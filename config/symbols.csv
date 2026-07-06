@@ -591,7 +591,7 @@ address|name|symbol|size|type|prototype|provenance
 485180|TMacViewMgr::TMacViewMgr_OnCommand_ID_8009_Impl||29|function|undefined TMacViewMgr_OnCommand_ID_8009_Impl()|
 4851b0|TMacViewMgr_OnCommand_ID_800C_ShowCityViewSelectionDialog||774|function|undefined TMacViewMgr_OnCommand_ID_800C_ShowCityViewSelectionDialog()|
 48542a|HandleDialogSelectionAndDispatchTurnEventCode|||global||
-485590|SetUiRuntimeContextValue64ToZero||1|function|undefined SetUiRuntimeContextValue64ToZero()|
+485590|CMainFrame::OnCommand800D||14|function|undefined SetUiRuntimeContextValue64ToZero()|
 4855b0|TMacViewMgr_OnCommand_ID_8013_ShowTerrainOverlayDialog||1|function|undefined TMacViewMgr_OnCommand_ID_8013_ShowTerrainOverlayDialog()|
 485920|CMainFrame::HandleCustomMessage2420DispatchTurnEvent||40|function|undefined HandleCustomMessage2420DispatchTurnEvent()|
 485960|CMainFrame::OnMsg0BC0||25|function|undefined TMacViewMgr_OnMsg_0x0BC0_Impl()|

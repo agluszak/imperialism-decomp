@@ -64,16 +64,16 @@ int __stdcall AdvanceTurnStateWhenMovieMciModeStops(int wParam, int mciMode) {
 
 IMPLEMENT_DYNCREATE(CMainFrame, CFrameWnd)
 
-// Entry order follows the original map at 0x648648. Original entries whose handlers are
-// still not ported: ON_COMMAND(0x800D, 0x485590) (forwards through TViewMgr slot 0x19,
-// byte 0x64 — needs TViewMgr slots 0x13..0x19 modeled) and ON_COMMAND(0x8013, 0x4855b0)
-// (terrain-overlay dialog builder); each needs its own class/type recovery before porting.
+// Entry order follows the original map at 0x648648. The one original entry whose handler
+// is still not ported is ON_COMMAND(0x8013, 0x4855b0) (a large terrain-overlay dialog
+// builder).
 BEGIN_MESSAGE_MAP(CMainFrame, CFrameWnd)
 ON_WM_QUERYNEWPALETTE()
 ON_WM_PALETTECHANGED()
 ON_WM_CREATE()
 ON_COMMAND(0x8009, OnCommand8009)
 ON_COMMAND(0x800C, OnCommand800C)
+ON_COMMAND(0x800D, OnCommand800D)
 ON_WM_PAINT()
 ON_WM_CHAR()
 ON_WM_ACTIVATE()
@@ -198,6 +198,11 @@ void CMainFrame::OnCommand8009() {
 
 void CMainFrame::OnCommand800C() {
   TMacViewMgr_OnCommand_ID_800C_ShowCityViewSelectionDialog();
+}
+
+// FUNCTION: IMPERIALISM 0x00485590
+void CMainFrame::OnCommand800D() {
+  g_pUiRuntimeContext->UiRuntimeSlot64();
 }
 
 // FUNCTION: IMPERIALISM 0x00485920

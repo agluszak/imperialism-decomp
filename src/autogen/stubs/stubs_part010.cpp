@@ -1443,14 +1443,6 @@ undefined4 TMacViewMgr_OnCommand_ID_800C_ShowCityViewSelectionDialog(void)
   return 0;
 }
 
-// ghidra_name SetUiRuntimeContextValue64ToZero
-// ghidra_proto undefined SetUiRuntimeContextValue64ToZero()
-// FUNCTION: IMPERIALISM 0x00485590
-undefined4 SetUiRuntimeContextValue64ToZero(void)
-{
-  return 0;
-}
-
 // ghidra_name TMacViewMgr_OnCommand_ID_8013_ShowTerrainOverlayDialog
 // ghidra_proto undefined TMacViewMgr_OnCommand_ID_8013_ShowTerrainOverlayDialog()
 // FUNCTION: IMPERIALISM 0x004855b0
