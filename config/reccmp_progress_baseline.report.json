@@ -2459,7 +2459,7 @@
     },
     {
       "address": "0x4838b0",
-      "matching": 0.0,
+      "matching": 0.9161290322580645,
       "name": "TCViewOwnedBufferRegistryState_00648560::HandleIncludeViewPointerUpdateAndNotifyChildren",
       "type": 1
     },
@@ -2467,6 +2467,12 @@
       "address": "0x483ad0",
       "matching": 0.9090909090909091,
       "name": "TUiEvent::`scalar deleting destructor'",
+      "type": 1
+    },
+    {
+      "address": "0x483b00",
+      "matching": 0.4067796610169492,
+      "name": "CIncludeView::OnLButtonUp",
       "type": 1
     },
     {
@@ -2495,7 +2501,7 @@
     },
     {
       "address": "0x484190",
-      "matching": 0.0392156862745098,
+      "matching": 0.5208333333333334,
       "name": "HandleParentNotifyAndEndMouseCapture_00484190",
       "type": 1
     },
@@ -3977,13 +3983,13 @@
     },
     {
       "address": "0x489cb0",
-      "matching": 0.6582278481012658,
+      "matching": 0.8860759493670886,
       "name": "TMouseCaptureState::NotifyCaptureOwnerState1AndMaybeUpdateCoords",
       "type": 1
     },
     {
       "address": "0x489d40",
-      "matching": 0.7422680412371134,
+      "matching": 0.7835051546391752,
       "name": "TMouseCaptureState::EndMouseCaptureAndStopRepeatTimer",
       "type": 1
     },
@@ -4313,7 +4319,7 @@
     },
     {
       "address": "0x48b0b0",
-      "matching": 0.9814814814814815,
+      "matching": 0.6614173228346457,
       "name": "TView::CloseCityDialogChildrenAndReleaseSelf",
       "type": 1
     },
@@ -5760,7 +5766,7 @@
     },
     {
       "address": "0x493a70",
-      "matching": 0.0,
+      "matching": 1.0,
       "name": "DispatchMessageFallbackAndUpdateCaptureState",
       "type": 1
     },
@@ -6979,7 +6985,7 @@
     },
     {
       "address": "0x49ded0",
-      "matching": 0.8242074927953891,
+      "matching": 0.8430232558139535,
       "name": "InitializeGlobalRuntimeSystemsFromConfig",
       "type": 1
     },
@@ -7549,7 +7555,7 @@
     },
     {
       "address": "0x4a2900",
-      "matching": 0.13063763608087092,
+      "matching": 0.13374805598755832,
       "name": "BuildArmyContextActionRecordsAndDispatchLabel",
       "type": 1
     },
@@ -12133,7 +12139,7 @@
     },
     {
       "address": "0x4db380",
-      "matching": 0.3170731707317073,
+      "matching": 0.3130081300813008,
       "name": "TGreatPower::UpdateGreatPowerPressureStateAndDispatchEscalationMessage",
       "type": 1
     },
@@ -12357,7 +12363,7 @@
     },
     {
       "address": "0x4dd430",
-      "matching": 0.5142857142857142,
+      "matching": 0.5714285714285714,
       "name": "TGreatPower::ComputeRemainingDiplomacyAidBudget",
       "type": 1
     },
@@ -12789,8 +12795,7 @@
     },
     {
       "address": "0x4e0590",
-      "effective": true,
-      "matching": 0.42857142857142855,
+      "matching": 1.0,
       "name": "TGreatPower::OrphanRetStub_004d7fa0_88",
       "type": 1
     },
@@ -12803,15 +12808,13 @@
     },
     {
       "address": "0x4e0610",
-      "effective": true,
-      "matching": 0.42857142857142855,
+      "matching": 1.0,
       "name": "TGreatPower::ReturnFalseNationStateActionStub_8a",
       "type": 1
     },
     {
       "address": "0x4e0650",
-      "effective": true,
-      "matching": 0.42857142857142855,
+      "matching": 1.0,
       "name": "TGreatPower::OrphanRetStub_004d7fe0_8b",
       "type": 1
     },
@@ -12824,7 +12827,7 @@
     },
     {
       "address": "0x4e06d0",
-      "matching": 0.8095238095238095,
+      "matching": 0.7619047619047619,
       "name": "TGreatPower::SumNationRuntimeFiveBucketValue44",
       "type": 1
     },
@@ -12854,7 +12857,7 @@
     },
     {
       "address": "0x4e09a0",
-      "matching": 0.5060240963855421,
+      "matching": 0.5301204819277109,
       "name": "TGreatPower::ComputeCityOrderCapabilityAggregateScore",
       "type": 1
     },
@@ -16299,7 +16302,7 @@
     },
     {
       "address": "0x50bea0",
-      "matching": 0.2044525215810995,
+      "matching": 0.20626987732848706,
       "name": "TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets",
       "type": 1
     },
@@ -20110,7 +20113,7 @@
     },
     {
       "address": "0x53d020",
-      "matching": 0.4235294117647059,
+      "matching": 0.4251968503937008,
       "name": "ComputeArmyMissionScoreDeltaWithCandidateUnit",
       "type": 1
     },
@@ -21034,7 +21037,7 @@
     },
     {
       "address": "0x542900",
-      "matching": 0.4375,
+      "matching": 0.44545454545454544,
       "name": "TMultiplayerMgr::InitializeMultiplayerManagerForSessionContext",
       "type": 1
     },
@@ -21094,7 +21097,7 @@
     },
     {
       "address": "0x544540",
-      "matching": 0.5,
+      "matching": 0.66,
       "name": "EnsureGameFlowStateAndPostTurnEvent5E5",
       "type": 1
     },
@@ -25876,7 +25879,7 @@
     },
     {
       "address": "0x57b9e0",
-      "matching": 0.6962025316455697,
+      "matching": 0.7006369426751592,
       "name": "TSimMgr::ConstructTurnFlowStateManagerVtable00662a58",
       "type": 1
     },
@@ -25888,7 +25891,7 @@
     },
     {
       "address": "0x57bbf0",
-      "matching": 0.5714285714285714,
+      "matching": 0.7368421052631579,
       "name": "TSimMgr::InitializeTurnFlowStateDefaults",
       "type": 1
     },
@@ -26164,7 +26167,7 @@
     },
     {
       "address": "0x581400",
-      "matching": 0.4492753623188406,
+      "matching": 0.5362318840579711,
       "name": "InitializeOrLoadEntryArray14AndClampLimits",
       "type": 1
     },
@@ -26176,7 +26179,7 @@
     },
     {
       "address": "0x581870",
-      "matching": 0.029411764705882353,
+      "matching": 0.5555555555555556,
       "name": "ReinitializeGameFlowAndPostTurnEventCode",
       "type": 1
     },

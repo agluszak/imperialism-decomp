@@ -3,6 +3,7 @@
 #include "game/CDib.h"
 #include "game/mfc.h"
 
+class TControl;
 class TView;
 
 // MFC view class for the SDI doc template (CRuntimeClass @ 0x006481c8, m_lpszClassName
@@ -38,6 +39,17 @@ protected:
   afx_msg LRESULT OnDialogTreeHostMsg4EF(WPARAM wParam, LPARAM lParam); // 0x00482bf0
   // WM_LBUTTONDOWN: forward the click into the dialog tree (skips a playing movie). 0x004839e0
   afx_msg void OnLButtonDown(UINT nFlags, CPoint point); // 0x004839e0
+  // WM_LBUTTONUP: complete the click — slot-0x48 mouse-up dispatch into the dialog tree,
+  // then end the global mouse capture. 0x00483b00
+  afx_msg void OnLButtonUp(UINT nFlags, CPoint point); // 0x00483b00
+  // WM_MOUSEMOVE: update the global capture drag state, drive this view's own captured
+  // control (m_capturedControl74 + the +0x78 point triple), feed the cursor to the UI
+  // root controller, and (while the app is active) run the dialog tree's hover
+  // hit-test. 0x004838b0
+  afx_msg void OnMouseMove(UINT nFlags, CPoint point); // 0x004838b0
+  // WM_PARENTNOTIFY: a click landed on a native child window (e.g. the movie MCIWnd) —
+  // replay it as a full down+up click into the dialog tree. 0x00484190
+  afx_msg void OnParentNotify(UINT message, LPARAM lParam); // 0x00484190
   // WM_KEYDOWN: translate the keystroke into the shared UI command event and forward it
   // into the active window's TView tree (via ForwardParam). This is the entry point that
   // lets ESC/Space/Enter reach TGameWindow::ForwardParam, e.g. to skip a playing movie.
@@ -56,7 +68,15 @@ public:
   CDib* m_pOffscreenDib;        // 0x48 — 640x480x8 surface created in OnInitialUpdate
   unsigned char pad4c[0x6c - 0x4c];
   UINT m_tickTimerId; // 0x6c — 17ms UI tick timer (id 0xd00d) driving cursor dispatch
-  unsigned char pad70[0x90 - 0x70];
+  unsigned char pad70[4];
+  // 0x74 — this view's own captured-control track (a second copy of the
+  // TMouseCaptureState shape: control + start/last/current points). OnMouseMove sends
+  // it the state-1 drag command through TControl slots 0x67/0x68; the writer that arms
+  // it is not yet located.
+  TControl* m_capturedControl74;
+  CPoint m_captureStartPoint78;   // 0x78
+  CPoint m_captureLastPoint80;    // 0x80
+  CPoint m_captureCurrentPoint88; // 0x88
   // 0x90 — nonzero while the UI is interactive; TApplication::InModalState (0x486960)
   // reports TRUE while it is 0. Writer not yet located.
   int m_uiInteractiveFlag90;

@@ -138,11 +138,11 @@ short ReadLocalizationFlowMode() {
 }
 
 short ReadLocalizationTurnGateFlag58() {
-  return g_pSimMgr->preferenceValues[10];
+  return g_pSimMgr->preferenceValues[8];
 }
 
 short ReadLocalizationPendingEventGate5c() {
-  return g_pSimMgr->preferenceValues[12];
+  return g_pSimMgr->preferenceValues[10];
 }
 
 } // namespace

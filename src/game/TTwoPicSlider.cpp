@@ -174,8 +174,9 @@ void TTwoPicSlider::DispatchPictureResourceCommand(int nEventType, void* pEventS
         // ECX = [0x6a43ec] in the original, same as 0x5db66f).
         g_pSfxPlaybackSystem->ScaleAndApplyAuxOutputVolume(static_cast<short>(volumeScalar));
         // Original: mov eax,[0x6a20f8]; mov [eax+0x4e],di — the master-volume
-        // preference slot on the TSimMgr singleton (not a raw global).
-        g_pSimMgr->preferenceValues[5] = static_cast<short>(volumeScalar);
+        // preference slot (index 3, clamped 0..0xff by
+        // InitializeOrLoadEntryArray14AndClampLimits) on the TSimMgr singleton.
+        g_pSimMgr->preferenceValues[3] = static_cast<short>(volumeScalar);
       }
     }
   }

@@ -96,7 +96,7 @@ void TAmbitApplication::InitializeGlobalRuntimeSystems() {
 
   g_pGameFlowState = new TMultiplayerMgr();
   if (g_pGameFlowState != nullptr) {
-    g_pGameFlowState->InitializeMultiplayerManagerForSessionContext(CString());
+    g_pGameFlowState->InitializeMultiplayerManagerForSessionContext(0);
   }
 }
 

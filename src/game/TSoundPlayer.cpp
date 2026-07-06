@@ -78,7 +78,7 @@ BOOL TSoundPlayer::ForwardMciStatusCommand814IgnoreFailure() {
 // FUNCTION: IMPERIALISM 0x00593400
 char TSoundPlayer::CanHandleCityDialogActionFalse(int action) {
   (void)action;
-  if (g_pSimMgr->preferenceValues[5] == 0) {
+  if (g_pSimMgr->preferenceValues[3] == 0) {
     if (this->stateByte78 != 0) {
       if (static_cast<char>(this->ForwardMciStatusCommand814IgnoreFailure()) != 0) {
         this->ForwardMciCommand808ToDevice();
@@ -238,7 +238,7 @@ void TSoundPlayer::NoOpAudioTickCallback_005e50a0() {}
 // FUNCTION: IMPERIALISM 0x005e50c0
 int TSoundPlayer::UpdateLocalizationAudioSlotAndMaybeRefreshVoiceState(int sfxToken, int param_2,
                                                                        int param_3, int param_4) {
-  if (g_pSimMgr->preferenceValues[4] == 0) {
+  if (g_pSimMgr->preferenceValues[2] == 0) {
     return 0;
   }
   int slot = DAT_006a60f8++;

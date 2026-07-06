@@ -4,12 +4,17 @@
 
 #include "decomp_types.h"
 #include "game/ImperialismApp.h"
+#include "game/TApplication.h"
 #include "game/TAssetMgr.h"
 #include "game/TCountry.h"
 #include "game/TGreatPower.h"
+#include "game/THelpMgr.h"
 #include "game/TMacViewMgr.h"
+#include "game/TMultiplayerMgr.h"
 #include "game/TViewMgr.h"
 #include "game/global_data_tables.h"
+
+extern "C" char DAT_006a43c0;
 
 // FUNCTION: IMPERIALISM 0x004153a0
 int ReadSettingsPrefIntByIndex(int index, int defaultValue) {
@@ -71,8 +76,7 @@ TSimMgr::TSimMgr() : sharedTextSlots() {
   fieldd8 = 0;
   field112 = 0;
   stateFlag114 = 0;
-  preferenceValues[0] = 0;
-  preferenceValues[1] = 0;
+  field44 = 0;
 }
 
 // SYNTHETIC: IMPERIALISM 0x0057bb50
@@ -88,20 +92,27 @@ void TSimMgr::InitializeTurnFlowStateDefaults() {
   quarterGateTick2c = 0;
   activeNationSlot = -1;
   field14 = 0;
-  mode = 1;
-  turnFlowStatusFlags = 0;
+  turnStateCode = 1;
+  runtimeSubsystemIndex = 0;
   field_64 = 0;
   field6e = 0;
-  memset(phaseFlags, 0x01, sizeof(phaseFlags));
-  gateFlag7a = 0;
-  field78 = 2;
+  // Ten bytes 0x6f..0x78 (phaseFlags[9] + field78) are filled with 1 in one pass
+  // (dword/dword/word stores in the original); field78 is then overwritten with 2.
+  memset(phaseFlags, 0x01, sizeof(phaseFlags) + 1);
   field79 = 1;
-  g_apSecondaryNationStateSlots[0x17] = nullptr;
-  PostMainWindowCommand100ForTurnFlow();
-  runtimeSubsystemIndex = 0;
+  field78 = 2;
+  // Developer-cheat probe: stat a file literally named "Conan" in the working directory;
+  // the original discards the result and clears the cheat flag unconditionally (the flag
+  // is armed elsewhere).
+  CFileStatus conanFileStatus;
+  CFile::GetStatus(g_szConanCheatFileName_00698BEC, conanFileStatus);
+  g_bRandomMapDeveloperCheatFlag = 0;
+  ReseedThreadLocalRandom();
+  redrawEnabled = 0;
   InitializeOrLoadEntryArray14AndClampLimits(false);
   field6a = 0;
   field6c = 0x77a;
+  gateFlag7a = 0;
 }
 
 // FUNCTION: IMPERIALISM 0x0057bd20
@@ -158,13 +169,13 @@ void TSimMgr::SetStateCodeAndUpdateZeroOrOutOfRangeFlag(int stateCode) {
   this->redrawEnabled = stateCode;
   if (stateCode != 0) {
     if (0 < stateCode && stateCode <= 4) {
-      this->preferenceValues[12] = 0;
+      this->preferenceValues[10] = 0;
       return;
     }
   } else {
     zeroFlag = 1;
   }
-  this->preferenceValues[12] = zeroFlag;
+  this->preferenceValues[10] = zeroFlag;
 }
 
 // FUNCTION: IMPERIALISM 0x0057d8b0
@@ -370,6 +381,53 @@ void TSimMgr::InitializeOrLoadEntryArray14AndClampLimits(bool writeBack) {
   }
   preferenceValues[12] = 0;
   preferenceValues[1] = 0;
+}
+
+// The "Done/advance" turn-flow bootstrap primitive (free __cdecl in the TSimMgr TU): the
+// single writer of DAT_006a43c0 and the funnel every menu/score-screen advance routes
+// through. eventCode 0x5dd is the "start new game" scenario-setup path: it soft-resets
+// the EXISTING TSimMgr (the reset block is the original's header-inline prefix of
+// InitializeTurnFlowStateDefaults, expanded in place at 0x58191a) and jumps the turn
+// state machine to state 3. Every other code tears the manager down and rebuilds it
+// from scratch.
+// FUNCTION: IMPERIALISM 0x00581870
+void ReinitializeGameFlowAndPostTurnEventCode(int eventCode) {
+  if (g_pHelpMgr != 0) {
+    g_pHelpMgr->HandlePendingEventActivationByCode(0x5dc);
+  }
+  if (g_pSimMgr->field44 != 0) {
+    g_pGameFlowState->Free();
+    g_pGameFlowState = new TMultiplayerMgr();
+    g_pGameFlowState->InitializeMultiplayerManagerForSessionContext(0);
+  }
+  if (eventCode == 0x5dd) {
+    TSimMgr* simMgr = g_pSimMgr;
+    simMgr->quarterGateTick2c = 0;
+    simMgr->activeNationSlot = -1;
+    simMgr->field14 = 0;
+    simMgr->turnStateCode = 1;
+    simMgr->runtimeSubsystemIndex = 0;
+    simMgr->field_64 = 0;
+    simMgr->field6e = 0;
+    memset(simMgr->phaseFlags, 0x01, sizeof(simMgr->phaseFlags) + 1);
+    simMgr->field79 = 1;
+    simMgr->field78 = 2;
+    CFileStatus conanFileStatus;
+    CFile::GetStatus(g_szConanCheatFileName_00698BEC, conanFileStatus);
+    g_bRandomMapDeveloperCheatFlag = 0;
+    simMgr->ReseedThreadLocalRandom();
+    g_pSimMgr->turnStateCode = 3;
+    g_pGlobalUiRootController->PostTurnEventCodeMessage2420(static_cast<short>(eventCode));
+  } else {
+    g_pSimMgr->Free();
+    g_pSimMgr = new TSimMgr();
+    g_pSimMgr->InitializeTurnFlowStateDefaults();
+    g_pSimMgr->PostMainWindowCommand100ForTurnFlow();
+    if (eventCode != 0) {
+      g_pGlobalUiRootController->PostTurnEventCodeMessage2420(static_cast<short>(eventCode));
+    }
+  }
+  DAT_006a43c0 = 1;
 }
 
 // FUNCTION: IMPERIALISM 0x00581ae0

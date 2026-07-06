@@ -116,14 +116,19 @@ public:
   unsigned int turnFlowStatusFlags;
   int runtimeSubsystemIndex;
   int redrawEnabled;
+  // +0x44 — the multiplayer/session-mode dword: zeroed by the constructor (0x57bae7),
+  // compared against 1 and 2 all over TMultiplayerMgr/TMapMgr/TArmyMgr, and tested
+  // whole by ReinitializeGameFlowAndPostTurnEventCode (0x5818ad), which tears down and
+  // recreates g_pGameFlowState when it is nonzero. Nonzero writer not yet ported.
+  int field44;
+  // +0x48 — settings-preference slots. Ground truth: InitializeOrLoadEntryArray14AndClampLimits
+  // (0x581412 `[this + i*2 + 0x48]`) anchors the array at +0x48, not +0x44 (the earlier
+  // +0x44 base — bd 1uj.4's -4 shift — folded field44 into the array and skewed every
+  // index by one slot). 14 shorts end at +0x63, so field_64 lands at its literal +0x64
+  // with no padding gap. Known slots: [2] clamped 0..100, [3] master volume 0..0xff
+  // (TTwoPicSlider writes +0x4e), [8] = the +0x58 turn-gate flag, [10] = the +0x5c
+  // pending-event gate (SetStateCodeAndUpdateZeroOrOutOfRangeFlag writes +0x5c).
   short preferenceValues[14];
-  // Ground truth (bd 1uj.4 originally mis-shifted this whole region by -4; corrected
-  // per bd cwa/agent-2 evidence): pad60 is a genuine, currently-unidentified 4-byte gap
-  // -- InitializeTurnFlowStateDefaults (0x57bbf0) writes [this+0x64], and the
-  // constructor's scenario-row scatter-copy (destCursor anchored at scenarioSetupRows1)
-  // lands row0/1/2/3 at +0xda/+0xe8/+0xf6/+0x104 with zero inter-row padding -- both
-  // facts only hold if field_64 sits at its literal +0x64, not +0x60.
-  unsigned char pad60[4]; // +0x60 — no observed reader/writer yet
   int field_64;
   // +0x68 — nonzero: city/nation names come from the localized string table
   // (GetString group 0x2715) instead of the generated flavor-text variants
@@ -155,3 +160,12 @@ public:
 };
 
 ASSERT_SIZE(TSimMgr, 0x118);
+
+// 0x581870 — the "Done/advance" turn-flow bootstrap primitive (free __cdecl, TSimMgr TU).
+// Optionally activates the pending help event (0x5dc), recreates g_pGameFlowState when a
+// game flow was active (field44), then either soft-resets the existing TSimMgr for the
+// scenario-setup path (eventCode 0x5dd: shared reset prefix, turnStateCode = 3) or
+// replaces g_pSimMgr with a fresh TSimMgr and reinitializes its turn-flow defaults.
+// Posts eventCode to the main frame (message 0x2420) unless it is 0, and latches the
+// bootstrap-complete flag DAT_006a43c0 the turn state machine's case 1 keys off.
+void ReinitializeGameFlowAndPostTurnEventCode(int eventCode);

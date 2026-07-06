@@ -59,9 +59,9 @@ void TArmyMgr::WriteTo(TStream* stream) {}
 
 // FUNCTION: IMPERIALISM 0x004a1e40
 undefined TArmyMgr::OrphanCallChain_C4_I26_004a1e40() {
-  // g_pSimMgr's preferenceValues[0] is reused as a dual-purpose int slot (matching the
-  // established pattern in TMultiplayerMgr.cpp); == 2 selects the alternate branch here.
-  if (*reinterpret_cast<int*>(&g_pSimMgr->preferenceValues[0]) == 2) {
+  // g_pSimMgr->field44 is the multiplayer-mode dword (compared against 1/2 throughout
+  // TMultiplayerMgr.cpp); == 2 selects the alternate branch here.
+  if (g_pSimMgr->field44 == 2) {
     this->IterateLinkedListCursorAndClearPerTileByte0F();
     g_pSimMgr->PostMainWindowCommand100ForTurnFlow();
   } else {
@@ -1174,7 +1174,7 @@ void TArmyMgr::CreateTacticalBattleViewAndInitializeBattleSetup(TArmyStack* ourS
   this->enemyStackBattle3a0 = enemyStack;
   this->activeBattleView3a4 = newBattle;
 
-  if (*reinterpret_cast<int*>(&g_pSimMgr->preferenceValues[0]) == 1) {
+  if (g_pSimMgr->field44 == 1) {
     g_pGameFlowState->NoOpCallbackRet4(newBattle);
   }
   // Ground truth also calls newBattle->field_0x18->vtable[0x28]() here

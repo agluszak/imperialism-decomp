@@ -30,9 +30,7 @@ public:
 
   // Message handlers (original message map: 14 entries, AFX_MSGMAP_ENTRY table at
   // 0x0064b5f0, AFX_MSGMAP at 0x0064b5e8 chaining to CWnd's at 0x670868). Still
-  // unported: WM_LBUTTONUP (0x493a00) and WM_MOUSEMOVE (0x493a70) — both need the
-  // global mouse-capture-state object at 0x6a1a68 (methods 0x489cb0/0x489d40) and a
-  // TControl-branch slot 0x68 recovered first; WM_CTLCOLOR (0x493b70) — needs the
+  // unported: WM_CTLCOLOR (0x493b70) — needs the
   // module-library-cache color methods (0x4995c0 arg shape, 0x49ace0, 0x47e930);
   // WM_CHAR (0x493ce0) — function-static object of the 0x14-byte class with vtable
   // 0x648590 (ctor 0x4845a0) + cleanup registration; and message 0x36a (0x493d50) —
@@ -47,6 +45,12 @@ public:
   // 0x43) with the paint DC.
   afx_msg void OnPaint();
   afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
+  // WM_LBUTTONUP — completes a click: forwards to the owner tree's slot-0x48 mouse-up
+  // dispatch, then ends the global mouse capture (g_McAppMouseCaptureState).
+  afx_msg void OnLButtonUp(UINT nFlags, CPoint point);
+  // WM_MOUSEMOVE — updates the capture drag state, routes the cursor to the UI root
+  // controller, then (when the app is active) runs the owner tree's hover hit-test.
+  afx_msg void OnMouseMove(UINT nFlags, CPoint point);
   afx_msg void OnClose();
   afx_msg void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
   afx_msg void OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags);

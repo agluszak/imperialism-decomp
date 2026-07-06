@@ -63,9 +63,9 @@ TMultiplayerMgr::TMultiplayerMgr()
 TMultiplayerMgr::~TMultiplayerMgr() {}
 
 // FUNCTION: IMPERIALISM 0x00542900
-undefined TMultiplayerMgr::InitializeMultiplayerManagerForSessionContext(CString param_1) {
+undefined TMultiplayerMgr::InitializeMultiplayerManagerForSessionContext(int sessionContext) {
   this->InitializePacketHeaderFields_Tag20202020(0);
-  field10 = reinterpret_cast<int>(static_cast<LPCSTR>(param_1));
+  field10 = sessionContext;
   diplomacyQueueContext = 0;
   sessionReadyFlag = 0;
   processPrimaryEventQueue = 1;
@@ -132,7 +132,7 @@ void TMultiplayerMgr::EnsureGameFlowStateAndPostTurnEvent5E5() {
     self = new TMultiplayerMgr();
     g_pGameFlowState = self;
     if (self != 0) {
-      self->InitializeMultiplayerManagerForSessionContext(CString());
+      self->InitializeMultiplayerManagerForSessionContext(0);
     }
     self = g_pGameFlowState;
   }
@@ -724,7 +724,7 @@ undefined4 TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMessag
           local_4 = CONCAT31(((unsigned int)(local_4) >> 8 & 0xffffff), 6);
           reinterpret_cast<undefined4(__cdecl*)(...)>(0x004948b0)();
         }
-        if (*reinterpret_cast<int*>(&g_pSimMgr->preferenceValues[0]) == 1) {
+        if (g_pSimMgr->field44 == 1) {
           bVar10 = false;
           local_1c8.m_pchData = (char*)0x0;
           pcVar32 = (code*)(CVar42.m_pchData + 0x48);
@@ -782,7 +782,7 @@ undefined4 TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMessag
       uVar16 = 1;
       break;
     }
-    if (*reinterpret_cast<int*>(&g_pSimMgr->preferenceValues[0]) == 1) {
+    if (g_pSimMgr->field44 == 1) {
       pcVar25 = *(char**)(param_1 + 0xb4);
       pcVar17 = *(char**)(param_1 + 0xb0);
       uVar16 = reinterpret_cast<undefined4(__cdecl*)(...)>(0x405a3d)();
@@ -853,7 +853,7 @@ undefined4 TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMessag
       reinterpret_cast<undefined4(__cdecl*)(...)>(0x40108c)();
     }
     *(uint*)(param_1 + 0xe8) = *(uint*)(param_1 + 0xe8) & ~(1 << (*(byte*)(param_2 + 7) & 0x1f));
-    if (*reinterpret_cast<int*>(&g_pSimMgr->preferenceValues[0]) == 1) {
+    if (g_pSimMgr->field44 == 1) {
       reinterpret_cast<undefined4(__cdecl*)(...)>(0x402a45)();
       local_1a0 = *(uint*)(param_1 + 0xe8);
     LAB_00545aa0:
@@ -1129,7 +1129,7 @@ undefined4 TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMessag
     break;
   case 0xf:
     *(uint*)(param_1 + 0xe8) = *(uint*)(param_1 + 0xe8) & ~(1 << (*(byte*)(param_2 + 7) & 0x1f));
-    if (*reinterpret_cast<int*>(&g_pSimMgr->preferenceValues[0]) == 1) {
+    if (g_pSimMgr->field44 == 1) {
       reinterpret_cast<undefined4(__cdecl*)(...)>(0x402a45)();
       local_1a0 = *(uint*)(param_1 + 0xe8);
       goto LAB_00545aa0;
@@ -1172,7 +1172,7 @@ undefined4 TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMessag
           (int)(short)(*(ushort*)(param_2 + 9) & *(ushort*)((int)param_2 + 0x26)) |
           *(uint*)(param_2[8] + iVar35) & ~(int)(short)*(ushort*)((int)param_2 + 0x26);
     }
-    if (*reinterpret_cast<int*>(&g_pSimMgr->preferenceValues[0]) == 1) {
+    if (g_pSimMgr->field44 == 1) {
       puVar22 = local_1b8;
       for (iVar35 = 10; iVar35 != 0; iVar35 = iVar35 + -1) {
         *puVar22 = *param_2;
@@ -1323,7 +1323,7 @@ undefined4 TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMessag
     }
     goto LAB_005485d8;
   case 0x1a:
-    if (*reinterpret_cast<int*>(&g_pSimMgr->preferenceValues[0]) == 2) {
+    if (g_pSimMgr->field44 == 2) {
       ppTVar19 = g_apNationStates;
       puVar27 = (undefined2*)((int)param_2 + 0x26);
       do {
@@ -1342,7 +1342,7 @@ undefined4 TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMessag
       uVar16 = 1;
       break;
     }
-    if (*reinterpret_cast<int*>(&g_pSimMgr->preferenceValues[0]) == 2) {
+    if (g_pSimMgr->field44 == 2) {
       reinterpret_cast<undefined4(__cdecl*)(...)>(
           *reinterpret_cast<void**>((*reinterpret_cast<char**>(g_pUiRuntimeContext) + 0x98)))();
       uVar16 = 1;
@@ -1357,7 +1357,7 @@ undefined4 TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMessag
   case 0x1c:
     reinterpret_cast<undefined4(__cdecl*)(...)>(
         (*reinterpret_cast<void***>(g_pNationInteractionStateManager))[24])();
-    if (*reinterpret_cast<int*>(&g_pSimMgr->preferenceValues[0]) == 1) {
+    if (g_pSimMgr->field44 == 1) {
       local_1c4.m_pchData = (char*)operator_new();
       local_4 = 0x14;
       if (local_1c4.m_pchData != (char*)0x0) {
@@ -1468,7 +1468,7 @@ undefined4 TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMessag
         reinterpret_cast<undefined4(__cdecl*)(...)>(0x405245)();
         reinterpret_cast<undefined4(__cdecl*)(...)>(0x40988b)();
         reinterpret_cast<undefined4(__cdecl*)(...)>(0x402e0f)();
-        if (*reinterpret_cast<int*>(&g_pSimMgr->preferenceValues[0]) == 1) {
+        if (g_pSimMgr->field44 == 1) {
           reinterpret_cast<undefined4(__cdecl*)(...)>(0x40510f)();
         }
         *(unsigned char*)&(local_4) = 0x1d;
@@ -1552,8 +1552,7 @@ undefined4 TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMessag
         reinterpret_cast<undefined4(__cdecl*)(...)>(0x405245)();
         reinterpret_cast<undefined4(__cdecl*)(...)>(0x40988b)();
         reinterpret_cast<undefined4(__cdecl*)(...)>(0x402e0f)();
-        if ((((unsigned int)(uStack_1cc) >> 24 & 0xff) != '\0') &&
-            (*reinterpret_cast<int*>(&g_pSimMgr->preferenceValues[0]) == 2)) {
+        if ((((unsigned int)(uStack_1cc) >> 24 & 0xff) != '\0') && (g_pSimMgr->field44 == 2)) {
           reinterpret_cast<undefined4(__cdecl*)(...)>(0x407518)();
         }
         *(unsigned char*)&(local_4) = 0x23;
@@ -1567,7 +1566,7 @@ undefined4 TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMessag
       }
     } else if (uVar36 < 0x71756975) {
       if ((uVar36 == 0x71756974) || (uVar36 == 0x6e657767)) {
-        if (*reinterpret_cast<int*>(&g_pSimMgr->preferenceValues[0]) == 2) {
+        if (g_pSimMgr->field44 == 2) {
           ((void)0);
           local_4 = 0x16;
           reinterpret_cast<undefined4(__cdecl*)(...)>(0x401e7e)();
@@ -1575,8 +1574,7 @@ undefined4 TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMessag
           local_4 = 0xffffffff;
           ((void)0);
         }
-        if ((*reinterpret_cast<int*>(&g_pSimMgr->preferenceValues[0]) == 2) ||
-            (param_2[6] == 0x6e657767)) {
+        if ((g_pSimMgr->field44 == 2) || (param_2[6] == 0x6e657767)) {
           reinterpret_cast<undefined4(__cdecl*)(...)>(0x407518)();
           uVar16 = 1;
         } else {
@@ -1591,7 +1589,7 @@ undefined4 TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMessag
         if (((g_apNationStates[uVar36] == (TGreatPower*)0x0) &&
              (iVar35 = reinterpret_cast<undefined4(__cdecl*)(...)>(0x405a3d)(),
               param_2[1] == iVar35)) &&
-            (*reinterpret_cast<int*>(&g_pSimMgr->preferenceValues[0]) == 1)) {
+            (g_pSimMgr->field44 == 1)) {
           bVar10 = true;
         } else {
           bVar10 = false;
@@ -1730,8 +1728,7 @@ undefined4 TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMessag
         }
         break;
       }
-      if ((uVar36 == 0x72656765) &&
-          (*reinterpret_cast<int*>(&g_pSimMgr->preferenceValues[0]) == 2)) {
+      if ((uVar36 == 0x72656765) && (g_pSimMgr->field44 == 2)) {
         g_pStrategicMapViewSystem->RebuildNationClipRegionsAndDispatchMapEvent();
         uVar16 = 1;
         break;

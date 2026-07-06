@@ -411,22 +411,6 @@ undefined4 DestructObjectAndReleaseWithFlag_Field0F(void)
   return 0;
 }
 
-// ghidra_name WrapperFor_InvokeCurrentMessageFallbackHandler_At00493a00
-// ghidra_proto undefined WrapperFor_InvokeCurrentMessageFallbackHandler_At00493a00()
-// FUNCTION: IMPERIALISM 0x00493a00
-undefined4 WrapperFor_InvokeCurrentMessageFallbackHandler_At00493a00(void)
-{
-  return 0;
-}
-
-// ghidra_name DispatchMessageFallbackAndUpdateCaptureState
-// ghidra_proto undefined DispatchMessageFallbackAndUpdateCaptureState()
-// FUNCTION: IMPERIALISM 0x00493a70
-undefined4 DispatchMessageFallbackAndUpdateCaptureState(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_RouteCommandByIdWithUiProbe_At00493c30
 // ghidra_proto undefined WrapperFor_RouteCommandByIdWithUiProbe_At00493c30()
 // FUNCTION: IMPERIALISM 0x00493c30

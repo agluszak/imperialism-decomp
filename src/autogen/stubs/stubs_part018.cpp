@@ -363,14 +363,6 @@ undefined4 UpdatePersistentTopTenNationScores(void)
   return 0;
 }
 
-// ghidra_name ReinitializeGameFlowAndPostTurnEventCode
-// ghidra_proto undefined ReinitializeGameFlowAndPostTurnEventCode()
-// FUNCTION: IMPERIALISM 0x00581870
-undefined4 ReinitializeGameFlowAndPostTurnEventCode(void)
-{
-  return 0;
-}
-
 // ghidra_name AssignSharedStringFromIndexedSlot7C
 // ghidra_proto undefined AssignSharedStringFromIndexedSlot7C()
 // FUNCTION: IMPERIALISM 0x00581bc0

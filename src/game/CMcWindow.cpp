@@ -1,5 +1,6 @@
 #include "game/CMcWindow.h"
 
+#include "game/TAmbitApplication.h"
 #include "game/TWindow.h"
 #include "game/global_data_tables.h"
 #include "game/ui_invalidation_guard.h"
@@ -12,11 +13,14 @@
 
 IMPLEMENT_DYNCREATE(CMcWindow, CWnd)
 
-// Original AFX_MSGMAP_ENTRY order (0x0064b5f0). WM_LBUTTONUP, WM_MOUSEMOVE,
-// WM_CTLCOLOR, WM_CHAR and message 0x36a are still unported (see CMcWindow.h).
+// Original AFX_MSGMAP_ENTRY order (0x0064b5f0). WM_CTLCOLOR (before QUERYNEWPALETTE),
+// WM_CHAR (after PALETTECHANGED) and message 0x36a (last) are still unported
+// (see CMcWindow.h).
 BEGIN_MESSAGE_MAP(CMcWindow, CWnd)
 ON_WM_PAINT()
 ON_WM_LBUTTONDOWN()
+ON_WM_LBUTTONUP()
+ON_WM_MOUSEMOVE()
 ON_WM_CLOSE()
 ON_WM_KEYDOWN()
 ON_WM_KEYUP()
@@ -147,6 +151,33 @@ void CMcWindow::OnLButtonDown(UINT nFlags, CPoint point) {
   ::BringWindowToTop(m_hWnd);
   CPoint pt(point);
   m_pOwnerWindow->DispatchUiMouseMoveToChildren(&pt, 0, 0, 0);
+}
+
+// Click completion: default processing, forward the point to the owner tree's slot-0x48
+// mouse-up dispatch, then end the global mouse capture (kills the repeat timer, releases
+// the Win32 capture, and sends the captured control its state-2 command). The owner
+// pointer is not null-checked in the original.
+// FUNCTION: IMPERIALISM 0x00493a00
+void CMcWindow::OnLButtonUp(UINT nFlags, CPoint point) {
+  Default();
+  CPoint pt(point);
+  m_pOwnerWindow->DispatchUiMouseEventToChildrenOrSelf_Impl(&pt, 0, 0, 0);
+  g_McAppMouseCaptureState.EndMouseCaptureAndStopRepeatTimer(nFlags, point.x, point.y);
+}
+
+// Drag/hover tracking: default processing, update the capture drag state (state-1 command
+// to the captured control, if any), hand the cursor position to the UI root controller,
+// then — only while the McApp UI active flag is set — run the owner tree's hover
+// selection hit-test.
+// FUNCTION: IMPERIALISM 0x00493a70
+void CMcWindow::OnMouseMove(UINT nFlags, CPoint point) {
+  Default();
+  g_McAppMouseCaptureState.NotifyCaptureOwnerState1AndMaybeUpdateCoords(nFlags, point.x, point.y);
+  static_cast<TAmbitApplication*>(g_pGlobalUiRootController)->HandleCursor(point.x, point.y, 0);
+  if (m_pOwnerWindow != NULL && GetMcAppUiActiveFlag() != 0) {
+    CPoint pt(point);
+    m_pOwnerWindow->HandleCursorHoverSelectionByChildHitTestAndFallback(&pt, 0);
+  }
 }
 
 // Close request: run default processing, then forward to the owning TWindow's

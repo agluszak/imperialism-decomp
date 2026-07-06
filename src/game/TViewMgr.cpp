@@ -50,7 +50,6 @@
 char IsNationSlotEligibleForEventProcessing(short nationSlot);
 
 undefined4 QueueDeferredUiEventPacket(void);
-undefined4 ReinitializeGameFlowAndPostTurnEventCode(void);
 undefined4 ShowDialogTemplateE0ModalAndReleaseCapture(void);
 undefined4 HandleTurnEvent8FC_RebuildPageTabsAndTitles(void);
 
@@ -361,7 +360,7 @@ void TViewMgr::HandleTurnEventVtableSlot40RefreshGoldDialog() {
 
   // Mask the game-flow flag while committing the refresh when localization mode is active.
   unsigned char savedFlag = 0;
-  bool localizationActive = *reinterpret_cast<int*>(&g_pSimMgr->preferenceValues[0]) != 0;
+  bool localizationActive = g_pSimMgr->field44 != 0;
   if (localizationActive) {
     savedFlag = g_pGameFlowState->processPrimaryEventQueue;
     g_pGameFlowState->processPrimaryEventQueue = 0;
@@ -369,7 +368,7 @@ void TViewMgr::HandleTurnEventVtableSlot40RefreshGoldDialog() {
   node->RefreshTurnEventDialog();
   node->CallVoidSlotA0();
   node->Free();
-  if (*reinterpret_cast<int*>(&g_pSimMgr->preferenceValues[0]) != 0) {
+  if (g_pSimMgr->field44 != 0) {
     g_pGameFlowState->processPrimaryEventQueue = savedFlag;
   }
 }
@@ -1401,8 +1400,8 @@ void TViewMgr::HandleTurnStateExitAndPostFollowupEventCode(short followupState) 
     return;
   }
   g_pSfxPlaybackSystem->RequestDirectSoundInitIfAllowed();
-  g_pSfxPlaybackSystem->SetMasterVolumeFromPercent(g_pSimMgr->preferenceValues[4]);
-  g_pSfxPlaybackSystem->ScaleAndApplyAuxOutputVolume(g_pSimMgr->preferenceValues[5]);
+  g_pSfxPlaybackSystem->SetMasterVolumeFromPercent(g_pSimMgr->preferenceValues[2]);
+  g_pSfxPlaybackSystem->ScaleAndApplyAuxOutputVolume(g_pSimMgr->preferenceValues[3]);
   this->activeMovieViewF4 = 0;
   switch (g_pSimMgr->mode) {
   case 1:
@@ -1419,8 +1418,7 @@ void TViewMgr::HandleTurnStateExitAndPostFollowupEventCode(short followupState) 
       return;
     }
   default:
-    // 0x581870, unported __cdecl(int) — generic thunk form per Hard Rule 9.
-    reinterpret_cast<void(__cdecl*)(int)>(ReinitializeGameFlowAndPostTurnEventCode)(0);
+    ReinitializeGameFlowAndPostTurnEventCode(0);
   }
 }
 

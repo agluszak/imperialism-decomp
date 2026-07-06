@@ -1251,14 +1251,6 @@ undefined4 SelectPaletteAndResolveHandleMapEntry_004835e0(void)
   return 0;
 }
 
-// ghidra_name TCViewOwnedBufferRegistryState_00648560::HandleIncludeViewPointerUpdateAndNotifyChildren
-// ghidra_proto undefined HandleIncludeViewPointerUpdateAndNotifyChildren()
-// FUNCTION: IMPERIALISM 0x004838b0
-undefined4 HandleIncludeViewPointerUpdateAndNotifyChildren(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_FreeHeapBufferIfNotNull_At00483ad0_Impl
 // ghidra_proto undefined WrapperFor_FreeHeapBufferIfNotNull_At00483ad0_Impl()
 // FUNCTION: IMPERIALISM 0x00483ab0
@@ -1303,14 +1295,6 @@ undefined4 RunCommandModalLoopAndFinalizeState_Impl(void)
 // ghidra_proto undefined WrapperFor_GetWindowExStyleViaSiteOrHandle_At004840d0()
 // FUNCTION: IMPERIALISM 0x004840d0
 undefined4 WrapperFor_GetWindowExStyleViaSiteOrHandle_At004840d0(void)
-{
-  return 0;
-}
-
-// ghidra_name HandleParentNotifyAndEndMouseCapture_00484190
-// ghidra_proto undefined HandleParentNotifyAndEndMouseCapture_00484190()
-// FUNCTION: IMPERIALISM 0x00484190
-undefined4 HandleParentNotifyAndEndMouseCapture_00484190(void)
 {
   return 0;
 }

@@ -14,9 +14,10 @@ void TMouseCaptureState::NotifyCaptureOwnerState1AndMaybeUpdateCoords(unsigned i
   lastPoint = currentPoint;
   // Ground truth gates this on bit 0x20 of nFlags (MK_XBUTTON1 in the standard WM_MOUSEMOVE
   // flag set); the exact intent of skipping the coordinate update on that bit isn't recovered.
+  // The stored point is the owner-relative one (0x489cf5 reloads the converted stack local,
+  // not the raw args).
   if ((nFlags & 0x20) == 0) {
-    currentPoint.x = x;
-    currentPoint.y = y;
+    currentPoint = ownerRelativePoint;
   }
   // Ground truth pushes a trailing "1" flag arg the declared 4-param
   // DispatchPictureResourceCommand signature doesn't model (same arity caveat as
@@ -40,8 +41,8 @@ void TMouseCaptureState::EndMouseCaptureAndStopRepeatTimer(unsigned int nFlags, 
   CPoint ownerRelativePoint(x, y);
   capturedControl->SubtractPosAndDispatchToOwnerSlot19C(&ownerRelativePoint);
   lastPoint = currentPoint;
-  currentPoint.x = x;
-  currentPoint.y = y;
+  // Owner-relative, as in Notify... above (0x489db2 reloads the converted stack local).
+  currentPoint = ownerRelativePoint;
   capturedControl->DispatchPictureResourceCommand(2, &startPoint, &lastPoint, &currentPoint);
   capturedControl = 0;
 }

@@ -2,6 +2,7 @@
 
 #include "game/CMcWindow.h"
 #include "game/TAmbitApplication.h"
+#include "game/TControl.h"
 #include "game/TEvent.h"
 #include "game/TUiEvent.h"
 #include "game/TView.h"
@@ -80,13 +81,15 @@ static CWnd* GetLiveRegistryHeadHostView();
 IMPLEMENT_DYNCREATE(CIncludeView, CView)
 
 // Original AFX_MSGMAP_ENTRY order (entries @ 0x6489e8). Still unported:
-// WM_LBUTTONDOWN 0x4839e0, WM_LBUTTONUP 0x483b00, WM_MOUSEMOVE 0x4838b0,
 // WM_LBUTTONDBLCLK 0x483b70, WM_COMMAND id 0x8011/0x8012 0x483d60/0x483d90,
 // WM_SETCURSOR 0x483ef0, WM_RBUTTONDOWN 0x483f10, WM_RBUTTONUP 0x483ff0,
-// WM_PARENTNOTIFY 0x484190, WM_CTLCOLOR 0x483660.
+// WM_CTLCOLOR 0x483660.
 BEGIN_MESSAGE_MAP(CIncludeView, CView)
 ON_WM_ERASEBKGND()
 ON_WM_LBUTTONDOWN()
+ON_WM_LBUTTONUP()
+ON_WM_MOUSEMOVE()
+ON_WM_PARENTNOTIFY()
 ON_WM_KEYDOWN()
 ON_WM_CHAR()
 ON_MESSAGE(0x4ef, OnDialogTreeHostMsg4EF)
@@ -186,6 +189,35 @@ void CIncludeView::OnInitialUpdate() {
   OnUpdate(0, 0, 0);
 }
 
+// Pointer tracking on the host view: update the global capture drag state, drive this
+// view's own captured-control track (the +0x74 control with its +0x78 start/last/current
+// point triple, sent the state-1 drag command through TControl slots 0x67/0x68), hand the
+// cursor position to the UI root controller, and — while the McApp UI active flag is
+// set — run the dialog tree's hover selection hit-test.
+// FUNCTION: IMPERIALISM 0x004838b0
+void CIncludeView::OnMouseMove(UINT nFlags, CPoint point) {
+  if (m_uiInteractiveFlag90 == 0) {
+    return;
+  }
+  g_McAppMouseCaptureState.NotifyCaptureOwnerState1AndMaybeUpdateCoords(nFlags, point.x, point.y);
+  if (m_capturedControl74 != 0) {
+    if (g_nIncludeViewPointerAssertGate_006A17C4 == 0) {
+      TemporarilyClearAndRestoreUiInvalidationFlag(g_szIncludeViewSourcePath_00694D10, 0x2b7);
+    }
+    CPoint controlRelativePoint(point);
+    m_capturedControl74->SubtractPosAndDispatchToOwnerSlot19C(&controlRelativePoint);
+    m_captureLastPoint80 = m_captureCurrentPoint88;
+    m_captureCurrentPoint88 = controlRelativePoint;
+    m_capturedControl74->DispatchPictureResourceCommand(
+        1, &m_captureStartPoint78, &m_captureLastPoint80, &m_captureCurrentPoint88);
+  }
+  static_cast<TAmbitApplication*>(g_pGlobalUiRootController)->HandleCursor(point.x, point.y, 0);
+  if (m_activeDialogContext != 0 && GetMcAppUiActiveFlag() != 0) {
+    CPoint pt(point);
+    m_activeDialogContext->HandleCursorHoverSelectionByChildHitTestAndFallback(&pt, 0);
+  }
+}
+
 // WM_LBUTTONDOWN: forward the click into the hosted dialog tree as a mouse event
 // (TView slot 0x46). For a playing movie this reaches TMovieView::DispatchUiMouseMoveToChildren,
 // which stops (skips) the movie. Clicking the view outside the centered movie lands here;
@@ -200,6 +232,20 @@ void CIncludeView::OnLButtonDown(UINT nFlags, CPoint point) {
     evt.pad1c = 0;
     evt.pad24 = 0;
     m_activeDialogContext->DispatchUiMouseMoveToChildren(&point, reinterpret_cast<int>(&evt), 0, 0);
+  }
+}
+
+// Complete a click on the host view: forward the point to the dialog tree's slot-0x48
+// mouse-up dispatch, then end the global mouse capture. The original reuses the incoming
+// point pair as the dispatch buffer.
+// FUNCTION: IMPERIALISM 0x00483b00
+void CIncludeView::OnLButtonUp(UINT nFlags, CPoint point) {
+  if (m_uiInteractiveFlag90 != 0) {
+    if (m_activeDialogContext != 0) {
+      CPoint pt(point);
+      m_activeDialogContext->DispatchUiMouseEventToChildrenOrSelf_Impl(&pt, 0, 0, 0);
+    }
+    g_McAppMouseCaptureState.EndMouseCaptureAndStopRepeatTimer(nFlags, point.x, point.y);
   }
 }
 
@@ -218,6 +264,25 @@ void CIncludeView::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags) {
   (void)nRepCnt;
   (void)nFlags;
   Default();
+}
+
+// A click on a native child window (e.g. the movie MCIWnd) never reaches the view's own
+// button handlers — WM_PARENTNOTIFY replays it as a full click: run the down handler,
+// then the up dispatch + capture end, all at the child-relative point packed in lParam.
+// FUNCTION: IMPERIALISM 0x00484190
+void CIncludeView::OnParentNotify(UINT message, LPARAM lParam) {
+  CWnd::OnParentNotify(message, lParam);
+  CPoint point(static_cast<short>(LOWORD(lParam)), static_cast<short>(HIWORD(lParam)));
+  if (static_cast<unsigned short>(message) == WM_LBUTTONDOWN) {
+    OnLButtonDown(0, point);
+    if (m_uiInteractiveFlag90 != 0) {
+      if (m_activeDialogContext != 0) {
+        CPoint pt(point);
+        m_activeDialogContext->DispatchUiMouseEventToChildrenOrSelf_Impl(&pt, 0, 0, 0);
+      }
+      g_McAppMouseCaptureState.EndMouseCaptureAndStopRepeatTimer(0, point.x, point.y);
+    }
+  }
 }
 
 // MCIWNDM_NOTIFYMODE: when the movie MCIWnd reports MCI_MODE_STOP (whether the movie ended

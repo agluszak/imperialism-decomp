@@ -369,6 +369,11 @@ char g_szIncludeViewSourcePath_00694D10[] = "D:\\Ambit\\IncludeView.cpp";
 // GLOBAL: IMPERIALISM 0x006a17b0
 int g_nIncludeViewAssertGate_006A17B0 = 0;
 
+// Gate read by CIncludeView::OnMouseMove (0x4838e4) before firing the
+// drag-track-without-context one-shot assert (IncludeView.cpp line 0x2b7).
+// GLOBAL: IMPERIALISM 0x006a17c4
+int g_nIncludeViewPointerAssertGate_006A17C4 = 0;
+
 extern "C" {
 // MFC CRuntimeClass descriptors (slot-0 GetRuntimeClass returns these). Reccmp pairs by
 // symbol name, so the zero-initialized contents are irrelevant to matching.
@@ -614,6 +619,10 @@ int g_nMapActionContextDistanceCacheSizedFor = 0;
 
 // GLOBAL: IMPERIALISM 0x006a42dc
 unsigned char g_bRandomMapDeveloperCheatFlag = 0;
+// Developer-cheat probe filename: TSimMgr::InitializeTurnFlowStateDefaults (0x57bc2d)
+// stats a file literally named "Conan" via CFile::GetStatus.
+// GLOBAL: IMPERIALISM 0x00698bec
+char g_szConanCheatFileName_00698BEC[] = "Conan";
 // GLOBAL: IMPERIALISM 0x006a43cc
 TTradeMgr* g_pNationInteractionStateManager = 0;
 

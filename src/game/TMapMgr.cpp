@@ -1446,10 +1446,10 @@ void TMapMgr::DispatchFormationEntryActionsAndMaybeCreateTurnEvent12(short cityR
       static_cast<short>(newNationTag);
 
   bool isPrimary = g_pDiplomacyTurnStateManager->IsPrimaryNationSlotIndex(newNationTag) != 0;
-  if (isPrimary && *reinterpret_cast<int*>(&g_pSimMgr->preferenceValues[0]) != 2) {
+  if (isPrimary && g_pSimMgr->field44 != 2) {
     g_apNationStates[newNationTag]->NotifyActionSlot94(oldNationCode, 0x135);
   }
-  if (*reinterpret_cast<int*>(&g_pSimMgr->preferenceValues[0]) == 1) {
+  if (g_pSimMgr->field44 == 1) {
     g_pGameFlowState->CreateAndSendTurnEvent12_TwoShorts(static_cast<short>(newNationTag),
                                                          static_cast<short>(newNationTag));
   }
@@ -1761,12 +1761,11 @@ void TMapMgr::FloodFillTileRegionMarker(short nTileIndex, short nOwnerNationId) 
         cityScoreTable[cityIdx].lastTurnTick = g_pSimMgr->GetTurnTickSlot3C();
         if (g_nSaveFormatVersion == -3) {
           skipRedraw = true;
-        } else if (*reinterpret_cast<int*>(&g_pSimMgr->preferenceValues[0]) == 1) {
+        } else if (g_pSimMgr->field44 == 1) {
           g_pGameFlowState->DispatchCityRedrawInvalidateEvent(cityIdx);
         }
       }
-      if (!skipRedraw && g_nSaveFormatVersion != -3 &&
-          *reinterpret_cast<int*>(&g_pSimMgr->preferenceValues[0]) == 1) {
+      if (!skipRedraw && g_nSaveFormatVersion != -3 && g_pSimMgr->field44 == 1) {
         DispatchTileRedrawInvalidateEvent(neighborTile);
       }
     }

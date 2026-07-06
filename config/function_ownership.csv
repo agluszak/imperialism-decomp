@@ -218,10 +218,13 @@ address|target_cpp|ownership|note
 4835a0|src/game/CIncludeView.cpp|manual|marker_sync
 483720|src/game/CIncludeView.cpp|manual|marker_sync
 483750|src/game/CIncludeView.cpp|manual|marker_sync
+4838b0|src/game/CIncludeView.cpp|manual|marker_sync
 4839e0|src/game/CIncludeView.cpp|manual|marker_sync
 483ad0|src/game/TUiEvent.cpp|manual|marker_sync
+483b00|src/game/CIncludeView.cpp|manual|marker_sync
 484060|src/game/CIncludeView.cpp|manual|marker_sync
 4840b0|src/game/CIncludeView.cpp|manual|marker_sync
+484190|src/game/CIncludeView.cpp|manual|marker_sync
 484230|src/game/CIncludeView.cpp|manual|marker_sync
 484260|src/game/CIncludeView.cpp|manual|marker_sync
 4845a0|src/game/TUiEvent.cpp|manual|marker_sync
@@ -715,6 +718,8 @@ address|target_cpp|ownership|note
 493800|src/game/CMcWindow.cpp|manual|marker_sync
 4938c0|src/game/CMcWindow.cpp|manual|marker_sync
 493990|src/game/CMcWindow.cpp|manual|marker_sync
+493a00|src/game/CMcWindow.cpp|manual|marker_sync
+493a70|src/game/CMcWindow.cpp|manual|marker_sync
 493b00|src/game/CMcWindow.cpp|manual|marker_sync
 493b30|src/game/CMcWindow.cpp|manual|marker_sync
 493b50|src/game/CMcWindow.cpp|manual|marker_sync
@@ -3409,6 +3414,7 @@ address|target_cpp|ownership|note
 581260|src/game/TSimMgr.cpp|manual|marker_sync
 581280|src/game/TDiplomacyMgr.cpp|manual|marker_sync
 581400|src/game/TSimMgr.cpp|manual|marker_sync
+581870|src/game/TSimMgr.cpp|manual|marker_sync
 581ae0|src/game/TSimMgr.cpp|manual|marker_sync
 581b20|src/game/TSimMgr.cpp|manual|marker_sync
 582630|src/game/TGreatPower.cpp|manual|marker_sync

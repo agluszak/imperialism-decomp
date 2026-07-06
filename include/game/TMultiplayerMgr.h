@@ -52,8 +52,11 @@ public:
   virtual void ReadFrom(TStream* stream) override;                  // slot 0x06 0x542be0
   virtual void Free() override;                                     // slot 0x07 0x542b10
   virtual char CanHandleCityDialogActionFalse(int action) override; // slot 0x13 0x544e30
+  // Ground truth (0x542923): the argument is stored raw into the inherited int
+  // TEventHandler::field10; every observed caller (0x5818ee, TAmbitApplication init)
+  // pushes literal 0 — not a by-value CString as Ghidra guessed.
   virtual undefined
-  InitializeMultiplayerManagerForSessionContext(CString param_1); // slot 0x25 0x542900
+  InitializeMultiplayerManagerForSessionContext(int sessionContext); // slot 0x25 0x542900
 
   TMultiplayerMgr();
 

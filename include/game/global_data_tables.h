@@ -387,6 +387,7 @@ extern int g_nMcWindowStateMsgAssertGate_006A1C74;
 // asserts, and the gate read before the msg-0x4ef detach assert fires.
 extern char g_szIncludeViewSourcePath_00694D10[];
 extern int g_nIncludeViewAssertGate_006A17B0;
+extern int g_nIncludeViewPointerAssertGate_006A17C4;
 
 // Header path string ("D:\\Ambit\\McAppUI.h") passed with a line number to city-production
 // dialog assert/log helpers on the TControl branch.
@@ -623,6 +624,8 @@ extern int g_nMapActionContextDistanceCacheSizedFor;
 // (never toggled anywhere in the reachable game code -- likely a build-time/debug-only
 // switch in the retail binary). 0x6a42dc.
 extern unsigned char g_bRandomMapDeveloperCheatFlag;
+// "Conan" — developer-cheat probe filename statted by TSimMgr::InitializeTurnFlowStateDefaults.
+extern char g_szConanCheatFileName_00698BEC[];
 
 // TBehavior.cpp / TDialogBehavior.cpp / TDialogView.cpp — RTTI class-descriptor anchors.
 extern char g_pClassDescTBehavior;
