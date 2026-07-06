@@ -868,6 +868,10 @@ extern "C" const int g_anGreatPowerPressureHardAlertThresholdByLocale[6] = {6, 6
 // GLOBAL: IMPERIALISM 0x00653558
 extern "C" const int g_anNationStartingTreasuryByLocale[6] = {50000, 10000, 10000, 5000, 5000, 0};
 
+// GLOBAL: IMPERIALISM 0x006a2318
+CString g_cstrArmyOrderMessageStore;
+// GLOBAL: IMPERIALISM 0x006a2d40
+CString g_cstrCivilianOrderMessageStore;
 // GLOBAL: IMPERIALISM 0x006a2df0
 CString g_cstrGreatPowerPressureMessage;
 // GLOBAL: IMPERIALISM 0x006a3060

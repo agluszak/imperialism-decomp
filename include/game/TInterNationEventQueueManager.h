@@ -2,7 +2,7 @@
 
 #include "decomp_types.h"
 
-class TQueueObject;
+class TPtrList;
 
 // Global singleton at g_pInterNationEventQueueManager (0x006A43E8).
 // Ghidra labels calls through this pointer as TCountry* / TGreatPower*; that is
@@ -20,12 +20,15 @@ public:
   void AddOrUpdateBilateralActionRelationEntry(int eventCode, int nationA, int nationB);
 
 private:
-  TQueueObject* GetInterNationQueueByEventCode(int eventCode);
+  TPtrList* GetInterNationQueueByEventCode(int eventCode);
 
   unsigned char pad00[0x58C];
-  TQueueObject* dedupRecordQueue58c;
+  TPtrList* dedupRecordQueue58c;
   unsigned char pad590[0xED4 - 0x590];
-  TQueueObject* perNationEventBuckets[7];
-  TQueueObject* sharedEventRecordQueue;
+  // The queues are TPtrList instances (vtable 0x649068): the ctor 0x55b710
+  // allocates the 7 buckets with relationType 0x24 and the shared record
+  // queue with relationType 0x10.
+  TPtrList* perNationEventBuckets[7];
+  TPtrList* sharedEventRecordQueue;
   int perNationUiCounters7[7];
 };

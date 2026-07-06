@@ -951,8 +951,8 @@ void TGreatPower::CompileGreatPowerRelationshipDeltaLinesAndDispatchMessage(void
       localizationRuntime->GetString(0x274b, 0, &scoreHeaderRef);
       localizationRuntime->GetString(0x274b, static_cast<short>(interactionScore), &scoreTextRef);
     }
-    CString dispatchMessage(scoreTextRef);
-    g_pUiRuntimeContext->DispatchLocalizedUiMessageWithTemplateA13A0(2, &dispatchMessage);
+    g_pUiRuntimeContext->DispatchLocalizedUiMessageWithTemplateA13A0(
+        scoreTextRef, &g_cstrGreatPowerPressureMessage, 2, 0);
   }
 }
 
@@ -1016,28 +1016,23 @@ void TGreatPower::UpdateGreatPowerPressureStateAndDispatchEscalationMessage(void
       int compileThreshold = g_anGreatPowerCompileThresholdByLocale[localeIndex];
 
       if (hardThreshold <= pressureTier) {
-        if (localizationRuntime != 0) {
-          localizationRuntime->GetString(0x274b, 4, &sharedMessageRef);
-        }
-        CString dispatchMessage(sharedMessageRef);
-        g_pUiRuntimeContext->DispatchLocalizedUiMessageWithTemplateA13A0(4, &dispatchMessage);
+        g_pSimMgr->GetString(0x274b, 4, &sharedMessageRef);
+        g_pUiRuntimeContext->DispatchLocalizedUiMessageWithTemplateA13A0(
+            sharedMessageRef, &g_cstrGreatPowerPressureMessage, 2, 0);
         return;
       }
 
-      if (pressureTier < compileThreshold) {
-        if (localizationRuntime != 0) {
-          int statusId = (pressureTier == (compileThreshold - 1)) ? 3 : 2;
-          localizationRuntime->GetString(0x274b, static_cast<short>(statusId),
-                                         &g_cstrGreatPowerPressureMessage);
-        }
-        CString pressureMessage(g_cstrGreatPowerPressureMessage);
-        g_pUiRuntimeContext->DispatchLocalizedUiMessageWithTemplateA13A0(1, &pressureMessage);
+      if (pressureTier >= compileThreshold) {
+        g_pSimMgr->GetString(0x274b, 1, &sharedMessageRef);
+        g_pUiRuntimeContext->DispatchLocalizedUiMessageWithTemplateA13A0(
+            sharedMessageRef, &g_cstrGreatPowerPressureMessage, 2, 0);
+        // 0x004db5f6: the original re-runs the relationship-delta compile here.
+        this->CompileGreatPowerRelationshipDeltaLinesAndDispatchMessage();
       } else {
-        if (localizationRuntime != 0) {
-          localizationRuntime->GetString(0x274b, 1, &g_cstrGreatPowerPressureMessage);
-        }
-        CString pressureMessage(g_cstrGreatPowerPressureMessage);
-        g_pUiRuntimeContext->DispatchLocalizedUiMessageWithTemplateA13A0(2, &pressureMessage);
+        int statusId = (pressureTier == (compileThreshold - 1)) ? 3 : 2;
+        g_pSimMgr->GetString(0x274b, static_cast<short>(statusId), &sharedMessageRef);
+        g_pUiRuntimeContext->DispatchLocalizedUiMessageWithTemplateA13A0(
+            sharedMessageRef, &g_cstrGreatPowerPressureMessage, 2, 0);
       }
     }
   } else {
@@ -2491,15 +2486,12 @@ bool TGreatPower::SetDiplomacyGrantEntryForTargetAndUpdateTreasury(int arg1, int
       if (shouldDispatchAlert) {
         CString alertHeaderRef;
         CString alertTextRef;
-        TSimMgr* localizationRuntime = g_pSimMgr;
-        if (localizationRuntime != 0) {
-          localizationRuntime->GetString(0x2753, 0, &alertHeaderRef);
-          localizationRuntime->GetString(0x2753, 0, &alertTextRef);
-        }
-        CString primaryMessage(alertHeaderRef);
-        CString secondaryMessage(alertTextRef);
-        (void)primaryMessage;
-        g_pUiRuntimeContext->DispatchLocalizedUiMessageWithTemplateA13A0(2, &secondaryMessage);
+        g_pSimMgr->GetString(0x2753, 0x44, &alertHeaderRef);
+        g_pSimMgr->GetString(0x2753, 0x45, &alertTextRef);
+        // alertHeaderRef is fetched and released without being dispatched, as in
+        // the original (0x004de4a2..0x004de4ea).
+        g_pUiRuntimeContext->DispatchLocalizedUiMessageWithTemplateA13A0(
+            alertTextRef, &g_cstrGreatPowerPressureMessage, 0, 0);
       }
     }
   }
@@ -3223,7 +3215,8 @@ void TGreatPower::CreateFrogCityAtHomeRegionAndAttach(void* receiver) {
       }
       message += static_cast<char>('0' + static_cast<char>(this->nationSlot));
       message += " is missing capitol site";
-      g_pUiRuntimeContext->RunControlStringProviderAndDispatchLocalizedMessage(&message);
+      g_pUiRuntimeContext->RunControlStringProviderAndDispatchLocalizedMessage(
+          message, &g_cstrGreatPowerPressureMessage);
     }
   }
   this->homeRegionIndex = static_cast<short>(homeRegionIndex);
@@ -3239,33 +3232,33 @@ void TGreatPower::CreateFrogCityAtHomeRegionAndAttach(void* receiver) {
 }
 
 // FUNCTION: IMPERIALISM 0x004e00d0
-void TGreatPower::DispatchGreatPowerQuarterlyStatusMessageLevel2(void) {
+void TGreatPower::DispatchGreatPowerQuarterlyStatusMessageLevel2(CString* message) {
   int quarterTick = static_cast<int>(g_pSimMgr->quarterGateTick2c);
   if (static_cast<short>(quarterTick / 4) == 0) {
     return;
   }
-  CString pressureMessage(g_cstrGreatPowerPressureMessage);
-  g_pUiRuntimeContext->DispatchLocalizedUiMessageWithTemplateA13A0(2, &pressureMessage);
+  g_pUiRuntimeContext->DispatchLocalizedUiMessageWithTemplateA13A0(
+      *message, &g_cstrGreatPowerPressureMessage, 2, 0);
 }
 
 // FUNCTION: IMPERIALISM 0x004e0140
-void TGreatPower::DispatchGreatPowerQuarterlyStatusMessageLevel1(void) {
+void TGreatPower::DispatchGreatPowerQuarterlyStatusMessageLevel1(CString* message) {
   int quarterTick = static_cast<int>(g_pSimMgr->quarterGateTick2c);
   if (static_cast<short>(quarterTick / 4) == 0) {
     return;
   }
-  CString pressureMessage(g_cstrGreatPowerPressureMessage);
-  g_pUiRuntimeContext->DispatchLocalizedUiMessageWithTemplateA13A0(1, &pressureMessage);
+  g_pUiRuntimeContext->DispatchLocalizedUiMessageWithTemplateA13A0(
+      *message, &g_cstrGreatPowerPressureMessage, 1, 0);
 }
 
 // FUNCTION: IMPERIALISM 0x004e01b0
-void TGreatPower::DispatchGreatPowerQuarterlyStatusMessageLevel0(void) {
+void TGreatPower::DispatchGreatPowerQuarterlyStatusMessageLevel0(CString* message) {
   int quarterTick = static_cast<int>(g_pSimMgr->quarterGateTick2c);
   if (static_cast<short>(quarterTick / 4) == 0) {
     return;
   }
-  CString pressureMessage(g_cstrGreatPowerPressureMessage);
-  g_pUiRuntimeContext->DispatchLocalizedUiMessageWithTemplateA13A0(0, &pressureMessage);
+  g_pUiRuntimeContext->DispatchLocalizedUiMessageWithTemplateA13A0(
+      *message, &g_cstrGreatPowerPressureMessage, 0, 0);
 }
 
 // --- Slots 0x4c/0x65/0x6c/0x6f/0x78/0x7d/0x7f/0xac and trivial tail slots ---
@@ -3887,13 +3880,13 @@ void TGreatPower::ApplyJoinEmpireModeForTargetNation(int targetNationSlot, int m
 
 // FUNCTION: IMPERIALISM 0x004e2270
 void TGreatPower::RemoveRegionIdFromNationOwnedRegionList(int regionId) {
-  this->ownedRegionList->AddTailEx(reinterpret_cast<void*>(regionId));
+  this->ownedRegionList->AddTailIntEx(regionId);
   this->NotifyRegionEventSlot298(regionId);
 }
 
 // FUNCTION: IMPERIALISM 0x004e22b0
 void TGreatPower::AddRegionIdToNationOwnedRegionList(int regionId) {
-  this->ownedRegionList->AddHead(reinterpret_cast<void*>(regionId));
+  this->ownedRegionList->AddHeadInt(regionId);
   int ownedRegionCount = this->ownedRegionList->GetCount();
 
   unsigned char pressureGate = this->serializedStatusFlags[6];

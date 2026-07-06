@@ -834,8 +834,8 @@ bool TArmyMgr::CommitCityActionGateCostIfAffordable(int contextArg) {
   CString formattedMessage;
   scanBracketExpressions(g_pSimMgr, &formattedMessage, static_cast<LPCSTR>(templateText),
                          static_cast<LPCSTR>(currentAmountString), static_cast<LPCSTR>(costString));
-  reinterpret_cast<TViewMgr*>(g_pUiRuntimeContext)
-      ->DispatchLocalizedUiMessageWithTemplateA13A0(2, &formattedMessage);
+  g_pUiRuntimeContext->DispatchLocalizedUiMessageWithTemplateA13A0(
+      formattedMessage, &g_cstrArmyOrderMessageStore, 2, 0);
   return false;
 }
 

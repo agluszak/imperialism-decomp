@@ -95,9 +95,9 @@ public:
 
   // Quarterly / nation-state event stubs the AI nation leaves empty.
   // slots 0x3c/0x3d/0x3e — 0x004e7910/0x004e7930/0x004e7950.
-  void DispatchGreatPowerQuarterlyStatusMessageLevel2() override;
-  void DispatchGreatPowerQuarterlyStatusMessageLevel1() override;
-  void DispatchGreatPowerQuarterlyStatusMessageLevel0() override;
+  void DispatchGreatPowerQuarterlyStatusMessageLevel2(CString* message) override;
+  void DispatchGreatPowerQuarterlyStatusMessageLevel1(CString* message) override;
+  void DispatchGreatPowerQuarterlyStatusMessageLevel0(CString* message) override;
   // slot 0x6a — 0x004e7970: AI leaves the base 1c6→250 snapshot empty.
   void SnapshotDiplomacyState1c6Into250(void) override;
   // slot 0x80 — 0x004e7ca0.
@@ -108,4 +108,3 @@ public:
   // slot 0xb3 — 0x004ea990.
   virtual undefined IterateLinkedListCursorAndRelinkNodeOwners_004ea990();
 };
-

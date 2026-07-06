@@ -159,13 +159,10 @@ undefined TDisplayMgr::AssertUDisplayMgrLine495() {
 }
 
 // FUNCTION: IMPERIALISM 0x004fec80
-undefined TDisplayMgr::DispatchDisplayManagerControlStringMessage() {
-  CString message;
-  reinterpret_cast<void(__cdecl*)(CString*, CString*)>(AssignStringSharedRefAndReturnThis)(
-      &message, &message);
-  reinterpret_cast<TViewMgr*>(g_pUiRuntimeContext)
-      ->RunControlStringProviderAndDispatchLocalizedMessage(&message);
-  return 0;
+void TDisplayMgr::DispatchDisplayManagerControlStringMessage(CString message,
+                                                             CString* messageStoreRef) {
+  g_pUiRuntimeContext->RunControlStringProviderAndDispatchLocalizedMessage(message,
+                                                                           messageStoreRef);
 }
 
 // FUNCTION: IMPERIALISM 0x004fed00

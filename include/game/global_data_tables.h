@@ -430,6 +430,10 @@ extern "C" const int g_anGreatPowerCompileThresholdByLocale[6];
 extern "C" const int g_anGreatPowerPressureHardAlertThresholdByLocale[6];
 extern "C" const int g_anNationStartingTreasuryByLocale[6];
 extern CString g_cstrGreatPowerPressureMessage; // @ 0x6a2df0
+// Per-subsystem message-store CStrings passed as the A13A0 dispatcher's
+// messageStoreRef argument (0x005d5b00 callsites).
+extern CString g_cstrArmyOrderMessageStore;     // @ 0x6a2318
+extern CString g_cstrCivilianOrderMessageStore; // @ 0x6a2d40
 extern "C" const char g_szUiFailureMessage[];
 extern CString g_cstrUiFontBelweLight;
 extern CString g_cstrUiFontPalatino;

@@ -152,9 +152,20 @@ public:
   // it with dispatch code 'Hey!' targeting the global UI root controller, and posts
   // it there. `this` is unused by the original body.
   void CreateModalMessageCommandAndQueue(CString* message, int payload);
-  undefined4 RunControlStringProviderAndDispatchLocalizedMessage(CString* messageString);
-  undefined1 DispatchLocalizedUiMessageWithTemplateA13A0(int overlayMode, CString* messageCString);
-  undefined1 DispatchLocalizedUiMessageWithTemplate(int templateKind);
+  // 0x005d5a70 (ret 0x8) — dispatches `message` via A13A0 with overlayMode from
+  // ClassifyTurnStateForOverlayMode (slot 0x38).
+  void RunControlStringProviderAndDispatchLocalizedMessage(CString message,
+                                                           CString* messageStoreRef);
+  // 0x005d5b00 (ret 0x10) — takes the message BY VALUE (copy-constructed into the
+  // arg slot by every caller, destroyed by the callee) and forwards it plus an
+  // empty format CString to DispatchLocalizedUiMessageWithTemplate(3, ...).
+  // messageStoreRef is a per-subsystem CString global (may be null: TNetMgr).
+  undefined1 DispatchLocalizedUiMessageWithTemplateA13A0(CString message, CString* messageStoreRef,
+                                                         int overlayMode, int arg4);
+  // 0x005d5c40 (ret 0x18) — the real message-window dispatch; body still TODO.
+  undefined1 DispatchLocalizedUiMessageWithTemplate(int templateKind, CString formatText,
+                                                    CString message, CString* messageStoreRef,
+                                                    int overlayMode, int arg4);
 
   // 0x5de4f0. Shows the Civilian Report confirmation dialog (resource 0xbc4) for
   // pCivilianOrderEntry and returns true iff the player picked "confirm" ('okay').
@@ -193,4 +204,3 @@ public:
 };
 
 ASSERT_SIZE(TViewMgr, 0xfc);
-

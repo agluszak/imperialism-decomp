@@ -220,7 +220,7 @@ void TNetMgr::HandleError(int errorCode) {
     message += detailText;
   }
 
-  g_pUiRuntimeContext->RunControlStringProviderAndDispatchLocalizedMessage(&message);
+  g_pUiRuntimeContext->RunControlStringProviderAndDispatchLocalizedMessage(message, 0);
   if (DAT_006a601c == 0) {
     TemporarilyClearAndRestoreUiInvalidationFlag();
   }

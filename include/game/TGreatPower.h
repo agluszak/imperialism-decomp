@@ -121,9 +121,11 @@ public:
   // site" on failure), stores it at +0x88, creates the "FrogCity" marker, attaches it to
   // the receiver and the global map, and notifies the interior minister.
   virtual void CreateFrogCityAtHomeRegionAndAttach(void* receiver);
-  virtual void DispatchGreatPowerQuarterlyStatusMessageLevel2(void);
-  virtual void DispatchGreatPowerQuarterlyStatusMessageLevel1(void);
-  virtual void DispatchGreatPowerQuarterlyStatusMessageLevel0(void);
+  // Slots 0x3c-0x3e — each dispatches *message via A13A0 (overlayMode 2/1/0)
+  // when the quarter gate (quarterGateTick2c / 4) is open.
+  virtual void DispatchGreatPowerQuarterlyStatusMessageLevel2(CString* message);
+  virtual void DispatchGreatPowerQuarterlyStatusMessageLevel1(CString* message);
+  virtual void DispatchGreatPowerQuarterlyStatusMessageLevel0(CString* message);
   // slot 0xfc — placeholder in the original table; city callers use the direct helper
   // below (`AbsorbCityNeedVectorSlotFC`), not virtual dispatch.
   virtual void OrphanRetStub_004dca80(void);
