@@ -55,10 +55,10 @@ typedef void(__cdecl* LocalizationFormatFn)(int tokenId, int arg, void* outTextR
 } // namespace
 
 // The ordinary destructor and the scalar deleting destructor below are both
-// compiler-generated (implicit) from real inheritance — never hand-written.
-
-// SYNTHETIC: IMPERIALISM 0x00407f4a
-// TCivDescription::`scalar deleting destructor'
+// compiler-generated (implicit) from real inheritance — never hand-written. The real
+// 30-byte body is at 0x0044a7a0; 0x00407f4a is its 5-byte ILT jmp thunk (the vtable slot
+// target), handled markerless via config/function_ownership.csv (name_paired_no_marker)
+// like the other ILT compiler symbols — no explicit hand-marker on the ILT slot.
 
 // SYNTHETIC: IMPERIALISM 0x0044a7a0
 // TCivDescription::`scalar deleting destructor'

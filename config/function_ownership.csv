@@ -9,7 +9,7 @@ address|target_cpp|ownership|note
 406ee7|src/game/TMinor.cpp|manual|name_paired_no_marker
 407c1b|src/game/TSimMgr.cpp|manual|name_paired_no_marker
 407da6|src/game/TSortedPtrList.cpp|manual|name_paired_no_marker
-407f4a|src/game/TCivDescription.cpp|manual|marker_sync
+407f4a|src/game/TCivDescription.cpp|manual|name_paired_no_marker
 40853f|src/game/TSimMgr.cpp|manual|name_paired_no_marker
 409868|src/game/TSortedPtrList.cpp|manual|name_paired_no_marker
 412a70|src/game/startup_helpers.cpp|manual|marker_sync
