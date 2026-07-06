@@ -19,6 +19,7 @@
 #include "game/TGreatPower.h"
 #include "game/TTown.h"
 #include "game/TDiplomacyMgr.h"
+#include "game/TMultiplayerMgr.h"
 #include "game/ui_invalidation_guard.h"
 
 void EnsurePortZoneForTile(short nTileIndex);
@@ -975,15 +976,6 @@ TTown* TMapMgr::FindTownMarkerForTileByOwnerNation(short tileIndex) {
   return nullptr;
 }
 
-undefined TMapMgr::DispatchFormationEntryActionsAndMaybeCreateTurnEvent12(short param_1,
-                                                                          undefined4 param_2) {
-  return 0;
-}
-
-undefined TMapMgr::SetTileOwnerAndInvalidateNeighborState(short param_1, short param_2) {
-  return 0;
-}
-
 // FUNCTION: IMPERIALISM 0x00513200
 int TMapMgr::SetTileTransportFlags(short nTileIndex, unsigned short wTileTransportFlags) {
   char* terrainTileBytes = *reinterpret_cast<char**>(reinterpret_cast<unsigned char*>(this) + 0xc);
@@ -1055,6 +1047,40 @@ short FindReachableRecruitSpawnTileRecursiveImpl(TMapMgr* mapState, short tileIn
 }
 
 } // namespace
+
+// FUNCTION: IMPERIALISM 0x00513290
+void TMapMgr::DispatchFormationEntryActionsAndMaybeCreateTurnEvent12(short cityRecordIndex,
+                                                                     int newNationTag) {
+  TGlobalMapCityScoreRecord* city = &cityScoreTable[cityRecordIndex];
+  signed char oldNationCode = city->ownerNationCode00;
+
+  for (int i = 0; i < city->linkedRegionCount; ++i) {
+    SetTileOwnerAndInvalidateNeighborState(city->linkedRegionIds[i],
+                                           static_cast<short>(newNationTag));
+  }
+
+  city->ownerNationCode00 = static_cast<signed char>(newNationTag);
+  g_apTerrainTypeDescriptorTable[oldNationCode]->RemoveRegionIdFromNationOwnedRegionList(
+      cityRecordIndex);
+  g_apTerrainTypeDescriptorTable[newNationTag]->AddRegionIdToNationOwnedRegionList(cityRecordIndex);
+  g_pMapContextActionManager->perTileOwnerNationCodeCache1c[cityRecordIndex] =
+      static_cast<short>(newNationTag);
+
+  bool isPrimary = g_pDiplomacyTurnStateManager->IsPrimaryNationSlotIndex(newNationTag) != 0;
+  if (isPrimary && *reinterpret_cast<int*>(&g_pSimMgr->preferenceValues[0]) != 2) {
+    g_apNationStates[newNationTag]->NotifyActionSlot94(oldNationCode, 0x135);
+  }
+  if (*reinterpret_cast<int*>(&g_pSimMgr->preferenceValues[0]) == 1) {
+    g_pGameFlowState->CreateAndSendTurnEvent12_TwoShorts(static_cast<short>(newNationTag),
+                                                         static_cast<short>(newNationTag));
+  }
+}
+
+void TMapMgr::SetTileOwnerAndInvalidateNeighborState(short regionId, short newNationTag) {
+  // TODO: port body @ 0x5133f0 (not yet ported).
+  (void)regionId;
+  (void)newNationTag;
+}
 
 // FUNCTION: IMPERIALISM 0x005135a0
 byte TMapMgr::FindResourceCapabilityRequirementLevelByType(short tileIndex, char resourceType) {

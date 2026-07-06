@@ -327,9 +327,16 @@ public:
   // for the real parameter types since none are read; typed as unused ints to match the
   // stack-cleanup byte count.
   virtual void NoOpVirtualSlot2D(int param_1, int param_2, int param_3); // slot 0x2d 0x515de0
-  virtual undefined
-  DispatchFormationEntryActionsAndMaybeCreateTurnEvent12(short param_1,
-                                                         undefined4 param_2); // slot 0x2e 0x513290
+  // Reassigns cityRecordIndex's ownerNationCode00 to newNationTag: first tells
+  // SetTileOwnerAndInvalidateNeighborState to update every one of the city's linkedRegionIds,
+  // then updates the city's own owned-region-list membership (real TCountry virtuals on
+  // g_apTerrainTypeDescriptorTable, resolved from the ILT thunks at 0x4081a2/0x407f72's
+  // siblings), sets g_pMapContextActionManager's per-nation slot, notifies the new owner
+  // (TGreatPower::NotifyActionSlot94) unless it's the local player's own turn, and creates a
+  // turn-12 event when running in multiplayer-host mode.
+  virtual void
+  DispatchFormationEntryActionsAndMaybeCreateTurnEvent12(short cityRecordIndex,
+                                                         int newNationTag); // slot 0x2e 0x513290
   // Searches cityScoreTable[cityRecordIndex].adjacentRegionIds0A[0..11] for regionId;
   // on a hit returns the parallel entry at [i+12] (see TMultiplayerMgr's
   // CityRedrawInvalidateTurnEventPacket, which already splits this same 24-entry array
@@ -376,8 +383,12 @@ public:
   // (g_apNationStates[terrainStateTable[tileIndex].ownerNationTag04]->townMarkerList),
   // matching TTown::regionId14 == tileIndex.
   virtual class TTown* FindTownMarkerForTileByOwnerNation(short tileIndex); // slot 0x36 0x513170
-  virtual undefined SetTileOwnerAndInvalidateNeighborState(short param_1,
-                                                           short param_2); // slot 0x37 0x5133f0
+  // TODO: port body @ 0x5133f0 (not yet ported). Updates terrainStateTable[regionId]'s owner
+  // nation, refreshes its own and its 6 neighbors' border-influence counters via
+  // UpdateTileNeighborBorderInfluenceCounters, and (for a coastal/border tile owned by a
+  // minor power) re-scans that minor's owned military unit list.
+  virtual void SetTileOwnerAndInvalidateNeighborState(short regionId,
+                                                      short newNationTag); // slot 0x37 0x5133f0
   // Rendering-variant lookup family: pick a bitmap-strip byte offset for a tile's
   // sprite, indexed by gateFlag and/or spriteVariantIndex01. Tables verified via
   // raw-listing + ghidra-read-data at 0x38: 0x696f10, 0x39: 0x696f50, 0x3a: 0x696f60,
