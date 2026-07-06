@@ -53,9 +53,8 @@ public:
 
   // Called from TTaskForce::ResolveTaskForceOrderConflictAndPickCandidate's tail
   // (ECX=g_pNavyOrderManager evidence at that callsite) when neither entry's priority
-  // clears the other's threshold and no tie-break resolves it outright. 2934 bytes with
-  // a heavy CString-building body (SEH frame, ~500-byte format buffer); not yet
-  // reverse-engineered in detail.
+  // clears the other's threshold and no tie-break resolves it outright. Runs the
+  // tier-scoring / random-attrition resolution between the two order entries' children.
   void ResolveMapOrderPairConflictStep(TTaskForce* leftEntry, TTaskForce* rightEntry); // 0x55a780
 
   // Zeroes every g_pNavyPrimaryOrderListHead ship's field0c, destroys the whole
@@ -63,8 +62,24 @@ public:
   // g_pActiveMapOrderContext that no order entry is selected anymore.
   void ResetPrimaryOrderActiveFlagsAndClearManagerState(); // 0x556fd0
 
+  // 0x558960 (3485 bytes). Called twice in sequence from the map-order turn-phase
+  // resolver (ResolveMapOrderChainsForTurnPhase, 0x5578a0) with `mode` = 1 then 2
+  // -- confirmed __thiscall on this (TNavyMgr) via the `MOV ECX,EBP; PUSH mode;
+  // CALL` sequence at 0x557ca7/0x557cb1 and the callee's `RET 4`. Sweeps the 7
+  // playable nations that have a live city, and for each its 17 tracked map-order
+  // interaction slots, reading every queued entry via TGreatPower's tracked-slot
+  // virtuals (GetTrackedSlotEntryCountLow @ slot 0x6d, ReadTrackedSlotEntryFields @
+  // slot 0x6f). Each live entry builds a localized diplomacy/order-exchange event
+  // message and, gated by `mode` (1 = offer pass, 2 = accept pass) and flags derived
+  // from that message, applies the exchange outcome (resource transfers, capped-at-499
+  // order-node stat writes, per-nation counter deltas). The outcome-application
+  // branch is left // TODO: promote body because it is driven through
+  // g_pLocalizationTable (an unrecovered string-manager singleton at 0x6a20f8 whose
+  // vtable slots 0xf/0x10 are called here -- deferred repo-wide, see TDeluxeText.cpp);
+  // the query skeleton above is fully ported.
+  void ProcessNationMapOrderInteractionsAndApplyOutcomes(short mode); // 0x558960
+
   TNavyMgr();
 };
 
 ASSERT_SIZE(TNavyMgr, 0x10);
-

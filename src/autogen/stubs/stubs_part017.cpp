@@ -235,14 +235,6 @@ undefined4 EnsureDwordPointerArraySlotAndReturnPointer(void)
   return 0;
 }
 
-// ghidra_name ProcessNationMapOrderInteractionsAndApplyOutcomes
-// ghidra_proto undefined ProcessNationMapOrderInteractionsAndApplyOutcomes()
-// FUNCTION: IMPERIALISM 0x00558960
-undefined4 ProcessNationMapOrderInteractionsAndApplyOutcomes(void)
-{
-  return 0;
-}
-
 // ghidra_name GetMapContextActionCode
 // ghidra_proto int __cdecl GetMapContextActionCode(short nTileIndex, int dwInputFlags)
 // FUNCTION: IMPERIALISM 0x00559a70

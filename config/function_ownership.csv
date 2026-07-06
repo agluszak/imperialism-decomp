@@ -3026,6 +3026,7 @@ address|target_cpp|ownership|note
 557170|src/game/TNavyMgr.cpp|manual|marker_sync
 557210|src/game/TNavyMgr.cpp|manual|marker_sync
 557870|src/game/TTaskForce.cpp|manual|marker_sync
+558960|src/game/TNavyMgr.cpp|manual|marker_sync
 55a780|src/game/TNavyMgr.cpp|manual|marker_sync
 55b670|src/game/TNewsMgr.cpp|manual|marker_sync
 55b6a0|src/game/TNewsMgr.cpp|manual|marker_sync

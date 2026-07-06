@@ -3,6 +3,7 @@
 #include "game/TAdmiral.h"
 #include "game/TArmyMgr.h"
 #include "game/TCountry.h"
+#include "game/TGreatPower.h"
 #include "game/TMapMgr.h"
 #include "game/TOcean.h"
 #include "game/TShip.h"
@@ -359,6 +360,57 @@ void TNavyMgr::RemoveOrdersByNationFromPrimarySecondaryAndTaskForceLists(short n
 
   RemoveMatchingSecondaryOrders(nationSlot);
   RemoveMatchingTaskForceOrders(this, nationSlot);
+}
+
+// FUNCTION: IMPERIALISM 0x00558960
+void TNavyMgr::ProcessNationMapOrderInteractionsAndApplyOutcomes(short mode) {
+  // Query skeleton (fully ported): iterate the 7 playable nations that have a live
+  // city, then each nation's 17 tracked map-order interaction slots, reading every
+  // queued entry via TGreatPower's tracked-slot virtuals. `slot` is passed to
+  // GetTrackedSlotEntryCountLow (slot 0x6d) and, with the 1-based ordinal, to
+  // ReadTrackedSlotEntryFields (slot 0x6f), which unpacks the entry's
+  // {kind, value, targetNation, payload} tuple. Confirmed against the disassembly:
+  // count call PUSHes the slot index, the field-read PUSHes (slot, ordinal, &kind,
+  // &value, &targetNation, &payload).
+  for (short nation = 0; nation <= 6; ++nation) {
+    if (g_apTerrainTypeDescriptorTable[nation] == nullptr) {
+      continue;
+    }
+    TGreatPower* state = g_apNationStates[nation];
+    TCity* city = (state != nullptr) ? state->city : nullptr;
+    if (city == nullptr) {
+      continue;
+    }
+    for (short slot = 0; slot < 0x11; ++slot) {
+      short entryCount = state->GetTrackedSlotEntryCountLow(slot);
+      for (short ordinal = 1; ordinal <= entryCount; ++ordinal) {
+        short entryKind = 0;
+        short entryValue = 0;
+        short entryTargetNation = 0;
+        int entryPayload = 0;
+        state->ReadTrackedSlotEntryFields(slot, ordinal, &entryKind, &entryValue,
+                                          &entryTargetNation, &entryPayload);
+        if (entryValue == 0) {
+          continue;
+        }
+        // TODO: promote outcome application. Each live entry builds a localized
+        // diplomacy/order-exchange event message (via g_pLocalizationTable, an
+        // unrecovered string-manager singleton at 0x6a20f8 whose vtable slots
+        // 0xf/0x10 are called here -- deferred repo-wide, see TDeluxeText.cpp), then,
+        // gated by `mode` and flag bits derived from that message result, applies the
+        // exchange outcome: resource transfers between `nation` and `entryTargetNation`
+        // (TGreatPower::SetNationTransferTargetCodeAndNotifyEligiblePeers /
+        // AssignPayloadToTrackedSlotEntryMatchingField2), order-node
+        // tiebreak_strength/required_count writes capped at 499, and per-nation counter
+        // deltas (AddShortDeltaToNationCounterAtOffset198), reusing the same
+        // MapOrderBattleSnapshot child-record arrays + DispatchMapInteractionPayload-
+        // AndResetWorkingFields cleanup ResolveMapOrderPairConflictStep uses. The
+        // outcome branch cannot be reproduced faithfully until that string-manager
+        // class is recovered, because its gating flags come from the message build.
+      }
+    }
+  }
+  (void)mode;
 }
 
 // FUNCTION: IMPERIALISM 0x0055a780
