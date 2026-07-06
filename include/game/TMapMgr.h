@@ -313,8 +313,16 @@ public:
   // (TArmyMgr::HasEligibleStationedUnitInRegion) but discards the result -- the original's
   // own call site never reads the return value either, so this is vestigial/dead code.
   virtual void ApplyUnitMovementClassForTileIfValid(int tileIndex); // slot 0x2b 0x515d60
-  virtual undefined SetRegionTileSubtypeAndRefreshNeighborFlags(int param_1,
-                                                                int param_2); // slot 0x2c 0x515f80
+  // Moves cityRecordIndex's "anchor" tile (cityScoreTable[cityRecordIndex].ownerNationSlot,
+  // reused here as a tile index) to newTileIndex: clears the old anchor tile's activeFlags1c
+  // (0x20 bit) and refreshes its gateFlag/resourceTypeByEdge[0], sets the new tile's
+  // activeFlags1c to 0x22 and its gateFlag, points ownerNationSlot at it, then clears the
+  // 0x20 bit from all of the city's linkedRegionIds tiles (unconditionally, even if
+  // newTileIndex is itself one of them -- matches the original's literal statement order).
+  // Finishes by recomputing the city's primary/secondary neighbor links.
+  virtual void
+  SetRegionTileSubtypeAndRefreshNeighborFlags(short cityRecordIndex,
+                                              short newTileIndex); // slot 0x2c 0x515f80
   // Real body is just `ret 0xc` (pops 3 stack dwords, no other instructions) -- no evidence
   // for the real parameter types since none are read; typed as unused ints to match the
   // stack-cleanup byte count.

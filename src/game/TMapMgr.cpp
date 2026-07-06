@@ -1808,10 +1808,6 @@ void TMapMgr::NoOpVirtualSlot2D(int param_1, int param_2, int param_3) {
   (void)param_3;
 }
 
-undefined TMapMgr::SetRegionTileSubtypeAndRefreshNeighborFlags(int param_1, int param_2) {
-  return 0;
-}
-
 // Verified against 0x0053e7bf's callsite (TDefendProvinceMission::
 // ComputeCrossNationSupportVectorScore): despite the Ghidra-provisional name, this
 // checks whether regionIndex appears in nodeContext's adjacent-region list, not
@@ -1831,6 +1827,39 @@ char TMapMgr::TileHasMovementClassId(int nodeContext, int regionIndex) {
 // FUNCTION: IMPERIALISM 0x00515ec0
 void TMapMgr::AssignCityRecordDisplayName(int cityRecordIndex, CString* dest) {
   *dest = cityScoreTable[cityRecordIndex].cityNameA4;
+}
+
+// FUNCTION: IMPERIALISM 0x00515f80
+void TMapMgr::SetRegionTileSubtypeAndRefreshNeighborFlags(short cityRecordIndex,
+                                                          short newTileIndex) {
+  TGlobalMapCityScoreRecord* city = &cityScoreTable[cityRecordIndex];
+
+  short oldTileIndex = city->ownerNationSlot;
+  if (oldTileIndex != -1) {
+    TTerrainStateRecordView* oldTile = &terrainStateTable[oldTileIndex];
+    oldTile->activeFlags1c = 0;
+    oldTile->pad1d[0] = 0;
+    oldTile->gateFlag =
+        static_cast<signed char>(ResolveRegionTileSubtypeCodeForTileIndex(oldTileIndex));
+    oldTile->resourceTypeByEdge[0] = 0x11;
+  }
+
+  TTerrainStateRecordView* newTile = &terrainStateTable[newTileIndex];
+  newTile->activeFlags1c = 2;
+  newTile->pad1d[0] = 0;
+  city->ownerNationSlot = newTileIndex;
+  newTile->activeFlags1c |= 0x20;
+  newTile->gateFlag =
+      static_cast<signed char>(ResolveRegionTileSubtypeCodeForTileIndex(newTileIndex));
+
+  for (int i = 0; i < city->linkedRegionCount; ++i) {
+    TTerrainStateRecordView* linkedTile = &terrainStateTable[city->linkedRegionIds[i]];
+    if (linkedTile->activeFlags1c & 0x20) {
+      linkedTile->activeFlags1c &= ~0x20;
+    }
+  }
+
+  UpdateTilePrimaryAndSecondaryNeighborLinksByPriority(cityRecordIndex);
 }
 
 // FUNCTION: IMPERIALISM 0x00516090
