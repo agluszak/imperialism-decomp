@@ -20,7 +20,7 @@ public:
   short pad16;        // +0x16
 
   TSortedPtrList();
-  virtual ~TSortedPtrList();
+  virtual ~TSortedPtrList() override;
 
   // List-operation virtuals introduced by TSortedPtrList (slots 5-16):
   virtual void slot14(void* message = 0);          // 5  (0x14)

@@ -16,7 +16,7 @@ public:
   bool SetQuantity(short quantity) override;                      // slot 0x0b 0x4b8800
   short MaxOrder() override;                                      // slot 0x0c 0x4b86d0
   undefined CommitIfPending() override;                           // slot 0x0d 0x4b8970
-  undefined FillOrderSheet() override;                            // slot 0x10 0x4b8b80
+  void FillOrderSheet(void* orderSheet, short quantity) override; // slot 0x10 0x4b8b80
   virtual bool CanMakeFromCityStock();                            // slot 0x11 0x4b85a0
   virtual bool CanFillOrderSheet();                               // slot 0x12 0x4b8630
   virtual void CommitQueuedNavyOrdersAndUpdateTierByCapability(); // slot 0x13 0x4b89a0

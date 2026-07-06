@@ -292,7 +292,7 @@ extern RgnHandle g_pTemporaryRegionCache;
 // Typed C++ linkage — see typed-recovered-globals.mdc (not inside extern "C").
 extern TCursorControlPanel* g_pCursorControlPanel;
 extern TTradeMgr* g_pNationInteractionStateManager;
-extern short g_nationMetricSlotDispatchOrder006d810[0x11];
+extern "C" short g_nationMetricSlotDispatchOrder006d810[0x11];
 extern GlobalViewportRectDefaultsRecord g_globalViewportRectDefaultsRecord;
 extern GlobalViewportRectDefaultsRecord* g_pGlobalViewportRectDefaultsRecord;
 extern TWNetSessionManager g_NetworkSessionManager006a5f60;
@@ -318,8 +318,8 @@ extern TCountry* g_apTerrainTypeDescriptorTable[kTerrainTypeDescriptorTableCount
 extern TDisplayMgr* g_pDisplayMgr;
 extern TMacViewMgr* g_pStrategicMapViewSystem;
 extern TViewMgr* g_pUiRuntimeContext;
-extern int g_councilControlTagTable[6];
-extern int g_defaultDropShadowTextColor;
+extern "C" int g_councilControlTagTable[6];
+extern "C" int g_defaultDropShadowTextColor;
 extern TAssetMgr* g_pUiViewManager;
 extern TLanguageMgr* g_pLanguageMgr;
 extern TAnimator* g_pUiAnimator;
@@ -464,7 +464,7 @@ extern "C" const char s_SourcePathUSuperMap_0069943C[];
 // Default viewport-marker-box width, shared by TMiniMapView/TacticalBattleView's own
 // marker-box construction (assigned once via ftol() elsewhere; role beyond that isn't
 // further recovered).
-extern short g_defaultMarkerBoxWidth_006a460c;
+extern "C" short g_defaultMarkerBoxWidth_006a460c;
 extern TSoundPlayer* g_pSfxPlaybackSystem;
 extern TTurnEventDialogFactoryRegistry* g_pTurnEventDialogFactoryRegistry;
 extern TApplication* g_pApplicationUiRootController;

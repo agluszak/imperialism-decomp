@@ -5,7 +5,6 @@
 #include "game/mfc.h"
 #include "game/TObject.h"
 
-class CArchive;
 class TZone;
 class TMilitaryUnit;
 
@@ -80,12 +79,6 @@ public:
   virtual void NoOpSlot90(int a);                           // 0x24 0x534f50
   virtual void SetFlag10FromArgSlot94(unsigned char value); // 0x25 0x534f70
   virtual char ReturnFalseSlot98();                         // 0x26 0x534f90
-
-  // Slot 0x0c — detach notification while draining mission queues (0x004e7230).
-  void NotifyDetachSlot0C() {
-    AssertValid(0);
-  }
-  void AssertValid(CArchive* archive) const override;
 
   void DispatchMissionNodeSlot28() {
     (void)ReturnFalseSlot28();

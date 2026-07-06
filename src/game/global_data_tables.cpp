@@ -573,6 +573,8 @@ TOcean* g_pActiveMapOrderContext = 0;
 TMapMgr* g_pGlobalMapState = 0;
 TCivMgr* g_pSelectedCivilianOrderState = 0;
 TSoundPlayer* g_pSfxPlaybackSystem = 0;
+// GLOBAL: IMPERIALISM 0x006a43cc
+TTradeMgr* g_pNationInteractionStateManager = 0;
 
 extern "C" {
 short g_awEngineerFortBuildCostByLevel[8] = {0};
@@ -594,8 +596,6 @@ unsigned char g_bRandomMapDeveloperCheatFlag = 0;
 // stats a file literally named "Conan" via CFile::GetStatus.
 // GLOBAL: IMPERIALISM 0x00698bec
 char g_szConanCheatFileName_00698BEC[] = "Conan";
-// GLOBAL: IMPERIALISM 0x006a43cc
-TTradeMgr* g_pNationInteractionStateManager = 0;
 
 // Metric-slot dispatch-order lookup consumed by
 // TTradeMgr::ProcessPendingDiplomacyTransferEntriesUntilBlockedWrapper (0x5b9190). Values

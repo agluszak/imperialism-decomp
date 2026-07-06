@@ -1,4 +1,9 @@
 #include "game/TTrainingOrder.h"
+
+static __inline void WriteShort(void* base, int offset, short value) {
+  *reinterpret_cast<short*>(reinterpret_cast<unsigned char*>(base) + offset) = value;
+}
+
 // SYNTHETIC: IMPERIALISM 0x004b6a60
 // TTrainingOrder::CreateObject
 
@@ -29,8 +34,14 @@ bool TTrainingOrder::SetQuantity(short param_1) {
 }
 
 // FUNCTION: IMPERIALISM 0x004b6de0
-undefined TTrainingOrder::FillOrderSheet() {
-  return 0;
+void TTrainingOrder::FillOrderSheet(void* orderSheet, short quantity) {
+  this->InitializeCityOrderItemWorkingBuffers(reinterpret_cast<undefined4*>(orderSheet));
+  if (this->resourceTypeIndex48 == 1) {
+    WriteShort(orderSheet, 0x14, quantity);
+    return;
+  }
+  WriteShort(orderSheet, 0x2e, quantity);
+  WriteShort(orderSheet, 0x14, static_cast<short>(quantity * 2));
 }
 
 // FUNCTION: IMPERIALISM 0x004b6e30

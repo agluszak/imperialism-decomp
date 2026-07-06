@@ -24,7 +24,7 @@ public:
   virtual undefined CommitIfPending() override; // slot 0x0d 0x4b8060
   virtual undefined ResetCityOrderItemDerivedStateNoop() override; // slot 0x0e 0x4b80a0
   // slot 0x0f Produce inherited unchanged (0x4b5180)
-  virtual undefined FillOrderSheet() override; // slot 0x10 0x4b80c0
+  virtual void FillOrderSheet(void* orderSheet, short quantity) override; // slot 0x10 0x4b80c0
   virtual undefined InitializeCityProductionState_Impl_At004b7e80(int param_1); // slot 0x11 0x4b7e80
 // === END GENERATED DECLS (TFoodProcessingOrder) ===
   // TODO(manifest): add data members from the object slice (`just slice-discovery TFoodProcessingOrder 0xCTOR`).

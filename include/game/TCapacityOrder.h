@@ -24,7 +24,10 @@ public:
   short ComputeCapacityOrderMaxQuantity();
   bool SetCapacityOrderQuantity(short quantity);
   void CommitCapacityOrderIfPending();
-  void FillOrderSheet(void* orderSheet, short quantity);
+  // No FillOrderSheet override here: TCapacityOrder's vtable slot 0x10 is byte-identical
+  // to TItemOrder's (confirmed via direct vtable read), so it inherits TItemOrder's
+  // FillOrderSheet unchanged. The real logic once misfiled here as this class's own
+  // FillOrderSheet was actually TShipOrder::FillOrderSheet (0x004b8b80) -- moved there.
   bool CanMakeFromCityStock();
   bool CanFillOrderSheet(void* orderSheet);
   static TCapacityOrder* NewForCity(TCity* city);

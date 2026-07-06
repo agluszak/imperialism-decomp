@@ -16,6 +16,7 @@ struct TZoneSecondaryNeighborTag;
 
 // Mac symbols expose a project-local stretch<T> family. Windows TZone embeds two
 // stretch-like secondary subobjects whose vfptrs point into the TZone vtable group.
+IMPERIALISM_BEGIN_INTENTIONAL_NON_VIRTUAL_DTOR
 // VTABLE: IMPERIALISM 0x0065c74c
 class TZonePrimaryNeighborStretch : public stretch<TZone*, TZonePrimaryNeighborTag> {
 public:
@@ -40,6 +41,7 @@ public:
   // updating capacity. 0x55fae0.
   void ResizePointerArrayCapacityByRequestedCount(int count);
 };
+IMPERIALISM_END_INTENTIONAL_NON_VIRTUAL_DTOR
 
 // Map zone / map-action context node (Mac: TZone, TPortZone, TOcean hierarchy).
 // Per-nation seed contexts in TOcean use the first 0x48 bytes of this layout.

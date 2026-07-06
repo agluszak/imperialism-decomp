@@ -1,5 +1,9 @@
 #include "game/TItemOrder.h"
 
+static __inline void WriteShort(void* base, int offset, short value) {
+  *reinterpret_cast<short*>(reinterpret_cast<unsigned char*>(base) + offset) = value;
+}
+
 TItemOrder::TItemOrder() {}
 // SYNTHETIC: IMPERIALISM 0x004b51d0
 // TItemOrder::CreateObject
@@ -29,8 +33,16 @@ bool TItemOrder::SetQuantity(short param_1) {
 }
 
 // FUNCTION: IMPERIALISM 0x004b5510
-undefined TItemOrder::FillOrderSheet() {
-  return 0;
+void TItemOrder::FillOrderSheet(void* orderSheet, short quantity) {
+  this->InitializeCityOrderItemWorkingBuffers(reinterpret_cast<undefined4*>(orderSheet));
+  if (this->field50 >= 0) {
+    WriteShort(orderSheet, this->field4e * 2, quantity);
+    WriteShort(orderSheet, this->field50 * 2, quantity);
+    WriteShort(orderSheet, 0x7a, static_cast<short>(quantity * 2));
+  } else {
+    WriteShort(orderSheet, this->field4e * 2, static_cast<short>(quantity * 2));
+    WriteShort(orderSheet, 0x7a, static_cast<short>(quantity * 2));
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x004b5580

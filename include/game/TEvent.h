@@ -12,7 +12,7 @@ class TEvent : public TObject {
 public:
   DECLARE_DYNCREATE(TEvent)
 
-  ~TEvent();
+  ~TEvent() override;
 
   int commandNumber;            // 0x04
   int dispatchMessage;          // 0x08

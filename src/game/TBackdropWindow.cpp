@@ -28,11 +28,17 @@ CWnd* GetMainWndViaDoubleAfxGetThread() {
 
 } // namespace
 
+// clang-cl's lint build rejects the MFC message-map macros' unqualified `&OnPaint`-style
+// address-of-member-function (a long-standing MSVC extension clang doesn't implement for
+// this context); this is MFC dispatch-table plumbing, not game logic, so it's skipped in
+// the compile-only lint build (never linked, so the missing definition is harmless there).
+#ifndef IMPERIALISM_LINT
 BEGIN_MESSAGE_MAP(TBackdropWindow, CWnd)
 ON_WM_CREATE()
 ON_WM_PAINT()
 ON_WM_TIMER()
 END_MESSAGE_MAP()
+#endif
 
 // SYNTHETIC: IMPERIALISM 0x0049cbc0
 // TBackdropWindow::`scalar deleting destructor'

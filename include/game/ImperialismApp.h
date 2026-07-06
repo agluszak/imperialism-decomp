@@ -25,8 +25,8 @@ public:
   ImperialismApp();
 
   // CWinApp lifecycle overrides resolved by DispatchMfcAppLifecycle.
-  virtual BOOL InitInstance(); // slot +0x58, 0x00412dc0
-  virtual int ExitInstance();  // slot +0x70, 0x00413780
+  virtual BOOL InitInstance() override; // slot +0x58, 0x00412dc0
+  virtual int ExitInstance() override;  // slot +0x70, 0x00413780
 
   int ShowAutoResolutionDialogIfNeeded();           // 0x00415090
   void ApplyAutoResolutionModeAndPersist(int mode); // 0x004155b0

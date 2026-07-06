@@ -16,6 +16,11 @@ IMPLEMENT_DYNCREATE(CMcWindow, CWnd)
 // Original AFX_MSGMAP_ENTRY order (0x0064b5f0). WM_CTLCOLOR (before QUERYNEWPALETTE),
 // WM_CHAR (after PALETTECHANGED) and message 0x36a (last) are still unported
 // (see CMcWindow.h).
+// clang-cl's lint build rejects the MFC message-map macros' unqualified `&OnPaint`-style
+// address-of-member-function (a long-standing MSVC extension clang doesn't implement for
+// this context); this is MFC dispatch-table plumbing, not game logic, so it's skipped in
+// the compile-only lint build (never linked, so the missing definition is harmless there).
+#ifndef IMPERIALISM_LINT
 BEGIN_MESSAGE_MAP(CMcWindow, CWnd)
 ON_WM_PAINT()
 ON_WM_LBUTTONDOWN()
@@ -28,6 +33,7 @@ ON_WM_QUERYNEWPALETTE()
 ON_WM_PALETTECHANGED()
 ON_MESSAGE(0x468, OnWindowStateMsg468)
 END_MESSAGE_MAP()
+#endif
 
 // Build the host window for a TWindow descriptor: construct the CWnd base, record the
 // owner backref, derive the CreateEx window style from the descriptor's type code, then

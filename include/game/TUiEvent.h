@@ -13,7 +13,7 @@
 class TUiEvent : public TEvent {
 public:
   TUiEvent();
-  ~TUiEvent();
+  ~TUiEvent() override;
 };
 
 ASSERT_SIZE(TUiEvent, 0x14);

@@ -51,4 +51,8 @@ undefined TProductionOrder::InitializeCityOrderItemWorkingBuffers(undefined4* pa
   return 0;
 }
 
-undefined TProductionOrder::FillOrderSheet() { return 0; }
+// FUNCTION: IMPERIALISM 0x004b51b0
+void TProductionOrder::FillOrderSheet(void* orderSheet, short quantity) {
+  (void)quantity;
+  this->InitializeCityOrderItemWorkingBuffers(reinterpret_cast<undefined4*>(orderSheet));
+}

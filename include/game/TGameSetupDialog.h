@@ -8,7 +8,7 @@
 class TGameSetupDialog : public TDialogView {
 public:
   DECLARE_DYNCREATE(TGameSetupDialog)
-  ~TGameSetupDialog();
+  ~TGameSetupDialog() override;
 
   virtual undefined OrphanRetStub_005b2860();
 

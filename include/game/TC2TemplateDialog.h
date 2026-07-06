@@ -17,7 +17,7 @@
 class TC2TemplateDialog : public TModalTemplateDialogBase {
 public:
   TC2TemplateDialog(void* initParam); // 0x0047cfd0
-  ~TC2TemplateDialog();
+  ~TC2TemplateDialog() override;
 
   CSliderCtrl slider; // +0x74
   CListBox listbox;   // +0xb0
@@ -33,7 +33,7 @@ ASSERT_SIZE(TC2TemplateDialog, 0xec);
 class TD2TemplateDialog : public TModalTemplateDialogBase {
 public:
   TD2TemplateDialog(void* initParam); // 0x0047d1c0
-  ~TD2TemplateDialog();
+  ~TD2TemplateDialog() override;
 
   CListBox listbox; // +0x74
 };

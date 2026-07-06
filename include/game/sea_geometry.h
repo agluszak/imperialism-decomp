@@ -69,6 +69,7 @@ struct SeaSegment {
 // The Seapoint stretch. Vtable is adjacent to TMapMaker's (0x006599a0); left unannotated
 // because it overlaps TMapMaker's vtable data region — the append is paired by its own
 // // FUNCTION: address marker instead.
+IMPERIALISM_BEGIN_INTENTIONAL_NON_VIRTUAL_DTOR
 class SeapointStretch : public stretch<Seapoint, SeapointTag> {
 public:
   // The single vtable slot: append `value` at the end, growing on demand. 0x0052c0a0.
@@ -92,6 +93,7 @@ public:
   SeaSegment* At(unsigned int index);
   void ReallocExact(int newCount); // 0x0052e310
 };
+IMPERIALISM_END_INTENTIONAL_NON_VIRTUAL_DTOR
 
 ASSERT_SIZE(SeapointStretch, 0x10);
 ASSERT_SIZE(SeaSegmentStretch, 0x10);

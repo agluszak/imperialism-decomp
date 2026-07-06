@@ -17,6 +17,7 @@
 // (COM `__stdcall` this-on-stack, e.g. 0x49c240 `PUSH EAX / CALL [ECX+0x34]`), slot 0x2c
 // takes the 7 Lock arguments, and 0x49c720 retries a failed Lock after DSERR_BUFFERLOST
 // (0x88780096) with a slot-0x50 Restore — the IDirectSoundBuffer slot map exactly.
+IMPERIALISM_BEGIN_INTENTIONAL_NON_VIRTUAL_DTOR
 class IDirectSoundBuffer {
 public:
   virtual int __stdcall QueryInterface(void* riid, void** ppvObj) = 0; // 0x00
@@ -46,12 +47,14 @@ public:
                                DWORD dwAudioBytes2) = 0; // 0x4c
   virtual int __stdcall Restore() = 0;                   // 0x50
 };
+IMPERIALISM_END_INTENTIONAL_NON_VIRTUAL_DTOR
 
 #define DSERR_BUFFERLOST 0x88780096
 
 // The DirectSound device object (0x00). Hand-declared with the retail IDirectSound vtable
 // layout for the same reason as IDirectSoundBuffer above (dsound.h is kept out of these
 // TUs). Only CreateSoundBuffer (0x0c) and SetCooperativeLevel (0x18) are called here.
+IMPERIALISM_BEGIN_INTENTIONAL_NON_VIRTUAL_DTOR
 class IDirectSound {
 public:
   virtual int __stdcall QueryInterface(void* riid, void** ppvObj) = 0; // 0x00
@@ -68,6 +71,7 @@ public:
   virtual int __stdcall SetSpeakerConfig(DWORD dwSpeakerConfig) = 0;                        // 0x24
   virtual int __stdcall Initialize(void* pcGuidDevice) = 0;                                 // 0x28
 };
+IMPERIALISM_END_INTENTIONAL_NON_VIRTUAL_DTOR
 
 #define DSSCL_NORMAL 1
 

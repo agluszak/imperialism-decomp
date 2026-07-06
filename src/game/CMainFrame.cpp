@@ -57,6 +57,12 @@ IMPLEMENT_DYNCREATE(CMainFrame, CFrameWnd)
 // Entry order follows the original map at 0x648648. The one original entry whose handler
 // is still not ported is ON_COMMAND(0x8013, 0x4855b0) (a large terrain-overlay dialog
 // builder).
+//
+// clang-cl's lint build rejects the MFC message-map macros' unqualified `&OnPaint`-style
+// address-of-member-function (a long-standing MSVC extension clang doesn't implement for
+// this context); this is MFC dispatch-table plumbing, not game logic, so it's skipped in
+// the compile-only lint build (never linked, so the missing definition is harmless there).
+#ifndef IMPERIALISM_LINT
 BEGIN_MESSAGE_MAP(CMainFrame, CFrameWnd)
 ON_WM_QUERYNEWPALETTE()
 ON_WM_PALETTECHANGED()
@@ -78,6 +84,7 @@ ON_MESSAGE(0x464, OnMsg0464)
 ON_MESSAGE(0xBC0, OnMsg0BC0)
 ON_MESSAGE(0x2420, HandleCustomMessage2420DispatchTurnEvent)
 END_MESSAGE_MAP()
+#endif
 
 // FUNCTION: IMPERIALISM 0x00484bf0
 CMainFrame::CMainFrame()

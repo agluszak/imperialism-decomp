@@ -20,9 +20,9 @@ public:
 
 public:
   CMainFrame();
-  ~CMainFrame();
+  ~CMainFrame() override;
 
-  afx_msg BOOL PreCreateWindow(CREATESTRUCT& cs);
+  afx_msg BOOL PreCreateWindow(CREATESTRUCT& cs) override;
   afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
   // ON_COMMAND(100): the startup command InitInstance posts once the frame is up.
   afx_msg void OnStartupCommand100(); // 0x00484fd0
@@ -54,7 +54,7 @@ public:
   // lParam (posted by TApplication::DispatchQueuedUiCommandAndRelease). 0x00485960.
   afx_msg LRESULT OnMsg0BC0(WPARAM wParam, LPARAM lParam);
 
-  virtual BOOL PreTranslateMessage(MSG* msg);
+  virtual BOOL PreTranslateMessage(MSG* msg) override;
 
   void ConfigureTopLevelWindowStyleAndPlacement(int width, int height);
   int SetFieldC0AndInvalidateWindowIfChanged(int styleValue); // 0x00485990

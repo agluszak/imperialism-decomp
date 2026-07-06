@@ -24,7 +24,7 @@ public:
   virtual undefined CommitIfPending() override; // slot 0x0d 0x4b82f0
   virtual undefined ResetCityOrderItemDerivedStateNoop() override; // slot 0x0e 0x4b8420
   // slot 0x0f Produce inherited unchanged (0x4b5180)
-  virtual undefined FillOrderSheet() override; // slot 0x10 0x4b8440
+  virtual void FillOrderSheet(void* orderSheet, short quantity) override; // slot 0x10 0x4b8440
   virtual undefined ConstructTPopGrowthOrderBaseState(); // slot 0x11 0x4b8160
 // === END GENERATED DECLS (TPopGrowthOrder) ===
   // TODO(manifest): add data members from the object slice (`just slice-discovery TPopGrowthOrder 0xCTOR`).

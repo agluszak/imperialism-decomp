@@ -505,7 +505,7 @@ void TZone::GenerateMapActionContextDisplayNameAndHeadline(void* usedCityFlags,
   CString headlineTemplate;
   g_pSimMgr->GetString(0x275a, field04, &headlineTemplate);
   CString expanded;
-  scanBracketExpressions(g_pSimMgr, &expanded, headlineTemplate, displayName);
+  scanBracketExpressions(g_pSimMgr, &expanded, headlineTemplate, static_cast<LPCSTR>(displayName));
   displayName = expanded;
 }
 

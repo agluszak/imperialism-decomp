@@ -11,7 +11,7 @@ public:
   DECLARE_DYNCREATE(TCtlMgr)
 
   TCtlMgr();
-  virtual ~TCtlMgr(); // slot 0x01 (scalar deleting destructor 0x492de0)
+  virtual ~TCtlMgr() override; // slot 0x01 (scalar deleting destructor 0x492de0)
 };
 
 ASSERT_SIZE(TCtlMgr, 0x84);

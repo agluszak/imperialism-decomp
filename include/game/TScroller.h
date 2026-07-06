@@ -11,7 +11,7 @@ public:
   DECLARE_DYNCREATE(TScroller)
 
   TScroller();
-  virtual ~TScroller(); // slot 0x01 (scalar deleting destructor 0x48cad0)
+  virtual ~TScroller() override; // slot 0x01 (scalar deleting destructor 0x48cad0)
 
   // Non-virtual placement initializer (0x48cbb0): tags the control ('    '), links the
   // owner panel, copies offset/size layout pairs, and attaches self as a child control.
