@@ -11,8 +11,8 @@
 #include "game/ui_widget_thunks.h"
 #include <new>
 // FUNCTION: IMPERIALISM 0x004294d0
-undefined TStaticText::AssignSharedStringFromField84() {
-  return 0;
+void TStaticText::AssignSharedStringFromField84(CString* out) {
+  *out = *text;
 }
 
 // MFC RTTI slot 0x00 override: return this class's CRuntimeClass descriptor (0x649678).
@@ -33,19 +33,28 @@ void TStaticText::UpdateTextEntrySharedStringIfChanged(CString* text) {
 
 // FUNCTION: IMPERIALISM 0x0048F890
 TStaticText::TStaticText()
-    : TControl(), text(), field88((void*)0xffffffff), field8C(0), field90(0) {
+    : TControl(), text(new CString()), field88((void*)0xffffffff), field8C(0), field90(0) {
   hasCommandTagResource = 13;
 }
 
-// Destructors are compiler-generated (implicit) from real inheritance.
+// Destructors are compiler-generated (implicit) from real inheritance; the
+// `text` CString member's real destructor makes this non-trivial, so MSVC
+// emits it as its own out-of-line complete-object destructor (0x48fc30, 146
+// bytes) in addition to the vtable-slot scalar deleting destructor (0x48f9a0)
+// — same pattern as heuristic #39 (TFuzzySet/TFuzzyVar dtor split). It was
+// still being served by a dummy autogen stub before this claim.
 // SYNTHETIC: IMPERIALISM 0x0048f9a0
 // TStaticText::`scalar deleting destructor'
+// SYNTHETIC: IMPERIALISM 0x0048fc30
+// TStaticText::~TStaticText
 
-TStaticText::~TStaticText() {}
+TStaticText::~TStaticText() {
+  delete text;
+}
 
 // FUNCTION: IMPERIALISM 0x0048fb10
-void TStaticText::CopyCityDialogStateFromSource(TView* source) {
-  TView::CopyCityDialogStateFromSource(source);
+void TStaticText::CopyViewStateFromSource(TView* source) {
+  TView::CopyViewStateFromSource(source);
   TStaticText* src = static_cast<TStaticText*>(source);
   this->hasCommandTagResource = src->hasCommandTagResource;
   this->commandTagResourceByte = src->commandTagResourceByte;
@@ -56,14 +65,15 @@ void TStaticText::CopyCityDialogStateFromSource(TView* source) {
   this->commandTagDefaultParam0 = src->commandTagDefaultParam0;
   this->commandTagDefaultParam1 = src->commandTagDefaultParam1;
   this->commandTagDefaultParam2 = src->commandTagDefaultParam2;
-  this->text = src->text;
+  this->text = new CString();
+  *this->text = *src->text;
 }
 
 // FUNCTION: IMPERIALISM 0x0048fc00
 TObject* TStaticText::ShallowClone() {
   TObject* cloned = this->ShallowFree();
   if (cloned != 0) {
-    static_cast<TStaticText*>(cloned)->CopyCityDialogStateFromSource(this);
+    static_cast<TStaticText*>(cloned)->CopyViewStateFromSource(this);
   }
   return cloned;
 }
@@ -103,25 +113,33 @@ void TStaticText::InitializeTextEntryBaseAndOptionalStringResource(
 }
 
 // FUNCTION: IMPERIALISM 0x0048fe60
-undefined TStaticText::AssignTextSharedRefIfChangedAndMaybeInvalidate(CString* sharedString,
-                                                                      char refreshNow) {
-  (void)sharedString;
-  (void)refreshNow;
-  return 0;
+void TStaticText::AssignTextSharedRefIfChangedAndMaybeInvalidate(CString* sharedString,
+                                                                 char refreshNow) {
+  if (CompareAnsiStringsWithMbcsAwareness(
+          reinterpret_cast<unsigned char*>((char*)static_cast<LPCSTR>(*sharedString)),
+          reinterpret_cast<unsigned char*>((char*)static_cast<LPCSTR>(*text))) != 0) {
+    *text = *sharedString;
+    if (refreshNow != 0) {
+      RefreshControl();
+    }
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x0048fed0
-undefined TStaticText::LoadUiStringAndDispatchViaVslot1C8() {
-  return 0;
+void TStaticText::LoadUiStringAndDispatchViaVslot1C8(short stringResourceGroup,
+                                                     short stringResourceIndex) {
+  CString loadedString;
+  g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&loadedString, stringResourceGroup,
+                                                                  stringResourceIndex);
+  AssignTextSharedRefIfChangedAndMaybeInvalidate(&loadedString, 0);
 }
 
 // FUNCTION: IMPERIALISM 0x0048ff70
-undefined TStaticText::SetTextThemeCodeAndMaybeRefresh(short themeCode, char refreshFlag) {
+void TStaticText::SetTextThemeCodeAndMaybeRefresh(short themeCode, char refreshFlag) {
   field90 = themeCode;
   if (refreshFlag != 0) {
-    RefreshControl();
+    PaintOrInvalidateControl(0);
   }
-  return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x0048ffb0
@@ -130,6 +148,13 @@ void TStaticText::ApplyRectSlot110(RECT* rectBuffer) {
 }
 
 // FUNCTION: IMPERIALISM 0x004900a0
-undefined TStaticText::RenderControlStateTextBySelectionCode() {
-  return 0;
+void TStaticText::RenderControlStateTextBySelectionCode(RECT* rect) {
+  // TODO(manifest): real body (273 bytes) dispatches through the same
+  // unidentified quickdraw-context object as ApplyRectSlot110 (slots +0x30
+  // and +0x38, plus a draw call at +0x70 with a palette-index selected from
+  // field90 — the same 0x910/0x911/0x912 switch seen in ApplyRectSlot110),
+  // offsetting `rect` by (field2c, field30) before drawing. See
+  // imperialism-decomp-855 (text-widget ApplyRectSlot110 paint family) for
+  // the shared class-recovery blocker; left unimplemented rather than guessed.
+  (void)rect;
 }

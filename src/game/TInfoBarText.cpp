@@ -20,7 +20,7 @@ TInfoBarText::TInfoBarText()
     : TDeluxeText(), cursorThemeCode98(0), cursorThemeCode9c(0), fieldA0(0) {}
 
 // FUNCTION: IMPERIALISM 0x005b66b0
-undefined TInfoBarText::SetTextAndLayoutRect(CString text, RECT* layoutRect) {
+void TInfoBarText::SetTextAndLayoutRect(CString text, RECT* layoutRect) {
   // Original signature carries the text by value (the previous port dropped it and
   // pushed a fresh empty CString instead).
   if (EqualRect(layoutRect, &layoutRectA4) == 0) {
@@ -31,7 +31,6 @@ undefined TInfoBarText::SetTextAndLayoutRect(CString text, RECT* layoutRect) {
     UpdateTextEntrySharedString(&text);
     RecenterTextFromMeasuredWidthAndMaybeInvalidate(1);
   }
-  return 0;
 }
 
 // Clear the text-entry layout rect and push an empty shared string, then recenter.
@@ -47,14 +46,12 @@ void TInfoBarText::ClearTextAndLayoutRect() {
 }
 
 // FUNCTION: IMPERIALISM 0x005b6810
-undefined TInfoBarText::OrphanCallChain_C1_I05_005b6810() {
+void TInfoBarText::OrphanCallChain_C1_I05_005b6810() {
   InitializeMapHintTextStyleAndThemeFlags(0x2b6c, 0x2b67);
-  return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x005b6840
-undefined TInfoBarText::InitializeMapHintTextStyleAndThemeFlags(int stylePrimary,
-                                                                int styleSecondary) {
+void TInfoBarText::InitializeMapHintTextStyleAndThemeFlags(int stylePrimary, int styleSecondary) {
   // Original (0x5b6840): builds the descriptor from styleSecondary (stylePrimary is
   // genuinely unused), forwards it to slot 0x79, clears the theme code via slot 0x71
   // with (-1, no-refresh), then maps the descriptor's stored theme word and
@@ -67,7 +64,7 @@ undefined TInfoBarText::InitializeMapHintTextStyleAndThemeFlags(int stylePrimary
   styleDescriptor[2] = 0;
   styleDescriptor[3] = 0;
   BuildUiTextStyleDescriptor(&styleDescriptor, 0, 0xc, styleSecondary);
-  ConstructTMapKeyBaseState_Impl(&styleDescriptor, 0);
+  ConstructTMapKeyBaseState_Impl(styleDescriptor, 0);
   SetTextThemeCodeAndMaybeRefresh(static_cast<short>(-1), 0);
   layoutRectA4.left = 0;
   layoutRectA4.top = 0;
@@ -79,7 +76,6 @@ undefined TInfoBarText::InitializeMapHintTextStyleAndThemeFlags(int stylePrimary
   MapUiThemeCodeToStyleFlags(static_cast<short>(styleSecondary), &mappedFlags);
   cursorThemeCode9c = mappedFlags;
   fieldA0 = 1;
-  return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x005b6930

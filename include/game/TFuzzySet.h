@@ -3,7 +3,10 @@
 #include "game/TObject.h"
 #include "game/mfc.h"
 
-// TODO(manifest): describe TFuzzySet and its role. Base edge (TObject) recovered from RTTI CRuntimeClass chain: TFuzzySet -> TObject -> CObject.
+// Fuzzy-logic set (collection of up to 10 TObject-derived members, each
+// released via its own virtual Free()) used by the AI minister decision code
+// alongside TFuzzyVar. Base edge (TObject) recovered from RTTI CRuntimeClass
+// chain: TFuzzySet -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x006569c8
 class TFuzzySet : public TObject {
 public:
@@ -19,10 +22,15 @@ public:
   // slot 0x08 ShallowClone inherited unchanged (0x4798d0)
   // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
 // === END GENERATED DECLS (TFuzzySet) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TFuzzySet 0xCTOR`).
 
   TFuzzySet();
+
+private:
+  int m_memberCount;         // field_0x4 — not zeroed by the ctor; caller-managed
+  TObject* m_members[10];    // field_0x8..field_0x2c
 };
+
+ASSERT_SIZE(TFuzzySet, 0x30);
 
 // === BEGIN GENERATED (TFuzzySet) — refreshed by `just gen-class TFuzzySet`; do not hand-edit ===
 // clang-format off

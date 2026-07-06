@@ -14,7 +14,7 @@ TInfoBarPictureText::TInfoBarPictureText() {}
 TInfoBarPictureText::~TInfoBarPictureText() {}
 
 // FUNCTION: IMPERIALISM 0x005b5cb0
-undefined TInfoBarPictureText::SetTextAndLayoutRect(CString text, RECT* layoutRect) {
+void TInfoBarPictureText::SetTextAndLayoutRect(CString text, RECT* layoutRect) {
   if (EqualRect(layoutRect, &layoutRectA4) == 0) {
     CopyRect(&layoutRectA4, layoutRect);
     RECT clipRect;
@@ -23,7 +23,6 @@ undefined TInfoBarPictureText::SetTextAndLayoutRect(CString text, RECT* layoutRe
     UpdateTextEntrySharedString(&text);
     RefreshControl();
   }
-  return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x005b5dd0

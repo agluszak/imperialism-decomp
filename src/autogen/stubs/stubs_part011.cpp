@@ -163,14 +163,6 @@ undefined4 CloneCityDialogStateWithSharedStringInit(void)
   return 0;
 }
 
-// ghidra_name TStaticText::~TStaticText
-// ghidra_proto undefined ~TStaticText()
-// FUNCTION: IMPERIALISM 0x0048fc30
-undefined4 TStaticText(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_thunk_InitializeTextEntryBaseAndOptionalStringResource_At004905e0
 // ghidra_proto undefined WrapperFor_thunk_InitializeTextEntryBaseAndOptionalStringResource_At004905e0()
 // FUNCTION: IMPERIALISM 0x004905e0

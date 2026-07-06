@@ -100,7 +100,7 @@ void TPicture::SetPictureResourceIdAndRefresh(short nPictureId, bool fRefreshNow
 // FUNCTION: IMPERIALISM 0x0048f640
 TObject* TPicture::ShallowClone() {
   TPicture* clone = static_cast<TPicture*>(ShallowFree());
-  clone->CopyCityDialogStateFromSource(this);
+  clone->CopyViewStateFromSource(this);
   clone->hasCommandTagResource = hasCommandTagResource;
   clone->commandTagResourceByte = commandTagResourceByte;
   clone->field68 = field68;

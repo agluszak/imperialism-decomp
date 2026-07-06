@@ -12,10 +12,8 @@ IMPLEMENT_DYNCREATE(TEditText, TStaticText)
 // FUNCTION: IMPERIALISM 0x004903a0
 TEditText::TEditText() : TStaticText() {
   this->hasCommandTagResource = 13;
-  CString* textPtr = new CString();
-  *reinterpret_cast<CString**>(&this->text) = textPtr;
   this->field_94 = nullptr;
-  this->field_98 = 0;
+  this->field_98 = nullptr;
   this->field_9c = 0xff;
   this->flag4d = 0;
 }
@@ -26,52 +24,120 @@ TEditText::~TEditText() {
     delete this->field_94;
     this->field_94 = nullptr;
   }
-  if (this->field_98 != 0) {
-    delete reinterpret_cast<TObject*>(this->field_98);
-    this->field_98 = 0;
+  if (this->field_98 != nullptr) {
+    delete this->field_98;
+    this->field_98 = nullptr;
   }
-  CString* textPtr = *reinterpret_cast<CString**>(&this->text);
-  if (textPtr != nullptr) {
-    textPtr->~CString();
-    free(textPtr);
+  // `text` is freed by the inherited TStaticText::~TStaticText() base
+  // destructor (the original inlines that base cleanup into this same
+  // function; our real-inheritance model calls it via chaining instead).
+}
+
+// Releases the live edit CWnd (field_94) and cached font/style resource
+// (field_98) via virtual-dtor dispatch, in that order — shared by Free() below.
+// FUNCTION: IMPERIALISM 0x00490650
+void TEditText::CallVoidSlotA0() {
+  if (field_94 != nullptr) {
+    delete field_94;
+    field_94 = nullptr;
+    if (field_98 != nullptr) {
+      delete field_98;
+    }
+    field_98 = nullptr;
   }
 }
 
-// FUNCTION: IMPERIALISM 0x00490650
-void TEditText::CallVoidSlotA0() {}
-
 // FUNCTION: IMPERIALISM 0x004906a0
-void TEditText::ApplyRectSlot110(RECT* rectBuffer) {}
+void TEditText::ApplyRectSlot110(RECT* rectBuffer) {
+  (void)rectBuffer;
+  // TODO(manifest): real body dispatches on DispatchSlot9CToLinkedChildren()'s
+  // result to decide between the live-edit-window path and
+  // TStaticText::ApplyRectSlot110(rectBuffer); DispatchSlot9CToLinkedChildren
+  // itself is the dialog-creation keystone blocker (see TWindow sibling
+  // porting notes) so this is left as a stub until that lands.
+}
 
 // FUNCTION: IMPERIALISM 0x004906d0
 char TEditText::GetBoolSlot28() {
-  return 0;
+  return static_cast<char>(field04);
 }
 
 // FUNCTION: IMPERIALISM 0x004906f0
-void TEditText::SetControlValue(int value) {}
+void TEditText::SetControlValue(int value) {
+  field04 = value;
+  if (field_94 != nullptr) {
+    field_94->EnableWindow(value);
+    return;
+  }
+  TEditText::DispatchSlot9CToLinkedChildren();
+}
 
 // FUNCTION: IMPERIALISM 0x00490730
-void TEditText::SetEnabled(int enabledState, int refreshFlag) {}
+void TEditText::SetEnabled(int enabledState, int refreshFlag) {
+  if (enabledState != field08) {
+    field08 = enabledState;
+    if (refreshFlag != 0) {
+      RefreshControl();
+    }
+    if (field_94 != nullptr) {
+      field_94->ShowWindow(field08 != 0 ? 5 : 0);
+      return;
+    }
+    TEditText::DispatchSlot9CToLinkedChildren();
+  }
+}
 
 // FUNCTION: IMPERIALISM 0x004907a0
-void TEditText::DispatchSlot9CToLinkedChildren() {}
+void TEditText::DispatchSlot9CToLinkedChildren() {
+  // TODO(manifest): real body (479 bytes) constructs the live edit CWnd
+  // (field_94) on demand via `new CWnd()` + a modal-dialog-style CreateWindowEx
+  // path (InvokeDialogCreateVslot5CWithTemplate45) when nativeWindow50,
+  // field04, and controlTag/field50 preconditions hold. This is the same
+  // window-creation keystone blocked elsewhere (TWindow sibling porting notes)
+  // — needs the CWnd/dialog-template machinery before it can be ported for
+  // real; left unimplemented rather than guessed.
+}
 
 // FUNCTION: IMPERIALISM 0x00490a50
-undefined TEditText::SetEditSelectionAndScrollCaret() {
-  return 0;
+void TEditText::SetEditSelectionAndScrollCaret(short selStart, short selEnd, int unusedFlag) {
+  (void)unusedFlag;
+  if (field_94 != nullptr) {
+    field_94->SendMessage(0xb1, selStart, selEnd);
+    field_94->SendMessage(0xb7, 0, 0);
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x00490aa0
 char TEditText::ActivateCityProductionViewIfAllowed() {
-  return 0;
+  if (field_94 != nullptr) {
+    field_94->SetFocus();
+  }
+  return 1;
 }
 
+// Shared tail with CallVoidSlotA0 (field_94/field_98 release), then the
+// generic TView::Free() body (child list drain, owner detach, active-view
+// handoff, linkedResourceOwner release, delete this).
 // FUNCTION: IMPERIALISM 0x00490ad0
-void TEditText::Free() {}
+void TEditText::Free() {
+  if (field_94 != nullptr) {
+    delete field_94;
+    field_94 = nullptr;
+    if (field_98 != nullptr) {
+      delete field_98;
+    }
+    field_98 = nullptr;
+  }
+  TView::Free();
+}
 
 // FUNCTION: IMPERIALISM 0x00490bc0
 char TEditText::DispatchUiMouseMoveToChildren(CPoint* point, int arg2, int arg3, int arg4) {
+  // TODO(manifest): forwards to the base TView mouse-move dispatch
+  // (0x48c450) then, on success, fires a command event through an
+  // unidentified vtable slot (raw target 0x48a730 is a bare `xor eax,eax;
+  // ret` placeholder in the original, so the real receiver/slot isn't
+  // resolved yet) — left unimplemented rather than guessed.
   (void)point;
   (void)arg2;
   (void)arg3;
@@ -80,31 +146,61 @@ char TEditText::DispatchUiMouseMoveToChildren(CPoint* point, int arg2, int arg3,
 }
 
 // FUNCTION: IMPERIALISM 0x00490c10
-void TEditText::HandleCityProductionNoOp() {}
+void TEditText::HandleCityProductionNoOp() {
+  if (field_94 != nullptr) {
+    field_94->SetFocus();
+  }
+}
 
 // FUNCTION: IMPERIALISM 0x00490c30
-void TEditText::vmethod_0081(int) {}
+void TEditText::vmethod_0081(int param_1) {
+  if (field_94 != nullptr) {
+    field_94->SetFocus();
+  }
+  SetEditSelectionAndScrollCaret(0, 0x7fff, param_1);
+}
 
 // FUNCTION: IMPERIALISM 0x00490c70
-undefined TEditText::WrapperFor_StringShared_AssignFromPtr_At00490c70(CString* param_1) {
-  return 0;
+void TEditText::GetCurrentText(CString* out) {
+  if (field_94 != nullptr) {
+    field_94->GetWindowText(*out);
+    return;
+  }
+  *out = *text;
 }
 
 // FUNCTION: IMPERIALISM 0x00490cb0
-undefined TEditText::SetTextThemeCodeAndMaybeRefresh(short themeCode, char refreshFlag) {
-  (void)themeCode;
-  (void)refreshFlag;
-  return 0;
+void TEditText::SetTextThemeCodeAndMaybeRefresh(short themeCode, char refreshFlag) {
+  field90 = themeCode;
+  if (refreshFlag != 0) {
+    PaintOrInvalidateControl(0);
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x00490cf0
 void TEditText::InitDialogWindowAndSyncTitleIfChanged(CString* newText, int refreshFlag) {
+  // TODO(manifest): real body (272 bytes) truncates *newText to field_9c
+  // (max chars) via CString::Left, then either forwards to the live edit
+  // window (CMcWindow::SetWindowTextOrDelegateToOwner) or compares against
+  // the cached text and calls RefreshControl() on change — needs the
+  // DispatchSlot9CToLinkedChildren()-gated live/cached branch resolved
+  // first (same "is the live edit CWnd active" check used throughout this
+  // file), left unimplemented rather than guessed.
   (void)newText;
   (void)refreshFlag;
 }
 
 // FUNCTION: IMPERIALISM 0x00490e50
-void TEditText::RecomputeAbsolutePositionRecursive() {}
+void TEditText::RecomputeAbsolutePositionRecursive() {
+  TView::DispatchSlot9CToLinkedChildren();
+  if (field_94 != nullptr) {
+    RECT clientRect;
+    GetClientRect(field_94->m_hWnd, &clientRect);
+    if (clientRect.left != field2c || clientRect.top != field30) {
+      field_94->SetWindowPos(0, field2c, field30, 0, 0, 0x215);
+    }
+  }
+}
 
 // SYNTHETIC: IMPERIALISM 0x00492f30
 // TEditText::`scalar deleting destructor'

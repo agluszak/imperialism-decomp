@@ -128,21 +128,27 @@ public:
   // slot 0x73 LoadUiStringAndDispatchViaVslot1C8 inherited unchanged (0x48fed0)
   // slot 0x74 AssignSharedStringFromField84 inherited unchanged (0x4294d0)
   // slot 0x75 RenderControlStateTextBySelectionCode inherited unchanged (0x4900a0)
-  virtual undefined OrphanCallChain_C1_I08_005b60a0(char param_1); // slot 0x76 0x5b60a0
+  virtual void OrphanCallChain_C1_I08_005b60a0(char param_1); // slot 0x76 0x5b60a0
   // Loads the localized UI string `stringId` from the module cache and assigns it
   // via UpdateTextEntrySharedStringAndMaybeNotify (verified 1-arg thiscall, RET 4;
   // the old InitializeTechHistoryViewTitleAndMapKeyControls name was junk and the
   // declaration had dropped the argument).
-  virtual void SetTextFromUiStringResourceId(short stringId);                 // slot 0x77 0x5b60d0
-  virtual undefined WrapperFor_thunk_BuildUiTextStyleDescriptor_At005b62e0(); // slot 0x78 0x5b62e0
-  virtual undefined ConstructTMapKeyBaseState_Impl(void* styleDescriptor,
-                                                   int unusedFlag); // slot 0x79 0x5b62a0
-  virtual undefined BuildCityViewProductionControls_Impl();         // slot 0x7a 0x5b64e0
-  virtual undefined
-  UpdateTextEntrySharedStringAndMaybeNotify(CString* text, char notifyFlag); // slot 0x7b 0x5b64a0
-  virtual undefined UpdateTextEntrySharedString(CString* text);              // slot 0x7c 0x5b6480
-  virtual undefined Helper_Uses_ConstructSharedStringFromCStrOrResourceId_At005b6360(
+  virtual void SetTextFromUiStringResourceId(short stringId);           // slot 0x77 0x5b60d0
+  virtual void WrapperFor_thunk_BuildUiTextStyleDescriptor_At005b62e0(); // slot 0x78 0x5b62e0
+  // styleDescriptor points at a small packed style record (callers pass
+  // int[4]); only field_98 = *(int*)((char*)styleDescriptor+6) and two
+  // unresolved low-level style/font helpers are confirmed so far.
+  virtual void ConstructTMapKeyBaseState_Impl(int* styleDescriptor,
+                                              int unusedFlag);  // slot 0x79 0x5b62a0
+  virtual void BuildCityViewProductionControls_Impl();         // slot 0x7a 0x5b64e0
+  virtual void UpdateTextEntrySharedStringAndMaybeNotify(CString* text,
+                                                         char notifyFlag); // slot 0x7b 0x5b64a0
+  virtual void UpdateTextEntrySharedString(CString* text);                // slot 0x7c 0x5b6480
+  virtual void Helper_Uses_ConstructSharedStringFromCStrOrResourceId_At005b6360(
       CString param_1); // slot 0x7d 0x5b6360
+  // Real return is undefined4 (packs two shorts via CONCAT22) with an
+  // unresolved measure-width helper (func_0x004065e1) feeding it — kept as
+  // `undefined` rather than guessing a real return type.
   virtual undefined
   RecenterTextFromMeasuredWidthAndMaybeInvalidate(char param_1); // slot 0x7e 0x5b63e0
   // === END GENERATED DECLS (TDeluxeText) ===
