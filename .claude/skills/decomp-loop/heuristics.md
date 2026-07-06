@@ -518,8 +518,11 @@ object (often a file-scope static reachable via an `InitStub`/atexit pair: `MOV 
 in the static-init gives the object address, the ctor arg gives blockSize) as a real
 `CList<...>`/`CArray<...>` global and call the public API; `/Ob1` re-inlines AddTail
 identically (TNetMgr::Send 35%→65%). The twin-copy addresses themselves can't pair against
-the single recomp COMDAT — leave them to autogen stubs. Bonus: "mystery globals" inside the
-object footprint are member aliases (0x6a13e8 = the 0x6a13e0 list's m_pNodeTail).
+the single recomp COMDAT — leave them to autogen stubs. Linker switches do not fix this:
+`/OPT:NOREF` is identical to baseline for the CList rows, while `/OPT:REF` discards
+thousands of intentionally-unreferenced recomp bodies and collapses coverage. Bonus:
+"mystery globals" inside the object footprint are member aliases (0x6a13e8 = the 0x6a13e0
+list's m_pNodeTail).
 
 ## 28. Field-by-field snapshot copies are a struct-recovery oracle
 

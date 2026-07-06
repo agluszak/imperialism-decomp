@@ -740,17 +740,30 @@ unsigned short g_wUiResourceEntryDefaultParam2 = 0;
 
 #include "game/TWNetSessionManager.h"
 
-// WNetMgr.cpp file-scope template statics; the CList is the local-player pending-packet
-// queue that TNetMgr::Send appends heap packet copies to (block size 10, per the original
-// static-init at 0x5e26d0).
+// UGameWindow/dialog-factory widget build stack. The list element type is TView*: its
+// vtable family uses the CList<TView*,TView*> serializer/destructors, not the WNet
+// CList<void*,void*> copies below.
 // GLOBAL: IMPERIALISM 0x006a13e0
-CList<void*, void*> g_UiWidgetBuildStack006a13e0;
+CList<TView*, TView*> g_UiWidgetBuildStack006a13e0;
+
+// WNetMgr.cpp file-scope template statics; g_WNetPendingPacketList006a5f40 is the
+// local-player pending-packet queue that TNetMgr::Send appends heap packet copies to
+// (block size 10, per the original static-init at 0x5e26d0).
 // GLOBAL: IMPERIALISM 0x006a5f10
 CArray<void*, void*> g_WNetSerializedPtrArrayA006a5f10;
 // GLOBAL: IMPERIALISM 0x006a5f28
 CArray<void*, void*> g_WNetSerializedPtrArrayB006a5f28;
 // GLOBAL: IMPERIALISM 0x006a5f40
 CList<void*, void*> g_WNetPendingPacketList006a5f40(10);
+
+// Compiler-emitted dtor copies for the g_UiWidgetBuildStack006a13e0
+// CList<TView*,TView*> template instantiation. These previously carried invented
+// vtable-address-suffixed placeholder class names.
+// TEMPLATE: IMPERIALISM 0x00415f90
+// ??_G?$CList@PAVTView@@PAV1@@@UAEPAXI@Z
+
+// TEMPLATE: IMPERIALISM 0x00415e70
+// ??1?$CList@PAVTView@@PAV1@@@UAE@XZ
 
 // Compiler-emitted ctor/dtor for the CList<void*,void*> / CArray<void*,void*> template
 // instantiations shared by g_WNetPendingPacketList006a5f40 and
@@ -763,6 +776,12 @@ CList<void*, void*> g_WNetPendingPacketList006a5f40(10);
 
 // TEMPLATE: IMPERIALISM 0x005e4580
 // ??1?$CList@PAXPAX@@UAE@XZ
+
+// TEMPLATE: IMPERIALISM 0x005e4610
+// ?Serialize@?$CList@PAXPAX@@UAEXAAVCArchive@@@Z
+
+// TEMPLATE: IMPERIALISM 0x005e4a30
+// ??_G?$CList@PAXPAX@@UAEPAXI@Z
 
 // TEMPLATE: IMPERIALISM 0x005e4780
 // ??0?$CArray@PAXPAX@@QAE@XZ

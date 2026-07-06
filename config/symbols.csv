@@ -97,10 +97,10 @@ address|name|symbol|size|type|prototype|provenance
 415df0|WrapperFor_ftol_At00415df0||30|function|undefined WrapperFor_ftol_At00415df0()|
 415e20|InitializeUiResourcePoolStateAndRegisterAtExit||24|function|undefined InitializeUiResourcePoolStateAndRegisterAtExit()|
 415e50|DestroyUiResourcePoolStateAtExit||5|function|undefined DestroyUiResourcePoolStateAtExit()|
-415e70|TRuntimeLinkedBlockChainState_0063E880::DestructLinkedBlockChainState_0063E880_AndFreeChain_At00415e70||101|function|undefined DestructLinkedBlockChainState_0063E880_AndFreeChain_At00415e70()|
+415e70|CList<TView *,TView *>::~CList|??1?$CList@PAVTView@@PAV1@@@UAE@XZ|101|function|undefined ~CList()|template
 415f00|CObject::`scalar deleting destructor'||32|function|undefined ScalarDeletingDestructor()|
 415f50|InitializeUiResourcePoolRuntimeClassFields||33|function|undefined InitializeUiResourcePoolRuntimeClassFields()|
-415f90|WrapperFor_FreeHeapBufferIfNotNull_At00415f90||30|function|undefined WrapperFor_FreeHeapBufferIfNotNull_At00415f90()|
+415f90|CList<TView *,TView *>::`scalar deleting destructor'|??_G?$CList@PAVTView@@PAV1@@@UAEPAXI@Z|30|function|undefined ScalarDeletingDestructor()|template
 415fe0|BuildTradeSchoolDialogControls||16760|function|int * __fastcall BuildTradeSchoolDialogControls(dword dwPanelId, short nDialogTypeTag)|
 41b1c0|CObject::operator new|??2CObject@@SGPAXI@Z|16|function|void * __stdcall operator new(unsigned int nSize)|
 41b210|RegisterUiResourceEntry||312|function|undefined RegisterUiResourceEntry()|
@@ -315,9 +315,9 @@ address|name|symbol|size|type|prototype|provenance
 479b00|PushUiResourcePoolNode||125|function|undefined PushUiResourcePoolNode()|
 479ba0|InitializeJoinSelectorDialogControlsAndNationSlots_Impl||4|function|undefined InitializeJoinSelectorDialogControlsAndNationSlots_Impl()|
 479bc0|InitializeJoinSelectorDialogControlsAndNationSlots_Impl_At00479bc0||10|function|undefined InitializeJoinSelectorDialogControlsAndNationSlots_Impl_At00479bc0()|
-479be0|TView::SerializeRecordList_0x0C_WithBlockPool_A||280|function|undefined SerializeRecordList_0x0C_WithBlockPool_A()|
-479d50|WrapperFor_FreeHeapBufferIfNotNull_At00479d50||30|function|undefined WrapperFor_FreeHeapBufferIfNotNull_At00479d50()|
-479d80|TRuntimeLinkedBlockChainState_0063E880::DestructLinkedBlockChainState_0063E880_AndFreeChain_At00479d80||101|function|undefined DestructLinkedBlockChainState_0063E880_AndFreeChain_At00479d80()|
+479be0|CList<TView *,TView *>::Serialize|?Serialize@?$CList@PAVTView@@PAV1@@@UAEXAAVCArchive@@@Z|280|function|undefined Serialize(CArchive &)|template
+479d50|CList<TView *,TView *>::`scalar deleting destructor'|??_G?$CList@PAVTView@@PAV1@@@UAEPAXI@Z|30|function|undefined ScalarDeletingDestructor()|template
+479d80|CList<TView *,TView *>::~CList|??1?$CList@PAVTView@@PAV1@@@UAE@XZ|101|function|undefined ~CList()|template
 479e10|RegisterUiResourceEntry_Impl||17|function|undefined RegisterUiResourceEntry_Impl()|
 479e40|CDib::CreateObject|?CreateObject@CDib@@SGPAVCObject@@XZ|100|function|undefined CreateObject()|rtti
 479ed0|CDib::GetRuntimeClass||6|function|undefined GetRuntimeClass()|rtti
@@ -638,7 +638,7 @@ address|name|symbol|size|type|prototype|provenance
 486740|TApplication::GetRuntimeClass||6|function|undefined GetTApplicationClassNamePointer()|rtti
 486760|TApplication::TApplication|??0TApplication@@QAE@XZ|61|function|undefined TApplication()|curated
 4867b0|TApplication::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
-4867e0|CList<void*,void*>::~CList (twin copy, unfoldable — see 0x005e4580)||128|function|undefined ~CList()|curated
+4867e0|TApplication::~TApplication|??1TApplication@@UAE@XZ|128|function|undefined ~TApplication()|curated
 486880|TApplication::OrphanTiny_SetDwordEcxOffset_20_00486880||10|function|void SetActiveView(TEventHandler * view)|
 4868a0|TApplication::OrphanTiny_GetDwordEcxOffset_20_004868a0||4|function|TEventHandler * GetActiveView(void)|
 4868c0|PumpUiMessagesAndBackgroundTasks||124|function|int __stdcall PumpUiMessagesAndBackgroundTasks(int nTaskPumpMode)|
@@ -648,9 +648,9 @@ address|name|symbol|size|type|prototype|provenance
 486b10|TApplication::Idle||35|function|void __thiscall Idle(int)|
 486b50|TApplication::DispatchQueuedUiCommandAndRelease||50|function|undefined PostCustomMessageBC0ToMainWindow()|
 486ba0|TApplication::vmethod_0017||393|function|undefined DispatchReflectedControlMessageOrFallback(undefined4 param_1)|
-486df0|TApplication::trackedEntries::Serialize||280|function|undefined SerializeRecordList_0x0C_WithBlockPool_B()|
-486f60|TApplication::trackedEntries::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
-486f90|TBehavior::CreateTBehaviorInstance||101|function|undefined CreateTBehaviorInstance()|
+486df0|CList<void *,void *>::Serialize|?Serialize@?$CList@PAXPAX@@UAEXAAVCArchive@@@Z|280|function|undefined Serialize(CArchive &)|template
+486f60|CList<void *,void *>::`scalar deleting destructor'|??_G?$CList@PAXPAX@@UAEPAXI@Z|30|function|undefined ScalarDeletingDestructor()|template
+486f90|CList<void *,void *>::~CList|??1?$CList@PAXPAX@@UAE@XZ|101|function|undefined ~CList()|template
 487150|WrapperFor_ftol_At00487150||30|function|undefined WrapperFor_ftol_At00487150()|
 487180|TBehavior::CreateObject|?CreateObject@TBehavior@@SGPAVCObject@@XZ|42|function|undefined CreateObject()|rtti
 4871c0|TBehavior::GetRuntimeClass||6|function|undefined GetTBehaviorClassNamePointer()|rtti
@@ -885,8 +885,8 @@ address|name|symbol|size|type|prototype|provenance
 48ab90|TView::ForwardMapViewVirtualC4IfPresent_b5||23|function|undefined ForwardMapViewVirtualC4IfPresent()|
 48abc0|TView::GetTEventHandlerClassNamePointer_bc||1|function|undefined GetTEventHandlerClassNamePointer(void)|
 48abe0|TView::AttachChildControl_e0||341|function|void __thiscall AttachChildControl(class TView * child, int flag)|
-48ada0|TView::VTableSlot7F||30|function|undefined 'scalar_deleting_destructor'(void)|
-48add0|TRuntimeLinkedBlockChainState_0063E880::DestructLinkedBlockChainState_0063E880_AndFreeChain_At0048add0||101|function|undefined DestructLinkedBlockChainState_0063E880_AndFreeChain_At0048add0()|
+48ada0|CList<TView *,TView *>::`scalar deleting destructor'|??_G?$CList@PAVTView@@PAV1@@@UAEPAXI@Z|30|function|undefined ScalarDeletingDestructor()|template
+48add0|CList<TView *,TView *>::~CList|??1?$CList@PAVTView@@PAV1@@@UAE@XZ|101|function|undefined ~CList()|template
 48ae60|TView::DetachUiElementFromOwnerListAndClearBackref_e1||215|function|undefined DetachUiElementFromOwnerListAndClearBackref()|
 48af80|TView::CtrlSlot38_SwitchActiveChildAndNotify_Impl_aa||62|function|undefined CtrlSlot38_SwitchActiveChildAndNotify_Impl()|
 48afd0|TView::FindUiChildControlByWindowHandleRecursive_a9||117|function|undefined FindUiChildControlByWindowHandleRecursive()|
@@ -1108,10 +1108,10 @@ address|name|symbol|size|type|prototype|provenance
 492550|UnlinkNodeFromDoublyLinkedListAndRecycle||108|function|undefined UnlinkNodeFromDoublyLinkedListAndRecycle()|
 4925e0|DestructViewModalStateNodeBlockChainAndRestoreBaseRuntimeClass||101|function|undefined DestructViewModalStateNodeBlockChainAndRestoreBaseRuntimeClass()|
 492670|TCluster::SerializeRecordList_0x0C_WithBlockPool_C||280|function|undefined SerializeRecordList_0x0C_WithBlockPool_C()|
-4927e0|TCluster::SerializeRecordList_0x0C_WithBlockPool_D||280|function|undefined SerializeRecordList_0x0C_WithBlockPool_D()|
+4927e0|CList<TurnEventDialogFactoryProc,TurnEventDialogFactoryProc>::Serialize|?Serialize@?$CList@P6APAVTView@@PAVCWnd@@H@ZP6APAV1@0H@Z@@UAEXAAVCArchive@@@Z|280|function|undefined Serialize(CArchive &)|template
 492950|TCluster::WrapperFor_FreeHeapBufferIfNotNull_At00492950||30|function|undefined WrapperFor_FreeHeapBufferIfNotNull_At00492950(void)|
-492980|TCluster::WrapperFor_FreeHeapBufferIfNotNull_At00492980||30|function|undefined WrapperFor_FreeHeapBufferIfNotNull_At00492980(void)|
-4929b0|CList<TurnEventDialogFactoryProc,TurnEventDialogFactoryProc>::~CList|??1?$CList@P6APAVTView@@PAVCWnd@@H@ZP6APAV1@0H@Z@@UAE@XZ|101|function|undefined ~CList()|curated
+492980|CList<TurnEventDialogFactoryProc,TurnEventDialogFactoryProc>::`scalar deleting destructor'|??_G?$CList@P6APAVTView@@PAVCWnd@@H@ZP6APAV1@0H@Z@@UAEPAXI@Z|30|function|undefined ScalarDeletingDestructor()|template
+4929b0|CList<TurnEventDialogFactoryProc,TurnEventDialogFactoryProc>::~CList|??1?$CList@P6APAVTView@@PAVCWnd@@H@ZP6APAV1@0H@Z@@UAE@XZ|101|function|undefined ~CList()|template
 492a40|WrapperFor_AllocateAndLinkBlockHead_At00492a40||94|function|undefined WrapperFor_AllocateAndLinkBlockHead_At00492a40()|
 492ac0|WrapperFor_FreeLinkedBlockChain_At00492ac0||45|function|undefined WrapperFor_FreeLinkedBlockChain_At00492ac0()|
 492b00|WrapperFor_FreeLinkedBlockChain_At00492b00||68|function|undefined WrapperFor_FreeLinkedBlockChain_At00492b00()|
@@ -6262,13 +6262,13 @@ address|name|symbol|size|type|prototype|provenance
 5e42c0|NotifyIfNationMatchesSessionActiveNation||28|function|undefined NotifyIfNationMatchesSessionActiveNation()|
 5e42f0|CheckConnectivityOrShowLocalizedWarningAndReturnReady||187|function|undefined CheckConnectivityOrShowLocalizedWarningAndReturnReady()|
 5e43e0|ProbeNationReachabilityAndMarkAwolBitmask||264|function|undefined ProbeNationReachabilityAndMarkAwolBitmask()|
-5e4540|CList<void*,void*>::CList|??0?$CList@PAXPAX@@QAE@H@Z|35|function|void CList(int)|curated
-5e4580|CList<void*,void*>::~CList|??1?$CList@PAXPAX@@UAE@XZ|101|function|void ~CList()|curated
-5e4610|TNetMgr::SerializeLinkedRecordListWithFreeNodePool||280|function|undefined SerializeLinkedRecordListWithFreeNodePool()|
+5e4540|CList<void *,void *>::CList|??0?$CList@PAXPAX@@QAE@H@Z|35|function|void CList(int)|template
+5e4580|CList<void *,void *>::~CList|??1?$CList@PAXPAX@@UAE@XZ|101|function|void ~CList()|template
+5e4610|CList<void *,void *>::Serialize|?Serialize@?$CList@PAXPAX@@UAEXAAVCArchive@@@Z|280|function|undefined Serialize(CArchive &)|template
 5e4780|CArray<void*,void*>::CArray|??0?$CArray@PAXPAX@@QAE@XZ|23|function|void CArray()|curated
 5e47b0|CArray<void*,void*>::~CArray|??1?$CArray@PAXPAX@@UAE@XZ|81|function|void ~CArray()|curated
 5e4830|TNetMgr::SerializeDynamicDwordPointerArrayState||392|function|undefined SerializeDynamicDwordPointerArrayState()|
-5e4a30|TNetMgr::WrapperFor_FreeHeapBufferIfNotNull_At005e4a30||30|function|undefined WrapperFor_FreeHeapBufferIfNotNull_At005e4a30(byte param_1)|
+5e4a30|CList<void *,void *>::`scalar deleting destructor'|??_G?$CList@PAXPAX@@UAEPAXI@Z|30|function|undefined ScalarDeletingDestructor()|template
 5e4a60|TNetMgr::WrapperFor_FreeHeapBufferIfNotNull_At005e4a60||30|function|undefined WrapperFor_FreeHeapBufferIfNotNull_At005e4a60(byte param_1)|
 5e4a90|ResizeDwordPointerArrayAndZeroNewSlots||310|function|undefined ResizeDwordPointerArrayAndZeroNewSlots()|
 5e4d50|WrapperFor_ftol_At005e4d50||30|function|undefined WrapperFor_ftol_At005e4d50()|

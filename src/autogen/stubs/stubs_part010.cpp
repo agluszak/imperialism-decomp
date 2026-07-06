@@ -1723,11 +1723,3 @@ undefined4 DestructTEventHandlerAndMaybeFree_Impl(void)
   return 0;
 }
 
-// ghidra_name TRuntimeLinkedBlockChainState_0063E880::DestructLinkedBlockChainState_0063E880_AndFreeChain_At0048add0
-// ghidra_proto undefined DestructLinkedBlockChainState_0063E880_AndFreeChain_At0048add0()
-// FUNCTION: IMPERIALISM 0x0048add0
-undefined4 DestructLinkedBlockChainState_0063E880_AndFreeChain_At0048add0(void)
-{
-  return 0;
-}
-

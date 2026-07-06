@@ -507,26 +507,10 @@ undefined4 DestroyUiResourcePoolStateAtExit(void)
   return 0;
 }
 
-// ghidra_name TRuntimeLinkedBlockChainState_0063E880::DestructLinkedBlockChainState_0063E880_AndFreeChain_At00415e70
-// ghidra_proto undefined DestructLinkedBlockChainState_0063E880_AndFreeChain_At00415e70()
-// FUNCTION: IMPERIALISM 0x00415e70
-undefined4 DestructLinkedBlockChainState_0063E880_AndFreeChain_At00415e70(void)
-{
-  return 0;
-}
-
 // ghidra_name InitializeUiResourcePoolRuntimeClassFields
 // ghidra_proto undefined InitializeUiResourcePoolRuntimeClassFields()
 // FUNCTION: IMPERIALISM 0x00415f50
 undefined4 InitializeUiResourcePoolRuntimeClassFields(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_FreeHeapBufferIfNotNull_At00415f90
-// ghidra_proto undefined WrapperFor_FreeHeapBufferIfNotNull_At00415f90()
-// FUNCTION: IMPERIALISM 0x00415f90
-undefined4 WrapperFor_FreeHeapBufferIfNotNull_At00415f90(void)
 {
   return 0;
 }
@@ -1207,22 +1191,6 @@ undefined4 InitializeJoinSelectorDialogControlsAndNationSlots_Impl(void)
 // ghidra_proto undefined InitializeJoinSelectorDialogControlsAndNationSlots_Impl_At00479bc0()
 // FUNCTION: IMPERIALISM 0x00479bc0
 undefined4 InitializeJoinSelectorDialogControlsAndNationSlots_Impl_At00479bc0(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_FreeHeapBufferIfNotNull_At00479d50
-// ghidra_proto undefined WrapperFor_FreeHeapBufferIfNotNull_At00479d50()
-// FUNCTION: IMPERIALISM 0x00479d50
-undefined4 WrapperFor_FreeHeapBufferIfNotNull_At00479d50(void)
-{
-  return 0;
-}
-
-// ghidra_name TRuntimeLinkedBlockChainState_0063E880::DestructLinkedBlockChainState_0063E880_AndFreeChain_At00479d80
-// ghidra_proto undefined DestructLinkedBlockChainState_0063E880_AndFreeChain_At00479d80()
-// FUNCTION: IMPERIALISM 0x00479d80
-undefined4 DestructLinkedBlockChainState_0063E880_AndFreeChain_At00479d80(void)
 {
   return 0;
 }

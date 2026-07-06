@@ -427,6 +427,12 @@
       "type": 1
     },
     {
+      "address": "0x415e70",
+      "matching": 0.9696969696969697,
+      "name": "CList<TView *,TView *>::~CList<TView *,TView *>",
+      "type": 1
+    },
+    {
       "address": "0x415f00",
       "matching": 1.0,
       "name": "CObject::`scalar deleting destructor'",
@@ -436,6 +442,12 @@
       "address": "0x415f50",
       "matching": 0.16666666666666666,
       "name": "InitializeUiResourcePoolRuntimeClassFields",
+      "type": 1
+    },
+    {
+      "address": "0x415f90",
+      "matching": 1.0,
+      "name": "CList<TView *,TView *>::`scalar deleting destructor'(unsigned int)",
       "type": 1
     },
     {
@@ -1456,8 +1468,8 @@
     },
     {
       "address": "0x479be0",
-      "matching": 0.36097560975609755,
-      "name": "TView::SerializeRecordList_0x0C_WithBlockPool_A",
+      "matching": 1.0,
+      "name": "CList<TView *,TView *>::Serialize",
       "type": 1
     },
     {
@@ -1648,7 +1660,7 @@
     },
     {
       "address": "0x47c080",
-      "matching": 0.6073298429319371,
+      "matching": 0.5396825396825397,
       "name": "CDib::LoadBitmapResourceAndInitializeSurfaceState",
       "type": 1
     },
@@ -2862,7 +2874,7 @@
     {
       "address": "0x4867e0",
       "matching": 0.9,
-      "name": "CList<void*,void*>::~CList (twin copy, unfoldable \u2014 see 0x005e4580)",
+      "name": "TApplication::~TApplication",
       "type": 1
     },
     {
@@ -2917,6 +2929,24 @@
       "address": "0x486ba0",
       "matching": 0.015151515151515152,
       "name": "TApplication::vmethod_0017",
+      "type": 1
+    },
+    {
+      "address": "0x486df0",
+      "matching": 1.0,
+      "name": "CList<void *,void *>::Serialize(class CArchive &)",
+      "type": 1
+    },
+    {
+      "address": "0x486f60",
+      "matching": 1.0,
+      "name": "CList<void *,void *>::`scalar deleting destructor'(unsigned int)",
+      "type": 1
+    },
+    {
+      "address": "0x486f90",
+      "matching": 0.9696969696969697,
+      "name": "CList<void *,void *>::~CList<void *,void *>",
       "type": 1
     },
     {
@@ -4235,13 +4265,13 @@
     },
     {
       "address": "0x48abe0",
-      "matching": 0.13333333333333333,
+      "matching": 0.9925925925925926,
       "name": "TView::AttachChildControl_e0",
       "type": 1
     },
     {
       "address": "0x48ae60",
-      "matching": 0.2446043165467626,
+      "matching": 0.519774011299435,
       "name": "TView::DetachUiElementFromOwnerListAndClearBackref_e1",
       "type": 1
     },
@@ -5522,6 +5552,12 @@
       "address": "0x4925e0",
       "matching": 0.05714285714285714,
       "name": "DestructViewModalStateNodeBlockChainAndRestoreBaseRuntimeClass",
+      "type": 1
+    },
+    {
+      "address": "0x4927e0",
+      "matching": 1.0,
+      "name": "CList<TView * (__cdecl*)(CWnd *,int),TView * (__cdecl*)(CWnd *,int)>::Serialize",
       "type": 1
     },
     {
@@ -12435,7 +12471,7 @@
     },
     {
       "address": "0x4ddc30",
-      "matching": 0.9894736842105263,
+      "matching": 0.6526315789473685,
       "name": "TGreatPower::OrphanRetStub_004d7fa0_20",
       "type": 1
     },
@@ -12525,7 +12561,7 @@
     },
     {
       "address": "0x4de700",
-      "matching": 0.6486486486486487,
+      "matching": 0.6216216216216216,
       "name": "TGreatPower::CanAffordDiplomacyGrantEntryForTarget",
       "type": 1
     },
@@ -12723,14 +12759,14 @@
     },
     {
       "address": "0x4e0590",
-      "matching": 1.0,
+      "effective": true,
+      "matching": 0.42857142857142855,
       "name": "TGreatPower::OrphanRetStub_004d7fa0_88",
       "type": 1
     },
     {
       "address": "0x4e05d0",
-      "effective": true,
-      "matching": 0.42857142857142855,
+      "matching": 1.0,
       "name": "TGreatPower::OrphanLeaf_NoCall_Ins02_004d7fc0_89",
       "type": 1
     },
@@ -12743,20 +12779,20 @@
     },
     {
       "address": "0x4e0650",
-      "matching": 1.0,
+      "effective": true,
+      "matching": 0.42857142857142855,
       "name": "TGreatPower::OrphanRetStub_004d7fe0_8b",
       "type": 1
     },
     {
       "address": "0x4e0690",
-      "effective": true,
-      "matching": 0.42857142857142855,
+      "matching": 1.0,
       "name": "TGreatPower::ReturnFalseNationStateCapabilityFlag90",
       "type": 1
     },
     {
       "address": "0x4e06d0",
-      "matching": 0.8095238095238095,
+      "matching": 1.0,
       "name": "TGreatPower::SumNationRuntimeFiveBucketValue44",
       "type": 1
     },
@@ -12780,7 +12816,7 @@
     },
     {
       "address": "0x4e0890",
-      "matching": 0.2222222222222222,
+      "matching": 0.24242424242424243,
       "name": "TGreatPower::IterateLinkedListCursorAndAccumulateRoundedMetric_004e0890",
       "type": 1
     },
@@ -13062,7 +13098,7 @@
     },
     {
       "address": "0x4e4630",
-      "matching": 0.6666666666666666,
+      "matching": 0.9333333333333333,
       "name": "TMinor::OrphanLeaf_NoCall_Ins02_004d7ee0",
       "type": 1
     },
@@ -13549,13 +13585,13 @@
     },
     {
       "address": "0x4e9ff0",
-      "matching": 0.752,
+      "matching": 0.768,
       "name": "TAutoGreatPower::OrphanLeaf_NoCall_Ins02_004d7ee0",
       "type": 1
     },
     {
       "address": "0x4ea0e0",
-      "matching": 0.6382978723404256,
+      "matching": 0.6808510638297872,
       "name": "TAutoGreatPower::OrphanLeaf_NoCall_Ins02_004d7f00",
       "type": 1
     },
@@ -13579,7 +13615,7 @@
     },
     {
       "address": "0x4ea300",
-      "matching": 0.782608695652174,
+      "matching": 0.7701863354037267,
       "name": "TAutoGreatPower::ResetNationDiplomacySlotsAndMarkRelatedNations",
       "type": 1
     },
@@ -14143,7 +14179,7 @@
     },
     {
       "address": "0x4eff40",
-      "matching": 0.2857142857142857,
+      "matching": 0.27988338192419826,
       "name": "TDiplomacyMgr::PropagateRelationSideEffectSlot80",
       "type": 1
     },
@@ -14671,7 +14707,7 @@
     },
     {
       "address": "0x4f6bd0",
-      "matching": 0.242914979757085,
+      "matching": 0.2248995983935743,
       "name": "TDiplomacyMapView::BlitDiplomacyMapEventPaletteMaskToSurface",
       "type": 1
     },
@@ -16225,7 +16261,7 @@
     },
     {
       "address": "0x50bea0",
-      "matching": 0.20626987732848706,
+      "matching": 0.19718309859154928,
       "name": "TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets",
       "type": 1
     },
@@ -16675,7 +16711,7 @@
     },
     {
       "address": "0x5136a0",
-      "matching": 1.0,
+      "matching": 0.8888888888888888,
       "name": "TMapMgr::OrphanLeaf_NoCall_Ins35_005136a0",
       "type": 1
     },
@@ -17233,7 +17269,7 @@
     },
     {
       "address": "0x51a990",
-      "matching": 0.2413793103448276,
+      "matching": 0.24,
       "name": "TMapDialog::OrphanRetStub_005960c0",
       "type": 1
     },
@@ -18067,7 +18103,7 @@
     },
     {
       "address": "0x52c0a0",
-      "matching": 0.9122807017543859,
+      "matching": 0.9391304347826087,
       "name": "SeapointStretch::GetOrAppendUnique",
       "type": 1
     },
@@ -18079,7 +18115,7 @@
     },
     {
       "address": "0x52c990",
-      "matching": 0.8333333333333334,
+      "matching": 1.0,
       "name": "ConvertTileIndexToOverlayCoord216BySide",
       "type": 1
     },
@@ -18097,13 +18133,13 @@
     },
     {
       "address": "0x52cae0",
-      "matching": 0.2976,
+      "matching": 0.3054662379421222,
       "name": "BuildOverlaySpanRecordsFromQuadBorderLinks",
       "type": 1
     },
     {
       "address": "0x52d030",
-      "matching": 0.7766990291262136,
+      "matching": 1.0,
       "name": "ComputeWrappedOverlayCoordDeltaMetric",
       "type": 1
     },
@@ -18115,13 +18151,13 @@
     },
     {
       "address": "0x52d150",
-      "matching": 0.7311827956989247,
+      "matching": 0.7021276595744681,
       "name": "GetOrCreateOverlayQuadRecordByIndex",
       "type": 1
     },
     {
       "address": "0x52d1f0",
-      "matching": 0.2621082621082621,
+      "matching": 0.2784090909090909,
       "name": "ReindexContiguousCityRegionIds",
       "type": 1
     },
@@ -18139,7 +18175,7 @@
     },
     {
       "address": "0x52d750",
-      "matching": 0.21904761904761905,
+      "matching": 0.22063492063492063,
       "name": "MergeSmallCityRegionsAndCompactIds",
       "type": 1
     },
@@ -20036,13 +20072,13 @@
     },
     {
       "address": "0x53d020",
-      "matching": 0.4235294117647059,
+      "matching": 0.4251968503937008,
       "name": "ComputeArmyMissionScoreDeltaWithCandidateUnit",
       "type": 1
     },
     {
       "address": "0x53d200",
-      "matching": 0.41245136186770426,
+      "matching": 0.4108527131782946,
       "name": "ComputeArmyMissionScoreDeltaWithScaledCandidateUnit",
       "type": 1
     },
@@ -21134,7 +21170,7 @@
     },
     {
       "address": "0x545940",
-      "matching": 0.09351037965214139,
+      "matching": 0.09466791393826006,
       "name": "TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine",
       "type": 1
     },
@@ -27154,7 +27190,7 @@
     },
     {
       "address": "0x589260",
-      "matching": 0.2764227642276423,
+      "matching": 0.3064516129032258,
       "name": "TIndustryAmtBar::NoOpUiLifecycleHook",
       "type": 1
     },
@@ -27250,7 +27286,7 @@
     },
     {
       "address": "0x58a020",
-      "matching": 0.45685279187817257,
+      "matching": 0.47715736040609136,
       "name": "TRailAmtBar::NoOpUiLifecycleHook",
       "type": 1
     },
@@ -27803,7 +27839,7 @@
     },
     {
       "address": "0x58f550",
-      "matching": 0.5138888888888888,
+      "matching": 0.4722222222222222,
       "name": "TCivDescription::ApplyRectSlot110",
       "type": 1
     },
@@ -31331,7 +31367,7 @@
     },
     {
       "address": "0x5b8ad0",
-      "matching": 0.47191011235955055,
+      "matching": 0.4868913857677903,
       "name": "TTradeMgr::ComputeNationMetricBaselineValueForSlot",
       "type": 1
     },
@@ -33819,12 +33855,6 @@
       "type": 1
     },
     {
-      "address": "0x5e4580",
-      "matching": 0.9696969696969697,
-      "name": "CList<void *,void *>::~CList<void *,void *>",
-      "type": 1
-    },
-    {
       "address": "0x5e4780",
       "matching": 0.875,
       "name": "CArray<void *,void *>::CArray<void *,void *>",
@@ -33834,12 +33864,6 @@
       "address": "0x5e47b0",
       "matching": 0.9565217391304348,
       "name": "CArray<void *,void *>::~CArray<void *,void *>",
-      "type": 1
-    },
-    {
-      "address": "0x5e4a30",
-      "matching": 0.0,
-      "name": "TNetMgr::WrapperFor_FreeHeapBufferIfNotNull_At005e4a30",
       "type": 1
     },
     {

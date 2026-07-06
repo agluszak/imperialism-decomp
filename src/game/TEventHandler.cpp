@@ -18,6 +18,16 @@ extern "C" {
 extern CRuntimeClass PTR_s_TEventHandler_00649588;
 }
 
+namespace {
+
+struct TEventHandlerRawQueueNode {
+  TEventHandlerRawQueueNode* next;
+  TEventHandlerRawQueueNode* previous;
+  void* payload;
+};
+
+} // namespace
+
 // FUNCTION: IMPERIALISM 0x00415d50
 int TEventHandler::GetCityDialogValueDword10() {
   return field10;
@@ -32,6 +42,7 @@ void TEventHandler::SetCityDialogValueDword10(int value) {
 // FUNCTION: IMPERIALISM 0x0048a070
 void TEventHandler::CreateTEventHandlerInstance() {
   while (field0c != 0) {
+    TEventHandlerRawQueueNode* recordHead = reinterpret_cast<TEventHandlerRawQueueNode*>(field04);
     TEventHandler* entry = static_cast<TEventHandler*>(recordHead->payload);
     entry->Free();
   }
@@ -44,7 +55,8 @@ void TEventHandler::CreateTEventHandlerInstance() {
 
 IMPLEMENT_DYNCREATE(TEventHandler, TObject)
 
-TEventHandler::TEventHandler() : field0c(0), field10(0x7fffffff), field14(0), resourceOwner(0) {}
+TEventHandler::TEventHandler()
+    : field0c(0), field10(0x7fffffff), field14(0), linkedResourceOwner(0) {}
 
 // Binary helper @ 0x48a100: same header field defaults as TEventHandler().
 // FUNCTION: IMPERIALISM 0x0048a100

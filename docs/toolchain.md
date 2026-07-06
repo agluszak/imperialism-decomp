@@ -93,6 +93,24 @@ Interpretation:
 3. Iterate compiler flags before broad source reconstruction.
 4. Record every attempted compiler/version/flags set and observed matching deltas.
 
+## Linker Option Notes
+
+- Baseline `RelWithDebInfo` CMake injects `/INCREMENTAL:YES`, but the project adds
+  `/INCREMENTAL:NO` later on the `Imperialism.exe` link line; the later flag wins.
+  Incremental-link thunks are therefore not the current duplicate-template issue.
+- ISLE uses `/OPT:REF` for its MSVC 4.20 targets. On Imperialism this is not usable
+  as a default: an isolated `/OPT:REF` build linked successfully, but reccmp function
+  coverage collapsed from about 95.95% to 44.17% because the linker discarded
+  thousands of unreferenced recomp bodies that this repo intentionally keeps
+  addressable for comparison.
+- An isolated `/OPT:NOREF` build matched the baseline CList template rows exactly and
+  kept the normal comparison surface. It confirms that the current baseline already
+  behaves like "keep unreferenced code" for the CList problem; there is no linker flag
+  fix for the duplicate original-side CList instantiations.
+- Practical conclusion: do not adopt `/OPT:REF` to chase duplicate CList rows. Keep the
+  real `CList<...>` source model and treat leftover duplicate original template bodies
+  as a reccmp pairing/classification problem.
+
 ## Python/Ghidra Environment Notes
 
 - The repo syncs with `uv` using `pyghidra==3.1.0` and `jpype1==1.5.2` (see `pyproject.toml`). The stale `java-stubs-converted-strings` dependency conflicted with that `jpype1` pin and was removed.

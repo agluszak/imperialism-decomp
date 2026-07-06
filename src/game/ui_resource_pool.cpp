@@ -17,7 +17,7 @@ void __cdecl RegisterUiResourceEntry(unsigned int nameTag, unsigned int controlT
   TView* parent;
   g_pUiResourceContext = widget;
   if (g_pUiResourceHead != 0) {
-    parent = static_cast<TView*>(g_UiWidgetBuildStack006a13e0.GetTail());
+    parent = g_UiWidgetBuildStack006a13e0.GetTail();
   } else {
     g_pUiResourceHead = widget;
     parent = 0;
@@ -118,6 +118,6 @@ void __cdecl PopUiResourcePoolNode(unsigned int nameTag) {
 }
 
 // 0x479a80 / 0x479b00 ("Pop/PushUiResourcePoolNode") are this TU's out-of-line twin copies
-// of CList<void*,void*>::RemoveTail / ::AddTail operating on g_UiWidgetBuildStack006a13e0
-// — see global_data_tables.h. They are template COMDATs, not game functions; their
+// of CList<TView*,TView*>::RemoveTail / ::AddTail operating on g_UiWidgetBuildStack006a13e0
+// - see global_data_tables.h. They are template COMDATs, not game functions; their
 // addresses stay with autogen stubs (template twin-copy reccmp gap).

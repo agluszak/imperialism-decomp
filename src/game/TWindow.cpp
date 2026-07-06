@@ -11,7 +11,6 @@
 extern "C" CRuntimeClass PTR_s_TWindow_006495e8;
 extern CPtrList g_ModalViewStack;
 
-
 // One-shot McAppUI invalidation-flag assert. The original reaches the shared invalidation
 // helper through the incremental-link thunk; each call site is gated by its own
 // g_McAppUiFlag_* one-shot so the assert fires at most once.
@@ -340,7 +339,7 @@ void TWindow::ReturnFromUiSlot63(int arg1, int arg2) {
 }
 
 // Object teardown: destroy/notify the host CMcWindow, free all child controls, detach from
-// the owner, hand off the active-view slot, release the linked resourceOwner target, then delete
+// the owner, hand off the active-view slot, release the linked resource-owner target, then delete
 // self. Uses the real MFC CWnd/CObject surface (IsKindOf/AssertValid/dtor) directly.
 // FUNCTION: IMPERIALISM 0x0048e2a0
 void TWindow::Free() {
@@ -381,10 +380,10 @@ void TWindow::Free() {
     }
   }
   field0c = 0;
-  if (resourceOwner != 0) {
-    reinterpret_cast<TEventHandler*>(resourceOwner)->Free();
+  if (linkedResourceOwner != 0) {
+    linkedResourceOwner->Free();
   }
-  resourceOwner = 0;
+  linkedResourceOwner = 0;
   delete this;
 }
 

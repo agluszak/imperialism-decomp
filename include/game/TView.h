@@ -1,5 +1,7 @@
 #pragma once
 
+#include <afxtempl.h>
+
 #include "compat.h"
 #include "decomp_types.h"
 #include "game/TEventHandler.h"
@@ -47,6 +49,8 @@ public:
   };
 };
 
+typedef CList<TView*, TView*> TViewChildList;
+
 // VTABLE: IMPERIALISM 0x649858
 class TView : public TEventHandler {
 public:
@@ -67,8 +71,8 @@ public:
     TView* uiResourceContext40;
     int resourceTemplateId40;
   };
-  CPtrList* childList44;  // 0x44 — child-control list (CObList/CPtrList)
-  TUiStyleBytes* field48; // 8-byte style/color payload (see TUiStyleBytes above)
+  TViewChildList* childList44; // 0x44 — child-control list (CList<TView*,TView*>)
+  TUiStyleBytes* field48;      // 8-byte style/color payload (see TUiStyleBytes above)
   unsigned char flag4c;
   unsigned char flag4d;
   unsigned short field4e;
@@ -86,7 +90,6 @@ public:
   void CopyCityDialogStateFromSource(TView* source);
   void EnableAndProcessFlag(CString sharedString);
   void PropagateUiResourceContextRecursive(CWnd* nativeWindow);
-  void SerializeRecordList_0x0C_WithBlockPool_A(CArchive* archive);
   UINT GetStyle();
   int RunModalLoop(unsigned char loopKind);
 

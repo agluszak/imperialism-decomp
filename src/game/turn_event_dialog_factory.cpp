@@ -23,11 +23,11 @@
 
 namespace {
 
-// The original build emits CList<void*,void*>::AddTail on g_UiWidgetBuildStack out-of-line
-// (the 0x479b00 template COMDAT) and *calls* it from each builder; routing the append through
+// The original build emits CList<TView*,TView*>::AddTail on g_UiWidgetBuildStack out-of-line
+// (the 0x479b00 template COMDAT) and calls it from each builder; routing the append through
 // this non-inline wrapper reproduces that call rather than inlining AddTail into every builder
 // (which would inflate the builder's stack frame and cascade all stack offsets).
-void PushUiWidgetBuildStackNode(void* node) {
+void PushUiWidgetBuildStackNode(TView* node) {
   g_UiWidgetBuildStack006a13e0.AddTail(node);
 }
 void PopUiWidgetBuildStackNode() {

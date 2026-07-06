@@ -1251,14 +1251,6 @@ undefined4 ProbeNationReachabilityAndMarkAwolBitmask(void)
   return 0;
 }
 
-// ghidra_name TNetMgr::WrapperFor_FreeHeapBufferIfNotNull_At005e4a30
-// ghidra_proto undefined WrapperFor_FreeHeapBufferIfNotNull_At005e4a30(byte param_1)
-// FUNCTION: IMPERIALISM 0x005e4a30
-undefined4 WrapperFor_FreeHeapBufferIfNotNull_At005e4a30(void)
-{
-  return 0;
-}
-
 // ghidra_name TNetMgr::WrapperFor_FreeHeapBufferIfNotNull_At005e4a60
 // ghidra_proto undefined WrapperFor_FreeHeapBufferIfNotNull_At005e4a60(byte param_1)
 // FUNCTION: IMPERIALISM 0x005e4a60

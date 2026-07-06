@@ -97,3 +97,14 @@ void TApplication::DispatchQueuedUiCommandAndRelease(void* payload) {}
 
 // FUNCTION: IMPERIALISM 0x00486ba0
 void TApplication::vmethod_0017(int param) {}
+
+// TApplication::cohandlers' compiler-emitted CList<void*,void*>::Serialize body.
+// The real source is the embedded cohandlers template list, not a TApplication vtable slot.
+// TEMPLATE: IMPERIALISM 0x00486df0
+// ?Serialize@?$CList@PAXPAX@@UAEXAAVCArchive@@@Z
+
+// TEMPLATE: IMPERIALISM 0x00486f60
+// ??_G?$CList@PAXPAX@@UAEPAXI@Z
+
+// TEMPLATE: IMPERIALISM 0x00486f90
+// ??1?$CList@PAXPAX@@UAE@XZ

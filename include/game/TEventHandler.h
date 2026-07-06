@@ -10,12 +10,6 @@ class TView;
 class TControl;
 class TEvent;
 
-struct TEventHandlerRecordNode {
-  TEventHandlerRecordNode* next;
-  TEventHandlerRecordNode* previous;
-  void* payload;
-};
-
 //
 // The real shared base of TView and TApplication (TApplication). Both
 // inherit this 37-slot interface (slots 0x00-0x24) and the fields through +0x1c; they
@@ -27,32 +21,18 @@ struct TEventHandlerRecordNode {
 // VTABLE: IMPERIALISM 0x006497a0
 class TEventHandler : public TObject {
 public:
-  union {
-    int field04;
-    TEventHandlerRecordNode* recordHead;
-  };
+  int field04;
   union {
     int field08;
-    TEventHandlerRecordNode* recordTail;
     TEventHandler* resourceOwnerBackLink;
   };
   union {
     int field0c;
     TEventHandler* linkedChildHandler;
   };
-  union {
-    int field10;
-    TEventHandlerRecordNode* freeRecordHead;
-  };
-  union {
-    int field14;
-    CPlex* recordBlockHead;
-  };
-  union {
-    int resourceOwner;
-    int recordBlockCount;
-    TEventHandler* linkedResourceOwner;
-  };
+  int field10;
+  int field14;
+  TEventHandler* linkedResourceOwner;
   int controlTag; // 0x1c
 
   TEventHandler();
@@ -100,7 +80,7 @@ public:
   virtual void HandleCityProductionNoOp();                 // 0x1b 0x48a650
   virtual void DispatchUiCommand19ToParent();              // 0x1c 0x48a6d0
   virtual void DispatchCityProductionAction1A();           // 0x1d 0x48a670
-  virtual bool ContinueModal();                             // 0x1e 0x48a6f0
+  virtual bool ContinueModal();                            // 0x1e 0x48a6f0
   virtual char ActivateCityProductionViewIfAllowed();      // 0x1f 0x48a570
   virtual char vmethod_0080();                             // 0x20 0x48a5e0
   virtual void vmethod_0081(int param);                    // 0x21 0x48a710

@@ -45,7 +45,9 @@ address|target_cpp|ownership|note
 415ce0|src/game/TObject.cpp|manual|marker_sync
 415d50|src/game/TEventHandler.cpp|manual|marker_sync
 415d70|src/game/TEventHandler.cpp|manual|marker_sync
+415e70|src/game/global_data_tables.cpp|manual|marker_sync
 415f00|src/game/CObject.cpp|manual|marker_sync
+415f90|src/game/global_data_tables.cpp|manual|marker_sync
 415fe0|src/game/turn_event_dialog_factory.cpp|manual|marker_sync
 41b1c0|src/game/mfc_heap_library.cpp|library|marker_sync
 41b210|src/game/ui_resource_pool.cpp|manual|marker_sync
@@ -170,6 +172,8 @@ address|target_cpp|ownership|note
 479a80|src/game/ui_resource_pool.cpp|manual|marker_sync
 479b00|src/game/ui_resource_pool.cpp|manual|marker_sync
 479be0|src/game/TView.cpp|manual|marker_sync
+479d50|src/game/TView.cpp|manual|marker_sync
+479d80|src/game/TView.cpp|manual|marker_sync
 479ed0|src/game/CDib.cpp|manual|marker_sync
 479f40|src/game/CDib.cpp|manual|marker_sync
 479fb0|src/game/CDib.cpp|manual|marker_sync
@@ -276,7 +280,7 @@ address|target_cpp|ownership|note
 486ba0|src/game/TApplication.cpp|manual|marker_sync
 486df0|src/game/TApplication.cpp|manual|marker_sync
 486f60|src/game/TApplication.cpp|manual|marker_sync
-486f90|src/game/TApplication.cpp|manual|name_paired_no_marker
+486f90|src/game/TApplication.cpp|manual|marker_sync
 487180|src/game/TBehavior.cpp|manual|marker_sync
 4871c0|src/game/TBehavior.cpp|manual|marker_sync
 4871e0|src/game/TBehavior.cpp|manual|marker_sync
@@ -486,7 +490,8 @@ address|target_cpp|ownership|note
 48ab90|src/game/TView.cpp|manual|marker_sync
 48abc0|src/game/TView.cpp|manual|marker_sync
 48abe0|src/game/TView.cpp|manual|marker_sync
-48ada0|src/game/TView.cpp|manual|name_paired_no_marker
+48ada0|src/game/TView.cpp|manual|marker_sync
+48add0|src/game/TView.cpp|manual|marker_sync
 48ae60|src/game/TView.cpp|manual|marker_sync
 48af80|src/game/TView.cpp|manual|marker_sync
 48afd0|src/game/TView.cpp|manual|marker_sync
@@ -674,9 +679,9 @@ address|target_cpp|ownership|note
 492470|src/game/CWMgrIterator.cpp|manual|marker_sync
 4924a0|src/game/CWMgrIterator.cpp|manual|marker_sync
 492670|src/game/TCluster.cpp|manual|marker_sync
-4927e0|src/game/TCluster.cpp|manual|marker_sync
+4927e0|src/game/TTurnEventDialogFactoryRegistry.cpp|manual|marker_sync
 492950|src/game/TCluster.cpp|manual|marker_sync
-492980|src/game/TCluster.cpp|manual|marker_sync
+492980|src/game/TTurnEventDialogFactoryRegistry.cpp|manual|marker_sync
 4929b0|src/game/TTurnEventDialogFactoryRegistry.cpp|manual|marker_sync
 492c70|src/game/TEvent.cpp|manual|marker_sync
 492cc0|src/game/TWindow.cpp|manual|marker_sync
@@ -4315,10 +4320,11 @@ address|target_cpp|ownership|note
 5e42c0|src/game/TNetMgr.cpp|manual|marker_sync
 5e4540|src/game/global_data_tables.cpp|manual|marker_sync
 5e4580|src/game/global_data_tables.cpp|manual|marker_sync
-5e4610|src/game/TNetMgr.cpp|manual|marker_sync
+5e4610|src/game/global_data_tables.cpp|manual|marker_sync
 5e4780|src/game/global_data_tables.cpp|manual|marker_sync
 5e47b0|src/game/global_data_tables.cpp|manual|marker_sync
 5e4830|src/game/TNetMgr.cpp|manual|marker_sync
+5e4a30|src/game/global_data_tables.cpp|manual|marker_sync
 5e4e70|src/game/TSoundPlayer.cpp|manual|marker_sync
 5e4f60|src/game/TSoundPlayer.cpp|manual|marker_sync
 5e4f80|src/game/TSoundPlayer.cpp|manual|marker_sync

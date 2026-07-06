@@ -139,55 +139,22 @@ void TView::BeginMouseCaptureAndStartRepeatTimer(CPoint* point, int arg2, int ar
   (void)arg4;
 }
 
-// Serialize the field04/field08 intrusive list hanging off TEventHandler (+0x04 head,
-// +0x08 tail, +0x0c count, +0x10 free-list, +0x14/+0x18 block pool).
-// FUNCTION: IMPERIALISM 0x00479be0
-void TView::SerializeRecordList_0x0C_WithBlockPool_A(CArchive* archive) {
-  if (archive->IsLoading()) {
-    for (int count = archive->ReadCount(); count != 0; count = count - 1) {
-      CArchive* value = 0;
-      archive->Read(&value, sizeof(value));
-      TEventHandlerRecordNode* tail = recordTail;
-      if (freeRecordHead == 0) {
-        CPlex* plex =
-            CPlex::Create(recordBlockHead, recordBlockCount, sizeof(TEventHandlerRecordNode));
-        int blockCount = recordBlockCount;
-        TEventHandlerRecordNode* node = reinterpret_cast<TEventHandlerRecordNode*>(
-            static_cast<char*>(plex->data()) + (blockCount - 1) * sizeof(TEventHandlerRecordNode));
-        if (-1 < blockCount - 1) {
-          do {
-            node->next = freeRecordHead;
-            freeRecordHead = node;
-            node = node - 1;
-            blockCount = blockCount - 1;
-          } while (blockCount != 0);
-        }
-      }
-      TEventHandlerRecordNode* node = freeRecordHead;
-      freeRecordHead = node->next;
-      node->previous = tail;
-      node->next = 0;
-      field0c = field0c + 1;
-      node->payload = 0;
-      node->payload = value;
-      if (recordTail == 0) {
-        recordHead = node;
-      } else {
-        recordTail->next = node;
-      }
-      recordTail = node;
-    }
-  } else {
-    archive->WriteCount(field0c);
-    TEventHandlerRecordNode* node = recordHead;
-    if (node != 0) {
-      do {
-        archive->Write(&node->payload, sizeof(CArchive*));
-        node = node->next;
-      } while (node != 0);
-    }
-  }
-}
+// TViewChildList's compiler-emitted CList<TView*,TView*>::Serialize body. The real source is
+// the childList44 template type in TView, not a TView method or TEventHandler record pool.
+// TEMPLATE: IMPERIALISM 0x00479be0
+// ?Serialize@?$CList@PAVTView@@PAV1@@@UAEXAAVCArchive@@@Z
+
+// TEMPLATE: IMPERIALISM 0x00479d50
+// ??_G?$CList@PAVTView@@PAV1@@@UAEPAXI@Z
+
+// TEMPLATE: IMPERIALISM 0x00479d80
+// ??1?$CList@PAVTView@@PAV1@@@UAE@XZ
+
+// TEMPLATE: IMPERIALISM 0x0048ada0
+// ??_G?$CList@PAVTView@@PAV1@@@UAEPAXI@Z
+
+// TEMPLATE: IMPERIALISM 0x0048add0
+// ??1?$CList@PAVTView@@PAV1@@@UAE@XZ
 
 // IMPLEMENT_DYNCREATE also emits `TView::CreateObject` (`return new TView;`).
 // SYNTHETIC: IMPERIALISM 0x0048a840
@@ -267,7 +234,7 @@ void TView::AttachChildControl(class TView* child, int flag) {
   child->linkedChildHandler = this;
 
   if (childList44 == nullptr) {
-    childList44 = new CPtrList();
+    childList44 = new TViewChildList();
   }
 
   if (flag != 0) {
@@ -279,10 +246,10 @@ void TView::AttachChildControl(class TView* child, int flag) {
   child->RecomputeAbsolutePositionRecursive();
 }
 
-// Inlines CPtrList::RemoveAt (frees the list's block chain once empty).
+// Inlines CList<TView*,TView*>::RemoveAt (frees the list's block chain once empty).
 // FUNCTION: IMPERIALISM 0x0048ae60
 void TView::DetachChildFromOwnerList(class TView* child) {
-  CPtrList* list = childList44;
+  TViewChildList* list = childList44;
   if (list == 0) {
     child->ownerContext = 0;
     return;
@@ -605,7 +572,7 @@ void TView::PaintVisibleChildrenIntersectingClipRect(RECT* clipRect, CDC* paintD
     ReleaseMapQuickDrawDc(paintDc);
   }
 
-  CPtrList* list = childList44;
+  TViewChildList* list = childList44;
   if (list != 0) {
     POSITION pos = list->GetHeadPosition();
     while (pos != NULL) {

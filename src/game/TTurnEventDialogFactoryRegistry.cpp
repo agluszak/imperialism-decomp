@@ -46,7 +46,14 @@ TTurnEventDialogFactoryRegistry::TTurnEventDialogFactoryRegistry() : TObject(), 
 // TTurnEventDialogFactoryRegistry::~TTurnEventDialogFactoryRegistry
 
 // The `factories` CList<TurnEventDialogFactoryProc,TurnEventDialogFactoryProc> member's own
-// compiler-emitted destructor, called from the complete-object destructor above.
+// compiler-emitted serializer/destructor, called through the member's CList vtable and from
+// the complete-object destructor above.
+// TEMPLATE: IMPERIALISM 0x004927e0
+// ?Serialize@?$CList@P6APAVTView@@PAVCWnd@@H@ZP6APAV1@0H@Z@@UAEXAAVCArchive@@@Z
+
+// TEMPLATE: IMPERIALISM 0x00492980
+// ??_G?$CList@P6APAVTView@@PAVCWnd@@H@ZP6APAV1@0H@Z@@UAEPAXI@Z
+
 // TEMPLATE: IMPERIALISM 0x004929b0
 // ??1?$CList@P6APAVTView@@PAVCWnd@@H@ZP6APAV1@0H@Z@@UAE@XZ
 
