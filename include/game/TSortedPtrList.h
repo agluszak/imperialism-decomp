@@ -28,7 +28,7 @@ public:
   virtual void ResetPtrListRecordsSlot1C();        // 7  (0x1c)
   virtual void slot20();                           // 8  (0x20)
   virtual void ReleaseSlot24();                    // 9  (0x24)
-  virtual void ShrinkCapacitySlot28();             // 10 (0x28)
+  virtual void SelfDeleteSlot28();                 // 10 (0x28) if (this) delete this;
   virtual void* GetEntrySlot2C(int oneBasedIndex); // 11 (0x2c)
   virtual void RemoveFirstPairSlot30(int mode);    // 12 (0x30)
   virtual void* PeekFirstPairSlot34();             // 13 (0x34)

@@ -4,6 +4,7 @@
 #include "game/mfc.h"
 
 class TView;
+class TPtrList;
 struct TQuickDrawSurfaceContext;
 
 // Display-surface / GWorld manager (singleton g_pDisplayMgr @ 0x006a2158).
@@ -55,7 +56,12 @@ public:
   int field18;              // +0x18
   short clipSnapshotEvent;  // +0x1c
   unsigned short field1e;   // +0x1e
-  TView* ownerView;         // +0x20
+  // Turn-order-navigation-dialog scratch list, constructed in
+  // InitializeTurnOrderNavigationDialogByViewportSize as a real TPtrList -- not a TView
+  // (bd d9p: the port previously typed this TView* and reinterpret_cast'd a bare
+  // TSortedPtrList onto it, which made TDisplayMgr::Free's call resolve to TView's
+  // 0x28-slot vtable entry instead of the list's; fixed to call the real list method).
+  TPtrList* turnOrderList; // +0x20
 
   TDisplayMgr();
 };

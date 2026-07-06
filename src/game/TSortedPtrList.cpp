@@ -18,11 +18,15 @@ void TSortedPtrList::slot20() {}
 // FUNCTION: IMPERIALISM 0x00488110
 void TSortedPtrList::ReleaseSlot24() {
   this->ResetPtrListRecordsSlot1C();
-  this->ShrinkCapacitySlot28();
+  this->SelfDeleteSlot28();
 }
 
 // FUNCTION: IMPERIALISM 0x00488140
-void TSortedPtrList::ShrinkCapacitySlot28() {}
+void TSortedPtrList::SelfDeleteSlot28() {
+  if (this != 0) {
+    delete this;
+  }
+}
 
 // FUNCTION: IMPERIALISM 0x00488160
 void* TSortedPtrList::GetEntrySlot2C(int oneBasedIndex) {

@@ -6,8 +6,8 @@
 #include "game/CTemporaryRegion.h"
 #include "game/startup_helpers.h"
 #include "game/TAssetMgr.h"
+#include "game/TPtrList.h"
 #include "game/TQuickDrawSurfaceContext.h"
-#include "game/TSortedPtrList.h"
 #include "game/TView.h"
 #include "game/CWMgrIterator.h"
 #include "game/TViewMgr.h"
@@ -53,7 +53,7 @@ TDisplayMgr::TDisplayMgr()
     : TObject(), activeDialog(0), viewportMetric(8), dialogActiveFlag(0), field0c(0),
       eventCode0e(0), tileIcon10(0), tileIcon11(0), tileIcon12(0), tileIcon13(0), tileIcon14(0),
       tileIcon15(0), tileIcon16(0), tileIcon17(0), field18(0), clipSnapshotEvent(0), field1e(0),
-      ownerView(0) {}
+      turnOrderList(0) {}
 
 // SYNTHETIC: IMPERIALISM 0x004fe7f0
 // TDisplayMgr::`scalar deleting destructor'
@@ -61,11 +61,11 @@ TDisplayMgr::~TDisplayMgr() {}
 
 // FUNCTION: IMPERIALISM 0x004fe840
 undefined TDisplayMgr::InitializeTurnOrderNavigationDialogByViewportSize() {
-  TSortedPtrList* list = new TSortedPtrList();
+  TPtrList* list = new TPtrList();
   if (list == 0) {
-    ownerView = 0;
+    turnOrderList = 0;
   } else {
-    ownerView = reinterpret_cast<TView*>(list);
+    turnOrderList = list;
     list->relationType = 4;
   }
 
@@ -105,9 +105,7 @@ undefined TDisplayMgr::InitializeTurnOrderNavigationDialogByViewportSize() {
 void TDisplayMgr::Free() {
   delete g_pPrimaryRenderSurfaceContext;
   g_pPrimaryRenderSurfaceContext = 0;
-  if (ownerView != 0) {
-    ownerView->CallVoidSlotA0();
-  }
+  turnOrderList->SelfDeleteSlot28();
   delete this;
 }
 
