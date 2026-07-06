@@ -17,4 +17,7 @@ public:
   DECLARE_DYNCREATE(TIndustryAmtBar)
   void NoOpUiLifecycleHook(int arg) override;
   void RenderPrimarySurfaceOverlayPanelWithClipCache() override;
+  // TIndustryAmtBar-introduced virtual at slot 0x6b (byte 0x1ac): store the hit value and
+  // repaint the overlay's invalidated rect. TRailAmtBar overrides it.
+  virtual void RenderQuickDrawOverlayWithHitRegion(short selectedValue); // 0x00589540
 };

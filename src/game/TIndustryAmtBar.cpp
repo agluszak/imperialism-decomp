@@ -71,8 +71,7 @@ void TIndustryAmtBar::NoOpUiLifecycleHook(int arg) {
 
   auxValueA = productionCap;
   auxValueB = 0x3a;
-  rangeOrMaxValue =
-      (short)((selectedMetricRecord->quantityField04 * rangeRaw) / productionCap);
+  rangeOrMaxValue = (short)((selectedMetricRecord->quantityField04 * rangeRaw) / productionCap);
 
   reinterpret_cast<TView*>(this)->TView::NoOpUiLifecycleHook(arg);
 }
@@ -118,26 +117,21 @@ void TIndustryAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache() {
 }
 
 // FUNCTION: IMPERIALISM 0x00589540
-void __fastcall RenderQuickDrawOverlayWithHitRegion_00589540(TAmtBar* control, int unusedEdx,
-                                                             short selectedValue) {
-  (void)unusedEdx;
+void TIndustryAmtBar::RenderQuickDrawOverlayWithHitRegion(short selectedValue) {
   CTemporaryRegion surface;
-  *reinterpret_cast<short*>(reinterpret_cast<char*>(control) + 0x62) = selectedValue;
+  stepOrCurrentValue = selectedValue;
   GetClip(surface.tempRgn);
 
-  if (control != 0 && control->IsActionable() != 0) {
-    control->Refresh();
-    if (control->IsActionable() != 0) {
+  if (IsActionable() != 0) {
+    Refresh();
+    if (IsActionable() != 0) {
       int cachedX = g_nOverlayClipCacheParamX;
       int cachedY = g_nOverlayClipCacheParamY;
-      int invalidRect[4] = {cachedX, cachedY, 0, 0};
-      control->TranslatePointToParentChain4E();
-      invalidRect[2] =
-          cachedX + (int)*reinterpret_cast<short*>(reinterpret_cast<char*>(control) + 0x34);
-      invalidRect[3] =
-          cachedY + (int)*reinterpret_cast<short*>(reinterpret_cast<char*>(control) + 0x38);
-      reinterpret_cast<TView*>(control)->InvalidateCityDialogRectRegion(
-          reinterpret_cast<RECT*>(invalidRect), 1);
+      RECT invalidRect = {cachedX, cachedY, 0, 0};
+      TranslatePointToParentChain4E();
+      invalidRect.right = cachedX + (int)(short)field34;
+      invalidRect.bottom = cachedY + (int)(short)field38;
+      InvalidateCityDialogRectRegion(&invalidRect, 1);
     }
   }
 }

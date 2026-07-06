@@ -134,28 +134,24 @@ void TRailAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache() {
 }
 
 // FUNCTION: IMPERIALISM 0x0058a3b0
-void __fastcall RenderQuickDrawOverlayWithHitRegion_0058a3b0(TAmtBar* control, int unusedEdx,
-                                                             short selectedValue) {
-  (void)unusedEdx;
+void TRailAmtBar::RenderQuickDrawOverlayWithHitRegion(short selectedValue) {
   CTemporaryRegion surface;
-  *reinterpret_cast<short*>(reinterpret_cast<char*>(control) + 0x62) = selectedValue;
+  stepOrCurrentValue = selectedValue;
   GetClip(surface.tempRgn);
 
-  if (control != 0 && control->IsActionable() != 0) {
-    control->Refresh();
-    if (control->IsActionable() != 0) {
+  if (IsActionable() != 0) {
+    Refresh();
+    if (IsActionable() != 0) {
       RECT boundsRect = {0, 0, 0, 0};
-      control->QueryBounds(&boundsRect);
-      control->TranslatePointToParentChain4E();
+      QueryBounds(&boundsRect);
+      TranslatePointToParentChain4E();
 
       RECT invalidRect;
       invalidRect.left = boundsRect.left;
       invalidRect.top = boundsRect.top;
-      invalidRect.right =
-          boundsRect.left + (int)*reinterpret_cast<short*>(reinterpret_cast<char*>(control) + 0x34);
-      invalidRect.bottom =
-          boundsRect.top + (int)*reinterpret_cast<short*>(reinterpret_cast<char*>(control) + 0x38);
-      reinterpret_cast<TView*>(control)->InvalidateCityDialogRectRegion(&invalidRect, 1);
+      invalidRect.right = boundsRect.left + (int)(short)field34;
+      invalidRect.bottom = boundsRect.top + (int)(short)field38;
+      InvalidateCityDialogRectRegion(&invalidRect, 1);
     }
   }
 }

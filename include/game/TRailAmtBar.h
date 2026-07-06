@@ -11,4 +11,5 @@ public:
 
   void NoOpUiLifecycleHook(int arg) override;
   void RenderPrimarySurfaceOverlayPanelWithClipCache() override;
+  void RenderQuickDrawOverlayWithHitRegion(short selectedValue) override; // slot 0x6b 0x0058a3b0
 };
