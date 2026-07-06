@@ -39,9 +39,21 @@ struct TTerrainStateRecordView {
   // equality test isn't otherwise identified.
   signed char regionSubtypeTag05; // 0x05
   signed char adjacencyBits06;    // 0x06
-  unsigned char pad07[0x0a - 0x07];
-  unsigned char adjacencyMaskA0a; // 0x0a -- per-direction bit mask (land coastline/edges)
-  unsigned char adjacencyMaskB0b; // 0x0b -- per-direction bit mask (region/water borders)
+  // Per-direction (kHexDirectionBitMask) owner-nation border bitmask, accumulated by
+  // TMapMgr::UpdateTileNeighborBorderInfluenceCounters (0x50fe10): bit N set means hex
+  // neighbor N (or, for a water tile, the land tile across the water gap in that direction)
+  // has a different ownerNationTag04. Bits 0x40/0x80 are set as compound "opposite/adjacent
+  // pair differs" flags by the same function's tail checks. Not padding.
+  unsigned char ownerBorderMask07; // 0x07
+  // Per-direction cityRecordIndex border bitmask, same accumulation site as
+  // ownerBorderMask07 but comparing cityRecordIndex instead of ownerNationTag04 (only
+  // touched when UpdateTileNeighborBorderInfluenceCounters's mode param != 2). Not padding.
+  unsigned char cityBorderMask08; // 0x08
+  // Per-direction "this land tile borders open water" bitmask, same accumulation site;
+  // only ever written for a non-water tile whose neighbor is water. Not padding.
+  unsigned char waterAdjacencyMask09; // 0x09
+  unsigned char adjacencyMaskA0a;     // 0x0a -- per-direction bit mask (land coastline/edges)
+  unsigned char adjacencyMaskB0b;     // 0x0b -- per-direction bit mask (region/water borders)
   // Packed civilian/military development-class nibbles (offset 0xc): written by
   // SetCivilianDevelopmentClassNibble (0x5136a0), read by
   // GetTileCivilianWorkOrderCostClassNibble (high or low nibble by fUseHighNibble) and by
@@ -165,8 +177,18 @@ public:
   virtual unsigned char*
   UpdateMapTileAdjacencyMasksAndVariantForTile(uint param_1);                  // slot 0x0d 0x510210
   virtual undefined InitializeTileNeighborConnectionMaskIfNeeded(int param_1); // slot 0x0e 0x5107e0
-  virtual undefined UpdateTileNeighborBorderInfluenceCounters(short param_1,
-                                                              short param_2); // slot 0x0f 0x50fe10
+  // Recomputes tileIndex's ownerBorderMask07/cityBorderMask08/waterAdjacencyMask09 from its 6
+  // hex neighbors. For each direction: if the neighbor is off-map, always counts as a border
+  // (bit set unconditionally); if tileIndex is water, only counts a differently-owned water
+  // neighbor as a border when mode==0; if tileIndex is land, a water neighbor sets
+  // waterAdjacencyMask09, a differently-owned land neighbor sets ownerBorderMask07, and (when
+  // mode != 2) a different-cityRecordIndex neighbor sets cityBorderMask08. For a water tile,
+  // a second pass checks each adjacent pair of hex directions (d, (d+1)%6) across the water
+  // gap for a land/land owner or city mismatch. Finishes by OR-ing in 0x40/0x80 compound
+  // flags on cityBorderMask08 and ownerBorderMask07 based on specific neighbor-pair
+  // mismatches.
+  virtual void UpdateTileNeighborBorderInfluenceCounters(short tileIndex,
+                                                         short mode); // slot 0x0f 0x50fe10
   // Map-gen resource-type assignment for a single tile: for water (terrainType00==5), marks
   // resourceTypeByEdge[0]=0x13 if any hex neighbor is land; for the other 7 terrain classes,
   // rolls the map-gen LCG against fixed percentage thresholds to assign resourceTypeByEdge[0]

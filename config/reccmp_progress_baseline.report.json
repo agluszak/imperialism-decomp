@@ -16454,7 +16454,7 @@
     },
     {
       "address": "0x50fe10",
-      "matching": 0.008298755186721992,
+      "matching": 0.13513513513513514,
       "name": "TMapMgr::UpdateTileNeighborBorderInfluenceCounters",
       "type": 1
     },
@@ -16676,7 +16676,7 @@
     },
     {
       "address": "0x5136a0",
-      "matching": 0.8888888888888888,
+      "matching": 1.0,
       "name": "TMapMgr::OrphanLeaf_NoCall_Ins35_005136a0",
       "type": 1
     },
@@ -16874,7 +16874,7 @@
     },
     {
       "address": "0x515b10",
-      "matching": 0.3167420814479638,
+      "matching": 0.3378995433789954,
       "name": "TMapMgr::MarkSeedNeighborTilesUnavailableByCapabilityMaskProfileB",
       "type": 1
     },

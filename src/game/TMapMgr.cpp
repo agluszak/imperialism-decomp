@@ -173,8 +173,99 @@ void TMapMgr::UpdateTilePrimaryAndSecondaryNeighborLinksByPriority(short cityRec
   cityScoreTable[cityRecordIndex].secondaryNeighborTileIndex3e = neighbors[secondDirection];
 }
 
-undefined TMapMgr::UpdateTileNeighborBorderInfluenceCounters(short param_1, short param_2) {
-  return 0;
+// Hex-direction bit flags (1 << dir). Ground truth reads this via
+// `(char*)g_Build_Hex_Area_LookupTable_00696E80 + N`, but that offset lands well past that
+// global's own declared 6-short extent (0x696e80..0x696e8b) -- it's really a distinct,
+// separately-emitted 6-entry const table that happens to sit shortly after it in the
+// original .rdata layout, not guaranteed to hold in a freshly linked recompile. Modeled here
+// as its own bounds-safe table instead of pointer-walking off an unrelated global.
+static const unsigned char kHexDirectionBitMask[6] = {1, 2, 4, 8, 16, 32};
+
+// The "next" hex direction (d+1 mod 6), read raw at 0x00696e30 as its own table rather than
+// computed by TMapMgr::UpdateTileNeighborBorderInfluenceCounters (0x50fe10) -- the original
+// does a table lookup here, not a division, so this is modeled the same way.
+static const short kNextHexDirection[6] = {1, 2, 3, 4, 5, 0};
+
+// FUNCTION: IMPERIALISM 0x0050fe10
+void TMapMgr::UpdateTileNeighborBorderInfluenceCounters(short tileIndex, short mode) {
+  short neighbors[6];
+  ComputeHexNeighborTileIndices(tileIndex, neighbors, hexNeighborWrapHorizontally20);
+
+  TTerrainStateRecordView* tile = &terrainStateTable[tileIndex];
+  bool isWater = tile->terrainType00 == 5;
+
+  for (int d = 0; d < 6; ++d) {
+    short neighborTile = neighbors[d];
+    if (neighborTile == -1) {
+      tile->ownerBorderMask07 += kHexDirectionBitMask[d];
+      continue;
+    }
+    TTerrainStateRecordView* neighbor = &terrainStateTable[neighborTile];
+    if (isWater) {
+      if (mode == 0 && neighbor->terrainType00 == 5 &&
+          neighbor->ownerNationTag04 != tile->ownerNationTag04) {
+        tile->ownerBorderMask07 += kHexDirectionBitMask[d];
+      }
+    } else if (neighbor->terrainType00 == 5) {
+      tile->waterAdjacencyMask09 += kHexDirectionBitMask[d];
+    } else {
+      if (neighbor->ownerNationTag04 != tile->ownerNationTag04) {
+        tile->ownerBorderMask07 += kHexDirectionBitMask[d];
+      }
+      if (mode != 2 && neighbor->cityRecordIndex != tile->cityRecordIndex) {
+        tile->cityBorderMask08 += kHexDirectionBitMask[d];
+      }
+    }
+  }
+
+  if (isWater) {
+    for (int d = 0; d < 6; ++d) {
+      short neighborA = neighbors[d];
+      short neighborB = neighbors[kNextHexDirection[d]];
+      if (neighborA == -1 || neighborB == -1) {
+        continue;
+      }
+      TTerrainStateRecordView* tileA = &terrainStateTable[neighborA];
+      TTerrainStateRecordView* tileB = &terrainStateTable[neighborB];
+      if (tileA->terrainType00 == 5 || tileB->terrainType00 == 5) {
+        continue;
+      }
+      if (tileA->ownerNationTag04 != tileB->ownerNationTag04) {
+        tile->ownerBorderMask07 += kHexDirectionBitMask[d];
+      }
+      if (mode != 2 && tileA->cityRecordIndex != tileB->cityRecordIndex) {
+        tile->cityBorderMask08 += kHexDirectionBitMask[d];
+      }
+    }
+  }
+
+  if (mode != 2) {
+    unsigned char cityMask = tile->cityBorderMask08;
+    if ((cityMask & 2) && (cityMask & 1) && neighbors[1] != -1 && neighbors[0] != -1 &&
+        terrainStateTable[neighbors[1]].cityRecordIndex !=
+            terrainStateTable[neighbors[0]].cityRecordIndex) {
+      tile->cityBorderMask08 = cityMask + 0x40;
+    }
+    cityMask = tile->cityBorderMask08;
+    if ((cityMask & 2) && (cityMask & 4) && neighbors[1] != -1 && neighbors[2] != -1 &&
+        terrainStateTable[neighbors[1]].cityRecordIndex !=
+            terrainStateTable[neighbors[2]].cityRecordIndex) {
+      tile->cityBorderMask08 = cityMask + 0x80;
+    }
+  }
+
+  unsigned char ownerMask = tile->ownerBorderMask07;
+  if ((ownerMask & 2) && (ownerMask & 1) && neighbors[1] != -1 && neighbors[0] != -1 &&
+      terrainStateTable[neighbors[1]].ownerNationTag04 !=
+          terrainStateTable[neighbors[0]].ownerNationTag04) {
+    tile->ownerBorderMask07 = ownerMask + 0x40;
+  }
+  ownerMask = tile->ownerBorderMask07;
+  if ((ownerMask & 2) && (ownerMask & 4) && neighbors[1] != -1 && neighbors[2] != -1 &&
+      terrainStateTable[neighbors[1]].ownerNationTag04 !=
+          terrainStateTable[neighbors[2]].ownerNationTag04) {
+    tile->ownerBorderMask07 = ownerMask + 0x80;
+  }
 }
 
 undefined TMapMgr::InitializeTileNeighborConnectionMaskIfNeeded(int param_1) {
@@ -1084,14 +1175,14 @@ void TMapMgr::SetTileOwnerAndInvalidateNeighborState(short regionId, short newNa
   }
 
   terrainStateTable[regionId].ownerNationTag04 = static_cast<signed char>(newNationTag);
-  terrainStateTable[regionId].pad07[0] = 0;
+  terrainStateTable[regionId].ownerBorderMask07 = 0;
   UpdateTileNeighborBorderInfluenceCounters(regionId, 2);
 
   short neighbors[6];
   ComputeHexNeighborTileIndices(regionId, neighbors, hexNeighborWrapHorizontally20);
   for (int d = 0; d < 6; ++d) {
     if (neighbors[d] != -1) {
-      terrainStateTable[neighbors[d]].pad07[0] = 0;
+      terrainStateTable[neighbors[d]].ownerBorderMask07 = 0;
       UpdateTileNeighborBorderInfluenceCounters(neighbors[d], 2);
     }
   }
@@ -1210,14 +1301,6 @@ byte TMapMgr::CheckTileProspectingDiscoveryCandidate(short nTileIndex) {
   }
   return fHasDiscoveryCandidate;
 }
-
-// Hex-direction bit flags (1 << dir). Ground truth reads this via
-// `(char*)g_Build_Hex_Area_LookupTable_00696E80 + N`, but that offset lands well past that
-// global's own declared 6-short extent (0x696e80..0x696e8b) -- it's really a distinct,
-// separately-emitted 6-entry const table that happens to sit shortly after it in the
-// original .rdata layout, not guaranteed to hold in a freshly linked recompile. Modeled here
-// as its own bounds-safe table instead of pointer-walking off an unrelated global.
-static const unsigned char kHexDirectionBitMask[6] = {1, 2, 4, 8, 16, 32};
 
 // FUNCTION: IMPERIALISM 0x00513f60
 void TMapMgr::SetHexAdjacencyDirectionFlagsForTilePair(short sourceTile, short destTile,
