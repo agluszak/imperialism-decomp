@@ -13,6 +13,9 @@
 // (TZone.h: primaryNeighbors.Add(...)/secondaryNeighbors.Add(...)), never through a
 // `stretch<T,Tag>*` base pointer, so it is declared here as an ordinary (non-virtual,
 // unimplemented) member that each instantiation hides with its own definition.
+// Confirmed 1-slot vtable (TZoneSecondaryNeighborStretch's orig vtable at 0x0065c748 is
+// exactly 1 slot; see below) — no destructor slot in any instantiation.
+IMPERIALISM_BEGIN_INTENTIONAL_NON_VIRTUAL_DTOR
 template <typename T, typename Tag> class stretch {
 public:
   stretch() : data(0), capacity(0), count(0) {}
@@ -46,3 +49,4 @@ protected:
   int capacity; // +0x08
   int count;    // +0x0c
 };
+IMPERIALISM_END_INTENTIONAL_NON_VIRTUAL_DTOR

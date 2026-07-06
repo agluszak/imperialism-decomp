@@ -63,7 +63,10 @@ void TAutoGreatPower::Free(void) {
     int ordinal = this->missionQueue->GetCount();
     for (; ordinal > 0; --ordinal) {
       TMission* entry = static_cast<TMission*>(this->missionQueue->GetEntryByOrdinal(ordinal));
-      entry->NotifyDetachSlot0C();
+      // Vtable index 3 (byte offset 0xc): the real, inherited CObject::AssertValid()
+      // (zero-arg MFC diagnostic check) -- TMission does not override it. Confirmed
+      // against the assembly at 0x004e725d: `mov ecx,edi / call [ebx+0xc]`, no pushed args.
+      entry->AssertValid();
       this->missionQueue->RemoveAtOrdinal(ordinal);
       entry->Free();
     }

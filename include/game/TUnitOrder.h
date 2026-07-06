@@ -12,7 +12,7 @@ class TUnitOrder : public TProductionOrder {
 public:
   // === BEGIN GENERATED DECLS (TUnitOrder) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TUnitOrder)
-  virtual ~TUnitOrder(); // slot 0x01 (scalar deleting destructor)
+  virtual ~TUnitOrder() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
   // slot 0x03 AssertValid inherited unchanged (0x412bf0)
   // slot 0x04 Dump inherited unchanged (0x412c10)
@@ -27,7 +27,7 @@ public:
   virtual undefined CommitIfPending() override;     // slot 0x0d 0x4b73b0
   // slot 0x0e ResetCityOrderItemDerivedStateNoop inherited unchanged (0x4b5140)
   // slot 0x0f Produce inherited unchanged (0x4b5180)
-  virtual undefined FillOrderSheet() override; // slot 0x10 0x4b7320
+  virtual void FillOrderSheet(void* orderSheet, short quantity) override; // slot 0x10 0x4b7320
   virtual void InitializeCityRecruitmentOrderContext(
       void* pCityState, short nEntryId, short nPrimaryInputResourceId, short nPrimaryInputPerUnit,
       short nSecondaryInputResourceId, short nSecondaryInputPerUnit, short nCashCostPerUnit,

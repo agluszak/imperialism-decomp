@@ -10,7 +10,7 @@ public:
   DECLARE_DYNCREATE(TRadio)
 
   TRadio();
-  virtual ~TRadio(); // slot 0x01 (scalar deleting destructor 0x48edd0)
+  virtual ~TRadio() override; // slot 0x01 (scalar deleting destructor 0x48edd0)
 };
 
 ASSERT_SIZE(TRadio, 0x84);

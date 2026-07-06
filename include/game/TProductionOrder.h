@@ -17,7 +17,7 @@ class TProductionOrder : public TObject {
 public:
 // === BEGIN GENERATED DECLS (TProductionOrder) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TProductionOrder)
-  virtual ~TProductionOrder(); // slot 0x01 (scalar deleting destructor)
+  virtual ~TProductionOrder() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
   // slot 0x03 AssertValid inherited unchanged (0x412bf0)
   // slot 0x04 Dump inherited unchanged (0x412c10)
@@ -32,7 +32,7 @@ public:
   virtual undefined CommitIfPending(); // slot 0x0d 0x4b5160
   virtual undefined ResetCityOrderItemDerivedStateNoop(); // slot 0x0e 0x4b5140
   virtual undefined InitializeCityOrderItemWorkingBuffers(undefined4 * param_1); // slot 0x0f 0x4b5180
-  virtual undefined FillOrderSheet(); // slot 0x10 0x4b51b0
+  virtual void FillOrderSheet(void* orderSheet, short quantity); // slot 0x10 0x4b51b0
 // === END GENERATED DECLS (TProductionOrder) ===
   // Field layout recovered from the RTTI object-size match: TProductionOrder
   // and several direct children (TShipOrder, TTrainingOrder,

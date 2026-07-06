@@ -10,7 +10,7 @@ public:
   // still declared on TGreatPower; see worklog 2026-06-10).
 
   TAutoGreatPower();
-  ~TAutoGreatPower();
+  ~TAutoGreatPower() override;
   // Destructor real body 0x004e6bb0; scalar deleting destructor 0x004e6b80
   // (both paired via symbols.csv names).
 

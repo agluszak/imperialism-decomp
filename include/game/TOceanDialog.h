@@ -9,7 +9,7 @@
 class TOceanDialog : public TWorldView {
 public:
   DECLARE_DYNCREATE(TOceanDialog)
-  virtual ~TOceanDialog();
+  virtual ~TOceanDialog() override;
 
   virtual void NoOpUiLifecycleHook(int arg) override;
   virtual void ApplyRectSlot110(RECT* rectBuffer) override;

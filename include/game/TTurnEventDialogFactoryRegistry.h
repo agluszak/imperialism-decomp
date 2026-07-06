@@ -19,7 +19,7 @@ typedef TView*(__cdecl* TurnEventDialogFactoryProc)(CWnd* pHostWindow, int nEven
 class TTurnEventDialogFactoryRegistry : public TObject {
 public:
   // slot 0x00 GetRuntimeClass inherited unchanged (0x485e20)
-  virtual ~TTurnEventDialogFactoryRegistry(); // slot 0x01 0x491b10 (scalar deleting destructor)
+  virtual ~TTurnEventDialogFactoryRegistry() override; // slot 0x01 0x491b10 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
   // slot 0x03 AssertValid inherited unchanged (0x412bf0)
   // slot 0x04 Dump inherited unchanged (0x412c10)

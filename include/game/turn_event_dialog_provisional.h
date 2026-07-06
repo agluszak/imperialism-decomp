@@ -19,11 +19,15 @@
 // the concrete dialog/control classes.
 namespace turn_event_dialog {
 
-// The city order object queried by the city-order dialog population path.
+// The city order object queried by the city-order dialog population path. A view over
+// some other real class's vtable (reinterpret_cast'd in TMacViewMgr.cpp); adding a
+// destructor slot here would shift these two slots off the real object's layout.
+IMPERIALISM_BEGIN_INTENTIONAL_NON_VIRTUAL_DTOR
 struct CityOrderSource {
   virtual char QuerySellModeFlag1D8() = 0;
   virtual short QuerySellQuantity1D4() = 0;
 };
+IMPERIALISM_END_INTENTIONAL_NON_VIRTUAL_DTOR
 
 struct TurnEventDialogNode : public TView {
   virtual void ShowTurnEventDialog(int flag); // slot 0x68 byte 0x1a0

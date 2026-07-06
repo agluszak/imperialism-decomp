@@ -1,4 +1,13 @@
 #include "game/TExpansionOrder.h"
+
+static __inline void WriteShort(void* base, int offset, short value) {
+  *reinterpret_cast<short*>(reinterpret_cast<unsigned char*>(base) + offset) = value;
+}
+
+static __inline short ReadShort(void* base, int offset) {
+  return *reinterpret_cast<short*>(reinterpret_cast<unsigned char*>(base) + offset);
+}
+
 // SYNTHETIC: IMPERIALISM 0x004b8f50
 // TExpansionOrder::CreateObject
 
@@ -34,6 +43,14 @@ bool TExpansionOrder::SetQuantity(short param_1) {
 }
 
 // FUNCTION: IMPERIALISM 0x004b9360
-undefined TExpansionOrder::FillOrderSheet() {
-  return 0;
+void TExpansionOrder::FillOrderSheet(void* orderSheet, short quantity) {
+  this->InitializeCityOrderItemWorkingBuffers(reinterpret_cast<undefined4*>(orderSheet));
+  WriteShort(orderSheet, this->field4e * 2, quantity);
+  if (ReadShort(orderSheet, this->field4e * 2) < 0) {
+    WriteShort(orderSheet, this->field4e * 2, 0);
+  }
+  WriteShort(orderSheet, this->field50 * 2, quantity);
+  if (ReadShort(orderSheet, this->field50 * 2) < 0) {
+    WriteShort(orderSheet, this->field50 * 2, 0);
+  }
 }

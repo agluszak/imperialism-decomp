@@ -34,7 +34,7 @@ public:
   DECLARE_DYNCREATE(CIncludeView)
 
   CIncludeView();
-  virtual ~CIncludeView(); // 0x00482ab0 (scalar deleting destructor 0x4829c0)
+  virtual ~CIncludeView() override; // 0x00482ab0 (scalar deleting destructor 0x4829c0)
 
   void SetUiRuntimeContextAndActivateMain(TView* activeDialog); // 0x00483340
 

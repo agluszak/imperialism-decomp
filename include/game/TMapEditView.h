@@ -7,7 +7,7 @@
 class TMapEditView : public TMapDialog {
 public:
   DECLARE_DYNCREATE(TMapEditView)
-  virtual ~TMapEditView();
+  virtual ~TMapEditView() override;
 
   virtual void ForwardParam(int param) override;
   virtual void NoOpUiLifecycleHook(int arg) override;

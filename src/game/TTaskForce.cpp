@@ -422,9 +422,6 @@ void TTaskForce::SetMapOrderType9AndQueue() {
 
   AssertValid();
 
-  // MSVC500 keeps `for`-loop control variables in function scope, so this
-  // reuses `node`'s declaration slot rather than shadowing/redeclaring it
-  // with a new type -- a fresh TTaskForce* variable is used here instead.
   TTaskForce* head = g_pNavyOrderManager->orderListHead04;
   bool alreadyQueued = false;
   for (TTaskForce* queuedEntry = head; queuedEntry != nullptr;
@@ -437,7 +434,8 @@ void TTaskForce::SetMapOrderType9AndQueue() {
 
   if (!alreadyQueued) {
     int childCount = 0;
-    for (node = childOrderList; node != nullptr; node = node->next) {
+    for (TMapOrderChildLinkNode* countNode = childOrderList; countNode != nullptr;
+         countNode = countNode->next) {
       ++childCount;
     }
 
@@ -494,15 +492,13 @@ void TTaskForce::PromoteMapOrderChainAndQueue(void* pContextAnchor) {
     // follow-up notes.
   }
 
-  // MSVC500 keeps `for`-loop control variables in function scope; reuse
-  // `node`'s declaration slot from the loop above rather than redeclaring it.
-  for (node = childOrderList; node != nullptr;) {
-    if (node->active_flag != 0) {
-      node = node->next;
+  for (TMapOrderChildLinkNode* pruneNode = childOrderList; pruneNode != nullptr;) {
+    if (pruneNode->active_flag != 0) {
+      pruneNode = pruneNode->next;
       continue;
     }
 
-    TTaskForce* child = node->object_ptr;
+    TTaskForce* child = pruneNode->object_ptr;
     child->SetMapOrderActiveChildEntry(nullptr);
 
     short bucketIndex = static_cast<short>(
@@ -511,10 +507,10 @@ void TTaskForce::PromoteMapOrderChainAndQueue(void* pContextAnchor) {
         reinterpret_cast<short*>(reinterpret_cast<char*>(this) + 0x1e + bucketIndex * 2);
     --*bucketCounter;
 
-    if (node == childOrderList) {
-      childOrderList = node->next;
+    if (pruneNode == childOrderList) {
+      childOrderList = pruneNode->next;
     }
-    node = DeleteMapOrderChildLinkAndReturnNext(node);
+    pruneNode = DeleteMapOrderChildLinkAndReturnNext(pruneNode);
   }
 
   RecomputeMapOrderChildAggregateMetric();

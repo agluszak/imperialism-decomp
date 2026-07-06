@@ -10,7 +10,7 @@ class TStream;
 class THostGreatPower : public TGreatPower {
 public:
   DECLARE_DYNCREATE(THostGreatPower)
-  ~THostGreatPower();
+  ~THostGreatPower() override;
 
   void WriteTo(TStream* stream) override;
   void ReadFrom(TStream* stream) override;

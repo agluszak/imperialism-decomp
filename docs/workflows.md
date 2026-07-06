@@ -116,4 +116,4 @@ must run before committing either way.
 Renamed targets (old names remain as aliases): `stats-commit` →
 `stats-baseline-update`, `full-sync-build` → `db-resync`. `just session-loop` is
 now read-only; ignore-list rewriting requires `--refresh-ignore` or
-`just generate-ignores` (Hard Rule 14).
+`just generate-ignores` (Hard Rule 13).

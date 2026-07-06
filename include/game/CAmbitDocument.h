@@ -12,7 +12,7 @@ public:
   DECLARE_DYNCREATE(CAmbitDocument)
 
   CAmbitDocument();          // 0x479480
-  virtual ~CAmbitDocument(); // 0x479710
+  virtual ~CAmbitDocument() override; // 0x479710
 
   TAmbitFileBasedDocument* fileBasedDocument50; // +0x50 (4-byte T-tree document adapter)
 };

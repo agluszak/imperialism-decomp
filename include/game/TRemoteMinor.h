@@ -16,7 +16,7 @@ public:
   void NoOpNationSelectedRegionAndMapCellLabelHook(int arg1, int arg2) override;
 
 protected:
-  ~TRemoteMinor();
+  ~TRemoteMinor() override;
 
 private:
   unsigned char remoteMinorTail[0x2dc - 0x2cc];

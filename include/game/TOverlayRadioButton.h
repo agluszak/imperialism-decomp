@@ -12,7 +12,7 @@ public:
   DECLARE_DYNCREATE(TOverlayRadioButton)
 
   TOverlayRadioButton();
-  virtual ~TOverlayRadioButton(); // slot 0x01 (scalar deleting destructor 0x453830)
+  virtual ~TOverlayRadioButton() override; // slot 0x01 (scalar deleting destructor 0x453830)
 
   void ApplyRectSlot110(RECT* rectBuffer) override; // slot 0x44 0x4cab10
 

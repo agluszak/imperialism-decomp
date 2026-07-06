@@ -424,7 +424,8 @@ at ~5%.
 
 - **Inline the bodies into the one function** (an `#include "..._switch.inc"` fragment
   between `case` labels works well). Wrap each case in its own `{ }` so per-case locals
-  don't collide (MSVC500 leaks `for`-init vars to the enclosing block, Hard Rule 10).
+  don't collide (MSVC500 leaks `for`-init vars to the enclosing block; give each loop
+  its own uniquely-named control variable rather than relying on the leak, Hard Rule 15).
 - **Genuine helpers go file-scope `static inline`** so `/Ob1` folds them back in; trivial
   one-line wrappers are best expanded at the call site.
 - **Isolate a large/disruptive function in its own TU.** Adding the inline switch + its

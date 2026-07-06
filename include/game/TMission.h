@@ -5,7 +5,6 @@
 #include "game/mfc.h"
 #include "game/TObject.h"
 
-class CArchive;
 class TZone;
 class TMilitaryUnit;
 
@@ -42,7 +41,7 @@ public:
 
   // --- MFC CObject prefix slots 0x00-0x04 ---
   DECLARE_SERIAL(TMission)
-  virtual ~TMission(); // 0x01 dtor 0x535080 / ??_G 0x535050
+  virtual ~TMission() override; // 0x01 dtor 0x535080 / ??_G 0x535050
   // 0x02 Serialize / 0x03 AssertValid / 0x04 Dump inherited from CObject.
 
   // --- TMission's own virtuals, exact vtable slot order ---
@@ -80,12 +79,6 @@ public:
   virtual void NoOpSlot90(int a);                           // 0x24 0x534f50
   virtual void SetFlag10FromArgSlot94(unsigned char value); // 0x25 0x534f70
   virtual char ReturnFalseSlot98();                         // 0x26 0x534f90
-
-  // Slot 0x0c — detach notification while draining mission queues (0x004e7230).
-  void NotifyDetachSlot0C() {
-    AssertValid(0);
-  }
-  void AssertValid(CArchive* archive) const override;
 
   void DispatchMissionNodeSlot28() {
     (void)ReturnFalseSlot28();

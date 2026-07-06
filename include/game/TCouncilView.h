@@ -11,7 +11,7 @@ public:
   DECLARE_DYNCREATE(TCouncilView)
 
   TCouncilView();
-  virtual ~TCouncilView(); // slot 0x01 (scalar deleting destructor 0x430660)
+  virtual ~TCouncilView() override; // slot 0x01 (scalar deleting destructor 0x430660)
 
   void HandleEvent(int commandId, TEventHandler* sourceHandler,
                    TEvent* event) override; // slot 0x0f 0x4fbd60

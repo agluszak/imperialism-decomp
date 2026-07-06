@@ -10,7 +10,7 @@ class TDlgWindow : public TWindow {
 public:
   // === BEGIN GENERATED DECLS (TDlgWindow) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TDlgWindow)
-  virtual ~TDlgWindow();                                   // slot 0x01 (scalar deleting destructor)
+  virtual ~TDlgWindow() override;                                   // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
   // slot 0x03 AssertValid inherited unchanged (0x412bf0)
   // slot 0x04 Dump inherited unchanged (0x412c10)

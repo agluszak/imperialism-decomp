@@ -251,7 +251,7 @@ as returning `TControl*`, but the turn-event `'main'` node is a `TWorldView` —
 `static_cast<TWorldView*>(controlPtr)` is not a valid downcast. Clean wiring needs
 the return type widened to the true common base `TView*`, after which
 `static_cast<TWorldView*>(viewPtr)` is valid and each method can dispatch through
-real virtuals (Hard Rule 11). That return-type change ripples to every
+real virtuals (Hard Rule 10). That return-type change ripples to every
 `ResolveControlByTag` caller (each would need to re-cast its result), so it is a
 deliberate cross-file modeling change to stage carefully, not a per-method wire.
 

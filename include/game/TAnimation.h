@@ -16,7 +16,10 @@ struct TBitmapResourceLoaderState {
       : flags(0), bitmapResource(nullptr), bitmapResourceId(static_cast<short>(resourceId)) {}
 };
 
-// Lightweight bitmap loader allocated by CreateBitmapResourceLoaderHandle.
+// Lightweight bitmap loader allocated by CreateBitmapResourceLoaderHandle. Confirmed
+// exactly 3 slots (dword at +0xc, right after the 3 declared virtuals, reads as a
+// literal NULL); no destructor slot in the original.
+IMPERIALISM_BEGIN_INTENTIONAL_NON_VIRTUAL_DTOR
 // VTABLE: IMPERIALISM 0x0064c340
 class TBitmapResourceLoader : public TBitmapResourceLoaderState {
 public:
@@ -33,6 +36,7 @@ public:
   virtual void ReleaseBitmapResource();                     // slot 0x01 0x495c00
   virtual undefined TemporarilyClearAndRestoreUiInvalidationFlag(); // slot 0x02 0x4a1100
 };
+IMPERIALISM_END_INTENTIONAL_NON_VIRTUAL_DTOR
 
 ASSERT_SIZE(TBitmapResourceLoaderState, 0x1c);
 ASSERT_SIZE(TBitmapResourceLoader, 0x20);
@@ -44,7 +48,7 @@ class TAnimation : public TObject {
 public:
   // === BEGIN GENERATED DECLS (TAnimation) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TAnimation)
-  virtual ~TAnimation();                                   // slot 0x01 (scalar deleting destructor)
+  virtual ~TAnimation() override;                                   // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
   // slot 0x03 AssertValid inherited unchanged (0x412bf0)
   // slot 0x04 Dump inherited unchanged (0x412c10)

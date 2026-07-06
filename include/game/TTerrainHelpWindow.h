@@ -11,7 +11,7 @@ public:
   DECLARE_DYNCREATE(TTerrainHelpWindow)
 
   TTerrainHelpWindow();
-  virtual ~TTerrainHelpWindow(); // slot 0x01 (scalar deleting destructor 0x504d70)
+  virtual ~TTerrainHelpWindow() override; // slot 0x01 (scalar deleting destructor 0x504d70)
 
   void CallVoidSlotA0() override; // slot 0x28 0x504dc0
 };

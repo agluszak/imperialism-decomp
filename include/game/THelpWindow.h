@@ -11,7 +11,7 @@ public:
   DECLARE_DYNCREATE(THelpWindow)
 
   THelpWindow();
-  virtual ~THelpWindow(); // slot 0x01 (scalar deleting destructor 0x504c20)
+  virtual ~THelpWindow() override; // slot 0x01 (scalar deleting destructor 0x504c20)
 
   void CallVoidSlotA0() override; // slot 0x28 0x504c70
 };

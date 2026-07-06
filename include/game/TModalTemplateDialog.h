@@ -10,7 +10,7 @@
 class TModalTemplateDialog : public TControl {
 public:
   TModalTemplateDialog();
-  ~TModalTemplateDialog();
+  ~TModalTemplateDialog() override;
 
   TControl* InitializeDialogTemplateFromId(UINT templateId, void* initParam);
   int PrepareAndCreateModalFromTemplate();

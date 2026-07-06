@@ -7,7 +7,7 @@
 class TIconBar : public TNoHilitePicture {
 public:
   DECLARE_DYNCREATE(TIconBar)
-  virtual ~TIconBar();
+  virtual ~TIconBar() override;
 
   virtual void ApplyRectSlot110(RECT* rectBuffer) override;
   virtual void SetPictureResourceIdAndRefresh(short nPictureId, bool fRefreshNow) override;

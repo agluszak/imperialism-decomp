@@ -26,9 +26,9 @@ public:
       : m_pLanguageName24(languageName), field_28(0x20), m_bQuitAfterLanguageScan2c(0),
         m_bShowSetupDialog30(0), m_bClearRegistrySettings34(0), m_strMainWindowTitle38(),
         m_bForceAutoResOn3c(0), m_bForceAutoResOff40(0) {}
-  virtual ~ImperialismCommandLineInfo(); // 0x00413580
+  virtual ~ImperialismCommandLineInfo() override; // 0x00413580
 
-  virtual void ParseParam(LPCSTR pszParam, BOOL bFlag, BOOL bLast); // 0x004133d0
+  virtual void ParseParam(LPCSTR pszParam, BOOL bFlag, BOOL bLast) override; // 0x004133d0
 
   CString* m_pLanguageName24;       // 0x24 — points at the caller's language CString
   unsigned char field_28;           // 0x28 — set to 0x20 at construction; no reader found yet

@@ -1,4 +1,9 @@
 #include "game/TPowerPlantOrder.h"
+
+static __inline void WriteShort(void* base, int offset, short value) {
+  *reinterpret_cast<short*>(reinterpret_cast<unsigned char*>(base) + offset) = value;
+}
+
 // SYNTHETIC: IMPERIALISM 0x004b79f0
 // TPowerPlantOrder::CreateObject
 
@@ -39,8 +44,9 @@ undefined TPowerPlantOrder::ResetCityOrderItemDerivedStateNoop() {
 }
 
 // FUNCTION: IMPERIALISM 0x004b7c90
-undefined TPowerPlantOrder::FillOrderSheet() {
-  return 0;
+void TPowerPlantOrder::FillOrderSheet(void* orderSheet, short quantity) {
+  this->InitializeCityOrderItemWorkingBuffers(reinterpret_cast<undefined4*>(orderSheet));
+  WriteShort(orderSheet, 0x18, static_cast<short>(quantity * 6));
 }
 
 // FUNCTION: IMPERIALISM 0x004b7cc0

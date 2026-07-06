@@ -97,7 +97,7 @@ private:
   unsigned char minorTailPad1fa[0x2cc - 0x1fa];
 
 protected:
-  ~TMinor();
+  ~TMinor() override;
 };
 
 ASSERT_SIZE(TMinor, 0x2cc);

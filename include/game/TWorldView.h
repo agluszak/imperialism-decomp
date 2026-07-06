@@ -25,7 +25,7 @@ public:
 
   DECLARE_DYNCREATE(TWorldView)
   TWorldView();
-  virtual ~TWorldView();
+  virtual ~TWorldView() override;
 
   virtual void HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) override;
   virtual void ForwardParam(int param) override;

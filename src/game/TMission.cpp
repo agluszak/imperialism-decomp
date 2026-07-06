@@ -135,9 +135,6 @@ char TMission::ReturnFalseSlot98() {
   return 0;
 }
 
-void TMission::AssertValid(CArchive* archive) const {
-  (void)archive;
-}
 // SYNTHETIC: IMPERIALISM 0x00534fb0
 // TMission::GetRuntimeClass
 

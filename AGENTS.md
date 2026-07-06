@@ -122,34 +122,25 @@ target). They need a built binary + reccmp DB.
    and the symbols.csv integrity check first) → `just build`, and `just gates` before
    committing (raw-vtable + construction anti-pattern + marker-hygiene gates; run
    `just format-check <touched paths>` separately on files you edited).
-6. Keep naming from Ghidra unless there is a concrete semantic reason to rename; never
-   rename for style only. But treat Ghidra class/method/field names as **provisional** —
+6. Treat Ghidra class/method/field names as **provisional** —
    they may be auto-generated placeholders, even entirely random. reccmp pairs by the
    `// FUNCTION:` address marker, not by name, so drive matching and field naming from
    observed behavior in the disassembly, and keep tentative names hedged.
-7. Keep class-owned functions in `src/game/<ClassName>.cpp`; shared trade helpers in
-   `src/game/trade_helpers.cpp` and `include/game/trade_quickdraw.h`. Do not hand-edit
+7. Keep class-owned functions in `src/game/<ClassName>.cpp`; Do not hand-edit
    generated files under
    `src/ghidra_autogen/`, `src/autogen/stubs/`, or `include/ghidra_autogen/`.
 8. Promote repeated `this + offset` / `reinterpret_cast` access that maps to a stable
    class region into a typed class field (or typed view struct) instead of cast-helper
    indirection.
-9. Keep external thunk declarations in the generic repo form (`undefined4 ...(void)`)
-   and use typed local function-pointer casts at callsites; changing thunk
-   declaration signatures directly causes MSVC name-mangling linker breaks.
-10. MSVC500 keeps `for` loop variables in function scope; do not redeclare the same
-    loop variable name later in the same function.
-11. For vtable calls in manual code, use real `virtual` methods on recovered classes — no
+10. For vtable calls in manual code, use real `virtual` methods on recovered classes — no
     local `typedef ...Fn` + `reinterpret_cast` blocks, no raw `vftable[...]` indexing,
     and no generated `VCall_*` facade wrappers.
-12. When adding a dispatch to an unrecovered receiver, declare the method on the owning
+11. When adding a dispatch to an unrecovered receiver, declare the method on the owning
     class header at the verified slot and call `obj->Method(args)` directly.
-13. The raw-vtable gate (`just vtable-gate`) must pass; do not add new raw-vtable
-    patterns in files not already baseline-tracked.
-14. Rewriting `reccmp-project.yml` ignore lists is opt-in: only `just generate-ignores`
+13. Rewriting `reccmp-project.yml` ignore lists is opt-in: only `just generate-ignores`
     and `just session-loop --refresh-ignore` do it; run them only when you explicitly
     intend to rewrite ignore configuration (`just session-loop` alone is read-only).
-15. Mac CodeWarrior evidence (vendored at `vendor/macos_codewarrior/`) is a
+14. Mac CodeWarrior evidence (vendored at `vendor/macos_codewarrior/`) is a
     name/signature **oracle only** — it must never assign Windows addresses, calling
     conventions, vtables, or inheritance.
 

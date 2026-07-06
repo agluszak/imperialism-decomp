@@ -8,7 +8,7 @@
 class TRemoteGreatPower : public TGreatPower {
 public:
   DECLARE_DYNCREATE(TRemoteGreatPower)
-  ~TRemoteGreatPower();
+  ~TRemoteGreatPower() override;
 
   char ShouldDispatchImmediatelySlot28(void) override;
   void NoOpNationSelectedRegionAndMapCellLabelHook(int arg1, int arg2) override;

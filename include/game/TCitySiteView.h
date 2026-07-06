@@ -7,7 +7,7 @@
 class TCitySiteView : public TMapDialog {
 public:
   DECLARE_DYNCREATE(TCitySiteView)
-  virtual ~TCitySiteView();
+  virtual ~TCitySiteView() override;
 
   virtual void NoOpUiLifecycleHook(int arg) override;
   virtual void RenderStrategicTileSelectionAndNeighborHighlights() override;

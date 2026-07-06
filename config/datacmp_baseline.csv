@@ -52,7 +52,7 @@ TCancelGameOptionsCommand::classTCancelGameOptionsCommand|0x65bf60|WARN|8
 TCapacityOrder::classTCapacityOrder|0x64f440|WARN|9
 TCheater::classTCheater|0x64ebe0|WARN|9
 TCity::classTCity|0x64f338|WARN|8
-TCityBarCluster::classTCityBarCluster|0x662f08|WARN|9
+TCityBarCluster::classTCityBarCluster|0x662f08|WARN|8
 TCityInteriorMinister::classTCityInteriorMinister|0x6506c8|WARN|11
 TCityProductionView::classTCityProductionView|0x64fb60|WARN|9
 TCitySiteView::classTCitySiteView|0x6589e0|WARN|10
@@ -69,7 +69,7 @@ TClickZone::classTClickZone|0x65e658|WARN|10
 TClientGreatPower::classTClientGreatPower|0x65aff0|WARN|11
 TCloseButton::classTCloseButton|0x662e90|WARN|9
 TCloseParentButton::classTCloseParentButton|0x662ea8|WARN|9
-TClosePicture::classTClosePicture|0x662f38|WARN|8
+TClosePicture::classTClosePicture|0x662f38|WARN|9
 TCluster::classTCluster|0x6496c0|WARN|9
 TColorFill::classTColorFill|0x656618|WARN|10
 TColorKeyButton::classTColorKeyButton|0x65e628|WARN|10
@@ -381,7 +381,7 @@ TUniversityView::classTUniversityView|0x6512c0|WARN|10
 TUpDownPictureButton::classTUpDownPictureButton|0x65e5c8|WARN|8
 TUpDownView::classTUpDownView|0x662de8|WARN|10
 TView::classTView|0x6495a0|WARN|9
-TViewMgr::classTViewMgr|0x66f0b8|WARN|77
+TViewMgr::classTViewMgr|0x66f0b8|WARN|76
 TWarehouseView::classTWarehouseView|0x651248|WARN|11
 TWarningView::classTWarningView|0x663178|WARN|9
 TWindow::classTWindow|0x6495e8|WARN|8

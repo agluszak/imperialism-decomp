@@ -84,6 +84,12 @@ IMPLEMENT_DYNCREATE(CIncludeView, CView)
 // WM_LBUTTONDBLCLK 0x483b70, WM_COMMAND id 0x8011/0x8012 0x483d60/0x483d90,
 // WM_SETCURSOR 0x483ef0, WM_RBUTTONDOWN 0x483f10, WM_RBUTTONUP 0x483ff0,
 // WM_CTLCOLOR 0x483660.
+//
+// clang-cl's lint build rejects the MFC message-map macros' unqualified `&OnPaint`-style
+// address-of-member-function (a long-standing MSVC extension clang doesn't implement for
+// this context); this is MFC dispatch-table plumbing, not game logic, so it's skipped in
+// the compile-only lint build (never linked, so the missing definition is harmless there).
+#ifndef IMPERIALISM_LINT
 BEGIN_MESSAGE_MAP(CIncludeView, CView)
 ON_WM_ERASEBKGND()
 ON_WM_LBUTTONDOWN()
@@ -95,6 +101,7 @@ ON_WM_CHAR()
 ON_MESSAGE(0x4ef, OnDialogTreeHostMsg4EF)
 ON_MESSAGE(0x4c8, OnMciNotifyMode) // MCIWNDM_NOTIFYMODE
 END_MESSAGE_MAP()
+#endif
 
 // Compiler-emitted bodies of the m_overlayRectQueue CList<IncludeViewOverlayRectRecord,
 // IncludeViewOverlayRectRecord&> instantiation. The original emitted the set twice (one

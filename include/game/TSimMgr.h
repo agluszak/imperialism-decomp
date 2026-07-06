@@ -25,7 +25,7 @@ public:
 
   // --- TObject overrides (occupy the inherited base slots) ---
   DECLARE_DYNCREATE(TSimMgr)
-  ~TSimMgr();                              // slot 0x04  scalar deleting dtor 0x0057bb50
+  ~TSimMgr() override;                              // slot 0x04  scalar deleting dtor 0x0057bb50
   void WriteTo(TStream* stream) override;  // slot 0x14  0x0057c230
   void ReadFrom(TStream* stream) override; // slot 0x18  0x0057bea0  (scenario setup / rebuild)
   void Free() override;                    // slot 0x1c  0x0057bd20  (manager teardown)

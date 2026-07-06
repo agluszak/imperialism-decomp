@@ -9,7 +9,7 @@ class TNominationView : public TPicture {
 public:
 // === BEGIN GENERATED DECLS (TNominationView) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TNominationView)
-  virtual ~TNominationView(); // slot 0x01 (scalar deleting destructor)
+  virtual ~TNominationView() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
   // slot 0x03 AssertValid inherited unchanged (0x412bf0)
   // slot 0x04 Dump inherited unchanged (0x412c10)

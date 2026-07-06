@@ -12,7 +12,7 @@ class TPowerPlantOrder : public TProductionOrder {
 public:
 // === BEGIN GENERATED DECLS (TPowerPlantOrder) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TPowerPlantOrder)
-  virtual ~TPowerPlantOrder(); // slot 0x01 (scalar deleting destructor)
+  virtual ~TPowerPlantOrder() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
   // slot 0x03 AssertValid inherited unchanged (0x412bf0)
   // slot 0x04 Dump inherited unchanged (0x412c10)
@@ -27,7 +27,7 @@ public:
   virtual undefined CommitIfPending() override; // slot 0x0d 0x4b7c20
   virtual undefined ResetCityOrderItemDerivedStateNoop() override; // slot 0x0e 0x4b7c40
   // slot 0x0f Produce inherited unchanged (0x4b5180)
-  virtual undefined FillOrderSheet() override; // slot 0x10 0x4b7c90
+  virtual void FillOrderSheet(void* orderSheet, short quantity) override; // slot 0x10 0x4b7c90
   virtual undefined InitializeCityProductionState_Impl(); // slot 0x11 0x4b7ab0
 // === END GENERATED DECLS (TPowerPlantOrder) ===
   // TODO(manifest): add data members from the object slice (`just slice-discovery TPowerPlantOrder 0xCTOR`).

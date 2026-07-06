@@ -64,4 +64,17 @@ typedef unsigned long long qword;
 #define ASSERT_SIZE(type, size)                                                                    \
   static_assert(sizeof(type) == (size), #type " must be " #size " bytes")
 
+// Suppress -Wnon-virtual-dtor around a class whose *original* vtable is verified
+// (Ghidra disassembly, or COM ABI convention) to have no destructor slot at all.
+// MSVC 5.0 never warned about this; adding a real destructor here would insert a
+// vtable slot the original binary doesn't have and corrupt the modeled layout.
+#if defined(__clang__)
+#define IMPERIALISM_BEGIN_INTENTIONAL_NON_VIRTUAL_DTOR                                            \
+  _Pragma("clang diagnostic push") _Pragma("clang diagnostic ignored \"-Wnon-virtual-dtor\"")
+#define IMPERIALISM_END_INTENTIONAL_NON_VIRTUAL_DTOR _Pragma("clang diagnostic pop")
+#else
+#define IMPERIALISM_BEGIN_INTENTIONAL_NON_VIRTUAL_DTOR
+#define IMPERIALISM_END_INTENTIONAL_NON_VIRTUAL_DTOR
+#endif
+
 #endif // COMPAT_H
