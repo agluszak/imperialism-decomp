@@ -488,6 +488,10 @@ unsigned char g_abUniversityRequirementLevelById[24][4] = {
 // above; only nonzero-ness is consumed there.
 unsigned char g_abResourceTypeUsesHighNibbleFlag[24] = {0, 0, 0, 1, 1, 0, 1, 0, 0, 0, 0, 0,
                                                         0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0};
+// Per-resourceType capability-category code. Read by FindMaxResourceCapabilityValueForTile
+// (0x513720).
+unsigned char g_abResourceTypeCapabilityCategory[24] = {0, 0, 0, 1, 1, 0, 1, 0, 0, 0, 0, 0,
+                                                        0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0};
 
 short g_Build_Hex_Area_LookupTable_00696E70[6] = {0};
 short g_Build_Hex_Area_LookupTable_00696E80[6] = {0};

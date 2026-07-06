@@ -820,8 +820,25 @@ void TMapMgr::SetCivilianDevelopmentClassNibble(short tileIndex, char selectHigh
   }
 }
 
-undefined TMapMgr::OrphanLeaf_NoCall_Ins37_00513720(short param_1, char param_2, int param_3) {
-  return 0;
+// FUNCTION: IMPERIALISM 0x00513720
+short TMapMgr::FindMaxResourceCapabilityValueForTile(short tileIndex, char categoryCode,
+                                                     int nationSlot) {
+  short maxValue = 0;
+  for (int edgeIndex = 0; edgeIndex < 2; ++edgeIndex) {
+    signed char resourceType = terrainStateTable[tileIndex].resourceTypeByEdge[edgeIndex];
+    if (resourceType == -1) {
+      continue;
+    }
+    if (g_abResourceTypeCapabilityCategory[resourceType] != categoryCode) {
+      continue;
+    }
+    short value =
+        g_pCityOrderCapabilityState->capabilityValueByNationAndResource[nationSlot][resourceType];
+    if (value > maxValue) {
+      maxValue = value;
+    }
+  }
+  return maxValue;
 }
 
 undefined TMapMgr::SetHexAdjacencyDirectionFlagsForTilePair(short param_1, short param_2) {

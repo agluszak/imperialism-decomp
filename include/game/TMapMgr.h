@@ -243,8 +243,12 @@ public:
   // also sets pendingDevelopmentFlag0d = 0x7f.
   virtual void SetCivilianDevelopmentClassNibble(short tileIndex, char selectHighNibble, byte value,
                                                  char param4); // slot 0x33 0x5136a0
-  virtual undefined OrphanLeaf_NoCall_Ins37_00513720(short param_1, char param_2,
-                                                     int param_3); // slot 0x34 0x513720
+  // For each of tileIndex's 2 resourceTypeByEdge entries (skipping the -1 sentinel) whose
+  // g_abResourceTypeCapabilityCategory matches categoryCode, reads
+  // g_pCityOrderCapabilityState->capabilityValueByNationAndResource[nationSlot][resourceType]
+  // and returns the max across both edges (0 if neither qualifies).
+  virtual short FindMaxResourceCapabilityValueForTile(short tileIndex, char categoryCode,
+                                                      int nationSlot); // slot 0x34 0x513720
   // Finds the edge (0 or 1) whose resourceTypeByEdge matches resourceType, then dispatches
   // to FindResourceCapabilityRequirementLevel (slot 0x31) for that edge; 0 if no edge
   // matches.
