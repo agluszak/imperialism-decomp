@@ -27,7 +27,7 @@ IMPLEMENT_DYNCREATE(TUnit, TObject)
 TUnit::TUnit() {
   field_10 = 0;
   nextOnTile = 0;
-  field_6 = static_cast<short>(0xffff);
+  tileIndex06 = static_cast<short>(0xffff);
   field_8 = 0;
   field_1C = 0;
 }
@@ -114,17 +114,17 @@ void TUnit::Free() {
 void TUnit::ReadFrom(TStream* stream) {
   TObject::ReadFrom(stream);
   stream->ReadBytes(&orderType, 2);
-  stream->ReadBytes(&field_6, 2);
+  stream->ReadBytes(&tileIndex06, 2);
   stream->ReadBytes(&field_C, 2);
   stream->ReadBytes(&field_18, 2);
   stream->ReadBytes(&field_1A, 2);
   stream->ReadBytes(&field_1C, 1);
   stream->ReadBytes(&field_8, 4);
-  short savedField_6 = field_6;
-  if (savedField_6 != -1) {
+  short savedTileIndex = tileIndex06;
+  if (savedTileIndex != -1) {
     short savedField_C = field_C;
-    field_6 = -1;
-    this->VTableSlot10(savedField_6);
+    tileIndex06 = -1;
+    this->VTableSlot10(savedTileIndex);
     field_C = savedField_C;
   }
   if (g_nSaveFormatVersion > 0x2d) {
@@ -136,7 +136,7 @@ void TUnit::ReadFrom(TStream* stream) {
 void TUnit::WriteTo(TStream* stream) {
   TObject::WriteTo(stream);
   stream->WriteBytesSlot78(&orderType, 2);
-  stream->WriteBytesSlot78(&field_6, 2);
+  stream->WriteBytesSlot78(&tileIndex06, 2);
   stream->WriteBytesSlot78(&field_C, 2);
   stream->WriteBytesSlot78(&field_18, 2);
   stream->WriteBytesSlot78(&field_1A, 2);

@@ -13,7 +13,7 @@ class TMinister;
 class TForeignMinister;
 class TDefenseMinister;
 class TCityInteriorMinister;
-class TQueueObject;
+class TSortedByRelationshipList;
 class TCity;
 class TZone;
 
@@ -211,12 +211,12 @@ public:
   virtual bool SetDiplomacyGrantEntryForTargetAndUpdateTreasury(int arg1, int arg2); // index 117
   virtual void
   RevokeDiplomacyGrantForTargetAndAdjustInfluenceSlot1d8(int sourceNation); // index 118
-  virtual bool
+  virtual char
   CanAffordDiplomacyGrantEntryForTarget(short targetNationId,
                                         unsigned short proposedGrantEntry); // index 119
   virtual void ApplyTurnDiplomacyStateSlot1e0();                 // index 120 — body 0x004de7e0
   virtual void DecrementNeedLevelByNationStep(short nationSlot); // index 121
-  virtual bool CanAffordAdditionalDiplomacyCostAfterCommitments(short additionalCost); // index 122
+  virtual char CanAffordAdditionalDiplomacyCostAfterCommitments(short additionalCost); // index 122
   virtual void ApplyAcceptedDiplomacyProposalCode(short proposalIndex);                // index 123
   virtual void
   QueueInterNationEventForProposalCode12D_130(unsigned short proposalQueueIndex); // index 124
@@ -320,6 +320,14 @@ public:
 
   void LoadNationDisplayNameSharedRefFromField8(CString* destString);
 
+  // Clamped diplomacy budget (treasury + base/100, floored at 0). Header-inline:
+  // the original inlines this exact clamp into both CanAfford* bodies (0x004de700 /
+  // 0x004de790), flowing the value through the eax return slot.
+  int ComputeAvailableDiplomacyBudget() const {
+    int availableBudget = treasuryValue10 + diplomacyBudgetBase / 100;
+    return availableBudget & (static_cast<int>(availableBudget <= 0) - 1);
+  }
+
   // 0x04..0x90 (identity strings, nation-slot metrics, militaryUnitList44,
   // unitNameOrdinalByType, ownedRegionList) now live on the TCountry base.
   TForeignMinister* foreignMinister;
@@ -347,9 +355,11 @@ public:
   int aidAllocationMatrix[0x170];
   int budgetPoolBase;
   int budgetPoolDelta;
-  TQueueObject* turnEventQueue;
-  TQueueObject* proposalQueue;
-  TQueueObject* diplomacyTrackedSlots[0x11];
+  // Turn/proposal/diplomacy queues are TSortedByRelationshipList instances
+  // (constructed via TSortedByRelationshipList::CreateObject in 0x004d8cc0).
+  TSortedByRelationshipList* turnEventQueue;
+  TSortedByRelationshipList* proposalQueue;
+  TSortedByRelationshipList* diplomacyTrackedSlots[0x11];
   // 0x894 — city production state; same object used as TCity in diplomacy paths.
   TCity* city;
   TSortedList* townMarkerList;
@@ -377,7 +387,7 @@ public:
   int field900;
   unsigned char field904;
   unsigned char pad_905[3];
-  TQueueObject* turnSummaryQueue;
+  TSortedByRelationshipList* turnSummaryQueue;
   TSortedList* missionNodeQueue;
   int field910;
   int aidAllocationTotal;
@@ -415,7 +425,6 @@ public:
   float ComputeAdvisoryMapNodeScoreFactorByCaseMetric(int metricCase, int cityIndex,
                                                       int relationTargetNation,
                                                       int selectedNationSlot);
-  char ContainsPointerArrayEntryMatchingByteKey(short nationSlotKey);
   void InitializeNationStateRuntimeSubsystems(int arg1, int arg2);
   void HandleTurnInstruction_Civi_DeserializeAndCreateWorkOrder(void* pInstructionRaw);
   void QueueInterNationEventType0FForNationPairContext(short targetNationSlot,
@@ -425,4 +434,3 @@ public:
     return city;
   }
 };
-

@@ -301,7 +301,7 @@ undefined TArmyMgr::IterateLinkedListCursorAndClearPerTileByte0F() {
     CIterator unitIter(unitList);
     for (TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(unitIter.Reset()); unitIter.More();
          unit = static_cast<TMilitaryUnit*>(unitIter.Advance())) {
-      if (unit->field_34 > 0 && unit->field_6 != -1) {
+      if (unit->field_34 > 0 && unit->tileIndex06 != -1) {
         unit->DispatchSlot2C();
       } else {
         unit->DetachUnitOrderFromOwnerAndReset();
@@ -399,7 +399,7 @@ bool TArmyMgr::TryCreateTacticalBattleViewForTileArmies(TArmyStack* stack, short
   ourStack->field4 = 0;
   ourStack->fieldC = 0;
   ourStack->ownerNationCodeE = ownerNationCode;
-  ourStack->tileIndex10 = curUnit->field_6;
+  ourStack->tileIndex10 = curUnit->tileIndex06;
 
   while (curUnit != nullptr) {
     if (curUnit->field_C == ownerNationCode) {
@@ -594,7 +594,7 @@ undefined TArmyMgr::ResetAndRelocateUnitOrderQueue_004a37b0(TArmyStack* stack) {
   TUnit* unit = (node != nullptr) ? node->unit : nullptr;
   while (unit != nullptr) {
     unit->SetOrderModeSlot34(0, -1);
-    if (unit->field_6 != stack->tileIndex10) {
+    if (unit->tileIndex06 != stack->tileIndex10) {
       unit->VTableSlot10(stack->tileIndex10);
     }
     node = stack->cursor18;
@@ -624,8 +624,8 @@ bool TArmyMgr::UpdateDualLinkedEntryMetersAndBlinkState(TArmyStack* stack1, TArm
   TUnit* unit = stack1->ResetCursorAndGetHeadUnit();
   while (unit != nullptr) {
     stack1->fortLevelAttackerPenaltyCache9 = static_cast<unsigned char>(
-        g_anFortLevelAttackerPenaltyPercentByLevel[g_pGlobalMapState->cityScoreTable[unit->field_6]
-                                                       .fortLevel03]);
+        g_anFortLevelAttackerPenaltyPercentByLevel
+            [g_pGlobalMapState->cityScoreTable[unit->tileIndex06].fortLevel03]);
     if (stack1->fortLevelAttackerPenaltyCache9 == 0) {
       break;
     }
@@ -641,8 +641,8 @@ bool TArmyMgr::UpdateDualLinkedEntryMetersAndBlinkState(TArmyStack* stack1, TArm
   unit = stack2->ResetCursorAndGetHeadUnit();
   while (unit != nullptr) {
     stack2->fortLevelAttackerPenaltyCache9 = static_cast<unsigned char>(
-        g_anFortLevelAttackerPenaltyPercentByLevel[g_pGlobalMapState->cityScoreTable[unit->field_6]
-                                                       .fortLevel03]);
+        g_anFortLevelAttackerPenaltyPercentByLevel
+            [g_pGlobalMapState->cityScoreTable[unit->tileIndex06].fortLevel03]);
     if (stack2->fortLevelAttackerPenaltyCache9 == 0) {
       break;
     }
@@ -1100,7 +1100,7 @@ bool TArmyMgr::ValidateOrderPlacementPrerequisitesForSelectedTile(short cityReco
   for (TUnit* order = static_cast<TUnit*>(orderIter.Reset()); orderIter.More();
        order = static_cast<TUnit*>(orderIter.Advance())) {
     if (order->field_8 == 1 && order->field_C == cityRecordIndex &&
-        !g_pGlobalMapState->TileHasMovementClassId(order->field_6, cityRecordIndex)) {
+        !g_pGlobalMapState->TileHasMovementClassId(order->tileIndex06, cityRecordIndex)) {
       reinforcementCost += static_cast<TMilitaryUnit*>(order)->GetUnitTypeCostPoints();
     }
   }
@@ -1126,7 +1126,7 @@ bool TArmyMgr::ValidateOrderPlacementPrerequisitesForSelectedTile(short cityReco
   if (g_pUiRuntimeContext->mapUberPictureF0 != nullptr) {
     g_pSfxPlaybackSystem->PlaySoundEffect(0x3aa7, 0, 1);
     g_pUiRuntimeContext->mapUberPictureF0->NotifySubviewOfSelectedTile(
-        g_pGlobalMapState->cityScoreTable[cityRecordIndex].ownerNationSlot);
+        g_pGlobalMapState->cityScoreTable[cityRecordIndex].cityTileIndex04);
   }
   return true;
 }

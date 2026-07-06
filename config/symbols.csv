@@ -4302,7 +4302,7 @@ address|name|symbol|size|type|prototype|provenance
 55f140|TGreatPower::ComputeMapActionContextNodeValueAverage||337|function|undefined ComputeMapActionContextNodeValueAverage()|
 55f300|DispatchMapActionContextCallbackViaField24||16|function|undefined DispatchMapActionContextCallbackViaField24()|
 55f440|ContainsCityStatePointerInZoneArrayByCityIndex||104|function|undefined ContainsCityStatePointerInZoneArrayByCityIndex()|
-55f4d0|ContainsPointerArrayEntryMatchingByteKey||73|function|undefined ContainsPointerArrayEntryMatchingByteKey()|
+55f4d0|TZone::HasSecondaryNeighborWithNationTag||73|function|undefined HasSecondaryNeighborWithNationTag()|
 55f540|IsZoneMaskOrArrayEntryPresentForKey||84|function|undefined IsZoneMaskOrArrayEntryPresentForKey()|
 55f5c0|GenerateZoneStatusCodeIfUnset||340|function|undefined GenerateZoneStatusCodeIfUnset()|
 55f780|TZone::GenerateMapActionContextDisplayNameAndHeadline||678|function|undefined GenerateMapActionContextDisplayNameAndHeadline()|

@@ -361,6 +361,28 @@ void TZone::AppendUniquePrimaryNeighbor(TZone* zone) {
   primaryNeighbors.GetOrAppendUnique(zone);
 }
 
+// FUNCTION: IMPERIALISM 0x0055f4d0
+char TZone::HasSecondaryNeighborWithNationTag(short nationTag) {
+  unsigned int entryCount = static_cast<unsigned int>(this->secondaryNeighbors.Count());
+  if (entryCount == 0) {
+    return 0;
+  }
+  for (unsigned int entryIndex = 0; entryIndex < entryCount; ++entryIndex) {
+    // Inlined bounds-guarded stretch element access, as in the original.
+    TZone* const* entrySlot =
+        (entryIndex < entryCount) ? this->secondaryNeighbors.Data() + entryIndex : 0;
+    // secondaryNeighbors entries are TGlobalMapCityScoreRecord* under the documented
+    // stretch pun (see FindMapActionContextContainingNodeByIndex); byte 0 of the
+    // record is its ownerNationCode00.
+    const void* record = *entrySlot;
+    short entryNationTag = *static_cast<const signed char*>(record);
+    if (entryNationTag == nationTag) {
+      return 1;
+    }
+  }
+  return 0;
+}
+
 // FUNCTION: IMPERIALISM 0x0055f5c0
 void TZone::GenerateZoneStatusCodeIfUnset() {
   if (field04 != -1) {

@@ -2390,7 +2390,7 @@ void TMultiplayerMgr::DispatchCityRedrawInvalidateEvent(short cityId) {
   packet.cityHeader00[1] = src->byte01;
   packet.cityHeader00[2] = src->developmentStage;
   packet.cityHeader00[3] = src->fortLevel03;
-  packet.cityWord04 = src->ownerNationSlot;
+  packet.cityWord04 = src->cityTileIndex04;
   packet.cityWord06 = src->lastTurnTick;
   packet.cityByte08 = src->adjacentRegionCount08;
 

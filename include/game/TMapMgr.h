@@ -97,7 +97,9 @@ struct TGlobalMapCityScoreRecord {
   // Signed: 0x517540's switch on this reads it via MOVSX, not MOVZX.
   signed char developmentStage;
   unsigned char fortLevel03; // fort level (indexes g_awEngineerFortBuildCostByLevel)
-  short ownerNationSlot;
+  // +0x04 — tile index this city record is anchored to (-1 = none); rebound by
+  // the 0x00516100-family setters and matched against TCountry::homeRegionIndex.
+  short cityTileIndex04;
   short lastTurnTick;
   signed char adjacentRegionCount08;
   unsigned char pad09;
@@ -265,9 +267,9 @@ public:
   virtual void
   SeedRecruitSearchVisitedStateExcludingNation(short ownerNationTag); // slot 0x1d 0x514e40
   // Seeds recruitSearchVisited0e from g_pSelectedCivilianOrderState->selectedEntry instead
-  // of an explicit nation tag: if there's no selected order, or its field_6 (a TUnit field,
+  // of an explicit nation tag: if there's no selected order, or its tileIndex06 (a TUnit field,
   // sentinel-inited to 0xffff) is nonzero, every tile is marked 1 (blocked); only when
-  // field_6 == 0 does it fall back to seeding per-tile from activeFlags1c bit 4 (an
+  // tileIndex06 == 0 does it fall back to seeding per-tile from activeFlags1c bit 4 (an
   // otherwise-unused bit of that byte -- not otherwise cross-referenced in this codebase).
   virtual void SeedRecruitSearchVisitedStateFromSelectedCivilianOrder(); // slot 0x1e 0x514e80
   // Seeds recruitSearchVisited0e like the SeedRecruitSearchVisitedState* family: eligible
@@ -277,20 +279,20 @@ public:
       short nationTag); // slot 0x1f 0x514dc0
   // Resets recruitSearchVisited0e to 0 across all tiles and clears field9 back to idle.
   virtual void ResetRecruitSearchVisitedState(); // slot 0x20 0x514ef0
-  // Seeds recruitSearchVisited0e excluding terrainStateTable[pCivilianOrderEntry->field_6]'s
+  // Seeds recruitSearchVisited0e excluding terrainStateTable[pCivilianOrderEntry->tileIndex06]'s
   // owner (like SeedRecruitSearchVisitedStateExcludingNation, inlined here rather than
   // called). If orderType is 1 or 7, field_1C == 0, and the reference tile's
   // activeFlags1c/gateFlag or bit-2 gate passes, and (when the reference tile is owned by
   // pCivilianOrderEntry->field_18) its FindTownMarkerForTileByOwnerNation entry is
   // enabled: clears recruitSearchVisited0e for every not-at-war minor nation's
-  // TMinor::ownerNationSlot tile (via TDiplomacyMgr::IsNationPairAtWar) and every enabled
+  // TMinor::homeRegionIndex tile (via TDiplomacyMgr::IsNationPairAtWar) and every enabled
   // TTown on the owning TGreatPower's townMarkerList.
   virtual void SeedRecruitSearchVisitedStateAndClearAlliedTerritory(
       class TCivUnit* pCivilianOrderEntry); // slot 0x21 0x514f20
   // Military-recruit counterpart of the SeedRecruitSearchVisitedState* family above: scans
   // `candidates` (fixed 6 slots) for the last non-null entry, seeds recruitSearchVisited0e =
   // 1 across all tiles and clears it for the found unit's own tile
-  // (TUnit::field_6), then clears it for the 6 hex neighbors of either the unit's
+  // (TUnit::tileIndex06), then clears it for the 6 hex neighbors of either the unit's
   // orderTargetTiles28[orderTargetSlot-1] (when orderTargetSlot != 0) or its own tile,
   // provided the neighbor is owned by the same nation (TUnit::field_18) or is at war with it
   // (TDiplomacyMgr::IsNationPairAtWar). Bails immediately if no candidate is non-null.
@@ -339,7 +341,7 @@ public:
   virtual void SeedRecruitSearchVisitedStateByCapabilityThresholdAlt(
       class TCivUnit* pCivilianOrderEntry); // slot 0x27 0x515890
   // Seeds recruitSearchVisited0e = 1 for all tiles, then (if the order's terrain-type gate
-  // passes) walks the 6 direct hex neighbors of pCivilianOrderEntry->field_6 via
+  // passes) walks the 6 direct hex neighbors of pCivilianOrderEntry->tileIndex06 via
   // BuildHexAreaTileIndexList(tile, 1) and clears recruitSearchVisited0e for any neighbor
   // whose terrain type also gates and whose owner nation matches, provided
   // this tile's adjacencyBits06 doesn't already have that direction's bit set. Also flips 3
@@ -365,10 +367,10 @@ public:
   // (TArmyMgr::HasEligibleStationedUnitInRegion) but discards the result -- the original's
   // own call site never reads the return value either, so this is vestigial/dead code.
   virtual void ApplyUnitMovementClassForTileIfValid(int tileIndex); // slot 0x2b 0x515d60
-  // Moves cityRecordIndex's "anchor" tile (cityScoreTable[cityRecordIndex].ownerNationSlot,
+  // Moves cityRecordIndex's "anchor" tile (cityScoreTable[cityRecordIndex].cityTileIndex04,
   // reused here as a tile index) to newTileIndex: clears the old anchor tile's activeFlags1c
   // (0x20 bit) and refreshes its gateFlag/resourceTypeByEdge[0], sets the new tile's
-  // activeFlags1c to 0x22 and its gateFlag, points ownerNationSlot at it, then clears the
+  // activeFlags1c to 0x22 and its gateFlag, points cityTileIndex04 at it, then clears the
   // 0x20 bit from all of the city's linkedRegionIds tiles (unconditionally, even if
   // newTileIndex is itself one of them -- matches the original's literal statement order).
   // Finishes by recomputing the city's primary/secondary neighbor links.
@@ -399,9 +401,9 @@ public:
   virtual short FindLinkedRegionIdForAdjacentRegion(int cityRecordIndex,
                                                     int regionId); // slot 0x2f 0x516090
   // If nationSlotParam < 7, marks that nation's capital-tile city (found via
-  // g_apTerrainTypeDescriptorTable[nationSlotParam]->ownerNationSlot used as a
+  // g_apTerrainTypeDescriptorTable[nationSlotParam]->homeRegionIndex used as a
   // terrainStateTable index -- same dual-use pattern flagged on
-  // TGlobalMapCityScoreRecord::ownerNationSlot) as developmentStage 2. param_2 is unused
+  // TGlobalMapCityScoreRecord::cityTileIndex04) as developmentStage 2. param_2 is unused
   // by this body but the original callee epilogue pops 8 bytes (2 stack args), matching
   // slot 0x2f's signature.
   virtual void SetCapitalCityDevelopmentStageIfValidNationSlot(int nationSlotParam,
@@ -715,4 +717,3 @@ public:
 // Retail body ignores provinceId and returns the constant weight 0x21 (33); the
 // mission-scoring family converts it to float for the accumulate dampening factor.
 short __stdcall GetProvinceUnitOrderWeight(short provinceId); // 0x5184e0
-

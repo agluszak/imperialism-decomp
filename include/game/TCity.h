@@ -99,10 +99,12 @@ public:
   short field06; // +0x06 — zeroed by the ctor
   short field08; // +0x08 — zeroed by the ctor
   unsigned char pad0a[0x5c - 0x0a];
-  // +0x5c..+0x68 — per-zone recruit order counters (pending-action FSM, 0x004dab20).
-  short recruitZoneCount5c[6];
-  short navySecondaryCount68; // 0x68 — navy secondary-order counter
-  unsigned char pad6a[0x7c - 0x6a];
+  // +0x5c..+0x78 — per-order/resource-type counters (one short per type 0..13):
+  // the pending-action FSM (0x004dab20) bumps the active zone's entry and entry 6
+  // (navy secondary orders); 0x004dd140 weights all 14 entries by the resource
+  // descriptor to rebuild the diplomacy aid budget score.
+  short orderCountByType5c[0x0e];
+  unsigned char pad78[0x7c - 0x78];
   unsigned char lowProductionFlag7c; // +0x7c — PredictedNeeds
   unsigned char lowStockFlag7d;      // +0x7d — PredictedNeeds
   // +0x7e..0xac — per-resource reserved amounts subtracted from the summary
@@ -196,4 +198,3 @@ public:
 };
 
 ASSERT_SIZE(TCity, 0x2d4);
-

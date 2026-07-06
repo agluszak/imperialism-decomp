@@ -18,7 +18,7 @@ void TCountry::CreateMilitaryRecruitOrderForNode(int nodeContext) {
   int capabilityBonus = 0;
   if (static_cast<unsigned short>(this->nationSlot) < 7) {
     const TTechMgr::MilitaryCapRow& capabilityRow =
-        CityOrderCapabilityState()->militaryCapRows39d[this->nationSlot];
+        g_pCityOrderCapabilityState->militaryCapRows39d[this->nationSlot];
     if (capabilityRow.eliteRecruitFlag != 0) {
       capabilityBonus = 0x10;
     } else {
@@ -43,25 +43,25 @@ void TGreatPower::ExecuteNationPendingActionStateMachine(void) {
   if (this->serializedStatusFlags[1] == 0x32) {
     TMilitaryUnit* militaryOrder = new TMilitaryUnit();
     int nodeContext = this->GetHomeRegionCityRecordIndex();
-    short capValue = CityOrderCapForNation(nationSlot);
+    short capValue = g_pCityOrderCapabilityState->nationCapRows1e8[nationSlot].cap;
     militaryOrder->InitializeRecruitOrderState(capValue, nodeContext, nationSlot);
     this->DispatchTurnOrderActionSlotB0(3, capValue, 1);
   }
 
   // Navy primary/secondary order (serializedStatusFlags[0] == '2').
   if (this->serializedStatusFlags[0] == 0x32) {
-    short zoneIndex = CityOrderActiveZoneIndex();
+    short zoneIndex = g_pCityOrderCapabilityState->activeZoneIndex1d4;
     TZone* portZone = TZone::FindFirstPortZoneContextByNation(nationSlot);
     TShip* primaryOrder =
         CreateNavyPrimaryOrderNodeAndAssignDisplayName(zoneIndex, portZone, nationSlot, 0);
 
-    ++cityPtr->recruitZoneCount5c[CityOrderActiveZoneIndex()];
+    ++cityPtr->orderCountByType5c[g_pCityOrderCapabilityState->activeZoneIndex1d4];
 
     TAdmiral* secondaryNode = new TAdmiral(nationSlot);
     secondaryNode->SetTaskForcePrimaryOrderLinkAndRefreshChildBacklinks(primaryOrder);
 
     this->DispatchTurnOrderActionSlotB0(3, 0x2508, 1);
-    this->DispatchTurnOrderActionSlotB0(0, CityOrderActiveZoneIndex(), 1);
+    this->DispatchTurnOrderActionSlotB0(0, g_pCityOrderCapabilityState->activeZoneIndex1d4, 1);
   }
 
   // Civil work order (serializedStatusFlags[2] < '3').
@@ -75,8 +75,7 @@ void TGreatPower::ExecuteNationPendingActionStateMachine(void) {
         TMinor* minor = *minorEntry;
         if (minor != 0) {
           short ownerTag = minor->encodedNationSlot;
-          if (ownerTag > 99 && ownerTag < 200 &&
-              ResolveMinorCapabilityOwnerNationSlot(minor) == nationSlot) {
+          if (ownerTag > 99 && ownerTag < 200 && static_cast<short>(ownerTag - 100) == nationSlot) {
             goto nextMinorEntry;
           }
         }
@@ -89,16 +88,18 @@ void TGreatPower::ExecuteNationPendingActionStateMachine(void) {
 
     if (needsCivOrder) {
       TCivUnit* civOrder = new TCivUnit();
-      short spawnTile = g_pGlobalMapState->FindReachableRecruitSpawnTileWithVisitedReset(
-          this->ownerNationSlot, 0);
-      civOrder->InitializeCivWorkOrderState(7, spawnTile, nationSlot);
+      civOrder->InitializeCivWorkOrderState(
+          7,
+          g_pGlobalMapState->FindReachableRecruitSpawnTileWithVisitedReset(this->homeRegionIndex,
+                                                                           0),
+          nationSlot);
       this->SetNationPendingActionStateAndPayload(2, -1);
     }
   }
 
   // Final pending-action flush (serializedStatusFlags[0x0a] == '2').
   if (this->serializedStatusFlags[0x0a] == 0x32) {
-    cityPtr->navySecondaryCount68 += 2;
+    this->city->orderCountByType5c[6] += 2; // navy secondary-order counter
     this->DispatchTurnOrderActionSlotB0(1, 6, 2);
   }
   this->AssignDisplayNamesToUnnamedMilitaryUnits();

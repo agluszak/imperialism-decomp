@@ -100,10 +100,14 @@ public:
   short unitNameOrdinalByType[0x1e];
   short unitNameCounter84; // 0x84 — monotonically increasing name tag (stored at +0x1a)
   short pad_86;
-  short ownerNationSlot;
-  short pad_8a;
-  // 0x8c — serialized as a 4-byte block by slots 0x0a/0x0b together with the
-  // 4 bytes at 0x88 (ownerNationSlot + pad).
+  // 0x88 — home region/tile index (the terrainStateTable row of the capital;
+  // -1 = unset). The TGreatPower bodies access it as a full dword (0x004dfae0
+  // stores movsx(short); 0x004db7d0/0x004dbf00 load dwords), the TCountry readers
+  // narrow it to a short (0x004d87b0/0x004d71b0 `movsx word`) — expressed here as
+  // an int field with static_cast<short> at the narrow readers.
+  int homeRegionIndex;
+  // 0x8c — serialized as a 4-byte block by slots 0x0a/0x0b together with
+  // homeRegionIndex.
   int serializedField8c;
   TSortedList* ownedRegionList;
 
@@ -122,4 +126,3 @@ int ComputeWeightedNeighborLinkScoreForNode(int nodeIndex);
 int ComputeWeightedNeighborLinkScoreForNodeIndex(short nodeIndex);
 
 ASSERT_SIZE(TCountry, 0x94);
-

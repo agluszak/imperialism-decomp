@@ -123,13 +123,13 @@ void TWorldView::RenderMapContextOverlayWithScopedClipAndSurface() {
     TCivUnit* selectedOrder = g_pSelectedCivilianOrderState->selectedEntry;
     if (selectedOrder != 0) {
       previewTileIndex = -1;
-      previewBand = selectedOrder->field_6;
+      previewBand = selectedOrder->tileIndex06;
     }
   } else if (interactionMode == 1) {
     short actionIndex = g_pMapContextActionManager->pendingMapActionIndex;
     if (actionIndex != -1) {
       previewBand = -1;
-      previewTileIndex = g_pGlobalMapState->cityScoreTable[actionIndex].ownerNationSlot;
+      previewTileIndex = g_pGlobalMapState->cityScoreTable[actionIndex].cityTileIndex04;
     }
   } else if (interactionMode == 2) {
     int attachedEntity = 0;
@@ -177,9 +177,8 @@ void TWorldView::RenderMapContextOverlayWithScopedClipAndSurface() {
 
   char intersectScratch[16];
   char intersectPair[16];
-  SectRect(reinterpret_cast<RECT*>(&clipRect.left),
-                       reinterpret_cast<RECT*>(intersectScratch),
-                       reinterpret_cast<RECT*>(intersectPair));
+  SectRect(reinterpret_cast<RECT*>(&clipRect.left), reinterpret_cast<RECT*>(intersectScratch),
+           reinterpret_cast<RECT*>(intersectPair));
   OffsetRect(reinterpret_cast<RECT*>(&clipRect), field2c, field30);
 
   char scopedContextStorage[24];

@@ -1,5 +1,6 @@
 #include "decomp_types.h"
 #include "game/TAutoGreatPower.h"
+#include "game/TSortedByRelationshipList.h"
 #include "game/CIterator.h"
 #include "game/TDiplomacyMgr.h"
 #include "game/TGlobalMapState.h"
@@ -47,12 +48,6 @@ static __inline void SwapShortArrayBytes(void* base, int count) {
     bytes += 2;
     ++i;
   }
-}
-
-#include "game/TQueueObject.h"
-
-static __inline int ProposalQueue_ReadCount(void* queue) {
-  return static_cast<TQueueObject*>(queue)->GetEntryCount();
 }
 
 // FUNCTION: IMPERIALISM 0x004e6b10
@@ -370,11 +365,11 @@ void TAutoGreatPower::ProcessPendingDiplomacyProposalQueue(void) {
   }
 
   int rowIndex = 1;
-  if (ProposalQueue_ReadCount(this->proposalQueue) >= rowIndex) {
+  if (this->proposalQueue->GetSize() >= rowIndex) {
     do {
       this->foreignMinister->MinisterSlot1F(static_cast<short>(rowIndex));
       ++rowIndex;
-    } while (rowIndex <= ProposalQueue_ReadCount(this->proposalQueue));
+    } while (rowIndex <= this->proposalQueue->GetSize());
   }
 
   this->ResetDiplomacyPolicyAndGrantEntriesPreserveRecurringGrants();
