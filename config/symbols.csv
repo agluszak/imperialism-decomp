@@ -8505,6 +8505,7 @@ address|name|symbol|size|type|prototype|provenance
 696bc0|g_szUGameWindowSourcePath_00696bc0|||global||
 696d20|g_anStrategicMapOverlaySourceRowByIconId|||global||
 696d98|g_abUniversityRequirementLevelById|||global||
+696df8|g_abResourceTypeUsesHighNibbleFlag|||global||
 696e70|g_Build_Hex_Area_LookupTable_00696E70|||global||
 696e80|g_Build_Hex_Area_LookupTable_00696E80|||global||
 696f10|g_awTileSpriteVariantOffsetTable38|||global||

@@ -245,10 +245,9 @@ int g_nOverlayClipCacheParamY = 0;
 // the real table at 0x696108 is const-initialized, not runtime-populated.
 // GLOBAL: IMPERIALISM 0x00696108
 const int g_pTradeSummarySelectionMap[23] = {
-    0x636f7474, 0x776f6f6c, 0x74696d62, 0x636f616c, 0x69726f6e, 0x686f7273, 0x6f696c20,
-    0x666f6f64, 0x66616272, 0x6c756d62, 0x70617065, 0x73746565, 0x6675656c, 0x636c6f74,
-    0x6675726e, 0x68617264, 0x61726d61, 0x67726169, 0x70726f64, 0x66697368, 0x6c697665,
-    0x67656d73, 0x676f6c64,
+    0x636f7474, 0x776f6f6c, 0x74696d62, 0x636f616c, 0x69726f6e, 0x686f7273, 0x6f696c20, 0x666f6f64,
+    0x66616272, 0x6c756d62, 0x70617065, 0x73746565, 0x6675656c, 0x636c6f74, 0x6675726e, 0x68617264,
+    0x61726d61, 0x67726169, 0x70726f64, 0x66697368, 0x6c697665, 0x67656d73, 0x676f6c64,
 };
 
 // Trade sell propagation tags
@@ -477,6 +476,18 @@ int g_anWeightClassByOrderType[32] = {0};         // int table at 0x64c790
 short g_anScaledFactorByOrderType[32] = {0};      // short table at 0x64c660
 float g_afPercentEfficiencyByOrderType[32] = {0}; // float table at 0x64c6a0
 int g_anCountWeightByOrderType[32] = {0};         // int table at 0x695578
+
+// Per-resourceType requirement table (4 columns per resourceType, 0-23). Read by
+// TMapMgr::FindResourceCapabilityRequirementLevel (0x513610).
+unsigned char g_abUniversityRequirementLevelById[24][4] = {
+    {1, 2, 3, 4}, {1, 2, 3, 4}, {1, 2, 3, 4}, {0, 2, 4, 6}, {0, 2, 4, 6}, {1, 1, 1, 1},
+    {0, 2, 4, 6}, {0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0},
+    {0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}, {0, 0, 0, 0}, {1, 2, 3, 4},
+    {1, 2, 3, 4}, {1, 2, 3, 4}, {1, 2, 3, 4}, {0, 1, 2, 3}, {0, 1, 2, 3}, {0, 0, 0, 0}};
+// Per-resourceType "requires tiered nibble" boolean flag table. Read by the same function
+// above; only nonzero-ness is consumed there.
+unsigned char g_abResourceTypeUsesHighNibbleFlag[24] = {0, 0, 0, 1, 1, 0, 1, 0, 0, 0, 0, 0,
+                                                        0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0};
 
 short g_Build_Hex_Area_LookupTable_00696E70[6] = {0};
 short g_Build_Hex_Area_LookupTable_00696E80[6] = {0};

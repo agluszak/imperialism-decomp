@@ -524,6 +524,10 @@ extern double g_Recompute_Nation_Order_LookupTable_0065AA08;
 extern unsigned short g_Recompute_Nation_Order_LookupTable_00697870[];
 extern unsigned short g_Populate_Beachhead_Mission_LookupTable_00697958[];
 
+// TMapMgr.cpp — per-resourceType requirement level table (0x513610).
+extern unsigned char g_abUniversityRequirementLevelById[24][4];
+extern unsigned char g_abResourceTypeUsesHighNibbleFlag[24];
+
 // TMapMgr.cpp — hex-area neighbor lookup tables.
 extern short g_Build_Hex_Area_LookupTable_00696E70[];
 extern short g_Build_Hex_Area_LookupTable_00696E80[];

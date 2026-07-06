@@ -37,7 +37,17 @@ struct TTerrainStateRecordView {
   unsigned char pad07[0x0a - 0x07];
   unsigned char adjacencyMaskA0a; // 0x0a -- per-direction bit mask (land coastline/edges)
   unsigned char adjacencyMaskB0b; // 0x0b -- per-direction bit mask (region/water borders)
-  unsigned char pad0c[0x0e - 0x0c];
+  // Packed civilian/military development-class nibbles (offset 0xc): written by
+  // SetCivilianDevelopmentClassNibble (0x5136a0), read by
+  // GetTileCivilianWorkOrderCostClassNibble (high or low nibble by fUseHighNibble) and by
+  // the recruit-search-eligibility family (0x5155c0 reads the high nibble, 0x515890 the
+  // low nibble) as a per-tile development/need threshold. Not padding.
+  // Signed: GetTileCivilianWorkOrderCostClassNibble's high-nibble read is SAR (arithmetic
+  // shift), not SHR.
+  signed char developmentClassNibbles0c;
+  // Sentinel flag (0 / 0x7f) set by SetCivilianDevelopmentClassNibble alongside the high
+  // nibble; gates recruit-search eligibility in 0x5155c0. Not padding.
+  unsigned char pendingDevelopmentFlag0d;
   unsigned char recruitSearchVisited0e; // 0x0e
   // 0x0f -- cleared to 0 across all 0x1950 tiles by
   // TMapMgr::ClearPerTileByte0FForAllMapTiles (0x409250); reader/setter beyond that not
@@ -220,16 +230,27 @@ public:
   // slot 0x2f's signature.
   virtual void SetCapitalCityDevelopmentStageIfValidNationSlot(int nationSlotParam,
                                                                int param_2); // slot 0x30 0x516100
-  virtual undefined OrphanLeaf_NoCall_Ins14_00513610(short param_1,
-                                                     short param_2); // slot 0x31 0x513610
+  // Looks up terrainStateTable[tileIndex].resourceTypeByEdge[edgeIndex], then indexes
+  // g_abUniversityRequirementLevelById[resourceType][developmentClassNibbles0c's high
+  // nibble if g_abResourceTypeUsesHighNibbleFlag[resourceType] is set, else the raw
+  // (unmasked) byte].
+  virtual byte FindResourceCapabilityRequirementLevel(short tileIndex,
+                                                      short edgeIndex); // slot 0x31 0x513610
   virtual byte GetTileCivilianWorkOrderCostClassNibble(short nTileIndex,
                                                        char fUseHighNibble); // slot 0x32 0x513660
-  virtual undefined OrphanLeaf_NoCall_Ins35_005136a0(short param_1, char param_2, byte param_3,
-                                                     char param_4); // slot 0x33 0x5136a0
+  // Packs value into developmentClassNibbles0c's low or high nibble (selectHighNibble
+  // picks which); when writing the high nibble with a positive value and param4 != 0,
+  // also sets pendingDevelopmentFlag0d = 0x7f.
+  virtual void SetCivilianDevelopmentClassNibble(short tileIndex, char selectHighNibble, byte value,
+                                                 char param4); // slot 0x33 0x5136a0
   virtual undefined OrphanLeaf_NoCall_Ins37_00513720(short param_1, char param_2,
                                                      int param_3); // slot 0x34 0x513720
-  virtual undefined OrphanCallChain_C1_I29_005135a0(short param_1,
-                                                    char param_2); // slot 0x35 0x5135a0
+  // Finds the edge (0 or 1) whose resourceTypeByEdge matches resourceType, then dispatches
+  // to FindResourceCapabilityRequirementLevel (slot 0x31) for that edge; 0 if no edge
+  // matches.
+  virtual byte
+  FindResourceCapabilityRequirementLevelByType(short tileIndex,
+                                               char resourceType); // slot 0x35 0x5135a0
   // Looks up the TTown marker for tileIndex on its owning nation's townMarkerList
   // (g_apNationStates[terrainStateTable[tileIndex].ownerNationTag04]->townMarkerList),
   // matching TTown::regionId14 == tileIndex.
@@ -259,8 +280,15 @@ public:
   // isn't identified.
   virtual short LookupAdjacencyBitmaskVariantByDirection(char bitmaskIndex,
                                                          char direction); // slot 0x3c 0x516260
-  virtual undefined OrphanCallChain_C3_I41_00517410(char param_1);        // slot 0x3d 0x517410
-  virtual undefined OrphanCallChain_C3_I49_00517480();                    // slot 0x3e 0x517480
+  // Real signature has 3 stack args (RET 0xc), not 1 -- bitmaskIndex/direction forward
+  // unchanged into LookupAdjacencyBitmaskVariantByDirection (slot 0x3c); returns 0 if that
+  // lookup is 0, else (lookup+0x15)<<6 or (lookup+0x20)<<6 depending on useAltOffset.
+  virtual int MapImprovementOffsetFromAdjacencyVariant(char bitmaskIndex, char direction,
+                                                       char useAltOffset); // slot 0x3d 0x517410
+  // Real signature has 3 stack args (RET 0xc), not 0 -- see body for the exact combination
+  // of 3 calls into LookupAdjacencyBitmaskVariantByDirection (slot 0x3c).
+  virtual short MapImprovementOffsetFromAdjacencyVariantTriple(char bitmaskIndex, char direction,
+                                                               short param3); // slot 0x3e 0x517480
   // Real body is just `mov ax, 0xc80; ret` -- a bare constant, no callers besides the
   // vtable itself so its purpose isn't identified.
   virtual short GetFixedConstant0xc80(); // slot 0x3f 0x517520

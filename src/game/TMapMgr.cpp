@@ -705,31 +705,6 @@ undefined TMapMgr::SetTileOwnerAndInvalidateNeighborState(short param_1, short p
   return 0;
 }
 
-undefined TMapMgr::OrphanCallChain_C1_I29_005135a0(short param_1, char param_2) {
-  return 0;
-}
-
-undefined TMapMgr::OrphanLeaf_NoCall_Ins14_00513610(short param_1, short param_2) {
-  return 0;
-}
-
-byte TMapMgr::GetTileCivilianWorkOrderCostClassNibble(short nTileIndex, char fUseHighNibble) {
-  return 0;
-}
-
-undefined TMapMgr::OrphanLeaf_NoCall_Ins35_005136a0(short param_1, char param_2, byte param_3,
-                                                    char param_4) {
-  return 0;
-}
-
-undefined TMapMgr::OrphanLeaf_NoCall_Ins37_00513720(short param_1, char param_2, int param_3) {
-  return 0;
-}
-
-undefined TMapMgr::SetHexAdjacencyDirectionFlagsForTilePair(short param_1, short param_2) {
-  return 0;
-}
-
 // FUNCTION: IMPERIALISM 0x00513200
 int TMapMgr::SetTileTransportFlags(short nTileIndex, unsigned short wTileTransportFlags) {
   char* terrainTileBytes = *reinterpret_cast<char**>(reinterpret_cast<unsigned char*>(this) + 0xc);
@@ -801,6 +776,57 @@ short FindReachableRecruitSpawnTileRecursiveImpl(TMapMgr* mapState, short tileIn
 }
 
 } // namespace
+
+// FUNCTION: IMPERIALISM 0x005135a0
+byte TMapMgr::FindResourceCapabilityRequirementLevelByType(short tileIndex, char resourceType) {
+  for (int edgeIndex = 0; edgeIndex < 2; ++edgeIndex) {
+    if (terrainStateTable[tileIndex].resourceTypeByEdge[edgeIndex] == resourceType) {
+      return FindResourceCapabilityRequirementLevel(tileIndex, static_cast<short>(edgeIndex));
+    }
+  }
+  return 0;
+}
+
+// FUNCTION: IMPERIALISM 0x00513610
+byte TMapMgr::FindResourceCapabilityRequirementLevel(short tileIndex, short edgeIndex) {
+  signed char resourceType = terrainStateTable[tileIndex].resourceTypeByEdge[edgeIndex];
+  signed char raw = terrainStateTable[tileIndex].developmentClassNibbles0c;
+  signed char index = g_abResourceTypeUsesHighNibbleFlag[resourceType] != 0 ? (raw >> 4) : raw;
+  return g_abUniversityRequirementLevelById[resourceType][index];
+}
+
+// FUNCTION: IMPERIALISM 0x00513660
+byte TMapMgr::GetTileCivilianWorkOrderCostClassNibble(short nTileIndex, char fUseHighNibble) {
+  if (fUseHighNibble) {
+    return terrainStateTable[nTileIndex].developmentClassNibbles0c >> 4;
+  }
+  return terrainStateTable[nTileIndex].developmentClassNibbles0c & 0xf;
+}
+
+// FUNCTION: IMPERIALISM 0x005136a0
+void TMapMgr::SetCivilianDevelopmentClassNibble(short tileIndex, char selectHighNibble, byte value,
+                                                char param4) {
+  unsigned char packed = terrainStateTable[tileIndex].developmentClassNibbles0c;
+  if (selectHighNibble) {
+    packed = (packed & 0xf) | (value << 4);
+  } else {
+    packed = (packed & 0xf0) | value;
+  }
+  terrainStateTable[tileIndex].developmentClassNibbles0c = packed;
+  if (selectHighNibble) {
+    if (static_cast<signed char>(value) > 0 && param4 != 0) {
+      terrainStateTable[tileIndex].pendingDevelopmentFlag0d = 0x7f;
+    }
+  }
+}
+
+undefined TMapMgr::OrphanLeaf_NoCall_Ins37_00513720(short param_1, char param_2, int param_3) {
+  return 0;
+}
+
+undefined TMapMgr::SetHexAdjacencyDirectionFlagsForTilePair(short param_1, short param_2) {
+  return 0;
+}
 
 // FUNCTION: IMPERIALISM 0x00513ed0
 byte TMapMgr::CheckTileProspectingDiscoveryCandidate(short nTileIndex) {
@@ -1137,12 +1163,32 @@ short TMapMgr::LookupAdjacencyBitmaskVariantByDirection(char bitmaskIndex, char 
   return table[bitmaskIndex][direction];
 }
 
-undefined TMapMgr::OrphanCallChain_C3_I41_00517410(char param_1) {
-  return 0;
+// FUNCTION: IMPERIALISM 0x00517410
+int TMapMgr::MapImprovementOffsetFromAdjacencyVariant(char bitmaskIndex, char direction,
+                                                      char useAltOffset) {
+  if (LookupAdjacencyBitmaskVariantByDirection(bitmaskIndex, direction) == 0) {
+    return 0;
+  }
+  if (useAltOffset == 0) {
+    return (LookupAdjacencyBitmaskVariantByDirection(bitmaskIndex, direction) + 0x15) << 6;
+  }
+  return (LookupAdjacencyBitmaskVariantByDirection(bitmaskIndex, direction) + 0x20) << 6;
 }
 
-undefined TMapMgr::OrphanCallChain_C3_I49_00517480() {
-  return 0;
+// FUNCTION: IMPERIALISM 0x00517480
+short TMapMgr::MapImprovementOffsetFromAdjacencyVariantTriple(char bitmaskIndex, char direction,
+                                                              short param3) {
+  if (LookupAdjacencyBitmaskVariantByDirection(bitmaskIndex, direction) == 0) {
+    return 0;
+  }
+  short offset = LookupAdjacencyBitmaskVariantByDirection(bitmaskIndex, direction);
+  offset = (offset + 0x29) << 6;
+  if (LookupAdjacencyBitmaskVariantByDirection(bitmaskIndex, direction) == 1) {
+    if (param3 == 0x33 || param3 == 0x36 || param3 == 0x3a || param3 == 0x39) {
+      offset += 0xc0;
+    }
+  }
+  return offset;
 }
 
 // FUNCTION: IMPERIALISM 0x00517520
