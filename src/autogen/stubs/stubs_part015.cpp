@@ -27,22 +27,6 @@ undefined4 GetCityIndexFromCityStatePointer(void)
   return 0;
 }
 
-// ghidra_name ConstructGlobalMapState
-// ghidra_proto void * __fastcall ConstructGlobalMapState(void * pGlobalMapState)
-// FUNCTION: IMPERIALISM 0x0050e3d0
-undefined4 ConstructGlobalMapState(void)
-{
-  return 0;
-}
-
-// ghidra_name InitializeGlobalMapState
-// ghidra_proto void __fastcall InitializeGlobalMapState(int * pGlobalMapState)
-// FUNCTION: IMPERIALISM 0x0050e4e0
-undefined4 InitializeGlobalMapState(void)
-{
-  return 0;
-}
-
 // ghidra_name OrphanTiny_ThisAdjustJump_a4_0050e600
 // ghidra_proto undefined OrphanTiny_ThisAdjustJump_a4_0050e600()
 // FUNCTION: IMPERIALISM 0x0050e600

@@ -32,6 +32,10 @@ extern undefined4 ResetTurnEventQueueRuntimeRecordBuffer();
 extern undefined4 LoadProfileStringAndAssignSharedRef();
 extern undefined4 AssignStringSharedRefFromPointer();
 
+// Forward decl: real definition (with its // FUNCTION: marker) sits address-ordered
+// further down this file, near TMultiplayerMgr's other 0x5exxxx-adjacent members.
+static char ReturnTrueRuntimeCredentialInitStub();
+
 // Profile-section string literals.
 extern "C" const char s_PlayerName_0069801c[];
 extern "C" const char s_GameName_00698010[];
@@ -120,6 +124,27 @@ struct TurnEvent3Mode18Packet : NetMessage {
   unsigned char activeNationId;
   unsigned char pad15[3];
 };
+
+// FUNCTION: IMPERIALISM 0x00544540
+void TMultiplayerMgr::EnsureGameFlowStateAndPostTurnEvent5E5() {
+  TMultiplayerMgr* self = this;
+  if (self == 0) {
+    self = new TMultiplayerMgr();
+    g_pGameFlowState = self;
+    if (self != 0) {
+      self->InitializeMultiplayerManagerForSessionContext(CString());
+    }
+    self = g_pGameFlowState;
+  }
+  if (self == 0) {
+    return;
+  }
+
+  ReturnTrueRuntimeCredentialInitStub();
+  g_pGlobalUiRootController->InstallCohandler(self, 1);
+  g_pGlobalUiRootController->PostTurnEventCodeMessage2420(0x5e5);
+  self->sessionPhaseTag = 0x70726570; // 'prep'
+}
 
 // FUNCTION: IMPERIALISM 0x005446a0
 void TMultiplayerMgr::EmitTurnEvent3Mode18WithActiveNation() {
@@ -2398,4 +2423,11 @@ void TMultiplayerMgr::DispatchJoinEmpireModeEventPacket24_27(int sourceNation, i
 // FUNCTION: IMPERIALISM 0x0054c660
 void TMultiplayerMgr::NoOpCallbackRet4(void* param) {
   (void)param;
+}
+
+// Trivial credential-init stub reused across the networking cluster (0x5e34b0):
+// unconditionally reports success regardless of receiver.
+// FUNCTION: IMPERIALISM 0x005e34b0
+static char ReturnTrueRuntimeCredentialInitStub() {
+  return 1;
 }

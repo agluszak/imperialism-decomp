@@ -588,6 +588,12 @@ extern int g_nMapActionContextCount;
 extern void* g_pMapActionContextDistanceCache;
 extern int g_nMapActionContextDistanceCacheSizedFor;
 
+// TGameSetupPicture.cpp — main-menu 'rand' button developer cheat gate: holding shift
+// while clicking only takes the instant-random-map shortcut when this flag is set
+// (never toggled anywhere in the reachable game code -- likely a build-time/debug-only
+// switch in the retail binary). 0x6a42dc.
+extern unsigned char g_bRandomMapDeveloperCheatFlag;
+
 // TBehavior.cpp / TDialogBehavior.cpp / TDialogView.cpp — RTTI class-descriptor anchors.
 extern char g_pClassDescTBehavior;
 extern char g_pClassDescTDialogBehavior;

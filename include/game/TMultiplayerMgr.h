@@ -83,6 +83,16 @@ public:
   // TArmyMgr::CreateTacticalBattleViewAndInitializeBattleSetup with the new battle view,
   // discarding both the argument and the (unset) return value. 0x54c660, __thiscall.
   void NoOpCallbackRet4(void* param);
+
+  // Unlike the emitters above, `this` IS used here: called as
+  // g_pGameFlowState->EnsureGameFlowStateAndPostTurnEvent5E5() where g_pGameFlowState may
+  // still be null (every real call site loads ECX from that global first, even when it's
+  // null -- non-virtual calls don't dereference `this`). Lazily constructs+installs a
+  // fresh TMultiplayerMgr into g_pGameFlowState if it was null, then (whether freshly
+  // constructed or already present) registers it as an idle cohandler and posts turn
+  // event 0x5e5. Safe to call through a null `this` since member access only happens
+  // after the null check. 0x544540.
+  void EnsureGameFlowStateAndPostTurnEvent5E5();
 };
 
 ASSERT_SIZE(TMultiplayerMgr, 0xf8);

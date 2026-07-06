@@ -7549,7 +7549,7 @@
     },
     {
       "address": "0x4a2900",
-      "matching": 0.13374805598755832,
+      "matching": 0.13063763608087092,
       "name": "BuildArmyContextActionRecordsAndDispatchLabel",
       "type": 1
     },
@@ -12789,22 +12789,19 @@
     },
     {
       "address": "0x4e0590",
-      "effective": true,
-      "matching": 0.42857142857142855,
+      "matching": 1.0,
       "name": "TGreatPower::OrphanRetStub_004d7fa0_88",
       "type": 1
     },
     {
       "address": "0x4e05d0",
-      "effective": true,
-      "matching": 0.42857142857142855,
+      "matching": 1.0,
       "name": "TGreatPower::OrphanLeaf_NoCall_Ins02_004d7fc0_89",
       "type": 1
     },
     {
       "address": "0x4e0610",
-      "effective": true,
-      "matching": 0.42857142857142855,
+      "matching": 1.0,
       "name": "TGreatPower::ReturnFalseNationStateActionStub_8a",
       "type": 1
     },
@@ -12853,7 +12850,7 @@
     },
     {
       "address": "0x4e09a0",
-      "matching": 0.5301204819277109,
+      "matching": 0.5060240963855421,
       "name": "TGreatPower::ComputeCityOrderCapabilityAggregateScore",
       "type": 1
     },
@@ -13616,7 +13613,7 @@
     },
     {
       "address": "0x4e9ff0",
-      "matching": 0.768,
+      "matching": 0.752,
       "name": "TAutoGreatPower::OrphanLeaf_NoCall_Ins02_004d7ee0",
       "type": 1
     },
@@ -16292,7 +16289,7 @@
     },
     {
       "address": "0x50bea0",
-      "matching": 0.19900045433893684,
+      "matching": 0.20263516583371194,
       "name": "TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets",
       "type": 1
     },
@@ -16394,7 +16391,7 @@
     },
     {
       "address": "0x50e2f0",
-      "matching": 0.44776119402985076,
+      "matching": 0.47761194029850745,
       "name": "TMapMgr::CreateObject",
       "type": 1
     },
@@ -16406,7 +16403,7 @@
     },
     {
       "address": "0x50e3d0",
-      "matching": 0.0625,
+      "matching": 0.9666666666666667,
       "name": "ConstructGlobalMapState",
       "type": 1
     },
@@ -16418,7 +16415,7 @@
     },
     {
       "address": "0x50e4e0",
-      "matching": 0.2,
+      "matching": 1.0,
       "name": "InitializeGlobalMapState",
       "type": 1
     },
@@ -16742,7 +16739,7 @@
     },
     {
       "address": "0x5136a0",
-      "matching": 0.8888888888888888,
+      "matching": 1.0,
       "name": "TMapMgr::OrphanLeaf_NoCall_Ins35_005136a0",
       "type": 1
     },
@@ -18164,7 +18161,7 @@
     },
     {
       "address": "0x52cae0",
-      "matching": 0.3054662379421222,
+      "matching": 0.2976,
       "name": "BuildOverlaySpanRecordsFromQuadBorderLinks",
       "type": 1
     },
@@ -18182,7 +18179,7 @@
     },
     {
       "address": "0x52d150",
-      "matching": 0.7021276595744681,
+      "matching": 0.7311827956989247,
       "name": "GetOrCreateOverlayQuadRecordByIndex",
       "type": 1
     },
@@ -18206,7 +18203,7 @@
     },
     {
       "address": "0x52d750",
-      "matching": 0.22063492063492063,
+      "matching": 0.21904761904761905,
       "name": "MergeSmallCityRegionsAndCompactIds",
       "type": 1
     },
@@ -20103,7 +20100,7 @@
     },
     {
       "address": "0x53d020",
-      "matching": 0.4251968503937008,
+      "matching": 0.4235294117647059,
       "name": "ComputeArmyMissionScoreDeltaWithCandidateUnit",
       "type": 1
     },
@@ -21087,7 +21084,7 @@
     },
     {
       "address": "0x544540",
-      "matching": 0.07272727272727272,
+      "matching": 0.5,
       "name": "EnsureGameFlowStateAndPostTurnEvent5E5",
       "type": 1
     },
@@ -25389,7 +25386,7 @@
     },
     {
       "address": "0x575900",
-      "matching": 0.13691931540342298,
+      "matching": 0.36182902584493043,
       "name": "TGameSetupPicture::HandleEvent",
       "type": 1
     },
@@ -26175,7 +26172,7 @@
     },
     {
       "address": "0x581ae0",
-      "matching": 0.0,
+      "matching": 0.9411764705882353,
       "name": "SetSelectedIndex6AAndTriggerRefresh",
       "type": 1
     },
@@ -33785,7 +33782,7 @@
     },
     {
       "address": "0x5e34b0",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "ReturnTrueRuntimeCredentialInitStub",
       "type": 1
     },

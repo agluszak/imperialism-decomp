@@ -421,6 +421,7 @@ public:
   char hexNeighborWrapHorizontally20; // +0x20
   char pad21;                         // +0x21
   short pendingRiverMouthTile22;      // +0x22 -- tile awaiting a river-mouth variant assign
+  unsigned char field24;              // +0x24 -- zeroed by the ctor; no observed reader yet
 
   static void ComputeHexNeighborTileIndices(short tileIndex, short* neighborTiles,
                                             char wrapHorizontally);
@@ -529,6 +530,11 @@ public:
   // Clears terrainStateTable[i].perTileVisitedFlag0f for every one of the 0x1950
   // (108x60) map tiles. 0x00409250, __thiscall, no args.
   void ClearPerTileByte0FForAllMapTiles();
+
+  // Marks field6 ready and, on first call (g_pStrategicMapViewSystem->atlas668 still
+  // null), tail-calls TMacViewMgr::RenderOffscreenBitmapGridStripAndRestoreContext to
+  // build it. 0x0050e4e0, __thiscall.
+  void InitializeGlobalMapState();
 
   TMapMgr();
 };

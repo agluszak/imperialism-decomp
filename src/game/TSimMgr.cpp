@@ -4,8 +4,10 @@
 
 #include "decomp_types.h"
 #include "game/ImperialismApp.h"
+#include "game/TAssetMgr.h"
 #include "game/TCountry.h"
 #include "game/TGreatPower.h"
+#include "game/TMacViewMgr.h"
 #include "game/TViewMgr.h"
 #include "game/global_data_tables.h"
 
@@ -368,6 +370,13 @@ void TSimMgr::InitializeOrLoadEntryArray14AndClampLimits(bool writeBack) {
   }
   preferenceValues[12] = 0;
   preferenceValues[1] = 0;
+}
+
+// FUNCTION: IMPERIALISM 0x00581ae0
+void TSimMgr::SetSelectedIndex6AAndTriggerRefresh(short index) {
+  field6a = index;
+  EnsurePictWvDataGobLoadedBySlot(index);
+  g_pStrategicMapViewSystem->ReloadBitmap244AndRefreshUiCaches();
 }
 
 // FUNCTION: IMPERIALISM 0x00581b20

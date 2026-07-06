@@ -95,6 +95,11 @@ public:
   // 0x57cad0. Verified against 0x0057db53: real __thiscall on `this` (not
   // g_pSimMgr this time), 1 stack arg (`RET 0x4`).
   void RebuildNationStateSlotsAndAvailability(int flag);
+  // 0x581ae0. Sets field6a, then reloads the picture-word-data language pack for
+  // that index (EnsurePictWvDataGobLoadedBySlot) and refreshes the strategic map
+  // view's cached bitmap 244 (TMacViewMgr::ReloadBitmap244AndRefreshUiCaches on
+  // g_pStrategicMapViewSystem).
+  void SetSelectedIndex6AAndTriggerRefresh(short index);
 
   // --- fields (offsets are load-bearing: referenced from many other classes via
   //     g_pSimMgr; do not rename or move) ---

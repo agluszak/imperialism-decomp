@@ -595,14 +595,6 @@ undefined4 HandleDiplomacyTurnEventPacketByCode(void)
   return 0;
 }
 
-// ghidra_name EnsureGameFlowStateAndPostTurnEvent5E5
-// ghidra_proto undefined EnsureGameFlowStateAndPostTurnEvent5E5()
-// FUNCTION: IMPERIALISM 0x00544540
-undefined4 EnsureGameFlowStateAndPostTurnEvent5E5(void)
-{
-  return 0;
-}
-
 // ghidra_name ResetDiplomacyRuntimeSelectionAndSetModeNada
 // ghidra_proto undefined ResetDiplomacyRuntimeSelectionAndSetModeNada()
 // FUNCTION: IMPERIALISM 0x00544630

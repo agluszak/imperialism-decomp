@@ -371,14 +371,6 @@ undefined4 ReinitializeGameFlowAndPostTurnEventCode(void)
   return 0;
 }
 
-// ghidra_name SetSelectedIndex6AAndTriggerRefresh
-// ghidra_proto undefined SetSelectedIndex6AAndTriggerRefresh()
-// FUNCTION: IMPERIALISM 0x00581ae0
-undefined4 SetSelectedIndex6AAndTriggerRefresh(void)
-{
-  return 0;
-}
-
 // ghidra_name AssignSharedStringFromIndexedSlot7C
 // ghidra_proto undefined AssignSharedStringFromIndexedSlot7C()
 // FUNCTION: IMPERIALISM 0x00581bc0

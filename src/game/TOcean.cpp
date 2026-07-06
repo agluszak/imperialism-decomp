@@ -1,6 +1,7 @@
 #include "game/TOcean.h"
 #include "game/TSimMgr.h"
 
+#include <cstring>
 #include <new>
 
 #include "game/mfc.h"
@@ -140,7 +141,15 @@ TOcean::~TOcean() {}
 
 IMPLEMENT_DYNCREATE(TOcean, TObject)
 
-TOcean::TOcean() {}
+// No standalone address: the original ctor is small enough that MSVC500 inlined it
+// directly at its one call site (TGameSetupPicture::HandleEvent's 'rand'-cheat path,
+// 0x575bb0-0x575bd9) rather than emitting a separate TOcean::TOcean symbol.
+TOcean::TOcean()
+    : TObject(), nationCount(0), contextArray(0), routeNodeCount(0), routeNodeBuffer(0) {
+  // Only the first dword of this still-unrecovered padding region is zeroed by the
+  // original ctor; the rest of pad14 is left uninitialized there too.
+  memset(pad14, 0, sizeof(int));
+}
 
 // Slot 0x07 (Free). Ghidra: DispatchNationPendingActionEventCodes (264 bytes) —
 // real body is a follow-up port; stub keeps the vtable slot owned/paired. The

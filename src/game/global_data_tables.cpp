@@ -595,6 +595,9 @@ void* g_pMapActionContextDistanceCache = 0;
 // Count g_pMapActionContextDistanceCache was last sized for (0x006984b4); cache is
 // rebuilt whenever g_nMapActionContextCount no longer matches this.
 int g_nMapActionContextDistanceCacheSizedFor = 0;
+
+// GLOBAL: IMPERIALISM 0x006a42dc
+unsigned char g_bRandomMapDeveloperCheatFlag = 0;
 // GLOBAL: IMPERIALISM 0x006a43cc
 TTradeMgr* g_pNationInteractionStateManager = 0;
 

@@ -1147,14 +1147,6 @@ undefined4 DefaultUnhandledTurnEventHookReturnsFalse(void)
   return 0;
 }
 
-// ghidra_name ReturnTrueRuntimeCredentialInitStub
-// ghidra_proto undefined ReturnTrueRuntimeCredentialInitStub()
-// FUNCTION: IMPERIALISM 0x005e34b0
-undefined4 ReturnTrueRuntimeCredentialInitStub(void)
-{
-  return 0;
-}
-
 // ghidra_name ResetRuntimeSelectionRecordBufferAndReturnTrue
 // ghidra_proto undefined ResetRuntimeSelectionRecordBufferAndReturnTrue()
 // FUNCTION: IMPERIALISM 0x005e34d0

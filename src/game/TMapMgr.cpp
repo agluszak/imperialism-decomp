@@ -3,6 +3,7 @@
 #include "game/CString.h"
 #include "game/TCivMgr.h"
 #include "game/TCountry.h"
+#include "game/TMacViewMgr.h"
 #include "game/TSortedList.h"
 #include "game/TMinor.h"
 #include "game/TCivUnit.h"
@@ -44,13 +45,29 @@ TMilitaryUnit* TMapMgr::ValidateGridIndexRange0To17F(short index) {
 
 IMPLEMENT_DYNCREATE(TMapMgr, TObject)
 
-TMapMgr::TMapMgr() {}
+// FUNCTION: IMPERIALISM 0x0050e3d0
+TMapMgr::TMapMgr() : TObject(), cityScoreTable(0), scenarioTagText1c() {
+  field8 = 0;
+  field4 = 0;
+  terrainStateTable = 0;
+  field9 = 1;
+  field24 = 0;
+  pendingRiverMouthTile22 = -1;
+}
 
 // SYNTHETIC: IMPERIALISM 0x0050e460
 // TMapMgr::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x0050e490
 TMapMgr::~TMapMgr() {}
+
+// FUNCTION: IMPERIALISM 0x0050e4e0
+void TMapMgr::InitializeGlobalMapState() {
+  field6 = 1;
+  if (g_pStrategicMapViewSystem->atlas668 == 0) {
+    g_pStrategicMapViewSystem->RenderOffscreenBitmapGridStripAndRestoreContext();
+  }
+}
 
 // FUNCTION: IMPERIALISM 0x0050e510
 void TMapMgr::Free() {
