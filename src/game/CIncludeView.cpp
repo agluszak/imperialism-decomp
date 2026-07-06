@@ -1,9 +1,19 @@
 #include "game/CIncludeView.h"
 
+#include "game/CMcWindow.h"
 #include "game/TAmbitApplication.h"
+#include "game/TEvent.h"
+#include "game/TUiEvent.h"
 #include "game/TView.h"
+#include "game/TViewMgr.h"
+#include "game/TWindow.h"
 #include "game/global_data_tables.h"
 #include "game/ui_invalidation_guard.h"
+
+// MCIWNDM_NOTIFYMODE / MCI_MODE_STOP for the movie stop-notify handler. NOAVIFILE keeps
+// this to the MCIWnd control messages without pulling in the AVIFile COM interfaces.
+#define NOAVIFILE
+#include <vfw.h>
 
 // The 17ms UI tick (timer id 0xd00d, armed in OnInitialUpdate): track the cursor in
 // client coordinates and, while the main frame is the foreground window, feed the
@@ -26,6 +36,41 @@ static void CALLBACK UiCursorTickTimerProc(HWND hWnd, UINT uMsg, UINT idEvent, D
   }
 }
 
+// The shared keyboard command event (original object @ 0x6a1780) lives as a function-local
+// static so first use constructs it once; the whole block is forwarded (as an int, == &event)
+// into the active TView tree. Layout/type shared with TGameWindow::ForwardParam (which reads
+// commandCode/handledMarker) and the not-yet-ported CMcWindow WM_CHAR handler 0x493ce0 via
+// game/TUiEvent.h (TKeyCommandEvent).
+static void PopulateKeyCommandBlock(TKeyCommandEvent& block, UINT nChar, UINT nRepCnt,
+                                    UINT nFlags) {
+  block.commandCode = (nChar == VK_F1) ? 0x68 : static_cast<short>(nChar);
+  block.keyFlags = static_cast<short>(nFlags & 0xf);
+  block.handledMarker = static_cast<short>(nRepCnt);
+  unsigned int mods = block.modifierFlags;
+  mods = (mods & ~1u) | ((GetAsyncKeyState(VK_CONTROL) & 0x8000) != 0 ? 1u : 0u);
+  mods = (mods & ~2u) | (((GetAsyncKeyState(VK_SHIFT) & 0x8000) != 0 ? 1u : 0u) << 1);
+  mods = (mods & ~4u) | (((GetAsyncKeyState(VK_MENU) & 0x8000) != 0 ? 1u : 0u) << 2);
+  mods = (mods & ~8u) | (((GetAsyncKeyState(VK_RWIN) & 0x8000) != 0 ? 1u : 0u) << 3);
+  block.modifierFlags = mods;
+}
+
+// Local mouse event the click handlers forward into the dialog tree: a TUiEvent header
+// followed by the click coordinates (a separate stack-local instance from the persistent
+// keyboard command event above, but the same underlying class @ vtable 0x648590).
+struct UiMouseEventBlock {
+  TUiEvent event; // 0x00 TEvent-derived header (0x14; installs vtable 0x648590)
+  int x;          // 0x14
+  int y;          // 0x18
+  int pad1c;      // 0x1c
+  int pad20;      // 0x20
+  int pad24;      // 0x24
+};
+
+// Active-window/native-host accessors used by OnKeyDown; defined below in address order
+// (their bodies live at 0x48dxxx, past this file's other markers).
+static CWnd* GetModalStackTopHostView();
+static CWnd* GetLiveRegistryHeadHostView();
+
 // SYNTHETIC: IMPERIALISM 0x00482850
 // CIncludeView::CreateObject
 
@@ -38,15 +83,26 @@ IMPLEMENT_DYNCREATE(CIncludeView, CView)
 // WM_LBUTTONDOWN 0x4839e0, WM_LBUTTONUP 0x483b00, WM_MOUSEMOVE 0x4838b0,
 // WM_LBUTTONDBLCLK 0x483b70, WM_COMMAND id 0x8011/0x8012 0x483d60/0x483d90,
 // WM_SETCURSOR 0x483ef0, WM_RBUTTONDOWN 0x483f10, WM_RBUTTONUP 0x483ff0,
-// WM_CHAR 0x4840b0, WM_PARENTNOTIFY 0x484190, WM_CTLCOLOR 0x483660,
-// WM_KEYDOWN 0x484260, and message 0x4c8 0x484230 (turn-state exit; blocked on
-// porting TViewMgr::HandleTurnStateExitAndPostFollowupEventCode 0x5db620).
+// WM_PARENTNOTIFY 0x484190, WM_CTLCOLOR 0x483660.
 BEGIN_MESSAGE_MAP(CIncludeView, CView)
 ON_WM_ERASEBKGND()
+ON_WM_LBUTTONDOWN()
+ON_WM_KEYDOWN()
+ON_WM_CHAR()
 ON_MESSAGE(0x4ef, OnDialogTreeHostMsg4EF)
+ON_MESSAGE(0x4c8, OnMciNotifyMode) // MCIWNDM_NOTIFYMODE
 END_MESSAGE_MAP()
 
-CIncludeView::CIncludeView() : CView() {}
+CIncludeView::CIncludeView() : CView() {
+  // The original ctor (0x482950) initializes the view's fields, including the interactive
+  // flag (offset 0x90 == 1) that gates the click/paren-notify dispatch and the embedded
+  // owned-buffer registry at 0x4c (vtable 0x648560). Minimal init for now; full port TODO.
+  m_activeDialogContext = 0;
+  m_field44 = 0;
+  m_pOffscreenDib = 0;
+  m_tickTimerId = 0;
+  m_uiInteractiveFlag90 = 1;
+}
 
 // FUNCTION: IMPERIALISM 0x00482bf0
 LRESULT CIncludeView::OnDialogTreeHostMsg4EF(WPARAM wParam, LPARAM lParam) {
@@ -130,10 +186,112 @@ void CIncludeView::OnInitialUpdate() {
   OnUpdate(0, 0, 0);
 }
 
+// WM_LBUTTONDOWN: forward the click into the hosted dialog tree as a mouse event
+// (TView slot 0x46). For a playing movie this reaches TMovieView::DispatchUiMouseMoveToChildren,
+// which stops (skips) the movie. Clicking the view outside the centered movie lands here;
+// clicking the movie window itself arrives via OnParentNotify.
+// FUNCTION: IMPERIALISM 0x004839e0
+void CIncludeView::OnLButtonDown(UINT nFlags, CPoint point) {
+  (void)nFlags;
+  if (m_uiInteractiveFlag90 != 0 && m_activeDialogContext != 0) {
+    UiMouseEventBlock evt;
+    evt.x = point.x;
+    evt.y = point.y;
+    evt.pad1c = 0;
+    evt.pad24 = 0;
+    m_activeDialogContext->DispatchUiMouseMoveToChildren(&point, reinterpret_cast<int>(&evt), 0, 0);
+  }
+}
+
 // Everything the hosted activeDialog TView tree ever draws on screen flows through
 // here (CView::OnPaint -> OnDraw): clip box -> slot-0x43 paint recursion, gated on the
 // global UI-active flag (deliberately 0 while a dialog factory body runs).
 // FUNCTION: IMPERIALISM 0x00484060
 int CIncludeView::GetUiInteractiveFlag90() {
   return m_uiInteractiveFlag90;
+}
+
+// WM_CHAR: no game handling; defers to DefWindowProc (matches the original).
+// FUNCTION: IMPERIALISM 0x004840b0
+void CIncludeView::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags) {
+  (void)nChar;
+  (void)nRepCnt;
+  (void)nFlags;
+  Default();
+}
+
+// MCIWNDM_NOTIFYMODE: when the movie MCIWnd reports MCI_MODE_STOP (whether the movie ended
+// on its own or was stopped/skipped by StopMovieIfActive), run the screen-exit path so the
+// followup turn-event code (main menu, etc.) gets posted and the active movie view cleared.
+// FUNCTION: IMPERIALISM 0x00484230
+LRESULT CIncludeView::OnMciNotifyMode(WPARAM wParam, LPARAM mciMode) {
+  (void)wParam;
+  if (mciMode == MCI_MODE_STOP) {
+    g_pUiRuntimeContext->HandleTurnStateExitAndPostFollowupEventCode(0);
+  }
+  return 0;
+}
+
+// Translate a keystroke into the shared UI command event and forward it into the active
+// window's TView tree. Two dispatch targets are consulted: the modal-stack top host (as a
+// CIncludeView -> its hosted dialog tree) and the live-registry head host (as a CMcWindow
+// -> its owning TWindow and embedded dialog behaviour). This is how ESC/Space/Enter reach
+// TGameWindow::ForwardParam, e.g. to stop (skip) a playing movie.
+// FUNCTION: IMPERIALISM 0x00484260
+void CIncludeView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags) {
+  static TKeyCommandEvent s_keyCommand;
+  const int commandParam = reinterpret_cast<int>(&s_keyCommand);
+
+  CWnd* target = GetModalStackTopHostView();
+  if (target == 0) {
+    target = this;
+  }
+  if (target != 0 && target->IsKindOf(RUNTIME_CLASS(CIncludeView))) {
+    CIncludeView* view = static_cast<CIncludeView*>(target);
+    if (view->m_activeDialogContext != 0) {
+      PopulateKeyCommandBlock(s_keyCommand, nChar, nRepCnt, nFlags);
+      view->m_activeDialogContext->ForwardParam(commandParam);
+    }
+  }
+
+  if (target == this) {
+    target = GetLiveRegistryHeadHostView();
+  }
+  if (target != 0 && target->IsKindOf(RUNTIME_CLASS(CMcWindow))) {
+    TWindow* ownerWindow = static_cast<CMcWindow*>(target)->m_pOwnerWindow;
+    if (ownerWindow != 0) {
+      PopulateKeyCommandBlock(s_keyCommand, nChar, nRepCnt, nFlags);
+      ownerWindow->ForwardParam(commandParam);
+      if (ownerWindow->GetEmbeddedDialogBehavior() != 0) {
+        ownerWindow->GetEmbeddedDialogBehavior()->OrphanCallChain_C11_I88_004874b0(commandParam);
+      }
+    }
+  }
+  Default();
+}
+
+// Native host view (TView::nativeWindow50) of the top window on the modal stack.
+// FUNCTION: IMPERIALISM 0x0048d290
+static CWnd* GetModalStackTopHostView() {
+  if (g_ModalViewStack.GetHeadPosition() != NULL) {
+    TView* window = static_cast<TView*>(g_ModalViewStack.GetHead());
+    window->AssertValid();
+    if (window->nativeWindow50 != 0) {
+      return window->nativeWindow50;
+    }
+  }
+  return 0;
+}
+
+// Native host view of the head window in the live-view registry.
+// FUNCTION: IMPERIALISM 0x0048d840
+static CWnd* GetLiveRegistryHeadHostView() {
+  if (g_LiveViewRegistry.GetHeadPosition() != NULL) {
+    TView* window = static_cast<TView*>(g_LiveViewRegistry.GetHead());
+    window->AssertValid();
+    if (window->nativeWindow50 != 0) {
+      return window->nativeWindow50;
+    }
+  }
+  return 0;
 }

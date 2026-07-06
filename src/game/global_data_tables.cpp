@@ -137,13 +137,7 @@ int g_McAppUiDefaultPosX_006A1A60 = 0;
 // GLOBAL: IMPERIALISM 0x006a1a64
 int g_McAppUiDefaultPosY_006A1A64 = 0;
 // GLOBAL: IMPERIALISM 0x006a1a68
-int g_McAppUiMouseCaptureStartPoint_006A1A68[2] = {0, 0};
-// GLOBAL: IMPERIALISM 0x006a1a70
-int g_McAppUiMouseCaptureLastPoint_006A1A70[2] = {0, 0};
-// GLOBAL: IMPERIALISM 0x006a1a78
-int g_McAppUiMouseCaptureCurrentPoint_006A1A78[2] = {0, 0};
-// GLOBAL: IMPERIALISM 0x006a1a80
-TControl* g_McAppUiMouseCaptureControl_006A1A80 = 0;
+TMouseCaptureState g_McAppMouseCaptureState;
 // GLOBAL: IMPERIALISM 0x006a1adc
 unsigned int g_McAppUiMouseCaptureTimerId_006A1ADC = 0;
 // GLOBAL: IMPERIALISM 0x006950b0

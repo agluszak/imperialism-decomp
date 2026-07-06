@@ -9,7 +9,7 @@ struct MciMovieWindowState;
 // VTABLE: IMPERIALISM 0x0066f708
 class TMovieView : public TPicture {
 public:
-// === BEGIN GENERATED DECLS (TMovieView) — refreshed by recover-class; do not hand-edit ===
+  // === BEGIN GENERATED DECLS (TMovieView) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TMovieView)
   virtual ~TMovieView(); // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -126,14 +126,14 @@ public:
   // slot 0x70 SetControlStateFlagAndMaybeRefresh inherited unchanged (0x48e810)
   // slot 0x71 ResetPictureResourceEntry inherited unchanged (0x48f520)
   // slot 0x72 SetPictureResourceIdAndRefresh inherited unchanged (0x48f570)
-// === END GENERATED DECLS (TMovieView) ===
+  // === END GENERATED DECLS (TMovieView) ===
   // TODO(manifest): add data members from the object slice (`just slice-discovery TMovieView 0xCTOR`).
   MciMovieWindowState* movieWindowState; // +0x90
 
   TMovieView();
   bool OpenMoviePathAndDetachOnSuccess(LPCSTR moviePath); // 0x5e24b0
-  bool SendMessage806IfSelectionStateActive();            // 0x5e24e0
-  bool SendMessage808IfSelectionStateActive();            // 0x5e2500
+  bool PlayMovieIfActive();                               // 0x5e24e0 (MCI_PLAY)
+  bool StopMovieIfActive();                               // 0x5e2500 (MCI_STOP / skip)
 };
 
 ASSERT_SIZE(TMovieView, 0x94);

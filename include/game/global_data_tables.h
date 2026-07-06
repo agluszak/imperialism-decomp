@@ -18,6 +18,7 @@
 #include "game/TMacViewMgr.h"
 #include "game/TMinor.h"
 #include "game/TView.h"
+#include "game/TMouseCaptureState.h"
 
 TGreatPower* GetNationStateBySlot(short slotId);
 short QueryNationMetricBySlot(TGreatPower* nationState, short metricSlot);
@@ -365,11 +366,8 @@ extern int g_McAppUiDefaultPosX_006A1A60;
 extern int g_McAppUiDefaultPosY_006A1A64;
 
 // Mouse-capture drag/repeat state used by TControl's input slots.
-extern int g_McAppUiMouseCaptureStartPoint_006A1A68[2];
-extern int g_McAppUiMouseCaptureLastPoint_006A1A70[2];
-extern int g_McAppUiMouseCaptureCurrentPoint_006A1A78[2];
-extern class TControl* g_McAppUiMouseCaptureControl_006A1A80;
-extern unsigned int g_McAppUiMouseCaptureTimerId_006A1ADC;
+extern TMouseCaptureState g_McAppMouseCaptureState;        // 0x6a1a68
+extern unsigned int g_McAppUiMouseCaptureTimerId_006A1ADC; // 0x6a1adc
 
 // Source-file path string ("D:\\Ambit\\McAppUI.cpp") passed with a line number to the
 // UI invalidation-flag assert/log helper.

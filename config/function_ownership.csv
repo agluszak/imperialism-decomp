@@ -217,8 +217,13 @@ address|target_cpp|ownership|note
 4835a0|src/game/CIncludeView.cpp|manual|marker_sync
 483720|src/game/CIncludeView.cpp|manual|marker_sync
 483750|src/game/CIncludeView.cpp|manual|marker_sync
+4839e0|src/game/CIncludeView.cpp|manual|marker_sync
+483ad0|src/game/TUiEvent.cpp|manual|marker_sync
 484060|src/game/CIncludeView.cpp|manual|marker_sync
-484230|src/game/CMainFrame.cpp|manual|marker_sync
+4840b0|src/game/CIncludeView.cpp|manual|marker_sync
+484230|src/game/CIncludeView.cpp|manual|marker_sync
+484260|src/game/CIncludeView.cpp|manual|marker_sync
+4845a0|src/game/TUiEvent.cpp|manual|marker_sync
 484990|src/game/TObject.cpp|manual|marker_sync
 484af0|src/game/CMainFrame.cpp|manual|marker_sync
 484bb0|src/game/CMainFrame.cpp|manual|marker_sync
@@ -443,6 +448,8 @@ address|target_cpp|ownership|note
 4899a0|src/game/TStream.cpp|manual|marker_sync
 489a50|src/game/global_data_tables.cpp|manual|marker_sync
 489a70|src/game/global_data_tables.cpp|manual|marker_sync
+489cb0|src/game/TMouseCaptureState.cpp|manual|marker_sync
+489d40|src/game/TMouseCaptureState.cpp|manual|marker_sync
 489f00|src/game/TEvent.cpp|manual|marker_sync
 489f40|src/game/TEvent.cpp|manual|marker_sync
 48a070|src/game/TEventHandler.cpp|manual|marker_sync
@@ -558,9 +565,11 @@ address|target_cpp|ownership|note
 48cfd0|src/game/TIncludeView.cpp|manual|marker_sync
 48d090|src/game/TWindow.cpp|manual|marker_sync
 48d220|src/game/TWindow.cpp|manual|marker_sync
+48d290|src/game/CIncludeView.cpp|manual|marker_sync
 48d500|src/game/TWindow.cpp|manual|marker_sync
 48d640|src/game/TWindow.cpp|manual|marker_sync
 48d670|src/game/TWindow.cpp|manual|marker_sync
+48d840|src/game/CIncludeView.cpp|manual|marker_sync
 48d8a0|src/game/TWindow.cpp|manual|marker_sync
 48d8d0|src/game/TWindow.cpp|manual|marker_sync
 48d900|src/game/TWindow.cpp|manual|marker_sync

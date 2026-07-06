@@ -47,16 +47,15 @@ void TAssetMgr::NoOpRuntimeUiCallback_005df780(int arg) {
 }
 
 // FUNCTION: IMPERIALISM 0x005dfc10
-void TAssetMgr::PlayMovieClipAndDispatchTurnStateFollowup(CString movieName,
-                                                          TMovieView* movieView,
+void TAssetMgr::PlayMovieClipAndDispatchTurnStateFollowup(CString movieName, TMovieView* movieView,
                                                           int modeFlag) {
   (void)modeFlag;
 
   CString moviePath = CString("Movies/") + movieName;
   moviePath = moviePath + ".avi";
 
-  CString prefixedPath = CString(g_pImperialismApp->DetectImperialismInstallDriveAndSetPathPrefix()) +
-                         moviePath;
+  CString prefixedPath =
+      CString(g_pImperialismApp->DetectImperialismInstallDriveAndSetPathPrefix()) + moviePath;
 
   g_pUiRuntimeContext->activeMovieViewF4 = movieView;
   if (!movieView->OpenMoviePathAndDetachOnSuccess(static_cast<LPCTSTR>(prefixedPath))) {
@@ -68,7 +67,7 @@ void TAssetMgr::PlayMovieClipAndDispatchTurnStateFollowup(CString movieName,
 
   g_pSfxPlaybackSystem->ClearDirectSoundInitPendingAndResetState();
   g_pUiRuntimeContext->HandleTurnStateExitAndPostFollowupEventCode(2);
-  movieView->SendMessage806IfSelectionStateActive();
+  movieView->PlayMovieIfActive();
 }
 
 // FUNCTION: IMPERIALISM 0x005dfea0
