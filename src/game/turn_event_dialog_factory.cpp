@@ -205,6 +205,62 @@ TView* BuildStartupIntroBackground() {
   return g_pUiResourceHead;
 }
 
+// Event 0x3a98 (keystone case at 0x0043b099): a single bare 200x200 'WIND' window at
+// (0x9c,0x38) with the gold dialog behavior. Unlike the sibling cases, the original
+// case body uses the expanded (non-helper) idiom: field writes re-read
+// g_pUiResourceContext per statement group, and the pop is a direct RemoveTail.
+TView* BuildBareGoldEventWindow3A98() {
+  TView* parent;
+
+  TWindow* window = new TWindow();
+  g_pUiResourceContext = window;
+  if (g_pUiResourceHead != 0) {
+    parent = static_cast<TView*>(g_UiWidgetBuildStack006a13e0.GetTail());
+  } else {
+    g_pUiResourceHead = window;
+    parent = 0;
+  }
+  PushUiWidgetBuildStackNode(window);
+
+  int offset[2];
+  int size[2];
+  offset[0] = 0x9c;
+  offset[1] = 0x38;
+  size[0] = 0xc8;
+  size[1] = 0xc8;
+  window->InitializeUiResourceEntryFrameAndParent(0, parent, offset, size, 0, 0, 1);
+  window->controlTag = static_cast<int>(kControlTagWind);
+  window->field3c = 0;
+  window->SetEnabled(1, 0);
+  window->SetState(1, 0);
+
+  g_pUiResourceContext->flag4c = 1;
+  g_pUiResourceContext->flag4d = 1;
+
+  TWindow* context = static_cast<TWindow*>(g_pUiResourceContext);
+  context->field70 = 0;
+  context->flag6f = 1;
+  context->flag6e = 1;
+  context->field6d = 0;
+  context->flag6c = 1;
+  context->flag71 = 1;
+  context->field9c = 8;
+  context->windowStyleType = 2;
+
+  TWindow* behaviorOwner = static_cast<TWindow*>(g_pUiResourceContext);
+  behaviorOwner->GetEmbeddedDialogBehavior()->SetFlag0C(1);
+  behaviorOwner->GetEmbeddedDialogBehavior()->SetUiColorDescriptorGoldTriplet(1, 0x20202020,
+                                                                              0x20202020);
+
+  g_pUiResourceContext = 0;
+  PopUiWidgetBuildStackNode();
+
+  if (g_pUiResourceHead != 0) {
+    g_pUiResourceHead->PropagateUiResourceContextRecursive(0);
+  }
+  return g_pUiResourceHead;
+}
+
 } // namespace
 
 // Turn-event dialog factory callbacks registered by InitializeTurnEventDialogFactoryRegistry.
@@ -257,6 +313,8 @@ TView* __cdecl BuildTurnEventDialogUiByCode(CWnd* pHostWindow, int nEventCode) {
     return BuildTurnOrderNavigationWindow(5, 0x32, 0x258, 400, 2);
   case 0x7d2:
     return BuildTurnOrderNavigationWindow(0, 0x28, 0x280, 0x1e0, 4);
+  case 0x3a98:
+    return BuildBareGoldEventWindow3A98();
   case 0x11f8:
     return BuildStartupIntroBackground();
   default:
