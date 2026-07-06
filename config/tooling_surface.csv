@@ -62,10 +62,6 @@ module|tools.workflow.pe_resources|just:resource-check|Check rebuilt PE resource
 module|tools.ghidra.class_owner_probe|just:class-owner-probe|Probe likely class owner for an address
 module|tools.ghidra.function_slice|query:function-slice|Read-only Ghidra function slice report (callers/callees/field offsets)
 module|tools.reccmp.compare_batch|just:compare|Batch reccmp compare over multiple targets
-module|tools.w32dasm.parse_alf|just:w32dasm-report|Parse W32Dasm ALF disassembly export
-module|tools.w32dasm.compare_alf_ghidra|just:w32dasm-report|Compare W32Dasm ALF against Ghidra
-module|tools.w32dasm.inspect_wpj|just:w32dasm-report|Inspect W32Dasm project file
-module|tools.w32dasm.rank_report|just:w32dasm-report|Rank W32Dasm report findings
 module|tools.common.ghidra_env|dependency:tools.ghidra.listing_one|Shared pyghidra bootstrap + eager version enforcement for all Ghidra tools
 module|tools.reccmp.core_impact_ranking|dependency:tools.reccmp.session_loop|Imported by session loop
 module|tools.workflow.impk_compat|dependency:tools.workflow.class_discovery|In-repo class-discovery evidence CLI (formerly external impk)

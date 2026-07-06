@@ -30,7 +30,6 @@ export GHIDRA_PROJECT_NAME := "imperialism-decomp"
 # REGENERATE Mac evidence (already vendored under vendor/macos_codewarrior/evidence).
 macos_dump := env_var_or_default("MACOS_IMPERIALISM_DUMP", "")
 macos_workspace := env_var_or_default("MACOS_CODEWARRIOR_WORKSPACE", justfile_directory() / "vendor/macos_codewarrior")
-macos_pef_datafork := env_var_or_default("MACOS_PEF_DATAFORK", macos_dump + "/Imperialism.datafork")
 
 # Transitional aliases for renamed targets (see docs/workflows.md).
 alias stats-commit := stats-baseline-update
@@ -650,13 +649,6 @@ rtti-oracle *args: _require-ghidra-install
 dump-message-maps *args: _require-ghidra-install
   uv run python -m tools.ghidra.dump_message_maps {{args}}
 
-[group('ghidra-inspect')]
-w32dasm-report: _require-ghidra-install
-  uv run python -m tools.w32dasm.parse_alf
-  uv run python -m tools.w32dasm.compare_alf_ghidra
-  uv run python -m tools.w32dasm.inspect_wpj
-  uv run python -m tools.w32dasm.rank_report
-
 # ---------------------------------------------------------------------------
 # ghidra-db — targets that WRITE the vendored Ghidra database.
 # After any of these, `just export-project` must run before committing so the
@@ -761,11 +753,6 @@ import-ghidra *args: _require-ghidra-install
     --local-project-dir "{{GHIDRA_PROJECT_DIR}}" \
     --file "$file_in_project" \
     {{args}})
-
-# Convenience wrapper: apply-source-datatypes for the TEventHandler/TView pair.
-[private]
-apply-tview-datatype: _require-ghidra-install
-  uv run python -m tools.ghidra.apply_source_datatypes --classes TEventHandler,TView
 
 # ---------------------------------------------------------------------------
 # gates — mechanical checks (all read-only).
@@ -1122,15 +1109,3 @@ vendor-msvc500-headers *args:
 vendor-directx-headers *args:
   uv run python -m tools.workflow.vendor_directx_headers {{args}}
 
-# MUTATES: vendor/macos_codewarrior/ghidra (imports the Mac PEF into its own project).
-[group('setup')]
-import-macos-pef: _require-ghidra-install
-  : "${MACOS_IMPERIALISM_DUMP:?Set MACOS_IMPERIALISM_DUMP in .env (extracted macOS dump dir holding Imperialism.datafork)}"
-  mkdir -p "{{macos_workspace}}/ghidra"
-  "$GHIDRA_INSTALL_DIR/support/analyzeHeadless" "{{macos_workspace}}/ghidra" imperialism-macos \
-    -import "{{macos_pef_datafork}}" \
-    -overwrite \
-    -processor PowerPC:BE:32:default \
-    -cspec macosx \
-    -postScript PEF_script.java \
-    -postScript FindFunctionsUsingTOCinPEFScript.java
