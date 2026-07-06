@@ -13,9 +13,8 @@ namespace {
 MciMovieWindowState* InitializeMovieViewOwnedStateBlock_Impl(MciMovieWindowState* state,
                                                              HWND parentHwnd) {
   AFX_MODULE_STATE* moduleState = AfxGetModuleState();
-  state->hwnd =
-      MCIWndCreateA(parentHwnd, moduleState->m_hCurrentInstanceHandle,
-                    kMciMovieWindowCreateStyle, 0);
+  state->hwnd = MCIWndCreateA(parentHwnd, moduleState->m_hCurrentInstanceHandle,
+                              kMciMovieWindowCreateStyle, 0);
   state->lastResult = 0;
   return state;
 }
@@ -27,8 +26,8 @@ void SendWmCloseToWindowHandle(MciMovieWindowState* state) {
 
 // FUNCTION: IMPERIALISM 0x00492fc0
 bool SendMessage499AndDetachOnSuccess(MciMovieWindowState* state, LPCSTR moviePath) {
-  state->lastResult = SendMessageA(state->hwnd, kMciMovieOpenMessage, 0,
-                                   reinterpret_cast<LPARAM>(moviePath));
+  state->lastResult =
+      SendMessageA(state->hwnd, MCIWNDM_OPENA, 0, reinterpret_cast<LPARAM>(moviePath));
   if (state->lastResult != 0) {
     return false;
   }
@@ -41,14 +40,14 @@ bool SendMessage499AndDetachOnSuccess(MciMovieWindowState* state, LPCSTR moviePa
 }
 
 // FUNCTION: IMPERIALISM 0x00493090
-bool SendMessage806AndCacheResult(MciMovieWindowState* state) {
-  state->lastResult = SendMessageA(state->hwnd, kMciMoviePlayMessage, 0, 0);
+bool PlayMovieAndCacheResult(MciMovieWindowState* state) {
+  state->lastResult = SendMessageA(state->hwnd, MCI_PLAY, 0, 0);
   return state->lastResult == 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004930d0
-bool SendMessage808AndCacheResult(MciMovieWindowState* state) {
-  state->lastResult = SendMessageA(state->hwnd, kMciMoviePollMessage, 0, 0);
+bool StopMovieAndCacheResult(MciMovieWindowState* state) {
+  state->lastResult = SendMessageA(state->hwnd, MCI_STOP, 0, 0);
   return state->lastResult == 0;
 }
 
@@ -126,26 +125,27 @@ bool TMovieView::OpenMoviePathAndDetachOnSuccess(LPCSTR moviePath) {
 }
 
 // FUNCTION: IMPERIALISM 0x005e24e0
-bool TMovieView::SendMessage806IfSelectionStateActive() {
+bool TMovieView::PlayMovieIfActive() {
   if (movieWindowState == 0) {
     return false;
   }
-  return SendMessage806AndCacheResult(movieWindowState);
+  return PlayMovieAndCacheResult(movieWindowState);
 }
 
+// Stop (skip) the movie: sends MCI_STOP, which makes the MCIWnd notify its parent with
+// MCIWNDM_NOTIFYMODE/MCI_MODE_STOP -> CIncludeView::OnMciNotifyMode advances the turn state.
 // FUNCTION: IMPERIALISM 0x005e2500
-bool TMovieView::SendMessage808IfSelectionStateActive() {
+bool TMovieView::StopMovieIfActive() {
   if (movieWindowState == 0) {
     return false;
   }
-  return SendMessage808AndCacheResult(movieWindowState);
+  return StopMovieAndCacheResult(movieWindowState);
 }
 
 // FUNCTION: IMPERIALISM 0x005e2520
 char TMovieView::DispatchUiMouseMoveToChildren(CPoint* point, int arg2, int arg3, int arg4) {
   if (movieWindowState != 0) {
-    SendMessage808AndCacheResult(movieWindowState);
+    StopMovieAndCacheResult(movieWindowState);
   }
   return TPicture::DispatchUiMouseMoveToChildren(point, arg2, arg3, arg4);
 }
-

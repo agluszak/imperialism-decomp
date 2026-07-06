@@ -36,6 +36,18 @@ protected:
   // wParam 1 = re-propagate this view as the tree's native window and re-resolve 'main';
   // wParam 0 = detach the dialog context (one-shot assert if the gate flag is clear).
   afx_msg LRESULT OnDialogTreeHostMsg4EF(WPARAM wParam, LPARAM lParam); // 0x00482bf0
+  // WM_LBUTTONDOWN: forward the click into the dialog tree (skips a playing movie). 0x004839e0
+  afx_msg void OnLButtonDown(UINT nFlags, CPoint point); // 0x004839e0
+  // WM_KEYDOWN: translate the keystroke into the shared UI command event and forward it
+  // into the active window's TView tree (via ForwardParam). This is the entry point that
+  // lets ESC/Space/Enter reach TGameWindow::ForwardParam, e.g. to skip a playing movie.
+  afx_msg void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags); // 0x00484260
+  // WM_CHAR: no game handling (defers to DefWindowProc), matching the original.
+  afx_msg void OnChar(UINT nChar, UINT nRepCnt, UINT nFlags); // 0x004840b0
+  // MCIWNDM_NOTIFYMODE (0x4c8): when the movie MCIWnd reports MCI_MODE_STOP (whether it
+  // ended on its own or was stopped/skipped), advance the turn state (post the followup
+  // event code and clear the active movie view).
+  afx_msg LRESULT OnMciNotifyMode(WPARAM wParam, LPARAM mciMode); // 0x00484230
   DECLARE_MESSAGE_MAP()
 
 public:

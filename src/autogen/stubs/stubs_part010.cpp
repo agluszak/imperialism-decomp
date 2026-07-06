@@ -1259,14 +1259,6 @@ undefined4 HandleIncludeViewPointerUpdateAndNotifyChildren(void)
   return 0;
 }
 
-// ghidra_name WrapperFor_InitializeRefCountedObjectBaseVtable_At004839e0
-// ghidra_proto undefined WrapperFor_InitializeRefCountedObjectBaseVtable_At004839e0()
-// FUNCTION: IMPERIALISM 0x004839e0
-undefined4 WrapperFor_InitializeRefCountedObjectBaseVtable_At004839e0(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_FreeHeapBufferIfNotNull_At00483ad0_Impl
 // ghidra_proto undefined WrapperFor_FreeHeapBufferIfNotNull_At00483ad0_Impl()
 // FUNCTION: IMPERIALISM 0x00483ab0

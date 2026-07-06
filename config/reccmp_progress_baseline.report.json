@@ -2469,6 +2469,12 @@
       "type": 1
     },
     {
+      "address": "0x4840b0",
+      "matching": 1.0,
+      "name": "CIncludeView::OnChar",
+      "type": 1
+    },
+    {
       "address": "0x484190",
       "matching": 0.0392156862745098,
       "name": "HandleParentNotifyAndEndMouseCapture_00484190",
@@ -2477,7 +2483,13 @@
     {
       "address": "0x484230",
       "matching": 1.0,
-      "name": "AdvanceTurnStateWhenMovieMciModeStops",
+      "name": "CIncludeView::OnMciNotifyMode",
+      "type": 1
+    },
+    {
+      "address": "0x484260",
+      "matching": 0.16049382716049382,
+      "name": "CIncludeView::OnKeyDown",
       "type": 1
     },
     {
@@ -4683,6 +4695,12 @@
       "type": 1
     },
     {
+      "address": "0x48d290",
+      "matching": 0.9285714285714286,
+      "name": "GetModalStackTopHostView",
+      "type": 1
+    },
+    {
       "address": "0x48d4a0",
       "matching": 0.2222222222222222,
       "name": "InitializeTWindowUnlinkDestructState_006A1A40_AndRegisterAtExit",
@@ -4710,6 +4728,12 @@
       "address": "0x48d670",
       "matching": 0.19631901840490798,
       "name": "DestructTWindowViewAndUnlinkGlobalLists",
+      "type": 1
+    },
+    {
+      "address": "0x48d840",
+      "matching": 1.0,
+      "name": "GetLiveRegistryHeadHostView",
       "type": 1
     },
     {

@@ -174,7 +174,7 @@ void TGameWindow::ForwardParam(int param) {
       if (activeMovieView == 0) {
         return;
       }
-      activeMovieView->SendMessage808IfSelectionStateActive();
+      activeMovieView->StopMovieIfActive();
       return;
     }
     mainControl->ForwardParam(param);

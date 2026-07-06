@@ -43,18 +43,8 @@ BOOL CMainFrame::PreTranslateMessage(MSG* msg) {
   return CFrameWnd::PreTranslateMessage(msg);
 }
 
-// MCI notify callback (mode 0x20d == MCI_MODE_STOP): when the intro movie stops, run the
-// screen-exit path so the followup turn-event code (main menu, etc.) gets posted. The
-// original registers this by address only (no static xrefs; runtime registration site
-// still unidentified — see bd imperialism-decomp-1uj.57.4).
-// FUNCTION: IMPERIALISM 0x00484230
-int __stdcall AdvanceTurnStateWhenMovieMciModeStops(int wParam, int mciMode) {
-  (void)wParam;
-  if (mciMode == 0x20d) {
-    g_pUiRuntimeContext->HandleTurnStateExitAndPostFollowupEventCode(0);
-  }
-  return 0;
-}
+// The MCI stop-notify handler (0x00484230) is CIncludeView's MCIWNDM_NOTIFYMODE (msg 0x4c8)
+// message-map entry — see CIncludeView::OnMciNotifyMode.
 
 // SYNTHETIC: IMPERIALISM 0x00484af0
 // CMainFrame::CreateObject

@@ -14,6 +14,6 @@ struct MciMovieWindowState {
 ASSERT_SIZE(MciMovieWindowState, 0x08);
 
 const DWORD kMciMovieWindowCreateStyle = 0x5000410a;
-const UINT kMciMovieOpenMessage = 0x499;
-const UINT kMciMoviePlayMessage = 0x806;
-const UINT kMciMoviePollMessage = 0x808;
+// The movie window is a standard MCIWnd; the game drives it by sending it MCIWNDM_OPENA
+// (open a file) and, because MCIWnd relays MCI command messages to its device, the raw
+// MCI_PLAY / MCI_STOP command messages (from <vfw.h> / <mmsystem.h>).
