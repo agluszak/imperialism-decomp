@@ -7,6 +7,6 @@ src/game/TMacViewMgr.cpp|0|0|0|0|0|2|2
 src/game/TMapMaker_GenerateRegions.cpp|0|0|0|0|0|2|2
 src/game/TMapMaker_MergeSmallCityRegions.cpp|0|0|0|0|0|4|4
 src/game/TMapMaker_RotateMapColumns.cpp|0|0|0|0|0|2|2
-src/game/TMapMgr.cpp|0|0|0|0|0|2|2
+src/game/TMapMgr.cpp|0|0|0|0|0|3|3
 src/game/TOcean_RouteBuffer.cpp|0|0|0|0|0|2|2
 src/game/bitmap_descriptor_helpers.cpp|0|0|0|0|0|8|8

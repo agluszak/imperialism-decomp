@@ -291,8 +291,12 @@ public:
   // TTechMgr::OrderCapRow's unknownFlag27f/28b/291 comments).
   virtual void MarkSeedNeighborTilesUnavailableByCapabilityMaskProfileA(
       class TCivUnit* pCivilianOrderEntry); // slot 0x28 0x5159b0
-  virtual undefined
-  MarkSeedNeighborTilesUnavailableByCapabilityMaskProfileB(int param_1); // slot 0x29 0x515b10
+  // Same shape as ProfileA (slot 0x28), but the terrainType00 gate is a per-call local
+  // 8-entry table built from the same 3 OrderCapRow checks (rather than ProfileA's shared
+  // global table), and it additionally clears the origin tile's own recruitSearchVisited0e
+  // when its regionSubtypeTag05 is -1 or its city's fortLevel03 is below 3.
+  virtual void MarkSeedNeighborTilesUnavailableByCapabilityMaskProfileB(
+      class TCivUnit* pCivilianOrderEntry); // slot 0x29 0x515b10
   virtual undefined
   UpdateTilePrimaryAndSecondaryNeighborLinksByPriority(int param_1); // slot 0x2a 0x50fca0
   // Looks up whether tileIndex's region has an eligible stationed unit

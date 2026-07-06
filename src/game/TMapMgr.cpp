@@ -1698,8 +1698,53 @@ void TMapMgr::MarkSeedNeighborTilesUnavailableByCapabilityMaskProfileA(
   }
 }
 
-undefined TMapMgr::MarkSeedNeighborTilesUnavailableByCapabilityMaskProfileB(int param_1) {
-  return 0;
+// FUNCTION: IMPERIALISM 0x00515b10
+void TMapMgr::MarkSeedNeighborTilesUnavailableByCapabilityMaskProfileB(
+    TCivUnit* pCivilianOrderEntry) {
+  short tileIndex = pCivilianOrderEntry->field_6;
+  short nationTag = pCivilianOrderEntry->field_18;
+
+  unsigned char terrainTypeGate[8] = {1, 1, 0, 0, 0, 0, 1, 1};
+  if (g_pCityOrderCapabilityState->orderCapRows277[nationTag - 1].unknownFlag28b == 2) {
+    terrainTypeGate[4] = 1;
+    terrainTypeGate[5] = 0;
+    terrainTypeGate[6] = 1;
+    terrainTypeGate[7] = 1;
+  }
+  if (g_pCityOrderCapabilityState->orderCapRows277[nationTag - 1].unknownFlag291 == 2) {
+    terrainTypeGate[0] = 1;
+    terrainTypeGate[1] = 1;
+    terrainTypeGate[2] = 1;
+    terrainTypeGate[3] = 0;
+  }
+  if (g_pCityOrderCapabilityState->orderCapRows277[nationTag].unknownFlag27f == 2) {
+    terrainTypeGate[3] = 1;
+  }
+
+  this->field9 = 1;
+  for (int i = 0; i < 0x1950; ++i) {
+    terrainStateTable[i].recruitSearchVisited0e = 1;
+  }
+
+  TTerrainStateRecordView* tile = &terrainStateTable[tileIndex];
+  if (terrainTypeGate[tile->terrainType00] != 0) {
+    if (tile->regionSubtypeTag05 == -1 || cityScoreTable[tile->cityRecordIndex].fortLevel03 < 3) {
+      tile->recruitSearchVisited0e = 0;
+    }
+
+    short* neighbors = BuildHexAreaTileIndexList(tileIndex, 1);
+    unsigned char directionBit = 0;
+    for (int d = 0; d < 6; ++d) {
+      TTerrainStateRecordView* neighbor = &terrainStateTable[neighbors[d]];
+      if (terrainTypeGate[neighbor->terrainType00] != 0 &&
+          neighbor->ownerNationTag04 == nationTag &&
+          ((1 << directionBit) & tile->adjacencyBits06) == 0) {
+        neighbor->recruitSearchVisited0e = 0;
+      }
+      ++directionBit;
+    }
+    ::operator delete(neighbors);
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x00515d60
