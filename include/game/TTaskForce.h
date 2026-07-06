@@ -147,6 +147,12 @@ public:
 
   void RelinkMapOrderQueueNodeBetween(TTaskForce* prev_node, TTaskForce* next_node);
   void DecrementRequiredCount(short decrement);
+  // Adds delta to tiebreak_strength, capped at 499.
+  void AdjustMapOrderNodeStatCapped499(short delta); // 0x550370
+  // Real target is the packed order_type/order_strength dword, not an owner pointer
+  // despite the Ghidra-guessed name; only known caller (MissionSlot44's mode-1 branch)
+  // passes 0, resetting both fields to a fresh-order state.
+  void ResetOrderTypeAndStrengthDword(int packedValue); // 0x552f60
   TTaskForce* SelectPreferredMapOrderEntryByPriorityRules(TTaskForce* candidate,
                                                           int compareAttachedFlag);
   void RemoveNode(int self);

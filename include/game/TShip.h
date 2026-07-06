@@ -65,6 +65,13 @@ ASSERT_SIZE(TShip, 0x38);
 extern "C" TShip* g_pNavyPrimaryOrderListHead;
 
 TShip* GetNavyPrimaryOrderListHead(void);
+// Walks g_pNavyPrimaryOrderListHead's nextOlder24 chain `index` steps (stopping early at
+// the list's end); returns the node reached.
+TShip* GetNavyPrimaryOrderNodeByIndex(short index);
+// Cumulative-weight roll-table search: subtracts weightTable[0], [1], ... from `roll`
+// until it drops to <= 0, returning the index reached (same shape as the inlined
+// DAT_0065c25e/DAT_0065c264 walks in AccumulateRandomizedNavyOrderResourceDeltasByNationAndOwner).
+int FindCumulativeWeightBucketIndex(short* weightTable, short roll);
 short GetIndustryActionCostWeightByResourceType(short resourceType);
 short GetResourceDescriptorWeightWord0ByType(short resourceType);
 int ComputeOrderNodeCompositeEconomicScore(TShip* node);

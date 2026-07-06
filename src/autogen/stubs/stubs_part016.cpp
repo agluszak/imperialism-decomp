@@ -1155,26 +1155,10 @@ undefined4 CalculateMissionOrderPriorityScore(void)
   return 0;
 }
 
-// ghidra_name AdjustMapOrderNodeStatCapped499
-// ghidra_proto void __thiscall AdjustMapOrderNodeStatCapped499(short nDelta)
-// FUNCTION: IMPERIALISM 0x00550370
-undefined4 AdjustMapOrderNodeStatCapped499(void)
-{
-  return 0;
-}
-
 // ghidra_name TScatteredShipsMission::GetOrCreateMissionOrderEntryForNode
 // ghidra_proto void * __thiscall GetOrCreateMissionOrderEntryForNode(void)
 // FUNCTION: IMPERIALISM 0x005503a0
 undefined4 GetOrCreateMissionOrderEntryForNode(void)
-{
-  return 0;
-}
-
-// ghidra_name GetNavyPrimaryOrderNodeByIndex
-// ghidra_proto undefined GetNavyPrimaryOrderNodeByIndex()
-// FUNCTION: IMPERIALISM 0x00550640
-undefined4 GetNavyPrimaryOrderNodeByIndex(void)
 {
   return 0;
 }
@@ -1235,14 +1219,6 @@ undefined4 SelectNavyPrimaryOrderByNationAndRecomputePreferredChild(void)
   return 0;
 }
 
-// ghidra_name FindCumulativeWeightBucketIndex
-// ghidra_proto undefined FindCumulativeWeightBucketIndex()
-// FUNCTION: IMPERIALISM 0x005519d0
-undefined4 FindCumulativeWeightBucketIndex(void)
-{
-  return 0;
-}
-
 // ghidra_name AccumulateRandomizedNavyOrderResourceDeltasByNationAndOwner
 // ghidra_proto undefined AccumulateRandomizedNavyOrderResourceDeltasByNationAndOwner()
 // FUNCTION: IMPERIALISM 0x00551a00
@@ -1283,26 +1259,10 @@ undefined4 RecomputeNavyOrderSelectionPriorityChain_00552349(void)
   return 0;
 }
 
-// ghidra_name ResetTTaskForceToSentinelVtable
-// ghidra_proto undefined ResetTTaskForceToSentinelVtable()
-// FUNCTION: IMPERIALISM 0x005528a0
-undefined4 ResetTTaskForceToSentinelVtable(void)
-{
-  return 0;
-}
-
 // ghidra_name RemoveTaskForceOrderNodesByNationAndClearSelectionState
 // ghidra_proto undefined RemoveTaskForceOrderNodesByNationAndClearSelectionState()
 // FUNCTION: IMPERIALISM 0x00552a70
 undefined4 RemoveTaskForceOrderNodesByNationAndClearSelectionState(void)
-{
-  return 0;
-}
-
-// ghidra_name SetTaskForceOwnerPointer
-// ghidra_proto undefined SetTaskForceOwnerPointer()
-// FUNCTION: IMPERIALISM 0x00552f60
-undefined4 SetTaskForceOwnerPointer(void)
 {
   return 0;
 }

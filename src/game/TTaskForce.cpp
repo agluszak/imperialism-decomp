@@ -8,6 +8,14 @@
 
 extern undefined4 GenerateThreadLocalRandom15(void);
 
+// FUNCTION: IMPERIALISM 0x00550370
+void TTaskForce::AdjustMapOrderNodeStatCapped499(short delta) {
+  tiebreak_strength = static_cast<short>(tiebreak_strength + delta);
+  if (tiebreak_strength > 499) {
+    tiebreak_strength = 499;
+  }
+}
+
 // FUNCTION: IMPERIALISM 0x00550510
 short TTaskForce::GetOrderNodeDescriptorWord20ByResourceType() {
   return static_cast<short>(
@@ -290,6 +298,10 @@ TTaskForce::TTaskForce(int contextAnchorArg, short requiredCountArg)
       activeChildEntry(nullptr), contextAnchor(contextAnchorArg), required_count(requiredCountArg),
       attached_entity(0), queue_prev(nullptr), queue_next(nullptr), tiebreak_strength(-1) {}
 
+// SYNTHETIC: IMPERIALISM 0x00552870
+// TTaskForce::`scalar deleting destructor'
+
+// FUNCTION: IMPERIALISM 0x005528a0
 TTaskForce::~TTaskForce() {}
 
 void TTaskForce::WriteTo(TStream* stream) {
@@ -364,6 +376,11 @@ void TTaskForce::Free() {
   // 1uj.16 follow-up notes.
 
   delete this;
+}
+
+// FUNCTION: IMPERIALISM 0x00552f60
+void TTaskForce::ResetOrderTypeAndStrengthDword(int packedValue) {
+  *reinterpret_cast<int*>(&order_type) = packedValue;
 }
 
 // FUNCTION: IMPERIALISM 0x00552f80
