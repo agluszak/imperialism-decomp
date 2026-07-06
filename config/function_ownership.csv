@@ -4256,6 +4256,7 @@ address|target_cpp|ownership|note
 5dc1c0|src/game/TViewMgr.cpp|manual|marker_sync
 5dc1e0|src/game/TViewMgr.cpp|manual|marker_sync
 5dc3f0|src/game/TViewMgr.cpp|manual|marker_sync
+5dc430|src/game/TViewMgr.cpp|manual|marker_sync
 5dc690|src/game/TViewMgr.cpp|manual|marker_sync
 5dcaa0|src/game/TViewMgr.cpp|manual|marker_sync
 5dcc90|src/game/TModalMessageCommand.cpp|manual|marker_sync

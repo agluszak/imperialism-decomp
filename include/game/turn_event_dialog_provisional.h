@@ -26,10 +26,12 @@ struct CityOrderSource {
 };
 
 struct TurnEventDialogNode : public TView {
-  virtual void ShowTurnEventDialog(int flag);  // slot 0x68 byte 0x1a0
-  virtual void node69();                       // slot 0x69
-  virtual void node6a();                       // slot 0x6a
-  virtual void RefreshTurnEventDialog();       // slot 0x6b byte 0x1ac
+  virtual void ShowTurnEventDialog(int flag); // slot 0x68 byte 0x1a0
+  virtual void node69();                      // slot 0x69
+  virtual void node6a();                      // slot 0x6a
+  // Returns a status/tag value that some callers forward to the 'GOLD' child (see
+  // HandleTurnEventDialogFactorySlotB8); most callers ignore it (codegen-neutral).
+  virtual int RefreshTurnEventDialog();        // slot 0x6b byte 0x1ac
   virtual void node6c();                       // slot 0x6c
   virtual void node6d();                       // slot 0x6d
   virtual void* QueryTurnEventContentObject(); // slot 0x6e byte 0x1b8
@@ -68,8 +70,9 @@ struct GoldCommitControl : public TView {
   virtual void goldSlot70();
   virtual void goldSlot71();
   virtual void goldSlot72();
-  virtual void goldSlot73();
-  virtual void goldSlot74();
+  // dialog 0x2405 'GOLD' trade-summary child (HandleTurnEventDialogFactorySlotB8).
+  virtual void ApplyGoldTradeSummaryValues(int a, int b, int c);     // slot 0x73 byte 0x1cc
+  virtual void ApplyGoldTradeDialogRefreshResult(int refreshResult); // slot 0x74 byte 0x1d0
   virtual void goldSlot75();
   virtual void goldSlot76();
   virtual void goldSlot77();

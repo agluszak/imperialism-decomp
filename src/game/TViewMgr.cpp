@@ -1148,8 +1148,6 @@ void TViewMgr::InvokeStrategicMapViewMethod60(short param1) {
 
 void TViewMgr::UiRuntimeSlotB4() {}
 
-void TViewMgr::UiRuntimeSlotB8() {}
-
 // FUNCTION: IMPERIALISM 0x005d7fc0
 void TViewMgr::UiRuntimeSlot50(int payload) {
   (void)payload;
@@ -1505,6 +1503,32 @@ void TViewMgr::HandleTurnEventTable66F220_Slot0C_InvokeGoldViewSlots0C_1E4_14x14
       static_cast<TView*>(g_pDisplayMgr->activeDialog->ResolveControlByTag(0x444c4f47))); // 'GOLD'
   gold->AssertValid();
   gold->ConfigureGoldValueCells(0x14, 0x14);
+}
+
+// FUNCTION: IMPERIALISM 0x005dc430
+void TViewMgr::HandleTurnEventDialogFactorySlotB8(int a, int b, int c) {
+  TurnEventDialogNode* node = static_cast<TurnEventDialogNode*>(
+      g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(0x2405));
+  if (node == nullptr) {
+    MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgr_0069B6BC, 0xf50);
+  }
+  node->ShowTurnEventDialog(1);
+  GoldCommitControl* gold = static_cast<GoldCommitControl*>(
+      static_cast<TView*>(node->ResolveControlByTag(0x444c4f47))); // 'GOLD'
+  gold->AssertValid();
+  if (gold == nullptr) {
+    MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgr_0069B6BC, 0xf54);
+  }
+  gold->ApplyGoldTradeSummaryValues(a, b, c);
+  POINT placement;
+  this->ComputeTurnEventDialogPlacementByCode(node, &placement);
+  node->CaptureLayoutF0(reinterpret_cast<int*>(&placement), 0);
+  int refreshResult = node->RefreshTurnEventDialog();
+  gold->ApplyGoldTradeDialogRefreshResult(refreshResult);
+  node->CallVoidSlotA0();
+  node->Free();
 }
 
 // FUNCTION: IMPERIALISM 0x005dc690

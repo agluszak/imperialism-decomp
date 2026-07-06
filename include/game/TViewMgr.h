@@ -86,17 +86,20 @@ public:
   virtual void InvokeStrategicMapViewMethod5C();             // 0xac 0x5d7f70
   virtual void InvokeStrategicMapViewMethod60(short param1); // 0xb0 0x5d7f90
   virtual void UiRuntimeSlotB4();                            // 0xb4
-  virtual void UiRuntimeSlotB8();                            // 0xb8
-  virtual void UiRuntimeSlotBC();                            // 0xbc
-  virtual undefined InvokeStrategicMapViewMethod68();        // 0xc0 0x5dc180
-  virtual undefined InvokeStrategicMapViewMethod70();        // 0xc4 0x5dc1c0
-  virtual undefined InvokeStrategicMapViewMethod74();        // 0xc8 0x5dc1a0
-  virtual void InvokeStrategicMapViewMethod6C();             // 0xcc 0x5dc160
-  virtual void UiRuntimeSlotD0();                            // 0xd0
-  virtual void UiRuntimeSlotD4(int arg);                     // 0xd4
-  virtual void UiRuntimeSlotD8();                            // 0xd8
-  virtual int ShowConstructionOptionsDialog();               // 0xdc
-  virtual void UiRuntimeSlotE0();                            // 0xe0
+  // Opens factory dialog 0x2405, seeds its 'GOLD' trade-summary child with the three
+  // caller args, places/refreshes it, then forwards the refresh result to the child
+  // (0x5dc430).
+  virtual void HandleTurnEventDialogFactorySlotB8(int a, int b, int c); // 0xb8 0x5dc430
+  virtual void UiRuntimeSlotBC();                                       // 0xbc
+  virtual undefined InvokeStrategicMapViewMethod68();                   // 0xc0 0x5dc180
+  virtual undefined InvokeStrategicMapViewMethod70();                   // 0xc4 0x5dc1c0
+  virtual undefined InvokeStrategicMapViewMethod74();                   // 0xc8 0x5dc1a0
+  virtual void InvokeStrategicMapViewMethod6C();                        // 0xcc 0x5dc160
+  virtual void UiRuntimeSlotD0();                                       // 0xd0
+  virtual void UiRuntimeSlotD4(int arg);                                // 0xd4
+  virtual void UiRuntimeSlotD8();                                       // 0xd8
+  virtual int ShowConstructionOptionsDialog();                          // 0xdc
+  virtual void UiRuntimeSlotE0();                                       // 0xe0
   // Opens factory dialog 0x1c52, places it, and sets the 'GOLD'->'name' text from a
   // localized string code (0x5dd220).
   virtual void HandleTurnEventDialogFactorySlotE4(int stringCode); // 0xe4

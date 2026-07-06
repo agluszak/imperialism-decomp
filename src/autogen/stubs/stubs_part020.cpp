@@ -459,14 +459,6 @@ undefined4 BuildTurnStateStyledTextAndDispatchMainRoutine(void)
   return 0;
 }
 
-// ghidra_name HandleTurnEventDialogFactorySlotB8
-// ghidra_proto undefined HandleTurnEventDialogFactorySlotB8()
-// FUNCTION: IMPERIALISM 0x005dc430
-undefined4 HandleTurnEventDialogFactorySlotB8(void)
-{
-  return 0;
-}
-
 // ghidra_name DispatchUiRuntimeMessage102CAndRefreshActiveView
 // ghidra_proto undefined DispatchUiRuntimeMessage102CAndRefreshActiveView()
 // FUNCTION: IMPERIALISM 0x005dc560
