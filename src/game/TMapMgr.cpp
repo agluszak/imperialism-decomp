@@ -268,9 +268,10 @@ void TMapMgr::UpdateTileNeighborBorderInfluenceCounters(short tileIndex, short m
   }
 }
 
-undefined TMapMgr::InitializeTileNeighborConnectionMaskIfNeeded(int param_1) {
-  return 0;
-}
+// Opposite hex direction (d+3 mod 6), read raw at 0x00696e60 as its own table by
+// TMapMgr::InitializeTileNeighborConnectionMaskIfNeeded (0x5107e0) rather than computed --
+// modeled the same way per the kNextHexDirection precedent above (table lookup, not modulo).
+static const short kOppositeHexDirection[6] = {3, 4, 5, 0, 1, 2};
 
 // Recompute a tile's per-direction adjacency masks (bytes 0x0a/0x0b) and its sprite-variant
 // code (byte 2) from its six hex neighbors, using the map-gen LCG for random tie-breaks.
@@ -460,6 +461,33 @@ unsigned char* TMapMgr::UpdateMapTileAdjacencyMasksAndVariantForTile(uint param_
     }
   }
   return result;
+}
+
+// FUNCTION: IMPERIALISM 0x005107e0
+void TMapMgr::InitializeTileNeighborConnectionMaskIfNeeded(short tileIndex) {
+  TTerrainStateRecordView* tile = &terrainStateTable[tileIndex];
+  if (tile->gateFlag == 1) {
+    return;
+  }
+
+  tile->terrainType00 = 0;
+  tile->resourceTypeByEdge[0] = -1;
+  tile->resourceTypeByEdge[1] = -1;
+  tile->resourceTypeByEdge[0] = 0x11;
+  tile->gateFlag = static_cast<signed char>(ResolveRegionTileSubtypeCodeForTileIndex(tileIndex));
+
+  short neighbors[6];
+  ComputeHexNeighborTileIndices(tileIndex, neighbors, hexNeighborWrapHorizontally20);
+  for (int d = 0; d < 6; ++d) {
+    if (neighbors[d] == -1) {
+      continue;
+    }
+    TTerrainStateRecordView* neighbor = &terrainStateTable[neighbors[d]];
+    int oppositeDirection = kOppositeHexDirection[d];
+    if (neighbor->adjacencyMaskA0a & (1 << oppositeDirection)) {
+      neighbor->adjacencyMaskA0a -= kHexDirectionBitMask[oppositeDirection];
+    }
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x005108d0

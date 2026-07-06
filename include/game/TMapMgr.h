@@ -175,8 +175,12 @@ public:
                                                         char* param_2);     // slot 0x0b 0x50ec90
   virtual undefined LoadPoliticalMapRegionSubtypeTableFromResourceStream(); // slot 0x0c 0x50f200
   virtual unsigned char*
-  UpdateMapTileAdjacencyMasksAndVariantForTile(uint param_1);                  // slot 0x0d 0x510210
-  virtual undefined InitializeTileNeighborConnectionMaskIfNeeded(int param_1); // slot 0x0e 0x5107e0
+  UpdateMapTileAdjacencyMasksAndVariantForTile(uint param_1); // slot 0x0d 0x510210
+  // If tileIndex's gateFlag != 1 (not yet initialized): resets terrainType00 to 0 and
+  // resourceTypeByEdge to {0x11, 0xff}, refreshes gateFlag via
+  // ResolveRegionTileSubtypeCodeForTileIndex, then for each hex neighbor clears the
+  // corresponding "opposite direction" bit in that neighbor's adjacencyMaskA0a if set.
+  virtual void InitializeTileNeighborConnectionMaskIfNeeded(short tileIndex); // slot 0x0e 0x5107e0
   // Recomputes tileIndex's ownerBorderMask07/cityBorderMask08/waterAdjacencyMask09 from its 6
   // hex neighbors. For each direction: if the neighbor is off-map, always counts as a border
   // (bit set unconditionally); if tileIndex is water, only counts a differently-owned water
