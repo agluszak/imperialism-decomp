@@ -2397,8 +2397,8 @@ void TMultiplayerMgr::DispatchCityRedrawInvalidateEvent(short cityId) {
   packet.cityScoreValue9C = src->cityScoreValue;
   packet.cityBytesA0[0] = src->padA0;
   packet.cityBytesA0[1] = src->exploredByNationMaskA1;
-  packet.cityBytesA0[2] = src->padA2[0];
-  packet.cityBytesA0[3] = src->padA2[1];
+  packet.cityBytesA0[2] = src->padA2;
+  packet.cityBytesA0[3] = src->regionClassA3;
   packet.cityNameA4 = src->cityNameA4;
 
   g_pNetMgr006a6014->Send(&packet, 0);

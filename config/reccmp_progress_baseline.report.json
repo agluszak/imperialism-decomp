@@ -16536,7 +16536,7 @@
     },
     {
       "address": "0x511f30",
-      "matching": 0.024390243902439025,
+      "matching": 0.18587360594795538,
       "name": "TMapMgr::TMapMaker_CheckTerrainTypePairReachabilityByRegionClassMask",
       "type": 1
     },
@@ -16872,7 +16872,7 @@
     },
     {
       "address": "0x515b10",
-      "matching": 0.3167420814479638,
+      "matching": 0.3378995433789954,
       "name": "TMapMgr::MarkSeedNeighborTilesUnavailableByCapabilityMaskProfileB",
       "type": 1
     },
@@ -17046,7 +17046,7 @@
     },
     {
       "address": "0x5178f0",
-      "matching": 0.32038834951456313,
+      "matching": 0.34382566585956414,
       "name": "ComputeRepresentativeTileIndexForTerrainTypeWithWrapBias",
       "type": 1
     },

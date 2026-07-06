@@ -131,7 +131,11 @@ struct TGlobalMapCityScoreRecord {
   // pending nation has previously been adjacent/hostile here. Exact set-site not yet
   // identified.
   unsigned char exploredByNationMaskA1;
-  unsigned char padA2[2];
+  unsigned char padA2;
+  // Region-class code (0..23), read via MOVSX in
+  // TMapMaker_CheckTerrainTypePairReachabilityByRegionClassMask to index a 24-entry
+  // per-class "seen" flag array.
+  signed char regionClassA3;
   CString cityNameA4; // 0xa4 — city display name
 };
 
@@ -218,9 +222,14 @@ public:
   // (a UI refresh notification) to g_pUiRuntimeContext for the active nation.
   virtual void DispatchTurnEvent7DDForActiveNation();      // slot 0x13 0x511ed0
   virtual void ResetAllTileSpriteVariantIndexToSentinel(); // slot 0x14 0x5178c0
-  virtual undefined
-  TMapMaker_CheckTerrainTypePairReachabilityByRegionClassMask(short param_1,
-                                                              short param_2); // slot 0x15 0x511f30
+  // Builds the set of region classes (TGlobalMapCityScoreRecord::regionClassA3) present in
+  // nationA's owned regions (plus every minor nation tied to nationA per
+  // IsEncodedNationSlotMinus200Equal, i.e. encodedNationSlot - 200 == nationA), then
+  // returns true if nationB (plus its tied minors) owns any region sharing one of those
+  // classes.
+  virtual bool
+  TMapMaker_CheckTerrainTypePairReachabilityByRegionClassMask(short nationA,
+                                                              short nationB); // slot 0x15 0x511f30
   // False if any of cityRecordIndex's adjacent regions already has ownerNationCode00 ==
   // nationTag; otherwise true only if there's also no second-degree link
   // (CollectSecondDegreeLinksMatchingNodeType returns 0 into a scratch buffer) AND no

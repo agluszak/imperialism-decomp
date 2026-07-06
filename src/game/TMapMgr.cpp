@@ -948,9 +948,63 @@ void TMapMgr::ForwardComputeRepresentativeTileIndexForTerrainTypeWithWrapBias(un
   ComputeRepresentativeTileIndexForTerrainTypeWithWrapBias(static_cast<short>(param_1), 1);
 }
 
-undefined TMapMgr::TMapMaker_CheckTerrainTypePairReachabilityByRegionClassMask(short param_1,
-                                                                               short param_2) {
-  return 0;
+namespace {
+void MarkOwnedRegionClasses(TSortedList* regionList, bool* regionClassSeen) {
+  int ordinal = 1;
+  int count = regionList->GetCount();
+  while (ordinal <= count) {
+    int regionId = regionList->GetIntByOrdinal(ordinal);
+    regionClassSeen[g_pGlobalMapState->cityScoreTable[regionId].regionClassA3] = true;
+    ++ordinal;
+    count = regionList->GetCount();
+  }
+}
+
+bool AnyOwnedRegionClassSeen(TSortedList* regionList, const bool* regionClassSeen) {
+  int ordinal = 1;
+  int count = regionList->GetCount();
+  while (ordinal <= count) {
+    int regionId = regionList->GetIntByOrdinal(ordinal);
+    if (regionClassSeen[g_pGlobalMapState->cityScoreTable[regionId].regionClassA3]) {
+      return true;
+    }
+    ++ordinal;
+    count = regionList->GetCount();
+  }
+  return false;
+}
+} // namespace
+
+// FUNCTION: IMPERIALISM 0x00511f30
+bool TMapMgr::TMapMaker_CheckTerrainTypePairReachabilityByRegionClassMask(short nationA,
+                                                                          short nationB) {
+  bool regionClassSeen[24] = {false};
+
+  int i;
+  MarkOwnedRegionClasses(g_apTerrainTypeDescriptorTable[nationA]->ownedRegionList, regionClassSeen);
+  for (i = 0; i < 16; ++i) {
+    TMinor* minor = g_apNationAuxRuntimeStateSlots[i];
+    if (minor != 0 && minor->IsEncodedNationSlotMinus200Equal(nationA) &&
+        minor->ownedRegionList->GetCount() >= 1) {
+      MarkOwnedRegionClasses(g_apMinorNationCapabilityObjects[i]->ownedRegionList, regionClassSeen);
+    }
+  }
+
+  if (g_apTerrainTypeDescriptorTable[nationB]->ownedRegionList->GetCount() >= 1 &&
+      AnyOwnedRegionClassSeen(g_apTerrainTypeDescriptorTable[nationB]->ownedRegionList,
+                              regionClassSeen)) {
+    return true;
+  }
+  for (i = 0; i < 16; ++i) {
+    TMinor* minor = g_apNationAuxRuntimeStateSlots[i];
+    if (minor != 0 && minor->IsEncodedNationSlotMinus200Equal(nationB) &&
+        minor->ownedRegionList->GetCount() >= 1 &&
+        AnyOwnedRegionClassSeen(g_apMinorNationCapabilityObjects[i]->ownedRegionList,
+                                regionClassSeen)) {
+      return true;
+    }
+  }
+  return false;
 }
 
 // FUNCTION: IMPERIALISM 0x005121d0
