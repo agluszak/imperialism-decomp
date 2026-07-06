@@ -150,26 +150,60 @@ bool TZone::HasZoneActiveChildCount(int unused) {
 
 // FUNCTION: IMPERIALISM 0x0055e8e0
 TZone** TZonePrimaryNeighborStretch::GetOrAppendUnique(TZone* zone) {
-  int count = GetSize();
+  int count = Count();
   for (int index = 0; index < count; ++index) {
-    if (GetAt(index) == zone) {
-      return &ElementAt(index);
+    if (Data()[index] == zone) {
+      return &Data()[index];
     }
   }
-  Add(zone);
-  return &ElementAt(count);
+  if (count >= Capacity()) {
+    unsigned int doubledCapacity = static_cast<unsigned int>((count + 1) * 2);
+    if (doubledCapacity > 0x7fffffffU) {
+      doubledCapacity = 0x7fffffffU;
+    }
+    void* grownBuffer = ReallocateStretchEntries(Data(), (count + 1) * 8);
+    if (grownBuffer == 0) {
+      Data() = static_cast<TZone**>(ReallocateStretchEntries(Data(), (count + 1) * 4));
+      Capacity() = count + 1;
+    } else {
+      Data() = static_cast<TZone**>(grownBuffer);
+      Capacity() = static_cast<int>(doubledCapacity);
+    }
+  }
+  if (Count() <= count) {
+    Count() = count + 1;
+  }
+  Data()[count] = zone;
+  return &Data()[count];
 }
 
 // FUNCTION: IMPERIALISM 0x0055e9c0
 TZone** TZoneSecondaryNeighborStretch::GetOrAppendUnique(TZone* zone) {
-  int count = GetSize();
+  int count = Count();
   for (int index = 0; index < count; ++index) {
-    if (GetAt(index) == zone) {
-      return &ElementAt(index);
+    if (Data()[index] == zone) {
+      return &Data()[index];
     }
   }
-  Add(zone);
-  return &ElementAt(count);
+  if (count >= Capacity()) {
+    unsigned int doubledCapacity = static_cast<unsigned int>((count + 1) * 2);
+    if (doubledCapacity > 0x7fffffffU) {
+      doubledCapacity = 0x7fffffffU;
+    }
+    void* grownBuffer = ReallocateStretchEntries(Data(), (count + 1) * 8);
+    if (grownBuffer == 0) {
+      Data() = static_cast<TZone**>(ReallocateStretchEntries(Data(), (count + 1) * 4));
+      Capacity() = count + 1;
+    } else {
+      Data() = static_cast<TZone**>(grownBuffer);
+      Capacity() = static_cast<int>(doubledCapacity);
+    }
+  }
+  if (Count() <= count) {
+    Count() = count + 1;
+  }
+  Data()[count] = zone;
+  return &Data()[count];
 }
 
 // FUNCTION: IMPERIALISM 0x0055ead0
