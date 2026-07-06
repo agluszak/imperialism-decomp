@@ -55,9 +55,11 @@ int __stdcall AdvanceTurnStateWhenMovieMciModeStops(int wParam, int mciMode) {
 IMPLEMENT_DYNCREATE(CMainFrame, CFrameWnd)
 
 // Entry order follows the original map at 0x648648. Original entries whose handlers are
-// not yet ported are commented in place: ON_COMMAND(0x800D, 0x485590),
-// ON_COMMAND(0x8013, 0x4855b0), ON_WM_ERASEBKGND (0x4859d0), ON_WM_ACTIVATEAPP
-// (0x485c90), ON_MESSAGE(0xBC0, 0x485960).
+// still not ported: ON_COMMAND(0x800D, 0x485590) (forwards through TViewMgr slot 0x19,
+// byte 0x64 — needs TViewMgr slots 0x10..0x19 modeled), ON_COMMAND(0x8013, 0x4855b0)
+// (terrain-overlay dialog), ON_WM_ERASEBKGND (0x4859d0) (lazy backdrop object + tile
+// loop), ON_MESSAGE(0xBC0, 0x485960) (lParam-object dispatch); each needs its own
+// class/type recovery before porting.
 BEGIN_MESSAGE_MAP(CMainFrame, CFrameWnd)
 ON_WM_QUERYNEWPALETTE()
 ON_WM_PALETTECHANGED()
@@ -67,6 +69,7 @@ ON_COMMAND(0x800C, OnCommand800C)
 ON_WM_PAINT()
 ON_WM_CHAR()
 ON_WM_ACTIVATE()
+ON_WM_ACTIVATEAPP()
 ON_COMMAND(ID_HELP_FINDER, CFrameWnd::OnHelpFinder)
 ON_COMMAND(ID_HELP, CFrameWnd::OnHelp)
 ON_COMMAND(ID_CONTEXT_HELP, CFrameWnd::OnContextHelp)
@@ -221,4 +224,20 @@ void CMainFrame::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags) {
 // FUNCTION: IMPERIALISM 0x00485c60
 void CMainFrame::OnActivate(UINT nState, CWnd* pWndOther, BOOL bMinimized) {
   CFrameWnd::OnActivate(nState, pWndOther, bMinimized);
+}
+
+// FUNCTION: IMPERIALISM 0x00485c90
+void CMainFrame::OnActivateApp(BOOL bActive, DWORD dwThreadID) {
+  (void)dwThreadID;
+  Default();
+  WINDOWPLACEMENT placement;
+  placement.length = sizeof(WINDOWPLACEMENT);
+  GetWindowPlacement(&placement);
+  if (bActive == 0 && placement.showCmd != SW_SHOWMINIMIZED) {
+    placement.showCmd = SW_SHOWMINIMIZED;
+    placement.ptMinPosition.y = -1000;
+    placement.ptMinPosition.x = -1000;
+    placement.flags = 3;
+    SetWindowPlacement(&placement);
+  }
 }

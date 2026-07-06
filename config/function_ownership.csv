@@ -221,6 +221,7 @@ address|target_cpp|ownership|note
 485bd0|src/game/CMainFrame.cpp|manual|marker_sync
 485c00|src/game/CMainFrame.cpp|manual|marker_sync
 485c60|src/game/CMainFrame.cpp|manual|marker_sync
+485c90|src/game/CMainFrame.cpp|manual|marker_sync
 485df0|src/game/TObject.cpp|manual|marker_sync
 485e20|src/game/TObject.cpp|manual|marker_sync
 485e90|src/game/TObjectSerialize.cpp|manual|marker_sync

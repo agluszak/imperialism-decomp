@@ -1483,14 +1483,6 @@ undefined4 SendF1KeyDownToActiveMainWindow(void)
   return 0;
 }
 
-// ghidra_name TObject::CreateTObjectInstance
-// ghidra_proto undefined CreateTObjectInstance()
-// FUNCTION: IMPERIALISM 0x00485c90
-undefined4 CreateTObjectInstance(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_AFX_CLASSINIT_At00485e40
 // ghidra_proto undefined WrapperFor_AFX_CLASSINIT_At00485e40()
 // FUNCTION: IMPERIALISM 0x00485e40

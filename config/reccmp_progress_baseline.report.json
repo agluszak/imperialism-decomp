@@ -2662,8 +2662,8 @@
     },
     {
       "address": "0x485c90",
-      "matching": 0.0,
-      "name": "TObject::CreateTObjectInstance",
+      "matching": 0.75,
+      "name": "CMainFrame::OnActivateApp",
       "type": 1
     },
     {

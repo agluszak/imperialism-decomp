@@ -36,9 +36,12 @@ public:
   afx_msg LRESULT HandleCustomMessage2420DispatchTurnEvent(WPARAM wParam, LPARAM lParam);
   afx_msg void OnCommand8009();
   afx_msg void OnCommand800C();
-  afx_msg void OnPaint();                                             // 0x00485bd0
-  afx_msg void OnChar(UINT nChar, UINT nRepCnt, UINT nFlags);         // 0x00485c00
+  afx_msg void OnPaint();                                                 // 0x00485bd0
+  afx_msg void OnChar(UINT nChar, UINT nRepCnt, UINT nFlags);             // 0x00485c00
   afx_msg void OnActivate(UINT nState, CWnd* pWndOther, BOOL bMinimized); // 0x00485c60
+  // ON_WM_ACTIVATEAPP: when the app loses activation and isn't already minimized, park
+  // the (fullscreen) frame off-screen minimized. 0x00485c90.
+  afx_msg void OnActivateApp(BOOL bActive, DWORD dwThreadID);
 
   virtual BOOL PreTranslateMessage(MSG* msg);
 
