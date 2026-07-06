@@ -294,7 +294,11 @@ public:
   virtual short GetFixedConstant0xc80(); // slot 0x3f 0x517520
   virtual undefined OrphanLeaf_NoCall_Ins55_00517540(short param_1,
                                                      short param_2); // slot 0x40 0x517540
-  virtual undefined OrphanCallChain_C1_I46_00517600(short param_1);  // slot 0x41 0x517600
+  // Real signature has 2 stack slots (RET 8); the second is never read. Dispatches to
+  // FindTownMarkerForTileByOwnerNation (slot 0x36) and combines its transportLinkedFlag4c
+  // with activeFlags1c bits 2/4 to pick one of 6 fixed bitmap offsets.
+  virtual short GetMapImprovementOffsetByTownTransportLink(short tileIndex,
+                                                           int unusedParam2); // slot 0x41 0x517600
   // (index + 0x23) << 6 -- a bitmap-strip row offset, 64 bytes/row; sits in the same
   // "map improvement" offset family as the following GetMapImprovementTierBucketOffset/
   // GetMapImprovementSpriteBaseOffset slots (also 64-byte-row arithmetic). No callers other

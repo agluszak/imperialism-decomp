@@ -1200,7 +1200,21 @@ undefined TMapMgr::OrphanLeaf_NoCall_Ins55_00517540(short param_1, short param_2
   return 0;
 }
 
-undefined TMapMgr::OrphanCallChain_C1_I46_00517600(short param_1) {
+// FUNCTION: IMPERIALISM 0x00517600
+short TMapMgr::GetMapImprovementOffsetByTownTransportLink(short tileIndex, int unusedParam2) {
+  (void)unusedParam2;
+  unsigned char flags = terrainStateTable[tileIndex].activeFlags1c;
+  TTown* town = FindTownMarkerForTileByOwnerNation(tileIndex);
+  unsigned char linked = (town != nullptr) ? town->transportLinkedFlag4c : 1;
+  if (flags & 4) {
+    if (flags & 0x10) {
+      return linked ? 0x840 : 0xa40;
+    }
+    return linked ? 0x880 : 0xa00;
+  }
+  if (flags & 0x10) {
+    return linked ? 0x7c0 : 0x800;
+  }
   return 0;
 }
 
