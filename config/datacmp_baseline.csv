@@ -22,7 +22,7 @@ TArmyCheckBox::classTArmyCheckBox|0x64cb68|WARN|9
 TArmyInfoView::classTArmyInfoView|0x663148|WARN|8
 TArmyMgr::classTArmyMgr|0x64c828|WARN|8
 TArmyPlacard::classTArmyPlacard|0x663088|WARN|8
-TArmyPlayer::classTArmyPlayer|0x669488|WARN|9
+TArmyPlayer::classTArmyPlayer|0x669488|WARN|8
 TArmyStack::classTArmyStack|0x64c840|WARN|33
 TArmyStackList::classTArmyStackList|0x64c858|WARN|8
 TArmyTacUnit::classTArmyTacUnit|0x669e60|WARN|9
@@ -91,7 +91,7 @@ TDealBookPicture::classTDealBookPicture|0x66dbb8|WARN|10
 TDealLine::classTDealLine|0x66dca8|WARN|10
 TDealList::classTDealList|0x66d888|WARN|9
 TDealTabControl::classTDealTabControl|0x66dbd0|WARN|10
-TDefendProvinceMission::classTDefendProvinceMission|0x697a58|WARN|9
+TDefendProvinceMission::classTDefendProvinceMission|0x697a58|WARN|8
 TDefenderMinister::classTDefenderMinister|0x654898|WARN|10
 TDefenseMinister::classTDefenseMinister|0x654838|WARN|9
 TDefenseMinisterView::classTDefenseMinisterView|0x654f00|WARN|10
@@ -212,9 +212,9 @@ TNavyAutoPlayer::classTNavyAutoPlayer|0x6694d0|WARN|10
 TNavyBattle::classTNavyBattle|0x669e30|WARN|10
 TNavyBoyView::classTNavyBoyView|0x64dcc8|WARN|10
 TNavyHumanPlayer::classTNavyHumanPlayer|0x6694b8|WARN|10
-TNavyMgr::classTNavyMgr|0x65c360|WARN|10
+TNavyMgr::classTNavyMgr|0x65c360|WARN|31
 TNavyMission::classTNavyMission|0x697998|WARN|9
-TNavyPlayer::classTNavyPlayer|0x6694a0|WARN|10
+TNavyPlayer::classTNavyPlayer|0x6694a0|WARN|9
 TNavyRoster::classTNavyRoster|0x65c850|WARN|10
 TNavyTacUnit::classTNavyTacUnit|0x669e78|WARN|10
 TNavyToolbarCluster::classTNavyToolbarCluster|0x65c8f8|WARN|9
@@ -233,7 +233,7 @@ TNominationView::classTNominationView|0x655008|WARN|9
 TNumberText::classTNumberText|0x6496a8|WARN|9
 TNumberedArrowButton::classTNumberedArrowButton|0x6630a0|WARN|9
 TNumberedIcon::classTNumberedIcon|0x6579b8|WARN|10
-TNumberedItem::classTNumberedItem|0x6579d0|WARN|9
+TNumberedItem::classTNumberedItem|0x6579d0|WARN|10
 TObject::classTObject|0x694eb8|WARN|9
 TOcean::classTOcean|0x65c630|WARN|10
 TOceanDialog::classTOceanDialog|0x65c898|WARN|10
@@ -244,7 +244,7 @@ TOnOffRadioButton::classTOnOffRadioButton|0x65e5f8|WARN|10
 TOrItemOrder::classTOrItemOrder|0x64f380|WARN|9
 TOrderView::classTOrderView|0x6579a0|WARN|10
 TOverlayRadioButton::classTOverlayRadioButton|0x6512a8|WARN|9
-TPageCorner::classTPageCorner|0x65e188|WARN|10
+TPageCorner::classTPageCorner|0x65e188|WARN|9
 TPageView::classTPageView|0x65e1a0|WARN|9
 TPanelView::classTPanelView|0x654f60|WARN|10
 TPicture::classTPicture|0x649660|WARN|9
@@ -285,7 +285,7 @@ TScoreGraph::classTScoreGraph|0x655068|WARN|9
 TScrollBarView::classTScrollBarView|0x661460|WARN|10
 TScrollView::classTScrollView|0x661448|WARN|10
 TScroller::classTScroller|0x6495b8|WARN|9
-TScrollerButton::classTScrollerButton|0x661478|WARN|8
+TScrollerButton::classTScrollerButton|0x661478|WARN|9
 TSelectoText::classTSelectoText|0x661a88|WARN|9
 TSetupRandomMapPicture::classTSetupRandomMapPicture|0x6619e0|WARN|10
 TShip::classTShip|0x65c318|WARN|9
@@ -321,7 +321,7 @@ TSwapperDaddyView::classTSwapperDaddyView|0x64dc38|WARN|10
 TTEView::classTTEView|0x648a08|WARN|10
 TTacArmyView::classTTacArmyView|0x66a298|WARN|10
 TTacMapUberPicture::classTTacMapUberPicture|0x66a2e0|WARN|10
-TTacNavyToolbar::classTTacNavyToolbar|0x66a2c8|WARN|9
+TTacNavyToolbar::classTTacNavyToolbar|0x66a2c8|WARN|10
 TTacticalAdiosPicture::classTTacticalAdiosPicture|0x66a2f8|WARN|9
 TTacticalBattle::classTTacticalBattle|0x669e00|WARN|10
 TTacticalBattleView::classTTacticalBattleView|0x66a280|WARN|10

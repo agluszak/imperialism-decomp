@@ -2657,7 +2657,7 @@
     },
     {
       "address": "0x484d70",
-      "matching": 0.7973856209150327,
+      "matching": 0.7870967741935484,
       "name": "ConfigureTopLevelWindowStyleAndPlacement",
       "type": 1
     },
@@ -4379,7 +4379,7 @@
     },
     {
       "address": "0x48b0b0",
-      "matching": 0.6614173228346457,
+      "matching": 0.9814814814814815,
       "name": "TView::CloseCityDialogChildrenAndReleaseSelf",
       "type": 1
     },
@@ -4415,7 +4415,7 @@
     },
     {
       "address": "0x48b2d0",
-      "matching": 0.19130434782608696,
+      "matching": 0.2033898305084746,
       "name": "TView::VTableSlotDD",
       "type": 1
     },
@@ -12441,7 +12441,7 @@
     },
     {
       "address": "0x4dd430",
-      "matching": 0.5714285714285714,
+      "matching": 0.5142857142857142,
       "name": "TGreatPower::ComputeRemainingDiplomacyAidBudget",
       "type": 1
     },
@@ -12880,8 +12880,7 @@
     },
     {
       "address": "0x4e05d0",
-      "effective": true,
-      "matching": 0.42857142857142855,
+      "matching": 1.0,
       "name": "TGreatPower::OrphanLeaf_NoCall_Ins02_004d7fc0_89",
       "type": 1
     },
@@ -12893,7 +12892,8 @@
     },
     {
       "address": "0x4e0650",
-      "matching": 1.0,
+      "effective": true,
+      "matching": 0.42857142857142855,
       "name": "TGreatPower::OrphanRetStub_004d7fe0_8b",
       "type": 1
     },
@@ -12906,7 +12906,7 @@
     },
     {
       "address": "0x4e06d0",
-      "matching": 0.7619047619047619,
+      "matching": 0.8095238095238095,
       "name": "TGreatPower::SumNationRuntimeFiveBucketValue44",
       "type": 1
     },
@@ -16418,13 +16418,7 @@
     },
     {
       "address": "0x50bea0",
-<<<<<<< HEAD
       "matching": 0.20626987732848706,
-||||||| e683e1d9
-      "matching": 0.2044525215810995,
-=======
-      "matching": 0.20536119945479328,
->>>>>>> origin/claude/ttaskforce-order-resolution
       "name": "TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets",
       "type": 1
     },
@@ -18314,7 +18308,7 @@
     },
     {
       "address": "0x52d150",
-      "matching": 0.7311827956989247,
+      "matching": 0.7021276595744681,
       "name": "GetOrCreateOverlayQuadRecordByIndex",
       "type": 1
     },
@@ -18338,7 +18332,7 @@
     },
     {
       "address": "0x52d750",
-      "matching": 0.21904761904761905,
+      "matching": 0.22063492063492063,
       "name": "MergeSmallCityRegionsAndCompactIds",
       "type": 1
     },
@@ -20229,13 +20223,13 @@
     },
     {
       "address": "0x53ceb0",
-      "matching": 0.44329896907216493,
+      "matching": 0.441025641025641,
       "name": "ComputeArmyMissionCompositionAlignmentScore",
       "type": 1
     },
     {
       "address": "0x53d020",
-      "matching": 0.4235294117647059,
+      "matching": 0.4251968503937008,
       "name": "ComputeArmyMissionScoreDeltaWithCandidateUnit",
       "type": 1
     },
@@ -22323,13 +22317,13 @@
     },
     {
       "address": "0x553b10",
-      "matching": 0.41379310344827586,
+      "matching": 0.4827586206896552,
       "name": "HasNoMapOrderEntryChildrenQueued",
       "type": 1
     },
     {
       "address": "0x553b50",
-      "matching": 0.5454545454545454,
+      "matching": 0.5818181818181818,
       "name": "HasActiveMapOrderEntryChildren",
       "type": 1
     },
@@ -22467,7 +22461,7 @@
     },
     {
       "address": "0x555420",
-      "matching": 0.5706666666666667,
+      "matching": 0.5653333333333334,
       "name": "ResolveTaskForceOrderConflictAndPickCandidate",
       "type": 1
     },
@@ -27449,7 +27443,7 @@
     },
     {
       "address": "0x58a020",
-      "matching": 0.45685279187817257,
+      "matching": 0.47715736040609136,
       "name": "TRailAmtBar::NoOpUiLifecycleHook",
       "type": 1
     },
@@ -31691,7 +31685,7 @@
     },
     {
       "address": "0x5ba0e0",
-      "matching": 0.8181818181818182,
+      "matching": 1.0,
       "name": "BuildInterNationEventSummaryRowsForAdvisorDialog_Impl",
       "type": 1
     },
@@ -43672,6 +43666,6 @@
       "type": 5
     }
   ],
-  "file": "Imperialism.exe",
+  "file": "Imperialism.exe.gog-original",
   "format": 1
 }
