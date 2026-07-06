@@ -19,14 +19,6 @@ undefined4 WrapperFor_ftol_At0050e290(void)
   return 0;
 }
 
-// ghidra_name GetCityIndexFromCityStatePointer
-// ghidra_proto int __fastcall GetCityIndexFromCityStatePointer(int pCityState)
-// FUNCTION: IMPERIALISM 0x0050e2c0
-undefined4 GetCityIndexFromCityStatePointer(void)
-{
-  return 0;
-}
-
 // ghidra_name OrphanTiny_ThisAdjustJump_a4_0050e600
 // ghidra_proto undefined OrphanTiny_ThisAdjustJump_a4_0050e600()
 // FUNCTION: IMPERIALISM 0x0050e600

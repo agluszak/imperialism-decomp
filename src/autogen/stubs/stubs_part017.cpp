@@ -51,14 +51,6 @@ undefined4 BuildTaskForceOrderBreakdownSummaryText(void)
   return 0;
 }
 
-// ghidra_name BuildTaskForceSelectionOverlayLabelText
-// ghidra_proto undefined BuildTaskForceSelectionOverlayLabelText()
-// FUNCTION: IMPERIALISM 0x00554c90
-undefined4 BuildTaskForceSelectionOverlayLabelText(void)
-{
-  return 0;
-}
-
 // ghidra_name TToolBarCluster::BuildNavyOrderStatusLineText
 // ghidra_proto undefined BuildNavyOrderStatusLineText()
 // FUNCTION: IMPERIALISM 0x00554e70

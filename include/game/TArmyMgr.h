@@ -195,6 +195,12 @@ public:
                                                   TControlPictureRectState* styleC,
                                                   TControlPictureRectState* styleD);
 
+  // Called from RefreshMapOrderBattleSideSnapshot's type-5 (ship-order) tail with a
+  // side's requiredCountByte (nation slot) and the resolved city index. 0x004a6ef0,
+  // 897 bytes. TODO: port body -- out of scope for RefreshMapOrderBattleSideSnapshot,
+  // which only needs a real, correctly-typed call site.
+  void TrimExcessNavyOrderSupportAndRebuildOrderBuffer(short nationSlot, int cityIndex);
+
   TArmyMgr();
 };
 

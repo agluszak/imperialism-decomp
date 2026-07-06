@@ -1,5 +1,6 @@
 #include "game/TTaskForce.h"
 
+#include "game/CString.h"
 #include "game/TNavyMgr.h"
 #include "game/TOcean.h"
 #include "game/TShip.h"
@@ -648,6 +649,17 @@ namespace {
 const int kOrderTypePriorityWeight[3] = {200, 100, 50};
 } // namespace
 
+// FUNCTION: IMPERIALISM 0x00554c90
+void TTaskForce::BuildTaskForceSelectionOverlayLabelText(CString* out) {
+  // TODO: port body -- builds a localized string via g_pLocalizationTable's
+  // scanBracketExpressions format expander (this entry's required_count-as-nation-slot
+  // name, childOrderList count, and attachment), but the exact resource-string IDs and
+  // format-argument composition aren't recovered yet. See
+  // BuildMapOrderBattleSideSnapshot for the one confirmed callsite and receiver
+  // evidence.
+  *out = g_szEmptyString;
+}
+
 // FUNCTION: IMPERIALISM 0x00555420
 char TTaskForce::ResolveTaskForceOrderConflictAndPickCandidate(TTaskForce* other) {
   if (GetMapOrderEntryChildCount() == 0) {
@@ -715,7 +727,7 @@ char TTaskForce::ResolveTaskForceOrderConflictAndPickCandidate(TTaskForce* other
       return 1;
     }
   }
-  g_pNavyOrderManager->ResolveMapOrderPairConflictStep(other, this);
+  g_pNavyOrderManager->ResolveMapOrderPairConflictStep(this, other);
   return 0;
 }
 

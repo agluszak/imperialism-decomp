@@ -7,6 +7,7 @@
 
 class TTaskForce;
 class TStream;
+class CString;
 
 // Child-link node for map-order mission trees (NOT TOcean / TZone).
 struct TMapOrderChildLinkNode {
@@ -176,6 +177,13 @@ public:
   // Walks the queue_next chain starting at `this`, clearing eliminatedFlag26 on each
   // node.
   void ClearMapOrderProcessedFlagsChain(); // 0x557870
+
+  // Builds a localized selection-overlay label describing this task-force order entry
+  // (nation name + attachment count) via g_pLocalizationTable's format-string expander.
+  // 0x554c90, 370 bytes. TODO: port body -- the exact resource-string IDs and format
+  // args aren't recovered yet; used by BuildMapOrderBattleSideSnapshot for its overlay
+  // label field, which only needs a real, correctly-typed call site.
+  void BuildTaskForceSelectionOverlayLabelText(CString* out); // 0x554c90
 
   // Per-entry candidate score blending this order's tiebreak_strength bucket against
   // its resource-type's navy-priority/resolve/calculate/task-force weight columns

@@ -90,7 +90,11 @@ struct TNavyOrderResourceDescriptor {
                                  // as a bucket offset, full dword tested for sign as an
                                  // enabled/disabled gate)
   short descriptorWeight;        // +0x1c (was DAT_00698124)
-  short pad1e[3];                // +0x1e..+0x24
+  short pad1e;
+  // Per-order-type priority tier used by TNavyMgr::ResolveMapOrderPairConflictStep's
+  // candidate-tier scan/scoring loop (was DAT_00698128).
+  short priorityTier; // +0x20
+  short pad22;
 };
 ASSERT_SIZE(TNavyOrderResourceDescriptor, 0x24);
 

@@ -1099,22 +1099,6 @@ undefined4 WrapperFor_ftol_At0054efb0(void)
   return 0;
 }
 
-// ghidra_name BuildMapOrderBattleSideSnapshot
-// ghidra_proto void __cdecl BuildMapOrderBattleSideSnapshot(int pBattleSnapshotState, int nSideIndex, int pOrderEntry)
-// FUNCTION: IMPERIALISM 0x0054f110
-undefined4 BuildMapOrderBattleSideSnapshot(void)
-{
-  return 0;
-}
-
-// ghidra_name RefreshMapOrderBattleSideSnapshot
-// ghidra_proto void __cdecl RefreshMapOrderBattleSideSnapshot(int pBattleSnapshotState, int nSideIndex, int pOrderEntry)
-// FUNCTION: IMPERIALISM 0x0054f340
-undefined4 RefreshMapOrderBattleSideSnapshot(void)
-{
-  return 0;
-}
-
 // ghidra_name TShip::DestructTShip
 // ghidra_proto undefined DestructTShip()
 // FUNCTION: IMPERIALISM 0x0054f5f0

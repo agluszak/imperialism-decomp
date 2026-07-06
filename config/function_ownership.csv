@@ -933,6 +933,8 @@ address|target_cpp|ownership|note
 4a5c50|src/game/TArmyBattle.cpp|manual|marker_sync
 4a5ec0|src/game/TArmyMgr.cpp|manual|marker_sync
 4a6680|src/game/TArmyMgr.cpp|manual|marker_sync
+4a6e80|src/game/TNavyMgr.cpp|manual|marker_sync
+4a6ef0|src/game/TArmyMgr.cpp|manual|marker_sync
 4a76a0|src/game/TArmyStack.cpp|manual|marker_sync
 4a76d0|src/game/TArmyStack.cpp|manual|marker_sync
 4a7720|src/game/TArmyStack.cpp|manual|marker_sync
@@ -2180,6 +2182,7 @@ address|target_cpp|ownership|note
 50da80|src/game/TMacViewMgr.cpp|manual|marker_sync
 50dd40|src/game/TMacViewMgr.cpp|manual|marker_sync
 50df40|src/game/TMacViewMgr.cpp|manual|marker_sync
+50e2c0|src/game/TNavyMgr.cpp|manual|marker_sync
 50e2f0|src/game/TMapMgr.cpp|manual|marker_sync
 50e3b0|src/game/TMapMgr.cpp|manual|marker_sync
 50e3d0|src/game/TMapMgr.cpp|manual|marker_sync
@@ -2872,6 +2875,8 @@ address|target_cpp|ownership|note
 54ec20|src/game/TMultiMessagePicture.cpp|manual|marker_sync
 54eca0|src/game/TMultiMessagePicture.cpp|manual|marker_sync
 54ecc0|src/game/TMultiMessagePicture.cpp|manual|marker_sync
+54f110|src/game/TNavyMgr.cpp|manual|marker_sync
+54f340|src/game/TNavyMgr.cpp|manual|marker_sync
 54f460|src/game/TShip.cpp|manual|marker_sync
 54f4e0|src/game/TShip.cpp|manual|marker_sync
 54f500|src/game/TShip.cpp|manual|marker_sync
@@ -2941,6 +2946,7 @@ address|target_cpp|ownership|note
 553e30|src/game/TTaskForce.cpp|manual|marker_sync
 554930|src/game/TTaskForce.cpp|manual|marker_sync
 554ad0|src/game/TTaskForce.cpp|manual|marker_sync
+554c90|src/game/TTaskForce.cpp|manual|marker_sync
 555420|src/game/TTaskForce.cpp|manual|marker_sync
 555c20|src/game/TTaskForce.cpp|manual|marker_sync
 555de0|src/game/TTaskForce.cpp|manual|marker_sync

@@ -7549,7 +7549,7 @@
     },
     {
       "address": "0x4a2900",
-      "matching": 0.13374805598755832,
+      "matching": 0.13063763608087092,
       "name": "BuildArmyContextActionRecordsAndDispatchLabel",
       "type": 1
     },
@@ -7771,13 +7771,13 @@
     },
     {
       "address": "0x4a6e80",
-      "matching": 0.08333333333333333,
+      "matching": 0.18604651162790697,
       "name": "DispatchMapInteractionPayloadAndResetWorkingFields",
       "type": 1
     },
     {
       "address": "0x4a6ef0",
-      "matching": 0.007067137809187279,
+      "matching": 0.0,
       "name": "TrimExcessNavyOrderSupportAndRebuildOrderBuffer",
       "type": 1
     },
@@ -12796,7 +12796,8 @@
     },
     {
       "address": "0x4e05d0",
-      "matching": 1.0,
+      "effective": true,
+      "matching": 0.42857142857142855,
       "name": "TGreatPower::OrphanLeaf_NoCall_Ins02_004d7fc0_89",
       "type": 1
     },
@@ -12815,7 +12816,8 @@
     },
     {
       "address": "0x4e0690",
-      "matching": 1.0,
+      "effective": true,
+      "matching": 0.42857142857142855,
       "name": "TGreatPower::ReturnFalseNationStateCapabilityFlag90",
       "type": 1
     },
@@ -12851,7 +12853,7 @@
     },
     {
       "address": "0x4e09a0",
-      "matching": 0.5301204819277109,
+      "matching": 0.5060240963855421,
       "name": "TGreatPower::ComputeCityOrderCapabilityAggregateScore",
       "type": 1
     },
@@ -21673,13 +21675,13 @@
     },
     {
       "address": "0x54f110",
-      "matching": 0.02666666666666667,
+      "matching": 0.2846153846153846,
       "name": "BuildMapOrderBattleSideSnapshot",
       "type": 1
     },
     {
       "address": "0x54f340",
-      "matching": 0.05263157894736842,
+      "matching": 0.2638888888888889,
       "name": "RefreshMapOrderBattleSideSnapshot",
       "type": 1
     },
@@ -22195,13 +22197,13 @@
     },
     {
       "address": "0x553b10",
-      "matching": 0.4827586206896552,
+      "matching": 0.41379310344827586,
       "name": "HasNoMapOrderEntryChildrenQueued",
       "type": 1
     },
     {
       "address": "0x553b50",
-      "matching": 0.5818181818181818,
+      "matching": 0.5454545454545454,
       "name": "HasActiveMapOrderEntryChildren",
       "type": 1
     },
@@ -22315,7 +22317,7 @@
     },
     {
       "address": "0x554c90",
-      "matching": 0.01904761904761905,
+      "matching": 0.018691588785046728,
       "name": "BuildTaskForceSelectionOverlayLabelText",
       "type": 1
     },
@@ -22339,7 +22341,7 @@
     },
     {
       "address": "0x555420",
-      "matching": 0.5653333333333334,
+      "matching": 0.5706666666666667,
       "name": "ResolveTaskForceOrderConflictAndPickCandidate",
       "type": 1
     },
@@ -22621,7 +22623,7 @@
     },
     {
       "address": "0x55a780",
-      "matching": 0.0021321961620469083,
+      "matching": 0.109375,
       "name": "ResolveMapOrderPairConflictStep",
       "type": 1
     },
