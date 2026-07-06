@@ -16,7 +16,6 @@ module|tools.workflow.reshape_autogen_signatures|just:normalize-autogen|Reshape 
 module|tools.workflow.check_marker_hygiene|just:marker-gate|Marker hygiene gate (Hard Rules 3 and 4)
 module|tools.workflow.check_construction_antipatterns|just:antipattern-gate|Real-C++-construction anti-pattern gate
 module|tools.workflow.check_tgreatpower_hygiene|just:tgreatpower-gate|TGreatPower hygiene policy gate
-module|tools.workflow.check_field_layout_annotations|just:field-layout-gate|Field-layout annotation gate
 module|tools.workflow.check_global_location|just:global-location-gate|Global definition location policy gate
 module|tools.workflow.check_manual_cruntimeclass|just:manual-cruntimeclass-gate|Manual CRuntimeClass definition policy gate
 module|tools.workflow.check_vtable_coverage|just:vtable-coverage|Report unpaired vtable annotations
@@ -41,13 +40,11 @@ module|tools.ghidra.decomp_check|just:ghidra-decomp-check|Ghidra decompile bench
 module|tools.ghidra.scan_cdecl_thiscall|just:scan-cdecl-thiscall|Classify __cdecl vs __thiscall by ECX use
 module|tools.ghidra.vtable_dump|query:vtable-dump|Dump a class vtable slot->function map
 module|tools.ghidra.name_vtable_slots|just:name-vtable-slots|Name and expand Ghidra vtable structs from recovered source slots
-module|tools.ghidra.gen_vtable_slot_overrides|just:gen-vtable-slot-overrides|Suggest curated vtable-slot method names
 module|tools.ghidra.propagate_virtual_method_names|just:propagate-virtual-method-names|Propagate virtual method identities parent-first
 module|tools.ghidra.vtable_struct_check|just:ghidra-vtable-struct-check|Check Ghidra vtable struct field names
 module|tools.ghidra.fix_in_stack_params|just:fix-in-stack-params|Promote Ghidra in_stack variables to parameters
 module|tools.ghidra.dump_thunk_map|just:dump-thunk-map|Dump Ghidra thunk-name map for offline promotion
 module|tools.ghidra.dump_message_maps|just:dump-message-maps|Enumerate MFC message maps: message->handler->port-status per class
-module|tools.ghidra.gen_recovered_fields_from_headers|just:gen-recovered-fields-from-headers|Generate recovered fields from source headers
 module|tools.ghidra.apply_mfc_datatypes|just:apply-mfc-datatypes|Apply MFC datatypes into Ghidra
 module|tools.ghidra.apply_mfc_rtti|just:apply-mfc-rtti|Apply MFC RTTI into Ghidra
 module|tools.ghidra.apply_fidb|just:apply-fidb|Attach/query/apply an MSVC/MFC Function ID database into Ghidra

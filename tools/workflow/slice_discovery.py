@@ -9,7 +9,6 @@ import json
 import re
 from pathlib import Path
 
-from tools.common import class_manifest as cm
 from tools.common.pipe_csv import read_pipe_rows
 from tools.common.repo import repo_root_from_file, resolve_repo_path
 
@@ -457,9 +456,9 @@ def main() -> int:
     symbols = load_symbols(repo_root)
     autogen = load_autogen_index(repo_root)
     vtable_slots = load_pipe_csv_if_exists(repo_root / "config" / "vtable_slots.csv")
-    # Duplicate-vtable disambiguation overrides now come from the per-class
-    # manifests' curated.vtable_annotation (replaced vtable_annotation_overrides.csv).
-    overrides = cm.vtable_annotation_rows(cm.load_all_manifests(repo_root))
+    # Duplicate-vtable disambiguation overrides: no override source is currently
+    # wired in (the per-class manifest system this used to read was retired).
+    overrides: list[dict[str, str]] = []
 
     anchors: dict[str, str] = {}
     for row in symbols:

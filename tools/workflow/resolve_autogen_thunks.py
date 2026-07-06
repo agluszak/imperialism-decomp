@@ -7,8 +7,8 @@ class (``TMapDialog::thunk_HandleCityDialogNoOpSlot18``). The bulk decompile
 export keeps those raw, so the autogen bodies read against fake symbols even
 though the real target is known.
 
-This pass applies the same ``ThunkResolver`` that ``gen_class`` and
-``decompile_one`` use (driven by ``config/thunk_map.csv``) over the committed
+This pass applies the same ``ThunkResolver`` that ``decompile_one`` uses (driven
+by ``config/thunk_map.csv``) over the committed
 autogen files in place, so promoting from autogen — or just reading it — already
 lands on real names (e.g. ``TObject::ReadFrom`` instead of a misnamed thunk).
 

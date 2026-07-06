@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """Shape a raw Ghidra autogen block into a promote-ready ``// FUNCTION:`` block.
 
-Body promotion (``gen_class``) used to copy the Ghidra decompile verbatim,
-keeping the wrong signature (explicit ``this``, ``__thiscall``, the Ghidra name) and
-unresolved thunk-call names. This module applies the *safe* slice of the manual
+Naive body promotion copies the Ghidra decompile verbatim, keeping the wrong
+signature (explicit ``this``, ``__thiscall``, the Ghidra name) and unresolved
+thunk-call names. This module applies the *safe* slice of the manual
 decomp-loop shape pass — the rewrites that are provably correct without judgement:
 
   1. Canonical signature from the recovered slot's declared method

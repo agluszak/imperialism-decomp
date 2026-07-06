@@ -56,8 +56,8 @@ from pathlib import Path
 import jpype
 import pyghidra
 
-from tools.common import class_manifest, ghidra_env
-from tools.common.recovered_field_type import FieldKind, parse_data_field_type, parse_field_type
+from tools.common import ghidra_env
+from tools.common.recovered_field_type import FieldKind, parse_data_field_type
 from tools.common.repo import repo_root_from_file
 from tools.ghidra.apply_mfc_datatypes import MFC_MODELS
 
@@ -73,13 +73,11 @@ _PROVISIONAL = re.compile(
 )
 REPO_ROOT = repo_root_from_file(__file__)
 MAC_SYMBOLS_PATH = REPO_ROOT / "vendor" / "macos_codewarrior" / "evidence" / "symbols.csv"
-# Evidence-curated typing the auto-RTTI passes cannot infer statically (interior
-# class-field pointer types and typed global pointer arrays). Static this-argument
-# inference was measured to yield almost nothing (virtual dispatch dominates) and
-# to be noisy for globals, so these high-confidence facts are recorded by hand from
-# concrete evidence and applied deterministically. Globals are "|"-delimited;
-# interior class fields now live in the per-class manifests' curated.fields
-# (config/classes/<Class>.yml), which replaced recovered_fields.csv.
+# Evidence-curated typing the auto-RTTI passes cannot infer statically (typed global
+# pointer arrays). Static this-argument inference was measured to yield almost nothing
+# (virtual dispatch dominates) and to be noisy for globals, so these high-confidence
+# facts are recorded by hand from concrete evidence and applied deterministically.
+# "|"-delimited.
 RECOVERED_GLOBALS_PATH = REPO_ROOT / "config" / "recovered_globals.csv"
 # Placeholder "class" namespaces invented by early manual decompilation that are not
 # real classes (e.g. functions grouped because their destructor resets the object's
@@ -91,8 +89,6 @@ DISSOLVE_NAMESPACES_PATH = REPO_ROOT / "config" / "dissolve_namespaces.csv"
 # address. "|"-delimited (address|calling_convention|note).
 CALLING_CONVENTION_OVERRIDES_PATH = REPO_ROOT / "config" / "calling_convention_overrides.csv"
 FUNCTION_CLASS_OVERRIDES_PATH = REPO_ROOT / "config" / "function_class_overrides.csv"
-# Per-slot vtable method-name overrides and vtable aliases now live in the per-class
-# manifests (config/classes/<Class>.yml: curated.slots / curated.aliases).
 # Evidence-curated reclassification of misidentified data (e.g. Ghidra "string" labels
 # that are indexed as structs/arrays). "|"-delimited; see recovered_data.csv header.
 RECOVERED_DATA_PATH = REPO_ROOT / "config" / "recovered_data.csv"
@@ -415,7 +411,6 @@ def run(program, args) -> dict:
         "caller_class_assigned": 0,
         "locality_class_assigned": 0,
         "curated_globals_typed": 0,
-        "curated_fields_typed": 0,
         "pseudo_classes_dissolved": 0,
         "pseudo_class_members_moved": 0,
         "calling_conventions_fixed": 0,
@@ -552,7 +547,6 @@ def run(program, args) -> dict:
             StructureDataType as _SDT,
             Undefined1DataType,
             Undefined4DataType,
-            VoidDataType,
         )
         from ghidra.program.model.listing import ParameterImpl, ReturnParameterImpl
         from java.util import ArrayList
@@ -576,13 +570,6 @@ def run(program, args) -> dict:
                 return list(csv.DictReader(fd, delimiter="|"))
 
         mac_methods: dict[tuple[str, str], list[dict[str, str]]] = {}
-        # Per-slot method-name overrides and vtable aliases now live in the per-class
-        # manifests (config/classes/<Class>.yml: curated.slots / curated.aliases),
-        # the single source that replaced vtable_slot_method_overrides.csv and
-        # class_vtable_aliases.csv.
-        manifests = class_manifest.load_all_manifests(REPO_ROOT)
-        slot_method_overrides = class_manifest.slot_method_overrides(manifests)
-        vtable_aliases = class_manifest.vtable_aliases(manifests)
         if MAC_SYMBOLS_PATH.exists():
             with MAC_SYMBOLS_PATH.open("r", encoding="utf-8", newline="") as fd:
                 for row in csv.DictReader(fd):
@@ -804,15 +791,6 @@ def run(program, args) -> dict:
             refresh_function_signature(fn, "__thiscall", fn.getReturnType(), mac[0])
             return True
 
-        def slot_override_for(cls: str, slot: int) -> dict[str, str] | None:
-            override = slot_method_overrides.get((cls, slot))
-            if override is not None:
-                return override
-            canonical = vtable_aliases.get(cls)
-            if canonical:
-                return slot_method_overrides.get((canonical, slot))
-            return None
-
         def ensure_vtbl_struct(cls: str, vt: int):
             slots = vtable_extent(vt)
             name = f"{cls}Vtbl"
@@ -822,23 +800,10 @@ def run(program, args) -> dict:
             for i, tgt in enumerate(slots):
                 fld = f"slot_0x{i*4:02x}"
                 field_dt = vfn_ptr_dt
-                override = slot_override_for(cls, i)
                 if tgt is not None:
                     fn = real_function(tgt)
                     if fn is not None:
-                        if override is not None:
-                            fld = override["method_name"]
-                            if args.apply and is_auto_name(fn.getName()):
-                                try:
-                                    fn.setParentNamespace(get_or_make_class(cls))
-                                    fn.setName(fld, SourceType.USER_DEFINED)
-                                except Exception as exc:  # noqa: BLE001
-                                    changes.append(
-                                        f"  !! slot override rename {cls}#{i} 0x{tgt:08x} failed: {exc}"
-                                    )
-                            apply_mac_signature_if_safe(fn, cls, override["mac_method"])
-                        else:
-                            fld = sanitize_field(fn.getName(), i)
+                        fld = sanitize_field(fn.getName(), i)
                         try:
                             sig_dt, used_mac = make_function_definition(cls, fld, i, fn)
                             field_dt = PointerDataType(sig_dt, dtm)
@@ -1303,121 +1268,6 @@ def run(program, args) -> dict:
             except Exception as exc:  # noqa: BLE001
                 changes.append(f"  !! curated global {name}@0x{addr:08x} failed: {exc}")
 
-        def curated_field_datatype(ftype: str):
-            """Map recovered_fields field_type to (datatype, byte_length)."""
-            spec = parse_field_type(ftype)
-            if spec is None:
-                return None
-            if spec.kind == FieldKind.POINTER_ARRAY:
-                if spec.base.lower() in ("int", "dword", "uint"):
-                    elem = PointerDataType(_DWordDT(), dtm)
-                elif spec.base.lower() == "void":
-                    elem = PointerDataType(VoidDataType.dataType, dtm)
-                else:
-                    inner = root_class_dt(spec.base)
-                    if inner is None:
-                        return None
-                    elem = PointerDataType(inner, dtm)
-                arr = _ArrayDT(elem, spec.count, 4)
-                return arr, arr.getLength()
-            if spec.kind == FieldKind.VALUE_ARRAY:
-                base = spec.base.lower()
-                if base == "short":
-                    elem = _WordDT()
-                elif base in ("int", "dword", "uint"):
-                    elem = _DWordDT()
-                else:
-                    inner = root_class_dt(spec.base)
-                    if inner is None:
-                        return None
-                    elem = inner
-                arr = _ArrayDT(elem, spec.count, elem.getLength())
-                return arr, arr.getLength()
-            if spec.kind == FieldKind.POINTER:
-                if spec.base.lower() in ("int", "dword", "uint"):
-                    inner = _DWordDT()
-                else:
-                    inner = root_class_dt(spec.base)
-                    if inner is None:
-                        return None
-                return PointerDataType(inner, dtm), 4
-            if spec.base.lower() in ("int", "dword", "uint"):
-                return _DWordDT(), 4
-            if spec.base.lower() == "short":
-                return _WordDT(), 2
-            inner = root_class_dt(spec.base)
-            if inner is None:
-                return None
-            return inner, inner.getLength()
-
-        # Interior class-field types now come from the per-class manifests'
-        # curated.fields (config/classes/<Class>.yml), which replaced
-        # recovered_fields.csv. `manifests` was loaded above in this apply pass.
-        curated_field_rows = class_manifest.recovered_field_rows(manifests)
-        curated_field_rows.sort(
-            key=lambda row: (
-                (row.get("class") or "").strip(),
-                int((row.get("offset") or "0").strip(), 16)
-                if (row.get("offset") or "").strip()
-                else 0,
-            )
-        )
-        fields_by_class: dict[str, list[dict[str, str]]] = {}
-        for row in curated_field_rows:
-            cls = (row.get("class") or "").strip()
-            if cls:
-                fields_by_class.setdefault(cls, []).append(row)
-
-        for cls, class_rows in fields_by_class.items():
-            for idx, row in enumerate(class_rows):
-                off_s = (row.get("offset") or "").strip()
-                ftype = (row.get("field_type") or "").strip()
-                if not off_s or not ftype:
-                    continue
-                try:
-                    off = int(off_s, 16)
-                except ValueError:
-                    changes.append(f"  !! curated field {cls}: bad offset {off_s}")
-                    continue
-                fname = (row.get("field_name") or "").strip() or f"field_0x{off:x}"
-                note = (row.get("note") or "").strip() or None
-                struct = root_class_dt(cls)
-                if struct is None or not hasattr(struct, "replaceAtOffset"):
-                    changes.append(f"  !! curated field {cls}+0x{off:x}: struct not found")
-                    continue
-                field_dt_spec = curated_field_datatype(ftype)
-                if field_dt_spec is None:
-                    changes.append(f"  !! curated field {cls}+0x{off:x}: type {ftype} not found")
-                    continue
-                field_dt, field_len = field_dt_spec
-                if idx + 1 < len(class_rows):
-                    next_off_s = (class_rows[idx + 1].get("offset") or "").strip()
-                    try:
-                        next_off = int(next_off_s, 16)
-                        if next_off > off:
-                            clipped = next_off - off
-                            if clipped < field_len:
-                                if args.verbose:
-                                    changes.append(
-                                        f"  curated field {cls}+0x{off:x}: clip "
-                                        f"0x{field_len:x} -> 0x{clipped:x} before +0x{next_off:x}"
-                                    )
-                                field_len = clipped
-                    except ValueError:
-                        pass
-                if off + field_len > struct.getLength():
-                    changes.append(
-                        f"  !! curated field {cls}+0x{off:x}: beyond object size 0x{struct.getLength():x}"
-                    )
-                    continue
-                try:
-                    struct.replaceAtOffset(off, field_dt, field_len, fname, note)
-                    stats["curated_fields_typed"] += 1
-                    if args.verbose:
-                        changes.append(f"  curated field {cls}+0x{off:x} = {ftype} ({fname})")
-                except Exception as exc:  # noqa: BLE001
-                    changes.append(f"  !! curated field {cls}+0x{off:x} failed: {exc}")
-
         # Dissolve placeholder pseudo-class namespaces (not real classes) back into
         # Global: move every member symbol out, drop any leftover root datatype of
         # the same name, then delete the now-empty namespace.
@@ -1678,8 +1528,7 @@ def main() -> int:
             f"mac_method_signatures={s['mac_method_signatures']}\n"
             f"          caller_class_assigned={s['caller_class_assigned']} "
             f"locality_class_assigned={s['locality_class_assigned']}\n"
-            f"          curated_globals_typed={s['curated_globals_typed']} "
-            f"curated_fields_typed={s['curated_fields_typed']}\n"
+            f"          curated_globals_typed={s['curated_globals_typed']}\n"
             f"          pseudo_classes_dissolved={s['pseudo_classes_dissolved']} "
             f"pseudo_class_members_moved={s['pseudo_class_members_moved']}\n"
             f"          calling_conventions_fixed={s['calling_conventions_fixed']}\n"

@@ -733,11 +733,6 @@ name-vtable-slots *args: _require-ghidra-install
 
 # MUTATES: Ghidra DB (with --apply).
 [group('ghidra-db')]
-gen-vtable-slot-overrides *args: _require-ghidra-install
-  uv run python -m tools.ghidra.gen_vtable_slot_overrides {{args}}
-
-# MUTATES: Ghidra DB (with --apply).
-[group('ghidra-db')]
 propagate-virtual-method-names *args: _require-ghidra-install
   uv run python -m tools.ghidra.propagate_virtual_method_names {{args}}
 
@@ -784,7 +779,6 @@ gates:
   just marker-gate
   just vtable-annotation-gate
   just vtable-collision-gate
-  just field-layout-gate
   just synthetic-gate
   just symbols-integrity-gate
   just global-location-gate
@@ -887,10 +881,6 @@ antipattern-gate:
 [group('gates')]
 tgreatpower-gate:
   uv run python -m tools.workflow.check_tgreatpower_hygiene --baseline "{{tgreatpower_gate_baseline}}"
-
-[group('gates')]
-field-layout-gate *args:
-  uv run python -m tools.workflow.check_field_layout_annotations {{args}}
 
 # Ensure // GLOBAL: markers live in global_data_tables.cpp and declarations in global_data_tables.h
 [group('gates')]
@@ -1032,11 +1022,6 @@ mfc-runtime-macros *args:
 [group('rewrite')]
 apply-msvc500-library-region *args:
   uv run python -m tools.mfc.apply_msvc500_library_region {{args}}
-
-# MUTATES: config/recovered_fields (generated from recovered headers).
-[group('rewrite')]
-gen-recovered-fields-from-headers *args:
-  uv run python -m tools.ghidra.gen_recovered_fields_from_headers {{args}}
 
 # MUTATES: the given paths (clang-format).
 [group('rewrite')]

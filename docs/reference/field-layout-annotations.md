@@ -1,8 +1,9 @@
 # Field layout annotations
 
 Headers under `include/game/*.h` carry recovered MSVC field layout as comments.
-`gen_recovered_fields_from_headers`, `apply_mfc_rtti`, and `field-layout-gate`
-share the grammar implemented in `tools/common/field_layout_annotations.py`.
+This documents the comment grammar so it stays consistent across headers; there
+is no automated gate or generator for it (the manifest-driven tooling that used
+to enforce/generate these was retired, bead imperialism-decomp-1uj.30).
 
 ## Recovery status
 
@@ -14,11 +15,9 @@ Record the recovery status directly in the class header using comment annotation
 class TCity {
 ```
 
-`status` can be `RECOVERED` or `IN_PROGRESS`.
-
-**`RECOVERED`** — `just field-layout-gate` requires every non-pad data member to
-carry a resolvable offset annotation, and the annotation must match the
-sequential layout walk (pcpp + cxxheaderparser).
+`status` can be `RECOVERED` or `IN_PROGRESS`. `RECOVERED` means every non-pad
+data member should carry a resolvable offset annotation, matching the sequential
+layout walk.
 
 
 ## Offset comment forms
@@ -51,7 +50,7 @@ by a base class — those lines must not use a trailing dash:
 
 ```cpp
 // 0x04..0x90 (identity strings...) now live on the TCountry base.
-TForeignMinister* foreignMinister;  // starts at TGreatPower+0x94 via curated.layout.base_offset
+TForeignMinister* foreignMinister;  // starts at TGreatPower+0x94, base-owned prefix
 ```
 
 ### 3. Previous-line block start
@@ -81,13 +80,3 @@ offset comments.
 
 When a class inherits a documented prefix (e.g. `TGreatPower` after `TCountry`),
 do not re-annotate base-owned bytes in the derived header.
-
-
-## Closed loop
-
-```bash
-just gen-recovered-fields-from-headers --class TCity   # suggestions
-just field-layout-gate                               # annotation policy
-just apply-mfc-rtti --apply                          # Ghidra struct fields
-just ghidra-decomp-check                             # decompile regression
-```

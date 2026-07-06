@@ -24,11 +24,11 @@ def is_excluded_scan_path(path: Path) -> bool:
     be treated as canonical source during a repo-wide scan."""
     return any(part in _EXCLUDED_PATH_PARTS for part in path.parts)
 
-# `gen_class` maintains a marked, auto-generated reference block inside hand-owned
-# headers. Its slot table embeds raw provisional Ghidra names that can incidentally
-# match banned-pattern regexes (bridge names, etc.). Source-policy gates that scan
-# for *hand-written* anti-patterns must skip these blocks; the manifest-gate already
-# guards their correctness.
+# Hand-owned headers carry a marked, auto-generated reference block (inserted by a
+# now-retired generator) inside them. Its slot table embeds raw provisional Ghidra
+# names that can incidentally match banned-pattern regexes (bridge names, etc.).
+# Source-policy gates that scan for *hand-written* anti-patterns must skip these
+# blocks.
 _GENERATED_BLOCK_RE = re.compile(
     r"^[ \t]*//[ \t]*===[ \t]*BEGIN GENERATED \(\w+\).*?^[ \t]*//[ \t]*===[ \t]*END GENERATED \(\w+\)[ \t]*===[ \t]*$",
     re.DOTALL | re.MULTILINE,
@@ -36,7 +36,7 @@ _GENERATED_BLOCK_RE = re.compile(
 
 
 def strip_generated_blocks(text: str) -> str:
-    """Blank out gen_class GENERATED blocks (keeping line count) before pattern scans."""
+    """Blank out GENERATED reference blocks (keeping line count) before pattern scans."""
     def _blank(match: re.Match[str]) -> str:
         return "\n".join("" for _ in match.group(0).splitlines())
 
