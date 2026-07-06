@@ -3,7 +3,20 @@
 #include "game/TAnimation.h"
 #include "game/mfc.h"
 
-// TODO(manifest): describe TCivAnimation2 and its role. Base edge (TAnimation) recovered from RTTI CRuntimeClass chain: TCivAnimation2 -> TAnimation -> TObject -> CObject.
+// CONFIRMED REAL CLASS: RTTI CRuntimeClass descriptor `classTCivAnimation2` at
+// 0x64c220 (DYNCREATE, symbols.csv row 7965) gives the true name and base edge
+// TCivAnimation2 -> TAnimation -> TObject -> CObject; vtable @ 0x64c390 has 13
+// distinct slots (not folded with TAnimation/TOneTimeAnimation), and it is
+// upcast-constructed as a real object in TCouncilTickerAnimation.cpp
+// (g_pUiAnimator) and TMapDialog.cpp. It is a battle-report civ animation
+// state machine, not a misattribution.
+// TODO(manifest): field_0x24 is a polymorphic receiver called through vtable
+// slot 0x30/4=12 in AddObjectToUiTransientRegistry (0x4a0d10) — needs class
+// recovery (slice-discovery) to type; current body is a stub, not a real
+// port. FindLinkedListNodeByIdFieldAt18 (0x4a0d30) is an orphaned real
+// thiscall method on this class (walks a linked list of nodes each with an
+// id field at +0x18) still living in autogen stubs as free-function
+// `undefined4(void)` — needs promotion to a member + typed list.
 // VTABLE: IMPERIALISM 0x0064c390
 class TCivAnimation2 : public TAnimation {
 public:

@@ -139,8 +139,8 @@ public:
   // slot 0x7d Helper_Uses_ConstructSharedStringFromCStrOrResourceId_At005b6360 inherited unchanged
   // (0x5b6360) slot 0x7e GetRuntimeClass inherited unchanged (0x5b63e0)
   virtual void ClearTextAndLayoutRect() override; // slot 0x7f 0x5b5dd0
-  virtual undefined SetTextAndLayoutRect(CString text,
-                                         RECT* layoutRect) override; // slot 0x80 0x5b5cb0
+  virtual void SetTextAndLayoutRect(CString text,
+                                    RECT* layoutRect) override; // slot 0x80 0x5b5cb0
   // slot 0x81 InitializeMapHintTextStyleAndThemeFlags inherited unchanged (0x5b6840)
   // slot 0x82 OrphanCallChain_C1_I05_005b6810 inherited unchanged (0x5b6810)
   // === END GENERATED DECLS (TInfoBarPictureText) ===

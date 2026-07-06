@@ -1011,8 +1011,8 @@ undefined4 ModifyStyleEx(void)
   return 0;
 }
 
-// ghidra_name SetWindowPos
-// ghidra_proto undefined SetWindowPos()
+// ghidra_name CWnd::SetWindowPos
+// ghidra_proto void __thiscall SetWindowPos(void* pWndInsertAfter, int x, int y, int cx, int cy, unsigned int nFlags)
 // FUNCTION: IMPERIALISM 0x006074aa
 undefined4 SetWindowPos(void)
 {

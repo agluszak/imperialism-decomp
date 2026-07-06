@@ -56,7 +56,7 @@ int TNumberText::UpdateControlCachedIntFromWindowText() {
 TObject* TNumberText::ShallowClone() {
   TObject* cloned = this->ShallowFree();
   TNumberText* dest = static_cast<TNumberText*>(cloned);
-  dest->CopyCityDialogStateFromSource(this);
+  dest->CopyViewStateFromSource(this);
   dest->field_94 = this->field_94;
   dest->field_98 = this->field_98;
   dest->field_9c = this->field_9c;

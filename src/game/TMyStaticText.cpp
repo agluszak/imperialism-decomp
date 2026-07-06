@@ -6,7 +6,6 @@
 #include "game/TViewMgr.h"
 #include "game/global_data_tables.h"
 
-undefined4 LoadUiStringResourceByGroupAndIndex(void);
 // SYNTHETIC: IMPERIALISM 0x005b5380
 // TMyStaticText::CreateObject
 

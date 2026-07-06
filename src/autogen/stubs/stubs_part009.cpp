@@ -11,22 +11,6 @@ undefined4 TPictureButton(void)
   return 0;
 }
 
-// ghidra_name thunk_InvalidateMapRegionForOrderEntry
-// ghidra_proto undefined thunk_InvalidateMapRegionForOrderEntry()
-// ILT thunk 0x004019ba - unannotated on purpose (see ILT_THUNK_RANGE)
-undefined4 thunk_InvalidateMapRegionForOrderEntry(void)
-{
-  return 0;
-}
-
-// ghidra_name TAdmiral::thunk_GenerateMappedFlavorTextByNationSlotField0C
-// ghidra_proto undefined thunk_GenerateMappedFlavorTextByNationSlotField0C()
-// ILT thunk 0x0040231a - unannotated on purpose (see ILT_THUNK_RANGE)
-undefined4 thunk_GenerateMappedFlavorTextByNationSlotField0C(void)
-{
-  return 0;
-}
-
 // ghidra_name thunk_GetCityBuildingProductionValueBySlot
 // ghidra_proto int __thiscall thunk_GetCityBuildingProductionValueBySlot(short nBuildingSlotId)
 // ILT thunk 0x0040257c - unannotated on purpose (see ILT_THUNK_RANGE)
@@ -47,14 +31,6 @@ undefined4 thunk_InitializeCityInteriorMinister(void)
 // ghidra_proto undefined thunk_InitializeUiTextStyleDescriptor()
 // ILT thunk 0x00402a7c - unannotated on purpose (see ILT_THUNK_RANGE)
 undefined4 thunk_InitializeUiTextStyleDescriptor(void)
-{
-  return 0;
-}
-
-// ghidra_name TUnit::thunk_RegisterUnitOrderWithOwnerManager
-// ghidra_proto undefined thunk_RegisterUnitOrderWithOwnerManager()
-// ILT thunk 0x00402eeb - unannotated on purpose (see ILT_THUNK_RANGE)
-undefined4 thunk_RegisterUnitOrderWithOwnerManager(void)
 {
   return 0;
 }
@@ -143,22 +119,6 @@ undefined4 thunk_DestroyScopedMapQuickDrawContext(void)
 // ghidra_proto undefined thunk_NormalizeWrappedMapCoord108x60()
 // ILT thunk 0x00408328 - unannotated on purpose (see ILT_THUNK_RANGE)
 undefined4 thunk_NormalizeWrappedMapCoord108x60(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_GetResourceTypeRandomDrawBlockFlag
-// ghidra_proto undefined thunk_GetResourceTypeRandomDrawBlockFlag()
-// ILT thunk 0x00408ed6 - unannotated on purpose (see ILT_THUNK_RANGE)
-undefined4 thunk_GetResourceTypeRandomDrawBlockFlag(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_EnsureSelectedTaskForceForOrderOwnerAndRefresh
-// ghidra_proto undefined thunk_EnsureSelectedTaskForceForOrderOwnerAndRefresh()
-// ILT thunk 0x0040928c - unannotated on purpose (see ILT_THUNK_RANGE)
-undefined4 thunk_EnsureSelectedTaskForceForOrderOwnerAndRefresh(void)
 {
   return 0;
 }

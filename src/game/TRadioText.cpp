@@ -22,6 +22,7 @@ void TRadioText::ApplyRectSlot110(RECT* rectBuffer) {
 }
 
 // FUNCTION: IMPERIALISM 0x00579580
-undefined TRadioText::OrphanCallChain_C3_I13_00579580() {
-  return 0;
+void TRadioText::RefreshAndNotifyOwnerSlot13C() {
+  RefreshControl();
+  OwnerPanel()->InvokeSlot13C();
 }

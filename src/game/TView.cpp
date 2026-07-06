@@ -682,7 +682,7 @@ RECT* TView::BuildRectFromSlot158(RECT* rectOut) {
   return rectOut;
 }
 // FUNCTION: IMPERIALISM 0x0048bef0
-void TView::CopyCityDialogStateFromSource(TView* source) {
+void TView::CopyViewStateFromSource(TView* source) {
   field04 = source->field04;
   field08 = source->field08;
   controlTag = source->controlTag;
@@ -714,7 +714,7 @@ void TView::CopyCityDialogStateFromSource(TView* source) {
 // FUNCTION: IMPERIALISM 0x0048bfd0
 TObject* TView::ShallowClone() {
   TView* clone = static_cast<TView*>(ShallowFree());
-  clone->CopyCityDialogStateFromSource(this);
+  clone->CopyViewStateFromSource(this);
   return clone;
 }
 

@@ -87,7 +87,7 @@ public:
                                                int* offsetLayout, int* sizeLayout, int layoutParam6,
                                                int layoutParam7, int attachFlag);
   void InvalidateCityDialogRectRegion(RECT* rect, int flag);
-  void CopyCityDialogStateFromSource(TView* source);
+  void CopyViewStateFromSource(TView* source);
   void EnableAndProcessFlag(CString sharedString);
   void PropagateUiResourceContextRecursive(CWnd* nativeWindow);
   UINT GetStyle();

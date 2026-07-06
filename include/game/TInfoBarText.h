@@ -137,12 +137,11 @@ public:
   // slot 0x7c UpdateTextEntrySharedString inherited unchanged (0x5b6480)
   // slot 0x7d Helper_Uses_ConstructSharedStringFromCStrOrResourceId_At005b6360 inherited unchanged
   // (0x5b6360) slot 0x7e GetRuntimeClass inherited unchanged (0x5b63e0)
-  virtual void ClearTextAndLayoutRect();                                  // slot 0x7f 0x5b6770
-  virtual undefined SetTextAndLayoutRect(CString text, RECT* layoutRect); // slot 0x80 0x5b66b0
-  virtual undefined
-  InitializeMapHintTextStyleAndThemeFlags(int stylePrimary,
-                                          int styleSecondary); // slot 0x81 0x5b6840
-  virtual undefined OrphanCallChain_C1_I05_005b6810();         // slot 0x82 0x5b6810
+  virtual void ClearTextAndLayoutRect();                              // slot 0x7f 0x5b6770
+  virtual void SetTextAndLayoutRect(CString text, RECT* layoutRect); // slot 0x80 0x5b66b0
+  virtual void InitializeMapHintTextStyleAndThemeFlags(int stylePrimary,
+                                                       int styleSecondary); // slot 0x81 0x5b6840
+  virtual void OrphanCallChain_C1_I05_005b6810();                     // slot 0x82 0x5b6810
   // === END GENERATED DECLS (TInfoBarText) ===
 
   int cursorThemeCode98;      // +0x98

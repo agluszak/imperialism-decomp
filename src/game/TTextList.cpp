@@ -2,11 +2,9 @@
 #include "game/global_data_tables.h"
 #include "game/CString.h"
 #include "game/TControl.h"
-#include "game/TTextList_Virtuals.h"
 #include "game/UiRuntimeContext.h"
 #include "game/ui_invalidation_guard.h"
 #include "game/quickdraw_rendering.h"
-#include "game/mfc.h"
 #include "game/mfc.h"
 
 // SYNTHETIC: IMPERIALISM 0x0045af30
@@ -94,17 +92,17 @@ void TTextList::BeginMouseCaptureAndStartRepeatTimer(CPoint* point, int arg2, in
   if (index < totalItems) {
     selectedIndex = index;
 
-    reinterpret_cast<TTextList_Virtuals*>(this)->OnSelectionChangeSlotE4();
+    RefreshControl(); // slot 0x39 (was facade OnSelectionChangeSlotE4)
 
     RECT rect;
-    reinterpret_cast<TTextList_Virtuals*>(this)->GetRectSlot12C(&rect);
+    QueryBounds(&rect); // slot 0x4b (was facade GetRectSlot12C)
 
     RECT localRect;
     CopyRect(&localRect, &rect);
 
-    reinterpret_cast<TControl*>(this->ownerContext)->InvalidateCityDialogRectRegion(&localRect, 1);
-    reinterpret_cast<TTextList_Virtuals*>(this)->OnSelectionConfirmedSlot13C();
+    ownerContext->InvalidateCityDialogRectRegion(&localRect, 1);
+    InvokeSlot13C(); // slot 0x4f (was facade OnSelectionConfirmedSlot13C)
 
-    reinterpret_cast<TView*>(this->ownerContext)->DispatchEvent(4, this, 0);
+    ownerContext->DispatchEvent(4, this, 0);
   }
 }

@@ -128,7 +128,7 @@ public:
   // slot 0x73 LoadUiStringAndDispatchViaVslot1C8 inherited unchanged (0x48fed0)
   // slot 0x74 AssignSharedStringFromField84 inherited unchanged (0x4294d0)
   // slot 0x75 RenderControlStateTextBySelectionCode inherited unchanged (0x4900a0)
-  virtual undefined OrphanRetStub_0057b760(); // slot 0x76 0x57b760
+  virtual void OrphanRetStub_0057b760(); // slot 0x76 0x57b760 — genuinely a 1-byte no-op (bare `ret`)
   // === END GENERATED DECLS (TSelectoText) ===
   // TODO(manifest): add data members from the object slice (`just slice-discovery TSelectoText
   // 0xCTOR`).

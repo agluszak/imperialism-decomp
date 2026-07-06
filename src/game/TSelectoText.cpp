@@ -14,6 +14,4 @@ IMPLEMENT_DYNCREATE(TSelectoText, TStaticText)
 TSelectoText::TSelectoText() {}
 
 // FUNCTION: IMPERIALISM 0x0057b760
-undefined TSelectoText::OrphanRetStub_0057b760() {
-  return 0;
-}
+void TSelectoText::OrphanRetStub_0057b760() {}

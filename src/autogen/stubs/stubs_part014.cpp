@@ -619,42 +619,10 @@ undefined4 CreateTColorFillInstance(void)
   return 0;
 }
 
-// ghidra_name TFuzzySet::CreateTFuzzySetInstance
-// ghidra_proto undefined CreateTFuzzySetInstance()
-// FUNCTION: IMPERIALISM 0x004ff500
-undefined4 CreateTFuzzySetInstance(void)
-{
-  return 0;
-}
-
-// ghidra_name TFuzzySet::ConstructTFuzzySetBaseState
-// ghidra_proto undefined ConstructTFuzzySetBaseState()
-// FUNCTION: IMPERIALISM 0x004ff6e0
-undefined4 ConstructTFuzzySetBaseState(void)
-{
-  return 0;
-}
-
-// ghidra_name DestructTFuzzySetAndMaybeFree_Impl
-// ghidra_proto undefined DestructTFuzzySetAndMaybeFree_Impl()
-// FUNCTION: IMPERIALISM 0x004ff730
-undefined4 DestructTFuzzySetAndMaybeFree_Impl(void)
-{
-  return 0;
-}
-
 // ghidra_name InitializeCityInteriorMinister_Impl
 // ghidra_proto undefined InitializeCityInteriorMinister_Impl()
 // FUNCTION: IMPERIALISM 0x004ff750
 undefined4 InitializeCityInteriorMinister_Impl(void)
-{
-  return 0;
-}
-
-// ghidra_name TFuzzyVar::AllocateAndAppendTFuzzyVarRecord_004ff7d0
-// ghidra_proto undefined AllocateAndAppendTFuzzyVarRecord_004ff7d0()
-// FUNCTION: IMPERIALISM 0x004ff7d0
-undefined4 AllocateAndAppendTFuzzyVarRecord_004ff7d0(void)
 {
   return 0;
 }
