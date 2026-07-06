@@ -31366,7 +31366,7 @@
     },
     {
       "address": "0x5b7a40",
-      "matching": 0.9090909090909091,
+      "matching": 1.0,
       "name": "TTradeMgr::`scalar deleting destructor'",
       "type": 1
     },
@@ -31396,7 +31396,7 @@
     },
     {
       "address": "0x5b8080",
-      "matching": 0.24457142857142858,
+      "matching": 0.17547169811320754,
       "name": "TTradeMgr::AccumulateDiplomacyRelationChangesAndQueueEvents",
       "type": 1
     },
@@ -31408,7 +31408,7 @@
     },
     {
       "address": "0x5b8ad0",
-      "matching": 0.4868913857677903,
+      "matching": 0.45692883895131087,
       "name": "TTradeMgr::ComputeNationMetricBaselineValueForSlot",
       "type": 1
     },
@@ -31467,13 +31467,13 @@
     },
     {
       "address": "0x5b91e0",
-      "matching": 0.021052631578947368,
+      "matching": 0.38,
       "name": "ProcessPendingDiplomacyTransferEntriesUntilBlocked",
       "type": 1
     },
     {
       "address": "0x5b9370",
-      "matching": 0.045454545454545456,
+      "matching": 0.5476190476190477,
       "name": "RefreshNationStateAndEmitTurnEvent3Mode18",
       "type": 1
     },
@@ -31551,7 +31551,7 @@
     },
     {
       "address": "0x5ba0e0",
-      "matching": 0.08333333333333333,
+      "matching": 1.0,
       "name": "BuildInterNationEventSummaryRowsForAdvisorDialog_Impl",
       "type": 1
     },
@@ -43388,6 +43388,6 @@
       "type": 5
     }
   ],
-  "file": "Imperialism.exe.gog-original",
+  "file": "Imperialism.exe",
   "format": 1
 }
