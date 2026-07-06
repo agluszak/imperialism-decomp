@@ -1,5 +1,6 @@
 #pragma once
 
+#include "game/CString.h"
 #include "game/TObject.h"
 #include "game/mfc.h"
 #include "game/global_data_tables.h"
@@ -397,7 +398,11 @@ public:
   // (hexNeighborWrapHorizontally20) already matched their declared offsets, so the gap
   // is confined to +0x04..+0x0c: 4 stream-read scalars whose semantics aren't identified
   // yet (kept generic below), aligning the first pointer to +0x0c.
-  short field4;           // +0x04 -- zeroed unconditionally near the end of ReadFrom
+  // Only ever written, and only as a single byte (MOV byte ptr [this+4],0 in ReadFrom's
+  // decompile) -- not a genuine short; a real 2-byte field there would leave its high byte
+  // unaccounted for.
+  unsigned char field4;   // +0x04 -- zeroed unconditionally near the end of ReadFrom
+  unsigned char pad5;     // +0x05
   short field6;           // +0x06 -- 2-byte stream read
   unsigned char field8;   // +0x08 -- 1-byte stream read
   unsigned char field9;   // +0x09 -- 1-byte stream read
@@ -407,9 +412,12 @@ public:
   // Per-tile ownership/region table (0x24-byte records, one per map tile: terrain/region
   // tag at +0x04 valid in [7,22], owner-nation byte at +0x18). Full record layout is
   // unknown, so accessed via byte offsets.
-  signed char* tileOwnershipTable;    // +0x14
-  int cityScoreTotal;                 // +0x18
-  char* scenarioTagText1c;            // +0x1c
+  signed char* tileOwnershipTable; // +0x14
+  int cityScoreTotal;              // +0x18
+  // Real CString, not a raw char* -- ~TMapMgr's own decompile (0x50e490) shows an explicit
+  // CString::~CString() call on this field (LEA ECX,[this+0x1c]; CALL 0x6058e2), the sole
+  // action the base destructor performs.
+  CString scenarioTagText1c;          // +0x1c
   char hexNeighborWrapHorizontally20; // +0x20
   char pad21;                         // +0x21
   short pendingRiverMouthTile22;      // +0x22 -- tile awaiting a river-mouth variant assign

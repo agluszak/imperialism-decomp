@@ -16348,7 +16348,7 @@
     },
     {
       "address": "0x50e460",
-      "matching": 0.9090909090909091,
+      "matching": 1.0,
       "name": "TMapMgr::`scalar deleting destructor'",
       "type": 1
     },
@@ -16360,7 +16360,7 @@
     },
     {
       "address": "0x50e510",
-      "matching": 0.0625,
+      "matching": 0.9,
       "name": "TMapMgr::Free",
       "type": 1
     },
@@ -16372,13 +16372,13 @@
     },
     {
       "address": "0x50e620",
-      "matching": 0.018018018018018018,
+      "matching": 0.9174311926605505,
       "name": "TMapMgr::ReadFrom",
       "type": 1
     },
     {
       "address": "0x50e7a0",
-      "matching": 0.02564102564102564,
+      "matching": 1.0,
       "name": "TMapMgr::WriteTo",
       "type": 1
     },
@@ -16678,7 +16678,7 @@
     },
     {
       "address": "0x5136a0",
-      "matching": 0.8888888888888888,
+      "matching": 1.0,
       "name": "TMapMgr::OrphanLeaf_NoCall_Ins35_005136a0",
       "type": 1
     },
@@ -17050,7 +17050,7 @@
     },
     {
       "address": "0x5178f0",
-      "matching": 0.34382566585956414,
+      "matching": 0.32038834951456313,
       "name": "ComputeRepresentativeTileIndexForTerrainTypeWithWrapBias",
       "type": 1
     },

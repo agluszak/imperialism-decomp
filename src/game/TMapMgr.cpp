@@ -46,13 +46,71 @@ IMPLEMENT_DYNCREATE(TMapMgr, TObject)
 
 TMapMgr::TMapMgr() {}
 
+// SYNTHETIC: IMPERIALISM 0x0050e460
+// TMapMgr::`scalar deleting destructor'
+
+// FUNCTION: IMPERIALISM 0x0050e490
 TMapMgr::~TMapMgr() {}
 
-void TMapMgr::Free() {}
+// FUNCTION: IMPERIALISM 0x0050e510
+void TMapMgr::Free() {
+  delete[] terrainStateTable;
+  delete[] cityScoreTable;
+  delete this;
+}
 
-void TMapMgr::ReadFrom(TStream* stream) {}
+// FUNCTION: IMPERIALISM 0x0050e620
+void TMapMgr::ReadFrom(TStream* stream) {
+  TObject::ReadFrom(stream);
+  stream->ReadBytes(&field6, 2);
+  stream->ReadBytes(&field8, 1);
+  stream->ReadBytes(&field9, 1);
+  stream->ReadBytes(&cityScoreTotal, 4);
+  stream->streamSlot70(&scenarioTagText1c, 0x20);
+  hexNeighborWrapHorizontally20 = stream->streamSlot44();
+  stream->ReadBytes(terrainStateTable, 0x38f40);
+  int i;
+  TGlobalMapCityScoreRecord* record = cityScoreTable;
+  for (i = 0; i < 0x180; ++i, ++record) {
+    stream->ReadBytes(record, 0xa4);
+    stream->streamSlot70(&record->cityNameA4, 0x20);
+  }
+  for (i = 0; i < 0x1950; ++i) {
+    terrainStateTable[i].firstCivilianOrder20 = nullptr;
+  }
+  for (i = 0; i < 0x180; ++i) {
+    cityScoreTable[i].stationedUnitChain98 = nullptr;
+  }
+  field4 = 0;
+  if (g_nSaveFormatVersion < 0x32) {
+    for (i = 0; i < 0x1950; ++i) {
+      terrainStateTable[i].perTileVisitedFlag0f = 0;
+    }
+  }
+  if (g_nSaveFormatVersion > 0x32) {
+    stream->ReadBytes(&pendingRiverMouthTile22, 2);
+  } else {
+    pendingRiverMouthTile22 = -1;
+  }
+}
 
-void TMapMgr::WriteTo(TStream* stream) {}
+// FUNCTION: IMPERIALISM 0x0050e7a0
+void TMapMgr::WriteTo(TStream* stream) {
+  TObject::WriteTo(stream);
+  stream->WriteBytesSlot78(&field6, 2);
+  stream->WriteBytesSlot78(&field8, 1);
+  stream->WriteBytesSlot78(&field9, 1);
+  stream->WriteBytesSlot78(&cityScoreTotal, 4);
+  stream->streamSlotAc(&scenarioTagText1c);
+  stream->streamSlot80(hexNeighborWrapHorizontally20);
+  stream->WriteBytesSlot78(terrainStateTable, 0x38f40);
+  TGlobalMapCityScoreRecord* record = cityScoreTable;
+  for (int i = 0; i < 0x180; ++i, ++record) {
+    stream->WriteBytesSlot78(record, 0xa4);
+    stream->streamSlotAc(&record->cityNameA4);
+  }
+  stream->WriteBytesSlot78(&pendingRiverMouthTile22, 2);
+}
 
 undefined TMapMgr::WrapperFor_AllocateWithFallbackHandler_At0050e8b0() {
   return 0;

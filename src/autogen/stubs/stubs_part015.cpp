@@ -35,14 +35,6 @@ undefined4 ConstructGlobalMapState(void)
   return 0;
 }
 
-// ghidra_name WrapperFor_ReleaseSharedStringRefIfNotEmpty_At0050e490
-// ghidra_proto undefined WrapperFor_ReleaseSharedStringRefIfNotEmpty_At0050e490()
-// FUNCTION: IMPERIALISM 0x0050e490
-undefined4 WrapperFor_ReleaseSharedStringRefIfNotEmpty_At0050e490(void)
-{
-  return 0;
-}
-
 // ghidra_name InitializeGlobalMapState
 // ghidra_proto void __fastcall InitializeGlobalMapState(int * pGlobalMapState)
 // FUNCTION: IMPERIALISM 0x0050e4e0
