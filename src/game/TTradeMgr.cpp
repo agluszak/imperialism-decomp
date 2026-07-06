@@ -14,6 +14,7 @@
 #include "game/nation_slot_eligibility.h"
 #include "game/TStream.h"
 #include "game/TSoundChannelNode.h"
+#include "game/TMultiplayerMgr.h"
 
 // Preset seed table for the metric rows (original global @ 0x69a910) and the proposal-code
 // lookup used by the code-resolver. Kept file-local until modeled as recovered globals.
@@ -57,6 +58,8 @@ TTradeMgr::TTradeMgr() {}
 
 // SYNTHETIC: IMPERIALISM 0x005b7a40
 // TTradeMgr::`scalar deleting destructor'
+
+// FUNCTION: IMPERIALISM 0x005b7a70
 TTradeMgr::~TTradeMgr() {}
 
 // FUNCTION: IMPERIALISM 0x005b7a90
@@ -603,6 +606,32 @@ void TTradeMgr::ProcessPendingDiplomacyTransferEntriesUntilBlockedWrapper() {
 
 // FUNCTION: IMPERIALISM 0x005b91e0
 void TTradeMgr::ProcessPendingDiplomacyTransferEntriesUntilBlocked() {}
+
+// FUNCTION: IMPERIALISM 0x005b9370
+void TTradeMgr::RefreshNationStateAndEmitTurnEvent3Mode18() {
+  for (TGreatPower** cursor = g_apNationStates;
+       reinterpret_cast<int>(cursor) < reinterpret_cast<int>(&g_apNationStates_End); ++cursor) {
+    if (*cursor != 0) {
+      (*cursor)->ClearDiplomacyState1c6Block();
+    }
+  }
+
+  short* rowCursor = &categoryRows[0].cells18[46];
+  for (int row = 0; row < 0x11; ++row) {
+    for (int i = 0; i < 0x17; ++i) {
+      if (rowCursor[i] < rowCursor[i - 0x17]) {
+        rowCursor[i] = rowCursor[i - 0x17];
+      }
+    }
+    rowCursor += 0x50;
+  }
+
+  if (*reinterpret_cast<int*>(&g_pSimMgr->preferenceValues[0]) == 1) {
+    g_pGameFlowState->EmitTurnEvent3Mode18WithActiveNation();
+  } else {
+    g_pSimMgr->PostMainWindowCommand100ForTurnFlow();
+  }
+}
 
 // FUNCTION: IMPERIALISM 0x005b9410
 void TTradeMgr::RebuildNationMetricPassesAndClampRowsByBaseline() {

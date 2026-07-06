@@ -72,6 +72,13 @@ public:
   void InitializeNationInteractionStateManagerDefaults();
   // Non-virtual impl invoked by the slot-0x16 wrapper.
   void ProcessPendingDiplomacyTransferEntriesUntilBlocked(); // 0x5b91e0
+  // Clears every live TGreatPower's diplomacyState1c6 block, clamps each category row's
+  // cells18 turn-history cells to the running max seen 23 cells earlier (the scan
+  // deliberately runs past cells18's own bounds into the next row -- rows are laid out
+  // contiguously in categoryRows, so this is a genuine flat-buffer traversal in the
+  // original, not a bug), then either emits turn-event 3 mode 18 for the active nation or
+  // (if the game isn't in that mode) posts the turn-flow UI refresh command.
+  void RefreshNationStateAndEmitTurnEvent3Mode18(); // 0x5b9370
 
   // One 0xa0-byte metric row per category, indexed from class offset 0x04. Field offsets
   // recovered from the accessors' disassembly: `categoryRows[i].field` resolves to
