@@ -891,22 +891,6 @@ undefined4 FormatVersionStringFromVersionResource(void)
   return 0;
 }
 
-// ghidra_name CreateWaveFileAndWriteFmtFactChunks
-// ghidra_proto undefined CreateWaveFileAndWriteFmtFactChunks()
-// FUNCTION: IMPERIALISM 0x005e0b50
-undefined4 CreateWaveFileAndWriteFmtFactChunks(void)
-{
-  return 0;
-}
-
-// ghidra_name CopyMmioChunkByFourCCViaGlobalBuffer
-// ghidra_proto undefined CopyMmioChunkByFourCCViaGlobalBuffer()
-// FUNCTION: IMPERIALISM 0x005e0fb0
-undefined4 CopyMmioChunkByFourCCViaGlobalBuffer(void)
-{
-  return 0;
-}
-
 // ghidra_name ProbeAuxOutputDeviceIndexByPidMask
 // ghidra_proto undefined ProbeAuxOutputDeviceIndexByPidMask()
 // FUNCTION: IMPERIALISM 0x005e1430

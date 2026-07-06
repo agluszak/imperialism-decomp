@@ -4254,6 +4254,8 @@ address|target_cpp|ownership|note
 5dff20|src/game/TAssetMgr.cpp|manual|marker_sync
 5e0780|src/game/wave_helpers.cpp|manual|marker_sync
 5e09f0|src/game/wave_helpers.cpp|manual|marker_sync
+5e0b50|src/game/wave_helpers.cpp|manual|marker_sync
+5e0fb0|src/game/wave_helpers.cpp|manual|marker_sync
 5e10c0|src/game/wave_helpers.cpp|manual|marker_sync
 5e1500|src/game/wave_helpers.cpp|manual|marker_sync
 5e1bc0|src/game/TLowDiskWarningDialog.cpp|manual|marker_sync

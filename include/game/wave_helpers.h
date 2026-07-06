@@ -8,8 +8,6 @@
 
 // Wave-file loading helpers — the DirectX SDK sample wave.c module statically linked at
 // 0x5e0780..0x5e11c6. Free __cdecl functions (every callsite is caller-cleaned).
-// Still stubbed from the same module: CreateWaveFileAndWriteFmtFactChunks (0x5e0b50) and
-// CopyMmioChunkByFourCCViaGlobalBuffer (0x5e0fb0).
 
 // wave.c ER_* error codes.
 #define ER_MEM 0xe000
@@ -17,6 +15,7 @@
 #define ER_NOTWAVEFILE 0xe101
 #define ER_CANNOTREAD 0xe102
 #define ER_CORRUPTWAVEFILE 0xe103
+#define ER_CANNOTWRITE 0xe104
 
 // 0x005e0780 — wave.c WaveOpenFile: mmioOpen the file (or memory file via pmmioInfo),
 // verify RIFF/WAVE, read the 'fmt ' chunk into a GlobalAlloc'd WAVEFORMATEX.
@@ -34,6 +33,16 @@ UINT ReadMmioBytesToBufferAndUpdateChunkRemaining(HMMIO hmmio, UINT cbRead, HPST
 UINT LoadWaveDataAndFormatFromFilePath(char* pszFileName, DWORD* pcbSize, DWORD* pcSamples,
                                        WAVEFORMATEX** ppwfx, unsigned char** ppbData,
                                        MMIOINFO* pmmioInfo);
+
+// 0x005e0b50 — wave.c WaveCreateFile: create the output file, write the RIFF/WAVE header,
+// the 'fmt ' chunk (from pwfxDest), and a placeholder 'fact' chunk (dwFactChunk = -1).
+UINT CreateWaveFileAndWriteFmtFactChunks(char* pszFileName, HMMIO* phmmioOut,
+                                         WAVEFORMATEX* pwfxDest, MMCKINFO* pckOut,
+                                         MMCKINFO* pckOutRIFF);
+
+// 0x005e0fb0 — wave.c helper: copy one chunk (pckIn->ckid/cksize) from hmmioIn to hmmioOut
+// through a GlobalAlloc'd bounce buffer. Returns 1 on success, 0 on failure.
+int CopyMmioChunkByFourCCViaGlobalBuffer(HMMIO hmmioIn, HMMIO hmmioOut, MMCKINFO* pckIn);
 
 // Aux-output (CD-audio line) volume: 0x69b89c holds the probed aux device index
 // (-1 = none found; set by ProbeAuxOutputDeviceIndexByPidMask 0x5e1430, unported).
