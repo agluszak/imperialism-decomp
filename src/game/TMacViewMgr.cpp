@@ -1,5 +1,7 @@
 #include "game/TMacViewMgr.h"
 
+#include "game/turn_event_dialog_provisional.h"
+
 #include <new>
 
 #include "game/bitmap_descriptor_helpers.h"
@@ -30,7 +32,6 @@
 #include "game/turn_flow_cooldown.h"
 #include "decomp_types.h"
 #include <string.h>
-
 
 undefined4 RebuildSurfaceRowsWithTemporaryRowBuffer(void);
 undefined4 BuildHexNeighborHighlightPolygonForTile(void);
@@ -108,34 +109,11 @@ void ResolveAndBlitBitmapResourceToActiveAtlas(int resourceId, RECT* dstRect) {
   ReleaseBitmapLoaderHandle(loaderHandle);
 }
 
-struct CityOrderSource {
-  virtual char QuerySellModeFlag1D8() = 0;
-  virtual short QuerySellQuantity1D4() = 0;
-};
-
-struct TurnEventDialogView : public TView {
-  virtual void ShowTurnEventDialog(int flag);
-  virtual void node69();
-  virtual void node6a();
-  virtual void RefreshTurnEventDialog();
-  virtual void node6c();
-  virtual void node6d();
-  virtual void* QueryTurnEventContentObject();
-  virtual void DispatchSlot9C();
-  virtual void SetDialogModeSlotF0(int mode);
-  virtual void InvokeSlotF0WithPair(short a, short b);
-  virtual void SetDialogActiveFlag(int flag);
-  virtual void InvokeSlotA0();
-  virtual void InvokeSlot1C();
-};
-
-struct GoldDialogControl : public TControl {
-  virtual void gold71();
-  virtual void SetGoldControlStateByResource(int a, int b);
-  virtual void InvokeSlot1CC(int a, int b, int c);
-  virtual void InvokeSlot1D0FourParam(int a, int b, int c, int slot);
-  virtual void InvokeSlot1D0OneParam(void* content);
-};
+// Provisional turn-event dialog / GOLD control interfaces are shared with TViewMgr.cpp
+// via one header so the two copies can't drift (bd imperialism-decomp-hpd.7).
+using turn_event_dialog::CityOrderSource;
+using turn_event_dialog::GoldDialogControl;
+using turn_event_dialog::TurnEventDialogNode;
 
 } // namespace
 
@@ -1011,7 +989,7 @@ undefined TMacViewMgr::SyncSellTaggedChildControlWithNationState(int* param_1, s
 
 // FUNCTION: IMPERIALISM 0x0050be30
 undefined TMacViewMgr::ResolveTurnEventDialogOrFailAndInvokeSlot9C() {
-  TurnEventDialogView* dialog = reinterpret_cast<TurnEventDialogView*>(
+  TurnEventDialogNode* dialog = reinterpret_cast<TurnEventDialogNode*>(
       g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(0));
   if (dialog == 0) {
     MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
@@ -1407,7 +1385,7 @@ void TMacViewMgr::DispatchTurnEvent3B8AndWaitForCompletionFlag() {
 // FUNCTION: IMPERIALISM 0x0050d360
 undefined TMacViewMgr::CreateCityBuildingDialogBySlot(int param_1, undefined4 param_2,
                                                       undefined4 param_3) {
-  TurnEventDialogView* dialog = reinterpret_cast<TurnEventDialogView*>(
+  TurnEventDialogNode* dialog = reinterpret_cast<TurnEventDialogNode*>(
       g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(param_1 + 0x23f0));
   GoldDialogControl* goldControl =
       reinterpret_cast<GoldDialogControl*>(dialog->ResolveControlByTag(0x444c4f47));
@@ -1423,7 +1401,7 @@ undefined TMacViewMgr::CreateCityBuildingDialogBySlot(int param_1, undefined4 pa
 
 // FUNCTION: IMPERIALISM 0x0050d470
 undefined TMacViewMgr::OrphanCallChain_C10_I80_0050d470(undefined4 param_1, undefined4 param_2) {
-  TurnEventDialogView* dialog = reinterpret_cast<TurnEventDialogView*>(
+  TurnEventDialogNode* dialog = reinterpret_cast<TurnEventDialogNode*>(
       g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(param_1 + 0x23f0));
   GoldDialogControl* goldControl =
       reinterpret_cast<GoldDialogControl*>(dialog->ResolveControlByTag(0x444c4f47));
@@ -1441,7 +1419,7 @@ undefined TMacViewMgr::OrphanCallChain_C10_I80_0050d470(undefined4 param_1, unde
 
 // FUNCTION: IMPERIALISM 0x0050d5b0
 undefined TMacViewMgr::OrphanCallChain_C9_I49_0050d5b0(undefined4 param_1) {
-  TurnEventDialogView* dialog = reinterpret_cast<TurnEventDialogView*>(
+  TurnEventDialogNode* dialog = reinterpret_cast<TurnEventDialogNode*>(
       g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(0x2404));
   GoldDialogControl* goldControl =
       reinterpret_cast<GoldDialogControl*>(dialog->ResolveControlByTag(0x444c4f47));
@@ -1464,8 +1442,7 @@ undefined TMacViewMgr::EnsureClipRegionWrapperAtSlotAndMergeSourceRegion(undefin
   if (regionSlots[param_2] == 0) {
     regionSlots[param_2] = NewRgn();
   }
-  CopyRgn(
-      reinterpret_cast<RgnHandle>(param_1), regionSlots[param_2]);
+  CopyRgn(reinterpret_cast<RgnHandle>(param_1), regionSlots[param_2]);
   return 0;
 }
 

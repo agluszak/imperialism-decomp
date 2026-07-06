@@ -1,5 +1,7 @@
 #include "game/TViewMgr.h"
 
+#include "game/turn_event_dialog_provisional.h"
+
 #include "game/ImperialismApp.h"
 #include "game/TAmbitApplication.h"
 #include "game/TAssetMgr.h"
@@ -75,34 +77,15 @@ undefined4 NoOpUiRuntimeCallback_005db2f0(void);
 undefined4 NoOpRuntimeCallback_005d5d10(void);
 undefined4 DoModal_6051b9(void);
 
-// Provisional dispatch interfaces for the runtime-resolved turn-event dialog node (a
-// TView-family panel; the concrete class is registry-driven) and its 'GOLD' child
-// control. Only the subclass-introduced slots are declared; the lower slots
-// (ResolveControlByTag, CaptureLayoutF0, CallVoidSlotA0, Free, AssertValid) are
-// inherited and dispatched as real virtuals. No VTABLE/ctor — these are never
-// constructed here, only used to dispatch through the runtime object's vtable.
+// Provisional dispatch interfaces for the runtime-resolved turn-event dialog node and
+// its 'GOLD' child control now live in one shared header so the TViewMgr and
+// TMacViewMgr copies can't drift apart (bd imperialism-decomp-hpd.7). The lower slots
+// (ResolveControlByTag, CaptureLayoutF0, CallVoidSlotA0, Free, AssertValid) are real
+// inherited TView/TObject virtuals dispatched directly.
 namespace {
-struct TurnEventDialogNode : public TView {
-  virtual void ShowTurnEventDialog(int flag);  // slot 0x68 byte 0x1a0
-  virtual void node_vmethod_0069();            // slot 0x69
-  virtual void node_vmethod_006a();            // slot 0x6a
-  virtual void RefreshTurnEventDialog();       // slot 0x6b byte 0x1ac
-  virtual void node_vmethod_006c();            // slot 0x6c
-  virtual void node_vmethod_006d();            // slot 0x6d
-  virtual void* QueryTurnEventContentObject(); // slot 0x6e byte 0x1b8
-};
-struct GoldDialogControl : public TControl {
-  virtual void gold_vmethod_0071();                         // slot 0x71 byte 0x1c4
-  virtual void SetGoldControlStateByResource(int a, int b); // slot 0x72 byte 0x1c8
-};
-// The 'GOLD' child of the factory dialogs opened by HandleTurnEventDialogFactorySlot78
-// dispatches a zero-argument commit through byte 0x1a0 — a different subclass family
-// than TurnEventDialogNode (whose 0x1a0 is ShowTurnEventDialog(int)) and than TControl
-// (whose slot 0x68 takes four arguments). Provisional interface until the concrete
-// class is recovered.
-struct GoldCommitControl : public TView {
-  virtual void CommitGoldDialogContent(); // slot 0x68 byte 0x1a0
-};
+using turn_event_dialog::GoldCommitControl;
+using turn_event_dialog::GoldDialogControl;
+using turn_event_dialog::TurnEventDialogNode;
 // g_pUiViewManager (TAssetMgr) @ 0x6a2148 — the UI/view asset registry that resolves
 // turn-event dialog nodes by message context.
 const unsigned int kAddrHotKeyDialogTemplate = 0x00698b1a;
@@ -1357,22 +1340,22 @@ void TViewMgr::HandleTurnStateExitAndPostFollowupEventCode(short followupState) 
   g_pSfxPlaybackSystem->ScaleAndApplyAuxOutputVolume(g_pSimMgr->preferenceValues[5]);
   this->activeMovieViewF4 = 0;
   switch (g_pSimMgr->mode) {
-    case 1:
-      g_pGlobalUiRootController->PostTurnEventCodeMessage2420(0x5dc);
+  case 1:
+    g_pGlobalUiRootController->PostTurnEventCodeMessage2420(0x5dc);
+    return;
+  case 0xe:
+  case 0x16:
+  case 0x17:
+    g_pGlobalUiRootController->PostTurnEventCodeMessage2420(0x7e0);
+    return;
+  case 0x19:
+    if (IsNationSlotEligibleForEventProcessing(g_pSimMgr->GetActiveNationId())) {
+      g_pGlobalUiRootController->PostTurnEventCodeMessage2420(0x5eb);
       return;
-    case 0xe:
-    case 0x16:
-    case 0x17:
-      g_pGlobalUiRootController->PostTurnEventCodeMessage2420(0x7e0);
-      return;
-    case 0x19:
-      if (IsNationSlotEligibleForEventProcessing(g_pSimMgr->GetActiveNationId())) {
-        g_pGlobalUiRootController->PostTurnEventCodeMessage2420(0x5eb);
-        return;
-      }
-    default:
-      // 0x581870, unported __cdecl(int) — generic thunk form per Hard Rule 9.
-      reinterpret_cast<void(__cdecl*)(int)>(ReinitializeGameFlowAndPostTurnEventCode)(0);
+    }
+  default:
+    // 0x581870, unported __cdecl(int) — generic thunk form per Hard Rule 9.
+    reinterpret_cast<void(__cdecl*)(int)>(ReinitializeGameFlowAndPostTurnEventCode)(0);
   }
 }
 
