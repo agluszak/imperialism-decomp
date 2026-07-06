@@ -2,7 +2,7 @@
   "aligned_fun_count": 1944,
   "aligned_vs_original_pct": 24.897540983606557,
   "aligned_vs_paired_pct": 25.954606141522028,
-  "avg_matching_pct": 53.02604371216377,
+  "avg_matching_pct": 53.05849519375438,
   "compared_fun_count": 7226,
   "coverage_pct": 95.92725409836066,
   "dat_orig_only_count": 1608,
@@ -12,8 +12,8 @@
   "flo_orig_only_count": 273,
   "flo_recomp_only_count": 0,
   "git_branch": "claude/ttaskforce-order-resolution",
-  "git_commit": "94115529bbd121efc4849cb7cae7d0b74071b762",
-  "git_commit_date": "2026-07-06T20:45:48+00:00",
+  "git_commit": "691af3ba27209531e5497aab0227bad64bccc202",
+  "git_commit_date": "2026-07-06T20:50:02+00:00",
   "global_coverage_pct": 19.581534997185212,
   "global_orig_only_count": 8571,
   "global_recomp_only_count": 3584,
@@ -59,7 +59,7 @@
   "str_orig_only_count": 509,
   "str_recomp_only_count": 82,
   "target": "IMPERIALISM",
-  "timestamp_utc": "2026-07-06T20:49:50+00:00",
+  "timestamp_utc": "2026-07-06T20:56:39+00:00",
   "wid_orig_only_count": 0,
   "wid_recomp_only_count": 2
 }

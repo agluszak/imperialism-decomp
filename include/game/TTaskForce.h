@@ -113,7 +113,13 @@ public:
   s16 required_count;
   char pad_1e[0x02];
   int attached_entity;
-  char pad_24[0x04];
+  char pad_24[0x02];
+  // Set to 1 by ComputeTaskForceOrderTieBreakScore (0x555c20) when this entry loses a
+  // tie-break against a competing entry; checked by
+  // ResolveTaskForceOrderConflictAndPickCandidate (0x555420) to short-circuit an
+  // already-eliminated candidate (was pad_24[2]).
+  char eliminatedFlag26;
+  char pad_27;
   TTaskForce* queue_prev;
   TTaskForce* queue_next;
   s16 tiebreak_strength;
@@ -150,6 +156,25 @@ public:
   // (g_NavyOrderResourceDescriptorTable[order_type]) plus required_count. Used by the
   // order-selection cluster to rank candidate task-force order entries.
   int ComputeMapOrderEntryHeuristicScore(); // 0x550aa0
+
+  // Number of childOrderList entries; null-safe on `this` (returns 0), matching a call
+  // site that invokes it without checking for a null receiver first.
+  int GetMapOrderEntryChildCount(); // 0x5562c0
+
+  // Average (x10) of the resource-type descriptorWeight column across active
+  // childOrderList entries; 0 if none are active.
+  int CalculateMapOrderEntryAverageChildRatingX10(); // 0x554ad0
+
+  // Sum of ComputeMapOrderEntryHeuristicScore() over every childOrderList entry (each
+  // entry's own order_type/tiebreak_strength/required_count, not this entry's own).
+  int ComputeTaskForceOrderAggregateScore(); // 0x556010
+
+  // Compares this entry's best (lowest descriptorWeight) active child against `other`'s
+  // average active-child rating; rolls against the gap to decide a tie-break winner.
+  // On a loss, marks `this` (not `other`) eliminated (eliminatedFlag26 = 1) and returns
+  // 1; else returns 0. Only the low byte of the original's return value is ever
+  // consulted by callers, so this is modeled returning char rather than int.
+  char ComputeTaskForceOrderTieBreakScore(TTaskForce* other); // 0x555c20
 
   // Marks every active childOrderList entry's order node (object_ptr+0x34 -- same
   // out-of-bounds write documented on TMapOrderEntryOwnerContext::FindOrCreateChildOrderLink)

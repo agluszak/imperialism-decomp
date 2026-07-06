@@ -43,14 +43,6 @@ undefined4 GetMinActionThresholdFromEntryChildren(void)
   return 0;
 }
 
-// ghidra_name CalculateMapOrderEntryAverageChildRatingX10
-// ghidra_proto undefined CalculateMapOrderEntryAverageChildRatingX10()
-// FUNCTION: IMPERIALISM 0x00554ad0
-undefined4 CalculateMapOrderEntryAverageChildRatingX10(void)
-{
-  return 0;
-}
-
 // ghidra_name BuildTaskForceOrderBreakdownSummaryText
 // ghidra_proto undefined BuildTaskForceOrderBreakdownSummaryText()
 // FUNCTION: IMPERIALISM 0x00554b20
@@ -115,14 +107,6 @@ undefined4 TryMarkLosingMapOrderEntryFromForceBalance(void)
   return 0;
 }
 
-// ghidra_name ComputeTaskForceOrderTieBreakScore
-// ghidra_proto undefined ComputeTaskForceOrderTieBreakScore()
-// FUNCTION: IMPERIALISM 0x00555c20
-undefined4 ComputeTaskForceOrderTieBreakScore(void)
-{
-  return 0;
-}
-
 // ghidra_name TryResolveMapOrderEntryPairExecution
 // ghidra_proto undefined TryResolveMapOrderEntryPairExecution()
 // FUNCTION: IMPERIALISM 0x00555d10
@@ -139,26 +123,10 @@ undefined4 IsTaskForceOrderMixWithinPriorityThresholds(void)
   return 0;
 }
 
-// ghidra_name ComputeTaskForceOrderAggregateScore
-// ghidra_proto undefined ComputeTaskForceOrderAggregateScore()
-// FUNCTION: IMPERIALISM 0x00556010
-undefined4 ComputeTaskForceOrderAggregateScore(void)
-{
-  return 0;
-}
-
 // ghidra_name ApplyMapOrderTypeExecutionEffects
 // ghidra_proto void __fastcall ApplyMapOrderTypeExecutionEffects(void * pMapOrderEntry)
 // FUNCTION: IMPERIALISM 0x00556100
 undefined4 ApplyMapOrderTypeExecutionEffects(void)
-{
-  return 0;
-}
-
-// ghidra_name GetMapOrderEntryChildCount
-// ghidra_proto undefined GetMapOrderEntryChildCount()
-// FUNCTION: IMPERIALISM 0x005562c0
-undefined4 GetMapOrderEntryChildCount(void)
 {
   return 0;
 }

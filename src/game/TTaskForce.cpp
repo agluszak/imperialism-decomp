@@ -5,6 +5,8 @@
 #include "game/TShip.h"
 #include "game/global_data_tables.h"
 
+extern undefined4 GenerateThreadLocalRandom15(void);
+
 // FUNCTION: IMPERIALISM 0x00550670
 TTaskForce* TTaskForce::SelectPreferredMapOrderEntryByPriorityRules(TTaskForce* candidate,
                                                                     int compareAttachedFlag) {
@@ -567,6 +569,77 @@ void TTaskForce::SetTaskForceOrderSelectionByNationClassAndFlag(short nationClas
   if (activeFlag != 0) {
     *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(node->object_ptr) + 0x34) = 0;
   }
+}
+
+// FUNCTION: IMPERIALISM 0x00554ad0
+int TTaskForce::CalculateMapOrderEntryAverageChildRatingX10() {
+  int sum = 0;
+  int count = 0;
+  for (TMapOrderChildLinkNode* node = childOrderList; node != nullptr; node = node->next) {
+    if (node->active_flag != 0) {
+      sum += g_NavyOrderResourceDescriptorTable[node->object_ptr->order_type].descriptorWeight;
+      ++count;
+    }
+  }
+  if (count == 0) {
+    return 0;
+  }
+  return (sum * 10) / count;
+}
+
+// FUNCTION: IMPERIALISM 0x00555c20
+char TTaskForce::ComputeTaskForceOrderTieBreakScore(TTaskForce* other) {
+  unsigned short minDescriptorWeight = 10000;
+  for (TMapOrderChildLinkNode* node = childOrderList; node != nullptr; node = node->next) {
+    if (node->active_flag != 0) {
+      short weight = static_cast<short>(
+          g_NavyOrderResourceDescriptorTable[node->object_ptr->order_type].descriptorWeight);
+      if (weight < static_cast<short>(minDescriptorWeight)) {
+        minDescriptorWeight = static_cast<unsigned short>(weight);
+      }
+    }
+  }
+
+  int sum = 0;
+  int count = 0;
+  for (TMapOrderChildLinkNode* otherNode = other->childOrderList; otherNode != nullptr;
+       otherNode = otherNode->next) {
+    if (otherNode->active_flag != 0) {
+      sum += g_NavyOrderResourceDescriptorTable[otherNode->object_ptr->order_type].descriptorWeight;
+      ++count;
+    }
+  }
+  short otherAverage = (count == 0) ? 0 : static_cast<short>((sum * 10) / count);
+
+  int roll = GenerateThreadLocalRandom15();
+  short threshold = static_cast<short>(
+      ((minDescriptorWeight != 10000 ? minDescriptorWeight : 0) + 5) * 10 - otherAverage);
+  if (threshold <= roll % 100) {
+    return 0;
+  }
+  eliminatedFlag26 = 1;
+  return 1;
+}
+
+// FUNCTION: IMPERIALISM 0x00556010
+int TTaskForce::ComputeTaskForceOrderAggregateScore() {
+  int total = 0;
+  for (TMapOrderChildLinkNode* node = childOrderList; node != nullptr; node = node->next) {
+    total += node->object_ptr->ComputeMapOrderEntryHeuristicScore();
+  }
+  return total;
+}
+
+// FUNCTION: IMPERIALISM 0x005562c0
+int TTaskForce::GetMapOrderEntryChildCount() {
+  if (this == nullptr) {
+    return 0;
+  }
+  int count = 0;
+  for (TMapOrderChildLinkNode* node = childOrderList; node != nullptr; node = node->next) {
+    ++count;
+  }
+  return count;
 }
 
 // FUNCTION: IMPERIALISM 0x00556820
