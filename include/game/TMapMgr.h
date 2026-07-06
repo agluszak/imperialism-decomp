@@ -383,10 +383,11 @@ public:
   // (g_apNationStates[terrainStateTable[tileIndex].ownerNationTag04]->townMarkerList),
   // matching TTown::regionId14 == tileIndex.
   virtual class TTown* FindTownMarkerForTileByOwnerNation(short tileIndex); // slot 0x36 0x513170
-  // TODO: port body @ 0x5133f0 (not yet ported). Updates terrainStateTable[regionId]'s owner
-  // nation, refreshes its own and its 6 neighbors' border-influence counters via
-  // UpdateTileNeighborBorderInfluenceCounters, and (for a coastal/border tile owned by a
-  // minor power) re-scans that minor's owned military unit list.
+  // Updates terrainStateTable[regionId]'s owner nation, refreshes its own and its 6
+  // neighbors' border-influence counters via UpdateTileNeighborBorderInfluenceCounters, and
+  // -- if the tile carries a town (activeFlags1c & 0x14) and the old owner is a great power
+  // (< 7) -- moves that TTown marker from the old owner's townMarkerList to the new owner's,
+  // updating TTown::ownerNation1c.
   virtual void SetTileOwnerAndInvalidateNeighborState(short regionId,
                                                       short newNationTag); // slot 0x37 0x5133f0
   // Rendering-variant lookup family: pick a bitmap-strip byte offset for a tile's

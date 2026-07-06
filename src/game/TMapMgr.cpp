@@ -1076,10 +1076,47 @@ void TMapMgr::DispatchFormationEntryActionsAndMaybeCreateTurnEvent12(short cityR
   }
 }
 
+// FUNCTION: IMPERIALISM 0x005133f0
 void TMapMgr::SetTileOwnerAndInvalidateNeighborState(short regionId, short newNationTag) {
-  // TODO: port body @ 0x5133f0 (not yet ported).
-  (void)regionId;
-  (void)newNationTag;
+  signed char oldOwner = terrainStateTable[regionId].ownerNationTag04;
+  if (oldOwner == newNationTag) {
+    return;
+  }
+
+  terrainStateTable[regionId].ownerNationTag04 = static_cast<signed char>(newNationTag);
+  terrainStateTable[regionId].pad07[0] = 0;
+  UpdateTileNeighborBorderInfluenceCounters(regionId, 2);
+
+  short neighbors[6];
+  ComputeHexNeighborTileIndices(regionId, neighbors, hexNeighborWrapHorizontally20);
+  for (int d = 0; d < 6; ++d) {
+    if (neighbors[d] != -1) {
+      terrainStateTable[neighbors[d]].pad07[0] = 0;
+      UpdateTileNeighborBorderInfluenceCounters(neighbors[d], 2);
+    }
+  }
+
+  if ((terrainStateTable[regionId].activeFlags1c & 0x14) && oldOwner < 7) {
+    TSortedList* oldTownList = g_apNationStates[oldOwner]->townMarkerList;
+    int ordinal = 1;
+    int count = oldTownList->GetCount();
+    TTown* matchedTown = nullptr;
+    bool found = false;
+    while (ordinal <= count) {
+      matchedTown = static_cast<TTown*>(oldTownList->GetEntryByOrdinal(ordinal));
+      if (matchedTown->regionId14 == regionId) {
+        found = true;
+        break;
+      }
+      ++ordinal;
+      count = oldTownList->GetCount();
+    }
+    if (found) {
+      oldTownList->RemoveAtOrdinal(ordinal);
+      matchedTown->ownerNation1c = newNationTag;
+      g_apNationStates[newNationTag]->townMarkerList->AddTail(matchedTown);
+    }
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x005135a0
