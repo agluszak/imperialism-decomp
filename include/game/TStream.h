@@ -33,7 +33,7 @@ public:
   virtual void streamSlot34(int);                         // 13 (0x34) TODO
   virtual char streamSlot38();                            // 14 (0x38) 0x00488a80
   virtual void ReadBytes(void* buffer, int sizeBytes);    // 15 (0x3c) primitive TODO
-  virtual int ReadInteger();                              // 16 (0x40) TODO: 0x00488b60
+  virtual char ReadInteger();                             // 16 (0x40) 0x00488b60 read 1 byte
   virtual char streamSlot44();                            // 17 (0x44) 0x00488b90 read 1 byte
   virtual void streamSlot48(void* out);                   // 18 (0x48) 0x00488bc0
   virtual short ReadShort();                              // 19 (0x4c) TODO: 0x00488bf0
@@ -50,7 +50,7 @@ public:
   virtual void WriteBytesSlot78(void* data, int length);  // 30 (0x78) primitive TODO
   virtual void streamSlot7c(unsigned char value);         // 31 (0x7c) 0x00488e90
   virtual void streamSlot80(unsigned char value);         // 32 (0x80) 0x00488eb0
-  virtual void streamSlot84();                            // 33 (0x84) TODO: 0x00488ed0
+  virtual void streamSlot84(short value);                 // 33 (0x84) 0x00488ed0 write high byte
   virtual void WriteCountSlot88(int count);               // 34 (0x88) 0x00488ef0
   virtual void streamSlot8c(int value);                   // 35 (0x8c) 0x00488f10
   virtual void streamSlot90(double value);                // 36 (0x90) 0x00488f30

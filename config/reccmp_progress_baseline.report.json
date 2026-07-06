@@ -3466,7 +3466,7 @@
     },
     {
       "address": "0x488b60",
-      "matching": 0.18181818181818182,
+      "matching": 1.0,
       "name": "TStream::ReadInteger",
       "type": 1
     },
@@ -3586,7 +3586,7 @@
     },
     {
       "address": "0x488ed0",
-      "matching": 0.0,
+      "matching": 1.0,
       "name": "TStream::streamSlot84",
       "type": 1
     },
@@ -11976,7 +11976,7 @@
     },
     {
       "address": "0x4d92e0",
-      "matching": 0.42363775901765155,
+      "matching": 0.4233128834355828,
       "name": "TGreatPower::ReadFrom",
       "type": 1
     },
@@ -12745,7 +12745,8 @@
     },
     {
       "address": "0x4e0650",
-      "matching": 1.0,
+      "effective": true,
+      "matching": 0.42857142857142855,
       "name": "TGreatPower::OrphanRetStub_004d7fe0_8b",
       "type": 1
     },
@@ -12757,7 +12758,7 @@
     },
     {
       "address": "0x4e06d0",
-      "matching": 0.8095238095238095,
+      "matching": 0.7619047619047619,
       "name": "TGreatPower::SumNationRuntimeFiveBucketValue44",
       "type": 1
     },
@@ -17054,7 +17055,7 @@
     },
     {
       "address": "0x5178f0",
-      "matching": 0.34382566585956414,
+      "matching": 0.32038834951456313,
       "name": "ComputeRepresentativeTileIndexForTerrainTypeWithWrapBias",
       "type": 1
     },
@@ -19370,7 +19371,7 @@
     },
     {
       "address": "0x536650",
-      "matching": 0.5925925925925926,
+      "matching": 0.5853658536585366,
       "name": "DeserializeTNavyMissionCommon",
       "type": 1
     },
@@ -20037,7 +20038,7 @@
     },
     {
       "address": "0x53ceb0",
-      "matching": 0.44329896907216493,
+      "matching": 0.441025641025641,
       "name": "ComputeArmyMissionCompositionAlignmentScore",
       "type": 1
     },
@@ -20049,7 +20050,7 @@
     },
     {
       "address": "0x53d200",
-      "matching": 0.41245136186770426,
+      "matching": 0.4108527131782946,
       "name": "ComputeArmyMissionScoreDeltaWithScaledCandidateUnit",
       "type": 1
     },

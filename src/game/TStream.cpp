@@ -48,10 +48,14 @@ void TStream::AssertMcAppStreamLine304() {}
 // FUNCTION: IMPERIALISM 0x00488b40
 void TStream::ReadBytes(void*, int) {} // slot 0x3c primitive; subclasses keep this default
 
+// Read a single byte through the ReadBytes primitive (slot 0x3c) and return it; callers
+// sign-extend at the call site (identical body to streamSlot44 at a different slot).
 // FUNCTION: IMPERIALISM 0x00488b60
-int TStream::ReadInteger() {
-  return 0;
-} // TODO: 0x00488b60
+char TStream::ReadInteger() {
+  char value;
+  ReadBytes(&value, 1);
+  return value;
+}
 
 // Read a single byte through the ReadBytes primitive (slot 0x3c) and return it.
 // FUNCTION: IMPERIALISM 0x00488b90
@@ -170,8 +174,12 @@ void TStream::streamSlot80(unsigned char value) {
   WriteBytesSlot78(&value, 1);
 }
 
+// Write the high byte of `value` through the WriteBytesSlot78 primitive (slot 0x78) —
+// the write-side counterpart of streamSlot48's high-byte read.
 // FUNCTION: IMPERIALISM 0x00488ed0
-void TStream::streamSlot84() {} // TODO: 0x00488ed0
+void TStream::streamSlot84(short value) {
+  WriteBytesSlot78(reinterpret_cast<char*>(&value) + 1, 1);
+}
 
 // ---------------------------------------------------------------------------
 // Typed read/write accessors: each delegates to a primitive vtable slot

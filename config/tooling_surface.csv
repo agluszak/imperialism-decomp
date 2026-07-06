@@ -46,6 +46,7 @@ module|tools.ghidra.propagate_virtual_method_names|just:propagate-virtual-method
 module|tools.ghidra.vtable_struct_check|just:ghidra-vtable-struct-check|Check Ghidra vtable struct field names
 module|tools.ghidra.fix_in_stack_params|just:fix-in-stack-params|Promote Ghidra in_stack variables to parameters
 module|tools.ghidra.dump_thunk_map|just:dump-thunk-map|Dump Ghidra thunk-name map for offline promotion
+module|tools.ghidra.dump_message_maps|just:dump-message-maps|Enumerate MFC message maps: message->handler->port-status per class
 module|tools.ghidra.gen_recovered_fields_from_headers|just:gen-recovered-fields-from-headers|Generate recovered fields from source headers
 module|tools.ghidra.apply_mfc_datatypes|just:apply-mfc-datatypes|Apply MFC datatypes into Ghidra
 module|tools.ghidra.apply_mfc_rtti|just:apply-mfc-rtti|Apply MFC RTTI into Ghidra
