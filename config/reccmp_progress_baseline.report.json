@@ -22771,25 +22771,25 @@
     },
     {
       "address": "0x55e8e0",
-      "matching": 0.7076923076923077,
+      "matching": 0.7384615384615385,
       "name": "TZone::GetOrAppendUniqueZonePointerInPrimaryArray",
       "type": 1
     },
     {
       "address": "0x55e9c0",
-      "matching": 0.7076923076923077,
+      "matching": 0.7384615384615385,
       "name": "TZone::GetOrAppendUniqueZonePointerInSecondaryArray",
       "type": 1
     },
     {
       "address": "0x55ead0",
-      "matching": 0.6521739130434783,
+      "matching": 0.6956521739130435,
       "name": "TZone::AppendZonePointerToPrimaryArray",
       "type": 1
     },
     {
       "address": "0x55eba0",
-      "matching": 0.6521739130434783,
+      "matching": 0.6956521739130435,
       "name": "TZone::AppendZonePointerToSecondaryArray",
       "type": 1
     },
@@ -22879,7 +22879,7 @@
     },
     {
       "address": "0x55fae0",
-      "matching": 0.5915492957746479,
+      "matching": 0.647887323943662,
       "name": "ResizePointerArrayCapacityByRequestedCount",
       "type": 1
     },
@@ -22987,7 +22987,7 @@
     },
     {
       "address": "0x561300",
-      "matching": 0.5915492957746479,
+      "matching": 0.647887323943662,
       "name": "ResizePointerArrayCapacityByRequestedCountAlt",
       "type": 1
     },

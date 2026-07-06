@@ -23,38 +23,10 @@ void DeleteUnlinkedZone(TZone* zone) {
   delete zone;
 }
 
-void* ReallocateStretchEntries(TZone** entries, int sizeBytes) {
-  return reinterpret_cast<void*(__cdecl*)(void*, int)>(ReallocateHeapBlockWithAllocatorTracking)(
-      entries, sizeBytes);
-}
-
 // 0x005e7f50 resolves to CRT `_free` (per symbols.csv), not a game-specific tracking
 // helper -- call the real library function directly (LIBRARY: IMPERIALISM 0x005e7f50).
 void FreeStretchEntries(void* entries) {
   free(entries);
-}
-
-template <typename TStretch> void AppendZonePointerToStretch(TStretch* list, TZone* entry) {
-  int slotIndex = list->Count();
-  if (list->Capacity() <= slotIndex) {
-    int nextCapacity = slotIndex + 1;
-    unsigned int doubledCapacity = static_cast<unsigned int>(nextCapacity * 2);
-    if (doubledCapacity > 0x7fffffffU) {
-      doubledCapacity = 0x7fffffffU;
-    }
-    void* grownBuffer = ReallocateStretchEntries(list->Data(), nextCapacity * 8);
-    if (grownBuffer == 0) {
-      list->Data() = static_cast<TZone**>(ReallocateStretchEntries(list->Data(), nextCapacity * 4));
-      list->Capacity() = nextCapacity;
-    } else {
-      list->Data() = static_cast<TZone**>(grownBuffer);
-      list->Capacity() = static_cast<int>(doubledCapacity);
-    }
-  }
-  if (list->Count() <= slotIndex) {
-    list->Count() = slotIndex + 1;
-  }
-  list->Data()[slotIndex] = entry;
 }
 
 } // namespace
@@ -161,9 +133,11 @@ TZone** TZonePrimaryNeighborStretch::GetOrAppendUnique(TZone* zone) {
     if (doubledCapacity > 0x7fffffffU) {
       doubledCapacity = 0x7fffffffU;
     }
-    void* grownBuffer = ReallocateStretchEntries(Data(), (count + 1) * 8);
+    void* grownBuffer = reinterpret_cast<void*(__cdecl*)(void*, int)>(
+        ReallocateHeapBlockWithAllocatorTracking)(Data(), (count + 1) * 8);
     if (grownBuffer == 0) {
-      Data() = static_cast<TZone**>(ReallocateStretchEntries(Data(), (count + 1) * 4));
+      Data() = static_cast<TZone**>(reinterpret_cast<void*(__cdecl*)(void*, int)>(
+          ReallocateHeapBlockWithAllocatorTracking)(Data(), (count + 1) * 4));
       Capacity() = count + 1;
     } else {
       Data() = static_cast<TZone**>(grownBuffer);
@@ -190,9 +164,11 @@ TZone** TZoneSecondaryNeighborStretch::GetOrAppendUnique(TZone* zone) {
     if (doubledCapacity > 0x7fffffffU) {
       doubledCapacity = 0x7fffffffU;
     }
-    void* grownBuffer = ReallocateStretchEntries(Data(), (count + 1) * 8);
+    void* grownBuffer = reinterpret_cast<void*(__cdecl*)(void*, int)>(
+        ReallocateHeapBlockWithAllocatorTracking)(Data(), (count + 1) * 8);
     if (grownBuffer == 0) {
-      Data() = static_cast<TZone**>(ReallocateStretchEntries(Data(), (count + 1) * 4));
+      Data() = static_cast<TZone**>(reinterpret_cast<void*(__cdecl*)(void*, int)>(
+          ReallocateHeapBlockWithAllocatorTracking)(Data(), (count + 1) * 4));
       Capacity() = count + 1;
     } else {
       Data() = static_cast<TZone**>(grownBuffer);
@@ -208,12 +184,52 @@ TZone** TZoneSecondaryNeighborStretch::GetOrAppendUnique(TZone* zone) {
 
 // FUNCTION: IMPERIALISM 0x0055ead0
 void TZonePrimaryNeighborStretch::Add(TZone* zone) {
-  AppendZonePointerToStretch(this, zone);
+  int index = Count();
+  if (index >= Capacity()) {
+    unsigned int doubledCapacity = static_cast<unsigned int>((index + 1) * 2);
+    if (doubledCapacity > 0x7fffffffU) {
+      doubledCapacity = 0x7fffffffU;
+    }
+    void* grownBuffer = reinterpret_cast<void*(__cdecl*)(void*, int)>(
+        ReallocateHeapBlockWithAllocatorTracking)(Data(), (index + 1) * 8);
+    if (grownBuffer == 0) {
+      Data() = static_cast<TZone**>(reinterpret_cast<void*(__cdecl*)(void*, int)>(
+          ReallocateHeapBlockWithAllocatorTracking)(Data(), (index + 1) * 4));
+      Capacity() = index + 1;
+    } else {
+      Data() = static_cast<TZone**>(grownBuffer);
+      Capacity() = static_cast<int>(doubledCapacity);
+    }
+  }
+  if (Count() <= index) {
+    Count() = index + 1;
+  }
+  Data()[index] = zone;
 }
 
 // FUNCTION: IMPERIALISM 0x0055eba0
 void TZoneSecondaryNeighborStretch::Add(TZone* zone) {
-  AppendZonePointerToStretch(this, zone);
+  int index = Count();
+  if (index >= Capacity()) {
+    unsigned int doubledCapacity = static_cast<unsigned int>((index + 1) * 2);
+    if (doubledCapacity > 0x7fffffffU) {
+      doubledCapacity = 0x7fffffffU;
+    }
+    void* grownBuffer = reinterpret_cast<void*(__cdecl*)(void*, int)>(
+        ReallocateHeapBlockWithAllocatorTracking)(Data(), (index + 1) * 8);
+    if (grownBuffer == 0) {
+      Data() = static_cast<TZone**>(reinterpret_cast<void*(__cdecl*)(void*, int)>(
+          ReallocateHeapBlockWithAllocatorTracking)(Data(), (index + 1) * 4));
+      Capacity() = index + 1;
+    } else {
+      Data() = static_cast<TZone**>(grownBuffer);
+      Capacity() = static_cast<int>(doubledCapacity);
+    }
+  }
+  if (Count() <= index) {
+    Count() = index + 1;
+  }
+  Data()[index] = zone;
 }
 
 // FUNCTION: IMPERIALISM 0x0055ec60
@@ -501,9 +517,11 @@ void TZoneSecondaryNeighborStretch::ResizePointerArrayCapacityByRequestedCount(i
   if (doubled > 0x7fffffff) {
     doubled = 0x7fffffff;
   }
-  void* grown = ReallocateStretchEntries(Data(), count * 8);
+  void* grown = reinterpret_cast<void*(__cdecl*)(void*, int)>(
+      ReallocateHeapBlockWithAllocatorTracking)(Data(), count * 8);
   if (grown == 0) {
-    Data() = static_cast<TZone**>(ReallocateStretchEntries(Data(), count * 4));
+    Data() = static_cast<TZone**>(reinterpret_cast<void*(__cdecl*)(void*, int)>(
+        ReallocateHeapBlockWithAllocatorTracking)(Data(), count * 4));
     Capacity() = count;
     return;
   }
@@ -844,9 +862,11 @@ void TZonePrimaryNeighborStretch::EnsureCapacityAtLeast(int count) {
   if (doubledCapacity > 0x7fffffffU) {
     doubledCapacity = 0x7fffffffU;
   }
-  void* grownBuffer = ReallocateStretchEntries(Data(), count * 8);
+  void* grownBuffer = reinterpret_cast<void*(__cdecl*)(void*, int)>(
+      ReallocateHeapBlockWithAllocatorTracking)(Data(), count * 8);
   if (grownBuffer == 0) {
-    Data() = static_cast<TZone**>(ReallocateStretchEntries(Data(), count * 4));
+    Data() = static_cast<TZone**>(reinterpret_cast<void*(__cdecl*)(void*, int)>(
+        ReallocateHeapBlockWithAllocatorTracking)(Data(), count * 4));
     Capacity() = count;
   } else {
     Data() = static_cast<TZone**>(grownBuffer);
