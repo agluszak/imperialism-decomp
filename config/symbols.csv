@@ -8507,6 +8507,10 @@ address|name|symbol|size|type|prototype|provenance
 696d98|g_abUniversityRequirementLevelById|||global||
 696e70|g_Build_Hex_Area_LookupTable_00696E70|||global||
 696e80|g_Build_Hex_Area_LookupTable_00696E80|||global||
+696f10|g_awTileSpriteVariantOffsetTable38|||global||
+696f50|g_awTileSpriteVariantOffsetTable39|||global||
+696f60|g_awTileSpriteVariantOffsetTable3a|||global||
+697000|g_awTileSpriteVariantOffsetTable3b|||global||
 697848|TMission::classTMission|||global||
 697870|g_Recompute_Nation_Order_LookupTable_00697870|||global||
 697958|g_Populate_Beachhead_Mission_LookupTable_00697958|||global||

@@ -481,6 +481,16 @@ int g_anCountWeightByOrderType[32] = {0};         // int table at 0x695578
 short g_Build_Hex_Area_LookupTable_00696E70[6] = {0};
 short g_Build_Hex_Area_LookupTable_00696E80[6] = {0};
 
+// Per-tile sprite-variant bitmap-strip offset tables, indexed [gateFlag][spriteVariantIndex01]
+// (or, for the 39-suffixed table, by spriteVariantIndex01 alone). Read by
+// TMapMgr's rendering-variant lookup family (0x516150/0x5161a0/0x5161e0/0x516220).
+short g_awTileSpriteVariantOffsetTable38[4][2] = {
+    {0x140, 0x140}, {0, 0}, {0x200, 0x200}, {0x240, 0x240}};
+short g_awTileSpriteVariantOffsetTable39[4] = {0x140, 0x980, 0x9c0, 0xa00};
+short g_awTileSpriteVariantOffsetTable3a[4][5] = {
+    {0x140, 0x140, 0, 0, 0}, {0, 0, 0, 0, 0}, {0x280, 0x280, 0, 0, 0}, {0x340, 0x340, 0, 0, 0}};
+short g_awTileSpriteVariantOffsetTable3b[4][2] = {{0, 0}, {0, 0}, {0, 0}, {0, 0}};
+
 // Navy/order composite score table (0x550b60 /
 // ComputeNavyOrderPriorityContributionPercentByCategory family); see TNavyOrderResourceDescriptor
 // in global_data_tables.h.

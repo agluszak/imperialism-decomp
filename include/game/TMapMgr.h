@@ -15,7 +15,19 @@ struct GlobalMapTileRecord {
 };
 
 struct TTerrainStateRecordView {
-  unsigned char pad00[2];
+  // Region/terrain class (0-7), the switch key read by the map-gen resource-assignment
+  // dispatcher (0x511610) and by several rendering-variant lookups (e.g. 0x516150); also
+  // widely compared against fixed small values (2/3/5) elsewhere in this file and in
+  // TZone.cpp/TCivMgr.cpp. Confirmed via raw-listing cross-checks across those callers --
+  // not padding.
+  // Signed: the rendering-variant lookup family (0x516150/0x5161a0/0x5161e0/0x516220)
+  // reads this with MOVSX when computing a table index, not MOVZX.
+  signed char terrainType00;
+  // Per-tile sprite/adjacency variant index, read by the rendering-variant lookup family
+  // (0x516150/0x5161a0/0x5161e0/0x516220) and written by
+  // UpdateMapTileAdjacencyMasksAndVariantForTile's streak-length bookkeeping. Same
+  // evidence basis as terrainType00 above; also MOVSX-read there.
+  signed char spriteVariantIndex01;
   unsigned char roadFlag;
   unsigned char pad03;
   signed char ownerNationTag04; // 0x04
@@ -32,7 +44,8 @@ struct TTerrainStateRecordView {
   unsigned char perTileVisitedFlag0f;
   unsigned char pad10;
   signed char resourceTypeByEdge[2];
-  unsigned char gateFlag;
+  // Signed: same MOVSX-index evidence as terrainType00/spriteVariantIndex01 above.
+  signed char gateFlag;
   short cityRecordIndex;
   unsigned char pad16;
   unsigned char railFlags17; // 0x17
@@ -128,16 +141,16 @@ public:
   virtual undefined
   TMapMaker_EnsureMapDataStreamOpenedAndMaybeTickUiProgress(); // slot 0x12 0x511e80
   virtual undefined DispatchTurnEvent7DDForActiveNation();     // slot 0x13 0x511ed0
-  virtual undefined OrphanLeaf_NoCall_Ins08_005178c0();        // slot 0x14 0x5178c0
+  virtual void ResetAllTileSpriteVariantIndexToSentinel();     // slot 0x14 0x5178c0
   virtual undefined
   TMapMaker_CheckTerrainTypePairReachabilityByRegionClassMask(short param_1,
                                                               short param_2); // slot 0x15 0x511f30
   virtual undefined
   IsNodeTypeLinkUnavailableAndNoActiveMapActionContext(int param_1,
                                                        short param_2); // slot 0x16 0x5121d0
-  virtual undefined IsShiftKeyDown();                                  // slot 0x17 0x5122b0
-  virtual undefined IsAltKeyDown();                                    // slot 0x18 0x5122d0
-  virtual undefined ForwardComputeRepresentativeTileIndexForTerrainTypeWithWrapBias(
+  virtual int IsShiftKeyDown();                                        // slot 0x17 0x5122b0
+  virtual int IsAltKeyDown();                                          // slot 0x18 0x5122d0
+  virtual void ForwardComputeRepresentativeTileIndexForTerrainTypeWithWrapBias(
       undefined4 param_1); // slot 0x19 0x511f10
   virtual undefined SetHexAdjacencyDirectionFlagsForTilePair(short param_1,
                                                              short param_2); // slot 0x1a 0x513f60
@@ -145,11 +158,16 @@ public:
                                                      short param_2); // slot 0x1b 0x514310
   virtual undefined OrphanLeaf_NoCall_Ins31_00514360(short param_1, short param_2,
                                                      short param_3); // slot 0x1c 0x514360
-  virtual undefined OrphanLeaf_NoCall_Ins15_00514e40(short param_1); // slot 0x1d 0x514e40
-  virtual undefined OrphanLeaf_NoCall_Ins28_00514e80();              // slot 0x1e 0x514e80
+  // Seeds recruitSearchVisited0e across all tiles: 1 (already visited/blocked) for every
+  // tile NOT owned by ownerNationTag, 0 (unvisited seed candidate) for tiles it owns, and
+  // flags field9 = 1 ("search in progress"). Pairs with ResetRecruitSearchVisitedState below.
+  virtual void
+  SeedRecruitSearchVisitedStateExcludingNation(short ownerNationTag); // slot 0x1d 0x514e40
+  virtual undefined OrphanLeaf_NoCall_Ins28_00514e80();               // slot 0x1e 0x514e80
   virtual undefined WrapperFor_IsValidSecondaryNationHomeTileCandidate_At00514dc0(
-      short param_1);                                              // slot 0x1f 0x514dc0
-  virtual undefined OrphanLeaf_NoCall_Ins09_00514ef0();            // slot 0x20 0x514ef0
+      short param_1); // slot 0x1f 0x514dc0
+  // Resets recruitSearchVisited0e to 0 across all tiles and clears field9 back to idle.
+  virtual void ResetRecruitSearchVisitedState();                   // slot 0x20 0x514ef0
   virtual undefined OrphanCallChain_C5_I115_00514f20(int param_1); // slot 0x21 0x514f20
   virtual undefined OrphanCallChain_C1_I159_005150e0(int* param_1,
                                                      short param_2); // slot 0x22 0x5150e0
@@ -190,10 +208,18 @@ public:
   virtual undefined OrphanCallChain_C3_I43_00513170(short param_1); // slot 0x36 0x513170
   virtual undefined SetTileOwnerAndInvalidateNeighborState(short param_1,
                                                            short param_2); // slot 0x37 0x5133f0
-  virtual undefined OrphanLeaf_NoCall_Ins14_00516150(short param_1);       // slot 0x38 0x516150
-  virtual undefined OrphanLeaf_NoCall_Ins12_005161a0(short param_1);       // slot 0x39 0x5161a0
-  virtual undefined OrphanLeaf_NoCall_Ins10_005161e0(short param_1);       // slot 0x3a 0x5161e0
-  virtual undefined OrphanLeaf_NoCall_Ins09_00516220(short param_1);       // slot 0x3b 0x516220
+  // Rendering-variant lookup family: pick a bitmap-strip byte offset for a tile's
+  // sprite, indexed by gateFlag and/or spriteVariantIndex01. Tables verified via
+  // raw-listing + ghidra-read-data at 0x38: 0x696f10, 0x39: 0x696f50, 0x3a: 0x696f60,
+  // 0x3b: 0x697000.
+  virtual short
+  LookupTileSpriteVariantOffsetByTerrainAndGate(short nTileIndex); // slot 0x38 0x516150
+  virtual short
+  LookupTileSpriteVariantOffsetByAdjacencyMaskB(short nTileIndex); // slot 0x39 0x5161a0
+  virtual short
+  LookupTileSpriteVariantOffsetByGateAndVariant(short nTileIndex); // slot 0x3a 0x5161e0
+  virtual short
+  LookupTileSpriteVariantOffsetByGateAndVariantAlt(short nTileIndex); // slot 0x3b 0x516220
   virtual undefined OrphanLeaf_NoCall_Ins464_00516260(char param_1,
                                                       char param_2); // slot 0x3c 0x516260
   virtual undefined OrphanCallChain_C3_I41_00517410(char param_1);   // slot 0x3d 0x517410

@@ -4306,7 +4306,7 @@
     },
     {
       "address": "0x48b2d0",
-      "matching": 0.19130434782608696,
+      "matching": 0.2033898305084746,
       "name": "TView::VTableSlotDD",
       "type": 1
     },
@@ -11466,7 +11466,7 @@
     },
     {
       "address": "0x4d3a60",
-      "matching": 0.24733475479744135,
+      "matching": 0.24759871931696906,
       "name": "TCivMgr::HandleEngineerConstructionAction",
       "type": 1
     },
@@ -12295,7 +12295,7 @@
     },
     {
       "address": "0x4dd430",
-      "matching": 0.5714285714285714,
+      "matching": 0.5142857142857142,
       "name": "TGreatPower::ComputeRemainingDiplomacyAidBudget",
       "type": 1
     },
@@ -12734,7 +12734,8 @@
     },
     {
       "address": "0x4e05d0",
-      "matching": 1.0,
+      "effective": true,
+      "matching": 0.42857142857142855,
       "name": "TGreatPower::OrphanLeaf_NoCall_Ins02_004d7fc0_89",
       "type": 1
     },
@@ -12753,13 +12754,14 @@
     },
     {
       "address": "0x4e0690",
-      "matching": 1.0,
+      "effective": true,
+      "matching": 0.42857142857142855,
       "name": "TGreatPower::ReturnFalseNationStateCapabilityFlag90",
       "type": 1
     },
     {
       "address": "0x4e06d0",
-      "matching": 0.7619047619047619,
+      "matching": 0.8095238095238095,
       "name": "TGreatPower::SumNationRuntimeFiveBucketValue44",
       "type": 1
     },
@@ -12789,7 +12791,7 @@
     },
     {
       "address": "0x4e09a0",
-      "matching": 0.5180722891566265,
+      "matching": 0.4939759036144578,
       "name": "TGreatPower::ComputeCityOrderCapabilityAggregateScore",
       "type": 1
     },
@@ -16228,7 +16230,7 @@
     },
     {
       "address": "0x50bea0",
-      "matching": 0.20354384370740572,
+      "matching": 0.2044525215810995,
       "name": "TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets",
       "type": 1
     },
@@ -16540,7 +16542,7 @@
     },
     {
       "address": "0x511f10",
-      "matching": 0.9090909090909091,
+      "matching": 1.0,
       "name": "TMapMgr::ForwardComputeRepresentativeTileIndexForTerrainTypeWithWrapBias",
       "type": 1
     },
@@ -16558,13 +16560,13 @@
     },
     {
       "address": "0x5122b0",
-      "matching": 0.3333333333333333,
+      "matching": 1.0,
       "name": "TMapMgr::IsShiftKeyDown",
       "type": 1
     },
     {
       "address": "0x5122d0",
-      "matching": 0.3333333333333333,
+      "matching": 1.0,
       "name": "TMapMgr::IsAltKeyDown",
       "type": 1
     },
@@ -16816,7 +16818,7 @@
     },
     {
       "address": "0x514e40",
-      "matching": 0.11764705882352941,
+      "matching": 0.2222222222222222,
       "name": "TMapMgr::OrphanLeaf_NoCall_Ins15_00514e40",
       "type": 1
     },
@@ -16828,7 +16830,7 @@
     },
     {
       "address": "0x514ef0",
-      "matching": 0.18181818181818182,
+      "matching": 0.2,
       "name": "TMapMgr::OrphanLeaf_NoCall_Ins09_00514ef0",
       "type": 1
     },
@@ -16948,25 +16950,25 @@
     },
     {
       "address": "0x516150",
-      "matching": 0.125,
+      "matching": 1.0,
       "name": "TMapMgr::OrphanLeaf_NoCall_Ins14_00516150",
       "type": 1
     },
     {
       "address": "0x5161a0",
-      "matching": 0.14285714285714285,
+      "matching": 1.0,
       "name": "TMapMgr::OrphanLeaf_NoCall_Ins12_005161a0",
       "type": 1
     },
     {
       "address": "0x5161e0",
-      "matching": 0.16666666666666666,
+      "matching": 1.0,
       "name": "TMapMgr::OrphanLeaf_NoCall_Ins10_005161e0",
       "type": 1
     },
     {
       "address": "0x516220",
-      "matching": 0.18181818181818182,
+      "matching": 1.0,
       "name": "TMapMgr::OrphanLeaf_NoCall_Ins09_00516220",
       "type": 1
     },
@@ -17050,7 +17052,7 @@
     },
     {
       "address": "0x5178c0",
-      "matching": 0.2,
+      "matching": 0.2222222222222222,
       "name": "TMapMgr::OrphanLeaf_NoCall_Ins08_005178c0",
       "type": 1
     },
@@ -18124,7 +18126,7 @@
     },
     {
       "address": "0x52d150",
-      "matching": 0.7311827956989247,
+      "matching": 0.7021276595744681,
       "name": "GetOrCreateOverlayQuadRecordByIndex",
       "type": 1
     },
@@ -18148,7 +18150,7 @@
     },
     {
       "address": "0x52d750",
-      "matching": 0.22063492063492063,
+      "matching": 0.21904761904761905,
       "name": "MergeSmallCityRegionsAndCompactIds",
       "type": 1
     },

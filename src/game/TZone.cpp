@@ -475,7 +475,7 @@ int TZone::ScoreCoastalTileForContextAndCityStateAffinity(int tileIndex, TZone* 
                                                           int contextCityState) {
   TTerrainStateRecordView& tileRecord =
       g_pGlobalMapState->terrainStateTable[static_cast<short>(tileIndex)];
-  if (tileRecord.pad00[0] != 5) {
+  if (tileRecord.terrainType00 != 5) {
     return 0;
   }
   if (static_cast<signed char>(tileRecord.pad16) != static_cast<signed char>(-1)) {
@@ -496,7 +496,7 @@ int TZone::ScoreCoastalTileForContextAndCityStateAffinity(int tileIndex, TZone* 
         static_cast<short>(tileIndex), static_cast<short>(neighborDir));
     if (neighborTile != -1) {
       TTerrainStateRecordView& neighborRecord = g_pGlobalMapState->terrainStateTable[neighborTile];
-      if (neighborRecord.pad00[0] == 5) {
+      if (neighborRecord.terrainType00 == 5) {
         signed char neighborSubtype = static_cast<signed char>(neighborRecord.pad16);
         if ((neighborSubtype == 3) || (neighborSubtype == 0x0e)) {
           TZone* portZone = TZone::FindPortZoneByTile(neighborTile);
@@ -530,7 +530,7 @@ short TZone::FindBestCoastalTileForContextAndCityStateByHeuristic(int contextCit
   for (;;) {
     TTerrainStateRecordView& tileRecord =
         g_pGlobalMapState->terrainStateTable[static_cast<short>(tileCandidate)];
-    if (tileRecord.pad00[0] == 5) {
+    if (tileRecord.terrainType00 == 5) {
       TZone* zoneForTile = 0;
       if (g_pActiveMapOrderContext != 0) {
         zoneForTile =
@@ -544,7 +544,7 @@ short TZone::FindBestCoastalTileForContextAndCityStateByHeuristic(int contextCit
           if (neighborTile != -1) {
             TTerrainStateRecordView& neighborRecord =
                 g_pGlobalMapState->terrainStateTable[neighborTile];
-            if (neighborRecord.pad00[0] != 5) {
+            if (neighborRecord.terrainType00 != 5) {
               short cityStateLink = neighborRecord.cityRecordIndex;
               TGlobalMapCityScoreRecord* cityStateRecord = 0;
               if (cityStateLink != -1) {
