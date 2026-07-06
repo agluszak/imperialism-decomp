@@ -566,32 +566,6 @@ undefined TMapMgr::SetHexAdjacencyDirectionFlagsForTilePair(short param_1, short
   return 0;
 }
 
-undefined TMapMgr::OrphanLeaf_NoCall_Ins18_00514310(short param_1, short param_2) {
-  return 0;
-}
-
-undefined TMapMgr::OrphanLeaf_NoCall_Ins31_00514360(short param_1, short param_2, short param_3) {
-  return 0;
-}
-
-void TMapMgr::FloodFillTileRegionMarker(short nTileIndex, short nOwnerNationId) {}
-
-int TMapMgr::QueueDepotConstructionOrder(int* pMapContext, short nTileIndex, short nNationId,
-                                         undefined2 param_4) {
-  return 0;
-}
-
-void TMapMgr::QueuePortConstructionOrder(int* pMapContext, short nTileIndex, short nNationId,
-                                         undefined2 param_4) {}
-
-void TMapMgr::SetProvinceCapitalTileFlagBit08(short nProvinceId) {}
-
-void TMapMgr::SetTileTransportFlagsTo0x37AndRefreshNeighbors(short nTileIndex) {}
-
-undefined TMapMgr::WrapperFor_IsValidSecondaryNationHomeTileCandidate_At00514dc0(short param_1) {
-  return 0;
-}
-
 // FUNCTION: IMPERIALISM 0x00512b50
 void TMapMgr::ComputeHexNeighborTileIndices(short tileIndex, short* neighborTiles,
                                             char wrapHorizontally) {
@@ -900,6 +874,47 @@ short TMapMgr::ResolveTileOwnerNationCodeNormalized(int tileIndex) {
   return code - 200;
 }
 
+// FUNCTION: IMPERIALISM 0x00514310
+bool TMapMgr::TileHasCivilianOrderOfType(short tileIndex, short orderType) {
+  for (TCivUnit* order = terrainStateTable[tileIndex].firstCivilianOrder20; order != nullptr;
+       order = static_cast<TCivUnit*>(order->nextOnTile)) {
+    if (order->orderType == orderType) {
+      return true;
+    }
+  }
+  return false;
+}
+
+// FUNCTION: IMPERIALISM 0x00514360
+bool TMapMgr::TileHasCivilianOrderOfTypeAndField8(short tileIndex, short orderType,
+                                                  short field8Value) {
+  for (TCivUnit* order = terrainStateTable[tileIndex].firstCivilianOrder20; order != nullptr;
+       order = static_cast<TCivUnit*>(order->nextOnTile)) {
+    if (order->orderType == orderType && order->field_8 == field8Value) {
+      return true;
+    }
+  }
+  return false;
+}
+
+void TMapMgr::FloodFillTileRegionMarker(short nTileIndex, short nOwnerNationId) {}
+
+int TMapMgr::QueueDepotConstructionOrder(int* pMapContext, short nTileIndex, short nNationId,
+                                         undefined2 param_4) {
+  return 0;
+}
+
+void TMapMgr::QueuePortConstructionOrder(int* pMapContext, short nTileIndex, short nNationId,
+                                         undefined2 param_4) {}
+
+void TMapMgr::SetProvinceCapitalTileFlagBit08(short nProvinceId) {}
+
+void TMapMgr::SetTileTransportFlagsTo0x37AndRefreshNeighbors(short nTileIndex) {}
+
+undefined TMapMgr::WrapperFor_IsValidSecondaryNationHomeTileCandidate_At00514dc0(short param_1) {
+  return 0;
+}
+
 // FUNCTION: IMPERIALISM 0x00514c80
 short TMapMgr::FindReachableRecruitSpawnTileWithVisitedReset(short startTileIndex,
                                                              char allowActiveFlag2) {
@@ -985,19 +1000,22 @@ undefined TMapMgr::ApplyUnitMovementClassForTileIfValid(int param_1) {
   return 0;
 }
 
-undefined TMapMgr::OrphanRetStub_00515de0() {
-  return 0;
-}
-
-undefined TMapMgr::SetRegionTileSubtypeAndRefreshNeighborFlags(int param_1, int param_2) {
-  return 0;
-}
-
 // FUNCTION: IMPERIALISM 0x00515db0
 void TMapMgr::ClearPerTileByte0FForAllMapTiles() {
   for (int tileIndex = 0; tileIndex < kGlobalMapTileCount; ++tileIndex) {
     terrainStateTable[tileIndex].perTileVisitedFlag0f = 0;
   }
+}
+
+// FUNCTION: IMPERIALISM 0x00515de0
+void TMapMgr::NoOpVirtualSlot2D(int param_1, int param_2, int param_3) {
+  (void)param_1;
+  (void)param_2;
+  (void)param_3;
+}
+
+undefined TMapMgr::SetRegionTileSubtypeAndRefreshNeighborFlags(int param_1, int param_2) {
+  return 0;
 }
 
 // Verified against 0x0053e7bf's callsite (TDefendProvinceMission::
@@ -1088,8 +1106,9 @@ undefined TMapMgr::OrphanCallChain_C3_I49_00517480() {
   return 0;
 }
 
-undefined TMapMgr::OrphanVtableAssignStub_00517520() {
-  return 0;
+// FUNCTION: IMPERIALISM 0x00517520
+short TMapMgr::GetFixedConstant0xc80() {
+  return 0xc80;
 }
 
 undefined TMapMgr::OrphanLeaf_NoCall_Ins55_00517540(short param_1, short param_2) {

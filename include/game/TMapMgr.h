@@ -154,10 +154,12 @@ public:
       undefined4 param_1); // slot 0x19 0x511f10
   virtual undefined SetHexAdjacencyDirectionFlagsForTilePair(short param_1,
                                                              short param_2); // slot 0x1a 0x513f60
-  virtual undefined OrphanLeaf_NoCall_Ins18_00514310(short param_1,
-                                                     short param_2); // slot 0x1b 0x514310
-  virtual undefined OrphanLeaf_NoCall_Ins31_00514360(short param_1, short param_2,
-                                                     short param_3); // slot 0x1c 0x514360
+  // Walks terrainStateTable[tileIndex].firstCivilianOrder20 (a TCivUnit list threaded via
+  // TUnit::nextOnTile) for a node whose orderType matches.
+  virtual bool TileHasCivilianOrderOfType(short tileIndex, short orderType); // slot 0x1b 0x514310
+  // Same walk as above, additionally requiring TUnit::field_8 == field8Value.
+  virtual bool TileHasCivilianOrderOfTypeAndField8(short tileIndex, short orderType,
+                                                   short field8Value); // slot 0x1c 0x514360
   // Seeds recruitSearchVisited0e across all tiles: 1 (already visited/blocked) for every
   // tile NOT owned by ownerNationTag, 0 (unvisited seed candidate) for tiles it owns, and
   // flags field9 = 1 ("search in progress"). Pairs with ResetRecruitSearchVisitedState below.
@@ -193,7 +195,10 @@ public:
   virtual undefined ApplyUnitMovementClassForTileIfValid(int param_1); // slot 0x2b 0x515d60
   virtual undefined SetRegionTileSubtypeAndRefreshNeighborFlags(int param_1,
                                                                 int param_2); // slot 0x2c 0x515f80
-  virtual undefined OrphanRetStub_00515de0();                                 // slot 0x2d 0x515de0
+  // Real body is just `ret 0xc` (pops 3 stack dwords, no other instructions) -- no evidence
+  // for the real parameter types since none are read; typed as unused ints to match the
+  // stack-cleanup byte count.
+  virtual void NoOpVirtualSlot2D(int param_1, int param_2, int param_3); // slot 0x2d 0x515de0
   virtual undefined
   DispatchFormationEntryActionsAndMaybeCreateTurnEvent12(short param_1,
                                                          undefined4 param_2); // slot 0x2e 0x513290
@@ -243,7 +248,9 @@ public:
                                                       char param_2); // slot 0x3c 0x516260
   virtual undefined OrphanCallChain_C3_I41_00517410(char param_1);   // slot 0x3d 0x517410
   virtual undefined OrphanCallChain_C3_I49_00517480();               // slot 0x3e 0x517480
-  virtual undefined OrphanVtableAssignStub_00517520();               // slot 0x3f 0x517520
+  // Real body is just `mov ax, 0xc80; ret` -- a bare constant, no callers besides the
+  // vtable itself so its purpose isn't identified.
+  virtual short GetFixedConstant0xc80(); // slot 0x3f 0x517520
   virtual undefined OrphanLeaf_NoCall_Ins55_00517540(short param_1,
                                                      short param_2); // slot 0x40 0x517540
   virtual undefined OrphanCallChain_C1_I46_00517600(short param_1);  // slot 0x41 0x517600
