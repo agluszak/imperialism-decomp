@@ -173,6 +173,9 @@ public:
   int GetNavyOrderRankWithinNationBucket(); // 0x5563d0
   // Clears this order's map marker tile if one is set (tiebreak_strength != -1).
   void ClearNavyOrderMapMarker(); // 0x5564f0
+  // Walks the queue_next chain starting at `this`, clearing eliminatedFlag26 on each
+  // node.
+  void ClearMapOrderProcessedFlagsChain(); // 0x557870
 
   // Per-entry candidate score blending this order's tiebreak_strength bucket against
   // its resource-type's navy-priority/resolve/calculate/task-force weight columns

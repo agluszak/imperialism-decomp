@@ -58,6 +58,11 @@ public:
   // reverse-engineered in detail.
   void ResolveMapOrderPairConflictStep(TTaskForce* leftEntry, TTaskForce* rightEntry); // 0x55a780
 
+  // Zeroes every g_pNavyPrimaryOrderListHead ship's field0c, destroys the whole
+  // orderListHead04 task-force queue, clears the head, and notifies
+  // g_pActiveMapOrderContext that no order entry is selected anymore.
+  void ResetPrimaryOrderActiveFlagsAndClearManagerState(); // 0x556fd0
+
   TNavyMgr();
 };
 

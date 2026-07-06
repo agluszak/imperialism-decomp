@@ -815,3 +815,10 @@ void TTaskForce::DestroyNavyOrderAndChildren() {
   queue_next->DestroyNavyOrderAndChildren();
   Free();
 }
+
+// FUNCTION: IMPERIALISM 0x00557870
+void TTaskForce::ClearMapOrderProcessedFlagsChain() {
+  for (TTaskForce* node = this; node != nullptr; node = node->queue_next) {
+    node->eliminatedFlag26 = 0;
+  }
+}

@@ -163,14 +163,6 @@ undefined4 CancelNationOrdersAndResetPrimaryFlags(void)
   return 0;
 }
 
-// ghidra_name ResetPrimaryOrderActiveFlagsAndClearManagerState
-// ghidra_proto undefined ResetPrimaryOrderActiveFlagsAndClearManagerState()
-// FUNCTION: IMPERIALISM 0x00556fd0
-undefined4 ResetPrimaryOrderActiveFlagsAndClearManagerState(void)
-{
-  return 0;
-}
-
 // ghidra_name RefreshNavyOrderCycleAndClearReadyFlags
 // ghidra_proto undefined RefreshNavyOrderCycleAndClearReadyFlags()
 // FUNCTION: IMPERIALISM 0x00557040
@@ -215,14 +207,6 @@ undefined4 RevalidateAndRequeueMapOrdersForTurn(void)
 // ghidra_proto void __fastcall PrepareMapOrdersForExecutionPhase(int * pOrderManager, int nQueueDomain, short nPhaseId)
 // FUNCTION: IMPERIALISM 0x005577b0
 undefined4 PrepareMapOrdersForExecutionPhase(void)
-{
-  return 0;
-}
-
-// ghidra_name ClearMapOrderProcessedFlagsChain
-// ghidra_proto void __fastcall ClearMapOrderProcessedFlagsChain(int * pOrderNode)
-// FUNCTION: IMPERIALISM 0x00557870
-undefined4 ClearMapOrderProcessedFlagsChain(void)
 {
   return 0;
 }

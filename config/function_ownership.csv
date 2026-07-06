@@ -2957,9 +2957,11 @@ address|target_cpp|ownership|note
 556820|src/game/TTaskForce.cpp|manual|marker_sync
 5568c0|src/game/TNavyMgr.cpp|manual|marker_sync
 556aa0|src/game/TNavyMgr.cpp|manual|marker_sync
+556fd0|src/game/TNavyMgr.cpp|manual|marker_sync
 557080|src/game/TNavyMgr.cpp|manual|marker_sync
 557170|src/game/TNavyMgr.cpp|manual|marker_sync
 557210|src/game/TNavyMgr.cpp|manual|marker_sync
+557870|src/game/TTaskForce.cpp|manual|marker_sync
 55a780|src/game/TNavyMgr.cpp|manual|marker_sync
 55b670|src/game/TNewsMgr.cpp|manual|marker_sync
 55b6a0|src/game/TNewsMgr.cpp|manual|marker_sync

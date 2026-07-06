@@ -7549,7 +7549,7 @@
     },
     {
       "address": "0x4a2900",
-      "matching": 0.13063763608087092,
+      "matching": 0.13374805598755832,
       "name": "BuildArmyContextActionRecordsAndDispatchLabel",
       "type": 1
     },
@@ -12802,8 +12802,7 @@
     },
     {
       "address": "0x4e0610",
-      "effective": true,
-      "matching": 0.42857142857142855,
+      "matching": 1.0,
       "name": "TGreatPower::ReturnFalseNationStateActionStub_8a",
       "type": 1
     },
@@ -12822,7 +12821,7 @@
     },
     {
       "address": "0x4e06d0",
-      "matching": 1.0,
+      "matching": 0.8095238095238095,
       "name": "TGreatPower::SumNationRuntimeFiveBucketValue44",
       "type": 1
     },
@@ -22196,13 +22195,13 @@
     },
     {
       "address": "0x553b10",
-      "matching": 0.6206896551724138,
+      "matching": 0.4827586206896552,
       "name": "HasNoMapOrderEntryChildrenQueued",
       "type": 1
     },
     {
       "address": "0x553b50",
-      "matching": 0.5454545454545454,
+      "matching": 0.5818181818181818,
       "name": "HasActiveMapOrderEntryChildren",
       "type": 1
     },
@@ -22496,7 +22495,7 @@
     },
     {
       "address": "0x556fd0",
-      "matching": 0.06666666666666667,
+      "matching": 0.44,
       "name": "ResetPrimaryOrderActiveFlagsAndClearManagerState",
       "type": 1
     },
@@ -22556,7 +22555,7 @@
     },
     {
       "address": "0x557870",
-      "matching": 0.4,
+      "matching": 1.0,
       "name": "ClearMapOrderProcessedFlagsChain",
       "type": 1
     },

@@ -1,9 +1,11 @@
 #include "game/TNavyMgr.h"
 
 #include "game/TAdmiral.h"
+#include "game/TOcean.h"
 #include "game/TShip.h"
 #include "game/TObject.h"
 #include "game/TTaskForce.h"
+#include "game/global_data_tables.h"
 
 extern "C" TShip* g_pNavyPrimaryOrderListHead;
 extern "C" TAdmiral* g_pNavySecondaryOrderListHead;
@@ -54,6 +56,18 @@ static void RemoveMatchingTaskForceOrders(TNavyMgr* navyManager, short nationSlo
     }
     node = nextNode;
   }
+}
+
+// FUNCTION: IMPERIALISM 0x00556fd0
+void TNavyMgr::ResetPrimaryOrderActiveFlagsAndClearManagerState() {
+  for (TShip* ship = g_pNavyPrimaryOrderListHead; ship != nullptr; ship = ship->nextOlder24) {
+    ship->field0c = 0;
+  }
+  if (orderListHead04 != nullptr) {
+    orderListHead04->DestroyNavyOrderAndChildren();
+  }
+  orderListHead04 = nullptr;
+  g_pActiveMapOrderContext->EnsureSelectedTaskForceForOrderOwnerAndRefresh(nullptr);
 }
 
 // FUNCTION: IMPERIALISM 0x00557080
