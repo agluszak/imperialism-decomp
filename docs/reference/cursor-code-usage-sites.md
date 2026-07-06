@@ -136,3 +136,27 @@ Scope: code/memory locations used to load and apply cursor handles for mapped cu
 - `0x006A590C` -> `g_pCursorControlPanel`
 - `0x0049DBEA` -> `loc_WriteUiRuntimeCursorTableBase_A`
 - `0x0049DC60` -> `loc_WriteUiRuntimeCursorTableBase_B`
+
+## Resolution: per-ID dispatch is table-driven, not per-ID hardcoded (bd imperialism-decomp-1uj.36)
+
+The remaining gap ("exact per-ID dispatch branch for each individual cursor token")
+resolves as: there is **no** per-ID branch. Cursor selection is uniformly
+table-indexed by a runtime-computed action token, so no per-token code path exists to
+enumerate. Concrete evidence and trace targets:
+
+- **Token → cursor handle** (already noted above): the setters index the runtime cursor
+  table directly — `SetCursor(*(HCURSOR*)(g_pUiRuntimeContext - 0xF8C + token*4))`
+  (`SetMappedCursorOrDefaultArrow` 0x00595810, else `IDC_ARROW`). One flat table, one
+  multiply — no switch on the token value.
+- **Tile/action → token** (`HandleCursorHoverSelectionByChildHitTestAndFallback`,
+  0x005958B0): the hovered child's action token is produced by a **virtual dispatch**
+  (`call [vtable + 0x1c0]` at 0x005958E8 on the hit child), then the token (`AX`) indexes
+  a **0x24-stride action-descriptor table** at `*(0x006A43D4) + 0xC + token*0x24`
+  (`MOVSX ECX,AX; LEA ECX,[ECX+ECX*8]; SHL ECX,2` at 0x0059591D). The action descriptor,
+  not a code branch, decides the cursor/highlight. Because the token is the return value
+  of a per-control virtual, the "dispatch" is polymorphic + data-driven end to end.
+- Therefore binding each cursor ID to a fixed semantic use is a **data** question (the
+  contents of the 0x24-stride descriptor table + the per-control vtable-0x1c0
+  overrides), not a code-branch question. Trace targets to extend this into a full
+  ID→semantics map: the vtable-0x1c0 overrides across the control hierarchy, and the
+  descriptor table at `[0x006A43D4]+0xC`.
