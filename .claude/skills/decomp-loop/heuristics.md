@@ -894,3 +894,26 @@ decodes builder bodies. Diagnostic tell: the out-of-line copy sits at a game-cod
 address adjacent to unrelated game functions (COMDAT emitted by whichever TU called
 it first), and DYNCREATE CreateObject bodies always show the inlined form (small
 functions, fresh budget).
+
+## 54. Cross-check a header's assumed vtable-slot order against a REAL call site before trusting it
+
+`TSortedList.h`'s `GetCount()`/`GetEntryByOrdinal()` are declared assuming they're the
+first new virtuals after AddHead/AddTail-family slots (byte 0x48/0x4c), matching a
+prior session's declaration-order guess — but a real, already-shipped call site
+(`TCountry::SeedInitialMilitaryAndNavyOrdersForOwnedRegions`, 0x004d71b0) shows the
+ORIGINAL binary dispatching `GetCount()`/`GetEntryByOrdinal(ordinal)`-shaped calls
+(0-arg count check vs. 1-arg ordinal fetch, argument counts confirmed via `push`
+presence and `ret N`) at byte **0x28/0x24**, not 0x48/0x4c — visible directly in
+`just compare 0x004d71b0`'s diff (`-call [edx+0x28]` / `+call [edx+0x48]`). This
+mismatch is NOT new-function-specific: it already caps that committed function at
+56.50% and will cap every other `ownedRegionList`/`militaryUnitList44`-touching
+function the same way (confirmed again independently in
+`TMapMaker_CheckTerrainTypePairReachabilityByRegionClassMask`, 0x511f30 → 18.59%).
+Don't trust a header's declared vtable slot order from declaration position alone —
+before writing new code against a base class's virtuals, check ONE real call site's
+raw disassembly (arg count via push+ret-N, not just address) against the header's
+assumed byte offset. A full fix needs runtime evidence (ideally winedbg) for
+TSortedList's entire slot layout, since even the class's own static vtable dump can't
+disambiguate on its own (two different in-binary vtable copies for the same class
+were checked, both self-consistent with the header's WRONG assumption for the early
+slots) — this is flagged as follow-up work, not patched piecemeal per function.
