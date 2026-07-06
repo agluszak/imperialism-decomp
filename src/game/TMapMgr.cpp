@@ -795,8 +795,8 @@ TTown* TMapMgr::FindTownMarkerForTileByOwnerNation(short tileIndex) {
     return nullptr;
   }
   TSortedList* townMarkerList = owner->townMarkerList;
-  for (int ordinal = 1; ordinal <= townMarkerList->GetCountSlot48(); ++ordinal) {
-    TTown* town = static_cast<TTown*>(townMarkerList->GetEntryByOrdinalSlot4C(ordinal));
+  for (int ordinal = 1; ordinal <= townMarkerList->GetCount(); ++ordinal) {
+    TTown* town = static_cast<TTown*>(townMarkerList->GetEntryByOrdinal(ordinal));
     if (town->regionId14 == tileIndex) {
       return town;
     }
@@ -1227,8 +1227,8 @@ void TMapMgr::SeedRecruitSearchVisitedStateAndClearAlliedTerritory(TCivUnit* pCi
 
   TGreatPower* owner = g_apNationStates[pCivilianOrderEntry->field_18];
   TSortedList* townMarkerList = owner->townMarkerList;
-  for (int ordinal = 1; ordinal <= townMarkerList->GetCountSlot48(); ++ordinal) {
-    TTown* town = static_cast<TTown*>(townMarkerList->GetEntryByOrdinalSlot4C(ordinal));
+  for (int ordinal = 1; ordinal <= townMarkerList->GetCount(); ++ordinal) {
+    TTown* town = static_cast<TTown*>(townMarkerList->GetEntryByOrdinal(ordinal));
     if (town->enabledFlag4d != 0) {
       terrainStateTable[town->regionId14].recruitSearchVisited0e = 0;
     }
@@ -1671,7 +1671,7 @@ short TMapMgr::ComputeRepresentativeTileIndexForTerrainTypeWithWrapBias(short te
   short fallbackTile = -1;
   if (terrainType < 0x17 && g_apTerrainTypeDescriptorTable[terrainType] != 0) {
     TSortedList* ownedRegions = g_apTerrainTypeDescriptorTable[terrainType]->ownedRegionList;
-    if (ownedRegions != 0 && ownedRegions->GetCountSlot48() > 0) {
+    if (ownedRegions != 0 && ownedRegions->GetCount() > 0) {
       int lastMatch = -1;
       for (int tileIndex = 0; tileIndex < 0x1950; ++tileIndex) {
         if (static_cast<signed char>(tileTable[tileIndex * 0x24 + 4]) == terrainType) {
@@ -1750,12 +1750,12 @@ void LinkPortZoneToContextIfMissing(TZone* portZone, TZone* contextZone) {
 // FUNCTION: IMPERIALISM 0x00517c30
 char TMapMgr::AreNationsBorderLinked(int nationA, int nationB) {
   TSortedList* regionList = g_apTerrainTypeDescriptorTable[nationA]->ownedRegionList;
-  if (regionList->GetCountSlot48() < 1) {
+  if (regionList->GetCount() < 1) {
     return 0;
   }
   int ordinal = 1;
   do {
-    int regionId = regionList->GetIntByOrdinalSlot24(ordinal);
+    int regionId = regionList->GetIntByOrdinal(ordinal);
     TGlobalMapCityScoreRecord* record = &cityScoreTable[regionId];
     char found = 0;
     int neighborCount = record->adjacentRegionCount08;
@@ -1772,7 +1772,7 @@ char TMapMgr::AreNationsBorderLinked(int nationA, int nationB) {
       return 1;
     }
     ++ordinal;
-  } while (ordinal <= regionList->GetCountSlot48());
+  } while (ordinal <= regionList->GetCount());
   return 0;
 }
 

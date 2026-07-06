@@ -53,7 +53,7 @@ void TUnit::RegisterUnitOrderWithOwnerManager(short nOrderType, int pOwnerContex
 
   // The order-owner "manager" is a real TSortedList: military units (field_1C != 0)
   // register into the owning country's militaryUnitList44; other orders into the
-  // nation's trackedObjectList. Both dispatch AddTailSlot30(item) at vtable byte 0x30.
+  // nation's trackedObjectList. Both dispatch AddTail(item) at vtable byte 0x30.
   TSortedList* ownerManager;
   if (this->field_1C != 0) {
     ownerManager = g_apTerrainTypeDescriptorTable[nOrderOwnerNationId]->militaryUnitList44;
@@ -66,7 +66,7 @@ void TUnit::RegisterUnitOrderWithOwnerManager(short nOrderType, int pOwnerContex
     TemporarilyClearAndRestoreUiInvalidationFlag();
   }
 
-  ownerManager->AddTailSlot30(this);
+  ownerManager->AddTail(this);
 
   this->field_18 = nOrderOwnerNationId;
   this->field_1A = arg3;

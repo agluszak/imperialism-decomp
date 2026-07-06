@@ -617,11 +617,11 @@ void TGreatPower::Free(void) {
     trackedSlotCount = trackedSlotCount + -1;
   } while (trackedSlotCount != 0);
   if (this->townMarkerList != 0) {
-    this->townMarkerList->FreePayloadsAndDestroySlot58();
+    this->townMarkerList->FreePayloadsAndDestroy();
   }
   this->townMarkerList = 0;
   if (this->trackedObjectList != 0) {
-    this->trackedObjectList->FreePayloadsAndDestroySlot58();
+    this->trackedObjectList->FreePayloadsAndDestroy();
   }
   this->trackedObjectList = 0;
   if (this->turnSummaryQueue != 0) {
@@ -629,11 +629,11 @@ void TGreatPower::Free(void) {
   }
   this->turnSummaryQueue = 0;
   if (this->missionNodeQueue != 0) {
-    this->missionNodeQueue->FreePayloadsAndDestroySlot58();
+    this->missionNodeQueue->FreePayloadsAndDestroy();
   }
   this->missionNodeQueue = 0;
   if (this->militaryUnitList44 != 0) {
-    this->militaryUnitList44->FreePayloadsAndDestroySlot58();
+    this->militaryUnitList44->FreePayloadsAndDestroy();
   }
   this->militaryUnitList44 = 0;
   if (this->ownedRegionList != 0) {
@@ -773,9 +773,9 @@ void TGreatPower::ReadFrom(TStream* stream) {
   }
 
   void* townMarkerList = this->townMarkerList;
-  int hasItems = static_cast<TSortedList*>(townMarkerList)->GetCountSlot48();
+  int hasItems = static_cast<TSortedList*>(townMarkerList)->GetCount();
   if (hasItems != 0) {
-    static_cast<TSortedList*>(townMarkerList)->FreePayloadsSlot54();
+    static_cast<TSortedList*>(townMarkerList)->FreePayloads();
   }
   static_cast<TSortedList*>(townMarkerList)->ReadFrom(stream);
 
@@ -788,7 +788,7 @@ void TGreatPower::ReadFrom(TStream* stream) {
       TTown* townMarker = new TTown();
       if (townMarker != 0) {
         townMarker->ReadFrom(stream);
-        static_cast<TSortedList*>(townMarkerList)->AddTailSlot30(townMarker);
+        static_cast<TSortedList*>(townMarkerList)->AddTail(townMarker);
       }
       ++townOrdinal;
     }
@@ -796,13 +796,13 @@ void TGreatPower::ReadFrom(TStream* stream) {
 
   if (townCount > 0) {
     this->city->SetSelectedTownMarker(
-        static_cast<TSortedList*>(townMarkerList)->GetEntryByOrdinalSlot4C());
+        static_cast<TSortedList*>(townMarkerList)->GetEntryByOrdinal());
   }
 
   void* trackedObjectList = this->trackedObjectList;
-  hasItems = static_cast<TSortedList*>(trackedObjectList)->GetCountSlot48();
+  hasItems = static_cast<TSortedList*>(trackedObjectList)->GetCount();
   if (hasItems != 0) {
-    static_cast<TSortedList*>(trackedObjectList)->FreePayloadsSlot54();
+    static_cast<TSortedList*>(trackedObjectList)->FreePayloads();
   }
   static_cast<TSortedList*>(trackedObjectList)->ReadFrom(stream);
 
@@ -838,7 +838,7 @@ void TGreatPower::ReadFrom(TStream* stream) {
         unsigned char hasNode = 0;
         char markerOk = static_cast<TStream*>(stream)->ReadByte(&hasNode);
         if (markerOk != 0) {
-          static_cast<TSortedList*>(missionNodeQueue)->AddTailSlot30(0);
+          static_cast<TSortedList*>(missionNodeQueue)->AddTail(0);
         }
         ++nodeOrdinal;
       }
@@ -932,10 +932,10 @@ void TGreatPower::WriteTo(TStream* stream) {
   stream->WriteBytesSlot78(&this->field904, 1);
 
   this->missionNodeQueue->WriteTo(stream);
-  int missionNodeCount = this->missionNodeQueue->GetCountSlot48();
+  int missionNodeCount = this->missionNodeQueue->GetCount();
   stream->WriteBytesSlot78(&missionNodeCount, 4);
   for (int nodeOrdinal = 1; nodeOrdinal <= missionNodeCount; ++nodeOrdinal) {
-    void* node = this->missionNodeQueue->GetEntryByOrdinalSlot4C(nodeOrdinal);
+    void* node = this->missionNodeQueue->GetEntryByOrdinal(nodeOrdinal);
     stream->WriteObjectSlotB4(node, 0);
   }
 
@@ -949,8 +949,8 @@ void TGreatPower::WriteTo(TStream* stream) {
 void TGreatPower::ReadCoreFieldsFromStream(TStream* stream, int unusedArg) {
   TCountry::ReadCoreFieldsFromStream(stream, unusedArg);
 
-  if (this->trackedObjectList->GetCountSlot48() != 0) {
-    this->trackedObjectList->FreePayloadsSlot54();
+  if (this->trackedObjectList->GetCount() != 0) {
+    this->trackedObjectList->FreePayloads();
   }
   this->trackedObjectList->ReadFrom(stream);
 
@@ -969,11 +969,10 @@ void TGreatPower::WriteCoreFieldsToStream(TStream* stream) {
   TCountry::WriteCoreFieldsToStream(stream);
 
   this->trackedObjectList->WriteTo(stream);
-  int orderCount = this->trackedObjectList->GetCountSlot48();
+  int orderCount = this->trackedObjectList->GetCount();
   stream->WriteCountSlot88(orderCount);
   for (int ordinal = 1; ordinal <= orderCount; ++ordinal) {
-    TUnit* order =
-        reinterpret_cast<TUnit*>(this->trackedObjectList->GetEntryByOrdinalSlot4C(ordinal));
+    TUnit* order = reinterpret_cast<TUnit*>(this->trackedObjectList->GetEntryByOrdinal(ordinal));
     order->WriteTo(stream);
   }
 }
@@ -1109,7 +1108,7 @@ void TGreatPower::SetNationPendingActionStateAndPayload(int index, short payload
 
 // FUNCTION: IMPERIALISM 0x004daa50
 void TGreatPower::AddNodeToMissionNodeQueue(void* node) {
-  this->missionNodeQueue->AddTailSlot30(node);
+  this->missionNodeQueue->AddTail(node);
 }
 
 // FUNCTION: IMPERIALISM 0x004daa80
@@ -1119,7 +1118,7 @@ void TGreatPower::DispatchMissionNodeCallbacksAndClearQueue(void) {
        node = static_cast<TMission*>(nodeIter.Advance())) {
     node->DispatchMissionNodeSlot28();
   }
-  static_cast<TSortedList*>(this->missionNodeQueue)->FreePayloadsSlot54();
+  static_cast<TSortedList*>(this->missionNodeQueue)->FreePayloads();
 }
 
 // FUNCTION: IMPERIALISM 0x004dab00
@@ -1499,10 +1498,10 @@ void TGreatPower::AdvanceOwnedRegionDevelopmentCountersAndDispatchEvents(void) {
     return;
   }
 
-  int totalRegions = regionList->GetCountSlot48();
+  int totalRegions = regionList->GetCount();
   int regionOrdinal = 1;
   while (regionOrdinal <= totalRegions) {
-    short regionId = static_cast<short>(regionList->GetIntByOrdinalSlot24(regionOrdinal));
+    short regionId = static_cast<short>(regionList->GetIntByOrdinal(regionOrdinal));
     unsigned char pendingStage = 0;
     unsigned char needsRedraw = 0;
 
@@ -2837,10 +2836,10 @@ void TGreatPower::NotifyWarResetSlotA5(void) {
     return;
   }
 
-  int remaining = trackedList->GetCountSlot48();
+  int remaining = trackedList->GetCount();
   while (remaining > 0) {
     TTrackedObjectListEntry* entry =
-        static_cast<TTrackedObjectListEntry*>(trackedList->GetEntryByOrdinalSlot4C(remaining));
+        static_cast<TTrackedObjectListEntry*>(trackedList->GetEntryByOrdinal(remaining));
     if (entry != 0) {
       reinterpret_cast<TMission*>(entry)->Call30();
     }
@@ -3433,7 +3432,7 @@ void TGreatPower::CreateFrogCityTownMarkerAndAttach(void* receiver) {
   marker->InitializeTownMarker("Frog City", 0, 1, this->nationSlot);
   static_cast<TCity*>(receiver)->SetSelectedTownMarker(marker);
   marker->activeFlag4f = 1;
-  this->townMarkerList->AddTailSlot30(marker);
+  this->townMarkerList->AddTail(marker);
 }
 
 // FUNCTION: IMPERIALISM 0x004dfae0
@@ -3469,7 +3468,7 @@ void TGreatPower::CreateFrogCityAtHomeRegionAndAttach(void* receiver) {
   marker->InitializeTownMarker("FrogCity", homeRegionIndex, 1, this->nationSlot);
   static_cast<TCity*>(receiver)->SetSelectedTownMarker(marker);
   marker->activeFlag4f = 1;
-  this->townMarkerList->AddTailSlot30(marker);
+  this->townMarkerList->AddTail(marker);
   g_pGlobalMapState->LinkRegionToNationSlot134(marker->regionId14, this->nationSlot);
   if (this->diplomacyEligibilityA0 == 0 && this->interiorMinister != 0) {
     this->interiorMinister->NoOpForeignMinisterUtilityStub(receiver);
@@ -3513,20 +3512,18 @@ void TGreatPower::DispatchTrackedOrderSlot2CCallbacks(void) {
 
 // FUNCTION: IMPERIALISM 0x004e0290
 void TGreatPower::SortTrackedOrdersByTypePriority(void) {
-  short orderCount = static_cast<short>(this->trackedObjectList->GetCountSlot48());
+  short orderCount = static_cast<short>(this->trackedObjectList->GetCount());
   int total = orderCount;
   for (int outer = 1; outer < total; ++outer) {
-    void* entryOuter = this->trackedObjectList->GetEntryByOrdinalSlot4C(outer);
+    void* entryOuter = this->trackedObjectList->GetEntryByOrdinal(outer);
     short outerPriority = g_DAT_006966d0_Value_006966D0[static_cast<TUnit*>(entryOuter)->orderType];
     for (int inner = outer + 1; inner <= total; ++inner) {
-      void* entryInner = this->trackedObjectList->GetEntryByOrdinalSlot4C(inner);
+      void* entryInner = this->trackedObjectList->GetEntryByOrdinal(inner);
       short innerPriority =
           g_DAT_006966d0_Value_006966D0[static_cast<TUnit*>(entryInner)->orderType];
       if (innerPriority < outerPriority) {
-        static_cast<TSortedList*>(this->trackedObjectList)
-            ->SetAtOrdinalSlot60(outer, &entryInner, 1);
-        static_cast<TSortedList*>(this->trackedObjectList)
-            ->SetAtOrdinalSlot60(inner, &entryOuter, 1);
+        static_cast<TSortedList*>(this->trackedObjectList)->SetAtOrdinal(outer, &entryInner, 1);
+        static_cast<TSortedList*>(this->trackedObjectList)->SetAtOrdinal(inner, &entryOuter, 1);
         entryOuter = entryInner;
         outerPriority = innerPriority;
       }
@@ -4123,14 +4120,14 @@ void TGreatPower::ApplyJoinEmpireModeForTargetNation(int targetNationSlot, int m
 
 // FUNCTION: IMPERIALISM 0x004e2270
 void TGreatPower::RemoveRegionIdFromNationOwnedRegionList(int regionId) {
-  this->ownedRegionList->AddTailSlot34(reinterpret_cast<void*>(regionId));
+  this->ownedRegionList->AddTailEx(reinterpret_cast<void*>(regionId));
   this->NotifyRegionEventSlot298(regionId);
 }
 
 // FUNCTION: IMPERIALISM 0x004e22b0
 void TGreatPower::AddRegionIdToNationOwnedRegionList(int regionId) {
-  this->ownedRegionList->AddHeadSlot28(reinterpret_cast<void*>(regionId));
-  int ownedRegionCount = this->ownedRegionList->GetCountSlot48();
+  this->ownedRegionList->AddHead(reinterpret_cast<void*>(regionId));
+  int ownedRegionCount = this->ownedRegionList->GetCount();
 
   unsigned char pressureGate = this->serializedStatusFlags[6];
   unsigned char nationGate = this->expansionEventGate;
@@ -4188,9 +4185,9 @@ void TGreatPower::SetNationPercentFieldByModeAndDescriptorLinks(int targetNation
 void TGreatPower::NotifyRegionEventSlot298(int ownerClass) {
   TMapMgr* globalMapState = g_pGlobalMapState;
   TSortedList* filteredList = this->trackedObjectList;
-  for (int index = filteredList->GetCountSlot48(); index != 0; --index) {
+  for (int index = filteredList->GetCount(); index != 0; --index) {
     TTrackedObjectListEntry* entry =
-        static_cast<TTrackedObjectListEntry*>(filteredList->GetEntryByOrdinalSlot4C(index));
+        static_cast<TTrackedObjectListEntry*>(filteredList->GetEntryByOrdinal(index));
     if (entry == 0 || globalMapState == 0 || globalMapState->terrainStateTable == 0) {
       continue;
     }
@@ -4208,10 +4205,9 @@ void TGreatPower::NotifyRegionEventSlot298(int ownerClass) {
   }
 
   TSortedList* unassignedList = this->militaryUnitList44;
-  for (int unassignedIndex = unassignedList->GetCountSlot48(); unassignedIndex != 0;
-       --unassignedIndex) {
-    TTrackedObjectListEntry* entry = static_cast<TTrackedObjectListEntry*>(
-        unassignedList->GetEntryByOrdinalSlot4C(unassignedIndex));
+  for (int unassignedIndex = unassignedList->GetCount(); unassignedIndex != 0; --unassignedIndex) {
+    TTrackedObjectListEntry* entry =
+        static_cast<TTrackedObjectListEntry*>(unassignedList->GetEntryByOrdinal(unassignedIndex));
     if (entry != 0 && entry->regionIndex == -1) {
       if (entry->object != 0) {
         static_cast<TMission*>(entry->object)->Free();
@@ -4411,7 +4407,7 @@ void TGreatPower::BuildGreatPowerTurnMessageSummaryAndDispatch(void) {
   }
 
   TQueueObject* summaryQueue = this->turnSummaryQueue;
-  int queueCount = reinterpret_cast<TSortedList*>(summaryQueue)->GetCountSlot48();
+  int queueCount = reinterpret_cast<TSortedList*>(summaryQueue)->GetCount();
   if (queueCount <= 0) {
     return;
   }
@@ -4476,7 +4472,7 @@ void TGreatPower::QueueMapActionMissionFromCandidateAndMarkState(int arg1, int a
   }
 
   TSortedList* missionQueue = this->missionQueue;
-  missionQueue->AddTailSlot30(missionObj);
+  missionQueue->AddTail(missionObj);
 
   if (arg2 != -1) {
     this->mapNodeStateFlags[arg2] = kNodeStateQueued;
@@ -4563,7 +4559,7 @@ float TGreatPower::ComputeAdvisoryMapNodeScoreFactorByCaseMetric(int metricCase,
       return kOne;
     }
 
-    int nodeWeight = terrainView->ownedRegionList->GetCountSlot48();
+    int nodeWeight = terrainView->ownedRegionList->GetCount();
     int weightedNeighbor = ComputeWeightedNeighborLinkScoreForNode(relationTargetNation);
     int linkedNodeTotal = terrainView->SumWeightedNeighborLinkScoreForLinkedNodes();
 

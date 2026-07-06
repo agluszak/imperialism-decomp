@@ -112,9 +112,9 @@ public:
   // 0x4)), so every "+0xNN" comment below is an absolute this-relative offset and this
   // pad must be 4 bytes short of its target to land the next field correctly.
   unsigned char pad04[0x08];
-  // +0x0c -- a TSortedList (GetCountSlot48/GetEntryByOrdinalSlot4C evidence from
+  // +0x0c -- a TSortedList (GetCount/GetEntryByOrdinal evidence from
   // ProcessTileUnitListsAndApplyRandomStatusUpdates's ground truth); freed at the top of
-  // IterateLinkedListCursorAndClearPerTileByte0F via FreePayloadsSlot54.
+  // IterateLinkedListCursorAndClearPerTileByte0F via FreePayloads.
   TSortedList* pendingUnitPool0c;
   // +0x10 -- set to 1 by OrphanCallChain_C4_I26_004a1e40's non-turn-3 branch right before
   // calling OrphanCallChain_C12_I108_004a2390; role not pinned down beyond that write site.

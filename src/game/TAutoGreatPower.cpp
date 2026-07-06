@@ -81,16 +81,15 @@ TAutoGreatPower::TAutoGreatPower() : TGreatPower() {
 // FUNCTION: IMPERIALISM 0x004e7230
 void TAutoGreatPower::Free(void) {
   if (this->missionQueue != 0) {
-    int ordinal = this->missionQueue->GetCountSlot48();
+    int ordinal = this->missionQueue->GetCount();
     for (; ordinal > 0; --ordinal) {
-      TMission* entry =
-          static_cast<TMission*>(this->missionQueue->GetEntryByOrdinalSlot4C(ordinal));
+      TMission* entry = static_cast<TMission*>(this->missionQueue->GetEntryByOrdinal(ordinal));
       entry->NotifyDetachSlot0C();
-      this->missionQueue->RemoveAtOrdinalSlot50(ordinal);
+      this->missionQueue->RemoveAtOrdinal(ordinal);
       entry->Free();
     }
     if (this->missionQueue != 0) {
-      this->missionQueue->FreePayloadsAndDestroySlot58();
+      this->missionQueue->FreePayloadsAndDestroy();
     }
     this->missionQueue = 0;
   }
@@ -107,8 +106,8 @@ void TAutoGreatPower::ReadFrom(TStream* stream) {
   stream->ReadBytes(this->portZoneStateFlags, 0x70);
 
   TSortedList* missionQueue = this->missionQueue;
-  if (missionQueue->GetCountSlot48() != 0) {
-    missionQueue->FreePayloadsSlot54();
+  if (missionQueue->GetCount() != 0) {
+    missionQueue->FreePayloads();
   }
   missionQueue->ReadFrom(stream);
 
@@ -118,7 +117,7 @@ void TAutoGreatPower::ReadFrom(TStream* stream) {
     missionContext = 0;
     char hasMission = stream->ReadByte(&missionContext);
     if (hasMission != 0) {
-      missionQueue->AddTailSlot30(reinterpret_cast<void*>(missionContext));
+      missionQueue->AddTail(reinterpret_cast<void*>(missionContext));
     }
   }
 
@@ -150,14 +149,14 @@ void TAutoGreatPower::WriteTo(TStream* stream) {
 
   TSortedList* missionQueue = this->missionQueue;
   missionQueue->WriteTo(stream);
-  int missionQueueCount = missionQueue->GetCountSlot48();
+  int missionQueueCount = missionQueue->GetCount();
 
   int zeroWord = 0;
   message->WriteBytesSlot78(&zeroWord, 4);
   int index = 1;
   if (index <= missionQueueCount) {
     do {
-      int value = reinterpret_cast<int>(missionQueue->GetEntryByOrdinalSlot4C(index));
+      int value = reinterpret_cast<int>(missionQueue->GetEntryByOrdinal(index));
       message->WriteObjectSlotB4(reinterpret_cast<void*>(value), 0);
       ++index;
     } while (index <= missionQueueCount);
@@ -645,7 +644,7 @@ char TAutoGreatPower::HasActiveCandidateNationSlots(void) {
   TMinor** minorCursor = g_apNationAuxRuntimeStateSlots;
   do {
     if (this->candidateNationFlags[candidate] != 0) {
-      if ((*minorCursor)->ownedRegionList->GetCountSlot48() == 0) {
+      if ((*minorCursor)->ownedRegionList->GetCount() == 0) {
         this->candidateNationFlags[candidate] = 0;
         if (g_pDiplomacyTurnStateManager->HasPolicyWithNationSlot44(this->nationSlot, candidate) !=
             0) {
@@ -679,7 +678,7 @@ void TAutoGreatPower::SetCandidateNationFlagAndPortZoneState(int targetNation) {
   }
   this->candidateNationFlags[targetNation] = 1;
   if (g_apTerrainTypeDescriptorTable[targetNation] != 0) {
-    if (g_apTerrainTypeDescriptorTable[targetNation]->ownedRegionList->GetCountSlot48() > 0) {
+    if (g_apTerrainTypeDescriptorTable[targetNation]->ownedRegionList->GetCount() > 0) {
       short ownerTag;
       if (g_apTerrainTypeDescriptorTable[targetNation] == 0 ||
           (ownerTag = g_apTerrainTypeDescriptorTable[targetNation]->encodedNationSlot,
@@ -697,7 +696,7 @@ void TAutoGreatPower::SetCandidateNationFlagAndPortZoneState(int targetNation) {
 void TAutoGreatPower::NotifyAllianceSlot214(int targetNation) {
   this->candidateNationFlags[targetNation] = 0;
   if (g_apTerrainTypeDescriptorTable[targetNation] != 0) {
-    if (g_apTerrainTypeDescriptorTable[targetNation]->ownedRegionList->GetCountSlot48() > 0) {
+    if (g_apTerrainTypeDescriptorTable[targetNation]->ownedRegionList->GetCount() > 0) {
       TZone::FindFirstPortZoneContextByNation(static_cast<short>(targetNation));
       short portZoneId = GetShortAtOffset14OrInvalidValue();
       this->portZoneStateFlags[portZoneId] = 0;
@@ -756,13 +755,13 @@ void TAutoGreatPower::ResetNationDiplomacySlotsAndMarkRelatedNations(int targetN
   TGreatPower::ResetNationDiplomacySlotsAndMarkRelatedNations(targetNation);
   int ordinal = 1;
   TSortedList* regionList = g_apTerrainTypeDescriptorTable[targetNation]->ownedRegionList;
-  if (regionList->GetCountSlot48() > 0) {
+  if (regionList->GetCount() > 0) {
     do {
-      int regionId = regionList->GetIntByOrdinalSlot24(ordinal);
+      int regionId = regionList->GetIntByOrdinal(ordinal);
       this->mapNodeStateFlags[regionId] = 1;
       this->QueueMapActionMissionFromCandidateAndMarkState(3, regionId, 0, -1);
       ++ordinal;
-    } while (ordinal <= regionList->GetCountSlot48());
+    } while (ordinal <= regionList->GetCount());
   }
   TZone* portZone = TZone::FindFirstPortZoneContextByNation(static_cast<short>(targetNation));
   if (portZone->PrimaryZoneHeapCapacity() == 0) {
@@ -841,7 +840,7 @@ void TAutoGreatPower::PruneInvalidTrackedEntriesAndNotifyOwner(void) {
     }
     mission->Free();
     if (replacement != 0) {
-      this->missionQueue->AddTailSlot30(replacement);
+      this->missionQueue->AddTail(replacement);
     }
   }
 }
