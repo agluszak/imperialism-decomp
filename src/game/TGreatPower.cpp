@@ -222,7 +222,7 @@ static __inline short IndexAndRankList_GetShortValueByOrdinal1Based(TSortedPtrLi
 
 static __inline TSortedByRelationshipList* AllocateSortedByRelationshipListWithMode(short mode) {
   TSortedByRelationshipList* list =
-      TSortedByRelationshipList::CreateTSortedByRelationshipListInstance();
+      static_cast<TSortedByRelationshipList*>(TSortedByRelationshipList::CreateObject());
   if (list != 0) {
     list->relationType = mode;
   }
@@ -4662,7 +4662,7 @@ float TGreatPower::ComputeMapActionContextCompositeScoreForNation(int nodeType) 
 
   if (activeCandidateCount == 0) {
     TSortedByRelationshipList* relationshipList =
-        TSortedByRelationshipList::CreateTSortedByRelationshipListInstance();
+        static_cast<TSortedByRelationshipList*>(TSortedByRelationshipList::CreateObject());
     if (relationshipList != 0) {
       relationshipList->relationType = 4;
     }

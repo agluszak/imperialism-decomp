@@ -90,7 +90,7 @@ TArmyMission::TArmyMission(int nodeKey) : TMission() {
   field_14 = static_cast<short>(nodeKey);
   padding_16 = static_cast<short>(0xffff);
 
-  TList* list = TList::CreateTListInstance();
+  TList* list = static_cast<TList*>(TList::CreateObject());
   orderListAt18 = list;
   if (list == nullptr) {
     MessageBoxA(nullptr, "Nil Pointer", "Failure", 0x30);

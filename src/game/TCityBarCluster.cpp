@@ -22,10 +22,8 @@ undefined4 thunk_DestructTShipAndFreeIfOwned(void);
 
 undefined4 thunk_DestructEngineerDialogBaseState(void);
 
-// FUNCTION: IMPERIALISM 0x00586590
-TCityBarCluster* TCityBarCluster::CreateInstance() {
-  return new TCityBarCluster();
-}
+// SYNTHETIC: IMPERIALISM 0x00586590
+// TCityBarCluster::CreateObject
 // SYNTHETIC: IMPERIALISM 0x00586610
 // TCityBarCluster::GetRuntimeClass
 

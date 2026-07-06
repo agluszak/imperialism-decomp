@@ -4,12 +4,11 @@
 
 extern "C" int g_vtblTHQButton;
 struct CRuntimeClass;
-extern "C" CRuntimeClass g_pClassDescTHQButton;
 
 // VTABLE: IMPERIALISM 0x666fe0
 class THQButton : public TPicture {
 public:
-// === BEGIN GENERATED DECLS (THQButton) — refreshed by recover-class; do not hand-edit ===
+  // === BEGIN GENERATED DECLS (THQButton) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(THQButton)
   virtual ~THQButton() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -25,7 +24,8 @@ public:
   // slot 0x0c QueryStepValue inherited unchanged (0x48a2c0)
   // slot 0x0d DispatchQueuedUiCommandAndRelease inherited unchanged (0x48a3b0)
   // slot 0x0e DispatchUiSelectionToHandler inherited unchanged (0x48a3f0)
-  virtual void HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) override; // slot 0x0f 0x0058b7f0
+  virtual void HandleEvent(int commandId, TEventHandler* sourceHandler,
+                           TEvent* event) override; // slot 0x0f 0x0058b7f0
   // slot 0x10 DispatchUiCommandToHandler inherited unchanged (0x48a2e0)
   // slot 0x11 vmethod_0017 inherited unchanged (0x48a310)
   // slot 0x12 ForwardParam inherited unchanged (0x48a380)
@@ -122,12 +122,13 @@ public:
   // slot 0x6d SetCityProductionDialogPictureRectAndMaybeRefresh inherited unchanged (0x48e7d0)
   // slot 0x6e SetControlPictureEntryAndMaybeRefresh inherited unchanged (0x48e7a0)
   // slot 0x6f LogUnhandledDialogMethodAndReturnFalse inherited unchanged (0x4294a0)
-  virtual void SetControlStateFlagAndMaybeRefresh(bool enabledState, bool refreshNow) override; // slot 0x70 0x58b750
+  virtual void SetControlStateFlagAndMaybeRefresh(bool enabledState,
+                                                  bool refreshNow) override; // slot 0x70 0x58b750
   // slot 0x71 ResetPictureResourceEntry inherited unchanged (0x48f520)
   // slot 0x72 SetPictureResourceIdAndRefresh inherited unchanged (0x48f570)
-  virtual bool IsSelected(short value = -1, bool refreshNow = true); // slot 0x73 0x58b890
+  virtual bool IsSelected(short value = -1, bool refreshNow = true);    // slot 0x73 0x58b890
   virtual void SetSelectionStateAndRefreshBitmap(short selectionState); // slot 0x74 0x58b8d0
-// === END GENERATED DECLS (THQButton) ===
+  // === END GENERATED DECLS (THQButton) ===
   short glyph90;
   short timingWord92;
   short glyph94;

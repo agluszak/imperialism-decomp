@@ -907,14 +907,6 @@ undefined4 DestructTShipOrderAndMaybeFree(void)
   return 0;
 }
 
-// ghidra_name TCapacityOrder::CreateObject
-// ghidra_proto undefined CreateObject()
-// FUNCTION: IMPERIALISM 0x004b8c90
-undefined4 CreateObject_004B8C90(void)
-{
-  return 0;
-}
-
 // ghidra_name TCapacityOrder::DestructTCapacityOrderAndMaybeFree
 // ghidra_proto undefined __thiscall DestructTCapacityOrderAndMaybeFree(void)
 // FUNCTION: IMPERIALISM 0x004b8d30

@@ -7,8 +7,6 @@
 // VTABLE: IMPERIALISM 0x0065c758
 class TPortZone : public TZone {
 public:
-  static TPortZone* CreateTPortZone();
-
   TPortZone();
   ~TPortZone() override; // slot 0x01 scalar deleting destructor 0x5616c0
 

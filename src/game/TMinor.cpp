@@ -49,10 +49,8 @@ int SignedDivideBy100(int value) {
 
 extern undefined4 GenerateThreadLocalRandom15(void);
 
-// FUNCTION: IMPERIALISM 0x004e3660
-void* TMinor::CreateTMinorInstance() {
-  return new TMinor();
-}
+// SYNTHETIC: IMPERIALISM 0x004e3660
+// TMinor::CreateObject
 // SYNTHETIC: IMPERIALISM 0x004e36f0
 // TMinor::GetRuntimeClass
 

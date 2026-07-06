@@ -12,11 +12,6 @@
 #include "game/TSimMgr.h"
 #include "game/UiRuntimeContext.h"
 
-extern "C" char g_pClassDescTZone = 0;
-extern "C" {
-extern char g_pClassDescTPortZone;
-}
-
 undefined4 ReallocateHeapBlockWithAllocatorTracking(void);
 undefined4 GetCurrentLocalEpochSecondsWithTimezoneCache(void);
 
@@ -880,8 +875,7 @@ void TZonePrimaryNeighborStretch::EnsureCapacityAtLeast(int count) {
 // FUNCTION: IMPERIALISM 0x00561bf0
 TZone* TZone::FindPortZoneByTile(short nTileIndex) {
   TZone* zone = g_pMapActionContextListHead;
-  while (zone != 0 &&
-         zone->IsKindOf(reinterpret_cast<const CRuntimeClass*>(&g_pClassDescTPortZone)) == 0) {
+  while (zone != 0 && zone->IsKindOf(RUNTIME_CLASS(TPortZone)) == 0) {
     zone = zone->prev18;
   }
   for (;;) {
@@ -893,8 +887,7 @@ TZone* TZone::FindPortZoneByTile(short nTileIndex) {
       return zone;
     }
     zone = zone->prev18;
-    while (zone != 0 &&
-           zone->IsKindOf(reinterpret_cast<const CRuntimeClass*>(&g_pClassDescTPortZone)) == 0) {
+    while (zone != 0 && zone->IsKindOf(RUNTIME_CLASS(TPortZone)) == 0) {
       zone = zone->prev18;
     }
   }
@@ -903,8 +896,7 @@ TZone* TZone::FindPortZoneByTile(short nTileIndex) {
 // FUNCTION: IMPERIALISM 0x00561c80
 TZone* TZone::GetFirstPortZone() {
   TZone* cursor = g_pMapActionContextListHead;
-  while (cursor != 0 &&
-         cursor->IsKindOf(reinterpret_cast<const CRuntimeClass*>(&g_pClassDescTPortZone)) == 0) {
+  while (cursor != 0 && cursor->IsKindOf(RUNTIME_CLASS(TPortZone)) == 0) {
     cursor = cursor->prev18;
   }
   return cursor;
@@ -913,8 +905,7 @@ TZone* TZone::GetFirstPortZone() {
 // FUNCTION: IMPERIALISM 0x00561d40
 TZone* TZone::GetNextPortZone() {
   TZone* cursor = this->prev18;
-  while (cursor != 0 &&
-         cursor->IsKindOf(reinterpret_cast<const CRuntimeClass*>(&g_pClassDescTPortZone)) == 0) {
+  while (cursor != 0 && cursor->IsKindOf(RUNTIME_CLASS(TPortZone)) == 0) {
     cursor = cursor->prev18;
   }
   return cursor;
@@ -965,7 +956,7 @@ TZone* TZone::FindFirstPortZoneContextByNation(short nationSlot) {
   TZone* esi = static_cast<TZone*>(g_pMapActionContextListHead);
   if (esi != 0) {
     do {
-      if (esi->IsKindOf(reinterpret_cast<const CRuntimeClass*>(&g_pClassDescTPortZone)) != 0) {
+      if (esi->IsKindOf(RUNTIME_CLASS(TPortZone)) != 0) {
         break;
       }
       esi = esi->prev18;
@@ -988,7 +979,7 @@ TZone* TZone::FindFirstPortZoneContextByNation(short nationSlot) {
     esi = eax->prev18;
     if (esi != 0) {
       do {
-        if (esi->IsKindOf(reinterpret_cast<const CRuntimeClass*>(&g_pClassDescTPortZone)) != 0) {
+        if (esi->IsKindOf(RUNTIME_CLASS(TPortZone)) != 0) {
           break;
         }
         esi = esi->prev18;

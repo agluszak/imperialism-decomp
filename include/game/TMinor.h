@@ -9,7 +9,6 @@ class TMinor : public TCountry {
 public:
   TMinor();
 
-  static void* CreateTMinorInstance();
   static void* GetTMinorClassNamePointer();
 
   DECLARE_DYNCREATE(TMinor)

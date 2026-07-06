@@ -244,10 +244,15 @@ void TCapacityOrder::FillOrderSheet(void* orderSheet, short quantity) {
   }
 }
 
-// FUNCTION: IMPERIALISM 0x004b8cc0
-CRuntimeClass* TCapacityOrder::GetRuntimeClass() const {
-  return &g_pClassDescTCapacityOrder;
-}
+TCapacityOrder::TCapacityOrder() {}
+
+// SYNTHETIC: IMPERIALISM 0x004b8c90
+// TCapacityOrder::CreateObject
+
+// SYNTHETIC: IMPERIALISM 0x004b8cc0
+// TCapacityOrder::GetRuntimeClass
+
+IMPLEMENT_DYNCREATE(TCapacityOrder, TItemOrder)
 
 // SYNTHETIC: IMPERIALISM 0x004b8d00
 // TCapacityOrder::`scalar deleting destructor'

@@ -21,7 +21,6 @@
 #include "game/TTaskForce.h"
 
 extern "C" {
-extern char g_pClassDescTPortZone;
 extern CRuntimeClass PTR_s_TOcean_0065c630;
 }
 
@@ -243,8 +242,7 @@ TZone* TOcean::GetLinkedZoneForSeaTile(short seaTileIndex) {
 TZone* TOcean::FindPortZoneBySelectedTile(TCity* city) {
   short selectedTileId = city->SelectedOrderTileId();
   TZone* node = g_pMapActionContextListHead;
-  while (node != 0 &&
-         node->IsKindOf(reinterpret_cast<const CRuntimeClass*>(&g_pClassDescTPortZone)) == 0) {
+  while (node != 0 && node->IsKindOf(RUNTIME_CLASS(TPortZone)) == 0) {
     node = node->prev18;
   }
   for (;;) {
@@ -261,8 +259,7 @@ TZone* TOcean::FindPortZoneBySelectedTile(TCity* city) {
       break;
     }
     node = node->prev18;
-    while (node != 0 &&
-           node->IsKindOf(reinterpret_cast<const CRuntimeClass*>(&g_pClassDescTPortZone)) == 0) {
+    while (node != 0 && node->IsKindOf(RUNTIME_CLASS(TPortZone)) == 0) {
       node = node->prev18;
     }
   }

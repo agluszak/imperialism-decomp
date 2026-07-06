@@ -10,7 +10,6 @@ public:
   DECLARE_DYNCREATE(TCtlMgr)
 
   TCtlMgr();
-  static TCtlMgr* CreateTCtlMgrInstance();
 };
 
 ASSERT_SIZE(TCtlMgr, 0x84);

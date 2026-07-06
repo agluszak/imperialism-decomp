@@ -260,8 +260,6 @@ const int kTradeSellPropagationTags[17] = {
 };
 
 // Industry action cost weight tables
-// GLOBAL: IMPERIALISM 0x0064f440
-CRuntimeClass g_pClassDescTCapacityOrder = {nullptr, 0, 0, nullptr, nullptr};
 // GLOBAL: IMPERIALISM 0x00695b50
 short g_industryActionCostWeightResCode09[16] = {0, 4, 7, 5, 8, 6, 6, 6, 4, 8, 0, 2, 0, 0, 0, 0};
 // GLOBAL: IMPERIALISM 0x00695b70
@@ -285,8 +283,6 @@ HRGN g_hOpenRgnAccumulator = nullptr;
 
 // GLOBAL: IMPERIALISM 0x006a24d4
 char g_Sanitize_City_Counter_Value_006A24D4 = 0;
-// GLOBAL: IMPERIALISM 0x6630e8
-char g_pClassDescTStratReportView = 0;
 // GLOBAL: IMPERIALISM 0x6a134c
 TModuleLibraryCacheTableStateB* g_pModuleLibraryCacheState = nullptr;
 // GLOBAL: IMPERIALISM 0x00694150
@@ -298,8 +294,6 @@ int g_nDibOrientationFlag_006A1890 = 0;
 // ProbeAuxOutputDeviceIndexByPidMask (0x5e1430, unported) finds one.
 // GLOBAL: IMPERIALISM 0x0069b89c
 int g_nAuxOutputDeviceIndex = -1;
-// GLOBAL: IMPERIALISM 0x00694b48
-CRuntimeClass s_CDib_RuntimeClass_00694b48 = {nullptr, 0, 0, nullptr, nullptr};
 // GLOBAL: IMPERIALISM 0x6a1d9c
 CDC* g_pScopedMapQuickDrawDcHandleObject = nullptr;
 // GLOBAL: IMPERIALISM 0x6a1dac
@@ -312,7 +306,6 @@ RgnHandle g_pTemporaryRegionCache = 0;
 // Writer: SetCachedShowSplashFlag @ 0x0049cc40 from InitInstance @ 0x00412f81.
 // Reader: WrapperFor_AllocateWithFallbackHandler_At0049cc60 @ 0x0049cc60 when nonzero.
 BOOL g_cachedShowSplashFlag = FALSE;
-CRuntimeClass g_pClassDescTScopedMapQuickDrawContext2 = {nullptr, 0, 0, nullptr, nullptr};
 
 } // extern "C"
 
@@ -815,18 +808,6 @@ TNetMgr* g_pNetMgr006a6014 = 0;
 
 // GLOBAL: IMPERIALISM 0x006a18e0
 TApplication* g_pApplicationUiRootController = 0;
-
-// GLOBAL: IMPERIALISM 0x00648cf8
-extern "C" char g_pClassDescTBehavior = 0;
-
-// GLOBAL: IMPERIALISM 0x00648d10
-extern "C" char g_pClassDescTDialogBehavior = 0;
-
-// GLOBAL: IMPERIALISM 0x0064bda8
-extern "C" char g_pClassDescTDialogView = 0;
-
-// GLOBAL: IMPERIALISM 0x00648af8
-extern "C" CRuntimeClass PTR_s_TApplication_00648af8 = {nullptr, 0, 0, nullptr, nullptr};
 
 // GLOBAL: IMPERIALISM 0x006a44b0
 extern "C" void* g_pActiveCityDialogLegendSelectionOwner = 0;

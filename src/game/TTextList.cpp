@@ -10,10 +10,8 @@
 // SYNTHETIC: IMPERIALISM 0x0045af30
 // TTextList::`scalar deleting destructor'
 
-// FUNCTION: IMPERIALISM 0x0057ab70
-TTextList* TTextList::CreateTTextListInstance() {
-  return new TTextList();
-}
+// SYNTHETIC: IMPERIALISM 0x0057ab70
+// TTextList::CreateObject
 // SYNTHETIC: IMPERIALISM 0x0057ac30
 // TTextList::GetRuntimeClass
 

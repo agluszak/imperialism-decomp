@@ -7,10 +7,6 @@
 
 typedef void* hwnd_t;
 
-extern "C" {
-char g_pClassDescTFileStream = 0;
-}
-
 // Nil-pointer assert: pop a message box, then forward to the game's assert
 // reporter with the source path and line.
 static __inline void FailNilPointer(int line) {

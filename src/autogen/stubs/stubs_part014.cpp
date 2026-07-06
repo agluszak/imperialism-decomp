@@ -899,22 +899,6 @@ undefined4 ConstructTNumberedIconBaseState(void)
   return 0;
 }
 
-// ghidra_name TNumberedItem::CreateObject
-// ghidra_proto undefined CreateObject()
-// FUNCTION: IMPERIALISM 0x00507700
-undefined4 CreateObject_00507700(void)
-{
-  return 0;
-}
-
-// ghidra_name TNumberedItem::ConstructTNumberedItemBaseState
-// ghidra_proto undefined ConstructTNumberedItemBaseState()
-// FUNCTION: IMPERIALISM 0x005077c0
-undefined4 ConstructTNumberedItemBaseState(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_thunk_InitializeUiResourceEntryFrameAndParent_At00507850
 // ghidra_proto undefined WrapperFor_thunk_InitializeUiResourceEntryFrameAndParent_At00507850()
 // FUNCTION: IMPERIALISM 0x00507850

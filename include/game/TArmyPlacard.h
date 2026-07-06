@@ -4,12 +4,11 @@
 
 extern "C" int g_vtblTArmyPlacard;
 struct CRuntimeClass;
-extern "C" CRuntimeClass g_pClassDescTArmyPlacard;
 
 // VTABLE: IMPERIALISM 0x667448
 class TArmyPlacard : public TPicture {
 public:
-// === BEGIN GENERATED DECLS (TArmyPlacard) — refreshed by recover-class; do not hand-edit ===
+  // === BEGIN GENERATED DECLS (TArmyPlacard) — refreshed by recover-class; do not hand-edit ===
   // slot 0x02 Serialize inherited unchanged (0x485e90)
   // slot 0x03 AssertValid inherited unchanged (0x412bf0)
   // slot 0x04 Dump inherited unchanged (0x412c10)
@@ -23,7 +22,8 @@ public:
   // slot 0x0c QueryStepValue inherited unchanged (0x48a2c0)
   // slot 0x0d DispatchQueuedUiCommandAndRelease inherited unchanged (0x48a3b0)
   // slot 0x0e DispatchUiSelectionToHandler inherited unchanged (0x48a3f0)
-  virtual void HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) override; // slot 0x0f 0x0058c140
+  virtual void HandleEvent(int commandId, TEventHandler* sourceHandler,
+                           TEvent* event) override; // slot 0x0f 0x0058c140
   // slot 0x10 DispatchUiCommandToHandler inherited unchanged (0x48a2e0)
   // slot 0x11 vmethod_0017 inherited unchanged (0x48a310)
   // slot 0x12 ForwardParam inherited unchanged (0x48a380)
@@ -122,7 +122,7 @@ public:
   // slot 0x70 SetControlStateFlagAndMaybeRefresh inherited unchanged (0x48e810)
   // slot 0x71 ResetPictureResourceEntry inherited unchanged (0x48f520)
   // slot 0x72 SetPictureResourceIdAndRefresh inherited unchanged (0x48f570)
-// === END GENERATED DECLS (TArmyPlacard) ===
+  // === END GENERATED DECLS (TArmyPlacard) ===
   short glyph90;
 
   TArmyPlacard();

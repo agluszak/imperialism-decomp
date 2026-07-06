@@ -4,12 +4,8 @@
 
 #include "game/mfc.h"
 
-extern "C" char g_pClassDescTPortZone = 0;
-
-// FUNCTION: IMPERIALISM 0x005615e0
-TPortZone* TPortZone::CreateTPortZone() {
-  return new TPortZone();
-}
+// SYNTHETIC: IMPERIALISM 0x005615e0
+// TPortZone::CreateObject
 
 TPortZone::TPortZone() : TZone() {
   field48 = -1;

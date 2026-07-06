@@ -3,10 +3,13 @@
 #include "game/global_data_tables.h"
 #include "game/ui_invalidation_guard.h"
 
-// FUNCTION: IMPERIALISM 0x00479ed0
-CRuntimeClass* CDib::GetRuntimeClass() const {
-  return &s_CDib_RuntimeClass_00694b48;
-}
+// SYNTHETIC: IMPERIALISM 0x00479e40
+// CDib::CreateObject
+
+// SYNTHETIC: IMPERIALISM 0x00479ed0
+// CDib::GetRuntimeClass
+
+IMPLEMENT_SERIAL(CDib, CObject, 0)
 
 // FUNCTION: IMPERIALISM 0x00479f40
 CDib::CDib() : CObject() {

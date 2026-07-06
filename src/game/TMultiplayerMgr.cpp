@@ -40,10 +40,14 @@ static char ReturnTrueRuntimeCredentialInitStub();
 extern "C" const char s_PlayerName_0069801c[];
 extern "C" const char s_GameName_00698010[];
 
-// FUNCTION: IMPERIALISM 0x00542650
-CRuntimeClass* TMultiplayerMgr::GetRuntimeClass() const {
-  return 0;
-}
+// SYNTHETIC: IMPERIALISM 0x005425d0
+// TMultiplayerMgr::CreateObject
+
+// SYNTHETIC: IMPERIALISM 0x00542650
+// TMultiplayerMgr::GetRuntimeClass
+
+// Binary descriptor base is TObject (0x694eb8), not TEventHandler — original macro arg.
+IMPLEMENT_DYNCREATE(TMultiplayerMgr, TObject)
 
 // FUNCTION: IMPERIALISM 0x00542670
 TMultiplayerMgr::TMultiplayerMgr()

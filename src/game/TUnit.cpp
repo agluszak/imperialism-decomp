@@ -10,8 +10,6 @@
 #include "game/TStream.h"
 #include "game/ui_invalidation_guard.h"
 
-extern "C" char g_pClassDescTUnit = 0;
-
 // 0x00402eeb is an ILT jmp thunk to TUnit::RegisterUnitOrderWithOwnerManager (0x5c2530);
 // per the ILT hard rule it is never hand-written -- it is tracked in config/thunk_map.csv
 // like every other ILT slot and paired automatically. No source calls it.

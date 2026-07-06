@@ -9,7 +9,6 @@ class TSortedByRelationshipList : public TSortedPtrList {
 public:
   TSortedByRelationshipList();
   DECLARE_DYNCREATE(TSortedByRelationshipList)
-  static TSortedByRelationshipList* CreateTSortedByRelationshipListInstance();
 };
 
 ASSERT_SIZE(TSortedByRelationshipList, 0x18);

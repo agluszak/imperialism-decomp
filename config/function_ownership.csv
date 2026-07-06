@@ -175,6 +175,7 @@ address|target_cpp|ownership|note
 479be0|src/game/TView.cpp|manual|marker_sync
 479d50|src/game/TView.cpp|manual|marker_sync
 479d80|src/game/TView.cpp|manual|marker_sync
+479e40|src/game/CDib.cpp|manual|marker_sync
 479ed0|src/game/CDib.cpp|manual|marker_sync
 479f40|src/game/CDib.cpp|manual|marker_sync
 479fb0|src/game/CDib.cpp|manual|marker_sync
@@ -1219,6 +1220,7 @@ address|target_cpp|ownership|note
 4b8970|src/game/TShipOrder.cpp|manual|marker_sync
 4b89a0|src/game/TShipOrder.cpp|manual|marker_sync
 4b8b80|src/game/TShipOrder.cpp|manual|marker_sync
+4b8c90|src/game/TCapacityOrder.cpp|manual|marker_sync
 4b8cc0|src/game/TCapacityOrder.cpp|manual|marker_sync
 4b8d00|src/game/TCapacityOrder.cpp|manual|marker_sync
 4b8d50|src/game/TCapacityOrder.cpp|manual|marker_sync
@@ -2125,7 +2127,9 @@ address|target_cpp|ownership|note
 5074e0|src/game/TNumberedIcon.cpp|manual|marker_sync
 507570|src/game/TNumberedIcon.cpp|manual|marker_sync
 5076d0|src/game/TNumberedIcon.cpp|manual|marker_sync
+507700|src/game/TNumberedItem.cpp|manual|marker_sync
 5077a0|src/game/TNumberedItem.cpp|manual|marker_sync
+5077c0|src/game/TNumberedItem.cpp|manual|marker_sync
 507800|src/game/TNumberedItem.cpp|manual|marker_sync
 5078a0|src/game/TNumberedItem.cpp|manual|marker_sync
 507bc0|src/game/TLanguageMgr.cpp|manual|marker_sync
@@ -2828,6 +2832,7 @@ address|target_cpp|ownership|note
 542520|src/game/TCancelGameOptionsCommand.cpp|manual|marker_sync
 542560|src/game/TCancelGameOptionsCommand.cpp|manual|marker_sync
 5425b0|src/game/TCancelGameOptionsCommand.cpp|manual|marker_sync
+5425d0|src/game/TMultiplayerMgr.cpp|manual|marker_sync
 542650|src/game/TMultiplayerMgr.cpp|manual|marker_sync
 542670|src/game/TMultiplayerMgr.cpp|manual|marker_sync
 5427e0|src/game/TMultiplayerMgr.cpp|manual|marker_sync

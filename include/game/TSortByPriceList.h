@@ -10,7 +10,6 @@ public:
   DECLARE_DYNCREATE(TSortByPriceList)
 
   TSortByPriceList();
-  static TSortByPriceList* AllocateAndConstructTSortByPriceList();
 };
 
 ASSERT_SIZE(TSortByPriceList, 0x18);

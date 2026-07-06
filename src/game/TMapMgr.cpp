@@ -3070,7 +3070,7 @@ void EnsurePortZoneForTile(short nTileIndex) {
     return;
   }
 
-  TPortZone* portZone = TPortZone::CreateTPortZone();
+  TPortZone* portZone = static_cast<TPortZone*>(TPortZone::CreateObject());
   if (portZone == 0) {
     return;
   }

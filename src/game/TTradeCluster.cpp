@@ -85,10 +85,8 @@ static __inline short QueryNationTradeCapacity(TGreatPower* nationState) {
   return nationState->tradeCapacity;
 }
 
-// FUNCTION: IMPERIALISM 0x00587010
-void* CreateTradeSellControlPanel(void) {
-  return new TTradeCluster();
-}
+// SYNTHETIC: IMPERIALISM 0x00587010
+// TTradeCluster::CreateObject
 
 // SYNTHETIC: IMPERIALISM 0x00587090
 // TTradeCluster::GetRuntimeClass

@@ -10,7 +10,6 @@ public:
   DECLARE_DYNCREATE(TProvinceDesirabilityList)
 
   TProvinceDesirabilityList();
-  static TProvinceDesirabilityList* CreateTProvinceDesirabilityListInstance();
 };
 
 ASSERT_SIZE(TProvinceDesirabilityList, 0x18);

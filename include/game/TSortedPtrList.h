@@ -35,8 +35,6 @@ public:
   virtual void AddEntrySlot38(void* entry);        // 14 (0x38)
   virtual void slot3c();                           // 15 (0x3c)
   virtual void PushPairSlot40(void* pair);         // 16 (0x40)
-
-  static TSortedPtrList* ConstructTSortedPtrListBaseState();
 };
 
 ASSERT_SIZE(TSortedPtrList, 0x18);

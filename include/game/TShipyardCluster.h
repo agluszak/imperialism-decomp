@@ -9,7 +9,7 @@ class TAmtBar;
 // VTABLE: IMPERIALISM 0x666760
 class TShipyardCluster : public TUberCluster {
 public:
-// === BEGIN GENERATED DECLS (TShipyardCluster) — refreshed by recover-class; do not hand-edit ===
+  // === BEGIN GENERATED DECLS (TShipyardCluster) — refreshed by recover-class; do not hand-edit ===
   virtual ~TShipyardCluster(); // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
   // slot 0x03 AssertValid inherited unchanged (0x412bf0)
@@ -24,7 +24,8 @@ public:
   // slot 0x0c QueryStepValue inherited unchanged (0x48a2c0)
   // slot 0x0d DispatchQueuedUiCommandAndRelease inherited unchanged (0x48a3b0)
   // slot 0x0e DispatchUiSelectionToHandler inherited unchanged (0x48a3f0)
-  virtual void HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) override; // slot 0x0f 0x0058a940
+  virtual void HandleEvent(int commandId, TEventHandler* sourceHandler,
+                           TEvent* event) override; // slot 0x0f 0x0058a940
   // slot 0x10 DispatchUiCommandToHandler inherited unchanged (0x48a2e0)
   // slot 0x11 vmethod_0017 inherited unchanged (0x48a310)
   // slot 0x12 ForwardParam inherited unchanged (0x48a380)
@@ -125,7 +126,7 @@ public:
   // slot 0x72 OrphanCallChain_C2_I51_00491790 inherited unchanged (0x491790)
   // slot 0x73 IsTradeControlAtMinimum inherited unchanged (0x5714e0)
   virtual void ApplyMoveValue(int value); // slot 0x74 0x58a690
-// === END GENERATED DECLS (TShipyardCluster) ===
+                                          // === END GENERATED DECLS (TShipyardCluster) ===
   int field_88;
   short field_8c;
   short field_8e;
@@ -136,8 +137,6 @@ public:
 };
 
 ASSERT_SIZE(TShipyardCluster, 0x90);
-
-TShipyardCluster* __cdecl CreateTradeMoveArrowControlPanel(void);
 
 // === BEGIN GENERATED (TShipyardCluster) — refreshed by `just gen-class TShipyardCluster`; do not hand-edit ===
 // clang-format off

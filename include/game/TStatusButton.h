@@ -3,7 +3,6 @@
 #include "game/TButton.h"
 
 struct CRuntimeClass;
-extern "C" CRuntimeClass g_pClassDescTStatusButton;
 
 // VTABLE: IMPERIALISM 0x664f68
 class TStatusButton : public TButton {

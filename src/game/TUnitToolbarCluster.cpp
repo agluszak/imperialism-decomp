@@ -23,10 +23,8 @@ extern "C" {
 char g_vtblTUnitToolbarCluster = 0;
 }
 
-// FUNCTION: IMPERIALISM 0x00585f70
-TUnitToolbarCluster* TUnitToolbarCluster::CreateInstance() {
-  return new TUnitToolbarCluster();
-}
+// SYNTHETIC: IMPERIALISM 0x00585f70
+// TUnitToolbarCluster::CreateObject
 // SYNTHETIC: IMPERIALISM 0x00585ff0
 // TUnitToolbarCluster::GetRuntimeClass
 

@@ -77,10 +77,8 @@ int TNavyMission::ReturnZeroSlot5C() {
   return reinterpret_cast<int>(this);
 }
 
-// FUNCTION: IMPERIALISM 0x00536390
-TMission* CreateTNavyMission() {
-  return new TNavyMission();
-}
+// SYNTHETIC: IMPERIALISM 0x00536390
+// TNavyMission::CreateObject
 
 namespace {
 

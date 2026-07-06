@@ -13,17 +13,12 @@
 
 // SYNTHETIC: IMPERIALISM 0x00531130
 // TTedForeignMinister::CreateObject
-CObject* PASCAL TTedForeignMinister::CreateObject() {
-  return new TTedForeignMinister;
-}
-const CRuntimeClass TTedForeignMinister::classTTedForeignMinister = {
-    "TTedForeignMinister", sizeof(TTedForeignMinister), 0xffff, TTedForeignMinister::CreateObject,
-    RUNTIME_CLASS(TForeignMinister), nullptr};
 
-// FUNCTION: IMPERIALISM 0x005311b0
-CRuntimeClass* TTedForeignMinister::GetRuntimeClass() const {
-  return const_cast<CRuntimeClass*>(&classTTedForeignMinister);
-}
+// SYNTHETIC: IMPERIALISM 0x005311b0
+// TTedForeignMinister::GetRuntimeClass
+
+// Binary descriptor base is TMinister (0x659a80), not TForeignMinister — original macro arg.
+IMPLEMENT_DYNCREATE(TTedForeignMinister, TMinister)
 
 // FUNCTION: IMPERIALISM 0x005311d0
 TTedForeignMinister::TTedForeignMinister() : TForeignMinister() {
@@ -71,17 +66,12 @@ void TTedForeignMinister::NoOpForeignMinisterUtilityStub(void* receiver) {
 
 // SYNTHETIC: IMPERIALISM 0x00531b30
 // TBillForeignMinister::CreateObject
-CObject* PASCAL TBillForeignMinister::CreateObject() {
-  return new TBillForeignMinister;
-}
-const CRuntimeClass TBillForeignMinister::classTBillForeignMinister = {
-    "TBillForeignMinister", sizeof(TBillForeignMinister), 0xffff,
-    TBillForeignMinister::CreateObject, RUNTIME_CLASS(TForeignMinister), nullptr};
 
-// FUNCTION: IMPERIALISM 0x00531bc0
-CRuntimeClass* TBillForeignMinister::GetRuntimeClass() const {
-  return const_cast<CRuntimeClass*>(&classTBillForeignMinister);
-}
+// SYNTHETIC: IMPERIALISM 0x00531bc0
+// TBillForeignMinister::GetRuntimeClass
+
+// Binary descriptor base is TMinister (0x659a80), not TForeignMinister — original macro arg.
+IMPLEMENT_DYNCREATE(TBillForeignMinister, TMinister)
 
 // FUNCTION: IMPERIALISM 0x00531be0
 TBillForeignMinister::TBillForeignMinister() : TForeignMinister() {}
@@ -140,17 +130,12 @@ void TBillForeignMinister::NoOpForeignMinisterUtilityStub(void* receiver) {
 
 // SYNTHETIC: IMPERIALISM 0x005326e0
 // TDiplomatForeignMinister::CreateObject
-CObject* PASCAL TDiplomatForeignMinister::CreateObject() {
-  return new TDiplomatForeignMinister;
-}
-const CRuntimeClass TDiplomatForeignMinister::classTDiplomatForeignMinister = {
-    "TDiplomatForeignMinister", sizeof(TDiplomatForeignMinister), 0xffff,
-    TDiplomatForeignMinister::CreateObject, RUNTIME_CLASS(TForeignMinister), nullptr};
 
-// FUNCTION: IMPERIALISM 0x00532760
-CRuntimeClass* TDiplomatForeignMinister::GetRuntimeClass() const {
-  return const_cast<CRuntimeClass*>(&classTDiplomatForeignMinister);
-}
+// SYNTHETIC: IMPERIALISM 0x00532760
+// TDiplomatForeignMinister::GetRuntimeClass
+
+// Binary descriptor base is TMinister (0x659a80), not TForeignMinister — original macro arg.
+IMPLEMENT_DYNCREATE(TDiplomatForeignMinister, TMinister)
 
 // FUNCTION: IMPERIALISM 0x00532780
 TDiplomatForeignMinister::TDiplomatForeignMinister() : TForeignMinister() {}
@@ -195,17 +180,12 @@ void TDiplomatForeignMinister::NoOpForeignMinisterUtilityStub(void* receiver) {
 
 // SYNTHETIC: IMPERIALISM 0x00533070
 // TTextileForeignMinister::CreateObject
-CObject* PASCAL TTextileForeignMinister::CreateObject() {
-  return new TTextileForeignMinister;
-}
-const CRuntimeClass TTextileForeignMinister::classTTextileForeignMinister = {
-    "TTextileForeignMinister", sizeof(TTextileForeignMinister), 0xffff,
-    TTextileForeignMinister::CreateObject, RUNTIME_CLASS(TForeignMinister), nullptr};
 
-// FUNCTION: IMPERIALISM 0x005330f0
-CRuntimeClass* TTextileForeignMinister::GetRuntimeClass() const {
-  return const_cast<CRuntimeClass*>(&classTTextileForeignMinister);
-}
+// SYNTHETIC: IMPERIALISM 0x005330f0
+// TTextileForeignMinister::GetRuntimeClass
+
+// Binary descriptor base is TMinister (0x659a80), not TForeignMinister — original macro arg.
+IMPLEMENT_DYNCREATE(TTextileForeignMinister, TMinister)
 
 // FUNCTION: IMPERIALISM 0x00533110
 TTextileForeignMinister::TTextileForeignMinister() : TForeignMinister() {}
@@ -245,17 +225,12 @@ void TTextileForeignMinister::NoOpForeignMinisterUtilityStub(void* receiver) {
 
 // SYNTHETIC: IMPERIALISM 0x00533800
 // TTraderForeignMinister::CreateObject
-CObject* PASCAL TTraderForeignMinister::CreateObject() {
-  return new TTraderForeignMinister;
-}
-const CRuntimeClass TTraderForeignMinister::classTTraderForeignMinister = {
-    "TTraderForeignMinister", sizeof(TTraderForeignMinister), 0xffff,
-    TTraderForeignMinister::CreateObject, RUNTIME_CLASS(TForeignMinister), nullptr};
 
-// FUNCTION: IMPERIALISM 0x00533880
-CRuntimeClass* TTraderForeignMinister::GetRuntimeClass() const {
-  return const_cast<CRuntimeClass*>(&classTTraderForeignMinister);
-}
+// SYNTHETIC: IMPERIALISM 0x00533880
+// TTraderForeignMinister::GetRuntimeClass
+
+// Binary descriptor base is TMinister (0x659a80), not TForeignMinister — original macro arg.
+IMPLEMENT_DYNCREATE(TTraderForeignMinister, TMinister)
 
 // FUNCTION: IMPERIALISM 0x005338a0
 TTraderForeignMinister::TTraderForeignMinister() : TForeignMinister() {}
@@ -297,17 +272,12 @@ void TTraderForeignMinister::NoOpForeignMinisterUtilityStub(void* receiver) {
 
 // SYNTHETIC: IMPERIALISM 0x00533f70
 // TArmsForeignMinister::CreateObject
-CObject* PASCAL TArmsForeignMinister::CreateObject() {
-  return new TArmsForeignMinister;
-}
-const CRuntimeClass TArmsForeignMinister::classTArmsForeignMinister = {
-    "TArmsForeignMinister", sizeof(TArmsForeignMinister), 0xffff,
-    TArmsForeignMinister::CreateObject, RUNTIME_CLASS(TForeignMinister), nullptr};
 
-// FUNCTION: IMPERIALISM 0x00533ff0
-CRuntimeClass* TArmsForeignMinister::GetRuntimeClass() const {
-  return const_cast<CRuntimeClass*>(&classTArmsForeignMinister);
-}
+// SYNTHETIC: IMPERIALISM 0x00533ff0
+// TArmsForeignMinister::GetRuntimeClass
+
+// Binary descriptor base is TMinister (0x659a80), not TForeignMinister — original macro arg.
+IMPLEMENT_DYNCREATE(TArmsForeignMinister, TMinister)
 
 // FUNCTION: IMPERIALISM 0x00534010
 TArmsForeignMinister::TArmsForeignMinister() : TForeignMinister() {

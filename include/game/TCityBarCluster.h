@@ -6,7 +6,7 @@ struct CRuntimeClass;
 // VTABLE: IMPERIALISM 0x00665190
 class TCityBarCluster : public TUberCluster {
 public:
-// === BEGIN GENERATED DECLS (TCityBarCluster) — refreshed by recover-class; do not hand-edit ===
+  // === BEGIN GENERATED DECLS (TCityBarCluster) — refreshed by recover-class; do not hand-edit ===
   virtual ~TCityBarCluster(); // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
   // slot 0x03 AssertValid inherited unchanged (0x412bf0)
@@ -123,10 +123,9 @@ public:
   // slot 0x72 OrphanCallChain_C2_I51_00491790 inherited unchanged (0x491790)
   // slot 0x73 IsTradeControlAtMinimum inherited unchanged (0x5714e0)
   virtual void ApplyMoveValue(int value); // slot 0x74 0x5866b0
-// === END GENERATED DECLS (TCityBarCluster) ===
+                                          // === END GENERATED DECLS (TCityBarCluster) ===
   TCityBarCluster();
   DECLARE_DYNCREATE(TCityBarCluster)
-  static TCityBarCluster* CreateInstance();
 
   void UpdateTradeSummaryMetricControlsFromRecord(int recordContext);
 };

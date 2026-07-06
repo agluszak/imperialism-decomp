@@ -12,10 +12,8 @@
 const int kAssertLineTradeSellIncSell = 0x816;
 const int kAssertLineTradeSellIncCap = 0x81d;
 
-// FUNCTION: IMPERIALISM 0x00586c40
-TAmtBarCluster* TAmtBarCluster::CreateInstance() {
-  return new TAmtBarCluster();
-}
+// SYNTHETIC: IMPERIALISM 0x00586c40
+// TAmtBarCluster::CreateObject
 // SYNTHETIC: IMPERIALISM 0x00586cc0
 // TAmtBarCluster::GetRuntimeClass
 
