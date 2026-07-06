@@ -874,3 +874,23 @@ Then wire the caller as `static_cast<TRealClass*>(resolve(...))->Method(args)` �
 codegen-neutral downcast plus the real virtual (0x5d7090 →100%). Different callers of
 the same handler family can have different receivers — don't assume one recovery
 covers the set.
+
+## 52. Same inline function, two call shapes in one binary = per-TU inline-budget exhaustion, not flags or source tricks
+
+When an MFC/afx.inl (or any header-inline) function appears BOTH folded away
+(`call ::operator new` directly) and called out-of-line (`call CObject::operator new`
+COMDAT copy at 0x41b1c0) for the *same* classes, do not invent a source-side model —
+no class-scope operator overrides, no per-TU visibility macros, no per-file /Ob0.
+MSVC500 gives each TU a finite inline-expansion budget: once exhausted, later calls
+to `inline`-marked functions are emitted out-of-line (verified with the Docker
+toolchain: a generated TU flipped after ~1750 expansions; the original binary's
+factory giants flip mid-function — 0x415fe0 after 39 allocs, 0x41b6d0 after 10,
+0x4601b0 never). Consequences: (a) such wrappers are LIBRARY code
+(mfc_heap_library.cpp), never game ports; (b) reproducing exact flip points is a
+TU-composition concern (which functions share the .cpp, in what order) to be tuned
+when the TU is mostly ported; (c) `just alloc-audit` prints each original function's
+inlined/out-of-line allocator sequence as ground truth, and `just decode-builder`
+decodes builder bodies. Diagnostic tell: the out-of-line copy sits at a game-code
+address adjacent to unrelated game functions (COMDAT emitted by whichever TU called
+it first), and DYNCREATE CreateObject bodies always show the inlined form (small
+functions, fresh budget).
