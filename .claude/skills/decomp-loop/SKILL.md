@@ -70,7 +70,7 @@ Two config-file readers replace the by-hand grep-across-CSVs dance:
      methods before building (raw form breaks MSVC parsing and loses address
      pairing);
    - call vtable slots as real `virtual` methods on the recovered class (declare the
-     method at the verified slot if missing — Hard Rules 11/12), never raw
+     method at the verified slot if missing — Hard Rules 9/10), never raw
      `vftable[...]` indexing and never new `VCall_*` facades (see `class-recovery`).
 4. **Sync + build**:
    - `just build` — always. Use `just build`, **not** a hand-rolled `docker run`: it
@@ -122,8 +122,8 @@ both of which look like progress but block real recovery:
 
 - **Don't `reinterpret_cast` a `(void)` stub/thunk to a typed signature to call it.**
   (`reinterpret_cast<int(__cdecl*)(T*,int)>(Foo)(this, x)`.) Adjusting arg/return *types*
-  of a genuinely same-convention `__cdecl(void)` thunk is technically legal (Hard Rule 9),
-  but if the real target is portable, **port it** instead.
+  of a genuinely same-convention `__cdecl(void)` thunk is a legacy bridge form being
+  retired, not a porting approach — if the real target is portable, **port it** instead.
 - **Don't whitelist a name in `tools/stubgen.py` to emit a typed stub.** That fakes a
   signature without a real body and is an explicit anti-pattern — do not add entries.
 

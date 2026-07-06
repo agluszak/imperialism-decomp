@@ -29,11 +29,12 @@ starting that kind of task.
   reconstructs an unknown layout/inheritance in the first place.
 - **`run-debug`** — run the recomp under Wine, scripted winedbg sessions, and the
   capture-by-window-ID screenshot recipe for visual verification.
+- **`mfc-collections`** — recover/model MFC collection classes and subobjects
+  (`CPtrList`/`CObList`/`CObArray`/`CTypedPtrList`…). Use when a vtable, ctor/dtor, or
+  field region looks like an MFC collection, or ported code walks protected internals.
 
 ## IMPORTANT
 - Game is compiled with MSVC500 (Visual C++ 5.0), which is an old compiler. DO NOT USE modern C++ features or syntax.
-- ghidra uses unreliable, placeholder names and calling conventions. Almost every method
-  in this project should be a thiscall belonging to a proper class
 - code coming from MFC/other Windows libraries MUST NOT be modelled/ported. Use // LIBRARY annotations for it
 - ILT thunks must not be used at all - they should be completely ignored. Use the target methods instead.
 
@@ -62,16 +63,11 @@ starting that kind of task.
   `vendor/msvc500/headers/{include,mfc/include,atl/include}` instead of guessing MFC
   signatures or collection layouts.
 - **Ghidra is the ground-truth evidence source.** Read the disassembly before trusting
-  a decompile or a name: `just ghidra-listing 0xADDR`, `just ghidra-vtable-dump`,
-  `just xrefs [to|from|both] 0xADDR` (cross-references), `just scan-cdecl-thiscall`,
-  `just func-sig 0xADDR` (cc/params hypothesis + RET-imm purge ground truth),
-  `just field-xrefs <Class> [0xOFF]` (who touches `this+offset`), `just string-oracle`
-  (unported functions referencing unique strings — self-naming port targets),
-  plus decompile via the `ghidra` skill. Prefer this over objdump. The read-only inspect
-  targets run through a persistent daemon (`just ghidra-daemon` / `-stop`) that keeps the
-  project loaded, so calls after the first are sub-second; mutating targets evict it
-  automatically. The vendored project (`vendor/ghidra`) is authoritative; the tools verify
-  the installed Ghidra matches `ghidra.toml` and fail fast on a mismatch.
+  a decompile or a name; prefer it over objdump. The full inspect-command catalog
+  (listing, xrefs, func-sig, field-xrefs, string-oracle, cdecl/thiscall scan, decompile,
+  persistent daemon) lives in the `ghidra` skill and `just --list`. The vendored project
+  (`vendor/ghidra`) is authoritative; the tools verify the installed Ghidra matches
+  `ghidra.toml` and fail fast on a mismatch.
 - **Ghidra naming and calling conventions are provisional** (see Hard Rule 6 and the
   MSVC500 calling-convention guardrail): treat every name and
   `__cdecl`/`__fastcall`/`__thiscall` label as a hypothesis to verify against the
@@ -80,32 +76,20 @@ starting that kind of task.
 ### reccmp verification & comparison commands
 
 Each wraps a `uv run reccmp-*` tool via a `just` target (Hard Rule 2 — prefer the
-target). They need a built binary + reccmp DB.
+target). They need a built binary + reccmp DB. Details in the `quality-control` skill.
 
 - `just precommit` — the whole pre-commit sequence in one command: `build` +
   `gates` + `test` (tooling unit tests) + `stats`.
-- `just gates` — the pre-commit mechanical source-policy gates, including
-  `decomplint` (annotation linting) and the ratchet gates: `datacmp-gate`
-  (global-data drift vs `config/datacmp_baseline.csv`), `stub-count-gate`
-  (autogen stub count may not rise — the sync-ownership prune-trap tell),
-  `class-size-gate` (`ASSERT_SIZE` vs RTTI oracle, allowlist in
-  `config/class_size_allowlist.txt`), and `noop-gate` (empty-body ratchet;
-  intentionally-empty bodies need a marker or `// NOOP: verified empty in
-  original 0xADDR`). Each ratchet has a `just <gate>-update` baseline target.
+- `just gates` — the mechanical source-policy gates: `decomplint` plus the ratchet
+  gates (`datacmp-gate`, `stub-count-gate`, `class-size-gate`, `noop-gate`), each
+  with a `just <gate>-update` baseline target.
 - `just triage 0xADDR` / `just triage --file src/game/X.cpp` — classify every
-  mismatched diff line of a below-100% function into actionable buckets
-  (field_offset / stack_layout / call_target / missing_annotation / constant /
-  reg_alloc / codegen) with the standard next action per bucket. Run this before
-  reading a raw `just compare` diff by eye.
-- `just vtable [Name]` (`uv run reccmp-vtable`) — assert virtual-table correctness
-  against the original; optionally filter by class-name substring.
-- `just datacmp [-a]` (`uv run reccmp-datacmp`) — compare global data values between
-  the original and the recompiled binary (raw report; the gate is `datacmp-gate`).
-- `just roadmap` (`uv run reccmp-roadmap`) — compare symbol locations (functions,
-  vtables, data) between original and recompiled.
-- `just stackcmp 0xADDR` (`uv run reccmp-stackcmp`) — compare the stack layout of a
-  single near-matching function; `just stackcmp-triage` batches it over the
-  near-match range and ranks stack-layout suspects.
+  mismatched diff line of a below-100% function into actionable buckets with the
+  standard next action per bucket. Run this before reading a raw `just compare`
+  diff by eye.
+- `just vtable [Name]` (vtable correctness), `just datacmp [-a]` (global data values),
+  `just roadmap` (symbol locations of functions/vtables/data), `just stackcmp 0xADDR`
+  + `just stackcmp-triage` (stack layout of near-matching functions).
 
 ## Hard Rules
 
@@ -132,17 +116,23 @@ target). They need a built binary + reccmp DB.
 8. Promote repeated `this + offset` / `reinterpret_cast` access that maps to a stable
    class region into a typed class field (or typed view struct) instead of cast-helper
    indirection.
-10. For vtable calls in manual code, use real `virtual` methods on recovered classes — no
-    local `typedef ...Fn` + `reinterpret_cast` blocks, no raw `vftable[...]` indexing,
-    and no generated `VCall_*` facade wrappers.
-11. When adding a dispatch to an unrecovered receiver, declare the method on the owning
+9. For vtable calls in manual code, use real `virtual` methods on recovered classes — no
+   local `typedef ...Fn` + `reinterpret_cast` blocks, no raw `vftable[...]` indexing,
+   and no generated `VCall_*` facade wrappers.
+10. When adding a dispatch to an unrecovered receiver, declare the method on the owning
     class header at the verified slot and call `obj->Method(args)` directly.
-13. Rewriting `reccmp-project.yml` ignore lists is opt-in: only `just generate-ignores`
+11. Rewriting `reccmp-project.yml` ignore lists is opt-in: only `just generate-ignores`
     and `just session-loop --refresh-ignore` do it; run them only when you explicitly
     intend to rewrite ignore configuration (`just session-loop` alone is read-only).
-14. Mac CodeWarrior evidence (vendored at `vendor/macos_codewarrior/`) is a
+12. Mac CodeWarrior evidence (vendored at `vendor/macos_codewarrior/`) is a
     name/signature **oracle only** — it must never assign Windows addresses, calling
     conventions, vtables, or inheritance.
+13. Never discard working-tree changes: no `git stash`, `git checkout --` /
+    `git restore`, `git reset --hard`, or other blanket revert to escape a build/gate
+    failure or "get a clean slate". Fix forward per the gate-chasing guardrail.
+    Uncommitted changes may also belong to concurrent agents sharing this checkout —
+    discarding them destroys in-flight work. Reverting requires an explicit user
+    instruction.
 
 ## Hard rules: real C++ construction and inheritance
 
@@ -242,11 +232,11 @@ commit with correct source beats a passing commit with reverted stubs.
 | Vtable dispatch | Real `virtual` on recovered class | Raw `vftable[i]` or `VCall_*` facade |
 | `0x606f73` / `AllocateWithFallbackHandler` in listing | `new T()` (MFC `operator new` LIBRARY in `mfc_heap_library.cpp`) | `new char[n]` + stub ctor cast |
 | `// LIBRARY:` in repo | Link against MFC; no stub definition | Add a fake `undefined4` stub |
-| Genuine `__cdecl` ILT wrapper, no `this` | Hard Rule 9: `extern undefined4` + typed cast at callsite | — |
+| Genuine `__cdecl` free function, no `this` | Port the real callee when feasible; the legacy `extern undefined4` + typed-cast-at-callsite form is a bridge being retired, not a porting approach | — |
 
-**Hard Rule 9 applies only to genuine free-function thunks.** It does **not** permit
-re-stubbing a callee you have already verified is `__thiscall` on a recoverable class
-because a gate failed.
+**The legacy typedef-cast form applies only to genuine free-function thunks.** It does
+**not** permit re-stubbing a callee you have already verified is `__thiscall` on a
+recoverable class because a gate failed.
 
 ### Promotion direction is one-way
 
@@ -339,11 +329,15 @@ free-function stub or fake calling-convention cast back to unblock a commit.
 
 If gates fail or stats regress for reasons unrelated to your edit, stop and report
 rather than committing around the failure. See `.cursor/rules/commit-workflow.mdc`.
+Never revert promoted real C++ to pass gates — see the **Gate-chasing guardrail** above.
 
-**Never revert promoted real C++ to pass gates** — typed fields, real methods, `new T()`,
-typed globals. See **Gate-chasing guardrail** above. A failing gate with correct source
-must be fixed forward or reported; stub/`reinterpret_cast` rollback is not an acceptable
-gate fix.
+**Score wobble is not a regression.** Growing a TU or linking new code elsewhere can
+flip commutative-FP operand order (100%→43% on untouched FP leaves), cause sub-1pp
+register-allocation wobble in neighbouring functions, and re-pair nearby LIBRARY
+functions — all in code you never touched. These phantom drops are not regressions:
+never revert real structure, relocate globals, or contort the design to defend the old
+score. Accept the delta and `just stats-baseline-update` (full pattern: heuristics
+notes 18 and 47).
 
 - Do not add routine execution entries to `docs/worklog.md`; keep `docs/worklog.md`
   as historical context only.

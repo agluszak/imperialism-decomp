@@ -117,9 +117,12 @@ local/gitignored and commit only `reccmp-project.yml`.
    shard or another manual file.
 3. **Compare name looks like a sentence/comment** — a comment line sits between the
    marker and the declaration.
-4. **Build breaks on `__thiscall` in a free typedef** — replace with a `__fastcall`
-   bridge shape; never put `__thiscall` casts on free functions/function pointers
-   (route through a real class method instead).
+4. **Build breaks on `__thiscall` in a free typedef** — the callee is a class method:
+   declare it as a real method on the owning class and call `obj->Method(args)`.
+   Never put `__thiscall` casts on free functions/function pointers. Only when no
+   class can yet be modeled is a `__fastcall` bridge an acceptable last resort (see
+   the AGENTS.md calling-convention guardrail) — and it belongs outside primary
+   method bodies.
 5. **`InvalidVirtualAddressError: …Imperialism.exe : 0x…`** (reccmp crashes hard
    during compare/stats) — the exe and PDB are out of sync: the PDB references code
    past the current exe. Almost always a wrong-flags build. Rebuild with `just build`

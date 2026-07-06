@@ -14,6 +14,20 @@ entries here, and do not restate a Hard Rule or a memory; link to it instead.
 renumber an existing note; a new note takes the next free number, and a note
 folded into another leaves a one-line pointer behind.
 
+## Thematic index
+
+- **Target confirmation & reccmp pairing**: 1, 7, 25, 32, 38, 39, 52
+- **Constructors, destructors, EH locals**: 3, 8, 33, 41
+- **Vtables, slots, virtual dispatch**: 4, 12 (12b/12c), 20, 44, 45, 53, 54
+- **Calling conventions, ABI, signatures**: 5, 6, 26, 34, 40
+- **Class recovery & attribution**: 9, 16, 22, 23, 24, 28, 37, 46, 49, 50
+- **MFC surface, collections, inline budget**: 15, 18, 27, 35, 55
+- **Streams & deserialization**: 10
+- **CRT idioms & body-shape fixes**: 11, 43, 48, 51
+- **Monolithic functions & TU layout**: 13, 19, 36
+- **Process, batching, formatting, audits**: 14, 29, 30, 42
+- **Codegen noise / phantom regressions**: 16, 18, 47, 51, 52
+
 ---
 
 ## 1. Confirm the target before rewriting
@@ -75,8 +89,8 @@ AGENTS guardrail + [[model-real-classes-not-callconv-casts]].
 - Big-vtable classes (TGreatPower = 178 slots) self-dispatch to sibling slots on
   `this`; declare the **whole slot range** as real virtuals in one structural pass
   (bodies may temporarily delegate) so sibling calls resolve to real virtuals. Verify
-  ownership against `config/function_ownership.csv` first — many no-op slots are owned
-  by `noop_slots.cpp`. See [[next-tgreatpower-vtable-scope]].
+  ownership against `config/function_ownership.csv` first — no-op slot bodies live in
+  their owning class files. See [[next-tgreatpower-vtable-scope]].
 - The slot macro arg / `// slot 0xNN` comments are **decimal** (slot 0xb0 = index 176).
 
 ## 5. Calling-convention recovery
@@ -145,7 +159,7 @@ reccmp pairs by **name** (stripping C-linkage underscore); values are irrelevant
 Compiler-generated `??_G`/`??_E` scalar deleting destructors must be SYNTHETIC, never
 hand-written. Make the class polymorphic, the ordinary dtor implicit, and claim the
 address with a `// SYNTHETIC` marker + exact backtick name in `symbols.csv`. Full
-recipe in **AGENTS.md Hard Rule 16** and [[synthetic-scalar-deleting-dtor]];
+recipe in **AGENTS.md construction Hard Rule 10** and [[synthetic-scalar-deleting-dtor]];
 remaining candidates in [[next-scalar-dtor-rollout]].
 
 - A no-op custom `operator delete` lowers the `??_G` match — prefer the real global
@@ -164,7 +178,7 @@ Defer the full methodology to the `class-recovery` skill. Tactics:
   empty unknowns beat speculative edges. Class/method names from Ghidra are provisional
   ([[ghidra-names-provisional]]) — match by address/behavior.
 - Mac CodeWarrior evidence (`just mac-evidence`) is a **name/signature oracle only** —
-  never assigns Windows addresses, conventions, vtables, or inheritance (AGENTS rule 15).
+  never assigns Windows addresses, conventions, vtables, or inheritance (AGENTS rule 12).
   When it gives a signature with hidden stack args, test the signature before tuning.
 - Ground a local list/queue struct by the **vtable its ctor writes**, not its Ghidra
   name — names frequently contradict the installed vtable. See
@@ -317,7 +331,7 @@ against them.
 - **Generic-named callees are real functions, not "missing".** `FUN_00xxxxxx` is a defined
   function (just unnamed); a 5-byte `JMP` at `0x40xxxx` is an ILT thunk to a named target
   (`just ghidra-listing` the addr to resolve it). Forward-declare + call — minding the
-  Hard-Rule-9 thunk-signature trap (§12c).
+  legacy typedef-cast thunk-signature trap (§12c).
 - **Don't fake these two shapes — recover the class instead:** (1) a free callee invoked with
   `ECX=this` is a `__thiscall` *method* on that receiver; (2) `buf = operator new(sz);
   Ctor(buf /*ecx*/, args)` is a real `new RealClass(args)` expression (the banned
@@ -424,8 +438,8 @@ at ~5%.
 
 - **Inline the bodies into the one function** (an `#include "..._switch.inc"` fragment
   between `case` labels works well). Wrap each case in its own `{ }` so per-case locals
-  don't collide (MSVC500 leaks `for`-init vars to the enclosing block; give each loop
-  its own uniquely-named control variable rather than relying on the leak, Hard Rule 15).
+  don't collide (MSVC500 keeps `for`-init variables in function scope; give each loop
+  its own uniquely-named control variable rather than relying on the leak).
 - **Genuine helpers go file-scope `static inline`** so `/Ob1` folds them back in; trivial
   one-line wrappers are best expanded at the call site.
 - **Isolate a large/disruptive function in its own TU.** Adding the inline switch + its
@@ -547,7 +561,7 @@ pair at 100% for free (390→397).
 
 ## 30. Typedef-cast externs drift; audit before trusting a signature
 
-The Hard-Rule-9 pattern (`extern undefined4 Foo(void);` + per-callsite
+The legacy typedef-cast extern pattern (`extern undefined4 Foo(void);` + per-callsite
 `typedef ... (*Foo_t)(...)` cast) has no single source of truth, so signatures drift
 between files (same target cast four different ways across three mission files; one
 caller dropped the only argument — TBlockadePortMission::ReadFrom, 56%→100% by porting
@@ -812,7 +826,7 @@ instances). Split procedure:
    to `global_data_tables.cpp` (the marker gate rejects it anywhere else).
 4. Getter param width matters: `MOVSX word` ⇒ `short` param — fixing offset + width took
    accessors 60→100%. Callers that now truncate may dip a couple pp; accept it
-   (correct model > local caller score, Hard Rule 12).
+   (correct model > local caller score, construction Hard Rule 12).
 
 ## 51. Branch-order = fall-through: read the `je`/`jne` target to pick which body is the `if`
 
@@ -852,7 +866,7 @@ here (see §20, §38); a real regression has a real cause. Related from the same
   signature from `ret N` + the overrides, then apply to the base and ALL overrides at
   once (five base stubs sat at 0–50% purely from being declared 0-arg).
 - **A dispatcher that `CALL [EAX+byte]` after pushing args is a real virtual on `this`**
-  (Hard Rules 11/12) — the 8-byte slot-0x79 dispatchers (0x51adc0/0x51c2f0) hit 100%
+  (Hard Rules 9/10) — the 8-byte slot-0x79 dispatchers (0x51adc0/0x51c2f0) hit 100%
   once the target slot's true 3-arg arity was recovered.
 - **The shared-ILT-thunk callsite is a permanent ~1-instruction miss** (recomp pairs the
   unscoped `thunk_X`, original the scoped `Class::thunk_X`) — a body whose only residual
@@ -879,7 +893,7 @@ codegen-neutral downcast plus the real virtual (0x5d7090 →100%). Different cal
 the same handler family can have different receivers — don't assume one recovery
 covers the set.
 
-## 52. Same inline function, two call shapes in one binary = per-TU inline-budget exhaustion, not flags or source tricks
+## 55. Same inline function, two call shapes in one binary = per-TU inline-budget exhaustion, not flags or source tricks
 
 When an MFC/afx.inl (or any header-inline) function appears BOTH folded away
 (`call ::operator new` directly) and called out-of-line (`call CObject::operator new`

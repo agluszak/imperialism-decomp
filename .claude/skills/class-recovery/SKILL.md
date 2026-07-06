@@ -7,8 +7,8 @@ description: Reconstruct C++ classes and vtables for the Imperialism decomp — 
 
 Treat C++ recovery as **staged MSVC reconstruction**, not a single Ghidra result.
 Hard Rules and the MSVC calling-convention guardrail are in `AGENTS.md`; matching
-tactics for specific class families are in `decomp-loop/heuristics.md` (#25–36,
-#49, #58–84).
+tactics for specific class families are in `decomp-loop/heuristics.md` (see its
+thematic index; e.g. #25–36, #45–46, #49–54).
 
 ## Source-only class recovery workflow
 

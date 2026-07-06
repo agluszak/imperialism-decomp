@@ -57,8 +57,8 @@ but only when the thunk address is **not** claimed as a function on our side. To
 
 1. Remove its row from `config/symbols.csv` (stubgen sources addresses here, so its
    autogen stub stops regenerating).
-2. Delete any hand-written fake body + marker (e.g. in `src/game/thunks.cpp`). Fake
-   no-op/jmp bodies for ILT thunks are forbidden regardless.
+2. Delete any hand-written fake body + marker. Fake no-op/jmp bodies for ILT thunks
+   are forbidden regardless.
 3. Repoint any callsite that references the thunk symbol by name so it links without the
    stub — for a thunk to a base method, a qualified non-virtual call works:
    `reinterpret_cast<Base*>(this)->Base::Method(args)`.
@@ -89,7 +89,7 @@ comparison reads the freshly built `Imperialism.exe`/`.pdb`.
 1. **Linker Errors for External/QuickDraw Helpers**: When promoting functions, you may encounter linkage failures (e.g., `unresolved external symbol`) for external helpers (like `IsPointInsideHitRegion`). To resolve:
    - Wrap declarations in `extern "C"` blocks.
    - Match implementation signatures exactly (e.g., using `int*` instead of `void` if the wrapper/helper expects a pointer).
-   - If stubgen generates colliding dummy stubs for them, whitelist/add the symbol to the ignore list in `tools/stubgen.py`.
+   - If stubgen generates colliding dummy stubs for them, port the real callee or fix ownership (`just regen-stubs`) — do **not** add entries to the `tools/stubgen.py` whitelist; that fakes a signature without a real body and is an explicit anti-pattern (see the decomp-loop skill).
 2. **Substring Filter Collisions**: The `reccmp-vtable` filter (e.g., `--filter "TView::"`) matches case-insensitively. This can cause unexpected classes to be included in the comparison (e.g., `"TView::"` matches `TCombatReportView` because `t` + `View::` matches `tview::`). Analyze the output carefully to identify which class is the actual mismatch.
 3. **Override Signatures**: Ensure derived overrides match the base class virtual signature exactly. Mismatched signatures can cause MSVC to treat them as new virtual functions (shifting the vtable layout) rather than overrides.
 
