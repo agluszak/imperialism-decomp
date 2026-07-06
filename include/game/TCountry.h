@@ -74,6 +74,9 @@ public:
   void ApplyNationStateCode200AndQueueEvent1B(int targetNationSlot);
 
   void InitializeNationStateIdentityAndOwnedRegionList(short nationSlot);
+  // Fill out with this nation's overlay label (its shared credential/name text), or the
+  // empty string when the descriptor slot is null. 0x004d7860.
+  void FormatOverlayTerrainLabelText(CString* out);
 
   // Assign the display name and mirror it into the TSimMgr shared-text slot for
   // this nation (0x4d7a00).

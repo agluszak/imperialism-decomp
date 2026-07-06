@@ -359,6 +359,17 @@ void TCountry::SeedInitialMilitaryAndNavyOrdersForOwnedRegions(void) {
   this->AssignDisplayNamesToUnnamedMilitaryUnits();
 }
 
+// FUNCTION: IMPERIALISM 0x004d7860
+void TCountry::FormatOverlayTerrainLabelText(CString* out) {
+  CString label;
+  if (this == nullptr) {
+    label = g_szEmptyString;
+  } else {
+    g_pSimMgr->LoadNormalizedCredentialName(&label, nationSlot);
+  }
+  *out = label;
+}
+
 // FUNCTION: IMPERIALISM 0x004d7a00
 void TCountry::SetNationDisplayNameAndLocalizationSlotRef(const CString& name) {
   this->identitySharedString0 = name;

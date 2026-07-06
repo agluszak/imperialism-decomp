@@ -1713,7 +1713,7 @@
     },
     {
       "address": "0x47d1c0",
-      "matching": 0.058823529411764705,
+      "matching": 0.45714285714285713,
       "name": "InitializeDialogTemplateD2WithTextState",
       "type": 1
     },
@@ -2608,7 +2608,7 @@
     },
     {
       "address": "0x4855b0",
-      "matching": 0.0,
+      "matching": 0.48344370860927155,
       "name": "TMacViewMgr_OnCommand_ID_8013_ShowTerrainOverlayDialog",
       "type": 1
     },
@@ -4306,7 +4306,7 @@
     },
     {
       "address": "0x48b2d0",
-      "matching": 0.19130434782608696,
+      "matching": 0.2033898305084746,
       "name": "TView::VTableSlotDD",
       "type": 1
     },
@@ -7488,7 +7488,7 @@
     },
     {
       "address": "0x4a2900",
-      "matching": 0.13374805598755832,
+      "matching": 0.13063763608087092,
       "name": "BuildArmyContextActionRecordsAndDispatchLabel",
       "type": 1
     },
@@ -11718,8 +11718,8 @@
     },
     {
       "address": "0x4d7860",
-      "matching": 0.0,
-      "name": "FormatOverlayTerrainLabelText",
+      "matching": 0.3888888888888889,
+      "name": "TCountry::FormatOverlayTerrainLabelText",
       "type": 1
     },
     {
@@ -12295,7 +12295,7 @@
     },
     {
       "address": "0x4dd430",
-      "matching": 0.5142857142857142,
+      "matching": 0.5714285714285714,
       "name": "TGreatPower::ComputeRemainingDiplomacyAidBudget",
       "type": 1
     },
@@ -12733,7 +12733,8 @@
     },
     {
       "address": "0x4e05d0",
-      "matching": 1.0,
+      "effective": true,
+      "matching": 0.42857142857142855,
       "name": "TGreatPower::OrphanLeaf_NoCall_Ins02_004d7fc0_89",
       "type": 1
     },
@@ -12745,19 +12746,21 @@
     },
     {
       "address": "0x4e0650",
-      "matching": 1.0,
+      "effective": true,
+      "matching": 0.42857142857142855,
       "name": "TGreatPower::OrphanRetStub_004d7fe0_8b",
       "type": 1
     },
     {
       "address": "0x4e0690",
-      "matching": 1.0,
+      "effective": true,
+      "matching": 0.42857142857142855,
       "name": "TGreatPower::ReturnFalseNationStateCapabilityFlag90",
       "type": 1
     },
     {
       "address": "0x4e06d0",
-      "matching": 0.7619047619047619,
+      "matching": 0.8095238095238095,
       "name": "TGreatPower::SumNationRuntimeFiveBucketValue44",
       "type": 1
     },
@@ -12787,7 +12790,7 @@
     },
     {
       "address": "0x4e09a0",
-      "matching": 0.4939759036144578,
+      "matching": 0.5180722891566265,
       "name": "TGreatPower::ComputeCityOrderCapabilityAggregateScore",
       "type": 1
     },
@@ -16226,7 +16229,7 @@
     },
     {
       "address": "0x50bea0",
-      "matching": 0.2044525215810995,
+      "matching": 0.19627442071785553,
       "name": "TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets",
       "type": 1
     },
@@ -16304,7 +16307,7 @@
     },
     {
       "address": "0x50da80",
-      "matching": 0.30666666666666664,
+      "matching": 0.2984409799554566,
       "name": "TMacViewMgr::BlitMapOverlayGlyphStrip32x24SkipMask10",
       "type": 1
     },
@@ -17054,7 +17057,7 @@
     },
     {
       "address": "0x5178f0",
-      "matching": 0.34382566585956414,
+      "matching": 0.32038834951456313,
       "name": "ComputeRepresentativeTileIndexForTerrainTypeWithWrapBias",
       "type": 1
     },
@@ -26121,8 +26124,8 @@
     },
     {
       "address": "0x581b20",
-      "matching": 0.0,
-      "name": "AssignNormalizedCredentialTokenToIndexedSlot",
+      "matching": 0.24390243902439024,
+      "name": "TSimMgr::LoadNormalizedCredentialName",
       "type": 1
     },
     {
@@ -32783,7 +32786,7 @@
     },
     {
       "address": "0x5d6480",
-      "matching": 0.19617224880382775,
+      "matching": 0.13270142180094788,
       "name": "TViewMgr::BuildAndShowTurnOverlayByMode",
       "type": 1
     },

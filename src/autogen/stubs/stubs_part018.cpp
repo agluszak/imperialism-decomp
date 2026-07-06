@@ -387,14 +387,6 @@ undefined4 SetSelectedIndex6AAndTriggerRefresh(void)
   return 0;
 }
 
-// ghidra_name AssignNormalizedCredentialTokenToIndexedSlot
-// ghidra_proto undefined AssignNormalizedCredentialTokenToIndexedSlot()
-// FUNCTION: IMPERIALISM 0x00581b20
-undefined4 AssignNormalizedCredentialTokenToIndexedSlot(void)
-{
-  return 0;
-}
-
 // ghidra_name AssignSharedStringFromIndexedSlot7C
 // ghidra_proto undefined AssignSharedStringFromIndexedSlot7C()
 // FUNCTION: IMPERIALISM 0x00581bc0

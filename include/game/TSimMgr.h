@@ -61,6 +61,9 @@ public:
   virtual void TriggerScenarioVariantFormatSlot7c();                          // 0x7c  0x0057fe90
   virtual void ReseedThreadLocalRandom();                                     // 0x80  0x0057fec0
   virtual void GetString(short codeGroup, short offset, CString* destString); // 0x84 0x00580760
+  // Copy the per-slot shared credential/name text (sharedTextSlots[slot]) into out and
+  // return out. 0x00581b20.
+  CString* LoadNormalizedCredentialName(CString* out, short slot);
   virtual void FormatDiplomacyNoticeTextByPolicyOrGrantCode(CString* dest,
                                                             short* codes); // 0x88 0x00580790
 

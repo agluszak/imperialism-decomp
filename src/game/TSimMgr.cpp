@@ -369,3 +369,9 @@ void TSimMgr::InitializeOrLoadEntryArray14AndClampLimits(bool writeBack) {
   preferenceValues[12] = 0;
   preferenceValues[1] = 0;
 }
+
+// FUNCTION: IMPERIALISM 0x00581b20
+CString* TSimMgr::LoadNormalizedCredentialName(CString* out, short slot) {
+  *out = sharedTextSlots[slot];
+  return out;
+}

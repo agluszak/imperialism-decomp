@@ -183,6 +183,7 @@ address|target_cpp|ownership|note
 47c3d0|src/game/CDib.cpp|manual|marker_sync
 47cdd0|src/game/wave_helpers.cpp|manual|marker_sync
 47cfd0|src/game/TC2TemplateDialog.cpp|manual|marker_sync
+47d1c0|src/game/TC2TemplateDialog.cpp|manual|marker_sync
 47d960|src/game/CBrush.cpp|library|marker_sync
 47dfd0|src/game/TAutoResolutionDialog.cpp|manual|marker_sync
 47e0c0|src/game/TAutoResolutionDialog.cpp|manual|marker_sync
@@ -220,6 +221,7 @@ address|target_cpp|ownership|note
 485180|src/game/CMainFrame.cpp|manual|marker_sync
 4851b0|src/game/TC2TemplateDialog.cpp|manual|marker_sync
 485590|src/game/CMainFrame.cpp|manual|marker_sync
+4855b0|src/game/TC2TemplateDialog.cpp|manual|marker_sync
 485920|src/game/CMainFrame.cpp|manual|marker_sync
 485960|src/game/CMainFrame.cpp|manual|marker_sync
 485990|src/game/CMainFrame.cpp|manual|marker_sync
@@ -1472,6 +1474,7 @@ address|target_cpp|ownership|note
 4d7150|src/game/TCountry.cpp|manual|marker_sync
 4d71b0|src/game/TCountry.cpp|manual|marker_sync
 4d7770|src/game/TGreatPower_pending_action.cpp|manual|marker_sync
+4d7860|src/game/TCountry.cpp|manual|marker_sync
 4d7a00|src/game/TCountry.cpp|manual|marker_sync
 4d7a40|src/game/TGreatPower.cpp|manual|marker_sync
 4d7ae0|src/game/TCountry.cpp|manual|marker_sync
@@ -3353,6 +3356,7 @@ address|target_cpp|ownership|note
 581260|src/game/TSimMgr.cpp|manual|marker_sync
 581280|src/game/TDiplomacyMgr.cpp|manual|marker_sync
 581400|src/game/TSimMgr.cpp|manual|marker_sync
+581b20|src/game/TSimMgr.cpp|manual|marker_sync
 582630|src/game/TGreatPower.cpp|manual|marker_sync
 5838b0|src/game/TArrowsControl.cpp|manual|marker_sync
 583950|src/game/TArrowsControl.cpp|manual|marker_sync

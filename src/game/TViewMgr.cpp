@@ -17,6 +17,7 @@
 #include "game/TTechMgr.h"
 #include "game/TCivToolbar.h"
 #include "game/global_data_tables.h" // g_pGameFlowState, g_pSimMgr, g_apNationStates
+#include "game/TCountry.h"           // FormatOverlayTerrainLabelText (terrain overlay case)
 #include "game/TGreatPower.h"
 #include "game/TGlobalMapState.h"
 #include "game/TDisplayMgr.h" // g_pDisplayMgr, g_szUiNilPointerMessage, g_szUiFailureMessage
@@ -70,7 +71,6 @@ undefined4 SetQuickDrawFillColorFromPaletteIndex(void);
 undefined4 UpdatePaletteIndexWithDefaultFallback(void);
 // ILT thunk (generic form per repo policy; typed cast applied at the callsite).
 undefined4 thunk_DispatchLocalizedUiMessageWithTemplateA13A0(void);
-undefined4 FormatOverlayTerrainLabelText(void);
 undefined4 InitializeHotKeyDialogTemplateA1WithTripleTextState(void);
 undefined4 RunNationInfoModalAndReturnNonCancel(void);
 undefined4 NoOpUiRuntimeCallback_005db2f0(void);
@@ -514,7 +514,7 @@ void TViewMgr::BuildAndShowTurnOverlayByMode(int overlayMode, int contextArg) {
     resourceId = static_cast<short>(overlayMode + 0x2508);
     break;
   case 0xa:
-    reinterpret_cast<void(__cdecl*)(void)>(FormatOverlayTerrainLabelText)();
+    g_apTerrainTypeDescriptorTable[contextArg]->FormatOverlayTerrainLabelText(&formattedText);
     g_pSimMgr->GetString(0, 0, &templateText);
     scanBracketExpressions(g_pSimMgr, &formattedText, static_cast<LPCSTR>(templateText));
     resourceId = 0x2512;

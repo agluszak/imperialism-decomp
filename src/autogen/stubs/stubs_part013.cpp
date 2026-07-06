@@ -683,14 +683,6 @@ undefined4 GetOrComputeOverlayAnchorTileIndex(void)
   return 0;
 }
 
-// ghidra_name FormatOverlayTerrainLabelText
-// ghidra_proto undefined FormatOverlayTerrainLabelText()
-// FUNCTION: IMPERIALISM 0x004d7860
-undefined4 FormatOverlayTerrainLabelText(void)
-{
-  return 0;
-}
-
 // ghidra_name AssignSharedStringFromDescriptorNameOrDefault
 // ghidra_proto undefined AssignSharedStringFromDescriptorNameOrDefault()
 // FUNCTION: IMPERIALISM 0x004d7930

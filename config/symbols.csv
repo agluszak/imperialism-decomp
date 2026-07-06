@@ -592,7 +592,7 @@ address|name|symbol|size|type|prototype|provenance
 4851b0|TMacViewMgr_OnCommand_ID_800C_ShowCityViewSelectionDialog||774|function|undefined TMacViewMgr_OnCommand_ID_800C_ShowCityViewSelectionDialog()|
 48542a|HandleDialogSelectionAndDispatchTurnEventCode|||global||
 485590|CMainFrame::OnCommand800D||14|function|undefined SetUiRuntimeContextValue64ToZero()|
-4855b0|TMacViewMgr_OnCommand_ID_8013_ShowTerrainOverlayDialog||1|function|undefined TMacViewMgr_OnCommand_ID_8013_ShowTerrainOverlayDialog()|
+4855b0|TMacViewMgr_OnCommand_ID_8013_ShowTerrainOverlayDialog||697|function|undefined TMacViewMgr_OnCommand_ID_8013_ShowTerrainOverlayDialog()|
 485920|CMainFrame::HandleCustomMessage2420DispatchTurnEvent||40|function|undefined HandleCustomMessage2420DispatchTurnEvent()|
 485960|CMainFrame::OnMsg0BC0||25|function|undefined TMacViewMgr_OnMsg_0x0BC0_Impl()|
 485990|TMovieView::SetFieldC0AndInvalidateWindowIfChanged||41|function|undefined SetFieldC0AndInvalidateWindowIfChanged()|
@@ -2323,7 +2323,7 @@ address|name|symbol|size|type|prototype|provenance
 4d7170|GetOrComputeOverlayAnchorTileIndex||48|function|undefined GetOrComputeOverlayAnchorTileIndex()|
 4d71b0|TCountry::SeedRecruitAndNavyOrdersForEligibleCoastalCities||1153|function|undefined SeedRecruitAndNavyOrdersForEligibleCoastalCities()|
 4d7770|CreateAndDispatchMilitaryRecruitOrderForNationSlot||189|function|undefined CreateAndDispatchMilitaryRecruitOrderForNationSlot()|
-4d7860|FormatOverlayTerrainLabelText||150|function|undefined FormatOverlayTerrainLabelText()|
+4d7860|TCountry::FormatOverlayTerrainLabelText||150|function|undefined FormatOverlayTerrainLabelText()|
 4d7930|AssignSharedStringFromDescriptorNameOrDefault||150|function|undefined AssignSharedStringFromDescriptorNameOrDefault()|
 4d7a00|SetNationDisplayNameAndLocalizationSlotRef||45|function|undefined SetNationDisplayNameAndLocalizationSlotRef()|
 4d7a40|LoadNationDisplayNameSharedRefFromField8||94|function|undefined LoadNationDisplayNameSharedRefFromField8()|
@@ -4883,7 +4883,7 @@ address|name|symbol|size|type|prototype|provenance
 581510|UpdatePersistentTopTenNationScores||675|function|undefined UpdatePersistentTopTenNationScores()|
 581870|ReinitializeGameFlowAndPostTurnEventCode||494|function|undefined ReinitializeGameFlowAndPostTurnEventCode()|
 581ae0|SetSelectedIndex6AAndTriggerRefresh||38|function|undefined SetSelectedIndex6AAndTriggerRefresh()|
-581b20|AssignNormalizedCredentialTokenToIndexedSlot||123|function|undefined AssignNormalizedCredentialTokenToIndexedSlot()|
+581b20|TSimMgr::LoadNormalizedCredentialName||123|function|undefined AssignNormalizedCredentialTokenToIndexedSlot()|
 581bc0|AssignSharedStringFromIndexedSlot7C||38|function|undefined AssignSharedStringFromIndexedSlot7C()|
 581c00|RefreshNationAdvisorLabelStrings||477|function|undefined RefreshNationAdvisorLabelStrings()|
 581e60|ProcessTurnInstructionStreamAndFinalizePhase||549|function|undefined ProcessTurnInstructionStreamAndFinalizePhase()|
