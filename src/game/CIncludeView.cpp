@@ -102,7 +102,16 @@ ON_MESSAGE(0x4ef, OnDialogTreeHostMsg4EF)
 ON_MESSAGE(0x4c8, OnMciNotifyMode) // MCIWNDM_NOTIFYMODE
 END_MESSAGE_MAP()
 
-CIncludeView::CIncludeView() : CView() {}
+CIncludeView::CIncludeView() : CView() {
+  // The original ctor (0x482950) initializes the view's fields, including the interactive
+  // flag (offset 0x90 == 1) that gates the click/paren-notify dispatch and the embedded
+  // owned-buffer registry at 0x4c (vtable 0x648560). Minimal init for now; full port TODO.
+  m_activeDialogContext = 0;
+  m_field44 = 0;
+  m_pOffscreenDib = 0;
+  m_tickTimerId = 0;
+  m_uiInteractiveFlag90 = 1;
+}
 
 // FUNCTION: IMPERIALISM 0x00482bf0
 LRESULT CIncludeView::OnDialogTreeHostMsg4EF(WPARAM wParam, LPARAM lParam) {
