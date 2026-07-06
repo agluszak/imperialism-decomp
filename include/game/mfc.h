@@ -22,7 +22,6 @@
 #endif
 
 // Ghidra 0x606f73 / 0x606faf are retail MFC operator new/delete (LIBRARY — see mfc_heap_library.h).
-int AllocateAndLinkBlockHead(int* blockHead, int blockSize, int elementSize);
 
 // CString helper functions
 undefined4 AssignStringSharedRefAndReturnThis(void);

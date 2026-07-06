@@ -149,11 +149,11 @@ void TView::SerializeRecordList_0x0C_WithBlockPool_A(CArchive* archive) {
       archive->Read(&value, sizeof(value));
       TEventHandlerRecordNode* tail = recordTail;
       if (freeRecordHead == 0) {
-        int blockBase = AllocateAndLinkBlockHead(&recordBlockHead, recordBlockCount,
-                                                 sizeof(TEventHandlerRecordNode));
+        CPlex* plex =
+            CPlex::Create(recordBlockHead, recordBlockCount, sizeof(TEventHandlerRecordNode));
         int blockCount = recordBlockCount;
         TEventHandlerRecordNode* node = reinterpret_cast<TEventHandlerRecordNode*>(
-            blockBase + -8 + blockCount * sizeof(TEventHandlerRecordNode));
+            static_cast<char*>(plex->data()) + (blockCount - 1) * sizeof(TEventHandlerRecordNode));
         if (-1 < blockCount - 1) {
           do {
             node->next = freeRecordHead;

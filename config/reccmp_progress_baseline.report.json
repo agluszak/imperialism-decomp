@@ -446,7 +446,7 @@
     },
     {
       "address": "0x41b210",
-      "matching": 0.28717948717948716,
+      "matching": 0.29743589743589743,
       "name": "RegisterUiResourceEntry",
       "type": 1
     },
@@ -1456,7 +1456,7 @@
     },
     {
       "address": "0x479be0",
-      "matching": 0.3592233009708738,
+      "matching": 0.36097560975609755,
       "name": "TView::SerializeRecordList_0x0C_WithBlockPool_A",
       "type": 1
     },
@@ -2897,7 +2897,7 @@
     },
     {
       "address": "0x4869b0",
-      "matching": 0.9908256880733946,
+      "matching": 1.0,
       "name": "TApplication::InstallCohandler",
       "type": 1
     },
@@ -5406,7 +5406,7 @@
     },
     {
       "address": "0x491be0",
-      "matching": 0.98,
+      "matching": 1.0,
       "name": "RegisterDialogFactoryCallback",
       "type": 1
     },
@@ -12291,7 +12291,7 @@
     },
     {
       "address": "0x4dd430",
-      "matching": 0.5142857142857142,
+      "matching": 0.5714285714285714,
       "name": "TGreatPower::ComputeRemainingDiplomacyAidBudget",
       "type": 1
     },
@@ -12723,8 +12723,7 @@
     },
     {
       "address": "0x4e0590",
-      "effective": true,
-      "matching": 0.42857142857142855,
+      "matching": 1.0,
       "name": "TGreatPower::OrphanRetStub_004d7fa0_88",
       "type": 1
     },
@@ -12744,8 +12743,7 @@
     },
     {
       "address": "0x4e0650",
-      "effective": true,
-      "matching": 0.42857142857142855,
+      "matching": 1.0,
       "name": "TGreatPower::OrphanRetStub_004d7fe0_8b",
       "type": 1
     },
@@ -12758,7 +12756,7 @@
     },
     {
       "address": "0x4e06d0",
-      "matching": 1.0,
+      "matching": 0.8095238095238095,
       "name": "TGreatPower::SumNationRuntimeFiveBucketValue44",
       "type": 1
     },
@@ -12782,13 +12780,13 @@
     },
     {
       "address": "0x4e0890",
-      "matching": 0.24242424242424243,
+      "matching": 0.2222222222222222,
       "name": "TGreatPower::IterateLinkedListCursorAndAccumulateRoundedMetric_004e0890",
       "type": 1
     },
     {
       "address": "0x4e09a0",
-      "matching": 0.5060240963855421,
+      "matching": 0.5301204819277109,
       "name": "TGreatPower::ComputeCityOrderCapabilityAggregateScore",
       "type": 1
     },
@@ -13557,7 +13555,7 @@
     },
     {
       "address": "0x4ea0e0",
-      "matching": 0.6808510638297872,
+      "matching": 0.6382978723404256,
       "name": "TAutoGreatPower::OrphanLeaf_NoCall_Ins02_004d7f00",
       "type": 1
     },
@@ -16227,7 +16225,7 @@
     },
     {
       "address": "0x50bea0",
-      "matching": 0.20263516583371194,
+      "matching": 0.20626987732848706,
       "name": "TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets",
       "type": 1
     },
@@ -17235,7 +17233,7 @@
     },
     {
       "address": "0x51a990",
-      "matching": 0.24,
+      "matching": 0.2413793103448276,
       "name": "TMapDialog::OrphanRetStub_005960c0",
       "type": 1
     },
@@ -18123,7 +18121,7 @@
     },
     {
       "address": "0x52d1f0",
-      "matching": 0.2784090909090909,
+      "matching": 0.2621082621082621,
       "name": "ReindexContiguousCityRegionIds",
       "type": 1
     },
@@ -18141,7 +18139,7 @@
     },
     {
       "address": "0x52d750",
-      "matching": 0.22063492063492063,
+      "matching": 0.21904761904761905,
       "name": "MergeSmallCityRegionsAndCompactIds",
       "type": 1
     },
@@ -27252,7 +27250,7 @@
     },
     {
       "address": "0x58a020",
-      "matching": 0.47715736040609136,
+      "matching": 0.45685279187817257,
       "name": "TRailAmtBar::NoOpUiLifecycleHook",
       "type": 1
     },
@@ -33768,7 +33766,7 @@
     },
     {
       "address": "0x5e3d40",
-      "matching": 0.6486486486486487,
+      "matching": 0.6576576576576577,
       "name": "EnqueueOrSendTurnEventPacketToNation",
       "type": 1
     },
@@ -36366,8 +36364,8 @@
     },
     {
       "address": "0x601b74",
-      "matching": 0.5454545454545454,
-      "name": "CPlex::Create(int *, int, int)",
+      "matching": 1.0,
+      "name": "CPlex::Create",
       "type": 1
     },
     {
@@ -36516,7 +36514,7 @@
     },
     {
       "address": "0x603481",
-      "matching": 0.9666666666666667,
+      "matching": 1.0,
       "name": "CMapPtrToPtr::NewAssoc",
       "type": 1
     },

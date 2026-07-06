@@ -4771,7 +4771,7 @@ address|target_cpp|ownership|note
 6003de|src/game/library_msvc500_fid.cpp|library|marker_sync
 60042f|src/game/library_msvc500_fid.cpp|library|marker_sync
 60048b|src/game/library_msvc500_fid.cpp|library|marker_sync
-601b74|src/game/CPlex.cpp|manual|marker_sync
+601b74|src/game/CPlex.cpp|library|marker_sync
 601b94|src/game/CPlex.cpp|library|marker_sync
 601baa|src/game/CPtrArray.cpp|library|marker_sync
 601bc1|src/game/library_msvc500_fid.cpp|library|marker_sync

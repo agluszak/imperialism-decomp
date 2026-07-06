@@ -46,7 +46,7 @@ public:
   };
   union {
     int field14;
-    int recordBlockHead;
+    CPlex* recordBlockHead;
   };
   union {
     int resourceOwner;
