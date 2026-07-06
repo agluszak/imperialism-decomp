@@ -898,6 +898,9 @@ const int g_hexColOffsetOddRow_00697480[6] = {1, 1, 1, 0, -1, 0};
 // GLOBAL: IMPERIALISM 0x00696e40
 const unsigned short g_hexDirectionBitMasks_00696e40[6] = {1, 2, 4, 8, 16, 32};
 
+// GLOBAL: IMPERIALISM 0x00696ea8
+const unsigned short g_hexDirectionBitMasksAlt_00696ea8[7] = {1, 2, 4, 8, 16, 32, 0};
+
 // Map-generation PRNG state + region-seed grid dimensions (plain mutable globals at
 // 0x006a38e8/ec/f0, runtime-initialized to 0).
 unsigned int g_mapGenLcgState_006a38e8 = 0;

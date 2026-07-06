@@ -180,8 +180,12 @@ public:
   virtual int IsAltKeyDown();                                          // slot 0x18 0x5122d0
   virtual void ForwardComputeRepresentativeTileIndexForTerrainTypeWithWrapBias(
       undefined4 param_1); // slot 0x19 0x511f10
-  virtual undefined SetHexAdjacencyDirectionFlagsForTilePair(short param_1,
-                                                             short param_2); // slot 0x1a 0x513f60
+  // OR's the hex-direction bit (g_hexDirectionBitMasksAlt_00696ea8) for the direction from
+  // sourceTile to destTile into sourceTile's adjacencyBits06, and the opposite direction's
+  // bit into destTile's adjacencyBits06. Real signature has 3 stack slots (RET 0xc); the
+  // third is never read.
+  virtual void SetHexAdjacencyDirectionFlagsForTilePair(short sourceTile, short destTile,
+                                                        int unusedParam3); // slot 0x1a 0x513f60
   // Walks terrainStateTable[tileIndex].firstCivilianOrder20 (a TCivUnit list threaded via
   // TUnit::nextOnTile) for a node whose orderType matches.
   virtual bool TileHasCivilianOrderOfType(short tileIndex, short orderType); // slot 0x1b 0x514310
@@ -199,8 +203,11 @@ public:
   // field_6 == 0 does it fall back to seeding per-tile from activeFlags1c bit 4 (an
   // otherwise-unused bit of that byte -- not otherwise cross-referenced in this codebase).
   virtual void SeedRecruitSearchVisitedStateFromSelectedCivilianOrder(); // slot 0x1e 0x514e80
-  virtual undefined WrapperFor_IsValidSecondaryNationHomeTileCandidate_At00514dc0(
-      short param_1); // slot 0x1f 0x514dc0
+  // Seeds recruitSearchVisited0e like the SeedRecruitSearchVisitedState* family: eligible
+  // only if the tile is owned by nationTag and its terrainType00 isn't 2/3/4, gated further
+  // by IsValidSecondaryNationHomeTileCandidate (0x513980, not yet ported).
+  virtual void WrapperFor_IsValidSecondaryNationHomeTileCandidate_At00514dc0(
+      short nationTag); // slot 0x1f 0x514dc0
   // Resets recruitSearchVisited0e to 0 across all tiles and clears field9 back to idle.
   virtual void ResetRecruitSearchVisitedState(); // slot 0x20 0x514ef0
   // Seeds recruitSearchVisited0e excluding terrainStateTable[pCivilianOrderEntry->field_6]'s
@@ -502,6 +509,11 @@ public:
   // first entry owned by nationId. Reattributed from TCivToolbar (Ghidra bucket heuristic;
   // `this` at the callsite is the global map state, not a TCivToolbar).
   TCivUnit* GetTileUnitEntryByOwner(short tileIndex, short nationId);
+
+  // 0x513980, 632 bytes, __thiscall, 1 arg (tileIndex), returns bool. Called by
+  // WrapperFor_IsValidSecondaryNationHomeTileCandidate_At00514dc0. TODO stub: large body not
+  // yet ported.
+  bool IsValidSecondaryNationHomeTileCandidate(short tileIndex);
 
   char CallMetricSlotC4(int regionIndex, int edgeIndex);
   short QueryIconStripXSlot110(int iconCode);

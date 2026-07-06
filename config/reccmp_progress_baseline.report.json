@@ -12291,7 +12291,7 @@
     },
     {
       "address": "0x4dd430",
-      "matching": 0.5714285714285714,
+      "matching": 0.5142857142857142,
       "name": "TGreatPower::ComputeRemainingDiplomacyAidBudget",
       "type": 1
     },
@@ -12729,15 +12729,13 @@
     },
     {
       "address": "0x4e05d0",
-      "effective": true,
-      "matching": 0.42857142857142855,
+      "matching": 1.0,
       "name": "TGreatPower::OrphanLeaf_NoCall_Ins02_004d7fc0_89",
       "type": 1
     },
     {
       "address": "0x4e0610",
-      "effective": true,
-      "matching": 0.42857142857142855,
+      "matching": 1.0,
       "name": "TGreatPower::ReturnFalseNationStateActionStub_8a",
       "type": 1
     },
@@ -12750,13 +12748,14 @@
     },
     {
       "address": "0x4e0690",
-      "matching": 1.0,
+      "effective": true,
+      "matching": 0.42857142857142855,
       "name": "TGreatPower::ReturnFalseNationStateCapabilityFlag90",
       "type": 1
     },
     {
       "address": "0x4e06d0",
-      "matching": 1.0,
+      "matching": 0.8095238095238095,
       "name": "TGreatPower::SumNationRuntimeFiveBucketValue44",
       "type": 1
     },
@@ -12786,7 +12785,7 @@
     },
     {
       "address": "0x4e09a0",
-      "matching": 0.5301204819277109,
+      "matching": 0.5060240963855421,
       "name": "TGreatPower::ComputeCityOrderCapabilityAggregateScore",
       "type": 1
     },
@@ -13549,7 +13548,7 @@
     },
     {
       "address": "0x4e9ff0",
-      "matching": 0.752,
+      "matching": 0.768,
       "name": "TAutoGreatPower::OrphanLeaf_NoCall_Ins02_004d7ee0",
       "type": 1
     },
@@ -16225,7 +16224,7 @@
     },
     {
       "address": "0x50bea0",
-      "matching": 0.19718309859154928,
+      "matching": 0.20536119945479328,
       "name": "TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets",
       "type": 1
     },
@@ -16711,7 +16710,7 @@
     },
     {
       "address": "0x513f60",
-      "matching": 0.0,
+      "matching": 0.9722222222222222,
       "name": "TMapMgr::SetHexAdjacencyDirectionFlagsForTilePair",
       "type": 1
     },
@@ -16801,7 +16800,7 @@
     },
     {
       "address": "0x514dc0",
-      "matching": 0.05128205128205128,
+      "matching": 0.64,
       "name": "TMapMgr::WrapperFor_IsValidSecondaryNationHomeTileCandidate_At00514dc0",
       "type": 1
     },
@@ -18067,7 +18066,7 @@
     },
     {
       "address": "0x52c0a0",
-      "matching": 0.9122807017543859,
+      "matching": 0.9391304347826087,
       "name": "SeapointStretch::GetOrAppendUnique",
       "type": 1
     },
@@ -18139,7 +18138,7 @@
     },
     {
       "address": "0x52d750",
-      "matching": 0.22063492063492063,
+      "matching": 0.21904761904761905,
       "name": "MergeSmallCityRegionsAndCompactIds",
       "type": 1
     },
@@ -20042,7 +20041,7 @@
     },
     {
       "address": "0x53d200",
-      "matching": 0.4108527131782946,
+      "matching": 0.41245136186770426,
       "name": "ComputeArmyMissionScoreDeltaWithScaledCandidateUnit",
       "type": 1
     },
@@ -27803,7 +27802,7 @@
     },
     {
       "address": "0x58f550",
-      "matching": 0.5138888888888888,
+      "matching": 0.4722222222222222,
       "name": "TCivDescription::ApplyRectSlot110",
       "type": 1
     },

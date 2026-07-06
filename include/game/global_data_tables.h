@@ -626,6 +626,11 @@ extern const int g_hexColOffsetOddRow_00697480[6];
 // byte-wise (OR'd into per-tile adjacency mask bytes) by the tile-adjacency update pass.
 extern const unsigned short g_hexDirectionBitMasks_00696e40[6];
 
+// Second copy of the per-hex-direction adjacency bit mask table (1,2,4,8,16,32,0), indexed
+// by direction 0..6 (index 6 is an unused trailing zero); read byte-wise into
+// TTerrainStateRecordView::adjacencyBits06 by SetHexAdjacencyDirectionFlagsForTilePair.
+extern const unsigned short g_hexDirectionBitMasksAlt_00696ea8[7];
+
 // Map-generation PRNG state (LCG: x = x*0x15a4e35 + 1) and the region-seed grid dimensions,
 // shared by the city-region seeding/template passes.
 extern unsigned int g_mapGenLcgState_006a38e8;

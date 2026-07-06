@@ -1029,10 +1029,6 @@ short TMapMgr::FindMaxResourceCapabilityValueForTile(short tileIndex, char categ
   return maxValue;
 }
 
-undefined TMapMgr::SetHexAdjacencyDirectionFlagsForTilePair(short param_1, short param_2) {
-  return 0;
-}
-
 // FUNCTION: IMPERIALISM 0x00513ed0
 byte TMapMgr::CheckTileProspectingDiscoveryCandidate(short nTileIndex) {
   byte fHasDiscoveryCandidate;
@@ -1068,6 +1064,18 @@ byte TMapMgr::CheckTileProspectingDiscoveryCandidate(short nTileIndex) {
 // original .rdata layout, not guaranteed to hold in a freshly linked recompile. Modeled here
 // as its own bounds-safe table instead of pointer-walking off an unrelated global.
 static const unsigned char kHexDirectionBitMask[6] = {1, 2, 4, 8, 16, 32};
+
+// FUNCTION: IMPERIALISM 0x00513f60
+void TMapMgr::SetHexAdjacencyDirectionFlagsForTilePair(short sourceTile, short destTile,
+                                                       int unusedParam3) {
+  (void)unusedParam3;
+  short direction = GetHexDirectionBetweenTiles(sourceTile, destTile);
+  terrainStateTable[sourceTile].adjacencyBits06 |=
+      static_cast<unsigned char>(g_hexDirectionBitMasksAlt_00696ea8[direction]);
+  short oppositeDirection = (direction + 3) % 6;
+  terrainStateTable[destTile].adjacencyBits06 |=
+      static_cast<unsigned char>(g_hexDirectionBitMasksAlt_00696ea8[oppositeDirection]);
+}
 
 // FUNCTION: IMPERIALISM 0x00513ff0
 void TMapMgr::ApplyRailSectionEndpointDirectionFlags(short sourceTile, short destTile,
@@ -1149,6 +1157,12 @@ TCivUnit* TMapMgr::GetTileUnitEntryByOwner(short tileIndex, short nationId) {
   return entry;
 }
 
+bool TMapMgr::IsValidSecondaryNationHomeTileCandidate(short tileIndex) {
+  // TODO: port body @ 0x513980 (632 bytes; not yet ported).
+  (void)tileIndex;
+  return false;
+}
+
 // FUNCTION: IMPERIALISM 0x00514290
 short TMapMgr::ResolveTileOwnerNationCodeNormalized(int tileIndex) {
   short ownerCode = cityScoreTable[tileIndex].ownerNationCode00;
@@ -1211,10 +1225,6 @@ void TMapMgr::SetProvinceCapitalTileFlagBit08(short nProvinceId) {
 
 void TMapMgr::SetTileTransportFlagsTo0x37AndRefreshNeighbors(short nTileIndex) {}
 
-undefined TMapMgr::WrapperFor_IsValidSecondaryNationHomeTileCandidate_At00514dc0(short param_1) {
-  return 0;
-}
-
 // FUNCTION: IMPERIALISM 0x00514c80
 short TMapMgr::FindReachableRecruitSpawnTileWithVisitedReset(short startTileIndex,
                                                              char allowActiveFlag2) {
@@ -1224,6 +1234,20 @@ short TMapMgr::FindReachableRecruitSpawnTileWithVisitedReset(short startTileInde
   }
   return FindReachableRecruitSpawnTileRecursiveImpl(this, startTileIndex, ownerNationTag,
                                                     allowActiveFlag2);
+}
+
+// FUNCTION: IMPERIALISM 0x00514dc0
+void TMapMgr::WrapperFor_IsValidSecondaryNationHomeTileCandidate_At00514dc0(short nationTag) {
+  field9 = 1;
+  for (int tileIndex = 0; tileIndex < 0x1950; ++tileIndex) {
+    TTerrainStateRecordView* tile = &terrainStateTable[tileIndex];
+    if (tile->ownerNationTag04 == nationTag && tile->terrainType00 != 2 &&
+        tile->terrainType00 != 3 && tile->terrainType00 != 4) {
+      tile->recruitSearchVisited0e = IsValidSecondaryNationHomeTileCandidate(tileIndex) ? 0 : 1;
+    } else {
+      tile->recruitSearchVisited0e = 1;
+    }
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x00514e40
