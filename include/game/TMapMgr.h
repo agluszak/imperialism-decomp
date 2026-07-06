@@ -190,8 +190,17 @@ public:
   virtual undefined WrapperFor_IsValidSecondaryNationHomeTileCandidate_At00514dc0(
       short param_1); // slot 0x1f 0x514dc0
   // Resets recruitSearchVisited0e to 0 across all tiles and clears field9 back to idle.
-  virtual void ResetRecruitSearchVisitedState();                   // slot 0x20 0x514ef0
-  virtual undefined OrphanCallChain_C5_I115_00514f20(int param_1); // slot 0x21 0x514f20
+  virtual void ResetRecruitSearchVisitedState(); // slot 0x20 0x514ef0
+  // Seeds recruitSearchVisited0e excluding terrainStateTable[pCivilianOrderEntry->field_6]'s
+  // owner (like SeedRecruitSearchVisitedStateExcludingNation, inlined here rather than
+  // called). If orderType is 1 or 7, field_1C == 0, and the reference tile's
+  // activeFlags1c/gateFlag or bit-2 gate passes, and (when the reference tile is owned by
+  // pCivilianOrderEntry->field_18) its FindTownMarkerForTileByOwnerNation entry is
+  // enabled: clears recruitSearchVisited0e for every not-at-war minor nation's
+  // TMinor::ownerNationSlot tile (via TDiplomacyMgr::IsNationPairAtWar) and every enabled
+  // TTown on the owning TGreatPower's townMarkerList.
+  virtual void SeedRecruitSearchVisitedStateAndClearAlliedTerritory(
+      class TCivUnit* pCivilianOrderEntry); // slot 0x21 0x514f20
   virtual undefined OrphanCallChain_C1_I159_005150e0(int* param_1,
                                                      short param_2); // slot 0x22 0x5150e0
   virtual undefined

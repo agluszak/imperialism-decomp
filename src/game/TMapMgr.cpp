@@ -14,6 +14,7 @@
 #include "game/TTechMgr.h"
 #include "game/TGreatPower.h"
 #include "game/TTown.h"
+#include "game/TDiplomacyMgr.h"
 
 void EnsurePortZoneForTile(short nTileIndex);
 void RemovePortZoneByTile(short nTileIndex);
@@ -1017,8 +1018,56 @@ void TMapMgr::ResetRecruitSearchVisitedState() {
   this->field9 = 0;
 }
 
-undefined TMapMgr::OrphanCallChain_C5_I115_00514f20(int param_1) {
-  return 0;
+// FUNCTION: IMPERIALISM 0x00514f20
+void TMapMgr::SeedRecruitSearchVisitedStateAndClearAlliedTerritory(TCivUnit* pCivilianOrderEntry) {
+  short refTileIndex = pCivilianOrderEntry->field_6;
+  signed char refOwner = terrainStateTable[refTileIndex].ownerNationTag04;
+  this->field9 = 1;
+  for (int tileIndex = 0; tileIndex < 0x1950; ++tileIndex) {
+    terrainStateTable[tileIndex].recruitSearchVisited0e =
+        (terrainStateTable[tileIndex].ownerNationTag04 != refOwner) ? 1 : 0;
+  }
+
+  if (pCivilianOrderEntry->orderType != 1 && pCivilianOrderEntry->orderType != 7) {
+    return;
+  }
+  if (pCivilianOrderEntry->field_1C != 0) {
+    return;
+  }
+
+  TTerrainStateRecordView* refTile = &terrainStateTable[refTileIndex];
+  unsigned char flags = refTile->activeFlags1c;
+  bool gateFlagPasses = (flags & 3) != 0 && refTile->gateFlag != 0;
+  if (!gateFlagPasses && (flags & 4) == 0) {
+    return;
+  }
+
+  if (refOwner == pCivilianOrderEntry->field_18) {
+    TTown* town = FindTownMarkerForTileByOwnerNation(refTileIndex);
+    if (town->enabledFlag4d == 0) {
+      return;
+    }
+  }
+
+  for (int minorSlot = 7; minorSlot < 23; ++minorSlot) {
+    TMinor* minorObj = g_apMinorNationCapabilityObjects[minorSlot - 7];
+    if (minorObj == nullptr) {
+      continue;
+    }
+    if (g_pDiplomacyTurnStateManager->IsNationPairAtWar(minorSlot, pCivilianOrderEntry->field_18)) {
+      continue;
+    }
+    terrainStateTable[minorObj->ownerNationSlot].recruitSearchVisited0e = 0;
+  }
+
+  TGreatPower* owner = g_apNationStates[pCivilianOrderEntry->field_18];
+  TSortedList* townMarkerList = owner->townMarkerList;
+  for (int ordinal = 1; ordinal <= townMarkerList->GetCountSlot48(); ++ordinal) {
+    TTown* town = static_cast<TTown*>(townMarkerList->GetEntryByOrdinalSlot4C(ordinal));
+    if (town->enabledFlag4d != 0) {
+      terrainStateTable[town->regionId14].recruitSearchVisited0e = 0;
+    }
+  }
 }
 
 undefined TMapMgr::OrphanCallChain_C1_I159_005150e0(int* param_1, short param_2) {
