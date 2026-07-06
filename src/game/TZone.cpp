@@ -1,6 +1,7 @@
 #include "game/TZone.h"
 #include "game/global_data_tables.h"
 
+#include <cstdlib>
 #include <new>
 
 #include "game/mapped_flavor_text.h"
@@ -25,6 +26,12 @@ void DeleteUnlinkedZone(TZone* zone) {
 void* ReallocateStretchEntries(TZone** entries, int sizeBytes) {
   return reinterpret_cast<void*(__cdecl*)(void*, int)>(ReallocateHeapBlockWithAllocatorTracking)(
       entries, sizeBytes);
+}
+
+// 0x005e7f50 resolves to CRT `_free` (per symbols.csv), not a game-specific tracking
+// helper -- call the real library function directly (LIBRARY: IMPERIALISM 0x005e7f50).
+void FreeStretchEntries(void* entries) {
+  free(entries);
 }
 
 template <typename TStretch> void AppendZonePointerToStretch(TStretch* list, TZone* entry) {
@@ -192,10 +199,80 @@ void TZone::Free() {
 }
 
 // FUNCTION: IMPERIALISM 0x0055ed20
-void TZone::ReadFrom(TStream* stream) {}
+void TZone::ReadFrom(TStream* stream) {
+  TObject::ReadFrom(stream);
+  stream->streamSlot70(&displayName, 0x20);
+  stream->ReadBytes(&field04, 2);
+  stream->ReadBytes(&field0c, 4);
+  stream->ReadBytes(&field12, 2);
+  stream->ReadBytes(&field20, 2);
+  if (g_nSaveFormatVersion < 0x12) {
+    field14 = static_cast<short>(g_nMapActionContextCount);
+    ++g_nMapActionContextCount;
+  } else {
+    stream->ReadBytes(&field14, 2);
+  }
+  field10 = 0;
+  field44 = 0;
+
+  if (primaryNeighbors.Data() != 0) {
+    void* oldData = primaryNeighbors.Data();
+    primaryNeighbors.Data() = 0;
+    primaryNeighbors.Capacity() = 0;
+    primaryNeighbors.Count() = 0;
+    FreeStretchEntries(oldData);
+  }
+  if (secondaryNeighbors.Data() != 0) {
+    void* oldData = secondaryNeighbors.Data();
+    secondaryNeighbors.Data() = 0;
+    secondaryNeighbors.Capacity() = 0;
+    secondaryNeighbors.Count() = 0;
+    FreeStretchEntries(oldData);
+  }
+
+  // Pre-0xd save format stored the neighbor arrays directly; current saves rebuild them
+  // (AppendUniquePrimaryNeighbor et al.) after load instead.
+  if (g_nSaveFormatVersion < 0xd) {
+    short primaryCount;
+    stream->ReadBytes(&primaryCount, 2);
+    for (short i = 0; i < primaryCount; ++i) {
+      TZone* entry;
+      stream->ReadBytes(&entry, 4);
+      if (i >= primaryNeighbors.Capacity()) {
+        primaryNeighbors.EnsureCapacityAtLeast(i + 1);
+      }
+      if (primaryNeighbors.Count() <= i) {
+        primaryNeighbors.Count() = i + 1;
+      }
+      primaryNeighbors.Data()[i] = entry;
+    }
+
+    short secondaryCount;
+    stream->ReadBytes(&secondaryCount, 2);
+    for (short j = 0; j < secondaryCount; ++j) {
+      TZone* entry;
+      stream->ReadBytes(&entry, 4);
+      if (j >= secondaryNeighbors.Capacity()) {
+        secondaryNeighbors.ResizePointerArrayCapacityByRequestedCount(j + 1);
+      }
+      if (secondaryNeighbors.Count() <= j) {
+        secondaryNeighbors.Count() = j + 1;
+      }
+      secondaryNeighbors.Data()[j] = entry;
+    }
+  }
+}
 
 // FUNCTION: IMPERIALISM 0x0055eff0
-void TZone::WriteTo(TStream* stream) {}
+void TZone::WriteTo(TStream* stream) {
+  TObject::WriteTo(stream);
+  stream->streamSlotAc(&displayName);
+  stream->WriteBytesSlot78(&field04, 2);
+  stream->WriteBytesSlot78(&field0c, 4);
+  stream->WriteBytesSlot78(&field12, 2);
+  stream->WriteBytesSlot78(&field20, 2);
+  stream->WriteBytesSlot78(&field14, 2);
+}
 
 // FUNCTION: IMPERIALISM 0x0055f070
 void TZone::AssignZoneDisplayNameToOutputRef(CString* outputRef) {
