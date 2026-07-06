@@ -930,3 +930,21 @@ void PopulatePortZoneAdjacencyToNearbyCityContexts(void) {
     tileByteOffset = tileByteOffset + 0x24;
   } while (static_cast<short>(tileIndex) < 0x1950);
 }
+
+// FUNCTION: IMPERIALISM 0x00564570
+TZone* __stdcall FindMapActionContextContainingNodeByIndex(int cityRecordIndex) {
+  TGlobalMapCityScoreRecord* target = &g_pGlobalMapState->cityScoreTable[cityRecordIndex];
+  for (TZone* zone = g_pMapActionContextListHead; zone != 0; zone = zone->prev18) {
+    int count = zone->secondaryNeighbors.Count();
+    if (count != 0) {
+      TGlobalMapCityScoreRecord** entries =
+          reinterpret_cast<TGlobalMapCityScoreRecord**>(zone->secondaryNeighbors.Data());
+      for (int i = 0; i < count; ++i) {
+        if (entries[i] == target) {
+          return zone;
+        }
+      }
+    }
+  }
+  return 0;
+}

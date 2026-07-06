@@ -864,9 +864,27 @@ undefined TMapMgr::TMapMaker_CheckTerrainTypePairReachabilityByRegionClassMask(s
   return 0;
 }
 
-undefined TMapMgr::IsNodeTypeLinkUnavailableAndNoActiveMapActionContext(int param_1,
-                                                                        short param_2) {
-  return 0;
+// FUNCTION: IMPERIALISM 0x005121d0
+bool TMapMgr::IsNodeTypeLinkUnavailableAndNoActiveMapActionContext(int cityRecordIndex,
+                                                                   short nationTag) {
+  bool linkFound = false;
+  for (int i = 0; i < cityScoreTable[cityRecordIndex].adjacentRegionCount08; ++i) {
+    short adjacentRegion = cityScoreTable[cityRecordIndex].adjacentRegionIds0A[i];
+    if (cityScoreTable[adjacentRegion].ownerNationCode00 == nationTag) {
+      linkFound = true;
+      break;
+    }
+  }
+  if (linkFound) {
+    return false;
+  }
+
+  int secondDegreeLinks[12];
+  if (CollectSecondDegreeLinksMatchingNodeType(cityRecordIndex, nationTag, secondDegreeLinks) !=
+      0) {
+    return false;
+  }
+  return FindMapActionContextContainingNodeByIndex(cityRecordIndex) == nullptr;
 }
 
 // FUNCTION: IMPERIALISM 0x005122b0
@@ -2548,6 +2566,32 @@ char TMapMgr::AreNationsBorderLinked(int nationA, int nationB) {
     ++ordinal;
   } while (ordinal <= regionList->GetCount());
   return 0;
+}
+
+// FUNCTION: IMPERIALISM 0x00517f80
+int TMapMgr::CollectSecondDegreeLinksMatchingNodeType(int cityRecordIndex, int nationTag,
+                                                      int* nodeBuffer) {
+  int resultCount = 0;
+  if (cityScoreTable[cityRecordIndex].adjacentRegionCount08 <= 0) {
+    return resultCount;
+  }
+  for (int outer = 0; outer < cityScoreTable[cityRecordIndex].adjacentRegionCount08; ++outer) {
+    short adjacentRegion = cityScoreTable[cityRecordIndex].adjacentRegionIds0A[outer];
+    bool matched = false;
+    if (cityScoreTable[adjacentRegion].adjacentRegionCount08 > 0) {
+      for (int inner = 0; inner < cityScoreTable[adjacentRegion].adjacentRegionCount08; ++inner) {
+        if (matched) {
+          break;
+        }
+        if (cityScoreTable[cityRecordIndex].ownerNationCode00 == nationTag) {
+          nodeBuffer[resultCount] = adjacentRegion;
+          ++resultCount;
+          matched = true;
+        }
+      }
+    }
+  }
+  return resultCount;
 }
 
 // FUNCTION: IMPERIALISM 0x00518470

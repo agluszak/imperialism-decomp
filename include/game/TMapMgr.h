@@ -214,11 +214,17 @@ public:
   virtual undefined
   TMapMaker_CheckTerrainTypePairReachabilityByRegionClassMask(short param_1,
                                                               short param_2); // slot 0x15 0x511f30
-  virtual undefined
-  IsNodeTypeLinkUnavailableAndNoActiveMapActionContext(int param_1,
-                                                       short param_2); // slot 0x16 0x5121d0
-  virtual int IsShiftKeyDown();                                        // slot 0x17 0x5122b0
-  virtual int IsAltKeyDown();                                          // slot 0x18 0x5122d0
+  // False if any of cityRecordIndex's adjacent regions already has ownerNationCode00 ==
+  // nationTag; otherwise true only if there's also no second-degree link
+  // (CollectSecondDegreeLinksMatchingNodeType returns 0 into a scratch buffer) AND no
+  // TZone map-action-context already tracks this region
+  // (FindMapActionContextContainingNodeByIndex, a free function on TZone's
+  // secondaryNeighbors list).
+  virtual bool
+  IsNodeTypeLinkUnavailableAndNoActiveMapActionContext(int cityRecordIndex,
+                                                       short nationTag); // slot 0x16 0x5121d0
+  virtual int IsShiftKeyDown();                                          // slot 0x17 0x5122b0
+  virtual int IsAltKeyDown();                                            // slot 0x18 0x5122d0
   virtual void ForwardComputeRepresentativeTileIndexForTerrainTypeWithWrapBias(
       undefined4 param_1); // slot 0x19 0x511f10
   // OR's the hex-direction bit (g_hexDirectionBitMasksAlt_00696ea8) for the direction from
@@ -582,6 +588,15 @@ public:
   // 0x518b40. Developer purchase cost of a tile's two edge resources (weights the trade
   // manager's proposal-weight metric). Reattributed from TCivToolbar (heuristic 46).
   int CalculateDeveloperTilePurchaseCost(short nTileIndex);
+
+  // 0x517f80. For each of cityRecordIndex's adjacent regions that itself has at least one
+  // adjacent region, appends it to nodeBuffer (capacity assumed by caller) once if
+  // cityScoreTable[cityRecordIndex].ownerNationCode00 == nationTag -- despite iterating a
+  // "second degree" (neighbor-of-neighbor) loop, the comparison is against the *origin*
+  // region's own owner on every inner iteration, not the neighbor's or second-degree
+  // neighbor's; reproduced as-is (this is the real disassembly, not a simplification).
+  // Returns the number of entries appended.
+  int CollectSecondDegreeLinksMatchingNodeType(int cityRecordIndex, int nationTag, int* nodeBuffer);
 
   // 0x5108d0. Map-tile sprite-variant resolver: reads the tile's terrain type
   // (terrainStateTable byte 0) and feature/subtype code (byte 2, the field the layout

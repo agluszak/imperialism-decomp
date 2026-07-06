@@ -2259,6 +2259,7 @@ address|target_cpp|ownership|note
 5178c0|src/game/TMapMgr.cpp|manual|marker_sync
 5178f0|src/game/TMapMgr.cpp|manual|marker_sync
 517c30|src/game/TMapMgr.cpp|manual|marker_sync
+517f80|src/game/TMapMgr.cpp|manual|marker_sync
 518470|src/game/TMapMgr.cpp|manual|marker_sync
 5184e0|src/game/TMapMgr.cpp|manual|marker_sync
 518960|src/game/TMapMgr.cpp|manual|marker_sync
@@ -2992,6 +2993,7 @@ address|target_cpp|ownership|note
 563da0|src/game/TZone.cpp|manual|marker_sync
 564240|src/game/TMapMgr.cpp|manual|marker_sync
 564530|src/game/TOcean.cpp|manual|marker_sync
+564570|src/game/TZone.cpp|manual|marker_sync
 564600|src/game/TOcean.cpp|manual|marker_sync
 564860|src/game/TMilitaryPageView.cpp|manual|marker_sync
 564900|src/game/TMilitaryPageView.cpp|manual|marker_sync

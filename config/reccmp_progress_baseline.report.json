@@ -12291,7 +12291,7 @@
     },
     {
       "address": "0x4dd430",
-      "matching": 0.5714285714285714,
+      "matching": 0.5142857142857142,
       "name": "TGreatPower::ComputeRemainingDiplomacyAidBudget",
       "type": 1
     },
@@ -12730,28 +12730,26 @@
     },
     {
       "address": "0x4e05d0",
-      "effective": true,
-      "matching": 0.42857142857142855,
+      "matching": 1.0,
       "name": "TGreatPower::OrphanLeaf_NoCall_Ins02_004d7fc0_89",
       "type": 1
     },
     {
       "address": "0x4e0610",
-      "effective": true,
-      "matching": 0.42857142857142855,
+      "matching": 1.0,
       "name": "TGreatPower::ReturnFalseNationStateActionStub_8a",
       "type": 1
     },
     {
       "address": "0x4e0650",
-      "effective": true,
-      "matching": 0.42857142857142855,
+      "matching": 1.0,
       "name": "TGreatPower::OrphanRetStub_004d7fe0_8b",
       "type": 1
     },
     {
       "address": "0x4e0690",
-      "matching": 1.0,
+      "effective": true,
+      "matching": 0.42857142857142855,
       "name": "TGreatPower::ReturnFalseNationStateCapabilityFlag90",
       "type": 1
     },
@@ -12787,7 +12785,7 @@
     },
     {
       "address": "0x4e09a0",
-      "matching": 0.5301204819277109,
+      "matching": 0.5060240963855421,
       "name": "TGreatPower::ComputeCityOrderCapabilityAggregateScore",
       "type": 1
     },
@@ -13063,7 +13061,7 @@
     },
     {
       "address": "0x4e4630",
-      "matching": 0.6666666666666666,
+      "matching": 0.9333333333333333,
       "name": "TMinor::OrphanLeaf_NoCall_Ins02_004d7ee0",
       "type": 1
     },
@@ -16226,7 +16224,7 @@
     },
     {
       "address": "0x50bea0",
-      "matching": 0.2044525215810995,
+      "matching": 0.19809177646524306,
       "name": "TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets",
       "type": 1
     },
@@ -16544,7 +16542,7 @@
     },
     {
       "address": "0x5121d0",
-      "matching": 0.06349206349206349,
+      "matching": 0.31343283582089554,
       "name": "TMapMgr::IsNodeTypeLinkUnavailableAndNoActiveMapActionContext",
       "type": 1
     },
@@ -17072,7 +17070,7 @@
     },
     {
       "address": "0x517f80",
-      "matching": 0.02631578947368421,
+      "matching": 0.21794871794871795,
       "name": "CollectSecondDegreeLinksMatchingNodeType",
       "type": 1
     },
@@ -18068,7 +18066,7 @@
     },
     {
       "address": "0x52c0a0",
-      "matching": 0.9391304347826087,
+      "matching": 0.9122807017543859,
       "name": "SeapointStretch::GetOrAppendUnique",
       "type": 1
     },
@@ -18140,7 +18138,7 @@
     },
     {
       "address": "0x52d750",
-      "matching": 0.22063492063492063,
+      "matching": 0.21904761904761905,
       "name": "MergeSmallCityRegionsAndCompactIds",
       "type": 1
     },
@@ -20031,7 +20029,7 @@
     },
     {
       "address": "0x53ceb0",
-      "matching": 0.441025641025641,
+      "matching": 0.44329896907216493,
       "name": "ComputeArmyMissionCompositionAlignmentScore",
       "type": 1
     },
@@ -23319,7 +23317,7 @@
     },
     {
       "address": "0x564570",
-      "matching": 0.045454545454545456,
+      "matching": 0.48,
       "name": "FindMapActionContextContainingNodeByIndex",
       "type": 1
     },

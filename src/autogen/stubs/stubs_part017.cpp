@@ -771,14 +771,6 @@ undefined4 HandleNavyOrderNodeRemovalAndSelectionRefresh(void)
   return 0;
 }
 
-// ghidra_name FindMapActionContextContainingNodeByIndex
-// ghidra_proto undefined FindMapActionContextContainingNodeByIndex()
-// FUNCTION: IMPERIALISM 0x00564570
-undefined4 FindMapActionContextContainingNodeByIndex(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_ftol_At005647d0
 // ghidra_proto undefined WrapperFor_ftol_At005647d0()
 // FUNCTION: IMPERIALISM 0x005647d0

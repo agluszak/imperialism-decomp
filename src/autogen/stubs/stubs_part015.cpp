@@ -243,14 +243,6 @@ undefined4 HasDirectOrFallbackLinkedNodeType(void)
   return 0;
 }
 
-// ghidra_name CollectSecondDegreeLinksMatchingNodeType
-// ghidra_proto undefined CollectSecondDegreeLinksMatchingNodeType()
-// FUNCTION: IMPERIALISM 0x00517f80
-undefined4 CollectSecondDegreeLinksMatchingNodeType(void)
-{
-  return 0;
-}
-
 // ghidra_name CollectSecondDegreeLinksWithMinorNationFallback
 // ghidra_proto undefined CollectSecondDegreeLinksWithMinorNationFallback()
 // FUNCTION: IMPERIALISM 0x00518090
