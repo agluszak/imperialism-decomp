@@ -1,49 +1,19 @@
 #pragma once
 
-#include "game/TControl.h"
+#include "game/TInfoBarText.h"
 
-// Provisional interface for the 'crus' cursor-info control (g_pCursorControlPanel,
-// resolved via ResolveControlByTag(kControlTagCurs)). Concrete-class recovery in
-// progress (bd imperialism-decomp-hpd.8):
-//   * The UI factory registers 'crus' as a TInfoBarText (see
-//     turn_event_dialog_factory.cpp:671/1139 + the comment at :701 "a 'crus'
-//     TInfoBarText"). TInfoBarText is a real recovered class: VTABLE 0x0063eb00,
-//     ASSERT_SIZE 0xb4 (RTTI oracle), base TDeluxeText.
-//   * UpdateCursorState() below sits at slot 0x80 / byte 0x200, which on TInfoBarText
-//     is SetTextAndLayoutRect(CString, RECT*) (0x5b66b0, RET 0x8 = two args).
-//   * BLOCKER: the only dispatch of byte 0x200 on this control
-//     (TView::HandleCursorHoverFallback 0x0048c250) pushes NO arguments — verified
-//     matching in both original and recomp — so the crus control's byte-0x200 method
-//     is effectively a no-arg call. That is inconsistent with TInfoBarText's 2-arg
-//     SetTextAndLayoutRect, so the crus control is probably a TInfoBarText *subclass*
-//     that overrides byte 0x200 with a no-arg refresh, or the factory registers a
-//     TInfoBarText subtype not yet in the RTTI oracle. Next step: trace the concrete
-//     ctor/vtable the 'crus' RegisterUiResourceEntry path installs to confirm the
-//     subtype before folding this placeholder into the real class.
-class TCursorControlPanel : public TControl {
-public:
-  // Slots 113-127 (bytes 0x1C4..0x1FC) — these correspond to TInfoBarText's own
-  // inherited vtable slots (the real 'crus' object is a plain TInfoBarText); kept as
-  // placeholders only to land SetTextAndLayoutRect at the correct byte 0x200 without
-  // reparenting this TControl-typed global (autogen references it as TControl*).
-  virtual void dummy_113() = 0;
-  virtual void dummy_114() = 0;
-  virtual void dummy_115() = 0;
-  virtual void dummy_116() = 0;
-  virtual void dummy_117() = 0;
-  virtual void dummy_118() = 0;
-  virtual void dummy_119() = 0;
-  virtual void dummy_120() = 0;
-  virtual void dummy_121() = 0;
-  virtual void dummy_122() = 0;
-  virtual void dummy_123() = 0;
-  virtual void dummy_124() = 0;
-  virtual void dummy_125() = 0;
-  virtual void dummy_126() = 0;
-  virtual void dummy_127() = 0;
-
-  // Slot 0x80 / byte 0x200 — the real TInfoBarText method (0x5b66b0): set the info-bar
-  // text and its layout rect. HandleCursorHoverFallback pushes the hovered view's
-  // sharedStringRef + computed rect through here to refresh the cursor tooltip panel.
-  virtual void SetTextAndLayoutRect(CString text, RECT* layoutRect) = 0;
-};
+// The 'crus' cursor-info control (g_pCursorControlPanel, resolved via
+// ResolveControlByTag(kControlTagCurs)). The UI factory registers 'crus' as a
+// TInfoBarText (see turn_event_dialog_factory.cpp:671/1139 + the comment at :701 "a
+// 'crus' TInfoBarText"); TViewMgr::UiRuntimeSlotF8 (0x5db780) confirms this directly —
+// it calls InitializeMapHintTextStyleAndThemeFlags/ConstructTMapKeyBaseState_Impl/
+// SetTextThemeCodeAndMaybeRefresh on it and writes cursorThemeCode9c/fieldA0 at exactly
+// TInfoBarText's real offsets, so this is a genuine (not merely layout-compatible)
+// TInfoBarText and real inheritance is used instead of a placeholder vtable.
+//
+// Residual open question (bd imperialism-decomp-hpd.8): TView::HandleCursorHoverFallback
+// (0x0048c250) dispatches byte 0x200 (SetTextAndLayoutRect) with NO arguments — verified
+// matching in both original and recomp — inconsistent with the 2-arg signature. Whether
+// that reflects a distinct override or a quirk of that one call site is still unresolved;
+// it doesn't affect the fields/methods used here.
+class TCursorControlPanel : public TInfoBarText {};

@@ -22,6 +22,13 @@ undefined4 ForwardMciCommand808ToDevice(void);
 undefined4 ForwardMciStatusCommand814IgnoreFailure(void);
 undefined4 ReleaseRuntimeSelectionPeersAndResetOwner_Impl(void);
 undefined4 RequestAudioPresetChangeWithDeferredApply(void);
+// TODO(bd imperialism-decomp-04l): real callsite is
+// g_pSfxPlaybackSystem->SelectAndScheduleRandomAudioCue() (0x593790, __thiscall). NOT blocked
+// on an unrecovered class — the field it reads (Ghidra's "g_pLocalizationTable->field_0x4e") is
+// actually g_pSimMgr->preferenceValues[3] at the SAME address (0x6a20f8); Ghidra's decompiler
+// just shows a stale/wrong data-symbol name there (see the bead). Kept as a free-function stub
+// pending a full port of its CD-audio track scheduling body (ApplyMciPlaybackRangeFromAudioManager
+// reads `this->vftable` as if it were a raw MCI device id, which needs verifying before porting).
 undefined4 SelectAndScheduleRandomAudioCue(void);
 
 void __fastcall DestructTSoundPlayerBaseState(TSoundPlayer* player);
@@ -118,6 +125,18 @@ char TSoundPlayer::CanHandleCityDialogActionFalse(int action) {
     }
   }
   return 0;
+}
+
+// FUNCTION: IMPERIALISM 0x00593730
+void TSoundPlayer::ResetDualAudioCuePools() {
+  runtimePeerAt6c->StopOrResetActivePlaybackSlot30();
+  runtimePeerAt70->StopOrResetActivePlaybackSlot30();
+}
+
+// FUNCTION: IMPERIALISM 0x00593760
+void TSoundPlayer::PushCueToDualAudioCuePools(int cueId) {
+  runtimePeerAt6c->SoundChannelNodeDummy00(cueId);
+  runtimePeerAt70->SoundChannelNodeDummy00(cueId);
 }
 
 // FUNCTION: IMPERIALISM 0x00593c10

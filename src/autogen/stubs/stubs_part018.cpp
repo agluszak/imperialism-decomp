@@ -723,22 +723,6 @@ undefined4 UpdateTurnAudioPlaybackStateAndScheduleCue(void)
   return 0;
 }
 
-// ghidra_name ResetDualAudioCuePools
-// ghidra_proto undefined ResetDualAudioCuePools()
-// FUNCTION: IMPERIALISM 0x00593730
-undefined4 ResetDualAudioCuePools(void)
-{
-  return 0;
-}
-
-// ghidra_name PushCueToDualAudioCuePools
-// ghidra_proto undefined PushCueToDualAudioCuePools()
-// FUNCTION: IMPERIALISM 0x00593760
-undefined4 PushCueToDualAudioCuePools(void)
-{
-  return 0;
-}
-
 // ghidra_name SelectAndScheduleRandomAudioCue
 // ghidra_proto undefined SelectAndScheduleRandomAudioCue()
 // FUNCTION: IMPERIALISM 0x00593790

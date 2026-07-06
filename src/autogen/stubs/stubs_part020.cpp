@@ -443,14 +443,6 @@ undefined4 NoOpUiRuntimeCallback_005db2f0(void)
   return 0;
 }
 
-// ghidra_name HandleTurnEventDialogFactorySlotF8
-// ghidra_proto undefined HandleTurnEventDialogFactorySlotF8()
-// FUNCTION: IMPERIALISM 0x005db780
-undefined4 HandleTurnEventDialogFactorySlotF8(void)
-{
-  return 0;
-}
-
 // ghidra_name BuildTurnStateStyledTextAndDispatchMainRoutine
 // ghidra_proto undefined BuildTurnStateStyledTextAndDispatchMainRoutine()
 // FUNCTION: IMPERIALISM 0x005dbe50

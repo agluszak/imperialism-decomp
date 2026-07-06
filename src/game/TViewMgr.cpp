@@ -1387,7 +1387,22 @@ void TViewMgr::HandleTurnEventDialogFactorySlotF4() {
   }
 }
 
-void TViewMgr::UiRuntimeSlotF8() {}
+namespace {
+// Shared by each main-menu button: resolve by tag, assert (msgbox + one-shot invalidation-flag
+// clear if missing, matching the sibling null-check blocks elsewhere in this file), fetch the
+// button's localized label from g_pSimMgr's string table, and apply it.
+void RefreshMainMenuButtonLabel(TView* mainView, unsigned int controlTag, short codeGroup,
+                                short stringIndex, int assertLine) {
+  TControl* control = static_cast<TControl*>(mainView->ResolveControlByTag(controlTag));
+  if (control == nullptr) {
+    MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgr_0069B6BC, assertLine);
+  }
+  CString label;
+  g_pSimMgr->GetString(codeGroup, stringIndex, &label);
+  control->EnableAndProcessFlag(label);
+}
+} // namespace
 
 // Screen-exit backbone: record the followup turn state; when leaving (state 0),
 // re-apply the audio volume preferences and post the followup turn-event code for the
@@ -1420,6 +1435,55 @@ void TViewMgr::HandleTurnStateExitAndPostFollowupEventCode(short followupState) 
   default:
     ReinitializeGameFlowAndPostTurnEventCode(0);
   }
+}
+
+// Main-menu screen setup (turn-event 0x5dc): resets the background-music cue pools, then
+// configures the 'curs' cursor-info panel's style/theme and finally sets every menu button's
+// localized label (the 'main' council-ticker slot is cleared instead of labeled).
+// FUNCTION: IMPERIALISM 0x005db780
+void TViewMgr::UiRuntimeSlotF8() {
+  TView* mainView = g_pDisplayMgr->activeDialog;
+
+  g_pSfxPlaybackSystem->ResetDualAudioCuePools();
+  g_pSfxPlaybackSystem->PushCueToDualAudioCuePools(6);
+  // TODO(bd imperialism-decomp-04l): ground truth also calls
+  // g_pSfxPlaybackSystem->SelectAndScheduleRandomAudioCue() here (0x5db8f1) — deferred, see the
+  // TODO on the free-function stub declaration in TSoundPlayer.cpp.
+
+  g_pCursorControlPanel = nullptr;
+  g_pCursorControlPanel =
+      static_cast<TCursorControlPanel*>(mainView->ResolveControlByTag(kControlTagCurs));
+  g_pCursorControlPanel->AssertValid();
+
+  g_pCursorControlPanel->InitializeMapHintTextStyleAndThemeFlags(0x2b6b, 0x2b6c);
+
+  int styleDescriptor[4];
+  styleDescriptor[0] = 0;
+  styleDescriptor[1] = 0;
+  styleDescriptor[2] = 0;
+  styleDescriptor[3] = 0;
+  BuildUiTextStyleDescriptor(&styleDescriptor, 0, 0xe, 0x2b6c);
+  g_pCursorControlPanel->ConstructTMapKeyBaseState_Impl(styleDescriptor, 1);
+  g_pCursorControlPanel->SetTextThemeCodeAndMaybeRefresh(1, 0);
+
+  int mappedStyleFlags = 0;
+  MapUiThemeCodeToStyleFlags(0x2b6b, &mappedStyleFlags);
+  g_pCursorControlPanel->cursorThemeCode9c = mappedStyleFlags;
+  g_pCursorControlPanel->fieldA0 = 1;
+
+  // 'main' (council ticker) is not null-checked in the original, unlike the buttons below.
+  TControl* mainControl = static_cast<TControl*>(mainView->ResolveControlByTag(kControlTagMain));
+  mainControl->AssertValid();
+  CString emptyString(g_szEmptyString);
+  mainControl->EnableAndProcessFlag(emptyString);
+
+  RefreshMainMenuButtonLabel(mainView, kControlTagRand, 0x2737, 0, 0xdf0);
+  RefreshMainMenuButtonLabel(mainView, kControlTagLoad, 0x2737, 1, 0xdf9);
+  RefreshMainMenuButtonLabel(mainView, kControlTagMult, 0x2737, 2, 0xdfe);
+  RefreshMainMenuButtonLabel(mainView, kControlTagHigh, 0x2737, 3, 0xe03);
+  RefreshMainMenuButtonLabel(mainView, kControlTagScen, 0x2737, 4, 0xe08);
+  RefreshMainMenuButtonLabel(mainView, kControlTagQuit, 0x2737, 9, 0xe0d);
+  RefreshMainMenuButtonLabel(mainView, kControlTagPref, 0x2743, 8, 0xe12);
 }
 
 // FUNCTION: IMPERIALISM 0x005dbd10

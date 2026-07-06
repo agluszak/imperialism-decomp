@@ -3730,6 +3730,8 @@ address|target_cpp|ownership|note
 5933b0|src/game/TSoundPlayer.cpp|manual|marker_sync
 5933e0|src/game/TSoundPlayer.cpp|manual|marker_sync
 593400|src/game/TSoundPlayer.cpp|manual|marker_sync
+593730|src/game/TSoundPlayer.cpp|manual|marker_sync
+593760|src/game/TSoundPlayer.cpp|manual|marker_sync
 593c10|src/game/TSoundPlayer.cpp|manual|marker_sync
 593cb0|src/game/TSoundPlayer.cpp|manual|marker_sync
 593e80|src/game/TStatusPicture.cpp|manual|marker_sync
@@ -4335,6 +4337,7 @@ address|target_cpp|ownership|note
 5da360|src/game/TViewMgr.cpp|manual|marker_sync
 5db3b0|src/game/TViewMgr.cpp|manual|marker_sync
 5db620|src/game/TViewMgr.cpp|manual|marker_sync
+5db780|src/game/TViewMgr.cpp|manual|marker_sync
 5dbd10|src/game/TViewMgr.cpp|manual|marker_sync
 5dbd30|src/game/TViewMgr.cpp|manual|marker_sync
 5dbdd0|src/game/TViewMgr.cpp|manual|marker_sync

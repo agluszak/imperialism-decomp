@@ -276,9 +276,9 @@
       nation->IsEncodedNationSlotMinus200Equal(0);
       nation->DispatchMissionNodeCallbacksAndClearQueue();
     }
-    ResetDualAudioCuePools();
-    PushCueToDualAudioCuePools();
-    PushCueToDualAudioCuePools();
+    g_pSfxPlaybackSystem->ResetDualAudioCuePools();
+    g_pSfxPlaybackSystem->PushCueToDualAudioCuePools(2);
+    g_pSfxPlaybackSystem->PushCueToDualAudioCuePools(3);
     SelectAndScheduleRandomAudioCue();
     if (!IsNationTerrainEligible(activeNationSlot)) {
       PostMainWindowCommand100ForTurnFlow();

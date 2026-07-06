@@ -5,14 +5,14 @@ CMcWindow::classCMcWindow|0x64b5d0|WARN|8
 T2PictToggleButton::classT2PictToggleButton|0x662e78|WARN|8
 T2PictureButton::classT2PictureButton|0x65e568|WARN|8
 TAdmiral::classTAdmiral|0x65c330|WARN|8
-TAdorner::classTAdorner|0x64bd90|WARN|8
+TAdorner::classTAdorner|0x64bd90|WARN|9
 TAlwaysPictureButton::classTAlwaysPictureButton|0x65e550|WARN|8
-TAmbitApplication::classTAmbitApplication|0x64c0b8|WARN|7
-TAmbitFileBasedDocument::classTAmbitFileBasedDocument|0x64c0d0|WARN|7
+TAmbitApplication::classTAmbitApplication|0x64c0b8|WARN|8
+TAmbitFileBasedDocument::classTAmbitFileBasedDocument|0x64c0d0|WARN|8
 TAmtBar::classTAmtBar|0x662f80|WARN|8
 TAmtBarCluster::classTAmtBarCluster|0x662f50|WARN|9
 TAnimation::classTAnimation|0x64c1f0|WARN|8
-TAnimator::classTAnimator|0x64c298|WARN|7
+TAnimator::classTAnimator|0x64c298|WARN|8
 TApplication::classTApplication|0x648af8|WARN|8
 TArmoryView::classTArmoryView|0x651338|WARN|9
 TArmsForeignMinister::classTArmsForeignMinister|0x659b28|WARN|10
@@ -23,8 +23,8 @@ TArmyInfoView::classTArmyInfoView|0x663148|WARN|8
 TArmyMgr::classTArmyMgr|0x64c828|WARN|8
 TArmyPlacard::classTArmyPlacard|0x663088|WARN|8
 TArmyPlayer::classTArmyPlayer|0x669488|WARN|9
-TArmyStack::classTArmyStack|0x64c840|WARN|32
-TArmyStackList::classTArmyStackList|0x64c858|WARN|7
+TArmyStack::classTArmyStack|0x64c840|WARN|33
+TArmyStackList::classTArmyStackList|0x64c858|WARN|8
 TArmyTacUnit::classTArmyTacUnit|0x669e60|WARN|9
 TArmyToolbar::classTArmyToolbar|0x6630d0|WARN|8
 TArmyUnitLine::classTArmyUnitLine|0x64cb38|WARN|9
@@ -43,8 +43,8 @@ TBillForeignMinister::classTBillForeignMinister|0x659ac8|WARN|10
 TBismarckMinister::classTBismarckMinister|0x654868|WARN|10
 TBook::classTBook|0x65e170|WARN|9
 TBoycottButton::classTBoycottButton|0x662e60|WARN|8
-TBuildingConstructionView::classTBuildingConstructionView|0x651290|WARN|9
-TBuildingExpansionView::classTBuildingExpansionView|0x651320|WARN|9
+TBuildingConstructionView::classTBuildingConstructionView|0x651290|WARN|8
+TBuildingExpansionView::classTBuildingExpansionView|0x651320|WARN|8
 TBuildingView::classTBuildingView|0x651230|WARN|9
 TBullyMinister::classTBullyMinister|0x6548b0|WARN|10
 TButton::classTButton|0x649630|WARN|8
@@ -60,7 +60,7 @@ TCityTask::classTCityTask|0x66a8c8|WARN|10
 TCivAnimation2::classTCivAnimation2|0x64c220|WARN|10
 TCivAnimation::classTCivAnimation|0x64c208|WARN|10
 TCivDescription::classTCivDescription|0x663118|WARN|9
-TCivMgr::classTCivMgr|0x6531f8|WARN|9
+TCivMgr::classTCivMgr|0x6531f8|WARN|8
 TCivReport::classTCivReport|0x663130|WARN|9
 TCivToolbar::classTCivToolbar|0x663100|WARN|9
 TCivUnit::classTCivUnit|0x66ed58|WARN|8
@@ -93,7 +93,7 @@ TDealList::classTDealList|0x66d888|WARN|9
 TDealTabControl::classTDealTabControl|0x66dbd0|WARN|10
 TDefendProvinceMission::classTDefendProvinceMission|0x697a58|WARN|9
 TDefenderMinister::classTDefenderMinister|0x654898|WARN|10
-TDefenseMinister::classTDefenseMinister|0x654838|WARN|10
+TDefenseMinister::classTDefenseMinister|0x654838|WARN|9
 TDefenseMinisterView::classTDefenseMinisterView|0x654f00|WARN|10
 TDeluxeText::classTDeluxeText|0x66c450|WARN|10
 TDialogBehavior::classTDialogBehavior|0x648d10|WARN|9
@@ -114,7 +114,7 @@ TEngineerDialog::classTEngineerDialog|0x651350|WARN|9
 TEvenCityMinister::classTEvenCityMinister|0x650710|WARN|11
 TEvent::classTEvent|0x649570|WARN|9
 TEventHandler::classTEventHandler|0x649588|WARN|9
-TExpansionOrder::classTExpansionOrder|0x64f458|WARN|8
+TExpansionOrder::classTExpansionOrder|0x64f458|WARN|9
 TFileBasedDocument::classTFileBasedDocument|0x648a38|WARN|9
 TFileStream::classTFileStream|0x6490e0|WARN|9
 TFlagOptionsPicture::classTFlagOptionsPicture|0x65de10|WARN|9
@@ -180,7 +180,7 @@ TMapDialog::classTMapDialog|0x658998|WARN|9
 TMapEditCluster::classTMapEditCluster|0x66b238|WARN|9
 TMapEditView::classTMapEditView|0x6589f8|WARN|10
 TMapKey::classTMapKey|0x655038|WARN|10
-TMapMgr::classTMapMgr|0x658788|WARN|9
+TMapMgr::classTMapMgr|0x658788|WARN|8
 TMapPreviewView::classTMapPreviewView|0x6619f8|WARN|10
 TMapUberPicture::classTMapUberPicture|0x668c40|WARN|9
 TMapUberUberPicture::classTMapUberUberPicture|0x668c28|WARN|9
@@ -239,7 +239,7 @@ TOcean::classTOcean|0x65c630|WARN|10
 TOceanDialog::classTOceanDialog|0x65c898|WARN|10
 TOffLimitsPicture::classTOffLimitsPicture|0x660670|WARN|9
 TOfferDeskPicture::classTOfferDeskPicture|0x66dc90|WARN|10
-TOffersPanelView::classTOffersPanelView|0x654fc0|WARN|9
+TOffersPanelView::classTOffersPanelView|0x654fc0|WARN|10
 TOnOffRadioButton::classTOnOffRadioButton|0x65e5f8|WARN|10
 TOrItemOrder::classTOrItemOrder|0x64f380|WARN|9
 TOrderView::classTOrderView|0x6579a0|WARN|10

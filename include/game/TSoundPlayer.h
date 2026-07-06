@@ -56,5 +56,12 @@ public:
   // (scalar << 8) and apply it to the probed aux output device (CD-audio line). Both
   // original callsites (0x5db66f, 0x56e734) load ECX = g_pSfxPlaybackSystem.
   void ScaleAndApplyAuxOutputVolume(short scalar); // 0x593cb0
+
+  // Non-virtual: reset both channel peers' active playback (StopOrResetActivePlaybackSlot30
+  // on each). Callsite 0x5db798 (TViewMgr::UiRuntimeSlotF8) loads ECX = g_pSfxPlaybackSystem.
+  void ResetDualAudioCuePools(); // 0x593730
+  // Non-virtual: push cueId onto both channel peers' queues (SoundChannelNodeDummy00 on
+  // each). Same callsite as above.
+  void PushCueToDualAudioCuePools(int cueId); // 0x593760
 };
 
