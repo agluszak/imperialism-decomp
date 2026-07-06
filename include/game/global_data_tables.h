@@ -319,6 +319,8 @@ extern TCountry* g_apTerrainTypeDescriptorTable[kTerrainTypeDescriptorTableCount
 extern TDisplayMgr* g_pDisplayMgr;
 extern TMacViewMgr* g_pStrategicMapViewSystem;
 extern TViewMgr* g_pUiRuntimeContext;
+extern int g_councilControlTagTable[6];
+extern int g_defaultDropShadowTextColor;
 extern TAssetMgr* g_pUiViewManager;
 extern TLanguageMgr* g_pLanguageMgr;
 extern TAnimator* g_pUiAnimator;

@@ -1147,15 +1147,7 @@ undefined4 InitializeChildWindowSurfaceAndTickTimer_Impl_At00482820(void)
   return 0;
 }
 
-// ghidra_name TCViewOwnedBufferRegistryState_00648560::ConstructCViewOwnedBufferRegistryState
-// ghidra_proto undefined ConstructCViewOwnedBufferRegistryState()
-// FUNCTION: IMPERIALISM 0x00482950
-undefined4 ConstructCViewOwnedBufferRegistryState(void)
-{
-  return 0;
-}
-
-// ghidra_name TCViewOwnedBufferChainState_00648578::WrapperFor_FreeHeapBufferIfNotNull_At004829f0
+// ghidra_name ScalarDeletingDestructor_CIncludeViewRecordList_Derived_004829f0
 // ghidra_proto undefined WrapperFor_FreeHeapBufferIfNotNull_At004829f0()
 // FUNCTION: IMPERIALISM 0x004829f0
 undefined4 WrapperFor_FreeHeapBufferIfNotNull_At004829f0(void)
@@ -1163,7 +1155,7 @@ undefined4 WrapperFor_FreeHeapBufferIfNotNull_At004829f0(void)
   return 0;
 }
 
-// ghidra_name TCViewOwnedBufferChainState_00648578::DestructCViewOwnedBufferChainState_00648578_AndFreeChain_At00482a20
+// ghidra_name DestructCIncludeViewRecordListChain_Copy1_00482a20
 // ghidra_proto undefined DestructCViewOwnedBufferChainState_00648578_AndFreeChain_At00482a20()
 // FUNCTION: IMPERIALISM 0x00482a20
 undefined4 DestructCViewOwnedBufferChainState_00648578_AndFreeChain_At00482a20(void)
@@ -1171,7 +1163,7 @@ undefined4 DestructCViewOwnedBufferChainState_00648578_AndFreeChain_At00482a20(v
   return 0;
 }
 
-// ghidra_name TCViewOwnedBufferRegistryState_00648560::DestructCViewOwnedBufferRegistryStateAndReleaseOwnedBuffers
+// ghidra_name CIncludeView::DestructCIncludeViewAndReleaseOwnedBuffers
 // ghidra_proto undefined DestructCViewOwnedBufferRegistryStateAndReleaseOwnedBuffers()
 // FUNCTION: IMPERIALISM 0x00482ab0
 undefined4 DestructCViewOwnedBufferRegistryStateAndReleaseOwnedBuffers(void)
@@ -1203,7 +1195,7 @@ undefined4 Helper_Uses_BlitSurfaceRectSkippingTransparentColor_At00482ed0(void)
   return 0;
 }
 
-// ghidra_name TCViewOwnedBufferRegistryState_00648560::UpdateAndRenderMapTileHintOverlayQueue
+// ghidra_name CIncludeView::UpdateAndRenderMapTileHintOverlayQueue
 // ghidra_proto undefined UpdateAndRenderMapTileHintOverlayQueue()
 // FUNCTION: IMPERIALISM 0x00482fc0
 undefined4 UpdateAndRenderMapTileHintOverlayQueue(void)
@@ -1251,7 +1243,7 @@ undefined4 SelectPaletteAndResolveHandleMapEntry_004835e0(void)
   return 0;
 }
 
-// ghidra_name TCViewOwnedBufferRegistryState_00648560::HandleIncludeViewPointerUpdateAndNotifyChildren
+// ghidra_name CIncludeView::OnMouseMove
 // ghidra_proto undefined HandleIncludeViewPointerUpdateAndNotifyChildren()
 // FUNCTION: IMPERIALISM 0x004838b0
 undefined4 HandleIncludeViewPointerUpdateAndNotifyChildren(void)
@@ -1331,7 +1323,7 @@ undefined4 SerializeRecordList_0x18_WithBlockPool(void)
   return 0;
 }
 
-// ghidra_name WrapperFor_FreeHeapBufferIfNotNull_At004847a0
+// ghidra_name ScalarDeletingDestructor_CIncludeViewRecordList_Base_004847a0
 // ghidra_proto undefined WrapperFor_FreeHeapBufferIfNotNull_At004847a0()
 // FUNCTION: IMPERIALISM 0x004847a0
 undefined4 WrapperFor_FreeHeapBufferIfNotNull_At004847a0(void)
@@ -1339,7 +1331,7 @@ undefined4 WrapperFor_FreeHeapBufferIfNotNull_At004847a0(void)
   return 0;
 }
 
-// ghidra_name TCViewOwnedBufferChainState_00648578::DestructCViewOwnedBufferChainState_00648578_AndFreeChain_At004847d0
+// ghidra_name DestructCIncludeViewRecordListChain_Copy2_004847d0
 // ghidra_proto undefined DestructCViewOwnedBufferChainState_00648578_AndFreeChain_At004847d0()
 // FUNCTION: IMPERIALISM 0x004847d0
 undefined4 DestructCViewOwnedBufferChainState_00648578_AndFreeChain_At004847d0(void)

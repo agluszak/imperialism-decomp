@@ -64,7 +64,7 @@ public:
   void SelectCandidateTilesWithLowGroundUnitCount(); // 0x005da040
   void OrphanLeaf_NoCall_Ins07_004d8920();           // 0x005da180
 
-private:
+protected:
   // 0x90 — compared against a terrain-descriptor index in
   // ResolveDiplomacyActionFromClickAndUpdateTarget (matched to `actionCode != 0xd`); reset to 0
   // in the constructor.
@@ -85,7 +85,10 @@ private:
   int stateFlagAtB8;
   char pad_bc[0x468];
   int legendSurfaceModeAt524;
-  char pad_528[0x1984];
+  // 0x528 — hovered/selected council slot index; TCouncilView's cursor-hover override
+  // compares it against its own nation-count tail field.
+  short field528;
+  char pad_52a[0x1982];
   DiplomacyMaskBufferRun maskRuns[0x17];
   StrategicMapCallbackRecord packedColorRuns[0x17];
 };

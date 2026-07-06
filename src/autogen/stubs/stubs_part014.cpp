@@ -491,38 +491,6 @@ undefined4 RunDiplomacyWaitSheetPopupAndAwaitResponse(void)
   return 0;
 }
 
-// ghidra_name TCouncilView::CreateObject
-// ghidra_proto undefined CreateObject()
-// FUNCTION: IMPERIALISM 0x004fb9d0
-undefined4 CreateObject_004FB9D0(void)
-{
-  return 0;
-}
-
-// ghidra_name TCouncilView::GetRuntimeClass
-// ghidra_proto undefined __thiscall GetRuntimeClass(void)
-// FUNCTION: IMPERIALISM 0x004fba50
-undefined4 GetRuntimeClass_004FBA50(void)
-{
-  return 0;
-}
-
-// ghidra_name TCouncilView::RefreshDiplomacyNationOverlayGeometryAndLabels
-// ghidra_proto undefined RefreshDiplomacyNationOverlayGeometryAndLabels()
-// FUNCTION: IMPERIALISM 0x004fba70
-undefined4 RefreshDiplomacyNationOverlayGeometryAndLabels(void)
-{
-  return 0;
-}
-
-// ghidra_name TCouncilView::DestructTCouncilViewAndMaybeFree
-// ghidra_proto undefined DestructTCouncilViewAndMaybeFree()
-// FUNCTION: IMPERIALISM 0x004fbd60
-undefined4 DestructTCouncilViewAndMaybeFree(void)
-{
-  return 0;
-}
-
 // ghidra_name BuildDiplomacyMapHintOverlayTextAndMetrics
 // ghidra_proto undefined BuildDiplomacyMapHintOverlayTextAndMetrics()
 // FUNCTION: IMPERIALISM 0x004fbdf0
@@ -535,14 +503,6 @@ undefined4 BuildDiplomacyMapHintOverlayTextAndMetrics(void)
 // ghidra_proto undefined AdvanceCivilianTerrainSelectionStep()
 // FUNCTION: IMPERIALISM 0x004fc630
 undefined4 AdvanceCivilianTerrainSelectionStep(void)
-{
-  return 0;
-}
-
-// ghidra_name TCouncilView::WrapperFor_thunk_HandleCursorHoverSelectionByChildHitTestAndFallback_At004fc950
-// ghidra_proto undefined WrapperFor_thunk_HandleCursorHoverSelectionByChildHitTestAndFallback_At004fc950()
-// FUNCTION: IMPERIALISM 0x004fc950
-undefined4 WrapperFor_thunk_HandleCursorHoverSelectionByChildHitTestAndFallback_At004fc950(void)
 {
   return 0;
 }
@@ -751,86 +711,6 @@ undefined4 CycleTradeScreenMode0To2(void)
 // ghidra_proto undefined ConstructPictureResourceEntryType57080()
 // FUNCTION: IMPERIALISM 0x00503c90
 undefined4 ConstructPictureResourceEntryType57080(void)
-{
-  return 0;
-}
-
-// ghidra_name THelpWindow::CreateObject
-// ghidra_proto undefined CreateObject()
-// FUNCTION: IMPERIALISM 0x00504b50
-undefined4 CreateObject_00504B50(void)
-{
-  return 0;
-}
-
-// ghidra_name THelpWindow::GetRuntimeClass
-// ghidra_proto undefined __thiscall GetRuntimeClass(void)
-// FUNCTION: IMPERIALISM 0x00504bd0
-undefined4 GetRuntimeClass_00504BD0(void)
-{
-  return 0;
-}
-
-// ghidra_name THelpWindow::ConstructUiWindowResourceEntryType572C0
-// ghidra_proto undefined ConstructUiWindowResourceEntryType572C0()
-// FUNCTION: IMPERIALISM 0x00504bf0
-undefined4 ConstructUiWindowResourceEntryType572C0(void)
-{
-  return 0;
-}
-
-// ghidra_name THelpWindow::DestructTHelpWindowAndMaybeFree
-// ghidra_proto undefined DestructTHelpWindowAndMaybeFree()
-// FUNCTION: IMPERIALISM 0x00504c20
-undefined4 DestructTHelpWindowAndMaybeFree(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_ResetChildSelectionAndNotifyParent468Alt_At00504c70
-// ghidra_proto undefined WrapperFor_ResetChildSelectionAndNotifyParent468Alt_At00504c70()
-// FUNCTION: IMPERIALISM 0x00504c70
-undefined4 WrapperFor_ResetChildSelectionAndNotifyParent468Alt_At00504c70(void)
-{
-  return 0;
-}
-
-// ghidra_name TTerrainHelpWindow::CreateObject
-// ghidra_proto undefined CreateObject()
-// FUNCTION: IMPERIALISM 0x00504ca0
-undefined4 CreateObject_00504CA0(void)
-{
-  return 0;
-}
-
-// ghidra_name TTerrainHelpWindow::GetRuntimeClass
-// ghidra_proto undefined __thiscall GetRuntimeClass(void)
-// FUNCTION: IMPERIALISM 0x00504d20
-undefined4 GetRuntimeClass_00504D20(void)
-{
-  return 0;
-}
-
-// ghidra_name TTerrainHelpWindow::ConstructTTerrainHelpWindowBaseState
-// ghidra_proto undefined ConstructTTerrainHelpWindowBaseState()
-// FUNCTION: IMPERIALISM 0x00504d40
-undefined4 ConstructTTerrainHelpWindowBaseState(void)
-{
-  return 0;
-}
-
-// ghidra_name TTerrainHelpWindow::DestructTTerrainHelpWindowAndMaybeFree
-// ghidra_proto undefined DestructTTerrainHelpWindowAndMaybeFree()
-// FUNCTION: IMPERIALISM 0x00504d70
-undefined4 DestructTTerrainHelpWindowAndMaybeFree(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_ResetChildSelectionAndNotifyParent468Alt_At00504dc0
-// ghidra_proto undefined WrapperFor_ResetChildSelectionAndNotifyParent468Alt_At00504dc0()
-// FUNCTION: IMPERIALISM 0x00504dc0
-undefined4 WrapperFor_ResetChildSelectionAndNotifyParent468Alt_At00504dc0(void)
 {
   return 0;
 }

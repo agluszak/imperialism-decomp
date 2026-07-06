@@ -156,6 +156,11 @@ char g_szUiPlaceholderSampleText_00694A98[] = "Sample Text 1\n2\n3\n4\n5\n6\n7\n
 char g_szMcAppUiHeaderPath_006943CC[] = "D:\\Ambit\\McAppUI.h";
 // GLOBAL: IMPERIALISM 0x00696bc0
 char g_szUGameWindowSourcePath_00696bc0[] = "D:\\Ambit\\Cross\\UGameWindow.cpp";
+// TCouncilView::HandleEvent's council-control 4-char tag table ("tfni", "ttrt", "targ",
+// "tart", "tuoc", "rffo" as stored).
+// GLOBAL: IMPERIALISM 0x00696978
+int g_councilControlTagTable[6] = {0x696e6674, 0x74727474, 0x67726174,
+                                   0x74726174, 0x636f7574, 0x6f666672};
 // GLOBAL: IMPERIALISM 0x006a143c
 int g_McAppUiFlag_006A143C = 0;
 // GLOBAL: IMPERIALISM 0x006a1b04
@@ -616,6 +621,8 @@ TTradeMgr* g_pNationInteractionStateManager = 0;
 // GLOBAL: IMPERIALISM 0x0066d810
 short g_nationMetricSlotDispatchOrder006d810[0x11] = {0};
 
+// GLOBAL: IMPERIALISM 0x006a58c8
+int g_defaultDropShadowTextColor = 0;
 // GLOBAL: IMPERIALISM 0x006a5fc0
 int g_NetworkDefaultNationId006a5fc0 = 0;
 // GLOBAL: IMPERIALISM 0x006a5fc4

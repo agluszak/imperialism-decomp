@@ -92,6 +92,7 @@ address|target_cpp|ownership|note
 430570|src/game/TCouncilPanelView.cpp|manual|marker_sync
 4305c0|src/game/TNominationView.cpp|manual|marker_sync
 4305e0|src/game/TNominationView.cpp|manual|marker_sync
+430660|src/game/TCouncilView.cpp|manual|marker_sync
 430730|src/game/TDiplomacyMapView.cpp|manual|marker_sync
 430750|src/game/TMacViewMgr.cpp|manual|marker_sync
 430900|src/game/TMapKey.cpp|manual|marker_sync
@@ -132,6 +133,8 @@ address|target_cpp|ownership|note
 44fae0|src/game/TLoungeDialog.cpp|manual|marker_sync
 44fb10|src/game/TMultiMessagePicture.cpp|manual|marker_sync
 44fbc0|src/game/turn_event_dialog_factory.cpp|manual|marker_sync
+453800|src/game/TOverlayRadioButton.cpp|manual|marker_sync
+453830|src/game/TOverlayRadioButton.cpp|manual|marker_sync
 4538a0|src/game/turn_event_dialog_factory.cpp|manual|marker_sync
 45acb0|src/game/TSpecialQuitPicture.cpp|manual|marker_sync
 45acd0|src/game/TSpecialQuitPicture.cpp|manual|marker_sync
@@ -213,6 +216,7 @@ address|target_cpp|ownership|note
 482760|src/game/CIncludeView.cpp|manual|marker_sync
 482850|src/game/CIncludeView.cpp|manual|marker_sync
 482930|src/game/CIncludeView.cpp|manual|marker_sync
+482950|src/game/CIncludeView.cpp|manual|marker_sync
 482bf0|src/game/CIncludeView.cpp|manual|marker_sync
 482c90|src/game/CIncludeView.cpp|manual|marker_sync
 483340|src/game/CIncludeView.cpp|manual|marker_sync
@@ -559,6 +563,10 @@ address|target_cpp|ownership|note
 48ca00|src/game/TView.cpp|manual|marker_sync
 48ca20|src/game/TView.cpp|manual|marker_sync
 48ca40|src/game/TView.cpp|manual|marker_sync
+48ca60|src/game/TScroller.cpp|manual|marker_sync
+48cad0|src/game/TScroller.cpp|manual|marker_sync
+48cb90|src/game/TScroller.cpp|manual|marker_sync
+48cbb0|src/game/TScroller.cpp|manual|marker_sync
 48cc40|src/game/TIncludeView.cpp|manual|marker_sync
 48cd50|src/game/TIncludeView.cpp|manual|marker_sync
 48cd70|src/game/TIncludeView.cpp|manual|marker_sync
@@ -617,6 +625,9 @@ address|target_cpp|ownership|note
 48eb10|src/game/TButton.cpp|manual|marker_sync
 48ec00|src/game/TButton.cpp|manual|marker_sync
 48ecc0|src/game/TButton.cpp|manual|marker_sync
+48ece0|src/game/TRadio.cpp|manual|marker_sync
+48edd0|src/game/TRadio.cpp|manual|marker_sync
+48ee90|src/game/TRadio.cpp|manual|marker_sync
 48eeb0|src/game/TPicture.cpp|manual|marker_sync
 48efa0|src/game/TPicture.cpp|manual|marker_sync
 48efc0|src/game/TPicture.cpp|manual|marker_sync
@@ -703,6 +714,7 @@ address|target_cpp|ownership|note
 492d40|src/game/TWindow.cpp|manual|marker_sync
 492d60|src/game/TWindow.cpp|manual|marker_sync
 492d80|src/game/TWindow.cpp|manual|marker_sync
+492de0|src/game/TCtlMgr.cpp|manual|marker_sync
 492f30|src/game/TEditText.cpp|manual|marker_sync
 492f60|src/game/TMovieView.cpp|manual|marker_sync
 492fa0|src/game/TMovieView.cpp|manual|marker_sync
@@ -1412,6 +1424,9 @@ address|target_cpp|ownership|note
 4c9e60|src/game/TBuildingConstructionView.cpp|manual|marker_sync
 4c9eb0|src/game/TBuildingConstructionView.cpp|manual|marker_sync
 4ca8f0|src/game/TBuildingConstructionView.cpp|manual|marker_sync
+4caa50|src/game/TOverlayRadioButton.cpp|manual|marker_sync
+4caaf0|src/game/TOverlayRadioButton.cpp|manual|marker_sync
+4cab10|src/game/TOverlayRadioButton.cpp|manual|marker_sync
 4caba0|src/game/TUniversityView.cpp|manual|marker_sync
 4cac40|src/game/TUniversityView.cpp|manual|marker_sync
 4cac90|src/game/TUniversityView.cpp|manual|marker_sync
@@ -1994,7 +2009,12 @@ address|target_cpp|ownership|note
 4fb760|src/game/TNominationView.cpp|manual|marker_sync
 4fb780|src/game/TNominationView.cpp|manual|marker_sync
 4fb990|src/game/TNominationView.cpp|manual|marker_sync
+4fb9d0|src/game/TCouncilView.cpp|manual|marker_sync
+4fba50|src/game/TCouncilView.cpp|manual|marker_sync
+4fba70|src/game/TCouncilView.cpp|manual|marker_sync
+4fbd60|src/game/TCouncilView.cpp|manual|marker_sync
 4fc2e0|src/game/TCouncilTickerAnimation.cpp|manual|marker_sync
+4fc950|src/game/TCouncilView.cpp|manual|marker_sync
 4fc9c0|src/game/TMapKey.cpp|manual|marker_sync
 4fca70|src/game/TMapKey.cpp|manual|marker_sync
 4fcac0|src/game/TMapKey.cpp|manual|marker_sync
@@ -2088,6 +2108,16 @@ address|target_cpp|ownership|note
 5041a0|src/game/THelpPicture.cpp|manual|marker_sync
 504220|src/game/THelpPicture.cpp|manual|marker_sync
 5046c0|src/game/THelpPicture.cpp|manual|marker_sync
+504b50|src/game/THelpWindow.cpp|manual|marker_sync
+504bd0|src/game/THelpWindow.cpp|manual|marker_sync
+504bf0|src/game/THelpWindow.cpp|manual|marker_sync
+504c20|src/game/THelpWindow.cpp|manual|marker_sync
+504c70|src/game/THelpWindow.cpp|manual|marker_sync
+504ca0|src/game/TTerrainHelpWindow.cpp|manual|marker_sync
+504d20|src/game/TTerrainHelpWindow.cpp|manual|marker_sync
+504d40|src/game/TTerrainHelpWindow.cpp|manual|marker_sync
+504d70|src/game/TTerrainHelpWindow.cpp|manual|marker_sync
+504dc0|src/game/TTerrainHelpWindow.cpp|manual|marker_sync
 504df0|src/game/TTerrainHelpPicture.cpp|manual|marker_sync
 504e70|src/game/TTerrainHelpPicture.cpp|manual|marker_sync
 5057a0|src/game/TTerrainHelpPicture.cpp|manual|marker_sync
@@ -4001,6 +4031,11 @@ address|target_cpp|ownership|note
 5b47f0|src/game/TSpecialQuitPicture.cpp|manual|marker_sync
 5b4810|src/game/TSpecialQuitPicture.cpp|manual|marker_sync
 5b4a10|src/game/TSpecialQuitPicture.cpp|manual|marker_sync
+5b4f10|src/game/TMyNumberText.cpp|manual|marker_sync
+5b4fb0|src/game/TMyNumberText.cpp|manual|marker_sync
+5b4fd0|src/game/TMyNumberText.cpp|manual|marker_sync
+5b5000|src/game/TMyNumberText.cpp|manual|marker_sync
+5b5050|src/game/TMyNumberText.cpp|manual|marker_sync
 5b5120|src/game/TPictureNumberText.cpp|manual|marker_sync
 5b51c0|src/game/TPictureNumberText.cpp|manual|marker_sync
 5b51e0|src/game/TPictureNumberText.cpp|manual|marker_sync
@@ -4016,6 +4051,11 @@ address|target_cpp|ownership|note
 5b5570|src/game/TDropShadowText.cpp|manual|marker_sync
 5b5600|src/game/TDropShadowText.cpp|manual|marker_sync
 5b5650|src/game/TDropShadowText.cpp|manual|marker_sync
+5b5820|src/game/TDropShadowNumberText.cpp|manual|marker_sync
+5b58f0|src/game/TDropShadowNumberText.cpp|manual|marker_sync
+5b5910|src/game/TDropShadowNumberText.cpp|manual|marker_sync
+5b5960|src/game/TDropShadowNumberText.cpp|manual|marker_sync
+5b59b0|src/game/TDropShadowNumberText.cpp|manual|marker_sync
 5b5ac0|src/game/TInfoBarPictureText.cpp|manual|marker_sync
 5b5bb0|src/game/TInfoBarPictureText.cpp|manual|marker_sync
 5b5c60|src/game/TInfoBarPictureText.cpp|manual|marker_sync

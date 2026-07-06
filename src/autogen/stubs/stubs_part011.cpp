@@ -11,42 +11,10 @@ undefined4 CopyCityDialogStateFromSourceAndCloneChildLinks(void)
   return 0;
 }
 
-// ghidra_name TScroller::CreateObject
-// ghidra_proto undefined CreateObject()
-// FUNCTION: IMPERIALISM 0x0048ca60
-undefined4 CreateObject_0048CA60(void)
-{
-  return 0;
-}
-
-// ghidra_name TView::VTableSlot85
-// ghidra_proto undefined 'scalar_deleting_destructor'(void)
-// FUNCTION: IMPERIALISM 0x0048cad0
-undefined4 TView_VTableSlot85(void)
-{
-  return 0;
-}
-
 // ghidra_name TView::~TView
 // ghidra_proto undefined CreateTScrollerInstance()
 // FUNCTION: IMPERIALISM 0x0048cb00
 undefined4 CreateTScrollerInstance(void)
-{
-  return 0;
-}
-
-// ghidra_name TScroller::GetRuntimeClass
-// ghidra_proto undefined __thiscall GetRuntimeClass(void)
-// FUNCTION: IMPERIALISM 0x0048cb90
-undefined4 GetRuntimeClass(void)
-{
-  return 0;
-}
-
-// ghidra_name TScroller::ConstructTScrollerBaseState
-// ghidra_proto undefined ConstructTScrollerBaseState()
-// FUNCTION: IMPERIALISM 0x0048cbb0
-undefined4 ConstructTScrollerBaseState(void)
 {
   return 0;
 }
@@ -99,34 +67,10 @@ undefined4 CreateTButtonInstance(void)
   return 0;
 }
 
-// ghidra_name TRadio::CreateObject
-// ghidra_proto undefined CreateObject()
-// FUNCTION: IMPERIALISM 0x0048ece0
-undefined4 CreateObject_0048ECE0(void)
-{
-  return 0;
-}
-
-// ghidra_name TButton::DestructTButtonAndMaybeFree
-// ghidra_proto undefined DestructTButtonAndMaybeFree()
-// FUNCTION: IMPERIALISM 0x0048edd0
-undefined4 DestructTButtonAndMaybeFree(void)
-{
-  return 0;
-}
-
 // ghidra_name TView::~TView
 // ghidra_proto undefined CreateTRadioInstance()
 // FUNCTION: IMPERIALISM 0x0048ee00
 undefined4 CreateTRadioInstance(void)
-{
-  return 0;
-}
-
-// ghidra_name TRadio::GetRuntimeClass
-// ghidra_proto undefined __thiscall GetRuntimeClass(void)
-// FUNCTION: IMPERIALISM 0x0048ee90
-undefined4 GetRuntimeClass_0048EE90(void)
 {
   return 0;
 }
@@ -311,14 +255,6 @@ undefined4 WrapperFor_FreeHeapBufferIfNotNull_At00492c70_Impl(void)
 // ghidra_proto undefined WrapperFor_thunk_TemporarilyClearAndRestoreUiInvalidationFlag_At00492db0()
 // FUNCTION: IMPERIALISM 0x00492db0
 undefined4 WrapperFor_thunk_TemporarilyClearAndRestoreUiInvalidationFlag_At00492db0(void)
-{
-  return 0;
-}
-
-// ghidra_name TButton::`scalar deleting destructor'
-// ghidra_proto undefined ScalarDeletingDestructor()
-// FUNCTION: IMPERIALISM 0x00492de0
-undefined4 ScalarDeletingDestructor(void)
 {
   return 0;
 }

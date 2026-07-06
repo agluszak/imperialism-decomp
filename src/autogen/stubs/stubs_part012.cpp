@@ -54,7 +54,7 @@ undefined4 CreateTOneTimeAnimationInstance(void)
 // ghidra_name TOneTimeAnimation::GetRuntimeClass
 // ghidra_proto undefined __thiscall GetRuntimeClass(void)
 // FUNCTION: IMPERIALISM 0x0049fd40
-undefined4 GetRuntimeClass_0049FD40(void)
+undefined4 GetRuntimeClass(void)
 {
   return 0;
 }
