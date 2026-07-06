@@ -326,25 +326,6 @@ void TView::SetState(int state, int refreshFlag) {
 
 // FUNCTION: IMPERIALISM 0x0048b0b0
 void TView::Free() {
-  // RECOMP SAFETY GUARD (not in the original binary; remove once the root cause is
-  // fixed): disarm the global mouse capture if it still points at this view. In the
-  // recomp, a title-screen click arms the capture (TControl::
-  // BeginMouseCaptureAndStartRepeatTimer via the slot-0x46 dispatch) on a control that
-  // the posted 0x2420 turn-event rebuild then frees before WM_LBUTTONUP arrives, so
-  // EndMouseCaptureAndStopRepeatTimer dispatches slots 0x67/0x68 through a freed object
-  // (verified winedbg backtrace; page fault / jump to scribbled vtable). The original
-  // binary does not crash here under the same Wine, so some not-yet-ported piece
-  // (likely a stubbed slot-0x3e/0x0a override on the title-screen classes, or a
-  // teardown path that disarms the capture) prevents this situation in the original;
-  // this guard only keeps the recomp alive until that divergence is found.
-  if (static_cast<void*>(g_McAppMouseCaptureState.capturedControl) == static_cast<void*>(this)) {
-    if (g_McAppUiMouseCaptureTimerId_006A1ADC != 0 && nativeWindow50 != 0) {
-      ::KillTimer(nativeWindow50->m_hWnd, g_McAppUiMouseCaptureTimerId_006A1ADC);
-      g_McAppUiMouseCaptureTimerId_006A1ADC = 0;
-    }
-    ::ReleaseCapture();
-    g_McAppMouseCaptureState.capturedControl = 0;
-  }
   while (childList44 != 0) {
     TEventHandler* child = static_cast<TEventHandler*>(childList44->GetTail());
     child->Free();

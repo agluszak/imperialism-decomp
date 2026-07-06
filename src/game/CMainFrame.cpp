@@ -124,6 +124,18 @@ void CMainFrame::ConfigureTopLevelWindowStyleAndPlacement(int width, int height)
     placement.showCmd = SW_SHOWMAXIMIZED;
     placement.ptMinPosition.x = 0;
     placement.ptMinPosition.y = 0;
+    // Wine-compat deviation from the original (which leaves ptMaxPosition untouched): the
+    // frame is created at x=-1000 (matches ground truth, see PreCreateWindow) with the
+    // expectation that real Windows resolves the subsequent maximize against the monitor
+    // regardless of that off-screen starting position. Under Wine, ptMaxPosition/
+    // rcNormalPosition instead keep reflecting the x=-1000 creation rect, so the "maximized"
+    // frame ends up positioned/sized off to the left instead of filling the screen -- the
+    // same visible failure this function's neighboring PreCreateWindow comment already
+    // documents (misaligned frame, broken hit-testing). Pinning ptMaxPosition to the origin
+    // makes the maximize land correctly under Wine; real Windows would have computed the
+    // same result on its own.
+    placement.ptMaxPosition.x = 0;
+    placement.ptMaxPosition.y = 0;
     SetWindowPlacement(&placement);
   }
 }
