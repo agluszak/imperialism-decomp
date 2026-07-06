@@ -996,7 +996,7 @@ void TViewMgr::DispatchTurnEventSlot4C(short eventCode, int payload) {
     inclControl->Free();
   }
 
-  TIncludeView* packet = new TIncludeView();
+  TIncludeView* packet = ::new TIncludeView();
   CString emptyText(g_szEmptyString);
   int anchorPoint[2] = {0, 0};
   packet->BuildTurnEventFactoryPacket(nullptr, mainView, newCode, anchorPoint, &emptyText, 1);
@@ -1023,7 +1023,7 @@ void TViewMgr::DispatchTurnEventSlot4C(short eventCode, int payload) {
         this->NoOpTurnEventStateVtableSlotFC();
         break;
       case 0x5de:
-        this->UiRuntimeSlot100();
+        this->HandleTurnEvent5DE_RefreshMainView();
         break;
       case 0x5df:
         this->HandleTurnEvent5DF_RefreshMainView();
@@ -1177,7 +1177,22 @@ void TViewMgr::UiRuntimeSlot6C() {
   }
 }
 
-void TViewMgr::UiRuntimeSlot70() {}
+// FUNCTION: IMPERIALISM 0x005d6cd0
+void TViewMgr::HandleTurnEventDialogFactorySlot70(int eventCode) {
+  TurnEventDialogNode* node = static_cast<TurnEventDialogNode*>(
+      g_pTurnEventDialogFactoryRegistry->ResolveDialogNodeByMessageContext(eventCode, 0));
+  if (node == nullptr) {
+    MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgr_0069B6BC, 0x4ff);
+  }
+  GoldCommitControl* gold = static_cast<GoldCommitControl*>(
+      static_cast<TView*>(node->ResolveControlByTag(0x444c4f47))); // 'GOLD'
+  gold->AssertValid();
+  if (gold != nullptr) {
+    gold->CommitGoldDialogContent();
+  }
+  node->DispatchSlot9CToLinkedChildren();
+}
 
 // FUNCTION: IMPERIALISM 0x005d83b0
 void TViewMgr::UiRuntimeSlot84() {
@@ -1414,10 +1429,8 @@ void TViewMgr::HandleTurnStateExitAndPostFollowupEventCode(short followupState) 
 // FUNCTION: IMPERIALISM 0x005dbd10
 void TViewMgr::NoOpTurnEventStateVtableSlotFC() {}
 
-void TViewMgr::UiRuntimeSlot100() {}
-
-// Turn-event 0x5DE: like the 0x5DF handler, re-asserts and refreshes the 'main' view panel;
-// the original brackets the body with a scoped (empty) CString local.
+// Turn-event 0x5DE (vtable slot 0x100): like the 0x5DF handler, re-asserts and refreshes the
+// 'main' view panel; the original brackets the body with a scoped (empty) CString local.
 // FUNCTION: IMPERIALISM 0x005dbd30
 void TViewMgr::HandleTurnEvent5DE_RefreshMainView() {
   TView* activeDialog = g_pDisplayMgr->activeDialog;
@@ -1590,13 +1603,13 @@ void TViewMgr::ShowCivilianLedgerDialogAndSelectUnit() {
   TView* pageOwner = page->ownerContext;
   page->Free();
 
-  TSuperCivRoster* roster = new TSuperCivRoster();
+  TSuperCivRoster* roster = ::new TSuperCivRoster();
   int rosterBounds[4] = {0x1ca, 0x136, 0xd, 0x2e};
   TView* runningDialog = roster;
   roster->InitializeLedgerRosterPages(pageOwner, rosterBounds, &runningDialog);
   roster->controlTag = 0x70616765; // 'page'
 
-  TStaticText* textEntry = new TStaticText();
+  TStaticText* textEntry = ::new TStaticText();
   int textOffset[2] = {0x4d, 0x11};
   int textSize[2] = {0x80, 0x12};
   textEntry->InitializeTextEntryBaseAndOptionalStringResource(

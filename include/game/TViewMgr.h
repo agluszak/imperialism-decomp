@@ -56,7 +56,9 @@ public:
   // UI runtime helper functions
   virtual void AddPendingTurnOverlayCode(int modeValue); // 0x68
   virtual void UiRuntimeSlot6C();                        // 0x6c
-  virtual void UiRuntimeSlot70();                        // 0x70
+  // Resolve the factory dialog for eventCode, commit its 'GOLD' child, then push the
+  // slot-0x9c refresh down the dialog's linked children (0x5d6cd0).
+  virtual void HandleTurnEventDialogFactorySlot70(int eventCode); // 0x70 0x5d6cd0
   // Slots 0x74/0x78/0x7C/0x80 share the same body: resolve the factory dialog for
   // eventCode, commit its 'GOLD' child, then show/refresh/free the dialog node.
   virtual void HandleTurnEventDialogFactorySlot74(int eventCode); // 0x74 0x5d6d70
@@ -106,7 +108,9 @@ public:
   virtual void HandleTurnEventDialogFactorySlotF4();                 // 0xf4
   virtual void UiRuntimeSlotF8();                                    // 0xf8
   virtual void NoOpTurnEventStateVtableSlotFC(); // 0xfc 0x5dbd10 -- real body is a bare `ret`
-  virtual void UiRuntimeSlot100();               // 0x100
+  // Turn-event 0x5DE: re-assert + refresh the 'main' view panel (sibling of the 0x5DF
+  // handler; the original brackets the body with a scoped empty CString). 0x5dbd30.
+  virtual void HandleTurnEvent5DE_RefreshMainView(); // 0x100 0x5dbd30
   // Turn-event 0x5DF path (see DispatchTurnEventSlot4C): re-asserts and refreshes
   // the main view's 'main' panel (0x5dbdd0).
   virtual void HandleTurnEvent5DF_RefreshMainView();                          // 0x104
@@ -132,10 +136,6 @@ public:
   // the direct InvalidateAndRunChildWaitSheet path instead of the slot-0x79 virtual.
   void DispatchTurnEvent7D8AndUpdateMainViewSelection(void* a1, void* a2, void* a3);
   char DispatchTurnEvent7D8IfTurnFlowIdle(void* a1, void* a2, void* a3, void* a4);
-
-  // 0x5dbd30 — turn-event 0x5DE: re-assert + refresh the 'main' view panel (sibling of the
-  // 0x5DF handler; the original brackets the body with a scoped empty CString).
-  void HandleTurnEvent5DE_RefreshMainView();
 
   // 0x5ddd20 — opens the civilian ledger (TSuperCivRoster) inside factory dialog
   // 0xdac, runs it modally via the show/refresh chain, then applies the selected

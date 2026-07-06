@@ -4213,6 +4213,7 @@ address|target_cpp|ownership|note
 5d6bf0|src/game/TViewMgr.cpp|manual|marker_sync
 5d6c10|src/game/TViewMgr.cpp|manual|marker_sync
 5d6c30|src/game/TViewMgr.cpp|manual|marker_sync
+5d6cd0|src/game/TViewMgr.cpp|manual|marker_sync
 5d6d70|src/game/TViewMgr.cpp|manual|marker_sync
 5d6e30|src/game/TViewMgr.cpp|manual|marker_sync
 5d6e50|src/game/TViewMgr.cpp|manual|marker_sync

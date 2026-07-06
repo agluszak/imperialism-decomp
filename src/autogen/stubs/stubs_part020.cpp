@@ -395,14 +395,6 @@ undefined4 RunNationInfoModalAndReturnNonCancel(void)
   return 0;
 }
 
-// ghidra_name HandleTurnEventDialogFactorySlot70
-// ghidra_proto undefined HandleTurnEventDialogFactorySlot70()
-// FUNCTION: IMPERIALISM 0x005d6cd0
-undefined4 HandleTurnEventDialogFactorySlot70(void)
-{
-  return 0;
-}
-
 // ghidra_name TViewMgr::InvokeMainWidgetMethod1CCWithArgs
 // ghidra_proto undefined InvokeMainWidgetMethod1CCWithArgs()
 // FUNCTION: IMPERIALISM 0x005d71b0
