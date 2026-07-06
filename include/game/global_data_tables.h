@@ -553,6 +553,20 @@ extern unsigned char g_abGateFlagQualifies[24];
 extern short g_Build_Hex_Area_LookupTable_00696E70[];
 extern short g_Build_Hex_Area_LookupTable_00696E80[];
 
+// TMapMgr.cpp — per-terrainType00 gate table read by
+// MarkSeedNeighborTilesUnavailableByCapabilityMaskProfileA for both the origin tile and each of
+// its hex neighbors. Only indices 0-5 are meaningful (terrainType00's real range); read raw at
+// 0x00696f08, ground truth for the game's 6 terrain types.
+extern unsigned char g_abTerrainTypeSeedGateProfileA[6];
+
+// TMapMgr.cpp — three single-byte UI/notification flags set by
+// MarkSeedNeighborTilesUnavailableByCapabilityMaskProfileA when a nation-indexed
+// TTechMgr::OrderCapRow padding byte reads 2; purpose beyond that one comparison not
+// identified.
+extern unsigned char g_bSeedGateNotifyFlag_00696f0a;
+extern unsigned char g_bSeedGateNotifyFlag_00696f0b;
+extern unsigned char g_bSeedGateNotifyFlag_00696f0c;
+
 // TMapMgr.cpp — per-tile sprite-variant bitmap-strip offset tables, indexed
 // [gateFlag][spriteVariantIndex01] (table39 by spriteVariantIndex01 alone). Read by the
 // rendering-variant lookup family (0x516150/0x5161a0/0x5161e0/0x516220).

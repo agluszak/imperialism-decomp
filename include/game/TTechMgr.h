@@ -42,9 +42,23 @@ public:
     unsigned char flag;
     unsigned char pad01[3];
     unsigned char recruitTierFlag27b;
-    unsigned char pad05[4];
+    unsigned char pad05[3];
+    // Read via MarkSeedNeighborTilesUnavailableByCapabilityMaskProfileA off THIS row
+    // (row[nationTag], not the previous-row reads below) -- gates DAT_00696f0b.
+    unsigned char unknownFlag27f;
     unsigned char secondaryCapabilityFlag280;
-    unsigned char pad06[0x1d - 0x0a];
+    unsigned char pad06a[10];
+    // The two fields below are read by MarkSeedNeighborTilesUnavailableByCapabilityMaskProfileA
+    // off orderCapRows277[nationTag - 1] (the *previous* nation's row) -- confirmed by address
+    // arithmetic: the original reads absolute offsets 0x26e/0x274 with the same 29-byte
+    // per-nation stride as this array, which lands 9/3 bytes before this row's base (0x277),
+    // i.e. 20/26 bytes into the previous row. Gate DAT_00696f0c / DAT_00696f0a respectively.
+    // For nationTag == 0 this reads out of this array's bounds, into the tail of
+    // nationCapRows1e8[6] and pad274 -- reproduced faithfully via orderCapRows277[-1].
+    unsigned char unknownFlag28b;
+    unsigned char pad06b[5];
+    unsigned char unknownFlag291;
+    unsigned char pad06c[2];
   };
   OrderCapRow orderCapRows277[7];
   unsigned char pad342[0x39d - 0x342];

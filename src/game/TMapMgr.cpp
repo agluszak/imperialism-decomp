@@ -19,6 +19,7 @@
 #include "game/TGreatPower.h"
 #include "game/TTown.h"
 #include "game/TDiplomacyMgr.h"
+#include "game/ui_invalidation_guard.h"
 
 void EnsurePortZoneForTile(short nTileIndex);
 void RemovePortZoneByTile(short nTileIndex);
@@ -718,6 +719,55 @@ int TMapMgr::IsAltKeyDown() {
   return GetAsyncKeyState(VK_MENU) & 0x8000;
 }
 
+// FUNCTION: IMPERIALISM 0x00512930
+extern "C" short* __cdecl BuildHexAreaTileIndexList(short centerTileIndex, short radius) {
+  short* buffer = static_cast<short*>(::operator new(static_cast<short>(radius * 6) << 1));
+  if (buffer == nullptr) {
+    MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+    TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\UMap.cpp", 0xb85);
+  }
+
+  int row = static_cast<int>(centerTileIndex) / 0x6c;
+  int rowParity = row & 1;
+  int colBase = (static_cast<int>(centerTileIndex) % 0x6c) * 2;
+
+  short* out = buffer;
+  for (short direction = 0; direction < 6; ++direction) {
+    int dir = static_cast<int>(direction);
+    if (dir < 0) {
+      dir += 6;
+    } else if (dir > 5) {
+      dir -= 6;
+    }
+    int colAccum = g_Build_Hex_Area_LookupTable_00696E70[dir] * radius + rowParity + colBase;
+
+    dir = static_cast<int>(direction);
+    if (dir < 0) {
+      dir += 6;
+    } else if (dir > 5) {
+      dir -= 6;
+    }
+    int rowAccum = g_Build_Hex_Area_LookupTable_00696E80[dir] * radius + row;
+
+    int colHalfSign = colAccum >> 0x1f;
+    *out = static_cast<short>(((colAccum - colHalfSign) >> 1) + rowAccum * 0x6c);
+    ++out;
+
+    int innerDir = static_cast<int>(direction) + 2;
+    if (innerDir > 5) {
+      innerDir -= 6;
+    }
+    for (short step = 0; step < radius - 1; ++step) {
+      colAccum += g_Build_Hex_Area_LookupTable_00696E70[innerDir];
+      rowAccum += g_Build_Hex_Area_LookupTable_00696E80[innerDir];
+      colHalfSign = colAccum >> 0x1f;
+      *out = static_cast<short>(((colAccum - colHalfSign) >> 1) + rowAccum * 0x6c);
+      ++out;
+    }
+  }
+  return buffer;
+}
+
 // FUNCTION: IMPERIALISM 0x00512b50
 void TMapMgr::ComputeHexNeighborTileIndices(short tileIndex, short* neighborTiles,
                                             char wrapHorizontally) {
@@ -824,6 +874,7 @@ short TMapMgr::GetWrappedHexNeighborTileIndexByDirection(short tileIndex, short 
   }
   return static_cast<short>(result);
 }
+
 // FUNCTION: IMPERIALISM 0x00512dd0
 extern "C" short __cdecl GetHexDirectionBetweenTiles(short sourceTile, short destTile) {
   short rowFrom = sourceTile / 0x6c;
@@ -1607,8 +1658,44 @@ void TMapMgr::SeedRecruitSearchVisitedStateByCapabilityThresholdAlt(TCivUnit* pC
   }
 }
 
-undefined TMapMgr::MarkSeedNeighborTilesUnavailableByCapabilityMaskProfileA(int param_1) {
-  return 0;
+// FUNCTION: IMPERIALISM 0x005159b0
+void TMapMgr::MarkSeedNeighborTilesUnavailableByCapabilityMaskProfileA(
+    TCivUnit* pCivilianOrderEntry) {
+  this->field9 = 1;
+  for (int i = 0; i < 0x1950; ++i) {
+    terrainStateTable[i].recruitSearchVisited0e = 1;
+  }
+
+  short nationTag = pCivilianOrderEntry->field_18;
+  short tileIndex = pCivilianOrderEntry->field_6;
+
+  // orderCapRows277[nationTag - 1] reads the *previous* nation's row padding -- for
+  // nationTag == 0 this reads out of the array's declared bounds (into the tail of
+  // nationCapRows1e8[6]/pad274), reproducing the original's own out-of-bounds read.
+  if (g_pCityOrderCapabilityState->orderCapRows277[nationTag - 1].unknownFlag28b == 2) {
+    g_bSeedGateNotifyFlag_00696f0c = 1;
+  }
+  if (g_pCityOrderCapabilityState->orderCapRows277[nationTag - 1].unknownFlag291 == 2) {
+    g_bSeedGateNotifyFlag_00696f0a = 1;
+  }
+  if (g_pCityOrderCapabilityState->orderCapRows277[nationTag].unknownFlag27f == 2) {
+    g_bSeedGateNotifyFlag_00696f0b = 1;
+  }
+
+  if (g_abTerrainTypeSeedGateProfileA[terrainStateTable[tileIndex].terrainType00] != 0) {
+    short* neighbors = BuildHexAreaTileIndexList(tileIndex, 1);
+    unsigned char directionBit = 0;
+    for (int d = 0; d < 6; ++d) {
+      TTerrainStateRecordView* neighbor = &terrainStateTable[neighbors[d]];
+      if (g_abTerrainTypeSeedGateProfileA[neighbor->terrainType00] != 0 &&
+          neighbor->ownerNationTag04 == nationTag &&
+          ((1 << directionBit) & terrainStateTable[tileIndex].adjacencyBits06) == 0) {
+        neighbor->recruitSearchVisited0e = 0;
+      }
+      ++directionBit;
+    }
+    ::operator delete(neighbors);
+  }
 }
 
 undefined TMapMgr::MarkSeedNeighborTilesUnavailableByCapabilityMaskProfileB(int param_1) {

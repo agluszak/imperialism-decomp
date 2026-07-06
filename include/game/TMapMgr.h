@@ -131,6 +131,13 @@ struct HexSpiralSearchState {
 // __cdecl function (no `this`), defined in TMapMgr.cpp.
 extern "C" short __cdecl GetHexDirectionBetweenTiles(short sourceTile, short destTile);
 
+// 0x00512930. Heap-allocates (`operator new`, caller frees via `operator delete`) and fills a
+// `radius*6`-entry tile-index ring around centerTileIndex: each of the 6 hex directions gets
+// one "corner" tile at exactly `radius` steps out, followed by (radius-1) more tiles walking
+// the ring's edge toward the next corner. Distinct from the stack-buffer, direct-neighbors-only
+// ComputeHexNeighborTileIndices. Free __cdecl function (no `this`), defined in TMapMgr.cpp.
+extern "C" short* __cdecl BuildHexAreaTileIndexList(short centerTileIndex, short radius);
+
 // TODO(manifest): describe TMapMgr and its role. Base edge (TObject) recovered from RTTI
 // CRuntimeClass chain: TMapMgr -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x006587e0
@@ -275,8 +282,15 @@ public:
   // or ownerNationTag04 matches) exceeds the low development nibble.
   virtual void SeedRecruitSearchVisitedStateByCapabilityThresholdAlt(
       class TCivUnit* pCivilianOrderEntry); // slot 0x27 0x515890
-  virtual undefined
-  MarkSeedNeighborTilesUnavailableByCapabilityMaskProfileA(int param_1); // slot 0x28 0x5159b0
+  // Seeds recruitSearchVisited0e = 1 for all tiles, then (if the order's terrain-type gate
+  // passes) walks the 6 direct hex neighbors of pCivilianOrderEntry->field_6 via
+  // BuildHexAreaTileIndexList(tile, 1) and clears recruitSearchVisited0e for any neighbor
+  // whose terrain type also gates and whose owner nation matches, provided
+  // this tile's adjacencyBits06 doesn't already have that direction's bit set. Also flips 3
+  // notification flag globals based on nation-indexed OrderCapRow padding bytes (see
+  // TTechMgr::OrderCapRow's unknownFlag27f/28b/291 comments).
+  virtual void MarkSeedNeighborTilesUnavailableByCapabilityMaskProfileA(
+      class TCivUnit* pCivilianOrderEntry); // slot 0x28 0x5159b0
   virtual undefined
   MarkSeedNeighborTilesUnavailableByCapabilityMaskProfileB(int param_1); // slot 0x29 0x515b10
   virtual undefined

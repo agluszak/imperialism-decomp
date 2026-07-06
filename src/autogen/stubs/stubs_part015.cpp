@@ -179,14 +179,6 @@ undefined4 ReturnIfTileIndexNegative(void)
   return 0;
 }
 
-// ghidra_name BuildHexAreaTileIndexList
-// ghidra_proto short * __cdecl BuildHexAreaTileIndexList(short nCenterTileIndex, short nRadius)
-// FUNCTION: IMPERIALISM 0x00512930
-undefined4 BuildHexAreaTileIndexList(void)
-{
-  return 0;
-}
-
 // ghidra_name NormalizeWrappedMapCoord108x60
 // ghidra_proto undefined NormalizeWrappedMapCoord108x60()
 // FUNCTION: IMPERIALISM 0x00513050
