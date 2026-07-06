@@ -1376,8 +1376,6 @@ void TViewMgr::HandleTurnEventDialogFactorySlotF4() {
 }
 
 void TViewMgr::UiRuntimeSlotF8() {}
-void TViewMgr::UiRuntimeSlot108() {}
-void TViewMgr::UiRuntimeSlot10C() {}
 
 // Screen-exit backbone: record the followup turn state; when leaving (state 0),
 // re-apply the audio volume preferences and post the followup turn-event code for the
@@ -1435,6 +1433,17 @@ void TViewMgr::HandleTurnEvent5DF_RefreshMainView() {
   mainPanel->AssertValid();
   mainPanel->RefreshControl();
 }
+
+// Twin of HandleTurnEvent5DF_RefreshMainView: re-assert and refresh the active dialog's
+// 'main' council-ticker panel.
+// FUNCTION: IMPERIALISM 0x005dbe10
+void TViewMgr::UiRuntimeSlot108() {
+  TView* mainPanel = g_pDisplayMgr->activeDialog->ResolveControlByTag(kControlTagMain);
+  mainPanel->AssertValid();
+  mainPanel->RefreshControl();
+}
+
+void TViewMgr::UiRuntimeSlot10C() {}
 
 // FUNCTION: IMPERIALISM 0x005dc160
 void TViewMgr::InvokeStrategicMapViewMethod6C() {

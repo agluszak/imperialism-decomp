@@ -459,14 +459,6 @@ undefined4 HandleTurnEventDialogFactorySlotF8(void)
   return 0;
 }
 
-// ghidra_name HandleTurnEventTable66F220_Slot08_InvokeMainViewSlots0C_E4
-// ghidra_proto undefined HandleTurnEventTable66F220_Slot08_InvokeMainViewSlots0C_E4()
-// FUNCTION: IMPERIALISM 0x005dbe10
-undefined4 HandleTurnEventTable66F220_Slot08_InvokeMainViewSlots0C_E4(void)
-{
-  return 0;
-}
-
 // ghidra_name BuildTurnStateStyledTextAndDispatchMainRoutine
 // ghidra_proto undefined BuildTurnStateStyledTextAndDispatchMainRoutine()
 // FUNCTION: IMPERIALISM 0x005dbe50

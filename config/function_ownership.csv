@@ -4235,6 +4235,7 @@ address|target_cpp|ownership|note
 5dbd10|src/game/TViewMgr.cpp|manual|marker_sync
 5dbd30|src/game/TViewMgr.cpp|manual|marker_sync
 5dbdd0|src/game/TViewMgr.cpp|manual|marker_sync
+5dbe10|src/game/TViewMgr.cpp|manual|marker_sync
 5dc160|src/game/TViewMgr.cpp|manual|marker_sync
 5dc180|src/game/TViewMgr.cpp|manual|marker_sync
 5dc1a0|src/game/TViewMgr.cpp|manual|marker_sync
