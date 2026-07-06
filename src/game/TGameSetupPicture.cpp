@@ -95,7 +95,7 @@ void TGameSetupPicture::HandleEvent(int commandId, TEventHandler* sourceHandler,
         g_pGlobalMapState->InitializeGlobalMapState();
       }
       g_pSimMgr->RebuildGlobalOrderManagersAndCapabilityState(1);
-      g_pGlobalMapState->WrapperFor_AllocateWithFallbackHandler_At0050e8b0();
+      g_pGlobalMapState->AllocateAndResetTerrainAndCityScoreTables();
       g_pGlobalMapState->LoadPoliticalMapRegionSubtypeTableFromResourceStream();
       for (unsigned int tileIndex = 0; tileIndex < 0x1950; ++tileIndex) {
         g_pGlobalMapState->UpdateMapTileAdjacencyMasksAndVariantForTile(tileIndex);

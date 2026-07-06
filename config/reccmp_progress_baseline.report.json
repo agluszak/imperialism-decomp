@@ -4349,7 +4349,7 @@
     },
     {
       "address": "0x48b2d0",
-      "matching": 0.19130434782608696,
+      "matching": 0.2033898305084746,
       "name": "TView::VTableSlotDD",
       "type": 1
     },
@@ -7651,7 +7651,7 @@
     },
     {
       "address": "0x4a4550",
-      "matching": 0.0,
+      "matching": 0.8831168831168831,
       "name": "ForwardGetUnitMovementClassId_At004a4550",
       "type": 1
     },
@@ -12789,19 +12789,22 @@
     },
     {
       "address": "0x4e0590",
-      "matching": 1.0,
+      "effective": true,
+      "matching": 0.42857142857142855,
       "name": "TGreatPower::OrphanRetStub_004d7fa0_88",
       "type": 1
     },
     {
       "address": "0x4e05d0",
-      "matching": 1.0,
+      "effective": true,
+      "matching": 0.42857142857142855,
       "name": "TGreatPower::OrphanLeaf_NoCall_Ins02_004d7fc0_89",
       "type": 1
     },
     {
       "address": "0x4e0610",
-      "matching": 1.0,
+      "effective": true,
+      "matching": 0.42857142857142855,
       "name": "TGreatPower::ReturnFalseNationStateActionStub_8a",
       "type": 1
     },
@@ -12814,13 +12817,14 @@
     },
     {
       "address": "0x4e0690",
-      "matching": 1.0,
+      "effective": true,
+      "matching": 0.42857142857142855,
       "name": "TGreatPower::ReturnFalseNationStateCapabilityFlag90",
       "type": 1
     },
     {
       "address": "0x4e06d0",
-      "matching": 0.7619047619047619,
+      "matching": 0.8095238095238095,
       "name": "TGreatPower::SumNationRuntimeFiveBucketValue44",
       "type": 1
     },
@@ -16295,7 +16299,7 @@
     },
     {
       "address": "0x50bea0",
-      "matching": 0.19718309859154928,
+      "matching": 0.2044525215810995,
       "name": "TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets",
       "type": 1
     },
@@ -16451,7 +16455,7 @@
     },
     {
       "address": "0x50e8b0",
-      "matching": 0.0,
+      "matching": 0.19428571428571428,
       "name": "TMapMgr::WrapperFor_AllocateWithFallbackHandler_At0050e8b0",
       "type": 1
     },
@@ -16517,13 +16521,13 @@
     },
     {
       "address": "0x50fca0",
-      "matching": 0.020618556701030927,
+      "matching": 0.5520833333333334,
       "name": "TMapMgr::UpdateTilePrimaryAndSecondaryNeighborLinksByPriority",
       "type": 1
     },
     {
       "address": "0x50fe10",
-      "matching": 0.008298755186721992,
+      "matching": 0.13513513513513514,
       "name": "TMapMgr::UpdateTileNeighborBorderInfluenceCounters",
       "type": 1
     },
@@ -16535,7 +16539,7 @@
     },
     {
       "address": "0x5107e0",
-      "matching": 0.029850746268656716,
+      "matching": 0.3697478991596639,
       "name": "TMapMgr::InitializeTileNeighborConnectionMaskIfNeeded",
       "type": 1
     },
@@ -16583,19 +16587,19 @@
     },
     {
       "address": "0x511a70",
-      "matching": 0.007722007722007722,
+      "matching": 0.23433242506811988,
       "name": "TMapMgr::TMapMaker_EnsureRegionClassHasSubtype3And4AssignmentsWithRng",
       "type": 1
     },
     {
       "address": "0x511e80",
-      "matching": 0.1,
+      "matching": 0.7441860465116279,
       "name": "TMapMgr::TMapMaker_EnsureMapDataStreamOpenedAndMaybeTickUiProgress",
       "type": 1
     },
     {
       "address": "0x511ed0",
-      "matching": 0.13333333333333333,
+      "matching": 0.6666666666666666,
       "name": "TMapMgr::DispatchTurnEvent7DDForActiveNation",
       "type": 1
     },
@@ -16607,13 +16611,13 @@
     },
     {
       "address": "0x511f30",
-      "matching": 0.024390243902439025,
+      "matching": 0.18587360594795538,
       "name": "TMapMgr::TMapMaker_CheckTerrainTypePairReachabilityByRegionClassMask",
       "type": 1
     },
     {
       "address": "0x5121d0",
-      "matching": 0.06349206349206349,
+      "matching": 0.31343283582089554,
       "name": "TMapMgr::IsNodeTypeLinkUnavailableAndNoActiveMapActionContext",
       "type": 1
     },
@@ -16667,7 +16671,7 @@
     },
     {
       "address": "0x512930",
-      "matching": 0.013513513513513514,
+      "matching": 0.25622775800711745,
       "name": "BuildHexAreaTileIndexList",
       "type": 1
     },
@@ -16715,13 +16719,13 @@
     },
     {
       "address": "0x513290",
-      "matching": 0.022727272727272728,
+      "matching": 0.4146341463414634,
       "name": "TMapMgr::DispatchFormationEntryActionsAndMaybeCreateTurnEvent12",
       "type": 1
     },
     {
       "address": "0x5133f0",
-      "matching": 0.017857142857142856,
+      "matching": 0.4818181818181818,
       "name": "TMapMgr::SetTileOwnerAndInvalidateNeighborState",
       "type": 1
     },
@@ -16745,7 +16749,7 @@
     },
     {
       "address": "0x5136a0",
-      "matching": 1.0,
+      "matching": 0.8888888888888888,
       "name": "TMapMgr::OrphanLeaf_NoCall_Ins35_005136a0",
       "type": 1
     },
@@ -16781,7 +16785,7 @@
     },
     {
       "address": "0x513f60",
-      "matching": 0.0,
+      "matching": 0.9722222222222222,
       "name": "TMapMgr::SetHexAdjacencyDirectionFlagsForTilePair",
       "type": 1
     },
@@ -16829,7 +16833,7 @@
     },
     {
       "address": "0x5143d0",
-      "matching": 0.017699115044247787,
+      "matching": 0.5087719298245614,
       "name": "TMapMgr::FloodFillTileRegionMarker",
       "type": 1
     },
@@ -16847,13 +16851,13 @@
     },
     {
       "address": "0x5149d0",
-      "matching": 0.1,
+      "matching": 0.6341463414634146,
       "name": "TMapMgr::SetProvinceCapitalTileFlagBit08",
       "type": 1
     },
     {
       "address": "0x514a20",
-      "matching": 0.0,
+      "matching": 0.22568093385214008,
       "name": "TMapMgr::SetTileTransportFlagsTo0x37AndRefreshNeighbors",
       "type": 1
     },
@@ -16871,7 +16875,7 @@
     },
     {
       "address": "0x514dc0",
-      "matching": 0.05128205128205128,
+      "matching": 0.64,
       "name": "TMapMgr::WrapperFor_IsValidSecondaryNationHomeTileCandidate_At00514dc0",
       "type": 1
     },
@@ -16907,13 +16911,13 @@
     },
     {
       "address": "0x515330",
-      "matching": 0.025,
+      "matching": 0.2804878048780488,
       "name": "TMapMgr::WrapperFor_LookupOrderCompatibilityMatrixValue_At00515330",
       "type": 1
     },
     {
       "address": "0x515460",
-      "matching": 0.021739130434782608,
+      "matching": 0.3707865168539326,
       "name": "TMapMgr::WrapperFor_LookupOrderCompatibilityMatrixValue_At00515460",
       "type": 1
     },
@@ -16925,7 +16929,7 @@
     },
     {
       "address": "0x515720",
-      "matching": 0.021505376344086023,
+      "matching": 0.4067796610169492,
       "name": "TMapMgr::MarkType5NeighborTilesUnavailableByNationCapability",
       "type": 1
     },
@@ -16937,19 +16941,19 @@
     },
     {
       "address": "0x5159b0",
-      "matching": 0.023255813953488372,
+      "matching": 0.35502958579881655,
       "name": "TMapMgr::MarkSeedNeighborTilesUnavailableByCapabilityMaskProfileA",
       "type": 1
     },
     {
       "address": "0x515b10",
-      "matching": 0.01834862385321101,
+      "matching": 0.3378995433789954,
       "name": "TMapMgr::MarkSeedNeighborTilesUnavailableByCapabilityMaskProfileB",
       "type": 1
     },
     {
       "address": "0x515d60",
-      "matching": 0.2222222222222222,
+      "matching": 1.0,
       "name": "TMapMgr::ApplyUnitMovementClassForTileIfValid",
       "type": 1
     },
@@ -16991,7 +16995,7 @@
     },
     {
       "address": "0x515f80",
-      "matching": 0.0273972602739726,
+      "matching": 0.33093525179856115,
       "name": "TMapMgr::SetRegionTileSubtypeAndRefreshNeighborFlags",
       "type": 1
     },
@@ -17081,31 +17085,31 @@
     },
     {
       "address": "0x5176e0",
-      "matching": 0.2222222222222222,
+      "matching": 1.0,
       "name": "TMapMgr::GetMapImprovementTierBucketOffset",
       "type": 1
     },
     {
       "address": "0x517710",
-      "matching": 0.06451612903225806,
+      "matching": 0.4,
       "name": "TMapMgr::ApplyMapImprovementSelectionState",
       "type": 1
     },
     {
       "address": "0x517780",
-      "matching": 0.13333333333333333,
+      "matching": 0.6923076923076923,
       "name": "TMapMgr::GetMapImprovementSpriteBaseOffset",
       "type": 1
     },
     {
       "address": "0x5177d0",
-      "matching": 0.0,
+      "matching": 1.0,
       "name": "TMapMgr::GetMapImprovementTileOffsetFromClass",
       "type": 1
     },
     {
       "address": "0x5177f0",
-      "matching": 0.03636363636363636,
+      "matching": 0.25806451612903225,
       "name": "TMapMgr::GetMapImprovementTileSpriteOffset",
       "type": 1
     },
@@ -17141,7 +17145,7 @@
     },
     {
       "address": "0x517f80",
-      "matching": 0.02631578947368421,
+      "matching": 0.21794871794871795,
       "name": "CollectSecondDegreeLinksMatchingNodeType",
       "type": 1
     },
@@ -17303,7 +17307,7 @@
     },
     {
       "address": "0x51a990",
-      "matching": 0.24,
+      "matching": 0.2413793103448276,
       "name": "TMapDialog::OrphanRetStub_005960c0",
       "type": 1
     },
@@ -18137,7 +18141,7 @@
     },
     {
       "address": "0x52c0a0",
-      "matching": 0.9122807017543859,
+      "matching": 0.9391304347826087,
       "name": "SeapointStretch::GetOrAppendUnique",
       "type": 1
     },
@@ -18185,13 +18189,13 @@
     },
     {
       "address": "0x52d150",
-      "matching": 0.7311827956989247,
+      "matching": 0.7021276595744681,
       "name": "GetOrCreateOverlayQuadRecordByIndex",
       "type": 1
     },
     {
       "address": "0x52d1f0",
-      "matching": 0.2784090909090909,
+      "matching": 0.2621082621082621,
       "name": "ReindexContiguousCityRegionIds",
       "type": 1
     },
@@ -18209,7 +18213,7 @@
     },
     {
       "address": "0x52d750",
-      "matching": 0.21904761904761905,
+      "matching": 0.22063492063492063,
       "name": "MergeSmallCityRegionsAndCompactIds",
       "type": 1
     },
@@ -21348,7 +21352,7 @@
     },
     {
       "address": "0x54ab20",
-      "matching": 0.05128205128205128,
+      "matching": 0.37142857142857144,
       "name": "DispatchTileRedrawInvalidateEvent",
       "type": 1
     },
@@ -22842,25 +22846,25 @@
     },
     {
       "address": "0x55e8e0",
-      "matching": 0.3157894736842105,
+      "matching": 0.7384615384615385,
       "name": "TZone::GetOrAppendUniqueZonePointerInPrimaryArray",
       "type": 1
     },
     {
       "address": "0x55e9c0",
-      "matching": 0.3157894736842105,
+      "matching": 0.7384615384615385,
       "name": "TZone::GetOrAppendUniqueZonePointerInSecondaryArray",
       "type": 1
     },
     {
       "address": "0x55ead0",
-      "matching": 0.6521739130434783,
+      "matching": 0.6956521739130435,
       "name": "TZone::AppendZonePointerToPrimaryArray",
       "type": 1
     },
     {
       "address": "0x55eba0",
-      "matching": 0.6521739130434783,
+      "matching": 0.6956521739130435,
       "name": "TZone::AppendZonePointerToSecondaryArray",
       "type": 1
     },
@@ -22872,13 +22876,13 @@
     },
     {
       "address": "0x55ed20",
-      "matching": 0.010309278350515464,
+      "matching": 0.32142857142857145,
       "name": "TZone::ReadFrom",
       "type": 1
     },
     {
       "address": "0x55eff0",
-      "matching": 0.046511627906976744,
+      "matching": 1.0,
       "name": "TZone::WriteTo",
       "type": 1
     },
@@ -22950,7 +22954,7 @@
     },
     {
       "address": "0x55fae0",
-      "matching": 0.5915492957746479,
+      "matching": 0.647887323943662,
       "name": "ResizePointerArrayCapacityByRequestedCount",
       "type": 1
     },
@@ -23058,7 +23062,7 @@
     },
     {
       "address": "0x561300",
-      "matching": 0.5915492957746479,
+      "matching": 0.647887323943662,
       "name": "ResizePointerArrayCapacityByRequestedCountAlt",
       "type": 1
     },
@@ -23172,19 +23176,19 @@
     },
     {
       "address": "0x561bf0",
-      "matching": 0.2033898305084746,
+      "matching": 0.6190476190476191,
       "name": "FindPortZoneByTile",
       "type": 1
     },
     {
       "address": "0x561c80",
-      "matching": 0.6666666666666666,
+      "matching": 0.9333333333333333,
       "name": "GetFirstPortZone",
       "type": 1
     },
     {
       "address": "0x561d40",
-      "matching": 0.6666666666666666,
+      "matching": 0.9333333333333333,
       "name": "GetNextPortZone",
       "type": 1
     },
@@ -23328,7 +23332,7 @@
     },
     {
       "address": "0x563540",
-      "matching": 0.29411764705882354,
+      "matching": 0.35294117647058826,
       "name": "FindFirstPortZoneContextByNation",
       "type": 1
     },
@@ -23388,7 +23392,7 @@
     },
     {
       "address": "0x564570",
-      "matching": 0.045454545454545456,
+      "matching": 0.48,
       "name": "FindMapActionContextContainingNodeByIndex",
       "type": 1
     },
@@ -27320,7 +27324,7 @@
     },
     {
       "address": "0x58a020",
-      "matching": 0.45685279187817257,
+      "matching": 0.47715736040609136,
       "name": "TRailAmtBar::NoOpUiLifecycleHook",
       "type": 1
     },
@@ -27873,7 +27877,7 @@
     },
     {
       "address": "0x58f550",
-      "matching": 0.4722222222222222,
+      "matching": 0.5138888888888888,
       "name": "TCivDescription::ApplyRectSlot110",
       "type": 1
     },
