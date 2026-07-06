@@ -208,6 +208,16 @@ int TShip::GetIndexInPrimaryOrderList() {
   return index;
 }
 
+// FUNCTION: IMPERIALISM 0x00550640
+TShip* GetNavyPrimaryOrderNodeByIndex(short index) {
+  TShip* node = g_pNavyPrimaryOrderListHead;
+  while (node != nullptr && index != 0) {
+    node = node->nextOlder24;
+    --index;
+  }
+  return node;
+}
+
 // FUNCTION: IMPERIALISM 0x00550970
 short GetIndustryActionCostWeightByResourceType(short resourceType) {
   return g_industryActionCostWeightResCode10[resourceType];
@@ -228,4 +238,14 @@ int ComputeOrderNodeCompositeEconomicScore(TShip* node) {
 // FUNCTION: IMPERIALISM 0x00550e70
 short GetResourceDescriptorWeightWord0ByType(short resourceType) {
   return g_NavyOrderResourceDescriptorTable[resourceType].resourceDescriptorWeightWord0;
+}
+
+// FUNCTION: IMPERIALISM 0x005519d0
+int FindCumulativeWeightBucketIndex(short* weightTable, short roll) {
+  int index = -1;
+  do {
+    ++index;
+    roll = static_cast<short>(roll - weightTable[index]);
+  } while (roll > 0);
+  return index;
 }

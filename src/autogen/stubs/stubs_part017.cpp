@@ -19,14 +19,6 @@ undefined4 RecomputeTaskForceAverageOrderScore(void)
   return 0;
 }
 
-// ghidra_name SetTaskForceOrderSelectionByNationClassAndFlag
-// ghidra_proto undefined SetTaskForceOrderSelectionByNationClassAndFlag()
-// FUNCTION: IMPERIALISM 0x00554930
-undefined4 SetTaskForceOrderSelectionByNationClassAndFlag(void)
-{
-  return 0;
-}
-
 // ghidra_name SetTaskForceOrderSelectionByNodeId
 // ghidra_proto undefined SetTaskForceOrderSelectionByNodeId()
 // FUNCTION: IMPERIALISM 0x005549a0
@@ -51,26 +43,10 @@ undefined4 GetMinActionThresholdFromEntryChildren(void)
   return 0;
 }
 
-// ghidra_name CalculateMapOrderEntryAverageChildRatingX10
-// ghidra_proto undefined CalculateMapOrderEntryAverageChildRatingX10()
-// FUNCTION: IMPERIALISM 0x00554ad0
-undefined4 CalculateMapOrderEntryAverageChildRatingX10(void)
-{
-  return 0;
-}
-
 // ghidra_name BuildTaskForceOrderBreakdownSummaryText
 // ghidra_proto undefined BuildTaskForceOrderBreakdownSummaryText()
 // FUNCTION: IMPERIALISM 0x00554b20
 undefined4 BuildTaskForceOrderBreakdownSummaryText(void)
-{
-  return 0;
-}
-
-// ghidra_name BuildTaskForceSelectionOverlayLabelText
-// ghidra_proto undefined BuildTaskForceSelectionOverlayLabelText()
-// FUNCTION: IMPERIALISM 0x00554c90
-undefined4 BuildTaskForceSelectionOverlayLabelText(void)
 {
   return 0;
 }
@@ -99,14 +75,6 @@ undefined4 BuildTaskForcePrimaryObjectiveDescriptionText(void)
   return 0;
 }
 
-// ghidra_name ResolveTaskForceOrderConflictAndPickCandidate
-// ghidra_proto undefined ResolveTaskForceOrderConflictAndPickCandidate()
-// FUNCTION: IMPERIALISM 0x00555420
-undefined4 ResolveTaskForceOrderConflictAndPickCandidate(void)
-{
-  return 0;
-}
-
 // ghidra_name ShouldAttemptMapOrderPairResolution
 // ghidra_proto undefined ShouldAttemptMapOrderPairResolution()
 // FUNCTION: IMPERIALISM 0x00555720
@@ -123,34 +91,10 @@ undefined4 TryMarkLosingMapOrderEntryFromForceBalance(void)
   return 0;
 }
 
-// ghidra_name ComputeTaskForceOrderTieBreakScore
-// ghidra_proto undefined ComputeTaskForceOrderTieBreakScore()
-// FUNCTION: IMPERIALISM 0x00555c20
-undefined4 ComputeTaskForceOrderTieBreakScore(void)
-{
-  return 0;
-}
-
 // ghidra_name TryResolveMapOrderEntryPairExecution
 // ghidra_proto undefined TryResolveMapOrderEntryPairExecution()
 // FUNCTION: IMPERIALISM 0x00555d10
 undefined4 TryResolveMapOrderEntryPairExecution(void)
-{
-  return 0;
-}
-
-// ghidra_name IsTaskForceOrderMixWithinPriorityThresholds
-// ghidra_proto undefined IsTaskForceOrderMixWithinPriorityThresholds()
-// FUNCTION: IMPERIALISM 0x00555de0
-undefined4 IsTaskForceOrderMixWithinPriorityThresholds(void)
-{
-  return 0;
-}
-
-// ghidra_name ComputeTaskForceOrderAggregateScore
-// ghidra_proto undefined ComputeTaskForceOrderAggregateScore()
-// FUNCTION: IMPERIALISM 0x00556010
-undefined4 ComputeTaskForceOrderAggregateScore(void)
 {
   return 0;
 }
@@ -163,22 +107,6 @@ undefined4 ApplyMapOrderTypeExecutionEffects(void)
   return 0;
 }
 
-// ghidra_name GetMapOrderEntryChildCount
-// ghidra_proto undefined GetMapOrderEntryChildCount()
-// FUNCTION: IMPERIALISM 0x005562c0
-undefined4 GetMapOrderEntryChildCount(void)
-{
-  return 0;
-}
-
-// ghidra_name GetNavyOrderRankWithinNationBucket
-// ghidra_proto undefined GetNavyOrderRankWithinNationBucket()
-// FUNCTION: IMPERIALISM 0x005563d0
-undefined4 GetNavyOrderRankWithinNationBucket(void)
-{
-  return 0;
-}
-
 // ghidra_name UpdateNavyOrderMapMarkerByOrderType
 // ghidra_proto undefined UpdateNavyOrderMapMarkerByOrderType()
 // FUNCTION: IMPERIALISM 0x00556410
@@ -187,42 +115,10 @@ undefined4 UpdateNavyOrderMapMarkerByOrderType(void)
   return 0;
 }
 
-// ghidra_name ClearNavyOrderMapMarker
-// ghidra_proto undefined ClearNavyOrderMapMarker()
-// FUNCTION: IMPERIALISM 0x005564f0
-undefined4 ClearNavyOrderMapMarker(void)
-{
-  return 0;
-}
-
-// ghidra_name ConstructNavyManager
-// ghidra_proto undefined ConstructNavyManager()
-// FUNCTION: IMPERIALISM 0x00556590
-undefined4 ConstructNavyManager(void)
-{
-  return 0;
-}
-
-// ghidra_name ResetNavyManagerVtable
-// ghidra_proto undefined ResetNavyManagerVtable()
-// FUNCTION: IMPERIALISM 0x005565f0
-undefined4 ResetNavyManagerVtable(void)
-{
-  return 0;
-}
-
 // ghidra_name InitializeNavyOrderPriorityTables
 // ghidra_proto undefined InitializeNavyOrderPriorityTables()
 // FUNCTION: IMPERIALISM 0x00556610
 undefined4 InitializeNavyOrderPriorityTables(void)
-{
-  return 0;
-}
-
-// ghidra_name DestroyNavyOrderAndChildren
-// ghidra_proto undefined DestroyNavyOrderAndChildren()
-// FUNCTION: IMPERIALISM 0x00556820
-undefined4 DestroyNavyOrderAndChildren(void)
 {
   return 0;
 }
@@ -255,14 +151,6 @@ undefined4 DeserializeNavyOrderListsByNation(void)
 // ghidra_proto undefined CancelNationOrdersAndResetPrimaryFlags()
 // FUNCTION: IMPERIALISM 0x00556f60
 undefined4 CancelNationOrdersAndResetPrimaryFlags(void)
-{
-  return 0;
-}
-
-// ghidra_name ResetPrimaryOrderActiveFlagsAndClearManagerState
-// ghidra_proto undefined ResetPrimaryOrderActiveFlagsAndClearManagerState()
-// FUNCTION: IMPERIALISM 0x00556fd0
-undefined4 ResetPrimaryOrderActiveFlagsAndClearManagerState(void)
 {
   return 0;
 }
@@ -311,14 +199,6 @@ undefined4 RevalidateAndRequeueMapOrdersForTurn(void)
 // ghidra_proto void __fastcall PrepareMapOrdersForExecutionPhase(int * pOrderManager, int nQueueDomain, short nPhaseId)
 // FUNCTION: IMPERIALISM 0x005577b0
 undefined4 PrepareMapOrdersForExecutionPhase(void)
-{
-  return 0;
-}
-
-// ghidra_name ClearMapOrderProcessedFlagsChain
-// ghidra_proto void __fastcall ClearMapOrderProcessedFlagsChain(int * pOrderNode)
-// FUNCTION: IMPERIALISM 0x00557870
-undefined4 ClearMapOrderProcessedFlagsChain(void)
 {
   return 0;
 }
@@ -399,14 +279,6 @@ undefined4 TryHandleMapContextAction(void)
 // ghidra_proto int __thiscall TryQueueMapOrderFromTileAction(short nTileIndex, int nInputFlags)
 // FUNCTION: IMPERIALISM 0x0055a160
 undefined4 TryQueueMapOrderFromTileAction(void)
-{
-  return 0;
-}
-
-// ghidra_name ResolveMapOrderPairConflictStep
-// ghidra_proto void __cdecl ResolveMapOrderPairConflictStep(int * pLeftOrderEntry, int * pRightOrderEntry)
-// FUNCTION: IMPERIALISM 0x0055a780
-undefined4 ResolveMapOrderPairConflictStep(void)
 {
   return 0;
 }

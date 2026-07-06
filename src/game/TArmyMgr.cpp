@@ -1233,3 +1233,12 @@ void TArmyMgr::BuildMapHintOverlayTextAndDispatchUiMessages(short cityRecordInde
   // per-owner-nation theme-code lookup at cityScoreTable[cityRecordIndex].ownerNation-
   // Code00 feeding one of them) isn't recovered either.
 }
+
+// FUNCTION: IMPERIALISM 0x004a6ef0
+void TArmyMgr::TrimExcessNavyOrderSupportAndRebuildOrderBuffer(short nationSlot, int cityIndex) {
+  // TODO: port body -- 897 bytes, rebuilds a per-nation navy-order support buffer for
+  // the given city; not yet reverse-engineered. See RefreshMapOrderBattleSideSnapshot
+  // for the one confirmed callsite and receiver evidence (g_pMapContextActionManager).
+  (void)nationSlot;
+  (void)cityIndex;
+}

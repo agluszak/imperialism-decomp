@@ -90,13 +90,23 @@ struct TNavyOrderResourceDescriptor {
                                  // as a bucket offset, full dword tested for sign as an
                                  // enabled/disabled gate)
   short descriptorWeight;        // +0x1c (was DAT_00698124)
-  short pad1e[3];                // +0x1e..+0x24
+  short pad1e;
+  // Per-order-type priority tier used by TNavyMgr::ResolveMapOrderPairConflictStep's
+  // candidate-tier scan/scoring loop (was DAT_00698128).
+  short priorityTier; // +0x20
+  short pad22;
 };
 ASSERT_SIZE(TNavyOrderResourceDescriptor, 0x24);
 
 extern "C" TNavyOrderResourceDescriptor g_NavyOrderResourceDescriptorTable[64];
 
 short GetResourceTypeRandomDrawBlockFlag(short resourceType);
+short GetResourceDescriptorWord0CByType(short resourceType);
+short GetResourceDescriptorWord10ByType(short resourceType);
+short GetResourceDescriptorWord14ByType(short resourceType);
+short GetResourceDescriptorWord18ByType(short resourceType);
+short GetResourceDescriptorWeightWord1ByType(short resourceType);
+short GetResourceDescriptorWord08ByTypeOffset(short resourceType, short subslot);
 
 // Per-unit-type military stat records (7 shorts per type, record base 0x695cd2):
 // column 0 = category flag (0x10 = counted toward power/cost), column 1 = power/cost

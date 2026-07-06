@@ -7,6 +7,7 @@
 
 class TTaskForce;
 class TStream;
+class CString;
 
 // Child-link node for map-order mission trees (NOT TOcean / TZone).
 struct TMapOrderChildLinkNode {
@@ -113,13 +114,26 @@ public:
   s16 required_count;
   char pad_1e[0x02];
   int attached_entity;
-  char pad_24[0x04];
+  char pad_24[0x02];
+  // Set to 1 by ComputeTaskForceOrderTieBreakScore (0x555c20) when this entry loses a
+  // tie-break against a competing entry; checked by
+  // ResolveTaskForceOrderConflictAndPickCandidate (0x555420) to short-circuit an
+  // already-eliminated candidate (was pad_24[2]).
+  char eliminatedFlag26;
+  char pad_27;
   TTaskForce* queue_prev;
   TTaskForce* queue_next;
   s16 tiebreak_strength;
   char pad_32[0x02];
 
   TTaskForce();
+  // Real constructor used when a task-force order entry is created for a specific
+  // context/nation slot (CreateTaskForceFromNavyOrdersForNationIfEligible 0x560a78,
+  // RebuildMapOrderEntryChildrenForContext 0x536dce). `contextAnchorArg` is an opaque
+  // caller-supplied value stored verbatim into contextAnchor (its real pointee type
+  // varies by caller -- see the contextAnchor field comment); `requiredCountArg` seeds
+  // required_count.
+  TTaskForce(int contextAnchorArg, short requiredCountArg);
 
   static TMapOrderChildLinkNode* FindMissionOrderNodeById(TMapOrderChildLinkNode* node,
                                                           TTaskForce* child_node);
@@ -134,9 +148,112 @@ public:
 
   void RelinkMapOrderQueueNodeBetween(TTaskForce* prev_node, TTaskForce* next_node);
   void DecrementRequiredCount(short decrement);
+  // Adds delta to tiebreak_strength, capped at 499.
+  void AdjustMapOrderNodeStatCapped499(short delta); // 0x550370
+  // Real target is the packed order_type/order_strength dword, not an owner pointer
+  // despite the Ghidra-guessed name; only known caller (MissionSlot44's mode-1 branch)
+  // passes 0, resetting both fields to a fresh-order state.
+  void ResetOrderTypeAndStrengthDword(int packedValue); // 0x552f60
   TTaskForce* SelectPreferredMapOrderEntryByPriorityRules(TTaskForce* candidate,
                                                           int compareAttachedFlag);
   void RemoveNode(int self);
+
+  // Null-safe (returns true on null `this`). Sums 4 consecutive shorts spanning
+  // pad_1e, attached_entity's two halves, and pad_24 -- the original reads this whole
+  // +0x1e..+0x25 region as a flat 4-short block rather than per individual field.
+  bool HasNoMapOrderEntryChildrenQueued(); // 0x553b10
+  // Null-safe (returns true on null `this`). Same +0x1e..+0x25 sum check as
+  // HasNoMapOrderEntryChildrenQueued short-circuits to true; otherwise scans
+  // childOrderList for any active entry. The "found" path returns the node pointer
+  // itself (mask is a no-op for an aligned allocation) rather than a clean bool --
+  // preserved raw since no confirmed caller needs more than a non-zero test.
+  unsigned int HasActiveMapOrderEntryChildren(); // 0x553b50
+  // This entry's 0-based rank among g_pNavyOrderManager->orderListHead04 entries
+  // sharing the same required_count value; -1 if `this` is null or not found in the
+  // queue.
+  int GetNavyOrderRankWithinNationBucket(); // 0x5563d0
+  // Clears this order's map marker tile if one is set (tiebreak_strength != -1).
+  void ClearNavyOrderMapMarker(); // 0x5564f0
+  // Walks the queue_next chain starting at `this`, clearing eliminatedFlag26 on each
+  // node.
+  void ClearMapOrderProcessedFlagsChain(); // 0x557870
+
+  // Builds a localized selection-overlay label describing this task-force order entry
+  // (nation name + attachment count) via g_pLocalizationTable's format-string expander.
+  // 0x554c90, 370 bytes. TODO: port body -- the exact resource-string IDs and format
+  // args aren't recovered yet; used by BuildMapOrderBattleSideSnapshot for its overlay
+  // label field, which only needs a real, correctly-typed call site.
+  void BuildTaskForceSelectionOverlayLabelText(CString* out); // 0x554c90
+
+  // Per-entry candidate score blending this order's tiebreak_strength bucket against
+  // its resource-type's navy-priority/resolve/calculate/task-force weight columns
+  // (g_NavyOrderResourceDescriptorTable[order_type]) plus required_count. Used by the
+  // order-selection cluster to rank candidate task-force order entries.
+  int ComputeMapOrderEntryHeuristicScore(); // 0x550aa0
+
+  // Number of childOrderList entries; null-safe on `this` (returns 0), matching a call
+  // site that invokes it without checking for a null receiver first.
+  int GetMapOrderEntryChildCount(); // 0x5562c0
+
+  // Average (x10) of the resource-type descriptorWeight column across active
+  // childOrderList entries; 0 if none are active.
+  int CalculateMapOrderEntryAverageChildRatingX10(); // 0x554ad0
+
+  // Sum of ComputeMapOrderEntryHeuristicScore() over every childOrderList entry (each
+  // entry's own order_type/tiebreak_strength/required_count, not this entry's own).
+  int ComputeTaskForceOrderAggregateScore(); // 0x556010
+
+  // Compares this entry's best (lowest descriptorWeight) active child against `other`'s
+  // average active-child rating; rolls against the gap to decide a tie-break winner.
+  // On a loss, marks `this` (not `other`) eliminated (eliminatedFlag26 = 1) and returns
+  // 1; else returns 0. Only the low byte of the original's return value is ever
+  // consulted by callers, so this is modeled returning char rather than int.
+  char ComputeTaskForceOrderTieBreakScore(TTaskForce* other); // 0x555c20
+
+  // this->ComputeTaskForceOrderAggregateScore()*100 < kOrderTypePriorityWeight[order_type] *
+  // other->ComputeTaskForceOrderAggregateScore(). Same per-order-type {200,100,50}
+  // weight table ResolveTaskForceOrderConflictAndPickCandidate uses.
+  char IsTaskForceOrderMixWithinPriorityThresholds(TTaskForce* other); // 0x555de0
+
+  // Top-level task-force order-conflict resolver: bails if either side has no active
+  // children; force-attempts resolution for type-5/6 attachments, else rolls against a
+  // priority-gap threshold (childRating average delta + child-count overflow); if
+  // attempted, compares aggregate scores (weighted by kOrderTypePriorityWeight) both
+  // ways and falls back to ComputeTaskForceOrderTieBreakScore on a near-tie; on a
+  // resolved conflict with both sides still non-empty, returns true immediately if
+  // either side is the active nation (when g_pSimMgr->preferenceValues[3] is set), else
+  // hands off to TNavyMgr::ResolveMapOrderPairConflictStep and returns false.
+  char ResolveTaskForceOrderConflictAndPickCandidate(TTaskForce* other); // 0x555420
+
+  // Low word of this order's resource-type enabledFlagOrBucketOffset column (same field
+  // RemoveNode reads as a bucket_offset).
+  short GetOrderNodeDescriptorWord20ByResourceType(); // 0x550510
+  // This order's resource-type calculateWeight column.
+  short GetOrderNodeDescriptorWord0CByResourceType(); // 0x550820
+
+  // Marks every active childOrderList entry's order node (object_ptr+0x34 -- same
+  // out-of-bounds write documented on TMapOrderEntryOwnerContext::FindOrCreateChildOrderLink)
+  // with a 1-or-2 selection-mode code depending on `reserveExtraSlot`, then scans the
+  // global primary navy order list (g_pNavyPrimaryOrderListHead) for TShip nodes
+  // matching this entry's contextAnchor/required_count and re-attaches each one via the
+  // same `this`-as-TMapOrderEntryOwnerContext reinterpretation RemoveNode's tail uses,
+  // and finally recomputes each childOrderList entry's active_flag from whether its
+  // node+0x34 slot was left at 0.
+  void ApplyTaskForceSelectionModeForCurrentNationOrders(char reserveExtraSlot); // 0x553a50
+
+  // Finds the first childOrderList entry whose order node's resource-type bucket
+  // (g_NavyOrderResourceDescriptorTable[...].enabledFlagOrBucketOffset, low word) equals
+  // `nationClass` and whose active_flag differs from `activeFlag`; sets that entry's
+  // active_flag and, when activating (activeFlag != 0), clears its order node's +0x34
+  // slot (same overrun as above).
+  void SetTaskForceOrderSelectionByNationClassAndFlag(short nationClass,
+                                                      char activeFlag); // 0x554930
+
+  // Recursively destroys the whole queue_next chain (tail-first: recurses before
+  // freeing `this`) then Free()s `this`. Deliberately null-safe on `this` itself --
+  // callers (e.g. a manager's own Free()) invoke it on a possibly-null queue head
+  // without checking first, matching the original's `test esi,esi; jz` guard.
+  void DestroyNavyOrderAndChildren(); // 0x556820
 
   // Sets owner (was misread as "active child entry"); when newEntry is
   // non-null also touches a still-unrecovered dual-purpose region at +0x10

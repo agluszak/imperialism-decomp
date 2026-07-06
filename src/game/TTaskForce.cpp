@@ -1,8 +1,27 @@
 #include "game/TTaskForce.h"
 
+#include "game/CString.h"
 #include "game/TNavyMgr.h"
 #include "game/TOcean.h"
+#include "game/TShip.h"
+#include "game/TSimMgr.h"
 #include "game/global_data_tables.h"
+
+extern undefined4 GenerateThreadLocalRandom15(void);
+
+// FUNCTION: IMPERIALISM 0x00550370
+void TTaskForce::AdjustMapOrderNodeStatCapped499(short delta) {
+  tiebreak_strength = static_cast<short>(tiebreak_strength + delta);
+  if (tiebreak_strength > 499) {
+    tiebreak_strength = 499;
+  }
+}
+
+// FUNCTION: IMPERIALISM 0x00550510
+short TTaskForce::GetOrderNodeDescriptorWord20ByResourceType() {
+  return static_cast<short>(
+      g_NavyOrderResourceDescriptorTable[order_type].enabledFlagOrBucketOffset);
+}
 
 // FUNCTION: IMPERIALISM 0x00550670
 TTaskForce* TTaskForce::SelectPreferredMapOrderEntryByPriorityRules(TTaskForce* candidate,
@@ -74,6 +93,26 @@ TTaskForce* TTaskForce::SelectPreferredMapOrderEntryByPriorityRules(TTaskForce* 
     }
   }
   return candidate;
+}
+
+// FUNCTION: IMPERIALISM 0x00550820
+short TTaskForce::GetOrderNodeDescriptorWord0CByResourceType() {
+  return g_NavyOrderResourceDescriptorTable[order_type].calculateWeight;
+}
+
+// FUNCTION: IMPERIALISM 0x00550aa0
+int TTaskForce::ComputeMapOrderEntryHeuristicScore() {
+  short strengthBucket = static_cast<short>(tiebreak_strength / 100);
+
+  const TNavyOrderResourceDescriptor& desc = g_NavyOrderResourceDescriptorTable[order_type];
+  int navyPriorityScore = strengthBucket + 5 + desc.navyPriorityWeight * 10;
+  int resolveScore = strengthBucket + 5 + desc.resolveWeight * 10;
+
+  short resolveBucket = static_cast<short>(resolveScore / 10);
+  short navyPriorityBucket = static_cast<short>(navyPriorityScore / 10);
+
+  return ((resolveBucket + navyPriorityBucket + desc.calculateWeight) * 100 + required_count) /
+         desc.taskForceWeight;
 }
 
 // FUNCTION: IMPERIALISM 0x00550f80
@@ -250,10 +289,20 @@ TTaskForce::PruneDefeatedMapOrderChildrenAndReturnHead(TMapOrderChildLinkNode* c
 IMPLEMENT_DYNCREATE(TTaskForce, TObject)
 
 TTaskForce::TTaskForce()
-    : order_type(0), order_strength(0), attachment(0), owner(nullptr), childOrderList(nullptr),
-      activeChildEntry(nullptr), contextAnchor(0), required_count(0), attached_entity(0),
-      queue_prev(nullptr), queue_next(nullptr), tiebreak_strength(0) {}
+    : order_type(1), order_strength(0), attachment(0), owner(nullptr), childOrderList(nullptr),
+      activeChildEntry(nullptr), contextAnchor(0), required_count(-1), attached_entity(0),
+      queue_prev(nullptr), queue_next(nullptr), tiebreak_strength(-1) {}
 
+// FUNCTION: IMPERIALISM 0x00552800
+TTaskForce::TTaskForce(int contextAnchorArg, short requiredCountArg)
+    : order_type(1), order_strength(0), attachment(0), owner(nullptr), childOrderList(nullptr),
+      activeChildEntry(nullptr), contextAnchor(contextAnchorArg), required_count(requiredCountArg),
+      attached_entity(0), queue_prev(nullptr), queue_next(nullptr), tiebreak_strength(-1) {}
+
+// SYNTHETIC: IMPERIALISM 0x00552870
+// TTaskForce::`scalar deleting destructor'
+
+// FUNCTION: IMPERIALISM 0x005528a0
 TTaskForce::~TTaskForce() {}
 
 void TTaskForce::WriteTo(TStream* stream) {
@@ -328,6 +377,11 @@ void TTaskForce::Free() {
   // 1uj.16 follow-up notes.
 
   delete this;
+}
+
+// FUNCTION: IMPERIALISM 0x00552f60
+void TTaskForce::ResetOrderTypeAndStrengthDword(int packedValue) {
+  *reinterpret_cast<int*>(&order_type) = packedValue;
 }
 
 // FUNCTION: IMPERIALISM 0x00552f80
@@ -472,6 +526,60 @@ void TTaskForce::PromoteMapOrderChainAndQueue(void* pContextAnchor) {
   }
 }
 
+// FUNCTION: IMPERIALISM 0x00553a50
+void TTaskForce::ApplyTaskForceSelectionModeForCurrentNationOrders(char reserveExtraSlot) {
+  for (TMapOrderChildLinkNode* node = childOrderList; node != nullptr; node = node->next) {
+    if (node->active_flag != 0) {
+      // Same node+0x34 overrun documented on
+      // TMapOrderEntryOwnerContext::FindOrCreateChildOrderLink.
+      *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(node->object_ptr) + 0x34) =
+          (reserveExtraSlot != 0) ? 1u : 2u;
+    }
+  }
+
+  for (TShip* ship = g_pNavyPrimaryOrderListHead; ship != nullptr; ship = ship->nextOlder24) {
+    if (reinterpret_cast<int>(ship->field08) == contextAnchor &&
+        ship->ownerNationSlot14 == required_count && ship->field0c == 0) {
+      // Same `this`-as-owner-context reinterpretation RemoveNode's tail uses; the node
+      // argument here is a TShip* (the primary navy order list's own element type), not
+      // a TTaskForce* -- FindOrCreateChildOrderLink's own body is still unported
+      // (`// TODO: promote body`), so its real, evidenced parameter type is unresolved.
+      reinterpret_cast<TMapOrderEntryOwnerContext*>(this)->FindOrCreateChildOrderLink(
+          reinterpret_cast<TTaskForce*>(ship));
+    }
+  }
+
+  for (TMapOrderChildLinkNode* recheckNode = childOrderList; recheckNode != nullptr;
+       recheckNode = recheckNode->next) {
+    recheckNode->active_flag =
+        *reinterpret_cast<int*>(reinterpret_cast<char*>(recheckNode->object_ptr) + 0x34) == 0;
+  }
+}
+
+// FUNCTION: IMPERIALISM 0x00553b10
+bool TTaskForce::HasNoMapOrderEntryChildrenQueued() {
+  if (this == nullptr) {
+    return true;
+  }
+  const short* words = reinterpret_cast<const short*>(reinterpret_cast<const char*>(this) + 0x1e);
+  return (words[0] + words[1] + words[2] + words[3]) == 0;
+}
+
+// FUNCTION: IMPERIALISM 0x00553b50
+unsigned int TTaskForce::HasActiveMapOrderEntryChildren() {
+  if (this != nullptr) {
+    const short* words = reinterpret_cast<const short*>(reinterpret_cast<const char*>(this) + 0x1e);
+    if (words[0] + words[1] + words[2] + words[3] != 0) {
+      for (TMapOrderChildLinkNode* node = childOrderList; node != nullptr; node = node->next) {
+        if (node->active_flag != 0) {
+          return reinterpret_cast<unsigned int>(node) & 0xffffff00u;
+        }
+      }
+    }
+  }
+  return 1;
+}
+
 // FUNCTION: IMPERIALISM 0x00553bc0
 void TMapOrderEntryOwnerContext::FindOrCreateChildOrderLink(TTaskForce* node) {
   // TODO: promote body -- searches `head` for an existing link to `node` (via
@@ -493,5 +601,236 @@ void TTaskForce::RecomputeMapOrderChildAggregateMetric() {
   for (TMapOrderChildLinkNode* node = childOrderList; node != nullptr; node = node->next) {
     activeChildEntry =
         node->object_ptr->SelectPreferredMapOrderEntryByPriorityRules(activeChildEntry, 0);
+  }
+}
+
+// FUNCTION: IMPERIALISM 0x00554930
+void TTaskForce::SetTaskForceOrderSelectionByNationClassAndFlag(short nationClass,
+                                                                char activeFlag) {
+  TMapOrderChildLinkNode* node = childOrderList;
+  if (node == nullptr) {
+    return;
+  }
+  while (static_cast<short>(g_NavyOrderResourceDescriptorTable[node->object_ptr->order_type]
+                                .enabledFlagOrBucketOffset) != nationClass ||
+         node->active_flag == activeFlag) {
+    node = node->next;
+    if (node == nullptr) {
+      return;
+    }
+  }
+  node->active_flag = activeFlag;
+  if (activeFlag != 0) {
+    *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(node->object_ptr) + 0x34) = 0;
+  }
+}
+
+// FUNCTION: IMPERIALISM 0x00554ad0
+int TTaskForce::CalculateMapOrderEntryAverageChildRatingX10() {
+  int sum = 0;
+  int count = 0;
+  for (TMapOrderChildLinkNode* node = childOrderList; node != nullptr; node = node->next) {
+    if (node->active_flag != 0) {
+      sum += g_NavyOrderResourceDescriptorTable[node->object_ptr->order_type].descriptorWeight;
+      ++count;
+    }
+  }
+  if (count == 0) {
+    return 0;
+  }
+  return (sum * 10) / count;
+}
+
+namespace {
+// Per-order-type priority weight used by both IsTaskForceOrderMixWithinPriorityThresholds
+// and ResolveTaskForceOrderConflictAndPickCandidate; indexed by order_type (only 0-2 are
+// meaningful -- the original indexes the same 3-entry stack array unconditionally, so an
+// out-of-range order_type reads original stack garbage there too).
+const int kOrderTypePriorityWeight[3] = {200, 100, 50};
+} // namespace
+
+// FUNCTION: IMPERIALISM 0x00554c90
+void TTaskForce::BuildTaskForceSelectionOverlayLabelText(CString* out) {
+  // TODO: port body -- builds a localized string via g_pLocalizationTable's
+  // scanBracketExpressions format expander (this entry's required_count-as-nation-slot
+  // name, childOrderList count, and attachment), but the exact resource-string IDs and
+  // format-argument composition aren't recovered yet. See
+  // BuildMapOrderBattleSideSnapshot for the one confirmed callsite and receiver
+  // evidence.
+  *out = g_szEmptyString;
+}
+
+// FUNCTION: IMPERIALISM 0x00555420
+char TTaskForce::ResolveTaskForceOrderConflictAndPickCandidate(TTaskForce* other) {
+  if (GetMapOrderEntryChildCount() == 0) {
+    return 0;
+  }
+  if (other == nullptr || other->GetMapOrderEntryChildCount() == 0) {
+    return 0;
+  }
+
+  bool shouldAttempt;
+  if (attachment == 6 || other->attachment == 6 || other->attachment == 5) {
+    shouldAttempt = true;
+  } else {
+    int sum = 0;
+    int count = 0;
+    for (TMapOrderChildLinkNode* node = childOrderList; node != nullptr; node = node->next) {
+      if (node->active_flag != 0) {
+        sum += g_NavyOrderResourceDescriptorTable[node->object_ptr->order_type].descriptorWeight;
+        ++count;
+      }
+    }
+    short thisAverage = (count == 0) ? 0 : static_cast<short>((sum * 10) / count);
+    short otherAverage = static_cast<short>(other->CalculateMapOrderEntryAverageChildRatingX10());
+    short threshold = static_cast<short>(thisAverage - otherAverage + 0x32);
+    int totalChildren = other->GetMapOrderEntryChildCount() + GetMapOrderEntryChildCount();
+    if (totalChildren > 10) {
+      threshold = static_cast<short>(threshold + (totalChildren - 10));
+    }
+    int roll = GenerateThreadLocalRandom15();
+    shouldAttempt = (roll % 100) < threshold;
+  }
+
+  if (!shouldAttempt) {
+    return 0;
+  }
+
+  int thisScore = ComputeTaskForceOrderAggregateScore();
+  int otherScore = other->ComputeTaskForceOrderAggregateScore();
+  bool resolved;
+  if (thisScore * 100 < kOrderTypePriorityWeight[order_type] * otherScore) {
+    int otherScore2 = other->ComputeTaskForceOrderAggregateScore();
+    int thisScore2 = ComputeTaskForceOrderAggregateScore();
+    if (otherScore2 * 100 < kOrderTypePriorityWeight[other->order_type] * thisScore2 ||
+        other->eliminatedFlag26 != 0) {
+      resolved = false;
+    } else {
+      resolved = (ComputeTaskForceOrderTieBreakScore(other) == 0);
+    }
+  } else if (other->IsTaskForceOrderMixWithinPriorityThresholds(this) == 0) {
+    resolved = true;
+  } else {
+    resolved = (other->ComputeTaskForceOrderTieBreakScore(this) == 0);
+  }
+
+  if (!resolved) {
+    return 0;
+  }
+  if (GetMapOrderEntryChildCount() == 0 || other->GetMapOrderEntryChildCount() == 0) {
+    return 0;
+  }
+
+  if (g_pSimMgr->preferenceValues[3] != 0) {
+    if (g_pSimMgr->GetActiveNationId() == required_count ||
+        g_pSimMgr->GetActiveNationId() == other->required_count) {
+      return 1;
+    }
+  }
+  g_pNavyOrderManager->ResolveMapOrderPairConflictStep(this, other);
+  return 0;
+}
+
+// FUNCTION: IMPERIALISM 0x00555c20
+char TTaskForce::ComputeTaskForceOrderTieBreakScore(TTaskForce* other) {
+  unsigned short minDescriptorWeight = 10000;
+  for (TMapOrderChildLinkNode* node = childOrderList; node != nullptr; node = node->next) {
+    if (node->active_flag != 0) {
+      short weight = static_cast<short>(
+          g_NavyOrderResourceDescriptorTable[node->object_ptr->order_type].descriptorWeight);
+      if (weight < static_cast<short>(minDescriptorWeight)) {
+        minDescriptorWeight = static_cast<unsigned short>(weight);
+      }
+    }
+  }
+
+  int sum = 0;
+  int count = 0;
+  for (TMapOrderChildLinkNode* otherNode = other->childOrderList; otherNode != nullptr;
+       otherNode = otherNode->next) {
+    if (otherNode->active_flag != 0) {
+      sum += g_NavyOrderResourceDescriptorTable[otherNode->object_ptr->order_type].descriptorWeight;
+      ++count;
+    }
+  }
+  short otherAverage = (count == 0) ? 0 : static_cast<short>((sum * 10) / count);
+
+  int roll = GenerateThreadLocalRandom15();
+  short threshold = static_cast<short>(
+      ((minDescriptorWeight != 10000 ? minDescriptorWeight : 0) + 5) * 10 - otherAverage);
+  if (threshold <= roll % 100) {
+    return 0;
+  }
+  eliminatedFlag26 = 1;
+  return 1;
+}
+
+// FUNCTION: IMPERIALISM 0x00555de0
+char TTaskForce::IsTaskForceOrderMixWithinPriorityThresholds(TTaskForce* other) {
+  int thisSum = ComputeTaskForceOrderAggregateScore();
+  int otherSum = other->ComputeTaskForceOrderAggregateScore();
+  return thisSum * 100 < kOrderTypePriorityWeight[order_type] * otherSum;
+}
+
+// FUNCTION: IMPERIALISM 0x00556010
+int TTaskForce::ComputeTaskForceOrderAggregateScore() {
+  int total = 0;
+  for (TMapOrderChildLinkNode* node = childOrderList; node != nullptr; node = node->next) {
+    total += node->object_ptr->ComputeMapOrderEntryHeuristicScore();
+  }
+  return total;
+}
+
+// FUNCTION: IMPERIALISM 0x005562c0
+int TTaskForce::GetMapOrderEntryChildCount() {
+  if (this == nullptr) {
+    return 0;
+  }
+  int count = 0;
+  for (TMapOrderChildLinkNode* node = childOrderList; node != nullptr; node = node->next) {
+    ++count;
+  }
+  return count;
+}
+
+// FUNCTION: IMPERIALISM 0x005563d0
+int TTaskForce::GetNavyOrderRankWithinNationBucket() {
+  if (this == nullptr) {
+    return -1;
+  }
+  int rank = 0;
+  for (TTaskForce* node = g_pNavyOrderManager->orderListHead04; node != nullptr;
+       node = node->queue_next) {
+    if (this == node) {
+      return rank;
+    }
+    if (node->required_count == required_count) {
+      ++rank;
+    }
+  }
+  return -1;
+}
+
+// FUNCTION: IMPERIALISM 0x005564f0
+void TTaskForce::ClearNavyOrderMapMarker() {
+  if (tiebreak_strength != -1) {
+    SetMapTileStateByteAndNotifyObserver(tiebreak_strength, -1);
+    tiebreak_strength = -1;
+  }
+}
+
+// FUNCTION: IMPERIALISM 0x00556820
+void TTaskForce::DestroyNavyOrderAndChildren() {
+  if (this == nullptr) {
+    return;
+  }
+  queue_next->DestroyNavyOrderAndChildren();
+  Free();
+}
+
+// FUNCTION: IMPERIALISM 0x00557870
+void TTaskForce::ClearMapOrderProcessedFlagsChain() {
+  for (TTaskForce* node = this; node != nullptr; node = node->queue_next) {
+    node->eliminatedFlag26 = 0;
   }
 }

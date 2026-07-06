@@ -4415,7 +4415,7 @@
     },
     {
       "address": "0x48b2d0",
-      "matching": 0.2033898305084746,
+      "matching": 0.19130434782608696,
       "name": "TView::VTableSlotDD",
       "type": 1
     },
@@ -7855,13 +7855,13 @@
     },
     {
       "address": "0x4a6e80",
-      "matching": 0.08333333333333333,
+      "matching": 0.18604651162790697,
       "name": "DispatchMapInteractionPayloadAndResetWorkingFields",
       "type": 1
     },
     {
       "address": "0x4a6ef0",
-      "matching": 0.007067137809187279,
+      "matching": 0.0,
       "name": "TrimExcessNavyOrderSupportAndRebuildOrderBuffer",
       "type": 1
     },
@@ -12441,7 +12441,7 @@
     },
     {
       "address": "0x4dd430",
-      "matching": 0.5142857142857142,
+      "matching": 0.5714285714285714,
       "name": "TGreatPower::ComputeRemainingDiplomacyAidBudget",
       "type": 1
     },
@@ -12887,8 +12887,7 @@
     },
     {
       "address": "0x4e0610",
-      "effective": true,
-      "matching": 0.42857142857142855,
+      "matching": 1.0,
       "name": "TGreatPower::ReturnFalseNationStateActionStub_8a",
       "type": 1
     },
@@ -13213,7 +13212,7 @@
     },
     {
       "address": "0x4e4630",
-      "matching": 0.6666666666666666,
+      "matching": 0.9333333333333333,
       "name": "TMinor::OrphanLeaf_NoCall_Ins02_004d7ee0",
       "type": 1
     },
@@ -16419,7 +16418,13 @@
     },
     {
       "address": "0x50bea0",
+<<<<<<< HEAD
       "matching": 0.20626987732848706,
+||||||| e683e1d9
+      "matching": 0.2044525215810995,
+=======
+      "matching": 0.20536119945479328,
+>>>>>>> origin/claude/ttaskforce-order-resolution
       "name": "TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets",
       "type": 1
     },
@@ -16503,7 +16508,7 @@
     },
     {
       "address": "0x50dd40",
-      "matching": 0.31788079470198677,
+      "matching": 0.32450331125827814,
       "name": "TMacViewMgr::DrawStrategicMapUnitIcon",
       "type": 1
     },
@@ -16791,7 +16796,7 @@
     },
     {
       "address": "0x512930",
-      "matching": 0.25622775800711745,
+      "matching": 0.2491103202846975,
       "name": "BuildHexAreaTileIndexList",
       "type": 1
     },
@@ -18261,7 +18266,7 @@
     },
     {
       "address": "0x52c0a0",
-      "matching": 0.9391304347826087,
+      "matching": 0.9122807017543859,
       "name": "SeapointStretch::GetOrAppendUnique",
       "type": 1
     },
@@ -18309,7 +18314,7 @@
     },
     {
       "address": "0x52d150",
-      "matching": 0.7021276595744681,
+      "matching": 0.7311827956989247,
       "name": "GetOrCreateOverlayQuadRecordByIndex",
       "type": 1
     },
@@ -19557,7 +19562,7 @@
     },
     {
       "address": "0x536650",
-      "matching": 0.5853658536585366,
+      "matching": 0.5925925925925926,
       "name": "DeserializeTNavyMissionCommon",
       "type": 1
     },
@@ -21796,13 +21801,13 @@
     },
     {
       "address": "0x54f110",
-      "matching": 0.02666666666666667,
+      "matching": 0.2846153846153846,
       "name": "BuildMapOrderBattleSideSnapshot",
       "type": 1
     },
     {
       "address": "0x54f340",
-      "matching": 0.05263157894736842,
+      "matching": 0.2638888888888889,
       "name": "RefreshMapOrderBattleSideSnapshot",
       "type": 1
     },
@@ -21898,7 +21903,7 @@
     },
     {
       "address": "0x550370",
-      "matching": 0.0,
+      "matching": 0.6153846153846154,
       "name": "AdjustMapOrderNodeStatCapped499",
       "type": 1
     },
@@ -21910,7 +21915,7 @@
     },
     {
       "address": "0x550510",
-      "matching": 0.3333333333333333,
+      "matching": 0.75,
       "name": "GetOrderNodeDescriptorWord20ByResourceType",
       "type": 1
     },
@@ -21940,7 +21945,7 @@
     },
     {
       "address": "0x550640",
-      "matching": 0.15384615384615385,
+      "matching": 1.0,
       "name": "GetNavyPrimaryOrderNodeByIndex",
       "type": 1
     },
@@ -21952,7 +21957,7 @@
     },
     {
       "address": "0x550820",
-      "matching": 0.3333333333333333,
+      "matching": 0.75,
       "name": "GetOrderNodeDescriptorWord0CByResourceType",
       "type": 1
     },
@@ -21976,7 +21981,7 @@
     },
     {
       "address": "0x550aa0",
-      "matching": 0.04,
+      "matching": 0.5773195876288659,
       "name": "ComputeMapOrderEntryHeuristicScore",
       "type": 1
     },
@@ -21994,31 +21999,31 @@
     },
     {
       "address": "0x550d80",
-      "matching": 0.5714285714285714,
+      "matching": 0.75,
       "name": "GetResourceTypeRandomDrawBlockFlag",
       "type": 1
     },
     {
       "address": "0x550db0",
-      "matching": 0.3333333333333333,
+      "matching": 0.75,
       "name": "GetResourceDescriptorWord0CByType",
       "type": 1
     },
     {
       "address": "0x550de0",
-      "matching": 0.3333333333333333,
+      "matching": 0.75,
       "name": "GetResourceDescriptorWord10ByType",
       "type": 1
     },
     {
       "address": "0x550e10",
-      "matching": 0.3333333333333333,
+      "matching": 0.75,
       "name": "GetResourceDescriptorWord14ByType",
       "type": 1
     },
     {
       "address": "0x550e40",
-      "matching": 0.3333333333333333,
+      "matching": 0.75,
       "name": "GetResourceDescriptorWord18ByType",
       "type": 1
     },
@@ -22036,13 +22041,13 @@
     },
     {
       "address": "0x550ed0",
-      "matching": 0.3333333333333333,
+      "matching": 0.75,
       "name": "GetResourceDescriptorWeightWord1ByType",
       "type": 1
     },
     {
       "address": "0x550f30",
-      "matching": 0.25,
+      "matching": 0.6666666666666666,
       "name": "GetResourceDescriptorWord08ByTypeOffset",
       "type": 1
     },
@@ -22132,7 +22137,7 @@
     },
     {
       "address": "0x5519d0",
-      "matching": 0.16666666666666666,
+      "matching": 1.0,
       "name": "FindCumulativeWeightBucketIndex",
       "type": 1
     },
@@ -22216,19 +22221,19 @@
     },
     {
       "address": "0x552800",
-      "matching": 0.0,
+      "matching": 0.04878048780487805,
       "name": "TTaskForce::ConstructTTaskForce",
       "type": 1
     },
     {
       "address": "0x552870",
-      "matching": 0.9090909090909091,
+      "matching": 1.0,
       "name": "TTaskForce::`scalar deleting destructor'",
       "type": 1
     },
     {
       "address": "0x5528a0",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "ResetTTaskForceToSentinelVtable",
       "type": 1
     },
@@ -22270,7 +22275,7 @@
     },
     {
       "address": "0x552f60",
-      "matching": 0.0,
+      "matching": 1.0,
       "name": "SetTaskForceOwnerPointer",
       "type": 1
     },
@@ -22312,19 +22317,19 @@
     },
     {
       "address": "0x553a50",
-      "matching": 0.0,
+      "matching": 1.0,
       "name": "ApplyTaskForceSelectionModeForCurrentNationOrders",
       "type": 1
     },
     {
       "address": "0x553b10",
-      "matching": 0.25,
+      "matching": 0.41379310344827586,
       "name": "HasNoMapOrderEntryChildrenQueued",
       "type": 1
     },
     {
       "address": "0x553b50",
-      "matching": 0.125,
+      "matching": 0.5454545454545454,
       "name": "HasActiveMapOrderEntryChildren",
       "type": 1
     },
@@ -22402,7 +22407,7 @@
     },
     {
       "address": "0x554930",
-      "matching": 0.0,
+      "matching": 0.5555555555555556,
       "name": "SetTaskForceOrderSelectionByNationClassAndFlag",
       "type": 1
     },
@@ -22426,7 +22431,7 @@
     },
     {
       "address": "0x554ad0",
-      "matching": 0.06451612903225806,
+      "matching": 0.8275862068965517,
       "name": "CalculateMapOrderEntryAverageChildRatingX10",
       "type": 1
     },
@@ -22438,7 +22443,7 @@
     },
     {
       "address": "0x554c90",
-      "matching": 0.01904761904761905,
+      "matching": 0.018691588785046728,
       "name": "BuildTaskForceSelectionOverlayLabelText",
       "type": 1
     },
@@ -22462,7 +22467,7 @@
     },
     {
       "address": "0x555420",
-      "matching": 0.008968609865470852,
+      "matching": 0.5706666666666667,
       "name": "ResolveTaskForceOrderConflictAndPickCandidate",
       "type": 1
     },
@@ -22480,7 +22485,7 @@
     },
     {
       "address": "0x555c20",
-      "matching": 0.0,
+      "matching": 0.5945945945945946,
       "name": "ComputeTaskForceOrderTieBreakScore",
       "type": 1
     },
@@ -22492,13 +22497,13 @@
     },
     {
       "address": "0x555de0",
-      "matching": 0.014925373134328358,
+      "matching": 0.09210526315789473,
       "name": "IsTaskForceOrderMixWithinPriorityThresholds",
       "type": 1
     },
     {
       "address": "0x556010",
-      "matching": 0.030303030303030304,
+      "matching": 0.2,
       "name": "ComputeTaskForceOrderAggregateScore",
       "type": 1
     },
@@ -22510,13 +22515,13 @@
     },
     {
       "address": "0x5562c0",
-      "matching": 0.13333333333333333,
+      "matching": 0.8461538461538461,
       "name": "GetMapOrderEntryChildCount",
       "type": 1
     },
     {
       "address": "0x5563d0",
-      "matching": 0.18181818181818182,
+      "matching": 0.85,
       "name": "GetNavyOrderRankWithinNationBucket",
       "type": 1
     },
@@ -22528,13 +22533,13 @@
     },
     {
       "address": "0x5564f0",
-      "matching": 0.14285714285714285,
+      "matching": 0.8,
       "name": "ClearNavyOrderMapMarker",
       "type": 1
     },
     {
       "address": "0x556530",
-      "matching": 0.2702702702702703,
+      "matching": 0.32432432432432434,
       "name": "TNavyMgr::CreateObject",
       "type": 1
     },
@@ -22546,19 +22551,19 @@
     },
     {
       "address": "0x556590",
-      "matching": 0.2222222222222222,
+      "matching": 0.1111111111111111,
       "name": "ConstructNavyManager",
       "type": 1
     },
     {
       "address": "0x5565c0",
-      "matching": 0.9090909090909091,
+      "matching": 1.0,
       "name": "TNavyMgr::`scalar deleting destructor'",
       "type": 1
     },
     {
       "address": "0x5565f0",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "ResetNavyManagerVtable",
       "type": 1
     },
@@ -22576,7 +22581,7 @@
     },
     {
       "address": "0x556820",
-      "matching": 0.15384615384615385,
+      "matching": 1.0,
       "name": "DestroyNavyOrderAndChildren",
       "type": 1
     },
@@ -22618,7 +22623,7 @@
     },
     {
       "address": "0x556fd0",
-      "matching": 0.06666666666666667,
+      "matching": 0.44,
       "name": "ResetPrimaryOrderActiveFlagsAndClearManagerState",
       "type": 1
     },
@@ -22678,7 +22683,7 @@
     },
     {
       "address": "0x557870",
-      "matching": 0.4,
+      "matching": 1.0,
       "name": "ClearMapOrderProcessedFlagsChain",
       "type": 1
     },
@@ -22744,7 +22749,7 @@
     },
     {
       "address": "0x55a780",
-      "matching": 0.002129925452609159,
+      "matching": 0.109375,
       "name": "ResolveMapOrderPairConflictStep",
       "type": 1
     },
@@ -43667,6 +43672,6 @@
       "type": 5
     }
   ],
-  "file": "Imperialism.exe.gog-original",
+  "file": "Imperialism.exe",
   "format": 1
 }

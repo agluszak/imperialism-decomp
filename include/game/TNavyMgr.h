@@ -27,6 +27,11 @@ public:
   // PromoteMapOrderChainAndQueue (TTaskForce.cpp) all read/write this same
   // field via the g_pNavyOrderManager global.
   TTaskForce* orderListHead04;
+  // ctor initializes to -1; real purpose not yet identified from any confirmed reader.
+  short field08;
+  char pad0a[2];
+  // ctor initializes to 0; real purpose not yet identified from any confirmed reader.
+  int field0c;
 
   void RemoveOrdersByNationFromPrimarySecondaryAndTaskForceLists(short nationSlot);
   // 0x557170. Walks orderListHead04 (the same raw task-force-order node list
@@ -46,6 +51,20 @@ public:
   // currently queued and (re)inserts it at orderListHead04, returning true.
   bool MoveMapOrderEntryToQueueHeadIfValid(TTaskForce* entry); // 0x557080
 
+  // Called from TTaskForce::ResolveTaskForceOrderConflictAndPickCandidate's tail
+  // (ECX=g_pNavyOrderManager evidence at that callsite) when neither entry's priority
+  // clears the other's threshold and no tie-break resolves it outright. 2934 bytes with
+  // a heavy CString-building body (SEH frame, ~500-byte format buffer); not yet
+  // reverse-engineered in detail.
+  void ResolveMapOrderPairConflictStep(TTaskForce* leftEntry, TTaskForce* rightEntry); // 0x55a780
+
+  // Zeroes every g_pNavyPrimaryOrderListHead ship's field0c, destroys the whole
+  // orderListHead04 task-force queue, clears the head, and notifies
+  // g_pActiveMapOrderContext that no order entry is selected anymore.
+  void ResetPrimaryOrderActiveFlagsAndClearManagerState(); // 0x556fd0
+
   TNavyMgr();
 };
+
+ASSERT_SIZE(TNavyMgr, 0x10);
 

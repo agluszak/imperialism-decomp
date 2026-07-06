@@ -339,22 +339,6 @@ undefined4 WrapperFor_FreeHeapBufferIfNotNull_At004a6df0(void)
   return 0;
 }
 
-// ghidra_name DispatchMapInteractionPayloadAndResetWorkingFields
-// ghidra_proto undefined DispatchMapInteractionPayloadAndResetWorkingFields()
-// FUNCTION: IMPERIALISM 0x004a6e80
-undefined4 DispatchMapInteractionPayloadAndResetWorkingFields(void)
-{
-  return 0;
-}
-
-// ghidra_name TrimExcessNavyOrderSupportAndRebuildOrderBuffer
-// ghidra_proto undefined TrimExcessNavyOrderSupportAndRebuildOrderBuffer()
-// FUNCTION: IMPERIALISM 0x004a6ef0
-undefined4 TrimExcessNavyOrderSupportAndRebuildOrderBuffer(void)
-{
-  return 0;
-}
-
 // ghidra_name ValidateOrderSupportDeltaAndMarkDirectionalOverlays
 // ghidra_proto undefined ValidateOrderSupportDeltaAndMarkDirectionalOverlays()
 // FUNCTION: IMPERIALISM 0x004a7370

@@ -1091,22 +1091,6 @@ undefined4 WrapperFor_ftol_At0054efb0(void)
   return 0;
 }
 
-// ghidra_name BuildMapOrderBattleSideSnapshot
-// ghidra_proto void __cdecl BuildMapOrderBattleSideSnapshot(int pBattleSnapshotState, int nSideIndex, int pOrderEntry)
-// FUNCTION: IMPERIALISM 0x0054f110
-undefined4 BuildMapOrderBattleSideSnapshot(void)
-{
-  return 0;
-}
-
-// ghidra_name RefreshMapOrderBattleSideSnapshot
-// ghidra_proto void __cdecl RefreshMapOrderBattleSideSnapshot(int pBattleSnapshotState, int nSideIndex, int pOrderEntry)
-// FUNCTION: IMPERIALISM 0x0054f340
-undefined4 RefreshMapOrderBattleSideSnapshot(void)
-{
-  return 0;
-}
-
 // ghidra_name TShip::DestructTShip
 // ghidra_proto undefined DestructTShip()
 // FUNCTION: IMPERIALISM 0x0054f5f0
@@ -1147,42 +1131,10 @@ undefined4 CalculateMissionOrderPriorityScore(void)
   return 0;
 }
 
-// ghidra_name AdjustMapOrderNodeStatCapped499
-// ghidra_proto void __thiscall AdjustMapOrderNodeStatCapped499(short nDelta)
-// FUNCTION: IMPERIALISM 0x00550370
-undefined4 AdjustMapOrderNodeStatCapped499(void)
-{
-  return 0;
-}
-
 // ghidra_name TScatteredShipsMission::GetOrCreateMissionOrderEntryForNode
 // ghidra_proto void * __thiscall GetOrCreateMissionOrderEntryForNode(void)
 // FUNCTION: IMPERIALISM 0x005503a0
 undefined4 GetOrCreateMissionOrderEntryForNode(void)
-{
-  return 0;
-}
-
-// ghidra_name GetOrderNodeDescriptorWord20ByResourceType
-// ghidra_proto undefined GetOrderNodeDescriptorWord20ByResourceType()
-// FUNCTION: IMPERIALISM 0x00550510
-undefined4 GetOrderNodeDescriptorWord20ByResourceType(void)
-{
-  return 0;
-}
-
-// ghidra_name GetNavyPrimaryOrderNodeByIndex
-// ghidra_proto undefined GetNavyPrimaryOrderNodeByIndex()
-// FUNCTION: IMPERIALISM 0x00550640
-undefined4 GetNavyPrimaryOrderNodeByIndex(void)
-{
-  return 0;
-}
-
-// ghidra_name GetOrderNodeDescriptorWord0CByResourceType
-// ghidra_proto undefined GetOrderNodeDescriptorWord0CByResourceType()
-// FUNCTION: IMPERIALISM 0x00550820
-undefined4 GetOrderNodeDescriptorWord0CByResourceType(void)
 {
   return 0;
 }
@@ -1203,14 +1155,6 @@ undefined4 PruneOrPromoteOrderNodeWhenChildCostDepleted(void)
   return 0;
 }
 
-// ghidra_name ComputeMapOrderEntryHeuristicScore
-// ghidra_proto undefined ComputeMapOrderEntryHeuristicScore()
-// FUNCTION: IMPERIALISM 0x00550aa0
-undefined4 ComputeMapOrderEntryHeuristicScore(void)
-{
-  return 0;
-}
-
 // ghidra_name FormatLocalizedCommodityCountLabelByIndex
 // ghidra_proto undefined FormatLocalizedCommodityCountLabelByIndex()
 // FUNCTION: IMPERIALISM 0x00550c20
@@ -1219,58 +1163,10 @@ undefined4 FormatLocalizedCommodityCountLabelByIndex(void)
   return 0;
 }
 
-// ghidra_name GetResourceDescriptorWord0CByType
-// ghidra_proto undefined GetResourceDescriptorWord0CByType()
-// FUNCTION: IMPERIALISM 0x00550db0
-undefined4 GetResourceDescriptorWord0CByType(void)
-{
-  return 0;
-}
-
-// ghidra_name GetResourceDescriptorWord10ByType
-// ghidra_proto undefined GetResourceDescriptorWord10ByType()
-// FUNCTION: IMPERIALISM 0x00550de0
-undefined4 GetResourceDescriptorWord10ByType(void)
-{
-  return 0;
-}
-
-// ghidra_name GetResourceDescriptorWord14ByType
-// ghidra_proto undefined GetResourceDescriptorWord14ByType()
-// FUNCTION: IMPERIALISM 0x00550e10
-undefined4 GetResourceDescriptorWord14ByType(void)
-{
-  return 0;
-}
-
-// ghidra_name GetResourceDescriptorWord18ByType
-// ghidra_proto undefined GetResourceDescriptorWord18ByType()
-// FUNCTION: IMPERIALISM 0x00550e40
-undefined4 GetResourceDescriptorWord18ByType(void)
-{
-  return 0;
-}
-
 // ghidra_name GetResourceDescriptorWord20ByType
 // ghidra_proto undefined GetResourceDescriptorWord20ByType()
 // FUNCTION: IMPERIALISM 0x00550ea0
 undefined4 GetResourceDescriptorWord20ByType(void)
-{
-  return 0;
-}
-
-// ghidra_name GetResourceDescriptorWeightWord1ByType
-// ghidra_proto undefined GetResourceDescriptorWeightWord1ByType()
-// FUNCTION: IMPERIALISM 0x00550ed0
-undefined4 GetResourceDescriptorWeightWord1ByType(void)
-{
-  return 0;
-}
-
-// ghidra_name GetResourceDescriptorWord08ByTypeOffset
-// ghidra_proto undefined GetResourceDescriptorWord08ByTypeOffset()
-// FUNCTION: IMPERIALISM 0x00550f30
-undefined4 GetResourceDescriptorWord08ByTypeOffset(void)
 {
   return 0;
 }
@@ -1295,14 +1191,6 @@ undefined4 ReassignOrderNodeNationAndRebindParentCounters(void)
 // ghidra_proto undefined SelectNavyPrimaryOrderByNationAndRecomputePreferredChild()
 // FUNCTION: IMPERIALISM 0x00551850
 undefined4 SelectNavyPrimaryOrderByNationAndRecomputePreferredChild(void)
-{
-  return 0;
-}
-
-// ghidra_name FindCumulativeWeightBucketIndex
-// ghidra_proto undefined FindCumulativeWeightBucketIndex()
-// FUNCTION: IMPERIALISM 0x005519d0
-undefined4 FindCumulativeWeightBucketIndex(void)
 {
   return 0;
 }
@@ -1347,34 +1235,10 @@ undefined4 RecomputeNavyOrderSelectionPriorityChain_00552349(void)
   return 0;
 }
 
-// ghidra_name TTaskForce::ConstructTTaskForce
-// ghidra_proto undefined ConstructTTaskForce()
-// FUNCTION: IMPERIALISM 0x00552800
-undefined4 ConstructTTaskForce(void)
-{
-  return 0;
-}
-
-// ghidra_name ResetTTaskForceToSentinelVtable
-// ghidra_proto undefined ResetTTaskForceToSentinelVtable()
-// FUNCTION: IMPERIALISM 0x005528a0
-undefined4 ResetTTaskForceToSentinelVtable(void)
-{
-  return 0;
-}
-
 // ghidra_name RemoveTaskForceOrderNodesByNationAndClearSelectionState
 // ghidra_proto undefined RemoveTaskForceOrderNodesByNationAndClearSelectionState()
 // FUNCTION: IMPERIALISM 0x00552a70
 undefined4 RemoveTaskForceOrderNodesByNationAndClearSelectionState(void)
-{
-  return 0;
-}
-
-// ghidra_name SetTaskForceOwnerPointer
-// ghidra_proto undefined SetTaskForceOwnerPointer()
-// FUNCTION: IMPERIALISM 0x00552f60
-undefined4 SetTaskForceOwnerPointer(void)
 {
   return 0;
 }
@@ -1407,30 +1271,6 @@ undefined4 SetMapOrderType5AndQueue(void)
 // ghidra_proto undefined RefreshTaskForceSelectionFlagsForCurrentNationOrders()
 // FUNCTION: IMPERIALISM 0x005539c0
 undefined4 RefreshTaskForceSelectionFlagsForCurrentNationOrders(void)
-{
-  return 0;
-}
-
-// ghidra_name ApplyTaskForceSelectionModeForCurrentNationOrders
-// ghidra_proto undefined ApplyTaskForceSelectionModeForCurrentNationOrders()
-// FUNCTION: IMPERIALISM 0x00553a50
-undefined4 ApplyTaskForceSelectionModeForCurrentNationOrders(void)
-{
-  return 0;
-}
-
-// ghidra_name HasNoMapOrderEntryChildrenQueued
-// ghidra_proto undefined HasNoMapOrderEntryChildrenQueued()
-// FUNCTION: IMPERIALISM 0x00553b10
-undefined4 HasNoMapOrderEntryChildrenQueued(void)
-{
-  return 0;
-}
-
-// ghidra_name HasActiveMapOrderEntryChildren
-// ghidra_proto undefined HasActiveMapOrderEntryChildren()
-// FUNCTION: IMPERIALISM 0x00553b50
-undefined4 HasActiveMapOrderEntryChildren(void)
 {
   return 0;
 }

@@ -187,15 +187,10 @@ void TNavyMission::ReadFrom(TStream* stream) {
     resourceWeights2c[i] = SwapFloat(resourceWeights2c[i]);
   }
 
-  typedef void*(__cdecl * GetNavyPrimaryOrderNodeByIndex_t)(int index, int unused);
-  GetNavyPrimaryOrderNodeByIndex_t GetNavyPrimaryOrderNodeByIndex_fn =
-      reinterpret_cast<GetNavyPrimaryOrderNodeByIndex_t>(
-          (void*)&GetNavyPrimaryOrderNodeByIndex); // at 0x550640
-
   short nodeIdx = stream->ReadShort();
   if (nodeIdx > -1) {
     do {
-      void* orderNode = GetNavyPrimaryOrderNodeByIndex_fn(nodeIdx, 0);
+      TShip* orderNode = GetNavyPrimaryOrderNodeByIndex(nodeIdx);
       NoOpSlot84(reinterpret_cast<int>(orderNode), 0);
       nodeIdx = stream->ReadShort();
     } while (nodeIdx >= 0);

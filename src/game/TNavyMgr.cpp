@@ -1,12 +1,218 @@
 #include "game/TNavyMgr.h"
 
 #include "game/TAdmiral.h"
+#include "game/TArmyMgr.h"
+#include "game/TCountry.h"
+#include "game/TMapMgr.h"
+#include "game/TOcean.h"
 #include "game/TShip.h"
 #include "game/TObject.h"
 #include "game/TTaskForce.h"
+#include "game/CString.h"
+#include "game/global_data_tables.h"
+#include "game/map_order_battle_snapshot.h"
+
+extern undefined4 GenerateThreadLocalRandom15(void);
 
 extern "C" TShip* g_pNavyPrimaryOrderListHead;
 extern "C" TAdmiral* g_pNavySecondaryOrderListHead;
+
+// FUNCTION: IMPERIALISM 0x004a6e80
+void DispatchMapInteractionPayloadAndResetWorkingFields(MapOrderBattleSnapshot* snapshot) {
+  // TODO: port the leading dispatch call -- an unresolved vtable call on an
+  // unidentified receiver (`(**(*(this+4))+0x3c))(snapshot)`), not yet
+  // reverse-engineered. The trailing field resets below are confirmed real.
+  for (int side = 0; side < 2; ++side) {
+    delete[] snapshot->childRecords[side];
+    snapshot->childRecords[side] = nullptr;
+    snapshot->childCount[side] = 0;
+  }
+}
+
+namespace {
+// Resolves a raw TGlobalMapCityScoreRecord* back into its index in
+// g_pGlobalMapState's cityScoreTable. `unusedArg` is provably dead in the original
+// (0x50e2c0 only ever reads `cityState`), kept only so the real __thiscall
+// signature/stack cleanup matches.
+// FUNCTION: IMPERIALISM 0x0050e2c0
+int GetCityIndexFromCityStatePointer(TGlobalMapCityScoreRecord* cityState, int unusedArg) {
+  (void)unusedArg;
+  return static_cast<int>(cityState - g_pGlobalMapState->cityScoreTable);
+}
+
+// Shared by BuildMapOrderBattleSideSnapshot's two fixed-size name/label copies and its
+// per-child name copy: copies up to destSize-1 chars of `src` into `dest`, stopping at
+// the first NUL (matching the original's own byte-at-a-time copy loop).
+void CopyCStringIntoFixedBuffer(char* dest, int destSize, const char* src) {
+  int i = 0;
+  for (; i < destSize; ++i) {
+    char c = src[i];
+    dest[i] = c;
+    if (c == '\0') {
+      break;
+    }
+  }
+}
+
+// Sum, over childOrderList entries whose resource-type priorityTier is >= minTier, of
+// (child->tiebreak_strength/100 + resolveWeight*10 + 5)/10 -- the per-child "combat power"
+// term ResolveMapOrderPairConflictStep's tier-scoring loop accumulates as a float.
+float SumMapOrderChildPowerAtOrAboveTier(TMapOrderChildLinkNode* head, int minTier) {
+  float total = 0.0f;
+  for (TMapOrderChildLinkNode* node = head; node != nullptr; node = node->next) {
+    TTaskForce* child = node->object_ptr;
+    const TNavyOrderResourceDescriptor& descriptor =
+        g_NavyOrderResourceDescriptorTable[child->order_type];
+    if (descriptor.priorityTier < minTier) {
+      continue;
+    }
+    int power = (child->tiebreak_strength / 100 + descriptor.resolveWeight * 10 + 5) / 10;
+    total += static_cast<float>(power);
+  }
+  return total;
+}
+
+// Count of childOrderList entries whose resource-type priorityTier is >= minTier.
+int CountMapOrderChildrenAtOrAboveTier(TMapOrderChildLinkNode* head, int minTier) {
+  int count = 0;
+  for (TMapOrderChildLinkNode* node = head; node != nullptr; node = node->next) {
+    if (g_NavyOrderResourceDescriptorTable[node->object_ptr->order_type].priorityTier >= minTier) {
+      ++count;
+    }
+  }
+  return count;
+}
+
+int CountMapOrderChildren(TMapOrderChildLinkNode* head) {
+  int count = 0;
+  for (TMapOrderChildLinkNode* node = head; node != nullptr; node = node->next) {
+    ++count;
+  }
+  return count;
+}
+
+// Randomly applies a resource-weighted attrition roll (0x55ae70/0x55af36) to up to
+// `target` of `*headSlot`'s children: for each candidate node, rolls
+// rand()%currentCount < target to select it (a single-pass approximation of the real
+// per-node selection gate), then reduces its required_count by
+// 0.5 + taskForceWeight[child->order_type] * ((rand()%100+rand()%100+100) * 0.005) *
+// favorRatio * 0.01 (the confirmed real float constants at 0x65c3a8/0x65c3b0/0x65c3b8).
+void ApplyMapOrderConflictAttrition(TMapOrderChildLinkNode* head, int currentCount, int target,
+                                    float favorRatio) {
+  if (target <= 0) {
+    return;
+  }
+  int selected = 0;
+  for (TMapOrderChildLinkNode* node = head; node != nullptr && selected < target;
+       node = node->next) {
+    if (currentCount == target ||
+        static_cast<int>(GenerateThreadLocalRandom15()) % currentCount < target) {
+      ++selected;
+      int roll = static_cast<int>(GenerateThreadLocalRandom15()) % 100 +
+                 static_cast<int>(GenerateThreadLocalRandom15()) % 100 + 100;
+      TTaskForce* child = node->object_ptr;
+      float delta = 0.5f + g_NavyOrderResourceDescriptorTable[child->order_type].taskForceWeight *
+                               (roll * 0.005f) * favorRatio * -0.01f;
+      child->required_count = static_cast<short>(child->required_count - static_cast<short>(delta));
+    }
+  }
+}
+
+// Removes a depleted (required_count < 1) list head and prunes any other depleted entries
+// further down the chain; matches the real call sequence at 0x55afff/0x55b06e
+// (SetMapOrderActiveChildEntry(nullptr) + Free() + DeleteMapOrderChildLinkAndReturnNext on a
+// depleted head, else a side-effect-only PruneDefeatedMapOrderChildrenAndReturnHead(head->next)
+// call on a still-alive head) rather than TTaskForce::PruneDefeatedMapOrderChildrenAndReturnHead's
+// own equivalent-but-differently-sequenced internal logic.
+TMapOrderChildLinkNode* PruneMapOrderConflictHeadAndTail(TMapOrderChildLinkNode* head) {
+  if (head == nullptr) {
+    return nullptr;
+  }
+  TTaskForce* child = head->object_ptr;
+  if (child->required_count < 1) {
+    child->SetMapOrderActiveChildEntry(nullptr);
+    child->Free();
+    head = TTaskForce::DeleteMapOrderChildLinkAndReturnNext(head);
+    head = TTaskForce::PruneDefeatedMapOrderChildrenAndReturnHead(head);
+  } else {
+    TTaskForce::PruneDefeatedMapOrderChildrenAndReturnHead(head->next);
+  }
+  return head;
+}
+} // namespace
+
+// FUNCTION: IMPERIALISM 0x0054f110
+void BuildMapOrderBattleSideSnapshot(MapOrderBattleSnapshot* snapshot, int side,
+                                     TTaskForce* entry) {
+  snapshot->requiredCountByte[side] = static_cast<char>(entry->required_count);
+
+  CString terrainLabel;
+  g_apTerrainTypeDescriptorTable[entry->required_count]->FormatOverlayTerrainLabelText(
+      &terrainLabel);
+  CopyCStringIntoFixedBuffer(snapshot->nameBuffer[side], 0x20, static_cast<LPCSTR>(terrainLabel));
+
+  CString overlayLabel;
+  entry->BuildTaskForceSelectionOverlayLabelText(&overlayLabel);
+  CopyCStringIntoFixedBuffer(snapshot->overlayLabel[side], 0xff, static_cast<LPCSTR>(overlayLabel));
+
+  short childCount = static_cast<short>(entry->GetMapOrderEntryChildCount());
+  snapshot->childCount[side] = childCount;
+
+  MapOrderBattleSideChildRecord* records = nullptr;
+  if (childCount > 0) {
+    records = new MapOrderBattleSideChildRecord[childCount];
+    // Original only zeroes each record's first byte (a stride-0x2c loop writing one
+    // byte per record), not the whole record -- reproduced verbatim.
+    for (int i = 0; i < childCount; ++i) {
+      reinterpret_cast<char*>(&records[i])[0] = 0;
+    }
+  }
+  snapshot->childRecords[side] = records;
+
+  int idx = 0;
+  for (TMapOrderChildLinkNode* node = entry->childOrderList; node != nullptr; node = node->next) {
+    // These children are TShip primary-order nodes (not nested TTaskForce entries --
+    // confirmed via the CString read at +0x18, which only lines up with
+    // TShip::displayName18; TTaskForce's own +0x18 is contextAnchor, an int).
+    TShip* child = reinterpret_cast<TShip*>(node->object_ptr);
+    MapOrderBattleSideChildRecord& rec = records[idx];
+    rec.resourceType = child->resourceType04;
+    rec.stockOrRequired = child->stockLevel1c;
+    CopyCStringIntoFixedBuffer(rec.nameBuffer, 0x20, static_cast<LPCSTR>(child->displayName18));
+    rec.childPtr = child;
+    rec.strengthBucket = static_cast<short>(child->field30 / 100);
+    ++idx;
+  }
+}
+
+// FUNCTION: IMPERIALISM 0x0054f340
+void RefreshMapOrderBattleSideSnapshot(MapOrderBattleSnapshot* snapshot, int side,
+                                       TTaskForce* entry) {
+  short count = snapshot->childCount[side];
+  for (int i = 0; i < count; ++i) {
+    MapOrderBattleSideChildRecord& rec = snapshot->childRecords[side][i];
+    TShip* child = reinterpret_cast<TShip*>(rec.childPtr);
+    bool stillPresent = entry != nullptr &&
+                        TTaskForce::FindMissionOrderNodeById(
+                            entry->childOrderList, reinterpret_cast<TTaskForce*>(child)) != nullptr;
+    if (stillPresent) {
+      rec.stockOrRequired = child->stockLevel1c;
+      rec.strengthBucket = static_cast<short>(child->field30 / 100);
+    } else {
+      rec.stockOrRequired = 0;
+    }
+    // Sentinel/debug marker written unconditionally each pass, matching the original's
+    // own literal write (ASCII bytes "yvan", real meaning not recovered).
+    rec.childPtr = reinterpret_cast<void*>(0x6e617679);
+  }
+
+  if (entry != nullptr && entry->attachment == 5) {
+    int cityIndex = GetCityIndexFromCityStatePointer(
+        reinterpret_cast<TGlobalMapCityScoreRecord*>(entry->owner), 0);
+    g_pMapContextActionManager->TrimExcessNavyOrderSupportAndRebuildOrderBuffer(
+        snapshot->requiredCountByte[side], cityIndex);
+  }
+}
 // SYNTHETIC: IMPERIALISM 0x00556530
 // TNavyMgr::CreateObject
 
@@ -15,10 +221,13 @@ extern "C" TAdmiral* g_pNavySecondaryOrderListHead;
 
 IMPLEMENT_DYNCREATE(TNavyMgr, TObject)
 
-TNavyMgr::TNavyMgr() : orderListHead04(0) {}
+// FUNCTION: IMPERIALISM 0x00556590
+TNavyMgr::TNavyMgr() : orderListHead04(0), field08(-1), field0c(0) {}
 
 // SYNTHETIC: IMPERIALISM 0x005565c0
 // TNavyMgr::`scalar deleting destructor'
+
+// FUNCTION: IMPERIALISM 0x005565f0
 TNavyMgr::~TNavyMgr() {}
 
 void TNavyMgr::Free() {}
@@ -51,6 +260,18 @@ static void RemoveMatchingTaskForceOrders(TNavyMgr* navyManager, short nationSlo
     }
     node = nextNode;
   }
+}
+
+// FUNCTION: IMPERIALISM 0x00556fd0
+void TNavyMgr::ResetPrimaryOrderActiveFlagsAndClearManagerState() {
+  for (TShip* ship = g_pNavyPrimaryOrderListHead; ship != nullptr; ship = ship->nextOlder24) {
+    ship->field0c = 0;
+  }
+  if (orderListHead04 != nullptr) {
+    orderListHead04->DestroyNavyOrderAndChildren();
+  }
+  orderListHead04 = nullptr;
+  g_pActiveMapOrderContext->EnsureSelectedTaskForceForOrderOwnerAndRefresh(nullptr);
 }
 
 // FUNCTION: IMPERIALISM 0x00557080
@@ -138,4 +359,170 @@ void TNavyMgr::RemoveOrdersByNationFromPrimarySecondaryAndTaskForceLists(short n
 
   RemoveMatchingSecondaryOrders(nationSlot);
   RemoveMatchingTaskForceOrders(this, nationSlot);
+}
+
+// FUNCTION: IMPERIALISM 0x0055a780
+void TNavyMgr::ResolveMapOrderPairConflictStep(TTaskForce* leftEntry, TTaskForce* rightEntry) {
+  MapOrderBattleSnapshot snapshot;
+  BuildMapOrderBattleSideSnapshot(&snapshot, 0, leftEntry);
+  BuildMapOrderBattleSideSnapshot(&snapshot, 1, rightEntry);
+
+  int leftStartCount = CountMapOrderChildren(leftEntry->childOrderList);
+  int rightStartCount = CountMapOrderChildren(rightEntry->childOrderList);
+
+  int maxTier = 1;
+  for (TMapOrderChildLinkNode* node = leftEntry->childOrderList; node != nullptr;
+       node = node->next) {
+    int tier = g_NavyOrderResourceDescriptorTable[node->object_ptr->order_type].priorityTier;
+    if (tier > maxTier) {
+      maxTier = tier;
+    }
+  }
+  for (TMapOrderChildLinkNode* rightNode = rightEntry->childOrderList; rightNode != nullptr;
+       rightNode = rightNode->next) {
+    int tier = g_NavyOrderResourceDescriptorTable[rightNode->object_ptr->order_type].priorityTier;
+    if (tier > maxTier) {
+      maxTier = tier;
+    }
+  }
+
+  // Per-attachment "convergence tolerance" the winning-tier ratio must clear for that side
+  // to be judged to have genuinely won the tier (the real {1.1,0.95,0.8} float table,
+  // indexed by the packed order_type/order_strength dword at +0x04 -- a single offset
+  // reused as two shorts elsewhere and as one combined int here, matching the
+  // type-modeling guardrail's dual-purpose-offset exception).
+  static const float kTierConvergenceThreshold[3] = {1.1f, 0.95f, 0.8f};
+  float leftThreshold = kTierConvergenceThreshold[*reinterpret_cast<int*>(&leftEntry->order_type)];
+  float rightThreshold =
+      kTierConvergenceThreshold[*reinterpret_cast<int*>(&rightEntry->order_type)];
+
+  int candidateTier = maxTier;
+  bool tierUnreachable = false;
+
+  for (;;) {
+    // Each side's "current active order" tiebreak bucket -- TODO: the real chain
+    // (entry->activeChildEntry->attached_entity interpreted as a pointer to an
+    // unidentified record, reading a short at +0x10) isn't recovered yet; treated as 0
+    // (no scaling correction) pending a dedicated class-recovery pass.
+    int leftBucket = 0;
+    int rightBucket = 0;
+
+    int bestLeftFavorTier = 0;
+    float bestLeftFavorRatio = 0.0f;
+    int bestRightFavorTier = 0;
+    float bestRightFavorRatio = 0.0f;
+    for (int tier = 1; tier <= maxTier; ++tier) {
+      float leftPower = SumMapOrderChildPowerAtOrAboveTier(leftEntry->childOrderList, tier) *
+                        (1.0f + leftBucket * 0.1f);
+      float rightPower = SumMapOrderChildPowerAtOrAboveTier(rightEntry->childOrderList, tier) *
+                         (1.0f + rightBucket * 0.1f);
+      float leftFavorRatio = leftPower / rightPower;
+      if (leftFavorRatio > bestLeftFavorRatio) {
+        bestLeftFavorTier = tier;
+        bestLeftFavorRatio = leftFavorRatio;
+      }
+      float rightFavorRatio = rightPower / leftPower;
+      if (rightFavorRatio > bestRightFavorRatio) {
+        bestRightFavorTier = tier;
+        bestRightFavorRatio = rightFavorRatio;
+      }
+    }
+
+    // 0 = tier should drop for this side, 2 = tier should rise, 1 = holds.
+    int leftTierAdjust;
+    if (bestLeftFavorTier < candidateTier) {
+      leftTierAdjust = 0;
+    } else if (bestLeftFavorRatio >= leftThreshold || bestLeftFavorTier > candidateTier) {
+      leftTierAdjust = 2;
+    } else {
+      leftTierAdjust = 1;
+    }
+    int rightTierAdjust;
+    if (bestRightFavorTier < candidateTier) {
+      rightTierAdjust = 0;
+    } else if (bestRightFavorRatio >= rightThreshold || bestRightFavorTier > candidateTier) {
+      rightTierAdjust = 2;
+    } else {
+      rightTierAdjust = 1;
+    }
+
+    int leftWeight = (leftBucket + 10) * leftEntry->CalculateMapOrderEntryAverageChildRatingX10();
+    int rightWeight =
+        (rightBucket + 10) * rightEntry->CalculateMapOrderEntryAverageChildRatingX10();
+    int totalWeight = leftWeight + rightWeight;
+
+    if (static_cast<int>(GenerateThreadLocalRandom15()) % totalWeight < leftWeight) {
+      if (leftTierAdjust == 0) {
+        --candidateTier;
+      }
+      if (leftTierAdjust == 2) {
+        ++candidateTier;
+      }
+    }
+    if (static_cast<int>(GenerateThreadLocalRandom15()) % totalWeight < rightWeight) {
+      if (rightTierAdjust == 0) {
+        --candidateTier;
+      }
+      if (rightTierAdjust == 2) {
+        ++candidateTier;
+      }
+    }
+    if (candidateTier < 1) {
+      candidateTier = 1;
+    }
+
+    if (candidateTier > maxTier) {
+      tierUnreachable = true;
+      break;
+    }
+
+    int leftEligible = CountMapOrderChildrenAtOrAboveTier(leftEntry->childOrderList, candidateTier);
+    int rightEligible =
+        CountMapOrderChildrenAtOrAboveTier(rightEntry->childOrderList, candidateTier);
+    int leftCurrentCount = CountMapOrderChildren(leftEntry->childOrderList);
+    int rightCurrentCount = CountMapOrderChildren(rightEntry->childOrderList);
+
+    int leftAttritionTarget = rightEligible < leftCurrentCount ? rightEligible : leftCurrentCount;
+    ApplyMapOrderConflictAttrition(leftEntry->childOrderList, leftCurrentCount, leftAttritionTarget,
+                                   bestLeftFavorRatio);
+    int rightAttritionTarget = leftEligible < rightCurrentCount ? leftEligible : rightCurrentCount;
+    ApplyMapOrderConflictAttrition(rightEntry->childOrderList, rightCurrentCount,
+                                   rightAttritionTarget, bestRightFavorRatio);
+
+    leftEntry->childOrderList = PruneMapOrderConflictHeadAndTail(leftEntry->childOrderList);
+    leftEntry->RecomputeMapOrderChildAggregateMetric();
+    bool leftEmpty = leftEntry->childOrderList == nullptr;
+
+    rightEntry->childOrderList = PruneMapOrderConflictHeadAndTail(rightEntry->childOrderList);
+    rightEntry->RecomputeMapOrderChildAggregateMetric();
+    bool rightEmpty = rightEntry->childOrderList == nullptr;
+
+    if (leftEmpty || rightEmpty) {
+      break;
+    }
+  }
+
+  bool leftEliminated = leftEntry->childOrderList == nullptr;
+  bool rightEliminated = rightEntry->childOrderList == nullptr;
+  if (!tierUnreachable && (leftEliminated != rightEliminated)) {
+    TTaskForce* loser = leftEliminated ? leftEntry : rightEntry;
+    TTaskForce* winner = leftEliminated ? rightEntry : leftEntry;
+    int loserStart = leftEliminated ? leftStartCount : rightStartCount;
+    int bump = loserStart * 5 + candidateTier;
+    int winnerCount = CountMapOrderChildren(winner->childOrderList);
+    if (winnerCount > 0) {
+      for (TMapOrderChildLinkNode* node = winner->childOrderList; node != nullptr;
+           node = node->next) {
+        node->object_ptr->AdjustMapOrderNodeStatCapped499(
+            static_cast<short>((bump * 3) / winnerCount));
+      }
+    }
+    loser->eliminatedFlag26 = 1;
+  }
+
+  RefreshMapOrderBattleSideSnapshot(&snapshot, 0,
+                                    leftEntry->childOrderList != nullptr ? leftEntry : nullptr);
+  RefreshMapOrderBattleSideSnapshot(&snapshot, 1,
+                                    rightEntry->childOrderList != nullptr ? rightEntry : nullptr);
+  DispatchMapInteractionPayloadAndResetWorkingFields(&snapshot);
 }
