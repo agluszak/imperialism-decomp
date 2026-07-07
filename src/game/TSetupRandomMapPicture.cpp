@@ -1,4 +1,6 @@
 #include "game/TSetupRandomMapPicture.h"
+
+#include "game/TUiEvent.h"
 // SYNTHETIC: IMPERIALISM 0x00576ca0
 // TSetupRandomMapPicture::CreateObject
 
@@ -33,4 +35,12 @@ undefined TSetupRandomMapPicture::PostTurnEvent5DCOrResetLocalUiState() {
 }
 
 // FUNCTION: IMPERIALISM 0x005782f0
-void TSetupRandomMapPicture::ForwardParam(int param) {}
+void TSetupRandomMapPicture::ForwardParam(int param) {
+  TKeyCommandEvent* commandEvent = reinterpret_cast<TKeyCommandEvent*>(param);
+  int commandCode = commandEvent->commandCode;
+  if (commandCode == 3 || commandCode == 0xd) {
+    ApplyNationSelectionAndMaybePostTurnEvent5E4();
+  } else if (commandCode == 0x1b) {
+    PostTurnEvent5DCOrResetLocalUiState();
+  }
+}
