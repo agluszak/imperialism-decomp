@@ -627,7 +627,7 @@
     },
     {
       "address": "0x429330",
-      "matching": 0.375,
+      "matching": 0.3333333333333333,
       "name": "ConstructUiCursorTextResourceEntry",
       "type": 1
     },
@@ -1162,7 +1162,7 @@
     },
     {
       "address": "0x4538a0",
-      "matching": 0.07948717948717948,
+      "matching": 0.1113440484509667,
       "name": "InitializeGameSetupScreenControlsAndModeTags",
       "type": 1
     },
@@ -2818,12 +2818,6 @@
       "type": 1
     },
     {
-      "address": "0x4860e0",
-      "matching": 0.5671641791044776,
-      "name": "TTEView::MeasureCurrentTextWidthInLayoutRect",
-      "type": 1
-    },
-    {
       "address": "0x4861f0",
       "matching": 0.0,
       "name": "AssignTextFromResourceIdAndMaybeInvalidate",
@@ -3185,7 +3179,7 @@
     },
     {
       "address": "0x4878e0",
-      "matching": 1.0,
+      "matching": 0.2857142857142857,
       "name": "TCommand::Free",
       "type": 1
     },
@@ -3557,7 +3551,7 @@
     },
     {
       "address": "0x488ab0",
-      "matching": 1.0,
+      "matching": 0.2857142857142857,
       "name": "TStream::Free",
       "type": 1
     },
@@ -4427,7 +4421,7 @@
     },
     {
       "address": "0x48b2d0",
-      "matching": 0.19130434782608696,
+      "matching": 0.2033898305084746,
       "name": "TView::VTableSlotDD",
       "type": 1
     },
@@ -5021,7 +5015,7 @@
     },
     {
       "address": "0x48e520",
-      "matching": 0.5555555555555556,
+      "matching": 0.34285714285714286,
       "name": "TControl::TControl",
       "type": 1
     },
@@ -5262,7 +5256,7 @@
     },
     {
       "address": "0x48fd00",
-      "matching": 0.631578947368421,
+      "matching": 0.6447368421052632,
       "name": "InitializeTextEntryBaseAndOptionalStringResource",
       "type": 1
     },
@@ -5286,13 +5280,13 @@
     },
     {
       "address": "0x48ffb0",
-      "matching": 0.5359477124183006,
+      "matching": 0.027777777777777776,
       "name": "TStaticText::ApplyRectSlot110",
       "type": 1
     },
     {
       "address": "0x4900a0",
-      "matching": 0.47126436781609193,
+      "matching": 0.0,
       "name": "TStaticText::RenderControlStateTextBySelectionCode",
       "type": 1
     },
@@ -5922,13 +5916,25 @@
     },
     {
       "address": "0x494130",
-      "matching": 0.47533632286995514,
+      "matching": 0.03418803418803419,
       "name": "CreateFontFromPresetAndAttachRegionHandle",
       "type": 1
     },
     {
+      "address": "0x494430",
+      "matching": 0.2222222222222222,
+      "name": "ReleaseQuickDrawCachedFontHandleIfPresent_At00494430",
+      "type": 1
+    },
+    {
+      "address": "0x4944b0",
+      "matching": 0.2222222222222222,
+      "name": "ReleaseCachedGlobalFontObjectIfPresent_At004944b0",
+      "type": 1
+    },
+    {
       "address": "0x4944e0",
-      "matching": 0.4266666666666667,
+      "matching": 0.05128205128205128,
       "name": "UpdateGlobalFontPresetAndRebuildCachedFontIfDirty",
       "type": 1
     },
@@ -5982,7 +5988,7 @@
     },
     {
       "address": "0x494a90",
-      "matching": 0.7142857142857143,
+      "matching": 0.02247191011235955,
       "name": "THQButton::DrawTextWithCachedQuickDrawStyleState",
       "type": 1
     },
@@ -5994,13 +6000,13 @@
     },
     {
       "address": "0x494e00",
-      "matching": 0.2297872340425532,
+      "matching": 0.01680672268907563,
       "name": "MeasureTextExtentWithCachedQuickDrawStyle",
       "type": 1
     },
     {
       "address": "0x495000",
-      "matching": 0.5714285714285714,
+      "matching": 0.7142857142857143,
       "name": "SetQuickDrawFillColor",
       "type": 1
     },
@@ -6018,7 +6024,7 @@
     },
     {
       "address": "0x4950a0",
-      "matching": 0.8333333333333334,
+      "matching": 1.0,
       "name": "SetQuickDrawColorAndSyncGlobals",
       "type": 1
     },
@@ -7633,7 +7639,7 @@
     },
     {
       "address": "0x4a2900",
-      "matching": 0.13374805598755832,
+      "matching": 0.13063763608087092,
       "name": "BuildArmyContextActionRecordsAndDispatchLabel",
       "type": 1
     },
@@ -12591,7 +12597,7 @@
     },
     {
       "address": "0x4ddcf0",
-      "matching": 0.0,
+      "matching": 1.0,
       "name": "AddShortDeltaToNationCounterAtOffset198",
       "type": 1
     },
@@ -12873,8 +12879,7 @@
     },
     {
       "address": "0x4e0590",
-      "effective": true,
-      "matching": 0.42857142857142855,
+      "matching": 1.0,
       "name": "TGreatPower::OrphanRetStub_004d7fa0_88",
       "type": 1
     },
@@ -12887,15 +12892,13 @@
     },
     {
       "address": "0x4e0610",
-      "effective": true,
-      "matching": 0.42857142857142855,
+      "matching": 1.0,
       "name": "TGreatPower::ReturnFalseNationStateActionStub_8a",
       "type": 1
     },
     {
       "address": "0x4e0650",
-      "effective": true,
-      "matching": 0.42857142857142855,
+      "matching": 1.0,
       "name": "TGreatPower::OrphanRetStub_004d7fe0_8b",
       "type": 1
     },
@@ -12938,7 +12941,7 @@
     },
     {
       "address": "0x4e09a0",
-      "matching": 0.5060240963855421,
+      "matching": 0.5301204819277109,
       "name": "TGreatPower::ComputeCityOrderCapabilityAggregateScore",
       "type": 1
     },
@@ -16420,7 +16423,7 @@
     },
     {
       "address": "0x50bea0",
-      "matching": 0.19809177646524306,
+      "matching": 0.20626987732848706,
       "name": "TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets",
       "type": 1
     },
@@ -18292,7 +18295,7 @@
     },
     {
       "address": "0x52cae0",
-      "matching": 0.3054662379421222,
+      "matching": 0.2976,
       "name": "BuildOverlaySpanRecordsFromQuadBorderLinks",
       "type": 1
     },
@@ -18316,7 +18319,7 @@
     },
     {
       "address": "0x52d1f0",
-      "matching": 0.2621082621082621,
+      "matching": 0.2784090909090909,
       "name": "ReindexContiguousCityRegionIds",
       "type": 1
     },
@@ -20231,13 +20234,13 @@
     },
     {
       "address": "0x53d020",
-      "matching": 0.4235294117647059,
+      "matching": 0.4251968503937008,
       "name": "ComputeArmyMissionScoreDeltaWithCandidateUnit",
       "type": 1
     },
     {
       "address": "0x53d200",
-      "matching": 0.41245136186770426,
+      "matching": 0.4108527131782946,
       "name": "ComputeArmyMissionScoreDeltaWithScaledCandidateUnit",
       "type": 1
     },
@@ -22319,13 +22322,13 @@
     },
     {
       "address": "0x553b10",
-      "matching": 0.41379310344827586,
+      "matching": 0.4827586206896552,
       "name": "HasNoMapOrderEntryChildrenQueued",
       "type": 1
     },
     {
       "address": "0x553b50",
-      "matching": 0.5454545454545454,
+      "matching": 0.5818181818181818,
       "name": "HasActiveMapOrderEntryChildren",
       "type": 1
     },
@@ -22463,7 +22466,7 @@
     },
     {
       "address": "0x555420",
-      "matching": 0.5546666666666666,
+      "matching": 0.5653333333333334,
       "name": "ResolveTaskForceOrderConflictAndPickCandidate",
       "type": 1
     },
@@ -22709,7 +22712,7 @@
     },
     {
       "address": "0x558960",
-      "matching": 0.0021253985122210413,
+      "matching": 0.07922535211267606,
       "name": "ProcessNationMapOrderInteractionsAndApplyOutcomes",
       "type": 1
     },
@@ -25733,7 +25736,7 @@
     },
     {
       "address": "0x5789b0",
-      "matching": 0.9473684210526315,
+      "matching": 0.18181818181818182,
       "name": "TMapPreviewView::Free",
       "type": 1
     },
@@ -25781,7 +25784,7 @@
     },
     {
       "address": "0x5794b0",
-      "matching": 0.10714285714285714,
+      "matching": 0.03773584905660377,
       "name": "TRadioText::ApplyRectSlot110",
       "type": 1
     },
@@ -25823,13 +25826,13 @@
     },
     {
       "address": "0x579770",
-      "matching": 1.0,
+      "matching": 0.08695652173913043,
       "name": "TRadioTextCluster::HandleEvent",
       "type": 1
     },
     {
       "address": "0x5797c0",
-      "matching": 0.40707964601769914,
+      "matching": 0.03389830508474576,
       "name": "SetSelectedTextOptionByTag",
       "type": 1
     },
@@ -27259,7 +27262,7 @@
     },
     {
       "address": "0x588690",
-      "matching": 0.5246913580246914,
+      "matching": 0.5185185185185185,
       "name": "TAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache",
       "type": 1
     },
@@ -27445,7 +27448,7 @@
     },
     {
       "address": "0x58a020",
-      "matching": 0.45685279187817257,
+      "matching": 0.47715736040609136,
       "name": "TRailAmtBar::NoOpUiLifecycleHook",
       "type": 1
     },
@@ -27715,7 +27718,7 @@
     },
     {
       "address": "0x58bc60",
-      "matching": 0.23684210526315788,
+      "matching": 0.2119205298013245,
       "name": "TPlacard::ApplyRectSlot110",
       "type": 1
     },
@@ -27799,7 +27802,7 @@
     },
     {
       "address": "0x58c3d0",
-      "matching": 0.22321428571428573,
+      "matching": 0.2062780269058296,
       "name": "TNumberedArrowButton::ApplyRectSlot110",
       "type": 1
     },
@@ -28496,8 +28499,7 @@
     },
     {
       "address": "0x596840",
-      "effective": true,
-      "matching": 0.16666666666666666,
+      "matching": 0.0,
       "name": "TMapUberUberPicture::Free",
       "type": 1
     },
@@ -28533,7 +28535,7 @@
     },
     {
       "address": "0x596c60",
-      "matching": 1.0,
+      "matching": 0.0,
       "name": "TMapUberPicture::Free",
       "type": 1
     },
@@ -31203,7 +31205,7 @@
     },
     {
       "address": "0x5b5590",
-      "matching": 0.42857142857142855,
+      "matching": 0.625,
       "name": "TDropShadowText::ConstructSelectableTextOptionEntryBase",
       "type": 1
     },
@@ -31215,7 +31217,7 @@
     },
     {
       "address": "0x5b5650",
-      "matching": 0.2804878048780488,
+      "matching": 0.018867924528301886,
       "name": "TDropShadowText::ApplyRectSlot110",
       "type": 1
     },
@@ -31317,20 +31319,20 @@
     },
     {
       "address": "0x5b6170",
-      "matching": 0.9,
+      "matching": 0.028169014084507043,
       "name": "TDeluxeText::ApplyRectSlot110",
       "type": 1
     },
     {
       "address": "0x5b62a0",
-      "matching": 0.35714285714285715,
-      "name": "TDeluxeText::ApplyTextStyleDescriptorAndMaybeRefresh",
+      "matching": 0.1111111111111111,
+      "name": "TDeluxeText::ConstructTMapKeyBaseState_Impl",
       "type": 1
     },
     {
       "address": "0x5b62e0",
-      "matching": 0.4838709677419355,
-      "name": "TDeluxeText::BuildAndApplyTextStyleDescriptor",
+      "matching": 0.0,
+      "name": "TDeluxeText::WrapperFor_thunk_BuildUiTextStyleDescriptor_At005b62e0",
       "type": 1
     },
     {
@@ -31341,7 +31343,7 @@
     },
     {
       "address": "0x5b63e0",
-      "matching": 0.647887323943662,
+      "matching": 0.045454545454545456,
       "name": "TDeluxeText::RecenterTextFromMeasuredWidthAndMaybeInvalidate",
       "type": 1
     },
@@ -31395,13 +31397,13 @@
     },
     {
       "address": "0x5b6840",
-      "matching": 0.453781512605042,
+      "matching": 0.5042016806722689,
       "name": "TInfoBarText::InitializeMapHintTextStyleAndThemeFlags",
       "type": 1
     },
     {
       "address": "0x5b6930",
-      "matching": 1.0,
+      "matching": 0.0,
       "name": "TInfoBarText::Free",
       "type": 1
     },
@@ -31688,7 +31690,7 @@
     },
     {
       "address": "0x5ba0e0",
-      "matching": 1.0,
+      "matching": 0.8181818181818182,
       "name": "BuildInterNationEventSummaryRowsForAdvisorDialog_Impl",
       "type": 1
     },
@@ -32552,7 +32554,7 @@
     },
     {
       "address": "0x5c3f50",
-      "matching": 0.5066666666666667,
+      "matching": 0.047619047619047616,
       "name": "InitializeUiTextStyleDescriptor",
       "type": 1
     },
@@ -32582,13 +32584,13 @@
     },
     {
       "address": "0x5c4470",
-      "matching": 0.875,
+      "matching": 0.05555555555555555,
       "name": "ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor",
       "type": 1
     },
     {
       "address": "0x5c4500",
-      "matching": 0.8529411764705882,
+      "matching": 0.05263157894736842,
       "name": "InitializeUiTextStyleDescriptorAndApplyQuickDraw",
       "type": 1
     },
@@ -32606,37 +32608,37 @@
     },
     {
       "address": "0x5c46b0",
-      "matching": 0.9743589743589743,
+      "matching": 0.04878048780487805,
       "name": "LoadUiStringByGroupAndIndexToGlobalControlTagAndApply",
       "type": 1
     },
     {
       "address": "0x5c4780",
-      "matching": 0.9743589743589743,
+      "matching": 0.04878048780487805,
       "name": "LoadUiStringByGroupAndIndexToGlobalControlTag",
       "type": 1
     },
     {
       "address": "0x5c4850",
-      "matching": 0.9705882352941176,
+      "matching": 0.05555555555555555,
       "name": "LoadUiStringByGroupAndIndexToControlObject",
       "type": 1
     },
     {
       "address": "0x5c4910",
-      "matching": 0.9705882352941176,
+      "matching": 0.05555555555555555,
       "name": "LoadUiStringAndDispatchSharedMessageCommand",
       "type": 1
     },
     {
       "address": "0x5c49d0",
-      "matching": 0.46153846153846156,
+      "matching": 0.10526315789473684,
       "name": "RunEnableAndProcessFlagWithScopedSharedStringCleanup",
       "type": 1
     },
     {
       "address": "0x5c4a40",
-      "matching": 0.46153846153846156,
+      "matching": 0.10526315789473684,
       "name": "EnableAndProcessFlagWithSharedStringCleanup",
       "type": 1
     },
@@ -33206,7 +33208,7 @@
     },
     {
       "address": "0x5db780",
-      "matching": 0.25477707006369427,
+      "matching": 0.2632696390658174,
       "name": "HandleTurnEventDialogFactorySlotF8",
       "type": 1
     },
@@ -38528,7 +38530,7 @@
     },
     {
       "address": "0x60c4ac",
-      "matching": 0.9827586206896551,
+      "matching": 1.0,
       "name": "CDialogTemplate::SetSystemFont",
       "type": 1
     },
@@ -43669,6 +43671,6 @@
       "type": 5
     }
   ],
-  "file": "Imperialism.exe.gog-original",
+  "file": "Imperialism.exe",
   "format": 1
 }

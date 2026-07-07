@@ -2209,6 +2209,12 @@ void TGreatPower::ApplyIndexedResourceDeltaAndAdjustNationTotals(int resourceInd
   }
 }
 
+// FUNCTION: IMPERIALISM 0x004ddcf0
+void TGreatPower::AddShortDeltaToNationCounterAtOffset198(short index, short delta) {
+  this->relationDeltaSnapshot[index] =
+      static_cast<short>(this->relationDeltaSnapshot[index] + delta);
+}
+
 // FUNCTION: IMPERIALISM 0x004ddd20
 void TGreatPower::ClearDiplomacyState1c6ForTarget(short targetSlot) {
   this->diplomacyState1c6[targetSlot] = 0;

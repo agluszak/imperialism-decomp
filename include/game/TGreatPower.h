@@ -322,6 +322,11 @@ public:
 
   void LoadNationDisplayNameSharedRefFromField8(CString* destString);
 
+  // 0x004ddcf0. Adds `delta` to relationDeltaSnapshot[index] (the +0x198 per-nation
+  // short counter array). Called from
+  // TNavyMgr::ProcessNationMapOrderInteractionsAndApplyOutcomes.
+  void AddShortDeltaToNationCounterAtOffset198(short index, short delta);
+
   // Clamped diplomacy budget (treasury + base/100, floored at 0). Header-inline:
   // the original inlines this exact clamp into both CanAfford* bodies (0x004de700 /
   // 0x004de790), flowing the value through the eax return slot.

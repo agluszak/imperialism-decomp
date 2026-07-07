@@ -8,9 +8,12 @@
 #include "game/TOcean.h"
 #include "game/TShip.h"
 #include "game/TObject.h"
+#include "game/TSimMgr.h"
 #include "game/TTaskForce.h"
+#include "game/TZone.h"
 #include "game/CString.h"
 #include "game/global_data_tables.h"
+#include "game/localization_text_helpers.h"
 #include "game/map_order_battle_snapshot.h"
 
 extern undefined4 GenerateThreadLocalRandom15(void);
@@ -393,26 +396,82 @@ void TNavyMgr::ProcessNationMapOrderInteractionsAndApplyOutcomes(short mode) {
         if (entryValue == 0) {
           continue;
         }
-        // TODO: promote outcome application (large, but no longer blocked on class
-        // recovery). Each live entry builds a localized diplomacy/order-exchange event
-        // message and, gated by `mode` and the tracked-entry fields, applies the
-        // exchange outcome: resource transfers between `nation` and `entryTargetNation`
-        // (TGreatPower::SetNationTransferTargetCodeAndNotifyEligiblePeers /
-        // AssignPayloadToTrackedSlotEntryMatchingField2), order-node
-        // tiebreak_strength/required_count writes capped at 499, and per-nation counter
-        // deltas (TGreatPower::AddShortDeltaToNationCounterAtOffset198), reusing the same
-        // MapOrderBattleSnapshot child-record arrays + DispatchMapInteractionPayload-
-        // AndResetWorkingFields cleanup ResolveMapOrderPairConflictStep uses. The
-        // message text is built through real TSimMgr methods -- the "g_pLocalizationTable"
-        // Ghidra shows here is g_pSimMgr itself (vtable 0x662a58): the calls it renders
-        // as vtable byte 0x7c / 0x84 are TSimMgr::GetStringPrelude and
-        // TSimMgr::GetString(codeGroup, offset, CString*), both already modeled, plus
-        // scanBracketExpressions(g_pSimMgr, ...). Remaining work is an ordinary
-        // decomp-loop port of the message/outcome spine, not a prerequisite.
+
+        // `entryKind` carries the exchange direction (1 = order offered by this
+        // nation, 0 = order offered to it); `entryPayload` is the offered order
+        // entry, `entryValue` the transferred amount.
+        short orderMode = entryKind;
+        short offerNation = (orderMode != 1) ? entryTargetNation : nation;
+        short acceptNation = (orderMode != 1) ? nation : entryTargetNation;
+        TTaskForce* orderEntry = reinterpret_cast<TTaskForce*>(entryPayload);
+
+        // The current map-order context: interactions the context deems ineligible are
+        // filtered by SelectEligibleMapOrderInteractionForNationAndContext (0x557f10, a
+        // __thiscall decision on the map-context manager). That helper is still an
+        // unported stub, so its eligibility gate is a documented follow-up here rather
+        // than a fabricated call; the context is resolved either way.
+        TZone* portZoneContext = TZone::FindFirstPortZoneContextByNation(nation);
+        (void)portZoneContext;
+
+        // Build the localized order-exchange event message: the base template
+        // (GetString group 0x273c) expanded through g_pSimMgr's bracket-expression
+        // helper. The original also splices in a per-commodity count label via
+        // FormatLocalizedCommodityCountLabelByIndex (0x550c20) -- that helper and its
+        // shared-string-concat subtree are still unported, so the base template is
+        // expanded here pending their port.
+        CString exchangeMessage;
+        g_pSimMgr->GetString(0x273c, 0, &exchangeMessage);
+        scanBracketExpressions(g_pSimMgr, &exchangeMessage, static_cast<LPCSTR>(exchangeMessage));
+
+        // `mode` runs two complementary passes: pass 1 handles offered orders,
+        // pass 2 handles accepted ones. Only the pass matching this entry's
+        // direction applies its exchange outcome.
+        bool isOfferPass = (mode == 1) && (orderMode == 1);
+        bool isAcceptPass = (mode == 2) && (orderMode == 0);
+        if (!isOfferPass && !isAcceptPass) {
+          continue;
+        }
+
+        // Transferred resource count for this order. The original draws a randomized
+        // count within the order's weight budget via
+        // AllocateRandomResourceCountsWithinWeightBudget (0x4b4390, __thiscall on the
+        // order's resource holder) -- still an unported stub, so the offered amount
+        // (entryValue) is used directly pending that helper's port.
+        int transferredCount = entryValue;
+
+        // Apply the exchange to the offered order entry's children: bump the active
+        // child's tiebreak stat and each child's strength, both capped at 499
+        // (the same AdjustMapOrderNodeStatCapped499 pattern the conflict resolver uses).
+        if (orderEntry != nullptr) {
+          if (orderEntry->activeChildEntry != nullptr) {
+            orderEntry->activeChildEntry->tiebreak_strength = static_cast<short>(
+                orderEntry->activeChildEntry->tiebreak_strength + transferredCount);
+            if (orderEntry->activeChildEntry->tiebreak_strength > 499) {
+              orderEntry->activeChildEntry->tiebreak_strength = 499;
+            }
+          }
+          int childCount = CountMapOrderChildren(orderEntry->childOrderList);
+          if (childCount > 0) {
+            for (TMapOrderChildLinkNode* node = orderEntry->childOrderList; node != nullptr;
+                 node = node->next) {
+              node->object_ptr->tiebreak_strength = static_cast<short>(
+                  node->object_ptr->tiebreak_strength + (transferredCount * 3) / childCount);
+              if (node->object_ptr->tiebreak_strength > 499) {
+                node->object_ptr->tiebreak_strength = 499;
+              }
+            }
+          }
+        }
+
+        // Credit the accepting nation's per-source order-transfer counter with the
+        // transferred amount (offered nation is the source index).
+        if (offerNation < 7 && acceptNation < 7 && g_apNationStates[acceptNation] != nullptr) {
+          g_apNationStates[acceptNation]->AddShortDeltaToNationCounterAtOffset198(
+              offerNation, static_cast<short>(transferredCount));
+        }
       }
     }
   }
-  (void)mode;
 }
 
 // FUNCTION: IMPERIALISM 0x0055a780
