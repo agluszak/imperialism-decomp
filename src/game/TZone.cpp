@@ -8,8 +8,11 @@
 #include "game/mfc.h"
 #include "game/TGlobalMapState.h"
 #include "game/TOcean.h"
+#include "game/TDiplomacyMgr.h"
 #include "game/TPortZone.h"
+#include "game/TShip.h"
 #include "game/TSimMgr.h"
+#include "game/TTaskForce.h"
 #include "game/UiRuntimeContext.h"
 
 undefined4 ReallocateHeapBlockWithAllocatorTracking(void);
@@ -892,6 +895,63 @@ void TZonePrimaryNeighborStretch::EnsureCapacityAtLeast(int count) {
     Data() = static_cast<TZone**>(grownBuffer);
     Capacity() = static_cast<int>(doubledCapacity);
   }
+}
+
+// FUNCTION: IMPERIALISM 0x00561400
+unsigned int TZone::BuildNationBitmaskForActiveType3Or4OrdersIncludingNation(unsigned char nation) {
+  unsigned int mask = 0;
+  for (TShip* ship = GetNavyPrimaryOrderListHead(); ship != 0; ship = ship->nextOlder24) {
+    if (ship->field08 == this) {
+      TTaskForce* entry = reinterpret_cast<TTaskForce*>(ship->field0c);
+      if (entry != 0 && entry->eliminatedFlag26 == 0 &&
+          (entry->attachment == 3 || entry->attachment == 4)) {
+        mask |= 1u << (ship->ownerNationSlot14 & 0x1f);
+      }
+    }
+  }
+  return (1u << (nation & 0x1f)) | mask;
+}
+
+// FUNCTION: IMPERIALISM 0x00561490
+unsigned int TZone::BuildNationBitmaskForActiveType3Or4Orders() {
+  unsigned int mask = 0;
+  for (TShip* ship = GetNavyPrimaryOrderListHead(); ship != 0; ship = ship->nextOlder24) {
+    if (ship->field08 == this) {
+      TTaskForce* entry = reinterpret_cast<TTaskForce*>(ship->field0c);
+      if (entry != 0 && entry->eliminatedFlag26 == 0 &&
+          (entry->attachment == 3 || entry->attachment == 4)) {
+        mask |= 1u << (ship->ownerNationSlot14 & 0x1f);
+      }
+    }
+  }
+  return mask;
+}
+
+// FUNCTION: IMPERIALISM 0x00561510
+unsigned int TZone::HasDiplomaticallyRelatedNationInActiveType3Or4OrderMask(int nation) {
+  unsigned int mask = 0;
+  for (TShip* ship = GetNavyPrimaryOrderListHead(); ship != 0; ship = ship->nextOlder24) {
+    if (ship->field08 == this) {
+      TTaskForce* entry = reinterpret_cast<TTaskForce*>(ship->field0c);
+      if (entry != 0 && entry->eliminatedFlag26 == 0 &&
+          (entry->attachment == 3 || entry->attachment == 4)) {
+        mask |= 1u << (ship->ownerNationSlot14 & 0x1f);
+      }
+    }
+  }
+  if ((mask & (1u << (static_cast<unsigned char>(nation) & 0x1f))) != 0) {
+    return 0;
+  }
+  int candidate = 0;
+  while ((mask & (1u << (candidate & 0x1f))) == 0 ||
+         g_pDiplomacyTurnStateManager->IsNationPairRelationTurnStampOutOfDate(candidate, nation) ==
+             0) {
+    ++candidate;
+    if (candidate > 6) {
+      return 0;
+    }
+  }
+  return 1;
 }
 
 // FUNCTION: IMPERIALISM 0x00561bf0

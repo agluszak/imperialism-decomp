@@ -446,10 +446,10 @@ char TNavyMgr::SelectEligibleMapOrderInteractionForNationAndContext(short* outRe
     // Diplomacy eligibility: the entry's nation must relate to the port-zone owner or
     // the querying nation.
     bool relatedToOwner = (entry->required_count == ownerCode ||
-                           g_pDiplomacyTurnStateManager->GetNationPairDiplomacyRelationCode(
+                           g_pDiplomacyTurnStateManager->IsNationPairRelationTurnStampOutOfDate(
                                ownerCode, entry->required_count) != 0);
     bool relatedToNation = (ownerCode >= 7 && entry->attachment == 6 &&
-                            g_pDiplomacyTurnStateManager->GetNationPairDiplomacyRelationCode(
+                            g_pDiplomacyTurnStateManager->IsNationPairRelationTurnStampOutOfDate(
                                 entry->required_count, ownerCode) != 0);
 
     if (!(contextMatch || activeContextMatch) || !(relatedToOwner || relatedToNation)) {
@@ -488,7 +488,7 @@ char TNavyMgr::SelectEligibleMapOrderInteractionForNationAndContext(short* outRe
     outResult[0] = entry->required_count;
     *reinterpret_cast<TTaskForce**>(outResult + 4) = entry;
     *reinterpret_cast<unsigned int*>(outResult + 2) = flags;
-    if (g_pDiplomacyTurnStateManager->GetNationPairDiplomacyRelationCode(
+    if (g_pDiplomacyTurnStateManager->IsNationPairRelationTurnStampOutOfDate(
             nation, entry->required_count) == 0) {
       return 1;
     }

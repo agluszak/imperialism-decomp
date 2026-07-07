@@ -3083,6 +3083,9 @@ address|target_cpp|ownership|note
 560f80|src/game/TZone.cpp|manual|marker_sync
 5610b0|src/game/TZone.cpp|manual|marker_sync
 561300|src/game/TZone.cpp|manual|marker_sync
+561400|src/game/TZone.cpp|manual|marker_sync
+561490|src/game/TZone.cpp|manual|marker_sync
+561510|src/game/TZone.cpp|manual|marker_sync
 5615e0|src/game/TPortZone.cpp|manual|marker_sync
 561660|src/game/TPortZone.cpp|manual|marker_sync
 561680|src/game/TPortZone.cpp|manual|marker_sync

@@ -145,6 +145,15 @@ public:
   TZone* GetNextPortZone();
   static TZone* FindPortZoneByTile(short nTileIndex);
 
+  // 0x00561490 / 0x00561400. Build a bitmask of nations that currently have an active
+  // (non-eliminated) type-3 or type-4 map order whose ship sits in this zone; the
+  // "IncludingNation" variant also sets `nation`'s own bit.
+  unsigned int BuildNationBitmaskForActiveType3Or4Orders();
+  unsigned int BuildNationBitmaskForActiveType3Or4OrdersIncludingNation(unsigned char nation);
+  // 0x00561510. True if any nation in that active-order mask (excluding `nation`
+  // itself) is diplomatically related to `nation` (per g_pDiplomacyTurnStateManager).
+  unsigned int HasDiplomaticallyRelatedNationInActiveType3Or4OrderMask(int nation);
+
   TZone**& PrimaryZoneHeapData() {
     return primaryNeighbors.Data();
   }

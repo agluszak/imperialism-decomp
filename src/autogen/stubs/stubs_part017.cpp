@@ -475,30 +475,6 @@ undefined4 SelectBestMapActionContextForNationDiplomacyMask(void)
   return 0;
 }
 
-// ghidra_name BuildNationBitmaskForActiveType3Or4OrdersIncludingNation
-// ghidra_proto undefined BuildNationBitmaskForActiveType3Or4OrdersIncludingNation()
-// FUNCTION: IMPERIALISM 0x00561400
-undefined4 BuildNationBitmaskForActiveType3Or4OrdersIncludingNation(void)
-{
-  return 0;
-}
-
-// ghidra_name BuildNationBitmaskForActiveType3Or4Orders
-// ghidra_proto undefined BuildNationBitmaskForActiveType3Or4Orders()
-// FUNCTION: IMPERIALISM 0x00561490
-undefined4 BuildNationBitmaskForActiveType3Or4Orders(void)
-{
-  return 0;
-}
-
-// ghidra_name HasDiplomaticallyRelatedNationInActiveType3Or4OrderMask
-// ghidra_proto undefined HasDiplomaticallyRelatedNationInActiveType3Or4OrderMask()
-// FUNCTION: IMPERIALISM 0x00561510
-undefined4 HasDiplomaticallyRelatedNationInActiveType3Or4OrderMask(void)
-{
-  return 0;
-}
-
 // ghidra_name ResetTPortZoneToSentinelVtableAndReleaseResources
 // ghidra_proto undefined ResetTPortZoneToSentinelVtableAndReleaseResources()
 // FUNCTION: IMPERIALISM 0x005616f0
