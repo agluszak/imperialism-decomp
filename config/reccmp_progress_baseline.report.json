@@ -12873,21 +12873,20 @@
     },
     {
       "address": "0x4e0590",
-      "matching": 1.0,
+      "effective": true,
+      "matching": 0.42857142857142855,
       "name": "TGreatPower::OrphanRetStub_004d7fa0_88",
       "type": 1
     },
     {
       "address": "0x4e05d0",
-      "effective": true,
-      "matching": 0.42857142857142855,
+      "matching": 1.0,
       "name": "TGreatPower::OrphanLeaf_NoCall_Ins02_004d7fc0_89",
       "type": 1
     },
     {
       "address": "0x4e0610",
-      "effective": true,
-      "matching": 0.42857142857142855,
+      "matching": 1.0,
       "name": "TGreatPower::ReturnFalseNationStateActionStub_8a",
       "type": 1
     },
@@ -22252,7 +22251,7 @@
     },
     {
       "address": "0x552a70",
-      "matching": 0.024096385542168676,
+      "matching": 0.024390243902439025,
       "name": "RemoveTaskForceOrderNodesByNationAndClearSelectionState",
       "type": 1
     },
@@ -22306,7 +22305,7 @@
     },
     {
       "address": "0x5539c0",
-      "matching": 0.0,
+      "matching": 0.046511627906976744,
       "name": "RefreshTaskForceSelectionFlagsForCurrentNationOrders",
       "type": 1
     },
@@ -22318,13 +22317,13 @@
     },
     {
       "address": "0x553b10",
-      "matching": 0.41379310344827586,
+      "matching": 0.4827586206896552,
       "name": "HasNoMapOrderEntryChildrenQueued",
       "type": 1
     },
     {
       "address": "0x553b50",
-      "matching": 0.5454545454545454,
+      "matching": 0.5818181818181818,
       "name": "HasActiveMapOrderEntryChildren",
       "type": 1
     },
@@ -23140,7 +23139,7 @@
     },
     {
       "address": "0x5609e0",
-      "matching": 0.02666666666666667,
+      "matching": 0.05333333333333334,
       "name": "CreateTaskForceFromNavyOrdersForNationIfEligible",
       "type": 1
     },
@@ -23512,7 +23511,7 @@
     },
     {
       "address": "0x564600",
-      "matching": 0.043478260869565216,
+      "matching": 1.0,
       "name": "EnsureSelectedTaskForceForOrderOwnerAndRefresh",
       "type": 1
     },

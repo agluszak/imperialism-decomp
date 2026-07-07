@@ -147,6 +147,17 @@ public:
   PruneDefeatedMapOrderChildrenAndReturnHead(TMapOrderChildLinkNode* child_link_head);
 
   void RelinkMapOrderQueueNodeBetween(TTaskForce* prev_node, TTaskForce* next_node);
+
+  // Map-order selection helpers driven by TOcean::EnsureSelectedTaskForceForOrderOwnerAndRefresh.
+  // 0x005609e0 — resolves/creates the task force this order entry needs for `nation`
+  // (via the TTaskForce(contextAnchor, requiredCount) ctor) if eligible; returns it.
+  TTaskForce* CreateTaskForceFromNavyOrdersForNationIfEligible(short nation);
+  // 0x00552a70 — drops this task force's queued order nodes belonging to `nation` and
+  // clears the selection state tied to `entry`.
+  void RemoveTaskForceOrderNodesByNationAndClearSelectionState(int nation, TTaskForce* entry);
+  // 0x005539c0 — recomputes this task force's per-order selection flags for the active
+  // nation's current orders (`mode` selects the pass; the caller passes 0).
+  void RefreshTaskForceSelectionFlagsForCurrentNationOrders(int mode);
   void DecrementRequiredCount(short decrement);
   // Adds delta to tiebreak_strength, capped at 499.
   void AdjustMapOrderNodeStatCapped499(short delta); // 0x550370

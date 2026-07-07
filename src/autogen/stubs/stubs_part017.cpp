@@ -427,14 +427,6 @@ undefined4 GetMapOrderContextPointerForNationAndTarget(void)
   return 0;
 }
 
-// ghidra_name CreateTaskForceFromNavyOrdersForNationIfEligible
-// ghidra_proto undefined CreateTaskForceFromNavyOrdersForNationIfEligible()
-// FUNCTION: IMPERIALISM 0x005609e0
-undefined4 CreateTaskForceFromNavyOrdersForNationIfEligible(void)
-{
-  return 0;
-}
-
 // ghidra_name TCivToolbar::CanDisplayMapOrderEntryInCurrentContext
 // ghidra_proto undefined CanDisplayMapOrderEntryInCurrentContext()
 // FUNCTION: IMPERIALISM 0x00560b00

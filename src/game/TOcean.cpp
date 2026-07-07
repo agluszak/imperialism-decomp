@@ -141,9 +141,9 @@ IMPLEMENT_DYNCREATE(TOcean, TObject)
 // 0x575bb0-0x575bd9) rather than emitting a separate TOcean::TOcean symbol.
 TOcean::TOcean()
     : TObject(), nationCount(0), contextArray(0), routeNodeCount(0), routeNodeBuffer(0) {
-  // Only the first dword of this still-unrecovered padding region is zeroed by the
-  // original ctor; the rest of pad14 is left uninitialized there too.
-  memset(pad14, 0, sizeof(int));
+  // Only selectedTaskForce14 (+0x14) is zeroed by the original ctor; the rest of the
+  // still-unrecovered pad18 region is left uninitialized there too.
+  selectedTaskForce14 = 0;
 }
 
 // Slot 0x07 (Free). Ghidra: DispatchNationPendingActionEventCodes (264 bytes) —
@@ -269,10 +269,28 @@ int ComputeGlobalMapActionContextNodeValueAverage(void) {
 
 // FUNCTION: IMPERIALISM 0x00564600
 TTaskForce* TOcean::EnsureSelectedTaskForceForOrderOwnerAndRefresh(TTaskForce* pMapOrderEntry) {
-  // TODO: port body @ 0x564600 (245 bytes; frees/caches a task force into an as-yet
-  // unexposed TOcean field around +0x14; not yet ported).
-  (void)pMapOrderEntry;
-  return nullptr;
+  // If a different order entry is currently selected, drop its per-nation order nodes;
+  // and if the new entry is null, free and forget the cached task force.
+  if (selectedTaskForce14 != nullptr &&
+      selectedTaskForce14->contextAnchor != reinterpret_cast<int>(pMapOrderEntry)) {
+    selectedTaskForce14->RemoveTaskForceOrderNodesByNationAndClearSelectionState(
+        g_pSimMgr->GetActiveNationId(), pMapOrderEntry);
+    if (pMapOrderEntry == nullptr) {
+      TTaskForce* previous = selectedTaskForce14;
+      selectedTaskForce14 = nullptr;
+      previous->Free();
+    }
+  }
+  if (selectedTaskForce14 == nullptr) {
+    if (pMapOrderEntry != nullptr) {
+      selectedTaskForce14 = pMapOrderEntry->CreateTaskForceFromNavyOrdersForNationIfEligible(
+          g_pSimMgr->GetActiveNationId());
+      return selectedTaskForce14;
+    }
+  } else if (pMapOrderEntry != nullptr) {
+    selectedTaskForce14->RefreshTaskForceSelectionFlagsForCurrentNationOrders(0);
+  }
+  return selectedTaskForce14;
 }
 
 // bd 1uj.16: TTaskForce::SetMapOrderType9AndQueue / PromoteMapOrderChainAndQueue's

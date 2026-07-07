@@ -32,15 +32,18 @@ public:
   // slot 0x08 ShallowClone inherited unchanged (0x4798d0)
   // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
   // === END GENERATED DECLS (TOcean) ===
-  short nationCount;       // +0x04
-  TZone* contextArray;     // +0x08
-  short routeNodeCount;    // +0x0c number of route-node records in routeNodeBuffer
-  char pad0e[2];           // +0x0e
-  void* routeNodeBuffer;   // +0x10 heap buffer of routeNodeCount 0x10-byte route records
-  char pad14[0x38 - 0x14]; // +0x14 .. +0x37
-  int* slotTable;          // +0x38
-  unsigned int slotCount;  // +0x40
-  char pad44[0x14];        // +0x44 .. +0x57 (allocation size TBD)
+  short nationCount;     // +0x04
+  TZone* contextArray;   // +0x08
+  short routeNodeCount;  // +0x0c number of route-node records in routeNodeBuffer
+  char pad0e[2];         // +0x0e
+  void* routeNodeBuffer; // +0x10 heap buffer of routeNodeCount 0x10-byte route records
+  // +0x14: the currently-selected task force cached for the active map-order entry
+  // (maintained by EnsureSelectedTaskForceForOrderOwnerAndRefresh); zeroed in the ctor.
+  TTaskForce* selectedTaskForce14; // +0x14
+  char pad18[0x38 - 0x18];         // +0x18 .. +0x37
+  int* slotTable;                  // +0x38
+  unsigned int slotCount;          // +0x40
+  char pad44[0x14];                // +0x44 .. +0x57 (allocation size TBD)
 
   // Reallocate routeNodeBuffer to hold `count` 0x10-byte route records. 0x0052e7b0.
   void AllocateRouteNodeStateBufferByCount(short count);
@@ -72,7 +75,7 @@ public:
   // Called from TMapUberPicture::SetActiveMapOrderEntry on g_pActiveMapOrderContext.
   // Frees the previously-tracked task force if the new entry is null, or resolves/caches
   // one for the new entry via GetActiveNationId(); returns the (possibly updated) cached
-  // task force. 0x00564600, 245 bytes. TODO stub body (not yet ported).
+  // task force. 0x00564600.
   TTaskForce* EnsureSelectedTaskForceForOrderOwnerAndRefresh(TTaskForce* pMapOrderEntry);
 };
 

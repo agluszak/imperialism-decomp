@@ -2999,11 +2999,13 @@ address|target_cpp|ownership|note
 5528c0|src/game/TTaskForce.cpp|manual|marker_sync
 5528e0|src/game/TTaskForce.cpp|manual|marker_sync
 552930|src/game/TTaskForce.cpp|manual|marker_sync
+552a70|src/game/TTaskForce.cpp|manual|marker_sync
 552b90|src/game/TTaskForce.cpp|manual|marker_sync
 552d10|src/game/TTaskForce.cpp|manual|marker_sync
 552f60|src/game/TTaskForce.cpp|manual|marker_sync
 552f80|src/game/TTaskForce.cpp|manual|marker_sync
 5533f0|src/game/TTaskForce.cpp|manual|marker_sync
+5539c0|src/game/TTaskForce.cpp|manual|marker_sync
 553a50|src/game/TTaskForce.cpp|manual|marker_sync
 553b10|src/game/TTaskForce.cpp|manual|marker_sync
 553b50|src/game/TTaskForce.cpp|manual|marker_sync
@@ -3085,6 +3087,7 @@ address|target_cpp|ownership|note
 560150|src/game/TZone.cpp|manual|marker_sync
 560470|src/game/TMapMgr.cpp|manual|marker_sync
 560580|src/game/TZone.cpp|manual|marker_sync
+5609e0|src/game/TTaskForce.cpp|manual|marker_sync
 560f80|src/game/TZone.cpp|manual|marker_sync
 5610b0|src/game/TZone.cpp|manual|marker_sync
 561300|src/game/TZone.cpp|manual|marker_sync
