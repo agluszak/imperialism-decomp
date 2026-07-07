@@ -2560,6 +2560,12 @@
       "type": 1
     },
     {
+      "address": "0x4840d0",
+      "matching": 1.0,
+      "name": "CIncludeView::CalcWindowRect",
+      "type": 1
+    },
+    {
       "address": "0x484190",
       "matching": 0.5208333333333334,
       "name": "HandleParentNotifyAndEndMouseCapture_00484190",

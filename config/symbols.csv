@@ -563,7 +563,7 @@ address|name|symbol|size|type|prototype|provenance
 483e80|WrapperFor_RouteCommandByIdWithUiProbe_At00483e80||74|function|undefined WrapperFor_RouteCommandByIdWithUiProbe_At00483e80()|
 484060|CIncludeView::GetUiInteractiveFlag90||7|function|int __thiscall GetUiInteractiveFlag90()|
 484080|TCommand::RunCommandModalLoopAndFinalizeState_Impl||25|function|undefined RunCommandModalLoopAndFinalizeState_Impl()|
-4840d0|WrapperFor_GetWindowExStyleViaSiteOrHandle_At004840d0||135|function|undefined WrapperFor_GetWindowExStyleViaSiteOrHandle_At004840d0()|
+4840d0|CIncludeView::CalcWindowRect|?CalcWindowRect@CIncludeView@@UAEXPAUtagRECT@@I@Z|135|function|undefined CalcWindowRect(tagRECT* lpClientRect, uint nAdjustType)|
 484190|HandleParentNotifyAndEndMouseCapture_00484190||122|function|undefined HandleParentNotifyAndEndMouseCapture_00484190()|
 4845a0|TUiEvent::TUiEvent||23|function|undefined TUiEvent()|
 4845f0|DereferencePointerCellInPlace||16|function|undefined DereferencePointerCellInPlace()|

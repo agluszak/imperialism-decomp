@@ -39,7 +39,13 @@ public:
   void SetUiRuntimeContextAndActivateMain(TView* activeDialog); // 0x00483340
 
 protected:
-  void OnInitialUpdate() override; // 0x00483750
+  // The layout keystone for the whole main screen: whatever client rect the frame's
+  // RecalcLayout/RepositionBars proposes for the leftover pane, reinterpret it as "a
+  // 640x480 view centered in that rect" (clamped to the top-left when smaller). This is
+  // what keeps the game view centered 640x480 inside the maximized frame — the movie
+  // MCIWnd then CenterWindow()s against the same region and every click stays coherent.
+  void CalcWindowRect(LPRECT lpClientRect, UINT nAdjustType) override; // 0x004840d0
+  void OnInitialUpdate() override;                                     // 0x00483750
   void OnActivateView(BOOL bActivate, CView* pActivateView,
                       CView* pDeactiveView) override; // 0x00483720
   void OnDraw(CDC* pDC) override;                     // 0x00482c90
@@ -84,7 +90,7 @@ public:
   CList<IncludeViewOverlayRectRecord, IncludeViewOverlayRectRecord&> m_overlayRectQueue;
   POSITION m_overlayRectCursor68; // 0x68 — iteration cursor of the repaint pass (0x482fc0)
   UINT m_tickTimerId;             // 0x6c — 17ms UI tick timer (id 0xd00d) driving cursor dispatch
-  unsigned char pad70[4]; // 0x70 — zeroed in the ctor, not yet resolved to a field
+  unsigned char pad70[4];         // 0x70 — zeroed in the ctor, not yet resolved to a field
   // 0x74 — this view's own captured-control track (a second copy of the
   // TMouseCaptureState shape: control + start/last/current points). OnMouseMove sends
   // it the state-1 drag command through TControl slots 0x67/0x68; the writer that arms

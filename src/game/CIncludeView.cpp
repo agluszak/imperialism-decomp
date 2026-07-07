@@ -316,6 +316,28 @@ void CIncludeView::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags) {
   Default();
 }
 
+// RecalcLayout keystone: the frame's RepositionBars hands the leftover client rect to the
+// pane's virtual CalcWindowRect; this override centers the fixed 640x480 view inside it
+// (top-left-clamped when the rect is smaller) instead of filling it. Without this the
+// maximize re-expands the view full-screen and the movie/menu/title layouts split apart.
+// FUNCTION: IMPERIALISM 0x004840d0
+void CIncludeView::CalcWindowRect(LPRECT lpClientRect, UINT nAdjustType) {
+  (void)nAdjustType;
+  RECT proposedRect;
+  CopyRect(&proposedRect, lpClientRect);
+  lpClientRect->left = ((proposedRect.right - proposedRect.left) - 0x280) / 2;
+  if (lpClientRect->left < 0) {
+    lpClientRect->left = 0;
+  }
+  lpClientRect->top = ((proposedRect.bottom - proposedRect.top) - 0x1e0) / 2;
+  if (lpClientRect->top < 0) {
+    lpClientRect->top = 0;
+  }
+  lpClientRect->right = lpClientRect->left + 0x280;
+  lpClientRect->bottom = lpClientRect->top + 0x1e0;
+  ::AdjustWindowRectEx(lpClientRect, 0, FALSE, GetExStyle());
+}
+
 // A click on a native child window (e.g. the movie MCIWnd) never reaches the view's own
 // button handlers — WM_PARENTNOTIFY replays it as a full click: run the down handler,
 // then the up dispatch + capture end, all at the child-relative point packed in lParam.

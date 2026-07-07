@@ -1259,14 +1259,6 @@ undefined4 RunCommandModalLoopAndFinalizeState_Impl(void)
   return 0;
 }
 
-// ghidra_name WrapperFor_GetWindowExStyleViaSiteOrHandle_At004840d0
-// ghidra_proto undefined WrapperFor_GetWindowExStyleViaSiteOrHandle_At004840d0()
-// FUNCTION: IMPERIALISM 0x004840d0
-undefined4 WrapperFor_GetWindowExStyleViaSiteOrHandle_At004840d0(void)
-{
-  return 0;
-}
-
 // ghidra_name DereferencePointerCellInPlace
 // ghidra_proto undefined DereferencePointerCellInPlace()
 // FUNCTION: IMPERIALISM 0x004845f0
