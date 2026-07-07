@@ -779,14 +779,6 @@ undefined4 ComputeAverageWeightWord0TimesTenFromResourceCounts(void)
   return 0;
 }
 
-// ghidra_name AllocateRandomResourceCountsWithinWeightBudget
-// ghidra_proto undefined AllocateRandomResourceCountsWithinWeightBudget()
-// FUNCTION: IMPERIALISM 0x004b4390
-undefined4 AllocateRandomResourceCountsWithinWeightBudget(void)
-{
-  return 0;
-}
-
 // ghidra_name TProductionOrder::ConstructTProductionOrderBaseState
 // ghidra_proto undefined ConstructTProductionOrderBaseState()
 // FUNCTION: IMPERIALISM 0x004b4f00

@@ -94,6 +94,13 @@ public:
   // UCity.cpp:0x47f unless replaying).
   virtual void VerifyStocks();
 
+  // 0x004b4390. Randomly draws resource units from this city's orderCountByType5c
+  // counters (skipping types the RNG block-flag disables) until `maxWeight` of
+  // resource weight has been allocated, tallying each drawn type into `outCounts` and
+  // decrementing the city's counter. Returns the total allocated weight (capped at
+  // `maxWeight`). Used by TNavyMgr::ProcessNationMapOrderInteractionsAndApplyOutcomes.
+  int AllocateRandomResourceCountsWithinWeightBudget(short maxWeight, short* outCounts);
+
   unsigned char powerPlantUpgradeQueuedFlag04; // +0x04 — BuildPowerPlant queue flag
   unsigned char pad05;
   short field06; // +0x06 — zeroed by the ctor

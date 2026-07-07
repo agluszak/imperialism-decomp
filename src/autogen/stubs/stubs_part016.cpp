@@ -1155,14 +1155,6 @@ undefined4 PruneOrPromoteOrderNodeWhenChildCostDepleted(void)
   return 0;
 }
 
-// ghidra_name FormatLocalizedCommodityCountLabelByIndex
-// ghidra_proto undefined FormatLocalizedCommodityCountLabelByIndex()
-// FUNCTION: IMPERIALISM 0x00550c20
-undefined4 FormatLocalizedCommodityCountLabelByIndex(void)
-{
-  return 0;
-}
-
 // ghidra_name GetResourceDescriptorWord20ByType
 // ghidra_proto undefined GetResourceDescriptorWord20ByType()
 // FUNCTION: IMPERIALISM 0x00550ea0

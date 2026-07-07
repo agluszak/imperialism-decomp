@@ -9,6 +9,9 @@
 #include "game/global_data_tables.h"
 #include "game/mfc.h"
 #include "game/ui_invalidation_guard.h"
+#include "game/TShip.h" // GetResourceDescriptorWeightWord0ByType
+
+extern undefined4 GenerateThreadLocalRandom15(void);
 
 static const char kUCityCppPath[] = "D:\\Ambit\\Cross\\UCity.cpp";
 static const unsigned int kAddrClassDescTCity = 0x0064f338;
@@ -283,6 +286,40 @@ int TCity::GetOwnerNeedCapA6() {
 // FUNCTION: IMPERIALISM 0x004b4260
 void TCity::SetOwnerNeedCapA6(short value) {
   this->ownerNationAc->needCapA6 = value;
+}
+
+// FUNCTION: IMPERIALISM 0x004b4390
+int TCity::AllocateRandomResourceCountsWithinWeightBudget(short maxWeight, short* outCounts) {
+  int allocatedWeight = 0;
+  short remaining = 0;
+  for (int type = 0; type < 0xe; ++type) {
+    if (GetResourceTypeRandomDrawBlockFlag(static_cast<short>(type)) == 0) {
+      remaining = static_cast<short>(remaining + orderCountByType5c[type]);
+    }
+  }
+  while (remaining > 0 && static_cast<short>(allocatedWeight) < maxWeight) {
+    int roll = static_cast<int>(GenerateThreadLocalRandom15()) % remaining + 1;
+    int type = 0;
+    for (;;) {
+      if (GetResourceTypeRandomDrawBlockFlag(static_cast<short>(type)) == 0) {
+        roll -= orderCountByType5c[type];
+        if (roll < 1) {
+          break;
+        }
+      }
+      ++type;
+    }
+    short weight = GetResourceDescriptorWeightWord0ByType(static_cast<short>(type));
+    if (maxWeight < weight && GetResourceDescriptorWeightWord0ByType(static_cast<short>(type)) - 1 <
+                                  static_cast<int>(GenerateThreadLocalRandom15()) % maxWeight) {
+      break;
+    }
+    outCounts[type] = static_cast<short>(outCounts[type] + 1);
+    orderCountByType5c[type] = static_cast<short>(orderCountByType5c[type] - 1);
+    allocatedWeight += GetResourceDescriptorWeightWord0ByType(static_cast<short>(type));
+    remaining = static_cast<short>(remaining - 1);
+  }
+  return (static_cast<short>(allocatedWeight) >= maxWeight) ? maxWeight : allocatedWeight;
 }
 
 // FUNCTION: IMPERIALISM 0x004b44d0

@@ -9073,7 +9073,7 @@
     },
     {
       "address": "0x4b4390",
-      "matching": 0.0,
+      "matching": 0.4835164835164835,
       "name": "AllocateRandomResourceCountsWithinWeightBudget",
       "type": 1
     },
@@ -12447,7 +12447,7 @@
     },
     {
       "address": "0x4dd430",
-      "matching": 0.5714285714285714,
+      "matching": 0.5142857142857142,
       "name": "TGreatPower::ComputeRemainingDiplomacyAidBudget",
       "type": 1
     },
@@ -12591,7 +12591,7 @@
     },
     {
       "address": "0x4ddc30",
-      "matching": 0.9894736842105263,
+      "matching": 0.6526315789473685,
       "name": "TGreatPower::OrphanRetStub_004d7fa0_20",
       "type": 1
     },
@@ -12885,8 +12885,7 @@
     },
     {
       "address": "0x4e05d0",
-      "effective": true,
-      "matching": 0.42857142857142855,
+      "matching": 1.0,
       "name": "TGreatPower::OrphanLeaf_NoCall_Ins02_004d7fc0_89",
       "type": 1
     },
@@ -12904,14 +12903,13 @@
     },
     {
       "address": "0x4e0690",
-      "effective": true,
-      "matching": 0.42857142857142855,
+      "matching": 1.0,
       "name": "TGreatPower::ReturnFalseNationStateCapabilityFlag90",
       "type": 1
     },
     {
       "address": "0x4e06d0",
-      "matching": 1.0,
+      "matching": 0.8095238095238095,
       "name": "TGreatPower::SumNationRuntimeFiveBucketValue44",
       "type": 1
     },
@@ -12941,7 +12939,7 @@
     },
     {
       "address": "0x4e09a0",
-      "matching": 0.5301204819277109,
+      "matching": 0.5060240963855421,
       "name": "TGreatPower::ComputeCityOrderCapabilityAggregateScore",
       "type": 1
     },
@@ -16423,7 +16421,7 @@
     },
     {
       "address": "0x50bea0",
-      "matching": 0.20626987732848706,
+      "matching": 0.2080872330758746,
       "name": "TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets",
       "type": 1
     },
@@ -21992,7 +21990,7 @@
     },
     {
       "address": "0x550c20",
-      "matching": 0.02702702702702703,
+      "matching": 0.5714285714285714,
       "name": "FormatLocalizedCommodityCountLabelByIndex",
       "type": 1
     },
@@ -22712,7 +22710,7 @@
     },
     {
       "address": "0x558960",
-      "matching": 0.07922535211267606,
+      "matching": 0.08404802744425385,
       "name": "ProcessNationMapOrderInteractionsAndApplyOutcomes",
       "type": 1
     },

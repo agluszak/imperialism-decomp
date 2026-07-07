@@ -2,6 +2,7 @@
 
 #include "game/TAdmiral.h"
 #include "game/TArmyMgr.h"
+#include "game/TCity.h"
 #include "game/TCountry.h"
 #include "game/TGreatPower.h"
 #include "game/TMapMgr.h"
@@ -217,6 +218,24 @@ void RefreshMapOrderBattleSideSnapshot(MapOrderBattleSnapshot* snapshot, int sid
         snapshot->requiredCountByte[side], cityIndex);
   }
 }
+
+// Formats "<count><sep><commodity name>" into `out`: fetches the commodity's
+// localized name (singular string group 0x2716 for count < 2, plural 0x271a
+// otherwise) into `out`, then, for a non-negative count, prefixes the decimal count
+// and the shared separator string. The concat/format helpers Ghidra names
+// AssignSharedStringConcat*/_Format_CString are MFC CString operator+/Format.
+// FUNCTION: IMPERIALISM 0x00550c20
+void FormatLocalizedCommodityCountLabelByIndex(CString* out, unsigned int commodityCode,
+                                               short count) {
+  short codeGroup = (count < 2) ? 0x2716 : 0x271a;
+  g_pSimMgr->GetString(codeGroup, static_cast<short>(commodityCode), out);
+  if (count >= 0) {
+    CString numberText;
+    numberText.Format(g_szDecimalFormat, static_cast<int>(count));
+    *out = numberText + s_mcflavor_00695794 + *out;
+  }
+}
+
 // SYNTHETIC: IMPERIALISM 0x00556530
 // TNavyMgr::CreateObject
 
@@ -405,23 +424,22 @@ void TNavyMgr::ProcessNationMapOrderInteractionsAndApplyOutcomes(short mode) {
         short acceptNation = (orderMode != 1) ? nation : entryTargetNation;
         TTaskForce* orderEntry = reinterpret_cast<TTaskForce*>(entryPayload);
 
-        // The current map-order context: interactions the context deems ineligible are
-        // filtered by SelectEligibleMapOrderInteractionForNationAndContext (0x557f10, a
-        // __thiscall decision on the map-context manager). That helper is still an
-        // unported stub, so its eligibility gate is a documented follow-up here rather
-        // than a fabricated call; the context is resolved either way.
+        // Resolve the current map-order port-zone context. The original then filters
+        // ineligible interactions via SelectEligibleMapOrderInteractionForNationAndContext
+        // (0x557f10) -- a large __thiscall decision (order-score comparison + diplomacy
+        // relation gate) whose helpers are all now available; its port is the last
+        // remaining piece of this body and the gate is a documented follow-up here.
         TZone* portZoneContext = TZone::FindFirstPortZoneContextByNation(nation);
         (void)portZoneContext;
 
-        // Build the localized order-exchange event message: the base template
-        // (GetString group 0x273c) expanded through g_pSimMgr's bracket-expression
-        // helper. The original also splices in a per-commodity count label via
-        // FormatLocalizedCommodityCountLabelByIndex (0x550c20) -- that helper and its
-        // shared-string-concat subtree are still unported, so the base template is
-        // expanded here pending their port.
+        // Build the localized order-exchange event message: the transferred commodity
+        // label spliced into the base template (GetString group 0x273c) expanded
+        // through g_pSimMgr's bracket-expression helper.
+        CString commodityLabel;
+        FormatLocalizedCommodityCountLabelByIndex(&commodityLabel, entryTargetNation, entryValue);
         CString exchangeMessage;
         g_pSimMgr->GetString(0x273c, 0, &exchangeMessage);
-        scanBracketExpressions(g_pSimMgr, &exchangeMessage, static_cast<LPCSTR>(exchangeMessage));
+        scanBracketExpressions(g_pSimMgr, &exchangeMessage, static_cast<LPCSTR>(commodityLabel));
 
         // `mode` runs two complementary passes: pass 1 handles offered orders,
         // pass 2 handles accepted ones. Only the pass matching this entry's
@@ -432,12 +450,11 @@ void TNavyMgr::ProcessNationMapOrderInteractionsAndApplyOutcomes(short mode) {
           continue;
         }
 
-        // Transferred resource count for this order. The original draws a randomized
-        // count within the order's weight budget via
-        // AllocateRandomResourceCountsWithinWeightBudget (0x4b4390, __thiscall on the
-        // order's resource holder) -- still an unported stub, so the offered amount
-        // (entryValue) is used directly pending that helper's port.
-        int transferredCount = entryValue;
+        // Draw a randomized transferred resource count within the order's weight
+        // budget from the offering nation's city resource counters.
+        short drawnCounts[0x0e] = {0};
+        int transferredCount =
+            city->AllocateRandomResourceCountsWithinWeightBudget(entryValue, drawnCounts);
 
         // Apply the exchange to the offered order entry's children: bump the active
         // child's tiebreak stat and each child's strength, both capped at 499

@@ -1142,6 +1142,7 @@ address|target_cpp|ownership|note
 4b4210|src/game/TCity.cpp|manual|marker_sync
 4b4230|src/game/TCity.cpp|manual|marker_sync
 4b4260|src/game/TCity.cpp|manual|marker_sync
+4b4390|src/game/TCity.cpp|manual|marker_sync
 4b44d0|src/game/TCity.cpp|manual|marker_sync
 4b4540|src/game/TCity.cpp|manual|marker_sync
 4b4580|src/game/TCity.cpp|manual|marker_sync
@@ -2958,6 +2959,7 @@ address|target_cpp|ownership|note
 550970|src/game/TShip.cpp|manual|marker_sync
 550aa0|src/game/TTaskForce.cpp|manual|marker_sync
 550b60|src/game/TShip.cpp|manual|marker_sync
+550c20|src/game/TNavyMgr.cpp|manual|marker_sync
 550d80|src/game/trade_resource_lookup.cpp|manual|marker_sync
 550db0|src/game/trade_resource_lookup.cpp|manual|marker_sync
 550de0|src/game/trade_resource_lookup.cpp|manual|marker_sync
