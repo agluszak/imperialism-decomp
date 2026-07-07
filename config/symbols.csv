@@ -614,7 +614,7 @@ address|name|symbol|size|type|prototype|provenance
 485fb0|TTEView::CreateObject|?CreateObject@TTEView@@SGPAVCObject@@XZ|83|function|undefined CreateObject()|rtti
 486030|TTEView::GetRuntimeClass||6|function|undefined GetTTEViewClassNamePointer()|rtti
 486050|TTEView::ConstructTTEViewBaseState||109|function|undefined ConstructTTEViewBaseState()|
-4860e0|TTEView::DestructTTEViewAndMaybeFree||205|function|undefined DestructTTEViewAndMaybeFree()|
+4860e0|TTEView::MeasureCurrentTextWidthInLayoutRect||205|function|int MeasureCurrentTextWidthInLayoutRect()|
 4861f0|AssignTextFromResourceIdAndMaybeInvalidate||127|function|undefined AssignTextFromResourceIdAndMaybeInvalidate()|
 486290|TStaticText::UpdateTextEntrySharedStringIfChanged||15|function|void __thiscall UpdateTextEntrySharedStringIfChanged(CString* text)|
 4862b0|NoOpUiStyleBridge_004862b0||5|function|undefined NoOpUiStyleBridge_004862b0()|
@@ -5756,8 +5756,8 @@ address|name|symbol|size|type|prototype|provenance
 5b60a0|TDeluxeText::OrphanCallChain_C1_I08_005b60a0||27|function|undefined OrphanCallChain_C1_I08_005b60a0(char param_1)|
 5b60d0|TDeluxeText::SetTextFromUiStringResourceId||116|function|undefined SetTextFromUiStringResourceId(short stringId)|
 5b6170|TDeluxeText::ApplyRectSlot110||237|function|undefined OrphanTiny_ReturnZero_0048a730(void)|
-5b62a0|TDeluxeText::ConstructTMapKeyBaseState_Impl||45|function|undefined ConstructTMapKeyBaseState_Impl()|
-5b62e0|TDeluxeText::WrapperFor_thunk_BuildUiTextStyleDescriptor_At005b62e0||96|function|undefined WrapperFor_thunk_BuildUiTextStyleDescriptor_At005b62e0(void)|
+5b62a0|TDeluxeText::ApplyTextStyleDescriptorAndMaybeRefresh||45|function|void ApplyTextStyleDescriptorAndMaybeRefresh(TControlPictureRectState * styleDescriptor, int refreshFlag)|
+5b62e0|TDeluxeText::BuildAndApplyTextStyleDescriptor||96|function|void BuildAndApplyTextStyleDescriptor(int unused, int pointSize, int themeCode)|
 5b6360|TDeluxeText::Helper_Uses_ConstructSharedStringFromCStrOrResourceId_At005b6360||96|function|undefined Helper_Uses_ConstructSharedStringFromCStrOrResourceId_At005b6360(CString param_1)|
 5b63e0|TDeluxeText::RecenterTextFromMeasuredWidthAndMaybeInvalidate||123|function|undefined RecenterTextFromMeasuredWidthAndMaybeInvalidate(char param_1)|
 5b6480|TDeluxeText::UpdateTextEntrySharedString||13|function|void __thiscall UpdateTextEntrySharedString(CString* text)|

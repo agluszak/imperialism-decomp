@@ -1,4 +1,5 @@
 #include "game/TIndustryCluster.h"
+#include "game/TControl.h"
 #include "game/TRailCluster.h"
 #include "game/TShipyardCluster.h"
 #include "game/TTradeCluster.h"
@@ -59,7 +60,7 @@ void TUberCluster::InitializeTradeMoveAndBarControls(unsigned int styleSeed) {
   // reused for both this buffer AND the NoOpUiLifecycleHook scalar below, an
   // undersized-buffer/type conflation now that the callee has a real body (harmless
   // while it was an empty stub).
-  int styleDescriptor[4] = {0, 0, 0, 0};
+  TControlPictureRectState styleDescriptor = {0, 0, 0, 0};
   if (moveControl != 0) {
     BuildUiTextStyleDescriptor(&styleDescriptor, 0, 0xa, 0x2b67);
     moveControl->ApplyStyleDescriptor(&styleDescriptor, 0);

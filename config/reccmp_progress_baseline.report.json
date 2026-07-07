@@ -2818,6 +2818,12 @@
       "type": 1
     },
     {
+      "address": "0x4860e0",
+      "matching": 0.5671641791044776,
+      "name": "TTEView::MeasureCurrentTextWidthInLayoutRect",
+      "type": 1
+    },
+    {
       "address": "0x4861f0",
       "matching": 0.0,
       "name": "AssignTextFromResourceIdAndMaybeInvalidate",
@@ -31317,14 +31323,14 @@
     },
     {
       "address": "0x5b62a0",
-      "matching": 0.1111111111111111,
-      "name": "TDeluxeText::ConstructTMapKeyBaseState_Impl",
+      "matching": 0.35714285714285715,
+      "name": "TDeluxeText::ApplyTextStyleDescriptorAndMaybeRefresh",
       "type": 1
     },
     {
       "address": "0x5b62e0",
-      "matching": 0.0,
-      "name": "TDeluxeText::WrapperFor_thunk_BuildUiTextStyleDescriptor_At005b62e0",
+      "matching": 0.4838709677419355,
+      "name": "TDeluxeText::BuildAndApplyTextStyleDescriptor",
       "type": 1
     },
     {
@@ -31335,7 +31341,7 @@
     },
     {
       "address": "0x5b63e0",
-      "matching": 0.045454545454545456,
+      "matching": 0.647887323943662,
       "name": "TDeluxeText::RecenterTextFromMeasuredWidthAndMaybeInvalidate",
       "type": 1
     },
@@ -31389,7 +31395,7 @@
     },
     {
       "address": "0x5b6840",
-      "matching": 0.5042016806722689,
+      "matching": 0.453781512605042,
       "name": "TInfoBarText::InitializeMapHintTextStyleAndThemeFlags",
       "type": 1
     },
@@ -33200,7 +33206,7 @@
     },
     {
       "address": "0x5db780",
-      "matching": 0.2632696390658174,
+      "matching": 0.25477707006369427,
       "name": "HandleTurnEventDialogFactorySlotF8",
       "type": 1
     },

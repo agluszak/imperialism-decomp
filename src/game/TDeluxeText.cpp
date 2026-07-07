@@ -57,21 +57,18 @@ void TDeluxeText::ApplyRectSlot110(RECT* rectBuffer) {
 }
 
 // FUNCTION: IMPERIALISM 0x005b62a0
-void TDeluxeText::ConstructTMapKeyBaseState_Impl(int* styleDescriptor, int unusedFlag) {
-  // TODO(manifest): real body sets field_0x98 = *(int*)(styleDescriptor + 6),
-  // then forwards to two unresolved low-level style/font helpers
-  // (func_0x0040350d(0xf, styleDescriptor, unusedFlag) and
-  // func_0x004093a4(0, result)) — left unimplemented rather than guessed.
-  (void)styleDescriptor;
-  (void)unusedFlag;
+void TDeluxeText::ApplyTextStyleDescriptorAndMaybeRefresh(TControlPictureRectState* styleDescriptor,
+                                                          int refreshFlag) {
+  cursorThemeCode98 = styleDescriptor->styleRef6;
+  SetCityProductionDialogPictureRectAndMaybeRefresh(styleDescriptor,
+                                                    static_cast<char>(refreshFlag));
 }
 
 // FUNCTION: IMPERIALISM 0x005b62e0
-void TDeluxeText::WrapperFor_thunk_BuildUiTextStyleDescriptor_At005b62e0() {
-  // TODO(manifest): real body builds a local 6-byte style descriptor (via an
-  // unresolved helper), stores it into field_0x98, then forwards to the same
-  // pair of unresolved style/font helpers as ConstructTMapKeyBaseState_Impl —
-  // left unimplemented rather than guessed.
+void TDeluxeText::BuildAndApplyTextStyleDescriptor(int unused, int pointSize, int themeCode) {
+  TControlPictureRectState styleDescriptor = {0, 0, 0, 0};
+  BuildUiTextStyleDescriptor(&styleDescriptor, unused, pointSize, themeCode);
+  ApplyTextStyleDescriptorAndMaybeRefresh(&styleDescriptor, 1);
 }
 
 // FUNCTION: IMPERIALISM 0x005b6360
@@ -81,14 +78,20 @@ void TDeluxeText::Helper_Uses_ConstructSharedStringFromCStrOrResourceId_At005b63
 }
 
 // FUNCTION: IMPERIALISM 0x005b63e0
-undefined TDeluxeText::RecenterTextFromMeasuredWidthAndMaybeInvalidate(char param_1) {
-  (void)param_1;
-  // TODO(manifest): real body measures the current text's rendered width via
-  // an unresolved helper (func_0x004065e1), recenters field_0x74/field_0x6c
-  // from (field38 - measuredWidth)/2, conditionally calls RefreshControl(),
-  // and returns a packed (measuredWidth, someFlag) pair — left unimplemented
-  // rather than guessed.
-  return 0;
+int TDeluxeText::RecenterTextFromMeasuredWidthAndMaybeInvalidate(char refreshNow) {
+  field74 = 0;
+  field6C = 0;
+  int measuredWidth = MeasureCurrentTextWidthInLayoutRect();
+  int inset = 0;
+  if (measuredWidth < field38) {
+    inset = (field38 - measuredWidth) / 2;
+  }
+  field74 = static_cast<short>(inset);
+  field6C = static_cast<short>(inset);
+  if (refreshNow != 0) {
+    RefreshControl();
+  }
+  return measuredWidth;
 }
 
 // FUNCTION: IMPERIALISM 0x005b6480

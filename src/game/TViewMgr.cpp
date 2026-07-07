@@ -1459,13 +1459,9 @@ void TViewMgr::UiRuntimeSlotF8() {
 
   g_pCursorControlPanel->InitializeMapHintTextStyleAndThemeFlags(0x2b6b, 0x2b6c);
 
-  int styleDescriptor[4];
-  styleDescriptor[0] = 0;
-  styleDescriptor[1] = 0;
-  styleDescriptor[2] = 0;
-  styleDescriptor[3] = 0;
+  TControlPictureRectState styleDescriptor = {0, 0, 0, 0};
   BuildUiTextStyleDescriptor(&styleDescriptor, 0, 0xe, 0x2b6c);
-  g_pCursorControlPanel->ConstructTMapKeyBaseState_Impl(styleDescriptor, 1);
+  g_pCursorControlPanel->ApplyTextStyleDescriptorAndMaybeRefresh(&styleDescriptor, 1);
   g_pCursorControlPanel->SetTextThemeCodeAndMaybeRefresh(1, 0);
 
   int mappedStyleFlags = 0;

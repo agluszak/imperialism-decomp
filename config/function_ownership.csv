@@ -272,6 +272,7 @@ address|target_cpp|ownership|note
 485f90|src/game/TObject.cpp|manual|marker_sync
 485fb0|src/game/TTEView.cpp|manual|marker_sync
 486030|src/game/TTEView.cpp|manual|marker_sync
+4860e0|src/game/TTEView.cpp|manual|marker_sync
 486290|src/game/TStaticText.cpp|manual|marker_sync
 486320|src/game/TDocument.cpp|manual|marker_sync
 486350|src/game/TDocument.cpp|manual|marker_sync

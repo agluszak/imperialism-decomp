@@ -6,7 +6,7 @@
 // ResolveControlByTag(kControlTagCurs)). The UI factory registers 'crus' as a
 // TInfoBarText (see turn_event_dialog_factory.cpp:671/1139 + the comment at :701 "a
 // 'crus' TInfoBarText"); TViewMgr::UiRuntimeSlotF8 (0x5db780) confirms this directly —
-// it calls InitializeMapHintTextStyleAndThemeFlags/ConstructTMapKeyBaseState_Impl/
+// it calls InitializeMapHintTextStyleAndThemeFlags/ApplyTextStyleDescriptorAndMaybeRefresh/
 // SetTextThemeCodeAndMaybeRefresh on it and writes cursorThemeCode9c/fieldA0 at exactly
 // TInfoBarText's real offsets, so this is a genuine (not merely layout-compatible)
 // TInfoBarText and real inheritance is used instead of a placeholder vtable.

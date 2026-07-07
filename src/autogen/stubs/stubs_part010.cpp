@@ -1355,14 +1355,6 @@ undefined4 ConstructTTEViewBaseState(void)
   return 0;
 }
 
-// ghidra_name TTEView::DestructTTEViewAndMaybeFree
-// ghidra_proto undefined DestructTTEViewAndMaybeFree()
-// FUNCTION: IMPERIALISM 0x004860e0
-undefined4 DestructTTEViewAndMaybeFree(void)
-{
-  return 0;
-}
-
 // ghidra_name AssignTextFromResourceIdAndMaybeInvalidate
 // ghidra_proto undefined AssignTextFromResourceIdAndMaybeInvalidate()
 // FUNCTION: IMPERIALISM 0x004861f0

@@ -59,20 +59,16 @@ void TInfoBarText::InitializeMapHintTextStyleAndThemeFlags(int stylePrimary, int
   // styleSecondary through MapUiThemeCodeToStyleFlags out-params (the previous port
   // consumed nonexistent return values with swapped arguments).
   (void)stylePrimary;
-  int styleDescriptor[4];
-  styleDescriptor[0] = 0;
-  styleDescriptor[1] = 0;
-  styleDescriptor[2] = 0;
-  styleDescriptor[3] = 0;
+  TControlPictureRectState styleDescriptor = {0, 0, 0, 0};
   BuildUiTextStyleDescriptor(&styleDescriptor, 0, 0xc, styleSecondary);
-  ConstructTMapKeyBaseState_Impl(styleDescriptor, 0);
+  ApplyTextStyleDescriptorAndMaybeRefresh(&styleDescriptor, 0);
   SetTextThemeCodeAndMaybeRefresh(static_cast<short>(-1), 0);
   layoutRectA4.left = 0;
   layoutRectA4.top = 0;
   layoutRectA4.right = 0;
   layoutRectA4.bottom = 0;
   int mappedFlags = 0;
-  MapUiThemeCodeToStyleFlags(static_cast<short>(styleDescriptor[0]), &mappedFlags);
+  MapUiThemeCodeToStyleFlags(styleDescriptor.mode, &mappedFlags);
   cursorThemeCode98 = mappedFlags;
   MapUiThemeCodeToStyleFlags(static_cast<short>(styleSecondary), &mappedFlags);
   cursorThemeCode9c = mappedFlags;

@@ -19,10 +19,6 @@ void FillRectWithQuickDrawBrushAndContextOffset(RECT* rect);
 void SetQuickDrawTextOriginWithContextOffset(short x, short y);
 void DrawCenteredGuideLineOnMapDc(short x, short y);
 
-// styleDescriptor: opaque out-buffer (>= 10 bytes; callers use `int[4]`) -- real field
-// layout only partially recovered (see BuildUiTextStyleDescriptor body): a packed
-// {short,short,short,int} at +0x0/+0x2/+0x4/+0x6, rest unknown/unwritten by this
-// function. unused is always passed 0 by every known caller.
 struct TControlPictureRectState;
 
 // Build a CFont from a packed text-style preset (mode=font family 0-4, flag2=bold/
@@ -35,7 +31,8 @@ CFont* __cdecl CreateFontFromPresetAndAttachRegionHandle(TControlPictureRectStat
 // field changed (or none exists yet), and return it. 0x004944e0
 CFont* __cdecl UpdateGlobalFontPresetAndRebuildCachedFontIfDirty(TControlPictureRectState* style);
 
-void BuildUiTextStyleDescriptor(void* styleDescriptor, int unused, int arg2, int themeCode);
+void BuildUiTextStyleDescriptor(TControlPictureRectState* styleDescriptor, int unused, int arg2,
+                                int themeCode);
 void InitializeUiTextStyleDescriptor(TControlPictureRectState* styleDescriptor, short face,
                                      short pointSize, int themeCode, short font);
 

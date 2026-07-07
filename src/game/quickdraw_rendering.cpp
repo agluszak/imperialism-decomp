@@ -440,19 +440,19 @@ void MapUiThemeCodeToStyleFlags(short themeCode, int* outStyleFlags) {
 }
 
 // FUNCTION: IMPERIALISM 0x005c3e80
-void BuildUiTextStyleDescriptor(void* styleDescriptor, int unused, int arg2, int themeCode) {
+void BuildUiTextStyleDescriptor(TControlPictureRectState* styleDescriptor, int unused, int arg2,
+                                int themeCode) {
   (void)unused;
   // Verified against 0x5c3e9b-0x5c3f01: constructed unconditionally, never read or
   // written again -- a genuinely dead local kept faithfully (not our porting
   // artifact; the original does the same).
   CString deadLocal;
-  short* fields = static_cast<short*>(styleDescriptor);
-  fields[1] = 0;
+  styleDescriptor->flag2 = 0;
   int styleFlags = 0;
   MapUiThemeCodeToStyleFlags(static_cast<short>(themeCode), &styleFlags);
-  *reinterpret_cast<int*>(fields + 3) = styleFlags;
-  fields[2] = static_cast<short>(arg2);
-  fields[0] = (arg2 >= 0xc) ? 1 : 3;
+  styleDescriptor->styleRef6 = styleFlags;
+  styleDescriptor->pointSize = static_cast<short>(arg2);
+  styleDescriptor->mode = (arg2 >= 0xc) ? 1 : 3;
 }
 
 // FUNCTION: IMPERIALISM 0x005c3f50
