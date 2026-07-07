@@ -18,7 +18,10 @@ TRadioText::TRadioText() : TDropShadowText() {}
 void TRadioText::NoOpUiLifecycleHook(int arg) {}
 
 // FUNCTION: IMPERIALISM 0x005794b0
-void TRadioText::ApplyRectSlot110(RECT* rectBuffer) {}
+void TRadioText::ApplyRectSlot110(RECT* rectBuffer) {
+  // TODO(manifest): original draws selected/hover radio decoration before the text pass.
+  TDropShadowText::ApplyRectSlot110(rectBuffer);
+}
 
 // FUNCTION: IMPERIALISM 0x00579580
 void TRadioText::RefreshAndNotifyOwnerSlot13C() {

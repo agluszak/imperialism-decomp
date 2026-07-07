@@ -627,7 +627,7 @@
     },
     {
       "address": "0x429330",
-      "matching": 0.3333333333333333,
+      "matching": 0.375,
       "name": "ConstructUiCursorTextResourceEntry",
       "type": 1
     },
@@ -5286,7 +5286,7 @@
     },
     {
       "address": "0x4900a0",
-      "matching": 0.0,
+      "matching": 0.47126436781609193,
       "name": "TStaticText::RenderControlStateTextBySelectionCode",
       "type": 1
     },
@@ -5921,18 +5921,6 @@
       "type": 1
     },
     {
-      "address": "0x494430",
-      "matching": 0.2222222222222222,
-      "name": "ReleaseQuickDrawCachedFontHandleIfPresent_At00494430",
-      "type": 1
-    },
-    {
-      "address": "0x4944b0",
-      "matching": 0.2222222222222222,
-      "name": "ReleaseCachedGlobalFontObjectIfPresent_At004944b0",
-      "type": 1
-    },
-    {
       "address": "0x4944e0",
       "matching": 0.4266666666666667,
       "name": "UpdateGlobalFontPresetAndRebuildCachedFontIfDirty",
@@ -5988,7 +5976,7 @@
     },
     {
       "address": "0x494a90",
-      "matching": 0.02247191011235955,
+      "matching": 0.7142857142857143,
       "name": "THQButton::DrawTextWithCachedQuickDrawStyleState",
       "type": 1
     },
@@ -6000,13 +5988,13 @@
     },
     {
       "address": "0x494e00",
-      "matching": 0.01680672268907563,
+      "matching": 0.2297872340425532,
       "name": "MeasureTextExtentWithCachedQuickDrawStyle",
       "type": 1
     },
     {
       "address": "0x495000",
-      "matching": 0.7142857142857143,
+      "matching": 0.5714285714285714,
       "name": "SetQuickDrawFillColor",
       "type": 1
     },
@@ -6024,7 +6012,7 @@
     },
     {
       "address": "0x4950a0",
-      "matching": 1.0,
+      "matching": 0.8333333333333334,
       "name": "SetQuickDrawColorAndSyncGlobals",
       "type": 1
     },
@@ -12447,7 +12435,7 @@
     },
     {
       "address": "0x4dd430",
-      "matching": 0.5142857142857142,
+      "matching": 0.5714285714285714,
       "name": "TGreatPower::ComputeRemainingDiplomacyAidBudget",
       "type": 1
     },
@@ -12591,7 +12579,7 @@
     },
     {
       "address": "0x4ddc30",
-      "matching": 0.6526315789473685,
+      "matching": 0.9894736842105263,
       "name": "TGreatPower::OrphanRetStub_004d7fa0_20",
       "type": 1
     },
@@ -12879,7 +12867,8 @@
     },
     {
       "address": "0x4e0590",
-      "matching": 1.0,
+      "effective": true,
+      "matching": 0.42857142857142855,
       "name": "TGreatPower::OrphanRetStub_004d7fa0_88",
       "type": 1
     },
@@ -12892,7 +12881,8 @@
     },
     {
       "address": "0x4e0610",
-      "matching": 1.0,
+      "effective": true,
+      "matching": 0.42857142857142855,
       "name": "TGreatPower::ReturnFalseNationStateActionStub_8a",
       "type": 1
     },
@@ -12912,7 +12902,7 @@
     },
     {
       "address": "0x4e06d0",
-      "matching": 0.8095238095238095,
+      "matching": 1.0,
       "name": "TGreatPower::SumNationRuntimeFiveBucketValue44",
       "type": 1
     },
@@ -12942,7 +12932,7 @@
     },
     {
       "address": "0x4e09a0",
-      "matching": 0.5301204819277109,
+      "matching": 0.5060240963855421,
       "name": "TGreatPower::ComputeCityOrderCapabilityAggregateScore",
       "type": 1
     },
@@ -17246,7 +17236,7 @@
     },
     {
       "address": "0x5178f0",
-      "matching": 0.3446601941747573,
+      "matching": 0.32116788321167883,
       "name": "ComputeRepresentativeTileIndexForTerrainTypeWithWrapBias",
       "type": 1
     },
@@ -18296,7 +18286,7 @@
     },
     {
       "address": "0x52cae0",
-      "matching": 0.2976,
+      "matching": 0.3054662379421222,
       "name": "BuildOverlaySpanRecordsFromQuadBorderLinks",
       "type": 1
     },
@@ -18338,7 +18328,7 @@
     },
     {
       "address": "0x52d750",
-      "matching": 0.22063492063492063,
+      "matching": 0.21904761904761905,
       "name": "MergeSmallCityRegionsAndCompactIds",
       "type": 1
     },
@@ -20235,13 +20225,13 @@
     },
     {
       "address": "0x53d020",
-      "matching": 0.4251968503937008,
+      "matching": 0.4235294117647059,
       "name": "ComputeArmyMissionScoreDeltaWithCandidateUnit",
       "type": 1
     },
     {
       "address": "0x53d200",
-      "matching": 0.4108527131782946,
+      "matching": 0.41245136186770426,
       "name": "ComputeArmyMissionScoreDeltaWithScaledCandidateUnit",
       "type": 1
     },
@@ -22323,7 +22313,7 @@
     },
     {
       "address": "0x553b10",
-      "matching": 0.6206896551724138,
+      "matching": 0.41379310344827586,
       "name": "HasNoMapOrderEntryChildrenQueued",
       "type": 1
     },
@@ -22467,7 +22457,7 @@
     },
     {
       "address": "0x555420",
-      "matching": 0.5653333333333334,
+      "matching": 0.5546666666666666,
       "name": "ResolveTaskForceOrderConflictAndPickCandidate",
       "type": 1
     },
@@ -25785,7 +25775,7 @@
     },
     {
       "address": "0x5794b0",
-      "matching": 0.03773584905660377,
+      "matching": 0.10714285714285714,
       "name": "TRadioText::ApplyRectSlot110",
       "type": 1
     },
@@ -27719,7 +27709,7 @@
     },
     {
       "address": "0x58bc60",
-      "matching": 0.2119205298013245,
+      "matching": 0.23684210526315788,
       "name": "TPlacard::ApplyRectSlot110",
       "type": 1
     },
@@ -27803,7 +27793,7 @@
     },
     {
       "address": "0x58c3d0",
-      "matching": 0.2062780269058296,
+      "matching": 0.22321428571428573,
       "name": "TNumberedArrowButton::ApplyRectSlot110",
       "type": 1
     },
@@ -31207,7 +31197,7 @@
     },
     {
       "address": "0x5b5590",
-      "matching": 0.625,
+      "matching": 0.42857142857142855,
       "name": "TDropShadowText::ConstructSelectableTextOptionEntryBase",
       "type": 1
     },
@@ -31219,7 +31209,7 @@
     },
     {
       "address": "0x5b5650",
-      "matching": 0.018867924528301886,
+      "matching": 0.2804878048780488,
       "name": "TDropShadowText::ApplyRectSlot110",
       "type": 1
     },
@@ -31321,7 +31311,7 @@
     },
     {
       "address": "0x5b6170",
-      "matching": 0.028169014084507043,
+      "matching": 0.9,
       "name": "TDeluxeText::ApplyRectSlot110",
       "type": 1
     },
@@ -31692,7 +31682,7 @@
     },
     {
       "address": "0x5ba0e0",
-      "matching": 0.8181818181818182,
+      "matching": 1.0,
       "name": "BuildInterNationEventSummaryRowsForAdvisorDialog_Impl",
       "type": 1
     },
@@ -32556,7 +32546,7 @@
     },
     {
       "address": "0x5c3f50",
-      "matching": 0.047619047619047616,
+      "matching": 0.5066666666666667,
       "name": "InitializeUiTextStyleDescriptor",
       "type": 1
     },
@@ -32586,13 +32576,13 @@
     },
     {
       "address": "0x5c4470",
-      "matching": 0.05555555555555555,
+      "matching": 0.875,
       "name": "ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor",
       "type": 1
     },
     {
       "address": "0x5c4500",
-      "matching": 0.05263157894736842,
+      "matching": 0.8529411764705882,
       "name": "InitializeUiTextStyleDescriptorAndApplyQuickDraw",
       "type": 1
     },

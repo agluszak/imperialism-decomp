@@ -36,6 +36,8 @@ CFont* __cdecl CreateFontFromPresetAndAttachRegionHandle(TControlPictureRectStat
 CFont* __cdecl UpdateGlobalFontPresetAndRebuildCachedFontIfDirty(TControlPictureRectState* style);
 
 void BuildUiTextStyleDescriptor(void* styleDescriptor, int unused, int arg2, int themeCode);
+void InitializeUiTextStyleDescriptor(TControlPictureRectState* styleDescriptor, short face,
+                                     short pointSize, int themeCode, short font);
 
 // 0x5c4020 -- asserts the text control, applies a theme style descriptor built from
 // themeCode (BuildUiTextStyleDescriptor inline-expanded in the original), sets the
@@ -47,36 +49,35 @@ TStaticText* ApplyControlThemeStyleAndOptionalCaption(TStaticText* control, int 
                                                       const char* caption);
 
 undefined4 UpdatePaletteIndexWithDefaultFallback(void);
-undefined4 ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(void);
+void ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(int unused, int styleWidth, int themeCode);
+void InitializeUiTextStyleDescriptorAndApplyQuickDraw(short face, short pointSize, int themeCode,
+                                                      short font);
 
-// Cached-style text leaves (0x494a90 / 0x494e00) are not ported yet — they dispatch
-// through the cached text-style context singletons (0x6a1da0 / 0x6a1d9c), which are
-// real CDC* (see g_pQuickDrawMemoryDc / g_pScopedMapQuickDrawDcHandleObject). Until
-// they're ported these stay the single shared typed entry points (Hard Rule 9: generic
-// extern + typed cast), so call sites stay cast-free.
-undefined4 MeasureTextExtentWithCachedQuickDrawStyle(void);
-undefined4 DrawTextWithCachedQuickDrawStyleState(void);
+// Cached-style text measurement leaf (0x494e00): rebuilds the cached measure-font from
+// g_QuickDrawMeasureFontPreset if dirty, selects it into the active QuickDraw CDC (or a
+// local compatible DC if none active), and returns the text width via
+// GetTextExtentPoint32A. Ported in quickdraw_rendering.cpp.
+short __cdecl MeasureTextExtentWithCachedQuickDrawStyle(const CString* text);
 
-static __inline short MeasureTextExtentWithCachedStyle(const CString* text) {
-  return reinterpret_cast<short(__cdecl*)(const CString*)>(
-      reinterpret_cast<void (*)()>(MeasureTextExtentWithCachedQuickDrawStyle))(text);
-}
+// Cached-style text draw leaf (0x494a90): rebuilds/selects the cached measure-font into
+// the active QuickDraw CDC, applies the current QuickDraw text color, then draws at the
+// resolved origin cached by SetQuickDrawTextOriginWithContextOffset.
+void __cdecl DrawTextWithCachedQuickDrawStyleState(const CString* text);
 
 static __inline void DrawTextWithCachedStyle(const CString* text) {
-  reinterpret_cast<void(__cdecl*)(const CString*)>(
-      reinterpret_cast<void (*)()>(DrawTextWithCachedQuickDrawStyleState))(text);
+  DrawTextWithCachedQuickDrawStyleState(text);
 }
 
-// QuickDraw text-style words at 0x6a1d4c/0x6a1d4e/0x6a1d50 (txFont/txFace/txSize); each
-// stores the value and marks the text-style state dirty (0x6a1d56). Real game functions
-// (the D:\Ambit\QuickDraw.cpp layer), ported in quickdraw_rendering.cpp.
+// QuickDraw text-style words (txFont/txFace/txSize) write the corresponding fields of
+// g_QuickDrawMeasureFontPreset (mode/flag2/pointSize) and mark the measure-font dirty
+// (g_bQuickDrawMeasureFontDirty). Real game functions (the D:\Ambit\QuickDraw.cpp layer),
+// ported in quickdraw_rendering.cpp.
 void SetQuickDrawTextFont(short value); // 0x00495230 (txFont)
 void SetQuickDrawTextFace(short value); // 0x00495290 (txFace)
 void SetQuickDrawTextSize(short value); // 0x00495260 (txSize)
 
 static __inline void ApplyUiTextStyleAndSyncColor(int unused, int styleWidth, int themeCode) {
-  reinterpret_cast<void(__cdecl*)(int, int, int)>(reinterpret_cast<void (*)()>(
-      ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor))(unused, styleWidth, themeCode);
+  ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(unused, styleWidth, themeCode);
 }
 
 static __inline void UpdatePaletteIndexWithFallback(int paletteIndex) {

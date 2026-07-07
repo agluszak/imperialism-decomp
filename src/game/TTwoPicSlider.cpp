@@ -126,7 +126,7 @@ void TTwoPicSlider::ApplyRectSlot110(RECT* rectBuffer) {
       MapUiThemeCodeToStyleFlags(0x2b67, &textMainColor);
 
       short textCenterY = static_cast<short>(slider->field38 / 2);
-      short textWidth = MeasureTextExtentWithCachedStyle(&statusText);
+      short textWidth = MeasureTextExtentWithCachedQuickDrawStyle(&statusText);
       short textLeft = static_cast<short>((slider->field34 / 2) - (textWidth / 2));
 
       SetQuickDrawColorAndSyncGlobals(textMainColor);

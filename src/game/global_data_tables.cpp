@@ -152,15 +152,13 @@ char g_szUiPlaceholderTreasury_006943B0[] = "$55,555";
 // share "Book Antiqua".
 // GLOBAL: IMPERIALISM 0x00695160
 char g_szQuickDrawFontFaceSystem[] = "System";
-// GLOBAL: IMPERIALISM 0x00695150
-char g_szQuickDrawFontFaceBelwe[] = "Belwe Bd BT";
 // GLOBAL: IMPERIALISM 0x00695140
 char g_szQuickDrawFontFaceBookAntiqua[] = "Book Antiqua";
 // GLOBAL: IMPERIALISM 0x00695130
 char g_szQuickDrawFontFaceSmallFonts[] = "Small Fonts";
 // GLOBAL: IMPERIALISM 0x00695108
 const char* const g_apszQuickDrawFontFaceNames[5] = {
-    g_szQuickDrawFontFaceSystem, g_szQuickDrawFontFaceBelwe, g_szQuickDrawFontFaceBookAntiqua,
+    g_szQuickDrawFontFaceSystem, g_szUiFontLiteralBelweBdBt, g_szQuickDrawFontFaceBookAntiqua,
     g_szQuickDrawFontFaceBookAntiqua, g_szQuickDrawFontFaceSmallFonts};
 
 // GLOBAL: IMPERIALISM 0x006943bc
@@ -248,16 +246,18 @@ TControlPictureRectState g_QuickDrawCachedFontPreset = {0, 0, 0, 0};
 // GLOBAL: IMPERIALISM 0x006a1cf6
 unsigned char g_bQuickDrawCachedFontDirty = 0;
 
+// Measure-text cached font cluster. The preset's styleRef6 field (0x6a1d52) IS the
+// current text color — written by SetQuickDrawFillColor, read as COLORREF by the paint
+// paths (the original PDB labels those 4 bytes g_uQuickDrawCurrentColor; it's the same
+// field, not a separate global). The CRT init at 0x4943e0 seeds the preset to 0xc and
+// dirty=1 at runtime; left zero-initialized here to match the original .data image, and
+// the measure engine rebuilds on first use via the null-cache fallback.
+// GLOBAL: IMPERIALISM 0x006a1d48
+CFont* g_pQuickDrawCachedMeasureFont = 0;
 // GLOBAL: IMPERIALISM 0x006a1d4c
-short g_nQuickDrawTextFont = 0;
-// GLOBAL: IMPERIALISM 0x006a1d4e
-short g_nQuickDrawTextFace = 0;
-// GLOBAL: IMPERIALISM 0x006a1d50
-short g_nQuickDrawTextSize = 0;
+TControlPictureRectState g_QuickDrawMeasureFontPreset = {0, 0, 0, 0};
 // GLOBAL: IMPERIALISM 0x006a1d56
-unsigned char g_bQuickDrawTextStyleDirty = 0;
-// GLOBAL: IMPERIALISM 0x006a1d52
-int g_uQuickDrawCurrentColor = 0;
+unsigned char g_bQuickDrawMeasureFontDirty = 0;
 // GLOBAL: IMPERIALISM 0x006a1d80
 int g_nQuickDrawOriginX = 0;
 // GLOBAL: IMPERIALISM 0x006a1d84

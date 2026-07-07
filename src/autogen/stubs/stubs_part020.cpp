@@ -131,14 +131,6 @@ undefined4 WrapperFor_thunk_BusyWaitUntilShiftedTickDeadline_At005c3b40(void)
   return 0;
 }
 
-// ghidra_name InitializeUiTextStyleDescriptor
-// ghidra_proto undefined InitializeUiTextStyleDescriptor()
-// FUNCTION: IMPERIALISM 0x005c3f50
-undefined4 InitializeUiTextStyleDescriptor(void)
-{
-  return 0;
-}
-
 // ghidra_name ConfigureUiControlStyleValueAndCaptionFromStringResource
 // ghidra_proto undefined ConfigureUiControlStyleValueAndCaptionFromStringResource()
 // FUNCTION: IMPERIALISM 0x005c4180
@@ -159,22 +151,6 @@ undefined4 RefreshActiveControlThenApplyThemeStyleAndCaption(void)
 // ghidra_proto undefined DispatchToSelectableTextOptionEntries()
 // FUNCTION: IMPERIALISM 0x005c43b0
 undefined4 DispatchToSelectableTextOptionEntries(void)
-{
-  return 0;
-}
-
-// ghidra_name ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor
-// ghidra_proto undefined ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor()
-// FUNCTION: IMPERIALISM 0x005c4470
-undefined4 ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(void)
-{
-  return 0;
-}
-
-// ghidra_name InitializeUiTextStyleDescriptorAndApplyQuickDraw
-// ghidra_proto undefined InitializeUiTextStyleDescriptorAndApplyQuickDraw()
-// FUNCTION: IMPERIALISM 0x005c4500
-undefined4 InitializeUiTextStyleDescriptorAndApplyQuickDraw(void)
 {
   return 0;
 }

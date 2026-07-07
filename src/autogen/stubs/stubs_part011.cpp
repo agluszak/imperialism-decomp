@@ -451,38 +451,6 @@ undefined4 WrapperFor_DeleteRegionHandleFromClipState_At00494370(void)
   return 0;
 }
 
-// ghidra_name WrapperFor_AppendPointerToGlobalVectorAsStatus_At004943e0
-// ghidra_proto undefined WrapperFor_AppendPointerToGlobalVectorAsStatus_At004943e0()
-// FUNCTION: IMPERIALISM 0x004943e0
-undefined4 WrapperFor_AppendPointerToGlobalVectorAsStatus_At004943e0(void)
-{
-  return 0;
-}
-
-// ghidra_name ReleaseQuickDrawCachedFontHandleIfPresent_At00494430
-// ghidra_proto undefined ReleaseQuickDrawCachedFontHandleIfPresent_At00494430()
-// FUNCTION: IMPERIALISM 0x00494430
-undefined4 ReleaseQuickDrawCachedFontHandleIfPresent_At00494430(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_AppendPointerToGlobalVectorAsStatus_At00494460
-// ghidra_proto undefined WrapperFor_AppendPointerToGlobalVectorAsStatus_At00494460()
-// FUNCTION: IMPERIALISM 0x00494460
-undefined4 WrapperFor_AppendPointerToGlobalVectorAsStatus_At00494460(void)
-{
-  return 0;
-}
-
-// ghidra_name ReleaseCachedGlobalFontObjectIfPresent_At004944b0
-// ghidra_proto undefined ReleaseCachedGlobalFontObjectIfPresent_At004944b0()
-// FUNCTION: IMPERIALISM 0x004944b0
-undefined4 ReleaseCachedGlobalFontObjectIfPresent_At004944b0(void)
-{
-  return 0;
-}
-
 // ghidra_name ConstructScopedMapQuickDrawContextWithPaletteToken
 // ghidra_proto undefined ConstructScopedMapQuickDrawContextWithPaletteToken()
 // FUNCTION: IMPERIALISM 0x004947e0
@@ -499,14 +467,6 @@ undefined4 RenderTacticalBattleSelectionAndUnitOverlayPass_Impl(void)
   return 0;
 }
 
-// ghidra_name THQButton::DrawTextWithCachedQuickDrawStyleState
-// ghidra_proto undefined DrawTextWithCachedQuickDrawStyleState()
-// FUNCTION: IMPERIALISM 0x00494a90
-undefined4 DrawTextWithCachedQuickDrawStyleState(void)
-{
-  return 0;
-}
-
 // ghidra_name RenderTradeScreenCommoditySummaryRows_Impl
 // ghidra_proto undefined RenderTradeScreenCommoditySummaryRows_Impl()
 // FUNCTION: IMPERIALISM 0x00494bf0
@@ -519,14 +479,6 @@ undefined4 RenderTradeScreenCommoditySummaryRows_Impl(void)
 // ghidra_proto undefined WrapperFor_CreateFontFromPresetAndAttachRegionHandle_At00494d20()
 // FUNCTION: IMPERIALISM 0x00494d20
 undefined4 WrapperFor_CreateFontFromPresetAndAttachRegionHandle_At00494d20(void)
-{
-  return 0;
-}
-
-// ghidra_name MeasureTextExtentWithCachedQuickDrawStyle
-// ghidra_proto undefined MeasureTextExtentWithCachedQuickDrawStyle()
-// FUNCTION: IMPERIALISM 0x00494e00
-undefined4 MeasureTextExtentWithCachedQuickDrawStyle(void)
 {
   return 0;
 }

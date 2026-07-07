@@ -18,8 +18,7 @@ TInfoBarText::~TInfoBarText() {}
 IMPLEMENT_DYNCREATE(TInfoBarText, TDeluxeText)
 
 // FUNCTION: IMPERIALISM 0x00429330
-TInfoBarText::TInfoBarText()
-    : TDeluxeText(), cursorThemeCode98(0), cursorThemeCode9c(0), fieldA0(0) {}
+TInfoBarText::TInfoBarText() : TDeluxeText() {}
 
 // FUNCTION: IMPERIALISM 0x005b66b0
 void TInfoBarText::SetTextAndLayoutRect(CString text, RECT* layoutRect) {

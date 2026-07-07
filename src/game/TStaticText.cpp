@@ -184,13 +184,29 @@ void TStaticText::ApplyRectSlot110(RECT* rectBuffer) {
 }
 
 // FUNCTION: IMPERIALISM 0x004900a0
-void TStaticText::RenderControlStateTextBySelectionCode(RECT* rect) {
-  // TODO(manifest): real body (273 bytes) dispatches through the same
-  // unidentified quickdraw-context object as ApplyRectSlot110 (slots +0x30
-  // and +0x38, plus a draw call at +0x70 with a palette-index selected from
-  // field90 — the same 0x910/0x911/0x912 switch seen in ApplyRectSlot110),
-  // offsetting `rect` by (field2c, field30) before drawing. See
-  // imperialism-decomp-855 (text-widget ApplyRectSlot110 paint family) for
-  // the shared class-recovery blocker; left unimplemented rather than guessed.
-  (void)rect;
+void TStaticText::RenderControlStateTextBySelectionCode(const char* textChars, int textLength,
+                                                        RECT* rect, short alignmentCode) {
+  (void)textLength;
+  CDC* dc = GetActiveQuickDrawDc();
+  dc->SetMapperFlags(1);
+  CFont* font = UpdateGlobalFontPresetAndRebuildCachedFontIfDirty(&textStyle78);
+  CFont* oldFont = dc->SelectObject(font);
+  dc->SetTextColor(g_Quick_Draw_Color_State_006950FC);
+  UINT format = 0x910;
+  if (alignmentCode != -2) {
+    if (alignmentCode == -1) {
+      format = 0x912;
+    } else if (alignmentCode == 1) {
+      format = 0x911;
+    }
+  }
+  RECT drawRect;
+  drawRect.left = rect->left;
+  drawRect.top = rect->top;
+  drawRect.right = rect->right;
+  drawRect.bottom = rect->bottom;
+  OffsetRect(&drawRect, ownerOffsetX, ownerOffsetY);
+  CString textCopy(textChars);
+  dc->DrawText((LPCSTR)textCopy, textCopy.GetLength(), &drawRect, format);
+  dc->SelectObject(oldFont);
 }

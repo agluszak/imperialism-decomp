@@ -321,7 +321,7 @@ void TCivDescription::ApplyRectSlot110(RECT* rectBuffer) {
     MapUiThemeCodeToStyleFlags(0x2b67, &styleSecondary);
     g_pSimMgr->GetString(0x2718, selectedClass, &localizedTextRef);
 
-    textWidth = MeasureTextExtentWithCachedStyle(&localizedTextRef);
+    textWidth = MeasureTextExtentWithCachedQuickDrawStyle(&localizedTextRef);
     textOriginX = static_cast<short>((this->field34 / 2) - (textWidth / 2));
 
     SetQuickDrawColorAndSyncGlobals(styleSecondary);

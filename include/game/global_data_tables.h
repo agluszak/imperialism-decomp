@@ -223,15 +223,16 @@ extern CFont* g_pQuickDrawCachedUiFont;
 extern TControlPictureRectState g_QuickDrawCachedFontPreset;
 extern unsigned char g_bQuickDrawCachedFontDirty;
 extern char g_szQuickDrawFontFaceSystem[];
-extern char g_szQuickDrawFontFaceBelwe[];
 extern char g_szQuickDrawFontFaceBookAntiqua[];
 extern char g_szQuickDrawFontFaceSmallFonts[];
 extern const char* const g_apszQuickDrawFontFaceNames[5];
-extern short g_nQuickDrawTextFont;               // 0x6a1d4c
-extern short g_nQuickDrawTextFace;               // 0x6a1d4e
-extern short g_nQuickDrawTextSize;               // 0x6a1d50
-extern unsigned char g_bQuickDrawTextStyleDirty; // 0x6a1d56
-extern int g_uQuickDrawCurrentColor;
+// Measure-text cached font cluster (0x6a1d48-0x6a1d56): same shape as the draw-font
+// cluster above. The preset's styleRef6 field IS the current text color (written by
+// SetQuickDrawFillColor, read as COLORREF by the paint paths; the original PDB labels
+// those 4 bytes g_uQuickDrawCurrentColor — it's the same field, not a separate global).
+extern CFont* g_pQuickDrawCachedMeasureFont;                  // 0x6a1d48
+extern TControlPictureRectState g_QuickDrawMeasureFontPreset; // 0x6a1d4c
+extern unsigned char g_bQuickDrawMeasureFontDirty;            // 0x6a1d56
 extern int g_uQuickDrawStrokeColor;
 extern int g_nQuickDrawOriginX;
 extern int g_nQuickDrawOriginY;

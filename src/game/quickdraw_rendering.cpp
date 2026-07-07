@@ -93,13 +93,115 @@ CFont* __cdecl UpdateGlobalFontPresetAndRebuildCachedFontIfDirty(TControlPicture
   return g_pQuickDrawCachedUiFont;
 }
 
+// FUNCTION: IMPERIALISM 0x00494a90
+void __cdecl DrawTextWithCachedQuickDrawStyleState(const CString* text) {
+  if (g_bQuickDrawMeasureFontDirty != 0 || g_pQuickDrawCachedMeasureFont == 0) {
+    if (g_pQuickDrawCachedMeasureFont != 0) {
+      delete g_pQuickDrawCachedMeasureFont;
+    }
+    g_pQuickDrawCachedMeasureFont =
+        CreateFontFromPresetAndAttachRegionHandle(&g_QuickDrawMeasureFontPreset);
+    g_bQuickDrawMeasureFontDirty = 0;
+  }
+
+  CDC* dc = g_pQuickDrawMemoryDc;
+  if (dc == nullptr) {
+    dc = g_pScopedMapQuickDrawDcHandleObject;
+  }
+  CFont* oldFont = dc->SelectObject(g_pQuickDrawCachedMeasureFont);
+
+  dc = g_pQuickDrawMemoryDc;
+  if (dc == nullptr) {
+    dc = g_pScopedMapQuickDrawDcHandleObject;
+  }
+  dc->SetTextColor(static_cast<COLORREF>(g_QuickDrawMeasureFontPreset.styleRef6));
+
+  dc = g_pQuickDrawMemoryDc;
+  if (dc == nullptr) {
+    dc = g_pScopedMapQuickDrawDcHandleObject;
+  }
+  dc->SetMapperFlags(1);
+
+  dc = g_pQuickDrawMemoryDc;
+  if (dc == nullptr) {
+    dc = g_pScopedMapQuickDrawDcHandleObject;
+  }
+  UINT oldTextAlign = dc->SetTextAlign(TA_BASELINE | TA_NOUPDATECP);
+
+  dc = g_pQuickDrawMemoryDc;
+  if (dc == nullptr) {
+    dc = g_pScopedMapQuickDrawDcHandleObject;
+  }
+  dc->TextOut(g_nQuickDrawResolvedTextOriginX, g_nQuickDrawResolvedTextOriginY, (LPCSTR)*text,
+              text->GetLength());
+
+  dc = g_pQuickDrawMemoryDc;
+  if (dc == nullptr) {
+    dc = g_pScopedMapQuickDrawDcHandleObject;
+  }
+  dc->SetTextAlign(oldTextAlign);
+
+  dc = g_pQuickDrawMemoryDc;
+  if (dc == nullptr) {
+    dc = g_pScopedMapQuickDrawDcHandleObject;
+  }
+  dc->SelectObject(oldFont);
+}
+
+// FUNCTION: IMPERIALISM 0x00494e00
+short __cdecl MeasureTextExtentWithCachedQuickDrawStyle(const CString* text) {
+  // Active-DC path: reuse the global QuickDraw CDC, SelectObject the cached measure-font
+  // around a GetTextExtentPointA. Falls back to g_pScopedMapQuickDrawDcHandleObject
+  // when no memory DC is bound (same null-fallback chain as the other draw leaves).
+  CDC* activeDc = g_pQuickDrawMemoryDc;
+  if (activeDc == nullptr) {
+    activeDc = g_pScopedMapQuickDrawDcHandleObject;
+  }
+  if (activeDc != nullptr) {
+    // Inlined rebuild of the cached measure-font (same shape as the draw-font rebuild
+    // in UpdateGlobalFontPresetAndRebuildCachedFontIfDirty, but for the measure cluster).
+    if (g_bQuickDrawMeasureFontDirty != 0 || g_pQuickDrawCachedMeasureFont == 0) {
+      if (g_pQuickDrawCachedMeasureFont != 0) {
+        delete g_pQuickDrawCachedMeasureFont;
+      }
+      g_pQuickDrawCachedMeasureFont =
+          CreateFontFromPresetAndAttachRegionHandle(&g_QuickDrawMeasureFontPreset);
+      g_bQuickDrawMeasureFontDirty = 0;
+    }
+    CFont* oldFont = activeDc->SelectObject(g_pQuickDrawCachedMeasureFont);
+    SIZE extent;
+    GetTextExtentPointA(activeDc->GetSafeHdc(), (LPCSTR)*text, text->GetLength(), &extent);
+    activeDc->SelectObject(oldFont);
+    return static_cast<short>(extent.cx);
+  }
+  // Local-DC path: no active QuickDraw DC, so build a throwaway compatible DC, select
+  // the cached font into it, measure, restore, and destroy. The original wraps this in
+  // an SEH frame for the stack CDC's destructor; real C++ construction/destruction emits
+  // the same unwind via MSVC's EH machinery.
+  CDC localDc;
+  localDc.Attach(CreateCompatibleDC(static_cast<HDC>(0)));
+  if (g_bQuickDrawMeasureFontDirty != 0 || g_pQuickDrawCachedMeasureFont == 0) {
+    if (g_pQuickDrawCachedMeasureFont != 0) {
+      delete g_pQuickDrawCachedMeasureFont;
+    }
+    g_pQuickDrawCachedMeasureFont =
+        CreateFontFromPresetAndAttachRegionHandle(&g_QuickDrawMeasureFontPreset);
+    g_bQuickDrawMeasureFontDirty = 0;
+  }
+  CFont* oldFont = localDc.SelectObject(g_pQuickDrawCachedMeasureFont);
+  SIZE extent;
+  GetTextExtentPointA(localDc.GetSafeHdc(), (LPCSTR)*text, text->GetLength(), &extent);
+  localDc.SelectObject(oldFont);
+  return static_cast<short>(extent.cx);
+}
+
 // FUNCTION: IMPERIALISM 0x00495000
 void SetQuickDrawFillColor(int fillColor) {
   g_Quick_Draw_Color_State_006950FC = fillColor;
   if (g_pActiveQuickDrawSurfaceContext != 0) {
     g_pActiveQuickDrawSurfaceContext->quickDrawColor = fillColor;
   }
-  g_uQuickDrawCurrentColor = fillColor;
+  g_QuickDrawMeasureFontPreset.styleRef6 = fillColor;
 }
 
 // FUNCTION: IMPERIALISM 0x00495070
@@ -114,7 +216,7 @@ void SetQuickDrawStrokeColor(int strokeColor) {
 void SetQuickDrawColorAndSyncGlobals(int color) {
   g_Quick_Draw_Color_State_006950FC = color;
   g_pActiveQuickDrawSurfaceContext->quickDrawColor = color;
-  g_uQuickDrawCurrentColor = color;
+  g_QuickDrawMeasureFontPreset.styleRef6 = color;
 }
 
 // FUNCTION: IMPERIALISM 0x004950d0
@@ -124,25 +226,25 @@ void SetGlobalBlitTransparentColorRaw(int transparentColor) {
 
 // FUNCTION: IMPERIALISM 0x00495230
 void SetQuickDrawTextFont(short value) {
-  if (g_nQuickDrawTextFont != value) {
-    g_nQuickDrawTextFont = value;
-    g_bQuickDrawTextStyleDirty = 1;
+  if (g_QuickDrawMeasureFontPreset.mode != value) {
+    g_QuickDrawMeasureFontPreset.mode = value;
+    g_bQuickDrawMeasureFontDirty = 1;
   }
 }
 
 // FUNCTION: IMPERIALISM 0x00495260
 void SetQuickDrawTextSize(short value) {
-  if (g_nQuickDrawTextSize != value) {
-    g_nQuickDrawTextSize = value;
-    g_bQuickDrawTextStyleDirty = 1;
+  if (g_QuickDrawMeasureFontPreset.pointSize != value) {
+    g_QuickDrawMeasureFontPreset.pointSize = value;
+    g_bQuickDrawMeasureFontDirty = 1;
   }
 }
 
 // FUNCTION: IMPERIALISM 0x00495290
 void SetQuickDrawTextFace(short value) {
-  if (g_nQuickDrawTextFace != value) {
-    g_nQuickDrawTextFace = value;
-    g_bQuickDrawTextStyleDirty = 1;
+  if (g_QuickDrawMeasureFontPreset.flag2 != value) {
+    g_QuickDrawMeasureFontPreset.flag2 = value;
+    g_bQuickDrawMeasureFontDirty = 1;
   }
 }
 
@@ -353,6 +455,20 @@ void BuildUiTextStyleDescriptor(void* styleDescriptor, int unused, int arg2, int
   fields[0] = (arg2 >= 0xc) ? 1 : 3;
 }
 
+// FUNCTION: IMPERIALISM 0x005c3f50
+void InitializeUiTextStyleDescriptor(TControlPictureRectState* styleDescriptor, short face,
+                                     short pointSize, int themeCode, short font) {
+  // Same dead CString shape as BuildUiTextStyleDescriptor; the original constructs and
+  // destroys it while only using the packed descriptor fields below.
+  CString deadLocal;
+  int styleFlags = 0;
+  styleDescriptor->flag2 = face;
+  MapUiThemeCodeToStyleFlags(static_cast<short>(themeCode), &styleFlags);
+  styleDescriptor->pointSize = pointSize;
+  styleDescriptor->styleRef6 = styleFlags;
+  styleDescriptor->mode = font;
+}
+
 // FUNCTION: IMPERIALISM 0x005c4020
 TStaticText* ApplyControlThemeStyleAndOptionalCaption(TStaticText* control, int unused2,
                                                       int pointSize, int themeCode, int themeCode2,
@@ -372,4 +488,27 @@ TStaticText* ApplyControlThemeStyleAndOptionalCaption(TStaticText* control, int 
     control->AssignTextSharedRefIfChangedAndMaybeInvalidate(&captionString, 0);
   }
   return control;
+}
+
+// FUNCTION: IMPERIALISM 0x005c4470
+void ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(int unused, int styleWidth, int themeCode) {
+  TControlPictureRectState styleDescriptor;
+  styleDescriptor.styleRef6 = 0;
+  BuildUiTextStyleDescriptor(&styleDescriptor, unused, styleWidth, themeCode);
+  SetQuickDrawTextFace(styleDescriptor.flag2);
+  SetQuickDrawTextSize(styleDescriptor.pointSize);
+  SetQuickDrawTextFont(styleDescriptor.mode);
+  SetQuickDrawColorAndSyncGlobals(styleDescriptor.styleRef6);
+}
+
+// FUNCTION: IMPERIALISM 0x005c4500
+void InitializeUiTextStyleDescriptorAndApplyQuickDraw(short face, short pointSize, int themeCode,
+                                                      short font) {
+  TControlPictureRectState styleDescriptor;
+  styleDescriptor.styleRef6 = 0;
+  InitializeUiTextStyleDescriptor(&styleDescriptor, face, pointSize, themeCode, font);
+  SetQuickDrawTextFace(styleDescriptor.flag2);
+  SetQuickDrawTextSize(styleDescriptor.pointSize);
+  SetQuickDrawTextFont(styleDescriptor.mode);
+  SetQuickDrawColorAndSyncGlobals(styleDescriptor.styleRef6);
 }

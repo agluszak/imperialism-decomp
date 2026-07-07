@@ -747,6 +747,10 @@ address|target_cpp|ownership|note
 493ca0|src/game/CMcWindow.cpp|manual|marker_sync
 493cc0|src/game/CMcWindow.cpp|manual|marker_sync
 494130|src/game/quickdraw_rendering.cpp|manual|marker_sync
+4943e0|src/game/crt_io_library.cpp|library|marker_sync
+494430|src/game/crt_io_library.cpp|library|marker_sync
+494460|src/game/crt_io_library.cpp|library|marker_sync
+4944b0|src/game/crt_io_library.cpp|library|marker_sync
 4944e0|src/game/quickdraw_rendering.cpp|manual|marker_sync
 4945f0|src/game/ScopedMapQuickDrawContext.cpp|manual|marker_sync
 494660|src/game/ScopedMapQuickDrawContext.cpp|manual|marker_sync
@@ -754,6 +758,8 @@ address|target_cpp|ownership|note
 4946b0|src/game/ScopedMapQuickDrawContext.cpp|manual|marker_sync
 494700|src/game/ScopedMapQuickDrawContext.cpp|manual|marker_sync
 4948b0|src/game/ScopedMapQuickDrawContext.cpp|manual|marker_sync
+494a90|src/game/quickdraw_rendering.cpp|manual|marker_sync
+494e00|src/game/quickdraw_rendering.cpp|manual|marker_sync
 495000|src/game/quickdraw_rendering.cpp|manual|marker_sync
 495070|src/game/quickdraw_rendering.cpp|manual|marker_sync
 4950a0|src/game/quickdraw_rendering.cpp|manual|marker_sync
@@ -4317,7 +4323,10 @@ address|target_cpp|ownership|note
 5c3b70|src/game/bitmap_descriptor_helpers.cpp|manual|marker_sync
 5c3d20|src/game/quickdraw_rendering.cpp|manual|marker_sync
 5c3e80|src/game/quickdraw_rendering.cpp|manual|marker_sync
+5c3f50|src/game/quickdraw_rendering.cpp|manual|marker_sync
 5c4020|src/game/quickdraw_rendering.cpp|manual|marker_sync
+5c4470|src/game/quickdraw_rendering.cpp|manual|marker_sync
+5c4500|src/game/quickdraw_rendering.cpp|manual|marker_sync
 5c4c60|src/game/map_context_flavor_builders.cpp|manual|marker_sync
 5c57f0|src/game/map_context_flavor_builders.cpp|manual|marker_sync
 5c61a0|src/game/map_context_flavor_builders.cpp|manual|marker_sync

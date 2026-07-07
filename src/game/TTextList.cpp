@@ -56,7 +56,7 @@ void TTextList::ApplyRectSlot110(RECT* rectBuffer) {
         FillRectWithQuickDrawBrushAndContextOffset(&rect);
       }
 
-      short textWidth = MeasureTextExtentWithCachedStyle(&tempString);
+      short textWidth = MeasureTextExtentWithCachedQuickDrawStyle(&tempString);
       short textX = static_cast<short>(field34 / 2) - static_cast<short>(textWidth / 2);
 
       SetQuickDrawColorAndSyncGlobals(styleFlags2);

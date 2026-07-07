@@ -57,7 +57,7 @@ void TArmyPlacard::ApplyRectSlot110(RECT* rectBuffer) {
     ApplyUiTextStyleAndSyncColor(0, 10, 0x2b67);
     countText.Format(g_szDecimalFormat, static_cast<int>(this->glyph90));
 
-    short textWidth = MeasureTextExtentWithCachedStyle(&countText);
+    short textWidth = MeasureTextExtentWithCachedQuickDrawStyle(&countText);
     short textX = static_cast<short>(field34 - textWidth);
     short textY = static_cast<short>(field38 - 2);
 

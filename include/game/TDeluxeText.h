@@ -133,17 +133,17 @@ public:
   // via UpdateTextEntrySharedStringAndMaybeNotify (verified 1-arg thiscall, RET 4;
   // the old InitializeTechHistoryViewTitleAndMapKeyControls name was junk and the
   // declaration had dropped the argument).
-  virtual void SetTextFromUiStringResourceId(short stringId);           // slot 0x77 0x5b60d0
+  virtual void SetTextFromUiStringResourceId(short stringId);            // slot 0x77 0x5b60d0
   virtual void WrapperFor_thunk_BuildUiTextStyleDescriptor_At005b62e0(); // slot 0x78 0x5b62e0
   // styleDescriptor points at a small packed style record (callers pass
   // int[4]); only field_98 = *(int*)((char*)styleDescriptor+6) and two
   // unresolved low-level style/font helpers are confirmed so far.
   virtual void ConstructTMapKeyBaseState_Impl(int* styleDescriptor,
-                                              int unusedFlag);  // slot 0x79 0x5b62a0
+                                              int unusedFlag); // slot 0x79 0x5b62a0
   virtual void BuildCityViewProductionControls_Impl();         // slot 0x7a 0x5b64e0
   virtual void UpdateTextEntrySharedStringAndMaybeNotify(CString* text,
                                                          char notifyFlag); // slot 0x7b 0x5b64a0
-  virtual void UpdateTextEntrySharedString(CString* text);                // slot 0x7c 0x5b6480
+  virtual void UpdateTextEntrySharedString(CString* text);                 // slot 0x7c 0x5b6480
   virtual void Helper_Uses_ConstructSharedStringFromCStrOrResourceId_At005b6360(
       CString param_1); // slot 0x7d 0x5b6360
   // Real return is undefined4 (packs two shorts via CONCAT22) with an
@@ -154,7 +154,10 @@ public:
   // === END GENERATED DECLS (TDeluxeText) ===
   // TODO(manifest): add data members from the object slice (`just slice-discovery TDeluxeText
   // 0xCTOR`).
+  int cursorThemeCode98;      // +0x98
+  int cursorThemeCode9c;      // +0x9c
+  unsigned char fieldA0;      // +0xa0
+  unsigned char paddingA1[3]; // +0xa1
 
   TDeluxeText();
 };
-

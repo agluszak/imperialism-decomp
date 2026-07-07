@@ -2,6 +2,7 @@
 
 #include "game/TModuleLibraryCacheTableStateB.h"
 #include "game/global_data_tables.h"
+#include "game/quickdraw_rendering.h"
 
 // SYNTHETIC: IMPERIALISM 0x004309e0
 // TDeluxeText::`scalar deleting destructor'
@@ -14,7 +15,7 @@ TDeluxeText::~TDeluxeText() {}
 
 IMPLEMENT_DYNCREATE(TDeluxeText, TTEView)
 
-TDeluxeText::TDeluxeText() {}
+TDeluxeText::TDeluxeText() : TTEView(), cursorThemeCode98(0), cursorThemeCode9c(0), fieldA0(0) {}
 
 // FUNCTION: IMPERIALISM 0x005b6060
 void TDeluxeText::NoOpUiLifecycleHook(int arg) {}
@@ -36,7 +37,24 @@ void TDeluxeText::SetTextFromUiStringResourceId(short stringId) {
 }
 
 // FUNCTION: IMPERIALISM 0x005b6170
-void TDeluxeText::ApplyRectSlot110(RECT* rectBuffer) {}
+void TDeluxeText::ApplyRectSlot110(RECT* rectBuffer) {
+  (void)rectBuffer;
+  CString textBuffer;
+  AssignSharedStringFromField84(&textBuffer);
+  if (fieldA0 != 0) {
+    SetQuickDrawColorAndSyncGlobals(cursorThemeCode9c);
+    RECT shadowRect;
+    BuildRectFromSlot158(&shadowRect);
+    OffsetRect(&shadowRect, 1, 1);
+    RenderControlStateTextBySelectionCode((LPCSTR)textBuffer, textBuffer.GetLength(), &shadowRect,
+                                          field90);
+  }
+  RECT mainRect;
+  BuildRectFromSlot158(&mainRect);
+  SetQuickDrawColorAndSyncGlobals(cursorThemeCode98);
+  RenderControlStateTextBySelectionCode((LPCSTR)textBuffer, textBuffer.GetLength(), &mainRect,
+                                        field90);
+}
 
 // FUNCTION: IMPERIALISM 0x005b62a0
 void TDeluxeText::ConstructTMapKeyBaseState_Impl(int* styleDescriptor, int unusedFlag) {
