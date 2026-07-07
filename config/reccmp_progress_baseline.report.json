@@ -5077,7 +5077,7 @@
     {
       "address": "0x48e980",
       "matching": 1.0,
-      "name": "TControl::DeserializeCityProductionQueueCommand",
+      "name": "TControl::BuildInsetContentRect",
       "type": 1
     },
     {
@@ -31215,7 +31215,7 @@
     },
     {
       "address": "0x5b5650",
-      "matching": 0.2804878048780488,
+      "matching": 0.39408866995073893,
       "name": "TDropShadowText::ApplyRectSlot110",
       "type": 1
     },
@@ -32631,13 +32631,13 @@
     {
       "address": "0x5c49d0",
       "matching": 0.46153846153846156,
-      "name": "RunEnableAndProcessFlagWithScopedSharedStringCleanup",
+      "name": "ApplySharedStringToControlState",
       "type": 1
     },
     {
       "address": "0x5c4a40",
       "matching": 0.46153846153846156,
-      "name": "EnableAndProcessFlagWithSharedStringCleanup",
+      "name": "AssignSharedStringToControlState",
       "type": 1
     },
     {

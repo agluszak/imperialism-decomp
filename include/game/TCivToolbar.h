@@ -112,7 +112,7 @@ public:
   // slot 0x66 AssertMcAppUILine1922 inherited unchanged (0x48c7d0)
   // slot 0x67 CtrlSlot103_SubtractPosAndDispatchSlot19C_Impl inherited unchanged (0x48bac0)
   // slot 0x68 DispatchPictureResourceCommand inherited unchanged (0x48e850)
-  // slot 0x69 DeserializeCityProductionQueueCommand inherited unchanged (0x48e980)
+  // slot 0x69 BuildInsetContentRect inherited unchanged (0x48e980)
   // slot 0x6a AssertCityProductionGlobalStateInitialized inherited unchanged (0x429470)
   // slot 0x6b NoOpUiViewSlotHandler inherited unchanged (0x48e9c0)
   // slot 0x6c OrphanRetStub_00487a00 inherited unchanged (0x48e9e0)

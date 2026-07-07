@@ -141,8 +141,12 @@ public:
   // slot 0x67 CtrlSlot103_SubtractPosAndDispatchSlot19C_Impl inherited unchanged (0x48bac0)
   virtual void DispatchPictureResourceCommand(int eventType, void* eventSender, void* eventDataA,
                                               void* eventDataB,
-                                              int commandFlag);          // slot 0x68 0x48e850
-  virtual void DeserializeCityProductionQueueCommand(int* boundsBuffer); // slot 0x69 0x48e980
+                                              int commandFlag); // slot 0x68 0x48e850
+  // Build this control's content bounds (via QueryContentBounds) then deflate by the
+  // 0x68-0x74 inset region — the shared "content rect with margins applied" primitive
+  // used by ApplyRectSlot110-family paint code. Some subclasses (e.g. TCivDescription)
+  // repurpose this vtable slot for an unrelated override rather than this semantic.
+  virtual void BuildInsetContentRect(RECT* boundsBuffer); // slot 0x69 0x48e980
   virtual void AssertCityProductionGlobalStateInitialized(int arg1,
                                                           int arg2); // slot 0x6a 0x429470
   virtual void NoOpUiViewSlotHandler(int arg1, int arg2);            // slot 0x6b 0x48e9c0

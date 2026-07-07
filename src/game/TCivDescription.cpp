@@ -302,8 +302,8 @@ void TCivDescription::ApplyRectSlot110(RECT* rectBuffer) {
   if (selectedClass == kCivilianClass_Prospector) {
     this->DispatchPictureResourceCommand(0, 0, 0, 0, 0);
   } else if (selectedClass == kCivilianClass_Engineer) {
-    int boundsBuffer[4];
-    this->DeserializeCityProductionQueueCommand(boundsBuffer);
+    RECT boundsBuffer;
+    this->BuildInsetContentRect(&boundsBuffer);
   } else if (selectedClass != kCivilianClass_Developer) {
     this->AssertCityProductionGlobalStateInitialized(0, 0);
   }
@@ -333,8 +333,12 @@ void TCivDescription::ApplyRectSlot110(RECT* rectBuffer) {
   }
 }
 
+// TODO(bd follow-up): real body (Ghidra name RenderCivilianTargetLegendVariantA, 1438
+// bytes) draws the Engineer target-tile legend into legendRects[16] (icon rects +
+// class-name label via g_pSimMgr->GetString), ignoring boundsBuffer. Unported — the
+// Engineer civilian legend overlay currently never paints. See bd tracking issue.
 // FUNCTION: IMPERIALISM 0x0058f7b0
-void TCivDescription::DeserializeCityProductionQueueCommand(int* boundsBuffer) {
+void TCivDescription::BuildInsetContentRect(RECT* boundsBuffer) {
   (void)boundsBuffer;
 }
 

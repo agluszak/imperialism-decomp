@@ -176,8 +176,8 @@ char TControl::PointInBoundsAndActionable(CPoint* point) {
 }
 
 // FUNCTION: IMPERIALISM 0x0048e980
-void TControl::DeserializeCityProductionQueueCommand(int* boundsBuffer) {
-  QueryContentBounds(reinterpret_cast<RECT*>(boundsBuffer));
+void TControl::BuildInsetContentRect(RECT* boundsBuffer) {
+  QueryContentBounds(boundsBuffer);
   reinterpret_cast<TTEView*>(boundsBuffer)->DeflateRect(reinterpret_cast<RECT*>(&field68));
 }
 

@@ -1005,7 +1005,7 @@ address|name|symbol|size|type|prototype|provenance
 48e810|TControl::SetControlStateFlagAndMaybeRefresh||33|function|void __thiscall SetControlStateFlagAndMaybeRefresh(bool fEnabledState, bool fRefreshNow)|
 48e850|TControl::DispatchPictureResourceCommand||189|function|void __thiscall DispatchPictureResourceCommand(int nEventType, void * pEventSender, void * pEventDataA, void * pEventDataB)|
 48e940|TControl::PointInBoundsAndActionable||44|function|undefined 'scalar_deleting_destructor'(void)|
-48e980|TControl::DeserializeCityProductionQueueCommand||33|function|undefined DeserializeCityProductionQueueCommand(void)|
+48e980|TControl::BuildInsetContentRect||33|function|undefined BuildInsetContentRect(void)|
 48e9c0|TControl::NoOpUiViewSlotHandler||3|function|undefined NoOpUiViewSlotHandler(void)|
 48e9e0|TControl::ReturnZeroFromUiSlot6C||3|function|undefined ReturnZeroFromUiSlot6C(void)|
 48ea00|TCtlMgr::CreateObject|?CreateObject@TCtlMgr@@SGPAVCObject@@XZ|181|function|undefined CreateObject()|rtti

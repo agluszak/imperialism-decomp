@@ -120,7 +120,7 @@ public:
   // slot 0x67 CtrlSlot103_SubtractPosAndDispatchSlot19C_Impl inherited unchanged (0x48bac0)
   virtual void DispatchPictureResourceCommand(int nEventType, void* pEventSender, void* pEventDataA,
                                               void* pEventDataB, int nCommandFlag) override; // slot 0x68 0x59a920
-  // slot 0x69 DeserializeCityProductionQueueCommand inherited unchanged (0x48e980)
+  // slot 0x69 BuildInsetContentRect inherited unchanged (0x48e980)
   // slot 0x6a AssertCityProductionGlobalStateInitialized inherited unchanged (0x429470)
   // slot 0x6b NoOpUiViewSlotHandler inherited unchanged (0x48e9c0)
   // slot 0x6c OrphanRetStub_00487a00 inherited unchanged (0x48e9e0)

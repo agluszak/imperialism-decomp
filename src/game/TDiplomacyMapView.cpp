@@ -640,7 +640,7 @@ void TDiplomacyMapView::InvalidateAndRunChildWaitSheet(void* arg1, void* arg2, v
 void TDiplomacyMapView::InvalidateAndForwardTabSwitchToChild(void* arg1, void* arg2, void* arg3) {
   reinterpret_cast<void(__stdcall*)(int)>(
       thunk_WrapperFor_InvalidateCityDialogRectRegion_At004f6d90)(5);
-  childControlAtB4->DeserializeCityProductionQueueCommand(reinterpret_cast<int*>(arg1));
+  childControlAtB4->BuildInsetContentRect(reinterpret_cast<RECT*>(arg1));
 }
 
 // FUNCTION: IMPERIALISM 0x004f70c0
