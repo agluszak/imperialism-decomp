@@ -723,14 +723,6 @@ undefined4 UpdateTurnAudioPlaybackStateAndScheduleCue(void)
   return 0;
 }
 
-// ghidra_name SelectAndScheduleRandomAudioCue
-// ghidra_proto undefined SelectAndScheduleRandomAudioCue()
-// FUNCTION: IMPERIALISM 0x00593790
-undefined4 SelectAndScheduleRandomAudioCue(void)
-{
-  return 0;
-}
-
 // ghidra_name TOceanDialog::RequestAudioPresetChangeWithDeferredApply
 // ghidra_proto undefined RequestAudioPresetChangeWithDeferredApply()
 // FUNCTION: IMPERIALISM 0x00593920

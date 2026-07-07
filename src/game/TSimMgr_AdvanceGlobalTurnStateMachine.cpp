@@ -44,7 +44,6 @@ extern undefined4 RefreshNavyOrderCycleAndClearReadyFlags(void);
 extern undefined4 RecomputeTileStrategicScoreHeatmap(void);
 extern undefined4 RecomputeNationOrderPriorityMetrics(void);
 extern undefined4 RemoveNationSlotAndNotifyPeers(void);
-extern undefined4 SelectAndScheduleRandomAudioCue(void);
 extern undefined4 IsNationProfileInMinorRange100To199(void);
 extern undefined4 SetOutputDevice(void);
 

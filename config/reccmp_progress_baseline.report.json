@@ -1737,6 +1737,12 @@
       "type": 1
     },
     {
+      "address": "0x47cd60",
+      "matching": 1.0,
+      "name": "TCdAudioDevice::ApplyMciPlaybackRangeFromAudioManager",
+      "type": 1
+    },
+    {
       "address": "0x47cdd0",
       "matching": 1.0,
       "name": "ApplyAuxOutputVolumeFromScalar",
@@ -10741,7 +10747,7 @@
     },
     {
       "address": "0x4c6880",
-      "matching": 0.0,
+      "matching": 0.19047619047619047,
       "name": "TSoundChannelNode::SoundChannelNodeDummy04",
       "type": 1
     },
@@ -10753,7 +10759,7 @@
     },
     {
       "address": "0x4c68e0",
-      "matching": 0.0,
+      "matching": 0.03389830508474576,
       "name": "TSoundChannelNode::SoundChannelNodeDummy2C",
       "type": 1
     },
@@ -12441,7 +12447,7 @@
     },
     {
       "address": "0x4dd430",
-      "matching": 0.5714285714285714,
+      "matching": 0.5142857142857142,
       "name": "TGreatPower::ComputeRemainingDiplomacyAidBudget",
       "type": 1
     },
@@ -12873,8 +12879,7 @@
     },
     {
       "address": "0x4e0590",
-      "effective": true,
-      "matching": 0.42857142857142855,
+      "matching": 1.0,
       "name": "TGreatPower::OrphanRetStub_004d7fa0_88",
       "type": 1
     },
@@ -12887,26 +12892,27 @@
     },
     {
       "address": "0x4e0610",
-      "effective": true,
-      "matching": 0.42857142857142855,
+      "matching": 1.0,
       "name": "TGreatPower::ReturnFalseNationStateActionStub_8a",
       "type": 1
     },
     {
       "address": "0x4e0650",
-      "matching": 1.0,
+      "effective": true,
+      "matching": 0.42857142857142855,
       "name": "TGreatPower::OrphanRetStub_004d7fe0_8b",
       "type": 1
     },
     {
       "address": "0x4e0690",
-      "matching": 1.0,
+      "effective": true,
+      "matching": 0.42857142857142855,
       "name": "TGreatPower::ReturnFalseNationStateCapabilityFlag90",
       "type": 1
     },
     {
       "address": "0x4e06d0",
-      "matching": 0.8095238095238095,
+      "matching": 0.8571428571428571,
       "name": "TGreatPower::SumNationRuntimeFiveBucketValue44",
       "type": 1
     },
@@ -12936,7 +12942,7 @@
     },
     {
       "address": "0x4e09a0",
-      "matching": 0.5060240963855421,
+      "matching": 0.5301204819277109,
       "name": "TGreatPower::ComputeCityOrderCapabilityAggregateScore",
       "type": 1
     },
@@ -13645,7 +13651,7 @@
     },
     {
       "address": "0x4e8750",
-      "matching": 0.29313543599257885,
+      "matching": 0.2894248608534323,
       "name": "TGreatPower::ComputeAdvisoryMapNodeScoreFactorByCaseMetric",
       "type": 1
     },
@@ -16418,7 +16424,7 @@
     },
     {
       "address": "0x50bea0",
-      "matching": 0.2044525215810995,
+      "matching": 0.19809177646524306,
       "name": "TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets",
       "type": 1
     },
@@ -16868,7 +16874,7 @@
     },
     {
       "address": "0x5136a0",
-      "matching": 1.0,
+      "matching": 0.8888888888888888,
       "name": "TMapMgr::OrphanLeaf_NoCall_Ins35_005136a0",
       "type": 1
     },
@@ -17240,7 +17246,7 @@
     },
     {
       "address": "0x5178f0",
-      "matching": 0.3446601941747573,
+      "matching": 0.32116788321167883,
       "name": "ComputeRepresentativeTileIndexForTerrainTypeWithWrapBias",
       "type": 1
     },
@@ -18308,7 +18314,7 @@
     },
     {
       "address": "0x52d150",
-      "matching": 0.7021276595744681,
+      "matching": 0.7311827956989247,
       "name": "GetOrCreateOverlayQuadRecordByIndex",
       "type": 1
     },
@@ -20223,13 +20229,13 @@
     },
     {
       "address": "0x53ceb0",
-      "matching": 0.44329896907216493,
+      "matching": 0.441025641025641,
       "name": "ComputeArmyMissionCompositionAlignmentScore",
       "type": 1
     },
     {
       "address": "0x53d020",
-      "matching": 0.4235294117647059,
+      "matching": 0.4251968503937008,
       "name": "ComputeArmyMissionScoreDeltaWithCandidateUnit",
       "type": 1
     },
@@ -22461,7 +22467,7 @@
     },
     {
       "address": "0x555420",
-      "matching": 0.5653333333333334,
+      "matching": 0.5546666666666666,
       "name": "ResolveTaskForceOrderConflictAndPickCandidate",
       "type": 1
     },
@@ -26115,7 +26121,7 @@
     },
     {
       "address": "0x57da70",
-      "matching": 0.12121212121212122,
+      "matching": 0.12196162046908315,
       "name": "TSimMgr::AdvanceGlobalTurnStateMachine",
       "type": 1
     },
@@ -28188,7 +28194,7 @@
     },
     {
       "address": "0x593400",
-      "matching": 0.5732484076433121,
+      "matching": 0.5822784810126582,
       "name": "TSoundPlayer::CanHandleCityDialogActionFalse",
       "type": 1
     },
@@ -28212,8 +28218,8 @@
     },
     {
       "address": "0x593790",
-      "matching": 0.017543859649122806,
-      "name": "SelectAndScheduleRandomAudioCue",
+      "matching": 0.6181818181818182,
+      "name": "TSoundPlayer::SelectAndScheduleRandomAudioCue",
       "type": 1
     },
     {
@@ -31685,7 +31691,7 @@
     },
     {
       "address": "0x5ba0e0",
-      "matching": 1.0,
+      "matching": 0.8181818181818182,
       "name": "BuildInterNationEventSummaryRowsForAdvisorDialog_Impl",
       "type": 1
     },
@@ -33569,7 +33575,7 @@
     },
     {
       "address": "0x5df8d0",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "ReturnTrueStub",
       "type": 1
     },
@@ -33629,13 +33635,13 @@
     },
     {
       "address": "0x5e0460",
-      "matching": 0.047619047619047616,
+      "matching": 0.7948717948717948,
       "name": "DispatchWAssetMgrPeriodicCallbackAndStopInactiveTimerSlot",
       "type": 1
     },
     {
       "address": "0x5e0520",
-      "matching": 0.07692307692307693,
+      "matching": 0.9130434782608695,
       "name": "ScheduleTimerSlotCallbackWithInterval",
       "type": 1
     },

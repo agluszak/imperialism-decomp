@@ -715,14 +715,6 @@ undefined4 GetResourceStreamSize(void)
   return 0;
 }
 
-// ghidra_name ReturnTrueStub
-// ghidra_proto undefined ReturnTrueStub()
-// FUNCTION: IMPERIALISM 0x005df8d0
-undefined4 ReturnTrueStub(void)
-{
-  return 0;
-}
-
 // ghidra_name BuildScenarioPathForModeAndIndex
 // ghidra_proto undefined BuildScenarioPathForModeAndIndex()
 // FUNCTION: IMPERIALISM 0x005dfd70
@@ -795,22 +787,6 @@ undefined4 DeleteLegacyCliSaveImpFiles(void)
   return 0;
 }
 
-// ghidra_name DispatchWAssetMgrPeriodicCallbackAndStopInactiveTimerSlot
-// ghidra_proto undefined DispatchWAssetMgrPeriodicCallbackAndStopInactiveTimerSlot()
-// FUNCTION: IMPERIALISM 0x005e0460
-undefined4 DispatchWAssetMgrPeriodicCallbackAndStopInactiveTimerSlot(void)
-{
-  return 0;
-}
-
-// ghidra_name ScheduleTimerSlotCallbackWithInterval
-// ghidra_proto undefined ScheduleTimerSlotCallbackWithInterval()
-// FUNCTION: IMPERIALISM 0x005e0520
-undefined4 ScheduleTimerSlotCallbackWithInterval(void)
-{
-  return 0;
-}
-
 // ghidra_name FormatVersionStringFromVersionResource
 // ghidra_proto undefined FormatVersionStringFromVersionResource()
 // FUNCTION: IMPERIALISM 0x005e0590
@@ -871,14 +847,6 @@ undefined4 QueryMciStatusField8ViaCommand814(void)
 // ghidra_proto undefined QueryMciStatusField3ViaCommand814()
 // FUNCTION: IMPERIALISM 0x005e1800
 undefined4 QueryMciStatusField3ViaCommand814(void)
-{
-  return 0;
-}
-
-// ghidra_name SetMciPlaybackRangeByTrackIndexAndDevice
-// ghidra_proto undefined SetMciPlaybackRangeByTrackIndexAndDevice()
-// FUNCTION: IMPERIALISM 0x005e1850
-undefined4 SetMciPlaybackRangeByTrackIndexAndDevice(void)
 {
   return 0;
 }

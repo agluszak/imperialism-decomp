@@ -1403,14 +1403,6 @@ undefined4 SendMciCommand804IfDeviceOpenAndClearHandle_FastcallBridge(void)
   return 0;
 }
 
-// ghidra_name TSimMgr::ApplyMciPlaybackRangeFromAudioManager
-// ghidra_proto undefined ApplyMciPlaybackRangeFromAudioManager()
-// FUNCTION: IMPERIALISM 0x0047cd60
-undefined4 ApplyMciPlaybackRangeFromAudioManager(void)
-{
-  return 0;
-}
-
 // ghidra_name ForwardMciCommand808ToDevice
 // ghidra_proto undefined ForwardMciCommand808ToDevice()
 // FUNCTION: IMPERIALISM 0x0047cd80

@@ -194,6 +194,7 @@ address|target_cpp|ownership|note
 47bde0|src/game/CDib.cpp|manual|marker_sync
 47c080|src/game/CDib.cpp|manual|marker_sync
 47c3d0|src/game/CDib.cpp|manual|marker_sync
+47cd60|src/game/cd_audio.cpp|manual|marker_sync
 47cdd0|src/game/wave_helpers.cpp|manual|marker_sync
 47cfd0|src/game/TC2TemplateDialog.cpp|manual|marker_sync
 47d1c0|src/game/TC2TemplateDialog.cpp|manual|marker_sync
@@ -3771,6 +3772,7 @@ address|target_cpp|ownership|note
 593400|src/game/TSoundPlayer.cpp|manual|marker_sync
 593730|src/game/TSoundPlayer.cpp|manual|marker_sync
 593760|src/game/TSoundPlayer.cpp|manual|marker_sync
+593790|src/game/TSoundPlayer.cpp|manual|marker_sync
 593c10|src/game/TSoundPlayer.cpp|manual|marker_sync
 593cb0|src/game/TSoundPlayer.cpp|manual|marker_sync
 593e80|src/game/TStatusPicture.cpp|manual|marker_sync
@@ -4410,15 +4412,19 @@ address|target_cpp|ownership|note
 5df780|src/game/TAssetMgr.cpp|manual|marker_sync
 5df7a0|src/game/ImperialismApp.cpp|manual|marker_sync
 5df890|src/game/ImperialismApp.cpp|manual|marker_sync
+5df8d0|src/game/cd_audio.cpp|manual|marker_sync
 5dfc10|src/game/TAssetMgr.cpp|manual|marker_sync
 5dfea0|src/game/TAssetMgr.cpp|manual|marker_sync
 5dff20|src/game/TAssetMgr.cpp|manual|marker_sync
+5e0460|src/game/timer_slots.cpp|manual|marker_sync
+5e0520|src/game/timer_slots.cpp|manual|marker_sync
 5e0780|src/game/wave_helpers.cpp|manual|marker_sync
 5e09f0|src/game/wave_helpers.cpp|manual|marker_sync
 5e0b50|src/game/wave_helpers.cpp|manual|marker_sync
 5e0fb0|src/game/wave_helpers.cpp|manual|marker_sync
 5e10c0|src/game/wave_helpers.cpp|manual|marker_sync
 5e1500|src/game/wave_helpers.cpp|manual|marker_sync
+5e1850|src/game/cd_audio.cpp|manual|marker_sync
 5e1bc0|src/game/TLowDiskWarningDialog.cpp|manual|marker_sync
 5e1e50|src/game/TSortedPtrList.cpp|manual|marker_sync
 5e1f10|src/game/TSortedPtrList.cpp|manual|marker_sync

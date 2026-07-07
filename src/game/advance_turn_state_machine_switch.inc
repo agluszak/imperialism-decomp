@@ -279,7 +279,7 @@
     g_pSfxPlaybackSystem->ResetDualAudioCuePools();
     g_pSfxPlaybackSystem->PushCueToDualAudioCuePools(2);
     g_pSfxPlaybackSystem->PushCueToDualAudioCuePools(3);
-    SelectAndScheduleRandomAudioCue();
+    g_pSfxPlaybackSystem->SelectAndScheduleRandomAudioCue();
     if (!IsNationTerrainEligible(activeNationSlot)) {
       PostMainWindowCommand100ForTurnFlow();
     }

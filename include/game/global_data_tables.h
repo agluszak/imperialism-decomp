@@ -27,6 +27,7 @@ int GetTradeSummarySelectionTagByIndex(short index);
 
 struct NationState;
 struct TQuickDrawSurfaceContext;
+struct TCdAudioDevice;
 class TArmyMgr;
 class TDiplomacyMgr;
 class TNavyMgr;
@@ -324,6 +325,12 @@ extern CArray<void*, void*> g_WNetSerializedPtrArrayB006a5f28;
 extern CList<void*, void*> g_WNetPendingPacketList006a5f40;
 extern TTechMgr* g_pCityOrderCapabilityState;
 extern TSoundResourceManager g_soundResourceManager;
+// CD-audio MCI device singleton (see game/cd_audio.h).
+extern TCdAudioDevice g_cdAudioDevice; // 0x006a60bc
+// Audio timer-slot registry (see game/timer_slots.h): 10 callbacks + 10 live timer ids.
+extern undefined4 (*g_timerSlotCallbacks[10])(); // 0x006a5cf8
+extern UINT g_timerSlotIds[10];                  // 0x006a5c98
+extern int g_timerDispatchSuppressAssert;        // 0x006a5d24
 extern TCountry* g_apTerrainTypeDescriptorTable[kTerrainTypeDescriptorTableCount];
 extern TDisplayMgr* g_pDisplayMgr;
 extern TMacViewMgr* g_pStrategicMapViewSystem;

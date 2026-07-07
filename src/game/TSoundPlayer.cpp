@@ -8,6 +8,9 @@
 #include "game/TSoundChannelNode.h"
 #include "game/TSoundResourceManager.h"
 #include "game/startup_helpers.h"
+#include "game/cd_audio.h"
+#include "game/timer_slots.h"
+#include "game/turn_flow_cooldown.h"
 
 #include <new>
 #include <math.h>
@@ -22,14 +25,11 @@ undefined4 ForwardMciCommand808ToDevice(void);
 undefined4 ForwardMciStatusCommand814IgnoreFailure(void);
 undefined4 ReleaseRuntimeSelectionPeersAndResetOwner_Impl(void);
 undefined4 RequestAudioPresetChangeWithDeferredApply(void);
-// TODO(bd imperialism-decomp-04l): real callsite is
-// g_pSfxPlaybackSystem->SelectAndScheduleRandomAudioCue() (0x593790, __thiscall). NOT blocked
-// on an unrecovered class — the field it reads (Ghidra's "g_pLocalizationTable->field_0x4e") is
-// actually g_pSimMgr->preferenceValues[3] at the SAME address (0x6a20f8); Ghidra's decompiler
-// just shows a stale/wrong data-symbol name there (see the bead). Kept as a free-function stub
-// pending a full port of its CD-audio track scheduling body (ApplyMciPlaybackRangeFromAudioManager
-// reads `this->vftable` as if it were a raw MCI device id, which needs verifying before porting).
-undefined4 SelectAndScheduleRandomAudioCue(void);
+
+extern undefined4 GenerateThreadLocalRandom15(void);
+// The deferred-apply timer callback (0x593210); registered by ScheduleTimerSlotCallbackWithInterval
+// as a real function pointer (its return keeps/clears the slot).
+extern undefined4 Helper_Uses_ForwardMciCommand808ToDevice_At00593210(void);
 
 void __fastcall DestructTSoundPlayerBaseState(TSoundPlayer* player);
 
@@ -120,7 +120,7 @@ char TSoundPlayer::CanHandleCityDialogActionFalse(int action) {
     if (DAT_006a4520 > 4) {
       DAT_006a4520 = 0;
       if (static_cast<char>(this->ForwardMciStatusCommand814IgnoreFailure()) == 0) {
-        SelectAndScheduleRandomAudioCue();
+        this->SelectAndScheduleRandomAudioCue();
       }
     }
   }
@@ -137,6 +137,56 @@ void TSoundPlayer::ResetDualAudioCuePools() {
 void TSoundPlayer::PushCueToDualAudioCuePools(int cueId) {
   runtimePeerAt6c->SoundChannelNodeDummy00(cueId);
   runtimePeerAt70->SoundChannelNodeDummy00(cueId);
+}
+
+// FUNCTION: IMPERIALISM 0x00593790
+void TSoundPlayer::SelectAndScheduleRandomAudioCue() {
+  if (g_pSimMgr->preferenceValues[3] == 0 || IsTurnCooldownCounterActiveOrResetFlag() != 0) {
+    return;
+  }
+
+  if (this->runtimePeerAt70->QueryPendingPlaybackCountSlot28() == 0) {
+    int available = this->runtimePeerAt6c->QueryPendingPlaybackCountSlot28();
+    if (available == 0) {
+      return;
+    }
+    for (int i = 1; i <= available; ++i) {
+      TSoundChannelNode* peer70 = this->runtimePeerAt70;
+      int cue = this->runtimePeerAt6c->SoundChannelNodeDummy04(i);
+      peer70->SoundChannelNodeDummy00(cue);
+    }
+    this->fieldShort74 = 0;
+  }
+
+  int total = this->runtimePeerAt70->QueryPendingPlaybackCountSlot28();
+  int pick = static_cast<int>(GenerateThreadLocalRandom15()) % total + 1;
+  int chosen = this->runtimePeerAt70->SoundChannelNodeDummy04(pick);
+  this->runtimePeerAt70->SoundChannelNodeDummy2C(pick);
+
+  if (g_pSimMgr->preferenceValues[3] == 0 || IsTurnCooldownCounterActiveOrResetFlag() != 0) {
+    return;
+  }
+  if (ReturnTrueStub() == 0) {
+    g_pSimMgr->preferenceValues[3] = 0;
+    return;
+  }
+
+  if (chosen == static_cast<short>(this->fieldShort74)) {
+    return;
+  }
+  if (static_cast<short>(this->fieldShort74) > 0) {
+    this->fieldShort76 = static_cast<unsigned short>(chosen);
+    if (this->stateDword7c == 0) {
+      this->stateDword7c = GetTickCountDiv16();
+      ScheduleTimerSlotCallbackWithInterval(&Helper_Uses_ForwardMciCommand808ToDevice_At00593210, 6,
+                                            0);
+    }
+  } else {
+    this->fieldShort74 = static_cast<unsigned short>(chosen);
+    g_cdAudioDevice.ApplyMciPlaybackRangeFromAudioManager(chosen);
+    ApplyAuxOutputVolumeFromScalar(static_cast<int>(g_pSimMgr->preferenceValues[3]) << 8);
+    this->stateByte78 = 1;
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x00593c10
@@ -165,8 +215,8 @@ void TSoundPlayer::HandleBlinkStateAndScheduleTimerTick(char enabled) {
 
 // FUNCTION: IMPERIALISM 0x00593cb0
 void TSoundPlayer::ScaleAndApplyAuxOutputVolume(short scalar) {
-  // Original forwards through 0x47cdd0 with ECX pointed at an unrecovered audio
-  // singleton (0x6a60bc) that the callee never reads; modeled as the free helper.
+  // Original forwards through 0x47cdd0 with ECX pointed at the CD-audio device singleton
+  // (g_cdAudioDevice, 0x6a60bc) that the callee never reads; modeled as the free helper.
   ApplyAuxOutputVolumeFromScalar(scalar << 8);
 }
 
