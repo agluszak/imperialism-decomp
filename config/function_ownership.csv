@@ -3433,6 +3433,7 @@ address|target_cpp|ownership|note
 5796f0|src/game/TRadioTextCluster.cpp|manual|marker_sync
 579740|src/game/TRadioTextCluster.cpp|manual|marker_sync
 579770|src/game/TRadioTextCluster.cpp|manual|marker_sync
+5797c0|src/game/TRadioTextCluster.cpp|manual|marker_sync
 579a60|src/game/TRadioTextCluster.cpp|manual|marker_sync
 579ae0|src/game/TScenarioChooser.cpp|manual|marker_sync
 579b60|src/game/TScenarioChooser.cpp|manual|marker_sync

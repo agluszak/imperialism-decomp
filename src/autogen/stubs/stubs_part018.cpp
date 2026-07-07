@@ -219,14 +219,6 @@ undefined4 ApplyPaletteMaskToTileBufferByEventCode(void)
   return 0;
 }
 
-// ghidra_name SetSelectedTextOptionByTag
-// ghidra_proto undefined SetSelectedTextOptionByTag()
-// FUNCTION: IMPERIALISM 0x005797c0
-undefined4 SetSelectedTextOptionByTag(void)
-{
-  return 0;
-}
-
 // ghidra_name CreateSelectableTextOptionChildEntry
 // ghidra_proto undefined CreateSelectableTextOptionChildEntry()
 // FUNCTION: IMPERIALISM 0x005798a0

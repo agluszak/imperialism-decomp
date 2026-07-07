@@ -129,7 +129,15 @@ public:
 
   TRadioTextCluster();
 
-  int field88;            // 0x88 — not initialized by the ctor
+  // Non-virtual: 0x5797c0. Shared "selectable text option" primitive used directly (not
+  // through the vtable) by several dialog builders (country/protocol/difficulty pickers)
+  // that construct a TRadioTextCluster of TRadioText children. Syncs selectedTag88 to
+  // `tag`, then walks childList44 marking the TRadioText child whose controlTag matches
+  // as selected (isSelectedOption98) and clearing the others, refreshing each that
+  // changed (unless tag == 0).
+  void SetSelectedTextOptionByTag(int tag, bool refreshOnChange);
+
+  int selectedTag88;      // 0x88 — not initialized by the ctor
   short word8C;           // 0x8c — ctor 0x5796a0 seeds 0x4b
   short word8E;           // 0x8e — ctor seeds 0x49
   short selectedOption90; // 0x90 — ctor seeds -1 (no radio option selected)

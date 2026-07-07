@@ -137,6 +137,10 @@ public:
 
   TRadioText();
 
-  int field98; // 0x98 — not initialized by the ctor (0x43d990 writes only the vtable)
+  // 0x98 — not initialized by the ctor (0x43d990 writes only the vtable); a 0/1
+  // "this option is selected" flag toggled by the owning
+  // TRadioTextCluster::SetSelectedTextOptionByTag (0x5797c0) as it walks childList44.
+  unsigned char isSelectedOption98;
+  unsigned char pad99[3]; // 0x99 — not read/written by SetSelectedTextOptionByTag
 };
 ASSERT_SIZE(TRadioText, 0x9c);
