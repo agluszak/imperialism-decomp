@@ -125,8 +125,13 @@ public:
   // slot 0x72 SetPictureResourceIdAndRefresh inherited unchanged (0x48f570)
   // slot 0x73 IsSelected inherited unchanged (0x571690)
 // === END GENERATED DECLS (TTextPictureButton) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TTextPictureButton 0xCTOR`).
+  CString buttonText;  // 0x94
+  short field98;       // 0x98
+  short field9A;       // 0x9A
+  short field9C;       // 0x9C
 
   TTextPictureButton();
 };
+
+ASSERT_SIZE(TTextPictureButton, 0xa0);
 

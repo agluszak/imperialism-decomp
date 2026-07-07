@@ -15,6 +15,8 @@ TSetupRandomMapPicture::TSetupRandomMapPicture()
 
 // SYNTHETIC: IMPERIALISM 0x00576e00
 // TSetupRandomMapPicture::`scalar deleting destructor'
+// SYNTHETIC: IMPERIALISM 0x00576e30
+// TSetupRandomMapPicture::~TSetupRandomMapPicture
 TSetupRandomMapPicture::~TSetupRandomMapPicture() {}
 
 // FUNCTION: IMPERIALISM 0x00577030

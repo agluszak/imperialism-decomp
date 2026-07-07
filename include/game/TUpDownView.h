@@ -122,8 +122,10 @@ public:
   // slot 0x6f LogUnhandledDialogMethodAndReturnFalse inherited unchanged (0x4294a0)
   // slot 0x70 SetControlStateFlagAndMaybeRefresh inherited unchanged (0x48e810)
 // === END GENERATED DECLS (TUpDownView) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TUpDownView 0xCTOR`).
+  int timingDword84;
 
   TUpDownView();
 };
+
+ASSERT_SIZE(TUpDownView, 0x88);
 

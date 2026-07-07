@@ -11,6 +11,7 @@ TScrollBarView::~TScrollBarView() {}
 
 IMPLEMENT_DYNCREATE(TScrollBarView, TControl)
 
+// FUNCTION: IMPERIALISM 0x005744b0
 TScrollBarView::TScrollBarView() {}
 
 // FUNCTION: IMPERIALISM 0x005746e0

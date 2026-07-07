@@ -173,7 +173,7 @@ address|name|symbol|size|type|prototype|provenance
 430950|ConstructUiColorTextResourceEntry||102|function|undefined ConstructUiColorTextResourceEntry()|
 4309e0|TDeluxeText::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 430a30|TBattleReportView::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
-430a60|TBattleReportView::DestructTBattleReportViewBaseState||115|function|undefined DestructTBattleReportViewBaseState()|
+430a60|TBattleReportView::~TBattleReportView||115|function|undefined ~TBattleReportView()|
 430b00|TBattleDetailBook::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 430b50|ConstructUiResourceEntry_Vtbl00640940||28|function|undefined ConstructUiResourceEntry_Vtbl00640940()|
 430b80|TBattleUnitsView::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
@@ -2820,9 +2820,9 @@ address|name|symbol|size|type|prototype|provenance
 4f3ae0|TDiplomacyMapView::CreateObject|?CreateObject@TDiplomacyMapView@@SGPAVCObject@@XZ|90|function|undefined CreateObject()|rtti
 4f3b60|TDiplomacyMapView::GetRuntimeClass||6|function|undefined GetTDiplomacyMapViewClassNamePointer()|rtti
 4f3b80|TDiplomacyMapView::ConstructTDiplomacyMapViewBaseState||178|function|undefined ConstructTDiplomacyMapViewBaseState()|
-4f3c70|TDiplomacyMapView::DestructTDiplomacyMapViewAndMaybeFree||9|function|undefined DestructTDiplomacyMapViewAndMaybeFree()|
+4f3c70|TDiplomacyMapView::`scalar deleting destructor'||9|function|undefined ScalarDeletingDestructor()|
 4f3c90|TDiplomacyMapView::`scalar deleting destructor'||30|function|undefined DestructTDiplomacyMapViewAndMaybeFree_004F3C90()|
-4f3cc0|TDiplomacyMapView::DestructTDiplomacyMapViewBaseState||115|function|undefined DestructTDiplomacyMapViewBaseState()|
+4f3cc0|TDiplomacyMapView::~TDiplomacyMapView||115|function|undefined ~TDiplomacyMapView()|
 4f3d60|TDiplomacyMapView::NoOpUiLifecycleHook||158|function|undefined InitializeDiplomacyMapViewOverlaysAndActionControls()|
 4f3e30|TDiplomacyMapView::ResetDiplomacyOverlayFlagAndDispatchChildUpdate||17|function|undefined ResetDiplomacyOverlayFlagAndDispatchChildUpdate()|
 4f3e60|WrapperFor_thunk_CloseCityDialogChildrenAndReleaseSelf_At004f3e60||41|function|undefined WrapperFor_thunk_CloseCityDialogChildrenAndReleaseSelf_At004f3e60()|
@@ -4767,7 +4767,7 @@ address|name|symbol|size|type|prototype|provenance
 576d60|TSetupRandomMapPicture::GetRuntimeClass||6|function|undefined GetTSetupRandomMapPictureClassNamePointer()|rtti
 576d80|TSetupRandomMapPicture::ConstructTSetupRandomMapPictureBaseState||91|function|undefined ConstructTSetupRandomMapPictureBaseState()|
 576e00|TSetupRandomMapPicture::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
-576e30|TSetupRandomMapPicture::DestructTSetupRandomMapPictureBaseState||74|function|undefined DestructTSetupRandomMapPictureBaseState()|
+576e30|TSetupRandomMapPicture::~TSetupRandomMapPicture||74|function|undefined ~TSetupRandomMapPicture()|
 576ea0|InitializeSharedStringRef_006A4220_AndRegisterAtExit||24|function|undefined InitializeSharedStringRef_006A4220_AndRegisterAtExit()|
 576ed0|DestroySharedStringRef_006A4220_AtExit||1|function|undefined DestroySharedStringRef_006A4220_AtExit()|
 576fe0|RefreshSetupRandomMapCountryControlIfApplicable||53|function|undefined RefreshSetupRandomMapCountryControlIfApplicable()|

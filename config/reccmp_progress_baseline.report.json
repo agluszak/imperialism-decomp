@@ -844,14 +844,14 @@
     },
     {
       "address": "0x430a30",
-      "matching": 0.9090909090909091,
+      "matching": 1.0,
       "name": "TBattleReportView::`scalar deleting destructor'",
       "type": 1
     },
     {
       "address": "0x430a60",
-      "matching": 0.06060606060606061,
-      "name": "TBattleReportView::DestructTBattleReportViewBaseState",
+      "matching": 0.9523809523809523,
+      "name": "TBattleReportView::~TBattleReportView",
       "type": 1
     },
     {
@@ -1336,13 +1336,13 @@
     },
     {
       "address": "0x45d520",
-      "matching": 0.303975058456742,
+      "matching": 0.3055339049103663,
       "name": "BuildTurnEventDialogResourcesForEvent898",
       "type": 1
     },
     {
       "address": "0x45e0b0",
-      "matching": 0.45938375350140054,
+      "matching": 0.46106442577030815,
       "name": "BuildTurnEventDialogResourcesForEvent8FC",
       "type": 1
     },
@@ -8263,7 +8263,7 @@
     },
     {
       "address": "0x4ab380",
-      "matching": 0.9615384615384616,
+      "matching": 1.0,
       "name": "TSuperCivRoster::CreateObject",
       "type": 1
     },
@@ -14702,15 +14702,21 @@
       "type": 1
     },
     {
+      "address": "0x4f3c70",
+      "matching": 1.0,
+      "name": "TDiplomacyMapView::`scalar deleting destructor'(void)",
+      "type": 1
+    },
+    {
       "address": "0x4f3c90",
-      "matching": 0.9090909090909091,
-      "name": "TDiplomacyMapView::`scalar deleting destructor'",
+      "matching": 1.0,
+      "name": "TDiplomacyMapView::`scalar deleting destructor'(unsigned int)",
       "type": 1
     },
     {
       "address": "0x4f3cc0",
-      "matching": 0.06060606060606061,
-      "name": "TDiplomacyMapView::DestructTDiplomacyMapViewBaseState",
+      "matching": 0.9523809523809523,
+      "name": "TDiplomacyMapView::~TDiplomacyMapView",
       "type": 1
     },
     {
@@ -16198,7 +16204,7 @@
     },
     {
       "address": "0x5077c0",
-      "matching": 0.7058823529411765,
+      "matching": 0.8235294117647058,
       "name": "TNumberedItem::ConstructTNumberedItemBaseState",
       "type": 1
     },
@@ -23537,7 +23543,7 @@
     },
     {
       "address": "0x564920",
-      "matching": 0.2,
+      "matching": 0.9333333333333333,
       "name": "TMilitaryPageView::ConstructTMilitaryPageViewBaseState",
       "type": 1
     },
@@ -23579,7 +23585,7 @@
     },
     {
       "address": "0x564d20",
-      "matching": 0.23529411764705882,
+      "matching": 0.5454545454545454,
       "name": "TNavyRoster::ConstructTNavyRosterBaseState",
       "type": 1
     },
@@ -23681,7 +23687,7 @@
     },
     {
       "address": "0x565e90",
-      "matching": 0.2222222222222222,
+      "matching": 0.6086956521739131,
       "name": "TOceanDialog::ConstructTOceanDialogBaseState",
       "type": 1
     },
@@ -23807,7 +23813,7 @@
     },
     {
       "address": "0x568bc0",
-      "matching": 0.2222222222222222,
+      "matching": 0.8571428571428571,
       "name": "TDisappearingButton::ConstructTDisappearingButtonBaseState",
       "type": 1
     },
@@ -23873,7 +23879,7 @@
     },
     {
       "address": "0x569270",
-      "matching": 0.2222222222222222,
+      "matching": 1.0,
       "name": "TShipPlacard::ConstructTShipPlacardBaseState",
       "type": 1
     },
@@ -23903,7 +23909,7 @@
     },
     {
       "address": "0x5694d0",
-      "matching": 0.2222222222222222,
+      "matching": 1.0,
       "name": "TNavyToolbarCluster::ConstructTNavyToolbarClusterBaseState",
       "type": 1
     },
@@ -24377,7 +24383,7 @@
     },
     {
       "address": "0x56f9c0",
-      "matching": 0.2857142857142857,
+      "matching": 0.7368421052631579,
       "name": "TPageView::ConstructTPageViewBaseState",
       "type": 1
     },
@@ -24473,7 +24479,7 @@
     },
     {
       "address": "0x570290",
-      "matching": 0.06896551724137931,
+      "matching": 0.35294117647058826,
       "name": "TTextLine::ConstructTTextLineBaseState",
       "type": 1
     },
@@ -24539,7 +24545,7 @@
     },
     {
       "address": "0x570900",
-      "matching": 0.6046511627906976,
+      "matching": 0.9047619047619048,
       "name": "TPictureButton::BeginMouseCaptureAndStartRepeatTimer",
       "type": 1
     },
@@ -24623,7 +24629,7 @@
     },
     {
       "address": "0x570d60",
-      "matching": 0.2,
+      "matching": 0.8,
       "name": "TPictureRadioButton::ConstructTPictureRadioButtonBaseState",
       "type": 1
     },
@@ -24767,7 +24773,7 @@
     },
     {
       "address": "0x5716b0",
-      "matching": 0.5581395348837209,
+      "matching": 0.9047619047619048,
       "name": "TCivilianButton::BeginMouseCaptureAndStartRepeatTimer",
       "type": 1
     },
@@ -24815,7 +24821,7 @@
     },
     {
       "address": "0x5719f0",
-      "matching": 0.16666666666666666,
+      "matching": 0.7058823529411765,
       "name": "TOnOffRadioButton::ConstructTOnOffRadioButtonBaseState",
       "type": 1
     },
@@ -24851,7 +24857,7 @@
     },
     {
       "address": "0x571c20",
-      "matching": 0.18181818181818182,
+      "matching": 0.75,
       "name": "TCzechBox::ConstructTCzechBoxBaseState",
       "type": 1
     },
@@ -24923,7 +24929,7 @@
     },
     {
       "address": "0x571f70",
-      "matching": 0.2222222222222222,
+      "matching": 0.8571428571428571,
       "name": "TColorKeyButton::ConstructTColorKeyButtonBaseState",
       "type": 1
     },
@@ -24959,7 +24965,7 @@
     },
     {
       "address": "0x572130",
-      "matching": 0.2,
+      "matching": 0.9333333333333333,
       "name": "TGWorldButton::ConstructTGWorldButtonBaseState",
       "type": 1
     },
@@ -25001,7 +25007,7 @@
     },
     {
       "address": "0x572410",
-      "matching": 0.2,
+      "matching": 0.9333333333333333,
       "name": "TClickZone::ConstructUiCommandTagResourceEntry",
       "type": 1
     },
@@ -25019,7 +25025,7 @@
     },
     {
       "address": "0x5724e0",
-      "matching": 0.45454545454545453,
+      "matching": 0.48484848484848486,
       "name": "TTextPictureButton::CreateObject",
       "type": 1
     },
@@ -25031,7 +25037,7 @@
     },
     {
       "address": "0x5725d0",
-      "matching": 0.06666666666666667,
+      "matching": 0.9259259259259259,
       "name": "TLineData::ConstructPictureScreenVariantEntry",
       "type": 1
     },
@@ -25091,7 +25097,7 @@
     },
     {
       "address": "0x572c80",
-      "matching": 0.2,
+      "matching": 0.8,
       "name": "TBackgroundPicture::ConstructTBackgroundPictureBaseState",
       "type": 1
     },
@@ -25163,7 +25169,7 @@
     },
     {
       "address": "0x573190",
-      "matching": 0.3076923076923077,
+      "matching": 0.6666666666666666,
       "name": "TMegaPicture::ConstructTMegaPictureBaseState",
       "type": 1
     },
@@ -25265,7 +25271,7 @@
     },
     {
       "address": "0x573a20",
-      "matching": 0.2,
+      "matching": 0.8,
       "name": "TSliderPicture::ConstructTSliderPictureBaseState",
       "type": 1
     },
@@ -25349,7 +25355,7 @@
     },
     {
       "address": "0x5744b0",
-      "matching": 0.0,
+      "matching": 0.04316546762589928,
       "name": "TScrollBarView::ConstructTScrollBarViewBaseState",
       "type": 1
     },
@@ -25403,7 +25409,7 @@
     },
     {
       "address": "0x574f40",
-      "matching": 0.2222222222222222,
+      "matching": 1.0,
       "name": "TScrollerButton::ConstructTScrollerButtonBaseState",
       "type": 1
     },
@@ -25535,7 +25541,7 @@
     },
     {
       "address": "0x575f30",
-      "matching": 0.2222222222222222,
+      "matching": 1.0,
       "name": "TGameSetupMultiplayerPicture::ConstructTGameSetupMultiplayerPictureBaseState",
       "type": 1
     },
@@ -25631,14 +25637,14 @@
     },
     {
       "address": "0x576e00",
-      "matching": 0.9090909090909091,
+      "matching": 1.0,
       "name": "TSetupRandomMapPicture::`scalar deleting destructor'",
       "type": 1
     },
     {
       "address": "0x576e30",
-      "matching": 0.1,
-      "name": "TSetupRandomMapPicture::DestructTSetupRandomMapPictureBaseState",
+      "matching": 0.918918918918919,
+      "name": "TSetupRandomMapPicture::~TSetupRandomMapPicture",
       "type": 1
     },
     {
@@ -26495,7 +26501,7 @@
     },
     {
       "address": "0x5838b0",
-      "matching": 0.5454545454545454,
+      "matching": 0.5818181818181818,
       "name": "TArrowsControl::CreateObject",
       "type": 1
     },
@@ -26507,7 +26513,7 @@
     },
     {
       "address": "0x583970",
-      "matching": 0.2,
+      "matching": 0.75,
       "name": "TArrowsControl::ConstructTArrowsControlBaseState",
       "type": 1
     },
@@ -26519,7 +26525,7 @@
     },
     {
       "address": "0x5839f0",
-      "matching": 0.04081632653061224,
+      "matching": 1.0,
       "name": "TArrowsControl::DispatchPictureResourceCommand",
       "type": 1
     },
@@ -26549,13 +26555,13 @@
     },
     {
       "address": "0x583bd0",
-      "matching": 0.8990825688073395,
+      "matching": 1.0,
       "name": "TSidewaysArrow::DispatchPictureResourceCommand",
       "type": 1
     },
     {
       "address": "0x583c90",
-      "matching": 0.5454545454545454,
+      "matching": 0.5818181818181818,
       "name": "TUpDownView::CreateObject",
       "type": 1
     },
@@ -26567,7 +26573,8 @@
     },
     {
       "address": "0x583d50",
-      "matching": 0.2,
+      "effective": true,
+      "matching": 0.875,
       "name": "TUpDownView::ConstructTUpDownViewBaseState",
       "type": 1
     },
@@ -26579,7 +26586,7 @@
     },
     {
       "address": "0x583dd0",
-      "matching": 0.04081632653061224,
+      "matching": 1.0,
       "name": "TUpDownView::DispatchPictureResourceCommand",
       "type": 1
     },
@@ -26610,7 +26617,7 @@
     },
     {
       "address": "0x583fb0",
-      "matching": 0.047619047619047616,
+      "matching": 1.0,
       "name": "TRightLeftView::DispatchPictureResourceCommand",
       "type": 1
     },
@@ -26628,7 +26635,7 @@
     },
     {
       "address": "0x5840e0",
-      "matching": 0.2222222222222222,
+      "matching": 1.0,
       "name": "TDipDlgCluster::ConstructTDipDlgClusterBaseState",
       "type": 1
     },
@@ -26658,7 +26665,7 @@
     },
     {
       "address": "0x5842a0",
-      "matching": 0.2222222222222222,
+      "matching": 1.0,
       "name": "TTradePolicyCluster::ConstructTTradePolicyClusterBaseState",
       "type": 1
     },
@@ -26688,7 +26695,7 @@
     },
     {
       "address": "0x584480",
-      "matching": 0.2222222222222222,
+      "matching": 0.8571428571428571,
       "name": "TTradeOrderPicture::ConstructTTradeOrderPictureBaseState",
       "type": 1
     },
@@ -26790,7 +26797,7 @@
     },
     {
       "address": "0x584af0",
-      "matching": 0.2222222222222222,
+      "matching": 1.0,
       "name": "TCloseButton::ConstructTCloseButtonBaseState",
       "type": 1
     },
@@ -26820,7 +26827,7 @@
     },
     {
       "address": "0x584c60",
-      "matching": 0.08,
+      "matching": 0.4,
       "name": "TCloseParentButton::ConstructTCloseParentButtonBaseState",
       "type": 1
     },
@@ -26850,7 +26857,7 @@
     },
     {
       "address": "0x584e20",
-      "matching": 0.2222222222222222,
+      "matching": 0.8571428571428571,
       "name": "TToolBarCluster::ConstructTToolBarClusterBaseState",
       "type": 1
     },
@@ -27553,7 +27560,7 @@
     },
     {
       "address": "0x58aef0",
-      "matching": 0.2857142857142857,
+      "matching": 0.631578947368421,
       "name": "TTraderAmtBar::ConstructBaseState",
       "type": 1
     },
@@ -28316,7 +28323,7 @@
     },
     {
       "address": "0x595000",
-      "matching": 0.26666666666666666,
+      "matching": 0.7,
       "name": "TWorldView::ConstructTWorldViewBaseState",
       "type": 1
     },
@@ -32631,13 +32638,13 @@
     {
       "address": "0x5c49d0",
       "matching": 0.46153846153846156,
-      "name": "RunEnableAndProcessFlagWithScopedSharedStringCleanup",
+      "name": "ApplySharedStringToControlState",
       "type": 1
     },
     {
       "address": "0x5c4a40",
       "matching": 0.46153846153846156,
-      "name": "EnableAndProcessFlagWithSharedStringCleanup",
+      "name": "AssignSharedStringToControlState",
       "type": 1
     },
     {
@@ -33392,7 +33399,7 @@
     },
     {
       "address": "0x5ddd20",
-      "matching": 0.835820895522388,
+      "matching": 0.8417910447761194,
       "name": "TViewMgr::ShowCivilianLedgerDialogAndSelectUnit",
       "type": 1
     },

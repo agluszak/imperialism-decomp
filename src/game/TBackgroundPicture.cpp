@@ -7,6 +7,7 @@
 
 IMPLEMENT_DYNCREATE(TBackgroundPicture, TNoHilitePicture)
 
+// FUNCTION: IMPERIALISM 0x00572c80
 TBackgroundPicture::TBackgroundPicture() {}
 
 // SYNTHETIC: IMPERIALISM 0x00572cb0

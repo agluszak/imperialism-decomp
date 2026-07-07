@@ -1,5 +1,7 @@
 #include "game/TPictureButton.h"
 #include "game/mfc.h"
+#include "game/global_data_tables.h"
+#include "game/TSoundPlayer.h"
 
 // SYNTHETIC: IMPERIALISM 0x00570750
 // TPictureButton::CreateObject
@@ -18,8 +20,6 @@ TPictureButton::TPictureButton() : TPicture(), timingWord92(7000) {}
 // TPictureButton::`scalar deleting destructor'
 
 TPictureButton::~TPictureButton() {}
-
-const unsigned int kAddrSfxPlaybackSystem = 0x006A43EC;
 
 // FUNCTION: IMPERIALISM 0x00570870
 void TPictureButton::SetControlStateFlagAndMaybeRefresh(bool enabledState, bool refreshNow) {
@@ -43,8 +43,6 @@ bool TPictureButton::IsSelected() {
 // FUNCTION: IMPERIALISM 0x00570900
 void TPictureButton::BeginMouseCaptureAndStartRepeatTimer(CPoint* point, int arg2, int arg3,
                                                           int arg4) {
-  int sfxSystem = *reinterpret_cast<int*>(kAddrSfxPlaybackSystem);
-  reinterpret_cast<void(__cdecl*)(int, int, int)>(
-      *reinterpret_cast<void**>(*reinterpret_cast<int*>(sfxSystem) + 0xb8))(timingWord92, 0, 1);
+  g_pSfxPlaybackSystem->PlaySoundEffect(timingWord92, 0, 1);
   TControl::BeginMouseCaptureAndStartRepeatTimer(point, arg2, arg3, arg4);
 }

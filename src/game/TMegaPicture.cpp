@@ -7,6 +7,7 @@
 
 IMPLEMENT_DYNCREATE(TMegaPicture, TNoHilitePicture)
 
+// FUNCTION: IMPERIALISM 0x00573190
 TMegaPicture::TMegaPicture() {}
 
 // SYNTHETIC: IMPERIALISM 0x005731d0

@@ -79,7 +79,8 @@ DiplomacyMaskBufferRun::DiplomacyMaskBufferRun() {
 
 // SYNTHETIC: IMPERIALISM 0x004f3c90
 // TDiplomacyMapView::`scalar deleting destructor'
-TDiplomacyMapView::~TDiplomacyMapView() {}
+// SYNTHETIC: IMPERIALISM 0x004f3cc0
+// TDiplomacyMapView::~TDiplomacyMapView
 
 // FUNCTION: IMPERIALISM 0x004f3d60
 void TDiplomacyMapView::NoOpUiLifecycleHook(int arg) {

@@ -29,7 +29,8 @@ ASSERT_SIZE(DiplomacyMaskBufferRun, 0x14);
 class TDiplomacyMapView : public TPicture {
 public:
   DECLARE_DYNCREATE(TDiplomacyMapView)
-  virtual ~TDiplomacyMapView() override; // slot 0x01 scalar deleting dtor
+  virtual ~TDiplomacyMapView() override { // NOOP: verified empty in original 0x004f3cc0
+  }
   void Free() override;                  // slot 0x07 0x4f3e60
   void HandleEvent(int commandId, TEventHandler* sourceHandler,
                    TEvent* event) override; // slot 0x0f 0x4f70c0

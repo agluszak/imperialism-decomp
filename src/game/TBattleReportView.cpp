@@ -8,6 +8,8 @@ TBattleReportView::TBattleReportView()
 
 // SYNTHETIC: IMPERIALISM 0x00430a30
 // TBattleReportView::`scalar deleting destructor'
+// SYNTHETIC: IMPERIALISM 0x00430a60
+// TBattleReportView::~TBattleReportView
 TBattleReportView::~TBattleReportView() {}
 // SYNTHETIC: IMPERIALISM 0x004acaa0
 // TBattleReportView::CreateObject

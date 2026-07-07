@@ -7,6 +7,7 @@
 
 IMPLEMENT_DYNCREATE(TNavyToolbarCluster, TUberCluster)
 
+// FUNCTION: IMPERIALISM 0x005694d0
 TNavyToolbarCluster::TNavyToolbarCluster() {}
 
 // SYNTHETIC: IMPERIALISM 0x00569500

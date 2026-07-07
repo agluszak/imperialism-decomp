@@ -124,8 +124,9 @@ public:
   // slot 0x71 ResetPictureResourceEntry inherited unchanged (0x48f520)
   // slot 0x72 SetPictureResourceIdAndRefresh inherited unchanged (0x48f570)
 // === END GENERATED DECLS (TArrowsControl) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TArrowsControl 0xCTOR`).
+  int timingDword90;
 
   TArrowsControl();
 };
 
+ASSERT_SIZE(TArrowsControl, 0x94);

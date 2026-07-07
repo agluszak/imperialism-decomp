@@ -72,6 +72,7 @@ void TWorldView::UpdateMapDialogTileRowColumnMarkerAndInvalidate(int arg1) {
 
 IMPLEMENT_DYNCREATE(TWorldView, TView)
 
+// FUNCTION: IMPERIALISM 0x00595000
 TWorldView::TWorldView() {}
 
 // SYNTHETIC: IMPERIALISM 0x00595040

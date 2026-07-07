@@ -7,6 +7,7 @@
 
 IMPLEMENT_DYNCREATE(TOnOffRadioButton, TPictureButton)
 
+// FUNCTION: IMPERIALISM 0x005719f0
 TOnOffRadioButton::TOnOffRadioButton() {}
 
 // SYNTHETIC: IMPERIALISM 0x00571a30

@@ -667,14 +667,6 @@ undefined4 WrapperFor_thunk_MapTurnEventCodeToPaletteIndex_At00564830(void)
   return 0;
 }
 
-// ghidra_name TMilitaryPageView::ConstructTMilitaryPageViewBaseState
-// ghidra_proto undefined ConstructTMilitaryPageViewBaseState()
-// FUNCTION: IMPERIALISM 0x00564920
-undefined4 ConstructTMilitaryPageViewBaseState(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_thunk_UpdatePagedListNavigationButtonState_At00564a10
 // ghidra_proto undefined WrapperFor_thunk_UpdatePagedListNavigationButtonState_At00564a10()
 // FUNCTION: IMPERIALISM 0x00564a10
@@ -687,14 +679,6 @@ undefined4 WrapperFor_thunk_UpdatePagedListNavigationButtonState_At00564a10(void
 // ghidra_proto undefined RenderUiBitmapOnRuntimeSurfaceContext()
 // FUNCTION: IMPERIALISM 0x00564a60
 undefined4 RenderUiBitmapOnRuntimeSurfaceContext(void)
-{
-  return 0;
-}
-
-// ghidra_name TNavyRoster::ConstructTNavyRosterBaseState
-// ghidra_proto undefined ConstructTNavyRosterBaseState()
-// FUNCTION: IMPERIALISM 0x00564d20
-undefined4 ConstructTNavyRosterBaseState(void)
 {
   return 0;
 }
@@ -719,14 +703,6 @@ undefined4 RunEngineerOrderNameEditDialogAndApply(void)
 // ghidra_proto undefined ComputeWrappedIsometricScreenOffsetFromTile()
 // FUNCTION: IMPERIALISM 0x00565d20
 undefined4 ComputeWrappedIsometricScreenOffsetFromTile(void)
-{
-  return 0;
-}
-
-// ghidra_name TOceanDialog::ConstructTOceanDialogBaseState
-// ghidra_proto undefined ConstructTOceanDialogBaseState()
-// FUNCTION: IMPERIALISM 0x00565e90
-undefined4 ConstructTOceanDialogBaseState(void)
 {
   return 0;
 }
@@ -771,14 +747,6 @@ undefined4 ApplyDirectionalNudgeAndRefreshDisplay(void)
   return 0;
 }
 
-// ghidra_name TDisappearingButton::ConstructTDisappearingButtonBaseState
-// ghidra_proto undefined ConstructTDisappearingButtonBaseState()
-// FUNCTION: IMPERIALISM 0x00568bc0
-undefined4 ConstructTDisappearingButtonBaseState(void)
-{
-  return 0;
-}
-
 // ghidra_name TToolBarCluster::UpdateIndustryCapabilityControlStateAndValue
 // ghidra_proto undefined UpdateIndustryCapabilityControlStateAndValue()
 // FUNCTION: IMPERIALISM 0x00568f90
@@ -799,22 +767,6 @@ undefined4 WrapperFor_thunk_SetTaskForceOrderSelectionByNationClassAndFlag_At005
 // ghidra_proto undefined WrapperFor_thunk_SetTaskForceOrderSelectionByNationClassAndFlag_At00569150()
 // FUNCTION: IMPERIALISM 0x00569150
 undefined4 WrapperFor_thunk_SetTaskForceOrderSelectionByNationClassAndFlag_At00569150(void)
-{
-  return 0;
-}
-
-// ghidra_name TShipPlacard::ConstructTShipPlacardBaseState
-// ghidra_proto undefined ConstructTShipPlacardBaseState()
-// FUNCTION: IMPERIALISM 0x00569270
-undefined4 ConstructTShipPlacardBaseState(void)
-{
-  return 0;
-}
-
-// ghidra_name TNavyToolbarCluster::ConstructTNavyToolbarClusterBaseState
-// ghidra_proto undefined ConstructTNavyToolbarClusterBaseState()
-// FUNCTION: IMPERIALISM 0x005694d0
-undefined4 ConstructTNavyToolbarClusterBaseState(void)
 {
   return 0;
 }
@@ -947,26 +899,10 @@ undefined4 UpdatePagedListNavigationButtonState(void)
   return 0;
 }
 
-// ghidra_name TPageView::ConstructTPageViewBaseState
-// ghidra_proto undefined ConstructTPageViewBaseState()
-// FUNCTION: IMPERIALISM 0x0056f9c0
-undefined4 ConstructTPageViewBaseState(void)
-{
-  return 0;
-}
-
 // ghidra_name TPictureLine::DestructTPictureLineAndMaybeFree
 // ghidra_proto undefined DestructTPictureLineAndMaybeFree()
 // FUNCTION: IMPERIALISM 0x005700d0
 undefined4 DestructTPictureLineAndMaybeFree(void)
-{
-  return 0;
-}
-
-// ghidra_name TTextLine::ConstructTTextLineBaseState
-// ghidra_proto undefined ConstructTTextLineBaseState()
-// FUNCTION: IMPERIALISM 0x00570290
-undefined4 ConstructTTextLineBaseState(void)
 {
   return 0;
 }
@@ -1019,66 +955,10 @@ undefined4 WrapperFor_ftol_At00570720(void)
   return 0;
 }
 
-// ghidra_name TPictureRadioButton::ConstructTPictureRadioButtonBaseState
-// ghidra_proto undefined ConstructTPictureRadioButtonBaseState()
-// FUNCTION: IMPERIALISM 0x00570d60
-undefined4 ConstructTPictureRadioButtonBaseState(void)
-{
-  return 0;
-}
-
-// ghidra_name TOnOffRadioButton::ConstructTOnOffRadioButtonBaseState
-// ghidra_proto undefined ConstructTOnOffRadioButtonBaseState()
-// FUNCTION: IMPERIALISM 0x005719f0
-undefined4 ConstructTOnOffRadioButtonBaseState(void)
-{
-  return 0;
-}
-
-// ghidra_name TCzechBox::ConstructTCzechBoxBaseState
-// ghidra_proto undefined ConstructTCzechBoxBaseState()
-// FUNCTION: IMPERIALISM 0x00571c20
-undefined4 ConstructTCzechBoxBaseState(void)
-{
-  return 0;
-}
-
-// ghidra_name TColorKeyButton::ConstructTColorKeyButtonBaseState
-// ghidra_proto undefined ConstructTColorKeyButtonBaseState()
-// FUNCTION: IMPERIALISM 0x00571f70
-undefined4 ConstructTColorKeyButtonBaseState(void)
-{
-  return 0;
-}
-
-// ghidra_name TGWorldButton::ConstructTGWorldButtonBaseState
-// ghidra_proto undefined ConstructTGWorldButtonBaseState()
-// FUNCTION: IMPERIALISM 0x00572130
-undefined4 ConstructTGWorldButtonBaseState(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_thunk_InitializeUiResourceEntryFrameAndParent_At005721b0
 // ghidra_proto undefined WrapperFor_thunk_InitializeUiResourceEntryFrameAndParent_At005721b0()
 // FUNCTION: IMPERIALISM 0x005721b0
 undefined4 WrapperFor_thunk_InitializeUiResourceEntryFrameAndParent_At005721b0(void)
-{
-  return 0;
-}
-
-// ghidra_name TClickZone::ConstructUiCommandTagResourceEntry
-// ghidra_proto undefined ConstructUiCommandTagResourceEntry()
-// FUNCTION: IMPERIALISM 0x00572410
-undefined4 ConstructUiCommandTagResourceEntry(void)
-{
-  return 0;
-}
-
-// ghidra_name TLineData::ConstructPictureScreenVariantEntry
-// ghidra_proto undefined ConstructPictureScreenVariantEntry()
-// FUNCTION: IMPERIALISM 0x005725d0
-undefined4 ConstructPictureScreenVariantEntry(void)
 {
   return 0;
 }
@@ -1107,34 +987,10 @@ undefined4 WrapperFor_ftol_At00572a50(void)
   return 0;
 }
 
-// ghidra_name TBackgroundPicture::ConstructTBackgroundPictureBaseState
-// ghidra_proto undefined ConstructTBackgroundPictureBaseState()
-// FUNCTION: IMPERIALISM 0x00572c80
-undefined4 ConstructTBackgroundPictureBaseState(void)
-{
-  return 0;
-}
-
 // ghidra_name TColorKeyPicture::ConstructPictureResourceEntry_Vtbl00660b48
 // ghidra_proto undefined ConstructPictureResourceEntry_Vtbl00660b48()
 // FUNCTION: IMPERIALISM 0x00572de0
 undefined4 ConstructPictureResourceEntry_Vtbl00660b48(void)
-{
-  return 0;
-}
-
-// ghidra_name TMegaPicture::ConstructTMegaPictureBaseState
-// ghidra_proto undefined ConstructTMegaPictureBaseState()
-// FUNCTION: IMPERIALISM 0x00573190
-undefined4 ConstructTMegaPictureBaseState(void)
-{
-  return 0;
-}
-
-// ghidra_name TSliderPicture::ConstructTSliderPictureBaseState
-// ghidra_proto undefined ConstructTSliderPictureBaseState()
-// FUNCTION: IMPERIALISM 0x00573a20
-undefined4 ConstructTSliderPictureBaseState(void)
 {
   return 0;
 }

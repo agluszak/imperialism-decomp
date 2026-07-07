@@ -19,41 +19,41 @@ TSidewaysArrow::TSidewaysArrow() : TUpDownPictureButton() {
   repeatDeadlineTick = 0;
 }
 
-undefined4 GetTickCountDiv16(void);
+#include "game/startup_helpers.h"
 
 // FUNCTION: IMPERIALISM 0x00583bd0
 void TSidewaysArrow::DispatchPictureResourceCommand(int eventType, void* eventSender,
                                                     void* eventDataA, void* eventDataB,
                                                     int commandFlag) {
-  TControl::DispatchPictureResourceCommand(eventType, eventSender, eventDataA, eventDataB,
-                                           commandFlag);
+  TUpDownPictureButton::DispatchPictureResourceCommand(eventType, eventSender, eventDataA, eventDataB,
+                                                       commandFlag);
 
   if (eventType == 2) {
     return;
   }
 
-  typedef unsigned int(__cdecl * GetTickCountDiv16Proc)(void);
-  unsigned int tick = reinterpret_cast<GetTickCountDiv16Proc>(GetTickCountDiv16)();
+  unsigned int tick = GetTickCountDiv16();
   if (tick < (unsigned int)(repeatDeadlineTick + 5)) {
     return;
   }
 
-  tick = reinterpret_cast<GetTickCountDiv16Proc>(GetTickCountDiv16)();
+  tick = GetTickCountDiv16();
   repeatDeadlineTick = (int)tick;
   if (eventType == 0) {
     repeatDeadlineTick = (int)tick + 10;
   }
 
-  if (this->PointInBoundsAndActionable(reinterpret_cast<CPoint*>(eventDataB)) == '\0') {
+  CPoint* point = static_cast<CPoint*>(eventDataB);
+  if (!this->PointInBoundsAndActionable(point)) {
     return;
   }
 
   if (this->controlTag == kControlTagRght) {
-    this->DispatchEvent(100, 0, 0);
+    this->DispatchEvent(100, this, nullptr);
     return;
   }
 
-  this->DispatchEvent(0x65, this, 0);
+  this->DispatchEvent(101, this, nullptr);
 }
 
 // SYNTHETIC: IMPERIALISM 0x00583b80

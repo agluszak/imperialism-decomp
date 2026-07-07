@@ -7,6 +7,7 @@
 
 IMPLEMENT_DYNCREATE(TColorKeyButton, TColorKeyPicture)
 
+// FUNCTION: IMPERIALISM 0x00571f70
 TColorKeyButton::TColorKeyButton() {}
 
 // SYNTHETIC: IMPERIALISM 0x00571fa0

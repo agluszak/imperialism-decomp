@@ -1,8 +1,8 @@
 #include "game/TUpDownPictureButton.h"
 #include "game/TAmtBar.h"
 #include "game/TView.h"
-
-const unsigned int kAddrSfxPlaybackSystem = 0x006a4510;
+#include "game/global_data_tables.h"
+#include "game/TSoundPlayer.h"
 // SYNTHETIC: IMPERIALISM 0x00571500
 // TUpDownPictureButton::CreateObject
 
@@ -41,8 +41,6 @@ bool TUpDownPictureButton::IsSelected() {
 // FUNCTION: IMPERIALISM 0x005716b0
 void TUpDownPictureButton::BeginMouseCaptureAndStartRepeatTimer(CPoint* point, int arg2, int arg3,
                                                                 int arg4) {
-  int sfxSystem = *reinterpret_cast<int*>(kAddrSfxPlaybackSystem);
-  reinterpret_cast<void(__cdecl*)(int, int, int)>(
-      *reinterpret_cast<void**>(*reinterpret_cast<int*>(sfxSystem) + 0xb8))(timingWord92, 0, 1);
-  TView::BeginMouseCaptureAndStartRepeatTimer(point, arg2, arg3, arg4);
+  g_pSfxPlaybackSystem->PlaySoundEffect(timingWord92, 0, 1);
+  TControl::BeginMouseCaptureAndStartRepeatTimer(point, arg2, arg3, arg4);
 }

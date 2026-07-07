@@ -7,7 +7,9 @@
 
 IMPLEMENT_DYNCREATE(TTextPictureButton, TUpDownPictureButton)
 
-TTextPictureButton::TTextPictureButton() {}
+// FUNCTION: IMPERIALISM 0x005725d0
+TTextPictureButton::TTextPictureButton()
+    : TUpDownPictureButton(), field98(0), field9A(0), field9C(0) {}
 
 // SYNTHETIC: IMPERIALISM 0x00572670
 // TTextPictureButton::`scalar deleting destructor'

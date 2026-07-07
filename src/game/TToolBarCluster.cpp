@@ -7,6 +7,7 @@
 
 IMPLEMENT_DYNCREATE(TToolBarCluster, TCluster)
 
+// FUNCTION: IMPERIALISM 0x00584e20
 TToolBarCluster::TToolBarCluster() {}
 
 // SYNTHETIC: IMPERIALISM 0x00584e50

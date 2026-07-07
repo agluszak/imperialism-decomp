@@ -7,6 +7,7 @@
 
 IMPLEMENT_DYNCREATE(TDisappearingButton, TPicture)
 
+// FUNCTION: IMPERIALISM 0x00568bc0
 TDisappearingButton::TDisappearingButton() {}
 
 // SYNTHETIC: IMPERIALISM 0x00568bf0
