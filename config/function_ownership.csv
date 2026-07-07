@@ -954,6 +954,7 @@ address|target_cpp|ownership|note
 4a5c50|src/game/TArmyBattle.cpp|manual|marker_sync
 4a5ec0|src/game/TArmyMgr.cpp|manual|marker_sync
 4a6680|src/game/TArmyMgr.cpp|manual|marker_sync
+4a6dd0|src/game/TArmyMgr.cpp|manual|marker_sync
 4a6e80|src/game/TNavyMgr.cpp|manual|marker_sync
 4a6ef0|src/game/TArmyMgr.cpp|manual|marker_sync
 4a76a0|src/game/TArmyStack.cpp|manual|marker_sync
@@ -1896,6 +1897,7 @@ address|target_cpp|ownership|note
 4efeb0|src/game/TDiplomacyMgr.cpp|manual|marker_sync
 4eff40|src/game/TDiplomacyMgr.cpp|manual|marker_sync
 4f01e0|src/game/TDiplomacyMgr.cpp|manual|marker_sync
+4f0590|src/game/TDiplomacyMgr.cpp|manual|marker_sync
 4f05c0|src/game/TDiplomacyMgr.cpp|manual|marker_sync
 4f09c0|src/game/TDiplomacyMgr.cpp|manual|marker_sync
 4f0a10|src/game/TDiplomacyMgr.cpp|manual|marker_sync
@@ -2881,6 +2883,7 @@ address|target_cpp|ownership|note
 542b10|src/game/TMultiplayerMgr.cpp|manual|marker_sync
 542be0|src/game/TMultiplayerMgr.cpp|manual|marker_sync
 542ff0|src/game/TMultiplayerMgr.cpp|manual|marker_sync
+543120|src/game/TMultiplayerMgr.cpp|manual|marker_sync
 5438e0|src/game/NetMessage.cpp|manual|marker_sync
 544540|src/game/TMultiplayerMgr.cpp|manual|marker_sync
 5446a0|src/game/TMultiplayerMgr.cpp|manual|marker_sync
@@ -3468,6 +3471,7 @@ address|target_cpp|ownership|note
 57d970|src/game/TSimMgr.cpp|manual|marker_sync
 57d990|src/game/TSimMgr.cpp|manual|marker_sync
 57da70|src/game/TSimMgr_AdvanceGlobalTurnStateMachine.cpp|manual|marker_sync
+57f0e0|src/game/TCountry.cpp|manual|marker_sync
 57f110|src/game/TSimMgr.cpp|manual|marker_sync
 57f140|src/game/TSimMgr.cpp|manual|marker_sync
 57f200|src/game/TSimMgr.cpp|manual|marker_sync

@@ -299,14 +299,6 @@ undefined4 RemoveNationSlotAndNotifyPeers_Impl(void)
   return 0;
 }
 
-// ghidra_name SyncNationField790FromLocalizationStateId
-// ghidra_proto undefined SyncNationField790FromLocalizationStateId()
-// FUNCTION: IMPERIALISM 0x004f0590
-undefined4 SyncNationField790FromLocalizationStateId(void)
-{
-  return 0;
-}
-
 // ghidra_name RecomputeNationComparativePowerMetrics
 // ghidra_proto undefined RecomputeNationComparativePowerMetrics()
 // FUNCTION: IMPERIALISM 0x004f1760

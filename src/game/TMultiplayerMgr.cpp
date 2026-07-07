@@ -123,6 +123,19 @@ void TMultiplayerMgr::WriteTo(TStream* stream) {
   (void)stream;
 }
 
+// FUNCTION: IMPERIALISM 0x00543120
+void TMultiplayerMgr::ConfigureTurnResumeStateAndNationMask(int pendingNationSlot,
+                                                            int activeNationSlot) {
+  pendingNationSlotIndex = pendingNationSlot;
+  activeNationSlotIndex = activeNationSlot;
+  pendingNationBitmask = 0;
+  for (int nationSlot = 0; nationSlot < kNationSlotCount; ++nationSlot) {
+    if (g_apTerrainTypeDescriptorTable[nationSlot] != nullptr) {
+      pendingNationBitmask |= 1 << nationSlot;
+    }
+  }
+}
+
 struct TurnEvent3Mode18Packet : NetMessage {
   int packetTag;
   unsigned char activeNationId;

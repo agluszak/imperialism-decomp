@@ -555,14 +555,6 @@ undefined4 EnableDiplomacyQueueRoutingAndSetContextField44(void)
   return 0;
 }
 
-// ghidra_name ConfigureTurnResumeStateAndNationMask
-// ghidra_proto undefined ConfigureTurnResumeStateAndNationMask()
-// FUNCTION: IMPERIALISM 0x00543120
-undefined4 ConfigureTurnResumeStateAndNationMask(void)
-{
-  return 0;
-}
-
 // ghidra_name ClearTurnResumeNationPendingBitAndMaybeFlushTelemetry
 // ghidra_proto undefined ClearTurnResumeNationPendingBitAndMaybeFlushTelemetry()
 // FUNCTION: IMPERIALISM 0x005431a0

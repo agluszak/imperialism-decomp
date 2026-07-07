@@ -291,14 +291,6 @@ undefined4 RecreateActiveMapContextAndInitializeGlobalMapState(void)
   return 0;
 }
 
-// ghidra_name IsNationProfileInMinorRange100To199
-// ghidra_proto undefined IsNationProfileInMinorRange100To199()
-// FUNCTION: IMPERIALISM 0x0057f0e0
-undefined4 IsNationProfileInMinorRange100To199(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_ConfigureTurnResumeStateAndNationMask_At0057f570
 // ghidra_proto undefined WrapperFor_ConfigureTurnResumeStateAndNationMask_At0057f570()
 // FUNCTION: IMPERIALISM 0x0057f570

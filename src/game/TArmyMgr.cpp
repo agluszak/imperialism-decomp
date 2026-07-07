@@ -1234,6 +1234,11 @@ void TArmyMgr::BuildMapHintOverlayTextAndDispatchUiMessages(short cityRecordInde
   // Code00 feeding one of them) isn't recovered either.
 }
 
+// FUNCTION: IMPERIALISM 0x004a6dd0
+unsigned char TArmyMgr::GetByteFlagAtOffset8() {
+  return flag8;
+}
+
 // FUNCTION: IMPERIALISM 0x004a6ef0
 void TArmyMgr::TrimExcessNavyOrderSupportAndRebuildOrderBuffer(short nationSlot, int cityIndex) {
   // TODO: port body -- 897 bytes, rebuilds a per-nation navy-order support buffer for
