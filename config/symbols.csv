@@ -5998,8 +5998,8 @@ address|name|symbol|size|type|prototype|provenance
 5c4780|LoadUiStringByGroupAndIndexToGlobalControlTag||146|function|void LoadUiStringByGroupAndIndexToGlobalControlTag(short group, short index, unsigned int controlTag)|
 5c4850|LoadUiStringByGroupAndIndexToControlObject||129|function|void LoadUiStringByGroupAndIndexToControlObject(short group, short index, TView * control)|
 5c4910|LoadUiStringAndDispatchSharedMessageCommand||129|function|void LoadUiStringAndDispatchSharedMessageCommand(short group, short index, TView * control)|
-5c49d0|RunEnableAndProcessFlagWithScopedSharedStringCleanup||75|function|void RunEnableAndProcessFlagWithScopedSharedStringCleanup(CString sharedString, TView * control)|
-5c4a40|EnableAndProcessFlagWithSharedStringCleanup||75|function|void EnableAndProcessFlagWithSharedStringCleanup(CString sharedString, TView * control)|
+5c49d0|ApplySharedStringToControlState||75|function|void ApplySharedStringToControlState(CString sharedString, TView * control)|
+5c4a40|AssignSharedStringToControlState||75|function|void AssignSharedStringToControlState(CString sharedString, TView * control)|
 5c4ab0|InitializeMainRoutineContextAndRun||136|function|undefined InitializeMainRoutineContextAndRun()|
 5c4b70|AssignSharedStringToTaggedControlAndProcessState||136|function|undefined AssignSharedStringToTaggedControlAndProcessState()|
 5c4c60|BuildMapContextStatusStringVariantA||2292|function|undefined BuildMapContextStatusStringVariantA()|
