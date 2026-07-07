@@ -66,8 +66,8 @@ static TControl* ResolveTaggedChildOrFail(TControl* panel, unsigned int tag) {
 
 static void CopyViewLayoutFieldsToStack(int* layout0, int* layout1, TControl* srcControl) {
   TView* srcView = srcControl;
-  layout0[0] = srcView->ownerOffsetX;
-  layout0[1] = srcView->ownerOffsetY;
+  layout0[0] = srcView->ownerLocalX;
+  layout0[1] = srcView->ownerLocalY;
   layout1[0] = srcView->field34;
   layout1[1] = srcView->field38;
 }

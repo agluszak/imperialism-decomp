@@ -59,7 +59,7 @@ int TModalTemplateDialog::FinalizeModalDialogAndRestoreOwnerFocus() {
     CallVoidSlotA0();
   }
   if (hasCommandTagResource != 0) {
-    if ((ownerOffsetX & 0x10) != 0) {
+    if ((ownerLocalX & 0x10) != 0) {
       unsigned char loopKind = 4;
       CWnd* dialogWnd = CWnd::FromHandlePermanent(hModalDialog);
       if (dialogWnd != nullptr && (dialogWnd->GetStyle() & 0x100) != 0) {

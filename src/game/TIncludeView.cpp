@@ -41,8 +41,8 @@ void TIncludeView::BuildTurnEventFactoryPacket(TView* ownerContextArg, TView* ma
   field04 = 1;
   field08 = 1;
   linkedChildHandler = mainView;
-  ownerOffsetX = g_turnEventDialogAnchorPoint[0];
-  ownerOffsetY = g_turnEventDialogAnchorPoint[1];
+  ownerLocalX = g_turnEventDialogAnchorPoint[0];
+  ownerLocalY = g_turnEventDialogAnchorPoint[1];
   field34 = mainView->field34;
   field38 = mainView->field38;
   if (mainView != nullptr) {

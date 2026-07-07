@@ -53,12 +53,6 @@ void TInfoBarText::OrphanCallChain_C1_I05_005b6810() {
 
 // FUNCTION: IMPERIALISM 0x005b6840
 void TInfoBarText::InitializeMapHintTextStyleAndThemeFlags(int stylePrimary, int styleSecondary) {
-  // Original (0x5b6840): builds the descriptor from styleSecondary (stylePrimary is
-  // genuinely unused), forwards it to slot 0x79, clears the theme code via slot 0x71
-  // with (-1, no-refresh), then maps the descriptor's stored theme word and
-  // styleSecondary through MapUiThemeCodeToStyleFlags out-params (the previous port
-  // consumed nonexistent return values with swapped arguments).
-  (void)stylePrimary;
   TControlPictureRectState styleDescriptor = {0, 0, 0, 0};
   BuildUiTextStyleDescriptor(&styleDescriptor, 0, 0xc, styleSecondary);
   ApplyTextStyleDescriptorAndMaybeRefresh(&styleDescriptor, 0);
@@ -68,7 +62,7 @@ void TInfoBarText::InitializeMapHintTextStyleAndThemeFlags(int stylePrimary, int
   layoutRectA4.right = 0;
   layoutRectA4.bottom = 0;
   int mappedFlags = 0;
-  MapUiThemeCodeToStyleFlags(styleDescriptor.mode, &mappedFlags);
+  MapUiThemeCodeToStyleFlags(static_cast<short>(stylePrimary), &mappedFlags);
   cursorThemeCode98 = mappedFlags;
   MapUiThemeCodeToStyleFlags(static_cast<short>(styleSecondary), &mappedFlags);
   cursorThemeCode9c = mappedFlags;

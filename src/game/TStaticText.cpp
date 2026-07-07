@@ -93,8 +93,8 @@ void TStaticText::InitializeTextEntryBaseAndOptionalStringResource(
   field04 = 1;
   field08 = 1;
   field0c = reinterpret_cast<int>(panel);
-  ownerOffsetX = offsetLayout[0];
-  ownerOffsetY = offsetLayout[1];
+  ownerLocalX = offsetLayout[0];
+  ownerLocalY = offsetLayout[1];
   field34 = sizeLayout[0];
   field38 = sizeLayout[1];
   if (panel != 0) {
@@ -152,7 +152,7 @@ void TStaticText::SetTextThemeCodeAndMaybeRefresh(short themeCode, char refreshF
 void TStaticText::ApplyRectSlot110(RECT* rectBuffer) {
   (void)rectBuffer;
   CDC* dc = GetActiveQuickDrawDc();
-  dc->SetMapperFlags(1);
+  dc->SetBkMode(TRANSPARENT);
   RECT bounds;
   BuildRectFromSlot158(&bounds);
   // The original calls the CRect::DeflateRect(LPCRECT) COMDAT (0x61f342) on the
@@ -188,7 +188,7 @@ void TStaticText::RenderControlStateTextBySelectionCode(const char* textChars, i
                                                         RECT* rect, short alignmentCode) {
   (void)textLength;
   CDC* dc = GetActiveQuickDrawDc();
-  dc->SetMapperFlags(1);
+  dc->SetBkMode(TRANSPARENT);
   CFont* font = UpdateGlobalFontPresetAndRebuildCachedFontIfDirty(&textStyle78);
   CFont* oldFont = dc->SelectObject(font);
   dc->SetTextColor(g_Quick_Draw_Color_State_006950FC);
@@ -205,7 +205,7 @@ void TStaticText::RenderControlStateTextBySelectionCode(const char* textChars, i
   drawRect.top = rect->top;
   drawRect.right = rect->right;
   drawRect.bottom = rect->bottom;
-  OffsetRect(&drawRect, ownerOffsetX, ownerOffsetY);
+  OffsetRect(&drawRect, absoluteX, absoluteY);
   CString textCopy(textChars);
   dc->DrawText((LPCSTR)textCopy, textCopy.GetLength(), &drawRect, format);
   dc->SelectObject(oldFont);

@@ -64,7 +64,7 @@ void TShipyardCluster::ApplyMoveValue(int value) {
   RECT invalidateRect;
   RECT moveRect;
   moveControl->QueryBounds(&moveRect);
-  OffsetRect(&moveRect, this->ownerOffsetX, this->ownerOffsetY);
+  OffsetRect(&moveRect, this->ownerLocalX, this->ownerLocalY);
   CopyRect(&invalidateRect, &moveRect);
   reinterpret_cast<TView*>(this)->InvalidateCityDialogRectRegion(&invalidateRect, 1);
 
@@ -77,7 +77,7 @@ void TShipyardCluster::ApplyMoveValue(int value) {
   barControl->SetBarMetric(0, 0);
 
   moveControl->CaptureLayoutF0(reinterpret_cast<int*>(&moveRect), 1);
-  OffsetRect(&moveRect, this->ownerOffsetX, this->ownerOffsetY);
+  OffsetRect(&moveRect, this->ownerLocalX, this->ownerLocalY);
   CopyRect(&invalidateRect, &moveRect);
   reinterpret_cast<TView*>(this)->InvalidateCityDialogRectRegion(&invalidateRect, 1);
 

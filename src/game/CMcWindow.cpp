@@ -86,8 +86,8 @@ CMcWindow::CMcWindow(TWindow* descriptor) : CWnd() {
   }
 
   CRect rect;
-  rect.left = descriptor->ownerOffsetX;
-  rect.top = descriptor->ownerOffsetY;
+  rect.left = descriptor->ownerLocalX;
+  rect.top = descriptor->ownerLocalY;
   rect.right = rect.left + descriptor->field34;
   rect.bottom = rect.top + descriptor->field38;
   ::AdjustWindowRectEx(&rect, dwStyle, FALSE, dwExStyle);

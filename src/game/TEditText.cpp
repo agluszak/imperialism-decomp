@@ -196,8 +196,8 @@ void TEditText::RecomputeAbsolutePositionRecursive() {
   if (field_94 != nullptr) {
     RECT clientRect;
     GetClientRect(field_94->m_hWnd, &clientRect);
-    if (clientRect.left != field2c || clientRect.top != field30) {
-      field_94->SetWindowPos(0, field2c, field30, 0, 0, 0x215);
+    if (clientRect.left != absoluteX || clientRect.top != absoluteY) {
+      field_94->SetWindowPos(0, absoluteX, absoluteY, 0, 0, 0x215);
     }
   }
 }

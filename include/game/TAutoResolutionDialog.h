@@ -11,7 +11,7 @@ public:
   BOOL UpdateData(BOOL saveAndValidate);
 
   int DialogResult() const {
-    return field2c;
+    return absoluteX;
   }
 
   CWnd primaryDialogControl;

@@ -248,7 +248,7 @@ int TModalTemplateDialogBase::FinalizeModalDialogAndRestoreOwnerFocus() {
       SetActiveWindow(reinterpret_cast<HWND>(field6C));
     }
   }
-  const int result = field2c;
+  const int result = absoluteX;
   commandTagResourceByte = 1;
   padding_65_to_67[0] = 0;
   padding_65_to_67[1] = 0;

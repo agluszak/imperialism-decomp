@@ -55,10 +55,10 @@ typedef CList<TView*, TView*> TViewChildList;
 class TView : public TEventHandler {
 public:
   class TView* ownerContext; // 0x20
-  int ownerOffsetX;          // 0x24
-  int ownerOffsetY;          // 0x28
-  int field2c;
-  int field30;
+  int ownerLocalX;          // 0x24
+  int ownerLocalY;          // 0x28
+  int absoluteX;
+  int absoluteY;
   int field34;
   int field38;
   int field3c;

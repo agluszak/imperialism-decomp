@@ -152,8 +152,9 @@ public:
   virtual int
   RecenterTextFromMeasuredWidthAndMaybeInvalidate(char refreshNow); // slot 0x7e 0x5b63e0
   // === END GENERATED DECLS (TDeluxeText) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TDeluxeText
-  // 0xCTOR`).
+  unsigned char field94;      // +0x94
+  unsigned char field95;      // +0x95
+  unsigned char padding96[2]; // +0x96
   int cursorThemeCode98;      // +0x98
   int cursorThemeCode9c;      // +0x9c
   unsigned char fieldA0;      // +0xa0

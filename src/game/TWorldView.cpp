@@ -156,7 +156,7 @@ void TWorldView::RenderMapContextOverlayWithScopedClipAndSurface() {
       reinterpret_cast<int>(&outY), packedBand);
 
   GetClip(reusableSurfaceA.tempRgn);
-  SetGlobalQuickDrawOrigin(static_cast<short>(field2c), static_cast<short>(field30));
+  SetGlobalQuickDrawOrigin(static_cast<short>(absoluteX), static_cast<short>(absoluteY));
 
   short rectWidth = field76;
   short rectHeight = field78;
@@ -180,7 +180,7 @@ void TWorldView::RenderMapContextOverlayWithScopedClipAndSurface() {
   char intersectPair[16];
   SectRect(reinterpret_cast<RECT*>(&clipRect.left), reinterpret_cast<RECT*>(intersectScratch),
            reinterpret_cast<RECT*>(intersectPair));
-  OffsetRect(reinterpret_cast<RECT*>(&clipRect), field2c, field30);
+  OffsetRect(reinterpret_cast<RECT*>(&clipRect), absoluteX, absoluteY);
 
   char scopedContextStorage[24];
   reinterpret_cast<void(__cdecl*)(void*, void*, void*)>(

@@ -168,7 +168,7 @@ int TRailCluster::NotifyControlSelectionChange(void* dragValuePtr, int updateFla
   RECT moveBoundsRect;
   RECT moveInvalidRect;
   moveControl->QueryBounds(&moveBoundsRect);
-  OffsetRect(&moveBoundsRect, ctx->ownerOffsetX, ctx->ownerOffsetY);
+  OffsetRect(&moveBoundsRect, ctx->ownerLocalX, ctx->ownerLocalY);
   CopyRect(&moveInvalidRect, &moveBoundsRect);
   reinterpret_cast<TView*>(this)->InvalidateCityDialogRectRegion(&moveInvalidRect, 1);
 

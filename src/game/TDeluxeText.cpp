@@ -18,15 +18,16 @@ IMPLEMENT_DYNCREATE(TDeluxeText, TTEView)
 TDeluxeText::TDeluxeText() : TTEView(), cursorThemeCode98(0), cursorThemeCode9c(0), fieldA0(0) {}
 
 // FUNCTION: IMPERIALISM 0x005b6060
-void TDeluxeText::NoOpUiLifecycleHook(int arg) {}
+void TDeluxeText::NoOpUiLifecycleHook(int arg) {
+  TView::NoOpUiLifecycleHook(arg);
+  field95 = 0;
+  OrphanCallChain_C1_I08_005b60a0(0);
+}
 
 // FUNCTION: IMPERIALISM 0x005b60a0
 void TDeluxeText::OrphanCallChain_C1_I08_005b60a0(char param_1) {
-  // TODO(manifest): real body sets field_0x94 = param_1 then calls an
-  // unresolved vtable slot (placeholder name
-  // UpdateControlCachedIntFromWindowText_2a) with (param_1, 0) — slot not
-  // yet mapped to a real method, left unimplemented rather than guessed.
-  (void)param_1;
+  field94 = param_1;
+  SetState(param_1, 0);
 }
 
 // FUNCTION: IMPERIALISM 0x005b60d0
@@ -44,13 +45,13 @@ void TDeluxeText::ApplyRectSlot110(RECT* rectBuffer) {
   if (fieldA0 != 0) {
     SetQuickDrawColorAndSyncGlobals(cursorThemeCode9c);
     RECT shadowRect;
-    BuildRectFromSlot158(&shadowRect);
+    BuildInsetContentRect(&shadowRect);
     OffsetRect(&shadowRect, 1, 1);
     RenderControlStateTextBySelectionCode((LPCSTR)textBuffer, textBuffer.GetLength(), &shadowRect,
                                           field90);
   }
   RECT mainRect;
-  BuildRectFromSlot158(&mainRect);
+  BuildInsetContentRect(&mainRect);
   SetQuickDrawColorAndSyncGlobals(cursorThemeCode98);
   RenderControlStateTextBySelectionCode((LPCSTR)textBuffer, textBuffer.GetLength(), &mainRect,
                                         field90);

@@ -279,8 +279,8 @@ undefined TMapUberPicture::CreateToolWindow_00599CF0() {
   this->field_0xc0 = miniMap;
 
   RECT toolRect;
-  toolRect.left = toolControl->ownerOffsetX;
-  toolRect.top = toolControl->ownerOffsetY + kToolWindowMargin;
+  toolRect.left = toolControl->ownerLocalX;
+  toolRect.top = toolControl->ownerLocalY + kToolWindowMargin;
   toolRect.right = toolRect.left + 0x71;
   toolRect.bottom = toolRect.top + 0x41;
   RgnHandle region = NewRgn();

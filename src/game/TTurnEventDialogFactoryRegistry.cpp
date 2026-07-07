@@ -102,8 +102,8 @@ TView* TTurnEventDialogFactoryRegistry::RunRegisteredDialogFactoriesByEventCode(
     }
     if (pAnchorPoint[1] != 0 || pAnchorPoint[0] != 0) {
       int layout[2];
-      layout[0] = pAnchorPoint[0] + result->ownerOffsetX;
-      layout[1] = pAnchorPoint[1] + result->ownerOffsetY;
+      layout[0] = pAnchorPoint[0] + result->ownerLocalX;
+      layout[1] = pAnchorPoint[1] + result->ownerLocalY;
       result->CaptureLayoutF0(layout, 0);
     }
   }

@@ -120,7 +120,7 @@ void __cdecl DrawTextWithCachedQuickDrawStyleState(const CString* text) {
   if (dc == nullptr) {
     dc = g_pScopedMapQuickDrawDcHandleObject;
   }
-  dc->SetMapperFlags(1);
+  dc->SetBkMode(TRANSPARENT);
 
   dc = g_pQuickDrawMemoryDc;
   if (dc == nullptr) {

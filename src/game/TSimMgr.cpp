@@ -11,6 +11,7 @@
 #include "game/THelpMgr.h"
 #include "game/TMacViewMgr.h"
 #include "game/TMultiplayerMgr.h"
+#include "game/TModuleLibraryCacheTableStateB.h"
 #include "game/TViewMgr.h"
 #include "game/global_data_tables.h"
 
@@ -316,11 +317,11 @@ void TSimMgr::TriggerScenarioVariantFormatSlot7c() {}
 // FUNCTION: IMPERIALISM 0x0057fec0
 void TSimMgr::ReseedThreadLocalRandom() {}
 
-// TODO: port the UI string loader (forwards to the app-context string resource lookup at
-// 0x6a134c with offset+1).
-
 // FUNCTION: IMPERIALISM 0x00580760
-void TSimMgr::GetString(short, short, CString*) {}
+void TSimMgr::GetString(short codeGroup, short offset, CString* destString) {
+  g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(destString, codeGroup,
+                                                                  offset + 1);
+}
 
 // TODO: port diplomacy-notice text formatting by policy / grant code.
 

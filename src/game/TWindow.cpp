@@ -291,10 +291,10 @@ undefined TWindow::WrapperFor_CenterWindowWithinOwnerOrWorkArea_At0048e150(char 
     return 0;
   }
   if (param_1 != 0) {
-    ownerOffsetX = (0x280 - field34) / 2;
+    ownerLocalX = (0x280 - field34) / 2;
   }
   if (param_2 != 0) {
-    ownerOffsetY = (0x1e0 - field38) / 2;
+    ownerLocalY = (0x1e0 - field38) / 2;
   }
   return 0;
 }

@@ -93,9 +93,9 @@ void TView::QueryContentBounds(RECT* boundsOut) {
 // FUNCTION: IMPERIALISM 0x00427290
 void TView::QueryBounds(RECT* boundsOut) {
   int width = field34;
-  int left = ownerOffsetX;
+  int left = ownerLocalX;
   int height = field38;
-  int top = ownerOffsetY;
+  int top = ownerLocalY;
   boundsOut->left = left;
   boundsOut->top = top;
   boundsOut->right = width + left;
@@ -111,8 +111,8 @@ void TView::DispatchVslot134WithRectAndRectPlus8_Impl(RECT* rect) {
 
 // FUNCTION: IMPERIALISM 0x00427330
 void TView::UpdateAfterBitmapChange(CPoint* point) {
-  point->x -= ownerOffsetX;
-  point->y -= ownerOffsetY;
+  point->x -= ownerLocalX;
+  point->y -= ownerLocalY;
 }
 
 // FUNCTION: IMPERIALISM 0x00429410
@@ -168,7 +168,7 @@ IMPLEMENT_DYNCREATE(TView, TEventHandler)
 
 // FUNCTION: IMPERIALISM 0x0048a8e0
 TView::TView()
-    : TEventHandler(), ownerContext(0), field2c(0), field30(0), field3c(0), childList44(0),
+    : TEventHandler(), ownerContext(0), absoluteX(0), absoluteY(0), field3c(0), childList44(0),
       field48(0), flag4c(1), flag4d(1), field4e(0xffff), nativeWindow50(0), field54(1),
       sharedStringRef(), field5c(0) {}
 
@@ -195,8 +195,8 @@ void TView::InitializeUiResourceEntryFrameAndParent(TView* uiResourceContext, TV
   field04 = 1;
   field08 = 1;
   linkedChildHandler = panel;
-  ownerOffsetX = offsetLayout[0];
-  ownerOffsetY = offsetLayout[1];
+  ownerLocalX = offsetLayout[0];
+  ownerLocalY = offsetLayout[1];
   field34 = sizeLayout[0];
   field38 = sizeLayout[1];
   if (panel != 0) {
@@ -390,8 +390,8 @@ void TView::CaptureLayoutF0(int* buffer, int modeFlag) {
   if (modeFlag != 0 && IsActionable() != 0) {
     InvalidateCityDialogRectRegion(0, 1);
   }
-  ownerOffsetX = buffer[0];
-  ownerOffsetY = buffer[1];
+  ownerLocalX = buffer[0];
+  ownerLocalY = buffer[1];
   RecomputeAbsolutePositionRecursive();
   if (modeFlag != 0 && IsActionable() != 0) {
     InvalidateCityDialogRectRegion(0, 0);
@@ -401,17 +401,17 @@ void TView::CaptureLayoutF0(int* buffer, int modeFlag) {
 // FUNCTION: IMPERIALISM 0x0048b2d0
 void TView::RecomputeAbsolutePositionRecursive() {
   TView* owner = ownerContext;
-  int oldX = field2c;
-  int oldY = field30;
+  int oldX = absoluteX;
+  int oldY = absoluteY;
   int newX = g_McAppUiDefaultPosX_006A1A60;
   int newY = g_McAppUiDefaultPosY_006A1A64;
   if (owner != 0) {
-    newX = owner->field2c + ownerOffsetX;
-    newY = owner->field30 + ownerOffsetY;
+    newX = owner->absoluteX + ownerLocalX;
+    newY = owner->absoluteY + ownerLocalY;
   }
-  field2c = newX;
-  field30 = newY;
-  if (field2c != oldX || field30 != oldY) {
+  absoluteX = newX;
+  absoluteY = newY;
+  if (absoluteX != oldX || absoluteY != oldY) {
     if (childList44 != 0) {
       POSITION pos = childList44->GetHeadPosition();
       while (pos != NULL) {
@@ -520,7 +520,7 @@ void TView::InvokeSlot13C() {
 // FUNCTION: IMPERIALISM 0x0048b770
 char TView::Refresh() {
   if (this != g_McAppUiActiveRenderContext_006A1AF4) {
-    SetGlobalQuickDrawOrigin(static_cast<short>(field2c), static_cast<short>(field30));
+    SetGlobalQuickDrawOrigin(static_cast<short>(absoluteX), static_cast<short>(absoluteY));
     g_McAppUiActiveRenderContext_006A1AF4 = this;
   }
   return 1;
@@ -578,7 +578,7 @@ void TView::PaintVisibleChildrenIntersectingClipRect(RECT* clipRect, CDC* paintD
     while (pos != NULL) {
       TView* child = static_cast<TView*>(list->GetNext(pos));
       RECT childClip = clippedRect;
-      OffsetRect(&childClip, -child->ownerOffsetX, -child->ownerOffsetY);
+      OffsetRect(&childClip, -child->ownerLocalX, -child->ownerLocalY);
       RECT childPaintRect;
       CopyRect(&childPaintRect, &childClip);
       child->PaintVisibleChildrenIntersectingClipRect(&childPaintRect, paintDc);
@@ -590,35 +590,35 @@ void TView::PaintVisibleChildrenIntersectingClipRect(RECT* clipRect, CDC* paintD
 // distinct vtable slots; both bottom out here at the root owner).
 // FUNCTION: IMPERIALISM 0x0048ba40
 void TView::TranslatePointToParentChain4E(CPoint* point) {
-  point->y += ownerOffsetY;
-  point->x += ownerOffsetX;
+  point->y += ownerLocalY;
+  point->x += ownerLocalX;
   ownerContext->TranslatePointToParentChain4E(point);
 }
 // FUNCTION: IMPERIALISM 0x0048ba80
 void TView::TranslatePointToParentChain4D(CPoint* point) {
-  int offY = ownerOffsetY;
-  point->x += ownerOffsetX;
+  int offY = ownerLocalY;
+  point->x += ownerLocalX;
   point->y += offY;
   ownerContext->TranslatePointToParentChain4D(point);
 }
 // Mirror of TranslatePointToParentChain4D/4E above, but subtracts instead of adding.
 // FUNCTION: IMPERIALISM 0x0048bac0
 void TView::SubtractPosAndDispatchToOwnerSlot19C(CPoint* point) {
-  int offY = ownerOffsetY;
-  point->x = point->x - ownerOffsetX;
+  int offY = ownerLocalY;
+  point->x = point->x - ownerLocalX;
   point->y = point->y - offY;
   ownerContext->SubtractPosAndDispatchToOwnerSlot19C(point);
 }
 
 // FUNCTION: IMPERIALISM 0x0048bb00
 void TView::OffsetRectByControlPosition(RECT* rect) {
-  OffsetRect(rect, ownerOffsetX, ownerOffsetY);
+  OffsetRect(rect, ownerLocalX, ownerLocalY);
 }
 
 // FUNCTION: IMPERIALISM 0x0048bb30
 CPoint* TView::GetCachedPosPoint(CPoint* outPoint) {
-  int posY = field30;
-  outPoint->x = field2c;
+  int posY = absoluteY;
+  outPoint->x = absoluteX;
   outPoint->y = posY;
   return outPoint;
 }
@@ -649,8 +649,8 @@ RECT TView::TransformRectViaSlot148(RECT* inRect) {
 }
 // FUNCTION: IMPERIALISM 0x0048bc30
 void TView::AddControlPosToPoint(int x, int y, int* outPoint) {
-  x = x + field2c;
-  y = field30 + y;
+  x = x + absoluteX;
+  y = absoluteY + y;
   outPoint[0] = x;
   outPoint[1] = y;
 }
@@ -662,7 +662,7 @@ void TView::OffsetRectByCachedPos(RECT* inRect, RECT* outRect) {
   local.top = inRect->top;
   local.right = inRect->right;
   local.bottom = inRect->bottom;
-  OffsetRect(&local, field2c, field30);
+  OffsetRect(&local, absoluteX, absoluteY);
   outRect->left = local.left;
   outRect->top = local.top;
   outRect->right = local.right;
@@ -693,10 +693,10 @@ void TView::CopyViewStateFromSource(TView* source) {
   field48 = 0;
   field3c = source->field3c;
   field54 = source->field54;
-  ownerOffsetX = source->ownerOffsetX;
-  ownerOffsetY = source->ownerOffsetY;
-  field2c = source->field2c;
-  field30 = source->field30;
+  ownerLocalX = source->ownerLocalX;
+  ownerLocalY = source->ownerLocalY;
+  absoluteX = source->absoluteX;
+  absoluteY = source->absoluteY;
   field34 = source->field34;
   field38 = source->field38;
   flag4c = source->flag4c;
@@ -811,8 +811,8 @@ void TView::ApplyBounds(RECT* newBounds, int modeFlag) {
     if (modeFlag != 0 && IsActionable() != 0) {
       InvalidateCityDialogRectRegion(0, 1);
     }
-    ownerOffsetX = newBounds->left;
-    ownerOffsetY = newBounds->top;
+    ownerLocalX = newBounds->left;
+    ownerLocalY = newBounds->top;
     field34 = newBounds->right - newBounds->left;
     field38 = newBounds->bottom - newBounds->top;
     RecomputeAbsolutePositionRecursive();
@@ -1008,7 +1008,7 @@ int TView::RunModalLoop(unsigned char loopKind) {
   }
 
   HWND parentHwnd = GetParent(reinterpret_cast<HWND>(controlTag));
-  ownerOffsetX |= 0x18;
+  ownerLocalX |= 0x18;
 
   CWinThread* thread = AfxGetThread();
   LPMSG msg = &thread->m_msgCur;
@@ -1032,8 +1032,8 @@ int TView::RunModalLoop(unsigned char loopKind) {
       }
 
       if (!ContinueModal()) {
-        ownerOffsetX &= ~0x18;
-        return field2c;
+        ownerLocalX &= ~0x18;
+        return absoluteX;
       }
 
       if (thread->IsIdleMessage(msg)) {

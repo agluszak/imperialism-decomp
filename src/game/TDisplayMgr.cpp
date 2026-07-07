@@ -225,8 +225,8 @@ undefined TDisplayMgr::LoadMainViewClipSnapshotIntoQuickDrawState(undefined2 par
   clipRect.right = queryBounds.right;
   clipRect.bottom = queryBounds.bottom;
 
-  SetGlobalQuickDrawOrigin(static_cast<short>(mainView->ownerOffsetX),
-                           static_cast<short>(mainView->ownerOffsetY));
+  SetGlobalQuickDrawOrigin(static_cast<short>(mainView->ownerLocalX),
+                           static_cast<short>(mainView->ownerLocalY));
   ClipRect(&clipRect);
   mainView->ApplyRectSlot110(&queryBounds);
 

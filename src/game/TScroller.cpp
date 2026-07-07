@@ -29,8 +29,8 @@ void TScroller::InitializeScrollerPlacement(TView* owner, int* offsetLayout, int
   field04 = 1;
   field08 = 1;
   linkedChildHandler = owner;
-  ownerOffsetX = offsetLayout[0];
-  ownerOffsetY = offsetLayout[1];
+  ownerLocalX = offsetLayout[0];
+  ownerLocalY = offsetLayout[1];
   field34 = sizeLayout[0];
   field38 = sizeLayout[1];
   if (owner != 0) {
