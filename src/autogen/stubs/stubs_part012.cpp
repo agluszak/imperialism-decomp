@@ -323,14 +323,6 @@ undefined4 ScanMapContextActionEntriesForCodeMatch(void)
   return 0;
 }
 
-// ghidra_name GetByteFlagAtOffset8
-// ghidra_proto undefined GetByteFlagAtOffset8()
-// FUNCTION: IMPERIALISM 0x004a6dd0
-undefined4 GetByteFlagAtOffset8(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_FreeHeapBufferIfNotNull_At004a6df0
 // ghidra_proto undefined WrapperFor_FreeHeapBufferIfNotNull_At004a6df0()
 // FUNCTION: IMPERIALISM 0x004a6df0

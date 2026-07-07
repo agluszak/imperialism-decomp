@@ -85,6 +85,11 @@ public:
   // 0x004d7150, __thiscall, one stack arg (sign-extended short -> int store).
   void SetSerializedField8c(short value);
 
+  // Bare `this+0xe` (encodedNationSlot) range check, same test as the free-function
+  // IsNationTerrainEligible helper in TSimMgr::AdvanceGlobalTurnStateMachine (its sole
+  // caller, over g_apTerrainTypeDescriptorTable entries). 0x0057f0e0, __thiscall.
+  bool IsNationProfileInMinorRange100To199();
+
   CString identitySharedString0;
   CString identitySharedString1;
   short nationSlot;

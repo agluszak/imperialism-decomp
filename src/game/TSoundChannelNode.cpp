@@ -27,7 +27,10 @@ void TSoundChannelNode::SoundChannelNodeDummy00(int value) {
 void TSoundChannelNode::SoundChannelNodeDummy01() {}
 
 // FUNCTION: IMPERIALISM 0x004c6880
-void TSoundChannelNode::SoundChannelNodeDummy04() {}
+int TSoundChannelNode::SoundChannelNodeDummy04(int index) {
+  (void)index;
+  return 0;
+}
 
 // FUNCTION: IMPERIALISM 0x004c68c0
 int TSoundChannelNode::QueryPendingPlaybackCountSlot28() {
@@ -35,7 +38,9 @@ int TSoundChannelNode::QueryPendingPlaybackCountSlot28() {
 }
 
 // FUNCTION: IMPERIALISM 0x004c68e0
-void TSoundChannelNode::SoundChannelNodeDummy2C() {}
+void TSoundChannelNode::SoundChannelNodeDummy2C(int index) {
+  (void)index;
+}
 
 // FUNCTION: IMPERIALISM 0x004c69a0
 int TSoundChannelNode::StopOrResetActivePlaybackSlot30() {

@@ -676,6 +676,11 @@ void TDiplomacyMgr::ApplyDiplomacyInterNationStatesForTurn() {
   }
 }
 
+// FUNCTION: IMPERIALISM 0x004f0590
+void TDiplomacyMgr::SyncNationField790FromLocalizationStateId() {
+  proposalDispatchCounter790 = g_pSimMgr->GetTurnTickSlot3C();
+}
+
 // FUNCTION: IMPERIALISM 0x004f05c0
 void TDiplomacyMgr::SelectPriorityNationIndicesForMinorCapabilityRows() {}
 

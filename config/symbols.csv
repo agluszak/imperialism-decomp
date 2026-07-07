@@ -364,7 +364,7 @@ address|name|symbol|size|type|prototype|provenance
 47ccd0|SendMciCommand804IfDeviceOpenAndClearHandle||23|function|undefined SendMciCommand804IfDeviceOpenAndClearHandle()|
 47cd00|EnsureCdAudioDeviceHandleInitialized||22|function|undefined EnsureCdAudioDeviceHandleInitialized()|
 47cd30|SendMciCommand804IfDeviceOpenAndClearHandle_FastcallBridge||23|function|undefined SendMciCommand804IfDeviceOpenAndClearHandle_FastcallBridge()|
-47cd60|TSimMgr::ApplyMciPlaybackRangeFromAudioManager||16|function|undefined ApplyMciPlaybackRangeFromAudioManager()|
+47cd60|TCdAudioDevice::ApplyMciPlaybackRangeFromAudioManager||16|function|undefined ApplyMciPlaybackRangeFromAudioManager()|
 47cd80|ForwardMciCommand808ToDevice||9|function|undefined ForwardMciCommand808ToDevice()|
 47cdd0|ApplyAuxOutputVolumeFromScalar||13|function|undefined ApplyAuxOutputVolumeFromScalar()|
 47cdf0|ForwardMciStatusCommand814IgnoreFailure||9|function|undefined ForwardMciStatusCommand814IgnoreFailure()|
@@ -5206,7 +5206,7 @@ address|name|symbol|size|type|prototype|provenance
 5935c0|UpdateTurnAudioPlaybackStateAndScheduleCue||276|function|undefined UpdateTurnAudioPlaybackStateAndScheduleCue()|
 593730|ResetDualAudioCuePools||21|function|undefined ResetDualAudioCuePools()|
 593760|PushCueToDualAudioCuePools||31|function|undefined PushCueToDualAudioCuePools()|
-593790|SelectAndScheduleRandomAudioCue||317|function|undefined SelectAndScheduleRandomAudioCue()|
+593790|TSoundPlayer::SelectAndScheduleRandomAudioCue||317|function|undefined SelectAndScheduleRandomAudioCue()|
 593920|TOceanDialog::RequestAudioPresetChangeWithDeferredApply||183|function|undefined RequestAudioPresetChangeWithDeferredApply()|
 593a10|TSimMgr::SetOutputDevice||388|function|void __thiscall SetOutputDevice(int this_ptr)|
 593c10|TMovieView::HandleBlinkStateAndScheduleTimerTick||116|function|undefined HandleBlinkStateAndScheduleTimerTick()|
@@ -8652,6 +8652,10 @@ address|name|symbol|size|type|prototype|provenance
 6a44b4|g_bCityDialogLegendSelectionInitialized|||global||
 6a4520|DAT_006a4520|||global||xref_oracle
 6a590c|g_pCursorControlPanel|||global||
+6a5c98|g_timerSlotIds|||global||
+6a5cf8|g_timerSlotCallbacks|||global||
+6a5d24|g_timerDispatchSuppressAssert|||global||
+6a60bc|g_cdAudioDevice|||global||
 6a60c0|g_soundResourceManager|||global||
 6a611c|_afxWinState|||global||xref_oracle
 6a6120|CDocManager::pStaticDocManager|||global||xref_oracle

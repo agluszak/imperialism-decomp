@@ -47,7 +47,7 @@ public:
   unsigned char fieldF4;      // +0xf4
   unsigned char padF5[3];
 
-  virtual ~TMultiplayerMgr() override;                                       // slot 0x01 0x5427e0
+  virtual ~TMultiplayerMgr() override;                              // slot 0x01 0x5427e0
   virtual void WriteTo(TStream* stream) override;                   // slot 0x05 0x542ff0
   virtual void ReadFrom(TStream* stream) override;                  // slot 0x06 0x542be0
   virtual void Free() override;                                     // slot 0x07 0x542b10
@@ -96,6 +96,12 @@ public:
   // event 0x5e5. Safe to call through a null `this` since member access only happens
   // after the null check. 0x544540.
   void EnsureGameFlowStateAndPostTurnEvent5E5();
+
+  // Stores the turn-state pair and recomputes pendingNationBitmask from which of the
+  // first kNationSlotCount terrain descriptor slots are populated. Every callsite
+  // (TSimMgr::AdvanceGlobalTurnStateMachine) loads ECX from g_pGameFlowState, so this is
+  // a real TMultiplayerMgr method, not a free function. 0x543120.
+  void ConfigureTurnResumeStateAndNationMask(int pendingNationSlot, int activeNationSlot);
 };
 
 ASSERT_SIZE(TMultiplayerMgr, 0xf8);

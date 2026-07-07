@@ -23,12 +23,12 @@ public:
   SOUND_CHANNEL_NODE_DUMMY(01);
   SOUND_CHANNEL_NODE_DUMMY(02);
   SOUND_CHANNEL_NODE_DUMMY(03);
-  SOUND_CHANNEL_NODE_DUMMY(04);
 #undef SOUND_CHANNEL_NODE_DUMMY
+  virtual int SoundChannelNodeDummy04(int index); // 0x24 — fetch the value at index
 
-  virtual int QueryPendingPlaybackCountSlot28(); // 0x28
-  virtual void SoundChannelNodeDummy2C();        // 0x2c
-  virtual int StopOrResetActivePlaybackSlot30(); // 0x30
-  virtual void SoundChannelNodeDummy34();        // 0x34
-  virtual int ReleaseChannelNodeSlot38();        // 0x38
+  virtual int QueryPendingPlaybackCountSlot28();   // 0x28
+  virtual void SoundChannelNodeDummy2C(int index); // 0x2c
+  virtual int StopOrResetActivePlaybackSlot30();   // 0x30
+  virtual void SoundChannelNodeDummy34();          // 0x34
+  virtual int ReleaseChannelNodeSlot38();          // 0x38
 };

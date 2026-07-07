@@ -57,6 +57,11 @@ public:
   // original callsites (0x5db66f, 0x56e734) load ECX = g_pSfxPlaybackSystem.
   void ScaleAndApplyAuxOutputVolume(short scalar); // 0x593cb0
 
+  // Non-virtual: pick a random CD-audio cue from the peer queues and (re)schedule it, driving
+  // the MCI playback range and the deferred-apply timer. Every callsite loads
+  // ECX = g_pSfxPlaybackSystem.
+  void SelectAndScheduleRandomAudioCue(); // 0x593790
+
   // Non-virtual: reset both channel peers' active playback (StopOrResetActivePlaybackSlot30
   // on each). Callsite 0x5db798 (TViewMgr::UiRuntimeSlotF8) loads ECX = g_pSfxPlaybackSystem.
   void ResetDualAudioCuePools(); // 0x593730
@@ -64,4 +69,3 @@ public:
   // each). Same callsite as above.
   void PushCueToDualAudioCuePools(int cueId); // 0x593760
 };
-

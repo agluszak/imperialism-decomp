@@ -68,6 +68,8 @@ int ComputeWeightedNeighborLinkScoreForNodeIndex(short nodeIndex) {
   }
   return sum;
 }
+// SYNTHETIC: IMPERIALISM 0x004d66a0
+// TCountry::CreateObject
 
 // FUNCTION: IMPERIALISM 0x004d6730
 char TCountry::ReturnFalseNationStateCapabilityFlag98(void) {
@@ -90,8 +92,6 @@ void TCountry::NoOpNationSelectedRegionAndMapCellLabelHook(int arg1, int arg2) {
   (void)arg1;
   (void)arg2;
 }
-// SYNTHETIC: IMPERIALISM 0x004d66a0
-// TCountry::CreateObject
 
 // SYNTHETIC: IMPERIALISM 0x004d67b0
 // TCountry::GetRuntimeClass
@@ -815,3 +815,13 @@ void TCountry::ApplyNationStateCode200AndQueueEvent1B(int targetNationSlot) {
 }
 
 void OrphanCallChain_C2_I28_004e59d0(void) {}
+
+// FUNCTION: IMPERIALISM 0x0057f0e0
+bool TCountry::IsNationProfileInMinorRange100To199() {
+  if (this != nullptr) {
+    if (encodedNationSlot >= 100 && encodedNationSlot < 200) {
+      return true;
+    }
+  }
+  return false;
+}

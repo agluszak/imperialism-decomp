@@ -111,7 +111,12 @@ public:
   // NOTE: TObject's own vptr occupies the object's first 4 bytes (ASSERT_SIZE(TObject,
   // 0x4)), so every "+0xNN" comment below is an absolute this-relative offset and this
   // pad must be 4 bytes short of its target to land the next field correctly.
-  unsigned char pad04[0x08];
+  unsigned char pad04[0x08 - 0x04];
+  // +0x08 -- read by GetByteFlagAtOffset8 (0x4a6dd0, a bare `this+8` thiscall getter);
+  // sole call site is TSimMgr::AdvanceGlobalTurnStateMachine case 0xd, gating whether the
+  // terrain-eligibility branch runs. No confirmed writer site yet.
+  unsigned char flag8;
+  unsigned char pad09[0x0c - 0x09];
   // +0x0c -- a TSortedList (GetCount/GetEntryByOrdinal evidence from
   // ProcessTileUnitListsAndApplyRandomStatusUpdates's ground truth); freed at the top of
   // IterateLinkedListCursorAndClearPerTileByte0F via FreePayloads.
@@ -201,6 +206,9 @@ public:
   // which only needs a real, correctly-typed call site.
   void TrimExcessNavyOrderSupportAndRebuildOrderBuffer(short nationSlot, int cityIndex);
 
+  // Bare `this+8` accessor; sole caller is TSimMgr::AdvanceGlobalTurnStateMachine
+  // (g_pMapContextActionManager->GetByteFlagAtOffset8()). 0x4a6dd0.
+  unsigned char GetByteFlagAtOffset8();
+
   TArmyMgr();
 };
-

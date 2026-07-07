@@ -32,21 +32,22 @@ public:
   virtual void SetStandingScoreSlot28(int sourceNation, int targetNation, int score); // 10 (0x28)
   virtual void CopyDiplomacyStandingMatrixRowAndColumnSlot2c(int destinationNation,
                                                              int sourceNation); // 11 (0x2c)
-  virtual void ApplyDiplomacyInterNationStatesForTurn();                          // 12 (0x30)
+  virtual void ApplyDiplomacyInterNationStatesForTurn();                        // 12 (0x30)
   virtual void SelectPriorityNationIndicesForMinorCapabilityRows();             // 13 (0x34)
-  virtual void RebuildDiplomacyStandingAndInfluenceMatrices();                    // 14 (0x38)
-  virtual void InitializeDiplomacyStandingBaselineRandom();                       // 15 (0x3c)
-  virtual void BuildMajorNationDiplomacyStandingRanking();                       // 16 (0x40)
+  virtual void RebuildDiplomacyStandingAndInfluenceMatrices();                  // 14 (0x38)
+  virtual void InitializeDiplomacyStandingBaselineRandom();                     // 15 (0x3c)
+  virtual void BuildMajorNationDiplomacyStandingRanking();                      // 16 (0x40)
   virtual char IsNationPairAtWar(int sourceNation, int targetNation);           // 17 (0x44)
   virtual char IsNationPairRelationTurnStampOutOfDate(int sourceNation,
-                                                      int targetNation); // 18 (0x48)
-  virtual char HasAnyWarRelationForNation(int sourceNation);                     // 19 (0x4c)
-  virtual char HasAnyWarRelationTurnStampOutOfDateForNation(int sourceNation);   // 20 (0x50)
-  virtual char IsNationSlotInPrimaryGroupA(int nationSlot);                      // 21 (0x54)
-  virtual char IsNationSlotInPrimaryGroupB(int nationSlot);                      // 22 (0x58)
-  virtual char ValidateDiplomacyActionTypeAgainstTargetAndSetRejectCode(
-      int sourceNation, int targetNation, int actionCode); // 23 (0x5c)
-  virtual char HasAllianceGuardSlot60(int sourceNation, int targetNation); // 24 (0x60)
+                                                      int targetNation);       // 18 (0x48)
+  virtual char HasAnyWarRelationForNation(int sourceNation);                   // 19 (0x4c)
+  virtual char HasAnyWarRelationTurnStampOutOfDateForNation(int sourceNation); // 20 (0x50)
+  virtual char IsNationSlotInPrimaryGroupA(int nationSlot);                    // 21 (0x54)
+  virtual char IsNationSlotInPrimaryGroupB(int nationSlot);                    // 22 (0x58)
+  virtual char
+  ValidateDiplomacyActionTypeAgainstTargetAndSetRejectCode(int sourceNation, int targetNation,
+                                                           int actionCode);          // 23 (0x5c)
+  virtual char HasAllianceGuardSlot60(int sourceNation, int targetNation);           // 24 (0x60)
   virtual char HasState300LinkBetweenNationPair(int sourceNation, int targetNation); // 25 (0x64)
   virtual int GetNationPairDiplomacyStandingTierCode(int sourceNation,
                                                      int targetNation); // 26 (0x68)
@@ -55,26 +56,25 @@ public:
   virtual short GetNationPairDiplomacyRelationCode(int sourceNation,
                                                    int targetNation); // 28 (0x70)
   virtual void SetNationPairDiplomacyRelationCode(int sourceNation, int targetNation,
-                                                 int relationCode, int updateMode); // 29 (0x74)
+                                                  int relationCode, int updateMode); // 29 (0x74)
   virtual void SetNationPairDiplomacyRelationCodeFinal(int sourceNation, int targetNation,
                                                        int relationCode); // 30 (0x78)
-  virtual void ApplyRelationCode4AndQueueEvent18ForTargetNation(int sourceNation,
-                                                                int targetNation,
+  virtual void ApplyRelationCode4AndQueueEvent18ForTargetNation(int sourceNation, int targetNation,
                                                                 int updateMode); // 31 (0x7c)
   virtual void PropagateRelationSideEffectSlot80(int sourceNation, int targetNation,
                                                  int updateMode); // 32 (0x80)
   virtual char IsPrimaryNationSlotIndex(int nationSlot);          // 33 (0x84)
   virtual void BuildRelationshipListSlot88(int sourceNation, int targetNation,
-                                           void* list); // 34 (0x88)
-  virtual int CountMajorAllianceRelationsSlot8c(int sourceNation); // 35 (0x8c)
+                                           void* list);                              // 34 (0x88)
+  virtual int CountMajorAllianceRelationsSlot8c(int sourceNation);                   // 35 (0x8c)
   virtual int GetNthAlliedMajorNationSlot90(int nthAllianceIndex, int sourceNation); // 36 (0x90)
   virtual int SelectDiplomacyTargetNationFromCandidateSetSlot94(int sourceNation,
-                                                                  int primaryOnlyFlag,
-                                                                  int sideEffectCode); // 37 (0x94)
+                                                                int primaryOnlyFlag,
+                                                                int sideEffectCode); // 37 (0x94)
   virtual int SelectNationSlotFromCollectedStandingEntriesSlot98(int sourceNation,
                                                                  int primaryOnlyFlag); // 38 (0x98)
-  virtual int WrapperFor_IsNationSlotEligibleForEventProcessingAt413250(
-      int nationSlot); // 39 (0x9c)
+  virtual int
+  WrapperFor_IsNationSlotEligibleForEventProcessingAt413250(int nationSlot); // 39 (0x9c)
 
   // Slot-name aliases retained for recovered call sites.
   char HasPolicyWithNationSlot44(int sourceNation, int targetNation) {
@@ -103,7 +103,9 @@ public:
   void ApplyRelationCode4Slot7c(int sourceNation, int targetNation, int updateMode) {
     ApplyRelationCode4AndQueueEvent18ForTargetNation(sourceNation, targetNation, updateMode);
   }
-  char HasFlag84ForNationSlot84(int nation) { return IsPrimaryNationSlotIndex(nation); }
+  char HasFlag84ForNationSlot84(int nation) {
+    return IsPrimaryNationSlotIndex(nation);
+  }
 
   short relationCodeMatrix04[kDiplomacyPairMatrixEntries];
   unsigned char pendingPolicyCodeMatrix304[kDiplomacyPairMatrixEntries];
@@ -133,6 +135,8 @@ public:
   short LookupOrderCompatibilityMatrixValue(int sourceNationSlot, int targetNationSlot);
   void ProcessQueuedWarTransitions();
   void ResetTerrainAdjacencyMatrixRowAndSymmetricLink(short nationSlot);
+  // Mirrors g_pSimMgr's current turn tick into proposalDispatchCounter790. 0x4f0590.
+  void SyncNationField790FromLocalizationStateId();
 
   TDiplomacyMgr();
 };
