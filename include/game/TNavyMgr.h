@@ -5,6 +5,16 @@
 class TStream;
 class TTaskForce;
 
+// Result buffer filled by SelectEligibleMapOrderInteractionForNationAndContext for the
+// first eligible queued interaction: the offering nation code, the packed exchange-
+// direction flags (low 2 bits), and the chosen order entry.
+struct TMapOrderInteractionSelection {
+  short offerNationCode;       // +0x00
+  short pad02;                 // +0x02
+  unsigned int directionFlags; // +0x04 packed direction bits (bit0/bit1)
+  TTaskForce* selectedEntry;   // +0x08
+};
+
 // TODO(manifest): describe TNavyMgr and its role. Base edge (TObject) recovered from RTTI CRuntimeClass chain: TNavyMgr -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x0065c4c8
 class TNavyMgr : public TObject {
@@ -84,11 +94,12 @@ public:
   // (g_pDiplomacyTurnStateManager) and an order-score comparison (the same
   // ComputeMapOrderEntryHeuristicScore / ComputeTaskForceOrderAggregateScore /
   // ResolveMapOrderPairConflictStep helpers the conflict resolver uses). On the first
-  // eligible entry it writes {nation, entry, packed direction flags} into
-  // outResult[0/4/2] and returns 1; otherwise 0. `portZoneContext` is the resolved
-  // TZone* (as int), `offerAmount` the transfer size.
-  char SelectEligibleMapOrderInteractionForNationAndContext(short* outResult, int portZoneContext,
-                                                            short nation, short offerAmount);
+  // eligible entry it fills `outResult` and returns 1; otherwise 0. `portZoneContext`
+  // is the resolved TZone* (as int), `offerAmount` the transfer size.
+  char
+  SelectEligibleMapOrderInteractionForNationAndContext(TMapOrderInteractionSelection* outResult,
+                                                       int portZoneContext, short nation,
+                                                       short offerAmount);
 
   void ProcessNationMapOrderInteractionsAndApplyOutcomes(short mode); // 0x558960
 

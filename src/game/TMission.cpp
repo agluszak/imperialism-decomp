@@ -13,19 +13,10 @@
 #include "game/TStream.h"
 #include "game/TZone.h"
 
-TMission* CreateMissionObjectByKindAndNodeContext(int sourceNation, int missionKind, int nodeKey,
-                                                  int contextArg, int keyArg);
-
 // SYNTHETIC: IMPERIALISM 0x00534bc0
 // TMission::CreateObject
 
 IMPLEMENT_SERIAL(TMission, TObject, 1)
-
-void* TMission::CreateByKindAndNodeContext(int sourceNation, int missionKind, int arg2,
-                                           TZone* portZoneContext, int arg4) {
-  return CreateMissionObjectByKindAndNodeContext(sourceNation, missionKind, arg2,
-                                                 reinterpret_cast<int>(portZoneContext), arg4);
-}
 
 // --- TMission default-mission virtual stubs (concrete missions override) ---
 // FUNCTION: IMPERIALISM 0x00534c00
@@ -177,21 +168,21 @@ TMission::~TMission() {}
 // target port zone (a TZone) for the navy missions; nodeKey/keyArg carry the province
 // or amassing keys for the army missions.
 // FUNCTION: IMPERIALISM 0x005350d0
-TMission* CreateMissionObjectByKindAndNodeContext(int sourceNation, int missionKind, int nodeKey,
-                                                  int contextArg, int keyArg) {
+TMission* CreateMissionObjectByKindAndNodeContext(int sourceNation, eMissionType missionKind,
+                                                  int nodeKey, int contextArg, int keyArg) {
   TMission* mission = nullptr;
   switch (missionKind) {
-  case 0:
+  case kMissionTypeAttackProvince:
     if (contextArg == 0) {
       mission = new TAttackProvinceMission(static_cast<short>(nodeKey), -1);
     } else {
       mission = new TControlSeaZoneMission(reinterpret_cast<TZone*>(contextArg));
     }
     break;
-  case 1:
+  case kMissionTypeAmassProvince:
     mission = new TAttackProvinceMission(static_cast<short>(nodeKey), static_cast<short>(keyArg));
     break;
-  case 2:
+  case kMissionTypeInvadeProvince:
     if (keyArg != -1) {
       mission =
           new TInvadeMission(static_cast<short>(contextArg), reinterpret_cast<TZone*>(keyArg));
@@ -199,7 +190,7 @@ TMission* CreateMissionObjectByKindAndNodeContext(int sourceNation, int missionK
       mission = new TControlSeaZoneMission(reinterpret_cast<TZone*>(contextArg));
     }
     break;
-  case 3:
+  case kMissionTypeDefendProvince:
     if (contextArg == 0) {
       mission = new TDefendProvinceMission(nodeKey);
     } else if (reinterpret_cast<TZone*>(contextArg) ==
@@ -209,10 +200,10 @@ TMission* CreateMissionObjectByKindAndNodeContext(int sourceNation, int missionK
       mission = new TControlSeaZoneMission(reinterpret_cast<TZone*>(contextArg));
     }
     break;
-  case 4:
+  case kMissionTypeBlockadePort:
     mission = new TBlockadePortMission(reinterpret_cast<TZone*>(contextArg));
     break;
-  case 5:
+  case kMissionTypeScatteredShips:
     mission = new TScatteredShipsMission();
     break;
   }

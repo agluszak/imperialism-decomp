@@ -73,6 +73,11 @@ IMPLEMENT_DYNCREATE(TZone, TObject)
 
 // FUNCTION: IMPERIALISM 0x00558860
 TZone** TZonePrimaryNeighborStretch::EnsureSlotAllocatedAndReturnPointer(unsigned int index) {
+  // Grow-on-access. The capacity-doubling realloc block is the same stretch growth
+  // primitive as EnsureCapacityAtLeast (0x561300); the original compiler inlined it
+  // here (while keeping the standalone copy for that function's other callers), so it
+  // is reproduced inline rather than called to match the emitted code. Then bump count
+  // to cover the slot and return a pointer to it.
   if (static_cast<unsigned int>(Capacity()) <= index) {
     int wanted = static_cast<int>(index) + 1;
     unsigned int doubledCapacity = static_cast<unsigned int>(wanted * 2);
@@ -983,7 +988,8 @@ unsigned int TZone::HasDiplomaticallyRelatedNationInActiveType3Or4OrderMask(int 
 void TZone::ResolvePortZoneOwnerContextAndDispatch() {
   short tileIndex = FindNearestActiveSeaContextTileFromOffset216();
   short ownerNation = g_pGlobalMapState->terrainStateTable[tileIndex].ownerNationTag04;
-  TZone* contextElement = g_pActiveMapOrderContext->contextArray + (ownerNation - 0x17);
+  TZone* contextElement =
+      g_pActiveMapOrderContext->GetMapActionContextEntryByNationCodeOffset17(ownerNation);
   primaryNeighbors.GetOrAppendUnique(contextElement);
   contextElement->primaryNeighbors.GetOrAppendUnique(this);
 }
@@ -1140,7 +1146,7 @@ void PopulatePortZoneAdjacencyToNearbyCityContexts(void) {
       short region = static_cast<short>(
           *(reinterpret_cast<char*>(g_pGlobalMapState->terrainStateTable) + tileByteOffset + 4));
       if (region >= 0x17) {
-        context = g_pActiveMapOrderContext->contextArray + (region - 0x17);
+        context = g_pActiveMapOrderContext->GetMapActionContextEntryByNationCodeOffset17(region);
       } else {
         context = 0;
       }
@@ -1159,8 +1165,7 @@ void PopulatePortZoneAdjacencyToNearbyCityContexts(void) {
           if (cityIdx == -1) {
             cityRecord = 0;
           } else {
-            cityRecord = reinterpret_cast<int>(
-                reinterpret_cast<char*>(g_pGlobalMapState->cityScoreTable) + cityIdx * 0xa8);
+            cityRecord = reinterpret_cast<int>(&g_pGlobalMapState->cityScoreTable[cityIdx]);
           }
           if (cityRecord != 0) {
             // Append the neighbour's city context to the secondary list if not already present.

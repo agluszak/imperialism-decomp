@@ -172,7 +172,6 @@ void TOcean::InitializeMapActionContextsForNationCountUsingCostField(int nationC
   int* costField;
   int relaxPassCount;
   int nationIndex;
-  int contextStride;
 
   nationCount = static_cast<short>(nationCountArg);
   if (contextArray != 0) {
@@ -200,23 +199,15 @@ void TOcean::InitializeMapActionContextsForNationCountUsingCostField(int nationC
   }
   nationIndex = 0;
   if (0 < static_cast<int>(static_cast<short>(nationCountArg))) {
-    contextStride = 0;
     do {
       reinterpret_cast<int(__cdecl*)(int*, int)>(SelectBestSeedTileForNationFromCostField)(
           costField, nationIndex + 0x17);
-      reinterpret_cast<TZone*>(reinterpret_cast<char*>(contextArray) + contextStride)
-          ->SetMapActionContextTargetTileAndRefreshMarkers(nationIndex + 0x17, 0xffff);
+      contextArray[nationIndex].SetMapActionContextTargetTileAndRefreshMarkers(nationIndex + 0x17,
+                                                                               0xffff);
       nationIndex = nationIndex + 1;
-      contextStride = contextStride + 0x48;
     } while (nationIndex < static_cast<int>(static_cast<short>(nationCountArg)));
   }
   delete[] costField;
-}
-
-// FUNCTION: IMPERIALISM 0x00563300
-TZone* TOcean::GetMapActionContextEntryByNationCodeOffset17(short nationCode) {
-  return reinterpret_cast<TZone*>(reinterpret_cast<char*>(this->contextArray) +
-                                  (static_cast<int>(nationCode) - 0x17) * 0x48);
 }
 
 TZone* TOcean::GetLinkedZoneForSeaTile(short seaTileIndex) {

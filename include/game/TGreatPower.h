@@ -4,6 +4,7 @@
 #include "game/CString.h"
 #include "game/nation_domain_types.h"
 #include "game/TCountry.h"
+#include "game/TMission.h" // eMissionType
 #include "game/TSortedList.h"
 
 struct CRuntimeClass;
@@ -420,8 +421,8 @@ public:
   TGreatPower(int arg1, int arg2);
 
   void CompileGreatPowerRelationshipDeltaLinesAndDispatchMessage(void);
-  void QueueMapActionMissionFromCandidateAndMarkState(int arg1, int arg2, TZone* portZoneContext,
-                                                      int arg4);
+  void QueueMapActionMissionFromCandidateAndMarkState(eMissionType arg1, int arg2,
+                                                      TZone* portZoneContext, int arg4);
   void ReleaseTrackedObjectsByMapOwnerAndUnassignedEntries(int ownerClass);
   bool ExecuteAdvisoryPromptAndApplyActionType1(int arg1, int arg2);
   void AbsorbCityNeedVectorSlotFC(short* needVector);

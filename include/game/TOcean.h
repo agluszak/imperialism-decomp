@@ -50,7 +50,13 @@ public:
 
   void InitializeMapActionContextsForNationCountUsingCostField(int nationCountArg);
 
-  TZone* GetMapActionContextEntryByNationCodeOffset17(short nationCode);
+  // __inline: the original inlines this pointer calc at its call sites (e.g.
+  // TZone::ResolvePortZoneOwnerContextAndDispatch) while keeping the standalone copy
+  // at 0x00563300, so it must be inline-visible to match.
+  // FUNCTION: IMPERIALISM 0x00563300
+  __inline TZone* GetMapActionContextEntryByNationCodeOffset17(short nationCode) {
+    return &this->contextArray[nationCode - 0x17];
+  }
 
   // Resolves port-zone or per-nation map-action context for a sea/coastal tile.
   TZone* GetLinkedZoneForSeaTile(short seaTileIndex);
@@ -78,4 +84,3 @@ void RegenerateAllMapActionContextStatusCodes();      // 0x00563220
 
 void SetMapTileStateByteAndNotifyObserver(int tileIndex, int stateByte);
 int ComputeGlobalMapActionContextNodeValueAverage(void);
-

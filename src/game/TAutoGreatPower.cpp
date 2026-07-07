@@ -104,7 +104,7 @@ void TAutoGreatPower::ReadFrom(TStream* stream) {
   }
 
   if (g_nSaveFormatVersion < 0x39) {
-    this->QueueMapActionMissionFromCandidateAndMarkState(5, -1, 0, -1);
+    this->QueueMapActionMissionFromCandidateAndMarkState(kMissionTypeScatteredShips, -1, 0, -1);
   }
 }
 
@@ -573,7 +573,8 @@ void TAutoGreatPower::NoOpSlotA2(void) {
     return;
   }
 
-  this->QueueMapActionMissionFromCandidateAndMarkState(3, bestNodeIndex, 0, -1);
+  this->QueueMapActionMissionFromCandidateAndMarkState(kMissionTypeDefendProvince, bestNodeIndex, 0,
+                                                       -1);
 
   int strongestNation = -1;
   int strongestNeed = 0;
@@ -720,7 +721,8 @@ void TAutoGreatPower::AddRegionIdToNationOwnedRegionList(int regionId) {
 
   if (regionId >= 0 && regionId < kMapNodeCount) {
     this->mapNodeStateFlags[regionId] = 1;
-    this->QueueMapActionMissionFromCandidateAndMarkState(3, regionId, 0, -1);
+    this->QueueMapActionMissionFromCandidateAndMarkState(kMissionTypeDefendProvince, regionId, 0,
+                                                         -1);
   }
 }
 
@@ -733,7 +735,8 @@ void TAutoGreatPower::ResetNationDiplomacySlotsAndMarkRelatedNations(int targetN
     do {
       int regionId = regionList->GetIntByOrdinal(ordinal);
       this->mapNodeStateFlags[regionId] = 1;
-      this->QueueMapActionMissionFromCandidateAndMarkState(3, regionId, 0, -1);
+      this->QueueMapActionMissionFromCandidateAndMarkState(kMissionTypeDefendProvince, regionId, 0,
+                                                           -1);
       ++ordinal;
     } while (ordinal <= regionList->GetCount());
   }
@@ -757,7 +760,8 @@ void TAutoGreatPower::ResetNationDiplomacySlotsAndMarkRelatedNations(int targetN
   TZone* firstOrder = portZone->PrimaryZoneHeapData()[0];
   short portZoneId = g_pMapActionContextListHead->GetContextOrdinalOrInvalid();
   this->portZoneStateFlags[portZoneId] = 1;
-  this->QueueMapActionMissionFromCandidateAndMarkState(3, -1, firstOrder, -1);
+  this->QueueMapActionMissionFromCandidateAndMarkState(kMissionTypeDefendProvince, -1, firstOrder,
+                                                       -1);
 }
 
 // FUNCTION: IMPERIALISM 0x004ea430

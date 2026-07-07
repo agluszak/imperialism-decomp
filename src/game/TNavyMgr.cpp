@@ -387,10 +387,9 @@ void TNavyMgr::RemoveOrdersByNationFromPrimarySecondaryAndTaskForceLists(short n
 }
 
 // FUNCTION: IMPERIALISM 0x00557f10
-char TNavyMgr::SelectEligibleMapOrderInteractionForNationAndContext(short* outResult,
-                                                                    int portZoneContext,
-                                                                    short nation,
-                                                                    short offerAmount) {
+char TNavyMgr::SelectEligibleMapOrderInteractionForNationAndContext(
+    TMapOrderInteractionSelection* outResult, int portZoneContext, short nation,
+    short offerAmount) {
   // The port-zone context's owning nation code.
   short ownerCode = 0;
   if (portZoneContext != 0) {
@@ -486,10 +485,10 @@ char TNavyMgr::SelectEligibleMapOrderInteractionForNationAndContext(short* outRe
 
     // Eligible: publish the chosen entry and set the packed direction flags, then a
     // final diplomacy relation + child-count roll decides the exchange direction bit.
-    unsigned int flags = *reinterpret_cast<unsigned int*>(outResult + 2) & 0xfffffffc;
-    outResult[0] = entry->required_count;
-    *reinterpret_cast<TTaskForce**>(outResult + 4) = entry;
-    *reinterpret_cast<unsigned int*>(outResult + 2) = flags;
+    unsigned int flags = outResult->directionFlags & 0xfffffffc;
+    outResult->offerNationCode = entry->required_count;
+    outResult->selectedEntry = entry;
+    outResult->directionFlags = flags;
     if (g_pDiplomacyTurnStateManager->IsNationPairRelationTurnStampOutOfDate(
             nation, entry->required_count) == 0) {
       return 1;
@@ -498,10 +497,10 @@ char TNavyMgr::SelectEligibleMapOrderInteractionForNationAndContext(short* outRe
     short bias = static_cast<short>(entryChildren + 10);
     if (roll >= bias) {
       if (roll < bias * 2) {
-        *reinterpret_cast<unsigned int*>(outResult + 2) |= 1;
+        outResult->directionFlags |= 1;
       }
     } else {
-      *reinterpret_cast<unsigned int*>(outResult + 2) |= 2;
+      outResult->directionFlags |= 2;
     }
     return 1;
   }
@@ -551,9 +550,9 @@ void TNavyMgr::ProcessNationMapOrderInteractionsAndApplyOutcomes(short mode) {
         // Resolve the port-zone context and filter interactions the map-order context
         // deems ineligible (order-score comparison + diplomacy relation gate).
         TZone* portZoneContext = TZone::FindFirstPortZoneContextByNation(nation);
-        short eligibilityResult[8] = {0};
+        TMapOrderInteractionSelection eligibilityResult = {0};
         char eligible = SelectEligibleMapOrderInteractionForNationAndContext(
-            eligibilityResult, reinterpret_cast<int>(portZoneContext), nation, entryValue);
+            &eligibilityResult, reinterpret_cast<int>(portZoneContext), nation, entryValue);
         if (eligible == 0) {
           continue;
         }
