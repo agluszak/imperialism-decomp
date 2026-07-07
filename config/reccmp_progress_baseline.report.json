@@ -501,13 +501,13 @@
     },
     {
       "address": "0x41b570",
-      "matching": 0.25,
+      "matching": 1.0,
       "name": "UpdateUiResourceContextMetricWord27",
       "type": 1
     },
     {
       "address": "0x41b5a0",
-      "matching": 0.1,
+      "matching": 0.7777777777777778,
       "name": "DispatchUiResourceContextVslot1E4WithCoords",
       "type": 1
     },
@@ -1114,7 +1114,7 @@
     },
     {
       "address": "0x44a810",
-      "matching": 0.6345679012345679,
+      "matching": 0.6370370370370371,
       "name": "BuildTurnEventDialogResources_2508",
       "type": 1
     },
@@ -1162,7 +1162,7 @@
     },
     {
       "address": "0x4538a0",
-      "matching": 0.07948717948717948,
+      "matching": 0.07985347985347985,
       "name": "InitializeGameSetupScreenControlsAndModeTags",
       "type": 1
     },
@@ -1336,13 +1336,13 @@
     },
     {
       "address": "0x45d520",
-      "matching": 0.3055339049103663,
+      "matching": 0.30709275136399067,
       "name": "BuildTurnEventDialogResourcesForEvent898",
       "type": 1
     },
     {
       "address": "0x45e0b0",
-      "matching": 0.46106442577030815,
+      "matching": 0.461624649859944,
       "name": "BuildTurnEventDialogResourcesForEvent8FC",
       "type": 1
     },
@@ -1360,26 +1360,8 @@
     },
     {
       "address": "0x4601b0",
-      "matching": 0.00031928480204342275,
+      "matching": 0.6675220423739966,
       "name": "InitializeTradeScreenBitmapControls",
-      "type": 1
-    },
-    {
-      "address": "0x46503c",
-      "matching": 0.001443001443001443,
-      "name": "BuildTradeBoardDialogUiLayoutVariantA",
-      "type": 1
-    },
-    {
-      "address": "0x46620f",
-      "matching": 0.00784313725490196,
-      "name": "InitializeUiResourceEntries",
-      "type": 1
-    },
-    {
-      "address": "0x46baa7",
-      "matching": 0.00322061191626409,
-      "name": "BuildTradeBoardDialogUiLayoutVariantB",
       "type": 1
     },
     {
@@ -4433,7 +4415,7 @@
     },
     {
       "address": "0x48b2d0",
-      "matching": 0.2033898305084746,
+      "matching": 0.19130434782608696,
       "name": "TView::VTableSlotDD",
       "type": 1
     },
@@ -5292,13 +5274,13 @@
     },
     {
       "address": "0x48ffb0",
-      "matching": 0.5359477124183006,
+      "matching": 0.5228758169934641,
       "name": "TStaticText::ApplyRectSlot110",
       "type": 1
     },
     {
       "address": "0x4900a0",
-      "matching": 0.47126436781609193,
+      "matching": 0.45977011494252873,
       "name": "TStaticText::RenderControlStateTextBySelectionCode",
       "type": 1
     },
@@ -5988,7 +5970,7 @@
     },
     {
       "address": "0x494a90",
-      "matching": 0.7142857142857143,
+      "matching": 0.7023809523809523,
       "name": "THQButton::DrawTextWithCachedQuickDrawStyleState",
       "type": 1
     },
@@ -9073,7 +9055,7 @@
     },
     {
       "address": "0x4b4390",
-      "matching": 0.4835164835164835,
+      "matching": 0.4918032786885246,
       "name": "AllocateRandomResourceCountsWithinWeightBudget",
       "type": 1
     },
@@ -12879,34 +12861,33 @@
     },
     {
       "address": "0x4e0590",
-      "effective": true,
-      "matching": 0.42857142857142855,
+      "matching": 1.0,
       "name": "TGreatPower::OrphanRetStub_004d7fa0_88",
       "type": 1
     },
     {
       "address": "0x4e05d0",
-      "matching": 1.0,
+      "effective": true,
+      "matching": 0.42857142857142855,
       "name": "TGreatPower::OrphanLeaf_NoCall_Ins02_004d7fc0_89",
       "type": 1
     },
     {
       "address": "0x4e0610",
-      "effective": true,
-      "matching": 0.42857142857142855,
+      "matching": 1.0,
       "name": "TGreatPower::ReturnFalseNationStateActionStub_8a",
       "type": 1
     },
     {
       "address": "0x4e0650",
-      "effective": true,
-      "matching": 0.42857142857142855,
+      "matching": 1.0,
       "name": "TGreatPower::OrphanRetStub_004d7fe0_8b",
       "type": 1
     },
     {
       "address": "0x4e0690",
-      "matching": 1.0,
+      "effective": true,
+      "matching": 0.42857142857142855,
       "name": "TGreatPower::ReturnFalseNationStateCapabilityFlag90",
       "type": 1
     },
@@ -16436,7 +16417,7 @@
     },
     {
       "address": "0x50bea0",
-      "matching": 0.2044525215810995,
+      "matching": 0.19900045433893684,
       "name": "TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets",
       "type": 1
     },
@@ -16886,7 +16867,7 @@
     },
     {
       "address": "0x5136a0",
-      "matching": 1.0,
+      "matching": 0.8888888888888888,
       "name": "TMapMgr::OrphanLeaf_NoCall_Ins35_005136a0",
       "type": 1
     },
@@ -17444,7 +17425,7 @@
     },
     {
       "address": "0x51a990",
-      "matching": 0.2413793103448276,
+      "matching": 0.24,
       "name": "TMapDialog::OrphanRetStub_005960c0",
       "type": 1
     },
@@ -18332,7 +18313,7 @@
     },
     {
       "address": "0x52d1f0",
-      "matching": 0.2784090909090909,
+      "matching": 0.2621082621082621,
       "name": "ReindexContiguousCityRegionIds",
       "type": 1
     },
@@ -26247,7 +26228,7 @@
     },
     {
       "address": "0x580760",
-      "matching": 0.18181818181818182,
+      "matching": 1.0,
       "name": "TSimMgr::LoadUiStringByCodeGroupAndOffset",
       "type": 1
     },
@@ -28009,7 +27990,7 @@
     },
     {
       "address": "0x58f550",
-      "matching": 0.5051903114186851,
+      "matching": 0.46366782006920415,
       "name": "TCivDescription::ApplyRectSlot110",
       "type": 1
     },
@@ -31262,7 +31243,7 @@
     },
     {
       "address": "0x5b5ac0",
-      "matching": 0.410958904109589,
+      "matching": 0.4383561643835616,
       "name": "TInfoBarPictureText::CreateObject",
       "type": 1
     },
@@ -31280,7 +31261,7 @@
     },
     {
       "address": "0x5b5cb0",
-      "matching": 0.4642857142857143,
+      "matching": 0.48214285714285715,
       "name": "TInfoBarPictureText::SetTextAndLayoutRect",
       "type": 1
     },
@@ -31292,7 +31273,7 @@
     },
     {
       "address": "0x5b5ee0",
-      "matching": 0.410958904109589,
+      "matching": 0.4383561643835616,
       "name": "TDeluxeText::CreateObject",
       "type": 1
     },
@@ -31310,13 +31291,13 @@
     },
     {
       "address": "0x5b6060",
-      "matching": 0.15384615384615385,
+      "matching": 1.0,
       "name": "TDeluxeText::NoOpUiLifecycleHook",
       "type": 1
     },
     {
       "address": "0x5b60a0",
-      "matching": 0.2222222222222222,
+      "matching": 1.0,
       "name": "TDeluxeText::OrphanCallChain_C1_I08_005b60a0",
       "type": 1
     },
@@ -31328,7 +31309,7 @@
     },
     {
       "address": "0x5b6170",
-      "matching": 0.9,
+      "matching": 0.9714285714285714,
       "name": "TDeluxeText::ApplyRectSlot110",
       "type": 1
     },
@@ -31376,7 +31357,7 @@
     },
     {
       "address": "0x5b65a0",
-      "matching": 0.410958904109589,
+      "matching": 0.4383561643835616,
       "name": "TInfoBarText::CreateObject",
       "type": 1
     },
@@ -31406,7 +31387,7 @@
     },
     {
       "address": "0x5b6840",
-      "matching": 0.453781512605042,
+      "matching": 0.5042016806722689,
       "name": "TInfoBarText::InitializeMapHintTextStyleAndThemeFlags",
       "type": 1
     },
@@ -31556,7 +31537,7 @@
     },
     {
       "address": "0x5b8ad0",
-      "matching": 0.47191011235955055,
+      "matching": 0.45692883895131087,
       "name": "TTradeMgr::ComputeNationMetricBaselineValueForSlot",
       "type": 1
     },
@@ -31783,7 +31764,7 @@
     },
     {
       "address": "0x5ba720",
-      "matching": 0.2222222222222222,
+      "matching": 0.8571428571428571,
       "name": "TradeScreenPicture::ConstructTradeScreenPictureBaseState",
       "type": 1
     },
@@ -33217,7 +33198,7 @@
     },
     {
       "address": "0x5db780",
-      "matching": 0.25477707006369427,
+      "matching": 0.25902335456475584,
       "name": "HandleTurnEventDialogFactorySlotF8",
       "type": 1
     },

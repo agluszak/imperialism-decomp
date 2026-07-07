@@ -41,7 +41,7 @@ void __cdecl BindUiResourceTextAndStyle(int nGroupId, int nVariant, char* szText
                                         short nThemeCode);
 
 // Set the current context edit control's max-character-count word (+0x9c).
-void __cdecl UpdateUiResourceContextMetricWord27(short nMaxChars);
+void __cdecl SetUiResourceContextMaxCharCount(short maxChars);
 
 // Set the picture resource id on the current g_pUiResourceContext picture widget
 // (virtual slot 0x72 SetPictureResourceIdAndRefresh, no immediate refresh).
@@ -66,6 +66,11 @@ void __cdecl SetUiResourceContextFlagsAndMetrics(short nField9C, short nStyleTyp
 void __cdecl ApplyUiResourceColorTripletFromContext(unsigned char nFlag0C,
                                                     unsigned char nTripletFlag, int colorA,
                                                     int colorB);
+
+// Bind the value range (TNumberText::field_a4/field_a8, min/max hypothesis) and the
+// current value (virtual slot 0x79 SetControlValue, no immediate refresh) on the
+// current context number-text widget.
+void __cdecl SetUiResourceContextNumberValueAndRange(int value, int minValue, int maxValue);
 
 // Clear the g_pUiResourceContext cursor.
 void __cdecl ClearUiResourceContext();

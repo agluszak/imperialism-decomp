@@ -58,6 +58,7 @@ address|target_cpp|ownership|note
 41b450|src/game/ui_resource_pool.cpp|manual|marker_sync
 41b490|src/game/ui_resource_pool.cpp|manual|marker_sync
 41b570|src/game/ui_resource_pool.cpp|manual|marker_sync
+41b5a0|src/game/ui_resource_pool.cpp|manual|marker_sync
 41b5f0|src/game/ui_resource_pool.cpp|manual|marker_sync
 41b610|src/game/ui_resource_pool.cpp|manual|marker_sync
 41b6d0|src/game/turn_event_dialog_factory.cpp|manual|marker_sync
@@ -4288,6 +4289,7 @@ address|target_cpp|ownership|note
 5ba4b0|src/game/TNextTradeCommand.cpp|manual|marker_sync
 5ba680|src/game/TTradeScreenPicture.cpp|manual|marker_sync
 5ba700|src/game/TTradeScreenPicture.cpp|manual|marker_sync
+5ba720|src/game/TTradeScreenPicture.cpp|manual|marker_sync
 5ba750|src/game/TTradeScreenPicture.cpp|manual|marker_sync
 5ba7a0|src/game/TTradeScreenPicture.cpp|manual|marker_sync
 5bab00|src/game/TDealBookPicture.cpp|manual|marker_sync

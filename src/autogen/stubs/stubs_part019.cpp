@@ -1011,14 +1011,6 @@ undefined4 WrapperFor_ftol_At005ba600(void)
   return 0;
 }
 
-// ghidra_name TradeScreenPicture::ConstructTradeScreenPictureBaseState
-// ghidra_proto undefined ConstructTradeScreenPictureBaseState()
-// FUNCTION: IMPERIALISM 0x005ba720
-undefined4 ConstructTradeScreenPictureBaseState(void)
-{
-  return 0;
-}
-
 // ghidra_name TDealBookPicture::ConstructTDealBookPictureBaseState
 // ghidra_proto undefined ConstructTDealBookPictureBaseState()
 // FUNCTION: IMPERIALISM 0x005babc0

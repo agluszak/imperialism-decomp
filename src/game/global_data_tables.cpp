@@ -146,6 +146,8 @@ char g_szMcAppUiSourcePath_006950B0[] = "D:\\Ambit\\McAppUI.cpp";
 // text shown until real values are bound).
 // GLOBAL: IMPERIALISM 0x00694354
 char g_szUiPlaceholderStaticText_00694354[] = "Static Text";
+// GLOBAL: IMPERIALISM 0x00694378
+char g_szUiPlaceholderZero_00694378[] = "0";
 // GLOBAL: IMPERIALISM 0x006943b0
 char g_szUiPlaceholderTreasury_006943B0[] = "$55,555";
 // Font face names for the cached-UI-font LOGFONT factory (0x494130); families 2 and 3
@@ -187,6 +189,21 @@ char g_szNewGameDifficultyNormal_00694A48[] = "Normal";
 char g_szNewGameDifficultyEasy_00694A50[] = "Easy";
 // GLOBAL: IMPERIALISM 0x00694a58
 char g_szNewGameDifficultyIntroductory_00694A58[] = "Introductory";
+// Trade-board screen labels (InitializeTradeScreenBitmapControls, events 0x7d9/0x7da).
+// GLOBAL: IMPERIALISM 0x006948a4
+char g_szUiOrdersLabel_006948A4[] = "Orders";
+// GLOBAL: IMPERIALISM 0x00694abc
+char g_szUiPlaceholder185_00694ABC[] = "185";
+// GLOBAL: IMPERIALISM 0x00694ac0
+char g_szUiQuantityToOfferLabel_00694AC0[] = "Quantity to Offer";
+// GLOBAL: IMPERIALISM 0x00694ad8
+char g_szUiAvailableLabel_00694AD8[] = "Available";
+// GLOBAL: IMPERIALISM 0x00694ae4
+char g_szUiPriceLabel_00694AE4[] = "Price";
+// GLOBAL: IMPERIALISM 0x00694aec
+char g_szUiCommodityLabel_00694AEC[] = "Commodity";
+// GLOBAL: IMPERIALISM 0x00694af8
+char g_szUiBoardOfTradeLabel_00694AF8[] = "Board of Trade";
 // GLOBAL: IMPERIALISM 0x006943cc
 char g_szMcAppUiHeaderPath_006943CC[] = "D:\\Ambit\\McAppUI.h";
 // GLOBAL: IMPERIALISM 0x00696bc0

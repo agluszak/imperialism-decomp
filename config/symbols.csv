@@ -279,16 +279,7 @@ address|name|symbol|size|type|prototype|provenance
 4600c0|TPageView::WrapperFor_ConstructTPageViewBaseState_At004600c0||18|function|undefined WrapperFor_ConstructTPageViewBaseState_At004600c0()|
 4600f0|TTechStorePage::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 460140|TTechHistoryView::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
-4601b0|InitializeTradeScreenBitmapControls||41928|function|undefined InitializeTradeScreenBitmapControls()|
-46503c|BuildTradeBoardDialogUiLayoutVariantA||4563|function|undefined BuildTradeBoardDialogUiLayoutVariantA()|
-46620f|InitializeUiResourceEntries||860|function|int * __cdecl InitializeUiResourceEntries(void)|
-46624f|alloc_failed_set_null_factory_result|||global||
-466251|build_first_resource_entry|||global||
-466566|jump_to_shared_cleanup_tail|||global||
-46baa7|BuildTradeBoardDialogUiLayoutVariantB||4104|function|undefined BuildTradeBoardDialogUiLayoutVariantB()|
-46ca6e|begin_final_resource_cleanup|||global||
-46ca9c|restore_exception_context|||global||
-46caae|return_resource_head|||global||
+4601b0|InitializeTradeScreenBitmapControls||51455|function|undefined InitializeTradeScreenBitmapControls()|
 46fd10|BuildTurnEventDialogResourcesForEvent7DE||15634|function|undefined BuildTurnEventDialogResourcesForEvent7DE()|
 4749a0|BuildUniversityDialogShell||293|function|int * __fastcall BuildUniversityDialogShell(dword dwPanelId, short nDialogTypeTag)|
 474ac5|BuildUniversityDialogControls||5307|function|undefined BuildUniversityDialogControls()|
