@@ -2727,6 +2727,7 @@ address|target_cpp|ownership|note
 53aa70|src/game/TBlockadePortMission.cpp|manual|marker_sync
 53aa90|src/game/TBlockadePortMission.cpp|manual|marker_sync
 53aae0|src/game/TBlockadePortMission.cpp|manual|marker_sync
+53ab50|src/game/TBlockadePortMission.cpp|manual|marker_sync
 53ac60|src/game/TBlockadePortMission.cpp|manual|marker_sync
 53aca0|src/game/TBlockadePortMission.cpp|manual|marker_sync
 53ace0|src/game/TBlockadePortMission.cpp|manual|marker_sync

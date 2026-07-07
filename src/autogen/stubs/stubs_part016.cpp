@@ -267,14 +267,6 @@ undefined4 WrapperFor_AFX_CLASSINIT_At0053ab00(void)
   return 0;
 }
 
-// ghidra_name TMission::ConstructBlockadePortMissionForContext
-// ghidra_proto undefined ConstructBlockadePortMissionForContext()
-// FUNCTION: IMPERIALISM 0x0053ab50
-undefined4 ConstructBlockadePortMissionForContext(void)
-{
-  return 0;
-}
-
 // ghidra_name ComputeMissionNavyOrderDistributionScoreForPortOwnerOrAllies
 // ghidra_proto undefined ComputeMissionNavyOrderDistributionScoreForPortOwnerOrAllies()
 // FUNCTION: IMPERIALISM 0x0053b350
