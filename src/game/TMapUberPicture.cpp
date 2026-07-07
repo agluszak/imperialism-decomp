@@ -148,19 +148,20 @@ void TMapUberPicture::RefreshMapOrderEntryPanel(TTaskForce* pMapOrderEntry) {
 }
 
 // FUNCTION: IMPERIALISM 0x00597950
-void TMapUberPicture::SetActiveMapOrderEntry(TTaskForce* pMapOrderEntry) {
+void TMapUberPicture::SetActiveMapOrderEntry(TZone* pMapOrderContextZone) {
   this->SetMapInteractionMode(2);
   // Ground truth also calls InvalidateMapRegionForOrderEntry (thiscall on
   // goodGoldTagControlA4, an unrecovered control class) around the write below, once for
   // the old orderEntryContext98 value and once for the new one; left undone rather than
   // faked.
-  this->orderEntryContext98 = pMapOrderEntry;
-  if (pMapOrderEntry == nullptr) {
+  this->orderEntryContext98 = pMapOrderContextZone;
+  if (pMapOrderContextZone == nullptr) {
     this->RefreshMapOrderEntryPanel(nullptr);
     return;
   }
   TTaskForce* refreshedTaskForce =
-      g_pActiveMapOrderContext->EnsureSelectedTaskForceForOrderOwnerAndRefresh(pMapOrderEntry);
+      g_pActiveMapOrderContext->EnsureSelectedTaskForceForOrderOwnerAndRefresh(
+          pMapOrderContextZone);
   this->RefreshMapOrderEntryPanel(refreshedTaskForce);
 }
 
@@ -284,8 +285,7 @@ undefined TMapUberPicture::CreateToolWindow_00599CF0() {
   toolRect.bottom = toolRect.top + 0x41;
   RgnHandle region = NewRgn();
   RectRgn(region, &toolRect);
-  UnionRgn(this->ownClipRegion90, region,
-                                               this->ownClipRegion90);
+  UnionRgn(this->ownClipRegion90, region, this->ownClipRegion90);
   DisposeRgn(region);
 
   if (this->invalidationFlag94 == 0) {

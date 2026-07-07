@@ -8,8 +8,11 @@
 #include "game/mfc.h"
 #include "game/TGlobalMapState.h"
 #include "game/TOcean.h"
+#include "game/TDiplomacyMgr.h"
 #include "game/TPortZone.h"
+#include "game/TShip.h"
 #include "game/TSimMgr.h"
+#include "game/TTaskForce.h"
 #include "game/UiRuntimeContext.h"
 
 undefined4 ReallocateHeapBlockWithAllocatorTracking(void);
@@ -67,6 +70,36 @@ void* TZone::HandleTurnEventVtableSlot24CopyPayloadBuffer() {
 // TZone::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TZone, TObject)
+
+// FUNCTION: IMPERIALISM 0x00558860
+TZone** TZonePrimaryNeighborStretch::EnsureSlotAllocatedAndReturnPointer(unsigned int index) {
+  // Grow-on-access. The capacity-doubling realloc block is the same stretch growth
+  // primitive as EnsureCapacityAtLeast (0x561300); the original compiler inlined it
+  // here (while keeping the standalone copy for that function's other callers), so it
+  // is reproduced inline rather than called to match the emitted code. Then bump count
+  // to cover the slot and return a pointer to it.
+  if (static_cast<unsigned int>(Capacity()) <= index) {
+    int wanted = static_cast<int>(index) + 1;
+    unsigned int doubledCapacity = static_cast<unsigned int>(wanted * 2);
+    if (doubledCapacity > 0x7fffffffU) {
+      doubledCapacity = 0x7fffffffU;
+    }
+    void* grownBuffer = reinterpret_cast<void*(__cdecl*)(void*, int)>(
+        ReallocateHeapBlockWithAllocatorTracking)(Data(), wanted * 8);
+    if (grownBuffer == 0) {
+      Data() = static_cast<TZone**>(reinterpret_cast<void*(__cdecl*)(void*, int)>(
+          ReallocateHeapBlockWithAllocatorTracking)(Data(), wanted * 4));
+      Capacity() = wanted;
+    } else {
+      Data() = static_cast<TZone**>(grownBuffer);
+      Capacity() = static_cast<int>(doubledCapacity);
+    }
+  }
+  if (static_cast<unsigned int>(Count()) <= index) {
+    Count() = static_cast<int>(index) + 1;
+  }
+  return Data() + index;
+}
 
 // FUNCTION: IMPERIALISM 0x0055e700
 TZone::TZone()
@@ -801,6 +834,16 @@ void TZone::SetMapOrderUiFlag(int flag) {
   }
 }
 
+// TODO: port body @ 0x005609e0 (builds a new TTaskForce order entry for this context
+// zone + nation via the TTaskForce(contextAnchor, requiredCount) ctor when eligible).
+// Stub keeps the address owned; EnsureSelectedTaskForceForOrderOwnerAndRefresh calls it
+// as a real TZone method.
+// FUNCTION: IMPERIALISM 0x005609e0
+TTaskForce* TZone::CreateTaskForceFromNavyOrdersForNationIfEligible(short nation) {
+  (void)nation;
+  return nullptr;
+}
+
 // FUNCTION: IMPERIALISM 0x00560f80
 void TZone::PropagateMapActionContextDistanceLevelsRecursive(short level) {
   if (level == -1) {
@@ -892,6 +935,79 @@ void TZonePrimaryNeighborStretch::EnsureCapacityAtLeast(int count) {
     Data() = static_cast<TZone**>(grownBuffer);
     Capacity() = static_cast<int>(doubledCapacity);
   }
+}
+
+// FUNCTION: IMPERIALISM 0x00561400
+unsigned int TZone::BuildNationBitmaskForActiveType3Or4OrdersIncludingNation(unsigned char nation) {
+  unsigned int mask = 0;
+  for (TShip* ship = GetNavyPrimaryOrderListHead(); ship != 0; ship = ship->nextOlder24) {
+    if (ship->field08 == this) {
+      TTaskForce* entry = reinterpret_cast<TTaskForce*>(ship->field0c);
+      if (entry != 0 && entry->eliminatedFlag26 == 0 &&
+          (entry->attachment == 3 || entry->attachment == 4)) {
+        mask |= 1u << (ship->ownerNationSlot14 & 0x1f);
+      }
+    }
+  }
+  return (1u << (nation & 0x1f)) | mask;
+}
+
+// FUNCTION: IMPERIALISM 0x00561490
+unsigned int TZone::BuildNationBitmaskForActiveType3Or4Orders() {
+  unsigned int mask = 0;
+  for (TShip* ship = GetNavyPrimaryOrderListHead(); ship != 0; ship = ship->nextOlder24) {
+    if (ship->field08 == this) {
+      TTaskForce* entry = reinterpret_cast<TTaskForce*>(ship->field0c);
+      if (entry != 0 && entry->eliminatedFlag26 == 0 &&
+          (entry->attachment == 3 || entry->attachment == 4)) {
+        mask |= 1u << (ship->ownerNationSlot14 & 0x1f);
+      }
+    }
+  }
+  return mask;
+}
+
+// FUNCTION: IMPERIALISM 0x00561510
+unsigned int TZone::HasDiplomaticallyRelatedNationInActiveType3Or4OrderMask(int nation) {
+  unsigned int mask = 0;
+  for (TShip* ship = GetNavyPrimaryOrderListHead(); ship != 0; ship = ship->nextOlder24) {
+    if (ship->field08 == this) {
+      TTaskForce* entry = reinterpret_cast<TTaskForce*>(ship->field0c);
+      if (entry != 0 && entry->eliminatedFlag26 == 0 &&
+          (entry->attachment == 3 || entry->attachment == 4)) {
+        mask |= 1u << (ship->ownerNationSlot14 & 0x1f);
+      }
+    }
+  }
+  if ((mask & (1u << (static_cast<unsigned char>(nation) & 0x1f))) != 0) {
+    return 0;
+  }
+  int candidate = 0;
+  while ((mask & (1u << (candidate & 0x1f))) == 0 ||
+         g_pDiplomacyTurnStateManager->IsNationPairRelationTurnStampOutOfDate(candidate, nation) ==
+             0) {
+    ++candidate;
+    if (candidate > 6) {
+      return 0;
+    }
+  }
+  return 1;
+}
+
+// FUNCTION: IMPERIALISM 0x005619e0
+void TZone::ResolvePortZoneOwnerContextAndDispatch() {
+  short tileIndex = FindNearestActiveSeaContextTileFromOffset216();
+  short ownerNation = g_pGlobalMapState->terrainStateTable[tileIndex].ownerNationTag04;
+  TZone* contextElement =
+      g_pActiveMapOrderContext->GetMapActionContextEntryByNationCodeOffset17(ownerNation);
+  primaryNeighbors.GetOrAppendUnique(contextElement);
+  contextElement->primaryNeighbors.GetOrAppendUnique(this);
+}
+
+// FUNCTION: IMPERIALISM 0x00561b90
+short TZone::GetPortZoneOwnerNationCodeFromMissionField48() {
+  short tileIndex = static_cast<short>(static_cast<TPortZone*>(this)->field48);
+  return g_pGlobalMapState->terrainStateTable[tileIndex].ownerNationTag04;
 }
 
 // FUNCTION: IMPERIALISM 0x00561bf0
@@ -1040,7 +1156,7 @@ void PopulatePortZoneAdjacencyToNearbyCityContexts(void) {
       short region = static_cast<short>(
           *(reinterpret_cast<char*>(g_pGlobalMapState->terrainStateTable) + tileByteOffset + 4));
       if (region >= 0x17) {
-        context = g_pActiveMapOrderContext->contextArray + (region - 0x17);
+        context = g_pActiveMapOrderContext->GetMapActionContextEntryByNationCodeOffset17(region);
       } else {
         context = 0;
       }
@@ -1059,8 +1175,7 @@ void PopulatePortZoneAdjacencyToNearbyCityContexts(void) {
           if (cityIdx == -1) {
             cityRecord = 0;
           } else {
-            cityRecord = reinterpret_cast<int>(
-                reinterpret_cast<char*>(g_pGlobalMapState->cityScoreTable) + cityIdx * 0xa8);
+            cityRecord = reinterpret_cast<int>(&g_pGlobalMapState->cityScoreTable[cityIdx]);
           }
           if (cityRecord != 0) {
             // Append the neighbour's city context to the secondary list if not already present.

@@ -219,30 +219,6 @@ undefined4 UpdateType7NavyOrderChildSelectionByChanceThreshold(void)
   return 0;
 }
 
-// ghidra_name SelectEligibleMapOrderInteractionForNationAndContext
-// ghidra_proto undefined SelectEligibleMapOrderInteractionForNationAndContext()
-// FUNCTION: IMPERIALISM 0x00557f10
-undefined4 SelectEligibleMapOrderInteractionForNationAndContext(void)
-{
-  return 0;
-}
-
-// ghidra_name EnsureDwordPointerArraySlotAndReturnPointer
-// ghidra_proto undefined EnsureDwordPointerArraySlotAndReturnPointer()
-// FUNCTION: IMPERIALISM 0x00558860
-undefined4 EnsureDwordPointerArraySlotAndReturnPointer(void)
-{
-  return 0;
-}
-
-// ghidra_name ProcessNationMapOrderInteractionsAndApplyOutcomes
-// ghidra_proto undefined ProcessNationMapOrderInteractionsAndApplyOutcomes()
-// FUNCTION: IMPERIALISM 0x00558960
-undefined4 ProcessNationMapOrderInteractionsAndApplyOutcomes(void)
-{
-  return 0;
-}
-
 // ghidra_name GetMapContextActionCode
 // ghidra_proto int __cdecl GetMapContextActionCode(short nTileIndex, int dwInputFlags)
 // FUNCTION: IMPERIALISM 0x00559a70
@@ -451,14 +427,6 @@ undefined4 GetMapOrderContextPointerForNationAndTarget(void)
   return 0;
 }
 
-// ghidra_name CreateTaskForceFromNavyOrdersForNationIfEligible
-// ghidra_proto undefined CreateTaskForceFromNavyOrdersForNationIfEligible()
-// FUNCTION: IMPERIALISM 0x005609e0
-undefined4 CreateTaskForceFromNavyOrdersForNationIfEligible(void)
-{
-  return 0;
-}
-
 // ghidra_name TCivToolbar::CanDisplayMapOrderEntryInCurrentContext
 // ghidra_proto undefined CanDisplayMapOrderEntryInCurrentContext()
 // FUNCTION: IMPERIALISM 0x00560b00
@@ -491,50 +459,10 @@ undefined4 SelectBestMapActionContextForNationDiplomacyMask(void)
   return 0;
 }
 
-// ghidra_name BuildNationBitmaskForActiveType3Or4OrdersIncludingNation
-// ghidra_proto undefined BuildNationBitmaskForActiveType3Or4OrdersIncludingNation()
-// FUNCTION: IMPERIALISM 0x00561400
-undefined4 BuildNationBitmaskForActiveType3Or4OrdersIncludingNation(void)
-{
-  return 0;
-}
-
-// ghidra_name BuildNationBitmaskForActiveType3Or4Orders
-// ghidra_proto undefined BuildNationBitmaskForActiveType3Or4Orders()
-// FUNCTION: IMPERIALISM 0x00561490
-undefined4 BuildNationBitmaskForActiveType3Or4Orders(void)
-{
-  return 0;
-}
-
-// ghidra_name HasDiplomaticallyRelatedNationInActiveType3Or4OrderMask
-// ghidra_proto undefined HasDiplomaticallyRelatedNationInActiveType3Or4OrderMask()
-// FUNCTION: IMPERIALISM 0x00561510
-undefined4 HasDiplomaticallyRelatedNationInActiveType3Or4OrderMask(void)
-{
-  return 0;
-}
-
 // ghidra_name ResetTPortZoneToSentinelVtableAndReleaseResources
 // ghidra_proto undefined ResetTPortZoneToSentinelVtableAndReleaseResources()
 // FUNCTION: IMPERIALISM 0x005616f0
 undefined4 ResetTPortZoneToSentinelVtableAndReleaseResources(void)
-{
-  return 0;
-}
-
-// ghidra_name ResolvePortZoneOwnerContextAndDispatch
-// ghidra_proto undefined ResolvePortZoneOwnerContextAndDispatch()
-// FUNCTION: IMPERIALISM 0x005619e0
-undefined4 ResolvePortZoneOwnerContextAndDispatch(void)
-{
-  return 0;
-}
-
-// ghidra_name GetPortZoneOwnerNationCodeFromMissionField48
-// ghidra_proto undefined GetPortZoneOwnerNationCodeFromMissionField48()
-// FUNCTION: IMPERIALISM 0x00561b90
-undefined4 GetPortZoneOwnerNationCodeFromMissionField48(void)
 {
   return 0;
 }

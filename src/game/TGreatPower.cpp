@@ -2209,6 +2209,12 @@ void TGreatPower::ApplyIndexedResourceDeltaAndAdjustNationTotals(int resourceInd
   }
 }
 
+// FUNCTION: IMPERIALISM 0x004ddcf0
+void TGreatPower::AddShortDeltaToNationCounterAtOffset198(short index, short delta) {
+  this->relationDeltaSnapshot[index] =
+      static_cast<short>(this->relationDeltaSnapshot[index] + delta);
+}
+
 // FUNCTION: IMPERIALISM 0x004ddd20
 void TGreatPower::ClearDiplomacyState1c6ForTarget(short targetSlot) {
   this->diplomacyState1c6[targetSlot] = 0;
@@ -4191,7 +4197,7 @@ void TGreatPower::BuildGreatPowerTurnMessageSummaryAndDispatch(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x004e8540
-void TGreatPower::QueueMapActionMissionFromCandidateAndMarkState(int arg1, int arg2,
+void TGreatPower::QueueMapActionMissionFromCandidateAndMarkState(eMissionType arg1, int arg2,
                                                                  TZone* portZoneContext, int arg4) {
   const unsigned char kNodeStateAvailable = 1;
   const unsigned char kNodeStateQueued = 2;
@@ -4207,14 +4213,15 @@ void TGreatPower::QueueMapActionMissionFromCandidateAndMarkState(int arg1, int a
     }
   }
 
-  int missionKind = arg1;
-  if ((portZoneContext != 0) && (arg2 == -1) && (arg4 == -1) && (arg1 != 4)) {
-    missionKind = 3;
+  eMissionType missionKind = arg1;
+  if ((portZoneContext != 0) && (arg2 == -1) && (arg4 == -1) &&
+      (arg1 != kMissionTypeBlockadePort)) {
+    missionKind = kMissionTypeDefendProvince;
     arg4 = -1;
   }
 
-  TMission* missionObj = static_cast<TMission*>(TMission::CreateByKindAndNodeContext(
-      this->nationSlot, missionKind, arg2, portZoneContext, arg4));
+  TMission* missionObj = CreateMissionObjectByKindAndNodeContext(
+      this->nationSlot, missionKind, arg2, reinterpret_cast<int>(portZoneContext), arg4);
   if (missionObj == 0) {
     GAME_FAIL_NIL_POINTER();
     TemporarilyClearAndRestoreUiInvalidationFlag();

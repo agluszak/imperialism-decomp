@@ -659,14 +659,6 @@ undefined4 InitializeMissionWithNationIdAndResetPathMarker(void)
   return 0;
 }
 
-// ghidra_name CreateMissionObjectByKindAndNodeContext
-// ghidra_proto undefined CreateMissionObjectByKindAndNodeContext()
-// FUNCTION: IMPERIALISM 0x005350d0
-undefined4 CreateMissionObjectByKindAndNodeContext(void)
-{
-  return 0;
-}
-
 // ghidra_name ResetTNavyMissionToSentinelVtable
 // ghidra_proto undefined ResetTNavyMissionToSentinelVtable()
 // FUNCTION: IMPERIALISM 0x00535590

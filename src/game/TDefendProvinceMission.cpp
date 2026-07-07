@@ -194,6 +194,11 @@ float TDefendProvinceMission::ComputeLocalSupportVectorScore(int nodeContext) {
 // Default constructor
 TDefendProvinceMission::TDefendProvinceMission() : TArmyMission() {}
 
+// Node-key constructor: delegates to TArmyMission(nodeKey) and stamps this class's
+// vtable. Inlined into the mission factory (CreateMissionObjectByKindAndNodeContext,
+// case 3, param_4 == 0); has no standalone address of its own.
+TDefendProvinceMission::TDefendProvinceMission(int nodeKey) : TArmyMission(nodeKey) {}
+
 namespace {
 
 // Order-list items (orderListAt18) are a not-yet-recovered mission/order

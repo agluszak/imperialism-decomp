@@ -723,14 +723,6 @@ undefined4 GetCityProductionValueTimesTwoCallbackG(void)
   return 0;
 }
 
-// ghidra_name AddShortDeltaToNationCounterAtOffset198
-// ghidra_proto undefined AddShortDeltaToNationCounterAtOffset198()
-// FUNCTION: IMPERIALISM 0x004ddcf0
-undefined4 AddShortDeltaToNationCounterAtOffset198(void)
-{
-  return 0;
-}
-
 // ghidra_name RefreshNationCivilianWorkOrdersForTurn
 // ghidra_proto undefined RefreshNationCivilianWorkOrdersForTurn()
 // FUNCTION: IMPERIALISM 0x004dfd30

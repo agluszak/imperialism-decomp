@@ -5,6 +5,16 @@
 class TStream;
 class TTaskForce;
 
+// Result buffer filled by SelectEligibleMapOrderInteractionForNationAndContext for the
+// first eligible queued interaction: the offering nation code, the packed exchange-
+// direction flags (low 2 bits), and the chosen order entry.
+struct TMapOrderInteractionSelection {
+  short offerNationCode;       // +0x00
+  short pad02;                 // +0x02
+  unsigned int directionFlags; // +0x04 packed direction bits (bit0/bit1)
+  TTaskForce* selectedEntry;   // +0x08
+};
+
 // TODO(manifest): describe TNavyMgr and its role. Base edge (TObject) recovered from RTTI CRuntimeClass chain: TNavyMgr -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x0065c4c8
 class TNavyMgr : public TObject {
@@ -53,9 +63,8 @@ public:
 
   // Called from TTaskForce::ResolveTaskForceOrderConflictAndPickCandidate's tail
   // (ECX=g_pNavyOrderManager evidence at that callsite) when neither entry's priority
-  // clears the other's threshold and no tie-break resolves it outright. 2934 bytes with
-  // a heavy CString-building body (SEH frame, ~500-byte format buffer); not yet
-  // reverse-engineered in detail.
+  // clears the other's threshold and no tie-break resolves it outright. Runs the
+  // tier-scoring / random-attrition resolution between the two order entries' children.
   void ResolveMapOrderPairConflictStep(TTaskForce* leftEntry, TTaskForce* rightEntry); // 0x55a780
 
   // Zeroes every g_pNavyPrimaryOrderListHead ship's field0c, destroys the whole
@@ -63,8 +72,38 @@ public:
   // g_pActiveMapOrderContext that no order entry is selected anymore.
   void ResetPrimaryOrderActiveFlagsAndClearManagerState(); // 0x556fd0
 
+  // 0x558960 (3485 bytes). Called twice in sequence from the map-order turn-phase
+  // resolver (ResolveMapOrderChainsForTurnPhase, 0x5578a0) with `mode` = 1 then 2
+  // -- confirmed __thiscall on this (TNavyMgr) via the `MOV ECX,EBP; PUSH mode;
+  // CALL` sequence at 0x557ca7/0x557cb1 and the callee's `RET 4`. Sweeps the 7
+  // playable nations that have a live city, and for each its 17 tracked map-order
+  // interaction slots, reading every queued entry via TGreatPower's tracked-slot
+  // virtuals (GetTrackedSlotEntryCountLow @ slot 0x6d, ReadTrackedSlotEntryFields @
+  // slot 0x6f). Each live entry builds a localized diplomacy/order-exchange event
+  // message and, gated by `mode` (1 = offer pass, 2 = accept pass) and flags derived
+  // from that message, applies the exchange outcome (resource transfers, capped-at-499
+  // order-node stat writes, per-nation counter deltas). The query skeleton is fully
+  // ported; the message/outcome spine is an unblocked (large) decomp-loop follow-up --
+  // the "g_pLocalizationTable" Ghidra shows in the body is g_pSimMgr itself (a modeled
+  // TSimMgr, vtable 0x662a58; the string calls are TSimMgr::GetStringPrelude/GetString),
+  // so no class recovery is required.
+  // 0x557f10 (1901 bytes). Scans orderListHead04 for the first queued order entry
+  // whose interaction is eligible to fire this turn for `nation`: gates the nation's
+  // own type-7 entry children by a priority-vs-descriptor roll, then for each
+  // non-eliminated queued entry checks attachment/context match + diplomacy relation
+  // (g_pDiplomacyTurnStateManager) and an order-score comparison (the same
+  // ComputeMapOrderEntryHeuristicScore / ComputeTaskForceOrderAggregateScore /
+  // ResolveMapOrderPairConflictStep helpers the conflict resolver uses). On the first
+  // eligible entry it fills `outResult` and returns 1; otherwise 0. `portZoneContext`
+  // is the resolved TZone* (as int), `offerAmount` the transfer size.
+  char
+  SelectEligibleMapOrderInteractionForNationAndContext(TMapOrderInteractionSelection* outResult,
+                                                       int portZoneContext, short nation,
+                                                       short offerAmount);
+
+  void ProcessNationMapOrderInteractionsAndApplyOutcomes(short mode); // 0x558960
+
   TNavyMgr();
 };
 
 ASSERT_SIZE(TNavyMgr, 0x10);
-

@@ -15,21 +15,6 @@
 
 IMPLEMENT_SERIAL(TBlockadePortMission, TControlSeaZoneMission, 1)
 
-// SYNTHETIC: IMPERIALISM 0x0053aae0
-// TBlockadePortMission::GetRuntimeClass
-// SYNTHETIC: IMPERIALISM 0x0053aa90
-// TBlockadePortMission::`scalar deleting destructor'
-
-// Not-yet-recovered free functions/subsystems this file calls into.
-extern undefined4 GetPortZoneOwnerNationCodeFromMissionField48(void);
-extern undefined4 SetByteFlagAtOffsetAF0ByIndex(void);
-
-TBlockadePortMission::TBlockadePortMission()
-    : TControlSeaZoneMission(), portZoneContext3c(nullptr) {}
-
-TBlockadePortMission::TBlockadePortMission(TZone* targetZone)
-    : TControlSeaZoneMission(targetZone), portZoneContext3c(nullptr) {}
-
 // FUNCTION: IMPERIALISM 0x0053aa50
 char TBlockadePortMission::ReturnFalseSlot64() {
   return 0;
@@ -38,6 +23,26 @@ char TBlockadePortMission::ReturnFalseSlot64() {
 // FUNCTION: IMPERIALISM 0x0053aa70
 char TBlockadePortMission::ReturnFalseSlot60() {
   return 0;
+}
+// SYNTHETIC: IMPERIALISM 0x0053aa90
+// TBlockadePortMission::`scalar deleting destructor'
+
+TBlockadePortMission::TBlockadePortMission()
+    : TControlSeaZoneMission(), portZoneContext3c(nullptr) {}
+
+// SYNTHETIC: IMPERIALISM 0x0053aae0
+// TBlockadePortMission::GetRuntimeClass
+
+// The mission factory (CreateMissionObjectByKindAndNodeContext, case 4) builds a
+// blockade mission from a map-order context node (a TZone). It lazily ensures the
+// context's primaryNeighbors array has slot 0 allocated -- that first entry is the
+// target port zone -- constructs the TControlSeaZoneMission base on it, back-links
+// the context node into portZoneContext3c (+0x3c), and validates the context.
+// FUNCTION: IMPERIALISM 0x0053ab50
+TBlockadePortMission::TBlockadePortMission(TZone* context)
+    : TControlSeaZoneMission(*context->primaryNeighbors.EnsureSlotAllocatedAndReturnPointer(0)),
+      portZoneContext3c(context) {
+  context->AssertValid();
 }
 
 // FUNCTION: IMPERIALISM 0x0053ac60

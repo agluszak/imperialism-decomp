@@ -2,14 +2,21 @@
 
 #include "game/TAdmiral.h"
 #include "game/TArmyMgr.h"
+#include "game/TCity.h"
 #include "game/TCountry.h"
+#include "game/TGreatPower.h"
 #include "game/TMapMgr.h"
 #include "game/TOcean.h"
 #include "game/TShip.h"
+#include "game/TDiplomacyMgr.h"
 #include "game/TObject.h"
+#include "game/TPortZone.h"
+#include "game/TSimMgr.h"
 #include "game/TTaskForce.h"
+#include "game/TZone.h"
 #include "game/CString.h"
 #include "game/global_data_tables.h"
+#include "game/localization_text_helpers.h"
 #include "game/map_order_battle_snapshot.h"
 
 extern undefined4 GenerateThreadLocalRandom15(void);
@@ -213,6 +220,24 @@ void RefreshMapOrderBattleSideSnapshot(MapOrderBattleSnapshot* snapshot, int sid
         snapshot->requiredCountByte[side], cityIndex);
   }
 }
+
+// Formats "<count><sep><commodity name>" into `out`: fetches the commodity's
+// localized name (singular string group 0x2716 for count < 2, plural 0x271a
+// otherwise) into `out`, then, for a non-negative count, prefixes the decimal count
+// and the shared separator string. The concat/format helpers Ghidra names
+// AssignSharedStringConcat*/_Format_CString are MFC CString operator+/Format.
+// FUNCTION: IMPERIALISM 0x00550c20
+void FormatLocalizedCommodityCountLabelByIndex(CString* out, unsigned int commodityCode,
+                                               short count) {
+  short codeGroup = (count < 2) ? 0x2716 : 0x271a;
+  g_pSimMgr->GetString(codeGroup, static_cast<short>(commodityCode), out);
+  if (count >= 0) {
+    CString numberText;
+    numberText.Format(g_szDecimalFormat, static_cast<int>(count));
+    *out = numberText + s_mcflavor_00695794 + *out;
+  }
+}
+
 // SYNTHETIC: IMPERIALISM 0x00556530
 // TNavyMgr::CreateObject
 
@@ -359,6 +384,236 @@ void TNavyMgr::RemoveOrdersByNationFromPrimarySecondaryAndTaskForceLists(short n
 
   RemoveMatchingSecondaryOrders(nationSlot);
   RemoveMatchingTaskForceOrders(this, nationSlot);
+}
+
+// FUNCTION: IMPERIALISM 0x00557f10
+char TNavyMgr::SelectEligibleMapOrderInteractionForNationAndContext(
+    TMapOrderInteractionSelection* outResult, int portZoneContext, short nation,
+    short offerAmount) {
+  // The port-zone context's owning nation code.
+  short ownerCode = 0;
+  if (portZoneContext != 0) {
+    ownerCode =
+        reinterpret_cast<TZone*>(portZoneContext)->GetPortZoneOwnerNationCodeFromMissionField48();
+  }
+
+  // Priority ratio: fraction of this nation's remaining diplomacy capacity the offered
+  // amount represents (x100).
+  TGreatPower* nationState = g_apNationStates[nation];
+  int capDiff = nationState->needCapA6 - nationState->diplomacyCounterA2;
+  short priorityRatio = (capDiff == 0) ? 0 : static_cast<short>((offerAmount * 100) / capDiff);
+
+  // Locate this nation's own type-7 order entry and gate each active child by a
+  // priority-vs-descriptor-stock roll.
+  TTaskForce* nationEntry = orderListHead04;
+  while (nationEntry != nullptr &&
+         !(nationEntry->required_count == nation && nationEntry->attachment == 7)) {
+    nationEntry = nationEntry->queue_next;
+  }
+  if (nationEntry != nullptr) {
+    for (TMapOrderChildLinkNode* node = nationEntry->childOrderList; node != nullptr;
+         node = node->next) {
+      TTaskForce* child = node->object_ptr;
+      char active = 1;
+      if (child->required_count < g_NavyOrderResourceDescriptorTable[child->order_type].stockCap ||
+          static_cast<int>(priorityRatio) <=
+              static_cast<int>(GenerateThreadLocalRandom15()) % 100) {
+        active = 0;
+      }
+      node->active_flag = active;
+    }
+  }
+
+  // Walk every queued order entry; return the first eligible interaction.
+  for (TTaskForce* entry = orderListHead04; entry != nullptr; entry = entry->queue_next) {
+    if (entry->eliminatedFlag26 != 0) {
+      continue;
+    }
+    if (entry->GetMapOrderEntryChildCount() <= 0) {
+      continue;
+    }
+
+    short attachment = entry->attachment;
+    bool contextMatch = (attachment == 6 && reinterpret_cast<int>(entry->owner) == portZoneContext);
+    // attachment 3 matches when this entry's contextAnchor equals the port zone's first
+    // primary-neighbor slot (the active map-order context head).
+    bool activeContextMatch = false;
+    if (attachment == 3 && portZoneContext != 0) {
+      TZone** slot = reinterpret_cast<TZone*>(portZoneContext)
+                         ->primaryNeighbors.EnsureSlotAllocatedAndReturnPointer(0);
+      activeContextMatch = (entry->contextAnchor == reinterpret_cast<int>(*slot));
+    }
+
+    // Diplomacy eligibility: the entry's nation must relate to the port-zone owner or
+    // the querying nation.
+    bool relatedToOwner = (entry->required_count == ownerCode ||
+                           g_pDiplomacyTurnStateManager->IsNationPairRelationTurnStampOutOfDate(
+                               ownerCode, entry->required_count) != 0);
+    bool relatedToNation = (ownerCode >= 7 && entry->attachment == 6 &&
+                            g_pDiplomacyTurnStateManager->IsNationPairRelationTurnStampOutOfDate(
+                                entry->required_count, ownerCode) != 0);
+
+    if (!(contextMatch || activeContextMatch) || !(relatedToOwner || relatedToNation)) {
+      continue;
+    }
+
+    // Aggregate this entry's active-child descriptorWeight rating (x10) and roll a
+    // gap-based threshold that also folds in the offer size relative to the entry's
+    // per-child heuristic score.
+    int ratingSum = 0;
+    int activeCount = 0;
+    for (TMapOrderChildLinkNode* node = entry->childOrderList; node != nullptr; node = node->next) {
+      if (node->active_flag != 0) {
+        ratingSum +=
+            g_NavyOrderResourceDescriptorTable[node->object_ptr->order_type].descriptorWeight;
+        ++activeCount;
+      }
+    }
+    short rating = (activeCount == 0) ? 0 : static_cast<short>((ratingSum * 10) / activeCount);
+    short entryScore = static_cast<short>(entry->ComputeMapOrderEntryHeuristicScore());
+    short perChildOffer = static_cast<short>(entry->ComputeTaskForceOrderAggregateScore());
+    if (perChildOffer > 0) {
+      perChildOffer = static_cast<short>(offerAmount / perChildOffer);
+    }
+    int entryChildren = entry->GetMapOrderEntryChildCount();
+    int nationChildren = (nationEntry != nullptr) ? nationEntry->GetMapOrderEntryChildCount() : 0;
+    int threshold = entryChildren + nationChildren + (attachment != 6 ? -0x1e : 0) +
+                    (rating - entryScore) + 0x28 + perChildOffer;
+    if (static_cast<int>(GenerateThreadLocalRandom15()) % 100 >= threshold) {
+      continue;
+    }
+
+    // Eligible: publish the chosen entry and set the packed direction flags, then a
+    // final diplomacy relation + child-count roll decides the exchange direction bit.
+    unsigned int flags = outResult->directionFlags & 0xfffffffc;
+    outResult->offerNationCode = entry->required_count;
+    outResult->selectedEntry = entry;
+    outResult->directionFlags = flags;
+    if (g_pDiplomacyTurnStateManager->IsNationPairRelationTurnStampOutOfDate(
+            nation, entry->required_count) == 0) {
+      return 1;
+    }
+    short roll = static_cast<short>(static_cast<int>(GenerateThreadLocalRandom15()) % 100);
+    short bias = static_cast<short>(entryChildren + 10);
+    if (roll >= bias) {
+      if (roll < bias * 2) {
+        outResult->directionFlags |= 1;
+      }
+    } else {
+      outResult->directionFlags |= 2;
+    }
+    return 1;
+  }
+  return 0;
+}
+
+// FUNCTION: IMPERIALISM 0x00558960
+void TNavyMgr::ProcessNationMapOrderInteractionsAndApplyOutcomes(short mode) {
+  // Query skeleton (fully ported): iterate the 7 playable nations that have a live
+  // city, then each nation's 17 tracked map-order interaction slots, reading every
+  // queued entry via TGreatPower's tracked-slot virtuals. `slot` is passed to
+  // GetTrackedSlotEntryCountLow (slot 0x6d) and, with the 1-based ordinal, to
+  // ReadTrackedSlotEntryFields (slot 0x6f), which unpacks the entry's
+  // {kind, value, targetNation, payload} tuple. Confirmed against the disassembly:
+  // count call PUSHes the slot index, the field-read PUSHes (slot, ordinal, &kind,
+  // &value, &targetNation, &payload).
+  for (short nation = 0; nation <= 6; ++nation) {
+    if (g_apTerrainTypeDescriptorTable[nation] == nullptr) {
+      continue;
+    }
+    TGreatPower* state = g_apNationStates[nation];
+    TCity* city = (state != nullptr) ? state->city : nullptr;
+    if (city == nullptr) {
+      continue;
+    }
+    for (short slot = 0; slot < 0x11; ++slot) {
+      short entryCount = state->GetTrackedSlotEntryCountLow(slot);
+      for (short ordinal = 1; ordinal <= entryCount; ++ordinal) {
+        short entryKind = 0;
+        short entryValue = 0;
+        short entryTargetNation = 0;
+        int entryPayload = 0;
+        state->ReadTrackedSlotEntryFields(slot, ordinal, &entryKind, &entryValue,
+                                          &entryTargetNation, &entryPayload);
+        if (entryValue == 0) {
+          continue;
+        }
+
+        // `entryKind` carries the exchange direction (1 = order offered by this
+        // nation, 0 = order offered to it); `entryPayload` is the offered order
+        // entry, `entryValue` the transferred amount.
+        short orderMode = entryKind;
+        short offerNation = (orderMode != 1) ? entryTargetNation : nation;
+        short acceptNation = (orderMode != 1) ? nation : entryTargetNation;
+        TTaskForce* orderEntry = reinterpret_cast<TTaskForce*>(entryPayload);
+
+        // Resolve the port-zone context and filter interactions the map-order context
+        // deems ineligible (order-score comparison + diplomacy relation gate).
+        TZone* portZoneContext = TZone::FindFirstPortZoneContextByNation(nation);
+        TMapOrderInteractionSelection eligibilityResult = {0};
+        char eligible = SelectEligibleMapOrderInteractionForNationAndContext(
+            &eligibilityResult, reinterpret_cast<int>(portZoneContext), nation, entryValue);
+        if (eligible == 0) {
+          continue;
+        }
+
+        // Build the localized order-exchange event message: the transferred commodity
+        // label spliced into the base template (GetString group 0x273c) expanded
+        // through g_pSimMgr's bracket-expression helper.
+        CString commodityLabel;
+        FormatLocalizedCommodityCountLabelByIndex(&commodityLabel, entryTargetNation, entryValue);
+        CString exchangeMessage;
+        g_pSimMgr->GetString(0x273c, 0, &exchangeMessage);
+        scanBracketExpressions(g_pSimMgr, &exchangeMessage, static_cast<LPCSTR>(commodityLabel));
+
+        // `mode` runs two complementary passes: pass 1 handles offered orders,
+        // pass 2 handles accepted ones. Only the pass matching this entry's
+        // direction applies its exchange outcome.
+        bool isOfferPass = (mode == 1) && (orderMode == 1);
+        bool isAcceptPass = (mode == 2) && (orderMode == 0);
+        if (!isOfferPass && !isAcceptPass) {
+          continue;
+        }
+
+        // Draw a randomized transferred resource count within the order's weight
+        // budget from the offering nation's city resource counters.
+        short drawnCounts[0x0e] = {0};
+        int transferredCount =
+            city->AllocateRandomResourceCountsWithinWeightBudget(entryValue, drawnCounts);
+
+        // Apply the exchange to the offered order entry's children: bump the active
+        // child's tiebreak stat and each child's strength, both capped at 499
+        // (the same AdjustMapOrderNodeStatCapped499 pattern the conflict resolver uses).
+        if (orderEntry != nullptr) {
+          if (orderEntry->activeChildEntry != nullptr) {
+            orderEntry->activeChildEntry->tiebreak_strength = static_cast<short>(
+                orderEntry->activeChildEntry->tiebreak_strength + transferredCount);
+            if (orderEntry->activeChildEntry->tiebreak_strength > 499) {
+              orderEntry->activeChildEntry->tiebreak_strength = 499;
+            }
+          }
+          int childCount = CountMapOrderChildren(orderEntry->childOrderList);
+          if (childCount > 0) {
+            for (TMapOrderChildLinkNode* node = orderEntry->childOrderList; node != nullptr;
+                 node = node->next) {
+              node->object_ptr->tiebreak_strength = static_cast<short>(
+                  node->object_ptr->tiebreak_strength + (transferredCount * 3) / childCount);
+              if (node->object_ptr->tiebreak_strength > 499) {
+                node->object_ptr->tiebreak_strength = 499;
+              }
+            }
+          }
+        }
+
+        // Credit the accepting nation's per-source order-transfer counter with the
+        // transferred amount (offered nation is the source index).
+        if (offerNation < 7 && acceptNation < 7 && g_apNationStates[acceptNation] != nullptr) {
+          g_apNationStates[acceptNation]->AddShortDeltaToNationCounterAtOffset198(
+              offerNation, static_cast<short>(transferredCount));
+        }
+      }
+    }
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x0055a780

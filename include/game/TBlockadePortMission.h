@@ -23,7 +23,10 @@ public:
   TZone* portZoneContext3c; // +0x3c blockade-target port zone (deserialized by node id)
 
   TBlockadePortMission();
-  TBlockadePortMission(TZone* targetZone);
+  // 0x0053ab50 -- built from a map-order context node (a TZone): derives the
+  // target port zone from context->primaryNeighbors[0] and stores the node in
+  // portZoneContext3c.
+  TBlockadePortMission(TZone* context);
 
   virtual void WriteTo(TStream* stream) override;  // slot 0x05 0x53ac60
   virtual void ReadFrom(TStream* stream) override; // slot 0x06 0x53aca0

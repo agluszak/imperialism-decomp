@@ -8,6 +8,21 @@
 class TZone;
 class TMilitaryUnit;
 
+// Mac oracle: eMissionType -- the mission-kind selector passed to the mission factory
+// (CreateMissionObjectByKindAndNodeContext) and to TMission::Matches. The Windows
+// binary only exposes the integer values 0..5; enumerator names below are provisional,
+// taken from the mission each kind primarily constructs (several kinds fall back to a
+// TControlSeaZoneMission when their context/beachhead argument is absent).
+enum eMissionType {
+  kMissionTypeAttackProvince = 0, // TAttackProvinceMission (direct) / TControlSeaZoneMission
+  kMissionTypeAmassProvince = 1,  // TAttackProvinceMission with an amassing province
+  kMissionTypeInvadeProvince = 2, // TInvadeMission / TControlSeaZoneMission
+  kMissionTypeDefendProvince =
+      3,                        // TDefendProvinceMission / TEscortMission / TControlSeaZoneMission
+  kMissionTypeBlockadePort = 4, // TBlockadePortMission
+  kMissionTypeScatteredShips = 5, // TScatteredShipsMission
+};
+
 // Mac: TMission — base AI-mission class. Real polymorphic MFC object rooted at
 // CObject<-TObject (slot 0x00 RTTI, dtor resets vptr to the CObject sentinel
 // 0x66fec4). Single-inheritance base of TNavyMission / TArmyMission (and through
@@ -33,11 +48,6 @@ public:
   unsigned char padding12[2];
 
   TMission();
-
-  // Factory (0x5350d0). TEMP: still forwards to the stub until the concrete mission
-  // ctors use real inheritance (plan step 4).
-  static void* CreateByKindAndNodeContext(int sourceNation, int missionKind, int arg2,
-                                          TZone* portZoneContext, int arg4);
 
   // --- MFC CObject prefix slots 0x00-0x04 ---
   DECLARE_SERIAL(TMission)
@@ -94,3 +104,10 @@ public:
 };
 
 ASSERT_SIZE(TMission, 0x14);
+
+// Mission factory (0x5350d0, __cdecl): allocates and constructs the concrete mission
+// subtype selected by missionKind, stamps the common owner/marker fields, and runs the
+// mission's Call30 initializer. contextArg is the map-order context / target port zone
+// (a TZone) for the navy missions; nodeKey/keyArg carry province or amassing keys.
+TMission* CreateMissionObjectByKindAndNodeContext(int sourceNation, eMissionType missionKind,
+                                                  int nodeKey, int contextArg, int keyArg);

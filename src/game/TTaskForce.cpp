@@ -378,6 +378,12 @@ void TTaskForce::Free() {
 
   delete this;
 }
+// FUNCTION: IMPERIALISM 0x00552a70
+void TTaskForce::RemoveTaskForceOrderNodesByNationAndClearSelectionState(int nation,
+                                                                         TZone* contextZone) {
+  (void)nation;
+  (void)contextZone;
+}
 
 // FUNCTION: IMPERIALISM 0x00552f60
 void TTaskForce::ResetOrderTypeAndStrengthDword(int packedValue) {
@@ -520,6 +526,13 @@ void TTaskForce::PromoteMapOrderChainAndQueue(void* pContextAnchor) {
   if (g_pNavyOrderManager->MoveMapOrderEntryToQueueHeadIfValid(this)) {
     g_pActiveMapOrderContext->FinalizeQueuedMapOrderEntry(this);
   }
+}
+
+// TODO: port body @ 0x005539c0 (recomputes this task force's per-order selection flags
+// for the active nation's current orders).
+// FUNCTION: IMPERIALISM 0x005539c0
+void TTaskForce::RefreshTaskForceSelectionFlagsForCurrentNationOrders(int mode) {
+  (void)mode;
 }
 
 // FUNCTION: IMPERIALISM 0x00553a50

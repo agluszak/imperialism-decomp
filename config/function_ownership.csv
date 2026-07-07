@@ -1142,6 +1142,9 @@ address|target_cpp|ownership|note
 4b4210|src/game/TCity.cpp|manual|marker_sync
 4b4230|src/game/TCity.cpp|manual|marker_sync
 4b4260|src/game/TCity.cpp|manual|marker_sync
+4b4290|src/game/TCity.cpp|manual|marker_sync
+4b4310|src/game/TCity.cpp|manual|marker_sync
+4b4390|src/game/TCity.cpp|manual|marker_sync
 4b44d0|src/game/TCity.cpp|manual|marker_sync
 4b4540|src/game/TCity.cpp|manual|marker_sync
 4b4580|src/game/TCity.cpp|manual|marker_sync
@@ -1660,6 +1663,7 @@ address|target_cpp|ownership|note
 4ddb80|src/game/TGreatPower.cpp|manual|marker_sync
 4ddbb0|src/game/TGreatPower.cpp|manual|marker_sync
 4ddc30|src/game/TGreatPower.cpp|manual|marker_sync
+4ddcf0|src/game/TGreatPower.cpp|manual|marker_sync
 4ddd20|src/game/TGreatPower.cpp|manual|marker_sync
 4ddd50|src/game/TGreatPower.cpp|manual|marker_sync
 4ddd90|src/game/TGreatPower.cpp|manual|marker_sync
@@ -2641,6 +2645,7 @@ address|target_cpp|ownership|note
 535020|src/game/TMission.cpp|manual|marker_sync
 535050|src/game/TMission.cpp|manual|marker_sync
 535080|src/game/TMission.cpp|manual|marker_sync
+5350d0|src/game/TMission.cpp|manual|marker_sync
 535370|src/game/TDefendProvinceMission.cpp|manual|name_paired_no_marker
 535470|src/game/TNavyMission.cpp|manual|marker_sync
 5354c0|src/game/TNavyMission.cpp|manual|marker_sync
@@ -2723,6 +2728,7 @@ address|target_cpp|ownership|note
 53aa70|src/game/TBlockadePortMission.cpp|manual|marker_sync
 53aa90|src/game/TBlockadePortMission.cpp|manual|marker_sync
 53aae0|src/game/TBlockadePortMission.cpp|manual|marker_sync
+53ab50|src/game/TBlockadePortMission.cpp|manual|marker_sync
 53ac60|src/game/TBlockadePortMission.cpp|manual|marker_sync
 53aca0|src/game/TBlockadePortMission.cpp|manual|marker_sync
 53ace0|src/game/TBlockadePortMission.cpp|manual|marker_sync
@@ -2957,6 +2963,7 @@ address|target_cpp|ownership|note
 550970|src/game/TShip.cpp|manual|marker_sync
 550aa0|src/game/TTaskForce.cpp|manual|marker_sync
 550b60|src/game/TShip.cpp|manual|marker_sync
+550c20|src/game/TNavyMgr.cpp|manual|marker_sync
 550d80|src/game/trade_resource_lookup.cpp|manual|marker_sync
 550db0|src/game/trade_resource_lookup.cpp|manual|marker_sync
 550de0|src/game/trade_resource_lookup.cpp|manual|marker_sync
@@ -2992,11 +2999,13 @@ address|target_cpp|ownership|note
 5528c0|src/game/TTaskForce.cpp|manual|marker_sync
 5528e0|src/game/TTaskForce.cpp|manual|marker_sync
 552930|src/game/TTaskForce.cpp|manual|marker_sync
+552a70|src/game/TTaskForce.cpp|manual|marker_sync
 552b90|src/game/TTaskForce.cpp|manual|marker_sync
 552d10|src/game/TTaskForce.cpp|manual|marker_sync
 552f60|src/game/TTaskForce.cpp|manual|marker_sync
 552f80|src/game/TTaskForce.cpp|manual|marker_sync
 5533f0|src/game/TTaskForce.cpp|manual|marker_sync
+5539c0|src/game/TTaskForce.cpp|manual|marker_sync
 553a50|src/game/TTaskForce.cpp|manual|marker_sync
 553b10|src/game/TTaskForce.cpp|manual|marker_sync
 553b50|src/game/TTaskForce.cpp|manual|marker_sync
@@ -3026,6 +3035,9 @@ address|target_cpp|ownership|note
 557170|src/game/TNavyMgr.cpp|manual|marker_sync
 557210|src/game/TNavyMgr.cpp|manual|marker_sync
 557870|src/game/TTaskForce.cpp|manual|marker_sync
+557f10|src/game/TNavyMgr.cpp|manual|marker_sync
+558860|src/game/TZone.cpp|manual|marker_sync
+558960|src/game/TNavyMgr.cpp|manual|marker_sync
 55a780|src/game/TNavyMgr.cpp|manual|marker_sync
 55b670|src/game/TNewsMgr.cpp|manual|marker_sync
 55b6a0|src/game/TNewsMgr.cpp|manual|marker_sync
@@ -3075,9 +3087,13 @@ address|target_cpp|ownership|note
 560150|src/game/TZone.cpp|manual|marker_sync
 560470|src/game/TMapMgr.cpp|manual|marker_sync
 560580|src/game/TZone.cpp|manual|marker_sync
+5609e0|src/game/TZone.cpp|manual|marker_sync
 560f80|src/game/TZone.cpp|manual|marker_sync
 5610b0|src/game/TZone.cpp|manual|marker_sync
 561300|src/game/TZone.cpp|manual|marker_sync
+561400|src/game/TZone.cpp|manual|marker_sync
+561490|src/game/TZone.cpp|manual|marker_sync
+561510|src/game/TZone.cpp|manual|marker_sync
 5615e0|src/game/TPortZone.cpp|manual|marker_sync
 561660|src/game/TPortZone.cpp|manual|marker_sync
 561680|src/game/TPortZone.cpp|manual|marker_sync
@@ -3087,9 +3103,11 @@ address|target_cpp|ownership|note
 5617f0|src/game/TPortZone.cpp|manual|marker_sync
 561820|src/game/TPortZone.cpp|manual|marker_sync
 5618b0|src/game/TPortZone.cpp|manual|marker_sync
+5619e0|src/game/TZone.cpp|manual|marker_sync
 561a70|src/game/TPortZone.cpp|manual|marker_sync
 561b10|src/game/TPortZone.cpp|manual|marker_sync
 561b50|src/game/TPortZone.cpp|manual|marker_sync
+561b90|src/game/TZone.cpp|manual|marker_sync
 561bf0|src/game/TZone.cpp|manual|marker_sync
 561c80|src/game/TZone.cpp|manual|marker_sync
 561d40|src/game/TZone.cpp|manual|marker_sync
@@ -3104,7 +3122,7 @@ address|target_cpp|ownership|note
 5628f0|src/game/TOcean.cpp|manual|marker_sync
 562d90|src/game/TOcean.cpp|manual|marker_sync
 563220|src/game/TZone.cpp|manual|marker_sync
-563300|src/game/TOcean.cpp|manual|marker_sync
+563300|include/game/TOcean.h|manual|marker_sync
 563330|src/game/TOcean_RouteBuffer.cpp|manual|marker_sync
 5634a0|src/game/TOcean.cpp|manual|marker_sync
 563540|src/game/TZone.cpp|manual|marker_sync

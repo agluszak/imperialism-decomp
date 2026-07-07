@@ -11,6 +11,7 @@
 struct CRuntimeClass;
 class TStream;
 class TZone;
+class TTaskForce;
 struct TZonePrimaryNeighborTag;
 struct TZoneSecondaryNeighborTag;
 
@@ -28,6 +29,10 @@ public:
   // fails). Only this one instantiation (primary neighbors) is evidenced; do not
   // assume TZoneSecondaryNeighborStretch shares the address.
   void EnsureCapacityAtLeast(int count); // 0x561300
+  // 0x558860. Grow-on-access accessor: ensures `data`/`capacity` can hold `index`
+  // (same doubling/fallback realloc as EnsureCapacityAtLeast), bumps `count` to
+  // cover it, and returns a pointer to the element slot. Called on TZone::primaryNeighbors.
+  TZone** EnsureSlotAllocatedAndReturnPointer(unsigned int index);
 };
 
 // VTABLE: IMPERIALISM 0x0065c748
@@ -144,6 +149,32 @@ public:
   static TZone* GetFirstPortZone();
   TZone* GetNextPortZone();
   static TZone* FindPortZoneByTile(short nTileIndex);
+
+  // 0x00561490 / 0x00561400. Build a bitmask of nations that currently have an active
+  // (non-eliminated) type-3 or type-4 map order whose ship sits in this zone; the
+  // "IncludingNation" variant also sets `nation`'s own bit.
+  unsigned int BuildNationBitmaskForActiveType3Or4Orders();
+  unsigned int BuildNationBitmaskForActiveType3Or4OrdersIncludingNation(unsigned char nation);
+  // 0x00561510. True if any nation in that active-order mask (excluding `nation`
+  // itself) is diplomatically related to `nation` (per g_pDiplomacyTurnStateManager).
+  unsigned int HasDiplomaticallyRelatedNationInActiveType3Or4OrderMask(int nation);
+
+  // 0x00561b90. This port zone's owning nation code -- terrainStateTable[field48]'s
+  // ownerNationTag04. (Reads the TPortZone-derived field48; only valid on a TPortZone.)
+  short GetPortZoneOwnerNationCodeFromMissionField48();
+
+  // 0x005619e0. Bidirectionally links this zone with its owning nation's map-order
+  // context: resolves the owner nation (terrainStateTable at the zone's active tile),
+  // finds that nation's context in g_pActiveMapOrderContext->contextArray, and adds
+  // each to the other's primaryNeighbors (GetOrAppendUnique).
+  void ResolvePortZoneOwnerContextAndDispatch();
+
+  // 0x005609e0. If `nation` has this map-order context zone flagged (field10 bit) and a
+  // matching primary-order ship, builds and returns a new TTaskForce order entry for it
+  // (via the TTaskForce(contextAnchor, requiredCount) ctor); otherwise returns null.
+  // `nation` == -1 resolves the active nation. Called by
+  // TOcean::EnsureSelectedTaskForceForOrderOwnerAndRefresh.
+  TTaskForce* CreateTaskForceFromNavyOrdersForNationIfEligible(short nation);
 
   TZone**& PrimaryZoneHeapData() {
     return primaryNeighbors.Data();

@@ -267,14 +267,6 @@ undefined4 WrapperFor_AFX_CLASSINIT_At0053ab00(void)
   return 0;
 }
 
-// ghidra_name TMission::ConstructBlockadePortMissionForContext
-// ghidra_proto undefined ConstructBlockadePortMissionForContext()
-// FUNCTION: IMPERIALISM 0x0053ab50
-undefined4 ConstructBlockadePortMissionForContext(void)
-{
-  return 0;
-}
-
 // ghidra_name ComputeMissionNavyOrderDistributionScoreForPortOwnerOrAllies
 // ghidra_proto undefined ComputeMissionNavyOrderDistributionScoreForPortOwnerOrAllies()
 // FUNCTION: IMPERIALISM 0x0053b350
@@ -1155,14 +1147,6 @@ undefined4 PruneOrPromoteOrderNodeWhenChildCostDepleted(void)
   return 0;
 }
 
-// ghidra_name FormatLocalizedCommodityCountLabelByIndex
-// ghidra_proto undefined FormatLocalizedCommodityCountLabelByIndex()
-// FUNCTION: IMPERIALISM 0x00550c20
-undefined4 FormatLocalizedCommodityCountLabelByIndex(void)
-{
-  return 0;
-}
-
 // ghidra_name GetResourceDescriptorWord20ByType
 // ghidra_proto undefined GetResourceDescriptorWord20ByType()
 // FUNCTION: IMPERIALISM 0x00550ea0
@@ -1235,14 +1219,6 @@ undefined4 RecomputeNavyOrderSelectionPriorityChain_00552349(void)
   return 0;
 }
 
-// ghidra_name RemoveTaskForceOrderNodesByNationAndClearSelectionState
-// ghidra_proto undefined RemoveTaskForceOrderNodesByNationAndClearSelectionState()
-// FUNCTION: IMPERIALISM 0x00552a70
-undefined4 RemoveTaskForceOrderNodesByNationAndClearSelectionState(void)
-{
-  return 0;
-}
-
 // ghidra_name SetMapOrderType3Or4AndQueue
 // ghidra_proto void __thiscall SetMapOrderType3Or4AndQueue(char fUseType4)
 // FUNCTION: IMPERIALISM 0x005530f0
@@ -1263,14 +1239,6 @@ undefined4 SetMapOrderType6AndQueue(void)
 // ghidra_proto void __thiscall SetMapOrderType5AndQueue(int nOrderTarget)
 // FUNCTION: IMPERIALISM 0x00553840
 undefined4 SetMapOrderType5AndQueue(void)
-{
-  return 0;
-}
-
-// ghidra_name RefreshTaskForceSelectionFlagsForCurrentNationOrders
-// ghidra_proto undefined RefreshTaskForceSelectionFlagsForCurrentNationOrders()
-// FUNCTION: IMPERIALISM 0x005539c0
-undefined4 RefreshTaskForceSelectionFlagsForCurrentNationOrders(void)
 {
   return 0;
 }
