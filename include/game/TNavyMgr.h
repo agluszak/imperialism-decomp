@@ -77,6 +77,19 @@ public:
   // the "g_pLocalizationTable" Ghidra shows in the body is g_pSimMgr itself (a modeled
   // TSimMgr, vtable 0x662a58; the string calls are TSimMgr::GetStringPrelude/GetString),
   // so no class recovery is required.
+  // 0x557f10 (1901 bytes). Scans orderListHead04 for the first queued order entry
+  // whose interaction is eligible to fire this turn for `nation`: gates the nation's
+  // own type-7 entry children by a priority-vs-descriptor roll, then for each
+  // non-eliminated queued entry checks attachment/context match + diplomacy relation
+  // (g_pDiplomacyTurnStateManager) and an order-score comparison (the same
+  // ComputeMapOrderEntryHeuristicScore / ComputeTaskForceOrderAggregateScore /
+  // ResolveMapOrderPairConflictStep helpers the conflict resolver uses). On the first
+  // eligible entry it writes {nation, entry, packed direction flags} into
+  // outResult[0/4/2] and returns 1; otherwise 0. `portZoneContext` is the resolved
+  // TZone* (as int), `offerAmount` the transfer size.
+  char SelectEligibleMapOrderInteractionForNationAndContext(short* outResult, int portZoneContext,
+                                                            short nation, short offerAmount);
+
   void ProcessNationMapOrderInteractionsAndApplyOutcomes(short mode); // 0x558960
 
   TNavyMgr();

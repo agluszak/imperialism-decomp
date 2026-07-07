@@ -219,14 +219,6 @@ undefined4 UpdateType7NavyOrderChildSelectionByChanceThreshold(void)
   return 0;
 }
 
-// ghidra_name SelectEligibleMapOrderInteractionForNationAndContext
-// ghidra_proto undefined SelectEligibleMapOrderInteractionForNationAndContext()
-// FUNCTION: IMPERIALISM 0x00557f10
-undefined4 SelectEligibleMapOrderInteractionForNationAndContext(void)
-{
-  return 0;
-}
-
 // ghidra_name EnsureDwordPointerArraySlotAndReturnPointer
 // ghidra_proto undefined EnsureDwordPointerArraySlotAndReturnPointer()
 // FUNCTION: IMPERIALISM 0x00558860
