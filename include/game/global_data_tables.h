@@ -414,6 +414,14 @@ extern char g_szUiPlaceholderStaticText_00694354[];
 extern char g_szUiPlaceholderTreasury_006943B0[];
 extern char g_szUiPlaceholderSeason_006943BC[];
 extern char g_szUiPlaceholderSampleText_00694A98[];
+extern char g_szUiPlaceholderZero_00694378[];
+extern char g_szUiOrdersLabel_006948A4[];
+extern char g_szUiPlaceholder185_00694ABC[];
+extern char g_szUiQuantityToOfferLabel_00694AC0[];
+extern char g_szUiAvailableLabel_00694AD8[];
+extern char g_szUiPriceLabel_00694AE4[];
+extern char g_szUiCommodityLabel_00694AEC[];
+extern char g_szUiBoardOfTradeLabel_00694AF8[];
 
 // Source-file path string ("D:\\Ambit\\Cross\\UGameWindow.cpp") passed with a line number to
 // the UI invalidation-flag assert helper from the TDlgWindow/UGameWindow assert hooks.

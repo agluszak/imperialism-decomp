@@ -151,6 +151,23 @@ char g_szUiPlaceholderTreasury_006943B0[] = "$55,555";
 char g_szUiPlaceholderSeason_006943BC[] = "Winter, 1888";
 // GLOBAL: IMPERIALISM 0x00694a98
 char g_szUiPlaceholderSampleText_00694A98[] = "Sample Text 1\n2\n3\n4\n5\n6\n7\n8";
+// GLOBAL: IMPERIALISM 0x00694378
+char g_szUiPlaceholderZero_00694378[] = "0";
+// Trade-board screen labels (InitializeTradeScreenBitmapControls, events 0x7d9/0x7da).
+// GLOBAL: IMPERIALISM 0x006948a4
+char g_szUiOrdersLabel_006948A4[] = "Orders";
+// GLOBAL: IMPERIALISM 0x00694abc
+char g_szUiPlaceholder185_00694ABC[] = "185";
+// GLOBAL: IMPERIALISM 0x00694ac0
+char g_szUiQuantityToOfferLabel_00694AC0[] = "Quantity to Offer";
+// GLOBAL: IMPERIALISM 0x00694ad8
+char g_szUiAvailableLabel_00694AD8[] = "Available";
+// GLOBAL: IMPERIALISM 0x00694ae4
+char g_szUiPriceLabel_00694AE4[] = "Price";
+// GLOBAL: IMPERIALISM 0x00694aec
+char g_szUiCommodityLabel_00694AEC[] = "Commodity";
+// GLOBAL: IMPERIALISM 0x00694af8
+char g_szUiBoardOfTradeLabel_00694AF8[] = "Board of Trade";
 // GLOBAL: IMPERIALISM 0x006943cc
 char g_szMcAppUiHeaderPath_006943CC[] = "D:\\Ambit\\McAppUI.h";
 // GLOBAL: IMPERIALISM 0x00696bc0

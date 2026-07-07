@@ -515,22 +515,6 @@ undefined4 InitializeUiResourcePoolRuntimeClassFields(void)
   return 0;
 }
 
-// ghidra_name UpdateUiResourceContextMetricWord27
-// ghidra_proto undefined UpdateUiResourceContextMetricWord27()
-// FUNCTION: IMPERIALISM 0x0041b570
-undefined4 UpdateUiResourceContextMetricWord27(void)
-{
-  return 0;
-}
-
-// ghidra_name DispatchUiResourceContextVslot1E4WithCoords
-// ghidra_proto undefined DispatchUiResourceContextVslot1E4WithCoords()
-// FUNCTION: IMPERIALISM 0x0041b5a0
-undefined4 DispatchUiResourceContextVslot1E4WithCoords(void)
-{
-  return 0;
-}
-
 // ghidra_name PushUiLinkedListNodeWithPayload
 // ghidra_proto undefined PushUiLinkedListNodeWithPayload()
 // FUNCTION: IMPERIALISM 0x00426ec0
@@ -1047,30 +1031,6 @@ undefined4 WrapperFor_thunk_ConstructPictureResourceEntryBase_At0045d480(void)
 // ghidra_proto undefined WrapperFor_ConstructTPageViewBaseState_At004600c0()
 // FUNCTION: IMPERIALISM 0x004600c0
 undefined4 WrapperFor_ConstructTPageViewBaseState_At004600c0(void)
-{
-  return 0;
-}
-
-// ghidra_name BuildTradeBoardDialogUiLayoutVariantA
-// ghidra_proto undefined BuildTradeBoardDialogUiLayoutVariantA()
-// FUNCTION: IMPERIALISM 0x0046503c
-undefined4 BuildTradeBoardDialogUiLayoutVariantA(void)
-{
-  return 0;
-}
-
-// ghidra_name InitializeUiResourceEntries
-// ghidra_proto int * __cdecl InitializeUiResourceEntries(void)
-// FUNCTION: IMPERIALISM 0x0046620f
-undefined4 InitializeUiResourceEntries(void)
-{
-  return 0;
-}
-
-// ghidra_name BuildTradeBoardDialogUiLayoutVariantB
-// ghidra_proto undefined BuildTradeBoardDialogUiLayoutVariantB()
-// FUNCTION: IMPERIALISM 0x0046baa7
-undefined4 BuildTradeBoardDialogUiLayoutVariantB(void)
 {
   return 0;
 }

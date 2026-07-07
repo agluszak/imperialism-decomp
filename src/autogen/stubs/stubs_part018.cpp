@@ -635,14 +635,6 @@ undefined4 ConstructTTradePolicyClusterBaseState(void)
   return 0;
 }
 
-// ghidra_name TTradeOrderPicture::ConstructTTradeOrderPictureBaseState
-// ghidra_proto undefined ConstructTTradeOrderPictureBaseState()
-// FUNCTION: IMPERIALISM 0x00584480
-undefined4 ConstructTTradeOrderPictureBaseState(void)
-{
-  return 0;
-}
-
 // ghidra_name TCloseButton::ConstructTCloseButtonBaseState
 // ghidra_proto undefined ConstructTCloseButtonBaseState()
 // FUNCTION: IMPERIALISM 0x00584af0
@@ -659,26 +651,10 @@ undefined4 ConstructTCloseParentButtonBaseState(void)
   return 0;
 }
 
-// ghidra_name TToolBarCluster::ConstructTToolBarClusterBaseState
-// ghidra_proto undefined ConstructTToolBarClusterBaseState()
-// FUNCTION: IMPERIALISM 0x00584e20
-undefined4 ConstructTToolBarClusterBaseState(void)
-{
-  return 0;
-}
-
 // ghidra_name TToolBarCluster::HandleCrossUSmallViewsCommandTagDispatch
 // ghidra_proto undefined HandleCrossUSmallViewsCommandTagDispatch()
 // FUNCTION: IMPERIALISM 0x00584f27
 undefined4 HandleCrossUSmallViewsCommandTagDispatch(void)
-{
-  return 0;
-}
-
-// ghidra_name TTraderAmtBar::ConstructBaseState
-// ghidra_proto undefined ConstructBaseState()
-// FUNCTION: IMPERIALISM 0x0058aef0
-undefined4 ConstructBaseState(void)
 {
   return 0;
 }

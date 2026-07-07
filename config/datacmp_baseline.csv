@@ -37,7 +37,10 @@ g_pRegistryProfileAppName_0063E050|0x63e050|WARN|3
 g_pRegistrySettingsSectionAlt_0063E044|0x63e044|WARN|3
 g_pRegistrySettingsSection_0063E040|0x63e040|WARN|3
 g_szDecimalFormat|0x69430c|WARN|4
+g_szUiAvailableLabel_00694AD8|0x694ad8|WARN|4
+g_szUiCommodityLabel_00694AEC|0x694aec|WARN|4
 g_szUiFontLiteralPalatino|0x696b6c|WARN|4
+g_szUiPlaceholder185_00694ABC|0x694abc|WARN|4
 s_Data_scores_dat_0069b7fc|0x69b7fc|WARN|1
 s_GameName_00698010|0x698010|WARN|4
 s_OutOfMemoryText_006941F0|0x6941f0|WARN|4

@@ -7,6 +7,7 @@
 
 IMPLEMENT_DYNCREATE(TTradeScreenPicture, TPicture)
 
+// FUNCTION: IMPERIALISM 0x005ba720
 TTradeScreenPicture::TTradeScreenPicture() {}
 
 // SYNTHETIC: IMPERIALISM 0x005ba750

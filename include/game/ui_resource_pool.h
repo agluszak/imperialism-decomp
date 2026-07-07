@@ -64,6 +64,15 @@ void __cdecl ApplyUiResourceColorTripletFromContext(unsigned char nFlag0C,
                                                     unsigned char nTripletFlag, int colorA,
                                                     int colorB);
 
+// Set the max-character count (TEditText::field_9c) on the current context edit-text
+// widget after its AssertValid hook.
+void __cdecl SetUiResourceContextMaxCharCount(short maxChars);
+
+// Bind the value range (TNumberText::field_a4/field_a8, min/max hypothesis) and the
+// current value (virtual slot 0x79 SetControlValue, no immediate refresh) on the
+// current context number-text widget.
+void __cdecl SetUiResourceContextNumberValueAndRange(int value, int minValue, int maxValue);
+
 // Clear the g_pUiResourceContext cursor.
 void __cdecl ClearUiResourceContext();
 

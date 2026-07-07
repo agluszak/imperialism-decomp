@@ -2,6 +2,7 @@
 
 #include "game/TCluster.h"
 #include "game/TControl.h"
+#include "game/TNumberText.h"
 #include "game/TPicture.h"
 #include "game/TStaticText.h"
 #include "game/global_data_tables.h"
@@ -104,6 +105,22 @@ void __cdecl BindUiResourceTextAndStyle(int nGroupId, int nVariant, char* szText
   context->SetTextThemeCodeAndMaybeRefresh(nThemeCode, 0);
 }
 
+// FUNCTION: IMPERIALISM 0x0041b570
+void __cdecl SetUiResourceContextMaxCharCount(short maxChars) {
+  TEditText* context = static_cast<TEditText*>(g_pUiResourceContext);
+  context->AssertValid();
+  context->field_9c = maxChars;
+}
+
+// FUNCTION: IMPERIALISM 0x0041b5a0
+void __cdecl SetUiResourceContextNumberValueAndRange(int value, int minValue, int maxValue) {
+  TNumberText* context = static_cast<TNumberText*>(g_pUiResourceContext);
+  context->AssertValid();
+  context->field_a8 = maxValue;
+  context->field_a4 = minValue;
+  context->SetControlValue(value, 0);
+}
+
 // FUNCTION: IMPERIALISM 0x0041b5f0
 void __cdecl ClearUiResourceContext() {
   g_pUiResourceContext = 0;
@@ -117,7 +134,13 @@ void __cdecl PopUiResourcePoolNode(unsigned int nameTag) {
   g_UiWidgetBuildStack006a13e0.RemoveTail();
 }
 
-// 0x479a80 / 0x479b00 ("Pop/PushUiResourcePoolNode") are this TU's out-of-line twin copies
+// 0x479a80 / 0x479b00 ("Pop/PushUiResourcePoolNode") are the out-of-line template COMDATs
 // of CList<TView*,TView*>::RemoveTail / ::AddTail operating on g_UiWidgetBuildStack006a13e0
-// - see global_data_tables.h. They are template COMDATs, not game functions; their
-// addresses stay with autogen stubs (template twin-copy reccmp gap).
+// - see global_data_tables.h. The builders call them directly
+// (g_UiWidgetBuildStack006a13e0.RemoveTail()/.AddTail(node)); claimed here as templates.
+
+// TEMPLATE: IMPERIALISM 0x00479a80
+// ?RemoveTail@?$CList@PAVTView@@PAV1@@@QAEPAVTView@@XZ
+
+// TEMPLATE: IMPERIALISM 0x00479b00
+// ?AddTail@?$CList@PAVTView@@PAV1@@@QAEPAU__POSITION@@PAVTView@@@Z

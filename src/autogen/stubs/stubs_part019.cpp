@@ -939,14 +939,6 @@ undefined4 ConstructTPictureTextBaseState(void)
   return 0;
 }
 
-// ghidra_name TDropShadowText::ConstructSelectableTextOptionEntryBase
-// ghidra_proto undefined ConstructSelectableTextOptionEntryBase()
-// FUNCTION: IMPERIALISM 0x005b5590
-undefined4 ConstructSelectableTextOptionEntryBase(void)
-{
-  return 0;
-}
-
 // ghidra_name TInfoBarPictureText::DestructTInfoBarPictureTextAndMaybeFree
 // ghidra_proto undefined DestructTInfoBarPictureTextAndMaybeFree()
 // FUNCTION: IMPERIALISM 0x005b5c90
@@ -1023,14 +1015,6 @@ undefined4 DestructTNextTradeCommandAndMaybeFree_Impl(void)
 // ghidra_proto undefined WrapperFor_ftol_At005ba600()
 // FUNCTION: IMPERIALISM 0x005ba600
 undefined4 WrapperFor_ftol_At005ba600(void)
-{
-  return 0;
-}
-
-// ghidra_name TradeScreenPicture::ConstructTradeScreenPictureBaseState
-// ghidra_proto undefined ConstructTradeScreenPictureBaseState()
-// FUNCTION: IMPERIALISM 0x005ba720
-undefined4 ConstructTradeScreenPictureBaseState(void)
 {
   return 0;
 }

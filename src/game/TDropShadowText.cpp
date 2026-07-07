@@ -7,6 +7,7 @@
 
 IMPLEMENT_DYNCREATE(TDropShadowText, TPictureText)
 
+// FUNCTION: IMPERIALISM 0x005b5590
 TDropShadowText::TDropShadowText() {}
 
 // SYNTHETIC: IMPERIALISM 0x005b5600

@@ -1027,14 +1027,6 @@ undefined4 ConstructTPictureRadioButtonBaseState(void)
   return 0;
 }
 
-// ghidra_name TUpDownPictureButton::ConstructPictureScreenResourceEntry
-// ghidra_proto undefined ConstructPictureScreenResourceEntry()
-// FUNCTION: IMPERIALISM 0x005715a0
-undefined4 ConstructPictureScreenResourceEntry(void)
-{
-  return 0;
-}
-
 // ghidra_name TOnOffRadioButton::ConstructTOnOffRadioButtonBaseState
 // ghidra_proto undefined ConstructTOnOffRadioButtonBaseState()
 // FUNCTION: IMPERIALISM 0x005719f0
@@ -1135,14 +1127,6 @@ undefined4 ConstructPictureResourceEntry_Vtbl00660b48(void)
 // ghidra_proto undefined ConstructTMegaPictureBaseState()
 // FUNCTION: IMPERIALISM 0x00573190
 undefined4 ConstructTMegaPictureBaseState(void)
-{
-  return 0;
-}
-
-// ghidra_name TSliderPicture::ConstructTSliderPictureBaseState
-// ghidra_proto undefined ConstructTSliderPictureBaseState()
-// FUNCTION: IMPERIALISM 0x00573a20
-undefined4 ConstructTSliderPictureBaseState(void)
 {
   return 0;
 }

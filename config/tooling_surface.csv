@@ -85,6 +85,7 @@ module|tools.workflow.vendor_directx_headers|just:vendor-directx-headers|Mirror 
 module|tools.workflow.func_status|just:func-status|One-stop function status from config CSVs + reccmp baseline
 module|tools.workflow.port_candidates|just:port-candidates|Rank porting candidates by size and match gap
 module|tools.binary.decode_builder|just:decode-builder|Widget-block pseudo-source decoder for screen builders (bd 1uj.51)
+module|tools.binary.gen_builder_cpp|just:gen-builder|Compact-vocabulary C++ draft generator for screen builders (bd 1uj.51)
 module|tools.binary.alloc_audit|just:alloc-audit|Audit new-vs-::new spellings against original allocator calls
 module|tools.reccmp.triage|just:triage|Asm-diff mismatch classifier (bucket + suggested action)
 module|tools.reccmp.stackcmp_triage|just:stackcmp-triage|Batch stackcmp over near-match functions

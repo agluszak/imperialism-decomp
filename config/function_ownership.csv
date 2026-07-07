@@ -57,6 +57,8 @@ address|target_cpp|ownership|note
 41b420|src/game/ui_resource_pool.cpp|manual|marker_sync
 41b450|src/game/ui_resource_pool.cpp|manual|marker_sync
 41b490|src/game/ui_resource_pool.cpp|manual|marker_sync
+41b570|src/game/ui_resource_pool.cpp|manual|marker_sync
+41b5a0|src/game/ui_resource_pool.cpp|manual|marker_sync
 41b5f0|src/game/ui_resource_pool.cpp|manual|marker_sync
 41b610|src/game/ui_resource_pool.cpp|manual|marker_sync
 41b6d0|src/game/turn_event_dialog_factory.cpp|manual|marker_sync
@@ -3277,6 +3279,7 @@ address|target_cpp|ownership|note
 5714e0|src/game/TUberCluster.cpp|manual|marker_sync
 571500|src/game/TUpDownPictureButton.cpp|manual|marker_sync
 571580|src/game/TUpDownPictureButton.cpp|manual|marker_sync
+5715a0|src/game/TUpDownPictureButton.cpp|manual|marker_sync
 5715d0|src/game/TUpDownPictureButton.cpp|manual|marker_sync
 571620|src/game/TUpDownPictureButton.cpp|manual|marker_sync
 571690|src/game/TUpDownPictureButton.cpp|manual|marker_sync
@@ -3355,6 +3358,7 @@ address|target_cpp|ownership|note
 573940|src/game/TOffLimitsPicture.cpp|manual|marker_sync
 573970|src/game/TSliderPicture.cpp|manual|marker_sync
 573a00|src/game/TSliderPicture.cpp|manual|marker_sync
+573a20|src/game/TSliderPicture.cpp|manual|marker_sync
 573a50|src/game/TSliderPicture.cpp|manual|marker_sync
 573aa0|src/game/TSliderPicture.cpp|manual|marker_sync
 573c20|src/game/TScrollView.cpp|manual|marker_sync
@@ -3527,6 +3531,7 @@ address|target_cpp|ownership|note
 584320|src/game/TTradePolicyCluster.cpp|manual|marker_sync
 5843e0|src/game/TTradeOrderPicture.cpp|manual|marker_sync
 584460|src/game/TTradeOrderPicture.cpp|manual|marker_sync
+584480|src/game/TTradeOrderPicture.cpp|manual|marker_sync
 5844b0|src/game/TTradeOrderPicture.cpp|manual|marker_sync
 584500|src/game/TTradeOrderPicture.cpp|manual|marker_sync
 584520|src/game/TTradeOrderPicture.cpp|manual|marker_sync
@@ -3551,6 +3556,7 @@ address|target_cpp|ownership|note
 584d30|src/game/TCloseParentButton.cpp|manual|marker_sync
 584d80|src/game/TToolBarCluster.cpp|manual|marker_sync
 584e00|src/game/TToolBarCluster.cpp|manual|marker_sync
+584e20|src/game/TToolBarCluster.cpp|manual|marker_sync
 584e50|src/game/TToolBarCluster.cpp|manual|marker_sync
 584ea0|src/game/TToolBarCluster.cpp|manual|marker_sync
 5851c0|src/game/TToolBarCluster.cpp|manual|marker_sync
@@ -3668,6 +3674,7 @@ address|target_cpp|ownership|note
 58ac80|src/game/TShipAmtBar.cpp|manual|marker_sync
 58ae30|src/game/TTraderAmtBar.cpp|manual|marker_sync
 58aed0|src/game/TTraderAmtBar.cpp|manual|marker_sync
+58aef0|src/game/TTraderAmtBar.cpp|manual|marker_sync
 58af30|src/game/TTraderAmtBar.cpp|manual|marker_sync
 58af80|src/game/TTraderAmtBar.cpp|manual|marker_sync
 58b040|src/game/TTraderAmtBar.cpp|manual|marker_sync
@@ -4104,6 +4111,7 @@ address|target_cpp|ownership|note
 5b5450|src/game/TMyStaticText.cpp|manual|marker_sync
 5b54a0|src/game/TDropShadowText.cpp|manual|marker_sync
 5b5570|src/game/TDropShadowText.cpp|manual|marker_sync
+5b5590|src/game/TDropShadowText.cpp|manual|marker_sync
 5b5600|src/game/TDropShadowText.cpp|manual|marker_sync
 5b5650|src/game/TDropShadowText.cpp|manual|marker_sync
 5b5820|src/game/TDropShadowNumberText.cpp|manual|marker_sync
@@ -4202,6 +4210,7 @@ address|target_cpp|ownership|note
 5ba4b0|src/game/TNextTradeCommand.cpp|manual|marker_sync
 5ba680|src/game/TTradeScreenPicture.cpp|manual|marker_sync
 5ba700|src/game/TTradeScreenPicture.cpp|manual|marker_sync
+5ba720|src/game/TTradeScreenPicture.cpp|manual|marker_sync
 5ba750|src/game/TTradeScreenPicture.cpp|manual|marker_sync
 5ba7a0|src/game/TTradeScreenPicture.cpp|manual|marker_sync
 5bab00|src/game/TDealBookPicture.cpp|manual|marker_sync

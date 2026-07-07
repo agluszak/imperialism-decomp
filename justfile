@@ -511,6 +511,13 @@ ghidra-listing *args: _require-ghidra-install
 decode-builder *args:
   uv run python -m tools.binary.decode_builder {{args}}
 
+# Generate compact-vocabulary C++ draft for a screen-builder region (bd 1uj.51):
+# widget blocks emitted as ready-to-review statements, unrecognized instructions as
+# `// RAW` comments for hand-fixing. `just gen-builder 0xSTART 0xEND`.
+[group('ghidra-inspect')]
+gen-builder *args:
+  uv run python -m tools.binary.gen_builder_cpp {{args}}
+
 # Audit every manual `new TViewFamily(...)` spelling against the original's allocator
 # (TView::operator new 0x41b1c0 vs ::operator new 0x606f73). Exit 1 on mismatch.
 [group('ghidra-inspect')]
