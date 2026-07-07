@@ -699,14 +699,6 @@ undefined4 RouteAndProcessDiplomacyTurnStateEventQueue(void)
   return 0;
 }
 
-// ghidra_name TouchSessionActiveNationId
-// ghidra_proto undefined TouchSessionActiveNationId()
-// FUNCTION: IMPERIALISM 0x00549240
-undefined4 TouchSessionActiveNationId(void)
-{
-  return 0;
-}
-
 // ghidra_name AppendNodeToTurnEventLinkedListAt6C
 // ghidra_proto undefined AppendNodeToTurnEventLinkedListAt6C()
 // FUNCTION: IMPERIALISM 0x00549280

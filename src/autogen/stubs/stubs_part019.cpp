@@ -747,14 +747,6 @@ undefined4 DestructTTechMgrAndMaybeFree_Impl(void)
   return 0;
 }
 
-// ghidra_name GenerateRandomCapabilityPrioritySlots
-// ghidra_proto void __fastcall GenerateRandomCapabilityPrioritySlots(void * pCapabilityPriorityState)
-// FUNCTION: IMPERIALISM 0x005af330
-undefined4 GenerateRandomCapabilityPrioritySlots(void)
-{
-  return 0;
-}
-
 // ghidra_name UpdateCityOrderCapabilityUnlockProgress
 // ghidra_proto undefined UpdateCityOrderCapabilityUnlockProgress()
 // FUNCTION: IMPERIALISM 0x005af980

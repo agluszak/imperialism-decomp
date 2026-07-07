@@ -25,7 +25,7 @@ public:
 
   // --- TObject overrides (occupy the inherited base slots) ---
   DECLARE_DYNCREATE(TSimMgr)
-  ~TSimMgr() override;                              // slot 0x04  scalar deleting dtor 0x0057bb50
+  ~TSimMgr() override;                     // slot 0x04  scalar deleting dtor 0x0057bb50
   void WriteTo(TStream* stream) override;  // slot 0x14  0x0057c230
   void ReadFrom(TStream* stream) override; // slot 0x18  0x0057bea0  (scenario setup / rebuild)
   void Free() override;                    // slot 0x1c  0x0057bd20  (manager teardown)
@@ -34,7 +34,7 @@ public:
   virtual void RebuildNationStateSlotsNoOp();                                  // 0x28  0x0057c390
   virtual void RebuildPrimaryNationStateForSlot(int slotIndex, char activate); // 0x2c 0x0057cda0
   virtual void RebuildSecondaryNationStateForSlot(int slotIndex);              // 0x30  0x0057d520
-  virtual void ApplyScenarioVariantSeedForNationSetup();                       // 0x34  0x0057d830
+  virtual void ApplyScenarioVariantSeedForNationSetup(CString* destString);    // 0x34  0x0057d830
   // 0x38 — copies the scenario nation-setup buffer into this manager's flow state.
   // (Ghidra mislabelled this "RegisterHotKeyDialogState"; the real call site in TViewMgr
   // passes the assembled setup buffer.)
@@ -81,6 +81,7 @@ public:
   // Store a state code into +0x40 and set the +0x5c short flag to 1 only when the
   // code is exactly zero (codes 1..4 and out-of-range codes clear it). 0x57d870.
   void SetStateCodeAndUpdateZeroOrOutOfRangeFlag(int stateCode);
+  void QueueInterNationEventType11(int param1, int param2, char param3);
   void DecrementField30Value();
   void InitializeTurnFlowStateDefaults();
   void InitializeOrLoadEntryArray14AndClampLimits(bool writeBack);

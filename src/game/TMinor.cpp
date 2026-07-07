@@ -69,6 +69,11 @@ TMinor::TMinor() {
 // TMinor::`scalar deleting destructor'
 TMinor::~TMinor() {}
 
+// FUNCTION: IMPERIALISM 0x004e38e0
+void TMinor::InitializeTMinorDefaults(int slotIndex) {
+  reinterpret_cast<void(__fastcall*)(void*, int, int)>(0x004e38e0)(this, 0, slotIndex);
+}
+
 // FUNCTION: IMPERIALISM 0x004e41c0
 void TMinor::ReadFrom(TStream* stream) {
   TCountry::ReadFrom(stream);

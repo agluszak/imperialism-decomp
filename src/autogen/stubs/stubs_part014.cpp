@@ -27,22 +27,6 @@ undefined4 WrapperFor_ftol_At004e6a40(void)
   return 0;
 }
 
-// ghidra_name InitializeNationMinisterSubsystemsByPolicyIds
-// ghidra_proto undefined InitializeNationMinisterSubsystemsByPolicyIds()
-// FUNCTION: IMPERIALISM 0x004e6c20
-undefined4 InitializeNationMinisterSubsystemsByPolicyIds(void)
-{
-  return 0;
-}
-
-// ghidra_name QueueMapActionMissionsForPortZoneCandidates
-// ghidra_proto undefined QueueMapActionMissionsForPortZoneCandidates()
-// FUNCTION: IMPERIALISM 0x004e83d0
-undefined4 QueueMapActionMissionsForPortZoneCandidates(void)
-{
-  return 0;
-}
-
 // ghidra_name TAutoGreatPower::DispatchToFirstMatchingListNodeAndRemove
 // ghidra_proto undefined DispatchToFirstMatchingListNodeAndRemove()
 // FUNCTION: IMPERIALISM 0x004e8680
@@ -279,14 +263,6 @@ undefined4 InitializeObArrayVtable654D38ModeField(void)
 // ghidra_proto undefined WrapperFor_FreeHeapBufferIfNotNull_At004ee730()
 // FUNCTION: IMPERIALISM 0x004ee730
 undefined4 WrapperFor_FreeHeapBufferIfNotNull_At004ee730(void)
-{
-  return 0;
-}
-
-// ghidra_name RebuildCivilianOrderCompatibilityMatrices
-// ghidra_proto void __fastcall RebuildCivilianOrderCompatibilityMatrices(void * pNationSlotRuntime)
-// FUNCTION: IMPERIALISM 0x004ee8c0
-undefined4 RebuildCivilianOrderCompatibilityMatrices(void)
 {
   return 0;
 }

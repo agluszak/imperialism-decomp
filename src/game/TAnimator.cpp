@@ -13,6 +13,11 @@ TAnimator::TAnimator() {}
 // TAnimator::`scalar deleting destructor'
 TAnimator::~TAnimator() {}
 
+// FUNCTION: IMPERIALISM 0x004a0b20
+void TAnimator::InitializeUiTransientObjectRegistry(int maxCount) {
+  reinterpret_cast<void(__fastcall*)(void*, int, int)>(0x004a0b20)(this, 0, maxCount);
+}
+
 // FUNCTION: IMPERIALISM 0x004a0c00
 undefined TAnimator::OrphanCallChain_C2_I13_004a0c00() {
   return 0;

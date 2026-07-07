@@ -434,6 +434,9 @@ public:
                                                       int relationTargetNation,
                                                       int selectedNationSlot);
   void InitializeNationStateRuntimeSubsystems(int arg1, int arg2);
+  void InitializeNationMinisterSubsystemsByPolicyIds(int arg1, int arg2, short arg3, short arg4,
+                                                     short arg5);
+  void QueueMapActionMissionsForPortZoneCandidates();
   void HandleTurnInstruction_Civi_DeserializeAndCreateWorkOrder(void* pInstructionRaw);
   void QueueInterNationEventType0FForNationPairContext(short targetNationSlot,
                                                        short sourceNationSlot);

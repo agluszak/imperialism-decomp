@@ -83,14 +83,6 @@ undefined4 SetMapRecordFlagA3AndPropagateToChildren(void)
   return 0;
 }
 
-// ghidra_name RefreshMapContextRotatingStatusStrings
-// ghidra_proto undefined RefreshMapContextRotatingStatusStrings()
-// FUNCTION: IMPERIALISM 0x0050f740
-undefined4 RefreshMapContextRotatingStatusStrings(void)
-{
-  return 0;
-}
-
 // ghidra_name RebuildTileOwnerNeighborCachesAndFallbackAssignments
 // ghidra_proto undefined RebuildTileOwnerNeighborCachesAndFallbackAssignments()
 // FUNCTION: IMPERIALISM 0x0050f860
@@ -287,14 +279,6 @@ undefined4 MarkDirectionalMapOverlayFlagsForNationOrders(void)
 // ghidra_proto void __fastcall DumpAndResetMapScriptState(void * pMapState)
 // FUNCTION: IMPERIALISM 0x00519140
 undefined4 DumpAndResetMapScriptState(void)
-{
-  return 0;
-}
-
-// ghidra_name RebuildNationStateSlotsAndAvailability_Impl
-// ghidra_proto undefined RebuildNationStateSlotsAndAvailability_Impl()
-// FUNCTION: IMPERIALISM 0x00519610
-undefined4 RebuildNationStateSlotsAndAvailability_Impl(void)
 {
   return 0;
 }

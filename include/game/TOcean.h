@@ -40,10 +40,6 @@ public:
   // +0x14: the currently-selected task force cached for the active map-order entry
   // (maintained by EnsureSelectedTaskForceForOrderOwnerAndRefresh); zeroed in the ctor.
   TTaskForce* selectedTaskForce14; // +0x14
-  char pad18[0x38 - 0x18];         // +0x18 .. +0x37
-  int* slotTable;                  // +0x38
-  unsigned int slotCount;          // +0x40
-  char pad44[0x14];                // +0x44 .. +0x57 (allocation size TBD)
 
   // Reallocate routeNodeBuffer to hold `count` 0x10-byte route records. 0x0052e7b0.
   void AllocateRouteNodeStateBufferByCount(short count);
@@ -78,6 +74,8 @@ public:
   // (its CreateTaskForceFromNavyOrders... factory produces the task force). 0x00564600.
   TTaskForce* EnsureSelectedTaskForceForOrderOwnerAndRefresh(TZone* pMapOrderContextZone);
 };
+
+ASSERT_SIZE(TOcean, 0x18);
 
 void NotifyMapUberPictureTileMarker(short tileIndex);
 

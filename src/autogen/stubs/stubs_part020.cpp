@@ -267,14 +267,6 @@ undefined4 QueueDeferredUiEventPacket(void)
   return 0;
 }
 
-// ghidra_name TryGetFileMetadataForPath
-// ghidra_proto undefined TryGetFileMetadataForPath()
-// FUNCTION: IMPERIALISM 0x005d4c10
-undefined4 TryGetFileMetadataForPath(void)
-{
-  return 0;
-}
-
 // ghidra_name DeleteFileWithErrorReporting
 // ghidra_proto undefined DeleteFileWithErrorReporting()
 // FUNCTION: IMPERIALISM 0x005d4c40

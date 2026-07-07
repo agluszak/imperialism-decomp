@@ -228,6 +228,7 @@ public:
   // (a UI refresh notification) to g_pUiRuntimeContext for the active nation.
   virtual void DispatchTurnEvent7DDForActiveNation();      // slot 0x13 0x511ed0
   virtual void ResetAllTileSpriteVariantIndexToSentinel(); // slot 0x14 0x5178c0
+  void RefreshMapContextRotatingStatusStrings();
   // Builds the set of region classes (TGlobalMapCityScoreRecord::regionClassA3) present in
   // nationA's owned regions (plus every minor nation tied to nationA per
   // IsEncodedNationSlotMinus200Equal, i.e. encodedNationSlot - 200 == nationA), then

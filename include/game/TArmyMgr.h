@@ -209,6 +209,6 @@ public:
   // Bare `this+8` accessor; sole caller is TSimMgr::AdvanceGlobalTurnStateMachine
   // (g_pMapContextActionManager->GetByteFlagAtOffset8()). 0x4a6dd0.
   unsigned char GetByteFlagAtOffset8();
-
+  void InitializeMapContextActionManager();
   TArmyMgr();
 };

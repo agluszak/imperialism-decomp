@@ -228,6 +228,11 @@ undefined TMapMgr::LoadPoliticalMapRegionSubtypeTableFromResourceStream() {
   return 0;
 }
 
+// FUNCTION: IMPERIALISM 0x0050f740
+void TMapMgr::RefreshMapContextRotatingStatusStrings() {
+  reinterpret_cast<void(__fastcall*)(void*, int)>(0x0050f740)(this, 0);
+}
+
 // FUNCTION: IMPERIALISM 0x0050fca0
 void TMapMgr::UpdateTilePrimaryAndSecondaryNeighborLinksByPriority(short cityRecordIndex) {
   short neighbors[6];

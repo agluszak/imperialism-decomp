@@ -275,14 +275,6 @@ undefined4 ResetTNewsMgrToSentinelVtable(void)
   return 0;
 }
 
-// ghidra_name TIndexAndRankList::InitializeInterNationEventQueueManager
-// ghidra_proto undefined InitializeInterNationEventQueueManager()
-// FUNCTION: IMPERIALISM 0x0055b710
-undefined4 InitializeInterNationEventQueueManager(void)
-{
-  return 0;
-}
-
 // ghidra_name RebuildNationRankingDataAndUiCache
 // ghidra_proto undefined RebuildNationRankingDataAndUiCache()
 // FUNCTION: IMPERIALISM 0x0055b8e0
@@ -327,14 +319,6 @@ undefined4 BuildNationRankingRowsForNation(void)
 // ghidra_proto undefined BuildNationActionOptionCardsFromRelationTable()
 // FUNCTION: IMPERIALISM 0x0055c010
 undefined4 BuildNationActionOptionCardsFromRelationTable(void)
-{
-  return 0;
-}
-
-// ghidra_name TSimMgr::QueueInterNationEventType11
-// ghidra_proto undefined QueueInterNationEventType11()
-// FUNCTION: IMPERIALISM 0x0055cd00
-undefined4 QueueInterNationEventType11(void)
 {
   return 0;
 }
@@ -479,14 +463,6 @@ undefined4 ReallocatePortZoneContextArrayBuffer(void)
 // ghidra_proto undefined ResetTPortZoneManagerToSentinelVtable()
 // FUNCTION: IMPERIALISM 0x00562170
 undefined4 ResetTPortZoneManagerToSentinelVtable(void)
-{
-  return 0;
-}
-
-// ghidra_name ResetPortZoneGlobalContextCounters
-// ghidra_proto undefined ResetPortZoneGlobalContextCounters()
-// FUNCTION: IMPERIALISM 0x005621b0
-undefined4 ResetPortZoneGlobalContextCounters(void)
 {
   return 0;
 }

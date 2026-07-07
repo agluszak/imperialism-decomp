@@ -924,6 +924,7 @@ address|target_cpp|ownership|note
 4a09f0|src/game/TAnimator.cpp|manual|marker_sync
 4a0a80|src/game/TAnimator.cpp|manual|marker_sync
 4a0ad0|src/game/TAnimator.cpp|manual|marker_sync
+4a0b20|src/game/TAnimator.cpp|manual|marker_sync
 4a0c00|src/game/TAnimator.cpp|manual|marker_sync
 4a0c30|src/game/TAnimator.cpp|manual|marker_sync
 4a0d10|src/game/TCivAnimation2.cpp|manual|marker_sync
@@ -936,6 +937,7 @@ address|target_cpp|ownership|note
 4a1810|src/game/TArmyMgr.cpp|manual|marker_sync
 4a1850|src/game/TArmyMgr.cpp|manual|marker_sync
 4a18a0|src/game/TArmyMgr.cpp|manual|marker_sync
+4a18f0|src/game/TArmyMgr.cpp|manual|marker_sync
 4a1a00|src/game/TArmyMgr.cpp|manual|marker_sync
 4a1b80|src/game/TArmyMgr.cpp|manual|marker_sync
 4a1dd0|src/game/TArmyMgr.cpp|manual|marker_sync
@@ -1758,6 +1760,7 @@ address|target_cpp|ownership|note
 4e36f0|src/game/TMinor.cpp|manual|marker_sync
 4e3710|src/game/TMinor.cpp|manual|marker_sync
 4e3790|src/game/TMinor.cpp|manual|marker_sync
+4e38e0|src/game/TMinor.cpp|manual|marker_sync
 4e41c0|src/game/TMinor.cpp|manual|marker_sync
 4e4390|src/game/TMinor.cpp|manual|marker_sync
 4e45f0|src/game/TMinor.cpp|manual|marker_sync
@@ -1799,6 +1802,7 @@ address|target_cpp|ownership|note
 4e6b50|src/game/TAutoGreatPower.cpp|manual|marker_sync
 4e6b80|src/game/TAutoGreatPower.cpp|manual|marker_sync
 4e6bb0|src/game/TAutoGreatPower.cpp|manual|marker_sync
+4e6c20|src/game/TGreatPower.cpp|manual|marker_sync
 4e7230|src/game/TAutoGreatPower.cpp|manual|marker_sync
 4e72c0|src/game/TAutoGreatPower.cpp|manual|marker_sync
 4e73f0|src/game/TAutoGreatPower.cpp|manual|marker_sync
@@ -1827,6 +1831,7 @@ address|target_cpp|ownership|note
 4e7cc0|src/game/TAutoGreatPower.cpp|manual|marker_sync
 4e7ec0|src/game/TAutoGreatPower.cpp|manual|marker_sync
 4e8040|src/game/TAutoGreatPower.cpp|manual|marker_sync
+4e83d0|src/game/TGreatPower.cpp|manual|marker_sync
 4e8540|src/game/TGreatPower.cpp|manual|marker_sync
 4e8750|src/game/TGreatPower.cpp|manual|marker_sync
 4e9060|src/game/TGreatPower.cpp|manual|marker_sync
@@ -1901,6 +1906,7 @@ address|target_cpp|ownership|note
 4ee6c0|src/game/TDiplomacyMgr.cpp|manual|marker_sync
 4ee700|src/game/TDiplomacyMgr.cpp|manual|marker_sync
 4ee7a0|src/game/TDiplomacyMgr.cpp|manual|marker_sync
+4ee8c0|src/game/TSimMgr.cpp|manual|marker_sync
 4eef50|src/game/TDiplomacyMgr.cpp|manual|marker_sync
 4ef040|src/game/TDiplomacyMgr.cpp|manual|marker_sync
 4ef080|src/game/TDiplomacyMgr.cpp|manual|marker_sync
@@ -2261,6 +2267,7 @@ address|target_cpp|ownership|note
 50e8b0|src/game/TMapMgr.cpp|manual|marker_sync
 50ec90|src/game/TMapMgr.cpp|manual|marker_sync
 50f200|src/game/TMapMgr.cpp|manual|marker_sync
+50f740|src/game/TMapMgr.cpp|manual|marker_sync
 50fca0|src/game/TMapMgr.cpp|manual|marker_sync
 50fe10|src/game/TMapMgr.cpp|manual|marker_sync
 510210|src/game/TMapMgr.cpp|manual|marker_sync
@@ -2358,6 +2365,7 @@ address|target_cpp|ownership|note
 518b40|src/game/TMapMgr.cpp|manual|marker_sync
 518bd0|src/game/TMapMgr.cpp|manual|marker_sync
 519010|src/game/TMapMgr.cpp|manual|marker_sync
+519610|src/game/TSimMgr.cpp|manual|marker_sync
 5199c0|src/game/TMapDialog.cpp|manual|marker_sync
 519af0|src/game/TWorldView.cpp|manual|marker_sync
 519b30|src/game/TMapDialog.cpp|manual|marker_sync
@@ -2913,6 +2921,7 @@ address|target_cpp|ownership|note
 5446a0|src/game/TMultiplayerMgr.cpp|manual|marker_sync
 544e30|src/game/TMultiplayerMgr.cpp|manual|marker_sync
 545940|src/game/TMultiplayerMgr.cpp|manual|marker_sync
+549240|src/game/TSimMgr.cpp|manual|marker_sync
 5494b0|src/game/TMultiplayerMgr.cpp|manual|marker_sync
 549540|src/game/TMultiplayerMgr.cpp|manual|marker_sync
 5495e0|src/game/TMultiplayerMgr.cpp|manual|marker_sync
@@ -3048,12 +3057,14 @@ address|target_cpp|ownership|note
 55b670|src/game/TNewsMgr.cpp|manual|marker_sync
 55b6a0|src/game/TNewsMgr.cpp|manual|marker_sync
 55b6f0|src/game/TNewsMgr.cpp|manual|marker_sync
+55b710|src/game/TNewsMgr.cpp|manual|marker_sync
 55b820|src/game/TNewsMgr.cpp|manual|marker_sync
 55b8a0|src/game/TNewsMgr.cpp|manual|marker_sync
 55b8c0|src/game/TNewsMgr.cpp|manual|marker_sync
 55c970|src/game/TInterNationEventQueueManager.cpp|manual|marker_sync
 55c9f0|src/game/TInterNationEventQueueManager.cpp|manual|marker_sync
 55cbd0|src/game/TInterNationEventQueueManager.cpp|manual|marker_sync
+55cd00|src/game/TSimMgr.cpp|manual|marker_sync
 55cda0|src/game/TInterNationEventQueueManager.cpp|manual|marker_sync
 55d160|src/game/TNewspaperView.cpp|manual|marker_sync
 55d1e0|src/game/TNewspaperView.cpp|manual|marker_sync
@@ -3122,6 +3133,7 @@ address|target_cpp|ownership|note
 562100|src/game/TOcean.cpp|manual|marker_sync
 562140|src/game/TOcean.cpp|manual|marker_sync
 562190|src/game/TOcean.cpp|manual|marker_sync
+5621b0|src/game/TSimMgr.cpp|manual|marker_sync
 5621e0|src/game/TOcean.cpp|manual|marker_sync
 562340|src/game/TOcean.cpp|manual|marker_sync
 562880|src/game/TZone.cpp|manual|marker_sync
@@ -4106,6 +4118,7 @@ address|target_cpp|ownership|note
 5aef80|src/game/TTechMgr.cpp|manual|marker_sync
 5aefa0|src/game/TTechMgr.cpp|manual|marker_sync
 5aeff0|src/game/TTechMgr.cpp|manual|marker_sync
+5af330|src/game/TTechMgr.cpp|manual|marker_sync
 5af460|src/game/TTechMgr.cpp|manual|marker_sync
 5af710|src/game/TTechMgr.cpp|manual|marker_sync
 5b0e70|src/game/TTechStorePage.cpp|manual|marker_sync
@@ -4418,6 +4431,7 @@ address|target_cpp|ownership|note
 5d46e0|src/game/mapped_flavor_text.cpp|manual|marker_sync
 5d4720|src/game/mapped_flavor_text.cpp|manual|marker_sync
 5d4ba0|src/game/buffered_stream.cpp|library|marker_sync
+5d4c10|src/game/TSimMgr.cpp|manual|marker_sync
 5d5040|src/game/TViewMgr.cpp|manual|mfc_runtime_macro
 5d5060|src/game/TViewMgr.cpp|manual|marker_sync
 5d50b0|src/game/TViewMgr.cpp|manual|marker_sync

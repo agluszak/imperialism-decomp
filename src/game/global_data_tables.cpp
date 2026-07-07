@@ -624,6 +624,8 @@ TCivMgr* g_pSelectedCivilianOrderState = 0;
 TSoundPlayer* g_pSfxPlaybackSystem = 0;
 // GLOBAL: IMPERIALISM 0x006a43cc
 TTradeMgr* g_pNationInteractionStateManager = 0;
+// GLOBAL: IMPERIALISM 0x006a4220
+CString DAT_006a4220;
 
 extern "C" {
 short g_awEngineerFortBuildCostByLevel[8] = {0};
