@@ -939,14 +939,6 @@ undefined4 ConstructTPictureTextBaseState(void)
   return 0;
 }
 
-// ghidra_name TDropShadowText::ConstructSelectableTextOptionEntryBase
-// ghidra_proto undefined ConstructSelectableTextOptionEntryBase()
-// FUNCTION: IMPERIALISM 0x005b5590
-undefined4 ConstructSelectableTextOptionEntryBase(void)
-{
-  return 0;
-}
-
 // ghidra_name TInfoBarPictureText::DestructTInfoBarPictureTextAndMaybeFree
 // ghidra_proto undefined DestructTInfoBarPictureTextAndMaybeFree()
 // FUNCTION: IMPERIALISM 0x005b5c90

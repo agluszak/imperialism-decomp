@@ -2,6 +2,7 @@
 
 #include "game/TCluster.h"
 #include "game/TControl.h"
+#include "game/TEditText.h"
 #include "game/TPicture.h"
 #include "game/TStaticText.h"
 #include "game/global_data_tables.h"
@@ -102,6 +103,13 @@ void __cdecl BindUiResourceTextAndStyle(int nGroupId, int nVariant, char* szText
   style.styleRef6 = styleRef.value;
   context->SetCityProductionDialogPictureRectAndMaybeRefresh(&style, 0);
   context->SetTextThemeCodeAndMaybeRefresh(nThemeCode, 0);
+}
+
+// Set the current context edit control's max-character-count word (+0x9c).
+// FUNCTION: IMPERIALISM 0x0041b570
+void __cdecl UpdateUiResourceContextMetricWord27(short nMaxChars) {
+  g_pUiResourceContext->AssertValid();
+  static_cast<TEditText*>(g_pUiResourceContext)->field_9c = nMaxChars;
 }
 
 // FUNCTION: IMPERIALISM 0x0041b5f0

@@ -7,7 +7,7 @@
 // VTABLE: IMPERIALISM 0x00644ba0
 class TGWorldPartView : public TView {
 public:
-// === BEGIN GENERATED DECLS (TGWorldPartView) — refreshed by recover-class; do not hand-edit ===
+  // === BEGIN GENERATED DECLS (TGWorldPartView) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TGWorldPartView)
   virtual ~TGWorldPartView() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -112,9 +112,15 @@ public:
   // slot 0x65 AssertMcAppUILine1914 inherited unchanged (0x48c7a0)
   // slot 0x66 AssertMcAppUILine1922 inherited unchanged (0x48c7d0)
   // slot 0x67 CtrlSlot103_SubtractPosAndDispatchSlot19C_Impl inherited unchanged (0x48bac0)
-// === END GENERATED DECLS (TGWorldPartView) ===
+  // === END GENERATED DECLS (TGWorldPartView) ===
   // TODO(manifest): add data members from the object slice (`just slice-discovery TGWorldPartView 0xCTOR`).
 
   TGWorldPartView();
-};
 
+  int field60; // 0x60 — ctor 0x45b000 zeroes it
+  int field64; // 0x64
+  int field68; // 0x68
+  int field6c; // 0x6c
+  int field70; // 0x70
+};
+ASSERT_SIZE(TGWorldPartView, 0x74);

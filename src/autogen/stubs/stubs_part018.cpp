@@ -139,14 +139,6 @@ undefined4 ConstructTGameSetupMultiplayerPictureBaseState(void)
   return 0;
 }
 
-// ghidra_name TSetupRandomMapPicture::ConstructTSetupRandomMapPictureBaseState
-// ghidra_proto undefined ConstructTSetupRandomMapPictureBaseState()
-// FUNCTION: IMPERIALISM 0x00576d80
-undefined4 ConstructTSetupRandomMapPictureBaseState(void)
-{
-  return 0;
-}
-
 // ghidra_name TSetupRandomMapPicture::DestructTSetupRandomMapPictureBaseState
 // ghidra_proto undefined DestructTSetupRandomMapPictureBaseState()
 // FUNCTION: IMPERIALISM 0x00576e30
@@ -223,14 +215,6 @@ undefined4 RasterizeHexNeighborTerrainPaletteMap(void)
 // ghidra_proto undefined ApplyPaletteMaskToTileBufferByEventCode()
 // FUNCTION: IMPERIALISM 0x00579270
 undefined4 ApplyPaletteMaskToTileBufferByEventCode(void)
-{
-  return 0;
-}
-
-// ghidra_name TLineData::ConstructUiGoldLabelResourceEntry
-// ghidra_proto undefined ConstructUiGoldLabelResourceEntry()
-// FUNCTION: IMPERIALISM 0x005796a0
-undefined4 ConstructUiGoldLabelResourceEntry(void)
 {
   return 0;
 }

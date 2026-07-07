@@ -11,21 +11,20 @@ TMapPreviewView::~TMapPreviewView() {}
 
 IMPLEMENT_DYNCREATE(TMapPreviewView, TView)
 
-TMapPreviewView::TMapPreviewView() {}
+// FUNCTION: IMPERIALISM 0x0043d590
+TMapPreviewView::TMapPreviewView() : TView() {
+  selectedRegion64 = -1;
+}
 
 // FUNCTION: IMPERIALISM 0x00578850
-void TMapPreviewView::NoOpUiLifecycleHook(int arg) {
-}
+void TMapPreviewView::NoOpUiLifecycleHook(int arg) {}
 
 // FUNCTION: IMPERIALISM 0x005789b0
-void TMapPreviewView::Free() {
-}
+void TMapPreviewView::Free() {}
 
 // FUNCTION: IMPERIALISM 0x005789e0
 void TMapPreviewView::BeginMouseCaptureAndStartRepeatTimer(CPoint* point, int arg2, int arg3,
-                                                           int arg4) {
-}
+                                                           int arg4) {}
 
 // FUNCTION: IMPERIALISM 0x00578a80
-void TMapPreviewView::ApplyRectSlot110(RECT* rectBuffer) {
-}
+void TMapPreviewView::ApplyRectSlot110(RECT* rectBuffer) {}

@@ -136,5 +136,7 @@ public:
   // 0xCTOR`).
 
   TRadioText();
-};
 
+  int field98; // 0x98 — not initialized by the ctor (0x43d990 writes only the vtable)
+};
+ASSERT_SIZE(TRadioText, 0x9c);

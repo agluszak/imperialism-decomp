@@ -7,12 +7,17 @@
 
 IMPLEMENT_DYNCREATE(TDropShadowText, TPictureText)
 
-TDropShadowText::TDropShadowText() {}
+// FUNCTION: IMPERIALISM 0x005b5590
+TDropShadowText::TDropShadowText() : TPictureText() {
+  shadowFlags94[0] = 0;
+  shadowFlags94[1] = 0;
+  shadowFlags94[2] = 0;
+  shadowFlags94[3] = 0;
+}
 
 // SYNTHETIC: IMPERIALISM 0x005b5600
 // TDropShadowText::`scalar deleting destructor'
 TDropShadowText::~TDropShadowText() {}
 
 // FUNCTION: IMPERIALISM 0x005b5650
-void TDropShadowText::ApplyRectSlot110(RECT* rectBuffer) {
-}
+void TDropShadowText::ApplyRectSlot110(RECT* rectBuffer) {}

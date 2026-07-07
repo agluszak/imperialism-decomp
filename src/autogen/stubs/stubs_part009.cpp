@@ -515,14 +515,6 @@ undefined4 InitializeUiResourcePoolRuntimeClassFields(void)
   return 0;
 }
 
-// ghidra_name UpdateUiResourceContextMetricWord27
-// ghidra_proto undefined UpdateUiResourceContextMetricWord27()
-// FUNCTION: IMPERIALISM 0x0041b570
-undefined4 UpdateUiResourceContextMetricWord27(void)
-{
-  return 0;
-}
-
 // ghidra_name DispatchUiResourceContextVslot1E4WithCoords
 // ghidra_proto undefined DispatchUiResourceContextVslot1E4WithCoords()
 // FUNCTION: IMPERIALISM 0x0041b5a0
@@ -731,14 +723,6 @@ undefined4 WrapperFor_thunk_ConstructPictureResourceEntryBase_At004356e0(void)
   return 0;
 }
 
-// ghidra_name ConstructUiPlanetListResourceEntry
-// ghidra_proto undefined ConstructUiPlanetListResourceEntry()
-// FUNCTION: IMPERIALISM 0x0043d590
-undefined4 ConstructUiPlanetListResourceEntry(void)
-{
-  return 0;
-}
-
 // ghidra_name TControl::WrapperFor_thunk_ConstructUiCommandTagResourceEntryBase_At0043d610
 // ghidra_proto undefined WrapperFor_thunk_ConstructUiCommandTagResourceEntryBase_At0043d610()
 // FUNCTION: IMPERIALISM 0x0043d610
@@ -791,14 +775,6 @@ undefined4 ConstructUiBaseBackdropPictureEntry(void)
 // ghidra_proto int * __fastcall ConstructTurnEventMainPictureEntry_1036(int * pEntry)
 // FUNCTION: IMPERIALISM 0x0043d960
 undefined4 ConstructTurnEventMainPictureEntry_1036(void)
-{
-  return 0;
-}
-
-// ghidra_name ConstructSelectableTextOptionEntry
-// ghidra_proto undefined ConstructSelectableTextOptionEntry()
-// FUNCTION: IMPERIALISM 0x0043d990
-undefined4 ConstructSelectableTextOptionEntry(void)
 {
   return 0;
 }
@@ -999,14 +975,6 @@ undefined4 WrapperFor_thunk_ConstructUiResourceEntryBase_At0045aee0(void)
 // ghidra_proto undefined WrapperFor_thunk_ConstructPictureResourceEntryType606E8_At0045af80()
 // FUNCTION: IMPERIALISM 0x0045af80
 undefined4 WrapperFor_thunk_ConstructPictureResourceEntryType606E8_At0045af80(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_thunk_ConstructUiResourceEntryBase_At0045b000
-// ghidra_proto undefined WrapperFor_thunk_ConstructUiResourceEntryBase_At0045b000()
-// FUNCTION: IMPERIALISM 0x0045b000
-undefined4 WrapperFor_thunk_ConstructUiResourceEntryBase_At0045b000(void)
 {
   return 0;
 }

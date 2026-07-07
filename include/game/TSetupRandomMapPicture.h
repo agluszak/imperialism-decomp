@@ -7,7 +7,7 @@
 // VTABLE: IMPERIALISM 0x006621e0
 class TSetupRandomMapPicture : public TNoHilitePicture {
 public:
-// === BEGIN GENERATED DECLS (TSetupRandomMapPicture) — refreshed by recover-class; do not hand-edit ===
+  // === BEGIN GENERATED DECLS (TSetupRandomMapPicture) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TSetupRandomMapPicture)
   virtual ~TSetupRandomMapPicture() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -23,7 +23,8 @@ public:
   // slot 0x0c QueryStepValue inherited unchanged (0x48a2c0)
   // slot 0x0d DispatchQueuedUiCommandAndRelease inherited unchanged (0x48a3b0)
   // slot 0x0e DispatchUiSelectionToHandler inherited unchanged (0x48a3f0)
-  virtual void HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) override; // slot 0x0f 0x005779c0
+  virtual void HandleEvent(int commandId, TEventHandler* sourceHandler,
+                           TEvent* event) override; // slot 0x0f 0x005779c0
   // slot 0x10 DispatchUiCommandToHandler inherited unchanged (0x48a2e0)
   // slot 0x11 vmethod_0017 inherited unchanged (0x48a310)
   virtual void ForwardParam(int param) override; // slot 0x12 0x5782f0
@@ -125,10 +126,18 @@ public:
   // slot 0x72 SetPictureResourceIdAndRefresh inherited unchanged (0x48f570)
   // slot 0x73 UniversityDialogMethod_00405623 inherited unchanged (0x572bb0)
   virtual undefined ApplyNationSelectionAndMaybePostTurnEvent5E4(); // slot 0x74 0x577e40
-  virtual undefined PostTurnEvent5DCOrResetLocalUiState(); // slot 0x75 0x5781f0
-// === END GENERATED DECLS (TSetupRandomMapPicture) ===
+  virtual undefined PostTurnEvent5DCOrResetLocalUiState();          // slot 0x75 0x5781f0
+  // === END GENERATED DECLS (TSetupRandomMapPicture) ===
   // TODO(manifest): add data members from the object slice (`just slice-discovery TSetupRandomMapPicture 0xCTOR`).
 
   TSetupRandomMapPicture();
-};
 
+  CString countryName94;  // 0x94 — constructed empty by the ctor (0x576d80)
+  unsigned char flag98;   // 0x98 — ctor zeroes it
+  unsigned char pad99[3]; // 0x99
+  int field9C;            // 0x9c — not initialized by the ctor
+  int fieldA0;            // 0xa0
+  unsigned char flagA4;   // 0xa4 — ctor zeroes it
+  unsigned char padA5[3]; // 0xa5
+};
+ASSERT_SIZE(TSetupRandomMapPicture, 0xa8);

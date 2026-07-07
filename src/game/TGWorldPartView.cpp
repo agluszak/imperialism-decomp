@@ -11,8 +11,10 @@ TGWorldPartView::~TGWorldPartView() {}
 
 IMPLEMENT_DYNCREATE(TGWorldPartView, TView)
 
-TGWorldPartView::TGWorldPartView() {}
+// FUNCTION: IMPERIALISM 0x0045b000
+TGWorldPartView::TGWorldPartView() : TView() {
+  field60 = 0;
+}
 
 // FUNCTION: IMPERIALISM 0x004ac880
-void TGWorldPartView::ApplyRectSlot110(RECT* rectBuffer) {
-}
+void TGWorldPartView::ApplyRectSlot110(RECT* rectBuffer) {}

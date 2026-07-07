@@ -151,6 +151,28 @@ char g_szUiPlaceholderTreasury_006943B0[] = "$55,555";
 char g_szUiPlaceholderSeason_006943BC[] = "Winter, 1888";
 // GLOBAL: IMPERIALISM 0x00694a98
 char g_szUiPlaceholderSampleText_00694A98[] = "Sample Text 1\n2\n3\n4\n5\n6\n7\n8";
+// New-game setup screen (turn event 0x5dd) placeholder label strings, bound by the
+// screen builder (group 0x514) until real localized strings replace them.
+// GLOBAL: IMPERIALISM 0x006949e0
+char g_szNewGameAllAutoGPs_006949E0[] = "All AutoGP's";
+// GLOBAL: IMPERIALISM 0x006949f0
+char g_szNewGameNamesRandom_006949F0[] = "Random";
+// GLOBAL: IMPERIALISM 0x006949f8
+char g_szNewGameNamesHistorical_006949F8[] = "Historical";
+// GLOBAL: IMPERIALISM 0x00694a08
+char g_szNewGameNamesLabel_00694A08[] = "Names:";
+// GLOBAL: IMPERIALISM 0x00694a10
+char g_szNewGameDifficultySetting_00694A10[] = "Difficulty Setting";
+// GLOBAL: IMPERIALISM 0x00694a28
+char g_szNewGameDifficultyNighOnImpossible_00694A28[] = "Nigh-On Impossible";
+// GLOBAL: IMPERIALISM 0x00694a40
+char g_szNewGameDifficultyHard_00694A40[] = "Hard";
+// GLOBAL: IMPERIALISM 0x00694a48
+char g_szNewGameDifficultyNormal_00694A48[] = "Normal";
+// GLOBAL: IMPERIALISM 0x00694a50
+char g_szNewGameDifficultyEasy_00694A50[] = "Easy";
+// GLOBAL: IMPERIALISM 0x00694a58
+char g_szNewGameDifficultyIntroductory_00694A58[] = "Introductory";
 // GLOBAL: IMPERIALISM 0x006943cc
 char g_szMcAppUiHeaderPath_006943CC[] = "D:\\Ambit\\McAppUI.h";
 // GLOBAL: IMPERIALISM 0x00696bc0

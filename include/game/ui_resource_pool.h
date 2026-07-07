@@ -40,6 +40,9 @@ void __cdecl BindUiResourceTextAndStyle(int nGroupId, int nVariant, char* szText
                                         short nFlag, short nPointSize, TUiStyleRef styleRef,
                                         short nThemeCode);
 
+// Set the current context edit control's max-character-count word (+0x9c).
+void __cdecl UpdateUiResourceContextMetricWord27(short nMaxChars);
+
 // Set the picture resource id on the current g_pUiResourceContext picture widget
 // (virtual slot 0x72 SetPictureResourceIdAndRefresh, no immediate refresh).
 void __cdecl SetUiResourceContextPictureId(int nPictureId);

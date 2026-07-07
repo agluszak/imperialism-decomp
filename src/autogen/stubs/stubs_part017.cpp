@@ -1027,14 +1027,6 @@ undefined4 ConstructTPictureRadioButtonBaseState(void)
   return 0;
 }
 
-// ghidra_name TUpDownPictureButton::ConstructPictureScreenResourceEntry
-// ghidra_proto undefined ConstructPictureScreenResourceEntry()
-// FUNCTION: IMPERIALISM 0x005715a0
-undefined4 ConstructPictureScreenResourceEntry(void)
-{
-  return 0;
-}
-
 // ghidra_name TOnOffRadioButton::ConstructTOnOffRadioButtonBaseState
 // ghidra_proto undefined ConstructTOnOffRadioButtonBaseState()
 // FUNCTION: IMPERIALISM 0x005719f0

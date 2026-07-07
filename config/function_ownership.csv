@@ -57,6 +57,7 @@ address|target_cpp|ownership|note
 41b420|src/game/ui_resource_pool.cpp|manual|marker_sync
 41b450|src/game/ui_resource_pool.cpp|manual|marker_sync
 41b490|src/game/ui_resource_pool.cpp|manual|marker_sync
+41b570|src/game/ui_resource_pool.cpp|manual|marker_sync
 41b5f0|src/game/ui_resource_pool.cpp|manual|marker_sync
 41b610|src/game/ui_resource_pool.cpp|manual|marker_sync
 41b6d0|src/game/turn_event_dialog_factory.cpp|manual|marker_sync
@@ -111,6 +112,7 @@ address|target_cpp|ownership|note
 435710|src/game/TNewspaperView.cpp|manual|marker_sync
 435760|src/game/TControl.cpp|manual|marker_sync
 4357b0|src/game/turn_event_dialog_factory.cpp|manual|marker_sync
+43d590|src/game/TMapPreviewView.cpp|manual|marker_sync
 43d5c0|src/game/TMapPreviewView.cpp|manual|marker_sync
 43d650|src/game/TTwoPicSlider.cpp|manual|marker_sync
 43d6a0|src/game/TQueryFloater.cpp|manual|marker_sync
@@ -118,6 +120,7 @@ address|target_cpp|ownership|note
 43d7a0|src/game/TTerrainHelpPicture.cpp|manual|marker_sync
 43d7f0|src/game/TScrollView.cpp|manual|marker_sync
 43d870|src/game/TStatusPicture.cpp|manual|marker_sync
+43d990|src/game/TRadioText.cpp|manual|marker_sync
 43d9f0|src/game/TCreditsPicture.cpp|manual|marker_sync
 43da10|src/game/TFlagOptionsPicture.cpp|manual|marker_sync
 43da40|src/game/TLoadSavePicture.cpp|manual|marker_sync
@@ -145,6 +148,7 @@ address|target_cpp|ownership|note
 45ae90|src/game/TScenarioChooser.cpp|manual|marker_sync
 45af30|src/game/TTextList.cpp|manual|marker_sync
 45afb0|src/game/TGameScorePicture.cpp|manual|marker_sync
+45b000|src/game/TGWorldPartView.cpp|manual|marker_sync
 45b030|src/game/TGWorldPartView.cpp|manual|marker_sync
 45b100|src/game/turn_event_dialog_factory.cpp|manual|marker_sync
 45d2a0|src/game/TMapUberUberPicture.cpp|manual|marker_sync
@@ -3276,6 +3280,7 @@ address|target_cpp|ownership|note
 5714e0|src/game/TUberCluster.cpp|manual|marker_sync
 571500|src/game/TUpDownPictureButton.cpp|manual|marker_sync
 571580|src/game/TUpDownPictureButton.cpp|manual|marker_sync
+5715a0|src/game/TUpDownPictureButton.cpp|manual|marker_sync
 5715d0|src/game/TUpDownPictureButton.cpp|manual|marker_sync
 571620|src/game/TUpDownPictureButton.cpp|manual|marker_sync
 571690|src/game/TUpDownPictureButton.cpp|manual|marker_sync
@@ -3404,6 +3409,7 @@ address|target_cpp|ownership|note
 576bc0|src/game/TNetGameSelectPicture.cpp|manual|marker_sync
 576ca0|src/game/TSetupRandomMapPicture.cpp|manual|marker_sync
 576d60|src/game/TSetupRandomMapPicture.cpp|manual|marker_sync
+576d80|src/game/TSetupRandomMapPicture.cpp|manual|marker_sync
 576e00|src/game/TSetupRandomMapPicture.cpp|manual|marker_sync
 577030|src/game/TSetupRandomMapPicture.cpp|manual|marker_sync
 5779c0|src/game/TSetupRandomMapPicture.cpp|manual|marker_sync
@@ -3423,6 +3429,7 @@ address|target_cpp|ownership|note
 579580|src/game/TRadioText.cpp|manual|marker_sync
 5795b0|src/game/TRadioTextCluster.cpp|manual|marker_sync
 579680|src/game/TRadioTextCluster.cpp|manual|marker_sync
+5796a0|src/game/TRadioTextCluster.cpp|manual|marker_sync
 5796f0|src/game/TRadioTextCluster.cpp|manual|marker_sync
 579740|src/game/TRadioTextCluster.cpp|manual|marker_sync
 579770|src/game/TRadioTextCluster.cpp|manual|marker_sync
@@ -4101,6 +4108,7 @@ address|target_cpp|ownership|note
 5b5450|src/game/TMyStaticText.cpp|manual|marker_sync
 5b54a0|src/game/TDropShadowText.cpp|manual|marker_sync
 5b5570|src/game/TDropShadowText.cpp|manual|marker_sync
+5b5590|src/game/TDropShadowText.cpp|manual|marker_sync
 5b5600|src/game/TDropShadowText.cpp|manual|marker_sync
 5b5650|src/game/TDropShadowText.cpp|manual|marker_sync
 5b5820|src/game/TDropShadowNumberText.cpp|manual|marker_sync

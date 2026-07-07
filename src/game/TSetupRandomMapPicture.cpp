@@ -7,18 +7,20 @@
 
 IMPLEMENT_DYNCREATE(TSetupRandomMapPicture, TNoHilitePicture)
 
-TSetupRandomMapPicture::TSetupRandomMapPicture() {}
+// FUNCTION: IMPERIALISM 0x00576d80
+TSetupRandomMapPicture::TSetupRandomMapPicture()
+    : TNoHilitePicture(), countryName94(), flag98(0), flagA4(0) {}
 
 // SYNTHETIC: IMPERIALISM 0x00576e00
 // TSetupRandomMapPicture::`scalar deleting destructor'
 TSetupRandomMapPicture::~TSetupRandomMapPicture() {}
 
 // FUNCTION: IMPERIALISM 0x00577030
-void TSetupRandomMapPicture::NoOpUiLifecycleHook(int arg) {
-}
+void TSetupRandomMapPicture::NoOpUiLifecycleHook(int arg) {}
 
 // FUNCTION: IMPERIALISM 0x005779c0
-void TSetupRandomMapPicture::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) { }
+void TSetupRandomMapPicture::HandleEvent(int commandId, TEventHandler* sourceHandler,
+                                         TEvent* event) {}
 
 // FUNCTION: IMPERIALISM 0x00577e40
 undefined TSetupRandomMapPicture::ApplyNationSelectionAndMaybePostTurnEvent5E4() {
@@ -31,5 +33,4 @@ undefined TSetupRandomMapPicture::PostTurnEvent5DCOrResetLocalUiState() {
 }
 
 // FUNCTION: IMPERIALISM 0x005782f0
-void TSetupRandomMapPicture::ForwardParam(int param) {
-}
+void TSetupRandomMapPicture::ForwardParam(int param) {}

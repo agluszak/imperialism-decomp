@@ -7,7 +7,7 @@
 // VTABLE: IMPERIALISM 0x00662418
 class TRadioTextCluster : public TCluster {
 public:
-// === BEGIN GENERATED DECLS (TRadioTextCluster) — refreshed by recover-class; do not hand-edit ===
+  // === BEGIN GENERATED DECLS (TRadioTextCluster) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TRadioTextCluster)
   virtual ~TRadioTextCluster() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -23,7 +23,8 @@ public:
   // slot 0x0c QueryStepValue inherited unchanged (0x48a2c0)
   // slot 0x0d DispatchQueuedUiCommandAndRelease inherited unchanged (0x48a3b0)
   // slot 0x0e DispatchUiSelectionToHandler inherited unchanged (0x48a3f0)
-  virtual void HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) override; // slot 0x0f 0x00579770
+  virtual void HandleEvent(int commandId, TEventHandler* sourceHandler,
+                           TEvent* event) override; // slot 0x0f 0x00579770
   // slot 0x10 DispatchUiCommandToHandler inherited unchanged (0x48a2e0)
   // slot 0x11 vmethod_0017 inherited unchanged (0x48a310)
   // slot 0x12 ForwardParam inherited unchanged (0x48a380)
@@ -123,9 +124,17 @@ public:
   // slot 0x70 SetControlStateFlagAndMaybeRefresh inherited unchanged (0x48e810)
   // slot 0x71 OrphanTiny_GetDwordEcxOffset_84_00491770 inherited unchanged (0x491770)
   // slot 0x72 OrphanCallChain_C2_I51_00491790 inherited unchanged (0x491790)
-// === END GENERATED DECLS (TRadioTextCluster) ===
+  // === END GENERATED DECLS (TRadioTextCluster) ===
   // TODO(manifest): add data members from the object slice (`just slice-discovery TRadioTextCluster 0xCTOR`).
 
   TRadioTextCluster();
-};
 
+  int field88;            // 0x88 — not initialized by the ctor
+  short word8C;           // 0x8c — ctor 0x5796a0 seeds 0x4b
+  short word8E;           // 0x8e — ctor seeds 0x49
+  short selectedOption90; // 0x90 — ctor seeds -1 (no radio option selected)
+  short word92;           // 0x92 — ctor seeds 0
+  short word94;           // 0x94 — ctor seeds 2
+  short pad96;            // 0x96
+};
+ASSERT_SIZE(TRadioTextCluster, 0x98);

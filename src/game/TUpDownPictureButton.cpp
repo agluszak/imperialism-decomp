@@ -15,6 +15,7 @@ IMPLEMENT_DYNCREATE(TUpDownPictureButton, TPicture)
 // TUpDownPictureButton::`scalar deleting destructor'
 TUpDownPictureButton::~TUpDownPictureButton() {}
 
+// FUNCTION: IMPERIALISM 0x005715a0
 TUpDownPictureButton::TUpDownPictureButton() : TPicture(), timingWord92(7000) {}
 
 // FUNCTION: IMPERIALISM 0x00571620

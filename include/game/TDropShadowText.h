@@ -133,5 +133,9 @@ public:
   // 0xCTOR`).
 
   TDropShadowText();
-};
 
+  // 0x94 — four shadow-state flag bytes; the ctor (0x5b5590) zeroes them through a
+  // 4-byte stack temporary copied as one dword.
+  unsigned char shadowFlags94[4];
+};
+ASSERT_SIZE(TDropShadowText, 0x98);
