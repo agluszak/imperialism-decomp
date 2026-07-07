@@ -393,20 +393,22 @@ void TNavyMgr::ProcessNationMapOrderInteractionsAndApplyOutcomes(short mode) {
         if (entryValue == 0) {
           continue;
         }
-        // TODO: promote outcome application. Each live entry builds a localized
-        // diplomacy/order-exchange event message (via g_pLocalizationTable, an
-        // unrecovered string-manager singleton at 0x6a20f8 whose vtable slots
-        // 0xf/0x10 are called here -- deferred repo-wide, see TDeluxeText.cpp), then,
-        // gated by `mode` and flag bits derived from that message result, applies the
+        // TODO: promote outcome application (large, but no longer blocked on class
+        // recovery). Each live entry builds a localized diplomacy/order-exchange event
+        // message and, gated by `mode` and the tracked-entry fields, applies the
         // exchange outcome: resource transfers between `nation` and `entryTargetNation`
         // (TGreatPower::SetNationTransferTargetCodeAndNotifyEligiblePeers /
         // AssignPayloadToTrackedSlotEntryMatchingField2), order-node
         // tiebreak_strength/required_count writes capped at 499, and per-nation counter
-        // deltas (AddShortDeltaToNationCounterAtOffset198), reusing the same
+        // deltas (TGreatPower::AddShortDeltaToNationCounterAtOffset198), reusing the same
         // MapOrderBattleSnapshot child-record arrays + DispatchMapInteractionPayload-
         // AndResetWorkingFields cleanup ResolveMapOrderPairConflictStep uses. The
-        // outcome branch cannot be reproduced faithfully until that string-manager
-        // class is recovered, because its gating flags come from the message build.
+        // message text is built through real TSimMgr methods -- the "g_pLocalizationTable"
+        // Ghidra shows here is g_pSimMgr itself (vtable 0x662a58): the calls it renders
+        // as vtable byte 0x7c / 0x84 are TSimMgr::GetStringPrelude and
+        // TSimMgr::GetString(codeGroup, offset, CString*), both already modeled, plus
+        // scanBracketExpressions(g_pSimMgr, ...). Remaining work is an ordinary
+        // decomp-loop port of the message/outcome spine, not a prerequisite.
       }
     }
   }

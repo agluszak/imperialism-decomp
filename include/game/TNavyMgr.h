@@ -72,11 +72,11 @@ public:
   // slot 0x6f). Each live entry builds a localized diplomacy/order-exchange event
   // message and, gated by `mode` (1 = offer pass, 2 = accept pass) and flags derived
   // from that message, applies the exchange outcome (resource transfers, capped-at-499
-  // order-node stat writes, per-nation counter deltas). The outcome-application
-  // branch is left // TODO: promote body because it is driven through
-  // g_pLocalizationTable (an unrecovered string-manager singleton at 0x6a20f8 whose
-  // vtable slots 0xf/0x10 are called here -- deferred repo-wide, see TDeluxeText.cpp);
-  // the query skeleton above is fully ported.
+  // order-node stat writes, per-nation counter deltas). The query skeleton is fully
+  // ported; the message/outcome spine is an unblocked (large) decomp-loop follow-up --
+  // the "g_pLocalizationTable" Ghidra shows in the body is g_pSimMgr itself (a modeled
+  // TSimMgr, vtable 0x662a58; the string calls are TSimMgr::GetStringPrelude/GetString),
+  // so no class recovery is required.
   void ProcessNationMapOrderInteractionsAndApplyOutcomes(short mode); // 0x558960
 
   TNavyMgr();
