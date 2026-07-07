@@ -72,6 +72,7 @@ public:
 
   void ConstructCityOrderCapabilityStateVtable();
   void InitializeCityOrderCapabilityStateDefaults();
+  void GenerateRandomCapabilityPrioritySlots();
 
   ~TTechMgr() override;
 };

@@ -69,6 +69,7 @@ public:
   char HasStandingPropagationBridgeSlot90(int targetNation);
   void NotifyNationAuxRuntimeFinalizeSlotC0(void);
   void ClearNationAuxRuntimeGrantSlotC4(int grantValue);
+  void InitializeTMinorDefaults(int slotIndex);
 
 private:
   short needCurrentByType[0x17];

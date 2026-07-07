@@ -1466,7 +1466,7 @@ address|name|symbol|size|type|prototype|provenance
 4a0aa0|ConstructUiTransientObjectRegistry_Vtbl0064c4e8||29|function|undefined ConstructUiTransientObjectRegistry_Vtbl0064c4e8()|
 4a0ad0|TAnimator::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 4a0b00|DestructTAnimatorAndMaybeFree_Impl||7|function|undefined DestructTAnimatorAndMaybeFree_Impl()|
-4a0b20|TArmyPlayer::InitializeUiTransientObjectRegistry||175|function|undefined InitializeUiTransientObjectRegistry()|
+4a0b20|TAnimator::InitializeUiTransientObjectRegistry||175|function|undefined InitializeUiTransientObjectRegistry()|
 4a0c00|TAnimator::OrphanCallChain_C2_I13_004a0c00||31|function|undefined OrphanCallChain_C2_I13_004a0c00(void)|
 4a0c30|TAnimator::CanHandleCityDialogActionFalse||172|function|undefined 'scalar_deleting_destructor'(int param_1)|
 4a0d10|TCivAnimation2::AddObjectToUiTransientRegistry||16|function|undefined AddObjectToUiTransientRegistry()|
@@ -4253,7 +4253,7 @@ address|name|symbol|size|type|prototype|provenance
 55b6a0|TNewsMgr::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 55b6d0|ResetTNewsMgrToSentinelVtable||7|function|undefined ResetTNewsMgrToSentinelVtable()|
 55b6f0|TNewsMgr::GetRuntimeClass||6|function|undefined GetTNewsMgrClassNamePointer()|rtti
-55b710|TIndexAndRankList::InitializeInterNationEventQueueManager||196|function|undefined InitializeInterNationEventQueueManager()|
+55b710|TInterNationEventQueueManager::InitializeInterNationEventQueueManager||196|function|undefined InitializeInterNationEventQueueManager()|
 55b820|TNewsMgr::Free||81|function|undefined DestroyTNewsMgrAndReleaseHeadlineEntries()|
 55b8a0|TNewsMgr::ReadFrom||13|function|undefined IsDiplomacyTargetClassCode200Match(void)|
 55b8c0|TNewsMgr::WriteTo||13|function|undefined ApplyJoinEmpireMode2FinalizeNationNameState(void)|

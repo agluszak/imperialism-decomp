@@ -24,6 +24,9 @@ TTechMgr::~TTechMgr() {}
 // FUNCTION: IMPERIALISM 0x005aef80
 void TTechMgr::ConstructCityOrderCapabilityStateVtable(void) {}
 
+// SYNTHETIC: IMPERIALISM 0x005aefa0
+// TTechMgr::`scalar deleting destructor'
+
 // FUNCTION: IMPERIALISM 0x005aeff0
 void TTechMgr::InitializeCityOrderCapabilityStateDefaults(void) {
   int self = reinterpret_cast<int>(this);
@@ -169,6 +172,11 @@ void TTechMgr::InitializeCityOrderCapabilityStateDefaults(void) {
   RecomputeGlobalCapabilityAverages();
 }
 
+// FUNCTION: IMPERIALISM 0x005af330
+void TTechMgr::GenerateRandomCapabilityPrioritySlots() {
+  reinterpret_cast<void(__fastcall*)(void*, int)>(0x005af330)(this, 0);
+}
+
 // FUNCTION: IMPERIALISM 0x005af460
 void TTechMgr::ReadFrom(TStream* stream) {
   (void)stream;
@@ -178,7 +186,3 @@ void TTechMgr::ReadFrom(TStream* stream) {
 void TTechMgr::WriteTo(TStream* stream) {
   (void)stream;
 }
-
-// SYNTHETIC: IMPERIALISM 0x005aefa0
-// TTechMgr::`scalar deleting destructor'
-

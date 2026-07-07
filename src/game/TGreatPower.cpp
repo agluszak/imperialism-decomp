@@ -4196,6 +4196,18 @@ void TGreatPower::BuildGreatPowerTurnMessageSummaryAndDispatch(void) {
   }
 }
 
+// FUNCTION: IMPERIALISM 0x004e6c20
+void TGreatPower::InitializeNationMinisterSubsystemsByPolicyIds(int arg1, int arg2, short arg3,
+                                                                short arg4, short arg5) {
+  reinterpret_cast<void(__fastcall*)(void*, int, int, int, short, short, short)>(0x004e6c20)(
+      this, 0, arg1, arg2, arg3, arg4, arg5);
+}
+
+// FUNCTION: IMPERIALISM 0x004e83d0
+void TGreatPower::QueueMapActionMissionsForPortZoneCandidates() {
+  reinterpret_cast<void(__fastcall*)(void*, int)>(0x004e83d0)(this, 0);
+}
+
 // FUNCTION: IMPERIALISM 0x004e8540
 void TGreatPower::QueueMapActionMissionFromCandidateAndMarkState(eMissionType arg1, int arg2,
                                                                  TZone* portZoneContext, int arg4) {

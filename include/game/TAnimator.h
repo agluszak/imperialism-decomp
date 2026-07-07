@@ -53,6 +53,7 @@ public:
   virtual undefined OrphanCallChain_C2_I13_004a0c00(); // slot 0x25 0x4a0c00
                                                        // === END GENERATED DECLS (TAnimator) ===
   void RemoveUiTransientRegistryObjectByTag(int tag);
+  void InitializeUiTransientObjectRegistry(int maxCount);
 
   // Object size 0x30 (base TEventHandler ends at 0x20). +0x20 is the offscreen
   // surface the focus animations blit into (read as `*(g_pUiAnimator) + 0x20` at
@@ -64,4 +65,3 @@ public:
 
   TAnimator();
 };
-

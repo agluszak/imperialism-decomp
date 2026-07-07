@@ -123,14 +123,6 @@ undefined4 DestructTAnimatorAndMaybeFree_Impl(void)
   return 0;
 }
 
-// ghidra_name TArmyPlayer::InitializeUiTransientObjectRegistry
-// ghidra_proto undefined InitializeUiTransientObjectRegistry()
-// FUNCTION: IMPERIALISM 0x004a0b20
-undefined4 InitializeUiTransientObjectRegistry(void)
-{
-  return 0;
-}
-
 // ghidra_name TCivAnimation2::FindLinkedListNodeByIdFieldAt18
 // ghidra_proto undefined FindLinkedListNodeByIdFieldAt18()
 // FUNCTION: IMPERIALISM 0x004a0d30
@@ -191,14 +183,6 @@ undefined4 ConstructMapContextActionManager(void)
 // ghidra_proto undefined DestructTArmyMgrAndMaybeFree_Impl()
 // FUNCTION: IMPERIALISM 0x004a18d0
 undefined4 DestructTArmyMgrAndMaybeFree_Impl(void)
-{
-  return 0;
-}
-
-// ghidra_name TArmyStackList::InitializeMapContextActionManager
-// ghidra_proto void __thiscall InitializeMapContextActionManager(void)
-// FUNCTION: IMPERIALISM 0x004a18f0
-undefined4 InitializeMapContextActionManager(void)
 {
   return 0;
 }

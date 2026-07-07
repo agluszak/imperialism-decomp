@@ -48,6 +48,11 @@ TArmyMgr::TArmyMgr() {}
 // TArmyMgr::`scalar deleting destructor'
 TArmyMgr::~TArmyMgr() {}
 
+// FUNCTION: IMPERIALISM 0x004a18f0
+void TArmyMgr::InitializeMapContextActionManager() {
+  reinterpret_cast<void(__fastcall*)(void*, int)>(0x004a18f0)(this, 0);
+}
+
 // FUNCTION: IMPERIALISM 0x004a1a00
 void TArmyMgr::Free() {}
 
