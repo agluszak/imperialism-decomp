@@ -14,5 +14,8 @@ TUpDownView::TUpDownView() {}
 TUpDownView::~TUpDownView() {}
 
 // FUNCTION: IMPERIALISM 0x00583dd0
-void TUpDownView::DispatchPictureResourceCommand(int nEventType, void * pEventSender, void * pEventDataA, void * pEventDataB) {
+void TUpDownView::DispatchPictureResourceCommand(int nEventType, void* pEventSender,
+                                                 void* pEventDataA, void* pEventDataB,
+                                                 int nCommandFlag) {
+  (void)nCommandFlag;
 }

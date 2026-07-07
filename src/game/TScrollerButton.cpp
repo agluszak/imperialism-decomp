@@ -14,5 +14,8 @@ TScrollerButton::TScrollerButton() {}
 TScrollerButton::~TScrollerButton() {}
 
 // FUNCTION: IMPERIALISM 0x00574fc0
-void TScrollerButton::DispatchPictureResourceCommand(int nEventType, void * pEventSender, void * pEventDataA, void * pEventDataB) {
+void TScrollerButton::DispatchPictureResourceCommand(int nEventType, void* pEventSender,
+                                                     void* pEventDataA, void* pEventDataB,
+                                                     int nCommandFlag) {
+  (void)nCommandFlag;
 }

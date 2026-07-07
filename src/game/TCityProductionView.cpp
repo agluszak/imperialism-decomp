@@ -157,7 +157,9 @@ void TCityProductionView::BeginMouseCaptureAndStartRepeatTimer(CPoint* point, in
 
 // FUNCTION: IMPERIALISM 0x004bc870
 void TCityProductionView::DispatchPictureResourceCommand(int eventType, void* eventSender,
-                                                         void* eventDataA, void* eventDataB) {
+                                                         void* eventDataA, void* eventDataB,
+                                                         int commandFlag) {
+  (void)commandFlag;
   (void)eventType;
   (void)eventSender;
   (void)eventDataA;

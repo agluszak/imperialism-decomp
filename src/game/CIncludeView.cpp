@@ -259,7 +259,7 @@ void CIncludeView::OnMouseMove(UINT nFlags, CPoint point) {
     m_captureLastPoint80 = m_captureCurrentPoint88;
     m_captureCurrentPoint88 = controlRelativePoint;
     m_capturedControl74->DispatchPictureResourceCommand(
-        1, &m_captureStartPoint78, &m_captureLastPoint80, &m_captureCurrentPoint88);
+        1, &m_captureStartPoint78, &m_captureLastPoint80, &m_captureCurrentPoint88, 1);
   }
   static_cast<TAmbitApplication*>(g_pGlobalUiRootController)->HandleCursor(point.x, point.y, 0);
   if (m_activeDialogContext != 0 && GetMcAppUiActiveFlag() != 0) {

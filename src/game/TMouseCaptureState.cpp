@@ -3,6 +3,46 @@
 #include "game/TControl.h"
 #include "game/global_data_tables.h"
 
+// FUNCTION: IMPERIALISM 0x00489b60
+VOID CALLBACK NotifyGlobalCaptureOwnerState1WithCachedCoords(HWND hwnd, UINT message, UINT timerId,
+                                                             DWORD tickCount) {
+  (void)hwnd;
+  (void)message;
+  (void)timerId;
+  (void)tickCount;
+  TControl* captured = g_McAppMouseCaptureState.capturedControl;
+  if (captured != 0) {
+    // Ground truth passes a zeroed stack point through the owner-relative conversion and
+    // discards it; only the dispatch side effects matter on the repeat tick.
+    CPoint scratchPoint(0, 0);
+    captured->SubtractPosAndDispatchToOwnerSlot19C(&scratchPoint);
+    g_McAppMouseCaptureState.lastPoint = g_McAppMouseCaptureState.currentPoint;
+    captured->DispatchPictureResourceCommand(1, &g_McAppMouseCaptureState.startPoint,
+                                             &g_McAppMouseCaptureState.lastPoint,
+                                             &g_McAppMouseCaptureState.currentPoint, 1);
+  }
+}
+
+// State-side twin of TControl::BeginMouseCaptureAndStartRepeatTimer (no static callers in
+// the original binary; kept by the linker). Latches the capture on `control`, seeds all
+// three cached points from `point`, sends the state-0 (begin) picture-resource command,
+// and arms the shared 17ms repeat timer.
+// FUNCTION: IMPERIALISM 0x00489bf0
+void TMouseCaptureState::BeginMouseCaptureForControlAndStartRepeatTimer(CPoint* point,
+                                                                        TControl* control) {
+  capturedControl = control;
+  CWnd::FromHandle(::SetCapture(control->nativeWindow50->m_hWnd));
+  startPoint = *point;
+  lastPoint = *point;
+  currentPoint = *point;
+  control->DispatchPictureResourceCommand(0, &startPoint, &lastPoint, &currentPoint, 1);
+  if (g_McAppUiMouseCaptureTimerId_006A1ADC == 0) {
+    g_McAppUiMouseCaptureTimerId_006A1ADC =
+        ::SetTimer(control->nativeWindow50->m_hWnd, 0xef, 0x11,
+                   NotifyGlobalCaptureOwnerState1WithCachedCoords);
+  }
+}
+
 // FUNCTION: IMPERIALISM 0x00489cb0
 void TMouseCaptureState::NotifyCaptureOwnerState1AndMaybeUpdateCoords(unsigned int nFlags, int x,
                                                                       int y) {
@@ -19,11 +59,7 @@ void TMouseCaptureState::NotifyCaptureOwnerState1AndMaybeUpdateCoords(unsigned i
   if ((nFlags & 0x20) == 0) {
     currentPoint = ownerRelativePoint;
   }
-  // Ground truth pushes a trailing "1" flag arg the declared 4-param
-  // DispatchPictureResourceCommand signature doesn't model (same arity caveat as
-  // TControl::BeginMouseCaptureAndStartRepeatTimer's call and the note in
-  // TMapUberPicture.h/.cpp).
-  capturedControl->DispatchPictureResourceCommand(1, &startPoint, &lastPoint, &currentPoint);
+  capturedControl->DispatchPictureResourceCommand(1, &startPoint, &lastPoint, &currentPoint, 1);
 }
 
 // FUNCTION: IMPERIALISM 0x00489d40
@@ -43,6 +79,6 @@ void TMouseCaptureState::EndMouseCaptureAndStopRepeatTimer(unsigned int nFlags, 
   lastPoint = currentPoint;
   // Owner-relative, as in Notify... above (0x489db2 reloads the converted stack local).
   currentPoint = ownerRelativePoint;
-  capturedControl->DispatchPictureResourceCommand(2, &startPoint, &lastPoint, &currentPoint);
+  capturedControl->DispatchPictureResourceCommand(2, &startPoint, &lastPoint, &currentPoint, 1);
   capturedControl = 0;
 }

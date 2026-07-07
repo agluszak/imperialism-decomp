@@ -19,8 +19,8 @@ import argparse
 import json
 from pathlib import Path
 
+from tools.common.reccmp_report import run_report
 from tools.common.report_score import effective_matching
-from tools.reccmp.compare_batch import run_reccmp_json
 
 CACHE_NAME = "reccmp_addr_cache.json"
 
@@ -43,7 +43,7 @@ def load_entities(target: str, build_dir: Path) -> list[dict]:
                 return cached["data"]
         except (json.JSONDecodeError, KeyError):
             pass
-    data = run_reccmp_json(target, build_dir)
+    data = run_report(target, build_dir)
     cache_path.write_text(json.dumps({"stamp": stamp, "data": data}), encoding="utf-8")
     return data
 

@@ -12,7 +12,7 @@ public:
   virtual ~TTwoPicSlider() override;
   virtual void Free() override; // slot 0x07 0x0056e2f0
   virtual void DispatchPictureResourceCommand(int nEventType, void* pEventSender, void* pEventDataA,
-                                              void* pEventDataB) override; // slot 0x68 0x0056e640
+                                              void* pEventDataB, int nCommandFlag) override; // slot 0x68 0x0056e640
   virtual void ApplyRectSlot110(RECT* rectBuffer) override;                // slot 0x44 0x0056e370
 
   TQuickDrawSurfaceContext* lowerSurface;     // 0x84

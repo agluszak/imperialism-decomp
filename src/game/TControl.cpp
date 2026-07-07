@@ -3,6 +3,7 @@
 
 #include "game/TControl.h"
 #include "game/quickdraw_regions.h"
+#include "game/TMouseCaptureState.h"
 #include "game/TTEView.h"
 #include "game/TMovieView.h"
 #include "game/global_data_tables.h"
@@ -10,9 +11,6 @@
 #include "game/ui_invalidation_guard.h"
 
 #include <new>
-
-undefined4 FromHandle(void);
-extern "C" char LAB_00409a9d;
 
 // FUNCTION: IMPERIALISM 0x00429450
 int TControl::QuerySelectedIndexSlotBC() {
@@ -76,9 +74,7 @@ void TControl::BeginMouseCaptureAndStartRepeatTimer(CPoint* point, int arg2, int
   int startX = point->x;
   int startY = point->y;
   g_McAppMouseCaptureState.capturedControl = this;
-  void* capturedWindow =
-      reinterpret_cast<void*>(SetCapture(reinterpret_cast<HWND>(nativeWindow50->m_hWnd)));
-  reinterpret_cast<void(__cdecl*)(void*)>(FromHandle)(capturedWindow);
+  CWnd::FromHandle(::SetCapture(nativeWindow50->m_hWnd));
   g_McAppMouseCaptureState.startPoint.x = startX;
   g_McAppMouseCaptureState.startPoint.y = startY;
   g_McAppMouseCaptureState.lastPoint.x = startX;
@@ -87,11 +83,10 @@ void TControl::BeginMouseCaptureAndStartRepeatTimer(CPoint* point, int arg2, int
   g_McAppMouseCaptureState.currentPoint.y = startY;
   DispatchPictureResourceCommand(0, &g_McAppMouseCaptureState.startPoint,
                                  &g_McAppMouseCaptureState.lastPoint,
-                                 &g_McAppMouseCaptureState.currentPoint);
+                                 &g_McAppMouseCaptureState.currentPoint, 1);
   if (g_McAppUiMouseCaptureTimerId_006A1ADC == 0) {
-    g_McAppUiMouseCaptureTimerId_006A1ADC =
-        SetTimer(reinterpret_cast<HWND>(nativeWindow50->m_hWnd), 0xef, 0x11,
-                 reinterpret_cast<TIMERPROC>(&LAB_00409a9d));
+    g_McAppUiMouseCaptureTimerId_006A1ADC = SetTimer(
+        nativeWindow50->m_hWnd, 0xef, 0x11, NotifyGlobalCaptureOwnerState1WithCachedCoords);
   }
 }
 
@@ -144,9 +139,10 @@ void TControl::SetControlStateFlagAndMaybeRefresh(bool enabledState, bool refres
 
 // FUNCTION: IMPERIALISM 0x0048e850
 void TControl::DispatchPictureResourceCommand(int eventType, void* eventSender, void* eventDataA,
-                                              void* eventDataB) {
+                                              void* eventDataB, int commandFlag) {
   (void)eventSender;
   (void)eventDataA;
+  (void)commandFlag;
   if (eventType == 0) {
     SetControlStateFlagAndMaybeRefresh(1, 1);
     return;

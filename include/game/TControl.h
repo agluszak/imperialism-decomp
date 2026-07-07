@@ -140,7 +140,8 @@ public:
   // slot 0x66 AssertMcAppUILine1922 inherited unchanged (0x48c7d0)
   // slot 0x67 CtrlSlot103_SubtractPosAndDispatchSlot19C_Impl inherited unchanged (0x48bac0)
   virtual void DispatchPictureResourceCommand(int eventType, void* eventSender, void* eventDataA,
-                                              void* eventDataB);         // slot 0x68 0x48e850
+                                              void* eventDataB,
+                                              int commandFlag);          // slot 0x68 0x48e850
   virtual void DeserializeCityProductionQueueCommand(int* boundsBuffer); // slot 0x69 0x48e980
   virtual void AssertCityProductionGlobalStateInitialized(int arg1,
                                                           int arg2); // slot 0x6a 0x429470
@@ -176,4 +177,3 @@ public:
 
   void RefreshHudNationTitleControlsAndTheme(int themeCode);
 };
-

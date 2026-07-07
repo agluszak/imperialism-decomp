@@ -23,8 +23,10 @@ undefined4 GetTickCountDiv16(void);
 
 // FUNCTION: IMPERIALISM 0x00583bd0
 void TSidewaysArrow::DispatchPictureResourceCommand(int eventType, void* eventSender,
-                                                    void* eventDataA, void* eventDataB) {
-  TControl::DispatchPictureResourceCommand(eventType, eventSender, eventDataA, eventDataB);
+                                                    void* eventDataA, void* eventDataB,
+                                                    int commandFlag) {
+  TControl::DispatchPictureResourceCommand(eventType, eventSender, eventDataA, eventDataB,
+                                           commandFlag);
 
   if (eventType == 2) {
     return;
@@ -56,4 +58,3 @@ void TSidewaysArrow::DispatchPictureResourceCommand(int eventType, void* eventSe
 
 // SYNTHETIC: IMPERIALISM 0x00583b80
 // TSidewaysArrow::`scalar deleting destructor'
-

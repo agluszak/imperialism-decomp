@@ -11,7 +11,7 @@ public:
   int repeatDeadlineTick;           // 0x94
 
   virtual void DispatchPictureResourceCommand(int eventType, void* eventSender, void* eventDataA,
-                                              void* eventDataB) override; // slot 0x68 0x583bd0
+                                              void* eventDataB, int commandFlag) override; // slot 0x68 0x583bd0
 };
 
 ASSERT_SIZE(TSidewaysArrow, 0x98);

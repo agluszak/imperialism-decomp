@@ -2519,7 +2519,7 @@
     },
     {
       "address": "0x4838b0",
-      "matching": 0.9161290322580645,
+      "matching": 0.9358974358974359,
       "name": "CIncludeView::OnMouseMove",
       "type": 1
     },
@@ -4037,19 +4037,19 @@
     },
     {
       "address": "0x489b60",
-      "matching": 0.07142857142857142,
+      "matching": 0.2909090909090909,
       "name": "NotifyGlobalCaptureOwnerState1WithCachedCoords",
       "type": 1
     },
     {
       "address": "0x489cb0",
-      "matching": 0.8860759493670886,
+      "matching": 0.95,
       "name": "TMouseCaptureState::NotifyCaptureOwnerState1AndMaybeUpdateCoords",
       "type": 1
     },
     {
       "address": "0x489d40",
-      "matching": 0.7835051546391752,
+      "matching": 0.8367346938775511,
       "name": "TMouseCaptureState::EndMouseCaptureAndStopRepeatTimer",
       "type": 1
     },
@@ -4415,7 +4415,7 @@
     },
     {
       "address": "0x48b2d0",
-      "matching": 0.2033898305084746,
+      "matching": 0.19130434782608696,
       "name": "TView::VTableSlotDD",
       "type": 1
     },
@@ -5021,7 +5021,7 @@
     },
     {
       "address": "0x48e640",
-      "matching": 0.7441860465116279,
+      "matching": 0.813953488372093,
       "name": "TControl::BeginMouseCaptureAndStartRepeatTimer",
       "type": 1
     },
@@ -5052,7 +5052,7 @@
     },
     {
       "address": "0x48e850",
-      "matching": 0.41420118343195267,
+      "matching": 0.4378698224852071,
       "name": "TControl::DispatchPictureResourceCommand",
       "type": 1
     },
@@ -7633,7 +7633,7 @@
     },
     {
       "address": "0x4a2900",
-      "matching": 0.13063763608087092,
+      "matching": 0.13374805598755832,
       "name": "BuildArmyContextActionRecordsAndDispatchLabel",
       "type": 1
     },
@@ -12873,8 +12873,7 @@
     },
     {
       "address": "0x4e0590",
-      "effective": true,
-      "matching": 0.42857142857142855,
+      "matching": 1.0,
       "name": "TGreatPower::OrphanRetStub_004d7fa0_88",
       "type": 1
     },
@@ -12900,7 +12899,8 @@
     },
     {
       "address": "0x4e0690",
-      "matching": 1.0,
+      "effective": true,
+      "matching": 0.42857142857142855,
       "name": "TGreatPower::ReturnFalseNationStateCapabilityFlag90",
       "type": 1
     },
@@ -13645,7 +13645,7 @@
     },
     {
       "address": "0x4e8750",
-      "matching": 0.29313543599257885,
+      "matching": 0.2894248608534323,
       "name": "TGreatPower::ComputeAdvisoryMapNodeScoreFactorByCaseMetric",
       "type": 1
     },
@@ -16094,7 +16094,7 @@
     },
     {
       "address": "0x5067a0",
-      "matching": 0.0,
+      "matching": 0.013245033112582781,
       "name": "TIconSlider::DispatchPictureResourceCommand",
       "type": 1
     },
@@ -16418,7 +16418,7 @@
     },
     {
       "address": "0x50bea0",
-      "matching": 0.2044525215810995,
+      "matching": 0.20626987732848706,
       "name": "TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets",
       "type": 1
     },
@@ -16496,7 +16496,7 @@
     },
     {
       "address": "0x50da80",
-      "matching": 0.2857142857142857,
+      "matching": 0.28507795100222716,
       "name": "TMacViewMgr::BlitMapOverlayGlyphStrip32x24SkipMask10",
       "type": 1
     },
@@ -16868,7 +16868,7 @@
     },
     {
       "address": "0x5136a0",
-      "matching": 1.0,
+      "matching": 0.8888888888888888,
       "name": "TMapMgr::OrphanLeaf_NoCall_Ins35_005136a0",
       "type": 1
     },
@@ -18308,13 +18308,13 @@
     },
     {
       "address": "0x52d150",
-      "matching": 0.7021276595744681,
+      "matching": 0.7311827956989247,
       "name": "GetOrCreateOverlayQuadRecordByIndex",
       "type": 1
     },
     {
       "address": "0x52d1f0",
-      "matching": 0.2784090909090909,
+      "matching": 0.2621082621082621,
       "name": "ReindexContiguousCityRegionIds",
       "type": 1
     },
@@ -22461,7 +22461,7 @@
     },
     {
       "address": "0x555420",
-      "matching": 0.5653333333333334,
+      "matching": 0.5546666666666666,
       "name": "ResolveTaskForceOrderConflictAndPickCandidate",
       "type": 1
     },
@@ -24213,7 +24213,7 @@
     },
     {
       "address": "0x56e640",
-      "matching": 0.5504587155963303,
+      "matching": 0.5596330275229358,
       "name": "TTwoPicSlider::DispatchPictureResourceCommand",
       "type": 1
     },
@@ -25383,7 +25383,7 @@
     },
     {
       "address": "0x574d10",
-      "matching": 0.0,
+      "matching": 0.031746031746031744,
       "name": "TScrollBarView::DispatchPictureResourceCommand",
       "type": 1
     },
@@ -25413,7 +25413,7 @@
     },
     {
       "address": "0x574fc0",
-      "matching": 0.0,
+      "matching": 1.0,
       "name": "TScrollerButton::DispatchPictureResourceCommand",
       "type": 1
     },
@@ -26517,7 +26517,7 @@
     },
     {
       "address": "0x5839f0",
-      "matching": 0.0,
+      "matching": 0.04081632653061224,
       "name": "TArrowsControl::DispatchPictureResourceCommand",
       "type": 1
     },
@@ -26547,7 +26547,7 @@
     },
     {
       "address": "0x583bd0",
-      "matching": 0.7289719626168224,
+      "matching": 0.8990825688073395,
       "name": "TSidewaysArrow::DispatchPictureResourceCommand",
       "type": 1
     },
@@ -26577,7 +26577,7 @@
     },
     {
       "address": "0x583dd0",
-      "matching": 0.0,
+      "matching": 0.04081632653061224,
       "name": "TUpDownView::DispatchPictureResourceCommand",
       "type": 1
     },
@@ -26608,7 +26608,7 @@
     },
     {
       "address": "0x583fb0",
-      "matching": 0.0,
+      "matching": 0.047619047619047616,
       "name": "TRightLeftView::DispatchPictureResourceCommand",
       "type": 1
     },
@@ -27803,7 +27803,7 @@
     },
     {
       "address": "0x58c640",
-      "matching": 0.12698412698412698,
+      "matching": 0.14285714285714285,
       "name": "TNumberedArrowButton::DispatchPictureResourceCommand",
       "type": 1
     },
@@ -27996,7 +27996,7 @@
     },
     {
       "address": "0x58f550",
-      "matching": 0.5138888888888888,
+      "matching": 0.5051903114186851,
       "name": "TCivDescription::ApplyRectSlot110",
       "type": 1
     },
@@ -28782,7 +28782,7 @@
     },
     {
       "address": "0x59a920",
-      "matching": 0.0,
+      "matching": 0.019230769230769232,
       "name": "TMiniMapView::DispatchPictureResourceCommand",
       "type": 1
     },
@@ -31865,7 +31865,7 @@
     },
     {
       "address": "0x5bc9f0",
-      "matching": 0.0,
+      "matching": 0.023529411764705882,
       "name": "TDealTabControl::DispatchPictureResourceCommand",
       "type": 1
     },

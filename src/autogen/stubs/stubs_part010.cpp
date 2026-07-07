@@ -1555,22 +1555,6 @@ undefined4 WrapperFor_AppendPointerToGlobalVectorAsStatus_At00489ab0(void)
   return 0;
 }
 
-// ghidra_name NotifyGlobalCaptureOwnerState1WithCachedCoords
-// ghidra_proto undefined NotifyGlobalCaptureOwnerState1WithCachedCoords()
-// FUNCTION: IMPERIALISM 0x00489b60
-undefined4 NotifyGlobalCaptureOwnerState1WithCachedCoords(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_GetOrCreateCWndFromHandle_At00489bf0
-// ghidra_proto undefined WrapperFor_GetOrCreateCWndFromHandle_At00489bf0()
-// FUNCTION: IMPERIALISM 0x00489bf0
-undefined4 WrapperFor_GetOrCreateCWndFromHandle_At00489bf0(void)
-{
-  return 0;
-}
-
 // ghidra_name RenderMapOrderEntryTilePreview_Impl
 // ghidra_proto undefined RenderMapOrderEntryTilePreview_Impl()
 // FUNCTION: IMPERIALISM 0x00489e40

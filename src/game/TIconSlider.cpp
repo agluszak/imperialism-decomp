@@ -14,8 +14,7 @@ TIconSlider::TIconSlider() {}
 TIconSlider::~TIconSlider() {}
 
 // FUNCTION: IMPERIALISM 0x00506480
-void TIconSlider::NoOpUiLifecycleHook(int arg) {
-}
+void TIconSlider::NoOpUiLifecycleHook(int arg) {}
 
 // FUNCTION: IMPERIALISM 0x00506560
 undefined TIconSlider::OrphanLeaf_NoCall_Ins04_00506560(short param_1) {
@@ -42,11 +41,11 @@ char TIconSlider::DispatchUiMouseMoveToChildren(CPoint* point, int arg2, int arg
 }
 
 // FUNCTION: IMPERIALISM 0x00506690
-void TIconSlider::ApplyRectSlot110(RECT* rectBuffer) {
-}
+void TIconSlider::ApplyRectSlot110(RECT* rectBuffer) {}
 
 // FUNCTION: IMPERIALISM 0x005066c0
-undefined TIconSlider::Helper_Uses_WrapperFor_thunk_ResolveBmpResourceHandleWithDefault3B6_At00495c_At005066c0() {
+undefined TIconSlider::
+    Helper_Uses_WrapperFor_thunk_ResolveBmpResourceHandleWithDefault3B6_At00495c_At005066c0() {
   return 0;
 }
 
@@ -56,5 +55,6 @@ undefined TIconSlider::OrphanCallChain_C1_I36_00506710(LPRECT param_1) {
 }
 
 // FUNCTION: IMPERIALISM 0x005067a0
-void TIconSlider::DispatchPictureResourceCommand(int nEventType, void * pEventSender, void * pEventDataA, void * pEventDataB) {
-}
+void TIconSlider::DispatchPictureResourceCommand(int nEventType, void* pEventSender,
+                                                 void* pEventDataA, void* pEventDataB,
+                                                 int nCommandFlag) {}

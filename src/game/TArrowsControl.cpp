@@ -14,5 +14,8 @@ TArrowsControl::TArrowsControl() {}
 TArrowsControl::~TArrowsControl() {}
 
 // FUNCTION: IMPERIALISM 0x005839f0
-void TArrowsControl::DispatchPictureResourceCommand(int nEventType, void * pEventSender, void * pEventDataA, void * pEventDataB) {
+void TArrowsControl::DispatchPictureResourceCommand(int nEventType, void* pEventSender,
+                                                    void* pEventDataA, void* pEventDataB,
+                                                    int nCommandFlag) {
+  (void)nCommandFlag;
 }

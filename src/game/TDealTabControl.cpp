@@ -19,13 +19,14 @@ undefined TDealTabControl::ConstructTDealTabControlBaseState() {
 }
 
 // FUNCTION: IMPERIALISM 0x005bc7f0
-void TDealTabControl::ApplyRectSlot110(RECT* rectBuffer) {
-}
+void TDealTabControl::ApplyRectSlot110(RECT* rectBuffer) {}
 
 // FUNCTION: IMPERIALISM 0x005bc9f0
-void TDealTabControl::DispatchPictureResourceCommand(int nEventType, void * pEventSender, void * pEventDataA, void * pEventDataB) {
+void TDealTabControl::DispatchPictureResourceCommand(int nEventType, void* pEventSender,
+                                                     void* pEventDataA, void* pEventDataB,
+                                                     int nCommandFlag) {
+  (void)nCommandFlag;
 }
 
 // FUNCTION: IMPERIALISM 0x005bcb20
-void TDealTabControl::Free() {
-}
+void TDealTabControl::Free() {}

@@ -23,7 +23,7 @@ public:
   void BeginMouseCaptureAndStartRepeatTimer(CPoint* point, int arg2, int arg3,
                                             int arg4) override; // slot 0x47 0x4bc660
   void DispatchPictureResourceCommand(int eventType, void* eventSender, void* eventDataA,
-                                      void* eventDataB) override; // slot 0x68 0x4bc870
+                                      void* eventDataB, int commandFlag) override; // slot 0x68 0x4bc870
   // slots 0x02..0x06, 0x08..0x0e, 0x10..0x34, 0x36, 0x38..0x43, and
   // 0x45..0x67 and 0x69..0x73 inherited from TNoHilitePicture.
   virtual void

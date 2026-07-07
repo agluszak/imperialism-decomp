@@ -16,5 +16,8 @@ TRightLeftView::~TRightLeftView() {}
 TRightLeftView::TRightLeftView() : TControl(), field84(0) {}
 
 // FUNCTION: IMPERIALISM 0x00583fb0
-void TRightLeftView::DispatchPictureResourceCommand(int nEventType, void * pEventSender, void * pEventDataA, void * pEventDataB) {
+void TRightLeftView::DispatchPictureResourceCommand(int nEventType, void* pEventSender,
+                                                    void* pEventDataA, void* pEventDataB,
+                                                    int nCommandFlag) {
+  (void)nCommandFlag;
 }

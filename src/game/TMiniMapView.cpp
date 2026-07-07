@@ -25,4 +25,5 @@ void TMiniMapView::ApplyRectSlot110(RECT* rectBuffer) {}
 
 // FUNCTION: IMPERIALISM 0x0059a920
 void TMiniMapView::DispatchPictureResourceCommand(int nEventType, void* pEventSender,
-                                                  void* pEventDataA, void* pEventDataB) {}
+                                                  void* pEventDataA, void* pEventDataB,
+                                                  int nCommandFlag) {}

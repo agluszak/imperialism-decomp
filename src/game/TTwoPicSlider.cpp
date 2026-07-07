@@ -143,7 +143,9 @@ void TTwoPicSlider::ApplyRectSlot110(RECT* rectBuffer) {
 
 // FUNCTION: IMPERIALISM 0x0056e640
 void TTwoPicSlider::DispatchPictureResourceCommand(int nEventType, void* pEventSender,
-                                                   void* pEventDataA, void* pEventDataB) {
+                                                   void* pEventDataA, void* pEventDataB,
+                                                   int nCommandFlag) {
+  (void)nCommandFlag;
   TTwoPicSlider* slider = this;
   // ORIG_CALLCONV: __thiscall; Mac CodeWarrior evidence calls this TTwoPicSlider::TrackMouse.
   (void)pEventSender;

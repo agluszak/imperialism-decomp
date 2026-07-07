@@ -79,7 +79,9 @@ void TNumberedArrowButton::ApplyRectSlot110(RECT* rectBuffer) {
 
 // FUNCTION: IMPERIALISM 0x0058c640
 void TNumberedArrowButton::DispatchPictureResourceCommand(int eventType, void* eventSender,
-                                                          void* eventDataA, void* eventDataB) {
+                                                          void* eventDataA, void* eventDataB,
+                                                          int commandFlag) {
+  (void)commandFlag;
   (void)eventSender;
   (void)eventDataA;
   (void)eventDataB;

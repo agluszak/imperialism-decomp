@@ -376,8 +376,6 @@ int g_nIncludeViewAssertGate_006A17B0 = 0;
 int g_nIncludeViewPointerAssertGate_006A17C4 = 0;
 
 extern "C" {
-char LAB_00409a9d = 0;
-
 // Default mission score constant (0.0), loaded by the TMission slot 0x68-0x7C float
 // stubs (read pointer at 0x0065a468, immediately before the TMission vtable).
 // GLOBAL: IMPERIALISM 0x0065a468

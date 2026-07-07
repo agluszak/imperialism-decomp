@@ -300,7 +300,7 @@ void TCivDescription::ApplyRectSlot110(RECT* rectBuffer) {
 
   selectedClass = this->selectedCivilianClass;
   if (selectedClass == kCivilianClass_Prospector) {
-    this->DispatchPictureResourceCommand(0, 0, 0, 0);
+    this->DispatchPictureResourceCommand(0, 0, 0, 0, 0);
   } else if (selectedClass == kCivilianClass_Engineer) {
     int boundsBuffer[4];
     this->DeserializeCityProductionQueueCommand(boundsBuffer);
@@ -340,7 +340,9 @@ void TCivDescription::DeserializeCityProductionQueueCommand(int* boundsBuffer) {
 
 // FUNCTION: IMPERIALISM 0x0058fec0
 void TCivDescription::DispatchPictureResourceCommand(int eventType, void* eventSender,
-                                                     void* eventDataA, void* eventDataB) {
+                                                     void* eventDataA, void* eventDataB,
+                                                     int commandFlag) {
+  (void)commandFlag;
   (void)eventType;
   (void)eventSender;
   (void)eventDataA;

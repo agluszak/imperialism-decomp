@@ -460,6 +460,8 @@ address|target_cpp|ownership|note
 489a50|src/game/global_data_tables.cpp|manual|marker_sync
 489a70|src/game/global_data_tables.cpp|manual|marker_sync
 489a90|src/game/global_data_tables.cpp|manual|marker_sync
+489b60|src/game/TMouseCaptureState.cpp|manual|marker_sync
+489bf0|src/game/TMouseCaptureState.cpp|manual|marker_sync
 489cb0|src/game/TMouseCaptureState.cpp|manual|marker_sync
 489d40|src/game/TMouseCaptureState.cpp|manual|marker_sync
 489f00|src/game/TEvent.cpp|manual|marker_sync
