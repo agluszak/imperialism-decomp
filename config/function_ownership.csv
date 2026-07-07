@@ -4328,6 +4328,12 @@ address|target_cpp|ownership|note
 5c4020|src/game/quickdraw_rendering.cpp|manual|marker_sync
 5c4470|src/game/quickdraw_rendering.cpp|manual|marker_sync
 5c4500|src/game/quickdraw_rendering.cpp|manual|marker_sync
+5c46b0|src/game/ui_text_label_helpers.cpp|manual|marker_sync
+5c4780|src/game/ui_text_label_helpers.cpp|manual|marker_sync
+5c4850|src/game/ui_text_label_helpers.cpp|manual|marker_sync
+5c4910|src/game/ui_text_label_helpers.cpp|manual|marker_sync
+5c49d0|src/game/ui_text_label_helpers.cpp|manual|marker_sync
+5c4a40|src/game/ui_text_label_helpers.cpp|manual|marker_sync
 5c4c60|src/game/map_context_flavor_builders.cpp|manual|marker_sync
 5c57f0|src/game/map_context_flavor_builders.cpp|manual|marker_sync
 5c61a0|src/game/map_context_flavor_builders.cpp|manual|marker_sync

@@ -171,54 +171,6 @@ undefined4 ApplyControlTextStyleDescriptorFromThemeCode(void)
   return 0;
 }
 
-// ghidra_name LoadUiStringByGroupAndIndexToGlobalControlTagAndApply
-// ghidra_proto undefined LoadUiStringByGroupAndIndexToGlobalControlTagAndApply()
-// FUNCTION: IMPERIALISM 0x005c46b0
-undefined4 LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(void)
-{
-  return 0;
-}
-
-// ghidra_name LoadUiStringByGroupAndIndexToGlobalControlTag
-// ghidra_proto undefined LoadUiStringByGroupAndIndexToGlobalControlTag()
-// FUNCTION: IMPERIALISM 0x005c4780
-undefined4 LoadUiStringByGroupAndIndexToGlobalControlTag(void)
-{
-  return 0;
-}
-
-// ghidra_name LoadUiStringByGroupAndIndexToControlObject
-// ghidra_proto undefined LoadUiStringByGroupAndIndexToControlObject()
-// FUNCTION: IMPERIALISM 0x005c4850
-undefined4 LoadUiStringByGroupAndIndexToControlObject(void)
-{
-  return 0;
-}
-
-// ghidra_name LoadUiStringAndDispatchSharedMessageCommand
-// ghidra_proto undefined LoadUiStringAndDispatchSharedMessageCommand()
-// FUNCTION: IMPERIALISM 0x005c4910
-undefined4 LoadUiStringAndDispatchSharedMessageCommand(void)
-{
-  return 0;
-}
-
-// ghidra_name RunEnableAndProcessFlagWithScopedSharedStringCleanup
-// ghidra_proto undefined RunEnableAndProcessFlagWithScopedSharedStringCleanup()
-// FUNCTION: IMPERIALISM 0x005c49d0
-undefined4 RunEnableAndProcessFlagWithScopedSharedStringCleanup(void)
-{
-  return 0;
-}
-
-// ghidra_name EnableAndProcessFlagWithSharedStringCleanup
-// ghidra_proto undefined EnableAndProcessFlagWithSharedStringCleanup()
-// FUNCTION: IMPERIALISM 0x005c4a40
-undefined4 EnableAndProcessFlagWithSharedStringCleanup(void)
-{
-  return 0;
-}
-
 // ghidra_name InitializeMainRoutineContextAndRun
 // ghidra_proto undefined InitializeMainRoutineContextAndRun()
 // FUNCTION: IMPERIALISM 0x005c4ab0

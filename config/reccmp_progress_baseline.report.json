@@ -32606,37 +32606,37 @@
     },
     {
       "address": "0x5c46b0",
-      "matching": 0.04878048780487805,
+      "matching": 0.9743589743589743,
       "name": "LoadUiStringByGroupAndIndexToGlobalControlTagAndApply",
       "type": 1
     },
     {
       "address": "0x5c4780",
-      "matching": 0.04878048780487805,
+      "matching": 0.9743589743589743,
       "name": "LoadUiStringByGroupAndIndexToGlobalControlTag",
       "type": 1
     },
     {
       "address": "0x5c4850",
-      "matching": 0.05555555555555555,
+      "matching": 0.9705882352941176,
       "name": "LoadUiStringByGroupAndIndexToControlObject",
       "type": 1
     },
     {
       "address": "0x5c4910",
-      "matching": 0.05555555555555555,
+      "matching": 0.9705882352941176,
       "name": "LoadUiStringAndDispatchSharedMessageCommand",
       "type": 1
     },
     {
       "address": "0x5c49d0",
-      "matching": 0.10526315789473684,
+      "matching": 0.46153846153846156,
       "name": "RunEnableAndProcessFlagWithScopedSharedStringCleanup",
       "type": 1
     },
     {
       "address": "0x5c4a40",
-      "matching": 0.10526315789473684,
+      "matching": 0.46153846153846156,
       "name": "EnableAndProcessFlagWithSharedStringCleanup",
       "type": 1
     },
