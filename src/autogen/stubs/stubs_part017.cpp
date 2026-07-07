@@ -219,14 +219,6 @@ undefined4 UpdateType7NavyOrderChildSelectionByChanceThreshold(void)
   return 0;
 }
 
-// ghidra_name EnsureDwordPointerArraySlotAndReturnPointer
-// ghidra_proto undefined EnsureDwordPointerArraySlotAndReturnPointer()
-// FUNCTION: IMPERIALISM 0x00558860
-undefined4 EnsureDwordPointerArraySlotAndReturnPointer(void)
-{
-  return 0;
-}
-
 // ghidra_name GetMapContextActionCode
 // ghidra_proto int __cdecl GetMapContextActionCode(short nTileIndex, int dwInputFlags)
 // FUNCTION: IMPERIALISM 0x00559a70

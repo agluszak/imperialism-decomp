@@ -28,6 +28,10 @@ public:
   // fails). Only this one instantiation (primary neighbors) is evidenced; do not
   // assume TZoneSecondaryNeighborStretch shares the address.
   void EnsureCapacityAtLeast(int count); // 0x561300
+  // 0x558860. Grow-on-access accessor: ensures `data`/`capacity` can hold `index`
+  // (same doubling/fallback realloc as EnsureCapacityAtLeast), bumps `count` to
+  // cover it, and returns a pointer to the element slot. Called on TZone::primaryNeighbors.
+  TZone** EnsureSlotAllocatedAndReturnPointer(unsigned int index);
 };
 
 // VTABLE: IMPERIALISM 0x0065c748

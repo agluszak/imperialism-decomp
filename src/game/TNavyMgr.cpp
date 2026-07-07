@@ -436,10 +436,13 @@ char TNavyMgr::SelectEligibleMapOrderInteractionForNationAndContext(short* outRe
 
     short attachment = entry->attachment;
     bool contextMatch = (attachment == 6 && reinterpret_cast<int>(entry->owner) == portZoneContext);
-    // attachment 3 matches the active map-order context slot (a stretch<T> head).
+    // attachment 3 matches when this entry's contextAnchor equals the port zone's first
+    // primary-neighbor slot (the active map-order context head).
     bool activeContextMatch = false;
-    if (attachment == 3) {
-      activeContextMatch = true; // entry->contextAnchor == active-context head (approx)
+    if (attachment == 3 && portZoneContext != 0) {
+      TZone** slot = reinterpret_cast<TZone*>(portZoneContext)
+                         ->primaryNeighbors.EnsureSlotAllocatedAndReturnPointer(0);
+      activeContextMatch = (entry->contextAnchor == reinterpret_cast<int>(*slot));
     }
 
     // Diplomacy eligibility: the entry's nation must relate to the port-zone owner or

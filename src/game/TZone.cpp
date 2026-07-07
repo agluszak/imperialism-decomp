@@ -71,6 +71,31 @@ void* TZone::HandleTurnEventVtableSlot24CopyPayloadBuffer() {
 
 IMPLEMENT_DYNCREATE(TZone, TObject)
 
+// FUNCTION: IMPERIALISM 0x00558860
+TZone** TZonePrimaryNeighborStretch::EnsureSlotAllocatedAndReturnPointer(unsigned int index) {
+  if (static_cast<unsigned int>(Capacity()) <= index) {
+    int wanted = static_cast<int>(index) + 1;
+    unsigned int doubledCapacity = static_cast<unsigned int>(wanted * 2);
+    if (doubledCapacity > 0x7fffffffU) {
+      doubledCapacity = 0x7fffffffU;
+    }
+    void* grownBuffer = reinterpret_cast<void*(__cdecl*)(void*, int)>(
+        ReallocateHeapBlockWithAllocatorTracking)(Data(), wanted * 8);
+    if (grownBuffer == 0) {
+      Data() = static_cast<TZone**>(reinterpret_cast<void*(__cdecl*)(void*, int)>(
+          ReallocateHeapBlockWithAllocatorTracking)(Data(), wanted * 4));
+      Capacity() = wanted;
+    } else {
+      Data() = static_cast<TZone**>(grownBuffer);
+      Capacity() = static_cast<int>(doubledCapacity);
+    }
+  }
+  if (static_cast<unsigned int>(Count()) <= index) {
+    Count() = static_cast<int>(index) + 1;
+  }
+  return Data() + index;
+}
+
 // FUNCTION: IMPERIALISM 0x0055e700
 TZone::TZone()
     : field04(-1), displayName(), field0c(-1), field10(0), field12(-1), field14(0),
