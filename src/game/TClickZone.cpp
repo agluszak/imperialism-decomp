@@ -12,6 +12,7 @@ undefined TClickZone::OrphanRetStub_005723d0() {
 
 IMPLEMENT_DYNCREATE(TClickZone, TControl)
 
+// FUNCTION: IMPERIALISM 0x00572410
 TClickZone::TClickZone() {}
 
 // SYNTHETIC: IMPERIALISM 0x00572440

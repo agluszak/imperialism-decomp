@@ -7,6 +7,7 @@
 
 IMPLEMENT_DYNCREATE(TMilitaryPageView, TPageView)
 
+// FUNCTION: IMPERIALISM 0x00564920
 TMilitaryPageView::TMilitaryPageView() {}
 
 // SYNTHETIC: IMPERIALISM 0x00564950

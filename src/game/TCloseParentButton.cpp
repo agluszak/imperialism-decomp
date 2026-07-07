@@ -7,6 +7,7 @@
 
 IMPLEMENT_DYNCREATE(TCloseParentButton, TButton)
 
+// FUNCTION: IMPERIALISM 0x00584c60
 TCloseParentButton::TCloseParentButton() {}
 
 // SYNTHETIC: IMPERIALISM 0x00584ce0

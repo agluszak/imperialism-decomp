@@ -7,6 +7,7 @@
 
 IMPLEMENT_DYNCREATE(TGameSetupMultiplayerPicture, TNoHilitePicture)
 
+// FUNCTION: IMPERIALISM 0x00575f30
 TGameSetupMultiplayerPicture::TGameSetupMultiplayerPicture() {}
 
 // SYNTHETIC: IMPERIALISM 0x00575f60

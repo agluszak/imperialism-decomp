@@ -411,14 +411,6 @@ undefined4 BuildDiplomacyNationOverlayGeometryAndHitMasks_Impl_At004f3a50(void)
   return 0;
 }
 
-// ghidra_name TDiplomacyMapView::DestructTDiplomacyMapViewBaseState
-// ghidra_proto undefined DestructTDiplomacyMapViewBaseState()
-// FUNCTION: IMPERIALISM 0x004f3cc0
-undefined4 DestructTDiplomacyMapViewBaseState(void)
-{
-  return 0;
-}
-
 // ghidra_name TDiplomacyMapView::BuildDiplomacyNationOverlayGeometryAndHitMasks
 // ghidra_proto undefined BuildDiplomacyNationOverlayGeometryAndHitMasks()
 // FUNCTION: IMPERIALISM 0x004f3ea0

@@ -7,6 +7,7 @@
 
 IMPLEMENT_DYNCREATE(TScrollerButton, TPictureButton)
 
+// FUNCTION: IMPERIALISM 0x00574f40
 TScrollerButton::TScrollerButton() {}
 
 // SYNTHETIC: IMPERIALISM 0x00574f70

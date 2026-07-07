@@ -7,6 +7,7 @@
 
 IMPLEMENT_DYNCREATE(TPictureRadioButton, TToggleButton)
 
+// FUNCTION: IMPERIALISM 0x00570d60
 TPictureRadioButton::TPictureRadioButton() {}
 
 // SYNTHETIC: IMPERIALISM 0x00570d90

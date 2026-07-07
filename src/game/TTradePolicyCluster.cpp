@@ -7,6 +7,7 @@
 
 IMPLEMENT_DYNCREATE(TTradePolicyCluster, TUberCluster)
 
+// FUNCTION: IMPERIALISM 0x005842a0
 TTradePolicyCluster::TTradePolicyCluster() {}
 
 // SYNTHETIC: IMPERIALISM 0x005842d0

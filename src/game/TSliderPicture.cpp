@@ -7,6 +7,7 @@
 
 IMPLEMENT_DYNCREATE(TSliderPicture, TNoHilitePicture)
 
+// FUNCTION: IMPERIALISM 0x00573a20
 TSliderPicture::TSliderPicture() {}
 
 // SYNTHETIC: IMPERIALISM 0x00573a50

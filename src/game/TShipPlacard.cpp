@@ -7,6 +7,7 @@
 
 IMPLEMENT_DYNCREATE(TShipPlacard, TNoHilitePicture)
 
+// FUNCTION: IMPERIALISM 0x00569270
 TShipPlacard::TShipPlacard() {}
 
 // SYNTHETIC: IMPERIALISM 0x005692a0

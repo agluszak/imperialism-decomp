@@ -124,7 +124,7 @@ public:
 // === END GENERATED DECLS (TRightLeftView) ===
   // TODO(manifest): add data members from the object slice (`just slice-discovery TRightLeftView 0xCTOR`).
 
-  int field84;
+  int timingDword84;
 
   TRightLeftView();
 };

@@ -7,6 +7,7 @@
 
 IMPLEMENT_DYNCREATE(TOceanDialog, TWorldView)
 
+// FUNCTION: IMPERIALISM 0x00565e90
 TOceanDialog::TOceanDialog() {}
 
 // SYNTHETIC: IMPERIALISM 0x00565ee0

@@ -683,14 +683,6 @@ undefined4 ConstructUiColorTextResourceEntry(void)
   return 0;
 }
 
-// ghidra_name TBattleReportView::DestructTBattleReportViewBaseState
-// ghidra_proto undefined DestructTBattleReportViewBaseState()
-// FUNCTION: IMPERIALISM 0x00430a60
-undefined4 DestructTBattleReportViewBaseState(void)
-{
-  return 0;
-}
-
 // ghidra_name ConstructUiResourceEntry_Vtbl00640940
 // ghidra_proto undefined ConstructUiResourceEntry_Vtbl00640940()
 // FUNCTION: IMPERIALISM 0x00430b50

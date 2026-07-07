@@ -7,6 +7,7 @@
 
 IMPLEMENT_DYNCREATE(TNavyRoster, TMilitaryPageView)
 
+// FUNCTION: IMPERIALISM 0x00564d20
 TNavyRoster::TNavyRoster() {}
 
 // SYNTHETIC: IMPERIALISM 0x00564d70
