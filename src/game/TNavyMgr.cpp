@@ -391,12 +391,11 @@ char TNavyMgr::SelectEligibleMapOrderInteractionForNationAndContext(short* outRe
                                                                     int portZoneContext,
                                                                     short nation,
                                                                     short offerAmount) {
-  // The port-zone context's owning nation (terrainStateTable[portZone->field48]
-  // ownerNationTag04) -- inlined GetPortZoneOwnerNationCodeFromMissionField48 (0x561b90).
+  // The port-zone context's owning nation code.
   short ownerCode = 0;
   if (portZoneContext != 0) {
-    short field48 = static_cast<short>(reinterpret_cast<TPortZone*>(portZoneContext)->field48);
-    ownerCode = g_pGlobalMapState->terrainStateTable[field48].ownerNationTag04;
+    ownerCode =
+        reinterpret_cast<TZone*>(portZoneContext)->GetPortZoneOwnerNationCodeFromMissionField48();
   }
 
   // Priority ratio: fraction of this nation's remaining diplomacy capacity the offered

@@ -954,6 +954,12 @@ unsigned int TZone::HasDiplomaticallyRelatedNationInActiveType3Or4OrderMask(int 
   return 1;
 }
 
+// FUNCTION: IMPERIALISM 0x00561b90
+short TZone::GetPortZoneOwnerNationCodeFromMissionField48() {
+  short tileIndex = static_cast<short>(static_cast<TPortZone*>(this)->field48);
+  return g_pGlobalMapState->terrainStateTable[tileIndex].ownerNationTag04;
+}
+
 // FUNCTION: IMPERIALISM 0x00561bf0
 TZone* TZone::FindPortZoneByTile(short nTileIndex) {
   TZone* zone = g_pMapActionContextListHead;

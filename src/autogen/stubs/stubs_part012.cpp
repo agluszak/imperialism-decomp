@@ -763,22 +763,6 @@ undefined4 WrapperFor_FreeHeapBufferIfNotNull_At004b3050_Impl(void)
   return 0;
 }
 
-// ghidra_name ComputeAverageWeightWord1TimesTenFromResourceCounts
-// ghidra_proto undefined ComputeAverageWeightWord1TimesTenFromResourceCounts()
-// FUNCTION: IMPERIALISM 0x004b4290
-undefined4 ComputeAverageWeightWord1TimesTenFromResourceCounts(void)
-{
-  return 0;
-}
-
-// ghidra_name ComputeAverageWeightWord0TimesTenFromResourceCounts
-// ghidra_proto undefined ComputeAverageWeightWord0TimesTenFromResourceCounts()
-// FUNCTION: IMPERIALISM 0x004b4310
-undefined4 ComputeAverageWeightWord0TimesTenFromResourceCounts(void)
-{
-  return 0;
-}
-
 // ghidra_name TProductionOrder::ConstructTProductionOrderBaseState
 // ghidra_proto undefined ConstructTProductionOrderBaseState()
 // FUNCTION: IMPERIALISM 0x004b4f00

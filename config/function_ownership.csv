@@ -1142,6 +1142,8 @@ address|target_cpp|ownership|note
 4b4210|src/game/TCity.cpp|manual|marker_sync
 4b4230|src/game/TCity.cpp|manual|marker_sync
 4b4260|src/game/TCity.cpp|manual|marker_sync
+4b4290|src/game/TCity.cpp|manual|marker_sync
+4b4310|src/game/TCity.cpp|manual|marker_sync
 4b4390|src/game/TCity.cpp|manual|marker_sync
 4b44d0|src/game/TCity.cpp|manual|marker_sync
 4b4540|src/game/TCity.cpp|manual|marker_sync
@@ -3098,6 +3100,7 @@ address|target_cpp|ownership|note
 561a70|src/game/TPortZone.cpp|manual|marker_sync
 561b10|src/game/TPortZone.cpp|manual|marker_sync
 561b50|src/game/TPortZone.cpp|manual|marker_sync
+561b90|src/game/TZone.cpp|manual|marker_sync
 561bf0|src/game/TZone.cpp|manual|marker_sync
 561c80|src/game/TZone.cpp|manual|marker_sync
 561d40|src/game/TZone.cpp|manual|marker_sync

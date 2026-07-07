@@ -101,6 +101,12 @@ public:
   // `maxWeight`). Used by TNavyMgr::ProcessNationMapOrderInteractionsAndApplyOutcomes.
   int AllocateRandomResourceCountsWithinWeightBudget(short maxWeight, short* outCounts);
 
+  // 0x004b4290 / 0x004b4310. Count-weighted average (x10) of each resource type's
+  // descriptor weight word (1 / 0 respectively) across this city's orderCountByType5c
+  // counters. Empty counters return 0 / 1.
+  int ComputeAverageWeightWord1TimesTenFromResourceCounts();
+  int ComputeAverageWeightWord0TimesTenFromResourceCounts();
+
   unsigned char powerPlantUpgradeQueuedFlag04; // +0x04 — BuildPowerPlant queue flag
   unsigned char pad05;
   short field06; // +0x06 — zeroed by the ctor

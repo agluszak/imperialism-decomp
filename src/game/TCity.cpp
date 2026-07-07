@@ -288,6 +288,36 @@ void TCity::SetOwnerNeedCapA6(short value) {
   this->ownerNationAc->needCapA6 = value;
 }
 
+// FUNCTION: IMPERIALISM 0x004b4290
+int TCity::ComputeAverageWeightWord1TimesTenFromResourceCounts() {
+  int weightedSum = 0;
+  int totalCount = 0;
+  for (int type = 0; type < 0xe; ++type) {
+    short count = orderCountByType5c[type];
+    weightedSum += GetResourceDescriptorWeightWord1ByType(static_cast<short>(type)) * count;
+    totalCount += count;
+  }
+  if (totalCount != 0) {
+    return (weightedSum * 10) / totalCount;
+  }
+  return 0;
+}
+
+// FUNCTION: IMPERIALISM 0x004b4310
+int TCity::ComputeAverageWeightWord0TimesTenFromResourceCounts() {
+  int weightedSum = 0;
+  int totalCount = 0;
+  for (int type = 0; type < 0xe; ++type) {
+    short count = orderCountByType5c[type];
+    weightedSum += GetResourceDescriptorWeightWord0ByType(static_cast<short>(type)) * count;
+    totalCount += count;
+  }
+  if (totalCount != 0) {
+    return (totalCount / 2 + weightedSum * 10) / totalCount;
+  }
+  return 1;
+}
+
 // FUNCTION: IMPERIALISM 0x004b4390
 int TCity::AllocateRandomResourceCountsWithinWeightBudget(short maxWeight, short* outCounts) {
   int allocatedWeight = 0;

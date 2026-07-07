@@ -491,14 +491,6 @@ undefined4 ResolvePortZoneOwnerContextAndDispatch(void)
   return 0;
 }
 
-// ghidra_name GetPortZoneOwnerNationCodeFromMissionField48
-// ghidra_proto undefined GetPortZoneOwnerNationCodeFromMissionField48()
-// FUNCTION: IMPERIALISM 0x00561b90
-undefined4 GetPortZoneOwnerNationCodeFromMissionField48(void)
-{
-  return 0;
-}
-
 // ghidra_name ReallocatePortZoneContextArrayBuffer
 // ghidra_proto undefined ReallocatePortZoneContextArrayBuffer()
 // FUNCTION: IMPERIALISM 0x005620c0
