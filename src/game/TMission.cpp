@@ -3,10 +3,29 @@
 
 #include "decomp_types.h"
 #include "game/mfc.h"
-#include "game/mfc.h"
+#include "game/TAttackProvinceMission.h"
+#include "game/TBlockadePortMission.h"
+#include "game/TControlSeaZoneMission.h"
+#include "game/TDefendProvinceMission.h"
+#include "game/TEscortMission.h"
+#include "game/TInvadeMission.h"
+#include "game/TScatteredShipsMission.h"
 #include "game/TStream.h"
+#include "game/TZone.h"
 
-undefined4 CreateMissionObjectByKindAndNodeContext(void);
+TMission* CreateMissionObjectByKindAndNodeContext(int sourceNation, int missionKind, int nodeKey,
+                                                  int contextArg, int keyArg);
+
+// SYNTHETIC: IMPERIALISM 0x00534bc0
+// TMission::CreateObject
+
+IMPLEMENT_SERIAL(TMission, TObject, 1)
+
+void* TMission::CreateByKindAndNodeContext(int sourceNation, int missionKind, int arg2,
+                                           TZone* portZoneContext, int arg4) {
+  return CreateMissionObjectByKindAndNodeContext(sourceNation, missionKind, arg2,
+                                                 reinterpret_cast<int>(portZoneContext), arg4);
+}
 
 // --- TMission default-mission virtual stubs (concrete missions override) ---
 // FUNCTION: IMPERIALISM 0x00534c00
@@ -138,18 +157,6 @@ char TMission::ReturnFalseSlot98() {
 // SYNTHETIC: IMPERIALISM 0x00534fb0
 // TMission::GetRuntimeClass
 
-// SYNTHETIC: IMPERIALISM 0x00534bc0
-// TMission::CreateObject
-
-IMPLEMENT_SERIAL(TMission, TObject, 1)
-
-void* TMission::CreateByKindAndNodeContext(int sourceNation, int missionKind, int arg2,
-                                           TZone* portZoneContext, int arg4) {
-  return reinterpret_cast<void*(__cdecl*)(int, int, int, int, int)>(
-      CreateMissionObjectByKindAndNodeContext)(sourceNation, missionKind, arg2,
-                                               reinterpret_cast<int>(portZoneContext), arg4);
-}
-
 // FUNCTION: IMPERIALISM 0x00535020
 TMission::TMission() {
   state08 = 2;
@@ -162,6 +169,58 @@ TMission::TMission() {
 
 // FUNCTION: IMPERIALISM 0x00535080
 TMission::~TMission() {}
+
+// Mission factory: allocates and constructs the concrete mission subtype selected by
+// missionKind, then stamps the common owner/marker fields and runs the mission's
+// Call30 initializer. Each arm is real construction (new T(...)); the compiler emits
+// the operator-new + construction-unwind frame. contextArg is the map-order context /
+// target port zone (a TZone) for the navy missions; nodeKey/keyArg carry the province
+// or amassing keys for the army missions.
+// FUNCTION: IMPERIALISM 0x005350d0
+TMission* CreateMissionObjectByKindAndNodeContext(int sourceNation, int missionKind, int nodeKey,
+                                                  int contextArg, int keyArg) {
+  TMission* mission = nullptr;
+  switch (missionKind) {
+  case 0:
+    if (contextArg == 0) {
+      mission = new TAttackProvinceMission(static_cast<short>(nodeKey), -1);
+    } else {
+      mission = new TControlSeaZoneMission(reinterpret_cast<TZone*>(contextArg));
+    }
+    break;
+  case 1:
+    mission = new TAttackProvinceMission(static_cast<short>(nodeKey), static_cast<short>(keyArg));
+    break;
+  case 2:
+    if (keyArg != -1) {
+      mission =
+          new TInvadeMission(static_cast<short>(contextArg), reinterpret_cast<TZone*>(keyArg));
+    } else {
+      mission = new TControlSeaZoneMission(reinterpret_cast<TZone*>(contextArg));
+    }
+    break;
+  case 3:
+    if (contextArg == 0) {
+      mission = new TDefendProvinceMission(nodeKey);
+    } else if (reinterpret_cast<TZone*>(contextArg) ==
+               TZone::FindFirstPortZoneContextByNation(static_cast<short>(sourceNation))) {
+      mission = new TEscortMission(reinterpret_cast<TZone*>(contextArg));
+    } else {
+      mission = new TControlSeaZoneMission(reinterpret_cast<TZone*>(contextArg));
+    }
+    break;
+  case 4:
+    mission = new TBlockadePortMission(reinterpret_cast<TZone*>(contextArg));
+    break;
+  case 5:
+    mission = new TScatteredShipsMission();
+    break;
+  }
+  mission->nationId04 = static_cast<short>(sourceNation);
+  mission->pathMarker06 = -1;
+  mission->Call30();
+  return mission;
+}
 
 // --- slot 0x05/0x06 serializers (TStream* fast-path; same vtable offsets as WriteTo/ReadFrom) ---
 // FUNCTION: IMPERIALISM 0x00535820

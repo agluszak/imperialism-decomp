@@ -12879,7 +12879,8 @@
     },
     {
       "address": "0x4e0590",
-      "matching": 1.0,
+      "effective": true,
+      "matching": 0.42857142857142855,
       "name": "TGreatPower::OrphanRetStub_004d7fa0_88",
       "type": 1
     },
@@ -12897,7 +12898,8 @@
     },
     {
       "address": "0x4e0650",
-      "matching": 1.0,
+      "effective": true,
+      "matching": 0.42857142857142855,
       "name": "TGreatPower::OrphanRetStub_004d7fe0_8b",
       "type": 1
     },
@@ -12939,7 +12941,7 @@
     },
     {
       "address": "0x4e09a0",
-      "matching": 0.5060240963855421,
+      "matching": 0.5301204819277109,
       "name": "TGreatPower::ComputeCityOrderCapabilityAggregateScore",
       "type": 1
     },
@@ -19325,7 +19327,7 @@
     },
     {
       "address": "0x5350d0",
-      "matching": 0.01932367149758454,
+      "matching": 0.26595744680851063,
       "name": "CreateMissionObjectByKindAndNodeContext",
       "type": 1
     },
@@ -19486,18 +19488,6 @@
       "type": 1
     },
     {
-      "address": "0x535820",
-      "matching": 1.0,
-      "name": "TMission::SerializeMissionState",
-      "type": 1
-    },
-    {
-      "address": "0x5358a0",
-      "matching": 1.0,
-      "name": "TMission::DeserializeMissionState",
-      "type": 1
-    },
-    {
       "address": "0x535940",
       "matching": 0.03571428571428571,
       "name": "FindFirstTrackedHandlerMatchingModeAndShortKey",
@@ -19553,13 +19543,13 @@
     },
     {
       "address": "0x536530",
-      "matching": 0.2893081761006289,
+      "matching": 0.27672955974842767,
       "name": "SerializeTNavyMissionCommon",
       "type": 1
     },
     {
       "address": "0x536650",
-      "matching": 0.5925925925925926,
+      "matching": 0.5802469135802469,
       "name": "DeserializeTNavyMissionCommon",
       "type": 1
     },
@@ -20154,13 +20144,13 @@
     },
     {
       "address": "0x53c2b0",
-      "matching": 0.3411764705882353,
+      "matching": 0.32941176470588235,
       "name": "SerializeTArmyMission",
       "type": 1
     },
     {
       "address": "0x53c3d0",
-      "matching": 0.23668639053254437,
+      "matching": 0.22485207100591717,
       "name": "DeserializeTArmyMission",
       "type": 1
     },
@@ -42596,7 +42586,7 @@
     },
     {
       "address": "0x65a4e8",
-      "matching": 1.0,
+      "matching": 0.9487179487179487,
       "name": "TMission::`vftable'",
       "type": 5
     },
