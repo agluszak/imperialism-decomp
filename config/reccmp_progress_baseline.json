@@ -2,7 +2,7 @@
   "aligned_fun_count": 2028,
   "aligned_vs_original_pct": 25.966709346991035,
   "aligned_vs_paired_pct": 26.989619377162633,
-  "avg_matching_pct": 54.2377789109096,
+  "avg_matching_pct": 54.24788820313486,
   "compared_fun_count": 7275,
   "coverage_pct": 96.20998719590268,
   "dat_orig_only_count": 1584,
@@ -12,8 +12,8 @@
   "flo_orig_only_count": 270,
   "flo_recomp_only_count": 0,
   "git_branch": "claude/process-nation-map-order-interactions",
-  "git_commit": "3e12dea2c5b25504150aa552e462614e4048f76f",
-  "git_commit_date": "2026-07-07T11:38:05+00:00",
+  "git_commit": "bb7edee42b39fd6a5cfc57cab99262e7ebc770ba",
+  "git_commit_date": "2026-07-07T11:50:31+00:00",
   "global_coverage_pct": 20.08446738620366,
   "global_orig_only_count": 8515,
   "global_recomp_only_count": 3538,
@@ -59,7 +59,7 @@
   "str_orig_only_count": 480,
   "str_recomp_only_count": 82,
   "target": "IMPERIALISM",
-  "timestamp_utc": "2026-07-07T11:50:12+00:00",
+  "timestamp_utc": "2026-07-07T11:56:15+00:00",
   "wid_orig_only_count": 0,
   "wid_recomp_only_count": 2
 }

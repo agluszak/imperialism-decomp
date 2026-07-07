@@ -475,14 +475,6 @@ undefined4 ResetTPortZoneToSentinelVtableAndReleaseResources(void)
   return 0;
 }
 
-// ghidra_name ResolvePortZoneOwnerContextAndDispatch
-// ghidra_proto undefined ResolvePortZoneOwnerContextAndDispatch()
-// FUNCTION: IMPERIALISM 0x005619e0
-undefined4 ResolvePortZoneOwnerContextAndDispatch(void)
-{
-  return 0;
-}
-
 // ghidra_name ReallocatePortZoneContextArrayBuffer
 // ghidra_proto undefined ReallocatePortZoneContextArrayBuffer()
 // FUNCTION: IMPERIALISM 0x005620c0

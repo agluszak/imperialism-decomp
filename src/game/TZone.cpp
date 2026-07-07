@@ -979,6 +979,15 @@ unsigned int TZone::HasDiplomaticallyRelatedNationInActiveType3Or4OrderMask(int 
   return 1;
 }
 
+// FUNCTION: IMPERIALISM 0x005619e0
+void TZone::ResolvePortZoneOwnerContextAndDispatch() {
+  short tileIndex = FindNearestActiveSeaContextTileFromOffset216();
+  short ownerNation = g_pGlobalMapState->terrainStateTable[tileIndex].ownerNationTag04;
+  TZone* contextElement = g_pActiveMapOrderContext->contextArray + (ownerNation - 0x17);
+  primaryNeighbors.GetOrAppendUnique(contextElement);
+  contextElement->primaryNeighbors.GetOrAppendUnique(this);
+}
+
 // FUNCTION: IMPERIALISM 0x00561b90
 short TZone::GetPortZoneOwnerNationCodeFromMissionField48() {
   short tileIndex = static_cast<short>(static_cast<TPortZone*>(this)->field48);

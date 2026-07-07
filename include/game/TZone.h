@@ -162,6 +162,12 @@ public:
   // ownerNationTag04. (Reads the TPortZone-derived field48; only valid on a TPortZone.)
   short GetPortZoneOwnerNationCodeFromMissionField48();
 
+  // 0x005619e0. Bidirectionally links this zone with its owning nation's map-order
+  // context: resolves the owner nation (terrainStateTable at the zone's active tile),
+  // finds that nation's context in g_pActiveMapOrderContext->contextArray, and adds
+  // each to the other's primaryNeighbors (GetOrAppendUnique).
+  void ResolvePortZoneOwnerContextAndDispatch();
+
   TZone**& PrimaryZoneHeapData() {
     return primaryNeighbors.Data();
   }
