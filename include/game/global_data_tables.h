@@ -26,6 +26,7 @@ TGreatPower* GetActiveNationState(void);
 int GetTradeSummarySelectionTagByIndex(short index);
 
 struct NationState;
+struct TControlPictureRectState;
 struct TQuickDrawSurfaceContext;
 class TArmyMgr;
 class TDiplomacyMgr;
@@ -218,6 +219,14 @@ extern int g_bQuickDrawStrokePairDirty;
 // from it; SetClip (0x495a30) copies a RgnHandle's region into it.
 extern CRgn* g_pGlobalClipRegionHandleObject;
 extern int g_Quick_Draw_Color_State_006950FC;
+extern CFont* g_pQuickDrawCachedUiFont;
+extern TControlPictureRectState g_QuickDrawCachedFontPreset;
+extern unsigned char g_bQuickDrawCachedFontDirty;
+extern char g_szQuickDrawFontFaceSystem[];
+extern char g_szQuickDrawFontFaceBelwe[];
+extern char g_szQuickDrawFontFaceBookAntiqua[];
+extern char g_szQuickDrawFontFaceSmallFonts[];
+extern const char* const g_apszQuickDrawFontFaceNames[5];
 extern short g_nQuickDrawTextFont;               // 0x6a1d4c
 extern short g_nQuickDrawTextFace;               // 0x6a1d4e
 extern short g_nQuickDrawTextSize;               // 0x6a1d50
@@ -543,10 +552,9 @@ extern int g_adwEngineerRailBuildCostByTerrainType[16];
 // Civilian work-order rescind refund by cost class.
 extern int g_adwCivilianWorkOrderCostByClass[16];
 
-// TControl.cpp — UI resource entry defaults (also TMyStaticText.cpp/TStaticText.cpp).
-extern int g_nUiResourceEntryDefaultParam0;
-extern int g_nUiResourceEntryDefaultParam1;
-extern unsigned short g_wUiResourceEntryDefaultParam2;
+// TControl.cpp — UI resource entry default text-style/command-param block (also
+// TMyStaticText.cpp/TStaticText.cpp).
+extern TControlPictureRectState g_UiResourceEntryDefaultTextStyle;
 
 // TControlSeaZoneMission.cpp / TDefendProvinceMission.cpp / TNavyMission.cpp —
 // defend-province / mission priority-vector normalization constants.

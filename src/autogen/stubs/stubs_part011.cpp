@@ -443,14 +443,6 @@ undefined4 InitializeGlobalClipRegionHandleState(void)
   return 0;
 }
 
-// ghidra_name CreateFontFromPresetAndAttachRegionHandle
-// ghidra_proto undefined CreateFontFromPresetAndAttachRegionHandle()
-// FUNCTION: IMPERIALISM 0x00494130
-undefined4 CreateFontFromPresetAndAttachRegionHandle(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_DeleteRegionHandleFromClipState_At00494370
 // ghidra_proto undefined WrapperFor_DeleteRegionHandleFromClipState_At00494370()
 // FUNCTION: IMPERIALISM 0x00494370
@@ -487,14 +479,6 @@ undefined4 WrapperFor_AppendPointerToGlobalVectorAsStatus_At00494460(void)
 // ghidra_proto undefined ReleaseCachedGlobalFontObjectIfPresent_At004944b0()
 // FUNCTION: IMPERIALISM 0x004944b0
 undefined4 ReleaseCachedGlobalFontObjectIfPresent_At004944b0(void)
-{
-  return 0;
-}
-
-// ghidra_name UpdateGlobalFontPresetAndRebuildCachedFontIfDirty
-// ghidra_proto undefined UpdateGlobalFontPresetAndRebuildCachedFontIfDirty()
-// FUNCTION: IMPERIALISM 0x004944e0
-undefined4 UpdateGlobalFontPresetAndRebuildCachedFontIfDirty(void)
 {
   return 0;
 }

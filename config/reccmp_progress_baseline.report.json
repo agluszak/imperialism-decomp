@@ -4421,7 +4421,7 @@
     },
     {
       "address": "0x48b2d0",
-      "matching": 0.2033898305084746,
+      "matching": 0.19130434782608696,
       "name": "TView::VTableSlotDD",
       "type": 1
     },
@@ -5015,7 +5015,7 @@
     },
     {
       "address": "0x48e520",
-      "matching": 0.34285714285714286,
+      "matching": 0.5555555555555556,
       "name": "TControl::TControl",
       "type": 1
     },
@@ -5256,7 +5256,7 @@
     },
     {
       "address": "0x48fd00",
-      "matching": 0.6447368421052632,
+      "matching": 0.631578947368421,
       "name": "InitializeTextEntryBaseAndOptionalStringResource",
       "type": 1
     },
@@ -5280,7 +5280,7 @@
     },
     {
       "address": "0x48ffb0",
-      "matching": 0.027777777777777776,
+      "matching": 0.5359477124183006,
       "name": "TStaticText::ApplyRectSlot110",
       "type": 1
     },
@@ -5916,7 +5916,7 @@
     },
     {
       "address": "0x494130",
-      "matching": 0.03418803418803419,
+      "matching": 0.47533632286995514,
       "name": "CreateFontFromPresetAndAttachRegionHandle",
       "type": 1
     },
@@ -5934,7 +5934,7 @@
     },
     {
       "address": "0x4944e0",
-      "matching": 0.05128205128205128,
+      "matching": 0.4266666666666667,
       "name": "UpdateGlobalFontPresetAndRebuildCachedFontIfDirty",
       "type": 1
     },
@@ -12591,7 +12591,7 @@
     },
     {
       "address": "0x4ddc30",
-      "matching": 0.9894736842105263,
+      "matching": 0.6526315789473685,
       "name": "TGreatPower::OrphanRetStub_004d7fa0_20",
       "type": 1
     },
@@ -12879,14 +12879,14 @@
     },
     {
       "address": "0x4e0590",
-      "effective": true,
-      "matching": 0.42857142857142855,
+      "matching": 1.0,
       "name": "TGreatPower::OrphanRetStub_004d7fa0_88",
       "type": 1
     },
     {
       "address": "0x4e05d0",
-      "matching": 1.0,
+      "effective": true,
+      "matching": 0.42857142857142855,
       "name": "TGreatPower::OrphanLeaf_NoCall_Ins02_004d7fc0_89",
       "type": 1
     },
@@ -12898,19 +12898,21 @@
     },
     {
       "address": "0x4e0650",
-      "matching": 1.0,
+      "effective": true,
+      "matching": 0.42857142857142855,
       "name": "TGreatPower::OrphanRetStub_004d7fe0_8b",
       "type": 1
     },
     {
       "address": "0x4e0690",
-      "matching": 1.0,
+      "effective": true,
+      "matching": 0.42857142857142855,
       "name": "TGreatPower::ReturnFalseNationStateCapabilityFlag90",
       "type": 1
     },
     {
       "address": "0x4e06d0",
-      "matching": 0.7619047619047619,
+      "matching": 0.8095238095238095,
       "name": "TGreatPower::SumNationRuntimeFiveBucketValue44",
       "type": 1
     },
@@ -12934,7 +12936,7 @@
     },
     {
       "address": "0x4e0890",
-      "matching": 0.2222222222222222,
+      "matching": 0.24242424242424243,
       "name": "TGreatPower::IterateLinkedListCursorAndAccumulateRoundedMetric_004e0890",
       "type": 1
     },
@@ -13637,7 +13639,7 @@
     },
     {
       "address": "0x4e8540",
-      "matching": 0.4358974358974359,
+      "matching": 0.44871794871794873,
       "name": "TGreatPower::QueueMapActionMissionFromCandidateAndMarkState",
       "type": 1
     },
@@ -16422,7 +16424,7 @@
     },
     {
       "address": "0x50bea0",
-      "matching": 0.19627442071785553,
+      "matching": 0.19809177646524306,
       "name": "TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets",
       "type": 1
     },
@@ -16872,7 +16874,7 @@
     },
     {
       "address": "0x5136a0",
-      "matching": 1.0,
+      "matching": 0.8888888888888888,
       "name": "TMapMgr::OrphanLeaf_NoCall_Ins35_005136a0",
       "type": 1
     },
@@ -18312,13 +18314,13 @@
     },
     {
       "address": "0x52d150",
-      "matching": 0.7311827956989247,
+      "matching": 0.7021276595744681,
       "name": "GetOrCreateOverlayQuadRecordByIndex",
       "type": 1
     },
     {
       "address": "0x52d1f0",
-      "matching": 0.2784090909090909,
+      "matching": 0.2621082621082621,
       "name": "ReindexContiguousCityRegionIds",
       "type": 1
     },
@@ -20227,19 +20229,19 @@
     },
     {
       "address": "0x53ceb0",
-      "matching": 0.44329896907216493,
+      "matching": 0.441025641025641,
       "name": "ComputeArmyMissionCompositionAlignmentScore",
       "type": 1
     },
     {
       "address": "0x53d020",
-      "matching": 0.4235294117647059,
+      "matching": 0.4251968503937008,
       "name": "ComputeArmyMissionScoreDeltaWithCandidateUnit",
       "type": 1
     },
     {
       "address": "0x53d200",
-      "matching": 0.41245136186770426,
+      "matching": 0.4108527131782946,
       "name": "ComputeArmyMissionScoreDeltaWithScaledCandidateUnit",
       "type": 1
     },
@@ -22465,7 +22467,7 @@
     },
     {
       "address": "0x555420",
-      "matching": 0.5546666666666666,
+      "matching": 0.5653333333333334,
       "name": "ResolveTaskForceOrderConflictAndPickCandidate",
       "type": 1
     },
@@ -27261,7 +27263,7 @@
     },
     {
       "address": "0x588690",
-      "matching": 0.5185185185185185,
+      "matching": 0.5246913580246914,
       "name": "TAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache",
       "type": 1
     },
@@ -31547,7 +31549,7 @@
     },
     {
       "address": "0x5b8ad0",
-      "matching": 0.45692883895131087,
+      "matching": 0.47191011235955055,
       "name": "TTradeMgr::ComputeNationMetricBaselineValueForSlot",
       "type": 1
     },
@@ -31690,7 +31692,7 @@
     },
     {
       "address": "0x5ba0e0",
-      "matching": 1.0,
+      "matching": 0.8181818181818182,
       "name": "BuildInterNationEventSummaryRowsForAdvisorDialog_Impl",
       "type": 1
     },
@@ -38530,7 +38532,7 @@
     },
     {
       "address": "0x60c4ac",
-      "matching": 1.0,
+      "matching": 0.9827586206896551,
       "name": "CDialogTemplate::SetSystemFont",
       "type": 1
     },

@@ -157,9 +157,21 @@ public:
                                                   bool refreshNow); // slot 0x70 0x48e810
   // === END GENERATED DECLS (TControl) ===
   int field74;
-  int commandTagDefaultParam0;
-  int commandTagDefaultParam1;
-  unsigned short commandTagDefaultParam2;
+  // 0x78-0x81 — one 10-byte region, two verified views: text widgets store the packed
+  // text-style descriptor (font family/style-flag/size shorts + COLORREF-bearing
+  // styleRef at +0x7e, fed to the cached-font engine and CDC by ApplyRectSlot110
+  // 0x48ffb0); picture/command widgets store the command-tag default params
+  // (SetControlPictureEntryAndMaybeRefresh writes the +0x7c int).
+#pragma pack(push, 2)
+  union {
+    TControlPictureRectState textStyle78;
+    struct {
+      int commandTagDefaultParam0;            // 0x78
+      int commandTagDefaultParam1;            // 0x7c
+      unsigned short commandTagDefaultParam2; // 0x80
+    };
+  };
+#pragma pack(pop)
   unsigned char padding_82[2];
 
   TControl();

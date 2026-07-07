@@ -32,6 +32,7 @@ class TCursorControlPanel;
 #include "game/TMacViewMgr.h"
 #include "game/TLanguageMgr.h"
 #include "game/THelpMgr.h"
+#include "game/TControl.h"
 #include "game/TCursorControlPanel.h"
 #include "game/TAnimator.h"
 #include "game/TQuickDrawSurfaceContext.h"
@@ -147,6 +148,21 @@ char g_szMcAppUiSourcePath_006950B0[] = "D:\\Ambit\\McAppUI.cpp";
 char g_szUiPlaceholderStaticText_00694354[] = "Static Text";
 // GLOBAL: IMPERIALISM 0x006943b0
 char g_szUiPlaceholderTreasury_006943B0[] = "$55,555";
+// Font face names for the cached-UI-font LOGFONT factory (0x494130); families 2 and 3
+// share "Book Antiqua".
+// GLOBAL: IMPERIALISM 0x00695160
+char g_szQuickDrawFontFaceSystem[] = "System";
+// GLOBAL: IMPERIALISM 0x00695150
+char g_szQuickDrawFontFaceBelwe[] = "Belwe Bd BT";
+// GLOBAL: IMPERIALISM 0x00695140
+char g_szQuickDrawFontFaceBookAntiqua[] = "Book Antiqua";
+// GLOBAL: IMPERIALISM 0x00695130
+char g_szQuickDrawFontFaceSmallFonts[] = "Small Fonts";
+// GLOBAL: IMPERIALISM 0x00695108
+const char* const g_apszQuickDrawFontFaceNames[5] = {
+    g_szQuickDrawFontFaceSystem, g_szQuickDrawFontFaceBelwe, g_szQuickDrawFontFaceBookAntiqua,
+    g_szQuickDrawFontFaceBookAntiqua, g_szQuickDrawFontFaceSmallFonts};
+
 // GLOBAL: IMPERIALISM 0x006943bc
 char g_szUiPlaceholderSeason_006943BC[] = "Winter, 1888";
 // GLOBAL: IMPERIALISM 0x00694a98
@@ -219,6 +235,19 @@ CRgn* g_pGlobalClipRegionHandleObject = nullptr;
 int g_Quick_Draw_Color_State_006950FC = 0x010000FF;
 // GLOBAL: IMPERIALISM 0x00695100
 int g_uQuickDrawStrokeColor = 0x01000000;
+// Cached UI CFont built from the last text-style preset (quickdraw_rendering.cpp,
+// 0x494130/0x4944e0). Left zero-initialized to match the original .data image: the
+// 0x494460 CRT static-init function seeds mode/flag2/pointSize/styleRef6 to 0xc and
+// dirty=1 at runtime; until that init is ported, UpdateGlobalFontPresetAndRebuild
+// CachedFontIfDirty still rebuilds on first use via the g_pQuickDrawCachedUiFont==0
+// fallback.
+// GLOBAL: IMPERIALISM 0x006a1ce8
+CFont* g_pQuickDrawCachedUiFont = 0;
+// GLOBAL: IMPERIALISM 0x006a1cec
+TControlPictureRectState g_QuickDrawCachedFontPreset = {0, 0, 0, 0};
+// GLOBAL: IMPERIALISM 0x006a1cf6
+unsigned char g_bQuickDrawCachedFontDirty = 0;
+
 // GLOBAL: IMPERIALISM 0x006a1d4c
 short g_nQuickDrawTextFont = 0;
 // GLOBAL: IMPERIALISM 0x006a1d4e
@@ -745,11 +774,10 @@ extern "C" short g_anScenarioNationSetupTable_00698B1A[27] = {
 // GLOBAL: IMPERIALISM 0x00698c0c
 extern "C" const char s_Chunk_00698C0C[] = "Chunk";
 
-// UI command-tag default params copied into every TControl (offsets 0x78/0x7c/0x80).
-// Named so reccmp pairs the direct absolute loads in the TControl ctor.
-int g_nUiResourceEntryDefaultParam0 = 0;
-int g_nUiResourceEntryDefaultParam1 = 0;
-unsigned short g_wUiResourceEntryDefaultParam2 = 0;
+// UI default text-style/command-param block copied into every TControl (the 10-byte
+// dual-view region at offsets 0x78-0x81); same TControlPictureRectState shape the
+// widgets carry. Named so reccmp pairs the direct absolute loads in the TControl ctor.
+TControlPictureRectState g_UiResourceEntryDefaultTextStyle = {0, 0, 0, 0};
 
 } // extern "C"
 

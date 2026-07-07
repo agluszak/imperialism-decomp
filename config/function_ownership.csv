@@ -746,6 +746,8 @@ address|target_cpp|ownership|note
 493b50|src/game/CMcWindow.cpp|manual|marker_sync
 493ca0|src/game/CMcWindow.cpp|manual|marker_sync
 493cc0|src/game/CMcWindow.cpp|manual|marker_sync
+494130|src/game/quickdraw_rendering.cpp|manual|marker_sync
+4944e0|src/game/quickdraw_rendering.cpp|manual|marker_sync
 4945f0|src/game/ScopedMapQuickDrawContext.cpp|manual|marker_sync
 494660|src/game/ScopedMapQuickDrawContext.cpp|manual|marker_sync
 494680|src/game/ScopedMapQuickDrawContext.cpp|manual|marker_sync

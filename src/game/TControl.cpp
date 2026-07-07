@@ -56,10 +56,7 @@ TModalTemplateDialogBase::TModalTemplateDialogBase()
 
 // FUNCTION: IMPERIALISM 0x0048e520
 TControl::TControl()
-    : TModalTemplateDialogBase(), field74(0),
-      commandTagDefaultParam0(g_nUiResourceEntryDefaultParam0),
-      commandTagDefaultParam1(g_nUiResourceEntryDefaultParam1),
-      commandTagDefaultParam2(g_wUiResourceEntryDefaultParam2) {}
+    : TModalTemplateDialogBase(), field74(0), textStyle78(g_UiResourceEntryDefaultTextStyle) {}
 
 // Destructors are compiler-generated (implicit) from real inheritance.
 
@@ -121,7 +118,7 @@ void TControl::SetControlPictureEntryAndMaybeRefresh(int* pictureEntryRef, bool 
 // FUNCTION: IMPERIALISM 0x0048e7d0
 void TControl::SetCityProductionDialogPictureRectAndMaybeRefresh(TControlPictureRectState* state,
                                                                  char refreshNow) {
-  *reinterpret_cast<TControlPictureRectState*>(&commandTagDefaultParam0) = *state;
+  textStyle78 = *state;
   if (refreshNow != 0) {
     PaintOrInvalidateControl(0);
   }

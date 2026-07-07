@@ -4,6 +4,94 @@
 #include "game/global_data_tables.h"
 #include "game/TQuickDrawSurfaceContext.h"
 #include "game/TStaticText.h"
+#include <cstring>
+
+// FUNCTION: IMPERIALISM 0x00494130
+CFont* __cdecl CreateFontFromPresetAndAttachRegionHandle(TControlPictureRectState* preset) {
+  // Height table for the fixed-size families (indices are size codes 1-0x18); the
+  // original builds it on the stack every call.
+  int heightBySizeIndex[25];
+  heightBySizeIndex[0] = 0;
+  heightBySizeIndex[1] = 1;
+  heightBySizeIndex[2] = 2;
+  heightBySizeIndex[3] = 3;
+  heightBySizeIndex[4] = 4;
+  heightBySizeIndex[5] = 5;
+  heightBySizeIndex[6] = 6;
+  heightBySizeIndex[7] = 7;
+  heightBySizeIndex[8] = 8;
+  heightBySizeIndex[9] = 0xe;
+  heightBySizeIndex[10] = 0xe;
+  heightBySizeIndex[11] = 0xf;
+  heightBySizeIndex[12] = 0x10;
+  heightBySizeIndex[13] = 0x11;
+  heightBySizeIndex[14] = 0x14;
+  heightBySizeIndex[15] = 0x14;
+  heightBySizeIndex[16] = 0x14;
+  heightBySizeIndex[17] = 0x14;
+  heightBySizeIndex[18] = 0x14;
+  heightBySizeIndex[19] = 0x14;
+  heightBySizeIndex[20] = 0x19;
+  heightBySizeIndex[21] = 0x19;
+  heightBySizeIndex[22] = 0x19;
+  heightBySizeIndex[23] = 0x19;
+  heightBySizeIndex[24] = 0x1e;
+
+  int sizeIndex = 0xc;
+  if (preset->pointSize != 0) {
+    sizeIndex = preset->pointSize;
+  }
+  int family = preset->mode;
+  if (family < 1 || family > 4) {
+    family = 0;
+  }
+
+  int height;
+  if (family == 0 || family == 1 || family == 4 || sizeIndex < 1 || sizeIndex > 0x18) {
+    height = (sizeIndex * 10 + 3) / 8;
+  } else {
+    height = heightBySizeIndex[sizeIndex];
+  }
+
+  CFont* font = new CFont();
+  LOGFONTA logFont;
+  memset(&logFont, 0, sizeof(LOGFONTA));
+  logFont.lfCharSet = DEFAULT_CHARSET;
+  logFont.lfHeight = height;
+  lstrcpynA(logFont.lfFaceName, g_apszQuickDrawFontFaceNames[family], 0x20);
+  if ((preset->flag2 & 1) != 0) {
+    logFont.lfWeight = 700;
+  }
+  logFont.lfItalic = static_cast<unsigned char>(preset->flag2 & 2);
+  logFont.lfUnderline = static_cast<unsigned char>(preset->flag2 & 4);
+  font->Attach(CreateFontIndirectA(&logFont));
+  return font;
+}
+
+// FUNCTION: IMPERIALISM 0x004944e0
+CFont* __cdecl UpdateGlobalFontPresetAndRebuildCachedFontIfDirty(TControlPictureRectState* style) {
+  if (g_QuickDrawCachedFontPreset.mode != style->mode) {
+    g_bQuickDrawCachedFontDirty = 1;
+    g_QuickDrawCachedFontPreset.mode = style->mode;
+  }
+  if (g_QuickDrawCachedFontPreset.flag2 != style->flag2) {
+    g_bQuickDrawCachedFontDirty = 1;
+    g_QuickDrawCachedFontPreset.flag2 = style->flag2;
+  }
+  if (g_QuickDrawCachedFontPreset.pointSize != style->pointSize) {
+    g_bQuickDrawCachedFontDirty = 1;
+    g_QuickDrawCachedFontPreset.pointSize = style->pointSize;
+  }
+  if (g_bQuickDrawCachedFontDirty != 0 || g_pQuickDrawCachedUiFont == 0) {
+    if (g_pQuickDrawCachedUiFont != 0) {
+      delete g_pQuickDrawCachedUiFont;
+    }
+    g_pQuickDrawCachedUiFont =
+        CreateFontFromPresetAndAttachRegionHandle(&g_QuickDrawCachedFontPreset);
+    g_bQuickDrawCachedFontDirty = 0;
+  }
+  return g_pQuickDrawCachedUiFont;
+}
 
 // FUNCTION: IMPERIALISM 0x00495000
 void SetQuickDrawFillColor(int fillColor) {

@@ -6,7 +6,9 @@
 #include "game/global_data_tables.h"
 
 #include "game/UiRuntimeContext.h"
+#include "game/ScopedMapQuickDrawContext.h"
 #include "game/quickdraw_guards.h"
+#include "game/quickdraw_rendering.h"
 #include "game/mfc.h"
 #include "game/ui_widget_thunks.h"
 #include <new>
@@ -99,8 +101,7 @@ void TStaticText::InitializeTextEntryBaseAndOptionalStringResource(
     panel->AttachChildControl(this, 0);
   }
   resourceTemplateId40 = 0;
-  SetCityProductionDialogPictureRectAndMaybeRefresh(
-      reinterpret_cast<TControlPictureRectState*>(&g_nUiResourceEntryDefaultParam0), 0);
+  SetCityProductionDialogPictureRectAndMaybeRefresh(&g_UiResourceEntryDefaultTextStyle, 0);
   field88 = reinterpret_cast<void*>(static_cast<int>(stringResourceGroup));
   field8C = stringResourceIndex;
   if (stringResourceGroup != -1) {
@@ -129,8 +130,8 @@ void TStaticText::AssignTextSharedRefIfChangedAndMaybeInvalidate(CString* shared
 void TStaticText::LoadUiStringAndDispatchViaVslot1C8(short stringResourceGroup,
                                                      short stringResourceIndex) {
   CString loadedString;
-  g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&loadedString, stringResourceGroup,
-                                                                  stringResourceIndex);
+  g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(
+      &loadedString, stringResourceGroup, stringResourceIndex);
   AssignTextSharedRefIfChangedAndMaybeInvalidate(&loadedString, 0);
 }
 
@@ -142,9 +143,44 @@ void TStaticText::SetTextThemeCodeAndMaybeRefresh(short themeCode, char refreshF
   }
 }
 
+// Paint the static text through the active QuickDraw CDC: aspect-filtered font
+// mapping, cached CFont from the widget's packed text style, text color from the
+// optional field48 payload (else the style's styleRef), and CDC::DrawText with the
+// field90 alignment code (-2 left / 1 center / -1 right on DT_NOPREFIX|0x100|
+// DT_WORDBREAK).
 // FUNCTION: IMPERIALISM 0x0048ffb0
 void TStaticText::ApplyRectSlot110(RECT* rectBuffer) {
   (void)rectBuffer;
+  CDC* dc = GetActiveQuickDrawDc();
+  dc->SetMapperFlags(1);
+  RECT bounds;
+  BuildRectFromSlot158(&bounds);
+  // The original calls the CRect::DeflateRect(LPCRECT) COMDAT (0x61f342) on the
+  // 0x68-0x74 inset region; the four ints are open-coded here because the insets are
+  // modeled as separate fields.
+  bounds.left += field68;
+  bounds.top += field6C;
+  bounds.right -= field70;
+  bounds.bottom -= field74;
+  CFont* font = UpdateGlobalFontPresetAndRebuildCachedFontIfDirty(&textStyle78);
+  CFont* oldFont = dc->SelectObject(font);
+  COLORREF textColor;
+  if (field48 == 0) {
+    textColor = textStyle78.styleRef6;
+  } else {
+    textColor = field48->styleWord;
+  }
+  dc->SetTextColor(textColor);
+  UINT format = 0x910;
+  if (field90 != -2) {
+    if (field90 == -1) {
+      format = 0x912;
+    } else if (field90 == 1) {
+      format = 0x911;
+    }
+  }
+  dc->DrawText(*text, text->GetLength(), &bounds, format);
+  dc->SelectObject(oldFont);
 }
 
 // FUNCTION: IMPERIALISM 0x004900a0

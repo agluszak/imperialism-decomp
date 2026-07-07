@@ -23,6 +23,18 @@ void DrawCenteredGuideLineOnMapDc(short x, short y);
 // layout only partially recovered (see BuildUiTextStyleDescriptor body): a packed
 // {short,short,short,int} at +0x0/+0x2/+0x4/+0x6, rest unknown/unwritten by this
 // function. unused is always passed 0 by every known caller.
+struct TControlPictureRectState;
+
+// Build a CFont from a packed text-style preset (mode=font family 0-4, flag2=bold/
+// italic/underline bits, pointSize=size index): fixed-size families 2/3 map the size
+// index through a height table, scalable families compute (index*10+3)/8; the face
+// name comes from g_apszQuickDrawFontFaceNames. 0x00494130
+CFont* __cdecl CreateFontFromPresetAndAttachRegionHandle(TControlPictureRectState* preset);
+
+// Copy the preset into the global font-preset cache, rebuild the cached CFont if any
+// field changed (or none exists yet), and return it. 0x004944e0
+CFont* __cdecl UpdateGlobalFontPresetAndRebuildCachedFontIfDirty(TControlPictureRectState* style);
+
 void BuildUiTextStyleDescriptor(void* styleDescriptor, int unused, int arg2, int themeCode);
 
 // 0x5c4020 -- asserts the text control, applies a theme style descriptor built from
