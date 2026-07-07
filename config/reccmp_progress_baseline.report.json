@@ -13729,7 +13729,7 @@
     },
     {
       "address": "0x4ea300",
-      "matching": 0.7701863354037267,
+      "matching": 0.782608695652174,
       "name": "TAutoGreatPower::ResetNationDiplomacySlotsAndMarkRelatedNations",
       "type": 1
     },
@@ -17240,7 +17240,7 @@
     },
     {
       "address": "0x5178f0",
-      "matching": 0.32116788321167883,
+      "matching": 0.3446601941747573,
       "name": "ComputeRepresentativeTileIndexForTerrainTypeWithWrapBias",
       "type": 1
     },
@@ -22317,13 +22317,13 @@
     },
     {
       "address": "0x553b10",
-      "matching": 0.4827586206896552,
+      "matching": 0.41379310344827586,
       "name": "HasNoMapOrderEntryChildrenQueued",
       "type": 1
     },
     {
       "address": "0x553b50",
-      "matching": 0.5818181818181818,
+      "matching": 0.5454545454545454,
       "name": "HasActiveMapOrderEntryChildren",
       "type": 1
     },
@@ -28531,7 +28531,7 @@
     },
     {
       "address": "0x596cb0",
-      "matching": 0.16101694915254236,
+      "matching": 0.15254237288135594,
       "name": "TMapUberPicture::SetMapInteractionMode",
       "type": 1
     },
@@ -28620,45 +28620,15 @@
       "type": 1
     },
     {
-      "address": "0x598870",
-      "matching": 0.13333333333333333,
-      "name": "TMapUberPicture::WrapperFor_InvalidateCityDialogRectRegionChain_At00598870",
-      "type": 1
-    },
-    {
-      "address": "0x5988c0",
-      "matching": 0.8,
-      "name": "TMapUberPicture::OrphanCallChain_C2_I18_005988c0",
-      "type": 1
-    },
-    {
       "address": "0x598910",
       "matching": 0.26666666666666666,
       "name": "TMapUberPicture::OrphanCallChain_C2_I11_00598910",
       "type": 1
     },
     {
-      "address": "0x598950",
-      "matching": 0.0,
-      "name": "TMapUberPicture::OrphanLeaf_NoCall_Ins09_00598950",
-      "type": 1
-    },
-    {
-      "address": "0x598990",
-      "matching": 0.9655172413793104,
-      "name": "TMapUberPicture::OrphanCallChain_C2_I14_00598990",
-      "type": 1
-    },
-    {
       "address": "0x5989d0",
       "matching": 0.1111111111111111,
       "name": "TMapUberPicture::OrphanCallChain_C2_I16_005989d0",
-      "type": 1
-    },
-    {
-      "address": "0x598a20",
-      "matching": 0.6666666666666666,
-      "name": "TMapUberPicture::OrphanCallChain_C1_I06_00598a20",
       "type": 1
     },
     {
@@ -28707,12 +28677,6 @@
       "address": "0x599a20",
       "matching": 0.2,
       "name": "NotifyTaskForceSelectionListenerByWord62",
-      "type": 1
-    },
-    {
-      "address": "0x599a50",
-      "matching": 0.6412213740458015,
-      "name": "TacticalBattleView::EnterMapInteractionOverlayMode",
       "type": 1
     },
     {
@@ -43290,7 +43254,7 @@
     },
     {
       "address": "0x668f08",
-      "matching": 1.0,
+      "matching": 0.9609375,
       "name": "TMapUberPicture::`vftable'",
       "type": 5
     },

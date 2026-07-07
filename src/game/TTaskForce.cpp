@@ -380,9 +380,9 @@ void TTaskForce::Free() {
 }
 // FUNCTION: IMPERIALISM 0x00552a70
 void TTaskForce::RemoveTaskForceOrderNodesByNationAndClearSelectionState(int nation,
-                                                                         TTaskForce* entry) {
+                                                                         TZone* contextZone) {
   (void)nation;
-  (void)entry;
+  (void)contextZone;
 }
 
 // FUNCTION: IMPERIALISM 0x00552f60
@@ -843,15 +843,3 @@ void TTaskForce::ClearMapOrderProcessedFlagsChain() {
     node->eliminatedFlag26 = 0;
   }
 }
-
-// TODO: port body @ 0x005609e0 (resolves/creates the task force for `nation` via the
-// TTaskForce(contextAnchor, requiredCount) ctor if eligible). Stub keeps the address
-// owned and lets EnsureSelectedTaskForceForOrderOwnerAndRefresh call it as a real method.
-// FUNCTION: IMPERIALISM 0x005609e0
-TTaskForce* TTaskForce::CreateTaskForceFromNavyOrdersForNationIfEligible(short nation) {
-  (void)nation;
-  return nullptr;
-}
-
-// TODO: port body @ 0x00552a70 (drops this task force's queued order nodes for `nation`
-// and clears the selection state tied to `entry`).

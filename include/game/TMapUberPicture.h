@@ -5,6 +5,7 @@
 
 // Forward declarations for types referenced by generated signatures.
 class TTaskForce;
+class TZone;
 class TMiniMapView;
 
 // TODO(manifest): describe TMapUberPicture and its role. Base edge (TMapUberUberPicture) recovered from RTTI CRuntimeClass chain: TMapUberPicture -> TMapUberUberPicture -> TOffLimitsPicture -> TPicture -> TControl -> TView -> TEventHandler -> TObject -> CObject.
@@ -130,8 +131,8 @@ public:
   // slot 0x72 SetPictureResourceIdAndRefresh inherited unchanged (0x48f570)
   // slot 0x73 ForwardCombineOptionalSourceRegionIntoDestinationAndUpdateBox inherited unchanged (0x573940)
   virtual undefined AutoScrollByEdgeMask(short edgeMask) override; // slot 0x74 0x5977a0
-  virtual undefined RefreshAfterSelectionChange();                  // slot 0x75 0x598950
-  virtual void InvalidateTileMarkerChain(short tileIndex);          // slot 0x76 0x598870
+  virtual undefined RefreshAfterSelectionChange();                 // slot 0x75 0x598950
+  virtual void InvalidateTileMarkerChain(short tileIndex);         // slot 0x76 0x598870
   // Ground truth (RET 0x4) proves the previous 0-arg declaration was a poison-pill:
   // forwards entryIndex to subviewAc's NotifySubviewOfSelectedTile, then (only before
   // entering overlay mode) syncs subview2A8's trade-tool enabled state to the same value.
@@ -173,9 +174,10 @@ public:
   unsigned char invalidationFlag94;
   // 0=civilian, 1=army, 2=navy, 3=none (default) -- selects categoryPages[] below.
   short activeUnitCategoryIndex96;
-  // The currently-selected map order-entry object (SetActiveMapOrderEntry/
-  // RefreshMapOrderEntryPanel).
-  TTaskForce* orderEntryContext98;
+  // The currently-selected map-order context node -- a TZone (map-action context), not a
+  // TTaskForce: its CreateTaskForceFromNavyOrders... factory produces the task force
+  // panel shown for it (SetActiveMapOrderEntry/RefreshMapOrderEntryPanel).
+  TZone* orderEntryContext98;
   int field_0x9c;
   int field_0xa0;
   // 'GOOD'/'GOLD'-tag sub-control resolved by NoOpUiLifecycleHook (not yet ported);
@@ -223,10 +225,9 @@ public:
   void RefreshMapOrderEntryPanel(TTaskForce* pMapOrderEntry);
   // Sets orderEntryContext98 (invalidating the old/new map regions around the write),
   // then calls RefreshMapOrderEntryPanel. 0x00597950, __thiscall, 1 arg.
-  void SetActiveMapOrderEntry(TTaskForce* pMapOrderEntry);
+  void SetActiveMapOrderEntry(TZone* pMapOrderContextZone);
   // Enters/exits the mode-specific overlay UI state (called from SetMapInteractionMode
   // when switching to civilian mode). 0x00599a50, 252 bytes. TODO stub body (not yet
   // ported).
   void EnterMapInteractionOverlayMode(int param1);
 };
-

@@ -834,6 +834,16 @@ void TZone::SetMapOrderUiFlag(int flag) {
   }
 }
 
+// TODO: port body @ 0x005609e0 (builds a new TTaskForce order entry for this context
+// zone + nation via the TTaskForce(contextAnchor, requiredCount) ctor when eligible).
+// Stub keeps the address owned; EnsureSelectedTaskForceForOrderOwnerAndRefresh calls it
+// as a real TZone method.
+// FUNCTION: IMPERIALISM 0x005609e0
+TTaskForce* TZone::CreateTaskForceFromNavyOrdersForNationIfEligible(short nation) {
+  (void)nation;
+  return nullptr;
+}
+
 // FUNCTION: IMPERIALISM 0x00560f80
 void TZone::PropagateMapActionContextDistanceLevelsRecursive(short level) {
   if (level == -1) {

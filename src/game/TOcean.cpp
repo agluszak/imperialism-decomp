@@ -268,26 +268,26 @@ int ComputeGlobalMapActionContextNodeValueAverage(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x00564600
-TTaskForce* TOcean::EnsureSelectedTaskForceForOrderOwnerAndRefresh(TTaskForce* pMapOrderEntry) {
-  // If a different order entry is currently selected, drop its per-nation order nodes;
-  // and if the new entry is null, free and forget the cached task force.
+TTaskForce* TOcean::EnsureSelectedTaskForceForOrderOwnerAndRefresh(TZone* pMapOrderContextZone) {
+  // If a different context zone is now selected, drop the cached task force's per-nation
+  // order nodes; and if the new context is null, free and forget the cached task force.
   if (selectedTaskForce14 != nullptr &&
-      selectedTaskForce14->contextAnchor != reinterpret_cast<int>(pMapOrderEntry)) {
+      selectedTaskForce14->contextAnchor != reinterpret_cast<int>(pMapOrderContextZone)) {
     selectedTaskForce14->RemoveTaskForceOrderNodesByNationAndClearSelectionState(
-        g_pSimMgr->GetActiveNationId(), pMapOrderEntry);
-    if (pMapOrderEntry == nullptr) {
+        g_pSimMgr->GetActiveNationId(), pMapOrderContextZone);
+    if (pMapOrderContextZone == nullptr) {
       TTaskForce* previous = selectedTaskForce14;
       selectedTaskForce14 = nullptr;
       previous->Free();
     }
   }
   if (selectedTaskForce14 == nullptr) {
-    if (pMapOrderEntry != nullptr) {
-      selectedTaskForce14 = pMapOrderEntry->CreateTaskForceFromNavyOrdersForNationIfEligible(
+    if (pMapOrderContextZone != nullptr) {
+      selectedTaskForce14 = pMapOrderContextZone->CreateTaskForceFromNavyOrdersForNationIfEligible(
           g_pSimMgr->GetActiveNationId());
       return selectedTaskForce14;
     }
-  } else if (pMapOrderEntry != nullptr) {
+  } else if (pMapOrderContextZone != nullptr) {
     selectedTaskForce14->RefreshTaskForceSelectionFlagsForCurrentNationOrders(0);
   }
   return selectedTaskForce14;

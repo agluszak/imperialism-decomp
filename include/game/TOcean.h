@@ -72,11 +72,11 @@ public:
   // body is a documented placeholder; see bd 1uj.16 follow-up notes.
   void FinalizeQueuedMapOrderEntry(TTaskForce* entry); // 0x5642e0
 
-  // Called from TMapUberPicture::SetActiveMapOrderEntry on g_pActiveMapOrderContext.
-  // Frees the previously-tracked task force if the new entry is null, or resolves/caches
-  // one for the new entry via GetActiveNationId(); returns the (possibly updated) cached
-  // task force. 0x00564600.
-  TTaskForce* EnsureSelectedTaskForceForOrderOwnerAndRefresh(TTaskForce* pMapOrderEntry);
+  // Frees the previously-tracked task force if the new map-order context zone is null,
+  // or resolves/caches one for it via GetActiveNationId(); returns the (possibly
+  // updated) cached task force. The map-order "entry" is the selected context TZone
+  // (its CreateTaskForceFromNavyOrders... factory produces the task force). 0x00564600.
+  TTaskForce* EnsureSelectedTaskForceForOrderOwnerAndRefresh(TZone* pMapOrderContextZone);
 };
 
 void NotifyMapUberPictureTileMarker(short tileIndex);

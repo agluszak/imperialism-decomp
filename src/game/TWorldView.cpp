@@ -338,7 +338,7 @@ void TWorldView::HandleMapTileClickSetOrderContextAndDispatchEvent79(int arg1, i
   short tileIndex = static_cast<short>(arg1);
   char* terrainTable = reinterpret_cast<char*>(g_pGlobalMapState->terrainStateTable);
   if (terrainTable[tileIndex * 0x24] == '\x05') {
-    TTaskForce* orderContext = static_cast<TTaskForce*>(
+    TZone* orderContext = static_cast<TZone*>(
         reinterpret_cast<void*(__cdecl*)(short)>(thunk_GetMapActionContextByTileIndex)(tileIndex));
     // ownerContext is really a TMapUberPicture* (see the class-attribution note on
     // TMapUberPicture::SetMapInteractionMode); SetActiveMapOrderEntry already reproduces

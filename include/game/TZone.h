@@ -11,6 +11,7 @@
 struct CRuntimeClass;
 class TStream;
 class TZone;
+class TTaskForce;
 struct TZonePrimaryNeighborTag;
 struct TZoneSecondaryNeighborTag;
 
@@ -167,6 +168,13 @@ public:
   // finds that nation's context in g_pActiveMapOrderContext->contextArray, and adds
   // each to the other's primaryNeighbors (GetOrAppendUnique).
   void ResolvePortZoneOwnerContextAndDispatch();
+
+  // 0x005609e0. If `nation` has this map-order context zone flagged (field10 bit) and a
+  // matching primary-order ship, builds and returns a new TTaskForce order entry for it
+  // (via the TTaskForce(contextAnchor, requiredCount) ctor); otherwise returns null.
+  // `nation` == -1 resolves the active nation. Called by
+  // TOcean::EnsureSelectedTaskForceForOrderOwnerAndRefresh.
+  TTaskForce* CreateTaskForceFromNavyOrdersForNationIfEligible(short nation);
 
   TZone**& PrimaryZoneHeapData() {
     return primaryNeighbors.Data();
