@@ -30,7 +30,9 @@ char TStream::streamSlot38() {
 }
 
 // FUNCTION: IMPERIALISM 0x00488ab0
-void TStream::Free() {} // slot 0x1c override
+void TStream::Free() { // slot 0x1c override
+  delete this;
+}
 
 // FUNCTION: IMPERIALISM 0x00488ad0
 int TStream::streamSlot28() {

@@ -2,7 +2,7 @@
 
 #include "game/TWorldView.h"
 
-class TQuickDrawSurfaceContext;
+struct TQuickDrawSurfaceContext;
 
 // VTABLE: IMPERIALISM 0x658a58
 class TMapDialog : public TWorldView {

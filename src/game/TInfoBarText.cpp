@@ -2,6 +2,8 @@
 
 #include <cstring>
 
+#include "game/TCursorControlPanel.h"
+#include "game/global_data_tables.h"
 #include "game/quickdraw_rendering.h"
 
 // SYNTHETIC: IMPERIALISM 0x004293c0
@@ -78,5 +80,12 @@ void TInfoBarText::InitializeMapHintTextStyleAndThemeFlags(int stylePrimary, int
   fieldA0 = 1;
 }
 
+// Detach from the shared cursor-info-panel global before the generic view teardown;
+// an empty body here left the node attached and looped the parent's Free-until-empty walk.
 // FUNCTION: IMPERIALISM 0x005b6930
-void TInfoBarText::Free() {}
+void TInfoBarText::Free() {
+  if (g_pCursorControlPanel == this) {
+    g_pCursorControlPanel = 0;
+  }
+  TView::Free();
+}

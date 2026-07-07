@@ -63,7 +63,7 @@ TDiplomacyMapView::TDiplomacyMapView() : TPicture() {
   interactionModeAt94 = 0;
   frameRegionSelectorAt98 = 0;
   selectedTerrainIndexAt90 = 0;
-  fieldAt9c = 0;
+  regionAt9c = 0;
   legendSurfaceModeAt524 = 6;
   stateFlagAtB8 = 0;
   // Slot 5 of TViewMgr::cursorTable (0x14 + 5*4 = 0x28), reused here as a plain flag rather
@@ -92,7 +92,13 @@ void TDiplomacyMapView::CallVoidSlotA0() {
 }
 
 // FUNCTION: IMPERIALISM 0x004f3e60
-void TDiplomacyMapView::Free() {}
+void TDiplomacyMapView::Free() {
+  if (regionAt9c != 0) {
+    DisposeRgn(regionAt9c);
+  }
+  regionAt9c = 0;
+  TView::Free();
+}
 
 // FUNCTION: IMPERIALISM 0x004f48c0
 void TDiplomacyMapView::ApplyRectSlot110(RECT* rectBuffer) {

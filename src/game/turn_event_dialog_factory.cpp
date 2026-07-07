@@ -1,9 +1,16 @@
 #include "game/turn_event_dialog_factory.h"
 
 #include "game/TBook.h"
+#include "game/TCluster.h"
 #include "game/TControl.h"
 #include "game/TDeluxeText.h"
 #include "game/TDropShadowText.h"
+#include "game/TEditText.h"
+#include "game/TGWorldPartView.h"
+#include "game/TMapPreviewView.h"
+#include "game/TRadioText.h"
+#include "game/TRadioTextCluster.h"
+#include "game/TSetupRandomMapPicture.h"
 #include "game/TGameSetupPicture.h"
 #include "game/TNoHilitePicture.h"
 #include "game/TPageView.h"
@@ -523,6 +530,244 @@ TView* __cdecl BuildUiResourceTreeByTemplateIdAndBindScreenContext(CWnd* pHostWi
 // FUNCTION: IMPERIALISM 0x004538a0
 TView* __cdecl InitializeGameSetupScreenControlsAndModeTags(CWnd* pHostWindow, int nEventCode) {
   g_pUiResourceHead = 0;
+
+  // New-game random-map setup screen (jump-table case 0x5dd @ 0x45676b): a 2000x2000
+  // 'base' container with a 640x480 'main' TSetupRandomMapPicture (bitmap 0x11bc), a
+  // 'hot!' info bar, a right-hand 'stuf' cluster (map preview, country title/flag/edit,
+  // OK button, difficulty + names radio clusters), and 'key '/'auto'/'canc'/'cncl'
+  // hotspots, 'coat'/'glob' pictures on the main panel.
+  if (static_cast<short>(nEventCode) == 0x5dd) {
+    TView* base = new TView();
+    RegisterUiResourceEntry(0x76696577, kControlTagBase, base, 0, 0, 0x7d0, 0x7d0, 0, 1, 0, 0);
+    SetUiResourceStateFlags(1, 1);
+    g_pUiResourceContext = 0;
+
+    TSetupRandomMapPicture* main = new TSetupRandomMapPicture();
+    RegisterUiResourceEntry(kControlTagPict, kControlTagMain, main, 0, 0, 0x280, 0x1e0, 0, 1,
+                            kControlTagBase, 0);
+    SetUiResourceStateFlags(1, 1);
+    ReplaceUiResourceContextPairBuffer(0, 0xffffff);
+    SetUiResourceLayoutValues(0xa, 0, 0, 0, 0);
+    SetUiResourceContextPictureId(0x11bc);
+    g_pUiResourceContext = 0;
+
+    TInfoBarText* hotText = new TInfoBarText();
+    RegisterUiResourceEntry(kControlTagTevw, kControlTagHot, hotText, 0x24, 0x16, 0xee, 0x1b, 0, 1,
+                            kControlTagMain, 0);
+    SetUiResourceStateFlags(1, 0);
+    g_pUiResourceContext = 0;
+    PopUiWidgetBuildStackNode();
+
+    TCluster* stuffCluster = new TCluster();
+    RegisterUiResourceEntry(kControlTagClus, kControlTagStuf, stuffCluster, 0x120, 4, 0x159, 0x1d2,
+                            0, 1, kControlTagMain, 0);
+    SetUiResourceStateFlags(1, 1);
+    SetUiResourceLayoutValues(5, 0, 0, 0, 0);
+    SetUiResourceContextStringCode(0x20202020);
+    g_pUiResourceContext = 0;
+
+    TMapPreviewView* mapPreview = new TMapPreviewView();
+    RegisterUiResourceEntry(0x76696577, kControlTagMapP, mapPreview, 0xe, 0xa, 0x144, 0xb4, 0, 1,
+                            kControlTagStuf, 0);
+    SetUiResourceStateFlags(1, 1);
+    g_pUiResourceContext = 0;
+    PopUiWidgetBuildStackNode();
+
+    TDropShadowText* countryTitle = new TDropShadowText();
+    RegisterUiResourceEntry(kControlTagStat, kControlTagTcou, countryTitle, 0x42, 0xe6, 0x90, 0x10,
+                            0, 1, kControlTagStuf, 0);
+    SetUiResourceStateFlags(1, 1);
+    SetUiResourceLayoutValues(0xd, 0, 0, 0, 0);
+    BindUiResourceTextAndStyle(0x514, -1, g_szEmptyString, 0, 0, 0, 0, 0);
+    g_pUiResourceContext = 0;
+    PopUiWidgetBuildStackNode();
+
+    TGWorldPartView* flagView = new TGWorldPartView();
+    RegisterUiResourceEntry(0x76696577, kControlTagFlag, flagView, 0x19, 0xe1, 0x20, 0x18, 0, 1,
+                            kControlTagStuf, 0);
+    SetUiResourceStateFlags(1, 1);
+    g_pUiResourceContext = 0;
+    PopUiWidgetBuildStackNode();
+
+    TEditText* countryEdit = new TEditText();
+    RegisterUiResourceEntry(kControlTagEdit, kControlTagCoun, countryEdit, 0x17, 0xf9, 0x132, 0x16,
+                            1, 1, kControlTagStuf, 0);
+    SetUiResourceStateFlags(1, 0);
+    SetUiResourceLayoutValues(6, 3, 3, 3, 3);
+    BindUiResourceTextAndStyle(0x514, -1, g_szEmptyString, 0, 0, 0, 0, 0);
+    UpdateUiResourceContextMetricWord27(0x1e);
+    g_pUiResourceContext = 0;
+    PopUiWidgetBuildStackNode();
+
+    TUpDownPictureButton* okayButton = new TUpDownPictureButton();
+    RegisterUiResourceEntry(kControlTagPict, kControlTagOkay, okayButton, 0x80, 0x1a2, 0x60, 0x1e,
+                            1, 1, kControlTagStuf, 0);
+    SetUiResourceStateFlags(1, 1);
+    SetUiResourceLayoutValues(0xa, 0, 0, 0, 0);
+    SetUiResourceContextPictureId(0x11a0);
+    g_pUiResourceContext = 0;
+    PopUiWidgetBuildStackNode();
+
+    TRadioTextCluster* difficultyCluster = new TRadioTextCluster();
+    RegisterUiResourceEntry(kControlTagClus, kControlTagDiff, difficultyCluster, 0x19, 0x12a, 0x12e,
+                            0x54, 0, 1, kControlTagStuf, 0);
+    SetUiResourceStateFlags(1, 1);
+    SetUiResourceLayoutValues(5, 0, 0, 0, 0);
+    SetUiResourceContextStringCode(0x20202020);
+    g_pUiResourceContext = 0;
+
+    TRadioText* difficulty0 = new TRadioText();
+    RegisterUiResourceEntry(kControlTagStat, kControlTagDif0, difficulty0, 2, 2, 0x12a, 0x10, 1, 1,
+                            kControlTagDiff, 0);
+    SetUiResourceStateFlags(1, 1);
+    SetUiResourceLayoutValues(0xd, 0, 0, 0, 0);
+    BindUiResourceTextAndStyle(0x514, 0xc, g_szNewGameDifficultyIntroductory_00694A58, 0, 0, 0, 0,
+                               1);
+    g_pUiResourceContext = 0;
+    PopUiWidgetBuildStackNode();
+
+    TRadioText* difficulty1 = new TRadioText();
+    RegisterUiResourceEntry(kControlTagStat, kControlTagDif1, difficulty1, 2, 0x12, 0x12a, 0x10, 1,
+                            1, kControlTagDiff, 0);
+    SetUiResourceStateFlags(1, 1);
+    SetUiResourceLayoutValues(0xd, 0, 0, 0, 0);
+    BindUiResourceTextAndStyle(0x514, 0xd, g_szNewGameDifficultyEasy_00694A50, 0, 0, 0, 0, 1);
+    g_pUiResourceContext = 0;
+    PopUiWidgetBuildStackNode();
+
+    TRadioText* difficulty2 = new TRadioText();
+    RegisterUiResourceEntry(kControlTagStat, kControlTagDif2, difficulty2, 2, 0x22, 0x12a, 0x10, 1,
+                            1, kControlTagDiff, 0);
+    SetUiResourceStateFlags(1, 1);
+    SetUiResourceLayoutValues(0xd, 0, 0, 0, 0);
+    BindUiResourceTextAndStyle(0x514, 0xe, g_szNewGameDifficultyNormal_00694A48, 0, 0, 0, 0, 1);
+    g_pUiResourceContext = 0;
+    PopUiWidgetBuildStackNode();
+
+    TRadioText* difficulty3 = new TRadioText();
+    RegisterUiResourceEntry(kControlTagStat, kControlTagDif3, difficulty3, 2, 0x32, 0x12a, 0x10, 1,
+                            1, kControlTagDiff, 0);
+    SetUiResourceStateFlags(1, 1);
+    SetUiResourceLayoutValues(0xd, 0, 0, 0, 0);
+    BindUiResourceTextAndStyle(0x514, 0x11, g_szNewGameDifficultyHard_00694A40, 0, 0, 0, 0, 1);
+    g_pUiResourceContext = 0;
+    PopUiWidgetBuildStackNode();
+
+    TRadioText* difficulty4 = new TRadioText();
+    RegisterUiResourceEntry(kControlTagStat, kControlTagDif4, difficulty4, 2, 0x42, 0x12a, 0x10, 1,
+                            1, kControlTagDiff, 0);
+    SetUiResourceStateFlags(1, 1);
+    SetUiResourceLayoutValues(0xd, 0, 0, 0, 0);
+    BindUiResourceTextAndStyle(0x514, 0x12, g_szNewGameDifficultyNighOnImpossible_00694A28, 0, 0, 0,
+                               0, 1);
+    g_pUiResourceContext = 0;
+    PopUiWidgetBuildStackNode();
+    PopUiWidgetBuildStackNode();
+
+    TDropShadowText* difficultyTitle = new TDropShadowText();
+    RegisterUiResourceEntry(kControlTagStat, kControlTagDift, difficultyTitle, 0x1a, 0x116, 0x9f,
+                            0x12, 0, 1, kControlTagStuf, 0);
+    SetUiResourceStateFlags(1, 1);
+    SetUiResourceLayoutValues(0xd, 0, 0, 0, 0);
+    BindUiResourceTextAndStyle(0x514, 0x13, g_szNewGameDifficultySetting_00694A10, 0, 0, 0, 0, 0);
+    g_pUiResourceContext = 0;
+    PopUiWidgetBuildStackNode();
+
+    TDropShadowText* namesTitle = new TDropShadowText();
+    RegisterUiResourceEntry(kControlTagStat, kControlTagTnam, namesTitle, 0x1a, 0x188, 0x3f, 0x10,
+                            0, 1, kControlTagStuf, 0);
+    SetUiResourceStateFlags(1, 1);
+    SetUiResourceLayoutValues(0xd, 0, 0, 0, 0);
+    BindUiResourceTextAndStyle(0x514, 2, g_szNewGameNamesLabel_00694A08, 0, 0, 0, 0, 0);
+    g_pUiResourceContext = 0;
+    PopUiWidgetBuildStackNode();
+
+    TRadioTextCluster* namesCluster = new TRadioTextCluster();
+    RegisterUiResourceEntry(kControlTagClus, kControlTagName, namesCluster, 0x5b, 0x186, 0xeb, 0x14,
+                            0, 1, kControlTagStuf, 0);
+    SetUiResourceStateFlags(1, 1);
+    SetUiResourceLayoutValues(5, 0, 0, 0, 0);
+    SetUiResourceContextStringCode(0x20202020);
+    g_pUiResourceContext = 0;
+
+    TRadioText* namesHistorical = new TRadioText();
+    RegisterUiResourceEntry(kControlTagStat, kControlTagHist, namesHistorical, 2, 2, 0x73, 0x10, 1,
+                            1, kControlTagName, 0);
+    SetUiResourceStateFlags(1, 1);
+    SetUiResourceLayoutValues(0xd, 0, 0, 0, 0);
+    BindUiResourceTextAndStyle(0x514, 7, g_szNewGameNamesHistorical_006949F8, 0, 0, 0, 0, 1);
+    g_pUiResourceContext = 0;
+    PopUiWidgetBuildStackNode();
+
+    TRadioText* namesRandom = new TRadioText();
+    RegisterUiResourceEntry(kControlTagStat, kControlTagRand, namesRandom, 0x76, 2, 0x73, 0x10, 1,
+                            1, kControlTagName, 0);
+    SetUiResourceStateFlags(1, 1);
+    SetUiResourceLayoutValues(0xd, 0, 0, 0, 0);
+    BindUiResourceTextAndStyle(0x514, 8, g_szNewGameNamesRandom_006949F0, 0, 0, 0, 0, 1);
+    g_pUiResourceContext = 0;
+    PopUiWidgetBuildStackNode();
+    PopUiWidgetBuildStackNode();
+    PopUiWidgetBuildStackNode();
+
+    TControl* keyControl = new TControl();
+    RegisterUiResourceEntry(kControlTagCntl, kControlTagKeyP, keyControl, 0x109, 0x119, 0xe, 0xe, 1,
+                            0, kControlTagMain, 0);
+    SetUiResourceStateFlags(1, 1);
+    SetUiResourceLayoutValues(0x14, 0, 0, 0, 0);
+    g_pUiResourceContext = 0;
+    PopUiWidgetBuildStackNode();
+
+    TStaticText* autoLabel = new TStaticText();
+    RegisterUiResourceEntry(kControlTagStat, kControlTagAuto, autoLabel, 0xd9, 0x42, 0x41, 0x29, 0,
+                            0, kControlTagMain, 0);
+    SetUiResourceStateFlags(1, 1);
+    SetUiResourceLayoutValues(0xd, 0, 0, 0, 0);
+    BindUiResourceTextAndStyle(0x514, 1, g_szNewGameAllAutoGPs_006949E0, 0, 0, 0, 0, 0);
+    g_pUiResourceContext = 0;
+    PopUiWidgetBuildStackNode();
+
+    TControl* cancControl = new TControl();
+    RegisterUiResourceEntry(kControlTagCntl, kControlTagCanc, cancControl, 0x2a, 0x37, 0x92, 0x4e,
+                            1, 0, kControlTagMain, 0);
+    SetUiResourceStateFlags(1, 1);
+    SetUiResourceLayoutValues(0x14, 0, 0, 0, 0);
+    g_pUiResourceContext = 0;
+    PopUiWidgetBuildStackNode();
+
+    TControl* cnclControl = new TControl();
+    RegisterUiResourceEntry(kControlTagCntl, kControlTagCncl, cnclControl, 0x2a, 0x85, 0x68, 0xea,
+                            1, 0, kControlTagMain, 0);
+    SetUiResourceStateFlags(1, 1);
+    SetUiResourceLayoutValues(0x14, 0, 0, 0, 0);
+    g_pUiResourceContext = 0;
+    PopUiWidgetBuildStackNode();
+
+    TPicture* coatPicture = new TPicture();
+    RegisterUiResourceEntry(kControlTagPict, kControlTagCoat, coatPicture, 0xad, 0x14d, 0x46, 0x5e,
+                            0, 1, kControlTagMain, 0);
+    SetUiResourceStateFlags(1, 1);
+    SetUiResourceLayoutValues(0xa, 0, 0, 0, 0);
+    SetUiResourceContextPictureId(0x11cd);
+    g_pUiResourceContext = 0;
+    PopUiWidgetBuildStackNode();
+
+    TNoHilitePicture* globePicture = new TNoHilitePicture();
+    RegisterUiResourceEntry(kControlTagPict, kControlTagGlob, globePicture, 0x93, 0x86, 0x80, 0x80,
+                            1, 1, kControlTagMain, 0);
+    SetUiResourceStateFlags(1, 1);
+    SetUiResourceLayoutValues(0xa, 0, 0, 0, 0);
+    SetUiResourceContextPictureId(0x11d0);
+    g_pUiResourceContext = 0;
+    PopUiWidgetBuildStackNode();
+    PopUiWidgetBuildStackNode();
+    PopUiWidgetBuildStackNode();
+
+    if (g_pUiResourceHead != 0) {
+      g_pUiResourceHead->PropagateUiResourceContextRecursive(pHostWindow);
+    }
+    return g_pUiResourceHead;
+  }
 
   if (static_cast<short>(nEventCode) != 0x5dc) {
     return nullptr;

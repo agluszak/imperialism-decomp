@@ -3,6 +3,8 @@
 #include "game/TView.h"
 #include "game/mfc.h"
 
+struct TQuickDrawSurfaceContext;
+
 // TODO(manifest): describe TMapPreviewView and its role. Base edge (TView) recovered from RTTI CRuntimeClass chain: TMapPreviewView -> TView -> TEventHandler -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x006419d8
 class TMapPreviewView : public TView {
@@ -118,7 +120,8 @@ public:
 
   TMapPreviewView();
 
-  int field60;          // 0x60
+  // 0x60 — offscreen preview surface; deleted+cleared in Free (0x5789b0).
+  TQuickDrawSurfaceContext* previewSurface60;
   int selectedRegion64; // 0x64 — ctor 0x43d590 seeds -1 (no region selected)
   int field68;          // 0x68
   int field6c;          // 0x6c

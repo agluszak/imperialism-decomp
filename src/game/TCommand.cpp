@@ -42,7 +42,9 @@ void TCommand::InitializeRangePair(int arg1, TCommandHandler* arg2, int arg3, in
 }
 
 // FUNCTION: IMPERIALISM 0x004878e0
-void TCommand::Free() {}
+void TCommand::Free() {
+  delete this;
+}
 
 // FUNCTION: IMPERIALISM 0x00487900
 void TCommand::NextDiplomacyCommandVtableSlotE8_NotifyOwnerSlot94() {

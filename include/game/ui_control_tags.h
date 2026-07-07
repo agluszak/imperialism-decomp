@@ -42,6 +42,32 @@ const unsigned int kControlTagSeas = 0x73656173u; // 'seas' — season label
 const unsigned int kControlTagTrea = 0x74726561u; // 'trea' — treasury label
 const unsigned int kControlTagPatc = 0x70617463u; // 'patc' — patch picture
 
+// New-game random-map setup screen (turn event 0x5dd) tags
+const unsigned int kControlTagClus = 0x636c7573u; // 'clus' — generic cluster name tag
+const unsigned int kControlTagStat = 0x73746174u; // 'stat' — static-text name tag
+const unsigned int kControlTagEdit = 0x65646974u; // 'edit' — edit-text name tag
+const unsigned int kControlTagHot = 0x686f7421u;  // 'hot!' — hint/info bar text
+const unsigned int kControlTagStuf = 0x73747566u; // 'stuf' — right-hand settings cluster
+const unsigned int kControlTagMapP = 0x6d617020u; // 'map ' — random-map preview view
+const unsigned int kControlTagTcou = 0x74636f75u; // 'tcou' — country title label
+const unsigned int kControlTagFlag = 0x666c6167u; // 'flag' — nation flag view
+const unsigned int kControlTagCoun = 0x636f756eu; // 'coun' — country-name edit box
+const unsigned int kControlTagDiff = 0x64696666u; // 'diff' — difficulty radio cluster
+const unsigned int kControlTagDif0 = 0x64696630u; // 'dif0' — Introductory
+const unsigned int kControlTagDif1 = 0x64696631u; // 'dif1' — Easy
+const unsigned int kControlTagDif2 = 0x64696632u; // 'dif2' — Normal
+const unsigned int kControlTagDif3 = 0x64696633u; // 'dif3' — Hard
+const unsigned int kControlTagDif4 = 0x64696634u; // 'dif4' — Nigh-On Impossible
+const unsigned int kControlTagDift = 0x64696674u; // 'dift' — difficulty title label
+const unsigned int kControlTagTnam = 0x746e616du; // 'tnam' — names title label
+const unsigned int kControlTagName = 0x6e616d65u; // 'name' — names radio cluster
+const unsigned int kControlTagHist = 0x68697374u; // 'hist' — historical names option
+const unsigned int kControlTagKeyP = 0x6b657920u; // 'key ' — map-key hotspot
+const unsigned int kControlTagAuto = 0x6175746fu; // 'auto' — all-AutoGP label
+const unsigned int kControlTagCanc = 0x63616e63u; // 'canc' — cancel hotspot (upper)
+const unsigned int kControlTagCncl = 0x636e636cu; // 'cncl' — cancel hotspot (lower)
+const unsigned int kControlTagGlob = 0x676c6f62u; // 'glob' — globe picture
+
 // Game window control tags
 const unsigned int kTagMain = 0x6d61696e;  // 'main'
 const unsigned int kTagQuery = 0x71756572; // 'quer'

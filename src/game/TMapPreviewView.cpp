@@ -1,5 +1,7 @@
 #include "game/TMapPreviewView.h"
 
+#include "game/bitmap_descriptor_helpers.h"
+
 // SYNTHETIC: IMPERIALISM 0x0043d5c0
 // TMapPreviewView::`scalar deleting destructor'
 TMapPreviewView::~TMapPreviewView() {}
@@ -20,7 +22,10 @@ TMapPreviewView::TMapPreviewView() : TView() {
 void TMapPreviewView::NoOpUiLifecycleHook(int arg) {}
 
 // FUNCTION: IMPERIALISM 0x005789b0
-void TMapPreviewView::Free() {}
+void TMapPreviewView::Free() {
+  FreeQuickDrawSurfaceContextSlot(&previewSurface60);
+  TView::Free();
+}
 
 // FUNCTION: IMPERIALISM 0x005789e0
 void TMapPreviewView::BeginMouseCaptureAndStartRepeatTimer(CPoint* point, int arg2, int arg3,

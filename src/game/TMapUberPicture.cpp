@@ -1,12 +1,15 @@
 #include "game/TMapUberPicture.h"
 
 #include "game/quickdraw_regions.h"
+#include "game/TAmbitApplication.h"
+#include "game/TAnimator.h"
 #include "game/TArmyMgr.h"
 #include "game/TCivMgr.h"
 #include "game/TMiniMapView.h"
 #include "game/TOcean.h"
 #include "game/TSimMgr.h"
 #include "game/TTaskForce.h"
+#include "game/TViewMgr.h"
 #include "game/global_data_tables.h"
 #include "game/ui_invalidation_guard.h"
 
@@ -30,8 +33,22 @@ TMapUberPicture::~TMapUberPicture() {}
 // FUNCTION: IMPERIALISM 0x00596a80
 void TMapUberPicture::NoOpUiLifecycleHook(int arg) {}
 
+// Clears every global backref to the map picture (view-manager slot, animator slot, app
+// root's edge-scroll/active-content) before the shared clip-region teardown; the original
+// tail-jumps straight to TOffLimitsPicture::Free (0x573900), skipping the intermediate
+// TMapUberUberPicture::Free.
 // FUNCTION: IMPERIALISM 0x00596c60
-void TMapUberPicture::Free() {}
+void TMapUberPicture::Free() {
+  if (g_pUiRuntimeContext != 0) {
+    g_pUiRuntimeContext->mapUberPictureF0 = 0;
+  }
+  if (g_pUiAnimator != 0) {
+    g_pUiAnimator->field2c = 0;
+  }
+  static_cast<TAmbitApplication*>(g_pGlobalUiRootController)->edgeScrollTarget48 = 0;
+  g_pGlobalUiRootController->field28 = 0;
+  TOffLimitsPicture::Free();
+}
 
 // A shared "previous mode" layout-capture scratch buffer (0x6a45e8, BSS/zeroed) and a
 // per-mode saved-layout table (0x6a4590, stride 8 = 2 ints, indexed by mode 0-3); both

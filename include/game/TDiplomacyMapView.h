@@ -4,6 +4,7 @@
 #include "game/StrategicMapCallbackRecord.h"
 #include "game/TPicture.h"
 #include "game/mfc.h"
+#include "game/quickdraw_regions.h"
 
 struct DiplomacyMaskBufferRun {
   DiplomacyMaskBufferRun();
@@ -75,7 +76,9 @@ protected:
   int interactionModeAt94;
   short frameRegionSelectorAt98;
   char pad_9a[0x02];
-  int fieldAt9c; // 0x9c — reset to 0 in the constructor; no other confirmed reader in this file.
+  // 0x9c — QuickDraw region handle; disposed and cleared in Free (0x4f3e60), reset to 0 in the
+  // constructor.
+  RgnHandle regionAt9c;
   char pad_a0[0x14];
   // 0xb4 — the panel's child control, read in InvalidateAndForwardTabSwitchToChild /
   // InvalidateAndRunChildWaitSheet.
