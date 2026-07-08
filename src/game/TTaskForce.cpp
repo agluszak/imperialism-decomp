@@ -9,6 +9,57 @@
 
 extern undefined4 GenerateThreadLocalRandom15(void);
 
+// Sums the four per-category priority contributions (the same category-0..3 blend
+// ComputeNavyOrderPriorityContributionPercentByCategory computes over this entry's
+// order_type/required_count/tiebreak_strength), each scaled by this profile's
+// per-category weight row. The original inlines that per-category switch here (as the
+// sibling ComputeMapOrderEntryHeuristicScore does) rather than calling the shared
+// 0x54ff00 helper, so it is reproduced inline to match.
+// FUNCTION: IMPERIALISM 0x005501b0
+int TTaskForce::CalculateMissionOrderPriorityScore(int nScoreProfileId) {
+  int total = 0;
+  for (int category = 0; category < 4; category++) {
+    // Category-normalization divisor table at 0x006a3ec8 (see 0x54ff00).
+    int divisor = reinterpret_cast<const int*>(0x006a3ec8)[category];
+    const TNavyOrderResourceDescriptor& desc = g_NavyOrderResourceDescriptorTable[order_type];
+    short contribution;
+    switch (category) {
+    case 0: {
+      int quantityTerm = static_cast<short>(tiebreak_strength / 100) + 5 + desc.resolveWeight * 10;
+      int weight = desc.calculateWeight;
+      contribution = static_cast<short>(
+          (static_cast<short>(quantityTerm / 10) * weight * weight * 100) / divisor);
+      break;
+    }
+    case 1: {
+      int weight = desc.calculateWeight;
+      contribution = static_cast<short>((weight * static_cast<int>(required_count) * 10000) /
+                                        (desc.taskForceWeight * divisor));
+      break;
+    }
+    case 2:
+      contribution = static_cast<short>((static_cast<int>(desc.descriptorWeight) * 100) / divisor);
+      break;
+    case 3:
+      if (required_count < 1) {
+        contribution = static_cast<short>(0 / divisor);
+      } else {
+        contribution = static_cast<short>(
+            (static_cast<int>(GetIndustryActionCostWeightByResourceType(order_type)) * 100) /
+            divisor);
+      }
+      break;
+    default:
+      contribution = 0;
+    }
+    total +=
+        static_cast<int>(static_cast<short>(
+            g_Populate_Beachhead_Mission_LookupTable_00697958[nScoreProfileId * 4 + category])) *
+        static_cast<int>(contribution);
+  }
+  return total;
+}
+
 // FUNCTION: IMPERIALISM 0x00550370
 void TTaskForce::AdjustMapOrderNodeStatCapped499(short delta) {
   tiebreak_strength = static_cast<short>(tiebreak_strength + delta);
@@ -378,6 +429,7 @@ void TTaskForce::Free() {
 
   delete this;
 }
+
 // FUNCTION: IMPERIALISM 0x00552a70
 void TTaskForce::RemoveTaskForceOrderNodesByNationAndClearSelectionState(int nation,
                                                                          TZone* contextZone) {
@@ -530,6 +582,7 @@ void TTaskForce::PromoteMapOrderChainAndQueue(void* pContextAnchor) {
 
 // TODO: port body @ 0x005539c0 (recomputes this task force's per-order selection flags
 // for the active nation's current orders).
+
 // FUNCTION: IMPERIALISM 0x005539c0
 void TTaskForce::RefreshTaskForceSelectionFlagsForCurrentNationOrders(int mode) {
   (void)mode;
