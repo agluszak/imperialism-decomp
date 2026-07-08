@@ -19,8 +19,7 @@ extern undefined4 GenerateThreadLocalRandom15(void);
 int TTaskForce::CalculateMissionOrderPriorityScore(int nScoreProfileId) {
   int total = 0;
   for (int category = 0; category < 4; category++) {
-    // Category-normalization divisor table at 0x006a3ec8 (see 0x54ff00).
-    int divisor = reinterpret_cast<const int*>(0x006a3ec8)[category];
+    int divisor = g_aCategoryMetricBaselineAverage[category];
     const TNavyOrderResourceDescriptor& desc = g_NavyOrderResourceDescriptorTable[order_type];
     short contribution;
     switch (category) {

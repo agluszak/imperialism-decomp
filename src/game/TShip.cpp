@@ -143,9 +143,7 @@ void __fastcall RegenerateNavyPrimaryOrderDisplayNameUntilUnique(TShip* shipNode
 int ComputeNavyOrderPriorityContributionPercentByCategory(short resourceType,
                                                           short stockOrRequiredCount,
                                                           short tiebreakField, int category) {
-  // Category-normalization divisor table; not yet a catalogued global (sits
-  // between g_pNavySecondaryOrderListHead and g_pCachedMapActionContext).
-  int divisor = reinterpret_cast<const int*>(0x006a3ec8)[category];
+  int divisor = g_aCategoryMetricBaselineAverage[category];
   const TNavyOrderResourceDescriptor& descriptor = g_NavyOrderResourceDescriptorTable[resourceType];
 
   switch (category) {
@@ -180,13 +178,13 @@ int TShip::ComputeNavyOrderPriorityContributionPercentByCategory(int category) {
 
 // Per-category normalized cost percent for a resource type, used by the AI
 // city/industry development selectors (0x4eb45a, 0x535d8e/0x535e26). Same
-// category-0..3 divisor table (0x006a3ec8) and resource-descriptor table as
-// ComputeNavyOrderPriorityContributionPercentByCategory, but a distinct blend per
+// category-0..3 divisor table (g_aCategoryMetricBaselineAverage) and resource-descriptor
+// table as ComputeNavyOrderPriorityContributionPercentByCategory, but a distinct blend per
 // category; the original inlines the descriptor-field reads, so they are reproduced
 // inline here.
 // FUNCTION: IMPERIALISM 0x00550090
 int GetNormalizedIndustryActionResourceCostPercent(int nCategory, short nResourceType) {
-  int divisor = reinterpret_cast<const int*>(0x006a3ec8)[nCategory];
+  int divisor = g_aCategoryMetricBaselineAverage[nCategory];
   const TNavyOrderResourceDescriptor& desc = g_NavyOrderResourceDescriptorTable[nResourceType];
   switch (nCategory) {
   case 0:

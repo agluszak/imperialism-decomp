@@ -69,7 +69,7 @@ void TBlockadePortMission::Call30() {
   }
 
   marker11 = 0;
-  *reinterpret_cast<float*>(&value0c) = score / *reinterpret_cast<const float*>(0x0065a9c0);
+  *reinterpret_cast<float*>(&value0c) = score / g_fMissionScoreNormalizationDivisor;
 }
 
 // FUNCTION: IMPERIALISM 0x0053adf0
