@@ -581,6 +581,17 @@ short g_awTileSpriteVariantOffsetTable3b[4][2] = {{0, 0}, {0, 0}, {0, 0}, {0, 0}
 // in global_data_tables.h.
 TNavyOrderResourceDescriptor g_NavyOrderResourceDescriptorTable[64] = {{0}};
 
+// Per-category (0..3) capability metric baseline averages, recomputed at runtime by
+// RecomputeGlobalCapabilityAverages (0x54fd50) and read back as the normalization divisor
+// by the navy/map-order per-category scoring helpers (0x5501b0, 0x550090, 0x54ff00).
+// GLOBAL: IMPERIALISM 0x006a3ec8
+int g_aCategoryMetricBaselineAverage[4] = {0};
+
+// Mission score normalization divisor used by the control-sea-zone and blockade-port
+// mission scoring helpers.
+// GLOBAL: IMPERIALISM 0x0065a9c0
+float g_fMissionScoreNormalizationDivisor = 5000.0f;
+
 MappedFlavorTextNationVariantEntry g_MappedFlavorTextNationVariantTable_0066EF30[32] = {0};
 
 // Defend-province / mission priority-vector normalization (0x53e6e0 / 0x53ea70 family).

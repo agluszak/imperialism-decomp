@@ -107,14 +107,6 @@ undefined4 ComputeStridedRecordAddress6C(void)
   return 0;
 }
 
-// ghidra_name TMapDialog::ProjectTileIndexToWrappedScreenOffsetByScale
-// ghidra_proto undefined ProjectTileIndexToWrappedScreenOffsetByScale()
-// FUNCTION: IMPERIALISM 0x00512440
-undefined4 ProjectTileIndexToWrappedScreenOffsetByScale(void)
-{
-  return 0;
-}
-
 // ghidra_name TMapDialog::SplitTileIndexToRowAndColumn
 // ghidra_proto undefined SplitTileIndexToRowAndColumn()
 // FUNCTION: IMPERIALISM 0x005125a0

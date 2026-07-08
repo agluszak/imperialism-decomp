@@ -275,14 +275,6 @@ undefined4 HandleTacticalCommandTag_raly(void)
   return 0;
 }
 
-// ghidra_name ComputeHexTileDistanceFromIndices
-// ghidra_proto undefined ComputeHexTileDistanceFromIndices()
-// FUNCTION: IMPERIALISM 0x005a39a0
-undefined4 ComputeHexTileDistanceFromIndices(void)
-{
-  return 0;
-}
-
 // ghidra_name TestGridSegmentCrossesViewportThreshold
 // ghidra_proto undefined TestGridSegmentCrossesViewportThreshold()
 // FUNCTION: IMPERIALISM 0x005a3a70

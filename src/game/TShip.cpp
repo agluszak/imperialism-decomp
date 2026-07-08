@@ -138,13 +138,12 @@ void __fastcall RegenerateNavyPrimaryOrderDisplayNameUntilUnique(TShip* shipNode
 // Receiver-agnostic: also called directly on a TTaskForce's own
 // order_type/required_count/tiebreak_strength fields (TNavyMission::ReturnZeroSlot2C),
 // which happen to share these same 3 offsets with TShip -- see the header comment.
+
 // FUNCTION: IMPERIALISM 0x0054ff00
 int ComputeNavyOrderPriorityContributionPercentByCategory(short resourceType,
                                                           short stockOrRequiredCount,
                                                           short tiebreakField, int category) {
-  // Category-normalization divisor table; not yet a catalogued global (sits
-  // between g_pNavySecondaryOrderListHead and g_pCachedMapActionContext).
-  int divisor = reinterpret_cast<const int*>(0x006a3ec8)[category];
+  int divisor = g_aCategoryMetricBaselineAverage[category];
   const TNavyOrderResourceDescriptor& descriptor = g_NavyOrderResourceDescriptorTable[resourceType];
 
   switch (category) {
@@ -175,6 +174,35 @@ int ComputeNavyOrderPriorityContributionPercentByCategory(short resourceType,
 int TShip::ComputeNavyOrderPriorityContributionPercentByCategory(int category) {
   return ::ComputeNavyOrderPriorityContributionPercentByCategory(resourceType04, stockLevel1c,
                                                                  field30, category);
+}
+
+// Per-category normalized cost percent for a resource type, used by the AI
+// city/industry development selectors (0x4eb45a, 0x535d8e/0x535e26). Same
+// category-0..3 divisor table (g_aCategoryMetricBaselineAverage) and resource-descriptor
+// table as ComputeNavyOrderPriorityContributionPercentByCategory, but a distinct blend per
+// category; the original inlines the descriptor-field reads, so they are reproduced
+// inline here.
+// FUNCTION: IMPERIALISM 0x00550090
+int GetNormalizedIndustryActionResourceCostPercent(int nCategory, short nResourceType) {
+  int divisor = g_aCategoryMetricBaselineAverage[nCategory];
+  const TNavyOrderResourceDescriptor& desc = g_NavyOrderResourceDescriptorTable[nResourceType];
+  switch (nCategory) {
+  case 0:
+    return (static_cast<int>(desc.resolveWeight) * static_cast<int>(desc.calculateWeight) *
+            static_cast<int>(desc.calculateWeight) * 100) /
+           divisor;
+  case 1:
+    return (((static_cast<int>(desc.calculateWeight) * static_cast<int>(desc.stockCap) * 100) /
+             static_cast<int>(desc.taskForceWeight)) *
+            100) /
+           divisor;
+  case 2:
+    return (static_cast<short>(desc.navyPriorityWeight) * 100) / divisor;
+  case 3:
+    return (g_industryActionCostWeightResCode10[nResourceType] * 100) / divisor;
+  default:
+    return 0 / divisor;
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x00550550

@@ -200,6 +200,14 @@ public:
   // order-selection cluster to rank candidate task-force order entries.
   int ComputeMapOrderEntryHeuristicScore(); // 0x550aa0
 
+  // Weighted 4-category priority score for the given score profile: sums each
+  // category's ComputeNavyOrderPriorityContributionPercentByCategory contribution
+  // (over this entry's order_type/required_count/tiebreak_strength) scaled by the
+  // profile's per-category weight row in g_Populate_Beachhead_Mission_LookupTable
+  // (4 shorts per profile). Called by TScatteredShipsMission::QueueMissionOrders-
+  // ByPriorityForContext with profile 3 to pick the top child order entry.
+  int CalculateMissionOrderPriorityScore(int nScoreProfileId); // 0x5501b0
+
   // Number of childOrderList entries; null-safe on `this` (returns 0), matching a call
   // site that invokes it without checking for a null receiver first.
   int GetMapOrderEntryChildCount(); // 0x5562c0

@@ -142,7 +142,7 @@ char TAttackProvinceMission::TryResolveTargetTerrainClass() {
                         *reinterpret_cast<const float*>(0x0065a9e0)) *
                        candidateScore;
     }
-    candidateScore = candidateScore / *reinterpret_cast<const float*>(0x0065a9c0);
+    candidateScore = candidateScore / g_fMissionScoreNormalizationDivisor;
 
     if (field_14 != -1 && candidateScore <= bestScore) {
       continue;
@@ -268,7 +268,7 @@ void TAttackProvinceMission::ResetValue0CToZero() {
              *reinterpret_cast<const float*>(0x0065a9e0)) *
             score;
   }
-  *reinterpret_cast<float*>(&value0c) = score / *reinterpret_cast<const float*>(0x0065a9c0);
+  *reinterpret_cast<float*>(&value0c) = score / g_fMissionScoreNormalizationDivisor;
 }
 
 // Shared with TInvadeMission (COMDAT-folded body).
