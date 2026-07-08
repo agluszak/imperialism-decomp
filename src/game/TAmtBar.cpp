@@ -84,8 +84,8 @@ void TAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache() {
 
   this->TranslatePointToParentChain4E();
 
-  controlWidth = (short)this->field34;
-  controlHeight = (short)this->field38;
+  controlWidth = (short)this->frameWidth34;
+  controlHeight = (short)this->frameHeight38;
 
   panelRect.left = frameBounds.left;
   panelRect.top = frameBounds.top;
@@ -132,9 +132,9 @@ void TAmtBar::BeginMouseCaptureAndStartRepeatTimer(CPoint* point, int arg2, int 
 void TAmtBar::ClampAndApplyTradeMoveValue(int* requestedValuePtr) {
   int baseValue;
   if (auxValueA < 1 ||
-      static_cast<int>(field34) / (static_cast<int>(auxValueA) << 1) <= *requestedValuePtr) {
+      static_cast<int>(frameWidth34) / (static_cast<int>(auxValueA) << 1) <= *requestedValuePtr) {
     int fildRequested = *requestedValuePtr;
-    int fildField34 = static_cast<int>(field34);
+    int fildField34 = static_cast<int>(frameWidth34);
     int fildAux = static_cast<int>(auxValueA);
     double ratio = static_cast<double>(fildRequested) /
                    (static_cast<double>(fildField34) * static_cast<double>(fildAux));

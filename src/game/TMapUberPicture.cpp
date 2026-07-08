@@ -250,9 +250,9 @@ void TMapUberPicture::EnterMapInteractionOverlayMode(int param1) {
     this->field_0xc0->markerBoxWidth98 = g_defaultMarkerBoxWidth_006a460c;
     this->field_0xc0->markerBoxHeight9c = 8;
     this->field_0xc0->markerBoxX90 =
-        this->field_0xc0->field34 / 2 - this->field_0xc0->markerBoxWidth98 - 2;
+        this->field_0xc0->frameWidth34 / 2 - this->field_0xc0->markerBoxWidth98 - 2;
     this->field_0xc0->markerBoxY94 =
-        this->field_0xc0->field38 / 2 - this->field_0xc0->markerBoxHeight9c - 2;
+        this->field_0xc0->frameHeight38 / 2 - this->field_0xc0->markerBoxHeight9c - 2;
     this->field_0xc0->RefreshControl();
   }
 }
@@ -271,9 +271,9 @@ undefined TMapUberPicture::CreateToolWindow_00599CF0() {
   int sizeLayout[2] = {0x71, 0x41};
   miniMap->InitializeUiResourceEntryFrameAndParent(nullptr, toolControl, offsetLayout, sizeLayout,
                                                    kToolWindowMargin, kToolWindowMargin, 0);
-  miniMap->markerBoxX90 = miniMap->field34 / 2 - miniMap->markerBoxWidth98;
+  miniMap->markerBoxX90 = miniMap->frameWidth34 / 2 - miniMap->markerBoxWidth98;
   miniMap->ownerPicture84 = this;
-  miniMap->markerBoxY94 = miniMap->field38 / 2 - miniMap->markerBoxHeight9c;
+  miniMap->markerBoxY94 = miniMap->frameHeight38 / 2 - miniMap->markerBoxHeight9c;
   miniMap->RefreshControl();
   miniMap->SetState(1, 0);
   this->field_0xc0 = miniMap;
@@ -292,9 +292,9 @@ undefined TMapUberPicture::CreateToolWindow_00599CF0() {
     this->field_0xc0->markerBoxWidth98 = 0x20;
     this->field_0xc0->markerBoxHeight9c = 0x1c;
     this->field_0xc0->markerBoxX90 =
-        this->field_0xc0->field34 / 2 - this->field_0xc0->markerBoxWidth98 - 2;
+        this->field_0xc0->frameWidth34 / 2 - this->field_0xc0->markerBoxWidth98 - 2;
     this->field_0xc0->markerBoxY94 =
-        this->field_0xc0->field38 / 2 - this->field_0xc0->markerBoxHeight9c - 2;
+        this->field_0xc0->frameHeight38 / 2 - this->field_0xc0->markerBoxHeight9c - 2;
     this->field_0xc0->RefreshControl();
   }
 

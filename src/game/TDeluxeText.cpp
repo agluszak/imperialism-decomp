@@ -85,8 +85,8 @@ int TDeluxeText::RecenterTextFromMeasuredWidthAndMaybeInvalidate(char refreshNow
   field6C = 0;
   int measuredWidth = MeasureCurrentTextWidthInLayoutRect();
   int inset = 0;
-  if (measuredWidth < field38) {
-    inset = (field38 - measuredWidth) / 2;
+  if (measuredWidth < frameHeight38) {
+    inset = (frameHeight38 - measuredWidth) / 2;
   }
   field74 = static_cast<short>(inset);
   field6C = static_cast<short>(inset);

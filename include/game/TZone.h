@@ -159,8 +159,8 @@ public:
   // itself) is diplomatically related to `nation` (per g_pDiplomacyTurnStateManager).
   unsigned int HasDiplomaticallyRelatedNationInActiveType3Or4OrderMask(int nation);
 
-  // 0x00561b90. This port zone's owning nation code -- terrainStateTable[field48]'s
-  // ownerNationTag04. (Reads the TPortZone-derived field48; only valid on a TPortZone.)
+  // 0x00561b90. This port zone's owning nation code -- terrainStateTable[stylePayload48]'s
+  // ownerNationTag04. (Reads the TPortZone-derived stylePayload48; only valid on a TPortZone.)
   short GetPortZoneOwnerNationCodeFromMissionField48();
 
   // 0x005619e0. Bidirectionally links this zone with its owning nation's map-order

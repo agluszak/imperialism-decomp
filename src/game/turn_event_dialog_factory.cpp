@@ -91,24 +91,24 @@ TView* BuildTurnOrderNavigationWindow(int offsetX, int offsetY, int width, int h
   window->InitializeUiResourceEntryFrameAndParent(0, 0, offsetLayout, sizeLayout, 0, 0, 1);
 
   window->controlTag = static_cast<int>(kControlTagWind);
-  window->field3c = 0;
+  window->controlValue3c = 0;
   window->SetEnabled(1, 0);
   window->SetState(width, 0);
-  window->flag4c = 1;
-  window->flag4d = 1;
+  window->inputGateFlag4c = 1;
+  window->childHitTestFlag4d = 1;
 
-  if (window->field48 != 0) {
-    delete window->field48;
-    window->field48 = 0;
+  if (window->stylePayload48 != 0) {
+    delete window->stylePayload48;
+    window->stylePayload48 = 0;
   }
   window->EnsureField48Buffer();
-  if (window->field48 != 0) {
-    window->field48->Reset();
-    window->field48->styleWord = 0;
-    window->field48->packedColor = 0xffffff;
+  if (window->stylePayload48 != 0) {
+    window->stylePayload48->Reset();
+    window->stylePayload48->styleWord = 0;
+    window->stylePayload48->packedColor = 0xffffff;
   }
 
-  window->field6d = 0;
+  window->useCaptionedFrameFlag6d = 0;
   window->flag6e = 1;
   window->flag6f = 1;
   window->flag71 = 1;
@@ -161,7 +161,7 @@ TView* BuildStartupIntroBackground() {
   container->InitializeUiResourceEntryFrameAndParent(0, parent, containerOffset, containerSize, 0,
                                                      0, 1);
   container->controlTag = static_cast<int>(kControlTagBase);
-  container->field3c = 0;
+  container->controlValue3c = 0;
   container->SetEnabled(1, 0);
   container->SetState(containerSize[0], 0);
 
@@ -181,14 +181,14 @@ TView* BuildStartupIntroBackground() {
     background->InitializeUiResourceEntryFrameAndParent(0, parent, pictureOffset, pictureSize, 0, 0,
                                                         1);
     background->controlTag = static_cast<int>(kControlTagMain);
-    background->field3c = 0;
+    background->controlValue3c = 0;
     background->SetEnabled(1, 0);
     background->SetState(pictureSize[0], 0);
 
     background->EnsureField48Buffer();
-    if (background->field48 != 0) {
-      background->field48->styleWord = 0;
-      background->field48->packedColor = 0xffffff;
+    if (background->stylePayload48 != 0) {
+      background->stylePayload48->styleWord = 0;
+      background->stylePayload48->packedColor = 0xffffff;
     }
 
     background->hasCommandTagResource = 0xa;
@@ -213,14 +213,14 @@ TView* BuildStartupIntroBackground() {
       int movieSize[2] = {0x11c, 0xe8};
       movie->InitializeUiResourceEntryFrameAndParent(0, parent, movieOffset, movieSize, 0, 0, 1);
       movie->controlTag = static_cast<int>(kControlTagMovi);
-      movie->field3c = 0;
+      movie->controlValue3c = 0;
       movie->SetEnabled(1, 0);
       movie->SetState(1, 0);
 
       movie->EnsureField48Buffer();
-      if (movie->field48 != 0) {
-        movie->field48->styleWord = 0;
-        movie->field48->packedColor = 0xffffff;
+      if (movie->stylePayload48 != 0) {
+        movie->stylePayload48->styleWord = 0;
+        movie->stylePayload48->packedColor = 0xffffff;
       }
 
       movie->hasCommandTagResource = 0xa;
@@ -268,18 +268,18 @@ TView* BuildBareGoldEventWindow3A98() {
   size[1] = 0xc8;
   window->InitializeUiResourceEntryFrameAndParent(0, parent, offset, size, 0, 0, 1);
   window->controlTag = static_cast<int>(kControlTagWind);
-  window->field3c = 0;
+  window->controlValue3c = 0;
   window->SetEnabled(1, 0);
   window->SetState(1, 0);
 
-  g_pUiResourceContext->flag4c = 1;
-  g_pUiResourceContext->flag4d = 1;
+  g_pUiResourceContext->inputGateFlag4c = 1;
+  g_pUiResourceContext->childHitTestFlag4d = 1;
 
   TWindow* context = static_cast<TWindow*>(g_pUiResourceContext);
-  context->field70 = 0;
+  context->topmostFlag70 = 0;
   context->flag6f = 1;
   context->flag6e = 1;
-  context->field6d = 0;
+  context->useCaptionedFrameFlag6d = 0;
   context->flag6c = 1;
   context->flag71 = 1;
   context->field9c = 8;
@@ -1396,15 +1396,15 @@ TView* __cdecl InitializeArmyNavyReportViewsAndCommandTags(CWnd* pHostWindow, in
       size[1] = 0xfa;
       window->InitializeUiResourceEntryFrameAndParent(0, parent, offset, size, 0, 0, 1);
       window->controlTag = static_cast<int>(kControlTagWind);
-      window->field3c = 0;
+      window->controlValue3c = 0;
       window->SetEnabled(1, 0);
       window->SetState(1, 0);
-      window->flag4c = 1;
-      window->flag4d = 1;
-      window->field70 = 0;
+      window->inputGateFlag4c = 1;
+      window->childHitTestFlag4d = 1;
+      window->topmostFlag70 = 0;
       window->flag6f = 1;
       window->flag6e = 1;
-      window->field6d = 0;
+      window->useCaptionedFrameFlag6d = 0;
       window->flag6c = 0;
       window->flag71 = 1;
       window->field9c = 8;
@@ -1434,11 +1434,11 @@ TView* __cdecl InitializeArmyNavyReportViewsAndCommandTags(CWnd* pHostWindow, in
       size[1] = 0xfa;
       reportView->InitializeUiResourceEntryFrameAndParent(0, parent, offset, size, 0, 0, 1);
       reportView->controlTag = static_cast<int>(kControlTagGold);
-      reportView->field3c = 0;
+      reportView->controlValue3c = 0;
       reportView->SetEnabled(1, 0);
       reportView->SetState(0, 0);
-      reportView->flag4c = 1;
-      reportView->flag4d = 1;
+      reportView->inputGateFlag4c = 1;
+      reportView->childHitTestFlag4d = 1;
       reportView->hasCommandTagResource = 0xa;
       CRect zeroRect(0, 0, 0, 0);
       reportView->field68 = zeroRect.left;
@@ -1467,11 +1467,11 @@ TView* __cdecl InitializeArmyNavyReportViewsAndCommandTags(CWnd* pHostWindow, in
       size[1] = 0x17;
       titleText->InitializeUiResourceEntryFrameAndParent(0, parent, offset, size, 0, 0, 1);
       titleText->controlTag = static_cast<int>(0x7469746c); // 'titl'
-      titleText->field3c = 0;
+      titleText->controlValue3c = 0;
       titleText->SetEnabled(1, 0);
       titleText->SetState(0, 0);
-      titleText->flag4c = 1;
-      titleText->flag4d = 1;
+      titleText->inputGateFlag4c = 1;
+      titleText->childHitTestFlag4d = 1;
       titleText->hasCommandTagResource = 0xd;
       CRect zeroRect(0, 0, 0, 0);
       titleText->field68 = zeroRect.left;
@@ -1501,11 +1501,11 @@ TView* __cdecl InitializeArmyNavyReportViewsAndCommandTags(CWnd* pHostWindow, in
       size[1] = 0x57;
       whomText->InitializeUiResourceEntryFrameAndParent(0, parent, offset, size, 0, 0, 1);
       whomText->controlTag = static_cast<int>(0x77686f6d); // 'whom'
-      whomText->field3c = 0;
+      whomText->controlValue3c = 0;
       whomText->SetEnabled(1, 0);
       whomText->SetState(0, 0);
-      whomText->flag4c = 1;
-      whomText->flag4d = 1;
+      whomText->inputGateFlag4c = 1;
+      whomText->childHitTestFlag4d = 1;
       whomText->hasCommandTagResource = 0xd;
       CRect zeroRect(0, 0, 0, 0);
       whomText->field68 = zeroRect.left;
@@ -3407,15 +3407,15 @@ TView* __cdecl BuildTurnEventDialogResources_2508(CWnd* pHostWindow, int nEventC
   size[1] = 0x11a;
   window->InitializeUiResourceEntryFrameAndParent(0, parent, offset, size, 0, 0, 1);
   window->controlTag = static_cast<int>(kControlTagWind);
-  window->field3c = 0;
+  window->controlValue3c = 0;
   window->SetEnabled(1, 0);
   window->SetState(1, 0);
-  window->flag4c = 1;
-  window->flag4d = 1;
-  window->field70 = 0;
+  window->inputGateFlag4c = 1;
+  window->childHitTestFlag4d = 1;
+  window->topmostFlag70 = 0;
   window->flag6f = 1;
   window->flag6e = 1;
-  window->field6d = 0;
+  window->useCaptionedFrameFlag6d = 0;
   window->flag6c = 0;
   window->flag71 = 1;
   window->field9c = 8;
@@ -3440,11 +3440,11 @@ TView* __cdecl BuildTurnEventDialogResources_2508(CWnd* pHostWindow, int nEventC
   size[1] = 0x11a;
   goldPanel->InitializeUiResourceEntryFrameAndParent(0, parent, offset, size, 0, 0, 1);
   goldPanel->controlTag = static_cast<int>(kControlTagGold);
-  goldPanel->field3c = 0;
+  goldPanel->controlValue3c = 0;
   goldPanel->SetEnabled(1, 0);
   goldPanel->SetState(0, 0);
-  goldPanel->flag4c = 1;
-  goldPanel->flag4d = 1;
+  goldPanel->inputGateFlag4c = 1;
+  goldPanel->childHitTestFlag4d = 1;
   goldPanel->hasCommandTagResource = 0xa;
   goldPanel->field68 = 0;
   goldPanel->field6C = 0;
@@ -3468,11 +3468,11 @@ TView* __cdecl BuildTurnEventDialogResources_2508(CWnd* pHostWindow, int nEventC
   size[1] = 0x17;
   okayButton->InitializeUiResourceEntryFrameAndParent(0, parent, offset, size, 0, 0, 1);
   okayButton->controlTag = static_cast<int>(kControlTagOkay);
-  okayButton->field3c = 0;
+  okayButton->controlValue3c = 0;
   okayButton->SetEnabled(1, 0);
   okayButton->SetState(1, 0);
-  okayButton->flag4c = 1;
-  okayButton->flag4d = 1;
+  okayButton->inputGateFlag4c = 1;
+  okayButton->childHitTestFlag4d = 1;
   okayButton->hasCommandTagResource = 0x22;
   okayButton->field68 = 0;
   okayButton->field6C = 0;
@@ -3497,11 +3497,11 @@ TView* __cdecl BuildTurnEventDialogResources_2508(CWnd* pHostWindow, int nEventC
   size[1] = 0x6d;
   rewardPicture->InitializeUiResourceEntryFrameAndParent(0, parent, offset, size, 0, 0, 1);
   rewardPicture->controlTag = static_cast<int>(kControlTagRewa);
-  rewardPicture->field3c = 0;
+  rewardPicture->controlValue3c = 0;
   rewardPicture->SetEnabled(1, 0);
   rewardPicture->SetState(0, 0);
-  rewardPicture->flag4c = 1;
-  rewardPicture->flag4d = 1;
+  rewardPicture->inputGateFlag4c = 1;
+  rewardPicture->childHitTestFlag4d = 1;
   rewardPicture->hasCommandTagResource = 0xa;
   rewardPicture->field68 = 0;
   rewardPicture->field6C = 0;
@@ -3514,8 +3514,8 @@ TView* __cdecl BuildTurnEventDialogResources_2508(CWnd* pHostWindow, int nEventC
   TPicture* coatPicture = new TPicture();
   RegisterUiResourceEntry(kControlTagPict, kControlTagCoat, coatPicture, 0x127, 0xc, 0x54, 0x7d, 0,
                           1, kControlTagGold, 0);
-  coatPicture->flag4c = 1;
-  coatPicture->flag4d = 1;
+  coatPicture->inputGateFlag4c = 1;
+  coatPicture->childHitTestFlag4d = 1;
   SetUiResourceLayoutValues(0xa, 0, 0, 0, 0);
   coatPicture->SetPictureResourceIdAndRefresh(0x251c, 0);
   g_pUiResourceContext = 0;
@@ -3524,8 +3524,8 @@ TView* __cdecl BuildTurnEventDialogResources_2508(CWnd* pHostWindow, int nEventC
   TDeluxeText* infoText = new TDeluxeText();
   RegisterUiResourceEntry(kControlTagTevw, kControlTagInfo, infoText, 0x11, 0xa0, 0x162, 0x54, 0, 1,
                           kControlTagGold, 0);
-  infoText->flag4c = 1;
-  infoText->flag4d = 0;
+  infoText->inputGateFlag4c = 1;
+  infoText->childHitTestFlag4d = 0;
   g_pUiResourceContext = 0;
   PopUiWidgetBuildStackNode();
   PopUiWidgetBuildStackNode();
@@ -3932,11 +3932,11 @@ TView* __cdecl BuildTurnEventDialogResourcesForEvent898(CWnd* pHostWindow, int n
   int baseSize[2] = {0x7d0, 0x7d0};
   baseContainer->InitializeUiResourceEntryFrameAndParent(0, parent, baseOffset, baseSize, 0, 0, 1);
   baseContainer->controlTag = static_cast<int>(kControlTagBase);
-  baseContainer->field3c = 0;
+  baseContainer->controlValue3c = 0;
   baseContainer->SetEnabled(1, 0);
   baseContainer->SetState(0, 0);
-  baseContainer->flag4c = 1;
-  baseContainer->flag4d = 1;
+  baseContainer->inputGateFlag4c = 1;
+  baseContainer->childHitTestFlag4d = 1;
 
   TPicture* mainPicture = new TPicture();
   g_pUiResourceContext = mainPicture;
@@ -3951,19 +3951,19 @@ TView* __cdecl BuildTurnEventDialogResourcesForEvent898(CWnd* pHostWindow, int n
   int mainSize[2] = {0x280, 0x1e0};
   mainPicture->InitializeUiResourceEntryFrameAndParent(0, parent, mainOffset, mainSize, 0, 0, 1);
   mainPicture->controlTag = static_cast<int>(kControlTagMain);
-  mainPicture->field3c = 0;
+  mainPicture->controlValue3c = 0;
   mainPicture->SetEnabled(1, 0);
   mainPicture->SetState(0, 0);
-  mainPicture->flag4c = 1;
-  mainPicture->flag4d = 1;
-  // The original re-allocates the 8-byte field48 style payload here (free + alloc +
+  mainPicture->inputGateFlag4c = 1;
+  mainPicture->childHitTestFlag4d = 1;
+  // The original re-allocates the 8-byte stylePayload48 style payload here (free + alloc +
   // the zeroing helper) before overwriting both slots.
-  delete[] mainPicture->field48;
-  mainPicture->field48 = 0;
+  delete[] mainPicture->stylePayload48;
+  mainPicture->stylePayload48 = 0;
   mainPicture->EnsureField48Buffer();
-  if (mainPicture->field48 != 0) {
-    mainPicture->field48->styleWord = 0;
-    mainPicture->field48->packedColor = 0xffffff;
+  if (mainPicture->stylePayload48 != 0) {
+    mainPicture->stylePayload48->styleWord = 0;
+    mainPicture->stylePayload48->packedColor = 0xffffff;
   }
   mainPicture->hasCommandTagResource = 0xa;
   mainPicture->field68 = 0;
@@ -3985,11 +3985,11 @@ TView* __cdecl BuildTurnEventDialogResourcesForEvent898(CWnd* pHostWindow, int n
   int bodySize[2] = {0x128, 0x7a};
   bodyText->InitializeUiResourceEntryFrameAndParent(0, parent, bodyOffset, bodySize, 0, 0, 1);
   bodyText->controlTag = static_cast<int>(kControlTagText);
-  bodyText->field3c = 0;
+  bodyText->controlValue3c = 0;
   bodyText->SetEnabled(1, 0);
   bodyText->SetState(0, 0);
-  bodyText->flag4c = 1;
-  bodyText->flag4d = 1;
+  bodyText->inputGateFlag4c = 1;
+  bodyText->childHitTestFlag4d = 1;
   bodyText->hasCommandTagResource = 0xd;
   bodyText->field68 = 0;
   bodyText->field6C = 0;
@@ -4012,11 +4012,11 @@ TView* __cdecl BuildTurnEventDialogResourcesForEvent898(CWnd* pHostWindow, int n
   int toolbarSize[2] = {0xed, 0x5a};
   toolbar->InitializeUiResourceEntryFrameAndParent(0, parent, toolbarOffset, toolbarSize, 0, 0, 1);
   toolbar->controlTag = static_cast<int>(kControlTagTool);
-  toolbar->field3c = 0;
+  toolbar->controlValue3c = 0;
   toolbar->SetEnabled(1, 0);
   toolbar->SetState(0, 0);
-  toolbar->flag4c = 1;
-  toolbar->flag4d = 1;
+  toolbar->inputGateFlag4c = 1;
+  toolbar->childHitTestFlag4d = 1;
   toolbar->hasCommandTagResource = 5;
   toolbar->field68 = 0;
   toolbar->field6C = 0;
@@ -4037,11 +4037,11 @@ TView* __cdecl BuildTurnEventDialogResourcesForEvent898(CWnd* pHostWindow, int n
   int endSize[2] = {0x1f, 0x33};
   endButton->InitializeUiResourceEntryFrameAndParent(0, parent, endOffset, endSize, 0, 0, 1);
   endButton->controlTag = static_cast<int>(kControlTagEnd);
-  endButton->field3c = 0;
+  endButton->controlValue3c = 0;
   endButton->SetEnabled(0, 0);
   endButton->SetState(1, 0);
-  endButton->flag4c = 1;
-  endButton->flag4d = 1;
+  endButton->inputGateFlag4c = 1;
+  endButton->childHitTestFlag4d = 1;
   endButton->hasCommandTagResource = 0xa;
   endButton->field68 = 0;
   endButton->field6C = 0;
@@ -4065,11 +4065,11 @@ TView* __cdecl BuildTurnEventDialogResourcesForEvent898(CWnd* pHostWindow, int n
   seasonLabel->InitializeUiResourceEntryFrameAndParent(0, parent, seasonOffset, seasonSize, 0, 0,
                                                        1);
   seasonLabel->controlTag = static_cast<int>(kControlTagSeas);
-  seasonLabel->field3c = 0;
+  seasonLabel->controlValue3c = 0;
   seasonLabel->SetEnabled(1, 0);
   seasonLabel->SetState(0, 0);
-  seasonLabel->flag4c = 1;
-  seasonLabel->flag4d = 1;
+  seasonLabel->inputGateFlag4c = 1;
+  seasonLabel->childHitTestFlag4d = 1;
   seasonLabel->hasCommandTagResource = 0xd;
   seasonLabel->field68 = 0;
   seasonLabel->field6C = 0;
@@ -4093,11 +4093,11 @@ TView* __cdecl BuildTurnEventDialogResourcesForEvent898(CWnd* pHostWindow, int n
   treasuryLabel->InitializeUiResourceEntryFrameAndParent(0, parent, treasuryOffset, treasurySize, 0,
                                                          0, 1);
   treasuryLabel->controlTag = static_cast<int>(kControlTagTrea);
-  treasuryLabel->field3c = 0;
+  treasuryLabel->controlValue3c = 0;
   treasuryLabel->SetEnabled(1, 0);
   treasuryLabel->SetState(0, 0);
-  treasuryLabel->flag4c = 1;
-  treasuryLabel->flag4d = 1;
+  treasuryLabel->inputGateFlag4c = 1;
+  treasuryLabel->childHitTestFlag4d = 1;
   treasuryLabel->hasCommandTagResource = 0xd;
   treasuryLabel->field68 = 0;
   treasuryLabel->field6C = 0;
@@ -4167,11 +4167,11 @@ TView* __cdecl BuildTurnEventDialogResourcesForEvent8FC(CWnd* pHostWindow, int n
     size[1] = 0x7d0;
     baseContainer->InitializeUiResourceEntryFrameAndParent(0, parent, offset, size, 0, 0, 1);
     baseContainer->controlTag = static_cast<int>(kControlTagBase);
-    baseContainer->field3c = 0;
+    baseContainer->controlValue3c = 0;
     baseContainer->SetEnabled(1, 0);
     baseContainer->SetState(0, 0);
-    baseContainer->flag4c = 1;
-    baseContainer->flag4d = 1;
+    baseContainer->inputGateFlag4c = 1;
+    baseContainer->childHitTestFlag4d = 1;
     g_pUiResourceContext = 0;
 
     TBook* mainBook = new TBook();
@@ -4189,17 +4189,17 @@ TView* __cdecl BuildTurnEventDialogResourcesForEvent8FC(CWnd* pHostWindow, int n
     size[1] = 0x1e0;
     mainBook->InitializeUiResourceEntryFrameAndParent(0, parent, offset, size, 0, 0, 1);
     mainBook->controlTag = static_cast<int>(kControlTagMain);
-    mainBook->field3c = 0;
+    mainBook->controlValue3c = 0;
     mainBook->SetEnabled(1, 0);
     mainBook->SetState(0, 0);
-    mainBook->flag4c = 1;
-    mainBook->flag4d = 1;
-    delete[] mainBook->field48;
-    mainBook->field48 = 0;
+    mainBook->inputGateFlag4c = 1;
+    mainBook->childHitTestFlag4d = 1;
+    delete[] mainBook->stylePayload48;
+    mainBook->stylePayload48 = 0;
     mainBook->EnsureField48Buffer();
-    if (mainBook->field48 != 0) {
-      mainBook->field48->styleWord = 0;
-      mainBook->field48->packedColor = 0xffffff;
+    if (mainBook->stylePayload48 != 0) {
+      mainBook->stylePayload48->styleWord = 0;
+      mainBook->stylePayload48->packedColor = 0xffffff;
     }
     mainBook->hasCommandTagResource = 0xa;
     mainBook->field68 = 0;
@@ -4224,11 +4224,11 @@ TView* __cdecl BuildTurnEventDialogResourcesForEvent8FC(CWnd* pHostWindow, int n
     size[1] = 0x54;
     toolbar->InitializeUiResourceEntryFrameAndParent(0, parent, offset, size, 0, 0, 1);
     toolbar->controlTag = static_cast<int>(kControlTagTool);
-    toolbar->field3c = 0;
+    toolbar->controlValue3c = 0;
     toolbar->SetEnabled(1, 0);
     toolbar->SetState(0, 0);
-    toolbar->flag4c = 1;
-    toolbar->flag4d = 1;
+    toolbar->inputGateFlag4c = 1;
+    toolbar->childHitTestFlag4d = 1;
     toolbar->hasCommandTagResource = 5;
     toolbar->field68 = 0;
     toolbar->field6C = 0;
@@ -4252,11 +4252,11 @@ TView* __cdecl BuildTurnEventDialogResourcesForEvent8FC(CWnd* pHostWindow, int n
     size[1] = 0x32;
     endButton->InitializeUiResourceEntryFrameAndParent(0, parent, offset, size, 0, 0, 1);
     endButton->controlTag = static_cast<int>(kControlTagEnd);
-    endButton->field3c = 0;
+    endButton->controlValue3c = 0;
     endButton->SetEnabled(0, 0);
     endButton->SetState(1, 0);
-    endButton->flag4c = 1;
-    endButton->flag4d = 1;
+    endButton->inputGateFlag4c = 1;
+    endButton->childHitTestFlag4d = 1;
     endButton->hasCommandTagResource = 0xa;
     endButton->field68 = 0;
     endButton->field6C = 0;
@@ -4281,11 +4281,11 @@ TView* __cdecl BuildTurnEventDialogResourcesForEvent8FC(CWnd* pHostWindow, int n
     size[1] = 0x11;
     seasonLabel->InitializeUiResourceEntryFrameAndParent(0, parent, offset, size, 0, 0, 1);
     seasonLabel->controlTag = static_cast<int>(kControlTagSeas);
-    seasonLabel->field3c = 0;
+    seasonLabel->controlValue3c = 0;
     seasonLabel->SetEnabled(1, 0);
     seasonLabel->SetState(0, 0);
-    seasonLabel->flag4c = 1;
-    seasonLabel->flag4d = 1;
+    seasonLabel->inputGateFlag4c = 1;
+    seasonLabel->childHitTestFlag4d = 1;
     seasonLabel->hasCommandTagResource = 0xd;
     seasonLabel->field68 = 0;
     seasonLabel->field6C = 0;
@@ -4310,11 +4310,11 @@ TView* __cdecl BuildTurnEventDialogResourcesForEvent8FC(CWnd* pHostWindow, int n
     size[1] = 0x11;
     treasuryLabel->InitializeUiResourceEntryFrameAndParent(0, parent, offset, size, 0, 0, 1);
     treasuryLabel->controlTag = static_cast<int>(kControlTagTrea);
-    treasuryLabel->field3c = 0;
+    treasuryLabel->controlValue3c = 0;
     treasuryLabel->SetEnabled(1, 0);
     treasuryLabel->SetState(0, 0);
-    treasuryLabel->flag4c = 1;
-    treasuryLabel->flag4d = 1;
+    treasuryLabel->inputGateFlag4c = 1;
+    treasuryLabel->childHitTestFlag4d = 1;
     treasuryLabel->hasCommandTagResource = 0xd;
     treasuryLabel->field68 = 0;
     treasuryLabel->field6C = 0;
@@ -4340,11 +4340,11 @@ TView* __cdecl BuildTurnEventDialogResourcesForEvent8FC(CWnd* pHostWindow, int n
     size[1] = 0x1a;
     potToolbar->InitializeUiResourceEntryFrameAndParent(0, parent, offset, size, 0, 0, 1);
     potToolbar->controlTag = static_cast<int>(kControlTagBpot);
-    potToolbar->field3c = 0;
+    potToolbar->controlValue3c = 0;
     potToolbar->SetEnabled(1, 0);
     potToolbar->SetState(0, 0);
-    potToolbar->flag4c = 1;
-    potToolbar->flag4d = 1;
+    potToolbar->inputGateFlag4c = 1;
+    potToolbar->childHitTestFlag4d = 1;
     potToolbar->hasCommandTagResource = 5;
     potToolbar->field68 = 0;
     potToolbar->field6C = 0;
@@ -4368,11 +4368,11 @@ TView* __cdecl BuildTurnEventDialogResourcesForEvent8FC(CWnd* pHostWindow, int n
     size[1] = 0x12;
     transportButton->InitializeUiResourceEntryFrameAndParent(0, parent, offset, size, 0, 0, 1);
     transportButton->controlTag = static_cast<int>(kControlTagTran);
-    transportButton->field3c = 0;
+    transportButton->controlValue3c = 0;
     transportButton->SetEnabled(1, 0);
     transportButton->SetState(1, 0);
-    transportButton->flag4c = 1;
-    transportButton->flag4d = 1;
+    transportButton->inputGateFlag4c = 1;
+    transportButton->childHitTestFlag4d = 1;
     transportButton->hasCommandTagResource = 0xa;
     transportButton->field68 = 0;
     transportButton->field6C = 0;
@@ -4397,11 +4397,11 @@ TView* __cdecl BuildTurnEventDialogResourcesForEvent8FC(CWnd* pHostWindow, int n
     size[1] = 0x12;
     cityButton->InitializeUiResourceEntryFrameAndParent(0, parent, offset, size, 0, 0, 1);
     cityButton->controlTag = static_cast<int>(kControlTagCity);
-    cityButton->field3c = 0;
+    cityButton->controlValue3c = 0;
     cityButton->SetEnabled(1, 0);
     cityButton->SetState(1, 0);
-    cityButton->flag4c = 1;
-    cityButton->flag4d = 1;
+    cityButton->inputGateFlag4c = 1;
+    cityButton->childHitTestFlag4d = 1;
     cityButton->hasCommandTagResource = 0xa;
     cityButton->field68 = 0;
     cityButton->field6C = 0;
@@ -4426,11 +4426,11 @@ TView* __cdecl BuildTurnEventDialogResourcesForEvent8FC(CWnd* pHostWindow, int n
     size[1] = 0x12;
     tradeButton->InitializeUiResourceEntryFrameAndParent(0, parent, offset, size, 0, 0, 1);
     tradeButton->controlTag = static_cast<int>(kControlTagTrad);
-    tradeButton->field3c = 0;
+    tradeButton->controlValue3c = 0;
     tradeButton->SetEnabled(1, 0);
     tradeButton->SetState(1, 0);
-    tradeButton->flag4c = 1;
-    tradeButton->flag4d = 1;
+    tradeButton->inputGateFlag4c = 1;
+    tradeButton->childHitTestFlag4d = 1;
     tradeButton->hasCommandTagResource = 0xa;
     tradeButton->field68 = 0;
     tradeButton->field6C = 0;
@@ -4455,11 +4455,11 @@ TView* __cdecl BuildTurnEventDialogResourcesForEvent8FC(CWnd* pHostWindow, int n
     size[1] = 0x12;
     diplomacyButton->InitializeUiResourceEntryFrameAndParent(0, parent, offset, size, 0, 0, 1);
     diplomacyButton->controlTag = static_cast<int>(kControlTagDipl);
-    diplomacyButton->field3c = 0;
+    diplomacyButton->controlValue3c = 0;
     diplomacyButton->SetEnabled(1, 0);
     diplomacyButton->SetState(1, 0);
-    diplomacyButton->flag4c = 1;
-    diplomacyButton->flag4d = 1;
+    diplomacyButton->inputGateFlag4c = 1;
+    diplomacyButton->childHitTestFlag4d = 1;
     diplomacyButton->hasCommandTagResource = 0xa;
     diplomacyButton->field68 = 0;
     diplomacyButton->field6C = 0;
@@ -4485,11 +4485,11 @@ TView* __cdecl BuildTurnEventDialogResourcesForEvent8FC(CWnd* pHostWindow, int n
     size[1] = 0x30;
     trb2Toolbar->InitializeUiResourceEntryFrameAndParent(0, parent, offset, size, 0, 0, 1);
     trb2Toolbar->controlTag = static_cast<int>(0x74627232); // 'trb2' (see MISSING-TAG)
-    trb2Toolbar->field3c = 0;
+    trb2Toolbar->controlValue3c = 0;
     trb2Toolbar->SetEnabled(1, 0);
     trb2Toolbar->SetState(0, 0);
-    trb2Toolbar->flag4c = 1;
-    trb2Toolbar->flag4d = 1;
+    trb2Toolbar->inputGateFlag4c = 1;
+    trb2Toolbar->childHitTestFlag4d = 1;
     trb2Toolbar->hasCommandTagResource = 5;
     trb2Toolbar->field68 = 0;
     trb2Toolbar->field6C = 0;
@@ -4513,11 +4513,11 @@ TView* __cdecl BuildTurnEventDialogResourcesForEvent8FC(CWnd* pHostWindow, int n
     size[1] = 0x26;
     queryButton->InitializeUiResourceEntryFrameAndParent(0, parent, offset, size, 0, 0, 1);
     queryButton->controlTag = static_cast<int>(kControlTagQuer);
-    queryButton->field3c = 0;
+    queryButton->controlValue3c = 0;
     queryButton->SetEnabled(0, 0);
     queryButton->SetState(1, 0);
-    queryButton->flag4c = 1;
-    queryButton->flag4d = 1;
+    queryButton->inputGateFlag4c = 1;
+    queryButton->childHitTestFlag4d = 1;
     SetUiResourceLayoutValues(0xa, 0, 0, 0, 0);
     queryButton->SetPictureResourceIdAndRefresh(0x8fe, 0);
     g_pUiResourceContext = 0;
@@ -4601,15 +4601,15 @@ TView* __cdecl BuildTurnEventDialogResourcesForEvent8FC(CWnd* pHostWindow, int n
     size[1] = 0x127;
     window->InitializeUiResourceEntryFrameAndParent(0, parent, offset, size, 0, 0, 1);
     window->controlTag = static_cast<int>(kControlTagWind);
-    window->field3c = 0;
+    window->controlValue3c = 0;
     window->SetEnabled(1, 0);
     window->SetState(1, 0);
-    window->flag4c = 1;
-    window->flag4d = 1;
-    window->field70 = 0;
+    window->inputGateFlag4c = 1;
+    window->childHitTestFlag4d = 1;
+    window->topmostFlag70 = 0;
     window->flag6f = 1;
     window->flag6e = 1;
-    window->field6d = 0;
+    window->useCaptionedFrameFlag6d = 0;
     window->flag6c = 0;
     window->flag71 = 1;
     window->field9c = 8;
@@ -4634,11 +4634,11 @@ TView* __cdecl BuildTurnEventDialogResourcesForEvent8FC(CWnd* pHostWindow, int n
     size[1] = 0x127;
     goldView->InitializeUiResourceEntryFrameAndParent(0, parent, offset, size, 0, 0, 1);
     goldView->controlTag = static_cast<int>(kControlTagGold);
-    goldView->field3c = 0;
+    goldView->controlValue3c = 0;
     goldView->SetEnabled(1, 0);
     goldView->SetState(0, 0);
-    goldView->flag4c = 1;
-    goldView->flag4d = 1;
+    goldView->inputGateFlag4c = 1;
+    goldView->childHitTestFlag4d = 1;
     g_pUiResourceContext = 0;
 
     TPicture* topPicture = new TPicture();
@@ -4656,11 +4656,11 @@ TView* __cdecl BuildTurnEventDialogResourcesForEvent8FC(CWnd* pHostWindow, int n
     size[1] = 0x127;
     topPicture->InitializeUiResourceEntryFrameAndParent(0, parent, offset, size, 0, 0, 1);
     topPicture->controlTag = static_cast<int>(0x746f7020); // 'top ' (see MISSING-TAG)
-    topPicture->field3c = 0;
+    topPicture->controlValue3c = 0;
     topPicture->SetEnabled(1, 0);
     topPicture->SetState(0, 0);
-    topPicture->flag4c = 1;
-    topPicture->flag4d = 1;
+    topPicture->inputGateFlag4c = 1;
+    topPicture->childHitTestFlag4d = 1;
     topPicture->hasCommandTagResource = 0xa;
     topPicture->field68 = 0;
     topPicture->field6C = 0;
@@ -4684,11 +4684,11 @@ TView* __cdecl BuildTurnEventDialogResourcesForEvent8FC(CWnd* pHostWindow, int n
     size[1] = 0x20;
     titleText->InitializeUiResourceEntryFrameAndParent(0, parent, offset, size, 0, 0, 1);
     titleText->controlTag = static_cast<int>(0x7469746c); // 'titl' (see MISSING-TAG)
-    titleText->field3c = 0;
+    titleText->controlValue3c = 0;
     titleText->SetEnabled(1, 0);
     titleText->SetState(0, 0);
-    titleText->flag4c = 1;
-    titleText->flag4d = 1;
+    titleText->inputGateFlag4c = 1;
+    titleText->childHitTestFlag4d = 1;
     titleText->hasCommandTagResource = 0xd;
     titleText->field68 = 0;
     titleText->field6C = 0;
@@ -4713,11 +4713,11 @@ TView* __cdecl BuildTurnEventDialogResourcesForEvent8FC(CWnd* pHostWindow, int n
     size[1] = 0x3c;
     patchPicture->InitializeUiResourceEntryFrameAndParent(0, parent, offset, size, 0, 0, 1);
     patchPicture->controlTag = static_cast<int>(kControlTagPict);
-    patchPicture->field3c = 0;
+    patchPicture->controlValue3c = 0;
     patchPicture->SetEnabled(1, 0);
     patchPicture->SetState(0, 0);
-    patchPicture->flag4c = 1;
-    patchPicture->flag4d = 1;
+    patchPicture->inputGateFlag4c = 1;
+    patchPicture->childHitTestFlag4d = 1;
     patchPicture->hasCommandTagResource = 0xa;
     patchPicture->field68 = 0;
     patchPicture->field6C = 0;
@@ -4742,11 +4742,11 @@ TView* __cdecl BuildTurnEventDialogResourcesForEvent8FC(CWnd* pHostWindow, int n
     size[1] = 0xaf;
     scrollView->InitializeUiResourceEntryFrameAndParent(0, parent, offset, size, 0, 0, 1);
     scrollView->controlTag = static_cast<int>(0x73637677); // 'scvw' (see MISSING-TAG)
-    scrollView->field3c = 0;
+    scrollView->controlValue3c = 0;
     scrollView->SetEnabled(1, 0);
     scrollView->SetState(0, 0);
-    scrollView->flag4c = 1;
-    scrollView->flag4d = 1;
+    scrollView->inputGateFlag4c = 1;
+    scrollView->childHitTestFlag4d = 1;
     g_pUiResourceContext = 0;
     PopUiWidgetBuildStackNode();
 
@@ -4765,11 +4765,11 @@ TView* __cdecl BuildTurnEventDialogResourcesForEvent8FC(CWnd* pHostWindow, int n
     size[1] = 0x18;
     okayButton->InitializeUiResourceEntryFrameAndParent(0, parent, offset, size, 0, 0, 1);
     okayButton->controlTag = static_cast<int>(kControlTagOkay);
-    okayButton->field3c = 0;
+    okayButton->controlValue3c = 0;
     okayButton->SetEnabled(1, 0);
     okayButton->SetState(1, 0);
-    okayButton->flag4c = 1;
-    okayButton->flag4d = 1;
+    okayButton->inputGateFlag4c = 1;
+    okayButton->childHitTestFlag4d = 1;
     okayButton->hasCommandTagResource = 0x22;
     okayButton->field68 = 0;
     okayButton->field6C = 0;
@@ -4824,11 +4824,11 @@ TView* __cdecl InitializeTradeScreenBitmapControls(CWnd* pHostWindow, int nEvent
       size[1] = 0x7d0;
       base->InitializeUiResourceEntryFrameAndParent(0, parent, offset, size, 0, 0, 1);
       base->controlTag = static_cast<int>(kControlTagBase);
-      base->field3c = 0;
+      base->controlValue3c = 0;
       base->SetEnabled(1, 0);
       base->SetState(0, 0);
-      base->flag4c = 1;
-      base->flag4d = 1;
+      base->inputGateFlag4c = 1;
+      base->childHitTestFlag4d = 1;
       g_pUiResourceContext = 0;
     }
 
@@ -4849,17 +4849,17 @@ TView* __cdecl InitializeTradeScreenBitmapControls(CWnd* pHostWindow, int nEvent
       size[1] = 0x1e0;
       main->InitializeUiResourceEntryFrameAndParent(0, parent, offset, size, 0, 0, 1);
       main->controlTag = static_cast<int>(kControlTagMain);
-      main->field3c = 0;
+      main->controlValue3c = 0;
       main->SetEnabled(1, 0);
       main->SetState(0, 0);
-      main->flag4c = 1;
-      main->flag4d = 1;
+      main->inputGateFlag4c = 1;
+      main->childHitTestFlag4d = 1;
       // Inline ReplaceUiResourceContextPairBuffer(0, 0xffffff): the original writes
-      // through the fresh field48 without a null re-check - faithful.
-      delete main->field48;
-      main->field48 = new TUiStyleBytes();
-      main->field48->styleWord = 0;
-      main->field48->packedColor = 0xffffff;
+      // through the fresh stylePayload48 without a null re-check - faithful.
+      delete main->stylePayload48;
+      main->stylePayload48 = new TUiStyleBytes();
+      main->stylePayload48->styleWord = 0;
+      main->stylePayload48->packedColor = 0xffffff;
       main->hasCommandTagResource = 0xa;
       CRect zeroRect(0, 0, 0, 0);
       main->field68 = zeroRect.left;
@@ -4887,11 +4887,11 @@ TView* __cdecl InitializeTradeScreenBitmapControls(CWnd* pHostWindow, int nEvent
       size[1] = 0x2c;
       toolbar->InitializeUiResourceEntryFrameAndParent(0, parent, offset, size, 0, 0, 1);
       toolbar->controlTag = static_cast<int>(0x74627232); // 'tbr2' (see MISSING-TAG)
-      toolbar->field3c = 0;
+      toolbar->controlValue3c = 0;
       toolbar->SetEnabled(1, 0);
       toolbar->SetState(0, 0);
-      toolbar->flag4c = 1;
-      toolbar->flag4d = 1;
+      toolbar->inputGateFlag4c = 1;
+      toolbar->childHitTestFlag4d = 1;
       toolbar->hasCommandTagResource = 5;
       CRect zeroRect(0, 0, 0, 0);
       toolbar->field68 = zeroRect.left;

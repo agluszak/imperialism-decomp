@@ -31,8 +31,8 @@ void TScroller::InitializeScrollerPlacement(TView* owner, int* offsetLayout, int
   linkedChildHandler = owner;
   ownerLocalX = offsetLayout[0];
   ownerLocalY = offsetLayout[1];
-  field34 = sizeLayout[0];
-  field38 = sizeLayout[1];
+  frameWidth34 = sizeLayout[0];
+  frameHeight38 = sizeLayout[1];
   if (owner != 0) {
     owner->AttachChildControl(this, 0);
   }

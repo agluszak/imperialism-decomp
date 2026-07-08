@@ -34,16 +34,17 @@ void __cdecl RegisterUiResourceEntry(unsigned int nameTag, unsigned int controlT
   sizeLayout[1] = height;
   widget->InitializeUiResourceEntryFrameAndParent(0, parent, offsetLayout, sizeLayout, 0, 0, 1);
   widget->controlTag = static_cast<int>(controlTag);
-  widget->field3c = field3cValue;
+  widget->controlValue3c = field3cValue;
   widget->SetEnabled(enabledState, 0);
   widget->SetState(stateValue, 0);
 }
 
 // FUNCTION: IMPERIALISM 0x0041b3a0
-void __cdecl SetUiResourceStateFlags(unsigned char flag4c, unsigned char flag4d) {
+void __cdecl SetUiResourceStateFlags(unsigned char inputGateFlag4c,
+                                     unsigned char childHitTestFlag4d) {
   TView* context = g_pUiResourceContext;
-  context->flag4c = flag4c;
-  context->flag4d = flag4d;
+  context->inputGateFlag4c = inputGateFlag4c;
+  context->childHitTestFlag4d = childHitTestFlag4d;
 }
 
 // FUNCTION: IMPERIALISM 0x0041b3d0

@@ -70,7 +70,7 @@ void TEngineerDialog::ApplyRectSlot110(RECT* rectBuffer) {
                         &headerRect, 0);
 
   bodyY = 0x38;
-  int bodyRowCount = (static_cast<short>(this->field38) - 0x46) / 0x0e;
+  int bodyRowCount = (static_cast<short>(this->frameHeight38) - 0x46) / 0x0e;
   if (bodyRowCount > 0) {
     do {
       dstRect.top = bodyY;

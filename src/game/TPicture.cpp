@@ -61,7 +61,7 @@ void TPicture::ApplyRectSlot110(RECT* rectBuffer) {
     CPoint posForY;
     this->field8C->StretchDibitsRectToDc(
         GetActiveQuickDrawDc(), this->GetCachedPosPoint(&posForX)->x,
-        this->GetCachedPosPoint(&posForY)->y, this->field34, this->field38, 0, 0,
+        this->GetCachedPosPoint(&posForY)->y, this->frameWidth34, this->frameHeight38, 0, 0,
         this->field8C->m_pInfoHeader->bmiHeader.biWidth, srcHeight);
   }
 }
@@ -87,10 +87,10 @@ void TPicture::SetPictureResourceIdAndRefresh(short nPictureId, bool fRefreshNow
     this->field8C = g_pModuleLibraryCacheState->LoadBmpResourceByIdCached(nPictureId);
   }
   if (this->field8C == 0) {
-    reinterpret_cast<void(__cdecl*)(int, int)>(SetPictureResourceIdAndRefresh_Impl)(this->field34,
-                                                                                    this->field38);
+    reinterpret_cast<void(__cdecl*)(int, int)>(SetPictureResourceIdAndRefresh_Impl)(
+        this->frameWidth34, this->frameHeight38);
     this->field8C = g_pModuleLibraryCacheState->BuildIndexedBmpResourceById(
-        nPictureId, this->field34, this->field38, 0);
+        nPictureId, this->frameWidth34, this->frameHeight38, 0);
   }
   if (fRefreshNow) {
     this->RefreshControl();

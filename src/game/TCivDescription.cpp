@@ -323,7 +323,7 @@ void TCivDescription::ApplyRectSlot110(RECT* rectBuffer) {
     g_pSimMgr->GetString(0x2718, selectedClass, &localizedTextRef);
 
     textWidth = MeasureTextExtentWithCachedQuickDrawStyle(&localizedTextRef);
-    textOriginX = static_cast<short>((this->field34 / 2) - (textWidth / 2));
+    textOriginX = static_cast<short>((this->frameWidth34 / 2) - (textWidth / 2));
 
     SetQuickDrawColorAndSyncGlobals(styleSecondary);
     SetQuickDrawTextOriginWithContextOffset(static_cast<short>(textOriginX + 1), 0x47);

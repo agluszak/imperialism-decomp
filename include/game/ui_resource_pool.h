@@ -31,8 +31,9 @@ void __cdecl RegisterUiResourceEntry(unsigned int nameTag, unsigned int controlT
 void __cdecl SetUiResourceLayoutValues(int frameStyle, int rectLeft, int rectTop, int rectRight,
                                        int rectBottom);
 
-// Set the flag4c/flag4d pair on the current g_pUiResourceContext widget.
-void __cdecl SetUiResourceStateFlags(unsigned char flag4c, unsigned char flag4d);
+// Set the inputGateFlag4c/childHitTestFlag4d pair on the current g_pUiResourceContext widget.
+void __cdecl SetUiResourceStateFlags(unsigned char inputGateFlag4c,
+                                     unsigned char childHitTestFlag4d);
 
 // Assign text + packed style descriptor + theme code onto the current
 // g_pUiResourceContext text control (a TStaticText-family widget).
@@ -50,7 +51,7 @@ void __cdecl SetUiResourceContextPictureId(int nPictureId);
 // Store a FourCC group/mode code into the current context cluster's field84.
 void __cdecl SetUiResourceContextStringCode(int nCode);
 
-// Replace the current context widget's field48 style payload with a fresh zeroed
+// Replace the current context widget's stylePayload48 style payload with a fresh zeroed
 // buffer carrying {packedColor, styleWord}.
 void __cdecl ReplaceUiResourceContextPairBuffer(int styleWord, int packedColor);
 

@@ -5,7 +5,7 @@
 
 // Template-driven modal dialog controller. Extends TControl (Ghidra types the stack object as
 // TControl and routes template init / finalize through TControl methods). Modal-create scratch
-// fields reuse TView members during setup (field3c, field48, field5c, absoluteX); extended state
+// fields reuse TView members during setup (controlValue3c, stylePayload48, field5c, absoluteX); extended state
 // lives in the members below.
 class TModalTemplateDialog : public TControl {
 public:
@@ -19,7 +19,9 @@ public:
   void DestroyListBoxAndHotKeyChildren();
   BOOL UpdateData(BOOL saveAndValidate);
 
-  int DialogResult() const { return absoluteX; }
+  int DialogResult() const {
+    return absoluteX;
+  }
 
 protected:
   UINT resourceTemplateId;

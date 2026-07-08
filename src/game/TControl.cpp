@@ -205,7 +205,7 @@ HWND ResolvePreModalOwner() {
 
 // FUNCTION: IMPERIALISM 0x0049d360
 int TModalTemplateDialogBase::PrepareAndCreateModalFromTemplate() {
-  void* lockedTemplateBytes = field48;
+  void* lockedTemplateBytes = stylePayload48;
   field70 = reinterpret_cast<int>(childList44);
   const UINT resourceTemplateId = static_cast<UINT>(resourceTemplateId40);
   if (resourceTemplateId != 0) {
@@ -275,10 +275,10 @@ TControl::~TControl() {}
 TModalTemplateDialogBase*
 TModalTemplateDialogBase::InitializeDialogTemplateFromId(UINT templateId, void* initParam) {
   sharedStringRef.~CString();
-  memset(&field3c, 0, 0x20);
+  memset(&controlValue3c, 0, 0x20);
   new (&sharedStringRef) CString();
   nativeWindow50 = reinterpret_cast<CWnd*>(initParam);
-  field3c = static_cast<int>(templateId);
+  controlValue3c = static_cast<int>(templateId);
   resourceTemplateId40 = static_cast<int>(templateId & 0xffff);
   field5c = 0;
   hasCommandTagResource = 0;

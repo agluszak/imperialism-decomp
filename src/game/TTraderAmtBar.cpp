@@ -65,8 +65,8 @@ void TTraderAmtBar::NoOpUiLifecycleHook(int arg) {
     stepOrCurrentValue = 0;
   } else {
     short currentValue = nationState->GetDiplomacyExternalStateByTarget(recordIndex);
-    stepOrCurrentValue =
-        (short)((((int)tradeCapacity - (int)currentValue) * this->field34) / (int)tradeCapacity);
+    stepOrCurrentValue = (short)((((int)tradeCapacity - (int)currentValue) * this->frameWidth34) /
+                                 (int)tradeCapacity);
   }
 
   short gaugeValue = 0;
@@ -76,7 +76,7 @@ void TTraderAmtBar::NoOpUiLifecycleHook(int arg) {
   if (tradeCapacity == 0) {
     rangeOrMaxValue = 0;
   } else {
-    rangeOrMaxValue = (short)((this->field38 * (int)gaugeValue) / (int)tradeCapacity);
+    rangeOrMaxValue = (short)((this->frameHeight38 * (int)gaugeValue) / (int)tradeCapacity);
   }
 
   auxValueA = tradeCapacity;
@@ -86,8 +86,8 @@ void TTraderAmtBar::NoOpUiLifecycleHook(int arg) {
 
 // FUNCTION: IMPERIALISM 0x0058b040
 void TTraderAmtBar::UpdateFromScaleOrRatio(int scaleValue, int ratioValue) {
-  this->field34 = scaleValue;
-  this->field38 = ratioValue;
+  this->frameWidth34 = scaleValue;
+  this->frameHeight38 = ratioValue;
 }
 
 // FUNCTION: IMPERIALISM 0x0058b070
@@ -99,7 +99,7 @@ int TTraderAmtBar::ApplyMoveClamp(int baseValue, int requestedValue) {
     TGreatPower* nationState = GetActiveNationState();
     short tradeCapacity = nationState->tradeCapacity;
     if (tradeCapacity != 0) {
-      if ((int)requestedValue < (this->field38 / (int)tradeCapacity)) {
+      if ((int)requestedValue < (this->frameHeight38 / (int)tradeCapacity)) {
         TAmtBar* sellControl = reinterpret_cast<TAmtBar*>(
             reinterpret_cast<TView*>(reinterpret_cast<void*>(this->ownerContext))
                 ->ResolveControlByTag(kControlTagSell));
