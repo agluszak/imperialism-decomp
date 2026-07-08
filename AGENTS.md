@@ -347,6 +347,35 @@ notes 18 and 47).
 - Persist transferable matching lessons as numbered notes in
   `.claude/skills/decomp-loop/heuristics.md`.
 
+## Cursor Cloud specific instructions
+
+Environment prep (install `uv`/`just`/Docker, `uv sync`, and the one-time
+`just docker-build` of the `imperialism-msvc500` image) is already done by the VM
+snapshot + startup update script; only the notes below are non-obvious.
+
+- **Start the Docker daemon before any build.** `dockerd` is not auto-started on a
+  fresh session. Start it once per session (it needs the docker-in-docker workaround
+  already configured in `/etc/docker/daemon.json` = `fuse-overlayfs`):
+  `sudo dockerd >/tmp/dockerd.log 2>&1 &` (or run it in a tmux session). Then
+  `sudo docker info` should report `Storage Driver: fuse-overlayfs`.
+- **`just` calls bare `docker`.** User `ubuntu` is in the `docker` group, so a
+  *newly started* shell can run `docker`/`just build` without `sudo`. Within a shell
+  that started before the group took effect, wrap the command:
+  `sg docker -c 'just build'`.
+- **What works without the original game binary:** `just tooling-check`, `just test`,
+  `just build` (produces `build-msvc500/Imperialism.exe`, a real PE32), `just detect`,
+  `just resource-check`, and the source-only gates (`marker-gate`, `decomplint`, etc.).
+- **What is blocked in cloud:** every reccmp-vs-original target — `just stats`,
+  `just compare`, `just vtable`, `just datacmp`, `just gates` (bundles `vtable` +
+  `datacmp-gate`), `just precommit`, and running the game (`just run`/`debug`/`screenshot`
+  under Wine). They need the user's own legally-obtained `Imperialism.exe` (sha256
+  `6afab8495db715fd9e719cffa74abe5ede4dd763428ff65d73be4edf16c9e691`), wired via
+  `.env` `ORIGINAL_BINARY` + `just bootstrap-reccmp` (writes gitignored `reccmp-user.yml`).
+  Without it these fail with `Target IMPERIALISM is missing data: original_path`.
+- **Ghidra targets** (`ghidra-*`, `sync-ghidra`, `db-resync`, `restore-project`) need
+  `GHIDRA_INSTALL_DIR` in `.env` and `git lfs pull` of `vendor/ghidra/exports/*.gzf`;
+  neither is set up in cloud. Not needed for the build/tooling loop above.
+
 <!-- BEGIN BEADS INTEGRATION v:1 profile:minimal hash:970c3bf2 -->
 ## Beads Issue Tracker
 
