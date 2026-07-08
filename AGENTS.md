@@ -349,7 +349,7 @@ notes 18 and 47).
 
 ## Cursor Cloud specific instructions
 
-Environment prep (install `uv`/`just`/Docker, `uv sync`, and the one-time
+Environment prep (install `uv`/`just`/Docker/host-`wine`, `uv sync`, and the one-time
 `just docker-build` of the `imperialism-msvc500` image) is already done by the VM
 snapshot + startup update script; only the notes below are non-obvious.
 
@@ -362,16 +362,24 @@ snapshot + startup update script; only the notes below are non-obvious.
   *newly started* shell can run `docker`/`just build` without `sudo`. Within a shell
   that started before the group took effect, wrap the command:
   `sg docker -c 'just build'`.
-- **What works without the original game binary:** `just tooling-check`, `just test`,
-  `just build` (produces `build-msvc500/Imperialism.exe`, a real PE32), `just detect`,
-  `just resource-check`, and the source-only gates (`marker-gate`, `decomplint`, etc.).
-- **What is blocked in cloud:** every reccmp-vs-original target — `just stats`,
-  `just compare`, `just vtable`, `just datacmp`, `just gates` (bundles `vtable` +
-  `datacmp-gate`), `just precommit`, and running the game (`just run`/`debug`/`screenshot`
-  under Wine). They need the user's own legally-obtained `Imperialism.exe` (sha256
-  `6afab8495db715fd9e719cffa74abe5ede4dd763428ff65d73be4edf16c9e691`), wired via
-  `.env` `ORIGINAL_BINARY` + `just bootstrap-reccmp` (writes gitignored `reccmp-user.yml`).
-  Without it these fail with `Target IMPERIALISM is missing data: original_path`.
+- **The original binary is present in the snapshot** at `orig/Imperialism.exe` (sha256
+  `6afab8495db715fd9e719cffa74abe5ede4dd763428ff65d73be4edf16c9e691`), wired via the
+  gitignored `.env` (`ORIGINAL_BINARY=/workspace/orig/Imperialism.exe`) and
+  `reccmp-user.yml` (`targets.IMPERIALISM.path`). Do **not** run `just bootstrap-reccmp`
+  — it refuses to overwrite the committed `reccmp-project.yml`; hand-write/keep
+  `reccmp-user.yml` instead (workflows §0). These three files are gitignored and persist
+  in the snapshot.
+- **reccmp needs host-side `wine`** (installed): the compare/stats/roadmap tools run
+  `cvdump.exe` via `wine`/`winepath` to parse the recompiled PDB. Prefix long compare
+  runs with `WINEDEBUG=-all` to silence Wine chatter.
+- **What works:** the whole loop — `just tooling-check`, `just test`, `just build`,
+  `just detect`, `just resource-check`, `just compare 0xADDR` / `--file`, `just stats`,
+  `just vtable`, `just datacmp`, `just gates`, `just precommit`, and the source-only gates.
+  (`just compare`/`--file` exits non-zero when any listed function is below 100% — that
+  is a score signal, not a setup failure.)
+- **Still blocked:** running the game (`just run`/`debug`/`screenshot`) needs the full
+  retail install (a `Data/` folder next to the exe), which is not present — only the exe
+  was supplied.
 - **Ghidra targets** (`ghidra-*`, `sync-ghidra`, `db-resync`, `restore-project`) need
   `GHIDRA_INSTALL_DIR` in `.env` and `git lfs pull` of `vendor/ghidra/exports/*.gzf`;
   neither is set up in cloud. Not needed for the build/tooling loop above.
