@@ -7,7 +7,7 @@
 // VTABLE: IMPERIALISM 0x006404b0
 class TMapKey : public TPicture {
 public:
-// === BEGIN GENERATED DECLS (TMapKey) — refreshed by recover-class; do not hand-edit ===
+  // === BEGIN GENERATED DECLS (TMapKey) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TMapKey)
   virtual ~TMapKey() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -123,9 +123,18 @@ public:
   // slot 0x70 SetControlStateFlagAndMaybeRefresh inherited unchanged (0x48e810)
   // slot 0x71 ResetPictureResourceEntry inherited unchanged (0x48f520)
   // slot 0x72 SetPictureResourceIdAndRefresh inherited unchanged (0x48f570)
-// === END GENERATED DECLS (TMapKey) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TMapKey 0xCTOR`).
+  // === END GENERATED DECLS (TMapKey) ===
+  // Legend/hint overlay render mode selector. TMapKey::ApplyRectSlot110 (0x4fcf80)
+  // switches on this to pick one of the RenderMapHintOverlayMode* label passes.
+  short viewMode90; // 0x90
+  short field92;    // 0x92
 
   TMapKey();
+
+private:
+  // Legend-label render passes dispatched by ApplyRectSlot110 (each draws its
+  // localized labels twice for a drop shadow, via the QuickDraw text helpers).
+  void RenderMapHintOverlayMode0(); // 0x004fd000
 };
 
+ASSERT_SIZE(TMapKey, 0x94);

@@ -15175,7 +15175,7 @@
     },
     {
       "address": "0x4fc9c0",
-      "matching": 0.5454545454545454,
+      "matching": 0.5818181818181818,
       "name": "TMapKey::CreateObject",
       "type": 1
     },
@@ -15199,14 +15199,14 @@
     },
     {
       "address": "0x4fcf80",
-      "matching": 0.07692307692307693,
+      "matching": 0.5,
       "name": "TMapKey::ApplyRectSlot110",
       "type": 1
     },
     {
       "address": "0x4fd000",
-      "matching": 0.03076923076923077,
-      "name": "RenderMapHintOverlayMode0",
+      "matching": 0.848,
+      "name": "TMapKey::RenderMapHintOverlayMode0",
       "type": 1
     },
     {
@@ -43661,6 +43661,6 @@
       "type": 5
     }
   ],
-  "file": "Imperialism.exe.gog-original",
+  "file": "Imperialism.exe",
   "format": 1
 }

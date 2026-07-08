@@ -2901,7 +2901,7 @@ address|name|symbol|size|type|prototype|provenance
 4fcac0|TMapKey::NoOpUiLifecycleHook||744|function|undefined OrphanCallChain_C6_I49_004875d0(void)|
 4fcea0|TControl::SetDiplomacyNationSelectionFilterAndRefreshRows||169|function|undefined SetDiplomacyNationSelectionFilterAndRefreshRows()|
 4fcf80|TMapKey::ApplyRectSlot110||76|function|undefined DispatchHintRenderByViewMode()|
-4fd000|RenderMapHintOverlayMode0||420|function|undefined RenderMapHintOverlayMode0()|
+4fd000|TMapKey::RenderMapHintOverlayMode0||420|function|undefined RenderMapHintOverlayMode0()|
 4fd220|RenderMapHintOverlayMode4||722|function|undefined RenderMapHintOverlayMode4()|
 4fd5c0|RenderMapHintOverlayMode1||671|function|undefined RenderMapHintOverlayMode1()|
 4fd910|RenderMapHintOverlayMode2||1154|function|undefined RenderMapHintOverlayMode2()|

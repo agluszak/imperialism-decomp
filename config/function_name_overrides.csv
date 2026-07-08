@@ -117,3 +117,4 @@ address|name|prototype
 0x0058aef0|TTraderAmtBar::TTraderAmtBar|void __thiscall TTraderAmtBar(void)
 0x005b5590|TDropShadowText::TDropShadowText|void __thiscall TDropShadowText(void)
 0x005ba720|TTradeScreenPicture::TTradeScreenPicture|void __thiscall TTradeScreenPicture(void)
+0x004fd000|TMapKey::RenderMapHintOverlayMode0|void __thiscall RenderMapHintOverlayMode0()
