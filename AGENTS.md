@@ -351,7 +351,10 @@ notes 18 and 47).
 
 Environment prep (install `uv`/`just`/Docker/host-`wine`, `uv sync`, and the one-time
 `just docker-build` of the `imperialism-msvc500` image) is already done by the VM
-snapshot + startup update script; only the notes below are non-obvious.
+snapshot + startup update script; only the notes below are non-obvious. To
+re-provision a fresh host from scratch (system packages, Ghidra, original binary,
+first build), run `scripts/bootstrap.sh` — it is the one-time bootstrap; the
+per-session refresh stays just `uv sync`.
 
 - **Start the Docker daemon before any build.** `dockerd` is not auto-started on a
   fresh session. Start it once per session (it needs the docker-in-docker workaround
