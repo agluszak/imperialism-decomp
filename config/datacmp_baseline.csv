@@ -39,9 +39,16 @@ g_pRegistrySettingsSectionAlt_0063E044|0x63e044|WARN|3
 g_pRegistrySettingsSection_0063E040|0x63e040|WARN|3
 g_szDecimalFormat|0x69430c|WARN|4
 g_szUiAvailableLabel_00694AD8|0x694ad8|WARN|4
+g_szUiBlockadeLabel_00694744|0x694744|WARN|4
 g_szUiCommodityLabel_00694AEC|0x694aec|WARN|4
+g_szUiEditTextLabel_00694834|0x694834|WARN|4
 g_szUiFontLiteralPalatino|0x696b6c|WARN|4
+g_szUiMinutemanLabel_0069480C|0x69480c|WARN|4
 g_szUiPlaceholder185_00694ABC|0x694abc|WARN|4
+g_szUiRegularsLabel_006947F0|0x6947f0|WARN|4
+g_szUiSeaOfOblongata_00694704|0x694704|WARN|4
+g_szUiThreeVessels_00694718|0x694718|WARN|4
+g_szUiToLabel_00694644|0x694644|WARN|4
 s_Data_scores_dat_0069b7fc|0x69b7fc|WARN|1
 s_GameName_00698010|0x698010|WARN|4
 s_OutOfMemoryText_006941F0|0x6941f0|WARN|4

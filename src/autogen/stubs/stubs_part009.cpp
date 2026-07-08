@@ -579,14 +579,6 @@ undefined4 BuildUiResourceTree_TextPictureCursorComposite_0042e864(void)
   return 0;
 }
 
-// ghidra_name ConstructPictureResourceEntry_Vtbl0063f650
-// ghidra_proto undefined ConstructPictureResourceEntry_Vtbl0063f650()
-// FUNCTION: IMPERIALISM 0x00430250
-undefined4 ConstructPictureResourceEntry_Vtbl0063f650(void)
-{
-  return 0;
-}
-
 // ghidra_name ConstructUiResourceEntry_Vtbl0063f878
 // ghidra_proto undefined ConstructUiResourceEntry_Vtbl0063f878()
 // FUNCTION: IMPERIALISM 0x00430320
@@ -663,14 +655,6 @@ undefined4 WrapperFor_ReallocateHeapBlockWithAllocatorTracking_At00430830(void)
 // ghidra_proto undefined ConstructPictureResourceEntry_Vtbl006404b0()
 // FUNCTION: IMPERIALISM 0x004308d0
 undefined4 ConstructPictureResourceEntry_Vtbl006404b0(void)
-{
-  return 0;
-}
-
-// ghidra_name ConstructUiColorTextResourceEntry
-// ghidra_proto undefined ConstructUiColorTextResourceEntry()
-// FUNCTION: IMPERIALISM 0x00430950
-undefined4 ConstructUiColorTextResourceEntry(void)
 {
   return 0;
 }
@@ -767,86 +751,6 @@ undefined4 ConstructTurnEventMainPictureEntry_1036(void)
 // ghidra_proto int * __fastcall ConstructTurnEventMainPictureEntry_104F(int * pEntry)
 // FUNCTION: IMPERIALISM 0x0043d9c0
 undefined4 ConstructTurnEventMainPictureEntry_104F(void)
-{
-  return 0;
-}
-
-// ghidra_name BuildMainMapAndCityCommandControls
-// ghidra_proto undefined BuildMainMapAndCityCommandControls()
-// FUNCTION: IMPERIALISM 0x0043e8b0
-undefined4 BuildMainMapAndCityCommandControls(void)
-{
-  return 0;
-}
-
-// ghidra_name BuildCivilianReportDialogResources
-// ghidra_proto int * BuildCivilianReportDialogResources(void)
-// FUNCTION: IMPERIALISM 0x00440b83
-undefined4 BuildCivilianReportDialogResources(void)
-{
-  return 0;
-}
-
-// ghidra_name InitializeTGarrisonViewBitmapAndControlResources
-// ghidra_proto undefined InitializeTGarrisonViewBitmapAndControlResources()
-// FUNCTION: IMPERIALISM 0x004418b0
-undefined4 InitializeTGarrisonViewBitmapAndControlResources(void)
-{
-  return 0;
-}
-
-// ghidra_name BuildGarrisonViewBaseAndTabCursorUiResources
-// ghidra_proto undefined BuildGarrisonViewBaseAndTabCursorUiResources()
-// FUNCTION: IMPERIALISM 0x00441948
-undefined4 BuildGarrisonViewBaseAndTabCursorUiResources(void)
-{
-  return 0;
-}
-
-// ghidra_name BuildConstructionOptionsDialogResources
-// ghidra_proto int * BuildConstructionOptionsDialogResources(void)
-// FUNCTION: IMPERIALISM 0x00441ff1
-undefined4 BuildConstructionOptionsDialogResources(void)
-{
-  return 0;
-}
-
-// ghidra_name InitializeTNavyRosterBitmapAndControlResources
-// ghidra_proto undefined InitializeTNavyRosterBitmapAndControlResources()
-// FUNCTION: IMPERIALISM 0x004472bb
-undefined4 InitializeTNavyRosterBitmapAndControlResources(void)
-{
-  return 0;
-}
-
-// ghidra_name TNavyRoster::BuildNavyRosterDialogUiResourceTree
-// ghidra_proto undefined BuildNavyRosterDialogUiResourceTree()
-// FUNCTION: IMPERIALISM 0x00447353
-undefined4 BuildNavyRosterDialogUiResourceTree(void)
-{
-  return 0;
-}
-
-// ghidra_name TPageCorner::WrapperFor_thunk_ConstructPictureResourceEntry_Vtbl00660b48_At0044a6c0
-// ghidra_proto undefined WrapperFor_thunk_ConstructPictureResourceEntry_Vtbl00660b48_At0044a6c0()
-// FUNCTION: IMPERIALISM 0x0044a6c0
-undefined4 WrapperFor_thunk_ConstructPictureResourceEntry_Vtbl00660b48_At0044a6c0(void)
-{
-  return 0;
-}
-
-// ghidra_name TToolBarCluster::WrapperFor_thunk_ConstructUiResourceEntryType4B0C0_At0044a6f0
-// ghidra_proto undefined WrapperFor_thunk_ConstructUiResourceEntryType4B0C0_At0044a6f0()
-// FUNCTION: IMPERIALISM 0x0044a6f0
-undefined4 WrapperFor_thunk_ConstructUiResourceEntryType4B0C0_At0044a6f0(void)
-{
-  return 0;
-}
-
-// ghidra_name TCivDescription::ConstructTCivDescriptionBaseState
-// ghidra_proto undefined ConstructTCivDescriptionBaseState()
-// FUNCTION: IMPERIALISM 0x0044a770
-undefined4 ConstructTCivDescriptionBaseState(void)
 {
   return 0;
 }

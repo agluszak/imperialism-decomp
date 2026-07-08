@@ -23,6 +23,7 @@ undefined4 thunk_SplitTileIndexToRowAndColumn(void);
 
 IMPLEMENT_DYNCREATE(TMapDialog, TWorldView)
 
+// FUNCTION: IMPERIALISM 0x00519b50
 TMapDialog::TMapDialog() {}
 
 // SYNTHETIC: IMPERIALISM 0x00519C40

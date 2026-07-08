@@ -11,11 +11,11 @@ TBook::~TBook() {}
 
 IMPLEMENT_DYNCREATE(TBook, TPicture)
 
+// FUNCTION: IMPERIALISM 0x00430250
 TBook::TBook() {}
 
 // FUNCTION: IMPERIALISM 0x0056f560
-void TBook::NoOpUiLifecycleHook(int arg) {
-}
+void TBook::NoOpUiLifecycleHook(int arg) {}
 
 // FUNCTION: IMPERIALISM 0x0056f5e0
-void TBook::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) { }
+void TBook::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {}

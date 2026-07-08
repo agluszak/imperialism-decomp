@@ -15,6 +15,7 @@ TDeluxeText::~TDeluxeText() {}
 
 IMPLEMENT_DYNCREATE(TDeluxeText, TTEView)
 
+// FUNCTION: IMPERIALISM 0x00430950
 TDeluxeText::TDeluxeText() : TTEView(), cursorThemeCode98(0), cursorThemeCode9c(0), fieldA0(0) {}
 
 // FUNCTION: IMPERIALISM 0x005b6060

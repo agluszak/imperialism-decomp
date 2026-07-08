@@ -204,6 +204,96 @@ char g_szUiPriceLabel_00694AE4[] = "Price";
 char g_szUiCommodityLabel_00694AEC[] = "Commodity";
 // GLOBAL: IMPERIALISM 0x00694af8
 char g_szUiBoardOfTradeLabel_00694AF8[] = "Board of Trade";
+
+// Placeholder strings baked into the army/navy report screen builders
+// (InitializeArmyNavyReportViewsAndCommandTags, events 0x546..0x2506).
+// GLOBAL: IMPERIALISM 0x00694540
+char g_szUiAsEstimatedBy_00694540[] = "as estimated by";
+// GLOBAL: IMPERIALISM 0x00694554
+char g_szUiForeignShippingObserved_00694554[] = "Foreign Shipping Observed";
+// GLOBAL: IMPERIALISM 0x00694574
+char g_szUiHalfDozenShips_00694574[] = "\xa5 Half a dozen Ships-of-the-Line\n2\n3\n4";
+// GLOBAL: IMPERIALISM 0x006945a4
+char g_szUiNavalForcesReportOf_006945A4[] = "Report of the naval forces of";
+// GLOBAL: IMPERIALISM 0x006945c8
+char g_szUiPlaceholderPont_006945C8[] = "Pont";
+// GLOBAL: IMPERIALISM 0x006945d0
+char g_szUiForeignFleetReport_006945D0[] = "Foreign Fleet Report";
+// GLOBAL: IMPERIALISM 0x006945ec
+char g_szUiTraderIndiamen_006945EC[] = "1 trader, 6 indiamen";
+// GLOBAL: IMPERIALISM 0x00694608
+char g_szUiStoppedFromTrade_00694608[] = "were stopped from completing their trade";
+// GLOBAL: IMPERIALISM 0x0069463c
+char g_szUiPlaceholderPokei_0069463C[] = "Pokei";
+// GLOBAL: IMPERIALISM 0x00694644
+char g_szUiToLabel_00694644[] = "to";
+// GLOBAL: IMPERIALISM 0x00694648
+char g_szUiItemLabel_00694648[] = "item";
+// GLOBAL: IMPERIALISM 0x00694650
+char g_szUiCarryingCargoOf_00694650[] = "carrying a cargo of";
+// GLOBAL: IMPERIALISM 0x00694668
+char g_szUiOwnrTag_00694668[] = "ownr";
+// GLOBAL: IMPERIALISM 0x00694670
+char g_szUiMerchantsBelongingTo_00694670[] = "Merchants belonging to";
+// GLOBAL: IMPERIALISM 0x0069468c
+char g_szUiAndConsistingOf_0069468C[] = "and consisting of";
+// GLOBAL: IMPERIALISM 0x006946a4
+char g_szUiByTaskForceCommandedBy_006946A4[] = "by a task force commanded by";
+// GLOBAL: IMPERIALISM 0x006946c8
+char g_szUiAdmiralKirk_006946C8[] = " Adm. James T. Kirk of the USS Enterprise";
+// GLOBAL: IMPERIALISM 0x006946fc
+char g_szUiInThe_006946FC[] = "in the";
+// GLOBAL: IMPERIALISM 0x00694704
+char g_szUiSeaOfOblongata_00694704[] = "Sea of Oblongata";
+// GLOBAL: IMPERIALISM 0x00694718
+char g_szUiThreeVessels_00694718[] = "3 vessels";
+// GLOBAL: IMPERIALISM 0x00694724
+char g_szUiResultOfSuccessful_00694724[] = "A result of a successful";
+// GLOBAL: IMPERIALISM 0x00694744
+char g_szUiBlockadeLabel_00694744[] = "Blockade";
+// GLOBAL: IMPERIALISM 0x00694750
+char g_szUiEnemyTradeInterrupted_00694750[] = "Enemy Trade Interrupted";
+// GLOBAL: IMPERIALISM 0x0069476c
+char g_szUiSeaOfSalamanders_0069476C[] = "Sea of Satanic Salamanders";
+// GLOBAL: IMPERIALISM 0x0069478c
+char g_szUiEngageAllFloating_0069478C[] = "Engage all floating objects";
+// GLOBAL: IMPERIALISM 0x006947b0
+char g_szUiForceCurrentlyLocated_006947B0[] = "Force currently located in the";
+// GLOBAL: IMPERIALISM 0x006947d8
+char g_szUiTaskForceReport_006947D8[] = "Task Force Report";
+// GLOBAL: IMPERIALISM 0x006947f0
+char g_szUiRegularsLabel_006947F0[] = "Regulars";
+// GLOBAL: IMPERIALISM 0x006947fc
+char g_szUiSkirmishersLabel_006947FC[] = "Skirmishers";
+// GLOBAL: IMPERIALISM 0x0069480c
+char g_szUiMinutemanLabel_0069480C[] = "Minuteman";
+// GLOBAL: IMPERIALISM 0x00694818
+char g_szUiConstructionOptions_00694818[] = "Construction Options";
+// GLOBAL: IMPERIALISM 0x00694834
+char g_szUiEditTextLabel_00694834[] = "Edit Text";
+// GLOBAL: IMPERIALISM 0x00694840
+char g_szUiAdmiralBobMinnow_00694840[] = "Adm. Bob of the SS Minnow commanding";
+// GLOBAL: IMPERIALISM 0x0069486c
+char g_szUiCompositionLabel_0069486C[] = "Composition";
+// GLOBAL: IMPERIALISM 0x0069487c
+char g_szUiPatrolTheWaters_0069487C[] = "Patrol the waters\nof whereever";
+// GLOBAL: IMPERIALISM 0x006948ac
+char g_szUiOneHenTwoDucks_006948AC[] = "One hen,\ntwo ducks, \nthree quacking geese.";
+// GLOBAL: IMPERIALISM 0x006948e0
+char g_szUiArmyReportTitle_006948E0[] = "Army Report";
+// GLOBAL: IMPERIALISM 0x006948f0
+char g_szUiCivilianReportTitle_006948F0[] = "Civilian Report";
+// GLOBAL: IMPERIALISM 0x00694904
+char g_szUiLossesHaxaco_00694904[] = "Losses\nHaxaco:  light\nOrdune:  heavy";
+// GLOBAL: IMPERIALISM 0x00694930
+char g_szUiOrderOfBattle_00694930[] = "Order of Battle follows";
+// GLOBAL: IMPERIALISM 0x0069494c
+char g_szUiHaxacoLegions_0069494C[] =
+    "Haxaco's Powerful Legions\nannhilate\nOrdune's Pathetic Armies";
+// GLOBAL: IMPERIALISM 0x00694998
+char g_szUiSkirmishReportTitle_00694998[] = "Skirmish Report";
+// GLOBAL: IMPERIALISM 0x006949ac
+char g_szUiPage14of14_006949AC[] = "Page 14 of 14";
 // GLOBAL: IMPERIALISM 0x006943cc
 char g_szMcAppUiHeaderPath_006943CC[] = "D:\\Ambit\\McAppUI.h";
 // GLOBAL: IMPERIALISM 0x00696bc0

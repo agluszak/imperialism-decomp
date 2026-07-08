@@ -66,6 +66,7 @@ typedef void(__cdecl* LocalizationFormatFn)(int tokenId, int arg, void* outTextR
 // SYNTHETIC: IMPERIALISM 0x0058f050
 // TCivDescription::CreateObject
 
+// FUNCTION: IMPERIALISM 0x0044a770
 TCivDescription::TCivDescription() : TView() {
   selectedCivilianClass = -1;
   legendInitialized = 0;

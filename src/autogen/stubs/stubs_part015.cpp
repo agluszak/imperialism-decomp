@@ -291,14 +291,6 @@ undefined4 WrapperFor_ftol_At00519970(void)
   return 0;
 }
 
-// ghidra_name TMapDialog::ConstructTMapDialogBaseState
-// ghidra_proto undefined ConstructTMapDialogBaseState()
-// FUNCTION: IMPERIALISM 0x00519b50
-undefined4 ConstructTMapDialogBaseState(void)
-{
-  return 0;
-}
-
 // ghidra_name TTerrainInfoDialog::ConstructTTerrainInfoDialogBaseState
 // ghidra_proto undefined ConstructTTerrainInfoDialogBaseState()
 // FUNCTION: IMPERIALISM 0x0051b140

@@ -214,14 +214,7 @@ address|name|symbol|size|type|prototype|provenance
 43da70|TGamePreferencesPicture::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 43daa0|TRadioText::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 43dad0|TCreditsPicture::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
-43dbc0|InitializeArmyNavyReportViewsAndCommandTags||18464|function|undefined InitializeArmyNavyReportViewsAndCommandTags()|
-43e8b0|BuildMainMapAndCityCommandControls||8800|function|undefined BuildMainMapAndCityCommandControls()|
-440b83|BuildCivilianReportDialogResources||1121|function|int * BuildCivilianReportDialogResources(void)|
-4418b0|InitializeTGarrisonViewBitmapAndControlResources||152|function|undefined InitializeTGarrisonViewBitmapAndControlResources()|
-441948|BuildGarrisonViewBaseAndTabCursorUiResources||642|function|undefined BuildGarrisonViewBaseAndTabCursorUiResources()|
-441ff1|BuildConstructionOptionsDialogResources||302|function|int * BuildConstructionOptionsDialogResources(void)|
-4472bb|InitializeTNavyRosterBitmapAndControlResources||152|function|undefined InitializeTNavyRosterBitmapAndControlResources()|
-447353|TNavyRoster::BuildNavyRosterDialogUiResourceTree||719|function|undefined BuildNavyRosterDialogUiResourceTree()|
+43dbc0|InitializeArmyNavyReportViewsAndCommandTags||41505|function|undefined InitializeArmyNavyReportViewsAndCommandTags()|
 44a6c0|TPageCorner::WrapperFor_thunk_ConstructPictureResourceEntry_Vtbl00660b48_At0044a6c0||18|function|undefined WrapperFor_thunk_ConstructPictureResourceEntry_Vtbl00660b48_At0044a6c0()|
 44a6f0|TToolBarCluster::WrapperFor_thunk_ConstructUiResourceEntryType4B0C0_At0044a6f0||18|function|undefined WrapperFor_thunk_ConstructUiResourceEntryType4B0C0_At0044a6f0()|
 44a720|TShipFractionCluster::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
