@@ -2904,7 +2904,7 @@ address|name|symbol|size|type|prototype|provenance
 4fd000|TMapKey::RenderMapHintOverlayMode0||420|function|undefined RenderMapHintOverlayMode0()|
 4fd220|TMapKey::RenderMapHintOverlayMode4||722|function|undefined RenderMapHintOverlayMode4()|
 4fd5c0|TMapKey::RenderMapHintOverlayMode1||671|function|undefined RenderMapHintOverlayMode1()|
-4fd910|RenderMapHintOverlayMode2||1154|function|undefined RenderMapHintOverlayMode2()|
+4fd910|TMapKey::RenderMapHintOverlayMode2||1154|function|undefined RenderMapHintOverlayMode2()|
 4fded0|TFrameRadioView::CreateObject|?CreateObject@TFrameRadioView@@SGPAVCObject@@XZ|83|function|undefined CreateObject()|rtti
 4fdf50|TFrameRadioView::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 4fdfa0|TFrameRadioView::GetRuntimeClass||6|function|undefined GetTFrameRadioViewClassNamePointer()|rtti

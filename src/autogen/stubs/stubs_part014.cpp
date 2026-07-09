@@ -475,14 +475,6 @@ undefined4 SetDiplomacyNationSelectionFilterAndRefreshRows(void)
   return 0;
 }
 
-// ghidra_name RenderMapHintOverlayMode2
-// ghidra_proto undefined RenderMapHintOverlayMode2()
-// FUNCTION: IMPERIALISM 0x004fd910
-undefined4 RenderMapHintOverlayMode2(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_ftol_At004fe670
 // ghidra_proto undefined WrapperFor_ftol_At004fe670()
 // FUNCTION: IMPERIALISM 0x004fe670
