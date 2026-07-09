@@ -112,14 +112,20 @@ public:
   short pendingPolicyTierMatrix484[kDiplomacyPairMatrixEntries];
   short selectedSourceNationSlot784;
   short selectedTargetNationSlot786;
+  // Build the turn-event-2 relation-matrix sync packet (delta against the baseline
+  // snapshot when one exists) and refresh the baseline copy. 0x4f2760.
+  struct TurnEvent2SyncPacket* BuildTurnEvent2ArraySyncPacketFromBufferAndRefreshBaselineCopy();
+
   short selectionFlagsA788;
   short selectionFlagsB78a;
   short selectionFlagsC78c;
   short lastProcessedNationSlot78e;
   short proposalDispatchCounter790;
   unsigned char pad792[2];
-  int queuedWarTransitionActive794;
-  int queuedWarTransitionPending798;
+  // Baseline snapshot of the relation-matrix block (0x79c..0x18d4, 0x1138 bytes) used
+  // by the turn-event-2 delta sync; lazily heap-allocated, size cached alongside.
+  short* relationMatrixBaselineCopy794;
+  int relationMatrixBaselineSize798;
   short relationStandingScoreMatrix79c[kNationPairMatrixEntries];
   short relationPropagationMatrixBbe[kNationPairMatrixEntries];
   short relationTurnStampMatrixFe0[kNationPairMatrixEntries];

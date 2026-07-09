@@ -7,6 +7,43 @@
 class TStream;
 struct NetMessage;
 
+// 0xa8-byte nation-status snapshot record with a trailing shared-text CString at +0xa4,
+// used as a stack local by the diplomacy turn-event packet handler (0x543910). The POD
+// prefix mirrors the received nation/city state; interior field semantics are still
+// being mapped (named by offset). The default ctor (0x50ec60) constructs only the
+// CString member; the copy-assignment (0x54ae90) copies the POD prefix then the CString.
+struct NationStateRecordA8 {
+  unsigned char field00;
+  unsigned char field01;
+  unsigned char field02;
+  unsigned char field03;
+  short field04;
+  short field06;
+  unsigned char field08;
+  unsigned char pad09;
+  short block0A[12];
+  short block22[12];
+  unsigned char field3A;
+  unsigned char field3B;
+  unsigned char field3C;
+  unsigned char pad3D;
+  short field3E;
+  short field40;
+  short block42[0x20];
+  short block82[10];
+  short pad96;
+  int field98;
+  int field9C;
+  unsigned char fieldA0;
+  unsigned char fieldA1;
+  unsigned char fieldA2;
+  unsigned char fieldA3;
+  CString sharedTextA4;
+
+  NationStateRecordA8();
+  NationStateRecordA8& operator=(const NationStateRecordA8& source);
+};
+
 // Multiplayer session / game-flow manager (g_pGameFlowState). Inherits the shared
 // TEventHandler control surface used by UI roots; vtable @ 0x0065c030.
 // VTABLE: IMPERIALISM 0x0065c030
@@ -102,6 +139,45 @@ public:
   // (TSimMgr::AdvanceGlobalTurnStateMachine) loads ECX from g_pGameFlowState, so this is
   // a real TMultiplayerMgr method, not a free function. 0x543120.
   void ConfigureTurnResumeStateAndNationMask(int pendingNationSlot, int activeNationSlot);
+
+  // Refresh defaultNationTextSlots/nationDisplayNameSlots/nationStatusTags for one slot,
+  // or all seven when nationSlot == -1 (dead slots get 'dead'; ineligible names are
+  // wrapped in parentheses and the tag set to 'deca'). 0x54cc00 (Ghidra mis-attributed
+  // it to TToolBarCluster).
+  void RefreshNationStatusLabelsAndCodesForSlotOrAll(int nationSlot);
+
+  // Send the turn-event-0x15 diplomacy need-state snapshot for nationSlot (broadcast
+  // when broadcastFlag != 0). 0x54b5d0.
+  void EmitNationDiplomacyNeedStateSnapshotEvent15(char broadcastFlag, int nationSlot);
+
+  // Send the turn-event-0x19 per-nation state-array packet for nationSlot to
+  // destinationSlot (sentinels as NetMessage::DestinateTo; -3 also marks the send
+  // as loopback-suppressed). 0x54d1f0.
+  void EmitTurnEvent19NationStateArraysForSlot(short nationSlot, int destinationSlot);
+
+  // Send the turn-event-0x2c composite city/population snapshot for nationSlot (no-op
+  // when the nation has no city). 0x54ce80.
+  void EmitTurnEvent2CNationStateCompositeForSlot(int nationSlot, int destinationSlot);
+
+  // Serializer subtree for the turn-event packet dispatcher (0x543910 family).
+  // 0x54a500: 'a'+slot marker byte, then the terrain descriptor's military unit list
+  // (16-bit count + WriteTo sweep), terminated with '.'.
+  void PublishTerrainDescriptorAndNotifyOrderListeners(TStream* stream, int terrainSlot);
+  // 0x54a5e0: per great-power tracked-object list (count + WriteTo sweep; 0 for
+  // filtered-out or empty slots).
+  void PublishNationDescriptorAndNotifyOrderListeners(TStream* stream, int nationFilter);
+  // 0x549c60: write the 0x1c-byte packet header then the tag-specific payload.
+  void SerializeOrderDataIntoTurnEventByTag(TStream* stream, short eventTag, void* payload,
+                                            short destinationSlot);
+  // 0x549ad0: measure with a TCountingStream, then serialize into a THandleStream over
+  // GlobalAlloc memory, stamp the real length, and send (loopback-suppressed for -3).
+  void DispatchTurnEventPacketWithCodeAndPayloadBuffer(short eventTag, void* payload,
+                                                       short destinationSlot);
+  // 0x54b930: for every session slot matching networkId - tag the nation 'awol',
+  // broadcast the event-0x25 status packet, mark the session id -2 and the pending bit,
+  // then either send the event-9 lobby-chat drop notice (session init) or show the
+  // localized "nation has dropped" advisory and post a 'pogc' cancel command.
+  void SetNationStatusAwolByNationIdAndDispatchNotices(int networkId);
 };
 
 ASSERT_SIZE(TMultiplayerMgr, 0xf8);

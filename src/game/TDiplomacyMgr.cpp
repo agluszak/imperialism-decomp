@@ -2,6 +2,9 @@
 #include "game/global_data_tables.h"
 #include "game/nation_slot_eligibility.h"
 #include "game/TSimMgr.h"
+#include "game/NetMessage.h"
+#include "game/TMultiplayerMgr.h"
+#include <string.h>
 #include "game/TIndexAndRankList.h"
 #include "game/TSortedByRelationshipList.h"
 #include "game/TSortedPtrList.h"
@@ -74,8 +77,8 @@ IMPLEMENT_DYNCREATE(TDiplomacyMgr, TObject)
 // FUNCTION: IMPERIALISM 0x004ee6c0
 TDiplomacyMgr* TDiplomacyMgr::ConstructTDiplomacyTurnStateManager_Vtbl00654d90() {
   int zero = 0;
-  queuedWarTransitionActive794 = zero;
-  queuedWarTransitionPending798 = zero;
+  relationMatrixBaselineCopy794 = reinterpret_cast<short*>(zero);
+  relationMatrixBaselineSize798 = zero;
   proposalDispatchCounter790 = static_cast<short>(zero);
   lastProcessedNationSlot78e = static_cast<short>(-1);
   return this;
@@ -1072,6 +1075,85 @@ int TDiplomacyMgr::SelectDiplomacyTargetNationFromCandidateSetSlot94(int sourceN
     list->ReleaseSlot24();
   }
   return matchedNationSlot;
+}
+
+// FUNCTION: IMPERIALISM 0x004f2760
+TurnEvent2SyncPacket*
+TDiplomacyMgr::BuildTurnEvent2ArraySyncPacketFromBufferAndRefreshBaselineCopy() {
+  TurnEvent2SyncPacket* packet = BuildTurnEvent2ArraySyncPacketDeltaOrFull(
+      0x89c, relationStandingScoreMatrix79c, relationMatrixBaselineCopy794);
+  packet->flag20 = 0;
+  if (relationMatrixBaselineCopy794 == 0) {
+    relationMatrixBaselineSize798 = 0x1138;
+    relationMatrixBaselineCopy794 = static_cast<short*>(::operator new(0x1138));
+  }
+  memcpy(relationMatrixBaselineCopy794, relationStandingScoreMatrix79c,
+         relationMatrixBaselineSize798);
+  return packet;
+}
+
+// FUNCTION: IMPERIALISM 0x005449b0
+TurnEvent2SyncPacket* __cdecl BuildTurnEvent2ArraySyncPacketDeltaOrFull(unsigned int shortCount,
+                                                                        short* current,
+                                                                        short* baseline) {
+  bool sendFull = true;
+  int differing = 0;
+  if (baseline != 0) {
+    if (0 < static_cast<int>(shortCount)) {
+      short* cur = current;
+      unsigned int remaining = shortCount;
+      do {
+        if (*cur != cur[baseline - current]) {
+          ++differing;
+        }
+        ++cur;
+        --remaining;
+      } while (remaining != 0);
+    }
+    if (static_cast<unsigned int>(differing * 4) < shortCount * 2) {
+      sendFull = false;
+    }
+  }
+  if (sendFull) {
+    int packetSize = shortCount * 2 + 0x24;
+    TurnEvent2SyncPacket* packet = static_cast<TurnEvent2SyncPacket*>(::operator new(packetSize));
+    packet->eventCode = 0;
+    packet->fromNetworkId = 0;
+    packet->toNetworkId = 0;
+    packet->messageLength = 0;
+    packet->messageLength = 0x1c;
+    packet->pendingNationSlot = static_cast<short>(g_pGameFlowState->pendingNationSlotIndex);
+    packet->messageLength = packetSize;
+    packet->eventCode = 2;
+    packet->toNetworkId = 0;
+    memcpy(packet->payload, current, shortCount * 2);
+    packet->deltaKind21 = 0;
+    return packet;
+  }
+  int packetSize = differing * 4 + 0x24;
+  TurnEvent2SyncPacket* packet = static_cast<TurnEvent2SyncPacket*>(::operator new(packetSize));
+  packet->eventCode = 0;
+  packet->fromNetworkId = 0;
+  packet->toNetworkId = 0;
+  packet->messageLength = 0;
+  packet->messageLength = 0x1c;
+  short pendingSlot = static_cast<short>(g_pGameFlowState->pendingNationSlotIndex);
+  packet->messageLength = packetSize;
+  packet->pendingNationSlot = pendingSlot;
+  packet->eventCode = 2;
+  packet->toNetworkId = 0;
+  packet->deltaKind21 = 2;
+  short* out = packet->payload;
+  short* cur = current;
+  for (int i = 0; i < static_cast<int>(shortCount); ++i) {
+    if (*cur != cur[baseline - current]) {
+      out[0] = static_cast<short>(i);
+      out[1] = *cur;
+      out += 2;
+    }
+    ++cur;
+  }
+  return packet;
 }
 
 // FUNCTION: IMPERIALISM 0x00581280

@@ -10,6 +10,7 @@
 #include "game/TGreatPower.h"
 #include "game/TSimMgr.h"
 #include "game/TOcean.h"
+#include "game/CIterator.h"
 #include "game/TMilitaryUnit.h"
 #include "game/TStream.h"
 #include "game/TShip.h"
@@ -371,6 +372,16 @@ void TCountry::FormatOverlayTerrainLabelText(CString* out) {
   *out = label;
 }
 
+// FUNCTION: IMPERIALISM 0x004d7930
+void TCountry::AssignSharedStringFromDescriptorNameOrDefault(CString* out) {
+  if (this == 0) {
+    CString defaultName(g_pszDescriptorDefaultName_00653300);
+    *out = defaultName;
+  } else {
+    *out = g_pSimMgr->AssignSharedStringFromIndexedSlot7C(this->nationSlot);
+  }
+}
+
 // FUNCTION: IMPERIALISM 0x004d7a00
 void TCountry::SetNationDisplayNameAndLocalizationSlotRef(const CString& name) {
   this->identitySharedString0 = name;
@@ -651,6 +662,17 @@ int TCountry::SumWeightedNeighborLinkScoreForLinkedNodes(void) {
   } while (index <= count);
 
   return sum;
+}
+
+// FUNCTION: IMPERIALISM 0x004d8430
+int TCountry::ComputeSelectedMilitaryPowerScore() {
+  int powerSum = 0;
+  CIterator unitIter(this->militaryUnitList44);
+  for (TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(unitIter.Reset()); unitIter.More();
+       unit = static_cast<TMilitaryUnit*>(unitIter.Advance())) {
+    powerSum += g_UnitTypeMilitaryStatTable_00695CD2[unit->orderType][1];
+  }
+  return powerSum;
 }
 
 // FUNCTION: IMPERIALISM 0x004d87b0

@@ -267,14 +267,6 @@ undefined4 QueueDeferredUiEventPacket(void)
   return 0;
 }
 
-// ghidra_name DeleteFileWithErrorReporting
-// ghidra_proto undefined DeleteFileWithErrorReporting()
-// FUNCTION: IMPERIALISM 0x005d4c40
-undefined4 DeleteFileWithErrorReporting(void)
-{
-  return 0;
-}
-
 // ghidra_name TViewMgr::CreateTViewMgrInstance
 // ghidra_proto undefined CreateTViewMgrInstance()
 // FUNCTION: IMPERIALISM 0x005d4c60
@@ -1111,14 +1103,6 @@ undefined4 NoOpDialogModeTagChangedHook(void)
 // ghidra_proto undefined CheckConnectivityOrShowLocalizedWarningAndReturnReady()
 // FUNCTION: IMPERIALISM 0x005e42f0
 undefined4 CheckConnectivityOrShowLocalizedWarningAndReturnReady(void)
-{
-  return 0;
-}
-
-// ghidra_name ProbeNationReachabilityAndMarkAwolBitmask
-// ghidra_proto undefined ProbeNationReachabilityAndMarkAwolBitmask()
-// FUNCTION: IMPERIALISM 0x005e43e0
-undefined4 ProbeNationReachabilityAndMarkAwolBitmask(void)
 {
   return 0;
 }

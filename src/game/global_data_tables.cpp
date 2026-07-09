@@ -189,6 +189,10 @@ char g_szNewGameDifficultyNormal_00694A48[] = "Normal";
 char g_szNewGameDifficultyEasy_00694A50[] = "Easy";
 // GLOBAL: IMPERIALISM 0x00694a58
 char g_szNewGameDifficultyIntroductory_00694A58[] = "Introductory";
+// GLOBAL: IMPERIALISM 0x00694a68
+char g_szNewGameScenarioPlaceholderTitle_00694A68[] = "Revenge of the Patagonians";
+// GLOBAL: IMPERIALISM 0x00694a88
+char g_szNewGameGameNameLabel_00694A88[] = "Game name:";
 // Trade-board screen labels (InitializeTradeScreenBitmapControls, events 0x7d9/0x7da).
 // GLOBAL: IMPERIALISM 0x006948a4
 char g_szUiOrdersLabel_006948A4[] = "Orders";
@@ -1052,6 +1056,32 @@ extern "C" const int g_anNationStartingTreasuryByLocale[6] = {50000, 10000, 1000
 
 // GLOBAL: IMPERIALISM 0x006a2318
 CString g_cstrArmyOrderMessageStore;
+// GLOBAL: IMPERIALISM 0x006a3180
+CString g_cstrNationComparisonMessageStore;
+// GLOBAL: IMPERIALISM 0x006a3d08
+CString g_cstrNationAwolMessageStore;
+// Save-game path construction strings.
+// GLOBAL: IMPERIALISM 0x00698708
+char g_szImpSaveExtension_00698708[] = ".imp";
+// GLOBAL: IMPERIALISM 0x00698710
+char g_szMultiplayerSavePrefix_00698710[] = "mult";
+// GLOBAL: IMPERIALISM 0x00698718
+char g_szSingleSlotSavePrefix_00698718[] = "slot";
+// GLOBAL: IMPERIALISM 0x00698720
+char g_szSaveFileReadBinaryMode_00698720[] = "rb";
+// GLOBAL: IMPERIALISM 0x00698724
+char g_szSaveDirectoryPrefix_00698724[] = "Save/";
+// GLOBAL: IMPERIALISM 0x0069872c
+char g_szAutosaveSlotLabel_0069872C[] = "A";
+// GLOBAL: IMPERIALISM 0x0069b848
+char g_szSavedDocumentMarker_0069B848[] = "__saved";
+// Default text returned for a null nation descriptor (points at g_szEmptyString).
+// GLOBAL: IMPERIALISM 0x00653300
+char* g_pszDescriptorDefaultName_00653300 = g_szEmptyString;
+// GLOBAL: IMPERIALISM 0x006973c8
+char g_szUiCloseParen_006973C8[] = ")";
+// GLOBAL: IMPERIALISM 0x0069806c
+char g_szUiOpenParen_0069806C[] = "(";
 // GLOBAL: IMPERIALISM 0x006a2d40
 CString g_cstrCivilianOrderMessageStore;
 // GLOBAL: IMPERIALISM 0x006a2df0

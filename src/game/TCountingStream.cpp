@@ -24,6 +24,9 @@ TCountingStream::~TCountingStream() {}
 // SYNTHETIC: IMPERIALISM 0x00489470
 // TCountingStream::~TCountingStream
 
+// FUNCTION: IMPERIALISM 0x00489490
+void TCountingStream::PrepareForUse() {}
+
 // FUNCTION: IMPERIALISM 0x004894b0
 int TCountingStream::streamSlot28() {
   return positionOrByteCount;

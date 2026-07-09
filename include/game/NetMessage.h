@@ -19,20 +19,49 @@ struct NetMessage {
   // Set the destination id from a great-power slot index via
   // TMultiplayerMgr::nationSessionIds (Mac oracle: NetMessage::DestinateToGP(int)).
   void DestinateToGP(int nationSlot);
+
+  // Sentinel-aware destination stamp (Mac oracle: NetMessage::DestinateTo(int)):
+  // -1 broadcasts, -2/-3 route to session id 0, otherwise the slot's session id.
+  void DestinateTo(int nationSlot);
 };
 
 // 'time'-tagged (0x74696d65) timely-message variant whose turn-token word sits at +0x18
 // (three-byte pad after the active-nation byte). Used by the advisory/diplomacy emitters
 // (0x540cf0..0x5416b0 band); 0x542120 writes word [this+0x18] from
 // TMultiplayerMgr::pendingNationSlotIndex.
-struct TimelyNetMessagePrefix : NetMessage {
+// 'time'-tagged header shared by every timely packet family: the stamp helper writes
+// only the tag + active-nation byte, so payloads that reuse +0x18 for their own fields
+// (the event-0x25 status tags, the event-9 chat slot byte) derive from this base while
+// the turn-token variant below adds uiTurnToken.
+struct TimelyMessageHeader : NetMessage {
   int messageTag;               // +0x10 — 'time'
   unsigned char activeNationId; // +0x14
   unsigned char pad15[3];
+
+  // Stamp messageTag='time' + the active nation id and return this (0x5438e0; used by
+  // the diplomacy turn-event reply emitters).
+  TimelyMessageHeader* InitializeEmitEventHeaderWithActiveNation();
+};
+
+struct TimelyNetMessagePrefix : TimelyMessageHeader {
   short uiTurnToken; // +0x18
 
   void SetTimeEmitPacketGameFlowTurnId();
-  // Stamp messageTag='time' + the active nation id and return this (0x5438e0; used by
-  // the diplomacy turn-event reply emitters).
-  TimelyNetMessagePrefix* InitializeEmitEventHeaderWithActiveNation();
 };
+
+// 0x5449b0 (TMultiplayerMgr TU): heap-build the turn-event-2 sync packet, delta or full.
+// Turn-event-2 relation-matrix sync packet. Variable-length: full form carries the raw
+// 0x89c-short block, delta form (deltaKind21 == 2) carries (index, value) pairs for the
+// entries that differ from the baseline.
+struct TurnEvent2SyncPacket : NetMessage {
+  int pad10;                 // +0x10 - zeroed, no 'time' tag on this packet
+  int pad14;                 // +0x14
+  short pendingNationSlot;   // +0x18
+  unsigned char pad1a[6];    // +0x1a
+  unsigned char flag20;      // +0x20 - cleared by the caller after the baseline refresh
+  unsigned char deltaKind21; // +0x21 - 2 = delta pairs, 0 = full block
+  unsigned char pad22[2];
+  short payload[1]; // +0x24 - variable length
+};
+TurnEvent2SyncPacket* __cdecl
+BuildTurnEvent2ArraySyncPacketDeltaOrFull(unsigned int shortCount, short* current, short* baseline);

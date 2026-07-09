@@ -1515,14 +1515,6 @@ undefined4 DestructTStreamAndMaybeFree(void)
   return 0;
 }
 
-// ghidra_name DispatchTurnEventPacketWithCodeAndPayloadBuffer_Impl
-// ghidra_proto undefined DispatchTurnEventPacketWithCodeAndPayloadBuffer_Impl()
-// FUNCTION: IMPERIALISM 0x00489490
-undefined4 DispatchTurnEventPacketWithCodeAndPayloadBuffer_Impl(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_ftol_At00489a20
 // ghidra_proto undefined WrapperFor_ftol_At00489a20()
 // FUNCTION: IMPERIALISM 0x00489a20

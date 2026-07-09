@@ -291,14 +291,6 @@ undefined4 RebuildMinorNationDispositionLookupTables(void)
   return 0;
 }
 
-// ghidra_name BuildTurnEvent2ArraySyncPacketFromBufferAndRefreshBaselineCopy
-// ghidra_proto undefined BuildTurnEvent2ArraySyncPacketFromBufferAndRefreshBaselineCopy()
-// FUNCTION: IMPERIALISM 0x004f2760
-undefined4 BuildTurnEvent2ArraySyncPacketFromBufferAndRefreshBaselineCopy(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_thunk_ApplyEncodedDeltaPayloadToBufferByMode_At004f27f0
 // ghidra_proto undefined WrapperFor_thunk_ApplyEncodedDeltaPayloadToBufferByMode_At004f27f0()
 // FUNCTION: IMPERIALISM 0x004f27f0
@@ -575,14 +567,6 @@ undefined4 DispatchTurnStateSpecialAdvisoriesAndReturnCount(void)
 // ghidra_proto undefined ShowPeriodicCapabilityReminderIfNeeded()
 // FUNCTION: IMPERIALISM 0x00501a20
 undefined4 ShowPeriodicCapabilityReminderIfNeeded(void)
-{
-  return 0;
-}
-
-// ghidra_name ShowPeriodicNationComparisonAdvisoryIfNeeded
-// ghidra_proto undefined ShowPeriodicNationComparisonAdvisoryIfNeeded()
-// FUNCTION: IMPERIALISM 0x00501be0
-undefined4 ShowPeriodicNationComparisonAdvisoryIfNeeded(void)
 {
   return 0;
 }

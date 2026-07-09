@@ -37,7 +37,9 @@ g_pRegistryLanguageKey_0063E04C|0x63e04c|WARN|3
 g_pRegistryProfileAppName_0063E050|0x63e050|WARN|3
 g_pRegistrySettingsSectionAlt_0063E044|0x63e044|WARN|3
 g_pRegistrySettingsSection_0063E040|0x63e040|WARN|3
+g_szAutosaveSlotLabel_0069872C|0x69872c|WARN|4
 g_szDecimalFormat|0x69430c|WARN|4
+g_szSaveFileReadBinaryMode_00698720|0x698720|WARN|4
 g_szUiAvailableLabel_00694AD8|0x694ad8|WARN|4
 g_szUiBlockadeLabel_00694744|0x694744|WARN|4
 g_szUiCommodityLabel_00694AEC|0x694aec|WARN|4
@@ -60,8 +62,6 @@ s_mcflavor_00696674|0x696674|WARN|4
 s_mcflavor_00696d10|0x696d10|WARN|4
 s_mcflavor_00697238|0x697238|WARN|4
 s_mcflavor_006976e0|0x6976e0|WARN|4
-s_mcflavor_00698720|0x698720|WARN|4
-s_mcflavor_0069872c|0x69872c|WARN|4
 s_mcflavor_00698b0c|0x698b0c|WARN|4
 s_mcflavor_0069ab00|0x69ab00|WARN|4
 s_mcflavor_0069ab04|0x69ab04|WARN|4

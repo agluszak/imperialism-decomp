@@ -111,13 +111,17 @@ public:
   unsigned char pad05;
   short field06; // +0x06 — zeroed by the ctor
   short field08; // +0x08 — zeroed by the ctor
-  unsigned char pad0a[0x5c - 0x0a];
+  unsigned char pad0a[0x0e - 0x0a];
+  // +0x0e..+0x4a and +0x4a..+0x5c — city metric blocks snapshotted wholesale by the
+  // turn-event-0x2c composite packet (0x54ce80); interior meaning still unmapped.
+  short cityMetricsBlock0E[0x1e];
+  short cityMetricsBlock4A[9];
   // +0x5c..+0x78 — per-order/resource-type counters (one short per type 0..13):
   // the pending-action FSM (0x004dab20) bumps the active zone's entry and entry 6
   // (navy secondary orders); 0x004dd140 weights all 14 entries by the resource
   // descriptor to rebuild the diplomacy aid budget score.
   short orderCountByType5c[0x0e];
-  unsigned char pad78[0x7c - 0x78];
+  int field78;                       // +0x78 — snapshotted by the turn-event-0x2c packet
   unsigned char lowProductionFlag7c; // +0x7c — PredictedNeeds
   unsigned char lowStockFlag7d;      // +0x7d — PredictedNeeds
   // +0x7e..0xac — per-resource reserved amounts subtracted from the summary
@@ -126,7 +130,7 @@ public:
   class TGreatPower* ownerNationAc; // 0xAC — owning nation state (0x004b4dc0)
   // +0xb0 — currently selected order; its +0x14 tile id drives the port-zone lookup
   void* selectedOrderB0; // +0xb0
-  unsigned char pad_b4[0xB6 - 0xB4];
+  short fieldB4;         // +0xB4 — snapshotted by the turn-event-0x2c packet
   // 0xB6..0xE4 — city commodity stock/need counters, commodity order:
   // Cotton..Gold (bitmap ids 700..722 / strings 17077..17099).
   short cityStockCottonB6;

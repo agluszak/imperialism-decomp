@@ -64,6 +64,9 @@ public:
   // Copy the per-slot shared credential/name text (sharedTextSlots[slot]) into out and
   // return out. 0x00581b20.
   CString* LoadNormalizedCredentialName(CString* out, short slot);
+  // Return a by-value copy of sharedTextSlots[slot] (the copy-constructed hidden-return
+  // sibling of LoadNormalizedCredentialName). 0x00581bc0.
+  CString AssignSharedStringFromIndexedSlot7C(short slot);
   virtual void FormatDiplomacyNoticeTextByPolicyOrGrantCode(CString* dest,
                                                             short* codes); // 0x88 0x00580790
 

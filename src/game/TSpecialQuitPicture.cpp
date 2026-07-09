@@ -16,11 +16,8 @@ TSpecialQuitPicture::~TSpecialQuitPicture() {}
 
 IMPLEMENT_DYNCREATE(TSpecialQuitPicture, TPicture)
 
-TSpecialQuitPicture::TSpecialQuitPicture() {}
-
 // FUNCTION: IMPERIALISM 0x005b4810
-void TSpecialQuitPicture::NoOpUiLifecycleHook(int arg) {
-}
+void TSpecialQuitPicture::NoOpUiLifecycleHook(int arg) {}
 
 // FUNCTION: IMPERIALISM 0x005b4a10
-void TSpecialQuitPicture::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) { }
+void TSpecialQuitPicture::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {}

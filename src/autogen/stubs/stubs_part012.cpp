@@ -499,14 +499,6 @@ undefined4 ConstructTMiniCivViewBaseState(void)
   return 0;
 }
 
-// ghidra_name TToolBarCluster::WrapperFor_ConstructSharedStringFromCStrOrResourceId_At004ac370
-// ghidra_proto undefined WrapperFor_ConstructSharedStringFromCStrOrResourceId_At004ac370()
-// FUNCTION: IMPERIALISM 0x004ac370
-undefined4 WrapperFor_ConstructSharedStringFromCStrOrResourceId_At004ac370(void)
-{
-  return 0;
-}
-
 // ghidra_name AssignSharedStringFromMidSubstring
 // ghidra_proto undefined AssignSharedStringFromMidSubstring()
 // FUNCTION: IMPERIALISM 0x004ac3a0
@@ -591,14 +583,6 @@ undefined4 CreateTBatRepDetLineInstance(void)
 // ghidra_proto undefined ConstructTBattleUnitsViewBaseState()
 // FUNCTION: IMPERIALISM 0x004b06f0
 undefined4 ConstructTBattleUnitsViewBaseState(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_InitializeSharedStringRefFromEmpty_At004b0970
-// ghidra_proto undefined WrapperFor_InitializeSharedStringRefFromEmpty_At004b0970()
-// FUNCTION: IMPERIALISM 0x004b0970
-undefined4 WrapperFor_InitializeSharedStringRefFromEmpty_At004b0970(void)
 {
   return 0;
 }

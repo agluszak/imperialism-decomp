@@ -363,14 +363,6 @@ undefined4 UpdateUniversitySpecialistCountControlAndRefreshViewAlt(void)
   return 0;
 }
 
-// ghidra_name TPlaceCityDialog::ConstructTPlaceCityDialogBaseState
-// ghidra_proto undefined ConstructTPlaceCityDialogBaseState()
-// FUNCTION: IMPERIALISM 0x004d1800
-undefined4 ConstructTPlaceCityDialogBaseState(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_ftol_At004d1fb0
 // ghidra_proto undefined WrapperFor_ftol_At004d1fb0()
 // FUNCTION: IMPERIALISM 0x004d1fb0
@@ -619,22 +611,6 @@ undefined4 GetOrComputeOverlayAnchorTileIndex(void)
   return 0;
 }
 
-// ghidra_name AssignSharedStringFromDescriptorNameOrDefault
-// ghidra_proto undefined AssignSharedStringFromDescriptorNameOrDefault()
-// FUNCTION: IMPERIALISM 0x004d7930
-undefined4 AssignSharedStringFromDescriptorNameOrDefault(void)
-{
-  return 0;
-}
-
-// ghidra_name ComputeSelectedMilitaryPowerScore
-// ghidra_proto undefined ComputeSelectedMilitaryPowerScore()
-// FUNCTION: IMPERIALISM 0x004d8430
-undefined4 ComputeSelectedMilitaryPowerScore(void)
-{
-  return 0;
-}
-
 // ghidra_name ClassifyNationMilitaryPowerBandAgainstGlobalMean
 // ghidra_proto undefined ClassifyNationMilitaryPowerBandAgainstGlobalMean()
 // FUNCTION: IMPERIALISM 0x004d84b0
@@ -719,14 +695,6 @@ undefined4 GetCityProductionValueTimesTwoCallbackG(void)
 // ghidra_proto undefined RefreshNationCivilianWorkOrdersForTurn()
 // FUNCTION: IMPERIALISM 0x004dfd30
 undefined4 RefreshNationCivilianWorkOrdersForTurn(void)
-{
-  return 0;
-}
-
-// ghidra_name ComputeNationRuntimeAdvisoryMetricCase6
-// ghidra_proto undefined ComputeNationRuntimeAdvisoryMetricCase6()
-// FUNCTION: IMPERIALISM 0x004e0770
-undefined4 ComputeNationRuntimeAdvisoryMetricCase6(void)
 {
   return 0;
 }

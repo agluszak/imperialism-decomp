@@ -43,14 +43,6 @@ undefined4 InitializeUMapAuxEntryDefaultsAndSharedNameFields(void)
   return 0;
 }
 
-// ghidra_name InitializeSharedStringRefAndReturnThis
-// ghidra_proto undefined InitializeSharedStringRefAndReturnThis()
-// FUNCTION: IMPERIALISM 0x0050ec60
-undefined4 InitializeSharedStringRefAndReturnThis(void)
-{
-  return 0;
-}
-
 // ghidra_name RebuildGlobalMapStateAndMaybeDispatchTurnEvent3C0
 // ghidra_proto undefined RebuildGlobalMapStateAndMaybeDispatchTurnEvent3C0()
 // FUNCTION: IMPERIALISM 0x0050ed4d
@@ -303,14 +295,6 @@ undefined4 PopulateMapContextInfoPanelStringsByTileSelection(void)
 // ghidra_proto undefined ConstructTTownNameDialogBaseState()
 // FUNCTION: IMPERIALISM 0x0051bb10
 undefined4 ConstructTTownNameDialogBaseState(void)
-{
-  return 0;
-}
-
-// ghidra_name InitializeCitySiteView
-// ghidra_proto undefined InitializeCitySiteView()
-// FUNCTION: IMPERIALISM 0x0051beb0
-undefined4 InitializeCitySiteView(void)
 {
   return 0;
 }

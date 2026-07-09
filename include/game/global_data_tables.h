@@ -441,6 +441,8 @@ extern char g_szNewGameDifficultyHard_00694A40[];
 extern char g_szNewGameDifficultyNormal_00694A48[];
 extern char g_szNewGameDifficultyEasy_00694A50[];
 extern char g_szNewGameDifficultyIntroductory_00694A58[];
+extern char g_szNewGameScenarioPlaceholderTitle_00694A68[];
+extern char g_szNewGameGameNameLabel_00694A88[];
 extern char g_szUiPlaceholderZero_00694378[];
 extern char g_szUiOrdersLabel_006948A4[];
 extern char g_szUiAsEstimatedBy_00694540[];
@@ -533,7 +535,19 @@ extern "C" const int g_anNationStartingTreasuryByLocale[6];
 extern CString g_cstrGreatPowerPressureMessage; // @ 0x6a2df0
 // Per-subsystem message-store CStrings passed as the A13A0 dispatcher's
 // messageStoreRef argument (0x005d5b00 callsites).
-extern CString g_cstrArmyOrderMessageStore;     // @ 0x6a2318
+extern CString g_cstrArmyOrderMessageStore;        // @ 0x6a2318
+extern CString g_cstrNationComparisonMessageStore; // @ 0x6a3180
+extern CString g_cstrNationAwolMessageStore;       // @ 0x6a3d08
+extern char g_szImpSaveExtension_00698708[];
+extern char g_szMultiplayerSavePrefix_00698710[];
+extern char g_szSingleSlotSavePrefix_00698718[];
+extern char g_szSaveFileReadBinaryMode_00698720[];
+extern char g_szSaveDirectoryPrefix_00698724[];
+extern char g_szAutosaveSlotLabel_0069872C[];
+extern char g_szSavedDocumentMarker_0069B848[];
+extern char* g_pszDescriptorDefaultName_00653300;
+extern char g_szUiCloseParen_006973C8[];
+extern char g_szUiOpenParen_0069806C[];
 extern CString g_cstrCivilianOrderMessageStore; // @ 0x6a2d40
 extern "C" const char g_szUiFailureMessage[];
 extern CString g_cstrUiFontBelweLight;

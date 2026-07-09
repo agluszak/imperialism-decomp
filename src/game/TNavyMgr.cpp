@@ -8,6 +8,7 @@
 #include "game/TMapMgr.h"
 #include "game/TOcean.h"
 #include "game/TShip.h"
+#include "game/TStream.h"
 #include "game/TDiplomacyMgr.h"
 #include "game/TObject.h"
 #include "game/TPortZone.h"
@@ -284,6 +285,61 @@ static void RemoveMatchingTaskForceOrders(TNavyMgr* navyManager, short nationSlo
       reinterpret_cast<TObject*>(node)->Free();
     }
     node = nextNode;
+  }
+}
+
+// FUNCTION: IMPERIALISM 0x005568f0
+void TNavyMgr::SerializeNavyOrderListsByNation(TStream* stream, short nationFilter) {
+  int matchCount = 0;
+  TShip* tail = g_pNavyPrimaryOrderListHead;
+  if (tail != 0) {
+    for (TShip* older = tail->nextOlder24; older != 0; older = older->nextOlder24) {
+      tail = older;
+    }
+  }
+  for (TShip* node = tail; node != 0; node = node->prevNewer28) {
+    if (nationFilter == -1 || nationFilter == node->ownerNationSlot14) {
+      ++matchCount;
+    }
+  }
+  stream->WriteBytesSlot78(&matchCount, 2);
+  tail = g_pNavyPrimaryOrderListHead;
+  if (tail != 0) {
+    for (TShip* older2 = tail->nextOlder24; older2 != 0; older2 = older2->nextOlder24) {
+      tail = older2;
+    }
+  }
+  for (TShip* writeNode = tail; writeNode != 0; writeNode = writeNode->prevNewer28) {
+    if (nationFilter == -1 || nationFilter == writeNode->ownerNationSlot14) {
+      writeNode->WriteTo(stream);
+    }
+  }
+  matchCount = 0;
+  for (TAdmiral* admiral = g_pNavySecondaryOrderListHead; admiral != 0; admiral = admiral->next) {
+    if (nationFilter == -1 || nationFilter == admiral->terrainType) {
+      ++matchCount;
+    }
+  }
+  stream->WriteBytesSlot78(&matchCount, 2);
+  for (TAdmiral* admiral2 = g_pNavySecondaryOrderListHead; admiral2 != 0;
+       admiral2 = admiral2->next) {
+    if (nationFilter == -1 || nationFilter == admiral2->terrainType) {
+      admiral2->WriteTo(stream);
+    }
+  }
+  matchCount = 0;
+  // +0x1c is required_count in TTaskForce.h but every navy-order reader (see
+  // RemoveMatchingTaskForceOrders) treats it as the entry's nation slot.
+  for (TTaskForce* order = orderListHead04; order != 0; order = order->queue_next) {
+    if (nationFilter == -1 || nationFilter == order->required_count) {
+      ++matchCount;
+    }
+  }
+  stream->WriteBytesSlot78(&matchCount, 2);
+  for (TTaskForce* order2 = orderListHead04; order2 != 0; order2 = order2->queue_next) {
+    if (nationFilter == -1 || nationFilter == order2->required_count) {
+      order2->WriteTo(stream);
+    }
   }
 }
 

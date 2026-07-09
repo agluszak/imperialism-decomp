@@ -44,6 +44,11 @@ public:
   int field0c;
 
   void RemoveOrdersByNationFromPrimarySecondaryAndTaskForceLists(short nationSlot);
+
+  // 0x5568f0 - stream out the three navy order lists (primary TShip chain tail-first,
+  // TAdmiral secondary chain, orderListHead04 task-force chain), each prefixed with a
+  // 16-bit count; nationFilter -1 serializes every nation's entries.
+  void SerializeNavyOrderListsByNation(TStream* stream, short nationFilter);
   // 0x557170. Walks orderListHead04 (the same raw task-force-order node list
   // RemoveMatchingTaskForceOrders in the .cpp already indexes via node[7]=
   // nationSlot@+0x1c, node[0xb]=next@+0x2c); matches nodes with orderType@+0x8==5,

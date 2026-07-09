@@ -969,7 +969,18 @@ CString* TSimMgr::LoadNormalizedCredentialName(CString* out, short slot) {
   return out;
 }
 
+// FUNCTION: IMPERIALISM 0x00581bc0
+CString TSimMgr::AssignSharedStringFromIndexedSlot7C(short slot) {
+  return sharedTextSlots[slot];
+}
+
 // FUNCTION: IMPERIALISM 0x005d4c10
 BOOL __cdecl TryGetFileMetadataForPath(CString* path) {
-  return reinterpret_cast<BOOL(__cdecl*)(CString*)>(0x005d4c10)(path);
+  CFileStatus status;
+  return CFile::GetStatus(*path, status);
+}
+
+// FUNCTION: IMPERIALISM 0x005d4c40
+void __cdecl DeleteFileWithErrorReporting(CString* path) {
+  CFile::Remove(*path);
 }

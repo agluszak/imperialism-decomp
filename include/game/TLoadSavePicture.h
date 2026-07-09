@@ -7,7 +7,7 @@
 // VTABLE: IMPERIALISM 0x006426b8
 class TLoadSavePicture : public TPicture {
 public:
-// === BEGIN GENERATED DECLS (TLoadSavePicture) — refreshed by recover-class; do not hand-edit ===
+  // === BEGIN GENERATED DECLS (TLoadSavePicture) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TLoadSavePicture)
   virtual ~TLoadSavePicture() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -23,7 +23,8 @@ public:
   // slot 0x0c QueryStepValue inherited unchanged (0x48a2c0)
   // slot 0x0d DispatchQueuedUiCommandAndRelease inherited unchanged (0x48a3b0)
   // slot 0x0e DispatchUiSelectionToHandler inherited unchanged (0x48a3f0)
-  virtual void HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) override; // slot 0x0f 0x0056cd10
+  virtual void HandleEvent(int commandId, TEventHandler* sourceHandler,
+                           TEvent* event) override; // slot 0x0f 0x0056cd10
   // slot 0x10 DispatchUiCommandToHandler inherited unchanged (0x48a2e0)
   // slot 0x11 vmethod_0017 inherited unchanged (0x48a310)
   virtual void ForwardParam(int param) override; // slot 0x12 0x56d1e0
@@ -123,11 +124,14 @@ public:
   // slot 0x70 SetControlStateFlagAndMaybeRefresh inherited unchanged (0x48e810)
   // slot 0x71 ResetPictureResourceEntry inherited unchanged (0x48f520)
   // slot 0x72 SetPictureResourceIdAndRefresh inherited unchanged (0x48f570)
-  virtual undefined HandleSaveGameSlotSelectionAndPromptFlow(); // slot 0x73 0x56d2a0
+  virtual undefined HandleSaveGameSlotSelectionAndPromptFlow();  // slot 0x73 0x56d2a0
   virtual undefined HandleTurnFlowStateTickOrPostTurnEvent5DC(); // slot 0x74 0x56d190
-// === END GENERATED DECLS (TLoadSavePicture) ===
+  // === END GENERATED DECLS (TLoadSavePicture) ===
   // TODO(manifest): add data members from the object slice (`just slice-discovery TLoadSavePicture 0xCTOR`).
 
   TLoadSavePicture();
 };
 
+// Save-game free functions (TLoadSavePicture TU).
+int __cdecl ReadScenarioIndexFromSaveHeader(const char* path);
+void __cdecl BuildSavePathStringForMode(CString* out, int saveMode, char* label);
