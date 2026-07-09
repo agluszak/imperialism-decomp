@@ -66,6 +66,7 @@ typedef void(__cdecl* LocalizationFormatFn)(int tokenId, int arg, void* outTextR
 // SYNTHETIC: IMPERIALISM 0x0058f050
 // TCivDescription::CreateObject
 
+// FUNCTION: IMPERIALISM 0x0044a770
 TCivDescription::TCivDescription() : TView() {
   selectedCivilianClass = -1;
   legendInitialized = 0;
@@ -322,7 +323,7 @@ void TCivDescription::ApplyRectSlot110(RECT* rectBuffer) {
     g_pSimMgr->GetString(0x2718, selectedClass, &localizedTextRef);
 
     textWidth = MeasureTextExtentWithCachedQuickDrawStyle(&localizedTextRef);
-    textOriginX = static_cast<short>((this->field34 / 2) - (textWidth / 2));
+    textOriginX = static_cast<short>((this->frameWidth34 / 2) - (textWidth / 2));
 
     SetQuickDrawColorAndSyncGlobals(styleSecondary);
     SetQuickDrawTextOriginWithContextOffset(static_cast<short>(textOriginX + 1), 0x47);

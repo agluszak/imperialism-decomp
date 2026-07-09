@@ -64,7 +64,7 @@ void TIndustryAmtBar::NoOpUiLifecycleHook(int arg) {
 
   short stepValue = selectedMetricRecord->MaxOrder();
   short productionCap = (short)productionValue;
-  int rangeRaw = this->field34;
+  int rangeRaw = this->frameWidth34;
   stepOrCurrentValue = (short)((stepValue * rangeRaw) / productionCap);
 
   auxValueA = productionCap;
@@ -127,8 +127,8 @@ void TIndustryAmtBar::RenderQuickDrawOverlayWithHitRegion(short selectedValue) {
       int cachedY = g_nOverlayClipCacheParamY;
       RECT invalidRect = {cachedX, cachedY, 0, 0};
       TranslatePointToParentChain4E();
-      invalidRect.right = cachedX + (int)(short)field34;
-      invalidRect.bottom = cachedY + (int)(short)field38;
+      invalidRect.right = cachedX + (int)(short)frameWidth34;
+      invalidRect.bottom = cachedY + (int)(short)frameHeight38;
       InvalidateCityDialogRectRegion(&invalidRect, 1);
     }
   }

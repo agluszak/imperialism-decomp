@@ -78,13 +78,14 @@ void TRailAmtBar::NoOpUiLifecycleHook(int arg) {
     stepOrCurrentValue = 9999;
   } else {
     short selectedStep = selectedMetricRecord->MaxOrder();
-    stepOrCurrentValue = (short)(((int)selectedStep * this->field34) / (int)productionOrCapValue);
+    stepOrCurrentValue =
+        (short)(((int)selectedStep * this->frameWidth34) / (int)productionOrCapValue);
   }
   auxValueA = productionOrCapValue;
   if (productionOrCapValue == 0) {
     rangeOrMaxValue = 9999;
   } else {
-    rangeOrMaxValue = (short)((this->field34 * (int)selectedMetricRecord->quantityField04) /
+    rangeOrMaxValue = (short)((this->frameWidth34 * (int)selectedMetricRecord->quantityField04) /
                               (int)productionOrCapValue);
   }
   auxValueB = 0x3a;
@@ -147,8 +148,8 @@ void TRailAmtBar::RenderQuickDrawOverlayWithHitRegion(short selectedValue) {
       RECT invalidRect;
       invalidRect.left = boundsRect.left;
       invalidRect.top = boundsRect.top;
-      invalidRect.right = boundsRect.left + (int)(short)field34;
-      invalidRect.bottom = boundsRect.top + (int)(short)field38;
+      invalidRect.right = boundsRect.left + (int)(short)frameWidth34;
+      invalidRect.bottom = boundsRect.top + (int)(short)frameHeight38;
       InvalidateCityDialogRectRegion(&invalidRect, 1);
     }
   }

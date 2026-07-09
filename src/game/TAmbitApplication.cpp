@@ -170,9 +170,9 @@ void TAmbitApplication::HandleCursor(int x, int y, void* cursorRegion) {
 
         if (pt.x > -200 && pt.y > -200) {
           TView* activeDialog = g_pDisplayMgr->activeDialog;
-          int width = activeDialog->field34;
+          int width = activeDialog->frameWidth34;
           if (pt.x < width + 200) {
-            int height = activeDialog->field38;
+            int height = activeDialog->frameHeight38;
             if (pt.y < height + 200) {
               char edgeMask = 0;
               if (pt.x <= 4) {

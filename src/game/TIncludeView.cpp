@@ -43,8 +43,8 @@ void TIncludeView::BuildTurnEventFactoryPacket(TView* ownerContextArg, TView* ma
   linkedChildHandler = mainView;
   ownerLocalX = g_turnEventDialogAnchorPoint[0];
   ownerLocalY = g_turnEventDialogAnchorPoint[1];
-  field34 = mainView->field34;
-  field38 = mainView->field38;
+  frameWidth34 = mainView->frameWidth34;
+  frameHeight38 = mainView->frameHeight38;
   if (mainView != nullptr) {
     mainView->AttachChildControl(this, 0);
   }
@@ -63,7 +63,7 @@ void TIncludeView::NoOpUiLifecycleHook(int arg) {
     int eventCode = static_cast<int>(turnEventCode60);
     if (ownerContext != nullptr) {
       CaptureLayoutF0(g_turnEventDialogAnchorPoint, 0);
-      CaptureLayout(&ownerContext->field34, 0);
+      CaptureLayout(&ownerContext->frameWidth34, 0);
     }
     TView* dialog = g_pTurnEventDialogFactoryRegistry->InvokeDialogFactoryFromPacket(
         0, this, eventCode, g_turnEventDialogAnchorPoint);

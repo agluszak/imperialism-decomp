@@ -37,8 +37,9 @@ static __inline void UpdateTradeBarFromSelectedMetricRatio(TRailCluster* context
 
   TAmtBar* barLayout = reinterpret_cast<TAmtBar*>(barControl);
   if (barLayout->auxValueA != 0) {
-    int ratioValue = ((int)context->selectedMetricControl->QueryStepValue() * barLayout->field34) /
-                     (int)barLayout->auxValueA;
+    int ratioValue =
+        ((int)context->selectedMetricControl->QueryStepValue() * barLayout->frameWidth34) /
+        (int)barLayout->auxValueA;
     barControl->SetBarMetricRatio(ratioValue);
   }
 }
@@ -182,7 +183,7 @@ int TRailCluster::NotifyControlSelectionChange(void* dragValuePtr, int updateFla
   TAmtBar* barAmount = reinterpret_cast<TAmtBar*>(barControl);
   float barScale = 9999.0f;
   if (barLayout->auxValueA != 0) {
-    barScale = (float)barLayout->field34 / (float)barLayout->auxValueA;
+    barScale = (float)barLayout->frameWidth34 / (float)barLayout->auxValueA;
   }
 
   if (ReadControlValueFieldPlus4(selectedControl) == selectedMetricValue) {

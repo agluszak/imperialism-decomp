@@ -41,10 +41,10 @@ bool TPlacard::IsSelected(short value, bool refreshNow) {
     glyph90 = value;
     if (refreshNow) {
       RECT rect;
-      rect.top = field38 - 0xc;
-      rect.left = static_cast<short>((field34 / 2) - 10);
+      rect.top = frameHeight38 - 0xc;
+      rect.left = static_cast<short>((frameWidth34 / 2) - 10);
       rect.right = rect.left + 0x14;
-      rect.bottom = field38 - 1;
+      rect.bottom = frameHeight38 - 1;
       InvalidateCityDialogRectRegion(&rect, 1);
     }
   }
@@ -57,11 +57,11 @@ void TPlacard::ApplyRectSlot110(RECT* rectBuffer) {
   TPicture::ApplyRectSlot110(nullptr);
   ApplyUiTextStyleAndSyncColor(0, 10, 0x2b6c);
   if (glyph90 < 10) {
-    SetQuickDrawTextOriginWithContextOffset(field34 / 2 - 2, 0);
+    SetQuickDrawTextOriginWithContextOffset(frameWidth34 / 2 - 2, 0);
   } else if (glyph90 < 100) {
-    SetQuickDrawTextOriginWithContextOffset(field34 / 2 - 6, 0);
+    SetQuickDrawTextOriginWithContextOffset(frameWidth34 / 2 - 6, 0);
   } else {
-    SetQuickDrawTextOriginWithContextOffset(field34 / 2 - 10, 0);
+    SetQuickDrawTextOriginWithContextOffset(frameWidth34 / 2 - 10, 0);
   }
   RefreshControl();
 }

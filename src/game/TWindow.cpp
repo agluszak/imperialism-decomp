@@ -20,10 +20,10 @@ static __inline void AssertMcAppUiInvalidation(const char* path, int line) {
 }
 
 // FUNCTION: IMPERIALISM 0x0048d500
-TWindow::TWindow() : TView(), dialogBehavior(), field98(0) {
+TWindow::TWindow() : TView(), dialogBehavior(), busyFlag98(0) {
   g_LiveViewRegistry.AddHead(this);
   dialogBehavior.SetUiColorDescriptorGoldTriplet(1, 0x20202020, 0x20202020);
-  field64 = this;
+  activeLinkedWindow64 = this;
   dialogBehavior.SetDword08(reinterpret_cast<int>(this));
 }
 // IMPLEMENT_DYNCREATE also emits `TWindow::CreateObject`; the original copy at
@@ -91,7 +91,8 @@ undefined TWindow::OrphanCallChain_C2_I39_0048d900(char param_1, char param_2) {
 
 // FUNCTION: IMPERIALISM 0x0048d980
 char TWindow::IsActionable() {
-  return field98 != 0 && g_McAppUiActiveFlag_006950AC != 0 && nativeWindow50 != 0 && field08 != 0;
+  return busyFlag98 != 0 && g_McAppUiActiveFlag_006950AC != 0 && nativeWindow50 != 0 &&
+         field08 != 0;
 }
 
 // FUNCTION: IMPERIALISM 0x0048d9c0
@@ -218,9 +219,9 @@ undefined TWindow::OrphanCallChain_C2_I19_0048ddc0(TWindow* param_1) {
   if (param_1 == 0) {
     param_1 = this;
   }
-  if (param_1 != field64) {
-    field64->DispatchUiCommand19ToParent();
-    field64 = param_1;
+  if (param_1 != activeLinkedWindow64) {
+    activeLinkedWindow64->DispatchUiCommand19ToParent();
+    activeLinkedWindow64 = param_1;
     param_1->HandleCityProductionNoOp();
   }
   return 0;
@@ -244,9 +245,9 @@ void TWindow::DispatchSlot9CToLinkedChildren() {
   }
   ::SendMessageA(nativeWindow50->m_hWnd, 0x468, 0, controlTag);
   if (IsActionable() == 0) {
-    field98 = 1;
-    if (field64 != 0) {
-      field64->vmethod_0081(0);
+    busyFlag98 = 1;
+    if (activeLinkedWindow64 != 0) {
+      activeLinkedWindow64->vmethod_0081(0);
     }
     OrphanCallChain_C2_I39_0048d900(1, 1);
   }
@@ -263,7 +264,7 @@ void TWindow::DispatchSlot9CToLinkedChildren() {
 // control, then run the slot-0x73 state-notify chain.
 // FUNCTION: IMPERIALISM 0x0048e060
 void TWindow::CallVoidSlotA0() {
-  field98 = 0;
+  busyFlag98 = 0;
   if (nativeWindow50 != 0 && nativeWindow50->m_hWnd != 0) {
     SendMessageA(reinterpret_cast<HWND>(nativeWindow50->m_hWnd), 0x468, 1, controlTag);
   }
@@ -291,10 +292,10 @@ undefined TWindow::WrapperFor_CenterWindowWithinOwnerOrWorkArea_At0048e150(char 
     return 0;
   }
   if (param_1 != 0) {
-    ownerLocalX = (0x280 - field34) / 2;
+    ownerLocalX = (0x280 - frameWidth34) / 2;
   }
   if (param_2 != 0) {
-    ownerLocalY = (0x1e0 - field38) / 2;
+    ownerLocalY = (0x1e0 - frameHeight38) / 2;
   }
   return 0;
 }

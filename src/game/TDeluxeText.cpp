@@ -15,6 +15,7 @@ TDeluxeText::~TDeluxeText() {}
 
 IMPLEMENT_DYNCREATE(TDeluxeText, TTEView)
 
+// FUNCTION: IMPERIALISM 0x00430950
 TDeluxeText::TDeluxeText() : TTEView(), cursorThemeCode98(0), cursorThemeCode9c(0), fieldA0(0) {}
 
 // FUNCTION: IMPERIALISM 0x005b6060
@@ -84,8 +85,8 @@ int TDeluxeText::RecenterTextFromMeasuredWidthAndMaybeInvalidate(char refreshNow
   field6C = 0;
   int measuredWidth = MeasureCurrentTextWidthInLayoutRect();
   int inset = 0;
-  if (measuredWidth < field38) {
-    inset = (field38 - measuredWidth) / 2;
+  if (measuredWidth < frameHeight38) {
+    inset = (frameHeight38 - measuredWidth) / 2;
   }
   field74 = static_cast<short>(inset);
   field6C = static_cast<short>(inset);

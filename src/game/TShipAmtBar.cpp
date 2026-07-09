@@ -38,7 +38,7 @@ void TShipAmtBar::NoOpUiLifecycleHook(int arg) {
   TCity* cityState = nationState != 0 ? nationState->GetCityState() : 0;
   selectedShipOrder = cityState->shipOrderSlots[0];
   short productionCap = cityState->productionSummary1d8->stockLevel1c;
-  stepOrCurrentValue = (short)this->field34;
+  stepOrCurrentValue = (short)this->frameWidth34;
   auxValueA = productionCap;
   auxValueB = 0x3a;
   rangeOrMaxValue = (short)(0 / (int)productionCap);

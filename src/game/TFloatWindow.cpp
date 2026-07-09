@@ -22,7 +22,7 @@ int TFloatWindow::GetWindowTypeTag() {
 
 // FUNCTION: IMPERIALISM 0x00492330
 void TFloatWindow::CallVoidSlotA0() {
-  field98 = 0;
+  busyFlag98 = 0;
   if (nativeWindow50 != 0 && nativeWindow50->m_hWnd != 0) {
     SendMessageA(reinterpret_cast<HWND>(nativeWindow50->m_hWnd), 0x468, 1, controlTag);
   }

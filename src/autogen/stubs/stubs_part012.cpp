@@ -419,14 +419,6 @@ undefined4 WrapperFor_ftol_At004a8740(void)
   return 0;
 }
 
-// ghidra_name TGarrisonView::ConstructTGarrisonViewBaseState
-// ghidra_proto undefined ConstructTGarrisonViewBaseState()
-// FUNCTION: IMPERIALISM 0x004a8810
-undefined4 ConstructTGarrisonViewBaseState(void)
-{
-  return 0;
-}
-
 // ghidra_name TLineData::PopulateTurnEventDialogArmyUnitLinesForTileSelection
 // ghidra_proto undefined PopulateTurnEventDialogArmyUnitLinesForTileSelection()
 // FUNCTION: IMPERIALISM 0x004a8890

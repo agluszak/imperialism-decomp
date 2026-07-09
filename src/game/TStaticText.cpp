@@ -95,8 +95,8 @@ void TStaticText::InitializeTextEntryBaseAndOptionalStringResource(
   field0c = reinterpret_cast<int>(panel);
   ownerLocalX = offsetLayout[0];
   ownerLocalY = offsetLayout[1];
-  field34 = sizeLayout[0];
-  field38 = sizeLayout[1];
+  frameWidth34 = sizeLayout[0];
+  frameHeight38 = sizeLayout[1];
   if (panel != 0) {
     panel->AttachChildControl(this, 0);
   }
@@ -145,7 +145,7 @@ void TStaticText::SetTextThemeCodeAndMaybeRefresh(short themeCode, char refreshF
 
 // Paint the static text through the active QuickDraw CDC: aspect-filtered font
 // mapping, cached CFont from the widget's packed text style, text color from the
-// optional field48 payload (else the style's styleRef), and CDC::DrawText with the
+// optional stylePayload48 payload (else the style's styleRef), and CDC::DrawText with the
 // field90 alignment code (-2 left / 1 center / -1 right on DT_NOPREFIX|0x100|
 // DT_WORDBREAK).
 // FUNCTION: IMPERIALISM 0x0048ffb0
@@ -165,10 +165,10 @@ void TStaticText::ApplyRectSlot110(RECT* rectBuffer) {
   CFont* font = UpdateGlobalFontPresetAndRebuildCachedFontIfDirty(&textStyle78);
   CFont* oldFont = dc->SelectObject(font);
   COLORREF textColor;
-  if (field48 == 0) {
+  if (stylePayload48 == 0) {
     textColor = textStyle78.styleRef6;
   } else {
-    textColor = field48->styleWord;
+    textColor = stylePayload48->styleWord;
   }
   dc->SetTextColor(textColor);
   UINT format = 0x910;

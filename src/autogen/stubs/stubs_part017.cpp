@@ -891,14 +891,6 @@ undefined4 WrapperFor_ftol_At00572a50(void)
   return 0;
 }
 
-// ghidra_name TColorKeyPicture::ConstructPictureResourceEntry_Vtbl00660b48
-// ghidra_proto undefined ConstructPictureResourceEntry_Vtbl00660b48()
-// FUNCTION: IMPERIALISM 0x00572de0
-undefined4 ConstructPictureResourceEntry_Vtbl00660b48(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_ftol_At00573bf0
 // ghidra_proto undefined WrapperFor_ftol_At00573bf0()
 // FUNCTION: IMPERIALISM 0x00573bf0

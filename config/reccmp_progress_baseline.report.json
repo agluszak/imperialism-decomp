@@ -712,7 +712,7 @@
     },
     {
       "address": "0x430250",
-      "matching": 0.3333333333333333,
+      "matching": 0.7058823529411765,
       "name": "ConstructPictureResourceEntry_Vtbl0063f650",
       "type": 1
     },
@@ -832,7 +832,7 @@
     },
     {
       "address": "0x430950",
-      "matching": 0.07407407407407407,
+      "matching": 0.3333333333333333,
       "name": "ConstructUiColorTextResourceEntry",
       "type": 1
     },
@@ -1054,50 +1054,8 @@
     },
     {
       "address": "0x43dbc0",
-      "matching": 0.0003661662394727206,
+      "matching": 0.8484586007323123,
       "name": "InitializeArmyNavyReportViewsAndCommandTags",
-      "type": 1
-    },
-    {
-      "address": "0x43e8b0",
-      "matching": 0.0007680491551459293,
-      "name": "BuildMainMapAndCityCommandControls",
-      "type": 1
-    },
-    {
-      "address": "0x440b83",
-      "matching": 0.005917159763313609,
-      "name": "BuildCivilianReportDialogResources",
-      "type": 1
-    },
-    {
-      "address": "0x4418b0",
-      "matching": 0.041666666666666664,
-      "name": "InitializeTGarrisonViewBitmapAndControlResources",
-      "type": 1
-    },
-    {
-      "address": "0x441948",
-      "matching": 0.0106951871657754,
-      "name": "BuildGarrisonViewBaseAndTabCursorUiResources",
-      "type": 1
-    },
-    {
-      "address": "0x441ff1",
-      "matching": 0.021739130434782608,
-      "name": "BuildConstructionOptionsDialogResources",
-      "type": 1
-    },
-    {
-      "address": "0x4472bb",
-      "matching": 0.041666666666666664,
-      "name": "InitializeTNavyRosterBitmapAndControlResources",
-      "type": 1
-    },
-    {
-      "address": "0x447353",
-      "matching": 0.009615384615384616,
-      "name": "TNavyRoster::BuildNavyRosterDialogUiResourceTree",
       "type": 1
     },
     {
@@ -1108,13 +1066,13 @@
     },
     {
       "address": "0x44a770",
-      "matching": 0.18181818181818182,
+      "matching": 1.0,
       "name": "TCivDescription::ConstructTCivDescriptionBaseState",
       "type": 1
     },
     {
       "address": "0x44a810",
-      "matching": 0.6370370370370371,
+      "matching": 0.6395061728395062,
       "name": "BuildTurnEventDialogResources_2508",
       "type": 1
     },
@@ -1372,32 +1330,8 @@
     },
     {
       "address": "0x4749a0",
-      "matching": 0.047058823529411764,
+      "matching": 0.6431053072960345,
       "name": "BuildUniversityDialogShell",
-      "type": 1
-    },
-    {
-      "address": "0x474ac5",
-      "matching": 0.0012970168612191958,
-      "name": "BuildUniversityDialogControls",
-      "type": 1
-    },
-    {
-      "address": "0x475f80",
-      "matching": 0.0,
-      "name": "thunk_BuildUniversityRecruitmentRows",
-      "type": 1
-    },
-    {
-      "address": "0x475f82",
-      "matching": 0.0,
-      "name": "BuildUniversityRecruitControls",
-      "type": 1
-    },
-    {
-      "address": "0x475f84",
-      "matching": 0.0014104372355430183,
-      "name": "BuildUniversityRecruitmentRows",
       "type": 1
     },
     {
@@ -4415,7 +4349,7 @@
     },
     {
       "address": "0x48b2d0",
-      "matching": 0.19130434782608696,
+      "matching": 0.2033898305084746,
       "name": "TView::VTableSlotDD",
       "type": 1
     },
@@ -7621,7 +7555,7 @@
     },
     {
       "address": "0x4a2900",
-      "matching": 0.13374805598755832,
+      "matching": 0.12752721617418353,
       "name": "BuildArmyContextActionRecordsAndDispatchLabel",
       "type": 1
     },
@@ -7981,7 +7915,7 @@
     },
     {
       "address": "0x4a8810",
-      "matching": 0.2,
+      "matching": 0.9333333333333333,
       "name": "TGarrisonView::ConstructTGarrisonViewBaseState",
       "type": 1
     },
@@ -9055,7 +8989,7 @@
     },
     {
       "address": "0x4b4390",
-      "matching": 0.4918032786885246,
+      "matching": 0.4835164835164835,
       "name": "AllocateRandomResourceCountsWithinWeightBudget",
       "type": 1
     },
@@ -11059,7 +10993,7 @@
     },
     {
       "address": "0x4cac60",
-      "matching": 0.3333333333333333,
+      "matching": 0.7058823529411765,
       "name": "TUniversityView::ConstructTUniversityViewBaseState",
       "type": 1
     },
@@ -12874,8 +12808,7 @@
     },
     {
       "address": "0x4e0610",
-      "effective": true,
-      "matching": 0.42857142857142855,
+      "matching": 1.0,
       "name": "TGreatPower::ReturnFalseNationStateActionStub_8a",
       "type": 1
     },
@@ -12894,7 +12827,7 @@
     },
     {
       "address": "0x4e06d0",
-      "matching": 1.0,
+      "matching": 0.7619047619047619,
       "name": "TGreatPower::SumNationRuntimeFiveBucketValue44",
       "type": 1
     },
@@ -13206,7 +13139,7 @@
     },
     {
       "address": "0x4e4630",
-      "matching": 0.9333333333333333,
+      "matching": 0.6666666666666666,
       "name": "TMinor::OrphanLeaf_NoCall_Ins02_004d7ee0",
       "type": 1
     },
@@ -13693,13 +13626,13 @@
     },
     {
       "address": "0x4e9ff0",
-      "matching": 0.752,
+      "matching": 0.768,
       "name": "TAutoGreatPower::OrphanLeaf_NoCall_Ins02_004d7ee0",
       "type": 1
     },
     {
       "address": "0x4ea0e0",
-      "matching": 0.6382978723404256,
+      "matching": 0.6808510638297872,
       "name": "TAutoGreatPower::OrphanLeaf_NoCall_Ins02_004d7f00",
       "type": 1
     },
@@ -16418,7 +16351,7 @@
     },
     {
       "address": "0x50bea0",
-      "matching": 0.20626987732848706,
+      "matching": 0.2080872330758746,
       "name": "TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets",
       "type": 1
     },
@@ -16502,7 +16435,7 @@
     },
     {
       "address": "0x50dd40",
-      "matching": 0.32450331125827814,
+      "matching": 0.31788079470198677,
       "name": "TMacViewMgr::DrawStrategicMapUnitIcon",
       "type": 1
     },
@@ -17384,7 +17317,7 @@
     },
     {
       "address": "0x519b50",
-      "matching": 0.0784313725490196,
+      "matching": 0.25,
       "name": "TMapDialog::ConstructTMapDialogBaseState",
       "type": 1
     },
@@ -17426,7 +17359,7 @@
     },
     {
       "address": "0x51a990",
-      "matching": 0.24,
+      "matching": 0.2413793103448276,
       "name": "TMapDialog::OrphanRetStub_005960c0",
       "type": 1
     },
@@ -18260,7 +18193,7 @@
     },
     {
       "address": "0x52c0a0",
-      "matching": 0.9391304347826087,
+      "matching": 0.9122807017543859,
       "name": "SeapointStretch::GetOrAppendUnique",
       "type": 1
     },
@@ -18284,19 +18217,19 @@
     },
     {
       "address": "0x52ca20",
-      "matching": 0.24242424242424243,
+      "matching": 0.20202020202020202,
       "name": "EmitOverlaySegmentFromTileEdgeSorted",
       "type": 1
     },
     {
       "address": "0x52cae0",
-      "matching": 0.3054662379421222,
+      "matching": 0.2976,
       "name": "BuildOverlaySpanRecordsFromQuadBorderLinks",
       "type": 1
     },
     {
       "address": "0x52d030",
-      "matching": 0.7766990291262136,
+      "matching": 1.0,
       "name": "ComputeWrappedOverlayCoordDeltaMetric",
       "type": 1
     },
@@ -18308,7 +18241,7 @@
     },
     {
       "address": "0x52d150",
-      "matching": 0.7311827956989247,
+      "matching": 0.7021276595744681,
       "name": "GetOrCreateOverlayQuadRecordByIndex",
       "type": 1
     },
@@ -20223,7 +20156,7 @@
     },
     {
       "address": "0x53ceb0",
-      "matching": 0.44329896907216493,
+      "matching": 0.441025641025641,
       "name": "ComputeArmyMissionCompositionAlignmentScore",
       "type": 1
     },
@@ -20235,7 +20168,7 @@
     },
     {
       "address": "0x53d200",
-      "matching": 0.41245136186770426,
+      "matching": 0.4108527131782946,
       "name": "ComputeArmyMissionScoreDeltaWithScaledCandidateUnit",
       "type": 1
     },
@@ -21891,7 +21824,7 @@
     },
     {
       "address": "0x5501b0",
-      "matching": 0.4558139534883721,
+      "matching": 0.5352112676056338,
       "name": "CalculateMissionOrderPriorityScore",
       "type": 1
     },
@@ -22317,13 +22250,13 @@
     },
     {
       "address": "0x553b10",
-      "matching": 0.4827586206896552,
+      "matching": 0.6206896551724138,
       "name": "HasNoMapOrderEntryChildrenQueued",
       "type": 1
     },
     {
       "address": "0x553b50",
-      "matching": 0.5818181818181818,
+      "matching": 0.5454545454545454,
       "name": "HasActiveMapOrderEntryChildren",
       "type": 1
     },
@@ -22461,7 +22394,7 @@
     },
     {
       "address": "0x555420",
-      "matching": 0.5546666666666666,
+      "matching": 0.5653333333333334,
       "name": "ResolveTaskForceOrderConflictAndPickCandidate",
       "type": 1
     },
@@ -24915,7 +24848,7 @@
     },
     {
       "address": "0x571f70",
-      "matching": 0.8571428571428571,
+      "matching": 1.0,
       "name": "TColorKeyButton::ConstructTColorKeyButtonBaseState",
       "type": 1
     },
@@ -25113,7 +25046,7 @@
     },
     {
       "address": "0x572de0",
-      "matching": 0.3333333333333333,
+      "matching": 0.7058823529411765,
       "name": "TColorKeyPicture::ConstructPictureResourceEntry_Vtbl00660b48",
       "type": 1
     },
@@ -27438,7 +27371,7 @@
     },
     {
       "address": "0x58a020",
-      "matching": 0.45685279187817257,
+      "matching": 0.47715736040609136,
       "name": "TRailAmtBar::NoOpUiLifecycleHook",
       "type": 1
     },
@@ -31681,7 +31614,7 @@
     },
     {
       "address": "0x5ba0e0",
-      "matching": 0.8181818181818182,
+      "matching": 1.0,
       "name": "BuildInterNationEventSummaryRowsForAdvisorDialog_Impl",
       "type": 1
     },

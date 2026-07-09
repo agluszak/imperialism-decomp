@@ -36,8 +36,9 @@ static __inline void UpdateTradeBarFromSelectedMetricRatio(TIndustryCluster* con
 
   TAmtBar* barLayout = reinterpret_cast<TAmtBar*>(barControl);
   if (barLayout->auxValueA != 0) {
-    int ratioValue = ((int)context->selectedMetricControl->QueryStepValue() * barLayout->field34) /
-                     (int)barLayout->auxValueA;
+    int ratioValue =
+        ((int)context->selectedMetricControl->QueryStepValue() * barLayout->frameWidth34) /
+        (int)barLayout->auxValueA;
     barControl->SetBarMetricRatio(ratioValue);
   }
 }
@@ -127,8 +128,8 @@ int TIndustryCluster::NotifyControlSelectionChange(void* dragValuePtr, int updat
   }
 
   float barScale = 9999.0f;
-  if (barControl->field34 != 0) {
-    barScale = (float)barControl->field38 / (float)barControl->field34;
+  if (barControl->frameWidth34 != 0) {
+    barScale = (float)barControl->frameHeight38 / (float)barControl->frameWidth34;
   }
 
   if (ReadControlValueFieldPlus4(selectedControl) == this->selectedMetricValue) {

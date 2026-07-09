@@ -68,8 +68,8 @@ static void CopyViewLayoutFieldsToStack(int* layout0, int* layout1, TControl* sr
   TView* srcView = srcControl;
   layout0[0] = srcView->ownerLocalX;
   layout0[1] = srcView->ownerLocalY;
-  layout1[0] = srcView->field34;
-  layout1[1] = srcView->field38;
+  layout1[0] = srcView->frameWidth34;
+  layout1[1] = srcView->frameHeight38;
 }
 
 static void ScanBracketExpressionsInto(CString* dest, const CString& templateText) {
@@ -1394,7 +1394,7 @@ undefined TMacViewMgr::CreateCityBuildingDialogBySlot(int param_1, undefined4 pa
     TemporarilyClearAndRestoreUiInvalidationFlag();
   }
   goldControl->InvokeSlot1D0FourParam(reinterpret_cast<int>(this), param_2, param_3, param_1);
-  dialog->field3c = 0x65;
+  dialog->controlValue3c = 0x65;
   dialog->DispatchSlot9C();
   return 0;
 }
@@ -1410,7 +1410,7 @@ undefined TMacViewMgr::OrphanCallChain_C10_I80_0050d470(undefined4 param_1, unde
     TemporarilyClearAndRestoreUiInvalidationFlag();
   }
   goldControl->InvokeSlot1D0FourParam(reinterpret_cast<int>(this), param_2, param_1, param_1);
-  dialog->field3c = 0x65;
+  dialog->controlValue3c = 0x65;
   dialog->InvokeSlotF0WithPair(static_cast<short>(reinterpret_cast<int>(this)),
                                static_cast<short>(param_1));
   dialog->DispatchSlot9C();

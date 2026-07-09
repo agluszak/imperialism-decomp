@@ -15,19 +15,6 @@ undefined4 thunk_ProjectTileIndexToWrappedScreenOffsetByScale(void);
 undefined4 thunk_SplitTileIndexToRowAndColumn(void);
 
 #define g_wMapDialogTileRowMarker (*reinterpret_cast<short*>(0x006a33b0))
-// SYNTHETIC: IMPERIALISM 0x005199c0
-// TMapDialog::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x00519b30
-// TMapDialog::GetRuntimeClass
-
-IMPLEMENT_DYNCREATE(TMapDialog, TWorldView)
-
-TMapDialog::TMapDialog() {}
-
-// SYNTHETIC: IMPERIALISM 0x00519C40
-// TMapDialog::`scalar deleting destructor'
-TMapDialog::~TMapDialog() {}
 
 // FUNCTION: IMPERIALISM 0x00512440
 void TMapDialog::ProjectTileIndexToWrappedScreenOffsetByScale(short tileIndex, short* originXY,
@@ -49,6 +36,20 @@ void TMapDialog::ProjectTileIndexToWrappedScreenOffsetByScale(short tileIndex, s
   *outY = static_cast<short>(*outY / scale);
   *outX = static_cast<short>(*outX / scale);
 }
+// SYNTHETIC: IMPERIALISM 0x005199c0
+// TMapDialog::CreateObject
+
+// SYNTHETIC: IMPERIALISM 0x00519b30
+// TMapDialog::GetRuntimeClass
+
+IMPLEMENT_DYNCREATE(TMapDialog, TWorldView)
+
+// FUNCTION: IMPERIALISM 0x00519b50
+TMapDialog::TMapDialog() {}
+
+// SYNTHETIC: IMPERIALISM 0x00519C40
+// TMapDialog::`scalar deleting destructor'
+TMapDialog::~TMapDialog() {}
 
 // FUNCTION: IMPERIALISM 0x00519c90
 void TMapDialog::Free() {

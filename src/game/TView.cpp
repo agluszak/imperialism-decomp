@@ -26,10 +26,10 @@ void __cdecl SetUiResourceContextFlagsAndMetrics(short nField9C, short nStyleTyp
                                                  unsigned char f6e, unsigned char f6d,
                                                  unsigned char f6c, unsigned char f71) {
   TWindow* window = static_cast<TWindow*>(g_pUiResourceContext);
-  window->field70 = f70;
+  window->topmostFlag70 = f70;
   window->flag6f = f6f;
   window->flag6e = f6e;
-  window->field6d = f6d;
+  window->useCaptionedFrameFlag6d = f6d;
   window->flag6c = f6c;
   window->flag71 = f71;
   window->field9c = static_cast<unsigned short>(nField9C);
@@ -46,15 +46,15 @@ void __cdecl ApplyUiResourceColorTripletFromContext(unsigned char nFlag0C,
                                                                        colorB);
 }
 
-// Replaces the context widget's field48 style payload. Note the original writes
-// through field48 without re-checking the fresh allocation for null — faithful.
+// Replaces the context widget's stylePayload48 style payload. Note the original writes
+// through stylePayload48 without re-checking the fresh allocation for null — faithful.
 // FUNCTION: IMPERIALISM 0x00427060
 void __cdecl ReplaceUiResourceContextPairBuffer(int styleWord, int packedColor) {
   TView* context = g_pUiResourceContext;
-  delete context->field48;
-  context->field48 = new TUiStyleBytes();
-  context->field48->styleWord = styleWord;
-  context->field48->packedColor = packedColor;
+  delete context->stylePayload48;
+  context->stylePayload48 = new TUiStyleBytes();
+  context->stylePayload48->styleWord = styleWord;
+  context->stylePayload48->packedColor = packedColor;
 }
 
 // FUNCTION: IMPERIALISM 0x004270e0
@@ -87,14 +87,14 @@ char TView::HandleMouseCommandToSelf(CPoint* point, int arg2, int arg3, int arg4
 void TView::QueryContentBounds(RECT* boundsOut) {
   boundsOut->left = 0;
   boundsOut->top = 0;
-  boundsOut->right = field34;
-  boundsOut->bottom = field38;
+  boundsOut->right = frameWidth34;
+  boundsOut->bottom = frameHeight38;
 }
 // FUNCTION: IMPERIALISM 0x00427290
 void TView::QueryBounds(RECT* boundsOut) {
-  int width = field34;
+  int width = frameWidth34;
   int left = ownerLocalX;
-  int height = field38;
+  int height = frameHeight38;
   int top = ownerLocalY;
   boundsOut->left = left;
   boundsOut->top = top;
@@ -168,9 +168,9 @@ IMPLEMENT_DYNCREATE(TView, TEventHandler)
 
 // FUNCTION: IMPERIALISM 0x0048a8e0
 TView::TView()
-    : TEventHandler(), ownerContext(0), absoluteX(0), absoluteY(0), field3c(0), childList44(0),
-      field48(0), flag4c(1), flag4d(1), field4e(0xffff), nativeWindow50(0), field54(1),
-      sharedStringRef(), field5c(0) {}
+    : TEventHandler(), ownerContext(0), absoluteX(0), absoluteY(0), controlValue3c(0),
+      childList44(0), stylePayload48(0), inputGateFlag4c(1), childHitTestFlag4d(1), field4e(0xffff),
+      nativeWindow50(0), field54(1), sharedStringRef(), field5c(0) {}
 
 // SYNTHETIC: IMPERIALISM 0x0048a9a0
 // TView::`scalar deleting destructor'
@@ -178,7 +178,7 @@ TView::TView()
 // FUNCTION: IMPERIALISM 0x0048a9d0
 TView::~TView() {
   delete childList44;
-  delete field48;
+  delete stylePayload48;
 }
 
 // FUNCTION: IMPERIALISM 0x0048aa60
@@ -197,8 +197,8 @@ void TView::InitializeUiResourceEntryFrameAndParent(TView* uiResourceContext, TV
   linkedChildHandler = panel;
   ownerLocalX = offsetLayout[0];
   ownerLocalY = offsetLayout[1];
-  field34 = sizeLayout[0];
-  field38 = sizeLayout[1];
+  frameWidth34 = sizeLayout[0];
+  frameHeight38 = sizeLayout[1];
   if (panel != 0) {
     panel->AttachChildControl(this, attachFlag);
   }
@@ -426,8 +426,8 @@ void TView::CaptureLayout(int* buffer, int modeFlag) {
   if (modeFlag != 0) {
     RECT oldRect;
     CopyRectFromBuildRectFromSlot158(&oldRect);
-    field34 = buffer[0];
-    field38 = buffer[1];
+    frameWidth34 = buffer[0];
+    frameHeight38 = buffer[1];
     RECT newRect;
     CopyRectFromBuildRectFromSlot158(&newRect);
     RECT unionRect;
@@ -436,8 +436,8 @@ void TView::CaptureLayout(int* buffer, int modeFlag) {
       InvalidateRect(nativeWindow50->m_hWnd, &unionRect, 0);
     }
   } else {
-    field34 = buffer[0];
-    field38 = buffer[1];
+    frameWidth34 = buffer[0];
+    frameHeight38 = buffer[1];
   }
 }
 
@@ -534,11 +534,11 @@ int TView::BindMapQuickDrawDc(CDC* paintDc) {
 void TView::ReleaseMapQuickDrawDc(CDC* paintDc) {
   ReleaseScopedMapQuickDrawDcHandle(this, paintDc);
 }
-// field48 is freed in ~TView.
+// stylePayload48 is freed in ~TView.
 // FUNCTION: IMPERIALISM 0x0048b810
 void TView::EnsureField48Buffer() {
-  if (field48 == 0) {
-    field48 = new TUiStyleBytes();
+  if (stylePayload48 == 0) {
+    stylePayload48 = new TUiStyleBytes();
   }
 }
 // FUNCTION: IMPERIALISM 0x0048b860
@@ -671,8 +671,8 @@ void TView::OffsetRectByCachedPos(RECT* inRect, RECT* outRect) {
 
 // FUNCTION: IMPERIALISM 0x0048bce0
 RECT* TView::BuildRectFromSlot158(RECT* rectOut) {
-  int width = field34;
-  int height = field38;
+  int width = frameWidth34;
+  int height = frameHeight38;
   CPoint pos;
   GetCachedPosPoint(&pos);
   rectOut->left = pos.x;
@@ -690,17 +690,17 @@ void TView::CopyViewStateFromSource(TView* source) {
   ownerContext = 0;
   nativeWindow50 = source->nativeWindow50;
   childList44 = 0;
-  field48 = 0;
-  field3c = source->field3c;
+  stylePayload48 = 0;
+  controlValue3c = source->controlValue3c;
   field54 = source->field54;
   ownerLocalX = source->ownerLocalX;
   ownerLocalY = source->ownerLocalY;
   absoluteX = source->absoluteX;
   absoluteY = source->absoluteY;
-  field34 = source->field34;
-  field38 = source->field38;
-  flag4c = source->flag4c;
-  flag4d = source->flag4d;
+  frameWidth34 = source->frameWidth34;
+  frameHeight38 = source->frameHeight38;
+  inputGateFlag4c = source->inputGateFlag4c;
+  childHitTestFlag4d = source->childHitTestFlag4d;
   if (source->childList44 != 0) {
     POSITION pos = source->childList44->GetHeadPosition();
     while (pos != NULL) {
@@ -721,7 +721,7 @@ TObject* TView::ShallowClone() {
 // FUNCTION: IMPERIALISM 0x0048c000
 char TView::EvaluateControlInputGate() {
   if (field5c == 0) {
-    if ((char)flag4c != 0 && GetBoolSlot28() != 0) {
+    if ((char)inputGateFlag4c != 0 && GetBoolSlot28() != 0) {
       return 1;
     }
     if (HasRenderableParentAndContent() == 0) {
@@ -733,7 +733,7 @@ char TView::EvaluateControlInputGate() {
 
 // FUNCTION: IMPERIALISM 0x0048c050
 char TView::HasRenderableParentAndContent() {
-  if (flag4d != 0 && childList44 != 0 && !childList44->IsEmpty()) {
+  if (childHitTestFlag4d != 0 && childList44 != 0 && !childList44->IsEmpty()) {
     return 1;
   }
   return 0;
@@ -813,8 +813,8 @@ void TView::ApplyBounds(RECT* newBounds, int modeFlag) {
     }
     ownerLocalX = newBounds->left;
     ownerLocalY = newBounds->top;
-    field34 = newBounds->right - newBounds->left;
-    field38 = newBounds->bottom - newBounds->top;
+    frameWidth34 = newBounds->right - newBounds->left;
+    frameHeight38 = newBounds->bottom - newBounds->top;
     RecomputeAbsolutePositionRecursive();
     if (modeFlag != 0 && IsActionable() != 0) {
       InvalidateCityDialogRectRegion(0, 0);
@@ -982,11 +982,11 @@ void TView::ReturnFromUiSlot63(int arg1, int arg2) {
 
 // FUNCTION: IMPERIALISM 0x00607318
 UINT TView::GetStyle() {
-  if (field38 != 0) {
-    // TODO(class-recovery): field38, when non-null, is some other polymorphic object
+  if (frameHeight38 != 0) {
+    // TODO(class-recovery): frameHeight38, when non-null, is some other polymorphic object
     // whose own vtable slot 0x1e is tail-called here for the style value; that class
     // isn't recovered yet. Falls back to the window-handle path below in the meantime
-    // (identical to the field38 == 0 case). Dead for TView::RunModalLoop's movie path
+    // (identical to the frameHeight38 == 0 case). Dead for TView::RunModalLoop's movie path
     // (loopKind == 0 never reaches here).
   }
   return GetWindowLong(reinterpret_cast<HWND>(controlTag), GWL_STYLE);
