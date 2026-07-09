@@ -347,6 +347,46 @@ notes 18 and 47).
 - Persist transferable matching lessons as numbered notes in
   `.claude/skills/decomp-loop/heuristics.md`.
 
+## Cursor Cloud specific instructions
+
+Environment prep (install `uv`/`just`/Docker/host-`wine`, `uv sync`, and the one-time
+`just docker-build` of the `imperialism-msvc500` image) is already done by the VM
+snapshot + startup update script; only the notes below are non-obvious. To
+re-provision a fresh host from scratch (system packages, Ghidra, original binary,
+first build), run `scripts/bootstrap.sh` — it is the one-time bootstrap; the
+per-session refresh stays just `uv sync`.
+
+- **Start the Docker daemon before any build.** `dockerd` is not auto-started on a
+  fresh session. Start it once per session (it needs the docker-in-docker workaround
+  already configured in `/etc/docker/daemon.json` = `fuse-overlayfs`):
+  `sudo dockerd >/tmp/dockerd.log 2>&1 &` (or run it in a tmux session). Then
+  `sudo docker info` should report `Storage Driver: fuse-overlayfs`.
+- **`just` calls bare `docker`.** User `ubuntu` is in the `docker` group, so a
+  *newly started* shell can run `docker`/`just build` without `sudo`. Within a shell
+  that started before the group took effect, wrap the command:
+  `sg docker -c 'just build'`.
+- **The original binary is present in the snapshot** at `orig/Imperialism.exe` (sha256
+  `6afab8495db715fd9e719cffa74abe5ede4dd763428ff65d73be4edf16c9e691`), wired via the
+  gitignored `.env` (`ORIGINAL_BINARY=/workspace/orig/Imperialism.exe`) and
+  `reccmp-user.yml` (`targets.IMPERIALISM.path`). Do **not** run `just bootstrap-reccmp`
+  — it refuses to overwrite the committed `reccmp-project.yml`; hand-write/keep
+  `reccmp-user.yml` instead (workflows §0). These three files are gitignored and persist
+  in the snapshot.
+- **reccmp needs host-side `wine`** (installed): the compare/stats/roadmap tools run
+  `cvdump.exe` via `wine`/`winepath` to parse the recompiled PDB. Prefix long compare
+  runs with `WINEDEBUG=-all` to silence Wine chatter.
+- **What works:** the whole loop — `just tooling-check`, `just test`, `just build`,
+  `just detect`, `just resource-check`, `just compare 0xADDR` / `--file`, `just stats`,
+  `just vtable`, `just datacmp`, `just gates`, `just precommit`, and the source-only gates.
+  (`just compare`/`--file` exits non-zero when any listed function is below 100% — that
+  is a score signal, not a setup failure.)
+- **Still blocked:** running the game (`just run`/`debug`/`screenshot`) needs the full
+  retail install (a `Data/` folder next to the exe), which is not present — only the exe
+  was supplied.
+- **Ghidra targets** (`ghidra-*`, `sync-ghidra`, `db-resync`, `restore-project`) need
+  `GHIDRA_INSTALL_DIR` in `.env` and `git lfs pull` of `vendor/ghidra/exports/*.gzf`;
+  neither is set up in cloud. Not needed for the build/tooling loop above.
+
 <!-- BEGIN BEADS INTEGRATION v:1 profile:minimal hash:970c3bf2 -->
 ## Beads Issue Tracker
 

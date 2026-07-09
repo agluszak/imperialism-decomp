@@ -467,38 +467,6 @@ undefined4 SetDiplomacyNationSelectionFilterAndRefreshRows(void)
   return 0;
 }
 
-// ghidra_name RenderMapHintOverlayMode0
-// ghidra_proto undefined RenderMapHintOverlayMode0()
-// FUNCTION: IMPERIALISM 0x004fd000
-undefined4 RenderMapHintOverlayMode0(void)
-{
-  return 0;
-}
-
-// ghidra_name RenderMapHintOverlayMode4
-// ghidra_proto undefined RenderMapHintOverlayMode4()
-// FUNCTION: IMPERIALISM 0x004fd220
-undefined4 RenderMapHintOverlayMode4(void)
-{
-  return 0;
-}
-
-// ghidra_name RenderMapHintOverlayMode1
-// ghidra_proto undefined RenderMapHintOverlayMode1()
-// FUNCTION: IMPERIALISM 0x004fd5c0
-undefined4 RenderMapHintOverlayMode1(void)
-{
-  return 0;
-}
-
-// ghidra_name RenderMapHintOverlayMode2
-// ghidra_proto undefined RenderMapHintOverlayMode2()
-// FUNCTION: IMPERIALISM 0x004fd910
-undefined4 RenderMapHintOverlayMode2(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_ftol_At004fe670
 // ghidra_proto undefined WrapperFor_ftol_At004fe670()
 // FUNCTION: IMPERIALISM 0x004fe670

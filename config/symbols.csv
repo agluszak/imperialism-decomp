@@ -1,5 +1,4 @@
 address|name|symbol|size|type|prototype|provenance
-401122|thunk_TPictureButton::TPictureButton||5|function|undefined TPictureButton()|
 4019ba|thunk_InvalidateMapRegionForOrderEntry||5|function|undefined thunk_InvalidateMapRegionForOrderEntry()|
 40231a|TAdmiral::thunk_GenerateMappedFlavorTextByNationSlotField0C||5|function|undefined thunk_GenerateMappedFlavorTextByNationSlotField0C()|
 40257c|thunk_GetCityBuildingProductionValueBySlot||5|function|int __thiscall thunk_GetCityBuildingProductionValueBySlot(short nBuildingSlotId)|
@@ -262,7 +261,7 @@ address|name|symbol|size|type|prototype|provenance
 45d4b0|TTacticalHolaPicture::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 45d520|BuildTurnEventDialogResourcesForEvent898||2326|function|undefined BuildTurnEventDialogResourcesForEvent898()|
 45e0b0|BuildTurnEventDialogResourcesForEvent8FC||6554|function|undefined BuildTurnEventDialogResourcesForEvent8FC()|
-4600c0|TPageView::WrapperFor_ConstructTPageViewBaseState_At004600c0||18|function|undefined WrapperFor_ConstructTPageViewBaseState_At004600c0()|
+4600c0|TTechStorePage::TTechStorePage||18|function|undefined TTechStorePage()|
 4600f0|TTechStorePage::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 460140|TTechHistoryView::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 4601b0|InitializeTradeScreenBitmapControls||51455|function|undefined InitializeTradeScreenBitmapControls()|
@@ -2883,10 +2882,10 @@ address|name|symbol|size|type|prototype|provenance
 4fcac0|TMapKey::NoOpUiLifecycleHook||744|function|undefined OrphanCallChain_C6_I49_004875d0(void)|
 4fcea0|TControl::SetDiplomacyNationSelectionFilterAndRefreshRows||169|function|undefined SetDiplomacyNationSelectionFilterAndRefreshRows()|
 4fcf80|TMapKey::ApplyRectSlot110||76|function|undefined DispatchHintRenderByViewMode()|
-4fd000|RenderMapHintOverlayMode0||420|function|undefined RenderMapHintOverlayMode0()|
-4fd220|RenderMapHintOverlayMode4||722|function|undefined RenderMapHintOverlayMode4()|
-4fd5c0|RenderMapHintOverlayMode1||671|function|undefined RenderMapHintOverlayMode1()|
-4fd910|RenderMapHintOverlayMode2||1154|function|undefined RenderMapHintOverlayMode2()|
+4fd000|TMapKey::RenderMapHintOverlayMode0||420|function|undefined RenderMapHintOverlayMode0()|
+4fd220|TMapKey::RenderMapHintOverlayMode4||722|function|undefined RenderMapHintOverlayMode4()|
+4fd5c0|TMapKey::RenderMapHintOverlayMode1||671|function|undefined RenderMapHintOverlayMode1()|
+4fd910|TMapKey::RenderMapHintOverlayMode2||1154|function|undefined RenderMapHintOverlayMode2()|
 4fded0|TFrameRadioView::CreateObject|?CreateObject@TFrameRadioView@@SGPAVCObject@@XZ|83|function|undefined CreateObject()|rtti
 4fdf50|TFrameRadioView::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 4fdfa0|TFrameRadioView::GetRuntimeClass||6|function|undefined GetTFrameRadioViewClassNamePointer()|rtti

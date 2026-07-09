@@ -3,14 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name thunk_TPictureButton::TPictureButton
-// ghidra_proto undefined TPictureButton()
-// ILT thunk 0x00401122 - unannotated on purpose (see ILT_THUNK_RANGE)
-undefined4 TPictureButton(void)
-{
-  return 0;
-}
-
 // ghidra_name thunk_InvalidateMapRegionForOrderEntry
 // ghidra_proto undefined thunk_InvalidateMapRegionForOrderEntry()
 // ILT thunk 0x004019ba - unannotated on purpose (see ILT_THUNK_RANGE)
@@ -807,14 +799,6 @@ undefined4 WrapperFor_ConstructTOffLimitsPictureBaseState_At0045d270(void)
 // ghidra_proto undefined WrapperFor_thunk_ConstructPictureResourceEntryBase_At0045d480()
 // FUNCTION: IMPERIALISM 0x0045d480
 undefined4 WrapperFor_thunk_ConstructPictureResourceEntryBase_At0045d480(void)
-{
-  return 0;
-}
-
-// ghidra_name TPageView::WrapperFor_ConstructTPageViewBaseState_At004600c0
-// ghidra_proto undefined WrapperFor_ConstructTPageViewBaseState_At004600c0()
-// FUNCTION: IMPERIALISM 0x004600c0
-undefined4 WrapperFor_ConstructTPageViewBaseState_At004600c0(void)
 {
   return 0;
 }

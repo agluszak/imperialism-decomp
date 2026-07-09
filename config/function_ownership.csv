@@ -172,6 +172,7 @@ address|target_cpp|ownership|note
 45d4b0|src/game/TTacticalHolaPicture.cpp|manual|marker_sync
 45d520|src/game/turn_event_dialog_factory.cpp|manual|marker_sync
 45e0b0|src/game/turn_event_dialog_factory.cpp|manual|marker_sync
+4600c0|src/game/TTechStorePage.cpp|manual|marker_sync
 4600f0|src/game/TTechStorePage.cpp|manual|marker_sync
 460140|src/game/TTechHistoryView.cpp|manual|marker_sync
 4601b0|src/game/turn_event_dialog_factory.cpp|manual|marker_sync
@@ -2080,6 +2081,10 @@ address|target_cpp|ownership|note
 4fca70|src/game/TMapKey.cpp|manual|marker_sync
 4fcac0|src/game/TMapKey.cpp|manual|marker_sync
 4fcf80|src/game/TMapKey.cpp|manual|marker_sync
+4fd000|src/game/TMapKey.cpp|manual|marker_sync
+4fd220|src/game/TMapKey.cpp|manual|marker_sync
+4fd5c0|src/game/TMapKey.cpp|manual|marker_sync
+4fd910|src/game/TMapKey.cpp|manual|marker_sync
 4fded0|src/game/TFrameRadioView.cpp|manual|marker_sync
 4fdf50|src/game/TFrameRadioView.cpp|manual|marker_sync
 4fdfa0|src/game/TFrameRadioView.cpp|manual|marker_sync

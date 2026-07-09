@@ -20,6 +20,7 @@
 #include "game/TSidewaysArrow.h"
 #include "game/TSliderPicture.h"
 #include "game/TTechHistoryView.h"
+#include "game/TTechStorePage.h"
 #include "game/TGameWindow.h"
 #include "game/TInfoBarText.h"
 #include "game/TPicture.h"
@@ -75,15 +76,13 @@
 
 namespace {
 
-// The original build emits CList<TView*,TView*>::AddTail on g_UiWidgetBuildStack out-of-line
-// (the 0x479b00 template COMDAT) and calls it from each builder; routing the append through
-// this non-inline wrapper reproduces that call rather than inlining AddTail into every builder
-// (which would inflate the builder's stack frame and cascade all stack offsets).
-void PushUiWidgetBuildStackNode(TView* node) {
-  g_UiWidgetBuildStack006a13e0.AddTail(node);
+static __inline void PushUiWidgetBuildStackNode(TView* node) {
+  POSITION (CList<TView*, TView*>::*addTail)(TView*) = &CList<TView*, TView*>::AddTail;
+  (g_UiWidgetBuildStack006a13e0.*addTail)(node);
 }
-void PopUiWidgetBuildStackNode() {
-  g_UiWidgetBuildStack006a13e0.RemoveTail();
+static __inline void PopUiWidgetBuildStackNode() {
+  TView* (CList<TView*, TView*>::*removeTail)() = &CList<TView*, TView*>::RemoveTail;
+  (g_UiWidgetBuildStack006a13e0.*removeTail)();
 }
 
 TView* BuildTurnOrderNavigationWindow(int offsetX, int offsetY, int width, int height,
@@ -3398,6 +3397,7 @@ TView* __cdecl InitializeArmyNavyReportViewsAndCommandTags(CWnd* pHostWindow, in
 // FUNCTION: IMPERIALISM 0x0044a810
 TView* __cdecl BuildTurnEventDialogResources_2508(CWnd* pHostWindow, int nEventCode) {
   TView* parent;
+  TView* widget;
   int offset[2];
   int size[2];
 
@@ -3406,140 +3406,160 @@ TView* __cdecl BuildTurnEventDialogResources_2508(CWnd* pHostWindow, int nEventC
     return 0;
   }
 
-  TWindow* window = new TWindow();
-  g_pUiResourceContext = window;
+  // 'WIND' host window
+  widget = new TWindow();
+  g_pUiResourceContext = widget;
   if (g_pUiResourceHead != 0) {
     parent = static_cast<TView*>(g_UiWidgetBuildStack006a13e0.GetTail());
   } else {
-    g_pUiResourceHead = window;
+    g_pUiResourceHead = widget;
     parent = 0;
   }
-  PushUiWidgetBuildStackNode(window);
+  PushUiWidgetBuildStackNode(widget);
   offset[0] = 0x64;
   offset[1] = 0x50;
   size[0] = 0x186;
   size[1] = 0x11a;
-  window->InitializeUiResourceEntryFrameAndParent(0, parent, offset, size, 0, 0, 1);
-  window->controlTag = static_cast<int>(kControlTagWind);
-  window->controlValue3c = 0;
-  window->SetEnabled(1, 0);
-  window->SetState(1, 0);
-  window->inputGateFlag4c = 1;
-  window->childHitTestFlag4d = 1;
-  window->topmostFlag70 = 0;
-  window->flag6f = 1;
-  window->flag6e = 1;
-  window->useCaptionedFrameFlag6d = 0;
-  window->flag6c = 0;
-  window->flag71 = 1;
-  window->field9c = 8;
-  window->windowStyleType = 2;
-  TDialogBehavior* behavior = window->GetEmbeddedDialogBehavior();
-  behavior->SetFlag0C(1);
-  window->GetEmbeddedDialogBehavior()->SetUiColorDescriptorGoldTriplet(1, 0x20202020, 0x20202020);
+  widget->InitializeUiResourceEntryFrameAndParent(0, parent, offset, size, 0, 0, 1);
+  widget->controlTag = static_cast<int>(kControlTagWind);
+  widget->controlValue3c = 0;
+  widget->SetEnabled(1, 0);
+  widget->SetState(1, 0);
+  g_pUiResourceContext->inputGateFlag4c = 1;
+  g_pUiResourceContext->childHitTestFlag4d = 1;
+  static_cast<TWindow*>(g_pUiResourceContext)->topmostFlag70 = 0;
+  static_cast<TWindow*>(g_pUiResourceContext)->flag6f = 1;
+  static_cast<TWindow*>(g_pUiResourceContext)->flag6e = 1;
+  static_cast<TWindow*>(g_pUiResourceContext)->useCaptionedFrameFlag6d = 0;
+  static_cast<TWindow*>(g_pUiResourceContext)->flag6c = 0;
+  static_cast<TWindow*>(g_pUiResourceContext)->flag71 = 1;
+  static_cast<TWindow*>(g_pUiResourceContext)->field9c = 8;
+  static_cast<TWindow*>(g_pUiResourceContext)->windowStyleType = 2;
+  static_cast<TWindow*>(g_pUiResourceContext)->GetEmbeddedDialogBehavior()->SetFlag0C(1);
+  static_cast<TWindow*>(g_pUiResourceContext)->GetEmbeddedDialogBehavior()->SetUiColorDescriptorGoldTriplet(1, 0x20202020, 0x20202020);
   g_pUiResourceContext = 0;
 
-  TPicture* goldPanel = new TPicture();
-  g_pUiResourceContext = goldPanel;
+  // 'GOLD' background picture
+  widget = new TPicture();
+  g_pUiResourceContext = widget;
   if (g_pUiResourceHead != 0) {
     parent = static_cast<TView*>(g_UiWidgetBuildStack006a13e0.GetTail());
   } else {
-    g_pUiResourceHead = goldPanel;
+    g_pUiResourceHead = widget;
     parent = 0;
   }
-  PushUiWidgetBuildStackNode(goldPanel);
+  PushUiWidgetBuildStackNode(widget);
   offset[0] = 0;
   offset[1] = 0;
   size[0] = 0x186;
   size[1] = 0x11a;
-  goldPanel->InitializeUiResourceEntryFrameAndParent(0, parent, offset, size, 0, 0, 1);
-  goldPanel->controlTag = static_cast<int>(kControlTagGold);
-  goldPanel->controlValue3c = 0;
-  goldPanel->SetEnabled(1, 0);
-  goldPanel->SetState(0, 0);
-  goldPanel->inputGateFlag4c = 1;
-  goldPanel->childHitTestFlag4d = 1;
-  goldPanel->hasCommandTagResource = 0xa;
-  goldPanel->field68 = 0;
-  goldPanel->field6C = 0;
-  goldPanel->field70 = 0;
-  goldPanel->field74 = 0;
-  goldPanel->SetPictureResourceIdAndRefresh(0x252a, 0);
+  widget->InitializeUiResourceEntryFrameAndParent(0, parent, offset, size, 0, 0, 1);
+  widget->controlTag = static_cast<int>(kControlTagGold);
+  widget->controlValue3c = 0;
+  widget->SetEnabled(1, 0);
+  widget->SetState(0, 0);
+  widget->inputGateFlag4c = 1;
+  widget->childHitTestFlag4d = 1;
+  {
+    static_cast<TControl*>(g_pUiResourceContext)->hasCommandTagResource = 0xa;
+#pragma inline_depth(0)
+    CRect zeroRect(0, 0, 0, 0);
+#pragma inline_depth()
+    static_cast<TControl*>(g_pUiResourceContext)->field68 = zeroRect.left;
+    static_cast<TControl*>(g_pUiResourceContext)->field6C = zeroRect.top;
+    static_cast<TControl*>(g_pUiResourceContext)->field70 = zeroRect.right;
+    static_cast<TControl*>(g_pUiResourceContext)->field74 = zeroRect.bottom;
+    static_cast<TPicture*>(g_pUiResourceContext)->SetPictureResourceIdAndRefresh(0x252a, 0);
+  }
   g_pUiResourceContext = 0;
 
-  TUpDownPictureButton* okayButton = new TUpDownPictureButton();
-  g_pUiResourceContext = okayButton;
+  // 'okay' confirm button
+  widget = new TUpDownPictureButton();
+  g_pUiResourceContext = widget;
   if (g_pUiResourceHead != 0) {
     parent = static_cast<TView*>(g_UiWidgetBuildStack006a13e0.GetTail());
   } else {
-    g_pUiResourceHead = okayButton;
+    g_pUiResourceHead = widget;
     parent = 0;
   }
-  PushUiWidgetBuildStackNode(okayButton);
+  PushUiWidgetBuildStackNode(widget);
   offset[0] = 0x136;
   offset[1] = 0xf8;
   size[0] = 0x3d;
   size[1] = 0x17;
-  okayButton->InitializeUiResourceEntryFrameAndParent(0, parent, offset, size, 0, 0, 1);
-  okayButton->controlTag = static_cast<int>(kControlTagOkay);
-  okayButton->controlValue3c = 0;
-  okayButton->SetEnabled(1, 0);
-  okayButton->SetState(1, 0);
-  okayButton->inputGateFlag4c = 1;
-  okayButton->childHitTestFlag4d = 1;
-  okayButton->hasCommandTagResource = 0x22;
-  okayButton->field68 = 0;
-  okayButton->field6C = 0;
-  okayButton->field70 = 0;
-  okayButton->field74 = 0;
-  okayButton->SetPictureResourceIdAndRefresh(0x24c2, 0);
+  widget->InitializeUiResourceEntryFrameAndParent(0, parent, offset, size, 0, 0, 1);
+  widget->controlTag = static_cast<int>(kControlTagOkay);
+  widget->controlValue3c = 0;
+  widget->SetEnabled(1, 0);
+  widget->SetState(1, 0);
+  widget->inputGateFlag4c = 1;
+  widget->childHitTestFlag4d = 1;
+  {
+    static_cast<TControl*>(g_pUiResourceContext)->hasCommandTagResource = 0x22;
+#pragma inline_depth(0)
+    CRect zeroRect(0, 0, 0, 0);
+#pragma inline_depth()
+    static_cast<TControl*>(g_pUiResourceContext)->field68 = zeroRect.left;
+    static_cast<TControl*>(g_pUiResourceContext)->field6C = zeroRect.top;
+    static_cast<TControl*>(g_pUiResourceContext)->field70 = zeroRect.right;
+    static_cast<TControl*>(g_pUiResourceContext)->field74 = zeroRect.bottom;
+    static_cast<TPicture*>(g_pUiResourceContext)->SetPictureResourceIdAndRefresh(0x24c2, 0);
+  }
   g_pUiResourceContext = 0;
   PopUiWidgetBuildStackNode();
 
-  TPicture* rewardPicture = new TPicture();
-  g_pUiResourceContext = rewardPicture;
+  // 'rewa' reward picture
+  widget = new TPicture();
+  g_pUiResourceContext = widget;
   if (g_pUiResourceHead != 0) {
     parent = static_cast<TView*>(g_UiWidgetBuildStack006a13e0.GetTail());
   } else {
-    g_pUiResourceHead = rewardPicture;
+    g_pUiResourceHead = widget;
     parent = 0;
   }
-  PushUiWidgetBuildStackNode(rewardPicture);
+  PushUiWidgetBuildStackNode(widget);
   offset[0] = 0x70;
   offset[1] = 0x12;
   size[0] = 0xa7;
   size[1] = 0x6d;
-  rewardPicture->InitializeUiResourceEntryFrameAndParent(0, parent, offset, size, 0, 0, 1);
-  rewardPicture->controlTag = static_cast<int>(kControlTagRewa);
-  rewardPicture->controlValue3c = 0;
-  rewardPicture->SetEnabled(1, 0);
-  rewardPicture->SetState(0, 0);
-  rewardPicture->inputGateFlag4c = 1;
-  rewardPicture->childHitTestFlag4d = 1;
-  rewardPicture->hasCommandTagResource = 0xa;
-  rewardPicture->field68 = 0;
-  rewardPicture->field6C = 0;
-  rewardPicture->field70 = 0;
-  rewardPicture->field74 = 0;
-  rewardPicture->SetPictureResourceIdAndRefresh(0x2508, 0);
+  widget->InitializeUiResourceEntryFrameAndParent(0, parent, offset, size, 0, 0, 1);
+  widget->controlTag = static_cast<int>(kControlTagRewa);
+  widget->controlValue3c = 0;
+  widget->SetEnabled(1, 0);
+  widget->SetState(0, 0);
+  widget->inputGateFlag4c = 1;
+  widget->childHitTestFlag4d = 1;
+  {
+    static_cast<TControl*>(g_pUiResourceContext)->hasCommandTagResource = 0xa;
+#pragma inline_depth(0)
+    CRect zeroRect(0, 0, 0, 0);
+#pragma inline_depth()
+    static_cast<TControl*>(g_pUiResourceContext)->field68 = zeroRect.left;
+    static_cast<TControl*>(g_pUiResourceContext)->field6C = zeroRect.top;
+    static_cast<TControl*>(g_pUiResourceContext)->field70 = zeroRect.right;
+    static_cast<TControl*>(g_pUiResourceContext)->field74 = zeroRect.bottom;
+    static_cast<TPicture*>(g_pUiResourceContext)->SetPictureResourceIdAndRefresh(0x2508, 0);
+  }
   g_pUiResourceContext = 0;
   PopUiWidgetBuildStackNode();
 
-  TPicture* coatPicture = new TPicture();
-  RegisterUiResourceEntry(kControlTagPict, kControlTagCoat, coatPicture, 0x127, 0xc, 0x54, 0x7d, 0,
-                          1, kControlTagGold, 0);
-  coatPicture->inputGateFlag4c = 1;
-  coatPicture->childHitTestFlag4d = 1;
-  SetUiResourceLayoutValues(0xa, 0, 0, 0, 0);
-  coatPicture->SetPictureResourceIdAndRefresh(0x251c, 0);
-  g_pUiResourceContext = 0;
-  PopUiWidgetBuildStackNode();
-
-  TDeluxeText* infoText = new TDeluxeText();
-  RegisterUiResourceEntry(kControlTagTevw, kControlTagInfo, infoText, 0x11, 0xa0, 0x162, 0x54, 0, 1,
+  // 'coat' coat-of-arms picture
+  widget = new TPicture();
+  RegisterUiResourceEntry(kControlTagPict, kControlTagCoat, widget, 0x127, 0xc, 0x54, 0x7d, 0, 1,
                           kControlTagGold, 0);
-  infoText->inputGateFlag4c = 1;
-  infoText->childHitTestFlag4d = 0;
+  static_cast<TControl*>(g_pUiResourceContext)->inputGateFlag4c = 1;
+  static_cast<TControl*>(g_pUiResourceContext)->childHitTestFlag4d = 1;
+  SetUiResourceLayoutValues(0xa, 0, 0, 0, 0);
+  static_cast<TPicture*>(g_pUiResourceContext)->SetPictureResourceIdAndRefresh(0x251c, 0);
+  g_pUiResourceContext = 0;
+  PopUiWidgetBuildStackNode();
+
+  // 'info' deluxe text
+  widget = new TDeluxeText();
+  RegisterUiResourceEntry(kControlTagTevw, kControlTagInfo, widget, 0x11, 0xa0, 0x162, 0x54, 0, 1,
+                          kControlTagGold, 0);
+  static_cast<TControl*>(g_pUiResourceContext)->inputGateFlag4c = 1;
+  static_cast<TControl*>(g_pUiResourceContext)->childHitTestFlag4d = 0;
   g_pUiResourceContext = 0;
   PopUiWidgetBuildStackNode();
   PopUiWidgetBuildStackNode();
@@ -5549,214 +5569,266 @@ TView* __cdecl InitializeTacticalBattleViewToolbarAndDialogControls(CWnd* pHostW
 // FUNCTION: IMPERIALISM 0x0045d520
 TView* __cdecl BuildTurnEventDialogResourcesForEvent898(CWnd* pHostWindow, int nEventCode) {
   TView* parent;
+  TView* widget;
+  int offset[2];
+  int size[2];
 
   g_pUiResourceHead = 0;
   if (static_cast<short>(nEventCode) != 0x898) {
     return 0;
   }
 
-  TView* baseContainer = new TView();
-  g_pUiResourceContext = baseContainer;
+  // 'base' container (2000x2000)
+  widget = new TView();
+  g_pUiResourceContext = widget;
   if (g_pUiResourceHead != 0) {
     parent = static_cast<TView*>(g_UiWidgetBuildStack006a13e0.GetTail());
   } else {
-    g_pUiResourceHead = baseContainer;
+    g_pUiResourceHead = widget;
     parent = 0;
   }
-  PushUiWidgetBuildStackNode(baseContainer);
-  int baseOffset[2] = {0, 0};
-  int baseSize[2] = {0x7d0, 0x7d0};
-  baseContainer->InitializeUiResourceEntryFrameAndParent(0, parent, baseOffset, baseSize, 0, 0, 1);
-  baseContainer->controlTag = static_cast<int>(kControlTagBase);
-  baseContainer->controlValue3c = 0;
-  baseContainer->SetEnabled(1, 0);
-  baseContainer->SetState(0, 0);
-  baseContainer->inputGateFlag4c = 1;
-  baseContainer->childHitTestFlag4d = 1;
+  PushUiWidgetBuildStackNode(widget);
+  offset[0] = 0;
+  offset[1] = 0;
+  size[0] = 0x7d0;
+  size[1] = 0x7d0;
+  widget->InitializeUiResourceEntryFrameAndParent(0, parent, offset, size, 0, 0, 1);
+  widget->controlTag = static_cast<int>(kControlTagBase);
+  widget->controlValue3c = 0;
+  widget->SetEnabled(1, 0);
+  widget->SetState(0, 0);
+  widget->inputGateFlag4c = 1;
+  widget->childHitTestFlag4d = 1;
 
-  TPicture* mainPicture = new TPicture();
-  g_pUiResourceContext = mainPicture;
+  // 'main' picture (640x480, bitmap 0x898)
+  widget = new TPicture();
+  g_pUiResourceContext = widget;
   if (g_pUiResourceHead != 0) {
     parent = static_cast<TView*>(g_UiWidgetBuildStack006a13e0.GetTail());
   } else {
-    g_pUiResourceHead = mainPicture;
+    g_pUiResourceHead = widget;
     parent = 0;
   }
-  PushUiWidgetBuildStackNode(mainPicture);
-  int mainOffset[2] = {0, 0};
-  int mainSize[2] = {0x280, 0x1e0};
-  mainPicture->InitializeUiResourceEntryFrameAndParent(0, parent, mainOffset, mainSize, 0, 0, 1);
-  mainPicture->controlTag = static_cast<int>(kControlTagMain);
-  mainPicture->controlValue3c = 0;
-  mainPicture->SetEnabled(1, 0);
-  mainPicture->SetState(0, 0);
-  mainPicture->inputGateFlag4c = 1;
-  mainPicture->childHitTestFlag4d = 1;
-  // The original re-allocates the 8-byte stylePayload48 style payload here (free + alloc +
-  // the zeroing helper) before overwriting both slots.
-  delete[] mainPicture->stylePayload48;
-  mainPicture->stylePayload48 = 0;
-  mainPicture->EnsureField48Buffer();
-  if (mainPicture->stylePayload48 != 0) {
-    mainPicture->stylePayload48->styleWord = 0;
-    mainPicture->stylePayload48->packedColor = 0xffffff;
+  PushUiWidgetBuildStackNode(widget);
+  offset[0] = 0;
+  offset[1] = 0;
+  size[0] = 0x280;
+  size[1] = 0x1e0;
+  widget->InitializeUiResourceEntryFrameAndParent(0, parent, offset, size, 0, 0, 1);
+  widget->controlTag = static_cast<int>(kControlTagMain);
+  widget->controlValue3c = 0;
+  widget->SetEnabled(1, 0);
+  widget->SetState(0, 0);
+  widget->inputGateFlag4c = 1;
+  widget->childHitTestFlag4d = 1;
+  delete widget->stylePayload48;
+  widget->stylePayload48 = static_cast<TUiStyleBytes*>(operator new(8));
+  if (widget->stylePayload48 != 0) {
+    widget->stylePayload48->Reset();
   }
-  mainPicture->hasCommandTagResource = 0xa;
-  mainPicture->field68 = 0;
-  mainPicture->field6C = 0;
-  mainPicture->field70 = 0;
-  mainPicture->field74 = 0;
-  mainPicture->SetPictureResourceIdAndRefresh(0x898, 0);
+  widget->stylePayload48->styleWord = 0;
+  widget->stylePayload48->packedColor = 0xffffff;
+  {
+    static_cast<TControl*>(g_pUiResourceContext)->hasCommandTagResource = 0xa;
+#pragma inline_depth(0)
+    CRect zeroRect(0, 0, 0, 0);
+#pragma inline_depth()
+    static_cast<TControl*>(g_pUiResourceContext)->field68 = zeroRect.left;
+    static_cast<TControl*>(g_pUiResourceContext)->field6C = zeroRect.top;
+    static_cast<TControl*>(g_pUiResourceContext)->field70 = zeroRect.right;
+    static_cast<TControl*>(g_pUiResourceContext)->field74 = zeroRect.bottom;
+    static_cast<TPicture*>(g_pUiResourceContext)->SetPictureResourceIdAndRefresh(0x898, 0);
+  }
 
-  TStaticText* bodyText = new TStaticText();
-  g_pUiResourceContext = bodyText;
+  // 'text' body block
+  widget = new TStaticText();
+  g_pUiResourceContext = widget;
   if (g_pUiResourceHead != 0) {
     parent = static_cast<TView*>(g_UiWidgetBuildStack006a13e0.GetTail());
   } else {
-    g_pUiResourceHead = bodyText;
+    g_pUiResourceHead = widget;
     parent = 0;
   }
-  PushUiWidgetBuildStackNode(bodyText);
-  int bodyOffset[2] = {0x131, 0x14f};
-  int bodySize[2] = {0x128, 0x7a};
-  bodyText->InitializeUiResourceEntryFrameAndParent(0, parent, bodyOffset, bodySize, 0, 0, 1);
-  bodyText->controlTag = static_cast<int>(kControlTagText);
-  bodyText->controlValue3c = 0;
-  bodyText->SetEnabled(1, 0);
-  bodyText->SetState(0, 0);
-  bodyText->inputGateFlag4c = 1;
-  bodyText->childHitTestFlag4d = 1;
-  bodyText->hasCommandTagResource = 0xd;
-  bodyText->field68 = 0;
-  bodyText->field6C = 0;
-  bodyText->field70 = 0;
-  bodyText->field74 = 0;
-  BindUiResourceTextAndStyle(0xc80, 1, g_szUiPlaceholderSampleText_00694A98, 3, 0, 0xc, 0, 1);
+  PushUiWidgetBuildStackNode(widget);
+  offset[0] = 0x131;
+  offset[1] = 0x14f;
+  size[0] = 0x128;
+  size[1] = 0x7a;
+  widget->InitializeUiResourceEntryFrameAndParent(0, parent, offset, size, 0, 0, 1);
+  widget->controlTag = static_cast<int>(kControlTagText);
+  widget->controlValue3c = 0;
+  widget->SetEnabled(1, 0);
+  widget->SetState(0, 0);
+  widget->inputGateFlag4c = 1;
+  widget->childHitTestFlag4d = 1;
+  {
+    static_cast<TControl*>(g_pUiResourceContext)->hasCommandTagResource = 0xd;
+#pragma inline_depth(0)
+    CRect zeroRect(0, 0, 0, 0);
+#pragma inline_depth()
+    static_cast<TControl*>(g_pUiResourceContext)->field68 = zeroRect.left;
+    static_cast<TControl*>(g_pUiResourceContext)->field6C = zeroRect.top;
+    static_cast<TControl*>(g_pUiResourceContext)->field70 = zeroRect.right;
+    static_cast<TControl*>(g_pUiResourceContext)->field74 = zeroRect.bottom;
+    BindUiResourceTextAndStyle(0xc80, 1, g_szUiPlaceholderSampleText_00694A98, 3, 0, 0xc, 0, 1);
+  }
   g_pUiResourceContext = 0;
   PopUiWidgetBuildStackNode();
 
-  TToolBarCluster* toolbar = new TToolBarCluster();
-  g_pUiResourceContext = toolbar;
+  // 'tool' toolbar cluster
+  widget = new TToolBarCluster();
+  g_pUiResourceContext = widget;
   if (g_pUiResourceHead != 0) {
     parent = static_cast<TView*>(g_UiWidgetBuildStack006a13e0.GetTail());
   } else {
-    g_pUiResourceHead = toolbar;
+    g_pUiResourceHead = widget;
     parent = 0;
   }
-  PushUiWidgetBuildStackNode(toolbar);
-  int toolbarOffset[2] = {3, 6};
-  int toolbarSize[2] = {0xed, 0x5a};
-  toolbar->InitializeUiResourceEntryFrameAndParent(0, parent, toolbarOffset, toolbarSize, 0, 0, 1);
-  toolbar->controlTag = static_cast<int>(kControlTagTool);
-  toolbar->controlValue3c = 0;
-  toolbar->SetEnabled(1, 0);
-  toolbar->SetState(0, 0);
-  toolbar->inputGateFlag4c = 1;
-  toolbar->childHitTestFlag4d = 1;
-  toolbar->hasCommandTagResource = 5;
-  toolbar->field68 = 0;
-  toolbar->field6C = 0;
-  toolbar->field70 = 0;
-  toolbar->field74 = 0;
-  toolbar->field84 = 0x20202020;
+  PushUiWidgetBuildStackNode(widget);
+  offset[0] = 3;
+  offset[1] = 6;
+  size[0] = 0xed;
+  size[1] = 0x5a;
+  widget->InitializeUiResourceEntryFrameAndParent(0, parent, offset, size, 0, 0, 1);
+  widget->controlTag = static_cast<int>(kControlTagTool);
+  widget->controlValue3c = 0;
+  widget->SetEnabled(1, 0);
+  widget->SetState(0, 0);
+  widget->inputGateFlag4c = 1;
+  widget->childHitTestFlag4d = 1;
+  {
+    static_cast<TControl*>(g_pUiResourceContext)->hasCommandTagResource = 5;
+#pragma inline_depth(0)
+    CRect zeroRect(0, 0, 0, 0);
+#pragma inline_depth()
+    static_cast<TControl*>(g_pUiResourceContext)->field68 = zeroRect.left;
+    static_cast<TControl*>(g_pUiResourceContext)->field6C = zeroRect.top;
+    static_cast<TControl*>(g_pUiResourceContext)->field70 = zeroRect.right;
+    static_cast<TControl*>(g_pUiResourceContext)->field74 = zeroRect.bottom;
+    static_cast<TCluster*>(g_pUiResourceContext)->field84 = 0x20202020;
+  }
 
-  TPictureButton* endButton = new TPictureButton();
-  g_pUiResourceContext = endButton;
+  // ' end' picture button
+  widget = new TPictureButton();
+  g_pUiResourceContext = widget;
   if (g_pUiResourceHead != 0) {
     parent = static_cast<TView*>(g_UiWidgetBuildStack006a13e0.GetTail());
   } else {
-    g_pUiResourceHead = endButton;
+    g_pUiResourceHead = widget;
     parent = 0;
   }
-  PushUiWidgetBuildStackNode(endButton);
-  int endOffset[2] = {5, 0x20};
-  int endSize[2] = {0x1f, 0x33};
-  endButton->InitializeUiResourceEntryFrameAndParent(0, parent, endOffset, endSize, 0, 0, 1);
-  endButton->controlTag = static_cast<int>(kControlTagEnd);
-  endButton->controlValue3c = 0;
-  endButton->SetEnabled(0, 0);
-  endButton->SetState(1, 0);
-  endButton->inputGateFlag4c = 1;
-  endButton->childHitTestFlag4d = 1;
-  endButton->hasCommandTagResource = 0xa;
-  endButton->field68 = 0;
-  endButton->field6C = 0;
-  endButton->field70 = 0;
-  endButton->field74 = 0;
-  endButton->SetPictureResourceIdAndRefresh(0x8b4, 0);
+  PushUiWidgetBuildStackNode(widget);
+  offset[0] = 5;
+  offset[1] = 0x20;
+  size[0] = 0x1f;
+  size[1] = 0x33;
+  widget->InitializeUiResourceEntryFrameAndParent(0, parent, offset, size, 0, 0, 1);
+  widget->controlTag = static_cast<int>(kControlTagEnd);
+  widget->controlValue3c = 0;
+  widget->SetEnabled(0, 0);
+  widget->SetState(1, 0);
+  widget->inputGateFlag4c = 1;
+  widget->childHitTestFlag4d = 1;
+  {
+    static_cast<TControl*>(g_pUiResourceContext)->hasCommandTagResource = 0xa;
+#pragma inline_depth(0)
+    CRect zeroRect(0, 0, 0, 0);
+#pragma inline_depth()
+    static_cast<TControl*>(g_pUiResourceContext)->field68 = zeroRect.left;
+    static_cast<TControl*>(g_pUiResourceContext)->field6C = zeroRect.top;
+    static_cast<TControl*>(g_pUiResourceContext)->field70 = zeroRect.right;
+    static_cast<TControl*>(g_pUiResourceContext)->field74 = zeroRect.bottom;
+    static_cast<TPicture*>(g_pUiResourceContext)->SetPictureResourceIdAndRefresh(0x8b4, 0);
+  }
   g_pUiResourceContext = 0;
   PopUiWidgetBuildStackNode();
 
-  TDropShadowText* seasonLabel = new TDropShadowText();
-  g_pUiResourceContext = seasonLabel;
+  // 'seas' drop-shadow label
+  widget = new TDropShadowText();
+  g_pUiResourceContext = widget;
   if (g_pUiResourceHead != 0) {
     parent = static_cast<TView*>(g_UiWidgetBuildStack006a13e0.GetTail());
   } else {
-    g_pUiResourceHead = seasonLabel;
+    g_pUiResourceHead = widget;
     parent = 0;
   }
-  PushUiWidgetBuildStackNode(seasonLabel);
-  int seasonOffset[2] = {0x2c, 1};
-  int seasonSize[2] = {0x5e, 0x11};
-  seasonLabel->InitializeUiResourceEntryFrameAndParent(0, parent, seasonOffset, seasonSize, 0, 0,
-                                                       1);
-  seasonLabel->controlTag = static_cast<int>(kControlTagSeas);
-  seasonLabel->controlValue3c = 0;
-  seasonLabel->SetEnabled(1, 0);
-  seasonLabel->SetState(0, 0);
-  seasonLabel->inputGateFlag4c = 1;
-  seasonLabel->childHitTestFlag4d = 1;
-  seasonLabel->hasCommandTagResource = 0xd;
-  seasonLabel->field68 = 0;
-  seasonLabel->field6C = 0;
-  seasonLabel->field70 = 0;
-  seasonLabel->field74 = 0;
-  BindUiResourceTextAndStyle(0xce4, 1, g_szUiPlaceholderSeason_006943BC, 3, 0, 9, 0, 1);
+  PushUiWidgetBuildStackNode(widget);
+  offset[0] = 0x2c;
+  offset[1] = 1;
+  size[0] = 0x5e;
+  size[1] = 0x11;
+  widget->InitializeUiResourceEntryFrameAndParent(0, parent, offset, size, 0, 0, 1);
+  widget->controlTag = static_cast<int>(kControlTagSeas);
+  widget->controlValue3c = 0;
+  widget->SetEnabled(1, 0);
+  widget->SetState(0, 0);
+  widget->inputGateFlag4c = 1;
+  widget->childHitTestFlag4d = 1;
+  {
+    static_cast<TControl*>(g_pUiResourceContext)->hasCommandTagResource = 0xd;
+#pragma inline_depth(0)
+    CRect zeroRect(0, 0, 0, 0);
+#pragma inline_depth()
+    static_cast<TControl*>(g_pUiResourceContext)->field68 = zeroRect.left;
+    static_cast<TControl*>(g_pUiResourceContext)->field6C = zeroRect.top;
+    static_cast<TControl*>(g_pUiResourceContext)->field70 = zeroRect.right;
+    static_cast<TControl*>(g_pUiResourceContext)->field74 = zeroRect.bottom;
+    BindUiResourceTextAndStyle(0xce4, 1, g_szUiPlaceholderSeason_006943BC, 3, 0, 9, 0, 1);
+  }
   g_pUiResourceContext = 0;
   PopUiWidgetBuildStackNode();
 
-  TDropShadowText* treasuryLabel = new TDropShadowText();
-  g_pUiResourceContext = treasuryLabel;
+  // 'trea' drop-shadow label
+  widget = new TDropShadowText();
+  g_pUiResourceContext = widget;
   if (g_pUiResourceHead != 0) {
     parent = static_cast<TView*>(g_UiWidgetBuildStack006a13e0.GetTail());
   } else {
-    g_pUiResourceHead = treasuryLabel;
+    g_pUiResourceHead = widget;
     parent = 0;
   }
-  PushUiWidgetBuildStackNode(treasuryLabel);
-  int treasuryOffset[2] = {0x8d, 1};
-  int treasurySize[2] = {0x4b, 0x11};
-  treasuryLabel->InitializeUiResourceEntryFrameAndParent(0, parent, treasuryOffset, treasurySize, 0,
-                                                         0, 1);
-  treasuryLabel->controlTag = static_cast<int>(kControlTagTrea);
-  treasuryLabel->controlValue3c = 0;
-  treasuryLabel->SetEnabled(1, 0);
-  treasuryLabel->SetState(0, 0);
-  treasuryLabel->inputGateFlag4c = 1;
-  treasuryLabel->childHitTestFlag4d = 1;
-  treasuryLabel->hasCommandTagResource = 0xd;
-  treasuryLabel->field68 = 0;
-  treasuryLabel->field6C = 0;
-  treasuryLabel->field70 = 0;
-  treasuryLabel->field74 = 0;
-  BindUiResourceTextAndStyle(0xce4, 2, g_szUiPlaceholderTreasury_006943B0, 3, 0, 9, 0, 1);
+  PushUiWidgetBuildStackNode(widget);
+  offset[0] = 0x8d;
+  offset[1] = 1;
+  size[0] = 0x4b;
+  size[1] = 0x11;
+  widget->InitializeUiResourceEntryFrameAndParent(0, parent, offset, size, 0, 0, 1);
+  widget->controlTag = static_cast<int>(kControlTagTrea);
+  widget->controlValue3c = 0;
+  widget->SetEnabled(1, 0);
+  widget->SetState(0, 0);
+  widget->inputGateFlag4c = 1;
+  widget->childHitTestFlag4d = 1;
+  {
+    static_cast<TControl*>(g_pUiResourceContext)->hasCommandTagResource = 0xd;
+#pragma inline_depth(0)
+    CRect zeroRect(0, 0, 0, 0);
+#pragma inline_depth()
+    static_cast<TControl*>(g_pUiResourceContext)->field68 = zeroRect.left;
+    static_cast<TControl*>(g_pUiResourceContext)->field6C = zeroRect.top;
+    static_cast<TControl*>(g_pUiResourceContext)->field70 = zeroRect.right;
+    static_cast<TControl*>(g_pUiResourceContext)->field74 = zeroRect.bottom;
+    BindUiResourceTextAndStyle(0xce4, 2, g_szUiPlaceholderTreasury_006943B0, 3, 0, 9, 0, 1);
+  }
   g_pUiResourceContext = 0;
   PopUiWidgetBuildStackNode();
   PopUiWidgetBuildStackNode();
 
-  TInfoBarText* cursorInfoText = new TInfoBarText();
-  RegisterUiResourceEntry(kControlTagTevw, kControlTagCurs, cursorInfoText, 0xf7, 7, 0x155, 0x11, 0,
-                          1, kControlTagMain, 0);
+  // 'curs' info-bar text
+  widget = new TInfoBarText();
+  RegisterUiResourceEntry(kControlTagTevw, kControlTagCurs, widget, 0xf7, 7, 0x155, 0x11, 0, 1,
+                          kControlTagMain, 0);
   SetUiResourceStateFlags(1, 0);
   g_pUiResourceContext = 0;
   PopUiWidgetBuildStackNode();
 
-  TPicture* patchPicture = new TPicture();
-  RegisterUiResourceEntry(kControlTagPict, kControlTagPatc, patchPicture, 0x248, 0x23, 0x34, 0x48,
-                          0, 1, kControlTagMain, 0);
+  // 'patc' picture
+  widget = new TPicture();
+  RegisterUiResourceEntry(kControlTagPict, kControlTagPatc, widget, 0x248, 0x23, 0x34, 0x48, 0, 1,
+                          kControlTagMain, 0);
   SetUiResourceStateFlags(1, 1);
   SetUiResourceLayoutValues(0xa, 0, 0, 0, 0);
-  patchPicture->SetPictureResourceIdAndRefresh(0x8b6, 0);
+  static_cast<TPicture*>(widget)->SetPictureResourceIdAndRefresh(0x8b6, 0);
   g_pUiResourceContext = 0;
   PopUiWidgetBuildStackNode();
   PopUiWidgetBuildStackNode();
@@ -5787,7 +5859,8 @@ TView* __cdecl BuildTurnEventDialogResourcesForEvent8FC(CWnd* pHostWindow, int n
   int size[2];
 
   g_pUiResourceHead = 0;
-  if (static_cast<short>(nEventCode) == 0x8fc) {
+  switch (static_cast<short>(nEventCode)) {
+  case 0x8fc: {
     TView* baseContainer = new TView();
     g_pUiResourceContext = baseContainer;
     if (g_pUiResourceHead != 0) {
@@ -5830,19 +5903,24 @@ TView* __cdecl BuildTurnEventDialogResourcesForEvent8FC(CWnd* pHostWindow, int n
     mainBook->SetState(0, 0);
     mainBook->inputGateFlag4c = 1;
     mainBook->childHitTestFlag4d = 1;
-    delete[] mainBook->stylePayload48;
-    mainBook->stylePayload48 = 0;
-    mainBook->EnsureField48Buffer();
+    delete mainBook->stylePayload48;
+    mainBook->stylePayload48 = static_cast<TUiStyleBytes*>(operator new(8));
     if (mainBook->stylePayload48 != 0) {
-      mainBook->stylePayload48->styleWord = 0;
-      mainBook->stylePayload48->packedColor = 0xffffff;
+      mainBook->stylePayload48->Reset();
     }
-    mainBook->hasCommandTagResource = 0xa;
-    mainBook->field68 = 0;
-    mainBook->field6C = 0;
-    mainBook->field70 = 0;
-    mainBook->field74 = 0;
-    mainBook->SetPictureResourceIdAndRefresh(0x8fc, 0);
+    mainBook->stylePayload48->styleWord = 0;
+    mainBook->stylePayload48->packedColor = 0xffffff;
+    {
+      mainBook->hasCommandTagResource = 0xa;
+#pragma inline_depth(0)
+      CRect zeroRect(0, 0, 0, 0);
+#pragma inline_depth()
+      mainBook->field68 = zeroRect.left;
+      mainBook->field6C = zeroRect.top;
+      mainBook->field70 = zeroRect.right;
+      mainBook->field74 = zeroRect.bottom;
+      mainBook->SetPictureResourceIdAndRefresh(0x8fc, 0);
+    }
     g_pUiResourceContext = 0;
 
     TToolBarCluster* toolbar = new TToolBarCluster();
@@ -5865,12 +5943,17 @@ TView* __cdecl BuildTurnEventDialogResourcesForEvent8FC(CWnd* pHostWindow, int n
     toolbar->SetState(0, 0);
     toolbar->inputGateFlag4c = 1;
     toolbar->childHitTestFlag4d = 1;
-    toolbar->hasCommandTagResource = 5;
-    toolbar->field68 = 0;
-    toolbar->field6C = 0;
-    toolbar->field70 = 0;
-    toolbar->field74 = 0;
-    toolbar->field84 = 0x20202020;
+    {
+      toolbar->hasCommandTagResource = 5;
+#pragma inline_depth(0)
+      CRect zeroRect(0, 0, 0, 0);
+#pragma inline_depth()
+      toolbar->field68 = zeroRect.left;
+      toolbar->field6C = zeroRect.top;
+      toolbar->field70 = zeroRect.right;
+      toolbar->field74 = zeroRect.bottom;
+      toolbar->field84 = 0x20202020;
+    }
     g_pUiResourceContext = 0;
 
     TPictureButton* endButton = new TPictureButton();
@@ -5893,12 +5976,17 @@ TView* __cdecl BuildTurnEventDialogResourcesForEvent8FC(CWnd* pHostWindow, int n
     endButton->SetState(1, 0);
     endButton->inputGateFlag4c = 1;
     endButton->childHitTestFlag4d = 1;
-    endButton->hasCommandTagResource = 0xa;
-    endButton->field68 = 0;
-    endButton->field6C = 0;
-    endButton->field70 = 0;
-    endButton->field74 = 0;
-    endButton->SetPictureResourceIdAndRefresh(0x8fd, 0);
+    {
+      endButton->hasCommandTagResource = 0xa;
+#pragma inline_depth(0)
+      CRect zeroRect(0, 0, 0, 0);
+#pragma inline_depth()
+      endButton->field68 = zeroRect.left;
+      endButton->field6C = zeroRect.top;
+      endButton->field70 = zeroRect.right;
+      endButton->field74 = zeroRect.bottom;
+      endButton->SetPictureResourceIdAndRefresh(0x8fd, 0);
+    }
     g_pUiResourceContext = 0;
     PopUiWidgetBuildStackNode();
 
@@ -5922,12 +6010,17 @@ TView* __cdecl BuildTurnEventDialogResourcesForEvent8FC(CWnd* pHostWindow, int n
     seasonLabel->SetState(0, 0);
     seasonLabel->inputGateFlag4c = 1;
     seasonLabel->childHitTestFlag4d = 1;
-    seasonLabel->hasCommandTagResource = 0xd;
-    seasonLabel->field68 = 0;
-    seasonLabel->field6C = 0;
-    seasonLabel->field70 = 0;
-    seasonLabel->field74 = 0;
-    BindUiResourceTextAndStyle(0xce4, 1, g_szUiPlaceholderSeason_006943BC, 3, 0, 9, 0, 1);
+    {
+      seasonLabel->hasCommandTagResource = 0xd;
+#pragma inline_depth(0)
+      CRect zeroRect(0, 0, 0, 0);
+#pragma inline_depth()
+      seasonLabel->field68 = zeroRect.left;
+      seasonLabel->field6C = zeroRect.top;
+      seasonLabel->field70 = zeroRect.right;
+      seasonLabel->field74 = zeroRect.bottom;
+      BindUiResourceTextAndStyle(0xce4, 1, g_szUiPlaceholderSeason_006943BC, 3, 0, 9, 0, 1);
+    }
     g_pUiResourceContext = 0;
     PopUiWidgetBuildStackNode();
 
@@ -5951,12 +6044,17 @@ TView* __cdecl BuildTurnEventDialogResourcesForEvent8FC(CWnd* pHostWindow, int n
     treasuryLabel->SetState(0, 0);
     treasuryLabel->inputGateFlag4c = 1;
     treasuryLabel->childHitTestFlag4d = 1;
-    treasuryLabel->hasCommandTagResource = 0xd;
-    treasuryLabel->field68 = 0;
-    treasuryLabel->field6C = 0;
-    treasuryLabel->field70 = 0;
-    treasuryLabel->field74 = 0;
-    BindUiResourceTextAndStyle(0xce4, 2, g_szUiPlaceholderTreasury_006943B0, 3, 0, 9, 0, 1);
+    {
+      treasuryLabel->hasCommandTagResource = 0xd;
+#pragma inline_depth(0)
+      CRect zeroRect(0, 0, 0, 0);
+#pragma inline_depth()
+      treasuryLabel->field68 = zeroRect.left;
+      treasuryLabel->field6C = zeroRect.top;
+      treasuryLabel->field70 = zeroRect.right;
+      treasuryLabel->field74 = zeroRect.bottom;
+      BindUiResourceTextAndStyle(0xce4, 2, g_szUiPlaceholderTreasury_006943B0, 3, 0, 9, 0, 1);
+    }
     g_pUiResourceContext = 0;
     PopUiWidgetBuildStackNode();
     PopUiWidgetBuildStackNode();
@@ -5981,12 +6079,17 @@ TView* __cdecl BuildTurnEventDialogResourcesForEvent8FC(CWnd* pHostWindow, int n
     potToolbar->SetState(0, 0);
     potToolbar->inputGateFlag4c = 1;
     potToolbar->childHitTestFlag4d = 1;
-    potToolbar->hasCommandTagResource = 5;
-    potToolbar->field68 = 0;
-    potToolbar->field6C = 0;
-    potToolbar->field70 = 0;
-    potToolbar->field74 = 0;
-    potToolbar->field84 = 0x20202020;
+    {
+      potToolbar->hasCommandTagResource = 5;
+#pragma inline_depth(0)
+      CRect zeroRect(0, 0, 0, 0);
+#pragma inline_depth()
+      potToolbar->field68 = zeroRect.left;
+      potToolbar->field6C = zeroRect.top;
+      potToolbar->field70 = zeroRect.right;
+      potToolbar->field74 = zeroRect.bottom;
+      potToolbar->field84 = 0x20202020;
+    }
     g_pUiResourceContext = 0;
 
     TUpDownPictureButton* transportButton = new TUpDownPictureButton();
@@ -6009,12 +6112,17 @@ TView* __cdecl BuildTurnEventDialogResourcesForEvent8FC(CWnd* pHostWindow, int n
     transportButton->SetState(1, 0);
     transportButton->inputGateFlag4c = 1;
     transportButton->childHitTestFlag4d = 1;
-    transportButton->hasCommandTagResource = 0xa;
-    transportButton->field68 = 0;
-    transportButton->field6C = 0;
-    transportButton->field70 = 0;
-    transportButton->field74 = 0;
-    transportButton->SetPictureResourceIdAndRefresh(0x24ef, 0);
+    {
+      transportButton->hasCommandTagResource = 0xa;
+#pragma inline_depth(0)
+      CRect zeroRect(0, 0, 0, 0);
+#pragma inline_depth()
+      transportButton->field68 = zeroRect.left;
+      transportButton->field6C = zeroRect.top;
+      transportButton->field70 = zeroRect.right;
+      transportButton->field74 = zeroRect.bottom;
+      transportButton->SetPictureResourceIdAndRefresh(0x24ef, 0);
+    }
     g_pUiResourceContext = 0;
     PopUiWidgetBuildStackNode();
 
@@ -6038,12 +6146,17 @@ TView* __cdecl BuildTurnEventDialogResourcesForEvent8FC(CWnd* pHostWindow, int n
     cityButton->SetState(1, 0);
     cityButton->inputGateFlag4c = 1;
     cityButton->childHitTestFlag4d = 1;
-    cityButton->hasCommandTagResource = 0xa;
-    cityButton->field68 = 0;
-    cityButton->field6C = 0;
-    cityButton->field70 = 0;
-    cityButton->field74 = 0;
-    cityButton->SetPictureResourceIdAndRefresh(0x24ed, 0);
+    {
+      cityButton->hasCommandTagResource = 0xa;
+#pragma inline_depth(0)
+      CRect zeroRect(0, 0, 0, 0);
+#pragma inline_depth()
+      cityButton->field68 = zeroRect.left;
+      cityButton->field6C = zeroRect.top;
+      cityButton->field70 = zeroRect.right;
+      cityButton->field74 = zeroRect.bottom;
+      cityButton->SetPictureResourceIdAndRefresh(0x24ed, 0);
+    }
     g_pUiResourceContext = 0;
     PopUiWidgetBuildStackNode();
 
@@ -6067,12 +6180,17 @@ TView* __cdecl BuildTurnEventDialogResourcesForEvent8FC(CWnd* pHostWindow, int n
     tradeButton->SetState(1, 0);
     tradeButton->inputGateFlag4c = 1;
     tradeButton->childHitTestFlag4d = 1;
-    tradeButton->hasCommandTagResource = 0xa;
-    tradeButton->field68 = 0;
-    tradeButton->field6C = 0;
-    tradeButton->field70 = 0;
-    tradeButton->field74 = 0;
-    tradeButton->SetPictureResourceIdAndRefresh(0x24eb, 0);
+    {
+      tradeButton->hasCommandTagResource = 0xa;
+#pragma inline_depth(0)
+      CRect zeroRect(0, 0, 0, 0);
+#pragma inline_depth()
+      tradeButton->field68 = zeroRect.left;
+      tradeButton->field6C = zeroRect.top;
+      tradeButton->field70 = zeroRect.right;
+      tradeButton->field74 = zeroRect.bottom;
+      tradeButton->SetPictureResourceIdAndRefresh(0x24eb, 0);
+    }
     g_pUiResourceContext = 0;
     PopUiWidgetBuildStackNode();
 
@@ -6096,12 +6214,17 @@ TView* __cdecl BuildTurnEventDialogResourcesForEvent8FC(CWnd* pHostWindow, int n
     diplomacyButton->SetState(1, 0);
     diplomacyButton->inputGateFlag4c = 1;
     diplomacyButton->childHitTestFlag4d = 1;
-    diplomacyButton->hasCommandTagResource = 0xa;
-    diplomacyButton->field68 = 0;
-    diplomacyButton->field6C = 0;
-    diplomacyButton->field70 = 0;
-    diplomacyButton->field74 = 0;
-    diplomacyButton->SetPictureResourceIdAndRefresh(0x24e9, 0);
+    {
+      diplomacyButton->hasCommandTagResource = 0xa;
+#pragma inline_depth(0)
+      CRect zeroRect(0, 0, 0, 0);
+#pragma inline_depth()
+      diplomacyButton->field68 = zeroRect.left;
+      diplomacyButton->field6C = zeroRect.top;
+      diplomacyButton->field70 = zeroRect.right;
+      diplomacyButton->field74 = zeroRect.bottom;
+      diplomacyButton->SetPictureResourceIdAndRefresh(0x24e9, 0);
+    }
     g_pUiResourceContext = 0;
     PopUiWidgetBuildStackNode();
     PopUiWidgetBuildStackNode();
@@ -6126,12 +6249,17 @@ TView* __cdecl BuildTurnEventDialogResourcesForEvent8FC(CWnd* pHostWindow, int n
     trb2Toolbar->SetState(0, 0);
     trb2Toolbar->inputGateFlag4c = 1;
     trb2Toolbar->childHitTestFlag4d = 1;
-    trb2Toolbar->hasCommandTagResource = 5;
-    trb2Toolbar->field68 = 0;
-    trb2Toolbar->field6C = 0;
-    trb2Toolbar->field70 = 0;
-    trb2Toolbar->field74 = 0;
-    trb2Toolbar->field84 = 0x20202020;
+    {
+      trb2Toolbar->hasCommandTagResource = 5;
+#pragma inline_depth(0)
+      CRect zeroRect(0, 0, 0, 0);
+#pragma inline_depth()
+      trb2Toolbar->field68 = zeroRect.left;
+      trb2Toolbar->field6C = zeroRect.top;
+      trb2Toolbar->field70 = zeroRect.right;
+      trb2Toolbar->field74 = zeroRect.bottom;
+      trb2Toolbar->field84 = 0x20202020;
+    }
     g_pUiResourceContext = 0;
 
     TPictureButton* queryButton = new TPictureButton();
@@ -6160,7 +6288,7 @@ TView* __cdecl BuildTurnEventDialogResourcesForEvent8FC(CWnd* pHostWindow, int n
     PopUiWidgetBuildStackNode();
     PopUiWidgetBuildStackNode();
 
-    TPageView* pageView = new TPageView();
+    TTechStorePage* pageView = new TTechStorePage();
     RegisterUiResourceEntry(0x76696577, 0x70616765, pageView, 0x26, 0x40, 0x232, 0x17a, 0, 1,
                             kControlTagMain, 0);
     SetUiResourceStateFlags(1, 1);
@@ -6217,11 +6345,8 @@ TView* __cdecl BuildTurnEventDialogResourcesForEvent8FC(CWnd* pHostWindow, int n
                             0, 1, kControlTagMain, 0);
     SetUiResourceStateFlags(1, 0);
     g_pUiResourceContext = 0;
-  } else {
-    if (static_cast<short>(nEventCode) != 0x942) {
-      return 0;
-    }
-
+  } break;
+  case 0x942: {
     TWindow* window = new TWindow();
     g_pUiResourceContext = window;
     if (g_pUiResourceHead != 0) {
@@ -6297,12 +6422,17 @@ TView* __cdecl BuildTurnEventDialogResourcesForEvent8FC(CWnd* pHostWindow, int n
     topPicture->SetState(0, 0);
     topPicture->inputGateFlag4c = 1;
     topPicture->childHitTestFlag4d = 1;
-    topPicture->hasCommandTagResource = 0xa;
-    topPicture->field68 = 0;
-    topPicture->field6C = 0;
-    topPicture->field70 = 0;
-    topPicture->field74 = 0;
-    topPicture->SetPictureResourceIdAndRefresh(0x942, 0);
+    {
+      topPicture->hasCommandTagResource = 0xa;
+#pragma inline_depth(0)
+      CRect zeroRect(0, 0, 0, 0);
+#pragma inline_depth()
+      topPicture->field68 = zeroRect.left;
+      topPicture->field6C = zeroRect.top;
+      topPicture->field70 = zeroRect.right;
+      topPicture->field74 = zeroRect.bottom;
+      topPicture->SetPictureResourceIdAndRefresh(0x942, 0);
+    }
     g_pUiResourceContext = 0;
 
     TDropShadowText* titleText = new TDropShadowText();
@@ -6325,12 +6455,17 @@ TView* __cdecl BuildTurnEventDialogResourcesForEvent8FC(CWnd* pHostWindow, int n
     titleText->SetState(0, 0);
     titleText->inputGateFlag4c = 1;
     titleText->childHitTestFlag4d = 1;
-    titleText->hasCommandTagResource = 0xd;
-    titleText->field68 = 0;
-    titleText->field6C = 0;
-    titleText->field70 = 0;
-    titleText->field74 = 0;
-    BindUiResourceTextAndStyle(0x3e9, 1, g_szUiPlaceholderStaticText_00694354, 0, 0, 0, 0, 0);
+    {
+      titleText->hasCommandTagResource = 0xd;
+#pragma inline_depth(0)
+      CRect zeroRect(0, 0, 0, 0);
+#pragma inline_depth()
+      titleText->field68 = zeroRect.left;
+      titleText->field6C = zeroRect.top;
+      titleText->field70 = zeroRect.right;
+      titleText->field74 = zeroRect.bottom;
+      BindUiResourceTextAndStyle(0x3e9, 1, g_szUiPlaceholderStaticText_00694354, 0, 0, 0, 0, 0);
+    }
     g_pUiResourceContext = 0;
     PopUiWidgetBuildStackNode();
 
@@ -6354,16 +6489,21 @@ TView* __cdecl BuildTurnEventDialogResourcesForEvent8FC(CWnd* pHostWindow, int n
     patchPicture->SetState(0, 0);
     patchPicture->inputGateFlag4c = 1;
     patchPicture->childHitTestFlag4d = 1;
-    patchPicture->hasCommandTagResource = 0xa;
-    patchPicture->field68 = 0;
-    patchPicture->field6C = 0;
-    patchPicture->field70 = 0;
-    patchPicture->field74 = 0;
-    patchPicture->SetPictureResourceIdAndRefresh(0x945, 0);
+    {
+      patchPicture->hasCommandTagResource = 0xa;
+#pragma inline_depth(0)
+      CRect zeroRect(0, 0, 0, 0);
+#pragma inline_depth()
+      patchPicture->field68 = zeroRect.left;
+      patchPicture->field6C = zeroRect.top;
+      patchPicture->field70 = zeroRect.right;
+      patchPicture->field74 = zeroRect.bottom;
+      patchPicture->SetPictureResourceIdAndRefresh(0x945, 0);
+    }
     g_pUiResourceContext = 0;
     PopUiWidgetBuildStackNode();
 
-    TScrollView* scrollView = new TScrollView();
+    TTechHistoryView* scrollView = new TTechHistoryView();
     g_pUiResourceContext = scrollView;
     if (g_pUiResourceHead != 0) {
       parent = static_cast<TView*>(g_UiWidgetBuildStack006a13e0.GetTail());
@@ -6406,14 +6546,22 @@ TView* __cdecl BuildTurnEventDialogResourcesForEvent8FC(CWnd* pHostWindow, int n
     okayButton->SetState(1, 0);
     okayButton->inputGateFlag4c = 1;
     okayButton->childHitTestFlag4d = 1;
-    okayButton->hasCommandTagResource = 0x22;
-    okayButton->field68 = 0;
-    okayButton->field6C = 0;
-    okayButton->field70 = 0;
-    okayButton->field74 = 0;
-    okayButton->SetPictureResourceIdAndRefresh(0x24c2, 0);
+    {
+      okayButton->hasCommandTagResource = 0x22;
+#pragma inline_depth(0)
+      CRect zeroRect(0, 0, 0, 0);
+#pragma inline_depth()
+      okayButton->field68 = zeroRect.left;
+      okayButton->field6C = zeroRect.top;
+      okayButton->field70 = zeroRect.right;
+      okayButton->field74 = zeroRect.bottom;
+      okayButton->SetPictureResourceIdAndRefresh(0x24c2, 0);
+    }
     g_pUiResourceContext = 0;
     PopUiWidgetBuildStackNode();
+  } break;
+  default:
+    return 0;
   }
 
   PopUiWidgetBuildStackNode();

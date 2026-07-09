@@ -3,6 +3,7 @@
 #include "game/TGlobalMapState.h"
 #include "game/TQuickDrawSurfaceContext.h"
 #include "game/TView.h"
+#include "game/TViewMgr.h"
 #include "game/global_data_tables.h"
 #include "game/quickdraw_rendering.h"
 #include "game/ui_invalidation_guard.h"
@@ -68,9 +69,107 @@ void TMapDialog::NoOpUiLifecycleHook(int arg) {
 // FUNCTION: IMPERIALISM 0x00519e00
 void TMapDialog::RenderStrategicTileSelectionAndNeighborHighlights() {}
 
+// Draw the selection outline around a hex tile: for each of the six neighbor
+// tiles (neighborTiles[0..5], -1 = none), project it to screen and stroke the
+// shared hex-cell edges, skipping an interior edge when the adjacent neighbor is
+// also present so shared borders are drawn once. 0x3f is the cell size, 0x20 the
+// half-cell. The projection's two outputs land as (outY = horizontal, outX =
+// vertical) here.
 // FUNCTION: IMPERIALISM 0x0051a2a0
-undefined TMapDialog::DrawHexNeighborOutlineFromTileArray() {
-  return 0;
+void TMapDialog::DrawHexNeighborOutlineFromTileArray(short* neighborTiles) {
+  short* originXY = reinterpret_cast<short*>(reinterpret_cast<char*>(this) + 0x60);
+  short outX;
+  short outY;
+
+  g_pUiRuntimeContext->ApplyLegendSplitSlot34(0x3f);
+
+  if (neighborTiles[0] != -1) {
+    ProjectTileIndexToWrappedScreenOffsetByScale(neighborTiles[0], originXY, &outX, &outY, 1);
+    SetQuickDrawTextOriginWithContextOffset(outY, outX);
+    DrawCenteredGuideLineOnMapDc(outY + 0x3f, outX);
+    DrawCenteredGuideLineOnMapDc(outY + 0x3f, outX + 0x3f);
+    if (neighborTiles[5] == -1) {
+      SetQuickDrawTextOriginWithContextOffset(outY, outX);
+      DrawCenteredGuideLineOnMapDc(outY, outX + 0x3f);
+    }
+    if (neighborTiles[1] == -1) {
+      SetQuickDrawTextOriginWithContextOffset(outY + 0x20, outX);
+      DrawCenteredGuideLineOnMapDc(outY + 0x20, outX + 0x3f);
+    }
+  }
+  if (neighborTiles[1] != -1) {
+    ProjectTileIndexToWrappedScreenOffsetByScale(neighborTiles[1], originXY, &outX, &outY, 1);
+    SetQuickDrawTextOriginWithContextOffset(outY + 0x20, outX);
+    DrawCenteredGuideLineOnMapDc(outY + 0x3f, outX);
+    DrawCenteredGuideLineOnMapDc(outY + 0x3f, outX + 0x3f);
+    DrawCenteredGuideLineOnMapDc(outY + 0x20, outX + 0x3f);
+    if (neighborTiles[0] == -1) {
+      SetQuickDrawTextOriginWithContextOffset(outY, outX);
+      DrawCenteredGuideLineOnMapDc(outY + 0x20, outX);
+    }
+    if (neighborTiles[2] == -1) {
+      SetQuickDrawTextOriginWithContextOffset(outY, outX + 0x3f);
+      DrawCenteredGuideLineOnMapDc(outY + 0x20, outX + 0x3f);
+    }
+  }
+  if (neighborTiles[2] != -1) {
+    ProjectTileIndexToWrappedScreenOffsetByScale(neighborTiles[2], originXY, &outX, &outY, 1);
+    SetQuickDrawTextOriginWithContextOffset(outY, outX + 0x3f);
+    DrawCenteredGuideLineOnMapDc(outY + 0x3f, outX + 0x3f);
+    DrawCenteredGuideLineOnMapDc(outY + 0x3f, outX);
+    if (neighborTiles[3] == -1) {
+      SetQuickDrawTextOriginWithContextOffset(outY, outX);
+      DrawCenteredGuideLineOnMapDc(outY, outX + 0x3f);
+    }
+    if (neighborTiles[1] == -1) {
+      SetQuickDrawTextOriginWithContextOffset(outY + 0x20, outX);
+      DrawCenteredGuideLineOnMapDc(outY + 0x3f, outX);
+    }
+  }
+  if (neighborTiles[3] != -1) {
+    ProjectTileIndexToWrappedScreenOffsetByScale(neighborTiles[3], originXY, &outX, &outY, 1);
+    SetQuickDrawTextOriginWithContextOffset(outY + 0x3f, outX + 0x3f);
+    DrawCenteredGuideLineOnMapDc(outY, outX + 0x3f);
+    DrawCenteredGuideLineOnMapDc(outY, outX);
+    if (neighborTiles[2] == -1) {
+      SetQuickDrawTextOriginWithContextOffset(outY + 0x3f, outX);
+      DrawCenteredGuideLineOnMapDc(outY + 0x3f, outX + 0x3f);
+    }
+    if (neighborTiles[4] == -1) {
+      SetQuickDrawTextOriginWithContextOffset(outY, outX);
+      DrawCenteredGuideLineOnMapDc(outY + 0x20, outX);
+    }
+  }
+  if (neighborTiles[4] != -1) {
+    ProjectTileIndexToWrappedScreenOffsetByScale(neighborTiles[4], originXY, &outX, &outY, 1);
+    SetQuickDrawTextOriginWithContextOffset(outY + 0x20, outX);
+    DrawCenteredGuideLineOnMapDc(outY, outX);
+    DrawCenteredGuideLineOnMapDc(outY, outX + 0x3f);
+    DrawCenteredGuideLineOnMapDc(outY + 0x20, outX + 0x3f);
+    if (neighborTiles[5] == -1) {
+      SetQuickDrawTextOriginWithContextOffset(outY + 0x20, outX);
+      DrawCenteredGuideLineOnMapDc(outY + 0x3f, outX);
+    }
+    if (neighborTiles[3] == -1) {
+      SetQuickDrawTextOriginWithContextOffset(outY + 0x20, outX + 0x3f);
+      DrawCenteredGuideLineOnMapDc(outY + 0x3f, outX + 0x3f);
+    }
+  }
+  if (neighborTiles[5] != -1) {
+    ProjectTileIndexToWrappedScreenOffsetByScale(neighborTiles[5], originXY, &outX, &outY, 1);
+    SetQuickDrawTextOriginWithContextOffset(outY, outX + 0x3f);
+    DrawCenteredGuideLineOnMapDc(outY, outX);
+    DrawCenteredGuideLineOnMapDc(outY + 0x3f, outX);
+    if (neighborTiles[0] == -1) {
+      SetQuickDrawTextOriginWithContextOffset(outY + 0x3f, outX);
+      DrawCenteredGuideLineOnMapDc(outY + 0x3f, outX + 0x3f);
+    }
+    if (neighborTiles[4] == -1) {
+      SetQuickDrawTextOriginWithContextOffset(outY, outX + 0x3f);
+      DrawCenteredGuideLineOnMapDc(outY + 0x20, outX + 0x3f);
+    }
+  }
+  SetQuickDrawFillColor(0);
 }
 
 // FUNCTION: IMPERIALISM 0x0051A900
