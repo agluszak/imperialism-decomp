@@ -6,6 +6,20 @@
 #include "game/NetMessage.h"
 #include "game/nation_slot_eligibility.h"
 
+// Turn-event-0x25 nation-status payload: header + seven per-nation status tags,
+// defaulted to 'unkn'; the 'time' tag and active-nation byte are stamped separately via
+// InitializeEmitEventHeaderWithActiveNation before sending.
+struct NationStatusEvent25Packet : NetMessage {
+  int packetTag;                // +0x10 - left for the header stamp
+  unsigned char activeNationId; // +0x14 - left for the header stamp
+  unsigned char pad15[3];
+  int statusTags[7]; // +0x18 - four-cc per-nation status ('unkn' default)
+
+  // 0x54bce0: zero the NetMessage header, set eventCode 0x25 / length 0x34, default all
+  // seven status tags to 'unkn'.
+  void InitializeNationStatusEvent25PayloadDefaults();
+};
+
 // Case-0x31 payload of SerializeOrderDataIntoTurnEventByTag: a {tag, object} pair whose
 // 'star'-tagged object carries a sub-tag plus two shorts on the 'land' route. Minimal
 // typed view until the real order class is recovered.
@@ -2700,6 +2714,22 @@ void TMultiplayerMgr::EmitNationDiplomacyNeedStateSnapshotEvent15(char broadcast
   packet.pendingCommitmentCost = nation->pendingCommitmentCost;
   packet.pressureCounter = nation->pressureCounter;
   g_pNetMgr006a6014->Send(&packet, 0);
+}
+
+// FUNCTION: IMPERIALISM 0x0054bce0
+void NationStatusEvent25Packet::InitializeNationStatusEvent25PayloadDefaults() {
+  // The original zeroes the header through a second pointer, so the eventCode /
+  // messageLength double-stores below survive (no-alias can't be proven).
+  NetMessage* header = this;
+  header->eventCode = 0;
+  header->fromNetworkId = 0;
+  header->toNetworkId = 0;
+  header->messageLength = 0;
+  messageLength = 0x34;
+  eventCode = 0x25;
+  for (int slot = 0; slot < 7; ++slot) {
+    statusTags[slot] = 0x756e6b6e; // 'unkn'
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x0054c5a0

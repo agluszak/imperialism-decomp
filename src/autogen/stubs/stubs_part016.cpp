@@ -843,14 +843,6 @@ undefined4 SetNationStatusAwolByNationIdAndDispatchNotices(void)
   return 0;
 }
 
-// ghidra_name InitializeNationStatusEvent25PayloadDefaults
-// ghidra_proto undefined InitializeNationStatusEvent25PayloadDefaults()
-// FUNCTION: IMPERIALISM 0x0054bce0
-undefined4 InitializeNationStatusEvent25PayloadDefaults(void)
-{
-  return 0;
-}
-
 // ghidra_name ReplaceNationStateForSlotAndRefreshStatus
 // ghidra_proto undefined ReplaceNationStateForSlotAndRefreshStatus()
 // FUNCTION: IMPERIALISM 0x0054bd20
