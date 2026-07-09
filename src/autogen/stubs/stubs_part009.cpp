@@ -907,38 +907,6 @@ undefined4 WrapperFor_ConstructTPageViewBaseState_At004600c0(void)
   return 0;
 }
 
-// ghidra_name BuildUniversityDialogControls
-// ghidra_proto undefined BuildUniversityDialogControls()
-// FUNCTION: IMPERIALISM 0x00474ac5
-undefined4 BuildUniversityDialogControls(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_BuildUniversityRecruitmentRows
-// ghidra_proto undefined thunk_BuildUniversityRecruitmentRows()
-// FUNCTION: IMPERIALISM 0x00475f80
-undefined4 thunk_BuildUniversityRecruitmentRows(void)
-{
-  return 0;
-}
-
-// ghidra_name BuildUniversityRecruitControls
-// ghidra_proto undefined BuildUniversityRecruitControls()
-// FUNCTION: IMPERIALISM 0x00475f82
-undefined4 BuildUniversityRecruitControls(void)
-{
-  return 0;
-}
-
-// ghidra_name BuildUniversityRecruitmentRows
-// ghidra_proto undefined BuildUniversityRecruitmentRows()
-// FUNCTION: IMPERIALISM 0x00475f84
-undefined4 BuildUniversityRecruitmentRows(void)
-{
-  return 0;
-}
-
 // ghidra_name CAmbitDocument::CreateObject
 // ghidra_proto undefined CreateObject()
 // FUNCTION: IMPERIALISM 0x004793c0

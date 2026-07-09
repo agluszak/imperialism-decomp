@@ -1469,6 +1469,7 @@ address|target_cpp|ownership|note
 4cab10|src/game/TOverlayRadioButton.cpp|manual|marker_sync
 4caba0|src/game/TUniversityView.cpp|manual|marker_sync
 4cac40|src/game/TUniversityView.cpp|manual|marker_sync
+4cac60|src/game/TUniversityView.cpp|manual|marker_sync
 4cac90|src/game/TUniversityView.cpp|manual|marker_sync
 4cace0|src/game/TUniversityView.cpp|manual|marker_sync
 4cb320|src/game/TUniversityView.cpp|manual|marker_sync

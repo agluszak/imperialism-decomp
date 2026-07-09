@@ -274,11 +274,7 @@ address|name|symbol|size|type|prototype|provenance
 460140|TTechHistoryView::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 4601b0|InitializeTradeScreenBitmapControls||51455|function|undefined InitializeTradeScreenBitmapControls()|
 46fd10|BuildTurnEventDialogResourcesForEvent7DE||15634|function|undefined BuildTurnEventDialogResourcesForEvent7DE()|
-4749a0|BuildUniversityDialogShell||293|function|int * __fastcall BuildUniversityDialogShell(dword dwPanelId, short nDialogTypeTag)|
-474ac5|BuildUniversityDialogControls||5307|function|undefined BuildUniversityDialogControls()|
-475f80|thunk_BuildUniversityRecruitmentRows||2|function|undefined thunk_BuildUniversityRecruitmentRows()|
-475f82|BuildUniversityRecruitControls||2|function|undefined BuildUniversityRecruitControls()|
-475f84|BuildUniversityRecruitmentRows||9547|function|undefined BuildUniversityRecruitmentRows()|
+4749a0|BuildUniversityDialogShell||15151|function|int * __fastcall BuildUniversityDialogShell(dword dwPanelId, short nDialogTypeTag)|
 4793c0|CAmbitDocument::CreateObject|?CreateObject@CAmbitDocument@@SGPAVCObject@@XZ|87|function|undefined CreateObject()|rtti
 479440|CAmbitDocument::GetRuntimeClass|?GetRuntimeClass@CAmbitDocument@@UBEPAUCRuntimeClass@@XZ|6|function|undefined __thiscall GetRuntimeClass(void)|rtti
 479460|TTechStorePage::GetCityDialogValueDwordC||6|function|undefined OrphanVtableAssignStub_00479460(void)|

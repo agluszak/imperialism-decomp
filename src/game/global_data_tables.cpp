@@ -294,6 +294,20 @@ char g_szUiHaxacoLegions_0069494C[] =
 char g_szUiSkirmishReportTitle_00694998[] = "Skirmish Report";
 // GLOBAL: IMPERIALISM 0x006949ac
 char g_szUiPage14of14_006949AC[] = "Page 14 of 14";
+
+// University-screen (turn event 0x23fa) placeholder label strings.
+// GLOBAL: IMPERIALISM 0x006943ac
+char g_szUiPlaceholderOne_006943AC[] = "1";
+// GLOBAL: IMPERIALISM 0x006949c8
+char g_szUiAvailableColon_006949C8[] = "Available:";
+// GLOBAL: IMPERIALISM 0x006949d8
+char g_szUiCostColon_006949D8[] = "Cost:";
+// GLOBAL: IMPERIALISM 0x00694b20
+char g_szUiUniversityTitle_00694B20[] = "University";
+// GLOBAL: IMPERIALISM 0x00694b30
+char g_szUiThousandDollars_00694B30[] = "$1,000";
+// GLOBAL: IMPERIALISM 0x00694b38
+char g_szUiLevel1_00694B38[] = "Level\n1";
 // GLOBAL: IMPERIALISM 0x006943cc
 char g_szMcAppUiHeaderPath_006943CC[] = "D:\\Ambit\\McAppUI.h";
 // GLOBAL: IMPERIALISM 0x00696bc0

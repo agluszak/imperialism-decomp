@@ -1330,32 +1330,8 @@
     },
     {
       "address": "0x4749a0",
-      "matching": 0.047058823529411764,
+      "matching": 0.6431053072960345,
       "name": "BuildUniversityDialogShell",
-      "type": 1
-    },
-    {
-      "address": "0x474ac5",
-      "matching": 0.0012970168612191958,
-      "name": "BuildUniversityDialogControls",
-      "type": 1
-    },
-    {
-      "address": "0x475f80",
-      "matching": 0.0,
-      "name": "thunk_BuildUniversityRecruitmentRows",
-      "type": 1
-    },
-    {
-      "address": "0x475f82",
-      "matching": 0.0,
-      "name": "BuildUniversityRecruitControls",
-      "type": 1
-    },
-    {
-      "address": "0x475f84",
-      "matching": 0.0014104372355430183,
-      "name": "BuildUniversityRecruitmentRows",
       "type": 1
     },
     {
@@ -9007,13 +8983,13 @@
     },
     {
       "address": "0x4b4310",
-      "matching": 0.8842105263157894,
+      "matching": 1.0,
       "name": "ComputeAverageWeightWord0TimesTenFromResourceCounts",
       "type": 1
     },
     {
       "address": "0x4b4390",
-      "matching": 0.4918032786885246,
+      "matching": 0.4835164835164835,
       "name": "AllocateRandomResourceCountsWithinWeightBudget",
       "type": 1
     },
@@ -11017,7 +10993,7 @@
     },
     {
       "address": "0x4cac60",
-      "matching": 0.3333333333333333,
+      "matching": 0.7058823529411765,
       "name": "TUniversityView::ConstructTUniversityViewBaseState",
       "type": 1
     },
@@ -12387,7 +12363,7 @@
     },
     {
       "address": "0x4dd430",
-      "matching": 0.5142857142857142,
+      "matching": 0.5714285714285714,
       "name": "TGreatPower::ComputeRemainingDiplomacyAidBudget",
       "type": 1
     },
@@ -12819,8 +12795,7 @@
     },
     {
       "address": "0x4e0590",
-      "effective": true,
-      "matching": 0.42857142857142855,
+      "matching": 1.0,
       "name": "TGreatPower::OrphanRetStub_004d7fa0_88",
       "type": 1
     },
@@ -12833,15 +12808,13 @@
     },
     {
       "address": "0x4e0610",
-      "effective": true,
-      "matching": 0.42857142857142855,
+      "matching": 1.0,
       "name": "TGreatPower::ReturnFalseNationStateActionStub_8a",
       "type": 1
     },
     {
       "address": "0x4e0650",
-      "effective": true,
-      "matching": 0.42857142857142855,
+      "matching": 1.0,
       "name": "TGreatPower::OrphanRetStub_004d7fe0_8b",
       "type": 1
     },
@@ -12884,7 +12857,7 @@
     },
     {
       "address": "0x4e09a0",
-      "matching": 0.5060240963855421,
+      "matching": 0.5301204819277109,
       "name": "TGreatPower::ComputeCityOrderCapabilityAggregateScore",
       "type": 1
     },
@@ -16378,7 +16351,7 @@
     },
     {
       "address": "0x50bea0",
-      "matching": 0.2044525215810995,
+      "matching": 0.20626987732848706,
       "name": "TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets",
       "type": 1
     },
@@ -16750,7 +16723,7 @@
     },
     {
       "address": "0x512930",
-      "matching": 0.2491103202846975,
+      "matching": 0.25622775800711745,
       "name": "BuildHexAreaTileIndexList",
       "type": 1
     },
@@ -18220,7 +18193,7 @@
     },
     {
       "address": "0x52c0a0",
-      "matching": 0.9391304347826087,
+      "matching": 0.9122807017543859,
       "name": "SeapointStretch::GetOrAppendUnique",
       "type": 1
     },
@@ -20189,7 +20162,7 @@
     },
     {
       "address": "0x53d020",
-      "matching": 0.4235294117647059,
+      "matching": 0.4251968503937008,
       "name": "ComputeArmyMissionScoreDeltaWithCandidateUnit",
       "type": 1
     },
@@ -20291,7 +20264,7 @@
     },
     {
       "address": "0x53de00",
-      "matching": 0.2702702702702703,
+      "matching": 0.26126126126126126,
       "name": "RefreshAttackProvinceMissionTargetAndMaybeQueueUnits",
       "type": 1
     },
@@ -22277,13 +22250,13 @@
     },
     {
       "address": "0x553b10",
-      "matching": 0.41379310344827586,
+      "matching": 0.4827586206896552,
       "name": "HasNoMapOrderEntryChildrenQueued",
       "type": 1
     },
     {
       "address": "0x553b50",
-      "matching": 0.5454545454545454,
+      "matching": 0.5818181818181818,
       "name": "HasActiveMapOrderEntryChildren",
       "type": 1
     },
