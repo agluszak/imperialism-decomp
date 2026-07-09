@@ -45,7 +45,7 @@ void TEscortMission::ResetValue0CToZero() {
   // pending recovery of the per-zone owner cache and needCapA6 scaling.
   TGreatPower* owner = reinterpret_cast<TGreatPower*>(targetZone14);
   float score = static_cast<float>(owner->ComputeMapActionContextNodeValueAverage());
-  *reinterpret_cast<float*>(&value0c) = score / *reinterpret_cast<const float*>(0x0065a9c0);
+  *reinterpret_cast<float*>(&value0c) = score / g_fMissionScoreNormalizationDivisor;
 }
 
 // FUNCTION: IMPERIALISM 0x00539e70

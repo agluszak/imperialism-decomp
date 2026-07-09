@@ -102,6 +102,12 @@ ASSERT_SIZE(TNavyOrderResourceDescriptor, 0x24);
 
 extern "C" TNavyOrderResourceDescriptor g_NavyOrderResourceDescriptorTable[64];
 
+// Per-category (0..3) capability metric baseline averages (0x006a3ec8): recomputed at
+// runtime by RecomputeGlobalCapabilityAverages and read back as the normalization divisor
+// by the navy/map-order per-category scoring helpers.
+extern "C" int g_aCategoryMetricBaselineAverage[4];
+extern "C" float g_fMissionScoreNormalizationDivisor;
+
 short GetResourceTypeRandomDrawBlockFlag(short resourceType);
 short GetResourceDescriptorWord0CByType(short resourceType);
 short GetResourceDescriptorWord10ByType(short resourceType);

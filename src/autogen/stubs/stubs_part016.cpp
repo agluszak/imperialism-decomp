@@ -1091,22 +1091,6 @@ undefined4 GetNavyContextPointerFromGlobalTableByIndex(void)
   return 0;
 }
 
-// ghidra_name GetNormalizedIndustryActionResourceCostPercent
-// ghidra_proto undefined GetNormalizedIndustryActionResourceCostPercent()
-// FUNCTION: IMPERIALISM 0x00550090
-undefined4 GetNormalizedIndustryActionResourceCostPercent(void)
-{
-  return 0;
-}
-
-// ghidra_name CalculateMissionOrderPriorityScore
-// ghidra_proto int __thiscall CalculateMissionOrderPriorityScore(int nScoreProfileId)
-// FUNCTION: IMPERIALISM 0x005501b0
-undefined4 CalculateMissionOrderPriorityScore(void)
-{
-  return 0;
-}
-
 // ghidra_name TScatteredShipsMission::GetOrCreateMissionOrderEntryForNode
 // ghidra_proto void * __thiscall GetOrCreateMissionOrderEntryForNode(void)
 // FUNCTION: IMPERIALISM 0x005503a0

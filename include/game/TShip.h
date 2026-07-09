@@ -92,6 +92,11 @@ int ComputeNavyOrderPriorityContributionPercentByCategory(short resourceType,
                                                           short tiebreakField, int category);
 short GetNavyOrderNormalizationBaseByResourceType(short resourceType);
 
+// Per-category (0..3) normalized cost percent for a resource type, over the same
+// divisor + TNavyOrderResourceDescriptor tables as the helper above but a distinct
+// per-category blend. Used by the AI city/industry development selectors.
+int GetNormalizedIndustryActionResourceCostPercent(int nCategory, short nResourceType);
+
 TShip* CreateNavyPrimaryOrderNodeAndAssignDisplayName(short resourceType, TZone* portZoneContext,
                                                       int nationSlot, char* displayNameOverride);
 void __fastcall RegenerateNavyPrimaryOrderDisplayNameUntilUnique(TShip* shipNode);

@@ -34,6 +34,8 @@ public:
   virtual void RenderStrategicTileSelectionAndNeighborHighlights() override;
   virtual void ForwardProjectTileIndexToWrappedScreenOffsetByScale(int arg1, int arg2, int arg3,
                                                                    int arg4, int arg5) override;
+  void ProjectTileIndexToWrappedScreenOffsetByScale(short tileIndex, short* originXY, short* outX,
+                                                    short* outY, short scale);
   virtual void ComputeWrappedMapCellAndRegionBandFromScreenCoord(int overlayRecord, short* outRow,
                                                                  unsigned short* outCol,
                                                                  short* outBand) override;
