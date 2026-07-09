@@ -164,6 +164,9 @@ static char ReturnTrueRuntimeCredentialInitStub();
 extern "C" const char s_PlayerName_0069801c[];
 extern "C" const char s_GameName_00698010[];
 
+// FUNCTION: IMPERIALISM 0x0050ec60
+NationStateRecordA8::NationStateRecordA8() {}
+
 // SYNTHETIC: IMPERIALISM 0x005425d0
 // TMultiplayerMgr::CreateObject
 
@@ -2684,6 +2687,42 @@ void TMultiplayerMgr::DispatchCityRedrawInvalidateEvent(short cityId) {
   packet.cityNameA4 = src->cityNameA4;
 
   g_pNetMgr006a6014->Send(&packet, 0);
+}
+
+// FUNCTION: IMPERIALISM 0x0054ae90
+NationStateRecordA8& NationStateRecordA8::operator=(const NationStateRecordA8& source) {
+  field00 = source.field00;
+  field01 = source.field01;
+  field02 = source.field02;
+  field03 = source.field03;
+  field04 = source.field04;
+  field06 = source.field06;
+  field08 = source.field08;
+  for (int a = 0; a < 12; ++a) {
+    block0A[a] = source.block0A[a];
+  }
+  for (int b = 0; b < 12; ++b) {
+    block22[b] = source.block22[b];
+  }
+  field3A = source.field3A;
+  field3B = source.field3B;
+  field3C = source.field3C;
+  field3E = source.field3E;
+  field40 = source.field40;
+  for (int c = 0; c < 0x20; ++c) {
+    block42[c] = source.block42[c];
+  }
+  for (int d = 0; d < 10; ++d) {
+    block82[d] = source.block82[d];
+  }
+  field98 = source.field98;
+  field9C = source.field9C;
+  fieldA0 = source.fieldA0;
+  fieldA1 = source.fieldA1;
+  fieldA2 = source.fieldA2;
+  fieldA3 = source.fieldA3;
+  sharedTextA4 = source.sharedTextA4;
+  return *this;
 }
 
 // FUNCTION: IMPERIALISM 0x0054b5d0

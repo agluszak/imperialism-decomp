@@ -3135,7 +3135,7 @@ address|name|symbol|size|type|prototype|provenance
 50e8b0|TMapMgr::WrapperFor_AllocateWithFallbackHandler_At0050e8b0||81|function|undefined WrapperFor_AllocateWithFallbackHandler_At0050e8b0(void)|
 50e901|InitializeUMapPrimaryTileRecordDefaultsAndEnsureAuxBuffer||341|function|undefined InitializeUMapPrimaryTileRecordDefaultsAndEnsureAuxBuffer()|
 50ea56|InitializeUMapAuxEntryDefaultsAndSharedNameFields||325|function|undefined InitializeUMapAuxEntryDefaultsAndSharedNameFields()|
-50ec60|InitializeSharedStringRefAndReturnThis||18|function|undefined InitializeSharedStringRefAndReturnThis()|
+50ec60|NationStateRecordA8::NationStateRecordA8||18|function|undefined InitializeSharedStringRefAndReturnThis()|
 50ec90|TMapMgr::BuildOrLoadGlobalMapStateForSession||283|function|undefined BuildOrLoadGlobalMapStateForSession()|
 50ed4d|RebuildGlobalMapStateAndMaybeDispatchTurnEvent3C0||591|function|undefined RebuildGlobalMapStateAndMaybeDispatchTurnEvent3C0()|
 50f200|TMapMgr::LoadPoliticalMapRegionSubtypeTableFromResourceStream||337|function|undefined LoadPoliticalMapRegionSubtypeTableFromResourceStream()|
@@ -3998,7 +3998,7 @@ address|name|symbol|size|type|prototype|provenance
 54acd6|copy_city_header_block|||global||
 54ad2e|copy_city_grid_block|||global||
 54adaa|dispatch_city_redraw_event|||global||
-54ae90|CopyA8RecordWithSharedStringAtA4||261|function|undefined CopyA8RecordWithSharedStringAtA4()|
+54ae90|NationStateRecordA8::operator=||261|function|undefined CopyA8RecordWithSharedStringAtA4()|
 54aff0|TPoseMessageDialog::OrphanRetStub_00487a00||16|function|void InvokePoseMessageDialogRefreshFromContextField18()|
 54b010|TPoseMessageDialog::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 54b040|DestructPoseMessageDialogTurnEventPacket||7|function|undefined DestructPoseMessageDialogTurnEventPacket()|

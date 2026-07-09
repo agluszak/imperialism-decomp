@@ -43,14 +43,6 @@ undefined4 InitializeUMapAuxEntryDefaultsAndSharedNameFields(void)
   return 0;
 }
 
-// ghidra_name InitializeSharedStringRefAndReturnThis
-// ghidra_proto undefined InitializeSharedStringRefAndReturnThis()
-// FUNCTION: IMPERIALISM 0x0050ec60
-undefined4 InitializeSharedStringRefAndReturnThis(void)
-{
-  return 0;
-}
-
 // ghidra_name RebuildGlobalMapStateAndMaybeDispatchTurnEvent3C0
 // ghidra_proto undefined RebuildGlobalMapStateAndMaybeDispatchTurnEvent3C0()
 // FUNCTION: IMPERIALISM 0x0050ed4d

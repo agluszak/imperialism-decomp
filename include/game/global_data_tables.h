@@ -538,6 +538,13 @@ extern CString g_cstrGreatPowerPressureMessage; // @ 0x6a2df0
 extern CString g_cstrArmyOrderMessageStore;        // @ 0x6a2318
 extern CString g_cstrNationComparisonMessageStore; // @ 0x6a3180
 extern CString g_cstrNationAwolMessageStore;       // @ 0x6a3d08
+extern char g_szImpSaveExtension_00698708[];
+extern char g_szMultiplayerSavePrefix_00698710[];
+extern char g_szSingleSlotSavePrefix_00698718[];
+extern char g_szSaveFileReadBinaryMode_00698720[];
+extern char g_szSaveDirectoryPrefix_00698724[];
+extern char g_szAutosaveSlotLabel_0069872C[];
+extern char g_szSavedDocumentMarker_0069B848[];
 extern char* g_pszDescriptorDefaultName_00653300;
 extern char g_szUiCloseParen_006973C8[];
 extern char g_szUiOpenParen_0069806C[];

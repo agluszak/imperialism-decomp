@@ -771,14 +771,6 @@ undefined4 CreateAndSendTurnEvent0C_Text256AndTwoFlags(void)
   return 0;
 }
 
-// ghidra_name CopyA8RecordWithSharedStringAtA4
-// ghidra_proto undefined CopyA8RecordWithSharedStringAtA4()
-// FUNCTION: IMPERIALISM 0x0054ae90
-undefined4 CopyA8RecordWithSharedStringAtA4(void)
-{
-  return 0;
-}
-
 // ghidra_name DestructPoseMessageDialogTurnEventPacket
 // ghidra_proto undefined DestructPoseMessageDialogTurnEventPacket()
 // FUNCTION: IMPERIALISM 0x0054b040

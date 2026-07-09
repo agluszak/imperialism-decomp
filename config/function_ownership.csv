@@ -2287,6 +2287,7 @@ address|target_cpp|ownership|note
 50e620|src/game/TMapMgr.cpp|manual|marker_sync
 50e7a0|src/game/TMapMgr.cpp|manual|marker_sync
 50e8b0|src/game/TMapMgr.cpp|manual|marker_sync
+50ec60|src/game/TMultiplayerMgr.cpp|manual|marker_sync
 50ec90|src/game/TMapMgr.cpp|manual|marker_sync
 50f200|src/game/TMapMgr.cpp|manual|marker_sync
 50f740|src/game/TMapMgr.cpp|manual|marker_sync
@@ -2962,6 +2963,7 @@ address|target_cpp|ownership|note
 54a5e0|src/game/TMultiplayerMgr.cpp|manual|marker_sync
 54ab20|src/game/TMultiplayerMgr.cpp|manual|marker_sync
 54abf0|src/game/TMultiplayerMgr.cpp|manual|marker_sync
+54ae90|src/game/TMultiplayerMgr.cpp|manual|marker_sync
 54aff0|src/game/TPoseMessageDialog.cpp|manual|marker_sync
 54b010|src/game/TPoseMessageDialog.cpp|manual|marker_sync
 54b060|src/game/TPoseMessageDialog.cpp|manual|marker_sync
@@ -3286,6 +3288,8 @@ address|target_cpp|ownership|note
 56d1e0|src/game/TLoadSavePicture.cpp|manual|marker_sync
 56d2a0|src/game/TLoadSavePicture.cpp|manual|marker_sync
 56d5c0|src/game/mapped_flavor_text.cpp|manual|marker_sync
+56d660|src/game/TLoadSavePicture.cpp|manual|marker_sync
+56d7d0|src/game/TLoadSavePicture.cpp|manual|marker_sync
 56e1e0|src/game/TTwoPicSlider.cpp|manual|marker_sync
 56e200|src/game/TTwoPicSlider.cpp|manual|marker_sync
 56e2f0|src/game/TTwoPicSlider.cpp|manual|marker_sync

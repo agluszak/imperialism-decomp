@@ -7,6 +7,43 @@
 class TStream;
 struct NetMessage;
 
+// 0xa8-byte nation-status snapshot record with a trailing shared-text CString at +0xa4,
+// used as a stack local by the diplomacy turn-event packet handler (0x543910). The POD
+// prefix mirrors the received nation/city state; interior field semantics are still
+// being mapped (named by offset). The default ctor (0x50ec60) constructs only the
+// CString member; the copy-assignment (0x54ae90) copies the POD prefix then the CString.
+struct NationStateRecordA8 {
+  unsigned char field00;
+  unsigned char field01;
+  unsigned char field02;
+  unsigned char field03;
+  short field04;
+  short field06;
+  unsigned char field08;
+  unsigned char pad09;
+  short block0A[12];
+  short block22[12];
+  unsigned char field3A;
+  unsigned char field3B;
+  unsigned char field3C;
+  unsigned char pad3D;
+  short field3E;
+  short field40;
+  short block42[0x20];
+  short block82[10];
+  short pad96;
+  int field98;
+  int field9C;
+  unsigned char fieldA0;
+  unsigned char fieldA1;
+  unsigned char fieldA2;
+  unsigned char fieldA3;
+  CString sharedTextA4;
+
+  NationStateRecordA8();
+  NationStateRecordA8& operator=(const NationStateRecordA8& source);
+};
+
 // Multiplayer session / game-flow manager (g_pGameFlowState). Inherits the shared
 // TEventHandler control surface used by UI roots; vtable @ 0x0065c030.
 // VTABLE: IMPERIALISM 0x0065c030

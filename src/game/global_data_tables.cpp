@@ -1060,6 +1060,21 @@ CString g_cstrArmyOrderMessageStore;
 CString g_cstrNationComparisonMessageStore;
 // GLOBAL: IMPERIALISM 0x006a3d08
 CString g_cstrNationAwolMessageStore;
+// Save-game path construction strings.
+// GLOBAL: IMPERIALISM 0x00698708
+char g_szImpSaveExtension_00698708[] = ".imp";
+// GLOBAL: IMPERIALISM 0x00698710
+char g_szMultiplayerSavePrefix_00698710[] = "mult";
+// GLOBAL: IMPERIALISM 0x00698718
+char g_szSingleSlotSavePrefix_00698718[] = "slot";
+// GLOBAL: IMPERIALISM 0x00698720
+char g_szSaveFileReadBinaryMode_00698720[] = "rb";
+// GLOBAL: IMPERIALISM 0x00698724
+char g_szSaveDirectoryPrefix_00698724[] = "Save/";
+// GLOBAL: IMPERIALISM 0x0069872c
+char g_szAutosaveSlotLabel_0069872C[] = "A";
+// GLOBAL: IMPERIALISM 0x0069b848
+char g_szSavedDocumentMarker_0069B848[] = "__saved";
 // Default text returned for a null nation descriptor (points at g_szEmptyString).
 // GLOBAL: IMPERIALISM 0x00653300
 char* g_pszDescriptorDefaultName_00653300 = g_szEmptyString;

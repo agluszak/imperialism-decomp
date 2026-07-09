@@ -707,22 +707,6 @@ undefined4 DestructTLoadSavePictureAndMaybeFree(void)
   return 0;
 }
 
-// ghidra_name BuildSavePathStringForMode
-// ghidra_proto undefined BuildSavePathStringForMode()
-// FUNCTION: IMPERIALISM 0x0056d660
-undefined4 BuildSavePathStringForMode(void)
-{
-  return 0;
-}
-
-// ghidra_name ReadScenarioIndexFromSaveHeader
-// ghidra_proto undefined ReadScenarioIndexFromSaveHeader()
-// FUNCTION: IMPERIALISM 0x0056d7d0
-undefined4 ReadScenarioIndexFromSaveHeader(void)
-{
-  return 0;
-}
-
 // ghidra_name LoadAndFormatMappedFlavorTextRecordsFromStream
 // ghidra_proto undefined LoadAndFormatMappedFlavorTextRecordsFromStream()
 // FUNCTION: IMPERIALISM 0x0056d840
