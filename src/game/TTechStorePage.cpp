@@ -19,4 +19,5 @@ TTechStorePage::~TTechStorePage() {}
 
 IMPLEMENT_DYNCREATE(TTechStorePage, TPageView)
 
+// FUNCTION: IMPERIALISM 0x004600c0
 TTechStorePage::TTechStorePage() {}
