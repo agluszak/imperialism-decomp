@@ -537,7 +537,10 @@ extern CString g_cstrGreatPowerPressureMessage; // @ 0x6a2df0
 // messageStoreRef argument (0x005d5b00 callsites).
 extern CString g_cstrArmyOrderMessageStore;        // @ 0x6a2318
 extern CString g_cstrNationComparisonMessageStore; // @ 0x6a3180
-extern CString g_cstrCivilianOrderMessageStore;    // @ 0x6a2d40
+extern char* g_pszDescriptorDefaultName_00653300;
+extern char g_szUiCloseParen_006973C8[];
+extern char g_szUiOpenParen_0069806C[];
+extern CString g_cstrCivilianOrderMessageStore; // @ 0x6a2d40
 extern "C" const char g_szUiFailureMessage[];
 extern CString g_cstrUiFontBelweLight;
 extern CString g_cstrUiFontPalatino;

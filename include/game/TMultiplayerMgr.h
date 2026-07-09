@@ -102,6 +102,16 @@ public:
   // (TSimMgr::AdvanceGlobalTurnStateMachine) loads ECX from g_pGameFlowState, so this is
   // a real TMultiplayerMgr method, not a free function. 0x543120.
   void ConfigureTurnResumeStateAndNationMask(int pendingNationSlot, int activeNationSlot);
+
+  // Refresh defaultNationTextSlots/nationDisplayNameSlots/nationStatusTags for one slot,
+  // or all seven when nationSlot == -1 (dead slots get 'dead'; ineligible names are
+  // wrapped in parentheses and the tag set to 'deca'). 0x54cc00 (Ghidra mis-attributed
+  // it to TToolBarCluster).
+  void RefreshNationStatusLabelsAndCodesForSlotOrAll(int nationSlot);
+
+  // Send the turn-event-0x15 diplomacy need-state snapshot for nationSlot (broadcast
+  // when broadcastFlag != 0). 0x54b5d0.
+  void EmitNationDiplomacyNeedStateSnapshotEvent15(char broadcastFlag, int nationSlot);
 };
 
 ASSERT_SIZE(TMultiplayerMgr, 0xf8);

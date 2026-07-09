@@ -32,5 +32,12 @@
 // LIBRARY: IMPERIALISM 0x0049eb00
 // CString::CString(class CString const &)
 
+// Same pattern: afx inline CString default/LPCSTR constructors spilled as COMDATs by
+// game TUs.
+// LIBRARY: IMPERIALISM 0x004b0970
+// CString::CString(void)
+// LIBRARY: IMPERIALISM 0x004ac370
+// CString::CString(char const *)
+
 // LIBRARY: IMPERIALISM 0x00413380
 // CObject::operator delete

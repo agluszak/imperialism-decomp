@@ -4331,7 +4331,7 @@
     },
     {
       "address": "0x48b2d0",
-      "matching": 0.2033898305084746,
+      "matching": 0.19130434782608696,
       "name": "TView::VTableSlotDD",
       "type": 1
     },
@@ -11767,7 +11767,7 @@
     },
     {
       "address": "0x4d7930",
-      "matching": 0.0,
+      "matching": 1.0,
       "name": "AssignSharedStringFromDescriptorNameOrDefault",
       "type": 1
     },
@@ -12771,8 +12771,7 @@
     },
     {
       "address": "0x4e0590",
-      "effective": true,
-      "matching": 0.42857142857142855,
+      "matching": 1.0,
       "name": "TGreatPower::OrphanRetStub_004d7fa0_88",
       "type": 1
     },
@@ -12790,20 +12789,20 @@
     },
     {
       "address": "0x4e0650",
-      "matching": 1.0,
+      "effective": true,
+      "matching": 0.42857142857142855,
       "name": "TGreatPower::OrphanRetStub_004d7fe0_8b",
       "type": 1
     },
     {
       "address": "0x4e0690",
-      "effective": true,
-      "matching": 0.42857142857142855,
+      "matching": 1.0,
       "name": "TGreatPower::ReturnFalseNationStateCapabilityFlag90",
       "type": 1
     },
     {
       "address": "0x4e06d0",
-      "matching": 0.7619047619047619,
+      "matching": 0.8095238095238095,
       "name": "TGreatPower::SumNationRuntimeFiveBucketValue44",
       "type": 1
     },
@@ -12833,7 +12832,7 @@
     },
     {
       "address": "0x4e09a0",
-      "matching": 0.5542168674698795,
+      "matching": 0.5301204819277109,
       "name": "TGreatPower::ComputeCityOrderCapabilityAggregateScore",
       "type": 1
     },
@@ -14352,7 +14351,7 @@
     },
     {
       "address": "0x4f2760",
-      "matching": 0.05555555555555555,
+      "matching": 1.0,
       "name": "BuildTurnEvent2ArraySyncPacketFromBufferAndRefreshBaselineCopy",
       "type": 1
     },
@@ -14730,7 +14729,7 @@
     },
     {
       "address": "0x4f6bd0",
-      "matching": 0.242914979757085,
+      "matching": 0.2248995983935743,
       "name": "TDiplomacyMapView::BlitDiplomacyMapEventPaletteMaskToSurface",
       "type": 1
     },
@@ -16327,7 +16326,7 @@
     },
     {
       "address": "0x50bea0",
-      "matching": 0.20717855520218081,
+      "matching": 0.19900045433893684,
       "name": "TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets",
       "type": 1
     },
@@ -16405,7 +16404,7 @@
     },
     {
       "address": "0x50da80",
-      "matching": 0.30666666666666664,
+      "matching": 0.2984409799554566,
       "name": "TMacViewMgr::BlitMapOverlayGlyphStrip32x24SkipMask10",
       "type": 1
     },
@@ -18241,7 +18240,7 @@
     },
     {
       "address": "0x52d750",
-      "matching": 0.21904761904761905,
+      "matching": 0.22063492063492063,
       "name": "MergeSmallCityRegionsAndCompactIds",
       "type": 1
     },
@@ -20132,13 +20131,13 @@
     },
     {
       "address": "0x53ceb0",
-      "matching": 0.44329896907216493,
+      "matching": 0.441025641025641,
       "name": "ComputeArmyMissionCompositionAlignmentScore",
       "type": 1
     },
     {
       "address": "0x53d020",
-      "matching": 0.4235294117647059,
+      "matching": 0.4251968503937008,
       "name": "ComputeArmyMissionScoreDeltaWithCandidateUnit",
       "type": 1
     },
@@ -20978,7 +20977,7 @@
     },
     {
       "address": "0x5420d0",
-      "matching": 0.0,
+      "matching": 1.0,
       "name": "SetEventPayloadNationIdFromSlotIndexWithSentinelHandling",
       "type": 1
     },
@@ -21038,7 +21037,7 @@
     },
     {
       "address": "0x542670",
-      "matching": 0.5203252032520326,
+      "matching": 0.5528455284552846,
       "name": "ConstructMultiplayerManager",
       "type": 1
     },
@@ -21146,7 +21145,7 @@
     },
     {
       "address": "0x5449b0",
-      "matching": 0.017857142857142856,
+      "matching": 0.44036697247706424,
       "name": "BuildTurnEvent2ArraySyncPacketDeltaOrFull",
       "type": 1
     },
@@ -21236,7 +21235,7 @@
     },
     {
       "address": "0x545940",
-      "matching": 0.09351037965214139,
+      "matching": 0.09384931762946346,
       "name": "TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine",
       "type": 1
     },
@@ -21452,7 +21451,7 @@
     },
     {
       "address": "0x54b5d0",
-      "matching": 0.021739130434782608,
+      "matching": 0.898876404494382,
       "name": "EmitNationDiplomacyNeedStateSnapshotEvent15",
       "type": 1
     },
@@ -21542,8 +21541,8 @@
     },
     {
       "address": "0x54cc00",
-      "matching": 0.0,
-      "name": "TToolBarCluster::RefreshNationStatusLabelsAndCodesForSlotOrAll",
+      "matching": 0.9029126213592233,
+      "name": "TMultiplayerMgr::RefreshNationStatusLabelsAndCodesForSlotOrAll",
       "type": 1
     },
     {
@@ -21800,7 +21799,7 @@
     },
     {
       "address": "0x5501b0",
-      "matching": 0.5352112676056338,
+      "matching": 0.4558139534883721,
       "name": "CalculateMissionOrderPriorityScore",
       "type": 1
     },
@@ -25898,7 +25897,7 @@
     },
     {
       "address": "0x57b9e0",
-      "matching": 0.7006369426751592,
+      "matching": 0.7133757961783439,
       "name": "TSimMgr::ConstructTurnFlowStateManagerVtable00662a58",
       "type": 1
     },
@@ -26216,7 +26215,7 @@
     },
     {
       "address": "0x581bc0",
-      "matching": 0.0,
+      "matching": 1.0,
       "name": "AssignSharedStringFromIndexedSlot7C",
       "type": 1
     },
@@ -32874,7 +32873,7 @@
     },
     {
       "address": "0x5d5b00",
-      "matching": 0.9767441860465116,
+      "matching": 1.0,
       "name": "DispatchLocalizedUiMessageWithTemplateA13A0",
       "type": 1
     },
@@ -33384,7 +33383,7 @@
     },
     {
       "address": "0x5df280",
-      "matching": 0.84,
+      "matching": 0.88,
       "name": "ConstructUiViewManager",
       "type": 1
     },

@@ -1607,7 +1607,7 @@ address|name|symbol|size|type|prototype|provenance
 4ab970|TMiniCivView::ConstructTMiniCivViewBaseState||1304|function|undefined ConstructTMiniCivViewBaseState()|
 4ac000|TMiniCivView::ApplyRectSlot110||628|function|undefined DestructTMiniCivViewAndMaybeFree()|
 4ac320|TMiniCivView::HandleEvent||64|function|undefined OrphanRetStub_0059add0(int param_1, TMiniCivView * param_2)|
-4ac370|TToolBarCluster::WrapperFor_ConstructSharedStringFromCStrOrResourceId_At004ac370||19|function|undefined WrapperFor_ConstructSharedStringFromCStrOrResourceId_At004ac370()|
+4ac370|CString::CString(char const *)||19|function|undefined CString(char const *)|
 4ac3a0|AssignSharedStringFromMidSubstring||114|function|undefined AssignSharedStringFromMidSubstring()|
 4ac570|WrapperFor_ftol_At004ac570||30|function|undefined WrapperFor_ftol_At004ac570()|
 4ac5c0|TSwapperDaddyView::CreateObject|?CreateObject@TSwapperDaddyView@@SGPAVCObject@@XZ|107|function|undefined CreateObject()|rtti
@@ -1669,7 +1669,7 @@ address|name|symbol|size|type|prototype|provenance
 4b06d0|TBattleUnitsView::GetRuntimeClass||6|function|undefined GetTBattleUnitsViewClassNamePointer()|rtti
 4b06f0|TBattleUnitsView::ConstructTBattleUnitsViewBaseState||389|function|undefined ConstructTBattleUnitsViewBaseState()|
 4b0900|TBattleUnitsView::CallVoidSlotA0||80|function|undefined DestructTBattleUnitsViewAndMaybeFree()|
-4b0970|WrapperFor_InitializeSharedStringRefFromEmpty_At004b0970||12|function|undefined WrapperFor_InitializeSharedStringRefFromEmpty_At004b0970()|
+4b0970|CString::CString(void)||12|function|undefined CString(void)|
 4b0ac0|WrapperFor_ftol_At004b0ac0||30|function|undefined WrapperFor_ftol_At004b0ac0()|
 4b0af0|THotspotBehavior::CreateObject|?CreateObject@THotspotBehavior@@SGPAVCObject@@XZ|80|function|undefined CreateObject()|rtti
 4b0b60|THotspotBehavior::GetRuntimeClass||6|function|undefined GetTHotspotBehaviorClassNamePointer()|rtti
@@ -4023,7 +4023,7 @@ address|name|symbol|size|type|prototype|provenance
 54c6e0|ResetNationStatusArraysAndTurnEventContext||186|function|undefined ResetNationStatusArraysAndTurnEventContext()|
 54c800|HandleActiveNationAwolTransitionOrRecovery||171|function|undefined HandleActiveNationAwolTransitionOrRecovery()|
 54c8e0|TSimMgr::EmitTurnEventEAnd9SessionContextPackets||525|function|undefined EmitTurnEventEAnd9SessionContextPackets()|
-54cc00|TToolBarCluster::RefreshNationStatusLabelsAndCodesForSlotOrAll||375|function|undefined RefreshNationStatusLabelsAndCodesForSlotOrAll()|
+54cc00|TMultiplayerMgr::RefreshNationStatusLabelsAndCodesForSlotOrAll||375|function|undefined RefreshNationStatusLabelsAndCodesForSlotOrAll()|
 54cde0|CreateAndQueueTurnEventPacketTagPOGC||128|function|undefined CreateAndQueueTurnEventPacketTagPOGC()|
 54ce80|EmitTurnEvent2CNationStateCompositeForSlot||701|function|undefined EmitTurnEvent2CNationStateCompositeForSlot()|
 54d1f0|EmitTurnEvent19NationStateArraysForSlot||381|function|undefined EmitTurnEvent19NationStateArraysForSlot()|

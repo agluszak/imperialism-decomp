@@ -611,14 +611,6 @@ undefined4 GetOrComputeOverlayAnchorTileIndex(void)
   return 0;
 }
 
-// ghidra_name AssignSharedStringFromDescriptorNameOrDefault
-// ghidra_proto undefined AssignSharedStringFromDescriptorNameOrDefault()
-// FUNCTION: IMPERIALISM 0x004d7930
-undefined4 AssignSharedStringFromDescriptorNameOrDefault(void)
-{
-  return 0;
-}
-
 // ghidra_name ClassifyNationMilitaryPowerBandAgainstGlobalMean
 // ghidra_proto undefined ClassifyNationMilitaryPowerBandAgainstGlobalMean()
 // FUNCTION: IMPERIALISM 0x004d84b0

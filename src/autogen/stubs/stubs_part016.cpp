@@ -491,14 +491,6 @@ undefined4 WrapperFor_ftol_At00541f60(void)
   return 0;
 }
 
-// ghidra_name SetEventPayloadNationIdFromSlotIndexWithSentinelHandling
-// ghidra_proto undefined SetEventPayloadNationIdFromSlotIndexWithSentinelHandling()
-// FUNCTION: IMPERIALISM 0x005420d0
-undefined4 SetEventPayloadNationIdFromSlotIndexWithSentinelHandling(void)
-{
-  return 0;
-}
-
 // ghidra_name FindActiveNationSlotIndexInGameFlowList
 // ghidra_proto undefined FindActiveNationSlotIndexInGameFlowList()
 // FUNCTION: IMPERIALISM 0x005421a0
@@ -583,14 +575,6 @@ undefined4 ResetDiplomacyRuntimeSelectionAndSetModeNada(void)
 // ghidra_proto undefined EmitTurnEvent10ForFlaggedNationSlots()
 // FUNCTION: IMPERIALISM 0x00544720
 undefined4 EmitTurnEvent10ForFlaggedNationSlots(void)
-{
-  return 0;
-}
-
-// ghidra_name BuildTurnEvent2ArraySyncPacketDeltaOrFull
-// ghidra_proto undefined BuildTurnEvent2ArraySyncPacketDeltaOrFull()
-// FUNCTION: IMPERIALISM 0x005449b0
-undefined4 BuildTurnEvent2ArraySyncPacketDeltaOrFull(void)
 {
   return 0;
 }
@@ -867,14 +851,6 @@ undefined4 DispatchTurnEventCode32NoPayload(void)
   return 0;
 }
 
-// ghidra_name EmitNationDiplomacyNeedStateSnapshotEvent15
-// ghidra_proto undefined EmitNationDiplomacyNeedStateSnapshotEvent15()
-// FUNCTION: IMPERIALISM 0x0054b5d0
-undefined4 EmitNationDiplomacyNeedStateSnapshotEvent15(void)
-{
-  return 0;
-}
-
 // ghidra_name SetNationStatusCodeForSlotOrActiveAndEmitEvent25
 // ghidra_proto undefined SetNationStatusCodeForSlotOrActiveAndEmitEvent25()
 // FUNCTION: IMPERIALISM 0x0054b7e0
@@ -967,14 +943,6 @@ undefined4 HandleActiveNationAwolTransitionOrRecovery(void)
 // ghidra_proto undefined EmitTurnEventEAnd9SessionContextPackets()
 // FUNCTION: IMPERIALISM 0x0054c8e0
 undefined4 EmitTurnEventEAnd9SessionContextPackets(void)
-{
-  return 0;
-}
-
-// ghidra_name TToolBarCluster::RefreshNationStatusLabelsAndCodesForSlotOrAll
-// ghidra_proto undefined RefreshNationStatusLabelsAndCodesForSlotOrAll()
-// FUNCTION: IMPERIALISM 0x0054cc00
-undefined4 RefreshNationStatusLabelsAndCodesForSlotOrAll(void)
 {
   return 0;
 }

@@ -79,6 +79,10 @@ public:
   void FormatOverlayTerrainLabelText(CString* out);
   // 0x4d8430 — sums g_UnitTypeMilitaryStatTable_00695CD2[type][1] over militaryUnitList44.
   int ComputeSelectedMilitaryPowerScore();
+  // 0x4d7930 - copy the nation's shared name text (TSimMgr::sharedTextSlots[nationSlot])
+  // into out; a null descriptor yields the default (empty) name. Callable through a null
+  // `this` (member access only happens after the null check).
+  void AssignSharedStringFromDescriptorNameOrDefault(CString* out);
 
   // Assign the display name and mirror it into the TSimMgr shared-text slot for
   // this nation (0x4d7a00).

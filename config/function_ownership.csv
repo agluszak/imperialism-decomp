@@ -1056,6 +1056,7 @@ address|target_cpp|ownership|note
 4ab950|src/game/TMiniCivView.cpp|manual|marker_sync
 4ac000|src/game/TMiniCivView.cpp|manual|marker_sync
 4ac320|src/game/TMiniCivView.cpp|manual|marker_sync
+4ac370|src/game/mfc_heap_library.cpp|library|marker_sync
 4ac5c0|src/game/TSwapperDaddyView.cpp|manual|marker_sync
 4ac650|src/game/TSwapperDaddyView.cpp|manual|marker_sync
 4ac6a0|src/game/TSwapperDaddyView.cpp|manual|marker_sync
@@ -1106,6 +1107,7 @@ address|target_cpp|ownership|note
 4b0630|src/game/TBattleUnitsView.cpp|manual|marker_sync
 4b06d0|src/game/TBattleUnitsView.cpp|manual|marker_sync
 4b0900|src/game/TBattleUnitsView.cpp|manual|marker_sync
+4b0970|src/game/mfc_heap_library.cpp|library|marker_sync
 4b0af0|src/game/THotspotBehavior.cpp|manual|marker_sync
 4b0b60|src/game/THotspotBehavior.cpp|manual|marker_sync
 4b0bb0|src/game/THotspotBehavior.cpp|manual|marker_sync
@@ -1574,6 +1576,7 @@ address|target_cpp|ownership|note
 4d71b0|src/game/TCountry.cpp|manual|marker_sync
 4d7770|src/game/TGreatPower_pending_action.cpp|manual|marker_sync
 4d7860|src/game/TCountry.cpp|manual|marker_sync
+4d7930|src/game/TCountry.cpp|manual|marker_sync
 4d7a00|src/game/TCountry.cpp|manual|marker_sync
 4d7a40|src/game/TGreatPower.cpp|manual|marker_sync
 4d7ae0|src/game/TCountry.cpp|manual|marker_sync
@@ -1963,6 +1966,7 @@ address|target_cpp|ownership|note
 4f2090|src/game/TDiplomacyMgr.cpp|manual|marker_sync
 4f2100|src/game/TDiplomacyMgr.cpp|manual|marker_sync
 4f21f0|src/game/TDiplomacyMgr.cpp|manual|marker_sync
+4f2760|src/game/TDiplomacyMgr.cpp|manual|marker_sync
 4f28a0|src/game/TNextDiplomationCommand.cpp|manual|marker_sync
 4f2910|src/game/TNextDiplomationCommand.cpp|manual|marker_sync
 4f2930|src/game/TNextDiplomationCommand.cpp|manual|marker_sync
@@ -2922,6 +2926,7 @@ address|target_cpp|ownership|note
 541d70|src/game/TRemoteMinor.cpp|manual|marker_sync
 541d90|src/game/TRemoteMinor.cpp|manual|marker_sync
 5420a0|src/game/NetMessage.cpp|manual|marker_sync
+5420d0|src/game/NetMessage.cpp|manual|marker_sync
 542120|src/game/NetMessage.cpp|manual|marker_sync
 5424b0|src/game/TCancelGameOptionsCommand.cpp|manual|marker_sync
 542520|src/game/TCancelGameOptionsCommand.cpp|manual|marker_sync
@@ -2939,6 +2944,7 @@ address|target_cpp|ownership|note
 5438e0|src/game/NetMessage.cpp|manual|marker_sync
 544540|src/game/TMultiplayerMgr.cpp|manual|marker_sync
 5446a0|src/game/TMultiplayerMgr.cpp|manual|marker_sync
+5449b0|src/game/TDiplomacyMgr.cpp|manual|marker_sync
 544e30|src/game/TMultiplayerMgr.cpp|manual|marker_sync
 545940|src/game/TMultiplayerMgr.cpp|manual|marker_sync
 549240|src/game/TSimMgr.cpp|manual|marker_sync
@@ -2955,8 +2961,10 @@ address|target_cpp|ownership|note
 54b010|src/game/TPoseMessageDialog.cpp|manual|marker_sync
 54b060|src/game/TPoseMessageDialog.cpp|manual|marker_sync
 54b0d0|src/game/TPoseMessageDialog.cpp|manual|marker_sync
+54b5d0|src/game/TMultiplayerMgr.cpp|manual|marker_sync
 54c5a0|src/game/TMultiplayerMgr.cpp|manual|marker_sync
 54c660|src/game/TMultiplayerMgr.cpp|manual|marker_sync
+54cc00|src/game/TMultiplayerMgr.cpp|manual|marker_sync
 54d650|src/game/TLoungeDialog.cpp|manual|marker_sync
 54d6d0|src/game/TLoungeDialog.cpp|manual|marker_sync
 54d6f0|src/game/TLoungeDialog.cpp|manual|marker_sync
@@ -3595,6 +3603,7 @@ address|target_cpp|ownership|note
 581870|src/game/TSimMgr.cpp|manual|marker_sync
 581ae0|src/game/TSimMgr.cpp|manual|marker_sync
 581b20|src/game/TSimMgr.cpp|manual|marker_sync
+581bc0|src/game/TSimMgr.cpp|manual|marker_sync
 582630|src/game/TGreatPower.cpp|manual|marker_sync
 5838b0|src/game/TArrowsControl.cpp|manual|marker_sync
 583950|src/game/TArrowsControl.cpp|manual|marker_sync

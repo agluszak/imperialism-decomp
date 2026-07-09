@@ -1058,6 +1058,13 @@ extern "C" const int g_anNationStartingTreasuryByLocale[6] = {50000, 10000, 1000
 CString g_cstrArmyOrderMessageStore;
 // GLOBAL: IMPERIALISM 0x006a3180
 CString g_cstrNationComparisonMessageStore;
+// Default text returned for a null nation descriptor (points at g_szEmptyString).
+// GLOBAL: IMPERIALISM 0x00653300
+char* g_pszDescriptorDefaultName_00653300 = g_szEmptyString;
+// GLOBAL: IMPERIALISM 0x006973c8
+char g_szUiCloseParen_006973C8[] = ")";
+// GLOBAL: IMPERIALISM 0x0069806c
+char g_szUiOpenParen_0069806C[] = "(";
 // GLOBAL: IMPERIALISM 0x006a2d40
 CString g_cstrCivilianOrderMessageStore;
 // GLOBAL: IMPERIALISM 0x006a2df0

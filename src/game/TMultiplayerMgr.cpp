@@ -4,6 +4,33 @@
 #include "game/CString.h"
 #include "game/mapped_flavor_text.h"
 #include "game/NetMessage.h"
+#include "game/nation_slot_eligibility.h"
+
+// Turn-event-0x15 payload: the sender nation's full diplomacy need-state block.
+struct TurnEvent15Packet : NetMessage {
+  int packetTag;                // +0x10 'time'
+  unsigned char activeNationId; // +0x14
+  unsigned char pad15[3];
+  short nationSlot; // +0x18
+  unsigned char pad1a[2];
+  int treasuryValue;                 // +0x1c
+  int grantTotalCost;                // +0x20
+  short needCurrentByType[0x17];     // +0x24
+  short needTargetByType[0x17];      // +0x52
+  short relationDeltaCurrent[0x17];  // +0x80
+  short relationDeltaSnapshot[0x17]; // +0xae
+  short diplomacyState1c6[0x17];     // +0xdc
+  unsigned char pad10a[2];
+  int aidAllocationMatrix[0x170]; // +0x10c
+  int budgetPoolBase;             // +0x6cc
+  int budgetPoolDelta;            // +0x6d0
+  int diplomacyBudgetBase;        // +0x6d4
+  signed char escalationCounter;  // +0x6d8
+  unsigned char pad6d9[3];
+  int pendingCommitmentCost;   // +0x6dc
+  signed char pressureCounter; // +0x6e0
+  unsigned char pad6e1[3];     // total 0x6e4
+};
 #include "game/TGreatPower.h"
 #include "game/TMapMgr.h"
 #include "game/TDiplomacyMgr.h"
@@ -2443,6 +2470,46 @@ void TMultiplayerMgr::DispatchCityRedrawInvalidateEvent(short cityId) {
   g_pNetMgr006a6014->Send(&packet, 0);
 }
 
+// FUNCTION: IMPERIALISM 0x0054b5d0
+void TMultiplayerMgr::EmitNationDiplomacyNeedStateSnapshotEvent15(char broadcastFlag,
+                                                                  int nationSlot) {
+  TurnEvent15Packet packet;
+  packet.packetTag = 0x74696d65;
+  packet.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetActiveNationId());
+  packet.eventCode = 0;
+  packet.eventCode = 0x15;
+  packet.fromNetworkId = 0;
+  packet.toNetworkId = 0;
+  packet.messageLength = 0;
+  packet.messageLength = 0x6e4;
+  if (broadcastFlag != 0) {
+    packet.toNetworkId = -1;
+  } else {
+    packet.toNetworkId = g_pGameFlowState->nationSessionIds[nationSlot];
+  }
+  packet.nationSlot = static_cast<short>(nationSlot);
+  TGreatPower* nation = g_apNationStates[nationSlot];
+  packet.treasuryValue = nation->treasuryValue10;
+  packet.grantTotalCost = nation->grantTotalCost;
+  for (int i = 0; i < 0x17; ++i) {
+    packet.needCurrentByType[i] = nation->needCurrentByType[i];
+    packet.needTargetByType[i] = nation->needTargetByType[i];
+    packet.relationDeltaCurrent[i] = nation->relationDeltaCurrent[i];
+    packet.relationDeltaSnapshot[i] = nation->relationDeltaSnapshot[i];
+    packet.diplomacyState1c6[i] = nation->diplomacyState1c6[i];
+    for (int j = 0; j < 0x10; ++j) {
+      packet.aidAllocationMatrix[j * 0x17 + i] = nation->aidAllocationMatrix[j * 0x17 + i];
+    }
+  }
+  packet.budgetPoolBase = nation->budgetPoolBase;
+  packet.budgetPoolDelta = nation->budgetPoolDelta;
+  packet.diplomacyBudgetBase = nation->diplomacyBudgetBase;
+  packet.escalationCounter = nation->escalationCounter;
+  packet.pendingCommitmentCost = nation->pendingCommitmentCost;
+  packet.pressureCounter = nation->pressureCounter;
+  g_pNetMgr006a6014->Send(&packet, 0);
+}
+
 // FUNCTION: IMPERIALISM 0x0054c5a0
 void TMultiplayerMgr::DispatchJoinEmpireModeEventPacket24_27(int sourceNation, int targetNation,
                                                              int mode) {
@@ -2464,6 +2531,47 @@ void TMultiplayerMgr::DispatchJoinEmpireModeEventPacket24_27(int sourceNation, i
 // FUNCTION: IMPERIALISM 0x0054c660
 void TMultiplayerMgr::NoOpCallbackRet4(void* param) {
   (void)param;
+}
+
+// FUNCTION: IMPERIALISM 0x0054cc00
+void TMultiplayerMgr::RefreshNationStatusLabelsAndCodesForSlotOrAll(int nationSlot) {
+  if (nationSlot == -1) {
+    for (int slot = 0; slot < 7; ++slot) {
+      RefreshNationStatusLabelsAndCodesForSlotOrAll(slot);
+    }
+  } else if (g_apNationStates[nationSlot] == 0) {
+    {
+      CString emptyName(g_szEmptyString);
+      defaultNationTextSlots[nationSlot] = emptyName;
+    }
+    nationStatusTags[nationSlot] = 0x64656164; // 'dead'
+  } else {
+    bool wrapInParens;
+    if (g_apNationStates[nationSlot]->diplomacyEligibilityA0 == 0 ||
+        IsNationSlotEligibleForEventProcessing(static_cast<short>(nationSlot)) == 0) {
+      wrapInParens = true;
+    } else {
+      wrapInParens = false;
+    }
+    CString nationName;
+    g_apNationStates[nationSlot]->FormatOverlayTerrainLabelText(&nationName);
+    const char* prefix = g_szUiOpenParen_0069806C;
+    if (!wrapInParens) {
+      prefix = g_szEmptyString;
+    }
+    CString prefixText(prefix);
+    defaultNationTextSlots[nationSlot] = prefixText;
+    defaultNationTextSlots[nationSlot] += nationName;
+    const char* suffix = g_szUiCloseParen_006973C8;
+    if (!wrapInParens) {
+      suffix = g_szEmptyString;
+    }
+    defaultNationTextSlots[nationSlot] += suffix;
+    nationDisplayNameSlots[nationSlot] = defaultNationTextSlots[nationSlot];
+    if (IsNationSlotEligibleForEventProcessing(static_cast<short>(nationSlot)) == 0) {
+      nationStatusTags[nationSlot] = 0x64656361; // 'deca'
+    }
+  }
 }
 
 // Trivial credential-init stub reused across the networking cluster (0x5e34b0):

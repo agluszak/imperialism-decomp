@@ -299,14 +299,6 @@ undefined4 UpdatePersistentTopTenNationScores(void)
   return 0;
 }
 
-// ghidra_name AssignSharedStringFromIndexedSlot7C
-// ghidra_proto undefined AssignSharedStringFromIndexedSlot7C()
-// FUNCTION: IMPERIALISM 0x00581bc0
-undefined4 AssignSharedStringFromIndexedSlot7C(void)
-{
-  return 0;
-}
-
 // ghidra_name RefreshNationAdvisorLabelStrings
 // ghidra_proto undefined RefreshNationAdvisorLabelStrings()
 // FUNCTION: IMPERIALISM 0x00581c00

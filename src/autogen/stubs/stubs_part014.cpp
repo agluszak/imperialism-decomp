@@ -291,14 +291,6 @@ undefined4 RebuildMinorNationDispositionLookupTables(void)
   return 0;
 }
 
-// ghidra_name BuildTurnEvent2ArraySyncPacketFromBufferAndRefreshBaselineCopy
-// ghidra_proto undefined BuildTurnEvent2ArraySyncPacketFromBufferAndRefreshBaselineCopy()
-// FUNCTION: IMPERIALISM 0x004f2760
-undefined4 BuildTurnEvent2ArraySyncPacketFromBufferAndRefreshBaselineCopy(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_thunk_ApplyEncodedDeltaPayloadToBufferByMode_At004f27f0
 // ghidra_proto undefined WrapperFor_thunk_ApplyEncodedDeltaPayloadToBufferByMode_At004f27f0()
 // FUNCTION: IMPERIALISM 0x004f27f0

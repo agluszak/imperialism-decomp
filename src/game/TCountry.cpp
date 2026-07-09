@@ -372,6 +372,16 @@ void TCountry::FormatOverlayTerrainLabelText(CString* out) {
   *out = label;
 }
 
+// FUNCTION: IMPERIALISM 0x004d7930
+void TCountry::AssignSharedStringFromDescriptorNameOrDefault(CString* out) {
+  if (this == 0) {
+    CString defaultName(g_pszDescriptorDefaultName_00653300);
+    *out = defaultName;
+  } else {
+    *out = g_pSimMgr->AssignSharedStringFromIndexedSlot7C(this->nationSlot);
+  }
+}
+
 // FUNCTION: IMPERIALISM 0x004d7a00
 void TCountry::SetNationDisplayNameAndLocalizationSlotRef(const CString& name) {
   this->identitySharedString0 = name;
