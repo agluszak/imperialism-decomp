@@ -168,6 +168,7 @@ address|target_cpp|ownership|note
 45d4b0|src/game/TTacticalHolaPicture.cpp|manual|marker_sync
 45d520|src/game/turn_event_dialog_factory.cpp|manual|marker_sync
 45e0b0|src/game/turn_event_dialog_factory.cpp|manual|marker_sync
+4600c0|src/game/TTechStorePage.cpp|manual|marker_sync
 4600f0|src/game/TTechStorePage.cpp|manual|marker_sync
 460140|src/game/TTechHistoryView.cpp|manual|marker_sync
 4601b0|src/game/turn_event_dialog_factory.cpp|manual|marker_sync
