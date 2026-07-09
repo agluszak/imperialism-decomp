@@ -7,6 +7,7 @@
 
 IMPLEMENT_DYNCREATE(TGarrisonView, TMilitaryPageView)
 
+// FUNCTION: IMPERIALISM 0x004a8810
 TGarrisonView::TGarrisonView() {}
 
 // SYNTHETIC: IMPERIALISM 0x004a8840
@@ -14,5 +15,4 @@ TGarrisonView::TGarrisonView() {}
 TGarrisonView::~TGarrisonView() {}
 
 // FUNCTION: IMPERIALISM 0x004a8a20
-void TGarrisonView::CallVoidSlotA0() {
-}
+void TGarrisonView::CallVoidSlotA0() {}

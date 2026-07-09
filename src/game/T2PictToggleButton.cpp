@@ -18,7 +18,7 @@ T2PictToggleButton::T2PictToggleButton() : TToggleButton() {}
 
 // FUNCTION: IMPERIALISM 0x005849b0
 bool T2PictToggleButton::IsSelected() {
-  return this->field3c <= this->glyphBase84;
+  return this->controlValue3c <= this->glyphBase84;
 }
 
 // FUNCTION: IMPERIALISM 0x005849d0
@@ -27,13 +27,13 @@ void T2PictToggleButton::Select(bool isPressed, bool notifyParent) {
   void** ppuVar2;
 
   short sVar1 = glyphBase84;
-  int oldField3c = field3c;
+  int oldField3c = controlValue3c;
 
   if (((isPressed == false) && (oldField3c < (int)sVar1)) ||
       ((isPressed == true && ((int)sVar1 < oldField3c)))) {
     reinterpret_cast<void(__cdecl*)(short, int)>(reinterpret_cast<void***>(this)[0][0x72])(
         (short)oldField3c, 0);
-    field3c = (int)sVar1;
+    controlValue3c = (int)sVar1;
   }
   ppuVar2 = reinterpret_cast<void***>(this)[0];
   reinterpret_cast<void(__cdecl*)()>(ppuVar2[0x3e])();

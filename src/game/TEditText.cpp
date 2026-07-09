@@ -15,7 +15,7 @@ TEditText::TEditText() : TStaticText() {
   this->field_94 = nullptr;
   this->field_98 = nullptr;
   this->field_9c = 0xff;
-  this->flag4d = 0;
+  this->childHitTestFlag4d = 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004904d0

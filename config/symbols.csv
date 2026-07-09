@@ -214,14 +214,7 @@ address|name|symbol|size|type|prototype|provenance
 43da70|TGamePreferencesPicture::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 43daa0|TRadioText::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 43dad0|TCreditsPicture::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
-43dbc0|InitializeArmyNavyReportViewsAndCommandTags||18464|function|undefined InitializeArmyNavyReportViewsAndCommandTags()|
-43e8b0|BuildMainMapAndCityCommandControls||8800|function|undefined BuildMainMapAndCityCommandControls()|
-440b83|BuildCivilianReportDialogResources||1121|function|int * BuildCivilianReportDialogResources(void)|
-4418b0|InitializeTGarrisonViewBitmapAndControlResources||152|function|undefined InitializeTGarrisonViewBitmapAndControlResources()|
-441948|BuildGarrisonViewBaseAndTabCursorUiResources||642|function|undefined BuildGarrisonViewBaseAndTabCursorUiResources()|
-441ff1|BuildConstructionOptionsDialogResources||302|function|int * BuildConstructionOptionsDialogResources(void)|
-4472bb|InitializeTNavyRosterBitmapAndControlResources||152|function|undefined InitializeTNavyRosterBitmapAndControlResources()|
-447353|TNavyRoster::BuildNavyRosterDialogUiResourceTree||719|function|undefined BuildNavyRosterDialogUiResourceTree()|
+43dbc0|InitializeArmyNavyReportViewsAndCommandTags||41505|function|undefined InitializeArmyNavyReportViewsAndCommandTags()|
 44a6c0|TPageCorner::WrapperFor_thunk_ConstructPictureResourceEntry_Vtbl00660b48_At0044a6c0||18|function|undefined WrapperFor_thunk_ConstructPictureResourceEntry_Vtbl00660b48_At0044a6c0()|
 44a6f0|TToolBarCluster::WrapperFor_thunk_ConstructUiResourceEntryType4B0C0_At0044a6f0||18|function|undefined WrapperFor_thunk_ConstructUiResourceEntryType4B0C0_At0044a6f0()|
 44a720|TShipFractionCluster::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
@@ -281,11 +274,7 @@ address|name|symbol|size|type|prototype|provenance
 460140|TTechHistoryView::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 4601b0|InitializeTradeScreenBitmapControls||51455|function|undefined InitializeTradeScreenBitmapControls()|
 46fd10|BuildTurnEventDialogResourcesForEvent7DE||15634|function|undefined BuildTurnEventDialogResourcesForEvent7DE()|
-4749a0|BuildUniversityDialogShell||293|function|int * __fastcall BuildUniversityDialogShell(dword dwPanelId, short nDialogTypeTag)|
-474ac5|BuildUniversityDialogControls||5307|function|undefined BuildUniversityDialogControls()|
-475f80|thunk_BuildUniversityRecruitmentRows||2|function|undefined thunk_BuildUniversityRecruitmentRows()|
-475f82|BuildUniversityRecruitControls||2|function|undefined BuildUniversityRecruitControls()|
-475f84|BuildUniversityRecruitmentRows||9547|function|undefined BuildUniversityRecruitmentRows()|
+4749a0|BuildUniversityDialogShell||15151|function|int * __fastcall BuildUniversityDialogShell(dword dwPanelId, short nDialogTypeTag)|
 4793c0|CAmbitDocument::CreateObject|?CreateObject@CAmbitDocument@@SGPAVCObject@@XZ|87|function|undefined CreateObject()|rtti
 479440|CAmbitDocument::GetRuntimeClass|?GetRuntimeClass@CAmbitDocument@@UBEPAUCRuntimeClass@@XZ|6|function|undefined __thiscall GetRuntimeClass(void)|rtti
 479460|TTechStorePage::GetCityDialogValueDwordC||6|function|undefined OrphanVtableAssignStub_00479460(void)|

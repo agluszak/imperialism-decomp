@@ -36,7 +36,7 @@ TTwoPicSlider::~TTwoPicSlider() {}
 void TTwoPicSlider::InitializePictureSurfaces(int baseBitmapId) {
   lowerSurface = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(baseBitmapId + 1);
   upperSurface = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(baseBitmapId);
-  RECT bounds = {0, 0, field34, field38};
+  RECT bounds = {0, 0, frameWidth34, frameHeight38};
   g_pDisplayMgr->InitializeBitmapSurfaceContextWithRetry(&compositeSurface, 8, &bounds);
 }
 
@@ -79,7 +79,8 @@ static __inline int SliderScaledValue(TTwoPicSlider* slider, int scale) {
   if (slider->splitPosition >= 0x0c) {
     adjustedSplit = static_cast<short>(slider->splitPosition - 0x0c);
   }
-  return (adjustedSplit * scale) / static_cast<int>(static_cast<short>(slider->field38 - 0x0c));
+  return (adjustedSplit * scale) /
+         static_cast<int>(static_cast<short>(slider->frameHeight38 - 0x0c));
 }
 } // namespace
 
@@ -93,10 +94,10 @@ void TTwoPicSlider::ApplyRectSlot110(RECT* rectBuffer) {
     short splitPosition = ClampSliderSplitForFill(slider->splitPosition);
 
     RECT blitRect;
-    blitRect.bottom = slider->field38;
+    blitRect.bottom = slider->frameHeight38;
     blitRect.left = 0;
     blitRect.top = blitRect.bottom - splitPosition;
-    blitRect.right = slider->field34;
+    blitRect.right = slider->frameWidth34;
 
     ResetQuickDrawStrokeState();
     BlitQuickDrawSurfaces(slider->lowerSurface->GetBlitSurface(),
@@ -107,8 +108,8 @@ void TTwoPicSlider::ApplyRectSlot110(RECT* rectBuffer) {
     BlitQuickDrawSurfaces(slider->upperSurface->GetBlitSurface(),
                           slider->compositeSurface->GetBlitSurface(), &blitRect, &blitRect, 0);
 
-    blitRect.right = slider->field34;
-    blitRect.bottom = slider->field38;
+    blitRect.right = slider->frameWidth34;
+    blitRect.bottom = slider->frameHeight38;
     blitRect.left = 0;
     blitRect.top = 0;
     BlitQuickDrawSurfaces(slider->compositeSurface->GetBlitSurface(),
@@ -125,9 +126,9 @@ void TTwoPicSlider::ApplyRectSlot110(RECT* rectBuffer) {
       MapUiThemeCodeToStyleFlags(0x2b6c, &textShadowColor);
       MapUiThemeCodeToStyleFlags(0x2b67, &textMainColor);
 
-      short textCenterY = static_cast<short>(slider->field38 / 2);
+      short textCenterY = static_cast<short>(slider->frameHeight38 / 2);
       short textWidth = MeasureTextExtentWithCachedQuickDrawStyle(&statusText);
-      short textLeft = static_cast<short>((slider->field34 / 2) - (textWidth / 2));
+      short textLeft = static_cast<short>((slider->frameWidth34 / 2) - (textWidth / 2));
 
       SetQuickDrawColorAndSyncGlobals(textMainColor);
       SetQuickDrawTextOriginWithContextOffset(static_cast<short>(textLeft + 1),
@@ -156,7 +157,7 @@ void TTwoPicSlider::DispatchPictureResourceCommand(int nEventType, void* pEventS
       return;
     }
 
-    short nextSplit = ClampSliderInputToHeight(slider->field38, pointRecord);
+    short nextSplit = ClampSliderInputToHeight(slider->frameHeight38, pointRecord);
     if (slider->splitPosition != nextSplit) {
       slider->splitPosition = nextSplit;
 
@@ -166,8 +167,8 @@ void TTwoPicSlider::DispatchPictureResourceCommand(int nEventType, void* pEventS
       RECT sliderRect;
       sliderRect.left = 0;
       sliderRect.top = 0;
-      sliderRect.right = slider->field34;
-      sliderRect.bottom = slider->field38;
+      sliderRect.right = slider->frameWidth34;
+      sliderRect.bottom = slider->frameHeight38;
       slider->ApplyRectSlot110(&sliderRect);
 
       if (slider->mode == 1) {

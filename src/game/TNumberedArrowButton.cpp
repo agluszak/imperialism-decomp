@@ -106,7 +106,7 @@ void TNumberedArrowButton::DispatchPictureResourceCommand(int eventType, void* e
 void TNumberedArrowButton::HandleCursorHoverSelectionByChildHitTestAndFallback(CPoint* cursorPoint,
                                                                                int hitArg) {
   if (IsActionable() != '\0') {
-    if (cursorPoint->y < field38 / 2) {
+    if (cursorPoint->y < frameHeight38 / 2) {
       field4e = 0x100;
       TControl::HandleCursorHoverSelectionByChildHitTestAndFallback(cursorPoint, hitArg);
       return;

@@ -44,7 +44,7 @@ TControl* TModalTemplateDialog::InitializeDialogTemplateFromId(UINT templateId, 
 
 int TModalTemplateDialog::PrepareAndCreateModalFromTemplate() {
   const int result = TModalTemplateDialogBase::PrepareAndCreateModalFromTemplate();
-  lockedTemplateBytes = field48;
+  lockedTemplateBytes = stylePayload48;
   templateSourceCopy = reinterpret_cast<int>(childList44);
   hDialogResource = reinterpret_cast<HGLOBAL>(field70);
   hOwnerWindow = reinterpret_cast<HWND>(field6C);

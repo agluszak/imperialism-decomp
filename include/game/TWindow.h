@@ -137,9 +137,9 @@ public:
   virtual undefined OrphanCallChain_C2_I39_0048d900(char param_1,
                                                     char param_2); // slot 0x73 0x48d900
   // MacApp TWindow::CloseAndFree(): Close (slot 0x28) then Free (slot 0x07).
-  virtual void CloseAndFree();                                     // slot 0x74 0x48e120
-  virtual undefined SetWindowText(CString* param_1);               // slot 0x75 0x48d9c0
-  virtual undefined GetWindowText(CString* param_1);               // slot 0x76 0x48d9f0
+  virtual void CloseAndFree();                       // slot 0x74 0x48e120
+  virtual undefined SetWindowText(CString* param_1); // slot 0x75 0x48d9c0
+  virtual undefined GetWindowText(CString* param_1); // slot 0x76 0x48d9f0
   // === END GENERATED DECLS (TWindow) ===
 
   // --- TWindow data members (object size 0xa0; the TView subobject ends at 0x60). ---
@@ -148,22 +148,25 @@ public:
   // Offsets that are not yet attributed stay as padding.
   short windowStyleType; // 0x60 — window-type code; selects the CreateEx style bits
   unsigned char padding_62_to_63[0x02];
-  class TWindow* field64;               // 0x64 — linked sibling/owner window
+  // 0x64 — the currently-active linked window (init = this); switching targets
+  // notifies the previous one via DispatchUiCommand19ToParent.
+  class TWindow* activeLinkedWindow64;
   unsigned char padding_68_to_6b[0x04]; // 0x68
   // 0x6c-0x71 — style/behavior flag bytes written per-window by the turn-event dialog
-  // factory builders (names hedged; only field6d/field70 have verified consumers).
-  unsigned char flag6c;  // 0x6c
-  unsigned char field6d; // 0x6d — dialog-style flag (CreateMcWindow)
-  unsigned char flag6e;  // 0x6e
-  unsigned char flag6f;  // 0x6f
-  unsigned char field70; // 0x70 — when set, adds WS_EX_TOPMOST in CreateMcWindow
-  unsigned char flag71;  // 0x71
+  // factory builders (names hedged; only useCaptionedFrameFlag6d/field70 have verified consumers).
+  unsigned char flag6c; // 0x6c
+  // 0x6d — for window-type codes 0x30/0x1f40, selects the captioned frame style
+  // (0x00c80000) instead of the popup style (0x80c00000) in CMcWindow's CreateEx.
+  unsigned char useCaptionedFrameFlag6d;
+  unsigned char flag6e;        // 0x6e
+  unsigned char flag6f;        // 0x6f
+  unsigned char topmostFlag70; // 0x70 — when set, CMcWindow adds WS_EX_TOPMOST
+  unsigned char flag71;        // 0x71
   unsigned char padding_72_to_73[0x02];
   TDialogBehavior dialogBehavior; // 0x74
-  int field98;                    // 0x98
+  int busyFlag98;                 // 0x98
   unsigned short field9c;         // 0x9c — style/mode word set by the dialog factory builders
   unsigned char padding_9e_to_9f[0x02];
 
   TWindow();
 };
-

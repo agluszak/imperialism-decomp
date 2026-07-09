@@ -43,7 +43,7 @@ void TArrowsControl::DispatchPictureResourceCommand(int nEventType, void* pEvent
     return;
   }
 
-  if (point->y <= this->field38 / 2) {
+  if (point->y <= this->frameHeight38 / 2) {
     this->DispatchEvent(100, this, nullptr);
   } else {
     this->DispatchEvent(101, this, nullptr);

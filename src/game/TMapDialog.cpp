@@ -15,6 +15,27 @@ undefined4 thunk_ProjectTileIndexToWrappedScreenOffsetByScale(void);
 undefined4 thunk_SplitTileIndexToRowAndColumn(void);
 
 #define g_wMapDialogTileRowMarker (*reinterpret_cast<short*>(0x006a33b0))
+
+// FUNCTION: IMPERIALISM 0x00512440
+void TMapDialog::ProjectTileIndexToWrappedScreenOffsetByScale(short tileIndex, short* originXY,
+                                                              short* outX, short* outY,
+                                                              short scale) {
+  unsigned int row = static_cast<unsigned int>(tileIndex / 0x6c);
+  *outY = static_cast<short>(row) * 0x40 - originXY[2];
+  short projectedX = static_cast<short>((tileIndex % 0x6c) << 6) - *originXY;
+  *outX = projectedX;
+  if ((row & 1U) != 0) {
+    *outX = static_cast<short>(projectedX + 0x20);
+    if (0x1adf < *outX) {
+      *outX = static_cast<short>(projectedX - 0x1ae0);
+    }
+  }
+  while (*outX < -0x40) {
+    *outX = static_cast<short>(*outX + 0x1b00);
+  }
+  *outY = static_cast<short>(*outY / scale);
+  *outX = static_cast<short>(*outX / scale);
+}
 // SYNTHETIC: IMPERIALISM 0x005199c0
 // TMapDialog::CreateObject
 
@@ -23,6 +44,7 @@ undefined4 thunk_SplitTileIndexToRowAndColumn(void);
 
 IMPLEMENT_DYNCREATE(TMapDialog, TWorldView)
 
+// FUNCTION: IMPERIALISM 0x00519b50
 TMapDialog::TMapDialog() {}
 
 // SYNTHETIC: IMPERIALISM 0x00519C40

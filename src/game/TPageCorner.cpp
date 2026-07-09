@@ -11,6 +11,7 @@ TPageCorner::~TPageCorner() {}
 
 IMPLEMENT_DYNCREATE(TPageCorner, TColorKeyPicture)
 
+// FUNCTION: IMPERIALISM 0x0044a6c0
 TPageCorner::TPageCorner() {}
 
 // FUNCTION: IMPERIALISM 0x0056f850

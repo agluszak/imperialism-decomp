@@ -935,3 +935,29 @@ TSortedList's entire slot layout, since even the class's own static vtable dump 
 disambiguate on its own (two different in-binary vtable copies for the same class
 were checked, both self-consistent with the header's WRONG assumption for the early
 slots) — this is flagged as follow-up work, not patched piecemeal per function.
+
+## 56. A non-inline wrapper for a CList AddTail/RemoveTail COMDAT can't match the original's direct dispatch — and __inline makes it worse
+
+The UI-builder giants call `g_UiWidgetBuildStack006a13e0.AddTail(node)` /
+`.RemoveTail()` at every widget push/pop. The original emits each as a *direct
+out-of-line dispatch* to the CList template COMDAT: `mov ecx, &list; call
+AddTail@0x479b00` (thiscall, callee cleans stack, `ret 4`). The repo routes these
+through free-function wrappers `Push/PopUiWidgetBuildStackNode` in
+turn_event_dialog_factory.cpp so the AddTail body stays out-of-line. Two failure
+modes, neither matches:
+- **Wrapper NOT `__inline`** (called many times → past the TU inline budget, note 55):
+  emits `call PushUiWidgetBuildStackNode` (a cdecl free fn) + caller `add esp,4`,
+  vs the original's `call AddTail` + no caller cleanup. Mismatch at every push/pop,
+  AND the cdecl call clobbers the register holding `parent`, forcing a stack spill
+  that inflates the frame by 8 bytes (`sub esp,0x18` vs orig `0x10`) and cascades
+  into dozens of wrong `[esp+off]` immediates.
+- **Wrapper `__inline`**: MSVC inlines the wrapper, then also inlines the *template
+  body* of AddTail/RemoveTail at each site (NewNode expansion + field writes), which
+  is even further from the original's single `call AddTail`. Score went 64.31% ->
+  59.94% on BuildUniversityDialogShell (0x4749a0) when both wrappers were marked.
+The original's exact shape (direct `call` to the out-of-line COMDAT, no wrapper, no
+body inline) is not reproducible from source at this build's `/Ob1`: a direct
+`.AddTail()` call inlines the implicitly-inline template method, and any wrapper adds
+a call layer. Keep the plain (non-inline) wrapper — it's the higher-scoring of the
+two — and treat the residual push/pop call-shape + frame-size delta as an accepted
+structural cost of these 10-15KB builders. Do not chase it by toggling `__inline`.

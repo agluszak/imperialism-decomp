@@ -252,7 +252,7 @@ undefined TDisplayMgr::DispatchUiWindowStatusTickForClass99Windows() {
   TWindow* window = static_cast<TWindow*>(cursor.FirstWindow());
   while (cursor.More() != 0) {
     if (window != 0) {
-      if (window->IsActionable() != 0 && window->field3c == kClass99WindowId) {
+      if (window->IsActionable() != 0 && window->controlValue3c == kClass99WindowId) {
         if (window->GetDialogBehaviorByte10() == 0) {
           window->CloseAndFree();
         } else {

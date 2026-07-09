@@ -16,7 +16,7 @@
 // 0x16 OwnerPanel) and introduces its own virtuals at slot 0x25+ (declared below in exact vtable
 // slot order). See include/game/TEventHandler.h and memory tview-vtable-slot-scramble.
 
-// 8-byte style/color payload hung off TView::field48 (see TView::EnsureField48Buffer
+// 8-byte style/color payload hung off TView::stylePayload48 (see TView::EnsureField48Buffer
 // 0x48b810 and ReplaceUiResourceContextPairBuffer 0x427060). Its default ctor zeroes
 // the bytes and is inlined at the new-expressions (both bodies show the 8 byte-stores
 // inline); 0x41b420 is the same zeroing as the out-of-line Reset entry the factory
@@ -55,13 +55,17 @@ typedef CList<TView*, TView*> TViewChildList;
 class TView : public TEventHandler {
 public:
   class TView* ownerContext; // 0x20
-  int ownerLocalX;          // 0x24
-  int ownerLocalY;          // 0x28
+  int ownerLocalX;           // 0x24
+  int ownerLocalY;           // 0x28
   int absoluteX;
   int absoluteY;
-  int field34;
-  int field38;
-  int field3c;
+  // 0x34/0x38 — control frame size; CMcWindow builds the native window rect as
+  // (ownerLocalX, ownerLocalY) + frameWidth34 x frameHeight38.
+  int frameWidth34;
+  int frameHeight38;
+  // 0x3c — general per-control value slot: toggle/current value (T2PictToggleButton),
+  // window id (TDisplayMgr), dialog resource-template id (TControl).
+  int controlValue3c;
   // TODO(class-recovery): offset +0x40 has at least two observed meanings. Startup and
   // TIncludeView treat it as a TView* UI-resource context, while TModalTemplateDialogBase
   // uses the same inherited slot as a dialog resource-template id. Verify whether one
@@ -71,10 +75,14 @@ public:
     TView* uiResourceContext40;
     int resourceTemplateId40;
   };
-  TViewChildList* childList44; // 0x44 — child-control list (CList<TView*,TView*>)
-  TUiStyleBytes* field48;      // 8-byte style/color payload (see TUiStyleBytes above)
-  unsigned char flag4c;
-  unsigned char flag4d;
+  TViewChildList* childList44;   // 0x44 — child-control list (CList<TView*,TView*>)
+  TUiStyleBytes* stylePayload48; // 8-byte style/color payload (see TUiStyleBytes above)
+  // 0x4c — participates in the control input gate (EvaluateControlInputGate passes
+  // when this is set and GetBoolSlot28() reports true).
+  unsigned char inputGateFlag4c;
+  // 0x4d — gates child traversal for renderability/hover hit-tests
+  // (HasRenderableParentAndContent requires it before childList44 counts).
+  unsigned char childHitTestFlag4d;
   unsigned short field4e;
   CWnd* nativeWindow50; // 0x50 — host window (MFC CWnd; HWND via m_hWnd)
   unsigned short field54;

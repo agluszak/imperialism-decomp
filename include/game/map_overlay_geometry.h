@@ -22,3 +22,5 @@ void WrapExtendedMapXCoordinateInPlace(int* x);
 
 // Converts a hex tile index to its overlay-grid coordinate for the given edge side.
 int ConvertTileIndexToOverlayCoord216BySide(int tileIndex, char side); // 0x0052c990
+
+int ComputeHexTileDistanceFromIndices(int tileIndexA, int tileIndexB);

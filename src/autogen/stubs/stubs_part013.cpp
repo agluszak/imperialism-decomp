@@ -235,14 +235,6 @@ undefined4 ConstructTBuildingConstructionViewBaseState(void)
   return 0;
 }
 
-// ghidra_name TUniversityView::ConstructTUniversityViewBaseState
-// ghidra_proto undefined ConstructTUniversityViewBaseState()
-// FUNCTION: IMPERIALISM 0x004cac60
-undefined4 ConstructTUniversityViewBaseState(void)
-{
-  return 0;
-}
-
 // ghidra_name UpdateUniversityCountControlAndRefreshView
 // ghidra_proto undefined UpdateUniversityCountControlAndRefreshView()
 // FUNCTION: IMPERIALISM 0x004cb9cd
