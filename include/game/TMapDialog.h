@@ -47,7 +47,7 @@ public:
   undefined OrphanLeaf_NoCall_Ins02_005966e0(short arg1) override;
   void OrphanRetStub_005966a0(int arg1) override;
   void OrphanRetStub_00596680(int arg1, int arg2) override;
-  virtual undefined DrawHexNeighborOutlineFromTileArray();
+  virtual void DrawHexNeighborOutlineFromTileArray(short* neighborTiles);
   virtual undefined OrphanCallChain_C1_I20_0051e1a0();
   virtual undefined OrphanLeaf_NoCall_Ins21_0051e1f0();
   virtual undefined UpdateMapDialogProjectedTileMarkerAndInvalidate();

@@ -17347,7 +17347,7 @@
     },
     {
       "address": "0x51a2a0",
-      "matching": 0.0,
+      "matching": 0.3690888119953864,
       "name": "TMapDialog::DrawHexNeighborOutlineFromTileArray",
       "type": 1
     },
@@ -17359,7 +17359,7 @@
     },
     {
       "address": "0x51a990",
-      "matching": 0.2413793103448276,
+      "matching": 0.24,
       "name": "TMapDialog::OrphanRetStub_005960c0",
       "type": 1
     },
