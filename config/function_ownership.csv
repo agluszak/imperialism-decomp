@@ -2062,6 +2062,7 @@ address|target_cpp|ownership|note
 4fcf80|src/game/TMapKey.cpp|manual|marker_sync
 4fd000|src/game/TMapKey.cpp|manual|marker_sync
 4fd220|src/game/TMapKey.cpp|manual|marker_sync
+4fd5c0|src/game/TMapKey.cpp|manual|marker_sync
 4fded0|src/game/TFrameRadioView.cpp|manual|marker_sync
 4fdf50|src/game/TFrameRadioView.cpp|manual|marker_sync
 4fdfa0|src/game/TFrameRadioView.cpp|manual|marker_sync

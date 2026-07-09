@@ -119,3 +119,4 @@ address|name|prototype
 0x005ba720|TTradeScreenPicture::TTradeScreenPicture|void __thiscall TTradeScreenPicture(void)
 0x004fd000|TMapKey::RenderMapHintOverlayMode0|void __thiscall RenderMapHintOverlayMode0()
 0x004fd220|TMapKey::RenderMapHintOverlayMode4|void __thiscall RenderMapHintOverlayMode4()
+0x004fd5c0|TMapKey::RenderMapHintOverlayMode1|void __thiscall RenderMapHintOverlayMode1()

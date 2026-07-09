@@ -31,6 +31,9 @@ void TMapKey::ApplyRectSlot110(RECT* rectBuffer) {
   case 0:
     RenderMapHintOverlayMode0();
     break;
+  case 1:
+    RenderMapHintOverlayMode1();
+    break;
   case 4:
     RenderMapHintOverlayMode4();
     break;
@@ -110,6 +113,56 @@ void TMapKey::RenderMapHintOverlayMode4() {
   }
 
   g_pSimMgr->GetString(0x2733, 0x1f, &label);
+  g_apTerrainTypeDescriptorTable[descriptorIndex]->FormatOverlayTerrainLabelText(&terrainName);
+  scanBracketExpressions(g_pSimMgr, &expanded, static_cast<const char*>(label),
+                         static_cast<const char*>(terrainName));
+  short cy = 0x172 - baseY;
+  short width = MeasureTextExtentWithCachedQuickDrawStyle(&expanded);
+  short cx = 0x1bd - width / 2 - baseX;
+  SetQuickDrawColorAndSyncGlobals(shadowStyle);
+  SetQuickDrawTextOriginWithContextOffset(cx + 1, cy + 1);
+  DrawTextWithCachedQuickDrawStyleState(&expanded);
+  SetQuickDrawColorAndSyncGlobals(mainStyle);
+  SetQuickDrawTextOriginWithContextOffset(cx, cy);
+  DrawTextWithCachedQuickDrawStyleState(&expanded);
+}
+
+// Legend labels for view mode 1: three numbered labels at table coordinates plus
+// a centered terrain-descriptor label, each drawn twice for a drop shadow.
+// FUNCTION: IMPERIALISM 0x004fd5c0
+void TMapKey::RenderMapHintOverlayMode1() {
+  TView* anchor = this->ownerContext;
+  short baseX = (short)this->ownerLocalX + (short)anchor->ownerLocalX;
+  short baseY = (short)this->ownerLocalY + (short)anchor->ownerLocalY;
+  short descriptorIndex = *(short*)((char*)anchor->ownerContext + 0x98);
+
+  short xTable[3] = {0, 0x1f2, 0x16b};
+  short yTable[3] = {0x1a9, 0x1a9, 0x1cb};
+  xTable[0] = descriptorIndex;
+
+  CString label;
+  CString terrainName;
+  CString expanded;
+  int shadowStyle = 0;
+  int mainStyle = 0;
+
+  ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0, 0xc, 0x2b68);
+  MapUiThemeCodeToStyleFlags(0x2b6b, &mainStyle);
+  MapUiThemeCodeToStyleFlags(0x2b68, &shadowStyle);
+
+  for (int k = 0; k < 3; ++k) {
+    g_pSimMgr->GetString(0x2733, (short)(0xe + k), &label);
+    short x = xTable[k] - baseX;
+    short y = yTable[k] - baseY;
+    SetQuickDrawColorAndSyncGlobals(shadowStyle);
+    SetQuickDrawTextOriginWithContextOffset(x + 1, y + 1);
+    DrawTextWithCachedQuickDrawStyleState(&label);
+    SetQuickDrawColorAndSyncGlobals(mainStyle);
+    SetQuickDrawTextOriginWithContextOffset(x, y);
+    DrawTextWithCachedQuickDrawStyleState(&label);
+  }
+
+  g_pSimMgr->GetString(0x2733, 0xd, &label);
   g_apTerrainTypeDescriptorTable[descriptorIndex]->FormatOverlayTerrainLabelText(&terrainName);
   scanBracketExpressions(g_pSimMgr, &expanded, static_cast<const char*>(label),
                          static_cast<const char*>(terrainName));
