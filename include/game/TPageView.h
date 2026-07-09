@@ -3,6 +3,9 @@
 #include "game/TView.h"
 #include "game/mfc.h"
 
+class TList;
+class TSoundChannelNode;
+
 // TODO(manifest): describe TPageView and its role. Base edge (TView) recovered from RTTI CRuntimeClass chain: TPageView -> TView -> TEventHandler -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x0065e270
 class TPageView : public TView {
@@ -112,19 +115,24 @@ public:
   // slot 0x65 AssertMcAppUILine1914_e9 inherited unchanged (0x48c7a0)
   // slot 0x66 AssertMcAppUILine1922_ea inherited unchanged (0x48c7d0)
   // slot 0x67 CtrlSlot103_SubtractPosAndDispatchSlot19C_Impl_eb inherited unchanged (0x48bac0)
-  virtual undefined OrphanCallChain_C1_I06_0056fbb0();                // slot 0x68 0x56fbb0
-  virtual undefined OrphanCallChain_C1_I06_0056fbd0();                // slot 0x69 0x56fbd0
+  virtual POSITION OrphanCallChain_C1_I06_0056fbb0(void* item);       // slot 0x68 0x56fbb0
+  virtual POSITION OrphanCallChain_C1_I06_0056fbd0(void* item);       // slot 0x69 0x56fbd0
   virtual undefined ResetSelectableOptionEntriesExceptColorAndOkay(); // slot 0x6a 0x56fbf0
   virtual undefined OrphanCallChain_C8_I82_0056fc80();                // slot 0x6b 0x56fc80
   virtual undefined OrphanCallChain_C8_I118_0056fdb0(short param_1);  // slot 0x6c 0x56fdb0
   virtual undefined OrphanCallChain_C4_I18_0056ff90();                // slot 0x6d 0x56ff90
   // === END GENERATED DECLS (TPageView) ===
 
-  // Unrecovered TPageView-slice fields: the RTTI object size is 0x84 while the
-  // inherited TView slice ends at +0x60. Kept as raw padding so derived-class fields
-  // (e.g. TSuperCivRoster::selectedIndex84) land at their verified offsets.
-  unsigned char padPageViewSlice60[0x24]; // +0x60..+0x83
+  // TPageView slice (+0x60..+0x83, size 0x24). Field names are hedged until the
+  // page UI flow is fully recovered; offsets and init values are from the ctor.
+  short field_0x60;              // +0x60
+  short field_0x62;              // +0x62, ctor writes 0xffff
+  short field_0x64;              // +0x64, ctor writes 0x0001
+  short pad_0x66;                // +0x66
+  RECT pageRect;                 // +0x68 (left, top, right, bottom)
+  TList* field_0x78;             // +0x78
+  TList* field_0x7c;             // +0x7c
+  TSoundChannelNode* field_0x80; // +0x80
 
   TPageView();
 };
-
