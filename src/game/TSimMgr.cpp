@@ -37,7 +37,6 @@ extern "C" char DAT_006a43c0;
 extern "C" char DAT_006a43f0;
 extern CString DAT_006a4220;
 extern "C" const char s_PictWvGobPathFormat_00698BF4[];
-BOOL __cdecl TryGetFileMetadataForPath(CString* path);
 void __fastcall RebuildNationStateSlotsAndAvailability_Impl(TSimMgr* self, int dummyEdx,
                                                             short* param_1);
 void __fastcall RebuildCivilianOrderCompatibilityMatrices(TDiplomacyMgr* self, int dummyEdx);
@@ -975,9 +974,10 @@ CString TSimMgr::AssignSharedStringFromIndexedSlot7C(short slot) {
 }
 
 // FUNCTION: IMPERIALISM 0x005d4c10
-BOOL __cdecl TryGetFileMetadataForPath(CString* path) {
+unsigned char __cdecl TryGetFileMetadataForPath(CString* path) {
   CFileStatus status;
-  return CFile::GetStatus(*path, status);
+  // Callers branch on AL: the original returns a Mac-style byte Boolean, not BOOL.
+  return (unsigned char)CFile::GetStatus(*path, status);
 }
 
 // FUNCTION: IMPERIALISM 0x005d4c40

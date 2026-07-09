@@ -10,7 +10,6 @@
 
 IMPLEMENT_SERIAL(TObject, CObject, 1)
 
-TObject::TObject() {}
 
 // FUNCTION: IMPERIALISM 0x00415ce0
 TObject* TObject::ShallowFree() {

@@ -165,6 +165,12 @@ public:
 
 ASSERT_SIZE(TSimMgr, 0x118);
 
+// 0x5d4c10 / 0x5d4c40 — file-metadata probe (CFile::GetStatus) and delete-with-error-box
+// (CFile::Remove) helpers from the TSimMgr TU; the save flow in TLoadSavePicture.cpp
+// uses them too.
+unsigned char __cdecl TryGetFileMetadataForPath(CString* path);
+void __cdecl DeleteFileWithErrorReporting(CString* path);
+
 // 0x581870 — the "Done/advance" turn-flow bootstrap primitive (free __cdecl, TSimMgr TU).
 // Optionally activates the pending help event (0x5dc), recreates g_pGameFlowState when a
 // game flow was active (field44), then either soft-resets the existing TSimMgr for the

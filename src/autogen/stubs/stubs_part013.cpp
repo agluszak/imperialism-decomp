@@ -595,10 +595,10 @@ undefined4 WrapperFor_ReleaseSharedStringRefIfNotEmpty_At004d6880(void)
   return 0;
 }
 
-// ghidra_name AssignStringSharedRefFromPointer
-// ghidra_proto undefined AssignStringSharedRefFromPointer()
+// ghidra_name CString::operator=
+// ghidra_proto CString & __thiscall operator=(CString const &)
 // FUNCTION: IMPERIALISM 0x004d6b70
-undefined4 AssignStringSharedRefFromPointer(void)
+undefined4 CString_operator(void)
 {
   return 0;
 }

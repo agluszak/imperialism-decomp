@@ -2287,7 +2287,7 @@ address|name|symbol|size|type|prototype|provenance
 4d6850|TCountry::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 4d6880|WrapperFor_ReleaseSharedStringRefIfNotEmpty_At004d6880||80|function|undefined WrapperFor_ReleaseSharedStringRefIfNotEmpty_At004d6880()|
 4d68f0|InitializeNationStateIdentityAndOwnedRegionList||509|function|undefined InitializeNationStateIdentityAndOwnedRegionList()|
-4d6b70|AssignStringSharedRefFromPointer||19|function|undefined AssignStringSharedRefFromPointer()|
+4d6b70|CString::operator=|??4CString@@QAEABV0@ABV0@@Z|19|function|CString & __thiscall operator=(CString const &)|
 4d6ba0|TCountry::Free||62|function|void __thiscall Free(void)|
 4d6bf0|TGreatPower::DeserializeRecruitScenarioAndInstantiateOrders||487|function|void __thiscall DeserializeRecruitScenarioAndInstantiateOrders(int streamState)|
 4d6e60|TCountry::WriteTo||403|function|void __thiscall WriteTo(void *)|
@@ -6142,7 +6142,7 @@ address|name|symbol|size|type|prototype|provenance
 5dfd70|BuildScenarioPathForModeAndIndex||225|function|undefined BuildScenarioPathForModeAndIndex()|
 5dfea0|AssignScoresDatPathToSharedString||92|function|undefined AssignScoresDatPathToSharedString()|
 5dff20|EnsurePictWvDataGobLoadedBySlot||206|function|void __stdcall EnsurePictWvDataGobLoadedBySlot(int languageTag)|
-5e0030|ShowSavedStatusDialogAndReturnAccepted||210|function|undefined ShowSavedStatusDialogAndReturnAccepted()|
+5e0030|TAssetMgr::SaveMainDocumentToPathAndMarkSaved||210|function|unsigned char __thiscall SaveMainDocumentToPathAndMarkSaved(CString const &)|
 5e0150|SetLoadedTagOnLocalizationEntryIfPresent||49|function|undefined SetLoadedTagOnLocalizationEntryIfPresent()|
 5e01a0|LoadProfileStringAndAssignSharedRef||132|function|undefined LoadProfileStringAndAssignSharedRef()|
 5e0260|SaveSettingValueFromPointerByKey||26|function|undefined SaveSettingValueFromPointerByKey()|
@@ -6212,7 +6212,7 @@ address|name|symbol|size|type|prototype|provenance
 5e30c0|ShowJoinGameSelectionDialogAndCaptureChoice||459|function|undefined ShowJoinGameSelectionDialogAndCaptureChoice()|
 5e3310|TNetMgr::CreateTNetMgrInstance||82|function|undefined CreateTNetMgrInstance()|
 5e33c0|TNetMgr::GetRuntimeClass||6|function|undefined GetTNetMgrClassNamePointer()|
-5e33e0|TNetMgr::ConstructGlobalTurnEventQueueManager||9|function|undefined ConstructGlobalTurnEventQueueManager()|
+5e33e0|TNetMgr::TNetMgr|??0TNetMgr@@QAE@XZ|9|function|void __thiscall TNetMgr(void)|
 5e3400|TNetMgr::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 5e3430|InitializeRuntimeClassVtablePointer_0066FEC4_Secondary||7|function|undefined InitializeRuntimeClassVtablePointer_0066FEC4_Secondary()|
 5e3450|NoOpInitializeGlobalTurnEventQueueManager||1|function|undefined NoOpInitializeGlobalTurnEventQueueManager()|
@@ -6464,16 +6464,16 @@ address|name|symbol|size|type|prototype|provenance
 5e8cc8|SehCleanup_CallCallbackRepeatedly||20|function|undefined SehCleanup_CallCallbackRepeatedly()|
 5e8cf0|ConvertEpochSecondsToLocalTmWithDstAdjust||486|function|undefined ConvertEpochSecondsToLocalTmWithDstAdjust()|
 5e8ee0|GetCurrentLocalEpochSecondsWithTimezoneCache||300|function|undefined GetCurrentLocalEpochSecondsWithTimezoneCache()|
-5e9010|fclose-style stream close|_fclose|61|function|undefined CloseBufferedStreamAndReleaseResources()|
+5e9010|_fclose|_fclose|61|function|undefined CloseBufferedStreamAndReleaseResources()|
 5e9050|flush/close/reset CRT FILE state|__fclose_lk|101|function|undefined FlushCloseAndResetBufferedStream()|
 5e90c0|fopen-style stream open with mode|__fsopen|55|function|undefined OpenBufferedStreamDescriptorWithModeAndLock()|
-5e9100|fopen wrapper|__wfopen|21|function|undefined OpenBufferedStreamWithMode40()|
+5e9100|_fopen|_fopen|21|function|undefined OpenBufferedStreamWithMode40()|
 5e9120|_fprintf|_fprintf|73|function|int __cdecl _fprintf@005e9120(FILE * _File, wchar_t * _Format, ...)|
 5e9170|_fwrite|_fwrite|55|function|undefined WriteBufferItemsToStreamLocked()|
 5e91b0|__fwrite_lk|__fwrite_lk|326|function|undefined WriteBufferItemsToStreamUnlocked()|
 5e9300|_fscanf|_fscanf|50|function|undefined DecodeScenarioTilePaletteMaskWithStreamLock()|
 5e9340|_strncpy|_strncpy|254|function|char * __cdecl strncpy(char * _Dest, char * _Source, size_t _Count)|
-5e9440|fread wrapper with stream lock|_fread|55|function|undefined ReadBufferedStreamLocked()|
+5e9440|_fread|_fread|55|function|undefined ReadBufferedStreamLocked()|
 5e9480|fread core over CRT FILE buffer|__fread_lk|316|function|undefined ReadBufferedStreamCoreUnlocked()|
 5e95c0|getc-style read with stream lock|_fgetc|74|function|undefined ReadNextByteFromBufferedStreamWithLock()|
 5e9620|__itoa|__itoa|61|function|undefined ConvertSignedIntToStringWithBaseAndSignHandling()|
@@ -6801,7 +6801,7 @@ address|name|symbol|size|type|prototype|provenance
 5fee78|CString::ReverseFind|?ReverseFind@CString@@QBEHD@Z|33|function|undefined ReverseFind()|
 5fee99|CString::FindOneOf|?FindOneOf@CString@@QBEHPBD@Z|31|function|undefined FindCharIndexInStringPtrOrMinusOne()|
 5feeb8|CString::FormatV|?FormatV@CString@@IAEXPBDPAD@Z|678|function|undefined FormatV()|
-5ff15e|CString::Format (LPCTSTR, ...) — AFX_CDECL member; va_start + FormatV||19|function|undefined FormatStringWithVarArgsToSharedRef()|
+5ff15e|CString::Format|?Format@CString@@QAAXPBDZZ|19|function|void __cdecl Format(char const *,...)|
 5ff1ba|CString::FormatMessageA|?FormatMessageA@CString@@QAAXPBDZZ|76|function|undefined FormatMessageA()|
 5ff206|CString::FormatMessageA|?FormatMessageA@CString@@QAAXIZZ|131|function|undefined FormatMessageFromLoadedResourceOrThrowMfcException()|
 5ff289|CString::TrimRight|?TrimRight@CString@@QAEXXZ|73|function|undefined TrimRight()|
@@ -6999,8 +6999,8 @@ address|name|symbol|size|type|prototype|provenance
 606c59|TTechStorePage::ShallowFree||3|function|undefined TMacViewMgr_Slot09_Target()|
 606c5c|TTechStorePage::GetCityDialogFlagByte4||3|function|undefined TMacViewMgr_Slot10_Target()|
 606c5f|TTechStorePage::SetCityDialogFlagByte4||8|function|undefined TMacViewMgr_Slot11_Target()|
-606c67|AfxGetApp()->BeginWaitCursor (BeginWaitCursor)||21|function|undefined BeginWaitCursor()|
-606c7c|EndWaitCursor||21|function|undefined EndWaitCursor()|
+606c67|CCmdTarget::BeginWaitCursor||21|function|void __thiscall BeginWaitCursor()|
+606c7c|CCmdTarget::EndWaitCursor||21|function|void __thiscall EndWaitCursor()|
 606c91|CCmdTarget::RestoreWaitCursor|?RestoreWaitCursor@CCmdTarget@@QAEXXZ|21|function|void __thiscall RestoreWaitCursor()|
 606ca6|GetCCmdTargetMessageMap||6|function|undefined GetCCmdTargetMessageMap()|
 606cac|TTechStorePage::DispatchUiSelectionToHandler||6|function|undefined TMacViewMgr_Slot14_Target()|
@@ -7667,7 +7667,7 @@ address|name|symbol|size|type|prototype|provenance
 61d6f6|CFrameWnd::OnEndSession|?OnEndSession@CFrameWnd@@IAEXH@Z|52|function|undefined OnEndSession()|
 61d72a|CFrameWnd::OnDDEInitiate|?OnDDEInitiate@CFrameWnd@@IAEJIJ@Z|187|function|undefined OnDDEInitiate()|
 61d7e5|CFrameWnd::OnDDEExecute|?OnDDEExecute@CFrameWnd@@IAEJIJ@Z|155|function|undefined OnDDEExecute()|
-61d89b|GetObjectValueAtOffset98||7|function|undefined GetObjectValueAtOffset98()|
+61d89b|CFrameWnd::GetActiveView|?GetActiveView@CFrameWnd@@QBEPAVCView@@XZ|7|function|CView * __thiscall GetActiveView(void) const|
 61d8a2|SetActiveView||90|function|void __thiscall ?SetActiveView@CFrameWnd@@QAEXPAVCView@@H@Z(CView * param_1, int param_2)|
 61d917|TMacViewMgr::WrapperFor_GetObjectValueAtOffset98_At0061d917||16|function|undefined WrapperFor_GetObjectValueAtOffset98_At0061d917()|
 61d927|CFrameWnd::ShowControlBar|?ShowControlBar@CFrameWnd@@QAEXPAVCControlBar@@HH@Z|251|function|undefined ShowControlBar()|

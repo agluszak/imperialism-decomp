@@ -39,10 +39,6 @@ public:
   // Map a DirectPlay error HRESULT to detail text and pose the localized error dialog.
   // Mac oracle: TNetMgr::HandleError(int). Asserts with D:\Ambit\WNetMgr.cpp line 451.
   void HandleError(int errorCode);
-
-  // Placement ctor on a 4-byte heap block (Ghidra: ConstructGlobalTurnEventQueueManager @
-  // 0x005e33e0).
-  static TNetMgr* ConstructGlobalTurnEventQueueManager(TNetMgr* storage);
 };
 
 // WNetMgr.cpp free helpers over the file-scope session state.

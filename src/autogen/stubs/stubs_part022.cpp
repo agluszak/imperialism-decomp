@@ -1059,10 +1059,10 @@ undefined4 WrapperFor_PostSetMessageStringE001AfterCommand_At0061cf3d(void)
   return 0;
 }
 
-// ghidra_name GetObjectValueAtOffset98
-// ghidra_proto undefined GetObjectValueAtOffset98()
+// ghidra_name CFrameWnd::GetActiveView
+// ghidra_proto CView * __thiscall GetActiveView(void) const
 // FUNCTION: IMPERIALISM 0x0061d89b
-undefined4 GetObjectValueAtOffset98(void)
+undefined4 GetActiveView(void)
 {
   return 0;
 }

@@ -715,14 +715,6 @@ undefined4 LoadAndFormatMappedFlavorTextRecordsFromStream(void)
   return 0;
 }
 
-// ghidra_name SaveGameWithModeAndOptionalLabel
-// ghidra_proto undefined SaveGameWithModeAndOptionalLabel()
-// FUNCTION: IMPERIALISM 0x0056da50
-undefined4 SaveGameWithModeAndOptionalLabel(void)
-{
-  return 0;
-}
-
 // ghidra_name BuildSaveSlotPathAndProbeMetadata
 // ghidra_proto undefined BuildSaveSlotPathAndProbeMetadata()
 // FUNCTION: IMPERIALISM 0x0056df40

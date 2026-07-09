@@ -10,7 +10,12 @@ class TStream;
 class TObject : public CObject {
 public:
   DECLARE_SERIAL(TObject)
-  TObject();
+  // In-class inline: the original binary has no out-of-line TObject::TObject — every
+  // derived constructor absorbs it (e.g. TNetMgr::TNetMgr 0x5e33e0 is a single vptr
+  // store), so an out-of-line definition would pessimize all of them into a call.
+  // NOOP: verified empty in original 0x005e33e0 (no standalone body exists; every
+  // derived ctor absorbs it — e.g. TNetMgr::TNetMgr is just the vptr store)
+  TObject() {}
 
   void Serialize(CArchive& archive) override;
   virtual void WriteTo(TStream* stream);

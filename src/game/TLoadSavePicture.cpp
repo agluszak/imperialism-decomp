@@ -4,6 +4,10 @@
 #include "game/TSimMgr.h"
 #include "game/TModuleLibraryCacheTableStateB.h"
 #include <stdio.h>
+#include <string.h>
+
+#include "game/TAssetMgr.h"
+#include "game/TMultiplayerMgr.h"
 
 // SYNTHETIC: IMPERIALISM 0x0043da40
 // TLoadSavePicture::`scalar deleting destructor'
@@ -37,38 +41,169 @@ undefined TLoadSavePicture::HandleSaveGameSlotSelectionAndPromptFlow() {
   return 0;
 }
 
+namespace {
+
+// The whole save flow tests g_pSimMgr->field44 through Boolean-returning inline
+// helpers: every original site materializes the comparison into a byte register
+// (sete/setne + test al,al) before branching, the Mac-style unsigned-char Boolean shape
+// under /Ob1.
+static __inline unsigned char IsMultiplayerFlowHosting() {
+  return g_pSimMgr->field44 == 1;
+}
+
+static __inline unsigned char IsMultiplayerFlowActive() {
+  return g_pSimMgr->field44 != 0;
+}
+
+} // namespace
+
 // FUNCTION: IMPERIALISM 0x0056d660
 void __cdecl BuildSavePathStringForMode(CString* out, int saveMode, char* label) {
   const char* prefix = label;
   if (label == 0) {
-    prefix = g_szMultiplayerSavePrefix_00698710;
-    if (g_pSimMgr->field44 == 0) {
-      prefix = g_szSingleSlotSavePrefix_00698718;
+    prefix = g_pszMultiplayerSavePrefix_0065DDD4;
+    if (!IsMultiplayerFlowActive()) {
+      prefix = g_pszSingleSlotSavePrefix_0065DDD0;
     }
   }
   CString slotText;
   if (saveMode == 0xa1) {
-    slotText = g_szAutosaveSlotLabel_0069872C;
+    CString autosaveLabel(g_szAutosaveSlotLabel_0069872C);
+    slotText = autosaveLabel;
   } else {
     slotText.Format(g_szDecimalFormat, saveMode);
   }
-  *out = g_szSaveDirectoryPrefix_00698724;
+  {
+    CString directoryPrefix(g_szSaveDirectoryPrefix_00698724);
+    *out = directoryPrefix;
+  }
   *out += prefix;
   *out += slotText;
-  *out += g_szImpSaveExtension_00698708;
+  *out += g_pszImpSaveExtension_0065DDD8;
 }
+
+namespace {
+
+// Save-file header record: both header readers reserve the full 0x40 bytes on the stack
+// (sub esp,0x40 at 0x56d7d4 / the 0x48 local area at 0x56da65) but only fread the first
+// 0xc bytes to reach scenarioIndex.
+struct SaveFileHeader {
+  unsigned char pad0[8];
+  int scenarioIndex; // +0x08
+  unsigned char pad0C[0x40 - 0xc];
+};
+
+} // namespace
 
 // FUNCTION: IMPERIALISM 0x0056d7d0
 int __cdecl ReadScenarioIndexFromSaveHeader(const char* path) {
-  struct SaveFileHeader {
-    unsigned char pad0[8];
-    int scenarioIndex;
-  } header;
-  FILE* file = fopen(path, g_szSaveFileReadBinaryMode_00698720);
+  SaveFileHeader header;
   int result = -3;
+  FILE* file = fopen(path, g_szSaveFileReadBinaryMode_00698720);
   if (fread(&header, 1, 0xc, file) == 0xc) {
     result = header.scenarioIndex;
   }
   fclose(file);
   return result;
+}
+
+// Top-level save-game driver. mode 0xa1 = autosave slot "A"; 0xa2 = autosave without
+// marking the document saved; 0..7 = numbered slot. In multiplayer (field44 == 1) an
+// autosave first rebinds to the numbered slot whose save file carries the current
+// scenario id, and the scenario display name (resource 0x2758/9) is published to
+// g_ScenarioSaveNameBuffer_006A2178 for the slot picker. After a successful manual save
+// in multiplayer the flow dispatches the 'save' game-state event and deletes a stale
+// autosave of the same scenario.
+// FUNCTION: IMPERIALISM 0x0056da50
+void __cdecl SaveGameWithModeAndOptionalLabel(int mode, char* label) {
+  char markSaved = 1;
+  if (mode == 0xa2) {
+    markSaved = 0;
+    mode = 0xa1;
+  }
+
+  if (IsMultiplayerFlowHosting() && mode == 0xa1) {
+    int currentScenario = g_pGameFlowState->queueSyncDword;
+    CString probePath;
+    for (int i = 0; i < 8; ++i) {
+      BuildSavePathStringForMode(&probePath, i, 0);
+      if (TryGetFileMetadataForPath(&probePath) &&
+          ReadScenarioIndexFromSaveHeader(probePath) == currentScenario) {
+        mode = i;
+      }
+    }
+  }
+
+  if (mode == 0xa1) {
+    CString scenarioName;
+    g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&scenarioName, 0x2758, 9);
+    strcpy(g_ScenarioSaveNameBuffer_006A2178, scenarioName);
+  }
+
+  CString savePath;
+  if (label == 0) {
+    label = (char*)g_pszMultiplayerSavePrefix_0065DDD4;
+    if (!IsMultiplayerFlowActive()) {
+      label = (char*)g_pszSingleSlotSavePrefix_0065DDD0;
+    }
+  }
+  {
+    CString slotText;
+    if (mode == 0xa1) {
+      CString autosaveLabel(g_szAutosaveSlotLabel_0069872C);
+      slotText = autosaveLabel;
+    } else {
+      slotText.Format(g_szDecimalFormat, mode);
+    }
+    {
+      CString directoryPrefix(g_szSaveDirectoryPrefix_00698724);
+      savePath = directoryPrefix;
+    }
+    savePath += label;
+    savePath += slotText;
+    savePath += g_pszImpSaveExtension_0065DDD8;
+  }
+
+  if (g_pUiViewManager->SaveMainDocumentToPathAndMarkSaved(savePath)) {
+    if (IsMultiplayerFlowHosting()) {
+      g_pGameFlowState->fieldF4 = markSaved;
+      g_pGameFlowState->DispatchTaggedGameStateEvent1F20(0x73617665, markSaved, -2);
+    }
+    if (IsMultiplayerFlowHosting() && mode != 0xa1) {
+      const char* autosavePrefix = g_pszMultiplayerSavePrefix_0065DDD4;
+      if (!IsMultiplayerFlowActive()) {
+        autosavePrefix = g_pszSingleSlotSavePrefix_0065DDD0;
+      }
+      {
+        CString autosaveSlotText;
+        {
+          CString autosaveLabel(g_szAutosaveSlotLabel_0069872C);
+          autosaveSlotText = autosaveLabel;
+        }
+        {
+          CString directoryPrefix(g_szSaveDirectoryPrefix_00698724);
+          savePath = directoryPrefix;
+        }
+        savePath += autosavePrefix;
+        savePath += autosaveSlotText;
+        savePath += g_pszImpSaveExtension_0065DDD8;
+      }
+      if (TryGetFileMetadataForPath(&savePath)) {
+        SaveFileHeader header;
+        int scenarioIndex = -3;
+        FILE* file = fopen(savePath, g_szSaveFileReadBinaryMode_00698720);
+        if (fread(&header, 1, 0xc, file) == 0xc) {
+          scenarioIndex = header.scenarioIndex;
+        }
+        fclose(file);
+        if (scenarioIndex == g_pGameFlowState->queueSyncDword) {
+          DeleteFileWithErrorReporting(&savePath);
+        }
+      }
+    }
+  } else {
+    if (IsMultiplayerFlowHosting()) {
+      g_pGameFlowState->fieldF4 = 0;
+    }
+  }
 }

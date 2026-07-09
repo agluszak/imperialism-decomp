@@ -15,12 +15,8 @@
 
 IMPLEMENT_DYNCREATE(TNetMgr, TObject)
 
-TNetMgr::TNetMgr() : TObject() {}
-
 // FUNCTION: IMPERIALISM 0x005e33e0
-TNetMgr* TNetMgr::ConstructGlobalTurnEventQueueManager(TNetMgr* storage) {
-  return new (storage) TNetMgr();
-}
+TNetMgr::TNetMgr() : TObject() {}
 
 // SYNTHETIC: IMPERIALISM 0x005e3400
 // TNetMgr::`scalar deleting destructor'

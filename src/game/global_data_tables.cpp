@@ -974,7 +974,7 @@ CList<void*, void*> g_WNetPendingPacketList006a5f40(10);
 // GLOBAL: IMPERIALISM 0x006a5f60
 TWNetSessionManager g_NetworkSessionManager006a5f60;
 
-// 0x006a6014 — global TNetMgr (built by ConstructGlobalTurnEventQueueManager during
+// 0x006a6014 — global TNetMgr (built by new TNetMgr() during
 // multiplayer init, stored here; every turn-event emitter dispatches TNetMgr::Send
 // through it). GLOBAL: IMPERIALISM 0x006a6014
 TNetMgr* g_pNetMgr006a6014 = 0;
@@ -1075,6 +1075,18 @@ char g_szSaveDirectoryPrefix_00698724[] = "Save/";
 char g_szAutosaveSlotLabel_0069872C[] = "A";
 // GLOBAL: IMPERIALISM 0x0069b848
 char g_szSavedDocumentMarker_0069B848[] = "__saved";
+// Save-path fragment pointers (.rdata): the TLoadSavePicture save flow reads these
+// through pointer loads instead of referencing the literals directly.
+// GLOBAL: IMPERIALISM 0x0065ddd0
+const char* const g_pszSingleSlotSavePrefix_0065DDD0 = g_szSingleSlotSavePrefix_00698718;
+// GLOBAL: IMPERIALISM 0x0065ddd4
+const char* const g_pszMultiplayerSavePrefix_0065DDD4 = g_szMultiplayerSavePrefix_00698710;
+// GLOBAL: IMPERIALISM 0x0065ddd8
+const char* const g_pszImpSaveExtension_0065DDD8 = g_szImpSaveExtension_00698708;
+// Scenario display name copied out of string resource (0x2758, 9) when autosaving; the
+// save-slot picker (0x56d2a0) and lifecycle hooks read it back. 0x30 bytes.
+// GLOBAL: IMPERIALISM 0x006a2178
+char g_ScenarioSaveNameBuffer_006A2178[0x30];
 // Default text returned for a null nation descriptor (points at g_szEmptyString).
 // GLOBAL: IMPERIALISM 0x00653300
 char* g_pszDescriptorDefaultName_00653300 = g_szEmptyString;

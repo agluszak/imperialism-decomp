@@ -46,6 +46,10 @@ public:
 
   TAssetMgr();
   void EnsurePictWvDataGobLoadedForLanguageSlot(int languageTag);
+  // Save the MFC document to `savePath`, then restamp its path with the "__saved"
+  // marker so later saves re-prompt. `this` is unused; callers still dispatch it
+  // through g_pUiViewManager. 0x005e0030.
+  unsigned char SaveMainDocumentToPathAndMarkSaved(const CString& savePath);
 };
 
 void __stdcall EnsurePictWvDataGobLoadedBySlot(int languageTag);
@@ -53,4 +57,3 @@ void __stdcall EnsurePictWvDataGobLoadedBySlot(int languageTag);
 void __stdcall ForwardEnsurePictWvDataGobLoadedBySlot(int languageTag);
 
 void __stdcall AssignScoresDatPathToSharedString(CString* out);
-

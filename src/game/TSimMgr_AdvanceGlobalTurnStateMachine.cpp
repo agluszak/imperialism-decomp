@@ -5,6 +5,7 @@
 // expands inline-marked functions) so they fold back into the switch body instead of becoming
 // out-of-line calls.
 
+#include "game/TLoadSavePicture.h"
 #include "game/TSimMgr.h"
 
 #include "decomp_types.h"
@@ -34,7 +35,6 @@ extern undefined4 RebuildNationRankingDataAndUiCache(void);
 extern undefined4 HandleTurnResumeStateTelemetry(void);
 extern undefined4 UpdateCityOrderCapabilityUnlockProgress(void);
 extern undefined4 ConsumeFirstPendingAbilityUnlock(void);
-extern undefined4 SaveGameWithModeAndOptionalLabel(void);
 extern undefined4 TrySaveGameAndMaybeShowFailureDialog(void);
 extern undefined4 RefreshNavyOrderCycleAndClearReadyFlags(void);
 extern undefined4 RecomputeTileStrategicScoreHeatmap(void);
@@ -113,7 +113,7 @@ static inline short ReadCityOrderCapabilityField262(void) {
 
 static inline void HandleTurnEndSavePaths(TSimMgr* simMgr) {
   if (simMgr->redrawEnabled == 0) {
-    SaveGameWithModeAndOptionalLabel();
+    SaveGameWithModeAndOptionalLabel(0xa1, 0);
     return;
   }
   if (simMgr->redrawEnabled == 1) {

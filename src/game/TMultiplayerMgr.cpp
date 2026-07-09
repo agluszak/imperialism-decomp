@@ -154,7 +154,6 @@ struct TurnEvent15Packet : NetMessage {
 extern undefined4 NoOpInitializeGlobalTurnEventQueueManager();
 extern undefined4 ResetTurnEventQueueRuntimeRecordBuffer();
 extern undefined4 LoadProfileStringAndAssignSharedRef();
-extern undefined4 AssignStringSharedRefFromPointer();
 
 // Forward decl: real definition (with its // FUNCTION: marker) sits address-ordered
 // further down this file, near TMultiplayerMgr's other 0x5exxxx-adjacent members.
@@ -210,11 +209,10 @@ undefined TMultiplayerMgr::InitializeMultiplayerManagerForSessionContext(int ses
   g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&loadedString, 0x2759, 1);
 
   for (int i = 0; i < kNationSlotCount; ++i) {
-    nationSessionIds[0] = 0;
-    nationStatusTags[0] = 0x756e6173;
+    nationSessionIds[i] = 0;
+    nationStatusTags[i] = 0x756e6173;
     nationDisplayNameSlots[i] = loadedString;
-    reinterpret_cast<void (*)(CString*)>(AssignStringSharedRefFromPointer)(
-        &nationDisplayNameSlots[i]);
+    defaultNationTextSlots[i] = nationDisplayNameSlots[i];
   }
 
   queueSyncDword = 0;

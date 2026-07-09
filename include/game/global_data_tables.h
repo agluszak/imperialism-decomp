@@ -545,6 +545,10 @@ extern char g_szSaveFileReadBinaryMode_00698720[];
 extern char g_szSaveDirectoryPrefix_00698724[];
 extern char g_szAutosaveSlotLabel_0069872C[];
 extern char g_szSavedDocumentMarker_0069B848[];
+extern const char* const g_pszSingleSlotSavePrefix_0065DDD0;  // "slot" @ 0x65ddd0
+extern const char* const g_pszMultiplayerSavePrefix_0065DDD4; // "mult" @ 0x65ddd4
+extern const char* const g_pszImpSaveExtension_0065DDD8;      // ".imp" @ 0x65ddd8
+extern char g_ScenarioSaveNameBuffer_006A2178[0x30];          // scenario name for save flow
 extern char* g_pszDescriptorDefaultName_00653300;
 extern char g_szUiCloseParen_006973C8[];
 extern char g_szUiOpenParen_0069806C[];

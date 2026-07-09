@@ -635,14 +635,6 @@ undefined4 BuildScenarioPathForModeAndIndex(void)
   return 0;
 }
 
-// ghidra_name ShowSavedStatusDialogAndReturnAccepted
-// ghidra_proto undefined ShowSavedStatusDialogAndReturnAccepted()
-// FUNCTION: IMPERIALISM 0x005e0030
-undefined4 ShowSavedStatusDialogAndReturnAccepted(void)
-{
-  return 0;
-}
-
 // ghidra_name SetLoadedTagOnLocalizationEntryIfPresent
 // ghidra_proto undefined SetLoadedTagOnLocalizationEntryIfPresent()
 // FUNCTION: IMPERIALISM 0x005e0150

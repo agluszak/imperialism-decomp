@@ -135,3 +135,5 @@ public:
 // Save-game free functions (TLoadSavePicture TU).
 int __cdecl ReadScenarioIndexFromSaveHeader(const char* path);
 void __cdecl BuildSavePathStringForMode(CString* out, int saveMode, char* label);
+// 0x56da50 — top-level save-game driver (see TLoadSavePicture.cpp).
+void __cdecl SaveGameWithModeAndOptionalLabel(int mode, char* label);
