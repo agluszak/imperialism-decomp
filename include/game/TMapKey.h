@@ -135,6 +135,7 @@ private:
   // Legend-label render passes dispatched by ApplyRectSlot110 (each draws its
   // localized labels twice for a drop shadow, via the QuickDraw text helpers).
   void RenderMapHintOverlayMode0(); // 0x004fd000
+  void RenderMapHintOverlayMode4(); // 0x004fd220
 };
 
 ASSERT_SIZE(TMapKey, 0x94);
