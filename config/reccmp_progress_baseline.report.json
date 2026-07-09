@@ -3803,8 +3803,8 @@
     },
     {
       "address": "0x489490",
-      "matching": 0.6666666666666666,
-      "name": "DispatchTurnEventPacketWithCodeAndPayloadBuffer_Impl",
+      "matching": 1.0,
+      "name": "TCountingStream::PrepareForUse",
       "type": 1
     },
     {
@@ -12778,13 +12778,15 @@
     },
     {
       "address": "0x4e05d0",
-      "matching": 1.0,
+      "effective": true,
+      "matching": 0.42857142857142855,
       "name": "TGreatPower::OrphanLeaf_NoCall_Ins02_004d7fc0_89",
       "type": 1
     },
     {
       "address": "0x4e0610",
-      "matching": 1.0,
+      "effective": true,
+      "matching": 0.42857142857142855,
       "name": "TGreatPower::ReturnFalseNationStateActionStub_8a",
       "type": 1
     },
@@ -12796,13 +12798,14 @@
     },
     {
       "address": "0x4e0690",
-      "matching": 1.0,
+      "effective": true,
+      "matching": 0.42857142857142855,
       "name": "TGreatPower::ReturnFalseNationStateCapabilityFlag90",
       "type": 1
     },
     {
       "address": "0x4e06d0",
-      "matching": 0.8571428571428571,
+      "matching": 0.8095238095238095,
       "name": "TGreatPower::SumNationRuntimeFiveBucketValue44",
       "type": 1
     },
@@ -12832,7 +12835,7 @@
     },
     {
       "address": "0x4e09a0",
-      "matching": 0.5542168674698795,
+      "matching": 0.5301204819277109,
       "name": "TGreatPower::ComputeCityOrderCapabilityAggregateScore",
       "type": 1
     },
@@ -16326,7 +16329,7 @@
     },
     {
       "address": "0x50bea0",
-      "matching": 0.20536119945479328,
+      "matching": 0.20717855520218081,
       "name": "TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets",
       "type": 1
     },
@@ -16776,7 +16779,7 @@
     },
     {
       "address": "0x5136a0",
-      "matching": 1.0,
+      "matching": 0.8888888888888888,
       "name": "TMapMgr::OrphanLeaf_NoCall_Ins35_005136a0",
       "type": 1
     },
@@ -21235,7 +21238,7 @@
     },
     {
       "address": "0x545940",
-      "matching": 0.09466791393826006,
+      "matching": 0.09351037965214139,
       "name": "TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine",
       "type": 1
     },
@@ -21313,13 +21316,13 @@
     },
     {
       "address": "0x549ad0",
-      "matching": 0.02040816326530612,
+      "matching": 0.9791666666666666,
       "name": "DispatchTurnEventPacketWithCodeAndPayloadBuffer",
       "type": 1
     },
     {
       "address": "0x549c60",
-      "matching": 0.0136986301369863,
+      "matching": 0.375,
       "name": "SerializeOrderDataIntoTurnEventByTag",
       "type": 1
     },
@@ -21343,13 +21346,13 @@
     },
     {
       "address": "0x54a500",
-      "matching": 0.0,
+      "matching": 0.556390977443609,
       "name": "PublishTerrainDescriptorAndNotifyOrderListeners",
       "type": 1
     },
     {
       "address": "0x54a5e0",
-      "matching": 0.0,
+      "matching": 0.42105263157894735,
       "name": "PublishNationDescriptorAndNotifyOrderListeners",
       "type": 1
     },
@@ -21553,7 +21556,7 @@
     },
     {
       "address": "0x54ce80",
-      "matching": 0.011494252873563218,
+      "matching": 0.8141592920353983,
       "name": "EmitTurnEvent2CNationStateCompositeForSlot",
       "type": 1
     },
@@ -22225,13 +22228,13 @@
     },
     {
       "address": "0x553b10",
-      "matching": 0.41379310344827586,
+      "matching": 0.4827586206896552,
       "name": "HasNoMapOrderEntryChildrenQueued",
       "type": 1
     },
     {
       "address": "0x553b50",
-      "matching": 0.5454545454545454,
+      "matching": 0.5818181818181818,
       "name": "HasActiveMapOrderEntryChildren",
       "type": 1
     },
@@ -22501,7 +22504,7 @@
     },
     {
       "address": "0x5568f0",
-      "matching": 0.0,
+      "matching": 0.78125,
       "name": "SerializeNavyOrderListsByNation",
       "type": 1
     },
@@ -32765,7 +32768,7 @@
     },
     {
       "address": "0x5d4c10",
-      "matching": 0.26666666666666666,
+      "matching": 1.0,
       "name": "TryGetFileMetadataForPath",
       "type": 1
     },

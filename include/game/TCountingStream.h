@@ -67,10 +67,12 @@ public:
   // Destructors are compiler-generated (implicit virtual dtor from TStream).
 
   int streamSlot28() override;
+  // NOOP: verified empty in original 0x00489490 (single ret; the packet dispatcher
+  // calls it right after construction before measuring).
+  void PrepareForUse();
   void streamSlot2c(int) override;
   int streamSlot30() override;
   void streamSlot34(int) override;
   // ReadBytes (slot 0x3c) is inherited unchanged from TStream.
   void WriteBytesSlot78(void* data, int length) override;
 };
-

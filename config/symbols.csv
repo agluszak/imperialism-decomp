@@ -777,7 +777,7 @@ address|name|symbol|size|type|prototype|provenance
 489410|TCountingStream::ConstructTCountingStreamBaseState||17|function|undefined ConstructTCountingStreamBaseState()|
 489440|TCountingStream::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 489470|TCountingStream::~TCountingStream||7|function|undefined ~TCountingStream()|
-489490|DispatchTurnEventPacketWithCodeAndPayloadBuffer_Impl||1|function|undefined DispatchTurnEventPacketWithCodeAndPayloadBuffer_Impl()|
+489490|TCountingStream::PrepareForUse||1|function|undefined DispatchTurnEventPacketWithCodeAndPayloadBuffer_Impl()|
 4894b0|TCountingStream::OrphanTiny_ReturnZero_00488ad0||4|function|undefined OrphanTiny_ReturnZero_00488ad0(void)|
 4894d0|TCountingStream::OrphanRetStub_00488e30||19|function|undefined OrphanRetStub_00488e30(void)|
 489500|TCountingStream::OrphanTiny_ReturnZero_00488af0||4|function|undefined OrphanTiny_ReturnZero_00488af0(void)|

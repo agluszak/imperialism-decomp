@@ -6,6 +6,53 @@
 #include "game/NetMessage.h"
 #include "game/nation_slot_eligibility.h"
 
+// Case-0x31 payload of SerializeOrderDataIntoTurnEventByTag: a {tag, object} pair whose
+// 'star'-tagged object carries a sub-tag plus two shorts on the 'land' route. Minimal
+// typed view until the real order class is recovered.
+struct TaggedSerializablePayload {
+  int tag;
+  TObject* object;
+};
+struct StarOrderObjectView {
+  void* vftable;
+  int subTag;  // +0x04 - 'land' selects the two-short route
+  short word8; // +0x08
+  short wordA; // +0x0a
+};
+
+// Turn-event-0x2c payload: composite snapshot of a nation's city production state
+// plus the population-summary scalars and metric buckets.
+struct TurnEvent2CPacket : NetMessage {
+  int packetTag;                // +0x10 'time'
+  unsigned char activeNationId; // +0x14
+  unsigned char pad15[3];
+  short pendingNationSlot; // +0x18
+  unsigned char pad1a[2];
+  short nationSlot; // +0x1c
+  unsigned char pad1e[2];
+  int field910;                     // +0x20
+  int aidAllocationTotal;           // +0x24
+  unsigned char pad28[6];           // +0x28
+  short cityMetricsBlock0E[0x1e];   // +0x2e
+  short cityMetricsBlock4A[9];      // +0x6a
+  short orderCountByType[0x0e];     // +0x7c
+  int cityField78;                  // +0x98
+  short cityFieldB4;                // +0x9c
+  short cityStock[0x17];            // +0x9e
+  short productionOrderTable[0x10]; // +0xcc
+  short productionAccum[0x10];      // +0xec
+  short cityField26C;               // +0x10c
+  unsigned char pad10e[2];
+  int orderAccumulatedValues[0x17]; // +0x110
+  short popFieldAt8;                // +0x16c
+  unsigned char pad16e[2];
+  int popFieldAtC;         // +0x170
+  short popStockLevel;     // +0x174
+  short popExtraAt1e;      // +0x176
+  short popFieldAt20;      // +0x178
+  short popBucketWords[9]; // +0x17a - baseline/production/pendingDelta valueAt4/6/8
+}; // total 0x18c
+
 // Turn-event-0x19 payload: per-nation state arrays (city order counters, external
 // diplomacy state, slot-7C metrics, policy/grant/need-level tables).
 struct TurnEvent19Packet : NetMessage {
@@ -55,6 +102,13 @@ struct TurnEvent15Packet : NetMessage {
 #include "game/TDiplomacyMgr.h"
 #include "game/TMinor.h"
 #include "game/TCity.h"
+#include "game/TTradeMgr.h"
+#include "game/TNavyMgr.h"
+#include "game/THandleStream.h"
+#include "game/TCountingStream.h"
+#include "game/CIterator.h"
+#include "game/TPopulationMgr.h"
+#include "game/TProductionOrder.h"
 #include "game/TNetMgr.h"
 #include "game/TSimMgr.h"
 #include "game/TStream.h"
@@ -2349,6 +2403,82 @@ struct TaggedGameStateTurnEventPacket : NetMessage {
   int valueParam;
 };
 
+// FUNCTION: IMPERIALISM 0x00549ad0
+void TMultiplayerMgr::DispatchTurnEventPacketWithCodeAndPayloadBuffer(short eventTag, void* payload,
+                                                                      short destinationSlot) {
+  TCountingStream* counter = new TCountingStream();
+  counter->PrepareForUse();
+  SerializeOrderDataIntoTurnEventByTag(counter, eventTag, payload, destinationSlot);
+  int packetBytes = counter->streamSlot28();
+  counter->Free();
+  HGLOBAL packetMemory = GlobalAlloc(GMEM_MOVEABLE, packetBytes);
+  THandleStream* writer = new THandleStream();
+  writer->AttachGlobalMemoryHandleAndResetPosition(packetMemory, 0x10);
+  SerializeOrderDataIntoTurnEventByTag(writer, eventTag, payload, destinationSlot);
+  NetMessage* packet = static_cast<NetMessage*>(GlobalLock(packetMemory));
+  packet->messageLength = writer->streamSlot28();
+  writer->Free();
+  g_pNetMgr006a6014->Send(packet, destinationSlot == -3);
+  GlobalFree(packetMemory);
+}
+
+// FUNCTION: IMPERIALISM 0x00549c60
+void TMultiplayerMgr::SerializeOrderDataIntoTurnEventByTag(TStream* stream, short eventTag,
+                                                           void* payload, short destinationSlot) {
+  TimelyNetMessagePrefix header;
+  header.messageTag = 0x74696d65;
+  header.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetActiveNationId());
+  int tag = eventTag;
+  header.eventCode = 0;
+  header.fromNetworkId = 0;
+  header.messageLength = 0x1c;
+  header.eventCode = tag;
+  int dest = destinationSlot;
+  header.uiTurnToken = static_cast<short>(g_pGameFlowState->pendingNationSlotIndex);
+  if (dest == -2 || dest == -3) {
+    header.toNetworkId = 0;
+  } else if (dest == -1) {
+    header.toNetworkId = -1;
+  } else {
+    header.toNetworkId = g_pGameFlowState->nationSessionIds[dest];
+  }
+  stream->WriteBytesSlot78(&header, 0x1c);
+  switch (tag) {
+  case 0x28:
+    static_cast<TObject*>(payload)->WriteTo(stream);
+    return;
+  case 0x2e:
+    g_pNavyOrderManager->SerializeNavyOrderListsByNation(
+        stream, static_cast<short>(reinterpret_cast<int>(payload)));
+    return;
+  case 0x2f:
+    PublishTerrainDescriptorAndNotifyOrderListeners(stream, reinterpret_cast<int>(payload));
+    return;
+  case 0x30:
+    PublishNationDescriptorAndNotifyOrderListeners(stream, reinterpret_cast<int>(payload));
+    return;
+  case 0x31: {
+    TaggedSerializablePayload* record = static_cast<TaggedSerializablePayload*>(payload);
+    stream->streamSlot8c(record->tag);
+    if (record->tag != 0x73746172) { // 'star'
+      record->object->WriteTo(stream);
+      return;
+    }
+    StarOrderObjectView* view = reinterpret_cast<StarOrderObjectView*>(record->object);
+    record->object->AssertValid();
+    stream->streamSlot8c(view->subTag);
+    if (view->subTag == 0x6c616e64) { // 'land'
+      record->object->AssertValid();
+      stream->WriteCountSlot88(view->word8);
+      stream->WriteCountSlot88(view->wordA);
+      return;
+    }
+  } break;
+  case 0x32:
+    g_pNationInteractionStateManager->WriteTo(stream);
+  }
+}
+
 // FUNCTION: IMPERIALISM 0x0054a340
 void TMultiplayerMgr::DispatchTaggedGameStateEvent1F20(int packetTag, int param2,
                                                        int nationSlotOrMode) {
@@ -2406,6 +2536,49 @@ struct TileRedrawInvalidateTurnEventPacket : NetMessage {
   TTerrainStateRecordView tileSnapshot;
 };
 #pragma pack(pop)
+
+// FUNCTION: IMPERIALISM 0x0054a500
+void TMultiplayerMgr::PublishTerrainDescriptorAndNotifyOrderListeners(TStream* stream,
+                                                                      int terrainSlot) {
+  stream->streamSlot7c(static_cast<unsigned char>(terrainSlot + 'a'));
+  TCountry* descriptor = g_apTerrainTypeDescriptorTable[terrainSlot];
+  if (descriptor == 0) {
+    stream->WriteCountSlot88(0);
+  } else {
+    stream->WriteCountSlot88(descriptor->militaryUnitList44->GetCount());
+    CIterator unitIter(descriptor->militaryUnitList44);
+    for (TObject* unit = static_cast<TObject*>(unitIter.Reset()); unitIter.More();
+         unit = static_cast<TObject*>(unitIter.Advance())) {
+      unit->WriteTo(stream);
+    }
+  }
+  stream->streamSlot7c('.');
+}
+
+// FUNCTION: IMPERIALISM 0x0054a5e0
+void TMultiplayerMgr::PublishNationDescriptorAndNotifyOrderListeners(TStream* stream,
+                                                                     int nationFilter) {
+  int slot = 0;
+  for (TGreatPower** cell = g_apNationStates; cell < g_apNationStates + 7; ++cell, ++slot) {
+    bool matches;
+    if (nationFilter == -1 || nationFilter == slot) {
+      matches = true;
+    } else {
+      matches = false;
+    }
+    TGreatPower* nation = *cell;
+    if (nation == 0 || !matches) {
+      stream->WriteCountSlot88(0);
+    } else {
+      stream->WriteCountSlot88(nation->trackedObjectList->GetCount());
+      CIterator trackedIter(nation->trackedObjectList);
+      for (TObject* tracked = static_cast<TObject*>(trackedIter.Reset()); trackedIter.More();
+           tracked = static_cast<TObject*>(trackedIter.Advance())) {
+        tracked->WriteTo(stream);
+      }
+    }
+  }
+}
 
 // FUNCTION: IMPERIALISM 0x0054ab20
 extern "C" void __stdcall DispatchTileRedrawInvalidateEvent(short tileIndex) {
@@ -2590,6 +2763,83 @@ void TMultiplayerMgr::RefreshNationStatusLabelsAndCodesForSlotOrAll(int nationSl
     if (IsNationSlotEligibleForEventProcessing(static_cast<short>(nationSlot)) == 0) {
       nationStatusTags[nationSlot] = 0x64656361; // 'deca'
     }
+  }
+}
+
+// FUNCTION: IMPERIALISM 0x0054ce80
+void TMultiplayerMgr::EmitTurnEvent2CNationStateCompositeForSlot(int nationSlot,
+                                                                 int destinationSlot) {
+  TurnEvent2CPacket packet;
+  packet.packetTag = 0x74696d65;
+  packet.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetActiveNationId());
+  packet.fromNetworkId = 0;
+  packet.messageLength = 0x18c;
+  packet.eventCode = 0x2c;
+  packet.pendingNationSlot = static_cast<short>(g_pGameFlowState->pendingNationSlotIndex);
+  if (destinationSlot == -2 || destinationSlot == -3) {
+    packet.toNetworkId = 0;
+  } else if (destinationSlot == -1) {
+    packet.toNetworkId = -1;
+  } else {
+    packet.toNetworkId = g_pGameFlowState->nationSessionIds[destinationSlot];
+  }
+  packet.nationSlot = static_cast<short>(nationSlot);
+  TGreatPower* nation = g_apNationStates[nationSlot];
+  packet.field910 = nation->field910;
+  packet.aidAllocationTotal = nation->aidAllocationTotal;
+  TCity* city;
+  if (nation == 0) {
+    city = 0;
+  } else {
+    city = nation->city;
+  }
+  if (city != 0) {
+    for (int i = 0; i < 0x1e; ++i) {
+      packet.cityMetricsBlock0E[i] = city->cityMetricsBlock0E[i];
+    }
+    for (int j = 0; j < 9; ++j) {
+      packet.cityMetricsBlock4A[j] = city->cityMetricsBlock4A[j];
+    }
+    for (int orderType = 0; orderType < 0x0e; ++orderType) {
+      packet.orderCountByType[orderType] = city->orderCountByType5c[orderType];
+    }
+    packet.cityField78 = city->field78;
+    packet.cityFieldB4 = city->fieldB4;
+    short* stock = &city->cityStockCottonB6;
+    for (int stockType = 0; stockType < 0x17; ++stockType) {
+      packet.cityStock[stockType] = stock[stockType];
+    }
+    for (int slot = 0; slot < 0x10; ++slot) {
+      packet.productionOrderTable[slot] = city->productionOrderTable1dc[slot];
+    }
+    for (int slot2 = 0; slot2 < 0x10; ++slot2) {
+      packet.productionAccum[slot2] = city->productionAccum1fc[slot2];
+    }
+    packet.cityField26C = city->field26c;
+    for (int record = 0; record < 0x17; ++record) {
+      TProductionOrder* order = city->tradeCommodityRecordPtrs[record];
+      if (order == 0) {
+        packet.orderAccumulatedValues[record] = 0;
+      } else {
+        packet.orderAccumulatedValues[record] = order->accumulatedValue;
+      }
+    }
+    TPopulationMgr* summary = city->productionSummary1d8;
+    packet.popFieldAt8 = summary->fieldAt8;
+    packet.popFieldAtC = summary->fieldAtC;
+    packet.popStockLevel = summary->stockLevel1c;
+    packet.popExtraAt1e = summary->extraAt1e;
+    packet.popFieldAt20 = summary->fieldAt20;
+    packet.popBucketWords[0] = summary->baselineSlots10->valueAt4;
+    packet.popBucketWords[1] = summary->baselineSlots10->valueAt6;
+    packet.popBucketWords[2] = summary->baselineSlots10->valueAt8;
+    packet.popBucketWords[3] = summary->productionSlots14->valueAt4;
+    packet.popBucketWords[4] = summary->productionSlots14->valueAt6;
+    packet.popBucketWords[5] = summary->productionSlots14->valueAt8;
+    packet.popBucketWords[6] = summary->pendingDeltaSlots18->valueAt4;
+    packet.popBucketWords[7] = summary->pendingDeltaSlots18->valueAt6;
+    packet.popBucketWords[8] = summary->pendingDeltaSlots18->valueAt8;
+    g_pNetMgr006a6014->Send(&packet, destinationSlot == -3);
   }
 }
 

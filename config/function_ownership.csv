@@ -454,6 +454,7 @@ address|target_cpp|ownership|note
 489410|src/game/TCountingStream.cpp|manual|marker_sync
 489440|src/game/TCountingStream.cpp|manual|marker_sync
 489470|src/game/TCountingStream.cpp|manual|marker_sync
+489490|src/game/TCountingStream.cpp|manual|marker_sync
 4894b0|src/game/TCountingStream.cpp|manual|marker_sync
 4894d0|src/game/TCountingStream.cpp|manual|marker_sync
 489500|src/game/TCountingStream.cpp|manual|marker_sync
@@ -2954,7 +2955,11 @@ address|target_cpp|ownership|note
 549680|src/game/TMultiplayerMgr.cpp|manual|marker_sync
 549720|src/game/TMultiplayerMgr.cpp|manual|marker_sync
 5497b0|src/game/TMultiplayerMgr.cpp|manual|marker_sync
+549ad0|src/game/TMultiplayerMgr.cpp|manual|marker_sync
+549c60|src/game/TMultiplayerMgr.cpp|manual|marker_sync
 54a340|src/game/TMultiplayerMgr.cpp|manual|marker_sync
+54a500|src/game/TMultiplayerMgr.cpp|manual|marker_sync
+54a5e0|src/game/TMultiplayerMgr.cpp|manual|marker_sync
 54ab20|src/game/TMultiplayerMgr.cpp|manual|marker_sync
 54abf0|src/game/TMultiplayerMgr.cpp|manual|marker_sync
 54aff0|src/game/TPoseMessageDialog.cpp|manual|marker_sync
@@ -2965,6 +2970,7 @@ address|target_cpp|ownership|note
 54c5a0|src/game/TMultiplayerMgr.cpp|manual|marker_sync
 54c660|src/game/TMultiplayerMgr.cpp|manual|marker_sync
 54cc00|src/game/TMultiplayerMgr.cpp|manual|marker_sync
+54ce80|src/game/TMultiplayerMgr.cpp|manual|marker_sync
 54d1f0|src/game/TMultiplayerMgr.cpp|manual|marker_sync
 54d650|src/game/TLoungeDialog.cpp|manual|marker_sync
 54d6d0|src/game/TLoungeDialog.cpp|manual|marker_sync
@@ -3075,6 +3081,7 @@ address|target_cpp|ownership|note
 5567a0|src/game/TNavyMgr.cpp|manual|marker_sync
 556820|src/game/TTaskForce.cpp|manual|marker_sync
 5568c0|src/game/TNavyMgr.cpp|manual|marker_sync
+5568f0|src/game/TNavyMgr.cpp|manual|marker_sync
 556aa0|src/game/TNavyMgr.cpp|manual|marker_sync
 556fd0|src/game/TNavyMgr.cpp|manual|marker_sync
 557080|src/game/TNavyMgr.cpp|manual|marker_sync
@@ -4467,6 +4474,7 @@ address|target_cpp|ownership|note
 5d4720|src/game/mapped_flavor_text.cpp|manual|marker_sync
 5d4ba0|src/game/buffered_stream.cpp|library|marker_sync
 5d4c10|src/game/TSimMgr.cpp|manual|marker_sync
+5d4c40|src/game/TSimMgr.cpp|manual|marker_sync
 5d5040|src/game/TViewMgr.cpp|manual|mfc_runtime_macro
 5d5060|src/game/TViewMgr.cpp|manual|marker_sync
 5d50b0|src/game/TViewMgr.cpp|manual|marker_sync

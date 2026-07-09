@@ -723,22 +723,6 @@ undefined4 DispatchTurnEvent31TaggedPayload(void)
   return 0;
 }
 
-// ghidra_name DispatchTurnEventPacketWithCodeAndPayloadBuffer
-// ghidra_proto undefined DispatchTurnEventPacketWithCodeAndPayloadBuffer()
-// FUNCTION: IMPERIALISM 0x00549ad0
-undefined4 DispatchTurnEventPacketWithCodeAndPayloadBuffer(void)
-{
-  return 0;
-}
-
-// ghidra_name SerializeOrderDataIntoTurnEventByTag
-// ghidra_proto undefined SerializeOrderDataIntoTurnEventByTag()
-// FUNCTION: IMPERIALISM 0x00549c60
-undefined4 SerializeOrderDataIntoTurnEventByTag(void)
-{
-  return 0;
-}
-
 // ghidra_name HandleTurnEventCodes28_2E_2F_30_31_32
 // ghidra_proto undefined HandleTurnEventCodes28_2E_2F_30_31_32()
 // FUNCTION: IMPERIALISM 0x00549ff0
@@ -751,22 +735,6 @@ undefined4 HandleTurnEventCodes28_2E_2F_30_31_32(void)
 // ghidra_proto undefined DispatchTextPairEvent8FromContext()
 // FUNCTION: IMPERIALISM 0x0054a410
 undefined4 DispatchTextPairEvent8FromContext(void)
-{
-  return 0;
-}
-
-// ghidra_name PublishTerrainDescriptorAndNotifyOrderListeners
-// ghidra_proto undefined PublishTerrainDescriptorAndNotifyOrderListeners()
-// FUNCTION: IMPERIALISM 0x0054a500
-undefined4 PublishTerrainDescriptorAndNotifyOrderListeners(void)
-{
-  return 0;
-}
-
-// ghidra_name PublishNationDescriptorAndNotifyOrderListeners
-// ghidra_proto undefined PublishNationDescriptorAndNotifyOrderListeners()
-// FUNCTION: IMPERIALISM 0x0054a5e0
-undefined4 PublishNationDescriptorAndNotifyOrderListeners(void)
 {
   return 0;
 }
@@ -951,14 +919,6 @@ undefined4 EmitTurnEventEAnd9SessionContextPackets(void)
 // ghidra_proto undefined CreateAndQueueTurnEventPacketTagPOGC()
 // FUNCTION: IMPERIALISM 0x0054cde0
 undefined4 CreateAndQueueTurnEventPacketTagPOGC(void)
-{
-  return 0;
-}
-
-// ghidra_name EmitTurnEvent2CNationStateCompositeForSlot
-// ghidra_proto undefined EmitTurnEvent2CNationStateCompositeForSlot()
-// FUNCTION: IMPERIALISM 0x0054ce80
-undefined4 EmitTurnEvent2CNationStateCompositeForSlot(void)
 {
   return 0;
 }

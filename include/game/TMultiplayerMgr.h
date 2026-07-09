@@ -117,6 +117,25 @@ public:
   // destinationSlot (sentinels as NetMessage::DestinateTo; -3 also marks the send
   // as loopback-suppressed). 0x54d1f0.
   void EmitTurnEvent19NationStateArraysForSlot(short nationSlot, int destinationSlot);
+
+  // Send the turn-event-0x2c composite city/population snapshot for nationSlot (no-op
+  // when the nation has no city). 0x54ce80.
+  void EmitTurnEvent2CNationStateCompositeForSlot(int nationSlot, int destinationSlot);
+
+  // Serializer subtree for the turn-event packet dispatcher (0x543910 family).
+  // 0x54a500: 'a'+slot marker byte, then the terrain descriptor's military unit list
+  // (16-bit count + WriteTo sweep), terminated with '.'.
+  void PublishTerrainDescriptorAndNotifyOrderListeners(TStream* stream, int terrainSlot);
+  // 0x54a5e0: per great-power tracked-object list (count + WriteTo sweep; 0 for
+  // filtered-out or empty slots).
+  void PublishNationDescriptorAndNotifyOrderListeners(TStream* stream, int nationFilter);
+  // 0x549c60: write the 0x1c-byte packet header then the tag-specific payload.
+  void SerializeOrderDataIntoTurnEventByTag(TStream* stream, short eventTag, void* payload,
+                                            short destinationSlot);
+  // 0x549ad0: measure with a TCountingStream, then serialize into a THandleStream over
+  // GlobalAlloc memory, stamp the real length, and send (loopback-suppressed for -3).
+  void DispatchTurnEventPacketWithCodeAndPayloadBuffer(short eventTag, void* payload,
+                                                       short destinationSlot);
 };
 
 ASSERT_SIZE(TMultiplayerMgr, 0xf8);

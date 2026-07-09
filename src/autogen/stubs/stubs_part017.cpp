@@ -131,14 +131,6 @@ undefined4 ResetNavyOrderListsAndManagerOwner(void)
   return 0;
 }
 
-// ghidra_name SerializeNavyOrderListsByNation
-// ghidra_proto undefined SerializeNavyOrderListsByNation()
-// FUNCTION: IMPERIALISM 0x005568f0
-undefined4 SerializeNavyOrderListsByNation(void)
-{
-  return 0;
-}
-
 // ghidra_name DeserializeNavyOrderListsByNation
 // ghidra_proto undefined DeserializeNavyOrderListsByNation()
 // FUNCTION: IMPERIALISM 0x00556ad0

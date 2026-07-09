@@ -267,14 +267,6 @@ undefined4 QueueDeferredUiEventPacket(void)
   return 0;
 }
 
-// ghidra_name DeleteFileWithErrorReporting
-// ghidra_proto undefined DeleteFileWithErrorReporting()
-// FUNCTION: IMPERIALISM 0x005d4c40
-undefined4 DeleteFileWithErrorReporting(void)
-{
-  return 0;
-}
-
 // ghidra_name TViewMgr::CreateTViewMgrInstance
 // ghidra_proto undefined CreateTViewMgrInstance()
 // FUNCTION: IMPERIALISM 0x005d4c60
