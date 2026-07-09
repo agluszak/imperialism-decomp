@@ -1120,50 +1120,8 @@
     },
     {
       "address": "0x4538a0",
-      "matching": 0.07985347985347985,
+      "matching": 0.6985700127424607,
       "name": "InitializeGameSetupScreenControlsAndModeTags",
-      "type": 1
-    },
-    {
-      "address": "0x456ba3",
-      "matching": 0.002366863905325444,
-      "name": "BuildDifficultyAndNamesSetupUiResources",
-      "type": 1
-    },
-    {
-      "address": "0x45762e",
-      "matching": 0.00558659217877095,
-      "name": "BuildUiResourceTreeWithPlanetListAndCursorEntries_0045762e",
-      "type": 1
-    },
-    {
-      "address": "0x457aee",
-      "matching": 0.0,
-      "name": "thunk_BuildMainStatsScoreboardAndDoneUiResourceTree",
-      "type": 1
-    },
-    {
-      "address": "0x457af2",
-      "matching": 0.0013477088948787063,
-      "name": "BuildMainStatsScoreboardAndDoneUiResourceTree",
-      "type": 1
-    },
-    {
-      "address": "0x458ced",
-      "matching": 0.0,
-      "name": "AllocateAndConstructTViewDerivedState_00458ced",
-      "type": 1
-    },
-    {
-      "address": "0x458d10",
-      "matching": 0.0,
-      "name": "thunk_InitializeOrderStateUiResourceTreeAndControlEntries",
-      "type": 1
-    },
-    {
-      "address": "0x458d14",
-      "matching": 0.0065252854812398045,
-      "name": "InitializeOrderStateUiResourceTreeAndControlEntries",
       "type": 1
     },
     {
@@ -1176,6 +1134,12 @@
       "address": "0x45acd0",
       "matching": 0.9090909090909091,
       "name": "TSpecialQuitPicture::`scalar deleting destructor'",
+      "type": 1
+    },
+    {
+      "address": "0x45ad20",
+      "matching": 1.0,
+      "name": "TTEView::TTEView",
       "type": 1
     },
     {
@@ -1203,15 +1167,33 @@
       "type": 1
     },
     {
+      "address": "0x45ae60",
+      "matching": 1.0,
+      "name": "TScenarioChooser::TScenarioChooser",
+      "type": 1
+    },
+    {
       "address": "0x45ae90",
       "matching": 0.9090909090909091,
       "name": "TScenarioChooser::`scalar deleting destructor'",
       "type": 1
     },
     {
+      "address": "0x45aee0",
+      "matching": 1.0,
+      "name": "TTextList::TTextList",
+      "type": 1
+    },
+    {
       "address": "0x45af30",
       "matching": 0.9090909090909091,
       "name": "TTextList::`scalar deleting destructor'",
+      "type": 1
+    },
+    {
+      "address": "0x45af80",
+      "matching": 1.0,
+      "name": "TGameScorePicture::TGameScorePicture",
       "type": 1
     },
     {
@@ -7555,7 +7537,7 @@
     },
     {
       "address": "0x4a2900",
-      "matching": 0.12752721617418353,
+      "matching": 0.13063763608087092,
       "name": "BuildArmyContextActionRecordsAndDispatchLabel",
       "type": 1
     },
@@ -8983,7 +8965,7 @@
     },
     {
       "address": "0x4b4310",
-      "matching": 0.8842105263157894,
+      "matching": 1.0,
       "name": "ComputeAverageWeightWord0TimesTenFromResourceCounts",
       "type": 1
     },
@@ -11377,8 +11359,8 @@
     },
     {
       "address": "0x4d1800",
-      "matching": 0.2222222222222222,
-      "name": "TPlaceCityDialog::ConstructTPlaceCityDialogBaseState",
+      "matching": 0.8571428571428571,
+      "name": "TPlaceCityDialog::TPlaceCityDialog",
       "type": 1
     },
     {
@@ -12821,7 +12803,8 @@
     },
     {
       "address": "0x4e0690",
-      "matching": 1.0,
+      "effective": true,
+      "matching": 0.42857142857142855,
       "name": "TGreatPower::ReturnFalseNationStateCapabilityFlag90",
       "type": 1
     },
@@ -12857,7 +12840,7 @@
     },
     {
       "address": "0x4e09a0",
-      "matching": 0.5301204819277109,
+      "matching": 0.5060240963855421,
       "name": "TGreatPower::ComputeCityOrderCapabilityAggregateScore",
       "type": 1
     },
@@ -13139,7 +13122,7 @@
     },
     {
       "address": "0x4e4630",
-      "matching": 0.6666666666666666,
+      "matching": 0.9333333333333333,
       "name": "TMinor::OrphanLeaf_NoCall_Ins02_004d7ee0",
       "type": 1
     },
@@ -16351,7 +16334,7 @@
     },
     {
       "address": "0x50bea0",
-      "matching": 0.2080872330758746,
+      "matching": 0.20354384370740572,
       "name": "TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets",
       "type": 1
     },
@@ -17173,7 +17156,7 @@
     },
     {
       "address": "0x5178f0",
-      "matching": 0.3446601941747573,
+      "matching": 0.32116788321167883,
       "name": "ComputeRepresentativeTileIndexForTerrainTypeWithWrapBias",
       "type": 1
     },
@@ -17491,8 +17474,8 @@
     },
     {
       "address": "0x51beb0",
-      "matching": 0.07692307692307693,
-      "name": "InitializeCitySiteView",
+      "matching": 0.21052631578947367,
+      "name": "TCitySiteView::TCitySiteView",
       "type": 1
     },
     {
@@ -18265,7 +18248,7 @@
     },
     {
       "address": "0x52d750",
-      "matching": 0.21904761904761905,
+      "matching": 0.22063492063492063,
       "name": "MergeSmallCityRegionsAndCompactIds",
       "type": 1
     },
@@ -20162,7 +20145,7 @@
     },
     {
       "address": "0x53d020",
-      "matching": 0.4235294117647059,
+      "matching": 0.4251968503937008,
       "name": "ComputeArmyMissionScoreDeltaWithCandidateUnit",
       "type": 1
     },
@@ -22250,13 +22233,13 @@
     },
     {
       "address": "0x553b10",
-      "matching": 0.6206896551724138,
+      "matching": 0.4827586206896552,
       "name": "HasNoMapOrderEntryChildrenQueued",
       "type": 1
     },
     {
       "address": "0x553b50",
-      "matching": 0.5454545454545454,
+      "matching": 0.5818181818181818,
       "name": "HasActiveMapOrderEntryChildren",
       "type": 1
     },
@@ -25382,7 +25365,7 @@
     },
     {
       "address": "0x575280",
-      "matching": 0.4489795918367347,
+      "matching": 0.96,
       "name": "THighScoresPicture::CreateObject",
       "type": 1
     },
@@ -25484,7 +25467,7 @@
     },
     {
       "address": "0x576900",
-      "matching": 0.4897959183673469,
+      "matching": 1.0,
       "name": "TNetSelectPicture::CreateObject",
       "type": 1
     },
@@ -30985,7 +30968,7 @@
     },
     {
       "address": "0x5b4760",
-      "matching": 0.5454545454545454,
+      "matching": 0.6428571428571429,
       "name": "TSpecialQuitPicture::CreateObject",
       "type": 1
     },

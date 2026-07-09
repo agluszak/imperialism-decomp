@@ -11,11 +11,11 @@ TGameScorePicture::~TGameScorePicture() {}
 
 IMPLEMENT_DYNCREATE(TGameScorePicture, TNoHilitePicture)
 
+// FUNCTION: IMPERIALISM 0x0045af80
 TGameScorePicture::TGameScorePicture() {}
 
 // FUNCTION: IMPERIALISM 0x0057b0a0
-void TGameScorePicture::NoOpUiLifecycleHook(int arg) {
-}
+void TGameScorePicture::NoOpUiLifecycleHook(int arg) {}
 
 // FUNCTION: IMPERIALISM 0x0057b620
-void TGameScorePicture::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) { }
+void TGameScorePicture::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {}

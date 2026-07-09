@@ -11,14 +11,14 @@ TScenarioChooser::~TScenarioChooser() {}
 
 IMPLEMENT_DYNCREATE(TScenarioChooser, TNoHilitePicture)
 
+// FUNCTION: IMPERIALISM 0x0045ae60
 TScenarioChooser::TScenarioChooser() {}
 
 // FUNCTION: IMPERIALISM 0x00579b80
-void TScenarioChooser::NoOpUiLifecycleHook(int arg) {
-}
+void TScenarioChooser::NoOpUiLifecycleHook(int arg) {}
 
 // FUNCTION: IMPERIALISM 0x0057a050
-void TScenarioChooser::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) { }
+void TScenarioChooser::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {}
 
 // FUNCTION: IMPERIALISM 0x0057a2d0
 undefined TScenarioChooser::PostTurnEvent5DCOrResetScenarioSelectionState() {
@@ -26,8 +26,7 @@ undefined TScenarioChooser::PostTurnEvent5DCOrResetScenarioSelectionState() {
 }
 
 // FUNCTION: IMPERIALISM 0x0057a310
-void TScenarioChooser::ForwardParam(int param) {
-}
+void TScenarioChooser::ForwardParam(int param) {}
 
 // FUNCTION: IMPERIALISM 0x0057a350
 undefined TScenarioChooser::ApplyScenarioSelectionAndPostTurnEvent5E4() {
@@ -35,5 +34,4 @@ undefined TScenarioChooser::ApplyScenarioSelectionAndPostTurnEvent5E4() {
 }
 
 // FUNCTION: IMPERIALISM 0x0057ab30
-void TScenarioChooser::Free() {
-}
+void TScenarioChooser::Free() {}

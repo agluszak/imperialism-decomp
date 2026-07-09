@@ -189,6 +189,10 @@ char g_szNewGameDifficultyNormal_00694A48[] = "Normal";
 char g_szNewGameDifficultyEasy_00694A50[] = "Easy";
 // GLOBAL: IMPERIALISM 0x00694a58
 char g_szNewGameDifficultyIntroductory_00694A58[] = "Introductory";
+// GLOBAL: IMPERIALISM 0x00694a68
+char g_szNewGameScenarioPlaceholderTitle_00694A68[] = "Revenge of the Patagonians";
+// GLOBAL: IMPERIALISM 0x00694a88
+char g_szNewGameGameNameLabel_00694A88[] = "Game name:";
 // Trade-board screen labels (InitializeTradeScreenBitmapControls, events 0x7d9/0x7da).
 // GLOBAL: IMPERIALISM 0x006948a4
 char g_szUiOrdersLabel_006948A4[] = "Orders";

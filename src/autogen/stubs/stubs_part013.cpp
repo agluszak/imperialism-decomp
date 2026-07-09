@@ -363,14 +363,6 @@ undefined4 UpdateUniversitySpecialistCountControlAndRefreshViewAlt(void)
   return 0;
 }
 
-// ghidra_name TPlaceCityDialog::ConstructTPlaceCityDialogBaseState
-// ghidra_proto undefined ConstructTPlaceCityDialogBaseState()
-// FUNCTION: IMPERIALISM 0x004d1800
-undefined4 ConstructTPlaceCityDialogBaseState(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_ftol_At004d1fb0
 // ghidra_proto undefined WrapperFor_ftol_At004d1fb0()
 // FUNCTION: IMPERIALISM 0x004d1fb0

@@ -16,15 +16,11 @@ THighScoresPicture::~THighScoresPicture() {}
 
 IMPLEMENT_DYNCREATE(THighScoresPicture, TNoHilitePicture)
 
-THighScoresPicture::THighScoresPicture() {}
-
 // FUNCTION: IMPERIALISM 0x00575320
-void THighScoresPicture::NoOpUiLifecycleHook(int arg) {
-}
+void THighScoresPicture::NoOpUiLifecycleHook(int arg) {}
 
 // FUNCTION: IMPERIALISM 0x00575460
-void THighScoresPicture::ApplyRectSlot110(RECT* rectBuffer) {
-}
+void THighScoresPicture::ApplyRectSlot110(RECT* rectBuffer) {}
 
 // FUNCTION: IMPERIALISM 0x00575770
-void THighScoresPicture::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) { }
+void THighScoresPicture::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {}

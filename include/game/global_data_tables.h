@@ -441,6 +441,8 @@ extern char g_szNewGameDifficultyHard_00694A40[];
 extern char g_szNewGameDifficultyNormal_00694A48[];
 extern char g_szNewGameDifficultyEasy_00694A50[];
 extern char g_szNewGameDifficultyIntroductory_00694A58[];
+extern char g_szNewGameScenarioPlaceholderTitle_00694A68[];
+extern char g_szNewGameGameNameLabel_00694A88[];
 extern char g_szUiPlaceholderZero_00694378[];
 extern char g_szUiOrdersLabel_006948A4[];
 extern char g_szUiAsEstimatedBy_00694540[];

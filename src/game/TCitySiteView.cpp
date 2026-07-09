@@ -7,6 +7,7 @@
 
 IMPLEMENT_DYNCREATE(TCitySiteView, TMapDialog)
 
+// FUNCTION: IMPERIALISM 0x0051beb0
 TCitySiteView::TCitySiteView() {}
 
 // SYNTHETIC: IMPERIALISM 0x0051bfa0

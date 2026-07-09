@@ -7,7 +7,7 @@
 // VTABLE: IMPERIALISM 0x00643ea8
 class THighScoresPicture : public TNoHilitePicture {
 public:
-// === BEGIN GENERATED DECLS (THighScoresPicture) — refreshed by recover-class; do not hand-edit ===
+  // === BEGIN GENERATED DECLS (THighScoresPicture) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(THighScoresPicture)
   virtual ~THighScoresPicture() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -23,7 +23,8 @@ public:
   // slot 0x0c QueryStepValue inherited unchanged (0x48a2c0)
   // slot 0x0d DispatchQueuedUiCommandAndRelease inherited unchanged (0x48a3b0)
   // slot 0x0e DispatchUiSelectionToHandler inherited unchanged (0x48a3f0)
-  virtual void HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) override; // slot 0x0f 0x00575770
+  virtual void HandleEvent(int commandId, TEventHandler* sourceHandler,
+                           TEvent* event) override; // slot 0x0f 0x00575770
   // slot 0x10 DispatchUiCommandToHandler inherited unchanged (0x48a2e0)
   // slot 0x11 vmethod_0017 inherited unchanged (0x48a310)
   // slot 0x12 ForwardParam inherited unchanged (0x48a380)
@@ -124,9 +125,10 @@ public:
   // slot 0x71 ResetPictureResourceEntry inherited unchanged (0x48f520)
   // slot 0x72 SetPictureResourceIdAndRefresh inherited unchanged (0x48f570)
   virtual undefined UniversityDialogMethod_00405623() override; // slot 0x73 0x45ada0
-// === END GENERATED DECLS (THighScoresPicture) ===
+  // === END GENERATED DECLS (THighScoresPicture) ===
   // TODO(manifest): add data members from the object slice (`just slice-discovery THighScoresPicture 0xCTOR`).
 
-  THighScoresPicture();
+  // NOOP: verified empty in original 0x00455a91 (trivial inline ctor: the builder
+  // expansion site emits only the base ctor call + vtbl install)
+  THighScoresPicture() {}
 };
-

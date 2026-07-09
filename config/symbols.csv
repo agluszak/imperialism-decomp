@@ -231,26 +231,19 @@ address|name|symbol|size|type|prototype|provenance
 44fbc0|BuildUiResourceTreeByTemplateIdAndBindScreenContext||12326|function|undefined BuildUiResourceTreeByTemplateIdAndBindScreenContext()|
 453800|TOverlayRadioButton::TOverlayRadioButton||28|function|undefined ConstructUiClickablePictureResourceEntry_Vtbl643A40()|
 453830|TOverlayRadioButton::`scalar deleting destructor'||30|function|undefined DestructUiClickablePictureResourceEntry_Vtbl643A40_AndMaybeFree()|
-4538a0|InitializeGameSetupScreenControlsAndModeTags||13059|function|undefined InitializeGameSetupScreenControlsAndModeTags()|
-456ba3|BuildDifficultyAndNamesSetupUiResources||2665|function|undefined BuildDifficultyAndNamesSetupUiResources()|
-45762e|BuildUiResourceTreeWithPlanetListAndCursorEntries_0045762e||1186|function|undefined BuildUiResourceTreeWithPlanetListAndCursorEntries_0045762e()|
-457aee|thunk_BuildMainStatsScoreboardAndDoneUiResourceTree||2|function|undefined thunk_BuildMainStatsScoreboardAndDoneUiResourceTree()|
-457af2|BuildMainStatsScoreboardAndDoneUiResourceTree||4575|function|undefined BuildMainStatsScoreboardAndDoneUiResourceTree()|
-458ced|AllocateAndConstructTViewDerivedState_00458ced||35|function|undefined AllocateAndConstructTViewDerivedState_00458ced()|
-458d10|thunk_InitializeOrderStateUiResourceTreeAndControlEntries||2|function|undefined thunk_InitializeOrderStateUiResourceTreeAndControlEntries()|
-458d14|InitializeOrderStateUiResourceTreeAndControlEntries||2098|function|undefined InitializeOrderStateUiResourceTreeAndControlEntries()|
+4538a0|InitializeGameSetupScreenControlsAndModeTags||23718|function|undefined InitializeGameSetupScreenControlsAndModeTags()|
 45acb0|TSpecialQuitPicture::OrphanRetStub_0045acb0||1|function|undefined OrphanRetStub_0045acb0(void)|
 45acd0|TSpecialQuitPicture::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
-45ad20|TMapKey::WrapperFor_thunk_ConstructUiTextResourceEntryBase_At0045ad20||18|function|undefined WrapperFor_thunk_ConstructUiTextResourceEntryBase_At0045ad20()|
+45ad20|TTEView::TTEView||18|function|undefined TTEView()|
 45ad70|TTEView::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 45ada0|THighScoresPicture::UniversityDialogMethod_00405623||1|function|undefined UniversityDialogMethod_00405623(void)|
 45adc0|THighScoresPicture::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 45ae10|TNetSelectPicture::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
-45ae60|TShipyardView::WrapperFor_thunk_ConstructPictureResourceEntryType606E8_At0045ae60||18|function|undefined WrapperFor_thunk_ConstructPictureResourceEntryType606E8_At0045ae60()|
+45ae60|TScenarioChooser::TScenarioChooser||18|function|undefined TScenarioChooser()|
 45ae90|TScenarioChooser::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
-45aee0|WrapperFor_thunk_ConstructUiResourceEntryBase_At0045aee0||51|function|undefined WrapperFor_thunk_ConstructUiResourceEntryBase_At0045aee0()|
+45aee0|TTextList::TTextList||51|function|undefined TTextList()|
 45af30|TTextList::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
-45af80|TShipyardView::WrapperFor_thunk_ConstructPictureResourceEntryType606E8_At0045af80||18|function|undefined WrapperFor_thunk_ConstructPictureResourceEntryType606E8_At0045af80()|
+45af80|TGameScorePicture::TGameScorePicture||18|function|undefined TGameScorePicture()|
 45afb0|TGameScorePicture::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 45b000|WrapperFor_thunk_ConstructUiResourceEntryBase_At0045b000||25|function|undefined WrapperFor_thunk_ConstructUiResourceEntryBase_At0045b000()|
 45b030|TGWorldPartView::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
@@ -2216,7 +2209,7 @@ address|name|symbol|size|type|prototype|provenance
 4d0810|TEngineerDialog::BuildCityViewProductionControls||3136|function|void __thiscall BuildCityViewProductionControls(short nBuildingSlotId)|
 4d1760|TPlaceCityDialog::CreateObject|?CreateObject@TPlaceCityDialog@@SGPAVCObject@@XZ|83|function|undefined CreateObject()|rtti
 4d17e0|TPlaceCityDialog::GetRuntimeClass||6|function|undefined GetTPlaceCityDialogClassNamePointer()|rtti
-4d1800|TPlaceCityDialog::ConstructTPlaceCityDialogBaseState||18|function|undefined ConstructTPlaceCityDialogBaseState()|
+4d1800|TPlaceCityDialog::TPlaceCityDialog||18|function|undefined TPlaceCityDialog()|
 4d1830|TPlaceCityDialog::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 4d1880|TPlaceCityDialog::BuildCityViewResourceRows||1163|function|undefined BuildCityViewResourceRows()|
 4d1e40|TPlaceCityDialog::ApplyRectSlot110||13|function|undefined OrphanTiny_ReturnZero_0048a730(void)|
@@ -3319,7 +3312,7 @@ address|name|symbol|size|type|prototype|provenance
 51bcc0|TTownNameDialog::ApplyRectSlot110||125|function|undefined RenderMapTileNameControlHighlight()|
 51bd60|TCitySiteView::CreateObject|?CreateObject@TCitySiteView@@SGPAVCObject@@XZ|232|function|undefined CreateObject()|rtti
 51be90|TCitySiteView::GetRuntimeClass||6|function|undefined GetTCitySiteViewClassNamePointer()|rtti
-51beb0|InitializeCitySiteView||185|function|undefined InitializeCitySiteView()|
+51beb0|TCitySiteView::TCitySiteView||185|function|undefined TCitySiteView()|
 51bfa0|TCitySiteView::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 51bff0|TCitySiteView::NoOpUiLifecycleHook||536|function|undefined OrphanLeaf_NoCall_Ins07_004d8920(void)|
 51c2a0|TCitySiteView::OrphanRetStub_005966a0||52|function|undefined OrphanRetStub_005966a0(undefined4 param_1)|

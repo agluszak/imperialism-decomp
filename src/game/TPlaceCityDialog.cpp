@@ -7,6 +7,7 @@
 
 IMPLEMENT_DYNCREATE(TPlaceCityDialog, TPicture)
 
+// FUNCTION: IMPERIALISM 0x004d1800
 TPlaceCityDialog::TPlaceCityDialog() {}
 
 // SYNTHETIC: IMPERIALISM 0x004d1830
@@ -19,8 +20,7 @@ undefined TPlaceCityDialog::BuildCityViewResourceRows() {
 }
 
 // FUNCTION: IMPERIALISM 0x004d1e40
-void TPlaceCityDialog::ApplyRectSlot110(RECT* rectBuffer) {
-}
+void TPlaceCityDialog::ApplyRectSlot110(RECT* rectBuffer) {}
 
 // FUNCTION: IMPERIALISM 0x004d1e60
 void TPlaceCityDialog::CallVoidSlotA0() {

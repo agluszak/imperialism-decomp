@@ -148,12 +148,16 @@ address|target_cpp|ownership|note
 4538a0|src/game/turn_event_dialog_factory.cpp|manual|marker_sync
 45acb0|src/game/TSpecialQuitPicture.cpp|manual|marker_sync
 45acd0|src/game/TSpecialQuitPicture.cpp|manual|marker_sync
+45ad20|src/game/TTEView.cpp|manual|marker_sync
 45ad70|src/game/TTEView.cpp|manual|marker_sync
 45ada0|src/game/THighScoresPicture.cpp|manual|marker_sync
 45adc0|src/game/THighScoresPicture.cpp|manual|marker_sync
 45ae10|src/game/TNetSelectPicture.cpp|manual|marker_sync
+45ae60|src/game/TScenarioChooser.cpp|manual|marker_sync
 45ae90|src/game/TScenarioChooser.cpp|manual|marker_sync
+45aee0|src/game/TTextList.cpp|manual|marker_sync
 45af30|src/game/TTextList.cpp|manual|marker_sync
+45af80|src/game/TGameScorePicture.cpp|manual|marker_sync
 45afb0|src/game/TGameScorePicture.cpp|manual|marker_sync
 45b000|src/game/TGWorldPartView.cpp|manual|marker_sync
 45b030|src/game/TGWorldPartView.cpp|manual|marker_sync
@@ -1518,6 +1522,7 @@ address|target_cpp|ownership|note
 4d0810|src/game/TEngineerDialog.cpp|manual|name_paired_no_marker
 4d1760|src/game/TPlaceCityDialog.cpp|manual|marker_sync
 4d17e0|src/game/TPlaceCityDialog.cpp|manual|marker_sync
+4d1800|src/game/TPlaceCityDialog.cpp|manual|marker_sync
 4d1830|src/game/TPlaceCityDialog.cpp|manual|marker_sync
 4d1880|src/game/TPlaceCityDialog.cpp|manual|marker_sync
 4d1e40|src/game/TPlaceCityDialog.cpp|manual|marker_sync
@@ -2404,6 +2409,7 @@ address|target_cpp|ownership|note
 51bcc0|src/game/TTownNameDialog.cpp|manual|marker_sync
 51bd60|src/game/TCitySiteView.cpp|manual|marker_sync
 51be90|src/game/TCitySiteView.cpp|manual|marker_sync
+51beb0|src/game/TCitySiteView.cpp|manual|marker_sync
 51bfa0|src/game/TCitySiteView.cpp|manual|marker_sync
 51bff0|src/game/TCitySiteView.cpp|manual|marker_sync
 51c2a0|src/game/TCitySiteView.cpp|manual|marker_sync

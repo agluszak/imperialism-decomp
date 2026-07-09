@@ -307,14 +307,6 @@ undefined4 ConstructTTownNameDialogBaseState(void)
   return 0;
 }
 
-// ghidra_name InitializeCitySiteView
-// ghidra_proto undefined InitializeCitySiteView()
-// FUNCTION: IMPERIALISM 0x0051beb0
-undefined4 InitializeCitySiteView(void)
-{
-  return 0;
-}
-
 // ghidra_name MarkHexTileAndNeighborsDirtyAndNotify
 // ghidra_proto undefined MarkHexTileAndNeighborsDirtyAndNotify()
 // FUNCTION: IMPERIALISM 0x0051d380
