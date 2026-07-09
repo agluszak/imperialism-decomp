@@ -6,6 +6,25 @@
 #include "game/NetMessage.h"
 #include "game/nation_slot_eligibility.h"
 
+// Turn-event-0x19 payload: per-nation state arrays (city order counters, external
+// diplomacy state, slot-7C metrics, policy/grant/need-level tables).
+struct TurnEvent19Packet : NetMessage {
+  int packetTag;                // +0x10 'time'
+  unsigned char activeNationId; // +0x14
+  unsigned char pad15[3];
+  short pendingNationSlot; // +0x18
+  unsigned char pad1a[2];
+  short nationSlot;                    // +0x1c
+  short needCapA6;                     // +0x1e
+  short orderCountByType[0x0e];        // +0x20
+  short externalStateByTarget[0x17];   // +0x3c
+  short metricBySlot7C[0x11];          // +0x6a
+  short diplomacyPolicyByNation[0x17]; // +0x8c
+  short diplomacyGrantByNation[0x17];  // +0xba
+  short needLevelByNation[0x17];       // +0xe8
+  unsigned char pad116[2];             // total 0x118
+};
+
 // Turn-event-0x15 payload: the sender nation's full diplomacy need-state block.
 struct TurnEvent15Packet : NetMessage {
   int packetTag;                // +0x10 'time'
@@ -2572,6 +2591,50 @@ void TMultiplayerMgr::RefreshNationStatusLabelsAndCodesForSlotOrAll(int nationSl
       nationStatusTags[nationSlot] = 0x64656361; // 'deca'
     }
   }
+}
+
+// FUNCTION: IMPERIALISM 0x0054d1f0
+void TMultiplayerMgr::EmitTurnEvent19NationStateArraysForSlot(short nationSlot,
+                                                              int destinationSlot) {
+  TurnEvent19Packet packet;
+  packet.packetTag = 0x74696d65;
+  packet.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetActiveNationId());
+  packet.eventCode = 0;
+  packet.eventCode = 0x19;
+  packet.fromNetworkId = 0;
+  packet.toNetworkId = 0;
+  packet.toNetworkId = -1;
+  packet.messageLength = 0;
+  packet.messageLength = 0x118;
+  packet.pendingNationSlot = static_cast<short>(g_pGameFlowState->pendingNationSlotIndex);
+  if (destinationSlot == -2 || destinationSlot == -3) {
+    packet.toNetworkId = 0;
+  } else if (destinationSlot == -1) {
+    packet.toNetworkId = -1;
+  } else {
+    packet.toNetworkId = g_pGameFlowState->nationSessionIds[destinationSlot];
+  }
+  TGreatPower* nation = g_apNationStates[nationSlot];
+  packet.nationSlot = nationSlot;
+  EmitNationDiplomacyNeedStateSnapshotEvent15(1, nationSlot);
+  packet.needCapA6 = nation->needCapA6;
+  for (int orderType = 0; orderType < 0x0e; ++orderType) {
+    packet.orderCountByType[orderType] = nation->city->orderCountByType5c[orderType];
+  }
+  for (int i = 0; i < 0x17; ++i) {
+    packet.externalStateByTarget[i] =
+        nation->GetDiplomacyExternalStateByTarget(static_cast<short>(i));
+  }
+  for (int metricSlot = 0; metricSlot < 0x11; ++metricSlot) {
+    packet.metricBySlot7C[metricSlot] =
+        nation->QueryNationMetricBySlot7C(static_cast<short>(metricSlot));
+  }
+  for (short target = 0; target < 0x17; ++target) {
+    packet.diplomacyPolicyByNation[target] = nation->diplomacyPolicyByNation[target];
+    packet.diplomacyGrantByNation[target] = nation->diplomacyGrantByNation[target];
+    packet.needLevelByNation[target] = nation->needLevelByNation[target];
+  }
+  g_pNetMgr006a6014->Send(&packet, destinationSlot == -3);
 }
 
 // Trivial credential-init stub reused across the networking cluster (0x5e34b0):

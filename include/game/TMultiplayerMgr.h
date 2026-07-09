@@ -112,6 +112,11 @@ public:
   // Send the turn-event-0x15 diplomacy need-state snapshot for nationSlot (broadcast
   // when broadcastFlag != 0). 0x54b5d0.
   void EmitNationDiplomacyNeedStateSnapshotEvent15(char broadcastFlag, int nationSlot);
+
+  // Send the turn-event-0x19 per-nation state-array packet for nationSlot to
+  // destinationSlot (sentinels as NetMessage::DestinateTo; -3 also marks the send
+  // as loopback-suppressed). 0x54d1f0.
+  void EmitTurnEvent19NationStateArraysForSlot(short nationSlot, int destinationSlot);
 };
 
 ASSERT_SIZE(TMultiplayerMgr, 0xf8);

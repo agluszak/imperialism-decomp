@@ -963,14 +963,6 @@ undefined4 EmitTurnEvent2CNationStateCompositeForSlot(void)
   return 0;
 }
 
-// ghidra_name EmitTurnEvent19NationStateArraysForSlot
-// ghidra_proto undefined EmitTurnEvent19NationStateArraysForSlot()
-// FUNCTION: IMPERIALISM 0x0054d1f0
-undefined4 EmitTurnEvent19NationStateArraysForSlot(void)
-{
-  return 0;
-}
-
 // ghidra_name CreateAndSendTurnEvent2D_TableRowShortArray
 // ghidra_proto undefined CreateAndSendTurnEvent2D_TableRowShortArray()
 // FUNCTION: IMPERIALISM 0x0054d3d0
