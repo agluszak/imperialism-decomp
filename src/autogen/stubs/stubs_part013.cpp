@@ -619,14 +619,6 @@ undefined4 AssignSharedStringFromDescriptorNameOrDefault(void)
   return 0;
 }
 
-// ghidra_name ComputeSelectedMilitaryPowerScore
-// ghidra_proto undefined ComputeSelectedMilitaryPowerScore()
-// FUNCTION: IMPERIALISM 0x004d8430
-undefined4 ComputeSelectedMilitaryPowerScore(void)
-{
-  return 0;
-}
-
 // ghidra_name ClassifyNationMilitaryPowerBandAgainstGlobalMean
 // ghidra_proto undefined ClassifyNationMilitaryPowerBandAgainstGlobalMean()
 // FUNCTION: IMPERIALISM 0x004d84b0
@@ -711,14 +703,6 @@ undefined4 GetCityProductionValueTimesTwoCallbackG(void)
 // ghidra_proto undefined RefreshNationCivilianWorkOrdersForTurn()
 // FUNCTION: IMPERIALISM 0x004dfd30
 undefined4 RefreshNationCivilianWorkOrdersForTurn(void)
-{
-  return 0;
-}
-
-// ghidra_name ComputeNationRuntimeAdvisoryMetricCase6
-// ghidra_proto undefined ComputeNationRuntimeAdvisoryMetricCase6()
-// FUNCTION: IMPERIALISM 0x004e0770
-undefined4 ComputeNationRuntimeAdvisoryMetricCase6(void)
 {
   return 0;
 }

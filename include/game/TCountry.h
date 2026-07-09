@@ -77,6 +77,8 @@ public:
   // Fill out with this nation's overlay label (its shared credential/name text), or the
   // empty string when the descriptor slot is null. 0x004d7860.
   void FormatOverlayTerrainLabelText(CString* out);
+  // 0x4d8430 — sums g_UnitTypeMilitaryStatTable_00695CD2[type][1] over militaryUnitList44.
+  int ComputeSelectedMilitaryPowerScore();
 
   // Assign the display name and mirror it into the TSimMgr shared-text slot for
   // this nation (0x4d7a00).

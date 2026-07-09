@@ -27,5 +27,10 @@
 // LIBRARY: IMPERIALISM 0x0041b1c0
 // CObject::operator new
 
+// CString copy constructor: out-of-line COMDAT copy of the afx inline body, emitted by
+// game TUs that pass CString by value (e.g. the nation-comparison advisory temps).
+// LIBRARY: IMPERIALISM 0x0049eb00
+// CString::CString(class CString const &)
+
 // LIBRARY: IMPERIALISM 0x00413380
 // CObject::operator delete

@@ -1259,14 +1259,6 @@ undefined4 DestructTAmbitFileBasedDocumentAndMaybeFree_Impl(void)
   return 0;
 }
 
-// ghidra_name AssignStringSharedRefAndReturnThis
-// ghidra_proto undefined AssignStringSharedRefAndReturnThis()
-// FUNCTION: IMPERIALISM 0x0049eb00
-undefined4 AssignStringSharedRefAndReturnThis(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_ftol_At0049efd0
 // ghidra_proto undefined WrapperFor_ftol_At0049efd0()
 // FUNCTION: IMPERIALISM 0x0049efd0

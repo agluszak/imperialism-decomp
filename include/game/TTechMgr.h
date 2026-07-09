@@ -21,7 +21,7 @@ public:
   // 0x515890. Row count (7) matches g_apNationStates[7]; column count (23) matches the
   // resourceType range used throughout TMapMgr (see resourceTypeByEdge).
   short capabilityValueByNationAndResource[7][23];
-  unsigned char pad180[0x193 - 0x17c];
+  unsigned char pad180[0x193 - 0x180];
   unsigned char hasProductionOrder193;
   unsigned char pad194[0x1a5 - 0x194];
   unsigned char shipCapabilityFlag1a5;

@@ -611,14 +611,6 @@ undefined4 ShowPeriodicCapabilityReminderIfNeeded(void)
   return 0;
 }
 
-// ghidra_name ShowPeriodicNationComparisonAdvisoryIfNeeded
-// ghidra_proto undefined ShowPeriodicNationComparisonAdvisoryIfNeeded()
-// FUNCTION: IMPERIALISM 0x00501be0
-undefined4 ShowPeriodicNationComparisonAdvisoryIfNeeded(void)
-{
-  return 0;
-}
-
 // ghidra_name ShowTurnAlertsForActiveNation
 // ghidra_proto undefined ShowTurnAlertsForActiveNation()
 // FUNCTION: IMPERIALISM 0x00502b60

@@ -1056,6 +1056,8 @@ extern "C" const int g_anNationStartingTreasuryByLocale[6] = {50000, 10000, 1000
 
 // GLOBAL: IMPERIALISM 0x006a2318
 CString g_cstrArmyOrderMessageStore;
+// GLOBAL: IMPERIALISM 0x006a3180
+CString g_cstrNationComparisonMessageStore;
 // GLOBAL: IMPERIALISM 0x006a2d40
 CString g_cstrCivilianOrderMessageStore;
 // GLOBAL: IMPERIALISM 0x006a2df0

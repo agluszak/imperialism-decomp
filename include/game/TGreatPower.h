@@ -417,6 +417,11 @@ public:
   // Semantic C++ wrappers:
   // - constructor behavior maps to 0x004D8CC0 InitializeNationStateRuntimeSubsystems
   // - TObject::Free override at 0x004D9160 releases owned members then deletes self
+  // 0x4e0770 — city population summary metric: productionSlots14 bucket words folded
+  // ((w8*2+w6)*2+w4) plus extraAt1e; 0 when the nation has no city. Curated name kept
+  // from symbols.csv (advisory case-6 metric); exact game meaning still tentative.
+  short ComputeNationRuntimeAdvisoryMetricCase6();
+
   TGreatPower();
   TGreatPower(int arg1, int arg2);
 

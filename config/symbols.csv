@@ -1381,7 +1381,7 @@ address|name|symbol|size|type|prototype|provenance
 49e660|TAmbitFileBasedDocument::OrphanRetStub_0049e660||3|function|undefined OrphanRetStub_0049e660(void)|
 49e680|TAmbitFileBasedDocument::OrphanRetStub_0049e680||3|function|undefined OrphanRetStub_0049e680(void)|
 49e6a0|TAmbitFileBasedDocument::OrphanRetStub_00486530||845|function|void OrphanRetStub_00486530(void * pLoadContext)|
-49eb00|AssignStringSharedRefAndReturnThis||19|function|undefined AssignStringSharedRefAndReturnThis()|
+49eb00|CString::CString(class CString const &)||19|function|undefined CString(CString const &)|
 49eb30|TAmbitFileBasedDocument::OrphanRetStub_00486550||650|function|void OrphanRetStub_00486550(void * pSaveContext)|
 49ee70|TAmbitFileBasedDocument::AssertUAmbitLine1335||30|function|undefined AssertUAmbitLine1335()|
 49efd0|WrapperFor_ftol_At0049efd0||30|function|undefined WrapperFor_ftol_At0049efd0()|

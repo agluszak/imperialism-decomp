@@ -16,6 +16,7 @@
 #include "game/nation_stream_serialization.h"
 #include "game/quickdraw_rendering.h"
 #include "game/TCity.h"
+#include "game/TPopulationMgr.h"
 #include "game/TCityInteriorMinister.h"
 #include "game/TCivUnit.h"
 #include "game/TCountry.h"
@@ -3399,6 +3400,21 @@ int TGreatPower::SumCommodityRecordAccumulatedValues(void) {
 int TGreatPower::GetCityBuildingProductionSlot8D(short buildingSlot) {
   if (this->city != 0) {
     return static_cast<short>(this->city->GetBuildingType(buildingSlot));
+  }
+  return 0;
+}
+
+// FUNCTION: IMPERIALISM 0x004e0770
+short TGreatPower::ComputeNationRuntimeAdvisoryMetricCase6() {
+  TCity* nationCity = this->city;
+  if (nationCity != 0) {
+    TPopulationMgr* summary = nationCity->productionSummary1d8;
+    TPopulationMetricBucket* bucket = summary->productionSlots14;
+    // 100% at a file-tail position; the register-allocator picks an esi-spill form here
+    // (position-dependent wobble, heuristics 18/47) - keep the natural expression.
+    short folded = static_cast<short>(bucket->valueAt8 * 2 + bucket->valueAt6);
+    folded = static_cast<short>(folded * 2 + bucket->valueAt4);
+    return static_cast<short>(folded + summary->extraAt1e);
   }
   return 0;
 }

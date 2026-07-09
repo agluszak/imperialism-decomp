@@ -895,6 +895,7 @@ address|target_cpp|ownership|note
 49e660|src/game/TAmbitFileBasedDocument.cpp|manual|marker_sync
 49e680|src/game/TAmbitFileBasedDocument.cpp|manual|marker_sync
 49e6a0|src/game/TAmbitFileBasedDocument.cpp|manual|marker_sync
+49eb00|src/game/mfc_heap_library.cpp|library|marker_sync
 49eb30|src/game/TAmbitFileBasedDocument.cpp|manual|marker_sync
 49ee70|src/game/TAmbitFileBasedDocument.cpp|manual|marker_sync
 49f020|src/game/TAnimation.cpp|manual|marker_sync
@@ -1599,6 +1600,7 @@ address|target_cpp|ownership|note
 4d8000|src/game/TCountry.cpp|manual|marker_sync
 4d8390|src/game/TCountry.cpp|manual|marker_sync
 4d83c0|src/game/TCountry.cpp|manual|marker_sync
+4d8430|src/game/TCountry.cpp|manual|marker_sync
 4d87b0|src/game/TCountry.cpp|manual|marker_sync
 4d87e0|src/game/TCountry.cpp|manual|marker_sync
 4d8920|src/game/TCountry.cpp|manual|marker_sync
@@ -1734,6 +1736,7 @@ address|target_cpp|ownership|note
 4e0690|src/game/TGreatPower.cpp|manual|marker_sync
 4e06d0|src/game/TGreatPower.cpp|manual|marker_sync
 4e0740|src/game/TGreatPower.cpp|manual|marker_sync
+4e0770|src/game/TGreatPower.cpp|manual|marker_sync
 4e07b0|src/game/TGreatPower.cpp|manual|marker_sync
 4e0890|src/game/TGreatPower.cpp|manual|marker_sync
 4e09a0|src/game/TGreatPower.cpp|manual|marker_sync
@@ -2148,6 +2151,7 @@ address|target_cpp|ownership|note
 500fe0|src/game/THelpMgr.cpp|manual|marker_sync
 501070|src/game/THelpMgr.cpp|manual|marker_sync
 5011a0|src/game/THelpMgr.cpp|manual|marker_sync
+501be0|src/game/THelpMgr.cpp|manual|marker_sync
 5031c0|src/game/THelpMgr.cpp|manual|marker_sync
 5033e0|src/game/THelpMgr.cpp|manual|marker_sync
 503400|src/game/THelpMgr.cpp|manual|marker_sync

@@ -9,6 +9,11 @@
 #include "game/global_data_tables.h"
 #include "game/ui_invalidation_guard.h"
 #include "game/TMilitaryUnit.h"
+#include "game/TTechMgr.h"
+#include "game/mapped_flavor_text.h"
+#include "game/nation_slot_eligibility.h"
+
+char ShowPeriodicNationComparisonAdvisoryIfNeeded();
 
 extern "C" char DAT_006a43f0;
 
@@ -51,23 +56,6 @@ static const int kHelpSetIndexBootstrapRecordCount =
     sizeof(kHelpSetIndexBootstrapRecords) / sizeof(kHelpSetIndexBootstrapRecords[0]);
 
 } // namespace
-
-// FUNCTION: IMPERIALISM 0x005005e0
-THelpMgr::THelpMgr() : TObject() {
-  pendingDialogView8 = 0;
-  pendingDialogViewC = 0;
-  helpIndexReady = 0;
-  field1a = 0;
-  field1e = 0;
-  field22 = 0;
-  field26 = 0;
-  field2a = 0;
-  field2c = 0;
-  field10 = 0;
-  field14 = 0;
-  field18 = 0;
-  indexList = nullptr;
-}
 // SYNTHETIC: IMPERIALISM 0x00500550
 // THelpMgr::CreateObject
 
@@ -91,6 +79,26 @@ void THelpMgr::WriteTo(TStream* stream) {
 }
 
 void THelpMgr::Free() {}
+
+// FUNCTION: IMPERIALISM 0x005005e0
+THelpMgr::THelpMgr() : TObject() {
+  pendingDialogView8 = 0;
+  pendingDialogViewC = 0;
+  helpIndexReady = 0;
+  field1a = 0;
+  field1e = 0;
+  field22 = 0;
+  field26 = 0;
+  field2a = 0;
+  field2c = 0;
+  field10 = 0;
+  field14 = 0;
+  field18 = 0;
+  indexList = nullptr;
+}
+
+// SYNTHETIC: IMPERIALISM 0x00500630
+// THelpMgr::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x00500680
 undefined THelpMgr::InitializeHelpManagerIndexArrayAndState() {
@@ -117,10 +125,6 @@ short DispatchTurnStateSpecialAdvisoriesAndReturnCount() {
 }
 
 void ShowPeriodicCapabilityReminderIfNeeded() {}
-
-char ShowPeriodicNationComparisonAdvisoryIfNeeded() {
-  return 0;
-}
 
 void ReleasePendingHelpDialogView(TView** dialogView) {
   if (*dialogView != 0) {
@@ -170,6 +174,278 @@ void THelpMgr::HandlePostDispatchTurnStateEventUpdates() {
       }
     }
   }
+}
+
+// Periodic "another great power is beating you" advisory: every turn tick maps to one of
+// ten comparison metrics; when some eligible nation's metric exceeds twice the active
+// nation's, a localized advisory (string group 0x2753) is formatted and dispatched.
+// FUNCTION: IMPERIALISM 0x00501be0
+char ShowPeriodicNationComparisonAdvisoryIfNeeded() {
+  short activeNation = g_pSimMgr->GetActiveNationId();
+  CString formatText;
+  CString templateText;
+  CString nationName;
+  CString message;
+  char advisoryShown = 0;
+
+  switch (static_cast<short>(g_pSimMgr->GetTurnTickSlot3C() % 10)) {
+  case 0: {
+    TGreatPower* active = g_apNationStates[activeNation];
+    short best = (active != 0) ? active->needCapA6 : 0;
+    short bestNation = activeNation;
+    for (short i = 0; i < 7; ++i) {
+      if (IsNationSlotEligibleForEventProcessing(i) != 0) {
+        TGreatPower* nation = g_apNationStates[i];
+        short value = (nation != 0) ? nation->needCapA6 : 0;
+        if (value > best) {
+          best = (nation != 0) ? nation->needCapA6 : 0;
+          bestNation = i;
+        }
+      }
+    }
+    TGreatPower* mine = g_apNationStates[activeNation];
+    short mineValue = (mine != 0) ? mine->needCapA6 : 0;
+    if (best <= mineValue * 2) {
+      break;
+    }
+    g_apNationStates[bestNation]->FormatOverlayTerrainLabelText(&nationName);
+    g_pSimMgr->GetString(0x2753, 0, &formatText);
+    g_pSimMgr->GetString(0x2753, 1, &templateText);
+    scanBracketExpressions(g_pSimMgr, &message, static_cast<LPCSTR>(templateText),
+                           static_cast<LPCSTR>(nationName));
+    g_pUiRuntimeContext->DispatchLocalizedUiMessageWithTemplate(
+        5, formatText, message, &g_cstrNationComparisonMessageStore, 2, 0);
+    advisoryShown = 1;
+  } break;
+
+  case 3: {
+    short best = g_apNationStates[activeNation]->tradeCapacity;
+    short bestNation = activeNation;
+    for (short i = 0; i < 7; ++i) {
+      if (IsNationSlotEligibleForEventProcessing(i) != 0 &&
+          g_apNationStates[i]->tradeCapacity > best) {
+        best = g_apNationStates[i]->tradeCapacity;
+        bestNation = i;
+      }
+    }
+    if (best <= g_apNationStates[activeNation]->tradeCapacity * 2) {
+      break;
+    }
+    g_apNationStates[bestNation]->FormatOverlayTerrainLabelText(&nationName);
+    g_pSimMgr->GetString(0x2753, 2, &formatText);
+    g_pSimMgr->GetString(0x2753, 3, &templateText);
+    scanBracketExpressions(g_pSimMgr, &message, static_cast<LPCSTR>(templateText),
+                           static_cast<LPCSTR>(nationName));
+    g_pUiRuntimeContext->DispatchLocalizedUiMessageWithTemplate(
+        5, formatText, message, &g_cstrNationComparisonMessageStore, 0, 0);
+    advisoryShown = 1;
+  } break;
+
+  case 6: {
+    short best = g_apNationStates[activeNation]->ComputeNationRuntimeAdvisoryMetricCase6();
+    short bestNation = activeNation;
+    for (short i = 0; i < 7; ++i) {
+      if (IsNationSlotEligibleForEventProcessing(i) != 0 &&
+          g_apNationStates[i]->ComputeNationRuntimeAdvisoryMetricCase6() > best) {
+        best = g_apNationStates[i]->ComputeNationRuntimeAdvisoryMetricCase6();
+        bestNation = i;
+      }
+    }
+    if (best <= g_apNationStates[activeNation]->ComputeNationRuntimeAdvisoryMetricCase6() * 2) {
+      break;
+    }
+    g_apNationStates[bestNation]->FormatOverlayTerrainLabelText(&nationName);
+    g_pSimMgr->GetString(0x2753, 4, &formatText);
+    g_pSimMgr->GetString(0x2753, 5, &templateText);
+    scanBracketExpressions(g_pSimMgr, &message, static_cast<LPCSTR>(templateText),
+                           static_cast<LPCSTR>(nationName));
+    g_pUiRuntimeContext->DispatchLocalizedUiMessageWithTemplate(
+        5, formatText, message, &g_cstrNationComparisonMessageStore, 2, 0);
+    advisoryShown = 1;
+  } break;
+
+  case 2: {
+    int best = g_apNationStates[activeNation]->GetCityBuildingProductionSlot8D(0);
+    short bestNation = activeNation;
+    for (short i = 0; i < 7; ++i) {
+      if (IsNationSlotEligibleForEventProcessing(i) != 0 &&
+          g_apNationStates[i]->GetCityBuildingProductionSlot8D(0) > best) {
+        best = g_apNationStates[i]->GetCityBuildingProductionSlot8D(0);
+        bestNation = i;
+      }
+    }
+    if (best <= g_apNationStates[activeNation]->GetCityBuildingProductionSlot8D(0) * 2) {
+      break;
+    }
+    g_apNationStates[bestNation]->FormatOverlayTerrainLabelText(&nationName);
+    g_pSimMgr->GetString(0x2753, 6, &formatText);
+    g_pSimMgr->GetString(0x2753, 7, &templateText);
+    scanBracketExpressions(g_pSimMgr, &message, static_cast<LPCSTR>(templateText),
+                           static_cast<LPCSTR>(nationName));
+    g_pUiRuntimeContext->DispatchLocalizedUiMessageWithTemplate(
+        5, formatText, message, &g_cstrNationComparisonMessageStore, 2, 0);
+    advisoryShown = 1;
+  } break;
+
+  case 5: {
+    int best = g_apNationStates[activeNation]->GetCityBuildingProductionSlot8D(2);
+    short bestNation = activeNation;
+    for (short i = 0; i < 7; ++i) {
+      if (IsNationSlotEligibleForEventProcessing(i) != 0 &&
+          g_apNationStates[i]->GetCityBuildingProductionSlot8D(2) > best) {
+        best = g_apNationStates[i]->GetCityBuildingProductionSlot8D(2);
+        bestNation = i;
+      }
+    }
+    if (best <= g_apNationStates[activeNation]->GetCityBuildingProductionSlot8D(2) * 2) {
+      break;
+    }
+    g_apNationStates[bestNation]->FormatOverlayTerrainLabelText(&nationName);
+    g_pSimMgr->GetString(0x2753, 8, &formatText);
+    g_pSimMgr->GetString(0x2753, 9, &templateText);
+    scanBracketExpressions(g_pSimMgr, &message, static_cast<LPCSTR>(templateText),
+                           static_cast<LPCSTR>(nationName));
+    g_pUiRuntimeContext->DispatchLocalizedUiMessageWithTemplate(
+        5, formatText, message, &g_cstrNationComparisonMessageStore, 2, 0);
+    advisoryShown = 1;
+  } break;
+
+  case 7: {
+    int best = g_apNationStates[activeNation]->GetCityBuildingProductionSlot8D(4);
+    short bestNation = activeNation;
+    for (short i = 0; i < 7; ++i) {
+      if (IsNationSlotEligibleForEventProcessing(i) != 0 &&
+          g_apNationStates[i]->GetCityBuildingProductionSlot8D(4) > best) {
+        best = g_apNationStates[i]->GetCityBuildingProductionSlot8D(4);
+        bestNation = i;
+      }
+    }
+    if (best <= g_apNationStates[activeNation]->GetCityBuildingProductionSlot8D(4) * 2) {
+      break;
+    }
+    g_apNationStates[bestNation]->FormatOverlayTerrainLabelText(&nationName);
+    g_pSimMgr->GetString(0x2753, 0xa, &formatText);
+    g_pSimMgr->GetString(0x2753, 0xb, &templateText);
+    scanBracketExpressions(g_pSimMgr, &message, static_cast<LPCSTR>(templateText),
+                           static_cast<LPCSTR>(nationName));
+    g_pUiRuntimeContext->DispatchLocalizedUiMessageWithTemplate(
+        5, formatText, message, &g_cstrNationComparisonMessageStore, 2, 0);
+    advisoryShown = 1;
+  } break;
+
+  case 8: {
+    if (g_pCityOrderCapabilityState->hasProductionOrder193 == 0) {
+      break;
+    }
+    if (g_apNationStates[activeNation]->GetCityBuildingProductionSlot8D(6) == 0) {
+      int best = 0;
+      short bestNation = activeNation;
+      for (short i = 0; i < 7; ++i) {
+        if (IsNationSlotEligibleForEventProcessing(i) != 0 &&
+            g_apNationStates[i]->GetCityBuildingProductionSlot8D(6) > best) {
+          best = g_apNationStates[i]->GetCityBuildingProductionSlot8D(6);
+          bestNation = i;
+        }
+      }
+      if (best <= 4) {
+        break;
+      }
+      if (g_pCityOrderCapabilityState->orderCapRows277[activeNation].recruitTierFlag27b != 0) {
+        g_apNationStates[bestNation]->FormatOverlayTerrainLabelText(&nationName);
+        g_pSimMgr->GetString(0x2753, 0xc, &formatText);
+        g_pSimMgr->GetString(0x2753, 0xd, &templateText);
+        scanBracketExpressions(g_pSimMgr, &message, static_cast<LPCSTR>(templateText),
+                               static_cast<LPCSTR>(nationName));
+        g_pUiRuntimeContext->DispatchLocalizedUiMessageWithTemplate(
+            5, formatText, message, &g_cstrNationComparisonMessageStore, 2, 0);
+        advisoryShown = 1;
+      } else {
+        g_apNationStates[bestNation]->FormatOverlayTerrainLabelText(&nationName);
+        g_pSimMgr->GetString(0x2753, 0xe, &formatText);
+        g_pSimMgr->GetString(0x2753, 0xf, &templateText);
+        scanBracketExpressions(g_pSimMgr, &message, static_cast<LPCSTR>(templateText),
+                               static_cast<LPCSTR>(nationName));
+        g_pUiRuntimeContext->DispatchLocalizedUiMessageWithTemplate(
+            5, formatText, message, &g_cstrNationComparisonMessageStore, 2, 0);
+        advisoryShown = 1;
+      }
+    } else {
+      int best = g_apNationStates[activeNation]->GetCityBuildingProductionSlot8D(6);
+      short bestNation = activeNation;
+      for (short i = 0; i < 7; ++i) {
+        if (IsNationSlotEligibleForEventProcessing(i) != 0 &&
+            g_apNationStates[i]->GetCityBuildingProductionSlot8D(6) > best) {
+          best = g_apNationStates[i]->GetCityBuildingProductionSlot8D(6);
+          bestNation = i;
+        }
+      }
+      if (best <= g_apNationStates[activeNation]->GetCityBuildingProductionSlot8D(6) * 2) {
+        break;
+      }
+      g_apNationStates[bestNation]->FormatOverlayTerrainLabelText(&nationName);
+      g_pSimMgr->GetString(0x2753, 0x10, &formatText);
+      g_pSimMgr->GetString(0x2753, 0x11, &templateText);
+      scanBracketExpressions(g_pSimMgr, &message, static_cast<LPCSTR>(templateText),
+                             static_cast<LPCSTR>(nationName));
+      g_pUiRuntimeContext->DispatchLocalizedUiMessageWithTemplate(
+          5, formatText, message, &g_cstrNationComparisonMessageStore, 2, 0);
+      advisoryShown = 1;
+    }
+  } break;
+
+  case 1: {
+    int firstValue = g_apNationStates[activeNation]->ComputeSelectedMilitaryPowerScore();
+    int best = firstValue;
+    short bestNation = activeNation;
+    for (short i = 0; i < 7; ++i) {
+      if (i != activeNation && IsNationSlotEligibleForEventProcessing(i) != 0 &&
+          g_apNationStates[i]->ComputeSelectedMilitaryPowerScore() > best) {
+        best = g_apNationStates[i]->ComputeSelectedMilitaryPowerScore();
+        bestNation = i;
+      }
+    }
+    if (best <= firstValue * 2) {
+      break;
+    }
+    g_apNationStates[bestNation]->FormatOverlayTerrainLabelText(&nationName);
+    g_pSimMgr->GetString(0x2753, 0x12, &formatText);
+    g_pSimMgr->GetString(0x2753, 0x13, &templateText);
+    scanBracketExpressions(g_pSimMgr, &message, static_cast<LPCSTR>(templateText),
+                           static_cast<LPCSTR>(nationName));
+    g_pUiRuntimeContext->DispatchLocalizedUiMessageWithTemplate(
+        5, formatText, message, &g_cstrNationComparisonMessageStore, 1, 0);
+    advisoryShown = 1;
+  } break;
+
+  case 4: {
+    int firstValue = g_apNationStates[activeNation]->SumNavyOrderPriorityForNationSlot86();
+    int best = firstValue;
+    short bestNation = activeNation;
+    for (short i = 0; i < 7; ++i) {
+      if (i != activeNation && IsNationSlotEligibleForEventProcessing(i) != 0 &&
+          g_apNationStates[i]->SumNavyOrderPriorityForNationSlot86() > best) {
+        best = g_apNationStates[i]->SumNavyOrderPriorityForNationSlot86();
+        bestNation = i;
+      }
+    }
+    if (best <= firstValue * 2) {
+      break;
+    }
+    g_apNationStates[bestNation]->FormatOverlayTerrainLabelText(&nationName);
+    g_pSimMgr->GetString(0x2753, 0x14, &formatText);
+    g_pSimMgr->GetString(0x2753, 0x15, &templateText);
+    scanBracketExpressions(g_pSimMgr, &message, static_cast<LPCSTR>(templateText),
+                           static_cast<LPCSTR>(nationName));
+    g_pUiRuntimeContext->DispatchLocalizedUiMessageWithTemplate(
+        5, formatText, message, &g_cstrNationComparisonMessageStore, 1, 0);
+    advisoryShown = 1;
+  } break;
+
+  default:
+    break;
+  }
+
+  return advisoryShown;
 }
 
 // FUNCTION: IMPERIALISM 0x005031c0
@@ -238,6 +514,3 @@ void THelpMgr::ActivatePendingEventAndRefreshView(HelpSetRecord* pendingEntry) {
   pendingEntry->rank = g_pSimMgr->GetActiveNationId();
   // Full dialog refresh path deferred; mark the help-set entry seen/current-nation.
 }
-
-// SYNTHETIC: IMPERIALISM 0x00500630
-// THelpMgr::`scalar deleting destructor'

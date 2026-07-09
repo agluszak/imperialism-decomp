@@ -10,6 +10,7 @@
 #include "game/TGreatPower.h"
 #include "game/TSimMgr.h"
 #include "game/TOcean.h"
+#include "game/CIterator.h"
 #include "game/TMilitaryUnit.h"
 #include "game/TStream.h"
 #include "game/TShip.h"
@@ -651,6 +652,17 @@ int TCountry::SumWeightedNeighborLinkScoreForLinkedNodes(void) {
   } while (index <= count);
 
   return sum;
+}
+
+// FUNCTION: IMPERIALISM 0x004d8430
+int TCountry::ComputeSelectedMilitaryPowerScore() {
+  int powerSum = 0;
+  CIterator unitIter(this->militaryUnitList44);
+  for (TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(unitIter.Reset()); unitIter.More();
+       unit = static_cast<TMilitaryUnit*>(unitIter.Advance())) {
+    powerSum += g_UnitTypeMilitaryStatTable_00695CD2[unit->orderType][1];
+  }
+  return powerSum;
 }
 
 // FUNCTION: IMPERIALISM 0x004d87b0
