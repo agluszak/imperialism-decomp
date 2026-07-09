@@ -1,4 +1,7 @@
 #include "game/TNetMgr.h"
+#include "game/TSimMgr.h"
+#include "game/TMultiplayerMgr.h"
+#include "game/TGreatPower.h"
 
 #include "game/CString.h"
 #include "game/NetMessage.h"
@@ -261,4 +264,50 @@ void __stdcall NotifyIfNationMatchesSessionActiveNation(int nationId) {
   if (nationId == g_NetworkDefaultNationId006a5fc0) {
     g_NetworkSessionManager006a5f60.DestroyPlayerAndStoreResult(nationId);
   }
+}
+
+// Event-0x2b reachability probe header: two per-nation bytes reuse the +0x18 area.
+struct ReachabilityProbeEvent2BPacket : TimelyMessageHeader {
+  unsigned char pendingByte18;  // +0x18 - zeroed
+  unsigned char activeNation19; // +0x19
+  unsigned char pad1a[2];       // total 0x1c
+};
+
+// FUNCTION: IMPERIALISM 0x005e43e0
+int __cdecl ProbeNationReachabilityAndMarkAwolBitmask() {
+  int awolBitmask = 0;
+  ReachabilityProbeEvent2BPacket probe;
+  probe.messageTag = 0x74696d65;
+  probe.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetActiveNationId());
+  probe.eventCode = 0;
+  probe.fromNetworkId = 0;
+  probe.eventCode = 0x2b;
+  probe.toNetworkId = 0;
+  probe.messageLength = 0;
+  probe.messageLength = 0x1c;
+  probe.pendingByte18 = 0;
+  probe.activeNation19 = static_cast<unsigned char>(g_pSimMgr->GetActiveNationId());
+  int slot = 0;
+  for (TGreatPower** cell = g_apNationStates; cell < g_apNationStates + 7; ++cell, ++slot) {
+    TGreatPower* nation = *cell;
+    if (nation != 0 && nation->diplomacyEligibilityA0 != 0 &&
+        nation->ShouldDispatchImmediatelySlot28() != 0) {
+      if (g_pGameFlowState->nationSessionIds[slot] == -2) {
+        awolBitmask += 1 << slot;
+      } else {
+        probe.DestinateToGP(slot);
+        probe.fromNetworkId = g_NetworkDefaultNationId006a5fc0;
+        int destination = probe.toNetworkId;
+        if (destination == -1) {
+          destination = g_NetworkBroadcastNationId006a5fc4;
+        }
+        if (g_NetworkSessionManager006a5f60.TrySendNetworkPacket(destination, &probe,
+                                                                 probe.messageLength) == 0) {
+          awolBitmask += 1 << slot;
+          g_pGameFlowState->SetNationStatusAwolByNationIdAndDispatchNotices(slot);
+        }
+      }
+    }
+  }
+  return awolBitmask;
 }

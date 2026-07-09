@@ -29,16 +29,24 @@ struct NetMessage {
 // (three-byte pad after the active-nation byte). Used by the advisory/diplomacy emitters
 // (0x540cf0..0x5416b0 band); 0x542120 writes word [this+0x18] from
 // TMultiplayerMgr::pendingNationSlotIndex.
-struct TimelyNetMessagePrefix : NetMessage {
+// 'time'-tagged header shared by every timely packet family: the stamp helper writes
+// only the tag + active-nation byte, so payloads that reuse +0x18 for their own fields
+// (the event-0x25 status tags, the event-9 chat slot byte) derive from this base while
+// the turn-token variant below adds uiTurnToken.
+struct TimelyMessageHeader : NetMessage {
   int messageTag;               // +0x10 — 'time'
   unsigned char activeNationId; // +0x14
   unsigned char pad15[3];
+
+  // Stamp messageTag='time' + the active nation id and return this (0x5438e0; used by
+  // the diplomacy turn-event reply emitters).
+  TimelyMessageHeader* InitializeEmitEventHeaderWithActiveNation();
+};
+
+struct TimelyNetMessagePrefix : TimelyMessageHeader {
   short uiTurnToken; // +0x18
 
   void SetTimeEmitPacketGameFlowTurnId();
-  // Stamp messageTag='time' + the active nation id and return this (0x5438e0; used by
-  // the diplomacy turn-event reply emitters).
-  TimelyNetMessagePrefix* InitializeEmitEventHeaderWithActiveNation();
 };
 
 // 0x5449b0 (TMultiplayerMgr TU): heap-build the turn-event-2 sync packet, delta or full.

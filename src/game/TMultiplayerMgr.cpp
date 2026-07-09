@@ -1,5 +1,7 @@
 #include "game/TMultiplayerMgr.h"
 
+#include <string.h>
+
 #include "decomp_types.h"
 #include "game/CString.h"
 #include "game/mapped_flavor_text.h"
@@ -9,15 +11,22 @@
 // Turn-event-0x25 nation-status payload: header + seven per-nation status tags,
 // defaulted to 'unkn'; the 'time' tag and active-nation byte are stamped separately via
 // InitializeEmitEventHeaderWithActiveNation before sending.
-struct NationStatusEvent25Packet : NetMessage {
-  int packetTag;                // +0x10 - left for the header stamp
-  unsigned char activeNationId; // +0x14 - left for the header stamp
-  unsigned char pad15[3];
+struct NationStatusEvent25Packet : TimelyMessageHeader {
   int statusTags[7]; // +0x18 - four-cc per-nation status ('unkn' default)
 
   // 0x54bce0: zero the NetMessage header, set eventCode 0x25 / length 0x34, default all
   // seven status tags to 'unkn'.
   void InitializeNationStatusEvent25PayloadDefaults();
+};
+
+// Event-9 lobby-chat packet sent when a nation drops during session init: the AWOL
+// slot byte plus empty sender/message strings (0x64 bytes total).
+struct LobbyChatEvent9Packet : TimelyMessageHeader {
+  unsigned char nationSlot18; // +0x18
+  unsigned char pad19[3];
+  int field1C;            // +0x1c - zeroed
+  char senderName[0x21];  // +0x20
+  char messageText[0x23]; // +0x41 (total 0x64)
 };
 
 // Case-0x31 payload of SerializeOrderDataIntoTurnEventByTag: a {tag, object} pair whose
@@ -116,6 +125,7 @@ struct TurnEvent15Packet : NetMessage {
 #include "game/TDiplomacyMgr.h"
 #include "game/TMinor.h"
 #include "game/TCity.h"
+#include "game/TCancelGameOptionsCommand.h"
 #include "game/TTradeMgr.h"
 #include "game/TNavyMgr.h"
 #include "game/THandleStream.h"
@@ -2714,6 +2724,61 @@ void TMultiplayerMgr::EmitNationDiplomacyNeedStateSnapshotEvent15(char broadcast
   packet.pendingCommitmentCost = nation->pendingCommitmentCost;
   packet.pressureCounter = nation->pressureCounter;
   g_pNetMgr006a6014->Send(&packet, 0);
+}
+
+// FUNCTION: IMPERIALISM 0x0054b930
+void TMultiplayerMgr::SetNationStatusAwolByNationIdAndDispatchNotices(int networkId) {
+  for (int slot = 0; slot < 7; ++slot) {
+    if (nationSessionIds[slot] == networkId) {
+      int tagSlot = slot;
+      if (slot == -1) {
+        tagSlot = g_pSimMgr->GetActiveNationId();
+      }
+      if (tagSlot == -1) {
+        tagSlot = activeNationTagIndex;
+      }
+      nationStatusTags[tagSlot] = 0x61776f6c; // 'awol'
+      NationStatusEvent25Packet statusPacket;
+      statusPacket.InitializeEmitEventHeaderWithActiveNation();
+      statusPacket.InitializeNationStatusEvent25PayloadDefaults();
+      statusPacket.toNetworkId = 0;
+      statusPacket.statusTags[tagSlot] = 0x61776f6c;
+      g_pNetMgr006a6014->Send(&statusPacket, 0);
+      nationSessionIds[slot] = -2;
+      pendingNationBitmask |= 1 << slot;
+      if (sessionPhaseTag == 0x696e6974 && g_pSimMgr->field44 == 1) { // 'init'
+        LobbyChatEvent9Packet chat;
+        chat.InitializeEmitEventHeaderWithActiveNation();
+        chat.eventCode = 0;
+        chat.field1C = 0;
+        chat.fromNetworkId = 0;
+        chat.eventCode = 9;
+        chat.toNetworkId = 0;
+        chat.messageLength = 0;
+        chat.messageLength = 0x64;
+        chat.nationSlot18 = static_cast<unsigned char>(slot);
+        strcpy(chat.senderName, g_szEmptyString);
+        strcpy(chat.messageText, g_szEmptyString);
+        g_pNetMgr006a6014->Send(&chat, 1);
+      } else {
+        CString formatted;
+        CString nationName;
+        nationName = defaultNationTextSlots[slot];
+        CString templateText;
+        g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&templateText, 0x2759, 4);
+        scanBracketExpressions(g_pSimMgr, &formatted, static_cast<LPCSTR>(templateText),
+                               static_cast<LPCSTR>(nationName));
+        g_pUiRuntimeContext->DispatchLocalizedUiMessageWithTemplateA13A0(
+            formatted, &g_cstrNationAwolMessageStore, 0, 0);
+        if (g_pGameFlowState != this || fieldF4 == 0) {
+          TCancelGameOptionsCommand* cancelCommand = new TCancelGameOptionsCommand();
+          cancelCommand->InitializeRangePair(0x63676f70, g_pGlobalUiRootController, 0, 0,
+                                             0); // 'pogc'
+          g_pGlobalUiRootController->DispatchUiSelectionToHandler(cancelCommand);
+        }
+      }
+    }
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x0054bce0

@@ -52,3 +52,7 @@ int GetSessionActiveNationId(); // 0x5e4280
 // from Ghidra; the body destroys, it does not notify).
 void __stdcall NotifyIfNationMatchesSessionActiveNation(int nationId); // 0x5e42c0
 
+// 0x5e43e0 (TNetMgr TU): probe every eligible nation with an event-0x2b packet through
+// the DirectPlay session manager; returns the bitmask of unreachable (AWOL) slots and
+// dispatches the drop notices for newly failed sends.
+int __cdecl ProbeNationReachabilityAndMarkAwolBitmask();

@@ -2967,6 +2967,7 @@ address|target_cpp|ownership|note
 54b060|src/game/TPoseMessageDialog.cpp|manual|marker_sync
 54b0d0|src/game/TPoseMessageDialog.cpp|manual|marker_sync
 54b5d0|src/game/TMultiplayerMgr.cpp|manual|marker_sync
+54b930|src/game/TMultiplayerMgr.cpp|manual|marker_sync
 54bce0|src/game/TMultiplayerMgr.cpp|manual|marker_sync
 54c5a0|src/game/TMultiplayerMgr.cpp|manual|marker_sync
 54c660|src/game/TMultiplayerMgr.cpp|manual|marker_sync
@@ -4593,6 +4594,7 @@ address|target_cpp|ownership|note
 5e3d40|src/game/TNetMgr.cpp|manual|marker_sync
 5e4280|src/game/TNetMgr.cpp|manual|marker_sync
 5e42c0|src/game/TNetMgr.cpp|manual|marker_sync
+5e43e0|src/game/TNetMgr.cpp|manual|marker_sync
 5e4540|src/game/global_data_tables.cpp|manual|marker_sync
 5e4580|src/game/global_data_tables.cpp|manual|marker_sync
 5e4610|src/game/global_data_tables.cpp|manual|marker_sync
