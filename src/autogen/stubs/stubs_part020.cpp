@@ -187,54 +187,6 @@ undefined4 AssignSharedStringToTaggedControlAndProcessState(void)
   return 0;
 }
 
-// ghidra_name GenerateMappedFlavorTextVariantEToSharedString
-// ghidra_proto undefined GenerateMappedFlavorTextVariantEToSharedString()
-// FUNCTION: IMPERIALISM 0x005ce110
-undefined4 GenerateMappedFlavorTextVariantEToSharedString(void)
-{
-  return 0;
-}
-
-// ghidra_name BuildMapContextStatusStringWithRandomSuffix
-// ghidra_proto undefined BuildMapContextStatusStringWithRandomSuffix()
-// FUNCTION: IMPERIALISM 0x005cf090
-undefined4 BuildMapContextStatusStringWithRandomSuffix(void)
-{
-  return 0;
-}
-
-// ghidra_name GenerateMappedFlavorTextVariantCToSharedString
-// ghidra_proto undefined GenerateMappedFlavorTextVariantCToSharedString()
-// FUNCTION: IMPERIALISM 0x005cfba0
-undefined4 GenerateMappedFlavorTextVariantCToSharedString(void)
-{
-  return 0;
-}
-
-// ghidra_name GenerateMappedFlavorTextVariantBToSharedString
-// ghidra_proto undefined GenerateMappedFlavorTextVariantBToSharedString()
-// FUNCTION: IMPERIALISM 0x005d1330
-undefined4 GenerateMappedFlavorTextVariantBToSharedString(void)
-{
-  return 0;
-}
-
-// ghidra_name GenerateMappedFlavorTextVariantAToSharedString
-// ghidra_proto undefined GenerateMappedFlavorTextVariantAToSharedString()
-// FUNCTION: IMPERIALISM 0x005d3300
-undefined4 GenerateMappedFlavorTextVariantAToSharedString(void)
-{
-  return 0;
-}
-
-// ghidra_name GenerateMappedFlavorTextVariantDToSharedString
-// ghidra_proto undefined GenerateMappedFlavorTextVariantDToSharedString()
-// FUNCTION: IMPERIALISM 0x005d41a0
-undefined4 GenerateMappedFlavorTextVariantDToSharedString(void)
-{
-  return 0;
-}
-
 // ghidra_name SetSharedStringFromRotatingFlavorTextBySlot
 // ghidra_proto undefined SetSharedStringFromRotatingFlavorTextBySlot()
 // FUNCTION: IMPERIALISM 0x005d4550
