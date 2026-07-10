@@ -62,6 +62,12 @@ struct TurnEvent2SyncPacket : NetMessage {
   unsigned char deltaKind21; // +0x21 - 2 = delta pairs, 0 = full block
   unsigned char pad22[2];
   short payload[1]; // +0x24 - variable length
+
+  // 0x544cd0 — apply the payload to `buffer` per deltaKind21: 0 = raw block copy,
+  // 1 = (short index, byte value) triples, 2 = (short index, short value) pairs,
+  // 3 = (short index, int value) records. The receiver decides the element width, so
+  // the buffer is opaque here (TDiplomacyMgr passes its short relation matrix).
+  void ApplyEncodedDeltaPayloadToBufferByMode(void* buffer);
 };
 TurnEvent2SyncPacket* __cdecl
 BuildTurnEvent2ArraySyncPacketDeltaOrFull(unsigned int shortCount, short* current, short* baseline);

@@ -115,6 +115,8 @@ public:
   // Build the turn-event-2 relation-matrix sync packet (delta against the baseline
   // snapshot when one exists) and refresh the baseline copy. 0x4f2760.
   struct TurnEvent2SyncPacket* BuildTurnEvent2ArraySyncPacketFromBufferAndRefreshBaselineCopy();
+  // 0x4f27f0 — apply a received turn-event-2 sync packet to the relation matrix.
+  void ApplyTurnEvent2SyncPacketToRelationMatrix(TurnEvent2SyncPacket* packet);
 
   short selectionFlagsA788;
   short selectionFlagsB78a;

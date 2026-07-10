@@ -388,6 +388,40 @@ static void* operator_new(void) {
   return malloc(0x400);
 }
 
+// ============================================================================
+// REWRITE MAP for ProcessDiplomacyTurnStateEventStateMachine (0x545940, 11459B)
+// The body below is still the raw Ghidra scaffold (broken raw-address calls) and
+// must be rewritten case-by-case. Ground-truth analysis (2026-07-10 session):
+//   switch (packet->eventCode - 1), 0x32-way dword jump table at 0x548604.
+//   Case bodies: 0x1->0x5468e0 (pendingNationBitmask = pkt->pendingMask)
+//     0x2->0x5468f0 (deltaKind==0: g_pDiplomacyTurnStateManager->
+//                    ApplyTurnEvent2SyncPacketToRelationMatrix — PORTED 0x4f27f0)
+//     0x3->0x546c0a ('goin' handshake) 0x8->0x545c01 (name/status, 0x64B pkt)
+//     0x9->0x545f4e (lobby chat)       0xa->0x5459f2 (city announce receive)
+//     0xb->0x545ad4 (event-0xB directory receive) 0xc->0x5464b1
+//     0xd->0x54690e 0xe->0x54691d 0xf->0x545980 (pending-bit clear + rebroadcast)
+//     0x10->0x546d4c 0x11->0x546d5e 0x12->0x546e89 0x13->0x546ea8
+//     0x14->0x547242 0x15->0x54725d 0x16->0x5476a0 0x17->0x5476c4 0x18->0x547709
+//     0x19->0x547358 0x1a->0x5470cd 0x1b->0x547180 0x1c->0x5471b2 0x1d->0x546f29
+//     0x1e->0x546f79 0x1f->0x5477f0 (tactical battle dispatcher, 2.5KB — needs the
+//        0x5a1010/0x5a1910/0x5a24a0/0x5a35a0/0x5a36d0/0x5a38e0/0x5a4370/0x5a53e0
+//        tactical family, all still stubs)
+//     0x20->0x546ec5 0x21->0x546ee8 0x22->0x546f0b 0x23->0x5481f0 0x24->0x54823c
+//     0x25->0x5482ae 0x26->0x548374 0x27->0x548408 0x29->0x548426 0x2a->0x548506
+//     0x2b->0x54855a 0x2c->0x547440 0x2d->0x547674
+//     0x28,0x2e..0x32 -> 0x547765: reads the 0x1c header then calls
+//        this->HandleTurnEventCodes28_2E_2F_30_31_32(stream) (0x549ff0, still a stub;
+//        its own switch needs: 0x40774d/0x402284/0x4091a1/0x40196f serializer reads,
+//        the 0xc-byte 'erra' object (vtable 0x653290), the 0x50-byte town record
+//        (ctor 0x403044) matched against g_pGlobalMapState->vtbl[+0xd8], and the
+//        0x78-byte object (ctor 0x403e36, vtable 0x64ca68)).
+//     default (0x4..0x7) -> 0x5485dc (return 0).
+//   Raw-address ILT map (verified via PE parse): 0x403aad->0x4f27f0(PORTED),
+//     0x405a3d->0x5e4280 GetSessionActiveNationId, 0x403170->0x549ff0,
+//     0x40510f->0x54bd20(PORTED), 0x407e82->0x54c8e0, 0x401587->0x54e4c0,
+//     0x408d78->0x56df40, 0x407518->0x49e500, 0x40619f->0x580060,
+//     0x40988b->0x57fef0 scanBracketExpressions, plus the tactical family above.
+// ============================================================================
 // FUNCTION: IMPERIALISM 0x00545940
 undefined4 TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMessage* packet) {
   CObject_slot_0x04_0x04* param_1 = reinterpret_cast<CObject_slot_0x04_0x04*>(this);

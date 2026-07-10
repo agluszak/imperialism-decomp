@@ -2748,7 +2748,7 @@ address|name|symbol|size|type|prototype|provenance
 4f21f0|TDiplomacyMgr::SelectDiplomacyTargetNationFromCandidateSetSlot94||258|function|undefined SelectDiplomacyTargetNationFromCandidateSet()|
 4f24a0|RebuildMinorNationDispositionLookupTables||553|function|undefined RebuildMinorNationDispositionLookupTables()|
 4f2760|BuildTurnEvent2ArraySyncPacketFromBufferAndRefreshBaselineCopy||109|function|undefined BuildTurnEvent2ArraySyncPacketFromBufferAndRefreshBaselineCopy()|
-4f27f0|WrapperFor_thunk_ApplyEncodedDeltaPayloadToBufferByMode_At004f27f0||19|function|undefined WrapperFor_thunk_ApplyEncodedDeltaPayloadToBufferByMode_At004f27f0()|
+4f27f0|TDiplomacyMgr::ApplyTurnEvent2SyncPacketToRelationMatrix||19|function|void __thiscall ApplyTurnEvent2SyncPacketToRelationMatrix(TurnEvent2SyncPacket *)|
 4f2820|SetNationPairSpecialRelationFlagAndQueueEvent14Or16||88|function|undefined SetNationPairSpecialRelationFlagAndQueueEvent14Or16()|
 4f28a0|TNextDiplomationCommand::CreateObject|?CreateObject@TNextDiplomationCommand@@SGPAVCObject@@XZ|80|function|undefined CreateObject()|rtti
 4f2910|TNextDiplomationCommand::GetRuntimeClass|?GetRuntimeClass@TNextDiplomationCommand@@UBEPAUCRuntimeClass@@XZ|6|function|undefined __thiscall GetRuntimeClass(void)|rtti
@@ -3951,7 +3951,7 @@ address|name|symbol|size|type|prototype|provenance
 5446a0|EmitTurnEvent3Mode18WithActiveNation||86|function|undefined EmitTurnEvent3Mode18WithActiveNation()|
 544720|EmitTurnEvent10ForFlaggedNationSlots||144|function|undefined EmitTurnEvent10ForFlaggedNationSlots()|
 5449b0|BuildTurnEvent2ArraySyncPacketDeltaOrFull||304|function|undefined BuildTurnEvent2ArraySyncPacketDeltaOrFull()|
-544cd0|ApplyEncodedDeltaPayloadToBufferByMode||251|function|undefined ApplyEncodedDeltaPayloadToBufferByMode()|
+544cd0|TurnEvent2SyncPacket::ApplyEncodedDeltaPayloadToBufferByMode||251|function|void __thiscall ApplyEncodedDeltaPayloadToBufferByMode(void *)|
 544e30|TMultiplayerMgr::DispatchOptionalChildEventAndProcessDiplomacyTurnQueue||33|function|undefined DispatchOptionalChildEventAndProcessDiplomacyTurnQueue()|
 544e70|InitializeProtocolOptionControlFromProvider||138|function|undefined InitializeProtocolOptionControlFromProvider()|
 544f30|ResetGameFlowStateAndPostTurnEvent5DC||97|function|undefined ResetGameFlowStateAndPostTurnEvent5DC()|

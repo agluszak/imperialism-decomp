@@ -555,14 +555,6 @@ undefined4 EmitTurnEvent10ForFlaggedNationSlots(void)
   return 0;
 }
 
-// ghidra_name ApplyEncodedDeltaPayloadToBufferByMode
-// ghidra_proto undefined ApplyEncodedDeltaPayloadToBufferByMode()
-// FUNCTION: IMPERIALISM 0x00544cd0
-undefined4 ApplyEncodedDeltaPayloadToBufferByMode(void)
-{
-  return 0;
-}
-
 // ghidra_name InitializeProtocolOptionControlFromProvider
 // ghidra_proto undefined InitializeProtocolOptionControlFromProvider()
 // FUNCTION: IMPERIALISM 0x00544e70

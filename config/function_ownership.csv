@@ -1969,6 +1969,7 @@ address|target_cpp|ownership|note
 4f2100|src/game/TDiplomacyMgr.cpp|manual|marker_sync
 4f21f0|src/game/TDiplomacyMgr.cpp|manual|marker_sync
 4f2760|src/game/TDiplomacyMgr.cpp|manual|marker_sync
+4f27f0|src/game/TDiplomacyMgr.cpp|manual|marker_sync
 4f28a0|src/game/TNextDiplomationCommand.cpp|manual|marker_sync
 4f2910|src/game/TNextDiplomationCommand.cpp|manual|marker_sync
 4f2930|src/game/TNextDiplomationCommand.cpp|manual|marker_sync
@@ -2955,6 +2956,7 @@ address|target_cpp|ownership|note
 544540|src/game/TMultiplayerMgr.cpp|manual|marker_sync
 5446a0|src/game/TMultiplayerMgr.cpp|manual|marker_sync
 5449b0|src/game/TDiplomacyMgr.cpp|manual|marker_sync
+544cd0|src/game/NetMessage.cpp|manual|marker_sync
 544e30|src/game/TMultiplayerMgr.cpp|manual|marker_sync
 545940|src/game/TMultiplayerMgr.cpp|manual|marker_sync
 549240|src/game/TSimMgr.cpp|manual|marker_sync

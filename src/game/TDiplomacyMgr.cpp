@@ -1090,6 +1090,11 @@ TDiplomacyMgr::BuildTurnEvent2ArraySyncPacketFromBufferAndRefreshBaselineCopy() 
   return packet;
 }
 
+// FUNCTION: IMPERIALISM 0x004f27f0
+void TDiplomacyMgr::ApplyTurnEvent2SyncPacketToRelationMatrix(TurnEvent2SyncPacket* packet) {
+  packet->ApplyEncodedDeltaPayloadToBufferByMode(relationStandingScoreMatrix79c);
+}
+
 // FUNCTION: IMPERIALISM 0x005449b0
 TurnEvent2SyncPacket* __cdecl BuildTurnEvent2ArraySyncPacketDeltaOrFull(unsigned int shortCount,
                                                                         short* current,

@@ -12788,8 +12788,7 @@
     },
     {
       "address": "0x4e0590",
-      "effective": true,
-      "matching": 0.42857142857142855,
+      "matching": 1.0,
       "name": "TGreatPower::OrphanRetStub_004d7fa0_88",
       "type": 1
     },
@@ -12809,7 +12808,8 @@
     },
     {
       "address": "0x4e0650",
-      "matching": 1.0,
+      "effective": true,
+      "matching": 0.42857142857142855,
       "name": "TGreatPower::OrphanRetStub_004d7fe0_8b",
       "type": 1
     },
@@ -14373,6 +14373,12 @@
       "address": "0x4f2760",
       "matching": 1.0,
       "name": "BuildTurnEvent2ArraySyncPacketFromBufferAndRefreshBaselineCopy",
+      "type": 1
+    },
+    {
+      "address": "0x4f27f0",
+      "matching": 1.0,
+      "name": "TDiplomacyMgr::ApplyTurnEvent2SyncPacketToRelationMatrix",
       "type": 1
     },
     {
@@ -17168,7 +17174,7 @@
     },
     {
       "address": "0x5178f0",
-      "matching": 0.32116788321167883,
+      "matching": 0.3446601941747573,
       "name": "ComputeRepresentativeTileIndexForTerrainTypeWithWrapBias",
       "type": 1
     },
@@ -21172,8 +21178,8 @@
     },
     {
       "address": "0x544cd0",
-      "matching": 0.020618556701030927,
-      "name": "ApplyEncodedDeltaPayloadToBufferByMode",
+      "matching": 0.391304347826087,
+      "name": "TurnEvent2SyncPacket::ApplyEncodedDeltaPayloadToBufferByMode",
       "type": 1
     },
     {
