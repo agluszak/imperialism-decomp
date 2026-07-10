@@ -63,8 +63,11 @@ int TArmyTacUnit::GetBaseActionPoints() {
 
 // FUNCTION: IMPERIALISM 0x005a6140
 int TArmyTacUnit::GetUnitRange() {
-  // TODO: port body @ 0x5a6140 (0x6699e8 int table by unitTypeC, adjusted by side20).
-  return 0;
+  int range = g_anUnitTypeTacticalRangeByType_006699E8[unitTypeC];
+  if (side20 == 1 && g_anUnitTypeCombatCategoryByType00669858[unitTypeC] == 2) {
+    ++range;
+  }
+  return range;
 }
 
 // FUNCTION: IMPERIALISM 0x005a6180

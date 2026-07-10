@@ -627,6 +627,13 @@ int g_nTacticalUnitSpriteCellWidth_006A5498 = 0;
 // GLOBAL: IMPERIALISM 0x006a549c
 int g_nTacticalUnitSpriteCellHeight_006A549C = 0;
 
+// Per-unit-type tactical range (int table at 0x6699e8, 30 unit types); artillery on
+// the defending side (side20 == 1, combat category 2) gets +1 from the fort walls.
+// GLOBAL: IMPERIALISM 0x006699e8
+int g_anUnitTypeTacticalRangeByType_006699E8[30] = {5,  5,  5,  5,  3,  3,  9,  11, 8,  8,
+                                                    8,  8,  5,  5,  12, 14, 10, 10, 10, 10,
+                                                    10, 12, 15, 17, 5,  8,  10, 0,  0,  0};
+
 // GLOBAL: IMPERIALISM 0x00695528
 short g_awTacticalUnitCategoryCodeBySlot[32] = {0, 1, 2, 3, 4, 5, 6, 7, 0, 1, 2, 3, 4, 5, 6, 7,
                                                 0, 1, 2, 3, 4, 5, 6, 7, 8, 8, 8, 9, 9, 9, 0, 0};

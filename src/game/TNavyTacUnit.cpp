@@ -1,5 +1,7 @@
 #include "game/TNavyTacUnit.h"
 
+#include "game/TTaskForce.h"
+
 // FUNCTION: IMPERIALISM 0x0059ed60
 undefined TNavyTacUnit::ConstructTNavyPlayerBaseState() {
   return 0;
@@ -25,8 +27,7 @@ int TNavyTacUnit::GetBaseActionPoints() {
 
 // FUNCTION: IMPERIALISM 0x005a6330
 int TNavyTacUnit::GetUnitRange() {
-  // TODO: port body @ 0x5a6330.
-  return 0;
+  return sourceTaskForce34->GetOrderNodeDescriptorWord0CByResourceType();
 }
 
 // FUNCTION: IMPERIALISM 0x005a6350

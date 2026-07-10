@@ -167,6 +167,7 @@ extern short g_DAT_006966d0_Value_006966D0[];
 // Cursor resource id by civilian-tile-order action code (12 entries).
 extern short g_civilianTileOrderCursorTokenTable[];
 // Per-unit-type tactical category code (slot 0x11 garrison sweep).
+extern int g_anUnitTypeTacticalRangeByType_006699E8[30];
 extern short g_awTacticalUnitCategoryCodeBySlot[];
 extern int g_nTacticalTileWidthPx_006A5430;
 extern int g_nTacticalTileRowHeightPx_006A5434;

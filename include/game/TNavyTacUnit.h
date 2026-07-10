@@ -29,8 +29,9 @@ public:
 
   // Navy slice (+0x34..): mostly unrecovered; +0x3c is the per-ship action-point
   // store read back by GetBaseActionPoints (0x5a6310).
-  unsigned char pad34[0x3c - 0x34]; // +0x34
-  int baseActionPoints3c;           // +0x3c
+  class TTaskForce* sourceTaskForce34; // +0x34 source fleet (range delegate, 0x5a6330)
+  unsigned char pad38[4];              // +0x38
+  int baseActionPoints3c;              // +0x3c
 
   TNavyTacUnit();
 };
