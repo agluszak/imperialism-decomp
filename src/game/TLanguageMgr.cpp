@@ -242,3 +242,21 @@ void TLanguageMgr::BuildNewsTableDimensions(char firstColumnArg, char lastColumn
 
 // SYNTHETIC: IMPERIALISM 0x00507d80
 // TLanguageMgr::`scalar deleting destructor'
+
+// FUNCTION: IMPERIALISM 0x00508c50
+CString TLanguageMgr::NormalizeRuntimeCredentialNameToken(CString* name) {
+  CString token;
+  const char* text = *name;
+  char first = *text;
+  if (first == '(' || (first >= 'A' && first <= 'Z')) {
+    token = CString(text);
+  } else {
+    unsigned char newsTableLoaded = (rowTextTable != 0);
+    if (newsTableLoaded != 0 || first == ' ') {
+      token = CString(text + 1);
+    } else {
+      token = CString(text);
+    }
+  }
+  return token;
+}

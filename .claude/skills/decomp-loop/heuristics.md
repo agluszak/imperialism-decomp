@@ -961,3 +961,159 @@ body inline) is not reproducible from source at this build's `/Ob1`: a direct
 a call layer. Keep the plain (non-inline) wrapper — it's the higher-scoring of the
 two — and treat the residual push/pop call-shape + frame-size delta as an accepted
 structural cost of these 10-15KB builders. Do not chase it by toggling `__inline`.
+
+## 56. Byte-Boolean materialization: `sete/setne al + test al,al` means an unsigned-char Boolean, and int `BOOL` folds
+
+When the original branches through a materialized byte (`xor eax,eax; cmp ...;
+sete al; test al,al; je`) instead of comparing flags directly, the condition was
+computed into a Mac-style byte Boolean (`unsigned char`/`char`), usually via a
+file-local `static __inline unsigned char IsX()` helper or a byte local. Writing
+the same condition as `BOOL` (int) or as a bare `if (expr)` folds to a direct
+`cmp/jne` and loses ~3 instructions per site (SaveGameWithModeAndOptionalLabel
+0x56da50 went 53%→92% on this fix alone). Corollary: return types the callers
+test with `test al,al` are byte Booleans, not BOOL — e.g.
+TryGetFileMetadataForPath (0x5d4c10) returns `(unsigned char)CFile::GetStatus(...)`.
+
+## 57. `ret 4`/`ret 0` + caller `mov ecx, [global]` = thiscall singleton method with unused `this`
+
+A "free function" whose every original callsite loads a manager singleton into
+ECX and whose body never reads ECX is still a real `__thiscall` method on that
+manager (callee-cleaned stack proves it): model it as a member with `this`
+unused, not as `__cdecl`. Batch of five found this session:
+TAssetMgr::SaveMainDocumentToPathAndMarkSaved (0x5e0030, g_pUiViewManager),
+TOcean::FindFirstPortZoneContextByNation (0x563540, g_pActiveMapOrderContext),
+TSimMgr::IsNationSlotEligibleForEventProcessing (0x581280, g_pSimMgr),
+TNetMgr::ProbeNationReachabilityAndMarkAwolBitmask (0x5e43e0, g_pNetMgr006a6014),
+TNetMgr::EnqueueOrSendTurnEventPacketToNation callers. The wrong free-function
+model caps the score (~40-75%) and miscompiles every callsite (dead ECX setup +
+caller cleanup).
+
+## 58. Turn-event packet emitters: zero-then-value store pairs and their folding
+
+The original packet emitters write each NetMessage header field twice — a zero
+store then the real value, interleaved by the scheduler. Writing the same double
+assignments in source (`packet.eventCode = 0; packet.eventCode = 0xb;`)
+reproduces this in some TU contexts (TMultiplayerMgr.cpp when 0x54b5d0 hit 100%)
+but folds to single stores in others (fresh TUs, grown TUs) — a TU-composition
+sensitivity like note 55's inline budget, not a source-model problem. Keep the
+double-write source; accept the folded-store diffs as the known wobble family.
+A NetMessage default ctor zeroing the four fields is NOT the model: it groups
+the zeros at the declaration point instead of interleaving them (verified, and
+it regresses every other emitter).
+
+## 59. Giant dispatchers get their own TU
+
+Adding a multi-KB function to an existing TU re-shapes neighbouring functions
+(store folding, register allocation) — 0x54b5d0 wobbled when 0x543910 landed in
+TMultiplayerMgr.cpp. Follow the TSimMgr_AdvanceGlobalTurnStateMachine.cpp
+precedent: put the monolith in its own file
+(TMultiplayerMgr_HandleDiplomacyTurnEvent.cpp) so its packet structs, inline
+helpers, and optimizer footprint stay isolated.
+
+## 60. Giant switch receive machines: transcribe per-case in binary body order
+
+For a multi-KB `switch (packet->eventCode)` dispatcher (e.g. 0x545940, 42 cases,
+11.4KB): (a) source case order must follow the binary case-BODY order, not numeric
+order — MSVC5 lays bodies out in source order; (b) model the exits as plain `break`
+per case + one post-switch `return 1` + `default: return 0` (the original's single
+`mov al,1` / `xor al,al` tail pair comes from cross-jump-merged constant returns —
+per-case `return 1;` statements compile to inline `mov al,1` copies that pair worse);
+(c) give every event code its own packet-view struct derived from
+NetMessage/TimelyMessageHeader/TimelyNetMessagePrefix and keep the exact store order
+including double-writes; (d) an `if (x == tagA) A; else if (x == tagB) B; else C;`
+chain whose bodies are emitted out-of-line with `je` jumps reproduces from
+inverted-inequality nesting (`if (x != tagA) { if (x != tagB) { C } else B } else A`);
+(e) accept the residual frame-size/stack-slot-order delta — VC5 slot assignment on
+frames this large is not source-controllable (same anomaly class as 0x543280).
+Parallelizing the asm transcription across subagents with a shared ILT->symbol map
+document works well; verify every agent-supplied field/slot name against the repo
+headers before splicing.
+
+61. **Verify shared-class inline ctors against multiple original call sites before
+    zero-initializing members.** CIterator's ctor stores ONLY ownerList in the binary
+    (Reset() seeds nextPosition/current); our all-member init-list added two dead
+    stores at every use site repo-wide. Fixing the ctor to match took several
+    functions to 100% in one stroke (0x5a53e0, 0x59f890, 0x5c38e0). When a repeated
+    small diff (same extra stores) appears across many functions using one helper
+    class, suspect the helper's ctor/layout, not the functions.
+
+62. **Never place a forward declaration between a `// VTABLE:` annotation and its
+    class.** reccmp attaches the annotation to the next class-like declaration, so
+    `// VTABLE: ...` + `class TOther;` + `class TReal {...}` silently pairs the
+    vtable with TOther and fails `just vtable` with a confusing cross-class diff
+    (hit three times in one session: TArmyTacUnit, TNavyBattle, TTacNavyToolbar).
+    Put fwd decls above the class comment block.
+
+63. **A multi-edit python splice that asserts mid-script loses ALL its edits** (the
+    write happens at the end), and the failure mode is silent: the earlier "ok" prints
+    never happened, the file keeps its old stubs, and compare pairs the address against
+    the stale stub (1-5% scores with tiny `+0xADDR,2` recomp extents in the diff).
+    After any batch splice, verify the bodies actually landed (`grep` a distinctive
+    line per function) before building; prefer one write per replacement, or wrap each
+    sub in its own try/write. Confirm suspicious "stub-like" scores by reading the
+    recomp bytes at the paired address from build-msvc500/Imperialism.exe via the
+    PE-parse pattern.
+
+64. **A local whose live range ends at the accumulate gets `faddp`; one that lives to
+    scope end gets `fxch/fadd/fxch/fstp`.** When the original shows the four-op
+    shuffle around a `sum += term` (term preserved then dropped), the source declared
+    the term variable OUTSIDE the loop (`double difference;` at function scope,
+    assigned per-iteration). Hoisting the declaration took 0x5362c0 from 85.7% to
+    95.05%. Corollary: intermediates that never spill to memory between FP ops were
+    declared `double`, not `float` — float locals force rounding stores.
+
+65. **`r = *rectPtr;` (struct assignment) vs member-by-member copies emit different
+    code.** Struct assignment produces `lea dst` + temp-register member moves; four
+    explicit `.left = p->left;` lines produce direct indexed stores. Match the
+    original's shape (0x49f0c0 went 36.7% → 73.1% switching to struct assignment;
+    same pattern earlier in TOneTimeAnimation's ctor). Similarly, zeroing an array
+    through a named base pointer (`float* sums = arr; sums[0] = 0; ...`) reproduces
+    the original's `lea` + offset stores where direct indexing does not.
+
+66. **A body that never touches `ecx` can still be a `__thiscall` method — check the
+    callsites, not the callee.** `FreeQuickDrawSurfaceContextSlot` (0x4feb50) looked
+    `__stdcall` from its body (no `this` use, `ret 4`), but every caller loads
+    `mov ecx, [g_pDisplayMgr]` first: it is a real TDisplayMgr method whose `this` is
+    unused. Modeling it free-function silently deletes the ecx load at every callsite
+    (~2 instructions x 34 sites). When promoting, sweep all callers to
+    `g_pX->Method(...)` in the same change.
+
+67. **Frame-slot packing is controlled by scope: block-scoped same-size locals pack
+    into one slot; a function-scope local keeps its slot live to the end.** When the
+    original has two iterator slots (0x18 and 0x24) but the recomp packs all loops
+    into one, the original declared the early iterator at function scope (its
+    lifetime crosses the later loops) while the case-local iterators packed into the
+    second slot (0x59c440, 46.8% → 68.4%). Conversely a recomp frame LARGER than the
+    original means block-scoped aggregates (RECTs) that the original reused as one or
+    two function-scope buffers.
+
+68. **A `func_0x` callee with an apparently different arg count at each call site is
+    the ILT-thunk-ambiguity smell, not evidence of two functions.** `just ghidra-listing
+    0xTHUNK` resolves the single real jmp target; if the decompiled param count still
+    varies by call site (one shows zero args, another shows two), that's the
+    decompiler failing calling-convention attribution at that specific site, not a
+    real overload — read the callee's own decompile (its declared signature is ground
+    truth) rather than trusting each call site's apparent arg list. When the callee
+    turns out to be a genuinely murky/deep dependency (an MFC-internal-shaped cache
+    with hash buckets and `CPlex`, or a whole GDI/CDC blit branch nothing currently
+    exercises), it's fine to port the caller's shape faithfully and leave that one
+    branch as a documented `// TODO(class-recovery)` no-op rather than chasing three
+    more levels of unrecovered class layout — confirm first that no current caller's
+    arguments actually reach the branch (e.g. every caller passes the sentinel/null
+    that skips it) before leaving it unmodeled.
+
+69. **Retiring a `reinterpret_cast<void(__stdcall*)(...)>(StubName)` bridge is a single
+    fix applied at the declaration, not N per-callsite fixes.** Grep for the bridge
+    pattern repo-wide before porting a stub free function — if 5+ files already call it
+    through identical casts, porting the real typed signature once and then
+    mechanically stripping the cast at each site (`sed`, since the pattern is
+    syntactically uniform) both retires the anti-pattern and validates the ported
+    signature (every call site's literal args must satisfy it, e.g. consistent
+    `unsigned int` cast confirms real `__stdcall(unsigned int)`).
+
+70. **MSVC500 for-loop-declared variables leak into the enclosing block scope (C89
+    rules), so two sibling `for (int count = ...)` loops in the same braces is
+    `error C2374: redefinition`.** Ghidra's decompile reuses one Ghidra-local name
+    (`count`) for both loops since it doesn't model C++ block scoping; give each loop
+    its own name when porting (`dwordCount`, `byteCount`) instead of copying the
+    Ghidra name verbatim.

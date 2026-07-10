@@ -25,6 +25,7 @@ g_adwEngineerRailBuildCostByTerrainType|0x6531d8|WARN|64
 g_anResourceTypeRequiredOrderType|0x696ed8|WARN|8
 g_anScenarioNationSetupTable_00698B1A|0x698b1a|WARN|43
 g_apFontFiles|0x694150|WARN|12
+g_apfnTacticalTileHeuristicScorers_006994C0|0x6994c0|WARN|30
 g_apszQuickDrawFontFaceNames|0x695108|WARN|15
 g_awEngineerFortBuildCostByLevel|0x65318a|WARN|16
 g_awTileSpriteVariantOffsetTable3b|0x697000|WARN|16
@@ -37,11 +38,13 @@ g_pRegistryLanguageKey_0063E04C|0x63e04c|WARN|3
 g_pRegistryProfileAppName_0063E050|0x63e050|WARN|3
 g_pRegistrySettingsSectionAlt_0063E044|0x63e044|WARN|3
 g_pRegistrySettingsSection_0063E040|0x63e040|WARN|3
+g_pszClientSavePrefix_0065BF5C|0x65bf5c|WARN|6
 g_pszImpSaveExtension_0065DDD8|0x65ddd8|WARN|3
 g_pszMultiplayerSavePrefix_0065DDD4|0x65ddd4|WARN|3
 g_pszSingleSlotSavePrefix_0065DDD0|0x65ddd0|WARN|3
 g_szAutosaveSlotLabel_0069872C|0x69872c|WARN|4
 g_szDecimalFormat|0x69430c|WARN|4
+g_szLoadedDocumentMarker_0069B854|0x69b854|WARN|4
 g_szSaveFileReadBinaryMode_00698720|0x698720|WARN|4
 g_szUiAvailableLabel_00694AD8|0x694ad8|WARN|4
 g_szUiBlockadeLabel_00694744|0x694744|WARN|4

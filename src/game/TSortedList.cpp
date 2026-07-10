@@ -36,7 +36,9 @@ int TSortedList::VirtualSlot64() {
 }
 
 // FUNCTION: IMPERIALISM 0x00487dd0
-int TSortedList::VirtualSlot68() {
+int TSortedList::SortEntriesWithComparator(int(__cdecl* compare)(void*, void*), int unused) {
+  (void)compare;
+  (void)unused;
   return 0;
 }
 

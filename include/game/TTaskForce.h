@@ -157,6 +157,13 @@ public:
   // nation's current orders (`mode` selects the pass; the caller passes 0).
   void RefreshTaskForceSelectionFlagsForCurrentNationOrders(int mode);
   void DecrementRequiredCount(short decrement);
+  // 0x00553fe0 — frees the head child order node when defeated (required_count <= 0),
+  // prunes remaining defeated children, rebinds childOrderList/activeChildEntry;
+  // returns 1 (marking this entry eliminated) when no child survives.
+  char PruneInactiveTaskForceOrderHead();
+  // 0x00551100 — hands this order node to `nation` and rebinds the parent counters
+  // (naval capture path). Body TODO.
+  void ReassignOrderNodeNationAndRebindParentCounters(short nation);
   // Adds delta to tiebreak_strength, capped at 499.
   void AdjustMapOrderNodeStatCapped499(short delta); // 0x550370
   // Real target is the packed order_type/order_strength dword, not an owner pointer

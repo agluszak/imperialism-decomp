@@ -319,22 +319,22 @@ void TMacViewMgr::Free() {
     }
     ++index;
   }
-  FreeQuickDrawSurfaceContextSlot(&unitIconAtlas);
-  FreeQuickDrawSurfaceContextSlot(&unitOverlayAtlas);
-  FreeQuickDrawSurfaceContextSlot(&atlas674);
-  FreeQuickDrawSurfaceContextSlot(&atlas668);
-  FreeQuickDrawSurfaceContextSlot(&atlas66c);
-  FreeQuickDrawSurfaceContextSlot(&atlas670);
-  FreeQuickDrawSurfaceContextSlot(&atlas680);
-  FreeQuickDrawSurfaceContextSlot(&atlas688);
-  FreeQuickDrawSurfaceContextSlot(&atlas68c);
-  FreeQuickDrawSurfaceContextSlot(&atlas690);
-  FreeQuickDrawSurfaceContextSlot(&atlas684);
-  FreeQuickDrawSurfaceContextSlot(&atlas6b4);
-  FreeQuickDrawSurfaceContextSlot(&atlas6b8);
+  g_pDisplayMgr->FreeQuickDrawSurfaceContextSlot(&unitIconAtlas);
+  g_pDisplayMgr->FreeQuickDrawSurfaceContextSlot(&unitOverlayAtlas);
+  g_pDisplayMgr->FreeQuickDrawSurfaceContextSlot(&atlas674);
+  g_pDisplayMgr->FreeQuickDrawSurfaceContextSlot(&atlas668);
+  g_pDisplayMgr->FreeQuickDrawSurfaceContextSlot(&atlas66c);
+  g_pDisplayMgr->FreeQuickDrawSurfaceContextSlot(&atlas670);
+  g_pDisplayMgr->FreeQuickDrawSurfaceContextSlot(&atlas680);
+  g_pDisplayMgr->FreeQuickDrawSurfaceContextSlot(&atlas688);
+  g_pDisplayMgr->FreeQuickDrawSurfaceContextSlot(&atlas68c);
+  g_pDisplayMgr->FreeQuickDrawSurfaceContextSlot(&atlas690);
+  g_pDisplayMgr->FreeQuickDrawSurfaceContextSlot(&atlas684);
+  g_pDisplayMgr->FreeQuickDrawSurfaceContextSlot(&atlas6b4);
+  g_pDisplayMgr->FreeQuickDrawSurfaceContextSlot(&atlas6b8);
   index = 0;
   while (index < 8) {
-    FreeQuickDrawSurfaceContextSlot(&atlas694[index]);
+    g_pDisplayMgr->FreeQuickDrawSurfaceContextSlot(&atlas694[index]);
     ++index;
   }
   g_pStrategicMapViewSystem = 0;
@@ -460,10 +460,10 @@ void TMacViewMgr::RefreshCityCapabilityUiHandlesForActiveNation() {
     return;
   }
   if (atlas68c != 0) {
-    FreeQuickDrawSurfaceContextSlot(&atlas68c);
+    g_pDisplayMgr->FreeQuickDrawSurfaceContextSlot(&atlas68c);
   }
   if (atlas690 != 0) {
-    FreeQuickDrawSurfaceContextSlot(&atlas690);
+    g_pDisplayMgr->FreeQuickDrawSurfaceContextSlot(&atlas690);
   }
   nationId = g_pSimMgr->GetActiveNationId();
   if (nationId < 0) {
@@ -688,7 +688,7 @@ undefined TMacViewMgr::RenderOffscreenBitmapGridStripAndRestoreContext() {
   SetActiveQuickDrawSurfaceContext(savedContext, savedFlags);
 
   if (atlas6b8 != 0) {
-    FreeQuickDrawSurfaceContextSlot(&atlas6b8);
+    g_pDisplayMgr->FreeQuickDrawSurfaceContextSlot(&atlas6b8);
   }
   atlasBounds.left = 0;
   atlasBounds.top = 0;
@@ -730,11 +730,11 @@ undefined TMacViewMgr::RenderOffscreenBitmapGridStripAndRestoreContext() {
 void TMacViewMgr::ReloadBitmap244AndRefreshUiCaches() {
   g_pUiViewManager->NoOpRuntimeUiCallback_005df3f0(3);
   if (atlas6b8 != 0) {
-    FreeQuickDrawSurfaceContextSlot(&atlas6b8);
+    g_pDisplayMgr->FreeQuickDrawSurfaceContextSlot(&atlas6b8);
   }
   atlas6b8 = LoadBitmapResourceSurfaceAndRestoreQuickDrawContext(0x244);
   if (atlas688 != 0) {
-    FreeQuickDrawSurfaceContextSlot(&atlas688);
+    g_pDisplayMgr->FreeQuickDrawSurfaceContextSlot(&atlas688);
   }
   LoadStrategicMapOverlayAtlas8699();
 }
@@ -1486,7 +1486,7 @@ undefined TMacViewMgr::RenderOffscreenBitmapTileSpanAndRestoreContext(int param_
     BitMapToRegion(regionSlots[param_1], *surfaceHandle);
     BitMapToRegion(regionSlots[param_1], *surfaceHandle);
   }
-  FreeQuickDrawSurfaceContextSlot(&tileSurface);
+  g_pDisplayMgr->FreeQuickDrawSurfaceContextSlot(&tileSurface);
   // Faithful to the original: the slot is already zeroed here, so this reads
   // *(0 + 0x24) — benign on the Win9x null page the game shipped against.
   NoOpQuickDrawLifecycleHookB(GetSurfaceNodeSlot(tileSurface));

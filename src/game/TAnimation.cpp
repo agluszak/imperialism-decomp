@@ -1,6 +1,7 @@
 #include "game/TAnimation.h"
 
 #include "game/TModuleLibraryCacheTableStateB.h"
+#include "game/TView.h"
 #include "game/ui_invalidation_guard.h"
 
 // FUNCTION: IMPERIALISM 0x00495b70
@@ -28,12 +29,12 @@ void TBitmapResourceLoader::ReleaseBitmapResource() {
   }
   bitmapResource = NULL;
 }
+// SYNTHETIC: IMPERIALISM 0x0049f020
+// TAnimation::CreateObject
 
 // SYNTHETIC: IMPERIALISM 0x0049f050
 // TAnimation::`scalar deleting destructor'
 TAnimation::~TAnimation() {}
-// SYNTHETIC: IMPERIALISM 0x0049f020
-// TAnimation::CreateObject
 
 // SYNTHETIC: IMPERIALISM 0x0049f0a0
 // TAnimation::GetRuntimeClass
@@ -42,8 +43,33 @@ IMPLEMENT_DYNCREATE(TAnimation, TObject)
 
 TAnimation::TAnimation() {}
 
+// FUNCTION: IMPERIALISM 0x0049f0c0
+void TAnimation::ConstructTAnimationBaseState(TView* ownerView, RECT* rect, short frameCount,
+                                              short param4, int ticksPerFrame, int tag) {
+  ownerView04 = ownerView;
+  screenRect1C = *rect;
+  frameCount0A = frameCount;
+  field0C = param4;
+  frameIndex08 = 0;
+  tickCounter10 = 0;
+  ticksPerFrame14 = ticksPerFrame;
+  registryTag18 = tag;
+}
+
+// Per-tick frame flip: on every ticksPerFrame14-th tick, invalidate the marker rect
+// and advance/wrap the frame index (the old WrapperFor_InvalidateCityDialogRectRegion
+// name was junk).
 // FUNCTION: IMPERIALISM 0x0049f140
-undefined TAnimation::WrapperFor_InvalidateCityDialogRectRegion_At0049f140() {
+undefined TAnimation::AdvanceAnimationTickAndInvalidateOnFrameFlip() {
+  tickCounter10 = tickCounter10 + 1;
+  if (tickCounter10 == ticksPerFrame14) {
+    ownerView04->InvalidateCityDialogRectRegion(&screenRect1C, 1);
+    tickCounter10 = 0;
+    frameIndex08 = static_cast<short>(frameIndex08 + 1);
+    if (frameIndex08 == frameCount0A) {
+      frameIndex08 = 0;
+    }
+  }
   return 0;
 }
 

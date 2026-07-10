@@ -1144,6 +1144,14 @@ int TMapMgr::IsAltKeyDown() {
   return GetAsyncKeyState(VK_MENU) & 0x8000;
 }
 
+// FUNCTION: IMPERIALISM 0x005127e0
+void SplitTileIndexToHexRasterColumnX2AndRow(short tileIndex, short* outColX2,
+                                             unsigned short* outRow) {
+  short row = tileIndex / 0x6c;
+  *outColX2 = static_cast<short>(row % 2 + (tileIndex % 0x6c) * 2);
+  *outRow = row;
+}
+
 // FUNCTION: IMPERIALISM 0x00512930
 extern "C" short* __cdecl BuildHexAreaTileIndexList(short centerTileIndex, short radius) {
   short* buffer = static_cast<short*>(::operator new(static_cast<short>(radius * 6) << 1));

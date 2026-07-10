@@ -5,12 +5,14 @@
 
 // Forward declarations for types referenced by generated signatures.
 class astruct_13;
+class TTacticalBattle;
+class TTacticalUnit;
 
 // TODO(manifest): describe TTacticalBattleView and its role. Base edge (TView) recovered from RTTI CRuntimeClass chain: TTacticalBattleView -> TView -> TEventHandler -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x0066a380
 class TTacticalBattleView : public TView {
 public:
-// === BEGIN GENERATED DECLS (TTacticalBattleView) — refreshed by recover-class; do not hand-edit ===
+  // === BEGIN GENERATED DECLS (TTacticalBattleView) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TTacticalBattleView)
   virtual ~TTacticalBattleView() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -64,7 +66,9 @@ public:
   // slot 0x32 ValidateControlRectIfWindowActive inherited unchanged (0x48b690)
   // slot 0x33 EvaluateControlInputGate inherited unchanged (0x48c000)
   // slot 0x34 HasRenderableParentAndContent inherited unchanged (0x48c050)
-  virtual void HandleCursorHoverSelectionByChildHitTestAndFallback(CPoint* point, int hitArg) override; // slot 0x35 0x5a8d40
+  virtual void
+  HandleCursorHoverSelectionByChildHitTestAndFallback(CPoint* point,
+                                                      int hitArg) override; // slot 0x35 0x5a8d40
   // slot 0x36 DispatchControlEventToChildrenAndSelf inherited unchanged (0x48aaf0)
   virtual void NoOpUiLifecycleHook(int arg) override; // slot 0x37 0x5a84d0
   // slot 0x38 NoOpUiCallback inherited unchanged (0x48abc0)
@@ -82,7 +86,8 @@ public:
   // slot 0x44 ApplyRectSlot110 inherited unchanged (0x430bf0)
   // slot 0x45 vmethod_0048 inherited unchanged (0x48b860)
   // slot 0x46 DispatchUiMouseMoveToChildren inherited unchanged (0x48c450)
-  virtual void BeginMouseCaptureAndStartRepeatTimer(CPoint* point, int arg2, int arg3, int arg4) override; // slot 0x47 0x5a8660
+  virtual void BeginMouseCaptureAndStartRepeatTimer(CPoint* point, int arg2, int arg3,
+                                                    int arg4) override; // slot 0x47 0x5a8660
   // slot 0x48 DispatchUiMouseEventToChildrenOrSelf_Impl inherited unchanged (0x48c590)
   // slot 0x49 vmethod_0071 inherited unchanged (0x427240)
   // slot 0x4a QueryContentBounds inherited unchanged (0x427260)
@@ -115,18 +120,75 @@ public:
   // slot 0x65 AssertMcAppUILine1914 inherited unchanged (0x48c7a0)
   // slot 0x66 AssertMcAppUILine1922 inherited unchanged (0x48c7d0)
   // slot 0x67 CtrlSlot103_SubtractPosAndDispatchSlot19C_Impl inherited unchanged (0x48bac0)
-  virtual undefined WrapperFor_InvalidateCityDialogRectRegion_At005a8900(int param_1); // slot 0x68 0x5a8900
-  virtual undefined WrapperFor_InvalidateCityDialogRectRegion_At005a89a0(int param_1); // slot 0x69 0x5a89a0
-  virtual undefined OrphanLeaf_NoCall_Ins59_005a89f0(int param_1, int * param_2); // slot 0x6a 0x5a89f0
+  virtual undefined
+  WrapperFor_InvalidateCityDialogRectRegion_At005a8900(int param_1);     // slot 0x68 0x5a8900
+  virtual undefined InvalidateTacticalUnitTileRect(TTacticalUnit* unit); // slot 0x69 0x5a89a0
+  // Writes the on-screen RECT of a unit's tile (grown 0x18 px upward, bottom-4;
+  // zero RECT when tileIndex8 == -1). Hedged name.
+  virtual undefined ComputeTacticalUnitTileScreenRect(TTacticalUnit* unit,
+                                                      RECT* rectOut);   // slot 0x6a 0x5a89f0
   virtual undefined AdjustTacticalUnitVerticalOffsetAndRefreshMarker(); // slot 0x6b 0x5a8be0
-  virtual undefined OrphanRetStub_005a83c0(); // slot 0x6c 0x5a83c0
-  virtual undefined RunOneTimeAnimationModalWaitAndInvalidateCityDialog(); // slot 0x6d 0x5a9170
-  virtual undefined OrphanCallChain_C2_I66_005a9090(int param_1, undefined4 param_2, undefined4 param_3); // slot 0x6e 0x5a9090
-  virtual undefined WrapperFor_InvalidateCityDialogRectRegion_At005a9240(int param_1, int param_2, int param_3); // slot 0x6f 0x5a9240
-  virtual void DrawUiTilesAndOverlay(astruct_13* ui_ctx); // slot 0x70 0x5a9550
-// === END GENERATED DECLS (TTacticalBattleView) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TTacticalBattleView 0xCTOR`).
+  // Per-tile drawer for the rect applier's 0..0x1b2 pass (base = no-op; the army view
+  // override renders the tile). Old OrphanRetStub name was junk; ret 8 = 2 args.
+  virtual undefined DrawTacticalTileInClipRect(int tileIndex, RECT* clipRect); // slot 0x6c 0x5a83c0
+  virtual undefined
+  RunOneTimeAnimationModalWaitAndInvalidateCityDialog(RECT* rect, int effectId, int frameCount,
+                                                      int tileIndex,
+                                                      int mode); // slot 0x6d 0x5a9170 (ret 0x14)
+  virtual undefined PlayTacticalTileEffect(int tileIndex, int effectId,
+                                           int frameCount); // slot 0x6e 0x5a9090
+  virtual undefined AnimateTacticalUnitMoveBetweenTiles(TTacticalUnit* unit, int fromTileIndex,
+                                                        int toTileIndex); // slot 0x6f 0x5a9240
+  // Takes no args (bare ret; the old astruct_13* param was a Ghidra artifact).
+  virtual void DrawUiTilesAndOverlay(); // slot 0x70 0x5a9550
+  // === END GENERATED DECLS (TTacticalBattleView) ===
+  // View-local slice (+0x60..; TView ends at +0x5c). Offsets verified in the tile-rect
+  // and move-animation bodies; gaps unobserved.
+  TTacticalBattle* tacticalBattle60; // +0x60 the battle this view renders
+  // Offscreen surfaces allocated/loaded by the live-battle initializer (0x5a9d90);
+  // all released through FreeQuickDrawSurfaceContextSlot.
+  struct TQuickDrawSurfaceContext* battlefieldSurface64;     // +0x64 0x5dc x 0x1c2 backdrop
+  struct TQuickDrawSurfaceContext* unitSpriteAtlasSurface68; // +0x68 bitmap 0xee2 atlas
+  struct TQuickDrawSurfaceContext* fortLevelAtlasSurface6C;  // +0x6c fort bitmap 0xee6+lvl/0xee7
+  struct TQuickDrawSurfaceContext* tileScratchSurface70;     // +0x70 one-tile scratch
+  struct TQuickDrawSurfaceContext* effectAtlasSurface74;     // +0x74 bitmap 0xeeb effects
+  short viewOriginX78;                   // +0x78 horizontal scroll origin (pixels)
+  short scrollableContentWidth7A;        // +0x7a total content width (scroll clamp max)
+  unsigned char pad7c[4];                // +0x7c
+  int tileColumnsPerRow80;               // +0x80 = 0x1d (grid stride)
+  int field84;                           // +0x84 set -1 by 0x5a9d90; use unobserved
+  int tileWidthPx88;                     // +0x88 tile width in pixels
+  int tileRowHeightPx8C;                 // +0x8c tile row height in pixels
+  int unitSpriteCellWidth90;             // +0x90 sprite-sheet cell width
+  int unitSpriteCellHeight94;            // +0x94 sprite-sheet cell height / facing-row offset
+  unsigned char modalAnimWaitDoneFlag98; // +0x98 0 during the 0x5a9170 modal wait, then 1
+  unsigned char pad99[3];                // +0x99
+  int moveAnimStepX9C;                   // +0x9c (toX-fromX)/3 animation step
+  int moveAnimStepYA0;                   // +0xa0 (toY-fromY)/3 animation step
+  int moveAnimUnitOffsetXA4;             // +0xa4 unit x offset in the anim rect; -1 = idle
+  int moveAnimUnitOffsetYA8;             // +0xa8 unit y offset in the anim rect
+  RECT moveAnimSpriteSrcRectAC;          // +0xac sprite-sheet source rect
+  struct TQuickDrawSurfaceContext* unitSpriteScratchSurfaceBC; // +0xbc 2x3-cell scratch
+  RECT moveAnimScreenRectC0;                                   // +0xc0 on-screen animation rect
 
   TTacticalBattleView();
-};
 
+  // Tactical-battle UI helpers dispatched from the TTacticalBattle command handlers
+  // (all __thiscall on the live view; verified at every call site). Bodies TODO.
+  void UpdateTacticalActionControlBitmapForCurrentUnit(char side); // 0x5a9b40
+  void InvalidateTacticalHexTileRect(int tileIndex);               // 0x5a8860
+  void CenterViewportAroundGridIndexAndSnap(int tileIndex);        // 0x5a8ac0
+  void SpawnTacticalUiMarkerAtUnitTile();                          // 0x5a9bb0
+  void TriggerTacticalUiUpdate2711();                              // 0x5a9cc0
+  // Writes the on-screen RECT of a bare hex tile (no unit growth). 0x5a87d0.
+  void ComputeTacticalHexTileScreenRect(RECT* rectOut, int tileIndex);
+  // Writes unit's on-screen sprite rect (tile rect grown 0x14px upward), then applies
+  // a trench-facing pixel offset (unrecovered table) when the unit's tile is a fresh
+  // trench-deploy mark, or clips the rect off-screen for a specific hidden-in-trench
+  // case. 0x5aa7d0.
+  void ComputeTacticalUnitSpriteDrawRectAndApplyFacingOffset(TTacticalUnit* unit, RECT* rectOut);
+  // Orientation-index lookup (0-6ish) for a unit sprite at tileIndex, based on which
+  // of the two "opposite" hex neighbors (by parity of tileIndex) are trench-deploy
+  // tiles; indexes an unrecovered 20-short table. 0x5aa670.
+  short ComputeTacticalUnitSpriteOrientationIndexByAdjacentType1Occupancy(int tileIndex);
+};

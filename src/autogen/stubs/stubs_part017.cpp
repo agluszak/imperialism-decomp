@@ -131,14 +131,6 @@ undefined4 ResetNavyOrderListsAndManagerOwner(void)
   return 0;
 }
 
-// ghidra_name DeserializeNavyOrderListsByNation
-// ghidra_proto undefined DeserializeNavyOrderListsByNation()
-// FUNCTION: IMPERIALISM 0x00556ad0
-undefined4 DeserializeNavyOrderListsByNation(void)
-{
-  return 0;
-}
-
 // ghidra_name CancelNationOrdersAndResetPrimaryFlags
 // ghidra_proto undefined CancelNationOrdersAndResetPrimaryFlags()
 // FUNCTION: IMPERIALISM 0x00556f60
@@ -403,14 +395,6 @@ undefined4 GetMapOrderContextPointerForNationAndTarget(void)
   return 0;
 }
 
-// ghidra_name TCivToolbar::CanDisplayMapOrderEntryInCurrentContext
-// ghidra_proto undefined CanDisplayMapOrderEntryInCurrentContext()
-// FUNCTION: IMPERIALISM 0x00560b00
-undefined4 CanDisplayMapOrderEntryInCurrentContext(void)
-{
-  return 0;
-}
-
 // ghidra_name ExpandTaskForceTraversalDepthAndMarkDeferredNodes
 // ghidra_proto undefined ExpandTaskForceTraversalDepthAndMarkDeferredNodes()
 // FUNCTION: IMPERIALISM 0x00560ba0
@@ -479,14 +463,6 @@ undefined4 RelaxMapTileCostFieldByNeighborTerrain(void)
 // ghidra_proto undefined SelectBestSeedTileForNationFromCostField()
 // FUNCTION: IMPERIALISM 0x00562c00
 undefined4 SelectBestSeedTileForNationFromCostField(void)
-{
-  return 0;
-}
-
-// ghidra_name RefreshMapActionContextNationOverlaysAndOrderRanks
-// ghidra_proto undefined RefreshMapActionContextNationOverlaysAndOrderRanks()
-// FUNCTION: IMPERIALISM 0x00562f20
-undefined4 RefreshMapActionContextNationOverlaysAndOrderRanks(void)
 {
   return 0;
 }
@@ -711,14 +687,6 @@ undefined4 DestructTLoadSavePictureAndMaybeFree(void)
 // ghidra_proto undefined LoadAndFormatMappedFlavorTextRecordsFromStream()
 // FUNCTION: IMPERIALISM 0x0056d840
 undefined4 LoadAndFormatMappedFlavorTextRecordsFromStream(void)
-{
-  return 0;
-}
-
-// ghidra_name BuildSaveSlotPathAndProbeMetadata
-// ghidra_proto undefined BuildSaveSlotPathAndProbeMetadata()
-// FUNCTION: IMPERIALISM 0x0056df40
-undefined4 BuildSaveSlotPathAndProbeMetadata(void)
 {
   return 0;
 }

@@ -11,7 +11,12 @@ TLandSaleEvent::~TLandSaleEvent() {}
 
 IMPLEMENT_DYNCREATE(TLandSaleEvent, TTurnStartEvent)
 
-TLandSaleEvent::TLandSaleEvent() {}
+// FUNCTION: IMPERIALISM 0x004e6710
+void TLandSaleEvent::ILandSaleEvent(short tileIndex, short nationCode) {
+  tileIndex08 = tileIndex;
+  nationCode0a = nationCode;
+  eventTag04 = 0x6c616e64; // 'land'
+}
 
 // FUNCTION: IMPERIALISM 0x004e6740
 undefined TLandSaleEvent::ApplyJoinEmpireMode2FinalizeNationNameState() {

@@ -459,14 +459,6 @@ undefined4 ConstructScopedMapQuickDrawContextWithPaletteToken(void)
   return 0;
 }
 
-// ghidra_name RenderTacticalBattleSelectionAndUnitOverlayPass_Impl
-// ghidra_proto undefined RenderTacticalBattleSelectionAndUnitOverlayPass_Impl()
-// FUNCTION: IMPERIALISM 0x00494950
-undefined4 RenderTacticalBattleSelectionAndUnitOverlayPass_Impl(void)
-{
-  return 0;
-}
-
 // ghidra_name RenderTradeScreenCommoditySummaryRows_Impl
 // ghidra_proto undefined RenderTradeScreenCommoditySummaryRows_Impl()
 // FUNCTION: IMPERIALISM 0x00494bf0
@@ -487,22 +479,6 @@ undefined4 WrapperFor_CreateFontFromPresetAndAttachRegionHandle_At00494d20(void)
 // ghidra_proto undefined SetQuickDrawColorAndPropagateIfChanged()
 // FUNCTION: IMPERIALISM 0x00495030
 undefined4 SetQuickDrawColorAndPropagateIfChanged(void)
-{
-  return 0;
-}
-
-// ghidra_name SetQuickDrawFillColorFromPaletteIndex
-// ghidra_proto undefined SetQuickDrawFillColorFromPaletteIndex()
-// FUNCTION: IMPERIALISM 0x004950f0
-undefined4 SetQuickDrawFillColorFromPaletteIndex(void)
-{
-  return 0;
-}
-
-// ghidra_name UpdatePaletteIndexWithDefaultFallback
-// ghidra_proto void __stdcall UpdatePaletteIndexWithDefaultFallback(uint palette_index)
-// FUNCTION: IMPERIALISM 0x004951e0
-undefined4 UpdatePaletteIndexWithDefaultFallback(void)
 {
   return 0;
 }
@@ -599,14 +575,6 @@ undefined4 OrphanCallChain_C42_I285_004967e0(void)
 // ghidra_proto undefined BlitBitmapResourceToTemporaryCompatibleDcAndPresent()
 // FUNCTION: IMPERIALISM 0x00496b80
 undefined4 BlitBitmapResourceToTemporaryCompatibleDcAndPresent(void)
-{
-  return 0;
-}
-
-// ghidra_name BlitRectWithOptionalTransparency
-// ghidra_proto void __stdcall BlitRectWithOptionalTransparency(astruct_17 * srcSurface, astruct_18 * dstSurface, RECT * srcRect, RECT * dstRect, byte blitFlags, astruct_19 * renderCtx)
-// FUNCTION: IMPERIALISM 0x00496d40
-undefined4 BlitRectWithOptionalTransparency(void)
 {
   return 0;
 }
@@ -715,18 +683,18 @@ undefined4 WrapperFor_AttachRegionHandleToClipStateAndRegister_At00498be0(void)
   return 0;
 }
 
-// ghidra_name RunOneTimeAnimationModalWaitAndInvalidateCityDialog_Impl
-// ghidra_proto undefined RunOneTimeAnimationModalWaitAndInvalidateCityDialog_Impl()
+// ghidra_name NoOpModalAnimWaitBracketHookA_00498c60
+// ghidra_proto undefined4 __cdecl NoOpModalAnimWaitBracketHookA_00498c60()
 // FUNCTION: IMPERIALISM 0x00498c60
-undefined4 RunOneTimeAnimationModalWaitAndInvalidateCityDialog_Impl(void)
+undefined4 NoOpModalAnimWaitBracketHookA_00498c60(void)
 {
   return 0;
 }
 
-// ghidra_name RunOneTimeAnimationModalWaitAndInvalidateCityDialog_Impl_At00498c80
-// ghidra_proto undefined RunOneTimeAnimationModalWaitAndInvalidateCityDialog_Impl_At00498c80()
+// ghidra_name NoOpModalAnimWaitBracketHookB_00498c80
+// ghidra_proto undefined4 __cdecl NoOpModalAnimWaitBracketHookB_00498c80()
 // FUNCTION: IMPERIALISM 0x00498c80
-undefined4 RunOneTimeAnimationModalWaitAndInvalidateCityDialog_Impl_At00498c80(void)
+undefined4 NoOpModalAnimWaitBracketHookB_00498c80(void)
 {
   return 0;
 }
@@ -1243,14 +1211,6 @@ undefined4 CreateTNewGameCommandInstance(void)
   return 0;
 }
 
-// ghidra_name CreateAndQueueTurnEventPacketTagGWEN
-// ghidra_proto undefined CreateAndQueueTurnEventPacketTagGWEN()
-// FUNCTION: IMPERIALISM 0x0049e500
-undefined4 CreateAndQueueTurnEventPacketTagGWEN(void)
-{
-  return 0;
-}
-
 // ghidra_name DestructTAmbitFileBasedDocumentAndMaybeFree_Impl
 // ghidra_proto undefined DestructTAmbitFileBasedDocumentAndMaybeFree_Impl()
 // FUNCTION: IMPERIALISM 0x0049e640
@@ -1271,14 +1231,6 @@ undefined4 WrapperFor_ftol_At0049efd0(void)
 // ghidra_proto undefined CreateTAnimationInstance()
 // FUNCTION: IMPERIALISM 0x0049f080
 undefined4 CreateTAnimationInstance(void)
-{
-  return 0;
-}
-
-// ghidra_name TAnimation::ConstructTAnimationBaseState
-// ghidra_proto undefined ConstructTAnimationBaseState()
-// FUNCTION: IMPERIALISM 0x0049f0c0
-undefined4 ConstructTAnimationBaseState(void)
 {
   return 0;
 }

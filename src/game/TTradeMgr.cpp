@@ -889,7 +889,8 @@ void TTradeMgr::RunNationUpdatePassesAndResetTransitionFlags() {
   int slot = 0;
   TGreatPower** np = g_apNationStates;
   do {
-    if ((IsNationSlotEligibleForEventProcessing(static_cast<short>(slot)) != 0) && (*np != 0)) {
+    if ((g_pSimMgr->IsNationSlotEligibleForEventProcessing(static_cast<short>(slot)) != 0) &&
+        (*np != 0)) {
       (*np)->ResetDiplomacyNeedScoresAndClearAidAllocationMatrix();
     }
     slot = slot + 1;
@@ -909,7 +910,8 @@ void TTradeMgr::RunNationUpdatePassesAndResetTransitionFlags() {
   slot = 0;
   np = g_apNationStates;
   do {
-    if ((IsNationSlotEligibleForEventProcessing(static_cast<short>(slot)) != 0) && (*np != 0)) {
+    if ((g_pSimMgr->IsNationSlotEligibleForEventProcessing(static_cast<short>(slot)) != 0) &&
+        (*np != 0)) {
       (*np)->ResetDiplomacyNeedSlots7012AndRefreshIfModeGateMatches();
     }
     slot = slot + 1;
@@ -959,7 +961,7 @@ void TTradeMgr::BuildEligibleNationMetricBucketsAndWeightedTrendScores() {
   int nation = 0;
   TGreatPower** np = g_apNationStates;
   do {
-    if (IsNationSlotEligibleForEventProcessing(static_cast<short>(nation)) != 0) {
+    if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(static_cast<short>(nation)) != 0) {
       (*np)->AssignFallbackNationsToUnfilledDiplomacyNeedSlots();
     }
     nation = nation + 1;
@@ -975,7 +977,7 @@ void TTradeMgr::BuildEligibleNationMetricBucketsAndWeightedTrendScores() {
     np = g_apNationStates;
     int slot = 0;
     do {
-      if (IsNationSlotEligibleForEventProcessing(static_cast<short>(slot)) != 0) {
+      if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(static_cast<short>(slot)) != 0) {
         short metric = (*np)->QueryNationMetricBySlot7C(static_cast<short>(metricRow));
         *reinterpret_cast<short*>(reinterpret_cast<char*>(this) + 0x1c + (cellBase + col) * 2) =
             metric;

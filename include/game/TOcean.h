@@ -47,7 +47,17 @@ public:
   // Map-action context (TZone, stride 0x48) at the given index in contextArray. 0x00563330.
   TZone* GetMapActionContextEntryByIndex(short index);
 
+  // 0x00563540 — walk g_pMapActionContextListHead for TPortZone contexts owned by
+  // nationSlot. Real __thiscall on the TOcean singleton (ret 4; callers load
+  // g_pActiveMapOrderContext into ecx); `this` is unused by the body.
+  TZone* FindFirstPortZoneContextByNation(short nationSlot);
+
   void InitializeMapActionContextsForNationCountUsingCostField(int nationCountArg);
+
+  // 0x562f20 - refresh every map-action context's nation overlays and per-nation order
+  // ranks after an order-list resync (turn-event-0x2E receive path calls it right after
+  // TNavyMgr::DeserializeNavyOrderListsByNation).
+  void RefreshMapActionContextNationOverlaysAndOrderRanks();
 
   // __inline: the original inlines this pointer calc at its call sites (e.g.
   // TZone::ResolvePortZoneOwnerContextAndDispatch) while keeping the standalone copy

@@ -1,5 +1,8 @@
 #include "game/TApplication.h"
 
+#include "game/TNewGameCommand.h"
+#include "game/global_data_tables.h"
+
 #include "game/CIncludeView.h"
 #include "game/TEventHandler.h"
 #include "game/mfc.h"
@@ -106,3 +109,12 @@ void TApplication::vmethod_0017(int param) {}
 
 // TEMPLATE: IMPERIALISM 0x00486f90
 // ??1?$CList@PAXPAX@@UAE@XZ
+
+// FUNCTION: IMPERIALISM 0x0049e500
+void TApplication::CreateAndQueueTurnEventPacketTagGWEN() {
+  // Build a TNewGameCommand, tag it 'gwen' targeting the global UI root controller,
+  // and dispatch it.
+  TNewGameCommand* newGameCommand = new TNewGameCommand();
+  newGameCommand->InitializeRangePair(0x6e657767 /* 'gwen' */, g_pGlobalUiRootController, 0, 0, 0);
+  g_pGlobalUiRootController->DispatchUiSelectionToHandler(newGameCommand);
+}

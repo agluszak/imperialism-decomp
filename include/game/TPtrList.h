@@ -31,7 +31,9 @@ public:
   virtual void RemoveAllSlot5C();
   virtual void SetAtOrdinalSlot60(int ordinal, void** entryPtr, int unusedFlag);
   virtual int VirtualSlot64();
-  virtual int VirtualSlot68();
+  // TPtrList does not derive TSortedList (known layout mismatch); same slot shape,
+  // independent declaration.
+  virtual int SortEntriesWithComparator(int(__cdecl* compare)(void*, void*), int unused = 0);
   virtual int VirtualSlot6C();
   virtual int VirtualSlot70();
   virtual int VirtualSlot74();

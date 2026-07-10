@@ -1,5 +1,6 @@
 #pragma once
 
+#include "game/CString.h"
 #include "game/TObject.h"
 #include "game/mfc.h"
 
@@ -35,6 +36,15 @@ public:
                                             TMovieView* movieView); // slot 0x0e 0x5dfc10
   // === END GENERATED DECLS (TAssetMgr) ===
 
+  // Non-virtual resource-stream helpers (every call site loads ECX = g_pUiViewManager;
+  // the callees ignore `this`). Used by the battle-setup .tab loader (0x5a4fc0).
+  class CFile_Virtuals* LoadTableResourceStreamByName(CString name); // 0x5df430, body TODO
+  // Reads *countInOut bytes from the stream into buffer, writes bytes-read back
+  // through countInOut. 0x5df700.
+  int ReadResourceStreamIntoBufferAndAdvance(class CFile_Virtuals* stream, void* buffer,
+                                             int* countInOut);
+  void ReleaseResourceStreamIfNotNull(class CFile_Virtuals* stream); // 0x5df6d0
+
   // Layout recovered from ctor 0x5df280: the 13 shared UI string-reference slots live at
   // offset 0x20, preceded by an as-yet-unidentified 0x1c-byte region and followed by one
   // trailing word; sizeof(TAssetMgr) per RTTI is 0x58. The ctor default-constructs all 13
@@ -50,6 +60,10 @@ public:
   // marker so later saves re-prompt. `this` is unused; callers still dispatch it
   // through g_pUiViewManager. 0x005e0030.
   unsigned char SaveMainDocumentToPathAndMarkSaved(const CString& savePath);
+  // Open the MFC document from `loadPath` (CWinApp::OpenDocumentFile) and restamp its
+  // path with the "__loaded" marker; returns whether a document was opened. `this` is
+  // unused; callers dispatch through g_pUiViewManager. 0x005e0150.
+  unsigned char OpenMainDocumentFromPathAndMarkLoaded(const CString& loadPath);
 };
 
 void __stdcall EnsurePictWvDataGobLoadedBySlot(int languageTag);

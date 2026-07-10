@@ -32,10 +32,8 @@ extern undefined4 ProcessTurnInstructionStreamAndFinalizePhase(void);
 extern undefined4 ShowTurnAlertsForActiveNation(void);
 extern undefined4 UpdatePersistentTopTenNationScores(void);
 extern undefined4 RebuildNationRankingDataAndUiCache(void);
-extern undefined4 HandleTurnResumeStateTelemetry(void);
 extern undefined4 UpdateCityOrderCapabilityUnlockProgress(void);
 extern undefined4 ConsumeFirstPendingAbilityUnlock(void);
-extern undefined4 TrySaveGameAndMaybeShowFailureDialog(void);
 extern undefined4 RefreshNavyOrderCycleAndClearReadyFlags(void);
 extern undefined4 RecomputeTileStrategicScoreHeatmap(void);
 extern undefined4 RecomputeNationOrderPriorityMetrics(void);
@@ -117,7 +115,7 @@ static inline void HandleTurnEndSavePaths(TSimMgr* simMgr) {
     return;
   }
   if (simMgr->redrawEnabled == 1) {
-    TrySaveGameAndMaybeShowFailureDialog();
+    g_pGameFlowState->TrySaveGameAndMaybeShowFailureDialog(0xa1, 0, 1);
   }
 }
 
@@ -159,7 +157,7 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
         continue;
       }
       if (nation->ShouldDispatchImmediatelySlot28() == 0 && DAT_006a43f0 == 0) {
-        nation->RefreshNationCivilianWorkOrdersForTurn(emptyString, reinterpret_cast<char*>(-1));
+        nation->SetHomeCityTileAndDisplayName(-1, 0);
       }
     }
     if (activeNationSlot >= 0 && activeNationSlot < 7) {
@@ -510,7 +508,7 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
     if (g_pGameFlowState != nullptr) {
       turnStateCode = g_pGameFlowState->activeNationSlotIndex;
     }
-    HandleTurnResumeStateTelemetry();
+    g_pGameFlowState->HandleTurnResumeStateTelemetry();
     if (g_pUiRuntimeContext != nullptr) {
       g_pUiRuntimeContext->DispatchTurnEventSlot4C(activeNationSlot, 0x5e4);
     }

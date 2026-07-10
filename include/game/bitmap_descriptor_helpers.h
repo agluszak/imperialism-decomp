@@ -14,7 +14,6 @@ void* GetSurfaceNodePixelBits(void* surfaceObject);
 short InitializeBitmapDescriptorRecordAndLoadSurfaceNode(TQuickDrawSurfaceContext** outContext,
                                                          short bitDepth, RECT* bounds,
                                                          int hintField18, int arg4, int arg5);
-void __stdcall FreeQuickDrawSurfaceContextSlot(TQuickDrawSurfaceContext** slot);
 unsigned char ReturnConstantTrueQuickDrawFlag(void* surfaceObject);
 void NoOpQuickDrawLifecycleHookB(void* surfaceObject);
 void BlitBitmapResourceLoaderToActiveDc(TBitmapResourceLoader** handle, RECT* bounds);

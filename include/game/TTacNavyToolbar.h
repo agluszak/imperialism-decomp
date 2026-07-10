@@ -4,10 +4,12 @@
 #include "game/mfc.h"
 
 // TODO(manifest): describe TTacNavyToolbar and its role. Base edge (TTacticalToolbar) recovered from RTTI CRuntimeClass chain: TTacNavyToolbar -> TTacticalToolbar -> TCluster -> TControl -> TView -> TEventHandler -> TObject -> CObject.
+class TTacticalUnit;
+
 // VTABLE: IMPERIALISM 0x0066a5a0
 class TTacNavyToolbar : public TTacticalToolbar {
 public:
-// === BEGIN GENERATED DECLS (TTacNavyToolbar) — refreshed by recover-class; do not hand-edit ===
+  // === BEGIN GENERATED DECLS (TTacNavyToolbar) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TTacNavyToolbar)
   virtual ~TTacNavyToolbar() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -23,7 +25,8 @@ public:
   // slot 0x0c QueryStepValue inherited unchanged (0x48a2c0)
   // slot 0x0d DispatchQueuedUiCommandAndRelease inherited unchanged (0x48a3b0)
   // slot 0x0e DispatchUiSelectionToHandler inherited unchanged (0x48a3f0)
-  virtual void HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) override; // slot 0x0f 0x005ad1b0
+  virtual void HandleEvent(int commandId, TEventHandler* sourceHandler,
+                           TEvent* event) override; // slot 0x0f 0x005ad1b0
   // slot 0x10 DispatchUiCommandToHandler inherited unchanged (0x48a2e0)
   // slot 0x11 vmethod_0017 inherited unchanged (0x48a310)
   // slot 0x12 ForwardParam inherited unchanged (0x48a380)
@@ -123,11 +126,12 @@ public:
   // slot 0x70 SetControlStateFlagAndMaybeRefresh inherited unchanged (0x48e810)
   // slot 0x71 OrphanTiny_GetDwordEcxOffset_84_00491770 inherited unchanged (0x491770)
   // slot 0x72 OrphanCallChain_C2_I51_00491790 inherited unchanged (0x491790)
-  virtual undefined UpdateCurrentDiplomacyCounterpartyControlAndDialogLabel() override; // slot 0x73 0x5ad0d0
-  virtual undefined WrapperFor_InvalidateCityDialogRectRegion_At005acc90(int param_1) override; // slot 0x74 0x5ad0f0
-// === END GENERATED DECLS (TTacNavyToolbar) ===
+  virtual undefined UpdateTacticalCurrentUnitControlAndDialogLabel(
+      TTacticalUnit* unit) override; // slot 0x73 0x5ad0d0
+  virtual undefined
+  WrapperFor_InvalidateCityDialogRectRegion_At005acc90(int param_1) override; // slot 0x74 0x5ad0f0
+  // === END GENERATED DECLS (TTacNavyToolbar) ===
   // TODO(manifest): add data members from the object slice (`just slice-discovery TTacNavyToolbar 0xCTOR`).
 
   TTacNavyToolbar();
 };
-

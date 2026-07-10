@@ -7,7 +7,7 @@
 // VTABLE: IMPERIALISM 0x00644fd0
 class TTacArmyView : public TTacticalBattleView {
 public:
-// === BEGIN GENERATED DECLS (TTacArmyView) — refreshed by recover-class; do not hand-edit ===
+  // === BEGIN GENERATED DECLS (TTacArmyView) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TTacArmyView)
   virtual ~TTacArmyView() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -116,14 +116,27 @@ public:
   // slot 0x69 WrapperFor_InvalidateCityDialogRectRegion_At005a89a0 inherited unchanged (0x5a89a0)
   // slot 0x6a OrphanLeaf_NoCall_Ins59_005a89f0 inherited unchanged (0x5a89f0)
   // slot 0x6b AdjustTacticalUnitVerticalOffsetAndRefreshMarker inherited unchanged (0x5a8be0)
-  virtual undefined OrphanRetStub_005a83c0() override; // slot 0x6c 0x5aa900
+  virtual undefined DrawTacticalTileInClipRect(int tileIndex,
+                                               RECT* clipRect) override; // slot 0x6c 0x5aa900
   // slot 0x6d RunOneTimeAnimationModalWaitAndInvalidateCityDialog inherited unchanged (0x5a9170)
   // slot 0x6e OrphanCallChain_C2_I66_005a9090 inherited unchanged (0x5a9090)
   // slot 0x6f WrapperFor_InvalidateCityDialogRectRegion_At005a9240 inherited unchanged (0x5a9240)
   // slot 0x70 DrawUiTilesAndOverlay inherited unchanged (0x5a9550)
-// === END GENERATED DECLS (TTacArmyView) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TTacArmyView 0xCTOR`).
+  // === END GENERATED DECLS (TTacArmyView) ===
+  // Army-view slice (base TTacticalBattleView ends at +0xd0). Written by the
+  // live-battle initializer 0x5a9d90; battlefieldOriginOffsetXD4 is re-derived as the
+  // backdrop source-x origin in the rect applier 0x5aa2e0.
+  class TTacticalToolbar* toolbarD0; // +0xd0 cached 'tool' control
+  short battlefieldOriginOffsetXD4;  // +0xd4 (0x1d - columnCount) * tileWidthPx
+  unsigned char padD6[2];            // +0xd6
+  short battlefieldColumnCountD8;    // +0xd8 copy of battle battlefieldColumnCount34
+  unsigned char padDA[2];            // +0xda
 
   TTacArmyView();
-};
 
+  // Initializes the live battle-view state from the freshly set-up TArmyBattle
+  // (called by InitializeBattleSetupAndMaybeDispatchTurnEventED8 after resolving the
+  // 'DLOG' control). Not a real constructor despite the symbols.csv name. Body TODO.
+  // 0x5a9d90, __thiscall, ret 8.
+  void ConstructTTacArmyViewBaseState(int compositionClass, class TArmyBattle* battle);
+};

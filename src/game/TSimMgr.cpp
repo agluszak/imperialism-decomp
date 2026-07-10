@@ -75,12 +75,6 @@ int __cdecl TouchSessionActiveNationId(void) {
   return reinterpret_cast<int(__cdecl*)()>(0x00549240)();
 }
 
-// FUNCTION: IMPERIALISM 0x0055cd00
-void TSimMgr::QueueInterNationEventType11(int param1, int param2, char param3) {
-  reinterpret_cast<void(__fastcall*)(void*, int, int, int, char)>(0x0055cd00)(this, 0, param1,
-                                                                              param2, param3);
-}
-
 // FUNCTION: IMPERIALISM 0x005621b0
 void __cdecl ResetPortZoneGlobalContextCounters(void) {
   reinterpret_cast<void(__cdecl*)()>(0x005621b0)();
@@ -496,6 +490,14 @@ void TSimMgr::RebuildMapContextAndGlobalMapState(int arg1, const char* arg2, int
   }
 }
 
+// FUNCTION: IMPERIALISM 0x0057c9a0
+unsigned char TSimMgr::RecreateActiveMapContextAndInitializeGlobalMapState(int scenarioIndex) {
+  // TODO: port body @ 0x57c9a0 (not yet ported). Declared for real so the
+  // turn-event-0xE receive path gets a correctly-typed call site.
+  (void)scenarioIndex;
+  return 0;
+}
+
 // FUNCTION: IMPERIALISM 0x0057cad0
 void TSimMgr::RebuildNationStateSlotsAndAvailability(int activate) {
   int i;
@@ -549,8 +551,8 @@ void TSimMgr::RebuildNationStateSlotsAndAvailability(int activate) {
     g_pCityOrderCapabilityState->GenerateRandomCapabilityPrioritySlots();
     g_pGlobalMapState->RefreshMapContextRotatingStatusStrings();
     RegenerateAllMapActionContextStatusCodes();
-    QueueInterNationEventType11(999, 1, 1);
-    QueueInterNationEventType11(999, 2, 1);
+    g_pInterNationEventQueueManager->QueueInterNationEventType11(999, 1, 1);
+    g_pInterNationEventQueueManager->QueueInterNationEventType11(999, 2, 1);
 
     const char* tagText = g_pGlobalMapState->scenarioTagText1c;
     if (tagText[0] == '.') {
@@ -865,6 +867,30 @@ void TSimMgr::DecrementField30Value() {
 // FUNCTION: IMPERIALISM 0x00581260
 short TSimMgr::GetActiveNationId() {
   return activeNationSlot;
+}
+
+// FUNCTION: IMPERIALISM 0x00581280
+char TSimMgr::IsNationSlotEligibleForEventProcessing(short nationSlot) {
+  if (nationSlot == -1) {
+    return 0;
+  }
+
+  TCountry* terrainDescriptor = g_apTerrainTypeDescriptorTable[nationSlot];
+  if (terrainDescriptor == 0) {
+    return 0;
+  }
+
+  if (nationSlot < 7) {
+    if (terrainDescriptor != 0) {
+      short profileType = terrainDescriptor->encodedNationSlot;
+      char inReservedProfileBand = profileType >= 100 && profileType < 200;
+      if (inReservedProfileBand) {
+        return 0;
+      }
+    }
+  }
+
+  return 1;
 }
 
 // FUNCTION: IMPERIALISM 0x00581400

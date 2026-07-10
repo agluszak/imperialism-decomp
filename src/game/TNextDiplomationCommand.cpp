@@ -7,8 +7,6 @@
 IMPLEMENT_DYNCREATE(TNextDiplomationCommand, TCommand)
 
 // Constructed inline at every call site; no standalone constructor address.
-TNextDiplomationCommand::TNextDiplomationCommand() : TCommand() {}
-
 // FUNCTION: IMPERIALISM 0x004f0db0
 void TNextDiplomationCommand::OrphanRetStub_00487a00() {
   g_pDiplomacyTurnStateManager->ProcessQueuedWarTransitions();

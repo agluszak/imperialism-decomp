@@ -7,7 +7,7 @@
 // VTABLE: IMPERIALISM 0x00645888
 class TTacticalHolaPicture : public TPicture {
 public:
-// === BEGIN GENERATED DECLS (TTacticalHolaPicture) — refreshed by recover-class; do not hand-edit ===
+  // === BEGIN GENERATED DECLS (TTacticalHolaPicture) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TTacticalHolaPicture)
   virtual ~TTacticalHolaPicture() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -123,9 +123,14 @@ public:
   // slot 0x70 SetControlStateFlagAndMaybeRefresh inherited unchanged (0x48e810)
   // slot 0x71 ResetPictureResourceEntry inherited unchanged (0x48f520)
   // slot 0x72 SetPictureResourceIdAndRefresh inherited unchanged (0x48f570)
-// === END GENERATED DECLS (TTacticalHolaPicture) ===
+  // === END GENERATED DECLS (TTacticalHolaPicture) ===
   // TODO(manifest): add data members from the object slice (`just slice-discovery TTacticalHolaPicture 0xCTOR`).
 
   TTacticalHolaPicture();
-};
 
+  // Configures the battle-intro ('hola', dialog 0xf19) coats-of-arms and site labels
+  // for the two nations. Body TODO. 0x005ad760, __thiscall, ret 0x10 (renamed off the
+  // junk TTask::CreateTTaskInstance attribution).
+  void ConfigureBattleIntroCoatsAndSiteLabels(int nationA, int nationB, int nationAIsLocalSide,
+                                              int battleSiteIndex);
+};

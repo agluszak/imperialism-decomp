@@ -81,10 +81,13 @@ public:
   // g_pSimMgr (0x6a20f8) — this getter belongs to TSimMgr, not the view
   // managers that many older ports called it on.
   short GetActiveNationId(); // 0x581260
+  // 0x581280 -- real __thiscall on the TSimMgr singleton (ret 4; every caller loads
+  // g_pSimMgr into ecx); `this` is unused by the body. Slot is eligible when its
+  // terrain descriptor exists and (for great powers) isn't a 100..199 profile.
+  char IsNationSlotEligibleForEventProcessing(short nationSlot);
   // Store a state code into +0x40 and set the +0x5c short flag to 1 only when the
   // code is exactly zero (codes 1..4 and out-of-range codes clear it). 0x57d870.
   void SetStateCodeAndUpdateZeroOrOutOfRangeFlag(int stateCode);
-  void QueueInterNationEventType11(int param1, int param2, char param3);
   void DecrementField30Value();
   void InitializeTurnFlowStateDefaults();
   void InitializeOrLoadEntryArray14AndClampLimits(bool writeBack);
@@ -96,6 +99,10 @@ public:
   // (`RET 0xc` confirms the count); param2 is the string literal "Chunk", not a
   // raw address.
   void RebuildMapContextAndGlobalMapState(int param1, const char* param2, int param3);
+  // 0x57c9a0: rebuild the active map context + global map state for a numbered
+  // scenario ('scn0'..'scz9' session-init tags); returns whether the scenario data
+  // loaded. Body TODO.
+  unsigned char RecreateActiveMapContextAndInitializeGlobalMapState(int scenarioIndex);
   // 0x57cad0. Verified against 0x0057db53: real __thiscall on `this` (not
   // g_pSimMgr this time), 1 stack arg (`RET 0x4`).
   void RebuildNationStateSlotsAndAvailability(int flag);

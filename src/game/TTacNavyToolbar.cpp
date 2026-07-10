@@ -1,7 +1,8 @@
 #include "game/TTacNavyToolbar.h"
 
 // FUNCTION: IMPERIALISM 0x005ad0d0
-undefined TTacNavyToolbar::UpdateCurrentDiplomacyCounterpartyControlAndDialogLabel() {
+undefined TTacNavyToolbar::UpdateTacticalCurrentUnitControlAndDialogLabel(TTacticalUnit* unit) {
+  (void)unit;
   return 0;
 }
 
@@ -24,8 +25,7 @@ IMPLEMENT_DYNCREATE(TTacNavyToolbar, TTacticalToolbar)
 TTacNavyToolbar::TTacNavyToolbar() {}
 
 // FUNCTION: IMPERIALISM 0x005ad180
-void TTacNavyToolbar::NoOpUiLifecycleHook(int arg) {
-}
+void TTacNavyToolbar::NoOpUiLifecycleHook(int arg) {}
 
 // FUNCTION: IMPERIALISM 0x005ad1b0
-void TTacNavyToolbar::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) { }
+void TTacNavyToolbar::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {}

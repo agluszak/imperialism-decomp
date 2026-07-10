@@ -5,6 +5,7 @@
 #include "game/mfc.h"
 
 class TStream;
+class TTacticalUnit;
 struct NetMessage;
 
 // 0xa8-byte nation-status snapshot record with a trailing shared-text CString at +0xa4,
@@ -52,8 +53,10 @@ public:
   DECLARE_DYNCREATE(TMultiplayerMgr)
   enum { kNationSlotCount = 7 };
 
-  int nationStatusControlSlots[8];        // +0x20
-  int field40;                            // +0x40
+  int nationStatusControlSlots[8]; // +0x20
+  // +0x40 — the active lobby dialog view when one is open; the code-9 receive path
+  // checks IsKindOf(RUNTIME_CLASS(TLoungeDialog)) before using it as the lounge.
+  TView* lobbyDialogView40;               // +0x40
   int diplomacyQueueContext;              // +0x44 — child handler for queue routing
   int nationSessionIds[kNationSlotCount]; // +0x48
   int queueSyncDword;                     // +0x64
@@ -117,12 +120,20 @@ public:
                                         int nationSlotOrMode); // 0x54a340
   void DispatchCityRedrawInvalidateEvent(short cityId);        // 0x54abf0
   void DispatchJoinEmpireModeEventPacket24_27(int sourceNation, int targetNation,
-                                              int mode);                     // 0x54c5a0
-  undefined4 ProcessDiplomacyTurnStateEventStateMachine(NetMessage* packet); // 0x545940
+                                              int mode);                        // 0x54c5a0
+  unsigned char ProcessDiplomacyTurnStateEventStateMachine(NetMessage* packet); // 0x545940
   // Genuinely empty in the shipped binary (single `RET 4`); called by
   // TArmyMgr::CreateTacticalBattleViewAndInitializeBattleSetup with the new battle view,
   // discarding both the argument and the (unset) return value. 0x54c660, __thiscall.
   void NoOpCallbackRet4(void* param);
+  // Multiplayer tactical-command echo hooks, dispatched thiscall on g_pGameFlowState by
+  // every TTacticalBattle command handler. Retail bodies are empty (0x54c680 = bare
+  // `ret 0x10`, 0x54c6a0 = bare `ret 0x18`) -- the echo was compiled out.
+  void EmitTacticalCommandPacket(int commandTag, TTacticalUnit* unit, int arg3,
+                                 int arg4); // 0x54c680
+  void EmitTacticalFireCommandPacket(int commandTag, TTacticalUnit* attackerUnit,
+                                     TTacticalUnit* targetUnit, int damageA, int damageB,
+                                     int effectCode); // 0x54c6a0
 
   // Unlike the emitters above, `this` IS used here: called as
   // g_pGameFlowState->EnsureGameFlowStateAndPostTurnEvent5E5() where g_pGameFlowState may
@@ -144,6 +155,40 @@ public:
   // or all seven when nationSlot == -1 (dead slots get 'dead'; ineligible names are
   // wrapped in parentheses and the tag set to 'deca'). 0x54cc00 (Ghidra mis-attributed
   // it to TToolBarCluster).
+  // 0x543910: post-resume diplomacy turn-event dispatcher — switches on
+  // pendingNationSlotIndex (the received turn-event code) and re-broadcasts the
+  // matching game-state snapshot family; every path except code 6 ends with the
+  // event-3 tick acknowledge.
+  void HandleDiplomacyTurnEventPacketByCode();
+  // 0x5431a0: clear the slot's turn-resume pending bit, broadcast the remaining mask
+  // (event 1) when hosting, and flush the latched event code once the mask drains.
+  void ClearTurnResumeNationPendingBitAndMaybeFlushTelemetry(int nationSlot);
+  // 0x543280: turn-resume telemetry pass — hosting drops absent nations' pending bits
+  // and re-broadcasts the mask; clients acknowledge the pending event code; everyone
+  // marks the local nation 'redy' and broadcasts the event-0x25 status board.
+  void HandleTurnResumeStateTelemetry();
+  // 0x54c8e0: re-emit the event-0xE session-init + event-9 name packets for the
+  // requesting session (turn-event 0xD receive path). Body TODO.
+  void EmitTurnEventEAnd9SessionContextPackets(NetMessage* packet);
+  // 0x549ff0: receive path for turn events 0x28/0x2E..0x32 — reads the 0x1c timely
+  // header, derives the acting nation (-1 during teardown), and dispatches by event
+  // code: 0x28 rebuilds the tactical battle from the stream, 0x2E resyncs the navy
+  // order lists, 0x2F/0x30 rebuild military/civilian orders, 0x31 handles the
+  // 'army'/'star'+'land'/'town' tagged payloads, 0x32 resyncs the trade manager.
+  void HandleTurnEventCodes28_2E_2F_30_31_32(TStream* stream);
+  // 0x54a6d0: deserialize the military recruit orders for the selected terrain
+  // (turn-event-0x2F receive path).
+  void CreateMilitaryRecruitOrdersForSelectedTerrain(TStream* stream, short nationSlot);
+  // 0x54a840: deserialize the civilian work orders for the selected nations
+  // (turn-event-0x30 receive path).
+  void CreateCivilianWorkOrdersForSelectedNations(TStream* stream, short nationSlot);
+  // 0x54bd20: replace the vacated slot's nation with a freshly rolled TAutoGreatPower
+  // (deep state copy + subobject ownership swap), then drop the session id, tag the
+  // slot 'suna', refresh labels, and re-broadcast the pending mask when hosting.
+  void ReplaceNationStateForSlotAndRefreshStatus(int nationSlot);
+  // 0x54d4e0: probe reachability, save when everyone is reachable, else optionally pose
+  // the "cannot save" advisory; returns the all-reachable byte Boolean.
+  unsigned char TrySaveGameAndMaybeShowFailureDialog(int mode, char* label, char showFailureDialog);
   void RefreshNationStatusLabelsAndCodesForSlotOrAll(int nationSlot);
 
   // Send the turn-event-0x15 diplomacy need-state snapshot for nationSlot (broadcast
@@ -167,12 +212,12 @@ public:
   // filtered-out or empty slots).
   void PublishNationDescriptorAndNotifyOrderListeners(TStream* stream, int nationFilter);
   // 0x549c60: write the 0x1c-byte packet header then the tag-specific payload.
-  void SerializeOrderDataIntoTurnEventByTag(TStream* stream, short eventTag, void* payload,
-                                            short destinationSlot);
+  void SerializeOrderDataIntoTurnEventByTag(TStream* stream, short eventTag, short destinationSlot,
+                                            void* payload);
   // 0x549ad0: measure with a TCountingStream, then serialize into a THandleStream over
   // GlobalAlloc memory, stamp the real length, and send (loopback-suppressed for -3).
-  void DispatchTurnEventPacketWithCodeAndPayloadBuffer(short eventTag, void* payload,
-                                                       short destinationSlot);
+  void DispatchTurnEventPacketWithCodeAndPayloadBuffer(short eventTag, short destinationSlot,
+                                                       void* payload);
   // 0x54b930: for every session slot matching networkId - tag the nation 'awol',
   // broadcast the event-0x25 status packet, mark the session id -2 and the pending bit,
   // then either send the event-9 lobby-chat drop notice (session init) or show the

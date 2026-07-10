@@ -51,7 +51,7 @@ void TCivilianButton::ApplyRectSlot110(RECT* rectBuffer) {
   if (ownerContext != 0) {
     TPicture::ApplyRectSlot110(nullptr);
   }
-  reinterpret_cast<void(__stdcall*)(unsigned int)>(UpdatePaletteIndexWithDefaultFallback)(0x10);
+  UpdatePaletteIndexWithDefaultFallback(0x10);
 
   RECT srcRect;
   srcRect.left = mappedSelection98;
@@ -66,7 +66,7 @@ void TCivilianButton::ApplyRectSlot110(RECT* rectBuffer) {
   BlitQuickDrawSurfaces(hintSource->GetBlitSurface(),
                         g_pActiveQuickDrawSurfaceContext->GetBlitSurface(), &srcRect, &dstRect,
                         0x24);
-  reinterpret_cast<void(__stdcall*)(unsigned int)>(UpdatePaletteIndexWithDefaultFallback)(0x13);
+  UpdatePaletteIndexWithDefaultFallback(0x13);
 }
 
 #if defined(_MSC_VER)

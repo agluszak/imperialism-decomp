@@ -1,4 +1,6 @@
 #include "game/TMapPreviewView.h"
+#include "game/TDisplayMgr.h"
+#include "game/global_data_tables.h"
 
 #include "game/bitmap_descriptor_helpers.h"
 
@@ -23,7 +25,7 @@ void TMapPreviewView::NoOpUiLifecycleHook(int arg) {}
 
 // FUNCTION: IMPERIALISM 0x005789b0
 void TMapPreviewView::Free() {
-  FreeQuickDrawSurfaceContextSlot(&previewSurface60);
+  g_pDisplayMgr->FreeQuickDrawSurfaceContextSlot(&previewSurface60);
   TView::Free();
 }
 

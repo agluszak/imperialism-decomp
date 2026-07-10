@@ -63,13 +63,6 @@ void* TZone::HandleTurnEventVtableSlot24CopyPayloadBuffer() {
   }
   return destObject;
 }
-// SYNTHETIC: IMPERIALISM 0x0055e660
-// TZone::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x0055e6e0
-// TZone::GetRuntimeClass
-
-IMPLEMENT_DYNCREATE(TZone, TObject)
 
 // FUNCTION: IMPERIALISM 0x00558860
 TZone** TZonePrimaryNeighborStretch::EnsureSlotAllocatedAndReturnPointer(unsigned int index) {
@@ -100,6 +93,13 @@ TZone** TZonePrimaryNeighborStretch::EnsureSlotAllocatedAndReturnPointer(unsigne
   }
   return Data() + index;
 }
+// SYNTHETIC: IMPERIALISM 0x0055e660
+// TZone::CreateObject
+
+// SYNTHETIC: IMPERIALISM 0x0055e6e0
+// TZone::GetRuntimeClass
+
+IMPLEMENT_DYNCREATE(TZone, TObject)
 
 // FUNCTION: IMPERIALISM 0x0055e700
 TZone::TZone()
@@ -844,6 +844,31 @@ TTaskForce* TZone::CreateTaskForceFromNavyOrdersForNationIfEligible(short nation
   return nullptr;
 }
 
+// FUNCTION: IMPERIALISM 0x00560b00
+char TZone::CanDisplayMapOrderEntryInCurrentContext(short nation, char skipField34Check) {
+  if (nation == -1) {
+    nation = g_pSimMgr->GetActiveNationId();
+  }
+  unsigned char nationBit = static_cast<unsigned char>(1 << nation);
+  if ((field10 & nationBit) == 0) {
+    return 0;
+  }
+  for (TShip* ship = GetNavyPrimaryOrderListHead(); ship != 0; ship = ship->nextOlder24) {
+    if (ship->field08 == this && ship->ownerNationSlot14 == nation) {
+      if (skipField34Check == 0) {
+        unsigned char hasField34 = (ship->field34 != 0);
+        if (hasField34 != 0) {
+          continue;
+        }
+      }
+      if (ship->field0c == 0) {
+        return 1;
+      }
+    }
+  }
+  return 0;
+}
+
 // FUNCTION: IMPERIALISM 0x00560f80
 void TZone::PropagateMapActionContextDistanceLevelsRecursive(short level) {
   if (level == -1) {
@@ -1087,46 +1112,6 @@ void RegenerateAllMapActionContextStatusCodes(void) {
   g_zoneStatusCodePrngSeed_006a5aec = 0;
   g_zoneStatusCodePrngSeed_006a5aec =
       reinterpret_cast<int(__cdecl*)(void*)>(GetCurrentLocalEpochSecondsWithTimezoneCache)(0);
-}
-
-// FUNCTION: IMPERIALISM 0x00563540
-TZone* TZone::FindFirstPortZoneContextByNation(short nationSlot) {
-  TZone* esi = static_cast<TZone*>(g_pMapActionContextListHead);
-  if (esi != 0) {
-    do {
-      if (esi->IsKindOf(RUNTIME_CLASS(TPortZone)) != 0) {
-        break;
-      }
-      esi = esi->prev18;
-    } while (esi != 0);
-  }
-
-  TZone* eax = esi;
-  if (eax == 0) {
-    return 0;
-  }
-
-  do {
-    short tileIndex = static_cast<short>(static_cast<TPortZone*>(eax)->field48);
-    short ownerTag =
-        static_cast<short>(g_pGlobalMapState->terrainStateTable[tileIndex].ownerNationTag04);
-    if (ownerTag == nationSlot) {
-      return eax;
-    }
-
-    esi = eax->prev18;
-    if (esi != 0) {
-      do {
-        if (esi->IsKindOf(RUNTIME_CLASS(TPortZone)) != 0) {
-          break;
-        }
-        esi = esi->prev18;
-      } while (esi != 0);
-    }
-    eax = esi;
-  } while (eax != 0);
-
-  return 0;
 }
 
 // Walks every map tile; for each coastal/port tile (terrain marker 3 or 0xe) or land tile

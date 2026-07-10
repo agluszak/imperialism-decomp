@@ -25,6 +25,7 @@ public:
   // TODO(manifest): add data members from the object slice (`just slice-discovery TNewGameCommand
   // 0xCTOR`).
 
-  TNewGameCommand();
+  // Fully inlined at every construction site (base TCommand ctor call + vtable
+  // store); defined in-class so `new TNewGameCommand()` reproduces that shape.
+  TNewGameCommand() : TCommand() {}
 };
-

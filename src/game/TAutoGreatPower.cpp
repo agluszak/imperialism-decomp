@@ -1,5 +1,7 @@
 #include "decomp_types.h"
 #include "game/TAutoGreatPower.h"
+
+#include "game/TOcean.h"
 #include "game/TSortedByRelationshipList.h"
 #include "game/nation_stream_serialization.h"
 #include "game/CIterator.h"
@@ -374,7 +376,7 @@ int TAutoGreatPower::CheckTransitionSlot27C(int targetNation, int sourceNation) 
     if (nation > 6) {
       break;
     }
-    if (IsNationSlotEligibleForEventProcessing(nation) != 0 &&
+    if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(nation) != 0 &&
         nation != static_cast<short>(this->nationSlot)) {
       if (g_pDiplomacyTurnStateManager->HasPolicyWithNationSlot44(this->nationSlot, nation) == 0 &&
           g_pDiplomacyTurnStateManager->HasPolicyWithNationSlot44(targetNation, nation) != 0) {
@@ -511,7 +513,7 @@ char TAutoGreatPower::ReturnZeroSlot9D(int targetNation) {
   int peerSlot = 0;
   TGreatPower** peerCursor = g_apNationStates;
   do {
-    if (IsNationSlotEligibleForEventProcessing(peerSlot) != 0) {
+    if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(peerSlot) != 0) {
       float peerArmy = (*peerCursor)->GetScoreFactorSlot23C();
       if (strongestPeer < peerArmy) {
         strongestPeer = peerArmy;
@@ -659,7 +661,8 @@ void TAutoGreatPower::SetCandidateNationFlagAndPortZoneState(int targetNation) {
           (ownerTag = g_apTerrainTypeDescriptorTable[targetNation]->encodedNationSlot,
            ownerTag < 100) ||
           199 < ownerTag) {
-        TZone::FindFirstPortZoneContextByNation(static_cast<short>(targetNation));
+        g_pActiveMapOrderContext->FindFirstPortZoneContextByNation(
+            static_cast<short>(targetNation));
         short portZoneId = g_pMapActionContextListHead->GetContextOrdinalOrInvalid();
         this->portZoneStateFlags[portZoneId] = 1;
       }
@@ -672,7 +675,7 @@ void TAutoGreatPower::NotifyAllianceSlot214(int targetNation) {
   this->candidateNationFlags[targetNation] = 0;
   if (g_apTerrainTypeDescriptorTable[targetNation] != 0) {
     if (g_apTerrainTypeDescriptorTable[targetNation]->ownedRegionList->GetCount() > 0) {
-      TZone::FindFirstPortZoneContextByNation(static_cast<short>(targetNation));
+      g_pActiveMapOrderContext->FindFirstPortZoneContextByNation(static_cast<short>(targetNation));
       short portZoneId = g_pMapActionContextListHead->GetContextOrdinalOrInvalid();
       this->portZoneStateFlags[portZoneId] = 0;
     }
@@ -740,7 +743,8 @@ void TAutoGreatPower::ResetNationDiplomacySlotsAndMarkRelatedNations(int targetN
       ++ordinal;
     } while (ordinal <= regionList->GetCount());
   }
-  TZone* portZone = TZone::FindFirstPortZoneContextByNation(static_cast<short>(targetNation));
+  TZone* portZone =
+      g_pActiveMapOrderContext->FindFirstPortZoneContextByNation(static_cast<short>(targetNation));
   if (portZone->PrimaryZoneHeapCapacity() == 0) {
     void* grownArray = reinterpret_cast<void*(__cdecl*)(void*, int)>(
         ReallocateHeapBlockWithAllocatorTracking)(portZone->PrimaryZoneHeapData(), 8);

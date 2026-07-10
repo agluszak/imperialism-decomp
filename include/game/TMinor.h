@@ -50,7 +50,9 @@ public:
   char ReturnFalseNationStateCapabilityFlag90(int arg) override;
   void NotifyActionSlot94(int sourceNation, int actionCode) override;
 
-  void RebuildDiplomacyEconomicPressureFromMapState(void);
+  // slot 0x2a (+0xa8), TMinor's first new virtual — vtable 0x653c90+0xa8 -> 0x4e46a0,
+  // dispatched virtually by HandleTurnResumeStateTelemetry (0x5434 0e region).
+  virtual void RebuildDiplomacyEconomicPressureFromMapState(void);
   void SeedRandomDiplomacyPolicyThresholds(void);
   char CanInitiateJoinEmpireProposalToTarget(short targetNationSlot, short proposalCode);
   void HandleNetworkPortConstructionOrder(int nationId);

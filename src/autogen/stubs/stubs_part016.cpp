@@ -67,14 +67,6 @@ undefined4 WrapperFor_ftol_At00536290(void)
   return 0;
 }
 
-// ghidra_name ComputeDistributionSimilarityScoreFromVectorAndReferenceProfile
-// ghidra_proto undefined ComputeDistributionSimilarityScoreFromVectorAndReferenceProfile()
-// FUNCTION: IMPERIALISM 0x005362c0
-undefined4 ComputeDistributionSimilarityScoreFromVectorAndReferenceProfile(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_AFX_CLASSINIT_At00536470
 // ghidra_proto undefined WrapperFor_AFX_CLASSINIT_At00536470()
 // FUNCTION: IMPERIALISM 0x00536470
@@ -539,30 +531,6 @@ undefined4 EnableDiplomacyQueueRoutingAndSetContextField44(void)
   return 0;
 }
 
-// ghidra_name ClearTurnResumeNationPendingBitAndMaybeFlushTelemetry
-// ghidra_proto undefined ClearTurnResumeNationPendingBitAndMaybeFlushTelemetry()
-// FUNCTION: IMPERIALISM 0x005431a0
-undefined4 ClearTurnResumeNationPendingBitAndMaybeFlushTelemetry(void)
-{
-  return 0;
-}
-
-// ghidra_name HandleTurnResumeStateTelemetry
-// ghidra_proto undefined HandleTurnResumeStateTelemetry()
-// FUNCTION: IMPERIALISM 0x00543280
-undefined4 HandleTurnResumeStateTelemetry(void)
-{
-  return 0;
-}
-
-// ghidra_name HandleDiplomacyTurnEventPacketByCode
-// ghidra_proto undefined HandleDiplomacyTurnEventPacketByCode()
-// FUNCTION: IMPERIALISM 0x00543910
-undefined4 HandleDiplomacyTurnEventPacketByCode(void)
-{
-  return 0;
-}
-
 // ghidra_name ResetDiplomacyRuntimeSelectionAndSetModeNada
 // ghidra_proto undefined ResetDiplomacyRuntimeSelectionAndSetModeNada()
 // FUNCTION: IMPERIALISM 0x00544630
@@ -575,14 +543,6 @@ undefined4 ResetDiplomacyRuntimeSelectionAndSetModeNada(void)
 // ghidra_proto undefined EmitTurnEvent10ForFlaggedNationSlots()
 // FUNCTION: IMPERIALISM 0x00544720
 undefined4 EmitTurnEvent10ForFlaggedNationSlots(void)
-{
-  return 0;
-}
-
-// ghidra_name ApplyEncodedDeltaPayloadToBufferByMode
-// ghidra_proto undefined ApplyEncodedDeltaPayloadToBufferByMode()
-// FUNCTION: IMPERIALISM 0x00544cd0
-undefined4 ApplyEncodedDeltaPayloadToBufferByMode(void)
 {
   return 0;
 }
@@ -723,34 +683,10 @@ undefined4 DispatchTurnEvent31TaggedPayload(void)
   return 0;
 }
 
-// ghidra_name HandleTurnEventCodes28_2E_2F_30_31_32
-// ghidra_proto undefined HandleTurnEventCodes28_2E_2F_30_31_32()
-// FUNCTION: IMPERIALISM 0x00549ff0
-undefined4 HandleTurnEventCodes28_2E_2F_30_31_32(void)
-{
-  return 0;
-}
-
 // ghidra_name DispatchTextPairEvent8FromContext
 // ghidra_proto undefined DispatchTextPairEvent8FromContext()
 // FUNCTION: IMPERIALISM 0x0054a410
 undefined4 DispatchTextPairEvent8FromContext(void)
-{
-  return 0;
-}
-
-// ghidra_name CreateMilitaryRecruitOrdersForSelectedTerrain
-// ghidra_proto undefined CreateMilitaryRecruitOrdersForSelectedTerrain()
-// FUNCTION: IMPERIALISM 0x0054a6d0
-undefined4 CreateMilitaryRecruitOrdersForSelectedTerrain(void)
-{
-  return 0;
-}
-
-// ghidra_name CreateCivilianWorkOrdersForSelectedNations
-// ghidra_proto undefined CreateCivilianWorkOrdersForSelectedNations()
-// FUNCTION: IMPERIALISM 0x0054a840
-undefined4 CreateCivilianWorkOrdersForSelectedNations(void)
 {
   return 0;
 }
@@ -827,14 +763,6 @@ undefined4 GetNationStatusCodeForSlotOrActiveNation(void)
   return 0;
 }
 
-// ghidra_name ReplaceNationStateForSlotAndRefreshStatus
-// ghidra_proto undefined ReplaceNationStateForSlotAndRefreshStatus()
-// FUNCTION: IMPERIALISM 0x0054bd20
-undefined4 ReplaceNationStateForSlotAndRefreshStatus(void)
-{
-  return 0;
-}
-
 // ghidra_name EmitTurnEvent26DiplomacyMatrixSnapshot
 // ghidra_proto undefined EmitTurnEvent26DiplomacyMatrixSnapshot()
 // FUNCTION: IMPERIALISM 0x0054c480
@@ -847,22 +775,6 @@ undefined4 EmitTurnEvent26DiplomacyMatrixSnapshot(void)
 // ghidra_proto undefined SetDialogModeTagInitAndInvokeNoOpHook()
 // FUNCTION: IMPERIALISM 0x0054c630
 undefined4 SetDialogModeTagInitAndInvokeNoOpHook(void)
-{
-  return 0;
-}
-
-// ghidra_name NoOpCallbackRet10
-// ghidra_proto undefined NoOpCallbackRet10()
-// FUNCTION: IMPERIALISM 0x0054c680
-undefined4 NoOpCallbackRet10(void)
-{
-  return 0;
-}
-
-// ghidra_name NoOpCallbackRet18
-// ghidra_proto undefined NoOpCallbackRet18()
-// FUNCTION: IMPERIALISM 0x0054c6a0
-undefined4 NoOpCallbackRet18(void)
 {
   return 0;
 }
@@ -883,14 +795,6 @@ undefined4 HandleActiveNationAwolTransitionOrRecovery(void)
   return 0;
 }
 
-// ghidra_name TSimMgr::EmitTurnEventEAnd9SessionContextPackets
-// ghidra_proto undefined EmitTurnEventEAnd9SessionContextPackets()
-// FUNCTION: IMPERIALISM 0x0054c8e0
-undefined4 EmitTurnEventEAnd9SessionContextPackets(void)
-{
-  return 0;
-}
-
 // ghidra_name CreateAndQueueTurnEventPacketTagPOGC
 // ghidra_proto undefined CreateAndQueueTurnEventPacketTagPOGC()
 // FUNCTION: IMPERIALISM 0x0054cde0
@@ -907,14 +811,6 @@ undefined4 CreateAndSendTurnEvent2D_TableRowShortArray(void)
   return 0;
 }
 
-// ghidra_name TrySaveGameAndMaybeShowFailureDialog
-// ghidra_proto undefined TrySaveGameAndMaybeShowFailureDialog()
-// FUNCTION: IMPERIALISM 0x0054d4e0
-undefined4 TrySaveGameAndMaybeShowFailureDialog(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_ftol_At0054d620
 // ghidra_proto undefined WrapperFor_ftol_At0054d620()
 // FUNCTION: IMPERIALISM 0x0054d620
@@ -927,14 +823,6 @@ undefined4 WrapperFor_ftol_At0054d620(void)
 // ghidra_proto undefined TryInvokeNationStateReplacementForSlot()
 // FUNCTION: IMPERIALISM 0x0054dfc0
 undefined4 TryInvokeNationStateReplacementForSlot(void)
-{
-  return 0;
-}
-
-// ghidra_name RefreshMapAndMessageControlsForCurrentContext
-// ghidra_proto undefined RefreshMapAndMessageControlsForCurrentContext()
-// FUNCTION: IMPERIALISM 0x0054e4c0
-undefined4 RefreshMapAndMessageControlsForCurrentContext(void)
 {
   return 0;
 }
@@ -1027,14 +915,6 @@ undefined4 InvokeOrderNodeOwnerVfunc38(void)
   return 0;
 }
 
-// ghidra_name ReassignOrderNodeNationAndRebindParentCounters
-// ghidra_proto undefined ReassignOrderNodeNationAndRebindParentCounters()
-// FUNCTION: IMPERIALISM 0x00551100
-undefined4 ReassignOrderNodeNationAndRebindParentCounters(void)
-{
-  return 0;
-}
-
 // ghidra_name SelectNavyPrimaryOrderByNationAndRecomputePreferredChild
 // ghidra_proto undefined SelectNavyPrimaryOrderByNationAndRecomputePreferredChild()
 // FUNCTION: IMPERIALISM 0x00551850
@@ -1119,14 +999,6 @@ undefined4 RemoveTaskForceOrderNodeById(void)
 // ghidra_proto undefined RebuildMapOrderEntryChildren()
 // FUNCTION: IMPERIALISM 0x00553f10
 undefined4 RebuildMapOrderEntryChildren(void)
-{
-  return 0;
-}
-
-// ghidra_name PruneInactiveTaskForceOrderHead
-// ghidra_proto undefined PruneInactiveTaskForceOrderHead()
-// FUNCTION: IMPERIALISM 0x00553fe0
-undefined4 PruneInactiveTaskForceOrderHead(void)
 {
   return 0;
 }

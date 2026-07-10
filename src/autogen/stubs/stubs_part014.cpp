@@ -11,14 +11,6 @@ undefined4 CreateTTurnStartEventInstance(void)
   return 0;
 }
 
-// ghidra_name InitializeLandSaleEventPayloadTileAndNation
-// ghidra_proto undefined InitializeLandSaleEventPayloadTileAndNation()
-// FUNCTION: IMPERIALISM 0x004e6710
-undefined4 InitializeLandSaleEventPayloadTileAndNation(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_ftol_At004e6a40
 // ghidra_proto undefined WrapperFor_ftol_At004e6a40()
 // FUNCTION: IMPERIALISM 0x004e6a40
@@ -287,14 +279,6 @@ undefined4 RecomputeNationComparativePowerMetrics(void)
 // ghidra_proto undefined RebuildMinorNationDispositionLookupTables()
 // FUNCTION: IMPERIALISM 0x004f24a0
 undefined4 RebuildMinorNationDispositionLookupTables(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_thunk_ApplyEncodedDeltaPayloadToBufferByMode_At004f27f0
-// ghidra_proto undefined WrapperFor_thunk_ApplyEncodedDeltaPayloadToBufferByMode_At004f27f0()
-// FUNCTION: IMPERIALISM 0x004f27f0
-undefined4 WrapperFor_thunk_ApplyEncodedDeltaPayloadToBufferByMode_At004f27f0(void)
 {
   return 0;
 }
@@ -719,14 +703,6 @@ undefined4 WrapperFor_ReleaseSharedStringRefIfNotEmpty_At00507db0(void)
 // ghidra_proto undefined ShowCountrySelectionPromptAndReturnNationId()
 // FUNCTION: IMPERIALISM 0x00508910
 undefined4 ShowCountrySelectionPromptAndReturnNationId(void)
-{
-  return 0;
-}
-
-// ghidra_name NormalizeRuntimeCredentialNameToken
-// ghidra_proto undefined NormalizeRuntimeCredentialNameToken()
-// FUNCTION: IMPERIALISM 0x00508c50
-undefined4 NormalizeRuntimeCredentialNameToken(void)
 {
   return 0;
 }

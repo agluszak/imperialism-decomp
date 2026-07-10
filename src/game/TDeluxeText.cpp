@@ -74,9 +74,10 @@ void TDeluxeText::BuildAndApplyTextStyleDescriptor(int unused, int pointSize, in
 }
 
 // FUNCTION: IMPERIALISM 0x005b6360
-void TDeluxeText::Helper_Uses_ConstructSharedStringFromCStrOrResourceId_At005b6360(
-    CString param_1) {
-  UpdateTextEntrySharedString(&param_1);
+void TDeluxeText::SetTextEntryFromChars(const char* textChars, int textLength) {
+  (void)textLength; // accepted but never read by the original body
+  CString text(textChars);
+  UpdateTextEntrySharedString(&text);
 }
 
 // FUNCTION: IMPERIALISM 0x005b63e0

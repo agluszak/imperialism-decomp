@@ -1,5 +1,7 @@
 #include "game/TViewMgr.h"
 
+#include "game/TModuleLibraryCacheTableStateB.h"
+
 #include "game/turn_event_dialog_provisional.h"
 
 #include "game/ImperialismApp.h"
@@ -47,8 +49,6 @@
 #include "game/TTurnEventDialogFactoryRegistry.h"
 #include "game/quickdraw_rendering.h" // ApplyControlThemeStyleAndOptionalCaption
 
-char IsNationSlotEligibleForEventProcessing(short nationSlot);
-
 undefined4 QueueDeferredUiEventPacket(void);
 undefined4 ShowDialogTemplateE0ModalAndReleaseCapture(void);
 undefined4 HandleTurnEvent8FC_RebuildPageTabsAndTitles(void);
@@ -66,8 +66,6 @@ undefined4 HandleTurnEvent8FC_RebuildPageTabsAndTitles(void);
 
 // Free-function thunks reached through the ILT jump table; declared in the generic
 // repo form and invoked through typed __cdecl casts at the callsites.
-undefined4 SetQuickDrawFillColorFromPaletteIndex(void);
-undefined4 UpdatePaletteIndexWithDefaultFallback(void);
 // ILT thunk (generic form per repo policy; typed cast applied at the callsite).
 undefined4 thunk_DispatchLocalizedUiMessageWithTemplateA13A0(void);
 undefined4 InitializeHotKeyDialogTemplateA1WithTripleTextState(void);
@@ -319,13 +317,13 @@ int TViewMgr::MapTurnEventCodeToPaletteIndex(int eventCode) {
 // FUNCTION: IMPERIALISM 0x005d5750
 void TViewMgr::ApplyTurnEventPaletteColorByEventCode(int eventCode) {
   int paletteIndex = this->MapTurnEventCodeToPaletteIndex(eventCode);
-  reinterpret_cast<void(__cdecl*)(int)>(SetQuickDrawFillColorFromPaletteIndex)(paletteIndex);
+  SetQuickDrawFillColorFromPaletteIndex(static_cast<unsigned short>(paletteIndex));
 }
 
 // FUNCTION: IMPERIALISM 0x005d5780
 void TViewMgr::UpdatePaletteIndexFromTurnEventCode(int eventCode) {
   int paletteIndex = this->MapTurnEventCodeToPaletteIndex(eventCode);
-  reinterpret_cast<void(__cdecl*)(int)>(UpdatePaletteIndexWithDefaultFallback)(paletteIndex);
+  UpdatePaletteIndexWithDefaultFallback(paletteIndex);
 }
 
 // FUNCTION: IMPERIALISM 0x005d57b0
@@ -1313,7 +1311,7 @@ void TViewMgr::UiRuntimeSlot64() {
 // FUNCTION: IMPERIALISM 0x005da360
 void TViewMgr::UiRuntimeSlotBC() {
   const short activeNationId = g_pSimMgr->GetActiveNationId();
-  if (IsNationSlotEligibleForEventProcessing(activeNationId) == 0) {
+  if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(activeNationId) == 0) {
     g_pSimMgr->CopyScenarioNationSetupIntoFlowState(nullptr);
   }
 
@@ -1373,7 +1371,7 @@ void TViewMgr::HandleTurnEventDialogFactorySlotF4() {
     movieName = CString("win");
     break;
   case 0x17:
-    if (IsNationSlotEligibleForEventProcessing(g_pSimMgr->GetActiveNationId())) {
+    if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(g_pSimMgr->GetActiveNationId())) {
       movieName = CString("win");
     } else {
       movieName = CString("lose");
@@ -1430,7 +1428,7 @@ void TViewMgr::HandleTurnStateExitAndPostFollowupEventCode(short followupState) 
     g_pGlobalUiRootController->PostTurnEventCodeMessage2420(0x7e0);
     return;
   case 0x19:
-    if (IsNationSlotEligibleForEventProcessing(g_pSimMgr->GetActiveNationId())) {
+    if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(g_pSimMgr->GetActiveNationId())) {
       g_pGlobalUiRootController->PostTurnEventCodeMessage2420(0x5eb);
       return;
     }
@@ -1731,6 +1729,16 @@ bool TViewMgr::ShowCivilianReportDialogAndReturnConfirm(TCivUnit* pCivilianOrder
   return true;
 }
 
+// FUNCTION: IMPERIALISM 0x005de990
+char TViewMgr::ShowLocalizedUiPromptByGroupAndIndex(int uiStringGroup, int uiStringIndex,
+                                                    int overlayMode, int arg4) {
+  CString message;
+  g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&message, uiStringGroup,
+                                                                  uiStringIndex);
+  return DispatchLocalizedUiMessageWithTemplateA13A0(message, &g_cstrUiPromptMessageStore,
+                                                     overlayMode, arg4);
+}
+
 // FUNCTION: IMPERIALISM 0x005dea60
 void TViewMgr::CreateModalMessageCommandAndQueue(CString* message, int payload) {
   TModalMessageCommand* command = new TModalMessageCommand();
@@ -1738,4 +1746,41 @@ void TViewMgr::CreateModalMessageCommandAndQueue(CString* message, int payload) 
   command->payload = payload;
   command->InitializeRangePair(0x48657921 /* 'Hey!' */, g_pGlobalUiRootController, 0, 0, 0);
   g_pGlobalUiRootController->DispatchUiSelectionToHandler(command);
+}
+
+// FUNCTION: IMPERIALISM 0x005deb40
+char TViewMgr::DispatchGameStateEventIfLocalizedPromptAccepted(int actionTag) {
+  CString message;
+  int gameFlowMode = g_pSimMgr->field44;
+  unsigned char sessionTornDown = gameFlowMode == 2;
+  if (sessionTornDown != 0) {
+    g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&message, 0x2737, 0x31);
+  } else {
+    unsigned char hosting = gameFlowMode == 1;
+    if (hosting != 0) {
+      if (actionTag == 0x6367616d) { // 'magc'
+        g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&message, 0x2737, 0x37);
+      } else {
+        g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&message, 0x2737, 0x2f);
+      }
+    } else if (actionTag == 0x6e657767) { // 'gwen'
+      g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&message, 0x2737, 0x2b);
+    } else if (actionTag == 0x71756974) { // 'quit'
+      g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&message, 0x2737, 0x2a);
+    } else if (actionTag == 0x6c6f6164) { // 'load'
+      g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&message, 0x2737, 0x33);
+    } else {
+      g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&message, 0x2737, 0x2b);
+    }
+  }
+  char accepted = g_pUiRuntimeContext->DispatchLocalizedUiMessageWithTemplateA13A0(
+      message, &g_cstrUiPromptMessageStore, 0, 1);
+  if (accepted != 0) {
+    unsigned char tearingDown = g_pSimMgr->field44 == 2;
+    if (tearingDown != 0) {
+      g_pGameFlowState->DispatchTaggedGameStateEvent1F20(0x61626469, // 'abdi'
+                                                         g_pSimMgr->GetActiveNationId(), -2);
+    }
+  }
+  return accepted;
 }

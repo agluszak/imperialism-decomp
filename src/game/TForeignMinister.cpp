@@ -132,7 +132,8 @@ void TForeignMinister::Call8C() {
         break;
       }
       fallbackNationSlot = GenerateThreadLocalRandom15Value() % 7;
-      if (IsNationSlotEligibleForEventProcessing(static_cast<short>(fallbackNationSlot)) != 0) {
+      if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(
+              static_cast<short>(fallbackNationSlot)) != 0) {
         if (g_pDiplomacyTurnStateManager->HasPolicyWithNationSlot44(fallbackNationSlot,
                                                                     owner->nationSlot) == 0 &&
             fallbackNationSlot != owner->nationSlot) {

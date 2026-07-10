@@ -13,4 +13,3 @@ TNewGameCommand::~TNewGameCommand() {}
 
 IMPLEMENT_DYNCREATE(TNewGameCommand, TCommand)
 
-TNewGameCommand::TNewGameCommand() {}

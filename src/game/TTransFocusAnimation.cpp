@@ -16,21 +16,19 @@
 
 IMPLEMENT_DYNCREATE(TTransFocusAnimation, TFocusAnimation)
 
-undefined4 SetQuickDrawFillColorFromPaletteIndex(void);
-
 // Default constructor for MFC dynamic creation
 TTransFocusAnimation::TTransFocusAnimation() : TFocusAnimation() {
-  ScopedRenderTarget() = nullptr;
-  Field08() = 0;
-  Field0a() = 0;
-  Field0c() = 0;
-  FrameTick() = 0;
-  FrameTickLimit() = 0;
-  Field18() = 0;
-  SourceLeft() = 0;
-  SourceTop() = 0;
-  SourceRight() = 0;
-  SourceBottom() = 0;
+  ownerView04 = nullptr;
+  frameIndex08 = 0;
+  frameCount0A = 0;
+  field0C = 0;
+  tickCounter10 = 0;
+  ticksPerFrame14 = 0;
+  registryTag18 = 0;
+  screenRect1C.left = 0;
+  screenRect1C.top = 0;
+  screenRect1C.right = 0;
+  screenRect1C.bottom = 0;
   enabledFlag = 1;
   transientSurfaceContext = 0;
   insetBitmapSurface = 0;
@@ -40,17 +38,17 @@ TTransFocusAnimation::TTransFocusAnimation() : TFocusAnimation() {
 TTransFocusAnimation::TTransFocusAnimation(TView* target, RECT* bounds, short f0a, short f0c,
                                            int tickLimit, int f18)
     : TFocusAnimation() {
-  ScopedRenderTarget() = target;
-  Field08() = 0;
-  Field0a() = f0a;
-  Field0c() = f0c;
-  FrameTick() = 0;
-  FrameTickLimit() = tickLimit;
-  Field18() = f18;
-  SourceLeft() = bounds->left;
-  SourceTop() = bounds->top;
-  SourceRight() = bounds->right;
-  SourceBottom() = bounds->bottom;
+  ownerView04 = target;
+  frameIndex08 = 0;
+  frameCount0A = f0a;
+  field0C = f0c;
+  tickCounter10 = 0;
+  ticksPerFrame14 = tickLimit;
+  registryTag18 = f18;
+  screenRect1C.left = bounds->left;
+  screenRect1C.top = bounds->top;
+  screenRect1C.right = bounds->right;
+  screenRect1C.bottom = bounds->bottom;
   enabledFlag = 1;
   transientSurfaceContext = 0;
   insetBitmapSurface = 0;
@@ -68,10 +66,10 @@ TTransFocusAnimation::~TTransFocusAnimation() {}
 // FUNCTION: IMPERIALISM 0x004a0570
 void TTransFocusAnimation::Free() {
   if (transientSurfaceContext != 0) {
-    FreeQuickDrawSurfaceContextSlot(&transientSurfaceContext);
+    g_pDisplayMgr->FreeQuickDrawSurfaceContextSlot(&transientSurfaceContext);
   }
   if (insetBitmapSurface != 0) {
-    FreeQuickDrawSurfaceContextSlot(&insetBitmapSurface);
+    g_pDisplayMgr->FreeQuickDrawSurfaceContextSlot(&insetBitmapSurface);
   }
   if (this != nullptr) {
     delete this;
@@ -87,17 +85,17 @@ void TTransFocusAnimation::BlitTransientSurfaceToPrimaryRenderContextWithClip() 
   RECT sourceRect;
   destinationRect.left = 0;
   destinationRect.top = 0;
-  sourceRect.left = SourceLeft();
-  sourceRect.top = SourceTop();
-  sourceRect.right = SourceRight();
+  sourceRect.left = screenRect1C.left;
+  sourceRect.top = screenRect1C.top;
+  sourceRect.right = screenRect1C.right;
   destinationRect.right = sourceRect.right - sourceRect.left;
-  sourceRect.bottom = SourceBottom();
+  sourceRect.bottom = screenRect1C.bottom;
   destinationRect.bottom = sourceRect.bottom - sourceRect.top;
 
   ClipRect(&destinationRect);
   ResetQuickDrawStrokeState();
   UpdatePaletteIndexWithFallback(0x13);
-  reinterpret_cast<void(__cdecl*)(int)>(SetQuickDrawFillColorFromPaletteIndex)(0);
+  SetQuickDrawFillColorFromPaletteIndex(0);
 
   CDib* primaryDib = g_pPrimaryRenderSurfaceContext->surfaceDib;
   if (primaryDib != 0) {
@@ -129,8 +127,8 @@ void TTransFocusAnimation::VTableSlot0D() {}
 
 // FUNCTION: IMPERIALISM 0x004a0810
 undefined TTransFocusAnimation::RenderBattleReportInsetWithPaletteShift() {
-  short width = SourceRight() - SourceLeft();
-  int height = SourceBottom() - SourceTop();
+  short width = screenRect1C.right - screenRect1C.left;
+  int height = screenRect1C.bottom - screenRect1C.top;
 
   RECT destinationRect;
   destinationRect.left = 0;
@@ -161,7 +159,7 @@ undefined TTransFocusAnimation::RenderBattleReportInsetWithPaletteShift() {
 
   if (enabledFlag != 0) {
     RECT overlayRect;
-    overlayRect.left = Field08() * width;
+    overlayRect.left = frameIndex08 * width;
     overlayRect.right = overlayRect.left + width;
     overlayRect.top = 0;
     overlayRect.bottom = height;

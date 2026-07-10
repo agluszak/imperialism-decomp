@@ -135,7 +135,7 @@ public:
   // slot 0x7a BuildCityViewProductionControls_Impl inherited unchanged (0x5b64e0)
   // slot 0x7b UpdateTextEntrySharedStringAndMaybeNotify inherited unchanged (0x5b64a0)
   // slot 0x7c UpdateTextEntrySharedString inherited unchanged (0x5b6480)
-  // slot 0x7d Helper_Uses_ConstructSharedStringFromCStrOrResourceId_At005b6360 inherited unchanged
+  // slot 0x7d SetTextEntryFromChars inherited unchanged
   // (0x5b6360) slot 0x7e GetRuntimeClass inherited unchanged (0x5b63e0)
   virtual void ClearTextAndLayoutRect();                             // slot 0x7f 0x5b6770
   virtual void SetTextAndLayoutRect(CString text, RECT* layoutRect); // slot 0x80 0x5b66b0

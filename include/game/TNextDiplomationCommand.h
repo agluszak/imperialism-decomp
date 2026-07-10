@@ -16,7 +16,9 @@ public:
   // forwards to g_pDiplomacyTurnStateManager->ProcessQueuedWarTransitions().
   void OrphanRetStub_00487a00() override;
 
-  TNextDiplomationCommand();
+  // Fully inlined at every construction site (base TCommand ctor call + vtable
+  // store); defined in-class so `new TNextDiplomationCommand()` reproduces that shape.
+  TNextDiplomationCommand() : TCommand() {}
 
   // Seed the payload with the 'NeXT' four-cc and immediately dispatch this command
   // through the UI root controller (0x4f2930).

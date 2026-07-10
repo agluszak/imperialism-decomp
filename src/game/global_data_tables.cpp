@@ -13,6 +13,7 @@ class TControl;
 class TView;
 class TCursorControlPanel;
 
+#include "game/TArmyPlayer.h"
 #include "game/mfc.h"
 #include "game/global_data_tables.h"
 #include "game/sea_geometry.h"
@@ -393,6 +394,10 @@ int g_nQuickDrawOriginY = 0;
 int g_nQuickDrawResolvedTextOriginX = 0;
 // GLOBAL: IMPERIALISM 0x006a1d04
 int g_nQuickDrawResolvedTextOriginY = 0;
+// GLOBAL: IMPERIALISM 0x006a5458
+int g_nUiFrameClipOriginX = 0;
+// GLOBAL: IMPERIALISM 0x006a545c
+int g_nUiFrameClipOriginY = 0;
 // GLOBAL: IMPERIALISM 0x006a1ca0
 TQuickDrawSurfaceContext g_defaultQuickDrawSurfaceSentinel;
 // Statically initialized to the sentinel address (the dword at 0x006950f8 holds
@@ -604,17 +609,47 @@ short g_DAT_006966d0_Value_006966D0[16] = {0};
 
 // Cursor resource id by civilian-tile-order action code (short table at 0x696678, 12
 // entries), used by TCivMgr::LookupCivilianTileOrderCursorTokenByActionIndex (0x4d2930).
+// GLOBAL: IMPERIALISM 0x00696678
 short g_civilianTileOrderCursorTokenTable[12] = {0,    1008, 0,    1004, 1003, 1002,
                                                  1018, 1019, 1001, 1003, 1011, 1025};
 
-// Per-unit-type tactical category code (short table at 0x695528); category 0 counts
-// as garrison strength in TGreatPower slot 0x11 (0x004d87e0).
-short g_awTacticalUnitCategoryCodeBySlot[64] = {0};
+// Per-unit-type tactical category code (short table at 0x695528, 30 unit types + 2
+// pad); category 0 counts as garrison strength in TGreatPower slot 0x11 (0x004d87e0),
+// category 8 marks the sapper/engineer types (24-26), 9 the last tier (27-29).
+// Tactical view metrics (bss; written by the tactical-view metric setters
+// 0x5a6830 / 0x5a6860 / 0x5a6895, read by the live-battle initializer 0x5a9d90).
+// GLOBAL: IMPERIALISM 0x006a5430
+int g_nTacticalTileWidthPx_006A5430 = 0;
+// GLOBAL: IMPERIALISM 0x006a5434
+int g_nTacticalTileRowHeightPx_006A5434 = 0;
+// GLOBAL: IMPERIALISM 0x006a5448
+int g_nTacticalBattlefieldSurfaceWidth_006A5448 = 0;
+// GLOBAL: IMPERIALISM 0x006a544c
+int g_nTacticalBattlefieldSurfaceHeight_006A544C = 0;
+// GLOBAL: IMPERIALISM 0x006a5498
+int g_nTacticalUnitSpriteCellWidth_006A5498 = 0;
+// GLOBAL: IMPERIALISM 0x006a549c
+int g_nTacticalUnitSpriteCellHeight_006A549C = 0;
 
-// Per-unit-type combat/composition class (short table at 0x695380).
-short g_awUnitCombatClassBySlot[64] = {0};
+// Per-unit-type tactical range (int table at 0x6699e8, 30 unit types); artillery on
+// the defending side (side20 == 1, combat category 2) gets +1 from the fort walls.
+// GLOBAL: IMPERIALISM 0x006699e8
+int g_anUnitTypeTacticalRangeByType_006699E8[30] = {5,  5,  5,  5,  3,  3,  9,  11, 8,  8,
+                                                    8,  8,  5,  5,  12, 14, 10, 10, 10, 10,
+                                                    10, 12, 15, 17, 5,  8,  10, 0,  0,  0};
+
+// GLOBAL: IMPERIALISM 0x00695528
+short g_awTacticalUnitCategoryCodeBySlot[32] = {0, 1, 2, 3, 4, 5, 6, 7, 0, 1, 2, 3, 4, 5, 6, 7,
+                                                0, 1, 2, 3, 4, 5, 6, 7, 8, 8, 8, 9, 9, 9, 0, 0};
+
+// Per-unit-type combat/composition class (short table at 0x695380, 30 unit types + 2
+// pad).
+// GLOBAL: IMPERIALISM 0x00695380
+short g_awUnitCombatClassBySlot[32] = {1, 2, 1, 1, 3, 2, 2, 1, 1, 2, 1, 1, 3, 2, 2, 1,
+                                       1, 2, 1, 1, 3, 3, 2, 1, 1, 2, 3, 2, 2, 2, 0, 0};
 // Stack composition class lookup (byte table at 0x6953c0); indexed [minClass + maxClass*4].
-unsigned char g_abStackCompositionClassTable[32] = {0};
+// GLOBAL: IMPERIALISM 0x006953c0
+unsigned char g_abStackCompositionClassTable[16] = {0, 0, 0, 0, 0, 1, 0, 0, 0, 2, 3, 0, 0, 3, 4, 5};
 
 // Per-civilian-order-type map-improvement sprite class (short table at 0x697040).
 short g_anMapImprovementSpriteClassByOrderType[9] = {2, 3, 1, 6, 0, 7, 5, 4, 8};
@@ -708,7 +743,12 @@ extern const double g_Recompute_Nation_Order_LookupTable_0065A9F0 = 0.0;
 double g_Recompute_Nation_Order_LookupTable_0065A9F8 = 0.01;
 double g_Recompute_Nation_Order_LookupTable_0065AA00 = 0.5;
 double g_Recompute_Nation_Order_LookupTable_0065AA08 = 1.0;
-unsigned short g_Recompute_Nation_Order_LookupTable_00697870[0x10] = {0};
+// GLOBAL: IMPERIALISM 0x00697870
+// Tactical composition reference profiles (4 rows x 5 action classes, shorts at
+// 0x697870): row 0 baseline, row 1 fort-siege, row 2 open-field, row 3 unattributed.
+// Consumed by the distribution-similarity scorer (0x5362c0) callers.
+unsigned short g_awTacticalCompositionReferenceProfiles_00697870[20] = {
+    40, 27, 0, 17, 16, 27, 36, 0, 17, 20, 26, 31, 20, 23, 0, 40, 22, 0, 38, 0};
 unsigned short g_Populate_Beachhead_Mission_LookupTable_00697958[0x10] = {0};
 
 // Army-mission order-priority weight/scoring tables (0x53c620 / 0x53ceb0 /
@@ -829,6 +869,13 @@ extern "C" const char s_BmpResourceNameFormat_006951C4[] = "%d.BMP";
 extern "C" const char s_TurnEventCursorNameFormat_0069B6B4[] = "~C%d";
 // GLOBAL: IMPERIALISM 0x0069b6bc
 extern "C" const char s_SourcePathUViewMgr_0069B6BC[] = "D:\\Ambit\\Cross\\UViewMgr.cpp";
+// GLOBAL: IMPERIALISM 0x00698040
+extern "C" const char s_SourcePathUMultiplayerMgr_00698040[] =
+    "D:\\Ambit\\Cross\\UMultiplayerMgr.cpp";
+// GLOBAL: IMPERIALISM 0x006983c8
+extern "C" const char s_SourcePathUNavy_006983C8[] = "D:\\Ambit\\Cross\\UNavy.cpp";
+// GLOBAL: IMPERIALISM 0x00699ff4
+extern "C" const char s_SourcePathUTacViews_00699FF4[] = "D:\\Ambit\\Cross\\UTacViews.cpp";
 // GLOBAL: IMPERIALISM 0x0069b740
 extern "C" const char s_SourcePathUViewMgrMore_0069B740[] = "D:\\Ambit\\Cross\\UViewMgr.more.cpp";
 // GLOBAL: IMPERIALISM 0x0069573c
@@ -974,9 +1021,9 @@ CList<void*, void*> g_WNetPendingPacketList006a5f40(10);
 // GLOBAL: IMPERIALISM 0x006a5f60
 TWNetSessionManager g_NetworkSessionManager006a5f60;
 
-// 0x006a6014 — global TNetMgr (built by new TNetMgr() during
-// multiplayer init, stored here; every turn-event emitter dispatches TNetMgr::Send
-// through it). GLOBAL: IMPERIALISM 0x006a6014
+// Global TNetMgr (built by new TNetMgr() during multiplayer init, stored here; every
+// turn-event emitter dispatches TNetMgr::Send through it).
+// GLOBAL: IMPERIALISM 0x006a6014
 TNetMgr* g_pNetMgr006a6014 = 0;
 
 #include "game/TApplication.h"
@@ -1060,6 +1107,213 @@ CString g_cstrArmyOrderMessageStore;
 CString g_cstrNationComparisonMessageStore;
 // GLOBAL: IMPERIALISM 0x006a3d08
 CString g_cstrNationAwolMessageStore;
+// Message-store slot the TViewMgr prompt helpers (0x5de990/0x5deb40) pass to the
+// localized-message dispatch.
+// GLOBAL: IMPERIALISM 0x006a5be0
+CString g_cstrUiPromptMessageStore;
+
+// The live tactical battle: assigned when a battle object is created/loaded, read by
+// the turn-event 0x29/0x2a receive dispatchers.
+// GLOBAL: IMPERIALISM 0x006a475c
+TTacticalBattle* g_pActiveTacticalBattle;
+
+// OR-accumulator for the turn-event-0x2b presence-mask exchange.
+// GLOBAL: IMPERIALISM 0x006a3d64
+int g_nTurnEvent2BNationMaskAccumulator;
+
+// Per-unit-type combat-category word table (.rdata): 0 infantry-like, 1/2/3 ranged
+// classes, 4 support; indexed by TUnit::orderType.
+// GLOBAL: IMPERIALISM 0x00669858
+short g_anUnitTypeCombatCategoryByType00669858[32] = {
+    0, 0, 0, 0, 1, 1, 2, 2, 0, 0, 0, 0, 1, 1, 2, 2, 0, 0, 0, 0, 1, 3, 2, 2, 4, 4, 4, 4, 4, 4, 0, 0};
+
+// Per-unit-type base action-point word table (.rdata); TArmyTacUnit::
+// GetBaseActionPoints (0x5a6120) returns this value for the unit's type.
+// GLOBAL: IMPERIALISM 0x00669898
+short g_awUnitTypeBaseActionPointTable[32] = {40, 60,  40, 40, 110, 90, 50, 30, 40, 60,  40,
+                                              40, 110, 90, 60, 30,  50, 70, 50, 40, 110, 90,
+                                              80, 30,  40, 40, 50,  90, 90, 90, 0,  0};
+
+// The fifteen per-tile AI heuristic scorers as a member-function-pointer table
+// (single-inheritance MSVC5 member pointers are plain code pointers in .data).
+// GLOBAL: IMPERIALISM 0x006994c0
+TacticalTileHeuristicScorerFn g_apfnTacticalTileHeuristicScorers_006994C0[15] = {
+    &TArmyPlayer::ScoreTacticalTileHoldPositionBonus,                // [0]  0x59d6b0
+    &TArmyPlayer::ScoreTacticalTileFireOpportunityAndTargetApproach, // [1]  0x59d6e0
+    &TArmyPlayer::ScoreTacticalTileSapperWallApproachColumn,         // [2]  0x59d810
+    &TArmyPlayer::ScoreTacticalTileAdjacentEnemyContact,             // [3]  0x59d8a0
+    &TArmyPlayer::ScoreTacticalTileEnemyEngagementExposureCount,     // [4]  0x59d940
+    &TArmyPlayer::ScoreTacticalTileRetreatEdgeRowProximity,          // [5]  0x59da20
+    &TArmyPlayer::ScoreTacticalTileCoverTerrainBonus,                // [6]  0x59dac0
+    &TArmyPlayer::ScoreTacticalTileAdjacentRallyTargetBonus,         // [7]  0x59db00
+    &TArmyPlayer::ScoreTacticalTileDistanceFieldAdvance,             // [8]  0x59dba0
+    &TArmyPlayer::ScoreTacticalTileFriendlyArtillerySpacing,         // [9]  0x59dbe0
+    &TArmyPlayer::ScoreTacticalTileArtilleryFiringLaneColumn,        // [10] 0x59dcd0
+    &TArmyPlayer::ScoreTacticalTileEnemyArtilleryExposureCount,      // [11] 0x59dd40
+    &TArmyPlayer::ScoreTacticalTileEngageableEnemyStandoff,          // [12] 0x59de30
+    &TArmyPlayer::ScoreTacticalTileEnemyArtilleryHuntBonus,          // [13] 0x59dfe0
+    &TArmyPlayer::ScoreTacticalTileEnemyEdgeColumnZoneBonus,         // [14] 0x59e0d0
+};
+
+// Tactical AI cursor-mode ratio thresholds and projection factors (.rdata FP pool).
+// GLOBAL: IMPERIALISM 0x00669508
+double g_dTacticalCursorStrongRatioThreshold_00669508 = 3.0;
+// GLOBAL: IMPERIALISM 0x00669510
+double g_dTacticalCursorOverwhelmRatioThreshold_00669510 = 4.0;
+// GLOBAL: IMPERIALISM 0x00669518
+double g_dTacticalCursorWeakRatioThreshold_00669518 = 0.25;
+// GLOBAL: IMPERIALISM 0x00669520
+double g_dTacticalCursorArtilleryParityThreshold_00669520 = 1.0;
+// GLOBAL: IMPERIALISM 0x00669528
+double g_dTacticalCursorArtillerySuperiorityThreshold_00669528 = 1.8;
+// GLOBAL: IMPERIALISM 0x00669530
+double g_dTacticalCursorAssaultRatioThreshold_00669530 = 2.5;
+// GLOBAL: IMPERIALISM 0x00669538
+double g_dTacticalCursorRetreatRatioThreshold_00669538 = 0.8;
+// GLOBAL: IMPERIALISM 0x00669ec8
+double g_dTacticalQualityFactorStep_00669EC8 = -0.1;
+// GLOBAL: IMPERIALISM 0x00669ed0
+double g_dTacticalQualityFactorBase_00669ED0 = 1.0;
+// GLOBAL: IMPERIALISM 0x00669f0c
+float g_fTacticalStrengthProjectionScale_00669F0C = 0.002f;
+
+// Direct-fire flag per unit CATEGORY CODE (.rdata floats; sibling of the 0x669830
+// per-category copy, this one indexed by g_awTacticalUnitCategoryCodeBySlot values).
+// GLOBAL: IMPERIALISM 0x00669390
+float g_afTacticalDirectFireFlagByCategoryCode_00669390[10] = {1.0f, 1.0f, 1.0f, 1.0f, 1.0f,
+                                                               1.0f, 0.0f, 0.0f, 1.0f, 1.0f};
+
+// Per-unit-type tactical AI class (.rdata; duplicate values of the 0x669858 category
+// table at a separate address): 0 infantry, 1 artillery-advance, 2 cavalry-screen,
+// 3/4 support classes. Drives deployment strategy and the auto-turn controller.
+// GLOBAL: IMPERIALISM 0x006693b8
+short g_awTacticalUnitAiClassByUnitType_006693B8[32] = {
+    0, 0, 0, 0, 1, 1, 2, 2, 0, 0, 0, 0, 1, 1, 2, 2, 0, 0, 0, 0, 1, 3, 2, 2, 4, 4, 4, 4, 4, 4, 0, 0};
+
+// Per-unit-type action-point cost word (.rdata; duplicate values of the 0x669898
+// base-action-point table): the sapper dig loop budgets against half of this.
+// GLOBAL: IMPERIALISM 0x006693f8
+short g_awTacticalUnitActionPointCostByType_006693F8[32] = {
+    40, 60, 40, 40, 110, 90, 50, 30, 40, 60, 40, 40, 110, 90, 60, 30,
+    50, 70, 50, 40, 110, 90, 80, 30, 40, 40, 50, 90, 90,  90, 0,  0};
+
+// Tactical tile-selection heuristic weights per AI stance (.rdata): 19 rows of 15
+// weights, one weight per tile-score heuristic; row index = TTacticalUnit AI stance
+// (aiStateCode2c) or a strategy-specific row (12/13 sapper, 18 artillery hold).
+// GLOBAL: IMPERIALISM 0x00699500
+int g_anTacticalTileHeuristicWeightsByAiState_00699500[19][15] = {
+    {1, 0, 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 1, 0, 0, 0, 0, 0, 0, 0, 10, 0, 0, 0, 0, 0},
+    {0, 100, 0, 200, -1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, -10, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 100, 0, 0, -1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 100, 0, 200, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 100, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {1, 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0},
+    {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, -1, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, -1, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0},
+    {1, 0, 0, 100, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 200, 0, 0, 0},
+    {0, 0, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0},
+    {0, 1, 0, 0, -100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}};
+
+// Direct-fire flag per unit category (.rdata floats): 0.0 marks the indirect-fire
+// categories 6/7 whose shots erode a fort wall they cross.
+// GLOBAL: IMPERIALISM 0x00669830
+float g_afTacticalDirectFireFlagByCategory[10] = {1.0f, 1.0f, 1.0f, 1.0f, 1.0f,
+                                                  1.0f, 0.0f, 0.0f, 1.0f, 1.0f};
+
+// Base attack power per unit type (.rdata floats).
+// GLOBAL: IMPERIALISM 0x006698d8
+float g_afTacticalBaseAttackPowerByUnitType[30] = {
+    50.0f,  50.0f,  100.0f, 125.0f, 75.0f,  150.0f, 100.0f, 160.0f, 75.0f,  100.0f,
+    150.0f, 175.0f, 100.0f, 200.0f, 175.0f, 300.0f, 100.0f, 150.0f, 225.0f, 250.0f,
+    225.0f, 450.0f, 250.0f, 500.0f, 0.0f,   0.0f,   0.0f,   0.0f,   0.0f,   0.0f};
+
+// Melee (adjacent-attack) power multiplier per unit category (.rdata floats).
+// GLOBAL: IMPERIALISM 0x00669950
+float g_afTacticalMeleeMultiplierByCategory[8] = {1.0f, 1.0f, 1.0f, 1.0f, 1.3f, 1.3f, 0.2f, 0.2f};
+
+// Incoming-damage scale per defender unit type (.rdata floats).
+// GLOBAL: IMPERIALISM 0x00669970
+float g_afTacticalDamageScaleByUnitType[30] = {
+    0.0025f, 0.0015f, 0.002f,  0.002f,  0.0015f, 0.002f,  0.004f, 0.005f,  0.0025f, 0.0015f,
+    0.0015f, 0.0015f, 0.0015f, 0.002f,  0.003f,  0.0035f, 0.001f, 0.0005f, 0.0005f, 0.0005f,
+    0.001f,  0.0005f, 0.0005f, 0.0005f, 0.003f,  0.0025f, 0.001f, 0.002f,  0.0015f, 0.0005f};
+
+// Attack-power terrain modifier [category * 5 + tile terrainType0] (.rdata floats).
+// GLOBAL: IMPERIALISM 0x00669ac8
+float g_afTacticalAttackTerrainModifierByCategory[50] = {
+    1.0f,  0.75f, 0.75f, 1.0f,  0.0f,  1.0f,  1.0f,  1.0f,  1.0f,  0.0f, 1.0f,  0.75f, 0.75f,
+    1.0f,  0.0f,  1.0f,  0.75f, 0.75f, 1.0f,  0.0f,  1.0f,  1.0f,  1.0f, 1.0f,  0.0f,  1.0f,
+    0.75f, 0.75f, 1.0f,  0.0f,  1.0f,  0.75f, 0.75f, 1.0f,  0.0f,  1.0f, 0.75f, 0.75f, 1.0f,
+    0.0f,  1.0f,  0.75f, 0.75f, 1.0f,  0.0f,  1.0f,  0.75f, 0.75f, 1.0f, 0.0f};
+
+// Incoming-damage terrain modifier [defender category * 5 + terrainType0] (.rdata).
+// GLOBAL: IMPERIALISM 0x00669b90
+float g_afTacticalDefenseTerrainModifierByCategory[50] = {
+    1.0f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f, 0.8f, 0.8f, 1.0f, 0.0f, 1.0f, 1.0f, 1.0f,
+    1.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f,
+    1.0f, 1.0f, 1.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f,
+    0.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f};
+
+// Cover damage modifier [defender category * 5 + cover state] where cover state is
+// TacticalTileRecord::deployMark8 (1 = trench, 2..4 = fort-wall levels) (.rdata).
+// GLOBAL: IMPERIALISM 0x00669c58
+float g_afTacticalCoverDamageModifierByCategory[50] = {
+    1.0f, 0.8f, 0.7f, 0.6f, 0.5f, 1.0f, 0.8f, 0.7f, 0.6f, 0.5f, 1.0f, 0.8f, 0.7f,
+    0.6f, 0.5f, 1.0f, 0.8f, 0.7f, 0.6f, 0.5f, 1.0f, 1.0f, 0.7f, 0.6f, 0.5f, 1.0f,
+    1.0f, 0.7f, 0.6f, 0.5f, 1.0f, 0.8f, 0.7f, 0.6f, 0.5f, 1.0f, 0.8f, 0.7f, 0.6f,
+    0.5f, 1.0f, 0.8f, 0.7f, 0.6f, 0.5f, 1.0f, 0.8f, 0.7f, 0.6f, 0.5f};
+
+// Tactical move cost per unit category and tile terrain code (.rdata): 10 category
+// rows x 5 terrain codes, in tenths of an action point band (999 = impassable).
+// GLOBAL: IMPERIALISM 0x00669a60
+short g_awTacticalMoveCostByCategoryAndTerrain[50] = {
+    10,  20, 30,  15, 999, 10,  10, 10,  10, 999, 10,  20, 30,  15, 999, 10, 20,
+    30,  15, 999, 10, 10,  10,  10, 999, 10, 20,  30,  15, 999, 10, 20,  30, 15,
+    999, 10, 20,  30, 15,  999, 10, 20,  30, 15,  999, 10, 20,  30, 15,  999};
+
+// Fort strength points per fort level (.rdata); seeds the 8 per-row-pair pools of a
+// tactical battle in TArmyBattle::LoadBattleSetupTabDataByIndex (0x5a4fc0).
+// GLOBAL: IMPERIALISM 0x00669818
+int g_anFortStrengthPointsByFortLevel[6] = {0, 0, 500, 750, 1000, 0};
+
+// Battle-setup terrain layout file-name template ("data/%%03d.tab").
+// GLOBAL: IMPERIALISM 0x00699e20
+extern "C" const char g_szBattleSetupTabPathFormat[] = "data/%03d.tab";
+
+// Source-path string for UTacPlayer.cpp asserts.
+// GLOBAL: IMPERIALISM 0x00699d84
+extern "C" const char s_SourcePathUTacPlayer_00699D84[] = "D:\\Ambit\\Cross\\UTacPlayer.cpp";
+
+// Empty-string pointer used by the battle-summary dialog builder (0x5a2750); points
+// at g_szEmptyString.
+// GLOBAL: IMPERIALISM 0x00669db8
+const char* g_pszEmptyTextRef_00669db8 = g_szEmptyString;
+
+// Paragraph separator between the two per-side casualty lines of the battle summary.
+// GLOBAL: IMPERIALISM 0x00699438
+extern "C" const char s_szDoubleNewline_00699438[] = "\n\n";
+
+// Per-unit-type tactical fire sound-effect token table (.rdata); indexed by
+// TTacticalUnit::unitTypeC when a unit fires in the tactical battle.
+// GLOBAL: IMPERIALISM 0x00669dc0
+short g_awTacticalFireSfxTokenByUnitType[32] = {
+    0x3a98, 0x3a98, 0x3a98, 0x3a98, 0x3a99, 0x3a99, 0x3a9b, 0x3a9b, 0x3a98, 0x3a98, 0x3a98,
+    0x3a98, 0x3a99, 0x3a99, 0x3a9b, 0x3a9b, 0x3aa6, 0x3aa6, 0x3aa6, 0x3a9c, 0x3aa6, 0x3a9a,
+    0x3a9b, 0x3a9b, 0x3a9d, 0x3a9d, 0x3a9d, 0x3a98, 0x3a98, 0x3aa6, 0,      0};
+
+// Force-show flag for the tactical battle view (semantics unverified; OR'd with the
+// two per-side watch flags at battle setup).
+// GLOBAL: IMPERIALISM 0x006a4758
+char g_nForceTacticalBattleViewFlag_006A4758;
+
 // Save-game path construction strings.
 // GLOBAL: IMPERIALISM 0x00698708
 char g_szImpSaveExtension_00698708[] = ".imp";
@@ -1075,6 +1329,8 @@ char g_szSaveDirectoryPrefix_00698724[] = "Save/";
 char g_szAutosaveSlotLabel_0069872C[] = "A";
 // GLOBAL: IMPERIALISM 0x0069b848
 char g_szSavedDocumentMarker_0069B848[] = "__saved";
+// GLOBAL: IMPERIALISM 0x0069b854
+char g_szLoadedDocumentMarker_0069B854[] = "__loaded";
 // Save-path fragment pointers (.rdata): the TLoadSavePicture save flow reads these
 // through pointer loads instead of referencing the literals directly.
 // GLOBAL: IMPERIALISM 0x0065ddd0
@@ -1083,6 +1339,10 @@ const char* const g_pszSingleSlotSavePrefix_0065DDD0 = g_szSingleSlotSavePrefix_
 const char* const g_pszMultiplayerSavePrefix_0065DDD4 = g_szMultiplayerSavePrefix_00698710;
 // GLOBAL: IMPERIALISM 0x0065ddd8
 const char* const g_pszImpSaveExtension_0065DDD8 = g_szImpSaveExtension_00698708;
+// GLOBAL: IMPERIALISM 0x00697cbc
+char g_szClientSavePrefix_00697CBC[] = "cli_";
+// GLOBAL: IMPERIALISM 0x0065bf5c
+const char* const g_pszClientSavePrefix_0065BF5C = g_szClientSavePrefix_00697CBC;
 // Scenario display name copied out of string resource (0x2758, 9) when autosaving; the
 // save-slot picker (0x56d2a0) and lifecycle hooks read it back. 0x30 bytes.
 // GLOBAL: IMPERIALISM 0x006a2178
@@ -1160,10 +1420,6 @@ char s_mcflavor_00696d10[] = "";
 char s_mcflavor_00697238[] = "";
 // GLOBAL: IMPERIALISM 0x006976e0
 char s_mcflavor_006976e0[] = "";
-// GLOBAL: IMPERIALISM 0x00698720
-char s_mcflavor_00698720[] = "";
-// GLOBAL: IMPERIALISM 0x0069872c
-char s_mcflavor_0069872c[] = "";
 // GLOBAL: IMPERIALISM 0x00698b0c
 char s_mcflavor_00698b0c[] = "";
 // GLOBAL: IMPERIALISM 0x0069ab00

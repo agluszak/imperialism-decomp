@@ -1,5 +1,7 @@
 #include "game/TAssetMgr.h"
 
+#include "game/CFile_Virtuals.h"
+
 #include "game/CAmbitDocument.h"
 #include "game/ImperialismApp.h"
 #include "game/TModuleLibraryCacheTableStateB.h"
@@ -40,6 +42,27 @@ void TAssetMgr::NoOpRuntimeUiCallback_005df3f0(int arg) {
 // FUNCTION: IMPERIALISM 0x005df410
 void TAssetMgr::NoOpRuntimeUiCallback_005df410(int arg) {
   (void)arg;
+}
+
+// FUNCTION: IMPERIALISM 0x005df430
+CFile_Virtuals* TAssetMgr::LoadTableResourceStreamByName(CString name) {
+  // TODO: port body @ 0x5df430.
+  (void)name;
+  return 0;
+}
+
+// FUNCTION: IMPERIALISM 0x005df6d0
+void TAssetMgr::ReleaseResourceStreamIfNotNull(CFile_Virtuals* stream) {
+  if (stream != 0) {
+    stream->CloseAndMaybeDeleteSlot04(1);
+  }
+}
+
+// FUNCTION: IMPERIALISM 0x005df700
+int TAssetMgr::ReadResourceStreamIntoBufferAndAdvance(CFile_Virtuals* stream, void* buffer,
+                                                      int* countInOut) {
+  *countInOut = stream->ReadBytesSlot3C(buffer, *countInOut);
+  return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x005df780
@@ -124,4 +147,14 @@ unsigned char TAssetMgr::SaveMainDocumentToPathAndMarkSaved(const CString& saveP
   unsigned char saved = (unsigned char)document->DoSave(document->GetPathName(), TRUE);
   document->SetPathName(g_szSavedDocumentMarker_0069B848, FALSE);
   return saved;
+}
+
+// FUNCTION: IMPERIALISM 0x005e0150
+unsigned char TAssetMgr::OpenMainDocumentFromPathAndMarkLoaded(const CString& loadPath) {
+  CDocument* document = g_pImperialismApp->OpenDocumentFile(loadPath);
+  if (document == 0) {
+    return 0;
+  }
+  document->SetPathName(g_szLoadedDocumentMarker_0069B854, FALSE);
+  return 1;
 }

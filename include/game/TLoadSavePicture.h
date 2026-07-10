@@ -127,13 +127,32 @@ public:
   virtual undefined HandleSaveGameSlotSelectionAndPromptFlow();  // slot 0x73 0x56d2a0
   virtual undefined HandleTurnFlowStateTickOrPostTurnEvent5DC(); // slot 0x74 0x56d190
   // === END GENERATED DECLS (TLoadSavePicture) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TLoadSavePicture 0xCTOR`).
+
+  // 0 = save picture, nonzero = load picture (the builder writes it, the prompt flow
+  // 0x56d2a0 branches on it).
+  unsigned char loadModeFlag90; // +0x90
+  unsigned char pad91;
+  short selectedSlot92; // +0x92 — currently selected save slot (-1 = none)
+  // +0x94..0xa8 — unrecovered tail (RTTI m_nObjectSize 0xa8).
+  unsigned char pad94[0xa8 - 0x94];
 
   TLoadSavePicture();
+
+  // 0x578c10: rasterize the owner-nation palette preview map (3x3 px per hex, 0x1950
+  // tiles) into this control's surface buffer. `tileOwnerTagTable`, when non-null, is a
+  // per-tile signed-byte owner-tag table; null falls back to the live map's
+  // terrainStateTable ownerNationTag04 bytes.
+  void RasterizeHexNeighborTerrainPaletteMap(signed char* tileOwnerTagTable);
 };
+
+ASSERT_SIZE(TLoadSavePicture, 0xa8);
 
 // Save-game free functions (TLoadSavePicture TU).
 int __cdecl ReadScenarioIndexFromSaveHeader(const char* path);
 void __cdecl BuildSavePathStringForMode(CString* out, int saveMode, char* label);
 // 0x56da50 — top-level save-game driver (see TLoadSavePicture.cpp).
 void __cdecl SaveGameWithModeAndOptionalLabel(int mode, char* label);
+
+// 0x56df40: build the save path for `slot` with `label` and probe the file's metadata;
+// returns whether the save file exists (turn-event 0xE 'load' receive path). Body TODO.
+unsigned char __cdecl BuildSaveSlotPathAndProbeMetadata(int slot, const char* label);

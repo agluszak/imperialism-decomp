@@ -436,7 +436,7 @@ void TCountry::ApplyJoinEmpireModeForTargetNation(int targetNationSlot, int mode
 void TCountry::SetNationTransferTargetCodeAndNotifyEligiblePeers(int targetNationSlot) {
   this->encodedNationSlot = static_cast<short>(targetNationSlot + 100);
   for (int nationSlot = 0; nationSlot < kNationSlotCount; ++nationSlot) {
-    if (IsNationSlotEligibleForEventProcessing(static_cast<short>(nationSlot)) != 0 &&
+    if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(static_cast<short>(nationSlot)) != 0 &&
         nationSlot != this->nationSlot && nationSlot != targetNationSlot) {
       TCountry* terrain = g_apTerrainTypeDescriptorTable[nationSlot];
       if (terrain != 0) {
@@ -454,8 +454,8 @@ void TCountry::ApplyJoinEmpireMode1TargetTransition(int targetNationSlot) {
 
   int nationSlot = 0;
   do {
-    if (IsNationSlotEligibleForEventProcessing(nationSlot) != 0 && nationSlot != this->nationSlot &&
-        nationSlot != targetNationSlot) {
+    if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(nationSlot) != 0 &&
+        nationSlot != this->nationSlot && nationSlot != targetNationSlot) {
       TCountry* terrainDescriptor = g_apTerrainTypeDescriptorTable[nationSlot];
       if (terrainDescriptor != 0) {
         terrainDescriptor->SetNationPercentFieldByModeAndDescriptorLinks(this->nationSlot, 200);

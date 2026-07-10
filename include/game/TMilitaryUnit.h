@@ -56,7 +56,10 @@ public:
   TMilitaryUnit();
   virtual ~TMilitaryUnit() override;
 
-  void InitializeRecruitOrderState(short capValue, int nodeContext, short nationSlot);
+  // 4-stack-arg thiscall (ret 0x10); the trailing short forwards into
+  // RegisterUnitOrderWithOwnerManager (default 0 preserves the 3-arg callers' codegen).
+  void InitializeRecruitOrderState(short capValue, int nodeContext, short nationSlot,
+                                   short registerArg3 = 0);
 
   // --- TObject/TUnit overrides ---
   void ReadFrom(TStream* stream) override;
@@ -79,3 +82,7 @@ public:
 };
 
 ASSERT_SIZE(TMilitaryUnit, 0x44);
+
+// Finds a military unit by its TUnit::field_20 id across every terrain descriptor's
+// militaryUnitList44; 0 when unitId is 0 or nothing matches. 0x005c38e0, __cdecl.
+TMilitaryUnit* FindMilitaryUnitByIdAcrossTerrainDescriptors(int unitId);

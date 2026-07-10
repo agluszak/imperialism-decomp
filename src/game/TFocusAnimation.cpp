@@ -18,14 +18,14 @@ IMPLEMENT_DYNCREATE(TFocusAnimation, TAnimation)
 TFocusAnimation::TFocusAnimation() : TAnimation(), enabledFlag(1) {}
 
 // FUNCTION: IMPERIALISM 0x004a0140
-undefined TFocusAnimation::WrapperFor_InvalidateCityDialogRectRegion_At0049f140() {
-  FrameTick()++;
-  if (FrameTick() == FrameTickLimit()) {
+undefined TFocusAnimation::AdvanceAnimationTickAndInvalidateOnFrameFlip() {
+  tickCounter10++;
+  if (tickCounter10 == ticksPerFrame14) {
     VTableSlot0D();
-    Field08()++;
-    FrameTick() = 0;
-    if (Field08() == Field0a()) {
-      Field08() = 0;
+    frameIndex08++;
+    tickCounter10 = 0;
+    if (frameIndex08 == frameCount0A) {
+      frameIndex08 = 0;
     }
   }
   return 0;
@@ -34,10 +34,10 @@ undefined TFocusAnimation::WrapperFor_InvalidateCityDialogRectRegion_At0049f140(
 // FUNCTION: IMPERIALISM 0x004a0190
 void TFocusAnimation::VTableSlot0D() {
   if (enabledFlag != 0) {
-    ScopedMapQuickDrawContextGuard quickDrawContext(ScopedRenderTarget());
-    ScopedRenderTarget()->Refresh();
+    ScopedMapQuickDrawContextGuard quickDrawContext(ownerView04);
+    ownerView04->Refresh();
     RenderBattleReportInsetWithPaletteShift();
-    ScopedRenderTarget()->PostRenderSlotFC();
+    ownerView04->PostRenderSlotFC();
   }
 }
 
@@ -53,11 +53,11 @@ void TFocusAnimation::Helper_Uses_BlitRectWithOptionalTransparency_At004a0280() 
   TQuickDrawSurfaceContext* srcContext =
       *reinterpret_cast<TQuickDrawSurfaceContext**>(g_pUiAnimator + 0x20);
 
-  CPoint pt(SourceLeft(), SourceTop());
-  CPoint transformedPt = ScopedRenderTarget()->TransformPointViaSlot138(&pt);
+  CPoint pt(screenRect1C.left, screenRect1C.top);
+  CPoint transformedPt = ownerView04->TransformPointViaSlot138(&pt);
 
-  int width = SourceRight() - SourceLeft();
-  int height = SourceBottom() - SourceTop();
+  int width = screenRect1C.right - screenRect1C.left;
+  int height = screenRect1C.bottom - screenRect1C.top;
 
   RECT local_24;
   local_24.left = transformedPt.x;

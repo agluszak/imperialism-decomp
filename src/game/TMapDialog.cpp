@@ -441,13 +441,13 @@ void TMapDialog::RenderMapDialogTerrainOverlayFrameByTileOwner(short tileIndex, 
     srcRect.right = srcRect.left + 0x40;
     srcRect.top = 0;
     srcRect.bottom = 0x40;
-    reinterpret_cast<void(__stdcall*)(unsigned int)>(UpdatePaletteIndexWithDefaultFallback)(0x10);
+    UpdatePaletteIndexWithDefaultFallback(0x10);
     int strategicBlitSource = *reinterpret_cast<int*>(0x006a21a8 + 0x690);
     reinterpret_cast<void(__stdcall*)(void*, void*, void*, void*, int, void*)>(
         BlitRectWithOptionalTransparency)(reinterpret_cast<void*>(strategicBlitSource + 4),
                                           reinterpret_cast<char*>(surfaceContext) + 4, &srcRect,
                                           dstRect, 0x24, 0);
-    reinterpret_cast<void(__stdcall*)(unsigned int)>(UpdatePaletteIndexWithDefaultFallback)(0x13);
+    UpdatePaletteIndexWithDefaultFallback(0x13);
     return;
   }
 
@@ -471,13 +471,13 @@ void TMapDialog::RenderMapDialogTerrainOverlayFrameByTileOwner(short tileIndex, 
   srcRect.right = srcRect.left + 0x40;
   srcRect.top = 0;
   srcRect.bottom = 0x40;
-  reinterpret_cast<void(__stdcall*)(unsigned int)>(UpdatePaletteIndexWithDefaultFallback)(0x10);
+  UpdatePaletteIndexWithDefaultFallback(0x10);
   int strategicBlitSource = *reinterpret_cast<int*>(0x006a21a8 + 0x690);
   reinterpret_cast<void(__stdcall*)(void*, void*, void*, void*, int, void*)>(
       BlitRectWithOptionalTransparency)(reinterpret_cast<void*>(strategicBlitSource + 4),
                                         reinterpret_cast<char*>(surfaceContext) + 4, &srcRect,
                                         dstRect, 0x24, 0);
-  reinterpret_cast<void(__stdcall*)(unsigned int)>(UpdatePaletteIndexWithDefaultFallback)(0x13);
+  UpdatePaletteIndexWithDefaultFallback(0x13);
 }
 
 // FUNCTION: IMPERIALISM 0x005241B0
