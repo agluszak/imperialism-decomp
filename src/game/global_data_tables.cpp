@@ -605,17 +605,25 @@ short g_DAT_006966d0_Value_006966D0[16] = {0};
 
 // Cursor resource id by civilian-tile-order action code (short table at 0x696678, 12
 // entries), used by TCivMgr::LookupCivilianTileOrderCursorTokenByActionIndex (0x4d2930).
+// GLOBAL: IMPERIALISM 0x00696678
 short g_civilianTileOrderCursorTokenTable[12] = {0,    1008, 0,    1004, 1003, 1002,
                                                  1018, 1019, 1001, 1003, 1011, 1025};
 
-// Per-unit-type tactical category code (short table at 0x695528); category 0 counts
-// as garrison strength in TGreatPower slot 0x11 (0x004d87e0).
-short g_awTacticalUnitCategoryCodeBySlot[64] = {0};
+// Per-unit-type tactical category code (short table at 0x695528, 30 unit types + 2
+// pad); category 0 counts as garrison strength in TGreatPower slot 0x11 (0x004d87e0),
+// category 8 marks the sapper/engineer types (24-26), 9 the last tier (27-29).
+// GLOBAL: IMPERIALISM 0x00695528
+short g_awTacticalUnitCategoryCodeBySlot[32] = {0, 1, 2, 3, 4, 5, 6, 7, 0, 1, 2, 3, 4, 5, 6, 7,
+                                                0, 1, 2, 3, 4, 5, 6, 7, 8, 8, 8, 9, 9, 9, 0, 0};
 
-// Per-unit-type combat/composition class (short table at 0x695380).
-short g_awUnitCombatClassBySlot[64] = {0};
+// Per-unit-type combat/composition class (short table at 0x695380, 30 unit types + 2
+// pad).
+// GLOBAL: IMPERIALISM 0x00695380
+short g_awUnitCombatClassBySlot[32] = {1, 2, 1, 1, 3, 2, 2, 1, 1, 2, 1, 1, 3, 2, 2, 1,
+                                       1, 2, 1, 1, 3, 3, 2, 1, 1, 2, 3, 2, 2, 2, 0, 0};
 // Stack composition class lookup (byte table at 0x6953c0); indexed [minClass + maxClass*4].
-unsigned char g_abStackCompositionClassTable[32] = {0};
+// GLOBAL: IMPERIALISM 0x006953c0
+unsigned char g_abStackCompositionClassTable[16] = {0, 0, 0, 0, 0, 1, 0, 0, 0, 2, 3, 0, 0, 3, 4, 5};
 
 // Per-civilian-order-type map-improvement sprite class (short table at 0x697040).
 short g_anMapImprovementSpriteClassByOrderType[9] = {2, 3, 1, 6, 0, 7, 5, 4, 8};
@@ -1113,6 +1121,28 @@ TacticalTileHeuristicScorerFn g_apfnTacticalTileHeuristicScorers_006994C0[15] = 
     &TArmyPlayer::ScoreTacticalTileEnemyArtilleryHuntBonus,          // [13] 0x59dfe0
     &TArmyPlayer::ScoreTacticalTileEnemyEdgeColumnZoneBonus,         // [14] 0x59e0d0
 };
+
+// Tactical AI cursor-mode ratio thresholds and projection factors (.rdata FP pool).
+// GLOBAL: IMPERIALISM 0x00669508
+double g_dTacticalCursorStrongRatioThreshold_00669508 = 3.0;
+// GLOBAL: IMPERIALISM 0x00669510
+double g_dTacticalCursorOverwhelmRatioThreshold_00669510 = 4.0;
+// GLOBAL: IMPERIALISM 0x00669518
+double g_dTacticalCursorWeakRatioThreshold_00669518 = 0.25;
+// GLOBAL: IMPERIALISM 0x00669520
+double g_dTacticalCursorArtilleryParityThreshold_00669520 = 1.0;
+// GLOBAL: IMPERIALISM 0x00669528
+double g_dTacticalCursorArtillerySuperiorityThreshold_00669528 = 1.8;
+// GLOBAL: IMPERIALISM 0x00669530
+double g_dTacticalCursorAssaultRatioThreshold_00669530 = 2.5;
+// GLOBAL: IMPERIALISM 0x00669538
+double g_dTacticalCursorRetreatRatioThreshold_00669538 = 0.8;
+// GLOBAL: IMPERIALISM 0x00669ec8
+double g_dTacticalQualityFactorStep_00669EC8 = -0.1;
+// GLOBAL: IMPERIALISM 0x00669ed0
+double g_dTacticalQualityFactorBase_00669ED0 = 1.0;
+// GLOBAL: IMPERIALISM 0x00669f0c
+float g_fTacticalStrengthProjectionScale_00669F0C = 0.002f;
 
 // Direct-fire flag per unit CATEGORY CODE (.rdata floats; sibling of the 0x669830
 // per-category copy, this one indexed by g_awTacticalUnitCategoryCodeBySlot values).

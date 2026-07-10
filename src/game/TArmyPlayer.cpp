@@ -6,6 +6,8 @@
 #include "game/TArmyTacUnit.h"
 #include "game/TList.h"
 #include "game/TAssetMgr.h"
+#include "game/TCountry.h"
+#include "game/TMapMgr.h"
 #include "game/TMilitaryUnit.h"
 #include "game/TTacticalBattle.h"
 #include "game/TTacticalHolaPicture.h"
@@ -20,11 +22,28 @@ using turn_event_dialog::TurnEventDialogNode;
 // FUNCTION: IMPERIALISM 0x005362c0
 float __cdecl ComputeDistributionSimilarityScoreFromVectorAndReferenceProfile(
     float* vector, unsigned short* referenceProfile, int count) {
-  // TODO: port body @ 0x5362c0.
-  (void)vector;
-  (void)referenceProfile;
-  (void)count;
-  return 0.0f;
+  // Locals are double: the original keeps the whole computation on the FP stack with
+  // no intermediate float rounding stores.
+  double vectorSum = g_Recompute_Nation_Order_LookupTable_0065A9E8;
+  int i;
+  double difference;
+  for (i = 0; i < count; ++i) {
+    vectorSum += vector[i];
+  }
+  if (vectorSum == g_Recompute_Nation_Order_LookupTable_0065A9F0) {
+    return g_Recompute_Nation_Order_LookupTable_0065A9E8;
+  }
+  double absoluteDifferenceSum = g_Recompute_Nation_Order_LookupTable_0065A9E8;
+  for (i = 0; i < count; ++i) {
+    difference = vector[i] / vectorSum -
+                 (short)referenceProfile[i] * g_Recompute_Nation_Order_LookupTable_0065A9F8;
+    if (difference <= g_Recompute_Nation_Order_LookupTable_0065A9F0) {
+      difference = -difference;
+    }
+    absoluteDifferenceSum += difference;
+  }
+  return vectorSum * (g_Recompute_Nation_Order_LookupTable_0065AA08 -
+                      absoluteDifferenceSum * g_Recompute_Nation_Order_LookupTable_0065AA00);
 }
 
 // Sort comparator for the auto-deploy strategies: melee (aiClass 0) first, artillery
@@ -111,7 +130,7 @@ void TArmyPlayer::InitializeTacticalSideFromArmyUnitList(TArmyStack* stack, int 
   cursorIndex18 = 0;      // duplicate store present in the original
   watchFlagD = watchFlag; // duplicate store present in the original
   notWatchedFlagE = (watchFlag == 0);
-  field44 = -1;
+  lastAppliedCursorMode44 = -1;
   unsigned char coinFlip = static_cast<unsigned char>(GenerateThreadLocalRandom15() & 1);
   field4C = -1;
   randomParityByte50 = coinFlip;
@@ -157,6 +176,12 @@ void TArmyPlayer::RemoveTacticalUnitFromUnitList(TTacticalUnit* unit) {
 void TArmyPlayer::AddTacticalUnitToUnitListHead(TTacticalUnit* unit) {
   // TODO: port body @ 0x59b540.
   (void)unit;
+}
+
+// FUNCTION: IMPERIALISM 0x0059b5b0
+void TArmyPlayer::AccumulateTacticalCursorActionClassProfileMetrics() {
+  // TODO: port body @ 0x59b5b0 (zeroes projectionScoreSums2C, accumulates the active
+  // records' float vectors, tracks maxUnitRange40/42, sets field51).
 }
 
 // Kicks the side at battle start: unwatched (AI/remote) sides skip the intro dialog
@@ -386,22 +411,131 @@ void TArmyPlayer::DispatchTacticalActionClassSelectionAcrossCursorList() {
   }
 }
 
+// Deploy-tile selector for artillery-class (aiClass 2) enemy units: zone-cell score by
+// column distance from the playable-column edge (odd rows shifted half a cell), plus
+// distance from the near board edge, plus 100 when any hex neighbor already holds an
+// artillery-class unit (either side); writes each candidate's score into
+// battle14->tileIntArray2c.
 // FUNCTION: IMPERIALISM 0x0059bfe0
 int TArmyPlayer::SelectTacticalTileIndexByColumnPriorityVariantA() {
-  // TODO: port body @ 0x59bfe0.
-  return -1;
+  int bestScore = 0;
+  int bestTileIndex = -1;
+  for (int tileIndex = 0; tileIndex < battle14->tacticalTileCount3c; ++tileIndex) {
+    if (battle14->ApplyGridColumnSelectionGuard(tileIndex) != 0) {
+      int row = tileIndex / 29;
+      int column = tileIndex % 29;
+      int zoneCell = (row & 1) + 2 * (column - battle14->battlefieldColumnCount34) + 10;
+      int score;
+      if (zoneCell == 0) {
+        score = 10;
+      } else {
+        score = (7 - zoneCell) * 10;
+      }
+      int rowDistance = row;
+      if (rowDistance > 7) {
+        rowDistance = 15 - rowDistance;
+      }
+      score += rowDistance;
+      int neighborTiles[6];
+      int adjacentArtilleryBonus = 0;
+      battle14->ComputeHexNeighborTileIndices_005A0420(tileIndex, neighborTiles);
+      for (int neighborIndex = 0; neighborIndex < 6; ++neighborIndex) {
+        int neighborTileIndex = neighborTiles[neighborIndex];
+        if (neighborTileIndex != -1) {
+          TTacticalUnit* occupant = battle14->tileGrid4[neighborTileIndex].occupant4;
+          if (occupant != 0 &&
+              g_awTacticalUnitAiClassByUnitType_006693B8[occupant->unitTypeC] == 2) {
+            adjacentArtilleryBonus = 0x64;
+          }
+        }
+      }
+      score += adjacentArtilleryBonus;
+      battle14->tileIntArray2c[tileIndex] = score;
+      if (score > bestScore) {
+        bestScore = score;
+        bestTileIndex = tileIndex;
+      }
+    }
+  }
+  return bestTileIndex;
 }
 
+// Deploy-tile selector for melee-class (aiClass 0) enemy units: cell score grows
+// toward the playable-column edge, plus edge-row distance, plus an adjacency bonus
+// (100 next to an artillery-class unit, else 10 next to any occupant).
 // FUNCTION: IMPERIALISM 0x0059c140
 int TArmyPlayer::SelectTacticalTileByActionClassAdjacencyPriority() {
-  // TODO: port body @ 0x59c140.
-  return -1;
+  int bestScore = 0;
+  int bestTileIndex = -1;
+  for (int tileIndex = 0; tileIndex < battle14->tacticalTileCount3c; ++tileIndex) {
+    if (battle14->ApplyGridColumnSelectionGuard(tileIndex) != 0) {
+      int row = tileIndex / 29;
+      int column = tileIndex % 29;
+      int score = (2 * (battle14->battlefieldColumnCount34 - column) - (row & 1) - 3) * 10;
+      int rowDistance = row;
+      if (rowDistance > 7) {
+        rowDistance = 15 - rowDistance;
+      }
+      score += rowDistance;
+      int neighborTiles[6];
+      int adjacencyBonus = 0;
+      battle14->ComputeHexNeighborTileIndices_005A0420(tileIndex, neighborTiles);
+      for (int neighborIndex = 0; neighborIndex < 6; ++neighborIndex) {
+        int neighborTileIndex = neighborTiles[neighborIndex];
+        if (neighborTileIndex != -1) {
+          TTacticalUnit* occupant = battle14->tileGrid4[neighborTileIndex].occupant4;
+          if (occupant != 0) {
+            if (g_awTacticalUnitAiClassByUnitType_006693B8[occupant->unitTypeC] == 2) {
+              adjacencyBonus = 0x64;
+            } else if (adjacencyBonus == 0) {
+              adjacencyBonus = 0xa;
+            }
+          }
+        }
+      }
+      score += adjacencyBonus;
+      if (score > bestScore) {
+        bestScore = score;
+        bestTileIndex = tileIndex;
+      }
+    }
+  }
+  return bestTileIndex;
 }
 
+// Deploy-tile selector for the remaining enemy action classes: a per-battle constant
+// base (20 * (columnCount - 5)) plus edge-row distance, plus 10 when any hex neighbor
+// is occupied (first hit stops the neighbor scan).
 // FUNCTION: IMPERIALISM 0x0059c2a0
 int TArmyPlayer::SelectTacticalTileIndexByColumnPriorityVariantB() {
-  // TODO: port body @ 0x59c2a0.
-  return -1;
+  int bestScore = 0;
+  int bestTileIndex = -1;
+  for (int tileIndex = 0; tileIndex < battle14->tacticalTileCount3c; ++tileIndex) {
+    if (battle14->ApplyGridColumnSelectionGuard(tileIndex) != 0) {
+      int row = tileIndex / 29;
+      int score = (battle14->battlefieldColumnCount34 - 5) * 20;
+      if (row > 7) {
+        row = 15 - row;
+      }
+      score += row;
+      int neighborTiles[6];
+      int occupiedNeighborBonus = 0;
+      battle14->ComputeHexNeighborTileIndices_005A0420(tileIndex, neighborTiles);
+      for (int neighborIndex = 0; occupiedNeighborBonus == 0 && neighborIndex < 6;
+           ++neighborIndex) {
+        int neighborTileIndex = neighborTiles[neighborIndex];
+        if (neighborTileIndex != -1 && battle14->tileGrid4[neighborTileIndex].occupant4 != 0) {
+          occupiedNeighborBonus = 0xa;
+        }
+      }
+      score += occupiedNeighborBonus;
+      if (score > bestScore) {
+        bestScore = score;
+        bestTileIndex = tileIndex;
+      }
+    }
+  }
+  return bestTileIndex;
 }
 
 // FUNCTION: IMPERIALISM 0x0059c3c0
@@ -409,10 +543,216 @@ undefined TArmyPlayer::TArmyTacUnit_VtblSlot07() {
   return 0;
 }
 
+// Re-derives the side's AI cursor mode from both sides' aggregated projection metrics
+// and applies the matching per-unit stance profile. The `cursorProfileMode` parameter
+// is dead in the original (popped by ret 4, never read).
 // FUNCTION: IMPERIALISM 0x0059c440
 void TArmyPlayer::SelectAndApplyTacticalCursorModeProfile(int cursorProfileMode) {
-  // TODO: port body @ 0x59c440.
   (void)cursorProfileMode;
+
+  // Is the battle site this nation's capital city record?
+  unsigned char siteIsHomeCapital =
+      battle14->battleSiteIndex38 ==
+      g_pGlobalMapState
+          ->terrainStateTable[static_cast<short>(
+              g_apTerrainTypeDescriptorTable[nationIndex1C]->homeRegionIndex)]
+          .cityRecordIndex;
+
+  // Army battles always pair two TArmyPlayers; the +0x2c metric slice lives on the
+  // derived class.
+  TArmyPlayer* opponent;
+  if (isOurSideFlagC != 0) {
+    opponent = static_cast<TArmyPlayer*>(battle14->tacticalPlayer18);
+  } else {
+    opponent = static_cast<TArmyPlayer*>(battle14->tacticalPlayer14);
+  }
+
+  AccumulateTacticalCursorActionClassProfileMetrics();
+  opponent->AccumulateTacticalCursorActionClassProfileMetrics();
+
+  // Pointer-walk countdown copy (the original emits an fld/fstp loop, not rep movsd).
+  float opponentMetrics[5];
+  float* metricsDst = opponentMetrics;
+  const float* metricsSrc = opponent->projectionScoreSums2C;
+  for (int remaining = 5; remaining > 0; --remaining) {
+    *metricsDst++ = *metricsSrc++;
+  }
+
+  // Function-scope iterator: it stays live across the switch, so the block-scoped
+  // iterators below (own-unit scan + case loops) pack into a second frame slot,
+  // matching the original stack layout.
+  unsigned char enemyHasActiveUnit = 0;
+  CIterator scanIter(opponent->unitList4);
+  for (TTacticalUnit* enemyRecord = static_cast<TTacticalUnit*>(scanIter.Reset()); scanIter.More();
+       enemyRecord = static_cast<TTacticalUnit*>(scanIter.Advance())) {
+    if (enemyRecord->state1c == 0) {
+      enemyHasActiveUnit = 1;
+    }
+  }
+  if (enemyHasActiveUnit == 0) {
+    field48 = 1;
+  } else {
+    field48 = 0;
+  }
+
+  int cursorMode;
+  if (isOurSideFlagC == 0) {
+    // Defending side.
+    if (enemyHasActiveUnit == 0) {
+      cursorMode = 6;
+    } else if (opponent->field51 == 0 &&
+               battle14->IsTacticalSideCategoryCoverageIncompleteOrFlagOff() == 0) {
+      cursorMode = 7;
+    } else if (projectionScoreSums2C[1] / opponentMetrics[1] >
+               g_dTacticalCursorStrongRatioThreshold_00669508) {
+      if (battle14->IsTacticalSideCategoryCoverageIncompleteOrFlagOff() != 0) {
+        cursorMode = 2;
+      } else if (projectionScoreSums2C[1] / opponentMetrics[1] >
+                 g_dTacticalCursorOverwhelmRatioThreshold_00669510) {
+        cursorMode = 2;
+      } else {
+        cursorMode = 0;
+      }
+    } else if (projectionScoreSums2C[0] / opponentMetrics[1] <
+                   g_dTacticalCursorWeakRatioThreshold_00669518 &&
+               siteIsHomeCapital == 0) {
+      cursorMode = 1;
+    } else {
+      // Branchless in the original (setl form): outranged defenders bombard.
+      cursorMode = (maxUnitRange40 < opponent->maxUnitRange40) ? 2 : 0;
+    }
+  } else {
+    // Attacking side.
+    float strengthRatio = projectionScoreSums2C[1] / opponentMetrics[0];
+    unsigned char haveActiveSapper = 0;
+    unsigned char haveActiveArtillery = 0;
+    CIterator unitIter(unitList4);
+    for (TTacticalUnit* record = static_cast<TTacticalUnit*>(unitIter.Reset()); unitIter.More();
+         record = static_cast<TTacticalUnit*>(unitIter.Advance())) {
+      if (g_awTacticalUnitCategoryCodeBySlot[record->unitTypeC] == 8 && record->state1c == 0) {
+        haveActiveSapper = 1;
+      }
+      if (g_awTacticalUnitAiClassByUnitType_006693B8[record->unitTypeC] == 2 &&
+          record->state1c == 0) {
+        haveActiveArtillery = 1;
+      }
+    }
+    if (battle14->IsTacticalSideCategoryCoverageIncompleteOrFlagOff() == 0) {
+      // Fort wall still intact.
+      if (haveActiveSapper != 0) {
+        cursorMode = 3;
+      } else if (haveActiveArtillery == 0) {
+        cursorMode = 1;
+      } else if (projectionScoreSums2C[3] / opponentMetrics[3] <
+                 g_dTacticalCursorArtilleryParityThreshold_00669520) {
+        cursorMode = 1;
+      } else {
+        cursorMode = 3;
+      }
+    } else {
+      // No fort, or a wall section is breached.
+      if (enemyHasActiveUnit == 0) {
+        cursorMode = 6;
+      } else if (strengthRatio > g_dTacticalCursorStrongRatioThreshold_00669508) {
+        cursorMode = 4;
+      } else if (!(projectionScoreSums2C[3] / opponentMetrics[3] <
+                   g_dTacticalCursorArtillerySuperiorityThreshold_00669528) &&
+                 haveActiveArtillery != 0) {
+        cursorMode = 3;
+      } else if (!(strengthRatio < g_dTacticalCursorAssaultRatioThreshold_00669530)) {
+        cursorMode = 4;
+      } else if (strengthRatio < g_dTacticalCursorRetreatRatioThreshold_00669538 &&
+                 siteIsHomeCapital == 0) {
+        cursorMode = 1;
+      } else {
+        cursorMode = 5;
+      }
+    }
+  }
+
+  if (fieldF != 0) {
+    cursorMode = 1;
+  }
+  if (cursorMode == 1) {
+    field48 = cursorMode;
+  }
+  if (cursorMode == lastAppliedCursorMode44) {
+    return; // mode unchanged since the last application
+  }
+  lastAppliedCursorMode44 = cursorMode;
+  switch (cursorMode) {
+  case 0:
+    ApplyTacticalCursorModeProfile0_ByActionClassCounts();
+    return;
+  case 1: {
+    // Retreat/fallback stance: non-category-0 units get state 0xc, category-0 get 7.
+    CIterator retreatIter(unitList4);
+    for (TTacticalUnit* retreatRecord = static_cast<TTacticalUnit*>(retreatIter.Reset());
+         retreatIter.More(); retreatRecord = static_cast<TTacticalUnit*>(retreatIter.Advance())) {
+      if (g_awTacticalUnitCategoryCodeBySlot[retreatRecord->unitTypeC] != 0) {
+        retreatRecord->aiStateCode2c = 0xc;
+      } else {
+        retreatRecord->aiStateCode2c = 7;
+      }
+    }
+    return;
+  }
+  case 2:
+    ApplyTacticalCursorModeProfile2_ByActionClassCounts();
+    return;
+  case 3:
+    ApplyTacticalCursorModeProfile3_ClassAware();
+    return;
+  case 4:
+    ApplyTacticalCursorModeProfile4_ClassAware();
+    return;
+  case 5:
+    ApplyTacticalCursorModeProfile5_ClassAware();
+    return;
+  case 6:
+    ApplyTacticalCursorModeProfile6_DefaultByActionClass();
+    return;
+  case 7: {
+    // Hold-fire garrison stance: every unit gets state 0x13.
+    CIterator garrisonIter(unitList4);
+    for (TTacticalUnit* garrisonRecord = static_cast<TTacticalUnit*>(garrisonIter.Reset());
+         garrisonIter.More();
+         garrisonRecord = static_cast<TTacticalUnit*>(garrisonIter.Advance())) {
+      garrisonRecord->aiStateCode2c = 0x13;
+    }
+    return;
+  }
+  }
+}
+
+// FUNCTION: IMPERIALISM 0x0059caf0
+void TArmyPlayer::ApplyTacticalCursorModeProfile0_ByActionClassCounts() {
+  // TODO: port body @ 0x59caf0.
+}
+
+// FUNCTION: IMPERIALISM 0x0059cd00
+void TArmyPlayer::ApplyTacticalCursorModeProfile2_ByActionClassCounts() {
+  // TODO: port body @ 0x59cd00.
+}
+
+// FUNCTION: IMPERIALISM 0x0059ce90
+void TArmyPlayer::ApplyTacticalCursorModeProfile3_ClassAware() {
+  // TODO: port body @ 0x59ce90.
+}
+
+// FUNCTION: IMPERIALISM 0x0059d020
+void TArmyPlayer::ApplyTacticalCursorModeProfile4_ClassAware() {
+  // TODO: port body @ 0x59d020.
+}
+
+// FUNCTION: IMPERIALISM 0x0059d1a0
+void TArmyPlayer::ApplyTacticalCursorModeProfile5_ClassAware() {
+  // TODO: port body @ 0x59d1a0.
+}
+
+// FUNCTION: IMPERIALISM 0x0059d320
+void TArmyPlayer::ApplyTacticalCursorModeProfile6_DefaultByActionClass() {
+  // TODO: port body @ 0x59d320.
 }
 
 // Weighted tile chooser for the auto-turn controller: builds the distance field when
@@ -868,10 +1208,39 @@ int TArmyPlayer::SelectBestTacticalTargetTileByActionHeuristics(TTacticalUnit* u
   return bestTargetTileIndex;
 }
 
+// Per-tick battle pump. In the field20 phase it waits on an active sapper record:
+// once the battle's selection has moved off the sapper it queues the 0x232a hand-back
+// event, and when the sapper is selected (or none remains active) it clears the phase.
+// Otherwise an unwatched side runs one auto-turn step, with a right-Windows-key
+// cancel check for watched-then-released sides.
 // FUNCTION: IMPERIALISM 0x0059e3e0
 void TArmyPlayer::AdvanceTacticalTurnPulse() {
-  // TODO: port body @ 0x59e3e0 (per-tick battle pump; runs the auto-turn controller
-  // while notWatchedFlagE, with a GetAsyncKeyState(0x5c) cancel check).
+  if (field20 != 0) {
+    CIterator unitIter(unitList4);
+    TTacticalUnit* record = static_cast<TTacticalUnit*>(unitIter.Reset());
+    while (unitIter.More() != 0) {
+      if (g_awTacticalUnitCategoryCodeBySlot[record->unitTypeC] == 8 && record->state1c == 0) {
+        if (g_awTacticalUnitCategoryCodeBySlot[battle14->selectedUnit1c->unitTypeC] != 8) {
+          battle14->QueueTacticalEventPacket232A();
+          return;
+        }
+        field20 = 0;
+        return;
+      }
+      record = static_cast<TTacticalUnit*>(unitIter.Advance());
+    }
+    field20 = 0;
+    return;
+  }
+  if (notWatchedFlagE != 0) {
+    if (watchFlagD != 0) {
+      if (GetAsyncKeyState(0x5c /* VK_RWIN */) & 0x8000) {
+        notWatchedFlagE = 0;
+        return;
+      }
+    }
+    RunTacticalAutoTurnControllerForActiveUnit();
+  }
 }
 
 // One full AI turn for the battle's currently selected unit: pick a destination by

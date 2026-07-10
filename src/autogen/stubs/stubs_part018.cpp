@@ -763,14 +763,6 @@ undefined4 DestructTArmyPlayerAndMaybeFree_Impl(void)
   return 0;
 }
 
-// ghidra_name AccumulateTacticalCursorActionClassProfileMetrics
-// ghidra_proto undefined AccumulateTacticalCursorActionClassProfileMetrics()
-// FUNCTION: IMPERIALISM 0x0059b5b0
-undefined4 AccumulateTacticalCursorActionClassProfileMetrics(void)
-{
-  return 0;
-}
-
 // ghidra_name RebuildListFromProviderAndDeduplicateByKey
 // ghidra_proto undefined RebuildListFromProviderAndDeduplicateByKey()
 // FUNCTION: IMPERIALISM 0x0059b740
@@ -851,58 +843,10 @@ undefined4 SetLinkedListEntryState2CTo13ForAllNodes(void)
   return 0;
 }
 
-// ghidra_name ApplyTacticalCursorModeProfile0_ByActionClassCounts
-// ghidra_proto undefined ApplyTacticalCursorModeProfile0_ByActionClassCounts()
-// FUNCTION: IMPERIALISM 0x0059caf0
-undefined4 ApplyTacticalCursorModeProfile0_ByActionClassCounts(void)
-{
-  return 0;
-}
-
 // ghidra_name IterateLinkedListCursorEntries_0059cc70
 // ghidra_proto undefined IterateLinkedListCursorEntries_0059cc70()
 // FUNCTION: IMPERIALISM 0x0059cc70
 undefined4 IterateLinkedListCursorEntries_0059cc70(void)
-{
-  return 0;
-}
-
-// ghidra_name ApplyTacticalCursorModeProfile2_ByActionClassCounts
-// ghidra_proto undefined ApplyTacticalCursorModeProfile2_ByActionClassCounts()
-// FUNCTION: IMPERIALISM 0x0059cd00
-undefined4 ApplyTacticalCursorModeProfile2_ByActionClassCounts(void)
-{
-  return 0;
-}
-
-// ghidra_name ApplyTacticalCursorModeProfile3_ClassAware
-// ghidra_proto undefined ApplyTacticalCursorModeProfile3_ClassAware()
-// FUNCTION: IMPERIALISM 0x0059ce90
-undefined4 ApplyTacticalCursorModeProfile3_ClassAware(void)
-{
-  return 0;
-}
-
-// ghidra_name ApplyTacticalCursorModeProfile4_ClassAware
-// ghidra_proto undefined ApplyTacticalCursorModeProfile4_ClassAware()
-// FUNCTION: IMPERIALISM 0x0059d020
-undefined4 ApplyTacticalCursorModeProfile4_ClassAware(void)
-{
-  return 0;
-}
-
-// ghidra_name ApplyTacticalCursorModeProfile5_ClassAware
-// ghidra_proto undefined ApplyTacticalCursorModeProfile5_ClassAware()
-// FUNCTION: IMPERIALISM 0x0059d1a0
-undefined4 ApplyTacticalCursorModeProfile5_ClassAware(void)
-{
-  return 0;
-}
-
-// ghidra_name ApplyTacticalCursorModeProfile6_DefaultByActionClass
-// ghidra_proto undefined ApplyTacticalCursorModeProfile6_DefaultByActionClass()
-// FUNCTION: IMPERIALISM 0x0059d320
-undefined4 ApplyTacticalCursorModeProfile6_DefaultByActionClass(void)
 {
   return 0;
 }

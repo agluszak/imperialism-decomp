@@ -40,8 +40,20 @@ void TArmyTacUnit::ConstructTArmyTacUnitBaseState(TMilitaryUnit* source) {
 
 // FUNCTION: IMPERIALISM 0x005a5fe0
 void TArmyTacUnit::ComputeTacticalProjectionScoreVector() {
-  // TODO: port body @ 0x5a5fe0 (fills field44..field54 from
-  // sourceUnit38->GetUnitTypeStatPercent(0..4) scaled by strength).
+  // Quality is recomputed from the source unit's raw experience field (not the
+  // cached qualityLevel10): (short)(field_38 / 100), same derivation as the ctor.
+  float qualityFactor = static_cast<float>(g_dTacticalQualityFactorBase_00669ED0 -
+                                           static_cast<short>(sourceUnit38->field_38 / 100) *
+                                               g_dTacticalQualityFactorStep_00669EC8);
+  sourceUnit38->GetUnitTypeStatPercent(5);
+  float unitFactor = 1.0f;
+  float strengthTerm = strength4 * g_fTacticalStrengthProjectionScale_00669F0C;
+  float scale = strengthTerm * qualityFactor;
+  field44 = sourceUnit38->GetUnitTypeStatPercent(0) * scale * strengthTerm * unitFactor;
+  field48 = sourceUnit38->GetUnitTypeStatPercent(1) * scale * unitFactor;
+  field4c = sourceUnit38->GetUnitTypeStatPercent(2) * scale;
+  field50 = sourceUnit38->GetUnitTypeStatPercent(3) * scale;
+  field54 = sourceUnit38->GetUnitTypeStatPercent(4) * scale * unitFactor;
 }
 
 // FUNCTION: IMPERIALISM 0x005a6120

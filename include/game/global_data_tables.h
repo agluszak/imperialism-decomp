@@ -172,10 +172,10 @@ extern short g_awTacticalUnitCategoryCodeBySlot[];
 // Per-unit-type combat/composition class (0x695380), read by
 // ProcessTileUnitListsAndApplyRandomStatusUpdates when building a TArmyStack's
 // field4/field6 composition code.
-extern short g_awUnitCombatClassBySlot[64];
+extern short g_awUnitCombatClassBySlot[32];
 // Stack composition class lookup (0x6953c0), indexed [minClass + maxClass*4]; true
 // bound unconfirmed beyond the observed min/max class range (1..5-ish).
-extern unsigned char g_abStackCompositionClassTable[32];
+extern unsigned char g_abStackCompositionClassTable[16];
 
 // Per-civilian-order-type map-improvement sprite class (0x697040), read by
 // TMapMgr::GetMapImprovementSpriteBaseOffset via TCivUnit::orderType; only indices 0-8 are
@@ -280,6 +280,16 @@ extern "C" const char s_SourcePathUTacPlayer_00699D84[];
 extern const char* g_pszEmptyTextRef_00669db8;
 extern int g_anFortStrengthPointsByFortLevel[6];
 extern short g_awTacticalMoveCostByCategoryAndTerrain[50];
+extern double g_dTacticalCursorStrongRatioThreshold_00669508;
+extern double g_dTacticalCursorOverwhelmRatioThreshold_00669510;
+extern double g_dTacticalCursorWeakRatioThreshold_00669518;
+extern double g_dTacticalCursorArtilleryParityThreshold_00669520;
+extern double g_dTacticalCursorArtillerySuperiorityThreshold_00669528;
+extern double g_dTacticalCursorAssaultRatioThreshold_00669530;
+extern double g_dTacticalCursorRetreatRatioThreshold_00669538;
+extern double g_dTacticalQualityFactorStep_00669EC8;
+extern double g_dTacticalQualityFactorBase_00669ED0;
+extern float g_fTacticalStrengthProjectionScale_00669F0C;
 extern float g_afTacticalDirectFireFlagByCategoryCode_00669390[10];
 // Requires the TacticalTileHeuristicScorerFn typedef from game/TArmyPlayer.h at the
 // point of use; declared here per the one-home-for-globals rule.

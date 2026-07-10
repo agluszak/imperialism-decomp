@@ -4041,6 +4041,7 @@ address|target_cpp|ownership|note
 59b3e0|src/game/TArmyPlayer.cpp|manual|marker_sync
 59b4f0|src/game/TArmyPlayer.cpp|manual|marker_sync
 59b540|src/game/TArmyPlayer.cpp|manual|marker_sync
+59b5b0|src/game/TArmyPlayer.cpp|manual|marker_sync
 59b830|src/game/TArmyPlayer.cpp|manual|marker_sync
 59b990|src/game/TArmyPlayer.cpp|manual|marker_sync
 59bc80|src/game/TArmyPlayer.cpp|manual|marker_sync
@@ -4051,6 +4052,12 @@ address|target_cpp|ownership|note
 59c2a0|src/game/TArmyPlayer.cpp|manual|marker_sync
 59c3c0|src/game/TArmyPlayer.cpp|manual|marker_sync
 59c440|src/game/TArmyPlayer.cpp|manual|marker_sync
+59caf0|src/game/TArmyPlayer.cpp|manual|marker_sync
+59cd00|src/game/TArmyPlayer.cpp|manual|marker_sync
+59ce90|src/game/TArmyPlayer.cpp|manual|marker_sync
+59d020|src/game/TArmyPlayer.cpp|manual|marker_sync
+59d1a0|src/game/TArmyPlayer.cpp|manual|marker_sync
+59d320|src/game/TArmyPlayer.cpp|manual|marker_sync
 59d530|src/game/TArmyPlayer.cpp|manual|marker_sync
 59d6b0|src/game/TArmyPlayer.cpp|manual|marker_sync
 59d6e0|src/game/TArmyPlayer.cpp|manual|marker_sync

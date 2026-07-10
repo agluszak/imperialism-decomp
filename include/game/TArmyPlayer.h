@@ -38,9 +38,14 @@ public:
   // Partial slice (object is 0x54): only the side's combatant stack is recovered so
   // far; stored by InitializeTacticalSideFromArmyUnitList and read back by
   // TArmyBattle::WriteTo.
-  TArmyStack* armyStack28;          // +0x28
-  unsigned char pad2c[0x44 - 0x2c]; // +0x2c
-  int field44;                      // +0x44 init -1 (0x59b1b0)
+  TArmyStack* armyStack28; // +0x28
+  // Aggregated projection metrics for the side, rebuilt by
+  // AccumulateTacticalCursorActionClassProfileMetrics (0x59b5b0) from the active
+  // records' float vectors.
+  float projectionScoreSums2C[5];   // +0x2c
+  short maxUnitRange40;             // +0x40 max GetUnitRange over active units
+  short maxNonArtilleryUnitRange42; // +0x42 same, skipping aiClass-2 units
+  int lastAppliedCursorMode44;      // +0x44 init -1; SelectAndApply... early-outs on equality
   // Target-selection mode: == 1 also engages morale-broken (state1c == 1) units.
   int field48;             // +0x48
   int field4C;             // +0x4c init -1; cached fort-bombardment target tile for indirect fire
@@ -55,6 +60,18 @@ public:
   // Applies the tactical cursor/UI mode profile for this side. Body TODO.
   // 0x0059c440, __thiscall, ret 4.
   void SelectAndApplyTacticalCursorModeProfile(int cursorProfileMode);
+
+  // Rebuilds projectionScoreSums2C/maxUnitRange40/42 and field51 from the active
+  // records. Body TODO. 0x59b5b0.
+  void AccumulateTacticalCursorActionClassProfileMetrics();
+  // Per-mode stance-profile appliers (bodies TODO): set each record's aiStateCode2c
+  // by action class for the matching cursor mode.
+  void ApplyTacticalCursorModeProfile0_ByActionClassCounts();  // 0x59caf0
+  void ApplyTacticalCursorModeProfile2_ByActionClassCounts();  // 0x59cd00
+  void ApplyTacticalCursorModeProfile3_ClassAware();           // 0x59ce90
+  void ApplyTacticalCursorModeProfile4_ClassAware();           // 0x59d020
+  void ApplyTacticalCursorModeProfile5_ClassAware();           // 0x59d1a0
+  void ApplyTacticalCursorModeProfile6_DefaultByActionClass(); // 0x59d320
 
   // Auto-deploy helpers (0x59bc80 dispatcher). Curated names kept; behaviorally these
   // are the zone-score-table and per-class-tile-selector deploy strategies.
