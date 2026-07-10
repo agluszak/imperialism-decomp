@@ -2,6 +2,7 @@
 
 #include "game/TMilitaryUnit.h"
 #include "game/global_data_tables.h"
+#include "game/ui_invalidation_guard.h"
 
 extern undefined4 GenerateThreadLocalRandom15(void);
 
@@ -38,17 +39,46 @@ TUnit* TArmyStack::AdvanceCursorAndGetUnit() {
 
 IMPLEMENT_DYNCREATE(TArmyStack, TObject)
 
-TArmyStack::TArmyStack() {}
+// FUNCTION: IMPERIALISM 0x004a76f0
+TArmyStack::TArmyStack() {
+  head14 = 0;
+  cursor18 = 0;
+}
 
 // SYNTHETIC: IMPERIALISM 0x004a7720
 // TArmyStack::`scalar deleting destructor'
 TArmyStack::~TArmyStack() {}
+
+// FUNCTION: IMPERIALISM 0x004a7770
+void TArmyStack::InitializeSideAndTile(char ownerNationIndex, short ownerNationCode,
+                                       short tileIndex) {
+  fieldA = 0;
+  field6 = 0;
+  field4 = 0;
+  fieldC = 0;
+  ownerNationCodeE = ownerNationCode;
+  categoryFlag8 = ownerNationIndex;
+  tileIndex10 = tileIndex;
+}
 
 // FUNCTION: IMPERIALISM 0x004a77b0
 void TArmyStack::ReadFrom(TStream* stream) {}
 
 // FUNCTION: IMPERIALISM 0x004a7960
 void TArmyStack::WriteTo(TStream* stream) {}
+
+// FUNCTION: IMPERIALISM 0x004a7b20
+void TArmyStack::AddUnitToChainHead(TUnit* unit) {
+  TArmyStackUnitNode* node = new TArmyStackUnitNode();
+  if (node == nullptr) {
+    MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUArmyMgr_0069573C, 0xbeb);
+  }
+  node->unit = unit;
+  node->next = head14;
+  ++fieldA;
+  head14 = node;
+}
 
 // FUNCTION: IMPERIALISM 0x004a7c20
 void TArmyStack::Free() {}

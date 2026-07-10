@@ -3,10 +3,30 @@
 #include "game/TObject.h"
 #include "game/mfc.h"
 
+class TArmyTacUnit;
 class TList;
+class TTacticalBattleView;
 class TTacticalPlayer;
+class TTacticalUnit;
 
-// TODO(manifest): describe TTacticalBattle and its role. Base edge (TObject) recovered from RTTI CRuntimeClass chain: TTacticalBattle -> TObject -> CObject.
+// One 0x14-byte battle-grid tile record (array at TTacticalBattle::tileGrid4).
+// +0x08 is written 1 when a trench-capable unit deploys; +0x10 is the trench-link
+// bitmask: bits 0-5 = hex directions, 0x80 = first dig on a bare tile, 0x40 replaces
+// it once a link exists.
+struct TacticalTileRecord {
+  int field0;                 // +0x00
+  TTacticalUnit* occupant4;   // +0x04
+  int deployMark8;            // +0x08
+  int fieldC;                 // +0x0c
+  unsigned char trenchMask10; // +0x10
+  unsigned char pad11[3];     // +0x11
+};
+
+// Runs one tactical battle (army or navy branch): owns the hex battle grid, the two
+// side players, and the tactical unit records; executes the tagged tactical commands
+// (select/move/fire/mine/digg/raly/depl) locally and echoes them to multiplayer.
+// Base edge (TObject) recovered from RTTI CRuntimeClass chain: TTacticalBattle ->
+// TObject -> CObject.
 // VTABLE: IMPERIALISM 0x0066a088
 class TTacticalBattle : public TObject {
 public:
@@ -55,24 +75,37 @@ public:
   // Offset-faithful layout (object is 0x78 per RTTI; TArmyBattle adds no bytes).
   // The ctor (0x59f770) zeroes +4, +8, +0x24, +0x1c, +0x34, +0x74, +0x20 -- in that
   // store order -- and leaves everything else (including the two player slots)
-  // uninitialized.
-  int field4;                      // +0x04
-  int field8;                      // +0x08
-  unsigned char pad0c[0x14 - 0xc]; // +0x0c
+  // uninitialized. Serialized fields per TArmyBattle::ReadFrom/WriteTo (0x5a4990/
+  // 0x5a4da0); grid/view fields per the tactical command handlers.
+  TacticalTileRecord* tileGrid4;    // +0x04 per-tile grid, allocated by battle setup (0x59f890)
+  TTacticalBattleView* battleView8; // +0x08 live view; null when the battle runs headless
+  int currentSideC;                 // +0x0c side (0/1) of the current selection; serialized
+  int field10;                      // +0x10 serialized battle-header dword
   // The two battle players (Mac oracle: TTacticalBattle::InitTacticalBattle(
   // TTacticalPlayer*, TTacticalPlayer*)). Windows evidence: TTacticalBattle::Free
   // (0x59fb50) Free()s both; 0x5a2700 dispatches slots 0x0e/0x0f on them; 0x59fc20
   // dispatches slot 0x0a on the +0x18 one -- all slots TTacticalPlayer carries.
   TTacticalPlayer* tacticalPlayer14; // +0x14
   TTacticalPlayer* tacticalPlayer18; // +0x18
-  int field1c;                       // +0x1c
+  // Currently selected/linked unit record; re-resolved by source-unit id in
+  // TArmyBattle::ReadFrom, set by ApplyTacticalDoneSelectionAndRefreshUi.
+  TTacticalUnit* selectedUnit1c; // +0x1c
   // Allocated by TArmyBattle::AllocateRecordList (0x59f7f0), called separately after
   // construction; TArmyBattle::ReadFrom appends the deserialized units here.
   TList* recordList20;              // +0x20
   int field24;                      // +0x24
   unsigned char pad28[0x34 - 0x28]; // +0x28
   int field34;                      // +0x34
-  unsigned char pad38[0x74 - 0x38]; // +0x38
+  int battleSiteIndex38;            // +0x38 cityScoreTable row of the battle site
+  int tacticalTileCount3c;          // +0x3c = 0x1b3 (435 = 15*29 battle tiles)
+  int tacticalTileStride40;         // +0x40 = 0x1d (29)
+  int field44;                      // +0x44 serialized; 0x5a5320 sets it to 1
+  char field48;                     // +0x48
+  char fortLevel49;                 // +0x49 serialized; nonzero suppresses depl trench-marking
+  unsigned char pad4a[2];           // +0x4a
+  int field4c;                      // +0x4c serialized; == 7 suppresses the move animation
+  int compositionClass50;           // +0x50 stack-composition class of the battle
+  unsigned char pad54[0x74 - 0x54]; // +0x54
   int field74;                      // +0x74
 
   TTacticalBattle();
@@ -83,23 +116,38 @@ public:
   // (network join). 0x0059fc20.
   undefined StartBattle();
 
-  // Network tactical-command receive family (turn events 0x29/0x2a dispatch on the
-  // live battle at g_pActiveTacticalBattle). All __thiscall on the battle object;
-  // signatures verified against the 0x545940 dispatcher's pushes. Bodies TODO.
-  // The 'unit' values are whatever SeekLinkedListCursorByNestedId returns (a unit-list
-  // node; the 'fire' path reads its +0x8 dword) — void* until that type is recovered.
-  void* SeekLinkedListCursorByNestedId(int nestedId);         // 0x5a53e0
-  void SetCurrentTacticalUnitSelection(void* unit, int flag); // 0x5a1010
-  void MoveTacticalUnitBetweenTiles(void* unit, int arg20, int arg24,
-                                    int flag); // 0x5a1910
-  void ApplyTacticalActionEffectsAndMaybeRemoveUnit(void* attackerUnit, void* targetUnit,
-                                                    int targetUnitField8, int arg24, int arg28,
-                                                    char arg2C, int flag); // 0x5a24a0
-  void HandleTacticalCommandTag_mine(int arg20, int arg24, int flag);      // 0x5a35a0
-  void HandleTacticalCommandTag_digg(void* unit, int arg20, int flag);     // 0x5a36d0
-  void HandleTacticalCommandTag_raly(void* unit, int arg20, int arg24,
-                                     int flag);                        // 0x5a38e0
-  void HandleTacticalCommandTag_depl(void* unit, int arg20, int flag); // 0x5a4370
+  // Battle-state assembly (Mac oracle: InitTacticalBattle); sets tacticalPlayer14/18
+  // and allocates the tile grid. Body TODO. 0x0059f890.
+  void BuildTacticalBattleStateFromBothSides(TTacticalPlayer* ourPlayer,
+                                             TTacticalPlayer* enemyPlayer);
+
+  // Tactical command family (local execution + multiplayer echo; turn events
+  // 0x29/0x2a re-enter these with remoteFlag = 1 on the battle at
+  // g_pActiveTacticalBattle). Signatures verified against the handler prologues and
+  // the 0x545940 dispatcher's pushes.
+  TArmyTacUnit* SeekLinkedListCursorByNestedId(int nestedId);                 // 0x5a53e0
+  void SetCurrentTacticalUnitSelection(TTacticalUnit* unit, char remoteFlag); // 0x5a1010
+  void MoveTacticalUnitBetweenTiles(TTacticalUnit* unit, int fromTileIndex, int toTileIndex,
+                                    char remoteFlag); // 0x5a1910
+  void ApplyTacticalActionEffectsAndMaybeRemoveUnit(TTacticalUnit* attackerUnit,
+                                                    TTacticalUnit* targetUnit, int targetTileIndex,
+                                                    int damageA, int damageB, char effectCode2C,
+                                                    char remoteFlag);             // 0x5a24a0
+  void HandleTacticalCommandTag_mine(int tileIndex, int amount, char remoteFlag); // 0x5a35a0
+  void HandleTacticalCommandTag_digg(TTacticalUnit* unit, int targetTileIndex,
+                                     char remoteFlag); // 0x5a36d0
+  void HandleTacticalCommandTag_raly(TArmyTacUnit* unit, int newMorale, int newState,
+                                     char remoteFlag); // 0x5a38e0
+  void HandleTacticalCommandTag_depl(TArmyTacUnit* unit, int tileIndex,
+                                     char remoteFlag); // 0x5a4370
+
+  // Helpers the command family dispatches into (all __thiscall on the battle;
+  // bodies TODO).
+  void ApplyTacticalDoneSelectionAndRefreshUi(TTacticalUnit* unit);                   // 0x59fe40
+  void ComputeHexNeighborTileIndices_005A0420(int tileIndex, int* outNeighborTiles6); // 0x5a0420
+  void ConsumeTacticalSideResourcePoolAndInvalidateIfEmpty(int tileIndex,
+                                                           int consumeAmount); // 0x5a3c20
+  void EvaluateTacticalSideStateAndShowBattleSummaryDialog();                  // 0x5a2750
 };
 
 ASSERT_SIZE(TTacticalBattle, 0x78);

@@ -29,5 +29,7 @@ public:
   // === END GENERATED DECLS (TTacticalPlayer) ===
   // TODO(manifest): add data members from the object slice (`just slice-discovery TTacticalPlayer 0xCTOR`).
 
-  TTacticalPlayer();
+  // Derived construction sites inline the whole ctor chain as a bare vptr store, so
+  // this must stay empty and in-class.
+  TTacticalPlayer() {}
 };

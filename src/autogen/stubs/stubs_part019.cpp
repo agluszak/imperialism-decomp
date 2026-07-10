@@ -43,14 +43,6 @@ undefined4 DestructTTacticalBattleAndMaybeFree_Impl(void)
   return 0;
 }
 
-// ghidra_name BuildTacticalBattleStateFromBothSides
-// ghidra_proto undefined BuildTacticalBattleStateFromBothSides()
-// FUNCTION: IMPERIALISM 0x0059f890
-undefined4 BuildTacticalBattleStateFromBothSides(void)
-{
-  return 0;
-}
-
 // ghidra_name IterateLinkedListCursorEntries_0059fc40
 // ghidra_proto undefined IterateLinkedListCursorEntries_0059fc40()
 // FUNCTION: IMPERIALISM 0x0059fc40
@@ -79,22 +71,6 @@ undefined4 HandleTacticalCommandTag_retr(void)
 // ghidra_proto void __thiscall FinalizeTacticalTurnStateAndQueueEvent232A(void)
 // FUNCTION: IMPERIALISM 0x0059fdb0
 undefined4 FinalizeTacticalTurnStateAndQueueEvent232A(void)
-{
-  return 0;
-}
-
-// ghidra_name ApplyTacticalDoneSelectionAndRefreshUi
-// ghidra_proto undefined ApplyTacticalDoneSelectionAndRefreshUi()
-// FUNCTION: IMPERIALISM 0x0059fe40
-undefined4 ApplyTacticalDoneSelectionAndRefreshUi(void)
-{
-  return 0;
-}
-
-// ghidra_name ComputeHexNeighborTileIndices_005A0420
-// ghidra_proto undefined ComputeHexNeighborTileIndices_005A0420()
-// FUNCTION: IMPERIALISM 0x005a0420
-undefined4 ComputeHexNeighborTileIndices_005A0420(void)
 {
   return 0;
 }
@@ -203,14 +179,6 @@ undefined4 Helper_Uses_thunk_AdvanceLinkedListCursor_At005a2630(void)
   return 0;
 }
 
-// ghidra_name EvaluateTacticalSideStateAndShowBattleSummaryDialog
-// ghidra_proto undefined EvaluateTacticalSideStateAndShowBattleSummaryDialog()
-// FUNCTION: IMPERIALISM 0x005a2750
-undefined4 EvaluateTacticalSideStateAndShowBattleSummaryDialog(void)
-{
-  return 0;
-}
-
 // ghidra_name DispatchTacticalActionByHoverStateIndex
 // ghidra_proto undefined DispatchTacticalActionByHoverStateIndex()
 // FUNCTION: IMPERIALISM 0x005a3370
@@ -223,14 +191,6 @@ undefined4 DispatchTacticalActionByHoverStateIndex(void)
 // ghidra_proto undefined TestGridSegmentCrossesViewportThreshold()
 // FUNCTION: IMPERIALISM 0x005a3a70
 undefined4 TestGridSegmentCrossesViewportThreshold(void)
-{
-  return 0;
-}
-
-// ghidra_name ConsumeTacticalSideResourcePoolAndInvalidateIfEmpty
-// ghidra_proto void __thiscall ConsumeTacticalSideResourcePoolAndInvalidateIfEmpty(int tileIndex, int consumeAmount)
-// FUNCTION: IMPERIALISM 0x005a3c20
-undefined4 ConsumeTacticalSideResourcePoolAndInvalidateIfEmpty(void)
 {
   return 0;
 }
@@ -303,14 +263,6 @@ undefined4 CreateTArmyBattleInstance(void)
 // ghidra_proto undefined ConstructTArmyBattleBaseState()
 // FUNCTION: IMPERIALISM 0x005a4770
 undefined4 ConstructTArmyBattleBaseState(void)
-{
-  return 0;
-}
-
-// ghidra_name LoadBattleSetupTabDataByIndex
-// ghidra_proto undefined LoadBattleSetupTabDataByIndex()
-// FUNCTION: IMPERIALISM 0x005a4fc0
-undefined4 LoadBattleSetupTabDataByIndex(void)
 {
   return 0;
 }
@@ -459,58 +411,10 @@ undefined4 EvaluateAndResolveTacticalActionAgainstTileOccupant_Impl(void)
   return 0;
 }
 
-// ghidra_name InvalidateTacticalHexTileRect
-// ghidra_proto undefined InvalidateTacticalHexTileRect()
-// FUNCTION: IMPERIALISM 0x005a8860
-undefined4 InvalidateTacticalHexTileRect(void)
-{
-  return 0;
-}
-
-// ghidra_name CenterViewportAroundGridIndexAndSnap
-// ghidra_proto undefined CenterViewportAroundGridIndexAndSnap()
-// FUNCTION: IMPERIALISM 0x005a8ac0
-undefined4 CenterViewportAroundGridIndexAndSnap(void)
-{
-  return 0;
-}
-
 // ghidra_name DrawHexSelectionOutlineSegments
 // ghidra_proto undefined DrawHexSelectionOutlineSegments()
 // FUNCTION: IMPERIALISM 0x005a99e0
 undefined4 DrawHexSelectionOutlineSegments(void)
-{
-  return 0;
-}
-
-// ghidra_name UpdateTacticalActionControlBitmapForCurrentUnit
-// ghidra_proto undefined UpdateTacticalActionControlBitmapForCurrentUnit()
-// FUNCTION: IMPERIALISM 0x005a9b40
-undefined4 UpdateTacticalActionControlBitmapForCurrentUnit(void)
-{
-  return 0;
-}
-
-// ghidra_name SpawnTacticalUiMarkerAtUnitTile
-// ghidra_proto undefined SpawnTacticalUiMarkerAtUnitTile()
-// FUNCTION: IMPERIALISM 0x005a9bb0
-undefined4 SpawnTacticalUiMarkerAtUnitTile(void)
-{
-  return 0;
-}
-
-// ghidra_name TriggerTacticalUiUpdate2711
-// ghidra_proto undefined TriggerTacticalUiUpdate2711()
-// FUNCTION: IMPERIALISM 0x005a9cc0
-undefined4 TriggerTacticalUiUpdate2711(void)
-{
-  return 0;
-}
-
-// ghidra_name TTacArmyView::ConstructTTacArmyViewBaseState
-// ghidra_proto undefined ConstructTTacArmyViewBaseState()
-// FUNCTION: IMPERIALISM 0x005a9d90
-undefined4 ConstructTTacArmyViewBaseState(void)
 {
   return 0;
 }

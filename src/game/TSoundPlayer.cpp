@@ -24,7 +24,6 @@ undefined4 EnsureCdAudioDeviceHandleInitialized(void);
 undefined4 ForwardMciCommand808ToDevice(void);
 undefined4 ForwardMciStatusCommand814IgnoreFailure(void);
 undefined4 ReleaseRuntimeSelectionPeersAndResetOwner_Impl(void);
-undefined4 RequestAudioPresetChangeWithDeferredApply(void);
 
 extern undefined4 GenerateThreadLocalRandom15(void);
 // The deferred-apply timer callback (0x593210); registered by ScheduleTimerSlotCallbackWithInterval
@@ -109,7 +108,7 @@ char TSoundPlayer::CanHandleCityDialogActionFalse(int action) {
   }
 
   if (this->fieldShort76 != 0 && this->stateDword7c == 0) {
-    RequestAudioPresetChangeWithDeferredApply();
+    this->RequestAudioPresetChangeWithDeferredApply(this->fieldShort76, 0);
     this->fieldShort76 = 0;
     return 0;
   }
@@ -187,6 +186,13 @@ void TSoundPlayer::SelectAndScheduleRandomAudioCue() {
     ApplyAuxOutputVolumeFromScalar(static_cast<int>(g_pSimMgr->preferenceValues[3]) << 8);
     this->stateByte78 = 1;
   }
+}
+
+// FUNCTION: IMPERIALISM 0x00593920
+void TSoundPlayer::RequestAudioPresetChangeWithDeferredApply(int presetId, int flag) {
+  // TODO: port body @ 0x593920.
+  (void)presetId;
+  (void)flag;
 }
 
 // FUNCTION: IMPERIALISM 0x00593c10

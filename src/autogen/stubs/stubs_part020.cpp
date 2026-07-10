@@ -99,14 +99,6 @@ undefined4 WrapperFor_ResolveEraCapabilityFallbackSlot_At005c3840(void)
   return 0;
 }
 
-// ghidra_name InitializeBattleSetupArmyStacksAndPopulateSelectionState_Impl
-// ghidra_proto undefined InitializeBattleSetupArmyStacksAndPopulateSelectionState_Impl()
-// FUNCTION: IMPERIALISM 0x005c38e0
-undefined4 InitializeBattleSetupArmyStacksAndPopulateSelectionState_Impl(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_ftol_At005c3ad0
 // ghidra_proto undefined WrapperFor_ftol_At005c3ad0()
 // FUNCTION: IMPERIALISM 0x005c3ad0

@@ -19,8 +19,8 @@ IMPLEMENT_DYNCREATE(TNavyTacUnit, TTacticalUnit)
 TNavyTacUnit::TNavyTacUnit() {}
 
 // FUNCTION: IMPERIALISM 0x005a6310
-undefined TNavyTacUnit::OrphanTiny_ReturnZero_005a5d40() {
-  return 0;
+int TNavyTacUnit::GetBaseActionPoints() {
+  return baseActionPoints3c;
 }
 
 // FUNCTION: IMPERIALISM 0x005a6330

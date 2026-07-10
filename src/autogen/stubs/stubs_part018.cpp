@@ -547,14 +547,6 @@ undefined4 UpdateTurnAudioPlaybackStateAndScheduleCue(void)
   return 0;
 }
 
-// ghidra_name TOceanDialog::RequestAudioPresetChangeWithDeferredApply
-// ghidra_proto undefined RequestAudioPresetChangeWithDeferredApply()
-// FUNCTION: IMPERIALISM 0x00593920
-undefined4 RequestAudioPresetChangeWithDeferredApply(void)
-{
-  return 0;
-}
-
 // ghidra_name TSimMgr::SetOutputDevice
 // ghidra_proto void __thiscall SetOutputDevice(int this_ptr)
 // FUNCTION: IMPERIALISM 0x00593a10
@@ -783,14 +775,6 @@ undefined4 CompareTacticalCursorEntriesByActionClassPriority(void)
 // ghidra_proto undefined CreateTArmyPlayerInstance()
 // FUNCTION: IMPERIALISM 0x0059b170
 undefined4 CreateTArmyPlayerInstance(void)
-{
-  return 0;
-}
-
-// ghidra_name InitializeTacticalSideFromArmyUnitList
-// ghidra_proto undefined InitializeTacticalSideFromArmyUnitList()
-// FUNCTION: IMPERIALISM 0x0059b1b0
-undefined4 InitializeTacticalSideFromArmyUnitList(void)
 {
   return 0;
 }

@@ -5,12 +5,13 @@
 
 // Forward declarations for types referenced by generated signatures.
 class astruct_13;
+class TTacticalUnit;
 
 // TODO(manifest): describe TTacticalBattleView and its role. Base edge (TView) recovered from RTTI CRuntimeClass chain: TTacticalBattleView -> TView -> TEventHandler -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x0066a380
 class TTacticalBattleView : public TView {
 public:
-// === BEGIN GENERATED DECLS (TTacticalBattleView) — refreshed by recover-class; do not hand-edit ===
+  // === BEGIN GENERATED DECLS (TTacticalBattleView) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TTacticalBattleView)
   virtual ~TTacticalBattleView() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -64,7 +65,9 @@ public:
   // slot 0x32 ValidateControlRectIfWindowActive inherited unchanged (0x48b690)
   // slot 0x33 EvaluateControlInputGate inherited unchanged (0x48c000)
   // slot 0x34 HasRenderableParentAndContent inherited unchanged (0x48c050)
-  virtual void HandleCursorHoverSelectionByChildHitTestAndFallback(CPoint* point, int hitArg) override; // slot 0x35 0x5a8d40
+  virtual void
+  HandleCursorHoverSelectionByChildHitTestAndFallback(CPoint* point,
+                                                      int hitArg) override; // slot 0x35 0x5a8d40
   // slot 0x36 DispatchControlEventToChildrenAndSelf inherited unchanged (0x48aaf0)
   virtual void NoOpUiLifecycleHook(int arg) override; // slot 0x37 0x5a84d0
   // slot 0x38 NoOpUiCallback inherited unchanged (0x48abc0)
@@ -82,7 +85,8 @@ public:
   // slot 0x44 ApplyRectSlot110 inherited unchanged (0x430bf0)
   // slot 0x45 vmethod_0048 inherited unchanged (0x48b860)
   // slot 0x46 DispatchUiMouseMoveToChildren inherited unchanged (0x48c450)
-  virtual void BeginMouseCaptureAndStartRepeatTimer(CPoint* point, int arg2, int arg3, int arg4) override; // slot 0x47 0x5a8660
+  virtual void BeginMouseCaptureAndStartRepeatTimer(CPoint* point, int arg2, int arg3,
+                                                    int arg4) override; // slot 0x47 0x5a8660
   // slot 0x48 DispatchUiMouseEventToChildrenOrSelf_Impl inherited unchanged (0x48c590)
   // slot 0x49 vmethod_0071 inherited unchanged (0x427240)
   // slot 0x4a QueryContentBounds inherited unchanged (0x427260)
@@ -115,18 +119,29 @@ public:
   // slot 0x65 AssertMcAppUILine1914 inherited unchanged (0x48c7a0)
   // slot 0x66 AssertMcAppUILine1922 inherited unchanged (0x48c7d0)
   // slot 0x67 CtrlSlot103_SubtractPosAndDispatchSlot19C_Impl inherited unchanged (0x48bac0)
-  virtual undefined WrapperFor_InvalidateCityDialogRectRegion_At005a8900(int param_1); // slot 0x68 0x5a8900
-  virtual undefined WrapperFor_InvalidateCityDialogRectRegion_At005a89a0(int param_1); // slot 0x69 0x5a89a0
-  virtual undefined OrphanLeaf_NoCall_Ins59_005a89f0(int param_1, int * param_2); // slot 0x6a 0x5a89f0
-  virtual undefined AdjustTacticalUnitVerticalOffsetAndRefreshMarker(); // slot 0x6b 0x5a8be0
-  virtual undefined OrphanRetStub_005a83c0(); // slot 0x6c 0x5a83c0
+  virtual undefined
+  WrapperFor_InvalidateCityDialogRectRegion_At005a8900(int param_1);     // slot 0x68 0x5a8900
+  virtual undefined InvalidateTacticalUnitTileRect(TTacticalUnit* unit); // slot 0x69 0x5a89a0
+  virtual undefined OrphanLeaf_NoCall_Ins59_005a89f0(int param_1,
+                                                     int* param_2);        // slot 0x6a 0x5a89f0
+  virtual undefined AdjustTacticalUnitVerticalOffsetAndRefreshMarker();    // slot 0x6b 0x5a8be0
+  virtual undefined OrphanRetStub_005a83c0();                              // slot 0x6c 0x5a83c0
   virtual undefined RunOneTimeAnimationModalWaitAndInvalidateCityDialog(); // slot 0x6d 0x5a9170
-  virtual undefined OrphanCallChain_C2_I66_005a9090(int param_1, undefined4 param_2, undefined4 param_3); // slot 0x6e 0x5a9090
-  virtual undefined WrapperFor_InvalidateCityDialogRectRegion_At005a9240(int param_1, int param_2, int param_3); // slot 0x6f 0x5a9240
-  virtual void DrawUiTilesAndOverlay(astruct_13* ui_ctx); // slot 0x70 0x5a9550
-// === END GENERATED DECLS (TTacticalBattleView) ===
+  virtual undefined PlayTacticalTileEffect(int tileIndex, int effectId,
+                                           int frameCount); // slot 0x6e 0x5a9090
+  virtual undefined AnimateTacticalUnitMoveBetweenTiles(TTacticalUnit* unit, int fromTileIndex,
+                                                        int toTileIndex); // slot 0x6f 0x5a9240
+  virtual void DrawUiTilesAndOverlay(astruct_13* ui_ctx);                 // slot 0x70 0x5a9550
+  // === END GENERATED DECLS (TTacticalBattleView) ===
   // TODO(manifest): add data members from the object slice (`just slice-discovery TTacticalBattleView 0xCTOR`).
 
   TTacticalBattleView();
-};
 
+  // Tactical-battle UI helpers dispatched from the TTacticalBattle command handlers
+  // (all __thiscall on the live view; verified at every call site). Bodies TODO.
+  void UpdateTacticalActionControlBitmapForCurrentUnit(char side); // 0x5a9b40
+  void InvalidateTacticalHexTileRect(int tileIndex);               // 0x5a8860
+  void CenterViewportAroundGridIndexAndSnap(int tileIndex);        // 0x5a8ac0
+  void SpawnTacticalUiMarkerAtUnitTile();                          // 0x5a9bb0
+  void TriggerTacticalUiUpdate2711();                              // 0x5a9cc0
+};

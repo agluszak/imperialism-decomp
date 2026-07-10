@@ -1,6 +1,22 @@
 #include "game/TArmyBattle.h"
 
+#include "game/CIterator.h"
+#include "game/TArmyPlayer.h"
+#include "game/TArmyStack.h"
+#include "game/TArmyTacUnit.h"
+#include "game/TDisplayMgr.h"
+#include "game/TGreatPower.h"
 #include "game/TList.h"
+#include "game/TMilitaryUnit.h"
+#include "game/TSimMgr.h"
+#include "game/TSoundPlayer.h"
+#include "game/TStream.h"
+#include "game/TTacArmyView.h"
+#include "game/TView.h"
+#include "game/TViewMgr.h"
+#include "game/global_data_tables.h"
+
+extern undefined4 GenerateThreadLocalRandom15(void);
 
 // SYNTHETIC: IMPERIALISM 0x004a5c50
 // TArmyBattle::`scalar deleting destructor'
@@ -25,20 +41,226 @@ void TArmyBattle::AllocateRecordList() {
 // FUNCTION: IMPERIALISM 0x005a4790
 void TArmyBattle::InitializeBattleSetupAndMaybeDispatchTurnEventED8(TArmyStack* ourStack,
                                                                     TArmyStack* enemyStack,
-                                                                    int compositionClass) {
-  // TODO: port body @ 0x5a4790 (387 bytes; not yet ported). Declared for real so callers
-  // (TArmyMgr::CreateTacticalBattleViewAndInitializeBattleSetup) get a correctly-typed
-  // call site.
-  (void)ourStack;
-  (void)enemyStack;
-  (void)compositionClass;
+                                                                    int compositionClass,
+                                                                    int fortLevel,
+                                                                    int battleSiteIndex) {
+  // Fixed tactical battle grid: 435 tiles (0x1b3), stride 29 (0x1d).
+  tacticalTileCount3c = 0x1b3;
+  tacticalTileStride40 = 0x1d;
+  // AI/watch flags for each side (TGreatPower +0xa0), only when preference slot 0 is
+  // set and no multiplayer session mode is active.
+  unsigned char enemySideWatchFlag = 0;
+  unsigned char ourSideWatchFlag = 0;
+  if (g_pSimMgr->preferenceValues[0] != 0) {
+    unsigned char sessionModeActive = g_pSimMgr->field44 != 0;
+    if (sessionModeActive == 0) {
+      ourSideWatchFlag = g_apNationStates[ourStack->categoryFlag8]->diplomacyEligibilityA0;
+      if (enemyStack->categoryFlag8 < 7) {
+        enemySideWatchFlag = g_apNationStates[enemyStack->categoryFlag8]->diplomacyEligibilityA0;
+      } else {
+        enemySideWatchFlag = 0; // explicit redundant store present in the original
+      }
+    }
+  }
+
+  TArmyPlayer* ourPlayer = new TArmyPlayer();
+  ourPlayer->InitializeTacticalSideFromArmyUnitList(ourStack, 1, ourSideWatchFlag,
+                                                    ourStack->categoryFlag8);
+  TArmyPlayer* enemyPlayer = new TArmyPlayer();
+  enemyPlayer->InitializeTacticalSideFromArmyUnitList(enemyStack, 0, enemySideWatchFlag,
+                                                      enemyStack->categoryFlag8);
+  BuildTacticalBattleStateFromBothSides(ourPlayer, enemyPlayer);
+
+  battleSiteIndex38 = battleSiteIndex;
+  LoadBattleSetupTabDataByIndex(compositionClass, fortLevel);
+  compositionClass50 = compositionClass;
+  fortLevel49 = static_cast<char>(fortLevel);
+
+  // Show the live tactical-battle view when forced globally or either side is watched.
+  if (g_nForceTacticalBattleViewFlag_006A4758 != 0 || enemySideWatchFlag != 0 ||
+      ourSideWatchFlag != 0) {
+    g_nTurnCooldownDeferCounter006A43C4 = 0;
+    g_pSfxPlaybackSystem->RequestAudioPresetChangeWithDeferredApply(
+        static_cast<int>(GenerateThreadLocalRandom15()) % 3 + 6, 0); // battle cue 6..8
+    g_pUiRuntimeContext->DispatchTurnEventSlot4C(0xed8, 0);
+    TTacArmyView* battleView = static_cast<TTacArmyView*>(
+        g_pDisplayMgr->activeDialog->ResolveControlByTag(0x444c4f47 /* 'DLOG' */));
+    battleView->AssertValid();
+    battleView8 = battleView;
+    battleView->ConstructTTacArmyViewBaseState(compositionClass, this);
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x005a4990
-void TArmyBattle::ReadFrom(TStream* stream) {}
+void TArmyBattle::ReadFrom(TStream* stream) {
+  stream->ReadBytes(&currentSideC, 4);
+  stream->ReadBytes(&field10, 4);
+  // Per-side stack identity triplets (index into g_apNationStates, owner nation code,
+  // originating tile), written by WriteTo from each player's armyStack28.
+  int ourNationIndex;
+  int ourNationCode;
+  int ourTileIndex;
+  int enemyNationIndex;
+  int enemyNationCode;
+  int enemyTileIndex;
+  stream->ReadBytes(&ourNationIndex, 4);
+  stream->ReadBytes(&ourNationCode, 4);
+  stream->ReadBytes(&ourTileIndex, 4);
+  stream->ReadBytes(&enemyNationIndex, 4);
+  stream->ReadBytes(&enemyNationCode, 4);
+  stream->ReadBytes(&enemyTileIndex, 4);
+
+  // Only the low word is read from the stream; the loop tests the word and decrements
+  // the full dword, matching the original codegen.
+  int unitRecordCount;
+  stream->ReadBytes(&unitRecordCount, 2);
+  while (static_cast<short>(unitRecordCount--) != 0) {
+    int unitId;
+    stream->ReadBytes(&unitId, 4);
+    TMilitaryUnit* sourceUnit = FindMilitaryUnitByIdAcrossTerrainDescriptors(unitId);
+    TArmyTacUnit* record = new TArmyTacUnit();
+    // Field-fill mirrors the TArmyTacUnit base-state init (0x5a5f20) exactly (same
+    // store order) -- the original duplicated this init here.
+    record->unitTypeC = sourceUnit->orderType;
+    record->tileIndex8 = -2;
+    record->selectedFlag18 = 0;
+    record->state1c = 0;
+    record->actionPoints28 = record->GetBaseActionPoints();
+    record->field2c = 0;
+    record->field30 = 0;
+    record->strength4 = sourceUnit->field_34;
+    record->morale34 = sourceUnit->field_34;
+    record->qualityLevel10 = static_cast<short>(sourceUnit->field_38 / 100);
+    record->ownerNationIndex14 = sourceUnit->field_18;
+    record->field40 = -1;
+    record->sourceUnit38 = sourceUnit;
+    unsigned char deployedCategory0Flag;
+    if (sourceUnit->field_8 == 2 &&
+        g_anUnitTypeCombatCategoryByType00669858[record->unitTypeC] == 0) {
+      deployedCategory0Flag = 1;
+    } else {
+      deployedCategory0Flag = 0;
+    }
+    record->flag3c = deployedCategory0Flag;
+    stream->ReadBytes(&record->side20, 4);
+    stream->ReadBytes(&record->field24, 2);
+    recordList20->AddTail(record);
+  }
+
+  // Re-link the selected/linked unit record by its source unit id.
+  int linkedUnitId;
+  stream->ReadBytes(&linkedUnitId, 4);
+  TArmyTacUnit* linkedRecord = 0;
+  if (linkedUnitId != 0) {
+    CIterator linkIter(recordList20);
+    for (TArmyTacUnit* candidate = static_cast<TArmyTacUnit*>(linkIter.Reset()); linkIter.More();
+         candidate = static_cast<TArmyTacUnit*>(linkIter.Advance())) {
+      int candidateUnitId;
+      if (candidate != 0 && candidate->sourceUnit38 != 0) {
+        candidateUnitId = candidate->sourceUnit38->field_20;
+      } else {
+        candidateUnitId = 0;
+      }
+      if (candidateUnitId == linkedUnitId) {
+        linkedRecord = candidate;
+        break;
+      }
+    }
+  }
+  selectedUnit1c = linkedRecord;
+
+  stream->ReadBytes(&battleSiteIndex38, 4);
+  stream->ReadBytes(&field44, 4);
+  stream->ReadBytes(&fortLevel49, 1);
+  stream->ReadBytes(&field4c, 4);
+  stream->ReadBytes(&compositionClass50, 4);
+
+  // Rebuild the two combatant stacks and re-add every source unit to its side.
+  TArmyStack* ourBattleStack = new TArmyStack();
+  ourBattleStack->InitializeSideAndTile(static_cast<char>(ourNationIndex),
+                                        static_cast<short>(ourNationCode),
+                                        static_cast<short>(ourTileIndex));
+  TArmyStack* enemyBattleStack = new TArmyStack();
+  enemyBattleStack->InitializeSideAndTile(static_cast<char>(enemyNationIndex),
+                                          static_cast<short>(enemyNationCode),
+                                          static_cast<short>(enemyTileIndex));
+  CIterator recordIter(recordList20);
+  for (TArmyTacUnit* deployRecord = static_cast<TArmyTacUnit*>(recordIter.Reset());
+       recordIter.More(); deployRecord = static_cast<TArmyTacUnit*>(recordIter.Advance())) {
+    TArmyStack* targetStack;
+    if (deployRecord->ownerNationIndex14 == ourNationIndex) {
+      targetStack = ourBattleStack;
+    } else {
+      targetStack = enemyBattleStack;
+    }
+    targetStack->AddUnitToChainHead(deployRecord->sourceUnit38);
+  }
+
+  InitializeBattleSetupAndMaybeDispatchTurnEventED8(
+      ourBattleStack, enemyBattleStack, compositionClass50, fortLevel49, battleSiteIndex38);
+}
 
 // FUNCTION: IMPERIALISM 0x005a4da0
-void TArmyBattle::WriteTo(TStream* stream) {}
+void TArmyBattle::WriteTo(TStream* stream) {
+  stream->WriteBytesSlot78(&currentSideC, 4);
+  stream->WriteBytesSlot78(&field10, 4);
+
+  TArmyPlayer* ourPlayer = static_cast<TArmyPlayer*>(tacticalPlayer14);
+  ourPlayer->AssertValid();
+  int ourNationIndex = ourPlayer->armyStack28->categoryFlag8;
+  stream->WriteBytesSlot78(&ourNationIndex, 4);
+  int ourNationCode = ourPlayer->armyStack28->ownerNationCodeE;
+  stream->WriteBytesSlot78(&ourNationCode, 4);
+  int ourTileIndex = ourPlayer->armyStack28->tileIndex10;
+  stream->WriteBytesSlot78(&ourTileIndex, 4);
+
+  TArmyPlayer* enemyPlayer = static_cast<TArmyPlayer*>(tacticalPlayer18);
+  enemyPlayer->AssertValid();
+  int enemyNationIndex = enemyPlayer->armyStack28->categoryFlag8;
+  stream->WriteBytesSlot78(&enemyNationIndex, 4);
+  int enemyNationCode = enemyPlayer->armyStack28->ownerNationCodeE;
+  stream->WriteBytesSlot78(&enemyNationCode, 4);
+  int enemyTileIndex = enemyPlayer->armyStack28->tileIndex10;
+  stream->WriteBytesSlot78(&enemyTileIndex, 4);
+
+  int unitRecordCount = recordList20->GetCount();
+  stream->WriteBytesSlot78(&unitRecordCount, 2);
+  CIterator recordIter(recordList20);
+  for (TArmyTacUnit* record = static_cast<TArmyTacUnit*>(recordIter.Reset()); recordIter.More();
+       record = static_cast<TArmyTacUnit*>(recordIter.Advance())) {
+    int recordUnitId;
+    if (record != 0 && record->sourceUnit38 != 0) {
+      recordUnitId = record->sourceUnit38->field_20;
+    } else {
+      recordUnitId = 0;
+    }
+    stream->WriteBytesSlot78(&recordUnitId, 4);
+    stream->WriteBytesSlot78(&record->side20, 4);
+    stream->WriteBytesSlot78(&record->field24, 2);
+  }
+
+  TArmyTacUnit* linked = static_cast<TArmyTacUnit*>(selectedUnit1c);
+  int linkedUnitId;
+  if (linked != 0 && linked->sourceUnit38 != 0) {
+    linkedUnitId = linked->sourceUnit38->field_20;
+  } else {
+    linkedUnitId = 0;
+  }
+  stream->WriteBytesSlot78(&linkedUnitId, 4);
+
+  stream->WriteBytesSlot78(&battleSiteIndex38, 4);
+  stream->WriteBytesSlot78(&field44, 4);
+  stream->WriteBytesSlot78(&fortLevel49, 1);
+  stream->WriteBytesSlot78(&field4c, 4);
+  stream->WriteBytesSlot78(&compositionClass50, 4);
+}
+
+// FUNCTION: IMPERIALISM 0x005a4fc0
+void TArmyBattle::LoadBattleSetupTabDataByIndex(int compositionClass, int fortLevel) {
+  // TODO: port body @ 0x5a4fc0.
+  (void)compositionClass;
+  (void)fortLevel;
+}
 
 // FUNCTION: IMPERIALISM 0x005a51e0
 undefined TArmyBattle::OrphanRetStub_0059f710() {

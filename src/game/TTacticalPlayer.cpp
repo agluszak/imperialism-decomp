@@ -35,8 +35,6 @@ TTacticalPlayer::~TTacticalPlayer() {}
 
 IMPLEMENT_DYNCREATE(TTacticalPlayer, TObject)
 
-TTacticalPlayer::TTacticalPlayer() {}
-
 void TTacticalPlayer::Free() {}
 
 undefined TTacticalPlayer::Helper_Uses_FindListNodeByKeyFromNodeOrHead_At0059afa0() {

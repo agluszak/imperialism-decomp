@@ -13,9 +13,15 @@ IMPLEMENT_DYNCREATE(TTacArmyView, TTacticalBattleView)
 
 TTacArmyView::TTacArmyView() {}
 
-// FUNCTION: IMPERIALISM 0x005aa2e0
-void TTacArmyView::ApplyRectSlot110(RECT* rectBuffer) {
+// FUNCTION: IMPERIALISM 0x005a9d90
+void TTacArmyView::ConstructTTacArmyViewBaseState(int compositionClass, TArmyBattle* battle) {
+  // TODO: port body @ 0x5a9d90.
+  (void)compositionClass;
+  (void)battle;
 }
+
+// FUNCTION: IMPERIALISM 0x005aa2e0
+void TTacArmyView::ApplyRectSlot110(RECT* rectBuffer) {}
 
 // FUNCTION: IMPERIALISM 0x005aa900
 undefined TTacArmyView::OrphanRetStub_005a83c0() {

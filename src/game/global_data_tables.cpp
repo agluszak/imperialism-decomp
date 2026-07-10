@@ -1079,6 +1079,32 @@ TTacticalBattle* g_pActiveTacticalBattle;
 // GLOBAL: IMPERIALISM 0x006a3d64
 int g_nTurnEvent2BNationMaskAccumulator;
 
+// Per-unit-type combat-category word table (.rdata): 0 infantry-like, 1/2/3 ranged
+// classes, 4 support; indexed by TUnit::orderType.
+// GLOBAL: IMPERIALISM 0x00669858
+short g_anUnitTypeCombatCategoryByType00669858[32] = {
+    0, 0, 0, 0, 1, 1, 2, 2, 0, 0, 0, 0, 1, 1, 2, 2, 0, 0, 0, 0, 1, 3, 2, 2, 4, 4, 4, 4, 4, 4, 0, 0};
+
+// Per-unit-type base action-point word table (.rdata); TArmyTacUnit::
+// GetBaseActionPoints (0x5a6120) returns this value for the unit's type.
+// GLOBAL: IMPERIALISM 0x00669898
+short g_awUnitTypeBaseActionPointTable[32] = {40, 60,  40, 40, 110, 90, 50, 30, 40, 60,  40,
+                                              40, 110, 90, 60, 30,  50, 70, 50, 40, 110, 90,
+                                              80, 30,  40, 40, 50,  90, 90, 90, 0,  0};
+
+// Per-unit-type tactical fire sound-effect token table (.rdata); indexed by
+// TTacticalUnit::unitTypeC when a unit fires in the tactical battle.
+// GLOBAL: IMPERIALISM 0x00669dc0
+short g_awTacticalFireSfxTokenByUnitType[32] = {
+    0x3a98, 0x3a98, 0x3a98, 0x3a98, 0x3a99, 0x3a99, 0x3a9b, 0x3a9b, 0x3a98, 0x3a98, 0x3a98,
+    0x3a98, 0x3a99, 0x3a99, 0x3a9b, 0x3a9b, 0x3aa6, 0x3aa6, 0x3aa6, 0x3a9c, 0x3aa6, 0x3a9a,
+    0x3a9b, 0x3a9b, 0x3a9d, 0x3a9d, 0x3a9d, 0x3a98, 0x3a98, 0x3aa6, 0,      0};
+
+// Force-show flag for the tactical battle view (semantics unverified; OR'd with the
+// two per-side watch flags at battle setup).
+// GLOBAL: IMPERIALISM 0x006a4758
+char g_nForceTacticalBattleViewFlag_006A4758;
+
 // Save-game path construction strings.
 // GLOBAL: IMPERIALISM 0x00698708
 char g_szImpSaveExtension_00698708[] = ".imp";
@@ -1185,10 +1211,6 @@ char s_mcflavor_00696d10[] = "";
 char s_mcflavor_00697238[] = "";
 // GLOBAL: IMPERIALISM 0x006976e0
 char s_mcflavor_006976e0[] = "";
-// GLOBAL: IMPERIALISM 0x00698720
-char s_mcflavor_00698720[] = "";
-// GLOBAL: IMPERIALISM 0x0069872c
-char s_mcflavor_0069872c[] = "";
 // GLOBAL: IMPERIALISM 0x00698b0c
 char s_mcflavor_00698b0c[] = "";
 // GLOBAL: IMPERIALISM 0x0069ab00

@@ -82,3 +82,7 @@ public:
 };
 
 ASSERT_SIZE(TMilitaryUnit, 0x44);
+
+// Finds a military unit by its TUnit::field_20 id across every terrain descriptor's
+// militaryUnitList44; 0 when unitId is 0 or nothing matches. 0x005c38e0, __cdecl.
+TMilitaryUnit* FindMilitaryUnitByIdAcrossTerrainDescriptors(int unitId);

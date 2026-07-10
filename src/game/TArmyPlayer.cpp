@@ -11,7 +11,16 @@ TArmyPlayer::~TArmyPlayer() {}
 
 IMPLEMENT_DYNCREATE(TArmyPlayer, TTacticalPlayer)
 
-TArmyPlayer::TArmyPlayer() {}
+// FUNCTION: IMPERIALISM 0x0059b1b0
+void TArmyPlayer::InitializeTacticalSideFromArmyUnitList(TArmyStack* stack, int isOurSide,
+                                                         char watchFlag, int nationIndex) {
+  // TODO: port body @ 0x59b1b0 (builds the side's TArmyTacUnit records from the
+  // stack's unit chain and stores the stack into armyStack28).
+  (void)stack;
+  (void)isOurSide;
+  (void)watchFlag;
+  (void)nationIndex;
+}
 
 // FUNCTION: IMPERIALISM 0x0059b3e0
 undefined TArmyPlayer::OrphanRetStub_0059add0() {

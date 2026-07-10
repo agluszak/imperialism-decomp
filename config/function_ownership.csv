@@ -992,9 +992,12 @@ address|target_cpp|ownership|note
 4a6ef0|src/game/TArmyMgr.cpp|manual|marker_sync
 4a76a0|src/game/TArmyStack.cpp|manual|marker_sync
 4a76d0|src/game/TArmyStack.cpp|manual|marker_sync
+4a76f0|src/game/TArmyStack.cpp|manual|marker_sync
 4a7720|src/game/TArmyStack.cpp|manual|marker_sync
+4a7770|src/game/TArmyStack.cpp|manual|marker_sync
 4a77b0|src/game/TArmyStack.cpp|manual|marker_sync
 4a7960|src/game/TArmyStack.cpp|manual|marker_sync
+4a7b20|src/game/TArmyStack.cpp|manual|marker_sync
 4a7c20|src/game/TArmyStack.cpp|manual|marker_sync
 4a7e70|src/game/TArmyStack.cpp|manual|marker_sync
 4a8040|src/game/TArmyStack.cpp|manual|marker_sync
@@ -2991,6 +2994,8 @@ address|target_cpp|ownership|note
 54bd20|src/game/TMultiplayerMgr_HandleDiplomacyTurnEvent.cpp|manual|marker_sync
 54c5a0|src/game/TMultiplayerMgr.cpp|manual|marker_sync
 54c660|src/game/TMultiplayerMgr.cpp|manual|marker_sync
+54c680|src/game/TMultiplayerMgr.cpp|manual|marker_sync
+54c6a0|src/game/TMultiplayerMgr.cpp|manual|marker_sync
 54c8e0|src/game/TMultiplayerMgr.cpp|manual|marker_sync
 54cc00|src/game/TMultiplayerMgr.cpp|manual|marker_sync
 54ce80|src/game/TMultiplayerMgr.cpp|manual|marker_sync
@@ -3936,6 +3941,7 @@ address|target_cpp|ownership|note
 593730|src/game/TSoundPlayer.cpp|manual|marker_sync
 593760|src/game/TSoundPlayer.cpp|manual|marker_sync
 593790|src/game/TSoundPlayer.cpp|manual|marker_sync
+593920|src/game/TSoundPlayer.cpp|manual|marker_sync
 593c10|src/game/TSoundPlayer.cpp|manual|marker_sync
 593cb0|src/game/TSoundPlayer.cpp|manual|marker_sync
 593e80|src/game/TStatusPicture.cpp|manual|marker_sync
@@ -4025,6 +4031,7 @@ address|target_cpp|ownership|note
 59b110|src/game/TArmyPlayer.cpp|manual|marker_sync
 59b140|src/game/TArmyPlayer.cpp|manual|marker_sync
 59b190|src/game/TArmyPlayer.cpp|manual|marker_sync
+59b1b0|src/game/TArmyPlayer.cpp|manual|marker_sync
 59b390|src/game/TArmyTacUnit.cpp|manual|marker_sync
 59b3e0|src/game/TArmyPlayer.cpp|manual|marker_sync
 59b4f0|src/game/TArmyPlayer.cpp|manual|marker_sync
@@ -4060,10 +4067,13 @@ address|target_cpp|ownership|note
 59f770|src/game/TTacticalBattle.cpp|manual|marker_sync
 59f7a0|src/game/TTacticalBattle.cpp|manual|marker_sync
 59f7f0|src/game/TArmyBattle.cpp|manual|marker_sync
+59f890|src/game/TTacticalBattle.cpp|manual|marker_sync
 59fb50|src/game/TTacticalBattle.cpp|manual|marker_sync
 59fc20|src/game/TTacticalBattle.cpp|manual|marker_sync
+59fe40|src/game/TTacticalBattle.cpp|manual|marker_sync
 59ff20|src/game/TTacticalBattle.cpp|manual|marker_sync
 5a02e0|src/game/TTacticalBattle.cpp|manual|marker_sync
+5a0420|src/game/TTacticalBattle.cpp|manual|marker_sync
 5a1010|src/game/TTacticalBattle.cpp|manual|marker_sync
 5a1400|src/game/TTacticalBattle.cpp|manual|marker_sync
 5a1910|src/game/TTacticalBattle.cpp|manual|marker_sync
@@ -4072,6 +4082,7 @@ address|target_cpp|ownership|note
 5a1ee0|src/game/TTacticalBattle.cpp|manual|marker_sync
 5a24a0|src/game/TTacticalBattle.cpp|manual|marker_sync
 5a2700|src/game/TTacticalBattle.cpp|manual|marker_sync
+5a2750|src/game/TTacticalBattle.cpp|manual|marker_sync
 5a3190|src/game/TTacticalBattle.cpp|manual|marker_sync
 5a3210|src/game/TTacticalBattle.cpp|manual|marker_sync
 5a3320|src/game/TTacticalBattle.cpp|manual|marker_sync
@@ -4082,12 +4093,14 @@ address|target_cpp|ownership|note
 5a3810|src/game/TTacticalBattle.cpp|manual|marker_sync
 5a38e0|src/game/TTacticalBattle.cpp|manual|marker_sync
 5a39a0|src/game/map_overlay_geometry.cpp|manual|marker_sync
+5a3c20|src/game/TTacticalBattle.cpp|manual|marker_sync
 5a4370|src/game/TTacticalBattle.cpp|manual|marker_sync
 5a4710|src/game/TArmyBattle.cpp|manual|marker_sync
 5a4750|src/game/TArmyBattle.cpp|manual|marker_sync
 5a4790|src/game/TArmyBattle.cpp|manual|marker_sync
 5a4990|src/game/TArmyBattle.cpp|manual|marker_sync
 5a4da0|src/game/TArmyBattle.cpp|manual|marker_sync
+5a4fc0|src/game/TArmyBattle.cpp|manual|marker_sync
 5a51e0|src/game/TArmyBattle.cpp|manual|marker_sync
 5a5320|src/game/TArmyBattle.cpp|manual|marker_sync
 5a53e0|src/game/TTacticalBattle.cpp|manual|marker_sync
@@ -4134,9 +4147,11 @@ address|target_cpp|ownership|note
 5a84d0|src/game/TTacticalBattleView.cpp|manual|marker_sync
 5a8550|src/game/TTacticalBattleView.cpp|manual|marker_sync
 5a8660|src/game/TTacticalBattleView.cpp|manual|marker_sync
+5a8860|src/game/TTacticalBattleView.cpp|manual|marker_sync
 5a8900|src/game/TTacticalBattleView.cpp|manual|marker_sync
 5a89a0|src/game/TTacticalBattleView.cpp|manual|marker_sync
 5a89f0|src/game/TTacticalBattleView.cpp|manual|marker_sync
+5a8ac0|src/game/TTacticalBattleView.cpp|manual|marker_sync
 5a8be0|src/game/TTacticalBattleView.cpp|manual|marker_sync
 5a8ca0|src/game/TTacticalBattleView.cpp|manual|marker_sync
 5a8d40|src/game/TTacticalBattleView.cpp|manual|marker_sync
@@ -4144,8 +4159,12 @@ address|target_cpp|ownership|note
 5a9170|src/game/TTacticalBattleView.cpp|manual|marker_sync
 5a9240|src/game/TTacticalBattleView.cpp|manual|marker_sync
 5a9550|src/game/TTacticalBattleView.cpp|manual|marker_sync
+5a9b40|src/game/TTacticalBattleView.cpp|manual|marker_sync
+5a9bb0|src/game/TTacticalBattleView.cpp|manual|marker_sync
+5a9cc0|src/game/TTacticalBattleView.cpp|manual|marker_sync
 5a9cf0|src/game/TTacArmyView.cpp|manual|marker_sync
 5a9d70|src/game/TTacArmyView.cpp|manual|marker_sync
+5a9d90|src/game/TTacArmyView.cpp|manual|marker_sync
 5aa2e0|src/game/TTacArmyView.cpp|manual|marker_sync
 5aa900|src/game/TTacArmyView.cpp|manual|marker_sync
 5ac780|src/game/TTacticalToolbar.cpp|manual|marker_sync
@@ -4479,6 +4498,7 @@ address|target_cpp|ownership|note
 5c3490|src/game/TMilitaryUnit.cpp|manual|marker_sync
 5c34d0|src/game/TMilitaryUnit.cpp|manual|marker_sync
 5c3530|src/game/TMilitaryUnit.cpp|manual|marker_sync
+5c38e0|src/game/TMilitaryUnit.cpp|manual|marker_sync
 5c3b70|src/game/bitmap_descriptor_helpers.cpp|manual|marker_sync
 5c3d20|src/game/quickdraw_rendering.cpp|manual|marker_sync
 5c3e80|src/game/quickdraw_rendering.cpp|manual|marker_sync

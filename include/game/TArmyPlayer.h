@@ -3,6 +3,8 @@
 #include "game/TTacticalPlayer.h"
 #include "game/mfc.h"
 
+class TArmyStack;
+
 // TODO(manifest): describe TArmyPlayer and its role. Base edge (TTacticalPlayer) recovered from RTTI CRuntimeClass chain: TArmyPlayer -> TTacticalPlayer -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x006695f0
 class TArmyPlayer : public TTacticalPlayer {
@@ -32,7 +34,22 @@ public:
   virtual undefined RunTacticalAutoTurnControllerForActiveUnit(); // slot 0x14 0x59e4f0
   virtual undefined TArmyTacUnit_VtblSlot09();                    // slot 0x15 0x59ea60
   // === END GENERATED DECLS (TArmyPlayer) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TArmyPlayer 0xCTOR`).
 
-  TArmyPlayer();
+  // Partial slice (object is 0x54): only the side's combatant stack is recovered so
+  // far; stored by InitializeTacticalSideFromArmyUnitList and read back by
+  // TArmyBattle::WriteTo.
+  unsigned char pad04[0x28 - 0x04]; // +0x04
+  TArmyStack* armyStack28;          // +0x28
+  unsigned char pad2c[0x54 - 0x2c]; // +0x2c
+
+  // Both original construction sites (0x5a4790, 0x5a4990) inline the ctor as a bare
+  // vptr store.
+  TArmyPlayer() {}
+
+  // Builds the side's tactical unit records from the stack's army unit chain and
+  // stores the stack into armyStack28. 0x0059b1b0, __thiscall, ret 0x10. Body TODO.
+  void InitializeTacticalSideFromArmyUnitList(TArmyStack* stack, int isOurSide, char watchFlag,
+                                              int nationIndex);
 };
+
+ASSERT_SIZE(TArmyPlayer, 0x54);

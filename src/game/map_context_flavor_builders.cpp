@@ -64,16 +64,14 @@ void BuildMapContextStatusStringVariantA(CString* out) {
     const char* text = 0;
     switch (token) {
     case 'K': {
-      const char* strings[20] = {s_mcflavor_0069ac58, s_mcflavor_0069ac54,
-                                 s_mcflavor_0069ac50, s_mcflavor_0069ac4c,
-                                 s_mcflavor_0069ac48, s_mcflavor_0069ac44,
-                                 s_mcflavor_0069ac40, s_mcflavor_0069ac3c,
-                                 s_mcflavor_0069ac38, g_szCmdSwitchLang_00694250,
-                                 s_mcflavor_0069ac30, s_mcflavor_0069ac2c,
-                                 s_mcflavor_0069ac28, s_mcflavor_0069ac24,
-                                 s_mcflavor_0069ac20, s_mcflavor_0069ac1c,
-                                 s_mcflavor_0069ac18, s_mcflavor_0069ac14,
-                                 s_mcflavor_0069ac10, s_mcflavor_0069ac0c};
+      const char* strings[20] = {
+          s_mcflavor_0069ac58,        s_mcflavor_0069ac54, s_mcflavor_0069ac50,
+          s_mcflavor_0069ac4c,        s_mcflavor_0069ac48, s_mcflavor_0069ac44,
+          s_mcflavor_0069ac40,        s_mcflavor_0069ac3c, s_mcflavor_0069ac38,
+          g_szCmdSwitchLang_00694250, s_mcflavor_0069ac30, s_mcflavor_0069ac2c,
+          s_mcflavor_0069ac28,        s_mcflavor_0069ac24, s_mcflavor_0069ac20,
+          s_mcflavor_0069ac1c,        s_mcflavor_0069ac18, s_mcflavor_0069ac14,
+          s_mcflavor_0069ac10,        s_mcflavor_0069ac0c};
       const int weights[20] = {4, 3, 2, 1, 1, 4, 1, 1, 3, 1, 1, 4, 1, 1, 2, 2, 1, 2, 1, 1};
       text = PickWeighted(strings, weights, 0x25, false);
       break;
@@ -86,17 +84,26 @@ void BuildMapContextStatusStringVariantA(CString* out) {
       break;
     }
     case 'k': {
-      const char* strings[40] = {
-          s_mcflavor_0069abf4, s_mcflavor_0069abf0, s_mcflavor_0069abec, s_mcflavor_0069abe8,
-          s_mcflavor_0069abe4, s_mcflavor_0069abe0, s_mcflavor_0069abdc, s_mcflavor_0069abd8,
-          s_mcflavor_0069abd4, s_mcflavor_0069abd0, s_mcflavor_0069abcc, s_mcflavor_0069abc4,
-          s_mcflavor_0069abc0, s_mcflavor_0069abbc, s_mcflavor_0069abb8, s_mcflavor_0069abb4,
-          s_mcflavor_0069abb0, s_mcflavor_0069abac, s_mcflavor_0069aba8, s_mcflavor_0069aba4,
-          s_mcflavor_0069aba0, s_mcflavor_0069ab9c, s_mcflavor_0069ab98, s_mcflavor_0069ab94,
-          s_mcflavor_0069ab90, s_mcflavor_0069ab8c, s_mcflavor_0069ab88, s_mcflavor_00698720,
-          s_mcflavor_0069ab84, s_mcflavor_0069ab80, s_mcflavor_0069ab7c, s_mcflavor_0069ab78,
-          s_mcflavor_0069ab74, s_mcflavor_0069ab70, s_mcflavor_0069ab6c, s_mcflavor_0069ab68,
-          s_mcflavor_0069ab64, s_mcflavor_0069ab60, s_mcflavor_0069ab5c, s_mcflavor_0069ab58};
+      const char* strings[40] = {s_mcflavor_0069abf4, s_mcflavor_0069abf0,
+                                 s_mcflavor_0069abec, s_mcflavor_0069abe8,
+                                 s_mcflavor_0069abe4, s_mcflavor_0069abe0,
+                                 s_mcflavor_0069abdc, s_mcflavor_0069abd8,
+                                 s_mcflavor_0069abd4, s_mcflavor_0069abd0,
+                                 s_mcflavor_0069abcc, s_mcflavor_0069abc4,
+                                 s_mcflavor_0069abc0, s_mcflavor_0069abbc,
+                                 s_mcflavor_0069abb8, s_mcflavor_0069abb4,
+                                 s_mcflavor_0069abb0, s_mcflavor_0069abac,
+                                 s_mcflavor_0069aba8, s_mcflavor_0069aba4,
+                                 s_mcflavor_0069aba0, s_mcflavor_0069ab9c,
+                                 s_mcflavor_0069ab98, s_mcflavor_0069ab94,
+                                 s_mcflavor_0069ab90, s_mcflavor_0069ab8c,
+                                 s_mcflavor_0069ab88, g_szSaveFileReadBinaryMode_00698720,
+                                 s_mcflavor_0069ab84, s_mcflavor_0069ab80,
+                                 s_mcflavor_0069ab7c, s_mcflavor_0069ab78,
+                                 s_mcflavor_0069ab74, s_mcflavor_0069ab70,
+                                 s_mcflavor_0069ab6c, s_mcflavor_0069ab68,
+                                 s_mcflavor_0069ab64, s_mcflavor_0069ab60,
+                                 s_mcflavor_0069ab5c, s_mcflavor_0069ab58};
       const int weights[40] = {2, 2, 1, 1, 1, 3, 1, 1, 1, 2, 2, 1, 7, 1, 2, 1, 1, 1, 2, 2,
                                2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1};
       text = PickWeighted(strings, weights, 0x3a, false);
@@ -148,17 +155,17 @@ void BuildMapContextStatusStringVariantB(CString* out) {
     switch (token) {
     case 'K': {
       const char* strings[14] = {
-          s_mcflavor_0069ac10, s_mcflavor_0069ad00, s_mcflavor_0069acfc,
-          s_mcflavor_0069acf8, s_mcflavor_0069ac44, s_mcflavor_0069ac14,
-          s_mcflavor_0069ac40, s_mcflavor_0069ac38, s_mcflavor_0069acf4,
-          s_mcflavor_0069acf0, s_mcflavor_0069ac28, g_szCmdSwitchLang_00694250,
+          s_mcflavor_0069ac10, s_mcflavor_0069ad00, s_mcflavor_0069acfc, s_mcflavor_0069acf8,
+          s_mcflavor_0069ac44, s_mcflavor_0069ac14, s_mcflavor_0069ac40, s_mcflavor_0069ac38,
+          s_mcflavor_0069acf4, s_mcflavor_0069acf0, s_mcflavor_0069ac28, g_szCmdSwitchLang_00694250,
           s_mcflavor_0069ac24, s_mcflavor_0069acec};
       const int weights[14] = {3, 3, 2, 2, 2, 7, 3, 1, 1, 1, 1, 1, 1, 1};
       text = PickWeighted(strings, weights, 0x1d, false);
       break;
     }
     case 'V': {
-      const char* strings[3] = {s_mcflavor_0069872c, s_mcflavor_0069ace8, s_mcflavor_0069ac00};
+      const char* strings[3] = {g_szAutosaveSlotLabel_0069872C, s_mcflavor_0069ace8,
+                                s_mcflavor_0069ac00};
       const int weights[3] = {4, 1, 1};
       text = PickWeighted(strings, weights, 6, false);
       break;
@@ -224,10 +231,9 @@ void BuildMapContextStatusStringVariantC(CString* out) {
       break;
     case 'G': {
       const char* strings[14] = {
-          s_mcflavor_0069ac1c, s_mcflavor_0069ac58, g_szCmdSwitchLang_00694250,
-          s_mcflavor_0069ac0c, s_mcflavor_0069ac38, s_mcflavor_0069ad00,
-          s_mcflavor_0069acf4, s_mcflavor_0069ad54, s_mcflavor_0069acec,
-          s_mcflavor_0069ad50, s_mcflavor_0069ac24, s_mcflavor_0069ac54,
+          s_mcflavor_0069ac1c, s_mcflavor_0069ac58, g_szCmdSwitchLang_00694250, s_mcflavor_0069ac0c,
+          s_mcflavor_0069ac38, s_mcflavor_0069ad00, s_mcflavor_0069acf4,        s_mcflavor_0069ad54,
+          s_mcflavor_0069acec, s_mcflavor_0069ad50, s_mcflavor_0069ac24,        s_mcflavor_0069ac54,
           s_mcflavor_0069ad4c, s_mcflavor_0069ac44};
       const int weights[14] = {1, 3, 5, 3, 1, 1, 2, 2, 2, 1, 3, 1, 1, 1};
       text = PickWeighted(strings, weights, 0x1b, false);
@@ -245,7 +251,7 @@ void BuildMapContextStatusStringVariantC(CString* out) {
     }
     case 'R':
     case 'V':
-      text = s_mcflavor_0069872c;
+      text = g_szAutosaveSlotLabel_0069872C;
       break;
     case 'j': {
       const char* strings[7] = {s_mcflavor_0069ab3c, s_mcflavor_0069abcc, s_mcflavor_0069ab70,
@@ -323,9 +329,11 @@ void BuildMapContextStatusStringVariantD(CString* out) {
       break;
     }
     case 'V': {
-      const char* strings[9] = {s_mcflavor_0069abfc, s_mcflavor_0069ac00, s_mcflavor_0069ae10,
-                                s_mcflavor_0069872c, s_mcflavor_0069abf8, s_mcflavor_0069ae0c,
-                                s_mcflavor_0069ae08, s_mcflavor_0069ae04, s_mcflavor_0069ae00};
+      const char* strings[9] = {s_mcflavor_0069abfc, s_mcflavor_0069ac00,
+                                s_mcflavor_0069ae10, g_szAutosaveSlotLabel_0069872C,
+                                s_mcflavor_0069abf8, s_mcflavor_0069ae0c,
+                                s_mcflavor_0069ae08, s_mcflavor_0069ae04,
+                                s_mcflavor_0069ae00};
       const int weights[9] = {1, 4, 1, 6, 1, 1, 3, 1, 1};
       text = PickWeighted(strings, weights, 0x13, false);
       break;
@@ -402,7 +410,8 @@ void BuildMapContextStatusStringVariantE(CString* out) {
       break;
     }
     case 'V': {
-      const char* strings[3] = {s_mcflavor_0069872c, s_mcflavor_0069ae64, s_mcflavor_0069ac00};
+      const char* strings[3] = {g_szAutosaveSlotLabel_0069872C, s_mcflavor_0069ae64,
+                                s_mcflavor_0069ac00};
       const int weights[3] = {2, 1, 3};
       text = PickWeighted(strings, weights, 6, false);
       break;
@@ -466,19 +475,16 @@ void BuildMapContextStatusStringVariantF(CString* out) {
     const char* text = 0;
     switch (token) {
     case 'C': {
-      const char* strings[7] = {g_szCmdSwitchLang_00694250,
-                                s_mcflavor_0069ac2c,
-                                s_mcflavor_0069ac24,
-                                s_mcflavor_0069ac40,
-                                s_mcflavor_0069ac44,
-                                s_mcflavor_0069ac14,
-                                s_mcflavor_0069ac58};
+      const char* strings[7] = {
+          g_szCmdSwitchLang_00694250, s_mcflavor_0069ac2c, s_mcflavor_0069ac24, s_mcflavor_0069ac40,
+          s_mcflavor_0069ac44,        s_mcflavor_0069ac14, s_mcflavor_0069ac58};
       const int weights[7] = {2, 3, 3, 0xa, 5, 0xe, 0xa};
       text = PickWeighted(strings, weights, 0x2f, false);
       break;
     }
     case 'V': {
-      const char* strings[3] = {s_mcflavor_0069aedc, s_mcflavor_0069872c, s_mcflavor_0069aed8};
+      const char* strings[3] = {s_mcflavor_0069aedc, g_szAutosaveSlotLabel_0069872C,
+                                s_mcflavor_0069aed8};
       const int weights[3] = {1, 2, 1};
       text = PickWeighted(strings, weights, 3, true);
       break;
@@ -544,10 +550,9 @@ void BuildMapContextStatusStringVariantG(CString* out) {
       break;
     case 'G': {
       const char* strings[14] = {
-          s_mcflavor_0069ac38, s_mcflavor_0069ac58, s_mcflavor_0069ac44,
-          s_mcflavor_0069acf0, s_mcflavor_0069ac10, s_mcflavor_0069af9c,
-          s_mcflavor_0069ac14, s_mcflavor_0069acec, s_mcflavor_0069ae74,
-          s_mcflavor_0069af98, s_mcflavor_0069ac0c, g_szCmdSwitchLang_00694250,
+          s_mcflavor_0069ac38, s_mcflavor_0069ac58, s_mcflavor_0069ac44, s_mcflavor_0069acf0,
+          s_mcflavor_0069ac10, s_mcflavor_0069af9c, s_mcflavor_0069ac14, s_mcflavor_0069acec,
+          s_mcflavor_0069ae74, s_mcflavor_0069af98, s_mcflavor_0069ac0c, g_szCmdSwitchLang_00694250,
           s_mcflavor_0069ac54, s_mcflavor_0069ad48};
       const int weights[14] = {1, 4, 7, 1, 4, 1, 1, 1, 1, 1, 2, 1, 1, 2};
       text = PickWeighted(strings, weights, 0x1c, false);
@@ -564,13 +569,14 @@ void BuildMapContextStatusStringVariantG(CString* out) {
       break;
     }
     case 'R': {
-      const char* strings[2] = {s_mcflavor_0069872c, s_mcflavor_0069af90};
+      const char* strings[2] = {g_szAutosaveSlotLabel_0069872C, s_mcflavor_0069af90};
       const int weights[2] = {1, 1};
       text = PickWeighted(strings, weights, 1, true);
       break;
     }
     case 'V': {
-      const char* strings[3] = {s_mcflavor_0069872c, s_mcflavor_0069ac00, s_mcflavor_0069af8c};
+      const char* strings[3] = {g_szAutosaveSlotLabel_0069872C, s_mcflavor_0069ac00,
+                                s_mcflavor_0069af8c};
       const int weights[3] = {0x1f, 1, 2};
       text = PickWeighted(strings, weights, 0x22, false);
       break;
@@ -584,15 +590,18 @@ void BuildMapContextStatusStringVariantG(CString* out) {
     }
     case 'k': {
       const char* strings[38] = {
-          s_mcflavor_0069af84, s_mcflavor_0069af80, s_mcflavor_0069af7c, s_mcflavor_0069af78,
-          s_mcflavor_0069af74, s_mcflavor_00698720, s_mcflavor_00696d10, s_mcflavor_0069af70,
-          s_mcflavor_0069add4, s_mcflavor_0069aba4, s_mcflavor_0069ab9c, s_mcflavor_0069af6c,
-          s_mcflavor_0069adc4, s_mcflavor_0069acbc, s_mcflavor_0069af68, s_mcflavor_0069ab40,
-          s_mcflavor_006976e0, s_mcflavor_0069ace4, s_mcflavor_0069af64, s_mcflavor_0069ab70,
-          s_mcflavor_0069adb4, s_mcflavor_0069ad34, s_mcflavor_0069af60, s_mcflavor_0069af5c,
-          s_mcflavor_0069ae34, s_mcflavor_0069af88, s_mcflavor_0069af58, s_mcflavor_0069af54,
-          s_mcflavor_0069af50, s_mcflavor_0069adbc, s_mcflavor_0069af4c, s_mcflavor_0069af48,
-          s_mcflavor_0069af44, s_mcflavor_0069af40, s_mcflavor_0069aba8, s_mcflavor_0069af3c,
+          s_mcflavor_0069af84, s_mcflavor_0069af80, s_mcflavor_0069af7c,
+          s_mcflavor_0069af78, s_mcflavor_0069af74, g_szSaveFileReadBinaryMode_00698720,
+          s_mcflavor_00696d10, s_mcflavor_0069af70, s_mcflavor_0069add4,
+          s_mcflavor_0069aba4, s_mcflavor_0069ab9c, s_mcflavor_0069af6c,
+          s_mcflavor_0069adc4, s_mcflavor_0069acbc, s_mcflavor_0069af68,
+          s_mcflavor_0069ab40, s_mcflavor_006976e0, s_mcflavor_0069ace4,
+          s_mcflavor_0069af64, s_mcflavor_0069ab70, s_mcflavor_0069adb4,
+          s_mcflavor_0069ad34, s_mcflavor_0069af60, s_mcflavor_0069af5c,
+          s_mcflavor_0069ae34, s_mcflavor_0069af88, s_mcflavor_0069af58,
+          s_mcflavor_0069af54, s_mcflavor_0069af50, s_mcflavor_0069adbc,
+          s_mcflavor_0069af4c, s_mcflavor_0069af48, s_mcflavor_0069af44,
+          s_mcflavor_0069af40, s_mcflavor_0069aba8, s_mcflavor_0069af3c,
           s_mcflavor_0069ab90, s_mcflavor_0069af38};
       const int weights[38] = {1, 1, 1, 1, 2, 1, 4, 2, 2, 3, 6, 1, 1, 3, 1, 4, 1, 2, 1,
                                3, 1, 1, 2, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1};
@@ -653,12 +662,11 @@ void BuildMapContextStatusStringVariantH(CString* out) {
     switch (token) {
     case 'K': {
       const char* strings[18] = {
-          s_mcflavor_0069af98, s_mcflavor_00696674, g_szCmdSwitchLang_00694250,
-          s_mcflavor_0069b0a4, s_mcflavor_0069ac44, s_mcflavor_0069ac54,
-          s_mcflavor_0069ac58, s_mcflavor_0069ac2c, s_mcflavor_0069acec,
-          s_mcflavor_0069ac1c, s_mcflavor_0069b0a0, s_mcflavor_0069ae74,
-          s_mcflavor_0069ac10, s_mcflavor_0069ac14, s_mcflavor_0069ad48,
-          s_mcflavor_0069ac48, s_mcflavor_0069ac24, s_mcflavor_0069af9c};
+          s_mcflavor_0069af98, s_mcflavor_00696674, g_szCmdSwitchLang_00694250, s_mcflavor_0069b0a4,
+          s_mcflavor_0069ac44, s_mcflavor_0069ac54, s_mcflavor_0069ac58,        s_mcflavor_0069ac2c,
+          s_mcflavor_0069acec, s_mcflavor_0069ac1c, s_mcflavor_0069b0a0,        s_mcflavor_0069ae74,
+          s_mcflavor_0069ac10, s_mcflavor_0069ac14, s_mcflavor_0069ad48,        s_mcflavor_0069ac48,
+          s_mcflavor_0069ac24, s_mcflavor_0069af9c};
       const int weights[18] = {10, 0xd, 9, 7, 4, 4, 6, 5, 8, 6, 3, 6, 5, 2, 3, 4, 6, 4};
       text = PickWeighted(strings, weights, 0x69, false);
       break;
@@ -742,8 +750,9 @@ void BuildMapContextStatusStringVariantI(CString* out) {
       break;
     }
     case 'V': {
-      const char* strings[8] = {s_mcflavor_0069b0c4, s_mcflavor_0069872c, s_mcflavor_0069ac00,
-                                s_mcflavor_0069ae0c, s_mcflavor_0069b0c0, s_mcflavor_0069b0bc,
+      const char* strings[8] = {s_mcflavor_0069b0c4, g_szAutosaveSlotLabel_0069872C,
+                                s_mcflavor_0069ac00, s_mcflavor_0069ae0c,
+                                s_mcflavor_0069b0c0, s_mcflavor_0069b0bc,
                                 s_mcflavor_0069abf8, s_mcflavor_0069b0b8};
       const int weights[8] = {1, 1, 3, 3, 1, 3, 1, 1};
       text = PickWeighted(strings, weights, 0xe, false);
@@ -807,8 +816,8 @@ void BuildMapContextStatusStringVariantJ(CString* out) {
       break;
     }
     case 'V': {
-      const char* strings[4] = {s_mcflavor_0069ae10, s_mcflavor_0069ae08, s_mcflavor_0069872c,
-                                s_mcflavor_0069ae0c};
+      const char* strings[4] = {s_mcflavor_0069ae10, s_mcflavor_0069ae08,
+                                g_szAutosaveSlotLabel_0069872C, s_mcflavor_0069ae0c};
       const int weights[4] = {1, 3, 1, 1};
       text = PickWeighted(strings, weights, 6, false);
       break;
@@ -882,8 +891,9 @@ void BuildMapContextStatusStringVariantK(CString* out) {
       break;
     }
     case 'V': {
-      const char* strings[6] = {s_mcflavor_0069ac00, s_mcflavor_0069b0c0, s_mcflavor_0069872c,
-                                s_mcflavor_0069b138, s_mcflavor_0069abf8, s_mcflavor_0069ae08};
+      const char* strings[6] = {
+          s_mcflavor_0069ac00, s_mcflavor_0069b0c0, g_szAutosaveSlotLabel_0069872C,
+          s_mcflavor_0069b138, s_mcflavor_0069abf8, s_mcflavor_0069ae08};
       const int weights[6] = {9, 2, 0xd, 1, 1, 6};
       text = PickWeighted(strings, weights, 0x1f, true);
       break;
@@ -952,23 +962,17 @@ void BuildMapContextStatusStringVariantL(CString* out) {
     const char* text = 0;
     switch (token) {
     case 'K': {
-      const char* strings[10] = {s_mcflavor_0069ac44,
-                                 s_mcflavor_0069ac14,
-                                 s_mcflavor_0069ac10,
-                                 s_mcflavor_0069ac40,
-                                 s_mcflavor_0069b0a0,
-                                 s_mcflavor_0069acf0,
-                                 g_szCmdSwitchLang_00694250,
-                                 s_mcflavor_0069ac54,
-                                 s_mcflavor_0069ac0c,
-                                 s_mcflavor_0069ac2c};
+      const char* strings[10] = {
+          s_mcflavor_0069ac44, s_mcflavor_0069ac14, s_mcflavor_0069ac10,        s_mcflavor_0069ac40,
+          s_mcflavor_0069b0a0, s_mcflavor_0069acf0, g_szCmdSwitchLang_00694250, s_mcflavor_0069ac54,
+          s_mcflavor_0069ac0c, s_mcflavor_0069ac2c};
       const int weights[10] = {8, 9, 2, 1, 1, 1, 2, 6, 4, 2};
       text = PickWeighted(strings, weights, 0x24, false);
       break;
     }
     case 'V': {
-      const char* strings[4] = {s_mcflavor_0069b0bc, s_mcflavor_0069872c, s_mcflavor_0069ac00,
-                                s_mcflavor_0069ae08};
+      const char* strings[4] = {s_mcflavor_0069b0bc, g_szAutosaveSlotLabel_0069872C,
+                                s_mcflavor_0069ac00, s_mcflavor_0069ae08};
       const int weights[4] = {1, 1, 1, 1};
       text = PickWeighted(strings, weights, 3, true);
       break;
@@ -1024,22 +1028,19 @@ void GenerateMappedFlavorTextVariantE_005ccce0(CString* out) {
   *out = CString(g_szEmptyString);
 
   if (flag == 0) {
-    const char* strings[5] = {s_mcflavor_0069872c, s_mcflavor_0069abf8, s_mcflavor_0069b26c,
-                              s_mcflavor_0069ae08, s_mcflavor_0069b268};
+    const char* strings[5] = {g_szAutosaveSlotLabel_0069872C, s_mcflavor_0069abf8,
+                              s_mcflavor_0069b26c, s_mcflavor_0069ae08, s_mcflavor_0069b268};
     const int weights[5] = {5, 3, 2, 2, 2};
     *out += PickWeighted(strings, weights, 0xe, false);
   } else {
     const char* strings[28] = {
-        s_mcflavor_0069ac58, s_mcflavor_0069ac2c, s_mcflavor_0069ac24,
-        s_mcflavor_0069ac54, s_mcflavor_0069ac14, s_mcflavor_0069ac10,
-        s_mcflavor_0069ac44, s_mcflavor_0069ac40, s_mcflavor_0069ad44,
-        s_mcflavor_0069ac48, s_mcflavor_0069b290, g_szCmdSwitchLang_00694250,
-        s_mcflavor_0069ac0c, s_mcflavor_0069ac38, s_mcflavor_0069b28c,
-        s_mcflavor_0069b0a0, s_mcflavor_0069acec, s_mcflavor_0069ac28,
-        s_mcflavor_0069ac1c, s_mcflavor_0069b288, s_mcflavor_0069b284,
-        s_mcflavor_0069ac4c, s_mcflavor_0069ae74, s_mcflavor_0069b280,
-        s_mcflavor_0069b27c, s_mcflavor_0069b278, s_mcflavor_0069b274,
-        s_mcflavor_0069b270};
+        s_mcflavor_0069ac58, s_mcflavor_0069ac2c, s_mcflavor_0069ac24, s_mcflavor_0069ac54,
+        s_mcflavor_0069ac14, s_mcflavor_0069ac10, s_mcflavor_0069ac44, s_mcflavor_0069ac40,
+        s_mcflavor_0069ad44, s_mcflavor_0069ac48, s_mcflavor_0069b290, g_szCmdSwitchLang_00694250,
+        s_mcflavor_0069ac0c, s_mcflavor_0069ac38, s_mcflavor_0069b28c, s_mcflavor_0069b0a0,
+        s_mcflavor_0069acec, s_mcflavor_0069ac28, s_mcflavor_0069ac1c, s_mcflavor_0069b288,
+        s_mcflavor_0069b284, s_mcflavor_0069ac4c, s_mcflavor_0069ae74, s_mcflavor_0069b280,
+        s_mcflavor_0069b27c, s_mcflavor_0069b278, s_mcflavor_0069b274, s_mcflavor_0069b270};
     const int weights[28] = {0x18, 0x16, 0x10, 0xb, 0xa, 0xa, 0xa, 0xa, 9, 8, 6, 6, 5, 5,
                              4,    4,    4,    3,   3,   3,   3,   3,   2, 2, 2, 1, 1, 1};
     *out += PickWeighted(strings, weights, 0xbc, false);
@@ -1056,34 +1057,60 @@ void GenerateMappedFlavorTextVariantE_005ccce0(CString* out) {
         const int weights[8] = {0x61, 0x5a, 0x53, 0x3e, 0xc, 0xc, 0xb, 8};
         *out += PickWeighted(strings, weights, 0x174, false);
       } else {
-        const char* strings[107] = {
-            s_mcflavor_0069ad3c, s_mcflavor_00696d10, s_mcflavor_0069b038, s_mcflavor_00697238,
-            s_mcflavor_0069ab70, s_mcflavor_0069b060, s_mcflavor_0069af5c, s_mcflavor_0069ab5c,
-            s_mcflavor_0069ace0, s_mcflavor_0069b264, s_mcflavor_0069aba4, s_mcflavor_0069ab98,
-            s_mcflavor_0069aba0, s_mcflavor_0069ab40, s_mcflavor_0069b040, s_mcflavor_0069abf4,
-            s_mcflavor_0069b260, s_mcflavor_0069ab90, s_mcflavor_0069b25c, s_mcflavor_0069ab84,
-            s_mcflavor_0069abcc, s_mcflavor_0069ada8, s_mcflavor_0069b254, s_mcflavor_0069af70,
-            s_mcflavor_0069b24c, s_mcflavor_0069b248, s_mcflavor_0069ad38, s_mcflavor_0069b244,
-            s_mcflavor_0069add8, s_mcflavor_0069b130, s_mcflavor_0069af88, s_mcflavor_0069acd8,
-            s_mcflavor_0069b240, s_mcflavor_0069b23c, s_mcflavor_0069abf0, s_mcflavor_0069b238,
-            s_mcflavor_0069b234, s_mcflavor_0069b22c, s_mcflavor_0069abb4, s_mcflavor_0069b228,
-            s_mcflavor_0069ab50, s_mcflavor_0069ab48, s_mcflavor_0069b224, s_mcflavor_0069ace4,
-            s_mcflavor_0069b220, s_mcflavor_0069b21c, s_mcflavor_0069af44, s_mcflavor_0069b218,
-            s_mcflavor_0069abc0, s_mcflavor_0069b214, s_mcflavor_0069b210, s_mcflavor_0069b20c,
-            s_mcflavor_0069b208, s_mcflavor_0069b204, s_mcflavor_0069ab9c, s_mcflavor_00698720,
-            s_mcflavor_0069b1fc, s_mcflavor_0069b1f8, s_mcflavor_0069b1f4, s_mcflavor_0069acc0,
-            s_mcflavor_0069b1f0, s_mcflavor_0069add4, s_mcflavor_0069b1ec, s_mcflavor_0069af3c,
-            s_mcflavor_0069ae58, s_mcflavor_0069abd0, s_mcflavor_0069b1e8, s_mcflavor_0069b128,
-            s_mcflavor_0069b1e4, s_mcflavor_0069b1e0, s_mcflavor_0069b1dc, s_mcflavor_0069b1d8,
-            s_mcflavor_0069abb8, s_mcflavor_0069ab54, s_mcflavor_0069adf4, s_mcflavor_0069b1d4,
-            s_mcflavor_0069b1d0, s_mcflavor_0069b1cc, s_mcflavor_0069b1c4, s_mcflavor_0069b1c0,
-            s_mcflavor_0069b1bc, s_mcflavor_0069b1b8, s_mcflavor_0069abbc, s_mcflavor_0069b1b4,
-            s_mcflavor_0069b1b0, s_mcflavor_0069b1ac, s_mcflavor_0069acc8, s_mcflavor_0069ab3c,
-            s_mcflavor_0069b1a8, s_mcflavor_0069addc, s_mcflavor_0069b0dc, s_mcflavor_0069b1a0,
-            s_mcflavor_0069b19c, s_mcflavor_0069b198, s_mcflavor_0069af68, s_mcflavor_0069b194,
-            s_mcflavor_0069b190, s_mcflavor_0069b12c, s_mcflavor_0069b18c, s_mcflavor_0069b188,
-            s_mcflavor_0069b184, s_mcflavor_0069b17c, s_mcflavor_0069b178, s_mcflavor_0069b048,
-            s_mcflavor_0069b174, s_mcflavor_0069adc8, s_mcflavor_0069b170};
+        const char* strings[107] = {s_mcflavor_0069ad3c, s_mcflavor_00696d10,
+                                    s_mcflavor_0069b038, s_mcflavor_00697238,
+                                    s_mcflavor_0069ab70, s_mcflavor_0069b060,
+                                    s_mcflavor_0069af5c, s_mcflavor_0069ab5c,
+                                    s_mcflavor_0069ace0, s_mcflavor_0069b264,
+                                    s_mcflavor_0069aba4, s_mcflavor_0069ab98,
+                                    s_mcflavor_0069aba0, s_mcflavor_0069ab40,
+                                    s_mcflavor_0069b040, s_mcflavor_0069abf4,
+                                    s_mcflavor_0069b260, s_mcflavor_0069ab90,
+                                    s_mcflavor_0069b25c, s_mcflavor_0069ab84,
+                                    s_mcflavor_0069abcc, s_mcflavor_0069ada8,
+                                    s_mcflavor_0069b254, s_mcflavor_0069af70,
+                                    s_mcflavor_0069b24c, s_mcflavor_0069b248,
+                                    s_mcflavor_0069ad38, s_mcflavor_0069b244,
+                                    s_mcflavor_0069add8, s_mcflavor_0069b130,
+                                    s_mcflavor_0069af88, s_mcflavor_0069acd8,
+                                    s_mcflavor_0069b240, s_mcflavor_0069b23c,
+                                    s_mcflavor_0069abf0, s_mcflavor_0069b238,
+                                    s_mcflavor_0069b234, s_mcflavor_0069b22c,
+                                    s_mcflavor_0069abb4, s_mcflavor_0069b228,
+                                    s_mcflavor_0069ab50, s_mcflavor_0069ab48,
+                                    s_mcflavor_0069b224, s_mcflavor_0069ace4,
+                                    s_mcflavor_0069b220, s_mcflavor_0069b21c,
+                                    s_mcflavor_0069af44, s_mcflavor_0069b218,
+                                    s_mcflavor_0069abc0, s_mcflavor_0069b214,
+                                    s_mcflavor_0069b210, s_mcflavor_0069b20c,
+                                    s_mcflavor_0069b208, s_mcflavor_0069b204,
+                                    s_mcflavor_0069ab9c, g_szSaveFileReadBinaryMode_00698720,
+                                    s_mcflavor_0069b1fc, s_mcflavor_0069b1f8,
+                                    s_mcflavor_0069b1f4, s_mcflavor_0069acc0,
+                                    s_mcflavor_0069b1f0, s_mcflavor_0069add4,
+                                    s_mcflavor_0069b1ec, s_mcflavor_0069af3c,
+                                    s_mcflavor_0069ae58, s_mcflavor_0069abd0,
+                                    s_mcflavor_0069b1e8, s_mcflavor_0069b128,
+                                    s_mcflavor_0069b1e4, s_mcflavor_0069b1e0,
+                                    s_mcflavor_0069b1dc, s_mcflavor_0069b1d8,
+                                    s_mcflavor_0069abb8, s_mcflavor_0069ab54,
+                                    s_mcflavor_0069adf4, s_mcflavor_0069b1d4,
+                                    s_mcflavor_0069b1d0, s_mcflavor_0069b1cc,
+                                    s_mcflavor_0069b1c4, s_mcflavor_0069b1c0,
+                                    s_mcflavor_0069b1bc, s_mcflavor_0069b1b8,
+                                    s_mcflavor_0069abbc, s_mcflavor_0069b1b4,
+                                    s_mcflavor_0069b1b0, s_mcflavor_0069b1ac,
+                                    s_mcflavor_0069acc8, s_mcflavor_0069ab3c,
+                                    s_mcflavor_0069b1a8, s_mcflavor_0069addc,
+                                    s_mcflavor_0069b0dc, s_mcflavor_0069b1a0,
+                                    s_mcflavor_0069b19c, s_mcflavor_0069b198,
+                                    s_mcflavor_0069af68, s_mcflavor_0069b194,
+                                    s_mcflavor_0069b190, s_mcflavor_0069b12c,
+                                    s_mcflavor_0069b18c, s_mcflavor_0069b188,
+                                    s_mcflavor_0069b184, s_mcflavor_0069b17c,
+                                    s_mcflavor_0069b178, s_mcflavor_0069b048,
+                                    s_mcflavor_0069b174, s_mcflavor_0069adc8,
+                                    s_mcflavor_0069b170};
         const int weights[107] = {
             0xc, 8, 8, 6, 6, 5, 5, 5, 4, 4, 4, 4, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 2, 2, 2, 2,
             2,   2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1,
@@ -1129,30 +1156,23 @@ void BuildRandomMapContextStatusBaseString(CString* out) {
   *out = CString(g_szEmptyString);
 
   if (flag == 0) {
-    const char* strings[8] = {s_mcflavor_0069872c, s_mcflavor_0069b0bc, s_mcflavor_0069abf8,
-                              s_mcflavor_0069b26c, s_mcflavor_0069ac00, s_mcflavor_0069ac08,
-                              s_mcflavor_0069b268, s_mcflavor_0069b0b8};
+    const char* strings[8] = {g_szAutosaveSlotLabel_0069872C,
+                              s_mcflavor_0069b0bc,
+                              s_mcflavor_0069abf8,
+                              s_mcflavor_0069b26c,
+                              s_mcflavor_0069ac00,
+                              s_mcflavor_0069ac08,
+                              s_mcflavor_0069b268,
+                              s_mcflavor_0069b0b8};
     const int weights[8] = {0x62, 0x55, 0x42, 0x42, 0x1f, 0x13, 0x12, 0xe};
     *out += PickWeighted(strings, weights, 0x186, false);
   } else {
-    const char* strings[18] = {g_szCmdSwitchLang_00694250,
-                               s_mcflavor_0069ac44,
-                               s_mcflavor_0069ac38,
-                               s_mcflavor_0069ac58,
-                               s_mcflavor_0069ac10,
-                               s_mcflavor_0069ac28,
-                               s_mcflavor_0069ad44,
-                               s_mcflavor_0069ac1c,
-                               s_mcflavor_0069b0a0,
-                               s_mcflavor_0069ac40,
-                               s_mcflavor_0069ac0c,
-                               s_mcflavor_0069ac54,
-                               s_mcflavor_0069acec,
-                               s_mcflavor_0069ac24,
-                               s_mcflavor_0069b2c0,
-                               s_mcflavor_0069b2bc,
-                               s_mcflavor_0069ac50,
-                               s_mcflavor_0069b27c};
+    const char* strings[18] = {
+        g_szCmdSwitchLang_00694250, s_mcflavor_0069ac44, s_mcflavor_0069ac38, s_mcflavor_0069ac58,
+        s_mcflavor_0069ac10,        s_mcflavor_0069ac28, s_mcflavor_0069ad44, s_mcflavor_0069ac1c,
+        s_mcflavor_0069b0a0,        s_mcflavor_0069ac40, s_mcflavor_0069ac0c, s_mcflavor_0069ac54,
+        s_mcflavor_0069acec,        s_mcflavor_0069ac24, s_mcflavor_0069b2c0, s_mcflavor_0069b2bc,
+        s_mcflavor_0069ac50,        s_mcflavor_0069b27c};
     const int weights[18] = {0x80, 0x73, 0x6c, 0x5b, 0x51, 0x4f, 0x32, 0x30, 0x2a,
                              0x25, 0x1d, 0x1c, 0x1a, 0xf,  0xe,  0xd,  0xc,  8};
     *out += PickWeighted(strings, weights, 0x39c, false);
@@ -1245,25 +1265,16 @@ void GenerateMappedFlavorTextVariantC_005cf1b0(CString* out) {
   *out = CString(g_szEmptyString);
 
   if (flag == 0) {
-    const char* strings[5] = {s_mcflavor_0069872c, s_mcflavor_0069abf8, s_mcflavor_0069ae08,
-                              s_mcflavor_0069b0bc, s_mcflavor_0069b0c4};
+    const char* strings[5] = {g_szAutosaveSlotLabel_0069872C, s_mcflavor_0069abf8,
+                              s_mcflavor_0069ae08, s_mcflavor_0069b0bc, s_mcflavor_0069b0c4};
     const int weights[5] = {0x10, 0xc, 4, 2, 2};
     *out += PickWeighted(strings, weights, 0x24, false);
   } else {
-    const char* strings[14] = {g_szCmdSwitchLang_00694250,
-                               s_mcflavor_0069ac40,
-                               s_mcflavor_0069ad44,
-                               s_mcflavor_0069ac28,
-                               s_mcflavor_0069ac10,
-                               s_mcflavor_0069ac38,
-                               s_mcflavor_0069acec,
-                               s_mcflavor_0069ac44,
-                               s_mcflavor_0069ac54,
-                               s_mcflavor_0069acf4,
-                               s_mcflavor_0069ac1c,
-                               s_mcflavor_0069ac50,
-                               s_mcflavor_0069ac48,
-                               s_mcflavor_0069ac24};
+    const char* strings[14] = {g_szCmdSwitchLang_00694250, s_mcflavor_0069ac40, s_mcflavor_0069ad44,
+                               s_mcflavor_0069ac28,        s_mcflavor_0069ac10, s_mcflavor_0069ac38,
+                               s_mcflavor_0069acec,        s_mcflavor_0069ac44, s_mcflavor_0069ac54,
+                               s_mcflavor_0069acf4,        s_mcflavor_0069ac1c, s_mcflavor_0069ac50,
+                               s_mcflavor_0069ac48,        s_mcflavor_0069ac24};
     const int weights[14] = {0x1a, 0x19, 0x16, 0x15, 0x13, 0x12, 0xf, 0xd, 9, 6, 6, 5, 4, 3};
     *out += PickWeighted(strings, weights, 0xc0, false);
   }
@@ -1278,16 +1289,40 @@ void GenerateMappedFlavorTextVariantC_005cf1b0(CString* out) {
         const int weights[6] = {0x7a, 0x53, 0x4c, 0x46, 0x12, 0xd};
         *out += PickWeighted(strings, weights, 0x17a, false);
       } else {
-        const char* strings[34] = {
-            s_mcflavor_0069ab70, s_mcflavor_0069ab40, s_mcflavor_0069ab48, s_mcflavor_00696d10,
-            s_mcflavor_0069ad3c, s_mcflavor_0069abd0, s_mcflavor_0069adac, s_mcflavor_0069ad40,
-            s_mcflavor_0069ada8, s_mcflavor_0069b2b0, s_mcflavor_0069b2e0, s_mcflavor_0069adc4,
-            s_mcflavor_0069add8, s_mcflavor_0069abf4, s_mcflavor_0069b2dc, s_mcflavor_0069abb4,
-            s_mcflavor_0069abe0, s_mcflavor_0069b2d8, s_mcflavor_0069aba4, s_mcflavor_0069ab90,
-            s_mcflavor_0069ab38, s_mcflavor_0069adb0, s_mcflavor_0069b2d4, s_mcflavor_0069ab98,
-            s_mcflavor_0069abd4, s_mcflavor_0069b130, s_mcflavor_0069af34, s_mcflavor_0069b2d0,
-            s_mcflavor_00698720, s_mcflavor_0069b2cc, s_mcflavor_0069ab9c, s_mcflavor_0069af60,
-            s_mcflavor_0069acd8, s_mcflavor_0069b2c8};
+        const char* strings[34] = {s_mcflavor_0069ab70,
+                                   s_mcflavor_0069ab40,
+                                   s_mcflavor_0069ab48,
+                                   s_mcflavor_00696d10,
+                                   s_mcflavor_0069ad3c,
+                                   s_mcflavor_0069abd0,
+                                   s_mcflavor_0069adac,
+                                   s_mcflavor_0069ad40,
+                                   s_mcflavor_0069ada8,
+                                   s_mcflavor_0069b2b0,
+                                   s_mcflavor_0069b2e0,
+                                   s_mcflavor_0069adc4,
+                                   s_mcflavor_0069add8,
+                                   s_mcflavor_0069abf4,
+                                   s_mcflavor_0069b2dc,
+                                   s_mcflavor_0069abb4,
+                                   s_mcflavor_0069abe0,
+                                   s_mcflavor_0069b2d8,
+                                   s_mcflavor_0069aba4,
+                                   s_mcflavor_0069ab90,
+                                   s_mcflavor_0069ab38,
+                                   s_mcflavor_0069adb0,
+                                   s_mcflavor_0069b2d4,
+                                   s_mcflavor_0069ab98,
+                                   s_mcflavor_0069abd4,
+                                   s_mcflavor_0069b130,
+                                   s_mcflavor_0069af34,
+                                   s_mcflavor_0069b2d0,
+                                   g_szSaveFileReadBinaryMode_00698720,
+                                   s_mcflavor_0069b2cc,
+                                   s_mcflavor_0069ab9c,
+                                   s_mcflavor_0069af60,
+                                   s_mcflavor_0069acd8,
+                                   s_mcflavor_0069b2c8};
         const int weights[34] = {0x3c, 0x30, 0x23, 0x1c, 0x15, 0x10, 0x10, 0x10, 0x10,
                                  0xf,  0xd,  0xc,  0xc,  0xb,  0xa,  0xa,  8,    7,
                                  6,    6,    6,    5,    5,    5,    4,    4,    3,
@@ -1322,38 +1357,25 @@ void GenerateMappedFlavorTextVariantB_005cfc40(CString* out) {
 
   if (flag == 0) {
     const char* strings[4] = {s_mcflavor_0069b0bc, s_mcflavor_0069ae08, s_mcflavor_0069ac00,
-                              s_mcflavor_0069872c};
+                              g_szAutosaveSlotLabel_0069872C};
     const int weights[4] = {0x5d, 0x1c, 0x1a, 8};
     *out += PickWeighted(strings, weights, 0x95, false);
   } else {
-    const char* strings[55] = {s_mcflavor_0069ac24, g_szCmdSwitchLang_00694250,
-                               s_mcflavor_0069ac40, s_mcflavor_0069ac28,
-                               s_mcflavor_0069ac44, s_mcflavor_0069ac54,
-                               s_mcflavor_0069ac14, s_mcflavor_0069ac58,
-                               s_mcflavor_0069ac10, s_mcflavor_0069ac0c,
-                               s_mcflavor_0069ac38, s_mcflavor_0069acec,
-                               s_mcflavor_0069ad44, s_mcflavor_0069acf0,
-                               s_mcflavor_0069af98, s_mcflavor_0069b28c,
-                               s_mcflavor_0069b408, s_mcflavor_0069ac18,
-                               s_mcflavor_0069b2c0, s_mcflavor_0069ac4c,
-                               s_mcflavor_0069b404, s_mcflavor_0069acf4,
-                               s_mcflavor_0069b284, s_mcflavor_0069ae78,
-                               s_mcflavor_0069ac1c, s_mcflavor_0069b400,
-                               s_mcflavor_0069b3f8, s_mcflavor_0069ae68,
-                               s_mcflavor_0069acf8, s_mcflavor_0069b3f4,
-                               s_mcflavor_0069b274, s_mcflavor_0069ae70,
-                               s_mcflavor_0069b3f0, s_mcflavor_0069b278,
-                               s_mcflavor_0069ac48, s_mcflavor_0069b3ec,
-                               s_mcflavor_0069b3e8, s_mcflavor_0069b3e4,
-                               s_mcflavor_0069b0a0, s_mcflavor_0069b3e0,
-                               s_mcflavor_0069b3dc, s_mcflavor_0069b270,
-                               s_mcflavor_0069b3d4, s_mcflavor_0069b3d0,
-                               s_mcflavor_0069b3cc, s_mcflavor_0069b3c8,
-                               s_mcflavor_0069b3c4, s_mcflavor_0069b3bc,
-                               s_mcflavor_0069b290, s_mcflavor_0069b3b8,
-                               s_mcflavor_0069b3b4, s_mcflavor_0069b3b0,
-                               s_mcflavor_0069b3ac, s_mcflavor_0069b3a8,
-                               s_mcflavor_0069b3a4};
+    const char* strings[55] = {
+        s_mcflavor_0069ac24, g_szCmdSwitchLang_00694250, s_mcflavor_0069ac40, s_mcflavor_0069ac28,
+        s_mcflavor_0069ac44, s_mcflavor_0069ac54,        s_mcflavor_0069ac14, s_mcflavor_0069ac58,
+        s_mcflavor_0069ac10, s_mcflavor_0069ac0c,        s_mcflavor_0069ac38, s_mcflavor_0069acec,
+        s_mcflavor_0069ad44, s_mcflavor_0069acf0,        s_mcflavor_0069af98, s_mcflavor_0069b28c,
+        s_mcflavor_0069b408, s_mcflavor_0069ac18,        s_mcflavor_0069b2c0, s_mcflavor_0069ac4c,
+        s_mcflavor_0069b404, s_mcflavor_0069acf4,        s_mcflavor_0069b284, s_mcflavor_0069ae78,
+        s_mcflavor_0069ac1c, s_mcflavor_0069b400,        s_mcflavor_0069b3f8, s_mcflavor_0069ae68,
+        s_mcflavor_0069acf8, s_mcflavor_0069b3f4,        s_mcflavor_0069b274, s_mcflavor_0069ae70,
+        s_mcflavor_0069b3f0, s_mcflavor_0069b278,        s_mcflavor_0069ac48, s_mcflavor_0069b3ec,
+        s_mcflavor_0069b3e8, s_mcflavor_0069b3e4,        s_mcflavor_0069b0a0, s_mcflavor_0069b3e0,
+        s_mcflavor_0069b3dc, s_mcflavor_0069b270,        s_mcflavor_0069b3d4, s_mcflavor_0069b3d0,
+        s_mcflavor_0069b3cc, s_mcflavor_0069b3c8,        s_mcflavor_0069b3c4, s_mcflavor_0069b3bc,
+        s_mcflavor_0069b290, s_mcflavor_0069b3b8,        s_mcflavor_0069b3b4, s_mcflavor_0069b3b0,
+        s_mcflavor_0069b3ac, s_mcflavor_0069b3a8,        s_mcflavor_0069b3a4};
     const int weights[55] = {0xda, 0xd7, 0xc3, 0xbe, 0xbb, 0xba, 0xb7, 0xa0, 0x9d, 0x92, 0x8d,
                              0x74, 0x6c, 0x67, 0x47, 0x46, 0x43, 0x3b, 0x3a, 0x35, 0x28, 0x21,
                              0x20, 0x1f, 0x1a, 0x16, 0x16, 0x15, 0x14, 0x12, 0x11, 0xd,  0xc,
@@ -1450,29 +1472,25 @@ void GenerateMappedFlavorTextVariantA_005d13d0(CString* out) {
   *out = CString(g_szEmptyString);
 
   if (flag == 0) {
-    const char* strings[6] = {s_mcflavor_0069872c, s_mcflavor_0069b0bc, s_mcflavor_0069abf8,
-                              s_mcflavor_0069ac00, s_mcflavor_0069ae08, s_mcflavor_0069ac08};
+    const char* strings[6] = {g_szAutosaveSlotLabel_0069872C,
+                              s_mcflavor_0069b0bc,
+                              s_mcflavor_0069abf8,
+                              s_mcflavor_0069ac00,
+                              s_mcflavor_0069ae08,
+                              s_mcflavor_0069ac08};
     const int weights[6] = {0x2c, 0xf, 0xc, 0xb, 4, 4};
     *out += PickWeighted(strings, weights, 0x59, false);
   } else {
-    const char* strings[36] = {s_mcflavor_0069ad44, s_mcflavor_0069ac54,
-                               s_mcflavor_0069ac44, s_mcflavor_0069ac10,
-                               s_mcflavor_0069ac58, s_mcflavor_0069ac40,
-                               s_mcflavor_0069ac38, s_mcflavor_0069af98,
-                               s_mcflavor_0069ac1c, g_szCmdSwitchLang_00694250,
-                               s_mcflavor_0069ac0c, s_mcflavor_0069acec,
-                               s_mcflavor_0069ac14, s_mcflavor_0069ac24,
-                               s_mcflavor_0069ac2c, s_mcflavor_0069ac48,
-                               s_mcflavor_0069b0a0, s_mcflavor_0069b290,
-                               s_mcflavor_0069ac28, s_mcflavor_0069ac4c,
-                               s_mcflavor_0069b28c, s_mcflavor_0069acf4,
-                               s_mcflavor_0069ac50, s_mcflavor_0069b528,
-                               s_mcflavor_0069af9c, s_mcflavor_0069ad00,
-                               s_mcflavor_0069ad4c, s_mcflavor_0069b288,
-                               s_mcflavor_0069ae74, s_mcflavor_0069acf8,
-                               s_mcflavor_0069b280, s_mcflavor_0069b2c0,
-                               s_mcflavor_0069b524, s_mcflavor_0069b520,
-                               s_mcflavor_0069b274, s_mcflavor_0069b51c};
+    const char* strings[36] = {
+        s_mcflavor_0069ad44, s_mcflavor_0069ac54,        s_mcflavor_0069ac44, s_mcflavor_0069ac10,
+        s_mcflavor_0069ac58, s_mcflavor_0069ac40,        s_mcflavor_0069ac38, s_mcflavor_0069af98,
+        s_mcflavor_0069ac1c, g_szCmdSwitchLang_00694250, s_mcflavor_0069ac0c, s_mcflavor_0069acec,
+        s_mcflavor_0069ac14, s_mcflavor_0069ac24,        s_mcflavor_0069ac2c, s_mcflavor_0069ac48,
+        s_mcflavor_0069b0a0, s_mcflavor_0069b290,        s_mcflavor_0069ac28, s_mcflavor_0069ac4c,
+        s_mcflavor_0069b28c, s_mcflavor_0069acf4,        s_mcflavor_0069ac50, s_mcflavor_0069b528,
+        s_mcflavor_0069af9c, s_mcflavor_0069ad00,        s_mcflavor_0069ad4c, s_mcflavor_0069b288,
+        s_mcflavor_0069ae74, s_mcflavor_0069acf8,        s_mcflavor_0069b280, s_mcflavor_0069b2c0,
+        s_mcflavor_0069b524, s_mcflavor_0069b520,        s_mcflavor_0069b274, s_mcflavor_0069b51c};
     const int weights[36] = {0x2e, 0x2b, 0x28, 0x26, 0x22, 0x21, 0x1f, 0x1a, 0x1a, 0x19, 0x15, 0x14,
                              0x14, 0x13, 0x13, 0x10, 0xc,  0xb,  0xb,  0xa,  6,    6,    6,    5,
                              5,    5,    4,    4,    4,    4,    4,    3,    3,    3,    2,    2};
@@ -1492,48 +1510,168 @@ void GenerateMappedFlavorTextVariantA_005d13d0(CString* out) {
         const int weights[13] = {0x14f, 0x104, 0xd7, 0xc7, 0x3f, 0x12, 0xf, 0xe, 0xd, 0xa, 9, 9, 8};
         *out += PickWeighted(strings, weights, 0x48f, false);
       } else {
-        const char* strings[162] = {
-            s_mcflavor_0069ab40, s_mcflavor_0069ab70, s_mcflavor_0069ab48, s_mcflavor_00696d10,
-            s_mcflavor_0069ab98, s_mcflavor_0069add8, s_mcflavor_0069ad3c, s_mcflavor_0069ad40,
-            s_mcflavor_0069b034, s_mcflavor_0069abd0, s_mcflavor_0069ada8, s_mcflavor_0069abb4,
-            s_mcflavor_0069aba4, s_mcflavor_0069acc8, s_mcflavor_0069abb8, s_mcflavor_0069ab9c,
-            s_mcflavor_0069add4, s_mcflavor_0069af60, s_mcflavor_0069ab54, s_mcflavor_0069abe0,
-            s_mcflavor_0069ace4, s_mcflavor_00697238, s_mcflavor_0069acbc, s_mcflavor_0069ab90,
-            s_mcflavor_0069acd8, s_mcflavor_0069b130, s_mcflavor_0069abc0, s_mcflavor_0069af88,
-            s_mcflavor_0069ab50, s_mcflavor_0069b060, s_mcflavor_0069ab3c, s_mcflavor_0069ab68,
-            s_mcflavor_0069b518, s_mcflavor_0069b2d8, s_mcflavor_0069ab5c, s_mcflavor_0069b128,
-            s_mcflavor_0069b188, s_mcflavor_0069abf0, s_mcflavor_0069af34, s_mcflavor_00698b0c,
-            s_mcflavor_0069adf4, s_mcflavor_0069b370, s_mcflavor_0069ad34, s_mcflavor_0069adac,
-            s_mcflavor_0069adfc, s_mcflavor_0069b2dc, s_mcflavor_0069b0dc, s_mcflavor_0069ae60,
-            s_mcflavor_0069b514, s_mcflavor_0069b510, s_mcflavor_0069b2e0, s_mcflavor_0069af40,
-            s_mcflavor_0069b2ac, s_mcflavor_0069aba0, s_mcflavor_0069ab84, s_mcflavor_0069acdc,
-            s_mcflavor_0069b50c, s_mcflavor_0069b508, s_mcflavor_0069b34c, s_mcflavor_0069b160,
-            s_mcflavor_0069ada0, s_mcflavor_0069b124, s_mcflavor_0069abcc, s_mcflavor_0069b504,
-            s_mcflavor_0069af70, s_mcflavor_0069b500, s_mcflavor_0069b25c, s_mcflavor_0069b1f0,
-            s_mcflavor_0069b260, s_mcflavor_0069addc, s_mcflavor_0069b054, s_mcflavor_0069b234,
-            s_mcflavor_00698720, s_mcflavor_0069ab7c, s_mcflavor_0069b4fc, s_mcflavor_0069acc0,
-            s_mcflavor_0069ab4c, s_mcflavor_0069abd4, s_mcflavor_0069b2d0, s_mcflavor_0069acac,
-            s_mcflavor_0069af38, s_mcflavor_0069af74, s_mcflavor_0069b4f8, s_mcflavor_0069b4f4,
-            s_mcflavor_0069b038, s_mcflavor_0069ae4c, s_mcflavor_0069adcc, s_mcflavor_0069ae48,
-            s_mcflavor_0069aba8, s_mcflavor_0069b378, s_mcflavor_0069b4f0, s_mcflavor_0069b4ec,
-            s_mcflavor_0069b078, s_mcflavor_0069b4e8, s_mcflavor_0069adb0, s_mcflavor_0069b4e4,
-            s_mcflavor_0069b228, s_mcflavor_0069b20c, s_mcflavor_0069b208, s_mcflavor_0069b4e0,
-            s_mcflavor_0069b4dc, s_mcflavor_0069b4d8, s_mcflavor_0069b1c0, s_mcflavor_0069b248,
-            s_mcflavor_0069b4d4, s_mcflavor_0069b4d0, s_mcflavor_0069ae58, s_mcflavor_0069b064,
-            s_mcflavor_0069b1dc, s_mcflavor_0069b354, s_mcflavor_0069b4cc, s_mcflavor_0069b4c8,
-            s_mcflavor_0069b1ec, s_mcflavor_0069b4c4, s_mcflavor_0069b4bc, s_mcflavor_0069b4b8,
-            s_mcflavor_006976e0, s_mcflavor_0069af3c, s_mcflavor_0069b4b4, s_mcflavor_0069b198,
-            s_mcflavor_0069b4b0, s_mcflavor_0069b2a8, s_mcflavor_0069acd4, s_mcflavor_0069ade8,
-            s_mcflavor_0069ab30, s_mcflavor_0069b4ac, s_mcflavor_0069b4a8, s_mcflavor_0069b218,
-            s_mcflavor_0069b4a4, s_mcflavor_0069b4a0, s_mcflavor_0069abbc, s_mcflavor_0069b264,
-            s_mcflavor_0069b058, s_mcflavor_0069b49c, s_mcflavor_0069b498, s_mcflavor_0069b490,
-            s_mcflavor_0069b340, s_mcflavor_0069b48c, s_mcflavor_0069b488, s_mcflavor_0069b484,
-            s_mcflavor_0069adc4, s_mcflavor_0069b480, s_mcflavor_0069b47c, s_mcflavor_0069b478,
-            s_mcflavor_0069b474, s_mcflavor_0069ace0, s_mcflavor_0069b134, s_mcflavor_0069acb8,
-            s_mcflavor_0069b470, s_mcflavor_0069b46c, s_mcflavor_0069b468, s_mcflavor_0069b1d4,
-            s_mcflavor_0069b464, s_mcflavor_0069b460, s_mcflavor_0069b1e0, s_mcflavor_0069b16c,
-            s_mcflavor_0069b1d8, s_mcflavor_0069b29c, s_mcflavor_0069b45c, s_mcflavor_0069b458,
-            s_mcflavor_0069b454, s_mcflavor_0069b44c};
+        const char* strings[162] = {s_mcflavor_0069ab40,
+                                    s_mcflavor_0069ab70,
+                                    s_mcflavor_0069ab48,
+                                    s_mcflavor_00696d10,
+                                    s_mcflavor_0069ab98,
+                                    s_mcflavor_0069add8,
+                                    s_mcflavor_0069ad3c,
+                                    s_mcflavor_0069ad40,
+                                    s_mcflavor_0069b034,
+                                    s_mcflavor_0069abd0,
+                                    s_mcflavor_0069ada8,
+                                    s_mcflavor_0069abb4,
+                                    s_mcflavor_0069aba4,
+                                    s_mcflavor_0069acc8,
+                                    s_mcflavor_0069abb8,
+                                    s_mcflavor_0069ab9c,
+                                    s_mcflavor_0069add4,
+                                    s_mcflavor_0069af60,
+                                    s_mcflavor_0069ab54,
+                                    s_mcflavor_0069abe0,
+                                    s_mcflavor_0069ace4,
+                                    s_mcflavor_00697238,
+                                    s_mcflavor_0069acbc,
+                                    s_mcflavor_0069ab90,
+                                    s_mcflavor_0069acd8,
+                                    s_mcflavor_0069b130,
+                                    s_mcflavor_0069abc0,
+                                    s_mcflavor_0069af88,
+                                    s_mcflavor_0069ab50,
+                                    s_mcflavor_0069b060,
+                                    s_mcflavor_0069ab3c,
+                                    s_mcflavor_0069ab68,
+                                    s_mcflavor_0069b518,
+                                    s_mcflavor_0069b2d8,
+                                    s_mcflavor_0069ab5c,
+                                    s_mcflavor_0069b128,
+                                    s_mcflavor_0069b188,
+                                    s_mcflavor_0069abf0,
+                                    s_mcflavor_0069af34,
+                                    s_mcflavor_00698b0c,
+                                    s_mcflavor_0069adf4,
+                                    s_mcflavor_0069b370,
+                                    s_mcflavor_0069ad34,
+                                    s_mcflavor_0069adac,
+                                    s_mcflavor_0069adfc,
+                                    s_mcflavor_0069b2dc,
+                                    s_mcflavor_0069b0dc,
+                                    s_mcflavor_0069ae60,
+                                    s_mcflavor_0069b514,
+                                    s_mcflavor_0069b510,
+                                    s_mcflavor_0069b2e0,
+                                    s_mcflavor_0069af40,
+                                    s_mcflavor_0069b2ac,
+                                    s_mcflavor_0069aba0,
+                                    s_mcflavor_0069ab84,
+                                    s_mcflavor_0069acdc,
+                                    s_mcflavor_0069b50c,
+                                    s_mcflavor_0069b508,
+                                    s_mcflavor_0069b34c,
+                                    s_mcflavor_0069b160,
+                                    s_mcflavor_0069ada0,
+                                    s_mcflavor_0069b124,
+                                    s_mcflavor_0069abcc,
+                                    s_mcflavor_0069b504,
+                                    s_mcflavor_0069af70,
+                                    s_mcflavor_0069b500,
+                                    s_mcflavor_0069b25c,
+                                    s_mcflavor_0069b1f0,
+                                    s_mcflavor_0069b260,
+                                    s_mcflavor_0069addc,
+                                    s_mcflavor_0069b054,
+                                    s_mcflavor_0069b234,
+                                    g_szSaveFileReadBinaryMode_00698720,
+                                    s_mcflavor_0069ab7c,
+                                    s_mcflavor_0069b4fc,
+                                    s_mcflavor_0069acc0,
+                                    s_mcflavor_0069ab4c,
+                                    s_mcflavor_0069abd4,
+                                    s_mcflavor_0069b2d0,
+                                    s_mcflavor_0069acac,
+                                    s_mcflavor_0069af38,
+                                    s_mcflavor_0069af74,
+                                    s_mcflavor_0069b4f8,
+                                    s_mcflavor_0069b4f4,
+                                    s_mcflavor_0069b038,
+                                    s_mcflavor_0069ae4c,
+                                    s_mcflavor_0069adcc,
+                                    s_mcflavor_0069ae48,
+                                    s_mcflavor_0069aba8,
+                                    s_mcflavor_0069b378,
+                                    s_mcflavor_0069b4f0,
+                                    s_mcflavor_0069b4ec,
+                                    s_mcflavor_0069b078,
+                                    s_mcflavor_0069b4e8,
+                                    s_mcflavor_0069adb0,
+                                    s_mcflavor_0069b4e4,
+                                    s_mcflavor_0069b228,
+                                    s_mcflavor_0069b20c,
+                                    s_mcflavor_0069b208,
+                                    s_mcflavor_0069b4e0,
+                                    s_mcflavor_0069b4dc,
+                                    s_mcflavor_0069b4d8,
+                                    s_mcflavor_0069b1c0,
+                                    s_mcflavor_0069b248,
+                                    s_mcflavor_0069b4d4,
+                                    s_mcflavor_0069b4d0,
+                                    s_mcflavor_0069ae58,
+                                    s_mcflavor_0069b064,
+                                    s_mcflavor_0069b1dc,
+                                    s_mcflavor_0069b354,
+                                    s_mcflavor_0069b4cc,
+                                    s_mcflavor_0069b4c8,
+                                    s_mcflavor_0069b1ec,
+                                    s_mcflavor_0069b4c4,
+                                    s_mcflavor_0069b4bc,
+                                    s_mcflavor_0069b4b8,
+                                    s_mcflavor_006976e0,
+                                    s_mcflavor_0069af3c,
+                                    s_mcflavor_0069b4b4,
+                                    s_mcflavor_0069b198,
+                                    s_mcflavor_0069b4b0,
+                                    s_mcflavor_0069b2a8,
+                                    s_mcflavor_0069acd4,
+                                    s_mcflavor_0069ade8,
+                                    s_mcflavor_0069ab30,
+                                    s_mcflavor_0069b4ac,
+                                    s_mcflavor_0069b4a8,
+                                    s_mcflavor_0069b218,
+                                    s_mcflavor_0069b4a4,
+                                    s_mcflavor_0069b4a0,
+                                    s_mcflavor_0069abbc,
+                                    s_mcflavor_0069b264,
+                                    s_mcflavor_0069b058,
+                                    s_mcflavor_0069b49c,
+                                    s_mcflavor_0069b498,
+                                    s_mcflavor_0069b490,
+                                    s_mcflavor_0069b340,
+                                    s_mcflavor_0069b48c,
+                                    s_mcflavor_0069b488,
+                                    s_mcflavor_0069b484,
+                                    s_mcflavor_0069adc4,
+                                    s_mcflavor_0069b480,
+                                    s_mcflavor_0069b47c,
+                                    s_mcflavor_0069b478,
+                                    s_mcflavor_0069b474,
+                                    s_mcflavor_0069ace0,
+                                    s_mcflavor_0069b134,
+                                    s_mcflavor_0069acb8,
+                                    s_mcflavor_0069b470,
+                                    s_mcflavor_0069b46c,
+                                    s_mcflavor_0069b468,
+                                    s_mcflavor_0069b1d4,
+                                    s_mcflavor_0069b464,
+                                    s_mcflavor_0069b460,
+                                    s_mcflavor_0069b1e0,
+                                    s_mcflavor_0069b16c,
+                                    s_mcflavor_0069b1d8,
+                                    s_mcflavor_0069b29c,
+                                    s_mcflavor_0069b45c,
+                                    s_mcflavor_0069b458,
+                                    s_mcflavor_0069b454,
+                                    s_mcflavor_0069b44c};
         const int weights[162] = {
             0x31, 0x2c, 0x27, 0x23, 0x21, 0x19, 0x19, 0x16, 0x15, 0x14, 0x14, 0x13, 0x12, 0x11,
             0x11, 0xe,  0xc,  0xb,  0xb,  0xb,  9,    9,    9,    9,    9,    8,    7,    7,
@@ -1604,19 +1742,17 @@ void GenerateMappedFlavorTextVariantD_005d33a0(CString* out) {
 
   if (flag == 0) {
     // NOTE: this draw MASKS the sample (& 0x1f) instead of taking a modulus.
-    const char* strings[5] = {s_mcflavor_0069872c, s_mcflavor_0069b0bc, s_mcflavor_0069ac00,
-                              s_mcflavor_0069abf8, s_mcflavor_0069b0c4};
+    const char* strings[5] = {g_szAutosaveSlotLabel_0069872C, s_mcflavor_0069b0bc,
+                              s_mcflavor_0069ac00, s_mcflavor_0069abf8, s_mcflavor_0069b0c4};
     const int weights[5] = {0x10, 0xa, 4, 1, 1};
     *out += PickWeighted(strings, weights, 0x1f, true);
   } else {
     const char* strings[20] = {
-        s_mcflavor_0069ac44, s_mcflavor_0069ad44, g_szCmdSwitchLang_00694250,
-        s_mcflavor_0069ac40, s_mcflavor_0069ac28, s_mcflavor_0069ac48,
-        s_mcflavor_0069ac38, s_mcflavor_0069ac54, s_mcflavor_0069ac10,
-        s_mcflavor_0069ac1c, s_mcflavor_0069acec, s_mcflavor_0069ac24,
-        s_mcflavor_0069acf4, s_mcflavor_0069ac0c, s_mcflavor_0069b28c,
-        s_mcflavor_0069b0a0, s_mcflavor_0069b290, s_mcflavor_0069b2c0,
-        s_mcflavor_0069acf8, s_mcflavor_0069ac4c};
+        s_mcflavor_0069ac44, s_mcflavor_0069ad44, g_szCmdSwitchLang_00694250, s_mcflavor_0069ac40,
+        s_mcflavor_0069ac28, s_mcflavor_0069ac48, s_mcflavor_0069ac38,        s_mcflavor_0069ac54,
+        s_mcflavor_0069ac10, s_mcflavor_0069ac1c, s_mcflavor_0069acec,        s_mcflavor_0069ac24,
+        s_mcflavor_0069acf4, s_mcflavor_0069ac0c, s_mcflavor_0069b28c,        s_mcflavor_0069b0a0,
+        s_mcflavor_0069b290, s_mcflavor_0069b2c0, s_mcflavor_0069acf8,        s_mcflavor_0069ac4c};
     const int weights[20] = {0x1d, 0x1b, 0x18, 0x14, 0x13, 0x12, 0x12, 0x11, 0xd, 0xc,
                              0xa,  9,    8,    6,    4,    4,    3,    3,    3,   2};
     *out += PickWeighted(strings, weights, 0xf8, false);
@@ -1633,20 +1769,31 @@ void GenerateMappedFlavorTextVariantD_005d33a0(CString* out) {
         const int weights[7] = {0xa1, 0x89, 0x88, 0x5f, 0x18, 0xd, 0xc};
         *out += PickWeighted(strings, weights, 0x23f, false);
       } else {
-        const char* strings[50] = {
-            s_mcflavor_0069ab70, s_mcflavor_00696d10, s_mcflavor_0069add8, s_mcflavor_0069ab40,
-            s_mcflavor_0069abd0, s_mcflavor_0069ad3c, s_mcflavor_0069ad40, s_mcflavor_0069ab48,
-            s_mcflavor_0069abe0, s_mcflavor_0069ada8, s_mcflavor_0069b2b0, s_mcflavor_0069abb4,
-            s_mcflavor_0069aba4, s_mcflavor_0069ab38, s_mcflavor_0069ab98, s_mcflavor_0069ab5c,
-            s_mcflavor_0069ab90, s_mcflavor_0069b128, s_mcflavor_0069adb0, s_mcflavor_0069ab50,
-            s_mcflavor_0069abb8, s_mcflavor_0069b2d4, s_mcflavor_0069b2cc, s_mcflavor_0069b2d0,
-            s_mcflavor_0069b034, s_mcflavor_0069ab9c, s_mcflavor_0069b130, s_mcflavor_0069acd8,
-            s_mcflavor_0069acc8, s_mcflavor_0069adc4, s_mcflavor_0069b370, s_mcflavor_0069b2d8,
-            s_mcflavor_0069acbc, s_mcflavor_0069b2e0, s_mcflavor_0069af60, s_mcflavor_0069adac,
-            s_mcflavor_0069abf0, s_mcflavor_0069b29c, s_mcflavor_0069b2b8, s_mcflavor_0069adb4,
-            s_mcflavor_0069aba0, s_mcflavor_0069af3c, s_mcflavor_0069accc, s_mcflavor_0069adf4,
-            s_mcflavor_0069adcc, s_mcflavor_0069b12c, s_mcflavor_0069abc0, s_mcflavor_0069b390,
-            s_mcflavor_0069ab54, s_mcflavor_00698720};
+        const char* strings[50] = {s_mcflavor_0069ab70, s_mcflavor_00696d10,
+                                   s_mcflavor_0069add8, s_mcflavor_0069ab40,
+                                   s_mcflavor_0069abd0, s_mcflavor_0069ad3c,
+                                   s_mcflavor_0069ad40, s_mcflavor_0069ab48,
+                                   s_mcflavor_0069abe0, s_mcflavor_0069ada8,
+                                   s_mcflavor_0069b2b0, s_mcflavor_0069abb4,
+                                   s_mcflavor_0069aba4, s_mcflavor_0069ab38,
+                                   s_mcflavor_0069ab98, s_mcflavor_0069ab5c,
+                                   s_mcflavor_0069ab90, s_mcflavor_0069b128,
+                                   s_mcflavor_0069adb0, s_mcflavor_0069ab50,
+                                   s_mcflavor_0069abb8, s_mcflavor_0069b2d4,
+                                   s_mcflavor_0069b2cc, s_mcflavor_0069b2d0,
+                                   s_mcflavor_0069b034, s_mcflavor_0069ab9c,
+                                   s_mcflavor_0069b130, s_mcflavor_0069acd8,
+                                   s_mcflavor_0069acc8, s_mcflavor_0069adc4,
+                                   s_mcflavor_0069b370, s_mcflavor_0069b2d8,
+                                   s_mcflavor_0069acbc, s_mcflavor_0069b2e0,
+                                   s_mcflavor_0069af60, s_mcflavor_0069adac,
+                                   s_mcflavor_0069abf0, s_mcflavor_0069b29c,
+                                   s_mcflavor_0069b2b8, s_mcflavor_0069adb4,
+                                   s_mcflavor_0069aba0, s_mcflavor_0069af3c,
+                                   s_mcflavor_0069accc, s_mcflavor_0069adf4,
+                                   s_mcflavor_0069adcc, s_mcflavor_0069b12c,
+                                   s_mcflavor_0069abc0, s_mcflavor_0069b390,
+                                   s_mcflavor_0069ab54, g_szSaveFileReadBinaryMode_00698720};
         const int weights[50] = {
             0x56, 0x43, 0x22, 0x1e, 0x1b, 0x16, 0x12, 0xf, 0xd, 0xd, 0xd, 0xd, 0xc, 0xb, 0xb, 9, 9,
             8,    8,    8,    7,    7,    6,    6,    6,   5,   5,   5,   5,   4,   4,   4,   4, 4,

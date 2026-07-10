@@ -3,11 +3,16 @@
 #include "game/TTacticalUnit.h"
 #include "game/mfc.h"
 
-// TODO(manifest): describe TArmyTacUnit and its role. Base edge (TTacticalUnit) recovered from RTTI CRuntimeClass chain: TArmyTacUnit -> TTacticalUnit -> TObject -> CObject.
+class TMilitaryUnit;
+
+// One land unit in a tactical battle. The grid/state slice (+0x04..+0x30) lives on
+// TTacticalUnit; this class appends the army slice at +0x34. Base edge (TTacticalUnit)
+// recovered from RTTI CRuntimeClass chain: TArmyTacUnit -> TTacticalUnit -> TObject ->
+// CObject.
 // VTABLE: IMPERIALISM 0x00669660
 class TArmyTacUnit : public TTacticalUnit {
 public:
-// === BEGIN GENERATED DECLS (TArmyTacUnit) — refreshed by recover-class; do not hand-edit ===
+  // === BEGIN GENERATED DECLS (TArmyTacUnit) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TArmyTacUnit)
   virtual ~TArmyTacUnit() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -18,15 +23,29 @@ public:
   // slot 0x07 Free inherited unchanged (0x4798b0)
   // slot 0x08 ShallowClone inherited unchanged (0x4798d0)
   // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
-  virtual undefined OrphanTiny_ReturnZero_005a5d40() override; // slot 0x0a 0x5a6120
-  virtual undefined OrphanTiny_ReturnZero_005a5d60() override; // slot 0x0b 0x5a6140
-  virtual undefined OrphanLeaf_NoCall_Ins02_005a5d80() override; // slot 0x0c 0x5a6180
-  virtual undefined OrphanLeaf_NoCall_Ins02_005a5da0() override; // slot 0x0d 0x5a61a0
-  virtual undefined VTableSlot0E(int param_1) override; // slot 0x0e 0x5a61c0
+  virtual int GetBaseActionPoints() override;                          // slot 0x0a 0x5a6120
+  virtual undefined OrphanTiny_ReturnZero_005a5d60() override;         // slot 0x0b 0x5a6140
+  virtual undefined OrphanLeaf_NoCall_Ins02_005a5d80() override;       // slot 0x0c 0x5a6180
+  virtual undefined OrphanLeaf_NoCall_Ins02_005a5da0() override;       // slot 0x0d 0x5a61a0
+  virtual void ApplyTacticalDamage(int damageA, int damageB) override; // slot 0x0e 0x5a61c0
   // slot 0x0f CreateTArmyTacUnitInstance inherited unchanged (0x5a5eb0)
-// === END GENERATED DECLS (TArmyTacUnit) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TArmyTacUnit 0xCTOR`).
+  // === END GENERATED DECLS (TArmyTacUnit) ===
 
-  TArmyTacUnit();
+  // Army slice (+0x34..+0x54), from the duplicated init in TArmyBattle::ReadFrom
+  // (0x5a4990), the base-state ctor 0x5a5f20, and the float writers at 0x5a5fe0.
+  int morale34;                // +0x34 init = sourceUnit38->field_34; floors at 0 -> state1c = 1
+  TMilitaryUnit* sourceUnit38; // +0x38 back-pointer (persisted as its field_20 id)
+  unsigned char flag3c;        // +0x3c = (source field_8 == 2 && category[type] == 0)
+  unsigned char pad3d[3];      // +0x3d
+  int field40;                 // +0x40 init -1
+  float field44;               // +0x44
+  float field48;               // +0x48
+  float field4c;               // +0x4c
+  float field50;               // +0x50
+  float field54;               // +0x54
+
+  // Both original construction sites inline the ctor as a bare vptr store.
+  TArmyTacUnit() {}
 };
 
+ASSERT_SIZE(TArmyTacUnit, 0x58);

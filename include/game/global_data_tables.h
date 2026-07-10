@@ -273,6 +273,10 @@ extern TApplication* g_pGlobalUiRootController;
 extern TTacticalBattle* g_pActiveTacticalBattle;
 // OR-accumulator for the turn-event-0x2b presence-mask exchange.
 extern int g_nTurnEvent2BNationMaskAccumulator;
+extern short g_anUnitTypeCombatCategoryByType00669858[32];
+extern short g_awUnitTypeBaseActionPointTable[32];
+extern short g_awTacticalFireSfxTokenByUnitType[32];
+extern char g_nForceTacticalBattleViewFlag_006A4758;
 // The multiplayer/game-flow singleton (0x6a43c8); every turn-event emitter is a
 // __thiscall method on it (original callsites load ECX from here).
 extern TMultiplayerMgr* g_pGameFlowState;
@@ -810,8 +814,6 @@ extern char s_mcflavor_00696674[];
 extern char s_mcflavor_00696d10[];
 extern char s_mcflavor_00697238[];
 extern char s_mcflavor_006976e0[];
-extern char s_mcflavor_00698720[];
-extern char s_mcflavor_0069872c[];
 extern char s_mcflavor_00698b0c[];
 extern char s_mcflavor_0069ab00[];
 extern char s_mcflavor_0069ab04[];

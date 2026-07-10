@@ -787,22 +787,6 @@ undefined4 SetDialogModeTagInitAndInvokeNoOpHook(void)
   return 0;
 }
 
-// ghidra_name NoOpCallbackRet10
-// ghidra_proto undefined NoOpCallbackRet10()
-// FUNCTION: IMPERIALISM 0x0054c680
-undefined4 NoOpCallbackRet10(void)
-{
-  return 0;
-}
-
-// ghidra_name NoOpCallbackRet18
-// ghidra_proto undefined NoOpCallbackRet18()
-// FUNCTION: IMPERIALISM 0x0054c6a0
-undefined4 NoOpCallbackRet18(void)
-{
-  return 0;
-}
-
 // ghidra_name ResetNationStatusArraysAndTurnEventContext
 // ghidra_proto undefined ResetNationStatusArraysAndTurnEventContext()
 // FUNCTION: IMPERIALISM 0x0054c6e0

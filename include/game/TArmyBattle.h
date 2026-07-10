@@ -51,11 +51,16 @@ public:
   void AllocateRecordList();
 
   // Called by TArmyMgr::CreateTacticalBattleViewAndInitializeBattleSetup right after
-  // construction, with the two combatant stacks and a composition class from
-  // TMapMgr::ClassifyCityGateTerrainComposition. 0x005a4790, __thiscall, 387 bytes.
-  // TODO: port body -- out of scope for that callsite, which only needs a real,
-  // correctly-typed call.
+  // construction (and by ReadFrom on the network receive path) with the two combatant
+  // stacks, a composition class from TMapMgr::ClassifyCityGateTerrainComposition, the
+  // battle-site fort level, and the cityScoreTable row of the site. 0x005a4790,
+  // __thiscall, ret 0x14.
   void InitializeBattleSetupAndMaybeDispatchTurnEventED8(class TArmyStack* ourStack,
                                                          class TArmyStack* enemyStack,
-                                                         int compositionClass);
+                                                         int compositionClass, int fortLevel,
+                                                         int battleSiteIndex);
+
+  // Loads the battle-setup tab data (terrain/backdrop selection) for the composition
+  // class + fort level. Body TODO. 0x005a4fc0, __thiscall, ret 8.
+  void LoadBattleSetupTabDataByIndex(int compositionClass, int fortLevel);
 };

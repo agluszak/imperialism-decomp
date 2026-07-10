@@ -161,6 +161,7 @@ struct TurnEvent15Packet : NetMessage {
 #include "game/TPicture.h"
 #include "game/TPoseMessageDialog.h"
 #include "game/TStaticText.h"
+#include "game/TArmyTacUnit.h"
 #include "game/TTacticalBattle.h"
 #include "game/TTextPictureButton.h"
 #include "game/quickdraw_rendering.h"
@@ -1951,7 +1952,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
     TacticalCommandPacket* tactical = static_cast<TacticalCommandPacket*>(packet);
     TTacticalBattle* battle = g_pActiveTacticalBattle;
     battle->AssertValid();
-    void* unit = battle->SeekLinkedListCursorByNestedId(tactical->unitId1C);
+    TArmyTacUnit* unit = battle->SeekLinkedListCursorByNestedId(tactical->unitId1C);
     switch (tactical->commandTag18) {
     case 0x6465706c: // 'depl'
       battle->HandleTacticalCommandTag_depl(unit, tactical->arg20, 1);
@@ -1979,14 +1980,14 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
     TacticalCommandPacket* fireCommand = static_cast<TacticalCommandPacket*>(packet);
     TTacticalBattle* fireBattle = g_pActiveTacticalBattle;
     fireBattle->AssertValid();
-    void* attacker = fireBattle->SeekLinkedListCursorByNestedId(fireCommand->unitId1C);
-    void* target = fireBattle->SeekLinkedListCursorByNestedId(fireCommand->arg20);
+    TArmyTacUnit* attacker = fireBattle->SeekLinkedListCursorByNestedId(fireCommand->unitId1C);
+    TArmyTacUnit* target = fireBattle->SeekLinkedListCursorByNestedId(fireCommand->arg20);
     if (fireCommand->commandTag18 != 0x66697265 /* 'fire' */) {
       return 1;
     }
     fireBattle->ApplyTacticalActionEffectsAndMaybeRemoveUnit(
-        attacker, target, *(reinterpret_cast<int*>(target) + 2), fireCommand->arg24,
-        fireCommand->arg28, static_cast<char>(fireCommand->arg2C), 1);
+        attacker, target, target->tileIndex8, fireCommand->arg24, fireCommand->arg28,
+        static_cast<char>(fireCommand->arg2C), 1);
     break;
   }
   case 0x2b: { // accumulate the presence mask; optionally echo a 0x2b ack
@@ -2613,6 +2614,31 @@ void TMultiplayerMgr::DispatchJoinEmpireModeEventPacket24_27(int sourceNation, i
 // FUNCTION: IMPERIALISM 0x0054c660
 void TMultiplayerMgr::NoOpCallbackRet4(void* param) {
   (void)param;
+}
+
+// FUNCTION: IMPERIALISM 0x0054c680
+void TMultiplayerMgr::EmitTacticalCommandPacket(int commandTag, TTacticalUnit* unit, int arg3,
+                                                int arg4) {
+  // Genuinely empty in the shipped binary (bare `ret 0x10`): the multiplayer
+  // tactical-command echo was compiled out of the retail build.
+  (void)commandTag;
+  (void)unit;
+  (void)arg3;
+  (void)arg4;
+}
+
+// FUNCTION: IMPERIALISM 0x0054c6a0
+void TMultiplayerMgr::EmitTacticalFireCommandPacket(int commandTag, TTacticalUnit* attackerUnit,
+                                                    TTacticalUnit* targetUnit, int damageA,
+                                                    int damageB, int effectCode) {
+  // Genuinely empty in the shipped binary (bare `ret 0x18`); see
+  // EmitTacticalCommandPacket.
+  (void)commandTag;
+  (void)attackerUnit;
+  (void)targetUnit;
+  (void)damageA;
+  (void)damageB;
+  (void)effectCode;
 }
 
 // Emit the event-0xE session-init snapshot (scenario tag/seed, host game name, save

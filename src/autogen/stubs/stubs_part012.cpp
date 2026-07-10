@@ -331,14 +331,6 @@ undefined4 CreateTArmyStackInstance(void)
   return 0;
 }
 
-// ghidra_name TArmyStack::ConstructTArmyStackBaseState
-// ghidra_proto undefined ConstructTArmyStackBaseState()
-// FUNCTION: IMPERIALISM 0x004a76f0
-undefined4 ConstructTArmyStackBaseState(void)
-{
-  return 0;
-}
-
 // ghidra_name DestructTArmyStackAndMaybeFree_Impl
 // ghidra_proto undefined DestructTArmyStackAndMaybeFree_Impl()
 // FUNCTION: IMPERIALISM 0x004a7750
@@ -347,26 +339,10 @@ undefined4 DestructTArmyStackAndMaybeFree_Impl(void)
   return 0;
 }
 
-// ghidra_name TArmyStack::InitializeBattleSetupArmyStacksAndPopulateSelectionState_Impl_At004a7770
-// ghidra_proto undefined InitializeBattleSetupArmyStacksAndPopulateSelectionState_Impl_At004a7770()
-// FUNCTION: IMPERIALISM 0x004a7770
-undefined4 InitializeBattleSetupArmyStacksAndPopulateSelectionState_Impl_At004a7770(void)
-{
-  return 0;
-}
-
 // ghidra_name InitializeLinkedListCursorContainerAndIterate_004a7a40
 // ghidra_proto undefined InitializeLinkedListCursorContainerAndIterate_004a7a40()
 // FUNCTION: IMPERIALISM 0x004a7a40
 undefined4 InitializeLinkedListCursorContainerAndIterate_004a7a40(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_AllocateWithFallbackHandler_At004a7b20
-// ghidra_proto undefined WrapperFor_AllocateWithFallbackHandler_At004a7b20()
-// FUNCTION: IMPERIALISM 0x004a7b20
-undefined4 WrapperFor_AllocateWithFallbackHandler_At004a7b20(void)
 {
   return 0;
 }

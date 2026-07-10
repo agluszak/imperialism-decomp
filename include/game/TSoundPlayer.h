@@ -52,6 +52,11 @@ public:
 
   void HandleBlinkStateAndScheduleTimerTick(char enabled); // 0x593c10
 
+  // Non-virtual: queue an audio-preset (music cue) change applied on the next audio
+  // tick. Called with rand%3+6 for the tactical-battle cues. Both original callsites
+  // load ECX = g_pSfxPlaybackSystem. Body TODO. 0x593920.
+  void RequestAudioPresetChangeWithDeferredApply(int presetId, int flag);
+
   // Non-virtual: scale a 0-255 aux-volume preference into the 16-bit auxSetVolume range
   // (scalar << 8) and apply it to the probed aux output device (CD-audio line). Both
   // original callsites (0x5db66f, 0x56e734) load ECX = g_pSfxPlaybackSystem.

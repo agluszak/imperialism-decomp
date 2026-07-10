@@ -7,7 +7,7 @@
 // VTABLE: IMPERIALISM 0x00644fd0
 class TTacArmyView : public TTacticalBattleView {
 public:
-// === BEGIN GENERATED DECLS (TTacArmyView) — refreshed by recover-class; do not hand-edit ===
+  // === BEGIN GENERATED DECLS (TTacArmyView) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TTacArmyView)
   virtual ~TTacArmyView() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -121,9 +121,14 @@ public:
   // slot 0x6e OrphanCallChain_C2_I66_005a9090 inherited unchanged (0x5a9090)
   // slot 0x6f WrapperFor_InvalidateCityDialogRectRegion_At005a9240 inherited unchanged (0x5a9240)
   // slot 0x70 DrawUiTilesAndOverlay inherited unchanged (0x5a9550)
-// === END GENERATED DECLS (TTacArmyView) ===
+  // === END GENERATED DECLS (TTacArmyView) ===
   // TODO(manifest): add data members from the object slice (`just slice-discovery TTacArmyView 0xCTOR`).
 
   TTacArmyView();
-};
 
+  // Initializes the live battle-view state from the freshly set-up TArmyBattle
+  // (called by InitializeBattleSetupAndMaybeDispatchTurnEventED8 after resolving the
+  // 'DLOG' control). Not a real constructor despite the symbols.csv name. Body TODO.
+  // 0x5a9d90, __thiscall, ret 8.
+  void ConstructTTacArmyViewBaseState(int compositionClass, class TArmyBattle* battle);
+};

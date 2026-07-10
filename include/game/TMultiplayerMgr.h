@@ -5,6 +5,7 @@
 #include "game/mfc.h"
 
 class TStream;
+class TTacticalUnit;
 struct NetMessage;
 
 // 0xa8-byte nation-status snapshot record with a trailing shared-text CString at +0xa4,
@@ -125,6 +126,14 @@ public:
   // TArmyMgr::CreateTacticalBattleViewAndInitializeBattleSetup with the new battle view,
   // discarding both the argument and the (unset) return value. 0x54c660, __thiscall.
   void NoOpCallbackRet4(void* param);
+  // Multiplayer tactical-command echo hooks, dispatched thiscall on g_pGameFlowState by
+  // every TTacticalBattle command handler. Retail bodies are empty (0x54c680 = bare
+  // `ret 0x10`, 0x54c6a0 = bare `ret 0x18`) -- the echo was compiled out.
+  void EmitTacticalCommandPacket(int commandTag, TTacticalUnit* unit, int arg3,
+                                 int arg4); // 0x54c680
+  void EmitTacticalFireCommandPacket(int commandTag, TTacticalUnit* attackerUnit,
+                                     TTacticalUnit* targetUnit, int damageA, int damageB,
+                                     int effectCode); // 0x54c6a0
 
   // Unlike the emitters above, `this` IS used here: called as
   // g_pGameFlowState->EnsureGameFlowStateAndPostTurnEvent5E5() where g_pGameFlowState may
