@@ -99,3 +99,78 @@ undefined TTacticalBattle::ExecuteTacticalDigActionAndConsumeUnitActionPoints(in
 undefined TTacticalBattle::ComputeRallyStrengthAndQueueTacticalRallyCommand(int param_1) {
   return 0;
 }
+
+// Turn-event 0x29/0x2a tactical receive family: promoted with verified signatures so
+// the 0x545940 dispatcher gets correctly-typed calls; bodies not yet ported.
+
+// FUNCTION: IMPERIALISM 0x005a1010
+void TTacticalBattle::SetCurrentTacticalUnitSelection(void* unit, int flag) {
+  // TODO: port body @ 0x5a1010.
+  (void)unit;
+  (void)flag;
+}
+
+// FUNCTION: IMPERIALISM 0x005a1910
+void TTacticalBattle::MoveTacticalUnitBetweenTiles(void* unit, int arg20, int arg24, int flag) {
+  // TODO: port body @ 0x5a1910.
+  (void)unit;
+  (void)arg20;
+  (void)arg24;
+  (void)flag;
+}
+
+// FUNCTION: IMPERIALISM 0x005a24a0
+void TTacticalBattle::ApplyTacticalActionEffectsAndMaybeRemoveUnit(void* attackerUnit,
+                                                                   void* targetUnit,
+                                                                   int targetUnitField8, int arg24,
+                                                                   int arg28, char arg2C,
+                                                                   int flag) {
+  // TODO: port body @ 0x5a24a0.
+  (void)attackerUnit;
+  (void)targetUnit;
+  (void)targetUnitField8;
+  (void)arg24;
+  (void)arg28;
+  (void)arg2C;
+  (void)flag;
+}
+
+// FUNCTION: IMPERIALISM 0x005a35a0
+void TTacticalBattle::HandleTacticalCommandTag_mine(int arg20, int arg24, int flag) {
+  // TODO: port body @ 0x5a35a0.
+  (void)arg20;
+  (void)arg24;
+  (void)flag;
+}
+
+// FUNCTION: IMPERIALISM 0x005a36d0
+void TTacticalBattle::HandleTacticalCommandTag_digg(void* unit, int arg20, int flag) {
+  // TODO: port body @ 0x5a36d0.
+  (void)unit;
+  (void)arg20;
+  (void)flag;
+}
+
+// FUNCTION: IMPERIALISM 0x005a38e0
+void TTacticalBattle::HandleTacticalCommandTag_raly(void* unit, int arg20, int arg24, int flag) {
+  // TODO: port body @ 0x5a38e0.
+  (void)unit;
+  (void)arg20;
+  (void)arg24;
+  (void)flag;
+}
+
+// FUNCTION: IMPERIALISM 0x005a4370
+void TTacticalBattle::HandleTacticalCommandTag_depl(void* unit, int arg20, int flag) {
+  // TODO: port body @ 0x5a4370.
+  (void)unit;
+  (void)arg20;
+  (void)flag;
+}
+
+// FUNCTION: IMPERIALISM 0x005a53e0
+void* TTacticalBattle::SeekLinkedListCursorByNestedId(int nestedId) {
+  // TODO: port body @ 0x5a53e0.
+  (void)nestedId;
+  return 0;
+}

@@ -829,6 +829,9 @@ extern "C" const char s_BmpResourceNameFormat_006951C4[] = "%d.BMP";
 extern "C" const char s_TurnEventCursorNameFormat_0069B6B4[] = "~C%d";
 // GLOBAL: IMPERIALISM 0x0069b6bc
 extern "C" const char s_SourcePathUViewMgr_0069B6BC[] = "D:\\Ambit\\Cross\\UViewMgr.cpp";
+// GLOBAL: IMPERIALISM 0x00698040
+extern "C" const char s_SourcePathUMultiplayerMgr_00698040[] =
+    "D:\\Ambit\\Cross\\UMultiplayerMgr.cpp";
 // GLOBAL: IMPERIALISM 0x0069b740
 extern "C" const char s_SourcePathUViewMgrMore_0069B740[] = "D:\\Ambit\\Cross\\UViewMgr.more.cpp";
 // GLOBAL: IMPERIALISM 0x0069573c
@@ -1064,6 +1067,16 @@ CString g_cstrNationAwolMessageStore;
 // localized-message dispatch.
 // GLOBAL: IMPERIALISM 0x006a5be0
 CString g_cstrUiPromptMessageStore;
+
+// The live tactical battle: assigned when a battle object is created/loaded, read by
+// the turn-event 0x29/0x2a receive dispatchers.
+// GLOBAL: IMPERIALISM 0x006a475c
+TTacticalBattle* g_pActiveTacticalBattle;
+
+// OR-accumulator for the turn-event-0x2b presence-mask exchange.
+// GLOBAL: IMPERIALISM 0x006a3d64
+int g_nTurnEvent2BNationMaskAccumulator;
+
 // Save-game path construction strings.
 // GLOBAL: IMPERIALISM 0x00698708
 char g_szImpSaveExtension_00698708[] = ".imp";
@@ -1089,6 +1102,10 @@ const char* const g_pszSingleSlotSavePrefix_0065DDD0 = g_szSingleSlotSavePrefix_
 const char* const g_pszMultiplayerSavePrefix_0065DDD4 = g_szMultiplayerSavePrefix_00698710;
 // GLOBAL: IMPERIALISM 0x0065ddd8
 const char* const g_pszImpSaveExtension_0065DDD8 = g_szImpSaveExtension_00698708;
+// GLOBAL: IMPERIALISM 0x00697cbc
+char g_szClientSavePrefix_00697CBC[] = "cli_";
+// GLOBAL: IMPERIALISM 0x0065bf5c
+const char* const g_pszClientSavePrefix_0065BF5C = g_szClientSavePrefix_00697CBC;
 // Scenario display name copied out of string resource (0x2758, 9) when autosaving; the
 // save-slot picker (0x56d2a0) and lifecycle hooks read it back. 0x30 bytes.
 // GLOBAL: IMPERIALISM 0x006a2178

@@ -707,14 +707,6 @@ undefined4 ShowCountrySelectionPromptAndReturnNationId(void)
   return 0;
 }
 
-// ghidra_name NormalizeRuntimeCredentialNameToken
-// ghidra_proto undefined NormalizeRuntimeCredentialNameToken()
-// FUNCTION: IMPERIALISM 0x00508c50
-undefined4 NormalizeRuntimeCredentialNameToken(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_ftol_At00508ee0
 // ghidra_proto undefined WrapperFor_ftol_At00508ee0()
 // FUNCTION: IMPERIALISM 0x00508ee0

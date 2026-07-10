@@ -65,6 +65,10 @@ public:
   virtual void Idle(int idlePhase); // slot 0x2a 0x486b10
   // === END GENERATED DECLS (TApplication) ===
   TApplication();
+
+  // 0x49e500: build + queue the 'gwen' (game-window-end) turn-event packet through the
+  // UI root controller (turn-event 0x1F 'aced'/'lost'/'quit' receive paths). Body TODO.
+  void CreateAndQueueTurnEventPacketTagGWEN();
   ~TApplication() override;
 
   // Post custom message 0x2420 (turn-event code in wParam) to the main frame; handled
@@ -91,4 +95,3 @@ public:
 };
 
 ASSERT_SIZE(TApplication, 0x48);
-

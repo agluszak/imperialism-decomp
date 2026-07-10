@@ -210,6 +210,7 @@ extern short g_Rebuild_Primary_Nation_Value_00653570[6][0x17];
 
 extern "C" {
 class TApplication;
+class TTacticalBattle;
 class ImperialismApp;
 
 extern int g_nOverlayClipCacheParamX;
@@ -267,6 +268,11 @@ extern TSimMgr* g_pSimMgr;
 extern THelpMgr* g_pHelpMgr;
 extern TInterNationEventQueueManager* g_pInterNationEventQueueManager;
 extern TApplication* g_pGlobalUiRootController;
+
+// The live tactical battle (turn-event 0x29/0x2a receive dispatch target).
+extern TTacticalBattle* g_pActiveTacticalBattle;
+// OR-accumulator for the turn-event-0x2b presence-mask exchange.
+extern int g_nTurnEvent2BNationMaskAccumulator;
 // The multiplayer/game-flow singleton (0x6a43c8); every turn-event emitter is a
 // __thiscall method on it (original callsites load ECX from here).
 extern TMultiplayerMgr* g_pGameFlowState;
@@ -550,7 +556,9 @@ extern char g_szLoadedDocumentMarker_0069B854[];
 extern const char* const g_pszSingleSlotSavePrefix_0065DDD0;  // "slot" @ 0x65ddd0
 extern const char* const g_pszMultiplayerSavePrefix_0065DDD4; // "mult" @ 0x65ddd4
 extern const char* const g_pszImpSaveExtension_0065DDD8;      // ".imp" @ 0x65ddd8
-extern char g_ScenarioSaveNameBuffer_006A2178[0x30];          // scenario name for save flow
+extern "C" char g_szClientSavePrefix_00697CBC[];
+extern const char* const g_pszClientSavePrefix_0065BF5C; // "cli_" @ 0x65bf5c
+extern char g_ScenarioSaveNameBuffer_006A2178[0x30];     // scenario name for save flow
 extern char* g_pszDescriptorDefaultName_00653300;
 extern char g_szUiCloseParen_006973C8[];
 extern char g_szUiOpenParen_0069806C[];
@@ -581,6 +589,7 @@ extern TCivMgr* g_pSelectedCivilianOrderState; // 0x6a43dc — the TCivMgr insta
 
 // Assert source-path strings for the UViewMgr TU family.
 extern "C" const char s_SourcePathUViewMgr_0069B6BC[];
+extern "C" const char s_SourcePathUMultiplayerMgr_00698040[];
 extern "C" const char s_SourcePathUViewMgrMore_0069B740[];
 // Assert source-path string for the UArmyMgr TU.
 extern "C" const char s_SourcePathUArmyMgr_0069573C[];

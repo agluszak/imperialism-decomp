@@ -14,12 +14,10 @@ IMPLEMENT_DYNCREATE(TLoungeDialog, TNoHilitePicture)
 TLoungeDialog::TLoungeDialog() {}
 
 // FUNCTION: IMPERIALISM 0x0054d6f0
-void TLoungeDialog::Free() {
-}
+void TLoungeDialog::Free() {}
 
 // FUNCTION: IMPERIALISM 0x0054d730
-void TLoungeDialog::NoOpUiLifecycleHook(int arg) {
-}
+void TLoungeDialog::NoOpUiLifecycleHook(int arg) {}
 
 // FUNCTION: IMPERIALISM 0x0054db40
 char TLoungeDialog::CanHandleCityDialogActionFalse(int action) {
@@ -27,4 +25,10 @@ char TLoungeDialog::CanHandleCityDialogActionFalse(int action) {
 }
 
 // FUNCTION: IMPERIALISM 0x0054e1f0
-void TLoungeDialog::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) { }
+void TLoungeDialog::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {}
+
+// FUNCTION: IMPERIALISM 0x0054e4c0
+void TLoungeDialog::RefreshMapAndMessageControlsForCurrentContext() {
+  // TODO: port body @ 0x54e4c0 (357 bytes; not yet ported). Declared for real so the
+  // turn-event-0xE receive tail gets a correctly-typed call site.
+}

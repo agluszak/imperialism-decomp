@@ -82,6 +82,24 @@ public:
   // Called right after a battle object is created (TArmyMgr setup) or deserialized
   // (network join). 0x0059fc20.
   undefined StartBattle();
+
+  // Network tactical-command receive family (turn events 0x29/0x2a dispatch on the
+  // live battle at g_pActiveTacticalBattle). All __thiscall on the battle object;
+  // signatures verified against the 0x545940 dispatcher's pushes. Bodies TODO.
+  // The 'unit' values are whatever SeekLinkedListCursorByNestedId returns (a unit-list
+  // node; the 'fire' path reads its +0x8 dword) — void* until that type is recovered.
+  void* SeekLinkedListCursorByNestedId(int nestedId);         // 0x5a53e0
+  void SetCurrentTacticalUnitSelection(void* unit, int flag); // 0x5a1010
+  void MoveTacticalUnitBetweenTiles(void* unit, int arg20, int arg24,
+                                    int flag); // 0x5a1910
+  void ApplyTacticalActionEffectsAndMaybeRemoveUnit(void* attackerUnit, void* targetUnit,
+                                                    int targetUnitField8, int arg24, int arg28,
+                                                    char arg2C, int flag); // 0x5a24a0
+  void HandleTacticalCommandTag_mine(int arg20, int arg24, int flag);      // 0x5a35a0
+  void HandleTacticalCommandTag_digg(void* unit, int arg20, int flag);     // 0x5a36d0
+  void HandleTacticalCommandTag_raly(void* unit, int arg20, int arg24,
+                                     int flag);                        // 0x5a38e0
+  void HandleTacticalCommandTag_depl(void* unit, int arg20, int flag); // 0x5a4370
 };
 
 ASSERT_SIZE(TTacticalBattle, 0x78);

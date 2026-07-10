@@ -699,14 +699,6 @@ undefined4 LoadAndFormatMappedFlavorTextRecordsFromStream(void)
   return 0;
 }
 
-// ghidra_name BuildSaveSlotPathAndProbeMetadata
-// ghidra_proto undefined BuildSaveSlotPathAndProbeMetadata()
-// FUNCTION: IMPERIALISM 0x0056df40
-undefined4 BuildSaveSlotPathAndProbeMetadata(void)
-{
-  return 0;
-}
-
 // ghidra_name TTwoPicSlider::CreateObject
 // ghidra_proto undefined CreateObject()
 // FUNCTION: IMPERIALISM 0x0056e120

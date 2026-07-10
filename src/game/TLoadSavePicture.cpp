@@ -263,3 +263,12 @@ void __cdecl SaveGameWithModeAndOptionalLabel(int mode, char* label) {
     }
   }
 }
+
+// FUNCTION: IMPERIALISM 0x0056df40
+unsigned char __cdecl BuildSaveSlotPathAndProbeMetadata(int slot, const char* label) {
+  // TODO: port body @ 0x56df40 (380 bytes; not yet ported). Declared for real so the
+  // turn-event-0xE 'load' receive path gets a correctly-typed call site.
+  (void)slot;
+  (void)label;
+  return 0;
+}

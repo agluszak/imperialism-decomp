@@ -10,7 +10,7 @@ src/game/TAmtBar.cpp|0|0|6|0
 src/game/TAmtBarCluster.cpp|0|0|1|0
 src/game/TAnimation.cpp|0|0|1|0
 src/game/TAnimator.cpp|4|0|1|0
-src/game/TApplication.cpp|2|0|0|0
+src/game/TApplication.cpp|3|0|0|0
 src/game/TArmoryView.cpp|3|0|1|0
 src/game/TArmyBattle.cpp|3|0|0|0
 src/game/TArmyBoyView.cpp|1|0|1|0
@@ -60,7 +60,7 @@ src/game/TColorKeyButton.cpp|1|0|0|0
 src/game/TColorKeyPicture.cpp|3|0|0|0
 src/game/TCombatReportView.cpp|0|0|1|0
 src/game/TCommodityLine.cpp|0|0|1|0
-src/game/TControl.cpp|1|0|1|0
+src/game/TControl.cpp|2|0|1|0
 src/game/TControlSeaZoneMission.cpp|2|0|0|0
 src/game/TCouncilPanelView.cpp|1|0|1|0
 src/game/TCouncilTickerAnimation.cpp|0|0|1|0
@@ -128,12 +128,12 @@ src/game/TItemBoyView.cpp|1|0|1|0
 src/game/TItemOrder.cpp|2|0|1|0
 src/game/TJoinSelectorDialog.cpp|2|0|1|0
 src/game/TLaborPool.cpp|2|0|1|0
-src/game/TLanguageMgr.cpp|1|0|1|0
+src/game/TLanguageMgr.cpp|2|0|1|0
 src/game/TLineData.cpp|0|0|1|0
 src/game/TList.cpp|0|0|1|0
 src/game/TLoadSavePicture.cpp|3|0|1|0
 src/game/TLonelyTileView.cpp|1|0|1|0
-src/game/TLoungeDialog.cpp|3|0|1|0
+src/game/TLoungeDialog.cpp|4|0|1|0
 src/game/TMadnessButton.cpp|1|0|1|0
 src/game/TMapDialog.cpp|5|0|0|0
 src/game/TMapEditCluster.cpp|1|0|1|0
@@ -161,7 +161,7 @@ src/game/TMinorTradeBidsDialog.cpp|0|0|1|0
 src/game/TMinorTreatyDialog.cpp|0|0|1|0
 src/game/TModalMessageCommand.cpp|1|0|0|0
 src/game/TMultiMessagePicture.cpp|1|0|1|0
-src/game/TMultiplayerMgr.cpp|3|0|0|0
+src/game/TMultiplayerMgr.cpp|4|0|0|0
 src/game/TMultiplayerMgr_HandleDiplomacyTurnEvent.cpp|2|0|0|0
 src/game/TNavyAutoPlayer.cpp|0|0|1|0
 src/game/TNavyBattle.cpp|0|0|1|0
@@ -242,7 +242,7 @@ src/game/TTacArmyView.cpp|1|0|1|0
 src/game/TTacMapUberPicture.cpp|2|0|1|0
 src/game/TTacNavyToolbar.cpp|2|0|1|0
 src/game/TTacticalAdiosPicture.cpp|2|0|1|0
-src/game/TTacticalBattle.cpp|1|0|0|0
+src/game/TTacticalBattle.cpp|8|0|0|0
 src/game/TTacticalBattleView.cpp|7|0|1|0
 src/game/TTacticalHolaPicture.cpp|0|0|1|0
 src/game/TTacticalPlayer.cpp|1|0|1|0
@@ -291,3 +291,5 @@ src/game/TUniversityView.cpp|4|0|0|0
 src/game/TViewMgr.cpp|1|0|9|0
 src/game/TWarehouseView.cpp|1|0|1|0
 src/game/TWorldView.cpp|2|0|0|0
+src/game/mapped_flavor_text.cpp|1|0|0|0
+src/game/ui_text_label_helpers.cpp|1|0|0|0

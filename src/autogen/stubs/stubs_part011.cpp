@@ -1243,14 +1243,6 @@ undefined4 CreateTNewGameCommandInstance(void)
   return 0;
 }
 
-// ghidra_name CreateAndQueueTurnEventPacketTagGWEN
-// ghidra_proto undefined CreateAndQueueTurnEventPacketTagGWEN()
-// FUNCTION: IMPERIALISM 0x0049e500
-undefined4 CreateAndQueueTurnEventPacketTagGWEN(void)
-{
-  return 0;
-}
-
 // ghidra_name DestructTAmbitFileBasedDocumentAndMaybeFree_Impl
 // ghidra_proto undefined DestructTAmbitFileBasedDocumentAndMaybeFree_Impl()
 // FUNCTION: IMPERIALISM 0x0049e640

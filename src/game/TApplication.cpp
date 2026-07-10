@@ -106,3 +106,9 @@ void TApplication::vmethod_0017(int param) {}
 
 // TEMPLATE: IMPERIALISM 0x00486f90
 // ??1?$CList@PAXPAX@@UAE@XZ
+
+// FUNCTION: IMPERIALISM 0x0049e500
+void TApplication::CreateAndQueueTurnEventPacketTagGWEN() {
+  // TODO: port body @ 0x49e500 (128 bytes; not yet ported). Declared for real so the
+  // turn-event-0x1F receive paths get a correctly-typed call site.
+}

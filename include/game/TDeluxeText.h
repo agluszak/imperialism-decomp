@@ -144,8 +144,11 @@ public:
   virtual void UpdateTextEntrySharedStringAndMaybeNotify(CString* text,
                                                          char notifyFlag); // slot 0x7b 0x5b64a0
   virtual void UpdateTextEntrySharedString(CString* text);                 // slot 0x7c 0x5b6480
-  virtual void Helper_Uses_ConstructSharedStringFromCStrOrResourceId_At005b6360(
-      CString param_1); // slot 0x7d 0x5b6360
+  // Assign the entry text from a raw char pointer; the length argument is accepted but
+  // unused by the body (ret 8 proves the two-arg shape; renamed from the provisional
+  // Helper_Uses_ConstructSharedStringFromCStrOrResourceId_At005b6360).
+  virtual void SetTextEntryFromChars(const char* textChars,
+                                     int textLength); // slot 0x7d 0x5b6360
   // Real return is undefined4 (packs two shorts via CONCAT22) with an
   // unresolved measure-width helper (func_0x004065e1) feeding it — kept as
   // `undefined` rather than guessing a real return type.

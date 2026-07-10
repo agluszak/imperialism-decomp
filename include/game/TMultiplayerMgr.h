@@ -119,8 +119,8 @@ public:
                                         int nationSlotOrMode); // 0x54a340
   void DispatchCityRedrawInvalidateEvent(short cityId);        // 0x54abf0
   void DispatchJoinEmpireModeEventPacket24_27(int sourceNation, int targetNation,
-                                              int mode);                     // 0x54c5a0
-  undefined4 ProcessDiplomacyTurnStateEventStateMachine(NetMessage* packet); // 0x545940
+                                              int mode);                        // 0x54c5a0
+  unsigned char ProcessDiplomacyTurnStateEventStateMachine(NetMessage* packet); // 0x545940
   // Genuinely empty in the shipped binary (single `RET 4`); called by
   // TArmyMgr::CreateTacticalBattleViewAndInitializeBattleSetup with the new battle view,
   // discarding both the argument and the (unset) return value. 0x54c660, __thiscall.
@@ -158,6 +158,9 @@ public:
   // and re-broadcasts the mask; clients acknowledge the pending event code; everyone
   // marks the local nation 'redy' and broadcasts the event-0x25 status board.
   void HandleTurnResumeStateTelemetry();
+  // 0x54c8e0: re-emit the event-0xE session-init + event-9 name packets for the
+  // requesting session (turn-event 0xD receive path). Body TODO.
+  void EmitTurnEventEAnd9SessionContextPackets(NetMessage* packet);
   // 0x549ff0: receive path for turn events 0x28/0x2E..0x32 — reads the 0x1c timely
   // header, derives the acting nation (-1 during teardown), and dispatches by event
   // code: 0x28 rebuilds the tactical battle from the stream, 0x2E resyncs the navy

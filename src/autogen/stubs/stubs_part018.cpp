@@ -179,14 +179,6 @@ undefined4 RasterizeHexNeighborTerrainPaletteMap(void)
   return 0;
 }
 
-// ghidra_name ApplyPaletteMaskToTileBufferByEventCode
-// ghidra_proto undefined ApplyPaletteMaskToTileBufferByEventCode()
-// FUNCTION: IMPERIALISM 0x00579270
-undefined4 ApplyPaletteMaskToTileBufferByEventCode(void)
-{
-  return 0;
-}
-
 // ghidra_name CreateSelectableTextOptionChildEntry
 // ghidra_proto undefined CreateSelectableTextOptionChildEntry()
 // FUNCTION: IMPERIALISM 0x005798a0
@@ -227,14 +219,6 @@ undefined4 WrapperFor_InvokeCallbackNTimesWithSehGuard_At0057bb80(void)
   return 0;
 }
 
-// ghidra_name RecreateActiveMapContextAndInitializeGlobalMapState
-// ghidra_proto undefined RecreateActiveMapContextAndInitializeGlobalMapState()
-// FUNCTION: IMPERIALISM 0x0057c9a0
-undefined4 RecreateActiveMapContextAndInitializeGlobalMapState(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_ConfigureTurnResumeStateAndNationMask_At0057f570
 // ghidra_proto undefined WrapperFor_ConfigureTurnResumeStateAndNationMask_At0057f570()
 // FUNCTION: IMPERIALISM 0x0057f570
@@ -247,14 +231,6 @@ undefined4 WrapperFor_ConfigureTurnResumeStateAndNationMask_At0057f570(void)
 // ghidra_proto undefined FormatFloatToLocalizedSharedString()
 // FUNCTION: IMPERIALISM 0x0057fa30
 undefined4 FormatFloatToLocalizedSharedString(void)
-{
-  return 0;
-}
-
-// ghidra_name BuildUiMessageTextFromBracketTemplate
-// ghidra_proto undefined BuildUiMessageTextFromBracketTemplate()
-// FUNCTION: IMPERIALISM 0x00580060
-undefined4 BuildUiMessageTextFromBracketTemplate(void)
 {
   return 0;
 }

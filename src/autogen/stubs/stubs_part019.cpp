@@ -147,14 +147,6 @@ undefined4 AdvanceToNextTacticalUnitTurnStep(void)
   return 0;
 }
 
-// ghidra_name SetCurrentTacticalUnitSelection
-// ghidra_proto undefined SetCurrentTacticalUnitSelection()
-// FUNCTION: IMPERIALISM 0x005a1010
-undefined4 SetCurrentTacticalUnitSelection(void)
-{
-  return 0;
-}
-
 // ghidra_name ProcessTacticalUnitState1TurnStep
 // ghidra_proto undefined ProcessTacticalUnitState1TurnStep()
 // FUNCTION: IMPERIALISM 0x005a10e0
@@ -175,14 +167,6 @@ undefined4 MoveTacticalUnitTowardTile(void)
 // ghidra_proto undefined BuildPathToTargetByDistanceField()
 // FUNCTION: IMPERIALISM 0x005a16e0
 undefined4 BuildPathToTargetByDistanceField(void)
-{
-  return 0;
-}
-
-// ghidra_name MoveTacticalUnitBetweenTiles
-// ghidra_proto undefined MoveTacticalUnitBetweenTiles()
-// FUNCTION: IMPERIALISM 0x005a1910
-undefined4 MoveTacticalUnitBetweenTiles(void)
 {
   return 0;
 }
@@ -211,14 +195,6 @@ undefined4 HasValidTacticalFollowupTargetForCurrentAction(void)
   return 0;
 }
 
-// ghidra_name ApplyTacticalActionEffectsAndMaybeRemoveUnit
-// ghidra_proto undefined ApplyTacticalActionEffectsAndMaybeRemoveUnit()
-// FUNCTION: IMPERIALISM 0x005a24a0
-undefined4 ApplyTacticalActionEffectsAndMaybeRemoveUnit(void)
-{
-  return 0;
-}
-
 // ghidra_name Helper_Uses_thunk_AdvanceLinkedListCursor_At005a2630
 // ghidra_proto undefined Helper_Uses_thunk_AdvanceLinkedListCursor_At005a2630()
 // FUNCTION: IMPERIALISM 0x005a2630
@@ -239,30 +215,6 @@ undefined4 EvaluateTacticalSideStateAndShowBattleSummaryDialog(void)
 // ghidra_proto undefined DispatchTacticalActionByHoverStateIndex()
 // FUNCTION: IMPERIALISM 0x005a3370
 undefined4 DispatchTacticalActionByHoverStateIndex(void)
-{
-  return 0;
-}
-
-// ghidra_name HandleTacticalCommandTag_mine
-// ghidra_proto undefined HandleTacticalCommandTag_mine()
-// FUNCTION: IMPERIALISM 0x005a35a0
-undefined4 HandleTacticalCommandTag_mine(void)
-{
-  return 0;
-}
-
-// ghidra_name HandleTacticalCommandTag_digg
-// ghidra_proto undefined HandleTacticalCommandTag_digg()
-// FUNCTION: IMPERIALISM 0x005a36d0
-undefined4 HandleTacticalCommandTag_digg(void)
-{
-  return 0;
-}
-
-// ghidra_name TArmyStack::HandleTacticalCommandTag_raly
-// ghidra_proto undefined HandleTacticalCommandTag_raly()
-// FUNCTION: IMPERIALISM 0x005a38e0
-undefined4 HandleTacticalCommandTag_raly(void)
 {
   return 0;
 }
@@ -331,14 +283,6 @@ undefined4 IsTacticalSideCategoryCoverageIncompleteOrFlagOff(void)
   return 0;
 }
 
-// ghidra_name HandleTacticalCommandTag_depl
-// ghidra_proto undefined HandleTacticalCommandTag_depl()
-// FUNCTION: IMPERIALISM 0x005a4370
-undefined4 HandleTacticalCommandTag_depl(void)
-{
-  return 0;
-}
-
 // ghidra_name BuildTacticalDistanceFieldForSide
 // ghidra_proto undefined BuildTacticalDistanceFieldForSide()
 // FUNCTION: IMPERIALISM 0x005a4460
@@ -367,14 +311,6 @@ undefined4 ConstructTArmyBattleBaseState(void)
 // ghidra_proto undefined LoadBattleSetupTabDataByIndex()
 // FUNCTION: IMPERIALISM 0x005a4fc0
 undefined4 LoadBattleSetupTabDataByIndex(void)
-{
-  return 0;
-}
-
-// ghidra_name SeekLinkedListCursorByNestedId
-// ghidra_proto undefined SeekLinkedListCursorByNestedId()
-// FUNCTION: IMPERIALISM 0x005a53e0
-undefined4 SeekLinkedListCursorByNestedId(void)
 {
   return 0;
 }

@@ -691,7 +691,7 @@ undefined4 GetCityProductionValueTimesTwoCallbackG(void)
   return 0;
 }
 
-// ghidra_name RefreshNationCivilianWorkOrdersForTurn
+// ghidra_name TGreatPower::SetHomeCityTileAndDisplayName
 // ghidra_proto undefined RefreshNationCivilianWorkOrdersForTurn()
 // FUNCTION: IMPERIALISM 0x004dfd30
 undefined4 RefreshNationCivilianWorkOrdersForTurn(void)

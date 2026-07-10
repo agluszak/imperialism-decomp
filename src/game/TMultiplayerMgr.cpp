@@ -7,6 +7,7 @@
 #include "game/mapped_flavor_text.h"
 #include "game/NetMessage.h"
 #include "game/nation_slot_eligibility.h"
+#include "game/ImperialismApp.h"
 
 // Turn-event-0x25 nation-status payload: header + seven per-nation status tags,
 // defaulted to 'unkn'; the 'time' tag and active-nation byte are stamped separately via
@@ -149,8 +150,25 @@ struct TurnEvent15Packet : NetMessage {
 #include "game/TCountry.h"
 #include "game/TSoundPlayer.h"
 #include "game/global_data_tables.h"
+#include "game/ScopedMapQuickDrawContext.h"
+#include "game/TControl.h"
+#include "game/TDeluxeText.h"
+#include "game/TInterNationEventQueueManager.h"
+#include "game/TLanguageMgr.h"
+#include "game/TLoungeDialog.h"
+#include "game/TNextTradeCommand.h"
+#include "game/TPicture.h"
+#include "game/TPoseMessageDialog.h"
+#include "game/TStaticText.h"
+#include "game/TTacticalBattle.h"
+#include "game/TTextPictureButton.h"
+#include "game/quickdraw_rendering.h"
+#include "game/turn_event_dialog_provisional.h"
+#include "game/ui_invalidation_guard.h"
 #include <cstdlib>
 #include <cstring>
+
+using turn_event_dialog::TurnEventDialogNode;
 
 // Leaf helpers reached through ILT thunks / autogen stubs. They are genuine __cdecl free
 // functions (verified against the disassembly — none consume ECX as `this` on entry; the
@@ -388,1947 +406,1657 @@ static void* operator_new(void) {
   return malloc(0x400);
 }
 
-// ============================================================================
-// REWRITE MAP for ProcessDiplomacyTurnStateEventStateMachine (0x545940, 11459B)
-// The body below is still the raw Ghidra scaffold (broken raw-address calls) and
-// must be rewritten case-by-case. Ground-truth analysis (2026-07-10 session):
-//   switch (packet->eventCode - 1), 0x32-way dword jump table at 0x548604.
-//   Case bodies: 0x1->0x5468e0 (pendingNationBitmask = pkt->pendingMask)
-//     0x2->0x5468f0 (deltaKind==0: g_pDiplomacyTurnStateManager->
-//                    ApplyTurnEvent2SyncPacketToRelationMatrix — PORTED 0x4f27f0)
-//     0x3->0x546c0a ('goin' handshake) 0x8->0x545c01 (name/status, 0x64B pkt)
-//     0x9->0x545f4e (lobby chat)       0xa->0x5459f2 (city announce receive)
-//     0xb->0x545ad4 (event-0xB directory receive) 0xc->0x5464b1
-//     0xd->0x54690e 0xe->0x54691d 0xf->0x545980 (pending-bit clear + rebroadcast)
-//     0x10->0x546d4c 0x11->0x546d5e 0x12->0x546e89 0x13->0x546ea8
-//     0x14->0x547242 0x15->0x54725d 0x16->0x5476a0 0x17->0x5476c4 0x18->0x547709
-//     0x19->0x547358 0x1a->0x5470cd 0x1b->0x547180 0x1c->0x5471b2 0x1d->0x546f29
-//     0x1e->0x546f79 0x1f->0x5477f0 (tactical battle dispatcher, 2.5KB — needs the
-//        0x5a1010/0x5a1910/0x5a24a0/0x5a35a0/0x5a36d0/0x5a38e0/0x5a4370/0x5a53e0
-//        tactical family, all still stubs)
-//     0x20->0x546ec5 0x21->0x546ee8 0x22->0x546f0b 0x23->0x5481f0 0x24->0x54823c
-//     0x25->0x5482ae 0x26->0x548374 0x27->0x548408 0x29->0x548426 0x2a->0x548506
-//     0x2b->0x54855a 0x2c->0x547440 0x2d->0x547674
-//     0x28,0x2e..0x32 -> 0x547765: reads the 0x1c header then calls
-//        this->HandleTurnEventCodes28_2E_2F_30_31_32(stream) (0x549ff0, still a stub;
-//        its own switch needs: 0x40774d/0x402284/0x4091a1/0x40196f serializer reads,
-//        the 0xc-byte 'erra' object (vtable 0x653290), the 0x50-byte town record
-//        (ctor 0x403044) matched against g_pGlobalMapState->vtbl[+0xd8], and the
-//        0x78-byte object (ctor 0x403e36, vtable 0x64ca68)).
-//     default (0x4..0x7) -> 0x5485dc (return 0).
-//   Raw-address ILT map (verified via PE parse): 0x403aad->0x4f27f0(PORTED),
-//     0x405a3d->0x5e4280 GetSessionActiveNationId, 0x403170->0x549ff0,
-//     0x40510f->0x54bd20(PORTED), 0x407e82->0x54c8e0, 0x401587->0x54e4c0,
-//     0x408d78->0x56df40, 0x407518->0x49e500, 0x40619f->0x580060,
-//     0x40988b->0x57fef0 scanBracketExpressions, plus the tactical family above.
-// ============================================================================
-// FUNCTION: IMPERIALISM 0x00545940
-undefined4 TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMessage* packet) {
-  CObject_slot_0x04_0x04* param_1 = reinterpret_cast<CObject_slot_0x04_0x04*>(this);
-  undefined4* param_2 = reinterpret_cast<undefined4*>(packet);
-  GhStr* thisStr;
-  char cVar1;
-  code cVar2;
-  word wVar3;
-  undefined2 uVar4;
-  CObject* this_00;
-  void** pCVar5;
-  TMinor* pTVar6;
-  TGreatPower* pTVar7;
-  void** pTVar8;
-  byte bVar9;
-  bool bVar10;
-  undefined uVar11;
-  char cVar12;
-  undefined1 uVar13;
-  short sVar14;
-  short sVar15;
-  undefined4 uVar16;
-  char* pcVar17;
-  undefined3 extraout_var;
-  undefined3 extraout_var_00;
-  int* piVar18;
-  TGreatPower** ppTVar19;
-  word* pwVar20;
-  undefined2* puVar21;
-  undefined4* puVar22;
-  word* pwVar23;
-  HGLOBAL hMem;
-  int* piVar24;
-  char* pcVar25;
-  word* pwVar26;
-  undefined2* puVar27;
-  void** ppvVar28;
-  undefined2* puVar29;
-  uint uVar30;
-  uint uVar31;
-  code* pcVar32;
-  undefined4* puVar33;
-  int iVar34;
-  int iVar35;
-  uint uVar36;
-  char* unaff_EBP;
-  code* unaff_ESI;
-  TCountry** ppTVar37;
-  undefined4* puVar38;
-  undefined4* puVar39;
-  GhStr* unaff_EDI;
-  char* pcVar40;
-  TCity* pTVar41;
-  GhStr CVar42;
-  TDiplomacyMgr* pTVar43;
-  undefined4* unaff_FS_OFFSET;
-  GhStr local_1d4;
-  GhStr local_1d0;
-  undefined4 uStack_1cc;
-  GhStr local_1c8;
-  GhStr local_1c4;
-  GhStr local_1c0;
-  GhStr local_1bc;
-  undefined4 local_1b8[5];
-  undefined1 local_1a4[4];
-  undefined4 local_1a0;
-  int local_19c;
-  char local_198[24];
-  undefined1 auStack_180[9];
-  char local_177[31];
-  GhStr CStack_158;
-  GhStr local_154;
-  GhStr CStack_150;
-  GhStr local_14c;
-  GhStr CStack_148;
-  GhStr local_144[2];
-  undefined4 uStack_13c;
-  undefined4 uStack_138;
-  undefined4 uStack_134;
-  undefined4 uStack_130;
-  undefined4 uStack_12c;
-  undefined4 local_128;
-  char local_124[4];
-  undefined4 local_120;
-  char local_11c[248];
-  char cStack_24;
-  undefined1 uStack_23;
-  undefined4 uStack_1c;
-  undefined1 uStack_18;
-  undefined1 uStack_14;
-  undefined1 local_10;
-  undefined1 local_f;
-  undefined4 local_c;
-  undefined1* puStack_8;
-  undefined4 local_4;
-  char stack0xfffffde0[512];
-  char stack0xfffffe00[512];
-  char stack0xfffffe1c[512];
+// Packet views for the turn-state receive machine below (emit-side twins of several
+// of these live earlier in this TU and in TMultiplayerMgr_HandleDiplomacyTurnEvent.cpp).
 
-  local_4 = 0xffffffff;
-  puStack_8 = reinterpret_cast<undefined1*>(0x00634baf);
-  local_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = (undefined4)&local_c;
-  local_1d0.m_pchData = (char*)param_1;
-  switch (*param_2) {
-  case 1:
-    uVar16 = 1;
-    *(undefined4*)(param_1 + 0xe8) = param_2[6];
+// Event-8 name/status announce: slot byte at +0x18, then two NUL strings at +0x19/+0x3a.
+struct TurnEvent8NameAnnouncePacket : TimelyMessageHeader {
+  char nationSlot18;        // +0x18
+  char senderName19[0x21];  // +0x19
+  char messageText3a[0x2a]; // +0x3a, total 0x64
+};
+
+// Event-0xC kick/notice text: message text plus the addressed-nations mask and the
+// kicking nation id (or -1) in the two tail bytes.
+struct TurnEventCKickMessagePacket : TimelyMessageHeader {
+  char messageText18[0x100];            // +0x18
+  unsigned char targetNationBitmask118; // +0x118 - 1 << slot per addressed nation
+  signed char kickerNationId119;        // +0x119 - -1 = no specific kicker
+  unsigned char pad11a[2];              // total 0x11c
+};
+
+// Event-0xE host session-init record.
+struct TurnEventESessionInitPacket : TimelyMessageHeader {
+  char mapSeedText18[0x21];      // +0x18 - passed to RebuildMapContextAndGlobalMapState
+  unsigned char mapParamByte39;  // +0x39 - third Rebuild arg
+  char hostGameName3A[0x22];     // +0x3a
+  int saveSlotDword5C;           // +0x5c -> queueSyncDword
+  int scenarioTag60;             // +0x60 -> scenarioSelectionTag
+  signed char simStateCode64;    // +0x64
+  unsigned char nameTableFlag65; // +0x65 -> g_pSimMgr->useLocalizedNameTables68
+  unsigned char pad66[2];        // total 0x68
+};
+
+// Event-0xF per-nation turn-resume acknowledge (same shape as the dispatcher TU copy).
+struct TurnEventFResumeAckPacketM : TimelyNetMessagePrefix {
+  short nationSlot1C;     // +0x1c
+  unsigned char pad1e[2]; // total 0x20
+};
+
+// Event-0xA city announce (same shape as the dispatcher TU copy).
+struct TurnEventACityAnnouncePacketM : TimelyNetMessagePrefix {
+  unsigned char nationId1C; // +0x1c
+  unsigned char pad1d;
+  short homeRegion1E;    // +0x1e
+  char cityName20[0x24]; // +0x20, total 0x44
+};
+
+// Event-0xB nation directory (same shape as the dispatcher TU copy).
+struct TurnEventBNationDirectoryPacketM : NetMessage {
+  int packetTag;                // +0x10 'time'
+  unsigned char activeNationId; // +0x14
+  unsigned char pad15[3];
+  short pendingNationSlot; // +0x18
+  unsigned char pad1a[2];
+  short homeRegionBySlot[0x17];      // +0x1c
+  char cityNameBySlot[0x17][0x17];   // +0x4a
+  unsigned char pad25b[0xe6];        // reserve to 0x17 * 0x21
+  char nationNameBySlot[0x17][0x17]; // +0x341
+  unsigned char pad552[0xe6];        // reserve to 0x17 * 0x21
+  short portZoneOrdinalBySlot[0x17]; // +0x638
+  unsigned char pad666[2];           // total 0x668
+};
+
+// Event-0x11 masked byte/word/dword poke into one of the two global map tables.
+struct TurnEvent11MapPokePacket : TimelyMessageHeader {
+  signed char pokeWidthCode18; // +0x18 - 1 byte / 2 word / 4 dword
+  unsigned char pad19[3];
+  int bufferSelector1C; // +0x1c - 0 terrainStateTable, 1 cityScoreTable, else null base
+  int byteOffset20;     // +0x20 - raw byte offset into the selected table
+  short valueWord24;    // +0x24
+  short maskWord26;     // +0x26, total 0x28
+};
+
+// Event-0x13 nine-dword nation payload.
+struct TurnEvent13NationPayloadPacket : TimelyMessageHeader {
+  short nationSlot18; // +0x18
+  unsigned char pad1a[2];
+  int payloadDwords1C[9]; // +0x1c, total 0x40
+};
+
+// Event-0x14 nation-metric delta.
+struct TurnEvent14NationMetricPacket : TimelyMessageHeader {
+  short nationSlot18; // +0x18
+  unsigned char pad1a[2];
+  int amount1C; // +0x1c, total 0x20
+};
+
+// Event-0x16 diplomacy proposal for one nation.
+struct TurnEvent16DiplomacyProposalPacket : TimelyMessageHeader {
+  short nationSlot18;     // +0x18
+  short proposalCode1A;   // +0x1a
+  short targetNationId1C; // +0x1c
+  unsigned char pad1e[2]; // total 0x20
+};
+
+// Event-0x17 proposal resolution (accept/decline).
+struct TurnEvent17ProposalResolutionPacket : TimelyMessageHeader {
+  short nationSlot18;           // +0x18
+  unsigned char acceptedFlag1A; // +0x1a
+  unsigned char pad1b;
+  short proposalIndex1C;  // +0x1c
+  unsigned char pad1e[2]; // total 0x20
+};
+
+// Event-0x18 host broadcast of all seven great powers' diplomacy arrays (same shape as
+// the dispatcher TU emit-side copy).
+struct TurnEvent18DiplomacyArraysPacketM : NetMessage {
+  int packetTag;                // +0x10 'time'
+  unsigned char activeNationId; // +0x14
+  unsigned char pad15[3];
+  short pendingNationSlot; // +0x18
+  unsigned char pad1a[2];
+  short diplomacyPolicyByNation[7][0x17]; // +0x1c
+  short diplomacyGrantByNation[7][0x17];  // +0x15e
+  short needLevelByNation[7][0x17];       // +0x2a0
+  unsigned char pad3e2[2];                // total 0x3e4
+};
+
+// Events 0x20/0x21/0x22 receive views (the emit-side structs later in this TU pack
+// their payload at different offsets; the receive side reads +0x18..).
+struct TurnEvent20PacketM : TimelyMessageHeader {
+  short eventParam18;    // +0x18
+  signed char nationA1A; // +0x1a
+  signed char nationB1B; // +0x1b, total 0x1c
+};
+struct TurnEvent21PacketM : TimelyMessageHeader {
+  signed char byte18;  // +0x18
+  signed char byte19;  // +0x19
+  signed char byte1A;  // +0x1a
+  unsigned char pad1b; // total 0x1c
+};
+struct TurnEvent22PacketM : TimelyMessageHeader {
+  signed char byte18; // +0x18
+  unsigned char pad19;
+  short word1A; // +0x1a, total 0x1c
+};
+
+// Event-0x1A nation action + per-nation counterA2 words.
+struct TurnEvent1ANationActionPacket : TimelyNetMessagePrefix {
+  short sourceNation1C;     // +0x1c
+  short param1E;            // +0x1e
+  short param20;            // +0x20
+  short param22;            // +0x22
+  short param24;            // +0x24
+  short counterA2BySlot[7]; // +0x26, total 0x34
+};
+
+// Event-0x1B one tracked-slot entry.
+struct TurnEvent1BTrackedEntryPacket : TimelyNetMessagePrefix {
+  short nationSlot1C;       // +0x1c
+  short trackedKind1E;      // +0x1e
+  short targetNation20;     // +0x20
+  short trackedValue22;     // +0x22
+  short trackedSlotIndex24; // +0x24
+  unsigned char pad26[2];
+  int trackedPayload28; // +0x28, total 0x2c
+};
+
+// Event-0x1C proposal amount dispatch.
+struct TurnEvent1CProposalAmountPacket : TimelyNetMessagePrefix {
+  short ownerNation1C;           // +0x1c
+  short sourceContext1E;         // +0x1e
+  short maxAmount20;             // +0x20
+  short targetNation22;          // +0x22
+  short amount24;                // +0x24
+  unsigned char emitEventFlag26; // +0x26
+  unsigned char pad27;           // total 0x28
+};
+
+// Event-0x1D war-transition check/propagate.
+struct TurnEvent1DWarTransitionPacket : TimelyNetMessagePrefix {
+  char actionCode1C;     // +0x1c - 'i' selects the two-arg check
+  signed char nationA1D; // +0x1d
+  signed char nationB1E; // +0x1e
+  unsigned char mode1F;  // +0x1f, total 0x20
+};
+
+// Event-0x1E diplomacy relation action.
+struct TurnEvent1EDiplomacyActionPacket : TimelyNetMessagePrefix {
+  signed char nation1C;   // +0x1c
+  signed char nationA1D;  // +0x1d
+  signed char nationB1E;  // +0x1e
+  char actionCode1F;      // +0x1f - 'a' or 'i'
+  unsigned char flag20;   // +0x20 - role-swap selector
+  unsigned char flag21;   // +0x21 - gate for the slot-0x284 paths
+  unsigned char pad22[2]; // total 0x24
+};
+
+// Event-0x1F game-state four-cc tag + one dword payload.
+struct TurnEvent1FGameStateTagPacket : TimelyMessageHeader {
+  int statusTag18; // +0x18 - 'aced'/'abdi'/'uhed'/'cgam'/'lose'/'foff'/...
+  int value1C;     // +0x1c, total 0x20
+};
+
+// Event-0x23 one map tile's terrain-state record (same shape as the dispatcher TU copy).
+struct TurnEvent23TileStatePacketM : NetMessage {
+  int packetTag;                // +0x10 'time'
+  unsigned char activeNationId; // +0x14
+  unsigned char pad15[3];
+  short pendingNationSlot; // +0x18
+  unsigned char pad1a[2];
+  short tileIndex; // +0x1c
+  unsigned char pad1e[2];
+  TTerrainStateRecordView record; // +0x20, total 0x44
+};
+
+// Event-0x24 one city-score record (receive side: the 0xa8-byte record is contiguous).
+struct TurnEvent24CityRecordPacket : TimelyNetMessagePrefix {
+  short cityRecordIndex; // +0x1c
+  unsigned char pad1e[2];
+  NationStateRecordA8 record; // +0x20
+};
+
+// Event-0x26 full diplomacy-matrix snapshot for g_pDiplomacyTurnStateManager.
+struct TurnEvent26DiplomacyMatrixPacket : TimelyMessageHeader {
+  short relationCodeMatrix[kDiplomacyPairMatrixEntries];              // +0x018
+  unsigned char pendingPolicyCodeMatrix[kDiplomacyPairMatrixEntries]; // +0x318
+  short pendingPolicyTierMatrix[kDiplomacyPairMatrixEntries];         // +0x498
+  short selectedSourceNationSlot;                                     // +0x798
+  short selectedTargetNationSlot;                                     // +0x79a
+  short selectionFlagsA;                                              // +0x79c
+  short selectionFlagsB;                                              // +0x79e
+  short selectionFlagsC;                                              // +0x7a0
+  unsigned char pad7a2[2];                                            // +0x7a2
+  unsigned char relationTailBlock[0x70];                              // +0x7a4, total 0x814
+};
+
+// Event-0x27 join-empire dispatch.
+struct TurnEvent27JoinEmpirePacket : TimelyMessageHeader {
+  int terrainSlot18;      // +0x18 - index into g_apTerrainTypeDescriptorTable
+  int targetNationSlot1C; // +0x1c
+  int mode20;             // +0x20, total 0x24
+};
+
+// Event-0x2D minor need levels (same shape as the dispatcher TU copy).
+struct TurnEvent2DMinorNeedPacketM : TimelyNetMessagePrefix {
+  short nationSlot;              // +0x1c
+  short needLevelByNation[0x17]; // +0x1e, total 0x4c
+};
+
+// Events 0x29/0x2A tactical battle commands by fourcc tag.
+struct TacticalCommandPacket : TimelyMessageHeader {
+  int commandTag18; // +0x18 'sele'/'move'/'mine'/'digg'/'depl'/'raly' (0x29), 'fire' (0x2a)
+  int unitId1C;     // +0x1c - resolved via SeekLinkedListCursorByNestedId
+  int arg20;        // +0x20
+  int arg24;        // +0x24
+  int arg28;        // +0x28 ('fire' only)
+  int arg2C;        // +0x2c ('fire' only), total 0x30
+};
+
+// Event-0x2B presence/ack mask exchange.
+struct TurnEvent2BPresenceMaskPacket : TimelyMessageHeader {
+  unsigned char replyRequestFlag18; // +0x18 - nonzero requests the echo reply
+  signed char nationMask19;         // +0x19 - OR'd (signed) into the accumulator
+  unsigned char pad1a[2];           // total 0x1c
+};
+
+void LoadUiStringAndDispatchSharedMessageCommand(short group, short index, TView* control);
+void __cdecl ApplyUiTextStyleAndThemeFlags(TView* control, int arg2, int themeCode, int styleResA,
+                                           int styleResB);
+
+// Receive-side state machine for every diplomacy/lobby turn event ('time' packets).
+// Dispatches on eventCode 1..0x32 (codes 4..7 return 0); each case applies the payload
+// to the local session/world state and often re-broadcasts or acknowledges. Case bodies
+// are laid out in the original binary order.
+// FUNCTION: IMPERIALISM 0x00545940
+unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMessage* packet) {
+  unsigned char result;
+  switch (packet->eventCode) {
+  case 0xf: {
+    // Clear the acknowledging nation's pending bit; when hosting, re-broadcast the mask
+    // and flush the latched event code once the mask drains.
+    TurnEventFResumeAckPacketM* ack = static_cast<TurnEventFResumeAckPacketM*>(packet);
+    pendingNationBitmask &= ~(1 << (char)ack->nationSlot1C);
+    unsigned char hosting = g_pSimMgr->field44 == 1;
+    if (hosting == 0) {
+      return 1;
+    }
+    TurnEvent1PendingMaskPacket maskPacketF;
+    maskPacketF.InitializeEmitEventHeaderWithActiveNation();
+    maskPacketF.eventCode = 0;
+    maskPacketF.fromNetworkId = 0;
+    maskPacketF.eventCode = 1;
+    maskPacketF.toNetworkId = 0;
+    maskPacketF.pendingMask = pendingNationBitmask;
+    maskPacketF.messageLength = 0;
+    maskPacketF.messageLength = 0x1c;
+    maskPacketF.toNetworkId = 0;
+    g_pNetMgr006a6014->Send(&maskPacketF, 0);
+    if (pendingNationBitmask == 0 && pendingNationSlotIndex != -1) {
+      HandleDiplomacyTurnEventPacketByCode();
+      return 1;
+    }
+    result = 1;
     break;
-  case 2:
-    if (*(char*)(param_2 + 8) == '\0') {
-      reinterpret_cast<undefined4(__cdecl*)(...)>(0x403aad)();
-      uVar16 = 1;
-      break;
+  }
+  case 0xa: {
+    // A resuming nation announces its home region and city name.
+    TurnEventACityAnnouncePacketM* announce = static_cast<TurnEventACityAnnouncePacketM*>(packet);
+    if (g_pSimMgr->stateFlag114 == 0) {
+      g_pGlobalMapState->SetTileTransportFlagsTo0x37AndRefreshNeighbors(announce->homeRegion1E,
+                                                                        (char)announce->nationId1C);
+      g_apNationStates[(char)announce->nationId1C]->SetHomeCityTileAndDisplayName(
+          announce->homeRegion1E, announce->cityName20);
     }
-    goto LAB_005485d8;
-  case 3:
-    *(undefined4*)(param_1 + 0xd8) = 0x676f696e;
-    *(undefined4*)(param_1 + 0xec) = 0xffffffff;
-    *(undefined4*)(param_1 + 0xf0) = 0xffffffff;
-    iVar35 = reinterpret_cast<undefined4(__cdecl*)(...)>(0x405a3d)();
-    iVar34 = 0;
-    piVar24 = (int*)((int)g_pGameFlowState + 0x48);
-    do {
-      if (*piVar24 == iVar35)
-        goto LAB_00546c48;
-      iVar34 = iVar34 + 1;
-      piVar24 = piVar24 + 1;
-    } while (iVar34 < 7);
-    iVar34 = -1;
-  LAB_00546c48:
-    if (iVar34 == -1) {
-      pcVar25 = (char*)operator_new();
-      local_4 = 0x12;
-      local_1c4.m_pchData = pcVar25;
-      if (pcVar25 != (char*)0x0) {
-        reinterpret_cast<undefined4(__cdecl*)(...)>(0x403d5f)();
-        *reinterpret_cast<void**>(pcVar25) = 0;
-      }
-      local_4 = 0xffffffff;
-      reinterpret_cast<undefined4(__cdecl*)(...)>(0x405ee3)();
-      g_pGlobalUiRootController->DispatchUiSelectionToHandler(pcVar25);
-      uVar16 = 1;
-    } else {
-      sVar15 = reinterpret_cast<undefined4(__cdecl*)(...)>(0x403b16)();
-      iVar35 = (int)sVar15;
-      if (iVar35 == -1) {
-        iVar35 = (int)(char)param_1[0xdc];
-      }
-      *(undefined4*)(param_1 + iVar35 * 4 + 0xbc) = 0x62757379;
-      local_1b8[4] = 0x74696d65;
-      local_1a4[0] = reinterpret_cast<undefined4(__cdecl*)(...)>(0x403b16)();
-      local_1b8[1] = 0;
-      local_1b8[0] = 0x25;
-      local_1b8[3] = 0x34;
-      puVar22 = &local_1a0;
-      for (iVar34 = 7; iVar34 != 0; iVar34 = iVar34 + -1) {
-        *puVar22 = 0x756e6b6e;
-        puVar22 = puVar22 + 1;
-      }
-      local_1b8[2] = 0;
-      (&local_1a0)[iVar35] = 0x62757379;
-      reinterpret_cast<undefined4(__cdecl*)(...)>(0x405a5b)();
-      g_pSimMgr->PostMainWindowCommand100ForTurnFlow();
-      uVar16 = 1;
+    pendingNationBitmask &= ~(1 << (char)announce->nationId1C);
+    unsigned char hostingA = g_pSimMgr->field44 == 1;
+    if (hostingA == 0) {
+      return 1;
     }
+    TurnEvent1PendingMaskPacket maskPacketA;
+    maskPacketA.InitializeEmitEventHeaderWithActiveNation();
+    maskPacketA.eventCode = 0;
+    maskPacketA.fromNetworkId = 0;
+    maskPacketA.eventCode = 1;
+    maskPacketA.toNetworkId = 0;
+    maskPacketA.pendingMask = pendingNationBitmask;
+    maskPacketA.messageLength = 0;
+    maskPacketA.messageLength = 0x1c;
+    maskPacketA.toNetworkId = 0;
+    g_pNetMgr006a6014->Send(&maskPacketA, 0);
+    if (pendingNationBitmask == 0 && pendingNationSlotIndex != -1) {
+      HandleDiplomacyTurnEventPacketByCode();
+      return 1;
+    }
+    result = 1;
     break;
-  default:
-    uVar16 = 0;
+  }
+  case 0xb: {
+    // Full nation directory: refresh each minor's home tile, city/nation names, and
+    // port-zone ordinal, then rebuild all status labels.
+    TurnEventBNationDirectoryPacketM* directory =
+        static_cast<TurnEventBNationDirectoryPacketM*>(packet);
+    for (int dirSlot = 0; dirSlot < 0x17; ++dirSlot) {
+      if (dirSlot != g_pSimMgr->GetActiveNationId() &&
+          g_apTerrainTypeDescriptorTable[dirSlot]->ShouldDispatchImmediatelySlot28() != 0) {
+        g_apTerrainTypeDescriptorTable[dirSlot]->NoOpNationSelectedRegionAndMapCellLabelHook(
+            directory->homeRegionBySlot[dirSlot], (int)directory->cityNameBySlot[dirSlot]);
+        {
+          CString nationName(directory->nationNameBySlot[dirSlot]);
+          g_apTerrainTypeDescriptorTable[dirSlot]->SetNationDisplayNameAndLocalizationSlotRef(
+              nationName);
+        }
+        {
+          CString nationName2(directory->nationNameBySlot[dirSlot]);
+          g_apTerrainTypeDescriptorTable[dirSlot]->identitySharedString1 = nationName2;
+        }
+        if (g_pSimMgr->stateFlag114 == 0) {
+          g_pGlobalMapState->SetTileTransportFlagsTo0x37AndRefreshNeighbors(
+              directory->homeRegionBySlot[dirSlot], (short)dirSlot);
+        }
+      }
+      TZone* portZone =
+          g_pActiveMapOrderContext->FindFirstPortZoneContextByNation(static_cast<short>(dirSlot));
+      portZone->field14 = directory->portZoneOrdinalBySlot[dirSlot];
+    }
+    RefreshNationStatusLabelsAndCodesForSlotOrAll(-1);
+    result = 1;
     break;
-  case 8:
-    cVar12 = *(char*)(param_2 + 6);
-    local_1d4.m_pchData = (char*)(int)cVar12;
-    if (local_1d4.m_pchData == (char*)0xffffffff) {
-      reinterpret_cast<undefined4(__cdecl*)(...)>(0x405682)();
-    } else if (*(int*)(param_1 + (int)local_1d4.m_pchData * 4 + 0x48) != 0) {
-      iVar35 = param_2[1];
-      if (*(int*)(param_1 + (int)local_1d4.m_pchData * 4 + 0x48) == iVar35) {
-        reinterpret_cast<undefined4(__cdecl*)(...)>(0x402a45)();
-        local_1b8[1] = 0;
-        uVar36 = 0xffffffff;
-        pcVar25 = (char*)((int)param_2 + 0x19);
-        do {
-          pcVar17 = pcVar25;
-          if (uVar36 == 0)
-            break;
-          uVar36 = uVar36 - 1;
-          pcVar17 = pcVar25 + 1;
-          cVar1 = *pcVar25;
-          pcVar25 = pcVar17;
-        } while (cVar1 != '\0');
-        uVar36 = ~uVar36;
-        local_1b8[2] = 0;
-        local_1b8[3] = 100;
-        local_1b8[0] = 9;
-        local_1a0 = CONCAT31(((unsigned int)(local_1a0) >> 8 & 0xffffff), cVar12);
-        pcVar25 = pcVar17 + -uVar36;
-        pcVar17 = local_198;
-        for (uVar30 = uVar36 >> 2; uVar30 != 0; uVar30 = uVar30 - 1) {
-          *(undefined4*)pcVar17 = *(undefined4*)pcVar25;
-          pcVar25 = pcVar25 + 4;
-          pcVar17 = pcVar17 + 4;
-        }
-        for (uVar36 = uVar36 & 3; uVar36 != 0; uVar36 = uVar36 - 1) {
-          *pcVar17 = *pcVar25;
-          pcVar25 = pcVar25 + 1;
-          pcVar17 = pcVar17 + 1;
-        }
-        uVar36 = 0xffffffff;
-        pcVar25 = (char*)((int)param_2 + 0x3a);
-        do {
-          pcVar17 = pcVar25;
-          if (uVar36 == 0)
-            break;
-          uVar36 = uVar36 - 1;
-          pcVar17 = pcVar25 + 1;
-          cVar12 = *pcVar25;
-          pcVar25 = pcVar17;
-        } while (cVar12 != '\0');
-        uVar36 = ~uVar36;
-        pcVar25 = pcVar17 + -uVar36;
-        pcVar17 = local_177;
-        for (uVar30 = uVar36 >> 2; uVar30 != 0; uVar30 = uVar30 - 1) {
-          *(undefined4*)pcVar17 = *(undefined4*)pcVar25;
-          pcVar25 = pcVar25 + 4;
-          pcVar17 = pcVar17 + 4;
-        }
-        for (uVar36 = uVar36 & 3; uVar36 != 0; uVar36 = uVar36 - 1) {
-          *pcVar17 = *pcVar25;
-          pcVar25 = pcVar25 + 1;
-          pcVar17 = pcVar17 + 1;
-        }
-        local_19c = iVar35;
-        reinterpret_cast<undefined4(__cdecl*)(...)>(0x405a5b)();
-        uVar16 = 1;
+  }
+  case 8: {
+    // Name/session announce for one slot (or -1 probe): echo an event-9 back to the
+    // matching session, kick mismatched sessions with the localized 0x2759/2 text, and
+    // release any other slot bound to the same session ('suna' + empty-name event-9).
+    TurnEvent8NameAnnouncePacket* announce8 = static_cast<TurnEvent8NameAnnouncePacket*>(packet);
+    int announceSlot = announce8->nationSlot18;
+    if (announceSlot == -1) {
+      // Faithful out-of-bounds quirk: slot -1 reads the dword before nationSessionIds.
+      g_pNetMgr006a6014->NotifyIfNationMatchesSessionActiveNation(nationSessionIds[announceSlot]);
+    } else if (nationSessionIds[announceSlot] != 0) {
+      int fromId = announce8->fromNetworkId;
+      if (nationSessionIds[announceSlot] == fromId) {
+        LobbyChatEvent9Packet echo;
+        echo.InitializeEmitEventHeaderWithActiveNation();
+        echo.field1C = fromId;
+        echo.eventCode = 0;
+        echo.fromNetworkId = 0;
+        echo.toNetworkId = 0;
+        echo.messageLength = 0;
+        echo.toNetworkId = 0;
+        echo.messageLength = 0x64;
+        echo.eventCode = 9;
+        echo.nationSlot18 = (unsigned char)announceSlot;
+        strcpy(echo.senderName, announce8->senderName19);
+        strcpy(echo.messageText, announce8->messageText3a);
+        g_pNetMgr006a6014->Send(&echo, 1);
+        return 1;
       } else {
-        builtin_strncpy(local_11c + 4, "emit", 4);
-        local_11c[8] = reinterpret_cast<undefined4(__cdecl*)(...)>(0x403b16)();
-        local_124[0] = '\0';
-        local_124[1] = '\0';
-        local_124[2] = '\0';
-        local_124[3] = '\0';
-        local_128 = 0xc;
-        local_120 = 0;
-        local_10 = 0xff;
-        local_11c[0] = '\x1c';
-        local_11c[1] = '\x01';
-        local_11c[2] = '\0';
-        local_11c[3] = '\0';
-        reinterpret_cast<undefined4(__cdecl*)(...)>(0x403b16)();
-        local_120 = param_2[1];
-        local_f = 0xff;
-        ((void)0);
-        local_4 = 2;
-        reinterpret_cast<undefined4(__cdecl*)(...)>(0x401e7e)();
-        uVar36 = 0xffffffff;
-        do {
-          pcVar25 = unaff_EBP;
-          if (uVar36 == 0)
-            break;
-          uVar36 = uVar36 - 1;
-          pcVar25 = unaff_EBP + 1;
-          cVar12 = *unaff_EBP;
-          unaff_EBP = pcVar25;
-        } while (cVar12 != '\0');
-        uVar36 = ~uVar36;
-        pcVar25 = pcVar25 + -uVar36;
-        pcVar17 = local_124 + 8;
-        for (uVar30 = uVar36 >> 2; uVar30 != 0; uVar30 = uVar30 - 1) {
-          *(undefined4*)pcVar17 = *(undefined4*)pcVar25;
-          pcVar25 = pcVar25 + 4;
-          pcVar17 = pcVar17 + 4;
-        }
-        for (uVar36 = uVar36 & 3; uVar36 != 0; uVar36 = uVar36 - 1) {
-          *pcVar17 = *pcVar25;
-          pcVar25 = pcVar25 + 1;
-          pcVar17 = pcVar17 + 1;
-        }
-        reinterpret_cast<undefined4(__cdecl*)(...)>(0x405a5b)();
-        local_4 = 0xffffffff;
-        ((void)0);
-        uVar16 = 1;
+        TurnEventCKickMessagePacket kick;
+        kick.messageTag = 0x74696d65; // 'time'
+        short activeNation8 = g_pSimMgr->GetActiveNationId();
+        kick.eventCode = 0;
+        kick.activeNationId = (unsigned char)activeNation8;
+        kick.fromNetworkId = 0;
+        kick.eventCode = 0xc;
+        kick.toNetworkId = 0;
+        kick.targetNationBitmask118 = 0xff;
+        kick.messageLength = 0;
+        kick.messageLength = 0x11c;
+        // Dead second query kept for fidelity: the original re-reads the active nation
+        // here and discards the result.
+        g_pSimMgr->GetActiveNationId();
+        kick.toNetworkId = announce8->fromNetworkId;
+        kick.kickerNationId119 = -1;
+        CString kickText;
+        g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&kickText, 0x2759, 2);
+        strcpy(kick.messageText18, kickText);
+        g_pNetMgr006a6014->Send(&kick, 0);
+        return 1;
       }
-      break;
     }
-    local_1c0.m_pchData = (char*)0x0;
-    pcVar32 = (code*)(local_1d0.m_pchData + 0x48);
-    do {
-      if (*(int*)pcVar32 == param_2[1]) {
-        *(int*)pcVar32 = 0;
-        *(int*)(pcVar32 + 0x74) = 0x756e6173;
-        pcVar25 = (*reinterpret_cast<char**>(0x0065bf18));
-        local_1bc.m_pchData = (*reinterpret_cast<char**>(0x0065bf18));
-        reinterpret_cast<undefined4(__cdecl*)(...)>(0x402a45)();
-        local_1b8[1] = 0;
-        local_1a0 = CONCAT31(((unsigned int)(local_1a0) >> 8 & 0xffffff),
-                             ((unsigned int)(local_1c0.m_pchData) & 0xff));
-        local_1b8[2] = 0;
-        uVar36 = 0xffffffff;
-        do {
-          pcVar17 = pcVar25;
-          if (uVar36 == 0)
-            break;
-          uVar36 = uVar36 - 1;
-          pcVar17 = pcVar25 + 1;
-          cVar12 = *pcVar25;
-          pcVar25 = pcVar17;
-        } while (cVar12 != '\0');
-        uVar36 = ~uVar36;
-        local_19c = 0;
-        local_1b8[3] = 100;
-        local_1b8[0] = 9;
-        pcVar25 = pcVar17 + -uVar36;
-        pcVar17 = local_198;
-        for (uVar30 = uVar36 >> 2; uVar30 != 0; uVar30 = uVar30 - 1) {
-          *(undefined4*)pcVar17 = *(undefined4*)pcVar25;
-          pcVar25 = pcVar25 + 4;
-          pcVar17 = pcVar17 + 4;
-        }
-        for (uVar36 = uVar36 & 3; uVar36 != 0; uVar36 = uVar36 - 1) {
-          *pcVar17 = *pcVar25;
-          pcVar25 = pcVar25 + 1;
-          pcVar17 = pcVar17 + 1;
-        }
-        uVar36 = 0xffffffff;
-        CVar42.m_pchData = local_1bc.m_pchData;
-        do {
-          pcVar25 = CVar42.m_pchData;
-          if (uVar36 == 0)
-            break;
-          uVar36 = uVar36 - 1;
-          pcVar25 = CVar42.m_pchData + 1;
-          cVar12 = *CVar42.m_pchData;
-          CVar42.m_pchData = pcVar25;
-        } while (cVar12 != '\0');
-        uVar36 = ~uVar36;
-        pcVar25 = pcVar25 + -uVar36;
-        pcVar17 = local_177;
-        for (uVar30 = uVar36 >> 2; uVar30 != 0; uVar30 = uVar30 - 1) {
-          *(undefined4*)pcVar17 = *(undefined4*)pcVar25;
-          pcVar25 = pcVar25 + 4;
-          pcVar17 = pcVar17 + 4;
-        }
-        for (uVar36 = uVar36 & 3; uVar36 != 0; uVar36 = uVar36 - 1) {
-          *pcVar17 = *pcVar25;
-          pcVar25 = pcVar25 + 1;
-          pcVar17 = pcVar17 + 1;
-        }
-        reinterpret_cast<undefined4(__cdecl*)(...)>(0x405a5b)();
+    for (int scanSlot = 0; scanSlot < 7; ++scanSlot) {
+      if (nationSessionIds[scanSlot] == announce8->fromNetworkId) {
+        nationSessionIds[scanSlot] = 0;
+        nationStatusTags[scanSlot] = 0x756e6173; // 'suna'
+        const char* emptyName = g_szEmptyString;
+        LobbyChatEvent9Packet vacate;
+        vacate.InitializeEmitEventHeaderWithActiveNation();
+        vacate.eventCode = 0;
+        vacate.fromNetworkId = 0;
+        vacate.nationSlot18 = (unsigned char)scanSlot;
+        vacate.toNetworkId = 0;
+        vacate.toNetworkId = 0;
+        vacate.messageLength = 0;
+        vacate.field1C = 0;
+        vacate.messageLength = 0x64;
+        vacate.eventCode = 9;
+        strcpy(vacate.senderName, emptyName);
+        strcpy(vacate.messageText, emptyName);
+        g_pNetMgr006a6014->Send(&vacate, 1);
       }
-      CVar42.m_pchData = local_1d4.m_pchData;
-      pcVar32 = pcVar32 + 4;
-      local_1c0.m_pchData = local_1c0.m_pchData + 1;
-    } while ((int)local_1c0.m_pchData < 7);
-    if (local_1d4.m_pchData != (char*)0xffffffff) {
-      uVar16 = param_2[1];
-      reinterpret_cast<undefined4(__cdecl*)(...)>(0x402a45)();
-      uVar36 = 0xffffffff;
-      pcVar25 = (char*)((int)param_2 + 0x19);
-      do {
-        pcVar17 = pcVar25;
-        if (uVar36 == 0)
-          break;
-        uVar36 = uVar36 - 1;
-        pcVar17 = pcVar25 + 1;
-        cVar12 = *pcVar25;
-        pcVar25 = pcVar17;
-      } while (cVar12 != '\0');
-      local_1b8[1] = 0;
-      local_1b8[0] = 9;
-      uVar36 = ~uVar36;
-      local_1b8[2] = 0;
-      local_1b8[3] = 100;
-      local_1a0 = CONCAT31(((unsigned int)(local_1a0) >> 8 & 0xffffff), (char)CVar42.m_pchData);
-      pcVar25 = pcVar17 + -uVar36;
-      pcVar17 = local_198;
-      for (uVar30 = uVar36 >> 2; uVar30 != 0; uVar30 = uVar30 - 1) {
-        *(undefined4*)pcVar17 = *(undefined4*)pcVar25;
-        pcVar25 = pcVar25 + 4;
-        pcVar17 = pcVar17 + 4;
-      }
-      for (uVar36 = uVar36 & 3; uVar36 != 0; uVar36 = uVar36 - 1) {
-        *pcVar17 = *pcVar25;
-        pcVar25 = pcVar25 + 1;
-        pcVar17 = pcVar17 + 1;
-      }
-      uVar36 = 0xffffffff;
-      pcVar25 = (char*)((int)param_2 + 0x3a);
-      do {
-        pcVar17 = pcVar25;
-        if (uVar36 == 0)
-          break;
-        uVar36 = uVar36 - 1;
-        pcVar17 = pcVar25 + 1;
-        cVar12 = *pcVar25;
-        pcVar25 = pcVar17;
-      } while (cVar12 != '\0');
-      uVar36 = ~uVar36;
-      pcVar25 = pcVar17 + -uVar36;
-      pcVar17 = local_177;
-      for (uVar30 = uVar36 >> 2; uVar30 != 0; uVar30 = uVar30 - 1) {
-        *(undefined4*)pcVar17 = *(undefined4*)pcVar25;
-        pcVar25 = pcVar25 + 4;
-        pcVar17 = pcVar17 + 4;
-      }
-      for (uVar36 = uVar36 & 3; uVar36 != 0; uVar36 = uVar36 - 1) {
-        *pcVar17 = *pcVar25;
-        pcVar25 = pcVar25 + 1;
-        pcVar17 = pcVar17 + 1;
-      }
-      local_19c = uVar16;
-      reinterpret_cast<undefined4(__cdecl*)(...)>(0x405a5b)();
-      uVar16 = 1;
-      break;
     }
-    goto LAB_005485d8;
-  case 9:
-    cVar2 = *(code*)(param_2 + 6);
-    if (cVar2 != (code)0xf3) {
-      pcVar25 = (char*)param_2[7];
-      iVar35 = (int)(char)cVar2;
-      local_1d4.m_pchData = pcVar25;
-      (reinterpret_cast<GhStr*>(&local_154)->m_pchData = (char*)((char*)(param_2 + 8)));
-      CVar42.m_pchData = local_1d0.m_pchData;
-      local_4 = 3;
-      ((*reinterpret_cast<GhStr*>((GhStr*)(local_1d0.m_pchData + iVar35 * 4 + 0x78))) =
-           (*reinterpret_cast<GhStr*>(&local_154)));
-      local_4 = 0xffffffff;
-      ((void)0);
-      (reinterpret_cast<GhStr*>(&local_14c)->m_pchData = (char*)((char*)((int)param_2 + 0x41)));
-      thisStr = (GhStr*)(CVar42.m_pchData + iVar35 * 4 + 0x94);
-      local_4 = 4;
-      ((*reinterpret_cast<GhStr*>(thisStr)) = (*reinterpret_cast<GhStr*>(&local_14c)));
-      local_4 = 0xffffffff;
-      ((void)0);
-      /* WARNING: Load size is inaccurate */
-      local_1bc.m_pchData = (char*)(int)CVar42.m_pchData[iVar35 * 4 + 0x48];
-      *(char**)(CVar42.m_pchData + iVar35 * 4 + 0x48) = pcVar25;
-      pcVar17 = (char*)reinterpret_cast<undefined4(__cdecl*)(...)>(0x405a3d)();
-      if ((pcVar25 == pcVar17) && (pcVar25 != (char*)0x0)) {
-        uStack_1cc = CONCAT13(1, (undefined3)uStack_1cc);
-        CVar42.m_pchData[0xdc] = (char)cVar2;
-      } else {
-        uStack_1cc = uStack_1cc & 0xffffff;
+    if (announceSlot != -1) {
+      LobbyChatEvent9Packet claim;
+      claim.InitializeEmitEventHeaderWithActiveNation();
+      claim.eventCode = 0;
+      claim.field1C = announce8->fromNetworkId;
+      claim.fromNetworkId = 0;
+      claim.eventCode = 9;
+      claim.toNetworkId = 0;
+      claim.messageLength = 0;
+      claim.toNetworkId = 0;
+      claim.messageLength = 0x64;
+      claim.nationSlot18 = (unsigned char)announceSlot;
+      strcpy(claim.senderName, announce8->senderName19);
+      strcpy(claim.messageText, announce8->messageText3a);
+      g_pNetMgr006a6014->Send(&claim, 1);
+      return 1;
+    }
+    result = 1;
+    break;
+  }
+  case 9: {
+    // A session claims (or vacates) a nation slot: adopt the names/session id, restamp
+    // the status tag, refresh the lounge dialog's row, and - when hosting - retune the
+    // start button and lobby message. Slot 0xf3 asks the host to re-broadcast its own
+    // claim instead.
+    LobbyChatEvent9Packet* chat = reinterpret_cast<LobbyChatEvent9Packet*>(packet);
+    if (chat->nationSlot18 != 0xf3) {
+      char slot9 = (char)chat->nationSlot18;
+      int sessionId = chat->field1C;
+      {
+        CString senderName(chat->senderName);
+        defaultNationTextSlots[slot9] = senderName;
       }
-      ((void)0);
-      local_4 = 5;
-      if (pcVar25 == (char*)0x0) {
-        reinterpret_cast<undefined4(__cdecl*)(...)>(0x401e7e)();
-        *(undefined4*)(CVar42.m_pchData + iVar35 * 4 + 0xbc) = 0x756e6173;
+      {
+        CString messageText9(chat->messageText);
+        nationDisplayNameSlots[slot9] = messageText9;
+      }
+      int oldSessionId = nationSessionIds[slot9];
+      nationSessionIds[slot9] = sessionId;
+      unsigned char isLocal;
+      if (sessionId == GetSessionActiveNationId() && sessionId != 0) {
+        isLocal = 1;
+        activeNationTagIndex = (unsigned char)slot9;
       } else {
-        ((*reinterpret_cast<GhStr*>(&local_1c0)) = (*reinterpret_cast<GhStr*>(thisStr)));
-        if ((*(int*)(CVar42.m_pchData + 0xd8) == 0x676f696e) &&
-            (sVar15 = reinterpret_cast<undefined4(__cdecl*)(...)>(0x403b16)(), sVar15 != -1)) {
-          bVar9 = 1;
+        isLocal = 0;
+      }
+      CString statusText;
+      if (sessionId == 0) {
+        g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&statusText, 0x2759, 1);
+        nationStatusTags[slot9] = 0x756e6173; // 'suna'
+      } else {
+        statusText = nationDisplayNameSlots[slot9];
+        unsigned char sessionBusy;
+        if (sessionPhaseTag == 0x676f696e /* 'goin' */ && g_pSimMgr->GetActiveNationId() != -1) {
+          sessionBusy = 1;
         } else {
-          bVar9 = 0;
+          sessionBusy = 0;
         }
-        *(uint*)(CVar42.m_pchData + iVar35 * 4 + 0xbc) = (-(uint)bVar9 & 0xf0100f00) + 0x72656479;
+        nationStatusTags[slot9] =
+            (-(unsigned int)sessionBusy & 0xf0100f00) + 0x72656479; // 'busy' : 'redy'
       }
-      ((*reinterpret_cast<GhStr*>(thisStr)) = (*reinterpret_cast<GhStr*>(&local_1c0)));
-      ((*reinterpret_cast<GhStr*>((GhStr*)(CVar42.m_pchData + iVar35 * 4 + 0x78))) =
-           (*reinterpret_cast<GhStr*>(thisStr)));
-      this_00 = *(CObject**)(CVar42.m_pchData + 0x40);
-      if ((this_00 == (CObject*)0x0) ||
-          (iVar35 = this_00->IsKindOf((CRuntimeClass*)0), iVar35 == 0)) {
-        iVar35 = 0;
+      nationDisplayNameSlots[slot9] = statusText;
+      defaultNationTextSlots[slot9] = nationDisplayNameSlots[slot9];
+      TLoungeDialog* lounge;
+      if (lobbyDialogView40 != 0 &&
+          lobbyDialogView40->IsKindOf(RUNTIME_CLASS(TLoungeDialog)) != 0) {
+        lounge = (TLoungeDialog*)lobbyDialogView40;
       } else {
-        iVar35 = *(int*)(CVar42.m_pchData + 0x40);
+        lounge = 0;
       }
-      if (iVar35 != 0) {
-        local_1d0.m_pchData = (char*)((*reinterpret_cast<void***>(this_00))[37]);
-        uVar11 = reinterpret_cast<undefined4(__cdecl*)(...)>(local_1d0.m_pchData)();
-        iVar35 = *(int*)CONCAT31(extraout_var, uVar11);
-        reinterpret_cast<undefined4(__cdecl*)(...)>(*reinterpret_cast<void**>((iVar35 + 0xc)))();
-        reinterpret_cast<undefined4(__cdecl*)(...)>(0x402a2c)();
-        local_10 = 6;
-        reinterpret_cast<undefined4(__cdecl*)(...)>(*reinterpret_cast<void**>((iVar35 + 0x1c8)))();
-        reinterpret_cast<undefined4(__cdecl*)(...)>(0x40263a)();
-        pcVar25 = (char*)reinterpret_cast<undefined4(__cdecl*)(...)>(0x405a3d)();
-        if ((local_1bc.m_pchData == pcVar25) ||
-            (pcVar25 = (char*)reinterpret_cast<undefined4(__cdecl*)(...)>(0x405a3d)(),
-             local_1d4.m_pchData == pcVar25)) {
-          iVar35 = 6;
-          pcVar32 = (code*)(CVar42.m_pchData + 0x60);
-          do {
-            iVar34 = reinterpret_cast<undefined4(__cdecl*)(...)>(0x405a3d)();
-            if (*(int*)pcVar32 == iVar34)
-              break;
-            iVar35 = iVar35 + -1;
-            pcVar32 = pcVar32 + -4;
-          } while (-1 < iVar35);
-          piVar24 = (int*)reinterpret_cast<undefined4(__cdecl*)(...)>(local_1d0.m_pchData)();
-          iVar34 = *piVar24;
-          reinterpret_cast<undefined4(__cdecl*)(...)>(*reinterpret_cast<void**>((iVar34 + 0xc)))();
-          piVar24[0x1a] = iVar35;
-          reinterpret_cast<undefined4(__cdecl*)(...)>(0x40686b)();
-          reinterpret_cast<undefined4(__cdecl*)(...)>(
-              *reinterpret_cast<void**>((iVar34 + 0x128)))();
-          reinterpret_cast<undefined4(__cdecl*)(...)>(0x401d70)();
-          local_10 = 7;
-          reinterpret_cast<undefined4(__cdecl*)(...)>(
-              *reinterpret_cast<void**>((unaff_ESI + 0x110)))();
-          piVar24 = (int*)reinterpret_cast<undefined4(__cdecl*)(...)>(unaff_ESI)();
-          iVar34 = *piVar24;
-          reinterpret_cast<undefined4(__cdecl*)(...)>(*reinterpret_cast<void**>((iVar34 + 0xc)))();
-          if (-1 < iVar35) {
-            reinterpret_cast<undefined4(__cdecl*)(...)>(
-                *reinterpret_cast<void**>((iVar34 + 0x1c8)))();
+      if (lounge != 0) {
+        TStaticText* nameLabel =
+            (TStaticText*)lounge->ResolveControlByTag(0x6e616d30 /* 'nam0' */ + slot9);
+        nameLabel->AssertValid();
+        CString normalizedName;
+        g_pLanguageMgr->NormalizeRuntimeCredentialNameToken(&normalizedName, &statusText);
+        nameLabel->AssignTextSharedRefIfChangedAndMaybeInvalidate(&normalizedName, 1);
+        ApplyUiTextStyleAndThemeFlags(nameLabel, 0, 0xe, isLocal != 0 ? 0x2b6c : 0x2b6b,
+                                      isLocal != 0 ? 0x2b6b : 0x2b6c);
+        if (oldSessionId == GetSessionActiveNationId() || sessionId == GetSessionActiveNationId()) {
+          int mySlot = 6;
+          while (mySlot >= 0 && nationSessionIds[mySlot] != GetSessionActiveNationId()) {
+            --mySlot;
           }
-          reinterpret_cast<undefined4(__cdecl*)(...)>(*reinterpret_cast<void**>((iVar34 + 0xa4)))();
-          local_4 = CONCAT31(((unsigned int)(local_4) >> 8 & 0xffffff), 6);
-          reinterpret_cast<undefined4(__cdecl*)(...)>(0x004948b0)();
+          TControl* mapControl = (TControl*)lounge->ResolveControlByTag(0x6d617020 /* 'map ' */);
+          mapControl->AssertValid();
+          mapControl->field68 = mySlot;
+          mapControl->ApplyPaletteMaskToTileBufferByEventCode();
+          RECT mapRect;
+          mapControl->QueryContentBounds(&mapRect);
+          {
+            ScopedMapQuickDrawContext quickDraw(mapControl);
+            mapControl->ApplyRectSlot110(&mapRect);
+          }
+          TPicture* coatControl = (TPicture*)lounge->ResolveControlByTag(0x636f6174 /* 'coat' */);
+          coatControl->AssertValid();
+          if (mySlot >= 0) {
+            coatControl->SetPictureResourceIdAndRefresh((short)(mySlot + 0x120a), 1);
+          }
+          coatControl->SetEnabled(mySlot >= 0, 1);
         }
         if (g_pSimMgr->field44 == 1) {
-          bVar10 = false;
-          local_1c8.m_pchData = (char*)0x0;
-          pcVar32 = (code*)(CVar42.m_pchData + 0x48);
-          iVar35 = 7;
-          do {
-            if (*(int*)pcVar32 != 0) {
-              local_1c8.m_pchData = local_1c8.m_pchData + 1;
-              iVar34 = reinterpret_cast<undefined4(__cdecl*)(...)>(0x405a3d)();
-              if (*(int*)pcVar32 == iVar34) {
-                bVar10 = true;
+          unsigned char localPresent = 0;
+          int liveCount = 0;
+          for (int liveSlot = 0; liveSlot < 7; ++liveSlot) {
+            if (nationSessionIds[liveSlot] != 0) {
+              ++liveCount;
+              if (nationSessionIds[liveSlot] == GetSessionActiveNationId()) {
+                localPresent = 1;
               }
             }
-            pcVar32 = pcVar32 + 4;
-            iVar35 = iVar35 + -1;
-          } while (iVar35 != 0);
-          if (((int)local_1c8.m_pchData < 2) || (!bVar10)) {
-            bVar10 = false;
+          }
+          unsigned char canStart;
+          if (liveCount < 2 || localPresent == 0) {
+            canStart = 0;
           } else {
-            bVar10 = true;
+            canStart = 1;
           }
-          piVar24 = (int*)reinterpret_cast<undefined4(__cdecl*)(...)>(local_1d0.m_pchData)();
-          iVar35 = *piVar24;
-          reinterpret_cast<undefined4(__cdecl*)(...)>(*reinterpret_cast<void**>((iVar35 + 0xc)))();
-          ((void)0);
-          pcVar32 = (code*)0x2759;
-          puStack_8 = (undefined1*)CONCAT31(((unsigned int)(puStack_8) >> 8 & 0xffffff), 8);
-          reinterpret_cast<undefined4(__cdecl*)(...)>(0x401e7e)();
-          if (bVar10) {
-            ((*reinterpret_cast<GhStr*>((GhStr*)(piVar24 + 0x25))) =
-                 (*reinterpret_cast<GhStr*>((GhStr*)reinterpret_cast<char*>(stack0xfffffe1c))));
-            reinterpret_cast<undefined4(__cdecl*)(...)>(
-                *reinterpret_cast<void**>((iVar35 + 0xe4)))();
+          TTextPictureButton* okayButton =
+              (TTextPictureButton*)lounge->ResolveControlByTag(0x6f6b6179 /* 'okay' */);
+          okayButton->AssertValid();
+          CString startText;
+          g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&startText, 0x2759, 3);
+          if (canStart != 0) {
+            okayButton->buttonText = startText;
+            okayButton->RefreshControl();
           }
-          reinterpret_cast<undefined4(__cdecl*)(...)>(*reinterpret_cast<void**>((iVar35 + 0xa8)))();
-          reinterpret_cast<undefined4(__cdecl*)(...)>(*reinterpret_cast<void**>((iVar35 + 0xa4)))();
-          *(undefined2*)((int)piVar24 + 0x9a) = 0x2b6c;
-          *(undefined2*)(piVar24 + 0x27) = 0x2b6b;
-          *(undefined2*)(piVar24 + 0x26) = 0xc;
-          piVar24 = (int*)reinterpret_cast<undefined4(__cdecl*)(...)>(pcVar32)();
-          iVar35 = *piVar24;
-          reinterpret_cast<undefined4(__cdecl*)(...)>(*reinterpret_cast<void**>((iVar35 + 0xc)))();
-          reinterpret_cast<undefined4(__cdecl*)(...)>(*reinterpret_cast<void**>((iVar35 + 0xa4)))();
-          reinterpret_cast<undefined4(__cdecl*)(...)>(0x407ce8)();
-          pCVar5 = *reinterpret_cast<void***>(this_00);
-          reinterpret_cast<undefined4(__cdecl*)(...)>(pCVar5[3])();
-          reinterpret_cast<undefined4(__cdecl*)(...)>(pCVar5[114])();
-          local_4 = CONCAT31(((unsigned int)(local_4) >> 8 & 0xffffff), 6);
-          ((void)0);
-        }
-        local_4 = CONCAT31(((unsigned int)(local_4) >> 8 & 0xffffff), 5);
-        ((void)0);
-      }
-      local_4 = 0xffffffff;
-      ((void)0);
-      uVar16 = 1;
-      break;
-    }
-    if (g_pSimMgr->field44 == 1) {
-      pcVar25 = *(char**)(param_1 + 0xb4);
-      pcVar17 = *(char**)(param_1 + 0xb0);
-      uVar16 = reinterpret_cast<undefined4(__cdecl*)(...)>(0x405a3d)();
-      *reinterpret_cast<unsigned short*>(&(local_1bc.m_pchData)) = (short)(char)param_1[0xdc];
-      reinterpret_cast<undefined4(__cdecl*)(...)>(0x402a45)();
-      uVar36 = 0xffffffff;
-      local_1a0 = CONCAT31(((unsigned int)(local_1a0) >> 8 & 0xffffff),
-                           ((unsigned int)(local_1bc.m_pchData) & 0xff));
-      do {
-        pcVar40 = pcVar17;
-        if (uVar36 == 0)
-          break;
-        uVar36 = uVar36 - 1;
-        pcVar40 = pcVar17 + 1;
-        cVar12 = *pcVar17;
-        pcVar17 = pcVar40;
-      } while (cVar12 != '\0');
-      local_1b8[0] = 9;
-      local_1b8[1] = 0;
-      uVar36 = ~uVar36;
-      local_1b8[2] = 0;
-      local_1b8[3] = 100;
-      pcVar17 = pcVar40 + -uVar36;
-      pcVar40 = local_198;
-      for (uVar30 = uVar36 >> 2; uVar30 != 0; uVar30 = uVar30 - 1) {
-        *(undefined4*)pcVar40 = *(undefined4*)pcVar17;
-        pcVar17 = pcVar17 + 4;
-        pcVar40 = pcVar40 + 4;
-      }
-      for (uVar36 = uVar36 & 3; uVar36 != 0; uVar36 = uVar36 - 1) {
-        *pcVar40 = *pcVar17;
-        pcVar17 = pcVar17 + 1;
-        pcVar40 = pcVar40 + 1;
-      }
-      uVar36 = 0xffffffff;
-      do {
-        pcVar17 = pcVar25;
-        if (uVar36 == 0)
-          break;
-        uVar36 = uVar36 - 1;
-        pcVar17 = pcVar25 + 1;
-        cVar12 = *pcVar25;
-        pcVar25 = pcVar17;
-      } while (cVar12 != '\0');
-      uVar36 = ~uVar36;
-      pcVar25 = pcVar17 + -uVar36;
-      pcVar17 = local_177;
-      for (uVar30 = uVar36 >> 2; uVar30 != 0; uVar30 = uVar30 - 1) {
-        *(undefined4*)pcVar17 = *(undefined4*)pcVar25;
-        pcVar25 = pcVar25 + 4;
-        pcVar17 = pcVar17 + 4;
-      }
-      for (uVar36 = uVar36 & 3; uVar36 != 0; uVar36 = uVar36 - 1) {
-        *pcVar17 = *pcVar25;
-        pcVar25 = pcVar25 + 1;
-        pcVar17 = pcVar17 + 1;
-      }
-      local_19c = uVar16;
-      reinterpret_cast<undefined4(__cdecl*)(...)>(0x405a5b)();
-      uVar16 = 1;
-      break;
-    }
-    goto LAB_005485d8;
-  case 10:
-    if (g_pSimMgr->stateFlag114 == 0) {
-      reinterpret_cast<undefined4(__cdecl*)(...)>(
-          (*reinterpret_cast<void***>(g_pGlobalMapState))[76])();
-      reinterpret_cast<undefined4(__cdecl*)(...)>(0x40108c)();
-    }
-    *(uint*)(param_1 + 0xe8) = *(uint*)(param_1 + 0xe8) & ~(1 << (*(byte*)(param_2 + 7) & 0x1f));
-    if (g_pSimMgr->field44 == 1) {
-      reinterpret_cast<undefined4(__cdecl*)(...)>(0x402a45)();
-      local_1a0 = *(uint*)(param_1 + 0xe8);
-    LAB_00545aa0:
-      local_1b8[3] = 0x1c;
-      local_1b8[2] = 0;
-      local_1b8[1] = 0;
-      local_1b8[0] = 1;
-      reinterpret_cast<undefined4(__cdecl*)(...)>(0x405a5b)();
-      if ((*(int*)(param_1 + 0xe8) == 0) && (*(int*)(param_1 + 0xf0) != -1)) {
-        reinterpret_cast<undefined4(__cdecl*)(...)>(0x401d7f)();
-        uVar16 = 1;
-        break;
-      }
-    }
-    goto LAB_005485d8;
-  case 0xb:
-    iVar35 = 0;
-    puVar22 = param_2 + 7;
-    ppTVar37 = g_apTerrainTypeDescriptorTable;
-    pcVar25 = (char*)((int)param_2 + 0x341);
-    do {
-      sVar15 = reinterpret_cast<undefined4(__cdecl*)(...)>(0x403b16)();
-      if ((iVar35 != sVar15) &&
-          (cVar12 = (*ppTVar37)->ShouldDispatchImmediatelySlot28(), cVar12 != '\0')) {
-        reinterpret_cast<undefined4(__cdecl*)(...)>(
-            (*reinterpret_cast<void***>((*ppTVar37)))[41])();
-        (reinterpret_cast<GhStr*>(&CStack_158)->m_pchData = (char*)(pcVar25));
-        local_c = 0;
-        reinterpret_cast<undefined4(__cdecl*)(...)>(0x40308f)();
-        local_4 = 0xffffffff;
-        ((void)0);
-        (reinterpret_cast<GhStr*>(&CStack_148)->m_pchData = (char*)(pcVar25));
-        local_4 = 1;
-        ((*reinterpret_cast<GhStr*>((GhStr*)(reinterpret_cast<char*>((*ppTVar37)) + 0x8))) =
-             (*reinterpret_cast<GhStr*>(&CStack_148)));
-        local_4 = 0xffffffff;
-        ((void)0);
-        if (g_pSimMgr->stateFlag114 == 0) {
-          reinterpret_cast<undefined4(__cdecl*)(...)>(
-              (*reinterpret_cast<void***>(g_pGlobalMapState))[76])();
+          okayButton->SetState(canStart, 0);
+          okayButton->SetEnabled(canStart, 1);
+          okayButton->field9A = 0x2b6c;
+          okayButton->field9C = 0x2b6b;
+          okayButton->field98 = 0xc;
+          TView* messControl = lounge->ResolveControlByTag(0x6d657373 /* 'mess' */);
+          messControl->AssertValid();
+          messControl->SetEnabled(canStart == 0, 1);
+          LoadUiStringAndDispatchSharedMessageCommand(0x2742, canStart != 0 ? 0xa : 0xc,
+                                                      messControl);
+          lounge->AssertValid();
+          lounge->SetPictureResourceIdAndRefresh(canStart != 0 ? 0x11f9 : 0x11f8, 1);
         }
       }
-      iVar34 = reinterpret_cast<undefined4(__cdecl*)(...)>(0x4076a8)();
-      puVar38 = puVar22 + 0x187;
-      ppTVar37 = ppTVar37 + 1;
-      iVar35 = iVar35 + 1;
-      puVar22 = (undefined4*)((int)puVar22 + 2);
-      pcVar25 = pcVar25 + 0x17;
-      *(undefined2*)(iVar34 + 0x14) = *(undefined2*)puVar38;
-    } while ((int)ppTVar37 < 0x6a436c);
-    reinterpret_cast<undefined4(__cdecl*)(...)>(0x409859)();
-    uVar16 = 1;
+      return 1;
+    }
+    if (g_pSimMgr->field44 == 1) {
+      int sessionId2 = GetSessionActiveNationId();
+      short mySlot2 = (char)activeNationTagIndex;
+      LobbyChatEvent9Packet claim2;
+      claim2.InitializeEmitEventHeaderWithActiveNation();
+      claim2.nationSlot18 = (unsigned char)mySlot2;
+      claim2.field1C = sessionId2;
+      claim2.eventCode = 0;
+      claim2.eventCode = 9;
+      claim2.fromNetworkId = 0;
+      claim2.toNetworkId = 0;
+      claim2.messageLength = 0;
+      claim2.toNetworkId = 0;
+      claim2.messageLength = 0x64;
+      strcpy(claim2.senderName, playerNameString);
+      strcpy(claim2.messageText, playerNameMirror);
+      g_pNetMgr006a6014->Send(&claim2, 1);
+      return 1;
+    }
+    result = 1;
     break;
-  case 0xc:
-    sVar15 = reinterpret_cast<undefined4(__cdecl*)(...)>(0x403b16)();
-    local_1d4.m_pchData = (char*)(int)sVar15;
-    if (local_1d4.m_pchData == (char*)0xffffffff) {
-      iVar35 = reinterpret_cast<undefined4(__cdecl*)(...)>(0x405a3d)();
-      local_1d4.m_pchData = (char*)0x0;
-      piVar24 = (int*)((int)g_pGameFlowState + 0x48);
-      do {
-        if (*piVar24 == iVar35)
-          goto LAB_005464f4;
-        local_1d4.m_pchData = local_1d4.m_pchData + 1;
-        piVar24 = piVar24 + 1;
-      } while ((int)local_1d4.m_pchData < 7);
-      local_1d4.m_pchData = (char*)0xffffffff;
-    LAB_005464f4:
-      if (local_1d4.m_pchData != (char*)0xffffffff)
-        goto LAB_005464fd;
-    } else {
-    LAB_005464fd:
-      if ((*(byte*)(param_2 + 0x46) & (byte)(1 << ((byte)local_1d4.m_pchData & 0x1f))) == 0)
-        goto LAB_005485d8;
-    }
-    CVar42.m_pchData = local_1d4.m_pchData;
-    pcVar25 = (char*)(int)*(char*)((int)param_2 + 0x119);
-    local_1c8.m_pchData = pcVar25;
-    (reinterpret_cast<GhStr*>(&local_1bc)->m_pchData = (char*)((char*)(param_2 + 6)));
-    local_4 = 9;
-    ((void)0);
-    *(unsigned char*)&(local_4) = 10;
-    ((void)0);
-    local_4 = CONCAT31(((unsigned int)(local_4) >> 8 & 0xffffff), 0xb);
-    if ((pcVar25 == (char*)0xffffffff) || (pcVar25 == CVar42.m_pchData)) {
-      reinterpret_cast<undefined4(__cdecl*)(...)>(0x40619f)();
-    } else {
-      reinterpret_cast<undefined4(__cdecl*)(...)>((*reinterpret_cast<void***>(g_pSimMgr))[33])();
-      reinterpret_cast<undefined4(__cdecl*)(...)>(0x40988b)();
-    }
-    ((unsigned char*)&(CStack_148.m_pchData))[2] = 0;
-    ((unsigned char*)&(CStack_148.m_pchData))[3] = 0;
-    *(unsigned char*)&(local_144[0].m_pchData) = 0;
-    ((unsigned char*)&(local_144[0].m_pchData))[1] = 0;
-    reinterpret_cast<undefined4(__cdecl*)(...)>(0x005c3e80)();
-    piVar24 = (int*)g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(0x7e4);
-    if (piVar24 == (int*)0x0) {
-      MessageBoxA((HWND)0x0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-      reinterpret_cast<undefined4(__cdecl*)(...)>(0x4057a4)();
-    }
-    iVar35 = *piVar24;
-    reinterpret_cast<undefined4(__cdecl*)(...)>(*reinterpret_cast<void**>((iVar35 + 0x1a0)))();
-    iVar34 =
-        reinterpret_cast<undefined4(__cdecl*)(...)>(*reinterpret_cast<void**>((iVar35 + 0x1b8)))();
-    if (iVar34 != 0) {
-      *(undefined4*)(iVar34 + 0x14) = 0x6f6b6179;
-    }
-    reinterpret_cast<undefined4(__cdecl*)(...)>(
-        *reinterpret_cast<void**>((*reinterpret_cast<char**>(g_pUiRuntimeContext) + 0x44)))();
-    reinterpret_cast<undefined4(__cdecl*)(...)>(*reinterpret_cast<void**>((iVar35 + 0xf0)))();
-    pcVar32 = *(code**)(iVar35 + 0x94);
-    piVar18 = (int*)reinterpret_cast<undefined4(__cdecl*)(...)>(pcVar32)();
-    iVar35 = *piVar18;
-    reinterpret_cast<undefined4(__cdecl*)(...)>(*reinterpret_cast<void**>((iVar35 + 0xc)))();
-    if (piVar18 == (int*)0x0) {
-      MessageBoxA((HWND)0x0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-      reinterpret_cast<undefined4(__cdecl*)(...)>(0x4057a4)();
-    }
-    reinterpret_cast<undefined4(__cdecl*)(...)>(*reinterpret_cast<void**>((iVar35 + 0x1c8)))();
-    iVar34 = 0x636f6174;
-    piVar18 = (int*)reinterpret_cast<undefined4(__cdecl*)(...)>(pcVar32)();
-    iVar35 = *piVar18;
-    reinterpret_cast<undefined4(__cdecl*)(...)>(*reinterpret_cast<void**>((iVar35 + 0xc)))();
-    if (piVar18 == (int*)0x0) {
-      MessageBoxA((HWND)0x0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-      reinterpret_cast<undefined4(__cdecl*)(...)>(0x4057a4)();
-    }
-    reinterpret_cast<undefined4(__cdecl*)(...)>(*reinterpret_cast<void**>((iVar35 + 0x1c8)))();
-    piVar18 = (int*)reinterpret_cast<undefined4(__cdecl*)(...)>(pcVar32)(0x7469746c);
-    iVar35 = *piVar18;
-    reinterpret_cast<undefined4(__cdecl*)(...)>(*reinterpret_cast<void**>((iVar35 + 0xc)))();
-    if (piVar18 == (int*)0x0) {
-      MessageBoxA((HWND)0x0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-      reinterpret_cast<undefined4(__cdecl*)(...)>(0x4057a4)(reinterpret_cast<char*>(0x00698040),
-                                                            0x807);
-    }
-    reinterpret_cast<undefined4(__cdecl*)(...)>(*reinterpret_cast<void**>((iVar35 + 0x1b4)))(
-        auStack_180, 0);
-    reinterpret_cast<undefined4(__cdecl*)(...)>(*reinterpret_cast<void**>((iVar35 + 0x1c4)))(1, 0);
-    reinterpret_cast<undefined4(__cdecl*)(...)>(*reinterpret_cast<void**>((iVar35 + 0x1c8)))(
-        reinterpret_cast<char*>(stack0xfffffde0), 0);
-    piVar18 = (int*)reinterpret_cast<undefined4(__cdecl*)(...)>(pcVar32)();
-    iVar35 = *piVar18;
-    reinterpret_cast<undefined4(__cdecl*)(...)>(*reinterpret_cast<void**>((iVar35 + 0xc)))();
-    reinterpret_cast<undefined4(__cdecl*)(...)>(*reinterpret_cast<void**>((iVar35 + 500)))(
-        iVar34, *(undefined4*)(iVar34 + -8));
-    reinterpret_cast<undefined4(__cdecl*)(...)>(*reinterpret_cast<void**>((iVar35 + 0x1e4)))(
-        local_1a4, 0);
-    *(undefined1*)((int)g_pGameFlowState + 0x68) = 0;
-    piVar18 = (int*)reinterpret_cast<undefined4(__cdecl*)(...)>(pcVar32)(0x636e636c);
-    iVar35 = *piVar18;
-    reinterpret_cast<undefined4(__cdecl*)(...)>(*reinterpret_cast<void**>((iVar35 + 0xc)))();
-    piVar18[7] = 0x72737670;
-    reinterpret_cast<undefined4(__cdecl*)(...)>(*reinterpret_cast<void**>((iVar35 + 0xa4)))(1, 0);
-    reinterpret_cast<undefined4(__cdecl*)(...)>(*reinterpret_cast<void**>((iVar35 + 0xa8)))(1, 0);
-    reinterpret_cast<undefined4(__cdecl*)(...)>(*reinterpret_cast<void**>((iVar35 + 0x1c8)))(0x53a,
-                                                                                             0);
-    iVar35 = *piVar24;
-    iVar34 =
-        reinterpret_cast<undefined4(__cdecl*)(...)>(*reinterpret_cast<void**>((iVar35 + 0x1ac)))();
-    reinterpret_cast<undefined4(__cdecl*)(...)>(*reinterpret_cast<void**>((iVar35 + 0xa0)))();
-    reinterpret_cast<undefined4(__cdecl*)(...)>(*reinterpret_cast<void**>((iVar35 + 0x1c)))();
-    if (iVar34 == 0x72737670) {
-      pcVar25 = (char*)operator_new();
-      *(unsigned char*)&(local_4) = 0xc;
-      local_1c4.m_pchData = pcVar25;
-      if (pcVar25 == (char*)0x0) {
-        pcVar25 = (char*)0x0;
-      } else {
-        reinterpret_cast<undefined4(__cdecl*)(...)>(0x403d5f)();
-        *reinterpret_cast<void**>(pcVar25) = 0;
+  }
+  case 0xc: {
+    // Kick/leave notice: if the local nation is addressed, build the "[nation] kicked
+    // you" (or generic) text, run the 0x7e4 modal dialog, and on an 'rsvp' response
+    // queue a 'pose' command.
+    TurnEventCKickMessagePacket* kickView = static_cast<TurnEventCKickMessagePacket*>(packet);
+    int localSlot = g_pSimMgr->GetActiveNationId();
+    if (localSlot == -1) {
+      int sessionIdC = GetSessionActiveNationId();
+      int probe;
+      for (probe = 0; probe < 7; ++probe) {
+        if (g_pGameFlowState->nationSessionIds[probe] == sessionIdC) {
+          break;
+        }
       }
-      *(char**)(pcVar25 + 0x18) = local_1c8.m_pchData;
-      local_4 = CONCAT31(((unsigned int)(local_4) >> 8 & 0xffffff), 0xb);
-      reinterpret_cast<undefined4(__cdecl*)(...)>(0x405ee3)();
-      g_pGlobalUiRootController->DispatchUiSelectionToHandler(pcVar25);
+      localSlot = probe < 7 ? probe : -1;
     }
-    *(unsigned char*)&(local_4) = 10;
-    *(char*)((int)g_pGameFlowState + 0x68) = ((unsigned int)(uStack_1cc) >> 24 & 0xff);
-    ((void)0);
-    local_4 = CONCAT31(((unsigned int)(local_4) >> 8 & 0xffffff), 9);
-    ((void)0);
-    local_4 = 0xffffffff;
-    ((void)0);
-    uVar16 = 1;
+    if (localSlot != -1 && (kickView->targetNationBitmask118 & (1 << localSlot)) == 0) {
+      return 1;
+    }
+    int kickerNation = kickView->kickerNationId119;
+    CString messageTextC(kickView->messageText18);
+    CString templateTextC;
+    CString titleText;
+    if (kickerNation != -1 && kickerNation != localSlot) {
+      g_pSimMgr->GetString(0x2749, 7, &templateTextC);
+      scanBracketExpressions(g_pSimMgr, &titleText, static_cast<const char*>(templateTextC),
+                             static_cast<const char*>(defaultNationTextSlots[kickerNation]));
+    } else {
+      BuildUiMessageTextFromBracketTemplate(g_pSimMgr, &titleText, 0x2749, 3, 0x2749, 0);
+    }
+    TControlPictureRectState styleDescriptor;
+    styleDescriptor.styleRef6 = 0;
+    BuildUiTextStyleDescriptor(&styleDescriptor, 0, 0xc, 0x2b67);
+    TurnEventDialogNode* dialog = static_cast<TurnEventDialogNode*>(
+        g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(0x7e4));
+    if (dialog == 0) {
+      FailNilPointerWithAssert(s_SourcePathUMultiplayerMgr_00698040, 0x7ef);
+    }
+    dialog->ShowTurnEventDialog(1);
+    void* content = dialog->QueryTurnEventContentObject();
+    if (content != 0) {
+      *reinterpret_cast<int*>(reinterpret_cast<char*>(content) + 0x14) = 0x6f6b6179; // 'okay'
+    }
+    POINT placement;
+    g_pUiRuntimeContext->ComputeTurnEventDialogPlacementByCode(dialog, &placement);
+    dialog->CaptureLayoutF0(reinterpret_cast<int*>(&placement), 0);
+    TPicture* goldPicture = static_cast<TPicture*>(dialog->ResolveControlByTag(0x444c4f47));
+    goldPicture->AssertValid();
+    if (goldPicture == 0) {
+      FailNilPointerWithAssert(s_SourcePathUMultiplayerMgr_00698040, 0x7fd);
+    }
+    goldPicture->SetPictureResourceIdAndRefresh(0x24cd, 0);
+    TPicture* coatPicture = static_cast<TPicture*>(dialog->ResolveControlByTag(0x636f6174));
+    coatPicture->AssertValid();
+    if (coatPicture == 0) {
+      FailNilPointerWithAssert(s_SourcePathUMultiplayerMgr_00698040, 0x802);
+    }
+    coatPicture->SetPictureResourceIdAndRefresh(static_cast<short>(kickerNation + 0x251c), 0);
+    TStaticText* titleControl = static_cast<TStaticText*>(dialog->ResolveControlByTag(0x7469746c));
+    titleControl->AssertValid();
+    if (titleControl == 0) {
+      FailNilPointerWithAssert(s_SourcePathUMultiplayerMgr_00698040, 0x807);
+    }
+    titleControl->SetCityProductionDialogPictureRectAndMaybeRefresh(&styleDescriptor, 0);
+    titleControl->SetTextThemeCodeAndMaybeRefresh(1, 0);
+    titleControl->AssignTextSharedRefIfChangedAndMaybeInvalidate(&titleText, 0);
+    TDeluxeText* infoControl = static_cast<TDeluxeText*>(dialog->ResolveControlByTag(0x696e666f));
+    infoControl->AssertValid();
+    infoControl->SetTextEntryFromChars(static_cast<const char*>(messageTextC),
+                                       messageTextC.GetLength());
+    infoControl->ApplyTextStyleDescriptorAndMaybeRefresh(&styleDescriptor, 0);
+    unsigned char savedProcessPrimary = g_pGameFlowState->processPrimaryEventQueue;
+    g_pGameFlowState->processPrimaryEventQueue = 0;
+    if (kickerNation != -1 || localSlot != -1) {
+      TPicture* cancelButton = static_cast<TPicture*>(dialog->ResolveControlByTag(0x636e636c));
+      cancelButton->AssertValid();
+      cancelButton->controlTag = 0x72737670; // 'rsvp'
+      cancelButton->SetEnabled(1, 0);
+      cancelButton->SetState(1, 0);
+      cancelButton->SetPictureResourceIdAndRefresh(0x53a, 0);
+    }
+    int responseTag = dialog->RefreshTurnEventDialog();
+    dialog->CallVoidSlotA0();
+    dialog->Free();
+    if (responseTag == 0x72737670) { // 'rsvp'
+      TPoseMessageDialog* poseCommand = new TPoseMessageDialog();
+      poseCommand->kickedByNationSlot18 = kickerNation;
+      poseCommand->InitializeRangePair(0x706f7365 /* 'pose' */, g_pGlobalUiRootController, 0, 0, 0);
+      g_pGlobalUiRootController->DispatchUiSelectionToHandler(poseCommand);
+    }
+    g_pGameFlowState->processPrimaryEventQueue = savedProcessPrimary;
+    result = 1;
     break;
+  }
+  case 1: {
+    // Adopt the host's remaining pending-nation bitmask.
+    pendingNationBitmask = static_cast<TurnEvent1PendingMaskPacket*>(packet)->pendingMask;
+    result = 1;
+    break;
+  }
+  case 2: {
+    // Apply the relation-matrix sync payload unless the baseline-refresh flag is set.
+    TurnEvent2SyncPacket* syncPacket = static_cast<TurnEvent2SyncPacket*>(packet);
+    if (syncPacket->flag20 != 0) {
+      return 1;
+    }
+    g_pDiplomacyTurnStateManager->ApplyTurnEvent2SyncPacketToRelationMatrix(syncPacket);
+    result = 1;
+    break;
+  }
   case 0xd:
-    reinterpret_cast<undefined4(__cdecl*)(...)>(0x407e82)();
-    uVar16 = 1;
+    // Re-emit the event-0xE/9 session context packets for the requesting session.
+    EmitTurnEventEAnd9SessionContextPackets(packet);
+    result = 1;
     break;
-  case 0xe:
-    reinterpret_cast<undefined4(__cdecl*)(...)>(0x401668)();
-    g_pSimMgr->useLocalizedNameTables68 = *(undefined1*)((int)param_2 + 0x65);
-    (reinterpret_cast<GhStr*>(local_144)->m_pchData = (char*)((char*)((int)param_2 + 0x3a)));
-    local_4 = 0xd;
-    ((*reinterpret_cast<GhStr*>((GhStr*)(param_1 + 0x74))) =
-         (*reinterpret_cast<GhStr*>(local_144)));
-    local_4 = 0xffffffff;
-    ((void)0);
-    uVar36 = param_2[0x18];
-    *(uint*)(param_1 + 0xe0) = uVar36;
-    *(undefined4*)(param_1 + 100) = param_2[0x17];
-    *(undefined4*)(param_1 + 0xd8) = 0x696e6974;
-    if (uVar36 == 0x6c6f6164) {
-      cVar12 = reinterpret_cast<undefined4(__cdecl*)(...)>(0x408d78)();
-      if (cVar12 == '\0') {
-        ((void)0);
-        local_4 = 0xe;
-        reinterpret_cast<undefined4(__cdecl*)(...)>(0x401e7e)();
-        local_1d0.m_pchData = reinterpret_cast<char*>(stack0xfffffe00);
-        reinterpret_cast<undefined4(__cdecl*)(...)>(0x4076b7)();
-        reinterpret_cast<undefined4(__cdecl*)(...)>(0x005d5b00)();
-        pcVar25 = (char*)operator_new();
-        uStack_14 = 0xf;
-        local_1d4.m_pchData = pcVar25;
-        if (pcVar25 != (char*)0x0) {
-          reinterpret_cast<undefined4(__cdecl*)(...)>(0x403d5f)();
-          *reinterpret_cast<void**>(pcVar25) = 0;
-        }
-        uStack_14 = 0xe;
-        reinterpret_cast<undefined4(__cdecl*)(...)>(0x405ee3)();
-        g_pGlobalUiRootController->DispatchUiSelectionToHandler(pcVar25);
-        local_4 = 0xffffffff;
-        ((void)0);
-        uVar16 = 1;
-      } else {
-        *(undefined4*)((int)g_pGameFlowState + 0x40) = 0;
-        *(undefined4*)((int)g_pGameFlowState + 0xd8) = 0x676f696e;
-        reinterpret_cast<undefined4(__cdecl*)(...)>(0x409859)();
-        uVar16 = 1;
-      }
-      break;
+  case 0xe: {
+    // Host session-init: adopt sim state/game name/scenario selection, then build the
+    // world per the scenario tag ('load'/'rand'/'scnX') and refresh the lounge.
+    TurnEventESessionInitPacket* sessionInit = static_cast<TurnEventESessionInitPacket*>(packet);
+    g_pSimMgr->SetStateCodeAndUpdateZeroOrOutOfRangeFlag(sessionInit->simStateCode64);
+    g_pSimMgr->useLocalizedNameTables68 = sessionInit->nameTableFlag65;
+    {
+      CString hostGameName(sessionInit->hostGameName3A);
+      gameNameString = hostGameName;
     }
-    if (uVar36 == 0x72616e64) {
-      reinterpret_cast<undefined4(__cdecl*)(...)>(0x404cd2)();
-      reinterpret_cast<undefined4(__cdecl*)(...)>(0x405704)();
+    scenarioSelectionTag = sessionInit->scenarioTag60;
+    queueSyncDword = sessionInit->saveSlotDword5C;
+    sessionPhaseTag = 0x696e6974; // 'init'
+    if (scenarioSelectionTag == 0x6c6f6164 /* 'load' */) {
+      unsigned char probed =
+          BuildSaveSlotPathAndProbeMetadata(queueSyncDword, g_pszClientSavePrefix_0065BF5C);
+      if (probed == 0) {
+        CString messageTextE;
+        g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&messageTextE, 0x2742,
+                                                                        0x14);
+        g_pUiRuntimeContext->DispatchLocalizedUiMessageWithTemplateA13A0(
+            messageTextE, &g_cstrNationAwolMessageStore, 0, 0);
+        TCancelGameOptionsCommand* cancelCommand = new TCancelGameOptionsCommand();
+        cancelCommand->InitializeRangePair(0x63676f70 /* 'cgop' */, g_pGlobalUiRootController, 0, 0,
+                                           0);
+        g_pGlobalUiRootController->DispatchUiSelectionToHandler(cancelCommand);
+        return 1;
+      }
+      g_pGameFlowState->lobbyDialogView40 = 0;
+      g_pGameFlowState->sessionPhaseTag = 0x676f696e; // 'goin'
+      g_pGameFlowState->RefreshNationStatusLabelsAndCodesForSlotOrAll(-1);
+      return 1;
+    } else if (scenarioSelectionTag == 0x72616e64 /* 'rand' */) {
+      g_pSimMgr->RebuildGlobalOrderManagersAndCapabilityState(1);
+      g_pSimMgr->RebuildMapContextAndGlobalMapState(1, sessionInit->mapSeedText18,
+                                                    sessionInit->mapParamByte39);
+    } else if (scenarioSelectionTag >= 0x73636e30 /* 'scn0' */ &&
+               scenarioSelectionTag <= 0x73637a39 /* 'scz9' */) {
+      g_pSimMgr->RebuildGlobalOrderManagersAndCapabilityState(1);
+      unsigned char rebuilt = g_pSimMgr->RecreateActiveMapContextAndInitializeGlobalMapState(
+          scenarioSelectionTag - 0x73636e30);
+      if (rebuilt == 0) {
+        CString messageTextE2;
+        g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&messageTextE2, 0x2742, 2);
+        g_pUiRuntimeContext->DispatchLocalizedUiMessageWithTemplateA13A0(
+            messageTextE2, &g_cstrNationAwolMessageStore, 0, 0);
+        TCancelGameOptionsCommand* cancelCommand2 = new TCancelGameOptionsCommand();
+        cancelCommand2->InitializeRangePair(0x63676f70 /* 'cgop' */, g_pGlobalUiRootController, 0,
+                                            0, 0);
+        g_pGlobalUiRootController->DispatchUiSelectionToHandler(cancelCommand2);
+        return 1;
+      }
     } else {
-      if ((uVar36 < 0x73636e30) || (0x73637a39 < uVar36))
-        goto LAB_005485d8;
-      reinterpret_cast<undefined4(__cdecl*)(...)>(0x404cd2)();
-      cVar12 = reinterpret_cast<undefined4(__cdecl*)(...)>(0x4082ba)();
-      if (cVar12 == '\0') {
-        ((void)0);
-        local_c = 0x10;
-        reinterpret_cast<undefined4(__cdecl*)(...)>(0x401e7e)();
-        reinterpret_cast<undefined4(__cdecl*)(...)>(0x4076b7)();
-        reinterpret_cast<undefined4(__cdecl*)(...)>(0x005d5b00)();
-        puVar22 = (undefined4*)operator_new();
-        *(unsigned char*)&(uStack_1c) = 0x11;
-        if (puVar22 != (undefined4*)0x0) {
-          reinterpret_cast<undefined4(__cdecl*)(...)>(0x403d5f)();
-          *puVar22 = 0;
-        }
-        uStack_1c = CONCAT31(((unsigned int)(uStack_1c) >> 8 & 0xffffff), 0x10);
-        reinterpret_cast<undefined4(__cdecl*)(...)>(0x405ee3)();
-        g_pGlobalUiRootController->DispatchUiSelectionToHandler(puVar22);
-        local_4 = 0xffffffff;
-        ((void)0);
-        uVar16 = 1;
+      return 1;
+    }
+    // Shared tail: refresh the lounge dialog's map/message controls (the original
+    // tolerates a null lounge receiver).
+    TLoungeDialog* loungeE;
+    if (lobbyDialogView40 != 0 && lobbyDialogView40->IsKindOf(RUNTIME_CLASS(TLoungeDialog)) != 0) {
+      loungeE = (TLoungeDialog*)lobbyDialogView40;
+    } else {
+      loungeE = 0;
+    }
+    loungeE->RefreshMapAndMessageControlsForCurrentContext();
+    result = 1;
+    break;
+  }
+  case 3: {
+    // Enter the 'goin' phase; a session with no nation slot posts the cancel command,
+    // otherwise the local nation goes 'busy' and the event-0x25 status board goes out.
+    sessionPhaseTag = 0x676f696e; // 'goin'
+    activeNationSlotIndex = -1;
+    pendingNationSlotIndex = -1;
+    int sessionId3 = GetSessionActiveNationId();
+    int matchSlot = 0;
+    int* sessionIdCursor = nationSessionIds;
+    do {
+      if (*sessionIdCursor == sessionId3) {
         break;
       }
+      ++matchSlot;
+      ++sessionIdCursor;
+    } while (matchSlot < 7);
+    if (matchSlot >= 7) {
+      matchSlot = -1;
     }
-    if ((*(CObject**)(param_1 + 0x40) == (CObject*)0x0) ||
-        (iVar35 =
-             reinterpret_cast<CObject*>(*(CObject**)(param_1 + 0x40))->IsKindOf((CRuntimeClass*)0),
-         iVar35 == 0)) {
-      reinterpret_cast<undefined4(__cdecl*)(...)>(0x401587)();
-      uVar16 = 1;
-    } else {
-      reinterpret_cast<undefined4(__cdecl*)(...)>(0x401587)();
-      uVar16 = 1;
+    if (matchSlot == -1) {
+      TCancelGameOptionsCommand* cancelCommand3 = new TCancelGameOptionsCommand();
+      cancelCommand3->InitializeRangePair(0x63676f70 /* 'cgop' */, g_pGlobalUiRootController, 0, 0,
+                                          0);
+      g_pGlobalUiRootController->DispatchUiSelectionToHandler(cancelCommand3);
+      return 1;
     }
+    int tagSlot = g_pSimMgr->GetActiveNationId();
+    if (tagSlot == -1) {
+      tagSlot = (char)activeNationTagIndex;
+    }
+    nationStatusTags[tagSlot] = 0x62757379; // 'busy'
+    NationStatusEvent25Packet statusPacket;
+    statusPacket.messageTag = 0x74696d65; // 'time'
+    statusPacket.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetActiveNationId());
+    statusPacket.eventCode = 0;
+    statusPacket.fromNetworkId = 0;
+    statusPacket.eventCode = 0x25;
+    statusPacket.messageLength = 0;
+    statusPacket.messageLength = 0x34;
+    for (int tagInit = 0; tagInit < 7; ++tagInit) {
+      statusPacket.statusTags[tagInit] = 0x756e6b6e; // 'unkn'
+    }
+    statusPacket.toNetworkId = 0;
+    statusPacket.statusTags[tagSlot] = 0x62757379; // 'busy'
+    g_pNetMgr006a6014->Send(&statusPacket, 0);
+    g_pSimMgr->PostMainWindowCommand100ForTurnFlow();
+    result = 1;
     break;
-  case 0xf:
-    *(uint*)(param_1 + 0xe8) = *(uint*)(param_1 + 0xe8) & ~(1 << (*(byte*)(param_2 + 7) & 0x1f));
-    if (g_pSimMgr->field44 == 1) {
-      reinterpret_cast<undefined4(__cdecl*)(...)>(0x402a45)();
-      local_1a0 = *(uint*)(param_1 + 0xe8);
-      goto LAB_00545aa0;
-    }
-    goto LAB_005485d8;
+  }
   case 0x10:
     g_pSimMgr->PostMainWindowCommand100ForTurnFlow();
-    uVar16 = 1;
+    result = 1;
     break;
-  case 0x11:
-    cVar12 = *(char*)(param_2 + 6);
-    if (cVar12 == '\x01') {
-      iVar35 = 0;
-      if (param_2[7] == 0) {
-        iVar35 = *(int*)(reinterpret_cast<char*>(g_pGlobalMapState) + 0xc);
-      } else if (param_2[7] == 1) {
-        iVar35 = *(int*)(reinterpret_cast<char*>(g_pGlobalMapState) + 0x10);
+  case 0x11: {
+    // Masked byte/word/dword poke into a global map table; the host rebroadcasts.
+    TurnEvent11MapPokePacket* poke = static_cast<TurnEvent11MapPokePacket*>(packet);
+    switch (poke->pokeWidthCode18) {
+    case 1: {
+      unsigned char* bufferBase1 = 0;
+      if (poke->bufferSelector1C == 0) {
+        bufferBase1 = reinterpret_cast<unsigned char*>(g_pGlobalMapState->terrainStateTable);
+      } else if (poke->bufferSelector1C == 1) {
+        bufferBase1 = reinterpret_cast<unsigned char*>(g_pGlobalMapState->cityScoreTable);
       }
-      *(byte*)(param_2[8] + iVar35) =
-          *(byte*)(param_2[8] + iVar35) & ~*(byte*)((int)param_2 + 0x26) |
-          *(byte*)(param_2 + 9) & *(byte*)((int)param_2 + 0x26);
-    } else if (cVar12 == '\x02') {
-      iVar35 = 0;
-      if (param_2[7] == 0) {
-        iVar35 = *(int*)(reinterpret_cast<char*>(g_pGlobalMapState) + 0xc);
-      } else if (param_2[7] == 1) {
-        iVar35 = *(int*)(reinterpret_cast<char*>(g_pGlobalMapState) + 0x10);
-      }
-      *(ushort*)(param_2[8] + iVar35) =
-          *(ushort*)(param_2[8] + iVar35) & ~*(ushort*)((int)param_2 + 0x26) |
-          *(ushort*)(param_2 + 9) & *(ushort*)((int)param_2 + 0x26);
-    } else if (cVar12 == '\x04') {
-      iVar35 = 0;
-      if (param_2[7] == 0) {
-        iVar35 = *(int*)(reinterpret_cast<char*>(g_pGlobalMapState) + 0xc);
-      } else if (param_2[7] == 1) {
-        iVar35 = *(int*)(reinterpret_cast<char*>(g_pGlobalMapState) + 0x10);
-      }
-      *(uint*)(param_2[8] + iVar35) =
-          (int)(short)(*(ushort*)(param_2 + 9) & *(ushort*)((int)param_2 + 0x26)) |
-          *(uint*)(param_2[8] + iVar35) & ~(int)(short)*(ushort*)((int)param_2 + 0x26);
-    }
-    if (g_pSimMgr->field44 == 1) {
-      puVar22 = local_1b8;
-      for (iVar35 = 10; iVar35 != 0; iVar35 = iVar35 + -1) {
-        *puVar22 = *param_2;
-        param_2 = param_2 + 1;
-        puVar22 = puVar22 + 1;
-      }
-      local_1b8[1] = 0;
-      local_1b8[0] = 0x11;
-      local_1b8[3] = 0x28;
-      local_1b8[2] = 0;
-      reinterpret_cast<undefined4(__cdecl*)(...)>(0x405a5b)();
-      uVar16 = 1;
+      unsigned char maskByte = static_cast<unsigned char>(poke->maskWord26);
+      unsigned char* target1 = bufferBase1 + poke->byteOffset20;
+      *target1 =
+          static_cast<unsigned char>((*target1 & static_cast<unsigned char>(~maskByte)) |
+                                     (static_cast<unsigned char>(poke->valueWord24) & maskByte));
       break;
     }
-    goto LAB_005485d8;
-  case 0x12:
-    reinterpret_cast<undefined4(__cdecl*)(...)>(
-        (*reinterpret_cast<void***>(g_pGlobalMapState))[45])();
-    uVar16 = 1;
+    case 2: {
+      unsigned char* bufferBase2 = 0;
+      if (poke->bufferSelector1C == 0) {
+        bufferBase2 = reinterpret_cast<unsigned char*>(g_pGlobalMapState->terrainStateTable);
+      } else if (poke->bufferSelector1C == 1) {
+        bufferBase2 = reinterpret_cast<unsigned char*>(g_pGlobalMapState->cityScoreTable);
+      }
+      short* target2 = reinterpret_cast<short*>(bufferBase2 + poke->byteOffset20);
+      *target2 = static_cast<short>((*target2 & ~poke->maskWord26) |
+                                    (poke->valueWord24 & poke->maskWord26));
+      break;
+    }
+    case 4: {
+      unsigned char* bufferBase4 = 0;
+      if (poke->bufferSelector1C == 0) {
+        bufferBase4 = reinterpret_cast<unsigned char*>(g_pGlobalMapState->terrainStateTable);
+      } else if (poke->bufferSelector1C == 1) {
+        bufferBase4 = reinterpret_cast<unsigned char*>(g_pGlobalMapState->cityScoreTable);
+      }
+      int maskBits = poke->maskWord26;
+      int* target4 = reinterpret_cast<int*>(bufferBase4 + poke->byteOffset20);
+      *target4 = (poke->valueWord24 & maskBits) | (*target4 & ~maskBits);
+      break;
+    }
+    default:
+      break;
+    }
+    unsigned char hosting11 = g_pSimMgr->field44 == 1;
+    if (hosting11 == 0) {
+      return 1;
+    }
+    TurnEvent11MapPokePacket rebroadcast = *poke;
+    rebroadcast.eventCode = 0;
+    rebroadcast.fromNetworkId = 0;
+    rebroadcast.toNetworkId = 0;
+    rebroadcast.eventCode = 0x11;
+    rebroadcast.messageLength = 0;
+    rebroadcast.messageLength = 0x28;
+    rebroadcast.toNetworkId = 0;
+    g_pNetMgr006a6014->Send(&rebroadcast, 0);
+    result = 1;
     break;
-  case 0x13:
-    reinterpret_cast<undefined4(__cdecl*)(...)>(0x404007)();
-    uVar16 = 1;
+  }
+  case 0x12: {
+    // City ownership change via the map manager virtual.
+    TurnEvent12Packet* cityOwner = static_cast<TurnEvent12Packet*>(packet);
+    g_pGlobalMapState->DispatchFormationEntryActionsAndMaybeCreateTurnEvent12(cityOwner->shortA,
+                                                                              cityOwner->shortB);
+    result = 1;
     break;
-  case 0x14:
-    g_apTerrainTypeDescriptorTable[*(short*)(param_2 + 6)]->AddToNationMetricAtField10(param_2[7]);
-    uVar16 = 1;
+  }
+  case 0x13: {
+    // Queue the nine-dword payload into the nation's event bucket.
+    TurnEvent13NationPayloadPacket* nationPayload =
+        static_cast<TurnEvent13NationPayloadPacket*>(packet);
+    g_pInterNationEventQueueManager->QueueInterNationEventIntoNationBucket(
+        nationPayload->nationSlot18, reinterpret_cast<int>(nationPayload->payloadDwords1C), 1);
+    result = 1;
     break;
-  case 0x15:
-    local_1c8.m_pchData = (char*)0x17;
-    pTVar7 = g_apNationStates[*(short*)(param_2 + 6)];
-    *(undefined4*)(reinterpret_cast<char*>(pTVar7) + 0x10) = param_2[7];
-    puVar22 = param_2 + 0x43;
-    puVar38 = (undefined4*)(reinterpret_cast<char*>(pTVar7) + 0x280);
-    *(undefined4*)(reinterpret_cast<char*>(pTVar7) + 0xac) = param_2[8];
-    pwVar23 = (word*)pTVar7->needTargetByType;
-    pwVar20 = (word*)((int)param_2 + 0x52);
-    do {
-      pwVar23[-0x17] = pwVar20[-0x17];
-      *pwVar23 = *pwVar20;
-      pwVar23[0x17] = pwVar20[0x17];
-      pwVar23[0x2e] = pwVar20[0x2e];
-      pwVar23[0x45] = pwVar20[0x45];
-      iVar35 = 0x10;
-      puVar33 = puVar22;
-      puVar39 = puVar38;
-      do {
-        uVar16 = *puVar33;
-        puVar33 = puVar33 + 0x17;
-        *puVar39 = uVar16;
-        puVar39 = puVar39 + 0x17;
-        iVar35 = iVar35 + -1;
-      } while (iVar35 != 0);
-      pwVar20 = pwVar20 + 1;
-      pwVar23 = pwVar23 + 1;
-      puVar38 = puVar38 + 1;
-      puVar22 = puVar22 + 1;
-      local_1c8.m_pchData = local_1c8.m_pchData + -1;
-    } while (local_1c8.m_pchData != (char*)0x0);
-    *(undefined4*)(reinterpret_cast<char*>(pTVar7) + 0x840) = param_2[0x1b3];
-    *(undefined4*)(reinterpret_cast<char*>(pTVar7) + 0x844) = param_2[0x1b4];
-    *(undefined4*)(reinterpret_cast<char*>(pTVar7) + 0x8f0) = param_2[0x1b5];
-    (*(reinterpret_cast<char*>(pTVar7) + 0x8f4)) = *(undefined1*)(param_2 + 0x1b6);
-    *(undefined4*)(reinterpret_cast<char*>(pTVar7) + 0x8f8) = param_2[0x1b7];
-    (*(reinterpret_cast<char*>(pTVar7) + 0x8fc)) = *(undefined1*)(param_2 + 0x1b8);
-    uVar16 = 1;
+  }
+  case 0x20: {
+    TurnEvent20PacketM* dedupedEvent = static_cast<TurnEvent20PacketM*>(packet);
+    g_pInterNationEventQueueManager->QueueInterNationEventRecordDeduped(
+        dedupedEvent->eventParam18, dedupedEvent->nationA1A, dedupedEvent->nationB1B, 1);
+    result = 1;
     break;
-  case 0x16:
-    reinterpret_cast<undefined4(__cdecl*)(...)>(
-        (*reinterpret_cast<void***>(g_apNationStates[*(short*)(param_2 + 6)]))[35])();
-    uVar16 = 1;
+  }
+  case 0x21: {
+    TurnEvent21PacketM* mergedEvent = static_cast<TurnEvent21PacketM*>(packet);
+    g_pInterNationEventQueueManager->QueueInterNationEventType0FWithBitmaskMerge(
+        mergedEvent->byte18, mergedEvent->byte19, mergedEvent->byte1A, 1);
+    result = 1;
     break;
-  case 0x17:
-    if (*(char*)((int)param_2 + 0x1a) == '\0') {
-      reinterpret_cast<undefined4(__cdecl*)(...)>(
-          (*reinterpret_cast<void***>(g_apNationStates[*(short*)(param_2 + 6)]))[124])();
-      uVar16 = 1;
+  }
+  case 0x22: {
+    TurnEvent22PacketM* type11Event = static_cast<TurnEvent22PacketM*>(packet);
+    g_pInterNationEventQueueManager->QueueInterNationEventType11(type11Event->byte18,
+                                                                 type11Event->word1A, 1);
+    result = 1;
+    break;
+  }
+  case 0x1d: {
+    // War-transition check ('i') or propagate on the active nation.
+    TurnEvent1DWarTransitionPacket* warTransition =
+        static_cast<TurnEvent1DWarTransitionPacket*>(packet);
+    TGreatPower* nation1D = g_apNationStates[g_pSimMgr->GetActiveNationId()];
+    if (warTransition->actionCode1C == 0x69 /* 'i' */) {
+      nation1D->CheckTransitionSlot27C(warTransition->nationA1D, warTransition->nationB1E);
     } else {
-      reinterpret_cast<undefined4(__cdecl*)(...)>(
-          (*reinterpret_cast<void***>(g_apNationStates[*(short*)(param_2 + 6)]))[123])();
-      uVar16 = 1;
+      nation1D->PropagateWarTransitionSlot280(warTransition->nationA1D, warTransition->nationB1E,
+                                              warTransition->mode1F);
     }
+    result = 1;
     break;
-  case 0x18:
-    ppTVar19 = g_apNationStates;
-    puVar27 = (undefined2*)((int)param_2 + 0x15e);
-    do {
-      if (*ppTVar19 != (TGreatPower*)0x0) {
-        puVar29 = (undefined2*)(reinterpret_cast<char*>((*ppTVar19)) + 0xe0);
-        iVar35 = 0x17;
-        puVar21 = puVar27;
-        do {
-          puVar29[-0x17] = puVar21[-0xa1];
-          *puVar29 = *puVar21;
-          puVar29[-0x66] = puVar21[0xa1];
-          puVar29 = puVar29 + 1;
-          iVar35 = iVar35 + -1;
-          puVar21 = puVar21 + 1;
-        } while (iVar35 != 0);
-      }
-      ppTVar19 = ppTVar19 + 1;
-      puVar27 = puVar27 + 0x17;
-    } while ((int)ppTVar19 < 0x6a438c);
-    uVar16 = 1;
-    break;
-  case 0x19:
-    sVar15 = *(short*)(param_2 + 7);
-    sVar14 = reinterpret_cast<undefined4(__cdecl*)(...)>(0x403b16)();
-    if (sVar15 != sVar14) {
-      pTVar7 = g_apNationStates[sVar15];
-      iVar35 = 0x5c;
-      pTVar7->needCapA6 = *(word*)((int)param_2 + 0x1e);
-      do {
-        *(undefined2*)((int)reinterpret_cast<char*>(pTVar7->city) + iVar35) =
-            *(undefined2*)((int)param_2 + iVar35 + -0x3c);
-        iVar35 = iVar35 + 2;
-      } while (iVar35 < 0x78);
-      pTVar8 = *reinterpret_cast<void***>(pTVar7);
-      reinterpret_cast<undefined4(__cdecl*)(...)>(pTVar8[89])();
-      local_1c4.m_pchData = (char*)(pTVar8[99]);
-      iVar35 = 0;
-      do {
-        reinterpret_cast<undefined4(__cdecl*)(...)>(local_1c4.m_pchData)();
-        iVar35 = iVar35 + 1;
-      } while (iVar35 < 0x17);
-      pTVar8 = *reinterpret_cast<void***>(pTVar7);
-      reinterpret_cast<undefined4(__cdecl*)(...)>(pTVar8[90])();
-      local_1c4.m_pchData = (char*)(pTVar8[105]);
-      iVar35 = 0;
-      do {
-        reinterpret_cast<undefined4(__cdecl*)(...)>(local_1c4.m_pchData)();
-        iVar35 = iVar35 + 1;
-      } while (iVar35 < 0x11);
-      reinterpret_cast<undefined4(__cdecl*)(...)>((*reinterpret_cast<void***>(pTVar7))[106])();
-      puVar21 = (undefined2*)(reinterpret_cast<char*>(pTVar7) + 0xe0);
-      iVar35 = 0x17;
-      puVar27 = (undefined2*)((int)param_2 + 0xba);
-      do {
-        puVar21[-0x17] = puVar27[-0x17];
-        *puVar21 = *puVar27;
-        puVar21[-0x66] = puVar27[0x17];
-        puVar21 = puVar21 + 1;
-        iVar35 = iVar35 + -1;
-        puVar27 = puVar27 + 1;
-      } while (iVar35 != 0);
-      uVar16 = 1;
-      break;
-    }
-    goto LAB_005485d8;
-  case 0x1a:
-    if (g_pSimMgr->field44 == 2) {
-      ppTVar19 = g_apNationStates;
-      puVar27 = (undefined2*)((int)param_2 + 0x26);
-      do {
-        if (*ppTVar19 != (TGreatPower*)0x0) {
-          *(undefined2*)(reinterpret_cast<char*>((*ppTVar19)) + 0xa2) = *puVar27;
+  }
+  case 0x1e: {
+    // Diplomacy relation action - 'a' applies relation code 2 (or routes through the
+    // relation-4/event-18 path), 'i' incites a third party or flips a minor's owner;
+    // always finishes by posting the 'NeXT' diplomacy command.
+    TurnEvent1EDiplomacyActionPacket* action =
+        static_cast<TurnEvent1EDiplomacyActionPacket*>(packet);
+    if (action->actionCode1F == 0x61 /* 'a' */) {
+      if (action->flag21 != 0) {
+        TGreatPower* nation1E = g_apNationStates[action->nation1C];
+        if (action->flag20 == 0) {
+          nation1E->ApplyDiplomacyRelationCodeAndNotifyThirdPartySlot284(action->nationB1E, 2,
+                                                                         action->nationA1D);
+        } else {
+          nation1E->ApplyDiplomacyRelationCodeAndNotifyThirdPartySlot284(action->nationA1D, 2,
+                                                                         action->nationB1E);
         }
-        ppTVar19 = ppTVar19 + 1;
-        puVar27 = puVar27 + 1;
-      } while ((int)ppTVar19 < 0x6a438c);
-    }
-    sVar15 = *(short*)(param_2 + 7);
-    sVar14 = reinterpret_cast<undefined4(__cdecl*)(...)>(0x403b16)();
-    if (sVar15 != sVar14) {
-      reinterpret_cast<undefined4(__cdecl*)(...)>(
-          *reinterpret_cast<void**>((*reinterpret_cast<char**>(g_pUiRuntimeContext) + 0x98)))();
-      uVar16 = 1;
-      break;
-    }
-    if (g_pSimMgr->field44 == 2) {
-      reinterpret_cast<undefined4(__cdecl*)(...)>(
-          *reinterpret_cast<void**>((*reinterpret_cast<char**>(g_pUiRuntimeContext) + 0x98)))();
-      uVar16 = 1;
-      break;
-    }
-    goto LAB_005485d8;
-  case 0x1b:
-    reinterpret_cast<undefined4(__cdecl*)(...)>(
-        (*reinterpret_cast<void***>(g_apNationStates[*(short*)(param_2 + 7)]))[108])();
-    uVar16 = 1;
-    break;
-  case 0x1c:
-    reinterpret_cast<undefined4(__cdecl*)(...)>(
-        (*reinterpret_cast<void***>(g_pNationInteractionStateManager))[24])();
-    if (g_pSimMgr->field44 == 1) {
-      local_1c4.m_pchData = (char*)operator_new();
-      local_4 = 0x14;
-      if (local_1c4.m_pchData != (char*)0x0) {
-        reinterpret_cast<undefined4(__cdecl*)(...)>(0x404250)();
-      }
-      local_4 = 0xffffffff;
-      reinterpret_cast<undefined4(__cdecl*)(...)>(0x408b7f)();
-      g_pGlobalUiRootController->DispatchUiSelectionToHandler(local_1c4.m_pchData);
-      uVar16 = 1;
-      break;
-    }
-    goto LAB_005485d8;
-  case 0x1d:
-    sVar15 = reinterpret_cast<undefined4(__cdecl*)(...)>(0x403b16)();
-    if (*(char*)(param_2 + 7) == 'i') {
-      g_apNationStates[sVar15]->CheckTransitionSlot27C(*(char*)((int)param_2 + 0x1d),
-                                                       *(char*)((int)param_2 + 0x1e));
-      uVar16 = 1;
-    } else {
-      g_apNationStates[sVar15]->PropagateWarTransitionSlot280(*(char*)((int)param_2 + 0x1d),
-                                                              *(char*)((int)param_2 + 0x1e),
-                                                              *(char*)((int)param_2 + 0x1f));
-      uVar16 = 1;
-    }
-    break;
-  case 0x1e:
-    if (*(char*)((int)param_2 + 0x1f) == 'a') {
-      if (*(char*)((int)param_2 + 0x21) == '\0') {
-        reinterpret_cast<undefined4(__cdecl*)(...)>(
-            (*reinterpret_cast<void***>(g_pDiplomacyTurnStateManager))[31])();
-      } else if (*(char*)(param_2 + 8) == '\0') {
-        reinterpret_cast<undefined4(__cdecl*)(...)>(
-            (*reinterpret_cast<void***>(g_apNationStates[*(char*)(param_2 + 7)]))[161])();
       } else {
-        reinterpret_cast<undefined4(__cdecl*)(...)>(
-            (*reinterpret_cast<void***>(g_apNationStates[*(char*)(param_2 + 7)]))[161])();
+        if (action->flag20 == 0) {
+          g_pDiplomacyTurnStateManager->ApplyRelationCode4AndQueueEvent18ForTargetNation(
+              action->nation1C, action->nationA1D, 1);
+        } else {
+          g_pDiplomacyTurnStateManager->ApplyRelationCode4AndQueueEvent18ForTargetNation(
+              action->nation1C, action->nationB1E, 0);
+        }
       }
-    } else if ((*(char*)((int)param_2 + 0x1f) == 'i') && (*(char*)((int)param_2 + 0x21) != '\0')) {
-      cVar12 = g_pDiplomacyTurnStateManager->IsNationPairAtWar(*(char*)((int)param_2 + 0x1c),
-                                                               *(char*)((int)param_2 + 0x1e));
-      if (cVar12 == '\0') {
-        reinterpret_cast<undefined4(__cdecl*)(...)>(
-            (*reinterpret_cast<void***>(g_apNationStates[*(char*)(param_2 + 7)]))[161])();
+    } else if (action->actionCode1F == 0x69 /* 'i' */ && action->flag21 != 0) {
+      if (g_pDiplomacyTurnStateManager->IsNationPairAtWar(action->nation1C, action->nationB1E) ==
+          0) {
+        g_apNationStates[action->nation1C]->ApplyDiplomacyRelationCodeAndNotifyThirdPartySlot284(
+            action->nationB1E, 1, action->nationA1D);
       } else {
-        pTVar6 = g_apSecondaryNationStateSlots[*(char*)((int)param_2 + 0x1d)];
-        sVar15 = *(short*)(reinterpret_cast<char*>(pTVar6) + 0xe);
-        if (sVar15 < 200) {
-          if (sVar15 < 100) {
-            sVar15 = *(short*)(reinterpret_cast<char*>(pTVar6) + 0xc);
-          } else {
-            sVar15 = sVar15 + -100;
-          }
-        } else {
-          sVar15 = sVar15 + -200;
-        }
-        if (sVar15 != *(char*)(param_2 + 7)) {
-          reinterpret_cast<undefined4(__cdecl*)(...)>((*reinterpret_cast<void***>(pTVar6))[19])();
+        TMinor* minor1E = g_apSecondaryNationStateSlots[action->nationA1D];
+        if (minor1E->DecodeOwnerNationSlot() != static_cast<short>(action->nation1C)) {
+          minor1E->ApplyJoinEmpireModeForTargetNation(action->nation1C, 1);
         }
       }
     }
-    pcVar25 = (char*)operator_new();
-    local_4 = 0x13;
-    local_1c4.m_pchData = pcVar25;
-    if (pcVar25 != (char*)0x0) {
-      reinterpret_cast<undefined4(__cdecl*)(...)>(0x403d5f)();
-      *reinterpret_cast<void**>(pcVar25) = 0;
-    }
-    local_4 = 0xffffffff;
-    reinterpret_cast<undefined4(__cdecl*)(...)>(0x403f53)();
-    uVar16 = 1;
+    TNextDiplomationCommand* nextCommand = new TNextDiplomationCommand();
+    nextCommand->DispatchUiPacketWithTagNEXT();
+    result = 1;
     break;
-  case 0x1f:
-    uVar36 = param_2[6];
-    if (uVar36 < 0x61636565) {
-      if (uVar36 == 0x61636564) {
-        sVar15 = reinterpret_cast<undefined4(__cdecl*)(...)>(0x403b16)();
-        iVar35 = param_2[7];
-        ((void)0);
-        local_4 = 0x1f;
-        ((void)0);
-        *(unsigned char*)&(local_4) = 0x20;
-        ((void)0);
-        local_4 = CONCAT31(((unsigned int)(local_4) >> 8 & 0xffffff), 0x21);
-        reinterpret_cast<undefined4(__cdecl*)(...)>(0x401e7e)();
-        reinterpret_cast<undefined4(__cdecl*)(...)>(0x405245)();
-        reinterpret_cast<undefined4(__cdecl*)(...)>(0x40988b)();
-        reinterpret_cast<undefined4(__cdecl*)(...)>(0x402e0f)();
-        if (sVar15 == iVar35) {
-          reinterpret_cast<undefined4(__cdecl*)(...)>(0x407518)();
+  }
+  case 0x1a: {
+    // In teardown mode adopt the per-nation diplomacyCounterA2 words, then route the
+    // decision through the UI runtime.
+    TurnEvent1ANationActionPacket* nationAction =
+        static_cast<TurnEvent1ANationActionPacket*>(packet);
+    unsigned char tearingDown = g_pSimMgr->field44 == 2;
+    if (tearingDown != 0) {
+      for (int counterSlot = 0; counterSlot < 7; ++counterSlot) {
+        TGreatPower* counterNation = g_apNationStates[counterSlot];
+        if (counterNation != 0) {
+          counterNation->diplomacyCounterA2 = nationAction->counterA2BySlot[counterSlot];
         }
-        *(unsigned char*)&(local_4) = 0x20;
-        ((void)0);
-        local_4 = CONCAT31(((unsigned int)(local_4) >> 8 & 0xffffff), 0x1f);
-        ((void)0);
-        local_4 = 0xffffffff;
-        ((void)0);
-        uVar16 = 1;
-        break;
       }
-      if (uVar36 == 0x61626469) {
-        ((void)0);
-        local_4 = 0x1c;
-        ((void)0);
-        *(unsigned char*)&(local_4) = 0x1d;
-        ((void)0);
-        local_4 = CONCAT31(((unsigned int)(local_4) >> 8 & 0xffffff), 0x1e);
-        reinterpret_cast<undefined4(__cdecl*)(...)>(0x401e7e)();
-        reinterpret_cast<undefined4(__cdecl*)(...)>(0x405245)();
-        reinterpret_cast<undefined4(__cdecl*)(...)>(0x40988b)();
-        reinterpret_cast<undefined4(__cdecl*)(...)>(0x402e0f)();
-        if (g_pSimMgr->field44 == 1) {
-          reinterpret_cast<undefined4(__cdecl*)(...)>(0x40510f)();
-        }
-        *(unsigned char*)&(local_4) = 0x1d;
-        ((void)0);
-        local_4 = CONCAT31(((unsigned int)(local_4) >> 8 & 0xffffff), 0x1c);
-        ((void)0);
-        local_4 = 0xffffffff;
-        ((void)0);
-        uVar16 = 1;
-        break;
+    }
+    short sourceNation = nationAction->sourceNation1C;
+    if (sourceNation != g_pSimMgr->GetActiveNationId()) {
+      g_pUiRuntimeContext->DispatchDecisionSlot98(sourceNation, nationAction->param1E, 0, 0);
+      return 1;
+    }
+    unsigned char stillTearingDown = g_pSimMgr->field44 == 2;
+    if (stillTearingDown == 0) {
+      return 1;
+    }
+    g_pUiRuntimeContext->DispatchDecisionSlot98(sourceNation, nationAction->param1E,
+                                                nationAction->param20, nationAction->param22);
+    result = 1;
+    break;
+  }
+  case 0x1b: {
+    // Append one tracked-slot entry to the nation.
+    TurnEvent1BTrackedEntryPacket* trackedEntry =
+        static_cast<TurnEvent1BTrackedEntryPacket*>(packet);
+    g_apNationStates[trackedEntry->nationSlot1C]->AppendTrackedSlotEntry(
+        trackedEntry->trackedKind1E, trackedEntry->targetNation20, trackedEntry->trackedValue22,
+        trackedEntry->trackedSlotIndex24, trackedEntry->trackedPayload28);
+    result = 1;
+    break;
+  }
+  case 0x1c: {
+    // Dispatch the proposal amount through the trade manager; a hosting session then
+    // posts the 'NeXT' trade command.
+    TurnEvent1CProposalAmountPacket* proposalAmount =
+        static_cast<TurnEvent1CProposalAmountPacket*>(packet);
+    g_pNationInteractionStateManager->DispatchProposalAmountSlot60(
+        proposalAmount->ownerNation1C, proposalAmount->sourceContext1E, proposalAmount->amount24,
+        proposalAmount->maxAmount20, proposalAmount->targetNation22,
+        proposalAmount->emitEventFlag26, 1);
+    unsigned char hosting1C = g_pSimMgr->field44 == 1;
+    if (hosting1C == 0) {
+      return 1;
+    }
+    TNextTradeCommand* tradeCommand = new TNextTradeCommand();
+    tradeCommand->InitializeRangePairFromDiplomacyConstants();
+    g_pGlobalUiRootController->DispatchUiSelectionToHandler(tradeCommand);
+    result = 1;
+    break;
+  }
+  case 0x14: {
+    // Add the amount to the terrain-slot nation's field-0x10 metric.
+    TurnEvent14NationMetricPacket* metricDelta =
+        static_cast<TurnEvent14NationMetricPacket*>(packet);
+    g_apTerrainTypeDescriptorTable[metricDelta->nationSlot18]->AddToNationMetricAtField10(
+        metricDelta->amount1C);
+    result = 1;
+    break;
+  }
+  case 0x15: {
+    // Receive side of EmitNationDiplomacyNeedStateSnapshotEvent15: copy the full
+    // diplomacy need-state block into the great power.
+    TurnEvent15Packet* needState = static_cast<TurnEvent15Packet*>(packet);
+    TGreatPower* nation15 = g_apNationStates[needState->nationSlot];
+    nation15->treasuryValue10 = needState->treasuryValue;
+    nation15->grantTotalCost = needState->grantTotalCost;
+    for (int needType = 0; needType < 0x17; ++needType) {
+      nation15->needCurrentByType[needType] = needState->needCurrentByType[needType];
+      nation15->needTargetByType[needType] = needState->needTargetByType[needType];
+      nation15->relationDeltaCurrent[needType] = needState->relationDeltaCurrent[needType];
+      nation15->relationDeltaSnapshot[needType] = needState->relationDeltaSnapshot[needType];
+      nation15->diplomacyState1c6[needType] = needState->diplomacyState1c6[needType];
+      for (int aidRow = 0; aidRow < 0x10; ++aidRow) {
+        nation15->aidAllocationMatrix[aidRow * 0x17 + needType] =
+            needState->aidAllocationMatrix[aidRow * 0x17 + needType];
       }
-    } else if (uVar36 < 0x64656876) {
-      if (uVar36 == 0x64656875) {
-        reinterpret_cast<undefined4(__cdecl*)(...)>(0x40510f)();
-        uVar16 = 1;
-        break;
-      }
-      if (uVar36 == 0x6367616d) {
-        pcVar25 = (char*)operator_new();
-        local_4 = 0x25;
-        local_1c4.m_pchData = pcVar25;
-        if (pcVar25 != (char*)0x0) {
-          reinterpret_cast<undefined4(__cdecl*)(...)>(0x403d5f)();
-          *reinterpret_cast<void**>(pcVar25) = 0;
-        }
-        local_4 = 0xffffffff;
-        reinterpret_cast<undefined4(__cdecl*)(...)>(0x405ee3)();
-        g_pGlobalUiRootController->DispatchUiSelectionToHandler(pcVar25);
-        ((void)0);
-        uStack_1c = 0x26;
-        reinterpret_cast<undefined4(__cdecl*)(...)>(0x401e7e)();
-        reinterpret_cast<undefined4(__cdecl*)(...)>(0x402e0f)();
-        local_4 = 0xffffffff;
-        ((void)0);
-        uVar16 = 1;
-        break;
-      }
-    } else if (uVar36 < 0x6c6f7366) {
-      if (uVar36 == 0x6c6f7365) {
-        reinterpret_cast<undefined4(__cdecl*)(...)>(
-            (*reinterpret_cast<void***>(g_apNationStates[param_2[7]]))[171])();
-        uVar16 = 1;
-        break;
-      }
-      if (uVar36 == 0x666f6666) {
-        ((void)0);
-        local_4 = 0x1a;
-        reinterpret_cast<undefined4(__cdecl*)(...)>(0x401e7e)();
-        reinterpret_cast<undefined4(__cdecl*)(...)>(0x402e0f)();
-        puVar22 = (undefined4*)operator_new();
-        uStack_18 = 0x1b;
-        if (puVar22 != (undefined4*)0x0) {
-          reinterpret_cast<undefined4(__cdecl*)(...)>(0x403d5f)();
-          *puVar22 = 0;
-        }
-        uStack_18 = 0x1a;
-        reinterpret_cast<undefined4(__cdecl*)(...)>(0x405ee3)();
-        g_pGlobalUiRootController->DispatchUiSelectionToHandler(puVar22);
-        local_4 = 0xffffffff;
-        ((void)0);
-        uVar16 = 1;
-        break;
-      }
-    } else if (uVar36 < 0x6e616d66) {
-      if (uVar36 == 0x6e616d65) {
-        reinterpret_cast<undefined4(__cdecl*)(...)>(0x409859)();
-        uVar16 = 1;
-        break;
-      }
-      if (uVar36 == 0x6c6f7374) {
-        uVar36 = param_2[7];
-        sVar15 = reinterpret_cast<undefined4(__cdecl*)(...)>(0x403b16)();
-        ((unsigned char*)&(uStack_1cc))[3] = (uVar36 & 0xff) == (int)sVar15;
-        ((void)0);
-        local_4 = 0x22;
-        ((void)0);
-        *(unsigned char*)&(local_4) = 0x23;
-        ((void)0);
-        local_4 = CONCAT31(((unsigned int)(local_4) >> 8 & 0xffffff), 0x24);
-        reinterpret_cast<undefined4(__cdecl*)(...)>(0x401e7e)();
-        reinterpret_cast<undefined4(__cdecl*)(...)>(0x405245)();
-        reinterpret_cast<undefined4(__cdecl*)(...)>(0x40988b)();
-        reinterpret_cast<undefined4(__cdecl*)(...)>(0x402e0f)();
-        if ((((unsigned int)(uStack_1cc) >> 24 & 0xff) != '\0') && (g_pSimMgr->field44 == 2)) {
-          reinterpret_cast<undefined4(__cdecl*)(...)>(0x407518)();
-        }
-        *(unsigned char*)&(local_4) = 0x23;
-        ((void)0);
-        local_4 = CONCAT31(((unsigned int)(local_4) >> 8 & 0xffffff), 0x22);
-        ((void)0);
-        local_4 = 0xffffffff;
-        ((void)0);
-        uVar16 = 1;
-        break;
-      }
-    } else if (uVar36 < 0x71756975) {
-      if ((uVar36 == 0x71756974) || (uVar36 == 0x6e657767)) {
-        if (g_pSimMgr->field44 == 2) {
-          ((void)0);
-          local_4 = 0x16;
-          reinterpret_cast<undefined4(__cdecl*)(...)>(0x401e7e)();
-          reinterpret_cast<undefined4(__cdecl*)(...)>(0x402e0f)();
-          local_4 = 0xffffffff;
-          ((void)0);
-        }
-        if ((g_pSimMgr->field44 == 2) || (param_2[6] == 0x6e657767)) {
-          reinterpret_cast<undefined4(__cdecl*)(...)>(0x407518)();
-          uVar16 = 1;
-        } else {
-          reinterpret_cast<undefined4(__cdecl*)(...)>(0x4077e3)();
-          uVar16 = 1;
-        }
-        break;
-      }
-    } else if (uVar36 < 0x72657070) {
-      if (uVar36 == 0x7265706f) {
-        uVar36 = param_2[7] & 7;
-        if (((g_apNationStates[uVar36] == (TGreatPower*)0x0) &&
-             (iVar35 = reinterpret_cast<undefined4(__cdecl*)(...)>(0x405a3d)(),
-              param_2[1] == iVar35)) &&
-            (g_pSimMgr->field44 == 1)) {
-          bVar10 = true;
-        } else {
-          bVar10 = false;
-        }
-        if ((uVar36 < 7) &&
-            ((bVar10 || ((g_apNationStates[uVar36] != (TGreatPower*)0x0 &&
-                          ((iVar35 = reinterpret_cast<undefined4(__cdecl*)(...)>(0x405a3d)(),
-                            param_2[1] == iVar35 ||
-                                (cVar12 = reinterpret_cast<undefined4(__cdecl*)(...)>(
-                                     (*reinterpret_cast<void***>(g_apNationStates[uVar36]))[40])(),
-                                 cVar12 != '\0')))))))) {
-          uVar16 = param_2[1];
-          /* WARNING: Load size is inaccurate */
-          local_1c4.m_pchData = (char*)(int)local_1d0.m_pchData[uVar36 * 4 + 0x94];
-          pcVar25 = *(char**)(local_1d0.m_pchData + uVar36 * 4 + 0x78);
-          local_1d0.m_pchData = local_1d0.m_pchData + uVar36 * 4 + 0x78;
-          local_1b8[4] = 0x74696d65;
-          local_1a4[0] = reinterpret_cast<undefined4(__cdecl*)(...)>(0x403b16)();
-          uVar30 = 0xffffffff;
-          do {
-            pcVar17 = pcVar25;
-            if (uVar30 == 0)
-              break;
-            uVar30 = uVar30 - 1;
-            pcVar17 = pcVar25 + 1;
-            cVar12 = *pcVar25;
-            pcVar25 = pcVar17;
-          } while (cVar12 != '\0');
-          local_1b8[1] = 0;
-          local_1b8[0] = 9;
-          uVar30 = ~uVar30;
-          local_1b8[2] = 0;
-          local_1b8[3] = 100;
-          local_1a0 = CONCAT31(((unsigned int)(local_1a0) >> 8 & 0xffffff), (sbyte)uVar36);
-          pcVar25 = pcVar17 + -uVar30;
-          pcVar17 = local_198;
-          for (uVar31 = uVar30 >> 2; uVar31 != 0; uVar31 = uVar31 - 1) {
-            *(undefined4*)pcVar17 = *(undefined4*)pcVar25;
-            pcVar25 = pcVar25 + 4;
-            pcVar17 = pcVar17 + 4;
-          }
-          for (uVar30 = uVar30 & 3; uVar30 != 0; uVar30 = uVar30 - 1) {
-            *pcVar17 = *pcVar25;
-            pcVar25 = pcVar25 + 1;
-            pcVar17 = pcVar17 + 1;
-          }
-          uVar30 = 0xffffffff;
-          CVar42.m_pchData = local_1c4.m_pchData;
-          do {
-            pcVar25 = CVar42.m_pchData;
-            if (uVar30 == 0)
-              break;
-            uVar30 = uVar30 - 1;
-            pcVar25 = CVar42.m_pchData + 1;
-            cVar12 = *CVar42.m_pchData;
-            CVar42.m_pchData = pcVar25;
-          } while (cVar12 != '\0');
-          uVar30 = ~uVar30;
-          pcVar25 = pcVar25 + -uVar30;
-          pcVar17 = local_177;
-          for (uVar31 = uVar30 >> 2; uVar31 != 0; uVar31 = uVar31 - 1) {
-            *(undefined4*)pcVar17 = *(undefined4*)pcVar25;
-            pcVar25 = pcVar25 + 4;
-            pcVar17 = pcVar17 + 4;
-          }
-          for (uVar30 = uVar30 & 3; uVar30 != 0; uVar30 = uVar30 - 1) {
-            *pcVar17 = *pcVar25;
-            pcVar25 = pcVar25 + 1;
-            pcVar17 = pcVar17 + 1;
-          }
-          local_19c = uVar16;
-          reinterpret_cast<undefined4(__cdecl*)(...)>(0x405a5b)();
-          ((void)0);
-          local_c = 0x17;
-          ((void)0);
-          local_c = CONCAT31(((unsigned int)(local_c) >> 8 & 0xffffff), 0x18);
-          reinterpret_cast<undefined4(__cdecl*)(...)>(0x401e7e)();
-          (reinterpret_cast<GhStr*>(&local_1d0)->m_pchData = (char*)(unaff_EDI));
-          uStack_18 = 0x19;
-          reinterpret_cast<undefined4(__cdecl*)(...)>(0x40988b)();
-          uStack_12c = 0x74696d65;
-          uVar13 = reinterpret_cast<undefined4(__cdecl*)(...)>(0x403b16)();
-          uStack_138 = 0;
-          local_128 = CONCAT31(((unsigned int)(local_128) >> 8 & 0xffffff), uVar13);
-          uStack_134 = 0;
-          uStack_13c = 0xc;
-          uStack_130 = 0x11c;
-          cStack_24 = 0xff;
-          reinterpret_cast<undefined4(__cdecl*)(...)>(0x403b16)();
-          uVar30 = 0xffffffff;
-          do {
-            pcVar25 = unaff_EBP;
-            if (uVar30 == 0)
-              break;
-            uVar30 = uVar30 - 1;
-            pcVar25 = unaff_EBP + 1;
-            cVar12 = *unaff_EBP;
-            unaff_EBP = pcVar25;
-          } while (cVar12 != '\0');
-          uVar30 = ~uVar30;
-          pcVar25 = pcVar25 + -uVar30;
-          pcVar17 = local_124;
-          for (uVar31 = uVar30 >> 2; uVar31 != 0; uVar31 = uVar31 - 1) {
-            *(undefined4*)pcVar17 = *(undefined4*)pcVar25;
-            pcVar25 = pcVar25 + 4;
-            pcVar17 = pcVar17 + 4;
-          }
-          for (uVar30 = uVar30 & 3; uVar30 != 0; uVar30 = uVar30 - 1) {
-            *pcVar17 = *pcVar25;
-            pcVar25 = pcVar25 + 1;
-            pcVar17 = pcVar17 + 1;
-          }
-          uStack_13c = 0xc;
-          uStack_23 = 0xff;
-          uStack_134 = 0;
-          cStack_24 = -1 - ('\x01' << (sbyte)uVar36);
-          reinterpret_cast<undefined4(__cdecl*)(...)>(0x405a5b)();
-          *(unsigned char*)&(local_4) = 0x18;
-          ((void)0);
-          local_4 = CONCAT31(((unsigned int)(local_4) >> 8 & 0xffffff), 0x17);
-          ((void)0);
-          local_4 = 0xffffffff;
-          ((void)0);
-          uVar16 = 1;
-        } else {
-          local_1b8[4] = 0x74696d65;
-          local_1a4[0] = reinterpret_cast<undefined4(__cdecl*)(...)>(0x403b16)();
-          local_1b8[2] = param_2[1];
-          local_1b8[1] = 0;
-          local_1b8[0] = 0x1f;
-          local_1b8[3] = 0x20;
-          local_1a0 = 0x666f6666;
-          local_19c = 0x29;
-          reinterpret_cast<undefined4(__cdecl*)(...)>(0x405a5b)();
-          uVar16 = 1;
-        }
-        break;
-      }
-      if ((uVar36 == 0x72656765) && (g_pSimMgr->field44 == 2)) {
-        g_pStrategicMapViewSystem->RebuildNationClipRegionsAndDispatchMapEvent();
-        uVar16 = 1;
-        break;
-      }
+    }
+    nation15->budgetPoolBase = needState->budgetPoolBase;
+    nation15->budgetPoolDelta = needState->budgetPoolDelta;
+    nation15->diplomacyBudgetBase = needState->diplomacyBudgetBase;
+    nation15->escalationCounter = needState->escalationCounter;
+    nation15->pendingCommitmentCost = needState->pendingCommitmentCost;
+    nation15->pressureCounter = needState->pressureCounter;
+    result = 1;
+    break;
+  }
+  case 0x19: {
+    // Receive side of EmitTurnEvent19NationStateArraysForSlot.
+    TurnEvent19Packet* stateArrays = static_cast<TurnEvent19Packet*>(packet);
+    short nationSlot19 = stateArrays->nationSlot;
+    if (nationSlot19 == g_pSimMgr->GetActiveNationId()) {
+      return 1;
+    }
+    TGreatPower* nation19 = g_apNationStates[nationSlot19];
+    nation19->needCapA6 = stateArrays->needCapA6;
+    for (int orderType19 = 0; orderType19 < 0x0e; ++orderType19) {
+      nation19->city->orderCountByType5c[orderType19] = stateArrays->orderCountByType[orderType19];
+    }
+    nation19->RecomputeDiplomacyAidBudgetScoreFromResourceWeights();
+    for (int stockSlot19 = 0; stockSlot19 < 0x17; ++stockSlot19) {
+      nation19->SetCityStockCounterAndRefresh(static_cast<short>(stockSlot19),
+                                              stateArrays->externalStateByTarget[stockSlot19]);
+    }
+    nation19->ResetDiplomacyNeedScoresAndClearAidAllocationMatrix();
+    for (int metricSlot19 = 0; metricSlot19 < 0x11; ++metricSlot19) {
+      nation19->SetDiplomacyState1c6ClampedToCounterA4(static_cast<short>(metricSlot19),
+                                                       stateArrays->metricBySlot7C[metricSlot19]);
+    }
+    nation19->SnapshotDiplomacyState1c6Into250();
+    for (int target19 = 0; target19 < 0x17; ++target19) {
+      nation19->diplomacyPolicyByNation[target19] = stateArrays->diplomacyPolicyByNation[target19];
+      nation19->diplomacyGrantByNation[target19] = stateArrays->diplomacyGrantByNation[target19];
+      nation19->needLevelByNation[target19] = stateArrays->needLevelByNation[target19];
+    }
+    result = 1;
+    break;
+  }
+  case 0x2c: {
+    // Receive side of EmitTurnEvent2CNationStateCompositeForSlot.
+    TurnEvent2CPacket* composite = static_cast<TurnEvent2CPacket*>(packet);
+    int nationSlot2C = composite->nationSlot;
+    if (nationSlot2C == g_pSimMgr->GetActiveNationId()) {
+      return 1;
+    }
+    g_apNationStates[nationSlot2C]->field910 = composite->field910;
+    g_apNationStates[nationSlot2C]->aidAllocationTotal = composite->aidAllocationTotal;
+    TCity* city2C;
+    if (g_apNationStates[nationSlot2C] == 0) {
+      city2C = 0;
     } else {
-      if (uVar36 == 0x73617665) {
-        param_1[0xf4] = *(code*)(param_2 + 7);
-        reinterpret_cast<undefined4(__cdecl*)(...)>(0x407559)();
-        uVar16 = 1;
-        break;
-      }
-      if (uVar36 == 0x74726164) {
-        sVar15 = reinterpret_cast<undefined4(__cdecl*)(...)>(0x403b16)();
-        reinterpret_cast<undefined4(__cdecl*)(...)>(
-            (*reinterpret_cast<void***>(g_apNationStates[sVar15]))[18])();
-        uVar16 = 1;
-        break;
-      }
-      if (uVar36 == 0x74726173) {
-        sVar15 = reinterpret_cast<undefined4(__cdecl*)(...)>(0x403b16)();
-        reinterpret_cast<undefined4(__cdecl*)(...)>(
-            (*reinterpret_cast<void***>(g_apNationStates[sVar15]))[52])();
-        uVar16 = 1;
-        break;
+      city2C = g_apNationStates[nationSlot2C]->city;
+    }
+    for (int metric0E = 0; metric0E < 0x1e; ++metric0E) {
+      city2C->cityMetricsBlock0E[metric0E] = composite->cityMetricsBlock0E[metric0E];
+    }
+    for (int metric4A = 0; metric4A < 9; ++metric4A) {
+      city2C->cityMetricsBlock4A[metric4A] = composite->cityMetricsBlock4A[metric4A];
+    }
+    for (int orderType2C = 0; orderType2C < 0x0e; ++orderType2C) {
+      city2C->orderCountByType5c[orderType2C] = composite->orderCountByType[orderType2C];
+    }
+    g_apNationStates[nationSlot2C]->RecomputeDiplomacyAidBudgetScoreFromResourceWeights();
+    city2C->field78 = composite->cityField78;
+    city2C->fieldB4 = composite->cityFieldB4;
+    short* stock2C = &city2C->cityStockCottonB6;
+    for (int stockType = 0; stockType < 0x17; ++stockType) {
+      stock2C[stockType] = composite->cityStock[stockType];
+    }
+    for (int orderSlot2C = 0; orderSlot2C < 0x10; ++orderSlot2C) {
+      city2C->productionOrderTable1dc[orderSlot2C] = composite->productionOrderTable[orderSlot2C];
+    }
+    for (int accumSlot = 0; accumSlot < 0x10; ++accumSlot) {
+      city2C->productionAccum1fc[accumSlot] = composite->productionAccum[accumSlot];
+    }
+    city2C->field26c = composite->cityField26C;
+    // Second, duplicate copy of the city stock block - original behavior, kept as-is.
+    for (int stockType2 = 0; stockType2 < 0x17; ++stockType2) {
+      stock2C[stockType2] = composite->cityStock[stockType2];
+    }
+    for (int record2C = 0; record2C < 0x17; ++record2C) {
+      TProductionOrder* order2C = city2C->tradeCommodityRecordPtrs[record2C];
+      if (order2C != 0) {
+        order2C->accumulatedValue = composite->orderAccumulatedValues[record2C];
       }
     }
-    goto LAB_005485d8;
-  case 0x20:
-    reinterpret_cast<undefined4(__cdecl*)(...)>(0x0055c9f0)(
-        (TCountry*)g_pInterNationEventQueueManager, (int)*(short*)(param_2 + 6),
-        (int)*(char*)((int)param_2 + 0x1a), (int)*(char*)((int)param_2 + 0x1b), '\x01');
-    uVar16 = 1;
+    TPopulationMgr* summary2C = city2C->productionSummary1d8;
+    summary2C->fieldAt8 = composite->popFieldAt8;
+    summary2C->fieldAtC = composite->popFieldAtC;
+    summary2C->stockLevel1c = composite->popStockLevel;
+    summary2C->extraAt1e = composite->popExtraAt1e;
+    summary2C->fieldAt20 = composite->popFieldAt20;
+    summary2C->baselineSlots10->valueAt4 = composite->popBucketWords[0];
+    summary2C->baselineSlots10->valueAt6 = composite->popBucketWords[1];
+    summary2C->baselineSlots10->valueAt8 = composite->popBucketWords[2];
+    summary2C->productionSlots14->valueAt4 = composite->popBucketWords[3];
+    summary2C->productionSlots14->valueAt6 = composite->popBucketWords[4];
+    summary2C->productionSlots14->valueAt8 = composite->popBucketWords[5];
+    summary2C->pendingDeltaSlots18->valueAt4 = composite->popBucketWords[6];
+    summary2C->pendingDeltaSlots18->valueAt6 = composite->popBucketWords[7];
+    summary2C->pendingDeltaSlots18->valueAt8 = composite->popBucketWords[8];
+    result = 1;
     break;
-  case 0x21:
-    reinterpret_cast<undefined4(__cdecl*)(...)>(0x403175)();
-    uVar16 = 1;
+  }
+  case 0x2d: {
+    // Minor-nation need snapshot.
+    TurnEvent2DMinorNeedPacketM* minorNeed = static_cast<TurnEvent2DMinorNeedPacketM*>(packet);
+    TMinor* minor2D = g_apSecondaryNationStateSlots[minorNeed->nationSlot];
+    for (int needSlot2D = 0; needSlot2D < 0x17; ++needSlot2D) {
+      minor2D->needLevelByNation[needSlot2D] = minorNeed->needLevelByNation[needSlot2D];
+    }
+    result = 1;
     break;
-  case 0x22:
-    reinterpret_cast<undefined4(__cdecl*)(...)>(0x401474)();
-    uVar16 = 1;
+  }
+  case 0x16: {
+    // Queue a diplomacy proposal code on the addressed nation.
+    TurnEvent16DiplomacyProposalPacket* proposal =
+        static_cast<TurnEvent16DiplomacyProposalPacket*>(packet);
+    g_apNationStates[proposal->nationSlot18]->QueueDiplomacyProposalCodeForTargetNation(
+        proposal->proposalCode1A, proposal->targetNationId1C);
+    result = 1;
     break;
-  case 0x23:
-    sVar15 = *(short*)(param_2 + 7);
-    iVar35 = *(int*)(reinterpret_cast<char*>(g_pGlobalMapState) + 0xc);
-    *(undefined1*)(iVar35 + 4 + sVar15 * 0x24) = *(undefined1*)(param_2 + 9);
-    iVar35 = iVar35 + sVar15 * 0x24;
-    *(undefined1*)(iVar35 + 5) = *(undefined1*)((int)param_2 + 0x25);
-    *(undefined1*)(iVar35 + 6) = *(undefined1*)((int)param_2 + 0x26);
-    *(undefined1*)(iVar35 + 0xc) = *(undefined1*)(param_2 + 0xb);
-    *(byte*)(iVar35 + 0xd) = *(byte*)(iVar35 + 0xd) | *(byte*)((int)param_2 + 0x2d);
-    *(undefined1*)(iVar35 + 0x18) = *(undefined1*)(param_2 + 0xe);
-    *(undefined2*)(iVar35 + 0x1c) = *(undefined2*)(param_2 + 0xf);
-    uVar16 = 1;
+  }
+  case 0x17: {
+    // Resolve a pending diplomacy proposal.
+    TurnEvent17ProposalResolutionPacket* resolution =
+        static_cast<TurnEvent17ProposalResolutionPacket*>(packet);
+    if (resolution->acceptedFlag1A != 0) {
+      g_apNationStates[resolution->nationSlot18]->ApplyAcceptedDiplomacyProposalCode(
+          resolution->proposalIndex1C);
+    } else {
+      g_apNationStates[resolution->nationSlot18]->QueueInterNationEventForProposalCode12D_130(
+          resolution->proposalIndex1C);
+    }
+    result = 1;
     break;
-  case 0x24:
-    sVar15 = *(short*)(param_2 + 7);
-    iVar34 = 10;
-    iVar35 = *(int*)(reinterpret_cast<char*>(g_pGlobalMapState) + 0x10);
-    *(undefined1*)(iVar35 + sVar15 * 0xa8) = *(undefined1*)(param_2 + 8);
-    iVar35 = iVar35 + sVar15 * 0xa8;
-    *(undefined1*)(iVar35 + 2) = *(undefined1*)((int)param_2 + 0x22);
-    *(undefined1*)(iVar35 + 3) = *(undefined1*)((int)param_2 + 0x23);
-    *(undefined2*)(iVar35 + 6) = *(undefined2*)((int)param_2 + 0x26);
-    puVar27 = (undefined2*)(iVar35 + 0x82);
-    puVar21 = (undefined2*)((int)param_2 + 0xa2);
-    do {
-      uVar4 = *puVar21;
-      puVar21 = puVar21 + 1;
-      *puVar27 = uVar4;
-      puVar27 = puVar27 + 1;
-      iVar34 = iVar34 + -1;
-    } while (iVar34 != 0);
-    *(undefined1*)(iVar35 + 0xa1) = *(undefined1*)((int)param_2 + 0xc1);
-    *(undefined1*)(iVar35 + 0xa2) = *(undefined1*)((int)param_2 + 0xc2);
-    uVar16 = 1;
-    break;
-  case 0x25:
-    iVar35 = 0;
-    piVar24 = (int*)(param_2 + 6);
-    local_1d4.m_pchData = (char*)0x0;
-    pcVar32 = param_1 + 0xbc;
-    iVar34 = 7;
-    do {
-      if (*piVar24 != 0x756e6b6e) {
-        *(int*)pcVar32 = *piVar24;
-      }
-      if (*(int*)pcVar32 == 0x72656479) {
-        iVar35 = iVar35 + 1;
-      } else if (*(int*)pcVar32 == 0x62757379) {
-        local_1d4.m_pchData = local_1d4.m_pchData + 1;
-      }
-      piVar24 = piVar24 + 1;
-      pcVar32 = pcVar32 + 4;
-      iVar34 = iVar34 + -1;
-    } while (iVar34 != 0);
-    if ((0 < iVar35) && (local_1d4.m_pchData == (char*)0x1)) {
-      sVar15 = reinterpret_cast<undefined4(__cdecl*)(...)>(0x403b16)();
-      iVar35 = (int)sVar15;
-      if (iVar35 == -1) {
-        iVar34 = reinterpret_cast<undefined4(__cdecl*)(...)>(0x405a3d)();
-        iVar35 = 0;
-        piVar24 = (int*)((int)g_pGameFlowState + 0x48);
-        do {
-          if (*piVar24 == iVar34)
-            goto LAB_0054833b;
-          iVar35 = iVar35 + 1;
-          piVar24 = piVar24 + 1;
-        } while (iVar35 < 7);
-        iVar35 = -1;
-      }
-    LAB_0054833b:
-      if ((*(int*)(param_1 + iVar35 * 4 + 0xbc) == 0x62757379) &&
-          (param_1[0xf4] != (CObject_slot_0x04_0x04)0x0)) {
-        g_pSfxPlaybackSystem->PlaySoundEffect(0x13f2, 0, 1);
-        uVar16 = 1;
-        break;
+  }
+  case 0x18: {
+    // Host broadcast of all seven great powers' diplomacy arrays.
+    TurnEvent18DiplomacyArraysPacketM* arrays =
+        static_cast<TurnEvent18DiplomacyArraysPacketM*>(packet);
+    for (int arraySlot = 0; arraySlot < 7; ++arraySlot) {
+      TGreatPower* arrayNation = g_apNationStates[arraySlot];
+      if (arrayNation != 0) {
+        for (int arrayTarget = 0; arrayTarget < 0x17; ++arrayTarget) {
+          arrayNation->diplomacyPolicyByNation[arrayTarget] =
+              arrays->diplomacyPolicyByNation[arraySlot][arrayTarget];
+          arrayNation->diplomacyGrantByNation[arrayTarget] =
+              arrays->diplomacyGrantByNation[arraySlot][arrayTarget];
+          arrayNation->needLevelByNation[arrayTarget] =
+              arrays->needLevelByNation[arraySlot][arrayTarget];
+        }
       }
     }
-    goto LAB_005485d8;
-  case 0x26:
-    puVar22 = param_2 + 6;
-    pTVar43 = g_pDiplomacyTurnStateManager;
-    for (iVar35 = 0xc0;
-         pTVar43 = (TDiplomacyMgr*)(reinterpret_cast<char*>(pTVar43) + 0x4), iVar35 != 0;
-         iVar35 = iVar35 + -1) {
-      *(undefined4*)pTVar43 = *puVar22;
-      puVar22 = puVar22 + 1;
-    }
-    puVar22 = param_2 + 0xc6;
-    puVar38 = (undefined4*)(reinterpret_cast<char*>(g_pDiplomacyTurnStateManager) + 0x304);
-    for (iVar35 = 0x60; iVar35 != 0; iVar35 = iVar35 + -1) {
-      *puVar38 = *puVar22;
-      puVar22 = puVar22 + 1;
-      puVar38 = puVar38 + 1;
-    }
-    puVar22 = param_2 + 0x126;
-    puVar38 = (undefined4*)(reinterpret_cast<char*>(g_pDiplomacyTurnStateManager) + 0x484);
-    for (iVar35 = 0xc0; iVar35 != 0; iVar35 = iVar35 + -1) {
-      *puVar38 = *puVar22;
-      puVar22 = puVar22 + 1;
-      puVar38 = puVar38 + 1;
-    }
-    *(undefined4*)(reinterpret_cast<char*>(g_pDiplomacyTurnStateManager) + 0x784) = param_2[0x1e6];
-    pTVar43 = g_pDiplomacyTurnStateManager;
-    *(undefined4*)(reinterpret_cast<char*>(g_pDiplomacyTurnStateManager) + 0x788) = param_2[0x1e7];
-    *(undefined2*)(reinterpret_cast<char*>(pTVar43) + 0x78c) = *(undefined2*)(param_2 + 0x1e8);
-    uVar16 = 1;
-    puVar22 = param_2 + 0x1e9;
-    puVar38 = (undefined4*)(reinterpret_cast<char*>(g_pDiplomacyTurnStateManager) + 0x1824);
-    for (iVar35 = 0x1c; iVar35 != 0; iVar35 = iVar35 + -1) {
-      *puVar38 = *puVar22;
-      puVar22 = puVar22 + 1;
-      puVar38 = puVar38 + 1;
-    }
+    result = 1;
     break;
-  case 0x27:
-    g_apTerrainTypeDescriptorTable[param_2[6]]->ApplyJoinEmpireModeForTargetNation(param_2[7],
-                                                                                   param_2[8]);
-    uVar16 = 1;
-    break;
+  }
   case 0x28:
   case 0x2e:
   case 0x2f:
   case 0x30:
   case 0x31:
-  case 0x32:
-    g_nSaveFormatVersion = 0x6e657458;
-    hMem = GlobalAlloc(2, param_2[3]);
-    GlobalLock(hMem);
-    ((void)0); // Ghidra _memmove() with register-folded args; body-only side effect
-    GlobalUnlock(hMem);
-    local_1c4.m_pchData = (char*)operator_new();
-    local_4 = 0x15;
-    if (local_1c4.m_pchData == (char*)0x0) {
-      piVar24 = (int*)0x0;
-    } else {
-      piVar24 = (int*)reinterpret_cast<undefined4(__cdecl*)(...)>(0x401e1a)();
-    }
-    local_4 = 0xffffffff;
-    reinterpret_cast<undefined4(__cdecl*)(...)>(0x408765)();
-    reinterpret_cast<undefined4(__cdecl*)(...)>(0x403170)();
-    reinterpret_cast<undefined4(__cdecl*)(...)>(*reinterpret_cast<void**>((*piVar24 + 0x1c)))();
+  case 0x32: {
+    // Streamed-payload family: copy the raw packet into a global-memory block, wrap it
+    // in a THandleStream, and hand it to the code-switched stream reader. The
+    // save-format version global is stamped 'netX' for the deserialization.
+    g_nSaveFormatVersion = 0x6e657458; // 'netX'
+    int packetBytes = packet->messageLength;
+    HGLOBAL packetMemory = GlobalAlloc(GMEM_MOVEABLE, packetBytes);
+    void* streamBuffer = GlobalLock(packetMemory);
+    memmove(streamBuffer, packet, packetBytes);
+    GlobalUnlock(packetMemory);
+    THandleStream* reader = new THandleStream();
+    reader->AttachGlobalMemoryHandleAndResetPosition(packetMemory, 0x10);
+    HandleTurnEventCodes28_2E_2F_30_31_32(reader);
+    reader->Free();
     g_nSaveFormatVersion = -1;
-    uVar16 = 1;
+    result = 1;
     break;
-  case 0x29:
-    reinterpret_cast<undefined4(__cdecl*)(...)>(
-        *reinterpret_cast<void**>((*(*reinterpret_cast<int**>(0x006a475c)) + 0xc)))();
-    reinterpret_cast<undefined4(__cdecl*)(...)>(0x406b27)();
-    uVar36 = param_2[6];
-    if (uVar36 < 0x64696768) {
-      if (uVar36 == 0x64696767) {
-        reinterpret_cast<undefined4(__cdecl*)(...)>(0x4052e0)();
-        uVar16 = 1;
-        break;
-      }
-      if (uVar36 == 0x6465706c) {
-        reinterpret_cast<undefined4(__cdecl*)(...)>(0x4015dc)();
-        uVar16 = 1;
-        break;
-      }
-    } else if (uVar36 < 0x6d6f7666) {
-      if (uVar36 == 0x6d6f7665) {
-        reinterpret_cast<undefined4(__cdecl*)(...)>(0x403134)();
-        uVar16 = 1;
-        break;
-      }
-      if (uVar36 == 0x6d696e65) {
-        reinterpret_cast<undefined4(__cdecl*)(...)>(0x402dfb)();
-        uVar16 = 1;
-        break;
-      }
-    } else {
-      if (uVar36 == 0x72616c79) {
-        reinterpret_cast<undefined4(__cdecl*)(...)>(0x4065af)();
-        uVar16 = 1;
-        break;
-      }
-      if (uVar36 == 0x73656c65) {
-        reinterpret_cast<undefined4(__cdecl*)(...)>(0x402cca)();
-        uVar16 = 1;
-        break;
-      }
-    }
-    goto LAB_005485d8;
-  case 0x2a:
-    reinterpret_cast<undefined4(__cdecl*)(...)>(
-        *reinterpret_cast<void**>((*(*reinterpret_cast<int**>(0x006a475c)) + 0xc)))();
-    reinterpret_cast<undefined4(__cdecl*)(...)>(0x406b27)();
-    reinterpret_cast<undefined4(__cdecl*)(...)>(0x406b27)();
-    if (param_2[6] == 0x66697265) {
-      reinterpret_cast<undefined4(__cdecl*)(...)>(0x402770)();
-      uVar16 = 1;
-      break;
-    }
-    goto LAB_005485d8;
-  case 0x2b:
-    (*reinterpret_cast<int*>(0x006a3d64)) =
-        (*reinterpret_cast<int*>(0x006a3d64)) | (int)*(char*)((int)param_2 + 0x19);
-    if (*(char*)(param_2 + 6) != '\0') {
-      local_1b8[4] = 0x74696d65;
-      local_1a4[0] = reinterpret_cast<undefined4(__cdecl*)(...)>(0x403b16)();
-      local_1b8[0] = 0x2b;
-      local_1b8[1] = 0;
-      local_1b8[2] = 0;
-      local_1a0 = local_1a0 & 0xffffff00;
-      local_1b8[3] = 0x1c;
-      uVar13 = reinterpret_cast<undefined4(__cdecl*)(...)>(0x403b16)();
-      local_1b8[2] = param_2[1];
-      *reinterpret_cast<unsigned short*>(&(local_1a0)) = CONCAT11(uVar13, (undefined1)local_1a0);
-      reinterpret_cast<undefined4(__cdecl*)(...)>(0x405a5b)();
-    }
-    goto LAB_005485d8;
-  case 0x2c:
-    iVar35 = (int)*(short*)(param_2 + 7);
-    sVar15 = reinterpret_cast<undefined4(__cdecl*)(...)>(0x403b16)();
-    if (iVar35 != sVar15) {
-      *(undefined4*)(reinterpret_cast<char*>(g_apNationStates[iVar35]) + 0x910) = param_2[8];
-      *(undefined4*)(reinterpret_cast<char*>(g_apNationStates[iVar35]) + 0x914) = param_2[9];
-      if (g_apNationStates[iVar35] == (TGreatPower*)0x0) {
-        pTVar41 = (TCity*)0x0;
-      } else {
-        pTVar41 = g_apNationStates[iVar35]->city;
-      }
-      puVar27 = (undefined2*)(reinterpret_cast<char*>(pTVar41) + 0xe);
-      puVar21 = (undefined2*)((int)param_2 + 0x2e);
-      iVar34 = 0x1e;
-      do {
-        uVar4 = *puVar21;
-        puVar21 = puVar21 + 1;
-        *puVar27 = uVar4;
-        puVar27 = puVar27 + 1;
-        iVar34 = iVar34 + -1;
-      } while (iVar34 != 0);
-      puVar27 = (undefined2*)(reinterpret_cast<char*>(pTVar41) + 0x4a);
-      puVar21 = (undefined2*)((int)param_2 + 0x6a);
-      iVar34 = 9;
-      do {
-        uVar4 = *puVar21;
-        puVar21 = puVar21 + 1;
-        *puVar27 = uVar4;
-        puVar27 = puVar27 + 1;
-        iVar34 = iVar34 + -1;
-      } while (iVar34 != 0);
-      puVar27 = (undefined2*)(reinterpret_cast<char*>(pTVar41) + 0x5c);
-      puVar22 = param_2 + 0x1f;
-      iVar34 = 0xe;
-      do {
-        uVar4 = *(undefined2*)puVar22;
-        puVar22 = (undefined4*)((int)puVar22 + 2);
-        *puVar27 = uVar4;
-        puVar27 = puVar27 + 1;
-        iVar34 = iVar34 + -1;
-      } while (iVar34 != 0);
-      reinterpret_cast<undefined4(__cdecl*)(...)>(
-          (*reinterpret_cast<void***>(g_apNationStates[iVar35]))[89])();
-      pwVar20 = reinterpret_cast<word*>(reinterpret_cast<char*>(pTVar41) + 0xB6);
-      *(undefined4*)(reinterpret_cast<char*>(pTVar41) + 0x78) = param_2[0x26];
-      *(undefined2*)(reinterpret_cast<char*>(pTVar41) + 0xb4) = *(undefined2*)(param_2 + 0x27);
-      pwVar23 = (word*)((int)param_2 + 0x9e);
-      iVar35 = 0x17;
-      pwVar26 = pwVar20;
-      do {
-        wVar3 = *pwVar23;
-        pwVar23 = pwVar23 + 1;
-        *pwVar26 = wVar3;
-        pwVar26 = pwVar26 + 1;
-        iVar35 = iVar35 + -1;
-      } while (iVar35 != 0);
-      puVar27 = (undefined2*)(reinterpret_cast<char*>(pTVar41) + 0x1dc);
-      puVar22 = param_2 + 0x33;
-      iVar35 = 0x10;
-      do {
-        uVar4 = *(undefined2*)puVar22;
-        puVar22 = (undefined4*)((int)puVar22 + 2);
-        *puVar27 = uVar4;
-        puVar27 = puVar27 + 1;
-        iVar35 = iVar35 + -1;
-      } while (iVar35 != 0);
-      puVar27 = (undefined2*)(reinterpret_cast<char*>(pTVar41) + 0x1fc);
-      puVar22 = param_2 + 0x3b;
-      iVar35 = 0x10;
-      do {
-        uVar4 = *(undefined2*)puVar22;
-        puVar22 = (undefined4*)((int)puVar22 + 2);
-        *puVar27 = uVar4;
-        puVar27 = puVar27 + 1;
-        iVar35 = iVar35 + -1;
-      } while (iVar35 != 0);
-      *(undefined2*)(reinterpret_cast<char*>(pTVar41) + 0x26c) = *(undefined2*)(param_2 + 0x43);
-      pwVar23 = (word*)((int)param_2 + 0x9e);
-      iVar35 = 0x17;
-      do {
-        wVar3 = *pwVar23;
-        pwVar23 = pwVar23 + 1;
-        *pwVar20 = wVar3;
-        pwVar20 = pwVar20 + 1;
-        iVar35 = iVar35 + -1;
-      } while (iVar35 != 0);
-      ppvVar28 = pTVar41->orderSlotsE4;
-      puVar22 = param_2 + 0x44;
-      iVar35 = 0x17;
-      do {
-        if (*ppvVar28 != (void*)0x0) {
-          *(undefined4*)((int)*ppvVar28 + 0x44) = *puVar22;
-        }
-        puVar22 = puVar22 + 1;
-        ppvVar28 = ppvVar28 + 1;
-        iVar35 = iVar35 + -1;
-      } while (iVar35 != 0);
-      iVar35 = *(int*)(reinterpret_cast<char*>(pTVar41) + 0x1d8);
-      *(undefined2*)(iVar35 + 8) = *(undefined2*)(param_2 + 0x5b);
-      *(undefined4*)(iVar35 + 0xc) = param_2[0x5c];
-      *(undefined2*)(iVar35 + 0x1c) = *(undefined2*)(param_2 + 0x5d);
-      *(undefined2*)(iVar35 + 0x1e) = *(undefined2*)((int)param_2 + 0x176);
-      *(undefined2*)(iVar35 + 0x20) = *(undefined2*)(param_2 + 0x5e);
-      *(undefined2*)(*(int*)(iVar35 + 0x10) + 4) = *(undefined2*)((int)param_2 + 0x17a);
-      *(undefined2*)(*(int*)(iVar35 + 0x10) + 6) = *(undefined2*)(param_2 + 0x5f);
-      *(undefined2*)(*(int*)(iVar35 + 0x10) + 8) = *(undefined2*)((int)param_2 + 0x17e);
-      *(undefined2*)(*(int*)(iVar35 + 0x14) + 4) = *(undefined2*)(param_2 + 0x60);
-      *(undefined2*)(*(int*)(iVar35 + 0x14) + 6) = *(undefined2*)((int)param_2 + 0x182);
-      *(undefined2*)(*(int*)(iVar35 + 0x14) + 8) = *(undefined2*)(param_2 + 0x61);
-      *(undefined2*)(*(int*)(iVar35 + 0x18) + 4) = *(undefined2*)((int)param_2 + 0x186);
-      *(undefined2*)(*(int*)(iVar35 + 0x18) + 6) = *(undefined2*)(param_2 + 0x62);
-      *(undefined2*)(*(int*)(iVar35 + 0x18) + 8) = *(undefined2*)((int)param_2 + 0x18a);
-      uVar16 = 1;
-      break;
-    }
-  LAB_005485d8:
-    uVar16 = 1;
-    break;
-  case 0x2d:
-    iVar35 = 0x17;
-    puVar27 = (undefined2*)(reinterpret_cast<char*>(
-                                g_apSecondaryNationStateSlots[*(short*)(param_2 + 7)]) +
-                            0x14);
-    puVar21 = (undefined2*)((int)param_2 + 0x1e);
-    do {
-      uVar4 = *puVar21;
-      puVar21 = puVar21 + 1;
-      *puVar27 = uVar4;
-      puVar27 = puVar27 + 1;
-      iVar35 = iVar35 + -1;
-    } while (iVar35 != 0);
-    uVar16 = 1;
   }
-  *unaff_FS_OFFSET = local_c;
-  return uVar16;
+  case 0x1f: {
+    // Session/game-flow four-cc status dispatcher.
+    TurnEvent1FGameStateTagPacket* gameState =
+        reinterpret_cast<TurnEvent1FGameStateTagPacket*>(packet);
+    switch (gameState->statusTag18) {
+    case 0x61626469: { // 'abdi' - nation abdicated: notice; host replaces the slot with an AI
+      CString templateTextAbdi;
+      CString formattedAbdi;
+      CString nationNameAbdi;
+      g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&templateTextAbdi, 0x2737,
+                                                                      0x32);
+      g_apTerrainTypeDescriptorTable[gameState->value1C]->FormatOverlayTerrainLabelText(
+          &nationNameAbdi);
+      scanBracketExpressions(g_pSimMgr, &formattedAbdi, static_cast<const char*>(templateTextAbdi),
+                             static_cast<const char*>(nationNameAbdi));
+      g_pUiRuntimeContext->CreateModalMessageCommandAndQueue(&formattedAbdi, 0);
+      unsigned char hostingAbdi = g_pSimMgr->field44 == 1;
+      if (hostingAbdi != 0) {
+        ReplaceNationStateForSlotAndRefreshStatus(gameState->value1C);
+      }
+      return 1;
+    }
+    case 0x61636564: { // 'aced' - accession notice; the affected local player posts 'gwen'
+      unsigned char isLocalNationAced = g_pSimMgr->GetActiveNationId() == gameState->value1C;
+      CString templateTextAced;
+      CString formattedAced;
+      CString nationNameAced;
+      g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(
+          &templateTextAced, 0x2742, isLocalNationAced != 0 ? 0x23 : 0x1c);
+      g_apTerrainTypeDescriptorTable[gameState->value1C]->FormatOverlayTerrainLabelText(
+          &nationNameAced);
+      scanBracketExpressions(g_pSimMgr, &formattedAced, static_cast<const char*>(templateTextAced),
+                             static_cast<const char*>(nationNameAced));
+      g_pUiRuntimeContext->CreateModalMessageCommandAndQueue(&formattedAced, 0);
+      if (isLocalNationAced != 0) {
+        g_pGlobalUiRootController->CreateAndQueueTurnEventPacketTagGWEN();
+      }
+      return 1;
+    }
+    case 0x75686564: // 'uhed' - nation left unheaded: replace with AI locally
+      ReplaceNationStateForSlotAndRefreshStatus(gameState->value1C);
+      return 1;
+    case 0x6367616d: { // 'cgam' - cancel game
+      TCancelGameOptionsCommand* cancelCommandCgam = new TCancelGameOptionsCommand();
+      cancelCommandCgam->InitializeRangePair(0x63676f70 /* 'cgop' */, g_pGlobalUiRootController, 0,
+                                             0, 0);
+      g_pGlobalUiRootController->DispatchUiSelectionToHandler(cancelCommandCgam);
+      CString messageCgam;
+      g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&messageCgam, 0x2742, 0x27);
+      g_pUiRuntimeContext->CreateModalMessageCommandAndQueue(&messageCgam, 0);
+      return 1;
+    }
+    case 0x6c6f7365: // 'lose' - the named nation lost
+      g_apNationStates[gameState->value1C]->DispatchTurnEvent11F8NoPayloadSlot2AC();
+      return 1;
+    case 0x666f6666: { // 'foff' - seat refused: show string[value1C], post the cancel command
+      CString messageFoff;
+      g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&messageFoff, 0x2742,
+                                                                      gameState->value1C);
+      g_pUiRuntimeContext->CreateModalMessageCommandAndQueue(&messageFoff, 0);
+      TCancelGameOptionsCommand* cancelCommandFoff = new TCancelGameOptionsCommand();
+      cancelCommandFoff->InitializeRangePair(0x63676f70 /* 'cgop' */, g_pGlobalUiRootController, 0,
+                                             0, 0);
+      g_pGlobalUiRootController->DispatchUiSelectionToHandler(cancelCommandFoff);
+      return 1;
+    }
+    case 0x6e616d65: // 'name' - refresh the status board row (global manager receiver)
+      g_pGameFlowState->RefreshNationStatusLabelsAndCodesForSlotOrAll(gameState->value1C);
+      return 1;
+    case 0x6c6f7374: { // 'lost' - connection to a nation lost
+      int lostCode = gameState->value1C;
+      unsigned char droppedFlag = (lostCode & 0xff00) != 0;
+      int lostNationSlot = lostCode & 0xff;
+      unsigned char isLocalNationLost = lostNationSlot == g_pSimMgr->GetActiveNationId();
+      CString templateTextLost;
+      CString formattedLost;
+      CString nationNameLost;
+      g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(
+          &templateTextLost, 0x2742,
+          (droppedFlag != 0 ? 2 : 0) + (isLocalNationLost != 0 ? 1 : 0) + 0x1f);
+      g_apTerrainTypeDescriptorTable[lostNationSlot]->FormatOverlayTerrainLabelText(
+          &nationNameLost);
+      scanBracketExpressions(g_pSimMgr, &formattedLost, static_cast<const char*>(templateTextLost),
+                             static_cast<const char*>(nationNameLost));
+      g_pUiRuntimeContext->CreateModalMessageCommandAndQueue(&formattedLost, 0);
+      if (isLocalNationLost != 0) {
+        unsigned char sessionTornDownLost = g_pSimMgr->field44 == 2;
+        if (sessionTornDownLost != 0) {
+          g_pGlobalUiRootController->CreateAndQueueTurnEventPacketTagGWEN();
+        }
+      }
+      return 1;
+    }
+    case 0x71756974:   // 'quit'
+    case 0x6e657767: { // 'newg' - session ending: optional notice, then close or restart
+      unsigned char restartFlag = static_cast<unsigned char>(gameState->value1C);
+      unsigned char sessionTornDownQuit = g_pSimMgr->field44 == 2;
+      if (sessionTornDownQuit != 0) {
+        CString messageQuit;
+        if (restartFlag != 0) {
+          g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&messageQuit, 0x2742,
+                                                                          0x1d);
+        } else {
+          g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&messageQuit, 0x2742,
+                                                                          0x1e);
+        }
+        g_pUiRuntimeContext->CreateModalMessageCommandAndQueue(&messageQuit, 0);
+      }
+      unsigned char stillTornDownQuit = g_pSimMgr->field44 == 2;
+      if (stillTornDownQuit == 0 && gameState->statusTag18 != 0x6e657767 /* 'newg' */) {
+        PostWmCloseToMainThreadWindow();
+        return 1;
+      }
+      g_pGlobalUiRootController->CreateAndQueueTurnEventPacketTagGWEN();
+      return 1;
+    }
+    case 0x72656765: { // 'rege' - regenerate map clip regions after teardown
+      unsigned char sessionTornDownRege = g_pSimMgr->field44 == 2;
+      if (sessionTornDownRege != 0) {
+        g_pStrategicMapViewSystem->RebuildNationClipRegionsAndDispatchMapEvent();
+      }
+      return 1;
+    }
+    case 0x7265706f: { // 'repo' - a session reports for a nation slot: seat it or refuse
+      int repoSlot = gameState->value1C & 7;
+      unsigned char hostCanSeatEmptySlot = 0;
+      if (g_apNationStates[repoSlot] == 0 && packet->fromNetworkId == GetSessionActiveNationId() &&
+          g_pSimMgr->field44 == 1) {
+        hostCanSeatEmptySlot = 1;
+      }
+      if (repoSlot >= 0 && repoSlot < 7 &&
+          (hostCanSeatEmptySlot != 0 ||
+           (g_apNationStates[repoSlot] != 0 &&
+            (packet->fromNetworkId == GetSessionActiveNationId() ||
+             g_apNationStates[repoSlot]->ShouldDispatchImmediatelySlot28() != 0)))) {
+        LobbyChatEvent9Packet seatAnnounce;
+        seatAnnounce.messageTag = 0x74696d65; // 'time'
+        seatAnnounce.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetActiveNationId());
+        seatAnnounce.eventCode = 0;
+        seatAnnounce.field1C = packet->fromNetworkId;
+        seatAnnounce.fromNetworkId = 0;
+        seatAnnounce.eventCode = 9;
+        seatAnnounce.toNetworkId = 0;
+        seatAnnounce.messageLength = 0;
+        seatAnnounce.toNetworkId = 0;
+        seatAnnounce.messageLength = 0x64;
+        seatAnnounce.nationSlot18 = static_cast<unsigned char>(repoSlot);
+        strcpy(seatAnnounce.senderName, defaultNationTextSlots[repoSlot]);
+        strcpy(seatAnnounce.messageText, nationDisplayNameSlots[repoSlot]);
+        g_pNetMgr006a6014->Send(&seatAnnounce, 1);
+        CString formattedRepo;
+        CString templateTextRepo;
+        g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&templateTextRepo, 0x2759,
+                                                                        0xa);
+        CString nationNameRepo(defaultNationTextSlots[repoSlot]);
+        scanBracketExpressions(g_pSimMgr, &formattedRepo,
+                               static_cast<const char*>(templateTextRepo),
+                               static_cast<const char*>(nationNameRepo));
+        TurnEventCKickMessagePacket joinBroadcast;
+        joinBroadcast.messageTag = 0x74696d65; // 'time'
+        joinBroadcast.eventCode = 0;
+        joinBroadcast.fromNetworkId = 0;
+        joinBroadcast.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetActiveNationId());
+        joinBroadcast.toNetworkId = 0;
+        joinBroadcast.eventCode = 0xc;
+        joinBroadcast.messageLength = 0;
+        joinBroadcast.messageLength = 0x11c;
+        joinBroadcast.targetNationBitmask118 = 0xff;
+        joinBroadcast.kickerNationId119 = static_cast<signed char>(g_pSimMgr->GetActiveNationId());
+        strcpy(joinBroadcast.messageText18, formattedRepo);
+        joinBroadcast.eventCode = 0xc;
+        joinBroadcast.kickerNationId119 = -1; // double-write over the active id - original
+        joinBroadcast.toNetworkId = 0;
+        joinBroadcast.targetNationBitmask118 = static_cast<unsigned char>(0xff - (1 << repoSlot));
+        g_pNetMgr006a6014->Send(&joinBroadcast, 1);
+      } else {
+        TurnEvent1FGameStateTagPacket refuse;
+        refuse.messageTag = 0x74696d65; // 'time'
+        refuse.eventCode = 0;
+        refuse.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetActiveNationId());
+        refuse.fromNetworkId = 0;
+        refuse.toNetworkId = 0;
+        refuse.eventCode = 0x1f;
+        refuse.messageLength = 0;
+        refuse.messageLength = 0x20;
+        refuse.toNetworkId = packet->fromNetworkId;
+        refuse.statusTag18 = 0x666f6666; // 'foff'
+        refuse.value1C = 0x29;
+        g_pNetMgr006a6014->Send(&refuse, 0);
+      }
+      return 1;
+    }
+    case 0x73617665: // 'save' - latch the save flag and save with the network label
+      fieldF4 = static_cast<unsigned char>(gameState->value1C);
+      SaveGameWithModeAndOptionalLabel(queueSyncDword, (char*)g_pszClientSavePrefix_0065BF5C);
+      return 1;
+    case 0x74726164: { // 'trad' - reset diplomacy level: packed (nationSlot << 16 | level)
+      int tradeCode = gameState->value1C;
+      g_apNationStates[g_pSimMgr->GetActiveNationId()]->ResetDiplomacyLevelForNationSlot12(
+          static_cast<short>(static_cast<unsigned int>(tradeCode) >> 0x10),
+          static_cast<short>(tradeCode));
+      return 1;
+    }
+    case 0x74726173: // 'tras' - rebuild + discard the transport-influence map
+      g_apNationStates[g_pSimMgr->GetActiveNationId()]->BuildTransportLinkedInfluenceMap(0);
+      return 1;
+    default:
+      return 1;
+    }
+  }
+  case 0x23: { // patch selected fields of one map tile's terrain-state record
+    TurnEvent23TileStatePacketM* tileState = static_cast<TurnEvent23TileStatePacketM*>(packet);
+    TTerrainStateRecordView* tile = &g_pGlobalMapState->terrainStateTable[tileState->tileIndex];
+    tile->ownerNationTag04 = tileState->record.ownerNationTag04;
+    tile->regionSubtypeTag05 = tileState->record.regionSubtypeTag05;
+    tile->adjacencyBits06 = tileState->record.adjacencyBits06;
+    tile->developmentClassNibbles0c = tileState->record.developmentClassNibbles0c;
+    tile->pendingDevelopmentFlag0d = (unsigned char)(tile->pendingDevelopmentFlag0d |
+                                                     tileState->record.pendingDevelopmentFlag0d);
+    tile->secondaryOwnerNationTag18 = tileState->record.secondaryOwnerNationTag18;
+    // Single word store covering +0x1c..+0x1d (activeFlags1c + the adjacent byte); the
+    // original copies both with one 16-bit move.
+    *reinterpret_cast<short*>(&tile->activeFlags1c) =
+        *reinterpret_cast<short*>(&tileState->record.activeFlags1c);
+    result = 1;
+    break;
+  }
+  case 0x24: { // patch selected fields of one city-score record
+    TurnEvent24CityRecordPacket* cityRecord = static_cast<TurnEvent24CityRecordPacket*>(packet);
+    TGlobalMapCityScoreRecord* city24 =
+        &g_pGlobalMapState->cityScoreTable[cityRecord->cityRecordIndex];
+    city24->ownerNationCode00 = cityRecord->record.field00;
+    city24->developmentStage = cityRecord->record.field02;
+    city24->fortLevel03 = cityRecord->record.field03;
+    city24->lastTurnTick = cityRecord->record.field06;
+    {
+      // 10-short copy 0x82..0x95 (explicit word loop in the original, not rep movs).
+      short* cityWordCursor = &city24->linkedRegionIds[0x20];
+      short* recordWordCursor = cityRecord->record.block82;
+      int wordCountdown = 10;
+      do {
+        *cityWordCursor = *recordWordCursor;
+        ++recordWordCursor;
+        ++cityWordCursor;
+        --wordCountdown;
+      } while (wordCountdown != 0);
+    }
+    city24->exploredByNationMaskA1 = cityRecord->record.fieldA1;
+    city24->padA2 = cityRecord->record.fieldA2;
+    result = 1;
+    break;
+  }
+  case 0x25: { // merge nation status tags; ding when exactly one nation stays busy
+    NationStatusEvent25Packet* statusBoard = static_cast<NationStatusEvent25Packet*>(packet);
+    int readyCount = 0;
+    int busyCount = 0;
+    {
+      int* incomingTagCursor = statusBoard->statusTags;
+      int* ownTagCursor = nationStatusTags;
+      int tagCountdown = 7;
+      do {
+        if (*incomingTagCursor != 0x756e6b6e /* 'unkn' */) {
+          *ownTagCursor = *incomingTagCursor;
+        }
+        if (*ownTagCursor == 0x72656479 /* 'redy' */) {
+          ++readyCount;
+        } else if (*ownTagCursor == 0x62757379 /* 'busy' */) {
+          ++busyCount;
+        }
+        ++incomingTagCursor;
+        ++ownTagCursor;
+        --tagCountdown;
+      } while (tagCountdown != 0);
+    }
+    if (0 < readyCount && busyCount == 1) {
+      int busySlot = g_pSimMgr->GetActiveNationId();
+      if (busySlot == -1) {
+        int sessionId25 = GetSessionActiveNationId();
+        int* sessionCursor25 = g_pGameFlowState->nationSessionIds;
+        busySlot = 0;
+        do {
+          if (*sessionCursor25 == sessionId25) {
+            break;
+          }
+          ++busySlot;
+          ++sessionCursor25;
+        } while (busySlot < 7);
+        if (busySlot == 7) {
+          busySlot = -1; // a -1 here indexes nationStatusTags[-1] below - original
+                         // out-of-bounds behavior, kept as-is
+        }
+      }
+      if (nationStatusTags[busySlot] == 0x62757379 /* 'busy' */ && fieldF4 != 0) {
+        g_pSfxPlaybackSystem->PlaySoundEffect(0x13f2, 0, 1);
+      }
+    }
+    result = 1;
+    break;
+  }
+  case 0x26: { // bulk-load the diplomacy matrices into g_pDiplomacyTurnStateManager
+    TurnEvent26DiplomacyMatrixPacket* matrix =
+        static_cast<TurnEvent26DiplomacyMatrixPacket*>(packet);
+    memcpy(g_pDiplomacyTurnStateManager->relationCodeMatrix04, matrix->relationCodeMatrix,
+           sizeof(g_pDiplomacyTurnStateManager->relationCodeMatrix04));
+    memcpy(g_pDiplomacyTurnStateManager->pendingPolicyCodeMatrix304,
+           matrix->pendingPolicyCodeMatrix,
+           sizeof(g_pDiplomacyTurnStateManager->pendingPolicyCodeMatrix304));
+    memcpy(g_pDiplomacyTurnStateManager->pendingPolicyTierMatrix484,
+           matrix->pendingPolicyTierMatrix,
+           sizeof(g_pDiplomacyTurnStateManager->pendingPolicyTierMatrix484));
+    // The original copies each pair with a single 32-bit register move.
+    *reinterpret_cast<int*>(&g_pDiplomacyTurnStateManager->selectedSourceNationSlot784) =
+        *reinterpret_cast<int*>(&matrix->selectedSourceNationSlot);
+    *reinterpret_cast<int*>(&g_pDiplomacyTurnStateManager->selectionFlagsA788) =
+        *reinterpret_cast<int*>(&matrix->selectionFlagsA);
+    g_pDiplomacyTurnStateManager->selectionFlagsC78c = matrix->selectionFlagsC;
+    memcpy(g_pDiplomacyTurnStateManager->pad1824, matrix->relationTailBlock,
+           sizeof(matrix->relationTailBlock));
+    result = 1;
+    break;
+  }
+  case 0x27: { // dispatch join-empire mode on one terrain-slot nation
+    TurnEvent27JoinEmpirePacket* joinEmpire = static_cast<TurnEvent27JoinEmpirePacket*>(packet);
+    g_apTerrainTypeDescriptorTable[joinEmpire->terrainSlot18]->ApplyJoinEmpireModeForTargetNation(
+        joinEmpire->targetNationSlot1C, joinEmpire->mode20);
+    result = 1;
+    break;
+  }
+  case 0x29: { // route a tagged tactical command to the live battle
+    TacticalCommandPacket* tactical = static_cast<TacticalCommandPacket*>(packet);
+    TTacticalBattle* battle = g_pActiveTacticalBattle;
+    battle->AssertValid();
+    void* unit = battle->SeekLinkedListCursorByNestedId(tactical->unitId1C);
+    switch (tactical->commandTag18) {
+    case 0x6465706c: // 'depl'
+      battle->HandleTacticalCommandTag_depl(unit, tactical->arg20, 1);
+      return 1;
+    case 0x64696767: // 'digg'
+      battle->HandleTacticalCommandTag_digg(unit, tactical->arg20, 1);
+      return 1;
+    case 0x6d696e65: // 'mine' - the resolved unit cursor is NOT passed here
+      battle->HandleTacticalCommandTag_mine(tactical->arg20, tactical->arg24, 1);
+      return 1;
+    case 0x6d6f7665: // 'move'
+      battle->MoveTacticalUnitBetweenTiles(unit, tactical->arg20, tactical->arg24, 1);
+      return 1;
+    case 0x72616c79: // 'raly'
+      battle->HandleTacticalCommandTag_raly(unit, tactical->arg20, tactical->arg24, 1);
+      return 1;
+    case 0x73656c65: // 'sele'
+      battle->SetCurrentTacticalUnitSelection(unit, 1);
+      return 1;
+    default:
+      return 1;
+    }
+  }
+  case 0x2a: { // resolve a 'fire' action between two units of the live battle
+    TacticalCommandPacket* fireCommand = static_cast<TacticalCommandPacket*>(packet);
+    TTacticalBattle* fireBattle = g_pActiveTacticalBattle;
+    fireBattle->AssertValid();
+    void* attacker = fireBattle->SeekLinkedListCursorByNestedId(fireCommand->unitId1C);
+    void* target = fireBattle->SeekLinkedListCursorByNestedId(fireCommand->arg20);
+    if (fireCommand->commandTag18 != 0x66697265 /* 'fire' */) {
+      return 1;
+    }
+    fireBattle->ApplyTacticalActionEffectsAndMaybeRemoveUnit(
+        attacker, target, *(reinterpret_cast<int*>(target) + 2), fireCommand->arg24,
+        fireCommand->arg28, static_cast<char>(fireCommand->arg2C), 1);
+    result = 1;
+    break;
+  }
+  case 0x2b: { // accumulate the presence mask; optionally echo a 0x2b ack
+    TurnEvent2BPresenceMaskPacket* presence = static_cast<TurnEvent2BPresenceMaskPacket*>(packet);
+    g_nTurnEvent2BNationMaskAccumulator =
+        g_nTurnEvent2BNationMaskAccumulator | presence->nationMask19;
+    if (presence->replyRequestFlag18 != 0) {
+      TurnEvent2BPresenceMaskPacket reply;
+      // Inline header stamp (tag + nation), NOT the 0x5438e0 helper - keep the exact
+      // interleaved store order, including both double-writes below.
+      reply.messageTag = 0x74696d65; // 'time'
+      reply.activeNationId = (unsigned char)g_pSimMgr->GetActiveNationId();
+      reply.eventCode = 0;
+      reply.eventCode = 0x2b;
+      reply.fromNetworkId = 0;
+      reply.toNetworkId = 0;
+      reply.messageLength = 0;
+      reply.replyRequestFlag18 = 0;
+      reply.messageLength = 0x1c;
+      reply.nationMask19 = (signed char)g_pSimMgr->GetActiveNationId();
+      reply.toNetworkId = presence->fromNetworkId;
+      g_pNetMgr006a6014->Send(&reply, 0);
+    }
+    result = 1;
+    break;
+  }
+  default:
+    result = 0;
+    break;
+  }
+  return result;
 }
 
 // FUNCTION: IMPERIALISM 0x005494b0
@@ -2926,6 +2654,13 @@ void TMultiplayerMgr::DispatchJoinEmpireModeEventPacket24_27(int sourceNation, i
 // FUNCTION: IMPERIALISM 0x0054c660
 void TMultiplayerMgr::NoOpCallbackRet4(void* param) {
   (void)param;
+}
+
+// FUNCTION: IMPERIALISM 0x0054c8e0
+void TMultiplayerMgr::EmitTurnEventEAnd9SessionContextPackets(NetMessage* packet) {
+  // TODO: port body @ 0x54c8e0 (525 bytes; not yet ported). Declared for real so the
+  // turn-event-0xD receive path gets a correctly-typed call site.
+  (void)packet;
 }
 
 // FUNCTION: IMPERIALISM 0x0054cc00

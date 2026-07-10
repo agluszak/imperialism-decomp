@@ -17,6 +17,11 @@ public:
                                              char isReplayBypass);
   void QueueInterNationEventType0FWithBitmaskMerge(int eventCode, int nationA, int nationB,
                                                    char isReplayBypass);
+  // 0x55cd00 — type-0x11 event: with the bypass flag clear in a live multiplayer
+  // session it re-emits over the network as turn-event 0x22 instead of queueing
+  // locally. Was misattributed to TSimMgr (the receiver at every callsite is the
+  // 0x6a43e8 queue-manager global, e.g. the machine's case 0x22 receive path).
+  void QueueInterNationEventType11(int eventParam, int value, char isReplayBypass);
   void AddOrUpdateBilateralActionRelationEntry(int eventCode, int nationA, int nationB);
   void InitializeInterNationEventQueueManager();
 

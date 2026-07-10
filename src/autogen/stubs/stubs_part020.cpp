@@ -155,14 +155,6 @@ undefined4 DispatchToSelectableTextOptionEntries(void)
   return 0;
 }
 
-// ghidra_name ApplyUiTextStyleAndThemeFlags
-// ghidra_proto undefined ApplyUiTextStyleAndThemeFlags()
-// FUNCTION: IMPERIALISM 0x005c4590
-undefined4 ApplyUiTextStyleAndThemeFlags(void)
-{
-  return 0;
-}
-
 // ghidra_name ApplyControlTextStyleDescriptorFromThemeCode
 // ghidra_proto undefined ApplyControlTextStyleDescriptorFromThemeCode()
 // FUNCTION: IMPERIALISM 0x005c4620

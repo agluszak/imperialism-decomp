@@ -819,14 +819,6 @@ undefined4 HandleActiveNationAwolTransitionOrRecovery(void)
   return 0;
 }
 
-// ghidra_name TSimMgr::EmitTurnEventEAnd9SessionContextPackets
-// ghidra_proto undefined EmitTurnEventEAnd9SessionContextPackets()
-// FUNCTION: IMPERIALISM 0x0054c8e0
-undefined4 EmitTurnEventEAnd9SessionContextPackets(void)
-{
-  return 0;
-}
-
 // ghidra_name CreateAndQueueTurnEventPacketTagPOGC
 // ghidra_proto undefined CreateAndQueueTurnEventPacketTagPOGC()
 // FUNCTION: IMPERIALISM 0x0054cde0
@@ -855,14 +847,6 @@ undefined4 WrapperFor_ftol_At0054d620(void)
 // ghidra_proto undefined TryInvokeNationStateReplacementForSlot()
 // FUNCTION: IMPERIALISM 0x0054dfc0
 undefined4 TryInvokeNationStateReplacementForSlot(void)
-{
-  return 0;
-}
-
-// ghidra_name RefreshMapAndMessageControlsForCurrentContext
-// ghidra_proto undefined RefreshMapAndMessageControlsForCurrentContext()
-// FUNCTION: IMPERIALISM 0x0054e4c0
-undefined4 RefreshMapAndMessageControlsForCurrentContext(void)
 {
   return 0;
 }

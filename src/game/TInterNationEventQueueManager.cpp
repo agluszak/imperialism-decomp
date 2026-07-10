@@ -184,6 +184,28 @@ struct TBilateralActionRelationEntry {
   int nationMask8;
 };
 
+// FUNCTION: IMPERIALISM 0x0055cd00
+void TInterNationEventQueueManager::QueueInterNationEventType11(int eventParam, int value,
+                                                                char isReplayBypass) {
+  if (g_pSimMgr->gateFlag7a == 0) {
+    if (isReplayBypass == 0) {
+      unsigned char multiplayerActive = g_pSimMgr->field44 != 0;
+      if (multiplayerActive != 0) {
+        g_pGameFlowState->CreateAndSendTurnEvent22_ByteAndShort((unsigned char)eventParam,
+                                                                (short)value);
+        return;
+      }
+    }
+    // Frame evidence (sub esp,0x10): the stack record reserves four dwords even though
+    // only the first three are written -- same shape as the other queue records.
+    int record[4];
+    record[2] = value;
+    record[1] = eventParam;
+    record[0] = 0x11;
+    sharedEventRecordQueue->AddTailSlot38(record);
+  }
+}
+
 // FUNCTION: IMPERIALISM 0x0055cda0
 void TInterNationEventQueueManager::AddOrUpdateBilateralActionRelationEntry(int eventCode,
                                                                             int nationA,

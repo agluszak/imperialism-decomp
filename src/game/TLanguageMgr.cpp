@@ -242,3 +242,11 @@ void TLanguageMgr::BuildNewsTableDimensions(char firstColumnArg, char lastColumn
 
 // SYNTHETIC: IMPERIALISM 0x00507d80
 // TLanguageMgr::`scalar deleting destructor'
+
+// FUNCTION: IMPERIALISM 0x00508c50
+void TLanguageMgr::NormalizeRuntimeCredentialNameToken(CString* out, CString* name) {
+  // TODO: port body @ 0x508c50 (not yet ported). Declared for real so the turn-event-9
+  // lounge name-label path gets a correctly-typed call site.
+  (void)out;
+  (void)name;
+}

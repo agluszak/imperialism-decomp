@@ -1,11 +1,18 @@
 #pragma once
 
 class CString;
+class TSimMgr;
 
 // Template expander: writes `input` into `out`, substituting each `[N]` bracket with the
 // N-th variadic string argument (or, for `[Nx]` with a trailing letter, the news-table
 // mapped form of that argument). `ctx` is unused. 0x0057fef0.
 void scanBracketExpressions(void* ctx, void* out, const char* input, ...);
+
+// 0x580060: load string (groupB, indexB), expand it through the (groupA, indexA)
+// bracket template, and store the result into `out` (turn-event 0xA/0xC receive
+// paths). Genuine __cdecl free function; body TODO.
+void __cdecl BuildUiMessageTextFromBracketTemplate(TSimMgr* sim, CString* out, int groupA,
+                                                   int indexA, int groupB, int indexB);
 void GenerateMappedFlavorTextByCurrentContextNation(CString* dest);
 void GenerateMappedFlavorTextVariantC_005cf1b0(CString* out);
 void GenerateMappedFlavorTextVariantE_005ccce0(CString* out);

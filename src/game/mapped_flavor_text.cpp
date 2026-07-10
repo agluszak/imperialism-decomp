@@ -63,6 +63,19 @@ void scanBracketExpressions(void* ctx, void* out, const char* input, ...) {
   }
 }
 
+// FUNCTION: IMPERIALISM 0x00580060
+void __cdecl BuildUiMessageTextFromBracketTemplate(TSimMgr* sim, CString* out, int groupA,
+                                                   int indexA, int groupB, int indexB) {
+  // TODO: port body @ 0x580060 (424 bytes; not yet ported). Declared for real so the
+  // turn-event receive paths get correctly-typed call sites.
+  (void)sim;
+  (void)out;
+  (void)groupA;
+  (void)indexA;
+  (void)groupB;
+  (void)indexB;
+}
+
 // The generated flavor text is rejected (regenerate) if it contains any character from
 // this banned set list; each entry is a FindOneOf char-set probe against the result.
 // FUNCTION: IMPERIALISM 0x005d4240
