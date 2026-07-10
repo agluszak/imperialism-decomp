@@ -50,6 +50,10 @@ public:
   // marker so later saves re-prompt. `this` is unused; callers still dispatch it
   // through g_pUiViewManager. 0x005e0030.
   unsigned char SaveMainDocumentToPathAndMarkSaved(const CString& savePath);
+  // Open the MFC document from `loadPath` (CWinApp::OpenDocumentFile) and restamp its
+  // path with the "__loaded" marker; returns whether a document was opened. `this` is
+  // unused; callers dispatch through g_pUiViewManager. 0x005e0150.
+  unsigned char OpenMainDocumentFromPathAndMarkLoaded(const CString& loadPath);
 };
 
 void __stdcall EnsurePictWvDataGobLoadedBySlot(int languageTag);

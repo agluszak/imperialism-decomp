@@ -467,22 +467,6 @@ undefined4 DispatchUiRuntimeMessage101AAndRefreshActiveView(void)
   return 0;
 }
 
-// ghidra_name ShowLocalizedUiPromptByGroupAndIndex
-// ghidra_proto char __stdcall ShowLocalizedUiPromptByGroupAndIndex(int uiStringIndex, int uiStringGroup, int promptFlagA, int promptFlagB)
-// FUNCTION: IMPERIALISM 0x005de990
-undefined4 ShowLocalizedUiPromptByGroupAndIndex(void)
-{
-  return 0;
-}
-
-// ghidra_name DispatchGameStateEventIfLocalizedPromptAccepted
-// ghidra_proto undefined DispatchGameStateEventIfLocalizedPromptAccepted()
-// FUNCTION: IMPERIALISM 0x005deb40
-undefined4 DispatchGameStateEventIfLocalizedPromptAccepted(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_ftol_At005dee20
 // ghidra_proto undefined WrapperFor_ftol_At005dee20()
 // FUNCTION: IMPERIALISM 0x005dee20
@@ -631,14 +615,6 @@ undefined4 GetResourceStreamSize(void)
 // ghidra_proto undefined BuildScenarioPathForModeAndIndex()
 // FUNCTION: IMPERIALISM 0x005dfd70
 undefined4 BuildScenarioPathForModeAndIndex(void)
-{
-  return 0;
-}
-
-// ghidra_name SetLoadedTagOnLocalizationEntryIfPresent
-// ghidra_proto undefined SetLoadedTagOnLocalizationEntryIfPresent()
-// FUNCTION: IMPERIALISM 0x005e0150
-undefined4 SetLoadedTagOnLocalizationEntryIfPresent(void)
 {
   return 0;
 }

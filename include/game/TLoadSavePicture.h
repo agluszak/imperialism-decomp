@@ -127,10 +127,19 @@ public:
   virtual undefined HandleSaveGameSlotSelectionAndPromptFlow();  // slot 0x73 0x56d2a0
   virtual undefined HandleTurnFlowStateTickOrPostTurnEvent5DC(); // slot 0x74 0x56d190
   // === END GENERATED DECLS (TLoadSavePicture) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TLoadSavePicture 0xCTOR`).
+
+  // 0 = save picture, nonzero = load picture (the builder writes it, the prompt flow
+  // 0x56d2a0 branches on it).
+  unsigned char loadModeFlag90; // +0x90
+  unsigned char pad91;
+  short selectedSlot92; // +0x92 — currently selected save slot (-1 = none)
+  // +0x94..0xa8 — unrecovered tail (RTTI m_nObjectSize 0xa8).
+  unsigned char pad94[0xa8 - 0x94];
 
   TLoadSavePicture();
 };
+
+ASSERT_SIZE(TLoadSavePicture, 0xa8);
 
 // Save-game free functions (TLoadSavePicture TU).
 int __cdecl ReadScenarioIndexFromSaveHeader(const char* path);

@@ -4561,7 +4561,9 @@ address|target_cpp|ownership|note
 5dd900|src/game/TViewMgr.cpp|manual|marker_sync
 5ddd20|src/game/TViewMgr.cpp|manual|marker_sync
 5de4f0|src/game/TViewMgr.cpp|manual|marker_sync
+5de990|src/game/TViewMgr.cpp|manual|marker_sync
 5dea60|src/game/TViewMgr.cpp|manual|marker_sync
+5deb40|src/game/TViewMgr.cpp|manual|marker_sync
 5df260|src/game/TAssetMgr.cpp|manual|mfc_runtime_macro
 5df280|src/game/TAssetMgr.cpp|manual|marker_sync
 5df300|src/game/TAssetMgr.cpp|manual|marker_sync
@@ -4577,6 +4579,7 @@ address|target_cpp|ownership|note
 5dfea0|src/game/TAssetMgr.cpp|manual|marker_sync
 5dff20|src/game/TAssetMgr.cpp|manual|marker_sync
 5e0030|src/game/TAssetMgr.cpp|manual|marker_sync
+5e0150|src/game/TAssetMgr.cpp|manual|marker_sync
 5e0460|src/game/timer_slots.cpp|manual|marker_sync
 5e0520|src/game/timer_slots.cpp|manual|marker_sync
 5e0780|src/game/wave_helpers.cpp|manual|marker_sync

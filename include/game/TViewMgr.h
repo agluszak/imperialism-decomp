@@ -162,6 +162,14 @@ public:
   // messageStoreRef is a per-subsystem CString global (may be null: TNetMgr).
   undefined1 DispatchLocalizedUiMessageWithTemplateA13A0(CString message, CString* messageStoreRef,
                                                          int overlayMode, int arg4);
+  // 0x5de990 — load string (group, index) and pose it through the localized-message
+  // dispatch; returns the prompt result byte.
+  char ShowLocalizedUiPromptByGroupAndIndex(int uiStringGroup, int uiStringIndex, int overlayMode,
+                                            int arg4);
+  // 0x5deb40 — pose the confirm prompt matching `actionTag` ('magc'/'gwen'/'quit'/
+  // 'load'; group 0x2737 index by game-flow mode) and, when accepted during session
+  // teardown, dispatch the 'abdi' game-state event. Returns the accepted byte.
+  char DispatchGameStateEventIfLocalizedPromptAccepted(int actionTag);
   // 0x005d5c40 (ret 0x18) — the real message-window dispatch; body still TODO.
   undefined1 DispatchLocalizedUiMessageWithTemplate(int templateKind, CString formatText,
                                                     CString message, CString* messageStoreRef,

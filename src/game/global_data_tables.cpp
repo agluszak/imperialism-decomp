@@ -1060,6 +1060,10 @@ CString g_cstrArmyOrderMessageStore;
 CString g_cstrNationComparisonMessageStore;
 // GLOBAL: IMPERIALISM 0x006a3d08
 CString g_cstrNationAwolMessageStore;
+// Message-store slot the TViewMgr prompt helpers (0x5de990/0x5deb40) pass to the
+// localized-message dispatch.
+// GLOBAL: IMPERIALISM 0x006a5be0
+CString g_cstrUiPromptMessageStore;
 // Save-game path construction strings.
 // GLOBAL: IMPERIALISM 0x00698708
 char g_szImpSaveExtension_00698708[] = ".imp";
@@ -1075,6 +1079,8 @@ char g_szSaveDirectoryPrefix_00698724[] = "Save/";
 char g_szAutosaveSlotLabel_0069872C[] = "A";
 // GLOBAL: IMPERIALISM 0x0069b848
 char g_szSavedDocumentMarker_0069B848[] = "__saved";
+// GLOBAL: IMPERIALISM 0x0069b854
+char g_szLoadedDocumentMarker_0069B854[] = "__loaded";
 // Save-path fragment pointers (.rdata): the TLoadSavePicture save flow reads these
 // through pointer loads instead of referencing the literals directly.
 // GLOBAL: IMPERIALISM 0x0065ddd0

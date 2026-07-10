@@ -6106,9 +6106,9 @@ address|name|symbol|size|type|prototype|provenance
 5de4f0|ShowCivilianReportDialogAndReturnConfirm||176|function|bool __fastcall ShowCivilianReportDialogAndReturnConfirm(int * pCivilianOrderEntry)|
 5de5d0|RefreshCurrentUiViewAndActivePanelState||181|function|undefined RefreshCurrentUiViewAndActivePanelState()|
 5de8f0|DispatchUiRuntimeMessage101AAndRefreshActiveView||123|function|undefined DispatchUiRuntimeMessage101AAndRefreshActiveView()|
-5de990|ShowLocalizedUiPromptByGroupAndIndex||148|function|char __stdcall ShowLocalizedUiPromptByGroupAndIndex(int uiStringIndex, int uiStringGroup, int promptFlagA, int promptFlagB)|
+5de990|TViewMgr::ShowLocalizedUiPromptByGroupAndIndex||148|function|char __thiscall ShowLocalizedUiPromptByGroupAndIndex(int, int, int, int)|
 5dea60|TViewMgr::CreateModalMessageCommandAndQueue||164|function|void __thiscall CreateModalMessageCommandAndQueue(class CString * message, int payload)|
-5deb40|DispatchGameStateEventIfLocalizedPromptAccepted||323|function|undefined DispatchGameStateEventIfLocalizedPromptAccepted()|
+5deb40|TViewMgr::DispatchGameStateEventIfLocalizedPromptAccepted||323|function|char __thiscall DispatchGameStateEventIfLocalizedPromptAccepted(int)|
 5dee20|WrapperFor_ftol_At005dee20||30|function|undefined WrapperFor_ftol_At005dee20()|
 5dee50|InitializeDialogTemplateE0||30|function|undefined InitializeDialogTemplateE0()|
 5dee80|NoOpRuntimeUiCallback_005dee80||3|function|undefined NoOpRuntimeUiCallback_005dee80()|
@@ -6143,7 +6143,7 @@ address|name|symbol|size|type|prototype|provenance
 5dfea0|AssignScoresDatPathToSharedString||92|function|undefined AssignScoresDatPathToSharedString()|
 5dff20|EnsurePictWvDataGobLoadedBySlot||206|function|void __stdcall EnsurePictWvDataGobLoadedBySlot(int languageTag)|
 5e0030|TAssetMgr::SaveMainDocumentToPathAndMarkSaved||210|function|unsigned char __thiscall SaveMainDocumentToPathAndMarkSaved(CString const &)|
-5e0150|SetLoadedTagOnLocalizationEntryIfPresent||49|function|undefined SetLoadedTagOnLocalizationEntryIfPresent()|
+5e0150|TAssetMgr::OpenMainDocumentFromPathAndMarkLoaded||49|function|unsigned char __thiscall OpenMainDocumentFromPathAndMarkLoaded(CString const &)|
 5e01a0|LoadProfileStringAndAssignSharedRef||132|function|undefined LoadProfileStringAndAssignSharedRef()|
 5e0260|SaveSettingValueFromPointerByKey||26|function|undefined SaveSettingValueFromPointerByKey()|
 5e0290|LoadSettingValueByKeyIntoOut||30|function|undefined LoadSettingValueByKeyIntoOut()|

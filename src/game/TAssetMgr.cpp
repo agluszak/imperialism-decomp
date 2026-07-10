@@ -125,3 +125,13 @@ unsigned char TAssetMgr::SaveMainDocumentToPathAndMarkSaved(const CString& saveP
   document->SetPathName(g_szSavedDocumentMarker_0069B848, FALSE);
   return saved;
 }
+
+// FUNCTION: IMPERIALISM 0x005e0150
+unsigned char TAssetMgr::OpenMainDocumentFromPathAndMarkLoaded(const CString& loadPath) {
+  CDocument* document = g_pImperialismApp->OpenDocumentFile(loadPath);
+  if (document == 0) {
+    return 0;
+  }
+  document->SetPathName(g_szLoadedDocumentMarker_0069B854, FALSE);
+  return 1;
+}

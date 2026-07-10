@@ -1,5 +1,7 @@
 #include "game/TViewMgr.h"
 
+#include "game/TModuleLibraryCacheTableStateB.h"
+
 #include "game/turn_event_dialog_provisional.h"
 
 #include "game/ImperialismApp.h"
@@ -1729,6 +1731,16 @@ bool TViewMgr::ShowCivilianReportDialogAndReturnConfirm(TCivUnit* pCivilianOrder
   return true;
 }
 
+// FUNCTION: IMPERIALISM 0x005de990
+char TViewMgr::ShowLocalizedUiPromptByGroupAndIndex(int uiStringGroup, int uiStringIndex,
+                                                    int overlayMode, int arg4) {
+  CString message;
+  g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&message, uiStringGroup,
+                                                                  uiStringIndex);
+  return DispatchLocalizedUiMessageWithTemplateA13A0(message, &g_cstrUiPromptMessageStore,
+                                                     overlayMode, arg4);
+}
+
 // FUNCTION: IMPERIALISM 0x005dea60
 void TViewMgr::CreateModalMessageCommandAndQueue(CString* message, int payload) {
   TModalMessageCommand* command = new TModalMessageCommand();
@@ -1736,4 +1748,41 @@ void TViewMgr::CreateModalMessageCommandAndQueue(CString* message, int payload) 
   command->payload = payload;
   command->InitializeRangePair(0x48657921 /* 'Hey!' */, g_pGlobalUiRootController, 0, 0, 0);
   g_pGlobalUiRootController->DispatchUiSelectionToHandler(command);
+}
+
+// FUNCTION: IMPERIALISM 0x005deb40
+char TViewMgr::DispatchGameStateEventIfLocalizedPromptAccepted(int actionTag) {
+  CString message;
+  int gameFlowMode = g_pSimMgr->field44;
+  unsigned char sessionTornDown = gameFlowMode == 2;
+  if (sessionTornDown != 0) {
+    g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&message, 0x2737, 0x31);
+  } else {
+    unsigned char hosting = gameFlowMode == 1;
+    if (hosting != 0) {
+      if (actionTag == 0x6367616d) { // 'magc'
+        g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&message, 0x2737, 0x37);
+      } else {
+        g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&message, 0x2737, 0x2f);
+      }
+    } else if (actionTag == 0x6e657767) { // 'gwen'
+      g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&message, 0x2737, 0x2b);
+    } else if (actionTag == 0x71756974) { // 'quit'
+      g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&message, 0x2737, 0x2a);
+    } else if (actionTag == 0x6c6f6164) { // 'load'
+      g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&message, 0x2737, 0x33);
+    } else {
+      g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&message, 0x2737, 0x2b);
+    }
+  }
+  char accepted = g_pUiRuntimeContext->DispatchLocalizedUiMessageWithTemplateA13A0(
+      message, &g_cstrUiPromptMessageStore, 0, 1);
+  if (accepted != 0) {
+    unsigned char tearingDown = g_pSimMgr->field44 == 2;
+    if (tearingDown != 0) {
+      g_pGameFlowState->DispatchTaggedGameStateEvent1F20(0x61626469, // 'abdi'
+                                                         g_pSimMgr->GetActiveNationId(), -2);
+    }
+  }
+  return accepted;
 }

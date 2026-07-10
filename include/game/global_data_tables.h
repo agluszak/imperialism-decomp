@@ -538,6 +538,7 @@ extern CString g_cstrGreatPowerPressureMessage; // @ 0x6a2df0
 extern CString g_cstrArmyOrderMessageStore;        // @ 0x6a2318
 extern CString g_cstrNationComparisonMessageStore; // @ 0x6a3180
 extern CString g_cstrNationAwolMessageStore;       // @ 0x6a3d08
+extern CString g_cstrUiPromptMessageStore;         // @ 0x6a5be0
 extern char g_szImpSaveExtension_00698708[];
 extern char g_szMultiplayerSavePrefix_00698710[];
 extern char g_szSingleSlotSavePrefix_00698718[];
@@ -545,6 +546,7 @@ extern char g_szSaveFileReadBinaryMode_00698720[];
 extern char g_szSaveDirectoryPrefix_00698724[];
 extern char g_szAutosaveSlotLabel_0069872C[];
 extern char g_szSavedDocumentMarker_0069B848[];
+extern char g_szLoadedDocumentMarker_0069B854[];
 extern const char* const g_pszSingleSlotSavePrefix_0065DDD0;  // "slot" @ 0x65ddd0
 extern const char* const g_pszMultiplayerSavePrefix_0065DDD4; // "mult" @ 0x65ddd4
 extern const char* const g_pszImpSaveExtension_0065DDD8;      // ".imp" @ 0x65ddd8

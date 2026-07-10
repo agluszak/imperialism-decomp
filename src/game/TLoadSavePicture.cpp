@@ -7,6 +7,10 @@
 #include <string.h>
 
 #include "game/TAssetMgr.h"
+#include "game/TEditText.h"
+#include "game/TSoundPlayer.h"
+#include "game/TViewMgr.h"
+#include "game/mapped_flavor_text.h"
 #include "game/TMultiplayerMgr.h"
 
 // SYNTHETIC: IMPERIALISM 0x0043da40
@@ -36,11 +40,6 @@ undefined TLoadSavePicture::HandleTurnFlowStateTickOrPostTurnEvent5DC() {
 // FUNCTION: IMPERIALISM 0x0056d1e0
 void TLoadSavePicture::ForwardParam(int param) {}
 
-// FUNCTION: IMPERIALISM 0x0056d2a0
-undefined TLoadSavePicture::HandleSaveGameSlotSelectionAndPromptFlow() {
-  return 0;
-}
-
 namespace {
 
 // The whole save flow tests g_pSimMgr->field44 through Boolean-returning inline
@@ -56,6 +55,63 @@ static __inline unsigned char IsMultiplayerFlowActive() {
 }
 
 } // namespace
+
+// Save/load-slot confirm flow. No slot selected: pose the "pick a slot" prompt when
+// saving, else do nothing. Load picture: after the confirm prompt (skipped when the
+// setup mode is already 1), refresh the owner panel, rebuild the slot's save path with
+// the mult/slot prefix, and open the document when the file exists. Save picture:
+// fetch the name typed into the 'slot' edit control (defaulting empty text to the
+// mapped flavor string 0xd), publish it to the scenario-name buffer, then run the
+// multiplayer-aware or plain save driver and re-post turn-flow command 100. Both
+// completed paths reset the audio cue pools and schedule a random cue.
+// FUNCTION: IMPERIALISM 0x0056d2a0
+undefined TLoadSavePicture::HandleSaveGameSlotSelectionAndPromptFlow() {
+  if (selectedSlot92 == -1) {
+    if (loadModeFlag90 == 0) {
+      return g_pUiRuntimeContext->ShowLocalizedUiPromptByGroupAndIndex(0x2758, 0x17, 1, 0);
+    }
+    return 0;
+  }
+  if (loadModeFlag90 != 0) {
+    if (g_pSimMgr->mode == 1 ||
+        g_pUiRuntimeContext->DispatchGameStateEventIfLocalizedPromptAccepted(0x6c6f6164) != 0) {
+      OwnerPanel()->InvokeSlot13C();
+      char* prefix = (char*)g_pszMultiplayerSavePrefix_0065DDD4;
+      if (!IsMultiplayerFlowActive()) {
+        prefix = (char*)g_pszSingleSlotSavePrefix_0065DDD0;
+      }
+      short slot = selectedSlot92;
+      CString path;
+      BuildSavePathStringForMode(&path, slot, prefix);
+      if (TryGetFileMetadataForPath(&path) != 0) {
+        g_pUiViewManager->OpenMainDocumentFromPathAndMarkLoaded(path);
+      }
+    }
+  } else {
+    CString enteredName;
+    TEditText* slotNameControl = static_cast<TEditText*>(ResolveControlByTag(0x736c6f74));
+    slotNameControl->AssertValid();
+    slotNameControl->GetCurrentText(&enteredName);
+    if (strcmp(enteredName, g_szEmptyString) == 0) {
+      enteredName = BuildSharedStringFromMappedFlavorTextIndex(0xd);
+      slotNameControl->InitDialogWindowAndSyncTitleIfChanged(&enteredName, 1);
+      slotNameControl->InvokeSlot13C();
+    }
+    strcpy(g_ScenarioSaveNameBuffer_006A2178, enteredName);
+    if (IsMultiplayerFlowActive()) {
+      g_pGameFlowState->TrySaveGameAndMaybeShowFailureDialog(
+          selectedSlot92, (char*)g_pszMultiplayerSavePrefix_0065DDD4, 1);
+    } else {
+      SaveGameWithModeAndOptionalLabel(selectedSlot92, (char*)g_pszSingleSlotSavePrefix_0065DDD0);
+    }
+    g_pSimMgr->PostMainWindowCommand100ForTurnFlow();
+  }
+  g_pSfxPlaybackSystem->ResetDualAudioCuePools();
+  g_pSfxPlaybackSystem->PushCueToDualAudioCuePools(2);
+  g_pSfxPlaybackSystem->PushCueToDualAudioCuePools(3);
+  g_pSfxPlaybackSystem->SelectAndScheduleRandomAudioCue();
+  return 0;
+}
 
 // FUNCTION: IMPERIALISM 0x0056d660
 void __cdecl BuildSavePathStringForMode(CString* out, int saveMode, char* label) {
