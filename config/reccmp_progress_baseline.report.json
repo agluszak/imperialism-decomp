@@ -5898,7 +5898,7 @@
     },
     {
       "address": "0x494950",
-      "matching": 0.024096385542168676,
+      "matching": 0.5394736842105263,
       "name": "RenderTacticalBattleSelectionAndUnitOverlayPass_Impl",
       "type": 1
     },
@@ -5952,7 +5952,7 @@
     },
     {
       "address": "0x4950f0",
-      "matching": 0.03333333333333333,
+      "matching": 0.275,
       "name": "SetQuickDrawFillColorFromPaletteIndex",
       "type": 1
     },
@@ -7549,7 +7549,7 @@
     },
     {
       "address": "0x4a2900",
-      "matching": 0.13063763608087092,
+      "matching": 0.13374805598755832,
       "name": "BuildArmyContextActionRecordsAndDispatchLabel",
       "type": 1
     },
@@ -12794,13 +12794,15 @@
     },
     {
       "address": "0x4e0590",
-      "matching": 1.0,
+      "effective": true,
+      "matching": 0.42857142857142855,
       "name": "TGreatPower::OrphanRetStub_004d7fa0_88",
       "type": 1
     },
     {
       "address": "0x4e05d0",
-      "matching": 1.0,
+      "effective": true,
+      "matching": 0.42857142857142855,
       "name": "TGreatPower::OrphanLeaf_NoCall_Ins02_004d7fc0_89",
       "type": 1
     },
@@ -12813,7 +12815,8 @@
     },
     {
       "address": "0x4e0650",
-      "matching": 1.0,
+      "effective": true,
+      "matching": 0.42857142857142855,
       "name": "TGreatPower::OrphanRetStub_004d7fe0_8b",
       "type": 1
     },
@@ -12825,7 +12828,7 @@
     },
     {
       "address": "0x4e06d0",
-      "matching": 0.8095238095238095,
+      "matching": 1.0,
       "name": "TGreatPower::SumNationRuntimeFiveBucketValue44",
       "type": 1
     },
@@ -12855,7 +12858,7 @@
     },
     {
       "address": "0x4e09a0",
-      "matching": 0.5180722891566265,
+      "matching": 0.5421686746987951,
       "name": "TGreatPower::ComputeCityOrderCapabilityAggregateScore",
       "type": 1
     },
@@ -15145,7 +15148,7 @@
     },
     {
       "address": "0x4fd000",
-      "matching": 0.816,
+      "matching": 0.832,
       "name": "TMapKey::RenderMapHintOverlayMode0",
       "type": 1
     },
@@ -16363,7 +16366,7 @@
     },
     {
       "address": "0x50bea0",
-      "matching": 0.20354384370740572,
+      "matching": 0.2044525215810995,
       "name": "TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets",
       "type": 1
     },
@@ -21273,7 +21276,7 @@
     },
     {
       "address": "0x545940",
-      "matching": 0.38170652876535227,
+      "matching": 0.3804137039431157,
       "name": "TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine",
       "type": 1
     },
@@ -29463,7 +29466,7 @@
     },
     {
       "address": "0x5a1520",
-      "matching": 0.48148148148148145,
+      "matching": 0.5259259259259259,
       "name": "TTacticalBattle::MoveTacticalUnitTowardTile",
       "type": 1
     },
@@ -29505,7 +29508,7 @@
     },
     {
       "address": "0x5a1ee0",
-      "matching": 0.6631299734748011,
+      "matching": 0.6604774535809018,
       "name": "TTacticalBattle::EvaluateAndResolveTacticalActionAgainstTileOccupant",
       "type": 1
     },
@@ -29583,7 +29586,7 @@
     },
     {
       "address": "0x5a3810",
-      "matching": 0.7107438016528925,
+      "matching": 0.8571428571428571,
       "name": "TTacticalBattle::ComputeRallyStrengthAndQueueTacticalRallyCommand",
       "type": 1
     },
@@ -29613,7 +29616,7 @@
     },
     {
       "address": "0x5a3d30",
-      "matching": 0.8104956268221575,
+      "matching": 0.8163265306122449,
       "name": "IsTacticalTargetTileReachableForAction",
       "type": 1
     },
@@ -29637,7 +29640,7 @@
     },
     {
       "address": "0x5a42e0",
-      "matching": 0.0,
+      "matching": 0.5,
       "name": "RenderTacticalBattleSelectionAndUnitOverlayPass_Impl_At005a42e0",
       "type": 1
     },
@@ -29991,7 +29994,7 @@
     },
     {
       "address": "0x5a6940",
-      "matching": 0.8360655737704918,
+      "matching": 0.819672131147541,
       "name": "ClipRect_AdjustOffset_Validate",
       "type": 1
     },
@@ -30099,7 +30102,7 @@
     },
     {
       "address": "0x5a8ac0",
-      "matching": 0.6867469879518072,
+      "matching": 0.6086956521739131,
       "name": "TTacticalBattleView::CenterViewportAroundGridIndexAndSnap",
       "type": 1
     },
@@ -30135,7 +30138,7 @@
     },
     {
       "address": "0x5a9240",
-      "matching": 0.5533980582524272,
+      "matching": 0.5397590361445783,
       "name": "TTacticalBattleView::AnimateTacticalUnitMoveBetweenTiles",
       "type": 1
     },
@@ -30147,7 +30150,7 @@
     },
     {
       "address": "0x5a99e0",
-      "matching": 0.0,
+      "matching": 0.9888888888888889,
       "name": "DrawHexSelectionOutlineSegments",
       "type": 1
     },
@@ -30195,13 +30198,13 @@
     },
     {
       "address": "0x5aa670",
-      "matching": 0.0,
+      "matching": 0.06741573033707865,
       "name": "TCivDescription::ComputeTacticalUnitSpriteOrientationIndexByAdjacentType1Occupancy",
       "type": 1
     },
     {
       "address": "0x5aa7d0",
-      "matching": 0.0,
+      "matching": 0.48366013071895425,
       "name": "TacticalBattleView::ComputeTacticalUnitSpriteDrawRectAndApplyFacingOffset",
       "type": 1
     },

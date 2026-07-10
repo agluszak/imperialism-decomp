@@ -16,8 +16,6 @@
 
 IMPLEMENT_DYNCREATE(TTransFocusAnimation, TFocusAnimation)
 
-undefined4 SetQuickDrawFillColorFromPaletteIndex(void);
-
 // Default constructor for MFC dynamic creation
 TTransFocusAnimation::TTransFocusAnimation() : TFocusAnimation() {
   ownerView04 = nullptr;
@@ -97,7 +95,7 @@ void TTransFocusAnimation::BlitTransientSurfaceToPrimaryRenderContextWithClip() 
   ClipRect(&destinationRect);
   ResetQuickDrawStrokeState();
   UpdatePaletteIndexWithFallback(0x13);
-  reinterpret_cast<void(__cdecl*)(int)>(SetQuickDrawFillColorFromPaletteIndex)(0);
+  SetQuickDrawFillColorFromPaletteIndex(0);
 
   CDib* primaryDib = g_pPrimaryRenderSurfaceContext->surfaceDib;
   if (primaryDib != 0) {

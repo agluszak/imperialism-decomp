@@ -115,14 +115,6 @@ undefined4 DestructTAnimatorAndMaybeFree_Impl(void)
   return 0;
 }
 
-// ghidra_name TCivAnimation2::FindLinkedListNodeByIdFieldAt18
-// ghidra_proto undefined FindLinkedListNodeByIdFieldAt18()
-// FUNCTION: IMPERIALISM 0x004a0d30
-undefined4 FindLinkedListNodeByIdFieldAt18(void)
-{
-  return 0;
-}
-
 // ghidra_name TranslateListRectsAndDropNonIntersectingEntries
 // ghidra_proto undefined TranslateListRectsAndDropNonIntersectingEntries()
 // FUNCTION: IMPERIALISM 0x004a0e90

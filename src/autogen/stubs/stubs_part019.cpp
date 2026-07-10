@@ -131,14 +131,6 @@ undefined4 HandleTacticalCommandTag_targ(void)
   return 0;
 }
 
-// ghidra_name RenderTacticalBattleSelectionAndUnitOverlayPass_Impl_At005a42e0
-// ghidra_proto undefined RenderTacticalBattleSelectionAndUnitOverlayPass_Impl_At005a42e0()
-// FUNCTION: IMPERIALISM 0x005a42e0
-undefined4 RenderTacticalBattleSelectionAndUnitOverlayPass_Impl_At005a42e0(void)
-{
-  return 0;
-}
-
 // ghidra_name TArmyBattle::ConstructTArmyBattleBaseState
 // ghidra_proto undefined ConstructTArmyBattleBaseState()
 // FUNCTION: IMPERIALISM 0x005a4770
@@ -255,30 +247,6 @@ undefined4 ConvertScreenPointToHexGridCoordClamped(void)
 // ghidra_proto undefined HandleTurnEventVtableSlotA0SyncStatusPanel_Impl()
 // FUNCTION: IMPERIALISM 0x005a8790
 undefined4 HandleTurnEventVtableSlotA0SyncStatusPanel_Impl(void)
-{
-  return 0;
-}
-
-// ghidra_name DrawHexSelectionOutlineSegments
-// ghidra_proto undefined DrawHexSelectionOutlineSegments()
-// FUNCTION: IMPERIALISM 0x005a99e0
-undefined4 DrawHexSelectionOutlineSegments(void)
-{
-  return 0;
-}
-
-// ghidra_name TCivDescription::ComputeTacticalUnitSpriteOrientationIndexByAdjacentType1Occupancy
-// ghidra_proto undefined ComputeTacticalUnitSpriteOrientationIndexByAdjacentType1Occupancy()
-// FUNCTION: IMPERIALISM 0x005aa670
-undefined4 ComputeTacticalUnitSpriteOrientationIndexByAdjacentType1Occupancy(void)
-{
-  return 0;
-}
-
-// ghidra_name TacticalBattleView::ComputeTacticalUnitSpriteDrawRectAndApplyFacingOffset
-// ghidra_proto undefined ComputeTacticalUnitSpriteDrawRectAndApplyFacingOffset()
-// FUNCTION: IMPERIALISM 0x005aa7d0
-undefined4 ComputeTacticalUnitSpriteDrawRectAndApplyFacingOffset(void)
 {
   return 0;
 }

@@ -38,6 +38,11 @@ public:
   // TODO(manifest): add data members from the object slice (`just slice-discovery TCivAnimation2 0xCTOR`).
 
   void AddObjectToUiTransientRegistry(TAnimation* animationObject);
+  // Walks the field_0x24 list for a node whose id field (+0x18) matches nodeId; 0 if
+  // this is null, the list is empty, or nothing matches. The list/node classes aren't
+  // recovered yet (MFC-collection-shaped internals -- CPtrList-style iteration), so
+  // the walk itself is left unmodeled. 0x4a0d30
+  void* FindLinkedListNodeByIdFieldAt18(int nodeId);
 
   TCivAnimation2();
 };

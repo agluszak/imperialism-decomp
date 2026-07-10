@@ -93,6 +93,41 @@ CFont* __cdecl UpdateGlobalFontPresetAndRebuildCachedFontIfDirty(TControlPicture
   return g_pQuickDrawCachedUiFont;
 }
 
+// FUNCTION: IMPERIALISM 0x00494950
+void RenderTacticalBattleSelectionAndUnitOverlayPass_Impl() {
+  if (g_bQuickDrawMeasureFontDirty != 0 || g_pQuickDrawCachedMeasureFont == 0) {
+    if (g_pQuickDrawCachedMeasureFont != 0) {
+      delete g_pQuickDrawCachedMeasureFont;
+    }
+    g_pQuickDrawCachedMeasureFont =
+        CreateFontFromPresetAndAttachRegionHandle(&g_QuickDrawMeasureFontPreset);
+    g_bQuickDrawMeasureFontDirty = 0;
+  }
+  CDC* dc = g_pQuickDrawMemoryDc;
+  if (dc == nullptr) {
+    dc = g_pScopedMapQuickDrawDcHandleObject;
+  }
+  CFont* prevFont = static_cast<CFont*>(dc->SelectObject(g_pQuickDrawCachedMeasureFont));
+  dc = g_pQuickDrawMemoryDc;
+  if (dc == nullptr) {
+    dc = g_pScopedMapQuickDrawDcHandleObject;
+  }
+  dc->SetTextColor(static_cast<COLORREF>(g_uQuickDrawStrokeColor));
+  dc->SetMapperFlags(1);
+  UINT prevAlign = dc->SetTextAlign(0x18);
+  // TODO(codegen): the ExtTextOut option/rect/spacing args are dropped by the
+  // decompiler; modeled as a single-space "clear a small area" overlay at the
+  // resolved text origin, matching the surrounding idiom's typical usage.
+  dc->ExtTextOut(g_nQuickDrawResolvedTextOriginX, g_nQuickDrawResolvedTextOriginY, 0, nullptr, " ",
+                 1, nullptr);
+  dc->SetTextAlign(prevAlign);
+  dc = g_pQuickDrawMemoryDc;
+  if (dc == nullptr) {
+    dc = g_pScopedMapQuickDrawDcHandleObject;
+  }
+  dc->SelectObject(prevFont);
+}
+
 // FUNCTION: IMPERIALISM 0x00494a90
 void __cdecl DrawTextWithCachedQuickDrawStyleState(const CString* text) {
   if (g_bQuickDrawMeasureFontDirty != 0 || g_pQuickDrawCachedMeasureFont == 0) {
@@ -222,6 +257,23 @@ void SetQuickDrawColorAndSyncGlobals(int color) {
 // FUNCTION: IMPERIALISM 0x004950d0
 void SetGlobalBlitTransparentColorRaw(int transparentColor) {
   g_uQuickDrawStrokeColor = transparentColor;
+}
+
+// FUNCTION: IMPERIALISM 0x004950f0
+void SetQuickDrawFillColorFromPaletteIndex(unsigned short paletteIndex) {
+  if (g_pQuickDrawMemoryDc != nullptr) {
+    // TODO(class-recovery): resolves the real color from TMacViewMgr's resource-cache
+    // palette handle via GetPaletteEntries; same unresolved thunk as
+    // UpdatePaletteIndexWithDefaultFallback's -1 fallback. Left unmodeled.
+    return;
+  }
+  if (paletteIndex == 0xff) {
+    SetQuickDrawFillColor(0);
+  } else if (static_cast<short>(paletteIndex) < 1) {
+    SetQuickDrawFillColor(0xffffff);
+  } else {
+    SetQuickDrawFillColor(paletteIndex | 0x1000000);
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x004951e0
@@ -483,6 +535,30 @@ BOOL __stdcall ClipSrcRectToBoundsAndOffsetDstRect(RECT* bounds, RECT* dstRect, 
     srcRect->right = bounds->right;
   }
   return srcRect->left < srcRect->right && srcRect->top < srcRect->bottom;
+}
+
+// FUNCTION: IMPERIALISM 0x005a99e0
+void DrawHexSelectionOutlineSegments(RECT* rect) {
+  rect->right -= 1;
+  rect->bottom -= 1;
+  SetQuickDrawTextOriginWithContextOffset(static_cast<short>(rect->left),
+                                          static_cast<short>(rect->top + 6));
+  DrawCenteredGuideLineOnMapDc(static_cast<short>(rect->left), static_cast<short>(rect->top));
+  DrawCenteredGuideLineOnMapDc(static_cast<short>(rect->left + 6), static_cast<short>(rect->top));
+  SetQuickDrawTextOriginWithContextOffset(static_cast<short>(rect->right - 6),
+                                          static_cast<short>(rect->top));
+  DrawCenteredGuideLineOnMapDc(static_cast<short>(rect->right), static_cast<short>(rect->top));
+  DrawCenteredGuideLineOnMapDc(static_cast<short>(rect->right), static_cast<short>(rect->top + 6));
+  SetQuickDrawTextOriginWithContextOffset(static_cast<short>(rect->right),
+                                          static_cast<short>(rect->bottom - 6));
+  DrawCenteredGuideLineOnMapDc(static_cast<short>(rect->right), static_cast<short>(rect->bottom));
+  DrawCenteredGuideLineOnMapDc(static_cast<short>(rect->right - 6),
+                               static_cast<short>(rect->bottom));
+  SetQuickDrawTextOriginWithContextOffset(static_cast<short>(rect->left + 6),
+                                          static_cast<short>(rect->bottom));
+  DrawCenteredGuideLineOnMapDc(static_cast<short>(rect->left), static_cast<short>(rect->bottom));
+  DrawCenteredGuideLineOnMapDc(static_cast<short>(rect->left),
+                               static_cast<short>(rect->bottom - 6));
 }
 
 // FUNCTION: IMPERIALISM 0x005c3d20

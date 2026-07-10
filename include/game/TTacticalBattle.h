@@ -200,6 +200,9 @@ public:
   unsigned char ApplyGridColumnSelectionGuard(int tileIndex);
   // True when there is no fort or a wall section is breached (curated name kept).
   unsigned char IsTacticalSideCategoryCoverageIncompleteOrFlagOff();
+  // True when tileIndex is a fort-wall tile (deployMark8 > 1) whose double-row group
+  // still has a positive fortStrengthPoints54 entry (garrison intact). 0x5a42e0.
+  bool HasFortWallGarrison(int tileIndex);
 };
 
 ASSERT_SIZE(TTacticalBattle, 0x78);

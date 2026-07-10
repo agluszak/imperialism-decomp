@@ -459,14 +459,6 @@ undefined4 ConstructScopedMapQuickDrawContextWithPaletteToken(void)
   return 0;
 }
 
-// ghidra_name RenderTacticalBattleSelectionAndUnitOverlayPass_Impl
-// ghidra_proto undefined RenderTacticalBattleSelectionAndUnitOverlayPass_Impl()
-// FUNCTION: IMPERIALISM 0x00494950
-undefined4 RenderTacticalBattleSelectionAndUnitOverlayPass_Impl(void)
-{
-  return 0;
-}
-
 // ghidra_name RenderTradeScreenCommoditySummaryRows_Impl
 // ghidra_proto undefined RenderTradeScreenCommoditySummaryRows_Impl()
 // FUNCTION: IMPERIALISM 0x00494bf0
@@ -487,14 +479,6 @@ undefined4 WrapperFor_CreateFontFromPresetAndAttachRegionHandle_At00494d20(void)
 // ghidra_proto undefined SetQuickDrawColorAndPropagateIfChanged()
 // FUNCTION: IMPERIALISM 0x00495030
 undefined4 SetQuickDrawColorAndPropagateIfChanged(void)
-{
-  return 0;
-}
-
-// ghidra_name SetQuickDrawFillColorFromPaletteIndex
-// ghidra_proto undefined SetQuickDrawFillColorFromPaletteIndex()
-// FUNCTION: IMPERIALISM 0x004950f0
-undefined4 SetQuickDrawFillColorFromPaletteIndex(void)
 {
   return 0;
 }

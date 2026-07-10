@@ -1765,6 +1765,11 @@ int TTacticalBattle::CountFreeDeploymentZoneTilesForCurrentSide() {
   return freeTileCount;
 }
 
+// FUNCTION: IMPERIALISM 0x005a42e0
+bool TTacticalBattle::HasFortWallGarrison(int tileIndex) {
+  return tileGrid4[tileIndex].deployMark8 > 1 && fortStrengthPoints54[tileIndex / 0x3a] > 0;
+}
+
 // True when there is no fort (fortLevel49 == 0) or any of the eight per-row-pair fort
 // strength pools is depleted (<= 0).
 // FUNCTION: IMPERIALISM 0x005a4330

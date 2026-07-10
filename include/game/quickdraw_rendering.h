@@ -86,3 +86,19 @@ static __inline void ApplyUiTextStyleAndSyncColor(int unused, int styleWidth, in
 static __inline void UpdatePaletteIndexWithFallback(int paletteIndex) {
   UpdatePaletteIndexWithDefaultFallback(static_cast<unsigned int>(paletteIndex));
 }
+
+// Sets the QuickDraw fill color from a palette-table index (0xff = black, <1 = white
+// fallback, else index | 0x1000000). When a QuickDraw memory DC is active, the real
+// body instead resolves the color from TMacViewMgr's resource-cache palette handle
+// (same unrecovered-class gap as UpdatePaletteIndexWithDefaultFallback's -1 branch);
+// left unmodeled. 0x004950f0
+void SetQuickDrawFillColorFromPaletteIndex(unsigned short paletteIndex);
+
+// Selects the cached measure-font, draws a single-space overlay via CDC::ExtTextOut at
+// the resolved text origin (used as a "clear a small area" idiom), then restores DC
+// state. 0x00494950
+void RenderTacticalBattleSelectionAndUnitOverlayPass_Impl();
+
+// Draws four short corner-tick brackets around rect's edges (a hex-selection
+// highlight idiom), shrinking rect->right/bottom by 1 first. 0x005a99e0
+void DrawHexSelectionOutlineSegments(RECT* rect);

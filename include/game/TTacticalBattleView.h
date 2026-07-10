@@ -182,4 +182,13 @@ public:
   void TriggerTacticalUiUpdate2711();                              // 0x5a9cc0
   // Writes the on-screen RECT of a bare hex tile (no unit growth). 0x5a87d0.
   void ComputeTacticalHexTileScreenRect(RECT* rectOut, int tileIndex);
+  // Writes unit's on-screen sprite rect (tile rect grown 0x14px upward), then applies
+  // a trench-facing pixel offset (unrecovered table) when the unit's tile is a fresh
+  // trench-deploy mark, or clips the rect off-screen for a specific hidden-in-trench
+  // case. 0x5aa7d0.
+  void ComputeTacticalUnitSpriteDrawRectAndApplyFacingOffset(TTacticalUnit* unit, RECT* rectOut);
+  // Orientation-index lookup (0-6ish) for a unit sprite at tileIndex, based on which
+  // of the two "opposite" hex neighbors (by parity of tileIndex) are trench-deploy
+  // tiles; indexes an unrecovered 20-short table. 0x5aa670.
+  short ComputeTacticalUnitSpriteOrientationIndexByAdjacentType1Occupancy(int tileIndex);
 };

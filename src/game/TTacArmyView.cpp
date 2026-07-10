@@ -111,7 +111,7 @@ void TTacArmyView::ConstructTTacArmyViewBaseState(int compositionClass, TArmyBat
       overlayBounds.bottom = 0x1c2;
       ResetQuickDrawStrokeState();
       UpdatePaletteIndexWithFallback(0x13);
-      reinterpret_cast<void(__cdecl*)(int)>(SetQuickDrawFillColorFromPaletteIndex)(0);
+      SetQuickDrawFillColorFromPaletteIndex(0);
       BlitQuickDrawSurfaces(fortStripSurface->GetBlitSurface(),
                             battlefieldSurface64->GetBlitSurface(), &bounds, &overlayBounds, 0);
       g_pDisplayMgr->FreeQuickDrawSurfaceContextSlot(&fortStripSurface);

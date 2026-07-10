@@ -473,3 +473,49 @@ void TTacticalBattleView::SpawnTacticalUiMarkerAtUnitTile() {
 void TTacticalBattleView::TriggerTacticalUiUpdate2711() {
   g_pUiAnimator->RemoveUiTransientRegistryObjectByTag(0x2711);
 }
+
+// FUNCTION: IMPERIALISM 0x005aa670
+short TTacticalBattleView::ComputeTacticalUnitSpriteOrientationIndexByAdjacentType1Occupancy(
+    int tileIndex) {
+  // TODO(class-recovery): the real body indexes an unrecovered 20-short lookup table
+  // by an orientation code (0-6) derived from which of two "opposite" hex neighbors
+  // (selected by tileIndex's row/column parity) are trench-deploy tiles
+  // (TacticalTileRecord::deployMark8 == 1); the exact neighbor-slot-to-table mapping
+  // isn't verified. Structurally: compute the 6 neighbors, then look up.
+  int neighbors[6];
+  tacticalBattle60->ComputeHexNeighborTileIndices_005A0420(tileIndex, neighbors);
+  (void)neighbors;
+  return 0;
+}
+
+// FUNCTION: IMPERIALISM 0x005aa7d0
+void TTacticalBattleView::ComputeTacticalUnitSpriteDrawRectAndApplyFacingOffset(TTacticalUnit* unit,
+                                                                                RECT* rectOut) {
+  int tileIndex = unit->tileIndex8;
+  int row = tileIndex / tileColumnsPerRow80;
+  int x = (tileIndex % tileColumnsPerRow80) * tileWidthPx88 - viewOriginX78;
+  rectOut->left = x;
+  if (row & 1) {
+    rectOut->left = tileWidthPx88 / 2 + x;
+  }
+  int y = row * tileRowHeightPx8C;
+  rectOut->top = y;
+  rectOut->right = rectOut->left + tileWidthPx88;
+  rectOut->bottom = tileRowHeightPx8C + y;
+  rectOut->top = y - 0x14;
+
+  TacticalTileRecord* tile = &tacticalBattle60->tileGrid4[tileIndex];
+  if (tile->deployMark8 == 1) {
+    // TODO(class-recovery): applies a per-(unitType, orientation, side) pixel offset
+    // from an unrecovered facing-offset table (runtime-populated, not a static
+    // const -- every entry reads 0 in the static image). Left as a no-op offset.
+    ComputeTacticalUnitSpriteOrientationIndexByAdjacentType1Occupancy(tileIndex);
+    return;
+  }
+  // DAT_00695528 is a repeating identity-mod-8 table ({0..7} x N); "== 8" can never
+  // hold against a mod-8 read, so this branch is structurally preserved but dead for
+  // every observed table region.
+  if (tile->trenchMask10 != 0 && unit->unitTypeC % 8 == 8) {
+    rectOut->right = -200;
+  }
+}
