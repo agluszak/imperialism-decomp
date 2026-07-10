@@ -29,7 +29,9 @@ public:
   // slot 0x10 AlwaysTrueTacticalPredicate10 inherited unchanged (0x59adf0)
   // slot 0x11 ProceedAfterBattleIntroAccepted inherited unchanged (0x59ae10)
   // === END GENERATED DECLS (TNavyPlayer) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TNavyPlayer 0xCTOR`).
+  // Navy slice (base TTacticalPlayer ends at +0x28).
+  class TTaskForce* taskForce28; // +0x28 the side's fleet order node (0x59edd0 marks it
+                                 // eliminated and prunes its order head after commit)
 
   TNavyPlayer();
 };

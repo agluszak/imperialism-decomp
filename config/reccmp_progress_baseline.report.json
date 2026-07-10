@@ -12794,8 +12794,7 @@
     },
     {
       "address": "0x4e0590",
-      "effective": true,
-      "matching": 0.42857142857142855,
+      "matching": 1.0,
       "name": "TGreatPower::OrphanRetStub_004d7fa0_88",
       "type": 1
     },
@@ -12813,8 +12812,7 @@
     },
     {
       "address": "0x4e0650",
-      "effective": true,
-      "matching": 0.42857142857142855,
+      "matching": 1.0,
       "name": "TGreatPower::OrphanRetStub_004d7fe0_8b",
       "type": 1
     },
@@ -12857,7 +12855,7 @@
     },
     {
       "address": "0x4e09a0",
-      "matching": 0.5180722891566265,
+      "matching": 0.5421686746987951,
       "name": "TGreatPower::ComputeCityOrderCapabilityAggregateScore",
       "type": 1
     },
@@ -22013,7 +22011,7 @@
     },
     {
       "address": "0x551100",
-      "matching": 0.02702702702702703,
+      "matching": 0.0273972602739726,
       "name": "ReassignOrderNodeNationAndRebindParentCounters",
       "type": 1
     },
@@ -22265,13 +22263,13 @@
     },
     {
       "address": "0x553b10",
-      "matching": 0.4827586206896552,
+      "matching": 0.41379310344827586,
       "name": "HasNoMapOrderEntryChildrenQueued",
       "type": 1
     },
     {
       "address": "0x553b50",
-      "matching": 0.5818181818181818,
+      "matching": 0.5454545454545454,
       "name": "HasActiveMapOrderEntryChildren",
       "type": 1
     },
@@ -22301,7 +22299,7 @@
     },
     {
       "address": "0x553fe0",
-      "matching": 0.03076923076923077,
+      "matching": 0.03125,
       "name": "PruneInactiveTaskForceOrderHead",
       "type": 1
     },
@@ -29200,8 +29198,8 @@
     },
     {
       "address": "0x59ed60",
-      "matching": 0.5,
-      "name": "TNavyTacUnit::ConstructTNavyPlayerBaseState",
+      "matching": 1.0,
+      "name": "TNavyTacUnit::GetSourceTaskForce",
       "type": 1
     },
     {
@@ -29212,19 +29210,19 @@
     },
     {
       "address": "0x59edd0",
-      "matching": 0.05263157894736842,
+      "matching": 0.9041095890410958,
       "name": "TNavyPlayer::CommitTacticalResultsToSourceUnits",
       "type": 1
     },
     {
       "address": "0x59ee60",
-      "matching": 0.125,
+      "matching": 0.8666666666666667,
       "name": "TNavyPlayer::RemoveTacticalUnitFromUnitList",
       "type": 1
     },
     {
       "address": "0x59eea0",
-      "matching": 0.08695652173913043,
+      "matching": 0.9090909090909091,
       "name": "TNavyPlayer::AddTacticalUnitToUnitListHead",
       "type": 1
     },

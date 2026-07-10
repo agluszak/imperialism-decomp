@@ -915,14 +915,6 @@ undefined4 InvokeOrderNodeOwnerVfunc38(void)
   return 0;
 }
 
-// ghidra_name ReassignOrderNodeNationAndRebindParentCounters
-// ghidra_proto undefined ReassignOrderNodeNationAndRebindParentCounters()
-// FUNCTION: IMPERIALISM 0x00551100
-undefined4 ReassignOrderNodeNationAndRebindParentCounters(void)
-{
-  return 0;
-}
-
 // ghidra_name SelectNavyPrimaryOrderByNationAndRecomputePreferredChild
 // ghidra_proto undefined SelectNavyPrimaryOrderByNationAndRecomputePreferredChild()
 // FUNCTION: IMPERIALISM 0x00551850
@@ -1007,14 +999,6 @@ undefined4 RemoveTaskForceOrderNodeById(void)
 // ghidra_proto undefined RebuildMapOrderEntryChildren()
 // FUNCTION: IMPERIALISM 0x00553f10
 undefined4 RebuildMapOrderEntryChildren(void)
-{
-  return 0;
-}
-
-// ghidra_name PruneInactiveTaskForceOrderHead
-// ghidra_proto undefined PruneInactiveTaskForceOrderHead()
-// FUNCTION: IMPERIALISM 0x00553fe0
-undefined4 PruneInactiveTaskForceOrderHead(void)
 {
   return 0;
 }

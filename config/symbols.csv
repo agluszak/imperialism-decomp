@@ -5361,7 +5361,7 @@ address|name|symbol|size|type|prototype|provenance
 59ebb0|TNavyPlayer::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 59ebe0|TNavyPlayer::CreateTNavyPlayerInstance||7|function|undefined CreateTNavyPlayerInstance()|
 59ec00|TNavyPlayer::GetRuntimeClass||6|function|undefined GetTNavyPlayerClassNamePointer()|rtti
-59ed60|TNavyTacUnit::ConstructTNavyPlayerBaseState||4|function|undefined ConstructTNavyPlayerBaseState()|
+59ed60|TNavyTacUnit::GetSourceTaskForce||4|function|undefined ConstructTNavyPlayerBaseState()|
 59ed80|TNavyTacUnit::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 59edb0|DestructTNavyPlayerAndMaybeFree_Impl||7|function|undefined DestructTNavyPlayerAndMaybeFree_Impl()|
 59edd0|TNavyPlayer::CommitTacticalResultsToSourceUnits||110|function|undefined OrphanRetStub_0059add0(void)|

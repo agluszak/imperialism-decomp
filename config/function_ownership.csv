@@ -3059,6 +3059,7 @@ address|target_cpp|ownership|note
 550f30|src/game/trade_resource_lookup.cpp|manual|marker_sync
 550f80|src/game/TTaskForce.cpp|manual|marker_sync
 550ff0|src/game/TTaskForce.cpp|manual|marker_sync
+551100|src/game/TTaskForce.cpp|manual|marker_sync
 551220|src/game/TTaskForce.cpp|manual|marker_sync
 5512d0|src/game/TAdmiral.cpp|manual|marker_sync
 551410|src/game/TAdmiral.cpp|manual|marker_sync
@@ -3096,6 +3097,7 @@ address|target_cpp|ownership|note
 553b50|src/game/TTaskForce.cpp|manual|marker_sync
 553bc0|src/game/TTaskForce.cpp|manual|marker_sync
 553e30|src/game/TTaskForce.cpp|manual|marker_sync
+553fe0|src/game/TTaskForce.cpp|manual|marker_sync
 554930|src/game/TTaskForce.cpp|manual|marker_sync
 554ad0|src/game/TTaskForce.cpp|manual|marker_sync
 554c90|src/game/TTaskForce.cpp|manual|marker_sync

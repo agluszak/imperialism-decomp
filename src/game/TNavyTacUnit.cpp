@@ -3,8 +3,8 @@
 #include "game/TTaskForce.h"
 
 // FUNCTION: IMPERIALISM 0x0059ed60
-undefined TNavyTacUnit::ConstructTNavyPlayerBaseState() {
-  return 0;
+TTaskForce* TNavyTacUnit::GetSourceTaskForce() {
+  return sourceTaskForce34;
 }
 
 // SYNTHETIC: IMPERIALISM 0x0059ed80

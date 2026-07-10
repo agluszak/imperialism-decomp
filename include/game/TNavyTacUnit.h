@@ -24,8 +24,10 @@ public:
   virtual undefined OrphanLeaf_NoCall_Ins02_005a5da0() override; // slot 0x0d 0x5a6370
   // slot 0x0e ApplyTacticalDamage inherited unchanged (0x5a5e70)
   // slot 0x0f FlipUnitSideAffiliation inherited unchanged (0x5a5eb0)
-  virtual undefined ConstructTNavyPlayerBaseState(); // slot 0x10 0x59ed60
-                                                     // === END GENERATED DECLS (TNavyTacUnit) ===
+  // Navy-only added virtual: returns the unit's source fleet (the old
+  // ConstructTNavyPlayerBaseState name was Ghidra junk).
+  virtual class TTaskForce* GetSourceTaskForce(); // slot 0x10 0x59ed60
+                                                  // === END GENERATED DECLS (TNavyTacUnit) ===
 
   // Navy slice (+0x34..): mostly unrecovered; +0x3c is the per-ship action-point
   // store read back by GetBaseActionPoints (0x5a6310).

@@ -223,6 +223,12 @@ void TTaskForce::RemoveNode(int self) {
   }
 }
 
+// FUNCTION: IMPERIALISM 0x00551100
+void TTaskForce::ReassignOrderNodeNationAndRebindParentCounters(short nation) {
+  // TODO: port body @ 0x551100.
+  (void)nation;
+}
+
 // FUNCTION: IMPERIALISM 0x00551220
 void TTaskForce::SetMapOrderActiveChildEntry(TTaskForce* newEntry) {
   owner = reinterpret_cast<TMapOrderEntryOwnerContext*>(newEntry);
@@ -663,6 +669,11 @@ void TTaskForce::RecomputeMapOrderChildAggregateMetric() {
     activeChildEntry =
         node->object_ptr->SelectPreferredMapOrderEntryByPriorityRules(activeChildEntry, 0);
   }
+}
+
+// FUNCTION: IMPERIALISM 0x00553fe0
+void TTaskForce::PruneInactiveTaskForceOrderHead() {
+  // TODO: port body @ 0x553fe0.
 }
 
 // FUNCTION: IMPERIALISM 0x00554930
