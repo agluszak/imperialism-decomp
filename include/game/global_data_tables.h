@@ -708,7 +708,7 @@ extern const double g_Recompute_Nation_Order_LookupTable_0065A9F0;
 extern double g_Recompute_Nation_Order_LookupTable_0065A9F8;
 extern double g_Recompute_Nation_Order_LookupTable_0065AA00;
 extern double g_Recompute_Nation_Order_LookupTable_0065AA08;
-extern unsigned short g_Recompute_Nation_Order_LookupTable_00697870[];
+extern unsigned short g_awTacticalCompositionReferenceProfiles_00697870[];
 extern unsigned short g_Populate_Beachhead_Mission_LookupTable_00697958[];
 
 // TMapMgr.cpp — per-resourceType requirement level table (0x513610).

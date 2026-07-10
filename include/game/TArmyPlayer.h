@@ -40,7 +40,7 @@ public:
   // TArmyBattle::WriteTo.
   TArmyStack* armyStack28; // +0x28
   // Aggregated projection metrics for the side, rebuilt by
-  // AccumulateTacticalCursorActionClassProfileMetrics (0x59b5b0) from the active
+  // AccumulateTacticalProjectionMetricsAndUnitRanges (0x59b5b0) from the active
   // records' float vectors.
   float projectionScoreSums2C[5];   // +0x2c
   short maxUnitRange40;             // +0x40 max GetUnitRange over active units
@@ -61,17 +61,21 @@ public:
   // 0x0059c440, __thiscall, ret 4.
   void SelectAndApplyTacticalCursorModeProfile(int cursorProfileMode);
 
-  // Rebuilds projectionScoreSums2C/maxUnitRange40/42 and field51 from the active
-  // records. Body TODO. 0x59b5b0.
-  void AccumulateTacticalCursorActionClassProfileMetrics();
-  // Per-mode stance-profile appliers (bodies TODO): set each record's aiStateCode2c
-  // by action class for the matching cursor mode.
-  void ApplyTacticalCursorModeProfile0_ByActionClassCounts();  // 0x59caf0
-  void ApplyTacticalCursorModeProfile2_ByActionClassCounts();  // 0x59cd00
-  void ApplyTacticalCursorModeProfile3_ClassAware();           // 0x59ce90
-  void ApplyTacticalCursorModeProfile4_ClassAware();           // 0x59d020
-  void ApplyTacticalCursorModeProfile5_ClassAware();           // 0x59d1a0
-  void ApplyTacticalCursorModeProfile6_DefaultByActionClass(); // 0x59d320
+  // Rebuilds projectionScoreSums2C/maxUnitRange40/42 and field51 (active artillery or
+  // sapper present) from the active records, then folds sums[0]/sums[1] into
+  // distribution-similarity scores vs the 0x697870 reference profiles. 0x59b5b0.
+  void AccumulateTacticalProjectionMetricsAndUnitRanges();
+  // Per-mode stance-profile appliers: set each record's aiStateCode2c by action class
+  // for the matching cursor mode (mode number noted per address).
+  void ApplyDefenderHoldLineStanceByActionClass(); // mode 0, 0x59caf0
+  void ApplyDefenderBombardStanceByActionClass();  // mode 2, 0x59cd00
+  void ApplyAttackerSiegeStanceByActionClass();    // mode 3, 0x59ce90
+  void ApplyAttackerAssaultStanceByActionClass();  // mode 4, 0x59d020
+  void ApplyAttackerStandoffStanceByActionClass(); // mode 5, 0x59d1a0
+  void ApplyUnopposedAdvanceStanceByActionClass(); // mode 6, 0x59d320
+  // Whether the opposing side has a deployed, still-active artillery-class unit.
+  // 0x0059d470, __thiscall.
+  unsigned char OpponentHasDeployedActiveArtilleryUnit();
 
   // Auto-deploy helpers (0x59bc80 dispatcher). Curated names kept; behaviorally these
   // are the zone-score-table and per-class-tile-selector deploy strategies.

@@ -28892,8 +28892,8 @@
     },
     {
       "address": "0x59b5b0",
-      "matching": 0.01834862385321101,
-      "name": "TArmyPlayer::AccumulateTacticalCursorActionClassProfileMetrics",
+      "matching": 0.6018518518518519,
+      "name": "TArmyPlayer::AccumulateTacticalProjectionMetricsAndUnitRanges",
       "type": 1
     },
     {
@@ -28982,8 +28982,8 @@
     },
     {
       "address": "0x59caf0",
-      "matching": 0.022222222222222223,
-      "name": "TArmyPlayer::ApplyTacticalCursorModeProfile0_ByActionClassCounts",
+      "matching": 0.5714285714285714,
+      "name": "TArmyPlayer::ApplyDefenderHoldLineStanceByActionClass",
       "type": 1
     },
     {
@@ -28994,32 +28994,32 @@
     },
     {
       "address": "0x59cd00",
-      "matching": 0.02197802197802198,
-      "name": "TArmyPlayer::ApplyTacticalCursorModeProfile2_ByActionClassCounts",
+      "matching": 0.7741935483870968,
+      "name": "TArmyPlayer::ApplyDefenderBombardStanceByActionClass",
       "type": 1
     },
     {
       "address": "0x59ce90",
-      "matching": 0.02247191011235955,
-      "name": "TArmyPlayer::ApplyTacticalCursorModeProfile3_ClassAware",
+      "matching": 0.967032967032967,
+      "name": "TArmyPlayer::ApplyAttackerSiegeStanceByActionClass",
       "type": 1
     },
     {
       "address": "0x59d020",
-      "matching": 0.024096385542168676,
-      "name": "TArmyPlayer::ApplyTacticalCursorModeProfile4_ClassAware",
+      "matching": 0.8187134502923976,
+      "name": "TArmyPlayer::ApplyAttackerAssaultStanceByActionClass",
       "type": 1
     },
     {
       "address": "0x59d1a0",
-      "matching": 0.024096385542168676,
-      "name": "TArmyPlayer::ApplyTacticalCursorModeProfile5_ClassAware",
+      "matching": 0.8187134502923976,
+      "name": "TArmyPlayer::ApplyAttackerStandoffStanceByActionClass",
       "type": 1
     },
     {
       "address": "0x59d320",
-      "matching": 0.041666666666666664,
-      "name": "TArmyPlayer::ApplyTacticalCursorModeProfile6_DefaultByActionClass",
+      "matching": 0.7254901960784313,
+      "name": "TArmyPlayer::ApplyUnopposedAdvanceStanceByActionClass",
       "type": 1
     },
     {
@@ -29030,8 +29030,8 @@
     },
     {
       "address": "0x59d470",
-      "matching": 0.03636363636363636,
-      "name": "HasReachableActiveArtilleryClassCursorEntry",
+      "matching": 1.0,
+      "name": "TArmyPlayer::OpponentHasDeployedActiveArtilleryUnit",
       "type": 1
     },
     {
@@ -29054,7 +29054,7 @@
     },
     {
       "address": "0x59d810",
-      "matching": 1.0,
+      "matching": 0.8571428571428571,
       "name": "TArmyPlayer::ScoreTacticalTileSapperWallApproachColumn",
       "type": 1
     },

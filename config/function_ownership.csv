@@ -4062,6 +4062,7 @@ address|target_cpp|ownership|note
 59d020|src/game/TArmyPlayer.cpp|manual|marker_sync
 59d1a0|src/game/TArmyPlayer.cpp|manual|marker_sync
 59d320|src/game/TArmyPlayer.cpp|manual|marker_sync
+59d470|src/game/TArmyPlayer.cpp|manual|marker_sync
 59d530|src/game/TArmyPlayer.cpp|manual|marker_sync
 59d6b0|src/game/TArmyPlayer.cpp|manual|marker_sync
 59d6e0|src/game/TArmyPlayer.cpp|manual|marker_sync

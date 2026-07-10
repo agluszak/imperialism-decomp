@@ -739,7 +739,12 @@ extern const double g_Recompute_Nation_Order_LookupTable_0065A9F0 = 0.0;
 double g_Recompute_Nation_Order_LookupTable_0065A9F8 = 0.01;
 double g_Recompute_Nation_Order_LookupTable_0065AA00 = 0.5;
 double g_Recompute_Nation_Order_LookupTable_0065AA08 = 1.0;
-unsigned short g_Recompute_Nation_Order_LookupTable_00697870[0x10] = {0};
+// GLOBAL: IMPERIALISM 0x00697870
+// Tactical composition reference profiles (4 rows x 5 action classes, shorts at
+// 0x697870): row 0 baseline, row 1 fort-siege, row 2 open-field, row 3 unattributed.
+// Consumed by the distribution-similarity scorer (0x5362c0) callers.
+unsigned short g_awTacticalCompositionReferenceProfiles_00697870[20] = {
+    40, 27, 0, 17, 16, 27, 36, 0, 17, 20, 26, 31, 20, 23, 0, 40, 22, 0, 38, 0};
 unsigned short g_Populate_Beachhead_Mission_LookupTable_00697958[0x10] = {0};
 
 // Army-mission order-priority weight/scoring tables (0x53c620 / 0x53ceb0 /

@@ -178,10 +178,63 @@ void TArmyPlayer::AddTacticalUnitToUnitListHead(TTacticalUnit* unit) {
   (void)unit;
 }
 
+// Rebuilds the side's projection metrics from the active records: sums the five-float
+// projection vectors, tracks the max unit range (and the max skipping artillery), sets
+// field51 when the side has any active artillery or sapper, then folds sums[0]/sums[1]
+// into distribution-similarity scores vs the 0x697870 reference profiles (row 0
+// baseline; row 1 = fort present, row 2 = open field).
 // FUNCTION: IMPERIALISM 0x0059b5b0
-void TArmyPlayer::AccumulateTacticalCursorActionClassProfileMetrics() {
-  // TODO: port body @ 0x59b5b0 (zeroes projectionScoreSums2C, accumulates the active
-  // records' float vectors, tracks maxUnitRange40/42, sets field51).
+void TArmyPlayer::AccumulateTacticalProjectionMetricsAndUnitRanges() {
+  maxNonArtilleryUnitRange42 = 0;
+  maxUnitRange40 = 0;
+  // Zeroed through a base pointer in the original (lea + five dword stores).
+  float* sums = projectionScoreSums2C;
+  sums[0] = 0.0f;
+  sums[1] = 0.0f;
+  sums[2] = 0.0f;
+  sums[3] = 0.0f;
+  sums[4] = 0.0f;
+  field51 = 0;
+
+  CIterator unitIter(unitList4);
+  for (TArmyTacUnit* record = static_cast<TArmyTacUnit*>(unitIter.Reset()); unitIter.More();
+       record = static_cast<TArmyTacUnit*>(unitIter.Advance())) {
+    if (record->state1c == 0) {
+      record->ComputeTacticalProjectionScoreVector();
+
+      // Pointer-walk countdown accumulate (fld/fadd/fstp loop in the original).
+      float* sumCursor = projectionScoreSums2C;
+      float* vectorCursor = &record->field44;
+      int remaining;
+      for (remaining = 5; remaining > 0; --remaining) {
+        *sumCursor++ += *vectorCursor++;
+      }
+
+      // max()-macro form: the losing branch re-evaluates GetUnitRange().
+      maxUnitRange40 = static_cast<short>(
+          maxUnitRange40 > record->GetUnitRange() ? maxUnitRange40 : record->GetUnitRange());
+      if (g_awTacticalUnitAiClassByUnitType_006693B8[record->unitTypeC] != 2) {
+        maxNonArtilleryUnitRange42 = static_cast<short>(
+            maxNonArtilleryUnitRange42 > record->GetUnitRange() ? maxNonArtilleryUnitRange42
+                                                                : record->GetUnitRange());
+      }
+      if (g_awTacticalUnitAiClassByUnitType_006693B8[record->unitTypeC] == 2 ||
+          g_awTacticalUnitCategoryCodeBySlot[record->unitTypeC] == 8) {
+        field51 = 1;
+      }
+    }
+  }
+
+  // The row-0 score must be sampled before sums[1] is overwritten (both calls read the
+  // live sums). Row select: fort present -> row 1, open field -> row 2.
+  // TODO(verify): row sense is inverted vs RecomputeTacticalCursorProjectionScoresAndPruneList.
+  float baselineProfileScore = ComputeDistributionSimilarityScoreFromVectorAndReferenceProfile(
+      projectionScoreSums2C, g_awTacticalCompositionReferenceProfiles_00697870, 5);
+  projectionScoreSums2C[1] = ComputeDistributionSimilarityScoreFromVectorAndReferenceProfile(
+      projectionScoreSums2C,
+      g_awTacticalCompositionReferenceProfiles_00697870 + 5 * (battle14->fortLevel49 != 0 ? 1 : 2),
+      5);
+  projectionScoreSums2C[0] = baselineProfileScore;
 }
 
 // Kicks the side at battle start: unwatched (AI/remote) sides skip the intro dialog
@@ -293,8 +346,8 @@ void TArmyPlayer::RecomputeTacticalCursorProjectionScoresAndPruneList(int maxUni
           keptScoreVectorSum[addComponent] += candidateVector[addComponent];
         }
         float score = ComputeDistributionSimilarityScoreFromVectorAndReferenceProfile(
-            keptScoreVectorSum, g_Recompute_Nation_Order_LookupTable_00697870 + profileRowIndex * 5,
-            5);
+            keptScoreVectorSum,
+            g_awTacticalCompositionReferenceProfiles_00697870 + profileRowIndex * 5, 5);
         if (score > bestScore) {
           bestScore = score;
           bestOrdinal = candidateOrdinal;
@@ -567,8 +620,8 @@ void TArmyPlayer::SelectAndApplyTacticalCursorModeProfile(int cursorProfileMode)
     opponent = static_cast<TArmyPlayer*>(battle14->tacticalPlayer14);
   }
 
-  AccumulateTacticalCursorActionClassProfileMetrics();
-  opponent->AccumulateTacticalCursorActionClassProfileMetrics();
+  AccumulateTacticalProjectionMetricsAndUnitRanges();
+  opponent->AccumulateTacticalProjectionMetricsAndUnitRanges();
 
   // Pointer-walk countdown copy (the original emits an fld/fstp loop, not rep movsd).
   float opponentMetrics[5];
@@ -682,7 +735,7 @@ void TArmyPlayer::SelectAndApplyTacticalCursorModeProfile(int cursorProfileMode)
   lastAppliedCursorMode44 = cursorMode;
   switch (cursorMode) {
   case 0:
-    ApplyTacticalCursorModeProfile0_ByActionClassCounts();
+    ApplyDefenderHoldLineStanceByActionClass();
     return;
   case 1: {
     // Retreat/fallback stance: non-category-0 units get state 0xc, category-0 get 7.
@@ -698,19 +751,19 @@ void TArmyPlayer::SelectAndApplyTacticalCursorModeProfile(int cursorProfileMode)
     return;
   }
   case 2:
-    ApplyTacticalCursorModeProfile2_ByActionClassCounts();
+    ApplyDefenderBombardStanceByActionClass();
     return;
   case 3:
-    ApplyTacticalCursorModeProfile3_ClassAware();
+    ApplyAttackerSiegeStanceByActionClass();
     return;
   case 4:
-    ApplyTacticalCursorModeProfile4_ClassAware();
+    ApplyAttackerAssaultStanceByActionClass();
     return;
   case 5:
-    ApplyTacticalCursorModeProfile5_ClassAware();
+    ApplyAttackerStandoffStanceByActionClass();
     return;
   case 6:
-    ApplyTacticalCursorModeProfile6_DefaultByActionClass();
+    ApplyUnopposedAdvanceStanceByActionClass();
     return;
   case 7: {
     // Hold-fire garrison stance: every unit gets state 0x13.
@@ -725,34 +778,312 @@ void TArmyPlayer::SelectAndApplyTacticalCursorModeProfile(int cursorProfileMode)
   }
 }
 
+// Mode 0 (defender balanced/hold): infantry(class 0) engage (0), artillery(class 2)
+// bombard (9), cavalry/flankers(classes 1,3) screen (0xe), class 4 splits mortar/sapper
+// (unitType >= 27 -> 0xb, else 0xc). Skips broken/destroyed records.
 // FUNCTION: IMPERIALISM 0x0059caf0
-void TArmyPlayer::ApplyTacticalCursorModeProfile0_ByActionClassCounts() {
-  // TODO: port body @ 0x59caf0.
+void TArmyPlayer::ApplyDefenderHoldLineStanceByActionClass() {
+  int actionClassCounts[5] = {0, 0, 0, 0, 0};
+  int engageAssignedCount = 0;
+  CIterator countIter(unitList4);
+  for (TTacticalUnit* countRecord = static_cast<TTacticalUnit*>(countIter.Reset());
+       countIter.More(); countRecord = static_cast<TTacticalUnit*>(countIter.Advance())) {
+    ++actionClassCounts[g_awTacticalUnitAiClassByUnitType_006693B8[countRecord->unitTypeC]];
+  }
+
+  CIterator applyIter(unitList4);
+  for (TTacticalUnit* record = static_cast<TTacticalUnit*>(applyIter.Reset()); applyIter.More();
+       record = static_cast<TTacticalUnit*>(applyIter.Advance())) {
+    if (record->state1c != 0) {
+      continue;
+    }
+    switch (g_awTacticalUnitAiClassByUnitType_006693B8[record->unitTypeC]) {
+    case 0:
+      record->aiStateCode2c = 0;
+      break;
+    case 2:
+      record->aiStateCode2c = 9;
+      break;
+    case 1:
+    case 3:
+      // TODO(verify): faithful dead conditions -- counts and the assigned counter are
+      // never negative, so every class-1/3 unit gets 0xe (original-game dead code).
+      if (actionClassCounts[0] < actionClassCounts[2] && actionClassCounts[0] < 0 &&
+          engageAssignedCount < 0) {
+        record->aiStateCode2c = 0;
+        ++engageAssignedCount;
+      } else {
+        record->aiStateCode2c = 0xe;
+      }
+      break;
+    case 4:
+      if (record->unitTypeC >= 0x1b) {
+        record->aiStateCode2c = 0xb;
+      } else {
+        record->aiStateCode2c = 0xc;
+      }
+      break;
+    }
+  }
 }
 
+// Mode 2 (defender bombard/outrange): artillery(class 2) gets 8, cavalry/flankers
+// (classes 1,3) get 5, infantry(class 0) holds (7; the escort branch is dead),
+// class 4 splits by unitType >= 27 (0xb vs 0xc). Skips broken/destroyed records.
 // FUNCTION: IMPERIALISM 0x0059cd00
-void TArmyPlayer::ApplyTacticalCursorModeProfile2_ByActionClassCounts() {
-  // TODO: port body @ 0x59cd00.
+void TArmyPlayer::ApplyDefenderBombardStanceByActionClass() {
+  int actionClassCounts[5] = {0, 0, 0, 0, 0};
+  int engageAssignedCount = 0;
+  int escortAssignedCount = 0;
+  CIterator countIter(unitList4);
+  for (TTacticalUnit* countRecord = static_cast<TTacticalUnit*>(countIter.Reset());
+       countIter.More(); countRecord = static_cast<TTacticalUnit*>(countIter.Advance())) {
+    ++actionClassCounts[g_awTacticalUnitAiClassByUnitType_006693B8[countRecord->unitTypeC]];
+  }
+
+  CIterator applyIter(unitList4);
+  for (TTacticalUnit* record = static_cast<TTacticalUnit*>(applyIter.Reset()); applyIter.More();
+       record = static_cast<TTacticalUnit*>(applyIter.Advance())) {
+    if (record->state1c != 0) {
+      continue;
+    }
+    switch (g_awTacticalUnitAiClassByUnitType_006693B8[record->unitTypeC]) {
+    case 0:
+      // TODO(verify): faithful dead conditions -- engageAssignedCount stays 0, so
+      // every infantry unit gets 7 (original-game dead code, kept literally).
+      if (engageAssignedCount > 0 && escortAssignedCount < actionClassCounts[2]) {
+        record->aiStateCode2c = 1;
+        ++escortAssignedCount;
+      } else if (engageAssignedCount < 0) {
+        record->aiStateCode2c = 0;
+        ++engageAssignedCount;
+      } else {
+        record->aiStateCode2c = 7;
+      }
+      break;
+    case 2:
+      record->aiStateCode2c = 8;
+      break;
+    case 1:
+    case 3:
+      record->aiStateCode2c = 5;
+      break;
+    case 4:
+      if (record->unitTypeC >= 0x1b) {
+        record->aiStateCode2c = 0xb;
+      } else {
+        record->aiStateCode2c = 0xc;
+      }
+      break;
+    }
+  }
 }
 
+// Mode 3 (attacker siege vs fort): sappers (category 8) target the wall (0xd while
+// the wall record at tile 174 is intact, 0xc once breached); infantry(class 0)
+// outranging the enemy's non-artillery reach snipes (0x11), cavalry-charge category 1
+// hunts artillery when the enemy has deployed active artillery (0x10, else 0xa),
+// otherwise engages (1); classes 1,3 screen (0xe); artillery(class 2) bombards
+// (category 6 -> 0x11, else 8); class 4 remainder gets 0xb. No state1c filter.
 // FUNCTION: IMPERIALISM 0x0059ce90
-void TArmyPlayer::ApplyTacticalCursorModeProfile3_ClassAware() {
-  // TODO: port body @ 0x59ce90.
+void TArmyPlayer::ApplyAttackerSiegeStanceByActionClass() {
+  TArmyPlayer* opponent;
+  if (isOurSideFlagC != 0) {
+    opponent = static_cast<TArmyPlayer*>(battle14->tacticalPlayer18);
+  } else {
+    opponent = static_cast<TArmyPlayer*>(battle14->tacticalPlayer14);
+  }
+  short opponentMaxNonArtilleryRange = opponent->maxNonArtilleryUnitRange42;
+  unsigned char enemyHasDeployedArtillery = OpponentHasDeployedActiveArtilleryUnit();
+
+  CIterator applyIter(unitList4);
+  for (TTacticalUnit* record = static_cast<TTacticalUnit*>(applyIter.Reset()); applyIter.More();
+       record = static_cast<TTacticalUnit*>(applyIter.Advance())) {
+    if (g_awTacticalUnitCategoryCodeBySlot[record->unitTypeC] == 8) {
+      // Fort-wall reference tile (grid index 174 = row 6, column 0); deployMark8 > 1
+      // is the standing wall level.
+      if (battle14->tileGrid4[174].deployMark8 > 1) {
+        record->aiStateCode2c = 0xd;
+      } else {
+        record->aiStateCode2c = 0xc;
+      }
+      continue;
+    }
+    switch (g_awTacticalUnitAiClassByUnitType_006693B8[record->unitTypeC]) {
+    case 0:
+      if (record->GetUnitRange() > opponentMaxNonArtilleryRange) {
+        record->aiStateCode2c = 0x11;
+      } else if (g_awTacticalUnitCategoryCodeBySlot[record->unitTypeC] == 1) {
+        record->aiStateCode2c = enemyHasDeployedArtillery != 0 ? 0x10 : 0xa;
+      } else {
+        record->aiStateCode2c = 1;
+      }
+      break;
+    case 1:
+    case 3:
+      record->aiStateCode2c = 0xe;
+      break;
+    case 2:
+      if (g_awTacticalUnitCategoryCodeBySlot[record->unitTypeC] == 6) {
+        record->aiStateCode2c = 0x11;
+      } else {
+        record->aiStateCode2c = 8;
+      }
+      break;
+    case 4:
+      record->aiStateCode2c = 0xb;
+      break;
+    }
+  }
 }
 
+// Mode 4 (attacker assault): same class-0/class-2 logic as the siege profile but
+// infantry defaults to hold (7), cavalry/flankers(classes 1,3) get 5, and class 4
+// splits sapper (category 8 -> 0xc) vs 0xb. No state1c filter.
 // FUNCTION: IMPERIALISM 0x0059d020
-void TArmyPlayer::ApplyTacticalCursorModeProfile4_ClassAware() {
-  // TODO: port body @ 0x59d020.
+void TArmyPlayer::ApplyAttackerAssaultStanceByActionClass() {
+  TArmyPlayer* opponent;
+  if (isOurSideFlagC != 0) {
+    opponent = static_cast<TArmyPlayer*>(battle14->tacticalPlayer18);
+  } else {
+    opponent = static_cast<TArmyPlayer*>(battle14->tacticalPlayer14);
+  }
+  short opponentMaxNonArtilleryRange = opponent->maxNonArtilleryUnitRange42;
+  unsigned char enemyHasDeployedArtillery = OpponentHasDeployedActiveArtilleryUnit();
+
+  CIterator applyIter(unitList4);
+  for (TTacticalUnit* record = static_cast<TTacticalUnit*>(applyIter.Reset()); applyIter.More();
+       record = static_cast<TTacticalUnit*>(applyIter.Advance())) {
+    switch (g_awTacticalUnitAiClassByUnitType_006693B8[record->unitTypeC]) {
+    case 0:
+      if (record->GetUnitRange() > opponentMaxNonArtilleryRange) {
+        record->aiStateCode2c = 0x11;
+      } else if (g_awTacticalUnitCategoryCodeBySlot[record->unitTypeC] == 1) {
+        record->aiStateCode2c = enemyHasDeployedArtillery != 0 ? 0x10 : 0xa;
+      } else {
+        record->aiStateCode2c = 7;
+      }
+      break;
+    case 1:
+    case 3:
+      record->aiStateCode2c = 5;
+      break;
+    case 2:
+      if (g_awTacticalUnitCategoryCodeBySlot[record->unitTypeC] == 6) {
+        record->aiStateCode2c = 0x11;
+      } else {
+        record->aiStateCode2c = 8;
+      }
+      break;
+    case 4:
+      if (g_awTacticalUnitCategoryCodeBySlot[record->unitTypeC] == 8) {
+        record->aiStateCode2c = 0xc;
+      } else {
+        record->aiStateCode2c = 0xb;
+      }
+      break;
+    }
+  }
 }
 
+// Mode 5 (attacker cautious/standoff): byte-for-byte the mode-4 profile except
+// cavalry/flankers(classes 1,3) get 2 instead of 5.
 // FUNCTION: IMPERIALISM 0x0059d1a0
-void TArmyPlayer::ApplyTacticalCursorModeProfile5_ClassAware() {
-  // TODO: port body @ 0x59d1a0.
+void TArmyPlayer::ApplyAttackerStandoffStanceByActionClass() {
+  TArmyPlayer* opponent;
+  if (isOurSideFlagC != 0) {
+    opponent = static_cast<TArmyPlayer*>(battle14->tacticalPlayer18);
+  } else {
+    opponent = static_cast<TArmyPlayer*>(battle14->tacticalPlayer14);
+  }
+  short opponentMaxNonArtilleryRange = opponent->maxNonArtilleryUnitRange42;
+  unsigned char enemyHasDeployedArtillery = OpponentHasDeployedActiveArtilleryUnit();
+
+  CIterator applyIter(unitList4);
+  for (TTacticalUnit* record = static_cast<TTacticalUnit*>(applyIter.Reset()); applyIter.More();
+       record = static_cast<TTacticalUnit*>(applyIter.Advance())) {
+    switch (g_awTacticalUnitAiClassByUnitType_006693B8[record->unitTypeC]) {
+    case 0:
+      if (record->GetUnitRange() > opponentMaxNonArtilleryRange) {
+        record->aiStateCode2c = 0x11;
+      } else if (g_awTacticalUnitCategoryCodeBySlot[record->unitTypeC] == 1) {
+        record->aiStateCode2c = enemyHasDeployedArtillery != 0 ? 0x10 : 0xa;
+      } else {
+        record->aiStateCode2c = 7;
+      }
+      break;
+    case 1:
+    case 3:
+      record->aiStateCode2c = 2;
+      break;
+    case 2:
+      if (g_awTacticalUnitCategoryCodeBySlot[record->unitTypeC] == 6) {
+        record->aiStateCode2c = 0x11;
+      } else {
+        record->aiStateCode2c = 8;
+      }
+      break;
+    case 4:
+      if (g_awTacticalUnitCategoryCodeBySlot[record->unitTypeC] == 8) {
+        record->aiStateCode2c = 0xc;
+      } else {
+        record->aiStateCode2c = 0xb;
+      }
+      break;
+    }
+  }
 }
 
+// Mode 6 (unopposed -- the enemy has no active unit left): fixed stance per class
+// with no range/opponent checks: infantry 7, cavalry/flankers 5, artillery 8, class 4
+// splits sapper (category 8 -> 0xc) vs 0xb. No state1c filter.
 // FUNCTION: IMPERIALISM 0x0059d320
-void TArmyPlayer::ApplyTacticalCursorModeProfile6_DefaultByActionClass() {
-  // TODO: port body @ 0x59d320.
+void TArmyPlayer::ApplyUnopposedAdvanceStanceByActionClass() {
+  CIterator applyIter(unitList4);
+  for (TTacticalUnit* record = static_cast<TTacticalUnit*>(applyIter.Reset()); applyIter.More();
+       record = static_cast<TTacticalUnit*>(applyIter.Advance())) {
+    switch (g_awTacticalUnitAiClassByUnitType_006693B8[record->unitTypeC]) {
+    case 0:
+      record->aiStateCode2c = 7;
+      break;
+    case 1:
+    case 3:
+      record->aiStateCode2c = 5;
+      break;
+    case 2:
+      record->aiStateCode2c = 8;
+      break;
+    case 4:
+      if (g_awTacticalUnitCategoryCodeBySlot[record->unitTypeC] == 8) {
+        record->aiStateCode2c = 0xc;
+      } else {
+        record->aiStateCode2c = 0xb;
+      }
+      break;
+    }
+  }
+}
+
+// Whether the opposing side has a deployed (tileIndex8 >= 0), still-active
+// (state1c == 0) artillery-class (aiClass 2) unit.
+// FUNCTION: IMPERIALISM 0x0059d470
+unsigned char TArmyPlayer::OpponentHasDeployedActiveArtilleryUnit() {
+  TList* opponentUnitList;
+  if (isOurSideFlagC != 0) {
+    opponentUnitList = battle14->tacticalPlayer18->unitList4;
+  } else {
+    opponentUnitList = battle14->tacticalPlayer14->unitList4;
+  }
+  CIterator enemyIter(opponentUnitList);
+  for (TTacticalUnit* record = static_cast<TTacticalUnit*>(enemyIter.Reset()); enemyIter.More();
+       record = static_cast<TTacticalUnit*>(enemyIter.Advance())) {
+    if (record->tileIndex8 >= 0 &&
+        g_awTacticalUnitAiClassByUnitType_006693B8[record->unitTypeC] == 2 &&
+        record->state1c == 0) {
+      return 1;
+    }
+  }
+  return 0;
 }
 
 // Weighted tile chooser for the auto-turn controller: builds the distance field when

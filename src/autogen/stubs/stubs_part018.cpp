@@ -851,14 +851,6 @@ undefined4 SetLinkedListNodeField2CTo13ForAllNodes(void)
   return 0;
 }
 
-// ghidra_name HasReachableActiveArtilleryClassCursorEntry
-// ghidra_proto undefined HasReachableActiveArtilleryClassCursorEntry()
-// FUNCTION: IMPERIALISM 0x0059d470
-undefined4 HasReachableActiveArtilleryClassCursorEntry(void)
-{
-  return 0;
-}
-
 // ghidra_name BuildTacticalActionClassAndPositionFlags
 // ghidra_proto undefined BuildTacticalActionClassAndPositionFlags()
 // FUNCTION: IMPERIALISM 0x0059e8a0
