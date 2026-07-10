@@ -7975,7 +7975,7 @@
     },
     {
       "address": "0x4a9450",
-      "matching": 0.4489795918367347,
+      "matching": 0.4897959183673469,
       "name": "TArmyUnitView::CreateObject",
       "type": 1
     },
@@ -7999,7 +7999,7 @@
     },
     {
       "address": "0x4a95b0",
-      "matching": 0.008695652173913044,
+      "matching": 0.5286783042394015,
       "name": "TArmyUnitView::ApplyRectSlot110",
       "type": 1
     },
