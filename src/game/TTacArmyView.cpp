@@ -11,6 +11,7 @@
 #include "game/bitmap_descriptor_helpers.h"
 #include "game/global_data_tables.h"
 #include "game/quickdraw_guards.h"
+#include "game/quickdraw_regions.h"
 #include "game/quickdraw_rendering.h"
 #include "game/ui_control_tags.h"
 #include "game/ui_invalidation_guard.h"
@@ -258,8 +259,25 @@ void TTacArmyView::ApplyRectSlot110(RECT* rectBuffer) {
 
 // FUNCTION: IMPERIALISM 0x005aa900
 undefined TTacArmyView::DrawTacticalTileInClipRect(int tileIndex, RECT* clipRect) {
-  // TODO: port body @ 0x5aa900 (per-tile terrain/unit/effect draw).
-  (void)tileIndex;
-  (void)clipRect;
+  int row = tileIndex / tileColumnsPerRow80;
+  int x = (tileIndex % tileColumnsPerRow80) * tileWidthPx88 - viewOriginX78;
+  if (row & 1) {
+    x += tileWidthPx88 / 2;
+  }
+  int y = row * tileRowHeightPx8C;
+  RECT tileScreenRect = {x, y, x + tileWidthPx88, y + tileRowHeightPx8C};
+  RECT scratchRect;
+  if (!SectRect(&tileScreenRect, clipRect, &scratchRect)) {
+    return 0;
+  }
+
+  // TODO(codegen): the rest of the original (terrain-edge blend selection using
+  // tileGrid4/deployMark8/trenchMask10 and a 36-entry edge-blend table, the unit
+  // sprite draw dispatch, the hex-selection outline, and the fort-height indicator
+  // bars) is severely decompiler-degraded here (Ghidra flags "type propagation
+  // algorithm not settling"; nearly every call's argument list is dropped). Needs a
+  // raw-disassembly-driven follow-up pass rather than a guessed transcription. Left
+  // unmodeled.
+  (void)tileScreenRect;
   return 0;
 }
