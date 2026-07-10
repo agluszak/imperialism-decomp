@@ -227,14 +227,6 @@ undefined4 WrapperFor_ftol_At005a67e0(void)
   return 0;
 }
 
-// ghidra_name ClipRect_AdjustOffset_Validate
-// ghidra_proto undefined4 __stdcall ClipRect_AdjustOffset_Validate(int * bounds, astruct_15 * param_2, astruct_16 * param_3)
-// FUNCTION: IMPERIALISM 0x005a6940
-undefined4 ClipRect_AdjustOffset_Validate(void)
-{
-  return 0;
-}
-
 // ghidra_name OrphanLeaf_NoCall_Ins838_005a6a20
 // ghidra_proto undefined OrphanLeaf_NoCall_Ins838_005a6a20()
 // FUNCTION: IMPERIALISM 0x005a6a20

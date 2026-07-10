@@ -1086,3 +1086,34 @@ headers before splicing.
     second slot (0x59c440, 46.8% → 68.4%). Conversely a recomp frame LARGER than the
     original means block-scoped aggregates (RECTs) that the original reused as one or
     two function-scope buffers.
+
+68. **A `func_0x` callee with an apparently different arg count at each call site is
+    the ILT-thunk-ambiguity smell, not evidence of two functions.** `just ghidra-listing
+    0xTHUNK` resolves the single real jmp target; if the decompiled param count still
+    varies by call site (one shows zero args, another shows two), that's the
+    decompiler failing calling-convention attribution at that specific site, not a
+    real overload — read the callee's own decompile (its declared signature is ground
+    truth) rather than trusting each call site's apparent arg list. When the callee
+    turns out to be a genuinely murky/deep dependency (an MFC-internal-shaped cache
+    with hash buckets and `CPlex`, or a whole GDI/CDC blit branch nothing currently
+    exercises), it's fine to port the caller's shape faithfully and leave that one
+    branch as a documented `// TODO(class-recovery)` no-op rather than chasing three
+    more levels of unrecovered class layout — confirm first that no current caller's
+    arguments actually reach the branch (e.g. every caller passes the sentinel/null
+    that skips it) before leaving it unmodeled.
+
+69. **Retiring a `reinterpret_cast<void(__stdcall*)(...)>(StubName)` bridge is a single
+    fix applied at the declaration, not N per-callsite fixes.** Grep for the bridge
+    pattern repo-wide before porting a stub free function — if 5+ files already call it
+    through identical casts, porting the real typed signature once and then
+    mechanically stripping the cast at each site (`sed`, since the pattern is
+    syntactically uniform) both retires the anti-pattern and validates the ported
+    signature (every call site's literal args must satisfy it, e.g. consistent
+    `unsigned int` cast confirms real `__stdcall(unsigned int)`).
+
+70. **MSVC500 for-loop-declared variables leak into the enclosing block scope (C89
+    rules), so two sibling `for (int count = ...)` loops in the same braces is
+    `error C2374: redefinition`.** Ghidra's decompile reuses one Ghidra-local name
+    (`count`) for both loops since it doesn't model C++ block scoping; give each loop
+    its own name when porting (`dwordCount`, `byteCount`) instead of copying the
+    Ghidra name verbatim.

@@ -12,7 +12,10 @@
 #include "game/TTacticalBattle.h"
 #include "game/TTacticalPlayer.h"
 #include "game/TTacticalUnit.h"
+#include "game/TQuickDrawSurfaceContext.h"
 #include "game/global_data_tables.h"
+#include "game/quickdraw_rendering.h"
+#include "game/startup_helpers.h"
 #include "game/ui_control_tags.h"
 // SYNTHETIC: IMPERIALISM 0x005a82b0
 // TTacticalBattleView::CreateObject
@@ -205,6 +208,7 @@ extern undefined4 NoOpModalAnimWaitBracketHookB_00498c80(void);
 // frames, `mode` ticks per frame, registry tag = tileIndex), registers it with the
 // UI animator, then pumps UI messages modally until the animation completes; finally
 // invalidates the rect and drops the registry entry.
+
 // FUNCTION: IMPERIALISM 0x005a9170
 undefined TTacticalBattleView::RunOneTimeAnimationModalWaitAndInvalidateCityDialog(
     RECT* rect, int effectId, int frameCount, int tileIndex, int mode) {
@@ -303,7 +307,121 @@ undefined TTacticalBattleView::AnimateTacticalUnitMoveBetweenTiles(TTacticalUnit
 }
 
 // FUNCTION: IMPERIALISM 0x005a9550
-void TTacticalBattleView::DrawUiTilesAndOverlay() {}
+void TTacticalBattleView::DrawUiTilesAndOverlay() {
+  if (moveAnimUnitOffsetXA4 == -1) {
+    return;
+  }
+  SetQuickDrawFillColor(0);
+  int slotIndex = 0;
+  do {
+    unsigned int frameStartTick = GetTickCountDiv16();
+    int rowOffsetPx = slotIndex * moveAnimStepYA0;
+    int colOffsetPx = slotIndex * moveAnimStepX9C;
+
+    // Save the current on-screen animation-rect background into the scratch surface.
+    RECT screenRect = moveAnimScreenRectC0;
+    RECT scratchRect;
+    scratchRect.left = 0;
+    scratchRect.top = 0;
+    scratchRect.right = tileWidthPx88 << 1;
+    scratchRect.bottom = tileRowHeightPx8C * 3;
+    RECT primaryClipRect;
+    CopyRect(&primaryClipRect, &g_pPrimaryRenderSurfaceContext->clipRect);
+    if (ClipSrcRectToBoundsAndOffsetDstRect(&primaryClipRect, &scratchRect, &screenRect)) {
+      if (unitSpriteScratchSurfaceBC->surfaceDib != 0) {
+        int scratchDibHeight =
+            unitSpriteScratchSurfaceBC->surfaceDib->m_pInfoHeader->bmiHeader.biHeight;
+        if (scratchDibHeight < 1) {
+          scratchDibHeight = -scratchDibHeight;
+        }
+        OffsetRect(&scratchRect, 0, (scratchDibHeight - scratchRect.top) - scratchRect.bottom);
+      }
+      if (g_pPrimaryRenderSurfaceContext->surfaceDib != 0) {
+        int primaryDibHeight =
+            g_pPrimaryRenderSurfaceContext->surfaceDib->m_pInfoHeader->bmiHeader.biHeight;
+        if (primaryDibHeight < 1) {
+          primaryDibHeight = -primaryDibHeight;
+        }
+        OffsetRect(&screenRect, 0, (primaryDibHeight - screenRect.top) - screenRect.bottom);
+      }
+      BlitQuickDrawSurfaces(g_pPrimaryRenderSurfaceContext->GetBlitSurface(),
+                            unitSpriteScratchSurfaceBC->GetBlitSurface(), &screenRect, &scratchRect,
+                            0);
+    }
+
+    // Draw the unit sprite for this animation frame onto the scratch surface
+    // (transparent-color blit) at its per-frame offset within the anim rect.
+    RECT tileRect;
+    tileRect.left = colOffsetPx + moveAnimUnitOffsetXA4;
+    tileRect.top = (rowOffsetPx - unitSpriteCellHeight94) + moveAnimUnitOffsetYA8;
+    tileRect.bottom = moveAnimUnitOffsetYA8 + rowOffsetPx;
+    tileRect.right = colOffsetPx + unitSpriteCellWidth90 + moveAnimUnitOffsetXA4;
+
+    ResetQuickDrawStrokeState();
+    UpdatePaletteIndexWithDefaultFallback(0x10);
+
+    RECT spriteSrcRect = moveAnimSpriteSrcRectAC;
+    RECT atlasClipRect;
+    CopyRect(&atlasClipRect, &unitSpriteAtlasSurface68->clipRect);
+    if (ClipSrcRectToBoundsAndOffsetDstRect(&atlasClipRect, &tileRect, &spriteSrcRect)) {
+      if (unitSpriteAtlasSurface68->surfaceDib != 0) {
+        int atlasDibHeight =
+            unitSpriteAtlasSurface68->surfaceDib->m_pInfoHeader->bmiHeader.biHeight;
+        if (atlasDibHeight < 1) {
+          atlasDibHeight = -atlasDibHeight;
+        }
+        OffsetRect(&spriteSrcRect, 0, (atlasDibHeight - spriteSrcRect.top) - spriteSrcRect.bottom);
+      }
+      if (unitSpriteScratchSurfaceBC->surfaceDib != 0) {
+        int scratchDibHeight2 =
+            unitSpriteScratchSurfaceBC->surfaceDib->m_pInfoHeader->bmiHeader.biHeight;
+        if (scratchDibHeight2 < 1) {
+          scratchDibHeight2 = -scratchDibHeight2;
+        }
+        OffsetRect(&tileRect, 0, (scratchDibHeight2 - tileRect.top) - tileRect.bottom);
+      }
+      BlitQuickDrawSurfaces(unitSpriteAtlasSurface68->GetBlitSurface(),
+                            unitSpriteScratchSurfaceBC->GetBlitSurface(), &spriteSrcRect, &tileRect,
+                            0x24);
+    }
+
+    // Composite the finished scratch tile back onto the active surface, clipped to
+    // the view's own frame bounds.
+    SetQuickDrawStrokeColor(0xffffff);
+    RECT compositeSrcRect = moveAnimScreenRectC0;
+    RECT compositeDstRect = {0, 0, tileWidthPx88 << 1, tileRowHeightPx8C * 3};
+    RECT frameBoundsRect = {g_nUiFrameClipOriginX, g_nUiFrameClipOriginY, frameWidth34,
+                            frameHeight38};
+    if (ClipSrcRectToBoundsAndOffsetDstRect(&frameBoundsRect, &compositeDstRect,
+                                            &compositeSrcRect)) {
+      if (g_pActiveQuickDrawSurfaceContext->surfaceDib != 0) {
+        int activeDibHeight =
+            g_pActiveQuickDrawSurfaceContext->surfaceDib->m_pInfoHeader->bmiHeader.biHeight;
+        if (activeDibHeight < 1) {
+          activeDibHeight = -activeDibHeight;
+        }
+        OffsetRect(&compositeSrcRect, 0,
+                   (activeDibHeight - compositeSrcRect.top) - compositeSrcRect.bottom);
+      }
+      BlitQuickDrawSurfaces(unitSpriteScratchSurfaceBC->GetBlitSurface(),
+                            g_pActiveQuickDrawSurfaceContext->GetBlitSurface(), &compositeDstRect,
+                            &compositeSrcRect, 0);
+    }
+
+    unsigned int nowTick;
+    do {
+      nowTick = GetTickCountDiv16();
+      if (frameStartTick + 2 <= nowTick) {
+        break;
+      }
+    } while (frameStartTick <= nowTick);
+
+    ++slotIndex;
+  } while (slotIndex < 4);
+
+  InvalidateCityDialogRectRegion(&moveAnimScreenRectC0, 1);
+  moveAnimUnitOffsetXA4 = -1;
+}
 
 // Promoted tactical-UI helpers (called from the TTacticalBattle command handlers).
 

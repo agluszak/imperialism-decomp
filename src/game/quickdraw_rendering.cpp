@@ -224,6 +224,19 @@ void SetGlobalBlitTransparentColorRaw(int transparentColor) {
   g_uQuickDrawStrokeColor = transparentColor;
 }
 
+// FUNCTION: IMPERIALISM 0x004951e0
+void UpdatePaletteIndexWithDefaultFallback(unsigned int paletteIndex) {
+  if ((short)paletteIndex == -1) {
+    // TODO(class-recovery): the original resolves this from the default cached
+    // bitmap resource (id 0x3b6) via a TMacViewMgr-owned refcounted resource cache
+    // (TMacViewMgr::ResolveBmpResourceHandleWithDefault3B6, 0x004995c0) and reads
+    // GetNearestPaletteIndex(cacheNode->hPalette, 0xffffff) from it. That cache's
+    // node layout isn't recovered yet, so the fallback itself isn't modeled. Every
+    // current caller passes a real index (0x10/0x13), never -1.
+  }
+  g_uQuickDrawStrokeColor = (paletteIndex & 0xffff) | 0x1000000;
+}
+
 // FUNCTION: IMPERIALISM 0x00495230
 void SetQuickDrawTextFont(short value) {
   if (g_QuickDrawMeasureFontPreset.mode != value) {
@@ -281,6 +294,69 @@ CRgn* EnsureGlobalClipRegionHandleObject() {
 void SetGlobalQuickDrawOrigin(short originX, short originY) {
   g_nQuickDrawOriginX = originX;
   g_nQuickDrawOriginY = originY;
+}
+
+// FUNCTION: IMPERIALISM 0x00496d40
+void __stdcall BlitRectWithOptionalTransparency(TQuickDrawBlitSurface* srcSurface,
+                                                TQuickDrawBlitSurface* dstSurface, RECT* srcRect,
+                                                RECT* dstRect, unsigned char blitFlags,
+                                                void* renderCtx) {
+  if (dstSurface == g_defaultQuickDrawSurfaceSentinel.GetBlitSurface() || renderCtx != nullptr) {
+    // TODO(class-recovery): GDI/CDC path -- draws straight to the real screen surface
+    // (or through a caller-supplied clip region) via CreateCompatibleDC/BitBlt (or
+    // StretchDIBits for the blitFlags&0x24 case). Not modeled: renderCtx's real type
+    // is unrecovered and every current caller (all via BlitQuickDrawSurfaces) passes
+    // dstSurface != the screen sentinel and renderCtx == null, so this path is dead
+    // for all current call sites.
+  } else {
+    int rowCount = srcRect->bottom - srcRect->top;
+    if (rowCount < 0) {
+      rowCount = -rowCount;
+    }
+    int rowBytes = srcRect->right - srcRect->left;
+    int srcPitch = srcSurface->stride;
+    int dstPitch = dstSurface->stride;
+    char* srcPtr =
+        static_cast<char*>(srcSurface->pixelBits) + srcRect->top * srcPitch + srcRect->left;
+    char* dstPtr =
+        static_cast<char*>(dstSurface->pixelBits) + dstRect->top * dstPitch + dstRect->left;
+    if ((blitFlags & 0x24) == 0x24) {
+      char transparentColor = static_cast<char>(g_uQuickDrawStrokeColor);
+      for (; rowCount != 0; --rowCount) {
+        for (int count = rowBytes; count != 0; --count) {
+          char srcPixel = *srcPtr++;
+          if (srcPixel != transparentColor) {
+            *dstPtr = srcPixel;
+          }
+          ++dstPtr;
+        }
+        srcPtr += srcPitch - rowBytes;
+        dstPtr += dstPitch - rowBytes;
+      }
+    } else {
+      for (; rowCount != 0; --rowCount) {
+        char* rowSrcPtr = srcPtr;
+        char* rowDstPtr = dstPtr;
+        for (int dwordCount = rowBytes >> 2; dwordCount != 0; --dwordCount) {
+          *reinterpret_cast<unsigned int*>(rowDstPtr) = *reinterpret_cast<unsigned int*>(rowSrcPtr);
+          rowSrcPtr += 4;
+          rowDstPtr += 4;
+        }
+        for (int byteCount = rowBytes & 3; byteCount != 0; --byteCount) {
+          *rowDstPtr++ = *rowSrcPtr++;
+        }
+        srcPtr += srcPitch;
+        dstPtr += dstPitch;
+      }
+    }
+  }
+  if (renderCtx != nullptr) {
+    CDC* dc = g_pQuickDrawMemoryDc;
+    if (dc == nullptr) {
+      dc = g_pScopedMapQuickDrawDcHandleObject;
+    }
+    dc->SelectClipRgn(0);
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x00497c80
@@ -386,6 +462,27 @@ void FillRectWithQuickDrawBrushAndContextOffset(RECT* rect) {
   if (dc != nullptr) {
     FillRect(dc->GetSafeHdc(), &fillRect, static_cast<HBRUSH>(brush.GetSafeHandle()));
   }
+}
+
+// FUNCTION: IMPERIALISM 0x005a6940
+BOOL __stdcall ClipSrcRectToBoundsAndOffsetDstRect(RECT* bounds, RECT* dstRect, RECT* srcRect) {
+  if (srcRect->top < bounds->top) {
+    dstRect->top += bounds->top - srcRect->top;
+    srcRect->top = bounds->top;
+  }
+  if (bounds->bottom < srcRect->bottom) {
+    dstRect->bottom += bounds->bottom - srcRect->bottom;
+    srcRect->bottom = bounds->bottom;
+  }
+  if (srcRect->left < bounds->left) {
+    dstRect->left += bounds->left - srcRect->left;
+    srcRect->left = bounds->left;
+  }
+  if (bounds->right < srcRect->right) {
+    dstRect->right += bounds->right - srcRect->right;
+    srcRect->right = bounds->right;
+  }
+  return srcRect->left < srcRect->right && srcRect->top < srcRect->bottom;
 }
 
 // FUNCTION: IMPERIALISM 0x005c3d20

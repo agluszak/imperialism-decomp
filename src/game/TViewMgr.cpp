@@ -67,7 +67,6 @@ undefined4 HandleTurnEvent8FC_RebuildPageTabsAndTitles(void);
 // Free-function thunks reached through the ILT jump table; declared in the generic
 // repo form and invoked through typed __cdecl casts at the callsites.
 undefined4 SetQuickDrawFillColorFromPaletteIndex(void);
-undefined4 UpdatePaletteIndexWithDefaultFallback(void);
 // ILT thunk (generic form per repo policy; typed cast applied at the callsite).
 undefined4 thunk_DispatchLocalizedUiMessageWithTemplateA13A0(void);
 undefined4 InitializeHotKeyDialogTemplateA1WithTripleTextState(void);
@@ -325,7 +324,7 @@ void TViewMgr::ApplyTurnEventPaletteColorByEventCode(int eventCode) {
 // FUNCTION: IMPERIALISM 0x005d5780
 void TViewMgr::UpdatePaletteIndexFromTurnEventCode(int eventCode) {
   int paletteIndex = this->MapTurnEventCodeToPaletteIndex(eventCode);
-  reinterpret_cast<void(__cdecl*)(int)>(UpdatePaletteIndexWithDefaultFallback)(paletteIndex);
+  UpdatePaletteIndexWithDefaultFallback(paletteIndex);
 }
 
 // FUNCTION: IMPERIALISM 0x005d57b0

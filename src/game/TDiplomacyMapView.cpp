@@ -26,12 +26,10 @@
 #include "game/TCursorControlPanel.h"
 
 undefined4 RenderTerrainAndMinorNationLegendLabels(void);
-undefined4 BlitRectWithOptionalTransparency(void);
 undefined4 FrameRegionOnHdcAndReleaseBrushState(void);
 undefined4 MapTurnEventCodeToPaletteIndex(void);
 undefined4 BlitMonochromeMaskBytePatternToSurface(void);
 undefined4 thunk_AppendPackedColorDwordToMaskBuffers(void);
-undefined4 UpdatePaletteIndexWithDefaultFallback(void);
 undefined4 AppendPointerToGlobalVectorAsStatus(void);
 undefined4 thunk_WrapperFor_InvalidateCityDialogRectRegion_At004f6d90(void);
 undefined4 RunDiplomacyWaitSheetPopupAndAwaitResponse(void);
@@ -680,7 +678,7 @@ void TDiplomacyMapView::ForwardParam(int param) {
 // FUNCTION: IMPERIALISM 0x004f71a0
 void TDiplomacyMapView::RenderDiplomacyPendingPolicyIconsAndFrames() {
   ResetQuickDrawStrokeState();
-  reinterpret_cast<void(__cdecl*)(int)>(UpdatePaletteIndexWithDefaultFallback)(0x10);
+  UpdatePaletteIndexWithDefaultFallback(0x10);
 
   char* self = reinterpret_cast<char*>(this);
   short selectedTier = *reinterpret_cast<short*>(self + 0x528);
@@ -740,7 +738,7 @@ void TDiplomacyMapView::RenderDiplomacyPendingPolicyIconsAndFrames() {
     policyIndex += 1;
   } while (policyIndex < 0x180);
 
-  reinterpret_cast<void(__cdecl*)(int)>(UpdatePaletteIndexWithDefaultFallback)(0x13);
+  UpdatePaletteIndexWithDefaultFallback(0x13);
 }
 
 // FUNCTION: IMPERIALISM 0x005DA040

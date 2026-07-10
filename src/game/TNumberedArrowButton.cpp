@@ -50,7 +50,7 @@ void TNumberedArrowButton::OrphanCallChain_C2_I23_0058c360(short value86Arg, cha
 void TNumberedArrowButton::ApplyRectSlot110(RECT* rectBuffer) {
   (void)rectBuffer;
   const unsigned int kAddrStrategicMapViewSystem = 0x006A21A8;
-  reinterpret_cast<void(__stdcall*)(unsigned int)>(UpdatePaletteIndexWithDefaultFallback)(0x10);
+  UpdatePaletteIndexWithDefaultFallback(0x10);
   RECT srcRect;
   srcRect.left = (value86 != 2) ? 0xa : 0;
   srcRect.top = 0;
@@ -70,7 +70,7 @@ void TNumberedArrowButton::ApplyRectSlot110(RECT* rectBuffer) {
   BlitQuickDrawSurfaces(hintSource->GetBlitSurface(),
                         g_pActiveQuickDrawSurfaceContext->GetBlitSurface(), &srcRect, &dstRect,
                         0x24);
-  reinterpret_cast<void(__stdcall*)(unsigned int)>(UpdatePaletteIndexWithDefaultFallback)(0x13);
+  UpdatePaletteIndexWithDefaultFallback(0x13);
   ApplyUiTextStyleAndSyncColor(0, 10, 0x2b67);
   SetQuickDrawTextOriginWithContextOffset(7, 0);
   RefreshControl();

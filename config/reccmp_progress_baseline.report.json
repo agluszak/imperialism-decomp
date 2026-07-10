@@ -5958,7 +5958,7 @@
     },
     {
       "address": "0x4951e0",
-      "matching": 0.13333333333333333,
+      "matching": 0.5555555555555556,
       "name": "UpdatePaletteIndexWithDefaultFallback",
       "type": 1
     },
@@ -6162,7 +6162,7 @@
     },
     {
       "address": "0x496d40",
-      "matching": 0.0058997050147492625,
+      "matching": 0.09090909090909091,
       "name": "BlitRectWithOptionalTransparency",
       "type": 1
     },
@@ -7297,7 +7297,7 @@
     },
     {
       "address": "0x4a0280",
-      "matching": 0.26,
+      "matching": 0.25125628140703515,
       "name": "TFocusAnimation::Helper_Uses_BlitRectWithOptionalTransparency_At004a0280",
       "type": 1
     },
@@ -7339,7 +7339,7 @@
     },
     {
       "address": "0x4a05c0",
-      "matching": 0.6445497630331753,
+      "matching": 0.6285714285714286,
       "name": "TTransFocusAnimation::BlitTransientSurfaceToPrimaryRenderContextWithClip",
       "type": 1
     },
@@ -7351,7 +7351,7 @@
     },
     {
       "address": "0x4a0810",
-      "matching": 0.5245901639344263,
+      "matching": 0.512396694214876,
       "name": "TTransFocusAnimation::RenderBattleReportInsetWithPaletteShift",
       "type": 1
     },
@@ -10975,7 +10975,7 @@
     },
     {
       "address": "0x4cab10",
-      "matching": 0.8852459016393442,
+      "matching": 0.9,
       "name": "TOverlayRadioButton::ApplyRectSlot110",
       "type": 1
     },
@@ -11359,7 +11359,7 @@
     },
     {
       "address": "0x4d0650",
-      "matching": 0.2571428571428571,
+      "matching": 0.25120772946859904,
       "name": "TEngineerDialog::ApplyRectSlot110",
       "type": 1
     },
@@ -12362,7 +12362,7 @@
     },
     {
       "address": "0x4dd430",
-      "matching": 0.5142857142857142,
+      "matching": 0.5714285714285714,
       "name": "TGreatPower::ComputeRemainingDiplomacyAidBudget",
       "type": 1
     },
@@ -12806,7 +12806,8 @@
     },
     {
       "address": "0x4e0610",
-      "matching": 1.0,
+      "effective": true,
+      "matching": 0.42857142857142855,
       "name": "TGreatPower::ReturnFalseNationStateActionStub_8a",
       "type": 1
     },
@@ -12818,14 +12819,13 @@
     },
     {
       "address": "0x4e0690",
-      "effective": true,
-      "matching": 0.42857142857142855,
+      "matching": 1.0,
       "name": "TGreatPower::ReturnFalseNationStateCapabilityFlag90",
       "type": 1
     },
     {
       "address": "0x4e06d0",
-      "matching": 0.7619047619047619,
+      "matching": 0.8095238095238095,
       "name": "TGreatPower::SumNationRuntimeFiveBucketValue44",
       "type": 1
     },
@@ -12855,7 +12855,7 @@
     },
     {
       "address": "0x4e09a0",
-      "matching": 0.5421686746987951,
+      "matching": 0.5180722891566265,
       "name": "TGreatPower::ComputeCityOrderCapabilityAggregateScore",
       "type": 1
     },
@@ -13631,7 +13631,7 @@
     },
     {
       "address": "0x4ea0e0",
-      "matching": 0.723404255319149,
+      "matching": 0.6808510638297872,
       "name": "TAutoGreatPower::OrphanLeaf_NoCall_Ins02_004d7f00",
       "type": 1
     },
@@ -14718,7 +14718,7 @@
     },
     {
       "address": "0x4f6170",
-      "matching": 0.5309734513274337,
+      "matching": 0.5266272189349113,
       "name": "TDiplomacyMapView::RenderDiplomacyLegendSurfaceAndPresent",
       "type": 1
     },
@@ -14730,7 +14730,7 @@
     },
     {
       "address": "0x4f64c0",
-      "matching": 0.6141732283464567,
+      "matching": 0.6086956521739131,
       "name": "TDiplomacyMapView::RebuildDiplomacyLegendPaletteMode4AndBlit",
       "type": 1
     },
@@ -14748,7 +14748,7 @@
     },
     {
       "address": "0x4f6840",
-      "matching": 0.5534591194968553,
+      "matching": 0.5488958990536278,
       "name": "TDiplomacyMapView::RebuildDiplomacyLegendPaletteMode1AndBlit",
       "type": 1
     },
@@ -14772,7 +14772,7 @@
     },
     {
       "address": "0x4f71a0",
-      "matching": 0.604982206405694,
+      "matching": 0.6071428571428571,
       "name": "TDiplomacyMapView::RenderDiplomacyPendingPolicyIconsAndFrames",
       "type": 1
     },
@@ -15145,7 +15145,7 @@
     },
     {
       "address": "0x4fd000",
-      "matching": 0.832,
+      "matching": 0.816,
       "name": "TMapKey::RenderMapHintOverlayMode0",
       "type": 1
     },
@@ -17011,7 +17011,7 @@
     },
     {
       "address": "0x515b10",
-      "matching": 0.3167420814479638,
+      "matching": 0.3378995433789954,
       "name": "TMapMgr::MarkSeedNeighborTilesUnavailableByCapabilityMaskProfileB",
       "type": 1
     },
@@ -17821,7 +17821,7 @@
     },
     {
       "address": "0x523ff0",
-      "matching": 0.32038834951456313,
+      "matching": 0.3444976076555024,
       "name": "TMapDialog::OrphanRetStub_00596060",
       "type": 1
     },
@@ -18235,7 +18235,7 @@
     },
     {
       "address": "0x52cae0",
-      "matching": 0.3054662379421222,
+      "matching": 0.2976,
       "name": "BuildOverlaySpanRecordsFromQuadBorderLinks",
       "type": 1
     },
@@ -20169,7 +20169,7 @@
     },
     {
       "address": "0x53ceb0",
-      "matching": 0.450261780104712,
+      "matching": 0.4479166666666667,
       "name": "ComputeArmyMissionCompositionAlignmentScore",
       "type": 1
     },
@@ -21273,7 +21273,7 @@
     },
     {
       "address": "0x545940",
-      "matching": 0.4269553975436328,
+      "matching": 0.38170652876535227,
       "name": "TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine",
       "type": 1
     },
@@ -22263,13 +22263,13 @@
     },
     {
       "address": "0x553b10",
-      "matching": 0.4827586206896552,
+      "matching": 0.6206896551724138,
       "name": "HasNoMapOrderEntryChildrenQueued",
       "type": 1
     },
     {
       "address": "0x553b50",
-      "matching": 0.5818181818181818,
+      "matching": 0.5454545454545454,
       "name": "HasActiveMapOrderEntryChildren",
       "type": 1
     },
@@ -24148,7 +24148,7 @@
     },
     {
       "address": "0x56e370",
-      "matching": 0.5755813953488372,
+      "matching": 0.5806451612903226,
       "name": "TTwoPicSlider::ApplyRectSlot110",
       "type": 1
     },
@@ -27203,7 +27203,7 @@
     },
     {
       "address": "0x588690",
-      "matching": 0.5185185185185185,
+      "matching": 0.5139318885448917,
       "name": "TAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache",
       "type": 1
     },
@@ -27563,7 +27563,7 @@
     },
     {
       "address": "0x58b4f0",
-      "matching": 0.4888888888888889,
+      "matching": 0.4835164835164835,
       "name": "TCivilianButton::ApplyRectSlot110",
       "type": 1
     },
@@ -27743,7 +27743,7 @@
     },
     {
       "address": "0x58c3d0",
-      "matching": 0.22321428571428573,
+      "matching": 0.21428571428571427,
       "name": "TNumberedArrowButton::ApplyRectSlot110",
       "type": 1
     },
@@ -29463,7 +29463,7 @@
     },
     {
       "address": "0x5a1520",
-      "matching": 0.5259259259259259,
+      "matching": 0.48148148148148145,
       "name": "TTacticalBattle::MoveTacticalUnitTowardTile",
       "type": 1
     },
@@ -29991,7 +29991,7 @@
     },
     {
       "address": "0x5a6940",
-      "matching": 0.031746031746031744,
+      "matching": 0.8360655737704918,
       "name": "ClipRect_AdjustOffset_Validate",
       "type": 1
     },
@@ -30099,7 +30099,7 @@
     },
     {
       "address": "0x5a8ac0",
-      "matching": 0.6086956521739131,
+      "matching": 0.6867469879518072,
       "name": "TTacticalBattleView::CenterViewportAroundGridIndexAndSnap",
       "type": 1
     },
@@ -30123,7 +30123,7 @@
     },
     {
       "address": "0x5a9090",
-      "matching": 0.8208955223880597,
+      "matching": 0.8805970149253731,
       "name": "TTacticalBattleView::PlayTacticalTileEffect",
       "type": 1
     },
@@ -30135,13 +30135,13 @@
     },
     {
       "address": "0x5a9240",
-      "matching": 0.5397590361445783,
+      "matching": 0.5533980582524272,
       "name": "TTacticalBattleView::AnimateTacticalUnitMoveBetweenTiles",
       "type": 1
     },
     {
       "address": "0x5a9550",
-      "matching": 0.006734006734006734,
+      "matching": 0.22984562607204118,
       "name": "TTacticalBattleView::DrawUiTilesAndOverlay",
       "type": 1
     },
@@ -30183,13 +30183,13 @@
     },
     {
       "address": "0x5a9d90",
-      "matching": 0.6185897435897436,
+      "matching": 0.6163723916532905,
       "name": "TTacArmyView::ConstructTTacArmyViewBaseState",
       "type": 1
     },
     {
       "address": "0x5aa2e0",
-      "matching": 0.2909930715935335,
+      "matching": 0.2877030162412993,
       "name": "TTacArmyView::ApplyRectSlot110",
       "type": 1
     },

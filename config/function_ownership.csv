@@ -779,6 +779,7 @@ address|target_cpp|ownership|note
 495070|src/game/quickdraw_rendering.cpp|manual|marker_sync
 4950a0|src/game/quickdraw_rendering.cpp|manual|marker_sync
 4950d0|src/game/quickdraw_rendering.cpp|manual|marker_sync
+4951e0|src/game/quickdraw_rendering.cpp|manual|marker_sync
 495230|src/game/quickdraw_rendering.cpp|manual|marker_sync
 495260|src/game/quickdraw_rendering.cpp|manual|marker_sync
 495290|src/game/quickdraw_rendering.cpp|manual|marker_sync
@@ -805,6 +806,7 @@ address|target_cpp|ownership|note
 496270|src/game/bitmap_descriptor_helpers.cpp|manual|marker_sync
 4962a0|src/game/bitmap_descriptor_helpers.cpp|manual|marker_sync
 4962c0|src/game/bitmap_descriptor_helpers.cpp|manual|marker_sync
+496d40|src/game/quickdraw_rendering.cpp|manual|marker_sync
 497230|src/game/startup_helpers.cpp|manual|marker_sync
 4972a0|src/game/TDisplayMgr.cpp|manual|marker_sync
 4972c0|src/game/bitmap_descriptor_helpers.cpp|manual|marker_sync
@@ -4197,6 +4199,7 @@ address|target_cpp|ownership|note
 5a6540|src/game/TNextMoveCommand.cpp|manual|marker_sync
 5a6590|src/game/TNextMoveCommand.cpp|manual|marker_sync
 5a6620|src/game/TNextMoveCommand.cpp|manual|marker_sync
+5a6940|src/game/quickdraw_rendering.cpp|manual|marker_sync
 5a82b0|src/game/TTacticalBattleView.cpp|manual|marker_sync
 5a8330|src/game/TTacticalBattleView.cpp|manual|marker_sync
 5a83c0|src/game/TTacticalBattleView.cpp|manual|marker_sync

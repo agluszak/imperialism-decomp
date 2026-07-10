@@ -499,14 +499,6 @@ undefined4 SetQuickDrawFillColorFromPaletteIndex(void)
   return 0;
 }
 
-// ghidra_name UpdatePaletteIndexWithDefaultFallback
-// ghidra_proto void __stdcall UpdatePaletteIndexWithDefaultFallback(uint palette_index)
-// FUNCTION: IMPERIALISM 0x004951e0
-undefined4 UpdatePaletteIndexWithDefaultFallback(void)
-{
-  return 0;
-}
-
 // ghidra_name RenderUiBitmapOnRuntimeSurfaceContext_Impl
 // ghidra_proto undefined RenderUiBitmapOnRuntimeSurfaceContext_Impl()
 // FUNCTION: IMPERIALISM 0x004953e0
@@ -599,14 +591,6 @@ undefined4 OrphanCallChain_C42_I285_004967e0(void)
 // ghidra_proto undefined BlitBitmapResourceToTemporaryCompatibleDcAndPresent()
 // FUNCTION: IMPERIALISM 0x00496b80
 undefined4 BlitBitmapResourceToTemporaryCompatibleDcAndPresent(void)
-{
-  return 0;
-}
-
-// ghidra_name BlitRectWithOptionalTransparency
-// ghidra_proto void __stdcall BlitRectWithOptionalTransparency(astruct_17 * srcSurface, astruct_18 * dstSurface, RECT * srcRect, RECT * dstRect, byte blitFlags, astruct_19 * renderCtx)
-// FUNCTION: IMPERIALISM 0x00496d40
-undefined4 BlitRectWithOptionalTransparency(void)
 {
   return 0;
 }

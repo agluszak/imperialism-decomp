@@ -8623,6 +8623,8 @@ address|name|symbol|size|type|prototype|provenance
 6a44b0|g_pActiveCityDialogLegendSelectionOwner|||global||
 6a44b4|g_bCityDialogLegendSelectionInitialized|||global||
 6a4520|DAT_006a4520|||global||xref_oracle
+6a5458|g_nUiFrameClipOriginX|||global||
+6a545c|g_nUiFrameClipOriginY|||global||
 6a590c|g_pCursorControlPanel|||global||
 6a5c98|g_timerSlotIds|||global||
 6a5cf8|g_timerSlotCallbacks|||global||

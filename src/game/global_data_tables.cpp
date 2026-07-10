@@ -394,6 +394,10 @@ int g_nQuickDrawOriginY = 0;
 int g_nQuickDrawResolvedTextOriginX = 0;
 // GLOBAL: IMPERIALISM 0x006a1d04
 int g_nQuickDrawResolvedTextOriginY = 0;
+// GLOBAL: IMPERIALISM 0x006a5458
+int g_nUiFrameClipOriginX = 0;
+// GLOBAL: IMPERIALISM 0x006a545c
+int g_nUiFrameClipOriginY = 0;
 // GLOBAL: IMPERIALISM 0x006a1ca0
 TQuickDrawSurfaceContext g_defaultQuickDrawSurfaceSentinel;
 // Statically initialized to the sentinel address (the dword at 0x006950f8 holds

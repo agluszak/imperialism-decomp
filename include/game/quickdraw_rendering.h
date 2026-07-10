@@ -5,6 +5,10 @@
 
 void SetQuickDrawFillColor(int fillColor);
 void SetQuickDrawStrokeColor(int strokeColor);
+// Clips srcRect to bounds, shifting dstRect by the same per-edge delta so the two
+// stay in sync (the standard blit-clip prologue before a QuickDraw surface blit).
+// Returns non-zero iff the clipped srcRect is still non-empty. 0x005a6940
+BOOL __stdcall ClipSrcRectToBoundsAndOffsetDstRect(RECT* bounds, RECT* dstRect, RECT* srcRect);
 void SetQuickDrawColorAndSyncGlobals(int color);
 void SetGlobalBlitTransparentColorRaw(int transparentColor);
 void MapUiThemeCodeToStyleFlags(short themeCode, int* outStyleFlags);
@@ -45,7 +49,9 @@ TStaticText* ApplyControlThemeStyleAndOptionalCaption(TStaticText* control, int 
                                                       int pointSize, int themeCode, int themeCode2,
                                                       const char* caption);
 
-undefined4 UpdatePaletteIndexWithDefaultFallback(void);
+// If paletteIndex is the sentinel -1 (as a short), resolves it from the default
+// cached bitmap resource's palette instead. 0x004951e0
+void UpdatePaletteIndexWithDefaultFallback(unsigned int paletteIndex);
 void ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(int unused, int styleWidth, int themeCode);
 void InitializeUiTextStyleDescriptorAndApplyQuickDraw(short face, short pointSize, int themeCode,
                                                       short font);
@@ -78,6 +84,5 @@ static __inline void ApplyUiTextStyleAndSyncColor(int unused, int styleWidth, in
 }
 
 static __inline void UpdatePaletteIndexWithFallback(int paletteIndex) {
-  reinterpret_cast<void(__cdecl*)(int)>(
-      reinterpret_cast<void (*)()>(UpdatePaletteIndexWithDefaultFallback))(paletteIndex);
+  UpdatePaletteIndexWithDefaultFallback(static_cast<unsigned int>(paletteIndex));
 }
