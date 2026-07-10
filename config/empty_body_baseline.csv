@@ -16,11 +16,12 @@ src/game/TAnimation.cpp|1|0|1|0
 src/game/TAnimator.cpp|4|0|1|0
 src/game/TApplication.cpp|2|0|0|0
 src/game/TArmoryView.cpp|3|0|1|0
+src/game/TArmyBattle.cpp|1|0|0|0
 src/game/TArmyBoyView.cpp|1|0|1|0
 src/game/TArmyCheckBox.cpp|3|0|1|0
 src/game/TArmyMgr.cpp|5|0|1|0
 src/game/TArmyPlacard.cpp|0|0|1|0
-src/game/TArmyPlayer.cpp|7|0|0|0
+src/game/TArmyPlayer.cpp|5|0|0|0
 src/game/TArmyStack.cpp|3|0|0|0
 src/game/TArmyStackList.cpp|0|0|1|0
 src/game/TArmyUnitLine.cpp|0|0|1|0
@@ -165,7 +166,7 @@ src/game/TModalMessageCommand.cpp|1|0|0|0
 src/game/TMultiMessagePicture.cpp|1|0|1|0
 src/game/TMultiplayerMgr.cpp|3|0|0|0
 src/game/TNavyAutoPlayer.cpp|2|0|1|0
-src/game/TNavyBattle.cpp|4|0|1|0
+src/game/TNavyBattle.cpp|5|0|1|0
 src/game/TNavyBoyView.cpp|1|0|1|0
 src/game/TNavyHumanPlayer.cpp|0|0|1|0
 src/game/TNavyMgr.cpp|3|0|0|0
@@ -181,7 +182,7 @@ src/game/TNewGameCommand.cpp|0|1|0|0
 src/game/TNewTownView.cpp|1|0|1|0
 src/game/TNewsMgr.cpp|1|2|1|0
 src/game/TNewspaperView.cpp|0|0|1|0
-src/game/TNextMoveCommand.cpp|1|0|1|0
+src/game/TNextMoveCommand.cpp|1|0|0|0
 src/game/TNoHiliteText.cpp|0|0|1|0
 src/game/TNominationView.cpp|2|0|1|0
 src/game/TNumberedIcon.cpp|1|0|1|0
@@ -243,8 +244,8 @@ src/game/TTacArmyView.cpp|2|0|1|0
 src/game/TTacMapUberPicture.cpp|2|0|1|0
 src/game/TTacNavyToolbar.cpp|2|0|1|0
 src/game/TTacticalAdiosPicture.cpp|2|0|1|0
-src/game/TTacticalBattle.cpp|2|0|0|0
-src/game/TTacticalBattleView.cpp|8|0|1|0
+src/game/TTacticalBattle.cpp|0|1|0|0
+src/game/TTacticalBattleView.cpp|7|0|1|0
 src/game/TTacticalHolaPicture.cpp|1|0|1|0
 src/game/TTacticalPlayer.cpp|2|5|0|0
 src/game/TTacticalToolbar.cpp|3|0|1|0

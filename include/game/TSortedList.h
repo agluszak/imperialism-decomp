@@ -62,7 +62,9 @@ public:
   virtual void RemoveAll();
   virtual void SetAtOrdinal(int ordinal, void** entryPtr, int unusedFlag);
   virtual int VirtualSlot64();
-  virtual int VirtualSlot68();
+  // Sorts the list with a caller-supplied comparator (evidence: both auto-deploy
+  // strategies at 0x59bcf0/0x59bf20 push (&comparator, 0)).
+  virtual int SortEntriesWithComparator(int(__cdecl* compare)(void*, void*), int unused = 0);
   virtual int VirtualSlot6C();
   virtual int VirtualSlot70();
   virtual int VirtualSlot74();

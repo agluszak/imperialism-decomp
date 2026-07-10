@@ -5,6 +5,7 @@
 
 // Forward declarations for types referenced by generated signatures.
 class TStream;
+class TTacticalUnit;
 
 // TODO(manifest): describe TArmyBattle and its role. Base edge (TTacticalBattle) recovered from RTTI CRuntimeClass chain: TArmyBattle -> TTacticalBattle -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x0064ca68
@@ -23,7 +24,8 @@ public:
   // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
   // slot 0x0a ComputeTacticalReachableTileCostsByUnitCategory inherited unchanged (0x59ff20)
   // slot 0x0b PropagateTileAccessibilityStrengthLevels inherited unchanged (0x5a02e0)
-  virtual undefined OrphanRetStub_0059f710() override; // slot 0x0c 0x5a51e0
+  virtual void DeployTacticalUnitToTile(TTacticalUnit* unit,
+                                        int tileIndex) override; // slot 0x0c 0x5a51e0
   // slot 0x0d MoveTacticalUnitAndQueueEvent232AIfNoAdjacentReachableTarget inherited unchanged (0x5a1bd0)
   // slot 0x0e HasEnemyUnitOnTilesFlankingHexDirection inherited unchanged (0x5a1400)
   // slot 0x0f ExecuteTacticalActionAndQueueEventIfNoAdjacentValidTarget inherited unchanged (0x5a1ca0)

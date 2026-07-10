@@ -46,7 +46,7 @@ public:
   short field24;          // +0x24 serialized word
   short pad26;            // +0x26
   int actionPoints28;     // +0x28 remaining action points (seeded from GetBaseActionPoints)
-  int field2c;            // +0x2c
+  int aiStateCode2c;      // +0x2c AI stance code (indexes the 0x699500 weight rows)
   int field30;            // +0x30
 
   // NOOP: verified empty in original (trivial inline ctor: both concrete branches

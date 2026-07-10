@@ -131,7 +131,7 @@ void TArmyBattle::ReadFrom(TStream* stream) {
     record->selectedFlag18 = 0;
     record->state1c = 0;
     record->actionPoints28 = record->GetBaseActionPoints();
-    record->field2c = 0;
+    record->aiStateCode2c = 0;
     record->field30 = 0;
     record->strength4 = sourceUnit->field_34;
     record->morale34 = sourceUnit->field_34;
@@ -320,8 +320,10 @@ void TArmyBattle::LoadBattleSetupTabDataByIndex(int compositionClass, int fortLe
 }
 
 // FUNCTION: IMPERIALISM 0x005a51e0
-undefined TArmyBattle::OrphanRetStub_0059f710() {
-  return 0;
+void TArmyBattle::DeployTacticalUnitToTile(TTacticalUnit* unit, int tileIndex) {
+  // TODO: port body @ 0x5a51e0.
+  (void)unit;
+  (void)tileIndex;
 }
 
 // FUNCTION: IMPERIALISM 0x005a5320

@@ -30,8 +30,9 @@ extern undefined4 GenerateThreadLocalRandom15(void);
 
 using turn_event_dialog::TurnEventDialogNode;
 
-undefined TTacticalBattle::OrphanRetStub_0059f710() {
-  return 0;
+void TTacticalBattle::DeployTacticalUnitToTile(TTacticalUnit* unit, int tileIndex) {
+  (void)unit;
+  (void)tileIndex;
 }
 
 undefined TTacticalBattle::CreateTTacticalBattleInstance() {
@@ -430,12 +431,18 @@ void TTacticalBattle::QueueTacticalEventPacket232A() {
   g_pGlobalUiRootController->DispatchUiSelectionToHandler(command);
 }
 
-undefined TTacticalBattle::ExecuteTacticalDigActionAndConsumeUnitActionPoints(int* param_1,
-                                                                              undefined4 param_2) {
+undefined TTacticalBattle::ExecuteTacticalDigActionAndConsumeUnitActionPoints(TTacticalUnit* unit,
+                                                                              int tileIndex) {
+  (void)unit;
+  (void)tileIndex;
   return 0;
 }
 
-undefined TTacticalBattle::ComputeRallyStrengthAndQueueTacticalRallyCommand(int param_1) {
+undefined
+TTacticalBattle::ComputeRallyStrengthAndQueueTacticalRallyCommand(TTacticalUnit* rallyingUnit,
+                                                                  TArmyTacUnit* rallyTarget) {
+  (void)rallyingUnit;
+  (void)rallyTarget;
   return 0;
 }
 
@@ -1433,6 +1440,25 @@ unsigned char TTacticalBattle::IsTacticalTargetTileReachableForAction(int attack
   (void)targetTileIndex;
   (void)directFireFlag;
   (void)range;
+  return 0;
+}
+
+// FUNCTION: IMPERIALISM 0x005a41c0
+unsigned char TTacticalBattle::ApplyGridColumnSelectionGuard(int tileIndex) {
+  // TODO: port body @ 0x5a41c0.
+  (void)tileIndex;
+  return 0;
+}
+
+// FUNCTION: IMPERIALISM 0x005a4240
+int TTacticalBattle::CountFreeDeploymentZoneTilesForCurrentSide() {
+  // TODO: port body @ 0x5a4240.
+  return 0;
+}
+
+// FUNCTION: IMPERIALISM 0x005a4330
+unsigned char TTacticalBattle::IsTacticalSideCategoryCoverageIncompleteOrFlagOff() {
+  // TODO: port body @ 0x5a4330 (true when fortLevel49 == 0 or any fort pool <= 0).
   return 0;
 }
 

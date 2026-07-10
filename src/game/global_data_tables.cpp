@@ -1092,6 +1092,45 @@ short g_awUnitTypeBaseActionPointTable[32] = {40, 60,  40, 40, 110, 90, 50, 30, 
                                               40, 110, 90, 60, 30,  50, 70, 50, 40, 110, 90,
                                               80, 30,  40, 40, 50,  90, 90, 90, 0,  0};
 
+// Per-unit-type tactical AI class (.rdata; duplicate values of the 0x669858 category
+// table at a separate address): 0 infantry, 1 artillery-advance, 2 cavalry-screen,
+// 3/4 support classes. Drives deployment strategy and the auto-turn controller.
+// GLOBAL: IMPERIALISM 0x006693b8
+short g_awTacticalUnitAiClassByUnitType_006693B8[32] = {
+    0, 0, 0, 0, 1, 1, 2, 2, 0, 0, 0, 0, 1, 1, 2, 2, 0, 0, 0, 0, 1, 3, 2, 2, 4, 4, 4, 4, 4, 4, 0, 0};
+
+// Per-unit-type action-point cost word (.rdata; duplicate values of the 0x669898
+// base-action-point table): the sapper dig loop budgets against half of this.
+// GLOBAL: IMPERIALISM 0x006693f8
+short g_awTacticalUnitActionPointCostByType_006693F8[32] = {
+    40, 60, 40, 40, 110, 90, 50, 30, 40, 60, 40, 40, 110, 90, 60, 30,
+    50, 70, 50, 40, 110, 90, 80, 30, 40, 40, 50, 90, 90,  90, 0,  0};
+
+// Tactical tile-selection heuristic weights per AI stance (.rdata): 19 rows of 15
+// weights, one weight per tile-score heuristic; row index = TTacticalUnit AI stance
+// (aiStateCode2c) or a strategy-specific row (12/13 sapper, 18 artillery hold).
+// GLOBAL: IMPERIALISM 0x00699500
+int g_anTacticalTileHeuristicWeightsByAiState_00699500[19][15] = {
+    {1, 0, 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 1, 0, 0, 0, 0, 0, 0, 0, 10, 0, 0, 0, 0, 0},
+    {0, 100, 0, 200, -1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, -10, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 100, 0, 0, -1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 100, 0, 200, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 100, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {1, 100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0},
+    {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, -1, 0, 0, 100, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, -1, 0, 0, 0, 100, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0},
+    {1, 0, 0, 100, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 200, 0, 0, 0},
+    {0, 0, 0, 0, -1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0},
+    {0, 1, 0, 0, -100, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}};
+
 // Direct-fire flag per unit category (.rdata floats): 0.0 marks the indirect-fire
 // categories 6/7 whose shots erode a fort wall they cross.
 // GLOBAL: IMPERIALISM 0x00669830

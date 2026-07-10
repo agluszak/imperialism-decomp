@@ -747,14 +747,6 @@ undefined4 HandleTacticalCommandTag_skip(void)
   return 0;
 }
 
-// ghidra_name CompareTacticalCursorEntriesByActionClassPriority
-// ghidra_proto undefined CompareTacticalCursorEntriesByActionClassPriority()
-// FUNCTION: IMPERIALISM 0x0059b070
-undefined4 CompareTacticalCursorEntriesByActionClassPriority(void)
-{
-  return 0;
-}
-
 // ghidra_name TArmyPlayer::CreateTArmyPlayerInstance
 // ghidra_proto undefined CreateTArmyPlayerInstance()
 // FUNCTION: IMPERIALISM 0x0059b170
@@ -783,54 +775,6 @@ undefined4 AccumulateTacticalCursorActionClassProfileMetrics(void)
 // ghidra_proto undefined RebuildListFromProviderAndDeduplicateByKey()
 // FUNCTION: IMPERIALISM 0x0059b740
 undefined4 RebuildListFromProviderAndDeduplicateByKey(void)
-{
-  return 0;
-}
-
-// ghidra_name RecomputeTacticalCursorProjectionScoresAndPruneList
-// ghidra_proto undefined RecomputeTacticalCursorProjectionScoresAndPruneList()
-// FUNCTION: IMPERIALISM 0x0059b990
-undefined4 RecomputeTacticalCursorProjectionScoresAndPruneList(void)
-{
-  return 0;
-}
-
-// ghidra_name BuildTacticalActionPriorityBucketsWithGridGuard
-// ghidra_proto undefined BuildTacticalActionPriorityBucketsWithGridGuard()
-// FUNCTION: IMPERIALISM 0x0059bcf0
-undefined4 BuildTacticalActionPriorityBucketsWithGridGuard(void)
-{
-  return 0;
-}
-
-// ghidra_name DispatchTacticalActionClassSelectionAcrossCursorList
-// ghidra_proto undefined DispatchTacticalActionClassSelectionAcrossCursorList()
-// FUNCTION: IMPERIALISM 0x0059bf20
-undefined4 DispatchTacticalActionClassSelectionAcrossCursorList(void)
-{
-  return 0;
-}
-
-// ghidra_name SelectTacticalTileIndexByColumnPriorityVariantA
-// ghidra_proto undefined SelectTacticalTileIndexByColumnPriorityVariantA()
-// FUNCTION: IMPERIALISM 0x0059bfe0
-undefined4 SelectTacticalTileIndexByColumnPriorityVariantA(void)
-{
-  return 0;
-}
-
-// ghidra_name SelectTacticalTileByActionClassAdjacencyPriority
-// ghidra_proto undefined SelectTacticalTileByActionClassAdjacencyPriority()
-// FUNCTION: IMPERIALISM 0x0059c140
-undefined4 SelectTacticalTileByActionClassAdjacencyPriority(void)
-{
-  return 0;
-}
-
-// ghidra_name SelectTacticalTileIndexByColumnPriorityVariantB
-// ghidra_proto undefined SelectTacticalTileIndexByColumnPriorityVariantB()
-// FUNCTION: IMPERIALISM 0x0059c2a0
-undefined4 SelectTacticalTileIndexByColumnPriorityVariantB(void)
 {
   return 0;
 }
@@ -979,14 +923,6 @@ undefined4 HasReachableActiveArtilleryClassCursorEntry(void)
   return 0;
 }
 
-// ghidra_name SelectBestTacticalTileByWeightedHeuristics
-// ghidra_proto undefined SelectBestTacticalTileByWeightedHeuristics()
-// FUNCTION: IMPERIALISM 0x0059d530
-undefined4 SelectBestTacticalTileByWeightedHeuristics(void)
-{
-  return 0;
-}
-
 // ghidra_name EvaluateTacticalTileScore_CurrentTileMatchBonus
 // ghidra_proto undefined EvaluateTacticalTileScore_CurrentTileMatchBonus()
 // FUNCTION: IMPERIALISM 0x0059d6b0
@@ -1103,14 +1039,6 @@ undefined4 EvaluateTacticalTileScore_AnyReachableArtilleryClassEnemyBonus(void)
 // ghidra_proto undefined EvaluateTacticalTileScore_InsideBattlefrontWidth()
 // FUNCTION: IMPERIALISM 0x0059e0d0
 undefined4 EvaluateTacticalTileScore_InsideBattlefrontWidth(void)
-{
-  return 0;
-}
-
-// ghidra_name SelectBestTacticalTargetTileByActionHeuristics
-// ghidra_proto undefined SelectBestTacticalTargetTileByActionHeuristics()
-// FUNCTION: IMPERIALISM 0x0059e110
-undefined4 SelectBestTacticalTargetTileByActionHeuristics(void)
 {
   return 0;
 }

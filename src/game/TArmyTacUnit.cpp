@@ -21,7 +21,7 @@ void TArmyTacUnit::ConstructTArmyTacUnitBaseState(TMilitaryUnit* source) {
   selectedFlag18 = 0;
   state1c = 0;
   actionPoints28 = GetBaseActionPoints();
-  field2c = 0;
+  aiStateCode2c = 0;
   field30 = 0;
   strength4 = source->field_34;
   morale34 = source->field_34;

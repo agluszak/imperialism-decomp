@@ -155,34 +155,10 @@ undefined4 HandleTacticalCommandTag_targ(void)
   return 0;
 }
 
-// ghidra_name ApplyGridColumnSelectionGuard
-// ghidra_proto undefined ApplyGridColumnSelectionGuard()
-// FUNCTION: IMPERIALISM 0x005a41c0
-undefined4 ApplyGridColumnSelectionGuard(void)
-{
-  return 0;
-}
-
-// ghidra_name TArmyTacUnit::TArmyTacUnit_VtblSlot06_Impl
-// ghidra_proto undefined TArmyTacUnit_VtblSlot06_Impl()
-// FUNCTION: IMPERIALISM 0x005a4240
-undefined4 TArmyTacUnit_VtblSlot06_Impl(void)
-{
-  return 0;
-}
-
 // ghidra_name RenderTacticalBattleSelectionAndUnitOverlayPass_Impl_At005a42e0
 // ghidra_proto undefined RenderTacticalBattleSelectionAndUnitOverlayPass_Impl_At005a42e0()
 // FUNCTION: IMPERIALISM 0x005a42e0
 undefined4 RenderTacticalBattleSelectionAndUnitOverlayPass_Impl_At005a42e0(void)
-{
-  return 0;
-}
-
-// ghidra_name IsTacticalSideCategoryCoverageIncompleteOrFlagOff
-// ghidra_proto undefined IsTacticalSideCategoryCoverageIncompleteOrFlagOff()
-// FUNCTION: IMPERIALISM 0x005a4330
-undefined4 IsTacticalSideCategoryCoverageIncompleteOrFlagOff(void)
 {
   return 0;
 }

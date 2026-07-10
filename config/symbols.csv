@@ -5307,13 +5307,13 @@ address|name|symbol|size|type|prototype|provenance
 59b5b0|AccumulateTacticalCursorActionClassProfileMetrics||320|function|undefined AccumulateTacticalCursorActionClassProfileMetrics()|
 59b740|RebuildListFromProviderAndDeduplicateByKey||179|function|undefined RebuildListFromProviderAndDeduplicateByKey()|
 59b830|TArmyPlayer::StartBattle||260|function|undefined StartBattle(void)|
-59b990|RecomputeTacticalCursorProjectionScoresAndPruneList||579|function|undefined RecomputeTacticalCursorProjectionScoresAndPruneList()|
+59b990|TArmyPlayer::RecomputeTacticalCursorProjectionScoresAndPruneList||579|function|undefined RecomputeTacticalCursorProjectionScoresAndPruneList()|
 59bc80|TArmyPlayer::AutoDeploySideUnitsAndMarkReady||67|function|undefined TArmyTacUnit_VtblSlot06()|
-59bcf0|BuildTacticalActionPriorityBucketsWithGridGuard||438|function|undefined BuildTacticalActionPriorityBucketsWithGridGuard()|
-59bf20|DispatchTacticalActionClassSelectionAcrossCursorList||137|function|undefined DispatchTacticalActionClassSelectionAcrossCursorList()|
-59bfe0|SelectTacticalTileIndexByColumnPriorityVariantA||270|function|undefined SelectTacticalTileIndexByColumnPriorityVariantA()|
-59c140|SelectTacticalTileByActionClassAdjacencyPriority||257|function|undefined SelectTacticalTileByActionClassAdjacencyPriority()|
-59c2a0|SelectTacticalTileIndexByColumnPriorityVariantB||209|function|undefined SelectTacticalTileIndexByColumnPriorityVariantB()|
+59bcf0|TArmyPlayer::BuildTacticalActionPriorityBucketsWithGridGuard||438|function|undefined BuildTacticalActionPriorityBucketsWithGridGuard()|
+59bf20|TArmyPlayer::DispatchTacticalActionClassSelectionAcrossCursorList||137|function|undefined DispatchTacticalActionClassSelectionAcrossCursorList()|
+59bfe0|TArmyPlayer::SelectTacticalTileIndexByColumnPriorityVariantA||270|function|undefined SelectTacticalTileIndexByColumnPriorityVariantA()|
+59c140|TArmyPlayer::SelectTacticalTileByActionClassAdjacencyPriority||257|function|undefined SelectTacticalTileByActionClassAdjacencyPriority()|
+59c2a0|TArmyPlayer::SelectTacticalTileIndexByColumnPriorityVariantB||209|function|undefined SelectTacticalTileIndexByColumnPriorityVariantB()|
 59c3c0|TArmyPlayer::TArmyTacUnit_VtblSlot07||89|function|undefined TArmyTacUnit_VtblSlot07()|
 59c440|TArmyPlayer::SelectAndApplyTacticalCursorModeProfile||1023|function|undefined SelectAndApplyTacticalCursorModeProfile()|
 59c98d|WrapperFor_thunk_ApplyTacticalCursorModeProfile0_ByActionClassCounts_At0059c98d||12|function|undefined WrapperFor_thunk_ApplyTacticalCursorModeProfile0_ByActionClassCounts_At0059c98d()|
@@ -5334,7 +5334,7 @@ address|name|symbol|size|type|prototype|provenance
 59d320|ApplyTacticalCursorModeProfile6_DefaultByActionClass||149|function|undefined ApplyTacticalCursorModeProfile6_DefaultByActionClass()|
 59d400|SetLinkedListNodeField2CTo13ForAllNodes||74|function|undefined SetLinkedListNodeField2CTo13ForAllNodes()|
 59d470|HasReachableActiveArtilleryClassCursorEntry||140|function|undefined HasReachableActiveArtilleryClassCursorEntry()|
-59d530|SelectBestTacticalTileByWeightedHeuristics||297|function|undefined SelectBestTacticalTileByWeightedHeuristics()|
+59d530|TArmyPlayer::SelectBestTacticalTileByWeightedHeuristics||297|function|undefined SelectBestTacticalTileByWeightedHeuristics()|
 59d6b0|EvaluateTacticalTileScore_CurrentTileMatchBonus||25|function|undefined EvaluateTacticalTileScore_CurrentTileMatchBonus()|
 59d6e0|EvaluateTacticalTileScore_EnemyReachabilityAndBestTargetProximity||229|function|undefined EvaluateTacticalTileScore_EnemyReachabilityAndBestTargetProximity()|
 59d810|EvaluateTacticalTileScore_Column6OwnershipAdjacencyBias||103|function|undefined EvaluateTacticalTileScore_Column6OwnershipAdjacencyBias()|
@@ -5350,7 +5350,7 @@ address|name|symbol|size|type|prototype|provenance
 59de30|EvaluateTacticalTileScore_ClosestReachableEnemyDistance||324|function|undefined EvaluateTacticalTileScore_ClosestReachableEnemyDistance()|
 59dfe0|EvaluateTacticalTileScore_AnyReachableArtilleryClassEnemyBonus||182|function|undefined EvaluateTacticalTileScore_AnyReachableArtilleryClassEnemyBonus()|
 59e0d0|EvaluateTacticalTileScore_InsideBattlefrontWidth||37|function|undefined EvaluateTacticalTileScore_InsideBattlefrontWidth()|
-59e110|SelectBestTacticalTargetTileByActionHeuristics||568|function|undefined SelectBestTacticalTargetTileByActionHeuristics()|
+59e110|TArmyPlayer::SelectBestTacticalTargetTileByActionHeuristics||568|function|undefined SelectBestTacticalTargetTileByActionHeuristics()|
 59e3e0|TArmyPlayer::AdvanceTacticalTurnPulse||203|function|undefined OrphanRetStub_0059ad90(void)|
 59e4f0|TArmyPlayer::RunTacticalAutoTurnControllerForActiveUnit||752|function|undefined RunTacticalAutoTurnControllerForActiveUnit()|
 59e8a0|BuildTacticalActionClassAndPositionFlags||201|function|undefined BuildTacticalActionClassAndPositionFlags()|
@@ -5381,7 +5381,7 @@ address|name|symbol|size|type|prototype|provenance
 59f5c0|WrapperFor_ftol_At0059f5c0||30|function|undefined WrapperFor_ftol_At0059f5c0()|
 59f610|OrphanCallChain_C4_I70_0059f610||130|function|undefined OrphanCallChain_C4_I70_0059f610()|
 59f6d0|TTacticalBattle::CreateObject|?CreateObject@TTacticalBattle@@SGPAVCObject@@XZ|47|function|undefined CreateObject()|rtti
-59f710|TTacticalBattle::OrphanRetStub_0059f710||3|function|undefined OrphanRetStub_0059f710(void)|
+59f710|TTacticalBattle::DeployTacticalUnitToTile||3|function|undefined OrphanRetStub_0059f710(void)|
 59f730|TTacticalBattle::CreateTTacticalBattleInstance||10|function|undefined CreateTTacticalBattleInstance()|
 59f750|TTacticalBattle::GetRuntimeClass||6|function|undefined GetTTacticalBattleClassNamePointer()|rtti
 59f770|TTacticalBattle::ConstructTTacticalBattleBaseState||32|function|undefined ConstructTTacticalBattleBaseState()|
@@ -5436,8 +5436,8 @@ address|name|symbol|size|type|prototype|provenance
 5a3c20|TTacticalBattle::ConsumeFortStrengthPointsAndInvalidateIfDepleted||125|function|void __thiscall ConsumeTacticalSideResourcePoolAndInvalidateIfEmpty(int tileIndex, int consumeAmount)|
 5a3d30|IsTacticalTargetTileReachableForAction||383|function|undefined IsTacticalTargetTileReachableForAction()|
 5a3f10|TacticalBattleView::HandleTacticalCommandTag_targ||532|function|undefined HandleTacticalCommandTag_targ()|
-5a41c0|ApplyGridColumnSelectionGuard||96|function|undefined ApplyGridColumnSelectionGuard()|
-5a4240|TArmyTacUnit::TArmyTacUnit_VtblSlot06_Impl||125|function|undefined TArmyTacUnit_VtblSlot06_Impl()|
+5a41c0|TTacticalBattle::ApplyGridColumnSelectionGuard||96|function|undefined ApplyGridColumnSelectionGuard()|
+5a4240|TTacticalBattle::CountFreeDeploymentZoneTilesForCurrentSide||125|function|undefined TArmyTacUnit_VtblSlot06_Impl()|
 5a42e0|RenderTacticalBattleSelectionAndUnitOverlayPass_Impl_At005a42e0||64|function|undefined RenderTacticalBattleSelectionAndUnitOverlayPass_Impl_At005a42e0()|
 5a4330|IsTacticalSideCategoryCoverageIncompleteOrFlagOff||35|function|undefined IsTacticalSideCategoryCoverageIncompleteOrFlagOff()|
 5a4370|TTacticalBattle::HandleTacticalCommandTag_depl||183|function|undefined HandleTacticalCommandTag_depl()|
@@ -5450,14 +5450,14 @@ address|name|symbol|size|type|prototype|provenance
 5a4990|TArmyBattle::ReadFrom||819|function|undefined InitializeBattleSetupArmyStacksAndPopulateSelectionState()|
 5a4da0|TArmyBattle::WriteTo||425|function|undefined OrphanRetStub_0059ad90(int * param_1)|
 5a4fc0|TArmyBattle::LoadBattleSetupTabDataByIndex||430|function|undefined LoadBattleSetupTabDataByIndex()|
-5a51e0|TArmyBattle::OrphanRetStub_0059f710||254|function|undefined OrphanRetStub_0059f710(int * param_1, int param_2)|
+5a51e0|TArmyBattle::DeployTacticalUnitToTile||254|function|undefined OrphanRetStub_0059f710(int * param_1, int param_2)|
 5a5320|TArmyBattle::CreateTTacticalBattleInstance||144|function|undefined CreateTTacticalBattleInstance(undefined4 param_1)|
 5a53e0|TTacticalBattle::SeekLinkedListCursorByNestedId||118|function|undefined SeekLinkedListCursorByNestedId()|
 5a5480|TNavyBattle::CreateObject|?CreateObject@TNavyBattle@@SGPAVCObject@@XZ|50|function|undefined CreateObject()|rtti
 5a54d0|TNavyBattle::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 5a5500|TNavyBattle::CreateTNavyBattleInstance||7|function|undefined CreateTNavyBattleInstance()|
 5a5520|TNavyBattle::GetRuntimeClass||6|function|undefined GetTNavyBattleClassNamePointer()|rtti
-5a55c0|TNavyBattle::OrphanRetStub_0059f710||278|function|void OrphanRetStub_0059f710(TacticalBattleUnit * pUnit, int targetTileIndex)|
+5a55c0|TNavyBattle::DeployTacticalUnitToTile||278|function|void OrphanRetStub_0059f710(TacticalBattleUnit * pUnit, int targetTileIndex)|
 5a5730|TNavyBattle::EvaluateAndResolveTacticalActionAgainstTileOccupant||482|function|void __thiscall ResolveTacticalAttackAgainstTileOccupant(TacticalBattleUnit * pAttackerUnit, int targetTileIndex)|
 5a59a0|ConvertHexTileIndexToRowAndDoubleColumn||58|function|void __stdcall ConvertHexTileIndexToRowAndDoubleColumn(int tileIndex, uint * outRow, int * outCol2X)|
 5a59f0|TNavyBattle::ComputeTacticalReachableTileCostsByUnitCategory||293|function|undefined ComputeReachableTileDistanceByMoveBudget()|

@@ -31,7 +31,9 @@ int TPtrList::VirtualSlot64() {
   return 0;
 }
 
-int TPtrList::VirtualSlot68() {
+int TPtrList::SortEntriesWithComparator(int(__cdecl* compare)(void*, void*), int unused) {
+  (void)compare;
+  (void)unused;
   return 0;
 }
 

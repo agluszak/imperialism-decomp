@@ -44,7 +44,8 @@ public:
   virtual void
   ComputeTacticalReachableTileCostsByUnitCategory(TTacticalUnit* unit);       // slot 0x0a 0x59ff20
   virtual void PropagateTileAccessibilityStrengthLevels(TTacticalUnit* unit); // slot 0x0b 0x5a02e0
-  virtual undefined OrphanRetStub_0059f710();                                 // slot 0x0c 0x59f710
+  // Places a unit on a battle-grid tile (deployment). Base is a no-op stub.
+  virtual void DeployTacticalUnitToTile(TTacticalUnit* unit, int tileIndex); // slot 0x0c 0x59f710
   virtual void MoveTacticalUnitAndQueueEvent232AIfNoAdjacentReachableTarget(
       TTacticalUnit* unit, int targetTileIndex); // slot 0x0d 0x5a1bd0
   // Whether either neighbor tile flanking hex direction `hexDirection` around
@@ -66,12 +67,13 @@ public:
       TArmyTacUnit* unit);                                       // slot 0x14 0x5a3210
   virtual void ClearTacticalTileStateRunByStride(int tileIndex); // slot 0x15 0x5a3320
   virtual undefined
-  ComputeRallyStrengthAndQueueTacticalRallyCommand(int param_1); // slot 0x16 0x5a3810
+  ComputeRallyStrengthAndQueueTacticalRallyCommand(TTacticalUnit* rallyingUnit,
+                                                   TArmyTacUnit* rallyTarget); // slot 0x16 0x5a3810
   virtual void ExecuteTacticalMineActionAndQueuePacket(TTacticalUnit* unit,
                                                        int tileIndex); // slot 0x17 0x5a34d0
   virtual undefined
-  ExecuteTacticalDigActionAndConsumeUnitActionPoints(int* param_1,
-                                                     undefined4 param_2); // slot 0x18 0x5a3640
+  ExecuteTacticalDigActionAndConsumeUnitActionPoints(TTacticalUnit* unit,
+                                                     int tileIndex); // slot 0x18 0x5a3640
   // === END GENERATED DECLS (TTacticalBattle) ===
 
   // Offset-faithful layout (object is 0x78 per RTTI; TArmyBattle adds no bytes).
@@ -179,6 +181,11 @@ public:
   // attacker category's direct-fire flag). Body TODO. 0x5a3d30, ret 0x10.
   unsigned char IsTacticalTargetTileReachableForAction(int attackerTileIndex, int targetTileIndex,
                                                        char directFireFlag, int range);
+  // Deployment-zone queries (bodies TODO). 0x5a4240 / 0x5a41c0 / 0x5a4330.
+  int CountFreeDeploymentZoneTilesForCurrentSide();
+  unsigned char ApplyGridColumnSelectionGuard(int tileIndex);
+  // True when there is no fort or a wall section is breached (curated name kept).
+  unsigned char IsTacticalSideCategoryCoverageIncompleteOrFlagOff();
 };
 
 ASSERT_SIZE(TTacticalBattle, 0x78);

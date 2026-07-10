@@ -14,8 +14,10 @@ IMPLEMENT_DYNCREATE(TNavyBattle, TTacticalBattle)
 TNavyBattle::TNavyBattle() {}
 
 // FUNCTION: IMPERIALISM 0x005a55c0
-undefined TNavyBattle::OrphanRetStub_0059f710() {
-  return 0;
+void TNavyBattle::DeployTacticalUnitToTile(TTacticalUnit* unit, int tileIndex) {
+  // TODO: port body @ 0x5a55c0.
+  (void)unit;
+  (void)tileIndex;
 }
 
 // FUNCTION: IMPERIALISM 0x005a5730

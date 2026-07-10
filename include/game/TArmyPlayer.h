@@ -28,11 +28,11 @@ public:
   virtual void RemoveTacticalUnitFromUnitList(TTacticalUnit* unit) override; // slot 0x0e 0x59b4f0
   virtual void AddTacticalUnitToUnitListHead(TTacticalUnit* unit) override;  // slot 0x0f 0x59b540
   // slot 0x10 AlwaysTrueTacticalPredicate10 inherited unchanged (0x59adf0)
-  virtual void ProceedAfterBattleIntroAccepted() override;        // slot 0x11 0x59eb40
-  virtual void AutoDeploySideUnitsAndMarkReady();                 // slot 0x12 0x59bc80
-  virtual undefined TArmyTacUnit_VtblSlot07();                    // slot 0x13 0x59c3c0
-  virtual undefined RunTacticalAutoTurnControllerForActiveUnit(); // slot 0x14 0x59e4f0
-  virtual undefined TArmyTacUnit_VtblSlot09();                    // slot 0x15 0x59ea60
+  virtual void ProceedAfterBattleIntroAccepted() override;   // slot 0x11 0x59eb40
+  virtual void AutoDeploySideUnitsAndMarkReady();            // slot 0x12 0x59bc80
+  virtual undefined TArmyTacUnit_VtblSlot07();               // slot 0x13 0x59c3c0
+  virtual void RunTacticalAutoTurnControllerForActiveUnit(); // slot 0x14 0x59e4f0
+  virtual undefined TArmyTacUnit_VtblSlot09();               // slot 0x15 0x59ea60
   // === END GENERATED DECLS (TArmyPlayer) ===
 
   // Partial slice (object is 0x54): only the side's combatant stack is recovered so
@@ -54,6 +54,22 @@ public:
   // Applies the tactical cursor/UI mode profile for this side. Body TODO.
   // 0x0059c440, __thiscall, ret 4.
   void SelectAndApplyTacticalCursorModeProfile(int cursorProfileMode);
+
+  // Auto-deploy helpers (0x59bc80 dispatcher). Curated names kept; behaviorally these
+  // are the zone-score-table and per-class-tile-selector deploy strategies.
+  void BuildTacticalActionPriorityBucketsWithGridGuard();      // 0x59bcf0
+  void DispatchTacticalActionClassSelectionAcrossCursorList(); // 0x59bf20
+  // Prunes unitList4 down to the free-tile capacity. Body TODO. 0x59b990.
+  void RecomputeTacticalCursorProjectionScoresAndPruneList(int maxUnitCount);
+  // Per-class deployment tile selectors. Bodies TODO.
+  int SelectTacticalTileByActionClassAdjacencyPriority(); // 0x59c140
+  int SelectTacticalTileIndexByColumnPriorityVariantA();  // 0x59bfe0
+  int SelectTacticalTileIndexByColumnPriorityVariantB();  // 0x59c2a0
+  // Weighted tile-heuristic selectors for the auto-turn controller. Bodies TODO.
+  int SelectBestTacticalTileByWeightedHeuristics(TTacticalUnit* unit,
+                                                 int* heuristicWeights15); // 0x59d530
+  int SelectBestTacticalTargetTileByActionHeuristics(TTacticalUnit* unit,
+                                                     int flag); // 0x59e110
 
   // Builds the side's tactical unit records from the stack's army unit chain and
   // stores the stack into armyStack28. 0x0059b1b0, __thiscall, ret 0x10. Body TODO.
