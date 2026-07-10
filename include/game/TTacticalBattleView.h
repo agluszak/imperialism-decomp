@@ -142,24 +142,31 @@ public:
   // View-local slice (+0x60..; TView ends at +0x5c). Offsets verified in the tile-rect
   // and move-animation bodies; gaps unobserved.
   TTacticalBattle* tacticalBattle60; // +0x60 the battle this view renders
-  unsigned char pad64[0x78 - 0x64];  // +0x64
-  short viewOriginX78;               // +0x78 horizontal scroll origin (pixels)
-  short scrollableContentWidth7A;    // +0x7a total content width (scroll clamp max)
-  unsigned char pad7c[4];            // +0x7c
-  int tileColumnsPerRow80;           // +0x80 = 0x1d (grid stride)
-  unsigned char pad84[4];            // +0x84
-  int tileWidthPx88;                 // +0x88 tile width in pixels
-  int tileRowHeightPx8C;             // +0x8c tile row height in pixels
-  int unitSpriteCellWidth90;         // +0x90 sprite-sheet cell width
-  int unitSpriteCellHeight94;        // +0x94 sprite-sheet cell height / facing-row offset
-  unsigned char pad98[4];            // +0x98
-  int moveAnimStepX9C;               // +0x9c (toX-fromX)/3 animation step
-  int moveAnimStepYA0;               // +0xa0 (toY-fromY)/3 animation step
-  int moveAnimUnitOffsetXA4;         // +0xa4 unit x offset in the anim rect; -1 = idle
-  int moveAnimUnitOffsetYA8;         // +0xa8 unit y offset in the anim rect
-  RECT moveAnimSpriteSrcRectAC;      // +0xac sprite-sheet source rect
-  unsigned char padBC[4];            // +0xbc
-  RECT moveAnimScreenRectC0;         // +0xc0 on-screen animation rect
+  // Offscreen surfaces allocated/loaded by the live-battle initializer (0x5a9d90);
+  // all released through FreeQuickDrawSurfaceContextSlot.
+  struct TQuickDrawSurfaceContext* battlefieldSurface64;     // +0x64 0x5dc x 0x1c2 backdrop
+  struct TQuickDrawSurfaceContext* unitSpriteAtlasSurface68; // +0x68 bitmap 0xee2 atlas
+  struct TQuickDrawSurfaceContext* fortLevelAtlasSurface6C;  // +0x6c fort bitmap 0xee6+lvl/0xee7
+  struct TQuickDrawSurfaceContext* tileScratchSurface70;     // +0x70 one-tile scratch
+  struct TQuickDrawSurfaceContext* effectAtlasSurface74;     // +0x74 bitmap 0xeeb effects
+  short viewOriginX78;                   // +0x78 horizontal scroll origin (pixels)
+  short scrollableContentWidth7A;        // +0x7a total content width (scroll clamp max)
+  unsigned char pad7c[4];                // +0x7c
+  int tileColumnsPerRow80;               // +0x80 = 0x1d (grid stride)
+  int field84;                           // +0x84 set -1 by 0x5a9d90; use unobserved
+  int tileWidthPx88;                     // +0x88 tile width in pixels
+  int tileRowHeightPx8C;                 // +0x8c tile row height in pixels
+  int unitSpriteCellWidth90;             // +0x90 sprite-sheet cell width
+  int unitSpriteCellHeight94;            // +0x94 sprite-sheet cell height / facing-row offset
+  unsigned char modalAnimWaitDoneFlag98; // +0x98 0 during the 0x5a9170 modal wait, then 1
+  unsigned char pad99[3];                // +0x99
+  int moveAnimStepX9C;                   // +0x9c (toX-fromX)/3 animation step
+  int moveAnimStepYA0;                   // +0xa0 (toY-fromY)/3 animation step
+  int moveAnimUnitOffsetXA4;             // +0xa4 unit x offset in the anim rect; -1 = idle
+  int moveAnimUnitOffsetYA8;             // +0xa8 unit y offset in the anim rect
+  RECT moveAnimSpriteSrcRectAC;          // +0xac sprite-sheet source rect
+  struct TQuickDrawSurfaceContext* unitSpriteScratchSurfaceBC; // +0xbc 2x3-cell scratch
+  RECT moveAnimScreenRectC0;                                   // +0xc0 on-screen animation rect
 
   TTacticalBattleView();
 

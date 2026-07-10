@@ -917,6 +917,7 @@ address|target_cpp|ownership|note
 49f680|src/game/TCivAnimation2.cpp|manual|marker_sync
 49f7c0|src/game/TCivAnimation2.cpp|manual|marker_sync
 49f8e0|src/game/TCivAnimation2.cpp|manual|marker_sync
+49fd60|src/game/TOneTimeAnimation.cpp|manual|marker_sync
 49fde0|src/game/TOneTimeAnimation.cpp|manual|marker_sync
 49fef0|src/game/TCouncilTickerAnimation.cpp|manual|marker_sync
 49ff20|src/game/TCouncilTickerAnimation.cpp|manual|marker_sync

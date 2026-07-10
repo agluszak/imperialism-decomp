@@ -43,6 +43,11 @@ public:
   virtual undefined DispatchUiWindowStatusTickForClass99Windows(); // slot 0x16 0x4ff000
   // === END GENERATED DECLS (TDisplayMgr) ===
 
+  // Frees the TQuickDrawSurfaceContext record held in `slot` and clears the slot.
+  // Real __thiscall on the display manager (every callsite loads ecx = g_pDisplayMgr)
+  // even though the body never reads `this`. 0x4feb50, ret 4.
+  void FreeQuickDrawSurfaceContextSlot(struct TQuickDrawSurfaceContext** slot);
+
   TView* activeDialog;      // +0x04
   short viewportMetric;     // +0x08 (default 8)
   short dialogActiveFlag;   // +0x0a

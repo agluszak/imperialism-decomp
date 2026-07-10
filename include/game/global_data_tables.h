@@ -168,6 +168,12 @@ extern short g_DAT_006966d0_Value_006966D0[];
 extern short g_civilianTileOrderCursorTokenTable[];
 // Per-unit-type tactical category code (slot 0x11 garrison sweep).
 extern short g_awTacticalUnitCategoryCodeBySlot[];
+extern int g_nTacticalTileWidthPx_006A5430;
+extern int g_nTacticalTileRowHeightPx_006A5434;
+extern int g_nTacticalBattlefieldSurfaceWidth_006A5448;
+extern int g_nTacticalBattlefieldSurfaceHeight_006A544C;
+extern int g_nTacticalUnitSpriteCellWidth_006A5498;
+extern int g_nTacticalUnitSpriteCellHeight_006A549C;
 
 // Per-unit-type combat/composition class (0x695380), read by
 // ProcessTileUnitListsAndApplyRandomStatusUpdates when building a TArmyStack's
@@ -627,6 +633,7 @@ extern TCivMgr* g_pSelectedCivilianOrderState; // 0x6a43dc — the TCivMgr insta
 extern "C" const char s_SourcePathUViewMgr_0069B6BC[];
 extern "C" const char s_SourcePathUMultiplayerMgr_00698040[];
 extern "C" const char s_SourcePathUNavy_006983C8[];
+extern "C" const char s_SourcePathUTacViews_00699FF4[];
 extern "C" const char s_SourcePathUViewMgrMore_0069B740[];
 // Assert source-path string for the UArmyMgr TU.
 extern "C" const char s_SourcePathUArmyMgr_0069573C[];

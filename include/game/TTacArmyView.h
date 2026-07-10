@@ -122,7 +122,14 @@ public:
   // slot 0x6f WrapperFor_InvalidateCityDialogRectRegion_At005a9240 inherited unchanged (0x5a9240)
   // slot 0x70 DrawUiTilesAndOverlay inherited unchanged (0x5a9550)
   // === END GENERATED DECLS (TTacArmyView) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TTacArmyView 0xCTOR`).
+  // Army-view slice (base TTacticalBattleView ends at +0xd0). Written by the
+  // live-battle initializer 0x5a9d90; battlefieldOriginOffsetXD4 is re-derived as the
+  // backdrop source-x origin in the rect applier 0x5aa2e0.
+  class TTacticalToolbar* toolbarD0; // +0xd0 cached 'tool' control
+  short battlefieldOriginOffsetXD4;  // +0xd4 (0x1d - columnCount) * tileWidthPx
+  unsigned char padD6[2];            // +0xd6
+  short battlefieldColumnCountD8;    // +0xd8 copy of battle battlefieldColumnCount34
+  unsigned char padDA[2];            // +0xda
 
   TTacArmyView();
 

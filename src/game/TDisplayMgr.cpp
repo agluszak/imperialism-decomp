@@ -117,9 +117,9 @@ void TDisplayMgr::InitializeBitmapSurfaceContextWithRetry(TQuickDrawSurfaceConte
 }
 
 // Frees the TQuickDrawSurfaceContext record held in `slot` and clears the slot.
-// The original is callee-clean (`ret 4`) with no `this`, i.e. __stdcall.
+// `this` is unused, but the callsites all dispatch through g_pDisplayMgr.
 // FUNCTION: IMPERIALISM 0x004feb50
-void __stdcall FreeQuickDrawSurfaceContextSlot(TQuickDrawSurfaceContext** slot) {
+void TDisplayMgr::FreeQuickDrawSurfaceContextSlot(TQuickDrawSurfaceContext** slot) {
   delete *slot;
   *slot = 0;
 }

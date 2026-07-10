@@ -121,3 +121,5 @@ address|name|prototype
 0x004fd220|TMapKey::RenderMapHintOverlayMode4|void __thiscall RenderMapHintOverlayMode4()
 0x004fd5c0|TMapKey::RenderMapHintOverlayMode1|void __thiscall RenderMapHintOverlayMode1()
 0x004fd910|TMapKey::RenderMapHintOverlayMode2|void __thiscall RenderMapHintOverlayMode2()
+0x00498c60|NoOpModalAnimWaitBracketHookA_00498c60|undefined4 __cdecl NoOpModalAnimWaitBracketHookA_00498c60()
+0x00498c80|NoOpModalAnimWaitBracketHookB_00498c80|undefined4 __cdecl NoOpModalAnimWaitBracketHookB_00498c80()

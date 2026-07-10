@@ -1238,8 +1238,8 @@ address|name|symbol|size|type|prototype|provenance
 498b80|AssertQuickDrawFlag6A1DCCNonZero||30|function|void* __cdecl AssertQuickDrawFlag6A1DCCNonZero(int index)|
 498bb0|SectRect||22|function|undefined IntersectRectWrapper()|
 498be0|WrapperFor_AttachRegionHandleToClipStateAndRegister_At00498be0||50|function|undefined WrapperFor_AttachRegionHandleToClipStateAndRegister_At00498be0()|
-498c60|RunOneTimeAnimationModalWaitAndInvalidateCityDialog_Impl||1|function|undefined RunOneTimeAnimationModalWaitAndInvalidateCityDialog_Impl()|
-498c80|RunOneTimeAnimationModalWaitAndInvalidateCityDialog_Impl_At00498c80||1|function|undefined RunOneTimeAnimationModalWaitAndInvalidateCityDialog_Impl_At00498c80()|
+498c60|NoOpModalAnimWaitBracketHookA_00498c60||1|function|undefined RunOneTimeAnimationModalWaitAndInvalidateCityDialog_Impl()|
+498c80|NoOpModalAnimWaitBracketHookB_00498c80||1|function|undefined RunOneTimeAnimationModalWaitAndInvalidateCityDialog_Impl_At00498c80()|
 498ca0|NoOpCallback_00498ca0||1|function|undefined NoOpCallback_00498ca0()|
 498cc0|ShowDialogTemplateE0ModalAndReleaseCapture||117|function|undefined ShowDialogTemplateE0ModalAndReleaseCapture()|
 498d60|WrapperFor_CDialog_At00498d60||80|function|undefined WrapperFor_CDialog_At00498d60()|
@@ -2908,7 +2908,7 @@ address|name|symbol|size|type|prototype|provenance
 4fe840|TDisplayMgr::InitializeTurnOrderNavigationDialogByViewportSize||432|function|undefined InitializeTurnOrderNavigationDialogByViewportSize()|
 4fea60|TDisplayMgr::Free||50|function|undefined ReleasePrimaryRenderSurfaceContextAndCloseOwnerView()|
 4feab0|TDisplayMgr::InitializeBitmapSurfaceContextWithRetry||87|function|undefined InitializeBitmapSurfaceContextWithRetry(int *outContext, short bitDepth, RECT *bounds)|
-4feb50|WrapperFor_FreeHeapBufferIfNotNull_At004feb50||26|function|void WrapperFor_FreeHeapBufferIfNotNull_At004feb50(int * field)|
+4feb50|TDisplayMgr::FreeQuickDrawSurfaceContextSlot||26|function|void WrapperFor_FreeHeapBufferIfNotNull_At004feb50(int * field)|
 4feb80|TDisplayMgr::EnsurePrimaryRenderSurfaceContextAllocated||62|function|undefined EnsurePrimaryRenderSurfaceContextAllocated()|
 4febd0|TDisplayMgr::WrapperFor_thunk_NoOpCallback_00498ca0_At004febd0||50|function|undefined WrapperFor_thunk_NoOpCallback_00498ca0_At004febd0(void)|
 4fec20|TDisplayMgr::AssertUDisplayMgrLine471||28|function|undefined AssertUDisplayMgrLine471()|

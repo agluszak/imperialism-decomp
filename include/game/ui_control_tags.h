@@ -121,3 +121,8 @@ const unsigned int kControlTagBar = 0x62617220; // 'bar '
 
 // New-game setup screen tags (TRadioTextCluster option groups)
 const unsigned int kTagNada = 0x6e616461; // 'nada' — sentinel: no option selected
+
+// Battle-intro ('hola') dialog tags
+const unsigned int kControlTagAttackerCoat = 0x61636f61u; // 'acoa'
+const unsigned int kControlTagDefenderCoat = 0x64636f61u; // 'dcoa'
+const unsigned int kControlTagPreviewMap = 0x706d6170u;   // 'pmap'

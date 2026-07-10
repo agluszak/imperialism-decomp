@@ -612,6 +612,21 @@ short g_civilianTileOrderCursorTokenTable[12] = {0,    1008, 0,    1004, 1003, 1
 // Per-unit-type tactical category code (short table at 0x695528, 30 unit types + 2
 // pad); category 0 counts as garrison strength in TGreatPower slot 0x11 (0x004d87e0),
 // category 8 marks the sapper/engineer types (24-26), 9 the last tier (27-29).
+// Tactical view metrics (bss; written by the tactical-view metric setters
+// 0x5a6830 / 0x5a6860 / 0x5a6895, read by the live-battle initializer 0x5a9d90).
+// GLOBAL: IMPERIALISM 0x006a5430
+int g_nTacticalTileWidthPx_006A5430 = 0;
+// GLOBAL: IMPERIALISM 0x006a5434
+int g_nTacticalTileRowHeightPx_006A5434 = 0;
+// GLOBAL: IMPERIALISM 0x006a5448
+int g_nTacticalBattlefieldSurfaceWidth_006A5448 = 0;
+// GLOBAL: IMPERIALISM 0x006a544c
+int g_nTacticalBattlefieldSurfaceHeight_006A544C = 0;
+// GLOBAL: IMPERIALISM 0x006a5498
+int g_nTacticalUnitSpriteCellWidth_006A5498 = 0;
+// GLOBAL: IMPERIALISM 0x006a549c
+int g_nTacticalUnitSpriteCellHeight_006A549C = 0;
+
 // GLOBAL: IMPERIALISM 0x00695528
 short g_awTacticalUnitCategoryCodeBySlot[32] = {0, 1, 2, 3, 4, 5, 6, 7, 0, 1, 2, 3, 4, 5, 6, 7,
                                                 0, 1, 2, 3, 4, 5, 6, 7, 8, 8, 8, 9, 9, 9, 0, 0};
@@ -843,6 +858,8 @@ extern "C" const char s_SourcePathUMultiplayerMgr_00698040[] =
     "D:\\Ambit\\Cross\\UMultiplayerMgr.cpp";
 // GLOBAL: IMPERIALISM 0x006983c8
 extern "C" const char s_SourcePathUNavy_006983C8[] = "D:\\Ambit\\Cross\\UNavy.cpp";
+// GLOBAL: IMPERIALISM 0x00699ff4
+extern "C" const char s_SourcePathUTacViews_00699FF4[] = "D:\\Ambit\\Cross\\UTacViews.cpp";
 // GLOBAL: IMPERIALISM 0x0069b740
 extern "C" const char s_SourcePathUViewMgrMore_0069B740[] = "D:\\Ambit\\Cross\\UViewMgr.more.cpp";
 // GLOBAL: IMPERIALISM 0x0069573c

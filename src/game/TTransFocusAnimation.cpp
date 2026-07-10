@@ -68,10 +68,10 @@ TTransFocusAnimation::~TTransFocusAnimation() {}
 // FUNCTION: IMPERIALISM 0x004a0570
 void TTransFocusAnimation::Free() {
   if (transientSurfaceContext != 0) {
-    FreeQuickDrawSurfaceContextSlot(&transientSurfaceContext);
+    g_pDisplayMgr->FreeQuickDrawSurfaceContextSlot(&transientSurfaceContext);
   }
   if (insetBitmapSurface != 0) {
-    FreeQuickDrawSurfaceContextSlot(&insetBitmapSurface);
+    g_pDisplayMgr->FreeQuickDrawSurfaceContextSlot(&insetBitmapSurface);
   }
   if (this != nullptr) {
     delete this;

@@ -59,14 +59,6 @@ undefined4 GetRuntimeClass(void)
   return 0;
 }
 
-// ghidra_name TOneTimeAnimation::ConstructTOneTimeAnimationBaseState
-// ghidra_proto undefined ConstructTOneTimeAnimationBaseState()
-// FUNCTION: IMPERIALISM 0x0049fd60
-undefined4 ConstructTOneTimeAnimationBaseState(void)
-{
-  return 0;
-}
-
 // ghidra_name TCouncilTickerAnimation::CreateTCouncilTickerAnimationInstance
 // ghidra_proto undefined CreateTCouncilTickerAnimationInstance()
 // FUNCTION: IMPERIALISM 0x0049ff50

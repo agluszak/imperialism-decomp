@@ -1,5 +1,9 @@
 #include "game/TTacticalBattleView.h"
 
+#include "game/TCivAnimation2.h"
+#include "game/TOneTimeAnimation.h"
+#include "game/ui_invalidation_guard.h"
+
 #include "game/TAnimation.h"
 #include "game/TAnimator.h"
 #include "game/TCivAnimation2.h"
@@ -190,15 +194,35 @@ undefined TTacticalBattleView::PlayTacticalTileEffect(int tileIndex, int effectI
                                                              tileIndex, 2);
 }
 
+// 1-byte no-op pair bracketing the modal animation wait (possible Mac
+// HideCursor/ShowCursor shims, like QDLoadResource); autogen-stub-owned.
+extern undefined4 NoOpModalAnimWaitBracketHookA_00498c60(void);
+extern undefined4 NoOpModalAnimWaitBracketHookB_00498c80(void);
+
+// Spawns a TOneTimeAnimation over `rect` (effect sprite `effectId`, `frameCount`
+// frames, `mode` ticks per frame, registry tag = tileIndex), registers it with the
+// UI animator, then pumps UI messages modally until the animation completes; finally
+// invalidates the rect and drops the registry entry.
 // FUNCTION: IMPERIALISM 0x005a9170
 undefined TTacticalBattleView::RunOneTimeAnimationModalWaitAndInvalidateCityDialog(
     RECT* rect, int effectId, int frameCount, int tileIndex, int mode) {
-  // TODO: port body @ 0x5a9170.
-  (void)rect;
-  (void)effectId;
-  (void)frameCount;
-  (void)tileIndex;
-  (void)mode;
+  TOneTimeAnimation* animation = new TOneTimeAnimation;
+  // The original calls the init body unconditionally on the new-result (no null guard).
+  animation->ConstructTOneTimeAnimationBaseState(this, rect, static_cast<short>(frameCount),
+                                                 static_cast<short>(effectId), mode, tileIndex);
+  // The registry stores heterogeneous animation objects; TOneTimeAnimation is
+  // CObject-rooted, not TAnimation-derived, so this is a genuine pun confined here.
+  static_cast<TCivAnimation2*>(static_cast<void*>(g_pUiAnimator))
+      ->AddObjectToUiTransientRegistry(static_cast<TAnimation*>(static_cast<void*>(animation)));
+  NoOpModalAnimWaitBracketHookA_00498c60();
+  modalAnimWaitDoneFlag98 = 0;
+  while (animation->completeFlag == 0) {
+    PumpUiMessagesAndBackgroundTasks(1);
+  }
+  modalAnimWaitDoneFlag98 = 1;
+  NoOpModalAnimWaitBracketHookB_00498c80();
+  InvalidateCityDialogRectRegion(rect, 1);
+  g_pUiAnimator->RemoveUiTransientRegistryObjectByTag(tileIndex);
   return 0;
 }
 

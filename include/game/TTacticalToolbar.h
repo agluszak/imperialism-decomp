@@ -134,7 +134,12 @@ public:
   virtual undefined
   WrapperFor_InvalidateCityDialogRectRegion_At005acc90(int param_1); // slot 0x74 0x5acc90
   // === END GENERATED DECLS (TTacticalToolbar) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TTacticalToolbar 0xCTOR`).
+  // Toolbar slice (base TCluster ends at +0x88). battle88/unitSpriteAtlasSurface94 are
+  // wired by the live-battle initializer 0x5a9d90; currentUnit8C by slot 0x73.
+  class TTacticalBattle* battle88;                           // +0x88
+  class TTacticalUnit* currentUnit8C;                        // +0x8c current-unit control source
+  unsigned char pad90[4];                                    // +0x90 unobserved
+  struct TQuickDrawSurfaceContext* unitSpriteAtlasSurface94; // +0x94 the 0xee2 atlas
 
   // Arms/disarms the 'targ'/'done'/'retr'/'auto' control cluster for the live-battle
   // vs deployment phase (mode 1 = battle live). Resolves the child controls on
