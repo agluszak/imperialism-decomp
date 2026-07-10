@@ -2,6 +2,7 @@
 #include "game/TDisplayMgr.h"
 #include "game/TModuleLibraryCacheTableStateB.h"
 #include "game/TDropShadowText.h"
+#include "game/TStaticText.h"
 #include "game/TView.h"
 #include "game/ui_text_label_helpers_decls.h"
 #include "game/quickdraw_rendering.h"
@@ -16,15 +17,10 @@ TStaticText* __cdecl RefreshActiveControlThenApplyThemeStyleAndCaption(unsigned 
                                                                        int themeCode,
                                                                        int themeCode2,
                                                                        const char* caption) {
-  // TODO: port body @ 0x5c4310 (not yet ported). Declared for real so the lounge
-  // refresh gets a correctly-typed call site.
-  (void)controlTag;
-  (void)unused2;
-  (void)pointSize;
-  (void)themeCode;
-  (void)themeCode2;
-  (void)caption;
-  return 0;
+  TView* control = g_pDisplayMgr->activeDialog->ResolveControlByTag(controlTag);
+  control->AssertValid();
+  return ApplyControlThemeStyleAndOptionalCaption(static_cast<TStaticText*>(control), unused2,
+                                                  pointSize, themeCode, themeCode2, caption);
 }
 
 // FUNCTION: IMPERIALISM 0x005c4590

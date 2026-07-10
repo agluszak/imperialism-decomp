@@ -1198,7 +1198,7 @@ address|name|symbol|size|type|prototype|provenance
 496090|SetActiveQuickDrawSurfaceContext_Impl||146|function|undefined SetActiveQuickDrawSurfaceContext_Impl()|
 4961b0|SetActiveQuickDrawSurfaceContext||138|function|undefined SetActiveQuickDrawSurfaceContext()|
 496270|GetActiveQuickDrawSurfaceContextAndFlags||24|function|undefined GetActiveQuickDrawSurfaceContextAndFlags()|
-4962a0|GetSurfaceObjectAtContextOffset24||8|function|undefined GetSurfaceObjectAtContextOffset24()|
+4962a0|GetSurfaceNodeSlot||8|function|void* GetSurfaceNodeSlot(TQuickDrawSurfaceContext* context)|
 4962c0|InitializeBitmapDescriptorRecordAndLoadSurfaceNode||264|function|undefined InitializeBitmapDescriptorRecordAndLoadSurfaceNode()|
 496420|WrapperFor_FreeHeapBufferIfNotNull_At00496420||27|function|undefined WrapperFor_FreeHeapBufferIfNotNull_At00496420()|
 496450|OrphanCallChain_C42_I283_00496450||719|function|undefined OrphanCallChain_C42_I283_00496450()|
@@ -1209,7 +1209,7 @@ address|name|symbol|size|type|prototype|provenance
 4972a0|InitializeTurnOrderNavigationDialogByViewportSize_Impl||3|function|undefined InitializeTurnOrderNavigationDialogByViewportSize_Impl()|
 4972c0|ReturnConstantTrueQuickDrawFlag||3|function|undefined ReturnConstantTrueQuickDrawFlag()|
 4972e0|NoOpQuickDrawLifecycleHookB||1|function|undefined NoOpQuickDrawLifecycleHookB()|
-497300|GetSurfaceHeaderFromSurfaceObject||9|function|undefined GetSurfaceHeaderFromSurfaceObject()|
+497300|GetSurfaceNodePixelBits||9|function|void* GetSurfaceNodePixelBits(void* surfaceObject)|
 497320|CTemporaryRegion::CTemporaryRegion||80|function|undefined AcquireReusableQuickDrawSurface()|
 497390|CTemporaryRegion::~CTemporaryRegion||76|function|undefined ReleaseOrCacheQuickDrawSurface()|
 4974f0|ReleaseGlobalClipRegionHandleListAndReset_006a1c98||56|function|undefined ReleaseGlobalClipRegionHandleListAndReset_006a1c98()|
@@ -4290,7 +4290,7 @@ address|name|symbol|size|type|prototype|provenance
 5606f0|BuildMapOrderObjectiveDescriptionTextForNation||511|function|undefined BuildMapOrderObjectiveDescriptionTextForNation()|
 560970|GetMapOrderContextPointerForNationAndTarget||78|function|undefined GetMapOrderContextPointerForNationAndTarget()|
 5609e0|CreateTaskForceFromNavyOrdersForNationIfEligible||216|function|undefined CreateTaskForceFromNavyOrdersForNationIfEligible()|
-560b00|TCivToolbar::CanDisplayMapOrderEntryInCurrentContext||122|function|undefined CanDisplayMapOrderEntryInCurrentContext()|
+560b00|TZone::CanDisplayMapOrderEntryInCurrentContext||122|function|char CanDisplayMapOrderEntryInCurrentContext(short nation, char skipField34Check)|
 560ba0|ExpandTaskForceTraversalDepthAndMarkDeferredNodes||504|function|undefined ExpandTaskForceTraversalDepthAndMarkDeferredNodes()|
 560e20|ResetMapActionContextActivityAndNationFlags||50|function|undefined ResetMapActionContextActivityAndNationFlags()|
 560e70|SelectBestMapActionContextForNationDiplomacyMask||197|function|undefined SelectBestMapActionContextForNationDiplomacyMask()|
@@ -4758,7 +4758,7 @@ address|name|symbol|size|type|prototype|provenance
 5789b0|TMapPreviewView::Free||27|function|undefined DestructTMapPreviewViewAndMaybeFree()|
 5789e0|TMapPreviewView::BeginMouseCaptureAndStartRepeatTimer||122|function|undefined HandleTurnEventPaletteClickSelection()|
 578a80|TMapPreviewView::ApplyRectSlot110||307|function|undefined BlitMapPreviewSurfaceAndSelectionMarker()|
-578c10|TLoadSavePicture::RasterizeHexNeighborTerrainPaletteMap||1295|function|undefined RasterizeHexNeighborTerrainPaletteMap()|
+578c10|TLoadSavePicture::RasterizeHexNeighborTerrainPaletteMap||1295|function|void RasterizeHexNeighborTerrainPaletteMap(signed char* tileOwnerTagTable)|
 579270|ApplyPaletteMaskToTileBufferByEventCode||299|function|undefined ApplyPaletteMaskToTileBufferByEventCode()|
 5793f0|TRadioText::CreateObject|?CreateObject@TRadioText@@SGPAVCObject@@XZ|83|function|undefined CreateObject()|rtti
 579470|TRadioText::GetRuntimeClass||6|function|undefined GetTRadioTextClassNamePointer()|rtti

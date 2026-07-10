@@ -846,11 +846,26 @@ TTaskForce* TZone::CreateTaskForceFromNavyOrdersForNationIfEligible(short nation
 
 // FUNCTION: IMPERIALISM 0x00560b00
 char TZone::CanDisplayMapOrderEntryInCurrentContext(short nation, char skipField34Check) {
-  // TODO: port body @ 0x560b00 (not yet ported). Declared for real so
-  // TOcean::RefreshMapActionContextNationOverlaysAndOrderRanks gets a correctly-typed
-  // call site.
-  (void)nation;
-  (void)skipField34Check;
+  if (nation == -1) {
+    nation = g_pSimMgr->GetActiveNationId();
+  }
+  unsigned char nationBit = static_cast<unsigned char>(1 << nation);
+  if ((field10 & nationBit) == 0) {
+    return 0;
+  }
+  for (TShip* ship = GetNavyPrimaryOrderListHead(); ship != 0; ship = ship->nextOlder24) {
+    if (ship->field08 == this && ship->ownerNationSlot14 == nation) {
+      if (skipField34Check == 0) {
+        unsigned char hasField34 = (ship->field34 != 0);
+        if (hasField34 != 0) {
+          continue;
+        }
+      }
+      if (ship->field0c == 0) {
+        return 1;
+      }
+    }
+  }
   return 0;
 }
 

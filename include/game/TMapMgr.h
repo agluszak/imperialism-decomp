@@ -146,6 +146,11 @@ struct TGlobalMapCityScoreRecord {
 // defined in TNavyMgr.cpp.
 int GetCityIndexFromCityStatePointer(TGlobalMapCityScoreRecord* cityState, int unusedArg);
 
+// 0x5127e0: tileIndex -> (hex raster column*2 (+1 on odd rows), row = tileIndex/0x6c).
+// TODO(promote): genuine __cdecl free function (pure arithmetic; still an autogen stub).
+void SplitTileIndexToHexRasterColumnX2AndRow(short tileIndex, short* outColX2,
+                                             unsigned short* outRow);
+
 struct HexSpiralSearchState {
   int row;
   int col;

@@ -6133,7 +6133,7 @@
     {
       "address": "0x4962a0",
       "matching": 1.0,
-      "name": "GetSurfaceObjectAtContextOffset24",
+      "name": "GetSurfaceNodeSlot",
       "type": 1
     },
     {
@@ -6193,7 +6193,7 @@
     {
       "address": "0x497300",
       "matching": 1.0,
-      "name": "GetSurfaceHeaderFromSurfaceObject",
+      "name": "GetSurfaceNodePixelBits",
       "type": 1
     },
     {
@@ -12356,7 +12356,7 @@
     },
     {
       "address": "0x4dd430",
-      "matching": 0.5714285714285714,
+      "matching": 0.5142857142857142,
       "name": "TGreatPower::ComputeRemainingDiplomacyAidBudget",
       "type": 1
     },
@@ -12788,14 +12788,14 @@
     },
     {
       "address": "0x4e0590",
-      "effective": true,
-      "matching": 0.42857142857142855,
+      "matching": 1.0,
       "name": "TGreatPower::OrphanRetStub_004d7fa0_88",
       "type": 1
     },
     {
       "address": "0x4e05d0",
-      "matching": 1.0,
+      "effective": true,
+      "matching": 0.42857142857142855,
       "name": "TGreatPower::OrphanLeaf_NoCall_Ins02_004d7fc0_89",
       "type": 1
     },
@@ -12808,7 +12808,8 @@
     },
     {
       "address": "0x4e0650",
-      "matching": 1.0,
+      "effective": true,
+      "matching": 0.42857142857142855,
       "name": "TGreatPower::OrphanRetStub_004d7fe0_8b",
       "type": 1
     },
@@ -12851,7 +12852,7 @@
     },
     {
       "address": "0x4e09a0",
-      "matching": 0.5180722891566265,
+      "matching": 0.5421686746987951,
       "name": "TGreatPower::ComputeCityOrderCapabilityAggregateScore",
       "type": 1
     },
@@ -16352,7 +16353,7 @@
     },
     {
       "address": "0x50bea0",
-      "matching": 0.2080872330758746,
+      "matching": 0.20990458882326216,
       "name": "TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets",
       "type": 1
     },
@@ -16706,7 +16707,7 @@
     },
     {
       "address": "0x5127e0",
-      "matching": 0.06666666666666667,
+      "matching": 0.6551724137931034,
       "name": "SplitTileIndexToHexRasterColumnX2AndRow",
       "type": 1
     },
@@ -16802,7 +16803,7 @@
     },
     {
       "address": "0x5136a0",
-      "matching": 0.8888888888888888,
+      "matching": 1.0,
       "name": "TMapMgr::OrphanLeaf_NoCall_Ins35_005136a0",
       "type": 1
     },
@@ -17174,7 +17175,7 @@
     },
     {
       "address": "0x5178f0",
-      "matching": 0.32116788321167883,
+      "matching": 0.3446601941747573,
       "name": "ComputeRepresentativeTileIndexForTerrainTypeWithWrapBias",
       "type": 1
     },
@@ -18266,7 +18267,7 @@
     },
     {
       "address": "0x52d750",
-      "matching": 0.22063492063492063,
+      "matching": 0.21904761904761905,
       "name": "MergeSmallCityRegionsAndCompactIds",
       "type": 1
     },
@@ -23081,8 +23082,8 @@
     },
     {
       "address": "0x560b00",
-      "matching": 0.07272727272727272,
-      "name": "TCivToolbar::CanDisplayMapOrderEntryInCurrentContext",
+      "matching": 0.7047619047619048,
+      "name": "TZone::CanDisplayMapOrderEntryInCurrentContext",
       "type": 1
     },
     {
@@ -25682,7 +25683,7 @@
     },
     {
       "address": "0x578c10",
-      "matching": 0.004750593824228029,
+      "matching": 0.7158403869407497,
       "name": "TLoadSavePicture::RasterizeHexNeighborTerrainPaletteMap",
       "type": 1
     },
@@ -29582,7 +29583,7 @@
     },
     {
       "address": "0x5a39a0",
-      "matching": 0.9393939393939394,
+      "matching": 0.9545454545454546,
       "name": "ComputeHexTileDistanceFromIndices",
       "type": 1
     },
@@ -32503,7 +32504,7 @@
     },
     {
       "address": "0x5c4310",
-      "matching": 0.07142857142857142,
+      "matching": 1.0,
       "name": "RefreshActiveControlThenApplyThemeStyleAndCaption",
       "type": 1
     },

@@ -9,6 +9,9 @@
 #include "game/TAssetMgr.h"
 #include "game/TEditText.h"
 #include "game/TSoundPlayer.h"
+#include "game/TMapMgr.h"
+#include "game/TQuickDrawSurfaceContext.h"
+#include "game/bitmap_descriptor_helpers.h"
 #include "game/TViewMgr.h"
 #include "game/mapped_flavor_text.h"
 #include "game/TMultiplayerMgr.h"
@@ -298,9 +301,105 @@ unsigned char __cdecl BuildSaveSlotPathAndProbeMetadata(int slot, const char* la
   return 0;
 }
 
+namespace {
+
+// Per-pixel palette resolution for the preview-map rasterizer below - the original
+// inlines this 11x per tile. Minor-nation owner tags [7,0x17) collapse to the shared
+// minor color 0xb; -1 = no owner / off-map (palette 0x10); -2 = contested hex corner
+// (palette 0). __inline so MSVC500 /Ob1 re-inlines it at every use.
+static __inline unsigned char ResolvePreviewMapOwnerTagPaletteByte(int ownerTag) {
+  if (ownerTag >= 7 && ownerTag < 0x17) {
+    ownerTag = 0xb;
+  }
+  if (ownerTag == -1) {
+    return 0x10;
+  }
+  if (ownerTag == -2) {
+    return 0;
+  }
+  return static_cast<unsigned char>(g_pUiRuntimeContext->MapTurnEventCodeToPaletteIndex(ownerTag));
+}
+
+} // namespace
+
 // FUNCTION: IMPERIALISM 0x00578c10
-void TLoadSavePicture::RasterizeHexNeighborTerrainPaletteMap(int param) {
-  // TODO: port body @ 0x578c10 (not yet ported). Declared for real so the lounge map
-  // refresh gets a correctly-typed call site.
-  (void)param;
+void TLoadSavePicture::RasterizeHexNeighborTerrainPaletteMap(signed char* tileOwnerTagTable) {
+  TQuickDrawSurfaceContext* drawContext =
+      reinterpret_cast<TQuickDrawSurfaceContext*>(hasCommandTagResource);
+  unsigned char* tileBuffer =
+      static_cast<unsigned char*>(GetSurfaceNodePixelBits(GetSurfaceNodeSlot(drawContext)));
+  TBitmapSurfaceNode** surfaceObject =
+      static_cast<TBitmapSurfaceNode**>(GetSurfaceNodeSlot(drawContext));
+  int strideBytes = static_cast<unsigned short>((*surfaceObject)->stride) & 0x3fff;
+
+  for (int tileIndex = 0; tileIndex < 0x1950; ++tileIndex) {
+    short px;         // hex raster column*2 from the split, then the block's left pixel column
+    short py;         // hex raster row from the split, then the block's top pixel row
+    short hexTags[7]; // [0..5] neighbor tile indices -> owner tags, [6] = this tile
+    SplitTileIndexToHexRasterColumnX2AndRow(static_cast<short>(tileIndex), &px,
+                                            reinterpret_cast<unsigned short*>(&py));
+    unsigned char oddRow = static_cast<unsigned char>(py) & 1;
+    py = static_cast<short>(py * 3);
+    px = static_cast<short>((px * 3) / 2);
+    TMapMgr::ComputeHexNeighborTileIndices(static_cast<short>(tileIndex), hexTags, 1);
+    hexTags[6] = static_cast<short>(tileIndex);
+
+    // Tile index -> owner-nation tag, via the caller's per-tile byte table when given,
+    // else the live map's terrain state records.
+    if (tileOwnerTagTable != 0) {
+      for (int i = 0; i < 7; ++i) {
+        hexTags[i] = (hexTags[i] == -1) ? -1 : tileOwnerTagTable[hexTags[i]];
+      }
+    } else {
+      for (int j = 0; j < 7; ++j) {
+        hexTags[j] = (hexTags[j] == -1)
+                         ? -1
+                         : g_pGlobalMapState->terrainStateTable[hexTags[j]].ownerNationTag04;
+      }
+    }
+    for (int k = 0; k < 7; ++k) {
+      hexTags[k] = (hexTags[k] >= 0x17) ? -1 : hexTags[k];
+    }
+
+    int tag;
+    // Top-left pixel: blends toward neighbors 5/4 (odd rows) or 5/4/0 (even rows).
+    if (hexTags[6] == hexTags[5]) {
+      tag = hexTags[6];
+    } else if ((oddRow != 0 && hexTags[5] == hexTags[4]) ||
+               (oddRow == 0 && hexTags[5] == hexTags[0] && hexTags[4] == hexTags[0])) {
+      tag = hexTags[5];
+    } else {
+      tag = -2;
+    }
+    tileBuffer[py * strideBytes + px] = ResolvePreviewMapOwnerTagPaletteByte(tag);
+
+    // Rest of the top row, by row parity.
+    if (oddRow != 0) {
+      tag = (hexTags[6] == hexTags[5]) ? hexTags[6] : -2;
+      tileBuffer[py * strideBytes + (px + 1)] = ResolvePreviewMapOwnerTagPaletteByte(tag);
+      tag = (hexTags[6] == hexTags[0] || (hexTags[6] == hexTags[1] && hexTags[6] == hexTags[5]))
+                ? hexTags[6]
+                : -2;
+      tileBuffer[py * strideBytes + (px + 2)] = ResolvePreviewMapOwnerTagPaletteByte(tag);
+    } else {
+      tag = (hexTags[6] == hexTags[0] || hexTags[6] == hexTags[5]) ? hexTags[6] : -2;
+      tileBuffer[py * strideBytes + (px + 1)] = ResolvePreviewMapOwnerTagPaletteByte(tag);
+      tag = (hexTags[6] == hexTags[0]) ? hexTags[6] : -2;
+      tileBuffer[py * strideBytes + (px + 2)] = ResolvePreviewMapOwnerTagPaletteByte(tag);
+    }
+
+    // Left column of rows 2-3 blends toward neighbor 4; the remaining 2x2 is pure self.
+    tag = (hexTags[6] == hexTags[4]) ? hexTags[6] : -2;
+    tileBuffer[(py + 1) * strideBytes + px] = ResolvePreviewMapOwnerTagPaletteByte(tag);
+    tag = (hexTags[6] == hexTags[4]) ? hexTags[6] : -2;
+    tileBuffer[(py + 2) * strideBytes + px] = ResolvePreviewMapOwnerTagPaletteByte(tag);
+    tileBuffer[(py + 1) * strideBytes + (px + 1)] =
+        ResolvePreviewMapOwnerTagPaletteByte(hexTags[6]);
+    tileBuffer[(py + 2) * strideBytes + (px + 1)] =
+        ResolvePreviewMapOwnerTagPaletteByte(hexTags[6]);
+    tileBuffer[(py + 1) * strideBytes + (px + 2)] =
+        ResolvePreviewMapOwnerTagPaletteByte(hexTags[6]);
+    tileBuffer[(py + 2) * strideBytes + (px + 2)] =
+        ResolvePreviewMapOwnerTagPaletteByte(hexTags[6]);
+  }
 }

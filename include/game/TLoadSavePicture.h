@@ -138,9 +138,11 @@ public:
 
   TLoadSavePicture();
 
-  // 0x578c10: re-rasterize the hex-neighbor terrain palette map into this preview
-  // control's tile buffer (genuine __thiscall on the 'map ' control). Body TODO.
-  void RasterizeHexNeighborTerrainPaletteMap(int param);
+  // 0x578c10: rasterize the owner-nation palette preview map (3x3 px per hex, 0x1950
+  // tiles) into this control's surface buffer. `tileOwnerTagTable`, when non-null, is a
+  // per-tile signed-byte owner-tag table; null falls back to the live map's
+  // terrainStateTable ownerNationTag04 bytes.
+  void RasterizeHexNeighborTerrainPaletteMap(signed char* tileOwnerTagTable);
 };
 
 ASSERT_SIZE(TLoadSavePicture, 0xa8);
