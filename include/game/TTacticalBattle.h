@@ -102,7 +102,7 @@ public:
   short* tileMoveCostArray24;   // +0x24 per-tile move cost (-1 unreached); filled by slot 0x0a
   char* tileThreatLevelArray28; // +0x28 per-tile threat level; filled by slot 0x0b
   int* tileIntArray2c;          // +0x2c TODO(verify): use not yet observed
-  int* tileIntArray30;          // +0x30 TODO(verify): use not yet observed
+  int* tileIntArray30;          // +0x30 advance-distance field (0x5a4460); -1 = unreached
   int battlefieldColumnCount34; // +0x34 playable column count of this battle
   int battleSiteIndex38;        // +0x38 cityScoreTable row of the battle site
   int tacticalTileCount3c;      // +0x3c = 0x1b3 (435 = 15*29 battle tiles)
@@ -151,8 +151,14 @@ public:
                                      char remoteFlag); // 0x5a38e0
   void HandleTacticalCommandTag_depl(TArmyTacUnit* unit, int tileIndex,
                                      char remoteFlag); // 0x5a4370
-  // Hand the round over once the side has fully deployed. Body TODO. 0x59fd10.
+  // Hands the round over once the current side is done deploying: flips currentSideC,
+  // selects the incoming side's next unit, refreshes the 'tool' toolbar, then either
+  // finalizes the deployment phase or kicks the incoming side's StartBattle. 0x59fd10.
   void HandleTacticalCommandTag_retr();
+  // Ends the deployment phase once both sides are ready: retires undeployed units,
+  // sorts the record list into turn order, marks the battle live (field10 = 1), arms
+  // the live-battle toolbar controls and queues the 0x232a event. 0x59fdb0, __thiscall.
+  void FinalizeTacticalTurnStateAndQueueEvent232A();
 
   // Helpers the command family dispatches into (all __thiscall on the battle;
   // bodies TODO).
@@ -197,3 +203,9 @@ public:
 };
 
 ASSERT_SIZE(TTacticalBattle, 0x78);
+
+// Turn-order comparator for the battle record list (0x59fdb0 passes it to
+// SortEntriesWithComparator): higher base action points first, then higher quality,
+// then the +0x24 serialized word. Returns its -1/0/1 verdict in AX (short), so the
+// sort callsite adjusts the return type with a function-pointer cast.
+short __cdecl CompareTacticalUnitsForTurnOrder(void* a, void* b); // 0x59f610

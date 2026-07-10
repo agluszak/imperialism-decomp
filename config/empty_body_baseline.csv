@@ -243,11 +243,11 @@ src/game/TTacArmyView.cpp|2|0|1|0
 src/game/TTacMapUberPicture.cpp|2|0|1|0
 src/game/TTacNavyToolbar.cpp|2|0|1|0
 src/game/TTacticalAdiosPicture.cpp|2|0|1|0
-src/game/TTacticalBattle.cpp|2|1|0|0
+src/game/TTacticalBattle.cpp|0|1|0|0
 src/game/TTacticalBattleView.cpp|7|0|1|0
 src/game/TTacticalHolaPicture.cpp|1|0|1|0
-src/game/TTacticalPlayer.cpp|2|5|0|0
-src/game/TTacticalToolbar.cpp|3|0|1|0
+src/game/TTacticalPlayer.cpp|0|5|0|0
+src/game/TTacticalToolbar.cpp|4|0|1|0
 src/game/TTask.cpp|2|0|1|0
 src/game/TTaskForce.cpp|5|0|0|0
 src/game/TTaskList.cpp|0|0|1|0

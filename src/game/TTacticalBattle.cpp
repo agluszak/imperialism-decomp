@@ -38,6 +38,35 @@ void TTacticalBattle::DeployTacticalUnitToTile(TTacticalUnit* unit, int tileInde
 undefined TTacticalBattle::CreateTTacticalBattleInstance() {
   return 0;
 }
+
+// Non-virtual action helpers dispatched above.
+
+// Turn-order comparator (see the header note on the AX/short return).
+// FUNCTION: IMPERIALISM 0x0059f610
+short __cdecl CompareTacticalUnitsForTurnOrder(void* a, void* b) {
+  TTacticalUnit* unitA = static_cast<TTacticalUnit*>(a);
+  TTacticalUnit* unitB = static_cast<TTacticalUnit*>(b);
+  unitA->AssertValid();
+  unitB->AssertValid();
+  if (unitA == unitB) {
+    return 0;
+  }
+  int actionPointsA = unitA->GetBaseActionPoints();
+  int actionPointsB = unitB->GetBaseActionPoints();
+  if (actionPointsB < actionPointsA) {
+    return -1;
+  }
+  if (actionPointsB > actionPointsA) {
+    return 1;
+  }
+  if (unitB->qualityLevel10 < unitA->qualityLevel10) {
+    return -1;
+  }
+  if (unitB->qualityLevel10 > unitA->qualityLevel10) {
+    return 1;
+  }
+  return (unitA->field24 <= unitB->field24) ? 1 : -1;
+}
 // SYNTHETIC: IMPERIALISM 0x0059f6d0
 // TTacticalBattle::CreateObject
 
@@ -187,15 +216,45 @@ void TTacticalBattle::StartBattle() {
   tacticalPlayer18->StartBattle();
 }
 
-// Non-virtual action helpers dispatched above; bodies not yet ported.
-
-// Walks the unit step-by-step along the distance-field path toward the target tile,
-// stopping early when a reaction check fires. Deducts the arrival tile's move cost,
-// refreshes the view, and when the unit reaches its side's exit edge (column 0 for
-// side 0, the last playable column for side 1) retires it from the battlefield.
+// Round handover once the current side is done deploying; the 'retr' tag name is the
+// command-dispatch label, not a retreat walk.
 // FUNCTION: IMPERIALISM 0x0059fd10
 void TTacticalBattle::HandleTacticalCommandTag_retr() {
-  // TODO: port body @ 0x59fd10 (side fully deployed -> hand the round over).
+  currentSideC = (currentSideC == 0);
+  selectedUnit1c = (&tacticalPlayer14)[currentSideC]->SelectNextTacticalUnitForDoneCommand();
+  if (battleView8 != 0) {
+    TTacticalToolbar* toolbar = static_cast<TTacticalToolbar*>(
+        battleView8->ownerContext->ResolveControlByTag(kControlTagTool));
+    toolbar->AssertValid();
+    toolbar->UpdateTacticalCurrentUnitControlAndDialogLabel(selectedUnit1c);
+    toolbar->InvokeSlot13C();
+  }
+  TTacticalPlayer* incomingPlayer = (&tacticalPlayer14)[currentSideC];
+  if (incomingPlayer->sideReadyFlag10 != 0) {
+    FinalizeTacticalTurnStateAndQueueEvent232A();
+    return;
+  }
+  incomingPlayer->StartBattle();
+}
+
+// FUNCTION: IMPERIALISM 0x0059fdb0
+void TTacticalBattle::FinalizeTacticalTurnStateAndQueueEvent232A() {
+  tacticalPlayer14->RetireUndeployedUnitsToReserveList();
+  tacticalPlayer18->RetireUndeployedUnitsToReserveList();
+  recordList20->SortEntriesWithComparator(
+      reinterpret_cast<int(__cdecl*)(void*, void*)>(CompareTacticalUnitsForTurnOrder),
+      reinterpret_cast<int>(this));
+  field10 = 1;
+  if (battleView8 != 0) {
+    TTacticalToolbar* toolbar = static_cast<TTacticalToolbar*>(
+        battleView8->ownerContext->ResolveControlByTag(kControlTagTool));
+    toolbar->AssertValid();
+    toolbar->ConfigureTacticalTargetDoneRetreatAutoControls(1);
+  }
+  // TSortedList ordinals are 1-based, so GetEntryByOrdinal(GetCount()) is the tail.
+  selectedUnit1c =
+      static_cast<TTacticalUnit*>(recordList20->GetEntryByOrdinal(recordList20->GetCount()));
+  QueueTacticalEventPacket232A();
 }
 
 // Selection/UI helpers dispatched by the command family; bodies not yet ported.
@@ -1756,19 +1815,102 @@ void TTacticalBattle::HandleTacticalCommandTag_depl(TArmyTacUnit* unit, int tile
   }
 }
 
-// Counts the tiles the current side may still deploy onto. The zone test is the
-// ApplyGridColumnSelectionGuard body expanded inline in the original, so it is
-// duplicated here rather than called.
+// Builds the per-tile advance-distance field into tileIntArray30 for the given side:
+// fills the plane with -1, seeds distance 0 along the side's entry column (column 0
+// for ourSideFlag != 0, battlefieldColumnCount34 - 1 otherwise; water tiles with
+// terrainType0 == 4 stay unseeded), then flood-expands ring by ring through the six
+// hex neighbors. A neighbor is skipped when already reached, occupied, or behind an
+// intact fort wall -- except the wall gun-slot tiles (rows 5/7/9 at wall column
+// battlefieldColumnCount34 - 6), which stay passable for the attacking side only.
 // FUNCTION: IMPERIALISM 0x005a4460
 void TTacticalBattle::BuildTacticalDistanceFieldForSide(char ourSideFlag) {
-  // TODO: port body @ 0x5a4460 (pre-fills tileIntArray30 with -1, then floods).
-  (void)ourSideFlag;
+  int fillIndex;
+  for (fillIndex = 0; fillIndex < tacticalTileCount3c; ++fillIndex) {
+    tileIntArray30[fillIndex] = -1;
+  }
+  if (ourSideFlag != 0) {
+    // Seed column 0 of each of the 15 grid rows.
+    int rowStartA;
+    for (rowStartA = 0; rowStartA < 0x1b3; rowStartA += 0x1d) {
+      if (tileGrid4[rowStartA].terrainType0 != 4) {
+        tileIntArray30[rowStartA] = 0;
+      }
+    }
+  } else {
+    // Seed the last playable column (battlefieldColumnCount34 - 1) of each row.
+    int rowStartB;
+    for (rowStartB = 0; rowStartB < 0x1b3; rowStartB += 0x1d) {
+      int edgeTile = battlefieldColumnCount34 + rowStartB;
+      if (tileGrid4[edgeTile - 1].terrainType0 != 4) {
+        tileIntArray30[edgeTile - 1] = 0;
+      }
+    }
+  }
+  int distance = 0;
+  unsigned char anyTileExpanded;
+  do {
+    anyTileExpanded = 0;
+    int tile;
+    for (tile = 0; tile < tacticalTileCount3c; ++tile) {
+      if (tileIntArray30[tile] != distance) {
+        continue;
+      }
+      int neighborTiles[6];
+      ComputeHexNeighborTileIndices_005A0420(tile, neighborTiles);
+      int* neighborCursor = neighborTiles;
+      int direction;
+      for (direction = 0; direction < 6; ++direction, ++neighborCursor) {
+        int neighborTile = *neighborCursor;
+        if (neighborTile == -1) {
+          continue;
+        }
+        int* distanceCell = &tileIntArray30[neighborTile];
+        if (*distanceCell != -1) {
+          continue;
+        }
+        TacticalTileRecord* record = &tileGrid4[neighborTile];
+        if (record->occupant4 != 0) {
+          continue;
+        }
+        // The original emits two consecutive compares here (jl 2, then jle 1), so the
+        // source repeated the wall-mark test; kept literally. TODO(verify) shape.
+        if (record->deployMark8 >= 2 && record->deployMark8 > 1) {
+          int wallRow = neighborTile / 0x1d;
+          if (fortStrengthPoints54[wallRow / 2] > 0) {
+            int doubledColumn = (wallRow & 1) + (neighborTile % 0x1d) * 2;
+            if (wallRow != 5 && wallRow != 7 && wallRow != 9) {
+              continue;
+            }
+            if (doubledColumn / 2 != battlefieldColumnCount34 - 6) {
+              continue;
+            }
+            if (ourSideFlag != 0) {
+              continue;
+            }
+            // Gun-slot gate: stays passable for the attacking side.
+          }
+        }
+        if (record->terrainType0 != 4) {
+          anyTileExpanded = 1;
+          *distanceCell = distance + 1;
+        }
+      }
+    }
+    ++distance;
+  } while (anyTileExpanded != 0);
 }
 
+// Whether the tile sits on a fort-wall gun-slot: grid rows 5/7/9 at the wall column
+// battlefieldColumnCount34 - 6 (column compared in doubled-hex coordinates).
 // FUNCTION: IMPERIALISM 0x005a4690
 unsigned char TTacticalBattle::IsTacticalTileAtFortWallSectionSlot(int tileIndex) {
-  // TODO: port body @ 0x5a4690 (row in {5,7,9} and column == battlefieldColumnCount34-6).
-  (void)tileIndex;
+  int row = tileIndex / 0x1d;
+  int doubledColumn = (row & 1) + (tileIndex % 0x1d) * 2;
+  if (row == 5 || row == 7 || row == 9) {
+    if (doubledColumn / 2 == battlefieldColumnCount34 - 6) {
+      return 1;
+    }
+  }
   return 0;
 }
 

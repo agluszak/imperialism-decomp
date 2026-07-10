@@ -42,6 +42,6 @@ void TTacticalUnit::ApplyTacticalDamage(int damageA, int damageB) {
 }
 
 // FUNCTION: IMPERIALISM 0x005a5eb0
-undefined TTacticalUnit::CreateTArmyTacUnitInstance() {
-  return 0;
+void TTacticalUnit::FlipUnitSideAffiliation() {
+  side20 = (side20 == 0);
 }

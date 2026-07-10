@@ -1,6 +1,8 @@
 #include "game/TTacticalPlayer.h"
 
+#include "game/CIterator.h"
 #include "game/TSimMgr.h"
+#include "game/TTacticalBattle.h"
 #include "game/TTacticalUnit.h"
 #include "game/global_data_tables.h"
 
@@ -48,16 +50,6 @@ void TTacticalPlayer::Free() {
   delete this;
 }
 
-void TTacticalPlayer::RemoveTacticalUnitFromUnitList(TTacticalUnit* unit) {
-  // TODO: port body @ 0x59afa0 (unitList4 find + remove).
-  (void)unit;
-}
-
-void TTacticalPlayer::AddTacticalUnitToUnitListHead(TTacticalUnit* unit) {
-  // TODO: port body @ 0x59afe0 (unitList4 AddHead).
-  (void)unit;
-}
-
 // FUNCTION: IMPERIALISM 0x0059af20
 TTacticalUnit* TTacticalPlayer::SelectNextTacticalUnitForDoneCommand() {
   int startCursor = cursorIndex18;
@@ -80,7 +72,49 @@ TTacticalUnit* TTacticalPlayer::SelectNextTacticalUnitForDoneCommand() {
   return static_cast<TTacticalUnit*>(unitList4->GetEntryByOrdinal(cursorIndex18));
 }
 
+// FUNCTION: IMPERIALISM 0x0059afa0
+void TTacticalPlayer::RemoveTacticalUnitFromUnitList(TTacticalUnit* unit) {
+  CPtrList* entries = &unitList4->listState;
+  POSITION pos = entries->Find(unit, 0);
+  if (pos != 0) {
+    entries->RemoveAt(pos);
+  }
+}
+
+// Takes over a unit from the other side: prepends it to this side's list and flips
+// its side marker.
+// FUNCTION: IMPERIALISM 0x0059afe0
+void TTacticalPlayer::AddTacticalUnitToUnitListHead(TTacticalUnit* unit) {
+  unitList4->listState.AddHead(unit);
+  unit->FlipUnitSideAffiliation();
+}
+
 // FUNCTION: IMPERIALISM 0x0059b010
 unsigned char TTacticalPlayer::IsTacticalControllerOwnedByActiveNation() {
   return static_cast<unsigned char>(nationIndex1C == g_pSimMgr->GetActiveNationId());
+}
+
+// FUNCTION: IMPERIALISM 0x0059b740
+void TTacticalPlayer::RetireUndeployedUnitsToReserveList() {
+  int ordinal;
+  for (ordinal = unitList4->GetCount(); ordinal > 0; --ordinal) {
+    TTacticalUnit* unit = static_cast<TTacticalUnit*>(unitList4->GetEntryByOrdinal(ordinal));
+    if (unit->tileIndex8 == -2) {
+      CPtrList* entries = &unitList4->listState;
+      POSITION pos = entries->Find(unit, 0);
+      if (pos != 0) {
+        entries->RemoveAt(pos);
+      }
+      secondaryList8->listState.AddHead(unit);
+    }
+  }
+  CIterator reserveIter(secondaryList8);
+  for (TTacticalUnit* retired = static_cast<TTacticalUnit*>(reserveIter.Reset());
+       reserveIter.More(); retired = static_cast<TTacticalUnit*>(reserveIter.Advance())) {
+    CPtrList* recordEntries = &battle14->recordList20->listState;
+    POSITION recordPos = recordEntries->Find(retired, 0);
+    if (recordPos != 0) {
+      recordEntries->RemoveAt(recordPos);
+    }
+  }
 }

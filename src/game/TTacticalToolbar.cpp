@@ -30,5 +30,12 @@ undefined TTacticalToolbar::WrapperFor_InvalidateCityDialogRectRegion_At005acc90
   return 0;
 }
 
+// FUNCTION: IMPERIALISM 0x005acd60
+void TTacticalToolbar::ConfigureTacticalTargetDoneRetreatAutoControls(int mode) {
+  // TODO: port body @ 0x5acd60 (arms 'targ'/'done'/'retr'/'auto' children for the
+  // live-battle vs deployment phase).
+  (void)mode;
+}
+
 // FUNCTION: IMPERIALISM 0x005acf90
 void TTacticalToolbar::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {}

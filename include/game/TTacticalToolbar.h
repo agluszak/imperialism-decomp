@@ -136,5 +136,10 @@ public:
   // === END GENERATED DECLS (TTacticalToolbar) ===
   // TODO(manifest): add data members from the object slice (`just slice-discovery TTacticalToolbar 0xCTOR`).
 
+  // Arms/disarms the 'targ'/'done'/'retr'/'auto' control cluster for the live-battle
+  // vs deployment phase (mode 1 = battle live). Resolves the child controls on
+  // itself via slot 0x25. Body TODO. 0x5acd60, __thiscall, ret 4.
+  void ConfigureTacticalTargetDoneRetreatAutoControls(int mode);
+
   TTacticalToolbar();
 };

@@ -27,14 +27,6 @@ undefined4 WrapperFor_ftol_At0059f5c0(void)
   return 0;
 }
 
-// ghidra_name OrphanCallChain_C4_I70_0059f610
-// ghidra_proto undefined OrphanCallChain_C4_I70_0059f610()
-// FUNCTION: IMPERIALISM 0x0059f610
-undefined4 OrphanCallChain_C4_I70_0059f610(void)
-{
-  return 0;
-}
-
 // ghidra_name DestructTTacticalBattleAndMaybeFree_Impl
 // ghidra_proto undefined DestructTTacticalBattleAndMaybeFree_Impl()
 // FUNCTION: IMPERIALISM 0x0059f7d0
@@ -55,14 +47,6 @@ undefined4 IterateLinkedListCursorEntries_0059fc40(void)
 // ghidra_proto undefined OrphanCallChain_C2_I16_0059fcd0()
 // FUNCTION: IMPERIALISM 0x0059fcd0
 undefined4 OrphanCallChain_C2_I16_0059fcd0(void)
-{
-  return 0;
-}
-
-// ghidra_name TacticalBattleView::FinalizeTacticalTurnStateAndQueueEvent232A
-// ghidra_proto void __thiscall FinalizeTacticalTurnStateAndQueueEvent232A(void)
-// FUNCTION: IMPERIALISM 0x0059fdb0
-undefined4 FinalizeTacticalTurnStateAndQueueEvent232A(void)
 {
   return 0;
 }
@@ -303,14 +287,6 @@ undefined4 ComputeTacticalUnitSpriteOrientationIndexByAdjacentType1Occupancy(voi
 // ghidra_proto undefined ComputeTacticalUnitSpriteDrawRectAndApplyFacingOffset()
 // FUNCTION: IMPERIALISM 0x005aa7d0
 undefined4 ComputeTacticalUnitSpriteDrawRectAndApplyFacingOffset(void)
-{
-  return 0;
-}
-
-// ghidra_name TTacArmyView::ConfigureTacticalTargetDoneRetreatAutoControls
-// ghidra_proto undefined ConfigureTacticalTargetDoneRetreatAutoControls()
-// FUNCTION: IMPERIALISM 0x005acd60
-undefined4 ConfigureTacticalTargetDoneRetreatAutoControls(void)
 {
   return 0;
 }

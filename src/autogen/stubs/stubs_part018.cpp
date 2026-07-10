@@ -763,14 +763,6 @@ undefined4 DestructTArmyPlayerAndMaybeFree_Impl(void)
   return 0;
 }
 
-// ghidra_name RebuildListFromProviderAndDeduplicateByKey
-// ghidra_proto undefined RebuildListFromProviderAndDeduplicateByKey()
-// FUNCTION: IMPERIALISM 0x0059b740
-undefined4 RebuildListFromProviderAndDeduplicateByKey(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_thunk_ApplyTacticalCursorModeProfile0_ByActionClassCounts_At0059c98d
 // ghidra_proto undefined WrapperFor_thunk_ApplyTacticalCursorModeProfile0_ByActionClassCounts_At0059c98d()
 // FUNCTION: IMPERIALISM 0x0059c98d
