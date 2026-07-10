@@ -19,14 +19,14 @@ public:
   virtual void Free() override; // slot 0x07 0x59aee0
   // slot 0x08 ShallowClone inherited unchanged (0x4798d0)
   // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
-  virtual undefined StartBattle();                                        // slot 0x0a 0x59ad70
-  virtual undefined OrphanRetStub_0059ad90();                             // slot 0x0b 0x59ad90
-  virtual undefined TArmyTacUnit_VtblSlot00();                            // slot 0x0c 0x59adb0
-  virtual undefined OrphanRetStub_0059add0();                             // slot 0x0d 0x59add0
+  virtual void StartBattle();                                             // slot 0x0a 0x59ad70
+  virtual void AdvanceTacticalTurnPulse();                                // slot 0x0b 0x59ad90
+  virtual void NoOpTacticalPlayerHook0C(int unused);                      // slot 0x0c 0x59adb0
+  virtual void CommitTacticalResultsToSourceUnits(int unused);            // slot 0x0d 0x59add0
   virtual void RemoveTacticalUnitFromUnitList(class TTacticalUnit* unit); // slot 0x0e 0x59afa0
   virtual void AddTacticalUnitToUnitListHead(class TTacticalUnit* unit);  // slot 0x0f 0x59afe0
-  virtual undefined TArmyTacUnit_VtblSlot04();                            // slot 0x10 0x59adf0
-  virtual undefined OrphanRetStub_0059ae10();                             // slot 0x11 0x59ae10
+  virtual unsigned char AlwaysTrueTacticalPredicate10(int unused);        // slot 0x10 0x59adf0
+  virtual void ProceedAfterBattleIntroAccepted();                         // slot 0x11 0x59ae10
   // === END GENERATED DECLS (TTacticalPlayer) ===
 
   // Base slice (+0x04..+0x27; TArmyPlayer appends at +0x28 up to 0x54). Evidence:
@@ -38,7 +38,7 @@ public:
   char watchFlagD;                 // +0x0d human-watch flag for this side
   char notWatchedFlagE;            // +0x0e = (watchFlagD == 0)
   char fieldF;                     // +0x0f
-  char flag10;                     // +0x10 read by SelectNextTacticalUnitForDoneCommand
+  char sideReadyFlag10;            // +0x10 side ready (no undeployed unit remains)
   unsigned char pad11[3];          // +0x11
   class TTacticalBattle* battle14; // +0x14 back-pointer, set by battle setup (0x59f890)
   int cursorIndex18;               // +0x18 round-robin cursor over unitList4

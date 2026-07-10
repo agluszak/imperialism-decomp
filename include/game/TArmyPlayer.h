@@ -21,15 +21,15 @@ public:
   // slot 0x07 Free inherited unchanged (0x59aee0)
   // slot 0x08 ShallowClone inherited unchanged (0x4798d0)
   // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
-  virtual undefined StartBattle() override;            // slot 0x0a 0x59b830
-  virtual undefined OrphanRetStub_0059ad90() override; // slot 0x0b 0x59e3e0
-  // slot 0x0c TArmyTacUnit_VtblSlot00 inherited unchanged (0x59adb0)
-  virtual undefined OrphanRetStub_0059add0() override;                       // slot 0x0d 0x59b3e0
+  virtual void StartBattle() override;              // slot 0x0a 0x59b830
+  virtual void AdvanceTacticalTurnPulse() override; // slot 0x0b 0x59e3e0
+  // slot 0x0c NoOpTacticalPlayerHook0C inherited unchanged (0x59adb0)
+  virtual void CommitTacticalResultsToSourceUnits(int unused) override;      // slot 0x0d 0x59b3e0
   virtual void RemoveTacticalUnitFromUnitList(TTacticalUnit* unit) override; // slot 0x0e 0x59b4f0
   virtual void AddTacticalUnitToUnitListHead(TTacticalUnit* unit) override;  // slot 0x0f 0x59b540
-  // slot 0x10 TArmyTacUnit_VtblSlot04 inherited unchanged (0x59adf0)
-  virtual undefined OrphanRetStub_0059ae10() override;            // slot 0x11 0x59eb40
-  virtual undefined TArmyTacUnit_VtblSlot06();                    // slot 0x12 0x59bc80
+  // slot 0x10 AlwaysTrueTacticalPredicate10 inherited unchanged (0x59adf0)
+  virtual void ProceedAfterBattleIntroAccepted() override;        // slot 0x11 0x59eb40
+  virtual void AutoDeploySideUnitsAndMarkReady();                 // slot 0x12 0x59bc80
   virtual undefined TArmyTacUnit_VtblSlot07();                    // slot 0x13 0x59c3c0
   virtual undefined RunTacticalAutoTurnControllerForActiveUnit(); // slot 0x14 0x59e4f0
   virtual undefined TArmyTacUnit_VtblSlot09();                    // slot 0x15 0x59ea60
@@ -50,6 +50,10 @@ public:
   // Both original construction sites (0x5a4790, 0x5a4990) inline the ctor as a bare
   // vptr store.
   TArmyPlayer() {}
+
+  // Applies the tactical cursor/UI mode profile for this side. Body TODO.
+  // 0x0059c440, __thiscall, ret 4.
+  void SelectAndApplyTacticalCursorModeProfile(int cursorProfileMode);
 
   // Builds the side's tactical unit records from the stack's army unit chain and
   // stores the stack into armyStack28. 0x0059b1b0, __thiscall, ret 0x10. Body TODO.

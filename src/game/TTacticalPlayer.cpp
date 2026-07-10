@@ -4,29 +4,26 @@
 #include "game/TTacticalUnit.h"
 #include "game/global_data_tables.h"
 
-undefined TTacticalPlayer::StartBattle() {
-  return 0;
+void TTacticalPlayer::StartBattle() {}
+
+// True no-op in the original (bare ret); TArmyPlayer's override is the per-tick
+// battle pump.
+void TTacticalPlayer::AdvanceTacticalTurnPulse() {}
+
+void TTacticalPlayer::NoOpTacticalPlayerHook0C(int unused) {
+  (void)unused;
 }
 
-undefined TTacticalPlayer::OrphanRetStub_0059ad90() {
-  return 0;
+void TTacticalPlayer::CommitTacticalResultsToSourceUnits(int unused) {
+  (void)unused;
 }
 
-undefined TTacticalPlayer::TArmyTacUnit_VtblSlot00() {
-  return 0;
+unsigned char TTacticalPlayer::AlwaysTrueTacticalPredicate10(int unused) {
+  (void)unused;
+  return 1;
 }
 
-undefined TTacticalPlayer::OrphanRetStub_0059add0() {
-  return 0;
-}
-
-undefined TTacticalPlayer::TArmyTacUnit_VtblSlot04() {
-  return 0;
-}
-
-undefined TTacticalPlayer::OrphanRetStub_0059ae10() {
-  return 0;
-}
+void TTacticalPlayer::ProceedAfterBattleIntroAccepted() {}
 // SYNTHETIC: IMPERIALISM 0x0059ad40
 // TTacticalPlayer::CreateObject
 
@@ -39,7 +36,17 @@ TTacticalPlayer::~TTacticalPlayer() {}
 
 IMPLEMENT_DYNCREATE(TTacticalPlayer, TObject)
 
-void TTacticalPlayer::Free() {}
+// Frees both unit lists (payloads included) and self-deletes.
+// FUNCTION: IMPERIALISM 0x0059aee0
+void TTacticalPlayer::Free() {
+  if (unitList4 != 0) {
+    unitList4->FreePayloadsAndDestroy();
+  }
+  if (secondaryList8 != 0) {
+    secondaryList8->FreePayloadsAndDestroy();
+  }
+  delete this;
+}
 
 void TTacticalPlayer::RemoveTacticalUnitFromUnitList(TTacticalUnit* unit) {
   // TODO: port body @ 0x59afa0 (unitList4 find + remove).
@@ -53,9 +60,24 @@ void TTacticalPlayer::AddTacticalUnitToUnitListHead(TTacticalUnit* unit) {
 
 // FUNCTION: IMPERIALISM 0x0059af20
 TTacticalUnit* TTacticalPlayer::SelectNextTacticalUnitForDoneCommand() {
-  // TODO: port body @ 0x59af20 (walks unitList4 via GetCount/GetEntryByOrdinal from
-  // cursorIndex18, returns the first unit with tileIndex8 != -2).
-  return 0;
+  int startCursor = cursorIndex18;
+  TTacticalUnit* unit;
+  do {
+    cursorIndex18 = cursorIndex18 + 1;
+    if (unitList4->GetCount() < cursorIndex18) {
+      cursorIndex18 = 1; // 1-based ordinal wrap
+    }
+    unit = static_cast<TTacticalUnit*>(unitList4->GetEntryByOrdinal(cursorIndex18));
+    if (cursorIndex18 == startCursor) {
+      break; // wrapped all the way around
+    }
+  } while (unit->tileIndex8 != -2);
+  // The loop STOPS at tileIndex8 == -2: it seeks the next NOT-YET-PLACED unit.
+  if (unit->tileIndex8 != -2) {
+    sideReadyFlag10 = 1; // no undeployed unit left -> side ready
+  }
+  // The original re-fetches the entry; keep the second virtual call.
+  return static_cast<TTacticalUnit*>(unitList4->GetEntryByOrdinal(cursorIndex18));
 }
 
 // FUNCTION: IMPERIALISM 0x0059b010

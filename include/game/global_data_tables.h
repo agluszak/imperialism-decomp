@@ -276,6 +276,7 @@ extern int g_nTurnEvent2BNationMaskAccumulator;
 extern short g_anUnitTypeCombatCategoryByType00669858[32];
 extern short g_awUnitTypeBaseActionPointTable[32];
 extern short g_awTacticalFireSfxTokenByUnitType[32];
+extern "C" const char s_SourcePathUTacPlayer_00699D84[];
 extern const char* g_pszEmptyTextRef_00669db8;
 extern int g_anFortStrengthPointsByFortLevel[6];
 extern short g_awTacticalMoveCostByCategoryAndTerrain[50];

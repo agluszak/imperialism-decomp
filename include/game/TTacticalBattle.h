@@ -123,7 +123,7 @@ public:
   // TTacticalBattle::StartBattle(); original body is a bare mov/mov/jmp forwarder).
   // Called right after a battle object is created (TArmyMgr setup) or deserialized
   // (network join). 0x0059fc20.
-  undefined StartBattle();
+  void StartBattle();
 
   // Battle-state assembly (Mac oracle: InitTacticalBattle); sets tacticalPlayer14/18
   // and allocates the tile grid. Body TODO. 0x0059f890.

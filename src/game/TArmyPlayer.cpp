@@ -3,9 +3,17 @@
 #include "game/TArmyStack.h"
 #include "game/TArmyTacUnit.h"
 #include "game/TList.h"
+#include "game/TAssetMgr.h"
 #include "game/TMilitaryUnit.h"
+#include "game/TTacticalBattle.h"
+#include "game/TTacticalHolaPicture.h"
+#include "game/global_data_tables.h"
+#include "game/turn_event_dialog_provisional.h"
+#include "game/ui_invalidation_guard.h"
 
 extern undefined4 GenerateThreadLocalRandom15(void);
+
+using turn_event_dialog::TurnEventDialogNode;
 // SYNTHETIC: IMPERIALISM 0x0059b110
 // TArmyPlayer::CreateObject
 
@@ -25,7 +33,7 @@ void TArmyPlayer::InitializeTacticalSideFromArmyUnitList(TArmyStack* stack, int 
   // TODO(verify): the asm only ever touches the low byte of `isOurSide` -- the
   // original param was likely char/BOOL.
   isOurSideFlagC = static_cast<char>(isOurSide);
-  flag10 = 0;
+  sideReadyFlag10 = 0;
   watchFlagD = watchFlag;
   nationIndex1C = nationIndex;
   cursorIndex18 = 0;
@@ -34,7 +42,7 @@ void TArmyPlayer::InitializeTacticalSideFromArmyUnitList(TArmyStack* stack, int 
   field24 = 0;
 
   unitList4 = new TList();
-  flag10 = 0; // duplicate store present in the original
+  sideReadyFlag10 = 0; // duplicate store present in the original
   secondaryList8 = new TList();
 
   // Walk the stack's embedded {TUnit*, next} chain. The original inlines the
@@ -80,8 +88,10 @@ void TArmyPlayer::InitializeTacticalSideFromArmyUnitList(TArmyStack* stack, int 
 }
 
 // FUNCTION: IMPERIALISM 0x0059b3e0
-undefined TArmyPlayer::OrphanRetStub_0059add0() {
-  return 0;
+void TArmyPlayer::CommitTacticalResultsToSourceUnits(int unused) {
+  // TODO: port body @ 0x59b3e0 (writes strength4 back to sourceUnit38 +0x34 and kills
+  // zero-strength units via their slot 0x0c).
+  (void)unused;
 }
 
 // FUNCTION: IMPERIALISM 0x0059b4f0
@@ -96,14 +106,55 @@ void TArmyPlayer::AddTacticalUnitToUnitListHead(TTacticalUnit* unit) {
   (void)unit;
 }
 
+// Kicks the side at battle start: unwatched (AI/remote) sides skip the intro dialog
+// and auto-deploy; watched sides run the battle-intro ('hola', 0xf19) dialog and only
+// proceed on 'okay'.
 // FUNCTION: IMPERIALISM 0x0059b830
-undefined TArmyPlayer::StartBattle() {
-  return 0;
+void TArmyPlayer::StartBattle() {
+  if (notWatchedFlagE != 0) {
+    SelectAndApplyTacticalCursorModeProfile(1);
+    AutoDeploySideUnitsAndMarkReady();
+    return;
+  }
+  unsigned char alreadyStarted = field24 == 2;
+  if (alreadyStarted == 0) {
+    TTacticalPlayer* opponent;
+    if (isOurSideFlagC != 0) {
+      opponent = battle14->tacticalPlayer18;
+    } else {
+      opponent = battle14->tacticalPlayer14;
+    }
+    int opposingNationIndex = opponent->nationIndex1C;
+
+    // Battle-intro ("hola") dialog, id 0xf19.
+    TurnEventDialogNode* dialog = static_cast<TurnEventDialogNode*>(
+        g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(0xf19));
+    if (dialog == 0) {
+      FailNilPointerWithAssert(s_SourcePathUTacPlayer_00699D84, 0x18d);
+    }
+    TTacticalHolaPicture* holaPicture =
+        static_cast<TTacticalHolaPicture*>(dialog->ResolveControlByTag(0x444c4f47 /* 'DLOG' */));
+    holaPicture->AssertValid();
+    if (isOurSideFlagC != 0) {
+      holaPicture->ConfigureBattleIntroCoatsAndSiteLabels(
+          nationIndex1C, static_cast<short>(opposingNationIndex), isOurSideFlagC,
+          battle14->battleSiteIndex38);
+    } else {
+      holaPicture->ConfigureBattleIntroCoatsAndSiteLabels(
+          static_cast<short>(opposingNationIndex), nationIndex1C, 0, battle14->battleSiteIndex38);
+    }
+    int resultTag = dialog->RefreshTurnEventDialog();
+    dialog->CallVoidSlotA0();
+    dialog->Free();
+    if (resultTag == 0x6f6b6179 /* 'okay' */) {
+      ProceedAfterBattleIntroAccepted();
+    }
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x0059bc80
-undefined TArmyPlayer::TArmyTacUnit_VtblSlot06() {
-  return 0;
+void TArmyPlayer::AutoDeploySideUnitsAndMarkReady() {
+  // TODO: port body @ 0x59bc80 (auto-deploys the side and sets sideReadyFlag10).
 }
 
 // FUNCTION: IMPERIALISM 0x0059c3c0
@@ -111,9 +162,16 @@ undefined TArmyPlayer::TArmyTacUnit_VtblSlot07() {
   return 0;
 }
 
+// FUNCTION: IMPERIALISM 0x0059c440
+void TArmyPlayer::SelectAndApplyTacticalCursorModeProfile(int cursorProfileMode) {
+  // TODO: port body @ 0x59c440.
+  (void)cursorProfileMode;
+}
+
 // FUNCTION: IMPERIALISM 0x0059e3e0
-undefined TArmyPlayer::OrphanRetStub_0059ad90() {
-  return 0;
+void TArmyPlayer::AdvanceTacticalTurnPulse() {
+  // TODO: port body @ 0x59e3e0 (per-tick battle pump; runs the auto-turn controller
+  // while notWatchedFlagE, with a GetAsyncKeyState(0x5c) cancel check).
 }
 
 // FUNCTION: IMPERIALISM 0x0059e4f0
@@ -127,6 +185,7 @@ undefined TArmyPlayer::TArmyTacUnit_VtblSlot09() {
 }
 
 // FUNCTION: IMPERIALISM 0x0059eb40
-undefined TArmyPlayer::OrphanRetStub_0059ae10() {
-  return 0;
+void TArmyPlayer::ProceedAfterBattleIntroAccepted() {
+  // TODO: port body @ 0x59eb40 (auto-deploy when not ready, else flip notWatchedFlagE
+  // for watched sides, cursor profile 0, dispatch slot 0x0b).
 }

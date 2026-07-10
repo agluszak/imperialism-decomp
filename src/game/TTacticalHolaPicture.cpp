@@ -12,3 +12,15 @@ TTacticalHolaPicture::~TTacticalHolaPicture() {}
 IMPLEMENT_DYNCREATE(TTacticalHolaPicture, TPicture)
 
 TTacticalHolaPicture::TTacticalHolaPicture() {}
+
+// FUNCTION: IMPERIALISM 0x005ad760
+void TTacticalHolaPicture::ConfigureBattleIntroCoatsAndSiteLabels(int nationA, int nationB,
+                                                                  int nationAIsLocalSide,
+                                                                  int battleSiteIndex) {
+  // TODO: port body @ 0x5ad760 (resolves 'aoca'/'aocd' coat children, sets nation
+  // bitmaps + localized site labels from string group 0x273d).
+  (void)nationA;
+  (void)nationB;
+  (void)nationAIsLocalSide;
+  (void)battleSiteIndex;
+}

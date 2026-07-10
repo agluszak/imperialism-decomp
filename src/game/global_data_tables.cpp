@@ -1158,6 +1158,10 @@ int g_anFortStrengthPointsByFortLevel[6] = {0, 0, 500, 750, 1000, 0};
 // GLOBAL: IMPERIALISM 0x00699e20
 extern "C" const char g_szBattleSetupTabPathFormat[] = "data/%03d.tab";
 
+// Source-path string for UTacPlayer.cpp asserts.
+// GLOBAL: IMPERIALISM 0x00699d84
+extern "C" const char s_SourcePathUTacPlayer_00699D84[] = "D:\\Ambit\\Cross\\UTacPlayer.cpp";
+
 // Empty-string pointer used by the battle-summary dialog builder (0x5a2750); points
 // at g_szEmptyString.
 // GLOBAL: IMPERIALISM 0x00669db8

@@ -395,14 +395,6 @@ undefined4 ConfigureTacticalTargetDoneRetreatAutoControls(void)
   return 0;
 }
 
-// ghidra_name TTask::CreateTTaskInstance
-// ghidra_proto undefined CreateTTaskInstance()
-// FUNCTION: IMPERIALISM 0x005ad760
-undefined4 CreateTTaskInstance(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_ftol_At005adb10
 // ghidra_proto undefined WrapperFor_ftol_At005adb10()
 // FUNCTION: IMPERIALISM 0x005adb10

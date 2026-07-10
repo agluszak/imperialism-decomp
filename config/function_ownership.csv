@@ -4042,6 +4042,7 @@ address|target_cpp|ownership|note
 59b830|src/game/TArmyPlayer.cpp|manual|marker_sync
 59bc80|src/game/TArmyPlayer.cpp|manual|marker_sync
 59c3c0|src/game/TArmyPlayer.cpp|manual|marker_sync
+59c440|src/game/TArmyPlayer.cpp|manual|marker_sync
 59e3e0|src/game/TArmyPlayer.cpp|manual|marker_sync
 59e4f0|src/game/TArmyPlayer.cpp|manual|marker_sync
 59ea60|src/game/TArmyPlayer.cpp|manual|marker_sync
@@ -4200,6 +4201,7 @@ address|target_cpp|ownership|note
 5ad650|src/game/TTacticalAdiosPicture.cpp|manual|marker_sync
 5ad6c0|src/game/TTacticalHolaPicture.cpp|manual|marker_sync
 5ad740|src/game/TTacticalHolaPicture.cpp|manual|marker_sync
+5ad760|src/game/TTacticalHolaPicture.cpp|manual|marker_sync
 5adb40|src/game/TTask.cpp|manual|marker_sync
 5adb70|src/game/TTask.cpp|manual|marker_sync
 5adbb0|src/game/TTask.cpp|manual|marker_sync

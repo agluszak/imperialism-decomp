@@ -14,11 +14,11 @@ IMPLEMENT_DYNCREATE(TNavyAutoPlayer, TNavyPlayer)
 TNavyAutoPlayer::TNavyAutoPlayer() {}
 
 // FUNCTION: IMPERIALISM 0x0059f110
-undefined TNavyAutoPlayer::StartBattle() {
-  return 0;
+void TNavyAutoPlayer::StartBattle() {
+  // TODO: port body @ 0x59f110.
 }
 
 // FUNCTION: IMPERIALISM 0x0059f160
-undefined TNavyAutoPlayer::OrphanRetStub_0059ad90() {
-  return 0;
+void TNavyAutoPlayer::AdvanceTacticalTurnPulse() {
+  // TODO: port body @ 0x59f160.
 }

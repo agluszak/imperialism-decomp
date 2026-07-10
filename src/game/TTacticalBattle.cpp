@@ -180,8 +180,8 @@ void TTacticalBattle::Free() {
 }
 
 // FUNCTION: IMPERIALISM 0x0059fc20
-undefined TTacticalBattle::StartBattle() {
-  return tacticalPlayer18->StartBattle();
+void TTacticalBattle::StartBattle() {
+  tacticalPlayer18->StartBattle();
 }
 
 // Selection/UI helpers dispatched by the command family; bodies not yet ported.

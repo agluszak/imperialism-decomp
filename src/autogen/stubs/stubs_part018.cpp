@@ -835,14 +835,6 @@ undefined4 SelectTacticalTileIndexByColumnPriorityVariantB(void)
   return 0;
 }
 
-// ghidra_name SelectAndApplyTacticalCursorModeProfile
-// ghidra_proto undefined SelectAndApplyTacticalCursorModeProfile()
-// FUNCTION: IMPERIALISM 0x0059c440
-undefined4 SelectAndApplyTacticalCursorModeProfile(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_thunk_ApplyTacticalCursorModeProfile0_ByActionClassCounts_At0059c98d
 // ghidra_proto undefined WrapperFor_thunk_ApplyTacticalCursorModeProfile0_ByActionClassCounts_At0059c98d()
 // FUNCTION: IMPERIALISM 0x0059c98d

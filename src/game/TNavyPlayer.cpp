@@ -14,8 +14,9 @@ IMPLEMENT_DYNCREATE(TNavyPlayer, TTacticalPlayer)
 TNavyPlayer::TNavyPlayer() {}
 
 // FUNCTION: IMPERIALISM 0x0059edd0
-undefined TNavyPlayer::OrphanRetStub_0059add0() {
-  return 0;
+void TNavyPlayer::CommitTacticalResultsToSourceUnits(int unused) {
+  // TODO: port body @ 0x59edd0.
+  (void)unused;
 }
 
 // FUNCTION: IMPERIALISM 0x0059ee60

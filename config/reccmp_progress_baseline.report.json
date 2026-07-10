@@ -7549,7 +7549,7 @@
     },
     {
       "address": "0x4a2900",
-      "matching": 0.13063763608087092,
+      "matching": 0.13374805598755832,
       "name": "BuildArmyContextActionRecordsAndDispatchLabel",
       "type": 1
     },
@@ -8983,7 +8983,7 @@
     },
     {
       "address": "0x4b4310",
-      "matching": 0.8842105263157894,
+      "matching": 1.0,
       "name": "ComputeAverageWeightWord0TimesTenFromResourceCounts",
       "type": 1
     },
@@ -12362,7 +12362,7 @@
     },
     {
       "address": "0x4dd430",
-      "matching": 0.5714285714285714,
+      "matching": 0.5142857142857142,
       "name": "TGreatPower::ComputeRemainingDiplomacyAidBudget",
       "type": 1
     },
@@ -12801,7 +12801,8 @@
     },
     {
       "address": "0x4e05d0",
-      "matching": 1.0,
+      "effective": true,
+      "matching": 0.42857142857142855,
       "name": "TGreatPower::OrphanLeaf_NoCall_Ins02_004d7fc0_89",
       "type": 1
     },
@@ -18273,7 +18274,7 @@
     },
     {
       "address": "0x52d750",
-      "matching": 0.22063492063492063,
+      "matching": 0.21904761904761905,
       "name": "MergeSmallCityRegionsAndCompactIds",
       "type": 1
     },
@@ -20177,7 +20178,7 @@
     },
     {
       "address": "0x53d200",
-      "matching": 0.3700787401574803,
+      "matching": 0.3686274509803922,
       "name": "ComputeArmyMissionScoreDeltaWithScaledCandidateUnit",
       "type": 1
     },
@@ -22403,7 +22404,7 @@
     },
     {
       "address": "0x555420",
-      "matching": 0.5653333333333334,
+      "matching": 0.5546666666666666,
       "name": "ResolveTaskForceOrderConflictAndPickCandidate",
       "type": 1
     },
@@ -28737,38 +28738,38 @@
     },
     {
       "address": "0x59ad70",
-      "matching": 0.6666666666666666,
+      "matching": 1.0,
       "name": "TTacticalPlayer::StartBattle",
       "type": 1
     },
     {
       "address": "0x59ad90",
-      "matching": 0.6666666666666666,
-      "name": "TTacticalPlayer::OrphanRetStub_0059ad90",
+      "matching": 1.0,
+      "name": "TTacticalPlayer::AdvanceTacticalTurnPulse",
       "type": 1
     },
     {
       "address": "0x59adb0",
-      "matching": 0.0,
-      "name": "TTacticalPlayer::TArmyTacUnit_VtblSlot00",
+      "matching": 1.0,
+      "name": "TTacticalPlayer::NoOpTacticalPlayerHook0C",
       "type": 1
     },
     {
       "address": "0x59add0",
-      "matching": 0.0,
-      "name": "TTacticalPlayer::OrphanRetStub_0059add0",
+      "matching": 1.0,
+      "name": "TTacticalPlayer::CommitTacticalResultsToSourceUnits",
       "type": 1
     },
     {
       "address": "0x59adf0",
-      "matching": 0.0,
-      "name": "TTacticalPlayer::TArmyTacUnit_VtblSlot04",
+      "matching": 1.0,
+      "name": "TTacticalPlayer::AlwaysTrueTacticalPredicate10",
       "type": 1
     },
     {
       "address": "0x59ae10",
-      "matching": 0.6666666666666666,
-      "name": "TTacticalPlayer::OrphanRetStub_0059ae10",
+      "matching": 1.0,
+      "name": "TTacticalPlayer::ProceedAfterBattleIntroAccepted",
       "type": 1
     },
     {
@@ -28791,13 +28792,14 @@
     },
     {
       "address": "0x59aee0",
-      "matching": 0.09523809523809523,
+      "matching": 1.0,
       "name": "TTacticalPlayer::Free",
       "type": 1
     },
     {
       "address": "0x59af20",
-      "matching": 0.047619047619047616,
+      "effective": true,
+      "matching": 0.95,
       "name": "TTacticalPlayer::SelectNextTacticalUnitForDoneCommand",
       "type": 1
     },
@@ -28869,8 +28871,8 @@
     },
     {
       "address": "0x59b3e0",
-      "matching": 0.0,
-      "name": "TArmyPlayer::OrphanRetStub_0059add0",
+      "matching": 0.029850746268656716,
+      "name": "TArmyPlayer::CommitTacticalResultsToSourceUnits",
       "type": 1
     },
     {
@@ -28899,7 +28901,7 @@
     },
     {
       "address": "0x59b830",
-      "matching": 0.019801980198019802,
+      "matching": 0.84,
       "name": "TArmyPlayer::StartBattle",
       "type": 1
     },
@@ -28911,8 +28913,8 @@
     },
     {
       "address": "0x59bc80",
-      "matching": 0.06666666666666667,
-      "name": "TArmyPlayer::TArmyTacUnit_VtblSlot06",
+      "matching": 0.06896551724137931,
+      "name": "TArmyPlayer::AutoDeploySideUnitsAndMarkReady",
       "type": 1
     },
     {
@@ -28953,8 +28955,8 @@
     },
     {
       "address": "0x59c440",
-      "matching": 0.0060790273556231,
-      "name": "SelectAndApplyTacticalCursorModeProfile",
+      "matching": 0.006097560975609756,
+      "name": "TArmyPlayer::SelectAndApplyTacticalCursorModeProfile",
       "type": 1
     },
     {
@@ -29133,8 +29135,8 @@
     },
     {
       "address": "0x59e3e0",
-      "matching": 0.025,
-      "name": "TArmyPlayer::OrphanRetStub_0059ad90",
+      "matching": 0.02531645569620253,
+      "name": "TArmyPlayer::AdvanceTacticalTurnPulse",
       "type": 1
     },
     {
@@ -29163,8 +29165,8 @@
     },
     {
       "address": "0x59eb40",
-      "matching": 0.08695652173913043,
-      "name": "TArmyPlayer::OrphanRetStub_0059ae10",
+      "matching": 0.09090909090909091,
+      "name": "TArmyPlayer::ProceedAfterBattleIntroAccepted",
       "type": 1
     },
     {
@@ -29205,8 +29207,8 @@
     },
     {
       "address": "0x59edd0",
-      "matching": 0.0,
-      "name": "TNavyPlayer::OrphanRetStub_0059add0",
+      "matching": 0.05263157894736842,
+      "name": "TNavyPlayer::CommitTacticalResultsToSourceUnits",
       "type": 1
     },
     {
@@ -29277,14 +29279,14 @@
     },
     {
       "address": "0x59f110",
-      "matching": 0.06451612903225806,
+      "matching": 0.06666666666666667,
       "name": "TNavyAutoPlayer::StartBattle",
       "type": 1
     },
     {
       "address": "0x59f160",
-      "matching": 0.012658227848101266,
-      "name": "TNavyAutoPlayer::OrphanRetStub_0059ad90",
+      "matching": 0.012738853503184714,
+      "name": "TNavyAutoPlayer::AdvanceTacticalTurnPulse",
       "type": 1
     },
     {
@@ -29591,7 +29593,7 @@
     },
     {
       "address": "0x5a39a0",
-      "matching": 0.8062015503875969,
+      "matching": 0.7286821705426356,
       "name": "ComputeHexTileDistanceFromIndices",
       "type": 1
     },
@@ -30089,7 +30091,7 @@
     },
     {
       "address": "0x5a8ac0",
-      "matching": 0.6086956521739131,
+      "matching": 0.6867469879518072,
       "name": "TTacticalBattleView::CenterViewportAroundGridIndexAndSnap",
       "type": 1
     },
@@ -30125,7 +30127,7 @@
     },
     {
       "address": "0x5a9240",
-      "matching": 0.563855421686747,
+      "matching": 0.5304136253041363,
       "name": "TTacticalBattleView::AnimateTacticalUnitMoveBetweenTiles",
       "type": 1
     },
@@ -30353,8 +30355,8 @@
     },
     {
       "address": "0x5ad760",
-      "matching": 0.0,
-      "name": "TTask::CreateTTaskInstance",
+      "matching": 0.013513513513513514,
+      "name": "TTacticalHolaPicture::ConfigureBattleIntroCoatsAndSiteLabels",
       "type": 1
     },
     {
@@ -31630,7 +31632,7 @@
     },
     {
       "address": "0x5ba0e0",
-      "matching": 0.8181818181818182,
+      "matching": 1.0,
       "name": "BuildInterNationEventSummaryRowsForAdvisorDialog_Impl",
       "type": 1
     },
