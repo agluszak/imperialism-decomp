@@ -7,7 +7,7 @@
 // VTABLE: IMPERIALISM 0x00669760
 class TNavyHumanPlayer : public TNavyPlayer {
 public:
-// === BEGIN GENERATED DECLS (TNavyHumanPlayer) — refreshed by recover-class; do not hand-edit ===
+  // === BEGIN GENERATED DECLS (TNavyHumanPlayer) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TNavyHumanPlayer)
   virtual ~TNavyHumanPlayer() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -18,7 +18,7 @@ public:
   // slot 0x07 Free inherited unchanged (0x59aee0)
   // slot 0x08 ShallowClone inherited unchanged (0x4798d0)
   // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
-  // slot 0x0a OrphanRetStub_0059ad70 inherited unchanged (0x59ad70)
+  // slot 0x0a StartBattle inherited unchanged (0x59ad70)
   // slot 0x0b OrphanRetStub_0059ad90 inherited unchanged (0x59ad90)
   // slot 0x0c TArmyTacUnit_VtblSlot00 inherited unchanged (0x59adb0)
   // slot 0x0d OrphanRetStub_0059add0 inherited unchanged (0x59edd0)
@@ -27,9 +27,8 @@ public:
   // slot 0x10 TArmyTacUnit_VtblSlot04 inherited unchanged (0x59adf0)
   // slot 0x11 OrphanRetStub_0059ae10 inherited unchanged (0x59ae10)
   virtual undefined ConstructTNavyHumanPlayerBaseState(); // slot 0x12 0x59efc0
-// === END GENERATED DECLS (TNavyHumanPlayer) ===
+  // === END GENERATED DECLS (TNavyHumanPlayer) ===
   // TODO(manifest): add data members from the object slice (`just slice-discovery TNavyHumanPlayer 0xCTOR`).
 
   TNavyHumanPlayer();
 };
-

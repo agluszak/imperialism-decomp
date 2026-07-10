@@ -1816,6 +1816,7 @@ address|target_cpp|ownership|note
 4e6680|src/game/TTurnStartEvent.cpp|manual|marker_sync
 4e66c0|src/game/TLandSaleEvent.cpp|manual|marker_sync
 4e66f0|src/game/TLandSaleEvent.cpp|manual|marker_sync
+4e6710|src/game/TLandSaleEvent.cpp|manual|marker_sync
 4e6740|src/game/TLandSaleEvent.cpp|manual|marker_sync
 4e6a70|src/game/TAutoGreatPower.cpp|manual|marker_sync
 4e6b10|src/game/TAutoGreatPower.cpp|manual|marker_sync
@@ -2968,9 +2969,12 @@ address|target_cpp|ownership|note
 5497b0|src/game/TMultiplayerMgr.cpp|manual|marker_sync
 549ad0|src/game/TMultiplayerMgr.cpp|manual|marker_sync
 549c60|src/game/TMultiplayerMgr.cpp|manual|marker_sync
+549ff0|src/game/TMultiplayerMgr_HandleDiplomacyTurnEvent.cpp|manual|marker_sync
 54a340|src/game/TMultiplayerMgr.cpp|manual|marker_sync
 54a500|src/game/TMultiplayerMgr.cpp|manual|marker_sync
 54a5e0|src/game/TMultiplayerMgr.cpp|manual|marker_sync
+54a6d0|src/game/TMultiplayerMgr_HandleDiplomacyTurnEvent.cpp|manual|marker_sync
+54a840|src/game/TMultiplayerMgr_HandleDiplomacyTurnEvent.cpp|manual|marker_sync
 54ab20|src/game/TMultiplayerMgr.cpp|manual|marker_sync
 54abf0|src/game/TMultiplayerMgr.cpp|manual|marker_sync
 54ae90|src/game/TMultiplayerMgr.cpp|manual|marker_sync
@@ -3099,6 +3103,7 @@ address|target_cpp|ownership|note
 5568c0|src/game/TNavyMgr.cpp|manual|marker_sync
 5568f0|src/game/TNavyMgr.cpp|manual|marker_sync
 556aa0|src/game/TNavyMgr.cpp|manual|marker_sync
+556ad0|src/game/TNavyMgr.cpp|manual|marker_sync
 556fd0|src/game/TNavyMgr.cpp|manual|marker_sync
 557080|src/game/TNavyMgr.cpp|manual|marker_sync
 557170|src/game/TNavyMgr.cpp|manual|marker_sync
@@ -3193,6 +3198,7 @@ address|target_cpp|ownership|note
 562880|src/game/TZone.cpp|manual|marker_sync
 5628f0|src/game/TOcean.cpp|manual|marker_sync
 562d90|src/game/TOcean.cpp|manual|marker_sync
+562f20|src/game/TOcean.cpp|manual|marker_sync
 563220|src/game/TZone.cpp|manual|marker_sync
 563300|include/game/TOcean.h|manual|marker_sync
 563330|src/game/TOcean_RouteBuffer.cpp|manual|marker_sync
@@ -4044,6 +4050,7 @@ address|target_cpp|ownership|note
 59f7a0|src/game/TTacticalBattle.cpp|manual|marker_sync
 59f7f0|src/game/TArmyBattle.cpp|manual|marker_sync
 59fb50|src/game/TTacticalBattle.cpp|manual|marker_sync
+59fc20|src/game/TTacticalBattle.cpp|manual|marker_sync
 59ff20|src/game/TTacticalBattle.cpp|manual|marker_sync
 5a02e0|src/game/TTacticalBattle.cpp|manual|marker_sync
 5a1400|src/game/TTacticalBattle.cpp|manual|marker_sync

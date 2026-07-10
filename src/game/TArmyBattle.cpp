@@ -13,8 +13,12 @@ TArmyBattle::~TArmyBattle() {}
 
 IMPLEMENT_DYNCREATE(TArmyBattle, TTacticalBattle)
 
+// Not the constructor: neither original construction site calls this (both inline the
+// ctor as base-ctor + vtable install), and this body neither installs a vtable nor calls
+// the base ctor. It is the separate post-construction list allocator, reached via the
+// 0x5a4770 jump island from the TArmyMgr battle-setup site.
 // FUNCTION: IMPERIALISM 0x0059f7f0
-TArmyBattle::TArmyBattle() : TTacticalBattle() {
+void TArmyBattle::AllocateRecordList() {
   recordList20 = new TList();
 }
 

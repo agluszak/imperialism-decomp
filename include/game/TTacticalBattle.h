@@ -4,6 +4,7 @@
 #include "game/mfc.h"
 
 class TList;
+class TTacticalPlayer;
 
 // TODO(manifest): describe TTacticalBattle and its role. Base edge (TObject) recovered from RTTI CRuntimeClass chain: TTacticalBattle -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x0066a088
@@ -50,22 +51,37 @@ public:
   ExecuteTacticalDigActionAndConsumeUnitActionPoints(int* param_1,
                                                      undefined4 param_2); // slot 0x18 0x5a3640
   // === END GENERATED DECLS (TTacticalBattle) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TTacticalBattle 0xCTOR`).
 
-  // Zeroed by the real ctor (0x59f770); none of these 4 has further usage evidence yet.
-  int field4;
-  int field8;
-  int field1c;
-  // Falls within TTacticalBattle's own object-size slice (both this base and TArmyBattle
-  // report 0x78, i.e. TArmyBattle adds no bytes of its own), zeroed here but only
-  // observed being constructed (new TList()) from TArmyBattle::TArmyBattle's own body
-  // (0x59f7f0, reached via a TArmyBattle-vtable-set-then-call chain, not from this base
-  // ctor) -- declared here per the layout evidence, set by the derived ctor.
-  TList* recordList20;
-  int field24;
-  int field34;
-  int field74;
+  // Offset-faithful layout (object is 0x78 per RTTI; TArmyBattle adds no bytes).
+  // The ctor (0x59f770) zeroes +4, +8, +0x24, +0x1c, +0x34, +0x74, +0x20 -- in that
+  // store order -- and leaves everything else (including the two player slots)
+  // uninitialized.
+  int field4;                      // +0x04
+  int field8;                      // +0x08
+  unsigned char pad0c[0x14 - 0xc]; // +0x0c
+  // The two battle players (Mac oracle: TTacticalBattle::InitTacticalBattle(
+  // TTacticalPlayer*, TTacticalPlayer*)). Windows evidence: TTacticalBattle::Free
+  // (0x59fb50) Free()s both; 0x5a2700 dispatches slots 0x0e/0x0f on them; 0x59fc20
+  // dispatches slot 0x0a on the +0x18 one -- all slots TTacticalPlayer carries.
+  TTacticalPlayer* tacticalPlayer14; // +0x14
+  TTacticalPlayer* tacticalPlayer18; // +0x18
+  int field1c;                       // +0x1c
+  // Allocated by TArmyBattle::AllocateRecordList (0x59f7f0), called separately after
+  // construction; TArmyBattle::ReadFrom appends the deserialized units here.
+  TList* recordList20;              // +0x20
+  int field24;                      // +0x24
+  unsigned char pad28[0x34 - 0x28]; // +0x28
+  int field34;                      // +0x34
+  unsigned char pad38[0x74 - 0x38]; // +0x38
+  int field74;                      // +0x74
 
   TTacticalBattle();
+
+  // Start the battle by kicking the +0x18 player's StartBattle hook (Mac oracle:
+  // TTacticalBattle::StartBattle(); original body is a bare mov/mov/jmp forwarder).
+  // Called right after a battle object is created (TArmyMgr setup) or deserialized
+  // (network join). 0x0059fc20.
+  undefined StartBattle();
 };
 
+ASSERT_SIZE(TTacticalBattle, 0x78);

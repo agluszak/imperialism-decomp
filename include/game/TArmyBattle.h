@@ -39,7 +39,16 @@ public:
   // === END GENERATED DECLS (TArmyBattle) ===
   // TODO(manifest): add data members from the object slice (`just slice-discovery TArmyBattle 0xCTOR`).
 
-  TArmyBattle();
+  // Both original construction sites (TArmyMgr::CreateTacticalBattleViewAndInitialize-
+  // BattleSetup 0x4a5b60 and the network receive path 0x54a1df) inline this ctor as just
+  // the out-of-line base-ctor call plus the TArmyBattle vtable install -- no other body.
+  // Defined in-class so the recompile inlines it the same way.
+  TArmyBattle() : TTacticalBattle() {}
+
+  // Allocates recordList20 (the deserialized/deployed unit list). Called out-of-line
+  // right after construction at the TArmyMgr setup site; the network receive path
+  // relies on ReadFrom populating the list instead. 0x0059f7f0.
+  void AllocateRecordList();
 
   // Called by TArmyMgr::CreateTacticalBattleViewAndInitializeBattleSetup right after
   // construction, with the two combatant stacks and a composition class from
@@ -50,4 +59,3 @@ public:
                                                          class TArmyStack* enemyStack,
                                                          int compositionClass);
 };
-

@@ -10,6 +10,7 @@
 #include <string.h>
 
 #include "game/NetMessage.h"
+#include "game/TArmyBattle.h"
 #include "game/TArmyMgr.h"
 #include "game/TAutoGreatPower.h"
 #include "game/TCity.h"
@@ -21,8 +22,13 @@
 #include "game/TMapMgr.h"
 #include "game/TMinor.h"
 #include "game/TNetMgr.h"
+#include "game/TNavyMgr.h"
 #include "game/TNextDiplomationCommand.h"
 #include "game/TOcean.h"
+#include "game/TLandSaleEvent.h"
+#include "game/TStream.h"
+#include "game/TTown.h"
+#include "game/TTradeMgr.h"
 #include "game/TSimMgr.h"
 #include "game/TZone.h"
 #include "game/global_data_tables.h"
@@ -554,6 +560,101 @@ void TMultiplayerMgr::HandleDiplomacyTurnEventPacketByCode() {
     EmitTurnEvent3TickCompleteLoopback();
     break;
   }
+}
+
+// Receive path for turn events 0x28 and 0x2E..0x32. The 0x1c-byte timely header is
+// pre-stamped ('time' + active nation) and then immediately overwritten by the stream
+// read -- original behavior, kept as-is; the switch keys on the streamed event code and
+// the acting nation comes from the streamed header (-1 during session teardown).
+// FUNCTION: IMPERIALISM 0x00549ff0
+void TMultiplayerMgr::HandleTurnEventCodes28_2E_2F_30_31_32(TStream* stream) {
+  TimelyNetMessagePrefix header;
+  header.messageTag = 0x74696d65;
+  header.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetActiveNationId());
+  stream->ReadBytes(&header, 0x1c);
+  unsigned char sessionTornDown = g_pSimMgr->field44 == 2;
+  short nation;
+  if (sessionTornDown != 0) {
+    nation = -1;
+  } else {
+    nation = static_cast<char>(header.activeNationId);
+  }
+  switch (header.eventCode) {
+  case 0x2e:
+    g_pNavyOrderManager->DeserializeNavyOrderListsByNation(stream, nation);
+    g_pActiveMapOrderContext->RefreshMapActionContextNationOverlaysAndOrderRanks();
+    break;
+  case 0x2f:
+    CreateMilitaryRecruitOrdersForSelectedTerrain(stream, nation);
+    break;
+  case 0x30:
+    CreateCivilianWorkOrdersForSelectedNations(stream, nation);
+    break;
+  case 0x31: {
+    // The inverted-inequality nesting reproduces the original body layout: the 'town'
+    // handler falls through inline, 'star' and 'army' bodies are emitted after it.
+    int payloadTag = stream->streamSlot50();
+    if (payloadTag != 0x61726d79) {     // 'army'
+      if (payloadTag != 0x73746172) {   // 'star'
+        if (payloadTag == 0x746f776e) { // 'town'
+          TTown* town = new TTown();
+          town->InitializeTownMarker(g_szEmptyString, 0, 0, g_pSimMgr->GetActiveNationId());
+          town->ReadFrom(stream);
+          TTown* existing = g_pGlobalMapState->FindTownMarkerForTileByOwnerNation(town->regionId14);
+          if (existing != 0) {
+            memcpy(existing, town, sizeof(TTown));
+            town->Free();
+          } else {
+            g_apNationStates[town->ownerNation1c]->townMarkerList->AddTail(town);
+          }
+        }
+      } else {
+        if (stream->streamSlot50() == 0x6c616e64) { // 'land'
+          short tileIndex = stream->ReadShort();
+          short nationCode = stream->ReadShort();
+          TLandSaleEvent* saleEvent = new TLandSaleEvent();
+          saleEvent->ILandSaleEvent(tileIndex, nationCode);
+          g_apNationStates[static_cast<short>(g_pSimMgr->GetActiveNationId())]
+              ->AddNodeToMissionNodeQueue(saleEvent);
+        }
+      }
+    } else {
+      g_pMapContextActionManager->ReadFrom(stream);
+    }
+    break;
+  }
+  case 0x28: {
+    TArmyBattle* battle = new TArmyBattle();
+    battle->ReadFrom(stream);
+    battle->StartBattle();
+    break;
+  }
+  case 0x32:
+    g_pNationInteractionStateManager->ReadFrom(stream);
+    g_apNationStates[static_cast<short>(g_pSimMgr->GetActiveNationId())]
+        ->ReleaseDiplomacyTrackedObjectSlots850();
+    break;
+  default:
+    break;
+  }
+}
+
+// FUNCTION: IMPERIALISM 0x0054a6d0
+void TMultiplayerMgr::CreateMilitaryRecruitOrdersForSelectedTerrain(TStream* stream,
+                                                                    short nationSlot) {
+  // TODO: port body @ 0x54a6d0 (280 bytes; not yet ported). Declared for real so the
+  // turn-event-0x2F receive path gets a correctly-typed call site.
+  (void)stream;
+  (void)nationSlot;
+}
+
+// FUNCTION: IMPERIALISM 0x0054a840
+void TMultiplayerMgr::CreateCivilianWorkOrdersForSelectedNations(TStream* stream,
+                                                                 short nationSlot) {
+  // TODO: port body @ 0x54a840 (310 bytes; not yet ported). Declared for real so the
+  // turn-event-0x30 receive path gets a correctly-typed call site.
+  (void)stream;
+  (void)nationSlot;
 }
 
 extern undefined4 GenerateThreadLocalRandom15(void);

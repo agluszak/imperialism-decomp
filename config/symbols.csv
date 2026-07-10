@@ -2554,7 +2554,7 @@ address|name|symbol|size|type|prototype|provenance
 4e6680|TTurnStartEvent::GetRuntimeClass||6|function|undefined GetTTurnStartEventClassNamePointer()|rtti
 4e66c0|TLandSaleEvent::CreateObject|?CreateObject@TLandSaleEvent@@SGPAVCObject@@XZ|31|function|undefined CreateObject()|rtti
 4e66f0|TLandSaleEvent::GetRuntimeClass||6|function|undefined GetTLandSaleEventClassNamePointer()|rtti
-4e6710|InitializeLandSaleEventPayloadTileAndNation||28|function|undefined InitializeLandSaleEventPayloadTileAndNation()|
+4e6710|TLandSaleEvent::ILandSaleEvent||28|function|void ILandSaleEvent(short tileIndex, short nationCode)|
 4e6740|TLandSaleEvent::ApplyJoinEmpireMode2FinalizeNationNameState||528|function|undefined ShowLandSaleTransferNotification()|
 4e6a40|WrapperFor_ftol_At004e6a40||30|function|undefined WrapperFor_ftol_At004e6a40()|
 4e6a70|TAutoGreatPower::CreateObject|?CreateObject@TAutoGreatPower@@SGPAVCObject@@XZ|113|function|undefined CreateObject()|rtti
@@ -3980,13 +3980,13 @@ address|name|symbol|size|type|prototype|provenance
 549a90|DispatchTurnEvent31TaggedPayload||42|function|undefined DispatchTurnEvent31TaggedPayload()|
 549ad0|DispatchTurnEventPacketWithCodeAndPayloadBuffer||280|function|undefined DispatchTurnEventPacketWithCodeAndPayloadBuffer()|
 549c60|SerializeOrderDataIntoTurnEventByTag||396|function|undefined SerializeOrderDataIntoTurnEventByTag()|
-549ff0|HandleTurnEventCodes28_2E_2F_30_31_32||623|function|undefined HandleTurnEventCodes28_2E_2F_30_31_32()|
+549ff0|TMultiplayerMgr::HandleTurnEventCodes28_2E_2F_30_31_32||623|function|void HandleTurnEventCodes28_2E_2F_30_31_32(TStream* stream)|
 54a340|DispatchTaggedGameStateEvent1F20||156|function|undefined DispatchTaggedGameStateEvent1F20()|
 54a410|DispatchTextPairEvent8FromContext||184|function|undefined DispatchTextPairEvent8FromContext()|
 54a500|PublishTerrainDescriptorAndNotifyOrderListeners||169|function|undefined PublishTerrainDescriptorAndNotifyOrderListeners()|
 54a5e0|PublishNationDescriptorAndNotifyOrderListeners||177|function|undefined PublishNationDescriptorAndNotifyOrderListeners()|
-54a6d0|CreateMilitaryRecruitOrdersForSelectedTerrain||280|function|undefined CreateMilitaryRecruitOrdersForSelectedTerrain()|
-54a840|CreateCivilianWorkOrdersForSelectedNations||310|function|undefined CreateCivilianWorkOrdersForSelectedNations()|
+54a6d0|TMultiplayerMgr::CreateMilitaryRecruitOrdersForSelectedTerrain||280|function|void CreateMilitaryRecruitOrdersForSelectedTerrain(TStream* stream, short nationSlot)|
+54a840|TMultiplayerMgr::CreateCivilianWorkOrdersForSelectedNations||310|function|void CreateCivilianWorkOrdersForSelectedNations(TStream* stream, short nationSlot)|
 54a9d0|IsSpecialNationDialogModeActive||38|function|undefined IsSpecialNationDialogModeActive()|
 54aa10|CreateAndSendTurnEvent0C_Text256AndTwoFlags||206|function|undefined CreateAndSendTurnEvent0C_Text256AndTwoFlags()|
 54ab20|DispatchTileRedrawInvalidateEvent||149|function|void __cdecl DispatchTileRedrawInvalidateEvent(short nTileIndex)|
@@ -4187,7 +4187,7 @@ address|name|symbol|size|type|prototype|provenance
 5568c0|TNavyMgr::WriteTo||29|function|undefined SerializeNavyManager()|
 5568f0|SerializeNavyOrderListsByNation||333|function|undefined SerializeNavyOrderListsByNation()|
 556aa0|TNavyMgr::ReadFrom||29|function|undefined DeserializeNavyManager()|
-556ad0|DeserializeNavyOrderListsByNation||915|function|undefined DeserializeNavyOrderListsByNation()|
+556ad0|TNavyMgr::DeserializeNavyOrderListsByNation||915|function|void DeserializeNavyOrderListsByNation(TStream* stream, short nationFilter)|
 556f60|CancelNationOrdersAndResetPrimaryFlags||79|function|undefined CancelNationOrdersAndResetPrimaryFlags()|
 556fd0|ResetPrimaryOrderActiveFlagsAndClearManagerState||67|function|undefined ResetPrimaryOrderActiveFlagsAndClearManagerState()|
 557040|RefreshNavyOrderCycleAndClearReadyFlags||47|function|undefined RefreshNavyOrderCycleAndClearReadyFlags()|
@@ -4334,7 +4334,7 @@ address|name|symbol|size|type|prototype|provenance
 562af0|RelaxMapTileCostFieldByNeighborTerrain||205|function|undefined RelaxMapTileCostFieldByNeighborTerrain()|
 562c00|SelectBestSeedTileForNationFromCostField||306|function|undefined SelectBestSeedTileForNationFromCostField()|
 562d90|InputState::InitializeMapActionContextsForNationCountUsingCostField||313|function|undefined InitializeMapActionContextsForNationCountUsingCostField()|
-562f20|RefreshMapActionContextNationOverlaysAndOrderRanks||593|function|undefined RefreshMapActionContextNationOverlaysAndOrderRanks()|
+562f20|TOcean::RefreshMapActionContextNationOverlaysAndOrderRanks||593|function|void RefreshMapActionContextNationOverlaysAndOrderRanks()|
 563220|RegenerateAllMapActionContextStatusCodes||166|function|undefined RegenerateAllMapActionContextStatusCodes()|
 563300|GetMapActionContextEntryByNationCodeOffset17||20|function|undefined GetMapActionContextEntryByNationCodeOffset17()|
 563330|GetMapActionContextEntryByIndex||17|function|undefined GetMapActionContextEntryByIndex()|
@@ -5278,7 +5278,7 @@ address|name|symbol|size|type|prototype|provenance
 59a920|TMiniMapView::DispatchPictureResourceCommand||312|function|undefined QueueCityRecruitmentSupportCommandsIfDeficit(int param_1, int * param_2)|
 59acf0|WrapperFor_ftol_At0059acf0||30|function|undefined WrapperFor_ftol_At0059acf0()|
 59ad40|TTacticalPlayer::CreateObject|?CreateObject@TTacticalPlayer@@SGPAVCObject@@XZ|24|function|undefined CreateObject()|rtti
-59ad70|TTacticalPlayer::OrphanRetStub_0059ad70||1|function|undefined OrphanRetStub_0059ad70(void)|
+59ad70|TTacticalPlayer::StartBattle||1|function|undefined StartBattle(void)|
 59ad90|TTacticalPlayer::OrphanRetStub_0059ad90||1|function|undefined OrphanRetStub_0059ad90(void)|
 59adb0|TTacticalPlayer::TArmyTacUnit_VtblSlot00||3|function|undefined TArmyTacUnit_VtblSlot00()|
 59add0|TTacticalPlayer::OrphanRetStub_0059add0||3|function|undefined OrphanRetStub_0059add0(void)|
@@ -5306,7 +5306,7 @@ address|name|symbol|size|type|prototype|provenance
 59b540|TArmyPlayer::WrapperFor_AddHead_At0059afe0||73|function|undefined TArmyTacUnit_VtblSlot03(int * param_1)|
 59b5b0|AccumulateTacticalCursorActionClassProfileMetrics||320|function|undefined AccumulateTacticalCursorActionClassProfileMetrics()|
 59b740|RebuildListFromProviderAndDeduplicateByKey||179|function|undefined RebuildListFromProviderAndDeduplicateByKey()|
-59b830|TArmyPlayer::OrphanRetStub_0059ad70||260|function|undefined OrphanRetStub_0059ad70(void)|
+59b830|TArmyPlayer::StartBattle||260|function|undefined StartBattle(void)|
 59b990|RecomputeTacticalCursorProjectionScoresAndPruneList||579|function|undefined RecomputeTacticalCursorProjectionScoresAndPruneList()|
 59bc80|TArmyPlayer::TArmyTacUnit_VtblSlot06||67|function|undefined TArmyTacUnit_VtblSlot06()|
 59bcf0|BuildTacticalActionPriorityBucketsWithGridGuard||438|function|undefined BuildTacticalActionPriorityBucketsWithGridGuard()|
@@ -5376,7 +5376,7 @@ address|name|symbol|size|type|prototype|provenance
 59f070|TNavyAutoPlayer::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 59f0a0|TNavyAutoPlayer::CreateTNavyAutoPlayerInstance||7|function|undefined CreateTNavyAutoPlayerInstance()|
 59f0c0|TNavyAutoPlayer::GetRuntimeClass||6|function|undefined GetTNavyAutoPlayerClassNamePointer()|rtti
-59f110|TNavyAutoPlayer::OrphanRetStub_0059ad70||64|function|undefined OrphanRetStub_0059ad70(void)|
+59f110|TNavyAutoPlayer::StartBattle||64|function|undefined StartBattle(void)|
 59f160|TNavyAutoPlayer::OrphanRetStub_0059ad90||428|function|undefined OrphanRetStub_0059ad90(void)|
 59f5c0|WrapperFor_ftol_At0059f5c0||30|function|undefined WrapperFor_ftol_At0059f5c0()|
 59f610|OrphanCallChain_C4_I70_0059f610||130|function|undefined OrphanCallChain_C4_I70_0059f610()|
@@ -5387,10 +5387,10 @@ address|name|symbol|size|type|prototype|provenance
 59f770|TTacticalBattle::ConstructTTacticalBattleBaseState||32|function|undefined ConstructTTacticalBattleBaseState()|
 59f7a0|TTacticalBattle::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 59f7d0|DestructTTacticalBattleAndMaybeFree_Impl||7|function|undefined DestructTTacticalBattleAndMaybeFree_Impl()|
-59f7f0|TArmyBattle::ConstructTArmyBattleBaseStateImpl||123|function|undefined ConstructTArmyBattleBaseStateImpl()|
+59f7f0|TArmyBattle::AllocateRecordList||123|function|void AllocateRecordList()|
 59f890|BuildTacticalBattleStateFromBothSides||554|function|undefined BuildTacticalBattleStateFromBothSides()|
 59fb50|TTacticalBattle::Free||152|function|undefined WrapperFor_FreeHeapBufferIfNotNull_At0059fb50(void)|
-59fc20|CallObjectOffset18Vslot28||8|function|undefined CallObjectOffset18Vslot28()|
+59fc20|TTacticalBattle::StartBattle||8|function|undefined StartBattle()|
 59fc40|IterateLinkedListCursorEntries_0059fc40||99|function|undefined IterateLinkedListCursorEntries_0059fc40()|
 59fcd0|OrphanCallChain_C2_I16_0059fcd0||35|function|undefined OrphanCallChain_C2_I16_0059fcd0()|
 59fd10|HandleTacticalCommandTag_retr||116|function|undefined HandleTacticalCommandTag_retr()|

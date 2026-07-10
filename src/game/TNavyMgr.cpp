@@ -343,6 +343,15 @@ void TNavyMgr::SerializeNavyOrderListsByNation(TStream* stream, short nationFilt
   }
 }
 
+// FUNCTION: IMPERIALISM 0x00556ad0
+void TNavyMgr::DeserializeNavyOrderListsByNation(TStream* stream, short nationFilter) {
+  // TODO: port body @ 0x556ad0 (915 bytes; not yet ported). Declared for real so the
+  // turn-event-0x2E receive path (TMultiplayerMgr::HandleTurnEventCodes28_2E_2F_30_31_32)
+  // gets a correctly-typed call site.
+  (void)stream;
+  (void)nationFilter;
+}
+
 // FUNCTION: IMPERIALISM 0x00556fd0
 void TNavyMgr::ResetPrimaryOrderActiveFlagsAndClearManagerState() {
   for (TShip* ship = g_pNavyPrimaryOrderListHead; ship != nullptr; ship = ship->nextOlder24) {

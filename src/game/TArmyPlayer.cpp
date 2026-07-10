@@ -24,12 +24,12 @@ undefined TArmyPlayer::Helper_Uses_FindListNodeByKeyFromNodeOrHead_At0059afa0() 
 }
 
 // FUNCTION: IMPERIALISM 0x0059b540
-undefined TArmyPlayer::WrapperFor_AddHead_At0059afe0(int * param_1) {
+undefined TArmyPlayer::WrapperFor_AddHead_At0059afe0(int* param_1) {
   return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x0059b830
-undefined TArmyPlayer::OrphanRetStub_0059ad70() {
+undefined TArmyPlayer::StartBattle() {
   return 0;
 }
 

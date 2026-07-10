@@ -211,6 +211,13 @@ void TOcean::InitializeMapActionContextsForNationCountUsingCostField(int nationC
   delete[] costField;
 }
 
+// FUNCTION: IMPERIALISM 0x00562f20
+void TOcean::RefreshMapActionContextNationOverlaysAndOrderRanks() {
+  // TODO: port body @ 0x562f20 (593 bytes; not yet ported). Declared for real so the
+  // turn-event-0x2E receive path (TMultiplayerMgr::HandleTurnEventCodes28_2E_2F_30_31_32)
+  // gets a correctly-typed call site.
+}
+
 TZone* TOcean::GetLinkedZoneForSeaTile(short seaTileIndex) {
   TTerrainStateRecordView& terrainRecord = g_pGlobalMapState->terrainStateTable[seaTileIndex];
   signed char terrainClass = static_cast<signed char>(terrainRecord.pad16);

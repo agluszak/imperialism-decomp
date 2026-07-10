@@ -1,6 +1,7 @@
 #include "game/TTacticalBattle.h"
 
 #include "game/TList.h"
+#include "game/TTacticalPlayer.h"
 
 undefined TTacticalBattle::OrphanRetStub_0059f710() {
   return 0;
@@ -17,9 +18,23 @@ undefined TTacticalBattle::CreateTTacticalBattleInstance() {
 
 IMPLEMENT_DYNCREATE(TTacticalBattle, TObject)
 
+// Body assignments (not a member-init list) reproduce the original store order
+// +4, +8, +0x24, +0x1c, +0x34, +0x74, +0x20, which does not follow declaration order.
 // FUNCTION: IMPERIALISM 0x0059f770
-TTacticalBattle::TTacticalBattle()
-    : field4(0), field8(0), field1c(0), recordList20(nullptr), field24(0), field34(0), field74(0) {}
+TTacticalBattle::TTacticalBattle() {
+  field4 = 0;
+  field8 = 0;
+  field24 = 0;
+  field1c = 0;
+  field34 = 0;
+  field74 = 0;
+  recordList20 = 0;
+}
+
+// FUNCTION: IMPERIALISM 0x0059fc20
+undefined TTacticalBattle::StartBattle() {
+  return tacticalPlayer18->StartBattle();
+}
 
 // SYNTHETIC: IMPERIALISM 0x0059f7a0
 // TTacticalBattle::`scalar deleting destructor'

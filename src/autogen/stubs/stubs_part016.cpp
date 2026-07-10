@@ -691,34 +691,10 @@ undefined4 DispatchTurnEvent31TaggedPayload(void)
   return 0;
 }
 
-// ghidra_name HandleTurnEventCodes28_2E_2F_30_31_32
-// ghidra_proto undefined HandleTurnEventCodes28_2E_2F_30_31_32()
-// FUNCTION: IMPERIALISM 0x00549ff0
-undefined4 HandleTurnEventCodes28_2E_2F_30_31_32(void)
-{
-  return 0;
-}
-
 // ghidra_name DispatchTextPairEvent8FromContext
 // ghidra_proto undefined DispatchTextPairEvent8FromContext()
 // FUNCTION: IMPERIALISM 0x0054a410
 undefined4 DispatchTextPairEvent8FromContext(void)
-{
-  return 0;
-}
-
-// ghidra_name CreateMilitaryRecruitOrdersForSelectedTerrain
-// ghidra_proto undefined CreateMilitaryRecruitOrdersForSelectedTerrain()
-// FUNCTION: IMPERIALISM 0x0054a6d0
-undefined4 CreateMilitaryRecruitOrdersForSelectedTerrain(void)
-{
-  return 0;
-}
-
-// ghidra_name CreateCivilianWorkOrdersForSelectedNations
-// ghidra_proto undefined CreateCivilianWorkOrdersForSelectedNations()
-// FUNCTION: IMPERIALISM 0x0054a840
-undefined4 CreateCivilianWorkOrdersForSelectedNations(void)
 {
   return 0;
 }

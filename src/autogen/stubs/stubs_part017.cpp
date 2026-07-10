@@ -131,14 +131,6 @@ undefined4 ResetNavyOrderListsAndManagerOwner(void)
   return 0;
 }
 
-// ghidra_name DeserializeNavyOrderListsByNation
-// ghidra_proto undefined DeserializeNavyOrderListsByNation()
-// FUNCTION: IMPERIALISM 0x00556ad0
-undefined4 DeserializeNavyOrderListsByNation(void)
-{
-  return 0;
-}
-
 // ghidra_name CancelNationOrdersAndResetPrimaryFlags
 // ghidra_proto undefined CancelNationOrdersAndResetPrimaryFlags()
 // FUNCTION: IMPERIALISM 0x00556f60
@@ -479,14 +471,6 @@ undefined4 RelaxMapTileCostFieldByNeighborTerrain(void)
 // ghidra_proto undefined SelectBestSeedTileForNationFromCostField()
 // FUNCTION: IMPERIALISM 0x00562c00
 undefined4 SelectBestSeedTileForNationFromCostField(void)
-{
-  return 0;
-}
-
-// ghidra_name RefreshMapActionContextNationOverlaysAndOrderRanks
-// ghidra_proto undefined RefreshMapActionContextNationOverlaysAndOrderRanks()
-// FUNCTION: IMPERIALISM 0x00562f20
-undefined4 RefreshMapActionContextNationOverlaysAndOrderRanks(void)
 {
   return 0;
 }

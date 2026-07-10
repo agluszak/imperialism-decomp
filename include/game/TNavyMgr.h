@@ -49,6 +49,9 @@ public:
   // TAdmiral secondary chain, orderListHead04 task-force chain), each prefixed with a
   // 16-bit count; nationFilter -1 serializes every nation's entries.
   void SerializeNavyOrderListsByNation(TStream* stream, short nationFilter);
+  // 0x556ad0 - receive-side twin of SerializeNavyOrderListsByNation: rebuild the three
+  // navy order lists from the stream for `nationFilter` (-1 = all nations).
+  void DeserializeNavyOrderListsByNation(TStream* stream, short nationFilter);
   // 0x557170. Walks orderListHead04 (the same raw task-force-order node list
   // RemoveMatchingTaskForceOrders in the .cpp already indexes via node[7]=
   // nationSlot@+0x1c, node[0xb]=next@+0x2c); matches nodes with orderType@+0x8==5,

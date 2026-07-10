@@ -7549,7 +7549,7 @@
     },
     {
       "address": "0x4a2900",
-      "matching": 0.13374805598755832,
+      "matching": 0.13063763608087092,
       "name": "BuildArmyContextActionRecordsAndDispatchLabel",
       "type": 1
     },
@@ -7735,7 +7735,7 @@
     },
     {
       "address": "0x4a5b10",
-      "matching": 0.36220472440944884,
+      "matching": 0.6165413533834586,
       "name": "CreateTacticalBattleViewAndInitializeBattleSetup",
       "type": 1
     },
@@ -12356,7 +12356,7 @@
     },
     {
       "address": "0x4dd430",
-      "matching": 0.5142857142857142,
+      "matching": 0.5714285714285714,
       "name": "TGreatPower::ComputeRemainingDiplomacyAidBudget",
       "type": 1
     },
@@ -12788,14 +12788,14 @@
     },
     {
       "address": "0x4e0590",
-      "matching": 1.0,
+      "effective": true,
+      "matching": 0.42857142857142855,
       "name": "TGreatPower::OrphanRetStub_004d7fa0_88",
       "type": 1
     },
     {
       "address": "0x4e05d0",
-      "effective": true,
-      "matching": 0.42857142857142855,
+      "matching": 1.0,
       "name": "TGreatPower::OrphanLeaf_NoCall_Ins02_004d7fc0_89",
       "type": 1
     },
@@ -12808,21 +12808,19 @@
     },
     {
       "address": "0x4e0650",
-      "effective": true,
-      "matching": 0.42857142857142855,
+      "matching": 1.0,
       "name": "TGreatPower::OrphanRetStub_004d7fe0_8b",
       "type": 1
     },
     {
       "address": "0x4e0690",
-      "effective": true,
-      "matching": 0.42857142857142855,
+      "matching": 1.0,
       "name": "TGreatPower::ReturnFalseNationStateCapabilityFlag90",
       "type": 1
     },
     {
       "address": "0x4e06d0",
-      "matching": 0.7619047619047619,
+      "matching": 0.8095238095238095,
       "name": "TGreatPower::SumNationRuntimeFiveBucketValue44",
       "type": 1
     },
@@ -12852,7 +12850,7 @@
     },
     {
       "address": "0x4e09a0",
-      "matching": 0.5421686746987951,
+      "matching": 0.5180722891566265,
       "name": "TGreatPower::ComputeCityOrderCapabilityAggregateScore",
       "type": 1
     },
@@ -13284,7 +13282,8 @@
     },
     {
       "address": "0x4e65e0",
-      "matching": 0.35294117647058826,
+      "effective": true,
+      "matching": 0.9,
       "name": "TTurnStartEvent::CreateObject",
       "type": 1
     },
@@ -13314,7 +13313,7 @@
     },
     {
       "address": "0x4e66c0",
-      "matching": 0.35294117647058826,
+      "matching": 1.0,
       "name": "TLandSaleEvent::CreateObject",
       "type": 1
     },
@@ -13326,8 +13325,8 @@
     },
     {
       "address": "0x4e6710",
-      "matching": 0.0,
-      "name": "InitializeLandSaleEventPayloadTileAndNation",
+      "matching": 1.0,
+      "name": "TLandSaleEvent::ILandSaleEvent",
       "type": 1
     },
     {
@@ -16352,7 +16351,7 @@
     },
     {
       "address": "0x50bea0",
-      "matching": 0.20899591094956838,
+      "matching": 0.20354384370740572,
       "name": "TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets",
       "type": 1
     },
@@ -16724,7 +16723,7 @@
     },
     {
       "address": "0x512930",
-      "matching": 0.2491103202846975,
+      "matching": 0.25622775800711745,
       "name": "BuildHexAreaTileIndexList",
       "type": 1
     },
@@ -16802,7 +16801,7 @@
     },
     {
       "address": "0x5136a0",
-      "matching": 1.0,
+      "matching": 0.8888888888888888,
       "name": "TMapMgr::OrphanLeaf_NoCall_Ins35_005136a0",
       "type": 1
     },
@@ -17000,7 +16999,7 @@
     },
     {
       "address": "0x515b10",
-      "matching": 0.3167420814479638,
+      "matching": 0.3378995433789954,
       "name": "TMapMgr::MarkSeedNeighborTilesUnavailableByCapabilityMaskProfileB",
       "type": 1
     },
@@ -21352,8 +21351,8 @@
     },
     {
       "address": "0x549ff0",
-      "matching": 0.0,
-      "name": "HandleTurnEventCodes28_2E_2F_30_31_32",
+      "matching": 0.8727272727272727,
+      "name": "TMultiplayerMgr::HandleTurnEventCodes28_2E_2F_30_31_32",
       "type": 1
     },
     {
@@ -21382,14 +21381,14 @@
     },
     {
       "address": "0x54a6d0",
-      "matching": 0.0,
-      "name": "CreateMilitaryRecruitOrdersForSelectedTerrain",
+      "matching": 0.020833333333333332,
+      "name": "TMultiplayerMgr::CreateMilitaryRecruitOrdersForSelectedTerrain",
       "type": 1
     },
     {
       "address": "0x54a840",
-      "matching": 0.0,
-      "name": "CreateCivilianWorkOrdersForSelectedNations",
+      "matching": 0.018518518518518517,
+      "name": "TMultiplayerMgr::CreateCivilianWorkOrdersForSelectedNations",
       "type": 1
     },
     {
@@ -21826,7 +21825,7 @@
     },
     {
       "address": "0x5501b0",
-      "matching": 0.46511627906976744,
+      "matching": 0.5446009389671361,
       "name": "CalculateMissionOrderPriorityScore",
       "type": 1
     },
@@ -22541,8 +22540,8 @@
     },
     {
       "address": "0x556ad0",
-      "matching": 0.0,
-      "name": "DeserializeNavyOrderListsByNation",
+      "matching": 0.006622516556291391,
+      "name": "TNavyMgr::DeserializeNavyOrderListsByNation",
       "type": 1
     },
     {
@@ -23345,8 +23344,8 @@
     },
     {
       "address": "0x562f20",
-      "matching": 0.02040816326530612,
-      "name": "RefreshMapActionContextNationOverlaysAndOrderRanks",
+      "matching": 0.010256410256410256,
+      "name": "TOcean::RefreshMapActionContextNationOverlaysAndOrderRanks",
       "type": 1
     },
     {
@@ -28731,7 +28730,7 @@
     {
       "address": "0x59ad70",
       "matching": 0.6666666666666666,
-      "name": "TTacticalPlayer::OrphanRetStub_0059ad70",
+      "name": "TTacticalPlayer::StartBattle",
       "type": 1
     },
     {
@@ -28893,7 +28892,7 @@
     {
       "address": "0x59b830",
       "matching": 0.019801980198019802,
-      "name": "TArmyPlayer::OrphanRetStub_0059ad70",
+      "name": "TArmyPlayer::StartBattle",
       "type": 1
     },
     {
@@ -29271,7 +29270,7 @@
     {
       "address": "0x59f110",
       "matching": 0.06451612903225806,
-      "name": "TNavyAutoPlayer::OrphanRetStub_0059ad70",
+      "name": "TNavyAutoPlayer::StartBattle",
       "type": 1
     },
     {
@@ -29288,7 +29287,7 @@
     },
     {
       "address": "0x59f6d0",
-      "matching": 0.24390243902439024,
+      "matching": 0.2926829268292683,
       "name": "TTacticalBattle::CreateObject",
       "type": 1
     },
@@ -29312,7 +29311,7 @@
     },
     {
       "address": "0x59f770",
-      "matching": 0.5454545454545454,
+      "matching": 1.0,
       "name": "TTacticalBattle::ConstructTTacticalBattleBaseState",
       "type": 1
     },
@@ -29324,8 +29323,8 @@
     },
     {
       "address": "0x59f7f0",
-      "matching": 0.38235294117647056,
-      "name": "TArmyBattle::ConstructTArmyBattleBaseStateImpl",
+      "matching": 0.4117647058823529,
+      "name": "TArmyBattle::AllocateRecordList",
       "type": 1
     },
     {
@@ -29342,8 +29341,8 @@
     },
     {
       "address": "0x59fc20",
-      "matching": 0.0,
-      "name": "CallObjectOffset18Vslot28",
+      "matching": 1.0,
+      "name": "TTacticalBattle::StartBattle",
       "type": 1
     },
     {
@@ -29654,7 +29653,7 @@
     },
     {
       "address": "0x5a4710",
-      "matching": 0.24390243902439024,
+      "matching": 0.19047619047619047,
       "name": "TArmyBattle::CreateObject",
       "type": 1
     },

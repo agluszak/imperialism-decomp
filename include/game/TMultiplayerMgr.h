@@ -156,6 +156,18 @@ public:
   // and re-broadcasts the mask; clients acknowledge the pending event code; everyone
   // marks the local nation 'redy' and broadcasts the event-0x25 status board.
   void HandleTurnResumeStateTelemetry();
+  // 0x549ff0: receive path for turn events 0x28/0x2E..0x32 — reads the 0x1c timely
+  // header, derives the acting nation (-1 during teardown), and dispatches by event
+  // code: 0x28 rebuilds the tactical battle from the stream, 0x2E resyncs the navy
+  // order lists, 0x2F/0x30 rebuild military/civilian orders, 0x31 handles the
+  // 'army'/'star'+'land'/'town' tagged payloads, 0x32 resyncs the trade manager.
+  void HandleTurnEventCodes28_2E_2F_30_31_32(TStream* stream);
+  // 0x54a6d0: deserialize the military recruit orders for the selected terrain
+  // (turn-event-0x2F receive path).
+  void CreateMilitaryRecruitOrdersForSelectedTerrain(TStream* stream, short nationSlot);
+  // 0x54a840: deserialize the civilian work orders for the selected nations
+  // (turn-event-0x30 receive path).
+  void CreateCivilianWorkOrdersForSelectedNations(TStream* stream, short nationSlot);
   // 0x54bd20: replace the vacated slot's nation with a freshly rolled TAutoGreatPower
   // (deep state copy + subobject ownership swap), then drop the session id, tag the
   // slot 'suna', refresh labels, and re-broadcast the pending mask when hosting.

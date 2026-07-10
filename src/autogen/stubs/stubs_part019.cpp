@@ -51,14 +51,6 @@ undefined4 BuildTacticalBattleStateFromBothSides(void)
   return 0;
 }
 
-// ghidra_name CallObjectOffset18Vslot28
-// ghidra_proto undefined CallObjectOffset18Vslot28()
-// FUNCTION: IMPERIALISM 0x0059fc20
-undefined4 CallObjectOffset18Vslot28(void)
-{
-  return 0;
-}
-
 // ghidra_name IterateLinkedListCursorEntries_0059fc40
 // ghidra_proto undefined IterateLinkedListCursorEntries_0059fc40()
 // FUNCTION: IMPERIALISM 0x0059fc40

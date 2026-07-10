@@ -14,7 +14,7 @@ IMPLEMENT_DYNCREATE(TNavyAutoPlayer, TNavyPlayer)
 TNavyAutoPlayer::TNavyAutoPlayer() {}
 
 // FUNCTION: IMPERIALISM 0x0059f110
-undefined TNavyAutoPlayer::OrphanRetStub_0059ad70() {
+undefined TNavyAutoPlayer::StartBattle() {
   return 0;
 }
 

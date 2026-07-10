@@ -11,14 +11,6 @@ undefined4 CreateTTurnStartEventInstance(void)
   return 0;
 }
 
-// ghidra_name InitializeLandSaleEventPayloadTileAndNation
-// ghidra_proto undefined InitializeLandSaleEventPayloadTileAndNation()
-// FUNCTION: IMPERIALISM 0x004e6710
-undefined4 InitializeLandSaleEventPayloadTileAndNation(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_ftol_At004e6a40
 // ghidra_proto undefined WrapperFor_ftol_At004e6a40()
 // FUNCTION: IMPERIALISM 0x004e6a40

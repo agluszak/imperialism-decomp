@@ -54,6 +54,11 @@ public:
 
   void InitializeMapActionContextsForNationCountUsingCostField(int nationCountArg);
 
+  // 0x562f20 - refresh every map-action context's nation overlays and per-nation order
+  // ranks after an order-list resync (turn-event-0x2E receive path calls it right after
+  // TNavyMgr::DeserializeNavyOrderListsByNation).
+  void RefreshMapActionContextNationOverlaysAndOrderRanks();
+
   // __inline: the original inlines this pointer calc at its call sites (e.g.
   // TZone::ResolvePortZoneOwnerContextAndDispatch) while keeping the standalone copy
   // at 0x00563300, so it must be inline-visible to match.

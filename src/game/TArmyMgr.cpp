@@ -1172,6 +1172,7 @@ void TArmyMgr::CreateTacticalBattleViewAndInitializeBattleSetup(TArmyStack* ourS
   (void)g_pGlobalMapState->cityScoreTable[ownerNationCodeInt].fortLevel03;
 
   TArmyBattle* newBattle = new TArmyBattle();
+  newBattle->AllocateRecordList();
   newBattle->InitializeBattleSetupAndMaybeDispatchTurnEventED8(ourStack, enemyStack,
                                                                compositionClass);
 
@@ -1182,9 +1183,7 @@ void TArmyMgr::CreateTacticalBattleViewAndInitializeBattleSetup(TArmyStack* ourS
   if (g_pSimMgr->field44 == 1) {
     g_pGameFlowState->NoOpCallbackRet4(newBattle);
   }
-  // Ground truth also calls newBattle->field_0x18->vtable[0x28]() here
-  // (CallObjectOffset18Vslot28) -- TArmyBattle's own +0x18 field isn't recovered, so this
-  // dispatch is left undone rather than faked.
+  newBattle->StartBattle();
 }
 
 // FUNCTION: IMPERIALISM 0x004a5ec0
