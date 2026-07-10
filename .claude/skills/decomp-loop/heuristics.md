@@ -1053,3 +1053,36 @@ headers before splicing.
     sub in its own try/write. Confirm suspicious "stub-like" scores by reading the
     recomp bytes at the paired address from build-msvc500/Imperialism.exe via the
     PE-parse pattern.
+
+64. **A local whose live range ends at the accumulate gets `faddp`; one that lives to
+    scope end gets `fxch/fadd/fxch/fstp`.** When the original shows the four-op
+    shuffle around a `sum += term` (term preserved then dropped), the source declared
+    the term variable OUTSIDE the loop (`double difference;` at function scope,
+    assigned per-iteration). Hoisting the declaration took 0x5362c0 from 85.7% to
+    95.05%. Corollary: intermediates that never spill to memory between FP ops were
+    declared `double`, not `float` — float locals force rounding stores.
+
+65. **`r = *rectPtr;` (struct assignment) vs member-by-member copies emit different
+    code.** Struct assignment produces `lea dst` + temp-register member moves; four
+    explicit `.left = p->left;` lines produce direct indexed stores. Match the
+    original's shape (0x49f0c0 went 36.7% → 73.1% switching to struct assignment;
+    same pattern earlier in TOneTimeAnimation's ctor). Similarly, zeroing an array
+    through a named base pointer (`float* sums = arr; sums[0] = 0; ...`) reproduces
+    the original's `lea` + offset stores where direct indexing does not.
+
+66. **A body that never touches `ecx` can still be a `__thiscall` method — check the
+    callsites, not the callee.** `FreeQuickDrawSurfaceContextSlot` (0x4feb50) looked
+    `__stdcall` from its body (no `this` use, `ret 4`), but every caller loads
+    `mov ecx, [g_pDisplayMgr]` first: it is a real TDisplayMgr method whose `this` is
+    unused. Modeling it free-function silently deletes the ecx load at every callsite
+    (~2 instructions x 34 sites). When promoting, sweep all callers to
+    `g_pX->Method(...)` in the same change.
+
+67. **Frame-slot packing is controlled by scope: block-scoped same-size locals pack
+    into one slot; a function-scope local keeps its slot live to the end.** When the
+    original has two iterator slots (0x18 and 0x24) but the recomp packs all loops
+    into one, the original declared the early iterator at function scope (its
+    lifetime crosses the later loops) while the case-local iterators packed into the
+    second slot (0x59c440, 46.8% → 68.4%). Conversely a recomp frame LARGER than the
+    original means block-scoped aggregates (RECTs) that the original reused as one or
+    two function-scope buffers.
