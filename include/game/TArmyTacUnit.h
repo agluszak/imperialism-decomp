@@ -24,7 +24,7 @@ public:
   // slot 0x08 ShallowClone inherited unchanged (0x4798d0)
   // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
   virtual int GetBaseActionPoints() override;                          // slot 0x0a 0x5a6120
-  virtual undefined OrphanTiny_ReturnZero_005a5d60() override;         // slot 0x0b 0x5a6140
+  virtual int GetUnitRange() override;                                 // slot 0x0b 0x5a6140
   virtual undefined OrphanLeaf_NoCall_Ins02_005a5d80() override;       // slot 0x0c 0x5a6180
   virtual undefined OrphanLeaf_NoCall_Ins02_005a5da0() override;       // slot 0x0d 0x5a61a0
   virtual void ApplyTacticalDamage(int damageA, int damageB) override; // slot 0x0e 0x5a61c0
@@ -46,6 +46,11 @@ public:
 
   // Both original construction sites inline the ctor as a bare vptr store.
   TArmyTacUnit() {}
+
+  // Post-construction init from the source army unit (called unconditionally after
+  // `new TArmyTacUnit()`, even on alloc failure -- a real init method, not the ctor).
+  // TArmyBattle::ReadFrom duplicates this fill inline. 0x005a5f20, __thiscall.
+  void ConstructTArmyTacUnitBaseState(TMilitaryUnit* source);
 };
 
 ASSERT_SIZE(TArmyTacUnit, 0x58);

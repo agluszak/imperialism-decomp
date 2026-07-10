@@ -1,6 +1,17 @@
 #include "game/TTacticalBattle.h"
 
 #include "game/CIterator.h"
+#include "game/CString.h"
+#include "game/TAssetMgr.h"
+#include "game/TControl.h"
+#include "game/TCountry.h"
+#include "game/TDeluxeText.h"
+#include "game/TMapMgr.h"
+#include "game/TPicture.h"
+#include "game/TStaticText.h"
+#include "game/mapped_flavor_text.h"
+#include "game/quickdraw_rendering.h"
+#include "game/turn_event_dialog_provisional.h"
 #include "game/TArmyTacUnit.h"
 #include "game/TList.h"
 #include "game/TMilitaryUnit.h"
@@ -9,7 +20,13 @@
 #include "game/TSoundPlayer.h"
 #include "game/TTacticalBattleView.h"
 #include "game/TTacticalPlayer.h"
+#include "game/TTacticalToolbar.h"
+#include "game/ui_control_tags.h"
 #include "game/global_data_tables.h"
+
+extern undefined4 GenerateThreadLocalRandom15(void);
+
+using turn_event_dialog::TurnEventDialogNode;
 
 undefined TTacticalBattle::OrphanRetStub_0059f710() {
   return 0;
@@ -32,7 +49,7 @@ IMPLEMENT_DYNCREATE(TTacticalBattle, TObject)
 TTacticalBattle::TTacticalBattle() {
   tileGrid4 = 0;
   battleView8 = 0;
-  field24 = 0;
+  tileMoveCostArray24 = 0;
   selectedUnit1c = 0;
   field34 = 0;
   field74 = 0;
@@ -43,18 +60,92 @@ TTacticalBattle::TTacticalBattle() {
 // TTacticalBattle::`scalar deleting destructor'
 TTacticalBattle::~TTacticalBattle() {}
 
-void TTacticalBattle::Free() {}
-
+// Battle-state assembly (Mac oracle: InitTacticalBattle): links both players to the
+// battle, tags each side's units (side20 = 0/1) with a random field24 seed and collects
+// them into recordList20, seeds the selection from the +0x18 side, sizes field34 from
+// the longest unit range (+11), (re)allocates the per-tile work arrays and the hex tile
+// grid, and publishes the battle to g_pActiveTacticalBattle.
 // FUNCTION: IMPERIALISM 0x0059f890
 void TTacticalBattle::BuildTacticalBattleStateFromBothSides(TTacticalPlayer* ourPlayer,
                                                             TTacticalPlayer* enemyPlayer) {
-  // TODO: port body @ 0x59f890 (Mac oracle: InitTacticalBattle; sets tacticalPlayer14/18,
-  // allocates tileGrid4, publishes this to g_pActiveTacticalBattle).
-  (void)ourPlayer;
-  (void)enemyPlayer;
+  tacticalPlayer14 = ourPlayer;
+  tacticalPlayer18 = enemyPlayer;
+  ourPlayer->battle14 = this;
+  enemyPlayer->battle14 = this;
+
+  {
+    CIterator ourIter(ourPlayer->unitList4);
+    for (TTacticalUnit* ourUnit = static_cast<TTacticalUnit*>(ourIter.Reset()); ourIter.More();
+         ourUnit = static_cast<TTacticalUnit*>(ourIter.Advance())) {
+      ourUnit->side20 = 0;
+      ourUnit->field24 = static_cast<short>(GenerateThreadLocalRandom15());
+      recordList20->AddTail(ourUnit);
+    }
+  }
+  {
+    CIterator enemyIter(enemyPlayer->unitList4);
+    for (TTacticalUnit* enemyUnit = static_cast<TTacticalUnit*>(enemyIter.Reset());
+         enemyIter.More(); enemyUnit = static_cast<TTacticalUnit*>(enemyIter.Advance())) {
+      enemyUnit->side20 = 1;
+      enemyUnit->field24 = static_cast<short>(GenerateThreadLocalRandom15());
+      recordList20->AddTail(enemyUnit);
+    }
+  }
+
+  field10 = 0;
+  currentSideC = 1;
+  field44 = 0;
+  selectedUnit1c = enemyPlayer->SelectNextTacticalUnitForDoneCommand();
+
+  // field34 = longest per-unit range across both sides + 11 (the original calls the
+  // range virtual twice per improving unit).
+  int maxUnitRange = 0;
+  {
+    CIterator rangeIter(recordList20);
+    for (TTacticalUnit* rangeUnit = static_cast<TTacticalUnit*>(rangeIter.Reset());
+         rangeIter.More(); rangeUnit = static_cast<TTacticalUnit*>(rangeIter.Advance())) {
+      if (rangeUnit->GetUnitRange() > maxUnitRange) {
+        maxUnitRange = rangeUnit->GetUnitRange();
+      }
+    }
+  }
+  field34 = maxUnitRange + 11;
+
+  tileMoveCostArray24 = new short[tacticalTileCount3c];
+  for (int costIdx = 0; costIdx < tacticalTileCount3c; ++costIdx) {
+    tileMoveCostArray24[costIdx] = -1;
+  }
+  tileThreatLevelArray28 = new char[tacticalTileCount3c];
+  for (int threatIdx = 0; threatIdx < tacticalTileCount3c; ++threatIdx) {
+    tileThreatLevelArray28[threatIdx] = 0;
+  }
+  tileIntArray2c = new int[tacticalTileCount3c];
+  for (int workIdxA = 0; workIdxA < tacticalTileCount3c; ++workIdxA) {
+    tileIntArray2c[workIdxA] = 0;
+  }
+  tileIntArray30 = new int[tacticalTileCount3c];
+  for (int workIdxB = 0; workIdxB < tacticalTileCount3c; ++workIdxB) {
+    tileIntArray30[workIdxB] = 0;
+  }
+
+  if (tileGrid4 != 0) {
+    delete[] tileGrid4;
+  }
+  tileGrid4 = new TacticalTileRecord[tacticalTileCount3c];
+  TacticalTileRecord* record = tileGrid4;
+  for (int tile = 0; tile < tacticalTileCount3c; ++tile, ++record) {
+    record->field0 = 0;
+    record->occupant4 = 0;
+    record->deployMark8 = 0;
+    record->fieldC = -1;
+    record->trenchMask10 = 0;
+  }
+
+  g_pActiveTacticalBattle = this;
 }
 
-undefined TTacticalBattle::ComputeTacticalReachableTileCostsByUnitCategory(int param_1) {
+undefined TTacticalBattle::ComputeTacticalReachableTileCostsByUnitCategory(TTacticalUnit* unit) {
+  (void)unit;
   return 0;
 }
 
@@ -112,6 +203,41 @@ undefined TTacticalBattle::ComputeRallyStrengthAndQueueTacticalRallyCommand(int 
   return 0;
 }
 
+// Tears the battle down: frees the owned scratch planes and the tile grid, empties
+// and frees the record list and both side players, clears the live-battle global, and
+// self-deletes. The recordList20->RemoveAll() dispatch is unguarded in the original
+// (crashes on a null list), unlike every other member here.
+// FUNCTION: IMPERIALISM 0x0059fb50
+void TTacticalBattle::Free() {
+  if (tileMoveCostArray24 != 0) {
+    delete[] tileMoveCostArray24;
+  }
+  recordList20->RemoveAll();
+  if (recordList20 != 0) {
+    recordList20->Free();
+  }
+  if (tacticalPlayer14 != 0) {
+    tacticalPlayer14->Free();
+  }
+  if (tacticalPlayer18 != 0) {
+    tacticalPlayer18->Free();
+  }
+  if (tileGrid4 != 0) {
+    delete[] tileGrid4;
+  }
+  if (tileThreatLevelArray28 != 0) {
+    delete[] tileThreatLevelArray28;
+  }
+  if (tileIntArray2c != 0) {
+    delete[] tileIntArray2c;
+  }
+  if (tileIntArray30 != 0) {
+    delete[] tileIntArray30;
+  }
+  g_pActiveTacticalBattle = 0;
+  delete this;
+}
+
 // FUNCTION: IMPERIALISM 0x0059fc20
 undefined TTacticalBattle::StartBattle() {
   return tacticalPlayer18->StartBattle();
@@ -119,18 +245,74 @@ undefined TTacticalBattle::StartBattle() {
 
 // Selection/UI helpers dispatched by the command family; bodies not yet ported.
 
+// Applies a completed selection: records the unit, recomputes its reachable-tile cost
+// map, pushes the unit into the 'tool' toolbar cluster, recenters the viewport on the
+// unit's tile when it is on-grid, and refreshes the view + selection marker.
 // FUNCTION: IMPERIALISM 0x0059fe40
 void TTacticalBattle::ApplyTacticalDoneSelectionAndRefreshUi(TTacticalUnit* unit) {
-  // TODO: port body @ 0x59fe40 (sets selectedUnit1c and refreshes the selection UI).
-  (void)unit;
+  selectedUnit1c = unit;
+  ComputeTacticalReachableTileCostsByUnitCategory(unit);
+  if (battleView8 != 0) {
+    TTacticalToolbar* toolbar = static_cast<TTacticalToolbar*>(
+        battleView8->ownerContext->ResolveControlByTag(kControlTagTool));
+    toolbar->AssertValid();
+    toolbar->UpdateTacticalCurrentUnitControlAndDialogLabel(selectedUnit1c);
+    int tileIndex = unit->tileIndex8;
+    int row = tileIndex / 29;
+    int column = ((row & 1) + tileIndex % 29 * 2) / 2;
+    if (tileIndex >= 0 && row >= 0 && row < 15 && column >= 0 && column < field34) {
+      battleView8->CenterViewportAroundGridIndexAndSnap(tileIndex);
+    }
+    battleView8->RefreshControl();
+    battleView8->SpawnTacticalUiMarkerAtUnitTile();
+  }
 }
 
+// Six hex neighbors of tileIndex into outNeighborTiles6[0..5], -1 = off-grid.
+// Order: [0] up-right, [1] right, [2] down-right, [3] down-left, [4] left, [5] up-left
+// (odd/even rows of the 29-wide staggered grid use shifted column offsets).
 // FUNCTION: IMPERIALISM 0x005a0420
 void TTacticalBattle::ComputeHexNeighborTileIndices_005A0420(int tileIndex,
                                                              int* outNeighborTiles6) {
-  // TODO: port body @ 0x5a0420 (six hex-neighbor tile indices; -1 = off-grid).
-  (void)tileIndex;
-  (void)outNeighborTiles6;
+  if ((tileIndex / tacticalTileStride40) & 1) {
+    outNeighborTiles6[0] = tileIndex - tacticalTileStride40 + 1;
+    outNeighborTiles6[1] = tileIndex + 1;
+    outNeighborTiles6[2] = tileIndex + tacticalTileStride40 + 1;
+    outNeighborTiles6[3] = tileIndex + tacticalTileStride40;
+    outNeighborTiles6[4] = tileIndex - 1;
+    outNeighborTiles6[5] = tileIndex - tacticalTileStride40;
+  } else {
+    outNeighborTiles6[0] = tileIndex - tacticalTileStride40;
+    outNeighborTiles6[1] = tileIndex + 1;
+    outNeighborTiles6[2] = tileIndex + tacticalTileStride40;
+    outNeighborTiles6[3] = tileIndex + tacticalTileStride40 - 1;
+    outNeighborTiles6[4] = tileIndex - 1;
+    outNeighborTiles6[5] = tileIndex - tacticalTileStride40 - 1;
+  }
+  if ((tileIndex + 1) % tacticalTileStride40 == 0) {
+    // Right edge: no east neighbor; odd rows also lose both +1-column diagonals.
+    outNeighborTiles6[1] = -1;
+    if ((tileIndex / tacticalTileStride40) & 1) {
+      outNeighborTiles6[0] = -1;
+      outNeighborTiles6[2] = -1;
+    }
+  } else if (tileIndex % tacticalTileStride40 == 0) {
+    // Left edge: no west neighbor; even rows also lose both -1-column diagonals.
+    outNeighborTiles6[4] = -1;
+    if (!((tileIndex / tacticalTileStride40) & 1)) {
+      outNeighborTiles6[3] = -1;
+      outNeighborTiles6[5] = -1;
+    }
+  }
+  if (tileIndex >= tacticalTileCount3c - tacticalTileStride40) {
+    // Bottom row: no southern neighbors.
+    outNeighborTiles6[2] = -1;
+    outNeighborTiles6[3] = -1;
+  } else if (tileIndex < tacticalTileStride40) {
+    // Top row: no northern neighbors.
+    outNeighborTiles6[0] = -1;
+    outNeighborTiles6[5] = -1;
+  }
 }
 
 // Tactical command family: each handler echoes the command to multiplayer when it
@@ -254,9 +436,184 @@ void TTacticalBattle::ApplyTacticalActionEffectsAndMaybeRemoveUnit(TTacticalUnit
   EvaluateTacticalSideStateAndShowBattleSummaryDialog();
 }
 
+// Post-round tactical evaluation: scan recordList20 for live units per side, decide
+// the battle outcome code (field44: 1 = side 0 still standing before round 35,
+// 2 = side 0 wiped out or round limit reached; battle continues while both sides
+// live and field74 < 35), then -- only when a live battle view exists -- build and run
+// the battle-summary turn-event dialog (message context 0xeed): per-nation header
+// picture (0xeed victory / 0xefb defeat + nation id), 'titl' outcome line (group
+// 0x273d idx 1/3/4/6), 'loca' site line (idx 7 expanded with city name + site-owner
+// nation), and 'info' casualty lines per side (idx 0x24 with count / 0x25 one loss /
+// 0x26 no losses) joined by a blank line.
 // FUNCTION: IMPERIALISM 0x005a2750
 void TTacticalBattle::EvaluateTacticalSideStateAndShowBattleSummaryDialog() {
-  // TODO: port body @ 0x5a2750.
+  unsigned char sideHasLiveUnit[2];
+  sideHasLiveUnit[0] = 0;
+  sideHasLiveUnit[1] = 0;
+  CIterator unitIter(recordList20);
+  for (TTacticalUnit* unit = static_cast<TTacticalUnit*>(unitIter.Reset());
+       unitIter.More() && (sideHasLiveUnit[0] == 0 || sideHasLiveUnit[1] == 0);
+       unit = static_cast<TTacticalUnit*>(unitIter.Advance())) {
+    unit->AssertValid();
+    if (unit->state1c == 0 || unit->state1c == 1) {
+      sideHasLiveUnit[unit->side20] = 1;
+    }
+  }
+
+  if (sideHasLiveUnit[0] != 0) {
+    if (sideHasLiveUnit[1] != 0 && field74 < 0x23) {
+      return; // both sides still have live units and the round limit is not reached
+    }
+  }
+  if (sideHasLiveUnit[0] != 0 && field74 < 0x23) {
+    field44 = 1;
+  } else {
+    field44 = 2;
+  }
+
+  if (battleView8 == 0) {
+    return; // headless battle: outcome recorded, no summary dialog
+  }
+
+  unsigned char localIsSide0Player = tacticalPlayer14->IsTacticalControllerOwnedByActiveNation();
+  unsigned char localSideWon;
+  if ((field44 == 1 && tacticalPlayer14->IsTacticalControllerOwnedByActiveNation() != 0) ||
+      (field44 == 2 && tacticalPlayer18->IsTacticalControllerOwnedByActiveNation() != 0)) {
+    localSideWon = 1;
+  } else {
+    localSideWon = 0;
+  }
+
+  g_pSfxPlaybackSystem->RequestAudioPresetChangeWithDeferredApply(localSideWon != 0 ? 9 : 10, 0);
+
+  TControlPictureRectState styleDescriptor;
+  styleDescriptor.styleRef6 = 0;
+  TurnEventDialogNode* dialog = static_cast<TurnEventDialogNode*>(
+      g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(0xeed));
+
+  TPicture* headerPicture =
+      static_cast<TPicture*>(dialog->ResolveControlByTag(0x444c4f47 /* 'DLOG' */));
+  headerPicture->AssertValid();
+  headerPicture->SetPictureResourceIdAndRefresh(
+      g_pSimMgr->GetActiveNationId() + (localSideWon != 0 ? 0xeed : 0xefb), 0);
+
+  TStaticText* titleControl =
+      static_cast<TStaticText*>(headerPicture->ResolveControlByTag(0x7469746c /* 'titl' */));
+  titleControl->AssertValid();
+  {
+    int titleMessageIndex;
+    if (localIsSide0Player != 0) {
+      titleMessageIndex = (localSideWon != 0) ? 3 : 1;
+    } else {
+      titleMessageIndex = (localSideWon != 0) ? 6 : 4;
+    }
+    CString titleText;
+    g_pSimMgr->GetString(0x273d, titleMessageIndex, &titleText);
+    BuildUiTextStyleDescriptor(&styleDescriptor, 0, 0xc, 0x2b67);
+    titleControl->SetCityProductionDialogPictureRectAndMaybeRefresh(&styleDescriptor, 0);
+    titleControl->AssignTextSharedRefIfChangedAndMaybeInvalidate(&titleText, 0);
+  }
+
+  TStaticText* locationControl =
+      static_cast<TStaticText*>(headerPicture->ResolveControlByTag(0x6c6f6361 /* 'loca' */));
+  locationControl->AssertValid();
+  {
+    CString cityName;
+    CString siteOwnerLabel;
+    g_pGlobalMapState->AssignCityRecordDisplayName(battleSiteIndex38, &cityName);
+    g_apTerrainTypeDescriptorTable[g_pGlobalMapState->cityScoreTable[battleSiteIndex38]
+                                       .ownerNationCode00]
+        ->FormatOverlayTerrainLabelText(&siteOwnerLabel);
+    CString locationTemplate;
+    CString locationText;
+    g_pSimMgr->GetString(0x273d, 7, &locationTemplate);
+    scanBracketExpressions(g_pSimMgr, &locationText, static_cast<const char*>(locationTemplate),
+                           static_cast<const char*>(cityName),
+                           static_cast<const char*>(siteOwnerLabel));
+    BuildUiTextStyleDescriptor(&styleDescriptor, 0, 0xa, 0x2b67);
+    locationControl->SetCityProductionDialogPictureRectAndMaybeRefresh(&styleDescriptor, 0);
+    locationControl->AssignTextSharedRefIfChangedAndMaybeInvalidate(&locationText, 1);
+  }
+
+  TDeluxeText* infoControl =
+      static_cast<TDeluxeText*>(headerPicture->ResolveControlByTag(0x696e666f /* 'info' */));
+  infoControl->AssertValid();
+  {
+    CString infoText;
+    // Constructed and destroyed but never read/written in the original -- kept
+    // faithfully (same dead-local shape as BuildUiTextStyleDescriptor's CString).
+    CString unusedTextA;
+    CString casualtyTemplate;
+    CString unusedTextB;
+    infoText = CString(g_pszEmptyTextRef_00669db8);
+    BuildUiTextStyleDescriptor(&styleDescriptor, 0, 0xa, 0x2b67);
+
+    int destroyedCountBySide[2];
+    destroyedCountBySide[0] = 0;
+    destroyedCountBySide[1] = 0;
+    CIterator lossIter(recordList20);
+    for (TTacticalUnit* lossUnit = static_cast<TTacticalUnit*>(lossIter.Reset()); lossIter.More();
+         lossUnit = static_cast<TTacticalUnit*>(lossIter.Advance())) {
+      lossUnit->AssertValid();
+      if (lossUnit->state1c == 3) {
+        ++destroyedCountBySide[lossUnit->side20];
+      }
+    }
+
+    CString side0NationLabel;
+    CString side1NationLabel;
+    CString side0CountText;
+    CString side1CountText;
+    CString side0CasualtyLine;
+    CString side1CasualtyLine;
+    CString combinedCasualtyText;
+
+    g_apTerrainTypeDescriptorTable[tacticalPlayer14->nationIndex1C]->FormatOverlayTerrainLabelText(
+        &side0NationLabel);
+    if (destroyedCountBySide[0] > 1) {
+      g_pSimMgr->GetString(0x273d, 0x24, &casualtyTemplate);
+      side0CountText.Format(g_szDecimalFormat, destroyedCountBySide[0]);
+      scanBracketExpressions(
+          g_pSimMgr, &side0CasualtyLine, static_cast<const char*>(casualtyTemplate),
+          static_cast<const char*>(side0NationLabel), static_cast<const char*>(side0CountText));
+    } else {
+      g_pSimMgr->GetString(0x273d, (destroyedCountBySide[0] == 1) ? 0x25 : 0x26, &casualtyTemplate);
+      scanBracketExpressions(g_pSimMgr, &side0CasualtyLine,
+                             static_cast<const char*>(casualtyTemplate),
+                             static_cast<const char*>(side0NationLabel));
+    }
+
+    g_apTerrainTypeDescriptorTable[tacticalPlayer18->nationIndex1C]->FormatOverlayTerrainLabelText(
+        &side1NationLabel);
+    if (destroyedCountBySide[1] > 1) {
+      g_pSimMgr->GetString(0x273d, 0x24, &casualtyTemplate);
+      side1CountText.Format(g_szDecimalFormat, destroyedCountBySide[1]);
+      scanBracketExpressions(
+          g_pSimMgr, &side1CasualtyLine, static_cast<const char*>(casualtyTemplate),
+          static_cast<const char*>(side1NationLabel), static_cast<const char*>(side1CountText));
+    } else {
+      g_pSimMgr->GetString(0x273d, (destroyedCountBySide[1] == 1) ? 0x25 : 0x26, &casualtyTemplate);
+      scanBracketExpressions(g_pSimMgr, &side1CasualtyLine,
+                             static_cast<const char*>(casualtyTemplate),
+                             static_cast<const char*>(side1NationLabel));
+    }
+
+    combinedCasualtyText =
+        CString(side0CasualtyLine + s_szDoubleNewline_00699438 + side1CasualtyLine);
+    infoControl->ApplyTextStyleDescriptorAndMaybeRefresh(&styleDescriptor, 0);
+    infoControl->UpdateTextEntrySharedStringAndMaybeNotify(&combinedCasualtyText, 0);
+    infoControl->RecenterTextFromMeasuredWidthAndMaybeInvalidate(0);
+  }
+
+  dialog->ShowTurnEventDialog(1);
+  void* content = dialog->QueryTurnEventContentObject();
+  if (content != 0) {
+    *reinterpret_cast<int*>(reinterpret_cast<char*>(content) + 0x14) = 0x6f6b6179; // 'okay'
+  }
+  dialog->RefreshTurnEventDialog();
+  dialog->CallVoidSlotA0();
+  dialog->Free();
+  battleView8->InvokeSlot13C();
 }
 
 // 'mine' command: multiplayer echo (no unit), consume from the side resource pool for
@@ -269,7 +626,7 @@ void TTacticalBattle::HandleTacticalCommandTag_mine(int tileIndex, int amount, c
       g_pGameFlowState->EmitTacticalCommandPacket(0x6d696e65 /* 'mine' */, 0, tileIndex, amount);
     }
   }
-  ConsumeTacticalSideResourcePoolAndInvalidateIfEmpty(tileIndex, amount);
+  ConsumeFortStrengthPointsAndInvalidateIfDepleted(tileIndex, amount);
   if (battleView8 != 0) {
     g_pSfxPlaybackSystem->PlaySoundEffect(0x3a9d, 0, 1);
     battleView8->PlayTacticalTileEffect(tileIndex, 0xf98, 6);
@@ -350,12 +707,28 @@ void TTacticalBattle::HandleTacticalCommandTag_raly(TArmyTacUnit* unit, int newM
   }
 }
 
+// Consumes fort strength from the per-row-pair pool (one slot per two grid rows,
+// tile/58); when a pool runs dry it clamps to 0 and invalidates the three tiles where
+// the fort section is drawn (column band anchored at field34 - 6).
 // FUNCTION: IMPERIALISM 0x005a3c20
-void TTacticalBattle::ConsumeTacticalSideResourcePoolAndInvalidateIfEmpty(int tileIndex,
-                                                                          int consumeAmount) {
-  // TODO: port body @ 0x5a3c20.
-  (void)tileIndex;
-  (void)consumeAmount;
+void TTacticalBattle::ConsumeFortStrengthPointsAndInvalidateIfDepleted(int tileIndex,
+                                                                       int consumeAmount) {
+  int poolIndex = tileIndex / 29 / 2;
+  int remaining = fortStrengthPoints54[poolIndex] - consumeAmount;
+  fortStrengthPoints54[poolIndex] = remaining;
+  if (remaining < 0) {
+    fortStrengthPoints54[poolIndex] = 0;
+    int poolTileIndex = field34 + poolIndex * 58 - 6;
+    if (battleView8 != 0) {
+      battleView8->InvalidateTacticalHexTileRect(poolTileIndex);
+    }
+    if (battleView8 != 0) {
+      battleView8->InvalidateTacticalHexTileRect(poolTileIndex + 1);
+    }
+    if (battleView8 != 0) {
+      battleView8->InvalidateTacticalHexTileRect(poolTileIndex + 29);
+    }
+  }
 }
 
 // 'depl' command: places a unit on a battle-grid tile during deployment; for

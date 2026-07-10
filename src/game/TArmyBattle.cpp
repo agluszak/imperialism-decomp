@@ -1,6 +1,11 @@
 #include "game/TArmyBattle.h"
 
+#include <stdio.h>
+
+#include "game/CFile_Virtuals.h"
 #include "game/CIterator.h"
+#include "game/CString.h"
+#include "game/TAssetMgr.h"
 #include "game/TArmyPlayer.h"
 #include "game/TArmyStack.h"
 #include "game/TArmyTacUnit.h"
@@ -257,9 +262,61 @@ void TArmyBattle::WriteTo(TStream* stream) {
 
 // FUNCTION: IMPERIALISM 0x005a4fc0
 void TArmyBattle::LoadBattleSetupTabDataByIndex(int compositionClass, int fortLevel) {
-  // TODO: port body @ 0x5a4fc0.
-  (void)compositionClass;
-  (void)fortLevel;
+  CString tabFileName;
+  // Battle-setup terrain layout file, 1-based composition class ("data/%03d.tab").
+  // Layout is 15 rows x 29 cols + one newline byte per row.
+  char nameBuf[64];
+  int byteCount = tacticalTileCount3c + 0xf; // 0x1b3 tiles + 15 row-terminator bytes
+  sprintf(nameBuf, g_szBattleSetupTabPathFormat, compositionClass + 1);
+  tabFileName = CString(nameBuf);
+
+  char* tabData = new char[byteCount];
+  CFile_Virtuals* stream = g_pUiViewManager->LoadTableResourceStreamByName(tabFileName);
+  g_pUiViewManager->ReadResourceStreamIntoBufferAndAdvance(stream, tabData, &byteCount);
+  g_pUiViewManager->ReleaseResourceStreamIfNotNull(stream);
+
+  // Parse the character grid into the tile records. Each source row is 0x1d chars +
+  // 1 terminator; the first (0x1d - field34) chars of each row are margin (skipped
+  // without consuming a grid cell), so field34 cells are filled per row and the record
+  // cursor then skips the remaining (0x1d - field34) cells of that grid row.
+  TacticalTileRecord* record = tileGrid4;
+  char* src = tabData;
+  for (int rowsLeft = 0xf; rowsLeft != 0; --rowsLeft) {
+    for (int col = 0; col < 0x1d; ++col) {
+      if (col < 0x1d - field34) {
+        ++src; // margin char: no grid cell consumed
+        continue;
+      }
+      if (fortLevel > 1 && col > 0x17) {
+        record->field0 = 0; // fort present (level >= 2): blank the last 5 columns
+      } else {
+        record->field0 = *src; // movsx: signed char -> int
+      }
+      ++src;
+      record->occupant4 = 0;
+      record->deployMark8 = 0;
+      record->fieldC = -1;
+      record->trenchMask10 = 0;
+      ++record;
+    }
+    ++src;                    // skip the row terminator byte
+    record += 0x1d - field34; // skip the grid cells this row didn't cover
+  }
+
+  delete[] tabData;
+
+  if (fortLevel != 0) {
+    // Mark the fort column (tile field34 - 6, then every row below at stride 0x1d)
+    // with the fort level in deployMark8.
+    for (int tile = field34 - 6; tile < 0x1b3; tile += 0x1d) {
+      tileGrid4[tile].deployMark8 = fortLevel;
+    }
+    // Seed the 8 fort-strength slots from the per-level table (load kept inside the
+    // loop, matching the original).
+    for (int slot = 0; slot < 8; ++slot) {
+      fortStrengthPoints54[slot] = g_anFortStrengthPointsByFortLevel[fortLevel];
+    }
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x005a51e0

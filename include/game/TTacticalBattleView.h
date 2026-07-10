@@ -5,6 +5,7 @@
 
 // Forward declarations for types referenced by generated signatures.
 class astruct_13;
+class TTacticalBattle;
 class TTacticalUnit;
 
 // TODO(manifest): describe TTacticalBattleView and its role. Base edge (TView) recovered from RTTI CRuntimeClass chain: TTacticalBattleView -> TView -> TEventHandler -> TObject -> CObject.
@@ -122,18 +123,43 @@ public:
   virtual undefined
   WrapperFor_InvalidateCityDialogRectRegion_At005a8900(int param_1);     // slot 0x68 0x5a8900
   virtual undefined InvalidateTacticalUnitTileRect(TTacticalUnit* unit); // slot 0x69 0x5a89a0
-  virtual undefined OrphanLeaf_NoCall_Ins59_005a89f0(int param_1,
-                                                     int* param_2);        // slot 0x6a 0x5a89f0
-  virtual undefined AdjustTacticalUnitVerticalOffsetAndRefreshMarker();    // slot 0x6b 0x5a8be0
-  virtual undefined OrphanRetStub_005a83c0();                              // slot 0x6c 0x5a83c0
-  virtual undefined RunOneTimeAnimationModalWaitAndInvalidateCityDialog(); // slot 0x6d 0x5a9170
+  // Writes the on-screen RECT of a unit's tile (grown 0x18 px upward, bottom-4;
+  // zero RECT when tileIndex8 == -1). Hedged name.
+  virtual undefined ComputeTacticalUnitTileScreenRect(TTacticalUnit* unit,
+                                                      RECT* rectOut);   // slot 0x6a 0x5a89f0
+  virtual undefined AdjustTacticalUnitVerticalOffsetAndRefreshMarker(); // slot 0x6b 0x5a8be0
+  virtual undefined OrphanRetStub_005a83c0();                           // slot 0x6c 0x5a83c0
+  virtual undefined
+  RunOneTimeAnimationModalWaitAndInvalidateCityDialog(RECT* rect, int effectId, int frameCount,
+                                                      int tileIndex,
+                                                      int mode); // slot 0x6d 0x5a9170 (ret 0x14)
   virtual undefined PlayTacticalTileEffect(int tileIndex, int effectId,
                                            int frameCount); // slot 0x6e 0x5a9090
   virtual undefined AnimateTacticalUnitMoveBetweenTiles(TTacticalUnit* unit, int fromTileIndex,
                                                         int toTileIndex); // slot 0x6f 0x5a9240
   virtual void DrawUiTilesAndOverlay(astruct_13* ui_ctx);                 // slot 0x70 0x5a9550
   // === END GENERATED DECLS (TTacticalBattleView) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TTacticalBattleView 0xCTOR`).
+  // View-local slice (+0x60..; TView ends at +0x5c). Offsets verified in the tile-rect
+  // and move-animation bodies; gaps unobserved.
+  TTacticalBattle* tacticalBattle60; // +0x60 the battle this view renders
+  unsigned char pad64[0x78 - 0x64];  // +0x64
+  short viewOriginX78;               // +0x78 horizontal scroll origin (pixels)
+  short scrollableContentWidth7A;    // +0x7a total content width (scroll clamp max)
+  unsigned char pad7c[4];            // +0x7c
+  int tileColumnsPerRow80;           // +0x80 = 0x1d (grid stride)
+  unsigned char pad84[4];            // +0x84
+  int tileWidthPx88;                 // +0x88 tile width in pixels
+  int tileRowHeightPx8C;             // +0x8c tile row height in pixels
+  int unitSpriteCellWidth90;         // +0x90 sprite-sheet cell width
+  int unitSpriteCellHeight94;        // +0x94 sprite-sheet cell height / facing-row offset
+  unsigned char pad98[4];            // +0x98
+  int moveAnimStepX9C;               // +0x9c (toX-fromX)/3 animation step
+  int moveAnimStepYA0;               // +0xa0 (toY-fromY)/3 animation step
+  int moveAnimUnitOffsetXA4;         // +0xa4 unit x offset in the anim rect; -1 = idle
+  int moveAnimUnitOffsetYA8;         // +0xa8 unit y offset in the anim rect
+  RECT moveAnimSpriteSrcRectAC;      // +0xac sprite-sheet source rect
+  unsigned char padBC[4];            // +0xbc
+  RECT moveAnimScreenRectC0;         // +0xc0 on-screen animation rect
 
   TTacticalBattleView();
 

@@ -32,8 +32,8 @@ public:
     ReleaseBitmapResource();
   }
 
-  virtual void EnsureBitmapResourceLoadedAndCopyRectSize(); // slot 0x00 0x495b70
-  virtual void ReleaseBitmapResource();                     // slot 0x01 0x495c00
+  virtual void EnsureBitmapResourceLoadedAndCopyRectSize();         // slot 0x00 0x495b70
+  virtual void ReleaseBitmapResource();                             // slot 0x01 0x495c00
   virtual undefined TemporarilyClearAndRestoreUiInvalidationFlag(); // slot 0x02 0x4a1100
 };
 IMPERIALISM_END_INTENTIONAL_NON_VIRTUAL_DTOR
@@ -48,7 +48,7 @@ class TAnimation : public TObject {
 public:
   // === BEGIN GENERATED DECLS (TAnimation) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TAnimation)
-  virtual ~TAnimation() override;                                   // slot 0x01 (scalar deleting destructor)
+  virtual ~TAnimation() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
   // slot 0x03 AssertValid inherited unchanged (0x412bf0)
   // slot 0x04 Dump inherited unchanged (0x412c10)
@@ -70,9 +70,14 @@ public:
   unsigned char field1e[0x0e];
 
   TAnimation();
+
+  // Post-construction init used by the tactical selection marker (0x5a9bb0): owner
+  // view, screen rect, mode words, tick interval, registry tag. Body TODO.
+  // 0x0049f0c0, __thiscall.
+  void ConstructTAnimationBaseState(class TView* ownerView, RECT* rect, short param3, short param4,
+                                    int param5, int tag);
 };
 
 TBitmapResourceLoader** CreateBitmapResourceLoaderHandle(unsigned short resourceId);
 
 ASSERT_SIZE(TAnimation, 0x2c);
-

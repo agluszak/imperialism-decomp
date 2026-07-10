@@ -307,14 +307,6 @@ undefined4 ConstructTTacticalUnitBaseState(void)
   return 0;
 }
 
-// ghidra_name TArmyTacUnit::ConstructTArmyTacUnitBaseState
-// ghidra_proto undefined ConstructTArmyTacUnitBaseState()
-// FUNCTION: IMPERIALISM 0x005a5f20
-undefined4 ConstructTArmyTacUnitBaseState(void)
-{
-  return 0;
-}
-
 // ghidra_name TArmyTacUnit::DestructTArmyTacUnitAndMaybeFree
 // ghidra_proto undefined DestructTArmyTacUnitAndMaybeFree()
 // FUNCTION: IMPERIALISM 0x005a5fe0

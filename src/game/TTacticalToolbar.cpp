@@ -14,15 +14,14 @@ IMPLEMENT_DYNCREATE(TTacticalToolbar, TCluster)
 TTacticalToolbar::TTacticalToolbar() {}
 
 // FUNCTION: IMPERIALISM 0x005ac840
-void TTacticalToolbar::NoOpUiLifecycleHook(int arg) {
-}
+void TTacticalToolbar::NoOpUiLifecycleHook(int arg) {}
 
 // FUNCTION: IMPERIALISM 0x005ac950
-void TTacticalToolbar::ApplyRectSlot110(RECT* rectBuffer) {
-}
+void TTacticalToolbar::ApplyRectSlot110(RECT* rectBuffer) {}
 
 // FUNCTION: IMPERIALISM 0x005acb50
-undefined TTacticalToolbar::UpdateCurrentDiplomacyCounterpartyControlAndDialogLabel() {
+undefined TTacticalToolbar::UpdateTacticalCurrentUnitControlAndDialogLabel(TTacticalUnit* unit) {
+  (void)unit;
   return 0;
 }
 
@@ -32,4 +31,4 @@ undefined TTacticalToolbar::WrapperFor_InvalidateCityDialogRectRegion_At005acc90
 }
 
 // FUNCTION: IMPERIALISM 0x005acf90
-void TTacticalToolbar::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) { }
+void TTacticalToolbar::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {}

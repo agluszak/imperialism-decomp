@@ -6,7 +6,7 @@ int TTacticalUnit::GetBaseActionPoints() {
 }
 
 // FUNCTION: IMPERIALISM 0x005a5d60
-undefined TTacticalUnit::OrphanTiny_ReturnZero_005a5d60() {
+int TTacticalUnit::GetUnitRange() {
   return 0;
 }
 

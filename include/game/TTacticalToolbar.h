@@ -1,13 +1,15 @@
 #pragma once
 
 #include "game/TCluster.h"
+
+class TTacticalUnit;
 #include "game/mfc.h"
 
 // TODO(manifest): describe TTacticalToolbar and its role. Base edge (TCluster) recovered from RTTI CRuntimeClass chain: TTacticalToolbar -> TCluster -> TControl -> TView -> TEventHandler -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x00644d98
 class TTacticalToolbar : public TCluster {
 public:
-// === BEGIN GENERATED DECLS (TTacticalToolbar) — refreshed by recover-class; do not hand-edit ===
+  // === BEGIN GENERATED DECLS (TTacticalToolbar) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TTacticalToolbar)
   virtual ~TTacticalToolbar() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -23,7 +25,8 @@ public:
   // slot 0x0c QueryStepValue inherited unchanged (0x48a2c0)
   // slot 0x0d DispatchQueuedUiCommandAndRelease inherited unchanged (0x48a3b0)
   // slot 0x0e DispatchUiSelectionToHandler inherited unchanged (0x48a3f0)
-  virtual void HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) override; // slot 0x0f 0x005acf90
+  virtual void HandleEvent(int commandId, TEventHandler* sourceHandler,
+                           TEvent* event) override; // slot 0x0f 0x005acf90
   // slot 0x10 DispatchUiCommandToHandler inherited unchanged (0x48a2e0)
   // slot 0x11 vmethod_0017 inherited unchanged (0x48a310)
   // slot 0x12 ForwardParam inherited unchanged (0x48a380)
@@ -123,11 +126,15 @@ public:
   // slot 0x70 SetControlStateFlagAndMaybeRefresh inherited unchanged (0x48e810)
   // slot 0x71 OrphanTiny_GetDwordEcxOffset_84_00491770 inherited unchanged (0x491770)
   // slot 0x72 OrphanCallChain_C2_I51_00491790 inherited unchanged (0x491790)
-  virtual undefined UpdateCurrentDiplomacyCounterpartyControlAndDialogLabel(); // slot 0x73 0x5acb50
-  virtual undefined WrapperFor_InvalidateCityDialogRectRegion_At005acc90(int param_1); // slot 0x74 0x5acc90
-// === END GENERATED DECLS (TTacticalToolbar) ===
+  // Updates the toolbar's current-unit 'curr' control from the newly selected unit
+  // (stores it at +0x8c, reads its unitTypeC/side20). The old "Diplomacy" name was a
+  // Ghidra mislabel.
+  virtual undefined
+  UpdateTacticalCurrentUnitControlAndDialogLabel(TTacticalUnit* unit); // slot 0x73 0x5acb50
+  virtual undefined
+  WrapperFor_InvalidateCityDialogRectRegion_At005acc90(int param_1); // slot 0x74 0x5acc90
+  // === END GENERATED DECLS (TTacticalToolbar) ===
   // TODO(manifest): add data members from the object slice (`just slice-discovery TTacticalToolbar 0xCTOR`).
 
   TTacticalToolbar();
 };
-

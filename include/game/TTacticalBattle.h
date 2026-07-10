@@ -42,7 +42,7 @@ public:
   // slot 0x08 ShallowClone inherited unchanged (0x4798d0)
   // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
   virtual undefined
-  ComputeTacticalReachableTileCostsByUnitCategory(int param_1);              // slot 0x0a 0x59ff20
+  ComputeTacticalReachableTileCostsByUnitCategory(TTacticalUnit* unit);      // slot 0x0a 0x59ff20
   virtual undefined PropagateTileAccessibilityStrengthLevels(char* param_1); // slot 0x0b 0x5a02e0
   virtual undefined OrphanRetStub_0059f710();                                // slot 0x0c 0x59f710
   virtual undefined MoveTacticalUnitAndQueueEvent232AIfNoAdjacentReachableTarget(
@@ -92,21 +92,28 @@ public:
   TTacticalUnit* selectedUnit1c; // +0x1c
   // Allocated by TArmyBattle::AllocateRecordList (0x59f7f0), called separately after
   // construction; TArmyBattle::ReadFrom appends the deserialized units here.
-  TList* recordList20;              // +0x20
-  int field24;                      // +0x24
-  unsigned char pad28[0x34 - 0x28]; // +0x28
-  int field34;                      // +0x34
-  int battleSiteIndex38;            // +0x38 cityScoreTable row of the battle site
-  int tacticalTileCount3c;          // +0x3c = 0x1b3 (435 = 15*29 battle tiles)
-  int tacticalTileStride40;         // +0x40 = 0x1d (29)
-  int field44;                      // +0x44 serialized; 0x5a5320 sets it to 1
-  char field48;                     // +0x48
-  char fortLevel49;                 // +0x49 serialized; nonzero suppresses depl trench-marking
-  unsigned char pad4a[2];           // +0x4a
-  int field4c;                      // +0x4c serialized; == 7 suppresses the move animation
-  int compositionClass50;           // +0x50 stack-composition class of the battle
-  unsigned char pad54[0x74 - 0x54]; // +0x54
-  int field74;                      // +0x74
+  TList* recordList20; // +0x20
+  // Four owned per-tile work planes, (re)allocated by BuildTacticalBattleStateFromBothSides
+  // and freed (POD operator delete) by Free (0x59fb50).
+  short* tileMoveCostArray24;   // +0x24 per-tile move cost (-1 unreached); filled by slot 0x0a
+  char* tileThreatLevelArray28; // +0x28 per-tile threat level; filled by slot 0x0b
+  int* tileIntArray2c;          // +0x2c TODO(verify): use not yet observed
+  int* tileIntArray30;          // +0x30 TODO(verify): use not yet observed
+  int field34;                  // +0x34
+  int battleSiteIndex38;        // +0x38 cityScoreTable row of the battle site
+  int tacticalTileCount3c;      // +0x3c = 0x1b3 (435 = 15*29 battle tiles)
+  int tacticalTileStride40;     // +0x40 = 0x1d (29)
+  int field44;                  // +0x44 serialized; 0x5a5320 sets it to 1
+  char field48;                 // +0x48
+  char fortLevel49;             // +0x49 serialized; nonzero suppresses depl trench-marking
+  unsigned char pad4a[2];       // +0x4a
+  int field4c;                  // +0x4c serialized; == 7 suppresses the move animation
+  int compositionClass50;       // +0x50 stack-composition class of the battle
+  // Per-row-pair fort strength pools (one slot per two grid rows, tile/58), seeded by
+  // LoadBattleSetupTabDataByIndex from g_anFortStrengthPointsByFortLevel; consumed by
+  // the mine action, gates passability in slot 0x0a.
+  int fortStrengthPoints54[8]; // +0x54
+  int field74;                 // +0x74
 
   TTacticalBattle();
 
@@ -145,9 +152,9 @@ public:
   // bodies TODO).
   void ApplyTacticalDoneSelectionAndRefreshUi(TTacticalUnit* unit);                   // 0x59fe40
   void ComputeHexNeighborTileIndices_005A0420(int tileIndex, int* outNeighborTiles6); // 0x5a0420
-  void ConsumeTacticalSideResourcePoolAndInvalidateIfEmpty(int tileIndex,
-                                                           int consumeAmount); // 0x5a3c20
-  void EvaluateTacticalSideStateAndShowBattleSummaryDialog();                  // 0x5a2750
+  void ConsumeFortStrengthPointsAndInvalidateIfDepleted(int tileIndex,
+                                                        int consumeAmount); // 0x5a3c20
+  void EvaluateTacticalSideStateAndShowBattleSummaryDialog();               // 0x5a2750
 };
 
 ASSERT_SIZE(TTacticalBattle, 0x78);

@@ -739,22 +739,6 @@ undefined4 CreateTTacticalPlayerInstance(void)
   return 0;
 }
 
-// ghidra_name SelectNextTacticalUnitForDoneCommand
-// ghidra_proto undefined SelectNextTacticalUnitForDoneCommand()
-// FUNCTION: IMPERIALISM 0x0059af20
-undefined4 SelectNextTacticalUnitForDoneCommand(void)
-{
-  return 0;
-}
-
-// ghidra_name IsTacticalControllerOwnedByActiveNation
-// ghidra_proto undefined IsTacticalControllerOwnedByActiveNation()
-// FUNCTION: IMPERIALISM 0x0059b010
-undefined4 IsTacticalControllerOwnedByActiveNation(void)
-{
-  return 0;
-}
-
 // ghidra_name HandleTacticalCommandTag_skip
 // ghidra_proto undefined HandleTacticalCommandTag_skip()
 // FUNCTION: IMPERIALISM 0x0059b040

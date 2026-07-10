@@ -5288,10 +5288,10 @@ address|name|symbol|size|type|prototype|provenance
 59ae60|TTacticalPlayer::CreateTTacticalPlayerInstance||7|function|undefined CreateTTacticalPlayerInstance()|
 59ae80|TTacticalPlayer::GetRuntimeClass||6|function|undefined GetTTacticalPlayerClassNamePointer()|rtti
 59aee0|TTacticalPlayer::Free||42|function|undefined ConstructTTacticalPlayerBaseState()|
-59af20|SelectNextTacticalUnitForDoneCommand||90|function|undefined SelectNextTacticalUnitForDoneCommand()|
+59af20|TTacticalPlayer::SelectNextTacticalUnitForDoneCommand||90|function|undefined SelectNextTacticalUnitForDoneCommand()|
 59afa0|TTacticalPlayer::Helper_Uses_FindListNodeByKeyFromNodeOrHead_At0059afa0||37|function|undefined Helper_Uses_FindListNodeByKeyFromNodeOrHead_At0059afa0(void)|
 59afe0|TTacticalPlayer::WrapperFor_AddHead_At0059afe0||28|function|undefined WrapperFor_AddHead_At0059afe0(int * param_1)|
-59b010|IsTacticalControllerOwnedByActiveNation||31|function|undefined IsTacticalControllerOwnedByActiveNation()|
+59b010|TTacticalPlayer::IsTacticalControllerOwnedByActiveNation||31|function|undefined IsTacticalControllerOwnedByActiveNation()|
 59b040|HandleTacticalCommandTag_skip||32|function|undefined HandleTacticalCommandTag_skip()|
 59b070|CompareTacticalCursorEntriesByActionClassPriority||119|function|undefined CompareTacticalCursorEntriesByActionClassPriority()|
 59b110|TArmyPlayer::CreateObject|?CreateObject@TArmyPlayer@@SGPAVCObject@@XZ|24|function|undefined CreateObject()|rtti
@@ -5433,7 +5433,7 @@ address|name|symbol|size|type|prototype|provenance
 5a38e0|TTacticalBattle::HandleTacticalCommandTag_raly||136|function|undefined HandleTacticalCommandTag_raly()|
 5a39a0|ComputeHexTileDistanceFromIndices||146|function|undefined ComputeHexTileDistanceFromIndices()|
 5a3a70|TestGridSegmentCrossesViewportThreshold||328|function|undefined TestGridSegmentCrossesViewportThreshold()|
-5a3c20|TTacticalBattle::ConsumeTacticalSideResourcePoolAndInvalidateIfEmpty||125|function|void __thiscall ConsumeTacticalSideResourcePoolAndInvalidateIfEmpty(int tileIndex, int consumeAmount)|
+5a3c20|TTacticalBattle::ConsumeFortStrengthPointsAndInvalidateIfDepleted||125|function|void __thiscall ConsumeTacticalSideResourcePoolAndInvalidateIfEmpty(int tileIndex, int consumeAmount)|
 5a3d30|IsTacticalTargetTileReachableForAction||383|function|undefined IsTacticalTargetTileReachableForAction()|
 5a3f10|TacticalBattleView::HandleTacticalCommandTag_targ||532|function|undefined HandleTacticalCommandTag_targ()|
 5a41c0|ApplyGridColumnSelectionGuard||96|function|undefined ApplyGridColumnSelectionGuard()|
@@ -5467,7 +5467,7 @@ address|name|symbol|size|type|prototype|provenance
 5a5c50|TNavyBattle::MoveTacticalUnitAndQueueEvent232AIfNoAdjacentReachableTarget||141|function|undefined MoveTacticalUnitAndQueueEvent232AOnBlockedEngagementState()|
 5a5d10|TTacticalUnit::CreateObject|?CreateObject@TTacticalUnit@@SGPAVCObject@@XZ|24|function|undefined CreateObject()|rtti
 5a5d40|TTacticalUnit::GetBaseActionPoints||3|function|undefined OrphanTiny_ReturnZero_005a5d40(void)|
-5a5d60|TTacticalUnit::OrphanTiny_ReturnZero_005a5d60||3|function|undefined OrphanTiny_ReturnZero_005a5d60(void)|
+5a5d60|TTacticalUnit::GetUnitRange||3|function|undefined OrphanTiny_ReturnZero_005a5d60(void)|
 5a5d80|TTacticalUnit::OrphanLeaf_NoCall_Ins02_005a5d80||7|function|undefined OrphanLeaf_NoCall_Ins02_005a5d80(void)|
 5a5da0|TTacticalUnit::OrphanLeaf_NoCall_Ins02_005a5da0||7|function|undefined OrphanLeaf_NoCall_Ins02_005a5da0(void)|
 5a5dc0|TTacticalUnit::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
@@ -5481,7 +5481,7 @@ address|name|symbol|size|type|prototype|provenance
 5a5f20|TArmyTacUnit::ConstructTArmyTacUnitBaseState||134|function|undefined ConstructTArmyTacUnitBaseState()|
 5a5fe0|TArmyTacUnit::DestructTArmyTacUnitAndMaybeFree||254|function|undefined DestructTArmyTacUnitAndMaybeFree()|
 5a6120|TArmyTacUnit::GetBaseActionPoints||12|function|undefined OrphanTiny_ReturnZero_005a5d40(void)|
-5a6140|TArmyTacUnit::OrphanTiny_ReturnZero_005a5d60||33|function|undefined OrphanTiny_ReturnZero_005a5d60(void)|
+5a6140|TArmyTacUnit::GetUnitRange||33|function|undefined OrphanTiny_ReturnZero_005a5d60(void)|
 5a6180|TArmyTacUnit::OrphanLeaf_NoCall_Ins02_005a5d80||11|function|undefined OrphanLeaf_NoCall_Ins02_005a5d80(void)|
 5a61a0|TArmyTacUnit::OrphanLeaf_NoCall_Ins02_005a5da0||11|function|undefined OrphanLeaf_NoCall_Ins02_005a5da0(void)|
 5a61c0|TArmyTacUnit::ApplyTacticalDamage||63|function|undefined RunTacticalAutoTurnControllerForActiveUnit(int param_1, int param_2)|
@@ -5489,7 +5489,7 @@ address|name|symbol|size|type|prototype|provenance
 5a6270|TNavyTacUnit::GetRuntimeClass||6|function|undefined GetTNavyTacUnitClassNamePointer()|rtti
 5a6290|WrapperFor_ComputeOrderNodeDerivedScoreFromQuantityAndWord18_At005a6290||91|function|undefined WrapperFor_ComputeOrderNodeDerivedScoreFromQuantityAndWord18_At005a6290()|
 5a6310|TNavyTacUnit::GetBaseActionPoints||4|function|undefined OrphanTiny_ReturnZero_005a5d40(void)|
-5a6330|TNavyTacUnit::OrphanTiny_ReturnZero_005a5d60||12|function|undefined OrphanTiny_ReturnZero_005a5d60(void)|
+5a6330|TNavyTacUnit::GetUnitRange||12|function|undefined OrphanTiny_ReturnZero_005a5d60(void)|
 5a6350|TNavyTacUnit::OrphanLeaf_NoCall_Ins02_005a5d80||11|function|undefined OrphanLeaf_NoCall_Ins02_005a5d80(void)|
 5a6370|TNavyTacUnit::OrphanLeaf_NoCall_Ins02_005a5da0||11|function|undefined OrphanLeaf_NoCall_Ins02_005a5da0(void)|
 5a63c0|ApplyTacticalDamageAndDeathState||207|function|void __thiscall ApplyTacticalDamageAndDeathState(float damageAmount, int damageMode)|
@@ -5517,7 +5517,7 @@ address|name|symbol|size|type|prototype|provenance
 5a8860|TTacticalBattleView::InvalidateTacticalHexTileRect||115|function|undefined InvalidateTacticalHexTileRect()|
 5a8900|TTacticalBattleView::WrapperFor_InvalidateCityDialogRectRegion_At005a8900||115|function|undefined WrapperFor_InvalidateCityDialogRectRegion_At005a8900(int param_1)|
 5a89a0|TTacticalBattleView::InvalidateTacticalUnitTileRect||53|function|undefined WrapperFor_InvalidateCityDialogRectRegion_At005a89a0(int param_1)|
-5a89f0|TTacticalBattleView::OrphanLeaf_NoCall_Ins59_005a89f0||156|function|undefined OrphanLeaf_NoCall_Ins59_005a89f0(int param_1, int * param_2)|
+5a89f0|TTacticalBattleView::ComputeTacticalUnitTileScreenRect||156|function|undefined OrphanLeaf_NoCall_Ins59_005a89f0(int param_1, int * param_2)|
 5a8ac0|TTacticalBattleView::CenterViewportAroundGridIndexAndSnap||210|function|undefined CenterViewportAroundGridIndexAndSnap()|
 5a8be0|TTacticalBattleView::AdjustTacticalUnitVerticalOffsetAndRefreshMarker||132|function|undefined AdjustTacticalUnitVerticalOffsetAndRefreshMarker()|
 5a8ca0|TTacticalBattleView::HandleCursorHoverFallback||125|function|undefined SetMappedCursorOrDefaultArrowAlt()|
@@ -5541,12 +5541,12 @@ address|name|symbol|size|type|prototype|provenance
 5ac820|TTacticalToolbar::GetRuntimeClass||6|function|undefined GetTTacticalToolbarClassNamePointer()|rtti
 5ac840|TTacticalToolbar::NoOpUiLifecycleHook||207|function|undefined OrphanLeaf_NoCall_Ins07_004d8920(void)|
 5ac950|TTacticalToolbar::ApplyRectSlot110||395|function|undefined DestructTTacticalToolbarAndMaybeFree()|
-5acb50|TTacticalToolbar::UpdateCurrentDiplomacyCounterpartyControlAndDialogLabel||256|function|undefined UpdateCurrentDiplomacyCounterpartyControlAndDialogLabel()|
+5acb50|TTacticalToolbar::UpdateTacticalCurrentUnitControlAndDialogLabel||256|function|undefined UpdateCurrentDiplomacyCounterpartyControlAndDialogLabel()|
 5acc90|TTacticalToolbar::WrapperFor_InvalidateCityDialogRectRegion_At005acc90||145|function|undefined WrapperFor_InvalidateCityDialogRectRegion_At005acc90(int param_1)|
 5acd60|TTacArmyView::ConfigureTacticalTargetDoneRetreatAutoControls||446|function|undefined ConfigureTacticalTargetDoneRetreatAutoControls()|
 5acf90|TTacticalToolbar::HandleEvent||123|function|undefined HandleArmyTacticalToolbarCommandTags()|
 5ad030|TTacNavyToolbar::CreateObject|?CreateObject@TTacNavyToolbar@@SGPAVCObject@@XZ|128|function|undefined CreateObject()|rtti
-5ad0d0|TTacNavyToolbar::UpdateCurrentDiplomacyCounterpartyControlAndDialogLabel||3|function|undefined UpdateCurrentDiplomacyCounterpartyControlAndDialogLabel(void)|
+5ad0d0|TTacNavyToolbar::UpdateTacticalCurrentUnitControlAndDialogLabel||3|function|undefined UpdateCurrentDiplomacyCounterpartyControlAndDialogLabel(void)|
 5ad0f0|TTacNavyToolbar::WrapperFor_InvalidateCityDialogRectRegion_At005acc90||3|function|undefined OrphanRetStub_005ad0f0(void)|
 5ad110|TTacNavyToolbar::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 5ad160|TTacNavyToolbar::GetRuntimeClass||6|function|undefined GetTTacNavyToolbarClassNamePointer()|rtti
@@ -6126,12 +6126,12 @@ address|name|symbol|size|type|prototype|provenance
 5df3c0|TAssetMgr::ResolveTurnEventDialogNodeByMessageContext||21|function|undefined ResolveTurnEventDialogNodeByMessageContext()|
 5df3f0|TAssetMgr::NoOpRuntimeUiCallback_005df3f0||3|function|undefined NoOpRuntimeUiCallback_005df3f0(void)|
 5df410|TAssetMgr::NoOpRuntimeUiCallback_005df410||3|function|undefined NoOpRuntimeUiCallback_005df410(void)|
-5df430|LoadTableResourceStreamByName||384|function|undefined LoadTableResourceStreamByName()|
+5df430|TAssetMgr::LoadTableResourceStreamByName||384|function|undefined LoadTableResourceStreamByName()|
 5df610|InitializeRuntimeClassVtablePointer_0066FEC4||7|function|undefined InitializeRuntimeClassVtablePointer_0066FEC4()|
 5df630|WrapperFor_FreeHeapBufferIfNotNull_At005df630||30|function|undefined WrapperFor_FreeHeapBufferIfNotNull_At005df630()|
 5df660|WrapperFor_ReleaseSharedStringRefIfNotEmpty_At005df660||68|function|undefined WrapperFor_ReleaseSharedStringRefIfNotEmpty_At005df660()|
-5df6d0|ReleaseResourceStreamIfNotNull||18|function|undefined ReleaseResourceStreamIfNotNull()|
-5df700|ReadResourceStreamIntoBufferAndAdvance||30|function|undefined ReadResourceStreamIntoBufferAndAdvance()|
+5df6d0|TAssetMgr::ReleaseResourceStreamIfNotNull||18|function|undefined ReleaseResourceStreamIfNotNull()|
+5df700|TAssetMgr::ReadResourceStreamIntoBufferAndAdvance||30|function|undefined ReadResourceStreamIntoBufferAndAdvance()|
 5df730|InvokeVtableSlot30OnTargetObject||19|function|undefined InvokeVtableSlot30OnTargetObject()|
 5df760|GetResourceStreamSize||12|function|undefined GetResourceStreamSize()|
 5df780|TAssetMgr::NoOpRuntimeUiCallback_005df780||3|function|undefined NoOpRuntimeUiCallback_005df780(void)|

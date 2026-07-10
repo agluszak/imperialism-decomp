@@ -19,15 +19,16 @@ undefined TNavyBattle::OrphanRetStub_0059f710() {
 }
 
 // FUNCTION: IMPERIALISM 0x005a5730
-undefined TNavyBattle::EvaluateAndResolveTacticalActionAgainstTileOccupant(int* param_1, int param_2) {
+undefined TNavyBattle::EvaluateAndResolveTacticalActionAgainstTileOccupant(int* param_1,
+                                                                           int param_2) {
   (void)param_1;
   (void)param_2;
   return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x005a59f0
-undefined TNavyBattle::ComputeTacticalReachableTileCostsByUnitCategory(int param_1) {
-  (void)param_1;
+undefined TNavyBattle::ComputeTacticalReachableTileCostsByUnitCategory(TTacticalUnit* unit) {
+  (void)unit;
   return 0;
 }
 
@@ -43,7 +44,9 @@ undefined TNavyBattle::ExecuteTacticalActionAndQueueEventIfNoAdjacentValidTarget
 }
 
 // FUNCTION: IMPERIALISM 0x005a5c50
-undefined TNavyBattle::MoveTacticalUnitAndQueueEvent232AIfNoAdjacentReachableTarget(int param_1, undefined4 param_2) {
+undefined
+TNavyBattle::MoveTacticalUnitAndQueueEvent232AIfNoAdjacentReachableTarget(int param_1,
+                                                                          undefined4 param_2) {
   (void)param_1;
   (void)param_2;
   return 0;

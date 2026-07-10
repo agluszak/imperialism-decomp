@@ -1,6 +1,7 @@
 #pragma once
 
 #include "game/TObject.h"
+#include "game/TList.h"
 #include "game/mfc.h"
 
 // TODO(manifest): describe TTacticalPlayer and its role. Base edge (TObject) recovered from RTTI CRuntimeClass chain: TTacticalPlayer -> TObject -> CObject.
@@ -27,7 +28,31 @@ public:
   virtual undefined TArmyTacUnit_VtblSlot04();                                // slot 0x10 0x59adf0
   virtual undefined OrphanRetStub_0059ae10();                                 // slot 0x11 0x59ae10
   // === END GENERATED DECLS (TTacticalPlayer) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TTacticalPlayer 0xCTOR`).
+
+  // Base slice (+0x04..+0x27; TArmyPlayer appends at +0x28 up to 0x54). Evidence:
+  // battle setup 0x59f890 (unitList4/battle14 on both players), army side init 0x59b1b0
+  // (scatter-init of the whole slice), selection 0x59af20, coat control 0x5a9b40.
+  TList* unitList4;                // +0x04 the side's tactical unit records (new TList())
+  TList* secondaryList8;           // +0x08 second owned list; use TODO(verify)
+  char isOurSideFlagC;             // +0x0c
+  char watchFlagD;                 // +0x0d human-watch flag for this side
+  char notWatchedFlagE;            // +0x0e = (watchFlagD == 0)
+  char fieldF;                     // +0x0f
+  char flag10;                     // +0x10 read by SelectNextTacticalUnitForDoneCommand
+  unsigned char pad11[3];          // +0x11
+  class TTacticalBattle* battle14; // +0x14 back-pointer, set by battle setup (0x59f890)
+  int cursorIndex18;               // +0x18 round-robin cursor over unitList4
+  int nationIndex1C;               // +0x1c owner nation index (+ 0xea6 = 'coat' bitmap id)
+  char field20;                    // +0x20
+  unsigned char pad21[3];          // +0x21
+  int field24;                     // +0x24
+
+  // Returns the next selectable unit (tileIndex8 != -2) from unitList4, advancing
+  // cursorIndex18. Body TODO. 0x0059af20, __thiscall.
+  class TTacticalUnit* SelectNextTacticalUnitForDoneCommand();
+
+  // Whether this side belongs to the local active nation. 0x0059b010, __thiscall.
+  unsigned char IsTacticalControllerOwnedByActiveNation();
 
   // Derived construction sites inline the whole ctor chain as a bare vptr store, so
   // this must stay empty and in-class.

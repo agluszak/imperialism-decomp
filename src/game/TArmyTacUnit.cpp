@@ -1,5 +1,6 @@
 #include "game/TArmyTacUnit.h"
 
+#include "game/TMilitaryUnit.h"
 #include "game/global_data_tables.h"
 
 // SYNTHETIC: IMPERIALISM 0x0059b390
@@ -13,13 +14,38 @@ TArmyTacUnit::~TArmyTacUnit() {}
 
 IMPLEMENT_DYNCREATE(TArmyTacUnit, TTacticalUnit)
 
+// FUNCTION: IMPERIALISM 0x005a5f20
+void TArmyTacUnit::ConstructTArmyTacUnitBaseState(TMilitaryUnit* source) {
+  unitTypeC = source->orderType;
+  tileIndex8 = -2;
+  selectedFlag18 = 0;
+  state1c = 0;
+  actionPoints28 = GetBaseActionPoints();
+  field2c = 0;
+  field30 = 0;
+  strength4 = source->field_34;
+  morale34 = source->field_34;
+  qualityLevel10 = static_cast<short>(source->field_38 / 100);
+  ownerNationIndex14 = source->field_18;
+  field40 = -1;
+  sourceUnit38 = source;
+  unsigned char deployedCategory0Flag;
+  if (source->field_8 == 2 && g_anUnitTypeCombatCategoryByType00669858[unitTypeC] == 0) {
+    deployedCategory0Flag = 1;
+  } else {
+    deployedCategory0Flag = 0;
+  }
+  flag3c = deployedCategory0Flag;
+}
+
 // FUNCTION: IMPERIALISM 0x005a6120
 int TArmyTacUnit::GetBaseActionPoints() {
   return g_awUnitTypeBaseActionPointTable[unitTypeC];
 }
 
 // FUNCTION: IMPERIALISM 0x005a6140
-undefined TArmyTacUnit::OrphanTiny_ReturnZero_005a5d60() {
+int TArmyTacUnit::GetUnitRange() {
+  // TODO: port body @ 0x5a6140 (0x6699e8 int table by unitTypeC, adjusted by side20).
   return 0;
 }
 

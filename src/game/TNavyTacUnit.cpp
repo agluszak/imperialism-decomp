@@ -24,7 +24,8 @@ int TNavyTacUnit::GetBaseActionPoints() {
 }
 
 // FUNCTION: IMPERIALISM 0x005a6330
-undefined TNavyTacUnit::OrphanTiny_ReturnZero_005a5d60() {
+int TNavyTacUnit::GetUnitRange() {
+  // TODO: port body @ 0x5a6330.
   return 0;
 }
 

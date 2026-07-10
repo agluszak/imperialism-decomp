@@ -523,14 +523,6 @@ undefined4 WrapperFor_InvokeCallbackNTimesWithSehGuard_At005df330(void)
   return 0;
 }
 
-// ghidra_name LoadTableResourceStreamByName
-// ghidra_proto undefined LoadTableResourceStreamByName()
-// FUNCTION: IMPERIALISM 0x005df430
-undefined4 LoadTableResourceStreamByName(void)
-{
-  return 0;
-}
-
 // ghidra_name InitializeRuntimeClassVtablePointer_0066FEC4
 // ghidra_proto undefined InitializeRuntimeClassVtablePointer_0066FEC4()
 // FUNCTION: IMPERIALISM 0x005df610
@@ -551,22 +543,6 @@ undefined4 WrapperFor_FreeHeapBufferIfNotNull_At005df630(void)
 // ghidra_proto undefined WrapperFor_ReleaseSharedStringRefIfNotEmpty_At005df660()
 // FUNCTION: IMPERIALISM 0x005df660
 undefined4 WrapperFor_ReleaseSharedStringRefIfNotEmpty_At005df660(void)
-{
-  return 0;
-}
-
-// ghidra_name ReleaseResourceStreamIfNotNull
-// ghidra_proto undefined ReleaseResourceStreamIfNotNull()
-// FUNCTION: IMPERIALISM 0x005df6d0
-undefined4 ReleaseResourceStreamIfNotNull(void)
-{
-  return 0;
-}
-
-// ghidra_name ReadResourceStreamIntoBufferAndAdvance
-// ghidra_proto undefined ReadResourceStreamIntoBufferAndAdvance()
-// FUNCTION: IMPERIALISM 0x005df700
-undefined4 ReadResourceStreamIntoBufferAndAdvance(void)
 {
   return 0;
 }

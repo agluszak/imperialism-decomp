@@ -30,6 +30,9 @@ TEscortMission::TEscortMission() : TNavyMission() {}
 // SYNTHETIC: IMPERIALISM 0x005399b0
 // TEscortMission::GetRuntimeClass
 
+// The original inlines the whole TNavyMission(TZone*) body here (only the TMission()
+// base ctor stays an out-of-line call); the recompile emits a call to 0x535470 instead,
+// which is the accepted architectural shape until ctor-inlining is modeled.
 // FUNCTION: IMPERIALISM 0x00539a20
 TEscortMission::TEscortMission(TZone* targetZone) : TNavyMission(targetZone) {}
 

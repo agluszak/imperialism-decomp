@@ -28,12 +28,12 @@ void TBitmapResourceLoader::ReleaseBitmapResource() {
   }
   bitmapResource = NULL;
 }
+// SYNTHETIC: IMPERIALISM 0x0049f020
+// TAnimation::CreateObject
 
 // SYNTHETIC: IMPERIALISM 0x0049f050
 // TAnimation::`scalar deleting destructor'
 TAnimation::~TAnimation() {}
-// SYNTHETIC: IMPERIALISM 0x0049f020
-// TAnimation::CreateObject
 
 // SYNTHETIC: IMPERIALISM 0x0049f0a0
 // TAnimation::GetRuntimeClass
@@ -41,6 +41,18 @@ TAnimation::~TAnimation() {}
 IMPLEMENT_DYNCREATE(TAnimation, TObject)
 
 TAnimation::TAnimation() {}
+
+// FUNCTION: IMPERIALISM 0x0049f0c0
+void TAnimation::ConstructTAnimationBaseState(TView* ownerView, RECT* rect, short param3,
+                                              short param4, int param5, int tag) {
+  // TODO: port body @ 0x49f0c0.
+  (void)ownerView;
+  (void)rect;
+  (void)param3;
+  (void)param4;
+  (void)param5;
+  (void)tag;
+}
 
 // FUNCTION: IMPERIALISM 0x0049f140
 undefined TAnimation::WrapperFor_InvalidateCityDialogRectRegion_At0049f140() {

@@ -904,6 +904,7 @@ address|target_cpp|ownership|note
 49f020|src/game/TAnimation.cpp|manual|marker_sync
 49f050|src/game/TAnimation.cpp|manual|marker_sync
 49f0a0|src/game/TAnimation.cpp|manual|marker_sync
+49f0c0|src/game/TAnimation.cpp|manual|marker_sync
 49f140|src/game/TAnimation.cpp|manual|marker_sync
 49f190|src/game/TAnimation.cpp|manual|marker_sync
 49f2d0|src/game/TAnimation.cpp|manual|marker_sync
@@ -4026,8 +4027,10 @@ address|target_cpp|ownership|note
 59ae30|src/game/TTacticalPlayer.cpp|manual|marker_sync
 59ae80|src/game/TTacticalPlayer.cpp|manual|marker_sync
 59aee0|src/game/TTacticalPlayer.cpp|manual|marker_sync
+59af20|src/game/TTacticalPlayer.cpp|manual|marker_sync
 59afa0|src/game/TTacticalPlayer.cpp|manual|marker_sync
 59afe0|src/game/TTacticalPlayer.cpp|manual|marker_sync
+59b010|src/game/TTacticalPlayer.cpp|manual|marker_sync
 59b110|src/game/TArmyPlayer.cpp|manual|marker_sync
 59b140|src/game/TArmyPlayer.cpp|manual|marker_sync
 59b190|src/game/TArmyPlayer.cpp|manual|marker_sync
@@ -4124,6 +4127,7 @@ address|target_cpp|ownership|note
 5a5eb0|src/game/TTacticalUnit.cpp|manual|marker_sync
 5a5ed0|src/game/TArmyTacUnit.cpp|manual|marker_sync
 5a5f00|src/game/TArmyTacUnit.cpp|manual|marker_sync
+5a5f20|src/game/TArmyTacUnit.cpp|manual|marker_sync
 5a6120|src/game/TArmyTacUnit.cpp|manual|marker_sync
 5a6140|src/game/TArmyTacUnit.cpp|manual|marker_sync
 5a6180|src/game/TArmyTacUnit.cpp|manual|marker_sync
@@ -4621,6 +4625,9 @@ address|target_cpp|ownership|note
 5df3c0|src/game/TAssetMgr.cpp|manual|marker_sync
 5df3f0|src/game/TAssetMgr.cpp|manual|marker_sync
 5df410|src/game/TAssetMgr.cpp|manual|marker_sync
+5df430|src/game/TAssetMgr.cpp|manual|marker_sync
+5df6d0|src/game/TAssetMgr.cpp|manual|marker_sync
+5df700|src/game/TAssetMgr.cpp|manual|marker_sync
 5df780|src/game/TAssetMgr.cpp|manual|marker_sync
 5df7a0|src/game/ImperialismApp.cpp|manual|marker_sync
 5df890|src/game/ImperialismApp.cpp|manual|marker_sync

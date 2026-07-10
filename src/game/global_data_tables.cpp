@@ -1092,6 +1092,24 @@ short g_awUnitTypeBaseActionPointTable[32] = {40, 60,  40, 40, 110, 90, 50, 30, 
                                               40, 110, 90, 60, 30,  50, 70, 50, 40, 110, 90,
                                               80, 30,  40, 40, 50,  90, 90, 90, 0,  0};
 
+// Fort strength points per fort level (.rdata); seeds the 8 per-row-pair pools of a
+// tactical battle in TArmyBattle::LoadBattleSetupTabDataByIndex (0x5a4fc0).
+// GLOBAL: IMPERIALISM 0x00669818
+int g_anFortStrengthPointsByFortLevel[6] = {0, 0, 500, 750, 1000, 0};
+
+// Battle-setup terrain layout file-name template ("data/%%03d.tab").
+// GLOBAL: IMPERIALISM 0x00699e20
+extern "C" const char g_szBattleSetupTabPathFormat[] = "data/%03d.tab";
+
+// Empty-string pointer used by the battle-summary dialog builder (0x5a2750); points
+// at g_szEmptyString.
+// GLOBAL: IMPERIALISM 0x00669db8
+const char* g_pszEmptyTextRef_00669db8 = g_szEmptyString;
+
+// Paragraph separator between the two per-side casualty lines of the battle summary.
+// GLOBAL: IMPERIALISM 0x00699438
+extern "C" const char s_szDoubleNewline_00699438[] = "\n\n";
+
 // Per-unit-type tactical fire sound-effect token table (.rdata); indexed by
 // TTacticalUnit::unitTypeC when a unit fires in the tactical battle.
 // GLOBAL: IMPERIALISM 0x00669dc0

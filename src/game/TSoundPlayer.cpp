@@ -190,9 +190,39 @@ void TSoundPlayer::SelectAndScheduleRandomAudioCue() {
 
 // FUNCTION: IMPERIALISM 0x00593920
 void TSoundPlayer::RequestAudioPresetChangeWithDeferredApply(int presetId, int flag) {
-  // TODO: port body @ 0x593920.
-  (void)presetId;
-  (void)flag;
+  // TODO(verify): the asm tests only the low byte of `flag` -- original param was
+  // likely char/BOOL.
+  if (g_pSimMgr->preferenceValues[3] == 0) {
+    return;
+  }
+  if (IsTurnCooldownCounterActiveOrResetFlag() != 0) {
+    return;
+  }
+  if (ReturnTrueStub() == 0) {
+    g_pSimMgr->preferenceValues[3] = 0;
+    return;
+  }
+  if (presetId == static_cast<short>(this->fieldShort74)) {
+    return;
+  }
+
+  if (flag != 0 && static_cast<short>(this->fieldShort74) > 0) {
+    // Deferred apply: stash the preset and arm the one-shot timer callback.
+    this->fieldShort76 = static_cast<unsigned short>(presetId);
+    if (this->stateDword7c != 0) {
+      return;
+    }
+    this->stateDword7c = GetTickCountDiv16();
+    ScheduleTimerSlotCallbackWithInterval(&Helper_Uses_ForwardMciCommand808ToDevice_At00593210, 6,
+                                          0);
+    return;
+  }
+
+  // Immediate apply: start the CD track and set the aux volume from the preference.
+  this->fieldShort74 = static_cast<unsigned short>(presetId);
+  g_cdAudioDevice.ApplyMciPlaybackRangeFromAudioManager(static_cast<short>(presetId));
+  ApplyAuxOutputVolumeFromScalar(static_cast<int>(g_pSimMgr->preferenceValues[3]) << 8);
+  this->stateByte78 = 1;
 }
 
 // FUNCTION: IMPERIALISM 0x00593c10

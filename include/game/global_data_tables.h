@@ -276,6 +276,10 @@ extern int g_nTurnEvent2BNationMaskAccumulator;
 extern short g_anUnitTypeCombatCategoryByType00669858[32];
 extern short g_awUnitTypeBaseActionPointTable[32];
 extern short g_awTacticalFireSfxTokenByUnitType[32];
+extern const char* g_pszEmptyTextRef_00669db8;
+extern int g_anFortStrengthPointsByFortLevel[6];
+extern "C" const char g_szBattleSetupTabPathFormat[];
+extern "C" const char s_szDoubleNewline_00699438[];
 extern char g_nForceTacticalBattleViewFlag_006A4758;
 // The multiplayer/game-flow singleton (0x6a43c8); every turn-event emitter is a
 // __thiscall method on it (original callsites load ECX from here).

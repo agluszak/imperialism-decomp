@@ -38,9 +38,14 @@ public:
   // Partial slice (object is 0x54): only the side's combatant stack is recovered so
   // far; stored by InitializeTacticalSideFromArmyUnitList and read back by
   // TArmyBattle::WriteTo.
-  unsigned char pad04[0x28 - 0x04]; // +0x04
   TArmyStack* armyStack28;          // +0x28
-  unsigned char pad2c[0x54 - 0x2c]; // +0x2c
+  unsigned char pad2c[0x44 - 0x2c]; // +0x2c
+  int field44;                      // +0x44 init -1 (0x59b1b0)
+  unsigned char pad48[0x4c - 0x48]; // +0x48
+  int field4C;                      // +0x4c init -1
+  char randomParityByte50;          // +0x50 coin flip at side init (move-first side?)
+  char field51;                     // +0x51 init 0
+  unsigned char pad52[2];           // +0x52
 
   // Both original construction sites (0x5a4790, 0x5a4990) inline the ctor as a bare
   // vptr store.

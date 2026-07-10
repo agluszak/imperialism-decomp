@@ -1267,11 +1267,3 @@ undefined4 CreateTAnimationInstance(void)
   return 0;
 }
 
-// ghidra_name TAnimation::ConstructTAnimationBaseState
-// ghidra_proto undefined ConstructTAnimationBaseState()
-// FUNCTION: IMPERIALISM 0x0049f0c0
-undefined4 ConstructTAnimationBaseState(void)
-{
-  return 0;
-}
-
