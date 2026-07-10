@@ -8983,7 +8983,7 @@
     },
     {
       "address": "0x4b4310",
-      "matching": 0.8842105263157894,
+      "matching": 1.0,
       "name": "ComputeAverageWeightWord0TimesTenFromResourceCounts",
       "type": 1
     },
@@ -12362,7 +12362,7 @@
     },
     {
       "address": "0x4dd430",
-      "matching": 0.5714285714285714,
+      "matching": 0.5142857142857142,
       "name": "TGreatPower::ComputeRemainingDiplomacyAidBudget",
       "type": 1
     },
@@ -12800,8 +12800,7 @@
     },
     {
       "address": "0x4e05d0",
-      "effective": true,
-      "matching": 0.42857142857142855,
+      "matching": 1.0,
       "name": "TGreatPower::OrphanLeaf_NoCall_Ins02_004d7fc0_89",
       "type": 1
     },
@@ -14761,7 +14760,7 @@
     },
     {
       "address": "0x4f6bd0",
-      "matching": 0.2248995983935743,
+      "matching": 0.242914979757085,
       "name": "TDiplomacyMapView::BlitDiplomacyMapEventPaletteMaskToSurface",
       "type": 1
     },
@@ -18272,7 +18271,7 @@
     },
     {
       "address": "0x52d750",
-      "matching": 0.22063492063492063,
+      "matching": 0.21904761904761905,
       "name": "MergeSmallCityRegionsAndCompactIds",
       "type": 1
     },
@@ -20164,7 +20163,7 @@
     },
     {
       "address": "0x53ceb0",
-      "matching": 0.450261780104712,
+      "matching": 0.4479166666666667,
       "name": "ComputeArmyMissionCompositionAlignmentScore",
       "type": 1
     },
@@ -20176,7 +20175,7 @@
     },
     {
       "address": "0x53d200",
-      "matching": 0.3700787401574803,
+      "matching": 0.3686274509803922,
       "name": "ComputeArmyMissionScoreDeltaWithScaledCandidateUnit",
       "type": 1
     },
@@ -29386,13 +29385,13 @@
     },
     {
       "address": "0x59ff20",
-      "matching": 0.00823045267489712,
+      "matching": 0.44349680170575695,
       "name": "TTacticalBattle::ComputeTacticalReachableTileCostsByUnitCategory",
       "type": 1
     },
     {
       "address": "0x5a02e0",
-      "matching": 0.02040816326530612,
+      "matching": 0.17616580310880828,
       "name": "TTacticalBattle::PropagateTileAccessibilityStrengthLevels",
       "type": 1
     },
@@ -29428,7 +29427,7 @@
     },
     {
       "address": "0x5a0d60",
-      "matching": 0.044444444444444446,
+      "matching": 0.045454545454545456,
       "name": "QueueTacticalEventPacket232A",
       "type": 1
     },
@@ -29530,19 +29529,19 @@
     },
     {
       "address": "0x5a3190",
-      "matching": 0.05714285714285714,
+      "matching": 1.0,
       "name": "TTacticalBattle::MarkTacticalTileStateQueuedAndMaybeDispatchPacket",
       "type": 1
     },
     {
       "address": "0x5a3210",
-      "matching": 0.0273972602739726,
+      "matching": 0.33121019108280253,
       "name": "TTacticalBattle::AdvanceOrResetTacticalTileStateRunAndMaybeDispatchPacket",
       "type": 1
     },
     {
       "address": "0x5a3320",
-      "matching": 0.08333333333333333,
+      "matching": 1.0,
       "name": "TTacticalBattle::ClearTacticalTileStateRunByStride",
       "type": 1
     },
@@ -29554,7 +29553,7 @@
     },
     {
       "address": "0x5a34d0",
-      "matching": 0.03636363636363636,
+      "matching": 0.7924528301886793,
       "name": "TTacticalBattle::ExecuteTacticalMineActionAndQueuePacket",
       "type": 1
     },
@@ -29764,7 +29763,7 @@
     },
     {
       "address": "0x5a59f0",
-      "matching": 0.02040816326530612,
+      "matching": 0.020618556701030927,
       "name": "TNavyBattle::ComputeTacticalReachableTileCostsByUnitCategory",
       "type": 1
     },
@@ -30124,7 +30123,7 @@
     },
     {
       "address": "0x5a9240",
-      "matching": 0.5533980582524272,
+      "matching": 0.563855421686747,
       "name": "TTacticalBattleView::AnimateTacticalUnitMoveBetweenTiles",
       "type": 1
     },
@@ -31629,7 +31628,7 @@
     },
     {
       "address": "0x5ba0e0",
-      "matching": 0.8181818181818182,
+      "matching": 1.0,
       "name": "BuildInterNationEventSummaryRowsForAdvisorDialog_Impl",
       "type": 1
     },

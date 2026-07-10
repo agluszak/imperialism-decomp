@@ -164,7 +164,7 @@ src/game/TModalMessageCommand.cpp|1|0|0|0
 src/game/TMultiMessagePicture.cpp|1|0|1|0
 src/game/TMultiplayerMgr.cpp|3|0|0|0
 src/game/TNavyAutoPlayer.cpp|0|0|1|0
-src/game/TNavyBattle.cpp|0|0|1|0
+src/game/TNavyBattle.cpp|1|0|1|0
 src/game/TNavyBoyView.cpp|1|0|1|0
 src/game/TNavyHumanPlayer.cpp|0|0|1|0
 src/game/TNavyMgr.cpp|3|0|0|0
@@ -242,6 +242,7 @@ src/game/TTacArmyView.cpp|2|0|1|0
 src/game/TTacMapUberPicture.cpp|2|0|1|0
 src/game/TTacNavyToolbar.cpp|2|0|1|0
 src/game/TTacticalAdiosPicture.cpp|2|0|1|0
+src/game/TTacticalBattle.cpp|1|0|0|0
 src/game/TTacticalBattleView.cpp|7|0|1|0
 src/game/TTacticalHolaPicture.cpp|0|0|1|0
 src/game/TTacticalPlayer.cpp|1|0|0|0

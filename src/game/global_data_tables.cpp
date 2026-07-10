@@ -1092,6 +1092,14 @@ short g_awUnitTypeBaseActionPointTable[32] = {40, 60,  40, 40, 110, 90, 50, 30, 
                                               40, 110, 90, 60, 30,  50, 70, 50, 40, 110, 90,
                                               80, 30,  40, 40, 50,  90, 90, 90, 0,  0};
 
+// Tactical move cost per unit category and tile terrain code (.rdata): 10 category
+// rows x 5 terrain codes, in tenths of an action point band (999 = impassable).
+// GLOBAL: IMPERIALISM 0x00669a60
+short g_awTacticalMoveCostByCategoryAndTerrain[50] = {
+    10,  20, 30,  15, 999, 10,  10, 10,  10, 999, 10,  20, 30,  15, 999, 10, 20,
+    30,  15, 999, 10, 10,  10,  10, 999, 10, 20,  30,  15, 999, 10, 20,  30, 15,
+    999, 10, 20,  30, 15,  999, 10, 20,  30, 15,  999, 10, 20,  30, 15,  999};
+
 // Fort strength points per fort level (.rdata); seeds the 8 per-row-pair pools of a
 // tactical battle in TArmyBattle::LoadBattleSetupTabDataByIndex (0x5a4fc0).
 // GLOBAL: IMPERIALISM 0x00669818

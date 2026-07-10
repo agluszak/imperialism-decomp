@@ -4077,6 +4077,7 @@ address|target_cpp|ownership|note
 59ff20|src/game/TTacticalBattle.cpp|manual|marker_sync
 5a02e0|src/game/TTacticalBattle.cpp|manual|marker_sync
 5a0420|src/game/TTacticalBattle.cpp|manual|marker_sync
+5a0d60|src/game/TTacticalBattle.cpp|manual|marker_sync
 5a1010|src/game/TTacticalBattle.cpp|manual|marker_sync
 5a1400|src/game/TTacticalBattle.cpp|manual|marker_sync
 5a1910|src/game/TTacticalBattle.cpp|manual|marker_sync

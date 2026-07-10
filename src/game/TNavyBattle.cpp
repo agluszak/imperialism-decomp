@@ -27,9 +27,8 @@ undefined TNavyBattle::EvaluateAndResolveTacticalActionAgainstTileOccupant(int* 
 }
 
 // FUNCTION: IMPERIALISM 0x005a59f0
-undefined TNavyBattle::ComputeTacticalReachableTileCostsByUnitCategory(TTacticalUnit* unit) {
+void TNavyBattle::ComputeTacticalReachableTileCostsByUnitCategory(TTacticalUnit* unit) {
   (void)unit;
-  return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x005a5b70

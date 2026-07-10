@@ -27,7 +27,7 @@ void TArmyTacUnit::ConstructTArmyTacUnitBaseState(TMilitaryUnit* source) {
   morale34 = source->field_34;
   qualityLevel10 = static_cast<short>(source->field_38 / 100);
   ownerNationIndex14 = source->field_18;
-  field40 = -1;
+  sapTargetTileIndex40 = -1;
   sourceUnit38 = source;
   unsigned char deployedCategory0Flag;
   if (source->field_8 == 2 && g_anUnitTypeCombatCategoryByType00669858[unitTypeC] == 0) {

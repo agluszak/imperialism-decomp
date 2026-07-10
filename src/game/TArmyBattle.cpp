@@ -137,7 +137,7 @@ void TArmyBattle::ReadFrom(TStream* stream) {
     record->morale34 = sourceUnit->field_34;
     record->qualityLevel10 = static_cast<short>(sourceUnit->field_38 / 100);
     record->ownerNationIndex14 = sourceUnit->field_18;
-    record->field40 = -1;
+    record->sapTargetTileIndex40 = -1;
     record->sourceUnit38 = sourceUnit;
     unsigned char deployedCategory0Flag;
     if (sourceUnit->field_8 == 2 &&
@@ -276,39 +276,39 @@ void TArmyBattle::LoadBattleSetupTabDataByIndex(int compositionClass, int fortLe
   g_pUiViewManager->ReleaseResourceStreamIfNotNull(stream);
 
   // Parse the character grid into the tile records. Each source row is 0x1d chars +
-  // 1 terminator; the first (0x1d - field34) chars of each row are margin (skipped
-  // without consuming a grid cell), so field34 cells are filled per row and the record
-  // cursor then skips the remaining (0x1d - field34) cells of that grid row.
+  // 1 terminator; the first (0x1d - battlefieldColumnCount34) chars of each row are margin (skipped
+  // without consuming a grid cell), so battlefieldColumnCount34 cells are filled per row and the record
+  // cursor then skips the remaining (0x1d - battlefieldColumnCount34) cells of that grid row.
   TacticalTileRecord* record = tileGrid4;
   char* src = tabData;
   for (int rowsLeft = 0xf; rowsLeft != 0; --rowsLeft) {
     for (int col = 0; col < 0x1d; ++col) {
-      if (col < 0x1d - field34) {
+      if (col < 0x1d - battlefieldColumnCount34) {
         ++src; // margin char: no grid cell consumed
         continue;
       }
       if (fortLevel > 1 && col > 0x17) {
-        record->field0 = 0; // fort present (level >= 2): blank the last 5 columns
+        record->terrainType0 = 0; // fort present (level >= 2): blank the last 5 columns
       } else {
-        record->field0 = *src; // movsx: signed char -> int
+        record->terrainType0 = *src; // movsx: signed char -> int
       }
       ++src;
       record->occupant4 = 0;
       record->deployMark8 = 0;
-      record->fieldC = -1;
+      record->mineRunStateC = -1;
       record->trenchMask10 = 0;
       ++record;
     }
-    ++src;                    // skip the row terminator byte
-    record += 0x1d - field34; // skip the grid cells this row didn't cover
+    ++src;                                     // skip the row terminator byte
+    record += 0x1d - battlefieldColumnCount34; // skip the grid cells this row didn't cover
   }
 
   delete[] tabData;
 
   if (fortLevel != 0) {
-    // Mark the fort column (tile field34 - 6, then every row below at stride 0x1d)
+    // Mark the fort column (tile battlefieldColumnCount34 - 6, then every row below at stride 0x1d)
     // with the fort level in deployMark8.
-    for (int tile = field34 - 6; tile < 0x1b3; tile += 0x1d) {
+    for (int tile = battlefieldColumnCount34 - 6; tile < 0x1b3; tile += 0x1d) {
       tileGrid4[tile].deployMark8 = fortLevel;
     }
     // Seed the 8 fort-strength slots from the per-level table (load kept inside the

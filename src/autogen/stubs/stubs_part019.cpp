@@ -107,14 +107,6 @@ undefined4 HandleTacticalBattleCommandTag(void)
   return 0;
 }
 
-// ghidra_name QueueTacticalEventPacket232A
-// ghidra_proto undefined QueueTacticalEventPacket232A()
-// FUNCTION: IMPERIALISM 0x005a0d60
-undefined4 QueueTacticalEventPacket232A(void)
-{
-  return 0;
-}
-
 // ghidra_name AdvanceToNextTacticalUnitTurnStep
 // ghidra_proto undefined AdvanceToNextTacticalUnitTurnStep()
 // FUNCTION: IMPERIALISM 0x005a0ea0

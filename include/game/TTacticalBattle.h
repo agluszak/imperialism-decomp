@@ -14,10 +14,10 @@ class TTacticalUnit;
 // bitmask: bits 0-5 = hex directions, 0x80 = first dig on a bare tile, 0x40 replaces
 // it once a link exists.
 struct TacticalTileRecord {
-  int field0;                 // +0x00
+  int terrainType0;           // +0x00 terrain code 0..4 (indexes the move-cost table row)
   TTacticalUnit* occupant4;   // +0x04
-  int deployMark8;            // +0x08
-  int fieldC;                 // +0x0c
+  int deployMark8;            // +0x08 1 = trench-deploy mark; > 1 = fort-wall level
+  int mineRunStateC;          // +0x0c sap/mine-run state: -1 clear, 2 queued, 0/1 advance
   unsigned char trenchMask10; // +0x10
   unsigned char pad11[3];     // +0x11
 };
@@ -41,10 +41,10 @@ public:
   virtual void Free() override; // slot 0x07 0x59fb50
   // slot 0x08 ShallowClone inherited unchanged (0x4798d0)
   // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
-  virtual undefined
-  ComputeTacticalReachableTileCostsByUnitCategory(TTacticalUnit* unit);      // slot 0x0a 0x59ff20
-  virtual undefined PropagateTileAccessibilityStrengthLevels(char* param_1); // slot 0x0b 0x5a02e0
-  virtual undefined OrphanRetStub_0059f710();                                // slot 0x0c 0x59f710
+  virtual void
+  ComputeTacticalReachableTileCostsByUnitCategory(TTacticalUnit* unit);       // slot 0x0a 0x59ff20
+  virtual void PropagateTileAccessibilityStrengthLevels(TTacticalUnit* unit); // slot 0x0b 0x5a02e0
+  virtual undefined OrphanRetStub_0059f710();                                 // slot 0x0c 0x59f710
   virtual undefined MoveTacticalUnitAndQueueEvent232AIfNoAdjacentReachableTarget(
       int param_1, undefined4 param_2); // slot 0x0d 0x5a1bd0
   virtual undefined
@@ -57,16 +57,16 @@ public:
                                                       int param_2); // slot 0x10 0x5a1ee0
   virtual undefined OrphanCallChain_C4_I30_005a2700(int param_1);   // slot 0x11 0x5a2700
   virtual undefined CreateTTacticalBattleInstance();                // slot 0x12 0x59f730
-  virtual undefined
-  MarkTacticalTileStateQueuedAndMaybeDispatchPacket(int* param_1,
-                                                    int param_2); // slot 0x13 0x5a3190
-  virtual undefined
-  AdvanceOrResetTacticalTileStateRunAndMaybeDispatchPacket(int param_1); // slot 0x14 0x5a3210
-  virtual undefined ClearTacticalTileStateRunByStride(int param_1);      // slot 0x15 0x5a3320
+  virtual void
+  MarkTacticalTileStateQueuedAndMaybeDispatchPacket(TArmyTacUnit* unit,
+                                                    int targetTileIndex); // slot 0x13 0x5a3190
+  virtual void AdvanceOrResetTacticalTileStateRunAndMaybeDispatchPacket(
+      TArmyTacUnit* unit);                                       // slot 0x14 0x5a3210
+  virtual void ClearTacticalTileStateRunByStride(int tileIndex); // slot 0x15 0x5a3320
   virtual undefined
   ComputeRallyStrengthAndQueueTacticalRallyCommand(int param_1); // slot 0x16 0x5a3810
-  virtual undefined ExecuteTacticalMineActionAndQueuePacket(int param_1,
-                                                            int param_2); // slot 0x17 0x5a34d0
+  virtual void ExecuteTacticalMineActionAndQueuePacket(TTacticalUnit* unit,
+                                                       int tileIndex); // slot 0x17 0x5a34d0
   virtual undefined
   ExecuteTacticalDigActionAndConsumeUnitActionPoints(int* param_1,
                                                      undefined4 param_2); // slot 0x18 0x5a3640
@@ -99,7 +99,7 @@ public:
   char* tileThreatLevelArray28; // +0x28 per-tile threat level; filled by slot 0x0b
   int* tileIntArray2c;          // +0x2c TODO(verify): use not yet observed
   int* tileIntArray30;          // +0x30 TODO(verify): use not yet observed
-  int field34;                  // +0x34
+  int battlefieldColumnCount34; // +0x34 playable column count of this battle
   int battleSiteIndex38;        // +0x38 cityScoreTable row of the battle site
   int tacticalTileCount3c;      // +0x3c = 0x1b3 (435 = 15*29 battle tiles)
   int tacticalTileStride40;     // +0x40 = 0x1d (29)
@@ -155,6 +155,9 @@ public:
   void ConsumeFortStrengthPointsAndInvalidateIfDepleted(int tileIndex,
                                                         int consumeAmount); // 0x5a3c20
   void EvaluateTacticalSideStateAndShowBattleSummaryDialog();               // 0x5a2750
+  // Queues the 0x232a end-of-action turn event (news a TCommand and clears field48).
+  // Body TODO. 0x5a0d60, __thiscall.
+  void QueueTacticalEventPacket232A();
 };
 
 ASSERT_SIZE(TTacticalBattle, 0x78);

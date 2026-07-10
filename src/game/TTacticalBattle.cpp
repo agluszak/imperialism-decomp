@@ -51,7 +51,7 @@ TTacticalBattle::TTacticalBattle() {
   battleView8 = 0;
   tileMoveCostArray24 = 0;
   selectedUnit1c = 0;
-  field34 = 0;
+  battlefieldColumnCount34 = 0;
   field74 = 0;
   recordList20 = 0;
 }
@@ -62,7 +62,7 @@ TTacticalBattle::~TTacticalBattle() {}
 
 // Battle-state assembly (Mac oracle: InitTacticalBattle): links both players to the
 // battle, tags each side's units (side20 = 0/1) with a random field24 seed and collects
-// them into recordList20, seeds the selection from the +0x18 side, sizes field34 from
+// them into recordList20, seeds the selection from the +0x18 side, sizes battlefieldColumnCount34 from
 // the longest unit range (+11), (re)allocates the per-tile work arrays and the hex tile
 // grid, and publishes the battle to g_pActiveTacticalBattle.
 // FUNCTION: IMPERIALISM 0x0059f890
@@ -97,7 +97,7 @@ void TTacticalBattle::BuildTacticalBattleStateFromBothSides(TTacticalPlayer* our
   field44 = 0;
   selectedUnit1c = enemyPlayer->SelectNextTacticalUnitForDoneCommand();
 
-  // field34 = longest per-unit range across both sides + 11 (the original calls the
+  // battlefieldColumnCount34 = longest per-unit range across both sides + 11 (the original calls the
   // range virtual twice per improving unit).
   int maxUnitRange = 0;
   {
@@ -109,7 +109,7 @@ void TTacticalBattle::BuildTacticalBattleStateFromBothSides(TTacticalPlayer* our
       }
     }
   }
-  field34 = maxUnitRange + 11;
+  battlefieldColumnCount34 = maxUnitRange + 11;
 
   tileMoveCostArray24 = new short[tacticalTileCount3c];
   for (int costIdx = 0; costIdx < tacticalTileCount3c; ++costIdx) {
@@ -134,73 +134,14 @@ void TTacticalBattle::BuildTacticalBattleStateFromBothSides(TTacticalPlayer* our
   tileGrid4 = new TacticalTileRecord[tacticalTileCount3c];
   TacticalTileRecord* record = tileGrid4;
   for (int tile = 0; tile < tacticalTileCount3c; ++tile, ++record) {
-    record->field0 = 0;
+    record->terrainType0 = 0;
     record->occupant4 = 0;
     record->deployMark8 = 0;
-    record->fieldC = -1;
+    record->mineRunStateC = -1;
     record->trenchMask10 = 0;
   }
 
   g_pActiveTacticalBattle = this;
-}
-
-undefined TTacticalBattle::ComputeTacticalReachableTileCostsByUnitCategory(TTacticalUnit* unit) {
-  (void)unit;
-  return 0;
-}
-
-undefined TTacticalBattle::PropagateTileAccessibilityStrengthLevels(char* param_1) {
-  return 0;
-}
-
-undefined TTacticalBattle::WrapperFor_thunk_ComputeHexNeighborTileIndices_At005a1400(
-    undefined4 param_1, int param_2, char param_3) {
-  return 0;
-}
-
-undefined
-TTacticalBattle::MoveTacticalUnitAndQueueEvent232AIfNoAdjacentReachableTarget(int param_1,
-                                                                              undefined4 param_2) {
-  return 0;
-}
-
-undefined TTacticalBattle::ExecuteTacticalActionAndQueueEventIfNoAdjacentValidTarget(int param_1) {
-  return 0;
-}
-
-undefined TTacticalBattle::EvaluateAndResolveTacticalActionAgainstTileOccupant(int* param_1,
-                                                                               int param_2) {
-  return 0;
-}
-
-undefined TTacticalBattle::OrphanCallChain_C4_I30_005a2700(int param_1) {
-  return 0;
-}
-
-undefined TTacticalBattle::MarkTacticalTileStateQueuedAndMaybeDispatchPacket(int* param_1,
-                                                                             int param_2) {
-  return 0;
-}
-
-undefined TTacticalBattle::AdvanceOrResetTacticalTileStateRunAndMaybeDispatchPacket(int param_1) {
-  return 0;
-}
-
-undefined TTacticalBattle::ClearTacticalTileStateRunByStride(int param_1) {
-  return 0;
-}
-
-undefined TTacticalBattle::ExecuteTacticalMineActionAndQueuePacket(int param_1, int param_2) {
-  return 0;
-}
-
-undefined TTacticalBattle::ExecuteTacticalDigActionAndConsumeUnitActionPoints(int* param_1,
-                                                                              undefined4 param_2) {
-  return 0;
-}
-
-undefined TTacticalBattle::ComputeRallyStrengthAndQueueTacticalRallyCommand(int param_1) {
-  return 0;
 }
 
 // Tears the battle down: frees the owned scratch planes and the tile grid, empties
@@ -260,12 +201,193 @@ void TTacticalBattle::ApplyTacticalDoneSelectionAndRefreshUi(TTacticalUnit* unit
     int tileIndex = unit->tileIndex8;
     int row = tileIndex / 29;
     int column = ((row & 1) + tileIndex % 29 * 2) / 2;
-    if (tileIndex >= 0 && row >= 0 && row < 15 && column >= 0 && column < field34) {
+    if (tileIndex >= 0 && row >= 0 && row < 15 && column >= 0 &&
+        column < battlefieldColumnCount34) {
       battleView8->CenterViewportAroundGridIndexAndSnap(tileIndex);
     }
     battleView8->RefreshControl();
     battleView8->SpawnTacticalUiMarkerAtUnitTile();
   }
+}
+
+// Flood-fills tileMoveCostArray24 with the cheapest action-point cost for the unit to
+// reach each tile (-1 = unreachable): seeds the unit's tile at 0, then sweeps the grid
+// once per 10-point cost band, relaxing each tile's six hex neighbors through the
+// per-category terrain move-cost table. A neighbor is rejected when occupied, in grid
+// row 0, behind a live fort wall (deployMark8 > 1 with fort strength left -- except
+// the gate column battlefieldColumnCount34 - 6 at rows 5/7/9 for the attacking side),
+// over the action-point budget, worse than an already-found cost, flanked by an enemy
+// on an adjacent ring neighbor, or in the opponent's entry column. Ends by rebuilding
+// the threat plane for the unit.
+// FUNCTION: IMPERIALISM 0x0059ff20
+void TTacticalBattle::ComputeTacticalReachableTileCostsByUnitCategory(TTacticalUnit* unit) {
+  int neighborTiles[6];
+  int categoryCode = g_awTacticalUnitCategoryCodeBySlot[unit->unitTypeC];
+  short* moveCosts = tileMoveCostArray24;
+  int actionPoints = unit->actionPoints28;
+  int fillIndex;
+  for (fillIndex = 0; fillIndex < tacticalTileCount3c; ++fillIndex) {
+    moveCosts[fillIndex] = -1;
+  }
+  int startTile = unit->tileIndex8;
+  if (startTile < 0 || startTile >= tacticalTileCount3c) {
+    return;
+  }
+  int edgeColumn;
+  if (unit->side20 == 0) {
+    edgeColumn = battlefieldColumnCount34 - 1;
+  } else {
+    edgeColumn = 0;
+  }
+  moveCosts[startTile] = 0;
+  int costLevel;
+  for (costLevel = 0; costLevel <= actionPoints; costLevel += 10) {
+    int column = 0;
+    short* costCursor = moveCosts + tacticalTileStride40;
+    int tile;
+    for (tile = tacticalTileStride40; tile < tacticalTileCount3c; ++tile) {
+      if (column < battlefieldColumnCount34 && column != edgeColumn && *costCursor >= costLevel) {
+        ComputeHexNeighborTileIndices_005A0420(tile, neighborTiles);
+        int direction;
+        int* neighborCursor = neighborTiles;
+        for (direction = 0; direction < 6; ++direction, ++neighborCursor) {
+          short neighborIndex = static_cast<short>(*neighborCursor);
+          if (neighborIndex == -1) {
+            continue;
+          }
+          TacticalTileRecord* record = &tileGrid4[neighborIndex];
+          if (record->occupant4 != 0) {
+            continue;
+          }
+          if (neighborIndex < tacticalTileStride40) {
+            continue;
+          }
+          if (record->deployMark8 > 1 && fortStrengthPoints54[neighborIndex / 0x1d / 2] > 0) {
+            int wallRow = neighborIndex / 0x1d;
+            int wallColumn = neighborIndex % 0x1d;
+            if (wallRow != 5 && wallRow != 7 && wallRow != 9) {
+              continue;
+            }
+            if (((wallRow & 1) + wallColumn * 2) / 2 != battlefieldColumnCount34 - 6) {
+              continue;
+            }
+            if (unit->side20 != 1) {
+              continue;
+            }
+          }
+          short newCost = static_cast<short>(
+              g_awTacticalMoveCostByCategoryAndTerrain[categoryCode * 5 + record->terrainType0] +
+              *costCursor);
+          if (newCost > actionPoints) {
+            continue;
+          }
+          short existingCost = moveCosts[neighborIndex];
+          if (existingCost != -1 && existingCost <= newCost) {
+            continue;
+          }
+          unsigned char blockedByAdjacentEnemy = 0;
+          short prevDirection = static_cast<short>((direction > 0) ? direction - 1 : 5);
+          int prevNeighbor = neighborTiles[prevDirection];
+          if (prevNeighbor != -1) {
+            TTacticalUnit* prevOccupant = tileGrid4[prevNeighbor].occupant4;
+            if (prevOccupant != 0 && prevOccupant->side20 != unit->side20) {
+              blockedByAdjacentEnemy = 1;
+            }
+          }
+          // Transcribed as compiled: the original indexes neighborTiles[1] (or [0] when
+          // direction >= 5), NOT [direction + 1]. The branchless codegen proves the
+          // literal constants; likely an original bug for the intended "next ring
+          // neighbor". TODO(verify): keep literal for byte match.
+          short nextDirection = static_cast<short>((direction >= 5) ? 0 : 1);
+          int nextNeighbor = neighborTiles[nextDirection];
+          if (nextNeighbor != -1) {
+            TTacticalUnit* nextOccupant = tileGrid4[nextNeighbor].occupant4;
+            if (nextOccupant != 0 && nextOccupant->side20 != unit->side20) {
+              blockedByAdjacentEnemy = 1;
+            }
+          }
+          if (blockedByAdjacentEnemy != 0) {
+            continue;
+          }
+          if (neighborIndex % 0x1d == edgeColumn) {
+            continue;
+          }
+          moveCosts[neighborIndex] = newCost;
+        }
+      }
+      ++column;
+      if (column == 0x1d) {
+        column = 0;
+      }
+      ++costCursor;
+    }
+  }
+  PropagateTileAccessibilityStrengthLevels(unit);
+}
+
+// Rebuilds tileThreatLevelArray28 from the given unit's perspective: seeds each tile
+// holding a live enemy (other side, state1c == 0) with that enemy's range + 1 and
+// every other tile with 0, then decays the levels outward -- one pass per level from
+// 19 down, spreading level - 1 onto any hex neighbor still below it.
+// FUNCTION: IMPERIALISM 0x005a02e0
+void TTacticalBattle::PropagateTileAccessibilityStrengthLevels(TTacticalUnit* unit) {
+  int neighborTiles[6];
+  char unitSide = static_cast<char>(unit->side20);
+  char* threatLevels = tileThreatLevelArray28;
+  int seedTile;
+  for (seedTile = 0; seedTile < tacticalTileCount3c; ++seedTile) {
+    TTacticalUnit* occupant = tileGrid4[seedTile].occupant4;
+    if (occupant != 0 && occupant->side20 != unitSide && occupant->state1c == 0) {
+      occupant->AssertValid();
+      threatLevels[seedTile] = static_cast<char>(occupant->GetUnitRange() + 1);
+    } else {
+      threatLevels[seedTile] = 0;
+    }
+  }
+  int level;
+  for (level = 0x13; level > 0; --level) {
+    char* levelCursor = tileThreatLevelArray28;
+    int tile;
+    for (tile = 0; tile < tacticalTileCount3c; ++tile, ++levelCursor) {
+      if (*levelCursor == level) {
+        ComputeHexNeighborTileIndices_005A0420(tile, neighborTiles);
+        int neighborSlot;
+        int* neighborCursor = neighborTiles;
+        for (neighborSlot = 0; neighborSlot < 6; ++neighborSlot, ++neighborCursor) {
+          int neighborIndex = *neighborCursor;
+          if (neighborIndex != -1) {
+            if (threatLevels[neighborIndex] < level - 1) {
+              threatLevels[neighborIndex] = static_cast<char>(level - 1);
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+undefined TTacticalBattle::WrapperFor_thunk_ComputeHexNeighborTileIndices_At005a1400(
+    undefined4 param_1, int param_2, char param_3) {
+  return 0;
+}
+
+undefined
+TTacticalBattle::MoveTacticalUnitAndQueueEvent232AIfNoAdjacentReachableTarget(int param_1,
+                                                                              undefined4 param_2) {
+  return 0;
+}
+
+undefined TTacticalBattle::ExecuteTacticalActionAndQueueEventIfNoAdjacentValidTarget(int param_1) {
+  return 0;
+}
+
+undefined TTacticalBattle::EvaluateAndResolveTacticalActionAgainstTileOccupant(int* param_1,
+                                                                               int param_2) {
+  return 0;
+}
+
+undefined TTacticalBattle::OrphanCallChain_C4_I30_005a2700(int param_1) {
+  return 0;
 }
 
 // Six hex neighbors of tileIndex into outNeighborTiles6[0..5], -1 = off-grid.
@@ -313,6 +435,21 @@ void TTacticalBattle::ComputeHexNeighborTileIndices_005A0420(int tileIndex,
     outNeighborTiles6[0] = -1;
     outNeighborTiles6[5] = -1;
   }
+}
+
+// FUNCTION: IMPERIALISM 0x005a0d60
+void TTacticalBattle::QueueTacticalEventPacket232A() {
+  // TODO: port body @ 0x5a0d60 (clears field48, news a 0x1c-byte TCommand with vtable
+  // 0x66a100, queues turn event 0x232a).
+}
+
+undefined TTacticalBattle::ExecuteTacticalDigActionAndConsumeUnitActionPoints(int* param_1,
+                                                                              undefined4 param_2) {
+  return 0;
+}
+
+undefined TTacticalBattle::ComputeRallyStrengthAndQueueTacticalRallyCommand(int param_1) {
+  return 0;
 }
 
 // Tactical command family: each handler echoes the command to multiplayer when it
@@ -616,6 +753,112 @@ void TTacticalBattle::EvaluateTacticalSideStateAndShowBattleSummaryDialog() {
   battleView8->InvokeSlot13C();
 }
 
+// Queues a sap/mine run for the unit: stamps the unit's own tile with run state 2,
+// records the target wall tile on the unit, invalidates the unit tile in the view,
+// then spends the unit's remaining action points -- or, when they were already spent,
+// dispatches the 0x232a end-of-action event.
+// FUNCTION: IMPERIALISM 0x005a3190
+void TTacticalBattle::MarkTacticalTileStateQueuedAndMaybeDispatchPacket(TArmyTacUnit* unit,
+                                                                        int targetTileIndex) {
+  int unitTileIndex = unit->tileIndex8;
+  tileGrid4[unitTileIndex].mineRunStateC = 2;
+  unit->AssertValid();
+  unit->sapTargetTileIndex40 = targetTileIndex;
+  if (battleView8 != 0) {
+    battleView8->InvalidateTacticalHexTileRect(unitTileIndex);
+  }
+  if (unit->actionPoints28 != 0) {
+    unit->actionPoints28 = 0;
+    return;
+  }
+  QueueTacticalEventPacket232A();
+}
+
+// Advances the unit's queued sap/mine run one step. If the target wall tile no longer
+// carries a wall (deployMark8 <= 1) the run is dropped. Otherwise walks from the
+// unit's tile toward the target one grid row (stride) at a time until the first
+// unmarked (-1) run tile: reaching the target blows the wall (tile effect 0xf6e,
+// deployMark8 cleared + tile invalidated, run reset), otherwise the unmarked tile is
+// stamped with the row-parity marker (odd row -> 0, even row -> 1). Finally spends the
+// unit's action points, or dispatches the 0x232a end-of-action event when already
+// spent.
+// FUNCTION: IMPERIALISM 0x005a3210
+void TTacticalBattle::AdvanceOrResetTacticalTileStateRunAndMaybeDispatchPacket(TArmyTacUnit* unit) {
+  int targetTileIndex = unit->sapTargetTileIndex40;
+  if (tileGrid4[targetTileIndex].deployMark8 <= 1) {
+    unit->sapTargetTileIndex40 = -1;
+    return;
+  }
+  int runTileIndex = unit->tileIndex8;
+  if (runTileIndex != targetTileIndex) {
+    do {
+      if (tileGrid4[runTileIndex].mineRunStateC == -1) {
+        break;
+      }
+      runTileIndex -= tacticalTileStride40;
+    } while (runTileIndex != targetTileIndex);
+  }
+  if (runTileIndex == targetTileIndex) {
+    if (battleView8 != 0) {
+      battleView8->PlayTacticalTileEffect(runTileIndex, 0xf6e, 6);
+    }
+    tileGrid4[unit->sapTargetTileIndex40].deployMark8 = 0;
+    if (battleView8 != 0) {
+      battleView8->InvalidateTacticalHexTileRect(unit->sapTargetTileIndex40);
+    }
+    unit->sapTargetTileIndex40 = -1;
+  } else if (((runTileIndex / tacticalTileStride40) & 1) != 0) {
+    tileGrid4[runTileIndex].mineRunStateC = 0;
+  } else {
+    tileGrid4[runTileIndex].mineRunStateC = 1;
+  }
+  if (unit->actionPoints28 == 0) {
+    QueueTacticalEventPacket232A();
+    return;
+  }
+  unit->actionPoints28 = 0;
+}
+
+// Clears a sap/mine run: walks from the given tile down one grid row (stride) per
+// step, resetting each marked run tile back to -1 and invalidating it in the view,
+// stopping at the first already-clear tile or when walking off the grid (index < 0).
+// FUNCTION: IMPERIALISM 0x005a3320
+void TTacticalBattle::ClearTacticalTileStateRunByStride(int tileIndex) {
+  int runTileIndex;
+  for (runTileIndex = tileIndex; runTileIndex >= 0; runTileIndex -= tacticalTileStride40) {
+    int* runState = &tileGrid4[runTileIndex].mineRunStateC;
+    if (*runState == -1) {
+      break;
+    }
+    *runState = -1;
+    if (battleView8 != 0) {
+      battleView8->InvalidateTacticalHexTileRect(runTileIndex);
+    }
+  }
+}
+
+// Local 'mine' action for the acting unit against a fort tile: rolls the sap amount
+// from the unit's type (type * 250 - 5600 + rand % 400), echoes a 'mine' command
+// packet when multiplayer is active, consumes the tile's fort strength pool, plays the
+// mining sfx + tile effect when a view is attached, then dispatches the 0x232a
+// end-of-action event. (HandleTacticalCommandTag_mine at 0x5a35a0 is the remote-echo
+// twin of the middle section.)
+// FUNCTION: IMPERIALISM 0x005a34d0
+void TTacticalBattle::ExecuteTacticalMineActionAndQueuePacket(TTacticalUnit* unit, int tileIndex) {
+  int unitType = unit->unitTypeC;
+  int amount = static_cast<int>(GenerateThreadLocalRandom15()) % 400 + unitType * 250 - 5600;
+  unsigned char multiplayerActive = g_pSimMgr->field44 != 0;
+  if (multiplayerActive != 0) {
+    g_pGameFlowState->EmitTacticalCommandPacket(0x6d696e65 /* 'mine' */, 0, tileIndex, amount);
+  }
+  ConsumeFortStrengthPointsAndInvalidateIfDepleted(tileIndex, amount);
+  if (battleView8 != 0) {
+    g_pSfxPlaybackSystem->PlaySoundEffect(0x3a9d, 0, 1);
+    battleView8->PlayTacticalTileEffect(tileIndex, 0xf98, 6);
+  }
+  QueueTacticalEventPacket232A();
+}
+
 // 'mine' command: multiplayer echo (no unit), consume from the side resource pool for
 // the tile, then mining sfx + tile effect when a view is attached.
 // FUNCTION: IMPERIALISM 0x005a35a0
@@ -709,7 +952,7 @@ void TTacticalBattle::HandleTacticalCommandTag_raly(TArmyTacUnit* unit, int newM
 
 // Consumes fort strength from the per-row-pair pool (one slot per two grid rows,
 // tile/58); when a pool runs dry it clamps to 0 and invalidates the three tiles where
-// the fort section is drawn (column band anchored at field34 - 6).
+// the fort section is drawn (column band anchored at battlefieldColumnCount34 - 6).
 // FUNCTION: IMPERIALISM 0x005a3c20
 void TTacticalBattle::ConsumeFortStrengthPointsAndInvalidateIfDepleted(int tileIndex,
                                                                        int consumeAmount) {
@@ -718,7 +961,7 @@ void TTacticalBattle::ConsumeFortStrengthPointsAndInvalidateIfDepleted(int tileI
   fortStrengthPoints54[poolIndex] = remaining;
   if (remaining < 0) {
     fortStrengthPoints54[poolIndex] = 0;
-    int poolTileIndex = field34 + poolIndex * 58 - 6;
+    int poolTileIndex = battlefieldColumnCount34 + poolIndex * 58 - 6;
     if (battleView8 != 0) {
       battleView8->InvalidateTacticalHexTileRect(poolTileIndex);
     }

@@ -20,7 +20,7 @@ public:
   // slot 0x07 Free inherited unchanged (0x59fb50)
   // slot 0x08 ShallowClone inherited unchanged (0x4798d0)
   // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
-  virtual undefined ComputeTacticalReachableTileCostsByUnitCategory(
+  virtual void ComputeTacticalReachableTileCostsByUnitCategory(
       TTacticalUnit* unit) override; // slot 0x0a 0x5a59f0
   // slot 0x0b PropagateTileAccessibilityStrengthLevels inherited unchanged (0x5a02e0)
   virtual undefined OrphanRetStub_0059f710() override; // slot 0x0c 0x5a55c0

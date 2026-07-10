@@ -37,7 +37,7 @@ public:
   TMilitaryUnit* sourceUnit38; // +0x38 back-pointer (persisted as its field_20 id)
   unsigned char flag3c;        // +0x3c = (source field_8 == 2 && category[type] == 0)
   unsigned char pad3d[3];      // +0x3d
-  int field40;                 // +0x40 init -1
+  int sapTargetTileIndex40;    // +0x40 pending sap/mine target tile; -1 = none
   float field44;               // +0x44
   float field48;               // +0x48
   float field4c;               // +0x4c
