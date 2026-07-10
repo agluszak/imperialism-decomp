@@ -149,6 +149,12 @@ public:
   // matching game-state snapshot family; every path except code 6 ends with the
   // event-3 tick acknowledge.
   void HandleDiplomacyTurnEventPacketByCode();
+  // 0x5431a0: clear the slot's turn-resume pending bit, broadcast the remaining mask
+  // (event 1) when hosting, and flush the latched event code once the mask drains.
+  void ClearTurnResumeNationPendingBitAndMaybeFlushTelemetry(int nationSlot);
+  // 0x54d4e0: probe reachability, save when everyone is reachable, else optionally pose
+  // the "cannot save" advisory; returns the all-reachable byte Boolean.
+  unsigned char TrySaveGameAndMaybeShowFailureDialog(int mode, char* label, char showFailureDialog);
   void RefreshNationStatusLabelsAndCodesForSlotOrAll(int nationSlot);
 
   // Send the turn-event-0x15 diplomacy need-state snapshot for nationSlot (broadcast

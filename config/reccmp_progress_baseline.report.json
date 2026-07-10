@@ -12356,7 +12356,7 @@
     },
     {
       "address": "0x4dd430",
-      "matching": 0.5142857142857142,
+      "matching": 0.5714285714285714,
       "name": "TGreatPower::ComputeRemainingDiplomacyAidBudget",
       "type": 1
     },
@@ -12788,8 +12788,7 @@
     },
     {
       "address": "0x4e0590",
-      "effective": true,
-      "matching": 0.42857142857142855,
+      "matching": 1.0,
       "name": "TGreatPower::OrphanRetStub_004d7fa0_88",
       "type": 1
     },
@@ -12802,14 +12801,14 @@
     },
     {
       "address": "0x4e0610",
-      "effective": true,
-      "matching": 0.42857142857142855,
+      "matching": 1.0,
       "name": "TGreatPower::ReturnFalseNationStateActionStub_8a",
       "type": 1
     },
     {
       "address": "0x4e0650",
-      "matching": 1.0,
+      "effective": true,
+      "matching": 0.42857142857142855,
       "name": "TGreatPower::OrphanRetStub_004d7fe0_8b",
       "type": 1
     },
@@ -14215,7 +14214,7 @@
     },
     {
       "address": "0x4eff40",
-      "matching": 0.2857142857142857,
+      "matching": 0.27988338192419826,
       "name": "TDiplomacyMgr::PropagateRelationSideEffectSlot80",
       "type": 1
     },
@@ -16346,7 +16345,7 @@
     },
     {
       "address": "0x50bea0",
-      "matching": 0.21172194457064972,
+      "matching": 0.20263516583371194,
       "name": "TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets",
       "type": 1
     },
@@ -16994,7 +16993,7 @@
     },
     {
       "address": "0x515b10",
-      "matching": 0.3167420814479638,
+      "matching": 0.3378995433789954,
       "name": "TMapMgr::MarkSeedNeighborTilesUnavailableByCapabilityMaskProfileB",
       "type": 1
     },
@@ -21118,8 +21117,8 @@
     },
     {
       "address": "0x5431a0",
-      "matching": 0.043478260869565216,
-      "name": "ClearTurnResumeNationPendingBitAndMaybeFlushTelemetry",
+      "matching": 0.7380952380952381,
+      "name": "TMultiplayerMgr::ClearTurnResumeNationPendingBitAndMaybeFlushTelemetry",
       "type": 1
     },
     {
@@ -21592,8 +21591,8 @@
     },
     {
       "address": "0x54d4e0",
-      "matching": 0.0,
-      "name": "TrySaveGameAndMaybeShowFailureDialog",
+      "matching": 1.0,
+      "name": "TMultiplayerMgr::TrySaveGameAndMaybeShowFailureDialog",
       "type": 1
     },
     {
@@ -26042,7 +26041,7 @@
     },
     {
       "address": "0x57da70",
-      "matching": 0.12573344509639564,
+      "matching": 0.12552301255230125,
       "name": "TSimMgr::AdvanceGlobalTurnStateMachine",
       "type": 1
     },

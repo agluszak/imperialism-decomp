@@ -539,14 +539,6 @@ undefined4 EnableDiplomacyQueueRoutingAndSetContextField44(void)
   return 0;
 }
 
-// ghidra_name ClearTurnResumeNationPendingBitAndMaybeFlushTelemetry
-// ghidra_proto undefined ClearTurnResumeNationPendingBitAndMaybeFlushTelemetry()
-// FUNCTION: IMPERIALISM 0x005431a0
-undefined4 ClearTurnResumeNationPendingBitAndMaybeFlushTelemetry(void)
-{
-  return 0;
-}
-
 // ghidra_name HandleTurnResumeStateTelemetry
 // ghidra_proto undefined HandleTurnResumeStateTelemetry()
 // FUNCTION: IMPERIALISM 0x00543280
@@ -895,14 +887,6 @@ undefined4 CreateAndQueueTurnEventPacketTagPOGC(void)
 // ghidra_proto undefined CreateAndSendTurnEvent2D_TableRowShortArray()
 // FUNCTION: IMPERIALISM 0x0054d3d0
 undefined4 CreateAndSendTurnEvent2D_TableRowShortArray(void)
-{
-  return 0;
-}
-
-// ghidra_name TrySaveGameAndMaybeShowFailureDialog
-// ghidra_proto undefined TrySaveGameAndMaybeShowFailureDialog()
-// FUNCTION: IMPERIALISM 0x0054d4e0
-undefined4 TrySaveGameAndMaybeShowFailureDialog(void)
 {
   return 0;
 }

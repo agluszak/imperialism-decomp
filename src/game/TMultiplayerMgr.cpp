@@ -272,6 +272,37 @@ struct TurnEvent3Mode18Packet : NetMessage {
   unsigned char pad15[3];
 };
 
+// Turn-event-1 payload: the remaining turn-resume pending-nation bitmask.
+struct TurnEvent1PendingMaskPacket : TimelyMessageHeader {
+  int pendingMask; // +0x18, total 0x1c
+};
+
+// Clear the slot's turn-resume pending bit; when hosting, broadcast the remaining mask
+// as an event-1 packet, and once the mask drains (with a pending event code latched)
+// flush it through the diplomacy turn-event dispatcher.
+// FUNCTION: IMPERIALISM 0x005431a0
+void TMultiplayerMgr::ClearTurnResumeNationPendingBitAndMaybeFlushTelemetry(int nationSlot) {
+  pendingNationBitmask &= ~(1 << nationSlot);
+  unsigned char hosting = g_pSimMgr->field44 == 1;
+  if (hosting != 0) {
+    TurnEvent1PendingMaskPacket packet;
+    packet.messageTag = 0x74696d65;
+    packet.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetActiveNationId());
+    packet.eventCode = 0;
+    packet.fromNetworkId = 0;
+    packet.toNetworkId = 0;
+    packet.eventCode = 1;
+    packet.messageLength = 0;
+    packet.messageLength = 0x1c;
+    packet.toNetworkId = 0;
+    packet.pendingMask = pendingNationBitmask;
+    g_pNetMgr006a6014->Send(&packet, 0);
+  }
+  if (pendingNationBitmask == 0 && pendingNationSlotIndex != -1) {
+    HandleDiplomacyTurnEventPacketByCode();
+  }
+}
+
 // FUNCTION: IMPERIALISM 0x00544540
 void TMultiplayerMgr::EnsureGameFlowStateAndPostTurnEvent5E5() {
   TMultiplayerMgr* self = this;
@@ -3023,6 +3054,26 @@ void TMultiplayerMgr::EmitTurnEvent19NationStateArraysForSlot(short nationSlot,
     packet.needLevelByNation[target] = nation->needLevelByNation[target];
   }
   g_pNetMgr006a6014->Send(&packet, destinationSlot == -3);
+}
+
+// Probe reachability; when every nation is reachable, run the save-game driver with the
+// given mode/label. On failure (someone AWOL) optionally pose the localized "cannot
+// save" advisory (string 0x2742/0x28) as a modal message command. Returns the
+// all-reachable byte Boolean. `this` is unused; callers dispatch it on
+// g_pGameFlowState.
+// FUNCTION: IMPERIALISM 0x0054d4e0
+unsigned char TMultiplayerMgr::TrySaveGameAndMaybeShowFailureDialog(int mode, char* label,
+                                                                    char showFailureDialog) {
+  unsigned char allReachable = g_pNetMgr006a6014->ProbeNationReachabilityAndMarkAwolBitmask() == 0;
+  if (allReachable != 0) {
+    SaveGameWithModeAndOptionalLabel(mode, label);
+  }
+  if (showFailureDialog != 0 && allReachable == 0) {
+    CString message;
+    g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&message, 0x2742, 0x28);
+    g_pUiRuntimeContext->CreateModalMessageCommandAndQueue(&message, 0);
+  }
+  return allReachable;
 }
 
 // Trivial credential-init stub reused across the networking cluster (0x5e34b0):

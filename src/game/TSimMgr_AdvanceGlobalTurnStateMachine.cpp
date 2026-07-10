@@ -35,7 +35,6 @@ extern undefined4 RebuildNationRankingDataAndUiCache(void);
 extern undefined4 HandleTurnResumeStateTelemetry(void);
 extern undefined4 UpdateCityOrderCapabilityUnlockProgress(void);
 extern undefined4 ConsumeFirstPendingAbilityUnlock(void);
-extern undefined4 TrySaveGameAndMaybeShowFailureDialog(void);
 extern undefined4 RefreshNavyOrderCycleAndClearReadyFlags(void);
 extern undefined4 RecomputeTileStrategicScoreHeatmap(void);
 extern undefined4 RecomputeNationOrderPriorityMetrics(void);
@@ -117,7 +116,7 @@ static inline void HandleTurnEndSavePaths(TSimMgr* simMgr) {
     return;
   }
   if (simMgr->redrawEnabled == 1) {
-    TrySaveGameAndMaybeShowFailureDialog();
+    g_pGameFlowState->TrySaveGameAndMaybeShowFailureDialog(0xa1, 0, 1);
   }
 }
 

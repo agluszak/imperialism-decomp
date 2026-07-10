@@ -3942,7 +3942,7 @@ address|name|symbol|size|type|prototype|provenance
 542ff0|TMultiplayerMgr::WriteTo||146|function|undefined InitializeNationStatusControlArraysFromProvider()|
 5430c0|TMultiplayerMgr::EnableDiplomacyQueueRoutingAndSetContextField44||36|function|undefined EnableDiplomacyQueueRoutingAndSetContextField44()|
 543120|ConfigureTurnResumeStateAndNationMask||83|function|undefined ConfigureTurnResumeStateAndNationMask()|
-5431a0|ClearTurnResumeNationPendingBitAndMaybeFlushTelemetry||167|function|undefined ClearTurnResumeNationPendingBitAndMaybeFlushTelemetry()|
+5431a0|TMultiplayerMgr::ClearTurnResumeNationPendingBitAndMaybeFlushTelemetry||167|function|undefined ClearTurnResumeNationPendingBitAndMaybeFlushTelemetry()|
 543280|HandleTurnResumeStateTelemetry||1253|function|undefined HandleTurnResumeStateTelemetry()|
 5438e0|InitializeEmitEventHeaderWithActiveNation||28|function|undefined InitializeEmitEventHeaderWithActiveNation()|
 543910|TMultiplayerMgr::HandleDiplomacyTurnEventPacketByCode||2446|function|void __thiscall HandleDiplomacyTurnEventPacketByCode()|
@@ -4027,7 +4027,7 @@ address|name|symbol|size|type|prototype|provenance
 54ce80|EmitTurnEvent2CNationStateCompositeForSlot||701|function|undefined EmitTurnEvent2CNationStateCompositeForSlot()|
 54d1f0|EmitTurnEvent19NationStateArraysForSlot||381|function|undefined EmitTurnEvent19NationStateArraysForSlot()|
 54d3d0|CreateAndSendTurnEvent2D_TableRowShortArray||207|function|undefined CreateAndSendTurnEvent2D_TableRowShortArray()|
-54d4e0|TrySaveGameAndMaybeShowFailureDialog||169|function|undefined TrySaveGameAndMaybeShowFailureDialog()|
+54d4e0|TMultiplayerMgr::TrySaveGameAndMaybeShowFailureDialog||169|function|undefined TrySaveGameAndMaybeShowFailureDialog()|
 54d620|WrapperFor_ftol_At0054d620||30|function|undefined WrapperFor_ftol_At0054d620()|
 54d650|TLoungeDialog::CreateObject|?CreateObject@TLoungeDialog@@SGPAVCObject@@XZ|83|function|undefined CreateObject()|rtti
 54d6d0|TLoungeDialog::GetRuntimeClass||6|function|undefined GetTLoungeDialogClassNamePointer()|rtti
