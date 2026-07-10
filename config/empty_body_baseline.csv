@@ -20,9 +20,10 @@ src/game/TArmyBoyView.cpp|1|0|1|0
 src/game/TArmyCheckBox.cpp|3|0|1|0
 src/game/TArmyMgr.cpp|5|0|1|0
 src/game/TArmyPlacard.cpp|0|0|1|0
-src/game/TArmyPlayer.cpp|5|0|0|0
+src/game/TArmyPlayer.cpp|4|0|0|0
 src/game/TArmyStack.cpp|3|0|0|0
 src/game/TArmyStackList.cpp|0|0|1|0
+src/game/TArmyTacUnit.cpp|1|0|0|0
 src/game/TArmyUnitLine.cpp|0|0|1|0
 src/game/TArmyUnitView.cpp|2|0|1|0
 src/game/TAutoGreatPower.cpp|2|1|0|0
@@ -243,7 +244,7 @@ src/game/TTacArmyView.cpp|2|0|1|0
 src/game/TTacMapUberPicture.cpp|2|0|1|0
 src/game/TTacNavyToolbar.cpp|2|0|1|0
 src/game/TTacticalAdiosPicture.cpp|2|0|1|0
-src/game/TTacticalBattle.cpp|1|1|0|0
+src/game/TTacticalBattle.cpp|2|1|0|0
 src/game/TTacticalBattleView.cpp|7|0|1|0
 src/game/TTacticalHolaPicture.cpp|1|0|1|0
 src/game/TTacticalPlayer.cpp|2|5|0|0

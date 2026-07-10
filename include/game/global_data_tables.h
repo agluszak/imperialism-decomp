@@ -280,6 +280,12 @@ extern "C" const char s_SourcePathUTacPlayer_00699D84[];
 extern const char* g_pszEmptyTextRef_00669db8;
 extern int g_anFortStrengthPointsByFortLevel[6];
 extern short g_awTacticalMoveCostByCategoryAndTerrain[50];
+extern float g_afTacticalDirectFireFlagByCategoryCode_00669390[10];
+// Requires the TacticalTileHeuristicScorerFn typedef from game/TArmyPlayer.h at the
+// point of use; declared here per the one-home-for-globals rule.
+class TArmyPlayer;
+extern int (TArmyPlayer::* g_apfnTacticalTileHeuristicScorers_006994C0[15])(class TTacticalUnit*,
+                                                                            int);
 extern short g_awTacticalUnitAiClassByUnitType_006693B8[32];
 extern short g_awTacticalUnitActionPointCostByType_006693F8[32];
 extern int g_anTacticalTileHeuristicWeightsByAiState_00699500[19][15];

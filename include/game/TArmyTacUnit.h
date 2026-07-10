@@ -51,6 +51,10 @@ public:
   // `new TArmyTacUnit()`, even on alloc failure -- a real init method, not the ctor).
   // TArmyBattle::ReadFrom duplicates this fill inline. 0x005a5f20, __thiscall.
   void ConstructTArmyTacUnitBaseState(TMilitaryUnit* source);
+
+  // Fills the float projection vector (+0x44..+0x54) from the source unit's five
+  // per-type stat percentages scaled by strength. Body TODO. 0x5a5fe0, __thiscall.
+  void ComputeTacticalProjectionScoreVector();
 };
 
 ASSERT_SIZE(TArmyTacUnit, 0x58);

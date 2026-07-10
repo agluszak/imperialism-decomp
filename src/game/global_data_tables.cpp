@@ -13,6 +13,7 @@ class TControl;
 class TView;
 class TCursorControlPanel;
 
+#include "game/TArmyPlayer.h"
 #include "game/mfc.h"
 #include "game/global_data_tables.h"
 #include "game/sea_geometry.h"
@@ -1091,6 +1092,33 @@ short g_anUnitTypeCombatCategoryByType00669858[32] = {
 short g_awUnitTypeBaseActionPointTable[32] = {40, 60,  40, 40, 110, 90, 50, 30, 40, 60,  40,
                                               40, 110, 90, 60, 30,  50, 70, 50, 40, 110, 90,
                                               80, 30,  40, 40, 50,  90, 90, 90, 0,  0};
+
+// The fifteen per-tile AI heuristic scorers as a member-function-pointer table
+// (single-inheritance MSVC5 member pointers are plain code pointers in .data).
+// GLOBAL: IMPERIALISM 0x006994c0
+TacticalTileHeuristicScorerFn g_apfnTacticalTileHeuristicScorers_006994C0[15] = {
+    &TArmyPlayer::ScoreTacticalTileHoldPositionBonus,                // [0]  0x59d6b0
+    &TArmyPlayer::ScoreTacticalTileFireOpportunityAndTargetApproach, // [1]  0x59d6e0
+    &TArmyPlayer::ScoreTacticalTileSapperWallApproachColumn,         // [2]  0x59d810
+    &TArmyPlayer::ScoreTacticalTileAdjacentEnemyContact,             // [3]  0x59d8a0
+    &TArmyPlayer::ScoreTacticalTileEnemyEngagementExposureCount,     // [4]  0x59d940
+    &TArmyPlayer::ScoreTacticalTileRetreatEdgeRowProximity,          // [5]  0x59da20
+    &TArmyPlayer::ScoreTacticalTileCoverTerrainBonus,                // [6]  0x59dac0
+    &TArmyPlayer::ScoreTacticalTileAdjacentRallyTargetBonus,         // [7]  0x59db00
+    &TArmyPlayer::ScoreTacticalTileDistanceFieldAdvance,             // [8]  0x59dba0
+    &TArmyPlayer::ScoreTacticalTileFriendlyArtillerySpacing,         // [9]  0x59dbe0
+    &TArmyPlayer::ScoreTacticalTileArtilleryFiringLaneColumn,        // [10] 0x59dcd0
+    &TArmyPlayer::ScoreTacticalTileEnemyArtilleryExposureCount,      // [11] 0x59dd40
+    &TArmyPlayer::ScoreTacticalTileEngageableEnemyStandoff,          // [12] 0x59de30
+    &TArmyPlayer::ScoreTacticalTileEnemyArtilleryHuntBonus,          // [13] 0x59dfe0
+    &TArmyPlayer::ScoreTacticalTileEnemyEdgeColumnZoneBonus,         // [14] 0x59e0d0
+};
+
+// Direct-fire flag per unit CATEGORY CODE (.rdata floats; sibling of the 0x669830
+// per-category copy, this one indexed by g_awTacticalUnitCategoryCodeBySlot values).
+// GLOBAL: IMPERIALISM 0x00669390
+float g_afTacticalDirectFireFlagByCategoryCode_00669390[10] = {1.0f, 1.0f, 1.0f, 1.0f, 1.0f,
+                                                               1.0f, 0.0f, 0.0f, 1.0f, 1.0f};
 
 // Per-unit-type tactical AI class (.rdata; duplicate values of the 0x669858 category
 // table at a separate address): 0 infantry, 1 artillery-advance, 2 cavalry-screen,

@@ -25,6 +25,7 @@ g_adwEngineerRailBuildCostByTerrainType|0x6531d8|WARN|64
 g_anResourceTypeRequiredOrderType|0x696ed8|WARN|8
 g_anScenarioNationSetupTable_00698B1A|0x698b1a|WARN|43
 g_apFontFiles|0x694150|WARN|12
+g_apfnTacticalTileHeuristicScorers_006994C0|0x6994c0|WARN|30
 g_apszQuickDrawFontFaceNames|0x695108|WARN|15
 g_awEngineerFortBuildCostByLevel|0x65318a|WARN|16
 g_awTileSpriteVariantOffsetTable3b|0x697000|WARN|16

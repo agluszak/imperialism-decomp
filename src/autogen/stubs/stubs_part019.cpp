@@ -155,22 +155,6 @@ undefined4 RenderTacticalBattleSelectionAndUnitOverlayPass_Impl_At005a42e0(void)
   return 0;
 }
 
-// ghidra_name BuildTacticalDistanceFieldForSide
-// ghidra_proto undefined BuildTacticalDistanceFieldForSide()
-// FUNCTION: IMPERIALISM 0x005a4460
-undefined4 BuildTacticalDistanceFieldForSide(void)
-{
-  return 0;
-}
-
-// ghidra_name TArmyBattle::CreateTArmyBattleInstance
-// ghidra_proto undefined CreateTArmyBattleInstance()
-// FUNCTION: IMPERIALISM 0x005a4690
-undefined4 CreateTArmyBattleInstance(void)
-{
-  return 0;
-}
-
 // ghidra_name TArmyBattle::ConstructTArmyBattleBaseState
 // ghidra_proto undefined ConstructTArmyBattleBaseState()
 // FUNCTION: IMPERIALISM 0x005a4770
@@ -215,14 +199,6 @@ undefined4 CreateTTacticalUnitInstance(void)
 // ghidra_proto undefined ConstructTTacticalUnitBaseState()
 // FUNCTION: IMPERIALISM 0x005a5e30
 undefined4 ConstructTTacticalUnitBaseState(void)
-{
-  return 0;
-}
-
-// ghidra_name TArmyTacUnit::DestructTArmyTacUnitAndMaybeFree
-// ghidra_proto undefined DestructTArmyTacUnitAndMaybeFree()
-// FUNCTION: IMPERIALISM 0x005a5fe0
-undefined4 DestructTArmyTacUnitAndMaybeFree(void)
 {
   return 0;
 }

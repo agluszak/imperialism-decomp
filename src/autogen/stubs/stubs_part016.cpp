@@ -67,14 +67,6 @@ undefined4 WrapperFor_ftol_At00536290(void)
   return 0;
 }
 
-// ghidra_name ComputeDistributionSimilarityScoreFromVectorAndReferenceProfile
-// ghidra_proto undefined ComputeDistributionSimilarityScoreFromVectorAndReferenceProfile()
-// FUNCTION: IMPERIALISM 0x005362c0
-undefined4 ComputeDistributionSimilarityScoreFromVectorAndReferenceProfile(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_AFX_CLASSINIT_At00536470
 // ghidra_proto undefined WrapperFor_AFX_CLASSINIT_At00536470()
 // FUNCTION: IMPERIALISM 0x00536470

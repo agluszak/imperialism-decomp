@@ -38,6 +38,12 @@ void TArmyTacUnit::ConstructTArmyTacUnitBaseState(TMilitaryUnit* source) {
   flag3c = deployedCategory0Flag;
 }
 
+// FUNCTION: IMPERIALISM 0x005a5fe0
+void TArmyTacUnit::ComputeTacticalProjectionScoreVector() {
+  // TODO: port body @ 0x5a5fe0 (fills field44..field54 from
+  // sourceUnit38->GetUnitTypeStatPercent(0..4) scaled by strength).
+}
+
 // FUNCTION: IMPERIALISM 0x005a6120
 int TArmyTacUnit::GetBaseActionPoints() {
   return g_awUnitTypeBaseActionPointTable[unitTypeC];

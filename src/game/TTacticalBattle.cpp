@@ -1677,9 +1677,6 @@ unsigned char TTacticalBattle::ApplyGridColumnSelectionGuard(int tileIndex) {
   return 1;
 }
 
-// Counts the tiles the current side may still deploy onto. The zone test is the
-// ApplyGridColumnSelectionGuard body expanded inline in the original, so it is
-// duplicated here rather than called.
 // FUNCTION: IMPERIALISM 0x005a4240
 int TTacticalBattle::CountFreeDeploymentZoneTilesForCurrentSide() {
   int freeTileCount = 0;
@@ -1757,6 +1754,22 @@ void TTacticalBattle::HandleTacticalCommandTag_depl(TArmyTacUnit* unit, int tile
   if (battleView8 != 0) {
     battleView8->InvalidateTacticalUnitTileRect(unit);
   }
+}
+
+// Counts the tiles the current side may still deploy onto. The zone test is the
+// ApplyGridColumnSelectionGuard body expanded inline in the original, so it is
+// duplicated here rather than called.
+// FUNCTION: IMPERIALISM 0x005a4460
+void TTacticalBattle::BuildTacticalDistanceFieldForSide(char ourSideFlag) {
+  // TODO: port body @ 0x5a4460 (pre-fills tileIntArray30 with -1, then floods).
+  (void)ourSideFlag;
+}
+
+// FUNCTION: IMPERIALISM 0x005a4690
+unsigned char TTacticalBattle::IsTacticalTileAtFortWallSectionSlot(int tileIndex) {
+  // TODO: port body @ 0x5a4690 (row in {5,7,9} and column == battlefieldColumnCount34-6).
+  (void)tileIndex;
+  return 0;
 }
 
 // Walks recordList20 for the tactical unit whose source army unit's TUnit::field_20 id

@@ -41,11 +41,12 @@ public:
   TArmyStack* armyStack28;          // +0x28
   unsigned char pad2c[0x44 - 0x2c]; // +0x2c
   int field44;                      // +0x44 init -1 (0x59b1b0)
-  unsigned char pad48[0x4c - 0x48]; // +0x48
-  int field4C;                      // +0x4c init -1
-  char randomParityByte50;          // +0x50 coin flip at side init (move-first side?)
-  char field51;                     // +0x51 init 0
-  unsigned char pad52[2];           // +0x52
+  // Target-selection mode: == 1 also engages morale-broken (state1c == 1) units.
+  int field48;             // +0x48
+  int field4C;             // +0x4c init -1; cached fort-bombardment target tile for indirect fire
+  char randomParityByte50; // +0x50 coin flip at side init (move-first side?)
+  char field51;            // +0x51 init 0
+  unsigned char pad52[2];  // +0x52
 
   // Both original construction sites (0x5a4790, 0x5a4990) inline the ctor as a bare
   // vptr store.
@@ -71,6 +72,29 @@ public:
   int SelectBestTacticalTargetTileByActionHeuristics(TTacticalUnit* unit,
                                                      int flag); // 0x59e110
 
+  // The fifteen per-tile heuristic scorers driven (via the 0x6994c0 member-function-
+  // pointer table) by SelectBestTacticalTileByWeightedHeuristics; entry i pairs with
+  // weight column i of g_anTacticalTileHeuristicWeightsByAiState_00699500.
+  int ScoreTacticalTileHoldPositionBonus(TTacticalUnit* unit, int tileIndex); // 0x59d6b0
+  int ScoreTacticalTileFireOpportunityAndTargetApproach(TTacticalUnit* unit,
+                                                        int tileIndex);              // 0x59d6e0
+  int ScoreTacticalTileSapperWallApproachColumn(TTacticalUnit* unit, int tileIndex); // 0x59d810
+  int ScoreTacticalTileAdjacentEnemyContact(TTacticalUnit* unit, int tileIndex);     // 0x59d8a0
+  int ScoreTacticalTileEnemyEngagementExposureCount(TTacticalUnit* unit,
+                                                    int tileIndex);                  // 0x59d940
+  int ScoreTacticalTileRetreatEdgeRowProximity(TTacticalUnit* unit, int tileIndex);  // 0x59da20
+  int ScoreTacticalTileCoverTerrainBonus(TTacticalUnit* unit, int tileIndex);        // 0x59dac0
+  int ScoreTacticalTileAdjacentRallyTargetBonus(TTacticalUnit* unit, int tileIndex); // 0x59db00
+  int ScoreTacticalTileDistanceFieldAdvance(TTacticalUnit* unit, int tileIndex);     // 0x59dba0
+  int ScoreTacticalTileFriendlyArtillerySpacing(TTacticalUnit* unit, int tileIndex); // 0x59dbe0
+  int ScoreTacticalTileArtilleryFiringLaneColumn(TTacticalUnit* unit,
+                                                 int tileIndex); // 0x59dcd0
+  int ScoreTacticalTileEnemyArtilleryExposureCount(TTacticalUnit* unit,
+                                                   int tileIndex);                   // 0x59dd40
+  int ScoreTacticalTileEngageableEnemyStandoff(TTacticalUnit* unit, int tileIndex);  // 0x59de30
+  int ScoreTacticalTileEnemyArtilleryHuntBonus(TTacticalUnit* unit, int tileIndex);  // 0x59dfe0
+  int ScoreTacticalTileEnemyEdgeColumnZoneBonus(TTacticalUnit* unit, int tileIndex); // 0x59e0d0
+
   // Builds the side's tactical unit records from the stack's army unit chain and
   // stores the stack into armyStack28. 0x0059b1b0, __thiscall, ret 0x10. Body TODO.
   void InitializeTacticalSideFromArmyUnitList(TArmyStack* stack, int isOurSide, char watchFlag,
@@ -78,3 +102,14 @@ public:
 };
 
 ASSERT_SIZE(TArmyPlayer, 0x54);
+
+// The per-tile heuristic scorer table type (0x6994c0, declared in
+// global_data_tables.h): entry i pairs with weight column i of
+// g_anTacticalTileHeuristicWeightsByAiState_00699500.
+typedef int (TArmyPlayer::*TacticalTileHeuristicScorerFn)(TTacticalUnit* unit, int tileIndex);
+
+// Distribution-similarity score between a five-component vector and a reference
+// profile row (movsx short reads). Body TODO; owned alongside its only tactical
+// caller. 0x005362c0, __cdecl.
+float __cdecl ComputeDistributionSimilarityScoreFromVectorAndReferenceProfile(
+    float* vector, unsigned short* referenceProfile, int count);

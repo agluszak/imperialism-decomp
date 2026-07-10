@@ -1,6 +1,7 @@
 #include "game/TArmyPlayer.h"
 
 #include "game/CIterator.h"
+#include "game/map_overlay_geometry.h"
 #include "game/TArmyStack.h"
 #include "game/TArmyTacUnit.h"
 #include "game/TList.h"
@@ -16,15 +17,33 @@ extern undefined4 GenerateThreadLocalRandom15(void);
 
 using turn_event_dialog::TurnEventDialogNode;
 
-// Sort comparator for the auto-deploy strategies (0x59b070): compares the AI-class
-// priority words of two tactical unit records. Body TODO.
+// FUNCTION: IMPERIALISM 0x005362c0
+float __cdecl ComputeDistributionSimilarityScoreFromVectorAndReferenceProfile(
+    float* vector, unsigned short* referenceProfile, int count) {
+  // TODO: port body @ 0x5362c0.
+  (void)vector;
+  (void)referenceProfile;
+  (void)count;
+  return 0.0f;
+}
+
+// Sort comparator for the auto-deploy strategies: melee (aiClass 0) first, artillery
+// (aiClass 2) last, everything else in between.
 // FUNCTION: IMPERIALISM 0x0059b070
 int __cdecl CompareTacticalCursorEntriesByActionClassPriority(void* a, void* b) {
-  // TODO: port body @ 0x59b070 (AssertValid both, priority {class 0: 1, class 2: 2,
-  // others: 0}).
-  (void)a;
-  (void)b;
-  return 0;
+  // TODO(verify): the original returns in AX only -- the source return type was
+  // likely short; kept int to match the SortEntriesWithComparator slot.
+  short priorityByAiClass[5] = {1, 0, 2, 0, 0};
+  TTacticalUnit* unitA = static_cast<TTacticalUnit*>(a);
+  TTacticalUnit* unitB = static_cast<TTacticalUnit*>(b);
+  unitA->AssertValid();
+  unitB->AssertValid();
+  short priorityA = priorityByAiClass[g_awTacticalUnitAiClassByUnitType_006693B8[unitA->unitTypeC]];
+  short priorityB = priorityByAiClass[g_awTacticalUnitAiClassByUnitType_006693B8[unitB->unitTypeC]];
+  if (priorityA < priorityB) {
+    return 1;
+  }
+  return -(priorityA != priorityB); // neg/sbb idiom: -1 when priorityA > priorityB, else 0
 }
 // SYNTHETIC: IMPERIALISM 0x0059b110
 // TArmyPlayer::CreateObject
@@ -186,10 +205,101 @@ void TArmyPlayer::StartBattle() {
   }
 }
 
+// Prunes the side's unit list down to `maxUnitCount`: moves every record onto
+// secondaryList8 (refreshing its projection-score vector), keeps the first category-9
+// record plus the greedy best-scoring set by the distribution-similarity profile
+// (row: enemy=0, attacker=1, attacker-vs-fort=2), and drops every pruned record from
+// the battle's recordList20.
 // FUNCTION: IMPERIALISM 0x0059b990
 void TArmyPlayer::RecomputeTacticalCursorProjectionScoresAndPruneList(int maxUnitCount) {
-  // TODO: port body @ 0x59b990.
-  (void)maxUnitCount;
+  int profileRowIndex;
+  if (isOurSideFlagC != 0) {
+    profileRowIndex = (battle14->fortLevel49 != 0) + 1;
+  } else {
+    profileRowIndex = 0;
+  }
+
+  // Move every record onto secondaryList8, back to front (ordinals are 1-based).
+  for (int ordinal = unitList4->GetCount(); ordinal > 0; --ordinal) {
+    TArmyTacUnit* record = static_cast<TArmyTacUnit*>(unitList4->GetEntryByOrdinal(ordinal));
+    record->AssertValid();
+    unitList4->RemoveAtOrdinal(ordinal);
+    secondaryList8->AddTail(record);
+    record->ComputeTacticalProjectionScoreVector();
+  }
+
+  int remainingCapacity = maxUnitCount;
+  unsigned char movedCategory9Record = 0;
+  if (remainingCapacity != 0) {
+    CIterator category9Iter(secondaryList8);
+    TArmyTacUnit* category9Record = static_cast<TArmyTacUnit*>(category9Iter.Reset());
+    while (category9Iter.More() != 0) {
+      if (g_awTacticalUnitCategoryCodeBySlot[category9Record->unitTypeC] == 9) {
+        POSITION category9Pos = secondaryList8->listState.Find(category9Record, 0);
+        if (category9Pos != 0) {
+          secondaryList8->listState.RemoveAt(category9Pos);
+        }
+        unitList4->AddTail(category9Record);
+        movedCategory9Record = 1;
+        --remainingCapacity;
+      }
+      category9Record = static_cast<TArmyTacUnit*>(category9Iter.Advance());
+      if (movedCategory9Record != 0) {
+        break; // original stops after the first category-9 record
+      }
+    }
+  }
+
+  float keptScoreVectorSum[5] = {0.0f, 0.0f, 0.0f, 0.0f, 0.0f};
+  if (remainingCapacity != 0) {
+    for (int passesLeft = remainingCapacity; passesLeft != 0; --passesLeft) {
+      int bestOrdinal = 0;
+      float bestScore = 0.0f;
+      // TODO(verify): faithful off-by-one -- the scan starts at ordinal 1 and stops
+      // before GetCount(), so the last entry is never scored; with bestOrdinal left 0,
+      // GetEntryByOrdinal(0) returns 0.
+      for (int candidateOrdinal = 1; candidateOrdinal < secondaryList8->GetCount();
+           ++candidateOrdinal) {
+        TArmyTacUnit* candidate =
+            static_cast<TArmyTacUnit*>(secondaryList8->GetEntryByOrdinal(candidateOrdinal));
+        float* candidateVector = &candidate->field44;
+        int addComponent;
+        for (addComponent = 0; addComponent < 5; ++addComponent) {
+          keptScoreVectorSum[addComponent] += candidateVector[addComponent];
+        }
+        float score = ComputeDistributionSimilarityScoreFromVectorAndReferenceProfile(
+            keptScoreVectorSum, g_Recompute_Nation_Order_LookupTable_00697870 + profileRowIndex * 5,
+            5);
+        if (score > bestScore) {
+          bestScore = score;
+          bestOrdinal = candidateOrdinal;
+        }
+        int subComponent;
+        for (subComponent = 0; subComponent < 5; ++subComponent) {
+          keptScoreVectorSum[subComponent] -= candidateVector[subComponent];
+        }
+      }
+      TArmyTacUnit* keptRecord =
+          static_cast<TArmyTacUnit*>(secondaryList8->GetEntryByOrdinal(bestOrdinal));
+      secondaryList8->RemoveAtOrdinal(bestOrdinal);
+      unitList4->AddTail(keptRecord);
+      float* keptVector = &keptRecord->field44;
+      int keptComponent;
+      for (keptComponent = 0; keptComponent < 5; ++keptComponent) {
+        keptScoreVectorSum[keptComponent] += keptVector[keptComponent];
+      }
+    }
+  }
+
+  // Every record still on secondaryList8 was pruned from the battle roster.
+  CIterator prunedIter(secondaryList8);
+  for (TArmyTacUnit* prunedRecord = static_cast<TArmyTacUnit*>(prunedIter.Reset());
+       prunedIter.More(); prunedRecord = static_cast<TArmyTacUnit*>(prunedIter.Advance())) {
+    POSITION prunedPos = battle14->recordList20->listState.Find(prunedRecord, 0);
+    if (prunedPos != 0) {
+      battle14->recordList20->listState.RemoveAt(prunedPos);
+    }
+  }
 }
 
 // Auto-deploys every unit of this side into the deployment zone (pruning the unit
@@ -305,22 +415,457 @@ void TArmyPlayer::SelectAndApplyTacticalCursorModeProfile(int cursorProfileMode)
   (void)cursorProfileMode;
 }
 
+// Weighted tile chooser for the auto-turn controller: builds the distance field when
+// the advance heuristic (column 8) is weighted, then scores every reachable tile as
+// sum(weight[i] * heuristic[i](unit, tile)), tie-breaking on lower move cost, and
+// writes the per-tile score into battle14->tileIntArray2c.
 // FUNCTION: IMPERIALISM 0x0059d530
 int TArmyPlayer::SelectBestTacticalTileByWeightedHeuristics(TTacticalUnit* unit,
                                                             int* heuristicWeights15) {
-  // TODO: port body @ 0x59d530 (weights the fifteen tile-score heuristics at
-  // 0x59d6b0..0x59e0d0).
-  (void)unit;
-  (void)heuristicWeights15;
-  return -1;
+  int bestTileIndex = -1;
+  int bestScore = -99999;
+  char distanceFieldBuilt = 0;
+  if (heuristicWeights15[8] > 0) {
+    battle14->BuildTacticalDistanceFieldForSide(isOurSideFlagC);
+    distanceFieldBuilt = 1;
+  }
+  for (int tileIndex = 0; tileIndex < battle14->tacticalTileCount3c; ++tileIndex) {
+    int column = tileIndex % 29;
+    if (battle14->tileMoveCostArray24[tileIndex] == -1) {
+      battle14->tileIntArray2c[tileIndex] = 0;
+      continue;
+    }
+    if (distanceFieldBuilt == 0) {
+      // Without the distance field, never pick the outer edge columns.
+      if (column == 0 || column == battle14->battlefieldColumnCount34 - 1) {
+        battle14->tileIntArray2c[tileIndex] = 0;
+        continue;
+      }
+    }
+    int score = 0;
+    for (int heuristicIndex = 0; heuristicIndex < 15; ++heuristicIndex) {
+      if (heuristicWeights15[heuristicIndex] != 0) {
+        score +=
+            (this->*g_apfnTacticalTileHeuristicScorers_006994C0[heuristicIndex])(unit, tileIndex) *
+            heuristicWeights15[heuristicIndex];
+      }
+    }
+    if (score > bestScore ||
+        (score == bestScore &&
+         battle14->tileMoveCostArray24[tileIndex] < battle14->tileMoveCostArray24[bestTileIndex])) {
+      // TODO(verify): faithful -- on the first tie bestTileIndex is still -1 and the
+      // original reads the move-cost word one slot before the array too.
+      bestTileIndex = tileIndex;
+      bestScore = score;
+    }
+    battle14->tileIntArray2c[tileIndex] = score;
+  }
+  return bestTileIndex;
 }
 
+// Heuristic [0]: 100 for the tile the unit already stands on (hold position).
+// FUNCTION: IMPERIALISM 0x0059d6b0
+int TArmyPlayer::ScoreTacticalTileHoldPositionBonus(TTacticalUnit* unit, int tileIndex) {
+  return (unit->tileIndex8 == tileIndex) ? 0x64 : 0;
+}
+
+// Heuristic [1]: 50 when some (active, or morale-broken in field48==1 mode) enemy is
+// engageable from the tile, plus 50-minus-distance toward the current best target tile
+// (skipped for artillery that can already engage).
+// FUNCTION: IMPERIALISM 0x0059d6e0
+int TArmyPlayer::ScoreTacticalTileFireOpportunityAndTargetApproach(TTacticalUnit* unit,
+                                                                   int tileIndex) {
+  // TODO(verify): dead call in the original (result discarded; the compiler kept the
+  // fetched vtable slot in a stack temp and re-called it inside the loop).
+  unit->GetUnitRange();
+  int score = 0;
+  for (int scanTileIndex = 0; score == 0 && scanTileIndex < battle14->tacticalTileCount3c;
+       ++scanTileIndex) {
+    TTacticalUnit* occupant = battle14->tileGrid4[scanTileIndex].occupant4;
+    if (occupant != 0 && occupant->side20 != unit->side20 &&
+        (occupant->state1c == 0 || field48 == 1)) {
+      short categoryCode = g_awTacticalUnitCategoryCodeBySlot[unit->unitTypeC];
+      if (battle14->IsTacticalTargetTileReachableForAction(
+              tileIndex, scanTileIndex,
+              static_cast<char>(static_cast<int>(
+                  g_afTacticalDirectFireFlagByCategoryCode_00669390[categoryCode])),
+              unit->GetUnitRange()) != 0) {
+        score = 0x32;
+      }
+    }
+  }
+  int targetTileIndex = SelectBestTacticalTargetTileByActionHeuristics(unit, 0);
+  if (targetTileIndex != -1) {
+    if (g_awTacticalUnitAiClassByUnitType_006693B8[unit->unitTypeC] != 2 || score == 0) {
+      score += 0x32 - ComputeHexTileDistanceFromIndices(tileIndex, targetTileIndex);
+    }
+  }
+  return score;
+}
+
+// Heuristic [2]: sapper wall-approach cell -- only column 6 scores: 80 (100 when the
+// tile carries a deploy/wall mark), minus 20 for each friendly on the row-neighbor
+// tiles left and right.
+// FUNCTION: IMPERIALISM 0x0059d810
+int TArmyPlayer::ScoreTacticalTileSapperWallApproachColumn(TTacticalUnit* unit, int tileIndex) {
+  if (tileIndex % 29 != 6) {
+    return 0;
+  }
+  TacticalTileRecord* tile = &battle14->tileGrid4[tileIndex];
+  int score = ((tile->deployMark8 != 0) ? 0x14 : 0) + 0x50;
+  TTacticalUnit* rightOccupant = tile[1].occupant4;
+  if (rightOccupant != 0 && rightOccupant->side20 == unit->side20) {
+    score -= 0x14;
+  }
+  TTacticalUnit* leftOccupant = tile[-1].occupant4;
+  if (leftOccupant != 0 && leftOccupant->side20 == unit->side20) {
+    score -= 0x14;
+  }
+  return score;
+}
+
+// Heuristic [3]: 100 when an enemy unit (active, or morale-broken in field48==1 mode)
+// occupies one of the six hex neighbors of the tile.
+// FUNCTION: IMPERIALISM 0x0059d8a0
+int TArmyPlayer::ScoreTacticalTileAdjacentEnemyContact(TTacticalUnit* unit, int tileIndex) {
+  int neighborTiles[6];
+  battle14->ComputeHexNeighborTileIndices_005A0420(tileIndex, neighborTiles);
+  for (int neighborIndex = 0; neighborIndex < 6; ++neighborIndex) {
+    int neighborTileIndex = neighborTiles[neighborIndex];
+    if (neighborTileIndex != -1) {
+      TTacticalUnit* occupant = battle14->tileGrid4[neighborTileIndex].occupant4;
+      if (occupant != 0 && occupant->side20 != unit->side20 &&
+          (occupant->state1c == 0 || field48 == 1)) {
+        return 0x64;
+      }
+    }
+  }
+  return 0;
+}
+
+// Heuristic [4]: how many deployed enemy units could engage this tile.
+// FUNCTION: IMPERIALISM 0x0059d940
+int TArmyPlayer::ScoreTacticalTileEnemyEngagementExposureCount(TTacticalUnit* unit, int tileIndex) {
+  (void)unit;
+  int exposureCount = 0;
+  TList* enemyList;
+  if (isOurSideFlagC != 0) {
+    enemyList = battle14->tacticalPlayer18->unitList4;
+  } else {
+    enemyList = battle14->tacticalPlayer14->unitList4;
+  }
+  CIterator enemyIter(enemyList);
+  for (TTacticalUnit* record = static_cast<TTacticalUnit*>(enemyIter.Reset()); enemyIter.More();
+       record = static_cast<TTacticalUnit*>(enemyIter.Advance())) {
+    if (record->tileIndex8 >= 0) {
+      short categoryCode = g_awTacticalUnitCategoryCodeBySlot[record->unitTypeC];
+      if (battle14->IsTacticalTargetTileReachableForAction(
+              tileIndex, record->tileIndex8,
+              static_cast<char>(static_cast<int>(
+                  g_afTacticalDirectFireFlagByCategoryCode_00669390[categoryCode])),
+              record->GetUnitRange()) != 0) {
+        ++exposureCount;
+      }
+    }
+  }
+  return exposureCount;
+}
+
+// Heuristic [5]: proximity to this side's home/retreat edge row -- which edge is home
+// was coin-flipped into randomParityByte50 at side init; 100 within two rows of it,
+// tapering by (50 * rows-from-far-edge / 15) elsewhere.
+// FUNCTION: IMPERIALISM 0x0059da20
+int TArmyPlayer::ScoreTacticalTileRetreatEdgeRowProximity(TTacticalUnit* unit, int tileIndex) {
+  (void)unit;
+  int row = tileIndex / 29;
+  if (randomParityByte50 != 0) {
+    if (row <= 1) {
+      return 0x64;
+    }
+    return (0xf - row) * 50 / 15;
+  }
+  if (row >= 0xd) {
+    return 0x64;
+  }
+  return row * 50 / 15;
+}
+
+// Heuristic [6]: 100 on cover terrain (terrain codes 1 and 2).
+// FUNCTION: IMPERIALISM 0x0059dac0
+int TArmyPlayer::ScoreTacticalTileCoverTerrainBonus(TTacticalUnit* unit, int tileIndex) {
+  (void)unit;
+  int terrainType = battle14->tileGrid4[tileIndex].terrainType0;
+  if (terrainType == 1 || terrainType == 2) {
+    return 0x64;
+  }
+  return 0;
+}
+
+// Heuristic [7]: 100 when a friendly whose morale dropped below its strength occupies
+// one of the tile's hex neighbors (officer rally magnet).
+// FUNCTION: IMPERIALISM 0x0059db00
+int TArmyPlayer::ScoreTacticalTileAdjacentRallyTargetBonus(TTacticalUnit* unit, int tileIndex) {
+  int neighborTiles[6];
+  battle14->ComputeHexNeighborTileIndices_005A0420(tileIndex, neighborTiles);
+  for (int neighborIndex = 0; neighborIndex < 6; ++neighborIndex) {
+    int neighborTileIndex = neighborTiles[neighborIndex];
+    if (neighborTileIndex != -1) {
+      TArmyTacUnit* occupant =
+          static_cast<TArmyTacUnit*>(battle14->tileGrid4[neighborTileIndex].occupant4);
+      if (occupant != 0 && occupant->side20 == unit->side20 &&
+          occupant->morale34 < occupant->strength4) {
+        return 0x64;
+      }
+    }
+  }
+  return 0;
+}
+
+// Heuristic [8]: advance along the distance field built by
+// BuildTacticalDistanceFieldForSide (100 minus the tile's field value).
+// FUNCTION: IMPERIALISM 0x0059dba0
+int TArmyPlayer::ScoreTacticalTileDistanceFieldAdvance(TTacticalUnit* unit, int tileIndex) {
+  (void)unit;
+  int fieldValue = battle14->tileIntArray30[tileIndex];
+  if (fieldValue != -1) {
+    return 0x64 - fieldValue;
+  }
+  return 0;
+}
+
+// Heuristic [9]: stay near (but not within 2 tiles of) our own artillery -- 0
+// immediately if any friendly artillery is within distance 2, else the best
+// 100-minus-10*distance over all friendly artillery.
+// FUNCTION: IMPERIALISM 0x0059dbe0
+int TArmyPlayer::ScoreTacticalTileFriendlyArtillerySpacing(TTacticalUnit* unit, int tileIndex) {
+  (void)unit;
+  int bestScore = 0;
+  CIterator friendIter(unitList4);
+  for (TTacticalUnit* record = static_cast<TTacticalUnit*>(friendIter.Reset()); friendIter.More();
+       record = static_cast<TTacticalUnit*>(friendIter.Advance())) {
+    if (g_awTacticalUnitAiClassByUnitType_006693B8[record->unitTypeC] == 2) {
+      int distance = ComputeHexTileDistanceFromIndices(tileIndex, record->tileIndex8);
+      if (distance <= 2) {
+        return 0;
+      }
+      int score = 0x64 - distance * 100 / 10;
+      if (score > bestScore) {
+        bestScore = score;
+      }
+    }
+  }
+  return bestScore;
+}
+
+// Heuristic [10]: artillery firing-lane column -- score equals the column index when
+// the tile is unthreatened, at or left of the fort-wall column, and no blocking
+// terrain (code 4) sits between the tile and that column on its row.
+// FUNCTION: IMPERIALISM 0x0059dcd0
+int TArmyPlayer::ScoreTacticalTileArtilleryFiringLaneColumn(TTacticalUnit* unit, int tileIndex) {
+  (void)unit;
+  int column = tileIndex % 29;
+  int wallColumn = battle14->battlefieldColumnCount34 - 6;
+  if (column < wallColumn) {
+    TacticalTileRecord* scanTile = &battle14->tileGrid4[tileIndex];
+    for (int scanColumn = column; scanColumn < wallColumn; ++scanColumn, ++scanTile) {
+      if (scanTile->terrainType0 == 4) {
+        return 0;
+      }
+    }
+  }
+  if (battle14->tileThreatLevelArray28[tileIndex] != 0) {
+    return 0;
+  }
+  if (column > wallColumn) {
+    return 0;
+  }
+  return column;
+}
+
+// Heuristic [11]: how many deployed enemy artillery units could engage this tile.
+// FUNCTION: IMPERIALISM 0x0059dd40
+int TArmyPlayer::ScoreTacticalTileEnemyArtilleryExposureCount(TTacticalUnit* unit, int tileIndex) {
+  (void)unit;
+  int exposureCount = 0;
+  TList* enemyList;
+  if (isOurSideFlagC != 0) {
+    enemyList = battle14->tacticalPlayer18->unitList4;
+  } else {
+    enemyList = battle14->tacticalPlayer14->unitList4;
+  }
+  CIterator enemyIter(enemyList);
+  for (TTacticalUnit* record = static_cast<TTacticalUnit*>(enemyIter.Reset()); enemyIter.More();
+       record = static_cast<TTacticalUnit*>(enemyIter.Advance())) {
+    if (record->tileIndex8 >= 0 &&
+        g_awTacticalUnitAiClassByUnitType_006693B8[record->unitTypeC] == 2) {
+      short categoryCode = g_awTacticalUnitCategoryCodeBySlot[record->unitTypeC];
+      if (battle14->IsTacticalTargetTileReachableForAction(
+              tileIndex, record->tileIndex8,
+              static_cast<char>(static_cast<int>(
+                  g_afTacticalDirectFireFlagByCategoryCode_00669390[categoryCode])),
+              record->GetUnitRange()) != 0) {
+        ++exposureCount;
+      }
+    }
+  }
+  return exposureCount;
+}
+
+// Heuristic [12]: standoff scorer -- 50 plus the distance to the NEAREST active enemy
+// engageable from the tile (+5 when the current best target tile is also engageable);
+// when nothing is engageable, 50 minus the distance to the best target tile.
+// FUNCTION: IMPERIALISM 0x0059de30
+int TArmyPlayer::ScoreTacticalTileEngageableEnemyStandoff(TTacticalUnit* unit, int tileIndex) {
+  int range = unit->GetUnitRange();
+  int score = 0;
+  int targetTileIndex = SelectBestTacticalTargetTileByActionHeuristics(unit, 0);
+  for (int scanTileIndex = 0; scanTileIndex < battle14->tacticalTileCount3c; ++scanTileIndex) {
+    TTacticalUnit* occupant = battle14->tileGrid4[scanTileIndex].occupant4;
+    if (occupant != 0 && occupant->side20 != unit->side20 && occupant->state1c == 0) {
+      short categoryCode = g_awTacticalUnitCategoryCodeBySlot[unit->unitTypeC];
+      if (battle14->IsTacticalTargetTileReachableForAction(
+              tileIndex, scanTileIndex,
+              static_cast<char>(static_cast<int>(
+                  g_afTacticalDirectFireFlagByCategoryCode_00669390[categoryCode])),
+              range) != 0) {
+        int candidateScore = ComputeHexTileDistanceFromIndices(tileIndex, scanTileIndex) + 0x32;
+        if (score == 0 || candidateScore < score) {
+          score = candidateScore;
+        }
+      }
+    }
+  }
+  if (score > 0) {
+    short bonusCategoryCode = g_awTacticalUnitCategoryCodeBySlot[unit->unitTypeC];
+    if (battle14->IsTacticalTargetTileReachableForAction(
+            tileIndex, targetTileIndex,
+            static_cast<char>(static_cast<int>(
+                g_afTacticalDirectFireFlagByCategoryCode_00669390[bonusCategoryCode])),
+            range) != 0) {
+      score += 5;
+    }
+    if (score > 0) {
+      return score;
+    }
+  }
+  if (targetTileIndex != -1) {
+    return 0x32 - ComputeHexTileDistanceFromIndices(tileIndex, targetTileIndex);
+  }
+  return 0;
+}
+
+// Heuristic [13]: 100 when some active enemy artillery unit is engageable from the
+// tile (artillery-hunt magnet).
+// FUNCTION: IMPERIALISM 0x0059dfe0
+int TArmyPlayer::ScoreTacticalTileEnemyArtilleryHuntBonus(TTacticalUnit* unit, int tileIndex) {
+  int range = unit->GetUnitRange();
+  for (int scanTileIndex = 0; scanTileIndex < battle14->tacticalTileCount3c; ++scanTileIndex) {
+    TTacticalUnit* occupant = battle14->tileGrid4[scanTileIndex].occupant4;
+    if (occupant != 0 && occupant->side20 != unit->side20 && occupant->state1c == 0 &&
+        g_awTacticalUnitAiClassByUnitType_006693B8[occupant->unitTypeC] == 2) {
+      short categoryCode = g_awTacticalUnitCategoryCodeBySlot[unit->unitTypeC];
+      if (battle14->IsTacticalTargetTileReachableForAction(
+              tileIndex, scanTileIndex,
+              static_cast<char>(static_cast<int>(
+                  g_afTacticalDirectFireFlagByCategoryCode_00669390[categoryCode])),
+              range) != 0) {
+        return 0x64;
+      }
+    }
+  }
+  return 0;
+}
+
+// Heuristic [14]: 100 inside the enemy-edge column zone (column beyond
+// battlefieldColumnCount34 - 5).
+// FUNCTION: IMPERIALISM 0x0059e0d0
+int TArmyPlayer::ScoreTacticalTileEnemyEdgeColumnZoneBonus(TTacticalUnit* unit, int tileIndex) {
+  (void)unit;
+  return (tileIndex % 29 > battle14->battlefieldColumnCount34 - 5) ? 0x64 : 0;
+}
+
+// Picks the tile of the most valuable enemy target: base value by unit category, plus
+// (strength, or 500-minus-morale in field48==1 mode), doubled for adjacent entrenched
+// targets and again for adjacent targets of aiClass-1 attackers. When no target exists
+// and this attacker-side unit is indirect-fire with the fort still intact, falls back
+// to a cached random fort-wall-column bombardment tile (field4C), rerolled off the
+// wall gun-slot rows.
 // FUNCTION: IMPERIALISM 0x0059e110
 int TArmyPlayer::SelectBestTacticalTargetTileByActionHeuristics(TTacticalUnit* unit, int flag) {
-  // TODO: port body @ 0x59e110.
-  (void)unit;
-  (void)flag;
-  return -1;
+  int bestTargetTileIndex = -1;
+  int bestTargetScore = 0;
+  TList* enemyList;
+  if (isOurSideFlagC != 0) {
+    enemyList = battle14->tacticalPlayer18->unitList4;
+  } else {
+    enemyList = battle14->tacticalPlayer14->unitList4;
+  }
+  int neighborTiles[6];
+  battle14->ComputeHexNeighborTileIndices_005A0420(unit->tileIndex8, neighborTiles);
+
+  CIterator enemyIter(enemyList);
+  for (TArmyTacUnit* record = static_cast<TArmyTacUnit*>(enemyIter.Reset()); enemyIter.More();
+       record = static_cast<TArmyTacUnit*>(enemyIter.Advance())) {
+    // Valid targets: active units, plus morale-broken ones in field48==1 mode.
+    if (!(field48 == 1 && record->state1c == 1) && record->state1c != 0) {
+      continue;
+    }
+    if (flag != 0) { // TODO(verify): read as a byte in the original (param likely char)
+      short reachCategoryCode = g_awTacticalUnitCategoryCodeBySlot[unit->unitTypeC];
+      if (battle14->IsTacticalTargetTileReachableForAction(
+              unit->tileIndex8, record->tileIndex8,
+              static_cast<char>(static_cast<int>(
+                  g_afTacticalDirectFireFlagByCategoryCode_00669390[reachCategoryCode])),
+              unit->GetUnitRange()) == 0) {
+        continue;
+      }
+    }
+    int targetValueByCategoryCode[10] = {0x1f4, 0x1f4, 0x1f4, 0x1f4, 0x258,
+                                         0x2bc, 0x320, 0x384, 0x64,  0x190};
+    int score = targetValueByCategoryCode[g_awTacticalUnitCategoryCodeBySlot[record->unitTypeC]];
+    if (field48 == 1) {
+      score += 0x1f4 - record->morale34;
+    } else {
+      score += record->strength4;
+    }
+    int recordTileIndex = record->tileIndex8;
+    char adjacent = 0;
+    for (int neighborIndex = 0; neighborIndex < 6; ++neighborIndex) {
+      if (recordTileIndex == neighborTiles[neighborIndex]) {
+        adjacent = 1;
+      }
+    }
+    if (adjacent != 0) {
+      if (battle14->tileGrid4[recordTileIndex].deployMark8 == 1) {
+        score += score; // entrenched adjacent target: double
+      }
+      if (g_awTacticalUnitAiClassByUnitType_006693B8[unit->unitTypeC] == 1) {
+        score += score; // aiClass-1 attacker prefers adjacent targets: double again
+      }
+    }
+    if (bestTargetTileIndex == -1 || score > bestTargetScore) {
+      bestTargetTileIndex = recordTileIndex;
+      bestTargetScore = score;
+    }
+  }
+
+  if (bestTargetTileIndex == -1 && unit->side20 == 0 &&
+      g_afTacticalDirectFireFlagByCategoryCode_00669390
+              [g_awTacticalUnitCategoryCodeBySlot[unit->unitTypeC]] == 0.0f &&
+      battle14->IsTacticalSideCategoryCoverageIncompleteOrFlagOff() == 0) {
+    if (field4C == -1) {
+      // Roll a fort-wall-column tile (rows 1..13; column = columnCount-6 + one full
+      // row stride), rerolling while it lands on a wall gun-slot row (5/7/9).
+      int rolledTileIndex;
+      do {
+        rolledTileIndex = (static_cast<int>(GenerateThreadLocalRandom15()) % 0xd) * 29 +
+                          battle14->battlefieldColumnCount34 + 0x17;
+        field4C = rolledTileIndex;
+      } while (battle14->IsTacticalTileAtFortWallSectionSlot(rolledTileIndex) != 0);
+    }
+    bestTargetTileIndex = field4C;
+  }
+  return bestTargetTileIndex;
 }
 
 // FUNCTION: IMPERIALISM 0x0059e3e0

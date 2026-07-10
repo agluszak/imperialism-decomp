@@ -183,6 +183,12 @@ public:
   // attacker category's direct-fire flag). Body TODO. 0x5a3d30, ret 0x10.
   unsigned char IsTacticalTargetTileReachableForAction(int attackerTileIndex, int targetTileIndex,
                                                        char directFireFlag, int range);
+  // Builds the per-tile distance field into tileIntArray30 for the given side
+  // (consumed by the AI advance heuristic). Body TODO. 0x5a4460.
+  void BuildTacticalDistanceFieldForSide(char ourSideFlag);
+  // Whether the tile sits on a fort-wall gun-slot row (5/7/9) at the wall column.
+  // Body TODO. 0x5a4690.
+  unsigned char IsTacticalTileAtFortWallSectionSlot(int tileIndex);
   // Deployment-zone queries (bodies TODO). 0x5a4240 / 0x5a41c0 / 0x5a4330.
   int CountFreeDeploymentZoneTilesForCurrentSide();
   unsigned char ApplyGridColumnSelectionGuard(int tileIndex);

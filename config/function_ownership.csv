@@ -2724,6 +2724,7 @@ address|target_cpp|ownership|note
 5357d0|src/game/TDefendProvinceMission.cpp|manual|marker_sync
 535820|src/game/TMission.cpp|manual|marker_sync
 5358a0|src/game/TMission.cpp|manual|marker_sync
+5362c0|src/game/TArmyPlayer.cpp|manual|marker_sync
 536390|src/game/TNavyMission.cpp|manual|marker_sync
 536450|src/game/TNavyMission.cpp|manual|name_paired_no_marker
 5364c0|src/game/TNavyMission.cpp|manual|marker_sync
@@ -4051,6 +4052,21 @@ address|target_cpp|ownership|note
 59c3c0|src/game/TArmyPlayer.cpp|manual|marker_sync
 59c440|src/game/TArmyPlayer.cpp|manual|marker_sync
 59d530|src/game/TArmyPlayer.cpp|manual|marker_sync
+59d6b0|src/game/TArmyPlayer.cpp|manual|marker_sync
+59d6e0|src/game/TArmyPlayer.cpp|manual|marker_sync
+59d810|src/game/TArmyPlayer.cpp|manual|marker_sync
+59d8a0|src/game/TArmyPlayer.cpp|manual|marker_sync
+59d940|src/game/TArmyPlayer.cpp|manual|marker_sync
+59da20|src/game/TArmyPlayer.cpp|manual|marker_sync
+59dac0|src/game/TArmyPlayer.cpp|manual|marker_sync
+59db00|src/game/TArmyPlayer.cpp|manual|marker_sync
+59dba0|src/game/TArmyPlayer.cpp|manual|marker_sync
+59dbe0|src/game/TArmyPlayer.cpp|manual|marker_sync
+59dcd0|src/game/TArmyPlayer.cpp|manual|marker_sync
+59dd40|src/game/TArmyPlayer.cpp|manual|marker_sync
+59de30|src/game/TArmyPlayer.cpp|manual|marker_sync
+59dfe0|src/game/TArmyPlayer.cpp|manual|marker_sync
+59e0d0|src/game/TArmyPlayer.cpp|manual|marker_sync
 59e110|src/game/TArmyPlayer.cpp|manual|marker_sync
 59e3e0|src/game/TArmyPlayer.cpp|manual|marker_sync
 59e4f0|src/game/TArmyPlayer.cpp|manual|marker_sync
@@ -4119,6 +4135,8 @@ address|target_cpp|ownership|note
 5a4240|src/game/TTacticalBattle.cpp|manual|marker_sync
 5a4330|src/game/TTacticalBattle.cpp|manual|marker_sync
 5a4370|src/game/TTacticalBattle.cpp|manual|marker_sync
+5a4460|src/game/TTacticalBattle.cpp|manual|marker_sync
+5a4690|src/game/TTacticalBattle.cpp|manual|marker_sync
 5a4710|src/game/TArmyBattle.cpp|manual|marker_sync
 5a4750|src/game/TArmyBattle.cpp|manual|marker_sync
 5a4790|src/game/TArmyBattle.cpp|manual|marker_sync
@@ -4149,6 +4167,7 @@ address|target_cpp|ownership|note
 5a5ed0|src/game/TArmyTacUnit.cpp|manual|marker_sync
 5a5f00|src/game/TArmyTacUnit.cpp|manual|marker_sync
 5a5f20|src/game/TArmyTacUnit.cpp|manual|marker_sync
+5a5fe0|src/game/TArmyTacUnit.cpp|manual|marker_sync
 5a6120|src/game/TArmyTacUnit.cpp|manual|marker_sync
 5a6140|src/game/TArmyTacUnit.cpp|manual|marker_sync
 5a6180|src/game/TArmyTacUnit.cpp|manual|marker_sync
