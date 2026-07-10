@@ -170,4 +170,6 @@ public:
   void CenterViewportAroundGridIndexAndSnap(int tileIndex);        // 0x5a8ac0
   void SpawnTacticalUiMarkerAtUnitTile();                          // 0x5a9bb0
   void TriggerTacticalUiUpdate2711();                              // 0x5a9cc0
+  // Writes the on-screen RECT of a bare hex tile (no unit growth). 0x5a87d0.
+  void ComputeTacticalHexTileScreenRect(RECT* rectOut, int tileIndex);
 };

@@ -22,8 +22,8 @@ public:
   // slot 0x0b OrphanRetStub_0059ad90 inherited unchanged (0x59ad90)
   // slot 0x0c TArmyTacUnit_VtblSlot00 inherited unchanged (0x59adb0)
   // slot 0x0d OrphanRetStub_0059add0 inherited unchanged (0x59edd0)
-  // slot 0x0e Helper_Uses_FindListNodeByKeyFromNodeOrHead_At0059afa0 inherited unchanged (0x59ee60)
-  // slot 0x0f WrapperFor_AddHead_At0059afe0 inherited unchanged (0x59eea0)
+  // slot 0x0e RemoveTacticalUnitFromUnitList inherited unchanged (0x59ee60)
+  // slot 0x0f AddTacticalUnitToUnitListHead inherited unchanged (0x59eea0)
   // slot 0x10 TArmyTacUnit_VtblSlot04 inherited unchanged (0x59adf0)
   // slot 0x11 OrphanRetStub_0059ae10 inherited unchanged (0x59ae10)
   virtual undefined ConstructTNavyHumanPlayerBaseState(); // slot 0x12 0x59efc0

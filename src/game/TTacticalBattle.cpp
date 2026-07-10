@@ -366,29 +366,9 @@ void TTacticalBattle::PropagateTileAccessibilityStrengthLevels(TTacticalUnit* un
   }
 }
 
-undefined TTacticalBattle::WrapperFor_thunk_ComputeHexNeighborTileIndices_At005a1400(
-    undefined4 param_1, int param_2, char param_3) {
-  return 0;
-}
-
-undefined
-TTacticalBattle::MoveTacticalUnitAndQueueEvent232AIfNoAdjacentReachableTarget(int param_1,
-                                                                              undefined4 param_2) {
-  return 0;
-}
-
-undefined TTacticalBattle::ExecuteTacticalActionAndQueueEventIfNoAdjacentValidTarget(int param_1) {
-  return 0;
-}
-
-undefined TTacticalBattle::EvaluateAndResolveTacticalActionAgainstTileOccupant(int* param_1,
-                                                                               int param_2) {
-  return 0;
-}
-
-undefined TTacticalBattle::OrphanCallChain_C4_I30_005a2700(int param_1) {
-  return 0;
-}
+// Whether either of the two neighbor tiles flanking hex direction `hexDirection`
+// around `tileIndex` (direction+1 and direction-1, wrapping 0..5) is occupied by a
+// unit of the other side. `side` is the friendly side code (0/1).
 
 // Six hex neighbors of tileIndex into outNeighborTiles6[0..5], -1 = off-grid.
 // Order: [0] up-right, [1] right, [2] down-right, [3] down-left, [4] left, [5] up-left
@@ -483,6 +463,42 @@ void TTacticalBattle::SetCurrentTacticalUnitSelection(TTacticalUnit* unit, char 
   unit->selectedFlag18 = 1;
   ApplyTacticalDoneSelectionAndRefreshUi(unit);
 }
+// FUNCTION: IMPERIALISM 0x005a1400
+unsigned char TTacticalBattle::HasEnemyUnitOnTilesFlankingHexDirection(int tileIndex,
+                                                                       int hexDirection,
+                                                                       char side) {
+  int neighborTiles[6];
+  unsigned char foundEnemy = 0;
+  ComputeHexNeighborTileIndices_005A0420(tileIndex, neighborTiles);
+  int clockwiseDirection = (hexDirection == 5) ? 0 : hexDirection + 1;
+  int counterDirection = (hexDirection == 0) ? 5 : hexDirection - 1;
+  int clockwiseTile = neighborTiles[clockwiseDirection];
+  if (clockwiseTile != -1) {
+    TTacticalUnit* clockwiseOccupant = tileGrid4[clockwiseTile].occupant4;
+    if (clockwiseOccupant != 0 && clockwiseOccupant->side20 != side) {
+      foundEnemy = 1;
+    }
+  }
+  if (foundEnemy == 0) {
+    int counterTile = neighborTiles[counterDirection];
+    if (counterTile != -1) {
+      TTacticalUnit* counterOccupant = tileGrid4[counterTile].occupant4;
+      if (counterOccupant != 0 && counterOccupant->side20 != side) {
+        foundEnemy = 1;
+      }
+    }
+  }
+  return foundEnemy;
+}
+
+// Non-virtual action helpers dispatched above; bodies not yet ported.
+
+// FUNCTION: IMPERIALISM 0x005a1520
+void TTacticalBattle::MoveTacticalUnitTowardTile(TTacticalUnit* unit, int targetTileIndex) {
+  // TODO: port body @ 0x5a1520.
+  (void)unit;
+  (void)targetTileIndex;
+}
 
 // Moves a unit from one battle-grid tile to another: multiplayer 'move' echo, clear the
 // source tile's occupant, optionally animate (suppressed when field4c == 7), re-anchor
@@ -520,6 +536,250 @@ void TTacticalBattle::MoveTacticalUnitBetweenTiles(TTacticalUnit* unit, int from
   if (battleView8 != 0) {
     battleView8->SpawnTacticalUiMarkerAtUnitTile();
   }
+}
+
+// Executes the move (pathing the unit toward the target tile), clears the follow-up
+// selection latch for category-7 (siege-gun) units, then ends the action round: unless
+// the unit is still alive, the battle undecided, and the selected unit either has a
+// valid follow-up target or an adjacent tile still reachable within its remaining
+// action points, queue the 0x232a follow-up command.
+// FUNCTION: IMPERIALISM 0x005a1bd0
+void TTacticalBattle::MoveTacticalUnitAndQueueEvent232AIfNoAdjacentReachableTarget(
+    TTacticalUnit* unit, int targetTileIndex) {
+  MoveTacticalUnitTowardTile(unit, targetTileIndex);
+  if (g_awTacticalUnitCategoryCodeBySlot[unit->unitTypeC] == 7) {
+    unit->selectedFlag18 = 0;
+  }
+  if (unit->state1c == 0 && field44 == 0) {
+    if (unit->selectedFlag18 != 0) {
+      if (HasValidTacticalFollowupTargetForCurrentAction() != 0) {
+        return;
+      }
+    }
+    int neighborTiles[6];
+    ComputeHexNeighborTileIndices_005A0420(selectedUnit1c->tileIndex8, neighborTiles);
+    int direction = 0;
+    int* neighborCursor = neighborTiles;
+    for (; direction < 6; ++direction, ++neighborCursor) {
+      int neighborTile = *neighborCursor;
+      if (neighborTile != -1) {
+        short moveCost = tileMoveCostArray24[neighborTile];
+        if (moveCost != -1 && moveCost <= selectedUnit1c->actionPoints28) {
+          return; // the selected unit can still reach an adjacent tile
+        }
+      }
+    }
+  }
+  QueueTacticalEventPacket232A();
+}
+
+// Resolves the action against the target tile (virtual slot 0x10), then ends the
+// action round; category-4/5 (cavalry) attackers with an adjacent tile still reachable
+// keep the round open unless the battle outcome (field44) is already decided.
+// FUNCTION: IMPERIALISM 0x005a1ca0
+void TTacticalBattle::ExecuteTacticalActionAndQueueEventIfNoAdjacentValidTarget(
+    TTacticalUnit* unit, int targetTileIndex) {
+  EvaluateAndResolveTacticalActionAgainstTileOccupant(unit, targetTileIndex);
+  short categoryCode = g_awTacticalUnitCategoryCodeBySlot[unit->unitTypeC];
+  if (categoryCode == 4 || categoryCode == 5) {
+    int neighborTiles[6];
+    ComputeHexNeighborTileIndices_005A0420(selectedUnit1c->tileIndex8, neighborTiles);
+    int direction = 0;
+    int* neighborCursor = neighborTiles;
+    for (; direction < 6; ++direction, ++neighborCursor) {
+      int neighborTile = *neighborCursor;
+      if (neighborTile != -1) {
+        short moveCost = tileMoveCostArray24[neighborTile];
+        if (moveCost != -1 && moveCost <= selectedUnit1c->actionPoints28) {
+          // The cavalry unit can still move on: only close the round when the battle
+          // outcome is already decided.
+          if (field44 != 0) {
+            QueueTacticalEventPacket232A();
+          }
+          return;
+        }
+      }
+    }
+    QueueTacticalEventPacket232A();
+    return;
+  }
+  QueueTacticalEventPacket232A();
+}
+
+// FUNCTION: IMPERIALISM 0x005a1d70
+unsigned char TTacticalBattle::HasValidTacticalFollowupTargetForCurrentAction() {
+  // TODO: port body @ 0x5a1d70.
+  return 0;
+}
+
+// Damage resolution for a fire/melee action from attackerUnit against targetTileIndex.
+// Computes attack power from strength, quality (+10%/level), per-type base power, the
+// melee multiplier when adjacent (unless an intact fort wall blocks contact), and the
+// attacker-tile terrain modifier. Firing at an unoccupied intact wall tile erodes the
+// wall (0.1% of attack power) and plays the hit effect. Otherwise damage is scaled by
+// the defender's terrain/type modifiers, wall cover (indirect-fire categories 6/7 also
+// erode a wall crossed by the firing line), and trench cover beyond hex distance 1;
+// morale damage is additionally scaled by the defender side's best living leader
+// (2.0 down to 1.8 - 0.2*quality). Melee against artillery (defender category 6/7) by
+// category <4 attackers whose morale damage breaks the defender's morale sets the
+// capture effect code. Ends by dispatching ApplyTacticalActionEffectsAndMaybeRemoveUnit
+// and clearing the defender-side player's field20.
+// FUNCTION: IMPERIALISM 0x005a1ee0
+void TTacticalBattle::EvaluateAndResolveTacticalActionAgainstTileOccupant(
+    TTacticalUnit* attackerUnit, int targetTileIndex) {
+  TTacticalUnit* defenderUnit = tileGrid4[targetTileIndex].occupant4;
+  if (defenderUnit != 0) {
+    defenderUnit->AssertValid();
+  }
+
+  // Firing at an intact fort-wall tile (deployMark8 > 1 = wall state) with no occupant
+  // attacks the wall itself.
+  unsigned char fortWallTargeted;
+  if (tileGrid4[targetTileIndex].deployMark8 > 1 &&
+      fortStrengthPoints54[targetTileIndex / 29 / 2] > 0 && defenderUnit == 0) {
+    fortWallTargeted = 1;
+  } else {
+    fortWallTargeted = 0;
+  }
+
+  int fortWallTileOnLine =
+      FindFortWallTileCrossedByFiringLine(targetTileIndex, attackerUnit->tileIndex8);
+
+  unsigned char meleeAdjacent = 0;
+  {
+    int neighborTiles[6];
+    ComputeHexNeighborTileIndices_005A0420(attackerUnit->tileIndex8, neighborTiles);
+    int direction = 0;
+    int* neighborCursor = neighborTiles;
+    for (; direction < 6; ++direction, ++neighborCursor) {
+      if (*neighborCursor == targetTileIndex) {
+        meleeAdjacent = 1;
+        break;
+      }
+    }
+  }
+  if (fortWallTileOnLine != 0 && tileGrid4[fortWallTileOnLine].deployMark8 > 1 &&
+      fortStrengthPoints54[fortWallTileOnLine / 29 / 2] > 0) {
+    meleeAdjacent = 0; // an intact wall section between the tiles blocks melee contact
+  }
+
+  // Attack power. Original FP order: (1.0 - quality * -0.1) * basePower[type]
+  // [* meleeMul[cat] when adjacent], then strength * that, then * terrainMod.
+  short attackerCategory;
+  float attackPower;
+  {
+    double strengthFactor = 1.0 - attackerUnit->qualityLevel10 * -0.1; // = 1 + 0.1*quality
+    strengthFactor =
+        strengthFactor * g_afTacticalBaseAttackPowerByUnitType[attackerUnit->unitTypeC];
+    if (meleeAdjacent != 0) {
+      strengthFactor = strengthFactor *
+                       g_afTacticalMeleeMultiplierByCategory
+                           [g_awTacticalUnitCategoryCodeBySlot[attackerUnit->unitTypeC]];
+    }
+    attackerCategory = g_awTacticalUnitCategoryCodeBySlot[attackerUnit->unitTypeC];
+    attackPower =
+        (float)(attackerUnit->strength4 * strengthFactor *
+                g_afTacticalAttackTerrainModifierByCategory
+                    [attackerCategory * 5 + tileGrid4[attackerUnit->tileIndex8].terrainType0]);
+  }
+
+  if (fortWallTargeted != 0) {
+    // Wall attack: erode the wall's strength pool and play the hit effect.
+    ConsumeFortStrengthPointsAndInvalidateIfDepleted(fortWallTileOnLine,
+                                                     (int)(0.001f * attackPower));
+    if (battleView8 != 0) {
+      battleView8->CenterViewportAroundGridIndexAndSnap(targetTileIndex);
+      g_pSfxPlaybackSystem->PlaySoundEffect(
+          g_awTacticalFireSfxTokenByUnitType[attackerUnit->unitTypeC], 0, 1);
+      RECT effectRect;
+      battleView8->ComputeTacticalHexTileScreenRect(&effectRect, targetTileIndex);
+      effectRect.top -= 0x14;
+      battleView8->RunOneTimeAnimationModalWaitAndInvalidateCityDialog(&effectRect, 0xf98, 6,
+                                                                       targetTileIndex, 2);
+    }
+    return;
+  }
+
+  short defenderCategory = g_awTacticalUnitCategoryCodeBySlot[defenderUnit->unitTypeC];
+  float damage =
+      g_afTacticalDefenseTerrainModifierByCategory[defenderCategory * 5 +
+                                                   tileGrid4[targetTileIndex].terrainType0] *
+      g_afTacticalDamageScaleByUnitType[defenderUnit->unitTypeC] * attackPower;
+
+  if (fortWallTileOnLine != 0 && tileGrid4[fortWallTileOnLine].deployMark8 > 1 &&
+      fortStrengthPoints54[fortWallTileOnLine / 29 / 2] > 0) {
+    // Shot crosses an intact wall: indirect-fire categories (table value 0.0 for
+    // categories 6/7) erode it; the defender gets wall cover (indexed by wall state).
+    if (g_afTacticalDirectFireFlagByCategory[attackerCategory] == 0.0f) {
+      ConsumeFortStrengthPointsAndInvalidateIfDepleted(fortWallTileOnLine,
+                                                       (int)(0.001f * attackPower));
+    }
+    defenderCategory = g_awTacticalUnitCategoryCodeBySlot[defenderUnit->unitTypeC];
+    damage = damage *
+             g_afTacticalCoverDamageModifierByCategory[defenderCategory * 5 +
+                                                       tileGrid4[fortWallTileOnLine].deployMark8];
+  }
+
+  if (tileGrid4[targetTileIndex].deployMark8 == 1) {
+    // Trench cover applies beyond point-blank range (staggered-grid hex distance > 1;
+    // x = doubled column + row parity).
+    int attackerRow = attackerUnit->tileIndex8 / 29;
+    int attackerX = (attackerRow & 1) + attackerUnit->tileIndex8 % 29 * 2;
+    int targetRow = targetTileIndex / 29;
+    int targetX = (targetRow & 1) + targetTileIndex % 29 * 2;
+    if (targetX < attackerX) {
+      targetX = attackerX * 2 - targetX;
+    }
+    if (targetRow < attackerRow) {
+      targetRow = attackerRow * 2 - targetRow;
+    }
+    int rowDelta = targetRow - attackerRow;
+    int extraColumns = targetX - rowDelta - attackerX;
+    int hexDistance = (extraColumns > 0) ? rowDelta + extraColumns / 2 : rowDelta;
+    if (hexDistance > 1) {
+      damage = damage * g_afTacticalCoverDamageModifierByCategory[defenderCategory * 5 + 1];
+    }
+  }
+
+  // Defender-side leadership: lowest (best) morale-damage multiplier from living
+  // leader units (unit type >= 0x1b), default 2.0.
+  float leaderMoraleMultiplier = 2.0f;
+  {
+    TTacticalPlayer* defenderPlayer =
+        (defenderUnit->side20 == 0) ? tacticalPlayer14 : tacticalPlayer18;
+    CIterator leaderIter(defenderPlayer->unitList4);
+    for (TTacticalUnit* leaderUnit = static_cast<TTacticalUnit*>(leaderIter.Reset());
+         leaderIter.More(); leaderUnit = static_cast<TTacticalUnit*>(leaderIter.Advance())) {
+      if (leaderUnit->unitTypeC >= 0x1b && leaderUnit->state1c == 0) {
+        double leaderValue = 2.0 - leaderUnit->qualityLevel10 * 0.2 - 0.2;
+        if (leaderValue < leaderMoraleMultiplier) {
+          leaderMoraleMultiplier = (float)leaderValue;
+        }
+      }
+    }
+  }
+  float moraleDamage = leaderMoraleMultiplier * damage;
+
+  // Melee overrun of artillery: adjacent attack, defender category 6/7, attacker
+  // category < 4, and the morale damage breaks the defender's morale -> capture code.
+  // (morale34 is on the army slice; this battle-side resolution path is the army branch.)
+  unsigned char captureEffectCode;
+  short overrunDefenderCategory = g_awTacticalUnitCategoryCodeBySlot[defenderUnit->unitTypeC];
+  if (meleeAdjacent != 0 && (overrunDefenderCategory == 6 || overrunDefenderCategory == 7) &&
+      g_awTacticalUnitCategoryCodeBySlot[attackerUnit->unitTypeC] < 4 &&
+      static_cast<TArmyTacUnit*>(defenderUnit)->morale34 < moraleDamage) {
+    captureEffectCode = 1;
+  } else {
+    captureEffectCode = 0;
+  }
+
+  attackerUnit->AssertValid();
+  ApplyTacticalActionEffectsAndMaybeRemoveUnit(attackerUnit, defenderUnit, targetTileIndex,
+                                               (int)damage, (int)moraleDamage, captureEffectCode,
+                                               0);
+  TTacticalPlayer* postActionPlayer =
+      (defenderUnit->side20 == 0) ? tacticalPlayer14 : tacticalPlayer18;
+  postActionPlayer->field20 = 0;
 }
 
 // Resolves a 'fire' action: multiplayer echo, virtual damage application on the target,
@@ -571,6 +831,21 @@ void TTacticalBattle::ApplyTacticalActionEffectsAndMaybeRemoveUnit(TTacticalUnit
   }
   attackerUnit->selectedFlag18 = 0;
   EvaluateTacticalSideStateAndShowBattleSummaryDialog();
+}
+
+// Moves a unit's record from its own side's player unit list onto the opposing side's
+// list (artillery capture path; the unit's side20 itself is not touched here).
+// FUNCTION: IMPERIALISM 0x005a2700
+void TTacticalBattle::TransferTacticalUnitToOpposingSide(TTacticalUnit* unit) {
+  if (unit->side20 == 0) {
+    TTacticalPlayer* receivingPlayer = tacticalPlayer18;
+    tacticalPlayer14->RemoveTacticalUnitFromUnitList(unit);
+    receivingPlayer->AddTacticalUnitToUnitListHead(unit);
+  } else {
+    TTacticalPlayer* receivingPlayer = tacticalPlayer14;
+    tacticalPlayer18->RemoveTacticalUnitFromUnitList(unit);
+    receivingPlayer->AddTacticalUnitToUnitListHead(unit);
+  }
 }
 
 // Post-round tactical evaluation: scan recordList20 for live units per side, decide
@@ -948,6 +1223,15 @@ void TTacticalBattle::HandleTacticalCommandTag_raly(TArmyTacUnit* unit, int newM
   if (battleView8 != 0) {
     g_pSfxPlaybackSystem->PlaySoundEffect(0x3aae, 0, 1);
   }
+}
+
+// FUNCTION: IMPERIALISM 0x005a3a70
+int TTacticalBattle::FindFortWallTileCrossedByFiringLine(int targetTileIndex,
+                                                         int attackerTileIndex) {
+  // TODO: port body @ 0x5a3a70.
+  (void)targetTileIndex;
+  (void)attackerTileIndex;
+  return 0;
 }
 
 // Consumes fort strength from the per-row-pair pool (one slot per two grid rows,

@@ -4,6 +4,7 @@
 #include "game/mfc.h"
 
 class TArmyStack;
+class TTacticalUnit;
 
 // TODO(manifest): describe TArmyPlayer and its role. Base edge (TTacticalPlayer) recovered from RTTI CRuntimeClass chain: TArmyPlayer -> TTacticalPlayer -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x006695f0
@@ -23,10 +24,9 @@ public:
   virtual undefined StartBattle() override;            // slot 0x0a 0x59b830
   virtual undefined OrphanRetStub_0059ad90() override; // slot 0x0b 0x59e3e0
   // slot 0x0c TArmyTacUnit_VtblSlot00 inherited unchanged (0x59adb0)
-  virtual undefined OrphanRetStub_0059add0() override; // slot 0x0d 0x59b3e0
-  virtual undefined
-  Helper_Uses_FindListNodeByKeyFromNodeOrHead_At0059afa0() override;      // slot 0x0e 0x59b4f0
-  virtual undefined WrapperFor_AddHead_At0059afe0(int* param_1) override; // slot 0x0f 0x59b540
+  virtual undefined OrphanRetStub_0059add0() override;                       // slot 0x0d 0x59b3e0
+  virtual void RemoveTacticalUnitFromUnitList(TTacticalUnit* unit) override; // slot 0x0e 0x59b4f0
+  virtual void AddTacticalUnitToUnitListHead(TTacticalUnit* unit) override;  // slot 0x0f 0x59b540
   // slot 0x10 TArmyTacUnit_VtblSlot04 inherited unchanged (0x59adf0)
   virtual undefined OrphanRetStub_0059ae10() override;            // slot 0x11 0x59eb40
   virtual undefined TArmyTacUnit_VtblSlot06();                    // slot 0x12 0x59bc80

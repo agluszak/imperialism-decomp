@@ -1092,6 +1092,55 @@ short g_awUnitTypeBaseActionPointTable[32] = {40, 60,  40, 40, 110, 90, 50, 30, 
                                               40, 110, 90, 60, 30,  50, 70, 50, 40, 110, 90,
                                               80, 30,  40, 40, 50,  90, 90, 90, 0,  0};
 
+// Direct-fire flag per unit category (.rdata floats): 0.0 marks the indirect-fire
+// categories 6/7 whose shots erode a fort wall they cross.
+// GLOBAL: IMPERIALISM 0x00669830
+float g_afTacticalDirectFireFlagByCategory[10] = {1.0f, 1.0f, 1.0f, 1.0f, 1.0f,
+                                                  1.0f, 0.0f, 0.0f, 1.0f, 1.0f};
+
+// Base attack power per unit type (.rdata floats).
+// GLOBAL: IMPERIALISM 0x006698d8
+float g_afTacticalBaseAttackPowerByUnitType[30] = {
+    50.0f,  50.0f,  100.0f, 125.0f, 75.0f,  150.0f, 100.0f, 160.0f, 75.0f,  100.0f,
+    150.0f, 175.0f, 100.0f, 200.0f, 175.0f, 300.0f, 100.0f, 150.0f, 225.0f, 250.0f,
+    225.0f, 450.0f, 250.0f, 500.0f, 0.0f,   0.0f,   0.0f,   0.0f,   0.0f,   0.0f};
+
+// Melee (adjacent-attack) power multiplier per unit category (.rdata floats).
+// GLOBAL: IMPERIALISM 0x00669950
+float g_afTacticalMeleeMultiplierByCategory[8] = {1.0f, 1.0f, 1.0f, 1.0f, 1.3f, 1.3f, 0.2f, 0.2f};
+
+// Incoming-damage scale per defender unit type (.rdata floats).
+// GLOBAL: IMPERIALISM 0x00669970
+float g_afTacticalDamageScaleByUnitType[30] = {
+    0.0025f, 0.0015f, 0.002f,  0.002f,  0.0015f, 0.002f,  0.004f, 0.005f,  0.0025f, 0.0015f,
+    0.0015f, 0.0015f, 0.0015f, 0.002f,  0.003f,  0.0035f, 0.001f, 0.0005f, 0.0005f, 0.0005f,
+    0.001f,  0.0005f, 0.0005f, 0.0005f, 0.003f,  0.0025f, 0.001f, 0.002f,  0.0015f, 0.0005f};
+
+// Attack-power terrain modifier [category * 5 + tile terrainType0] (.rdata floats).
+// GLOBAL: IMPERIALISM 0x00669ac8
+float g_afTacticalAttackTerrainModifierByCategory[50] = {
+    1.0f,  0.75f, 0.75f, 1.0f,  0.0f,  1.0f,  1.0f,  1.0f,  1.0f,  0.0f, 1.0f,  0.75f, 0.75f,
+    1.0f,  0.0f,  1.0f,  0.75f, 0.75f, 1.0f,  0.0f,  1.0f,  1.0f,  1.0f, 1.0f,  0.0f,  1.0f,
+    0.75f, 0.75f, 1.0f,  0.0f,  1.0f,  0.75f, 0.75f, 1.0f,  0.0f,  1.0f, 0.75f, 0.75f, 1.0f,
+    0.0f,  1.0f,  0.75f, 0.75f, 1.0f,  0.0f,  1.0f,  0.75f, 0.75f, 1.0f, 0.0f};
+
+// Incoming-damage terrain modifier [defender category * 5 + terrainType0] (.rdata).
+// GLOBAL: IMPERIALISM 0x00669b90
+float g_afTacticalDefenseTerrainModifierByCategory[50] = {
+    1.0f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f, 0.8f, 0.8f, 1.0f, 0.0f, 1.0f, 1.0f, 1.0f,
+    1.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f,
+    1.0f, 1.0f, 1.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f,
+    0.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f};
+
+// Cover damage modifier [defender category * 5 + cover state] where cover state is
+// TacticalTileRecord::deployMark8 (1 = trench, 2..4 = fort-wall levels) (.rdata).
+// GLOBAL: IMPERIALISM 0x00669c58
+float g_afTacticalCoverDamageModifierByCategory[50] = {
+    1.0f, 0.8f, 0.7f, 0.6f, 0.5f, 1.0f, 0.8f, 0.7f, 0.6f, 0.5f, 1.0f, 0.8f, 0.7f,
+    0.6f, 0.5f, 1.0f, 0.8f, 0.7f, 0.6f, 0.5f, 1.0f, 1.0f, 0.7f, 0.6f, 0.5f, 1.0f,
+    1.0f, 0.7f, 0.6f, 0.5f, 1.0f, 0.8f, 0.7f, 0.6f, 0.5f, 1.0f, 0.8f, 0.7f, 0.6f,
+    0.5f, 1.0f, 0.8f, 0.7f, 0.6f, 0.5f, 1.0f, 0.8f, 0.7f, 0.6f, 0.5f};
+
 // Tactical move cost per unit category and tile terrain code (.rdata): 10 category
 // rows x 5 terrain codes, in tenths of an action point band (999 = impassable).
 // GLOBAL: IMPERIALISM 0x00669a60

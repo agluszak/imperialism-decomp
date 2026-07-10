@@ -19,11 +19,13 @@ undefined TNavyPlayer::OrphanRetStub_0059add0() {
 }
 
 // FUNCTION: IMPERIALISM 0x0059ee60
-undefined TNavyPlayer::Helper_Uses_FindListNodeByKeyFromNodeOrHead_At0059afa0() {
-  return 0;
+void TNavyPlayer::RemoveTacticalUnitFromUnitList(TTacticalUnit* unit) {
+  // TODO: port body @ 0x59ee60.
+  (void)unit;
 }
 
 // FUNCTION: IMPERIALISM 0x0059eea0
-undefined TNavyPlayer::WrapperFor_AddHead_At0059afe0(int * param_1) {
-  return 0;
+void TNavyPlayer::AddTacticalUnitToUnitListHead(TTacticalUnit* unit) {
+  // TODO: port body @ 0x59eea0.
+  (void)unit;
 }

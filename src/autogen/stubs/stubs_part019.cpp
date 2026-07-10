@@ -123,14 +123,6 @@ undefined4 ProcessTacticalUnitState1TurnStep(void)
   return 0;
 }
 
-// ghidra_name MoveTacticalUnitTowardTile
-// ghidra_proto undefined MoveTacticalUnitTowardTile()
-// FUNCTION: IMPERIALISM 0x005a1520
-undefined4 MoveTacticalUnitTowardTile(void)
-{
-  return 0;
-}
-
 // ghidra_name BuildPathToTargetByDistanceField
 // ghidra_proto undefined BuildPathToTargetByDistanceField()
 // FUNCTION: IMPERIALISM 0x005a16e0
@@ -155,14 +147,6 @@ undefined4 WrapperFor_thunk_ComputeHexNeighborTileIndices_At005a1b50(void)
   return 0;
 }
 
-// ghidra_name HasValidTacticalFollowupTargetForCurrentAction
-// ghidra_proto undefined HasValidTacticalFollowupTargetForCurrentAction()
-// FUNCTION: IMPERIALISM 0x005a1d70
-undefined4 HasValidTacticalFollowupTargetForCurrentAction(void)
-{
-  return 0;
-}
-
 // ghidra_name Helper_Uses_thunk_AdvanceLinkedListCursor_At005a2630
 // ghidra_proto undefined Helper_Uses_thunk_AdvanceLinkedListCursor_At005a2630()
 // FUNCTION: IMPERIALISM 0x005a2630
@@ -175,14 +159,6 @@ undefined4 Helper_Uses_thunk_AdvanceLinkedListCursor_At005a2630(void)
 // ghidra_proto undefined DispatchTacticalActionByHoverStateIndex()
 // FUNCTION: IMPERIALISM 0x005a3370
 undefined4 DispatchTacticalActionByHoverStateIndex(void)
-{
-  return 0;
-}
-
-// ghidra_name TestGridSegmentCrossesViewportThreshold
-// ghidra_proto undefined TestGridSegmentCrossesViewportThreshold()
-// FUNCTION: IMPERIALISM 0x005a3a70
-undefined4 TestGridSegmentCrossesViewportThreshold(void)
 {
   return 0;
 }
@@ -383,14 +359,6 @@ undefined4 ConvertScreenPointToHexGridCoordClamped(void)
 // ghidra_proto undefined HandleTurnEventVtableSlotA0SyncStatusPanel_Impl()
 // FUNCTION: IMPERIALISM 0x005a8790
 undefined4 HandleTurnEventVtableSlotA0SyncStatusPanel_Impl(void)
-{
-  return 0;
-}
-
-// ghidra_name EvaluateAndResolveTacticalActionAgainstTileOccupant_Impl
-// ghidra_proto undefined EvaluateAndResolveTacticalActionAgainstTileOccupant_Impl()
-// FUNCTION: IMPERIALISM 0x005a87d0
-undefined4 EvaluateAndResolveTacticalActionAgainstTileOccupant_Impl(void)
 {
   return 0;
 }

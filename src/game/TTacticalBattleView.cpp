@@ -47,6 +47,13 @@ void TTacticalBattleView::BeginMouseCaptureAndStartRepeatTimer(CPoint* point, in
   (void)arg4;
 }
 
+// FUNCTION: IMPERIALISM 0x005a87d0
+void TTacticalBattleView::ComputeTacticalHexTileScreenRect(RECT* rectOut, int tileIndex) {
+  // TODO: port body @ 0x5a87d0.
+  (void)rectOut;
+  (void)tileIndex;
+}
+
 // FUNCTION: IMPERIALISM 0x005a8860
 void TTacticalBattleView::InvalidateTacticalHexTileRect(int tileIndex) {
   RECT tileRect;

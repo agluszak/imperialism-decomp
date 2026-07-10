@@ -20,6 +20,7 @@ src/game/TArmyBoyView.cpp|1|0|1|0
 src/game/TArmyCheckBox.cpp|3|0|1|0
 src/game/TArmyMgr.cpp|5|0|1|0
 src/game/TArmyPlacard.cpp|0|0|1|0
+src/game/TArmyPlayer.cpp|2|0|0|0
 src/game/TArmyStack.cpp|3|0|0|0
 src/game/TArmyStackList.cpp|0|0|1|0
 src/game/TArmyUnitLine.cpp|0|0|1|0
@@ -164,12 +165,12 @@ src/game/TModalMessageCommand.cpp|1|0|0|0
 src/game/TMultiMessagePicture.cpp|1|0|1|0
 src/game/TMultiplayerMgr.cpp|3|0|0|0
 src/game/TNavyAutoPlayer.cpp|0|0|1|0
-src/game/TNavyBattle.cpp|1|0|1|0
+src/game/TNavyBattle.cpp|4|0|1|0
 src/game/TNavyBoyView.cpp|1|0|1|0
 src/game/TNavyHumanPlayer.cpp|0|0|1|0
 src/game/TNavyMgr.cpp|3|0|0|0
 src/game/TNavyMission.cpp|1|0|0|0
-src/game/TNavyPlayer.cpp|0|0|1|0
+src/game/TNavyPlayer.cpp|2|0|1|0
 src/game/TNavyRoster.cpp|1|0|0|0
 src/game/TNavyTacUnit.cpp|0|0|1|0
 src/game/TNavyToolbarCluster.cpp|2|0|0|0
@@ -242,10 +243,10 @@ src/game/TTacArmyView.cpp|2|0|1|0
 src/game/TTacMapUberPicture.cpp|2|0|1|0
 src/game/TTacNavyToolbar.cpp|2|0|1|0
 src/game/TTacticalAdiosPicture.cpp|2|0|1|0
-src/game/TTacticalBattle.cpp|1|0|0|0
-src/game/TTacticalBattleView.cpp|7|0|1|0
+src/game/TTacticalBattle.cpp|2|0|0|0
+src/game/TTacticalBattleView.cpp|8|0|1|0
 src/game/TTacticalHolaPicture.cpp|0|0|1|0
-src/game/TTacticalPlayer.cpp|1|0|0|0
+src/game/TTacticalPlayer.cpp|3|0|0|0
 src/game/TTacticalToolbar.cpp|3|0|1|0
 src/game/TTask.cpp|2|0|1|0
 src/game/TTaskForce.cpp|5|0|0|0

@@ -45,18 +45,20 @@ public:
   ComputeTacticalReachableTileCostsByUnitCategory(TTacticalUnit* unit);       // slot 0x0a 0x59ff20
   virtual void PropagateTileAccessibilityStrengthLevels(TTacticalUnit* unit); // slot 0x0b 0x5a02e0
   virtual undefined OrphanRetStub_0059f710();                                 // slot 0x0c 0x59f710
-  virtual undefined MoveTacticalUnitAndQueueEvent232AIfNoAdjacentReachableTarget(
-      int param_1, undefined4 param_2); // slot 0x0d 0x5a1bd0
-  virtual undefined
-  WrapperFor_thunk_ComputeHexNeighborTileIndices_At005a1400(undefined4 param_1, int param_2,
-                                                            char param_3); // slot 0x0e 0x5a1400
-  virtual undefined
-  ExecuteTacticalActionAndQueueEventIfNoAdjacentValidTarget(int param_1); // slot 0x0f 0x5a1ca0
-  virtual undefined
-  EvaluateAndResolveTacticalActionAgainstTileOccupant(int* param_1,
-                                                      int param_2); // slot 0x10 0x5a1ee0
-  virtual undefined OrphanCallChain_C4_I30_005a2700(int param_1);   // slot 0x11 0x5a2700
-  virtual undefined CreateTTacticalBattleInstance();                // slot 0x12 0x59f730
+  virtual void MoveTacticalUnitAndQueueEvent232AIfNoAdjacentReachableTarget(
+      TTacticalUnit* unit, int targetTileIndex); // slot 0x0d 0x5a1bd0
+  // Whether either neighbor tile flanking hex direction `hexDirection` around
+  // `tileIndex` holds a unit of the other side.
+  virtual unsigned char HasEnemyUnitOnTilesFlankingHexDirection(int tileIndex, int hexDirection,
+                                                                char side); // slot 0x0e 0x5a1400
+  virtual void ExecuteTacticalActionAndQueueEventIfNoAdjacentValidTarget(
+      TTacticalUnit* unit, int targetTileIndex); // slot 0x0f 0x5a1ca0
+  virtual void
+  EvaluateAndResolveTacticalActionAgainstTileOccupant(TTacticalUnit* attackerUnit,
+                                                      int targetTileIndex); // slot 0x10 0x5a1ee0
+  // Moves a unit's record onto the opposing side's player list (artillery capture).
+  virtual void TransferTacticalUnitToOpposingSide(TTacticalUnit* unit); // slot 0x11 0x5a2700
+  virtual undefined CreateTTacticalBattleInstance();                    // slot 0x12 0x59f730
   virtual void
   MarkTacticalTileStateQueuedAndMaybeDispatchPacket(TArmyTacUnit* unit,
                                                     int targetTileIndex); // slot 0x13 0x5a3190
@@ -158,6 +160,14 @@ public:
   // Queues the 0x232a end-of-action turn event (news a TCommand and clears field48).
   // Body TODO. 0x5a0d60, __thiscall.
   void QueueTacticalEventPacket232A();
+  // Paths the unit toward the target tile. Body TODO. 0x5a1520, __thiscall.
+  void MoveTacticalUnitTowardTile(TTacticalUnit* unit, int targetTileIndex);
+  // Whether the selected unit still has a valid follow-up target for the current
+  // action. Body TODO. 0x5a1d70, __thiscall.
+  unsigned char HasValidTacticalFollowupTargetForCurrentAction();
+  // Fort-wall tile index where the firing line between the two tiles crosses the wall
+  // column, 0 when it does not. Body TODO. 0x5a3a70, __thiscall.
+  int FindFortWallTileCrossedByFiringLine(int targetTileIndex, int attackerTileIndex);
 };
 
 ASSERT_SIZE(TTacticalBattle, 0x78);

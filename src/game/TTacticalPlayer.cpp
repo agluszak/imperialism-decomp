@@ -41,12 +41,14 @@ IMPLEMENT_DYNCREATE(TTacticalPlayer, TObject)
 
 void TTacticalPlayer::Free() {}
 
-undefined TTacticalPlayer::Helper_Uses_FindListNodeByKeyFromNodeOrHead_At0059afa0() {
-  return 0;
+void TTacticalPlayer::RemoveTacticalUnitFromUnitList(TTacticalUnit* unit) {
+  // TODO: port body @ 0x59afa0 (unitList4 find + remove).
+  (void)unit;
 }
 
-undefined TTacticalPlayer::WrapperFor_AddHead_At0059afe0(int* param_1) {
-  return 0;
+void TTacticalPlayer::AddTacticalUnitToUnitListHead(TTacticalUnit* unit) {
+  // TODO: port body @ 0x59afe0 (unitList4 AddHead).
+  (void)unit;
 }
 
 // FUNCTION: IMPERIALISM 0x0059af20

@@ -85,13 +85,15 @@ undefined TArmyPlayer::OrphanRetStub_0059add0() {
 }
 
 // FUNCTION: IMPERIALISM 0x0059b4f0
-undefined TArmyPlayer::Helper_Uses_FindListNodeByKeyFromNodeOrHead_At0059afa0() {
-  return 0;
+void TArmyPlayer::RemoveTacticalUnitFromUnitList(TTacticalUnit* unit) {
+  // TODO: port body @ 0x59b4f0.
+  (void)unit;
 }
 
 // FUNCTION: IMPERIALISM 0x0059b540
-undefined TArmyPlayer::WrapperFor_AddHead_At0059afe0(int* param_1) {
-  return 0;
+void TArmyPlayer::AddTacticalUnitToUnitListHead(TTacticalUnit* unit) {
+  // TODO: port body @ 0x59b540.
+  (void)unit;
 }
 
 // FUNCTION: IMPERIALISM 0x0059b830

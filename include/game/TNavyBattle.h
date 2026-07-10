@@ -24,15 +24,14 @@ public:
       TTacticalUnit* unit) override; // slot 0x0a 0x5a59f0
   // slot 0x0b PropagateTileAccessibilityStrengthLevels inherited unchanged (0x5a02e0)
   virtual undefined OrphanRetStub_0059f710() override; // slot 0x0c 0x5a55c0
-  virtual undefined MoveTacticalUnitAndQueueEvent232AIfNoAdjacentReachableTarget(
-      int param_1, undefined4 param_2) override; // slot 0x0d 0x5a5c50
-  // slot 0x0e WrapperFor_thunk_ComputeHexNeighborTileIndices_At005a1400 inherited unchanged (0x5a1400)
-  virtual undefined ExecuteTacticalActionAndQueueEventIfNoAdjacentValidTarget(
-      int param_1) override; // slot 0x0f 0x5a5bc0
-  virtual undefined
-  EvaluateAndResolveTacticalActionAgainstTileOccupant(int* param_1,
-                                                      int param_2) override; // slot 0x10 0x5a5730
-  // slot 0x11 OrphanCallChain_C4_I30_005a2700 inherited unchanged (0x5a2700)
+  virtual void MoveTacticalUnitAndQueueEvent232AIfNoAdjacentReachableTarget(
+      TTacticalUnit* unit, int targetTileIndex) override; // slot 0x0d 0x5a5c50
+  // slot 0x0e HasEnemyUnitOnTilesFlankingHexDirection inherited unchanged (0x5a1400)
+  virtual void ExecuteTacticalActionAndQueueEventIfNoAdjacentValidTarget(
+      TTacticalUnit* unit, int targetTileIndex) override; // slot 0x0f 0x5a5bc0
+  virtual void EvaluateAndResolveTacticalActionAgainstTileOccupant(
+      TTacticalUnit* attackerUnit, int targetTileIndex) override; // slot 0x10 0x5a5730
+  // slot 0x11 TransferTacticalUnitToOpposingSide inherited unchanged (0x5a2700)
   virtual undefined CreateTTacticalBattleInstance() override; // slot 0x12 0x5a5b70
   // slot 0x13 MarkTacticalTileStateQueuedAndMaybeDispatchPacket inherited unchanged (0x5a3190)
   // slot 0x14 AdvanceOrResetTacticalTileStateRunAndMaybeDispatchPacket inherited unchanged (0x5a3210)
