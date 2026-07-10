@@ -256,7 +256,7 @@ int GetSessionActiveNationId() {
 }
 
 // FUNCTION: IMPERIALISM 0x005e42c0
-void __stdcall NotifyIfNationMatchesSessionActiveNation(int nationId) {
+void TNetMgr::NotifyIfNationMatchesSessionActiveNation(int nationId) {
   if (nationId == g_NetworkDefaultNationId006a5fc0) {
     g_NetworkSessionManager006a5f60.DestroyPlayerAndStoreResult(nationId);
   }

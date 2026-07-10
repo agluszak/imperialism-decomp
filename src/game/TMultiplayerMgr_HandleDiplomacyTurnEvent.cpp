@@ -11,6 +11,9 @@
 
 #include "game/NetMessage.h"
 #include "game/TArmyMgr.h"
+#include "game/TAutoGreatPower.h"
+#include "game/TCity.h"
+#include "game/TSortedList.h"
 #include "game/TCountry.h"
 #include "game/TDiplomacyMgr.h"
 #include "game/TGreatPower.h"
@@ -111,6 +114,13 @@ struct TurnEventACityAnnouncePacket : TimelyNetMessagePrefix {
 // TMultiplayerMgr.cpp): seven per-nation four-cc status tags.
 struct NationStatusEvent25Packet2 : TimelyMessageHeader {
   int statusTags[7]; // +0x18, total 0x34
+};
+
+// Turn-event-0x1F payload: nation-unheaded notice — the 'uhed' status tag plus the
+// vacated slot index (the +0x18 pair reuses the timely-header tail).
+struct TurnEvent1FNationUnheadedPacket : TimelyMessageHeader {
+  int statusTag18;  // +0x18 'uhed'
+  int nationSlot1C; // +0x1c, total 0x20
 };
 
 // Turn-event-0xF payload: per-nation turn-resume acknowledge.
@@ -543,5 +553,177 @@ void TMultiplayerMgr::HandleDiplomacyTurnEventPacketByCode() {
   default:
     EmitTurnEvent3TickCompleteLoopback();
     break;
+  }
+}
+
+extern undefined4 GenerateThreadLocalRandom15(void);
+
+// Replace the nation in `nationSlot` with a freshly rolled AI (TAutoGreatPower):
+// broadcast the 'uhed' (event-0x1F) notice when hosting, deep-copy the vacating
+// nation's scalar/array state into the new object while swapping ownership of the
+// list/queue/city subobjects (the city's owner back-reference is repointed), install
+// the AI into both nation tables, re-derive war candidate flags, mark the scenario row
+// AI-controlled, and free the old object. All exits then drop the session id, tag the
+// slot 'suna', refresh status labels, and (hosting) re-broadcast the pending mask.
+// FUNCTION: IMPERIALISM 0x0054bd20
+void TMultiplayerMgr::ReplaceNationStateForSlotAndRefreshStatus(int nationSlot) {
+  unsigned char isLocalNation = nationSlot == g_pSimMgr->GetActiveNationId();
+  int gameFlowMode = g_pSimMgr->field44;
+  unsigned char sessionTornDown = gameFlowMode == 2;
+  if (sessionTornDown == 0) {
+    unsigned char hosting = gameFlowMode == 1;
+    if (hosting != 0) {
+      TurnEvent1FNationUnheadedPacket packet;
+      packet.messageTag = 0x74696d65;
+      packet.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetActiveNationId());
+      packet.eventCode = 0;
+      packet.fromNetworkId = 0;
+      packet.toNetworkId = 0;
+      packet.eventCode = 0x1f;
+      packet.messageLength = 0;
+      packet.messageLength = 0x20;
+      packet.DestinateTo(-2);
+      packet.statusTag18 = 0x64656875; // 'uhed'
+      packet.nationSlot1C = nationSlot;
+      g_pNetMgr006a6014->Send(&packet, 0);
+    }
+    TGreatPower* oldNation = g_apNationStates[nationSlot];
+    if (oldNation != 0 && oldNation->diplomacyEligibilityA0 != 0 && isLocalNation == 0) {
+      int policyDice5 = GenerateThreadLocalRandom15() % 5;
+      int policyDice6 = GenerateThreadLocalRandom15() % 6;
+      int policyDice4 = GenerateThreadLocalRandom15() % 4;
+      TAutoGreatPower* newNation = new TAutoGreatPower();
+      newNation->InitializeNationMinisterSubsystemsByPolicyIds(
+          nationSlot, 2, static_cast<short>(policyDice4), static_cast<short>(policyDice6),
+          static_cast<short>(policyDice5));
+
+      newNation->identitySharedString0 = oldNation->identitySharedString0;
+      newNation->identitySharedString1 = oldNation->identitySharedString1;
+      newNation->nationSlot = oldNation->nationSlot;
+      newNation->encodedNationSlot = oldNation->encodedNationSlot;
+      newNation->treasuryValue10 = oldNation->treasuryValue10;
+      memcpy(newNation->needLevelByNation, oldNation->needLevelByNation,
+             sizeof(newNation->needLevelByNation));
+      TSortedList* militaryUnits = newNation->militaryUnitList44;
+      newNation->militaryUnitList44 = oldNation->militaryUnitList44;
+      oldNation->militaryUnitList44 = militaryUnits;
+      memcpy(newNation->unitNameOrdinalByType, oldNation->unitNameOrdinalByType,
+             sizeof(newNation->unitNameOrdinalByType));
+      newNation->unitNameCounter84 = oldNation->unitNameCounter84;
+      newNation->homeRegionIndex = oldNation->homeRegionIndex;
+      newNation->serializedField8c = oldNation->serializedField8c;
+      TSortedList* ownedRegions = newNation->ownedRegionList;
+      newNation->ownedRegionList = oldNation->ownedRegionList;
+      oldNation->ownedRegionList = ownedRegions;
+      newNation->diplomacyCounterA2 = oldNation->diplomacyCounterA2;
+      newNation->tradeCapacity = oldNation->tradeCapacity;
+      newNation->needCapA6 = oldNation->needCapA6;
+      newNation->needsOverCapFlag = oldNation->needsOverCapFlag;
+      newNation->grantTotalCost = oldNation->grantTotalCost;
+      newNation->diplomacyCounterB0 = oldNation->diplomacyCounterB0;
+      memcpy(newNation->diplomacyPolicyByNation, oldNation->diplomacyPolicyByNation,
+             sizeof(newNation->diplomacyPolicyByNation));
+      memcpy(newNation->diplomacyGrantByNation, oldNation->diplomacyGrantByNation,
+             sizeof(newNation->diplomacyGrantByNation));
+      memcpy(newNation->needCurrentByType, oldNation->needCurrentByType,
+             sizeof(newNation->needCurrentByType));
+      memcpy(newNation->needTargetByType, oldNation->needTargetByType,
+             sizeof(newNation->needTargetByType));
+      memcpy(newNation->relationDeltaCurrent, oldNation->relationDeltaCurrent,
+             sizeof(newNation->relationDeltaCurrent));
+      memcpy(newNation->relationDeltaSnapshot, oldNation->relationDeltaSnapshot,
+             sizeof(newNation->relationDeltaSnapshot));
+      memcpy(newNation->diplomacyState1c6, oldNation->diplomacyState1c6,
+             sizeof(newNation->diplomacyState1c6));
+      memcpy(newNation->diplomacyState1f4, oldNation->diplomacyState1f4,
+             sizeof(newNation->diplomacyState1f4));
+      memcpy(newNation->diplomacyState222, oldNation->diplomacyState222,
+             sizeof(newNation->diplomacyState222));
+      memcpy(newNation->diplomacyState250, oldNation->diplomacyState250,
+             sizeof(newNation->diplomacyState250));
+      memcpy(newNation->aidAllocationMatrix, oldNation->aidAllocationMatrix,
+             sizeof(newNation->aidAllocationMatrix));
+      newNation->budgetPoolBase = oldNation->budgetPoolBase;
+      newNation->budgetPoolDelta = oldNation->budgetPoolDelta;
+      TSortedByRelationshipList* turnEvents = newNation->turnEventQueue;
+      newNation->turnEventQueue = oldNation->turnEventQueue;
+      oldNation->turnEventQueue = turnEvents;
+      TSortedByRelationshipList* proposals = newNation->proposalQueue;
+      newNation->proposalQueue = oldNation->proposalQueue;
+      oldNation->proposalQueue = proposals;
+      for (int trackedSlot = 0; trackedSlot < 0x11; ++trackedSlot) {
+        TSortedByRelationshipList* tracked = newNation->diplomacyTrackedSlots[trackedSlot];
+        newNation->diplomacyTrackedSlots[trackedSlot] =
+            oldNation->diplomacyTrackedSlots[trackedSlot];
+        oldNation->diplomacyTrackedSlots[trackedSlot] = tracked;
+      }
+      TCity* city = oldNation->city;
+      oldNation->city = newNation->city;
+      newNation->city = city;
+      if (city != 0) {
+        city->ownerNationAc = newNation;
+      }
+      TSortedList* townMarkers = newNation->townMarkerList;
+      newNation->townMarkerList = oldNation->townMarkerList;
+      oldNation->townMarkerList = townMarkers;
+      TSortedList* trackedObjects = newNation->trackedObjectList;
+      newNation->trackedObjectList = oldNation->trackedObjectList;
+      oldNation->trackedObjectList = trackedObjects;
+      memcpy(newNation->candidateNationFlags, oldNation->candidateNationFlags,
+             sizeof(newNation->candidateNationFlags));
+      // 0xd-byte block copy from serializedStatusFlags through expansionEventGate
+      // (field8d5 is deliberately left at its freshly constructed value).
+      memcpy(newNation->serializedStatusFlags, oldNation->serializedStatusFlags, 0xd);
+      memcpy(newNation->field8d6, oldNation->field8d6, sizeof(newNation->field8d6));
+      newNation->field900 = oldNation->field900;
+      newNation->field904 = oldNation->field904;
+
+      g_apNationStates[nationSlot] = newNation;
+      g_apTerrainTypeDescriptorTable[nationSlot] = newNation;
+      newNation->QueueMapActionMissionsForPortZoneCandidates();
+      for (int targetSlot = 0; targetSlot < 0x17; ++targetSlot) {
+        if (g_pDiplomacyTurnStateManager->IsNationPairAtWar(nationSlot, targetSlot) != 0) {
+          newNation->candidateNationFlags[targetSlot] = 1;
+        }
+      }
+      g_pSimMgr->scenarioSetupRows0[nationSlot] = 2;
+      oldNation->Free();
+    }
+    unsigned char stillHosting = g_pSimMgr->field44 == 1;
+    if (stillHosting != 0 && isLocalNation == 0) {
+      g_pNetMgr006a6014->NotifyIfNationMatchesSessionActiveNation(nationSessionIds[nationSlot]);
+    }
+  }
+  unsigned char tornDownNow = g_pSimMgr->field44 == 2;
+  if (tornDownNow != 0) {
+    TGreatPower* nation = g_apNationStates[nationSlot];
+    if (nation != 0) {
+      nation->diplomacyEligibilityA0 = 0;
+    }
+  }
+  nationSessionIds[nationSlot] = 0;
+  nationStatusTags[nationSlot] = 0x756e6173; // 'suna'
+  RefreshNationStatusLabelsAndCodesForSlotOrAll(nationSlot);
+  unsigned char hostingMask = g_pSimMgr->field44 == 1;
+  if (hostingMask != 0) {
+    pendingNationBitmask &= ~(1 << nationSlot);
+    unsigned char hostingBroadcast = g_pSimMgr->field44 == 1;
+    if (hostingBroadcast != 0) {
+      TurnEvent1PendingMaskPacket2 packet;
+      packet.messageTag = 0x74696d65;
+      packet.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetActiveNationId());
+      packet.eventCode = 0;
+      packet.fromNetworkId = 0;
+      packet.toNetworkId = 0;
+      packet.eventCode = 1;
+      packet.messageLength = 0;
+      packet.messageLength = 0x1c;
+      packet.toNetworkId = 0;
+      packet.pendingMask = pendingNationBitmask;
+      g_pNetMgr006a6014->Send(&packet, 0);
+      if (pendingNationBitmask == 0 && pendingNationSlotIndex != -1) {
+        HandleDiplomacyTurnEventPacketByCode();
+      }
+    }
   }
 }

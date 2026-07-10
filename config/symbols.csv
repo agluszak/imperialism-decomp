@@ -4012,7 +4012,7 @@ address|name|symbol|size|type|prototype|provenance
 54b8c0|GetNationStatusCodeForSlotOrActiveNation||80|function|undefined GetNationStatusCodeForSlotOrActiveNation()|
 54b930|SetNationStatusAwolByNationIdAndDispatchNotices||743|function|undefined SetNationStatusAwolByNationIdAndDispatchNotices()|
 54bce0|InitializeNationStatusEvent25PayloadDefaults||46|function|undefined InitializeNationStatusEvent25PayloadDefaults()|
-54bd20|ReplaceNationStateForSlotAndRefreshStatus||1498|function|undefined ReplaceNationStateForSlotAndRefreshStatus()|
+54bd20|TMultiplayerMgr::ReplaceNationStateForSlotAndRefreshStatus||1498|function|undefined ReplaceNationStateForSlotAndRefreshStatus()|
 54c480|EmitTurnEvent26DiplomacyMatrixSnapshot||215|function|undefined EmitTurnEvent26DiplomacyMatrixSnapshot()|
 54c5a0|DispatchJoinEmpireModeEventPacket24_27||112|function|undefined DispatchJoinEmpireModeEventPacket24_27()|
 54c630|SetDialogModeTagInitAndInvokeNoOpHook||24|function|undefined SetDialogModeTagInitAndInvokeNoOpHook()|

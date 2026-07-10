@@ -156,6 +156,10 @@ public:
   // and re-broadcasts the mask; clients acknowledge the pending event code; everyone
   // marks the local nation 'redy' and broadcasts the event-0x25 status board.
   void HandleTurnResumeStateTelemetry();
+  // 0x54bd20: replace the vacated slot's nation with a freshly rolled TAutoGreatPower
+  // (deep state copy + subobject ownership swap), then drop the session id, tag the
+  // slot 'suna', refresh labels, and re-broadcast the pending mask when hosting.
+  void ReplaceNationStateForSlotAndRefreshStatus(int nationSlot);
   // 0x54d4e0: probe reachability, save when everyone is reachable, else optionally pose
   // the "cannot save" advisory; returns the all-reachable byte Boolean.
   unsigned char TrySaveGameAndMaybeShowFailureDialog(int mode, char* label, char showFailureDialog);
