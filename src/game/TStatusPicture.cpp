@@ -1,5 +1,10 @@
 #include "game/TStatusPicture.h"
 
+#include "game/TGreatPower.h"
+#include "game/UiRuntimeContext.h"
+#include "game/global_data_tables.h"
+#include "game/quickdraw_rendering.h"
+
 // SYNTHETIC: IMPERIALISM 0x0043d870
 // TStatusPicture::`scalar deleting destructor'
 TStatusPicture::~TStatusPicture() {}
@@ -20,7 +25,37 @@ void TStatusPicture::NoOpUiLifecycleHook(int arg) {}
 void TStatusPicture::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {}
 
 // FUNCTION: IMPERIALISM 0x00594540
-void TStatusPicture::ApplyRectSlot110(RECT* rectBuffer) {}
+void TStatusPicture::ApplyRectSlot110(RECT* rectBuffer) {
+  TPicture::ApplyRectSlot110(rectBuffer);
+
+  CString title;
+  // TODO(class-recovery): the real body builds the title via g_pLocalizationTable's
+  // vtable slot 0x10.4 (format string 0x2757, substituting pad90's low short + 8) --
+  // same unrecovered-class gap as the sibling ApplyRectSlot110 overrides.
+  ApplyUiTextStyleAndSyncColor(0, 0xe, 0x2b6a);
+  short titleWidth = MeasureTextExtentWithCachedQuickDrawStyle(&title);
+  SetQuickDrawTextOriginWithContextOffset(0x140 - titleWidth / 2, 0x3c);
+  DrawTextWithCachedStyle(&title);
+
+  int rowY = 100;
+  for (int i = 0; i < 7; ++i, rowY += 0x37) {
+    if (pictureIds_b0[i] == -1) {
+      continue;
+    }
+    CString label;
+    g_apNationStates[pictureIds_b0[i]]->FormatOverlayTerrainLabelText(&label);
+    ApplyUiTextStyleAndSyncColor(0, 0xc, 0x2b6a);
+    SetQuickDrawTextOriginWithContextOffset(0x9a, rowY - 8);
+    DrawTextWithCachedStyle(&label);
+
+    // TODO(codegen): draws a color swatch for this row (SetQuickDrawFillColor(0),
+    // FillRectWithQuickDrawBrushAndContextOffset, OffsetRect(-1,-1),
+    // g_pUiRuntimeContext->ApplyTurnEventPaletteColorByEventCode(pictureIds_b0[i]),
+    // FillRectWithQuickDrawBrushAndContextOffset again) -- the swatch RECT itself is
+    // dropped from the decompile entirely (no field assignments shown at all), so its
+    // geometry isn't modeled rather than guessed.
+  }
+}
 
 // FUNCTION: IMPERIALISM 0x00594c00
 void TStatusPicture::SortSevenEntriesAndUpdatePictureWidgets() {
