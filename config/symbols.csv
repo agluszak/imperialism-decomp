@@ -3943,7 +3943,7 @@ address|name|symbol|size|type|prototype|provenance
 5430c0|TMultiplayerMgr::EnableDiplomacyQueueRoutingAndSetContextField44||36|function|undefined EnableDiplomacyQueueRoutingAndSetContextField44()|
 543120|ConfigureTurnResumeStateAndNationMask||83|function|undefined ConfigureTurnResumeStateAndNationMask()|
 5431a0|TMultiplayerMgr::ClearTurnResumeNationPendingBitAndMaybeFlushTelemetry||167|function|undefined ClearTurnResumeNationPendingBitAndMaybeFlushTelemetry()|
-543280|HandleTurnResumeStateTelemetry||1253|function|undefined HandleTurnResumeStateTelemetry()|
+543280|TMultiplayerMgr::HandleTurnResumeStateTelemetry||1253|function|undefined HandleTurnResumeStateTelemetry()|
 5438e0|InitializeEmitEventHeaderWithActiveNation||28|function|undefined InitializeEmitEventHeaderWithActiveNation()|
 543910|TMultiplayerMgr::HandleDiplomacyTurnEventPacketByCode||2446|function|void __thiscall HandleDiplomacyTurnEventPacketByCode()|
 544540|EnsureGameFlowStateAndPostTurnEvent5E5||180|function|undefined EnsureGameFlowStateAndPostTurnEvent5E5()|

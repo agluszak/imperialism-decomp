@@ -93,6 +93,32 @@ struct TurnEvent18DiplomacyArraysPacket : NetMessage {
   unsigned char pad3e2[2];                // total 0x3e4
 };
 
+// Turn-event-1 payload: the remaining turn-resume pending-nation bitmask (same shape
+// as the definition in TMultiplayerMgr.cpp).
+struct TurnEvent1PendingMaskPacket2 : TimelyMessageHeader {
+  int pendingMask; // +0x18, total 0x1c
+};
+
+// Turn-event-0xA payload: the resuming nation announces its home region and city name.
+struct TurnEventACityAnnouncePacket : TimelyNetMessagePrefix {
+  unsigned char nationId1C; // +0x1c
+  unsigned char pad1d;
+  short homeRegion1E;    // +0x1e
+  char cityName20[0x24]; // +0x20 (strncpy'd 0x21), total 0x44
+};
+
+// Turn-event-0x25 status board (same shape as NationStatusEvent25Packet in
+// TMultiplayerMgr.cpp): seven per-nation four-cc status tags.
+struct NationStatusEvent25Packet2 : TimelyMessageHeader {
+  int statusTags[7]; // +0x18, total 0x34
+};
+
+// Turn-event-0xF payload: per-nation turn-resume acknowledge.
+struct TurnEventFResumeAckPacket : TimelyNetMessagePrefix {
+  short nationSlot1C;     // +0x1c
+  unsigned char pad1e[2]; // total 0x20
+};
+
 // Build + send the event-3 tick acknowledge (loopback flag set). Expanded inline six
 // times inside HandleDiplomacyTurnEventPacketByCode; the out-of-line sibling
 // EmitTurnEvent3Mode18WithActiveNation (0x5446a0) serves the cross-TU callers.
@@ -110,6 +136,161 @@ static __inline void EmitTurnEvent3TickCompleteLoopback() {
 }
 
 } // namespace
+
+// Turn-resume telemetry pass. Hosting: drop pending bits for absent/ineligible nations
+// and the local nation, broadcast the remaining mask (event 1), and flush the latched
+// event code once the mask drains. Client: acknowledge the pending event code (2 =
+// announce home city, event 0xA; 5 = rebuild diplomacy pressure and re-emit state
+// arrays; 8 = re-emit the composite; 0x14/0x15 = plain event-0xF ack). All paths then
+// mark the local nation 'redy' and broadcast the event-0x25 status board ('unkn'
+// defaults).
+// FUNCTION: IMPERIALISM 0x00543280
+void TMultiplayerMgr::HandleTurnResumeStateTelemetry() {
+  unsigned char hosting = g_pSimMgr->field44 == 1;
+  if (hosting != 0) {
+    for (int slot = 0; slot < 7; ++slot) {
+      TGreatPower* nation = g_apNationStates[slot];
+      if (nation == 0 || nation->ReturnFalseNationStateCapabilityFlag98() == 0) {
+        pendingNationBitmask &= ~(1 << slot);
+      }
+    }
+    pendingNationBitmask &= ~(1 << g_pSimMgr->GetActiveNationId());
+    unsigned char stillHosting = g_pSimMgr->field44 == 1;
+    if (stillHosting != 0) {
+      TurnEvent1PendingMaskPacket2 packet;
+      packet.InitializeEmitEventHeaderWithActiveNation();
+      packet.eventCode = 0;
+      packet.fromNetworkId = 0;
+      packet.eventCode = 1;
+      packet.toNetworkId = 0;
+      packet.pendingMask = pendingNationBitmask;
+      packet.messageLength = 0;
+      packet.messageLength = 0x1c;
+      packet.toNetworkId = 0;
+      g_pNetMgr006a6014->Send(&packet, 0);
+      if (pendingNationBitmask == 0 && pendingNationSlotIndex != -1) {
+        HandleDiplomacyTurnEventPacketByCode();
+      }
+    }
+  } else {
+    switch (pendingNationSlotIndex) {
+    case 2: {
+      CString cityName;
+      EmitTurnEvent19NationStateArraysForSlot(g_pSimMgr->GetActiveNationId(), -1);
+      EmitTurnEvent2CNationStateCompositeForSlot(g_pSimMgr->GetActiveNationId(), -1);
+      TurnEventACityAnnouncePacket packet;
+      packet.messageTag = 0x74696d65;
+      packet.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetActiveNationId());
+      packet.eventCode = 0;
+      packet.fromNetworkId = 0;
+      packet.eventCode = 0xa;
+      packet.toNetworkId = 0;
+      packet.toNetworkId = -1;
+      packet.messageLength = 0;
+      packet.messageLength = 0x44;
+      packet.uiTurnToken = static_cast<short>(g_pGameFlowState->pendingNationSlotIndex);
+      char nationId = static_cast<char>(g_pSimMgr->GetActiveNationId());
+      packet.nationId1C = nationId;
+      packet.homeRegion1E = (short)g_apTerrainTypeDescriptorTable[nationId]->homeRegionIndex;
+      int cityRecordIndex =
+          g_apTerrainTypeDescriptorTable[nationId]->GetHomeRegionCityRecordIndex();
+      g_pGlobalMapState->AssignCityRecordDisplayName(cityRecordIndex, &cityName);
+      strncpy(packet.cityName20, cityName, 0x21);
+      g_pNetMgr006a6014->Send(&packet, 0);
+      break;
+    }
+    case 5: {
+      DispatchTurnEventPacketWithCodeAndPayloadBuffer(
+          0x2e, -1, reinterpret_cast<void*>(g_pSimMgr->GetActiveNationId()));
+      DispatchTurnEventPacketWithCodeAndPayloadBuffer(
+          0x2f, -1, reinterpret_cast<void*>(g_pSimMgr->GetActiveNationId()));
+      DispatchTurnEventPacketWithCodeAndPayloadBuffer(
+          0x30, -1, reinterpret_cast<void*>(g_pSimMgr->GetActiveNationId()));
+      for (int slot = 0; slot < 0x17; ++slot) {
+        TMinor* minor = g_apSecondaryNationStateSlots[slot];
+        if (minor != 0) {
+          minor->RebuildDiplomacyEconomicPressureFromMapState();
+        }
+      }
+      g_apNationStates[g_pSimMgr->GetActiveNationId()]
+          ->ResetDiplomacyNeedScoresAndClearAidAllocationMatrix();
+      EmitTurnEvent19NationStateArraysForSlot(g_pSimMgr->GetActiveNationId(), -1);
+      EmitTurnEvent2CNationStateCompositeForSlot(g_pSimMgr->GetActiveNationId(), -1);
+      TurnEventFResumeAckPacket packet;
+      packet.messageTag = 0x74696d65;
+      packet.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetActiveNationId());
+      packet.eventCode = 0;
+      packet.eventCode = 0xf;
+      packet.fromNetworkId = 0;
+      packet.toNetworkId = 0;
+      packet.toNetworkId = -1;
+      packet.messageLength = 0;
+      packet.messageLength = 0x20;
+      packet.uiTurnToken = static_cast<short>(g_pGameFlowState->pendingNationSlotIndex);
+      packet.nationSlot1C = g_pSimMgr->GetActiveNationId();
+      g_pNetMgr006a6014->Send(&packet, 0);
+      break;
+    }
+    case 8: {
+      EmitTurnEvent2CNationStateCompositeForSlot(g_pSimMgr->GetActiveNationId(), -1);
+      TurnEventFResumeAckPacket packet;
+      packet.messageTag = 0x74696d65;
+      packet.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetActiveNationId());
+      packet.eventCode = 0;
+      packet.eventCode = 0xf;
+      packet.fromNetworkId = 0;
+      packet.toNetworkId = 0;
+      packet.toNetworkId = -1;
+      packet.messageLength = 0;
+      packet.messageLength = 0x20;
+      packet.uiTurnToken = static_cast<short>(g_pGameFlowState->pendingNationSlotIndex);
+      packet.nationSlot1C = g_pSimMgr->GetActiveNationId();
+      g_pNetMgr006a6014->Send(&packet, 0);
+      break;
+    }
+    case 0x14:
+    case 0x15: {
+      TurnEventFResumeAckPacket packet;
+      packet.messageTag = 0x74696d65;
+      packet.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetActiveNationId());
+      packet.eventCode = 0;
+      packet.eventCode = 0xf;
+      packet.fromNetworkId = 0;
+      packet.toNetworkId = 0;
+      packet.toNetworkId = -1;
+      packet.messageLength = 0;
+      packet.messageLength = 0x20;
+      packet.uiTurnToken = static_cast<short>(g_pGameFlowState->pendingNationSlotIndex);
+      packet.nationSlot1C = g_pSimMgr->GetActiveNationId();
+      g_pNetMgr006a6014->Send(&packet, 0);
+      break;
+    }
+    default:
+      break;
+    }
+  }
+
+  int readySlot = g_pSimMgr->GetActiveNationId();
+  if (readySlot == -1) {
+    readySlot = static_cast<signed char>(activeNationTagIndex);
+  }
+  nationStatusTags[readySlot] = 0x72656479; // 'redy'
+  NationStatusEvent25Packet2 packet;
+  packet.messageTag = 0x74696d65;
+  packet.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetActiveNationId());
+  packet.eventCode = 0;
+  packet.fromNetworkId = 0;
+  packet.toNetworkId = 0;
+  packet.eventCode = 0x25;
+  packet.messageLength = 0;
+  for (int i = 0; i < 7; ++i) {
+    packet.statusTags[i] = 0x756e6b6e; // 'unkn'
+  }
+  packet.messageLength = 0x34;
+  packet.toNetworkId = 0;
+  packet.statusTags[readySlot] = 0x72656479; // 'redy'
+  g_pNetMgr006a6014->Send(&packet, 0);
+}
 
 // Post-resume diplomacy turn-event dispatcher: switches on pendingNationSlotIndex (the
 // received turn-event code) and re-broadcasts the matching game-state snapshot family.

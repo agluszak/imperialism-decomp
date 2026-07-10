@@ -32,7 +32,6 @@ extern undefined4 ProcessTurnInstructionStreamAndFinalizePhase(void);
 extern undefined4 ShowTurnAlertsForActiveNation(void);
 extern undefined4 UpdatePersistentTopTenNationScores(void);
 extern undefined4 RebuildNationRankingDataAndUiCache(void);
-extern undefined4 HandleTurnResumeStateTelemetry(void);
 extern undefined4 UpdateCityOrderCapabilityUnlockProgress(void);
 extern undefined4 ConsumeFirstPendingAbilityUnlock(void);
 extern undefined4 RefreshNavyOrderCycleAndClearReadyFlags(void);
@@ -509,7 +508,7 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
     if (g_pGameFlowState != nullptr) {
       turnStateCode = g_pGameFlowState->activeNationSlotIndex;
     }
-    HandleTurnResumeStateTelemetry();
+    g_pGameFlowState->HandleTurnResumeStateTelemetry();
     if (g_pUiRuntimeContext != nullptr) {
       g_pUiRuntimeContext->DispatchTurnEventSlot4C(activeNationSlot, 0x5e4);
     }

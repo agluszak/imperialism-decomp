@@ -152,6 +152,10 @@ public:
   // 0x5431a0: clear the slot's turn-resume pending bit, broadcast the remaining mask
   // (event 1) when hosting, and flush the latched event code once the mask drains.
   void ClearTurnResumeNationPendingBitAndMaybeFlushTelemetry(int nationSlot);
+  // 0x543280: turn-resume telemetry pass — hosting drops absent nations' pending bits
+  // and re-broadcasts the mask; clients acknowledge the pending event code; everyone
+  // marks the local nation 'redy' and broadcasts the event-0x25 status board.
+  void HandleTurnResumeStateTelemetry();
   // 0x54d4e0: probe reachability, save when everyone is reachable, else optionally pose
   // the "cannot save" advisory; returns the all-reachable byte Boolean.
   unsigned char TrySaveGameAndMaybeShowFailureDialog(int mode, char* label, char showFailureDialog);

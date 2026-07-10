@@ -13133,7 +13133,7 @@
     },
     {
       "address": "0x4e4630",
-      "matching": 0.9333333333333333,
+      "matching": 0.6666666666666666,
       "name": "TMinor::OrphanLeaf_NoCall_Ins02_004d7ee0",
       "type": 1
     },
@@ -16717,7 +16717,7 @@
     },
     {
       "address": "0x512930",
-      "matching": 0.25622775800711745,
+      "matching": 0.2491103202846975,
       "name": "BuildHexAreaTileIndexList",
       "type": 1
     },
@@ -18217,13 +18217,13 @@
     },
     {
       "address": "0x52cae0",
-      "matching": 0.3054662379421222,
+      "matching": 0.2976,
       "name": "BuildOverlaySpanRecordsFromQuadBorderLinks",
       "type": 1
     },
     {
       "address": "0x52d030",
-      "matching": 0.7766990291262136,
+      "matching": 1.0,
       "name": "ComputeWrappedOverlayCoordDeltaMetric",
       "type": 1
     },
@@ -20157,13 +20157,13 @@
     },
     {
       "address": "0x53d020",
-      "matching": 0.4235294117647059,
+      "matching": 0.4251968503937008,
       "name": "ComputeArmyMissionScoreDeltaWithCandidateUnit",
       "type": 1
     },
     {
       "address": "0x53d200",
-      "matching": 0.41245136186770426,
+      "matching": 0.4108527131782946,
       "name": "ComputeArmyMissionScoreDeltaWithScaledCandidateUnit",
       "type": 1
     },
@@ -21123,8 +21123,8 @@
     },
     {
       "address": "0x543280",
-      "matching": 0.012861736334405145,
-      "name": "HandleTurnResumeStateTelemetry",
+      "matching": 0.4340836012861736,
+      "name": "TMultiplayerMgr::HandleTurnResumeStateTelemetry",
       "type": 1
     },
     {
@@ -22389,7 +22389,7 @@
     },
     {
       "address": "0x555420",
-      "matching": 0.5546666666666666,
+      "matching": 0.5653333333333334,
       "name": "ResolveTaskForceOrderConflictAndPickCandidate",
       "type": 1
     },
@@ -26041,7 +26041,7 @@
     },
     {
       "address": "0x57da70",
-      "matching": 0.12552301255230125,
+      "matching": 0.12547051442910917,
       "name": "TSimMgr::AdvanceGlobalTurnStateMachine",
       "type": 1
     },
@@ -31560,7 +31560,7 @@
     },
     {
       "address": "0x5b97c0",
-      "matching": 0.8737864077669902,
+      "matching": 0.9807692307692307,
       "name": "TTradeMgr::RunNationUpdatePassesAndResetTransitionFlags",
       "type": 1
     },

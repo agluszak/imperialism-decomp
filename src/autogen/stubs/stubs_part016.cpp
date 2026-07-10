@@ -539,14 +539,6 @@ undefined4 EnableDiplomacyQueueRoutingAndSetContextField44(void)
   return 0;
 }
 
-// ghidra_name HandleTurnResumeStateTelemetry
-// ghidra_proto undefined HandleTurnResumeStateTelemetry()
-// FUNCTION: IMPERIALISM 0x00543280
-undefined4 HandleTurnResumeStateTelemetry(void)
-{
-  return 0;
-}
-
 // ghidra_name ResetDiplomacyRuntimeSelectionAndSetModeNada
 // ghidra_proto undefined ResetDiplomacyRuntimeSelectionAndSetModeNada()
 // FUNCTION: IMPERIALISM 0x00544630
