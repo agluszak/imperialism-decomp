@@ -157,7 +157,7 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
         continue;
       }
       if (nation->ShouldDispatchImmediatelySlot28() == 0 && DAT_006a43f0 == 0) {
-        nation->RefreshNationCivilianWorkOrdersForTurn(emptyString, reinterpret_cast<char*>(-1));
+        nation->SetHomeCityTileAndDisplayName(-1, 0);
       }
     }
     if (activeNationSlot >= 0 && activeNationSlot < 7) {

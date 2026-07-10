@@ -52,8 +52,10 @@ public:
   DECLARE_DYNCREATE(TMultiplayerMgr)
   enum { kNationSlotCount = 7 };
 
-  int nationStatusControlSlots[8];        // +0x20
-  int field40;                            // +0x40
+  int nationStatusControlSlots[8]; // +0x20
+  // +0x40 — the active lobby dialog view when one is open; the code-9 receive path
+  // checks IsKindOf(RUNTIME_CLASS(TLoungeDialog)) before using it as the lounge.
+  TView* lobbyDialogView40;               // +0x40
   int diplomacyQueueContext;              // +0x44 — child handler for queue routing
   int nationSessionIds[kNationSlotCount]; // +0x48
   int queueSyncDword;                     // +0x64

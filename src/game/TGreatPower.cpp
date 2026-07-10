@@ -781,9 +781,9 @@ void TGreatPower::MarkStatusFlag5HandledIfCapabilityActive(void) {
   }
 }
 
-void TGreatPower::RefreshNationCivilianWorkOrdersForTurn(CString param_2, char* param_3) {
-  (void)param_2;
-  (void)param_3;
+void TGreatPower::SetHomeCityTileAndDisplayName(short homeRegionTile, char* cityName) {
+  (void)homeRegionTile;
+  (void)cityName;
   // TODO: promote body @ 0x004dfd30
 }
 

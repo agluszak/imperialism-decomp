@@ -7549,7 +7549,7 @@
     },
     {
       "address": "0x4a2900",
-      "matching": 0.13063763608087092,
+      "matching": 0.13374805598755832,
       "name": "BuildArmyContextActionRecordsAndDispatchLabel",
       "type": 1
     },
@@ -12699,7 +12699,7 @@
     {
       "address": "0x4dfd30",
       "matching": 0.0,
-      "name": "RefreshNationCivilianWorkOrdersForTurn",
+      "name": "TGreatPower::SetHomeCityTileAndDisplayName(void)",
       "type": 1
     },
     {
@@ -12814,7 +12814,8 @@
     },
     {
       "address": "0x4e0690",
-      "matching": 1.0,
+      "effective": true,
+      "matching": 0.42857142857142855,
       "name": "TGreatPower::ReturnFalseNationStateCapabilityFlag90",
       "type": 1
     },
@@ -26047,7 +26048,7 @@
     },
     {
       "address": "0x57da70",
-      "matching": 0.12547051442910917,
+      "matching": 0.12573344509639564,
       "name": "TSimMgr::AdvanceGlobalTurnStateMachine",
       "type": 1
     },

@@ -2450,7 +2450,7 @@ address|name|symbol|size|type|prototype|provenance
 4df810|TGreatPower::RebuildPrimaryNationStateForSlot_Impl||403|function|undefined RebuildPrimaryNationStateForSlot_Impl()|
 4dfa20|TGreatPower::DeserializeRecruitScenarioAndInstantiateOrders_3a||139|function|undefined __thiscall DeserializeRecruitScenarioAndInstantiateOrders(int * param_1)|
 4dfae0|TGreatPower::CreateAndQueueFrogCityMarkerForNationTile||449|function|undefined CreateAndQueueFrogCityMarkerForNationTile()|
-4dfd30|RefreshNationCivilianWorkOrdersForTurn||723|function|undefined RefreshNationCivilianWorkOrdersForTurn()|
+4dfd30|TGreatPower::SetHomeCityTileAndDisplayName||723|function|undefined RefreshNationCivilianWorkOrdersForTurn()|
 4e00d0|TGreatPower::DispatchGreatPowerQuarterlyStatusMessageLevel2||65|function|undefined DispatchGreatPowerQuarterlyStatusMessageLevel2()|
 4e0140|TGreatPower::DispatchGreatPowerQuarterlyStatusMessageLevel1||65|function|undefined DispatchGreatPowerQuarterlyStatusMessageLevel1()|
 4e01b0|TGreatPower::DispatchGreatPowerQuarterlyStatusMessageLevel0||65|function|undefined DispatchGreatPowerQuarterlyStatusMessageLevel0()|

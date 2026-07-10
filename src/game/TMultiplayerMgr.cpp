@@ -186,7 +186,7 @@ TMultiplayerMgr::TMultiplayerMgr()
       playerNameString(), playerNameMirror(), fieldb8() {
   InitializeUiResourceEntryBaseHeaderDefaults();
   memset(nationStatusControlSlots, 0, sizeof(nationStatusControlSlots));
-  field40 = 0;
+  lobbyDialogView40 = 0;
   primaryTurnEventQueueHead = 0;
   secondaryTurnEventQueueHead = 0;
   sessionPhaseTag = 0x6e616461;
