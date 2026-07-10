@@ -22011,7 +22011,7 @@
     },
     {
       "address": "0x551100",
-      "matching": 0.0273972602739726,
+      "matching": 0.6258503401360545,
       "name": "ReassignOrderNodeNationAndRebindParentCounters",
       "type": 1
     },
@@ -22263,13 +22263,13 @@
     },
     {
       "address": "0x553b10",
-      "matching": 0.41379310344827586,
+      "matching": 0.4827586206896552,
       "name": "HasNoMapOrderEntryChildrenQueued",
       "type": 1
     },
     {
       "address": "0x553b50",
-      "matching": 0.5454545454545454,
+      "matching": 0.5818181818181818,
       "name": "HasActiveMapOrderEntryChildren",
       "type": 1
     },
@@ -22299,7 +22299,7 @@
     },
     {
       "address": "0x553fe0",
-      "matching": 0.03125,
+      "matching": 0.6821705426356589,
       "name": "PruneInactiveTaskForceOrderHead",
       "type": 1
     },
@@ -22407,7 +22407,7 @@
     },
     {
       "address": "0x555420",
-      "matching": 0.5653333333333334,
+      "matching": 0.5546666666666666,
       "name": "ResolveTaskForceOrderConflictAndPickCandidate",
       "type": 1
     },
@@ -29282,13 +29282,13 @@
     },
     {
       "address": "0x59f110",
-      "matching": 0.06666666666666667,
+      "matching": 0.8421052631578947,
       "name": "TNavyAutoPlayer::StartBattle",
       "type": 1
     },
     {
       "address": "0x59f160",
-      "matching": 0.012738853503184714,
+      "matching": 0.38977635782747605,
       "name": "TNavyAutoPlayer::AdvanceTacticalTurnPulse",
       "type": 1
     },
@@ -29751,7 +29751,7 @@
     },
     {
       "address": "0x5a55c0",
-      "matching": 0.018867924528301886,
+      "matching": 0.9714285714285714,
       "name": "TNavyBattle::DeployTacticalUnitToTile",
       "type": 1
     },
