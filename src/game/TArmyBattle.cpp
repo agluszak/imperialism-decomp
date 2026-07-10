@@ -15,6 +15,9 @@
 #include "game/TMilitaryUnit.h"
 #include "game/TSimMgr.h"
 #include "game/TSoundPlayer.h"
+#include "game/TTacticalBattleView.h"
+#include "game/TTacticalToolbar.h"
+#include "game/ui_control_tags.h"
 #include "game/TStream.h"
 #include "game/TTacArmyView.h"
 #include "game/TView.h"
@@ -319,11 +322,57 @@ void TArmyBattle::LoadBattleSetupTabDataByIndex(int compositionClass, int fortLe
   }
 }
 
+// Real deployment placement (slot 0x0c override): validates the tile against the
+// current side's deployment zone (same guard band as ApplyGridColumnSelectionGuard),
+// applies/echoes the 'depl' command, advances the done-selection to the side's next
+// undeployed unit, resets the move-cost plane, and either fires the ready handler when
+// the side has fully deployed or refreshes the 'tool' toolbar's current-unit control.
 // FUNCTION: IMPERIALISM 0x005a51e0
 void TArmyBattle::DeployTacticalUnitToTile(TTacticalUnit* unit, int tileIndex) {
-  // TODO: port body @ 0x5a51e0.
-  (void)unit;
-  (void)tileIndex;
+  unit->AssertValid();
+  int column = tileIndex % 29;
+  if (tileIndex < 29) {
+    return;
+  }
+  TacticalTileRecord* record = &tileGrid4[tileIndex];
+  if (record->terrainType0 == 4) {
+    return;
+  }
+  if (record->occupant4 != 0) {
+    return;
+  }
+  if (currentSideC == 0) {
+    if (column < 3) {
+      return;
+    }
+    if (column > 5) {
+      return;
+    }
+  } else {
+    if (column > battlefieldColumnCount34 - 3) {
+      return;
+    }
+    if (column < battlefieldColumnCount34 - 5) {
+      return;
+    }
+  }
+  HandleTacticalCommandTag_depl(static_cast<TArmyTacUnit*>(unit), tileIndex, 0);
+  TTacticalPlayer* sidePlayer = (currentSideC == 0) ? tacticalPlayer14 : tacticalPlayer18;
+  ApplyTacticalDoneSelectionAndRefreshUi(sidePlayer->SelectNextTacticalUnitForDoneCommand());
+  for (int planeIndex = 0; planeIndex < tacticalTileCount3c; ++planeIndex) {
+    tileMoveCostArray24[planeIndex] = -1;
+  }
+  TTacticalPlayer* readyPlayer = (currentSideC == 0) ? tacticalPlayer14 : tacticalPlayer18;
+  if (readyPlayer->sideReadyFlag10 != 0) {
+    HandleTacticalCommandTag_retr(); // side fully deployed -> hand the round over
+    return;
+  }
+  if (battleView8 != 0) {
+    TTacticalToolbar* toolbar = static_cast<TTacticalToolbar*>(
+        battleView8->ownerContext->ResolveControlByTag(0x746f6f6c /* 'tool' */));
+    toolbar->AssertValid();
+    toolbar->UpdateTacticalCurrentUnitControlAndDialogLabel(selectedUnit1c);
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x005a5320

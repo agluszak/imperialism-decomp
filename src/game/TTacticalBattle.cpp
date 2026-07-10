@@ -187,6 +187,17 @@ void TTacticalBattle::StartBattle() {
   tacticalPlayer18->StartBattle();
 }
 
+// Non-virtual action helpers dispatched above; bodies not yet ported.
+
+// Walks the unit step-by-step along the distance-field path toward the target tile,
+// stopping early when a reaction check fires. Deducts the arrival tile's move cost,
+// refreshes the view, and when the unit reaches its side's exit edge (column 0 for
+// side 0, the last playable column for side 1) retires it from the battlefield.
+// FUNCTION: IMPERIALISM 0x0059fd10
+void TTacticalBattle::HandleTacticalCommandTag_retr() {
+  // TODO: port body @ 0x59fd10 (side fully deployed -> hand the round over).
+}
+
 // Selection/UI helpers dispatched by the command family; bodies not yet ported.
 
 // Applies a completed selection: records the unit, recomputes its reachable-tile cost
@@ -431,21 +442,6 @@ void TTacticalBattle::QueueTacticalEventPacket232A() {
   g_pGlobalUiRootController->DispatchUiSelectionToHandler(command);
 }
 
-undefined TTacticalBattle::ExecuteTacticalDigActionAndConsumeUnitActionPoints(TTacticalUnit* unit,
-                                                                              int tileIndex) {
-  (void)unit;
-  (void)tileIndex;
-  return 0;
-}
-
-undefined
-TTacticalBattle::ComputeRallyStrengthAndQueueTacticalRallyCommand(TTacticalUnit* rallyingUnit,
-                                                                  TArmyTacUnit* rallyTarget) {
-  (void)rallyingUnit;
-  (void)rallyTarget;
-  return 0;
-}
-
 // Tactical command family: each handler echoes the command to multiplayer when it
 // originates locally (remoteFlag == 0), then applies it to the battle state. The
 // 0x545940 turn-event dispatcher re-enters these with remoteFlag = 1.
@@ -568,20 +564,91 @@ void TTacticalBattle::MoveTacticalUnitTowardTile(TTacticalUnit* unit, int target
   }
 }
 
-// Non-virtual action helpers dispatched above; bodies not yet ported.
-
-// Walks the unit step-by-step along the distance-field path toward the target tile,
-// stopping early when a reaction check fires. Deducts the arrival tile's move cost,
-// refreshes the view, and when the unit reaches its side's exit edge (column 0 for
-// side 0, the last playable column for side 1) retires it from the battlefield.
+// Recursive distance-field path builder: when the walk tile is the goal, records it
+// and returns the depth; otherwise collects the neighbors whose move cost is known
+// (!= -1) and strictly downhill, orders them (lower cost first; on ties a zero-threat
+// tile wins, two equal-threat-class tiles coin-flip), and recurses into each candidate
+// until one reaches the goal. Returns the found path depth or -1.
 // FUNCTION: IMPERIALISM 0x005a16e0
 int TTacticalBattle::BuildPathToTargetByDistanceField(int walkTileIndex, int pathDepth,
                                                       int goalTileIndex, int* outPathTiles) {
-  // TODO: port body @ 0x5a16e0 (self-recursive distance-field path builder).
-  (void)walkTileIndex;
-  (void)pathDepth;
-  (void)goalTileIndex;
-  (void)outPathTiles;
+  if (walkTileIndex == goalTileIndex) {
+    outPathTiles[pathDepth] = walkTileIndex;
+    return pathDepth;
+  }
+  int candidateTiles[6];
+  int neighborTiles[6];
+  int candidateCount = 0;
+  int walkCost = tileMoveCostArray24[walkTileIndex];
+  ComputeHexNeighborTileIndices_005A0420(walkTileIndex, neighborTiles);
+  int* neighborCursor = neighborTiles;
+  int* candidateCursor = candidateTiles;
+  int remainingDirections = 6;
+  do {
+    int neighborTile = *neighborCursor;
+    // NOTE(faithful): a -1 neighbor indexes tileMoveCostArray24[-1] in the original
+    // too (out-of-bounds word read); do not add a guard.
+    int neighborCost = tileMoveCostArray24[neighborTile];
+    if (neighborCost != -1 && neighborCost < walkCost) {
+      *candidateCursor = neighborTile;
+      ++candidateCount;
+      ++candidateCursor;
+    }
+    ++neighborCursor;
+    --remainingDirections;
+  } while (remainingDirections != 0);
+  if (candidateCount == 0) {
+    return -1;
+  }
+  if (candidateCount > 1) {
+    // Quirky original sort: the compare slot stays fixed per outer pass while the
+    // scan cursor always restarts at candidateTiles[1] (not curSlot + 1).
+    int* curSlot = candidateTiles;
+    for (int outerRemaining = candidateCount - 1; outerRemaining > 0; --outerRemaining) {
+      int* nextSlot = &candidateTiles[1];
+      for (int innerRemaining = candidateCount - 1; innerRemaining > 0; --innerRemaining) {
+        int nextTile = *nextSlot;
+        int curTile = *curSlot;
+        unsigned char swapFlag = static_cast<unsigned char>(tileMoveCostArray24[nextTile] <
+                                                            tileMoveCostArray24[curTile]);
+        if (swapFlag == 0 && tileMoveCostArray24[nextTile] == tileMoveCostArray24[curTile]) {
+          char nextThreat = tileThreatLevelArray28[nextTile];
+          char curThreat = tileThreatLevelArray28[curTile];
+          // TODO(verify): branch shape of this tiebreak; truth table verified: one
+          // zero-threat side -> it sorts first, both zero / both nonzero -> coin flip.
+          if (nextThreat == 0) {
+            if (curThreat != 0) {
+              swapFlag = 1;
+            } else {
+              swapFlag = static_cast<unsigned char>(GenerateThreadLocalRandom15() & 1);
+            }
+          } else if (curThreat != 0) {
+            swapFlag = static_cast<unsigned char>(GenerateThreadLocalRandom15() & 1);
+          }
+        }
+        if (swapFlag != 0) {
+          *curSlot = nextTile;
+          *nextSlot = curTile;
+        }
+        ++nextSlot;
+      }
+      ++curSlot;
+    }
+  }
+  if (candidateCount > 0) {
+    int candidateSlot = 0;
+    int* walkCursor = candidateTiles;
+    do {
+      int foundDepth =
+          BuildPathToTargetByDistanceField(*walkCursor, pathDepth + 1, goalTileIndex, outPathTiles);
+      if (foundDepth != -1) {
+        outPathTiles[pathDepth] = walkTileIndex;
+        return foundDepth;
+      }
+      ++candidateSlot;
+      ++walkCursor;
+    } while (candidateSlot < candidateCount);
+  }
   return -1;
 }
 
@@ -623,11 +690,42 @@ void TTacticalBattle::MoveTacticalUnitBetweenTiles(TTacticalUnit* unit, int from
   }
 }
 
+// Reaction/opportunity fire when a unit enters a tile: every unit of the opposing side
+// that is unbroken (state1c == 0), still latched for action (selectedFlag18), and has
+// the entered tile in range resolves its action against the tile's occupant. Stops
+// early when the occupant's strength hits 0; returns whether any reaction fired.
 // FUNCTION: IMPERIALISM 0x005a1a20
 unsigned char TTacticalBattle::ResolveTacticalReactionChecksForTile(int tileIndex) {
-  // TODO: port body @ 0x5a1a20.
-  (void)tileIndex;
-  return 0;
+  unsigned char reactionFired = 0;
+  TTacticalUnit* occupant = tileGrid4[tileIndex].occupant4;
+  TTacticalPlayer* reactingPlayer = (occupant->side20 == 0) ? tacticalPlayer18 : tacticalPlayer14;
+  CIterator reactorIter(reactingPlayer->unitList4);
+  TTacticalUnit* reactor = static_cast<TTacticalUnit*>(reactorIter.Reset());
+  // The original asserts the first record once before entering the loop.
+  reactor->AssertValid();
+  do {
+    reactor->AssertValid();
+    if (reactor->state1c == 0 && reactor->selectedFlag18 != 0) {
+      int reactorTileIndex = reactor->tileIndex8;
+      short categoryCode = g_awTacticalUnitCategoryCodeBySlot[reactor->unitTypeC];
+      if (IsTacticalTargetTileReachableForAction(
+              reactorTileIndex, tileIndex,
+              static_cast<char>(g_afTacticalDirectFireFlagByCategory[categoryCode]),
+              reactor->GetUnitRange()) != 0) {
+        EvaluateAndResolveTacticalActionAgainstTileOccupant(reactor, tileIndex);
+        if (battleView8 != 0) {
+          battleView8->InvalidateTacticalUnitTileRect(reactor);
+        }
+        reactionFired = 1;
+      }
+    }
+    if (reactorIter.More()) {
+      reactor = static_cast<TTacticalUnit*>(reactorIter.Advance());
+    } else {
+      reactor = 0;
+    }
+  } while (reactor != 0 && occupant->strength4 != 0);
+  return reactionFired;
 }
 
 // Executes the move (pathing the unit toward the target tile), clears the follow-up
@@ -1289,6 +1387,25 @@ void TTacticalBattle::HandleTacticalCommandTag_mine(int tileIndex, int amount, c
   }
 }
 
+// 'digg' action wrapper: apply the trench dig locally (+ echo), walk the unit to the
+// target tile, charge half the unit type's base action points against the pre-action
+// balance, rebuild the reachable-cost plane, and close the round when the unit is spent.
+// FUNCTION: IMPERIALISM 0x005a3640
+undefined TTacticalBattle::ExecuteTacticalDigActionAndConsumeUnitActionPoints(TTacticalUnit* unit,
+                                                                              int tileIndex) {
+  unit->AssertValid();
+  // Captured as a word before the dig/move mutate the unit.
+  short actionPointsBefore = static_cast<short>(unit->actionPoints28);
+  HandleTacticalCommandTag_digg(unit, tileIndex, 0);
+  MoveTacticalUnitTowardTile(unit, tileIndex);
+  unit->actionPoints28 = actionPointsBefore - g_awUnitTypeBaseActionPointTable[unit->unitTypeC] / 2;
+  ComputeTacticalReachableTileCostsByUnitCategory(unit);
+  if (unit->actionPoints28 == 0) {
+    QueueTacticalEventPacket232A();
+  }
+  return 0;
+}
+
 // 'digg' command: digs a trench link between the unit's tile and an adjacent target
 // tile -- finds the hex direction of the target among the unit tile's six neighbors,
 // then sets the paired direction bits (and the 0x80 first-dig / 0x40 linked state
@@ -1333,6 +1450,30 @@ void TTacticalBattle::HandleTacticalCommandTag_digg(TTacticalUnit* unit, int tar
     tileGrid4[targetTileIndex].trenchMask10 |= 0x40;
   }
   tileGrid4[targetTileIndex].trenchMask10 |= static_cast<unsigned char>(1 << direction);
+}
+
+// Rally strength computation: an unbroken target (state1c == 0) gains
+// strength/10 * (rallier quality + 3) morale; a broken one (state1c == 1) recovers to
+// state 0 with strength/10 + 20 morale on a rand()%100 < (quality+5)*10 roll. Then the
+// 'raly' command applies/echoes it and the 0x232a end-of-action event is queued.
+// FUNCTION: IMPERIALISM 0x005a3810
+undefined
+TTacticalBattle::ComputeRallyStrengthAndQueueTacticalRallyCommand(TTacticalUnit* rallyingUnit,
+                                                                  TArmyTacUnit* rallyTarget) {
+  int newState = rallyTarget->state1c;
+  int newMorale = rallyTarget->morale34;
+  if (newState == 0) {
+    newMorale += rallyTarget->strength4 / 10 * (rallyingUnit->qualityLevel10 + 3);
+  } else if (newState == 1) {
+    int qualityLevel = rallyingUnit->qualityLevel10;
+    if (static_cast<int>(GenerateThreadLocalRandom15()) % 100 < (qualityLevel + 5) * 10) {
+      newMorale = rallyTarget->strength4 / 10 + 20;
+      newState = 0;
+    }
+  }
+  HandleTacticalCommandTag_raly(rallyTarget, newMorale, newState, 0);
+  QueueTacticalEventPacket232A();
+  return 0;
 }
 
 // 'raly' command: multiplayer echo, sets the unit's state (rallying a broken unit) and
@@ -1430,35 +1571,156 @@ void TTacticalBattle::ConsumeFortStrengthPointsAndInvalidateIfDepleted(int tileI
   }
 }
 
+// Range/line-of-fire test on the doubled-x hex grid. Distance uses axial x = 2*col +
+// (row&1) with both deltas reflected positive; beyond `range` fails. An entrenched
+// category-8 (sapper) target is only engageable from an adjacent tile. Direct-fire
+// attacks are additionally blocked by an intact fort wall crossing the firing line,
+// unless the target is not behind the wall band or the attacker stands on the wall
+// column.
 // FUNCTION: IMPERIALISM 0x005a3d30
 unsigned char TTacticalBattle::IsTacticalTargetTileReachableForAction(int attackerTileIndex,
                                                                       int targetTileIndex,
                                                                       char directFireFlag,
                                                                       int range) {
-  // TODO: port body @ 0x5a3d30.
-  (void)attackerTileIndex;
-  (void)targetTileIndex;
-  (void)directFireFlag;
-  (void)range;
+  int attackerRow = attackerTileIndex / 29;
+  int attackerColumn = attackerTileIndex % 29;
+  int attackerAxialX = (attackerRow & 1) + attackerColumn * 2;
+  int targetRow = targetTileIndex / 29;
+  int targetColumn = targetTileIndex % 29;
+  int targetAxialX = (targetRow & 1) + targetColumn * 2;
+  if (targetAxialX < attackerAxialX) {
+    targetAxialX = attackerAxialX * 2 - targetAxialX;
+  }
+  if (targetRow < attackerRow) {
+    targetRow = attackerRow * 2 - targetRow;
+  }
+  int rowDistance = targetRow - attackerRow;
+  int diagonalOverhang = targetAxialX - rowDistance - attackerAxialX;
+  int hexDistance;
+  if (diagonalOverhang > 0) {
+    hexDistance = diagonalOverhang / 2 + rowDistance;
+  } else {
+    hexDistance = rowDistance;
+  }
+  if (hexDistance > range) {
+    return 0;
+  }
+  TacticalTileRecord* targetRecord = &tileGrid4[targetTileIndex];
+  TTacticalUnit* targetOccupant = targetRecord->occupant4;
+  if (targetOccupant != 0 && g_awTacticalUnitCategoryCodeBySlot[targetOccupant->unitTypeC] == 8 &&
+      targetRecord->trenchMask10 != 0) {
+    int neighborTiles[6];
+    ComputeHexNeighborTileIndices_005A0420(attackerTileIndex, neighborTiles);
+    int direction = 0;
+    int* neighborCursor = neighborTiles;
+    while (*neighborCursor != targetTileIndex) {
+      ++direction;
+      ++neighborCursor;
+      if (direction >= 6) {
+        return 0; // entrenched sapper: only adjacent attackers get through
+      }
+    }
+  }
+  if (directFireFlag == 0) {
+    return 1;
+  }
+  int wallTileIndex = FindFortWallTileCrossedByFiringLine(targetTileIndex, attackerTileIndex);
+  if (wallTileIndex == 0) {
+    return 1;
+  }
+  if (tileGrid4[wallTileIndex].deployMark8 <= 1) {
+    return 1;
+  }
+  if (fortStrengthPoints54[wallTileIndex / 29 / 2] <= 0) {
+    return 1;
+  }
+  if (targetColumn <= battlefieldColumnCount34 - 5) {
+    return 1;
+  }
+  if (attackerColumn == battlefieldColumnCount34 - 5) {
+    return 1;
+  }
   return 0;
 }
 
+// Whether a tile is a legal deployment target for the current side: not in the first
+// grid row, not water/impassable terrain (type 4), unoccupied, and inside the side's
+// deployment column band (side 0: columns 3..5; side 1: columnCount-5..columnCount-3).
 // FUNCTION: IMPERIALISM 0x005a41c0
 unsigned char TTacticalBattle::ApplyGridColumnSelectionGuard(int tileIndex) {
-  // TODO: port body @ 0x5a41c0.
-  (void)tileIndex;
-  return 0;
+  int column = tileIndex % 29;
+  if (tileIndex < 29) {
+    return 0;
+  }
+  TacticalTileRecord* record = &tileGrid4[tileIndex];
+  if (record->terrainType0 == 4) {
+    return 0;
+  }
+  if (record->occupant4 != 0) {
+    return 0;
+  }
+  if (currentSideC == 0) {
+    if (column < 3) {
+      return 0;
+    }
+    if (column > 5) {
+      return 0;
+    }
+    return 1;
+  }
+  if (column > battlefieldColumnCount34 - 3) {
+    return 0;
+  }
+  if (column < battlefieldColumnCount34 - 5) {
+    return 0;
+  }
+  return 1;
 }
 
+// Counts the tiles the current side may still deploy onto. The zone test is the
+// ApplyGridColumnSelectionGuard body expanded inline in the original, so it is
+// duplicated here rather than called.
 // FUNCTION: IMPERIALISM 0x005a4240
 int TTacticalBattle::CountFreeDeploymentZoneTilesForCurrentSide() {
-  // TODO: port body @ 0x5a4240.
-  return 0;
+  int freeTileCount = 0;
+  int tileCount = tacticalTileCount3c;
+  if (tileCount > 0) {
+    for (int tileIndex = 0; tileIndex < tileCount; ++tileIndex) {
+      int column = tileIndex % 29;
+      unsigned char tileFree = 0;
+      if (tileIndex >= 29) {
+        TacticalTileRecord* record = &tileGrid4[tileIndex];
+        if (record->terrainType0 != 4 && record->occupant4 == 0) {
+          if (currentSideC == 0) {
+            if (column >= 3 && column <= 5) {
+              tileFree = 1;
+            }
+          } else if (column <= battlefieldColumnCount34 - 3 &&
+                     column >= battlefieldColumnCount34 - 5) {
+            tileFree = 1;
+          }
+        }
+      }
+      if (tileFree != 0) {
+        ++freeTileCount;
+      }
+    }
+  }
+  return freeTileCount;
 }
 
+// True when there is no fort (fortLevel49 == 0) or any of the eight per-row-pair fort
+// strength pools is depleted (<= 0).
 // FUNCTION: IMPERIALISM 0x005a4330
 unsigned char TTacticalBattle::IsTacticalSideCategoryCoverageIncompleteOrFlagOff() {
-  // TODO: port body @ 0x5a4330 (true when fortLevel49 == 0 or any fort pool <= 0).
+  if (fortLevel49 == 0) {
+    return 1;
+  }
+  for (int poolIndex = 0; poolIndex < 8; ++poolIndex) {
+    if (fortStrengthPoints54[poolIndex] <= 0) {
+      return 1;
+    }
+  }
   return 0;
 }
 

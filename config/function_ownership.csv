@@ -4083,6 +4083,7 @@ address|target_cpp|ownership|note
 59f890|src/game/TTacticalBattle.cpp|manual|marker_sync
 59fb50|src/game/TTacticalBattle.cpp|manual|marker_sync
 59fc20|src/game/TTacticalBattle.cpp|manual|marker_sync
+59fd10|src/game/TTacticalBattle.cpp|manual|marker_sync
 59fe40|src/game/TTacticalBattle.cpp|manual|marker_sync
 59ff20|src/game/TTacticalBattle.cpp|manual|marker_sync
 5a02e0|src/game/TTacticalBattle.cpp|manual|marker_sync

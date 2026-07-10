@@ -7549,7 +7549,7 @@
     },
     {
       "address": "0x4a2900",
-      "matching": 0.13063763608087092,
+      "matching": 0.13374805598755832,
       "name": "BuildArmyContextActionRecordsAndDispatchLabel",
       "type": 1
     },
@@ -29368,7 +29368,7 @@
     },
     {
       "address": "0x59fd10",
-      "matching": 0.08333333333333333,
+      "matching": 0.0425531914893617,
       "name": "HandleTacticalCommandTag_retr",
       "type": 1
     },
@@ -29465,7 +29465,7 @@
     },
     {
       "address": "0x5a16e0",
-      "matching": 0.012345679012345678,
+      "matching": 0.7192429022082019,
       "name": "BuildPathToTargetByDistanceField",
       "type": 1
     },
@@ -29477,7 +29477,7 @@
     },
     {
       "address": "0x5a1a20",
-      "matching": 0.022727272727272728,
+      "matching": 0.7816091954022989,
       "name": "ResolveTacticalReactionChecksForTile",
       "type": 1
     },
@@ -29567,7 +29567,7 @@
     },
     {
       "address": "0x5a3640",
-      "matching": 0.045454545454545456,
+      "matching": 0.9882352941176471,
       "name": "TTacticalBattle::ExecuteTacticalDigActionAndConsumeUnitActionPoints",
       "type": 1
     },
@@ -29579,7 +29579,7 @@
     },
     {
       "address": "0x5a3810",
-      "matching": 0.03278688524590164,
+      "matching": 0.8571428571428571,
       "name": "TTacticalBattle::ComputeRallyStrengthAndQueueTacticalRallyCommand",
       "type": 1
     },
@@ -29609,7 +29609,7 @@
     },
     {
       "address": "0x5a3d30",
-      "matching": 0.024691358024691357,
+      "matching": 0.8104956268221575,
       "name": "IsTacticalTargetTileReachableForAction",
       "type": 1
     },
@@ -29621,13 +29621,13 @@
     },
     {
       "address": "0x5a41c0",
-      "matching": 0.044444444444444446,
+      "matching": 0.6,
       "name": "TTacticalBattle::ApplyGridColumnSelectionGuard",
       "type": 1
     },
     {
       "address": "0x5a4240",
-      "matching": 0.03389830508474576,
+      "matching": 0.48695652173913045,
       "name": "TTacticalBattle::CountFreeDeploymentZoneTilesForCurrentSide",
       "type": 1
     },
@@ -29639,7 +29639,7 @@
     },
     {
       "address": "0x5a4330",
-      "matching": 0.21052631578947367,
+      "matching": 1.0,
       "name": "IsTacticalSideCategoryCoverageIncompleteOrFlagOff",
       "type": 1
     },
@@ -29705,7 +29705,7 @@
     },
     {
       "address": "0x5a51e0",
-      "matching": 0.021505376344086023,
+      "matching": 0.783068783068783,
       "name": "TArmyBattle::DeployTacticalUnitToTile",
       "type": 1
     },

@@ -151,6 +151,8 @@ public:
                                      char remoteFlag); // 0x5a38e0
   void HandleTacticalCommandTag_depl(TArmyTacUnit* unit, int tileIndex,
                                      char remoteFlag); // 0x5a4370
+  // Hand the round over once the side has fully deployed. Body TODO. 0x59fd10.
+  void HandleTacticalCommandTag_retr();
 
   // Helpers the command family dispatches into (all __thiscall on the battle;
   // bodies TODO).

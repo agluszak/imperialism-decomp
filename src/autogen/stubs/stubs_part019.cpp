@@ -59,14 +59,6 @@ undefined4 OrphanCallChain_C2_I16_0059fcd0(void)
   return 0;
 }
 
-// ghidra_name HandleTacticalCommandTag_retr
-// ghidra_proto undefined HandleTacticalCommandTag_retr()
-// FUNCTION: IMPERIALISM 0x0059fd10
-undefined4 HandleTacticalCommandTag_retr(void)
-{
-  return 0;
-}
-
 // ghidra_name TacticalBattleView::FinalizeTacticalTurnStateAndQueueEvent232A
 // ghidra_proto void __thiscall FinalizeTacticalTurnStateAndQueueEvent232A(void)
 // FUNCTION: IMPERIALISM 0x0059fdb0
