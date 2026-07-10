@@ -1,23 +1,40 @@
 #include "game/CString.h"
 #include "game/TDisplayMgr.h"
 #include "game/TModuleLibraryCacheTableStateB.h"
+#include "game/TDropShadowText.h"
 #include "game/TView.h"
+#include "game/ui_text_label_helpers_decls.h"
+#include "game/quickdraw_rendering.h"
 #include "game/global_data_tables.h"
 
 void ApplySharedStringToControlState(CString sharedString, TView* control);
 void AssignSharedStringToControlState(CString sharedString, TView* control);
 
-// FUNCTION: IMPERIALISM 0x005c4590
-void __cdecl ApplyUiTextStyleAndThemeFlags(TView* control, int arg2, int themeCode, int styleResA,
-                                           int styleResB) {
-  // TODO: port body @ 0x5c4590 (not yet ported). Genuine __cdecl free function (callers
-  // clean up 0x14 bytes); declared for real so the turn-event-9 lounge refresh gets a
-  // correctly-typed call site.
-  (void)control;
-  (void)arg2;
+// FUNCTION: IMPERIALISM 0x005c4310
+TStaticText* __cdecl RefreshActiveControlThenApplyThemeStyleAndCaption(unsigned int controlTag,
+                                                                       int unused2, int pointSize,
+                                                                       int themeCode,
+                                                                       int themeCode2,
+                                                                       const char* caption) {
+  // TODO: port body @ 0x5c4310 (not yet ported). Declared for real so the lounge
+  // refresh gets a correctly-typed call site.
+  (void)controlTag;
+  (void)unused2;
+  (void)pointSize;
   (void)themeCode;
-  (void)styleResA;
-  (void)styleResB;
+  (void)themeCode2;
+  (void)caption;
+  return 0;
+}
+
+// FUNCTION: IMPERIALISM 0x005c4590
+void __cdecl ApplyUiTextStyleAndThemeFlags(TDropShadowText* control, int unused, int pointSize,
+                                           int shadowThemeCode, int textThemeCode) {
+  TControlPictureRectState styleDescriptor;
+  styleDescriptor.styleRef6 = 0;
+  BuildUiTextStyleDescriptor(&styleDescriptor, unused, pointSize, textThemeCode);
+  control->SetCityProductionDialogPictureRectAndMaybeRefresh(&styleDescriptor, 0);
+  MapUiThemeCodeToStyleFlags(static_cast<short>(shadowThemeCode), &control->shadowThemeCode94);
 }
 
 // FUNCTION: IMPERIALISM 0x005c46b0

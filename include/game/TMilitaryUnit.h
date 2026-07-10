@@ -56,7 +56,10 @@ public:
   TMilitaryUnit();
   virtual ~TMilitaryUnit() override;
 
-  void InitializeRecruitOrderState(short capValue, int nodeContext, short nationSlot);
+  // 4-stack-arg thiscall (ret 0x10); the trailing short forwards into
+  // RegisterUnitOrderWithOwnerManager (default 0 preserves the 3-arg callers' codegen).
+  void InitializeRecruitOrderState(short capValue, int nodeContext, short nationSlot,
+                                   short registerArg3 = 0);
 
   // --- TObject/TUnit overrides ---
   void ReadFrom(TStream* stream) override;

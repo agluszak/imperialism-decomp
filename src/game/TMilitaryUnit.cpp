@@ -38,13 +38,14 @@ TMilitaryUnit::TMilitaryUnit()
 TMilitaryUnit::~TMilitaryUnit() {}
 
 // FUNCTION: IMPERIALISM 0x005c2f50
-void TMilitaryUnit::InitializeRecruitOrderState(short capValue, int nodeContext, short nationSlot) {
+void TMilitaryUnit::InitializeRecruitOrderState(short capValue, int nodeContext, short nationSlot,
+                                                short registerArg3) {
   field_1C = 1;
   tileIndex06 = static_cast<short>(-1);
-  RegisterUnitOrderWithOwnerManager(capValue, nodeContext, nationSlot, 0);
+  RegisterUnitOrderWithOwnerManager(capValue, nodeContext, nationSlot, registerArg3);
   field_36 = static_cast<short>(
       (static_cast<int>(capValue) + (static_cast<int>(capValue) >> 31 & 7)) >> 3);
-  if (capValue > 0x1b) {
+  if (capValue >= 0x1b) {
     TAdmiral::GenerateMappedFlavorTextByNationSlotField0C(
         static_cast<TMinor*>(g_apTerrainTypeDescriptorTable[nationSlot]), &name24);
   }

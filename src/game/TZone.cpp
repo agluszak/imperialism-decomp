@@ -63,13 +63,6 @@ void* TZone::HandleTurnEventVtableSlot24CopyPayloadBuffer() {
   }
   return destObject;
 }
-// SYNTHETIC: IMPERIALISM 0x0055e660
-// TZone::CreateObject
-
-// SYNTHETIC: IMPERIALISM 0x0055e6e0
-// TZone::GetRuntimeClass
-
-IMPLEMENT_DYNCREATE(TZone, TObject)
 
 // FUNCTION: IMPERIALISM 0x00558860
 TZone** TZonePrimaryNeighborStretch::EnsureSlotAllocatedAndReturnPointer(unsigned int index) {
@@ -100,6 +93,13 @@ TZone** TZonePrimaryNeighborStretch::EnsureSlotAllocatedAndReturnPointer(unsigne
   }
   return Data() + index;
 }
+// SYNTHETIC: IMPERIALISM 0x0055e660
+// TZone::CreateObject
+
+// SYNTHETIC: IMPERIALISM 0x0055e6e0
+// TZone::GetRuntimeClass
+
+IMPLEMENT_DYNCREATE(TZone, TObject)
 
 // FUNCTION: IMPERIALISM 0x0055e700
 TZone::TZone()
@@ -842,6 +842,16 @@ void TZone::SetMapOrderUiFlag(int flag) {
 TTaskForce* TZone::CreateTaskForceFromNavyOrdersForNationIfEligible(short nation) {
   (void)nation;
   return nullptr;
+}
+
+// FUNCTION: IMPERIALISM 0x00560b00
+char TZone::CanDisplayMapOrderEntryInCurrentContext(short nation, char skipField34Check) {
+  // TODO: port body @ 0x560b00 (not yet ported). Declared for real so
+  // TOcean::RefreshMapActionContextNationOverlaysAndOrderRanks gets a correctly-typed
+  // call site.
+  (void)nation;
+  (void)skipField34Check;
+  return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x00560f80

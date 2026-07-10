@@ -832,6 +832,8 @@ extern "C" const char s_SourcePathUViewMgr_0069B6BC[] = "D:\\Ambit\\Cross\\UView
 // GLOBAL: IMPERIALISM 0x00698040
 extern "C" const char s_SourcePathUMultiplayerMgr_00698040[] =
     "D:\\Ambit\\Cross\\UMultiplayerMgr.cpp";
+// GLOBAL: IMPERIALISM 0x006983c8
+extern "C" const char s_SourcePathUNavy_006983C8[] = "D:\\Ambit\\Cross\\UNavy.cpp";
 // GLOBAL: IMPERIALISM 0x0069b740
 extern "C" const char s_SourcePathUViewMgrMore_0069B740[] = "D:\\Ambit\\Cross\\UViewMgr.more.cpp";
 // GLOBAL: IMPERIALISM 0x0069573c

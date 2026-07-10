@@ -137,6 +137,10 @@ public:
   unsigned char pad94[0xa8 - 0x94];
 
   TLoadSavePicture();
+
+  // 0x578c10: re-rasterize the hex-neighbor terrain palette map into this preview
+  // control's tile buffer (genuine __thiscall on the 'map ' control). Body TODO.
+  void RasterizeHexNeighborTerrainPaletteMap(int param);
 };
 
 ASSERT_SIZE(TLoadSavePicture, 0xa8);

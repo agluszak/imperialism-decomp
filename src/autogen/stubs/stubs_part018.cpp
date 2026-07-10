@@ -171,14 +171,6 @@ undefined4 UpdateMapGenerationProgressSpinnerFrame(void)
   return 0;
 }
 
-// ghidra_name TLoadSavePicture::RasterizeHexNeighborTerrainPaletteMap
-// ghidra_proto undefined RasterizeHexNeighborTerrainPaletteMap()
-// FUNCTION: IMPERIALISM 0x00578c10
-undefined4 RasterizeHexNeighborTerrainPaletteMap(void)
-{
-  return 0;
-}
-
 // ghidra_name CreateSelectableTextOptionChildEntry
 // ghidra_proto undefined CreateSelectableTextOptionChildEntry()
 // FUNCTION: IMPERIALISM 0x005798a0

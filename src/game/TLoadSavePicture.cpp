@@ -264,11 +264,43 @@ void __cdecl SaveGameWithModeAndOptionalLabel(int mode, char* label) {
   }
 }
 
+// Build the slot's save path (same recipe as BuildSavePathStringForMode) and, when the
+// file exists, open it as the main document; returns whether the load was kicked off.
 // FUNCTION: IMPERIALISM 0x0056df40
 unsigned char __cdecl BuildSaveSlotPathAndProbeMetadata(int slot, const char* label) {
-  // TODO: port body @ 0x56df40 (380 bytes; not yet ported). Declared for real so the
-  // turn-event-0xE 'load' receive path gets a correctly-typed call site.
-  (void)slot;
-  (void)label;
+  CString path;
+  const char* prefix = label;
+  if (label == 0) {
+    prefix = g_pszMultiplayerSavePrefix_0065DDD4;
+    if (!IsMultiplayerFlowActive()) {
+      prefix = g_pszSingleSlotSavePrefix_0065DDD0;
+    }
+  }
+  {
+    CString slotText;
+    if (slot == 0xa1) {
+      CString autosaveLabel(g_szAutosaveSlotLabel_0069872C);
+      slotText = autosaveLabel;
+    } else {
+      slotText.Format(g_szDecimalFormat, slot);
+    }
+    {
+      CString directoryPrefix(g_szSaveDirectoryPrefix_00698724);
+      path = directoryPrefix;
+    }
+    path += prefix;
+    path += slotText;
+    path += g_pszImpSaveExtension_0065DDD8;
+  }
+  if (TryGetFileMetadataForPath(&path) != 0) {
+    return g_pUiViewManager->OpenMainDocumentFromPathAndMarkLoaded(path);
+  }
   return 0;
+}
+
+// FUNCTION: IMPERIALISM 0x00578c10
+void TLoadSavePicture::RasterizeHexNeighborTerrainPaletteMap(int param) {
+  // TODO: port body @ 0x578c10 (not yet ported). Declared for real so the lounge map
+  // refresh gets a correctly-typed call site.
+  (void)param;
 }

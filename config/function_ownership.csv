@@ -3168,6 +3168,7 @@ address|target_cpp|ownership|note
 560470|src/game/TMapMgr.cpp|manual|marker_sync
 560580|src/game/TZone.cpp|manual|marker_sync
 5609e0|src/game/TZone.cpp|manual|marker_sync
+560b00|src/game/TZone.cpp|manual|marker_sync
 560f80|src/game/TZone.cpp|manual|marker_sync
 5610b0|src/game/TZone.cpp|manual|marker_sync
 561300|src/game/TZone.cpp|manual|marker_sync
@@ -3558,6 +3559,7 @@ address|target_cpp|ownership|note
 5789b0|src/game/TMapPreviewView.cpp|manual|marker_sync
 5789e0|src/game/TMapPreviewView.cpp|manual|marker_sync
 578a80|src/game/TMapPreviewView.cpp|manual|marker_sync
+578c10|src/game/TLoadSavePicture.cpp|manual|marker_sync
 579270|src/game/TControl.cpp|manual|marker_sync
 5793f0|src/game/TRadioText.cpp|manual|marker_sync
 579470|src/game/TRadioText.cpp|manual|marker_sync
@@ -4481,6 +4483,7 @@ address|target_cpp|ownership|note
 5c3e80|src/game/quickdraw_rendering.cpp|manual|marker_sync
 5c3f50|src/game/quickdraw_rendering.cpp|manual|marker_sync
 5c4020|src/game/quickdraw_rendering.cpp|manual|marker_sync
+5c4310|src/game/ui_text_label_helpers.cpp|manual|marker_sync
 5c4470|src/game/quickdraw_rendering.cpp|manual|marker_sync
 5c4500|src/game/quickdraw_rendering.cpp|manual|marker_sync
 5c4590|src/game/ui_text_label_helpers.cpp|manual|marker_sync

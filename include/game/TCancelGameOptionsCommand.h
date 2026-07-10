@@ -27,6 +27,7 @@ public:
   // TODO(manifest): add data members from the object slice (`just slice-discovery
   // TCancelGameOptionsCommand 0xCTOR`).
 
-  TCancelGameOptionsCommand();
+  // Fully inlined at every construction site (base TCommand ctor call + vtable
+  // store); defined in-class so `new TCancelGameOptionsCommand()` reproduces that shape.
+  TCancelGameOptionsCommand() : TCommand() {}
 };
-

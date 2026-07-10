@@ -66,14 +66,53 @@ void scanBracketExpressions(void* ctx, void* out, const char* input, ...) {
 // FUNCTION: IMPERIALISM 0x00580060
 void __cdecl BuildUiMessageTextFromBracketTemplate(TSimMgr* sim, CString* out, int groupA,
                                                    int indexA, int groupB, int indexB) {
-  // TODO: port body @ 0x580060 (424 bytes; not yet ported). Declared for real so the
-  // turn-event receive paths get correctly-typed call sites.
-  (void)sim;
-  (void)out;
-  (void)groupA;
-  (void)indexA;
+  // groupB/indexB are read through the (&groupA)[] pair table below when the template
+  // contains "[1]"; they are never referenced by name.
   (void)groupB;
   (void)indexB;
+  *out = CString(g_szEmptyString);
+
+  CString text;
+  sim->GetString(static_cast<short>(groupA), static_cast<short>(indexA), &text);
+
+  for (int i = 0; i < text.GetLength(); i++) {
+    char ch = text[i];
+    if (ch == '[') {
+      for (;;) {
+        if (ch == '\0') {
+          break;
+        }
+        ch = text[i + 1];
+        i = i + 1;
+        if (ch >= '0' && ch <= '9') {
+          CString expansion;
+          sim->GetString(static_cast<short>((&groupA)[(ch - '0') * 2]),
+                         static_cast<short>((&indexA)[(ch - '0') * 2]), &expansion);
+          char letter = text[i + 1];
+          if (letter < 'a' || letter > 'z') {
+            *out += expansion;
+          } else {
+            *out += g_pLanguageMgr->BuildMappedSharedStringFromByteStateTable(expansion, letter);
+          }
+          break;
+        }
+        if (ch == ']') {
+          break;
+        }
+      }
+      if (text[i] != ']') {
+        while (i < text.GetLength()) {
+          char next = text[i + 1];
+          i = i + 1;
+          if (next == ']') {
+            break;
+          }
+        }
+      }
+    } else {
+      *out += ch;
+    }
+  }
 }
 
 // The generated flavor text is rejected (regenerate) if it contains any character from

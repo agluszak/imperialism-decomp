@@ -153,6 +153,7 @@ struct TurnEvent15Packet : NetMessage {
 #include "game/ScopedMapQuickDrawContext.h"
 #include "game/TControl.h"
 #include "game/TDeluxeText.h"
+#include "game/TDropShadowText.h"
 #include "game/TInterNationEventQueueManager.h"
 #include "game/TLanguageMgr.h"
 #include "game/TLoungeDialog.h"
@@ -165,6 +166,7 @@ struct TurnEvent15Packet : NetMessage {
 #include "game/quickdraw_rendering.h"
 #include "game/turn_event_dialog_provisional.h"
 #include "game/ui_invalidation_guard.h"
+#include "game/ui_text_label_helpers_decls.h"
 #include <cstdlib>
 #include <cstring>
 
@@ -662,8 +664,6 @@ struct TurnEvent2BPresenceMaskPacket : TimelyMessageHeader {
 };
 
 void LoadUiStringAndDispatchSharedMessageCommand(short group, short index, TView* control);
-void __cdecl ApplyUiTextStyleAndThemeFlags(TView* control, int arg2, int themeCode, int styleResA,
-                                           int styleResB);
 
 // Receive-side state machine for every diplomacy/lobby turn event ('time' packets).
 // Dispatches on eventCode 1..0x32 (codes 4..7 return 0); each case applies the payload
@@ -905,10 +905,10 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
         TStaticText* nameLabel =
             (TStaticText*)lounge->ResolveControlByTag(0x6e616d30 /* 'nam0' */ + slot9);
         nameLabel->AssertValid();
-        CString normalizedName;
-        g_pLanguageMgr->NormalizeRuntimeCredentialNameToken(&normalizedName, &statusText);
+        CString normalizedName = g_pLanguageMgr->NormalizeRuntimeCredentialNameToken(&statusText);
         nameLabel->AssignTextSharedRefIfChangedAndMaybeInvalidate(&normalizedName, 1);
-        ApplyUiTextStyleAndThemeFlags(nameLabel, 0, 0xe, isLocal != 0 ? 0x2b6c : 0x2b6b,
+        ApplyUiTextStyleAndThemeFlags((TDropShadowText*)nameLabel, 0, 0xe,
+                                      isLocal != 0 ? 0x2b6c : 0x2b6b,
                                       isLocal != 0 ? 0x2b6b : 0x2b6c);
         if (oldSessionId == GetSessionActiveNationId() || sessionId == GetSessionActiveNationId()) {
           int mySlot = 6;
@@ -2615,11 +2615,73 @@ void TMultiplayerMgr::NoOpCallbackRet4(void* param) {
   (void)param;
 }
 
+// Emit the event-0xE session-init snapshot (scenario tag/seed, host game name, save
+// slot, sim state code) followed by seven event-9 seat-claim packets mirroring the
+// nation name/session tables; `packet`, when present, addresses both to its sender.
+// Skipped entirely before the map exists or while still in the 'prep' phase.
 // FUNCTION: IMPERIALISM 0x0054c8e0
 void TMultiplayerMgr::EmitTurnEventEAnd9SessionContextPackets(NetMessage* packet) {
-  // TODO: port body @ 0x54c8e0 (525 bytes; not yet ported). Declared for real so the
-  // turn-event-0xD receive path gets a correctly-typed call site.
-  (void)packet;
+  if (g_pGlobalMapState == 0 || sessionPhaseTag == 0x70726570 /* 'prep' */) {
+    return;
+  }
+  {
+    TurnEventESessionInitPacket sessionInit;
+    sessionInit.messageTag = 0x74696d65; // 'time'
+    sessionInit.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetActiveNationId());
+    sessionInit.eventCode = 0;
+    sessionInit.eventCode = 0xe;
+    sessionInit.fromNetworkId = 0;
+    sessionInit.toNetworkId = 0;
+    sessionInit.messageLength = 0;
+    sessionInit.messageLength = 0x68;
+    if (packet != 0) {
+      sessionInit.toNetworkId = packet->fromNetworkId;
+    } else {
+      sessionInit.toNetworkId = 0;
+    }
+    sessionInit.scenarioTag60 = scenarioSelectionTag;
+    unsigned char resumingSavedGame;
+    if (sessionPhaseTag == 0x676f696e /* 'goin' */ && g_pSimMgr->GetActiveNationId() != -1) {
+      resumingSavedGame = 1;
+    } else {
+      resumingSavedGame = 0;
+    }
+    if (resumingSavedGame != 0) {
+      sessionInit.scenarioTag60 = 0x6c6f6164; // 'load'
+    }
+    strcpy(sessionInit.hostGameName3A, gameNameString);
+    strcpy(sessionInit.mapSeedText18, g_pGlobalMapState->scenarioTagText1c);
+    sessionInit.mapParamByte39 = g_pGlobalMapState->hexNeighborWrapHorizontally20;
+    sessionInit.saveSlotDword5C = queueSyncDword;
+    // Round-trips through the receive side's SetStateCodeAndUpdateZeroOrOutOfRangeFlag,
+    // which stores back into this same +0x40 field.
+    sessionInit.simStateCode64 = static_cast<signed char>(g_pSimMgr->redrawEnabled);
+    sessionInit.nameTableFlag65 = g_pSimMgr->useLocalizedNameTables68;
+    g_pNetMgr006a6014->Send(&sessionInit, 0);
+  }
+  {
+    LobbyChatEvent9Packet seatClaim;
+    seatClaim.messageTag = 0x74696d65; // 'time'
+    seatClaim.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetActiveNationId());
+    seatClaim.eventCode = 0;
+    seatClaim.eventCode = 9;
+    seatClaim.fromNetworkId = 0;
+    seatClaim.toNetworkId = 0;
+    seatClaim.messageLength = 0;
+    seatClaim.messageLength = 0x64;
+    if (packet != 0) {
+      seatClaim.toNetworkId = packet->fromNetworkId;
+    } else {
+      seatClaim.toNetworkId = 0;
+    }
+    for (int emitSlot = 0; emitSlot < 7; ++emitSlot) {
+      seatClaim.field1C = nationSessionIds[emitSlot];
+      seatClaim.nationSlot18 = static_cast<unsigned char>(emitSlot);
+      strcpy(seatClaim.senderName, defaultNationTextSlots[emitSlot]);
+      strcpy(seatClaim.messageText, nationDisplayNameSlots[emitSlot]);
+      g_pNetMgr006a6014->Send(&seatClaim, 0);
+    }
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x0054cc00

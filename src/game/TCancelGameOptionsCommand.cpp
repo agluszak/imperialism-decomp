@@ -14,4 +14,3 @@ TCancelGameOptionsCommand::~TCancelGameOptionsCommand() {}
 
 IMPLEMENT_DYNCREATE(TCancelGameOptionsCommand, TCommand)
 
-TCancelGameOptionsCommand::TCancelGameOptionsCommand() {}

@@ -11,6 +11,9 @@
 
 #include "game/NetMessage.h"
 #include "game/TArmyBattle.h"
+#include "game/CIterator.h"
+#include "game/TCivUnit.h"
+#include "game/TMilitaryUnit.h"
 #include "game/TArmyMgr.h"
 #include "game/TAutoGreatPower.h"
 #include "game/TCity.h"
@@ -642,19 +645,60 @@ void TMultiplayerMgr::HandleTurnEventCodes28_2E_2F_30_31_32(TStream* stream) {
 // FUNCTION: IMPERIALISM 0x0054a6d0
 void TMultiplayerMgr::CreateMilitaryRecruitOrdersForSelectedTerrain(TStream* stream,
                                                                     short nationSlot) {
-  // TODO: port body @ 0x54a6d0 (280 bytes; not yet ported). Declared for real so the
-  // turn-event-0x2F receive path gets a correctly-typed call site.
-  (void)stream;
-  (void)nationSlot;
+  // Stream leads with a nation letter ('a' + slot); everything below - including the
+  // count read - is skipped when it doesn't match the requested slot.
+  int terrainSlot = stream->ReadInteger() - 0x61; // - 'a'
+  unsigned char terrainSelected =
+      static_cast<unsigned char>(nationSlot == -1 || nationSlot == terrainSlot);
+  if (terrainSelected != 0) {
+    if (g_apTerrainTypeDescriptorTable[terrainSlot] != 0) {
+      CIterator recruitIter(g_apTerrainTypeDescriptorTable[terrainSlot]->militaryUnitList44);
+      for (TUnit* pendingRecruit = static_cast<TUnit*>(recruitIter.Reset()); recruitIter.More();
+           pendingRecruit = static_cast<TUnit*>(recruitIter.Advance())) {
+        pendingRecruit->DetachUnitOrderFromOwnerAndReset();
+      }
+      g_apTerrainTypeDescriptorTable[terrainSlot]->militaryUnitList44->FreePayloads();
+    }
+    short recruitOrderCount = stream->ReadShort();
+    for (int recruitOrderIdx = recruitOrderCount; recruitOrderIdx != 0; --recruitOrderIdx) {
+      TMilitaryUnit* recruitOrder = new TMilitaryUnit();
+      recruitOrder->InitializeRecruitOrderState(0, -1, static_cast<short>(terrainSlot), 0);
+      recruitOrder->ReadFrom(stream);
+      recruitOrder->AssertValid();
+    }
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x0054a840
 void TMultiplayerMgr::CreateCivilianWorkOrdersForSelectedNations(TStream* stream,
                                                                  short nationSlot) {
-  // TODO: port body @ 0x54a840 (310 bytes; not yet ported). Declared for real so the
-  // turn-event-0x30 receive path gets a correctly-typed call site.
-  (void)stream;
-  (void)nationSlot;
+  // For each of the 7 great powers: when selected, detach + free its queued civilian
+  // work orders, then (always) read this nation's order count and records from the
+  // stream, discarding freshly-read orders for non-selected nations to keep the
+  // stream cursor in sync.
+  for (int nationIdx = 0; nationIdx < 7; ++nationIdx) {
+    unsigned char nationSelected =
+        static_cast<unsigned char>(nationSlot == -1 || nationSlot == nationIdx);
+    if (g_apNationStates[nationIdx] != 0 && nationSelected != 0) {
+      CIterator workOrderIter(g_apNationStates[nationIdx]->trackedObjectList);
+      for (TUnit* pendingWorkOrder = static_cast<TUnit*>(workOrderIter.Reset());
+           workOrderIter.More(); pendingWorkOrder = static_cast<TUnit*>(workOrderIter.Advance())) {
+        pendingWorkOrder->DetachUnitOrderFromOwnerAndReset();
+      }
+      g_apNationStates[nationIdx]->trackedObjectList->FreePayloads();
+    }
+    short workOrderCount = stream->ReadShort();
+    for (int workOrderIdx = workOrderCount; workOrderIdx != 0; --workOrderIdx) {
+      TCivUnit* workOrder = new TCivUnit();
+      workOrder->InitializeCivWorkOrderState(0, -1, nationIdx);
+      workOrder->ReadFrom(stream);
+      workOrder->AssertValid();
+      if (nationSelected == 0) {
+        workOrder->DetachUnitOrderFromOwnerAndReset();
+        workOrder->Free();
+      }
+    }
+  }
 }
 
 extern undefined4 GenerateThreadLocalRandom15(void);

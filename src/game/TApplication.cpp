@@ -1,5 +1,8 @@
 #include "game/TApplication.h"
 
+#include "game/TNewGameCommand.h"
+#include "game/global_data_tables.h"
+
 #include "game/CIncludeView.h"
 #include "game/TEventHandler.h"
 #include "game/mfc.h"
@@ -109,6 +112,9 @@ void TApplication::vmethod_0017(int param) {}
 
 // FUNCTION: IMPERIALISM 0x0049e500
 void TApplication::CreateAndQueueTurnEventPacketTagGWEN() {
-  // TODO: port body @ 0x49e500 (128 bytes; not yet ported). Declared for real so the
-  // turn-event-0x1F receive paths get a correctly-typed call site.
+  // Build a TNewGameCommand, tag it 'gwen' targeting the global UI root controller,
+  // and dispatch it.
+  TNewGameCommand* newGameCommand = new TNewGameCommand();
+  newGameCommand->InitializeRangePair(0x6e657767 /* 'gwen' */, g_pGlobalUiRootController, 0, 0, 0);
+  g_pGlobalUiRootController->DispatchUiSelectionToHandler(newGameCommand);
 }

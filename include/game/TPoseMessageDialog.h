@@ -28,5 +28,7 @@ public:
   // turn-event-0xC receive path before the command is queued).
   int kickedByNationSlot18;
 
-  TPoseMessageDialog();
+  // Fully inlined at every construction site (base TCommand ctor call + vtable
+  // store); defined in-class so `new TPoseMessageDialog()` reproduces that shape.
+  TPoseMessageDialog() : TCommand() {}
 };
