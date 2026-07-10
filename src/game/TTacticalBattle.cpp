@@ -16,6 +16,8 @@
 #include "game/TList.h"
 #include "game/TMilitaryUnit.h"
 #include "game/TMultiplayerMgr.h"
+#include "game/TApplication.h"
+#include "game/TNextMoveCommand.h"
 #include "game/TSimMgr.h"
 #include "game/TSoundPlayer.h"
 #include "game/TTacticalBattleView.h"
@@ -417,10 +419,15 @@ void TTacticalBattle::ComputeHexNeighborTileIndices_005A0420(int tileIndex,
   }
 }
 
+// Ends the current action round: clears the follow-up latch and posts a 'next move'
+// command (turn event 0x232a) carrying this battle to the UI root controller.
 // FUNCTION: IMPERIALISM 0x005a0d60
 void TTacticalBattle::QueueTacticalEventPacket232A() {
-  // TODO: port body @ 0x5a0d60 (clears field48, news a 0x1c-byte TCommand with vtable
-  // 0x66a100, queues turn event 0x232a).
+  field48 = 0;
+  TNextMoveCommand* command = new TNextMoveCommand();
+  command->InitializeRangePair(0x232a, g_pGlobalUiRootController, 0, 0, 0);
+  command->battle18 = this;
+  g_pGlobalUiRootController->DispatchUiSelectionToHandler(command);
 }
 
 undefined TTacticalBattle::ExecuteTacticalDigActionAndConsumeUnitActionPoints(int* param_1,
@@ -491,13 +498,84 @@ unsigned char TTacticalBattle::HasEnemyUnitOnTilesFlankingHexDirection(int tileI
   return foundEnemy;
 }
 
-// Non-virtual action helpers dispatched above; bodies not yet ported.
-
 // FUNCTION: IMPERIALISM 0x005a1520
 void TTacticalBattle::MoveTacticalUnitTowardTile(TTacticalUnit* unit, int targetTileIndex) {
-  // TODO: port body @ 0x5a1520.
-  (void)unit;
-  (void)targetTileIndex;
+  int pathTiles[12];
+  pathTiles[0] = targetTileIndex;
+  int stepCount = BuildPathToTargetByDistanceField(targetTileIndex, 0, unit->tileIndex8, pathTiles);
+  if (stepCount == -1) {
+    return;
+  }
+
+  // pathTiles[stepCount] is the unit's own tile; walk down to pathTiles[0] = target.
+  unsigned char stopped = 0;
+  if (stepCount != 0) {
+    int* pathCursor = &pathTiles[stepCount];
+    do {
+      if (stopped != 0) {
+        break;
+      }
+      unit->AssertValid();
+      MoveTacticalUnitBetweenTiles(unit, pathCursor[0], pathCursor[-1], 0);
+      --pathCursor;
+      --stepCount;
+      stopped = ResolveTacticalReactionChecksForTile(*pathCursor);
+    } while (stepCount != 0);
+  }
+
+  unit->actionPoints28 -= tileMoveCostArray24[pathTiles[stepCount]];
+  if (battleView8 != 0) {
+    battleView8->InvalidateTacticalUnitTileRect(unit);
+  }
+  if (battleView8 != 0) {
+    battleView8->InvokeSlot13C();
+  }
+
+  // Logical column on the doubled-x hex grid (odd rows are staggered half a tile).
+  int arrivedTile = pathTiles[stepCount];
+  int exitColumn = (((arrivedTile / 29) & 1) + 2 * (arrivedTile % 29)) / 2;
+  int side = unit->side20;
+  if ((side == 1 && exitColumn >= battlefieldColumnCount34 - 1) || (side == 0 && exitColumn == 0)) {
+    unsigned char unitMayLeave;
+    if (unit->state1c == 1) {
+      unitMayLeave = 1;
+    } else if (battleView8 != 0) {
+      TTacticalPlayer* sidePlayer = (side == 0) ? tacticalPlayer14 : tacticalPlayer18;
+      unitMayLeave = sidePlayer->AlwaysTrueTacticalPredicate10(unit);
+    }
+    // TODO(verify): original bug -- unitMayLeave is read uninitialized when the battle
+    // runs headless (battleView8 == 0) and the unit's morale is unbroken; the original
+    // compiler homed the local in the dead targetTileIndex arg slot.
+    if (unitMayLeave != 0) {
+      int exitTile = pathTiles[stepCount];
+      unit->state1c = 2;
+      unit->tileIndex8 = -2;
+      tileGrid4[exitTile].occupant4 = 0;
+      EvaluateTacticalSideStateAndShowBattleSummaryDialog();
+    }
+  }
+
+  ComputeTacticalReachableTileCostsByUnitCategory(unit);
+  if (battleView8 != 0) {
+    battleView8->RefreshControl();
+  }
+}
+
+// Non-virtual action helpers dispatched above; bodies not yet ported.
+
+// Walks the unit step-by-step along the distance-field path toward the target tile,
+// stopping early when a reaction check fires. Deducts the arrival tile's move cost,
+// refreshes the view, and when the unit reaches its side's exit edge (column 0 for
+// side 0, the last playable column for side 1) retires it from the battlefield.
+// FUNCTION: IMPERIALISM 0x005a16e0
+int TTacticalBattle::BuildPathToTargetByDistanceField(int walkTileIndex, int pathDepth,
+                                                      int goalTileIndex, int* outPathTiles) {
+  // TODO: port body @ 0x5a16e0 (self-recursive distance-field path builder).
+  (void)walkTileIndex;
+  (void)pathDepth;
+  (void)goalTileIndex;
+  (void)outPathTiles;
+  return -1;
 }
 
 // Moves a unit from one battle-grid tile to another: multiplayer 'move' echo, clear the
@@ -536,6 +614,13 @@ void TTacticalBattle::MoveTacticalUnitBetweenTiles(TTacticalUnit* unit, int from
   if (battleView8 != 0) {
     battleView8->SpawnTacticalUiMarkerAtUnitTile();
   }
+}
+
+// FUNCTION: IMPERIALISM 0x005a1a20
+unsigned char TTacticalBattle::ResolveTacticalReactionChecksForTile(int tileIndex) {
+  // TODO: port body @ 0x5a1a20.
+  (void)tileIndex;
+  return 0;
 }
 
 // Executes the move (pathing the unit toward the target tile), clears the follow-up
@@ -606,9 +691,55 @@ void TTacticalBattle::ExecuteTacticalActionAndQueueEventIfNoAdjacentValidTarget(
   QueueTacticalEventPacket232A();
 }
 
+// Whether the selected unit still has a valid follow-up target: category 9 (engineer)
+// needs an adjacent friendly unit, category 8 never has one, and every other category
+// needs any placed enemy unit whose tile is reachable for the current action (range
+// scaled by the direct-fire flag of the attacker's category).
 // FUNCTION: IMPERIALISM 0x005a1d70
 unsigned char TTacticalBattle::HasValidTacticalFollowupTargetForCurrentAction() {
-  // TODO: port body @ 0x5a1d70.
+  TTacticalUnit* selectedUnit = selectedUnit1c;
+  short categoryCode = g_awTacticalUnitCategoryCodeBySlot[selectedUnit->unitTypeC];
+  if (categoryCode == 9) {
+    int neighborTiles[6];
+    ComputeHexNeighborTileIndices_005A0420(selectedUnit->tileIndex8, neighborTiles);
+    int direction = 0;
+    int* neighborCursor = neighborTiles;
+    for (; direction < 6; ++direction, ++neighborCursor) {
+      int neighborTile = *neighborCursor;
+      if (neighborTile != -1) {
+        TTacticalUnit* occupant = tileGrid4[neighborTile].occupant4;
+        if (occupant != 0 && occupant->side20 == selectedUnit1c->side20) {
+          return 1;
+        }
+      }
+    }
+    return 0;
+  }
+  if (categoryCode == 8) {
+    return 0;
+  }
+  TTacticalPlayer* opposingPlayer =
+      (selectedUnit->side20 == 0) ? tacticalPlayer18 : tacticalPlayer14;
+  CIterator enemyIter(opposingPlayer->unitList4);
+  for (TTacticalUnit* enemyUnit = static_cast<TTacticalUnit*>(enemyIter.Reset()); enemyIter.More();
+       enemyUnit = static_cast<TTacticalUnit*>(enemyIter.Advance())) {
+    int enemyTile = enemyUnit->tileIndex8;
+    if (enemyTile >= 0) {
+      unsigned char targetReachable;
+      if (selectedUnit1c->selectedFlag18 != 0) {
+        short attackerCategory = g_awTacticalUnitCategoryCodeBySlot[selectedUnit1c->unitTypeC];
+        targetReachable = IsTacticalTargetTileReachableForAction(
+            selectedUnit1c->tileIndex8, enemyTile,
+            static_cast<char>(g_afTacticalDirectFireFlagByCategory[attackerCategory]),
+            selectedUnit1c->GetUnitRange());
+      } else {
+        targetReachable = 0;
+      }
+      if (targetReachable != 0) {
+        return 1;
+      }
+    }
+  }
   return 0;
 }
 
@@ -1225,13 +1356,47 @@ void TTacticalBattle::HandleTacticalCommandTag_raly(TArmyTacUnit* unit, int newM
   }
 }
 
+// Fort-wall tile index where the firing line between the two tiles crosses the wall
+// column x = 2*battlefieldColumnCount34 - 12 (doubled-x hex coordinates), 0 when the
+// segment does not span that column.
 // FUNCTION: IMPERIALISM 0x005a3a70
 int TTacticalBattle::FindFortWallTileCrossedByFiringLine(int targetTileIndex,
                                                          int attackerTileIndex) {
-  // TODO: port body @ 0x5a3a70.
-  (void)targetTileIndex;
-  (void)attackerTileIndex;
-  return 0;
+  float wallX = (float)(2 * battlefieldColumnCount34 - 12);
+  int lineX1 = 2 * (targetTileIndex % 29) + ((targetTileIndex / 29) & 1);
+  int lineY1 = 2 * (targetTileIndex / 29);
+  int lineX2 = 2 * (attackerTileIndex % 29) + ((attackerTileIndex / 29) & 1);
+  int lineY2 = 2 * (attackerTileIndex / 29);
+  if (lineX2 == lineX1) {
+    return 0;
+  }
+  if (lineX2 > lineX1) {
+    // Canonicalize so (lineX2, lineY2) is the left endpoint.
+    int swapTemp = lineX2;
+    lineX2 = lineX1;
+    lineX1 = swapTemp;
+    swapTemp = lineY2;
+    lineY2 = lineY1;
+    lineY1 = swapTemp;
+  }
+  float leftXF = (float)lineX2;
+  if (leftXF > wallX) {
+    return 0;
+  }
+  if ((float)lineX1 < wallX) {
+    return 0;
+  }
+  if (lineY1 == lineY2) {
+    return tacticalTileStride40 * lineY1 / 2 + battlefieldColumnCount34 - 6;
+  }
+  // Interpolate the crossing row (y is doubled, hence the -0.5 scale; the wall column
+  // itself sits at grid column battlefieldColumnCount34 - 6).
+  return battlefieldColumnCount34 -
+         (int)(((float)lineY2 +
+                (wallX - leftXF) * ((float)(lineY1 - lineY2) / (float)(lineX1 - lineX2))) *
+               -0.5f) *
+             tacticalTileStride40 -
+         6;
 }
 
 // Consumes fort strength from the per-row-pair pool (one slot per two grid rows,
@@ -1256,6 +1421,19 @@ void TTacticalBattle::ConsumeFortStrengthPointsAndInvalidateIfDepleted(int tileI
       battleView8->InvalidateTacticalHexTileRect(poolTileIndex + 29);
     }
   }
+}
+
+// FUNCTION: IMPERIALISM 0x005a3d30
+unsigned char TTacticalBattle::IsTacticalTargetTileReachableForAction(int attackerTileIndex,
+                                                                      int targetTileIndex,
+                                                                      char directFireFlag,
+                                                                      int range) {
+  // TODO: port body @ 0x5a3d30.
+  (void)attackerTileIndex;
+  (void)targetTileIndex;
+  (void)directFireFlag;
+  (void)range;
+  return 0;
 }
 
 // 'depl' command: places a unit on a battle-grid tile during deployment; for

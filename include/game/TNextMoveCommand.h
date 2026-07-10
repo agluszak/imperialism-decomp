@@ -3,6 +3,8 @@
 #include "game/TCommand.h"
 #include "game/mfc.h"
 
+class TTacticalBattle;
+
 // TODO(manifest): describe TNextMoveCommand and its role. Base edge (TCommand) recovered from RTTI
 // CRuntimeClass chain: TNextMoveCommand -> TCommand -> TEvent -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x0066a100
@@ -22,9 +24,13 @@ public:
   // slot 0x0a NextDiplomacyCommandVtableSlotE8_NotifyOwnerSlot94 inherited unchanged (0x487900)
   virtual void OrphanRetStub_00487a00() override; // slot 0x0b 0x5a6620
   // === END GENERATED DECLS (TNextMoveCommand) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TNextMoveCommand
-  // 0xCTOR`).
+  // The battle whose action round this command closes (turn event 0x232a); read
+  // back by the slot-0x0b override (0x5a6620).
+  TTacticalBattle* battle18; // +0x18
 
-  TNextMoveCommand();
+  // The posting site (0x5a0d60) inlines the ctor as TCommand() + vtable store, so it
+  // must stay in-class; 0x5a6560 is the compiler-emitted out-of-line copy.
+  TNextMoveCommand() : TCommand() {}
 };
 
+ASSERT_SIZE(TNextMoveCommand, 0x1c);

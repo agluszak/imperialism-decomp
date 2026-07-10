@@ -49,9 +49,16 @@ void TTacticalBattleView::BeginMouseCaptureAndStartRepeatTimer(CPoint* point, in
 
 // FUNCTION: IMPERIALISM 0x005a87d0
 void TTacticalBattleView::ComputeTacticalHexTileScreenRect(RECT* rectOut, int tileIndex) {
-  // TODO: port body @ 0x5a87d0.
-  (void)rectOut;
-  (void)tileIndex;
+  int row = tileIndex / tileColumnsPerRow80;
+  int x = (tileIndex % tileColumnsPerRow80) * tileWidthPx88 - viewOriginX78;
+  rectOut->left = x;
+  if (row & 1) {
+    // Odd hex rows are staggered right by half a tile.
+    rectOut->left = x + tileWidthPx88 / 2;
+  }
+  rectOut->top = row * tileRowHeightPx8C;
+  rectOut->right = rectOut->left + tileWidthPx88;
+  rectOut->bottom = rectOut->top + tileRowHeightPx8C;
 }
 
 // FUNCTION: IMPERIALISM 0x005a8860
@@ -91,10 +98,31 @@ undefined TTacticalBattleView::InvalidateTacticalUnitTileRect(TTacticalUnit* uni
 // FUNCTION: IMPERIALISM 0x005a89f0
 undefined TTacticalBattleView::ComputeTacticalUnitTileScreenRect(TTacticalUnit* unit,
                                                                  RECT* rectOut) {
-  // TODO: port body @ 0x5a89f0 (tile rect grown 0x18 px upward, bottom-4; zero RECT
-  // when tileIndex8 == -1).
-  (void)unit;
-  (void)rectOut;
+  int tileIndex = unit->tileIndex8;
+  if (tileIndex == -1) {
+    rectOut->left = 0;
+    rectOut->top = 0;
+    rectOut->right = 0;
+    rectOut->bottom = 0;
+    return 0;
+  }
+  int row = tileIndex / tileColumnsPerRow80;
+  int x = (tileIndex % tileColumnsPerRow80) * tileWidthPx88 - viewOriginX78;
+  rectOut->left = x;
+  if (row & 1) {
+    // Odd hex rows are staggered right by half a tile.
+    rectOut->left = x + tileWidthPx88 / 2;
+  }
+  int top = row * tileRowHeightPx8C;
+  rectOut->top = top;
+  rectOut->right = rectOut->left + tileWidthPx88;
+  int bottom = top + tileRowHeightPx8C;
+  // Grow the plain tile rect 0x18 px upward and pull the bottom in by 4 for the unit
+  // sprite box; the original stores the plain values first, then the adjusted ones
+  // (double writes kept per the original store order).
+  rectOut->top = top - 0x18;
+  rectOut->bottom = bottom;
+  rectOut->bottom = bottom - 4;
   return 0;
 }
 

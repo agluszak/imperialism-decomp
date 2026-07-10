@@ -166,8 +166,19 @@ public:
   // action. Body TODO. 0x5a1d70, __thiscall.
   unsigned char HasValidTacticalFollowupTargetForCurrentAction();
   // Fort-wall tile index where the firing line between the two tiles crosses the wall
-  // column, 0 when it does not. Body TODO. 0x5a3a70, __thiscall.
+  // column, 0 when it does not. 0x5a3a70, __thiscall.
   int FindFortWallTileCrossedByFiringLine(int targetTileIndex, int attackerTileIndex);
+  // Recursive distance-field path builder into outPathTiles (caller pre-seeds
+  // outPathTiles[0] = target); returns the path depth or -1. Body TODO. 0x5a16e0.
+  int BuildPathToTargetByDistanceField(int walkTileIndex, int pathDepth, int goalTileIndex,
+                                       int* outPathTiles);
+  // Reaction checks fired when a unit enters a tile; nonzero stops the walk.
+  // Body TODO. 0x5a1a20.
+  unsigned char ResolveTacticalReactionChecksForTile(int tileIndex);
+  // Whether the target tile is reachable for the current action (range scaled by the
+  // attacker category's direct-fire flag). Body TODO. 0x5a3d30, ret 0x10.
+  unsigned char IsTacticalTargetTileReachableForAction(int attackerTileIndex, int targetTileIndex,
+                                                       char directFireFlag, int range);
 };
 
 ASSERT_SIZE(TTacticalBattle, 0x78);

@@ -4082,7 +4082,9 @@ address|target_cpp|ownership|note
 5a1010|src/game/TTacticalBattle.cpp|manual|marker_sync
 5a1400|src/game/TTacticalBattle.cpp|manual|marker_sync
 5a1520|src/game/TTacticalBattle.cpp|manual|marker_sync
+5a16e0|src/game/TTacticalBattle.cpp|manual|marker_sync
 5a1910|src/game/TTacticalBattle.cpp|manual|marker_sync
+5a1a20|src/game/TTacticalBattle.cpp|manual|marker_sync
 5a1bd0|src/game/TTacticalBattle.cpp|manual|marker_sync
 5a1ca0|src/game/TTacticalBattle.cpp|manual|marker_sync
 5a1d70|src/game/TTacticalBattle.cpp|manual|marker_sync
@@ -4102,6 +4104,7 @@ address|target_cpp|ownership|note
 5a39a0|src/game/map_overlay_geometry.cpp|manual|marker_sync
 5a3a70|src/game/TTacticalBattle.cpp|manual|marker_sync
 5a3c20|src/game/TTacticalBattle.cpp|manual|marker_sync
+5a3d30|src/game/TTacticalBattle.cpp|manual|marker_sync
 5a4370|src/game/TTacticalBattle.cpp|manual|marker_sync
 5a4710|src/game/TArmyBattle.cpp|manual|marker_sync
 5a4750|src/game/TArmyBattle.cpp|manual|marker_sync

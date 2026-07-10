@@ -18,8 +18,8 @@ void TTacticalPlayer::CommitTacticalResultsToSourceUnits(int unused) {
   (void)unused;
 }
 
-unsigned char TTacticalPlayer::AlwaysTrueTacticalPredicate10(int unused) {
-  (void)unused;
+unsigned char TTacticalPlayer::AlwaysTrueTacticalPredicate10(TTacticalUnit* unit) {
+  (void)unit;
   return 1;
 }
 

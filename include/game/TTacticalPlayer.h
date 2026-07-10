@@ -25,8 +25,9 @@ public:
   virtual void CommitTacticalResultsToSourceUnits(int unused);            // slot 0x0d 0x59add0
   virtual void RemoveTacticalUnitFromUnitList(class TTacticalUnit* unit); // slot 0x0e 0x59afa0
   virtual void AddTacticalUnitToUnitListHead(class TTacticalUnit* unit);  // slot 0x0f 0x59afe0
-  virtual unsigned char AlwaysTrueTacticalPredicate10(int unused);        // slot 0x10 0x59adf0
-  virtual void ProceedAfterBattleIntroAccepted();                         // slot 0x11 0x59ae10
+  virtual unsigned char
+  AlwaysTrueTacticalPredicate10(class TTacticalUnit* unit); // slot 0x10 0x59adf0
+  virtual void ProceedAfterBattleIntroAccepted();           // slot 0x11 0x59ae10
   // === END GENERATED DECLS (TTacticalPlayer) ===
 
   // Base slice (+0x04..+0x27; TArmyPlayer appends at +0x28 up to 0x54). Evidence:

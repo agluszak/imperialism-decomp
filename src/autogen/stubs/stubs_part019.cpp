@@ -123,22 +123,6 @@ undefined4 ProcessTacticalUnitState1TurnStep(void)
   return 0;
 }
 
-// ghidra_name BuildPathToTargetByDistanceField
-// ghidra_proto undefined BuildPathToTargetByDistanceField()
-// FUNCTION: IMPERIALISM 0x005a16e0
-undefined4 BuildPathToTargetByDistanceField(void)
-{
-  return 0;
-}
-
-// ghidra_name ResolveTacticalReactionChecksForTile
-// ghidra_proto undefined ResolveTacticalReactionChecksForTile()
-// FUNCTION: IMPERIALISM 0x005a1a20
-undefined4 ResolveTacticalReactionChecksForTile(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_thunk_ComputeHexNeighborTileIndices_At005a1b50
 // ghidra_proto undefined WrapperFor_thunk_ComputeHexNeighborTileIndices_At005a1b50()
 // FUNCTION: IMPERIALISM 0x005a1b50
@@ -159,14 +143,6 @@ undefined4 Helper_Uses_thunk_AdvanceLinkedListCursor_At005a2630(void)
 // ghidra_proto undefined DispatchTacticalActionByHoverStateIndex()
 // FUNCTION: IMPERIALISM 0x005a3370
 undefined4 DispatchTacticalActionByHoverStateIndex(void)
-{
-  return 0;
-}
-
-// ghidra_name IsTacticalTargetTileReachableForAction
-// ghidra_proto undefined IsTacticalTargetTileReachableForAction()
-// FUNCTION: IMPERIALISM 0x005a3d30
-undefined4 IsTacticalTargetTileReachableForAction(void)
 {
   return 0;
 }
