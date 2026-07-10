@@ -25,7 +25,9 @@ IMPLEMENT_DYNCREATE(TTacticalBattleView, TView)
 TTacticalBattleView::TTacticalBattleView() {}
 
 // FUNCTION: IMPERIALISM 0x005a83c0
-undefined TTacticalBattleView::OrphanRetStub_005a83c0() {
+undefined TTacticalBattleView::DrawTacticalTileInClipRect(int tileIndex, RECT* clipRect) {
+  (void)tileIndex;
+  (void)clipRect;
   return 0;
 }
 
@@ -301,9 +303,7 @@ undefined TTacticalBattleView::AnimateTacticalUnitMoveBetweenTiles(TTacticalUnit
 }
 
 // FUNCTION: IMPERIALISM 0x005a9550
-void TTacticalBattleView::DrawUiTilesAndOverlay(astruct_13* ui_ctx) {
-  (void)ui_ctx;
-}
+void TTacticalBattleView::DrawUiTilesAndOverlay() {}
 
 // Promoted tactical-UI helpers (called from the TTacticalBattle command handlers).
 

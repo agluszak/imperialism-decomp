@@ -14,6 +14,6 @@ IMPLEMENT_DYNCREATE(TIdleMeAnimation, TAnimation)
 TIdleMeAnimation::TIdleMeAnimation() {}
 
 // FUNCTION: IMPERIALISM 0x004aca60
-undefined TIdleMeAnimation::WrapperFor_InvalidateCityDialogRectRegion_At0049f140() {
+undefined TIdleMeAnimation::AdvanceAnimationTickAndInvalidateOnFrameFlip() {
   return 0;
 }

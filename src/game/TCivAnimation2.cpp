@@ -14,7 +14,7 @@ IMPLEMENT_DYNCREATE(TCivAnimation2, TAnimation)
 TCivAnimation2::TCivAnimation2() {}
 
 // FUNCTION: IMPERIALISM 0x0049f7c0
-undefined TCivAnimation2::WrapperFor_InvalidateCityDialogRectRegion_At0049f140() {
+undefined TCivAnimation2::AdvanceAnimationTickAndInvalidateOnFrameFlip() {
   return 0;
 }
 

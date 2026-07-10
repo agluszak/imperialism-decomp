@@ -128,7 +128,9 @@ public:
   virtual undefined ComputeTacticalUnitTileScreenRect(TTacticalUnit* unit,
                                                       RECT* rectOut);   // slot 0x6a 0x5a89f0
   virtual undefined AdjustTacticalUnitVerticalOffsetAndRefreshMarker(); // slot 0x6b 0x5a8be0
-  virtual undefined OrphanRetStub_005a83c0();                           // slot 0x6c 0x5a83c0
+  // Per-tile drawer for the rect applier's 0..0x1b2 pass (base = no-op; the army view
+  // override renders the tile). Old OrphanRetStub name was junk; ret 8 = 2 args.
+  virtual undefined DrawTacticalTileInClipRect(int tileIndex, RECT* clipRect); // slot 0x6c 0x5a83c0
   virtual undefined
   RunOneTimeAnimationModalWaitAndInvalidateCityDialog(RECT* rect, int effectId, int frameCount,
                                                       int tileIndex,
@@ -137,7 +139,8 @@ public:
                                            int frameCount); // slot 0x6e 0x5a9090
   virtual undefined AnimateTacticalUnitMoveBetweenTiles(TTacticalUnit* unit, int fromTileIndex,
                                                         int toTileIndex); // slot 0x6f 0x5a9240
-  virtual void DrawUiTilesAndOverlay(astruct_13* ui_ctx);                 // slot 0x70 0x5a9550
+  // Takes no args (bare ret; the old astruct_13* param was a Ghidra artifact).
+  virtual void DrawUiTilesAndOverlay(); // slot 0x70 0x5a9550
   // === END GENERATED DECLS (TTacticalBattleView) ===
   // View-local slice (+0x60..; TView ends at +0x5c). Offsets verified in the tile-rect
   // and move-animation bodies; gaps unobserved.

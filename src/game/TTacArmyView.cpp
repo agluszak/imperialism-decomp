@@ -10,6 +10,7 @@
 #include "game/TTacticalUnit.h"
 #include "game/bitmap_descriptor_helpers.h"
 #include "game/global_data_tables.h"
+#include "game/quickdraw_guards.h"
 #include "game/quickdraw_rendering.h"
 #include "game/ui_control_tags.h"
 #include "game/ui_invalidation_guard.h"
@@ -167,10 +168,98 @@ void TTacArmyView::ConstructTTacArmyViewBaseState(int compositionClass, TArmyBat
   }
 }
 
+// Presents the battle view: blits the scrolled backdrop slice from
+// battlefieldSurface64 into the primary render surface, draws all 0x1b3 tiles inside
+// a saved/restored QuickDraw clip, presents to the restored active surface, then
+// draws the UI overlay.
 // FUNCTION: IMPERIALISM 0x005aa2e0
-void TTacArmyView::ApplyRectSlot110(RECT* rectBuffer) {}
+void TTacArmyView::ApplyRectSlot110(RECT* rectBuffer) {
+  int savedFlags = 0;
+  RECT clipRect;
+  clipRect = *rectBuffer;
+
+  TQuickDrawSurfaceContext* savedContext;
+  GetActiveQuickDrawSurfaceContextAndFlags(&savedContext, &savedFlags);
+  SetActiveQuickDrawSurfaceContext(g_pPrimaryRenderSurfaceContext, savedFlags);
+  ReturnConstantTrueQuickDrawFlag(GetSurfaceNodeSlot(g_pPrimaryRenderSurfaceContext));
+  ReturnConstantTrueQuickDrawFlag(GetSurfaceNodeSlot(battlefieldSurface64));
+
+  // Backdrop source-x origin: the battlefield bitmap is right-aligned inside the
+  // 0x1d-column grid, shifted by the current horizontal scroll.
+  battlefieldOriginOffsetXD4 = static_cast<short>(
+      (0x1d - tacticalBattle60->battlefieldColumnCount34) * static_cast<short>(tileWidthPx88));
+  int sourceOffsetX = battlefieldOriginOffsetXD4 + viewOriginX78;
+
+  RECT backdropSrcRect;
+  backdropSrcRect.left = clipRect.left + sourceOffsetX;
+  backdropSrcRect.top = clipRect.top;
+  backdropSrcRect.right = clipRect.right + sourceOffsetX;
+  backdropSrcRect.bottom = clipRect.bottom;
+  RECT presentDstRect;
+  presentDstRect.left = clipRect.left;
+  presentDstRect.top = clipRect.top;
+  presentDstRect.right = clipRect.right;
+  presentDstRect.bottom = clipRect.bottom;
+
+  ResetQuickDrawStrokeState();
+  SetQuickDrawStrokeColor(0xffffff);
+  SetQuickDrawFillColor(0);
+
+  RECT backdropDstRect;
+  backdropDstRect.left = clipRect.left;
+  backdropDstRect.top = clipRect.top;
+  backdropDstRect.right = clipRect.right;
+  backdropDstRect.bottom = clipRect.bottom;
+
+  // Bottom-up DIB flip, same idiom as TFocusAnimation.cpp.
+  if (battlefieldSurface64->surfaceDib != 0) {
+    int backdropHeight = battlefieldSurface64->surfaceDib->m_pInfoHeader->bmiHeader.biHeight;
+    if (backdropHeight < 1) {
+      backdropHeight = -backdropHeight;
+    }
+    OffsetRect(&backdropSrcRect, 0,
+               (backdropHeight - backdropSrcRect.top) - backdropSrcRect.bottom);
+  }
+  if (g_pPrimaryRenderSurfaceContext->surfaceDib != 0) {
+    int primaryHeight =
+        g_pPrimaryRenderSurfaceContext->surfaceDib->m_pInfoHeader->bmiHeader.biHeight;
+    if (primaryHeight < 1) {
+      primaryHeight = -primaryHeight;
+    }
+    OffsetRect(&backdropDstRect, 0, (primaryHeight - backdropDstRect.top) - backdropDstRect.bottom);
+  }
+  // Backdrop: battlefield surface -> primary render surface.
+  BlitQuickDrawSurfaces(battlefieldSurface64->GetBlitSurface(),
+                        g_pPrimaryRenderSurfaceContext->GetBlitSurface(), &backdropSrcRect,
+                        &backdropDstRect, 0);
+
+  if (tacticalBattle60 != 0) {
+    // Save/restore the QuickDraw clip around the per-tile pass.
+    CTemporaryRegion savedClip;
+    GetClip(savedClip.tempRgn);
+    int tileIndex;
+    for (tileIndex = 0; tileIndex < 0x1b3; tileIndex++) {
+      DrawTacticalTileInClipRect(tileIndex, &clipRect);
+    }
+    SetClip(savedClip.tempRgn);
+  }
+
+  SetActiveQuickDrawSurfaceContext(savedContext, savedFlags);
+  ResetQuickDrawStrokeState();
+  SetQuickDrawStrokeColor(0xffffff);
+  // Present: primary render surface -> the restored active surface.
+  BlitQuickDrawSurfaces(g_pPrimaryRenderSurfaceContext->GetBlitSurface(),
+                        g_pActiveQuickDrawSurfaceContext->GetBlitSurface(), &clipRect,
+                        &presentDstRect, 0);
+  DrawUiTilesAndOverlay();
+  NoOpQuickDrawLifecycleHookB(GetSurfaceNodeSlot(g_pPrimaryRenderSurfaceContext));
+  NoOpQuickDrawLifecycleHookB(GetSurfaceNodeSlot(battlefieldSurface64));
+}
 
 // FUNCTION: IMPERIALISM 0x005aa900
-undefined TTacArmyView::OrphanRetStub_005a83c0() {
+undefined TTacArmyView::DrawTacticalTileInClipRect(int tileIndex, RECT* clipRect) {
+  // TODO: port body @ 0x5aa900 (per-tile terrain/unit/effect draw).
+  (void)tileIndex;
+  (void)clipRect;
   return 0;
 }

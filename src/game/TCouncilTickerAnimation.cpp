@@ -95,7 +95,7 @@ void TCouncilTickerAnimation::ConstructTCouncilTickerAnimationBaseState(void* ho
 }
 
 // FUNCTION: IMPERIALISM 0x0049ffe0
-undefined TCouncilTickerAnimation::WrapperFor_InvalidateCityDialogRectRegion_At0049f140() {
+undefined TCouncilTickerAnimation::AdvanceAnimationTickAndInvalidateOnFrameFlip() {
   return 0;
 }
 

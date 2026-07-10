@@ -1389,7 +1389,7 @@ address|name|symbol|size|type|prototype|provenance
 49f080|TAnimation::CreateTAnimationInstance||7|function|undefined CreateTAnimationInstance()|
 49f0a0|TAnimation::GetRuntimeClass||6|function|undefined GetTAnimationClassNamePointer()|rtti
 49f0c0|TAnimation::ConstructTAnimationBaseState||82|function|undefined ConstructTAnimationBaseState()|
-49f140|TAnimation::WrapperFor_InvalidateCityDialogRectRegion_At0049f140||58|function|undefined WrapperFor_InvalidateCityDialogRectRegion_At0049f140(void)|
+49f140|TAnimation::AdvanceAnimationTickAndInvalidateOnFrameFlip||58|function|undefined WrapperFor_InvalidateCityDialogRectRegion_At0049f140(void)|
 49f190|TAnimation::RenderBattleReportInsetWithPaletteShift||249|function|undefined RenderBattleReportInsetWithPaletteShift()|
 49f2d0|TAnimation::RenderBattleReportViewSurfaceSpriteWithResourceHandle||295|function|undefined RenderBattleReportViewSurfaceSpriteWithResourceHandle()|
 49f450|TCivAnimation::CreateObject|?CreateObject@TCivAnimation@@SGPAVCObject@@XZ|24|function|undefined CreateObject()|rtti
@@ -5505,7 +5505,7 @@ address|name|symbol|size|type|prototype|provenance
 5a82b0|TTacticalBattleView::CreateObject|?CreateObject@TTacticalBattleView@@SGPAVCObject@@XZ|90|function|undefined CreateObject()|rtti
 5a8330|TTacticalBattleView::GetRuntimeClass||6|function|undefined GetTacticalBattleViewClassNamePointer()|rtti
 5a8350|TacticalBattleView::ConstructTacticalBattleViewBaseState||71|function|undefined ConstructTacticalBattleViewBaseState()|
-5a83c0|TTacticalBattleView::OrphanRetStub_005a83c0||3|function|undefined OrphanRetStub_005a83c0(void)|
+5a83c0|TTacticalBattleView::DrawTacticalTileInClipRect||3|function|undefined OrphanRetStub_005a83c0(void)|
 5a83e0|TTacticalBattleView::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 5a8430|TTacticalBattleView::Free||116|function|undefined OrphanLeaf_NoCall_Ins07_004d8920(void)|
 5a84d0|TTacticalBattleView::NoOpUiLifecycleHook||96|function|undefined OrphanLeaf_NoCall_Ins07_004d8920(void)|
@@ -5536,7 +5536,7 @@ address|name|symbol|size|type|prototype|provenance
 5aa2e0|TTacArmyView::ApplyRectSlot110||718|function|undefined DestructTTacArmyViewAndMaybeFree()|
 5aa670|TCivDescription::ComputeTacticalUnitSpriteOrientationIndexByAdjacentType1Occupancy||257|function|undefined ComputeTacticalUnitSpriteOrientationIndexByAdjacentType1Occupancy()|
 5aa7d0|TacticalBattleView::ComputeTacticalUnitSpriteDrawRectAndApplyFacingOffset||231|function|undefined ComputeTacticalUnitSpriteDrawRectAndApplyFacingOffset()|
-5aa900|TTacArmyView::OrphanRetStub_005a83c0||6235|function|undefined OrphanRetStub_005a83c0(int param_1)|
+5aa900|TTacArmyView::DrawTacticalTileInClipRect||6235|function|undefined OrphanRetStub_005a83c0(int param_1)|
 5ac780|TTacticalToolbar::CreateObject|?CreateObject@TTacticalToolbar@@SGPAVCObject@@XZ|128|function|undefined CreateObject()|rtti
 5ac820|TTacticalToolbar::GetRuntimeClass||6|function|undefined GetTTacticalToolbarClassNamePointer()|rtti
 5ac840|TTacticalToolbar::NoOpUiLifecycleHook||207|function|undefined OrphanLeaf_NoCall_Ins07_004d8920(void)|

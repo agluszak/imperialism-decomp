@@ -116,7 +116,8 @@ public:
   // slot 0x69 WrapperFor_InvalidateCityDialogRectRegion_At005a89a0 inherited unchanged (0x5a89a0)
   // slot 0x6a OrphanLeaf_NoCall_Ins59_005a89f0 inherited unchanged (0x5a89f0)
   // slot 0x6b AdjustTacticalUnitVerticalOffsetAndRefreshMarker inherited unchanged (0x5a8be0)
-  virtual undefined OrphanRetStub_005a83c0() override; // slot 0x6c 0x5aa900
+  virtual undefined DrawTacticalTileInClipRect(int tileIndex,
+                                               RECT* clipRect) override; // slot 0x6c 0x5aa900
   // slot 0x6d RunOneTimeAnimationModalWaitAndInvalidateCityDialog inherited unchanged (0x5a9170)
   // slot 0x6e OrphanCallChain_C2_I66_005a9090 inherited unchanged (0x5a9090)
   // slot 0x6f WrapperFor_InvalidateCityDialogRectRegion_At005a9240 inherited unchanged (0x5a9240)
