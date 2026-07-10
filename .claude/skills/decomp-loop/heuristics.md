@@ -1043,3 +1043,13 @@ headers before splicing.
     vtable with TOther and fails `just vtable` with a confusing cross-class diff
     (hit three times in one session: TArmyTacUnit, TNavyBattle, TTacNavyToolbar).
     Put fwd decls above the class comment block.
+
+63. **A multi-edit python splice that asserts mid-script loses ALL its edits** (the
+    write happens at the end), and the failure mode is silent: the earlier "ok" prints
+    never happened, the file keeps its old stubs, and compare pairs the address against
+    the stale stub (1-5% scores with tiny `+0xADDR,2` recomp extents in the diff).
+    After any batch splice, verify the bodies actually landed (`grep` a distinctive
+    line per function) before building; prefer one write per replacement, or wrap each
+    sub in its own try/write. Confirm suspicious "stub-like" scores by reading the
+    recomp bytes at the paired address from build-msvc500/Imperialism.exe via the
+    PE-parse pattern.
