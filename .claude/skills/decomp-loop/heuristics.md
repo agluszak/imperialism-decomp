@@ -1028,3 +1028,18 @@ frames this large is not source-controllable (same anomaly class as 0x543280).
 Parallelizing the asm transcription across subagents with a shared ILT->symbol map
 document works well; verify every agent-supplied field/slot name against the repo
 headers before splicing.
+
+61. **Verify shared-class inline ctors against multiple original call sites before
+    zero-initializing members.** CIterator's ctor stores ONLY ownerList in the binary
+    (Reset() seeds nextPosition/current); our all-member init-list added two dead
+    stores at every use site repo-wide. Fixing the ctor to match took several
+    functions to 100% in one stroke (0x5a53e0, 0x59f890, 0x5c38e0). When a repeated
+    small diff (same extra stores) appears across many functions using one helper
+    class, suspect the helper's ctor/layout, not the functions.
+
+62. **Never place a forward declaration between a `// VTABLE:` annotation and its
+    class.** reccmp attaches the annotation to the next class-like declaration, so
+    `// VTABLE: ...` + `class TOther;` + `class TReal {...}` silently pairs the
+    vtable with TOther and fails `just vtable` with a confusing cross-class diff
+    (hit three times in one session: TArmyTacUnit, TNavyBattle, TTacNavyToolbar).
+    Put fwd decls above the class comment block.
