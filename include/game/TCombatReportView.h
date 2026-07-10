@@ -125,9 +125,12 @@ public:
   // slot 0x71 ResetPictureResourceEntry inherited unchanged (0x48f520)
   // slot 0x72 SetPictureResourceIdAndRefresh inherited unchanged (0x48f570)
   // === END GENERATED DECLS (TCombatReportView) ===
-  short glyph90;
-  short field92;
-  short reportValue;
+  void* m_reportContext; // 0x90
+  short reportValue;     // 0x94
+  short totalPages;      // 0x96
+  short field98;         // 0x98
+  short field9a;         // 0x9a
+  short field9c;         // 0x9c
 
   TCombatReportView();
   DECLARE_DYNCREATE(TCombatReportView)
@@ -135,3 +138,4 @@ public:
   virtual bool IsSelected(void* reportRecord);
 };
 
+ASSERT_SIZE(TCombatReportView, 0xa0);

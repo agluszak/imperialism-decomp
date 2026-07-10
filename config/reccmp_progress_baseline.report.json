@@ -1054,7 +1054,7 @@
     },
     {
       "address": "0x43dbc0",
-      "matching": 0.8497756082198252,
+      "matching": 0.8498543421777813,
       "name": "InitializeArmyNavyReportViewsAndCommandTags",
       "type": 1
     },
@@ -27765,7 +27765,7 @@
     },
     {
       "address": "0x58c830",
-      "matching": 0.4489795918367347,
+      "matching": 0.4897959183673469,
       "name": "TCombatReportView::CreateObject",
       "type": 1
     },
@@ -27801,7 +27801,7 @@
     },
     {
       "address": "0x58d950",
-      "matching": 0.03436426116838488,
+      "matching": 0.6404109589041096,
       "name": "TCombatReportView::HandleEvent",
       "type": 1
     },
@@ -32687,7 +32687,7 @@
     },
     {
       "address": "0x5ce110",
-      "matching": 0.0625,
+      "matching": 0.7241379310344828,
       "name": "GenerateMappedFlavorTextVariantEToSharedString",
       "type": 1
     },
@@ -32711,7 +32711,7 @@
     },
     {
       "address": "0x5cf090",
-      "matching": 0.03333333333333333,
+      "matching": 0.8245614035087719,
       "name": "BuildMapContextStatusStringWithRandomSuffix",
       "type": 1
     },
@@ -32723,7 +32723,7 @@
     },
     {
       "address": "0x5cfba0",
-      "matching": 0.0625,
+      "matching": 0.7241379310344828,
       "name": "GenerateMappedFlavorTextVariantCToSharedString",
       "type": 1
     },
@@ -32735,7 +32735,7 @@
     },
     {
       "address": "0x5d1330",
-      "matching": 0.0625,
+      "matching": 0.7241379310344828,
       "name": "GenerateMappedFlavorTextVariantBToSharedString",
       "type": 1
     },
@@ -32747,7 +32747,7 @@
     },
     {
       "address": "0x5d3300",
-      "matching": 0.0625,
+      "matching": 0.7241379310344828,
       "name": "GenerateMappedFlavorTextVariantAToSharedString",
       "type": 1
     },
@@ -32759,7 +32759,7 @@
     },
     {
       "address": "0x5d41a0",
-      "matching": 0.0625,
+      "matching": 0.7241379310344828,
       "name": "GenerateMappedFlavorTextVariantDToSharedString",
       "type": 1
     },
