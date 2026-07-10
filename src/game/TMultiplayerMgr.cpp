@@ -671,7 +671,6 @@ void __cdecl ApplyUiTextStyleAndThemeFlags(TView* control, int arg2, int themeCo
 // are laid out in the original binary order.
 // FUNCTION: IMPERIALISM 0x00545940
 unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMessage* packet) {
-  unsigned char result;
   switch (packet->eventCode) {
   case 0xf: {
     // Clear the acknowledging nation's pending bit; when hosting, re-broadcast the mask
@@ -697,7 +696,6 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
       HandleDiplomacyTurnEventPacketByCode();
       return 1;
     }
-    result = 1;
     break;
   }
   case 0xa: {
@@ -729,7 +727,6 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
       HandleDiplomacyTurnEventPacketByCode();
       return 1;
     }
-    result = 1;
     break;
   }
   case 0xb: {
@@ -761,7 +758,6 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
       portZone->field14 = directory->portZoneOrdinalBySlot[dirSlot];
     }
     RefreshNationStatusLabelsAndCodesForSlotOrAll(-1);
-    result = 1;
     break;
   }
   case 8: {
@@ -853,7 +849,6 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
       g_pNetMgr006a6014->Send(&claim, 1);
       return 1;
     }
-    result = 1;
     break;
   }
   case 9: {
@@ -998,7 +993,6 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
       g_pNetMgr006a6014->Send(&claim2, 1);
       return 1;
     }
-    result = 1;
     break;
   }
   case 0xc: {
@@ -1092,13 +1086,11 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
       g_pGlobalUiRootController->DispatchUiSelectionToHandler(poseCommand);
     }
     g_pGameFlowState->processPrimaryEventQueue = savedProcessPrimary;
-    result = 1;
     break;
   }
   case 1: {
     // Adopt the host's remaining pending-nation bitmask.
     pendingNationBitmask = static_cast<TurnEvent1PendingMaskPacket*>(packet)->pendingMask;
-    result = 1;
     break;
   }
   case 2: {
@@ -1108,13 +1100,11 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
       return 1;
     }
     g_pDiplomacyTurnStateManager->ApplyTurnEvent2SyncPacketToRelationMatrix(syncPacket);
-    result = 1;
     break;
   }
   case 0xd:
     // Re-emit the event-0xE/9 session context packets for the requesting session.
     EmitTurnEventEAnd9SessionContextPackets(packet);
-    result = 1;
     break;
   case 0xe: {
     // Host session-init: adopt sim state/game name/scenario selection, then build the
@@ -1180,7 +1170,6 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
       loungeE = 0;
     }
     loungeE->RefreshMapAndMessageControlsForCurrentContext();
-    result = 1;
     break;
   }
   case 3: {
@@ -1229,12 +1218,10 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
     statusPacket.statusTags[tagSlot] = 0x62757379; // 'busy'
     g_pNetMgr006a6014->Send(&statusPacket, 0);
     g_pSimMgr->PostMainWindowCommand100ForTurnFlow();
-    result = 1;
     break;
   }
   case 0x10:
     g_pSimMgr->PostMainWindowCommand100ForTurnFlow();
-    result = 1;
     break;
   case 0x11: {
     // Masked byte/word/dword poke into a global map table; the host rebroadcasts.
@@ -1294,7 +1281,6 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
     rebroadcast.messageLength = 0x28;
     rebroadcast.toNetworkId = 0;
     g_pNetMgr006a6014->Send(&rebroadcast, 0);
-    result = 1;
     break;
   }
   case 0x12: {
@@ -1302,7 +1288,6 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
     TurnEvent12Packet* cityOwner = static_cast<TurnEvent12Packet*>(packet);
     g_pGlobalMapState->DispatchFormationEntryActionsAndMaybeCreateTurnEvent12(cityOwner->shortA,
                                                                               cityOwner->shortB);
-    result = 1;
     break;
   }
   case 0x13: {
@@ -1311,28 +1296,24 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
         static_cast<TurnEvent13NationPayloadPacket*>(packet);
     g_pInterNationEventQueueManager->QueueInterNationEventIntoNationBucket(
         nationPayload->nationSlot18, reinterpret_cast<int>(nationPayload->payloadDwords1C), 1);
-    result = 1;
     break;
   }
   case 0x20: {
     TurnEvent20PacketM* dedupedEvent = static_cast<TurnEvent20PacketM*>(packet);
     g_pInterNationEventQueueManager->QueueInterNationEventRecordDeduped(
         dedupedEvent->eventParam18, dedupedEvent->nationA1A, dedupedEvent->nationB1B, 1);
-    result = 1;
     break;
   }
   case 0x21: {
     TurnEvent21PacketM* mergedEvent = static_cast<TurnEvent21PacketM*>(packet);
     g_pInterNationEventQueueManager->QueueInterNationEventType0FWithBitmaskMerge(
         mergedEvent->byte18, mergedEvent->byte19, mergedEvent->byte1A, 1);
-    result = 1;
     break;
   }
   case 0x22: {
     TurnEvent22PacketM* type11Event = static_cast<TurnEvent22PacketM*>(packet);
     g_pInterNationEventQueueManager->QueueInterNationEventType11(type11Event->byte18,
                                                                  type11Event->word1A, 1);
-    result = 1;
     break;
   }
   case 0x1d: {
@@ -1346,7 +1327,6 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
       nation1D->PropagateWarTransitionSlot280(warTransition->nationA1D, warTransition->nationB1E,
                                               warTransition->mode1F);
     }
-    result = 1;
     break;
   }
   case 0x1e: {
@@ -1388,7 +1368,6 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
     }
     TNextDiplomationCommand* nextCommand = new TNextDiplomationCommand();
     nextCommand->DispatchUiPacketWithTagNEXT();
-    result = 1;
     break;
   }
   case 0x1a: {
@@ -1416,7 +1395,6 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
     }
     g_pUiRuntimeContext->DispatchDecisionSlot98(sourceNation, nationAction->param1E,
                                                 nationAction->param20, nationAction->param22);
-    result = 1;
     break;
   }
   case 0x1b: {
@@ -1426,7 +1404,6 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
     g_apNationStates[trackedEntry->nationSlot1C]->AppendTrackedSlotEntry(
         trackedEntry->trackedKind1E, trackedEntry->targetNation20, trackedEntry->trackedValue22,
         trackedEntry->trackedSlotIndex24, trackedEntry->trackedPayload28);
-    result = 1;
     break;
   }
   case 0x1c: {
@@ -1445,7 +1422,6 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
     TNextTradeCommand* tradeCommand = new TNextTradeCommand();
     tradeCommand->InitializeRangePairFromDiplomacyConstants();
     g_pGlobalUiRootController->DispatchUiSelectionToHandler(tradeCommand);
-    result = 1;
     break;
   }
   case 0x14: {
@@ -1454,7 +1430,6 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
         static_cast<TurnEvent14NationMetricPacket*>(packet);
     g_apTerrainTypeDescriptorTable[metricDelta->nationSlot18]->AddToNationMetricAtField10(
         metricDelta->amount1C);
-    result = 1;
     break;
   }
   case 0x15: {
@@ -1481,7 +1456,6 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
     nation15->escalationCounter = needState->escalationCounter;
     nation15->pendingCommitmentCost = needState->pendingCommitmentCost;
     nation15->pressureCounter = needState->pressureCounter;
-    result = 1;
     break;
   }
   case 0x19: {
@@ -1512,7 +1486,6 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
       nation19->diplomacyGrantByNation[target19] = stateArrays->diplomacyGrantByNation[target19];
       nation19->needLevelByNation[target19] = stateArrays->needLevelByNation[target19];
     }
-    result = 1;
     break;
   }
   case 0x2c: {
@@ -1578,7 +1551,6 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
     summary2C->pendingDeltaSlots18->valueAt4 = composite->popBucketWords[6];
     summary2C->pendingDeltaSlots18->valueAt6 = composite->popBucketWords[7];
     summary2C->pendingDeltaSlots18->valueAt8 = composite->popBucketWords[8];
-    result = 1;
     break;
   }
   case 0x2d: {
@@ -1588,7 +1560,6 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
     for (int needSlot2D = 0; needSlot2D < 0x17; ++needSlot2D) {
       minor2D->needLevelByNation[needSlot2D] = minorNeed->needLevelByNation[needSlot2D];
     }
-    result = 1;
     break;
   }
   case 0x16: {
@@ -1597,7 +1568,6 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
         static_cast<TurnEvent16DiplomacyProposalPacket*>(packet);
     g_apNationStates[proposal->nationSlot18]->QueueDiplomacyProposalCodeForTargetNation(
         proposal->proposalCode1A, proposal->targetNationId1C);
-    result = 1;
     break;
   }
   case 0x17: {
@@ -1611,7 +1581,6 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
       g_apNationStates[resolution->nationSlot18]->QueueInterNationEventForProposalCode12D_130(
           resolution->proposalIndex1C);
     }
-    result = 1;
     break;
   }
   case 0x18: {
@@ -1631,7 +1600,6 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
         }
       }
     }
-    result = 1;
     break;
   }
   case 0x28:
@@ -1654,7 +1622,6 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
     HandleTurnEventCodes28_2E_2F_30_31_32(reader);
     reader->Free();
     g_nSaveFormatVersion = -1;
-    result = 1;
     break;
   }
   case 0x1f: {
@@ -1881,7 +1848,6 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
     // original copies both with one 16-bit move.
     *reinterpret_cast<short*>(&tile->activeFlags1c) =
         *reinterpret_cast<short*>(&tileState->record.activeFlags1c);
-    result = 1;
     break;
   }
   case 0x24: { // patch selected fields of one city-score record
@@ -1906,7 +1872,6 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
     }
     city24->exploredByNationMaskA1 = cityRecord->record.fieldA1;
     city24->padA2 = cityRecord->record.fieldA2;
-    result = 1;
     break;
   }
   case 0x25: { // merge nation status tags; ding when exactly one nation stays busy
@@ -1953,7 +1918,6 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
         g_pSfxPlaybackSystem->PlaySoundEffect(0x13f2, 0, 1);
       }
     }
-    result = 1;
     break;
   }
   case 0x26: { // bulk-load the diplomacy matrices into g_pDiplomacyTurnStateManager
@@ -1975,14 +1939,12 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
     g_pDiplomacyTurnStateManager->selectionFlagsC78c = matrix->selectionFlagsC;
     memcpy(g_pDiplomacyTurnStateManager->pad1824, matrix->relationTailBlock,
            sizeof(matrix->relationTailBlock));
-    result = 1;
     break;
   }
   case 0x27: { // dispatch join-empire mode on one terrain-slot nation
     TurnEvent27JoinEmpirePacket* joinEmpire = static_cast<TurnEvent27JoinEmpirePacket*>(packet);
     g_apTerrainTypeDescriptorTable[joinEmpire->terrainSlot18]->ApplyJoinEmpireModeForTargetNation(
         joinEmpire->targetNationSlot1C, joinEmpire->mode20);
-    result = 1;
     break;
   }
   case 0x29: { // route a tagged tactical command to the live battle
@@ -2025,7 +1987,6 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
     fireBattle->ApplyTacticalActionEffectsAndMaybeRemoveUnit(
         attacker, target, *(reinterpret_cast<int*>(target) + 2), fireCommand->arg24,
         fireCommand->arg28, static_cast<char>(fireCommand->arg2C), 1);
-    result = 1;
     break;
   }
   case 0x2b: { // accumulate the presence mask; optionally echo a 0x2b ack
@@ -2049,14 +2010,12 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
       reply.toNetworkId = presence->fromNetworkId;
       g_pNetMgr006a6014->Send(&reply, 0);
     }
-    result = 1;
     break;
   }
   default:
-    result = 0;
-    break;
+    return 0;
   }
-  return result;
+  return 1;
 }
 
 // FUNCTION: IMPERIALISM 0x005494b0

@@ -1009,3 +1009,22 @@ TMultiplayerMgr.cpp. Follow the TSimMgr_AdvanceGlobalTurnStateMachine.cpp
 precedent: put the monolith in its own file
 (TMultiplayerMgr_HandleDiplomacyTurnEvent.cpp) so its packet structs, inline
 helpers, and optimizer footprint stay isolated.
+
+## 60. Giant switch receive machines: transcribe per-case in binary body order
+
+For a multi-KB `switch (packet->eventCode)` dispatcher (e.g. 0x545940, 42 cases,
+11.4KB): (a) source case order must follow the binary case-BODY order, not numeric
+order — MSVC5 lays bodies out in source order; (b) model the exits as plain `break`
+per case + one post-switch `return 1` + `default: return 0` (the original's single
+`mov al,1` / `xor al,al` tail pair comes from cross-jump-merged constant returns —
+per-case `return 1;` statements compile to inline `mov al,1` copies that pair worse);
+(c) give every event code its own packet-view struct derived from
+NetMessage/TimelyMessageHeader/TimelyNetMessagePrefix and keep the exact store order
+including double-writes; (d) an `if (x == tagA) A; else if (x == tagB) B; else C;`
+chain whose bodies are emitted out-of-line with `je` jumps reproduces from
+inverted-inequality nesting (`if (x != tagA) { if (x != tagB) { C } else B } else A`);
+(e) accept the residual frame-size/stack-slot-order delta — VC5 slot assignment on
+frames this large is not source-controllable (same anomaly class as 0x543280).
+Parallelizing the asm transcription across subagents with a shared ILT->symbol map
+document works well; verify every agent-supplied field/slot name against the repo
+headers before splicing.
