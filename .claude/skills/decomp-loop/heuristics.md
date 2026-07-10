@@ -961,3 +961,51 @@ body inline) is not reproducible from source at this build's `/Ob1`: a direct
 a call layer. Keep the plain (non-inline) wrapper — it's the higher-scoring of the
 two — and treat the residual push/pop call-shape + frame-size delta as an accepted
 structural cost of these 10-15KB builders. Do not chase it by toggling `__inline`.
+
+## 56. Byte-Boolean materialization: `sete/setne al + test al,al` means an unsigned-char Boolean, and int `BOOL` folds
+
+When the original branches through a materialized byte (`xor eax,eax; cmp ...;
+sete al; test al,al; je`) instead of comparing flags directly, the condition was
+computed into a Mac-style byte Boolean (`unsigned char`/`char`), usually via a
+file-local `static __inline unsigned char IsX()` helper or a byte local. Writing
+the same condition as `BOOL` (int) or as a bare `if (expr)` folds to a direct
+`cmp/jne` and loses ~3 instructions per site (SaveGameWithModeAndOptionalLabel
+0x56da50 went 53%→92% on this fix alone). Corollary: return types the callers
+test with `test al,al` are byte Booleans, not BOOL — e.g.
+TryGetFileMetadataForPath (0x5d4c10) returns `(unsigned char)CFile::GetStatus(...)`.
+
+## 57. `ret 4`/`ret 0` + caller `mov ecx, [global]` = thiscall singleton method with unused `this`
+
+A "free function" whose every original callsite loads a manager singleton into
+ECX and whose body never reads ECX is still a real `__thiscall` method on that
+manager (callee-cleaned stack proves it): model it as a member with `this`
+unused, not as `__cdecl`. Batch of five found this session:
+TAssetMgr::SaveMainDocumentToPathAndMarkSaved (0x5e0030, g_pUiViewManager),
+TOcean::FindFirstPortZoneContextByNation (0x563540, g_pActiveMapOrderContext),
+TSimMgr::IsNationSlotEligibleForEventProcessing (0x581280, g_pSimMgr),
+TNetMgr::ProbeNationReachabilityAndMarkAwolBitmask (0x5e43e0, g_pNetMgr006a6014),
+TNetMgr::EnqueueOrSendTurnEventPacketToNation callers. The wrong free-function
+model caps the score (~40-75%) and miscompiles every callsite (dead ECX setup +
+caller cleanup).
+
+## 58. Turn-event packet emitters: zero-then-value store pairs and their folding
+
+The original packet emitters write each NetMessage header field twice — a zero
+store then the real value, interleaved by the scheduler. Writing the same double
+assignments in source (`packet.eventCode = 0; packet.eventCode = 0xb;`)
+reproduces this in some TU contexts (TMultiplayerMgr.cpp when 0x54b5d0 hit 100%)
+but folds to single stores in others (fresh TUs, grown TUs) — a TU-composition
+sensitivity like note 55's inline budget, not a source-model problem. Keep the
+double-write source; accept the folded-store diffs as the known wobble family.
+A NetMessage default ctor zeroing the four fields is NOT the model: it groups
+the zeros at the declaration point instead of interleaving them (verified, and
+it regresses every other emitter).
+
+## 59. Giant dispatchers get their own TU
+
+Adding a multi-KB function to an existing TU re-shapes neighbouring functions
+(store folding, register allocation) — 0x54b5d0 wobbled when 0x543910 landed in
+TMultiplayerMgr.cpp. Follow the TSimMgr_AdvanceGlobalTurnStateMachine.cpp
+precedent: put the monolith in its own file
+(TMultiplayerMgr_HandleDiplomacyTurnEvent.cpp) so its packet structs, inline
+helpers, and optimizer footprint stay isolated.

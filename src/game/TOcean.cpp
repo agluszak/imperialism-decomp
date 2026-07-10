@@ -1,4 +1,5 @@
 #include "game/TOcean.h"
+#include "game/TMapMgr.h"
 #include "game/TSimMgr.h"
 
 #include <cstring>
@@ -251,6 +252,46 @@ TZone* TOcean::FindPortZoneBySelectedTile(TCity* city) {
     }
   }
   return node;
+}
+
+// FUNCTION: IMPERIALISM 0x00563540
+TZone* TOcean::FindFirstPortZoneContextByNation(short nationSlot) {
+  TZone* esi = static_cast<TZone*>(g_pMapActionContextListHead);
+  if (esi != 0) {
+    do {
+      if (esi->IsKindOf(RUNTIME_CLASS(TPortZone)) != 0) {
+        break;
+      }
+      esi = esi->prev18;
+    } while (esi != 0);
+  }
+
+  TZone* eax = esi;
+  if (eax == 0) {
+    return 0;
+  }
+
+  do {
+    short tileIndex = static_cast<short>(static_cast<TPortZone*>(eax)->field48);
+    short ownerTag =
+        static_cast<short>(g_pGlobalMapState->terrainStateTable[tileIndex].ownerNationTag04);
+    if (ownerTag == nationSlot) {
+      return eax;
+    }
+
+    esi = eax->prev18;
+    if (esi != 0) {
+      do {
+        if (esi->IsKindOf(RUNTIME_CLASS(TPortZone)) != 0) {
+          break;
+        }
+        esi = esi->prev18;
+      } while (esi != 0);
+    }
+    eax = esi;
+  } while (eax != 0);
+
+  return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x00564530

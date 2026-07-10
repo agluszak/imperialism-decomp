@@ -47,6 +47,11 @@ public:
   // Map-action context (TZone, stride 0x48) at the given index in contextArray. 0x00563330.
   TZone* GetMapActionContextEntryByIndex(short index);
 
+  // 0x00563540 — walk g_pMapActionContextListHead for TPortZone contexts owned by
+  // nationSlot. Real __thiscall on the TOcean singleton (ret 4; callers load
+  // g_pActiveMapOrderContext into ecx); `this` is unused by the body.
+  TZone* FindFirstPortZoneContextByNation(short nationSlot);
+
   void InitializeMapActionContextsForNationCountUsingCostField(int nationCountArg);
 
   // __inline: the original inlines this pointer calc at its call sites (e.g.

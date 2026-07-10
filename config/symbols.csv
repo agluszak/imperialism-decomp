@@ -3945,7 +3945,7 @@ address|name|symbol|size|type|prototype|provenance
 5431a0|ClearTurnResumeNationPendingBitAndMaybeFlushTelemetry||167|function|undefined ClearTurnResumeNationPendingBitAndMaybeFlushTelemetry()|
 543280|HandleTurnResumeStateTelemetry||1253|function|undefined HandleTurnResumeStateTelemetry()|
 5438e0|InitializeEmitEventHeaderWithActiveNation||28|function|undefined InitializeEmitEventHeaderWithActiveNation()|
-543910|HandleDiplomacyTurnEventPacketByCode||2446|function|undefined HandleDiplomacyTurnEventPacketByCode()|
+543910|TMultiplayerMgr::HandleDiplomacyTurnEventPacketByCode||2446|function|void __thiscall HandleDiplomacyTurnEventPacketByCode()|
 544540|EnsureGameFlowStateAndPostTurnEvent5E5||180|function|undefined EnsureGameFlowStateAndPostTurnEvent5E5()|
 544630|ResetDiplomacyRuntimeSelectionAndSetModeNada||72|function|undefined ResetDiplomacyRuntimeSelectionAndSetModeNada()|
 5446a0|EmitTurnEvent3Mode18WithActiveNation||86|function|undefined EmitTurnEvent3Mode18WithActiveNation()|
@@ -8627,6 +8627,7 @@ address|name|symbol|size|type|prototype|provenance
 6a5c98|g_timerSlotIds|||global||
 6a5cf8|g_timerSlotCallbacks|||global||
 6a5d24|g_timerDispatchSuppressAssert|||global||
+6a6014|g_pNetMgr006a6014|||global||
 6a60bc|g_cdAudioDevice|||global||
 6a60c0|g_soundResourceManager|||global||
 6a611c|_afxWinState|||global||xref_oracle

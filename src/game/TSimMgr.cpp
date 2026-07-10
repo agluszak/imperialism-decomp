@@ -867,6 +867,30 @@ short TSimMgr::GetActiveNationId() {
   return activeNationSlot;
 }
 
+// FUNCTION: IMPERIALISM 0x00581280
+char TSimMgr::IsNationSlotEligibleForEventProcessing(short nationSlot) {
+  if (nationSlot == -1) {
+    return 0;
+  }
+
+  TCountry* terrainDescriptor = g_apTerrainTypeDescriptorTable[nationSlot];
+  if (terrainDescriptor == 0) {
+    return 0;
+  }
+
+  if (nationSlot < 7) {
+    if (terrainDescriptor != 0) {
+      short profileType = terrainDescriptor->encodedNationSlot;
+      char inReservedProfileBand = profileType >= 100 && profileType < 200;
+      if (inReservedProfileBand) {
+        return 0;
+      }
+    }
+  }
+
+  return 1;
+}
+
 // FUNCTION: IMPERIALISM 0x00581400
 void TSimMgr::InitializeOrLoadEntryArray14AndClampLimits(bool writeBack) {
   if (writeBack) {

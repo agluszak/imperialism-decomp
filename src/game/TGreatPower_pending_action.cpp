@@ -1,4 +1,5 @@
 #include "game/TGreatPower.h"
+#include "game/TOcean.h"
 #include "game/TGreatPower_internal.h"
 #include "game/TMilitaryUnit.h"
 #include "game/TCivUnit.h"
@@ -51,7 +52,7 @@ void TGreatPower::ExecuteNationPendingActionStateMachine(void) {
   // Navy primary/secondary order (serializedStatusFlags[0] == '2').
   if (this->serializedStatusFlags[0] == 0x32) {
     short zoneIndex = g_pCityOrderCapabilityState->activeZoneIndex1d4;
-    TZone* portZone = TZone::FindFirstPortZoneContextByNation(nationSlot);
+    TZone* portZone = g_pActiveMapOrderContext->FindFirstPortZoneContextByNation(nationSlot);
     TShip* primaryOrder =
         CreateNavyPrimaryOrderNodeAndAssignDisplayName(zoneIndex, portZone, nationSlot, 0);
 

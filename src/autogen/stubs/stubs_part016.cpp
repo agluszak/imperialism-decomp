@@ -555,14 +555,6 @@ undefined4 HandleTurnResumeStateTelemetry(void)
   return 0;
 }
 
-// ghidra_name HandleDiplomacyTurnEventPacketByCode
-// ghidra_proto undefined HandleDiplomacyTurnEventPacketByCode()
-// FUNCTION: IMPERIALISM 0x00543910
-undefined4 HandleDiplomacyTurnEventPacketByCode(void)
-{
-  return 0;
-}
-
 // ghidra_name ResetDiplomacyRuntimeSelectionAndSetModeNada
 // ghidra_proto undefined ResetDiplomacyRuntimeSelectionAndSetModeNada()
 // FUNCTION: IMPERIALISM 0x00544630

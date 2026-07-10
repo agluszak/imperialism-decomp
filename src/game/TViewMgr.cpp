@@ -47,8 +47,6 @@
 #include "game/TTurnEventDialogFactoryRegistry.h"
 #include "game/quickdraw_rendering.h" // ApplyControlThemeStyleAndOptionalCaption
 
-char IsNationSlotEligibleForEventProcessing(short nationSlot);
-
 undefined4 QueueDeferredUiEventPacket(void);
 undefined4 ShowDialogTemplateE0ModalAndReleaseCapture(void);
 undefined4 HandleTurnEvent8FC_RebuildPageTabsAndTitles(void);
@@ -1313,7 +1311,7 @@ void TViewMgr::UiRuntimeSlot64() {
 // FUNCTION: IMPERIALISM 0x005da360
 void TViewMgr::UiRuntimeSlotBC() {
   const short activeNationId = g_pSimMgr->GetActiveNationId();
-  if (IsNationSlotEligibleForEventProcessing(activeNationId) == 0) {
+  if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(activeNationId) == 0) {
     g_pSimMgr->CopyScenarioNationSetupIntoFlowState(nullptr);
   }
 
@@ -1373,7 +1371,7 @@ void TViewMgr::HandleTurnEventDialogFactorySlotF4() {
     movieName = CString("win");
     break;
   case 0x17:
-    if (IsNationSlotEligibleForEventProcessing(g_pSimMgr->GetActiveNationId())) {
+    if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(g_pSimMgr->GetActiveNationId())) {
       movieName = CString("win");
     } else {
       movieName = CString("lose");
@@ -1430,7 +1428,7 @@ void TViewMgr::HandleTurnStateExitAndPostFollowupEventCode(short followupState) 
     g_pGlobalUiRootController->PostTurnEventCodeMessage2420(0x7e0);
     return;
   case 0x19:
-    if (IsNationSlotEligibleForEventProcessing(g_pSimMgr->GetActiveNationId())) {
+    if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(g_pSimMgr->GetActiveNationId())) {
       g_pGlobalUiRootController->PostTurnEventCodeMessage2420(0x5eb);
       return;
     }

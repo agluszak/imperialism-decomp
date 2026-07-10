@@ -137,6 +137,11 @@ struct TurnEvent15Packet : NetMessage {
 #include "game/TSimMgr.h"
 #include "game/TStream.h"
 #include "game/TModuleLibraryCacheTableStateB.h"
+#include "game/TArmyMgr.h"
+#include "game/TOcean.h"
+#include "game/TZone.h"
+#include "game/TNextDiplomationCommand.h"
+#include "game/TLoadSavePicture.h"
 #include "game/TViewMgr.h"
 #include "game/TApplication.h"
 #include "game/TAssetMgr.h"
@@ -2429,17 +2434,18 @@ struct TaggedGameStateTurnEventPacket : NetMessage {
 };
 
 // FUNCTION: IMPERIALISM 0x00549ad0
-void TMultiplayerMgr::DispatchTurnEventPacketWithCodeAndPayloadBuffer(short eventTag, void* payload,
-                                                                      short destinationSlot) {
+void TMultiplayerMgr::DispatchTurnEventPacketWithCodeAndPayloadBuffer(short eventTag,
+                                                                      short destinationSlot,
+                                                                      void* payload) {
   TCountingStream* counter = new TCountingStream();
   counter->PrepareForUse();
-  SerializeOrderDataIntoTurnEventByTag(counter, eventTag, payload, destinationSlot);
+  SerializeOrderDataIntoTurnEventByTag(counter, eventTag, destinationSlot, payload);
   int packetBytes = counter->streamSlot28();
   counter->Free();
   HGLOBAL packetMemory = GlobalAlloc(GMEM_MOVEABLE, packetBytes);
   THandleStream* writer = new THandleStream();
   writer->AttachGlobalMemoryHandleAndResetPosition(packetMemory, 0x10);
-  SerializeOrderDataIntoTurnEventByTag(writer, eventTag, payload, destinationSlot);
+  SerializeOrderDataIntoTurnEventByTag(writer, eventTag, destinationSlot, payload);
   NetMessage* packet = static_cast<NetMessage*>(GlobalLock(packetMemory));
   packet->messageLength = writer->streamSlot28();
   writer->Free();
@@ -2449,7 +2455,7 @@ void TMultiplayerMgr::DispatchTurnEventPacketWithCodeAndPayloadBuffer(short even
 
 // FUNCTION: IMPERIALISM 0x00549c60
 void TMultiplayerMgr::SerializeOrderDataIntoTurnEventByTag(TStream* stream, short eventTag,
-                                                           void* payload, short destinationSlot) {
+                                                           short destinationSlot, void* payload) {
   TimelyNetMessagePrefix header;
   header.messageTag = 0x74696d65;
   header.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetActiveNationId());
@@ -2872,7 +2878,7 @@ void TMultiplayerMgr::RefreshNationStatusLabelsAndCodesForSlotOrAll(int nationSl
   } else {
     bool wrapInParens;
     if (g_apNationStates[nationSlot]->diplomacyEligibilityA0 == 0 ||
-        IsNationSlotEligibleForEventProcessing(static_cast<short>(nationSlot)) == 0) {
+        g_pSimMgr->IsNationSlotEligibleForEventProcessing(static_cast<short>(nationSlot)) == 0) {
       wrapInParens = true;
     } else {
       wrapInParens = false;
@@ -2892,7 +2898,7 @@ void TMultiplayerMgr::RefreshNationStatusLabelsAndCodesForSlotOrAll(int nationSl
     }
     defaultNationTextSlots[nationSlot] += suffix;
     nationDisplayNameSlots[nationSlot] = defaultNationTextSlots[nationSlot];
-    if (IsNationSlotEligibleForEventProcessing(static_cast<short>(nationSlot)) == 0) {
+    if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(static_cast<short>(nationSlot)) == 0) {
       nationStatusTags[nationSlot] = 0x64656361; // 'deca'
     }
   }

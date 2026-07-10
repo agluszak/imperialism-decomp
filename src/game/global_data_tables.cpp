@@ -974,9 +974,9 @@ CList<void*, void*> g_WNetPendingPacketList006a5f40(10);
 // GLOBAL: IMPERIALISM 0x006a5f60
 TWNetSessionManager g_NetworkSessionManager006a5f60;
 
-// 0x006a6014 — global TNetMgr (built by new TNetMgr() during
-// multiplayer init, stored here; every turn-event emitter dispatches TNetMgr::Send
-// through it). GLOBAL: IMPERIALISM 0x006a6014
+// Global TNetMgr (built by new TNetMgr() during multiplayer init, stored here; every
+// turn-event emitter dispatches TNetMgr::Send through it).
+// GLOBAL: IMPERIALISM 0x006a6014
 TNetMgr* g_pNetMgr006a6014 = 0;
 
 #include "game/TApplication.h"

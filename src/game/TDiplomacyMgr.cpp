@@ -18,8 +18,6 @@
 #include "game/TMultiplayerMgr.h"
 #include <new>
 
-char IsNationSlotEligibleForEventProcessing(short nationSlot);
-
 namespace {
 const unsigned int kTurnEventTagNext = 0x4E655854;
 struct ScratchSharedString {
@@ -64,7 +62,7 @@ short DecodeTerrainDescriptorNationSlotForAdjacency(int terrainRecord) {
 
 // FUNCTION: IMPERIALISM 0x00413250
 int TDiplomacyMgr::WrapperFor_IsNationSlotEligibleForEventProcessingAt413250(int nationSlot) {
-  return IsNationSlotEligibleForEventProcessing(static_cast<short>(nationSlot));
+  return g_pSimMgr->IsNationSlotEligibleForEventProcessing(static_cast<short>(nationSlot));
 }
 // SYNTHETIC: IMPERIALISM 0x004ee650
 // TDiplomacyMgr::CreateObject
@@ -539,7 +537,7 @@ void TDiplomacyMgr::PropagateRelationSideEffectSlot80(int sourceNationSlot, int 
   TCountry** terrainCursor = g_apTerrainTypeDescriptorTable;
   do {
     TMinor* candidateTerrain = static_cast<TMinor*>(*terrainCursor);
-    if (IsNationSlotEligibleForEventProcessing(candidateNationSlot) != 0 &&
+    if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(candidateNationSlot) != 0 &&
         static_cast<short>(candidateNationSlot) != static_cast<short>(sourceNationSlot) &&
         static_cast<short>(candidateNationSlot) != static_cast<short>(targetNationSlot) &&
         candidateTerrain->encodedNationSlot == -1) {
@@ -1154,25 +1152,4 @@ TurnEvent2SyncPacket* __cdecl BuildTurnEvent2ArraySyncPacketDeltaOrFull(unsigned
     ++cur;
   }
   return packet;
-}
-
-// FUNCTION: IMPERIALISM 0x00581280
-char IsNationSlotEligibleForEventProcessing(short nationSlot) {
-  if (nationSlot == -1) {
-    return 0;
-  }
-
-  TCountry* terrainDescriptor = g_apTerrainTypeDescriptorTable[nationSlot];
-  if (terrainDescriptor == 0) {
-    return 0;
-  }
-
-  if (nationSlot < 7) {
-    short profileType = terrainDescriptor->encodedNationSlot;
-    if (profileType >= 100 && profileType <= 199) {
-      return 0;
-    }
-  }
-
-  return 1;
 }

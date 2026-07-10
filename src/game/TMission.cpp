@@ -1,4 +1,5 @@
 #include "game/TMission.h"
+#include "game/TOcean.h"
 #include "game/global_data_tables.h"
 
 #include "decomp_types.h"
@@ -194,7 +195,8 @@ TMission* CreateMissionObjectByKindAndNodeContext(int sourceNation, eMissionType
     if (contextArg == 0) {
       mission = new TDefendProvinceMission(nodeKey);
     } else if (reinterpret_cast<TZone*>(contextArg) ==
-               TZone::FindFirstPortZoneContextByNation(static_cast<short>(sourceNation))) {
+               g_pActiveMapOrderContext->FindFirstPortZoneContextByNation(
+                   static_cast<short>(sourceNation))) {
       mission = new TEscortMission(reinterpret_cast<TZone*>(contextArg));
     } else {
       mission = new TControlSeaZoneMission(reinterpret_cast<TZone*>(contextArg));

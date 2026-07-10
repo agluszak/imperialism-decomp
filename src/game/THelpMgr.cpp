@@ -194,7 +194,7 @@ char ShowPeriodicNationComparisonAdvisoryIfNeeded() {
     short best = (active != 0) ? active->needCapA6 : 0;
     short bestNation = activeNation;
     for (short i = 0; i < 7; ++i) {
-      if (IsNationSlotEligibleForEventProcessing(i) != 0) {
+      if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(i) != 0) {
         TGreatPower* nation = g_apNationStates[i];
         short value = (nation != 0) ? nation->needCapA6 : 0;
         if (value > best) {
@@ -222,7 +222,7 @@ char ShowPeriodicNationComparisonAdvisoryIfNeeded() {
     short best = g_apNationStates[activeNation]->tradeCapacity;
     short bestNation = activeNation;
     for (short i = 0; i < 7; ++i) {
-      if (IsNationSlotEligibleForEventProcessing(i) != 0 &&
+      if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(i) != 0 &&
           g_apNationStates[i]->tradeCapacity > best) {
         best = g_apNationStates[i]->tradeCapacity;
         bestNation = i;
@@ -245,7 +245,7 @@ char ShowPeriodicNationComparisonAdvisoryIfNeeded() {
     short best = g_apNationStates[activeNation]->ComputeNationRuntimeAdvisoryMetricCase6();
     short bestNation = activeNation;
     for (short i = 0; i < 7; ++i) {
-      if (IsNationSlotEligibleForEventProcessing(i) != 0 &&
+      if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(i) != 0 &&
           g_apNationStates[i]->ComputeNationRuntimeAdvisoryMetricCase6() > best) {
         best = g_apNationStates[i]->ComputeNationRuntimeAdvisoryMetricCase6();
         bestNation = i;
@@ -268,7 +268,7 @@ char ShowPeriodicNationComparisonAdvisoryIfNeeded() {
     int best = g_apNationStates[activeNation]->GetCityBuildingProductionSlot8D(0);
     short bestNation = activeNation;
     for (short i = 0; i < 7; ++i) {
-      if (IsNationSlotEligibleForEventProcessing(i) != 0 &&
+      if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(i) != 0 &&
           g_apNationStates[i]->GetCityBuildingProductionSlot8D(0) > best) {
         best = g_apNationStates[i]->GetCityBuildingProductionSlot8D(0);
         bestNation = i;
@@ -291,7 +291,7 @@ char ShowPeriodicNationComparisonAdvisoryIfNeeded() {
     int best = g_apNationStates[activeNation]->GetCityBuildingProductionSlot8D(2);
     short bestNation = activeNation;
     for (short i = 0; i < 7; ++i) {
-      if (IsNationSlotEligibleForEventProcessing(i) != 0 &&
+      if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(i) != 0 &&
           g_apNationStates[i]->GetCityBuildingProductionSlot8D(2) > best) {
         best = g_apNationStates[i]->GetCityBuildingProductionSlot8D(2);
         bestNation = i;
@@ -314,7 +314,7 @@ char ShowPeriodicNationComparisonAdvisoryIfNeeded() {
     int best = g_apNationStates[activeNation]->GetCityBuildingProductionSlot8D(4);
     short bestNation = activeNation;
     for (short i = 0; i < 7; ++i) {
-      if (IsNationSlotEligibleForEventProcessing(i) != 0 &&
+      if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(i) != 0 &&
           g_apNationStates[i]->GetCityBuildingProductionSlot8D(4) > best) {
         best = g_apNationStates[i]->GetCityBuildingProductionSlot8D(4);
         bestNation = i;
@@ -341,7 +341,7 @@ char ShowPeriodicNationComparisonAdvisoryIfNeeded() {
       int best = 0;
       short bestNation = activeNation;
       for (short i = 0; i < 7; ++i) {
-        if (IsNationSlotEligibleForEventProcessing(i) != 0 &&
+        if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(i) != 0 &&
             g_apNationStates[i]->GetCityBuildingProductionSlot8D(6) > best) {
           best = g_apNationStates[i]->GetCityBuildingProductionSlot8D(6);
           bestNation = i;
@@ -373,7 +373,7 @@ char ShowPeriodicNationComparisonAdvisoryIfNeeded() {
       int best = g_apNationStates[activeNation]->GetCityBuildingProductionSlot8D(6);
       short bestNation = activeNation;
       for (short i = 0; i < 7; ++i) {
-        if (IsNationSlotEligibleForEventProcessing(i) != 0 &&
+        if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(i) != 0 &&
             g_apNationStates[i]->GetCityBuildingProductionSlot8D(6) > best) {
           best = g_apNationStates[i]->GetCityBuildingProductionSlot8D(6);
           bestNation = i;
@@ -398,7 +398,7 @@ char ShowPeriodicNationComparisonAdvisoryIfNeeded() {
     int best = firstValue;
     short bestNation = activeNation;
     for (short i = 0; i < 7; ++i) {
-      if (i != activeNation && IsNationSlotEligibleForEventProcessing(i) != 0 &&
+      if (i != activeNation && g_pSimMgr->IsNationSlotEligibleForEventProcessing(i) != 0 &&
           g_apNationStates[i]->ComputeSelectedMilitaryPowerScore() > best) {
         best = g_apNationStates[i]->ComputeSelectedMilitaryPowerScore();
         bestNation = i;
@@ -422,7 +422,7 @@ char ShowPeriodicNationComparisonAdvisoryIfNeeded() {
     int best = firstValue;
     short bestNation = activeNation;
     for (short i = 0; i < 7; ++i) {
-      if (i != activeNation && IsNationSlotEligibleForEventProcessing(i) != 0 &&
+      if (i != activeNation && g_pSimMgr->IsNationSlotEligibleForEventProcessing(i) != 0 &&
           g_apNationStates[i]->SumNavyOrderPriorityForNationSlot86() > best) {
         best = g_apNationStates[i]->SumNavyOrderPriorityForNationSlot86();
         bestNation = i;

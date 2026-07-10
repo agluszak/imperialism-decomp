@@ -2949,6 +2949,7 @@ address|target_cpp|ownership|note
 542ff0|src/game/TMultiplayerMgr.cpp|manual|marker_sync
 543120|src/game/TMultiplayerMgr.cpp|manual|marker_sync
 5438e0|src/game/NetMessage.cpp|manual|marker_sync
+543910|src/game/TMultiplayerMgr_HandleDiplomacyTurnEvent.cpp|manual|marker_sync
 544540|src/game/TMultiplayerMgr.cpp|manual|marker_sync
 5446a0|src/game/TMultiplayerMgr.cpp|manual|marker_sync
 5449b0|src/game/TDiplomacyMgr.cpp|manual|marker_sync
@@ -3190,7 +3191,7 @@ address|target_cpp|ownership|note
 563300|include/game/TOcean.h|manual|marker_sync
 563330|src/game/TOcean_RouteBuffer.cpp|manual|marker_sync
 5634a0|src/game/TOcean.cpp|manual|marker_sync
-563540|src/game/TZone.cpp|manual|marker_sync
+563540|src/game/TOcean.cpp|manual|marker_sync
 5635e0|src/game/TMapMgr.cpp|manual|marker_sync
 563990|src/game/TMapMgr.cpp|manual|marker_sync
 563da0|src/game/TZone.cpp|manual|marker_sync
@@ -3618,7 +3619,7 @@ address|target_cpp|ownership|note
 5811e0|src/game/TSimMgr.cpp|manual|marker_sync
 581200|src/game/TSimMgr.cpp|manual|marker_sync
 581260|src/game/TSimMgr.cpp|manual|marker_sync
-581280|src/game/TDiplomacyMgr.cpp|manual|marker_sync
+581280|src/game/TSimMgr.cpp|manual|marker_sync
 581400|src/game/TSimMgr.cpp|manual|marker_sync
 581870|src/game/TSimMgr.cpp|manual|marker_sync
 581ae0|src/game/TSimMgr.cpp|manual|marker_sync

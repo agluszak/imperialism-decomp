@@ -1089,46 +1089,6 @@ void RegenerateAllMapActionContextStatusCodes(void) {
       reinterpret_cast<int(__cdecl*)(void*)>(GetCurrentLocalEpochSecondsWithTimezoneCache)(0);
 }
 
-// FUNCTION: IMPERIALISM 0x00563540
-TZone* TZone::FindFirstPortZoneContextByNation(short nationSlot) {
-  TZone* esi = static_cast<TZone*>(g_pMapActionContextListHead);
-  if (esi != 0) {
-    do {
-      if (esi->IsKindOf(RUNTIME_CLASS(TPortZone)) != 0) {
-        break;
-      }
-      esi = esi->prev18;
-    } while (esi != 0);
-  }
-
-  TZone* eax = esi;
-  if (eax == 0) {
-    return 0;
-  }
-
-  do {
-    short tileIndex = static_cast<short>(static_cast<TPortZone*>(eax)->field48);
-    short ownerTag =
-        static_cast<short>(g_pGlobalMapState->terrainStateTable[tileIndex].ownerNationTag04);
-    if (ownerTag == nationSlot) {
-      return eax;
-    }
-
-    esi = eax->prev18;
-    if (esi != 0) {
-      do {
-        if (esi->IsKindOf(RUNTIME_CLASS(TPortZone)) != 0) {
-          break;
-        }
-        esi = esi->prev18;
-      } while (esi != 0);
-    }
-    eax = esi;
-  } while (eax != 0);
-
-  return 0;
-}
-
 // Walks every map tile; for each coastal/port tile (terrain marker 3 or 0xe) or land tile
 // in a city region, resolves the owning map-action context (a port zone matched by tile id,
 // or the region-indexed context) and, for each of the tile's 6 hex neighbours that carries a

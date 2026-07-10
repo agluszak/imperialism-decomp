@@ -270,7 +270,7 @@ struct ReachabilityProbeEvent2BPacket : TimelyMessageHeader {
 };
 
 // FUNCTION: IMPERIALISM 0x005e43e0
-int __cdecl ProbeNationReachabilityAndMarkAwolBitmask() {
+int TNetMgr::ProbeNationReachabilityAndMarkAwolBitmask() {
   int awolBitmask = 0;
   ReachabilityProbeEvent2BPacket probe;
   probe.messageTag = 0x74696d65;

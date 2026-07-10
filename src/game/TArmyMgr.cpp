@@ -728,7 +728,7 @@ undefined TArmyMgr::WrapperFor_IsNationSlotEligibleForEventProcessing_At004a3bc0
     bool proceed = true;
     if (cachedOwner < 7 && currentOwner > 6 &&
         g_apTerrainTypeDescriptorTable[currentOwner]->needLevelByNation[1] == -1) {
-      bool eligible = IsNationSlotEligibleForEventProcessing(cachedOwner) != 0;
+      bool eligible = g_pSimMgr->IsNationSlotEligibleForEventProcessing(cachedOwner) != 0;
       bool blockedByPeerBand = g_apNationStates[cachedOwner] != nullptr &&
                                g_apNationStates[cachedOwner]->needLevelByNation[1] > 99 &&
                                g_apNationStates[cachedOwner]->needLevelByNation[1] < 200;
@@ -940,7 +940,7 @@ static int __stdcall ComputeMapCursorStateIndex(short tileIndex, short mode) {
   }
   short ownerTag = rec->ownerNationTag04;
   short activeNationId = g_pSimMgr->GetActiveNationId();
-  if (IsNationSlotEligibleForEventProcessing(activeNationId) == 0) {
+  if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(activeNationId) == 0) {
     return 8;
   }
   activeNationId = g_pSimMgr->GetActiveNationId();

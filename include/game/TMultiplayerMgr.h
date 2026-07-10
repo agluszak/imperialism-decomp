@@ -144,6 +144,11 @@ public:
   // or all seven when nationSlot == -1 (dead slots get 'dead'; ineligible names are
   // wrapped in parentheses and the tag set to 'deca'). 0x54cc00 (Ghidra mis-attributed
   // it to TToolBarCluster).
+  // 0x543910: post-resume diplomacy turn-event dispatcher — switches on
+  // pendingNationSlotIndex (the received turn-event code) and re-broadcasts the
+  // matching game-state snapshot family; every path except code 6 ends with the
+  // event-3 tick acknowledge.
+  void HandleDiplomacyTurnEventPacketByCode();
   void RefreshNationStatusLabelsAndCodesForSlotOrAll(int nationSlot);
 
   // Send the turn-event-0x15 diplomacy need-state snapshot for nationSlot (broadcast
@@ -167,12 +172,12 @@ public:
   // filtered-out or empty slots).
   void PublishNationDescriptorAndNotifyOrderListeners(TStream* stream, int nationFilter);
   // 0x549c60: write the 0x1c-byte packet header then the tag-specific payload.
-  void SerializeOrderDataIntoTurnEventByTag(TStream* stream, short eventTag, void* payload,
-                                            short destinationSlot);
+  void SerializeOrderDataIntoTurnEventByTag(TStream* stream, short eventTag, short destinationSlot,
+                                            void* payload);
   // 0x549ad0: measure with a TCountingStream, then serialize into a THandleStream over
   // GlobalAlloc memory, stamp the real length, and send (loopback-suppressed for -3).
-  void DispatchTurnEventPacketWithCodeAndPayloadBuffer(short eventTag, void* payload,
-                                                       short destinationSlot);
+  void DispatchTurnEventPacketWithCodeAndPayloadBuffer(short eventTag, short destinationSlot,
+                                                       void* payload);
   // 0x54b930: for every session slot matching networkId - tag the nation 'awol',
   // broadcast the event-0x25 status packet, mark the session id -2 and the pending bit,
   // then either send the event-9 lobby-chat drop notice (session init) or show the

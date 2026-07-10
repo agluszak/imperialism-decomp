@@ -536,7 +536,8 @@ void TMinor::SetNationTransferTargetCodeAndNotifyEligiblePeers(int targetNationS
     this->encodedNationSlot = static_cast<short>(targetNationSlot + 100);
 
     for (int eligibleNationSlot = 0; eligibleNationSlot < kNationSlotCount; ++eligibleNationSlot) {
-      if (IsNationSlotEligibleForEventProcessing(static_cast<short>(eligibleNationSlot)) != 0 &&
+      if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(
+              static_cast<short>(eligibleNationSlot)) != 0 &&
           eligibleNationSlot != this->nationSlot && eligibleNationSlot != targetNationSlot) {
         TCountry* terrain = g_apTerrainTypeDescriptorTable[eligibleNationSlot];
         if (terrain != 0) {
@@ -547,7 +548,8 @@ void TMinor::SetNationTransferTargetCodeAndNotifyEligiblePeers(int targetNationS
     g_pDiplomacyTurnStateManager->ResetTerrainAdjacencyMatrixRowAndSymmetricLink(this->nationSlot);
 
     for (int majorNationSlot = 0; majorNationSlot < 7; ++majorNationSlot) {
-      if (IsNationSlotEligibleForEventProcessing(static_cast<short>(majorNationSlot)) != 0) {
+      if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(static_cast<short>(majorNationSlot)) !=
+          0) {
         TGreatPower* majorNation = g_apNationStates[majorNationSlot];
         if (majorNation != 0 && majorNation->diplomacyEligibilityA0 == 0) {
           majorNation->NotifyActionSlot94(this->nationSlot, 0x131);
@@ -576,7 +578,8 @@ void TMinor::SetNationTransferTargetCodeAndNotifyEligiblePeers(int targetNationS
                                                                       this->nationSlot, 0);
 
   for (int resetNationSlot = 0; resetNationSlot < kNationSlotCount; ++resetNationSlot) {
-    if (IsNationSlotEligibleForEventProcessing(static_cast<short>(resetNationSlot)) != 0) {
+    if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(static_cast<short>(resetNationSlot)) !=
+        0) {
       g_pDiplomacyTurnStateManager->SetRelationCodeSlot78Final(this->nationSlot, resetNationSlot,
                                                                4);
       g_pDiplomacyTurnStateManager->SetStandingScoreSlot28(this->nationSlot, resetNationSlot, 0x5a);
@@ -618,7 +621,8 @@ void TMinor::SetNationTransferTargetCodeAndNotifyEligiblePeers(int targetNationS
 
   this->encodedNationSlot = static_cast<short>(targetNationSlot + 100);
   for (int linkNationSlot = 0; linkNationSlot < kNationSlotCount; ++linkNationSlot) {
-    if (IsNationSlotEligibleForEventProcessing(static_cast<short>(linkNationSlot)) != 0 &&
+    if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(static_cast<short>(linkNationSlot)) !=
+            0 &&
         linkNationSlot != this->nationSlot && linkNationSlot != targetNationSlot) {
       TCountry* terrain = g_apTerrainTypeDescriptorTable[linkNationSlot];
       if (terrain != 0) {
@@ -629,7 +633,8 @@ void TMinor::SetNationTransferTargetCodeAndNotifyEligiblePeers(int targetNationS
   g_pDiplomacyTurnStateManager->ResetTerrainAdjacencyMatrixRowAndSymmetricLink(this->nationSlot);
 
   for (int standingNationSlot = 0; standingNationSlot < 7; ++standingNationSlot) {
-    if (IsNationSlotEligibleForEventProcessing(static_cast<short>(standingNationSlot)) != 0) {
+    if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(static_cast<short>(standingNationSlot)) !=
+        0) {
       if (standingNationSlot == targetNationSlot) {
         this->SetDiplomacyStandingSlot48(standingNationSlot, 100);
         if (g_apNationStates[standingNationSlot] != 0) {

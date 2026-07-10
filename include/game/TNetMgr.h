@@ -36,6 +36,12 @@ public:
   // Mac oracle: TNetMgr::Send(NSpMessageHeader*, unsigned char).
   unsigned char Send(NetMessage* message, unsigned char queueOnly);
 
+  // 0x5e43e0 — probe every eligible nation with an event-0x2b packet through the
+  // DirectPlay session manager; returns the bitmask of unreachable (AWOL) slots and
+  // dispatches the drop notices for newly failed sends. Real __thiscall on the
+  // g_pNetMgr006a6014 singleton (every caller loads it into ecx); `this` unused.
+  int ProbeNationReachabilityAndMarkAwolBitmask();
+
   // Map a DirectPlay error HRESULT to detail text and pose the localized error dialog.
   // Mac oracle: TNetMgr::HandleError(int). Asserts with D:\Ambit\WNetMgr.cpp line 451.
   void HandleError(int errorCode);
@@ -47,8 +53,3 @@ int GetSessionActiveNationId(); // 0x5e4280
 // Destroys the DirectPlay player when `nationId` is the local session id (name kept
 // from Ghidra; the body destroys, it does not notify).
 void __stdcall NotifyIfNationMatchesSessionActiveNation(int nationId); // 0x5e42c0
-
-// 0x5e43e0 (TNetMgr TU): probe every eligible nation with an event-0x2b packet through
-// the DirectPlay session manager; returns the bitmask of unreachable (AWOL) slots and
-// dispatches the drop notices for newly failed sends.
-int __cdecl ProbeNationReachabilityAndMarkAwolBitmask();

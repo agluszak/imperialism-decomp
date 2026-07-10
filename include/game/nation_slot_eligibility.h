@@ -1,5 +1,5 @@
 #pragma once
 
-// Diplomacy turn-event nation filter. Implementation lives in
-// TDiplomacyMgr.cpp (primary consumer of eligibility checks).
-char IsNationSlotEligibleForEventProcessing(short nationSlot);
+// IsNationSlotEligibleForEventProcessing is a TSimMgr method (0x581280); call it as
+// g_pSimMgr->IsNationSlotEligibleForEventProcessing(slot).
+#include "game/TSimMgr.h"

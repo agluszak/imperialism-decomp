@@ -81,6 +81,10 @@ public:
   // g_pSimMgr (0x6a20f8) — this getter belongs to TSimMgr, not the view
   // managers that many older ports called it on.
   short GetActiveNationId(); // 0x581260
+  // 0x581280 -- real __thiscall on the TSimMgr singleton (ret 4; every caller loads
+  // g_pSimMgr into ecx); `this` is unused by the body. Slot is eligible when its
+  // terrain descriptor exists and (for great powers) isn't a 100..199 profile.
+  char IsNationSlotEligibleForEventProcessing(short nationSlot);
   // Store a state code into +0x40 and set the +0x5c short flag to 1 only when the
   // code is exactly zero (codes 1..4 and out-of-range codes clear it). 0x57d870.
   void SetStateCodeAndUpdateZeroOrOutOfRangeFlag(int stateCode);

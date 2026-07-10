@@ -605,7 +605,7 @@ void TNavyMgr::ProcessNationMapOrderInteractionsAndApplyOutcomes(short mode) {
 
         // Resolve the port-zone context and filter interactions the map-order context
         // deems ineligible (order-score comparison + diplomacy relation gate).
-        TZone* portZoneContext = TZone::FindFirstPortZoneContextByNation(nation);
+        TZone* portZoneContext = g_pActiveMapOrderContext->FindFirstPortZoneContextByNation(nation);
         TMapOrderInteractionSelection eligibilityResult = {0};
         char eligible = SelectEligibleMapOrderInteractionForNationAndContext(
             &eligibilityResult, reinterpret_cast<int>(portZoneContext), nation, entryValue);
