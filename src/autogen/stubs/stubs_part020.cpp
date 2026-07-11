@@ -459,14 +459,6 @@ undefined4 WrapperFor_ftol_At005df1a0(void)
   return 0;
 }
 
-// ghidra_name TAssetMgr::CreateTAssetMgrInstance
-// ghidra_proto undefined CreateTAssetMgrInstance()
-// FUNCTION: IMPERIALISM 0x005df1d0
-undefined4 CreateTAssetMgrInstance(void)
-{
-  return 0;
-}
-
 // ghidra_name TAssetMgr::WrapperFor_InvokeCallbackNTimesWithSehGuard_At005df330
 // ghidra_proto undefined WrapperFor_InvokeCallbackNTimesWithSehGuard_At005df330()
 // FUNCTION: IMPERIALISM 0x005df330

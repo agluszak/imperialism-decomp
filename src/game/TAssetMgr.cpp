@@ -10,6 +10,12 @@
 #include "game/TTurnEventDialogFactoryRegistry.h"
 #include "game/TViewMgr.h"
 #include "game/global_data_tables.h"
+// SYNTHETIC: IMPERIALISM 0x005df1d0
+// TAssetMgr::CreateObject
+
+// SYNTHETIC: IMPERIALISM 0x005df260
+// TAssetMgr::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TAssetMgr, TObject)
 
 // FUNCTION: IMPERIALISM 0x005df280

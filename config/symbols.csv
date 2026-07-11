@@ -6117,7 +6117,7 @@ address|name|symbol|size|type|prototype|provenance
 5def70|SetCursorFromResourceE4AndClampRange||65|function|undefined SetCursorFromResourceE4AndClampRange()|
 5df040|NoOpOnPaintWithCPaintDCScope_005df040||26|function|undefined NoOpOnPaintWithCPaintDCScope_005df040()|
 5df1a0|WrapperFor_ftol_At005df1a0||30|function|undefined WrapperFor_ftol_At005df1a0()|
-5df1d0|TAssetMgr::CreateTAssetMgrInstance||107|function|undefined CreateTAssetMgrInstance()|
+5df1d0|TAssetMgr::CreateObject|?CreateObject@TAssetMgr@@SGPAVCObject@@XZ|107|function|undefined CreateObject()|rtti
 5df260|TAssetMgr::GetRuntimeClass||6|function|undefined GetTAssetMgrClassNamePointer()|
 5df280|ConstructUiViewManager||90|function|void * __fastcall ConstructUiViewManager(void * pUiViewManager)|
 5df300|TAssetMgr::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|

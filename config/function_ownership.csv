@@ -4703,7 +4703,8 @@ address|target_cpp|ownership|note
 5de990|src/game/TViewMgr.cpp|manual|marker_sync
 5dea60|src/game/TViewMgr.cpp|manual|marker_sync
 5deb40|src/game/TViewMgr.cpp|manual|marker_sync
-5df260|src/game/TAssetMgr.cpp|manual|mfc_runtime_macro
+5df1d0|src/game/TAssetMgr.cpp|manual|marker_sync
+5df260|src/game/TAssetMgr.cpp|manual|marker_sync
 5df280|src/game/TAssetMgr.cpp|manual|marker_sync
 5df300|src/game/TAssetMgr.cpp|manual|marker_sync
 5df3a0|src/game/TAssetMgr.cpp|manual|marker_sync
