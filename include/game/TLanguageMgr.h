@@ -44,9 +44,11 @@ public:
   void BuildNewsTableDimensions(char firstColumn, char lastColumn, char firstPrimaryRow,
                                 char lastPrimaryRow, char firstExtraRow, char lastExtraRow);
   void ParseNewsTableRow(char* line);
-  // 0x508c50: normalize a player-name credential token into `out` (turn-event-9 lounge
-  // name-label path). Body TODO.
-  void NormalizeRuntimeCredentialNameToken(CString* out, CString* name);
+  // 0x508c50: normalize a player-name credential token (returns the CString by value —
+  // ret 8 with a hidden return slot). Names starting with '(' or an uppercase letter
+  // pass through; otherwise the first character is stripped when the news table is
+  // loaded or the name starts with a space. Turn-event-9 lounge name-label path.
+  CString NormalizeRuntimeCredentialNameToken(CString* name);
   bool ReloadPreplutNewsTableAndResources(int languageTag);
 
   // Maps a data byte through the news-string table for the given format column, expanding

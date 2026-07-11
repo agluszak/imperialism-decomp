@@ -167,15 +167,22 @@ extern short g_DAT_006966d0_Value_006966D0[];
 // Cursor resource id by civilian-tile-order action code (12 entries).
 extern short g_civilianTileOrderCursorTokenTable[];
 // Per-unit-type tactical category code (slot 0x11 garrison sweep).
+extern int g_anUnitTypeTacticalRangeByType_006699E8[30];
 extern short g_awTacticalUnitCategoryCodeBySlot[];
+extern int g_nTacticalTileWidthPx_006A5430;
+extern int g_nTacticalTileRowHeightPx_006A5434;
+extern int g_nTacticalBattlefieldSurfaceWidth_006A5448;
+extern int g_nTacticalBattlefieldSurfaceHeight_006A544C;
+extern int g_nTacticalUnitSpriteCellWidth_006A5498;
+extern int g_nTacticalUnitSpriteCellHeight_006A549C;
 
 // Per-unit-type combat/composition class (0x695380), read by
 // ProcessTileUnitListsAndApplyRandomStatusUpdates when building a TArmyStack's
 // field4/field6 composition code.
-extern short g_awUnitCombatClassBySlot[64];
+extern short g_awUnitCombatClassBySlot[32];
 // Stack composition class lookup (0x6953c0), indexed [minClass + maxClass*4]; true
 // bound unconfirmed beyond the observed min/max class range (1..5-ish).
-extern unsigned char g_abStackCompositionClassTable[32];
+extern unsigned char g_abStackCompositionClassTable[16];
 
 // Per-civilian-order-type map-improvement sprite class (0x697040), read by
 // TMapMgr::GetMapImprovementSpriteBaseOffset via TCivUnit::orderType; only indices 0-8 are
@@ -246,6 +253,11 @@ extern int g_nQuickDrawOriginX;
 extern int g_nQuickDrawOriginY;
 extern int g_nQuickDrawResolvedTextOriginX;
 extern int g_nQuickDrawResolvedTextOriginY;
+// TODO(hedge): only observed as the left/top of a view-frame clip bounds rect in
+// TTacticalBattleView::DrawUiTilesAndOverlay; sole writer (0x005ad9e2) not yet
+// identified/named. 0x6a5458/0x6a545c
+extern int g_nUiFrameClipOriginX;
+extern int g_nUiFrameClipOriginY;
 extern TQuickDrawSurfaceContext g_defaultQuickDrawSurfaceSentinel;
 extern TQuickDrawSurfaceContext* g_pActiveQuickDrawSurfaceContextHead;
 extern TQuickDrawSurfaceContext* g_pActiveQuickDrawSurfaceContext;
@@ -273,6 +285,42 @@ extern TApplication* g_pGlobalUiRootController;
 extern TTacticalBattle* g_pActiveTacticalBattle;
 // OR-accumulator for the turn-event-0x2b presence-mask exchange.
 extern int g_nTurnEvent2BNationMaskAccumulator;
+extern short g_anUnitTypeCombatCategoryByType00669858[32];
+extern short g_awUnitTypeBaseActionPointTable[32];
+extern short g_awTacticalFireSfxTokenByUnitType[32];
+extern "C" const char s_SourcePathUTacPlayer_00699D84[];
+extern const char* g_pszEmptyTextRef_00669db8;
+extern int g_anFortStrengthPointsByFortLevel[6];
+extern short g_awTacticalMoveCostByCategoryAndTerrain[50];
+extern double g_dTacticalCursorStrongRatioThreshold_00669508;
+extern double g_dTacticalCursorOverwhelmRatioThreshold_00669510;
+extern double g_dTacticalCursorWeakRatioThreshold_00669518;
+extern double g_dTacticalCursorArtilleryParityThreshold_00669520;
+extern double g_dTacticalCursorArtillerySuperiorityThreshold_00669528;
+extern double g_dTacticalCursorAssaultRatioThreshold_00669530;
+extern double g_dTacticalCursorRetreatRatioThreshold_00669538;
+extern double g_dTacticalQualityFactorStep_00669EC8;
+extern double g_dTacticalQualityFactorBase_00669ED0;
+extern float g_fTacticalStrengthProjectionScale_00669F0C;
+extern float g_afTacticalDirectFireFlagByCategoryCode_00669390[10];
+// Requires the TacticalTileHeuristicScorerFn typedef from game/TArmyPlayer.h at the
+// point of use; declared here per the one-home-for-globals rule.
+class TArmyPlayer;
+extern int (TArmyPlayer::* g_apfnTacticalTileHeuristicScorers_006994C0[15])(class TTacticalUnit*,
+                                                                            int);
+extern short g_awTacticalUnitAiClassByUnitType_006693B8[32];
+extern short g_awTacticalUnitActionPointCostByType_006693F8[32];
+extern int g_anTacticalTileHeuristicWeightsByAiState_00699500[19][15];
+extern float g_afTacticalDirectFireFlagByCategory[10];
+extern float g_afTacticalBaseAttackPowerByUnitType[30];
+extern float g_afTacticalMeleeMultiplierByCategory[8];
+extern float g_afTacticalDamageScaleByUnitType[30];
+extern float g_afTacticalAttackTerrainModifierByCategory[50];
+extern float g_afTacticalDefenseTerrainModifierByCategory[50];
+extern float g_afTacticalCoverDamageModifierByCategory[50];
+extern "C" const char g_szBattleSetupTabPathFormat[];
+extern "C" const char s_szDoubleNewline_00699438[];
+extern char g_nForceTacticalBattleViewFlag_006A4758;
 // The multiplayer/game-flow singleton (0x6a43c8); every turn-event emitter is a
 // __thiscall method on it (original callsites load ECX from here).
 extern TMultiplayerMgr* g_pGameFlowState;
@@ -599,6 +647,8 @@ extern TCivMgr* g_pSelectedCivilianOrderState; // 0x6a43dc — the TCivMgr insta
 // Assert source-path strings for the UViewMgr TU family.
 extern "C" const char s_SourcePathUViewMgr_0069B6BC[];
 extern "C" const char s_SourcePathUMultiplayerMgr_00698040[];
+extern "C" const char s_SourcePathUNavy_006983C8[];
+extern "C" const char s_SourcePathUTacViews_00699FF4[];
 extern "C" const char s_SourcePathUViewMgrMore_0069B740[];
 // Assert source-path string for the UArmyMgr TU.
 extern "C" const char s_SourcePathUArmyMgr_0069573C[];
@@ -672,7 +722,7 @@ extern const double g_Recompute_Nation_Order_LookupTable_0065A9F0;
 extern double g_Recompute_Nation_Order_LookupTable_0065A9F8;
 extern double g_Recompute_Nation_Order_LookupTable_0065AA00;
 extern double g_Recompute_Nation_Order_LookupTable_0065AA08;
-extern unsigned short g_Recompute_Nation_Order_LookupTable_00697870[];
+extern unsigned short g_awTacticalCompositionReferenceProfiles_00697870[];
 extern unsigned short g_Populate_Beachhead_Mission_LookupTable_00697958[];
 
 // TMapMgr.cpp — per-resourceType requirement level table (0x513610).
@@ -818,8 +868,6 @@ extern char s_mcflavor_00696674[];
 extern char s_mcflavor_00696d10[];
 extern char s_mcflavor_00697238[];
 extern char s_mcflavor_006976e0[];
-extern char s_mcflavor_00698720[];
-extern char s_mcflavor_0069872c[];
 extern char s_mcflavor_00698b0c[];
 extern char s_mcflavor_0069ab00[];
 extern char s_mcflavor_0069ab04[];

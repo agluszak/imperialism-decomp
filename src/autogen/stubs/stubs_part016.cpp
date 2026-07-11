@@ -67,14 +67,6 @@ undefined4 WrapperFor_ftol_At00536290(void)
   return 0;
 }
 
-// ghidra_name ComputeDistributionSimilarityScoreFromVectorAndReferenceProfile
-// ghidra_proto undefined ComputeDistributionSimilarityScoreFromVectorAndReferenceProfile()
-// FUNCTION: IMPERIALISM 0x005362c0
-undefined4 ComputeDistributionSimilarityScoreFromVectorAndReferenceProfile(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_AFX_CLASSINIT_At00536470
 // ghidra_proto undefined WrapperFor_AFX_CLASSINIT_At00536470()
 // FUNCTION: IMPERIALISM 0x00536470
@@ -787,22 +779,6 @@ undefined4 SetDialogModeTagInitAndInvokeNoOpHook(void)
   return 0;
 }
 
-// ghidra_name NoOpCallbackRet10
-// ghidra_proto undefined NoOpCallbackRet10()
-// FUNCTION: IMPERIALISM 0x0054c680
-undefined4 NoOpCallbackRet10(void)
-{
-  return 0;
-}
-
-// ghidra_name NoOpCallbackRet18
-// ghidra_proto undefined NoOpCallbackRet18()
-// FUNCTION: IMPERIALISM 0x0054c6a0
-undefined4 NoOpCallbackRet18(void)
-{
-  return 0;
-}
-
 // ghidra_name ResetNationStatusArraysAndTurnEventContext
 // ghidra_proto undefined ResetNationStatusArraysAndTurnEventContext()
 // FUNCTION: IMPERIALISM 0x0054c6e0
@@ -939,14 +915,6 @@ undefined4 InvokeOrderNodeOwnerVfunc38(void)
   return 0;
 }
 
-// ghidra_name ReassignOrderNodeNationAndRebindParentCounters
-// ghidra_proto undefined ReassignOrderNodeNationAndRebindParentCounters()
-// FUNCTION: IMPERIALISM 0x00551100
-undefined4 ReassignOrderNodeNationAndRebindParentCounters(void)
-{
-  return 0;
-}
-
 // ghidra_name SelectNavyPrimaryOrderByNationAndRecomputePreferredChild
 // ghidra_proto undefined SelectNavyPrimaryOrderByNationAndRecomputePreferredChild()
 // FUNCTION: IMPERIALISM 0x00551850
@@ -1031,14 +999,6 @@ undefined4 RemoveTaskForceOrderNodeById(void)
 // ghidra_proto undefined RebuildMapOrderEntryChildren()
 // FUNCTION: IMPERIALISM 0x00553f10
 undefined4 RebuildMapOrderEntryChildren(void)
-{
-  return 0;
-}
-
-// ghidra_name PruneInactiveTaskForceOrderHead
-// ghidra_proto undefined PruneInactiveTaskForceOrderHead()
-// FUNCTION: IMPERIALISM 0x00553fe0
-undefined4 PruneInactiveTaskForceOrderHead(void)
 {
   return 0;
 }

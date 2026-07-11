@@ -138,4 +138,3 @@ public:
 };
 
 ASSERT_SIZE(TStatusPicture, 0xc0);
-

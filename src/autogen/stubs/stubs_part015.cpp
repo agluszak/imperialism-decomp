@@ -107,14 +107,6 @@ undefined4 SplitTileIndexToRowAndColumn(void)
   return 0;
 }
 
-// ghidra_name SplitTileIndexToHexRasterColumnX2AndRow
-// ghidra_proto undefined SplitTileIndexToHexRasterColumnX2AndRow()
-// FUNCTION: IMPERIALISM 0x005127e0
-undefined4 SplitTileIndexToHexRasterColumnX2AndRow(void)
-{
-  return 0;
-}
-
 // ghidra_name NoOpMapTilePredicateStub
 // ghidra_proto undefined NoOpMapTilePredicateStub()
 // FUNCTION: IMPERIALISM 0x00512850

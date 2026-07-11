@@ -5,6 +5,10 @@
 
 void SetQuickDrawFillColor(int fillColor);
 void SetQuickDrawStrokeColor(int strokeColor);
+// Clips srcRect to bounds, shifting dstRect by the same per-edge delta so the two
+// stay in sync (the standard blit-clip prologue before a QuickDraw surface blit).
+// Returns non-zero iff the clipped srcRect is still non-empty. 0x005a6940
+BOOL __stdcall ClipSrcRectToBoundsAndOffsetDstRect(RECT* bounds, RECT* dstRect, RECT* srcRect);
 void SetQuickDrawColorAndSyncGlobals(int color);
 void SetGlobalBlitTransparentColorRaw(int transparentColor);
 void MapUiThemeCodeToStyleFlags(short themeCode, int* outStyleFlags);
@@ -45,7 +49,9 @@ TStaticText* ApplyControlThemeStyleAndOptionalCaption(TStaticText* control, int 
                                                       int pointSize, int themeCode, int themeCode2,
                                                       const char* caption);
 
-undefined4 UpdatePaletteIndexWithDefaultFallback(void);
+// If paletteIndex is the sentinel -1 (as a short), resolves it from the default
+// cached bitmap resource's palette instead. 0x004951e0
+void UpdatePaletteIndexWithDefaultFallback(unsigned int paletteIndex);
 void ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(int unused, int styleWidth, int themeCode);
 void InitializeUiTextStyleDescriptorAndApplyQuickDraw(short face, short pointSize, int themeCode,
                                                       short font);
@@ -78,6 +84,38 @@ static __inline void ApplyUiTextStyleAndSyncColor(int unused, int styleWidth, in
 }
 
 static __inline void UpdatePaletteIndexWithFallback(int paletteIndex) {
-  reinterpret_cast<void(__cdecl*)(int)>(
-      reinterpret_cast<void (*)()>(UpdatePaletteIndexWithDefaultFallback))(paletteIndex);
+  UpdatePaletteIndexWithDefaultFallback(static_cast<unsigned int>(paletteIndex));
 }
+
+// Sets the QuickDraw fill color from a palette-table index (0xff = black, <1 = white
+// fallback, else index | 0x1000000). When a QuickDraw memory DC is active, the real
+// body instead resolves the color from TMacViewMgr's resource-cache palette handle
+// (same unrecovered-class gap as UpdatePaletteIndexWithDefaultFallback's -1 branch);
+// left unmodeled. 0x004950f0
+void SetQuickDrawFillColorFromPaletteIndex(unsigned short paletteIndex);
+
+// Selects the cached measure-font, draws a single-space overlay via CDC::ExtTextOut at
+// the resolved text origin (used as a "clear a small area" idiom), then restores DC
+// state. 0x00494950
+void RenderTacticalBattleSelectionAndUnitOverlayPass_Impl();
+
+// Draws four short corner-tick brackets around rect's edges (a hex-selection
+// highlight idiom), shrinking rect->right/bottom by 1 first. 0x005a99e0
+void DrawHexSelectionOutlineSegments(RECT* rect);
+
+// Classic "simulate TransparentBlt" masked-BitBlt technique (cf. Microsoft KB Q79212):
+// builds a monochrome mask from sourceBitmap's pixels matching colorKey, uses it to AND
+// out the transparent area of the destination background and the opaque area of the
+// source image, then ORs the two together and blits the composited result onto destDc
+// at (destX, destY). No xrefs found in the retail binary (dead code, or reached only via
+// an unrecovered indirect call); ported directly from the decompile since the technique
+// and every callee are fully understood Win32 GDI primitives. 0x00496450
+void TransparentBlitBitmapUsingMaskedRasterOps(HDC destDc, HBITMAP sourceBitmap, short destX,
+                                               short destY, COLORREF colorKey);
+
+// Same technique as TransparentBlitBitmapUsingMaskedRasterOps, but blits only a
+// (srcX, srcY, width, height) sub-region of the composited image instead of the whole
+// bitmap. 0x004967e0
+void TransparentBlitBitmapRegionUsingMaskedRasterOps(HDC destDc, HBITMAP sourceBitmap, short destX,
+                                                     short destY, COLORREF colorKey, short srcX,
+                                                     short srcY, short width, short height);

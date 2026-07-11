@@ -73,6 +73,16 @@ unsigned int MapEdgePoint::Equals(const MapEdgePoint* other) const {
   return 0;
 }
 
+// FUNCTION: IMPERIALISM 0x00565d20
+void ComputeWrappedIsometricScreenOffsetFromTile(int tileIndex, int* outScreenXY, int tileScale,
+                                                 short originCol, short originRow) {
+  int row = tileIndex / 0x6c;
+  outScreenXY[1] = row;
+  int halfTileXOffset = (row & 1) == 0 ? tileScale / 2 : 0;
+  outScreenXY[1] = (row - originRow) * tileScale;
+  outScreenXY[0] = (((tileIndex - originCol) + 0x6c) % 0x6c) * tileScale - halfTileXOffset;
+}
+
 // FUNCTION: IMPERIALISM 0x005A39A0
 int ComputeHexTileDistanceFromIndices(int tileIndexA, int tileIndexB) {
   unsigned int rowA = static_cast<unsigned int>(tileIndexA / 0x1d);

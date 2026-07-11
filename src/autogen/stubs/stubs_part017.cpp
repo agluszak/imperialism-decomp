@@ -395,14 +395,6 @@ undefined4 GetMapOrderContextPointerForNationAndTarget(void)
   return 0;
 }
 
-// ghidra_name TCivToolbar::CanDisplayMapOrderEntryInCurrentContext
-// ghidra_proto undefined CanDisplayMapOrderEntryInCurrentContext()
-// FUNCTION: IMPERIALISM 0x00560b00
-undefined4 CanDisplayMapOrderEntryInCurrentContext(void)
-{
-  return 0;
-}
-
 // ghidra_name ExpandTaskForceTraversalDepthAndMarkDeferredNodes
 // ghidra_proto undefined ExpandTaskForceTraversalDepthAndMarkDeferredNodes()
 // FUNCTION: IMPERIALISM 0x00560ba0
@@ -575,14 +567,6 @@ undefined4 WrapperFor_FreeHeapBufferIfNotNull_At00564f90_Impl(void)
 // ghidra_proto undefined RunEngineerOrderNameEditDialogAndApply()
 // FUNCTION: IMPERIALISM 0x00565a40
 undefined4 RunEngineerOrderNameEditDialogAndApply(void)
-{
-  return 0;
-}
-
-// ghidra_name ComputeWrappedIsometricScreenOffsetFromTile
-// ghidra_proto undefined ComputeWrappedIsometricScreenOffsetFromTile()
-// FUNCTION: IMPERIALISM 0x00565d20
-undefined4 ComputeWrappedIsometricScreenOffsetFromTile(void)
 {
   return 0;
 }

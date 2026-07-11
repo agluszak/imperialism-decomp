@@ -14,7 +14,7 @@ IMPLEMENT_DYNCREATE(TCivAnimation2, TAnimation)
 TCivAnimation2::TCivAnimation2() {}
 
 // FUNCTION: IMPERIALISM 0x0049f7c0
-undefined TCivAnimation2::WrapperFor_InvalidateCityDialogRectRegion_At0049f140() {
+undefined TCivAnimation2::AdvanceAnimationTickAndInvalidateOnFrameFlip() {
   return 0;
 }
 
@@ -26,4 +26,13 @@ undefined TCivAnimation2::RenderBattleReportInsetWithPaletteShift() {
 // FUNCTION: IMPERIALISM 0x004a0d10
 void TCivAnimation2::AddObjectToUiTransientRegistry(TAnimation* animationObject) {
   (void)animationObject;
+}
+
+// FUNCTION: IMPERIALISM 0x004a0d30
+void* TCivAnimation2::FindLinkedListNodeByIdFieldAt18(int nodeId) {
+  // TODO(mfc-collections): real body iterates field_0x24's list (GetHeadPosition /
+  // GetNext-shaped calls) comparing each node's +0x18 id field against nodeId. The
+  // list/node classes aren't recovered yet.
+  (void)nodeId;
+  return nullptr;
 }

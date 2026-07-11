@@ -24,3 +24,11 @@ void WrapExtendedMapXCoordinateInPlace(int* x);
 int ConvertTileIndexToOverlayCoord216BySide(int tileIndex, char side); // 0x0052c990
 
 int ComputeHexTileDistanceFromIndices(int tileIndexA, int tileIndexB);
+
+// Converts a hex tile index (row*0x6c + col) to its isometric screen-space {x,y} offset in
+// outScreenXY, relative to a scrolled origin (originCol, originRow) and scaled by tileScale.
+// The column wraps horizontally: `tileIndex - originCol` is taken mod 0x6c directly (the
+// row*0x6c term vanishes under the modulo), and odd rows are offset by half a tile in x for
+// the hex stagger. 0x00565d20.
+void ComputeWrappedIsometricScreenOffsetFromTile(int tileIndex, int* outScreenXY, int tileScale,
+                                                 short originCol, short originRow);

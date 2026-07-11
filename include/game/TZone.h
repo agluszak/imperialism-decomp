@@ -116,6 +116,11 @@ public:
   // 0x0055f4d0 — true when any secondaryNeighbors entry (a TGlobalMapCityScoreRecord*
   // under the documented stretch pun) has byte 0 (ownerNationCode00) == nationTag.
   char HasSecondaryNeighborWithNationTag(short nationTag);
+  // 0x560b00: whether this map-order context has a displayable primary navy order for
+  // `nation` (-1 = active nation): field10 bit set and a g_pNavyPrimaryOrderListHead
+  // ship with field08 == this, matching owner, field0c == 0 (and field34 == 0 unless
+  // skipField34Check). Ghidra's TCivToolbar attribution is junk. Body TODO.
+  char CanDisplayMapOrderEntryInCurrentContext(short nation, char skipField34Check);
   void InvokeObjectVtableMethod24();
   void* HandleTurnEventVtableSlot24CopyPayloadBuffer();
 

@@ -1,5 +1,7 @@
 #include "game/TAssetMgr.h"
 
+#include "game/CFile_Virtuals.h"
+
 #include "game/CAmbitDocument.h"
 #include "game/ImperialismApp.h"
 #include "game/TModuleLibraryCacheTableStateB.h"
@@ -40,6 +42,27 @@ void TAssetMgr::NoOpRuntimeUiCallback_005df3f0(int arg) {
 // FUNCTION: IMPERIALISM 0x005df410
 void TAssetMgr::NoOpRuntimeUiCallback_005df410(int arg) {
   (void)arg;
+}
+
+// FUNCTION: IMPERIALISM 0x005df430
+CFile_Virtuals* TAssetMgr::LoadTableResourceStreamByName(CString name) {
+  // TODO: port body @ 0x5df430.
+  (void)name;
+  return 0;
+}
+
+// FUNCTION: IMPERIALISM 0x005df6d0
+void TAssetMgr::ReleaseResourceStreamIfNotNull(CFile_Virtuals* stream) {
+  if (stream != 0) {
+    stream->CloseAndMaybeDeleteSlot04(1);
+  }
+}
+
+// FUNCTION: IMPERIALISM 0x005df700
+int TAssetMgr::ReadResourceStreamIntoBufferAndAdvance(CFile_Virtuals* stream, void* buffer,
+                                                      int* countInOut) {
+  *countInOut = stream->ReadBytesSlot3C(buffer, *countInOut);
+  return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x005df780

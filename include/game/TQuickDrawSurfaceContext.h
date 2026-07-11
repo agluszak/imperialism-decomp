@@ -75,12 +75,17 @@ ASSERT_SIZE(TBitmapSurfaceContextDescriptor, 0x34);
 
 // Address markers: src/game/global_data_tables.cpp.
 
-undefined4 BlitRectWithOptionalTransparency(void);
+// Core QuickDraw surface blitter (memory-to-memory row copy, with an 0x24-flagged
+// transparent-color-skip variant; a GDI/CDC-based path handles the real-screen
+// sentinel surface or a caller-supplied clip region). renderCtx's real type isn't
+// recovered; every current caller passes null. 0x00496d40
+void __stdcall BlitRectWithOptionalTransparency(TQuickDrawBlitSurface* srcSurface,
+                                                TQuickDrawBlitSurface* dstSurface, RECT* srcRect,
+                                                RECT* dstRect, unsigned char blitFlags,
+                                                void* renderCtx);
 
 static __inline void BlitQuickDrawSurfaces(TQuickDrawBlitSurface* srcSurface,
                                            TQuickDrawBlitSurface* dstSurface, RECT* srcRect,
                                            RECT* dstRect, unsigned char blitFlags) {
-  reinterpret_cast<void(__cdecl*)(void*, void*, RECT*, RECT*, int, int)>(
-      reinterpret_cast<void (*)()>(BlitRectWithOptionalTransparency))(
-      srcSurface, dstSurface, srcRect, dstRect, (int)blitFlags, 0);
+  BlitRectWithOptionalTransparency(srcSurface, dstSurface, srcRect, dstRect, blitFlags, 0);
 }

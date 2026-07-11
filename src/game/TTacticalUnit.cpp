@@ -1,12 +1,12 @@
 #include "game/TTacticalUnit.h"
 
 // FUNCTION: IMPERIALISM 0x005a5d40
-undefined TTacticalUnit::OrphanTiny_ReturnZero_005a5d40() {
+int TTacticalUnit::GetBaseActionPoints() {
   return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x005a5d60
-undefined TTacticalUnit::OrphanTiny_ReturnZero_005a5d60() {
+int TTacticalUnit::GetUnitRange() {
   return 0;
 }
 
@@ -31,15 +31,17 @@ TTacticalUnit::~TTacticalUnit() {}
 
 IMPLEMENT_DYNCREATE(TTacticalUnit, TObject)
 
-TTacticalUnit::TTacticalUnit() {}
-
 // FUNCTION: IMPERIALISM 0x005a5e70
-undefined TTacticalUnit::VTableSlot0E(int param_1) {
-  (void)param_1;
-  return 0;
+void TTacticalUnit::ApplyTacticalDamage(int damageA, int damageB) {
+  (void)damageB;
+  strength4 -= damageA;
+  if (strength4 <= 0) {
+    strength4 = 0;
+    state1c = 3;
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x005a5eb0
-undefined TTacticalUnit::CreateTArmyTacUnitInstance() {
-  return 0;
+void TTacticalUnit::FlipUnitSideAffiliation() {
+  side20 = (side20 == 0);
 }

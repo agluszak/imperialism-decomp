@@ -43,13 +43,13 @@ void TTwoPicSlider::InitializePictureSurfaces(int baseBitmapId) {
 // FUNCTION: IMPERIALISM 0x0056e2f0
 void TTwoPicSlider::Free() {
   if (lowerSurface != 0) {
-    FreeQuickDrawSurfaceContextSlot(&lowerSurface);
+    g_pDisplayMgr->FreeQuickDrawSurfaceContextSlot(&lowerSurface);
   }
   if (upperSurface != 0) {
-    FreeQuickDrawSurfaceContextSlot(&upperSurface);
+    g_pDisplayMgr->FreeQuickDrawSurfaceContextSlot(&upperSurface);
   }
   if (compositeSurface != 0) {
-    FreeQuickDrawSurfaceContextSlot(&compositeSurface);
+    g_pDisplayMgr->FreeQuickDrawSurfaceContextSlot(&compositeSurface);
   }
   TView::Free();
 }

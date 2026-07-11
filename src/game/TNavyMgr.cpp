@@ -17,6 +17,7 @@
 #include "game/TZone.h"
 #include "game/CString.h"
 #include "game/global_data_tables.h"
+#include "game/ui_invalidation_guard.h"
 #include "game/localization_text_helpers.h"
 #include "game/map_order_battle_snapshot.h"
 
@@ -37,7 +38,6 @@ void DispatchMapInteractionPayloadAndResetWorkingFields(MapOrderBattleSnapshot* 
   }
 }
 
-namespace {
 // Resolves a raw TGlobalMapCityScoreRecord* back into its index in
 // g_pGlobalMapState's cityScoreTable. `unusedArg` is provably dead in the original
 // (0x50e2c0 only ever reads `cityState`), kept only so the real __thiscall
@@ -47,6 +47,8 @@ int GetCityIndexFromCityStatePointer(TGlobalMapCityScoreRecord* cityState, int u
   (void)unusedArg;
   return static_cast<int>(cityState - g_pGlobalMapState->cityScoreTable);
 }
+
+namespace {
 
 // Shared by BuildMapOrderBattleSideSnapshot's two fixed-size name/label copies and its
 // per-child name copy: copies up to destSize-1 chars of `src` into `dest`, stopping at
@@ -345,11 +347,103 @@ void TNavyMgr::SerializeNavyOrderListsByNation(TStream* stream, short nationFilt
 
 // FUNCTION: IMPERIALISM 0x00556ad0
 void TNavyMgr::DeserializeNavyOrderListsByNation(TStream* stream, short nationFilter) {
-  // TODO: port body @ 0x556ad0 (915 bytes; not yet ported). Declared for real so the
-  // turn-event-0x2E receive path (TMultiplayerMgr::HandleTurnEventCodes28_2E_2F_30_31_32)
-  // gets a correctly-typed call site.
-  (void)stream;
-  (void)nationFilter;
+  if (nationFilter == -1) {
+    // Full resync: drop every existing entry from all three navy order lists first
+    // (each Free() unlinks the head, so the loops drain the chains).
+    while (g_pNavyPrimaryOrderListHead != 0) {
+      g_pNavyPrimaryOrderListHead->Free();
+    }
+    while (g_pNavySecondaryOrderListHead != 0) {
+      g_pNavySecondaryOrderListHead->Free();
+    }
+    if (orderListHead04 != 0) {
+      orderListHead04->queue_next->DestroyNavyOrderAndChildren();
+      orderListHead04->Free();
+    }
+  } else {
+    RemoveOrdersByNationFromPrimarySecondaryAndTaskForceLists(nationFilter);
+  }
+
+  // Primary TShip chain (16-bit count, written tail-first by the serializer; TShip()
+  // itself prepends each node to g_pNavyPrimaryOrderListHead, restoring the order).
+  // Only the low word of pendingCount is ever written/tested, mirroring the original's
+  // 2-byte read into a 4-byte slot.
+  int pendingCount;
+  stream->ReadBytes(&pendingCount, 2);
+  while (static_cast<short>(pendingCount--) != 0) {
+    TShip* shipNode = new TShip();
+    if (shipNode == 0) {
+      FailNilPointerWithAssert(s_SourcePathUNavy_006983C8, 0xd11);
+    }
+    shipNode->ReadFrom(stream);
+    if (nationFilter != -1 && shipNode->ownerNationSlot14 != nationFilter) {
+      shipNode->Free();
+    }
+  }
+
+  // TAdmiral secondary chain (the ctor links each node into
+  // g_pNavySecondaryOrderListHead).
+  stream->ReadBytes(&pendingCount, 2);
+  while (static_cast<short>(pendingCount--) != 0) {
+    TAdmiral* admiralNode = new TAdmiral();
+    if (admiralNode == 0) {
+      FailNilPointerWithAssert(s_SourcePathUNavy_006983C8, 0xd24);
+    }
+    admiralNode->ReadFrom(stream);
+    if (nationFilter != -1 && admiralNode->terrainType != nationFilter) {
+      admiralNode->Free();
+    }
+  }
+
+  // orderListHead04 TTaskForce chain.
+  stream->ReadBytes(&pendingCount, 2);
+  while (static_cast<short>(pendingCount--) != 0) {
+    TTaskForce* orderEntry = new TTaskForce();
+    if (orderEntry == 0) {
+      FailNilPointerWithAssert(s_SourcePathUNavy_006983C8, 0xd37);
+    }
+    orderEntry->ReadFrom(stream);
+    if (nationFilter != -1 && orderEntry->required_count != nationFilter) {
+      orderEntry->Free();
+    }
+    // Open-coded MoveMapOrderEntryToQueueHeadIfValid (0x557080) - the original emits
+    // this logic inline here (registers carry across it), not as a call: if the entry
+    // is not already queued, free it when it has no children, else unlink it and push
+    // it to the queue head.
+    TTaskForce* queueHead = orderListHead04;
+    TTaskForce* queueCursor = queueHead;
+    while (queueCursor != 0) {
+      if (queueCursor == orderEntry) {
+        break;
+      }
+      queueCursor = queueCursor->queue_next;
+    }
+    if (queueCursor == 0) {
+      int childLinkCount = 0;
+      if (orderEntry != 0) {
+        for (TMapOrderChildLinkNode* childCursor = orderEntry->childOrderList; childCursor != 0;
+             childCursor = childCursor->next) {
+          ++childLinkCount;
+        }
+      }
+      if (static_cast<short>(childLinkCount) <= 0) {
+        orderEntry->Free();
+      } else {
+        if (orderEntry->queue_prev != 0) {
+          orderEntry->queue_prev->queue_next = orderEntry->queue_next;
+        }
+        if (orderEntry->queue_next != 0) {
+          orderEntry->queue_next->queue_prev = orderEntry->queue_prev;
+        }
+        orderEntry->queue_prev = 0;
+        orderEntry->queue_next = queueHead;
+        if (queueHead != 0) {
+          queueHead->queue_prev = orderEntry;
+        }
+        orderListHead04 = orderEntry;
+      }
+    }
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x00556fd0

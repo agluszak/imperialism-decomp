@@ -13,4 +13,3 @@ TPoseMessageDialog::~TPoseMessageDialog() {}
 
 IMPLEMENT_DYNCREATE(TPoseMessageDialog, TCommand)
 
-TPoseMessageDialog::TPoseMessageDialog() {}

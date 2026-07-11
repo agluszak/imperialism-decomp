@@ -8,9 +8,10 @@ class TSimMgr;
 // mapped form of that argument). `ctx` is unused. 0x0057fef0.
 void scanBracketExpressions(void* ctx, void* out, const char* input, ...);
 
-// 0x580060: load string (groupB, indexB), expand it through the (groupA, indexA)
-// bracket template, and store the result into `out` (turn-event 0xA/0xC receive
-// paths). Genuine __cdecl free function; body TODO.
+// 0x580060: load the (groupA, indexA) template and expand it into `out`; bracket
+// digit [0] re-expands pair A, [1] expands (groupB, indexB), and a trailing lowercase
+// letter routes the expansion through TLanguageMgr::BuildMappedSharedStringFromByte-
+// StateTable (turn-event 0xA/0xC receive paths). Genuine __cdecl free function.
 void __cdecl BuildUiMessageTextFromBracketTemplate(TSimMgr* sim, CString* out, int groupA,
                                                    int indexA, int groupB, int indexB);
 void GenerateMappedFlavorTextByCurrentContextNation(CString* dest);

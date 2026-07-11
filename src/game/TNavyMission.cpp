@@ -39,10 +39,10 @@ static inline float SwapFloat(float val) {
   return dst.f;
 }
 
+// The binary body inlines TMission() (state08/value0c/marker11) and does NOT touch
+// nationId04/pathMarker06; the vtable install lands mid-way through the zero stores.
 // FUNCTION: IMPERIALISM 0x00535470
 TNavyMission::TNavyMission(TZone* targetZone) : TMission() {
-  nationId04 = 0xffff;
-  pathMarker06 = 0xffff;
   targetZone14 = targetZone;
   targetZone18 = nullptr;
   navyField1c = 0;

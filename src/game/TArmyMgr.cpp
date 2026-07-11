@@ -1166,15 +1166,15 @@ void TArmyMgr::CreateTacticalBattleViewAndInitializeBattleSetup(TArmyStack* ourS
                                                                 TArmyStack* enemyStack,
                                                                 int ownerNationCodeInt) {
   int compositionClass = g_pGlobalMapState->ClassifyCityGateTerrainComposition(ownerNationCodeInt);
-  // Ground truth also computes fortLevel03 (+1 when positive) here, but never reads it
-  // again before it's overwritten -- kept for fidelity, matching the dead assignment in
-  // the original.
-  (void)g_pGlobalMapState->cityScoreTable[ownerNationCodeInt].fortLevel03;
+  int fortLevel = g_pGlobalMapState->cityScoreTable[ownerNationCodeInt].fortLevel03;
+  if (fortLevel > 0) {
+    fortLevel++;
+  }
 
   TArmyBattle* newBattle = new TArmyBattle();
   newBattle->AllocateRecordList();
-  newBattle->InitializeBattleSetupAndMaybeDispatchTurnEventED8(ourStack, enemyStack,
-                                                               compositionClass);
+  newBattle->InitializeBattleSetupAndMaybeDispatchTurnEventED8(
+      ourStack, enemyStack, compositionClass, fortLevel, ownerNationCodeInt);
 
   this->ourStackBattle39c = ourStack;
   this->enemyStackBattle3a0 = enemyStack;

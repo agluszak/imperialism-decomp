@@ -1,6 +1,8 @@
 #include "game/TMilitaryUnit.h"
 
+#include "game/CIterator.h"
 #include "game/TAdmiral.h"
+#include "game/TCountry.h"
 #include "game/TStream.h"
 #include "game/global_data_tables.h"
 
@@ -38,13 +40,14 @@ TMilitaryUnit::TMilitaryUnit()
 TMilitaryUnit::~TMilitaryUnit() {}
 
 // FUNCTION: IMPERIALISM 0x005c2f50
-void TMilitaryUnit::InitializeRecruitOrderState(short capValue, int nodeContext, short nationSlot) {
+void TMilitaryUnit::InitializeRecruitOrderState(short capValue, int nodeContext, short nationSlot,
+                                                short registerArg3) {
   field_1C = 1;
   tileIndex06 = static_cast<short>(-1);
-  RegisterUnitOrderWithOwnerManager(capValue, nodeContext, nationSlot, 0);
+  RegisterUnitOrderWithOwnerManager(capValue, nodeContext, nationSlot, registerArg3);
   field_36 = static_cast<short>(
       (static_cast<int>(capValue) + (static_cast<int>(capValue) >> 31 & 7)) >> 3);
-  if (capValue > 0x1b) {
+  if (capValue >= 0x1b) {
     TAdmiral::GenerateMappedFlavorTextByNationSlotField0C(
         static_cast<TMinor*>(g_apTerrainTypeDescriptorTable[nationSlot]), &name24);
   }
@@ -150,4 +153,31 @@ short TMilitaryUnit::IsNotStationedInProvince(short provinceId) {
 short TMilitaryUnit::GetUnitTypeStatPercent(short statIndex) {
   return static_cast<short>((g_UnitTypeStatTable_0066EB88[orderType][statIndex] * 100) /
                             g_UnitTypeStatDivisorTable_0066ED30[statIndex]);
+}
+
+// FUNCTION: IMPERIALISM 0x005c38e0
+TMilitaryUnit* FindMilitaryUnitByIdAcrossTerrainDescriptors(int unitId) {
+  if (unitId == 0) {
+    return 0;
+  }
+  for (TCountry** cell = g_apTerrainTypeDescriptorTable;
+       cell < g_apTerrainTypeDescriptorTable + kTerrainTypeDescriptorTableCount; ++cell) {
+    TCountry* descriptor = *cell;
+    if (descriptor != 0) {
+      CIterator unitIter(descriptor->militaryUnitList44);
+      for (TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(unitIter.Reset()); unitIter.More();
+           unit = static_cast<TMilitaryUnit*>(unitIter.Advance())) {
+        int candidateId;
+        if (unit != 0) {
+          candidateId = unit->field_20;
+        } else {
+          candidateId = 0;
+        }
+        if (candidateId == unitId) {
+          return unit;
+        }
+      }
+    }
+  }
+  return 0;
 }

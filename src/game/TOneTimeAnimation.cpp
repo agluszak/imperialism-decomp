@@ -10,28 +10,22 @@
 #include <new>
 #include "game/quickdraw_guards.h"
 
-// TOneTimeAnimation derives from the MFC CObject root: the factory at
-// 0x0049fd20 installs the shared CObject runtime vtable (0x0066fec4) into the
-// object, and TOneTimeAnimation adds no virtuals of its own. The CObject base
-// supplies the vptr at offset 0; the animation fields begin at offset 0x4,
-// matching the constructor at 0x0049fd60.
-// Duplicate VTABLE annotation removed
-class TOneTimeAnimation : public CObject {
-public:
-  TView* scopedRenderTarget; // 0x04 — render-target view for the scoped QuickDraw context
-  short currentFrame;       // 0x08
-  short frameCount;         // 0x0a
-  short field0c;            // 0x0c
-  char pad_0e[2];
-  int frameTick;      // 0x10
-  int frameTickLimit; // 0x14
-  int field18;        // 0x18
-  RECT targetRect;    // 0x1c
-  char completeFlag;  // 0x2c
+#include "game/TOneTimeAnimation.h"
 
-  void AdvanceOneTimeAnimationFrameAndInvalidateTargetRect();
-};
-
+// FUNCTION: IMPERIALISM 0x0049fd60
+void TOneTimeAnimation::ConstructTOneTimeAnimationBaseState(TView* view, RECT* rect,
+                                                            short frameCountArg, short effectId,
+                                                            int tickLimit, int registryTag) {
+  scopedRenderTarget = view;
+  targetRect = *rect;
+  frameCount = frameCountArg;
+  effectId0C = effectId;
+  frameTickLimit = tickLimit;
+  registryTag18 = registryTag;
+  currentFrame = 0;
+  frameTick = 0;
+  completeFlag = 0;
+}
 
 // FUNCTION: IMPERIALISM 0x0049fde0
 void TOneTimeAnimation::AdvanceOneTimeAnimationFrameAndInvalidateTargetRect() {

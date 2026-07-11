@@ -166,7 +166,7 @@ float TDefendProvinceMission::ComputeCrossNationSupportVectorScore(int nodeConte
   char resourceTypeByte = nationContextTable[nodeContext * 0xa8 + 3];
   int lookupGroup = (resourceTypeByte > 0) ? 2 : 1;
   const unsigned short* lookupTable =
-      g_Recompute_Nation_Order_LookupTable_00697870 + lookupGroup * 5;
+      g_awTacticalCompositionReferenceProfiles_00697870 + lookupGroup * 5;
   return NormalizeFiveComponentPriorityVector(vector, sum, lookupTable);
 }
 
@@ -188,7 +188,7 @@ float TDefendProvinceMission::ComputeLocalSupportVectorScore(int nodeContext) {
   }
 
   return NormalizeFiveComponentPriorityVector(vector, sum,
-                                              g_Recompute_Nation_Order_LookupTable_00697870);
+                                              g_awTacticalCompositionReferenceProfiles_00697870);
 }
 
 // Default constructor
@@ -346,7 +346,7 @@ void TDefendProvinceMission::NoOpSlot3C() {
   char* cityScoreTable = reinterpret_cast<char*>(g_pGlobalMapState->cityScoreTable);
   char tileByte3 = cityScoreTable[3 + field_14 * 0xa8];
   int offset = (tileByte3 < 1) ? 0 : 15;
-  unsigned short* psVar5 = g_Recompute_Nation_Order_LookupTable_00697870 + offset;
+  unsigned short* psVar5 = g_awTacticalCompositionReferenceProfiles_00697870 + offset;
 
   for (int j = 0; j < 5; ++j) {
     short val = psVar5[j];

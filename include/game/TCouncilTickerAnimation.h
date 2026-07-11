@@ -7,7 +7,7 @@
 // VTABLE: IMPERIALISM 0x0064c410
 class TCouncilTickerAnimation : public TAnimation {
 public:
-// === BEGIN GENERATED DECLS (TCouncilTickerAnimation) — refreshed by recover-class; do not hand-edit ===
+  // === BEGIN GENERATED DECLS (TCouncilTickerAnimation) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TCouncilTickerAnimation)
   virtual ~TCouncilTickerAnimation() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -18,10 +18,10 @@ public:
   // slot 0x07 Free inherited unchanged (0x4798b0)
   // slot 0x08 ShallowClone inherited unchanged (0x4798d0)
   // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
-  virtual undefined WrapperFor_InvalidateCityDialogRectRegion_At0049f140() override; // slot 0x0a 0x49ffe0
+  virtual undefined AdvanceAnimationTickAndInvalidateOnFrameFlip() override; // slot 0x0a 0x49ffe0
   // slot 0x0b RenderBattleReportInsetWithPaletteShift inherited unchanged (0x49f190)
   // slot 0x0c RenderBattleReportViewSurfaceSpriteWithResourceHandle inherited unchanged (0x49f2d0)
-// === END GENERATED DECLS (TCouncilTickerAnimation) ===
+  // === END GENERATED DECLS (TCouncilTickerAnimation) ===
   // TODO(manifest): add data members from the object slice (`just slice-discovery TCouncilTickerAnimation 0xCTOR`).
 
   void InitializeDiplomacyCouncilViewControlsAndTicker();
@@ -29,4 +29,3 @@ public:
 
   TCouncilTickerAnimation();
 };
-

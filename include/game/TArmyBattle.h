@@ -5,6 +5,7 @@
 
 // Forward declarations for types referenced by generated signatures.
 class TStream;
+class TTacticalUnit;
 
 // TODO(manifest): describe TArmyBattle and its role. Base edge (TTacticalBattle) recovered from RTTI CRuntimeClass chain: TArmyBattle -> TTacticalBattle -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x0064ca68
@@ -23,12 +24,13 @@ public:
   // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
   // slot 0x0a ComputeTacticalReachableTileCostsByUnitCategory inherited unchanged (0x59ff20)
   // slot 0x0b PropagateTileAccessibilityStrengthLevels inherited unchanged (0x5a02e0)
-  virtual undefined OrphanRetStub_0059f710() override; // slot 0x0c 0x5a51e0
+  virtual void DeployTacticalUnitToTile(TTacticalUnit* unit,
+                                        int tileIndex) override; // slot 0x0c 0x5a51e0
   // slot 0x0d MoveTacticalUnitAndQueueEvent232AIfNoAdjacentReachableTarget inherited unchanged (0x5a1bd0)
-  // slot 0x0e WrapperFor_thunk_ComputeHexNeighborTileIndices_At005a1400 inherited unchanged (0x5a1400)
+  // slot 0x0e HasEnemyUnitOnTilesFlankingHexDirection inherited unchanged (0x5a1400)
   // slot 0x0f ExecuteTacticalActionAndQueueEventIfNoAdjacentValidTarget inherited unchanged (0x5a1ca0)
   // slot 0x10 EvaluateAndResolveTacticalActionAgainstTileOccupant inherited unchanged (0x5a1ee0)
-  // slot 0x11 OrphanCallChain_C4_I30_005a2700 inherited unchanged (0x5a2700)
+  // slot 0x11 TransferTacticalUnitToOpposingSide inherited unchanged (0x5a2700)
   virtual undefined CreateTTacticalBattleInstance() override; // slot 0x12 0x5a5320
   // slot 0x13 MarkTacticalTileStateQueuedAndMaybeDispatchPacket inherited unchanged (0x5a3190)
   // slot 0x14 AdvanceOrResetTacticalTileStateRunAndMaybeDispatchPacket inherited unchanged (0x5a3210)
@@ -51,11 +53,16 @@ public:
   void AllocateRecordList();
 
   // Called by TArmyMgr::CreateTacticalBattleViewAndInitializeBattleSetup right after
-  // construction, with the two combatant stacks and a composition class from
-  // TMapMgr::ClassifyCityGateTerrainComposition. 0x005a4790, __thiscall, 387 bytes.
-  // TODO: port body -- out of scope for that callsite, which only needs a real,
-  // correctly-typed call.
+  // construction (and by ReadFrom on the network receive path) with the two combatant
+  // stacks, a composition class from TMapMgr::ClassifyCityGateTerrainComposition, the
+  // battle-site fort level, and the cityScoreTable row of the site. 0x005a4790,
+  // __thiscall, ret 0x14.
   void InitializeBattleSetupAndMaybeDispatchTurnEventED8(class TArmyStack* ourStack,
                                                          class TArmyStack* enemyStack,
-                                                         int compositionClass);
+                                                         int compositionClass, int fortLevel,
+                                                         int battleSiteIndex);
+
+  // Loads the battle-setup tab data (terrain/backdrop selection) for the composition
+  // class + fort level. Body TODO. 0x005a4fc0, __thiscall, ret 8.
+  void LoadBattleSetupTabDataByIndex(int compositionClass, int fortLevel);
 };

@@ -1,4 +1,5 @@
 #include "game/TOcean.h"
+#include "game/TNavyMgr.h"
 #include "game/TMapMgr.h"
 #include "game/TSimMgr.h"
 
@@ -213,9 +214,97 @@ void TOcean::InitializeMapActionContextsForNationCountUsingCostField(int nationC
 
 // FUNCTION: IMPERIALISM 0x00562f20
 void TOcean::RefreshMapActionContextNationOverlaysAndOrderRanks() {
-  // TODO: port body @ 0x562f20 (593 bytes; not yet ported). Declared for real so the
-  // turn-event-0x2E receive path (TMultiplayerMgr::HandleTurnEventCodes28_2E_2F_30_31_32)
-  // gets a correctly-typed call site.
+  // 1) Clear every map-action context's per-nation key mask.
+  for (TZone* maskZone = g_pMapActionContextListHead; maskZone != 0; maskZone = maskZone->prev18) {
+    maskZone->field10 = 0;
+  }
+
+  // 2) Re-seed the masks from the primary navy order list: each ship flags its zone
+  // with its owner nation's bit.
+  for (TShip* shipNode = GetNavyPrimaryOrderListHead(); shipNode != 0;
+       shipNode = shipNode->nextOlder24) {
+    TZone* orderZone = shipNode->field08;
+    orderZone->field10 = static_cast<unsigned short>(
+        orderZone->field10 | (1 << static_cast<unsigned char>(shipNode->ownerNationSlot14)));
+  }
+
+  // 3) Reset overlay tile states across the whole map: nation-overlay states (7..0xd)
+  // clear to -1, linked-zone overlay states (0xe..0x15) flip to their negated value.
+  for (short overlayTile = 0; overlayTile < 0x1950; ++overlayTile) {
+    short overlayState =
+        static_cast<signed char>(g_pGlobalMapState->terrainStateTable[overlayTile].pad16);
+    unsigned char isNationOverlay = (overlayState >= 7 && overlayState <= 0xd);
+    if (isNationOverlay != 0) {
+      SetMapTileStateByteAndNotifyObserver(overlayTile, -1);
+    } else {
+      unsigned char isLinkedZoneOverlay = (overlayState >= 0xe && overlayState < 0x16);
+      if (isLinkedZoneOverlay != 0) {
+        SetMapTileStateByteAndNotifyObserver(overlayTile, -overlayState);
+      }
+    }
+  }
+
+  // 4) For every context flagged for the active nation (mask bit or secondary-neighbor
+  // city match), refresh the order-UI flag and repaint the other six nations' slot
+  // markers.
+  short activeNationId = g_pSimMgr->GetActiveNationId();
+  if (g_pMapActionContextListHead != 0) {
+    unsigned char activeNationBit = static_cast<unsigned char>(1 << activeNationId);
+    for (TZone* ctxZone = g_pMapActionContextListHead; ctxZone != 0; ctxZone = ctxZone->prev18) {
+      unsigned char nationFlagged = (ctxZone->field10 & activeNationBit) != 0 ||
+                                    ctxZone->HasSecondaryNeighborWithNationTag(activeNationId) != 0;
+      if (nationFlagged != 0) {
+        ctxZone->SetMapOrderUiFlag(
+            ctxZone->CanDisplayMapOrderEntryInCurrentContext(g_pSimMgr->GetActiveNationId(), 1));
+        int slotCursor = activeNationId + 1;
+        int slotsRemaining = 6;
+        do {
+          int slotWrapped = slotCursor % 7;
+          if ((ctxZone->field10 & static_cast<unsigned char>(1 << slotWrapped)) != 0) {
+            short slotTile = ctxZone->GetActiveNationSlotTile();
+            SetMapTileStateByteAndNotifyObserver(slotTile, slotWrapped + 7);
+            *reinterpret_cast<unsigned short*>(
+                reinterpret_cast<char*>(&g_pGlobalMapState->terrainStateTable[slotTile]) + 0x1a) =
+                0xffff;
+          }
+          ++slotCursor;
+          --slotsRemaining;
+        } while (slotsRemaining != 0);
+      }
+    }
+  }
+
+  // 5) Order ranks: for every other nation's type-5 (task-force) order entry anchored on
+  // an active-nation-owned city, mark that nation's overlay on the anchor context's best
+  // coastal tile and store the entry's within-nation order rank in the tile's +0x1a word.
+  for (TTaskForce* rankEntry = g_pNavyOrderManager->orderListHead04; rankEntry != 0;
+       rankEntry = rankEntry->queue_next) {
+    if (rankEntry->required_count == g_pSimMgr->GetActiveNationId()) {
+      continue;
+    }
+    unsigned char isTaskForceEntry = (rankEntry->attachment == 5);
+    if (isTaskForceEntry == 0) {
+      continue;
+    }
+    int cityIndex = GetCityIndexFromCityStatePointer(
+        reinterpret_cast<TGlobalMapCityScoreRecord*>(rankEntry->owner), 0);
+    if (static_cast<short>(g_pGlobalMapState->cityScoreTable[cityIndex].ownerNationCode00) !=
+        g_pSimMgr->GetActiveNationId()) {
+      continue;
+    }
+    // contextAnchor's pointee varies by producer (see TTaskForce.h); this entry kind
+    // stores the anchoring map-action context TZone*.
+    short coastalTile = reinterpret_cast<TZone*>(rankEntry->contextAnchor)
+                            ->FindBestCoastalTileForContextAndCityStateByHeuristic(
+                                reinterpret_cast<int>(rankEntry->owner));
+    if (coastalTile == -1) {
+      continue;
+    }
+    SetMapTileStateByteAndNotifyObserver(coastalTile, rankEntry->required_count + 7);
+    *reinterpret_cast<unsigned short*>(
+        reinterpret_cast<char*>(&g_pGlobalMapState->terrainStateTable[coastalTile]) + 0x1a) =
+        static_cast<unsigned short>(rankEntry->GetNavyOrderRankWithinNationBucket());
+  }
 }
 
 TZone* TOcean::GetLinkedZoneForSeaTile(short seaTileIndex) {

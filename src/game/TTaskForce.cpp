@@ -1,4 +1,5 @@
 #include "game/TTaskForce.h"
+#include "game/TMission.h"
 
 #include "game/CString.h"
 #include "game/TNavyMgr.h"
@@ -221,6 +222,61 @@ void TTaskForce::RemoveNode(int self) {
     // evidence that the real callee is __thiscall on that receiver).
     reinterpret_cast<TMapOrderEntryOwnerContext*>(self)->FindOrCreateChildOrderLink(this);
   }
+}
+
+// FUNCTION: IMPERIALISM 0x00551100
+void TTaskForce::ReassignOrderNodeNationAndRebindParentCounters(short nation) {
+  // The owner pointer is read with the parent-TTaskForce shape here (required_count
+  // word at +0x1c compared against `nation`, childOrderList at +0x10, activeChildEntry
+  // at +0x14, bucket counters at +0x1e -- the same +0x1e base SetMapOrderType9AndQueue
+  // uses on `this`), not the TMapOrderEntryOwnerContext reading RemoveNode used; more
+  // bd 1uj.16 evidence that the two shapes should merge.
+  TTaskForce* parent = reinterpret_cast<TTaskForce*>(owner);
+  if (parent != 0 && parent->required_count != nation) {
+    TMapOrderChildLinkNode* link = parent->childOrderList;
+    if (link != 0 && this != link->object_ptr) {
+      link = FindMissionOrderNodeById(link->next, this);
+    }
+    if (link != 0) {
+      TMapOrderChildLinkNode* head = parent->childOrderList;
+      if (head != 0) {
+        if (this == head->object_ptr) {
+          head = DeleteMapOrderChildLinkAndReturnNext(head);
+        } else {
+          RemoveLinkedOrderNodeByValueRecursive(head->next, this);
+        }
+      }
+      parent->childOrderList = head;
+
+      short bucketIndex = static_cast<short>(
+          g_NavyOrderResourceDescriptorTable[order_type].enabledFlagOrBucketOffset);
+      short* bucketCounter =
+          reinterpret_cast<short*>(reinterpret_cast<char*>(parent) + 0x1e + bucketIndex * 2);
+      --*bucketCounter;
+    }
+
+    if (this == parent->activeChildEntry) {
+      parent->activeChildEntry = 0;
+      TMapOrderChildLinkNode* node;
+      for (node = parent->childOrderList; node != 0; node = node->next) {
+        parent->activeChildEntry = node->object_ptr->SelectPreferredMapOrderEntryByPriorityRules(
+            parent->activeChildEntry, 0);
+      }
+    }
+
+    owner = 0;
+  }
+
+  // Same node+0x2c TMission* backpointer TNavyMission::NoOpSlot84/NoOpSlot8C read and
+  // write (these child order nodes carry a mission backref where TTaskForce's own
+  // model has other fields -- TShip-shaped node evidence, bd 1uj.16).
+  TMission* missionBackref = *reinterpret_cast<TMission**>(reinterpret_cast<char*>(this) + 0x2c);
+  if (missionBackref != 0 && missionBackref->nationId04 != nation) {
+    missionBackref->NoOpSlot8C(reinterpret_cast<int>(this), 1);
+  }
+
+  // Same node+0x14 nation-word slot the TShip reading calls ownerNationSlot14.
+  *reinterpret_cast<short*>(reinterpret_cast<char*>(this) + 0x14) = nation;
 }
 
 // FUNCTION: IMPERIALISM 0x00551220
@@ -663,6 +719,48 @@ void TTaskForce::RecomputeMapOrderChildAggregateMetric() {
     activeChildEntry =
         node->object_ptr->SelectPreferredMapOrderEntryByPriorityRules(activeChildEntry, 0);
   }
+}
+
+// FUNCTION: IMPERIALISM 0x00553fe0
+char TTaskForce::PruneInactiveTaskForceOrderHead() {
+  TMapOrderChildLinkNode* head = childOrderList;
+  if (head != 0) {
+    TTaskForce* headChild = head->object_ptr;
+    unsigned char headDefeated = (headChild->required_count <= 0);
+    if (headDefeated != 0) {
+      headChild->owner = 0;
+      head->object_ptr->Free();
+
+      // Unlink the head link node (inlined DeleteMapOrderChildLinkAndReturnNext,
+      // same manual unlink TTaskForce::Free uses).
+      TMapOrderChildLinkNode* next = head->next;
+      if (next != 0) {
+        next->prev_link = head->prev_link;
+      }
+      if (head->prev_link != 0) {
+        head->prev_link->next = head->next;
+      }
+      delete head;
+
+      head = PruneDefeatedMapOrderChildrenAndReturnHead(next);
+    } else {
+      PruneDefeatedMapOrderChildrenAndReturnHead(head->next);
+    }
+  }
+
+  childOrderList = head;
+  activeChildEntry = 0;
+  TMapOrderChildLinkNode* node;
+  for (node = head; node != 0; node = node->next) {
+    activeChildEntry =
+        node->object_ptr->SelectPreferredMapOrderEntryByPriorityRules(activeChildEntry, 0);
+  }
+
+  if (childOrderList == 0) {
+    eliminatedFlag26 = 1;
+    return 1;
+  }
+  return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x00554930

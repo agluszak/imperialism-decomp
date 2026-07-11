@@ -7,7 +7,7 @@
 // VTABLE: IMPERIALISM 0x0064d100
 class TArmyUnitView : public TView {
 public:
-// === BEGIN GENERATED DECLS (TArmyUnitView) — refreshed by recover-class; do not hand-edit ===
+  // === BEGIN GENERATED DECLS (TArmyUnitView) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TArmyUnitView)
   virtual ~TArmyUnitView() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -23,7 +23,8 @@ public:
   // slot 0x0c QueryStepValue inherited unchanged (0x48a2c0)
   // slot 0x0d DispatchQueuedUiCommandAndRelease inherited unchanged (0x48a3b0)
   // slot 0x0e DispatchUiSelectionToHandler inherited unchanged (0x48a3f0)
-  virtual void HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) override; // slot 0x0f 0x004a9990
+  virtual void HandleEvent(int commandId, TEventHandler* sourceHandler,
+                           TEvent* event) override; // slot 0x0f 0x004a9990
   // slot 0x10 DispatchUiCommandToHandler inherited unchanged (0x48a2e0)
   // slot 0x11 vmethod_0017 inherited unchanged (0x48a310)
   // slot 0x12 ForwardParam inherited unchanged (0x48a380)
@@ -112,9 +113,13 @@ public:
   // slot 0x65 AssertMcAppUILine1914 inherited unchanged (0x48c7a0)
   // slot 0x66 AssertMcAppUILine1922 inherited unchanged (0x48c7d0)
   // slot 0x67 CtrlSlot103_SubtractPosAndDispatchSlot19C_Impl inherited unchanged (0x48bac0)
-// === END GENERATED DECLS (TArmyUnitView) ===
+  // === END GENERATED DECLS (TArmyUnitView) ===
   // TODO(manifest): add data members from the object slice (`just slice-discovery TArmyUnitView 0xCTOR`).
+  // Unrecovered context object read by ApplyRectSlot110: +8 unit-type code (int,
+  // compared against 0xe), +0x24 unit-type display name (CString), +0x34 veterancy
+  // level (short), +0x38 xp percent (short). Raw storage until the real pointee
+  // class is identified.
+  void* field60; // +0x60
 
   TArmyUnitView();
 };
-

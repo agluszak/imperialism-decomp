@@ -99,14 +99,6 @@ undefined4 WrapperFor_ResolveEraCapabilityFallbackSlot_At005c3840(void)
   return 0;
 }
 
-// ghidra_name InitializeBattleSetupArmyStacksAndPopulateSelectionState_Impl
-// ghidra_proto undefined InitializeBattleSetupArmyStacksAndPopulateSelectionState_Impl()
-// FUNCTION: IMPERIALISM 0x005c38e0
-undefined4 InitializeBattleSetupArmyStacksAndPopulateSelectionState_Impl(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_ftol_At005c3ad0
 // ghidra_proto undefined WrapperFor_ftol_At005c3ad0()
 // FUNCTION: IMPERIALISM 0x005c3ad0
@@ -139,14 +131,6 @@ undefined4 ConfigureUiControlStyleValueAndCaptionFromStringResource(void)
   return 0;
 }
 
-// ghidra_name RefreshActiveControlThenApplyThemeStyleAndCaption
-// ghidra_proto undefined RefreshActiveControlThenApplyThemeStyleAndCaption()
-// FUNCTION: IMPERIALISM 0x005c4310
-undefined4 RefreshActiveControlThenApplyThemeStyleAndCaption(void)
-{
-  return 0;
-}
-
 // ghidra_name DispatchToSelectableTextOptionEntries
 // ghidra_proto undefined DispatchToSelectableTextOptionEntries()
 // FUNCTION: IMPERIALISM 0x005c43b0
@@ -175,54 +159,6 @@ undefined4 InitializeMainRoutineContextAndRun(void)
 // ghidra_proto undefined AssignSharedStringToTaggedControlAndProcessState()
 // FUNCTION: IMPERIALISM 0x005c4b70
 undefined4 AssignSharedStringToTaggedControlAndProcessState(void)
-{
-  return 0;
-}
-
-// ghidra_name GenerateMappedFlavorTextVariantEToSharedString
-// ghidra_proto undefined GenerateMappedFlavorTextVariantEToSharedString()
-// FUNCTION: IMPERIALISM 0x005ce110
-undefined4 GenerateMappedFlavorTextVariantEToSharedString(void)
-{
-  return 0;
-}
-
-// ghidra_name BuildMapContextStatusStringWithRandomSuffix
-// ghidra_proto undefined BuildMapContextStatusStringWithRandomSuffix()
-// FUNCTION: IMPERIALISM 0x005cf090
-undefined4 BuildMapContextStatusStringWithRandomSuffix(void)
-{
-  return 0;
-}
-
-// ghidra_name GenerateMappedFlavorTextVariantCToSharedString
-// ghidra_proto undefined GenerateMappedFlavorTextVariantCToSharedString()
-// FUNCTION: IMPERIALISM 0x005cfba0
-undefined4 GenerateMappedFlavorTextVariantCToSharedString(void)
-{
-  return 0;
-}
-
-// ghidra_name GenerateMappedFlavorTextVariantBToSharedString
-// ghidra_proto undefined GenerateMappedFlavorTextVariantBToSharedString()
-// FUNCTION: IMPERIALISM 0x005d1330
-undefined4 GenerateMappedFlavorTextVariantBToSharedString(void)
-{
-  return 0;
-}
-
-// ghidra_name GenerateMappedFlavorTextVariantAToSharedString
-// ghidra_proto undefined GenerateMappedFlavorTextVariantAToSharedString()
-// FUNCTION: IMPERIALISM 0x005d3300
-undefined4 GenerateMappedFlavorTextVariantAToSharedString(void)
-{
-  return 0;
-}
-
-// ghidra_name GenerateMappedFlavorTextVariantDToSharedString
-// ghidra_proto undefined GenerateMappedFlavorTextVariantDToSharedString()
-// FUNCTION: IMPERIALISM 0x005d41a0
-undefined4 GenerateMappedFlavorTextVariantDToSharedString(void)
 {
   return 0;
 }
@@ -539,14 +475,6 @@ undefined4 WrapperFor_InvokeCallbackNTimesWithSehGuard_At005df330(void)
   return 0;
 }
 
-// ghidra_name LoadTableResourceStreamByName
-// ghidra_proto undefined LoadTableResourceStreamByName()
-// FUNCTION: IMPERIALISM 0x005df430
-undefined4 LoadTableResourceStreamByName(void)
-{
-  return 0;
-}
-
 // ghidra_name InitializeRuntimeClassVtablePointer_0066FEC4
 // ghidra_proto undefined InitializeRuntimeClassVtablePointer_0066FEC4()
 // FUNCTION: IMPERIALISM 0x005df610
@@ -567,22 +495,6 @@ undefined4 WrapperFor_FreeHeapBufferIfNotNull_At005df630(void)
 // ghidra_proto undefined WrapperFor_ReleaseSharedStringRefIfNotEmpty_At005df660()
 // FUNCTION: IMPERIALISM 0x005df660
 undefined4 WrapperFor_ReleaseSharedStringRefIfNotEmpty_At005df660(void)
-{
-  return 0;
-}
-
-// ghidra_name ReleaseResourceStreamIfNotNull
-// ghidra_proto undefined ReleaseResourceStreamIfNotNull()
-// FUNCTION: IMPERIALISM 0x005df6d0
-undefined4 ReleaseResourceStreamIfNotNull(void)
-{
-  return 0;
-}
-
-// ghidra_name ReadResourceStreamIntoBufferAndAdvance
-// ghidra_proto undefined ReadResourceStreamIntoBufferAndAdvance()
-// FUNCTION: IMPERIALISM 0x005df700
-undefined4 ReadResourceStreamIntoBufferAndAdvance(void)
 {
   return 0;
 }

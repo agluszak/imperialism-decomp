@@ -4,6 +4,8 @@
 #include "game/mfc.h"
 
 // TODO(manifest): describe TNavyPlayer and its role. Base edge (TTacticalPlayer) recovered from RTTI CRuntimeClass chain: TNavyPlayer -> TTacticalPlayer -> TObject -> CObject.
+class TTacticalUnit;
+
 // VTABLE: IMPERIALISM 0x006696b0
 class TNavyPlayer : public TTacticalPlayer {
 public:
@@ -19,16 +21,17 @@ public:
   // slot 0x08 ShallowClone inherited unchanged (0x4798d0)
   // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
   // slot 0x0a StartBattle inherited unchanged (0x59ad70)
-  // slot 0x0b OrphanRetStub_0059ad90 inherited unchanged (0x59ad90)
-  // slot 0x0c TArmyTacUnit_VtblSlot00 inherited unchanged (0x59adb0)
-  virtual undefined OrphanRetStub_0059add0() override; // slot 0x0d 0x59edd0
-  virtual undefined
-  Helper_Uses_FindListNodeByKeyFromNodeOrHead_At0059afa0() override;      // slot 0x0e 0x59ee60
-  virtual undefined WrapperFor_AddHead_At0059afe0(int* param_1) override; // slot 0x0f 0x59eea0
-  // slot 0x10 TArmyTacUnit_VtblSlot04 inherited unchanged (0x59adf0)
-  // slot 0x11 OrphanRetStub_0059ae10 inherited unchanged (0x59ae10)
+  // slot 0x0b AdvanceTacticalTurnPulse inherited unchanged (0x59ad90)
+  // slot 0x0c NoOpTacticalPlayerHook0C inherited unchanged (0x59adb0)
+  virtual void CommitTacticalResultsToSourceUnits(int unused) override;      // slot 0x0d 0x59edd0
+  virtual void RemoveTacticalUnitFromUnitList(TTacticalUnit* unit) override; // slot 0x0e 0x59ee60
+  virtual void AddTacticalUnitToUnitListHead(TTacticalUnit* unit) override;  // slot 0x0f 0x59eea0
+  // slot 0x10 AlwaysTrueTacticalPredicate10 inherited unchanged (0x59adf0)
+  // slot 0x11 ProceedAfterBattleIntroAccepted inherited unchanged (0x59ae10)
   // === END GENERATED DECLS (TNavyPlayer) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TNavyPlayer 0xCTOR`).
+  // Navy slice (base TTacticalPlayer ends at +0x28).
+  class TTaskForce* taskForce28; // +0x28 the side's fleet order node (0x59edd0 marks it
+                                 // eliminated and prunes its order head after commit)
 
   TNavyPlayer();
 };
