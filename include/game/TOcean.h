@@ -95,3 +95,10 @@ void RegenerateAllMapActionContextStatusCodes();      // 0x00563220
 
 void SetMapTileStateByteAndNotifyObserver(int tileIndex, int stateByte);
 int ComputeGlobalMapActionContextNodeValueAverage(void);
+
+// Returns the currently active map-order entry (g_pActiveMapOrderContext->
+// selectedTaskForce14). Ghidra labels this __thiscall, but the real call sites (e.g.
+// TToolBarCluster::TryHandleMapContextAction's case-10 branch) pass an unrelated
+// TMapUberPicture receiver in ecx and the body never touches `this` -- it reads the
+// TOcean global directly, so the thiscall attribution is spurious. 0x005979f0.
+TTaskForce* GetActiveMapOrderEntry();

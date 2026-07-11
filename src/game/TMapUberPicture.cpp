@@ -170,6 +170,15 @@ undefined TMapUberPicture::OrphanLeaf_NoCall_Ins23_00597a10() {
   return 0;
 }
 
+// TODO: body not yet ported (1761-byte dialog-construction routine). Real receiver and
+// arity confirmed from TToolBarCluster::TryHandleMapContextAction's case-11 call site
+// (ecx = mapUberPictureF0 immediately before the call); pMapOrderEntry is the TTaskForce
+// queue entry located by matching tiebreak_strength against the clicked tile index.
+// FUNCTION: IMPERIALISM 0x00597f80
+void TMapUberPicture::OpenMapEntryOrderDialog(TTaskForce* pMapOrderEntry) {
+  (void)pMapOrderEntry;
+}
+
 // FUNCTION: IMPERIALISM 0x00598870
 void TMapUberPicture::InvalidateTileMarkerChain(short tileIndex) {
   (void)tileIndex;
@@ -223,6 +232,19 @@ undefined TMapUberPicture::OrphanCallChain_C2_I16_005989d0(int tileX, int tileY)
 // FUNCTION: IMPERIALISM 0x00598a20
 undefined TMapUberPicture::NotifySubviewOfSelectedTile(short entryIndex) {
   return this->subviewAc->OrphanCallChain_C2_I11_00598910(entryIndex);
+}
+
+// TODO: body not yet ported (1405-byte dialog-construction routine). Real receiver and
+// arity confirmed from TToolBarCluster::TryHandleMapContextAction's case-2..8 call site
+// (ecx = mapUberPictureF0 immediately before the call); actionType is the map-context
+// action code minus 2 (range 0..6), cachedContext is the caller's cached map-action-
+// context pointer (g_pCachedMapActionContext) forwarded for dialog continuity.
+// FUNCTION: IMPERIALISM 0x00599090
+void TMapUberPicture::OpenMapContextActionDialogByType(TZone* zone, int actionType,
+                                                       TTaskForce* cachedContext) {
+  (void)zone;
+  (void)actionType;
+  (void)cachedContext;
 }
 
 // FUNCTION: IMPERIALISM 0x00599a50

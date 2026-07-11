@@ -211,14 +211,6 @@ undefined4 GetMapContextActionLabelToken(void)
   return 0;
 }
 
-// ghidra_name TToolBarCluster::TryHandleMapContextAction
-// ghidra_proto int __thiscall TryHandleMapContextAction(short nTileIndex, int nInputFlags)
-// FUNCTION: IMPERIALISM 0x0055a020
-undefined4 TryHandleMapContextAction(void)
-{
-  return 0;
-}
-
 // ghidra_name TryQueueMapOrderFromTileAction
 // ghidra_proto int __thiscall TryQueueMapOrderFromTileAction(short nTileIndex, int nInputFlags)
 // FUNCTION: IMPERIALISM 0x0055a160

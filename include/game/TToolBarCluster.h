@@ -143,5 +143,14 @@ public:
   // the same object independently, corroborating this.
 
   TToolBarCluster();
-};
 
+  // Resolves and executes a context-sensitive map click action for the active map-order
+  // manager (dialogs for actions 2..8, set-active-entry for 9, UI-runtime slot 0xf0 for
+  // 10, entry-order dialog for 11). Returns true if the click was consumed. Ghidra's
+  // `int` prototype is a mislabel -- callers (e.g. TWorldView::HandleMapClickByInteraction-
+  // Mode's ground truth) store the result in a `char fHandled` and test `!= '\0'`, and the
+  // real codegen only ever sets/tests AL (`mov al,1` / `xor al,al`), matching a bool
+  // return. Not virtual -- called directly (via an ILT thunk) from TWorldView::
+  // HandleMapClickByInteractionMode and from TryQueueMapOrderFromTileAction. 0x0055a020.
+  bool TryHandleMapContextAction(short nTileIndex, int nInputFlags);
+};

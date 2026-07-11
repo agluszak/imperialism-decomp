@@ -5247,7 +5247,7 @@ address|name|symbol|size|type|prototype|provenance
 5979f0|GetActiveMapOrderEntry||9|function|void * __thiscall GetActiveMapOrderEntry(void)|
 597a10|TMapUberPicture::OrphanLeaf_NoCall_Ins23_00597a10||68|function|undefined OrphanLeaf_NoCall_Ins23_00597a10(void)|
 597a80|TCivToolbar::CycleMapInteractionSelectionAfterHandledClick||996|function|void __thiscall CycleMapInteractionSelectionAfterHandledClick(void)|
-597f80|OpenMapEntryOrderDialog||1761|function|void __thiscall OpenMapEntryOrderDialog(void * pMapOrderEntry)|
+597f80|TMapUberPicture::OpenMapEntryOrderDialog||1761|function|void __thiscall OpenMapEntryOrderDialog(void * pMapOrderEntry)|
 598840|TToolBarCluster::InvalidateMapRegionForEntryIfUiPassive||29|function|undefined InvalidateMapRegionForEntryIfUiPassive()|
 598870|TMapUberPicture::WrapperFor_InvalidateCityDialogRectRegionChain_At00598870||51|function|undefined WrapperFor_InvalidateCityDialogRectRegionChain_At00598870(undefined4 param_1)|
 5988c0|TMapUberPicture::OrphanCallChain_C2_I18_005988c0||53|function|undefined OrphanCallChain_C2_I18_005988c0(void)|
@@ -5259,7 +5259,7 @@ address|name|symbol|size|type|prototype|provenance
 598a50|PromptAndQueueMilitaryProvincePurgeOrders||625|function|undefined PromptAndQueueMilitaryProvincePurgeOrders()|
 598d70|CreateCivilianWorkOrderAndRegisterSelection||117|function|undefined CreateCivilianWorkOrderAndRegisterSelection()|
 598e10|RunNavyPrimaryOrderCreationDialogAndApplyResults||509|function|undefined RunNavyPrimaryOrderCreationDialogAndApplyResults()|
-599090|OpenMapContextActionDialogByType||1405|function|undefined OpenMapContextActionDialogByType()|
+599090|TMapUberPicture::OpenMapContextActionDialogByType||1405|function|undefined OpenMapContextActionDialogByType()|
 599770|TBuildingConstructionView::SelectNextValidMapOrderEntryFromCursor||227|function|void __thiscall SelectNextValidMapOrderEntryFromCursor(void * pMapInteractionState, byte fStartAfterCurrent)|
 5998a0|TToolBarCluster::TrySelectNextValidMapOrderEntry||217|function|byte __thiscall TrySelectNextValidMapOrderEntry(void * pMapInteractionState, byte fStartAfterCurrent)|
 5999f0|ResetMapInteractionToCivilianMode||21|function|void __thiscall ResetMapInteractionToCivilianMode(void * pMapInteractionState)|

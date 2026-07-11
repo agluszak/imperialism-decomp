@@ -1,6 +1,11 @@
 #include "game/TToolBarCluster.h"
 
+#include "game/TMapUberPicture.h"
+#include "game/TOcean.h"
+#include "game/TTaskForce.h"
+#include "game/TViewMgr.h"
 #include "game/global_data_tables.h"
+#include "game/map_overlay_geometry.h"
 
 // Builds the 16 per-slot hover/hit-test rects consumed by
 // TToolBarCluster::HandleCityBuildingHoverSelection from a table of 17 (x,y) anchor points.
@@ -27,6 +32,52 @@ void InitializeCityBuildingHoverSelectionRects_004b95c0() {
   new (&rects[13]) CRect(coords[28], coords[29], coords[28] + 10, coords[29] + 10);
   new (&rects[14]) CRect(coords[30], coords[31], coords[30] + 10, coords[31] + 10);
   new (&rects[15]) CRect(coords[32], coords[33], coords[32] + 10, coords[33] + 10);
+}
+
+// FUNCTION: IMPERIALISM 0x0055a020
+bool TToolBarCluster::TryHandleMapContextAction(short nTileIndex, int nInputFlags) {
+  int actionCode = GetMapContextActionCode(nTileIndex, nInputFlags);
+  if (actionCode == 0) {
+    return false;
+  }
+  TMapUberPicture* mapUberPicture = g_pUiRuntimeContext->mapUberPictureF0;
+  switch (actionCode) {
+  case 9: {
+    TZone* zone = g_pActiveMapOrderContext->GetLinkedZoneForSeaTile(nTileIndex);
+    mapUberPicture->SetActiveMapOrderEntry(zone);
+    return true;
+  }
+  case 2:
+  case 3:
+  case 4:
+  case 5:
+  case 6:
+  case 7:
+  case 8: {
+    TZone* zone = g_pActiveMapOrderContext->GetLinkedZoneForSeaTile(nTileIndex);
+    mapUberPicture->OpenMapContextActionDialogByType(zone, actionCode - 2,
+                                                     g_pCachedMapActionContext);
+    return true;
+  }
+  case 11: {
+    // this->field04 is TEventHandler's generic base-class slot (see TEventHandler.h);
+    // this call site is the evidence that TToolBarCluster reuses it as a TTaskForce
+    // queue head, but the slot is reused for unrelated purposes by other TEventHandler
+    // descendants, so it stays untyped at the base and is cast locally here.
+    TTaskForce* entry = reinterpret_cast<TTaskForce*>(this->field04);
+    while (entry != 0 && entry->tiebreak_strength != nTileIndex) {
+      entry = entry->queue_next;
+    }
+    mapUberPicture->OpenMapEntryOrderDialog(entry);
+    return true;
+  }
+  case 10: {
+    g_pUiRuntimeContext->UiRuntimeSlotF0(GetActiveMapOrderEntry());
+    return true;
+  }
+  default:
+    return false;
+  }
 }
 
 // SYNTHETIC: IMPERIALISM 0x00584d80

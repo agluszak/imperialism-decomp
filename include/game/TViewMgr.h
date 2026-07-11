@@ -12,6 +12,7 @@ class TControl;
 class TCursorControlPanel;
 class TDiplomacyMapView;
 class TMovieView;
+class TTaskForce;
 
 // TODO(manifest): describe TViewMgr and its role. Base edge (TObject) recovered from RTTI
 // CRuntimeClass chain: TViewMgr -> TObject -> CObject.
@@ -107,9 +108,12 @@ public:
   // Refreshes the 0xdac factory dialog's 'page' roster for a tile-selection map click
   // (0x5dd900); reached from TArmyToolbar's map-tile-selection handler.
   virtual void HandleTurnEventDialogFactorySlotEC(int mapSelection); // 0xec
-  virtual void UiRuntimeSlotF0();                                    // 0xf0
-  virtual void HandleTurnEventDialogFactorySlotF4();                 // 0xf4
-  virtual void UiRuntimeSlotF8();                                    // 0xf8
+  // Real arity confirmed from TToolBarCluster::TryHandleMapContextAction's case-10 call
+  // site: ecx=g_pUiRuntimeContext, one pushed arg = GetActiveMapOrderEntry()'s result
+  // (a TTaskForce*). TODO: real slot body not yet ported.
+  virtual void UiRuntimeSlotF0(TTaskForce* activeMapOrderEntry); // 0xf0
+  virtual void HandleTurnEventDialogFactorySlotF4();             // 0xf4
+  virtual void UiRuntimeSlotF8();                                // 0xf8
   virtual void NoOpTurnEventStateVtableSlotFC(); // 0xfc 0x5dbd10 -- real body is a bare `ret`
   // Turn-event 0x5DE: re-assert + refresh the 'main' view panel (sibling of the 0x5DF
   // handler; the original brackets the body with a scoped empty CString). 0x5dbd30.

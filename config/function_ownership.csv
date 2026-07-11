@@ -3156,6 +3156,7 @@ address|target_cpp|ownership|note
 558960|src/game/TNavyMgr.cpp|manual|marker_sync
 559a70|src/game/map_overlay_geometry.cpp|manual|marker_sync
 559dd0|src/game/map_overlay_geometry.cpp|manual|marker_sync
+55a020|src/game/TToolBarCluster.cpp|manual|marker_sync
 55a780|src/game/TNavyMgr.cpp|manual|marker_sync
 55b670|src/game/TNewsMgr.cpp|manual|marker_sync
 55b6a0|src/game/TNewsMgr.cpp|manual|marker_sync
@@ -4037,8 +4038,10 @@ address|target_cpp|ownership|note
 5977a0|src/game/TMapUberPicture.cpp|manual|marker_sync
 597810|src/game/TMapUberPicture.cpp|manual|marker_sync
 597950|src/game/TMapUberPicture.cpp|manual|marker_sync
+5979f0|src/game/TOcean.cpp|manual|marker_sync
 597a10|src/game/TMapUberPicture.cpp|manual|marker_sync
 597a80|src/game/TCivToolbar.cpp|manual|marker_sync
+597f80|src/game/TMapUberPicture.cpp|manual|marker_sync
 598870|src/game/TMapUberPicture.cpp|manual|marker_sync
 5988c0|src/game/TMapUberPicture.cpp|manual|marker_sync
 598910|src/game/TMapUberPicture.cpp|manual|marker_sync
@@ -4046,6 +4049,7 @@ address|target_cpp|ownership|note
 598990|src/game/TMapUberPicture.cpp|manual|marker_sync
 5989d0|src/game/TMapUberPicture.cpp|manual|marker_sync
 598a20|src/game/TMapUberPicture.cpp|manual|marker_sync
+599090|src/game/TMapUberPicture.cpp|manual|marker_sync
 599a50|src/game/TMapUberPicture.cpp|manual|marker_sync
 599cf0|src/game/TMapUberPicture.cpp|manual|marker_sync
 599fd0|src/game/TMapUberPicture.cpp|manual|marker_sync

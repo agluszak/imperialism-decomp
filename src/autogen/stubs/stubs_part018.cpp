@@ -619,22 +619,6 @@ undefined4 ReinitializeGameFlowAndPostTurnEvent5DD(void)
   return 0;
 }
 
-// ghidra_name GetActiveMapOrderEntry
-// ghidra_proto void * __thiscall GetActiveMapOrderEntry(void)
-// FUNCTION: IMPERIALISM 0x005979f0
-undefined4 GetActiveMapOrderEntry(void)
-{
-  return 0;
-}
-
-// ghidra_name OpenMapEntryOrderDialog
-// ghidra_proto void __thiscall OpenMapEntryOrderDialog(void * pMapOrderEntry)
-// FUNCTION: IMPERIALISM 0x00597f80
-undefined4 OpenMapEntryOrderDialog(void)
-{
-  return 0;
-}
-
 // ghidra_name TToolBarCluster::InvalidateMapRegionForEntryIfUiPassive
 // ghidra_proto undefined InvalidateMapRegionForEntryIfUiPassive()
 // FUNCTION: IMPERIALISM 0x00598840
@@ -663,14 +647,6 @@ undefined4 CreateCivilianWorkOrderAndRegisterSelection(void)
 // ghidra_proto undefined RunNavyPrimaryOrderCreationDialogAndApplyResults()
 // FUNCTION: IMPERIALISM 0x00598e10
 undefined4 RunNavyPrimaryOrderCreationDialogAndApplyResults(void)
-{
-  return 0;
-}
-
-// ghidra_name OpenMapContextActionDialogByType
-// ghidra_proto undefined OpenMapContextActionDialogByType()
-// FUNCTION: IMPERIALISM 0x00599090
-undefined4 OpenMapContextActionDialogByType(void)
 {
   return 0;
 }

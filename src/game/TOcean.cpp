@@ -441,3 +441,8 @@ TTaskForce* TOcean::EnsureSelectedTaskForceForOrderOwnerAndRefresh(TZone* pMapOr
 void TOcean::FinalizeQueuedMapOrderEntry(TTaskForce* entry) {
   (void)entry;
 }
+
+// FUNCTION: IMPERIALISM 0x005979f0
+TTaskForce* GetActiveMapOrderEntry() {
+  return g_pActiveMapOrderContext->selectedTaskForce14;
+}

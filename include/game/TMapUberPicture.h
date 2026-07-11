@@ -230,4 +230,16 @@ public:
   // when switching to civilian mode). 0x00599a50, 252 bytes. TODO stub body (not yet
   // ported).
   void EnterMapInteractionOverlayMode(int param1);
+  // Opens a context-action dialog for actionType (0..6, i.e. map-context action code - 2)
+  // against the resolved tile zone, forwarding the caller's cached map-action-context
+  // pointer for dialog continuity. Called from TToolBarCluster::TryHandleMapContextAction
+  // for action codes 2..8. 0x00599090, __thiscall, 1405 bytes. TODO: body not yet ported
+  // (large dialog-construction routine).
+  void OpenMapContextActionDialogByType(TZone* zone, int actionType, TTaskForce* cachedContext);
+  // Opens the entry-order dialog for a specific TTaskForce queue entry. Called from
+  // TToolBarCluster::TryHandleMapContextAction for action code 11 (entry located by
+  // walking the queue_next chain rooted at TToolBarCluster's inherited TEventHandler::
+  // field04 for a tiebreak_strength == tile index match). 0x00597f80, __thiscall, 1761
+  // bytes. TODO: body not yet ported (large dialog-construction routine).
+  void OpenMapEntryOrderDialog(TTaskForce* pMapOrderEntry);
 };

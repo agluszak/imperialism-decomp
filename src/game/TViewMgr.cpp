@@ -1557,7 +1557,10 @@ int TViewMgr::ShowConstructionOptionsDialog() {
 
 void TViewMgr::UiRuntimeSlotE0() {}
 void TViewMgr::UiRuntimeSlotE8() {}
-void TViewMgr::UiRuntimeSlotF0() {}
+// TODO: real slot body not yet ported (see header TODO for call-site evidence).
+void TViewMgr::UiRuntimeSlotF0(TTaskForce* activeMapOrderEntry) {
+  (void)activeMapOrderEntry;
+}
 
 // FUNCTION: IMPERIALISM 0x005dc3f0
 void TViewMgr::HandleTurnEventTable66F220_Slot0C_InvokeGoldViewSlots0C_1E4_14x14() {
