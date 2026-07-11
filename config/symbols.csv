@@ -4339,7 +4339,7 @@ address|name|symbol|size|type|prototype|provenance
 563300|GetMapActionContextEntryByNationCodeOffset17||20|function|undefined GetMapActionContextEntryByNationCodeOffset17()|
 563330|GetMapActionContextEntryByIndex||17|function|undefined GetMapActionContextEntryByIndex()|
 563360|GetProvinceByTileIndex||55|function|void * __cdecl GetProvinceByTileIndex(short nTileIndex)|
-5633b0|GetMapActionContextByTileIndex||180|function|void * __cdecl GetMapActionContextByTileIndex(short nTileIndex)|
+5633b0|TOcean::GetLinkedZoneForSeaTile||180|function|TZone * __thiscall GetLinkedZoneForSeaTile(short seaTileIndex)|
 5634a0|FindPortZoneBySelectedTile||127|function|void * __stdcall FindPortZoneBySelectedTile(void * pMapState)|
 563540|FindFirstPortZoneContextByNation||114|function|undefined FindFirstPortZoneContextByNation()|
 5635e0|EnsurePortZoneForTile||749|function|void __stdcall EnsurePortZoneForTile(short nTileIndex)|

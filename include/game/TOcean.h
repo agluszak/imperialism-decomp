@@ -67,7 +67,7 @@ public:
     return &this->contextArray[nationCode - 0x17];
   }
 
-  // Resolves port-zone or per-nation map-action context for a sea/coastal tile.
+  // Resolves port-zone or per-nation map-action context for a sea/coastal tile. 0x5633b0.
   TZone* GetLinkedZoneForSeaTile(short seaTileIndex);
 
   // 0x005634a0 — walks g_pMapActionContextListHead for TPortZone tile-id match.

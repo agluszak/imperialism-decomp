@@ -475,14 +475,6 @@ undefined4 GetProvinceByTileIndex(void)
   return 0;
 }
 
-// ghidra_name GetMapActionContextByTileIndex
-// ghidra_proto void * __cdecl GetMapActionContextByTileIndex(short nTileIndex)
-// FUNCTION: IMPERIALISM 0x005633b0
-undefined4 GetMapActionContextByTileIndex(void)
-{
-  return 0;
-}
-
 // ghidra_name EvaluateTerrainFlowCrossNationBoundaryToSea
 // ghidra_proto undefined EvaluateTerrainFlowCrossNationBoundaryToSea()
 // FUNCTION: IMPERIALISM 0x00563b70

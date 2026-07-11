@@ -307,6 +307,7 @@ void TOcean::RefreshMapActionContextNationOverlaysAndOrderRanks() {
   }
 }
 
+// FUNCTION: IMPERIALISM 0x005633b0
 TZone* TOcean::GetLinkedZoneForSeaTile(short seaTileIndex) {
   TTerrainStateRecordView& terrainRecord = g_pGlobalMapState->terrainStateTable[seaTileIndex];
   signed char terrainClass = static_cast<signed char>(terrainRecord.pad16);
