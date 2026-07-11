@@ -3,6 +3,7 @@
 #include "game/TCluster.h"
 
 class TTacticalUnit;
+class TArmyTacUnit;
 #include "game/mfc.h"
 
 // TODO(manifest): describe TTacticalToolbar and its role. Base edge (TCluster) recovered from RTTI CRuntimeClass chain: TTacticalToolbar -> TCluster -> TControl -> TView -> TEventHandler -> TObject -> CObject.
@@ -136,9 +137,11 @@ public:
   // === END GENERATED DECLS (TTacticalToolbar) ===
   // Toolbar slice (base TCluster ends at +0x88). battle88/unitSpriteAtlasSurface94 are
   // wired by the live-battle initializer 0x5a9d90; currentUnit8C by slot 0x73.
-  class TTacticalBattle* battle88;                           // +0x88
-  class TTacticalUnit* currentUnit8C;                        // +0x8c current-unit control source
-  unsigned char pad90[4];                                    // +0x90 unobserved
+  class TTacticalBattle* battle88;    // +0x88
+  class TTacticalUnit* currentUnit8C; // +0x8c current-unit control source
+  // ApplyRectSlot110 (0x5ac950) reads a second current-unit pointer here, alongside
+  // currentUnit8C, to draw each side's xp progress bar -- same slot shape, other side.
+  class TArmyTacUnit* otherSideCurrentUnit90;                // +0x90
   struct TQuickDrawSurfaceContext* unitSpriteAtlasSurface94; // +0x94 the 0xee2 atlas
 
   // Arms/disarms the 'targ'/'done'/'retr'/'auto' control cluster for the live-battle
