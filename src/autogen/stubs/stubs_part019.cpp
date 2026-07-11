@@ -171,14 +171,6 @@ undefined4 CreateTTacticalUnitInstance(void)
   return 0;
 }
 
-// ghidra_name TTacticalUnit::ConstructTTacticalUnitBaseState
-// ghidra_proto undefined ConstructTTacticalUnitBaseState()
-// FUNCTION: IMPERIALISM 0x005a5e30
-undefined4 ConstructTTacticalUnitBaseState(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_ComputeOrderNodeDerivedScoreFromQuantityAndWord18_At005a6290
 // ghidra_proto undefined WrapperFor_ComputeOrderNodeDerivedScoreFromQuantityAndWord18_At005a6290()
 // FUNCTION: IMPERIALISM 0x005a6290
@@ -291,14 +283,6 @@ undefined4 InitializeCityProductionQueueCommand(void)
   return 0;
 }
 
-// ghidra_name TShipBuildingTask::ConstructTShipBuildingTaskBaseState
-// ghidra_proto undefined ConstructTShipBuildingTaskBaseState()
-// FUNCTION: IMPERIALISM 0x005ae6a0
-undefined4 ConstructTShipBuildingTaskBaseState(void)
-{
-  return 0;
-}
-
 // ghidra_name DestroyTShipBuildingTask_Impl
 // ghidra_proto undefined DestroyTShipBuildingTask_Impl()
 // FUNCTION: IMPERIALISM 0x005ae6f0
@@ -311,14 +295,6 @@ undefined4 DestroyTShipBuildingTask_Impl(void)
 // ghidra_proto undefined InitializeOrderRecordFieldsFromArgs()
 // FUNCTION: IMPERIALISM 0x005ae710
 undefined4 InitializeOrderRecordFieldsFromArgs(void)
-{
-  return 0;
-}
-
-// ghidra_name TaskList::ConstructTaskListBaseState
-// ghidra_proto undefined ConstructTaskListBaseState()
-// FUNCTION: IMPERIALISM 0x005aeb90
-undefined4 ConstructTaskListBaseState(void)
 {
   return 0;
 }
@@ -543,14 +519,6 @@ undefined4 HandleCitySiteShowAnimation_TailEpilogueRetC(void)
 // ghidra_proto undefined WrapperFor_ftol_At005b4ee0()
 // FUNCTION: IMPERIALISM 0x005b4ee0
 undefined4 WrapperFor_ftol_At005b4ee0(void)
-{
-  return 0;
-}
-
-// ghidra_name TPictureText::ConstructTPictureTextBaseState
-// ghidra_proto undefined ConstructTPictureTextBaseState()
-// FUNCTION: IMPERIALISM 0x005b5300
-undefined4 ConstructTPictureTextBaseState(void)
 {
   return 0;
 }

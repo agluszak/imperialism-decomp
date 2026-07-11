@@ -7,7 +7,8 @@
 
 IMPLEMENT_DYNCREATE(TShipBuildingTask, TCityTask)
 
-TShipBuildingTask::TShipBuildingTask() {}
+// FUNCTION: IMPERIALISM 0x005ae6a0
+TShipBuildingTask::TShipBuildingTask() : TCityTask() {}
 
 // SYNTHETIC: IMPERIALISM 0x005ae6c0
 // TShipBuildingTask::`scalar deleting destructor'
@@ -19,9 +20,7 @@ undefined TShipBuildingTask::OrphanLeaf_NoCall_Ins04_005adc30() {
 }
 
 // FUNCTION: IMPERIALISM 0x005ae9e0
-void TShipBuildingTask::WriteTo(TStream* stream) {
-}
+void TShipBuildingTask::WriteTo(TStream* stream) {}
 
 // FUNCTION: IMPERIALISM 0x005aea70
-void TShipBuildingTask::ReadFrom(TStream* stream) {
-}
+void TShipBuildingTask::ReadFrom(TStream* stream) {}

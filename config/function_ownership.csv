@@ -4234,6 +4234,7 @@ address|target_cpp|ownership|note
 5a5da0|src/game/TTacticalUnit.cpp|manual|marker_sync
 5a5dc0|src/game/TTacticalUnit.cpp|manual|marker_sync
 5a5e10|src/game/TTacticalUnit.cpp|manual|marker_sync
+5a5e30|src/game/TTacticalUnit.cpp|manual|marker_sync
 5a5e70|src/game/TTacticalUnit.cpp|manual|marker_sync
 5a5eb0|src/game/TTacticalUnit.cpp|manual|marker_sync
 5a5ed0|src/game/TArmyTacUnit.cpp|manual|marker_sync
@@ -4333,12 +4334,14 @@ address|target_cpp|ownership|note
 5ae5e0|src/game/TCityTask.cpp|manual|marker_sync
 5ae650|src/game/TShipBuildingTask.cpp|manual|marker_sync
 5ae680|src/game/TShipBuildingTask.cpp|manual|marker_sync
+5ae6a0|src/game/TShipBuildingTask.cpp|manual|marker_sync
 5ae6c0|src/game/TShipBuildingTask.cpp|manual|marker_sync
 5ae780|src/game/TShipBuildingTask.cpp|manual|marker_sync
 5ae9e0|src/game/TShipBuildingTask.cpp|manual|marker_sync
 5aea70|src/game/TShipBuildingTask.cpp|manual|marker_sync
 5aeaf0|src/game/TTaskList.cpp|manual|marker_sync
 5aeb70|src/game/TTaskList.cpp|manual|marker_sync
+5aeb90|src/game/TTaskList.cpp|manual|marker_sync
 5aec00|src/game/TTaskList.cpp|manual|marker_sync
 5aed50|src/game/TTaskList.cpp|manual|marker_sync
 5aef30|src/game/TTechMgr.cpp|manual|marker_sync
@@ -4410,6 +4413,7 @@ address|target_cpp|ownership|note
 5b5210|src/game/TPictureNumberText.cpp|manual|marker_sync
 5b5260|src/game/TPictureText.cpp|manual|marker_sync
 5b52e0|src/game/TPictureText.cpp|manual|marker_sync
+5b5300|src/game/TPictureText.cpp|manual|marker_sync
 5b5330|src/game/TPictureText.cpp|manual|marker_sync
 5b5380|src/game/TMyStaticText.cpp|manual|marker_sync
 5b5400|src/game/TMyStaticText.cpp|manual|marker_sync

@@ -55,6 +55,14 @@ public:
   // inline construction as a bare vptr store, so the base ctor must stay empty and
   // in-class).
   TTacticalUnit() {}
+
+  // Seeds the common per-unit-in-battle state (tileIndex8=-2 "not placed" sentinel,
+  // actionPoints28 from the virtual GetBaseActionPoints()) after a concrete derived
+  // class (TArmyTacUnit/TNavyTacUnit) has already installed its own vtable. No
+  // confirmed caller found yet (not reached via a direct xref -- likely still
+  // inlined at its call site(s), same shape as TSortedList::
+  // ConstructTSortedListBaseState). 0x5a5e30.
+  void ConstructTTacticalUnitBaseState();
 };
 
 ASSERT_SIZE(TTacticalUnit, 0x34);

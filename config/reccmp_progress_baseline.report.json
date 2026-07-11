@@ -21285,7 +21285,7 @@
     },
     {
       "address": "0x545940",
-      "matching": 0.41756822218633943,
+      "matching": 0.4162764411432262,
       "name": "TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine",
       "type": 1
     },
@@ -29475,7 +29475,7 @@
     },
     {
       "address": "0x5a1520",
-      "matching": 0.48148148148148145,
+      "matching": 0.5259259259259259,
       "name": "TTacticalBattle::MoveTacticalUnitTowardTile",
       "type": 1
     },
@@ -29625,7 +29625,7 @@
     },
     {
       "address": "0x5a3d30",
-      "matching": 0.8104956268221575,
+      "matching": 0.8163265306122449,
       "name": "IsTacticalTargetTileReachableForAction",
       "type": 1
     },
@@ -29859,7 +29859,7 @@
     },
     {
       "address": "0x5a5e30",
-      "matching": 0.11764705882352941,
+      "matching": 1.0,
       "name": "TTacticalUnit::ConstructTTacticalUnitBaseState",
       "type": 1
     },
@@ -30513,7 +30513,7 @@
     },
     {
       "address": "0x5ae6a0",
-      "matching": 0.4,
+      "matching": 0.2,
       "name": "TShipBuildingTask::ConstructTShipBuildingTaskBaseState",
       "type": 1
     },
@@ -30567,8 +30567,8 @@
     },
     {
       "address": "0x5aeb90",
-      "matching": 0.08695652173913043,
-      "name": "TaskList::ConstructTaskListBaseState",
+      "matching": 0.8095238095238095,
+      "name": "TTaskList::ConstructTaskListBaseState",
       "type": 1
     },
     {
@@ -31119,7 +31119,7 @@
     },
     {
       "address": "0x5b5300",
-      "matching": 0.2222222222222222,
+      "matching": 1.0,
       "name": "TPictureText::ConstructTPictureTextBaseState",
       "type": 1
     },

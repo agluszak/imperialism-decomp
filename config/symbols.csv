@@ -5596,7 +5596,7 @@ address|name|symbol|size|type|prototype|provenance
 5aea70|TShipBuildingTask::ReadFrom||86|function|undefined DeserializeCityProductionQueueCommand(int * param_1)|
 5aeaf0|TTaskList::CreateObject|?CreateObject@TTaskList@@SGPAVCObject@@XZ|94|function|undefined CreateObject()|rtti
 5aeb70|TTaskList::GetRuntimeClass||6|function|undefined GetTaskListClassNamePointer()|rtti
-5aeb90|TaskList::ConstructTaskListBaseState||77|function|undefined ConstructTaskListBaseState()|
+5aeb90|TTaskList::ConstructTaskListBaseState||77|function|undefined ConstructTaskListBaseState()|
 5aec00|TTaskList::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 5aec30|TaskList::WrapperFor_DestructCPtrListBaseState_At005aec30||62|function|undefined WrapperFor_DestructCPtrListBaseState_At005aec30()|
 5aec80|InitializeCityProductionState_Impl_At005aec80||1|function|undefined InitializeCityProductionState_Impl_At005aec80()|

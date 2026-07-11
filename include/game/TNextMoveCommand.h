@@ -29,7 +29,10 @@ public:
   TTacticalBattle* battle18; // +0x18
 
   // The posting site (0x5a0d60) inlines the ctor as TCommand() + vtable store, so it
-  // must stay in-class; 0x5a6560 is the compiler-emitted out-of-line copy.
+  // must stay in-class; the original also keeps a compiler-emitted out-of-line copy at
+  // 0x5a6560, but our toolchain fully inlines this trivial ctor away at its call
+  // sites (no matching recompiled address) -- a genuine optimizer-choice mismatch, not
+  // a modeling gap, so that address is left unclaimed rather than faked.
   TNextMoveCommand() : TCommand() {}
 };
 
