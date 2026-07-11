@@ -1173,5 +1173,9 @@ headers before splicing.
     passes a trampoline + the list as context to dispatch the virtual Compare. The
     parallel CPtrArray-backed chain (TSortedPtrList/TPtrList, same junk-named stubs in
     TPtrList.cpp, vtable 0x649010 / ctor 0x488400) still needs the same treatment, as
-    do TNavyMission's two big score stubs (0x537270/0x537610) and the 2041-byte idle
-    hook at 0x4acb60 that Ghidra mis-buckets as TBattleReportView (apply note 74).
+    do TNavyMission's two big score stubs (0x537270/0x537610). (Follow-up resolved:
+    the TSortedPtrList/TPtrList chain landed with 18/19 addresses at 100% plus all
+    five leaf comparator overrides -- and exposed a real save-corruption bug in
+    TTradeMgr::WriteTo. The 0x4acb60 idle hook turned out correctly attributed to
+    TBattleReportView's own vtable slot 0x37 via note-74 checking -- it is just an
+    unported 2041-byte body, still open.)
