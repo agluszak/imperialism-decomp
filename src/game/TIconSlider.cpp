@@ -7,7 +7,10 @@
 
 IMPLEMENT_DYNCREATE(TIconSlider, TIconBar)
 
-TIconSlider::TIconSlider() {}
+// FUNCTION: IMPERIALISM 0x005063c0
+TIconSlider::TIconSlider()
+    : TIconBar(), field9c(0), fieldA0(0), fieldA4(0), fieldA8(0), fieldAc(0), fieldB0(0),
+      fieldB4(0), fieldB6(0) {}
 
 // SYNTHETIC: IMPERIALISM 0x00506430
 // TIconSlider::`scalar deleting destructor'

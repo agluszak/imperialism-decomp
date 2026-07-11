@@ -2222,6 +2222,7 @@ address|target_cpp|ownership|note
 505b60|src/game/TLonelyTileView.cpp|manual|marker_sync
 505f50|src/game/TIconBar.cpp|manual|marker_sync
 505fd0|src/game/TIconBar.cpp|manual|marker_sync
+505ff0|src/game/TIconBar.cpp|manual|marker_sync
 506020|src/game/TIconBar.cpp|manual|marker_sync
 5060c0|src/game/TIconBar.cpp|manual|marker_sync
 5060f0|src/game/TIconBar.cpp|manual|marker_sync
@@ -2229,6 +2230,7 @@ address|target_cpp|ownership|note
 506150|src/game/TIconBar.cpp|manual|marker_sync
 5062d0|src/game/TIconSlider.cpp|manual|marker_sync
 5063a0|src/game/TIconSlider.cpp|manual|marker_sync
+5063c0|src/game/TIconSlider.cpp|manual|marker_sync
 506430|src/game/TIconSlider.cpp|manual|marker_sync
 506480|src/game/TIconSlider.cpp|manual|marker_sync
 506560|src/game/TIconSlider.cpp|manual|marker_sync

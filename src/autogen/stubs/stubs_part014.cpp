@@ -611,26 +611,10 @@ undefined4 WrapperFor_ftol_At00505f20(void)
   return 0;
 }
 
-// ghidra_name TIconBar::ConstructTIconBarBaseState
-// ghidra_proto undefined ConstructTIconBarBaseState()
-// FUNCTION: IMPERIALISM 0x00505ff0
-undefined4 ConstructTIconBarBaseState(void)
-{
-  return 0;
-}
-
 // ghidra_name AddCityCommodityIconControl
 // ghidra_proto void __thiscall AddCityCommodityIconControl(int * pCityView, int * pRect, int * pLayoutData, int nXPad, int nYPad, int nIconId, int nAmount)
 // FUNCTION: IMPERIALISM 0x00506070
 undefined4 AddCityCommodityIconControl(void)
-{
-  return 0;
-}
-
-// ghidra_name TIconSlider::ConstructTIconSliderBaseState
-// ghidra_proto undefined ConstructTIconSliderBaseState()
-// FUNCTION: IMPERIALISM 0x005063c0
-undefined4 ConstructTIconSliderBaseState(void)
 {
   return 0;
 }

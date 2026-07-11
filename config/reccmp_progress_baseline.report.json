@@ -15922,7 +15922,7 @@
     },
     {
       "address": "0x505f50",
-      "matching": 0.4489795918367347,
+      "matching": 0.4897959183673469,
       "name": "TIconBar::CreateObject",
       "type": 1
     },
@@ -15934,7 +15934,7 @@
     },
     {
       "address": "0x505ff0",
-      "matching": 0.2222222222222222,
+      "matching": 1.0,
       "name": "TIconBar::ConstructTIconBarBaseState",
       "type": 1
     },
@@ -15976,7 +15976,7 @@
     },
     {
       "address": "0x5062d0",
-      "matching": 0.4166666666666667,
+      "matching": 0.4444444444444444,
       "name": "TIconSlider::CreateObject",
       "type": 1
     },
@@ -15988,7 +15988,7 @@
     },
     {
       "address": "0x5063c0",
-      "matching": 0.15384615384615385,
+      "matching": 0.5,
       "name": "TIconSlider::ConstructTIconSliderBaseState",
       "type": 1
     },
