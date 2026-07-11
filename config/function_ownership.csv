@@ -3215,6 +3215,7 @@ address|target_cpp|ownership|note
 561680|src/game/TPortZone.cpp|manual|marker_sync
 5616a0|src/game/TPortZone.cpp|manual|marker_sync
 5616c0|src/game/TPortZone.cpp|manual|marker_sync
+5616f0|src/game/TPortZone.cpp|manual|marker_sync
 5617d0|src/game/TPortZone.cpp|manual|marker_sync
 5617f0|src/game/TPortZone.cpp|manual|marker_sync
 561820|src/game/TPortZone.cpp|manual|marker_sync
@@ -3235,6 +3236,7 @@ address|target_cpp|ownership|note
 5621b0|src/game/TSimMgr.cpp|manual|marker_sync
 5621e0|src/game/TOcean.cpp|manual|marker_sync
 562340|src/game/TOcean.cpp|manual|marker_sync
+5627a0|src/game/TZone.cpp|manual|marker_sync
 562880|src/game/TZone.cpp|manual|marker_sync
 5628f0|src/game/TOcean.cpp|manual|marker_sync
 562d90|src/game/TOcean.cpp|manual|marker_sync

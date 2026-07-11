@@ -1074,12 +1074,31 @@ TZone* TZone::GetNextPortZone() {
   return cursor;
 }
 
-// Destructors are compiler-generated (implicit virtual dtor).
 // PortZone vtable bodies (0x005616c0..0x00561e40) live in TPortZone.cpp.
 
 // SYNTHETIC: IMPERIALISM 0x00562880
 // TZone::`vector deleting destructor'
-TZone::~TZone() {}
+
+// Unlinks this zone from g_pMapActionContextListHead (via prev18/next1c); member
+// teardown (secondaryNeighbors, primaryNeighbors, displayName) happens automatically in
+// reverse declaration order. Ground truth for this function is reached via the vector
+// deleting destructor's thunk at 0x407775; TPortZone::~TPortZone (0x5616f0) is
+// instruction-for-instruction identical since TPortZone has no unique members of its own
+// -- the original inlined this same body there too instead of calling it out-of-line.
+// FUNCTION: IMPERIALISM 0x005627a0
+TZone::~TZone() {
+  if (g_pMapActionContextListHead == this) {
+    g_pMapActionContextListHead = prev18;
+  }
+  if (prev18 != 0) {
+    prev18->next1c = next1c;
+  }
+  if (next1c != 0) {
+    next1c->prev18 = prev18;
+  }
+  next1c = 0;
+  prev18 = 0;
+}
 
 // Reseeds the zone status-code PRNG from a hash of the scenario tag string (falling back
 // to the wall clock when the tag hashes to zero), then walks the whole map-action-context

@@ -12800,32 +12800,34 @@
     },
     {
       "address": "0x4e05d0",
-      "matching": 1.0,
+      "effective": true,
+      "matching": 0.42857142857142855,
       "name": "TGreatPower::OrphanLeaf_NoCall_Ins02_004d7fc0_89",
       "type": 1
     },
     {
       "address": "0x4e0610",
-      "matching": 1.0,
+      "effective": true,
+      "matching": 0.42857142857142855,
       "name": "TGreatPower::ReturnFalseNationStateActionStub_8a",
       "type": 1
     },
     {
       "address": "0x4e0650",
-      "matching": 1.0,
+      "effective": true,
+      "matching": 0.42857142857142855,
       "name": "TGreatPower::OrphanRetStub_004d7fe0_8b",
       "type": 1
     },
     {
       "address": "0x4e0690",
-      "effective": true,
-      "matching": 0.42857142857142855,
+      "matching": 1.0,
       "name": "TGreatPower::ReturnFalseNationStateCapabilityFlag90",
       "type": 1
     },
     {
       "address": "0x4e06d0",
-      "matching": 1.0,
+      "matching": 0.7619047619047619,
       "name": "TGreatPower::SumNationRuntimeFiveBucketValue44",
       "type": 1
     },
@@ -16735,7 +16737,7 @@
     },
     {
       "address": "0x512930",
-      "matching": 0.25622775800711745,
+      "matching": 0.2491103202846975,
       "name": "BuildHexAreaTileIndexList",
       "type": 1
     },
@@ -16813,7 +16815,7 @@
     },
     {
       "address": "0x5136a0",
-      "matching": 1.0,
+      "matching": 0.8888888888888888,
       "name": "TMapMgr::OrphanLeaf_NoCall_Ins35_005136a0",
       "type": 1
     },
@@ -17011,7 +17013,7 @@
     },
     {
       "address": "0x515b10",
-      "matching": 0.3167420814479638,
+      "matching": 0.3378995433789954,
       "name": "TMapMgr::MarkSeedNeighborTilesUnavailableByCapabilityMaskProfileB",
       "type": 1
     },
@@ -18205,7 +18207,7 @@
     },
     {
       "address": "0x52c0a0",
-      "matching": 0.9391304347826087,
+      "matching": 0.9122807017543859,
       "name": "SeapointStretch::GetOrAppendUnique",
       "type": 1
     },
@@ -21273,7 +21275,7 @@
     },
     {
       "address": "0x545940",
-      "matching": 0.42577935713131965,
+      "matching": 0.4162764411432262,
       "name": "TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine",
       "type": 1
     },
@@ -21837,7 +21839,7 @@
     },
     {
       "address": "0x5501b0",
-      "matching": 0.5352112676056338,
+      "matching": 0.46511627906976744,
       "name": "CalculateMissionOrderPriorityScore",
       "type": 1
     },
@@ -23176,14 +23178,14 @@
     },
     {
       "address": "0x5616c0",
-      "matching": 0.9090909090909091,
+      "matching": 1.0,
       "name": "TPortZone::`scalar deleting destructor'",
       "type": 1
     },
     {
       "address": "0x5616f0",
-      "matching": 0.04,
-      "name": "ResetTPortZoneToSentinelVtableAndReleaseResources",
+      "matching": 0.0,
+      "name": "TPortZone::~TPortZone",
       "type": 1
     },
     {
@@ -23320,13 +23322,13 @@
     },
     {
       "address": "0x5627a0",
-      "matching": 0.04,
-      "name": "ReleaseTPortZoneOwnedResourcesAndUnlinkFromGlobalList",
+      "matching": 0.9583333333333334,
+      "name": "TZone::~TZone",
       "type": 1
     },
     {
       "address": "0x562880",
-      "matching": 0.9411764705882353,
+      "matching": 1.0,
       "name": "TZone::`vector deleting destructor'",
       "type": 1
     },
@@ -23350,7 +23352,7 @@
     },
     {
       "address": "0x562d90",
-      "matching": 0.594059405940594,
+      "matching": 0.6039603960396039,
       "name": "InputState::InitializeMapActionContextsForNationCountUsingCostField",
       "type": 1
     },

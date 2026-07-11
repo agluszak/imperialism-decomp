@@ -419,14 +419,6 @@ undefined4 SelectBestMapActionContextForNationDiplomacyMask(void)
   return 0;
 }
 
-// ghidra_name ResetTPortZoneToSentinelVtableAndReleaseResources
-// ghidra_proto undefined ResetTPortZoneToSentinelVtableAndReleaseResources()
-// FUNCTION: IMPERIALISM 0x005616f0
-undefined4 ResetTPortZoneToSentinelVtableAndReleaseResources(void)
-{
-  return 0;
-}
-
 // ghidra_name ReallocatePortZoneContextArrayBuffer
 // ghidra_proto undefined ReallocatePortZoneContextArrayBuffer()
 // FUNCTION: IMPERIALISM 0x005620c0
@@ -439,14 +431,6 @@ undefined4 ReallocatePortZoneContextArrayBuffer(void)
 // ghidra_proto undefined ResetTPortZoneManagerToSentinelVtable()
 // FUNCTION: IMPERIALISM 0x00562170
 undefined4 ResetTPortZoneManagerToSentinelVtable(void)
-{
-  return 0;
-}
-
-// ghidra_name ReleaseTPortZoneOwnedResourcesAndUnlinkFromGlobalList
-// ghidra_proto undefined ReleaseTPortZoneOwnedResourcesAndUnlinkFromGlobalList()
-// FUNCTION: IMPERIALISM 0x005627a0
-undefined4 ReleaseTPortZoneOwnedResourcesAndUnlinkFromGlobalList(void)
 {
   return 0;
 }

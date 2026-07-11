@@ -4305,7 +4305,7 @@ address|name|symbol|size|type|prototype|provenance
 561680|ReturnTrueForPortZoneCapabilityFlagB||3|function|undefined ReturnTrueForPortZoneCapabilityFlagB()|
 5616a0|ReturnFalseForPortZoneCapabilityFlagC||3|function|undefined ReturnFalseForPortZoneCapabilityFlagC()|
 5616c0|TPortZone::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
-5616f0|ResetTPortZoneToSentinelVtableAndReleaseResources||171|function|undefined ResetTPortZoneToSentinelVtableAndReleaseResources()|
+5616f0|TPortZone::~TPortZone||171|function|undefined ~TPortZone()|
 5617d0|TPortZone::GetRuntimeClass||6|function|undefined GetTPortZoneClassNamePointer()|rtti
 5617f0|TZone::DeserializeTPortZoneFromBinaryStream||32|function|undefined DeserializeTPortZoneFromBinaryStream()|
 561820|TZone::SerializeTPortZoneToBinaryStream||98|function|undefined SerializeTPortZoneToBinaryStream()|
@@ -4328,7 +4328,7 @@ address|name|symbol|size|type|prototype|provenance
 5621b0|ResetPortZoneGlobalContextCounters||21|function|undefined ResetPortZoneGlobalContextCounters()|
 5621e0|TOcean::Free||264|function|void Free()|
 562340|TOcean::ReadFrom||887|function|undefined DeserializeMapActionContextRuntimeState(void)|
-5627a0|ReleaseTPortZoneOwnedResourcesAndUnlinkFromGlobalList||171|function|undefined ReleaseTPortZoneOwnedResourcesAndUnlinkFromGlobalList()|
+5627a0|TZone::~TZone||171|function|undefined ~TZone()|
 562880|TZone::`vector deleting destructor'||80|function|undefined VectorDeletingDestructor()|
 5628f0|TOcean::WriteTo||399|function|undefined SerializeMapActionContextRuntimeState(void)|
 562af0|RelaxMapTileCostFieldByNeighborTerrain||205|function|undefined RelaxMapTileCostFieldByNeighborTerrain()|

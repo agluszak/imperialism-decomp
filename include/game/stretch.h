@@ -1,5 +1,7 @@
 #pragma once
 
+#include <cstdlib>
+
 #include "decomp_types.h"
 
 // Project-local growable array template. Mac CodeWarrior symbols expose this family as
@@ -19,6 +21,16 @@ IMPERIALISM_BEGIN_INTENTIONAL_NON_VIRTUAL_DTOR
 template <typename T, typename Tag> class stretch {
 public:
   stretch() : data(0), capacity(0), count(0) {}
+  // Non-virtual on purpose (see IMPERIALISM_*_INTENTIONAL_NON_VIRTUAL_DTOR above): frees
+  // the growable buffer allocated by EnsureCapacityAtLeast/ResizePointerArrayCapacityBy-
+  // RequestedCount (realloc-family growth, so release via the matching free(), not
+  // delete[]). Ground truth: TZone::~TZone (0x5627a0) frees primaryNeighbors/
+  // secondaryNeighbors this same way as part of member teardown.
+  ~stretch() {
+    if (data != 0) {
+      free(data);
+    }
+  }
   virtual T* GetOrAppendUnique(T value) = 0;
   void Add(T value);
 
