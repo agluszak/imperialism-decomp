@@ -33,8 +33,8 @@ address|name|symbol|size|type|prototype|provenance
 412bd0|CObject::Serialize||3|function|undefined Serialize()|
 412bf0|CObject::AssertValid||1|function|void AssertValid() const|
 412c10|CObject::Dump||3|function|void Dump(CDumpContext &)|
-412c30|ReleaseImperialismApplicationSingleton||30|function|undefined ReleaseImperialismApplicationSingleton()|
-412c60|DestroyImperialismApplicationSingleton||175|function|undefined DestroyImperialismApplicationSingleton()|
+412c30|ImperialismApp::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
+412c60|ImperialismApp::~ImperialismApp||175|function|undefined ~ImperialismApp()|
 412d40|InitializeImperialismAppSingletonGlobal||24|function|undefined InitializeImperialismAppSingletonGlobal()|
 412d70|DestroyImperialismAppSingletonGlobal||10|function|undefined DestroyImperialismAppSingletonGlobal()|
 412d90|ShowOutOfMemoryErrorNewHandler||23|function|int __cdecl ShowOutOfMemoryErrorNewHandler(size_t)|

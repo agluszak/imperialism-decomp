@@ -19,6 +19,8 @@ address|target_cpp|ownership|note
 412bd0|src/game/CObject.cpp|library|marker_sync
 412bf0|src/game/CObject.cpp|library|marker_sync
 412c10|src/game/CObject.cpp|library|marker_sync
+412c30|src/game/ImperialismApp.cpp|manual|marker_sync
+412c60|src/game/ImperialismApp.cpp|manual|marker_sync
 412d90|src/game/ImperialismApp.cpp|manual|marker_sync
 412dc0|src/game/ImperialismApp.cpp|manual|marker_sync
 413250|src/game/TDiplomacyMgr.cpp|manual|marker_sync

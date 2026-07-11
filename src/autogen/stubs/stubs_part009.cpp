@@ -203,22 +203,6 @@ undefined4 NoOpThunkTargetHandler(void)
   return 0;
 }
 
-// ghidra_name ReleaseImperialismApplicationSingleton
-// ghidra_proto undefined ReleaseImperialismApplicationSingleton()
-// FUNCTION: IMPERIALISM 0x00412c30
-undefined4 ReleaseImperialismApplicationSingleton(void)
-{
-  return 0;
-}
-
-// ghidra_name DestroyImperialismApplicationSingleton
-// ghidra_proto undefined DestroyImperialismApplicationSingleton()
-// FUNCTION: IMPERIALISM 0x00412c60
-undefined4 DestroyImperialismApplicationSingleton(void)
-{
-  return 0;
-}
-
 // ghidra_name InitializeImperialismAppSingletonGlobal
 // ghidra_proto undefined InitializeImperialismAppSingletonGlobal()
 // FUNCTION: IMPERIALISM 0x00412d40

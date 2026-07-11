@@ -54,6 +54,12 @@ ImperialismApp::ImperialismApp()
       localizedPictGobNameD0(), field_D4(), primaryDataLibNameD8(), field_DC(),
       languageCodeStringE0(), languagePackIdE4(0) {}
 
+// SYNTHETIC: IMPERIALISM 0x00412c30
+// ImperialismApp::`scalar deleting destructor'
+
+// FUNCTION: IMPERIALISM 0x00412c60
+ImperialismApp::~ImperialismApp() {}
+
 // Out-of-memory handler installed by InitInstance through the CRT _set_new_handler;
 // __callnewh (0x5e7ac0) invokes it when operator new fails. Returns 0 (no retry).
 // FUNCTION: IMPERIALISM 0x00412d90
@@ -81,8 +87,7 @@ BOOL ImperialismApp::InitInstance() {
       return FALSE;
     }
 
-    if (!g_pModuleLibraryCacheState->LoadPrimaryDataLibraryWithErrorDialog(
-            primaryDataLibNameD8)) {
+    if (!g_pModuleLibraryCacheState->LoadPrimaryDataLibraryWithErrorDialog(primaryDataLibNameD8)) {
       return FALSE;
     }
 
@@ -335,8 +340,8 @@ BOOL ImperialismApp::LoadLanguageResourcesFromIrgFiles() {
     if (CompareAnsiStringsWithMbcsAwareness(
             const_cast<unsigned char*>(
                 reinterpret_cast<const unsigned char*>(static_cast<LPCSTR>(savedLanguage))),
-            const_cast<unsigned char*>(reinterpret_cast<const unsigned char*>(
-                static_cast<LPCSTR>(languageLabel)))) == 0) {
+            const_cast<unsigned char*>(
+                reinterpret_cast<const unsigned char*>(static_cast<LPCSTR>(languageLabel)))) == 0) {
       WriteProfileString(SettingsSection(), LanguageValueName(), savedLanguage);
 
       LoadStringA(irgModule, 0x1e36, languageLabelCC.GetBufferSetLength(0x21), 0x20);

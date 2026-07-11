@@ -23,37 +23,38 @@
 class ImperialismApp : public CWinApp {
 public:
   ImperialismApp();
+  virtual ~ImperialismApp() override;
 
   // CWinApp lifecycle overrides resolved by DispatchMfcAppLifecycle.
   virtual BOOL InitInstance() override; // slot +0x58, 0x00412dc0
   virtual int ExitInstance() override;  // slot +0x70, 0x00413780
 
-  int ShowAutoResolutionDialogIfNeeded();           // 0x00415090
-  void ApplyAutoResolutionModeAndPersist(int mode); // 0x004155b0
-  BOOL LoadLanguageResourcesFromIrgFiles();         // 0x004149a0
-  void HandleStartupCommand100();                   // 0x00413950
-  void PostStartupCommand100();                     // 0x004138b0
+  int ShowAutoResolutionDialogIfNeeded();                  // 0x00415090
+  void ApplyAutoResolutionModeAndPersist(int mode);        // 0x004155b0
+  BOOL LoadLanguageResourcesFromIrgFiles();                // 0x004149a0
+  void HandleStartupCommand100();                          // 0x00413950
+  void PostStartupCommand100();                            // 0x004138b0
   LPCTSTR DetectImperialismInstallDriveAndSetPathPrefix(); // 0x00414870
   // Modal-pump helper (ExecuteViewModalStateWithPushPopChain 0x48da60,
   // ShowDialogTemplateE0ModalAndReleaseCapture 0x498cc0 — both call it on
   // g_pImperialismApp): keep the wait cursor up while HandleStartupCommand100 runs.
-  void RestoreWaitCursorIfStartupBusy();            // 0x004139f0
+  void RestoreWaitCursorIfStartupBusy(); // 0x004139f0
 
   // Subclass state laid out immediately after the CWinApp base (offset 0xC0).
   // While HandleStartupCommand100 runs, points at a stack local so the modal pump
   // (RestoreAppWaitCursorDuringModalLoop) knows to keep the wait cursor up.
-  int* waitCursorAnchorC0;         // 0xC0
-  CString field_C4;                // 0xC4
-  int appliedAutoResModeC8;        // 0xC8 — auto-resolution mode currently applied to the display
+  int* waitCursorAnchorC0;  // 0xC0
+  CString field_C4;         // 0xC4
+  int appliedAutoResModeC8; // 0xC8 — auto-resolution mode currently applied to the display
   // 0xCC..0xE0: strings loaded from the matching language .irg module
   // (LoadLanguageResourcesFromIrgFiles).
-  CString languageLabelCC;         // 0xCC — string 0x1e36, the language display label
-  CString localizedPictGobNameD0;  // 0xD0 — string 0x2c6, localized Pict .gob path (lib slot 0)
-  CString field_D4;                // 0xD4 — string 0x840
-  CString primaryDataLibNameD8;    // 0xD8 — string 0x297, primary data library path
-  CString field_DC;                // 0xDC — string 0x80
-  CString languageCodeStringE0;    // 0xE0 — string 0x323, three-letter language code
-  int languagePackIdE4;            // 0xE4 — languageCodeStringE0 packed little-endian
+  CString languageLabelCC;        // 0xCC — string 0x1e36, the language display label
+  CString localizedPictGobNameD0; // 0xD0 — string 0x2c6, localized Pict .gob path (lib slot 0)
+  CString field_D4;               // 0xD4 — string 0x840
+  CString primaryDataLibNameD8;   // 0xD8 — string 0x297, primary data library path
+  CString field_DC;               // 0xDC — string 0x80
+  CString languageCodeStringE0;   // 0xE0 — string 0x323, three-letter language code
+  int languagePackIdE4;           // 0xE4 — languageCodeStringE0 packed little-endian
 };
 
 extern ImperialismApp theApp;

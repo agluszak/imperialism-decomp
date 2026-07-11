@@ -152,14 +152,14 @@
     },
     {
       "address": "0x412c30",
-      "matching": 0.0,
-      "name": "ReleaseImperialismApplicationSingleton",
+      "matching": 1.0,
+      "name": "ImperialismApp::`scalar deleting destructor'",
       "type": 1
     },
     {
       "address": "0x412c60",
-      "matching": 0.05,
-      "name": "DestroyImperialismApplicationSingleton",
+      "matching": 0.987012987012987,
+      "name": "ImperialismApp::~ImperialismApp",
       "type": 1
     },
     {
