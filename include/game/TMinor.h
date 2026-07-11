@@ -94,7 +94,9 @@ private:
   // the sibling diplomacyGrantByNation/recurringGrantByResource tables, but the indexed
   // dimension (nation vs. resource) is not yet confirmed.
   short diplomacySaveFields134[4]; // 0x134
+public:
   short diplomacySaveExt13c[0x17]; // 0x13c
+private:
   short recurringGrantByResource[0x17];
   short relationGrantLinkMatrix[7][7];
   unsigned char minorTailPad1fa[0x2cc - 0x1fa];

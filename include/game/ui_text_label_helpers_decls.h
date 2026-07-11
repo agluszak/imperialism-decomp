@@ -4,6 +4,11 @@
 
 class TDropShadowText;
 class TStaticText;
+class TView;
+
+// 0x5c49d0: apply a shared/string caption to a control (sets the text state).  Callee
+// consumes `sharedString` by value; `control` is asserted and updated.
+void ApplySharedStringToControlState(CString sharedString, TView* control);
 
 // 0x5c4310: resolve `controlTag` on g_pDisplayMgr->activeDialog, AssertValid it, and
 // forward to ApplyControlThemeStyleAndOptionalCaption. Genuine __cdecl free function
