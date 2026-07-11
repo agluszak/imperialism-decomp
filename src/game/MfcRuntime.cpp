@@ -86,3 +86,7 @@ static TempMapLockCallback ResolveTempMapLockCallback(int module_thread_state) {
 
 // LIBRARY: IMPERIALISM 0x00624e73
 // AfxWinInit
+
+// LIBRARY: IMPERIALISM 0x00613e49
+// CCmdTarget::OnCmdMsg (OLE nested-object routing override, shared across the
+// COM interface vtables at 0x64842c/0x672c68/0x672d80/0x6735a0)

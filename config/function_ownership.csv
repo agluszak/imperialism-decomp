@@ -5705,6 +5705,7 @@ address|target_cpp|ownership|note
 613d23|src/game/library_msvc500_fid.cpp|library|marker_sync
 613d76|src/game/library_msvc500_fid.cpp|library|marker_sync
 613da6|src/game/library_msvc500_fid.cpp|library|marker_sync
+613e49|src/game/MfcRuntime.cpp|library|marker_sync
 613eb0|src/game/library_msvc500_fid.cpp|library|marker_sync
 613f5a|src/game/library_msvc500_fid.cpp|library|marker_sync
 613fef|src/game/library_msvc500_fid.cpp|library|marker_sync

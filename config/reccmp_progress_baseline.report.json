@@ -39385,12 +39385,6 @@
       "type": 1
     },
     {
-      "address": "0x613e49",
-      "matching": 0.05,
-      "name": "GetTEventHandlerClassNamePointer",
-      "type": 1
-    },
-    {
       "address": "0x613eb0",
       "matching": 0.9655172413793104,
       "name": "CView::OnPaint",

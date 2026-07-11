@@ -587,14 +587,6 @@ undefined4 NoOpVirtualStub_00613e44(void)
   return 0;
 }
 
-// ghidra_name GetTEventHandlerClassNamePointer
-// ghidra_proto undefined WrapperFor_GetOrCreatePerThreadTlsSlotObject_At00613e49()
-// FUNCTION: IMPERIALISM 0x00613e49
-undefined4 WrapperFor_GetOrCreatePerThreadTlsSlotObject_At00613e49(void)
-{
-  return 0;
-}
-
 // ghidra_name InvokeVslotF4WithZeroArgs
 // ghidra_proto undefined InvokeVslotF4WithZeroArgs()
 // FUNCTION: IMPERIALISM 0x00613f04
