@@ -333,8 +333,36 @@ undefined TMapDialog::DrawMapDialogGuidePatternSetD_00520d20() {
 }
 
 // FUNCTION: IMPERIALISM 0x00520DE0
-undefined TMapDialog::DrawMapDialogTileGuidePatternByVariant() {
-  return 0;
+void TMapDialog::DrawMapDialogTileGuidePatternByVariant(int originX, int originY, short variant) {
+  if (variant == 0) {
+    SetQuickDrawTextOriginWithContextOffset(originX + 0x2c, originY + 8);
+    DrawCenteredGuideLineOnMapDc(originX + 0x36, originY + 0xd);
+    DrawCenteredGuideLineOnMapDc(originX + 0x34, originY + 0x14);
+    DrawCenteredGuideLineOnMapDc(originX + 0x3a, originY + 0x19);
+    DrawCenteredGuideLineOnMapDc(originX + 0x38, originY + 0x20);
+    SetQuickDrawTextOriginWithContextOffset(originX + 0x2c, originY + 8);
+    DrawCenteredGuideLineOnMapDc(originX + 0x38, originY);
+    return;
+  }
+  if (variant == 1) {
+    SetQuickDrawTextOriginWithContextOffset(originX + 0x2c, originY + 10);
+    DrawCenteredGuideLineOnMapDc(originX + 0x34, originY + 0xf);
+    DrawCenteredGuideLineOnMapDc(originX + 0x31, originY + 0x14);
+    DrawCenteredGuideLineOnMapDc(originX + 0x38, originY + 0x19);
+    DrawCenteredGuideLineOnMapDc(originX + 0x36, originY + 0x20);
+    SetQuickDrawTextOriginWithContextOffset(originX + 0x2c, originY + 10);
+    DrawCenteredGuideLineOnMapDc(originX + 0x39, originY);
+    return;
+  }
+  if (variant == 2) {
+    SetQuickDrawTextOriginWithContextOffset(originX + 0x2c, originY + 6);
+    DrawCenteredGuideLineOnMapDc(originX + 0x37, originY + 0xb);
+    DrawCenteredGuideLineOnMapDc(originX + 0x36, originY + 0x13);
+    DrawCenteredGuideLineOnMapDc(originX + 0x3c, originY + 0x19);
+    DrawCenteredGuideLineOnMapDc(originX + 0x3a, originY + 0x20);
+    SetQuickDrawTextOriginWithContextOffset(originX + 0x2c, originY + 5);
+    DrawCenteredGuideLineOnMapDc(originX + 0x37, originY + -3);
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x00520FC0

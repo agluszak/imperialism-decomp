@@ -59,7 +59,7 @@ public:
   virtual undefined DrawMapDialogGuidePatternSetB_00520a90();
   virtual undefined DrawMapDialogGuidePatternSetC_00520c10();
   virtual undefined DrawMapDialogGuidePatternSetD_00520d20();
-  virtual undefined DrawMapDialogTileGuidePatternByVariant();
+  virtual void DrawMapDialogTileGuidePatternByVariant(int originX, int originY, short variant);
   virtual undefined DrawMapDialogGuidePatternSetE_00520fc0();
   virtual undefined DrawMapDialogGuidePatternSetF_00521090();
   virtual undefined DrawMapDialogGuidePatternSetG_005211c0();
