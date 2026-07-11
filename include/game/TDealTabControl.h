@@ -7,7 +7,7 @@
 // VTABLE: IMPERIALISM 0x00641168
 class TDealTabControl : public TControl {
 public:
-// === BEGIN GENERATED DECLS (TDealTabControl) — refreshed by recover-class; do not hand-edit ===
+  // === BEGIN GENERATED DECLS (TDealTabControl) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TDealTabControl)
   virtual ~TDealTabControl() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -112,7 +112,9 @@ public:
   // slot 0x65 AssertMcAppUILine1914 inherited unchanged (0x48c7a0)
   // slot 0x66 AssertMcAppUILine1922 inherited unchanged (0x48c7d0)
   // slot 0x67 CtrlSlot103_SubtractPosAndDispatchSlot19C_Impl inherited unchanged (0x48bac0)
-  virtual void DispatchPictureResourceCommand(int nEventType, void * pEventSender, void * pEventDataA, void * pEventDataB, int nCommandFlag) override; // slot 0x68 0x5bc9f0
+  virtual void DispatchPictureResourceCommand(int nEventType, void* pEventSender, void* pEventDataA,
+                                              void* pEventDataB,
+                                              int nCommandFlag) override; // slot 0x68 0x5bc9f0
   // slot 0x69 BuildInsetContentRect inherited unchanged (0x48e980)
   // slot 0x6a AssertCityProductionGlobalStateInitialized inherited unchanged (0x429470)
   // slot 0x6b NoOpUiViewSlotHandler inherited unchanged (0x48e9c0)
@@ -122,9 +124,16 @@ public:
   // slot 0x6f LogUnhandledDialogMethodAndReturnFalse inherited unchanged (0x4294a0)
   // slot 0x70 SetControlStateFlagAndMaybeRefresh inherited unchanged (0x48e810)
   virtual undefined ConstructTDealTabControlBaseState(); // slot 0x71 0x5bc780
-// === END GENERATED DECLS (TDealTabControl) ===
+  // === END GENERATED DECLS (TDealTabControl) ===
   // TODO(manifest): add data members from the object slice (`just slice-discovery TDealTabControl 0xCTOR`).
+  // Vertical fill-bar slice read by ApplyRectSlot110: negative selectedRow84 means "no
+  // selection" (draw the whole strip empty); otherwise the highlight band spans
+  // [selectedRow84*rowHeightPx86, +rowHeightPx86) with the empty strip above and below.
+  short selectedRow84;                               // +0x84 selected row index, -1 = none
+  short rowHeightPx86;                               // +0x86 pixel height of one row
+  unsigned char pad88[4];                            // +0x88 unobserved
+  struct TQuickDrawSurfaceContext* filledRowStrip8c; // +0x8c highlighted-row strip
+  struct TQuickDrawSurfaceContext* emptyRowStrip90;  // +0x90 background strip
 
   TDealTabControl();
 };
-
