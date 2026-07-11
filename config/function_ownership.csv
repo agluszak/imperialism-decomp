@@ -1469,6 +1469,7 @@ address|target_cpp|ownership|note
 4c6bf0|src/game/TSoundChannelNode.cpp|manual|marker_sync
 4c6df0|src/game/TBuildingView.cpp|manual|marker_sync
 4c6e90|src/game/TBuildingView.cpp|manual|marker_sync
+4c6eb0|src/game/TBuildingView.cpp|manual|marker_sync
 4c6ee0|src/game/TBuildingView.cpp|manual|marker_sync
 4c6f30|src/game/TBuildingView.cpp|manual|marker_sync
 4c6fb0|src/game/TBuildingView.cpp|manual|marker_sync
@@ -1484,6 +1485,7 @@ address|target_cpp|ownership|note
 4c7d90|src/game/TWarehouseView.cpp|manual|marker_sync
 4c7f10|src/game/TUnitsView.cpp|manual|marker_sync
 4c7fb0|src/game/TUnitsView.cpp|manual|marker_sync
+4c7fd0|src/game/TUnitsView.cpp|manual|marker_sync
 4c8000|src/game/TUnitsView.cpp|manual|marker_sync
 4c8050|src/game/TUnitsView.cpp|manual|marker_sync
 4c8200|src/game/TShipyardView.cpp|manual|marker_sync
@@ -1500,6 +1502,7 @@ address|target_cpp|ownership|note
 4c9d20|src/game/TShipyardView.cpp|manual|marker_sync
 4c9d70|src/game/TBuildingConstructionView.cpp|manual|marker_sync
 4c9e10|src/game/TBuildingConstructionView.cpp|manual|marker_sync
+4c9e30|src/game/TBuildingConstructionView.cpp|manual|marker_sync
 4c9e60|src/game/TBuildingConstructionView.cpp|manual|marker_sync
 4c9eb0|src/game/TBuildingConstructionView.cpp|manual|marker_sync
 4ca8f0|src/game/TBuildingConstructionView.cpp|manual|marker_sync

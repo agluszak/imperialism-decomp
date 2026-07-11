@@ -171,26 +171,10 @@ undefined4 WrapperFor_ftol_At004c6cb0(void)
   return 0;
 }
 
-// ghidra_name TBuildingView::ConstructTBuildingViewBaseState
-// ghidra_proto undefined ConstructTBuildingViewBaseState()
-// FUNCTION: IMPERIALISM 0x004c6eb0
-undefined4 ConstructTBuildingViewBaseState(void)
-{
-  return 0;
-}
-
 // ghidra_name TWarehouseView::ConstructTWarehouseViewBaseState
 // ghidra_proto undefined ConstructTWarehouseViewBaseState()
 // FUNCTION: IMPERIALISM 0x004c72b0
 undefined4 ConstructTWarehouseViewBaseState(void)
-{
-  return 0;
-}
-
-// ghidra_name TUnitsView::ConstructTUnitsViewBaseState
-// ghidra_proto undefined ConstructTUnitsViewBaseState()
-// FUNCTION: IMPERIALISM 0x004c7fd0
-undefined4 ConstructTUnitsViewBaseState(void)
 {
   return 0;
 }
@@ -223,14 +207,6 @@ undefined4 UpdateCityViewCountControlAndRefreshSelection(void)
 // ghidra_proto undefined UpdateCityViewCountControlAndRefreshSelectionAlt()
 // FUNCTION: IMPERIALISM 0x004c8c3f
 undefined4 UpdateCityViewCountControlAndRefreshSelectionAlt(void)
-{
-  return 0;
-}
-
-// ghidra_name TBuildingConstructionView::ConstructTBuildingConstructionViewBaseState
-// ghidra_proto undefined ConstructTBuildingConstructionViewBaseState()
-// FUNCTION: IMPERIALISM 0x004c9e30
-undefined4 ConstructTBuildingConstructionViewBaseState(void)
 {
   return 0;
 }
