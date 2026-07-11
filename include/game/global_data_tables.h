@@ -729,11 +729,14 @@ extern TControlPictureRectState g_UiResourceEntryDefaultTextStyle;
 
 // TControlSeaZoneMission.cpp / TDefendProvinceMission.cpp / TNavyMission.cpp —
 // defend-province / mission priority-vector normalization constants.
+extern const float g_Recompute_Nation_Order_LookupTable_0065A9BC;
+extern const float g_Recompute_Nation_Order_LookupTable_0065A9C4;
 extern const float g_Recompute_Nation_Order_LookupTable_0065A9E8;
 extern const double g_Recompute_Nation_Order_LookupTable_0065A9F0;
 extern double g_Recompute_Nation_Order_LookupTable_0065A9F8;
 extern double g_Recompute_Nation_Order_LookupTable_0065AA00;
 extern double g_Recompute_Nation_Order_LookupTable_0065AA08;
+extern const float g_Recompute_Nation_Order_LookupTable_0065AA20;
 extern unsigned short g_awTacticalCompositionReferenceProfiles_00697870[];
 extern unsigned short g_Populate_Beachhead_Mission_LookupTable_00697958[];
 

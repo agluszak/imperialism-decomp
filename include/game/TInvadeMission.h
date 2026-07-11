@@ -44,7 +44,7 @@ public:
   virtual float ReturnZeroFloatSlot70(
       TMilitaryUnit* candidateUnit) override; // slot 0x1c 0x53fac0 -- weighted score delta
   virtual float ReturnZeroFloatSlot74(
-      TMilitaryUnit* candidateUnit) override; // slot 0x1d 0x53fb60 -- beachhead score if enabled
+      void* candidate) override; // slot 0x1d 0x53fb60 -- beachhead score if enabled
 
   virtual void NoOpSlot84(int a,
                           int b) override; // slot 0x21 0x53f190 -- forward to beachhead slot 0x84

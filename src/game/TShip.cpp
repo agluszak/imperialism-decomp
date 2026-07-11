@@ -140,40 +140,37 @@ void __fastcall RegenerateNavyPrimaryOrderDisplayNameUntilUnique(TShip* shipNode
 // which happen to share these same 3 offsets with TShip -- see the header comment.
 
 // FUNCTION: IMPERIALISM 0x0054ff00
-int ComputeNavyOrderPriorityContributionPercentByCategory(short resourceType,
-                                                          short stockOrRequiredCount,
-                                                          short tiebreakField, int category) {
+short TShip::ComputeNavyOrderPriorityContributionPercentByCategory(int category) {
   int divisor = g_aCategoryMetricBaselineAverage[category];
-  const TNavyOrderResourceDescriptor& descriptor = g_NavyOrderResourceDescriptorTable[resourceType];
 
   switch (category) {
   case 0: {
-    int quantityTerm =
-        static_cast<int>(SignedMod100(tiebreakField)) + 5 + descriptor.resolveWeight * 10;
+    const TNavyOrderResourceDescriptor& descriptor =
+        g_NavyOrderResourceDescriptorTable[resourceType04];
+    int quantityTerm = static_cast<int>(SignedMod100(field30)) + 5 + descriptor.resolveWeight * 10;
     int weight = descriptor.calculateWeight;
     return (SignedDiv10(quantityTerm) * weight * weight * 100) / divisor;
   }
   case 1: {
+    const TNavyOrderResourceDescriptor& descriptor =
+        g_NavyOrderResourceDescriptorTable[resourceType04];
     int weight = descriptor.calculateWeight;
-    return (weight * static_cast<int>(stockOrRequiredCount) * 10000) /
+    return (weight * static_cast<int>(stockLevel1c) * 10000) /
            (descriptor.taskForceWeight * divisor);
   }
   case 2:
-    return (static_cast<int>(descriptor.descriptorWeight) * 100) / divisor;
+    return (static_cast<int>(g_NavyOrderResourceDescriptorTable[resourceType04].descriptorWeight) *
+            100) /
+           divisor;
   case 3:
-    if (stockOrRequiredCount < 1) {
+    if (stockLevel1c < 1) {
       return 0;
     }
-    return (static_cast<int>(GetIndustryActionCostWeightByResourceType(resourceType)) * 100) /
+    return (static_cast<int>(GetIndustryActionCostWeightByResourceType(resourceType04)) * 100) /
            divisor;
   default:
     return 0;
   }
-}
-
-int TShip::ComputeNavyOrderPriorityContributionPercentByCategory(int category) {
-  return ::ComputeNavyOrderPriorityContributionPercentByCategory(resourceType04, stockLevel1c,
-                                                                 field30, category);
 }
 
 // Per-category normalized cost percent for a resource type, used by the AI

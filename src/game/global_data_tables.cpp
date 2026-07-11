@@ -757,11 +757,17 @@ float g_fMissionScoreNormalizationDivisor = 5000.0f;
 MappedFlavorTextNationVariantEntry g_MappedFlavorTextNationVariantTable_0066EF30[32] = {0};
 
 // Defend-province / mission priority-vector normalization (0x53e6e0 / 0x53ea70 family).
+// GLOBAL: IMPERIALISM 0x0065a9bc
+extern const float g_Recompute_Nation_Order_LookupTable_0065A9BC = 0.05f;
+// GLOBAL: IMPERIALISM 0x0065a9c4
+extern const float g_Recompute_Nation_Order_LookupTable_0065A9C4 = -1000.0f;
 extern const float g_Recompute_Nation_Order_LookupTable_0065A9E8 = 0.0f;
 extern const double g_Recompute_Nation_Order_LookupTable_0065A9F0 = 0.0;
 double g_Recompute_Nation_Order_LookupTable_0065A9F8 = 0.01;
 double g_Recompute_Nation_Order_LookupTable_0065AA00 = 0.5;
 double g_Recompute_Nation_Order_LookupTable_0065AA08 = 1.0;
+// GLOBAL: IMPERIALISM 0x0065aa20
+extern const float g_Recompute_Nation_Order_LookupTable_0065AA20 = 139069760.0f;
 // GLOBAL: IMPERIALISM 0x00697870
 // Tactical composition reference profiles (4 rows x 5 action classes, shorts at
 // 0x697870): row 0 baseline, row 1 fort-siege, row 2 open-field, row 3 unattributed.

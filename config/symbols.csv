@@ -3668,7 +3668,7 @@ address|name|symbol|size|type|prototype|provenance
 536f70|TScatteredShipsMission::SetMapOrderEntryChildFlags||21|function|undefined SetMapOrderEntryChildFlags()|
 536fa0|RefreshMissionPortZoneContextForNation||14|function|undefined RefreshMissionPortZoneContextForNation()|
 536fc0|TNavyMission::EnsureMissionCurrentTargetContextIsValid||60|function|undefined EnsureMissionCurrentTargetContextIsValid()|
-537060|GetMissionOrderBudgetByMode||25|function|undefined GetMissionOrderBudgetByMode()|
+537060|TNavyMission::GetActiveTargetZoneByState28||25|function|undefined GetMissionOrderBudgetByMode()|
 537090|TScatteredShipsMission::QueueMissionOrdersByPriorityForContext||100|function|void __thiscall QueueMissionOrdersByPriorityForContext(int pContextAnchor, int * ppSelectedChildNode)|
 5370f0|QueueMissionOrderEntriesAcrossSelectionRange||91|function|undefined QueueMissionOrderEntriesAcrossSelectionRange()|
 53714f|QueueMissionOrderEntryAndPropagateSelectionRange||62|function|undefined QueueMissionOrderEntryAndPropagateSelectionRange()|
@@ -4065,14 +4065,14 @@ address|name|symbol|size|type|prototype|provenance
 54fbf0|RegenerateNavyPrimaryOrderDisplayNameUntilUnique||72|function|undefined RegenerateNavyPrimaryOrderDisplayNameUntilUnique()|
 54fd50|RecomputeGlobalCapabilityAverages||296|function|undefined RecomputeGlobalCapabilityAverages()|
 54fee0|GetNavyContextPointerFromGlobalTableByIndex||12|function|undefined GetNavyContextPointerFromGlobalTableByIndex()|
-54ff00|ComputeNavyOrderPriorityContributionPercentByCategory||297|function|undefined ComputeNavyOrderPriorityContributionPercentByCategory()|
+54ff00|TShip::ComputeNavyOrderPriorityContributionPercentByCategory||297|function|undefined ComputeNavyOrderPriorityContributionPercentByCategory()|
 550090|GetNormalizedIndustryActionResourceCostPercent||207|function|undefined GetNormalizedIndustryActionResourceCostPercent()|
 5501b0|CalculateMissionOrderPriorityScore||336|function|int __thiscall CalculateMissionOrderPriorityScore(int nScoreProfileId)|
 550370|AdjustMapOrderNodeStatCapped499||26|function|void __thiscall AdjustMapOrderNodeStatCapped499(short nDelta)|
 5503a0|TScatteredShipsMission::GetOrCreateMissionOrderEntryForNode||285|function|void * __thiscall GetOrCreateMissionOrderEntryForNode(void)|
 550510|GetOrderNodeDescriptorWord20ByResourceType||16|function|undefined GetOrderNodeDescriptorWord20ByResourceType()|
-550550|ComputeOrderNodeDistanceQuotientByDescriptorWord24||51|function|undefined ComputeOrderNodeDistanceQuotientByDescriptorWord24()|
-5505a0|GetNavyOrderNormalizationBaseByNationType||16|function|undefined GetNavyOrderNormalizationBaseByNationType()|
+550550|TShip::ComputeOrderNodeDistanceQuotientByDescriptorWord24||51|function|undefined ComputeOrderNodeDistanceQuotientByDescriptorWord24()|
+5505a0|TShip::GetNavyOrderNormalizationBaseByNationType||16|function|undefined GetNavyOrderNormalizationBaseByNationType()|
 5505c0|GetNavyPrimaryOrderListHead||6|function|void * __cdecl GetNavyPrimaryOrderListHead(void)|
 550610|GetNavyPrimaryOrderListIndexOfNode||25|function|undefined GetNavyPrimaryOrderListIndexOfNode()|
 550640|GetNavyPrimaryOrderNodeByIndex||27|function|undefined GetNavyPrimaryOrderNodeByIndex()|
