@@ -133,9 +133,10 @@ public:
   // === END GENERATED DECLS (TBuildingView) ===
   // TNoHilitePicture's own slice ends at 0x94 (its ctor writes field90); RTTI oracle
   // confirms sizeof(TBuildingView) == 0xa0. The ctor (0x4c6eb0) only writes field94;
-  // the 0x98..0xa0 region is left as unconfirmed padding.
+  // field98 is a base-declared slot that some derived ctors init (e.g. TShipyardView)
+  // while TBuildingView's own ctor leaves it untouched; 0x9c is unconfirmed padding.
   int field94; // +0x94
-  int pad98;   // +0x98
+  int field98; // +0x98
   int pad9c;   // +0x9c
 
   TBuildingView();

@@ -1479,6 +1479,7 @@ address|target_cpp|ownership|note
 4c7180|src/game/TBuildingView.cpp|manual|marker_sync
 4c71f0|src/game/TWarehouseView.cpp|manual|marker_sync
 4c7290|src/game/TWarehouseView.cpp|manual|marker_sync
+4c72b0|src/game/TWarehouseView.cpp|manual|marker_sync
 4c72e0|src/game/TWarehouseView.cpp|manual|marker_sync
 4c7330|src/game/TWarehouseView.cpp|manual|marker_sync
 4c7360|src/game/TWarehouseView.cpp|manual|marker_sync
@@ -1529,12 +1530,14 @@ address|target_cpp|ownership|note
 4cc640|src/game/TPurchaseCluster.cpp|manual|marker_sync
 4cc6b0|src/game/TIndustryView.cpp|manual|marker_sync
 4cc770|src/game/TIndustryView.cpp|manual|marker_sync
+4cc790|src/game/TIndustryView.cpp|manual|marker_sync
 4cc7d0|src/game/TIndustryView.cpp|manual|marker_sync
 4cc820|src/game/TIndustryView.cpp|manual|marker_sync
 4ccf30|src/game/TIndustryView.cpp|manual|marker_sync
 4cd040|src/game/TIndustryView.cpp|manual|marker_sync
 4cd760|src/game/TTradeSchoolView.cpp|manual|marker_sync
 4cd820|src/game/TTradeSchoolView.cpp|manual|marker_sync
+4cd840|src/game/TTradeSchoolView.cpp|manual|marker_sync
 4cd880|src/game/TTradeSchoolView.cpp|manual|marker_sync
 4cd8d0|src/game/TTradeSchoolView.cpp|manual|marker_sync
 4ce070|src/game/TTradeSchoolView.cpp|manual|marker_sync

@@ -10784,7 +10784,7 @@
     },
     {
       "address": "0x4c72b0",
-      "matching": 0.2,
+      "matching": 0.8,
       "name": "TWarehouseView::ConstructTWarehouseViewBaseState",
       "type": 1
     },
@@ -11114,7 +11114,7 @@
     },
     {
       "address": "0x4cc6b0",
-      "matching": 0.5263157894736842,
+      "matching": 0.5614035087719298,
       "name": "TIndustryView::CreateObject",
       "type": 1
     },
@@ -11126,7 +11126,7 @@
     },
     {
       "address": "0x4cc790",
-      "matching": 0.3076923076923077,
+      "matching": 0.6,
       "name": "TIndustryView::ConstructTIndustryViewBaseState",
       "type": 1
     },
@@ -11162,7 +11162,7 @@
     },
     {
       "address": "0x4cd760",
-      "matching": 0.5263157894736842,
+      "matching": 0.5614035087719298,
       "name": "TTradeSchoolView::CreateObject",
       "type": 1
     },
@@ -11174,7 +11174,7 @@
     },
     {
       "address": "0x4cd840",
-      "matching": 0.3076923076923077,
+      "matching": 0.6666666666666666,
       "name": "TTradeSchoolView::ConstructTTradeSchoolViewBaseState",
       "type": 1
     },

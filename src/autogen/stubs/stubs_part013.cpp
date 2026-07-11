@@ -171,14 +171,6 @@ undefined4 WrapperFor_ftol_At004c6cb0(void)
   return 0;
 }
 
-// ghidra_name TWarehouseView::ConstructTWarehouseViewBaseState
-// ghidra_proto undefined ConstructTWarehouseViewBaseState()
-// FUNCTION: IMPERIALISM 0x004c72b0
-undefined4 ConstructTWarehouseViewBaseState(void)
-{
-  return 0;
-}
-
 // ghidra_name TShipyardView::ConstructTShipyardViewBaseState
 // ghidra_proto undefined ConstructTShipyardViewBaseState()
 // FUNCTION: IMPERIALISM 0x004c82c0
@@ -235,26 +227,10 @@ undefined4 ConstructTPurchaseClusterBaseState(void)
   return 0;
 }
 
-// ghidra_name TIndustryView::ConstructTIndustryViewBaseState
-// ghidra_proto undefined ConstructTIndustryViewBaseState()
-// FUNCTION: IMPERIALISM 0x004cc790
-undefined4 ConstructTIndustryViewBaseState(void)
-{
-  return 0;
-}
-
 // ghidra_name DispatchCityViewSelectionChangeAndRefresh
 // ghidra_proto undefined DispatchCityViewSelectionChangeAndRefresh()
 // FUNCTION: IMPERIALISM 0x004ccfa2
 undefined4 DispatchCityViewSelectionChangeAndRefresh(void)
-{
-  return 0;
-}
-
-// ghidra_name TTradeSchoolView::ConstructTTradeSchoolViewBaseState
-// ghidra_proto undefined ConstructTTradeSchoolViewBaseState()
-// FUNCTION: IMPERIALISM 0x004cd840
-undefined4 ConstructTTradeSchoolViewBaseState(void)
 {
   return 0;
 }

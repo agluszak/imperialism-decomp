@@ -7,7 +7,8 @@
 
 IMPLEMENT_DYNCREATE(TWarehouseView, TBuildingView)
 
-TWarehouseView::TWarehouseView() {}
+// FUNCTION: IMPERIALISM 0x004c72b0
+TWarehouseView::TWarehouseView() : TBuildingView() {}
 
 // SYNTHETIC: IMPERIALISM 0x004c72e0
 // TWarehouseView::`scalar deleting destructor'
@@ -15,8 +16,7 @@ TWarehouseView::~TWarehouseView() {}
 
 // FUNCTION: IMPERIALISM 0x004c7330
 void TWarehouseView::BeginMouseCaptureAndStartRepeatTimer(CPoint* point, int arg2, int arg3,
-                                                          int arg4) {
-}
+                                                          int arg4) {}
 
 // FUNCTION: IMPERIALISM 0x004c7360
 undefined TWarehouseView::OrphanRetStub_004c6fd0() {
