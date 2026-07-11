@@ -17374,7 +17374,7 @@
     },
     {
       "address": "0x51a990",
-      "matching": 0.2413793103448276,
+      "matching": 0.24,
       "name": "TMapDialog::OrphanRetStub_005960c0",
       "type": 1
     },
@@ -17704,25 +17704,25 @@
     },
     {
       "address": "0x520970",
-      "matching": 0.0,
+      "matching": 0.7682926829268293,
       "name": "TMapDialog::DrawMapDialogGuidePatternSetA_00520970",
       "type": 1
     },
     {
       "address": "0x520a90",
-      "matching": 0.0,
+      "matching": 1.0,
       "name": "TMapDialog::DrawMapDialogGuidePatternSetB_00520a90",
       "type": 1
     },
     {
       "address": "0x520c10",
-      "matching": 0.0,
+      "matching": 0.5945945945945946,
       "name": "TMapDialog::DrawMapDialogGuidePatternSetC_00520c10",
       "type": 1
     },
     {
       "address": "0x520d20",
-      "matching": 0.0,
+      "matching": 1.0,
       "name": "TMapDialog::DrawMapDialogGuidePatternSetD_00520d20",
       "type": 1
     },
@@ -17734,31 +17734,31 @@
     },
     {
       "address": "0x520fc0",
-      "matching": 0.0,
+      "matching": 1.0,
       "name": "TMapDialog::DrawMapDialogGuidePatternSetE_00520fc0",
       "type": 1
     },
     {
       "address": "0x521090",
-      "matching": 0.0,
+      "matching": 0.40476190476190477,
       "name": "TMapDialog::DrawMapDialogGuidePatternSetF_00521090",
       "type": 1
     },
     {
       "address": "0x5211c0",
-      "matching": 0.0,
+      "matching": 1.0,
       "name": "TMapDialog::DrawMapDialogGuidePatternSetG_005211c0",
       "type": 1
     },
     {
       "address": "0x521340",
-      "matching": 0.0,
+      "matching": 1.0,
       "name": "TMapDialog::DrawMapDialogGuidePatternSetH_00521340",
       "type": 1
     },
     {
       "address": "0x521540",
-      "matching": 0.0,
+      "matching": 0.6444444444444445,
       "name": "TMapDialog::DrawMapDialogGuidePatternSetI_00521540",
       "type": 1
     },
