@@ -1,5 +1,6 @@
 #pragma once
 
+#include "compat.h"
 #include "game/TPicture.h"
 #include "game/mfc.h"
 
@@ -7,7 +8,7 @@
 // VTABLE: IMPERIALISM 0x0066e728
 class TOfferDeskPicture : public TPicture {
 public:
-// === BEGIN GENERATED DECLS (TOfferDeskPicture) — refreshed by recover-class; do not hand-edit ===
+  // === BEGIN GENERATED DECLS (TOfferDeskPicture) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TOfferDeskPicture)
   virtual ~TOfferDeskPicture() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -23,7 +24,8 @@ public:
   // slot 0x0c QueryStepValue inherited unchanged (0x48a2c0)
   // slot 0x0d DispatchQueuedUiCommandAndRelease inherited unchanged (0x48a3b0)
   // slot 0x0e DispatchUiSelectionToHandler inherited unchanged (0x48a3f0)
-  virtual void HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) override; // slot 0x0f 0x005bf740
+  virtual void HandleEvent(int commandId, TEventHandler* sourceHandler,
+                           TEvent* event) override; // slot 0x0f 0x005bf740
   // slot 0x10 DispatchUiCommandToHandler inherited unchanged (0x48a2e0)
   // slot 0x11 vmethod_0017 inherited unchanged (0x48a310)
   virtual void ForwardParam(int param) override; // slot 0x12 0x5bf860
@@ -80,7 +82,8 @@ public:
   // slot 0x45 vmethod_0048 inherited unchanged (0x48b860)
   // slot 0x46 DispatchUiMouseMoveToChildren inherited unchanged (0x48c450)
   // slot 0x47 BeginMouseCaptureAndStartRepeatTimer inherited unchanged (0x48e640)
-  virtual char DispatchUiMouseEventToChildrenOrSelf_Impl(CPoint* point, int arg2, int arg3, int arg4) override; // slot 0x48 0x5c0930
+  virtual char DispatchUiMouseEventToChildrenOrSelf_Impl(CPoint* point, int arg2, int arg3,
+                                                         int arg4) override; // slot 0x48 0x5c0930
   // slot 0x49 vmethod_0071 inherited unchanged (0x427240)
   // slot 0x4a QueryContentBounds inherited unchanged (0x427260)
   // slot 0x4b QueryBounds inherited unchanged (0x427290)
@@ -124,9 +127,17 @@ public:
   // slot 0x71 ResetPictureResourceEntry inherited unchanged (0x48f520)
   // slot 0x72 SetPictureResourceIdAndRefresh inherited unchanged (0x48f570)
   virtual undefined InitializeTradeScreenControlsLabelsAndNationContext(); // slot 0x73 0x5bea00
-// === END GENERATED DECLS (TOfferDeskPicture) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TOfferDeskPicture 0xCTOR`).
+  // === END GENERATED DECLS (TOfferDeskPicture) ===
+  // TPicture's own slice ends at 0x90 (ASSERT_SIZE); RTTI oracle confirms
+  // sizeof(TOfferDeskPicture) == 0xa8. The ctor only touches field9e/fieldA0/fieldA4;
+  // the two gaps (0x90..0x9e and 0x9f..0xa0) are left as unconfirmed padding.
+  unsigned char pad90[14];
+  unsigned char field9e;
+  unsigned char pad9f;
+  int fieldA0;
+  int fieldA4;
 
   TOfferDeskPicture();
 };
 
+ASSERT_SIZE(TOfferDeskPicture, 0xa8);

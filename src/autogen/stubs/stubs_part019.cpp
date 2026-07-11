@@ -659,14 +659,6 @@ undefined4 UpdatePagerButtonStatesAndRefreshPanels(void)
   return 0;
 }
 
-// ghidra_name TOfferDeskPicture::ConstructTOfferDeskPictureBaseState
-// ghidra_proto undefined ConstructTOfferDeskPictureBaseState()
-// FUNCTION: IMPERIALISM 0x005be570
-undefined4 ConstructTOfferDeskPictureBaseState(void)
-{
-  return 0;
-}
-
 // ghidra_name RefreshSelectedNationOrderCompatibilityInfo
 // ghidra_proto undefined RefreshSelectedNationOrderCompatibilityInfo()
 // FUNCTION: IMPERIALISM 0x005bf930

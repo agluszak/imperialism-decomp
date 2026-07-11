@@ -4563,6 +4563,7 @@ address|target_cpp|ownership|note
 5be370|src/game/TTradeBookView.cpp|manual|marker_sync
 5be4b0|src/game/TOfferDeskPicture.cpp|manual|marker_sync
 5be550|src/game/TOfferDeskPicture.cpp|manual|marker_sync
+5be570|src/game/TOfferDeskPicture.cpp|manual|marker_sync
 5be5b0|src/game/TOfferDeskPicture.cpp|manual|marker_sync
 5be600|src/game/TOfferDeskPicture.cpp|manual|marker_sync
 5bea00|src/game/TOfferDeskPicture.cpp|manual|marker_sync
