@@ -555,22 +555,6 @@ undefined4 WrapperFor_FreeHeapBufferIfNotNull_At00496420(void)
   return 0;
 }
 
-// ghidra_name OrphanCallChain_C42_I283_00496450
-// ghidra_proto undefined OrphanCallChain_C42_I283_00496450()
-// FUNCTION: IMPERIALISM 0x00496450
-undefined4 OrphanCallChain_C42_I283_00496450(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanCallChain_C42_I285_004967e0
-// ghidra_proto undefined OrphanCallChain_C42_I285_004967e0()
-// FUNCTION: IMPERIALISM 0x004967e0
-undefined4 OrphanCallChain_C42_I285_004967e0(void)
-{
-  return 0;
-}
-
 // ghidra_name BlitBitmapResourceToTemporaryCompatibleDcAndPresent
 // ghidra_proto undefined BlitBitmapResourceToTemporaryCompatibleDcAndPresent()
 // FUNCTION: IMPERIALISM 0x00496b80

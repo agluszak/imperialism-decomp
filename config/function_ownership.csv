@@ -808,6 +808,8 @@ address|target_cpp|ownership|note
 496270|src/game/bitmap_descriptor_helpers.cpp|manual|marker_sync
 4962a0|src/game/bitmap_descriptor_helpers.cpp|manual|marker_sync
 4962c0|src/game/bitmap_descriptor_helpers.cpp|manual|marker_sync
+496450|src/game/quickdraw_rendering.cpp|manual|marker_sync
+4967e0|src/game/quickdraw_rendering.cpp|manual|marker_sync
 496d40|src/game/quickdraw_rendering.cpp|manual|marker_sync
 497230|src/game/startup_helpers.cpp|manual|marker_sync
 4972a0|src/game/TDisplayMgr.cpp|manual|marker_sync

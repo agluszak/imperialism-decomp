@@ -348,6 +348,113 @@ void SetGlobalQuickDrawOrigin(short originX, short originY) {
   g_nQuickDrawOriginY = originY;
 }
 
+// FUNCTION: IMPERIALISM 0x00496450
+void TransparentBlitBitmapUsingMaskedRasterOps(HDC destDc, HBITMAP sourceBitmap, short destX,
+                                               short destY, COLORREF colorKey) {
+  HDC hdcSrc = CreateCompatibleDC(destDc);
+  SelectObject(hdcSrc, sourceBitmap);
+  BITMAP bm;
+  GetObjectA(sourceBitmap, sizeof(BITMAP), &bm);
+  POINT size;
+  size.x = bm.bmWidth;
+  size.y = bm.bmHeight;
+  DPtoLP(hdcSrc, &size, 1);
+
+  HDC hdcInverse = CreateCompatibleDC(destDc);
+  HDC hdcMask = CreateCompatibleDC(destDc);
+  HDC hdcResult = CreateCompatibleDC(destDc);
+  HDC hdcSave = CreateCompatibleDC(destDc);
+
+  HBITMAP bmpInverse = CreateBitmap(size.x, size.y, 1, 1, nullptr);
+  HBITMAP bmpMask = CreateBitmap(size.x, size.y, 1, 1, nullptr);
+  HBITMAP bmpResult = CreateCompatibleBitmap(destDc, size.x, size.y);
+  HBITMAP bmpSave = CreateCompatibleBitmap(destDc, size.x, size.y);
+
+  HGDIOBJ oldInverse = SelectObject(hdcInverse, bmpInverse);
+  HGDIOBJ oldMask = SelectObject(hdcMask, bmpMask);
+  HGDIOBJ oldResult = SelectObject(hdcResult, bmpResult);
+  HGDIOBJ oldSave = SelectObject(hdcSave, bmpSave);
+
+  int mapMode = GetMapMode(destDc);
+  SetMapMode(hdcSrc, mapMode);
+
+  BitBlt(hdcSave, 0, 0, size.x, size.y, hdcSrc, 0, 0, SRCCOPY);
+  COLORREF oldBkColor = SetBkColor(hdcSrc, colorKey);
+  BitBlt(hdcMask, 0, 0, size.x, size.y, hdcSrc, 0, 0, SRCCOPY);
+  SetBkColor(hdcSrc, oldBkColor);
+  BitBlt(hdcInverse, 0, 0, size.x, size.y, hdcMask, 0, 0, NOTSRCCOPY);
+  BitBlt(hdcResult, 0, 0, size.x, size.y, destDc, destX, destY, SRCCOPY);
+  BitBlt(hdcResult, 0, 0, size.x, size.y, hdcMask, 0, 0, SRCAND);
+  BitBlt(hdcSrc, 0, 0, size.x, size.y, hdcInverse, 0, 0, SRCAND);
+  BitBlt(hdcResult, 0, 0, size.x, size.y, hdcSrc, 0, 0, SRCPAINT);
+  BitBlt(destDc, destX, destY, size.x, size.y, hdcResult, 0, 0, SRCCOPY);
+  BitBlt(hdcSrc, 0, 0, size.x, size.y, hdcSave, 0, 0, SRCCOPY);
+
+  DeleteObject(SelectObject(hdcInverse, oldInverse));
+  DeleteObject(SelectObject(hdcMask, oldMask));
+  DeleteObject(SelectObject(hdcResult, oldResult));
+  DeleteObject(SelectObject(hdcSave, oldSave));
+  DeleteDC(hdcResult);
+  DeleteDC(hdcInverse);
+  DeleteDC(hdcMask);
+  DeleteDC(hdcSave);
+  DeleteDC(hdcSrc);
+}
+
+// FUNCTION: IMPERIALISM 0x004967e0
+void TransparentBlitBitmapRegionUsingMaskedRasterOps(HDC destDc, HBITMAP sourceBitmap, short destX,
+                                                     short destY, COLORREF colorKey, short srcX,
+                                                     short srcY, short width, short height) {
+  HDC hdcSrc = CreateCompatibleDC(destDc);
+  SelectObject(hdcSrc, sourceBitmap);
+  BITMAP bm;
+  GetObjectA(sourceBitmap, sizeof(BITMAP), &bm);
+  POINT size;
+  size.x = bm.bmWidth;
+  size.y = bm.bmHeight;
+  DPtoLP(hdcSrc, &size, 1);
+
+  HDC hdcInverse = CreateCompatibleDC(destDc);
+  HDC hdcMask = CreateCompatibleDC(destDc);
+  HDC hdcResult = CreateCompatibleDC(destDc);
+  HDC hdcSave = CreateCompatibleDC(destDc);
+
+  HBITMAP bmpInverse = CreateBitmap(size.x, size.y, 1, 1, nullptr);
+  HBITMAP bmpMask = CreateBitmap(size.x, size.y, 1, 1, nullptr);
+  HBITMAP bmpResult = CreateCompatibleBitmap(destDc, size.x, size.y);
+  HBITMAP bmpSave = CreateCompatibleBitmap(destDc, size.x, size.y);
+
+  HGDIOBJ oldInverse = SelectObject(hdcInverse, bmpInverse);
+  HGDIOBJ oldMask = SelectObject(hdcMask, bmpMask);
+  HGDIOBJ oldResult = SelectObject(hdcResult, bmpResult);
+  HGDIOBJ oldSave = SelectObject(hdcSave, bmpSave);
+
+  int mapMode = GetMapMode(destDc);
+  SetMapMode(hdcSrc, mapMode);
+
+  BitBlt(hdcSave, 0, 0, size.x, size.y, hdcSrc, 0, 0, SRCCOPY);
+  COLORREF oldBkColor = SetBkColor(hdcSrc, colorKey);
+  BitBlt(hdcMask, 0, 0, size.x, size.y, hdcSrc, 0, 0, SRCCOPY);
+  SetBkColor(hdcSrc, oldBkColor);
+  BitBlt(hdcInverse, 0, 0, size.x, size.y, hdcMask, 0, 0, NOTSRCCOPY);
+  BitBlt(hdcResult, 0, 0, size.x, size.y, destDc, destX, destY, SRCCOPY);
+  BitBlt(hdcResult, 0, 0, size.x, size.y, hdcMask, 0, 0, SRCAND);
+  BitBlt(hdcSrc, 0, 0, size.x, size.y, hdcInverse, 0, 0, SRCAND);
+  BitBlt(hdcResult, 0, 0, size.x, size.y, hdcSrc, 0, 0, SRCPAINT);
+  BitBlt(destDc, destX, destY, width, height, hdcResult, srcX, srcY, SRCCOPY);
+  BitBlt(hdcSrc, 0, 0, size.x, size.y, hdcSave, 0, 0, SRCCOPY);
+
+  DeleteObject(SelectObject(hdcInverse, oldInverse));
+  DeleteObject(SelectObject(hdcMask, oldMask));
+  DeleteObject(SelectObject(hdcResult, oldResult));
+  DeleteObject(SelectObject(hdcSave, oldSave));
+  DeleteDC(hdcResult);
+  DeleteDC(hdcInverse);
+  DeleteDC(hdcMask);
+  DeleteDC(hdcSave);
+  DeleteDC(hdcSrc);
+}
+
 // FUNCTION: IMPERIALISM 0x00496d40
 void __stdcall BlitRectWithOptionalTransparency(TQuickDrawBlitSurface* srcSurface,
                                                 TQuickDrawBlitSurface* dstSurface, RECT* srcRect,
