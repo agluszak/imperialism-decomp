@@ -5,6 +5,9 @@
 #include "game/TTurnEventDialogFactoryRegistry.h"
 #include "game/global_data_tables.h"
 
+// SYNTHETIC: IMPERIALISM 0x004793c0
+// CAmbitDocument::CreateObject
+
 // SYNTHETIC: IMPERIALISM 0x00479440
 // CAmbitDocument::GetRuntimeClass
 

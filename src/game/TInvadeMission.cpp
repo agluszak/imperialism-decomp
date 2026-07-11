@@ -7,6 +7,9 @@
 
 IMPLEMENT_SERIAL(TInvadeMission, TAttackProvinceMission, 1)
 
+// SYNTHETIC: IMPERIALISM 0x0053f080
+// TInvadeMission::CreateObject
+
 // FUNCTION: IMPERIALISM 0x0053f120
 int TInvadeMission::ReturnZeroSlot5C() {
   return reinterpret_cast<int>(beachhead34);

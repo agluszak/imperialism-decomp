@@ -180,6 +180,7 @@ address|target_cpp|ownership|note
 4601b0|src/game/turn_event_dialog_factory.cpp|manual|marker_sync
 46fd10|src/game/turn_event_dialog_factory.cpp|manual|marker_sync
 4749a0|src/game/turn_event_dialog_factory.cpp|manual|marker_sync
+4793c0|src/game/CAmbitDocument.cpp|manual|marker_sync
 479440|src/game/CAmbitDocument.cpp|manual|marker_sync
 479480|src/game/CAmbitDocument.cpp|manual|marker_sync
 479710|src/game/CAmbitDocument.cpp|manual|marker_sync
@@ -932,12 +933,14 @@ address|target_cpp|ownership|note
 49ff70|src/game/TCouncilTickerAnimation.cpp|manual|marker_sync
 49ff90|src/game/TCouncilTickerAnimation.cpp|manual|marker_sync
 49ffe0|src/game/TCouncilTickerAnimation.cpp|manual|marker_sync
+4a0020|src/game/TFocusAnimation.cpp|manual|marker_sync
 4a0050|src/game/TFocusAnimation.cpp|manual|name_paired_no_marker
 4a00a0|src/game/TFocusAnimation.cpp|manual|name_paired_no_marker
 4a0140|src/game/TFocusAnimation.cpp|manual|marker_sync
 4a0190|src/game/TFocusAnimation.cpp|manual|marker_sync
 4a0250|src/game/TFocusAnimation.cpp|manual|marker_sync
 4a0280|src/game/TFocusAnimation.cpp|manual|marker_sync
+4a03f0|src/game/TTransFocusAnimation.cpp|manual|marker_sync
 4a0430|src/game/TTransFocusAnimation.cpp|manual|marker_sync
 4a0480|src/game/TTransFocusAnimation.cpp|manual|name_paired_no_marker
 4a04a0|src/game/TTransFocusAnimation.cpp|manual|marker_sync
@@ -2818,6 +2821,7 @@ address|target_cpp|ownership|note
 53bcc0|src/game/TScatteredShipsMission.cpp|manual|marker_sync
 53bdd0|src/game/TScatteredShipsMission.cpp|manual|marker_sync
 53bf90|src/game/TScatteredShipsMission.cpp|manual|marker_sync
+53bfb0|src/game/TArmyMission.cpp|manual|marker_sync
 53c030|src/game/TArmyMission.cpp|manual|marker_sync
 53c0a0|src/game/TArmyMission.cpp|manual|marker_sync
 53c1b0|src/game/TArmyMission.cpp|manual|marker_sync
@@ -2837,6 +2841,7 @@ address|target_cpp|ownership|note
 53d420|src/game/TArmyMission.cpp|manual|marker_sync
 53d4a0|src/game/TArmyMission.cpp|manual|marker_sync
 53d630|src/game/TArmyMission.cpp|manual|marker_sync
+53d670|src/game/TAttackProvinceMission.cpp|manual|marker_sync
 53d6f0|src/game/TAttackProvinceMission.cpp|manual|marker_sync
 53d710|src/game/TAttackProvinceMission.cpp|manual|marker_sync
 53d780|src/game/TAttackProvinceMission.cpp|manual|marker_sync
@@ -2865,6 +2870,7 @@ address|target_cpp|ownership|note
 53eff0|src/game/TDefendProvinceMission.cpp|manual|marker_sync
 53f010|src/game/TDefendProvinceMission.cpp|manual|marker_sync
 53f040|src/game/TDefendProvinceMission.cpp|manual|marker_sync
+53f080|src/game/TInvadeMission.cpp|manual|marker_sync
 53f120|src/game/TInvadeMission.cpp|manual|marker_sync
 53f140|src/game/TInvadeMission.cpp|manual|marker_sync
 53f160|src/game/TInvadeMission.cpp|manual|marker_sync
@@ -3343,6 +3349,7 @@ address|target_cpp|ownership|note
 56d7d0|src/game/TLoadSavePicture.cpp|manual|marker_sync
 56da50|src/game/TLoadSavePicture.cpp|manual|marker_sync
 56df40|src/game/TLoadSavePicture.cpp|manual|marker_sync
+56e120|src/game/TTwoPicSlider.cpp|manual|marker_sync
 56e1e0|src/game/TTwoPicSlider.cpp|manual|marker_sync
 56e200|src/game/TTwoPicSlider.cpp|manual|marker_sync
 56e2f0|src/game/TTwoPicSlider.cpp|manual|marker_sync

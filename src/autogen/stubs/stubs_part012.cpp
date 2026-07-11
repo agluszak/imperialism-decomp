@@ -30,7 +30,7 @@ undefined4 ConstructTCivAnimation2BaseState(void)
 // ghidra_name TOneTimeAnimation::CreateObject
 // ghidra_proto undefined CreateObject()
 // FUNCTION: IMPERIALISM 0x0049fcc0
-undefined4 CreateObject_0049FCC0(void)
+undefined4 CreateObject(void)
 {
   return 0;
 }
@@ -67,26 +67,10 @@ undefined4 CreateTCouncilTickerAnimationInstance(void)
   return 0;
 }
 
-// ghidra_name TFocusAnimation::CreateObject
-// ghidra_proto undefined CreateObject()
-// FUNCTION: IMPERIALISM 0x004a0020
-undefined4 CreateObject_004A0020(void)
-{
-  return 0;
-}
-
 // ghidra_name TFocusAnimation::CreateTFocusAnimationInstance
 // ghidra_proto undefined CreateTFocusAnimationInstance()
 // FUNCTION: IMPERIALISM 0x004a0080
 undefined4 CreateTFocusAnimationInstance(void)
-{
-  return 0;
-}
-
-// ghidra_name TTransFocusAnimation::CreateObject
-// ghidra_proto TTransFocusAnimation * __cdecl CreateObject(void)
-// FUNCTION: IMPERIALISM 0x004a03f0
-undefined4 CreateObject_004A03F0(void)
 {
   return 0;
 }

@@ -787,14 +787,6 @@ undefined4 WrapperFor_thunk_ConstructPictureResourceEntryBase_At0045d480(void)
   return 0;
 }
 
-// ghidra_name CAmbitDocument::CreateObject
-// ghidra_proto undefined CreateObject()
-// FUNCTION: IMPERIALISM 0x004793c0
-undefined4 CreateObject(void)
-{
-  return 0;
-}
-
 // ghidra_name TTechStorePage::GetCityDialogValueDwordC
 // ghidra_proto undefined OrphanVtableAssignStub_00479460(void)
 // FUNCTION: IMPERIALISM 0x00479460

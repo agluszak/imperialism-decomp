@@ -683,14 +683,6 @@ undefined4 LoadAndFormatMappedFlavorTextRecordsFromStream(void)
   return 0;
 }
 
-// ghidra_name TTwoPicSlider::CreateObject
-// ghidra_proto undefined CreateObject()
-// FUNCTION: IMPERIALISM 0x0056e120
-undefined4 CreateObject_0056E120(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_ftol_At0056f330
 // ghidra_proto undefined WrapperFor_ftol_At0056f330()
 // FUNCTION: IMPERIALISM 0x0056f330

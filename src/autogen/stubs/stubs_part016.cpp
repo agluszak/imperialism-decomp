@@ -251,14 +251,6 @@ undefined4 WrapperFor_AFX_CLASSINIT_At0053bb40(void)
   return 0;
 }
 
-// ghidra_name TArmyMission::CreateObject
-// ghidra_proto undefined CreateObject()
-// FUNCTION: IMPERIALISM 0x0053bfb0
-undefined4 CreateObject_0053BFB0(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_AFX_CLASSINIT_At0053c050
 // ghidra_proto undefined WrapperFor_AFX_CLASSINIT_At0053c050()
 // FUNCTION: IMPERIALISM 0x0053c050
@@ -315,14 +307,6 @@ undefined4 AccumulateMissionUnitPriorityVector(void)
   return 0;
 }
 
-// ghidra_name TAttackProvinceMission::CreateObject
-// ghidra_proto undefined CreateObject()
-// FUNCTION: IMPERIALISM 0x0053d670
-undefined4 CreateObject_0053D670(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_AFX_CLASSINIT_At0053d730
 // ghidra_proto undefined WrapperFor_AFX_CLASSINIT_At0053d730()
 // FUNCTION: IMPERIALISM 0x0053d730
@@ -343,14 +327,6 @@ undefined4 ResetTAttackProvinceMissionToSentinelVtable(void)
 // ghidra_proto undefined WrapperFor_AFX_CLASSINIT_At0053e690()
 // FUNCTION: IMPERIALISM 0x0053e690
 undefined4 WrapperFor_AFX_CLASSINIT_At0053e690(void)
-{
-  return 0;
-}
-
-// ghidra_name TInvadeMission::CreateObject
-// ghidra_proto undefined CreateObject()
-// FUNCTION: IMPERIALISM 0x0053f080
-undefined4 CreateObject_0053F080(void)
 {
   return 0;
 }

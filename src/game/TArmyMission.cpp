@@ -14,6 +14,9 @@
 
 IMPLEMENT_SERIAL(TArmyMission, TMission, 1)
 
+// SYNTHETIC: IMPERIALISM 0x0053bfb0
+// TArmyMission::CreateObject
+
 // SYNTHETIC: IMPERIALISM 0x0053c030
 // TArmyMission::GetRuntimeClass
 // SYNTHETIC: IMPERIALISM 0x0053c1d0

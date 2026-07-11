@@ -14,6 +14,9 @@
 
 IMPLEMENT_SERIAL(TAttackProvinceMission, TArmyMission, 1)
 
+// SYNTHETIC: IMPERIALISM 0x0053d670
+// TAttackProvinceMission::CreateObject
+
 // SYNTHETIC: IMPERIALISM 0x0053d710
 // TAttackProvinceMission::GetRuntimeClass
 // SYNTHETIC: IMPERIALISM 0x0053d7c0

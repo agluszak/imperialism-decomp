@@ -16,6 +16,9 @@
 #include <new>
 #include "game/CString.h"
 
+// SYNTHETIC: IMPERIALISM 0x0056e120
+// TTwoPicSlider::CreateObject
+
 // SYNTHETIC: IMPERIALISM 0x0056e1e0
 // TTwoPicSlider::GetRuntimeClass
 

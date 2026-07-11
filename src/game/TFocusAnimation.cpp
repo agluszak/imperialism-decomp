@@ -13,6 +13,9 @@
 #include "game/quickdraw_rendering.h"
 #include "game/TAnimator.h"
 
+// SYNTHETIC: IMPERIALISM 0x004a0020
+// TFocusAnimation::CreateObject
+
 IMPLEMENT_DYNCREATE(TFocusAnimation, TAnimation)
 
 TFocusAnimation::TFocusAnimation() : TAnimation(), enabledFlag(1) {}

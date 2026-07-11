@@ -1324,8 +1324,8 @@
     },
     {
       "address": "0x4793c0",
-      "matching": 0.07692307692307693,
-      "name": "CAmbitDocument::CreateObject(void)",
+      "matching": 1.0,
+      "name": "CAmbitDocument::CreateObject",
       "type": 1
     },
     {
@@ -7255,8 +7255,8 @@
     },
     {
       "address": "0x4a0020",
-      "matching": 0.3333333333333333,
-      "name": "TFocusAnimation::CreateObject(void)",
+      "matching": 0.4117647058823529,
+      "name": "TFocusAnimation::CreateObject",
       "type": 1
     },
     {
@@ -7303,8 +7303,8 @@
     },
     {
       "address": "0x4a03f0",
-      "matching": 0.26666666666666666,
-      "name": "TTransFocusAnimation::CreateObject(void)",
+      "matching": 0.32432432432432434,
+      "name": "TTransFocusAnimation::CreateObject",
       "type": 1
     },
     {
@@ -20055,8 +20055,8 @@
     },
     {
       "address": "0x53bfb0",
-      "matching": 0.07407407407407407,
-      "name": "TArmyMission::CreateObject(void)",
+      "matching": 0.8979591836734694,
+      "name": "TArmyMission::CreateObject",
       "type": 1
     },
     {
@@ -20211,8 +20211,8 @@
     },
     {
       "address": "0x53d670",
-      "matching": 0.13333333333333333,
-      "name": "TAttackProvinceMission::CreateObject(void)",
+      "matching": 0.46153846153846156,
+      "name": "TAttackProvinceMission::CreateObject",
       "type": 1
     },
     {
@@ -20391,8 +20391,8 @@
     },
     {
       "address": "0x53f080",
-      "matching": 0.05555555555555555,
-      "name": "TInvadeMission::CreateObject(void)",
+      "matching": 0.5517241379310345,
+      "name": "TInvadeMission::CreateObject",
       "type": 1
     },
     {
@@ -24124,8 +24124,8 @@
     },
     {
       "address": "0x56e120",
-      "matching": 0.05,
-      "name": "TTwoPicSlider::CreateObject(void)",
+      "matching": 0.5161290322580645,
+      "name": "TTwoPicSlider::CreateObject",
       "type": 1
     },
     {
