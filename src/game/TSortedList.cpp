@@ -1,4 +1,6 @@
 #include "game/TSortedList.h"
+
+#include <stdlib.h>
 #include "game/TMission.h"
 #include <new>
 
@@ -10,36 +12,89 @@ IMPLEMENT_DYNCREATE(TSortedList, TObject)
 // SYNTHETIC: IMPERIALISM 0x00487a90
 // TSortedList::CreateObject
 
+// Not-yet-recovered free functions this file calls into.
+extern undefined4 GenerateThreadLocalRandom15(void);
+
+// Default-compare trampoline whose address Sort() passes as the comparator: adapts the
+// three-arg __cdecl comparator shape onto the virtual Compare of the list supplied as
+// context. (Ghidra: OrphanCallChain_C1_I08_00487a60.)
+// FUNCTION: IMPERIALISM 0x00487a60
+static short __cdecl DispatchTSortedListDefaultCompare(void* a, void* b, void* context) {
+  return static_cast<TSortedList*>(context)->Compare(a, b);
+}
+
 // FUNCTION: IMPERIALISM 0x00487b30
-int TSortedList::VirtualSlot6C() {
+short TSortedList::Compare(void* a, void* b) {
+  if (reinterpret_cast<unsigned int>(a) > reinterpret_cast<unsigned int>(b)) {
+    return 1;
+  }
+  if (reinterpret_cast<unsigned int>(a) < reinterpret_cast<unsigned int>(b)) {
+    return -1;
+  }
   return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x00487b60
-int TSortedList::VirtualSlot70() {
-  return 0;
+void TSortedList::QuickSort(int lo, int hi, TSortedListCompareFunc compare, void* context) {
+  if (lo < hi) {
+    int pivot = QSPartition(lo, hi, compare, context);
+    QuickSort(lo, pivot, compare, context);
+    QuickSort(pivot + 1, hi, compare, context);
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x00487bd0
-int TSortedList::VirtualSlot74() {
-  return 0;
+int TSortedList::QSPartitionCore(int lo, int hi, TSortedListCompareFunc compare, void* context) {
+  if (lo >= hi) {
+    return hi;
+  }
+  void* pivot = GetEntryByOrdinal(lo);
+  int below = lo - 1;
+  int above = hi + 1;
+  for (;;) {
+    do {
+      above--;
+    } while (compare(pivot, GetEntryByOrdinal(above), context) <= -1);
+    do {
+      below++;
+    } while (compare(pivot, GetEntryByOrdinal(below), context) >= 1);
+    if (above <= below) {
+      return above;
+    }
+    void* belowEntry = GetEntryByOrdinal(below);
+    void* aboveEntry = GetEntryByOrdinal(above);
+    SetAtOrdinal(below, &aboveEntry, 1);
+    SetAtOrdinal(above, &belowEntry, 1);
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x00487cc0
-int TSortedList::VirtualSlot78() {
-  return 0;
+int TSortedList::QSPartition(int lo, int hi, TSortedListCompareFunc compare, void* context) {
+  int pivotOrdinal = lo;
+  if (lo != hi) {
+    pivotOrdinal = static_cast<int>(GenerateThreadLocalRandom15()) % abs(hi - lo) + lo;
+  }
+  // Swap the random pick into the pivot position through the public CPtrList API
+  // (FindIndex+SetAt compile to the same node-data stores the original emits).
+  void* loEntry = GetEntryByOrdinal(lo);
+  void* pivotEntry = GetEntryByOrdinal(pivotOrdinal);
+  listState.SetAt(listState.FindIndex(lo - 1), pivotEntry);
+  listState.SetAt(listState.FindIndex(pivotOrdinal - 1), loEntry);
+  return QSPartitionCore(lo, hi, compare, context);
 }
 
 // FUNCTION: IMPERIALISM 0x00487d90
-int TSortedList::VirtualSlot64() {
-  return 0;
+void TSortedList::Sort() {
+  if (GetCount() > 0) {
+    QuickSort(1, GetCount(), &DispatchTSortedListDefaultCompare, this);
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x00487dd0
-int TSortedList::SortEntriesWithComparator(int(__cdecl* compare)(void*, void*), int unused) {
-  (void)compare;
-  (void)unused;
-  return 0;
+void TSortedList::SortBy(TSortedListCompareFunc compare, void* context) {
+  if (GetCount() > 0) {
+    QuickSort(1, GetCount(), compare, context);
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x004885d0
@@ -166,6 +221,9 @@ void TSortedList::SetAtOrdinal(int ordinal, void** entryPtr, int unusedFlag) {
 // FUNCTION: IMPERIALISM 0x004a8640
 TSortedList::TSortedList() {}
 
+// Genuine reconstruction, not base construction: derived ctors (TArmyStackList,
+// TTaskList) run the default TSortedList() first and then re-run the CPtrList ctor
+// over listState with their real block size, exactly as the original binary does.
 void TSortedList::ConstructTSortedListBaseState(int blockSize) {
   new (&this->listState) CPtrList(blockSize);
 }

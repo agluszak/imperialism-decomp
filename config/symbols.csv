@@ -654,15 +654,15 @@ address|name|symbol|size|type|prototype|provenance
 4878e0|TCommand::Free||12|function|undefined NextDiplomacyCommandVtableSlotDC_DestroySelf()|
 487900|TCommand::NextDiplomacyCommandVtableSlotE8_NotifyOwnerSlot94||19|function|void NextDiplomacyCommandVtableSlotE8_NotifyOwnerSlot94()|
 487a00|TCommand::OrphanRetStub_00487a00||1|function|void OrphanRetStub_00487a00(void)|
-487a60|OrphanCallChain_C1_I08_00487a60||20|function|undefined OrphanCallChain_C1_I08_00487a60()|
+487a60|DispatchTSortedListDefaultCompare||20|function|short DispatchTSortedListDefaultCompare(void* a, void* b, void* context)|
 487a90|TSortedList::CreateObject|?CreateObject@TSortedList@@SGPAVCObject@@XZ|94|function|undefined CreateObject()|rtti
 487b10|TSortedList::GetRuntimeClass||6|function|undefined GetTSortedListClassNamePointer()|rtti
-487b30|TSortedList::ConstructTSortedListBaseState||24|function|undefined ConstructTSortedListBaseState()|
-487b60|TSortedList::DestructTSortedListAndMaybeFree||80|function|undefined DestructTSortedListAndMaybeFree()|
-487bd0|OrphanCallChain_C9_I83_00487bd0||179|function|undefined OrphanCallChain_C9_I83_00487bd0()|
-487cc0|Helper_Uses_FindIndex_At00487cc0||155|function|undefined Helper_Uses_FindIndex_At00487cc0()|
-487d90|OrphanCallChain_C3_I21_00487d90||38|function|undefined OrphanCallChain_C3_I21_00487d90()|
-487dd0|OrphanCallChain_C3_I23_00487dd0||44|function|undefined OrphanCallChain_C3_I23_00487dd0()|
+487b30|TSortedList::Compare||24|function|short Compare(void* a, void* b)|
+487b60|TSortedList::QuickSort||80|function|void QuickSort(int lo, int hi, TSortedListCompareFunc compare, void* context)|
+487bd0|TSortedList::QSPartitionCore||179|function|int QSPartitionCore(int lo, int hi, TSortedListCompareFunc compare, void* context)|
+487cc0|TSortedList::QSPartition||155|function|int QSPartition(int lo, int hi, TSortedListCompareFunc compare, void* context)|
+487d90|TSortedList::Sort||38|function|void Sort()|
+487dd0|TSortedList::SortBy||44|function|void SortBy(TSortedListCompareFunc compare, void* context)|
 487e10|FindOneBasedNodeIndexByValueInLinkedList||33|function|undefined FindOneBasedNodeIndexByValueInLinkedList()|
 487e50|TList::CreateObject|?CreateObject@TList@@SGPAVCObject@@XZ|94|function|undefined CreateObject()|rtti
 487ed0|TList::GetRuntimeClass||6|function|undefined GetTListClassNamePointer()|rtti
@@ -1538,7 +1538,7 @@ address|name|symbol|size|type|prototype|provenance
 4a8450|TArmyStackList::ConstructTArmyStackListBaseState||77|function|undefined ConstructTArmyStackListBaseState()|
 4a84c0|TArmyStackList::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 4a84f0|TArmyStackList::WrapperFor_DestructCPtrListBaseState_At004a84f0||62|function|undefined WrapperFor_DestructCPtrListBaseState_At004a84f0()|
-4a8560|TArmyStackList::ConstructTSortedListBaseState||43|function|undefined GetTEventHandlerClassNamePointer(int param_1, int param_2)|
+4a8560|TArmyStackList::Compare||43|function|short Compare(void* a, void* b)|
 4a8640|WrapperFor_InitializeLinkedListSentinelNodeWithOwnerContext_At004a8640||77|function|undefined WrapperFor_InitializeLinkedListSentinelNodeWithOwnerContext_At004a8640()|
 4a8740|WrapperFor_ftol_At004a8740||30|function|undefined WrapperFor_ftol_At004a8740()|
 4a8770|TGarrisonView::CreateObject|?CreateObject@TGarrisonView@@SGPAVCObject@@XZ|92|function|undefined CreateObject()|rtti

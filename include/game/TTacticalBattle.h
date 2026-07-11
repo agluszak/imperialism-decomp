@@ -208,7 +208,7 @@ public:
 ASSERT_SIZE(TTacticalBattle, 0x78);
 
 // Turn-order comparator for the battle record list (0x59fdb0 passes it to
-// SortEntriesWithComparator): higher base action points first, then higher quality,
-// then the +0x24 serialized word. Returns its -1/0/1 verdict in AX (short), so the
-// sort callsite adjusts the return type with a function-pointer cast.
-short __cdecl CompareTacticalUnitsForTurnOrder(void* a, void* b); // 0x59f610
+// SortBy): higher base action points first, then higher quality, then the +0x24
+// serialized word. Returns its -1/0/1 verdict in AX (short); the context argument
+// (the battle, passed by the SortBy call site) is unused.
+short __cdecl CompareTacticalUnitsForTurnOrder(void* a, void* b, void* context); // 0x59f610

@@ -348,6 +348,7 @@ address|target_cpp|ownership|note
 4878e0|src/game/TCommand.cpp|manual|marker_sync
 487900|src/game/TCommand.cpp|manual|marker_sync
 487a00|src/game/TCommand.cpp|manual|marker_sync
+487a60|src/game/TSortedList.cpp|manual|marker_sync
 487a90|src/game/TSortedList.cpp|manual|marker_sync
 487b10|src/game/TSortedList.cpp|manual|marker_sync
 487b30|src/game/TSortedList.cpp|manual|marker_sync

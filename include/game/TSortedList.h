@@ -6,6 +6,12 @@
 
 class TStream;
 
+// Three-way comparator shape used by the MacApp-heritage sort API below: short verdict
+// (<0 / 0 / >0) in AX, __cdecl, with the caller-supplied context as the third argument
+// (Sort() passes the list itself so the default trampoline can dispatch the virtual
+// Compare).
+typedef short(__cdecl* TSortedListCompareFunc)(void* a, void* b, void* context);
+
 // TObject-derived linked-list base (vtable 0x00648ee0).
 // Base recovered from CRuntimeClass descriptor: TSortedList -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x00648ee0
@@ -61,14 +67,24 @@ public:
   virtual void FreePayloadsAndDestroy();
   virtual void RemoveAll();
   virtual void SetAtOrdinal(int ordinal, void** entryPtr, int unusedFlag);
-  virtual int VirtualSlot64();
-  // Sorts the list with a caller-supplied comparator (evidence: both auto-deploy
-  // strategies at 0x59bcf0/0x59bf20 push (&comparator, 0)).
-  virtual int SortEntriesWithComparator(int(__cdecl* compare)(void*, void*), int unused = 0);
-  virtual int VirtualSlot6C();
-  virtual int VirtualSlot70();
-  virtual int VirtualSlot74();
-  virtual int VirtualSlot78();
+  // --- MacApp TSortedList sort family (names from the Mac oracle; slot bodies read
+  // from the raw listings -- ordinals are 1-based) ---
+  // Sort() = QuickSort(1, GetCount(), &DispatchTSortedListDefaultCompare, this).
+  virtual void Sort(); // slot 0x64 0x487d90
+  // SortBy: same as Sort with a caller-supplied comparator+context (evidence: the
+  // auto-deploy strategies at 0x59bcf0/0x59bf20 push (&comparator, 0)).
+  virtual void SortBy(TSortedListCompareFunc compare, void* context); // slot 0x68 0x487dd0
+  // Default comparator: unsigned three-way compare of the raw payload values (Mac:
+  // Compare(TObject*, TObject*) returning a short CompareResult).
+  virtual short Compare(void* a, void* b); // slot 0x6c 0x487b30
+  virtual void QuickSort(int lo, int hi, TSortedListCompareFunc compare,
+                         void* context); // slot 0x70 0x487b60
+  // Hoare partition core over ordinals [lo, hi]; pivot = payload at ordinal lo.
+  virtual int QSPartitionCore(int lo, int hi, TSortedListCompareFunc compare,
+                              void* context); // slot 0x74 0x487bd0
+  // Mac QSPartition: swaps a random ordinal into the pivot position, then runs the core.
+  virtual int QSPartition(int lo, int hi, TSortedListCompareFunc compare,
+                          void* context); // slot 0x78 0x487cc0
 
   CPtrList listState; // +0x04
 

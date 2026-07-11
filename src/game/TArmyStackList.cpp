@@ -17,6 +17,14 @@ TArmyStackList::TArmyStackList() : TSortedList() {
 TArmyStackList::~TArmyStackList() {}
 
 // FUNCTION: IMPERIALISM 0x004a8560
-int TArmyStackList::VirtualSlot6C() {
+short TArmyStackList::Compare(void* a, void* b) {
+  short aKey = *reinterpret_cast<short*>(static_cast<char*>(a) + 6);
+  short bKey = *reinterpret_cast<short*>(static_cast<char*>(b) + 6);
+  if (aKey < bKey) {
+    return 1;
+  }
+  if (aKey > bKey) {
+    return -1;
+  }
   return 0;
 }
