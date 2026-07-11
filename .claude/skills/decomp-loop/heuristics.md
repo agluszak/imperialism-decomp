@@ -1144,3 +1144,18 @@ headers before splicing.
     the stale `config/function_ownership.csv` row — `just regen-stubs` reports
     "Pruned ... 0" and does not auto-remove it; the stub count only rises back after the
     manual delete + re-regen.
+
+74. **A method whose every caller loads ECX from the same global belongs to that
+    global's class -- Ghidra buckets orphan thiscall methods by address proximity,
+    not by receiver.** The registry pair 0x4a0d10/0x4a0d30 sat under TCivAnimation2
+    (whose code neighbours them) while every call site did `mov ecx,[g_pUiAnimator]`;
+    the receiver global's declared type (TAnimator*) names the true owner. Check the
+    callers' ECX source before accepting any orphan method's class bucket, then move
+    the marker AND fix the class prefix in symbols.csv (the earlier TTaskList lesson).
+
+75. **Run `just detect` after every build completes and before any `just compare`,
+    even mid-session.** Comparing against a stale PDB right after a rebuild produces
+    phantom "Failed to find a match at 0xADDR" hard-fails and wildly wrong low scores
+    for functions that are actually 100% -- re-running detect then compare on the same
+    addresses fixed five phantom failures in one batch. Never conclude a claim is
+    unverifiable from a compare that ran before detect refreshed reccmp-build.yml.
