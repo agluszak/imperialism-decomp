@@ -478,12 +478,15 @@ void TNavyMission::ConsolidateMissionOrderEntriesByTargetAndQueue(int* pContextA
 }
 
 // FUNCTION: IMPERIALISM 0x00537270
-float TNavyMission::ReturnZeroFloatSlot74() {
+float TNavyMission::ReturnZeroFloatSlot74(TMilitaryUnit* candidateUnit) {
+  (void)candidateUnit;
   return 0.0f;
 }
 
 // FUNCTION: IMPERIALISM 0x00537610
-float TNavyMission::ReturnZeroFloatSlot7C() {
+float TNavyMission::ReturnZeroFloatSlot7C(TMilitaryUnit* candidateUnit, float* referenceVector) {
+  (void)candidateUnit;
+  (void)referenceVector;
   return 0.0f;
 }
 

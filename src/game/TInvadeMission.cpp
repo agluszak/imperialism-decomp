@@ -175,12 +175,12 @@ float TInvadeMission::ReturnZeroFloatSlot70(TMilitaryUnit* candidateUnit) {
 }
 
 // FUNCTION: IMPERIALISM 0x0053fb60
-float TInvadeMission::ReturnZeroFloatSlot74() {
+float TInvadeMission::ReturnZeroFloatSlot74(TMilitaryUnit* candidateUnit) {
   if (flag10 != 0) {
     return 0.0f;
   }
   if (beachhead34 != nullptr) {
-    return beachhead34->ReturnZeroFloatSlot74();
+    return beachhead34->ReturnZeroFloatSlot74(candidateUnit);
   }
   return 0.0f;
 }

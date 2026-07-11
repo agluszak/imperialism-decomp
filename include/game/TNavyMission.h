@@ -40,10 +40,10 @@ public:
   virtual float ReturnZeroFloatSlot68() override;    // slot 0x68 0x537f40
   virtual float
   ReturnZeroFloatSlot6C() override; // slot 0x6c 0x5378c0 -- dot product with baseline profile
-  virtual float
-  ReturnZeroFloatSlot74() override; // slot 0x74 0x537270 -- match delta vs candidate navy order
-  virtual float
-  ReturnZeroFloatSlot7C() override; // slot 0x7c 0x537610 -- order penalty vs target profile
+  virtual float ReturnZeroFloatSlot74(TMilitaryUnit* candidateUnit)
+      override; // slot 0x74 0x537270 -- match delta vs candidate navy order
+  virtual float ReturnZeroFloatSlot7C(TMilitaryUnit* candidateUnit, float* referenceVector)
+      override; // slot 0x7c 0x537610 -- order penalty vs target profile
   virtual void
   NoOpSlot84(int a,
              int b) override; // slot 0x84 0x536780 -- attach order child as queued and notify

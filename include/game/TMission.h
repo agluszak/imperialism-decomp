@@ -76,12 +76,15 @@ public:
   virtual float ReturnZeroFloatSlot68();                             // 0x1a 0x534e10
   virtual float ReturnZeroFloatSlot6C();                             // 0x1b 0x534e30
   virtual float ReturnZeroFloatSlot70(
-      TMilitaryUnit* candidateUnit);     // 0x1c 0x534e70 (ret 4 -- verified against base stub)
-  virtual float ReturnZeroFloatSlot74(); // 0x1d 0x534e50
+      TMilitaryUnit* candidateUnit); // 0x1c 0x534e70 (ret 4 -- verified against base stub)
+  virtual float ReturnZeroFloatSlot74(
+      TMilitaryUnit* candidateUnit); // 0x1d 0x534e50 (ret 4 -- verified: base + both overrides)
   virtual float ReturnZeroFloatSlot78(
       TMilitaryUnit* candidateUnit,
-      float* referenceVector);           // 0x1e 0x534eb0 (ret 8 -- verified against base stub)
-  virtual float ReturnZeroFloatSlot7C(); // 0x1f 0x534e90
+      float* referenceVector); // 0x1e 0x534eb0 (ret 8 -- verified against base stub)
+  virtual float ReturnZeroFloatSlot7C(
+      TMilitaryUnit* candidateUnit,
+      float* referenceVector); // 0x1f 0x534e90 (ret 8 -- verified: base + override)
   virtual void NoOpSlot80(TMilitaryUnit* unit, int notify); // 0x20 0x534ef0 — AdoptUnitSlot80
   virtual void NoOpSlot84(int a, int b);                    // 0x21 0x534ed0 (ret 8)
   virtual void NoOpSlot88(TMilitaryUnit* unit, int unused); // 0x22 0x534f30
