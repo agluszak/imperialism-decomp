@@ -147,14 +147,6 @@ undefined4 ComputeMissionOrderMatchScoreWithScaledCandidateNavyOrder(void)
   return 0;
 }
 
-// ghidra_name TControlSeaZoneMission::CreateObject
-// ghidra_proto undefined CreateObject()
-// FUNCTION: IMPERIALISM 0x005386c0
-undefined4 CreateObject_005386C0(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_AFX_CLASSINIT_At005387a0
 // ghidra_proto undefined WrapperFor_AFX_CLASSINIT_At005387a0()
 // FUNCTION: IMPERIALISM 0x005387a0
@@ -167,14 +159,6 @@ undefined4 WrapperFor_AFX_CLASSINIT_At005387a0(void)
 // ghidra_proto undefined ComputeNavyOrderDistributionSimilarityScoreForMissionNation()
 // FUNCTION: IMPERIALISM 0x00538dd0
 undefined4 ComputeNavyOrderDistributionSimilarityScoreForMissionNation(void)
-{
-  return 0;
-}
-
-// ghidra_name TEscortMission::CreateObject
-// ghidra_proto undefined CreateObject()
-// FUNCTION: IMPERIALISM 0x00539840
-undefined4 CreateObject_00539840(void)
 {
   return 0;
 }
@@ -203,14 +187,6 @@ undefined4 ComputeNavyOrderDistributionSimilarityScoreForNation(void)
   return 0;
 }
 
-// ghidra_name TBeachheadMission::CreateObject
-// ghidra_proto undefined CreateObject()
-// FUNCTION: IMPERIALISM 0x0053a2d0
-undefined4 CreateObject_0053A2D0(void)
-{
-  return 0;
-}
-
 // ghidra_name ResetTBeachheadMissionToSentinelVtable
 // ghidra_proto undefined ResetTBeachheadMissionToSentinelVtable()
 // FUNCTION: IMPERIALISM 0x0053a400
@@ -231,14 +207,6 @@ undefined4 WrapperFor_AFX_CLASSINIT_At0053a440(void)
 // ghidra_proto undefined ConstructTBeachheadMissionWithNodeAndParent()
 // FUNCTION: IMPERIALISM 0x0053a490
 undefined4 ConstructTBeachheadMissionWithNodeAndParent(void)
-{
-  return 0;
-}
-
-// ghidra_name TBlockadePortMission::CreateObject
-// ghidra_proto undefined CreateObject()
-// FUNCTION: IMPERIALISM 0x0053a990
-undefined4 CreateObject_0053A990(void)
 {
   return 0;
 }
@@ -271,14 +239,6 @@ undefined4 ComputeMissionNavyOrderDistributionScoreForPortOwnerOrAllies(void)
 // ghidra_proto undefined ComputeNavyOrderDistributionScoreForNation()
 // FUNCTION: IMPERIALISM 0x0053b800
 undefined4 ComputeNavyOrderDistributionScoreForNation(void)
-{
-  return 0;
-}
-
-// ghidra_name TScatteredShipsMission::CreateObject
-// ghidra_proto undefined CreateObject()
-// FUNCTION: IMPERIALISM 0x0053ba60
-undefined4 CreateObject_0053BA60(void)
 {
   return 0;
 }

@@ -24,6 +24,9 @@
 
 IMPLEMENT_SERIAL(TControlSeaZoneMission, TNavyMission, 1)
 
+// SYNTHETIC: IMPERIALISM 0x005386c0
+// TControlSeaZoneMission::CreateObject
+
 // SYNTHETIC: IMPERIALISM 0x00538780
 // TControlSeaZoneMission::GetRuntimeClass
 // SYNTHETIC: IMPERIALISM 0x005355f0

@@ -19664,8 +19664,8 @@
     },
     {
       "address": "0x5386c0",
-      "matching": 0.0851063829787234,
-      "name": "TControlSeaZoneMission::CreateObject(void)",
+      "matching": 0.463768115942029,
+      "name": "TControlSeaZoneMission::CreateObject",
       "type": 1
     },
     {
@@ -19742,8 +19742,8 @@
     },
     {
       "address": "0x539840",
-      "matching": 0.0851063829787234,
-      "name": "TEscortMission::CreateObject(void)",
+      "matching": 0.463768115942029,
+      "name": "TEscortMission::CreateObject",
       "type": 1
     },
     {
@@ -19820,8 +19820,8 @@
     },
     {
       "address": "0x53a2d0",
-      "matching": 0.08333333333333333,
-      "name": "TBeachheadMission::CreateObject(void)",
+      "matching": 0.45714285714285713,
+      "name": "TBeachheadMission::CreateObject",
       "type": 1
     },
     {
@@ -19892,8 +19892,8 @@
     },
     {
       "address": "0x53a990",
-      "matching": 0.0851063829787234,
-      "name": "TBlockadePortMission::CreateObject(void)",
+      "matching": 0.463768115942029,
+      "name": "TBlockadePortMission::CreateObject",
       "type": 1
     },
     {
@@ -19994,8 +19994,8 @@
     },
     {
       "address": "0x53ba60",
-      "matching": 0.0851063829787234,
-      "name": "TScatteredShipsMission::CreateObject(void)",
+      "matching": 0.463768115942029,
+      "name": "TScatteredShipsMission::CreateObject",
       "type": 1
     },
     {

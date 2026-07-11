@@ -6,6 +6,9 @@
 
 IMPLEMENT_SERIAL(TScatteredShipsMission, TNavyMission, 1)
 
+// SYNTHETIC: IMPERIALISM 0x0053ba60
+// TScatteredShipsMission::CreateObject
+
 // SYNTHETIC: IMPERIALISM 0x0053bb20
 // TScatteredShipsMission::GetRuntimeClass
 // SYNTHETIC: IMPERIALISM 0x005356a0

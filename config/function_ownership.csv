@@ -2759,6 +2759,7 @@ address|target_cpp|ownership|note
 537610|src/game/TNavyMission.cpp|manual|marker_sync
 5378c0|src/game/TNavyMission.cpp|manual|marker_sync
 537f40|src/game/TNavyMission.cpp|manual|marker_sync
+5386c0|src/game/TControlSeaZoneMission.cpp|manual|marker_sync
 538780|src/game/TControlSeaZoneMission.cpp|manual|marker_sync
 5387f0|src/game/TControlSeaZoneMission.cpp|manual|marker_sync
 538900|src/game/TControlSeaZoneMission.cpp|manual|marker_sync
@@ -2770,6 +2771,7 @@ address|target_cpp|ownership|note
 539600|src/game/TControlSeaZoneMission.cpp|manual|marker_sync
 539640|src/game/TControlSeaZoneMission.cpp|manual|marker_sync
 539780|src/game/TControlSeaZoneMission.cpp|manual|marker_sync
+539840|src/game/TEscortMission.cpp|manual|marker_sync
 539900|src/game/TEscortMission.cpp|manual|marker_sync
 539920|src/game/TEscortMission.cpp|manual|marker_sync
 539940|src/game/TEscortMission.cpp|manual|marker_sync
@@ -2781,6 +2783,7 @@ address|target_cpp|ownership|note
 539e70|src/game/TEscortMission.cpp|manual|marker_sync
 53a250|src/game/TEscortMission.cpp|manual|marker_sync
 53a290|src/game/TEscortMission.cpp|manual|marker_sync
+53a2d0|src/game/TBeachheadMission.cpp|manual|marker_sync
 53a390|src/game/TBeachheadMission.cpp|manual|marker_sync
 53a3b0|src/game/TBeachheadMission.cpp|manual|marker_sync
 53a3d0|src/game/TBeachheadMission.cpp|manual|marker_sync
@@ -2790,6 +2793,7 @@ address|target_cpp|ownership|note
 53a800|src/game/TBeachheadMission.cpp|manual|marker_sync
 53a920|src/game/TBeachheadMission.cpp|manual|marker_sync
 53a940|src/game/TBeachheadMission.cpp|manual|marker_sync
+53a990|src/game/TBlockadePortMission.cpp|manual|marker_sync
 53aa50|src/game/TBlockadePortMission.cpp|manual|marker_sync
 53aa70|src/game/TBlockadePortMission.cpp|manual|marker_sync
 53aa90|src/game/TBlockadePortMission.cpp|manual|marker_sync
@@ -2803,6 +2807,7 @@ address|target_cpp|ownership|note
 53aeb0|src/game/TBlockadePortMission.cpp|manual|marker_sync
 53ba10|src/game/TBlockadePortMission.cpp|manual|marker_sync
 53ba40|src/game/TBlockadePortMission.cpp|manual|marker_sync
+53ba60|src/game/TScatteredShipsMission.cpp|manual|marker_sync
 53bb20|src/game/TScatteredShipsMission.cpp|manual|marker_sync
 53bb90|src/game/TScatteredShipsMission.cpp|manual|marker_sync
 53bbb0|src/game/TScatteredShipsMission.cpp|manual|marker_sync

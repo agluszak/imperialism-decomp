@@ -16,6 +16,9 @@
 
 IMPLEMENT_SERIAL(TBeachheadMission, TControlSeaZoneMission, 1)
 
+// SYNTHETIC: IMPERIALISM 0x0053a2d0
+// TBeachheadMission::CreateObject
+
 // SYNTHETIC: IMPERIALISM 0x0053a420
 // TBeachheadMission::GetRuntimeClass
 // SYNTHETIC: IMPERIALISM 0x0053a3d0 (approx -- see symbols.csv)

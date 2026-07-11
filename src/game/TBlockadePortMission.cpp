@@ -15,6 +15,9 @@
 
 IMPLEMENT_SERIAL(TBlockadePortMission, TControlSeaZoneMission, 1)
 
+// SYNTHETIC: IMPERIALISM 0x0053a990
+// TBlockadePortMission::CreateObject
+
 // FUNCTION: IMPERIALISM 0x0053aa50
 char TBlockadePortMission::ReturnFalseSlot64() {
   return 0;
