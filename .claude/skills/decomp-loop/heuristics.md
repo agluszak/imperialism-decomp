@@ -1173,7 +1173,16 @@ headers before splicing.
     passes a trampoline + the list as context to dispatch the virtual Compare. The
     parallel CPtrArray-backed chain (TSortedPtrList/TPtrList, same junk-named stubs in
     TPtrList.cpp, vtable 0x649010 / ctor 0x488400) still needs the same treatment, as
-    do TNavyMission's two big score stubs (0x537270/0x537610). (Follow-up resolved:
+    do TNavyMission's two big score stubs (0x537270/0x537610). Recon for those two:
+    all three helper thunks resolve to already-ported TShip order-node methods
+    (GetNavyOrderNormalizationBaseByNationType 0x5505a0,
+    ComputeOrderNodeDistanceQuotientByDescriptorWord24 0x550550,
+    ComputeNavyOrderPriorityContributionPercentByCategory 0x54ff00), and
+    TNavyMission.cpp's AccumulateNavyOrderVectorFromNode is the ported sibling
+    idiom for the 4-float category-profile build; the remaining work is the
+    squared-distance-vs-referenceVector math with several inline float-global
+    constants that must be read from the raw listing (the Ghidra decompile garbles
+    the stack profile arrays). (Follow-up resolved:
     the TSortedPtrList/TPtrList chain landed with 18/19 addresses at 100% plus all
     five leaf comparator overrides -- and exposed a real save-corruption bug in
     TTradeMgr::WriteTo. The 0x4acb60 idle hook turned out correctly attributed to
