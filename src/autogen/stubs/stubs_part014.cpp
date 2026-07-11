@@ -315,22 +315,6 @@ undefined4 WrapperFor_ftol_At004f2b10(void)
   return 0;
 }
 
-// ghidra_name TDefenseMinisterView::ConstructTDefenseMinisterViewBaseState
-// ghidra_proto undefined ConstructTDefenseMinisterViewBaseState()
-// FUNCTION: IMPERIALISM 0x004f32f0
-undefined4 ConstructTDefenseMinisterViewBaseState(void)
-{
-  return 0;
-}
-
-// ghidra_name TInteriorMinisterView::ConstructTInteriorMinisterViewBaseState
-// ghidra_proto undefined ConstructTInteriorMinisterViewBaseState()
-// FUNCTION: IMPERIALISM 0x004f3690
-undefined4 ConstructTInteriorMinisterViewBaseState(void)
-{
-  return 0;
-}
-
 // ghidra_name BuildDiplomacyNationOverlayGeometryAndHitMasks_Impl_At004f3a50
 // ghidra_proto undefined BuildDiplomacyNationOverlayGeometryAndHitMasks_Impl_At004f3a50()
 // FUNCTION: IMPERIALISM 0x004f3a50

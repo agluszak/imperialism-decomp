@@ -1,5 +1,6 @@
 #pragma once
 
+#include "game/CString.h"
 #include "game/TBehavior.h"
 #include "game/mfc.h"
 
@@ -7,7 +8,7 @@
 // VTABLE: IMPERIALISM 0x0064eb10
 class TInfoBarBehavior : public TBehavior {
 public:
-// === BEGIN GENERATED DECLS (TInfoBarBehavior) — refreshed by recover-class; do not hand-edit ===
+  // === BEGIN GENERATED DECLS (TInfoBarBehavior) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TInfoBarBehavior)
   virtual ~TInfoBarBehavior() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -22,11 +23,14 @@ public:
   // slot 0x0b OrphanLeaf_NoCall_Ins02_004872a0 inherited unchanged (0x4872a0)
   // slot 0x0c CreateTDialogBehaviorInstance inherited unchanged (0x4872c0)
   // slot 0x0d OrphanRetStub_004872e0 inherited unchanged (0x4872e0)
-  virtual undefined InitializeInfoBarTagEntryWithOptionalDummyChild(int param_1, int * param_2); // slot 0x0e 0x4b0e20
-  virtual undefined RefreshInfoBarCursorPanelRegionClip(); // slot 0x0f 0x4b0f50
-// === END GENERATED DECLS (TInfoBarBehavior) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TInfoBarBehavior 0xCTOR`).
+  virtual undefined
+  InitializeInfoBarTagEntryWithOptionalDummyChild(int param_1, int* param_2); // slot 0x0e 0x4b0e20
+  virtual undefined RefreshInfoBarCursorPanelRegionClip();                    // slot 0x0f 0x4b0f50
+  // === END GENERATED DECLS (TInfoBarBehavior) ===
+  // TBehavior's own slice ends exactly at 0x10 (ASSERT_SIZE). Real CString member (ctor
+  // placement-constructs it); semantics unconfirmed -- InitializeInfoBarTagEntryWith-
+  // OptionalDummyChild/RefreshInfoBarCursorPanelRegionClip aren't ported yet.
+  CString field10;
 
   TInfoBarBehavior();
 };
-

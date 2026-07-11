@@ -7,14 +7,16 @@
 
 IMPLEMENT_DYNCREATE(TInfoBarBehavior, TBehavior)
 
-TInfoBarBehavior::TInfoBarBehavior() {}
+// FUNCTION: IMPERIALISM 0x004b0d30
+TInfoBarBehavior::TInfoBarBehavior() : TBehavior() {}
 
 // SYNTHETIC: IMPERIALISM 0x004b0da0
 // TInfoBarBehavior::`scalar deleting destructor'
 TInfoBarBehavior::~TInfoBarBehavior() {}
 
 // FUNCTION: IMPERIALISM 0x004b0e20
-undefined TInfoBarBehavior::InitializeInfoBarTagEntryWithOptionalDummyChild(int param_1, int * param_2) {
+undefined TInfoBarBehavior::InitializeInfoBarTagEntryWithOptionalDummyChild(int param_1,
+                                                                            int* param_2) {
   return 0;
 }
 

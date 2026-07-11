@@ -7,7 +7,8 @@
 
 IMPLEMENT_DYNCREATE(THotspotBehavior, TBehavior)
 
-THotspotBehavior::THotspotBehavior() {}
+// FUNCTION: IMPERIALISM 0x004b0b80
+THotspotBehavior::THotspotBehavior() : TBehavior() {}
 
 // SYNTHETIC: IMPERIALISM 0x004b0bb0
 // THotspotBehavior::`scalar deleting destructor'
