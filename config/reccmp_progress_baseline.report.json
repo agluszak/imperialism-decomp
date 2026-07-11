@@ -7993,7 +7993,7 @@
     },
     {
       "address": "0x4a94e0",
-      "matching": 0.2222222222222222,
+      "matching": 1.0,
       "name": "TArmyUnitView::ConstructTArmyUnitViewBaseState",
       "type": 1
     },
@@ -8023,7 +8023,7 @@
     },
     {
       "address": "0x4a9f20",
-      "matching": 0.4838709677419355,
+      "matching": 0.5161290322580645,
       "name": "TArmyCheckBox::CreateObject",
       "type": 1
     },
@@ -8035,7 +8035,7 @@
     },
     {
       "address": "0x4a9fe0",
-      "matching": 0.0,
+      "matching": 0.5185185185185185,
       "name": "TArmyCheckBox::ConstructTArmyCheckBoxBaseState",
       "type": 1
     },

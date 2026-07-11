@@ -11,7 +11,8 @@
 
 IMPLEMENT_DYNCREATE(TArmyUnitView, TView)
 
-TArmyUnitView::TArmyUnitView() {}
+// FUNCTION: IMPERIALISM 0x004a94e0
+TArmyUnitView::TArmyUnitView() : TView() {}
 
 // SYNTHETIC: IMPERIALISM 0x004a9510
 // TArmyUnitView::`scalar deleting destructor'

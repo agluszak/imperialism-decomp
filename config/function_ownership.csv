@@ -1039,11 +1039,13 @@ address|target_cpp|ownership|note
 4a9400|src/game/TArmyCheckBox.cpp|manual|marker_sync
 4a9450|src/game/TArmyUnitView.cpp|manual|marker_sync
 4a94c0|src/game/TArmyUnitView.cpp|manual|marker_sync
+4a94e0|src/game/TArmyUnitView.cpp|manual|marker_sync
 4a9510|src/game/TArmyUnitView.cpp|manual|marker_sync
 4a95b0|src/game/TArmyUnitView.cpp|manual|marker_sync
 4a9990|src/game/TArmyUnitView.cpp|manual|marker_sync
 4a9f20|src/game/TArmyCheckBox.cpp|manual|marker_sync
 4a9fc0|src/game/TArmyCheckBox.cpp|manual|marker_sync
+4a9fe0|src/game/TArmyCheckBox.cpp|manual|marker_sync
 4aa030|src/game/TArmyCheckBox.cpp|manual|marker_sync
 4aa100|src/game/TArmyCheckBox.cpp|manual|marker_sync
 4aa280|src/game/TArmyCheckBox.cpp|manual|marker_sync

@@ -1,5 +1,6 @@
 #pragma once
 
+#include "compat.h"
 #include "game/TControl.h"
 #include "game/mfc.h"
 
@@ -7,7 +8,7 @@
 // VTABLE: IMPERIALISM 0x0064cec0
 class TArmyCheckBox : public TControl {
 public:
-// === BEGIN GENERATED DECLS (TArmyCheckBox) — refreshed by recover-class; do not hand-edit ===
+  // === BEGIN GENERATED DECLS (TArmyCheckBox) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TArmyCheckBox)
   virtual ~TArmyCheckBox() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -23,7 +24,8 @@ public:
   // slot 0x0c QueryStepValue inherited unchanged (0x48a2c0)
   // slot 0x0d DispatchQueuedUiCommandAndRelease inherited unchanged (0x48a3b0)
   // slot 0x0e DispatchUiSelectionToHandler inherited unchanged (0x48a3f0)
-  virtual void HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) override; // slot 0x0f 0x004aa280
+  virtual void HandleEvent(int commandId, TEventHandler* sourceHandler,
+                           TEvent* event) override; // slot 0x0f 0x004aa280
   // slot 0x10 DispatchUiCommandToHandler inherited unchanged (0x48a2e0)
   // slot 0x11 vmethod_0017 inherited unchanged (0x48a310)
   // slot 0x12 ForwardParam inherited unchanged (0x48a380)
@@ -120,16 +122,34 @@ public:
   // slot 0x6d SetCityProductionDialogPictureRectAndMaybeRefresh inherited unchanged (0x48e7d0)
   // slot 0x6e SetControlPictureEntryAndMaybeRefresh inherited unchanged (0x48e7a0)
   // slot 0x6f LogUnhandledDialogMethodAndReturnFalse inherited unchanged (0x4294a0)
-  virtual void SetControlStateFlagAndMaybeRefresh(bool fEnabledState, bool fRefreshNow) override; // slot 0x70 0x4aa310
-  virtual undefined OrphanLeaf_NoCall_Ins02_004aa340(); // slot 0x71 0x4aa340
-  virtual undefined SetArmyUnitLineActiveFlagAndNotify(); // slot 0x72 0x4aa360
-  virtual undefined VTableSlot73(char param_1); // slot 0x73 0x4aa030
-  virtual undefined OrphanCallChain_C2_I16_004aa3a0(); // slot 0x74 0x4aa3a0
-  virtual undefined OrphanCallChain_C3_I23_004aa3e0(char param_1, undefined4 param_2); // slot 0x75 0x4aa3e0
-  virtual undefined OrphanCallChain_C1_I05_004aa430(); // slot 0x76 0x4aa430
-// === END GENERATED DECLS (TArmyCheckBox) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TArmyCheckBox 0xCTOR`).
+  virtual void SetControlStateFlagAndMaybeRefresh(bool fEnabledState,
+                                                  bool fRefreshNow) override; // slot 0x70 0x4aa310
+  virtual undefined OrphanLeaf_NoCall_Ins02_004aa340();                       // slot 0x71 0x4aa340
+  virtual undefined SetArmyUnitLineActiveFlagAndNotify();                     // slot 0x72 0x4aa360
+  virtual undefined VTableSlot73(char param_1);                               // slot 0x73 0x4aa030
+  virtual undefined OrphanCallChain_C2_I16_004aa3a0();                        // slot 0x74 0x4aa3a0
+  virtual undefined OrphanCallChain_C3_I23_004aa3e0(char param_1,
+                                                    undefined4 param_2); // slot 0x75 0x4aa3e0
+  virtual undefined OrphanCallChain_C1_I05_004aa430();                   // slot 0x76 0x4aa430
+  // === END GENERATED DECLS (TArmyCheckBox) ===
+  // TControl's own slice ends at 0x84 (RTTI oracle: sizeof(TControl) == 0x84);
+  // sizeof(TArmyCheckBox) == 0x94, adding one 0x10-byte region. The real ctor
+  // (0x4a9fe0) only ever writes field88/field90 (its 6th/7th real stack params --
+  // Ghidra's own signature undercounts the real param count as 5); pad84/pad8c are
+  // left as unconfirmed padding.
+  int pad84;
+  int field88;
+  int pad8c;
+  int field90;
 
   TArmyCheckBox();
+  // Real ctor (0x4a9fe0): forwards panel/offsetLayout/sizeLayout to the already-ported
+  // TView::InitializeUiResourceEntryFrameAndParent (uiResourceContext=null,
+  // layoutParam6/7=4, attachFlag=0), then stores its own two trailing args into
+  // field90/field88. unused1/unused2 (the 4th/5th real stack params) are never read
+  // by this ctor.
+  TArmyCheckBox(TView* panel, int* offsetLayout, int* sizeLayout, int unused1, int unused2,
+                int field90Value, int field88Value);
 };
 
+ASSERT_SIZE(TArmyCheckBox, 0x94);
