@@ -31473,7 +31473,7 @@
     },
     {
       "address": "0x5b7a90",
-      "matching": 0.7913669064748201,
+      "matching": 0.7058823529411765,
       "name": "TDealList::InitializeNationInteractionStateManagerDefaults",
       "type": 1
     },
@@ -31658,7 +31658,7 @@
     },
     {
       "address": "0x5ba130",
-      "matching": 0.96,
+      "matching": 0.4897959183673469,
       "name": "TDealList::CreateObject",
       "type": 1
     },
@@ -31670,7 +31670,7 @@
     },
     {
       "address": "0x5ba1c0",
-      "matching": 0.2222222222222222,
+      "matching": 0.8571428571428571,
       "name": "TDealList::ConstructTDealListBaseState",
       "type": 1
     },
@@ -32096,7 +32096,7 @@
     },
     {
       "address": "0x5c0d80",
-      "matching": 0.2222222222222222,
+      "matching": 1.0,
       "name": "TDealLine::ConstructTDealLineBaseState",
       "type": 1
     },
@@ -32126,7 +32126,7 @@
     },
     {
       "address": "0x5c14c0",
-      "matching": 0.2222222222222222,
+      "matching": 1.0,
       "name": "TCommodityLine::ConstructTCommodityLineBaseState",
       "type": 1
     },
@@ -32156,7 +32156,7 @@
     },
     {
       "address": "0x5c1900",
-      "matching": 0.2222222222222222,
+      "matching": 1.0,
       "name": "TTradeTotalsLine::ConstructTTradeTotalsLineBaseState",
       "type": 1
     },
@@ -32186,7 +32186,7 @@
     },
     {
       "address": "0x5c1b10",
-      "matching": 0.2222222222222222,
+      "matching": 1.0,
       "name": "TTradeTotalsView::ConstructTTradeTotalsViewBaseState",
       "type": 1
     },

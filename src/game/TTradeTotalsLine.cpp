@@ -7,7 +7,8 @@
 
 IMPLEMENT_DYNCREATE(TTradeTotalsLine, TLineData)
 
-TTradeTotalsLine::TTradeTotalsLine() {}
+// FUNCTION: IMPERIALISM 0x005c1900
+TTradeTotalsLine::TTradeTotalsLine() : TLineData() {}
 
 // SYNTHETIC: IMPERIALISM 0x005c1930
 // TTradeTotalsLine::`scalar deleting destructor'

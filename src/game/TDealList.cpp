@@ -12,6 +12,9 @@
 
 IMPLEMENT_DYNCREATE(TDealList, TSortedPtrList)
 
+// FUNCTION: IMPERIALISM 0x005ba1c0
+TDealList::TDealList() : TSortedPtrList() {}
+
 // SYNTHETIC: IMPERIALISM 0x005ba1f0
 // TDealList::`scalar deleting destructor'
 TDealList::~TDealList() {}

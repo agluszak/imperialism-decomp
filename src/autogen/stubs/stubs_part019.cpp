@@ -579,14 +579,6 @@ undefined4 WrapperFor_ftol_At005b79a0(void)
   return 0;
 }
 
-// ghidra_name TDealList::ConstructTDealListBaseState
-// ghidra_proto undefined ConstructTDealListBaseState()
-// FUNCTION: IMPERIALISM 0x005ba1c0
-undefined4 ConstructTDealListBaseState(void)
-{
-  return 0;
-}
-
 // ghidra_name TNextTradeCommand::DestructTNextTradeCommandAndMaybeFree_Impl
 // ghidra_proto undefined DestructTNextTradeCommandAndMaybeFree_Impl()
 // FUNCTION: IMPERIALISM 0x005ba460
@@ -699,14 +691,6 @@ undefined4 UpdateTradeSelectionStateAndRefreshUiIfChanged(void)
   return 0;
 }
 
-// ghidra_name TDealLine::ConstructTDealLineBaseState
-// ghidra_proto undefined ConstructTDealLineBaseState()
-// FUNCTION: IMPERIALISM 0x005c0d80
-undefined4 ConstructTDealLineBaseState(void)
-{
-  return 0;
-}
-
 // ghidra_name DestructTDealLineAndMaybeFree_Impl
 // ghidra_proto undefined DestructTDealLineAndMaybeFree_Impl()
 // FUNCTION: IMPERIALISM 0x005c0de0
@@ -715,26 +699,10 @@ undefined4 DestructTDealLineAndMaybeFree_Impl(void)
   return 0;
 }
 
-// ghidra_name TCommodityLine::ConstructTCommodityLineBaseState
-// ghidra_proto undefined ConstructTCommodityLineBaseState()
-// FUNCTION: IMPERIALISM 0x005c14c0
-undefined4 ConstructTCommodityLineBaseState(void)
-{
-  return 0;
-}
-
 // ghidra_name DestructTCommodityLineAndMaybeFree_Impl
 // ghidra_proto undefined DestructTCommodityLineAndMaybeFree_Impl()
 // FUNCTION: IMPERIALISM 0x005c1520
 undefined4 DestructTCommodityLineAndMaybeFree_Impl(void)
-{
-  return 0;
-}
-
-// ghidra_name TTradeTotalsLine::ConstructTTradeTotalsLineBaseState
-// ghidra_proto undefined ConstructTTradeTotalsLineBaseState()
-// FUNCTION: IMPERIALISM 0x005c1900
-undefined4 ConstructTTradeTotalsLineBaseState(void)
 {
   return 0;
 }

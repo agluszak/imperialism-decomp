@@ -32,5 +32,6 @@ public:
   // slot 0x10 InsertCopiedRecordAtFrontOfPtrList inherited unchanged (0x488310)
   virtual int CompareUnsignedIntsAscending(int lhs, int rhs); // slot 0x11 0x5ba260
   // === END GENERATED DECLS (TDealList) ===
-};
 
+  TDealList();
+};

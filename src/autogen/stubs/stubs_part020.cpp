@@ -11,14 +11,6 @@ undefined4 DestructTTradeTotalsLineAndMaybeFree_Impl(void)
   return 0;
 }
 
-// ghidra_name TTradeTotalsView::ConstructTTradeTotalsViewBaseState
-// ghidra_proto undefined ConstructTTradeTotalsViewBaseState()
-// FUNCTION: IMPERIALISM 0x005c1b10
-undefined4 ConstructTTradeTotalsViewBaseState(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_ftol_At005c2400
 // ghidra_proto undefined WrapperFor_ftol_At005c2400()
 // FUNCTION: IMPERIALISM 0x005c2400
