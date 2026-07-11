@@ -869,6 +869,30 @@ char TZone::CanDisplayMapOrderEntryInCurrentContext(short nation, char skipField
   return 0;
 }
 
+// FUNCTION: IMPERIALISM 0x00560e70
+TZone* TZone::SelectBestPrimaryNeighborForNationDiplomacyMask(int nationSlot) {
+  TZone* bestNeighbor = 0;
+  int bestWarCount = -1;
+  for (int neighborIndex = 0; neighborIndex < primaryNeighbors.GetSize(); ++neighborIndex) {
+    TZone* neighbor = primaryNeighbors.GetAt(neighborIndex);
+    if (!neighbor->QueryPortZoneCapability() || neighbor->QueryZoneCapabilityFlagD(nationSlot)) {
+      int warCount = 0;
+      for (int otherNation = 0; otherNation < 7; ++otherNation) {
+        if (g_apTerrainTypeDescriptorTable[otherNation] != 0 &&
+            (neighbor->field10 & (1 << otherNation)) != 0 &&
+            g_pDiplomacyTurnStateManager->IsNationPairAtWar(nationSlot, otherNation)) {
+          ++warCount;
+        }
+      }
+      if (bestWarCount < warCount) {
+        bestWarCount = warCount;
+        bestNeighbor = neighbor;
+      }
+    }
+  }
+  return bestNeighbor;
+}
+
 // FUNCTION: IMPERIALISM 0x00560f80
 void TZone::PropagateMapActionContextDistanceLevelsRecursive(short level) {
   if (level == -1) {

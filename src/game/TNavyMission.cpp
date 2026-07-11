@@ -20,7 +20,6 @@ extern undefined4 GetNavyPrimaryOrderNodeByIndex(void);
 extern undefined4 FindFirstTrackedHandlerMatchingModeAndShortKey(void);
 extern undefined4 CompareMissionOrderEntriesByPriorityScore(void);
 extern undefined4 GetOrCreateMissionOrderEntryForNode(void);
-extern undefined4 SelectBestMapActionContextForNationDiplomacyMask(void);
 extern undefined4 AccumulateNavyOrderCategoryVectorWithScale(void);
 extern undefined4 BuildNavyOrderCategoryVectorForNationWithExclusion(void);
 extern undefined4 IsZoneMaskOrArrayEntryPresentForKey(void);
@@ -339,12 +338,7 @@ void TNavyMission::MissionSlot44() {}
 
 // FUNCTION: IMPERIALISM 0x00536fa0
 void TNavyMission::RefreshMissionPortZoneContextForNation() {
-  typedef void(__fastcall * SelectBestMapActionContextForNationDiplomacyMask_t)(int);
-  SelectBestMapActionContextForNationDiplomacyMask_t
-      SelectBestMapActionContextForNationDiplomacyMask_fn =
-          reinterpret_cast<SelectBestMapActionContextForNationDiplomacyMask_t>(
-              (void*)&SelectBestMapActionContextForNationDiplomacyMask);
-  SelectBestMapActionContextForNationDiplomacyMask_fn(nationId04);
+  targetZone14->SelectBestPrimaryNeighborForNationDiplomacyMask(nationId04);
 }
 
 // FUNCTION: IMPERIALISM 0x00536fc0

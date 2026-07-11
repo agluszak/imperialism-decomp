@@ -102,6 +102,13 @@ public:
   // 0x55f300 — find-or-append `zone` to primaryNeighbors via the stretch's virtual
   // GetOrAppendUnique (Ghidra: DispatchMapActionContextCallbackViaField24).
   void AppendUniquePrimaryNeighbor(TZone* zone);
+  // Picks the primaryNeighbors entry most at war with nationSlot: a neighbor qualifies
+  // if it isn't a port zone or `nationSlot` doesn't hold flag D there, then scores it by
+  // how many of the (up to 7) g_apTerrainTypeDescriptorTable nations it lists in field10
+  // (its key mask) are currently at war with nationSlot per
+  // TDiplomacyMgr::IsNationPairAtWar. Returns the highest-scoring neighbor, or null if
+  // none qualify. 0x560e70.
+  TZone* SelectBestPrimaryNeighborForNationDiplomacyMask(int nationSlot);
   // BFS relaxation step over primaryNeighbors, writing shortest known distance
   // (in "hops") into field44. level == -1 means "start a fresh search": resets
   // every zone's field44 to the 0x29a sentinel first, then reseeds at level 0.

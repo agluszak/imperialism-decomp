@@ -4293,7 +4293,7 @@ address|name|symbol|size|type|prototype|provenance
 560b00|TZone::CanDisplayMapOrderEntryInCurrentContext||122|function|char CanDisplayMapOrderEntryInCurrentContext(short nation, char skipField34Check)|
 560ba0|ExpandTaskForceTraversalDepthAndMarkDeferredNodes||504|function|undefined ExpandTaskForceTraversalDepthAndMarkDeferredNodes()|
 560e20|ResetMapActionContextActivityAndNationFlags||50|function|undefined ResetMapActionContextActivityAndNationFlags()|
-560e70|SelectBestMapActionContextForNationDiplomacyMask||197|function|undefined SelectBestMapActionContextForNationDiplomacyMask()|
+560e70|TZone::SelectBestPrimaryNeighborForNationDiplomacyMask||197|function|undefined SelectBestPrimaryNeighborForNationDiplomacyMask()|
 560f80|TScatteredShipsMission::PropagateMapActionContextDistanceLevelsRecursive||230|function|undefined PropagateMapActionContextDistanceLevelsRecursive()|
 5610b0|TScatteredShipsMission::GetCachedMapActionContextDistanceOrRecompute||455|function|undefined GetCachedMapActionContextDistanceOrRecompute()|
 561300|ResizePointerArrayCapacityByRequestedCountAlt||94|function|undefined ResizePointerArrayCapacityByRequestedCountAlt()|

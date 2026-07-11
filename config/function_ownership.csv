@@ -3207,6 +3207,7 @@ address|target_cpp|ownership|note
 560580|src/game/TZone.cpp|manual|marker_sync
 5609e0|src/game/TZone.cpp|manual|marker_sync
 560b00|src/game/TZone.cpp|manual|marker_sync
+560e70|src/game/TZone.cpp|manual|marker_sync
 560f80|src/game/TZone.cpp|manual|marker_sync
 5610b0|src/game/TZone.cpp|manual|marker_sync
 561300|src/game/TZone.cpp|manual|marker_sync

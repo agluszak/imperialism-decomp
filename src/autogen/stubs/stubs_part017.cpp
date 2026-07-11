@@ -411,14 +411,6 @@ undefined4 ResetMapActionContextActivityAndNationFlags(void)
   return 0;
 }
 
-// ghidra_name SelectBestMapActionContextForNationDiplomacyMask
-// ghidra_proto undefined SelectBestMapActionContextForNationDiplomacyMask()
-// FUNCTION: IMPERIALISM 0x00560e70
-undefined4 SelectBestMapActionContextForNationDiplomacyMask(void)
-{
-  return 0;
-}
-
 // ghidra_name ReallocatePortZoneContextArrayBuffer
 // ghidra_proto undefined ReallocatePortZoneContextArrayBuffer()
 // FUNCTION: IMPERIALISM 0x005620c0
