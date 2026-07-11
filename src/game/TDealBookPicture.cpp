@@ -7,7 +7,8 @@
 
 IMPLEMENT_DYNCREATE(TDealBookPicture, TPicture)
 
-TDealBookPicture::TDealBookPicture() {}
+// FUNCTION: IMPERIALISM 0x005babc0
+TDealBookPicture::TDealBookPicture() : TPicture(), field90(8), fieldB2(0) {}
 
 // SYNTHETIC: IMPERIALISM 0x005bac00
 // TDealBookPicture::`scalar deleting destructor'
@@ -24,4 +25,4 @@ undefined TDealBookPicture::BuildSelectedNationOrderCapabilityRows() {
 }
 
 // FUNCTION: IMPERIALISM 0x005bbc30
-void TDealBookPicture::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) { }
+void TDealBookPicture::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {}

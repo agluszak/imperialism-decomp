@@ -2468,6 +2468,7 @@ address|target_cpp|ownership|note
 51af60|src/game/TMapDialog.cpp|manual|marker_sync
 51b0a0|src/game/TTerrainInfoDialog.cpp|manual|marker_sync
 51b120|src/game/TTerrainInfoDialog.cpp|manual|marker_sync
+51b140|src/game/TTerrainInfoDialog.cpp|manual|marker_sync
 51b170|src/game/TTerrainInfoDialog.cpp|manual|marker_sync
 51ba70|src/game/TTownNameDialog.cpp|manual|marker_sync
 51baf0|src/game/TTownNameDialog.cpp|manual|marker_sync
@@ -4537,6 +4538,7 @@ address|target_cpp|ownership|note
 5ba7a0|src/game/TTradeScreenPicture.cpp|manual|marker_sync
 5bab00|src/game/TDealBookPicture.cpp|manual|marker_sync
 5baba0|src/game/TDealBookPicture.cpp|manual|marker_sync
+5babc0|src/game/TDealBookPicture.cpp|manual|marker_sync
 5bac00|src/game/TDealBookPicture.cpp|manual|marker_sync
 5bac50|src/game/TControl.cpp|manual|marker_sync
 5baf70|src/game/TDealBookPicture.cpp|manual|marker_sync
