@@ -7,7 +7,8 @@
 
 IMPLEMENT_DYNCREATE(TArmyUnitLine, TLineData)
 
-TArmyUnitLine::TArmyUnitLine() {}
+// FUNCTION: IMPERIALISM 0x004a8d30
+TArmyUnitLine::TArmyUnitLine() : TLineData() {}
 
 // SYNTHETIC: IMPERIALISM 0x004a8d60
 // TArmyUnitLine::`scalar deleting destructor'

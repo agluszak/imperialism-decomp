@@ -627,14 +627,6 @@ undefined4 WrapperFor_ftol_At0056f330(void)
   return 0;
 }
 
-// ghidra_name TLineData::ConstructTLineDataBaseState
-// ghidra_proto undefined ConstructTLineDataBaseState()
-// FUNCTION: IMPERIALISM 0x0056f3b0
-undefined4 ConstructTLineDataBaseState(void)
-{
-  return 0;
-}
-
 // ghidra_name DestructTLineDataAndMaybeFree_Impl
 // ghidra_proto undefined DestructTLineDataAndMaybeFree_Impl()
 // FUNCTION: IMPERIALISM 0x0056f400

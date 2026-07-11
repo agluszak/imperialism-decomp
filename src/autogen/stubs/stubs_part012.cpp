@@ -371,14 +371,6 @@ undefined4 PopulateTurnEventDialogArmyUnitLinesForTileSelection(void)
   return 0;
 }
 
-// ghidra_name TArmyUnitLine::ConstructTArmyUnitLineBaseState
-// ghidra_proto undefined ConstructTArmyUnitLineBaseState()
-// FUNCTION: IMPERIALISM 0x004a8d30
-undefined4 ConstructTArmyUnitLineBaseState(void)
-{
-  return 0;
-}
-
 // ghidra_name DestructTArmyUnitLineAndMaybeFree_Impl
 // ghidra_proto undefined DestructTArmyUnitLineAndMaybeFree_Impl()
 // FUNCTION: IMPERIALISM 0x004a8d90

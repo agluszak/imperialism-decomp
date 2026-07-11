@@ -1031,6 +1031,7 @@ address|target_cpp|ownership|note
 4a8a20|src/game/TGarrisonView.cpp|manual|marker_sync
 4a8ca0|src/game/TArmyUnitLine.cpp|manual|marker_sync
 4a8d10|src/game/TArmyUnitLine.cpp|manual|marker_sync
+4a8d30|src/game/TArmyUnitLine.cpp|manual|marker_sync
 4a8d60|src/game/TArmyUnitLine.cpp|manual|marker_sync
 4a8df0|src/game/TArmyUnitLine.cpp|manual|marker_sync
 4a9400|src/game/TArmyCheckBox.cpp|manual|marker_sync
@@ -3388,6 +3389,7 @@ address|target_cpp|ownership|note
 56f190|src/game/TCreditsPicture.cpp|manual|marker_sync
 56f360|src/game/TLineData.cpp|manual|marker_sync
 56f390|src/game/TLineData.cpp|manual|marker_sync
+56f3b0|src/game/TLineData.cpp|manual|marker_sync
 56f3d0|src/game/TLineData.cpp|manual|marker_sync
 56f460|src/game/TLineData.cpp|manual|marker_sync
 56f480|src/game/TLineData.cpp|manual|marker_sync
