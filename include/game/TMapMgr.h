@@ -81,7 +81,11 @@ struct TTerrainStateRecordView {
   // family (0x5155c0, 0x515890) accepts a tile as owned by a nation if EITHER
   // ownerNationTag04 OR this byte matches -- a genuine second owner slot, not padding.
   signed char secondaryOwnerNationTag18;
-  unsigned char pad19[3];
+  unsigned char pad19;
+  // Per-tile ordinal within its tile-action-class bucket (GetMapContextActionCode 0x559a70
+  // uses it to pick the Nth queued TTaskForce entry whose required_count matches the tile's
+  // class). Not padding.
+  short tileActionOrdinal1a;
   unsigned char activeFlags1c; // 0x1c
   unsigned char pad1d[0x20 - 0x1d];
   TCivUnit* firstCivilianOrder20; // 0x20

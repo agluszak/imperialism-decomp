@@ -25,6 +25,10 @@ int ConvertTileIndexToOverlayCoord216BySide(int tileIndex, char side); // 0x0052
 
 int ComputeHexTileDistanceFromIndices(int tileIndexA, int tileIndexB);
 
+// Maps a clicked tile to a map-context action code used by the map-order handlers. See the
+// .cpp for the per-class breakdown. 0x00559a70.
+int __stdcall GetMapContextActionCode(short nTileIndex, int dwInputFlags);
+
 // Converts a hex tile index (row*0x6c + col) to its isometric screen-space {x,y} offset in
 // outScreenXY, relative to a scrolled origin (originCol, originRow) and scaled by tileScale.
 // The column wraps horizontally: `tileIndex - originCol` is taken mod 0x6c directly (the

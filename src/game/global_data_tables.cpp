@@ -792,6 +792,7 @@ double DAT_0066fad0 = 0.092;
 
 #include "game/TZone.h"
 #include "game/TOcean.h"
+#include "game/TTaskForce.h"
 #include "game/TMapMgr.h"
 #include "game/TMinor.h"
 #include "game/TCivMgr.h"
@@ -805,6 +806,8 @@ TZone* g_pMapActionContextListHead = 0;
 TOcean* g_pActiveMapOrderContext = 0;
 TMapMgr* g_pGlobalMapState = 0;
 TCivMgr* g_pSelectedCivilianOrderState = 0;
+// GLOBAL: IMPERIALISM 0x006a3ed8
+TTaskForce* g_pCachedMapActionContext = 0;
 TSoundPlayer* g_pSfxPlaybackSystem = 0;
 // GLOBAL: IMPERIALISM 0x006a43cc
 TTradeMgr* g_pNationInteractionStateManager = 0;

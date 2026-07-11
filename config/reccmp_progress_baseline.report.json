@@ -6162,7 +6162,7 @@
     },
     {
       "address": "0x496d40",
-      "matching": 0.09090909090909091,
+      "matching": 0.09071274298056156,
       "name": "BlitRectWithOptionalTransparency",
       "type": 1
     },
@@ -7549,7 +7549,7 @@
     },
     {
       "address": "0x4a2900",
-      "matching": 0.12752721617418353,
+      "matching": 0.13374805598755832,
       "name": "BuildArmyContextActionRecordsAndDispatchLabel",
       "type": 1
     },
@@ -8983,7 +8983,7 @@
     },
     {
       "address": "0x4b4310",
-      "matching": 0.8842105263157894,
+      "matching": 1.0,
       "name": "ComputeAverageWeightWord0TimesTenFromResourceCounts",
       "type": 1
     },
@@ -12815,7 +12815,8 @@
     },
     {
       "address": "0x4e0650",
-      "matching": 1.0,
+      "effective": true,
+      "matching": 0.42857142857142855,
       "name": "TGreatPower::OrphanRetStub_004d7fe0_8b",
       "type": 1
     },
@@ -15148,7 +15149,7 @@
     },
     {
       "address": "0x4fd000",
-      "matching": 0.848,
+      "matching": 0.816,
       "name": "TMapKey::RenderMapHintOverlayMode0",
       "type": 1
     },
@@ -16366,7 +16367,7 @@
     },
     {
       "address": "0x50bea0",
-      "matching": 0.20354384370740572,
+      "matching": 0.20990458882326216,
       "name": "TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets",
       "type": 1
     },
@@ -18220,7 +18221,7 @@
     },
     {
       "address": "0x52c990",
-      "matching": 1.0,
+      "matching": 0.8333333333333334,
       "name": "ConvertTileIndexToOverlayCoord216BySide",
       "type": 1
     },
@@ -18244,7 +18245,7 @@
     },
     {
       "address": "0x52d030",
-      "matching": 0.7766990291262136,
+      "matching": 1.0,
       "name": "ComputeWrappedOverlayCoordDeltaMetric",
       "type": 1
     },
@@ -18280,7 +18281,7 @@
     },
     {
       "address": "0x52d750",
-      "matching": 0.21904761904761905,
+      "matching": 0.22063492063492063,
       "name": "MergeSmallCityRegionsAndCompactIds",
       "type": 1
     },
@@ -21276,7 +21277,7 @@
     },
     {
       "address": "0x545940",
-      "matching": 0.41756822218633943,
+      "matching": 0.4162764411432262,
       "name": "TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine",
       "type": 1
     },
@@ -22410,7 +22411,7 @@
     },
     {
       "address": "0x555420",
-      "matching": 0.5653333333333334,
+      "matching": 0.5546666666666666,
       "name": "ResolveTaskForceOrderConflictAndPickCandidate",
       "type": 1
     },
@@ -22663,7 +22664,7 @@
     },
     {
       "address": "0x559a70",
-      "matching": 0.020618556701030927,
+      "matching": 0.3756906077348066,
       "name": "GetMapContextActionCode",
       "type": 1
     },
@@ -29598,7 +29599,7 @@
     },
     {
       "address": "0x5a39a0",
-      "matching": 0.7286821705426356,
+      "matching": 0.9545454545454546,
       "name": "ComputeHexTileDistanceFromIndices",
       "type": 1
     },
@@ -29616,7 +29617,7 @@
     },
     {
       "address": "0x5a3d30",
-      "matching": 0.8163265306122449,
+      "matching": 0.8104956268221575,
       "name": "IsTacticalTargetTileReachableForAction",
       "type": 1
     },
@@ -29994,7 +29995,7 @@
     },
     {
       "address": "0x5a6940",
-      "matching": 0.819672131147541,
+      "matching": 0.8360655737704918,
       "name": "ClipRect_AdjustOffset_Validate",
       "type": 1
     },
@@ -30138,7 +30139,7 @@
     },
     {
       "address": "0x5a9240",
-      "matching": 0.5533980582524272,
+      "matching": 0.563855421686747,
       "name": "TTacticalBattleView::AnimateTacticalUnitMoveBetweenTiles",
       "type": 1
     },

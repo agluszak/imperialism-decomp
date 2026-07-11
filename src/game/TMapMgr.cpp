@@ -168,8 +168,7 @@ void TMapMgr::AllocateAndResetTerrainAndCityScoreTables() {
     tile->pad16 = 0xff;
     tile->railFlags17 = 0;
     tile->secondaryOwnerNationTag18 = -1;
-    tile->pad19[1] = 0xff;
-    tile->pad19[2] = 0xff;
+    tile->tileActionOrdinal1a = -1;
     tile->activeFlags1c = 0;
     tile->pad1d[0] = 0;
     tile->firstCivilianOrder20 = 0;

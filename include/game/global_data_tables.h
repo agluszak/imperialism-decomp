@@ -46,6 +46,7 @@ class TControl;
 class TBackdropWindow;
 class TOcean;
 class TZone;
+class TTaskForce;
 class TMapMgr;
 class TCivMgr;
 class TTurnEventDialogFactoryRegistry;
@@ -641,6 +642,9 @@ extern int g_mapActionContextDisplayNameCacheStep_006984bc;
 // Game singleton pointers (markers in global_data_tables.cpp).
 extern TZone* g_pMapActionContextListHead;
 extern TOcean* g_pActiveMapOrderContext;
+// Resolved-context cache written by GetMapContextActionCode (0x559a70) for a downstream
+// dialog branch; not yet consumed by any ported reader.
+extern TTaskForce* g_pCachedMapActionContext;
 extern TMapMgr* g_pGlobalMapState;
 extern TCivMgr* g_pSelectedCivilianOrderState; // 0x6a43dc — the TCivMgr instance
 
