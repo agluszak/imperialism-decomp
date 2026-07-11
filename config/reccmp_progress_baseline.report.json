@@ -8161,7 +8161,7 @@
     },
     {
       "address": "0x4aad90",
-      "matching": 0.4489795918367347,
+      "matching": 0.4897959183673469,
       "name": "TMiniArmyView::CreateObject",
       "type": 1
     },
@@ -8173,7 +8173,7 @@
     },
     {
       "address": "0x4aaeb0",
-      "matching": 0.011695906432748537,
+      "matching": 0.5226480836236934,
       "name": "TMiniArmyView::ApplyRectSlot110",
       "type": 1
     },

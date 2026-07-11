@@ -7,7 +7,7 @@
 // VTABLE: IMPERIALISM 0x0064d550
 class TMiniArmyView : public TControl {
 public:
-// === BEGIN GENERATED DECLS (TMiniArmyView) — refreshed by recover-class; do not hand-edit ===
+  // === BEGIN GENERATED DECLS (TMiniArmyView) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TMiniArmyView)
   virtual ~TMiniArmyView() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -23,7 +23,8 @@ public:
   // slot 0x0c QueryStepValue inherited unchanged (0x48a2c0)
   // slot 0x0d DispatchQueuedUiCommandAndRelease inherited unchanged (0x48a3b0)
   // slot 0x0e DispatchUiSelectionToHandler inherited unchanged (0x48a3f0)
-  virtual void HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) override; // slot 0x0f 0x004ab1d0
+  virtual void HandleEvent(int commandId, TEventHandler* sourceHandler,
+                           TEvent* event) override; // slot 0x0f 0x004ab1d0
   // slot 0x10 DispatchUiCommandToHandler inherited unchanged (0x48a2e0)
   // slot 0x11 vmethod_0017 inherited unchanged (0x48a310)
   // slot 0x12 ForwardParam inherited unchanged (0x48a380)
@@ -122,9 +123,11 @@ public:
   // slot 0x6f LogUnhandledDialogMethodAndReturnFalse inherited unchanged (0x4294a0)
   // slot 0x70 SetControlStateFlagAndMaybeRefresh inherited unchanged (0x48e810)
   virtual undefined OrphanRetStub_004aad20(); // slot 0x71 0x4aad20
-// === END GENERATED DECLS (TMiniArmyView) ===
+                                              // === END GENERATED DECLS (TMiniArmyView) ===
   // TODO(manifest): add data members from the object slice (`just slice-discovery TMiniArmyView 0xCTOR`).
+  // Unrecovered context object read by ApplyRectSlot110: +0x24 name (CString), +0x34
+  // veterancy level (short). Raw storage until the real pointee class is identified.
+  void* field84; // +0x84
 
   TMiniArmyView();
 };
-
