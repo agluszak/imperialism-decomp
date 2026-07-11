@@ -451,14 +451,6 @@ undefined4 FreePointerIfNotNull(void)
   return 0;
 }
 
-// ghidra_name DestructMultiplayerManager
-// ghidra_proto undefined DestructMultiplayerManager()
-// FUNCTION: IMPERIALISM 0x00542810
-undefined4 DestructMultiplayerManager(void)
-{
-  return 0;
-}
-
 // ghidra_name TMultiplayerMgr::EnableDiplomacyQueueRoutingAndSetContextField44
 // ghidra_proto undefined EnableDiplomacyQueueRoutingAndSetContextField44()
 // FUNCTION: IMPERIALISM 0x005430c0

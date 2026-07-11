@@ -2978,6 +2978,7 @@ address|target_cpp|ownership|note
 542650|src/game/TMultiplayerMgr.cpp|manual|marker_sync
 542670|src/game/TMultiplayerMgr.cpp|manual|marker_sync
 5427e0|src/game/TMultiplayerMgr.cpp|manual|marker_sync
+542810|src/game/TMultiplayerMgr.cpp|manual|marker_sync
 542900|src/game/TMultiplayerMgr.cpp|manual|marker_sync
 542b10|src/game/TMultiplayerMgr.cpp|manual|marker_sync
 542be0|src/game/TMultiplayerMgr.cpp|manual|marker_sync

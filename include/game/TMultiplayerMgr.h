@@ -45,6 +45,22 @@ struct NationStateRecordA8 {
   NationStateRecordA8& operator=(const NationStateRecordA8& source);
 };
 
+// One of TMultiplayerMgr::nationStatusControlSlots' 4 elements. Ground truth from
+// TMultiplayerMgr::~TMultiplayerMgr (0x542810): each slot's destructor frees dataPtr via
+// a raw operator delete (no typed destructor on the pointee), gated on non-null. Neither
+// the pointee type nor tagOrSize's meaning is recovered yet; no reader/writer of the
+// array besides the ctor's memset zero-init is ported.
+struct TMultiplayerSlotHandle {
+  void* dataPtr;
+  int tagOrSize;
+
+  ~TMultiplayerSlotHandle() {
+    if (dataPtr != 0) {
+      operator delete(dataPtr);
+    }
+  }
+};
+
 // Multiplayer session / game-flow manager (g_pGameFlowState). Inherits the shared
 // TEventHandler control surface used by UI roots; vtable @ 0x0065c030.
 // VTABLE: IMPERIALISM 0x0065c030
@@ -53,7 +69,7 @@ public:
   DECLARE_DYNCREATE(TMultiplayerMgr)
   enum { kNationSlotCount = 7 };
 
-  int nationStatusControlSlots[8]; // +0x20
+  TMultiplayerSlotHandle nationStatusControlSlots[4]; // +0x20
   // +0x40 — the active lobby dialog view when one is open; the code-9 receive path
   // checks IsKindOf(RUNTIME_CLASS(TLoungeDialog)) before using it as the lounge.
   TView* lobbyDialogView40;               // +0x40

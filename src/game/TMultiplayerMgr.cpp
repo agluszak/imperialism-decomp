@@ -216,6 +216,8 @@ TMultiplayerMgr::TMultiplayerMgr()
 
 // SYNTHETIC: IMPERIALISM 0x005427e0
 // TMultiplayerMgr::`scalar deleting destructor'
+
+// FUNCTION: IMPERIALISM 0x00542810
 TMultiplayerMgr::~TMultiplayerMgr() {}
 
 // FUNCTION: IMPERIALISM 0x00542900

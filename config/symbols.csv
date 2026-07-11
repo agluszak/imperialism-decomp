@@ -3935,7 +3935,7 @@ address|name|symbol|size|type|prototype|provenance
 5427a0|InitializePointerPairToNull||16|function|undefined InitializePointerPairToNull()|
 5427c0|FreePointerIfNotNull||16|function|undefined FreePointerIfNotNull()|
 5427e0|TMultiplayerMgr::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
-542810|DestructMultiplayerManager||187|function|undefined DestructMultiplayerManager()|
+542810|TMultiplayerMgr::~TMultiplayerMgr||187|function|undefined ~TMultiplayerMgr()|
 542900|TMultiplayerMgr::InitializeMultiplayerManagerForSessionContext||404|function|undefined InitializeMultiplayerManagerForSessionContext()|
 542b10|TMultiplayerMgr::Free||152|function|undefined ShutdownRuntimeSelectionAndPersistPlayerName()|
 542be0|TMultiplayerMgr::ReadFrom||823|function|undefined InitializeNationStatusSlotsFromNationListAndEmitStartupEvents()|
