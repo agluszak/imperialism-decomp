@@ -304,6 +304,15 @@ extern short g_industryActionCostWeightResCode10[16];
 extern short g_industryActionCostWeightResCode0B[16];
 extern short g_industryActionCostWeightResCode03[16];
 extern short g_industryActionCostWeightResCode0C[16];
+// 17 (x,y) anchor points used to build the 16 city-building hover/hit-test rects (each a
+// fixed 10x10 box at its anchor, except slots 10-11 which span between two consecutive
+// anchors), plus a trailing (1,0) pair with no known consumer that shares this data blob.
+// 0x696198.
+extern short g_anCityBuildingSlotCoords[36];
+// Per-building-slot hover/hit-test rects (indexed by slotId, see
+// TToolBarCluster::HandleCityBuildingHoverSelection), built by
+// InitializeCityBuildingHoverSelectionRects_004b95c0. 0x6a2998.
+extern CRect g_aCityBuildingHoverSelectionRects[16];
 // QuickDraw OpenRgn/CloseRgn recording accumulator (QDFrameRect XORs framed rects into it).
 extern HRGN g_hOpenRgnAccumulator;
 extern char g_Sanitize_City_Counter_Value_006A24D4;

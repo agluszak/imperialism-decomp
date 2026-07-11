@@ -455,6 +455,14 @@ short g_industryActionCostWeightResCode03[16] = {0,  0,  0,  0,  0, 10, 0, 10,
 // GLOBAL: IMPERIALISM 0x00695bf0
 short g_industryActionCostWeightResCode0C[16] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 20, 20, 0, 0};
 
+// GLOBAL: IMPERIALISM 0x00696198
+short g_anCityBuildingSlotCoords[36] = {200, 235, 340, 300, 281, 184, 340, 266, 87, 286, 230, 310,
+                                        340, 139, 240, 35,  50,  220, 50,  107, 50, 35,  340, 139,
+                                        82,  35,  300, 35,  340, 44,  150, 95,  1,  0,   1,   0};
+
+// GLOBAL: IMPERIALISM 0x006a2998
+CRect g_aCityBuildingHoverSelectionRects[16];
+
 // GLOBAL: IMPERIALISM 0x006a1da4
 HRGN g_hOpenRgnAccumulator = nullptr;
 

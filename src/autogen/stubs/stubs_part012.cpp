@@ -859,14 +859,6 @@ undefined4 WrapperFor_ftol_At004b9570(void)
   return 0;
 }
 
-// ghidra_name InitializeCityBuildingHoverSelectionRects_004b95c0
-// ghidra_proto undefined InitializeCityBuildingHoverSelectionRects_004b95c0()
-// FUNCTION: IMPERIALISM 0x004b95c0
-undefined4 InitializeCityBuildingHoverSelectionRects_004b95c0(void)
-{
-  return 0;
-}
-
 // ghidra_name InitializeCityBuildingLayoutData
 // ghidra_proto undefined InitializeCityBuildingLayoutData()
 // FUNCTION: IMPERIALISM 0x004b98b0
