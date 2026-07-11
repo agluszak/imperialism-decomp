@@ -29,6 +29,11 @@ int ComputeHexTileDistanceFromIndices(int tileIndexA, int tileIndexB);
 // .cpp for the per-class breakdown. 0x00559a70.
 int __stdcall GetMapContextActionCode(short nTileIndex, int dwInputFlags);
 
+// Looks up the localized label string-group index for the tile's map-context action code.
+// 0x00559dd0.
+unsigned short __stdcall GetMapContextActionLabelTokenByActionCode(short nTileIndex,
+                                                                   int dwInputFlags);
+
 // Converts a hex tile index (row*0x6c + col) to its isometric screen-space {x,y} offset in
 // outScreenXY, relative to a scrolled origin (originCol, originRow) and scaled by tileScale.
 // The column wraps horizontally: `tileIndex - originCol` is taken mod 0x6c directly (the

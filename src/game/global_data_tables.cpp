@@ -806,6 +806,10 @@ TZone* g_pMapActionContextListHead = 0;
 TOcean* g_pActiveMapOrderContext = 0;
 TMapMgr* g_pGlobalMapState = 0;
 TCivMgr* g_pSelectedCivilianOrderState = 0;
+// GLOBAL: IMPERIALISM 0x0065c2f0
+short g_awMapContextActionLabelTokenByCommand[17] = {0,     0x3f0, 0x3f2, 0x3f2, 0x3f2, 0x3f2,
+                                                     0x3f2, 0x3f2, 0x3f2, 0x3f1, 0x3f3, 0x3f3,
+                                                     0x3f6, 0x3f8, 0x3f4, 0x3f5, 0x3f7};
 // GLOBAL: IMPERIALISM 0x006a3ed8
 TTaskForce* g_pCachedMapActionContext = 0;
 TSoundPlayer* g_pSfxPlaybackSystem = 0;

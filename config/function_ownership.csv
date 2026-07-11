@@ -3155,6 +3155,7 @@ address|target_cpp|ownership|note
 558860|src/game/TZone.cpp|manual|marker_sync
 558960|src/game/TNavyMgr.cpp|manual|marker_sync
 559a70|src/game/map_overlay_geometry.cpp|manual|marker_sync
+559dd0|src/game/map_overlay_geometry.cpp|manual|marker_sync
 55a780|src/game/TNavyMgr.cpp|manual|marker_sync
 55b670|src/game/TNewsMgr.cpp|manual|marker_sync
 55b6a0|src/game/TNewsMgr.cpp|manual|marker_sync

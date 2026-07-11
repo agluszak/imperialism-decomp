@@ -203,14 +203,6 @@ undefined4 UpdateType7NavyOrderChildSelectionByChanceThreshold(void)
   return 0;
 }
 
-// ghidra_name GetMapContextActionLabelTokenByActionCode
-// ghidra_proto ushort __cdecl GetMapContextActionLabelTokenByActionCode(short nTileIndex, int dwInputFlags)
-// FUNCTION: IMPERIALISM 0x00559dd0
-undefined4 GetMapContextActionLabelTokenByActionCode(void)
-{
-  return 0;
-}
-
 // ghidra_name GetMapContextActionLabelToken
 // ghidra_proto ushort __cdecl GetMapContextActionLabelToken(short nTileIndex, int dwInputFlags)
 // FUNCTION: IMPERIALISM 0x00559e00

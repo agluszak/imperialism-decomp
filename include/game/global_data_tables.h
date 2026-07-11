@@ -639,6 +639,11 @@ extern int g_mapActionContextDisplayNameCacheId_006984b8;
 // added to the key after each headline resource pick.
 extern int g_mapActionContextDisplayNameCacheStep_006984bc;
 
+// Localized-label string-group indices, keyed by GetMapContextActionCode's return value
+// (0..0x10 hold real tokens 0x3f0..0x3f8; the table is read by
+// GetMapContextActionLabelTokenByActionCode, 0x559dd0).
+extern short g_awMapContextActionLabelTokenByCommand[17];
+
 // Game singleton pointers (markers in global_data_tables.cpp).
 extern TZone* g_pMapActionContextListHead;
 extern TOcean* g_pActiveMapOrderContext;
