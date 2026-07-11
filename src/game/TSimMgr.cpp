@@ -59,6 +59,13 @@ void WriteSettingsPrefIntByIndex(int index, int value) {
   g_pImperialismApp->WriteProfileInt("Settings", key, value);
 }
 
+// FUNCTION: IMPERIALISM 0x00415540
+CString& __stdcall GetProfileStringFromSettingsSection(CString* result, LPCTSTR key,
+                                                       LPCTSTR defaultValue) {
+  *result = g_pImperialismApp->GetProfileString("Settings", key, defaultValue);
+  return *result;
+}
+
 // FUNCTION: IMPERIALISM 0x004ee8c0
 void __fastcall RebuildCivilianOrderCompatibilityMatrices(TDiplomacyMgr* self, int dummyEdx) {
   reinterpret_cast<void(__fastcall*)(TDiplomacyMgr*, int)>(0x004ee8c0)(self, dummyEdx);
@@ -1009,4 +1016,12 @@ unsigned char __cdecl TryGetFileMetadataForPath(CString* path) {
 // FUNCTION: IMPERIALISM 0x005d4c40
 void __cdecl DeleteFileWithErrorReporting(CString* path) {
   CFile::Remove(*path);
+}
+
+// FUNCTION: IMPERIALISM 0x005e01a0
+void __stdcall LoadProfileStringAndAssignSharedRef(CString* outString, LPCTSTR key,
+                                                   LPCTSTR defaultValue) {
+  CString result;
+  GetProfileStringFromSettingsSection(&result, key, defaultValue);
+  *outString = result;
 }

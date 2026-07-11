@@ -44,6 +44,7 @@ address|target_cpp|ownership|note
 4152e0|src/game/TModalTemplateDialog.cpp|manual|marker_sync
 4153a0|src/game/TSimMgr.cpp|manual|marker_sync
 415440|src/game/TSimMgr.cpp|manual|marker_sync
+415540|src/game/TSimMgr.cpp|manual|marker_sync
 4155b0|src/game/ImperialismApp.cpp|manual|marker_sync
 415760|src/game/startup_helpers.cpp|manual|marker_sync
 415ce0|src/game/TObject.cpp|manual|marker_sync
@@ -4747,6 +4748,7 @@ address|target_cpp|ownership|note
 5dff20|src/game/TAssetMgr.cpp|manual|marker_sync
 5e0030|src/game/TAssetMgr.cpp|manual|marker_sync
 5e0150|src/game/TAssetMgr.cpp|manual|marker_sync
+5e01a0|src/game/TSimMgr.cpp|manual|marker_sync
 5e0460|src/game/timer_slots.cpp|manual|marker_sync
 5e0520|src/game/timer_slots.cpp|manual|marker_sync
 5e0780|src/game/wave_helpers.cpp|manual|marker_sync

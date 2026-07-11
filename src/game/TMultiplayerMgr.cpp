@@ -179,7 +179,11 @@ using turn_event_dialog::TurnEventDialogNode;
 // generic repo form per Hard Rule 9 and cast to their real typed signatures at the call sites.
 extern undefined4 NoOpInitializeGlobalTurnEventQueueManager();
 extern undefined4 ResetTurnEventQueueRuntimeRecordBuffer();
-extern undefined4 LoadProfileStringAndAssignSharedRef();
+
+// Real definition (0x5e01a0) lives in TSimMgr.cpp, alongside the other Settings-section
+// profile helpers.
+void __stdcall LoadProfileStringAndAssignSharedRef(CString* outString, LPCTSTR key,
+                                                   LPCTSTR defaultValue);
 
 // Forward decl: real definition (with its // FUNCTION: marker) sits address-ordered
 // further down this file, near TMultiplayerMgr's other 0x5exxxx-adjacent members.
@@ -249,16 +253,14 @@ undefined TMultiplayerMgr::InitializeMultiplayerManagerForSessionContext(int ses
   reinterpret_cast<void (*)()>(ResetTurnEventQueueRuntimeRecordBuffer)();
 
   GenerateMappedFlavorTextByCurrentContextNation(&playerNameString);
-  reinterpret_cast<void (*)(CString*, const char*, const char*)>(
-      LoadProfileStringAndAssignSharedRef)(&loadedString, s_PlayerName_0069801c,
-                                           static_cast<LPCSTR>(playerNameString));
+  LoadProfileStringAndAssignSharedRef(&loadedString, s_PlayerName_0069801c,
+                                      static_cast<LPCSTR>(playerNameString));
   playerNameString = loadedString;
   playerNameMirror = playerNameString;
 
   GenerateMappedFlavorTextByCurrentContextNation(&gameNameString);
-  reinterpret_cast<void (*)(CString*, const char*, const char*)>(
-      LoadProfileStringAndAssignSharedRef)(&loadedString, s_GameName_00698010,
-                                           static_cast<LPCSTR>(gameNameString));
+  LoadProfileStringAndAssignSharedRef(&loadedString, s_GameName_00698010,
+                                      static_cast<LPCSTR>(gameNameString));
   gameNameString = loadedString;
   return 0;
 }

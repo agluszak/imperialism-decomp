@@ -379,6 +379,12 @@
       "type": 1
     },
     {
+      "address": "0x415540",
+      "matching": 0.2222222222222222,
+      "name": "GetProfileStringFromSettingsSection",
+      "type": 1
+    },
+    {
       "address": "0x415580",
       "matching": 0.0,
       "name": "SetSettingValueInSettingsSection",
@@ -21101,7 +21107,7 @@
     },
     {
       "address": "0x542900",
-      "matching": 0.7545454545454545,
+      "matching": 0.7614678899082569,
       "name": "TMultiplayerMgr::InitializeMultiplayerManagerForSessionContext",
       "type": 1
     },
@@ -21275,7 +21281,7 @@
     },
     {
       "address": "0x545940",
-      "matching": 0.42854836105280153,
+      "matching": 0.41756822218633943,
       "name": "TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine",
       "type": 1
     },
@@ -33568,7 +33574,7 @@
     },
     {
       "address": "0x5e01a0",
-      "matching": 0.0,
+      "matching": 0.4406779661016949,
       "name": "LoadProfileStringAndAssignSharedRef",
       "type": 1
     },

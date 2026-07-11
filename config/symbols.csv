@@ -85,7 +85,7 @@ address|name|symbol|size|type|prototype|provenance
 415440|WriteSettingsPrefIntByIndex||124|function|undefined WriteSettingsPrefIntByIndex()|
 4154e0|GetSettingValueFromSettingsSection||24|function|undefined GetSettingValueFromSettingsSection()|
 415510|CWinApp::WrapperFor_WriteProfileInt_At00415510||24|function|undefined WrapperFor_WriteProfileInt_At00415510()|
-415540|TToolBarCluster::WrapperFor_GetProfileStringA_At00415540||43|function|undefined WrapperFor_GetProfileStringA_At00415540()|
+415540|GetProfileStringFromSettingsSection||43|function|undefined WrapperFor_GetProfileStringA_At00415540()|
 415580|SetSettingValueInSettingsSection||24|function|undefined SetSettingValueInSettingsSection()|
 4155b0|ApplyAutoResolutionModeAndPersist||321|function|undefined ApplyAutoResolutionModeAndPersist()|
 415760|WarnLowDiskSpaceAndConfirmContinue||832|function|undefined WarnLowDiskSpaceAndConfirmContinue()|

@@ -419,14 +419,6 @@ undefined4 WrapperFor_WriteProfileInt_At00415510(void)
   return 0;
 }
 
-// ghidra_name TToolBarCluster::WrapperFor_GetProfileStringA_At00415540
-// ghidra_proto undefined WrapperFor_GetProfileStringA_At00415540()
-// FUNCTION: IMPERIALISM 0x00415540
-undefined4 WrapperFor_GetProfileStringA_At00415540(void)
-{
-  return 0;
-}
-
 // ghidra_name SetSettingValueInSettingsSection
 // ghidra_proto undefined SetSettingValueInSettingsSection()
 // FUNCTION: IMPERIALISM 0x00415580

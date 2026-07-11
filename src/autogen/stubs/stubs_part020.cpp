@@ -507,14 +507,6 @@ undefined4 BuildScenarioPathForModeAndIndex(void)
   return 0;
 }
 
-// ghidra_name LoadProfileStringAndAssignSharedRef
-// ghidra_proto undefined LoadProfileStringAndAssignSharedRef()
-// FUNCTION: IMPERIALISM 0x005e01a0
-undefined4 LoadProfileStringAndAssignSharedRef(void)
-{
-  return 0;
-}
-
 // ghidra_name SaveSettingValueFromPointerByKey
 // ghidra_proto undefined SaveSettingValueFromPointerByKey()
 // FUNCTION: IMPERIALISM 0x005e0260
