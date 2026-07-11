@@ -13,6 +13,15 @@ IMPLEMENT_DYNCREATE(TCivAnimation2, TAnimation)
 
 TCivAnimation2::TCivAnimation2() {}
 
+// FUNCTION: IMPERIALISM 0x0049f6a0
+TCivAnimation2::TCivAnimation2(TView* ownerView, RECT* rect, int kind, int tag) {
+  static const short kStringIds[9] = {14000, 14005, 14011, 14015, 14021,
+                                      14026, 14030, 14035, 14040};
+  static const int kTicksPerFrame[9] = {5, 15, 10, 7, 15, 15, 7, 10, 10};
+  ConstructTAnimationBaseState(ownerView, rect, 0, kStringIds[kind], kTicksPerFrame[kind], tag);
+  kindIndex2c = static_cast<short>(kind);
+}
+
 // FUNCTION: IMPERIALISM 0x0049f7c0
 undefined TCivAnimation2::AdvanceAnimationTickAndInvalidateOnFrameFlip() {
   return 0;

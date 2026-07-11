@@ -7159,7 +7159,7 @@
     },
     {
       "address": "0x49f600",
-      "matching": 0.36363636363636365,
+      "matching": 0.42424242424242425,
       "name": "TCivAnimation2::CreateObject",
       "type": 1
     },
@@ -7183,7 +7183,7 @@
     },
     {
       "address": "0x49f6a0",
-      "matching": 0.0,
+      "matching": 0.07058823529411765,
       "name": "TCivAnimation2::ConstructTCivAnimation2BaseState",
       "type": 1
     },
@@ -30111,7 +30111,7 @@
     },
     {
       "address": "0x5a8ac0",
-      "matching": 0.6086956521739131,
+      "matching": 0.6867469879518072,
       "name": "TTacticalBattleView::CenterViewportAroundGridIndexAndSnap",
       "type": 1
     },
@@ -30147,7 +30147,7 @@
     },
     {
       "address": "0x5a9240",
-      "matching": 0.5397590361445783,
+      "matching": 0.563855421686747,
       "name": "TTacticalBattleView::AnimateTacticalUnitMoveBetweenTiles",
       "type": 1
     },

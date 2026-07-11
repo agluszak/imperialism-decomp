@@ -19,14 +19,6 @@ undefined4 CreateTCivAnimation2Instance(void)
   return 0;
 }
 
-// ghidra_name TCivAnimation2::ConstructTCivAnimation2BaseState
-// ghidra_proto undefined ConstructTCivAnimation2BaseState()
-// FUNCTION: IMPERIALISM 0x0049f6a0
-undefined4 ConstructTCivAnimation2BaseState(void)
-{
-  return 0;
-}
-
 // ghidra_name TOneTimeAnimation::CreateObject
 // ghidra_proto undefined CreateObject()
 // FUNCTION: IMPERIALISM 0x0049fcc0
