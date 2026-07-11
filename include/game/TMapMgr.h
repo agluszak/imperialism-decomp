@@ -606,6 +606,12 @@ public:
   short ComputeRepresentativeTileIndexForTerrainTypeWithWrapBias(short terrainType, char wrapBias);
 
   char AreNationsBorderLinked(int nationA, int nationB);
+  // 0x517dd0. True if any of cityRecordIndex's adjacent regions is owned by nationCode.
+  // When allowFallback is set and nationCode is a great power (<=6), also tries each minor
+  // nation slot 7..22: if that minor's TCountry entry exists and
+  // IsEncodedNationSlotMinus200Equal(nationCode) holds for it, checks whether the minor's own
+  // slot number is among cityRecordIndex's adjacent owners too.
+  bool HasDirectOrFallbackLinkedNodeType(int cityRecordIndex, int nationCode, char allowFallback);
   // 0x515e50. Despite the name, checks whether regionIndex is in nodeContext's
   // adjacent-region list -- see the .cpp body comment.
   char TileHasMovementClassId(int nodeContext, int regionIndex);

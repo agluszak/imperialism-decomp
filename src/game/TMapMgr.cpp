@@ -2821,6 +2821,43 @@ char TMapMgr::AreNationsBorderLinked(int nationA, int nationB) {
   return 0;
 }
 
+// FUNCTION: IMPERIALISM 0x00517dd0
+bool TMapMgr::HasDirectOrFallbackLinkedNodeType(int cityRecordIndex, int nationCode,
+                                                char allowFallback) {
+  TGlobalMapCityScoreRecord* record = &cityScoreTable[cityRecordIndex];
+  int neighborCount = record->adjacentRegionCount08;
+
+  if (allowFallback == 0 || nationCode > 6) {
+    for (int neighborIndex = 0; neighborIndex < neighborCount; ++neighborIndex) {
+      short neighborRegionId = record->adjacentRegionIds0A[neighborIndex];
+      if (cityScoreTable[neighborRegionId].ownerNationCode00 == nationCode) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  for (int neighborIndex = 0; neighborIndex < neighborCount; ++neighborIndex) {
+    short neighborRegionId = record->adjacentRegionIds0A[neighborIndex];
+    if (cityScoreTable[neighborRegionId].ownerNationCode00 == nationCode) {
+      return true;
+    }
+  }
+
+  for (int minorSlot = 7; minorSlot < 0x17; ++minorSlot) {
+    if (g_apTerrainTypeDescriptorTable[minorSlot] != nullptr &&
+        g_apSecondaryNationStateSlots[minorSlot]->IsEncodedNationSlotMinus200Equal(nationCode)) {
+      for (int neighborIndex = 0; neighborIndex < neighborCount; ++neighborIndex) {
+        short neighborRegionId = record->adjacentRegionIds0A[neighborIndex];
+        if (cityScoreTable[neighborRegionId].ownerNationCode00 == minorSlot) {
+          return true;
+        }
+      }
+    }
+  }
+  return false;
+}
+
 // FUNCTION: IMPERIALISM 0x00517f80
 int TMapMgr::CollectSecondDegreeLinksMatchingNodeType(int cityRecordIndex, int nationTag,
                                                       int* nodeBuffer) {

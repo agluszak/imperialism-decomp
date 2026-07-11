@@ -179,14 +179,6 @@ undefined4 OrphanDeadLeaf_NoRefs_00517d40(void)
   return 0;
 }
 
-// ghidra_name HasDirectOrFallbackLinkedNodeType
-// ghidra_proto undefined HasDirectOrFallbackLinkedNodeType()
-// FUNCTION: IMPERIALISM 0x00517dd0
-undefined4 HasDirectOrFallbackLinkedNodeType(void)
-{
-  return 0;
-}
-
 // ghidra_name CollectSecondDegreeLinksWithMinorNationFallback
 // ghidra_proto undefined CollectSecondDegreeLinksWithMinorNationFallback()
 // FUNCTION: IMPERIALISM 0x00518090
