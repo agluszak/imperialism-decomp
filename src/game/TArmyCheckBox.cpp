@@ -13,6 +13,17 @@ IMPLEMENT_DYNCREATE(TArmyCheckBox, TControl)
 
 TArmyCheckBox::TArmyCheckBox() {}
 
+// FUNCTION: IMPERIALISM 0x004a9fe0
+TArmyCheckBox::TArmyCheckBox(TView* panel, int* offsetLayout, int* sizeLayout, int unused1,
+                             int unused2, int field90Value, int field88Value)
+    : TControl() {
+  (void)unused1;
+  (void)unused2;
+  InitializeUiResourceEntryFrameAndParent(nullptr, panel, offsetLayout, sizeLayout, 4, 4, 0);
+  field90 = field90Value;
+  field88 = field88Value;
+}
+
 // FUNCTION: IMPERIALISM 0x004aa030
 undefined TArmyCheckBox::VTableSlot73(char param_1) {
   (void)param_1;
@@ -20,19 +31,16 @@ undefined TArmyCheckBox::VTableSlot73(char param_1) {
 }
 
 // FUNCTION: IMPERIALISM 0x004aa100
-void TArmyCheckBox::ApplyRectSlot110(RECT* rectBuffer) {
-}
+void TArmyCheckBox::ApplyRectSlot110(RECT* rectBuffer) {}
 
 // FUNCTION: IMPERIALISM 0x004aa280
-void TArmyCheckBox::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) { }
+void TArmyCheckBox::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {}
 
 // FUNCTION: IMPERIALISM 0x004aa2f0
-void TArmyCheckBox::NoOpUiLifecycleHook(int arg) {
-}
+void TArmyCheckBox::NoOpUiLifecycleHook(int arg) {}
 
 // FUNCTION: IMPERIALISM 0x004aa310
-void TArmyCheckBox::SetControlStateFlagAndMaybeRefresh(bool fEnabledState, bool fRefreshNow) {
-}
+void TArmyCheckBox::SetControlStateFlagAndMaybeRefresh(bool fEnabledState, bool fRefreshNow) {}
 
 // FUNCTION: IMPERIALISM 0x004aa340
 undefined TArmyCheckBox::OrphanLeaf_NoCall_Ins02_004aa340() {

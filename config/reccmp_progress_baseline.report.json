@@ -7159,7 +7159,7 @@
     },
     {
       "address": "0x49f600",
-      "matching": 0.36363636363636365,
+      "matching": 0.42424242424242425,
       "name": "TCivAnimation2::CreateObject",
       "type": 1
     },
@@ -7183,7 +7183,7 @@
     },
     {
       "address": "0x49f6a0",
-      "matching": 0.0,
+      "matching": 0.07058823529411765,
       "name": "TCivAnimation2::ConstructTCivAnimation2BaseState",
       "type": 1
     },
@@ -7993,7 +7993,7 @@
     },
     {
       "address": "0x4a94e0",
-      "matching": 0.2222222222222222,
+      "matching": 1.0,
       "name": "TArmyUnitView::ConstructTArmyUnitViewBaseState",
       "type": 1
     },
@@ -8023,7 +8023,7 @@
     },
     {
       "address": "0x4a9f20",
-      "matching": 0.4838709677419355,
+      "matching": 0.5161290322580645,
       "name": "TArmyCheckBox::CreateObject",
       "type": 1
     },
@@ -8035,7 +8035,7 @@
     },
     {
       "address": "0x4a9fe0",
-      "matching": 0.0,
+      "matching": 0.5185185185185185,
       "name": "TArmyCheckBox::ConstructTArmyCheckBoxBaseState",
       "type": 1
     },
@@ -10712,7 +10712,7 @@
     },
     {
       "address": "0x4c6df0",
-      "matching": 0.5454545454545454,
+      "matching": 0.5818181818181818,
       "name": "TBuildingView::CreateObject",
       "type": 1
     },
@@ -10724,7 +10724,7 @@
     },
     {
       "address": "0x4c6eb0",
-      "matching": 0.2,
+      "matching": 1.0,
       "name": "TBuildingView::ConstructTBuildingViewBaseState",
       "type": 1
     },
@@ -10784,7 +10784,7 @@
     },
     {
       "address": "0x4c72b0",
-      "matching": 0.2,
+      "matching": 0.8,
       "name": "TWarehouseView::ConstructTWarehouseViewBaseState",
       "type": 1
     },
@@ -10814,7 +10814,7 @@
     },
     {
       "address": "0x4c7f10",
-      "matching": 0.5454545454545454,
+      "matching": 0.5818181818181818,
       "name": "TUnitsView::CreateObject",
       "type": 1
     },
@@ -10826,7 +10826,7 @@
     },
     {
       "address": "0x4c7fd0",
-      "matching": 0.2,
+      "matching": 0.8,
       "name": "TUnitsView::ConstructTUnitsViewBaseState",
       "type": 1
     },
@@ -10934,7 +10934,7 @@
     },
     {
       "address": "0x4c9d70",
-      "matching": 0.5357142857142857,
+      "matching": 0.5714285714285714,
       "name": "TBuildingConstructionView::CreateObject",
       "type": 1
     },
@@ -10946,7 +10946,7 @@
     },
     {
       "address": "0x4c9e30",
-      "matching": 0.3333333333333333,
+      "matching": 1.0,
       "name": "TBuildingConstructionView::ConstructTBuildingConstructionViewBaseState",
       "type": 1
     },
@@ -11114,7 +11114,7 @@
     },
     {
       "address": "0x4cc6b0",
-      "matching": 0.5263157894736842,
+      "matching": 0.5614035087719298,
       "name": "TIndustryView::CreateObject",
       "type": 1
     },
@@ -11126,7 +11126,7 @@
     },
     {
       "address": "0x4cc790",
-      "matching": 0.3076923076923077,
+      "matching": 0.6,
       "name": "TIndustryView::ConstructTIndustryViewBaseState",
       "type": 1
     },
@@ -11162,7 +11162,7 @@
     },
     {
       "address": "0x4cd760",
-      "matching": 0.5263157894736842,
+      "matching": 0.5614035087719298,
       "name": "TTradeSchoolView::CreateObject",
       "type": 1
     },
@@ -11174,7 +11174,7 @@
     },
     {
       "address": "0x4cd840",
-      "matching": 0.3076923076923077,
+      "matching": 0.6666666666666666,
       "name": "TTradeSchoolView::ConstructTTradeSchoolViewBaseState",
       "type": 1
     },
@@ -14800,7 +14800,7 @@
     },
     {
       "address": "0x4f78e0",
-      "matching": 0.5454545454545454,
+      "matching": 0.5818181818181818,
       "name": "TPanelView::CreateObject",
       "type": 1
     },
@@ -14824,7 +14824,7 @@
     },
     {
       "address": "0x4f7a10",
-      "matching": 0.5454545454545454,
+      "matching": 0.5818181818181818,
       "name": "TTreatiesView::CreateObject",
       "type": 1
     },
@@ -14860,7 +14860,7 @@
     },
     {
       "address": "0x4f7fd0",
-      "matching": 0.5454545454545454,
+      "matching": 0.5818181818181818,
       "name": "TGrantsView::CreateObject",
       "type": 1
     },
@@ -14896,7 +14896,7 @@
     },
     {
       "address": "0x4f86d0",
-      "matching": 0.5454545454545454,
+      "matching": 0.5818181818181818,
       "name": "TTradePanelView::CreateObject",
       "type": 1
     },
@@ -14932,7 +14932,7 @@
     },
     {
       "address": "0x4f8ec0",
-      "matching": 0.4918032786885246,
+      "matching": 0.5245901639344263,
       "name": "TOffersPanelView::CreateObject",
       "type": 1
     },
@@ -14944,7 +14944,7 @@
     },
     {
       "address": "0x4f8f70",
-      "matching": 0.3076923076923077,
+      "matching": 0.8571428571428571,
       "name": "TOffersPanelView::ConstructTOffersPanelViewBaseState",
       "type": 1
     },
@@ -15034,7 +15034,7 @@
     },
     {
       "address": "0x4faf80",
-      "matching": 0.5454545454545454,
+      "matching": 0.5818181818181818,
       "name": "TCouncilPanelView::CreateObject",
       "type": 1
     },
@@ -15581,7 +15581,7 @@
     },
     {
       "address": "0x500320",
-      "matching": 0.2222222222222222,
+      "matching": 1.0,
       "name": "TDlgWindow::ConstructTurnEventWindowEntryStaticBackdrop",
       "type": 1
     },
@@ -17449,7 +17449,7 @@
     },
     {
       "address": "0x51b140",
-      "matching": 0.2222222222222222,
+      "matching": 1.0,
       "name": "TTerrainInfoDialog::ConstructTTerrainInfoDialogBaseState",
       "type": 1
     },
@@ -30111,7 +30111,7 @@
     },
     {
       "address": "0x5a8ac0",
-      "matching": 0.6086956521739131,
+      "matching": 0.6867469879518072,
       "name": "TTacticalBattleView::CenterViewportAroundGridIndexAndSnap",
       "type": 1
     },
@@ -30147,7 +30147,7 @@
     },
     {
       "address": "0x5a9240",
-      "matching": 0.5397590361445783,
+      "matching": 0.563855421686747,
       "name": "TTacticalBattleView::AnimateTacticalUnitMoveBetweenTiles",
       "type": 1
     },
@@ -31754,7 +31754,7 @@
     },
     {
       "address": "0x5bab00",
-      "matching": 0.5357142857142857,
+      "matching": 0.5714285714285714,
       "name": "TDealBookPicture::CreateObject",
       "type": 1
     },
@@ -31766,7 +31766,8 @@
     },
     {
       "address": "0x5babc0",
-      "matching": 0.18181818181818182,
+      "effective": true,
+      "matching": 0.7777777777777778,
       "name": "TDealBookPicture::ConstructTDealBookPictureBaseState",
       "type": 1
     },

@@ -7,16 +7,17 @@
 
 IMPLEMENT_DYNCREATE(TBuildingConstructionView, TPicture)
 
-TBuildingConstructionView::TBuildingConstructionView() {}
+// FUNCTION: IMPERIALISM 0x004c9e30
+TBuildingConstructionView::TBuildingConstructionView() : TPicture(), pCity(0), field98(0) {}
 
 // SYNTHETIC: IMPERIALISM 0x004c9e60
 // TBuildingConstructionView::`scalar deleting destructor'
 TBuildingConstructionView::~TBuildingConstructionView() {}
 
 // FUNCTION: IMPERIALISM 0x004c9eb0
-void TBuildingConstructionView::OpenCityViewBuildingOrderDialog(short nBuildingSlotId, int * pCityState, int nDialogContextFlags) {
-}
+void TBuildingConstructionView::OpenCityViewBuildingOrderDialog(short nBuildingSlotId,
+                                                                int* pCityState,
+                                                                int nDialogContextFlags) {}
 
 // FUNCTION: IMPERIALISM 0x004ca8f0
-void TBuildingConstructionView::ApplyCityViewBuildingOrderDialogResult(int nDialogActionTag) {
-}
+void TBuildingConstructionView::ApplyCityViewBuildingOrderDialogResult(int nDialogActionTag) {}

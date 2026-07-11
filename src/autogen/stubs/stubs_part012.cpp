@@ -19,14 +19,6 @@ undefined4 CreateTCivAnimation2Instance(void)
   return 0;
 }
 
-// ghidra_name TCivAnimation2::ConstructTCivAnimation2BaseState
-// ghidra_proto undefined ConstructTCivAnimation2BaseState()
-// FUNCTION: IMPERIALISM 0x0049f6a0
-undefined4 ConstructTCivAnimation2BaseState(void)
-{
-  return 0;
-}
-
 // ghidra_name TOneTimeAnimation::CreateObject
 // ghidra_proto undefined CreateObject()
 // FUNCTION: IMPERIALISM 0x0049fcc0
@@ -371,26 +363,10 @@ undefined4 DestructTArmyUnitLineAndMaybeFree_Impl(void)
   return 0;
 }
 
-// ghidra_name TArmyUnitView::ConstructTArmyUnitViewBaseState
-// ghidra_proto undefined ConstructTArmyUnitViewBaseState()
-// FUNCTION: IMPERIALISM 0x004a94e0
-undefined4 ConstructTArmyUnitViewBaseState(void)
-{
-  return 0;
-}
-
 // ghidra_name HandleCrossUArmyViewsNameCommand
 // ghidra_proto undefined HandleCrossUArmyViewsNameCommand()
 // FUNCTION: IMPERIALISM 0x004a9ca0
 undefined4 HandleCrossUArmyViewsNameCommand(void)
-{
-  return 0;
-}
-
-// ghidra_name TArmyCheckBox::ConstructTArmyCheckBoxBaseState
-// ghidra_proto undefined ConstructTArmyCheckBoxBaseState()
-// FUNCTION: IMPERIALISM 0x004a9fe0
-undefined4 ConstructTArmyCheckBoxBaseState(void)
 {
   return 0;
 }

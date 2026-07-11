@@ -7,7 +7,10 @@
 
 IMPLEMENT_DYNCREATE(TBuildingView, TNoHilitePicture)
 
-TBuildingView::TBuildingView() {}
+// FUNCTION: IMPERIALISM 0x004c6eb0
+TBuildingView::TBuildingView() : TNoHilitePicture() {
+  field94 = 0;
+}
 
 // SYNTHETIC: IMPERIALISM 0x004c6ee0
 // TBuildingView::`scalar deleting destructor'
@@ -39,5 +42,4 @@ undefined TBuildingView::SetUniversityDialogLocalizedTextAndRefresh() {
 }
 
 // FUNCTION: IMPERIALISM 0x004c7180
-void TBuildingView::CallVoidSlotA0() {
-}
+void TBuildingView::CallVoidSlotA0() {}

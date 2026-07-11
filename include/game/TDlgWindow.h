@@ -1,5 +1,6 @@
 #pragma once
 
+#include "compat.h"
 #include "game/TWindow.h"
 #include "game/mfc.h"
 
@@ -10,7 +11,7 @@ class TDlgWindow : public TWindow {
 public:
   // === BEGIN GENERATED DECLS (TDlgWindow) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TDlgWindow)
-  virtual ~TDlgWindow() override;                                   // slot 0x01 (scalar deleting destructor)
+  virtual ~TDlgWindow() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
   // slot 0x03 AssertValid inherited unchanged (0x412bf0)
   // slot 0x04 Dump inherited unchanged (0x412c10)
@@ -130,9 +131,11 @@ public:
   // slot 0x75 WrapperFor_SetWindowTextOrDelegateToOwner_At0048d9c0 inherited unchanged (0x48d9c0)
   // slot 0x76 WrapperFor_FID_conflict_GetWindowTextA_At0048d9f0 inherited unchanged (0x48d9f0)
   // === END GENERATED DECLS (TDlgWindow) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TDlgWindow
-  // 0xCTOR`).
+  // RTTI oracle: sizeof(TDlgWindow) == 0xa0, identical to TWindow -- this class adds no
+  // data members of its own; its ctor (0x500320) just installs its own vtable over the
+  // real TWindow base construction.
 
   TDlgWindow();
 };
 
+ASSERT_SIZE(TDlgWindow, 0xa0);

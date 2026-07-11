@@ -1117,3 +1117,30 @@ headers before splicing.
     (`count`) for both loops since it doesn't model C++ block scoping; give each loop
     its own name when porting (`dwordCount`, `byteCount`) instead of copying the
     Ghidra name verbatim.
+
+71. **A `Ghidra_name::WrapperFor_Construct<Class>BaseState_At0x...` that installs a
+    *different* class's vtable (`this->vftable = &TOtherClass::_vftable_`) and/or writes
+    `this[1].vftable` (past the object) is a COMDAT-folded construction fragment, not a
+    real per-class ctor.** The linker folded several classes' identical construction tails
+    into one address and Ghidra attributed it to whichever symbol it found first. Do NOT
+    hand-port it as a fake per-class ctor (it would force a manual foreign-vtable write,
+    violating construction Hard Rule 2). Leave it as a stub. Tell-tales: the `WrapperFor_`
+    prefix, an installed vtable whose class name ≠ the `this` class, and tiny size.
+
+72. **A base ctor that the compiler *always inlines* (no standalone out-of-line address —
+    it appears only inside CreateObject and derived ctors) still gets a real C++ ctor
+    body, just no `// FUNCTION:` marker.** Give it `: Base() { field = ...; }` so derived
+    `: ThatBase()` chains construct correctly, and note in a comment that it is markerless
+    because always-inlined (e.g. TPanelView). reccmp never pairs it (recomp-only, no
+    marker), and derived ctors that call it score the usual accepted inlining-divergence
+    band (80-86%) rather than 100%. This is the base half of the recurring ctor-inlining
+    pattern: the real out-of-line base call our source emits vs. the original's inlined body.
+
+73. **A trivial derived ctor can hard-fail reccmp pairing ("Failed to find a match at
+    0xADDR") even when its same-shaped siblings pair fine** — our toolchain sometimes emits
+    no uniquely-pairable out-of-line copy for one `: Base() { oneField = 0; }` ctor while
+    emitting them for its siblings. Per the TNextMoveCommand precedent, revert just that
+    marker (restore the markerless `{}` body) rather than faking it, AND manually delete
+    the stale `config/function_ownership.csv` row — `just regen-stubs` reports
+    "Pruned ... 0" and does not auto-remove it; the stub count only rises back after the
+    manual delete + re-regen.

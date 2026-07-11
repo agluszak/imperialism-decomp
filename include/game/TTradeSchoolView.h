@@ -1,5 +1,6 @@
 #pragma once
 
+#include "compat.h"
 #include "game/TIndustryView.h"
 #include "game/mfc.h"
 
@@ -7,7 +8,7 @@
 // VTABLE: IMPERIALISM 0x00652690
 class TTradeSchoolView : public TIndustryView {
 public:
-// === BEGIN GENERATED DECLS (TTradeSchoolView) — refreshed by recover-class; do not hand-edit ===
+  // === BEGIN GENERATED DECLS (TTradeSchoolView) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TTradeSchoolView)
   virtual ~TTradeSchoolView() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -129,9 +130,12 @@ public:
   virtual undefined OrphanRetStub_004c6fb0() override; // slot 0x76 0x4ce070
   // slot 0x77 SetUniversityDialogLocalizedTextAndRefresh inherited unchanged (0x4c70e0)
   // slot 0x78 SetUniversityDialogTextAndRefresh inherited unchanged (0x4c6ff0)
-// === END GENERATED DECLS (TTradeSchoolView) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TTradeSchoolView 0xCTOR`).
+  // === END GENERATED DECLS (TTradeSchoolView) ===
+  // RTTI oracle: sizeof(TTradeSchoolView) == 0xa8, identical to TIndustryView -- this
+  // class adds no data members of its own. Its ctor (0x4cd840) re-runs exactly
+  // TIndustryView's field init (field94/fieldA0/fieldA4) via the inlined base body.
 
   TTradeSchoolView();
 };
 
+ASSERT_SIZE(TTradeSchoolView, 0xa8);

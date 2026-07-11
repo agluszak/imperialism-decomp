@@ -1,5 +1,6 @@
 #pragma once
 
+#include "compat.h"
 #include "game/TPanelView.h"
 #include "game/mfc.h"
 
@@ -7,7 +8,7 @@
 // VTABLE: IMPERIALISM 0x00655fb0
 class TOffersPanelView : public TPanelView {
 public:
-// === BEGIN GENERATED DECLS (TOffersPanelView) — refreshed by recover-class; do not hand-edit ===
+  // === BEGIN GENERATED DECLS (TOffersPanelView) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TOffersPanelView)
   virtual ~TOffersPanelView() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -23,7 +24,8 @@ public:
   // slot 0x0c QueryStepValue inherited unchanged (0x48a2c0)
   // slot 0x0d DispatchQueuedUiCommandAndRelease inherited unchanged (0x48a3b0)
   // slot 0x0e DispatchUiSelectionToHandler inherited unchanged (0x48a3f0)
-  virtual void HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) override; // slot 0x0f 0x004f9300
+  virtual void HandleEvent(int commandId, TEventHandler* sourceHandler,
+                           TEvent* event) override; // slot 0x0f 0x004f9300
   // slot 0x10 DispatchUiCommandToHandler inherited unchanged (0x48a2e0)
   // slot 0x11 vmethod_0017 inherited unchanged (0x48a310)
   virtual void ForwardParam(int param) override; // slot 0x12 0x4f9350
@@ -80,7 +82,8 @@ public:
   // slot 0x45 vmethod_0048 inherited unchanged (0x48b860)
   // slot 0x46 DispatchUiMouseMoveToChildren inherited unchanged (0x48c450)
   // slot 0x47 BeginMouseCaptureAndStartRepeatTimer inherited unchanged (0x430c10)
-  virtual char DispatchUiMouseEventToChildrenOrSelf_Impl(CPoint* point, int arg2, int arg3, int arg4) override; // slot 0x48 0x4f9420
+  virtual char DispatchUiMouseEventToChildrenOrSelf_Impl(CPoint* point, int arg2, int arg3,
+                                                         int arg4) override; // slot 0x48 0x4f9420
   // slot 0x49 vmethod_0071 inherited unchanged (0x427240)
   // slot 0x4a QueryContentBounds inherited unchanged (0x427260)
   // slot 0x4b QueryBounds inherited unchanged (0x427290)
@@ -114,9 +117,14 @@ public:
   // slot 0x67 CtrlSlot103_SubtractPosAndDispatchSlot19C_Impl inherited unchanged (0x48bac0)
   // slot 0x68 OrphanRetStub_00430550 inherited unchanged (0x430550)
   virtual undefined RunDiplomacyNegotiationPopupAndAwaitResponse(); // slot 0x69 0x4f9450
-// === END GENERATED DECLS (TOffersPanelView) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TOffersPanelView 0xCTOR`).
+  // === END GENERATED DECLS (TOffersPanelView) ===
+  // TPanelView's slice ends at 0x64; RTTI oracle confirms sizeof(TOffersPanelView) == 0x70.
+  // The ctor (0x4f8f70) zeroes field68 and field6c; field64 is unconfirmed padding.
+  int pad64;   // +0x64
+  int field68; // +0x68
+  int field6c; // +0x6c
 
   TOffersPanelView();
 };
 
+ASSERT_SIZE(TOffersPanelView, 0x70);

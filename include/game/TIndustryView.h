@@ -1,5 +1,6 @@
 #pragma once
 
+#include "compat.h"
 #include "game/TBuildingView.h"
 #include "game/mfc.h"
 
@@ -7,7 +8,7 @@
 // VTABLE: IMPERIALISM 0x00652448
 class TIndustryView : public TBuildingView {
 public:
-// === BEGIN GENERATED DECLS (TIndustryView) — refreshed by recover-class; do not hand-edit ===
+  // === BEGIN GENERATED DECLS (TIndustryView) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TIndustryView)
   virtual ~TIndustryView() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -23,7 +24,8 @@ public:
   // slot 0x0c QueryStepValue inherited unchanged (0x48a2c0)
   // slot 0x0d DispatchQueuedUiCommandAndRelease inherited unchanged (0x48a3b0)
   // slot 0x0e DispatchUiSelectionToHandler inherited unchanged (0x48a3f0)
-  virtual void HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) override; // slot 0x0f 0x004ccf30
+  virtual void HandleEvent(int commandId, TEventHandler* sourceHandler,
+                           TEvent* event) override; // slot 0x0f 0x004ccf30
   // slot 0x10 DispatchUiCommandToHandler inherited unchanged (0x48a2e0)
   // slot 0x11 vmethod_0017 inherited unchanged (0x48a310)
   // slot 0x12 ForwardParam inherited unchanged (0x48a380)
@@ -129,9 +131,14 @@ public:
   virtual undefined OrphanRetStub_004c6fb0() override; // slot 0x76 0x4cd040
   // slot 0x77 SetUniversityDialogLocalizedTextAndRefresh inherited unchanged (0x4c70e0)
   // slot 0x78 SetUniversityDialogTextAndRefresh inherited unchanged (0x4c6ff0)
-// === END GENERATED DECLS (TIndustryView) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TIndustryView 0xCTOR`).
+  // === END GENERATED DECLS (TIndustryView) ===
+  // TBuildingView's slice ends at 0xa0; RTTI oracle confirms sizeof(TIndustryView) == 0xa8.
+  // The ctor (0x4cc790) zeroes fieldA0 and sets fieldA4 to -1; padA6 rounds to 0xa8.
+  int fieldA0;   // +0xa0
+  short fieldA4; // +0xa4 sentinel-initialized to 0xffff
+  short padA6;   // +0xa6
 
   TIndustryView();
 };
 
+ASSERT_SIZE(TIndustryView, 0xa8);

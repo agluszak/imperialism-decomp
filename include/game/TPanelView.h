@@ -1,5 +1,6 @@
 #pragma once
 
+#include "compat.h"
 #include "game/TView.h"
 #include "game/mfc.h"
 
@@ -7,7 +8,7 @@
 // VTABLE: IMPERIALISM 0x00655db8
 class TPanelView : public TView {
 public:
-// === BEGIN GENERATED DECLS (TPanelView) — refreshed by recover-class; do not hand-edit ===
+  // === BEGIN GENERATED DECLS (TPanelView) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TPanelView)
   virtual ~TPanelView() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -113,9 +114,14 @@ public:
   // slot 0x66 AssertMcAppUILine1922 inherited unchanged (0x48c7d0)
   // slot 0x67 CtrlSlot103_SubtractPosAndDispatchSlot19C_Impl inherited unchanged (0x48bac0)
   virtual undefined OrphanRetStub_00430550(); // slot 0x68 0x430550
-// === END GENERATED DECLS (TPanelView) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TPanelView 0xCTOR`).
+                                              // === END GENERATED DECLS (TPanelView) ===
+  // TView's slice ends at 0x60; RTTI oracle confirms sizeof(TPanelView) == 0x64. The one
+  // own field (field60) is zeroed at construction. TPanelView's ctor has no standalone
+  // out-of-line address -- the compiler always inlines it (e.g. into CreateObject at
+  // 0x4f78e0 and into TOffersPanelView's ctor) -- so it carries no // FUNCTION marker.
+  int field60; // +0x60
 
   TPanelView();
 };
 
+ASSERT_SIZE(TPanelView, 0x64);

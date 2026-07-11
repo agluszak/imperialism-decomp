@@ -927,6 +927,7 @@ address|target_cpp|ownership|note
 49f600|src/game/TCivAnimation2.cpp|manual|marker_sync
 49f630|src/game/TCivAnimation2.cpp|manual|marker_sync
 49f680|src/game/TCivAnimation2.cpp|manual|marker_sync
+49f6a0|src/game/TCivAnimation2.cpp|manual|marker_sync
 49f7c0|src/game/TCivAnimation2.cpp|manual|marker_sync
 49f8e0|src/game/TCivAnimation2.cpp|manual|marker_sync
 49fd60|src/game/TOneTimeAnimation.cpp|manual|marker_sync
@@ -1038,11 +1039,13 @@ address|target_cpp|ownership|note
 4a9400|src/game/TArmyCheckBox.cpp|manual|marker_sync
 4a9450|src/game/TArmyUnitView.cpp|manual|marker_sync
 4a94c0|src/game/TArmyUnitView.cpp|manual|marker_sync
+4a94e0|src/game/TArmyUnitView.cpp|manual|marker_sync
 4a9510|src/game/TArmyUnitView.cpp|manual|marker_sync
 4a95b0|src/game/TArmyUnitView.cpp|manual|marker_sync
 4a9990|src/game/TArmyUnitView.cpp|manual|marker_sync
 4a9f20|src/game/TArmyCheckBox.cpp|manual|marker_sync
 4a9fc0|src/game/TArmyCheckBox.cpp|manual|marker_sync
+4a9fe0|src/game/TArmyCheckBox.cpp|manual|marker_sync
 4aa030|src/game/TArmyCheckBox.cpp|manual|marker_sync
 4aa100|src/game/TArmyCheckBox.cpp|manual|marker_sync
 4aa280|src/game/TArmyCheckBox.cpp|manual|marker_sync
@@ -1466,6 +1469,7 @@ address|target_cpp|ownership|note
 4c6bf0|src/game/TSoundChannelNode.cpp|manual|marker_sync
 4c6df0|src/game/TBuildingView.cpp|manual|marker_sync
 4c6e90|src/game/TBuildingView.cpp|manual|marker_sync
+4c6eb0|src/game/TBuildingView.cpp|manual|marker_sync
 4c6ee0|src/game/TBuildingView.cpp|manual|marker_sync
 4c6f30|src/game/TBuildingView.cpp|manual|marker_sync
 4c6fb0|src/game/TBuildingView.cpp|manual|marker_sync
@@ -1475,12 +1479,14 @@ address|target_cpp|ownership|note
 4c7180|src/game/TBuildingView.cpp|manual|marker_sync
 4c71f0|src/game/TWarehouseView.cpp|manual|marker_sync
 4c7290|src/game/TWarehouseView.cpp|manual|marker_sync
+4c72b0|src/game/TWarehouseView.cpp|manual|marker_sync
 4c72e0|src/game/TWarehouseView.cpp|manual|marker_sync
 4c7330|src/game/TWarehouseView.cpp|manual|marker_sync
 4c7360|src/game/TWarehouseView.cpp|manual|marker_sync
 4c7d90|src/game/TWarehouseView.cpp|manual|marker_sync
 4c7f10|src/game/TUnitsView.cpp|manual|marker_sync
 4c7fb0|src/game/TUnitsView.cpp|manual|marker_sync
+4c7fd0|src/game/TUnitsView.cpp|manual|marker_sync
 4c8000|src/game/TUnitsView.cpp|manual|marker_sync
 4c8050|src/game/TUnitsView.cpp|manual|marker_sync
 4c8200|src/game/TShipyardView.cpp|manual|marker_sync
@@ -1497,6 +1503,7 @@ address|target_cpp|ownership|note
 4c9d20|src/game/TShipyardView.cpp|manual|marker_sync
 4c9d70|src/game/TBuildingConstructionView.cpp|manual|marker_sync
 4c9e10|src/game/TBuildingConstructionView.cpp|manual|marker_sync
+4c9e30|src/game/TBuildingConstructionView.cpp|manual|marker_sync
 4c9e60|src/game/TBuildingConstructionView.cpp|manual|marker_sync
 4c9eb0|src/game/TBuildingConstructionView.cpp|manual|marker_sync
 4ca8f0|src/game/TBuildingConstructionView.cpp|manual|marker_sync
@@ -1523,12 +1530,14 @@ address|target_cpp|ownership|note
 4cc640|src/game/TPurchaseCluster.cpp|manual|marker_sync
 4cc6b0|src/game/TIndustryView.cpp|manual|marker_sync
 4cc770|src/game/TIndustryView.cpp|manual|marker_sync
+4cc790|src/game/TIndustryView.cpp|manual|marker_sync
 4cc7d0|src/game/TIndustryView.cpp|manual|marker_sync
 4cc820|src/game/TIndustryView.cpp|manual|marker_sync
 4ccf30|src/game/TIndustryView.cpp|manual|marker_sync
 4cd040|src/game/TIndustryView.cpp|manual|marker_sync
 4cd760|src/game/TTradeSchoolView.cpp|manual|marker_sync
 4cd820|src/game/TTradeSchoolView.cpp|manual|marker_sync
+4cd840|src/game/TTradeSchoolView.cpp|manual|marker_sync
 4cd880|src/game/TTradeSchoolView.cpp|manual|marker_sync
 4cd8d0|src/game/TTradeSchoolView.cpp|manual|marker_sync
 4ce070|src/game/TTradeSchoolView.cpp|manual|marker_sync
@@ -2084,6 +2093,7 @@ address|target_cpp|ownership|note
 4f8dd0|src/game/TTradePanelView.cpp|manual|marker_sync
 4f8ec0|src/game/TOffersPanelView.cpp|manual|marker_sync
 4f8f50|src/game/TOffersPanelView.cpp|manual|marker_sync
+4f8f70|src/game/TOffersPanelView.cpp|manual|marker_sync
 4f8fa0|src/game/TOffersPanelView.cpp|manual|marker_sync
 4f8ff0|src/game/TOffersPanelView.cpp|manual|marker_sync
 4f9300|src/game/TOffersPanelView.cpp|manual|marker_sync
@@ -2182,6 +2192,7 @@ address|target_cpp|ownership|note
 500240|src/game/TGameWindow.cpp|manual|marker_sync
 500280|src/game/TDlgWindow.cpp|manual|marker_sync
 500300|src/game/TDlgWindow.cpp|manual|marker_sync
+500320|src/game/TDlgWindow.cpp|manual|marker_sync
 500350|src/game/TDlgWindow.cpp|manual|marker_sync
 5003a0|src/game/TDlgWindow.cpp|manual|marker_sync
 500550|src/game/THelpMgr.cpp|manual|marker_sync
@@ -2457,6 +2468,7 @@ address|target_cpp|ownership|note
 51af60|src/game/TMapDialog.cpp|manual|marker_sync
 51b0a0|src/game/TTerrainInfoDialog.cpp|manual|marker_sync
 51b120|src/game/TTerrainInfoDialog.cpp|manual|marker_sync
+51b140|src/game/TTerrainInfoDialog.cpp|manual|marker_sync
 51b170|src/game/TTerrainInfoDialog.cpp|manual|marker_sync
 51ba70|src/game/TTownNameDialog.cpp|manual|marker_sync
 51baf0|src/game/TTownNameDialog.cpp|manual|marker_sync
@@ -4526,6 +4538,7 @@ address|target_cpp|ownership|note
 5ba7a0|src/game/TTradeScreenPicture.cpp|manual|marker_sync
 5bab00|src/game/TDealBookPicture.cpp|manual|marker_sync
 5baba0|src/game/TDealBookPicture.cpp|manual|marker_sync
+5babc0|src/game/TDealBookPicture.cpp|manual|marker_sync
 5bac00|src/game/TDealBookPicture.cpp|manual|marker_sync
 5bac50|src/game/TControl.cpp|manual|marker_sync
 5baf70|src/game/TDealBookPicture.cpp|manual|marker_sync

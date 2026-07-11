@@ -379,14 +379,6 @@ undefined4 ValidateDiplomacyProposalTargetAndShowBlockedDetails(void)
   return 0;
 }
 
-// ghidra_name TOffersPanelView::ConstructTOffersPanelViewBaseState
-// ghidra_proto undefined ConstructTOffersPanelViewBaseState()
-// FUNCTION: IMPERIALISM 0x004f8f70
-undefined4 ConstructTOffersPanelViewBaseState(void)
-{
-  return 0;
-}
-
 // ghidra_name TToolBarCluster::RunDiplomacyWaitSheetPopupAndAwaitResponse
 // ghidra_proto undefined RunDiplomacyWaitSheetPopupAndAwaitResponse()
 // FUNCTION: IMPERIALISM 0x004f9a60
@@ -471,14 +463,6 @@ undefined4 WrapperFor_GenerateThreadLocalRandom15_At004ff840(void)
 // ghidra_proto undefined WrapperFor_ftol_At004ffb00()
 // FUNCTION: IMPERIALISM 0x004ffb00
 undefined4 WrapperFor_ftol_At004ffb00(void)
-{
-  return 0;
-}
-
-// ghidra_name TDlgWindow::ConstructTurnEventWindowEntryStaticBackdrop
-// ghidra_proto undefined ConstructTurnEventWindowEntryStaticBackdrop()
-// FUNCTION: IMPERIALISM 0x00500320
-undefined4 ConstructTurnEventWindowEntryStaticBackdrop(void)
 {
   return 0;
 }

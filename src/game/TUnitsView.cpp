@@ -7,7 +7,8 @@
 
 IMPLEMENT_DYNCREATE(TUnitsView, TBuildingView)
 
-TUnitsView::TUnitsView() {}
+// FUNCTION: IMPERIALISM 0x004c7fd0
+TUnitsView::TUnitsView() : TBuildingView() {}
 
 // SYNTHETIC: IMPERIALISM 0x004c8000
 // TUnitsView::`scalar deleting destructor'

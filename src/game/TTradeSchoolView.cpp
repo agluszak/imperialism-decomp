@@ -7,7 +7,8 @@
 
 IMPLEMENT_DYNCREATE(TTradeSchoolView, TIndustryView)
 
-TTradeSchoolView::TTradeSchoolView() {}
+// FUNCTION: IMPERIALISM 0x004cd840
+TTradeSchoolView::TTradeSchoolView() : TIndustryView() {}
 
 // SYNTHETIC: IMPERIALISM 0x004cd880
 // TTradeSchoolView::`scalar deleting destructor'

@@ -1,5 +1,6 @@
 #pragma once
 
+#include "compat.h"
 #include "game/TPicture.h"
 #include "game/mfc.h"
 
@@ -7,7 +8,7 @@
 // VTABLE: IMPERIALISM 0x0066dfc0
 class TDealBookPicture : public TPicture {
 public:
-// === BEGIN GENERATED DECLS (TDealBookPicture) — refreshed by recover-class; do not hand-edit ===
+  // === BEGIN GENERATED DECLS (TDealBookPicture) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TDealBookPicture)
   virtual ~TDealBookPicture() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -23,7 +24,8 @@ public:
   // slot 0x0c QueryStepValue inherited unchanged (0x48a2c0)
   // slot 0x0d DispatchQueuedUiCommandAndRelease inherited unchanged (0x48a3b0)
   // slot 0x0e DispatchUiSelectionToHandler inherited unchanged (0x48a3f0)
-  virtual void HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) override; // slot 0x0f 0x005bbc30
+  virtual void HandleEvent(int commandId, TEventHandler* sourceHandler,
+                           TEvent* event) override; // slot 0x0f 0x005bbc30
   // slot 0x10 DispatchEvent inherited unchanged (0x48a2e0)
   // slot 0x11 vmethod_0017 inherited unchanged (0x48a310)
   // slot 0x12 ForwardParam inherited unchanged (0x48a380)
@@ -124,10 +126,17 @@ public:
   // slot 0x71 ResetPictureResourceEntry inherited unchanged (0x48f520)
   // slot 0x72 SetPictureResourceIdAndRefresh inherited unchanged (0x48f570)
   virtual undefined UpdateDealBookResourceSelectionAndToggleControls(); // slot 0x73 0x5baf70
-  virtual undefined BuildSelectedNationOrderCapabilityRows(); // slot 0x74 0x5bb2e0
-// === END GENERATED DECLS (TDealBookPicture) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TDealBookPicture 0xCTOR`).
+  virtual undefined BuildSelectedNationOrderCapabilityRows();           // slot 0x74 0x5bb2e0
+  // === END GENERATED DECLS (TDealBookPicture) ===
+  // TPicture's slice ends at 0x90; RTTI oracle confirms sizeof(TDealBookPicture) == 0xb4.
+  // The ctor (0x5babc0) writes field90 (= 8) and fieldB2 (= 0); the intervening region and
+  // the 0xb3 byte are unconfirmed padding.
+  short field90;             // +0x90 initialized to 8
+  unsigned char pad92[0x20]; // +0x92
+  unsigned char fieldB2;     // +0xb2 initialized to 0
+  unsigned char padB3;       // +0xb3
 
   TDealBookPicture();
 };
 
+ASSERT_SIZE(TDealBookPicture, 0xb4);
