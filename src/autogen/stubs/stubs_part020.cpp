@@ -195,14 +195,6 @@ undefined4 QueueDeferredUiEventPacket(void)
   return 0;
 }
 
-// ghidra_name TViewMgr::CreateTViewMgrInstance
-// ghidra_proto undefined CreateTViewMgrInstance()
-// FUNCTION: IMPERIALISM 0x005d4c60
-undefined4 CreateTViewMgrInstance(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_ftol_At005d4f00
 // ghidra_proto undefined WrapperFor_ftol_At005d4f00()
 // FUNCTION: IMPERIALISM 0x005d4f00
@@ -687,14 +679,6 @@ undefined4 GetRuntimePtrTable0066F588(void)
 // ghidra_proto undefined UpdateCursorHelperWindowTextFromUiString()
 // FUNCTION: IMPERIALISM 0x005e1ce0
 undefined4 UpdateCursorHelperWindowTextFromUiString(void)
-{
-  return 0;
-}
-
-// ghidra_name TMovieView::CreateTMovieViewInstance
-// ghidra_proto undefined CreateTMovieViewInstance()
-// FUNCTION: IMPERIALISM 0x005e2100
-undefined4 CreateTMovieViewInstance(void)
 {
   return 0;
 }

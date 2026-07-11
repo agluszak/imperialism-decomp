@@ -5,6 +5,9 @@
 #include "game/global_data_tables.h"
 #include "game/movie_window_library.h"
 
+// SYNTHETIC: IMPERIALISM 0x005e2100
+// TMovieView::CreateObject
+
 IMPLEMENT_DYNCREATE(TMovieView, TPicture)
 
 namespace {

@@ -13,6 +13,9 @@
 #include <cstring>
 #include <new>
 
+// SYNTHETIC: IMPERIALISM 0x005e3390
+// TNetMgr::CreateObject
+
 IMPLEMENT_DYNCREATE(TNetMgr, TObject)
 
 // FUNCTION: IMPERIALISM 0x005e33e0

@@ -32822,8 +32822,8 @@
     },
     {
       "address": "0x5d4c60",
-      "matching": 0.023809523809523808,
-      "name": "TViewMgr::CreateTViewMgrInstance",
+      "matching": 0.1320754716981132,
+      "name": "TViewMgr::CreateObject",
       "type": 1
     },
     {
@@ -33680,8 +33680,8 @@
     },
     {
       "address": "0x5e2100",
-      "matching": 0.03389830508474576,
-      "name": "TMovieView::CreateTMovieViewInstance",
+      "matching": 0.4444444444444444,
+      "name": "TMovieView::CreateObject",
       "type": 1
     },
     {
@@ -33838,6 +33838,12 @@
       "address": "0x5e3310",
       "matching": 0.16,
       "name": "TNetMgr::CreateTNetMgrInstance",
+      "type": 1
+    },
+    {
+      "address": "0x5e3390",
+      "matching": 0.42424242424242425,
+      "name": "TNetMgr::CreateObject",
       "type": 1
     },
     {

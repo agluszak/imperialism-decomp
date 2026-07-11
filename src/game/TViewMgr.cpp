@@ -98,6 +98,10 @@ const unsigned int kAddrTurnStateSeedHi = 0x006a5b5c;
 extern "C" const char s_TurnEventCursorNameFormat_0069B6B4[];
 
 HCURSOR LoadTurnEventCursorByResourceIdOffset1000(int cursorResourceId);
+
+// SYNTHETIC: IMPERIALISM 0x005d4c60
+// TViewMgr::CreateObject
+
 IMPLEMENT_DYNCREATE(TViewMgr, TObject)
 
 // FUNCTION: IMPERIALISM 0x005d5060

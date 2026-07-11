@@ -4638,6 +4638,7 @@ address|target_cpp|ownership|note
 5d4ba0|src/game/buffered_stream.cpp|library|marker_sync
 5d4c10|src/game/TSimMgr.cpp|manual|marker_sync
 5d4c40|src/game/TSimMgr.cpp|manual|marker_sync
+5d4c60|src/game/TViewMgr.cpp|manual|marker_sync
 5d5040|src/game/TViewMgr.cpp|manual|mfc_runtime_macro
 5d5060|src/game/TViewMgr.cpp|manual|marker_sync
 5d50b0|src/game/TViewMgr.cpp|manual|marker_sync
@@ -4745,6 +4746,7 @@ address|target_cpp|ownership|note
 5e1fa0|src/game/TInterNationEventQueueManager.cpp|manual|marker_sync
 5e1fd0|src/game/TInterNationEventQueueManager.cpp|manual|marker_sync
 5e2000|src/game/TInterNationEventQueueManager.cpp|manual|marker_sync
+5e2100|src/game/TMovieView.cpp|manual|marker_sync
 5e2210|src/game/TMovieView.cpp|manual|mfc_runtime_macro
 5e2230|src/game/TMovieView.cpp|manual|marker_sync
 5e22f0|src/game/TMovieView.cpp|manual|marker_sync
@@ -4754,6 +4756,7 @@ address|target_cpp|ownership|note
 5e24e0|src/game/TMovieView.cpp|manual|marker_sync
 5e2500|src/game/TMovieView.cpp|manual|marker_sync
 5e2520|src/game/TMovieView.cpp|manual|marker_sync
+5e3390|src/game/TNetMgr.cpp|manual|marker_sync
 5e33c0|src/game/TNetMgr.cpp|manual|mfc_runtime_macro
 5e33e0|src/game/TNetMgr.cpp|manual|marker_sync
 5e3400|src/game/TNetMgr.cpp|manual|marker_sync

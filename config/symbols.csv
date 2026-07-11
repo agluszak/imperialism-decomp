@@ -6012,7 +6012,7 @@ address|name|symbol|size|type|prototype|provenance
 5d4ba0|ReadLineFromBufferedStreamUntilTerminator||70|function|undefined ReadLineFromBufferedStreamUntilTerminator()|
 5d4c10|TryGetFileMetadataForPath||30|function|undefined TryGetFileMetadataForPath()|
 5d4c40|DeleteFileWithErrorReporting||13|function|undefined DeleteFileWithErrorReporting()|
-5d4c60|TViewMgr::CreateTViewMgrInstance||282|function|undefined CreateTViewMgrInstance()|
+5d4c60|TViewMgr::CreateObject|?CreateObject@TViewMgr@@SGPAVCObject@@XZ|282|function|undefined CreateObject()|rtti
 5d4f00|WrapperFor_ftol_At005d4f00||30|function|undefined WrapperFor_ftol_At005d4f00()|
 5d5040|TViewMgr::GetRuntimeClass||6|function|undefined GetTViewMgrClassNamePointer()|
 5d5060|TViewMgr::ConstructGlobalTurnEventState||62|function|undefined ConstructGlobalTurnEventState()|
@@ -6181,7 +6181,7 @@ address|name|symbol|size|type|prototype|provenance
 5e1fa0|SetPlaybackState2AndNotifyOwnerCallback||17|function|undefined SetPlaybackState2AndNotifyOwnerCallback()|
 5e1fd0|NoOpPlaybackCallback_005e1fd0||20|function|undefined NoOpPlaybackCallback_005e1fd0()|
 5e2000|IncrementPlaybackCounterAndNotifyOwnerCallback||17|function|undefined IncrementPlaybackCounterAndNotifyOwnerCallback()|
-5e2100|TMovieView::CreateTMovieViewInstance||204|function|undefined CreateTMovieViewInstance()|
+5e2100|TMovieView::CreateObject|?CreateObject@TMovieView@@SGPAVCObject@@XZ|204|function|undefined CreateObject()|rtti
 5e2210|TMovieView::GetRuntimeClass||6|function|undefined GetTMovieViewClassNamePointer()|
 5e2230|TMovieView::ConstructTMovieViewBaseState||130|function|undefined ConstructTMovieViewBaseState()|
 5e22f0|TMovieView::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
@@ -6211,6 +6211,7 @@ address|name|symbol|size|type|prototype|provenance
 5e2f60|CreateRuntimeSelectionRecordEntryIfTagNotReserved||272|function|undefined CreateRuntimeSelectionRecordEntryIfTagNotReserved()|
 5e30c0|ShowJoinGameSelectionDialogAndCaptureChoice||459|function|undefined ShowJoinGameSelectionDialogAndCaptureChoice()|
 5e3310|TNetMgr::CreateTNetMgrInstance||82|function|undefined CreateTNetMgrInstance()|
+5e3390|TNetMgr::CreateObject|?CreateObject@TNetMgr@@SGPAVCObject@@XZ|24|function|undefined CreateObject()|rtti
 5e33c0|TNetMgr::GetRuntimeClass||6|function|undefined GetTNetMgrClassNamePointer()|
 5e33e0|TNetMgr::TNetMgr|??0TNetMgr@@QAE@XZ|9|function|void __thiscall TNetMgr(void)|
 5e3400|TNetMgr::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
