@@ -3253,6 +3253,7 @@ address|target_cpp|ownership|note
 565470|src/game/TShipView.cpp|manual|marker_sync
 5654e0|src/game/TShipView.cpp|manual|marker_sync
 5658d0|src/game/TShipView.cpp|manual|marker_sync
+565d20|src/game/map_overlay_geometry.cpp|manual|marker_sync
 565db0|src/game/TOceanDialog.cpp|manual|marker_sync
 565e70|src/game/TOceanDialog.cpp|manual|marker_sync
 565e90|src/game/TOceanDialog.cpp|manual|marker_sync

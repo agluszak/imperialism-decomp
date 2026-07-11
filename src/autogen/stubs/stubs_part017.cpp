@@ -571,14 +571,6 @@ undefined4 RunEngineerOrderNameEditDialogAndApply(void)
   return 0;
 }
 
-// ghidra_name ComputeWrappedIsometricScreenOffsetFromTile
-// ghidra_proto undefined ComputeWrappedIsometricScreenOffsetFromTile()
-// FUNCTION: IMPERIALISM 0x00565d20
-undefined4 ComputeWrappedIsometricScreenOffsetFromTile(void)
-{
-  return 0;
-}
-
 // ghidra_name InvalidateMapRegionForOrderEntry
 // ghidra_proto undefined InvalidateMapRegionForOrderEntry()
 // FUNCTION: IMPERIALISM 0x00565f80
