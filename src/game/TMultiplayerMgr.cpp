@@ -2019,6 +2019,44 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
   return 1;
 }
 
+struct TurnEvent11Packet : NetMessage {
+  int packetTag;
+  unsigned char activeNationId;
+  unsigned char flagByte;
+  short pad16; // alignment gap before mapOffsetSelector
+  int mapOffsetSelector;
+  int mapOffset;
+  short shortA;
+  short shortB;
+  unsigned char pad24[4]; // original frame/messageLength is 0x28
+};
+
+// FUNCTION: IMPERIALISM 0x005493c0
+void TMultiplayerMgr::CreateAndSendTurnEvent11_MapOffsetAndFlags(unsigned char flagByte,
+                                                                 int mapOffsetSelector,
+                                                                 int absoluteOffset, short shortA,
+                                                                 short shortB) {
+  TurnEvent11Packet packet;
+  packet.eventCode = 0x11;
+  packet.fromNetworkId = 0;
+  packet.toNetworkId = (g_pSimMgr->field44 == 1) ? 0 : -1;
+  packet.messageLength = 0x28;
+  packet.packetTag = 0x74696d65;
+  packet.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetActiveNationId());
+  packet.flagByte = flagByte;
+  packet.mapOffsetSelector = mapOffsetSelector;
+  int base = 0;
+  if (mapOffsetSelector == 0) {
+    base = reinterpret_cast<int>(g_pGlobalMapState->terrainStateTable);
+  } else if (mapOffsetSelector == 1) {
+    base = reinterpret_cast<int>(g_pGlobalMapState->cityScoreTable);
+  }
+  packet.mapOffset = absoluteOffset - base;
+  packet.shortA = shortA;
+  packet.shortB = shortB;
+  g_pNetMgr006a6014->Send(&packet, 0);
+}
+
 // FUNCTION: IMPERIALISM 0x005494b0
 void TMultiplayerMgr::CreateAndSendTurnEvent12_TwoShorts(short shortA, short shortB) {
   TurnEvent12Packet packet;
@@ -2177,14 +2215,42 @@ void TMultiplayerMgr::DispatchTurnEvent1AWithNationActionPayload(short param0, s
   g_pNetMgr006a6014->Send(&packet, 1);
 }
 
-struct TaggedGameStateTurnEventPacket : NetMessage {
+struct TurnEvent1CPacket : NetMessage {
   int packetTag;
   unsigned char activeNationId;
   unsigned char pad15[3];
-  int resolvedNationId;
-  int tagParam;
-  int valueParam;
+  short pendingNationSlotIndexLow;
+  short shortA;
+  short shortB;
+  // Ground truth stores shortD/shortE before shortC (declaration order matches the
+  // original's field offsets, not the parameter order).
+  short shortD;
+  short shortE;
+  short shortC;
+  short shortF;
 };
+
+// FUNCTION: IMPERIALISM 0x005499b0
+void TMultiplayerMgr::CreateAndSendTurnEvent1C_BoolAndSixShorts(bool broadcastFlag, short shortA,
+                                                                short shortB, short shortC,
+                                                                short shortD, short shortE,
+                                                                short shortF) {
+  TurnEvent1CPacket packet;
+  packet.eventCode = 0x1c;
+  packet.fromNetworkId = 0;
+  packet.toNetworkId = broadcastFlag ? -1 : 0;
+  packet.messageLength = 0x28;
+  packet.packetTag = 0x74696d65;
+  packet.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetActiveNationId());
+  packet.pendingNationSlotIndexLow = static_cast<short>(g_pGameFlowState->pendingNationSlotIndex);
+  packet.shortA = shortA;
+  packet.shortB = shortB;
+  packet.shortD = shortD;
+  packet.shortE = shortE;
+  packet.shortC = shortC;
+  packet.shortF = shortF;
+  g_pNetMgr006a6014->Send(&packet, 0);
+}
 
 // FUNCTION: IMPERIALISM 0x00549ad0
 void TMultiplayerMgr::DispatchTurnEventPacketWithCodeAndPayloadBuffer(short eventTag,
@@ -2262,6 +2328,15 @@ void TMultiplayerMgr::SerializeOrderDataIntoTurnEventByTag(TStream* stream, shor
     g_pNationInteractionStateManager->WriteTo(stream);
   }
 }
+
+struct TaggedGameStateTurnEventPacket : NetMessage {
+  int packetTag;
+  unsigned char activeNationId;
+  unsigned char pad15[3];
+  int resolvedNationId;
+  int tagParam;
+  int valueParam;
+};
 
 // FUNCTION: IMPERIALISM 0x0054a340
 void TMultiplayerMgr::DispatchTaggedGameStateEvent1F20(int packetTag, int param2,

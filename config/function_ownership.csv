@@ -2994,12 +2994,14 @@ address|target_cpp|ownership|note
 544e30|src/game/TMultiplayerMgr.cpp|manual|marker_sync
 545940|src/game/TMultiplayerMgr.cpp|manual|marker_sync
 549240|src/game/TSimMgr.cpp|manual|marker_sync
+5493c0|src/game/TMultiplayerMgr.cpp|manual|marker_sync
 5494b0|src/game/TMultiplayerMgr.cpp|manual|marker_sync
 549540|src/game/TMultiplayerMgr.cpp|manual|marker_sync
 5495e0|src/game/TMultiplayerMgr.cpp|manual|marker_sync
 549680|src/game/TMultiplayerMgr.cpp|manual|marker_sync
 549720|src/game/TMultiplayerMgr.cpp|manual|marker_sync
 5497b0|src/game/TMultiplayerMgr.cpp|manual|marker_sync
+5499b0|src/game/TMultiplayerMgr.cpp|manual|marker_sync
 549ad0|src/game/TMultiplayerMgr.cpp|manual|marker_sync
 549c60|src/game/TMultiplayerMgr.cpp|manual|marker_sync
 549ff0|src/game/TMultiplayerMgr_HandleDiplomacyTurnEvent.cpp|manual|marker_sync

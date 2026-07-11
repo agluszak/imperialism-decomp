@@ -587,26 +587,10 @@ undefined4 AppendNodeToTurnEventLinkedListAt6C(void)
   return 0;
 }
 
-// ghidra_name CreateAndSendTurnEvent11_MapOffsetAndFlags
-// ghidra_proto undefined CreateAndSendTurnEvent11_MapOffsetAndFlags()
-// FUNCTION: IMPERIALISM 0x005493c0
-undefined4 CreateAndSendTurnEvent11_MapOffsetAndFlags(void)
-{
-  return 0;
-}
-
 // ghidra_name CreateAndSendTurnEvent1B_FiveShortsAndDword
 // ghidra_proto undefined CreateAndSendTurnEvent1B_FiveShortsAndDword()
 // FUNCTION: IMPERIALISM 0x005498d0
 undefined4 CreateAndSendTurnEvent1B_FiveShortsAndDword(void)
-{
-  return 0;
-}
-
-// ghidra_name CreateAndSendTurnEvent1C_BoolAndSixShorts
-// ghidra_proto undefined CreateAndSendTurnEvent1C_BoolAndSixShorts()
-// FUNCTION: IMPERIALISM 0x005499b0
-undefined4 CreateAndSendTurnEvent1C_BoolAndSixShorts(void)
 {
   return 0;
 }

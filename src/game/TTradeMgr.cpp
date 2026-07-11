@@ -21,15 +21,6 @@
 static short kNationMetricCategoryPresetValues[0x11];
 static short kNationMetricCodeLookup[0x20];
 
-extern undefined4 CreateAndSendTurnEvent1C_BoolAndSixShorts(void);
-
-static void InvokeCreateAndSendTurnEvent1C(int arg0, int arg1, int arg2, int arg3, int arg4,
-                                           int arg5, int arg6) {
-  typedef void(__cdecl * CreateEventFn)(int, int, int, int, int, int, int);
-  reinterpret_cast<CreateEventFn>(CreateAndSendTurnEvent1C_BoolAndSixShorts)(arg0, arg1, arg2, arg3,
-                                                                             arg4, arg5, arg6);
-}
-
 typedef void(__fastcall* MinorSlot80Fn)(TMinor* self, int unusedEdx, int arg1, int arg2, int arg3);
 typedef void(__fastcall* MinorSlot6CFn)(TMinor* self, int unusedEdx, int arg);
 
@@ -822,13 +813,15 @@ void TTradeMgr::DispatchProposalAmountSlot60(short ownerNation, int sourceContex
                                              int maxAmount, int targetNation, char emitEventFlag,
                                              char skipLocalizationBranch) {
   if ((skipLocalizationBranch == 0) && (g_pSimMgr->redrawEnabled == 2)) {
-    InvokeCreateAndSendTurnEvent1C(1, ownerNation, sourceContext, amount, maxAmount, targetNation,
-                                   emitEventFlag);
+    g_pGameFlowState->CreateAndSendTurnEvent1C_BoolAndSixShorts(
+        true, ownerNation, static_cast<short>(sourceContext), static_cast<short>(amount),
+        static_cast<short>(maxAmount), static_cast<short>(targetNation), emitEventFlag);
     return;
   }
   if (g_pSimMgr->redrawEnabled == 1) {
-    InvokeCreateAndSendTurnEvent1C(0, ownerNation, sourceContext, amount, maxAmount, targetNation,
-                                   emitEventFlag);
+    g_pGameFlowState->CreateAndSendTurnEvent1C_BoolAndSixShorts(
+        false, ownerNation, static_cast<short>(sourceContext), static_cast<short>(amount),
+        static_cast<short>(maxAmount), static_cast<short>(targetNation), emitEventFlag);
   }
 
   short ownerSlot = ownerNation;
