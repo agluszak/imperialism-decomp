@@ -2093,6 +2093,7 @@ address|target_cpp|ownership|note
 4f8dd0|src/game/TTradePanelView.cpp|manual|marker_sync
 4f8ec0|src/game/TOffersPanelView.cpp|manual|marker_sync
 4f8f50|src/game/TOffersPanelView.cpp|manual|marker_sync
+4f8f70|src/game/TOffersPanelView.cpp|manual|marker_sync
 4f8fa0|src/game/TOffersPanelView.cpp|manual|marker_sync
 4f8ff0|src/game/TOffersPanelView.cpp|manual|marker_sync
 4f9300|src/game/TOffersPanelView.cpp|manual|marker_sync
@@ -2191,6 +2192,7 @@ address|target_cpp|ownership|note
 500240|src/game/TGameWindow.cpp|manual|marker_sync
 500280|src/game/TDlgWindow.cpp|manual|marker_sync
 500300|src/game/TDlgWindow.cpp|manual|marker_sync
+500320|src/game/TDlgWindow.cpp|manual|marker_sync
 500350|src/game/TDlgWindow.cpp|manual|marker_sync
 5003a0|src/game/TDlgWindow.cpp|manual|marker_sync
 500550|src/game/THelpMgr.cpp|manual|marker_sync

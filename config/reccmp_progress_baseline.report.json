@@ -14800,7 +14800,7 @@
     },
     {
       "address": "0x4f78e0",
-      "matching": 0.5454545454545454,
+      "matching": 0.5818181818181818,
       "name": "TPanelView::CreateObject",
       "type": 1
     },
@@ -14824,7 +14824,7 @@
     },
     {
       "address": "0x4f7a10",
-      "matching": 0.5454545454545454,
+      "matching": 0.5818181818181818,
       "name": "TTreatiesView::CreateObject",
       "type": 1
     },
@@ -14860,7 +14860,7 @@
     },
     {
       "address": "0x4f7fd0",
-      "matching": 0.5454545454545454,
+      "matching": 0.5818181818181818,
       "name": "TGrantsView::CreateObject",
       "type": 1
     },
@@ -14896,7 +14896,7 @@
     },
     {
       "address": "0x4f86d0",
-      "matching": 0.5454545454545454,
+      "matching": 0.5818181818181818,
       "name": "TTradePanelView::CreateObject",
       "type": 1
     },
@@ -14932,7 +14932,7 @@
     },
     {
       "address": "0x4f8ec0",
-      "matching": 0.4918032786885246,
+      "matching": 0.5245901639344263,
       "name": "TOffersPanelView::CreateObject",
       "type": 1
     },
@@ -14944,7 +14944,7 @@
     },
     {
       "address": "0x4f8f70",
-      "matching": 0.3076923076923077,
+      "matching": 0.8571428571428571,
       "name": "TOffersPanelView::ConstructTOffersPanelViewBaseState",
       "type": 1
     },
@@ -15034,7 +15034,7 @@
     },
     {
       "address": "0x4faf80",
-      "matching": 0.5454545454545454,
+      "matching": 0.5818181818181818,
       "name": "TCouncilPanelView::CreateObject",
       "type": 1
     },
@@ -15581,7 +15581,7 @@
     },
     {
       "address": "0x500320",
-      "matching": 0.2222222222222222,
+      "matching": 1.0,
       "name": "TDlgWindow::ConstructTurnEventWindowEntryStaticBackdrop",
       "type": 1
     },
