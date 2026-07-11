@@ -7,7 +7,8 @@
 
 IMPLEMENT_DYNCREATE(TOrderView, TView)
 
-TOrderView::TOrderView() {}
+// FUNCTION: IMPERIALISM 0x00506a80
+TOrderView::TOrderView() : TView(), field60(0) {}
 
 // SYNTHETIC: IMPERIALISM 0x00506ab0
 // TOrderView::`scalar deleting destructor'
@@ -24,4 +25,4 @@ undefined TOrderView::RefreshOrderViewSupplyAndUseControlValues() {
 }
 
 // FUNCTION: IMPERIALISM 0x00507240
-void TOrderView::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) { }
+void TOrderView::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {}

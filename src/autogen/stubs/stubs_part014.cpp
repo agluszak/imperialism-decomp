@@ -659,22 +659,6 @@ undefined4 ConstructTIconSliderBaseState(void)
   return 0;
 }
 
-// ghidra_name TOrderView::ConstructTOrderViewBaseState
-// ghidra_proto undefined ConstructTOrderViewBaseState()
-// FUNCTION: IMPERIALISM 0x00506a80
-undefined4 ConstructTOrderViewBaseState(void)
-{
-  return 0;
-}
-
-// ghidra_name TNumberedIcon::ConstructTNumberedIconBaseState
-// ghidra_proto undefined ConstructTNumberedIconBaseState()
-// FUNCTION: IMPERIALISM 0x005073a0
-undefined4 ConstructTNumberedIconBaseState(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_thunk_InitializeUiResourceEntryFrameAndParent_At00507850
 // ghidra_proto undefined WrapperFor_thunk_InitializeUiResourceEntryFrameAndParent_At00507850()
 // FUNCTION: IMPERIALISM 0x00507850

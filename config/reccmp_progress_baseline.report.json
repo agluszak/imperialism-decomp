@@ -16065,7 +16065,8 @@
     },
     {
       "address": "0x506a80",
-      "matching": 0.2,
+      "effective": true,
+      "matching": 0.875,
       "name": "TOrderView::ConstructTOrderViewBaseState",
       "type": 1
     },
@@ -16095,7 +16096,7 @@
     },
     {
       "address": "0x5072e0",
-      "matching": 0.5454545454545454,
+      "matching": 0.5818181818181818,
       "name": "TNumberedIcon::CreateObject",
       "type": 1
     },
@@ -16107,7 +16108,8 @@
     },
     {
       "address": "0x5073a0",
-      "matching": 0.2,
+      "effective": true,
+      "matching": 0.875,
       "name": "TNumberedIcon::ConstructTNumberedIconBaseState",
       "type": 1
     },
@@ -17475,7 +17477,7 @@
     },
     {
       "address": "0x51bb10",
-      "matching": 0.2222222222222222,
+      "matching": 1.0,
       "name": "TTownNameDialog::ConstructTTownNameDialogBaseState",
       "type": 1
     },

@@ -275,14 +275,6 @@ undefined4 PopulateMapContextInfoPanelStringsByTileSelection(void)
   return 0;
 }
 
-// ghidra_name TTownNameDialog::ConstructTTownNameDialogBaseState
-// ghidra_proto undefined ConstructTTownNameDialogBaseState()
-// FUNCTION: IMPERIALISM 0x0051bb10
-undefined4 ConstructTTownNameDialogBaseState(void)
-{
-  return 0;
-}
-
 // ghidra_name MarkHexTileAndNeighborsDirtyAndNotify
 // ghidra_proto undefined MarkHexTileAndNeighborsDirtyAndNotify()
 // FUNCTION: IMPERIALISM 0x0051d380

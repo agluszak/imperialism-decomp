@@ -2238,12 +2238,14 @@ address|target_cpp|ownership|note
 5067a0|src/game/TIconSlider.cpp|manual|marker_sync
 5069d0|src/game/TOrderView.cpp|manual|marker_sync
 506a60|src/game/TOrderView.cpp|manual|marker_sync
+506a80|src/game/TOrderView.cpp|manual|marker_sync
 506ab0|src/game/TOrderView.cpp|manual|marker_sync
 506b00|src/game/TOrderView.cpp|manual|marker_sync
 506f90|src/game/TOrderView.cpp|manual|marker_sync
 507240|src/game/TOrderView.cpp|manual|marker_sync
 5072e0|src/game/TNumberedIcon.cpp|manual|marker_sync
 507380|src/game/TNumberedIcon.cpp|manual|marker_sync
+5073a0|src/game/TNumberedIcon.cpp|manual|marker_sync
 5073d0|src/game/TNumberedIcon.cpp|manual|marker_sync
 5074e0|src/game/TNumberedIcon.cpp|manual|marker_sync
 507570|src/game/TNumberedIcon.cpp|manual|marker_sync
@@ -2446,6 +2448,7 @@ address|target_cpp|ownership|note
 51b170|src/game/TTerrainInfoDialog.cpp|manual|marker_sync
 51ba70|src/game/TTownNameDialog.cpp|manual|marker_sync
 51baf0|src/game/TTownNameDialog.cpp|manual|marker_sync
+51bb10|src/game/TTownNameDialog.cpp|manual|marker_sync
 51bb40|src/game/TTownNameDialog.cpp|manual|marker_sync
 51bb90|src/game/TTownNameDialog.cpp|manual|marker_sync
 51bcc0|src/game/TTownNameDialog.cpp|manual|marker_sync
