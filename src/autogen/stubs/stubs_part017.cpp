@@ -547,14 +547,6 @@ undefined4 Helper_Uses_thunk_DrawCenteredGuideLineOnMapDc_At005663c0(void)
   return 0;
 }
 
-// ghidra_name TOceanDialog::ApplyDirectionalNudgeAndRefreshDisplay
-// ghidra_proto undefined ApplyDirectionalNudgeAndRefreshDisplay()
-// FUNCTION: IMPERIALISM 0x00568a40
-undefined4 ApplyDirectionalNudgeAndRefreshDisplay(void)
-{
-  return 0;
-}
-
 // ghidra_name TToolBarCluster::UpdateIndustryCapabilityControlStateAndValue
 // ghidra_proto undefined UpdateIndustryCapabilityControlStateAndValue()
 // FUNCTION: IMPERIALISM 0x00568f90

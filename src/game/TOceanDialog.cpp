@@ -1,4 +1,12 @@
 #include "game/TOceanDialog.h"
+
+#include "game/TDisplayMgr.h"
+#include "game/global_data_tables.h"
+
+// Standalone binary helper also reached via TWorldView.cpp/TMapDialog.cpp's identical
+// bridge (0x51ace0); real signature void(short*, short*).
+undefined4 thunk_NormalizeWrappedMapCoord108x60(void);
+
 // SYNTHETIC: IMPERIALISM 0x00565db0
 // TOceanDialog::CreateObject
 
@@ -7,8 +15,12 @@
 
 IMPLEMENT_DYNCREATE(TOceanDialog, TWorldView)
 
+// TODO: ground truth also sets viewportOffsetX/viewportOffsetY from two file-scope
+// globals (0x6a3ff0/0x6a3ff4, both read-only here -- the writer is at 0x56a3b2/0x56a3b7,
+// not yet traced/named) and overwrites field76=4/field78=0x10; deferred pending those
+// globals' real role.
 // FUNCTION: IMPERIALISM 0x00565e90
-TOceanDialog::TOceanDialog() {}
+TOceanDialog::TOceanDialog() : scrollRowOffset7c(0), scrollColOffset7e(0) {}
 
 // SYNTHETIC: IMPERIALISM 0x00565ee0
 // TOceanDialog::`scalar deleting destructor'
@@ -93,7 +105,32 @@ void TOceanDialog::UpdateMapDialogTileRowColumnMarkerAndInvalidate(int arg1) {
   (void)arg1;
 }
 
+// FUNCTION: IMPERIALISM 0x00568a40
+void TOceanDialog::ApplyDirectionalNudgeAndRefreshDisplay(unsigned char directionFlags) {
+  // Nudged values are only ever passed to OrphanRetStub_00596680 -- the fields
+  // themselves are not written back here (any persistence happens inside that call,
+  // still a documented TODO stub).
+  int col = scrollColOffset7e;
+  int row = scrollRowOffset7c;
+  if ((directionFlags & 1) != 0) {
+    row -= 4;
+  } else if ((directionFlags & 2) != 0) {
+    row += 4;
+  }
+  if ((directionFlags & 4) != 0) {
+    col += 4;
+  } else if ((directionFlags & 8) != 0) {
+    col -= 4;
+  }
+  OrphanRetStub_00596680(col, row);
+  g_pDisplayMgr->activeDialog->InvokeSlot13C();
+}
+
 // FUNCTION: IMPERIALISM 0x00568ab0
-undefined TOceanDialog::ComputeWrappedTileIndexFromObjectOffset7C7E() {
-  return 0;
+int TOceanDialog::ComputeWrappedTileIndexFromObjectOffset7C7E() {
+  short row = static_cast<short>(scrollRowOffset7c + 0xe);
+  short col = static_cast<short>(scrollColOffset7e + 0x10);
+  reinterpret_cast<void(__cdecl*)(short*, short*)>(thunk_NormalizeWrappedMapCoord108x60)(&col,
+                                                                                         &row);
+  return col + row * 0x6c;
 }

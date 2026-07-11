@@ -3299,6 +3299,7 @@ address|target_cpp|ownership|note
 5687b0|src/game/TOceanDialog.cpp|manual|marker_sync
 5688d0|src/game/TOceanDialog.cpp|manual|marker_sync
 5689f0|src/game/TOceanDialog.cpp|manual|marker_sync
+568a40|src/game/TOceanDialog.cpp|manual|marker_sync
 568ab0|src/game/TOceanDialog.cpp|manual|marker_sync
 568b20|src/game/TDisappearingButton.cpp|manual|marker_sync
 568ba0|src/game/TDisappearingButton.cpp|manual|marker_sync
