@@ -84,6 +84,28 @@ int QueryFreeDiskMegabytesOnWindowsVolume(LPCSTR windowsDirectory) {
 
 } // namespace
 
+// FUNCTION: IMPERIALISM 0x00412640
+HKEY OpenOrCreateCompanyProductRegistryKey(LPCSTR company, LPCSTR product) {
+  HKEY hSoftware = nullptr;
+  HKEY hCompany = nullptr;
+  HKEY hProduct = nullptr;
+  DWORD disposition = 0;
+
+  if (RegOpenKeyExA(HKEY_CURRENT_USER, "Software", 0, 0x2001f, &hSoftware) == ERROR_SUCCESS) {
+    if (RegCreateKeyExA(hSoftware, company, 0, nullptr, 0, 0x2001f, nullptr, &hCompany,
+                        &disposition) == ERROR_SUCCESS) {
+      RegCreateKeyExA(hCompany, product, 0, nullptr, 0, 0x2001f, nullptr, &hProduct, &disposition);
+    }
+  }
+  if (hSoftware != nullptr) {
+    RegCloseKey(hSoftware);
+  }
+  if (hCompany != nullptr) {
+    RegCloseKey(hCompany);
+  }
+  return hProduct;
+}
+
 // FUNCTION: IMPERIALISM 0x00412840
 CString ReadOrCreateRegistryStringValueWithFallback(LPCSTR company, LPCSTR product, LPCSTR section,
                                                     LPCSTR valueName, LPCSTR defaultValue) {

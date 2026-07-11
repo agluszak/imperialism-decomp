@@ -187,14 +187,6 @@ undefined4 InvokeCallbackForRecordRangeWithStride(void)
   return 0;
 }
 
-// ghidra_name OrphanCallChain_C5_I60_00412640
-// ghidra_proto undefined OrphanCallChain_C5_I60_00412640()
-// FUNCTION: IMPERIALISM 0x00412640
-undefined4 OrphanCallChain_C5_I60_00412640(void)
-{
-  return 0;
-}
-
 // ghidra_name OrphanCallChain_C7_I93_00412720
 // ghidra_proto undefined OrphanCallChain_C7_I93_00412720()
 // FUNCTION: IMPERIALISM 0x00412720

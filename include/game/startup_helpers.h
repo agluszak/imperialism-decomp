@@ -28,6 +28,12 @@ extern "C++" undefined4 ReleaseGlobalClipRegionHandleListAndReset_006a1c98();
 CString ReadOrCreateRegistryStringValueWithFallback(LPCSTR company, LPCSTR product, LPCSTR section,
                                                     LPCSTR valueName, LPCSTR defaultValue);
 
+// Opens (creating as needed) HKEY_CURRENT_USER\Software\<company>\<product> and returns the
+// final HKEY, or nullptr if any step fails. Sibling of
+// ReadOrCreateRegistryStringValueWithFallback's key-opening prologue, one level shallower (no
+// <section> subkey). Caller owns the returned HKEY (RegCloseKey). 0x00412640
+HKEY OpenOrCreateCompanyProductRegistryKey(LPCSTR company, LPCSTR product);
+
 // 0x00412a70 — the main thread's CWinThread::m_pMainWnd (the SDI CMainFrame), via its
 // real CFrameWnd::GetActiveView(). Always a CIncludeView in this app (the only registered
 // document-template view class).
