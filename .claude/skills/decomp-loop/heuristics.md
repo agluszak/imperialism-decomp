@@ -1159,3 +1159,19 @@ headers before splicing.
     for functions that are actually 100% -- re-running detect then compare on the same
     addresses fixed five phantom failures in one batch. Never conclude a claim is
     unverifiable from a compare that ran before detect refreshed reccmp-build.yml.
+
+76. **A block of junk-named `return 0` virtual-slot stubs (`VirtualSlot64/6C/70/74/78`)
+    can hide a complete real algorithm -- check `ret N` and the Mac oracle before
+    trusting any stub body.** TSortedList's six "no-op" sort slots were a full MacApp
+    quicksort (Sort/SortBy/Compare/QuickSort/QSPartition + a default-compare
+    trampoline), with symbols.csv rows that were outright wrong (QuickSort labelled
+    Destruct*AndMaybeFree, Compare labelled Construct*BaseState). Two tells: the stub's
+    claimed address had `ret 8`/`ret 0x10` (arguments the decl dropped), and the Mac
+    evidence listed Sort/SortBy/Compare/QuickSort/QSPartition on the same class. Six of
+    eight addresses hit 100% once the real shapes were written. Comparator shape:
+    `short(__cdecl*)(void* a, void* b, void* context)` with the verdict in AX; Sort()
+    passes a trampoline + the list as context to dispatch the virtual Compare. The
+    parallel CPtrArray-backed chain (TSortedPtrList/TPtrList, same junk-named stubs in
+    TPtrList.cpp, vtable 0x649010 / ctor 0x488400) still needs the same treatment, as
+    do TNavyMission's two big score stubs (0x537270/0x537610) and the 2041-byte idle
+    hook at 0x4acb60 that Ghidra mis-buckets as TBattleReportView (apply note 74).
