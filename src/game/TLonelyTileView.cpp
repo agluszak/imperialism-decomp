@@ -14,7 +14,8 @@
 
 IMPLEMENT_DYNCREATE(TLonelyTileView, TView)
 
-TLonelyTileView::TLonelyTileView() {}
+// FUNCTION: IMPERIALISM 0x00505ae0
+TLonelyTileView::TLonelyTileView() : TView() {}
 
 // SYNTHETIC: IMPERIALISM 0x00505b10
 // TLonelyTileView::`scalar deleting destructor'

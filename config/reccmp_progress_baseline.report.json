@@ -14438,7 +14438,8 @@
     },
     {
       "address": "0x4f2c60",
-      "matching": 0.2,
+      "effective": true,
+      "matching": 0.875,
       "name": "TMinisterView::ConstructTMinisterViewBaseState",
       "type": 1
     },
@@ -14498,7 +14499,7 @@
     },
     {
       "address": "0x4f2fd0",
-      "matching": 0.2,
+      "matching": 0.8,
       "name": "TForeignMinisterView::ConstructTForeignMinisterViewBaseState",
       "type": 1
     },
@@ -15903,7 +15904,7 @@
     },
     {
       "address": "0x505ae0",
-      "matching": 0.2222222222222222,
+      "matching": 1.0,
       "name": "TLonelyTileView::ConstructTLonelyTileViewBaseState",
       "type": 1
     },

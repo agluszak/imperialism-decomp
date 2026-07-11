@@ -315,22 +315,6 @@ undefined4 WrapperFor_ftol_At004f2b10(void)
   return 0;
 }
 
-// ghidra_name TMinisterView::ConstructTMinisterViewBaseState
-// ghidra_proto undefined ConstructTMinisterViewBaseState()
-// FUNCTION: IMPERIALISM 0x004f2c60
-undefined4 ConstructTMinisterViewBaseState(void)
-{
-  return 0;
-}
-
-// ghidra_name TForeignMinisterView::ConstructTForeignMinisterViewBaseState
-// ghidra_proto undefined ConstructTForeignMinisterViewBaseState()
-// FUNCTION: IMPERIALISM 0x004f2fd0
-undefined4 ConstructTForeignMinisterViewBaseState(void)
-{
-  return 0;
-}
-
 // ghidra_name TDefenseMinisterView::ConstructTDefenseMinisterViewBaseState
 // ghidra_proto undefined ConstructTDefenseMinisterViewBaseState()
 // FUNCTION: IMPERIALISM 0x004f32f0
@@ -615,14 +599,6 @@ undefined4 ConstructPictureResourceEntryType57080(void)
 // ghidra_proto void __thiscall BuildMapTileActionContextMenu(void * pMenuDialogState, short nTileIndex)
 // FUNCTION: IMPERIALISM 0x00504e90
 undefined4 BuildMapTileActionContextMenu(void)
-{
-  return 0;
-}
-
-// ghidra_name TLonelyTileView::ConstructTLonelyTileViewBaseState
-// ghidra_proto undefined ConstructTLonelyTileViewBaseState()
-// FUNCTION: IMPERIALISM 0x00505ae0
-undefined4 ConstructTLonelyTileViewBaseState(void)
 {
   return 0;
 }

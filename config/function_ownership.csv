@@ -1998,6 +1998,7 @@ address|target_cpp|ownership|note
 4f2930|src/game/TNextDiplomationCommand.cpp|manual|marker_sync
 4f2bb0|src/game/TMinisterView.cpp|manual|marker_sync
 4f2c40|src/game/TMinisterView.cpp|manual|marker_sync
+4f2c60|src/game/TMinisterView.cpp|manual|marker_sync
 4f2c90|src/game/TMinisterView.cpp|manual|marker_sync
 4f2ce0|src/game/TMinisterView.cpp|manual|marker_sync
 4f2d10|src/game/TMinisterView.cpp|manual|marker_sync
@@ -2007,6 +2008,7 @@ address|target_cpp|ownership|note
 4f2ef0|src/game/TMinisterView.cpp|manual|marker_sync
 4f2f20|src/game/TForeignMinisterView.cpp|manual|marker_sync
 4f2fb0|src/game/TForeignMinisterView.cpp|manual|marker_sync
+4f2fd0|src/game/TForeignMinisterView.cpp|manual|marker_sync
 4f3000|src/game/TForeignMinisterView.cpp|manual|marker_sync
 4f3050|src/game/TForeignMinisterView.cpp|manual|marker_sync
 4f31d0|src/game/TForeignMinisterView.cpp|manual|marker_sync
@@ -2215,6 +2217,7 @@ address|target_cpp|ownership|note
 5059d0|src/game/TTerrainHelpPicture.cpp|manual|marker_sync
 505a50|src/game/TLonelyTileView.cpp|manual|marker_sync
 505ac0|src/game/TLonelyTileView.cpp|manual|marker_sync
+505ae0|src/game/TLonelyTileView.cpp|manual|marker_sync
 505b10|src/game/TLonelyTileView.cpp|manual|marker_sync
 505b60|src/game/TLonelyTileView.cpp|manual|marker_sync
 505f50|src/game/TIconBar.cpp|manual|marker_sync
