@@ -732,6 +732,7 @@ extern TControlPictureRectState g_UiResourceEntryDefaultTextStyle;
 extern const float g_Recompute_Nation_Order_LookupTable_0065A9BC;
 extern const float g_Recompute_Nation_Order_LookupTable_0065A9C4;
 extern const float g_Recompute_Nation_Order_LookupTable_0065A9E8;
+extern const double g_Recompute_Nation_Order_LookupTable_0065A9E0;
 extern const double g_Recompute_Nation_Order_LookupTable_0065A9F0;
 extern double g_Recompute_Nation_Order_LookupTable_0065A9F8;
 extern double g_Recompute_Nation_Order_LookupTable_0065AA00;

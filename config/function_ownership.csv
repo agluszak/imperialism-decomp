@@ -2796,6 +2796,7 @@ address|target_cpp|ownership|note
 537270|src/game/TNavyMission.cpp|manual|marker_sync
 537610|src/game/TNavyMission.cpp|manual|marker_sync
 5378c0|src/game/TNavyMission.cpp|manual|marker_sync
+537c60|src/game/TNavyMission.cpp|manual|marker_sync
 537f40|src/game/TNavyMission.cpp|manual|marker_sync
 5386c0|src/game/TControlSeaZoneMission.cpp|manual|marker_sync
 538780|src/game/TControlSeaZoneMission.cpp|manual|marker_sync

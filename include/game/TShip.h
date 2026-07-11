@@ -88,6 +88,8 @@ int SumNavyOrderPriorityForNationAndNodeType(TGreatPower* nationObj, int nodeTyp
 // stock/required-count, +0x30 a tiebreak/context field). It is modelled as a
 // TShip method; the one TTaskForce call site keeps the original's receiver pun.
 short GetNavyOrderNormalizationBaseByResourceType(short resourceType);
+void __cdecl AccumulateNavyOrderCategoryVectorWithScale(TShip* orderNode, float* vector,
+                                                        float scale);
 
 // Per-category (0..3) normalized cost percent for a resource type, over the same
 // divisor + TNavyOrderResourceDescriptor tables as the helper above but a distinct
