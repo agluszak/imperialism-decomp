@@ -203,14 +203,6 @@ undefined4 OrphanCallChain_C7_I93_00412720(void)
   return 0;
 }
 
-// ghidra_name ReadOrCreateRegistryStringValueWithFallback
-// ghidra_proto undefined ReadOrCreateRegistryStringValueWithFallback()
-// FUNCTION: IMPERIALISM 0x00412840
-undefined4 ReadOrCreateRegistryStringValueWithFallback(void)
-{
-  return 0;
-}
-
 // ghidra_name NoOpThunkTargetHandler
 // ghidra_proto undefined NoOpThunkTargetHandler()
 // FUNCTION: IMPERIALISM 0x00412aa0

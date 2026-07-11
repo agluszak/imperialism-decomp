@@ -110,7 +110,7 @@
     },
     {
       "address": "0x412840",
-      "matching": 0.012345679012345678,
+      "matching": 0.5634674922600619,
       "name": "ReadOrCreateRegistryStringValueWithFallback",
       "type": 1
     },
@@ -1618,7 +1618,7 @@
     },
     {
       "address": "0x47c080",
-      "matching": 0.6073298429319371,
+      "matching": 0.5396825396825397,
       "name": "CDib::LoadBitmapResourceAndInitializeSurfaceState",
       "type": 1
     },
@@ -4349,7 +4349,7 @@
     },
     {
       "address": "0x48b2d0",
-      "matching": 0.19130434782608696,
+      "matching": 0.2033898305084746,
       "name": "TView::VTableSlotDD",
       "type": 1
     },
@@ -6162,7 +6162,7 @@
     },
     {
       "address": "0x496d40",
-      "matching": 0.09090909090909091,
+      "matching": 0.09071274298056156,
       "name": "BlitRectWithOptionalTransparency",
       "type": 1
     },
@@ -12801,14 +12801,14 @@
     },
     {
       "address": "0x4e05d0",
-      "effective": true,
-      "matching": 0.42857142857142855,
+      "matching": 1.0,
       "name": "TGreatPower::OrphanLeaf_NoCall_Ins02_004d7fc0_89",
       "type": 1
     },
     {
       "address": "0x4e0610",
-      "matching": 1.0,
+      "effective": true,
+      "matching": 0.42857142857142855,
       "name": "TGreatPower::ReturnFalseNationStateActionStub_8a",
       "type": 1
     },
@@ -12857,7 +12857,7 @@
     },
     {
       "address": "0x4e09a0",
-      "matching": 0.5180722891566265,
+      "matching": 0.5421686746987951,
       "name": "TGreatPower::ComputeCityOrderCapabilityAggregateScore",
       "type": 1
     },
@@ -13627,7 +13627,7 @@
     },
     {
       "address": "0x4e9ff0",
-      "matching": 0.784,
+      "matching": 0.768,
       "name": "TAutoGreatPower::OrphanLeaf_NoCall_Ins02_004d7ee0",
       "type": 1
     },
@@ -15147,7 +15147,7 @@
     },
     {
       "address": "0x4fd000",
-      "matching": 0.816,
+      "matching": 0.832,
       "name": "TMapKey::RenderMapHintOverlayMode0",
       "type": 1
     },
@@ -16365,7 +16365,7 @@
     },
     {
       "address": "0x50bea0",
-      "matching": 0.21353930031803725,
+      "matching": 0.20990458882326216,
       "name": "TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets",
       "type": 1
     },
@@ -16737,7 +16737,7 @@
     },
     {
       "address": "0x512930",
-      "matching": 0.2491103202846975,
+      "matching": 0.25622775800711745,
       "name": "BuildHexAreaTileIndexList",
       "type": 1
     },
@@ -16815,7 +16815,7 @@
     },
     {
       "address": "0x5136a0",
-      "matching": 1.0,
+      "matching": 0.8888888888888888,
       "name": "TMapMgr::OrphanLeaf_NoCall_Ins35_005136a0",
       "type": 1
     },
@@ -18255,7 +18255,7 @@
     },
     {
       "address": "0x52d150",
-      "matching": 0.7021276595744681,
+      "matching": 0.7311827956989247,
       "name": "GetOrCreateOverlayQuadRecordByIndex",
       "type": 1
     },
@@ -18279,7 +18279,7 @@
     },
     {
       "address": "0x52d750",
-      "matching": 0.22063492063492063,
+      "matching": 0.21904761904761905,
       "name": "MergeSmallCityRegionsAndCompactIds",
       "type": 1
     },
@@ -20171,7 +20171,7 @@
     },
     {
       "address": "0x53ceb0",
-      "matching": 0.450261780104712,
+      "matching": 0.4479166666666667,
       "name": "ComputeArmyMissionCompositionAlignmentScore",
       "type": 1
     },
@@ -20183,7 +20183,7 @@
     },
     {
       "address": "0x53d200",
-      "matching": 0.3686274509803922,
+      "matching": 0.3700787401574803,
       "name": "ComputeArmyMissionScoreDeltaWithScaledCandidateUnit",
       "type": 1
     },
@@ -21275,7 +21275,7 @@
     },
     {
       "address": "0x545940",
-      "matching": 0.4147956711355193,
+      "matching": 0.42707155548376674,
       "name": "TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine",
       "type": 1
     },
@@ -21839,7 +21839,7 @@
     },
     {
       "address": "0x5501b0",
-      "matching": 0.5352112676056338,
+      "matching": 0.5446009389671361,
       "name": "CalculateMissionOrderPriorityScore",
       "type": 1
     },
@@ -22265,13 +22265,13 @@
     },
     {
       "address": "0x553b10",
-      "matching": 0.4827586206896552,
+      "matching": 0.6206896551724138,
       "name": "HasNoMapOrderEntryChildrenQueued",
       "type": 1
     },
     {
       "address": "0x553b50",
-      "matching": 0.5818181818181818,
+      "matching": 0.5454545454545454,
       "name": "HasActiveMapOrderEntryChildren",
       "type": 1
     },
@@ -27391,7 +27391,7 @@
     },
     {
       "address": "0x58a020",
-      "matching": 0.45685279187817257,
+      "matching": 0.47715736040609136,
       "name": "TRailAmtBar::NoOpUiLifecycleHook",
       "type": 1
     },
@@ -29080,7 +29080,7 @@
     },
     {
       "address": "0x59dac0",
-      "matching": 0.7692307692307693,
+      "matching": 1.0,
       "name": "TArmyPlayer::ScoreTacticalTileCoverTerrainBonus",
       "type": 1
     },
@@ -29128,7 +29128,7 @@
     },
     {
       "address": "0x59e0d0",
-      "matching": 1.0,
+      "matching": 0.6,
       "name": "TArmyPlayer::ScoreTacticalTileEnemyEdgeColumnZoneBonus",
       "type": 1
     },
@@ -29507,7 +29507,7 @@
     },
     {
       "address": "0x5a1ee0",
-      "matching": 0.6604774535809018,
+      "matching": 0.6631299734748011,
       "name": "TTacticalBattle::EvaluateAndResolveTacticalActionAgainstTileOccupant",
       "type": 1
     },
@@ -29615,7 +29615,7 @@
     },
     {
       "address": "0x5a3d30",
-      "matching": 0.8104956268221575,
+      "matching": 0.8163265306122449,
       "name": "IsTacticalTargetTileReachableForAction",
       "type": 1
     },
@@ -30101,7 +30101,7 @@
     },
     {
       "address": "0x5a8ac0",
-      "matching": 0.6867469879518072,
+      "matching": 0.6086956521739131,
       "name": "TTacticalBattleView::CenterViewportAroundGridIndexAndSnap",
       "type": 1
     },
@@ -30137,7 +30137,7 @@
     },
     {
       "address": "0x5a9240",
-      "matching": 0.5533980582524272,
+      "matching": 0.5397590361445783,
       "name": "TTacticalBattleView::AnimateTacticalUnitMoveBetweenTiles",
       "type": 1
     },
