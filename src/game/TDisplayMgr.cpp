@@ -62,7 +62,7 @@ undefined TDisplayMgr::InitializeTurnOrderNavigationDialogByViewportSize() {
     turnOrderList = 0;
   } else {
     turnOrderList = list;
-    list->relationType = 4;
+    list->recordSize14 = 4;
   }
 
   dialogActiveFlag = 0;
@@ -101,7 +101,7 @@ undefined TDisplayMgr::InitializeTurnOrderNavigationDialogByViewportSize() {
 void TDisplayMgr::Free() {
   delete g_pPrimaryRenderSurfaceContext;
   g_pPrimaryRenderSurfaceContext = 0;
-  turnOrderList->SelfDeleteSlot28();
+  turnOrderList->SelfDelete();
   delete this;
 }
 

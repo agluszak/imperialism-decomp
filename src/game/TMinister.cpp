@@ -44,7 +44,7 @@ void TMinister::InitializeBaseOrderArray(undefined4 ownerContext) {
 // FUNCTION: IMPERIALISM 0x0052ec80
 void TMinister::Free() {
   if (this->field_8 != 0) {
-    this->field_8->ReleaseSlot24();
+    this->field_8->ReleasePtrList();
   }
   this->field_8 = 0;
   delete this;
@@ -73,7 +73,7 @@ short TMinister::DispatchNationStateEventCode10(short nationSlot) {
 
 // FUNCTION: IMPERIALISM 0x0052ed50
 void TMinister::RebuildTerrainPreferenceEntriesAndAssignRanks() {
-  this->field_8->ResetPtrListRecordsSlot1C();
+  this->field_8->ClearAndFreeAllPtrListRecords();
 
   int terrainIndex = 0;
   TCountry** tableCursor = g_apTerrainTypeDescriptorTable;
@@ -82,7 +82,7 @@ void TMinister::RebuildTerrainPreferenceEntriesAndAssignRanks() {
       MinisterTerrainPreferenceEntry entry;
       entry.terrainType = static_cast<short>(terrainIndex);
       entry.score = DispatchNationStateEventCode10(static_cast<short>(terrainIndex));
-      this->field_8->AddEntrySlot38(&entry);
+      this->field_8->InsertCopiedRecordSortedByComparator(&entry);
     }
     terrainIndex = terrainIndex + 1;
     tableCursor = tableCursor + 1;
@@ -92,8 +92,10 @@ void TMinister::RebuildTerrainPreferenceEntriesAndAssignRanks() {
   short rank = 1;
   if (1 < this->field_8->GetSize()) {
     do {
-      short* currentEntry = static_cast<short*>(this->field_8->GetEntrySlot2C(entryIndex));
-      short* nextEntry = static_cast<short*>(this->field_8->GetEntrySlot2C(entryIndex + 1));
+      short* currentEntry =
+          static_cast<short*>(this->field_8->GetPtrListEntryByOneBasedIndex(entryIndex));
+      short* nextEntry =
+          static_cast<short*>(this->field_8->GetPtrListEntryByOneBasedIndex(entryIndex + 1));
       currentEntry[2] = rank;
       if (nextEntry[1] < currentEntry[1]) {
         rank = static_cast<short>(rank + 1);
@@ -112,7 +114,7 @@ short TMinister::MapTerrainTypeToPreferenceRank(short terrainType) {
     return result;
   }
   do {
-    short* entry = static_cast<short*>(this->field_8->GetEntrySlot2C(entryIndex));
+    short* entry = static_cast<short*>(this->field_8->GetPtrListEntryByOneBasedIndex(entryIndex));
     if (entry[0] == terrainType) {
       result = entry[2];
       break;
@@ -130,7 +132,7 @@ short TMinister::MapPreferenceRankToTerrainType(short rank) {
     return result;
   }
   do {
-    short* entry = static_cast<short*>(this->field_8->GetEntrySlot2C(entryIndex));
+    short* entry = static_cast<short*>(this->field_8->GetPtrListEntryByOneBasedIndex(entryIndex));
     if (entry[2] == rank) {
       result = entry[0];
       break;
@@ -142,19 +144,19 @@ short TMinister::MapPreferenceRankToTerrainType(short rank) {
 
 // FUNCTION: IMPERIALISM 0x0052ef20
 short TMinister::GetPreferenceGroupRankByEntryIndex(short index) {
-  short* entry = static_cast<short*>(this->field_8->GetEntrySlot2C(index));
+  short* entry = static_cast<short*>(this->field_8->GetPtrListEntryByOneBasedIndex(index));
   return entry[2];
 }
 
 // FUNCTION: IMPERIALISM 0x0052ef50
 short TMinister::GetPreferenceScoreByEntryIndex(short index) {
-  short* entry = static_cast<short*>(this->field_8->GetEntrySlot2C(index));
+  short* entry = static_cast<short*>(this->field_8->GetPtrListEntryByOneBasedIndex(index));
   return entry[1];
 }
 
 // FUNCTION: IMPERIALISM 0x0052ef80
 short TMinister::GetPreferenceTerrainTypeByEntryIndex(short index) {
-  short* entry = static_cast<short*>(this->field_8->GetEntrySlot2C(index));
+  short* entry = static_cast<short*>(this->field_8->GetPtrListEntryByOneBasedIndex(index));
   return entry[0];
 }
 

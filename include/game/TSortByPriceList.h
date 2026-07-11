@@ -10,6 +10,8 @@ public:
   DECLARE_DYNCREATE(TSortByPriceList)
 
   TSortByPriceList();
+  // Ascending by the price short at record+2 (ties compare as 1).
+  short Compare(void* a, void* b) override; // slot 0x44 0x5347b0
 };
 
 ASSERT_SIZE(TSortByPriceList, 0x18);

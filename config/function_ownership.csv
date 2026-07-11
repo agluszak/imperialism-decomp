@@ -375,10 +375,11 @@ address|target_cpp|ownership|note
 4881f0|src/game/TSortedPtrList.cpp|manual|marker_sync
 4882c0|src/game/TSortedPtrList.cpp|manual|marker_sync
 488310|src/game/TSortedPtrList.cpp|manual|marker_sync
-488360|src/game/TSortedPtrList.cpp|manual|name_paired_no_marker
+488360|src/game/TSortedPtrList.cpp|manual|marker_sync
 488390|src/game/TSortedPtrList.cpp|manual|marker_sync
 4883e0|src/game/TSortedPtrList.cpp|manual|marker_sync
 488400|src/game/TSortedPtrList.cpp|manual|marker_sync
+488470|src/game/TPtrList.cpp|manual|marker_sync
 4884c0|src/game/TPtrList.cpp|manual|marker_sync
 488510|src/game/TPtrList.cpp|manual|marker_sync
 4885d0|src/game/TSortedList.cpp|manual|marker_sync
@@ -1599,7 +1600,7 @@ address|target_cpp|ownership|note
 4d6570|src/game/TProvinceDesirabilityList.cpp|manual|marker_sync
 4d6590|src/game/TProvinceDesirabilityList.cpp|manual|marker_sync
 4d65c0|src/game/TProvinceDesirabilityList.cpp|manual|marker_sync
-4d6630|src/game/TProvinceDesirabilityList.cpp|manual|name_paired_no_marker
+4d6630|src/game/TProvinceDesirabilityList.cpp|manual|marker_sync
 4d66a0|src/game/TCountry.cpp|manual|marker_sync
 4d6730|src/game/TCountry.cpp|manual|marker_sync
 4d6750|src/game/TCountry.cpp|manual|marker_sync
@@ -1962,7 +1963,7 @@ address|target_cpp|ownership|note
 4ee520|src/game/TSortedByRelationshipList.cpp|manual|marker_sync
 4ee540|src/game/TSortedByRelationshipList.cpp|manual|marker_sync
 4ee570|src/game/TSortedByRelationshipList.cpp|manual|marker_sync
-4ee5e0|src/game/TSortedByRelationshipList.cpp|manual|name_paired_no_marker
+4ee5e0|src/game/TSortedByRelationshipList.cpp|manual|marker_sync
 4ee650|src/game/TDiplomacyMgr.cpp|manual|marker_sync
 4ee6a0|src/game/TDiplomacyMgr.cpp|manual|marker_sync
 4ee6c0|src/game/TDiplomacyMgr.cpp|manual|marker_sync
@@ -2712,7 +2713,7 @@ address|target_cpp|ownership|note
 5347e0|src/game/TIndexAndRankList.cpp|manual|marker_sync
 534850|src/game/TIndexAndRankList.cpp|manual|marker_sync
 5348a0|src/game/TIndexAndRankList.cpp|manual|marker_sync
-534910|src/game/TIndexAndRankList.cpp|manual|name_paired_no_marker
+534910|src/game/TIndexAndRankList.cpp|manual|marker_sync
 534bc0|src/game/TMission.cpp|manual|marker_sync
 534c00|src/game/TMission.cpp|manual|marker_sync
 534c20|src/game/TMission.cpp|manual|marker_sync

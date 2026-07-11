@@ -3256,51 +3256,69 @@
       "type": 1
     },
     {
+      "address": "0x4880a0",
+      "matching": 1.0,
+      "name": "TSortedPtrList::ClearAndFreeAllPtrListRecords",
+      "type": 1
+    },
+    {
       "address": "0x4880f0",
-      "matching": 0.0,
-      "name": "InvokePtrListResetHook",
+      "matching": 1.0,
+      "name": "TSortedPtrList::InvokePtrListResetHook",
       "type": 1
     },
     {
       "address": "0x488110",
       "matching": 1.0,
-      "name": "TSortedPtrList::ResetPtrListAndShrinkCapacity",
+      "name": "TSortedPtrList::ReleasePtrList",
       "type": 1
     },
     {
       "address": "0x488140",
       "matching": 1.0,
-      "name": "OrphanCallChain_C1_I06_00488140",
+      "name": "TSortedPtrList::SelfDelete",
       "type": 1
     },
     {
       "address": "0x488160",
       "matching": 1.0,
-      "name": "GetPtrListEntryByOneBasedIndex",
+      "name": "TSortedPtrList::GetPtrListEntryByOneBasedIndex",
+      "type": 1
+    },
+    {
+      "address": "0x488190",
+      "matching": 1.0,
+      "name": "TSortedPtrList::RemovePtrListEntryByOneBasedIndexAndFree",
       "type": 1
     },
     {
       "address": "0x4881d0",
-      "matching": 0.3333333333333333,
-      "name": "RemoveFirstPtrListEntry",
+      "matching": 1.0,
+      "name": "TSortedPtrList::PeekFirstPtrListEntry",
       "type": 1
     },
     {
       "address": "0x4881f0",
-      "matching": 0.02666666666666667,
-      "name": "UpsertPtrListRecordByComparator",
+      "matching": 0.7361111111111112,
+      "name": "TSortedPtrList::InsertCopiedRecordSortedByComparator",
       "type": 1
     },
     {
       "address": "0x4882c0",
-      "matching": 0.0,
-      "name": "AppendCopiedRecordToPtrList",
+      "matching": 1.0,
+      "name": "TSortedPtrList::AppendCopiedRecordToPtrList",
       "type": 1
     },
     {
       "address": "0x488310",
-      "matching": 0.07407407407407407,
-      "name": "InsertCopiedRecordAtFrontOfPtrList",
+      "matching": 1.0,
+      "name": "TSortedPtrList::InsertCopiedRecordAtFrontOfPtrList",
+      "type": 1
+    },
+    {
+      "address": "0x488360",
+      "matching": 1.0,
+      "name": "TSortedPtrList::Compare",
       "type": 1
     },
     {
@@ -3323,8 +3341,8 @@
     },
     {
       "address": "0x488470",
-      "matching": 0.0,
-      "name": "InsertCopiedRecordAtFrontOfPtrListAlt",
+      "matching": 1.0,
+      "name": "TPtrList::InsertCopiedRecordAtFrontOfPtrListAlt",
       "type": 1
     },
     {
@@ -3342,73 +3360,73 @@
     {
       "address": "0x4885d0",
       "matching": 1.0,
-      "name": "TPtrList::AddHeadSlot28(void *)",
+      "name": "TPtrList::AddHeadSlot28",
       "type": 1
     },
     {
       "address": "0x4885f0",
       "matching": 1.0,
-      "name": "TPtrList::AddHeadSlot2C(void *, int, int)",
+      "name": "TPtrList::AddHeadSlot2C",
       "type": 1
     },
     {
       "address": "0x488610",
       "matching": 1.0,
-      "name": "TPtrList::AddTailSlot30(void *)",
+      "name": "TPtrList::AddTailSlot30",
       "type": 1
     },
     {
       "address": "0x488630",
       "matching": 1.0,
-      "name": "TPtrList::AddTailSlot34(void *, int, int)",
+      "name": "TPtrList::AddTailSlot34",
       "type": 1
     },
     {
       "address": "0x488650",
       "matching": 1.0,
-      "name": "TPtrList::AddTailSlot38(void *)",
+      "name": "TPtrList::AddTailSlot38",
       "type": 1
     },
     {
       "address": "0x488670",
       "matching": 1.0,
-      "name": "TPtrList::RemoveTailSlot3C(void)",
+      "name": "TPtrList::RemoveTailSlot3C",
       "type": 1
     },
     {
       "address": "0x488690",
       "matching": 1.0,
-      "name": "TPtrList::AddTailSlot40(void *)",
+      "name": "TPtrList::AddTailSlot40",
       "type": 1
     },
     {
       "address": "0x4886b0",
       "matching": 1.0,
-      "name": "TPtrList::RemoveHeadSlot44(void)",
+      "name": "TPtrList::RemoveHeadSlot44",
       "type": 1
     },
     {
       "address": "0x4886d0",
       "matching": 1.0,
-      "name": "TPtrList::GetCountSlot48(void)",
+      "name": "TPtrList::GetCountSlot48",
       "type": 1
     },
     {
       "address": "0x4886f0",
       "matching": 0.7777777777777778,
-      "name": "TPtrList::GetEntryByOrdinalSlot4C(int)",
+      "name": "TPtrList::GetEntryByOrdinalSlot4C",
       "type": 1
     },
     {
       "address": "0x488720",
       "matching": 0.9230769230769231,
-      "name": "TPtrList::RemoveAtOrdinalSlot50(int)",
+      "name": "TPtrList::RemoveAtOrdinalSlot50",
       "type": 1
     },
     {
       "address": "0x488750",
       "matching": 0.42105263157894735,
-      "name": "TPtrList::FreePayloadsSlot54(void)",
+      "name": "TPtrList::FreePayloadsSlot54",
       "type": 1
     },
     {
@@ -3420,13 +3438,13 @@
     {
       "address": "0x4887b0",
       "matching": 1.0,
-      "name": "TPtrList::FreePayloadsAndDestroySlot58(void)",
+      "name": "TPtrList::FreePayloadsAndDestroySlot58",
       "type": 1
     },
     {
       "address": "0x4887e0",
       "matching": 1.0,
-      "name": "TPtrList::RemoveAllSlot5C(void)",
+      "name": "TPtrList::RemoveAllSlot5C",
       "type": 1
     },
     {
@@ -3444,7 +3462,7 @@
     {
       "address": "0x488840",
       "matching": 0.9,
-      "name": "TPtrList::SetAtOrdinalSlot60(int, void **, int)",
+      "name": "TPtrList::SetAtOrdinalSlot60",
       "type": 1
     },
     {
@@ -8996,7 +9014,7 @@
     },
     {
       "address": "0x4b4310",
-      "matching": 1.0,
+      "matching": 0.8842105263157894,
       "name": "ComputeAverageWeightWord0TimesTenFromResourceCounts",
       "type": 1
     },
@@ -11683,6 +11701,12 @@
       "type": 1
     },
     {
+      "address": "0x4d6630",
+      "matching": 1.0,
+      "name": "TProvinceDesirabilityList::Compare",
+      "type": 1
+    },
+    {
       "address": "0x4d66a0",
       "matching": 0.4444444444444444,
       "name": "TCountry::CreateObject",
@@ -12056,7 +12080,7 @@
     },
     {
       "address": "0x4d92e0",
-      "matching": 0.4233128834355828,
+      "matching": 0.4254016832440704,
       "name": "TGreatPower::ReadFrom",
       "type": 1
     },
@@ -12376,7 +12400,7 @@
     },
     {
       "address": "0x4dd430",
-      "matching": 0.5714285714285714,
+      "matching": 0.5142857142857142,
       "name": "TGreatPower::ComputeRemainingDiplomacyAidBudget",
       "type": 1
     },
@@ -12808,8 +12832,7 @@
     },
     {
       "address": "0x4e0590",
-      "effective": true,
-      "matching": 0.42857142857142855,
+      "matching": 1.0,
       "name": "TGreatPower::OrphanRetStub_004d7fa0_88",
       "type": 1
     },
@@ -12821,7 +12844,8 @@
     },
     {
       "address": "0x4e0610",
-      "matching": 1.0,
+      "effective": true,
+      "matching": 0.42857142857142855,
       "name": "TGreatPower::ReturnFalseNationStateActionStub_8a",
       "type": 1
     },
@@ -12834,14 +12858,13 @@
     },
     {
       "address": "0x4e0690",
-      "effective": true,
-      "matching": 0.42857142857142855,
+      "matching": 1.0,
       "name": "TGreatPower::ReturnFalseNationStateCapabilityFlag90",
       "type": 1
     },
     {
       "address": "0x4e06d0",
-      "matching": 0.7619047619047619,
+      "matching": 1.0,
       "name": "TGreatPower::SumNationRuntimeFiveBucketValue44",
       "type": 1
     },
@@ -12871,7 +12894,7 @@
     },
     {
       "address": "0x4e09a0",
-      "matching": 0.5180722891566265,
+      "matching": 0.5542168674698795,
       "name": "TGreatPower::ComputeCityOrderCapabilityAggregateScore",
       "type": 1
     },
@@ -13575,7 +13598,7 @@
     },
     {
       "address": "0x4e8540",
-      "matching": 0.44871794871794873,
+      "matching": 0.46153846153846156,
       "name": "TGreatPower::QueueMapActionMissionFromCandidateAndMarkState",
       "type": 1
     },
@@ -14100,6 +14123,12 @@
       "address": "0x4ee5c0",
       "matching": 0.5,
       "name": "InitializeObArrayVtable654D38ModeField",
+      "type": 1
+    },
+    {
+      "address": "0x4ee5e0",
+      "matching": 1.0,
+      "name": "TSortedByRelationshipList::Compare",
       "type": 1
     },
     {
@@ -19041,7 +19070,7 @@
     {
       "address": "0x5347b0",
       "matching": 1.0,
-      "name": "TSortByPriceList::CompareUnsignedIntsAscending",
+      "name": "TSortByPriceList::Compare",
       "type": 1
     },
     {
@@ -19072,6 +19101,12 @@
       "address": "0x5348d0",
       "matching": 0.0,
       "name": "TIndexAndRankList::DestructTIndexAndRankList",
+      "type": 1
+    },
+    {
+      "address": "0x534910",
+      "matching": 0.8125,
+      "name": "TIndexAndRankList::Compare",
       "type": 1
     },
     {
@@ -22805,7 +22840,7 @@
     },
     {
       "address": "0x55cd00",
-      "matching": 0.6216216216216216,
+      "matching": 0.6486486486486487,
       "name": "TInterNationEventQueueManager::QueueInterNationEventType11",
       "type": 1
     },
@@ -31689,8 +31724,8 @@
     },
     {
       "address": "0x5ba260",
-      "matching": 0.05194805194805195,
-      "name": "TDealList::CompareUnsignedIntsAscending",
+      "matching": 0.47058823529411764,
+      "name": "TDealList::Compare",
       "type": 1
     },
     {
@@ -33671,14 +33706,14 @@
     },
     {
       "address": "0x5e1e50",
-      "matching": 0.0,
-      "name": "EnumerateStreamEntriesWithDualCallbacksAndTempBuffer",
+      "matching": 1.0,
+      "name": "TSortedPtrList::ReadFrom",
       "type": 1
     },
     {
       "address": "0x5e1f10",
-      "matching": 0.0425531914893617,
-      "name": "EnumerateStateEntriesAndInvokeObjectCallback",
+      "matching": 1.0,
+      "name": "TSortedPtrList::WriteTo",
       "type": 1
     },
     {
@@ -41647,6 +41682,12 @@
       "address": "0x649010",
       "matching": 1.0,
       "name": "TSortedPtrList::`vftable'",
+      "type": 5
+    },
+    {
+      "address": "0x649068",
+      "matching": 1.0,
+      "name": "TPtrList::`vftable'",
       "type": 5
     },
     {

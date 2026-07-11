@@ -72,7 +72,7 @@ void TTradeMgr::InitializeNationInteractionStateManagerDefaults() {
     *reinterpret_cast<short*>(rowCursor + 0x0c) = *reinterpret_cast<short*>(rowCursor - 0x06);
 
     TDealList* list = new TDealList();
-    list->relationType = 0x10;
+    list->recordSize14 = 0x10;
     *rankListCursor = list;
 
     short* cellCursor = reinterpret_cast<short*>(rowCursor + 0x6a);
@@ -98,7 +98,7 @@ void TTradeMgr::Free() {
   int i = 0x11;
   do {
     if (*p != 0) {
-      (*p)->ReleaseSlot24();
+      (*p)->ReleasePtrList();
     }
     *p = 0;
     p = p + 1;
@@ -159,8 +159,8 @@ void TTradeMgr::ReadFrom(TStream* stream) {
   TDealList** p = this->categoryRankLists;
   int i = 0x11;
   do {
-    (*p)->ResetPtrListRecordsSlot1C();
-    (*p)->slot18();
+    (*p)->ClearAndFreeAllPtrListRecords();
+    (*p)->ReadFrom(stream);
     p = p + 1;
     i = i + -1;
   } while (i != 0);
@@ -209,8 +209,9 @@ void TTradeMgr::WriteTo(TStream* stream) {
   TDealList** p = this->categoryRankLists;
   int i = 0x11;
   do {
-    (*p)->ResetPtrListRecordsSlot1C();
-    (*p)->slot18();
+    // The original WriteTo loop only serializes; the previous port wrongly copied the
+    // ReadFrom pair here and cleared every category rank list during a save.
+    (*p)->WriteTo(stream);
     p = p + 1;
     i = i + -1;
   } while (i != 0);
@@ -242,21 +243,21 @@ void TTradeMgr::OrphanCallChain_C3_I50_005b7fc0() {
   TDealList** p = &this->categoryRankLists[0xd];
   int i = 4;
   do {
-    (*p)->ResetPtrListRecordsSlot1C();
+    (*p)->ClearAndFreeAllPtrListRecords();
     p = p + 1;
     i = i + -1;
   } while (i != 0);
   p = &this->categoryRankLists[7];
   i = 6;
   do {
-    (*p)->ResetPtrListRecordsSlot1C();
+    (*p)->ClearAndFreeAllPtrListRecords();
     p = p + 1;
     i = i + -1;
   } while (i != 0);
   p = &this->categoryRankLists[0];
   i = 7;
   do {
-    (*p)->ResetPtrListRecordsSlot1C();
+    (*p)->ClearAndFreeAllPtrListRecords();
     p = p + 1;
     i = i + -1;
   } while (i != 0);
@@ -318,7 +319,7 @@ void TTradeMgr::AccumulateDiplomacyRelationChangesAndQueueEvents() {
               this->ComputeNationMetricDispatchScoreAndResolveScale(
                   static_cast<short>(source), static_cast<short>(target),
                   categoryRows[row].proposalWeightScale06, categoryRows[row].field16);
-              this->categoryRankLists[row]->AddEntrySlot38(&event);
+              this->categoryRankLists[row]->InsertCopiedRecordSortedByComparator(&event);
             }
             source = source + 1;
           } while (source < 7);
@@ -349,7 +350,7 @@ void TTradeMgr::AccumulateDiplomacyRelationChangesAndQueueEvents() {
               this->ComputeNationMetricDispatchScoreAndResolveScale(
                   static_cast<short>(source), static_cast<short>(secTarget),
                   categoryRows[row].proposalWeightScale06, categoryRows[row].field16);
-              this->categoryRankLists[row]->AddEntrySlot38(&event);
+              this->categoryRankLists[row]->InsertCopiedRecordSortedByComparator(&event);
             }
             source = source + 1;
           } while (source < 7);
@@ -385,7 +386,7 @@ void TTradeMgr::AccumulateDiplomacyRelationChangesAndQueueEvents() {
               this->ComputeNationMetricDispatchScoreAndResolveScale(
                   static_cast<short>(source), static_cast<short>(target),
                   categoryRows[midRow].proposalWeightScale06, categoryRows[midRow].field16);
-              this->categoryRankLists[midRow]->AddEntrySlot38(&event);
+              this->categoryRankLists[midRow]->InsertCopiedRecordSortedByComparator(&event);
             }
             source = source + 1;
           } while (source < 7);
@@ -420,7 +421,7 @@ void TTradeMgr::AccumulateDiplomacyRelationChangesAndQueueEvents() {
                 this->ComputeNationMetricDispatchScoreAndResolveScale(
                     static_cast<short>(source), static_cast<short>(secTarget),
                     categoryRows[7].proposalWeightScale06, categoryRows[7].field16);
-                this->categoryRankLists[7]->AddEntrySlot38(&event);
+                this->categoryRankLists[7]->InsertCopiedRecordSortedByComparator(&event);
               }
               source = source + 1;
             } while (source < 7);
@@ -458,7 +459,7 @@ void TTradeMgr::AccumulateDiplomacyRelationChangesAndQueueEvents() {
               this->ComputeNationMetricDispatchScoreAndResolveScale(
                   static_cast<short>(source), static_cast<short>(target),
                   categoryRows[lastRow].proposalWeightScale06, categoryRows[lastRow].field16);
-              this->categoryRankLists[lastRow]->AddEntrySlot38(&event);
+              this->categoryRankLists[lastRow]->InsertCopiedRecordSortedByComparator(&event);
             }
             source = source + 1;
           } while (source < 7);
@@ -639,7 +640,7 @@ void TTradeMgr::ApplyDiplomacyTransferEffectsAcrossNationMetricRoster(short slot
   int i = 1;
   if (0 < count) {
     do {
-      short* entry = reinterpret_cast<short*>(list->GetEntrySlot2C(i));
+      short* entry = reinterpret_cast<short*>(list->GetPtrListEntryByOneBasedIndex(i));
       int transfer =
           g_apTerrainTypeDescriptorTable[entry[1]]->SumDiplomacyState1c6AndRelationDeltaSnapshot(
               slot);
@@ -693,9 +694,9 @@ void TTradeMgr::ProcessPendingDiplomacyTransferEntriesUntilBlocked() {
     TDealList* list = categoryRankLists[dispatchIdx];
     // TDealList entry record layout not yet recovered: entry[0]=source nation slot,
     // entry[1]=target nation slot, entry[4]=amount-ish field (raw short offsets, matching
-    // the original's own untyped short* walk over the GetEntrySlot2C result).
-    short* entry =
-        static_cast<short*>(list->GetEntrySlot2C(categoryRows[0].resetTransitionFlagB02));
+    // the original's own untyped short* walk over the GetPtrListEntryByOneBasedIndex result).
+    short* entry = static_cast<short*>(
+        list->GetPtrListEntryByOneBasedIndex(categoryRows[0].resetTransitionFlagB02));
 
     int relationDelta =
         g_apTerrainTypeDescriptorTable[entry[1]]->SumDiplomacyState1c6AndRelationDeltaSnapshot(
@@ -1154,7 +1155,7 @@ TTradeMgr::AllocateAndPopulateLinkedValueCollectionFromRosterFilter(int rosterSl
   if (0 < count) {
     int i = 1;
     do {
-      short* entry = reinterpret_cast<short*>(list->GetEntrySlot2C(i));
+      short* entry = reinterpret_cast<short*>(list->GetPtrListEntryByOneBasedIndex(i));
       if (entry[1] == filterValue) {
         node->SoundChannelNodeDummy00(*entry);
       }

@@ -675,21 +675,21 @@ address|name|symbol|size|type|prototype|provenance
 487fe0|ClearInvalidArmyTileSelectionsAndCycleInteraction_Impl_At00487fe0||11|function|undefined ClearInvalidArmyTileSelectionsAndCycleInteraction_Impl_At00487fe0()|
 488000|ClearInvalidArmyTileSelectionsAndCycleInteraction_Impl||23|function|undefined ClearInvalidArmyTileSelectionsAndCycleInteraction_Impl()|
 488030|TSortedPtrList::CreateObject|?CreateObject@TSortedPtrList@@SGPAVCObject@@XZ|80|function|undefined CreateObject()|rtti
-4880a0|ClearAndFreeAllPtrListRecords||56|function|undefined ClearAndFreeAllPtrListRecords()|
-4880f0|InvokePtrListResetHook||5|function|undefined InvokePtrListResetHook()|
-488110|TSortedPtrList::ResetPtrListAndShrinkCapacity||17|function|undefined ResetPtrListAndShrinkCapacity()|
-488140|OrphanCallChain_C1_I06_00488140||12|function|undefined OrphanCallChain_C1_I06_00488140()|
-488160|GetPtrListEntryByOneBasedIndex||26|function|undefined GetPtrListEntryByOneBasedIndex()|
-488190|RemovePtrListEntryByOneBasedIndexAndFree||43|function|undefined RemovePtrListEntryByOneBasedIndexAndFree()|
-4881d0|RemoveFirstPtrListEntry||8|function|undefined RemoveFirstPtrListEntry()|
-4881f0|UpsertPtrListRecordByComparator||156|function|undefined UpsertPtrListRecordByComparator()|
-4882c0|AppendCopiedRecordToPtrList||60|function|undefined AppendCopiedRecordToPtrList()|
-488310|InsertCopiedRecordAtFrontOfPtrList||60|function|undefined InsertCopiedRecordAtFrontOfPtrList()|
-488360|TSortedPtrList::CompareUnsignedIntsAscending||24|function|undefined CompareUnsignedIntsAscending()|
+4880a0|TSortedPtrList::ClearAndFreeAllPtrListRecords||56|function|undefined ClearAndFreeAllPtrListRecords()|
+4880f0|TSortedPtrList::InvokePtrListResetHook||5|function|undefined InvokePtrListResetHook()|
+488110|TSortedPtrList::ReleasePtrList||17|function|undefined ResetPtrListAndShrinkCapacity()|
+488140|TSortedPtrList::SelfDelete||12|function|undefined OrphanCallChain_C1_I06_00488140()|
+488160|TSortedPtrList::GetPtrListEntryByOneBasedIndex||26|function|undefined GetPtrListEntryByOneBasedIndex()|
+488190|TSortedPtrList::RemovePtrListEntryByOneBasedIndexAndFree||43|function|undefined RemovePtrListEntryByOneBasedIndexAndFree()|
+4881d0|TSortedPtrList::PeekFirstPtrListEntry||8|function|undefined RemoveFirstPtrListEntry()|
+4881f0|TSortedPtrList::InsertCopiedRecordSortedByComparator||156|function|undefined UpsertPtrListRecordByComparator()|
+4882c0|TSortedPtrList::AppendCopiedRecordToPtrList||60|function|undefined AppendCopiedRecordToPtrList()|
+488310|TSortedPtrList::InsertCopiedRecordAtFrontOfPtrList||60|function|undefined InsertCopiedRecordAtFrontOfPtrList()|
+488360|TSortedPtrList::Compare||24|function|undefined CompareUnsignedIntsAscending()|
 488390|TSortedPtrList::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 4883e0|TSortedPtrList::GetRuntimeClass||6|function|undefined GetRuntimeClass()|rtti
 488400|TPtrList::CreateObject|?CreateObject@TPtrList@@SGPAVCObject@@XZ|80|function|undefined CreateObject()|rtti
-488470|InsertCopiedRecordAtFrontOfPtrListAlt||60|function|undefined InsertCopiedRecordAtFrontOfPtrListAlt()|
+488470|TPtrList::InsertCopiedRecordAtFrontOfPtrListAlt||60|function|undefined InsertCopiedRecordAtFrontOfPtrListAlt()|
 4884c0|TPtrList::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 488510|TPtrList::GetRuntimeClass||6|function|undefined GetTPtrListClassNamePointer()|rtti
 4885d0|TPtrList::AddHeadSlot28||16|function|undefined AddHeadSlot28()|
@@ -2276,7 +2276,7 @@ address|name|symbol|size|type|prototype|provenance
 4d6590|ConstructObArrayWithVtable653810||18|function|undefined ConstructObArrayWithVtable653810()|
 4d65c0|TProvinceDesirabilityList::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 4d6610|InitializeObArrayVtable653810ModeField||7|function|undefined InitializeObArrayVtable653810ModeField()|
-4d6630|TProvinceDesirabilityList::CompareUnsignedIntsAscending||65|function|undefined OrphanRetStub_0059add0(void)|
+4d6630|TProvinceDesirabilityList::Compare||65|function|undefined OrphanRetStub_0059add0(void)|
 4d66a0|TCountry::CreateObject|?CreateObject@TCountry@@SGPAVCObject@@XZ|108|function|undefined CreateObject()|rtti
 4d6730|TCountry::ReturnFalseNationStateCapabilityFlag98||3|function|undefined ReturnFalseNationStateCapabilityFlag98()|
 4d6750|TCountry::ReturnFalseNationStateCapabilityFlag9C||3|function|undefined ReturnFalseNationStateCapabilityFlag9C()|
@@ -2691,7 +2691,7 @@ address|name|symbol|size|type|prototype|provenance
 4ee540|TSortedByRelationshipList::ConstructObArrayWithVtable654D38||18|function|undefined ConstructObArrayWithVtable654D38()|
 4ee570|TSortedByRelationshipList::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 4ee5c0|InitializeObArrayVtable654D38ModeField||7|function|undefined InitializeObArrayVtable654D38ModeField()|
-4ee5e0|TSortedByRelationshipList::CompareUnsignedIntsAscending||65|function|undefined CreateTDiplomacyMgrInstance()|
+4ee5e0|TSortedByRelationshipList::Compare||65|function|undefined CreateTDiplomacyMgrInstance()|
 4ee650|TDiplomacyMgr::CreateObject|?CreateObject@TDiplomacyMgr@@SGPAVCObject@@XZ|57|function|undefined CreateObject()|rtti
 4ee6a0|TDiplomacyMgr::GetRuntimeClass||6|function|undefined GetTDiplomacyMgrClassNamePointer()|rtti
 4ee6c0|ConstructDiplomacyTurnStateManager_Vtbl00654d90||39|function|undefined ConstructDiplomacyTurnStateManager_Vtbl00654d90()|
@@ -3571,13 +3571,13 @@ address|name|symbol|size|type|prototype|provenance
 534710|TSortByPriceList::ConstructTSortByPriceList||18|function|undefined ConstructTSortByPriceList()|
 534740|TSortByPriceList::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 534770|TSortByPriceList::~TSortByPriceList||5|function|undefined ~TSortByPriceList()|
-5347b0|TSortByPriceList::CompareUnsignedIntsAscending||29|function|undefined CompareSortByPriceListEntriesByField2Ascending()|
+5347b0|TSortByPriceList::Compare||29|function|undefined CompareSortByPriceListEntriesByField2Ascending()|
 5347e0|TIndexAndRankList::CreateObject|?CreateObject@TIndexAndRankList@@SGPAVCObject@@XZ|80|function|undefined CreateObject()|rtti
 534850|TIndexAndRankList::GetRuntimeClass||6|function|undefined GetTIndexAndRankListClassNamePointer()|rtti
 534870|TIndexAndRankList::ConstructTIndexAndRankList||18|function|undefined ConstructTIndexAndRankList()|
 5348a0|TIndexAndRankList::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 5348d0|TIndexAndRankList::DestructTIndexAndRankList||5|function|undefined DestructTIndexAndRankList()|
-534910|TIndexAndRankList::CompareUnsignedIntsAscending||47|function|undefined CompareIndexAndRankEntriesByField2Descending()|
+534910|TIndexAndRankList::Compare||47|function|undefined CompareIndexAndRankEntriesByField2Descending()|
 534a80|WrapperFor_ftol_At00534a80||30|function|undefined WrapperFor_ftol_At00534a80()|
 534bc0|TMission::CreateObject|?CreateObject@TMission@@SGPAVCObject@@XZ|39|function|undefined CreateObject()|rtti
 534c00|ReturnFalseMissionVtableSlot28||3|function|undefined ReturnFalseMissionVtableSlot28()|
@@ -5805,7 +5805,7 @@ address|name|symbol|size|type|prototype|provenance
 5ba1a0|TDealList::GetRuntimeClass||6|function|undefined GetTDealListClassNamePointer()|rtti
 5ba1c0|TDealList::ConstructTDealListBaseState||18|function|undefined ConstructTDealListBaseState()|
 5ba1f0|TDealList::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
-5ba260|TDealList::CompareUnsignedIntsAscending||202|function|undefined CompareNationMetricRowsForSort()|
+5ba260|TDealList::Compare||202|function|undefined CompareNationMetricRowsForSort()|
 5ba370|TNextTradeCommand::CreateObject|?CreateObject@TNextTradeCommand@@SGPAVCObject@@XZ|80|function|undefined CreateObject()|rtti
 5ba3e0|TNextTradeCommand::GetRuntimeClass||6|function|undefined GetTNextTradeCommandClassNamePointer()|rtti
 5ba400|TNextTradeCommand::ConstructTNextTradeCommandBaseState||18|function|undefined ConstructTNextTradeCommandBaseState()|
@@ -6176,8 +6176,8 @@ address|name|symbol|size|type|prototype|provenance
 5e1c90|WrapperFor_DDX_Text_618cbd_At005e1c90||22|function|undefined WrapperFor_DDX_Text_618cbd_At005e1c90()|
 5e1cc0|GetRuntimePtrTable0066F588||6|function|undefined GetRuntimePtrTable0066F588()|
 5e1ce0|UpdateCursorHelperWindowTextFromUiString||120|function|undefined UpdateCursorHelperWindowTextFromUiString()|
-5e1e50|EnumerateStreamEntriesWithDualCallbacksAndTempBuffer||136|function|undefined EnumerateStreamEntriesWithDualCallbacksAndTempBuffer()|
-5e1f10|EnumerateStateEntriesAndInvokeObjectCallback||103|function|undefined EnumerateStateEntriesAndInvokeObjectCallback()|
+5e1e50|TSortedPtrList::ReadFrom||136|function|undefined EnumerateStreamEntriesWithDualCallbacksAndTempBuffer()|
+5e1f10|TSortedPtrList::WriteTo||103|function|undefined EnumerateStateEntriesAndInvokeObjectCallback()|
 5e1fa0|SetPlaybackState2AndNotifyOwnerCallback||17|function|undefined SetPlaybackState2AndNotifyOwnerCallback()|
 5e1fd0|NoOpPlaybackCallback_005e1fd0||20|function|undefined NoOpPlaybackCallback_005e1fd0()|
 5e2000|IncrementPlaybackCounterAndNotifyOwnerCallback||17|function|undefined IncrementPlaybackCounterAndNotifyOwnerCallback()|
@@ -7902,7 +7902,6 @@ address|name|symbol|size|type|prototype|provenance
 648e80|TList::classTList|||global||
 648e98|TSortedPtrList::classTSortedPtrList|||global||
 648eb0|TPtrList::classTPtrList|||global||
-649068|TSortedPtrList::'vftable'|||global||
 6490c8|TStream::classTStream|||global||
 6490e0|TFileStream::classTFileStream|||global||
 6490f8|TCountingStream::classTCountingStream|||global||

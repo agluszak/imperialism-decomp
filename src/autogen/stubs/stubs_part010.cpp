@@ -1475,14 +1475,6 @@ undefined4 ClearInvalidArmyTileSelectionsAndCycleInteraction_Impl(void)
   return 0;
 }
 
-// ghidra_name InsertCopiedRecordAtFrontOfPtrListAlt
-// ghidra_proto undefined InsertCopiedRecordAtFrontOfPtrListAlt()
-// FUNCTION: IMPERIALISM 0x00488470
-undefined4 InsertCopiedRecordAtFrontOfPtrListAlt(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_DestructCPtrListBaseState_At004888a0
 // ghidra_proto undefined WrapperFor_DestructCPtrListBaseState_At004888a0()
 // FUNCTION: IMPERIALISM 0x004888a0

@@ -32,8 +32,8 @@ private:
   TPtrList* dedupRecordQueue58c;
   unsigned char pad590[0xED4 - 0x590];
   // The queues are TPtrList instances (vtable 0x649068): the ctor 0x55b710
-  // allocates the 7 buckets with relationType 0x24 and the shared record
-  // queue with relationType 0x10.
+  // allocates the 7 buckets with recordSize14 0x24 and the shared record
+  // queue with recordSize14 0x10.
   TPtrList* perNationEventBuckets[7];
   TPtrList* sharedEventRecordQueue;
   int perNationUiCounters7[7];
