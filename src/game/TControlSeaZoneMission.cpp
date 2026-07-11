@@ -8,15 +8,15 @@
 // than being separately overridden there -- this file owns the `//
 // FUNCTION:` marker for each.
 //
-// The port-zone-ownership lookup these functions perform walks a lazily
-// allocated per-TZone owner cache (TZone::field_0x28/0x2c/0x30 in the Ghidra
-// decompile) that is not yet modeled as a TZone member; that cache
-// maintenance is approximated here pending TZone recovery of those fields.
+// RefreshMissionPortZoneContextForNation's per-nation owner cache reuses
+// TZone::primaryNeighbors slot 0 (TZone::field_0x28/0x2c/0x30 in the Ghidra
+// decompile), now modeled as a real TZonePrimaryNeighborStretch member.
 
 #include "game/TControlSeaZoneMission.h"
 #include "game/TDiplomacyMgr.h"
 #include "game/TGlobalMapState.h"
 #include "game/TGreatPower.h"
+#include "game/TOcean.h"
 #include "game/TShip.h"
 #include "game/TStream.h"
 #include "game/TZone.h"
@@ -34,8 +34,6 @@ IMPLEMENT_SERIAL(TControlSeaZoneMission, TNavyMission, 1)
 
 // Not-yet-recovered free functions/subsystems this file calls into.
 extern undefined4 GetPortZoneOwnerNationCodeFromMissionField48(void);
-extern undefined4 FindFirstPortZoneContextByNation(void);
-extern undefined4 SelectBestMapActionContextForNationDiplomacyMask(void);
 extern undefined4 SetTaskForceOwnerPointer(void);
 extern undefined4 SetMapOrderType3Or4AndQueue(void);
 extern undefined4 SetByteFlagAtOffsetAF0ByIndex(void);
@@ -161,8 +159,19 @@ void TControlSeaZoneMission::NoOpSlot9C() {
 }
 
 // Inherited unchanged by TBeachheadMission and TBlockadePortMission (real base class relationship).
+// Caches this mission's target port zone into the first port zone's primaryNeighbors slot 0
+// (a per-nation "current port zone owner" cache slot, not a real neighbor list entry -- ground
+// truth forces the slot to exist via EnsureSlotAllocatedAndReturnPointer(0) unconditionally).
+// If that cached slot still points at targetZone14, just re-touches the port zone lookup;
+// otherwise re-scores neighbors via SelectBestPrimaryNeighborForNationDiplomacyMask. Both
+// results are discarded here, matching the original exactly.
 // FUNCTION: IMPERIALISM 0x00539780
 void TControlSeaZoneMission::RefreshMissionPortZoneContextForNation() {
-  // TODO: ResolveAndCacheMissionPortZoneContextForNationTarget -- pending
-  // recovery of the per-zone owner cache and diplomacy-mask selection.
+  TZone* firstPortZone = g_pActiveMapOrderContext->FindFirstPortZoneContextByNation(nationId04);
+  TZone** cachedOwnerSlot = firstPortZone->primaryNeighbors.EnsureSlotAllocatedAndReturnPointer(0);
+  if (*cachedOwnerSlot == targetZone14) {
+    g_pActiveMapOrderContext->FindFirstPortZoneContextByNation(nationId04);
+    return;
+  }
+  targetZone14->SelectBestPrimaryNeighborForNationDiplomacyMask(nationId04);
 }
