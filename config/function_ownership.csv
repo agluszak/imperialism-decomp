@@ -954,12 +954,13 @@ address|target_cpp|ownership|note
 4a0810|src/game/TTransFocusAnimation.cpp|manual|marker_sync
 4a09f0|src/game/TAnimator.cpp|manual|marker_sync
 4a0a80|src/game/TAnimator.cpp|manual|marker_sync
+4a0aa0|src/game/TAnimator.cpp|manual|marker_sync
 4a0ad0|src/game/TAnimator.cpp|manual|marker_sync
 4a0b20|src/game/TAnimator.cpp|manual|marker_sync
 4a0c00|src/game/TAnimator.cpp|manual|marker_sync
 4a0c30|src/game/TAnimator.cpp|manual|marker_sync
-4a0d10|src/game/TCivAnimation2.cpp|manual|marker_sync
-4a0d30|src/game/TCivAnimation2.cpp|manual|marker_sync
+4a0d10|src/game/TAnimator.cpp|manual|marker_sync
+4a0d30|src/game/TAnimator.cpp|manual|marker_sync
 4a0dc0|src/game/TAnimator.cpp|manual|marker_sync
 4a0e10|src/game/TAnimator.cpp|manual|marker_sync
 4a0e50|src/game/TAnimator.cpp|manual|marker_sync
@@ -1094,6 +1095,7 @@ address|target_cpp|ownership|note
 4ac920|src/game/TIdleMeAnimation.cpp|manual|marker_sync
 4ac950|src/game/TIdleMeAnimation.cpp|manual|marker_sync
 4ac9a0|src/game/TIdleMeAnimation.cpp|manual|marker_sync
+4ac9c0|src/game/TIdleMeAnimation.cpp|manual|marker_sync
 4aca60|src/game/TIdleMeAnimation.cpp|manual|marker_sync
 4acaa0|src/game/TBattleReportView.cpp|manual|marker_sync
 4acb40|src/game/TBattleReportView.cpp|manual|marker_sync
@@ -1522,6 +1524,7 @@ address|target_cpp|ownership|note
 4cbf70|src/game/TUniversityView.cpp|manual|marker_sync
 4cc300|src/game/TPurchaseCluster.cpp|manual|marker_sync
 4cc3a0|src/game/TPurchaseCluster.cpp|manual|marker_sync
+4cc3c0|src/game/TPurchaseCluster.cpp|manual|marker_sync
 4cc3f0|src/game/TPurchaseCluster.cpp|manual|marker_sync
 4cc440|src/game/TPurchaseCluster.cpp|manual|marker_sync
 4cc470|src/game/TPurchaseCluster.cpp|manual|marker_sync

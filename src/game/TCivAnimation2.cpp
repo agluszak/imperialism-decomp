@@ -32,16 +32,7 @@ undefined TCivAnimation2::RenderBattleReportInsetWithPaletteShift() {
   return 0;
 }
 
-// FUNCTION: IMPERIALISM 0x004a0d10
-void TCivAnimation2::AddObjectToUiTransientRegistry(TAnimation* animationObject) {
-  (void)animationObject;
-}
-
-// FUNCTION: IMPERIALISM 0x004a0d30
-void* TCivAnimation2::FindLinkedListNodeByIdFieldAt18(int nodeId) {
-  // TODO(mfc-collections): real body iterates field_0x24's list (GetHeadPosition /
-  // GetNext-shaped calls) comparing each node's +0x18 id field against nodeId. The
-  // list/node classes aren't recovered yet.
-  (void)nodeId;
-  return nullptr;
-}
+// 0x4a0d10 (AddObjectToUiTransientRegistry) and 0x4a0d30 (the registry walker) were
+// once claimed here from Ghidra's bucketing, but their receiver is g_pUiAnimator
+// (`mov ecx,[0x6a43e0]` at every call site) -- they are TAnimator methods and now
+// live in TAnimator.cpp.

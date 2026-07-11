@@ -75,14 +75,6 @@ undefined4 CreateTTransFocusAnimationInstance(void)
   return 0;
 }
 
-// ghidra_name ConstructUiTransientObjectRegistry_Vtbl0064c4e8
-// ghidra_proto undefined ConstructUiTransientObjectRegistry_Vtbl0064c4e8()
-// FUNCTION: IMPERIALISM 0x004a0aa0
-undefined4 ConstructUiTransientObjectRegistry_Vtbl0064c4e8(void)
-{
-  return 0;
-}
-
 // ghidra_name DestructTAnimatorAndMaybeFree_Impl
 // ghidra_proto undefined DestructTAnimatorAndMaybeFree_Impl()
 // FUNCTION: IMPERIALISM 0x004a0b00
@@ -431,14 +423,6 @@ undefined4 ConstructTSwapperDaddyViewBaseState(void)
 // ghidra_proto undefined CreateTIdleMeAnimationInstance()
 // FUNCTION: IMPERIALISM 0x004ac980
 undefined4 CreateTIdleMeAnimationInstance(void)
-{
-  return 0;
-}
-
-// ghidra_name TIdleMeAnimation::ConstructTIdleMeAnimationBaseState
-// ghidra_proto undefined ConstructTIdleMeAnimationBaseState()
-// FUNCTION: IMPERIALISM 0x004ac9c0
-undefined4 ConstructTIdleMeAnimationBaseState(void)
 {
   return 0;
 }

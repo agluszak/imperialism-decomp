@@ -45,6 +45,17 @@ class TCursorControlPanel;
 TCountry* g_apTerrainTypeDescriptorTable[kTerrainTypeDescriptorTableCount] = {0};
 // GLOBAL: IMPERIALISM 0x006a2158
 TDisplayMgr* g_pDisplayMgr = 0;
+// Bounds of the TAnimator offscreen surface (only known live reader:
+// TAnimator::InitializeUiTransientObjectRegistry at 0x4a0b20).
+// GLOBAL: IMPERIALISM 0x006a2228
+int g_nUiAnimatorSurfaceBoundsWidth = 0;
+// GLOBAL: IMPERIALISM 0x006a222c
+int g_nUiAnimatorSurfaceBoundsHeight = 0;
+// Monotonic registry-tag counter for TIdleMeAnimation instances, seeded with the
+// byte pattern "0TUA" (multichar 'AUT0'); the class-name string "TIdleMeAnimation"
+// follows at 0x695938, which Ghidra folds into one s_0TUATIdleMeAnimation label.
+// GLOBAL: IMPERIALISM 0x00695934
+int g_nIdleMeAnimationNextRegistryTag = 0x41555430;
 // GLOBAL: IMPERIALISM 0x006a21a8
 TMacViewMgr* g_pStrategicMapViewSystem = 0;
 // GLOBAL: IMPERIALISM 0x006a21bc

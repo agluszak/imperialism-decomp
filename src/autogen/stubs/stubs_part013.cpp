@@ -219,14 +219,6 @@ undefined4 UpdateUniversityCountControlAndRefreshViewAlt(void)
   return 0;
 }
 
-// ghidra_name TPurchaseCluster::ConstructTPurchaseClusterBaseState
-// ghidra_proto undefined ConstructTPurchaseClusterBaseState()
-// FUNCTION: IMPERIALISM 0x004cc3c0
-undefined4 ConstructTPurchaseClusterBaseState(void)
-{
-  return 0;
-}
-
 // ghidra_name DispatchCityViewSelectionChangeAndRefresh
 // ghidra_proto undefined DispatchCityViewSelectionChangeAndRefresh()
 // FUNCTION: IMPERIALISM 0x004ccfa2

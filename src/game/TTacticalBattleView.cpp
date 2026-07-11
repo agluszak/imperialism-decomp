@@ -6,7 +6,6 @@
 
 #include "game/TAnimation.h"
 #include "game/TAnimator.h"
-#include "game/TCivAnimation2.h"
 #include "game/TPicture.h"
 #include "game/TSimMgr.h"
 #include "game/TTacticalBattle.h"
@@ -218,8 +217,8 @@ undefined TTacticalBattleView::RunOneTimeAnimationModalWaitAndInvalidateCityDial
                                                  static_cast<short>(effectId), mode, tileIndex);
   // The registry stores heterogeneous animation objects; TOneTimeAnimation is
   // CObject-rooted, not TAnimation-derived, so this is a genuine pun confined here.
-  static_cast<TCivAnimation2*>(static_cast<void*>(g_pUiAnimator))
-      ->AddObjectToUiTransientRegistry(static_cast<TAnimation*>(static_cast<void*>(animation)));
+  g_pUiAnimator->AddObjectToUiTransientRegistry(
+      static_cast<TAnimation*>(static_cast<void*>(animation)));
   NoOpModalAnimWaitBracketHookA_00498c60();
   modalAnimWaitDoneFlag98 = 0;
   while (animation->completeFlag == 0) {
@@ -465,8 +464,7 @@ void TTacticalBattleView::SpawnTacticalUiMarkerAtUnitTile() {
   TAnimation* marker = new TAnimation;
   // Original calls the init body unconditionally on the new-result (no null guard).
   marker->ConstructTAnimationBaseState(this, &tileRect, 2, 0, 0xa, 0x2711);
-  TCivAnimation2* animator = static_cast<TCivAnimation2*>(static_cast<void*>(g_pUiAnimator));
-  animator->AddObjectToUiTransientRegistry(marker);
+  g_pUiAnimator->AddObjectToUiTransientRegistry(marker);
 }
 
 // FUNCTION: IMPERIALISM 0x005a9cc0

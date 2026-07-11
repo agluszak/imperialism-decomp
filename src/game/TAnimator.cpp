@@ -1,4 +1,12 @@
 #include "game/TAnimator.h"
+
+#include "game/CIterator.h"
+#include "game/TAnimation.h"
+#include "game/TApplication.h"
+#include "game/TDisplayMgr.h"
+#include "game/TList.h"
+#include "game/TStream.h"
+#include "game/global_data_tables.h"
 // SYNTHETIC: IMPERIALISM 0x004a09f0
 // TAnimator::CreateObject
 
@@ -7,15 +15,28 @@
 
 IMPLEMENT_DYNCREATE(TAnimator, TEventHandler)
 
-TAnimator::TAnimator() {}
+// The original inlines the TEventHandler base construction (keeping only the shared
+// field-defaults helper out-of-line) and does not touch field28; the recompile emits
+// the real base-ctor call instead -- the usual accepted ctor-inlining divergence.
+// FUNCTION: IMPERIALISM 0x004a0aa0
+TAnimator::TAnimator() : TEventHandler(), renderSurfaceContext(0), registryList24(0), field2c(0) {}
 
 // SYNTHETIC: IMPERIALISM 0x004a0ad0
 // TAnimator::`scalar deleting destructor'
 TAnimator::~TAnimator() {}
 
 // FUNCTION: IMPERIALISM 0x004a0b20
-void TAnimator::InitializeUiTransientObjectRegistry(int maxCount) {
-  reinterpret_cast<void(__fastcall*)(void*, int, int)>(0x004a0b20)(this, 0, maxCount);
+void TAnimator::InitializeUiTransientObjectRegistry(int idleFrequency) {
+  InitializePacketHeaderFields_Tag20202020(0);
+  field10 = idleFrequency;
+  RECT bounds;
+  bounds.left = 0;
+  bounds.top = 0;
+  bounds.right = g_nUiAnimatorSurfaceBoundsWidth;
+  bounds.bottom = g_nUiAnimatorSurfaceBoundsHeight;
+  g_pDisplayMgr->InitializeBitmapSurfaceContextWithRetry(&renderSurfaceContext, 8, &bounds);
+  registryList24 = new TList();
+  field28 = 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004a0c00
@@ -28,16 +49,62 @@ char TAnimator::CanHandleCityDialogActionFalse(int action) {
   return 0;
 }
 
+// FUNCTION: IMPERIALISM 0x004a0d10
+void TAnimator::AddObjectToUiTransientRegistry(TAnimation* animationObject) {
+  registryList24->AddTail(animationObject);
+}
+
+// FUNCTION: IMPERIALISM 0x004a0d30
+TAnimation* TAnimator::FindRegisteredAnimationByTag(int tag) {
+  // The original null-checks the receiver: call sites invoke this on g_pUiAnimator
+  // without guarding it.
+  if (this != 0) {
+    CIterator cursor(registryList24);
+    TAnimation* animation = static_cast<TAnimation*>(cursor.Reset());
+    while (cursor.More() && animation->registryTag18 != tag) {
+      animation = static_cast<TAnimation*>(cursor.Advance());
+    }
+    if (animation != 0 && animation->registryTag18 == tag) {
+      return animation;
+    }
+  }
+  return 0;
+}
+
 // FUNCTION: IMPERIALISM 0x004a0dc0
-void TAnimator::Free() {}
+void TAnimator::Free() {
+  g_pGlobalUiRootController->InstallCohandler(this, 0);
+  if (registryList24 != 0) {
+    registryList24->FreePayloadsAndDestroy();
+  }
+  g_pDisplayMgr->FreeQuickDrawSurfaceContextSlot(&renderSurfaceContext);
+  TEventHandler::Free();
+}
 
 // FUNCTION: IMPERIALISM 0x004a0e10
-void TAnimator::ReadFrom(TStream* stream) {}
+void TAnimator::ReadFrom(TStream* stream) {
+  field2c = 0;
+  field10 = 0x7fffffff;
+  field10 = stream->streamSlot50();
+  TObject::ReadFrom(stream);
+}
 
 // FUNCTION: IMPERIALISM 0x004a0e50
-void TAnimator::WriteTo(TStream* stream) {}
+void TAnimator::WriteTo(TStream* stream) {
+  stream->streamSlot8c(field10);
+  TObject::WriteTo(stream);
+}
 
+// The original inlines FindRegisteredAnimationByTag here (same loop, including the
+// receiver null-check); the recompile emits the real call instead.
 // FUNCTION: IMPERIALISM 0x004a0fa0
 void TAnimator::RemoveUiTransientRegistryObjectByTag(int tag) {
-  (void)tag;
+  TAnimation* animation = FindRegisteredAnimationByTag(tag);
+  if (animation != 0) {
+    POSITION pos = registryList24->listState.Find(animation, 0);
+    if (pos != 0) {
+      registryList24->listState.RemoveAt(pos);
+    }
+    animation->Free();
+  }
 }

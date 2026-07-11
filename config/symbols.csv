@@ -1435,14 +1435,14 @@ address|name|symbol|size|type|prototype|provenance
 4a0810|TTransFocusAnimation::RenderBattleReportInsetWithPaletteShift||381|function|undefined BlitUiFrameToTransientSurfaceWithOptionalOverlay()|
 4a09f0|TAnimator::CreateObject|?CreateObject@TAnimator@@SGPAVCObject@@XZ|110|function|undefined CreateObject()|rtti
 4a0a80|TAnimator::GetRuntimeClass||6|function|undefined GetTAnimatorClassNamePointer()|rtti
-4a0aa0|ConstructUiTransientObjectRegistry_Vtbl0064c4e8||29|function|undefined ConstructUiTransientObjectRegistry_Vtbl0064c4e8()|
+4a0aa0|TAnimator::TAnimator||29|function|undefined TAnimator()|
 4a0ad0|TAnimator::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 4a0b00|DestructTAnimatorAndMaybeFree_Impl||7|function|undefined DestructTAnimatorAndMaybeFree_Impl()|
 4a0b20|TAnimator::InitializeUiTransientObjectRegistry||175|function|undefined InitializeUiTransientObjectRegistry()|
 4a0c00|TAnimator::OrphanCallChain_C2_I13_004a0c00||31|function|undefined OrphanCallChain_C2_I13_004a0c00(void)|
 4a0c30|TAnimator::CanHandleCityDialogActionFalse||172|function|undefined 'scalar_deleting_destructor'(int param_1)|
-4a0d10|TCivAnimation2::AddObjectToUiTransientRegistry||16|function|undefined AddObjectToUiTransientRegistry()|
-4a0d30|TCivAnimation2::FindLinkedListNodeByIdFieldAt18||102|function|undefined FindLinkedListNodeByIdFieldAt18()|
+4a0d10|TAnimator::AddObjectToUiTransientRegistry||16|function|undefined AddObjectToUiTransientRegistry()|
+4a0d30|TAnimator::FindRegisteredAnimationByTag||102|function|undefined FindRegisteredAnimationByTag()|
 4a0dc0|TAnimator::Free||56|function|undefined ResetUiViewStateAndReleaseRuntimeSelectionOwner()|
 4a0e10|TAnimator::ReadFrom||45|function|undefined GetTEventHandlerClassNamePointer(int * param_1)|
 4a0e50|TAnimator::WriteTo||35|function|undefined 'scalar_deleting_destructor'(int * param_1)|

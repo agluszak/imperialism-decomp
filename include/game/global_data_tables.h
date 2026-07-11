@@ -413,6 +413,9 @@ extern UINT g_timerSlotIds[10];                  // 0x006a5c98
 extern int g_timerDispatchSuppressAssert;        // 0x006a5d24
 extern TCountry* g_apTerrainTypeDescriptorTable[kTerrainTypeDescriptorTableCount];
 extern TDisplayMgr* g_pDisplayMgr;
+extern int g_nUiAnimatorSurfaceBoundsWidth;   // 0x006a2228
+extern int g_nUiAnimatorSurfaceBoundsHeight;  // 0x006a222c
+extern int g_nIdleMeAnimationNextRegistryTag; // 0x00695934
 extern TMacViewMgr* g_pStrategicMapViewSystem;
 extern TViewMgr* g_pUiRuntimeContext;
 extern "C" int g_councilControlTagTable[6];
