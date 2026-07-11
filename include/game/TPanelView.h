@@ -115,7 +115,10 @@ public:
   virtual undefined OrphanRetStub_00430550(); // slot 0x68 0x430550
 // === END GENERATED DECLS (TPanelView) ===
   // TODO(manifest): add data members from the object slice (`just slice-discovery TPanelView 0xCTOR`).
+  void* m_panelData; // 0x60
 
   TPanelView();
 };
+
+ASSERT_SIZE(TPanelView, 0x64);
 

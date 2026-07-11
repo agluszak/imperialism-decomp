@@ -16,7 +16,7 @@ TPanelView::~TPanelView() {}
 
 IMPLEMENT_DYNCREATE(TPanelView, TView)
 
-TPanelView::TPanelView() {}
+TPanelView::TPanelView() : m_panelData(0) {}
 
 // FUNCTION: IMPERIALISM 0x004f79e0
 void TPanelView::NoOpUiLifecycleHook(int arg) {
