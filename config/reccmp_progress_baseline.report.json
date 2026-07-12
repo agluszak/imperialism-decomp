@@ -35766,19 +35766,19 @@
     },
     {
       "address": "0x5f4370",
-      "matching": 0.08333333333333333,
+      "matching": 0.8695652173913043,
       "name": "Is96BitIntegerZeroAtOrAboveBitIndex",
       "type": 1
     },
     {
       "address": "0x5f43e0",
-      "matching": 0.8979591836734694,
+      "matching": 0.8888888888888888,
       "name": "SetBitIn96BitIntegerWithCarry",
       "type": 1
     },
     {
       "address": "0x5f4450",
-      "matching": 0.057971014492753624,
+      "matching": 0.4925373134328358,
       "name": "Truncate96BitIntegerAtBitWithRounding",
       "type": 1
     },
@@ -36086,13 +36086,13 @@
     },
     {
       "address": "0x5f78d0",
-      "matching": 0.42105263157894735,
+      "matching": 0.47368421052631576,
       "name": "ShiftLeft96BitIntegerBy1",
       "type": 1
     },
     {
       "address": "0x5f7900",
-      "matching": 0.6190476190476191,
+      "matching": 0.5714285714285714,
       "name": "ShiftRight96BitIntegerBy1",
       "type": 1
     },

@@ -9,9 +9,32 @@ int AddUintWithCarryOutFlag(unsigned int a, unsigned int b, unsigned int* out);
 
 // Sets bit `bitIndex` (counted from the most-significant bit of word 0) in the multi-word
 // integer at `value`, propagating the carry toward the more-significant (lower-index)
+// the bit is masked to the bits strictly below it, and all more-significant words must be
+// zero.
+// FUNCTION: IMPERIALISM 0x005F4370
+int Is96BitIntegerZeroAtOrAboveBitIndex(int* value, int bitIndex) {
+  int wordIndex = bitIndex / 32;
+  int bitInWord = 0x1f - bitIndex % 32;
+  if ((static_cast<unsigned int>(value[wordIndex]) & ~(-1 << bitInWord)) != 0) {
+    return 0;
+  }
+  wordIndex++;
+  if (wordIndex < 3) {
+    int* word = value + wordIndex;
+    do {
+      if (*word != 0) {
+        return 0;
+      }
+      wordIndex++;
+      word++;
+    } while (wordIndex < 3);
+    return 1;
+  }
+  return 1;
+}
 // words.
 // FUNCTION: IMPERIALISM 0x005F43E0
-void SetBitIn96BitIntegerWithCarry(int* value, int bitIndex) {
+int SetBitIn96BitIntegerWithCarry(int* value, int bitIndex) {
   int wordIndex = bitIndex / 32;
   int bitInWord = 0x1f - bitIndex % 32;
   int carry = AddUintWithCarryOutFlag(value[wordIndex], 1 << bitInWord,
@@ -21,13 +44,37 @@ void SetBitIn96BitIntegerWithCarry(int* value, int bitIndex) {
     unsigned int* word = reinterpret_cast<unsigned int*>(&value[wordIndex]);
     do {
       if (carry == 0) {
-        return;
+        return 0;
       }
       carry = AddUintWithCarryOutFlag(*word, 1, word);
       wordIndex--;
       word--;
     } while (wordIndex >= 0);
   }
+  return carry;
+}
+// if the bit at bitIndex is set and anything above the next bit is nonzero, it rounds up
+// by setting bitIndex-1 (propagating carry), then clears bitIndex and every
+// less-significant word. Returns the top carry-out from the round-up.
+// FUNCTION: IMPERIALISM 0x005F4450
+int Truncate96BitIntegerAtBitWithRounding(int* value, int bitIndex) {
+  int carry = 0;
+  int bitInWord = 0x1f - bitIndex % 32;
+  int wordIndex = bitIndex / 32;
+  if ((static_cast<unsigned int>(value[wordIndex]) & 1 << (bitInWord & 0x1f)) != 0 &&
+      Is96BitIntegerZeroAtOrAboveBitIndex(value, bitIndex + 1) == 0) {
+    carry = SetBitIn96BitIntegerWithCarry(value, bitIndex + -1);
+  }
+  value[wordIndex] = value[wordIndex] & -1 << (bitInWord & 0x1f);
+  wordIndex++;
+  if (wordIndex < 3) {
+    unsigned int* word = reinterpret_cast<unsigned int*>(&value[wordIndex]);
+    for (int remaining = 3 - wordIndex; remaining != 0; remaining = remaining + -1) {
+      *word = 0;
+      word++;
+    }
+  }
+  return carry;
 }
 // FUNCTION: IMPERIALISM 0x005F44F0
 void Copy96BitIntegerWords(unsigned int* dest, unsigned int* src) {
@@ -111,3 +158,7 @@ void ShiftRight96BitIntegerBy1(unsigned int* value) {
   value[2] = value[2] >> 1;
   value[0] = value[0] >> 1 | w1 << 0x1f;
 }
+
+// Returns 1 when every bit at or above `bitIndex` (MSB-relative) is zero: the word holding
+
+// Truncates the 96-bit integer to `bitIndex` bits (MSB-relative), rounding to nearest:

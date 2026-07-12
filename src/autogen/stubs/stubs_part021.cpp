@@ -347,22 +347,6 @@ undefined4 MapFpControlLowByteToRuntimeBits(void)
   return 0;
 }
 
-// ghidra_name Is96BitIntegerZeroAtOrAboveBitIndex
-// ghidra_proto undefined Is96BitIntegerZeroAtOrAboveBitIndex()
-// FUNCTION: IMPERIALISM 0x005f4370
-undefined4 Is96BitIntegerZeroAtOrAboveBitIndex(void)
-{
-  return 0;
-}
-
-// ghidra_name Truncate96BitIntegerAtBitWithRounding
-// ghidra_proto undefined Truncate96BitIntegerAtBitWithRounding()
-// FUNCTION: IMPERIALISM 0x005f4450
-undefined4 Truncate96BitIntegerAtBitWithRounding(void)
-{
-  return 0;
-}
-
 // ghidra_name ShiftRight96BitIntegerByBitCount
 // ghidra_proto undefined ShiftRight96BitIntegerByBitCount()
 // FUNCTION: IMPERIALISM 0x005f4540
