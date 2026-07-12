@@ -403,14 +403,6 @@ undefined4 SelectBestSeedTileForNationFromCostField(void)
   return 0;
 }
 
-// ghidra_name GetProvinceByTileIndex
-// ghidra_proto void * __cdecl GetProvinceByTileIndex(short nTileIndex)
-// FUNCTION: IMPERIALISM 0x00563360
-undefined4 GetProvinceByTileIndex(void)
-{
-  return 0;
-}
-
 // ghidra_name EvaluateTerrainFlowCrossNationBoundaryToSea
 // ghidra_proto undefined EvaluateTerrainFlowCrossNationBoundaryToSea()
 // FUNCTION: IMPERIALISM 0x00563b70

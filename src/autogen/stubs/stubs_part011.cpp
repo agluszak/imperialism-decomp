@@ -475,14 +475,6 @@ undefined4 WrapperFor_CreateFontFromPresetAndAttachRegionHandle_At00494d20(void)
   return 0;
 }
 
-// ghidra_name SetQuickDrawColorAndPropagateIfChanged
-// ghidra_proto undefined SetQuickDrawColorAndPropagateIfChanged()
-// FUNCTION: IMPERIALISM 0x00495030
-undefined4 SetQuickDrawColorAndPropagateIfChanged(void)
-{
-  return 0;
-}
-
 // ghidra_name RenderUiBitmapOnRuntimeSurfaceContext_Impl
 // ghidra_proto undefined RenderUiBitmapOnRuntimeSurfaceContext_Impl()
 // FUNCTION: IMPERIALISM 0x004953e0

@@ -239,6 +239,17 @@ void SetQuickDrawFillColor(int fillColor) {
   g_QuickDrawMeasureFontPreset.styleRef6 = fillColor;
 }
 
+// Sets the current QuickDraw draw color, propagating it to the active surface context and the
+// cached measure-font style ref, but only when it actually changed.
+// FUNCTION: IMPERIALISM 0x00495030
+void SetQuickDrawColorAndPropagateIfChanged(int newColor) {
+  if (g_Quick_Draw_Color_State_006950FC != newColor) {
+    g_Quick_Draw_Color_State_006950FC = newColor;
+    g_pActiveQuickDrawSurfaceContext->quickDrawColor = newColor;
+    g_QuickDrawMeasureFontPreset.styleRef6 = newColor;
+  }
+}
+
 // FUNCTION: IMPERIALISM 0x00495070
 void SetQuickDrawStrokeColor(int strokeColor) {
   g_uQuickDrawStrokeColor = strokeColor;

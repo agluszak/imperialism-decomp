@@ -51,6 +51,10 @@ public:
   // not a city-region tile (tile[0] != 5). 0x0052a670.
   int GetCityRegionIdAtTileIndex(int tileIndex);
 
+  // True when some column of regionClassGrid10 is entirely unassigned (all 15 rows == -1).
+  // 0x00526710.
+  char ValidateAllColumnsHaveAssignedRegionClass();
+
   // Scans every tile's hex neighbours and emits a Seapoint into the overlay-quad table for
   // each city-region border edge (single edges + 3-region triple junctions). 0x0052c1a0.
   void BuildCityRegionBorderOverlaySegments();
@@ -89,11 +93,13 @@ public:
   void RebuildUMapperRouteRecordsAndActiveMapRects();
 
   // --- data fields (raw pad except the two the region-merge pass reads) ---
-  char pad_04[0x08 - 0x04];  // +0x04
-  char* mapTileGrid08;       // +0x08 base of the 6480-tile (108x60) grid, stride 0x24
-  char pad_0c[0x2a4 - 0x0c]; // +0x0c
-  int cityRegionCount2a4;    // +0x2a4 number of active city regions
+  char pad_04[0x08 - 0x04]; // +0x04
+  char* mapTileGrid08;      // +0x08 base of the 6480-tile (108x60) grid, stride 0x24
+  char pad_0c[0x10 - 0x0c]; // +0x0c
+  // +0x10 region-class grid: 15 rows x 27 columns of region-class bytes (-1 = unassigned).
+  signed char regionClassGrid10[15][27];
+  char pad_1a5[0x2a4 - 0x1a5]; // +0x1a5
+  int cityRegionCount2a4;      // +0x2a4 number of active city regions
 };
 
 ASSERT_SIZE(TMapMaker, 0x2a8);
-

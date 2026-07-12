@@ -1,6 +1,8 @@
 #include "game/TStatusPicture.h"
 
+#include "game/TCity.h"
 #include "game/TGreatPower.h"
+#include "game/TSimMgr.h"
 #include "game/UiRuntimeContext.h"
 #include "game/global_data_tables.h"
 #include "game/quickdraw_rendering.h"
@@ -54,6 +56,78 @@ void TStatusPicture::ApplyRectSlot110(RECT* rectBuffer) {
     // FillRectWithQuickDrawBrushAndContextOffset again) -- the swatch RECT itself is
     // dropped from the decompile entirely (no field assignments shown at all), so its
     // geometry isn't modeled rather than guessed.
+  }
+}
+
+// Fills values94[nation] with the per-nation metric selected by comparisonMode90 (and
+// pictureIds_b0[nation] with the nation slot, or -1 when the slot is ineligible), sorts the
+// seven entries, then rescales them so the largest is at most 400.
+// FUNCTION: IMPERIALISM 0x00594900
+void TStatusPicture::RecomputeNationComparisonValuesAndNormalizeScale() {
+  int dipOffset = 0;
+  for (int i = 0; i < 7; ++i, dipOffset += 0x10) {
+    if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(static_cast<short>(i)) != '\0') {
+      TGreatPower* nation = g_apNationStates[i];
+      char* dip = reinterpret_cast<char*>(g_pDiplomacyTurnStateManager);
+      char* raw = reinterpret_cast<char*>(nation);
+      switch (comparisonMode90) {
+      case 1:
+        values94[i] = *reinterpret_cast<int*>(dip + 0x1830 + dipOffset) * 3;
+        break;
+      case 2:
+        values94[i] = *reinterpret_cast<int*>(dip + 0x1828 + dipOffset) * 3;
+        break;
+      case 3:
+        values94[i] = *reinterpret_cast<int*>(dip + 0x1824 + dipOffset) * 3;
+        break;
+      case 4:
+        values94[i] = static_cast<int>(*reinterpret_cast<short*>(raw + 0xa4)) << 2;
+        break;
+      case 5:
+        values94[i] = *reinterpret_cast<int*>(raw + 0x910) << 2;
+        break;
+      case 6: {
+        TCity* city = (nation == nullptr) ? nullptr : nation->city;
+        values94[i] = *reinterpret_cast<int*>(reinterpret_cast<char*>(city) + 0x78);
+        break;
+      }
+      case 7: {
+        TCity* city = (nation == nullptr) ? nullptr : nation->city;
+        int stats = *reinterpret_cast<int*>(reinterpret_cast<char*>(city) + 0x1d8);
+        int units = *reinterpret_cast<int*>(stats + 0x14);
+        values94[i] =
+            static_cast<int>(static_cast<short>(
+                (*reinterpret_cast<short*>(units + 8) * 2 + *reinterpret_cast<short*>(units + 6)) *
+                    2 +
+                *reinterpret_cast<short*>(stats + 0x1e) + *reinterpret_cast<short*>(units + 4)))
+            << 2;
+        break;
+      }
+      case 8:
+        values94[i] = *reinterpret_cast<int*>(raw + 0x914) / 10;
+        break;
+      case 9:
+        values94[i] = (nation == nullptr) ? 0 : static_cast<int>(nation->needCapA6) << 1;
+        break;
+      default:
+        break;
+      }
+      pictureIds_b0[i] = static_cast<short>(i);
+    } else {
+      pictureIds_b0[i] = -1;
+    }
+  }
+
+  SortSevenEntriesAndUpdatePictureWidgets();
+
+  int maxVal = values94[0];
+  if (maxVal > 400) {
+    values94[0] = 400;
+    for (int k = 1; k < 7; ++k) {
+      if (pictureIds_b0[k] != -1) {
+        values94[k] = (values94[k] * 400) / maxVal;
+      }
+    }
   }
 }
 

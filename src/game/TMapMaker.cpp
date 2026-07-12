@@ -15,6 +15,27 @@ TMapMaker::TMapMaker() : TObject() {}
 // FUNCTION: IMPERIALISM 0x005259c0
 TMapMaker::~TMapMaker() {}
 
+// FUNCTION: IMPERIALISM 0x00526710
+char TMapMaker::ValidateAllColumnsHaveAssignedRegionClass() {
+  bool foundEmptyColumn = false;
+  for (int col = 0; col < 0x1b; ++col) {
+    if (foundEmptyColumn) {
+      break;
+    }
+    int row = 0;
+    while (row < 0xf) {
+      if (regionClassGrid10[row][col] != -1) {
+        break;
+      }
+      ++row;
+    }
+    if (row == 0xf) {
+      foundEmptyColumn = true;
+    }
+  }
+  return foundEmptyColumn;
+}
+
 // FUNCTION: IMPERIALISM 0x00526ba0
 char TMapMaker::GetBoolSlot28() {
   return 0;
