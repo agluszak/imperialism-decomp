@@ -5178,6 +5178,7 @@ address|target_cpp|ownership|note
 5f44f0|src/game/bignum96_math.cpp|manual|marker_sync
 5f4510|src/game/bignum96_math.cpp|manual|marker_sync
 5f4520|src/game/bignum96_math.cpp|manual|marker_sync
+5f4540|src/game/bignum96_math.cpp|manual|marker_sync
 5f4950|src/game/library_msvc500_fid.cpp|library|marker_sync
 5f4b50|src/game/library_msvc500_fid.cpp|library|marker_sync
 5f4b70|src/game/library_msvc500_fid.cpp|library|marker_sync

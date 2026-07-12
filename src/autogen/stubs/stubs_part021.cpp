@@ -347,14 +347,6 @@ undefined4 MapFpControlLowByteToRuntimeBits(void)
   return 0;
 }
 
-// ghidra_name ShiftRight96BitIntegerByBitCount
-// ghidra_proto undefined ShiftRight96BitIntegerByBitCount()
-// FUNCTION: IMPERIALISM 0x005f4540
-undefined4 ShiftRight96BitIntegerByBitCount(void)
-{
-  return 0;
-}
-
 // ghidra_name ConvertExtendedFloatToDecimalState
 // ghidra_proto undefined ConvertExtendedFloatToDecimalState()
 // FUNCTION: IMPERIALISM 0x005f4600

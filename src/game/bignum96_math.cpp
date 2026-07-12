@@ -108,6 +108,36 @@ int Is96BitIntegerZero(int* value) {
   } while (i < 3);
   return 1;
 }
+// bitCount%32 carrying between words, then a whole-word shift down by bitCount/32,
+// zero-filling the vacated high words.
+// FUNCTION: IMPERIALISM 0x005F4540
+void ShiftRight96BitIntegerByBitCount(unsigned int* value, int bitCount) {
+  int wordShift = bitCount / 32;
+  int bitShift = bitCount % 32;
+  unsigned int carry = 0;
+  int count = 3;
+  unsigned int* word = value;
+  do {
+    unsigned int shifted = *word >> (bitShift & 0x1f) | carry;
+    carry = (~(-1 << (bitShift & 0x1f)) & *word) << (0x20 - bitShift & 0x1f);
+    *word = shifted;
+    count = count - 1;
+    word = word + 1;
+  } while (count != 0);
+  int i = 2;
+  int byteOffset = 8;
+  do {
+    if (i < wordShift) {
+      *reinterpret_cast<unsigned int*>(reinterpret_cast<int>(value) + byteOffset) = 0;
+    } else {
+      *reinterpret_cast<unsigned int*>(reinterpret_cast<int>(value) + byteOffset) =
+          *reinterpret_cast<unsigned int*>(reinterpret_cast<int>(value) + byteOffset +
+                                           wordShift * -4);
+    }
+    i = i - 1;
+    byteOffset = byteOffset - 4;
+  } while (byteOffset >= 0);
+}
 
 // FUNCTION: IMPERIALISM 0x005F7830
 int AddUintWithCarryOutFlag(unsigned int a, unsigned int b, unsigned int* out) {
@@ -162,3 +192,5 @@ void ShiftRight96BitIntegerBy1(unsigned int* value) {
 // Returns 1 when every bit at or above `bitIndex` (MSB-relative) is zero: the word holding
 
 // Truncates the 96-bit integer to `bitIndex` bits (MSB-relative), rounding to nearest:
+
+// Shifts the 96-bit integer right by `bitCount` bits: first a within-word bit shift by

@@ -45,3 +45,24 @@ integer/array logic, no vtable[1]/EH. abs()+else-first branch shaping gets them 
 - 0x4d4390 ApplyCompletedCivWorkOrderToMapState (680B) -- garbled vtable-call args, needs
   each g_pGlobalMapState virtual's real signature + civ-order struct modeled.
 - More small DrawMapDialog* / guide-pattern siblings near 0x520000-0x524000.
+
+## Update (window 3) -- 96-bit big-integer family (new src/game/bignum96_math.cpp)
+Ported the whole small family as clean __cdecl free functions, retiring autogen stubs:
+AddUintWithCarryOutFlag 100%, Add96BitIntegerWithCarry 100%, Copy96BitIntegerWords 100%eff,
+Zero96BitIntegerWords 100%eff, SetBitIn96BitIntegerWithCarry 88.9% (returns carry),
+Is96BitIntegerZero 62%, Is96BitIntegerZeroAtOrAboveBitIndex 87%,
+ShiftLeft96BitIntegerBy1 42%, ShiftRight96BitIntegerBy1 62%,
+Truncate96BitIntegerAtBitWithRounding 49%, ShiftRight96BitIntegerByBitCount 34%.
+Also this window: ConvertScreenPointToHexGridCoordClamped 71%, AdjustTacticalUnitVerticalOffset 100%,
+DrawMapDialogWrappedTileConnectionMarker 100%, DrawMapDialogOwnershipMarkerForNation 98.5%,
+RelaxMapTileCostFieldByNeighborTerrain 77.9%, Copy64x64TileBlockWithStrideAdjustment 30%.
+
+### Lesson: pure-math free-function families are a rich clean lane
+Small __cdecl arithmetic helpers (bignum, coordinate, bit-twiddling) port to correct
+behavior fast; the sub-100% ones are dominated by MSVC5 register-naming (callee-saved
+ESI/EDI vs volatile ECX/EDX) and instruction scheduling that isn't source-controllable.
+signed `% 32` (not `& 0x1f`) matches the abs/re-sign modulo sequence.
+
+### Remaining 96-bit family (larger, likely similar low-match)
+- 0x5f4a80 ConvertFpMantissaTo96BitIntegerAndExponent (190B)
+- 0x5f7930 Build96BitIntegerFromDigitBytesAndNormalize (241B)
