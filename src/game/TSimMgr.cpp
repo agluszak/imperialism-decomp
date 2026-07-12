@@ -499,10 +499,24 @@ void TSimMgr::RebuildMapContextAndGlobalMapState(int arg1, const char* arg2, int
 
 // FUNCTION: IMPERIALISM 0x0057c9a0
 unsigned char TSimMgr::RecreateActiveMapContextAndInitializeGlobalMapState(int scenarioIndex) {
-  // TODO: port body @ 0x57c9a0 (not yet ported). Declared for real so the
-  // turn-event-0xE receive path gets a correctly-typed call site.
-  (void)scenarioIndex;
-  return 0;
+  stateFlag114 = static_cast<short>(scenarioIndex + 1);
+
+  if (g_pActiveMapOrderContext != nullptr) {
+    g_pActiveMapOrderContext->Free();
+    g_pActiveMapOrderContext = nullptr;
+  }
+  g_pActiveMapOrderContext = new TOcean();
+  ResetPortZoneGlobalContextCounters();
+
+  if (g_pGlobalMapState != nullptr) {
+    g_pGlobalMapState->Free();
+    g_pGlobalMapState = nullptr;
+  }
+  g_pGlobalMapState = new TMapMgr();
+  g_pGlobalMapState->InitializeGlobalMapState();
+  g_pGlobalMapState->hexNeighborWrapHorizontally20 = 1;
+  return static_cast<unsigned char>(
+      g_pGlobalMapState->BuildOrLoadGlobalMapStateForSession(g_szEmptyString, g_szEmptyString));
 }
 
 // FUNCTION: IMPERIALISM 0x0057cad0

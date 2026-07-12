@@ -100,8 +100,7 @@ public:
   // raw address.
   void RebuildMapContextAndGlobalMapState(int param1, const char* param2, int param3);
   // 0x57c9a0: rebuild the active map context + global map state for a numbered
-  // scenario ('scn0'..'scz9' session-init tags); returns whether the scenario data
-  // loaded. Body TODO.
+  // scenario ('scn0'..'scz9' session-init tags); returns whether the scenario data loaded.
   unsigned char RecreateActiveMapContextAndInitializeGlobalMapState(int scenarioIndex);
   // 0x57cad0. Verified against 0x0057db53: real __thiscall on `this` (not
   // g_pSimMgr this time), 1 stack arg (`RET 0x4`).
