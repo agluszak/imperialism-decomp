@@ -756,7 +756,7 @@ void TMultiplayerMgr::ReplaceNationStateForSlotAndRefreshStatus(int nationSlot) 
              sizeof(newNation->unitNameOrdinalByType));
       newNation->unitNameCounter84 = oldNation->unitNameCounter84;
       newNation->homeRegionIndex = oldNation->homeRegionIndex;
-      newNation->serializedField8c = oldNation->serializedField8c;
+      newNation->overlayAnchorTileCache8c = oldNation->overlayAnchorTileCache8c;
       TSortedList* ownedRegions = newNation->ownedRegionList;
       newNation->ownedRegionList = oldNation->ownedRegionList;
       oldNation->ownedRegionList = ownedRegions;

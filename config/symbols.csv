@@ -2266,7 +2266,7 @@ address|name|symbol|size|type|prototype|provenance
 4d5720|StrategicMapCallbackRecord::FinalizeOpcodeBufferAlignment||449|function|void __thiscall FinalizeOpcodeBufferAlignment()|
 4d5970|WrapperFor_ReallocateHeapBlockWithAllocatorTracking_At004d5970||32|function|undefined WrapperFor_ReallocateHeapBlockWithAllocatorTracking_At004d5970()|
 4d59a0|WrapperFor_IsPointInsideHitRegion_At004d59a0||188|function|undefined WrapperFor_IsPointInsideHitRegion_At004d59a0()|
-4d5cf0|WrapperFor_thunk_BuildDiplomacyOverlayHitMaskOpcodeStream_At004d5cf0||45|function|undefined WrapperFor_thunk_BuildDiplomacyOverlayHitMaskOpcodeStream_At004d5cf0()|
+4d5cf0|StreamOverlayHitMaskToSurfaceDib||45|function|undefined WrapperFor_thunk_BuildDiplomacyOverlayHitMaskOpcodeStream_At004d5cf0()|
 4d5d30|BuildDiplomacyOverlayHitMaskOpcodeStream||1149|function|undefined BuildDiplomacyOverlayHitMaskOpcodeStream()|
 4d62d0|WrapperFor_ReallocateHeapBlockWithAllocatorTracking_At004d62d0||36|function|undefined WrapperFor_ReallocateHeapBlockWithAllocatorTracking_At004d62d0()|
 4d6310|BuildDiplomacyOverlayHitMaskOpcodeStream_Impl||99|function|undefined BuildDiplomacyOverlayHitMaskOpcodeStream_Impl()|
@@ -2788,7 +2788,7 @@ address|name|symbol|size|type|prototype|provenance
 4f38e0|TRearFloatWindow::ConstructTRearFloatWindowBaseState||18|function|undefined ConstructTRearFloatWindowBaseState()|
 4f3910|TRearFloatWindow::`scalar deleting destructor'||30|function|undefined DestructTRearFloatWindowAndMaybeFree()|
 4f3960|TRearFloatWindow::DispatchUiMouseMoveToChildren||141|function|undefined WrapperFor_thunk_DispatchUiMouseMoveToChildren_At004f3960()|
-4f3a50|BuildDiplomacyNationOverlayGeometryAndHitMasks_Impl_At004f3a50||110|function|undefined BuildDiplomacyNationOverlayGeometryAndHitMasks_Impl_At004f3a50()|
+4f3a50|ClampRectWithinBoundsPreservingSize||110|function|undefined BuildDiplomacyNationOverlayGeometryAndHitMasks_Impl_At004f3a50()|
 4f3ae0|TDiplomacyMapView::CreateObject|?CreateObject@TDiplomacyMapView@@SGPAVCObject@@XZ|90|function|undefined CreateObject()|rtti
 4f3b60|TDiplomacyMapView::GetRuntimeClass||6|function|undefined GetTDiplomacyMapViewClassNamePointer()|rtti
 4f3b80|TDiplomacyMapView::ConstructTDiplomacyMapViewBaseState||178|function|undefined ConstructTDiplomacyMapViewBaseState()|

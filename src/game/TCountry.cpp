@@ -1,5 +1,8 @@
 #include "game/TCountry.h"
 
+#include "game/TMapMgr.h"
+#include "game/global_data_tables.h"
+
 #include "game/CString.h"
 #include "game/global_data_tables.h"
 #include "game/TGreatPower.h"
@@ -109,7 +112,7 @@ TCountry::~TCountry() {}
 void TCountry::InitializeNationStateIdentityAndOwnedRegionList(short nationSlot) {
   this->nationSlot = nationSlot;
   this->homeRegionIndex = -1;
-  this->serializedField8c = -1;
+  this->overlayAnchorTileCache8c = -1;
   this->encodedNationSlot = -1;
 
   int dwordIndex = 0;
@@ -178,7 +181,7 @@ void TCountry::ReadFrom(TStream* stream) {
   stream->ReadBytes(&this->unitNameCounter84, 2);
   stream->ReadBytes(&this->treasuryValue10, 4);
   stream->ReadBytes(&this->homeRegionIndex, 4);
-  stream->ReadBytes(&this->serializedField8c, 4);
+  stream->ReadBytes(&this->overlayAnchorTileCache8c, 4);
   stream->ReadBytes(this->needLevelByNation, 0x2e);
   SwapAdjacentBytesInShortArray(this->needLevelByNation, 0x17);
 
@@ -235,7 +238,7 @@ void TCountry::WriteTo(TStream* stream) {
   stream->WriteBytesSlot78(&this->unitNameCounter84, 2);
   stream->WriteBytesSlot78(&this->treasuryValue10, 4);
   stream->WriteBytesSlot78(&this->homeRegionIndex, 4);
-  stream->WriteBytesSlot78(&this->serializedField8c, 4);
+  stream->WriteBytesSlot78(&this->overlayAnchorTileCache8c, 4);
   WriteShortArrayElems(stream, this->needLevelByNation, 0x17);
 
   WriteTrackedListToStream(stream, this->militaryUnitList44);
@@ -248,7 +251,7 @@ void TCountry::ReadCoreFieldsFromStream(TStream* stream, int unusedArg) {
   stream->ReadBytes(&this->encodedNationSlot, 2);
   stream->ReadBytes(&this->treasuryValue10, 4);
   stream->ReadBytes(&this->homeRegionIndex, 4);
-  stream->ReadBytes(&this->serializedField8c, 4);
+  stream->ReadBytes(&this->overlayAnchorTileCache8c, 4);
 }
 
 // FUNCTION: IMPERIALISM 0x004d70e0
@@ -256,12 +259,21 @@ void TCountry::WriteCoreFieldsToStream(TStream* stream) {
   stream->WriteBytesSlot78(&this->encodedNationSlot, 2);
   stream->WriteBytesSlot78(&this->treasuryValue10, 4);
   stream->WriteBytesSlot78(&this->homeRegionIndex, 4);
-  stream->WriteBytesSlot78(&this->serializedField8c, 4);
+  stream->WriteBytesSlot78(&this->overlayAnchorTileCache8c, 4);
 }
 
 // FUNCTION: IMPERIALISM 0x004d7150
 void TCountry::SetSerializedField8c(short value) {
-  this->serializedField8c = value;
+  this->overlayAnchorTileCache8c = value;
+}
+
+// FUNCTION: IMPERIALISM 0x004d7170
+short TCountry::GetOrComputeOverlayAnchorTileIndex() {
+  if (overlayAnchorTileCache8c == -1) {
+    overlayAnchorTileCache8c =
+        g_pGlobalMapState->ComputeRepresentativeTileIndexForTerrainTypeWithWrapBias(nationSlot, 1);
+  }
+  return static_cast<short>(overlayAnchorTileCache8c);
 }
 
 // FUNCTION: IMPERIALISM 0x004d71b0

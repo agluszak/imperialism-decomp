@@ -3,6 +3,7 @@ include/game/TMultiplayerMgr.h|0|0|0|0|0|2|2
 src/game/CDib.cpp|0|0|0|0|0|7|7
 src/game/CDocument.cpp|0|0|0|0|1|0|1
 src/game/TAnimation.cpp|0|0|0|0|0|1|1
+src/game/TDiplomacyMapView.cpp|0|0|0|0|0|2|2
 src/game/TDiplomacyMgr.cpp|0|0|0|0|0|3|3
 src/game/TInfoBarPictureText.cpp|0|0|0|0|1|0|1
 src/game/TMacViewMgr.cpp|0|0|0|0|0|2|2

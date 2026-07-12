@@ -90,17 +90,36 @@ protected:
   // 0xb8 — a state code compared to 5 (mirrors interactionModeAt94's pattern); reset to 0 by
   // CallVoidSlotA0 (slot 0xa0) and in the constructor.
   int stateFlagAtB8;
-  char pad_bc[0x514 - 0xbc];
+  // 0xbc -- action code written 0xd at the end of the overlay rebuild (matches
+  // selectedTerrainIndexAt90's `actionCode != 0xd` comparison site).
+  int actionCodeBC;
+  short pad_c0;
+  // 0xc2 -- active-nation snapshot stamped alongside 0x90/0x98 by the overlay rebuild.
+  short activeNationC2;
+  // Three consecutive per-nation RECT arrays filling 0xc4..0x514 exactly (23 nations):
+  // text hit rects, name-label rects ([entry+0x170] writes), anchor marker rects
+  // ([entry+0x2e0] writes) -- all rebuilt by BuildDiplomacyNationOverlayGeometryAndHitMasks.
+  RECT nationTextHitRectsC4[23]; // 0x0c4..0x234
+  RECT nationLabelRects234[23];  // 0x234..0x3a4
+  RECT nationAnchorRects3A4[23]; // 0x3a4..0x514
   // +0x514/+0x518 -- map-view origin in screen pixels; the battle-report layout hook
   // (0x4acb60) stamps marker positions as origin + hex-raster offset.
   int mapOriginPixelX514;
   int mapOriginPixelY518;
-  char pad_51c[0x524 - 0x51c];
+  // +0x51c/+0x520 -- map extent in pixels (0x24d x 0x159, set with the origin).
+  int mapExtentPixelX51C;
+  int mapExtentPixelY520;
   int legendSurfaceModeAt524;
   // 0x528 — hovered/selected council slot index; TCouncilView's cursor-hover override
   // compares it against its own nation-count tail field.
   short field528;
-  char pad_52a[0x1982];
+  char pad_52a[0x2];
+  // 0x52c -- per-tile flag: owner byte in g_pDiplomacyTurnStateManager's table != -1.
+  unsigned char tileHasOwnerFlags52C[0x180];
+  // 0x6ac -- per-tile 10x7 marker rect anchored at the tile's hex-raster position.
+  RECT tileMarkerRects6AC[0x180]; // 0x6ac..0x1eac
+  // 0x1eac -- per-nation overlay hit-mask runs; 0x2078 -- per-nation label opcode
+  // records (both rebuilt by BuildDiplomacyNationOverlayGeometryAndHitMasks).
   DiplomacyMaskBufferRun maskRuns[0x17];
   StrategicMapCallbackRecord packedColorRuns[0x17];
 };

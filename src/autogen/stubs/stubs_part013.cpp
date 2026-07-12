@@ -483,22 +483,6 @@ undefined4 WrapperFor_IsPointInsideHitRegion_At004d59a0(void)
   return 0;
 }
 
-// ghidra_name WrapperFor_thunk_BuildDiplomacyOverlayHitMaskOpcodeStream_At004d5cf0
-// ghidra_proto undefined WrapperFor_thunk_BuildDiplomacyOverlayHitMaskOpcodeStream_At004d5cf0()
-// FUNCTION: IMPERIALISM 0x004d5cf0
-undefined4 WrapperFor_thunk_BuildDiplomacyOverlayHitMaskOpcodeStream_At004d5cf0(void)
-{
-  return 0;
-}
-
-// ghidra_name BuildDiplomacyOverlayHitMaskOpcodeStream
-// ghidra_proto undefined BuildDiplomacyOverlayHitMaskOpcodeStream()
-// FUNCTION: IMPERIALISM 0x004d5d30
-undefined4 BuildDiplomacyOverlayHitMaskOpcodeStream(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_ReallocateHeapBlockWithAllocatorTracking_At004d62d0
 // ghidra_proto undefined WrapperFor_ReallocateHeapBlockWithAllocatorTracking_At004d62d0()
 // FUNCTION: IMPERIALISM 0x004d62d0
@@ -543,14 +527,6 @@ undefined4 WrapperFor_ReleaseSharedStringRefIfNotEmpty_At004d6880(void)
 // ghidra_proto CString & __thiscall operator=(CString const &)
 // FUNCTION: IMPERIALISM 0x004d6b70
 undefined4 CString_operator(void)
-{
-  return 0;
-}
-
-// ghidra_name GetOrComputeOverlayAnchorTileIndex
-// ghidra_proto undefined GetOrComputeOverlayAnchorTileIndex()
-// FUNCTION: IMPERIALISM 0x004d7170
-undefined4 GetOrComputeOverlayAnchorTileIndex(void)
 {
   return 0;
 }

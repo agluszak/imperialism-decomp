@@ -315,14 +315,6 @@ undefined4 WrapperFor_ftol_At004f2b10(void)
   return 0;
 }
 
-// ghidra_name BuildDiplomacyNationOverlayGeometryAndHitMasks_Impl_At004f3a50
-// ghidra_proto undefined BuildDiplomacyNationOverlayGeometryAndHitMasks_Impl_At004f3a50()
-// FUNCTION: IMPERIALISM 0x004f3a50
-undefined4 BuildDiplomacyNationOverlayGeometryAndHitMasks_Impl_At004f3a50(void)
-{
-  return 0;
-}
-
 // ghidra_name TToolBarCluster::InitializeDiplomacyMinisterActionControlsAndLabels
 // ghidra_proto undefined InitializeDiplomacyMinisterActionControlsAndLabels()
 // FUNCTION: IMPERIALISM 0x004f4620

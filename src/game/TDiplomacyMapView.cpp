@@ -25,6 +25,11 @@
 #include "game/TSimMgr.h"
 #include "game/TCursorControlPanel.h"
 
+// Defined below in address order (0x4d5d30).
+void __cdecl BuildDiplomacyOverlayHitMaskOpcodeStream(DiplomacyMaskBufferRun* run,
+                                                      void* surfacePixels, int flag,
+                                                      int surfaceHeight);
+
 undefined4 RenderTerrainAndMinorNationLegendLabels(void);
 undefined4 FrameRegionOnHdcAndReleaseBrushState(void);
 undefined4 MapTurnEventCodeToPaletteIndex(void);
@@ -46,6 +51,54 @@ const unsigned int kAddrResolveDiplomacyActionValue = 0x004F5F70;
 // FUNCTION: IMPERIALISM 0x00430730
 DiplomacyMaskBufferRun::~DiplomacyMaskBufferRun() {
   delete[] maskBytesAt00;
+}
+
+// FUNCTION: IMPERIALISM 0x004d5cf0
+void __cdecl StreamOverlayHitMaskToSurfaceDib(DiplomacyMaskBufferRun* run,
+                                              TQuickDrawSurfaceContext* surface, int flag) {
+  int height = surface->surfaceDib->m_pInfoHeader->bmiHeader.biHeight;
+  if (height < 1) {
+    height = -height;
+  }
+  BuildDiplomacyOverlayHitMaskOpcodeStream(
+      run, reinterpret_cast<void*>(surface->surfaceDib->m_pInfoHeader->bmiHeader.biWidth), flag,
+      height);
+}
+
+// Clamps `rect` inside `bounds`, preserving the rect's width/height.
+
+// Streams a nation's packed hit mask into the surface's overlay opcode buffer; body
+// not yet ported (1149 bytes) -- claimed as a typed stub so callers link the real
+// signature.
+// FUNCTION: IMPERIALISM 0x004d5d30
+void __cdecl BuildDiplomacyOverlayHitMaskOpcodeStream(DiplomacyMaskBufferRun* run,
+                                                      void* surfacePixels, int flag,
+                                                      int surfaceHeight) {
+  (void)run;
+  (void)surfacePixels;
+  (void)flag;
+  (void)surfaceHeight;
+}
+// FUNCTION: IMPERIALISM 0x004f3a50
+void __cdecl ClampRectWithinBoundsPreservingSize(RECT* rect, RECT* bounds) {
+  short width = static_cast<short>(rect->right) - static_cast<short>(rect->left);
+  short height = static_cast<short>(rect->bottom) - static_cast<short>(rect->top);
+  if (rect->top < bounds->top) {
+    rect->top = bounds->top;
+    rect->bottom = height + bounds->top;
+  }
+  if (bounds->bottom < rect->bottom) {
+    rect->bottom = bounds->bottom;
+    rect->top = bounds->bottom - height;
+  }
+  if (rect->left < bounds->left) {
+    rect->left = bounds->left;
+    rect->right = width + bounds->left;
+  }
+  if (bounds->right < rect->right) {
+    rect->right = bounds->right;
+    rect->left = bounds->right - width;
+  }
 }
 
 // SYNTHETIC: IMPERIALISM 0x004f3ae0
@@ -99,8 +152,158 @@ void TDiplomacyMapView::Free() {
   TView::Free();
 }
 
+// Rebuilds the diplomacy-map nation overlay: merges every nation's clip region into
+// regionAt9c, rasterizes each nation's region into a packed 1-bit hit mask, places the
+// nation name labels with collision avoidance, and refreshes the per-tile marker rects.
 // FUNCTION: IMPERIALISM 0x004f3ea0
-void TDiplomacyMapView::BuildDiplomacyNationOverlayGeometryAndHitMasks() {}
+void TDiplomacyMapView::BuildDiplomacyNationOverlayGeometryAndHitMasks() {
+  short labelWidths[23];
+  short labelXs[23];
+  short labelYs[23];
+  memset(labelWidths, 0, sizeof(labelWidths));
+  memset(labelXs, 0, sizeof(labelXs));
+  memset(labelYs, 0, sizeof(labelYs));
+
+  regionAt9c = NewRgn();
+  for (short terrain = 0; terrain < 0x17; ++terrain) {
+    if (g_apTerrainTypeDescriptorTable[terrain] != 0) {
+      UnionRgn(regionAt9c, g_pStrategicMapViewSystem->GetClipRegionSlotByIndex(terrain),
+               regionAt9c);
+    }
+  }
+
+  mapOriginPixelX514 = 0x31;
+  mapOriginPixelY518 = 0x2d;
+  mapExtentPixelX51C = 0x24d;
+  mapExtentPixelY520 = 0x159;
+
+  ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(0, 10, 0x2b68);
+
+  for (short nationIndex = 0; nationIndex < 0x17; ++nationIndex) {
+    DiplomacyMaskBufferRun* run = &maskRuns[nationIndex];
+    RgnHandle nationRgn = g_pStrategicMapViewSystem->GetClipRegionSlotByIndex(nationIndex);
+    CopyRect(reinterpret_cast<RECT*>(&run->leftAt04), &(*nationRgn)->rgnBBox);
+    char* oldMask = reinterpret_cast<char*>(run->maskBytesAt00);
+    run->rightAt0c = run->leftAt04 + ((run->rightAt0c - run->leftAt04) + 7 >> 3) * 8;
+    operator delete(oldMask);
+    char* mask = static_cast<char*>(operator new((run->rightAt0c - run->leftAt04) *
+                                                 (run->bottomAt10 - run->topAt08)));
+    run->maskBytesAt00 = reinterpret_cast<unsigned char*>(mask);
+    for (int y = run->topAt08; y < run->bottomAt10; ++y) {
+      for (int x = run->leftAt04; x < run->rightAt0c;) {
+        *mask = 0;
+        for (int bit = 1; bit < 0x100; bit *= 2) {
+          CPoint probe;
+          probe.x = x;
+          probe.y = y;
+          if (PtInRgn(&probe, nationRgn) != 0) {
+            *mask = static_cast<char>(*mask + bit);
+          }
+          ++x;
+        }
+        ++mask;
+      }
+    }
+    StreamOverlayHitMaskToSurfaceDib(run, g_pPrimaryRenderSurfaceContext, 1);
+
+    CString nationName;
+    TCountry* nation = g_apTerrainTypeDescriptorTable[nationIndex];
+    if (nation != 0) {
+      if (EmptyRgn(g_pStrategicMapViewSystem->GetClipRegionSlotByIndex(nationIndex)) == 0) {
+        short anchorTile = nation->GetOrComputeOverlayAnchorTileIndex();
+        int labelCenterX = (anchorTile % 0x6c) * 5 + 0x31;
+        int labelY = (anchorTile / 0x6c + 9) * 5;
+        static_cast<TGreatPower*>(nation)->LoadNationDisplayNameSharedRefFromField8(&nationName);
+        short textWidth = MeasureTextExtentWithCachedQuickDrawStyle(&nationName);
+        labelY -= 6;
+        labelWidths[nationIndex] = textWidth;
+        short labelX = static_cast<short>(labelCenterX) - textWidth / 2;
+
+        // Slide the label down (or up) until it no longer overlaps an already placed
+        // label; give up after 0x14 nudges.
+        short attempts = 0;
+        short placedIndex = 0;
+        while (placedIndex <= 0x16) {
+          short otherWidth = labelWidths[placedIndex];
+          if (otherWidth == 0) {
+            otherWidth = 0x5a;
+          }
+          short otherY = labelYs[placedIndex];
+          if (static_cast<short>(labelY) >= otherY && static_cast<short>(labelY) <= otherY + 10 &&
+              labelX >= labelXs[placedIndex] && labelX <= otherWidth + labelXs[placedIndex]) {
+            ++labelY;
+            ++attempts;
+            if (attempts < 0x14) {
+              placedIndex = 0;
+              continue;
+            }
+            ++placedIndex;
+            continue;
+          }
+          if (static_cast<short>(labelY) >= otherY - 10 && static_cast<short>(labelY) <= otherY &&
+              labelX >= labelXs[placedIndex] - textWidth && labelX <= labelXs[placedIndex]) {
+            --labelY;
+            ++attempts;
+            if (attempts < 0x14) {
+              placedIndex = 0;
+              continue;
+            }
+          }
+          ++placedIndex;
+        }
+
+        labelYs[nationIndex] = static_cast<short>(labelY);
+        labelXs[nationIndex] = labelX;
+        RECT* labelRect = &nationLabelRects234[nationIndex];
+        labelRect->left = labelX;
+        labelRect->top = labelY;
+        labelRect->right = labelX + textWidth;
+        labelRect->bottom = labelY + 0xc;
+        ClampRectWithinBoundsPreservingSize(
+            labelRect, reinterpret_cast<RECT*>(&packedColorRuns[nationIndex].field08));
+        int markerX = (static_cast<short>(nation->homeRegionIndex) % 0x6c) * 5;
+        int markerY = (static_cast<short>(nation->homeRegionIndex) / 0x6c + 9) * 5;
+        RECT* anchorRect = &nationAnchorRects3A4[nationIndex];
+        anchorRect->left = markerX + 0x29;
+        anchorRect->top = markerY - 8;
+        anchorRect->right = markerX + 0x39;
+        anchorRect->bottom = markerY + 8;
+        continue;
+      }
+    }
+    RECT* labelRect = &nationLabelRects234[nationIndex];
+    labelRect->left = 0;
+    labelRect->top = 0;
+    labelRect->right = 0;
+    labelRect->bottom = 0;
+    RECT* hitRect = &nationTextHitRectsC4[nationIndex];
+    hitRect->left = 0;
+    hitRect->top = 0;
+    hitRect->right = 0;
+    hitRect->bottom = 0;
+  }
+
+  for (int tile = 0; tile < 0x180; ++tile) {
+    tileHasOwnerFlags52C[tile] = 0;
+    tileHasOwnerFlags52C[tile] =
+        reinterpret_cast<char*>(g_pDiplomacyTurnStateManager)[tile - 0x228] != -1;
+    short colX2;
+    unsigned short row;
+    SplitTileIndexToHexRasterColumnX2AndRow(g_pGlobalMapState->cityScoreTable[tile].cityTileIndex04,
+                                            &colX2, &row);
+    RECT* tileRect = &tileMarkerRects6AC[tile];
+    tileRect->left = (colX2 * 5) / 2 - 4 + mapOriginPixelX514;
+    tileRect->top = static_cast<short>(row) * 5 - 3 + mapOriginPixelY518;
+    tileRect->right = tileRect->left + 9;
+    tileRect->bottom = tileRect->top + 6;
+  }
+
+  short activeNation = g_pSimMgr->GetActiveNationId();
+  selectedTerrainIndexAt90 = activeNation;
+  frameRegionSelectorAt98 = activeNation;
+  activeNationC2 = activeNation;
+  actionCodeBC = 0xd;
+}
 
 // FUNCTION: IMPERIALISM 0x004f48c0
 void TDiplomacyMapView::ApplyRectSlot110(RECT* rectBuffer) {
