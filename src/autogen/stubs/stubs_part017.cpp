@@ -403,14 +403,6 @@ undefined4 ResetTPortZoneManagerToSentinelVtable(void)
   return 0;
 }
 
-// ghidra_name RelaxMapTileCostFieldByNeighborTerrain
-// ghidra_proto undefined RelaxMapTileCostFieldByNeighborTerrain()
-// FUNCTION: IMPERIALISM 0x00562af0
-undefined4 RelaxMapTileCostFieldByNeighborTerrain(void)
-{
-  return 0;
-}
-
 // ghidra_name SelectBestSeedTileForNationFromCostField
 // ghidra_proto undefined SelectBestSeedTileForNationFromCostField()
 // FUNCTION: IMPERIALISM 0x00562c00
