@@ -413,6 +413,9 @@ extern UINT g_timerSlotIds[10];                  // 0x006a5c98
 extern int g_timerDispatchSuppressAssert;        // 0x006a5d24
 extern TCountry* g_apTerrainTypeDescriptorTable[kTerrainTypeDescriptorTableCount];
 extern TDisplayMgr* g_pDisplayMgr;
+extern int g_nUiAnimatorSurfaceBoundsWidth;   // 0x006a2228
+extern int g_nUiAnimatorSurfaceBoundsHeight;  // 0x006a222c
+extern int g_nIdleMeAnimationNextRegistryTag; // 0x00695934
 extern TMacViewMgr* g_pStrategicMapViewSystem;
 extern TViewMgr* g_pUiRuntimeContext;
 extern "C" int g_councilControlTagTable[6];
@@ -726,11 +729,15 @@ extern TControlPictureRectState g_UiResourceEntryDefaultTextStyle;
 
 // TControlSeaZoneMission.cpp / TDefendProvinceMission.cpp / TNavyMission.cpp —
 // defend-province / mission priority-vector normalization constants.
+extern const float g_Recompute_Nation_Order_LookupTable_0065A9BC;
+extern const float g_Recompute_Nation_Order_LookupTable_0065A9C4;
 extern const float g_Recompute_Nation_Order_LookupTable_0065A9E8;
+extern const double g_Recompute_Nation_Order_LookupTable_0065A9E0;
 extern const double g_Recompute_Nation_Order_LookupTable_0065A9F0;
 extern double g_Recompute_Nation_Order_LookupTable_0065A9F8;
 extern double g_Recompute_Nation_Order_LookupTable_0065AA00;
 extern double g_Recompute_Nation_Order_LookupTable_0065AA08;
+extern const float g_Recompute_Nation_Order_LookupTable_0065AA20;
 extern unsigned short g_awTacticalCompositionReferenceProfiles_00697870[];
 extern unsigned short g_Populate_Beachhead_Mission_LookupTable_00697958[];
 

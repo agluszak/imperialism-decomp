@@ -8,7 +8,7 @@ class TStream;
 class TSortedPtrList;
 class TView;
 
-// Mac oracle: HelpSetRecord — 0xe bytes stored in TSortedPtrList (relationType 0xe).
+// Mac oracle: HelpSetRecord — 0xe bytes stored in TSortedPtrList (recordSize14 0xe).
 struct HelpSetRecord {
   short helpSetIdA;
   short helpSetIdB;

@@ -1144,3 +1144,47 @@ headers before splicing.
     the stale `config/function_ownership.csv` row — `just regen-stubs` reports
     "Pruned ... 0" and does not auto-remove it; the stub count only rises back after the
     manual delete + re-regen.
+
+74. **A method whose every caller loads ECX from the same global belongs to that
+    global's class -- Ghidra buckets orphan thiscall methods by address proximity,
+    not by receiver.** The registry pair 0x4a0d10/0x4a0d30 sat under TCivAnimation2
+    (whose code neighbours them) while every call site did `mov ecx,[g_pUiAnimator]`;
+    the receiver global's declared type (TAnimator*) names the true owner. Check the
+    callers' ECX source before accepting any orphan method's class bucket, then move
+    the marker AND fix the class prefix in symbols.csv (the earlier TTaskList lesson).
+
+75. **Run `just detect` after every build completes and before any `just compare`,
+    even mid-session.** Comparing against a stale PDB right after a rebuild produces
+    phantom "Failed to find a match at 0xADDR" hard-fails and wildly wrong low scores
+    for functions that are actually 100% -- re-running detect then compare on the same
+    addresses fixed five phantom failures in one batch. Never conclude a claim is
+    unverifiable from a compare that ran before detect refreshed reccmp-build.yml.
+
+76. **A block of junk-named `return 0` virtual-slot stubs (`VirtualSlot64/6C/70/74/78`)
+    can hide a complete real algorithm -- check `ret N` and the Mac oracle before
+    trusting any stub body.** TSortedList's six "no-op" sort slots were a full MacApp
+    quicksort (Sort/SortBy/Compare/QuickSort/QSPartition + a default-compare
+    trampoline), with symbols.csv rows that were outright wrong (QuickSort labelled
+    Destruct*AndMaybeFree, Compare labelled Construct*BaseState). Two tells: the stub's
+    claimed address had `ret 8`/`ret 0x10` (arguments the decl dropped), and the Mac
+    evidence listed Sort/SortBy/Compare/QuickSort/QSPartition on the same class. Six of
+    eight addresses hit 100% once the real shapes were written. Comparator shape:
+    `short(__cdecl*)(void* a, void* b, void* context)` with the verdict in AX; Sort()
+    passes a trampoline + the list as context to dispatch the virtual Compare. The
+    parallel CPtrArray-backed chain (TSortedPtrList/TPtrList, same junk-named stubs in
+    TPtrList.cpp, vtable 0x649010 / ctor 0x488400) still needs the same treatment, as
+    do TNavyMission's two big score stubs (0x537270/0x537610). Recon for those two:
+    all three helper thunks resolve to already-ported TShip order-node methods
+    (GetNavyOrderNormalizationBaseByNationType 0x5505a0,
+    ComputeOrderNodeDistanceQuotientByDescriptorWord24 0x550550,
+    ComputeNavyOrderPriorityContributionPercentByCategory 0x54ff00), and
+    TNavyMission.cpp's AccumulateNavyOrderVectorFromNode is the ported sibling
+    idiom for the 4-float category-profile build; the remaining work is the
+    squared-distance-vs-referenceVector math with several inline float-global
+    constants that must be read from the raw listing (the Ghidra decompile garbles
+    the stack profile arrays). (Follow-up resolved:
+    the TSortedPtrList/TPtrList chain landed with 18/19 addresses at 100% plus all
+    five leaf comparator overrides -- and exposed a real save-corruption bug in
+    TTradeMgr::WriteTo. The 0x4acb60 idle hook turned out correctly attributed to
+    TBattleReportView's own vtable slot 0x37 via note-74 checking -- it is just an
+    unported 2041-byte body, still open.)

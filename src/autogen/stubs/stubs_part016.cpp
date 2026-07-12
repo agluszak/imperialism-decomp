@@ -107,14 +107,6 @@ undefined4 BuildNavyOrderCategoryVectorForNationWithExclusion(void)
   return 0;
 }
 
-// ghidra_name AccumulateNavyOrderCategoryVectorWithScale
-// ghidra_proto undefined AccumulateNavyOrderCategoryVectorWithScale()
-// FUNCTION: IMPERIALISM 0x00537c60
-undefined4 AccumulateNavyOrderCategoryVectorWithScale(void)
-{
-  return 0;
-}
-
 // ghidra_name BuildMissionQueuedOrderCategoryVector
 // ghidra_proto undefined BuildMissionQueuedOrderCategoryVector()
 // FUNCTION: IMPERIALISM 0x00537d40

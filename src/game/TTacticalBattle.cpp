@@ -43,7 +43,8 @@ undefined TTacticalBattle::CreateTTacticalBattleInstance() {
 
 // Turn-order comparator (see the header note on the AX/short return).
 // FUNCTION: IMPERIALISM 0x0059f610
-short __cdecl CompareTacticalUnitsForTurnOrder(void* a, void* b) {
+short __cdecl CompareTacticalUnitsForTurnOrder(void* a, void* b, void* context) {
+  (void)context;
   TTacticalUnit* unitA = static_cast<TTacticalUnit*>(a);
   TTacticalUnit* unitB = static_cast<TTacticalUnit*>(b);
   unitA->AssertValid();
@@ -241,9 +242,7 @@ void TTacticalBattle::HandleTacticalCommandTag_retr() {
 void TTacticalBattle::FinalizeTacticalTurnStateAndQueueEvent232A() {
   tacticalPlayer14->RetireUndeployedUnitsToReserveList();
   tacticalPlayer18->RetireUndeployedUnitsToReserveList();
-  recordList20->SortEntriesWithComparator(
-      reinterpret_cast<int(__cdecl*)(void*, void*)>(CompareTacticalUnitsForTurnOrder),
-      reinterpret_cast<int>(this));
+  recordList20->SortBy(&CompareTacticalUnitsForTurnOrder, this);
   field10 = 1;
   if (battleView8 != 0) {
     TTacticalToolbar* toolbar = static_cast<TTacticalToolbar*>(

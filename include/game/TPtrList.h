@@ -6,38 +6,20 @@
 
 class TStream;
 
-// CPtrArray-derived linked-list wrapper (vtable TBD).
+// CPtrArray-derived by-value record list leaf. The real vtable (0x00649068, 19 slots
+// 0x00-0x48) inherits every TSortedPtrList slot unchanged and adds exactly one
+// virtual; the previously modelled parallel-to-TSortedList slot set (0x4c-0x78) does
+// not exist in the original vtable.
 // Base recovered from CRuntimeClass descriptor: TPtrList -> TSortedPtrList -> CPtrArray -> CObject.
+// VTABLE: IMPERIALISM 0x00649068
 class TPtrList : public TSortedPtrList {
 public:
   DECLARE_DYNCREATE(TPtrList)
   TPtrList();
 
-  // Overrides of TSortedPtrList slots (0x28-0x40):
-  virtual POSITION AddHeadSlot28(void* item);
-  virtual POSITION AddHeadSlot2C(void* item, int unused1 = 0, int unused2 = 0);
-  virtual POSITION AddTailSlot30(void* item);
-  virtual POSITION AddTailSlot34(void* item, int unused1 = 0, int unused2 = 0);
-  virtual POSITION AddTailSlot38(void* item = 0);
-  virtual void* RemoveTailSlot3C();
-  virtual POSITION AddTailSlot40(void* item = 0);
-  // New slots (0x44-0x78):
-  virtual void* RemoveHeadSlot44();
-  virtual int GetCountSlot48();
-  virtual void* GetEntryByOrdinalSlot4C(int ordinal = 0);
-  virtual void RemoveAtOrdinalSlot50(int ordinal);
-  virtual void FreePayloadsSlot54();
-  virtual void FreePayloadsAndDestroySlot58();
-  virtual void RemoveAllSlot5C();
-  virtual void SetAtOrdinalSlot60(int ordinal, void** entryPtr, int unusedFlag);
-  virtual int VirtualSlot64();
-  // TPtrList does not derive TSortedList (known layout mismatch); same slot shape,
-  // independent declaration.
-  virtual int SortEntriesWithComparator(int(__cdecl* compare)(void*, void*), int unused = 0);
-  virtual int VirtualSlot6C();
-  virtual int VirtualSlot70();
-  virtual int VirtualSlot74();
-  virtual int VirtualSlot78();
+  // Same copy-to-front body as the inherited slot 0x40 -- TPtrList re-declares the
+  // operation as its own new slot (hence the curated "Alt" name).
+  virtual void InsertCopiedRecordAtFrontOfPtrListAlt(void* record); // slot 0x48 0x488470
 
   int GetIntByOrdinalSlot24(int ordinal);
 

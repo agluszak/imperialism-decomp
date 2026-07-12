@@ -1,5 +1,6 @@
 #pragma once
 
+#include "compat.h"
 #include "game/TCluster.h"
 #include "game/mfc.h"
 
@@ -7,7 +8,7 @@
 // VTABLE: IMPERIALISM 0x00652210
 class TPurchaseCluster : public TCluster {
 public:
-// === BEGIN GENERATED DECLS (TPurchaseCluster) — refreshed by recover-class; do not hand-edit ===
+  // === BEGIN GENERATED DECLS (TPurchaseCluster) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TPurchaseCluster)
   virtual ~TPurchaseCluster() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -23,7 +24,8 @@ public:
   // slot 0x0c QueryStepValue inherited unchanged (0x48a2c0)
   // slot 0x0d DispatchQueuedUiCommandAndRelease inherited unchanged (0x48a3b0)
   // slot 0x0e DispatchUiSelectionToHandler inherited unchanged (0x48a3f0)
-  virtual void HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) override; // slot 0x0f 0x004cc490
+  virtual void HandleEvent(int commandId, TEventHandler* sourceHandler,
+                           TEvent* event) override; // slot 0x0f 0x004cc490
   // slot 0x10 DispatchUiCommandToHandler inherited unchanged (0x48a2e0)
   // slot 0x11 vmethod_0017 inherited unchanged (0x48a310)
   // slot 0x12 ForwardParam inherited unchanged (0x48a380)
@@ -125,11 +127,15 @@ public:
   // slot 0x71 OrphanTiny_GetDwordEcxOffset_84_00491770 inherited unchanged (0x491770)
   // slot 0x72 OrphanCallChain_C2_I51_00491790 inherited unchanged (0x491790)
   virtual undefined OrphanCallChain_C1_I08_004cc440(int param_1); // slot 0x73 0x4cc440
-  virtual void __fastcall SetCityViewValueControlAmount(int * pCityViewDialog, short nValue); // slot 0x74 0x4cc550
-  virtual undefined UpdateCityViewValueControl(); // slot 0x75 0x4cc640
-// === END GENERATED DECLS (TPurchaseCluster) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TPurchaseCluster 0xCTOR`).
+  virtual void __fastcall SetCityViewValueControlAmount(int* pCityViewDialog,
+                                                        short nValue); // slot 0x74 0x4cc550
+  virtual undefined UpdateCityViewValueControl();                      // slot 0x75 0x4cc640
+  // === END GENERATED DECLS (TPurchaseCluster) ===
+  // TCluster's slice ends at 0x88; RTTI oracle confirms sizeof(TPurchaseCluster) == 0x8c.
+  // The ctor (0x4cc3c0) zeroes the one own field.
+  int field88; // +0x88
 
   TPurchaseCluster();
 };
 
+ASSERT_SIZE(TPurchaseCluster, 0x8c);

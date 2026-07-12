@@ -20,11 +20,8 @@ TSortByPriceList::TSortByPriceList() {}
 // TSortByPriceList::~TSortByPriceList
 
 // FUNCTION: IMPERIALISM 0x005347b0
-extern "C" int __stdcall CompareSortByPriceListEntriesByField2Ascending(void* a, void* b) {
-  short valA = *reinterpret_cast<short*>(reinterpret_cast<char*>(a) + 2);
-  short valB = *reinterpret_cast<short*>(reinterpret_cast<char*>(b) + 2);
-  if (valA > valB) {
-    return 1;
-  }
-  return -1;
+short TSortByPriceList::Compare(void* a, void* b) {
+  short aKey = *reinterpret_cast<short*>(static_cast<char*>(a) + 2);
+  short bKey = *reinterpret_cast<short*>(static_cast<char*>(b) + 2);
+  return static_cast<short>(((aKey <= bKey) - 1 & 2) - 1);
 }

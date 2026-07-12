@@ -1,5 +1,6 @@
 #pragma once
 
+#include "compat.h"
 #include "game/TAnimation.h"
 #include "game/mfc.h"
 
@@ -22,7 +23,15 @@ public:
   // slot 0x0b RenderBattleReportInsetWithPaletteShift inherited unchanged (0x49f190)
   // slot 0x0c RenderBattleReportViewSurfaceSpriteWithResourceHandle inherited unchanged (0x49f2d0)
   // === END GENERATED DECLS (TIdleMeAnimation) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TIdleMeAnimation 0xCTOR`).
+  // RTTI oracle: sizeof(TIdleMeAnimation) == 0x2c, identical to TAnimation -- no own
+  // fields.
 
   TIdleMeAnimation();
+
+  // Post-construction init (0x4ac9c0): stamps the animation with the next value of
+  // the g_nIdleMeAnimationNextRegistryTag counter (as its registryTag18), zeroes the
+  // rect/frame state via the base helper, and registers itself with g_pUiAnimator.
+  void ConstructTIdleMeAnimationBaseState(TView* ownerView);
 };
+
+ASSERT_SIZE(TIdleMeAnimation, 0x2c);

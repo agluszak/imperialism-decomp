@@ -35,7 +35,9 @@ public:
   // slot 0x18 SetAtOrdinal inherited unchanged (0x488840)
   // slot 0x19 OrphanLeaf_NoCall_Ins07_004d8920 inherited unchanged (0x487d90)
   // slot 0x1a OrphanCallChain_C11_I88_004874b0 inherited unchanged (0x487dd0)
-  int VirtualSlot6C() override; // slot 0x1b byte 0x6c 0x4a8560
+  // Descending three-way compare of the short at +0x6 of each payload (stack-size
+  // ordering; the payload record type is not yet recovered).
+  short Compare(void* a, void* b) override; // slot 0x1b byte 0x6c 0x4a8560
   // slot 0x1c VTableSlot1C inherited unchanged (0x487b60)
   // slot 0x1d QueueCityRecruitmentSupportCommandsIfDeficit inherited unchanged (0x487bd0)
   // slot 0x1e GetTTaskClassNamePointer inherited unchanged (0x487cc0)
@@ -44,4 +46,3 @@ public:
 
   TArmyStackList();
 };
-

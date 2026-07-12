@@ -95,7 +95,8 @@ float TMission::ReturnZeroFloatSlot6C() {
   return g_MissionDefaultScore_0065a468;
 }
 // FUNCTION: IMPERIALISM 0x00534e50
-float TMission::ReturnZeroFloatSlot74() {
+float TMission::ReturnZeroFloatSlot74(void* candidate) {
+  (void)candidate;
   return g_MissionDefaultScore_0065a468;
 }
 // FUNCTION: IMPERIALISM 0x00534e70
@@ -104,7 +105,9 @@ float TMission::ReturnZeroFloatSlot70(TMilitaryUnit* candidateUnit) {
   return g_MissionDefaultScore_0065a468;
 }
 // FUNCTION: IMPERIALISM 0x00534e90
-float TMission::ReturnZeroFloatSlot7C() {
+float TMission::ReturnZeroFloatSlot7C(void* candidate, void* targetProfile) {
+  (void)candidate;
+  (void)targetProfile;
   return g_MissionDefaultScore_0065a468;
 }
 // FUNCTION: IMPERIALISM 0x00534eb0

@@ -1,6 +1,8 @@
 // TInvadeMission implementations.
 
 #include "game/TInvadeMission.h"
+
+#include "game/global_data_tables.h"
 #include "game/TBeachheadMission.h"
 #include "game/TGlobalMapState.h"
 #include "game/TStream.h"
@@ -175,14 +177,11 @@ float TInvadeMission::ReturnZeroFloatSlot70(TMilitaryUnit* candidateUnit) {
 }
 
 // FUNCTION: IMPERIALISM 0x0053fb60
-float TInvadeMission::ReturnZeroFloatSlot74() {
+float TInvadeMission::ReturnZeroFloatSlot74(void* candidate) {
   if (flag10 != 0) {
-    return 0.0f;
+    return g_Recompute_Nation_Order_LookupTable_0065A9E8;
   }
-  if (beachhead34 != nullptr) {
-    return beachhead34->ReturnZeroFloatSlot74();
-  }
-  return 0.0f;
+  return beachhead34->ReturnZeroFloatSlot74(candidate);
 }
 
 // FUNCTION: IMPERIALISM 0x0053fb90

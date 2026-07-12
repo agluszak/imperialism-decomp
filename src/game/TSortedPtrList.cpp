@@ -1,4 +1,8 @@
 #include "game/TSortedPtrList.h"
+
+#include <string.h>
+
+#include "game/TStream.h"
 #include "game/mfc.h"
 
 // SYNTHETIC: IMPERIALISM 0x00488030
@@ -10,53 +14,101 @@
 IMPLEMENT_DYNCREATE(TSortedPtrList, CPtrArray)
 
 // FUNCTION: IMPERIALISM 0x004880a0
-void TSortedPtrList::ResetPtrListRecordsSlot1C() {}
+void TSortedPtrList::ClearAndFreeAllPtrListRecords() {
+  int ordinal = 1;
+  void* record = GetPtrListEntryByOneBasedIndex(1);
+  while (record != 0) {
+    operator delete(record);
+    ordinal++;
+    record = GetPtrListEntryByOneBasedIndex(ordinal);
+  }
+  SetSize(0, -1);
+}
 
+// Virtual forwarder: the reset hook simply dispatches the clear-and-free slot.
 // FUNCTION: IMPERIALISM 0x004880f0
-void TSortedPtrList::slot20() {}
+void TSortedPtrList::InvokePtrListResetHook() {
+  ClearAndFreeAllPtrListRecords();
+}
 
 // FUNCTION: IMPERIALISM 0x00488110
-void TSortedPtrList::ReleaseSlot24() {
-  this->ResetPtrListRecordsSlot1C();
-  this->SelfDeleteSlot28();
+void TSortedPtrList::ReleasePtrList() {
+  ClearAndFreeAllPtrListRecords();
+  SelfDelete();
 }
 
 // FUNCTION: IMPERIALISM 0x00488140
-void TSortedPtrList::SelfDeleteSlot28() {
+void TSortedPtrList::SelfDelete() {
   if (this != 0) {
     delete this;
   }
 }
 
 // FUNCTION: IMPERIALISM 0x00488160
-void* TSortedPtrList::GetEntrySlot2C(int oneBasedIndex) {
-  if (oneBasedIndex <= this->GetSize()) {
-    return this->GetAt(oneBasedIndex - 1);
+void* TSortedPtrList::GetPtrListEntryByOneBasedIndex(int oneBasedIndex) {
+  if (oneBasedIndex <= GetSize()) {
+    return GetAt(oneBasedIndex - 1);
   }
   return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x00488190
-void TSortedPtrList::RemoveFirstPairSlot30(int mode) {
-  (void)mode;
+void TSortedPtrList::RemovePtrListEntryByOneBasedIndexAndFree(int oneBasedIndex) {
+  void* record = GetPtrListEntryByOneBasedIndex(oneBasedIndex);
+  RemoveAt(oneBasedIndex - 1, 1);
+  operator delete(record);
 }
 
 // FUNCTION: IMPERIALISM 0x004881d0
-void* TSortedPtrList::PeekFirstPairSlot34() {
-  return 0;
+void* TSortedPtrList::PeekFirstPtrListEntry() {
+  return GetPtrListEntryByOneBasedIndex(1);
 }
 
+// Walks the records in order and inserts a copy of `record` before the first entry
+// the comparator does not place strictly after it; appends when the list is empty or
+// every entry compares as 1.
 // FUNCTION: IMPERIALISM 0x004881f0
-void TSortedPtrList::AddEntrySlot38(void* entry) {
-  (void)entry;
+void TSortedPtrList::InsertCopiedRecordSortedByComparator(void* record) {
+  int ordinal = 1;
+  void* entry = GetPtrListEntryByOneBasedIndex(1);
+  if (entry != 0) {
+    do {
+      if (Compare(record, entry) != 1) {
+        void* copy = operator new(recordSize14);
+        memcpy(copy, record, recordSize14);
+        InsertAt(ordinal - 1, copy, 1);
+        return;
+      }
+      ordinal++;
+      entry = GetPtrListEntryByOneBasedIndex(ordinal);
+    } while (entry != 0);
+  }
+  AppendCopiedRecordToPtrList(record);
 }
 
 // FUNCTION: IMPERIALISM 0x004882c0
-void TSortedPtrList::slot3c() {}
+void TSortedPtrList::AppendCopiedRecordToPtrList(void* record) {
+  void* copy = operator new(recordSize14);
+  memcpy(copy, record, recordSize14);
+  SetAtGrow(m_nSize, copy);
+}
 
 // FUNCTION: IMPERIALISM 0x00488310
-void TSortedPtrList::PushPairSlot40(void* pair) {
-  (void)pair;
+void TSortedPtrList::InsertCopiedRecordAtFrontOfPtrList(void* record) {
+  void* copy = operator new(recordSize14);
+  memcpy(copy, record, recordSize14);
+  InsertAt(0, copy, 1);
+}
+
+// FUNCTION: IMPERIALISM 0x00488360
+short TSortedPtrList::Compare(void* a, void* b) {
+  if (reinterpret_cast<unsigned int>(a) > reinterpret_cast<unsigned int>(b)) {
+    return 1;
+  }
+  if (reinterpret_cast<unsigned int>(a) < reinterpret_cast<unsigned int>(b)) {
+    return -1;
+  }
+  return 0;
 }
 
 // SYNTHETIC: IMPERIALISM 0x00488390
@@ -69,11 +121,22 @@ TSortedPtrList::TSortedPtrList() {}
 // TPtrList::CreateObject
 
 // FUNCTION: IMPERIALISM 0x005e1e50
-void TSortedPtrList::slot18() {}
-
-// List-operation virtuals (vtable 0x00649068 slots 0x14-0x40). These are
-// TSortedPtrList's own slot implementations; TIndexAndRankList and the other
-// derived list classes inherit them unchanged.
+void TSortedPtrList::ReadFrom(TStream* stream) {
+  stream->ReadBytes(&recordSize14, 2);
+  int count = stream->streamSlot50();
+  void* buffer = operator new(recordSize14);
+  for (short i = 1; i <= count; i++) {
+    stream->ReadBytes(buffer, recordSize14);
+    InsertCopiedRecordSortedByComparator(buffer);
+  }
+  operator delete(buffer);
+}
 
 // FUNCTION: IMPERIALISM 0x005e1f10
-void TSortedPtrList::slot14(void*) {}
+void TSortedPtrList::WriteTo(TStream* stream) {
+  stream->WriteBytesSlot78(&recordSize14, 2);
+  stream->streamSlot8c(m_nSize);
+  for (short i = 1; i <= m_nSize; i++) {
+    stream->WriteBytesSlot78(GetPtrListEntryByOneBasedIndex(i), recordSize14);
+  }
+}

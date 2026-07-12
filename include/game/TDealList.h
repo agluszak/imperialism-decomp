@@ -30,7 +30,9 @@ public:
   // slot 0x0e UpsertPtrListRecordByComparator inherited unchanged (0x4881f0)
   // slot 0x0f AppendCopiedRecordToPtrList inherited unchanged (0x4882c0)
   // slot 0x10 InsertCopiedRecordAtFrontOfPtrList inherited unchanged (0x488310)
-  virtual int CompareUnsignedIntsAscending(int lhs, int rhs); // slot 0x11 0x5ba260
+  // Deal-priority comparator: weighted (value * priority) score, inverted for deal
+  // kinds 0xd-0x10, with a mod-7 pseudo-random tiebreak over the record fields.
+  short Compare(void* a, void* b) override; // slot 0x11 0x5ba260
   // === END GENERATED DECLS (TDealList) ===
 
   TDealList();

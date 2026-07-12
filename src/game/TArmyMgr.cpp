@@ -217,7 +217,7 @@ undefined TArmyMgr::ProcessTileUnitListsAndApplyRandomStatusUpdates() {
     item->field6 = static_cast<short>((item->field4 << 8) + (roll & 0xff));
   }
 
-  this->pendingUnitPool0c->VirtualSlot64();
+  this->pendingUnitPool0c->Sort();
   for (int i = 0; i < 0x180; ++i) {
     this->perTileOwnerNationCodeCache1c[i] =
         g_pGlobalMapState->ResolveTileOwnerNationCodeNormalized(i);

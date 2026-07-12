@@ -110,16 +110,16 @@ void TForeignMinister::Call8C() {
     TSortedByRelationshipList* relationshipList =
         static_cast<TSortedByRelationshipList*>(TSortedByRelationshipList::CreateObject());
     if (relationshipList != 0) {
-      relationshipList->relationType = 4;
+      relationshipList->recordSize14 = 4;
     }
     if (relationshipList != 0) {
       g_pDiplomacyTurnStateManager->BuildRelationshipListSlot88(owner->nationSlot, 1,
                                                                 relationshipList);
-      short* nationSlotPtr =
-          static_cast<short*>(relationshipList->GetEntrySlot2C(relationshipList->GetSize()));
+      short* nationSlotPtr = static_cast<short*>(
+          relationshipList->GetPtrListEntryByOneBasedIndex(relationshipList->GetSize()));
       g_apNationStates[*nationSlotPtr]->AssignNeedSlotFromSourceSlot19C(
           *reinterpret_cast<short*>(raw + 0x10), owner->nationSlot);
-      relationshipList->ReleaseSlot24();
+      relationshipList->ReleasePtrList();
     }
   }
 

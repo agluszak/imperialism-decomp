@@ -106,13 +106,13 @@ undefined THelpMgr::InitializeHelpManagerIndexArrayAndState() {
   TSortedPtrList* list = new TSortedPtrList();
   indexList = list;
   if (list != nullptr) {
-    list->relationType = 0xe;
+    list->recordSize14 = 0xe;
   }
   if (DAT_006a43f0 == 0 && list != nullptr) {
     int entryIndex;
     for (entryIndex = 0; entryIndex < kHelpSetIndexBootstrapRecordCount; entryIndex++) {
       HelpSetRecord record = kHelpSetIndexBootstrapRecords[entryIndex];
-      list->AddEntrySlot38(&record);
+      list->InsertCopiedRecordSortedByComparator(&record);
     }
   }
   return 0;
@@ -467,7 +467,8 @@ char THelpMgr::HandlePendingEventActivationByCode(short eventCode) {
         if (indexList == 0 || index > GetSortedPtrListEntryCount(indexList)) {
           break;
         }
-        HelpSetRecord* entry = static_cast<HelpSetRecord*>(indexList->GetEntrySlot2C(index));
+        HelpSetRecord* entry =
+            static_cast<HelpSetRecord*>(indexList->GetPtrListEntryByOneBasedIndex(index));
         if (entry->contextId == eventCode) {
           // NOT GetActiveNationId — original loads ECX from g_pSimMgr and
           // dispatches vtable slot 0x3c (GetTurnTickSlot3C), same call as the currentTurn

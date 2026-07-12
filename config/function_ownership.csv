@@ -348,6 +348,7 @@ address|target_cpp|ownership|note
 4878e0|src/game/TCommand.cpp|manual|marker_sync
 487900|src/game/TCommand.cpp|manual|marker_sync
 487a00|src/game/TCommand.cpp|manual|marker_sync
+487a60|src/game/TSortedList.cpp|manual|marker_sync
 487a90|src/game/TSortedList.cpp|manual|marker_sync
 487b10|src/game/TSortedList.cpp|manual|marker_sync
 487b30|src/game/TSortedList.cpp|manual|marker_sync
@@ -374,10 +375,11 @@ address|target_cpp|ownership|note
 4881f0|src/game/TSortedPtrList.cpp|manual|marker_sync
 4882c0|src/game/TSortedPtrList.cpp|manual|marker_sync
 488310|src/game/TSortedPtrList.cpp|manual|marker_sync
-488360|src/game/TSortedPtrList.cpp|manual|name_paired_no_marker
+488360|src/game/TSortedPtrList.cpp|manual|marker_sync
 488390|src/game/TSortedPtrList.cpp|manual|marker_sync
 4883e0|src/game/TSortedPtrList.cpp|manual|marker_sync
 488400|src/game/TSortedPtrList.cpp|manual|marker_sync
+488470|src/game/TPtrList.cpp|manual|marker_sync
 4884c0|src/game/TPtrList.cpp|manual|marker_sync
 488510|src/game/TPtrList.cpp|manual|marker_sync
 4885d0|src/game/TSortedList.cpp|manual|marker_sync
@@ -954,12 +956,13 @@ address|target_cpp|ownership|note
 4a0810|src/game/TTransFocusAnimation.cpp|manual|marker_sync
 4a09f0|src/game/TAnimator.cpp|manual|marker_sync
 4a0a80|src/game/TAnimator.cpp|manual|marker_sync
+4a0aa0|src/game/TAnimator.cpp|manual|marker_sync
 4a0ad0|src/game/TAnimator.cpp|manual|marker_sync
 4a0b20|src/game/TAnimator.cpp|manual|marker_sync
 4a0c00|src/game/TAnimator.cpp|manual|marker_sync
 4a0c30|src/game/TAnimator.cpp|manual|marker_sync
-4a0d10|src/game/TCivAnimation2.cpp|manual|marker_sync
-4a0d30|src/game/TCivAnimation2.cpp|manual|marker_sync
+4a0d10|src/game/TAnimator.cpp|manual|marker_sync
+4a0d30|src/game/TAnimator.cpp|manual|marker_sync
 4a0dc0|src/game/TAnimator.cpp|manual|marker_sync
 4a0e10|src/game/TAnimator.cpp|manual|marker_sync
 4a0e50|src/game/TAnimator.cpp|manual|marker_sync
@@ -1094,6 +1097,7 @@ address|target_cpp|ownership|note
 4ac920|src/game/TIdleMeAnimation.cpp|manual|marker_sync
 4ac950|src/game/TIdleMeAnimation.cpp|manual|marker_sync
 4ac9a0|src/game/TIdleMeAnimation.cpp|manual|marker_sync
+4ac9c0|src/game/TIdleMeAnimation.cpp|manual|marker_sync
 4aca60|src/game/TIdleMeAnimation.cpp|manual|marker_sync
 4acaa0|src/game/TBattleReportView.cpp|manual|marker_sync
 4acb40|src/game/TBattleReportView.cpp|manual|marker_sync
@@ -1522,6 +1526,7 @@ address|target_cpp|ownership|note
 4cbf70|src/game/TUniversityView.cpp|manual|marker_sync
 4cc300|src/game/TPurchaseCluster.cpp|manual|marker_sync
 4cc3a0|src/game/TPurchaseCluster.cpp|manual|marker_sync
+4cc3c0|src/game/TPurchaseCluster.cpp|manual|marker_sync
 4cc3f0|src/game/TPurchaseCluster.cpp|manual|marker_sync
 4cc440|src/game/TPurchaseCluster.cpp|manual|marker_sync
 4cc470|src/game/TPurchaseCluster.cpp|manual|marker_sync
@@ -1595,7 +1600,7 @@ address|target_cpp|ownership|note
 4d6570|src/game/TProvinceDesirabilityList.cpp|manual|marker_sync
 4d6590|src/game/TProvinceDesirabilityList.cpp|manual|marker_sync
 4d65c0|src/game/TProvinceDesirabilityList.cpp|manual|marker_sync
-4d6630|src/game/TProvinceDesirabilityList.cpp|manual|name_paired_no_marker
+4d6630|src/game/TProvinceDesirabilityList.cpp|manual|marker_sync
 4d66a0|src/game/TCountry.cpp|manual|marker_sync
 4d6730|src/game/TCountry.cpp|manual|marker_sync
 4d6750|src/game/TCountry.cpp|manual|marker_sync
@@ -1958,7 +1963,7 @@ address|target_cpp|ownership|note
 4ee520|src/game/TSortedByRelationshipList.cpp|manual|marker_sync
 4ee540|src/game/TSortedByRelationshipList.cpp|manual|marker_sync
 4ee570|src/game/TSortedByRelationshipList.cpp|manual|marker_sync
-4ee5e0|src/game/TSortedByRelationshipList.cpp|manual|name_paired_no_marker
+4ee5e0|src/game/TSortedByRelationshipList.cpp|manual|marker_sync
 4ee650|src/game/TDiplomacyMgr.cpp|manual|marker_sync
 4ee6a0|src/game/TDiplomacyMgr.cpp|manual|marker_sync
 4ee6c0|src/game/TDiplomacyMgr.cpp|manual|marker_sync
@@ -2708,7 +2713,7 @@ address|target_cpp|ownership|note
 5347e0|src/game/TIndexAndRankList.cpp|manual|marker_sync
 534850|src/game/TIndexAndRankList.cpp|manual|marker_sync
 5348a0|src/game/TIndexAndRankList.cpp|manual|marker_sync
-534910|src/game/TIndexAndRankList.cpp|manual|name_paired_no_marker
+534910|src/game/TIndexAndRankList.cpp|manual|marker_sync
 534bc0|src/game/TMission.cpp|manual|marker_sync
 534c00|src/game/TMission.cpp|manual|marker_sync
 534c20|src/game/TMission.cpp|manual|marker_sync
@@ -2791,6 +2796,7 @@ address|target_cpp|ownership|note
 537270|src/game/TNavyMission.cpp|manual|marker_sync
 537610|src/game/TNavyMission.cpp|manual|marker_sync
 5378c0|src/game/TNavyMission.cpp|manual|marker_sync
+537c60|src/game/TNavyMission.cpp|manual|marker_sync
 537f40|src/game/TNavyMission.cpp|manual|marker_sync
 5386c0|src/game/TControlSeaZoneMission.cpp|manual|marker_sync
 538780|src/game/TControlSeaZoneMission.cpp|manual|marker_sync

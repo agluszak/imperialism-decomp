@@ -91,7 +91,7 @@ void TCity::Free() {
   }
   this->trackedOrderList270 = 0;
   if (this->eventQueue274 != 0) {
-    this->eventQueue274->ReleaseSlot24();
+    this->eventQueue274->ReleasePtrList();
   }
   this->eventQueue274 = 0;
   delete this;
@@ -374,7 +374,7 @@ short* TCity::GetCitySummaryRecordSlot74() {
 // FUNCTION: IMPERIALISM 0x004b4540
 void TCity::AddTransportRequest(short low, short high) {
   int packed = (static_cast<unsigned short>(high) << 16) | static_cast<unsigned short>(low);
-  this->eventQueue274->AddEntrySlot38(&packed);
+  this->eventQueue274->InsertCopiedRecordSortedByComparator(&packed);
 }
 
 // FUNCTION: IMPERIALISM 0x004b4580
@@ -382,7 +382,7 @@ void TCity::MakeTown() {}
 
 // FUNCTION: IMPERIALISM 0x004b46c0
 void TCity::TransferTransportRequests(void*) {
-  this->eventQueue274->slot20();
+  this->eventQueue274->InvokePtrListResetHook();
 }
 
 // FUNCTION: IMPERIALISM 0x004b46e0

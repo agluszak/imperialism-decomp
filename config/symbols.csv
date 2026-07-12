@@ -654,15 +654,15 @@ address|name|symbol|size|type|prototype|provenance
 4878e0|TCommand::Free||12|function|undefined NextDiplomacyCommandVtableSlotDC_DestroySelf()|
 487900|TCommand::NextDiplomacyCommandVtableSlotE8_NotifyOwnerSlot94||19|function|void NextDiplomacyCommandVtableSlotE8_NotifyOwnerSlot94()|
 487a00|TCommand::OrphanRetStub_00487a00||1|function|void OrphanRetStub_00487a00(void)|
-487a60|OrphanCallChain_C1_I08_00487a60||20|function|undefined OrphanCallChain_C1_I08_00487a60()|
+487a60|DispatchTSortedListDefaultCompare||20|function|short DispatchTSortedListDefaultCompare(void* a, void* b, void* context)|
 487a90|TSortedList::CreateObject|?CreateObject@TSortedList@@SGPAVCObject@@XZ|94|function|undefined CreateObject()|rtti
 487b10|TSortedList::GetRuntimeClass||6|function|undefined GetTSortedListClassNamePointer()|rtti
-487b30|TSortedList::ConstructTSortedListBaseState||24|function|undefined ConstructTSortedListBaseState()|
-487b60|TSortedList::DestructTSortedListAndMaybeFree||80|function|undefined DestructTSortedListAndMaybeFree()|
-487bd0|OrphanCallChain_C9_I83_00487bd0||179|function|undefined OrphanCallChain_C9_I83_00487bd0()|
-487cc0|Helper_Uses_FindIndex_At00487cc0||155|function|undefined Helper_Uses_FindIndex_At00487cc0()|
-487d90|OrphanCallChain_C3_I21_00487d90||38|function|undefined OrphanCallChain_C3_I21_00487d90()|
-487dd0|OrphanCallChain_C3_I23_00487dd0||44|function|undefined OrphanCallChain_C3_I23_00487dd0()|
+487b30|TSortedList::Compare||24|function|short Compare(void* a, void* b)|
+487b60|TSortedList::QuickSort||80|function|void QuickSort(int lo, int hi, TSortedListCompareFunc compare, void* context)|
+487bd0|TSortedList::QSPartitionCore||179|function|int QSPartitionCore(int lo, int hi, TSortedListCompareFunc compare, void* context)|
+487cc0|TSortedList::QSPartition||155|function|int QSPartition(int lo, int hi, TSortedListCompareFunc compare, void* context)|
+487d90|TSortedList::Sort||38|function|void Sort()|
+487dd0|TSortedList::SortBy||44|function|void SortBy(TSortedListCompareFunc compare, void* context)|
 487e10|FindOneBasedNodeIndexByValueInLinkedList||33|function|undefined FindOneBasedNodeIndexByValueInLinkedList()|
 487e50|TList::CreateObject|?CreateObject@TList@@SGPAVCObject@@XZ|94|function|undefined CreateObject()|rtti
 487ed0|TList::GetRuntimeClass||6|function|undefined GetTListClassNamePointer()|rtti
@@ -675,21 +675,21 @@ address|name|symbol|size|type|prototype|provenance
 487fe0|ClearInvalidArmyTileSelectionsAndCycleInteraction_Impl_At00487fe0||11|function|undefined ClearInvalidArmyTileSelectionsAndCycleInteraction_Impl_At00487fe0()|
 488000|ClearInvalidArmyTileSelectionsAndCycleInteraction_Impl||23|function|undefined ClearInvalidArmyTileSelectionsAndCycleInteraction_Impl()|
 488030|TSortedPtrList::CreateObject|?CreateObject@TSortedPtrList@@SGPAVCObject@@XZ|80|function|undefined CreateObject()|rtti
-4880a0|ClearAndFreeAllPtrListRecords||56|function|undefined ClearAndFreeAllPtrListRecords()|
-4880f0|InvokePtrListResetHook||5|function|undefined InvokePtrListResetHook()|
-488110|TSortedPtrList::ResetPtrListAndShrinkCapacity||17|function|undefined ResetPtrListAndShrinkCapacity()|
-488140|OrphanCallChain_C1_I06_00488140||12|function|undefined OrphanCallChain_C1_I06_00488140()|
-488160|GetPtrListEntryByOneBasedIndex||26|function|undefined GetPtrListEntryByOneBasedIndex()|
-488190|RemovePtrListEntryByOneBasedIndexAndFree||43|function|undefined RemovePtrListEntryByOneBasedIndexAndFree()|
-4881d0|RemoveFirstPtrListEntry||8|function|undefined RemoveFirstPtrListEntry()|
-4881f0|UpsertPtrListRecordByComparator||156|function|undefined UpsertPtrListRecordByComparator()|
-4882c0|AppendCopiedRecordToPtrList||60|function|undefined AppendCopiedRecordToPtrList()|
-488310|InsertCopiedRecordAtFrontOfPtrList||60|function|undefined InsertCopiedRecordAtFrontOfPtrList()|
-488360|TSortedPtrList::CompareUnsignedIntsAscending||24|function|undefined CompareUnsignedIntsAscending()|
+4880a0|TSortedPtrList::ClearAndFreeAllPtrListRecords||56|function|undefined ClearAndFreeAllPtrListRecords()|
+4880f0|TSortedPtrList::InvokePtrListResetHook||5|function|undefined InvokePtrListResetHook()|
+488110|TSortedPtrList::ReleasePtrList||17|function|undefined ResetPtrListAndShrinkCapacity()|
+488140|TSortedPtrList::SelfDelete||12|function|undefined OrphanCallChain_C1_I06_00488140()|
+488160|TSortedPtrList::GetPtrListEntryByOneBasedIndex||26|function|undefined GetPtrListEntryByOneBasedIndex()|
+488190|TSortedPtrList::RemovePtrListEntryByOneBasedIndexAndFree||43|function|undefined RemovePtrListEntryByOneBasedIndexAndFree()|
+4881d0|TSortedPtrList::PeekFirstPtrListEntry||8|function|undefined RemoveFirstPtrListEntry()|
+4881f0|TSortedPtrList::InsertCopiedRecordSortedByComparator||156|function|undefined UpsertPtrListRecordByComparator()|
+4882c0|TSortedPtrList::AppendCopiedRecordToPtrList||60|function|undefined AppendCopiedRecordToPtrList()|
+488310|TSortedPtrList::InsertCopiedRecordAtFrontOfPtrList||60|function|undefined InsertCopiedRecordAtFrontOfPtrList()|
+488360|TSortedPtrList::Compare||24|function|undefined CompareUnsignedIntsAscending()|
 488390|TSortedPtrList::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 4883e0|TSortedPtrList::GetRuntimeClass||6|function|undefined GetRuntimeClass()|rtti
 488400|TPtrList::CreateObject|?CreateObject@TPtrList@@SGPAVCObject@@XZ|80|function|undefined CreateObject()|rtti
-488470|InsertCopiedRecordAtFrontOfPtrListAlt||60|function|undefined InsertCopiedRecordAtFrontOfPtrListAlt()|
+488470|TPtrList::InsertCopiedRecordAtFrontOfPtrListAlt||60|function|undefined InsertCopiedRecordAtFrontOfPtrListAlt()|
 4884c0|TPtrList::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 488510|TPtrList::GetRuntimeClass||6|function|undefined GetTPtrListClassNamePointer()|rtti
 4885d0|TPtrList::AddHeadSlot28||16|function|undefined AddHeadSlot28()|
@@ -1435,14 +1435,14 @@ address|name|symbol|size|type|prototype|provenance
 4a0810|TTransFocusAnimation::RenderBattleReportInsetWithPaletteShift||381|function|undefined BlitUiFrameToTransientSurfaceWithOptionalOverlay()|
 4a09f0|TAnimator::CreateObject|?CreateObject@TAnimator@@SGPAVCObject@@XZ|110|function|undefined CreateObject()|rtti
 4a0a80|TAnimator::GetRuntimeClass||6|function|undefined GetTAnimatorClassNamePointer()|rtti
-4a0aa0|ConstructUiTransientObjectRegistry_Vtbl0064c4e8||29|function|undefined ConstructUiTransientObjectRegistry_Vtbl0064c4e8()|
+4a0aa0|TAnimator::TAnimator||29|function|undefined TAnimator()|
 4a0ad0|TAnimator::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 4a0b00|DestructTAnimatorAndMaybeFree_Impl||7|function|undefined DestructTAnimatorAndMaybeFree_Impl()|
 4a0b20|TAnimator::InitializeUiTransientObjectRegistry||175|function|undefined InitializeUiTransientObjectRegistry()|
 4a0c00|TAnimator::OrphanCallChain_C2_I13_004a0c00||31|function|undefined OrphanCallChain_C2_I13_004a0c00(void)|
 4a0c30|TAnimator::CanHandleCityDialogActionFalse||172|function|undefined 'scalar_deleting_destructor'(int param_1)|
-4a0d10|TCivAnimation2::AddObjectToUiTransientRegistry||16|function|undefined AddObjectToUiTransientRegistry()|
-4a0d30|TCivAnimation2::FindLinkedListNodeByIdFieldAt18||102|function|undefined FindLinkedListNodeByIdFieldAt18()|
+4a0d10|TAnimator::AddObjectToUiTransientRegistry||16|function|undefined AddObjectToUiTransientRegistry()|
+4a0d30|TAnimator::FindRegisteredAnimationByTag||102|function|undefined FindRegisteredAnimationByTag()|
 4a0dc0|TAnimator::Free||56|function|undefined ResetUiViewStateAndReleaseRuntimeSelectionOwner()|
 4a0e10|TAnimator::ReadFrom||45|function|undefined GetTEventHandlerClassNamePointer(int * param_1)|
 4a0e50|TAnimator::WriteTo||35|function|undefined 'scalar_deleting_destructor'(int * param_1)|
@@ -1538,7 +1538,7 @@ address|name|symbol|size|type|prototype|provenance
 4a8450|TArmyStackList::ConstructTArmyStackListBaseState||77|function|undefined ConstructTArmyStackListBaseState()|
 4a84c0|TArmyStackList::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 4a84f0|TArmyStackList::WrapperFor_DestructCPtrListBaseState_At004a84f0||62|function|undefined WrapperFor_DestructCPtrListBaseState_At004a84f0()|
-4a8560|TArmyStackList::ConstructTSortedListBaseState||43|function|undefined GetTEventHandlerClassNamePointer(int param_1, int param_2)|
+4a8560|TArmyStackList::Compare||43|function|short Compare(void* a, void* b)|
 4a8640|WrapperFor_InitializeLinkedListSentinelNodeWithOwnerContext_At004a8640||77|function|undefined WrapperFor_InitializeLinkedListSentinelNodeWithOwnerContext_At004a8640()|
 4a8740|WrapperFor_ftol_At004a8740||30|function|undefined WrapperFor_ftol_At004a8740()|
 4a8770|TGarrisonView::CreateObject|?CreateObject@TGarrisonView@@SGPAVCObject@@XZ|92|function|undefined CreateObject()|rtti
@@ -2276,7 +2276,7 @@ address|name|symbol|size|type|prototype|provenance
 4d6590|ConstructObArrayWithVtable653810||18|function|undefined ConstructObArrayWithVtable653810()|
 4d65c0|TProvinceDesirabilityList::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 4d6610|InitializeObArrayVtable653810ModeField||7|function|undefined InitializeObArrayVtable653810ModeField()|
-4d6630|TProvinceDesirabilityList::CompareUnsignedIntsAscending||65|function|undefined OrphanRetStub_0059add0(void)|
+4d6630|TProvinceDesirabilityList::Compare||65|function|undefined OrphanRetStub_0059add0(void)|
 4d66a0|TCountry::CreateObject|?CreateObject@TCountry@@SGPAVCObject@@XZ|108|function|undefined CreateObject()|rtti
 4d6730|TCountry::ReturnFalseNationStateCapabilityFlag98||3|function|undefined ReturnFalseNationStateCapabilityFlag98()|
 4d6750|TCountry::ReturnFalseNationStateCapabilityFlag9C||3|function|undefined ReturnFalseNationStateCapabilityFlag9C()|
@@ -2691,7 +2691,7 @@ address|name|symbol|size|type|prototype|provenance
 4ee540|TSortedByRelationshipList::ConstructObArrayWithVtable654D38||18|function|undefined ConstructObArrayWithVtable654D38()|
 4ee570|TSortedByRelationshipList::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 4ee5c0|InitializeObArrayVtable654D38ModeField||7|function|undefined InitializeObArrayVtable654D38ModeField()|
-4ee5e0|TSortedByRelationshipList::CompareUnsignedIntsAscending||65|function|undefined CreateTDiplomacyMgrInstance()|
+4ee5e0|TSortedByRelationshipList::Compare||65|function|undefined CreateTDiplomacyMgrInstance()|
 4ee650|TDiplomacyMgr::CreateObject|?CreateObject@TDiplomacyMgr@@SGPAVCObject@@XZ|57|function|undefined CreateObject()|rtti
 4ee6a0|TDiplomacyMgr::GetRuntimeClass||6|function|undefined GetTDiplomacyMgrClassNamePointer()|rtti
 4ee6c0|ConstructDiplomacyTurnStateManager_Vtbl00654d90||39|function|undefined ConstructDiplomacyTurnStateManager_Vtbl00654d90()|
@@ -3571,13 +3571,13 @@ address|name|symbol|size|type|prototype|provenance
 534710|TSortByPriceList::ConstructTSortByPriceList||18|function|undefined ConstructTSortByPriceList()|
 534740|TSortByPriceList::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 534770|TSortByPriceList::~TSortByPriceList||5|function|undefined ~TSortByPriceList()|
-5347b0|TSortByPriceList::CompareUnsignedIntsAscending||29|function|undefined CompareSortByPriceListEntriesByField2Ascending()|
+5347b0|TSortByPriceList::Compare||29|function|undefined CompareSortByPriceListEntriesByField2Ascending()|
 5347e0|TIndexAndRankList::CreateObject|?CreateObject@TIndexAndRankList@@SGPAVCObject@@XZ|80|function|undefined CreateObject()|rtti
 534850|TIndexAndRankList::GetRuntimeClass||6|function|undefined GetTIndexAndRankListClassNamePointer()|rtti
 534870|TIndexAndRankList::ConstructTIndexAndRankList||18|function|undefined ConstructTIndexAndRankList()|
 5348a0|TIndexAndRankList::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 5348d0|TIndexAndRankList::DestructTIndexAndRankList||5|function|undefined DestructTIndexAndRankList()|
-534910|TIndexAndRankList::CompareUnsignedIntsAscending||47|function|undefined CompareIndexAndRankEntriesByField2Descending()|
+534910|TIndexAndRankList::Compare||47|function|undefined CompareIndexAndRankEntriesByField2Descending()|
 534a80|WrapperFor_ftol_At00534a80||30|function|undefined WrapperFor_ftol_At00534a80()|
 534bc0|TMission::CreateObject|?CreateObject@TMission@@SGPAVCObject@@XZ|39|function|undefined CreateObject()|rtti
 534c00|ReturnFalseMissionVtableSlot28||3|function|undefined ReturnFalseMissionVtableSlot28()|
@@ -3668,13 +3668,13 @@ address|name|symbol|size|type|prototype|provenance
 536f70|TScatteredShipsMission::SetMapOrderEntryChildFlags||21|function|undefined SetMapOrderEntryChildFlags()|
 536fa0|RefreshMissionPortZoneContextForNation||14|function|undefined RefreshMissionPortZoneContextForNation()|
 536fc0|TNavyMission::EnsureMissionCurrentTargetContextIsValid||60|function|undefined EnsureMissionCurrentTargetContextIsValid()|
-537060|GetMissionOrderBudgetByMode||25|function|undefined GetMissionOrderBudgetByMode()|
+537060|TNavyMission::GetActiveTargetZoneByState28||25|function|undefined GetMissionOrderBudgetByMode()|
 537090|TScatteredShipsMission::QueueMissionOrdersByPriorityForContext||100|function|void __thiscall QueueMissionOrdersByPriorityForContext(int pContextAnchor, int * ppSelectedChildNode)|
 5370f0|QueueMissionOrderEntriesAcrossSelectionRange||91|function|undefined QueueMissionOrderEntriesAcrossSelectionRange()|
 53714f|QueueMissionOrderEntryAndPropagateSelectionRange||62|function|undefined QueueMissionOrderEntryAndPropagateSelectionRange()|
 5371d0|ConsolidateMissionOrderEntriesByTargetAndQueue||115|function|undefined ConsolidateMissionOrderEntriesByTargetAndQueue()|
-537270|ComputeMissionOrderMatchDeltaWithCandidateNavyOrder||724|function|undefined ComputeMissionOrderMatchDeltaWithCandidateNavyOrder()|
-537610|ComputeMissionOrderPenaltyForCandidateAgainstTargetProfile||530|function|undefined ComputeMissionOrderPenaltyForCandidateAgainstTargetProfile()|
+537270|TNavyMission::ComputeMissionOrderMatchDeltaWithCandidateNavyOrder||724|function|undefined ComputeMissionOrderMatchDeltaWithCandidateNavyOrder()|
+537610|TNavyMission::ComputeMissionOrderPenaltyForCandidateAgainstTargetProfile||530|function|undefined ComputeMissionOrderPenaltyForCandidateAgainstTargetProfile()|
 5378c0|ComputeMissionWeightDotProductWithBaselineProfile||34|function|undefined ComputeMissionWeightDotProductWithBaselineProfile()|
 537900|BuildNavyOrderCategoryVectorForNationWithExclusion||424|function|undefined BuildNavyOrderCategoryVectorForNationWithExclusion()|
 537c60|AccumulateNavyOrderCategoryVectorWithScale||166|function|undefined AccumulateNavyOrderCategoryVectorWithScale()|
@@ -4065,14 +4065,14 @@ address|name|symbol|size|type|prototype|provenance
 54fbf0|RegenerateNavyPrimaryOrderDisplayNameUntilUnique||72|function|undefined RegenerateNavyPrimaryOrderDisplayNameUntilUnique()|
 54fd50|RecomputeGlobalCapabilityAverages||296|function|undefined RecomputeGlobalCapabilityAverages()|
 54fee0|GetNavyContextPointerFromGlobalTableByIndex||12|function|undefined GetNavyContextPointerFromGlobalTableByIndex()|
-54ff00|ComputeNavyOrderPriorityContributionPercentByCategory||297|function|undefined ComputeNavyOrderPriorityContributionPercentByCategory()|
+54ff00|TShip::ComputeNavyOrderPriorityContributionPercentByCategory||297|function|undefined ComputeNavyOrderPriorityContributionPercentByCategory()|
 550090|GetNormalizedIndustryActionResourceCostPercent||207|function|undefined GetNormalizedIndustryActionResourceCostPercent()|
 5501b0|CalculateMissionOrderPriorityScore||336|function|int __thiscall CalculateMissionOrderPriorityScore(int nScoreProfileId)|
 550370|AdjustMapOrderNodeStatCapped499||26|function|void __thiscall AdjustMapOrderNodeStatCapped499(short nDelta)|
 5503a0|TScatteredShipsMission::GetOrCreateMissionOrderEntryForNode||285|function|void * __thiscall GetOrCreateMissionOrderEntryForNode(void)|
 550510|GetOrderNodeDescriptorWord20ByResourceType||16|function|undefined GetOrderNodeDescriptorWord20ByResourceType()|
-550550|ComputeOrderNodeDistanceQuotientByDescriptorWord24||51|function|undefined ComputeOrderNodeDistanceQuotientByDescriptorWord24()|
-5505a0|GetNavyOrderNormalizationBaseByNationType||16|function|undefined GetNavyOrderNormalizationBaseByNationType()|
+550550|TShip::ComputeOrderNodeDistanceQuotientByDescriptorWord24||51|function|undefined ComputeOrderNodeDistanceQuotientByDescriptorWord24()|
+5505a0|TShip::GetNavyOrderNormalizationBaseByNationType||16|function|undefined GetNavyOrderNormalizationBaseByNationType()|
 5505c0|GetNavyPrimaryOrderListHead||6|function|void * __cdecl GetNavyPrimaryOrderListHead(void)|
 550610|GetNavyPrimaryOrderListIndexOfNode||25|function|undefined GetNavyPrimaryOrderListIndexOfNode()|
 550640|GetNavyPrimaryOrderNodeByIndex||27|function|undefined GetNavyPrimaryOrderNodeByIndex()|
@@ -5805,7 +5805,7 @@ address|name|symbol|size|type|prototype|provenance
 5ba1a0|TDealList::GetRuntimeClass||6|function|undefined GetTDealListClassNamePointer()|rtti
 5ba1c0|TDealList::ConstructTDealListBaseState||18|function|undefined ConstructTDealListBaseState()|
 5ba1f0|TDealList::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
-5ba260|TDealList::CompareUnsignedIntsAscending||202|function|undefined CompareNationMetricRowsForSort()|
+5ba260|TDealList::Compare||202|function|undefined CompareNationMetricRowsForSort()|
 5ba370|TNextTradeCommand::CreateObject|?CreateObject@TNextTradeCommand@@SGPAVCObject@@XZ|80|function|undefined CreateObject()|rtti
 5ba3e0|TNextTradeCommand::GetRuntimeClass||6|function|undefined GetTNextTradeCommandClassNamePointer()|rtti
 5ba400|TNextTradeCommand::ConstructTNextTradeCommandBaseState||18|function|undefined ConstructTNextTradeCommandBaseState()|
@@ -6176,8 +6176,8 @@ address|name|symbol|size|type|prototype|provenance
 5e1c90|WrapperFor_DDX_Text_618cbd_At005e1c90||22|function|undefined WrapperFor_DDX_Text_618cbd_At005e1c90()|
 5e1cc0|GetRuntimePtrTable0066F588||6|function|undefined GetRuntimePtrTable0066F588()|
 5e1ce0|UpdateCursorHelperWindowTextFromUiString||120|function|undefined UpdateCursorHelperWindowTextFromUiString()|
-5e1e50|EnumerateStreamEntriesWithDualCallbacksAndTempBuffer||136|function|undefined EnumerateStreamEntriesWithDualCallbacksAndTempBuffer()|
-5e1f10|EnumerateStateEntriesAndInvokeObjectCallback||103|function|undefined EnumerateStateEntriesAndInvokeObjectCallback()|
+5e1e50|TSortedPtrList::ReadFrom||136|function|undefined EnumerateStreamEntriesWithDualCallbacksAndTempBuffer()|
+5e1f10|TSortedPtrList::WriteTo||103|function|undefined EnumerateStateEntriesAndInvokeObjectCallback()|
 5e1fa0|SetPlaybackState2AndNotifyOwnerCallback||17|function|undefined SetPlaybackState2AndNotifyOwnerCallback()|
 5e1fd0|NoOpPlaybackCallback_005e1fd0||20|function|undefined NoOpPlaybackCallback_005e1fd0()|
 5e2000|IncrementPlaybackCounterAndNotifyOwnerCallback||17|function|undefined IncrementPlaybackCounterAndNotifyOwnerCallback()|
@@ -7902,7 +7902,6 @@ address|name|symbol|size|type|prototype|provenance
 648e80|TList::classTList|||global||
 648e98|TSortedPtrList::classTSortedPtrList|||global||
 648eb0|TPtrList::classTPtrList|||global||
-649068|TSortedPtrList::'vftable'|||global||
 6490c8|TStream::classTStream|||global||
 6490e0|TFileStream::classTFileStream|||global||
 6490f8|TCountingStream::classTCountingStream|||global||

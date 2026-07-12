@@ -16,8 +16,8 @@ public:
   int navyField1c;                     // +0x1c
   TObject* navyField20;                // +0x20
   TMapOrderChildLinkNode* orderList24; // +0x24 -- head of child order-node chain
-  float navyField28;                   // +0x28
-  float resourceWeights2c[4];          // +0x2c
+  int navyState28;            // +0x28 target-selection state (0 -> zone18 active, 1..2 -> zone14)
+  float resourceWeights2c[4]; // +0x2c
 
   TNavyMission();
   TNavyMission(TZone* targetZone);
@@ -40,10 +40,11 @@ public:
   virtual float ReturnZeroFloatSlot68() override;    // slot 0x68 0x537f40
   virtual float
   ReturnZeroFloatSlot6C() override; // slot 0x6c 0x5378c0 -- dot product with baseline profile
-  virtual float
-  ReturnZeroFloatSlot74() override; // slot 0x74 0x537270 -- match delta vs candidate navy order
-  virtual float
-  ReturnZeroFloatSlot7C() override; // slot 0x7c 0x537610 -- order penalty vs target profile
+  virtual float ReturnZeroFloatSlot74(
+      void* candidate) override; // slot 0x74 0x537270 -- match delta vs candidate navy order
+  virtual float ReturnZeroFloatSlot7C(
+      void* candidate,
+      void* targetProfile) override; // slot 0x7c 0x537610 -- order penalty vs target profile
   virtual void
   NoOpSlot84(int a,
              int b) override; // slot 0x84 0x536780 -- attach order child as queued and notify
@@ -62,7 +63,8 @@ public:
   virtual void
   QueueMissionOrdersByPriorityForContext(int pContextAnchor,
                                          int* ppSelectedChildNode); // slot 0x2a 0x537090
-  virtual int GetMissionOrderBudgetByMode(int mode);                // slot 0x2b 0x537060
+  // Selects the active target zone from lifecycle state28 (0 -> zone18, 1..2 -> zone14).
+  virtual TZone* GetActiveTargetZoneByState28(); // slot 0x2b 0x537060
 
   static float ComputeOrderDistributionSimilarityScoreForExactSourceNation(int sourceNation,
                                                                            TZone* nodeContext);

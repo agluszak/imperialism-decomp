@@ -49,9 +49,10 @@ float __cdecl ComputeDistributionSimilarityScoreFromVectorAndReferenceProfile(
 // Sort comparator for the auto-deploy strategies: melee (aiClass 0) first, artillery
 // (aiClass 2) last, everything else in between.
 // FUNCTION: IMPERIALISM 0x0059b070
-int __cdecl CompareTacticalCursorEntriesByActionClassPriority(void* a, void* b) {
+short __cdecl CompareTacticalCursorEntriesByActionClassPriority(void* a, void* b, void* context) {
+  (void)context;
   // TODO(verify): the original returns in AX only -- the source return type was
-  // likely short; kept int to match the SortEntriesWithComparator slot.
+  // short verdict in AX, matching the TSortedListCompareFunc comparator shape.
   short priorityByAiClass[5] = {1, 0, 2, 0, 0};
   TTacticalUnit* unitA = static_cast<TTacticalUnit*>(a);
   TTacticalUnit* unitB = static_cast<TTacticalUnit*>(b);
@@ -414,7 +415,7 @@ void TArmyPlayer::BuildTacticalActionPriorityBucketsWithGridGuard() {
       10, 20, 30, 40, 50, 60, // aiClass 3
       10, 20, 30, 40, 50, 60, // aiClass 4
   };
-  unitList4->SortEntriesWithComparator(&CompareTacticalCursorEntriesByActionClassPriority, 0);
+  unitList4->SortBy(&CompareTacticalCursorEntriesByActionClassPriority, 0);
   CIterator unitIter(unitList4);
   for (TTacticalUnit* unit = static_cast<TTacticalUnit*>(unitIter.Reset()); unitIter.More();
        unit = static_cast<TTacticalUnit*>(unitIter.Advance())) {
@@ -444,7 +445,7 @@ void TArmyPlayer::BuildTacticalActionPriorityBucketsWithGridGuard() {
 // per-action-class tile selector for each unit's deployment tile.
 // FUNCTION: IMPERIALISM 0x0059bf20
 void TArmyPlayer::DispatchTacticalActionClassSelectionAcrossCursorList() {
-  unitList4->SortEntriesWithComparator(&CompareTacticalCursorEntriesByActionClassPriority, 0);
+  unitList4->SortBy(&CompareTacticalCursorEntriesByActionClassPriority, 0);
   CIterator unitIter(unitList4);
   for (TTacticalUnit* unit = static_cast<TTacticalUnit*>(unitIter.Reset()); unitIter.More();
        unit = static_cast<TTacticalUnit*>(unitIter.Advance())) {

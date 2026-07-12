@@ -1443,14 +1443,6 @@ undefined4 DestructTCommandAndMaybeFree_Impl(void)
   return 0;
 }
 
-// ghidra_name OrphanCallChain_C1_I08_00487a60
-// ghidra_proto undefined OrphanCallChain_C1_I08_00487a60()
-// FUNCTION: IMPERIALISM 0x00487a60
-undefined4 OrphanCallChain_C1_I08_00487a60(void)
-{
-  return 0;
-}
-
 // ghidra_name FindOneBasedNodeIndexByValueInLinkedList
 // ghidra_proto undefined FindOneBasedNodeIndexByValueInLinkedList()
 // FUNCTION: IMPERIALISM 0x00487e10
@@ -1479,14 +1471,6 @@ undefined4 ClearInvalidArmyTileSelectionsAndCycleInteraction_Impl_At00487fe0(voi
 // ghidra_proto undefined ClearInvalidArmyTileSelectionsAndCycleInteraction_Impl()
 // FUNCTION: IMPERIALISM 0x00488000
 undefined4 ClearInvalidArmyTileSelectionsAndCycleInteraction_Impl(void)
-{
-  return 0;
-}
-
-// ghidra_name InsertCopiedRecordAtFrontOfPtrListAlt
-// ghidra_proto undefined InsertCopiedRecordAtFrontOfPtrListAlt()
-// FUNCTION: IMPERIALISM 0x00488470
-undefined4 InsertCopiedRecordAtFrontOfPtrListAlt(void)
 {
   return 0;
 }

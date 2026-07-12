@@ -1,5 +1,6 @@
 #include "game/TCouncilTickerAnimation.h"
 
+#include "game/TAnimator.h"
 #include "game/TCivAnimation2.h"
 #include "game/TControl.h"
 #include "game/TGreatPower.h"
@@ -167,8 +168,7 @@ void TCouncilTickerAnimation::InitializeDiplomacyCouncilViewControlsAndTicker() 
   if (tickerAnimation != nullptr) {
     tickerAnimation->ConstructTCouncilTickerAnimationBaseState(hostPanel, 2);
     if (g_pUiAnimator != nullptr) {
-      TCivAnimation2* civAnimator = static_cast<TCivAnimation2*>(static_cast<void*>(g_pUiAnimator));
-      civAnimator->AddObjectToUiTransientRegistry(tickerAnimation);
+      g_pUiAnimator->AddObjectToUiTransientRegistry(tickerAnimation);
     }
   }
 

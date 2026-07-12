@@ -20,7 +20,6 @@ extern undefined4 GetNavyPrimaryOrderNodeByIndex(void);
 extern undefined4 FindFirstTrackedHandlerMatchingModeAndShortKey(void);
 extern undefined4 CompareMissionOrderEntriesByPriorityScore(void);
 extern undefined4 GetOrCreateMissionOrderEntryForNode(void);
-extern undefined4 AccumulateNavyOrderCategoryVectorWithScale(void);
 extern undefined4 BuildNavyOrderCategoryVectorForNationWithExclusion(void);
 extern undefined4 IsZoneMaskOrArrayEntryPresentForKey(void);
 
@@ -47,7 +46,7 @@ TNavyMission::TNavyMission(TZone* targetZone) : TMission() {
   navyField1c = 0;
   navyField20 = nullptr;
   orderList24 = nullptr;
-  navyField28 = 0.0f;
+  navyState28 = 0;
   for (int i = 0; i < 4; ++i) {
     resourceWeights2c[i] = 0.0f;
   }
@@ -168,7 +167,7 @@ void TNavyMission::WriteTo(TStream* stream) {
   }
   stream->WriteCountSlot88(-1);
 
-  stream->WriteBytesSlot78(&navyField28, 4);
+  stream->WriteBytesSlot78(&navyState28, 4);
 }
 
 // FUNCTION: IMPERIALISM 0x00536650
@@ -195,7 +194,7 @@ void TNavyMission::ReadFrom(TStream* stream) {
     } while (nodeIdx >= 0);
   }
 
-  stream->ReadBytes(&navyField28, 4);
+  stream->ReadBytes(&navyState28, 4);
   navyField1c = 0;
   if (navyField20 != nullptr) {
     navyField20->Free();
@@ -256,8 +255,9 @@ int TNavyMission::ReturnZeroSlot2C(int* outBuffer, int unused) {
   for (TMapOrderChildLinkNode* node = orderList24; node != nullptr; node = node->next) {
     TTaskForce* entry = node->object_ptr;
     for (int category = 0; category < 4; ++category) {
-      ComputeNavyOrderPriorityContributionPercentByCategory(
-          entry->order_type, entry->required_count, entry->tiebreak_strength, category);
+      // Original dispatches the TShip method on the TTaskForce node (shared offsets).
+      reinterpret_cast<TShip*>(entry)->ComputeNavyOrderPriorityContributionPercentByCategory(
+          category);
     }
     GetNavyOrderNormalizationBaseByResourceType(entry->order_type);
   }
@@ -273,10 +273,6 @@ int TNavyMission::ReturnZeroSlot2C(int* outBuffer, int unused) {
 
 // FUNCTION: IMPERIALISM 0x00536b30
 void TNavyMission::RefreshSlot40() {
-  // navyField28 is dual-purposed here as a raw selection-mode int (0/1/2);
-  // GetMissionOrderBudgetByMode reads the same field as a float. Access via
-  // a bit-reinterpreting pointer to avoid a numeric float<->int conversion.
-  int* modeSlot = reinterpret_cast<int*>(&navyField28);
 
   SetStateByte8To2();
   ResetValue0CToZero();
@@ -289,24 +285,24 @@ void TNavyMission::RefreshSlot40() {
   IsZoneMaskOrArrayEntryPresentForKey_fn(pathMarker06);
 
   if (orderList24 == nullptr) {
-    *modeSlot = 0;
+    navyState28 = 0;
     return;
   }
 
-  int mode = *modeSlot;
+  int mode = navyState28;
   if (mode == 0) {
     if (1.0f <= ComputeNavyOrderCategorySimilarityRatio(1)) {
       if (1.0f <= ComputeNavyOrderCategorySimilarityRatio(0)) {
-        *modeSlot = 2;
+        navyState28 = 2;
         return;
       }
-      *modeSlot = 1;
+      navyState28 = 1;
     }
   } else if (mode == 1) {
-    *modeSlot = 2;
+    navyState28 = 2;
   } else if (mode == 2) {
     if (ComputeNavyOrderCategorySimilarityRatio(1) < 0.8f) {
-      *modeSlot = 0;
+      navyState28 = 0;
       navyField20 = static_cast<TObject*>(GetReplacementSlot48());
     }
   }
@@ -354,15 +350,15 @@ TMission* TNavyMission::GetReplacementSlot48() {
 }
 
 // FUNCTION: IMPERIALISM 0x00537060
-int TNavyMission::GetMissionOrderBudgetByMode(int mode) {
-  int modeVal = static_cast<int>(navyField28);
-  if (modeVal == 0) {
-    return reinterpret_cast<int>(targetZone18);
+TZone* TNavyMission::GetActiveTargetZoneByState28() {
+  int state = navyState28;
+  if (state != 0) {
+    if (state > 0 && state <= 2) {
+      return targetZone14;
+    }
+    return 0;
   }
-  if (modeVal > 0 && modeVal < 3) {
-    return reinterpret_cast<int>(targetZone14);
-  }
-  return 0;
+  return targetZone18;
 }
 
 // FUNCTION: IMPERIALISM 0x00537090
@@ -477,14 +473,185 @@ void TNavyMission::ConsolidateMissionOrderEntriesByTargetAndQueue(int* pContextA
   }
 }
 
+// Adds one order node's 4-category priority contribution into `vector`, categories
+
+// Scores how the mission's aggregate order profile matches its resource weights when
+// the candidate order is added (foreign candidate) or removed (own candidate),
+// relative to the current-profile score from slot 0x68.
 // FUNCTION: IMPERIALISM 0x00537270
-float TNavyMission::ReturnZeroFloatSlot74() {
-  return 0.0f;
+float TNavyMission::ReturnZeroFloatSlot74(void* candidate) {
+  if (flag10 != 0) {
+    return g_Recompute_Nation_Order_LookupTable_0065A9E8;
+  }
+  TShip* orderNode = static_cast<TShip*>(candidate);
+  float profile[4];
+  if (orderNode->field2c == this) {
+    profile[0] = 0.0f;
+    profile[1] = 0.0f;
+    profile[2] = 0.0f;
+    profile[3] = 0.0f;
+    for (TMapOrderChildLinkNode* node = orderList24; node != 0; node = node->next) {
+      TShip* entry = reinterpret_cast<TShip*>(node->object_ptr);
+      short bucket;
+      if (GetActiveTargetZoneByState28() != 0) {
+        bucket = entry->ComputeOrderNodeDistanceQuotientByDescriptorWord24(
+            GetActiveTargetZoneByState28());
+      } else {
+        bucket = 0;
+      }
+      if (bucket > 5) {
+        bucket = 5;
+      }
+      AccumulateNavyOrderCategoryVectorWithScale(entry, profile,
+                                                 g_ArmyMissionOrderWeightTable_006978c8[bucket]);
+    }
+    short bucket;
+    if (GetActiveTargetZoneByState28() != 0) {
+      bucket = orderNode->ComputeOrderNodeDistanceQuotientByDescriptorWord24(
+          GetActiveTargetZoneByState28());
+    } else {
+      bucket = 0;
+    }
+    if (bucket > 5) {
+      bucket = 5;
+    }
+    float weight = static_cast<float>(g_ArmyMissionOrderWeightTable_006978c8[bucket] *
+                                      g_Recompute_Nation_Order_LookupTable_0065A9E0);
+    float scaledRatio =
+        weight * static_cast<float>(orderNode->stockLevel1c /
+                                    orderNode->GetNavyOrderNormalizationBaseByNationType());
+    profile[0] =
+        static_cast<float>(orderNode->ComputeNavyOrderPriorityContributionPercentByCategory(0)) *
+            scaledRatio +
+        profile[0];
+    profile[1] =
+        static_cast<float>(orderNode->ComputeNavyOrderPriorityContributionPercentByCategory(1)) *
+            scaledRatio +
+        profile[1];
+    profile[2] =
+        static_cast<float>(orderNode->ComputeNavyOrderPriorityContributionPercentByCategory(2)) *
+            scaledRatio +
+        profile[2];
+    profile[3] =
+        static_cast<float>(orderNode->ComputeNavyOrderPriorityContributionPercentByCategory(3)) *
+            weight +
+        profile[3];
+    float sqrtSum = g_Recompute_Nation_Order_LookupTable_0065A9E8;
+    float weightSum = g_Recompute_Nation_Order_LookupTable_0065A9E8;
+    for (int componentIndex = 0; componentIndex < 4; ++componentIndex) {
+      sqrtSum +=
+          static_cast<float>(sqrt(resourceWeights2c[componentIndex] * profile[componentIndex]));
+      weightSum += resourceWeights2c[componentIndex];
+    }
+    return ReturnZeroFloatSlot68() - sqrtSum / weightSum;
+  }
+  profile[0] = 0.0f;
+  profile[1] = 0.0f;
+  profile[2] = 0.0f;
+  profile[3] = 0.0f;
+  for (TMapOrderChildLinkNode* node = orderList24; node != 0; node = node->next) {
+    TShip* entry = reinterpret_cast<TShip*>(node->object_ptr);
+    short bucket;
+    if (GetActiveTargetZoneByState28() != 0) {
+      bucket =
+          entry->ComputeOrderNodeDistanceQuotientByDescriptorWord24(GetActiveTargetZoneByState28());
+    } else {
+      bucket = 0;
+    }
+    if (bucket > 5) {
+      bucket = 5;
+    }
+    AccumulateNavyOrderCategoryVectorWithScale(entry, profile,
+                                               g_ArmyMissionOrderWeightTable_006978c8[bucket]);
+  }
+  short bucket;
+  if (GetActiveTargetZoneByState28() != 0) {
+    bucket = orderNode->ComputeOrderNodeDistanceQuotientByDescriptorWord24(
+        GetActiveTargetZoneByState28());
+  } else {
+    bucket = 0;
+  }
+  if (bucket > 5) {
+    bucket = 5;
+  }
+  AccumulateNavyOrderCategoryVectorWithScale(orderNode, profile,
+                                             g_ArmyMissionOrderWeightTable_006978c8[bucket]);
+  float sqrtSum = g_Recompute_Nation_Order_LookupTable_0065A9E8;
+  float weightSum = g_Recompute_Nation_Order_LookupTable_0065A9E8;
+  for (int componentIndex = 0; componentIndex < 4; ++componentIndex) {
+    sqrtSum +=
+        static_cast<float>(sqrt(resourceWeights2c[componentIndex] * profile[componentIndex]));
+    weightSum += resourceWeights2c[componentIndex];
+  }
+  return sqrtSum / weightSum - ReturnZeroFloatSlot68();
 }
 
+// Scores how badly a candidate navy order node fits this mission's target profile:
+// squared distance between the node's normalized 4-category priority vector and the
+// profile floats at targetProfile+0x10, plus a distance-bucket weight from the score
+// table and an understock penalty.
 // FUNCTION: IMPERIALISM 0x00537610
-float TNavyMission::ReturnZeroFloatSlot7C() {
-  return 0.0f;
+float TNavyMission::ReturnZeroFloatSlot7C(void* candidate, void* targetProfile) {
+  TShip* orderNode = static_cast<TShip*>(candidate);
+  int stockRatio = orderNode->stockLevel1c / orderNode->GetNavyOrderNormalizationBaseByNationType();
+  if (static_cast<float>(stockRatio) < g_Recompute_Nation_Order_LookupTable_0065AA20 &&
+      !ReturnFalseSlot28()) {
+    return g_Recompute_Nation_Order_LookupTable_0065A9C4;
+  }
+  float profile[4] = {0.0f, 0.0f, 0.0f, 0.0f};
+  short distanceBucket;
+  if (GetActiveTargetZoneByState28() != 0) {
+    distanceBucket = orderNode->ComputeOrderNodeDistanceQuotientByDescriptorWord24(
+        GetActiveTargetZoneByState28());
+  } else {
+    distanceBucket = 0;
+  }
+  short clampedBucket = distanceBucket > 5 ? 5 : distanceBucket;
+  float bucketWeight =
+      g_ArmyMissionCandidateScoreTable_006978f8[static_cast<char>(state08) * 6 + clampedBucket];
+  float scale = static_cast<float>(orderNode->stockLevel1c /
+                                   orderNode->GetNavyOrderNormalizationBaseByNationType());
+  profile[0] =
+      static_cast<float>(orderNode->ComputeNavyOrderPriorityContributionPercentByCategory(0)) *
+          scale +
+      profile[0];
+  profile[1] =
+      static_cast<float>(orderNode->ComputeNavyOrderPriorityContributionPercentByCategory(1)) *
+          scale +
+      profile[1];
+  profile[2] =
+      static_cast<float>(orderNode->ComputeNavyOrderPriorityContributionPercentByCategory(2)) *
+          scale +
+      profile[2];
+  profile[3] =
+      static_cast<float>(orderNode->ComputeNavyOrderPriorityContributionPercentByCategory(3)) +
+      profile[3];
+  float sum = g_Recompute_Nation_Order_LookupTable_0065A9E8;
+  float sumSquares = g_Recompute_Nation_Order_LookupTable_0065A9E8;
+  int componentIndex;
+  for (componentIndex = 0; componentIndex < 4; ++componentIndex) {
+    sum += profile[componentIndex];
+  }
+  if (sum == g_Recompute_Nation_Order_LookupTable_0065A9F0) {
+    return g_Recompute_Nation_Order_LookupTable_0065A9C4;
+  }
+  const float* targetVector = static_cast<float*>(targetProfile);
+  for (componentIndex = 0; componentIndex < 4; ++componentIndex) {
+    float delta = profile[componentIndex] / sum - targetVector[componentIndex + 4];
+    sumSquares = delta * delta + sumSquares;
+  }
+  double understockPenalty;
+  if (!ReturnFalseSlot28() &&
+      orderNode->stockLevel1c < orderNode->GetNavyOrderNormalizationBaseByNationType()) {
+    understockPenalty =
+        (g_Recompute_Nation_Order_LookupTable_0065AA08 -
+         static_cast<double>(orderNode->stockLevel1c /
+                             orderNode->GetNavyOrderNormalizationBaseByNationType())) *
+        g_Recompute_Nation_Order_LookupTable_0065A9BC;
+  } else {
+    understockPenalty = g_Recompute_Nation_Order_LookupTable_0065A9F0;
+  }
+  return static_cast<float>((sumSquares + bucketWeight) + understockPenalty);
 }
 
 // FUNCTION: IMPERIALISM 0x005378c0
@@ -494,6 +661,30 @@ float TNavyMission::ReturnZeroFloatSlot6C() {
     total += static_cast<double>(resourceWeights2c[i]);
   }
   return static_cast<float>(total);
+}
+// 0-2 scaled by (stock/normalization base)*scale and category 3 by scale alone.
+// FUNCTION: IMPERIALISM 0x00537c60
+void __cdecl AccumulateNavyOrderCategoryVectorWithScale(TShip* orderNode, float* vector,
+                                                        float scale) {
+  float ratio = static_cast<float>(orderNode->stockLevel1c /
+                                   orderNode->GetNavyOrderNormalizationBaseByNationType()) *
+                scale;
+  vector[0] =
+      static_cast<float>(orderNode->ComputeNavyOrderPriorityContributionPercentByCategory(0)) *
+          ratio +
+      vector[0];
+  vector[1] =
+      static_cast<float>(orderNode->ComputeNavyOrderPriorityContributionPercentByCategory(1)) *
+          ratio +
+      vector[1];
+  vector[2] =
+      static_cast<float>(orderNode->ComputeNavyOrderPriorityContributionPercentByCategory(2)) *
+          ratio +
+      vector[2];
+  vector[3] =
+      static_cast<float>(orderNode->ComputeNavyOrderPriorityContributionPercentByCategory(3)) *
+          scale +
+      vector[3];
 }
 
 // FUNCTION: IMPERIALISM 0x00537f40
@@ -545,7 +736,7 @@ TNavyMission::TNavyMission() : TMission() {
   navyField1c = 0;
   navyField20 = nullptr;
   orderList24 = nullptr;
-  navyField28 = 0.0f;
+  navyState28 = 0;
   for (int i = 0; i < 4; ++i) {
     resourceWeights2c[i] = 0.0f;
   }
