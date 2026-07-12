@@ -151,6 +151,13 @@ short TTaskForce::GetOrderNodeDescriptorWord0CByResourceType() {
   return g_NavyOrderResourceDescriptorTable[order_type].calculateWeight;
 }
 
+// FUNCTION: IMPERIALISM 0x00550840
+int TTaskForce::ComputeOrderNodeDerivedScoreFromQuantityAndWord18() {
+  const TNavyOrderResourceDescriptor& desc = g_NavyOrderResourceDescriptorTable[order_type];
+  short strengthBucket = static_cast<short>(tiebreak_strength / 100);
+  return (strengthBucket + 5 + desc.navyPriorityWeight * 10) / 10;
+}
+
 // FUNCTION: IMPERIALISM 0x00550aa0
 int TTaskForce::ComputeMapOrderEntryHeuristicScore() {
   short strengthBucket = static_cast<short>(tiebreak_strength / 100);

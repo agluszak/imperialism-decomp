@@ -787,14 +787,6 @@ undefined4 GetOrCreateMissionOrderEntryForNode(void)
   return 0;
 }
 
-// ghidra_name ComputeOrderNodeDerivedScoreFromQuantityAndWord18
-// ghidra_proto undefined ComputeOrderNodeDerivedScoreFromQuantityAndWord18()
-// FUNCTION: IMPERIALISM 0x00550840
-undefined4 ComputeOrderNodeDerivedScoreFromQuantityAndWord18(void)
-{
-  return 0;
-}
-
 // ghidra_name PruneOrPromoteOrderNodeWhenChildCostDepleted
 // ghidra_proto undefined PruneOrPromoteOrderNodeWhenChildCostDepleted()
 // FUNCTION: IMPERIALISM 0x005509c0

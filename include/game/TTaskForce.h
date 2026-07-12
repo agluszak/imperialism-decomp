@@ -205,6 +205,8 @@ public:
   // its resource-type's navy-priority/resolve/calculate/task-force weight columns
   // (g_NavyOrderResourceDescriptorTable[order_type]) plus required_count. Used by the
   // order-selection cluster to rank candidate task-force order entries.
+  // Simplified single-term variant of ComputeMapOrderEntryHeuristicScore. 0x550840.
+  int ComputeOrderNodeDerivedScoreFromQuantityAndWord18();
   int ComputeMapOrderEntryHeuristicScore(); // 0x550aa0
 
   // Weighted 4-category priority score for the given score profile: sums each

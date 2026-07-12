@@ -12902,7 +12902,7 @@
     },
     {
       "address": "0x4e09a0",
-      "matching": 0.5301204819277109,
+      "matching": 0.5542168674698795,
       "name": "TGreatPower::ComputeCityOrderCapabilityAggregateScore",
       "type": 1
     },
@@ -21965,7 +21965,7 @@
     },
     {
       "address": "0x550840",
-      "matching": 0.08,
+      "matching": 0.2727272727272727,
       "name": "ComputeOrderNodeDerivedScoreFromQuantityAndWord18",
       "type": 1
     },
@@ -22325,13 +22325,13 @@
     },
     {
       "address": "0x553b10",
-      "matching": 0.4827586206896552,
+      "matching": 0.41379310344827586,
       "name": "HasNoMapOrderEntryChildrenQueued",
       "type": 1
     },
     {
       "address": "0x553b50",
-      "matching": 0.5818181818181818,
+      "matching": 0.5454545454545454,
       "name": "HasActiveMapOrderEntryChildren",
       "type": 1
     },
@@ -22469,7 +22469,7 @@
     },
     {
       "address": "0x555420",
-      "matching": 0.5546666666666666,
+      "matching": 0.5653333333333334,
       "name": "ResolveTaskForceOrderConflictAndPickCandidate",
       "type": 1
     },

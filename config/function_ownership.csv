@@ -3111,6 +3111,7 @@ address|target_cpp|ownership|note
 550640|src/game/TShip.cpp|manual|marker_sync
 550670|src/game/TTaskForce.cpp|manual|marker_sync
 550820|src/game/TTaskForce.cpp|manual|marker_sync
+550840|src/game/TTaskForce.cpp|manual|marker_sync
 550970|src/game/TShip.cpp|manual|marker_sync
 550aa0|src/game/TTaskForce.cpp|manual|marker_sync
 550b60|src/game/TShip.cpp|manual|marker_sync
