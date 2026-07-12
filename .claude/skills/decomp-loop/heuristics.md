@@ -1206,3 +1206,25 @@ headers before splicing.
     an unrelated `tileIndex*9`), proving ApplyTurnEventPaletteColorByEventCode's real parameter is
     `short`, not its declared `int` -- a 1.5% residual not worth perturbing a shared signature for,
     but a reliable width oracle when the callee is yours to retype.
+
+80. **Read a runtime-global's true value from `just datacmp -a`, not a hand-rolled
+    VA->file-offset dump.** When modeling a global referenced by an `fmul/fld [0xADDR]`,
+    a raw PE-section read can land on the wrong bytes (e.g. reported 0.0 for what reccmp
+    shows as 0.2f). datacmp prints `orig : recomp` for the symbol -- use that value in the
+    `float g_x = <value>;` initializer. A zero initializer also lands the global in BSS,
+    which datacmp reports as `(uninitialized)` and DIFFs against an initialized original;
+    a non-zero initializer forces .data. (RecomputeTileStrategicScoreHeatmap 0x518130,
+    g_TileHeatmapNeighborDiffusionFactor 0x658780 = 0.2f.)
+81. **An exact-matching FPU/vtable inner section validates the whole model even when the
+    overall score is low.** For a large function (0x518130, 643B, 33.71%) the diffusion
+    `fild/fmul[global]/fiadd/ftol` and both virtual dispatches matched instruction-for-
+    instruction; the low overall % was pure MSVC5 register/stack-offset scheduling (the
+    original reserves a dead 6-int scratch MSVC5 elides, shifting the frame 0x14 and the
+    whole allocation). Don't force dead scratch back with `volatile` (gains a few pp but
+    isn't faithful and doesn't match the original's rep-stosd init) -- accept the
+    scheduling residual once the semantic core is proven exact.
+82. **`static_cast<int>(int_expr * float_global + int_field)` reproduces MSVC5
+    `fild;fmul[global];fiadd[field];call __ftol`.** int*float promotes via FILD+FMUL, the
+    trailing `+ int_field` becomes FIADD (int memory operand), and the outer cast to int
+    is `__ftol`. Use this shape for int<-float score/diffusion math instead of a manual
+    ftol() bridge.
