@@ -364,7 +364,7 @@ void TMultiplayerMgr::EmitTurnEvent3Mode18WithActiveNation() {
 }
 
 // FUNCTION: IMPERIALISM 0x00544e30
-char TMultiplayerMgr::CanHandleCityDialogActionFalse(int action) {
+char TMultiplayerMgr::DoIdle(int action) {
   (void)action;
   return 0;
 }

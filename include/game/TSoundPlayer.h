@@ -33,7 +33,7 @@ public:
   BOOL ForwardMciStatusCommand814IgnoreFailure();
 
   void Free() override;                                     // 0x07 -> 0x5e51d0
-  char CanHandleCityDialogActionFalse(int action) override; // 0x13 -> 0x593400
+  char DoIdle(int action) override; // 0x13 -> 0x593400
 
   // TSoundPlayer-introduced slots (0x25+).
   virtual void InitializeSoundSubsystemAndAllocateChannelLists(int param_1); // 0x25 -> 0x5e4e70

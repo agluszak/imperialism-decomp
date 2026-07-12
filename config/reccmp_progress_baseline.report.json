@@ -4152,7 +4152,7 @@
     {
       "address": "0x48a480",
       "matching": 1.0,
-      "name": "TEventHandler::CanHandleCityDialogActionFalse",
+      "name": "TEventHandler::DoIdle",
       "type": 1
     },
     {
@@ -7424,7 +7424,7 @@
     {
       "address": "0x4a0c30",
       "matching": 0.06779661016949153,
-      "name": "TAnimator::CanHandleCityDialogActionFalse",
+      "name": "TAnimator::DoIdle",
       "type": 1
     },
     {
@@ -8414,7 +8414,7 @@
     {
       "address": "0x4ad5a0",
       "matching": 0.036036036036036036,
-      "name": "TBattleReportView::CanHandleCityDialogActionFalse",
+      "name": "TBattleReportView::DoIdle",
       "type": 1
     },
     {
@@ -18087,7 +18087,7 @@
     {
       "address": "0x528670",
       "matching": 0.0,
-      "name": "TMapMaker::CanHandleCityDialogActionFalse",
+      "name": "TMapMaker::DoIdle",
       "type": 1
     },
     {
@@ -21701,7 +21701,7 @@
     {
       "address": "0x54db40",
       "matching": 0.015873015873015872,
-      "name": "TLoungeDialog::CanHandleCityDialogActionFalse",
+      "name": "TLoungeDialog::DoIdle",
       "type": 1
     },
     {
@@ -28196,7 +28196,7 @@
     {
       "address": "0x593400",
       "matching": 0.6257668711656442,
-      "name": "TSoundPlayer::CanHandleCityDialogActionFalse",
+      "name": "TSoundPlayer::DoIdle",
       "type": 1
     },
     {
@@ -37412,7 +37412,7 @@
     {
       "address": "0x606cf4",
       "matching": 0.5,
-      "name": "TTechStorePage::CanHandleCityDialogActionFalse",
+      "name": "TTechStorePage::DoIdle",
       "type": 1
     },
     {
@@ -43734,6 +43734,6 @@
       "type": 5
     }
   ],
-  "file": "Imperialism.exe",
+  "file": "Imperialism.exe.gog-original",
   "format": 1
 }

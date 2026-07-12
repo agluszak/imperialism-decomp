@@ -45,7 +45,7 @@ undefined TAnimator::OrphanCallChain_C2_I13_004a0c00() {
 }
 
 // FUNCTION: IMPERIALISM 0x004a0c30
-char TAnimator::CanHandleCityDialogActionFalse(int action) {
+char TAnimator::DoIdle(int action) {
   return 0;
 }
 

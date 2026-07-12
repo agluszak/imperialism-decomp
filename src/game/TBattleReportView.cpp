@@ -254,7 +254,7 @@ void TBattleReportView::Free() {
 }
 
 // FUNCTION: IMPERIALISM 0x004ad5a0
-char TBattleReportView::CanHandleCityDialogActionFalse(int action) {
+char TBattleReportView::DoIdle(int action) {
   (void)action;
   return 0;
 }

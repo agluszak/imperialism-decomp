@@ -63,7 +63,7 @@ class TView* TMapMaker::OwnerPanel() {
 void TMapMaker::ForwardParam(int param) {}
 
 // FUNCTION: IMPERIALISM 0x00528670
-char TMapMaker::CanHandleCityDialogActionFalse(int action) {
+char TMapMaker::DoIdle(int action) {
   return 0;
 }
 

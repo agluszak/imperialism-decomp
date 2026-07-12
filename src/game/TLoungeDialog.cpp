@@ -30,7 +30,7 @@ void TLoungeDialog::Free() {}
 void TLoungeDialog::NoOpUiLifecycleHook(int arg) {}
 
 // FUNCTION: IMPERIALISM 0x0054db40
-char TLoungeDialog::CanHandleCityDialogActionFalse(int action) {
+char TLoungeDialog::DoIdle(int action) {
   return 0;
 }
 

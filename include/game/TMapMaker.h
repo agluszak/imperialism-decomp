@@ -23,7 +23,7 @@ public:
                              TEvent* event);                              // slot 16 / 0x40
   virtual void vmethod_0017(int param);                                   // slot 17 / 0x44
   virtual void ForwardParam(int param);                                   // slot 18 / 0x48
-  virtual char CanHandleCityDialogActionFalse(int action);                // slot 19 / 0x4c
+  virtual char DoIdle(int action);                // slot 19 / 0x4c
   virtual int GetCityDialogValueDword10();                                // slot 20 / 0x50
   virtual void SetCityDialogValueDword10(int value);                      // slot 21 / 0x54
   virtual TView* OwnerPanel();                                            // slot 22 / 0x58

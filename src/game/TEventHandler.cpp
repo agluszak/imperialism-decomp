@@ -168,7 +168,7 @@ void TEventHandler::DispatchUiSelectionToHandler(void* payload) {
 // MacApp TEventHandler::HandleIdle(IdlePhase): throttled idle dispatch, driven for every
 // installed cohandler by TApplication::Idle (0x486b10). field10 is the idle frequency in
 // tick16 units (0x7fffffff = never; MacApp fIdleFreq) and field14 the last-idle stamp
-// (MacApp fLastIdle). Slot 0x13 (CanHandleCityDialogActionFalse — MacApp's DoIdle) does
+// (MacApp fLastIdle). Slot 0x13 (DoIdle — MacApp's DoIdle) does
 // the work; a zero return on the continue phase (1) re-stamps the throttle clock.
 // FUNCTION: IMPERIALISM 0x0048a410
 void TEventHandler::HandleIdle(int idlePhase) {
@@ -184,13 +184,13 @@ void TEventHandler::HandleIdle(int idlePhase) {
       return;
     }
   }
-  if (!CanHandleCityDialogActionFalse(idlePhase) && idlePhase == 1) {
+  if (!DoIdle(idlePhase) && idlePhase == 1) {
     field14 = GetTickCountDiv16();
   }
 }
 
 // FUNCTION: IMPERIALISM 0x0048a480
-char TEventHandler::CanHandleCityDialogActionFalse(int action) {
+char TEventHandler::DoIdle(int action) {
   (void)action;
   return 0;
 }

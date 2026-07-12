@@ -80,7 +80,7 @@ BOOL TSoundPlayer::ForwardMciStatusCommand814IgnoreFailure() {
 // Slot 0x13 override — pump the audio playback state machine / schedule random cues.
 
 // FUNCTION: IMPERIALISM 0x00593400
-char TSoundPlayer::CanHandleCityDialogActionFalse(int action) {
+char TSoundPlayer::DoIdle(int action) {
   (void)action;
   if (g_pSimMgr->preferenceValues[3] == 0) {
     if (this->stateByte78 != 0) {

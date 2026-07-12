@@ -830,7 +830,7 @@ address|name|symbol|size|type|prototype|provenance
 48a3b0|TEventHandler::DispatchQueuedUiCommandAndRelease||37|function|undefined DispatchQueuedUiCommandAndRelease()|
 48a3f0|TEventHandler::DispatchUiSelectionToHandler||13|function|undefined DispatchUiSelectionToHandler()|
 48a410|TEventHandler::HandleIdle||78|function|void __thiscall HandleIdle(int)|
-48a480|TEventHandler::CanHandleCityDialogActionFalse||5|function|undefined CanHandleCityDialogActionFalse()|
+48a480|TEventHandler::DoIdle||5|function|undefined DoIdle()|
 48a4a0|TEventHandler::DetachActiveCityProductionChildIfMatches||32|function|undefined DetachActiveCityProductionChildIfMatches()|
 48a4d0|TEventHandler::SetUiResourceOwner||17|function|undefined SetUiResourceOwner()|
 48a500|TEventHandler::IsCurrentActiveCityProductionView||28|function|undefined IsCurrentActiveCityProductionView()|
@@ -1440,7 +1440,7 @@ address|name|symbol|size|type|prototype|provenance
 4a0b00|DestructTAnimatorAndMaybeFree_Impl||7|function|undefined DestructTAnimatorAndMaybeFree_Impl()|
 4a0b20|TAnimator::InitializeUiTransientObjectRegistry||175|function|undefined InitializeUiTransientObjectRegistry()|
 4a0c00|TAnimator::OrphanCallChain_C2_I13_004a0c00||31|function|undefined OrphanCallChain_C2_I13_004a0c00(void)|
-4a0c30|TAnimator::CanHandleCityDialogActionFalse||172|function|undefined 'scalar_deleting_destructor'(int param_1)|
+4a0c30|TAnimator::DoIdle||172|function|undefined 'scalar_deleting_destructor'(int param_1)|
 4a0d10|TAnimator::AddObjectToUiTransientRegistry||16|function|undefined AddObjectToUiTransientRegistry()|
 4a0d30|TAnimator::FindRegisteredAnimationByTag||102|function|undefined FindRegisteredAnimationByTag()|
 4a0dc0|TAnimator::Free||56|function|undefined ResetUiViewStateAndReleaseRuntimeSelectionOwner()|
@@ -1626,7 +1626,7 @@ address|name|symbol|size|type|prototype|provenance
 4acb40|TBattleReportView::GetRuntimeClass||6|function|CRuntimeClass* GetRuntimeClass() const|rtti
 4acb60|TBattleReportView::BuildBattleReportLayoutAndMarkers||2041|function|void NoOpUiLifecycleHook(int arg)|
 4ad560|TBattleReportView::Free||37|function|void Free()|
-4ad5a0|TBattleReportView::CanHandleCityDialogActionFalse||386|function|char CanHandleCityDialogActionFalse(int action)|
+4ad5a0|TBattleReportView::DoIdle||386|function|char DoIdle(int action)|
 4ad7a0|TBattleReportView::HandleEvent||937|function|void HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event)|
 4adc40|InitializeOutSharedStringWithEmptyRefAndCopyBuffer||42|function|undefined InitializeOutSharedStringWithEmptyRefAndCopyBuffer()|
 4adc80|TBattleReportView::HandleCursorHoverSelectionByChildHitTestAndFallback||18|function|void HandleCursorHoverSelectionByChildHitTestAndFallback(CPoint* point, int hitArg)|
@@ -3401,7 +3401,7 @@ address|name|symbol|size|type|prototype|provenance
 527ed0|TMapMaker::vmethod_0024||493|function|undefined TryAssignCellTypeWithDirectionalConstraints()|
 528140|TMapMaker::OwnerPanel||499|function|undefined TryPlaceType1CoarseCellWithAdjacencyRules()|
 5283c0|TMapMaker::ForwardParam||533|function|undefined TryPlaceType3CoarseCellWithAdjacencyRules()|
-528670|TMapMaker::CanHandleCityDialogActionFalse||202|function|undefined BalanceGrowthBudgetAcrossPrimaryAndSecondaryBands()|
+528670|TMapMaker::DoIdle||202|function|undefined BalanceGrowthBudgetAcrossPrimaryAndSecondaryBands()|
 528780|TMapMaker::GetCityDialogValueDword10||222|function|undefined SpreadType6CellsAcrossCoarseRowSegments()|
 5288a0|TMapMaker::SetCityDialogValueDword10||698|function|undefined SpreadType6CellsWithSecondaryNeighborPass()|
 528c10|GetNeighborTileIndexOnMap108x60||145|function|undefined GetNeighborTileIndexOnMap108x60()|
@@ -4033,7 +4033,7 @@ address|name|symbol|size|type|prototype|provenance
 54d6d0|TLoungeDialog::GetRuntimeClass||6|function|undefined GetTLoungeDialogClassNamePointer()|rtti
 54d6f0|TLoungeDialog::Free||38|function|undefined CloseTLoungeDialogAndReleaseChildren()|
 54d730|TLoungeDialog::NoOpUiLifecycleHook||821|function|undefined OrphanLeaf_NoCall_Ins07_004d8920(void)|
-54db40|TLoungeDialog::CanHandleCityDialogActionFalse||899|function|undefined RefreshNationStatusDialogRowsAndSummaryMessage()|
+54db40|TLoungeDialog::DoIdle||899|function|undefined RefreshNationStatusDialogRowsAndSummaryMessage()|
 54dfc0|TryInvokeNationStateReplacementForSlot||444|function|undefined TryInvokeNationStateReplacementForSlot()|
 54e1f0|TLoungeDialog::HandleEvent||562|function|undefined HandleNationStatusDialogCommand()|
 54e4c0|RefreshMapAndMessageControlsForCurrentContext||357|function|undefined RefreshMapAndMessageControlsForCurrentContext()|
@@ -5174,7 +5174,7 @@ address|name|symbol|size|type|prototype|provenance
 593370|TSoundPlayer::?ConstructTSoundPlayerBaseState@@YIPAUSoundPlayerState@?%Z:imperialismsrcgameTSoundPlayer.cpp14012305@@PAU12@@Z||38|function|undefined ?ConstructTSoundPlayerBaseState@@YIPAUSoundPlayerState@?%Z:imperialismsrcgameTSoundPlayer.cpp14012305@@PAU12@@Z()|
 5933b0|TSoundPlayer::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 5933e0|TSoundPlayer::?DestructTSoundPlayerBaseState@@YIXPAUSoundPlayerState@?%Z:imperialismsrcgameTSoundPlayer.cpp14012305@@@Z||7|function|undefined ?DestructTSoundPlayerBaseState@@YIXPAUSoundPlayerState@?%Z:imperialismsrcgameTSoundPlayer.cpp14012305@@@Z()|
-593400|TSoundPlayer::CanHandleCityDialogActionFalse||240|function|undefined UpdateAudioPlaybackStateAndScheduleRandomCue()|
+593400|TSoundPlayer::DoIdle||240|function|undefined UpdateAudioPlaybackStateAndScheduleRandomCue()|
 5935c0|UpdateTurnAudioPlaybackStateAndScheduleCue||276|function|undefined UpdateTurnAudioPlaybackStateAndScheduleCue()|
 593730|ResetDualAudioCuePools||21|function|undefined ResetDualAudioCuePools()|
 593760|PushCueToDualAudioCuePools||31|function|undefined PushCueToDualAudioCuePools()|
@@ -7009,7 +7009,7 @@ address|name|symbol|size|type|prototype|provenance
 606cb8|TTechStorePage::DispatchUiCommandToHandler||6|function|undefined TMacViewMgr_Slot16_Target()|
 606cbe|CCmdTarget::OnFinalRelease|?OnFinalRelease@CCmdTarget@@UAEXXZ|50|function|undefined ScalarDeletingDestructor()|
 606cf0|TTechStorePage::ForwardCityDialogParamToChildSlot48||4|function|undefined TMacViewMgr_Slot18_Target()|
-606cf4|TTechStorePage::CanHandleCityDialogActionFalse||5|function|undefined TMacViewMgr_Slot19_Target()|
+606cf4|TTechStorePage::DoIdle||5|function|undefined TMacViewMgr_Slot19_Target()|
 606cf9|TTechStorePage::HandleEvent||6|function|undefined TMacViewMgr_Slot15_Target()|
 606cff|TTechStorePage::SetCityDialogValueDword10||5|function|undefined TMacViewMgr_Slot21_Target()|
 606d04|TTechStorePage::GetCityDialogValueDword10||5|function|undefined TMacViewMgr_Slot20_Target()|

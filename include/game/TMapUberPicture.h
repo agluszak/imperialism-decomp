@@ -33,7 +33,7 @@ public:
   // slot 0x10 DispatchUiCommandToHandler inherited unchanged (0x48a2e0)
   virtual void vmethod_0017(int param) override; // slot 0x11 0x597600
   virtual void ForwardParam(int param) override; // slot 0x12 0x597770
-  // slot 0x13 CanHandleCityDialogActionFalse inherited unchanged (0x48a480)
+  // slot 0x13 DoIdle inherited unchanged (0x48a480)
   // slot 0x14 GetCityDialogValueDword10 inherited unchanged (0x415d50)
   // slot 0x15 SetCityDialogValueDword10 inherited unchanged (0x415d70)
   // slot 0x16 OwnerPanel inherited unchanged (0x48b180)
