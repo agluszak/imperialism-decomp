@@ -35772,7 +35772,7 @@
     },
     {
       "address": "0x5f43e0",
-      "matching": 0.04,
+      "matching": 0.8979591836734694,
       "name": "SetBitIn96BitIntegerWithCarry",
       "type": 1
     },
@@ -36072,7 +36072,7 @@
     },
     {
       "address": "0x5f7830",
-      "matching": 0.25,
+      "matching": 1.0,
       "name": "AddUintWithCarryOutFlag",
       "type": 1
     },

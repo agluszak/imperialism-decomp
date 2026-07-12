@@ -355,14 +355,6 @@ undefined4 Is96BitIntegerZeroAtOrAboveBitIndex(void)
   return 0;
 }
 
-// ghidra_name SetBitIn96BitIntegerWithCarry
-// ghidra_proto undefined SetBitIn96BitIntegerWithCarry()
-// FUNCTION: IMPERIALISM 0x005f43e0
-undefined4 SetBitIn96BitIntegerWithCarry(void)
-{
-  return 0;
-}
-
 // ghidra_name Truncate96BitIntegerAtBitWithRounding
 // ghidra_proto undefined Truncate96BitIntegerAtBitWithRounding()
 // FUNCTION: IMPERIALISM 0x005f4450
@@ -591,14 +583,6 @@ undefined4 ConsoleCtrlHandlerDispatchRuntimeSignalCallbacks(void)
 // ghidra_proto undefined RaiseRuntimeSignalAndInvokeHandler()
 // FUNCTION: IMPERIALISM 0x005f75c0
 undefined4 RaiseRuntimeSignalAndInvokeHandler(void)
-{
-  return 0;
-}
-
-// ghidra_name AddUintWithCarryOutFlag
-// ghidra_proto undefined AddUintWithCarryOutFlag()
-// FUNCTION: IMPERIALISM 0x005f7830
-undefined4 AddUintWithCarryOutFlag(void)
 {
   return 0;
 }
