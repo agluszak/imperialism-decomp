@@ -86,7 +86,8 @@ public:
   virtual undefined CopyDiamondMaskBlockKernel();
   virtual undefined CopyDiagonalMaskNarrowingBlockKernel();
   virtual undefined CopyDiagonalMaskWideningBlockKernel();
-  virtual undefined Copy64x64TileBlockWithStrideAdjustment();
+  virtual void Copy64x64TileBlockWithStrideAdjustment(int* src, int* dest, short srcStride,
+                                                      short destStride);
   virtual undefined HasRenderableParentAndContentSlotA2();
   virtual undefined ReleaseRuntimeSelectionOwnerAndDestroyObject(int param_1, int param_2,
                                                                  int param_3);

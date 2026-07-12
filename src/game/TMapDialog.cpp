@@ -862,9 +862,37 @@ undefined TMapDialog::CopyDiagonalMaskWideningBlockKernel() {
   return 0;
 }
 
+// Copies a 64-row tile block, 16 dwords (64 bytes) per row via two unrolled 8-dword
+// stores, advancing source and destination by their own dword strides between rows.
 // FUNCTION: IMPERIALISM 0x00525670
-undefined TMapDialog::Copy64x64TileBlockWithStrideAdjustment() {
-  return 0;
+void TMapDialog::Copy64x64TileBlockWithStrideAdjustment(int* src, int* dest, short srcStride,
+                                                        short destStride) {
+  int srcStrideDwords = static_cast<short>(srcStride / 4);
+  int destStrideDwords = static_cast<short>(destStride / 4);
+  int row = 0x40;
+  do {
+    int inner = 2;
+    int* s;
+    int* d;
+    do {
+      s = src;
+      d = dest;
+      d[0] = s[0];
+      d[1] = s[1];
+      d[2] = s[2];
+      d[3] = s[3];
+      d[4] = s[4];
+      d[5] = s[5];
+      d[6] = s[6];
+      d[7] = s[7];
+      inner = inner - 1;
+      dest = d + 8;
+      src = s + 8;
+    } while (inner != 0);
+    row = row - 1;
+    dest = d + destStrideDwords - 8;
+    src = s + srcStrideDwords - 8;
+  } while (row != 0);
 }
 
 // FUNCTION: IMPERIALISM 0x00525730

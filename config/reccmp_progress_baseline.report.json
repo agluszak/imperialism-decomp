@@ -17841,8 +17841,7 @@
     },
     {
       "address": "0x522c10",
-      "effective": true,
-      "matching": 0.9848484848484849,
+      "matching": 1.0,
       "name": "TMapDialog::DrawMapDialogWrappedTileConnectionMarker_00522c10",
       "type": 1
     },
@@ -17956,7 +17955,7 @@
     },
     {
       "address": "0x525670",
-      "matching": 0.0,
+      "matching": 0.29906542056074764,
       "name": "TMapDialog::Copy64x64TileBlockWithStrideAdjustment",
       "type": 1
     },
