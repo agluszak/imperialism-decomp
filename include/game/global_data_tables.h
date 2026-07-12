@@ -810,6 +810,9 @@ extern float g_ApplyIndexedResourceDeltaScale_00653728;
 // TMission.cpp — default mission score constant.
 extern const float g_MissionDefaultScore_0065a468;
 extern float g_TileHeatmapNeighborDiffusionFactor;
+extern short g_NavyResolveOrderRanking[14];
+extern short g_NavyMissionOrderRanking[14];
+extern short g_NavyPriorityOrderRanking[14];
 
 // TSimMgr.cpp — per-nation scenario setup source table.
 extern short g_anScenarioNationSetupTable_00698B1A[27];

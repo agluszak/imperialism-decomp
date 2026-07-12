@@ -595,6 +595,16 @@ extern const float g_MissionDefaultScore_0065a468 = 0.0f;
 // GLOBAL: IMPERIALISM 0x00658780
 float g_TileHeatmapNeighborDiffusionFactor = 0.2f;
 
+// Order-type index rankings (0..13) sorted by descending descriptor weight, rebuilt by
+// InitializeNavyOrderPriorityTables (0x556610): by resolveWeight, calculateWeight, and
+// navyPriorityWeight respectively. Runtime-filled, so zero in the on-disk image.
+// GLOBAL: IMPERIALISM 0x006a3e28
+short g_NavyResolveOrderRanking[14];
+// GLOBAL: IMPERIALISM 0x006a3e50
+short g_NavyMissionOrderRanking[14];
+// GLOBAL: IMPERIALISM 0x006a3e90
+short g_NavyPriorityOrderRanking[14];
+
 // Minister-skill-indexed float coefficient tables (DAT_0065xxxx), indexed by a
 // minister's skill value at +0x0C. Used by TGreatPower vtable slots 0x88-0x8c.
 float g_DAT_Value_00653308[8] = {0};

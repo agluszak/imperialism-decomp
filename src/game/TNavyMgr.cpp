@@ -290,6 +290,53 @@ static void RemoveMatchingTaskForceOrders(TNavyMgr* navyManager, short nationSlo
   }
 }
 
+// Seeds the three navy order-type ranking tables with the identity permutation, then
+// selection-sorts each by descending descriptor weight (resolve / calculate-mission /
+// navy-priority). The weight columns are read as dwords from the descriptor table, matching
+// the original's g_..._LookupTable_006981xx int views.
+// FUNCTION: IMPERIALISM 0x00556610
+void InitializeNavyOrderPriorityTables() {
+  int i;
+  for (i = 0; i < 14; ++i) {
+    g_NavyResolveOrderRanking[i] = static_cast<short>(i);
+    g_NavyPriorityOrderRanking[i] = static_cast<short>(i);
+    g_NavyMissionOrderRanking[i] = static_cast<short>(i);
+  }
+  for (i = 0; i < 13; ++i) {
+    for (int j = i + 1; j < 14; ++j) {
+      TNavyOrderResourceDescriptor* pi =
+          &g_NavyOrderResourceDescriptorTable[g_NavyPriorityOrderRanking[i]];
+      TNavyOrderResourceDescriptor* pj =
+          &g_NavyOrderResourceDescriptorTable[g_NavyPriorityOrderRanking[j]];
+      if (pj->navyPriorityWeight > pi->navyPriorityWeight) {
+        short t = g_NavyPriorityOrderRanking[i];
+        g_NavyPriorityOrderRanking[i] = g_NavyPriorityOrderRanking[j];
+        g_NavyPriorityOrderRanking[j] = t;
+      }
+      TNavyOrderResourceDescriptor* mi =
+          &g_NavyOrderResourceDescriptorTable[g_NavyMissionOrderRanking[i]];
+      TNavyOrderResourceDescriptor* mj =
+          &g_NavyOrderResourceDescriptorTable[g_NavyMissionOrderRanking[j]];
+      if (*reinterpret_cast<int*>(&mj->calculateWeight) >
+          *reinterpret_cast<int*>(&mi->calculateWeight)) {
+        short t = g_NavyMissionOrderRanking[i];
+        g_NavyMissionOrderRanking[i] = g_NavyMissionOrderRanking[j];
+        g_NavyMissionOrderRanking[j] = t;
+      }
+      TNavyOrderResourceDescriptor* ri =
+          &g_NavyOrderResourceDescriptorTable[g_NavyResolveOrderRanking[i]];
+      TNavyOrderResourceDescriptor* rj =
+          &g_NavyOrderResourceDescriptorTable[g_NavyResolveOrderRanking[j]];
+      if (*reinterpret_cast<int*>(&rj->resolveWeight) >
+          *reinterpret_cast<int*>(&ri->resolveWeight)) {
+        short t = g_NavyResolveOrderRanking[i];
+        g_NavyResolveOrderRanking[i] = g_NavyResolveOrderRanking[j];
+        g_NavyResolveOrderRanking[j] = t;
+      }
+    }
+  }
+}
+
 // FUNCTION: IMPERIALISM 0x005568f0
 void TNavyMgr::SerializeNavyOrderListsByNation(TStream* stream, short nationFilter) {
   int matchCount = 0;

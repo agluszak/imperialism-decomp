@@ -115,14 +115,6 @@ undefined4 UpdateNavyOrderMapMarkerByOrderType(void)
   return 0;
 }
 
-// ghidra_name InitializeNavyOrderPriorityTables
-// ghidra_proto undefined InitializeNavyOrderPriorityTables()
-// FUNCTION: IMPERIALISM 0x00556610
-undefined4 InitializeNavyOrderPriorityTables(void)
-{
-  return 0;
-}
-
 // ghidra_name ResetNavyOrderListsAndManagerOwner
 // ghidra_proto undefined ResetNavyOrderListsAndManagerOwner()
 // FUNCTION: IMPERIALISM 0x00556850
