@@ -1,4 +1,5 @@
 #include "game/TMapDialog.h"
+#include "game/TMapMgr.h"
 #include "game/CTemporaryRegion.h"
 #include "game/TGlobalMapState.h"
 #include "game/TQuickDrawSurfaceContext.h"
@@ -600,9 +601,74 @@ undefined TMapDialog::DrawMapDialogWrappedTileConnectionMarker_00522c10() {
   return 0;
 }
 
+// Draws the coastline "connection" line pattern linking this ocean tile to its ocean
+// neighbors, per the 6-bit connectionMask (which adjacent hexes are ocean and joined).
 // FUNCTION: IMPERIALISM 0x00522CF0
-undefined TMapDialog::DrawHexNeighborConnectionMask() {
-  return 0;
+void TMapDialog::DrawHexNeighborConnectionMask(unsigned char connectionMask, int screenX,
+                                               int screenY, short tileIndex) {
+  short neighborTiles[6];
+  TMapMgr::ComputeHexNeighborTileIndices(tileIndex, neighborTiles,
+                                         g_pGlobalMapState->hexNeighborWrapHorizontally20);
+  TTerrainStateRecordView* tiles = g_pGlobalMapState->terrainStateTable;
+  unsigned char northeastOcean = connectionMask & 2;
+
+  if ((connectionMask & 2) != 0 && tiles[neighborTiles[1]].terrainType00 == 5) {
+    if ((connectionMask & 1) == 0 || tiles[neighborTiles[2]].terrainType00 != 5) {
+      SetQuickDrawTextOriginWithContextOffset(screenX + 0x38, screenY);
+      DrawCenteredGuideLineOnMapDc(screenX + 0x30, screenY + 8);
+      DrawCenteredGuideLineOnMapDc(screenX + 0x30, screenY + 0x14);
+      DrawCenteredGuideLineOnMapDc(screenX + 0x38, screenY + 0x20);
+    } else {
+      SetQuickDrawTextOriginWithContextOffset(screenX + 0x2c, screenY + 8);
+      DrawCenteredGuideLineOnMapDc(screenX + 0x38, screenY + 0x14);
+      DrawCenteredGuideLineOnMapDc(screenX + 0x38, screenY + 0x20);
+      if ((connectionMask & 0x40) != 0) {
+        SetQuickDrawTextOriginWithContextOffset(screenX + 0x38, screenY + 0x14);
+        DrawCenteredGuideLineOnMapDc(screenX + 0x3c, screenY + 8);
+        DrawCenteredGuideLineOnMapDc(screenX + 0x38, screenY);
+      }
+    }
+
+    int bottomY;
+    if ((connectionMask & 4) == 0 || tiles[neighborTiles[0]].terrainType00 != 5) {
+      SetQuickDrawTextOriginWithContextOffset(screenX + 0x38, screenY + 0x20);
+      DrawCenteredGuideLineOnMapDc(screenX + 0x3c, screenY + 0x28);
+      bottomY = screenY + 0x34;
+    } else {
+      SetQuickDrawTextOriginWithContextOffset(screenX + 0x38, screenY + 0x20);
+      DrawCenteredGuideLineOnMapDc(screenX + 0x38, screenY + 0x28);
+      DrawCenteredGuideLineOnMapDc(screenX + 0x2c, screenY + 0x38);
+      if ((connectionMask & 0x80) == 0) {
+        goto tail;
+      }
+      SetQuickDrawTextOriginWithContextOffset(screenX + 0x38, screenY + 0x28);
+      bottomY = screenY + 0x38;
+    }
+    DrawCenteredGuideLineOnMapDc(screenX + 0x3c, bottomY);
+    DrawCenteredGuideLineOnMapDc(screenX + 0x38, screenY + 0x40);
+  }
+
+tail:
+  if ((connectionMask & 1) != 0 && tiles[neighborTiles[2]].terrainType00 == 5) {
+    SetQuickDrawTextOriginWithContextOffset(screenX + 0x18, screenY);
+    DrawCenteredGuideLineOnMapDc(screenX + 0x20, screenY + 8);
+    DrawCenteredGuideLineOnMapDc(screenX + 0x2c, screenY + 8);
+    if (northeastOcean == 0 && tiles[neighborTiles[1]].terrainType00 == 5) {
+      SetQuickDrawTextOriginWithContextOffset(screenX + 0x38, screenY);
+      DrawCenteredGuideLineOnMapDc(screenX + 0x30, screenY + 8);
+      DrawCenteredGuideLineOnMapDc(screenX + 0x2c, screenY + 8);
+    }
+  }
+  if ((connectionMask & 4) != 0 && tiles[neighborTiles[0]].terrainType00 == 5) {
+    SetQuickDrawTextOriginWithContextOffset(screenX + 0x18, screenY + 0x40);
+    DrawCenteredGuideLineOnMapDc(screenX + 0x20, screenY + 0x38);
+    DrawCenteredGuideLineOnMapDc(screenX + 0x2c, screenY + 0x38);
+    if (northeastOcean == 0 && tiles[neighborTiles[1]].terrainType00 == 5) {
+      SetQuickDrawTextOriginWithContextOffset(screenX + 0x2c, screenY + 0x38);
+      DrawCenteredGuideLineOnMapDc(screenX + 0x30, screenY + 0x38);
+      DrawCenteredGuideLineOnMapDc(screenX + 0x38, screenY + 0x40);
+    }
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x00523060

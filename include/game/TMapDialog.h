@@ -68,7 +68,8 @@ public:
   virtual undefined DrawMapDialogOwnershipMarkerForNation_00522000();
   virtual undefined RenderMapDialogDiplomacyNeighborRelationHints();
   virtual undefined DrawMapDialogWrappedTileConnectionMarker_00522c10();
-  virtual undefined DrawHexNeighborConnectionMask();
+  virtual void DrawHexNeighborConnectionMask(unsigned char connectionMask, int screenX, int screenY,
+                                             short tileIndex);
   virtual undefined WrapperFor_SetQuickDrawFillColor_At00523060();
   virtual undefined UpdateMapOrderEntryTilePreviewSlot();
   virtual undefined OrphanLeaf_NoCall_Ins100_005241b0();
