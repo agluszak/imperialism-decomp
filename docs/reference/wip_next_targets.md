@@ -21,3 +21,27 @@ Landed this session: DrawHexNeighborConnectionMask 0x522cf0 (0->64.6%, b5aeab1).
 
 ## Near-done but compiler-quirk residual (low yield)
 - 0x53d4a0 ComputeArmyMissionCandidateVectorDistanceScore (69.2%) -- fcomp-vs-fcompp FP compare codegen.
+
+## Update (window 2)
+Landed: 0x522c10 DrawMapDialogWrappedTileConnectionMarker (100%), 0x522000
+DrawMapDialogOwnershipMarkerForNation (98.5%), 0x562af0
+RelaxMapTileCostFieldByNeighborTerrain (77.9%, bridge retired). Heuristics 77-79 added
+(abs->cdq, else-first branch layout, movsx-width param oracle).
+
+### Winning lane confirmed
+Small (<300B) TMapDialog/map-cost functions built from ported QuickDraw primitives
+(SetQuickDrawTextOriginWithContextOffset / DrawCenteredGuideLineOnMapDc) or pure
+integer/array logic, no vtable[1]/EH. abs()+else-first branch shaping gets them to
+90-100%.
+
+### Defer (poor match candidates)
+- 0x5114b0 CheckTilePatternMaskAllowedByModeFlag (268B) -- returns a dirty AX (short
+  return with `& 0xffff0000` high-word-passthrough artifact); register-return semantics
+  hard to reproduce from clean C++. Pure table logic otherwise.
+- 0x51d380 MarkHexTileAndNeighborsDirtyAndNotify -- Ghidra artifacts (mystery receiver,
+  `(*pcVar5)()` garbage where pcVar5 is a loop counter).
+
+### Still ready
+- 0x4d4390 ApplyCompletedCivWorkOrderToMapState (680B) -- garbled vtable-call args, needs
+  each g_pGlobalMapState virtual's real signature + civ-order struct modeled.
+- More small DrawMapDialog* / guide-pattern siblings near 0x520000-0x524000.
