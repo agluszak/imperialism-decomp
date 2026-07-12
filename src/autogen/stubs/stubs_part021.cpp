@@ -531,14 +531,6 @@ undefined4 RaiseRuntimeSignalAndInvokeHandler(void)
   return 0;
 }
 
-// ghidra_name Build96BitIntegerFromDigitBytesAndNormalize
-// ghidra_proto undefined Build96BitIntegerFromDigitBytesAndNormalize()
-// FUNCTION: IMPERIALISM 0x005f7930
-undefined4 Build96BitIntegerFromDigitBytesAndNormalize(void)
-{
-  return 0;
-}
-
 // ghidra_name ParseFloatingPointTextToInternalState
 // ghidra_proto undefined ParseFloatingPointTextToInternalState()
 // FUNCTION: IMPERIALISM 0x005f7a30

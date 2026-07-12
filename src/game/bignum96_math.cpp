@@ -233,3 +233,49 @@ void ShiftRight96BitIntegerBy1(unsigned int* value) {
 // Truncates the 96-bit integer to `bitIndex` bits (MSB-relative), rounding to nearest:
 
 // Shifts the 96-bit integer right by `bitCount` bits: first a within-word bit shift by
+
+// Builds a normalized 80-bit extended float from `count` decimal digit bytes: accumulates
+// value = value*10 + digit across the 96-bit mantissa (each *10 via <<1,<<1,+self,<<1),
+// then left-normalizes so the top mantissa bit is set, tracking the biased exponent.
+// FUNCTION: IMPERIALISM 0x005F7930
+void Build96BitIntegerFromDigitBytesAndNormalize(char* digits, int count, unsigned int* out) {
+  unsigned int* acc = out;
+  short exponent = 0x404e;
+  out[0] = 0;
+  out[1] = 0;
+  out[2] = 0;
+  if (count != 0) {
+    int remaining = count;
+    do {
+      unsigned int saved[3];
+      saved[0] = acc[0];
+      saved[1] = acc[1];
+      saved[2] = acc[2];
+      ShiftLeft96BitIntegerBy1(acc);
+      ShiftLeft96BitIntegerBy1(acc);
+      Add96BitIntegerWithCarry(acc, saved);
+      ShiftLeft96BitIntegerBy1(acc);
+      saved[0] = static_cast<unsigned int>(*digits);
+      saved[1] = 0;
+      saved[2] = 0;
+      Add96BitIntegerWithCarry(acc, saved);
+      digits = digits + 1;
+      remaining = remaining - 1;
+    } while (remaining != 0);
+  }
+  unsigned int top = acc[2];
+  while (top == 0) {
+    exponent = exponent - 0x10;
+    acc[2] = acc[1] >> 0x10;
+    top = acc[2];
+    acc[1] = acc[0] >> 0x10 | acc[1] << 0x10;
+    acc[0] = acc[0] << 0x10;
+  }
+  top = acc[2];
+  while ((top & 0x8000) == 0) {
+    ShiftLeft96BitIntegerBy1(acc);
+    exponent = exponent - 1;
+    top = acc[2];
+  }
+  *reinterpret_cast<short*>(reinterpret_cast<int>(acc) + 10) = exponent;
+}

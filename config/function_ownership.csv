@@ -5222,6 +5222,7 @@ address|target_cpp|ownership|note
 5f7860|src/game/bignum96_math.cpp|manual|marker_sync
 5f78d0|src/game/bignum96_math.cpp|manual|marker_sync
 5f7900|src/game/bignum96_math.cpp|manual|marker_sync
+5f7930|src/game/bignum96_math.cpp|manual|marker_sync
 5f8640|src/game/library_msvc500_fid.cpp|library|marker_sync
 5f8680|src/game/library_msvc500_fid.cpp|library|marker_sync
 5f8770|src/game/library_msvc500_fid.cpp|library|marker_sync
