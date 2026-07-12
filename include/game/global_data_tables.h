@@ -522,6 +522,8 @@ extern char g_szNewGameScenarioPlaceholderTitle_00694A68[];
 extern char g_szNewGameGameNameLabel_00694A88[];
 extern char g_szUiPlaceholderZero_00694378[];
 extern char g_szUiOrdersLabel_006948A4[];
+extern char g_szUiDefaultPlanetName_00694528[];
+extern char g_szUiPickAPlanet_00694530[];
 extern char g_szUiAsEstimatedBy_00694540[];
 extern char g_szUiForeignShippingObserved_00694554[];
 extern char g_szUiHalfDozenShips_00694574[];

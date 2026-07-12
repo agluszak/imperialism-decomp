@@ -230,6 +230,11 @@ char g_szUiCommodityLabel_00694AEC[] = "Commodity";
 // GLOBAL: IMPERIALISM 0x00694af8
 char g_szUiBoardOfTradeLabel_00694AF8[] = "Board of Trade";
 
+// Default text baked into the event 0x3ba planet-name dialog.
+// GLOBAL: IMPERIALISM 0x00694528
+char g_szUiDefaultPlanetName_00694528[] = "Skyron";
+// GLOBAL: IMPERIALISM 0x00694530
+char g_szUiPickAPlanet_00694530[] = "Pick a planet";
 // Placeholder strings baked into the army/navy report screen builders
 // (InitializeArmyNavyReportViewsAndCommandTags, events 0x546..0x2506).
 // GLOBAL: IMPERIALISM 0x00694540

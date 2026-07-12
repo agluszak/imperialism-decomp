@@ -634,6 +634,11 @@ Out-of-line variants are real functions in `ui_resource_pool.cpp` (0x41b210/0x41
 `(short)nEventCode != 0xNNN → return 0`. Gotcha: MSVC schedules argument pushes early —
 match pushes to callee-consumed counts, not adjacency to the nearest call.
 
+- `just decode-builder`'s equality-case summary can miss a `CMP; JG; JE` ladder where
+  the equality jump is separated from the compare. Verify the dispatch prologue in the raw
+  listing before assigning case boundaries: `0x435916` is event `0x3ba`, not a continuation
+  of `0x3b6`, and the same pattern hides event `0x5de` at `0x435f2b`.
+
 ## 37. Two independent recoveries of one class can hide behind different names — check GetRuntimeClass address identity
 
 Before porting a "not yet ported" class onto a bead's named target, check whether its
