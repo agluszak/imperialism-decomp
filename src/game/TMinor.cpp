@@ -61,9 +61,7 @@ void* TMinor::GetTMinorClassNamePointer() {
 }
 
 // FUNCTION: IMPERIALISM 0x004e3710
-TMinor::TMinor() {
-  encodedNationSlot = 0;
-}
+TMinor::TMinor() {}
 
 // SYNTHETIC: IMPERIALISM 0x004e3790
 // TMinor::`scalar deleting destructor'
