@@ -355,14 +355,6 @@ undefined4 GenerateMapFromTuningStringAndApplyScenarioOverrides(void)
   return 0;
 }
 
-// ghidra_name ValidateAllColumnsHaveAssignedRegionClass
-// ghidra_proto undefined ValidateAllColumnsHaveAssignedRegionClass()
-// FUNCTION: IMPERIALISM 0x00526710
-undefined4 ValidateAllColumnsHaveAssignedRegionClass(void)
-{
-  return 0;
-}
-
 // ghidra_name ValidateTerrainClassAdjacencyCoverageMask
 // ghidra_proto undefined ValidateTerrainClassAdjacencyCoverageMask()
 // FUNCTION: IMPERIALISM 0x00526760
