@@ -151,3 +151,24 @@ tables, stride 4), plus a short table hidden right AFTER TOcean::classTOcean CRu
 direction). Terrain-type buckets: sVar in {0xb..0x1a} indexes the TOcean-adjacent table;
 {0x1b..0x2a} pass-through; {0x2b..0x3a} -> return 0xff. Non-standard conventions likely.
 Attempt only as a dedicated effort; not the clean lane.
+
+## Update (window 7) -- navy-order priority family
+Landed: InitializeNavyOrderPriorityTables (0x556610, 79.17%) -- seeds+selection-sorts three
+14-entry order-type ranking tables (added globals g_NavyResolveOrderRanking 0x6a3e28,
+g_NavyMissionOrderRanking 0x6a3e50, g_NavyPriorityOrderRanking 0x6a3e90) by descriptor
+weight columns (read as dwords). Also landed earlier this session: RecomputeTileStrategicScoreHeatmap
+(0x518130, 33.71% but FPU/vtable-exact), + the NormalizeWrappedMapCoord/hex-helper batch.
+
+### NEXT (navy-order manager chain -- receiver = g_pNavyOrderManager @ 0x6a43e4, a TNavyMgr):
+- 0x557040 RefreshNavyOrderCycleAndClearReadyFlags: TNavyMgr method. `this->field4 =
+  PruneNavyOrderIfUnserviceableOrNoChildren(); for (TShip* s=g_pNavyPrimaryOrderListHead;
+  s; s=s->next24) if (s->field34==1) s->field34=0;`. Called by AdvanceGlobalTurnStateMachine
+  with `mov ecx,[0x6a43e4]`. BLOCKER: calls 0x555090 (still a stub) -- port both together.
+- 0x555090 PruneNavyOrderIfUnserviceableOrNoChildren (159B): __thiscall on a navy-order NODE
+  (in_ECX[4]=child list, in_ECX[2]=order-type switch, vtable slot 7 = Free). RECURSIVE (calls
+  itself via ILT thunk 0x4063b1). case 5 dispatches g_pDiplomacyTurnStateManager->vtable[9] and
+  reads g_pGlobalMapState->cityScoreTable[...] terrainType. Needs the navy-order-node class +
+  its vtable slot 7 modeled. Medium-hard; do as a dedicated 2-function batch.
+- Siblings still stubbed: 0x556850 ResetNavyOrderListsAndManagerOwner (walks two global order
+  lists calling vtable dtors), 0x556410 UpdateNavyOrderMapMarkerByOrderType, 0x557320
+  BuildNavyOrderPromptTextByLocalizationMode (MFC text -- defer).
