@@ -48,3 +48,20 @@ functions defined inline; verify codegen matches vs writing blocks out longhand 
 original emitted straight-line repeats, a static helper that fully inlines gives identical
 bytes while deduplicating source). Candidates: the DIB-flip offset block, the
 {ResetQuickDrawStrokeState; UpdatePaletteIndexWithDefaultFallback} pair, srcRect+blit setup.
+
+## Unit-pass block decoded (decompile lines 330-410) -- THE canonical repeated motif
+unit = tileGrid[neighborIdx].occupant4; if (unit):
+  srcX = unit->+0x0c * cellW90 (+ cellW90/2 when odd row); srcY = unit->+0x20 ? cellH94 : 0;
+  srcRect = {srcX, srcY, +cellW90, +cellH94};
+  ComputeTacticalUnitSpriteDrawRectAndApplyFacingOffset(...); ResetQuickDrawStrokeState();
+  UpdatePaletteIndexWithDefaultFallback();
+  if (ClipRect_AdjustOffset_Validate(&dst)) {
+    <DIB-flip offset on unitSpriteAtlasSurface68 for srcRect>
+    <DIB-flip offset on g_pActiveQuickDrawSurfaceContext for dstRect>
+    BlitRectWithOptionalTransparency(&atlas68->blitSurface /* ctx+4 */,
+                                     &g_pActiveQuickDrawSurfaceContext->blitSurface, &src, &dst);
+  }
+  SetQuickDrawStrokeColor(&...);
+Neighbor selection: edgeKind(local_124) 1/5 -> puStack_b0 idx, 2/4 -> local_c4 idx (the row-adjacent
+tiles computed in the prologue). Fort pass mirrors this with fortLevelAtlasSurface6C and
+srcX=(level*3[+facing])*cellW90.
