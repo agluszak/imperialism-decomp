@@ -26,7 +26,7 @@ public:
   // RTTI oracle: sizeof(TIdleMeAnimation) == 0x2c, identical to TAnimation -- no own
   // fields.
 
-  TIdleMeAnimation();
+  TIdleMeAnimation() {}
 
   // Post-construction init (0x4ac9c0): stamps the animation with the next value of
   // the g_nIdleMeAnimationNextRegistryTag counter (as its registryTag18), zeroes the

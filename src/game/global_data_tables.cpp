@@ -104,6 +104,15 @@ TDiplomacyMgr* g_pDiplomacyTurnStateManager = 0;
 TNavyMgr* g_pNavyOrderManager = 0;
 // GLOBAL: IMPERIALISM 0x006a3338
 TArmyMgr* g_pMapContextActionManager = 0;
+
+// GLOBAL: IMPERIALISM 0x00695428
+extern const unsigned char g_MapContextStaticTable_00695428[0x20] = {
+    0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0};
+// GLOBAL: IMPERIALISM 0x0064dc30
+char* g_pBattleReportSharedText_0064dc30 = g_szEmptyString;
+// GLOBAL: IMPERIALISM 0x00695448
+extern const unsigned char g_MapContextStaticTable_00695448[0x20] = {
+    1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0};
 char g_vtblTSortedByRelationshipList = 0;
 // Last cursor edge-auto-scroll timestamp in GetTickCountDiv16 units
 // (TAmbitApplication::HandleCursor, 0x49e320).

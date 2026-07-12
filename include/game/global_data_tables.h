@@ -1,5 +1,7 @@
 #pragma once
 
+#include "game/CString.h"
+
 // reccmp `// GLOBAL:` address markers for symbols declared here live in
 // src/game/global_data_tables.cpp only (one marker per address).
 
@@ -340,6 +342,14 @@ extern const char s_ErrorCaption_00694204[];
 extern TDiplomacyMgr* g_pDiplomacyTurnStateManager;
 extern TNavyMgr* g_pNavyOrderManager;
 extern TArmyMgr* g_pMapContextActionManager;
+// Two 0x20-byte flag tables installed into TArmyMgr+0x14/+0x18 by
+// InitializeMapContextActionManager (0x4a18f0); 8 rows x 4 flag bytes.
+extern const unsigned char g_MapContextStaticTable_00695448[0x20];
+extern const unsigned char g_MapContextStaticTable_00695428[0x20];
+// Pointer to the current battle-report shared text (points at g_szEmptyString until
+// something retargets it); both 0x4acb60 and 0x4af0b0 wrap it in a CString for
+// ApplySharedStringToControlState.
+extern char* g_pBattleReportSharedText_0064dc30;
 extern int g_lastEdgeAutoScrollTick16;
 extern int g_nSaveFormatVersion;
 extern char g_szCmdSwitchLang_00694250[];

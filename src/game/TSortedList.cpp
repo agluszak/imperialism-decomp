@@ -218,9 +218,6 @@ void TSortedList::SetAtOrdinal(int ordinal, void** entryPtr, int unusedFlag) {
 // SYNTHETIC: IMPERIALISM 0x004888f0
 // TSortedList::`scalar deleting destructor'
 
-// FUNCTION: IMPERIALISM 0x004a8640
-TSortedList::TSortedList() {}
-
 // Genuine reconstruction, not base construction: derived ctors (TArmyStackList,
 // TTaskList) run the default TSortedList() first and then re-run the CPtrList ctor
 // over listState with their real block size, exactly as the original binary does.

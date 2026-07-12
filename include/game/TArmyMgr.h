@@ -9,6 +9,28 @@ class TSortedList;
 class TArmyStack;
 struct TControlPictureRectState;
 
+// 0x268-byte by-value POD record stored in TArmyMgr::mapContextActionRecordList04.
+// Field evidence from the battle-report layout hook (0x4acb60): the first bytes are a
+// small nation-id array indexed by participantIndex02; actionType04 selects how
+// tileOrObject08 is interpreted (0/3/4 -> index into g_pGlobalMapState's stride-0xa8
+// table; otherwise a pointer whose short at +0xc is the map cell). The +0x258 tail is
+// the report-marker placement state stamped by that hook.
+struct MapContextActionRecord {
+  unsigned char nationIds[2];       // +0x00
+  unsigned char participantIndex02; // +0x02
+  unsigned char pad03;              // +0x03
+  int actionType04;                 // +0x04 (0..4; 2 widens the marker sprite code)
+  int tileOrObject08;               // +0x08 (dual-purpose per actionType04 -- keep int)
+  unsigned char pad0c[0x258 - 0x0c];
+  int markerPixelX258;         // +0x258
+  int markerPixelY25c;         // +0x25c
+  unsigned char placedFlag260; // +0x260
+  unsigned char pad261;        // +0x261
+  short markerSpriteCode262;   // +0x262
+  short listOrdinal264;        // +0x264
+  unsigned char pad266[0x268 - 0x266];
+};
+
 // TODO(manifest): describe TArmyMgr and its role. Base edge (TObject) recovered from RTTI CRuntimeClass chain: TArmyMgr -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x0064c928
 class TArmyMgr : public TObject {
@@ -111,7 +133,11 @@ public:
   // NOTE: TObject's own vptr occupies the object's first 4 bytes (ASSERT_SIZE(TObject,
   // 0x4)), so every "+0xNN" comment below is an absolute this-relative offset and this
   // pad must be 4 bytes short of its target to land the next field correctly.
-  unsigned char pad04[0x08 - 0x04];
+  // +0x04 -- by-value record list of map-context action records (battle markers etc.):
+  // a TSortedPtrList whose recordSize14 is set to sizeof(MapContextActionRecord) == 0x268
+  // by InitializeMapContextActionManager. Walked ordinally by the battle-report layout
+  // hook (0x4acb60).
+  class TSortedPtrList* mapContextActionRecordList04;
   // +0x08 -- read by GetByteFlagAtOffset8 (0x4a6dd0, a bare `this+8` thiscall getter);
   // sole call site is TSimMgr::AdvanceGlobalTurnStateMachine case 0xd, gating whether the
   // terrain-eligibility branch runs. No confirmed writer site yet.
@@ -124,7 +150,10 @@ public:
   // +0x10 -- set to 1 by OrphanCallChain_C4_I26_004a1e40's non-turn-3 branch right before
   // calling OrphanCallChain_C12_I108_004a2390; role not pinned down beyond that write site.
   int pendingRebuildFlag10;
-  unsigned char pad18[0x1c - 0x14];
+  // +0x14/+0x18 -- static lookup-table pointers installed by
+  // InitializeMapContextActionManager (0x695448 / 0x695428); consumers not yet mapped.
+  const void* staticTable14;
+  const void* staticTable18;
   // +0x1c..+0x31b -- one entry per map tile (0x180 = 384 tiles, confirmed by
   // ProcessTileUnitListsAndApplyRandomStatusUpdates's own fill loop at 0x4a1f80, which
   // writes exactly 0x180 consecutive shorts starting here via

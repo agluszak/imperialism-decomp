@@ -323,14 +323,6 @@ undefined4 BuildDiplomacyNationOverlayGeometryAndHitMasks_Impl_At004f3a50(void)
   return 0;
 }
 
-// ghidra_name TDiplomacyMapView::BuildDiplomacyNationOverlayGeometryAndHitMasks
-// ghidra_proto undefined BuildDiplomacyNationOverlayGeometryAndHitMasks()
-// FUNCTION: IMPERIALISM 0x004f3ea0
-undefined4 BuildDiplomacyNationOverlayGeometryAndHitMasks(void)
-{
-  return 0;
-}
-
 // ghidra_name TToolBarCluster::InitializeDiplomacyMinisterActionControlsAndLabels
 // ghidra_proto undefined InitializeDiplomacyMinisterActionControlsAndLabels()
 // FUNCTION: IMPERIALISM 0x004f4620

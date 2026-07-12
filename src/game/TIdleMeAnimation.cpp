@@ -14,8 +14,6 @@ TIdleMeAnimation::~TIdleMeAnimation() {}
 
 IMPLEMENT_DYNCREATE(TIdleMeAnimation, TAnimation)
 
-TIdleMeAnimation::TIdleMeAnimation() {}
-
 // FUNCTION: IMPERIALISM 0x004ac9c0
 void TIdleMeAnimation::ConstructTIdleMeAnimationBaseState(TView* ownerView) {
   int tag = g_nIdleMeAnimationNextRegistryTag;

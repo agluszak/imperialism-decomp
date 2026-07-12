@@ -1,5 +1,8 @@
 #include "game/TArmyMgr.h"
 
+#include "game/TList.h"
+#include "game/TSortedPtrList.h"
+
 #include "game/CIterator.h"
 #include "game/CString.h"
 #include "game/TArmyBattle.h"
@@ -50,7 +53,16 @@ TArmyMgr::~TArmyMgr() {}
 
 // FUNCTION: IMPERIALISM 0x004a18f0
 void TArmyMgr::InitializeMapContextActionManager() {
-  reinterpret_cast<void(__fastcall*)(void*, int)>(0x004a18f0)(this, 0);
+  pendingUnitPool0c = new TList();
+  staticTable14 = g_MapContextStaticTable_00695448;
+  staticTable18 = g_MapContextStaticTable_00695428;
+  needsTerrainRefreshFlag39a = 0;
+  ourStackBattle39c = 0;
+  enemyStackBattle3a0 = 0;
+  activeBattleView3a4 = 0;
+  mapContextActionRecordList04 = new TSortedPtrList();
+  mapContextActionRecordList04->recordSize14 = sizeof(MapContextActionRecord);
+  flag8 = 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004a1a00

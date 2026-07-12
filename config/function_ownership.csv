@@ -2056,6 +2056,7 @@ address|target_cpp|ownership|note
 4f3d60|src/game/TDiplomacyMapView.cpp|manual|marker_sync
 4f3e30|src/game/TDiplomacyMapView.cpp|manual|marker_sync
 4f3e60|src/game/TDiplomacyMapView.cpp|manual|marker_sync
+4f3ea0|src/game/TDiplomacyMapView.cpp|manual|marker_sync
 4f48c0|src/game/TDiplomacyMapView.cpp|manual|marker_sync
 4f5410|src/game/TDiplomacyMapView.cpp|manual|marker_sync
 4f5e00|src/game/TDiplomacyMapView.cpp|manual|marker_sync

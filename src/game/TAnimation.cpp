@@ -41,8 +41,6 @@ TAnimation::~TAnimation() {}
 
 IMPLEMENT_DYNCREATE(TAnimation, TObject)
 
-TAnimation::TAnimation() {}
-
 // FUNCTION: IMPERIALISM 0x0049f0c0
 void TAnimation::ConstructTAnimationBaseState(TView* ownerView, RECT* rect, short frameCount,
                                               short param4, int ticksPerFrame, int tag) {

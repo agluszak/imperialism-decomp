@@ -31,7 +31,7 @@ public:
   DECLARE_DYNCREATE(TDiplomacyMapView)
   virtual ~TDiplomacyMapView() override { // NOOP: verified empty in original 0x004f3cc0
   }
-  void Free() override;                  // slot 0x07 0x4f3e60
+  void Free() override; // slot 0x07 0x4f3e60
   void HandleEvent(int commandId, TEventHandler* sourceHandler,
                    TEvent* event) override; // slot 0x0f 0x4f70c0
   void ForwardParam(int param) override;    // slot 0x12 0x4f7130
@@ -56,6 +56,9 @@ public:
                                                          int bmpId); // slot 0x78
   virtual void InvalidateAndForwardTabSwitchToChild(void* arg1, void* arg2,
                                                     void* arg3); // slot 0x79
+  // 0x4f3ea0 (1534 bytes) -- rebuilds the diplomacy-map nation overlay geometry and hit
+  // masks; body not yet ported (claimed as a manual stub so derived views can call it).
+  void BuildDiplomacyNationOverlayGeometryAndHitMasks();
 
   TDiplomacyMapView();
 
@@ -87,7 +90,12 @@ protected:
   // 0xb8 — a state code compared to 5 (mirrors interactionModeAt94's pattern); reset to 0 by
   // CallVoidSlotA0 (slot 0xa0) and in the constructor.
   int stateFlagAtB8;
-  char pad_bc[0x468];
+  char pad_bc[0x514 - 0xbc];
+  // +0x514/+0x518 -- map-view origin in screen pixels; the battle-report layout hook
+  // (0x4acb60) stamps marker positions as origin + hex-raster offset.
+  int mapOriginPixelX514;
+  int mapOriginPixelY518;
+  char pad_51c[0x524 - 0x51c];
   int legendSurfaceModeAt524;
   // 0x528 — hovered/selected council slot index; TCouncilView's cursor-hover override
   // compares it against its own nation-count tail field.

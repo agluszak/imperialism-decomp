@@ -72,7 +72,7 @@ public:
   int registryTag18;        // +0x18 animator-registry tag (0x2711 = selection marker)
   RECT screenRect1C;        // +0x1c on-screen rect invalidated per flip
 
-  TAnimation();
+  TAnimation() {}
 
   // Post-construction init used by the tactical selection marker (0x5a9bb0): owner
   // view, screen rect, frame count, mode word, tick interval, registry tag.

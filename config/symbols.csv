@@ -1459,7 +1459,7 @@ address|name|symbol|size|type|prototype|provenance
 4a1870|ConstructMapContextActionManager||25|function|void __thiscall ConstructMapContextActionManager(void)|
 4a18a0|TArmyMgr::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 4a18d0|DestructTArmyMgrAndMaybeFree_Impl||7|function|undefined DestructTArmyMgrAndMaybeFree_Impl()|
-4a18f0|TArmyStackList::InitializeMapContextActionManager||208|function|void __thiscall InitializeMapContextActionManager(void)|
+4a18f0|TArmyMgr::InitializeMapContextActionManager||208|function|void __thiscall InitializeMapContextActionManager(void)|
 4a1a00|TArmyMgr::Free||296|function|undefined WrapperFor_FreeHeapBufferIfNotNull_At004a1a00(void)|
 4a1b80|TArmyMgr::ReadFrom||403|function|undefined RebuildMapActionSelectionCachesAndContexts()|
 4a1d90|WrapperFor_FreeHeapBufferIfNotNull_At004a1d90||35|function|undefined WrapperFor_FreeHeapBufferIfNotNull_At004a1d90()|
@@ -1624,7 +1624,7 @@ address|name|symbol|size|type|prototype|provenance
 4aca60|TIdleMeAnimation::WrapperFor_InvalidateCityDialogRectRegion_At0049f140||38|function|undefined DestructTIdleMeAnimationAndMaybeFree(void)|
 4acaa0|TBattleReportView::CreateObject|?CreateObject@TBattleReportView@@SGPAVCObject@@XZ|123|function|undefined CreateObject()|rtti
 4acb40|TBattleReportView::GetRuntimeClass||6|function|CRuntimeClass* GetRuntimeClass() const|rtti
-4acb60|TBattleReportView::NoOpUiLifecycleHook||2041|function|void NoOpUiLifecycleHook(int arg)|
+4acb60|TBattleReportView::BuildBattleReportLayoutAndMarkers||2041|function|void NoOpUiLifecycleHook(int arg)|
 4ad560|TBattleReportView::Free||37|function|void Free()|
 4ad5a0|TBattleReportView::CanHandleCityDialogActionFalse||386|function|char CanHandleCityDialogActionFalse(int action)|
 4ad7a0|TBattleReportView::HandleEvent||937|function|void HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event)|

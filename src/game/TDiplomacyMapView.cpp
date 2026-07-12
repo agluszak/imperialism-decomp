@@ -43,6 +43,11 @@ const unsigned int kAddrDiplomacyHitBounds = 0x006A3008;
 const unsigned int kAddrResolveDiplomacyActionValue = 0x004F5F70;
 } // namespace
 
+// FUNCTION: IMPERIALISM 0x00430730
+DiplomacyMaskBufferRun::~DiplomacyMaskBufferRun() {
+  delete[] maskBytesAt00;
+}
+
 // SYNTHETIC: IMPERIALISM 0x004f3ae0
 // TDiplomacyMapView::CreateObject
 
@@ -50,11 +55,6 @@ const unsigned int kAddrResolveDiplomacyActionValue = 0x004F5F70;
 // TDiplomacyMapView::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TDiplomacyMapView, TPicture)
-
-// FUNCTION: IMPERIALISM 0x00430730
-DiplomacyMaskBufferRun::~DiplomacyMaskBufferRun() {
-  delete[] maskBytesAt00;
-}
 
 // FUNCTION: IMPERIALISM 0x004f3b80
 TDiplomacyMapView::TDiplomacyMapView() : TPicture() {
@@ -98,6 +98,9 @@ void TDiplomacyMapView::Free() {
   regionAt9c = 0;
   TView::Free();
 }
+
+// FUNCTION: IMPERIALISM 0x004f3ea0
+void TDiplomacyMapView::BuildDiplomacyNationOverlayGeometryAndHitMasks() {}
 
 // FUNCTION: IMPERIALISM 0x004f48c0
 void TDiplomacyMapView::ApplyRectSlot110(RECT* rectBuffer) {

@@ -3,6 +3,7 @@
 #include "game/TDiplomacyMapView.h"
 
 class TAnimator;
+class TIdleMeAnimation;
 
 // TODO(manifest): describe TBattleReportView and its role. Constructor evidence
 // calls TDiplomacyMapView::TDiplomacyMapView, initializes the derived tail at
@@ -11,7 +12,7 @@ class TAnimator;
 class TBattleReportView : public TDiplomacyMapView {
 public:
   DECLARE_DYNCREATE(TBattleReportView)
-  ~TBattleReportView() override;                   // slot 0x01 scalar deleting dtor
+  ~TBattleReportView() override; // slot 0x01 scalar deleting dtor
 
   void Free() override; // slot 0x07 0x4ad560
   void HandleEvent(int commandId, TEventHandler* sourceHandler,
@@ -30,7 +31,7 @@ public:
 
 private:
   int selectedReportIndex24c8;
-  void* transientRegistryObject24cc;
+  TIdleMeAnimation* transientRegistryObject24cc;
 };
 
 ASSERT_SIZE(TBattleReportView, 0x24d0);

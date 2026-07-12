@@ -18,3 +18,12 @@ TStaticText* __cdecl RefreshActiveControlThenApplyThemeStyleAndCaption(unsigned 
 // the control, and map shadowThemeCode into the control's +0x94 shadow style flags.
 void __cdecl ApplyUiTextStyleAndThemeFlags(TDropShadowText* control, int unused, int pointSize,
                                            int shadowThemeCode, int textThemeCode);
+
+class TView;
+
+// 0x5c4850: load string (group,index) from the module library cache and apply it to the
+// control via ApplySharedStringToControlState.
+void LoadUiStringByGroupAndIndexToControlObject(short group, short index, TView* control);
+
+// 0x5c49d0: forward the shared string (by value) to the control's EnableAndProcessFlag.
+void ApplySharedStringToControlState(CString sharedString, TView* control);
