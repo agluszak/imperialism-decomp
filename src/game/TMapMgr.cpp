@@ -1151,6 +1151,26 @@ void SplitTileIndexToHexRasterColumnX2AndRow(short tileIndex, short* outColX2,
   *outRow = row;
 }
 
+// Combines a doubled hex-raster column (columnX2, as produced by
+// SplitTileIndexToHexRasterColumnX2AndRow) and a row back into a linear tile index.
+// FUNCTION: IMPERIALISM 0x00512850
+int ComputeTileIndexFromHexColumnX2AndRow(int columnX2, int row) {
+  return columnX2 / 2 + row * 0x6c;
+}
+
+// Row delta (in tiles) for one of the six hex-neighbour directions, wrapping the direction
+// index into [0,6). Column deltas live in the sibling table g_Build_Hex_Area_LookupTable_00696E70.
+// FUNCTION: IMPERIALISM 0x005128f0
+short LookupHexNeighborRowDeltaByDirection(short direction) {
+  if (direction < 0) {
+    return g_Build_Hex_Area_LookupTable_00696E80[static_cast<short>(direction + 6)];
+  }
+  if (direction > 5) {
+    direction = static_cast<short>(direction - 6);
+  }
+  return g_Build_Hex_Area_LookupTable_00696E80[direction];
+}
+
 // FUNCTION: IMPERIALISM 0x00512930
 extern "C" short* __cdecl BuildHexAreaTileIndexList(short centerTileIndex, short radius) {
   short* buffer = static_cast<short*>(::operator new(static_cast<short>(radius * 6) << 1));

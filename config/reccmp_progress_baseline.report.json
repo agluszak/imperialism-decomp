@@ -16779,13 +16779,14 @@
     },
     {
       "address": "0x512850",
-      "matching": 0.18181818181818182,
+      "matching": 0.3157894736842105,
       "name": "NoOpMapTilePredicateStub",
       "type": 1
     },
     {
       "address": "0x5128f0",
-      "matching": 0.13333333333333333,
+      "effective": true,
+      "matching": 0.8461538461538461,
       "name": "ReturnIfTileIndexNegative",
       "type": 1
     },
@@ -16869,7 +16870,7 @@
     },
     {
       "address": "0x5136a0",
-      "matching": 0.8888888888888888,
+      "matching": 1.0,
       "name": "TMapMgr::OrphanLeaf_NoCall_Ins35_005136a0",
       "type": 1
     },
@@ -17067,7 +17068,7 @@
     },
     {
       "address": "0x515b10",
-      "matching": 0.3378995433789954,
+      "matching": 0.3167420814479638,
       "name": "TMapMgr::MarkSeedNeighborTilesUnavailableByCapabilityMaskProfileB",
       "type": 1
     },

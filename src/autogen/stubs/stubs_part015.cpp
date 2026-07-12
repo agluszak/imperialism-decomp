@@ -107,22 +107,6 @@ undefined4 SplitTileIndexToRowAndColumn(void)
   return 0;
 }
 
-// ghidra_name NoOpMapTilePredicateStub
-// ghidra_proto undefined NoOpMapTilePredicateStub()
-// FUNCTION: IMPERIALISM 0x00512850
-undefined4 NoOpMapTilePredicateStub(void)
-{
-  return 0;
-}
-
-// ghidra_name ReturnIfTileIndexNegative
-// ghidra_proto undefined ReturnIfTileIndexNegative()
-// FUNCTION: IMPERIALISM 0x005128f0
-undefined4 ReturnIfTileIndexNegative(void)
-{
-  return 0;
-}
-
 // ghidra_name TDeluxeText::CanBuildPortAtTile
 // ghidra_proto char __thiscall CanBuildPortAtTile(int nTileIndex)
 // FUNCTION: IMPERIALISM 0x005137b0
