@@ -114,3 +114,40 @@ setup before a clean port -- mapped here so a future window can pre-stage it:
 Either (a) do the global/bridge pre-staging above then port the dependent scorers, or
 (b) shift to a fresh untouched address range / a small class-recovery to open a new clean
 lane, rather than more single-function hunting in the mined ranges.
+
+## Update (window 6) -- Ghidra live in cloud + hex home-tile family
+Set up + verified live Ghidra in cloud (Ghidra 12.1.2 @ /opt/ghidra_12.1.2_PUBLIC, LFS
+gzf pulled, `just restore-project` + `just ghidra-decompile` work; export
+GHIDRA_INSTALL_DIR in fresh shell). Fixed the stale AGENTS.md/CLAUDE.md note.
+
+Landed (clean): NormalizeWrappedMapCoord108x60 (0x513050, 85%) + fixed sibling 217x60
+75->95% via else-first branch (heuristic 78) + retired 3 reinterpret_cast thunk bridges.
+LookupHexNeighborRowDeltaByDirection (0x5128f0, 100% eff -- was Ghidra
+'ReturnIfTileIndexNegative'; return short so only ax matters).
+ComputeTileIndexFromHexColumnX2AndRow (0x512850, ~31%; was 'NoOpMapTilePredicateStub';
+columnX2/2 + row*108; param_1 is int not short (cdq/sub/sar proves signed round-to-zero);
+capped by a non-standard eax-first calling convention MSVC5 C++ cannot express).
+
+### DEFERRED (rabbit hole): IsValidSecondaryNationHomeTileCandidate (0x513980, 632B)
+Fully analyzed, receiver = TMapMgr (thiscall, short tileIndex). terrainStateTable
+(TTerrainStateRecordView*, +0x0c). Structure: reject if terrainType00 in {2,3}; else scan
+6 hex neighbors (colX2 = row%2 + (idx%108)*2 inlined from SplitTileIndex...; colDelta from
+g_Build_Hex_Area_LookupTable_00696E70; rowDelta from LookupHexNeighborRowDeltaByDirection;
+NormalizeWrappedMapCoord217x60; ComputeTileIndexFromHexColumnX2AndRow; clamp to [0,0x194f]).
+If a neighbor tile terrainType00==5, set result=1, then scan ITS 6 neighbors: if any
+neighbor2.ownerNationTag04 < 0x17 && != this tile's owner -> result=0. Also if
+neighbor.pad16 (offset 0x16) != -1 -> result=0. Fallback: if result==0 && tile.roadFlag
+(0x02) != 0 && EvaluateTerrainFlowCrossNationBoundaryToSea(idx)==0 -> result=1.
+All 3 hex helpers now ported (call directly, ignore ILT thunks 0x40676c/0x40907f/0x402338).
+**BLOCKER**: the fallback calls 0x563b70 (below), still a `(void)` stub -- must be ported
+(promote-to-unblock) or given a matching signature first, else the call won't compile with
+the tileIndex arg.
+
+### DEFERRED (rabbit hole): EvaluateTerrainFlowCrossNationBoundaryToSea (0x563b70, 436B)
+Free function (uses g_pGlobalMapState, not this), char(short tileIndex). River/terrain-flow
+tracer. Needs modeling: DAT_0065c668 / DAT_0065c66a (paired short flow-direction lookup
+tables, stride 4), plus a short table hidden right AFTER TOcean::classTOcean CRuntimeClass
+(`&TOcean::classTOcean.m_lpszClassName + n*2 + 2`), plus thunk func_0x00403968 (hex-step in
+direction). Terrain-type buckets: sVar in {0xb..0x1a} indexes the TOcean-adjacent table;
+{0x1b..0x2a} pass-through; {0x2b..0x3a} -> return 0xff. Non-standard conventions likely.
+Attempt only as a dedicated effort; not the clean lane.
