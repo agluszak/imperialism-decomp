@@ -395,14 +395,6 @@ undefined4 BuildDecimalConversionStateFromFpInput(void)
   return 0;
 }
 
-// ghidra_name ConvertFpMantissaTo96BitIntegerAndExponent
-// ghidra_proto undefined ConvertFpMantissaTo96BitIntegerAndExponent()
-// FUNCTION: IMPERIALISM 0x005f4a80
-undefined4 ConvertFpMantissaTo96BitIntegerAndExponent(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_amsg_exit_At005f4b40
 // ghidra_proto undefined WrapperFor_amsg_exit_At005f4b40()
 // FUNCTION: IMPERIALISM 0x005f4b40

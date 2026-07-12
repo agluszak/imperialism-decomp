@@ -139,6 +139,45 @@ void ShiftRight96BitIntegerByBitCount(unsigned int* value, int bitCount) {
   } while (byteOffset >= 0);
 }
 
+// Converts an IEEE-754 double to an 80-bit extended float (64-bit mantissa in words 0/1,
+// 15-bit exponent + sign in the low half of word 2): rebiases the exponent, expands the
+// 52-bit mantissa with its implicit integer bit, and left-normalizes denormals.
+// FUNCTION: IMPERIALISM 0x005F4A80
+void ConvertFpMantissaTo96BitIntegerAndExponent(unsigned int* out, unsigned int* dbl) {
+  unsigned int intBit = 0x80000000;
+  unsigned short highWord = *reinterpret_cast<unsigned short*>(reinterpret_cast<int>(dbl) + 6);
+  unsigned int lowDword = dbl[0];
+  unsigned int expBits = (highWord & 0x7ff0) >> 4;
+  int exp;
+  if (expBits == 0) {
+    intBit = 0;
+    if ((dbl[1] & 0xfffff) == 0 && lowDword == 0) {
+      out[1] = 0;
+      out[0] = 0;
+      *reinterpret_cast<unsigned short*>(out + 2) = 0;
+      return;
+    }
+    exp = 0x3c01;
+  } else if (expBits == 0x7ff) {
+    exp = 0x7fff;
+  } else {
+    exp = expBits + 0x3c00;
+  }
+  unsigned short expWord = static_cast<unsigned short>(exp);
+  unsigned int mantHi = lowDword >> 0x15 | (dbl[1] & 0xfffff) << 0xb | intBit;
+  out[1] = mantHi;
+  out[0] = lowDword << 0xb;
+  for (; intBit == 0; intBit = intBit & 0x80000000) {
+    intBit = mantHi * 2;
+    mantHi = out[0] >> 0x1f | intBit;
+    exp = exp + 0xffff;
+    expWord = static_cast<unsigned short>(exp);
+    out[1] = mantHi;
+    out[0] = out[0] * 2;
+  }
+  *reinterpret_cast<unsigned short*>(out + 2) = expWord | highWord & 0x8000;
+}
+
 // FUNCTION: IMPERIALISM 0x005F7830
 int AddUintWithCarryOutFlag(unsigned int a, unsigned int b, unsigned int* out) {
   int carry = 0;
