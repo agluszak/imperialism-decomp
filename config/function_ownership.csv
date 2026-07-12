@@ -5173,6 +5173,9 @@ address|target_cpp|ownership|note
 5f41e0|src/game/library_msvc500_fid.cpp|library|marker_sync
 5f4270|src/game/library_msvc500_fid.cpp|library|marker_sync
 5f43e0|src/game/bignum96_math.cpp|manual|marker_sync
+5f44f0|src/game/bignum96_math.cpp|manual|marker_sync
+5f4510|src/game/bignum96_math.cpp|manual|marker_sync
+5f4520|src/game/bignum96_math.cpp|manual|marker_sync
 5f4950|src/game/library_msvc500_fid.cpp|library|marker_sync
 5f4b50|src/game/library_msvc500_fid.cpp|library|marker_sync
 5f4b70|src/game/library_msvc500_fid.cpp|library|marker_sync
@@ -5212,6 +5215,9 @@ address|target_cpp|ownership|note
 5f7300|src/game/library_msvc500_fid.cpp|library|marker_sync
 5f77d0|src/game/library_msvc500_fid.cpp|library|marker_sync
 5f7830|src/game/bignum96_math.cpp|manual|marker_sync
+5f7860|src/game/bignum96_math.cpp|manual|marker_sync
+5f78d0|src/game/bignum96_math.cpp|manual|marker_sync
+5f7900|src/game/bignum96_math.cpp|manual|marker_sync
 5f8640|src/game/library_msvc500_fid.cpp|library|marker_sync
 5f8680|src/game/library_msvc500_fid.cpp|library|marker_sync
 5f8770|src/game/library_msvc500_fid.cpp|library|marker_sync

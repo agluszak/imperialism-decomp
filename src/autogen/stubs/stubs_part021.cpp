@@ -363,30 +363,6 @@ undefined4 Truncate96BitIntegerAtBitWithRounding(void)
   return 0;
 }
 
-// ghidra_name Copy96BitIntegerWords
-// ghidra_proto undefined Copy96BitIntegerWords()
-// FUNCTION: IMPERIALISM 0x005f44f0
-undefined4 Copy96BitIntegerWords(void)
-{
-  return 0;
-}
-
-// ghidra_name Zero96BitIntegerWords
-// ghidra_proto undefined Zero96BitIntegerWords()
-// FUNCTION: IMPERIALISM 0x005f4510
-undefined4 Zero96BitIntegerWords(void)
-{
-  return 0;
-}
-
-// ghidra_name Is96BitIntegerZero
-// ghidra_proto undefined Is96BitIntegerZero()
-// FUNCTION: IMPERIALISM 0x005f4520
-undefined4 Is96BitIntegerZero(void)
-{
-  return 0;
-}
-
 // ghidra_name ShiftRight96BitIntegerByBitCount
 // ghidra_proto undefined ShiftRight96BitIntegerByBitCount()
 // FUNCTION: IMPERIALISM 0x005f4540
@@ -583,30 +559,6 @@ undefined4 ConsoleCtrlHandlerDispatchRuntimeSignalCallbacks(void)
 // ghidra_proto undefined RaiseRuntimeSignalAndInvokeHandler()
 // FUNCTION: IMPERIALISM 0x005f75c0
 undefined4 RaiseRuntimeSignalAndInvokeHandler(void)
-{
-  return 0;
-}
-
-// ghidra_name Add96BitIntegerWithCarry
-// ghidra_proto undefined Add96BitIntegerWithCarry()
-// FUNCTION: IMPERIALISM 0x005f7860
-undefined4 Add96BitIntegerWithCarry(void)
-{
-  return 0;
-}
-
-// ghidra_name ShiftLeft96BitIntegerBy1
-// ghidra_proto undefined ShiftLeft96BitIntegerBy1()
-// FUNCTION: IMPERIALISM 0x005f78d0
-undefined4 ShiftLeft96BitIntegerBy1(void)
-{
-  return 0;
-}
-
-// ghidra_name ShiftRight96BitIntegerBy1
-// ghidra_proto undefined ShiftRight96BitIntegerBy1()
-// FUNCTION: IMPERIALISM 0x005f7900
-undefined4 ShiftRight96BitIntegerBy1(void)
 {
   return 0;
 }

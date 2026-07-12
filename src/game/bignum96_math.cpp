@@ -29,6 +29,38 @@ void SetBitIn96BitIntegerWithCarry(int* value, int bitIndex) {
     } while (wordIndex >= 0);
   }
 }
+// FUNCTION: IMPERIALISM 0x005F44F0
+void Copy96BitIntegerWords(unsigned int* dest, unsigned int* src) {
+  int offset = reinterpret_cast<int>(dest) - reinterpret_cast<int>(src);
+  int count = 3;
+  do {
+    *reinterpret_cast<unsigned int*>(reinterpret_cast<int>(src) + offset) = *src;
+    src = src + 1;
+    count = count - 1;
+  } while (count != 0);
+}
+
+// Zeroes the three words of a 96-bit integer.
+// FUNCTION: IMPERIALISM 0x005F4510
+void Zero96BitIntegerWords(unsigned int* value) {
+  value[0] = 0;
+  value[1] = 0;
+  value[2] = 0;
+}
+
+// Returns 1 when all three words are zero, else 0.
+// FUNCTION: IMPERIALISM 0x005F4520
+int Is96BitIntegerZero(int* value) {
+  int i = 0;
+  do {
+    if (*value != 0) {
+      return 0;
+    }
+    i = i + 1;
+    value = value + 1;
+  } while (i < 3);
+  return 1;
+}
 
 // FUNCTION: IMPERIALISM 0x005F7830
 int AddUintWithCarryOutFlag(unsigned int a, unsigned int b, unsigned int* out) {
@@ -39,4 +71,43 @@ int AddUintWithCarryOutFlag(unsigned int a, unsigned int b, unsigned int* out) {
   }
   *out = sum;
   return carry;
+}
+
+// Adds the 96-bit integer `addend` into `acc` in place (word 0 processed first with full
+// carry propagation, then words 1 and 2), using the single-word carry-add helper.
+// FUNCTION: IMPERIALISM 0x005F7860
+void Add96BitIntegerWithCarry(unsigned int* acc, unsigned int* addend) {
+  int carry = AddUintWithCarryOutFlag(acc[0], addend[0], &acc[0]);
+  if (carry != 0) {
+    carry = AddUintWithCarryOutFlag(acc[1], 1, &acc[1]);
+    if (carry != 0) {
+      acc[2] = acc[2] + 1;
+    }
+  }
+  carry = AddUintWithCarryOutFlag(acc[1], addend[1], &acc[1]);
+  if (carry != 0) {
+    acc[2] = acc[2] + 1;
+  }
+  AddUintWithCarryOutFlag(acc[2], addend[2], &acc[2]);
+}
+
+// Copies three consecutive words from `src` to `dest`.
+
+// Shifts the 96-bit integer left by one bit.
+// FUNCTION: IMPERIALISM 0x005F78D0
+void ShiftLeft96BitIntegerBy1(unsigned int* value) {
+  unsigned int w0 = value[0];
+  unsigned int w1 = value[1];
+  value[0] = w0 * 2;
+  value[1] = w1 * 2 | w0 >> 0x1f;
+  value[2] = value[2] << 1 | w1 >> 0x1f;
+}
+
+// Shifts the 96-bit integer right by one bit.
+// FUNCTION: IMPERIALISM 0x005F7900
+void ShiftRight96BitIntegerBy1(unsigned int* value) {
+  unsigned int w1 = value[1];
+  value[1] = w1 >> 1 | value[2] << 0x1f;
+  value[2] = value[2] >> 1;
+  value[0] = value[0] >> 1 | w1 << 0x1f;
 }

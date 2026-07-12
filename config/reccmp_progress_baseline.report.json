@@ -35784,19 +35784,21 @@
     },
     {
       "address": "0x5f44f0",
-      "matching": 0.14285714285714285,
+      "effective": true,
+      "matching": 0.8333333333333334,
       "name": "Copy96BitIntegerWords",
       "type": 1
     },
     {
       "address": "0x5f4510",
-      "matching": 0.5,
+      "effective": true,
+      "matching": 0.16666666666666666,
       "name": "Zero96BitIntegerWords",
       "type": 1
     },
     {
       "address": "0x5f4520",
-      "matching": 0.2857142857142857,
+      "matching": 0.6153846153846154,
       "name": "Is96BitIntegerZero",
       "type": 1
     },
@@ -36078,19 +36080,19 @@
     },
     {
       "address": "0x5f7860",
-      "matching": 0.0425531914893617,
+      "matching": 1.0,
       "name": "Add96BitIntegerWithCarry",
       "type": 1
     },
     {
       "address": "0x5f78d0",
-      "matching": 0.08695652173913043,
+      "matching": 0.42105263157894735,
       "name": "ShiftLeft96BitIntegerBy1",
       "type": 1
     },
     {
       "address": "0x5f7900",
-      "matching": 0.08695652173913043,
+      "matching": 0.6190476190476191,
       "name": "ShiftRight96BitIntegerBy1",
       "type": 1
     },
