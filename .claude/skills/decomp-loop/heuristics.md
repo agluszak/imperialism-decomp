@@ -1188,3 +1188,21 @@ headers before splicing.
     TTradeMgr::WriteTo. The 0x4acb60 idle hook turned out correctly attributed to
     TBattleReportView's own vtable slot 0x37 via note-74 checking -- it is just an
     unported 2041-byte body, still open.)
+
+77. **`abs()` matches the compiler's `cdq/xor/sub` idiom; an explicit sign-shift local forces
+    `sar` instead.** For `abs(a-b)`, write `abs(static_cast<int>(a) - static_cast<int>(b))`
+    (MSVC5 emits `sub; cdq; xor eax,edx; sub eax,edx`), NOT a named
+    `int sign = delta >> 31; (delta ^ sign) - sign` which emits `mov;sar;xor;sub` and mismatches.
+    Verified taking 0x522c10 from 50% -> 92%.
+78. **When a two-way branch's ELSE block is laid out inline (fall-through) with the THEN block
+    out-of-line (`cmp; jle <then>; <else>; jmp`), write the ELSE condition first.** For the
+    original `cmp cx,0x6c; jle <colB>; sub ecx,0xd8; jmp after; <colB>: ...`, source
+    `if (col1 <= 0x6c) { ...colB... } else { col1 -= 0xd8; }` lays THEN first and mismatches;
+    flip to `if (col1 > 0x6c) { col1 -= 0xd8; } else if (col2 > 0x6c) { ... }` to match. Took
+    0x522c10 from 92% -> 100%. General rule: match the block the compiler put at the
+    fall-through, not the source's natural then/else order.
+79. **A callsite's `movsx ax` (16-bit) vs `movsx eax` (32-bit) reveals the callee's true param
+    width.** 0x522000's palette call sign-extended a byte to only 16 bits (high word left holding
+    an unrelated `tileIndex*9`), proving ApplyTurnEventPaletteColorByEventCode's real parameter is
+    `short`, not its declared `int` -- a 1.5% residual not worth perturbing a shared signature for,
+    but a reliable width oracle when the callee is yours to retype.
