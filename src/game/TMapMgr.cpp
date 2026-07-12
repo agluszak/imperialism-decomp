@@ -1331,15 +1331,35 @@ extern "C" short __cdecl GetHexDirectionBetweenTiles(short sourceTile, short des
   return 3;
 }
 
+// FUNCTION: IMPERIALISM 0x00513050
+void NormalizeWrappedMapCoord108x60(short* xCoord, short* yCoord) {
+  short x = *xCoord;
+  if (x >= 108) {
+    x = x - 108;
+  } else {
+    if (x >= 0)
+      goto clampY;
+    x = x + 108;
+  }
+  *xCoord = x;
+clampY:
+  if (*yCoord < 0) {
+    *yCoord = 0;
+    return;
+  }
+  if (*yCoord > 59)
+    *yCoord = 59;
+}
+
 // FUNCTION: IMPERIALISM 0x00513120
 void NormalizeWrappedMapCoord217x60(short* xCoord, short* yCoord) {
   short x = *xCoord;
-  if (x < 216) {
+  if (x > 215) {
+    x = x - 217;
+  } else {
     if (x >= 0)
       goto clampY;
     x = x + 216;
-  } else {
-    x = x - 217;
   }
   *xCoord = x;
 clampY:

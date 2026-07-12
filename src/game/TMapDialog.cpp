@@ -13,7 +13,7 @@
 
 extern "C" long _ftol(void);
 
-undefined4 thunk_NormalizeWrappedMapCoord108x60(void);
+void NormalizeWrappedMapCoord108x60(short* xCoord, short* yCoord);
 undefined4 ComputeStridedRecordAddress6C(void);
 undefined4 thunk_ProjectTileIndexToWrappedScreenOffsetByScale(void);
 undefined4 thunk_SplitTileIndexToRowAndColumn(void);
@@ -194,8 +194,7 @@ void TMapDialog::ComputeWrappedMapCellAndRegionBandFromScreenCoord(int overlayRe
     rowValue = static_cast<short>(_ftol()) - 1;
   }
   *outRow = rowValue;
-  reinterpret_cast<void(__cdecl*)(short*, short*)>(thunk_NormalizeWrappedMapCoord108x60)(
-      outRow, reinterpret_cast<short*>(outCol));
+  NormalizeWrappedMapCoord108x60(outRow, reinterpret_cast<short*>(outCol));
 
   int wrappedY = viewportOffsetY + tileOffset[1];
   unsigned short signY = static_cast<unsigned short>(wrappedY >> 31);

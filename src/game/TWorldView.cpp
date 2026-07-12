@@ -17,7 +17,7 @@
 undefined4 thunk_GetMapActionContextByTileIndex(void);
 undefined4 ConstructScopedMapQuickDrawContextWithPaletteToken(void);
 undefined4 thunk_DestroyScopedMapQuickDrawContext(void);
-undefined4 thunk_NormalizeWrappedMapCoord108x60(void);
+void NormalizeWrappedMapCoord108x60(short* xCoord, short* yCoord);
 undefined4 ComputeStridedRecordAddress6C(void);
 
 namespace {
@@ -286,8 +286,7 @@ char TWorldView::DispatchUiMouseMoveToChildren(CPoint* point, int arg2, int arg3
   unsigned short tileCol = 0;
   short regionBand = 0;
   ComputeWrappedMapCellAndRegionBandFromScreenCoord(overlayRecord, &tileRow, &tileCol, &regionBand);
-  reinterpret_cast<void(__cdecl*)(short*, short*)>(thunk_NormalizeWrappedMapCoord108x60)(
-      &tileRow, reinterpret_cast<short*>(&tileCol));
+  NormalizeWrappedMapCoord108x60(&tileRow, reinterpret_cast<short*>(&tileCol));
 
   int stridedRecord = reinterpret_cast<int(__cdecl*)(int, int)>(ComputeStridedRecordAddress6C)(
       (int)tileRow, (int)tileCol);

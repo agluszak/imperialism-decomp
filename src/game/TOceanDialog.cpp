@@ -5,7 +5,7 @@
 
 // Standalone binary helper also reached via TWorldView.cpp/TMapDialog.cpp's identical
 // bridge (0x51ace0); real signature void(short*, short*).
-undefined4 thunk_NormalizeWrappedMapCoord108x60(void);
+void NormalizeWrappedMapCoord108x60(short* xCoord, short* yCoord);
 
 // SYNTHETIC: IMPERIALISM 0x00565db0
 // TOceanDialog::CreateObject
@@ -130,7 +130,6 @@ void TOceanDialog::ApplyDirectionalNudgeAndRefreshDisplay(unsigned char directio
 int TOceanDialog::ComputeWrappedTileIndexFromObjectOffset7C7E() {
   short row = static_cast<short>(scrollRowOffset7c + 0xe);
   short col = static_cast<short>(scrollColOffset7e + 0x10);
-  reinterpret_cast<void(__cdecl*)(short*, short*)>(thunk_NormalizeWrappedMapCoord108x60)(&col,
-                                                                                         &row);
+  NormalizeWrappedMapCoord108x60(&col, &row);
   return col + row * 0x6c;
 }

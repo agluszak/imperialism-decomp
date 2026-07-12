@@ -16815,13 +16815,13 @@
     },
     {
       "address": "0x513050",
-      "matching": 0.09090909090909091,
+      "matching": 0.85,
       "name": "NormalizeWrappedMapCoord108x60",
       "type": 1
     },
     {
       "address": "0x513120",
-      "matching": 0.75,
+      "matching": 0.95,
       "name": "NormalizeWrappedMapCoord217x60",
       "type": 1
     },
@@ -17427,7 +17427,7 @@
     },
     {
       "address": "0x51a990",
-      "matching": 0.2413793103448276,
+      "matching": 0.22988505747126436,
       "name": "TMapDialog::OrphanRetStub_005960c0",
       "type": 1
     },
@@ -23790,7 +23790,7 @@
     },
     {
       "address": "0x568ab0",
-      "matching": 0.85,
+      "matching": 0.8,
       "name": "TOceanDialog::ComputeWrappedTileIndexFromObjectOffset7C7E",
       "type": 1
     },

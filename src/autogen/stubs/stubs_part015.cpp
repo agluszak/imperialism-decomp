@@ -123,14 +123,6 @@ undefined4 ReturnIfTileIndexNegative(void)
   return 0;
 }
 
-// ghidra_name NormalizeWrappedMapCoord108x60
-// ghidra_proto undefined NormalizeWrappedMapCoord108x60()
-// FUNCTION: IMPERIALISM 0x00513050
-undefined4 NormalizeWrappedMapCoord108x60(void)
-{
-  return 0;
-}
-
 // ghidra_name TDeluxeText::CanBuildPortAtTile
 // ghidra_proto char __thiscall CanBuildPortAtTile(int nTileIndex)
 // FUNCTION: IMPERIALISM 0x005137b0
