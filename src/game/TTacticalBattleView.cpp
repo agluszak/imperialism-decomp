@@ -190,9 +190,27 @@ void TTacticalBattleView::CenterViewportAroundGridIndexAndSnap(int tileIndex) {
   RefreshControl();
 }
 
+// Horizontal battlefield scroll: on direction 8 pans left by one tile while origin > 0,
+// on direction 4 pans right by one tile while within the scrollable content width, then
+// repaints and refreshes the unit marker. Gated on the modal-wait-done flag.
 // FUNCTION: IMPERIALISM 0x005a8be0
-undefined TTacticalBattleView::AdjustTacticalUnitVerticalOffsetAndRefreshMarker() {
-  return 0;
+void TTacticalBattleView::AdjustTacticalUnitVerticalOffsetAndRefreshMarker(short scrollDirection) {
+  if (modalAnimWaitDoneFlag98 != 0) {
+    if (scrollDirection == 8) {
+      if (viewOriginX78 > 0) {
+        viewOriginX78 = viewOriginX78 - static_cast<short>(tileWidthPx88);
+        RefreshControl();
+        SpawnTacticalUiMarkerAtUnitTile();
+        return;
+      }
+    } else if (scrollDirection == 4 &&
+               static_cast<int>(viewOriginX78) <
+                   (static_cast<int>(scrollableContentWidth7A) - frameWidth34) - tileWidthPx88) {
+      viewOriginX78 = static_cast<short>(tileWidthPx88) + viewOriginX78;
+      RefreshControl();
+    }
+    SpawnTacticalUiMarkerAtUnitTile();
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x005a8ca0

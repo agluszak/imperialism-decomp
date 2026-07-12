@@ -126,8 +126,9 @@ public:
   // Writes the on-screen RECT of a unit's tile (grown 0x18 px upward, bottom-4;
   // zero RECT when tileIndex8 == -1). Hedged name.
   virtual undefined ComputeTacticalUnitTileScreenRect(TTacticalUnit* unit,
-                                                      RECT* rectOut);   // slot 0x6a 0x5a89f0
-  virtual undefined AdjustTacticalUnitVerticalOffsetAndRefreshMarker(); // slot 0x6b 0x5a8be0
+                                                      RECT* rectOut); // slot 0x6a 0x5a89f0
+  virtual void
+  AdjustTacticalUnitVerticalOffsetAndRefreshMarker(short scrollDirection); // slot 0x6b 0x5a8be0
   // Per-tile drawer for the rect applier's 0..0x1b2 pass (base = no-op; the army view
   // override renders the tile). Old OrphanRetStub name was junk; ret 8 = 2 args.
   virtual undefined DrawTacticalTileInClipRect(int tileIndex, RECT* clipRect); // slot 0x6c 0x5a83c0
