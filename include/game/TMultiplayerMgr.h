@@ -122,6 +122,7 @@ public:
   // functions. They build a stack packet and hand it to TNetMgr::Send via the
   // g_pNetMgr006a6014 global.
   void EmitTurnEvent3Mode18WithActiveNation(); // 0x5446a0
+  void EmitTurnEvent10ForFlaggedNationSlots(); // 0x544720
   void CreateAndSendTurnEvent11_MapOffsetAndFlags(unsigned char flagByte, int mapOffsetSelector,
                                                   int absoluteOffset, short shortA,
                                                   short shortB);       // 0x5493c0

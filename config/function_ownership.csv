@@ -3035,6 +3035,7 @@ address|target_cpp|ownership|note
 543910|src/game/TMultiplayerMgr_HandleDiplomacyTurnEvent.cpp|manual|marker_sync
 544540|src/game/TMultiplayerMgr.cpp|manual|marker_sync
 5446a0|src/game/TMultiplayerMgr.cpp|manual|marker_sync
+544720|src/game/TMultiplayerMgr.cpp|manual|marker_sync
 5449b0|src/game/TDiplomacyMgr.cpp|manual|marker_sync
 544cd0|src/game/NetMessage.cpp|manual|marker_sync
 544e30|src/game/TMultiplayerMgr.cpp|manual|marker_sync

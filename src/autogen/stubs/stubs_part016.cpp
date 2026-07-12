@@ -459,14 +459,6 @@ undefined4 ResetDiplomacyRuntimeSelectionAndSetModeNada(void)
   return 0;
 }
 
-// ghidra_name EmitTurnEvent10ForFlaggedNationSlots
-// ghidra_proto undefined EmitTurnEvent10ForFlaggedNationSlots()
-// FUNCTION: IMPERIALISM 0x00544720
-undefined4 EmitTurnEvent10ForFlaggedNationSlots(void)
-{
-  return 0;
-}
-
 // ghidra_name InitializeProtocolOptionControlFromProvider
 // ghidra_proto undefined InitializeProtocolOptionControlFromProvider()
 // FUNCTION: IMPERIALISM 0x00544e70
