@@ -66,3 +66,25 @@ signed `% 32` (not `& 0x1f`) matches the abs/re-sign modulo sequence.
 ### Remaining 96-bit family (larger, likely similar low-match)
 - 0x5f4a80 ConvertFpMantissaTo96BitIntegerAndExponent (190B)
 - 0x5f7930 Build96BitIntegerFromDigitBytesAndNormalize (241B)
+
+## Update (window 4)
+Landed: ConvertFpMantissaTo96BitIntegerAndExponent 0x5f4a80 (23%, IEEE double->extended).
+The small 96-bit family is essentially complete (only Build96BitIntegerFromDigitBytesAndNormalize
+0x5f7930 241B remains, likely similar low-match register-scheduling).
+
+### Observations on target scarcity
+Many remaining small 0% functions fall into hard/low-match buckets:
+- dirty-AX/high-byte returns (CanQueueMapOrderForProvinceContext 0x554590,
+  ContainsCityStatePointerInZoneArrayByCityIndex 0x55f440) -- register-return artifact.
+- vftable[1] 2nd-base dispatch (UpdateMapDialogProjectedTileMarkerAndInvalidate 0x51a900,
+  WrapperFor_SetQuickDrawFillColor 0x523060).
+- unidentified receiver (RefreshTaskForceSelectionFlagsForCurrentNationOrders 0x5539c0 in_ECX).
+- already-ported-but-scheduling-bound (DrawMapDialogGuidePatternSetF 0x521090 = 40.5%, source
+  already exact-matches decompile; the guide-pattern family caps ~40% due to shared-x1/x2 tail).
+
+### Next clean candidates to try (need raw-level care)
+- TMapDialog::Free 0x519c90 (127B): decompile abstracts globals that the raw listing shows
+  differently (MOV ECX,[0x6a2158] before the free-buffer wrapper); needs raw-listing-driven
+  port. Fields quickDrawSurface350/field35c already declared; field35c->Free() is slot 7
+  (byte 0x1c). base-Free chain = 0x48b0b0 + 0x4a0f80.
+- Build96BitIntegerFromDigitBytesAndNormalize 0x5f7930 (241B): decimal-string -> 96-bit.
