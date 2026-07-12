@@ -579,14 +579,6 @@ undefined4 Helper_Uses_SetQuickDrawFillColor_At00594790(void)
   return 0;
 }
 
-// ghidra_name RecomputeNationComparisonValuesAndNormalizeScale
-// ghidra_proto undefined RecomputeNationComparisonValuesAndNormalizeScale()
-// FUNCTION: IMPERIALISM 0x00594900
-undefined4 RecomputeNationComparisonValuesAndNormalizeScale(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_ftol_At00594ed0
 // ghidra_proto undefined WrapperFor_ftol_At00594ed0()
 // FUNCTION: IMPERIALISM 0x00594ed0

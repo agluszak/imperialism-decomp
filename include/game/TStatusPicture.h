@@ -125,7 +125,7 @@ public:
   // slot 0x71 ResetPictureResourceEntry inherited unchanged (0x48f520)
   // slot 0x72 SetPictureResourceIdAndRefresh inherited unchanged (0x48f570)
   // === END GENERATED DECLS (TStatusPicture) ===
-  char pad90[0x94 - 0x90]; // +0x90
+  int comparisonMode90;    // +0x90 -- selects which per-nation metric fills values94
   int values94[7];         // +0x94 per-entry sort key (score)
   short pictureIds_b0[7];  // +0xb0 per-entry picture id (-1 = empty slot)
   char padBE[0xc0 - 0xbe]; // +0xbe
@@ -135,6 +135,7 @@ public:
   // Sorts the seven entries by descending value (empty -1 ids sink to the end), then pushes
   // each entry's picture id into its child picture widget. 0x594c00.
   void SortSevenEntriesAndUpdatePictureWidgets();
+  void RecomputeNationComparisonValuesAndNormalizeScale();
 };
 
 ASSERT_SIZE(TStatusPicture, 0xc0);

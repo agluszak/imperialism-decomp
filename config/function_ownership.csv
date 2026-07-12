@@ -4038,6 +4038,7 @@ address|target_cpp|ownership|note
 593f20|src/game/TStatusPicture.cpp|manual|marker_sync
 5942f0|src/game/TStatusPicture.cpp|manual|marker_sync
 594540|src/game/TStatusPicture.cpp|manual|marker_sync
+594900|src/game/TStatusPicture.cpp|manual|marker_sync
 594c00|src/game/TStatusPicture.cpp|manual|marker_sync
 594f20|src/game/TWorldView.cpp|manual|marker_sync
 594fc0|src/game/TWorldView.cpp|manual|marker_sync
