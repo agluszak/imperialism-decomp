@@ -1,4 +1,6 @@
 #include "game/TMapDialog.h"
+
+#include <stdlib.h>
 #include "game/TMapMgr.h"
 #include "game/CTemporaryRegion.h"
 #include "game/TGlobalMapState.h"
@@ -596,9 +598,34 @@ undefined TMapDialog::RenderMapDialogDiplomacyNeighborRelationHints() {
   return 0;
 }
 
+// Draws a guide line between two tiles' screen centers, wrapping the far tile across the
+// 108-column seam and culling the line when both endpoints fall off the same screen edge.
 // FUNCTION: IMPERIALISM 0x00522C10
-undefined TMapDialog::DrawMapDialogWrappedTileConnectionMarker_00522c10() {
-  return 0;
+void TMapDialog::DrawMapDialogWrappedTileConnectionMarker_00522c10(short col1, int row1, short col2,
+                                                                   int row2) {
+  if (abs(static_cast<int>(col1) - static_cast<int>(col2)) > 0x6c) {
+    if (col1 > 0x6c) {
+      col1 = col1 - 0xd8;
+    } else if (col2 > 0x6c) {
+      col2 = col2 - 0xd8;
+    }
+  }
+  if (col1 < 0) {
+    if (col2 < 0) {
+      return;
+    }
+  } else if (col1 > 0x12 && col2 > 0x12) {
+    return;
+  }
+  if (static_cast<short>(row1) < 0) {
+    if (static_cast<short>(row2) < 0) {
+      return;
+    }
+  } else if (static_cast<short>(row1) > 8 && static_cast<short>(row2) > 8) {
+    return;
+  }
+  SetQuickDrawTextOriginWithContextOffset((col1 * 0x40) / 2 + 0x40, (row1 + 1) * 0x40);
+  DrawCenteredGuideLineOnMapDc((col2 * 0x40) / 2 + 0x40, (row2 + 1) * 0x40);
 }
 
 // Draws the coastline "connection" line pattern linking this ocean tile to its ocean

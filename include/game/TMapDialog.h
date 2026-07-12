@@ -67,7 +67,8 @@ public:
   virtual void DrawMapDialogGuidePatternSetI_00521540(int originX, int originY, short variant);
   virtual undefined DrawMapDialogOwnershipMarkerForNation_00522000();
   virtual undefined RenderMapDialogDiplomacyNeighborRelationHints();
-  virtual undefined DrawMapDialogWrappedTileConnectionMarker_00522c10();
+  virtual void DrawMapDialogWrappedTileConnectionMarker_00522c10(short col1, int row1, short col2,
+                                                                 int row2);
   virtual void DrawHexNeighborConnectionMask(unsigned char connectionMask, int screenX, int screenY,
                                              short tileIndex);
   virtual undefined WrapperFor_SetQuickDrawFillColor_At00523060();

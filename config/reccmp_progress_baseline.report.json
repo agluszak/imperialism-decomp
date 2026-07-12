@@ -17841,7 +17841,7 @@
     },
     {
       "address": "0x522c10",
-      "matching": 0.0,
+      "matching": 1.0,
       "name": "TMapDialog::DrawMapDialogWrappedTileConnectionMarker_00522c10",
       "type": 1
     },
