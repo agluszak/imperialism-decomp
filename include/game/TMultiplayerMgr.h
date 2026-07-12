@@ -103,11 +103,11 @@ public:
   unsigned char fieldF4;      // +0xf4
   unsigned char padF5[3];
 
-  virtual ~TMultiplayerMgr() override;                              // slot 0x01 0x5427e0
-  virtual void WriteTo(TStream* stream) override;                   // slot 0x05 0x542ff0
-  virtual void ReadFrom(TStream* stream) override;                  // slot 0x06 0x542be0
-  virtual void Free() override;                                     // slot 0x07 0x542b10
-  virtual char DoIdle(int action) override; // slot 0x13 0x544e30
+  virtual ~TMultiplayerMgr() override;             // slot 0x01 0x5427e0
+  virtual void WriteTo(TStream* stream) override;  // slot 0x05 0x542ff0
+  virtual void ReadFrom(TStream* stream) override; // slot 0x06 0x542be0
+  virtual void Free() override;                    // slot 0x07 0x542b10
+  virtual char DoIdle(int action) override;        // slot 0x13 0x544e30
   // Ground truth (0x542923): the argument is stored raw into the inherited int
   // TEventHandler::field10; every observed caller (0x5818ee, TAmbitApplication init)
   // pushes literal 0 — not a by-value CString as Ghidra guessed.
@@ -123,6 +123,9 @@ public:
   // g_pNetMgr006a6014 global.
   void EmitTurnEvent3Mode18WithActiveNation(); // 0x5446a0
   void EmitTurnEvent10ForFlaggedNationSlots(); // 0x544720
+  // Appends a queue node (next pointer at node+0x10) to the tail of
+  // primaryTurnEventQueueHead. 0x549280.
+  void AppendNodeToTurnEventLinkedListAt6C(int node);
   void CreateAndSendTurnEvent11_MapOffsetAndFlags(unsigned char flagByte, int mapOffsetSelector,
                                                   int absoluteOffset, short shortA,
                                                   short shortB);       // 0x5493c0

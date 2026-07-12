@@ -2055,6 +2055,16 @@ struct TurnEvent11Packet : NetMessage {
   unsigned char pad24[4]; // original frame/messageLength is 0x28
 };
 
+// FUNCTION: IMPERIALISM 0x00549280
+void TMultiplayerMgr::AppendNodeToTurnEventLinkedListAt6C(int node) {
+  *reinterpret_cast<int*>(node + 0x10) = 0;
+  int* tail = &primaryTurnEventQueueHead;
+  for (int n = primaryTurnEventQueueHead; n != 0; n = *reinterpret_cast<int*>(n + 0x10)) {
+    tail = reinterpret_cast<int*>(n + 0x10);
+  }
+  *tail = node;
+}
+
 // FUNCTION: IMPERIALISM 0x005493c0
 void TMultiplayerMgr::CreateAndSendTurnEvent11_MapOffsetAndFlags(unsigned char flagByte,
                                                                  int mapOffsetSelector,

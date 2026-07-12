@@ -555,14 +555,6 @@ undefined4 RouteAndProcessDiplomacyTurnStateEventQueue(void)
   return 0;
 }
 
-// ghidra_name AppendNodeToTurnEventLinkedListAt6C
-// ghidra_proto undefined AppendNodeToTurnEventLinkedListAt6C()
-// FUNCTION: IMPERIALISM 0x00549280
-undefined4 AppendNodeToTurnEventLinkedListAt6C(void)
-{
-  return 0;
-}
-
 // ghidra_name CreateAndSendTurnEvent1B_FiveShortsAndDword
 // ghidra_proto undefined CreateAndSendTurnEvent1B_FiveShortsAndDword()
 // FUNCTION: IMPERIALISM 0x005498d0

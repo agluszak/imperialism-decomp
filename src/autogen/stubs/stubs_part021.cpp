@@ -931,7 +931,7 @@ undefined4 TMacViewMgr_Slot18_Target(void)
   return 0;
 }
 
-// ghidra_name TTechStorePage::CanHandleCityDialogActionFalse
+// ghidra_name TTechStorePage::DoIdle
 // ghidra_proto undefined TMacViewMgr_Slot19_Target()
 // FUNCTION: IMPERIALISM 0x00606cf4
 undefined4 TMacViewMgr_Slot19_Target(void)
