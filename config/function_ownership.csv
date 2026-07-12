@@ -3297,6 +3297,7 @@ address|target_cpp|ownership|note
 563220|src/game/TZone.cpp|manual|marker_sync
 563300|include/game/TOcean.h|manual|marker_sync
 563330|src/game/TOcean_RouteBuffer.cpp|manual|marker_sync
+563360|src/game/TMapMgr.cpp|manual|marker_sync
 5633b0|src/game/TOcean.cpp|manual|marker_sync
 5634a0|src/game/TOcean.cpp|manual|marker_sync
 563540|src/game/TOcean.cpp|manual|marker_sync

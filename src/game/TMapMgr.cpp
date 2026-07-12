@@ -3235,6 +3235,17 @@ short TMapMgr::TileIndexFromRowCol(int row, int col) {
   return static_cast<short>(col + row * 0x6c);
 }
 
+// Maps a tile index to its owning city/province record (cityScoreTable indexed by the tile's
+// cityRecordIndex), or null when the tile belongs to no province.
+// FUNCTION: IMPERIALISM 0x00563360
+TGlobalMapCityScoreRecord* __stdcall GetProvinceByTileIndex(short nTileIndex) {
+  short recordIndex = g_pGlobalMapState->terrainStateTable[nTileIndex].cityRecordIndex;
+  if (recordIndex == -1) {
+    return nullptr;
+  }
+  return &g_pGlobalMapState->cityScoreTable[recordIndex];
+}
+
 // FUNCTION: IMPERIALISM 0x005635e0
 void EnsurePortZoneForTile(short nTileIndex) {
   if (g_pGlobalMapState == 0) {
