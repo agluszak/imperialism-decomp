@@ -88,3 +88,29 @@ Many remaining small 0% functions fall into hard/low-match buckets:
   port. Fields quickDrawSurface350/field35c already declared; field35c->Free() is slot 7
   (byte 0x1c). base-Free chain = 0x48b0b0 + 0x4a0f80.
 - Build96BitIntegerFromDigitBytesAndNormalize 0x5f7930 (241B): decimal-string -> 96-bit.
+
+## Update (window 5) -- clean-lane thinning; next tier needs setup
+Surveyed math/compute/format functions; the quick-clean fruit in the 0x51xxxx-0x5fxxxx
+ranges is largely exhausted. The remaining small low-match functions need non-trivial
+setup before a clean port -- mapped here so a future window can pre-stage it:
+
+- **ComputeOrderNodeDerivedScoreFromQuantityAndWord18 0x550840 (67B)**: math is simple
+  `((short)(node->field30 / 100) + 5 + g_Navy_Order_Priority_LookupTable_00698118[node->order_type*9]*10) / 10`
+  (MSVC's /100 magic multiply will match `/100`). BLOCKERS: (1) receiver is a TTaskForce
+  order node (order_type at +4, quantity at +0x30) but passed via the bridge chain
+  WrapperFor_...At5a6290 <- FUN_0059ec20; (2) g_Navy_Order_Priority_LookupTable_00698118 is
+  in symbols.csv but NOT declared as a usable array in global_data_tables.h -- and a struct
+  at 0x698108 already claims +0x10 as navyPriorityWeight, so declaring it as an array risks a
+  duplicate-global collision. Needs the table-of-records global modeled/reconciled first
+  (sync-pipeline type-flip work).
+
+- **ComputeMissionQueuedOrderSimilarityForTargetNation 0x537eb0 (108B)**: TNavyMission float
+  similarity ratio sum(sqrt(w_i*ref_i))/sum(param+ref_i), mirroring the existing
+  ComputeNavyOrderCategorySimilarityRatio helper. Depends on the
+  BuildNavyOrderCategoryVectorForNationWithExclusion 0x537900 __fastcall bridge (still a
+  stub); port that helper first, then this scorer reuses it cleanly.
+
+### Recommended next-window strategy
+Either (a) do the global/bridge pre-staging above then port the dependent scorers, or
+(b) shift to a fresh untouched address range / a small class-recovery to open a new clean
+lane, rather than more single-function hunting in the mined ranges.
