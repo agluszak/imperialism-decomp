@@ -589,8 +589,24 @@ undefined TMapDialog::EmitHexAdjacencyTransitionEventsByBitmask() {
 }
 
 // FUNCTION: IMPERIALISM 0x00522000
-undefined TMapDialog::DrawMapDialogOwnershipMarkerForNation_00522000() {
-  return 0;
+void TMapDialog::DrawMapDialogOwnershipMarkerForNation_00522000(unsigned char edgeMask, int screenX,
+                                                                int screenY, short tileIndex) {
+  g_pUiRuntimeContext->ApplyTurnEventPaletteColorByEventCode(
+      g_pGlobalMapState->terrainStateTable[tileIndex].ownerNationTag04);
+  if ((edgeMask & 0x20) != 0) {
+    SetQuickDrawTextOriginWithContextOffset(screenX + 8, screenY + 8);
+    DrawCenteredGuideLineOnMapDc(screenX + 0xc, screenY + 8);
+    return;
+  }
+  if ((edgeMask & 8) != 0) {
+    SetQuickDrawTextOriginWithContextOffset(screenX + 8, screenY + 0x38);
+    DrawCenteredGuideLineOnMapDc(screenX + 0xc, screenY + 0x38);
+    return;
+  }
+  if ((edgeMask & 2) != 0) {
+    SetQuickDrawTextOriginWithContextOffset(screenX + 0x2c, screenY + 0x2e);
+    DrawCenteredGuideLineOnMapDc(screenX + 0x30, screenY + 0x2e);
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x005220F0
