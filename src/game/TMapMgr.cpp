@@ -2923,6 +2923,95 @@ int TMapMgr::CollectSecondDegreeLinksMatchingNodeType(int cityRecordIndex, int n
   return resultCount;
 }
 
+// FUNCTION: IMPERIALISM 0x00518130
+void TMapMgr::RecomputeTileStrategicScoreHeatmap() {
+  int r;
+  int i;
+  int edge;
+  // The original reserves a 6-int scratch here (zero-filled via rep stosd, then seeded
+  // {[4]=500,[5]=200}) that is never read afterwards; MSVC5 elides this dead local in the
+  // recompile, so its frame is 0x14 smaller and the resulting register/stack-offset
+  // allocation diverges from the original even though every instruction matches in kind
+  // and order (the FPU diffusion + vtable calls are exact). Left documented, not forced.
+  // Per-resource-type weight, pulled from the nation-interaction metric buckets.
+  int resourceWeights[17];
+  for (int resType = 0; resType < 0x11; ++resType) {
+    resourceWeights[resType] = g_pNationInteractionStateManager->GetNationMetricBucketValueByIndex(
+        static_cast<short>(resType));
+  }
+
+  int regionScores[0x180];
+
+  // Pass 1: base each region's score on the resource yields of its linked tiles.
+  TGlobalMapCityScoreRecord* region = cityScoreTable;
+  for (r = 0; r < 0x180; ++r) {
+    int score = 200;
+    int linkedCount = region->linkedRegionCount;
+    if (linkedCount > 0) {
+      short* linkedTile = region->linkedRegionIds;
+      do {
+        TTerrainStateRecordView* tile = &terrainStateTable[*linkedTile];
+        for (edge = 0; edge < 2; ++edge) {
+          int resType = tile->resourceTypeByEdge[edge];
+          if ((resType != 6 || g_pCityOrderCapabilityState->hasProductionOrder193 != 0) &&
+              resType != -1) {
+            score += g_abUniversityRequirementLevelById[resType][tile->developmentClassNibbles0c] *
+                     resourceWeights[resType];
+          }
+        }
+        ++linkedTile;
+      } while (--linkedCount != 0);
+    }
+    regionScores[r] = score;
+    region = reinterpret_cast<TGlobalMapCityScoreRecord*>(reinterpret_cast<char*>(region) + 0xa8);
+  }
+
+  // Pass 2: development-stage bonus.
+  char* stagePtr = reinterpret_cast<char*>(cityScoreTable) + 2;
+  for (r = 0; r < 0x180; ++r) {
+    regionScores[r] += (*stagePtr + 3) * 1000;
+    stagePtr += 0xa8;
+  }
+
+  // Pass 3: terrain-type descriptor bonuses (first 7 weighted higher than the next 16).
+  for (i = 0; i < 7; ++i) {
+    if (g_apTerrainTypeDescriptorTable[i] != nullptr) {
+      short idx =
+          static_cast<short>(g_apTerrainTypeDescriptorTable[i]->GetHomeRegionCityRecordIndex());
+      regionScores[idx] += 10000;
+    }
+  }
+  for (i = 7; i < 23; ++i) {
+    if (g_apTerrainTypeDescriptorTable[i] != nullptr) {
+      short idx =
+          static_cast<short>(g_apTerrainTypeDescriptorTable[i]->GetHomeRegionCityRecordIndex());
+      regionScores[idx] += 8000;
+    }
+  }
+
+  // Pass 4: store each region's score, then diffuse a weighted share of each adjacent
+  // region's score back into it.
+  region = cityScoreTable;
+  for (r = 0; r < 0x180; ++r) {
+    region->cityScoreValue = regionScores[r];
+    for (i = region->adjacentRegionCount08 - 1; i >= 0; --i) {
+      short adjIdx = region->adjacentRegionIds0A[i];
+      region->cityScoreValue = static_cast<int>(
+          regionScores[adjIdx] * g_TileHeatmapNeighborDiffusionFactor + region->cityScoreValue);
+    }
+    region = reinterpret_cast<TGlobalMapCityScoreRecord*>(reinterpret_cast<char*>(region) + 0xa8);
+  }
+
+  // Pass 5: cityScoreTotal = mean region score.
+  cityScoreTotal = 0;
+  region = cityScoreTable;
+  for (r = 0; r < 0x180; ++r) {
+    cityScoreTotal += region->cityScoreValue;
+    region = reinterpret_cast<TGlobalMapCityScoreRecord*>(reinterpret_cast<char*>(region) + 0xa8);
+  }
+  cityScoreTotal = cityScoreTotal / 0x180;
+}
+
 // FUNCTION: IMPERIALISM 0x00518470
 void TMapMgr::ApplyJoinEmpireMode0GlobalDiplomacyReset(int nationSlot) {
   signed char* tileBase = tileOwnershipTable;

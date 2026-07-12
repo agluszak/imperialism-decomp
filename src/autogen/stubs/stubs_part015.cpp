@@ -163,14 +163,6 @@ undefined4 CollectSecondDegreeLinksWithMinorNationFallback(void)
   return 0;
 }
 
-// ghidra_name RecomputeTileStrategicScoreHeatmap
-// ghidra_proto undefined RecomputeTileStrategicScoreHeatmap()
-// FUNCTION: IMPERIALISM 0x00518130
-undefined4 RecomputeTileStrategicScoreHeatmap(void)
-{
-  return 0;
-}
-
 // ghidra_name LoadScenarioMapStateFromTableResource
 // ghidra_proto undefined LoadScenarioMapStateFromTableResource()
 // FUNCTION: IMPERIALISM 0x00518540

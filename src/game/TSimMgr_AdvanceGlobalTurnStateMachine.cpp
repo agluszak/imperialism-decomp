@@ -35,7 +35,6 @@ extern undefined4 RebuildNationRankingDataAndUiCache(void);
 extern undefined4 UpdateCityOrderCapabilityUnlockProgress(void);
 extern undefined4 ConsumeFirstPendingAbilityUnlock(void);
 extern undefined4 RefreshNavyOrderCycleAndClearReadyFlags(void);
-extern undefined4 RecomputeTileStrategicScoreHeatmap(void);
 extern undefined4 RecomputeNationOrderPriorityMetrics(void);
 extern undefined4 RemoveNationSlotAndNotifyPeers(void);
 extern undefined4 SetOutputDevice(void);
@@ -531,7 +530,7 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
     turnStateCode = 0xd;
     RefreshNavyOrderCycleAndClearReadyFlags();
     if (redrawEnabled != 2) {
-      RecomputeTileStrategicScoreHeatmap();
+      g_pGlobalMapState->RecomputeTileStrategicScoreHeatmap();
       RecomputeNationOrderPriorityMetrics();
       for (short nationSlot = 0; nationSlot < 7; ++nationSlot) {
         if (nationSlot == -1 || g_apTerrainTypeDescriptorTable[nationSlot] == nullptr) {

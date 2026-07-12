@@ -555,6 +555,10 @@ public:
                                                  short nOwnerNationId); // slot 0x4d 0x514a20
   // === END GENERATED DECLS (TMapMgr) ===
 
+  // Recomputes the per-region strategic-score heatmap (cityScoreTable[*].cityScoreValue)
+  // used by turn-AI order planning, then updates cityScoreTotal with the mean. 0x00518130.
+  void RecomputeTileStrategicScoreHeatmap();
+
   // Global map session state (g_pGlobalMapState @ 0x006A43D4). RTTI object size 0x28
   // covers the TObject head; tile/city tables are heap-backed pointers below.
   //

@@ -590,6 +590,11 @@ extern "C" {
 // GLOBAL: IMPERIALISM 0x0065a468
 extern const float g_MissionDefaultScore_0065a468 = 0.0f;
 
+// Weighting factor (0.2) applied to each adjacent region's score when diffusing the
+// strategic heatmap (RecomputeTileStrategicScoreHeatmap 0x518130).
+// GLOBAL: IMPERIALISM 0x00658780
+float g_TileHeatmapNeighborDiffusionFactor = 0.2f;
+
 // Minister-skill-indexed float coefficient tables (DAT_0065xxxx), indexed by a
 // minister's skill value at +0x0C. Used by TGreatPower vtable slots 0x88-0x8c.
 float g_DAT_Value_00653308[8] = {0};
