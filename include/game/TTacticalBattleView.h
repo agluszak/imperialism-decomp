@@ -179,7 +179,9 @@ public:
   void InvalidateTacticalHexTileRect(int tileIndex);               // 0x5a8860
   void CenterViewportAroundGridIndexAndSnap(int tileIndex);        // 0x5a8ac0
   void SpawnTacticalUiMarkerAtUnitTile();                          // 0x5a9bb0
-  void TriggerTacticalUiUpdate2711();                              // 0x5a9cc0
+  // Maps a screen point to a clamped hex (row, col) on this battle's grid. 0x5a86d0.
+  void ConvertScreenPointToHexGridCoordClamped(POINT* screenPoint, int* outRow, int* outCol);
+  void TriggerTacticalUiUpdate2711(); // 0x5a9cc0
   // Writes the on-screen RECT of a bare hex tile (no unit growth). 0x5a87d0.
   void ComputeTacticalHexTileScreenRect(RECT* rectOut, int tileIndex);
   // Writes unit's on-screen sprite rect (tile rect grown 0x14px upward), then applies

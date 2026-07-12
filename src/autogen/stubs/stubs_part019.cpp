@@ -227,14 +227,6 @@ undefined4 ConstructTacticalBattleViewBaseState(void)
   return 0;
 }
 
-// ghidra_name ConvertScreenPointToHexGridCoordClamped
-// ghidra_proto undefined ConvertScreenPointToHexGridCoordClamped()
-// FUNCTION: IMPERIALISM 0x005a86d0
-undefined4 ConvertScreenPointToHexGridCoordClamped(void)
-{
-  return 0;
-}
-
 // ghidra_name HandleTurnEventVtableSlotA0SyncStatusPanel_Impl
 // ghidra_proto undefined HandleTurnEventVtableSlotA0SyncStatusPanel_Impl()
 // FUNCTION: IMPERIALISM 0x005a8790

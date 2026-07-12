@@ -55,6 +55,37 @@ void TTacticalBattleView::BeginMouseCaptureAndStartRepeatTimer(CPoint* point, in
   (void)arg4;
 }
 
+// Converts a screen point to a clamped hex grid (row, col) for this battle: row from the
+// point's Y over the tile row height, column from viewOriginX + point X (shifted half a
+// tile on odd rows) over the tile width, each clamped into the battle's playable range.
+// FUNCTION: IMPERIALISM 0x005A86D0
+void TTacticalBattleView::ConvertScreenPointToHexGridCoordClamped(POINT* screenPoint, int* outRow,
+                                                                  int* outCol) {
+  int row = screenPoint->y / tileRowHeightPx8C;
+  *outRow = row;
+  if (row < 0) {
+    *outRow = 0;
+  }
+  int maxRow = frameHeight38 / tileRowHeightPx8C + -1;
+  if (*outRow >= maxRow) {
+    *outRow = maxRow;
+  }
+  int col = viewOriginX78 + screenPoint->x;
+  *outCol = col;
+  if ((*outRow & 1) != 0) {
+    *outCol = col - tileWidthPx88 / 2;
+  }
+  col = *outCol / tileWidthPx88;
+  *outCol = col;
+  if (col < 0) {
+    *outCol = 0;
+  }
+  int maxCol = tacticalBattle60->battlefieldColumnCount34;
+  if (*outCol >= maxCol) {
+    *outCol = maxCol + -1;
+  }
+}
+
 // FUNCTION: IMPERIALISM 0x005a87d0
 void TTacticalBattleView::ComputeTacticalHexTileScreenRect(RECT* rectOut, int tileIndex) {
   int row = tileIndex / tileColumnsPerRow80;
