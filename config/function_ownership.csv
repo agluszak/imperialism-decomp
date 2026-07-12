@@ -785,6 +785,7 @@ address|target_cpp|ownership|note
 494a90|src/game/quickdraw_rendering.cpp|manual|marker_sync
 494e00|src/game/quickdraw_rendering.cpp|manual|marker_sync
 495000|src/game/quickdraw_rendering.cpp|manual|marker_sync
+495030|src/game/quickdraw_rendering.cpp|manual|marker_sync
 495070|src/game/quickdraw_rendering.cpp|manual|marker_sync
 4950a0|src/game/quickdraw_rendering.cpp|manual|marker_sync
 4950d0|src/game/quickdraw_rendering.cpp|manual|marker_sync

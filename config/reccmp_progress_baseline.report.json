@@ -5958,7 +5958,7 @@
     },
     {
       "address": "0x495030",
-      "matching": 0.18181818181818182,
+      "matching": 0.8888888888888888,
       "name": "SetQuickDrawColorAndPropagateIfChanged",
       "type": 1
     },
@@ -30052,7 +30052,7 @@
     },
     {
       "address": "0x5a6940",
-      "matching": 0.819672131147541,
+      "matching": 0.8360655737704918,
       "name": "ClipRect_AdjustOffset_Validate",
       "type": 1
     },
