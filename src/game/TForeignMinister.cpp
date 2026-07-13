@@ -335,7 +335,22 @@ char TForeignMinister::EvaluateLocalizedScoreThresholdPredicateForNationValue(in
 }
 
 // FUNCTION: IMPERIALISM 0x00530b30
-void TForeignMinister::MinisterSlot1D() {}
+void TForeignMinister::DispatchAction210ToFirstEligibleNationIfIdle() {
+  // The original reloads the owning great power (this->ownerContextAt04) at each use
+  // rather than caching it; access it inline so the same reload codegen is emitted.
+  for (int nationSlot = 0; nationSlot < 7; ++nationSlot) {
+    if (reinterpret_cast<TGreatPower*>(this->ownerContextAt04)->HasActiveCandidateNationSlots() !=
+        0) {
+      return;
+    }
+    if (nationSlot != reinterpret_cast<TGreatPower*>(this->ownerContextAt04)->nationSlot &&
+        g_pSimMgr->IsNationSlotEligibleForEventProcessing(nationSlot) != 0 &&
+        this->EvaluateLocalizedScoreThresholdPredicateForNationValue(nationSlot) != 0) {
+      reinterpret_cast<TGreatPower*>(this->ownerContextAt04)
+          ->SetCandidateNationFlagAndPortZoneState(nationSlot);
+    }
+  }
+}
 
 // FUNCTION: IMPERIALISM 0x00530bb0
 void TForeignMinister::MinisterSlot1B() {}

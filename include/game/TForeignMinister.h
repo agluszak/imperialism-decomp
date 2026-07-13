@@ -28,7 +28,9 @@ public:
   virtual void MinisterSlot1B();
   // slot 0x1c (body 0x005308b0) — difficulty-indexed army/navy score-threshold predicate.
   virtual char EvaluateLocalizedScoreThresholdPredicateForNationValue(int nationCode);
-  virtual void MinisterSlot1D();
+  // slot 0x1d (body 0x00530b30) — mark the first eligible nation as an action
+  // candidate, but only while no candidate is active yet.
+  virtual void DispatchAction210ToFirstEligibleNationIfIdle();
   virtual void MinisterSlot1E();
   virtual void MinisterSlot1F(short queueIndex); // byte 0x7c: processes a queued proposal row
   virtual void Call80();
