@@ -34,8 +34,6 @@
 #include "game/global_data_tables.h"
 #include "game/mapped_flavor_text.h"
 
-void __fastcall RebuildNationStateSlotsAndAvailability_Impl(TSimMgr* self, int dummyEdx,
-                                                            short* param_1);
 void __fastcall RebuildCivilianOrderCompatibilityMatrices(TDiplomacyMgr* self, int dummyEdx);
 int __cdecl TouchSessionActiveNationId(void);
 void __cdecl ResetPortZoneGlobalContextCounters(void);
@@ -66,12 +64,6 @@ CString& __stdcall GetProfileStringFromSettingsSection(CString* result, LPCTSTR 
 // FUNCTION: IMPERIALISM 0x004ee8c0
 void __fastcall RebuildCivilianOrderCompatibilityMatrices(TDiplomacyMgr* self, int dummyEdx) {
   reinterpret_cast<void(__fastcall*)(TDiplomacyMgr*, int)>(0x004ee8c0)(self, dummyEdx);
-}
-
-// FUNCTION: IMPERIALISM 0x00519610
-void __fastcall RebuildNationStateSlotsAndAvailability_Impl(TSimMgr* self, int dummyEdx,
-                                                            short* param_1) {
-  reinterpret_cast<void(__fastcall*)(TSimMgr*, int, short*)>(0x00519610)(self, dummyEdx, param_1);
 }
 
 // FUNCTION: IMPERIALISM 0x00549240
@@ -521,11 +513,11 @@ unsigned char TSimMgr::RecreateActiveMapContextAndInitializeGlobalMapState(int s
 void TSimMgr::RebuildNationStateSlotsAndAvailability(int activate) {
   int i;
   if (g_bMultiplayerScenarioSetupActive == 0) {
-    short local_1c[8];
-    RebuildNationStateSlotsAndAvailability_Impl(this, 0, local_1c);
+    short profileBySlot[8];
+    g_pGlobalMapState->ChooseNationSetupProfilesForOpenSlots(profileBySlot);
 
     for (i = 0; i < 7; ++i) {
-      int val = local_1c[i];
+      int val = profileBySlot[i];
       scenarioSetupRows1[i] = g_anScenarioNationSetupTable_00698B1A[val * 4];
       scenarioSetupRows2[i] = g_anScenarioNationSetupTable_00698B1A[val * 4 + 1];
       scenarioSetupRows3[i] = g_anScenarioNationSetupTable_00698B1A[val * 4 + 2];

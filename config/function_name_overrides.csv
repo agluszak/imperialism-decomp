@@ -103,7 +103,7 @@ address|name|prototype
 0x0060a60a|TView::RunModalLoop|int __thiscall RunModalLoop(unsigned char loopKind)
 0x005d4410|SetSharedStringFromMappedFlavorTextWithLengthClamp|void __fastcall SetSharedStringFromMappedFlavorTextWithLengthClamp(CString* sharedStr, int dummyEdx, int index)
 0x005d4c10|TryGetFileMetadataForPath|BOOL __cdecl TryGetFileMetadataForPath(CString* path)
-0x00519610|RebuildNationStateSlotsAndAvailability_Impl|void __fastcall RebuildNationStateSlotsAndAvailability_Impl(TSimMgr* self, int dummyEdx, short* param_1)
+0x00519610|TMapMgr::ChooseNationSetupProfilesForOpenSlots|void __thiscall ChooseNationSetupProfilesForOpenSlots(short* outProfileBySlot)
 0x004ee8c0|RebuildCivilianOrderCompatibilityMatrices|void __fastcall RebuildCivilianOrderCompatibilityMatrices(TDiplomacyMgr* self, int dummyEdx)
 0x005e4280|GetSessionActiveNationId|int __cdecl GetSessionActiveNationId(void)
 0x0041b570|SetUiResourceContextMaxCharCount|void __cdecl SetUiResourceContextMaxCharCount(short maxChars)

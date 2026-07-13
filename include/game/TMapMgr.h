@@ -719,6 +719,15 @@ public:
   // 0x00519010, __thiscall, one int stack arg.
   int ClassifyCityGateTerrainComposition(int cityIndex);
 
+  // Fills outProfileBySlot[0..6] with the AI profile id chosen for each great-power slot
+  // that TSimMgr has marked open (scenarioSetupRows0 == 2), or 3 for a slot that is not
+  // open. Slots are ranked by how isolated their region class is (unique / shared with a
+  // minor / shared with another great power) and profiles are handed out in a fixed
+  // priority order. 0x00519610, __thiscall on g_pGlobalMapState, one short* stack arg
+  // (`RET 0x4`); the sole caller is TSimMgr::RebuildNationStateSlotsAndAvailability, which
+  // loads ECX from g_pGlobalMapState (0x6a43d4) rather than passing its own `this`.
+  void ChooseNationSetupProfilesForOpenSlots(short* outProfileBySlot);
+
   // Returns cityScoreTable[index].stationedUnitChain98 when index is in [0, 0x180), else
   // nullptr -- the same "validate then fetch the tile's unit chain head" idiom already
   // inlined at several other TArmyMgr callsites, but here it's the original's own

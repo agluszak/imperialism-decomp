@@ -3141,6 +3141,81 @@ int TMapMgr::ClassifyCityGateTerrainComposition(int cityIndex) {
   return tallyA > tallyB ? 1 : 0;
 }
 
+// FUNCTION: IMPERIALISM 0x00519610
+void TMapMgr::ChooseNationSetupProfilesForOpenSlots(short* outProfileBySlot) {
+  // The AI profile ids are handed out in this fixed priority order, and each profile
+  // prefers a particular slot-isolation class; the three passes below relax that
+  // preference in the profile's own order.
+  short profileOrder[7] = {1, 5, 4, 6, 2, 3, 3};
+  short preferredIsolationByProfile[7][3] = {{0, 1, 2}, {2, 1, 0}, {0, 1, 2}, {0, 1, 2},
+                                             {1, 2, 0}, {1, 2, 0}, {0, 1, 2}};
+  short slotIsolation[7];
+  short nationRegionClass[0x17];
+  int slot;
+  int openSlot;
+  int recordsLeft;
+  int remaining;
+  int pass;
+  bool assigned;
+
+  // Region class of each nation's territory. Every region a nation owns carries the same
+  // class, so the last one seen wins.
+  TGlobalMapCityScoreRecord* record = cityScoreTable;
+  for (recordsLeft = 0x180; recordsLeft != 0; --recordsLeft) {
+    if (record->ownerNationCode00 != -1) {
+      nationRegionClass[record->ownerNationCode00] = record->regionClassA3;
+    }
+    ++record;
+  }
+
+  // Isolation class of each great-power slot: 2 when its region class is unique, 1 when it
+  // is shared only with a minor, 0 when another great power sits on the same class.
+  short openSlotCount = 0;
+  for (slot = 0; slot < 7; ++slot) {
+    slotIsolation[slot] = 2;
+    for (int power = 0; power < 7; ++power) {
+      if (power != slot && nationRegionClass[power] == nationRegionClass[slot]) {
+        slotIsolation[slot] = 0;
+      }
+    }
+    if (slotIsolation[slot] == 2) {
+      for (int minor = 7; minor < 0x17; ++minor) {
+        if (minor != slot && nationRegionClass[minor] == nationRegionClass[slot]) {
+          slotIsolation[slot] = 1;
+        }
+      }
+    }
+    if (g_pSimMgr->scenarioSetupRows0[slot] == 2) {
+      ++openSlotCount;
+    }
+    outProfileBySlot[slot] = -1;
+  }
+
+  // Give each open slot a profile, walking the priority order and taking the first
+  // still-unassigned open slot whose isolation class the profile is currently asking for.
+  short* profile = profileOrder;
+  for (remaining = openSlotCount; remaining > 0; --remaining) {
+    assigned = false;
+    for (pass = 0; pass < 3 && !assigned; ++pass) {
+      for (openSlot = 0; openSlot < 7 && !assigned; ++openSlot) {
+        if (g_pSimMgr->scenarioSetupRows0[openSlot] == 2 &&
+            slotIsolation[openSlot] == preferredIsolationByProfile[*profile][pass] &&
+            outProfileBySlot[openSlot] == -1) {
+          assigned = true;
+          outProfileBySlot[openSlot] = *profile;
+        }
+      }
+    }
+    ++profile;
+  }
+
+  for (slot = 0; slot < 7; ++slot) {
+    if (g_pSimMgr->scenarioSetupRows0[slot] != 2) {
+      outProfileBySlot[slot] = 3;
+    }
+  }
+}
+
 // FUNCTION: IMPERIALISM 0x0055e360
 short TMapMgr::StepHexTileIndexByDirectionWithWrapRules(short tileIndex, short direction) {
   int col = static_cast<int>(tileIndex) % 0x6c;

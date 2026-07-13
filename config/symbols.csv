@@ -3276,7 +3276,7 @@ address|name|symbol|size|type|prototype|provenance
 518d90|MarkDirectionalMapOverlayFlagsForNationOrders||510|function|undefined MarkDirectionalMapOverlayFlagsForNationOrders()|
 519010|CreateTacticalBattleViewAndInitializeBattleSetup_Impl||179|function|undefined CreateTacticalBattleViewAndInitializeBattleSetup_Impl()|
 519140|DumpAndResetMapScriptState||965|function|void __fastcall DumpAndResetMapScriptState(void * pMapState)|
-519610|RebuildNationStateSlotsAndAvailability_Impl||604|function|undefined RebuildNationStateSlotsAndAvailability_Impl()|
+519610|TMapMgr::ChooseNationSetupProfilesForOpenSlots||604|function|void __thiscall ChooseNationSetupProfilesForOpenSlots(short* outProfileBySlot)|
 519970|WrapperFor_ftol_At00519970||30|function|undefined WrapperFor_ftol_At00519970()|
 5199c0|TMapDialog::CreateObject|?CreateObject@TMapDialog@@SGPAVCObject@@XZ|226|function|undefined CreateObject()|rtti
 519af0|TWorldView::OrphanTiny_ReturnMinusOneWord_00519af0||5|function|undefined OrphanTiny_ReturnMinusOneWord_00519af0(void)|
