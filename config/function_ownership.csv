@@ -1916,6 +1916,7 @@ address|target_cpp|ownership|note
 4e83d0|src/game/TGreatPower.cpp|manual|marker_sync
 4e8540|src/game/TGreatPower.cpp|manual|marker_sync
 4e8750|src/game/TGreatPower.cpp|manual|marker_sync
+4e8bf0|src/game/TGreatPower.cpp|manual|marker_sync
 4e9060|src/game/TGreatPower.cpp|manual|marker_sync
 4e9a50|src/game/TAutoGreatPower.cpp|manual|marker_sync
 4e9ed0|src/game/TAutoGreatPower.cpp|manual|marker_sync
@@ -2820,7 +2821,7 @@ address|target_cpp|ownership|note
 536840|src/game/TNavyMission.cpp|manual|marker_sync
 536b30|src/game/TNavyMission.cpp|manual|marker_sync
 536e40|src/game/TNavyMission.cpp|manual|marker_sync
-536f70|src/game/TScatteredShipsMission.cpp|manual|marker_sync
+536f70|src/game/TTaskForce.cpp|manual|marker_sync
 536fa0|src/game/TNavyMission.cpp|manual|marker_sync
 536fc0|src/game/TNavyMission.cpp|manual|marker_sync
 537060|src/game/TNavyMission.cpp|manual|marker_sync
@@ -3196,7 +3197,9 @@ address|target_cpp|ownership|note
 552d10|src/game/TTaskForce.cpp|manual|marker_sync
 552f60|src/game/TTaskForce.cpp|manual|marker_sync
 552f80|src/game/TTaskForce.cpp|manual|marker_sync
+5530f0|src/game/TTaskForce.cpp|manual|marker_sync
 5533f0|src/game/TTaskForce.cpp|manual|marker_sync
+5536c0|src/game/TTaskForce.cpp|manual|marker_sync
 5539c0|src/game/TTaskForce.cpp|manual|marker_sync
 553a50|src/game/TTaskForce.cpp|manual|marker_sync
 553b10|src/game/TTaskForce.cpp|manual|marker_sync

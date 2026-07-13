@@ -4434,6 +4434,11 @@ float TGreatPower::ComputeAdvisoryMapNodeScoreFactorByCaseMetric(int metricCase,
   }
 }
 
+// FUNCTION: IMPERIALISM 0x004e8bf0
+void TGreatPower::SetByteFlagAtOffsetAF0ByIndex(int contextOrdinal, char value) {
+  *(reinterpret_cast<char*>(this) + 0xaf0 + contextOrdinal) = value;
+}
+
 // FUNCTION: IMPERIALISM 0x004e9060
 float TGreatPower::ComputeMapActionContextCompositeScoreForNation(int nodeType) {
   unsigned char* candidateFlags = this->candidateNationFlags;

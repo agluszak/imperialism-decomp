@@ -190,9 +190,8 @@ void RefreshMapOrderBattleSideSnapshot(MapOrderBattleSnapshot* snapshot, int sid
   for (int i = 0; i < count; ++i) {
     MapOrderBattleSideChildRecord& rec = snapshot->childRecords[side][i];
     TShip* child = reinterpret_cast<TShip*>(rec.childPtr);
-    bool stillPresent = entry != nullptr &&
-                        TTaskForce::FindMissionOrderNodeById(
-                            entry->childOrderList, reinterpret_cast<TTaskForce*>(child)) != nullptr;
+    bool stillPresent = entry != nullptr && entry->childOrderList->FindNodeMatching(
+                                                reinterpret_cast<TTaskForce*>(child)) != nullptr;
     if (stillPresent) {
       rec.stockOrRequired = child->stockLevel1c;
       rec.strengthBucket = static_cast<short>(child->field30 / 100);

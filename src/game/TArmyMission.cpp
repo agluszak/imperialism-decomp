@@ -90,8 +90,12 @@ static inline float SwapFloat(float val) {
   return dst.f;
 }
 
-// Shared accumulation loop over orderListAt18 (0x53c620 / 0x53ceb0 / 0x53d020 /
-// 0x53d200 all repeat this exact per-unit vector-contribution pattern).
+// Shared accumulation loop over orderListAt18 (0x53c620 / 0x53ceb0 / 0x53d020 / 0x53d200 /
+// 0x53fc10 all repeat this exact per-unit vector-contribution pattern -- kept `inline` and
+// TU-local: giving it real external linkage (tried during bd 1uj.16.7) changed this TU's own
+// inlining decisions at its two callers below and regressed 4 sibling functions by 8-25pp, so
+// TInvadeMission::ReturnZeroSlot2C duplicates the loop body instead of calling this, matching
+// the original's own apparent per-callsite inlining).
 inline void TArmyMission::AccumulateOrderPriorityVector(float* vector) {
   if (orderListAt18 == nullptr) {
     return;

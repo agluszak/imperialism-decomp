@@ -33,8 +33,10 @@ public:
   virtual char ReturnFalseSlot98()
       override; // slot 0x26 0x53a940 -- clears blockade-port child order links if ready
 
-  virtual void
-  NoOpSlot9C() override; // slot 0x27 0x53a800 -- try-queue province order from context message
+  // pMapOrderEntry is the TTaskForce map-order entry MissionSlot44's dispatch passed; see
+  // the TNavyMission::NoOpSlot9C declaration comment.
+  virtual void NoOpSlot9C(void* pMapOrderEntry)
+      override; // slot 0x27 0x53a800 -- try-queue province order from context message
 
   // slot 0x0f 0x53a500 -- resource weights from navy context (own override; not shared)
   virtual void NoOpSlot3C() override;

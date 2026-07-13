@@ -452,4 +452,11 @@ public:
   TCity* GetCityState(void) {
     return city;
   }
+
+  // Writes `value` into a per-port-zone-context byte flag array starting at this+0xaf0
+  // (region not otherwise recovered yet); `contextOrdinal` is a TZone::GetContextOrdinal-
+  // OrInvalid() result. Called from TControlSeaZoneMission::GetReplacementSlot48's
+  // terrain-coverage-not-found path (0x5389a9) to clear this nation's flag for the
+  // target port zone's context ordinal.
+  void SetByteFlagAtOffsetAF0ByIndex(int contextOrdinal, char value); // 0x4e8bf0
 };

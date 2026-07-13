@@ -35,14 +35,6 @@ undefined4 SetMapStateByteFlag970WithRuntimeGate(void)
   return 0;
 }
 
-// ghidra_name SetByteFlagAtOffsetAF0ByIndex
-// ghidra_proto undefined SetByteFlagAtOffsetAF0ByIndex()
-// FUNCTION: IMPERIALISM 0x004e8bf0
-undefined4 SetByteFlagAtOffsetAF0ByIndex(void)
-{
-  return 0;
-}
-
 // ghidra_name ComputeAdvisoryMapNodeCompositeScoreByMode
 // ghidra_proto undefined ComputeAdvisoryMapNodeCompositeScoreByMode()
 // FUNCTION: IMPERIALISM 0x004e8c50

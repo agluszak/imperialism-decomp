@@ -53,7 +53,9 @@ TNavyMission::TNavyMission(TZone* targetZone) : TMission() {
 }
 
 // FUNCTION: IMPERIALISM 0x005354c0
-void TNavyMission::NoOpSlot9C() {}
+void TNavyMission::NoOpSlot9C(void* pMapOrderEntry) {
+  (void)pMapOrderEntry;
+}
 
 // FUNCTION: IMPERIALISM 0x005354e0
 char TNavyMission::ReturnFalseSlot54() {
@@ -341,8 +343,8 @@ float TNavyMission::ComputeNavyOrderCategorySimilarityRatio(int excludeCurrent) 
 void TNavyMission::MissionSlot44() {}
 
 // FUNCTION: IMPERIALISM 0x00536fa0
-void TNavyMission::RefreshMissionPortZoneContextForNation() {
-  targetZone14->SelectBestPrimaryNeighborForNationDiplomacyMask(nationId04);
+TZone* TNavyMission::RefreshMissionPortZoneContextForNation() {
+  return targetZone14->SelectBestPrimaryNeighborForNationDiplomacyMask(nationId04);
 }
 
 // FUNCTION: IMPERIALISM 0x00536fc0
@@ -472,7 +474,7 @@ void TNavyMission::ConsolidateMissionOrderEntriesByTargetAndQueue(int* pContextA
           static_cast<TTaskForce*>(GetOrCreateMissionOrderEntryForNode_fn(node->object_ptr, 0));
       for (TMapOrderChildLinkNode* other = orderList24; other != nullptr; other = other->next) {
         if (other->active_flag == 0 && other->object_ptr->attachment == entry->contextAnchor) {
-          other->object_ptr->RemoveNode(reinterpret_cast<int>(entry));
+          other->object_ptr->RemoveNode(entry);
           other->active_flag = 1;
         }
       }

@@ -763,22 +763,6 @@ undefined4 RecomputeNavyOrderSelectionPriorityChain_00552349(void)
   return 0;
 }
 
-// ghidra_name SetMapOrderType3Or4AndQueue
-// ghidra_proto void __thiscall SetMapOrderType3Or4AndQueue(char fUseType4)
-// FUNCTION: IMPERIALISM 0x005530f0
-undefined4 SetMapOrderType3Or4AndQueue(void)
-{
-  return 0;
-}
-
-// ghidra_name TControlSeaZoneMission::SetMapOrderType6AndQueue
-// ghidra_proto void __thiscall SetMapOrderType6AndQueue(int nOrderTarget)
-// FUNCTION: IMPERIALISM 0x005536c0
-undefined4 SetMapOrderType6AndQueue(void)
-{
-  return 0;
-}
-
 // ghidra_name SetMapOrderType5AndQueue
 // ghidra_proto void __thiscall SetMapOrderType5AndQueue(int nOrderTarget)
 // FUNCTION: IMPERIALISM 0x00553840

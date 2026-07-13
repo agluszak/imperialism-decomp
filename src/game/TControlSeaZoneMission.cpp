@@ -32,12 +32,6 @@ IMPLEMENT_SERIAL(TControlSeaZoneMission, TNavyMission, 1)
 // SYNTHETIC: IMPERIALISM 0x005355f0
 // TControlSeaZoneMission::`scalar deleting destructor'
 
-// Not-yet-recovered free functions/subsystems this file calls into.
-extern undefined4 GetPortZoneOwnerNationCodeFromMissionField48(void);
-extern undefined4 SetTaskForceOwnerPointer(void);
-extern undefined4 SetMapOrderType3Or4AndQueue(void);
-extern undefined4 SetByteFlagAtOffsetAF0ByIndex(void);
-
 TControlSeaZoneMission::TControlSeaZoneMission() : TNavyMission() {}
 
 TControlSeaZoneMission::TControlSeaZoneMission(TZone* targetZone) : TNavyMission(targetZone) {}
@@ -73,11 +67,44 @@ void TControlSeaZoneMission::Call30() {
 }
 
 // Inherited unchanged by TBeachheadMission (real base class relationship).
+// Confirms this mission's nation has terrain coverage: scans g_apTerrainTypeDescriptorTable
+// for a nation that either IS this mission's nation or has an encoded-slot match with it, then
+// checks whether targetZone18 lists that nation among its secondary neighbors. If no terrain
+// coverage is found, clears this nation's per-context flag and returns null (mission invalid).
+// Otherwise, if targetZone18 is a port zone that doesn't already flag this nation, refreshes
+// targetZone18 via RefreshMissionPortZoneContextForNation; returns `this` iff targetZone18 ends
+// up non-null.
 // FUNCTION: IMPERIALISM 0x00538900
 TMission* TControlSeaZoneMission::GetReplacementSlot48() {
-  // TODO: ValidateMissionTerrainCoverageAndRefreshTargetContext -- pending
-  // recovery of g_apTerrainTypeDescriptorTable diplomacy-match traversal.
-  return nullptr;
+  bool foundCoverage = false;
+  for (int terrainIndex = 0; terrainIndex < kTerrainTypeDescriptorTableCount; ++terrainIndex) {
+    TCountry* nation = g_apTerrainTypeDescriptorTable[terrainIndex];
+    if (nation == nullptr) {
+      continue;
+    }
+    if (terrainIndex != nationId04 && !nation->IsEncodedNationSlotMinus200Equal(nationId04)) {
+      continue;
+    }
+    if (targetZone18->HasSecondaryNeighborWithNationTag(static_cast<short>(terrainIndex))) {
+      foundCoverage = true;
+      break;
+    }
+  }
+
+  if (!foundCoverage) {
+    TGreatPower* nationState = g_apNationStates[nationId04];
+    nationState->AssertValid();
+    short contextOrdinal = targetZone18->GetContextOrdinalOrInvalid();
+    nationState->SetByteFlagAtOffsetAF0ByIndex(contextOrdinal, 0);
+    return nullptr;
+  }
+
+  if (targetZone18 != nullptr && targetZone18->QueryPortZoneCapability() &&
+      !targetZone18->QueryZoneCapabilityFlagD(nationId04)) {
+    targetZone18 = RefreshMissionPortZoneContextForNation();
+  }
+
+  return (targetZone18 != nullptr) ? this : nullptr;
 }
 
 // Inherited unchanged by TBeachheadMission (real base class relationship).
@@ -155,26 +182,55 @@ char TControlSeaZoneMission::MatchesMissionKeySlot4C(int kind, int key, int mode
   return 0;
 }
 
+// Resolves a port-zone context command into a queued order type. `pMapOrderEntry` is the
+// TTaskForce map-order entry MissionSlot44's dispatch passed (navyField20). Builds a per-nation
+// bitmask of nations with an outdated war-relation timestamp against this mission's nation,
+// tracking the first such nation's port-zone context whose cached owner (primaryNeighbors slot
+// 0) matches the entry's contextAnchor (reinterpreted as a TZone*). If the entry's own target
+// context (also contextAnchor) has none of those nations already flagged AND a matching context
+// was found, queues map-order type 6 with that context; otherwise queues type 3.
 // FUNCTION: IMPERIALISM 0x00539640
-void TControlSeaZoneMission::NoOpSlot9C() {
-  // TODO: ResolveAndQueuePortZoneMapOrder -- pending recovery of the
-  // nation-bitmask + port-zone-context selection helpers.
+void TControlSeaZoneMission::NoOpSlot9C(void* pMapOrderEntry) {
+  TTaskForce* mapOrderEntry = static_cast<TTaskForce*>(pMapOrderEntry);
+  mapOrderEntry->ResetOrderTypeAndStrengthDword(1);
+
+  int nationBitmask = 0;
+  TZone* firstMatchContext = nullptr;
+  for (int nation = 0; nation < 7; ++nation) {
+    if (g_pDiplomacyTurnStateManager->HasOutdatedWarRelationSlot48(nation, nationId04)) {
+      nationBitmask |= 1 << nation;
+      TZone* portZone =
+          g_pActiveMapOrderContext->FindFirstPortZoneContextByNation(static_cast<short>(nation));
+      TZone** cachedOwnerSlot = portZone->primaryNeighbors.EnsureSlotAllocatedAndReturnPointer(0);
+      if (*cachedOwnerSlot == reinterpret_cast<TZone*>(mapOrderEntry->contextAnchor)) {
+        firstMatchContext =
+            g_pActiveMapOrderContext->FindFirstPortZoneContextByNation(static_cast<short>(nation));
+      }
+    }
+  }
+
+  TZone* entryContext = reinterpret_cast<TZone*>(mapOrderEntry->contextAnchor);
+  if ((entryContext->field10 & nationBitmask) == 0 && firstMatchContext != nullptr) {
+    mapOrderEntry->SetMapOrderType6AndQueue(reinterpret_cast<int>(firstMatchContext));
+    return;
+  }
+  mapOrderEntry->SetMapOrderType3Or4AndQueue(0);
 }
 
 // Inherited unchanged by TBeachheadMission and TBlockadePortMission (real base class relationship).
 // Caches this mission's target port zone into the first port zone's primaryNeighbors slot 0
 // (a per-nation "current port zone owner" cache slot, not a real neighbor list entry -- ground
 // truth forces the slot to exist via EnsureSlotAllocatedAndReturnPointer(0) unconditionally).
-// If that cached slot still points at targetZone14, just re-touches the port zone lookup;
-// otherwise re-scores neighbors via SelectBestPrimaryNeighborForNationDiplomacyMask. Both
-// results are discarded here, matching the original exactly.
+// If that cached slot still points at targetZone14, just re-touches the port zone lookup and
+// returns its result; otherwise returns the best-scoring neighbor via SelectBestPrimaryNeighbor-
+// ForNationDiplomacyMask. GetReplacementSlot48 (0x538900) consumes this return value (stores it
+// back into targetZone18), so it is no longer discarded.
 // FUNCTION: IMPERIALISM 0x00539780
-void TControlSeaZoneMission::RefreshMissionPortZoneContextForNation() {
+TZone* TControlSeaZoneMission::RefreshMissionPortZoneContextForNation() {
   TZone* firstPortZone = g_pActiveMapOrderContext->FindFirstPortZoneContextByNation(nationId04);
   TZone** cachedOwnerSlot = firstPortZone->primaryNeighbors.EnsureSlotAllocatedAndReturnPointer(0);
   if (*cachedOwnerSlot == targetZone14) {
-    g_pActiveMapOrderContext->FindFirstPortZoneContextByNation(nationId04);
-    return;
+    return g_pActiveMapOrderContext->FindFirstPortZoneContextByNation(nationId04);
   }
-  targetZone14->SelectBestPrimaryNeighborForNationDiplomacyMask(nationId04);
+  return targetZone14->SelectBestPrimaryNeighborForNationDiplomacyMask(nationId04);
 }
