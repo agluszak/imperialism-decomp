@@ -3,8 +3,10 @@
 #include "game/TInvadeMission.h"
 
 #include "game/global_data_tables.h"
+#include "game/CIterator.h"
 #include "game/TBeachheadMission.h"
 #include "game/TGlobalMapState.h"
+#include "game/TMilitaryUnit.h"
 #include "game/TStream.h"
 
 IMPLEMENT_SERIAL(TInvadeMission, TAttackProvinceMission, 1)
@@ -45,13 +47,7 @@ void TInvadeMission::NoOpSlot8C(int a, int b) {
 
 // FUNCTION: IMPERIALISM 0x0053f1f0
 float TInvadeMission::ReturnZeroFloatSlot6C() {
-  // TODO: ComputeInvadeMissionCompositeScoreWithBeachhead -- pending recovery
-  // of the g_697980 dot-product profile table.
-  float score = 0.0f;
-  if (beachhead34 != nullptr) {
-    score = beachhead34->ReturnZeroFloatSlot6C();
-  }
-  return score;
+  return TArmyMission::ReturnZeroFloatSlot6C() + beachhead34->ReturnZeroFloatSlot6C();
 }
 
 // FUNCTION: IMPERIALISM 0x0053f240
@@ -83,12 +79,19 @@ void TInvadeMission::Free() {
   TAttackProvinceMission::Free();
 }
 
+// Matches the original exactly: unconditionally dereferences beachhead34 (no null check),
+// so this is only ever called on an instance with a live beachhead child.
 // FUNCTION: IMPERIALISM 0x0053f4e0
 char TInvadeMission::ReturnFalseSlot98() {
-  // TODO: EvaluateInvadeMissionBeachheadAndQueueEligibleUnits -- pending
-  // recovery of the beachhead-gated unit-queueing cursor loop.
-  if (beachhead34 == nullptr) {
+  if (!beachhead34->ReturnFalseSlot98()) {
     return 0;
+  }
+  CIterator iter(orderListAt18);
+  for (void* item = iter.Reset(); iter.More(); item = iter.Advance()) {
+    TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(item);
+    if (unit->GetUnitMovementClassId() != 0) {
+      NoOpSlot88(unit, 1);
+    }
   }
   return 1;
 }
@@ -166,11 +169,26 @@ char TInvadeMission::ReturnFalseSlot50() {
   return 1;
 }
 
+// Same shape as TArmyMission::ReturnZeroFloatSlot70, but the "not this mission's own unit"
+// branch is scaled down by 0.1 unless ReturnFalseSlot50() says otherwise (TInvadeMission's
+// own override always returns true, so the scale-down never actually triggers here -- kept
+// as a real virtual dispatch to match the original rather than hardcoding).
 // FUNCTION: IMPERIALISM 0x0053fac0
 float TInvadeMission::ReturnZeroFloatSlot70(TMilitaryUnit* candidateUnit) {
-  // TODO: ComputeInvadeMissionWeightedScoreDelta -- simplified passthrough
-  // pending recovery of the beachhead-relative scaling logic.
-  return TArmyMission::ReturnZeroFloatSlot70(candidateUnit);
+  float delta;
+  if (flag10 != 0) {
+    delta = 0.0f;
+  } else if (candidateUnit->ownerMission40 == this) {
+    delta = ReturnZeroFloatSlot68() -
+            ComputeArmyMissionScoreDeltaWithScaledCandidateUnit(candidateUnit);
+  } else {
+    delta = ComputeArmyMissionScoreDeltaWithCandidateUnit(candidateUnit) - ReturnZeroFloatSlot68();
+  }
+
+  if (!ReturnFalseSlot50()) {
+    delta *= 0.1f;
+  }
+  return delta;
 }
 
 // FUNCTION: IMPERIALISM 0x0053fb60
@@ -199,11 +217,38 @@ char TInvadeMission::MatchesMissionKeySlot4C(int kind, int key, int mode) {
   return 0;
 }
 
+// Same vector-accumulation + truncate-to-outBuffer shape as TArmyMission::ReturnZeroSlot2C
+// (inlined here rather than calling the shared helper, matching this file's established
+// per-callsite-inlining pattern), plus this override's own addition: the running total also
+// folds in beachhead34->ReturnZeroSlot2C(outBuffer, unused) (vtable slot 0x2c, same slot).
+// NOTE: the original's per-element rounding is a custom FPU round-half rule, not plain
+// truncation (0x53fce9-0x53fd1c); approximated here as truncation pending that recovery.
 // FUNCTION: IMPERIALISM 0x0053fc10
 int TInvadeMission::ReturnZeroSlot2C(int* outBuffer, int unused) {
-  // TODO: BuildInvadeMissionUnitPriorityVectorAndScore -- pending recovery of
-  // the shared unit-priority-vector accumulation cursor; delegate for now.
-  return TArmyMission::ReturnZeroSlot2C(outBuffer, unused);
+  float vector[5] = {0.0f, 0.0f, 0.0f, 0.0f, 0.0f};
+  if (orderListAt18 != nullptr) {
+    CIterator iter(orderListAt18);
+    for (void* item = iter.Reset(); iter.More(); item = iter.Advance()) {
+      TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(item);
+      unit->AssertValid();
+      short weightIndex = unit->IsNotStationedInProvince(GetMissionTargetContextIdFromField14());
+      if (weightIndex > 5) {
+        weightIndex = 5;
+      }
+      AccumulateUnitOrderPriorityVectorContribution(
+          unit, vector, g_ArmyMissionOrderWeightTable_006978c8[weightIndex],
+          static_cast<float>(GetProvinceUnitOrderWeight(GetMissionTargetContextIdFromField14())));
+    }
+  }
+
+  int total = 0;
+  for (int i = 0; i < 5; ++i) {
+    int rounded = static_cast<int>(vector[i]);
+    outBuffer[i] = rounded;
+    total += rounded;
+  }
+
+  return total + beachhead34->ReturnZeroSlot2C(outBuffer, unused);
 }
 
 // FUNCTION: IMPERIALISM 0x0053fdc0

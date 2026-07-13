@@ -20482,7 +20482,7 @@
     },
     {
       "address": "0x53f1f0",
-      "matching": 0.23076923076923078,
+      "matching": 0.26666666666666666,
       "name": "TInvadeMission::ComputeInvadeMissionCompositeScoreWithBeachhead",
       "type": 1
     },
@@ -20524,7 +20524,7 @@
     },
     {
       "address": "0x53f4e0",
-      "matching": 0.0851063829787234,
+      "matching": 0.8705882352941177,
       "name": "TInvadeMission::EvaluateInvadeMissionBeachheadAndQueueEligibleUnits",
       "type": 1
     },
@@ -20584,7 +20584,7 @@
     },
     {
       "address": "0x53fac0",
-      "matching": 0.0425531914893617,
+      "matching": 0.8780487804878049,
       "name": "TInvadeMission::ComputeInvadeMissionWeightedScoreDelta",
       "type": 1
     },
@@ -20608,7 +20608,7 @@
     },
     {
       "address": "0x53fc10",
-      "matching": 0.03389830508474576,
+      "matching": 0.33,
       "name": "TInvadeMission::BuildInvadeMissionUnitPriorityVectorAndScore",
       "type": 1
     },
