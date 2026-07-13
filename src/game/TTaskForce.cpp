@@ -7,6 +7,7 @@
 #include "game/TShip.h"
 #include "game/TSimMgr.h"
 #include "game/global_data_tables.h"
+#include "game/ui_invalidation_guard.h"
 
 extern undefined4 GenerateThreadLocalRandom15(void);
 
@@ -179,17 +180,17 @@ void TTaskForce::DecrementRequiredCount(short decrement) {
 }
 
 // FUNCTION: IMPERIALISM 0x00550ff0
-void TTaskForce::RemoveNode(int self) {
-  TMapOrderEntryOwnerContext* owner_ctx = owner;
+void TTaskForce::RemoveNode(TTaskForce* self) {
+  TTaskForce* owner_ctx = owner;
   if (owner_ctx != 0) {
-    TMapOrderChildLinkNode* list_head = owner_ctx->head;
+    TMapOrderChildLinkNode* list_head = owner_ctx->childOrderList;
 
     if ((list_head != 0) && (this != list_head->object_ptr)) {
-      list_head = FindMissionOrderNodeById(list_head->next, this);
+      list_head = list_head->next->FindNodeMatching(this);
     }
 
     if (list_head != 0) {
-      list_head = owner_ctx->head;
+      list_head = owner_ctx->childOrderList;
       if (list_head != 0) {
         if (this == list_head->object_ptr) {
           list_head = DeleteMapOrderChildLinkAndReturnNext(list_head);
@@ -198,24 +199,28 @@ void TTaskForce::RemoveNode(int self) {
         }
       }
 
-      owner_ctx->head = list_head;
+      owner_ctx->childOrderList = list_head;
 
       // Low 16 bits of the shared per-order-type descriptor's enabled-flag
       // dword (see TNavyOrderResourceDescriptor in global_data_tables.h),
-      // reused here as a bucket-count array index.
+      // reused here as a bucket-count array index into the SAME +0x1e-based
+      // short[] region ApplyTaskForceSelectionModeForCurrentNationOrders /
+      // PruneInactiveTaskForceOrderHead use on `this` (0x551066 disassembly:
+      // `dec word ptr [edi + eax*2 + 0x1e]` -- confirmed +0x1e, not +0x18).
       short bucket_offset = static_cast<short>(
           g_NavyOrderResourceDescriptorTable[order_type].enabledFlagOrBucketOffset);
       short* bucket_counter =
-          reinterpret_cast<short*>(reinterpret_cast<char*>(owner_ctx) + 0x18 + bucket_offset * 2);
+          reinterpret_cast<short*>(reinterpret_cast<char*>(owner_ctx) + 0x1e + bucket_offset * 2);
       *bucket_counter = *bucket_counter - 1;
     }
 
-    if (this == owner_ctx->active_node) {
-      list_head = owner_ctx->head;
-      owner_ctx->active_node = 0;
+    if (this == owner_ctx->activeChildEntry) {
+      list_head = owner_ctx->childOrderList;
+      owner_ctx->activeChildEntry = 0;
       for (; list_head != 0; list_head = list_head->next) {
-        owner_ctx->active_node = list_head->object_ptr->SelectPreferredMapOrderEntryByPriorityRules(
-            owner_ctx->active_node, 0);
+        owner_ctx->activeChildEntry =
+            list_head->object_ptr->SelectPreferredMapOrderEntryByPriorityRules(
+                owner_ctx->activeChildEntry, 0);
       }
     }
 
@@ -223,26 +228,17 @@ void TTaskForce::RemoveNode(int self) {
   }
 
   if (self != 0) {
-    // `self` is the RemoveNode caller's own owner-context pointer punned to
-    // int (same pun this class already uses for `owner`/`contextAnchor`; see
-    // TMapOrderEntryOwnerContext::FindOrCreateChildOrderLink for the register
-    // evidence that the real callee is __thiscall on that receiver).
-    reinterpret_cast<TMapOrderEntryOwnerContext*>(self)->FindOrCreateChildOrderLink(this);
+    self->FindOrCreateChildOrderLink(this);
   }
 }
 
 // FUNCTION: IMPERIALISM 0x00551100
 void TTaskForce::ReassignOrderNodeNationAndRebindParentCounters(short nation) {
-  // The owner pointer is read with the parent-TTaskForce shape here (required_count
-  // word at +0x1c compared against `nation`, childOrderList at +0x10, activeChildEntry
-  // at +0x14, bucket counters at +0x1e -- the same +0x1e base SetMapOrderType9AndQueue
-  // uses on `this`), not the TMapOrderEntryOwnerContext reading RemoveNode used; more
-  // bd 1uj.16 evidence that the two shapes should merge.
-  TTaskForce* parent = reinterpret_cast<TTaskForce*>(owner);
+  TTaskForce* parent = owner;
   if (parent != 0 && parent->required_count != nation) {
     TMapOrderChildLinkNode* link = parent->childOrderList;
     if (link != 0 && this != link->object_ptr) {
-      link = FindMissionOrderNodeById(link->next, this);
+      link = link->next->FindNodeMatching(this);
     }
     if (link != 0) {
       TMapOrderChildLinkNode* head = parent->childOrderList;
@@ -288,7 +284,7 @@ void TTaskForce::ReassignOrderNodeNationAndRebindParentCounters(short nation) {
 
 // FUNCTION: IMPERIALISM 0x00551220
 void TTaskForce::SetMapOrderActiveChildEntry(TTaskForce* newEntry) {
-  owner = reinterpret_cast<TMapOrderEntryOwnerContext*>(newEntry);
+  owner = newEntry;
   if (newEntry == nullptr) {
     return;
   }
@@ -302,23 +298,25 @@ void TTaskForce::SetMapOrderActiveChildEntry(TTaskForce* newEntry) {
 
   short kind = static_cast<short>(newEntry->attachment);
   if (kind != 0 && kind != 7 && kind != 8 && kind != 4) {
-    // Same node+0x34 overrun documented on
-    // TMapOrderEntryOwnerContext::FindOrCreateChildOrderLink (past TTaskForce's
-    // own 0x34-byte size).
+    // Same node+0x34 overrun documented on FindOrCreateChildOrderLink (past
+    // TTaskForce's own 0x34-byte size).
     *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 0x34) = 0;
   }
 }
 
 // FUNCTION: IMPERIALISM 0x00552510
-TMapOrderChildLinkNode* TTaskForce::FindMissionOrderNodeById(TMapOrderChildLinkNode* node,
-                                                             TTaskForce* child_node) {
-  while (node != 0) {
-    if (node->object_ptr == child_node) {
-      return node;
-    }
-    node = node->next;
+TMapOrderChildLinkNode* TMapOrderChildLinkNode::FindNodeMatching(TTaskForce* child_node) {
+  if (this == 0) {
+    return 0;
   }
-  return 0;
+  TMapOrderChildLinkNode* node = this;
+  while (node->object_ptr != child_node) {
+    node = node->next;
+    if (node == 0) {
+      return 0;
+    }
+  }
+  return node;
 }
 
 // FUNCTION: IMPERIALISM 0x00552590
@@ -610,15 +608,15 @@ void TTaskForce::PromoteMapOrderChainAndQueue(void* pContextAnchor) {
     }
   }
 
-  owner = reinterpret_cast<TMapOrderEntryOwnerContext*>(contextAnchor);
+  owner = reinterpret_cast<TTaskForce*>(contextAnchor);
 
   int iterationBudget = (minPriority < 10000) ? minPriority : 0;
   if (iterationBudget > 0) {
     // TODO: promote body -- 0x55345f-0x553590's candidate-promotion loop
     // over `owner`'s still-uncharted growable-array region (data/capacity/
     // count at +0x28/+0x2c/+0x30, compared via a short field at +0x44); see
-    // the TMapOrderEntryOwnerContext note in TTaskForce.h and bd 1uj.16
-    // follow-up notes.
+    // the PromoteMapOrderChainAndQueue declaration comment in TTaskForce.h
+    // and bd 1uj.16 follow-up notes.
   }
 
   for (TMapOrderChildLinkNode* pruneNode = childOrderList; pruneNode != nullptr;) {
@@ -663,8 +661,7 @@ void TTaskForce::RefreshTaskForceSelectionFlagsForCurrentNationOrders(int mode) 
 void TTaskForce::ApplyTaskForceSelectionModeForCurrentNationOrders(char reserveExtraSlot) {
   for (TMapOrderChildLinkNode* node = childOrderList; node != nullptr; node = node->next) {
     if (node->active_flag != 0) {
-      // Same node+0x34 overrun documented on
-      // TMapOrderEntryOwnerContext::FindOrCreateChildOrderLink.
+      // Same node+0x34 overrun documented on FindOrCreateChildOrderLink.
       *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(node->object_ptr) + 0x34) =
           (reserveExtraSlot != 0) ? 1u : 2u;
     }
@@ -673,12 +670,12 @@ void TTaskForce::ApplyTaskForceSelectionModeForCurrentNationOrders(char reserveE
   for (TShip* ship = g_pNavyPrimaryOrderListHead; ship != nullptr; ship = ship->nextOlder24) {
     if (reinterpret_cast<int>(ship->field08) == contextAnchor &&
         ship->ownerNationSlot14 == required_count && ship->field0c == 0) {
-      // Same `this`-as-owner-context reinterpretation RemoveNode's tail uses; the node
-      // argument here is a TShip* (the primary navy order list's own element type), not
-      // a TTaskForce* -- FindOrCreateChildOrderLink's own body is still unported
-      // (`// TODO: promote body`), so its real, evidenced parameter type is unresolved.
-      reinterpret_cast<TMapOrderEntryOwnerContext*>(this)->FindOrCreateChildOrderLink(
-          reinterpret_cast<TTaskForce*>(ship));
+      // The node argument here is a TShip* (the primary navy order list's own element
+      // type), not a genuine TTaskForce -- FindOrCreateChildOrderLink's body only
+      // touches the shared node-prefix fields (owner/+0x10 raw dword/+0x34 overrun)
+      // TShip and TTaskForce both carry at these offsets, so this reinterpret_cast is
+      // the one confirmed cross-type pun (bd 1uj.16), not a mismodeled receiver.
+      FindOrCreateChildOrderLink(reinterpret_cast<TTaskForce*>(ship));
     }
   }
 
@@ -714,18 +711,84 @@ unsigned int TTaskForce::HasActiveMapOrderEntryChildren() {
 }
 
 // FUNCTION: IMPERIALISM 0x00553bc0
-void TMapOrderEntryOwnerContext::FindOrCreateChildOrderLink(TTaskForce* node) {
-  // TODO: promote body -- searches `head` for an existing link to `node` (via
-  // a sub-call at 0x40635c, not yet resolved); if none exists, allocates
-  // (operator new, 0x606f73) and inserts a new TMapOrderChildLinkNode in
-  // priority-sorted order (lookup table at 0x698120), bumps a bucket counter
-  // at this+0x1e, sets node->owner = this, then makes a virtual dispatch
-  // through this receiver's own (still-uncharted) vtable slot 0xc/4 whose
-  // consequences -- including a conditional write at node+0x34, past
-  // TTaskForce's own 0x34-byte size -- are not yet understood. See the
-  // TMapOrderEntryOwnerContext::FindOrCreateChildOrderLink declaration
-  // comment and bd 1uj.16 follow-up notes.
-  (void)node;
+void TTaskForce::FindOrCreateChildOrderLink(TTaskForce* node) {
+  TMapOrderChildLinkNode* head = childOrderList;
+  TMapOrderChildLinkNode* existingLink;
+  if (head == 0) {
+    existingLink = 0;
+  } else if (head->object_ptr != node) {
+    existingLink = head->next->FindNodeMatching(node);
+  } else {
+    existingLink = head;
+  }
+  if (existingLink != 0) {
+    return;
+  }
+
+  // Find the priority-sorted insertion point: the first sibling whose own
+  // enabledFlagOrBucketOffset priority is >= node's (table at g_NavyOrder-
+  // ResourceDescriptorTable + 0x18, i.e. 0x698108 + 0x18 = 0x698120).
+  TMapOrderChildLinkNode* nextLink = childOrderList;
+  TMapOrderChildLinkNode* prevLink = 0;
+  if (nextLink != 0) {
+    short nodePriority = static_cast<short>(
+        g_NavyOrderResourceDescriptorTable[node->order_type].enabledFlagOrBucketOffset);
+    do {
+      if (static_cast<short>(g_NavyOrderResourceDescriptorTable[nextLink->object_ptr->order_type]
+                                 .enabledFlagOrBucketOffset) >= nodePriority) {
+        break;
+      }
+      prevLink = nextLink;
+      nextLink = nextLink->next;
+    } while (nextLink != 0);
+  }
+
+  TMapOrderChildLinkNode* newLink = new TMapOrderChildLinkNode();
+  if (newLink != 0) {
+    newLink->object_ptr = node;
+    newLink->next = nextLink;
+    newLink->prev_link = prevLink;
+    newLink->active_flag = 1;
+    if (nextLink != 0) {
+      nextLink->prev_link = newLink;
+    }
+    if (newLink->prev_link != 0) {
+      newLink->prev_link->next = newLink;
+    }
+  } else {
+    MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUNavy_006983C8, 0x80f);
+  }
+
+  if (nextLink == childOrderList) {
+    childOrderList = newLink;
+  }
+
+  activeChildEntry = node->SelectPreferredMapOrderEntryByPriorityRules(activeChildEntry, 0);
+
+  short bucketIndex = static_cast<short>(
+      g_NavyOrderResourceDescriptorTable[node->order_type].enabledFlagOrBucketOffset);
+  ++*reinterpret_cast<short*>(reinterpret_cast<char*>(this) + 0x1e + bucketIndex * 2);
+
+  node->owner = this;
+
+  // Defensive null re-check on `this` (matches the original's own `test edi,edi`
+  // before this tail, mirroring the null-safe style already used elsewhere in this
+  // class -- e.g. HasNoMapOrderEntryChildrenQueued).
+  if (this != nullptr) {
+    AssertValid();
+
+    // Copies this entry's own packed order_type/order_strength dword and applies the
+    // same attachment-kind gate SetMapOrderActiveChildEntry applies, just with `this`
+    // playing the role of that method's `newEntry` argument (see the header comment).
+    *reinterpret_cast<int*>(reinterpret_cast<char*>(node) + 0x10) =
+        *reinterpret_cast<int*>(reinterpret_cast<char*>(this) + 4);
+
+    short kind = static_cast<short>(attachment);
+    if (kind != 0 && kind != 7 && kind != 8 && kind != 4) {
+      *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(node) + 0x34) = 0;
+    }
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x00553e30

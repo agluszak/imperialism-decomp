@@ -12831,40 +12831,39 @@
     },
     {
       "address": "0x4e0590",
-      "matching": 1.0,
+      "effective": true,
+      "matching": 0.42857142857142855,
       "name": "TGreatPower::OrphanRetStub_004d7fa0_88",
       "type": 1
     },
     {
       "address": "0x4e05d0",
-      "effective": true,
-      "matching": 0.42857142857142855,
+      "matching": 1.0,
       "name": "TGreatPower::OrphanLeaf_NoCall_Ins02_004d7fc0_89",
       "type": 1
     },
     {
       "address": "0x4e0610",
-      "effective": true,
-      "matching": 0.42857142857142855,
+      "matching": 1.0,
       "name": "TGreatPower::ReturnFalseNationStateActionStub_8a",
       "type": 1
     },
     {
       "address": "0x4e0650",
-      "matching": 1.0,
+      "effective": true,
+      "matching": 0.42857142857142855,
       "name": "TGreatPower::OrphanRetStub_004d7fe0_8b",
       "type": 1
     },
     {
       "address": "0x4e0690",
-      "effective": true,
-      "matching": 0.42857142857142855,
+      "matching": 1.0,
       "name": "TGreatPower::ReturnFalseNationStateCapabilityFlag90",
       "type": 1
     },
     {
       "address": "0x4e06d0",
-      "matching": 1.0,
+      "matching": 0.7619047619047619,
       "name": "TGreatPower::SumNationRuntimeFiveBucketValue44",
       "type": 1
     },
@@ -21802,7 +21801,7 @@
     },
     {
       "address": "0x54f340",
-      "matching": 0.2638888888888889,
+      "matching": 0.352112676056338,
       "name": "RefreshMapOrderBattleSideSnapshot",
       "type": 1
     },
@@ -21892,7 +21891,7 @@
     },
     {
       "address": "0x5501b0",
-      "matching": 0.5446009389671361,
+      "matching": 0.5352112676056338,
       "name": "CalculateMissionOrderPriorityScore",
       "type": 1
     },
@@ -22060,13 +22059,13 @@
     },
     {
       "address": "0x550ff0",
-      "matching": 0.5217391304347826,
+      "matching": 0.5,
       "name": "ObjectPool::RemoveNode",
       "type": 1
     },
     {
       "address": "0x551100",
-      "matching": 0.6258503401360545,
+      "matching": 0.6896551724137931,
       "name": "ReassignOrderNodeNationAndRebindParentCounters",
       "type": 1
     },
@@ -22180,7 +22179,7 @@
     },
     {
       "address": "0x552510",
-      "matching": 0.7272727272727273,
+      "matching": 0.6153846153846154,
       "name": "ObjectPool::FindMissionOrderNodeById",
       "type": 1
     },
@@ -22330,7 +22329,7 @@
     },
     {
       "address": "0x553bc0",
-      "matching": 0.0196078431372549,
+      "matching": 0.6439024390243903,
       "name": "GetOrCreateTaskForceOrderNodeByTemplate",
       "type": 1
     },
@@ -22697,7 +22696,7 @@
     },
     {
       "address": "0x557f10",
-      "matching": 0.1943502824858757,
+      "matching": 0.2054176072234763,
       "name": "SelectEligibleMapOrderInteractionForNationAndContext",
       "type": 1
     },
@@ -29652,7 +29651,7 @@
     },
     {
       "address": "0x5a39a0",
-      "matching": 0.9545454545454546,
+      "matching": 0.9393939393939394,
       "name": "ComputeHexTileDistanceFromIndices",
       "type": 1
     },

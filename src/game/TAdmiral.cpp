@@ -50,14 +50,14 @@ TAdmiral::TAdmiral(short terrainTypeIndex)
 // SYNTHETIC: IMPERIALISM 0x00551550
 // TAdmiral::`scalar deleting destructor'
 
-static void RecomputeMapOrderOwnerActiveSelection(TMapOrderEntryOwnerContext* ownerContext) {
+static void RecomputeMapOrderOwnerActiveSelection(TTaskForce* ownerContext) {
   if (ownerContext == 0) {
     return;
   }
-  ownerContext->active_node = 0;
-  for (TMapOrderChildLinkNode* link = ownerContext->head; link != 0; link = link->next) {
-    TTaskForce* activeEntry = ownerContext->active_node;
-    ownerContext->active_node =
+  ownerContext->activeChildEntry = 0;
+  for (TMapOrderChildLinkNode* link = ownerContext->childOrderList; link != 0; link = link->next) {
+    TTaskForce* activeEntry = ownerContext->activeChildEntry;
+    ownerContext->activeChildEntry =
         link->object_ptr->SelectPreferredMapOrderEntryByPriorityRules(activeEntry, 0);
   }
 }
@@ -67,8 +67,11 @@ static void ClearPrimaryOrderBacklink(void* primaryOrderNode) {
     return;
   }
   *reinterpret_cast<void**>(reinterpret_cast<char*>(primaryOrderNode) + 0x20) = 0;
-  TMapOrderEntryOwnerContext* ownerContext = *reinterpret_cast<TMapOrderEntryOwnerContext**>(
-      reinterpret_cast<char*>(primaryOrderNode) + 0xc);
+  // The owner pointer at +0xc follows the same node-prefix convention
+  // TTaskForce::owner/RemoveNode use (bd 1uj.16.1 merge); primaryOrderNode itself is a
+  // TShip-shaped node here, not a TTaskForce, so it stays raw/opaque (void*).
+  TTaskForce* ownerContext =
+      *reinterpret_cast<TTaskForce**>(reinterpret_cast<char*>(primaryOrderNode) + 0xc);
   RecomputeMapOrderOwnerActiveSelection(ownerContext);
 }
 
@@ -106,8 +109,8 @@ void TAdmiral::SetTaskForcePrimaryOrderLinkAndRefreshChildBacklinks(void* primar
   this->field_8 = reinterpret_cast<int>(primaryOrderNode);
   if (primaryOrderNode != 0) {
     *reinterpret_cast<void**>(reinterpret_cast<char*>(primaryOrderNode) + 0x20) = this;
-    TMapOrderEntryOwnerContext* ownerContext = *reinterpret_cast<TMapOrderEntryOwnerContext**>(
-        reinterpret_cast<char*>(primaryOrderNode) + 0xc);
+    TTaskForce* ownerContext =
+        *reinterpret_cast<TTaskForce**>(reinterpret_cast<char*>(primaryOrderNode) + 0xc);
     RecomputeMapOrderOwnerActiveSelection(ownerContext);
   }
 }
