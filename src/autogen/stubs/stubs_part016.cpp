@@ -459,14 +459,6 @@ undefined4 ResetDiplomacyRuntimeSelectionAndSetModeNada(void)
   return 0;
 }
 
-// ghidra_name EmitTurnEvent10ForFlaggedNationSlots
-// ghidra_proto undefined EmitTurnEvent10ForFlaggedNationSlots()
-// FUNCTION: IMPERIALISM 0x00544720
-undefined4 EmitTurnEvent10ForFlaggedNationSlots(void)
-{
-  return 0;
-}
-
 // ghidra_name InitializeProtocolOptionControlFromProvider
 // ghidra_proto undefined InitializeProtocolOptionControlFromProvider()
 // FUNCTION: IMPERIALISM 0x00544e70
@@ -551,14 +543,6 @@ undefined4 ResetDialogContextField40AndEmitTurnEvent3Mode18(void)
 // ghidra_proto undefined RouteAndProcessDiplomacyTurnStateEventQueue()
 // FUNCTION: IMPERIALISM 0x00545730
 undefined4 RouteAndProcessDiplomacyTurnStateEventQueue(void)
-{
-  return 0;
-}
-
-// ghidra_name AppendNodeToTurnEventLinkedListAt6C
-// ghidra_proto undefined AppendNodeToTurnEventLinkedListAt6C()
-// FUNCTION: IMPERIALISM 0x00549280
-undefined4 AppendNodeToTurnEventLinkedListAt6C(void)
 {
   return 0;
 }

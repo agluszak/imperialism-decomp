@@ -3042,12 +3042,14 @@ address|target_cpp|ownership|note
 543910|src/game/TMultiplayerMgr_HandleDiplomacyTurnEvent.cpp|manual|marker_sync
 544540|src/game/TMultiplayerMgr.cpp|manual|marker_sync
 5446a0|src/game/TMultiplayerMgr.cpp|manual|marker_sync
+544720|src/game/TMultiplayerMgr.cpp|manual|marker_sync
 5449b0|src/game/TDiplomacyMgr.cpp|manual|marker_sync
 544cd0|src/game/NetMessage.cpp|manual|marker_sync
 544e30|src/game/TMultiplayerMgr.cpp|manual|marker_sync
 545660|src/game/TMultiplayerMgr.cpp|manual|marker_sync
 545940|src/game/TMultiplayerMgr.cpp|manual|marker_sync
 549240|src/game/TSimMgr.cpp|manual|marker_sync
+549280|src/game/TMultiplayerMgr.cpp|manual|marker_sync
 5493c0|src/game/TMultiplayerMgr.cpp|manual|marker_sync
 5494b0|src/game/TMultiplayerMgr.cpp|manual|marker_sync
 549540|src/game/TMultiplayerMgr.cpp|manual|marker_sync

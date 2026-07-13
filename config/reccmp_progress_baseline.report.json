@@ -7585,7 +7585,7 @@
     },
     {
       "address": "0x4a2900",
-      "matching": 0.13374805598755832,
+      "matching": 0.12752721617418353,
       "name": "BuildArmyContextActionRecordsAndDispatchLabel",
       "type": 1
     },
@@ -12411,7 +12411,7 @@
     },
     {
       "address": "0x4dd430",
-      "matching": 0.5714285714285714,
+      "matching": 0.5142857142857142,
       "name": "TGreatPower::ComputeRemainingDiplomacyAidBudget",
       "type": 1
     },
@@ -12849,8 +12849,7 @@
     },
     {
       "address": "0x4e05d0",
-      "effective": true,
-      "matching": 0.42857142857142855,
+      "matching": 1.0,
       "name": "TGreatPower::OrphanLeaf_NoCall_Ins02_004d7fc0_89",
       "type": 1
     },
@@ -12869,8 +12868,7 @@
     },
     {
       "address": "0x4e0690",
-      "effective": true,
-      "matching": 0.42857142857142855,
+      "matching": 1.0,
       "name": "TGreatPower::ReturnFalseNationStateCapabilityFlag90",
       "type": 1
     },
@@ -12900,7 +12898,7 @@
     },
     {
       "address": "0x4e0890",
-      "matching": 0.24242424242424243,
+      "matching": 0.2222222222222222,
       "name": "TGreatPower::IterateLinkedListCursorAndAccumulateRoundedMetric_004e0890",
       "type": 1
     },
@@ -16423,7 +16421,7 @@
     },
     {
       "address": "0x50bea0",
-      "matching": 0.21353930031803725,
+      "matching": 0.20899591094956838,
       "name": "TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets",
       "type": 1
     },
@@ -16783,7 +16781,7 @@
     },
     {
       "address": "0x512850",
-      "matching": 0.3157894736842105,
+      "matching": 0.5555555555555556,
       "name": "NoOpMapTilePredicateStub",
       "type": 1
     },
@@ -17246,7 +17244,7 @@
     },
     {
       "address": "0x5178f0",
-      "matching": 0.3446601941747573,
+      "matching": 0.32116788321167883,
       "name": "ComputeRepresentativeTileIndexForTerrainTypeWithWrapBias",
       "type": 1
     },
@@ -21245,7 +21243,7 @@
     },
     {
       "address": "0x544720",
-      "matching": 0.0425531914893617,
+      "matching": 0.627906976744186,
       "name": "EmitTurnEvent10ForFlaggedNationSlots",
       "type": 1
     },
@@ -21353,7 +21351,7 @@
     },
     {
       "address": "0x549280",
-      "matching": 0.0,
+      "matching": 1.0,
       "name": "AppendNodeToTurnEventLinkedListAt6C",
       "type": 1
     },
@@ -29532,7 +29530,7 @@
     },
     {
       "address": "0x5a1520",
-      "matching": 0.5259259259259259,
+      "matching": 0.48148148148148145,
       "name": "TTacticalBattle::MoveTacticalUnitTowardTile",
       "type": 1
     },
@@ -29574,7 +29572,7 @@
     },
     {
       "address": "0x5a1ee0",
-      "matching": 0.6631299734748011,
+      "matching": 0.6604774535809018,
       "name": "TTacticalBattle::EvaluateAndResolveTacticalActionAgainstTileOccupant",
       "type": 1
     },
@@ -29682,7 +29680,7 @@
     },
     {
       "address": "0x5a3d30",
-      "matching": 0.8163265306122449,
+      "matching": 0.8104956268221575,
       "name": "IsTacticalTargetTileReachableForAction",
       "type": 1
     },
@@ -31709,7 +31707,7 @@
     },
     {
       "address": "0x5ba0e0",
-      "matching": 0.8181818181818182,
+      "matching": 1.0,
       "name": "BuildInterNationEventSummaryRowsForAdvisorDialog_Impl",
       "type": 1
     },

@@ -362,6 +362,26 @@ void TMultiplayerMgr::EmitTurnEvent3Mode18WithActiveNation() {
   g_pNetMgr006a6014->Send(&packet, 1);
 }
 
+// Broadcasts an event-0x10 "time" packet (same minimal payload as event 3) to every nation
+// slot that has both a live network session id and its pending-nation bit set.
+// FUNCTION: IMPERIALISM 0x00544720
+void TMultiplayerMgr::EmitTurnEvent10ForFlaggedNationSlots() {
+  for (int slot = 0; slot < kNationSlotCount; ++slot) {
+    if (nationSessionIds[slot] != 0 && (pendingNationBitmask & (1 << slot)) != 0) {
+      TurnEvent3Mode18Packet packet;
+      packet.packetTag = 0x74696d65;
+      packet.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetActiveNationId());
+      packet.eventCode = 0;
+      packet.fromNetworkId = 0;
+      packet.messageLength = 0;
+      packet.eventCode = 0x10;
+      packet.messageLength = 0x18;
+      packet.toNetworkId = g_pGameFlowState->nationSessionIds[slot];
+      g_pNetMgr006a6014->Send(&packet, 0);
+    }
+  }
+}
+
 // FUNCTION: IMPERIALISM 0x00544e30
 char TMultiplayerMgr::DoIdle(int action) {
   (void)action;
@@ -2042,6 +2062,16 @@ struct TurnEvent11Packet : NetMessage {
   short shortB;
   unsigned char pad24[4]; // original frame/messageLength is 0x28
 };
+
+// FUNCTION: IMPERIALISM 0x00549280
+void TMultiplayerMgr::AppendNodeToTurnEventLinkedListAt6C(int node) {
+  *reinterpret_cast<int*>(node + 0x10) = 0;
+  int* tail = &primaryTurnEventQueueHead;
+  for (int n = primaryTurnEventQueueHead; n != 0; n = *reinterpret_cast<int*>(n + 0x10)) {
+    tail = reinterpret_cast<int*>(n + 0x10);
+  }
+  *tail = node;
+}
 
 // FUNCTION: IMPERIALISM 0x005493c0
 void TMultiplayerMgr::CreateAndSendTurnEvent11_MapOffsetAndFlags(unsigned char flagByte,
