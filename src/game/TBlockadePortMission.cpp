@@ -52,8 +52,7 @@ TBlockadePortMission::TBlockadePortMission(TZone* context)
 // FUNCTION: IMPERIALISM 0x0053ac60
 void TBlockadePortMission::WriteTo(TStream* stream) {
   TNavyMission::WriteTo(stream);
-  // TODO: also serializes the port-zone-context node id (via a stream helper
-  // at CArchive-like vtable slot 0x88); pending recovery of that helper.
+  stream->WriteCountSlot88(portZoneContext3c->GetContextOrdinalOrInvalid());
 }
 
 // FUNCTION: IMPERIALISM 0x0053aca0
@@ -76,11 +75,29 @@ void TBlockadePortMission::Call30() {
   *reinterpret_cast<float*>(&value0c) = score / g_fMissionScoreNormalizationDivisor;
 }
 
+// Same overall shape as TControlSeaZoneMission::GetReplacementSlot48, but the coverage
+// check here indexes this nation's per-context byte gate array (this+0x8a0, same region
+// SetByteFlagAtOffsetAF0ByIndex writes) by portZoneContext3c's owner-nation-code ordinal,
+// instead of scanning g_apTerrainTypeDescriptorTable.
 // FUNCTION: IMPERIALISM 0x0053adf0
 TMission* TBlockadePortMission::GetReplacementSlot48() {
-  // TODO: ValidateBlockadePortMissionContextAndRefreshChild -- pending
-  // recovery of the per-nation "task force" gate array.
-  return nullptr;
+  TGreatPower* nation = g_apNationStates[nationId04];
+  nation->AssertValid();
+  short ownerCode = portZoneContext3c->GetPortZoneOwnerNationCodeFromMissionField48();
+  bool hasCoverage = *(reinterpret_cast<char*>(nation) + 0x8a0 + ownerCode) != 0;
+
+  if (!hasCoverage) {
+    short contextOrdinal = portZoneContext3c->GetContextOrdinalOrInvalid();
+    nation->SetByteFlagAtOffsetAF0ByIndex(contextOrdinal, 0);
+    return nullptr;
+  }
+
+  if (targetZone18 != nullptr && targetZone18->QueryPortZoneCapability() &&
+      !targetZone18->QueryZoneCapabilityFlagD(nationId04)) {
+    targetZone18 = RefreshMissionPortZoneContextForNation();
+  }
+
+  return (targetZone18 != nullptr) ? this : nullptr;
 }
 
 // FUNCTION: IMPERIALISM 0x0053ae90
@@ -88,10 +105,20 @@ void TBlockadePortMission::SetStateByte8To2() {
   state08 = 3;
 }
 
+// TODO: promote body (bd 1uj.16.5) -- 935 bytes, the largest unported function in this
+// family; several sub-calls not yet identified (func_0x0040793c order-list iteration,
+// func_0x00407c75/0x4063e3/0x405272/0x4027e3, and the vftable[8].slot_0x04 diplomacy
+// dispatch also seen in TEscortMission's own unported NoOpSlot3C). Shape: computes a
+// 4-category weighted base score the same way TControlSeaZoneMission::NoOpSlot3C /
+// TEscortMission::ResetValue0CToZero do (accumulate per-order contributions, normalize
+// against the g_Populate_Beachhead_Mission_LookupTable_00697958 profile, spread across
+// resourceWeights2c[4]), then computes a second "threat" score -- either from a single
+// target nation (targetZone18's owner-nation-code, if < 7) or maxed over every nation
+// g_apNationStates -- and uses max(threat*0.5, 10.0) to raise (never lower) each
+// resourceWeights2c[i] via a second DAT_00697960 lookup table. Left unported pending a
+// dedicated follow-up; see bd 1uj.16.5 notes.
 // FUNCTION: IMPERIALISM 0x0053aeb0
 void TBlockadePortMission::NoOpSlot3C() {
-  // TODO: PopulateBlockadePortMissionResourceWeightsFromNavyContext -- pending
-  // recovery of the navy-order-list traversal and category tables.
   for (int i = 0; i < 4; ++i) {
     resourceWeights2c[i] = 0.0f;
   }
