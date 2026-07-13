@@ -347,14 +347,6 @@ undefined4 ApplyTechUnlockAndQueueNationAbilityNotices(void)
   return 0;
 }
 
-// ghidra_name ApplyCityOrderCapabilityUnlockByTechId
-// ghidra_proto void __thiscall ApplyCityOrderCapabilityUnlockByTechId(int nTechId)
-// FUNCTION: IMPERIALISM 0x005afba0
-undefined4 ApplyCityOrderCapabilityUnlockByTechId(void)
-{
-  return 0;
-}
-
 // ghidra_name HandleAbilityUnlock
 // ghidra_proto void __thiscall HandleAbilityUnlock(int menu_state, int action_id)
 // FUNCTION: IMPERIALISM 0x005afd00
@@ -423,14 +415,6 @@ undefined4 ConsumeFirstPendingAbilityUnlock(void)
 // ghidra_proto undefined SetCityOrderCapabilityTierScaledValueByIndex()
 // FUNCTION: IMPERIALISM 0x005b0c70
 undefined4 SetCityOrderCapabilityTierScaledValueByIndex(void)
-{
-  return 0;
-}
-
-// ghidra_name GetNationFortLevelCap
-// ghidra_proto char __thiscall GetNationFortLevelCap(int nNationId)
-// FUNCTION: IMPERIALISM 0x005b0ca0
-undefined4 GetNationFortLevelCap(void)
 {
   return 0;
 }

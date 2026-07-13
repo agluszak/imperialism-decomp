@@ -348,6 +348,11 @@ extern TMultiplayerMgr* g_pGameFlowState;
 extern int g_NetworkDefaultNationId006a5fc0;
 extern int g_NetworkBroadcastNationId006a5fc4;
 extern int DAT_006a601c;
+// City-order capability rule-table pointer slots written into TTechMgr+0x264 as tech
+// unlocks are applied (default at construction, alternates for tech ids 0x0b/0x16).
+extern undefined4 DAT_0066ac88;
+extern undefined4 DAT_0066ac8c;
+extern undefined4 DAT_0066ac90;
 extern const char s_DataDirectoryPath_006942A8[];
 extern const char s_IrgGlobPattern_006942FC[];
 extern const char s_NoLanguageFilesMessage_006942B4[];

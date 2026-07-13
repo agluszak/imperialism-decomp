@@ -910,6 +910,8 @@ int g_NetworkDefaultNationId006a5fc0 = 0;
 // GLOBAL: IMPERIALISM 0x006a5fc4
 int g_NetworkBroadcastNationId006a5fc4 = 0;
 undefined4 DAT_0066ac88 = 0;
+undefined4 DAT_0066ac8c = 0;
+undefined4 DAT_0066ac90 = 0;
 // GLOBAL: IMPERIALISM 0x006a601c
 int DAT_006a601c = 0;
 

@@ -1,11 +1,8 @@
 #include "game/TTechMgr.h"
 
 #include "decomp_types.h"
+#include "game/global_data_tables.h"
 
-extern "C" {
-extern undefined4 DAT_0066ac88;
-extern int DAT_006a601c;
-}
 undefined4 RecomputeGlobalCapabilityAverages(void);
 
 TTechMgr* g_pCityOrderCapabilityState = 0;
@@ -185,4 +182,63 @@ void TTechMgr::ReadFrom(TStream* stream) {
 // FUNCTION: IMPERIALISM 0x005af710
 void TTechMgr::WriteTo(TStream* stream) {
   (void)stream;
+}
+
+// Applies a technology-unlock id to the city-order capability state: records the active tech
+// marker, sets the per-tech unlock flag, then toggles the dependent capability flags/selector
+// shorts for the milestone techs. Ids 0x0b/0x16 swap the rule-table pointer at +0x264.
+// FUNCTION: IMPERIALISM 0x005afba0
+void TTechMgr::ApplyCityOrderCapabilityUnlockByTechId(int nTechId) {
+  // 0x262 lands in nationCapRows1e8[6].caps[1]; 0x264 (the rule-table pointer) overlays the
+  // 4 bytes at caps[2..3] of the same row.
+  nationCapRows1e8[6].caps[1] = static_cast<short>(nTechId);
+  perTechUnlockFlag180[nTechId] = 1;
+  switch (nTechId) {
+  case 9:
+    capabilityFlag1a4 = 1;
+    techSelectorShort1d2 = 7;
+    capabilityFlag1a2 = 1;
+    return;
+  case 4:
+    capabilityFlag1a3 = 1;
+    return;
+  case 0xf:
+    shipCapabilityFlag1a5 = 1;
+    activeZoneIndex1d4 = 8;
+    return;
+  case 0xb:
+    nationCapRows1e8[6].techState.ruleTablePointer264 = DAT_0066ac8c;
+    return;
+  case 0x15:
+    capabilityFlag1a6 = 1;
+    activeZoneIndex1d4 = 9;
+    return;
+  case 0x18:
+    shipCapabilityFlag1a8 = 1;
+    techSelectorShort1d2 = 0xb;
+    capabilityFlag1a7 = 1;
+    return;
+  case 0x1b:
+    capabilityFlag1a9 = 1;
+    activeZoneIndex1d4 = 0xc;
+    capabilityFlag1aa = 1;
+    techSelectorShort1d2 = 0xd;
+    return;
+  case 0x16:
+    nationCapRows1e8[6].techState.ruleTablePointer264 = DAT_0066ac90;
+    break;
+  }
+}
+
+// Returns a nation's maximum fortification level (1..3): level 3 if the advanced-fort flag is
+// set, level 2 if the intermediate flag is set, else level 1. The advanced flag lives in the
+// nation's own orderCapRows277 row; the intermediate flag lives 4 bytes before it, i.e. in the
+// previous nation's row (the same previous-row / orderCapRows277[-1] striding documented on
+// OrderCapRow for nation 0).
+// FUNCTION: IMPERIALISM 0x005b0ca0
+int TTechMgr::GetNationFortLevelCap(int nNationId) {
+  if (orderCapRows277[nNationId].advancedFortFlag != 0) {
+    return 3;
+  }
+  return (orderCapRows277[nNationId - 1].intermediateFortFlag != 0) + 1;
 }
