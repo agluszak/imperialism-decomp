@@ -4,7 +4,6 @@
 #include "game/TBehavior.h"
 #include "game/mfc.h"
 
-// TODO(manifest): describe TInfoBarBehavior and its role. Base edge (TBehavior) recovered from RTTI CRuntimeClass chain: TInfoBarBehavior -> TBehavior -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x0064eb10
 class TInfoBarBehavior : public TBehavior {
 public:

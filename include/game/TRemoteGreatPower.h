@@ -3,7 +3,6 @@
 #include "game/TGreatPower.h"
 #include "game/mfc.h"
 
-// TODO(manifest): describe TRemoteGreatPower and its role. Base edge (TGreatPower) recovered from RTTI CRuntimeClass chain: TRemoteGreatPower -> TGreatPower -> TCountry -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x0065ba80
 class TRemoteGreatPower : public TGreatPower {
 public:

@@ -3,7 +3,6 @@
 #include "game/TPanelView.h"
 #include "game/mfc.h"
 
-// TODO(manifest): describe TTreatiesView and its role. Base edge (TPanelView) recovered from RTTI CRuntimeClass chain: TTreatiesView -> TPanelView -> TView -> TEventHandler -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x0063f878
 class TTreatiesView : public TPanelView {
 public:
@@ -114,7 +113,6 @@ public:
   // slot 0x67 CtrlSlot103_SubtractPosAndDispatchSlot19C_Impl inherited unchanged (0x48bac0)
   virtual undefined OrphanRetStub_00430550() override; // slot 0x68 0x4f7f10
 // === END GENERATED DECLS (TTreatiesView) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TTreatiesView 0xCTOR`).
 
   TTreatiesView();
 };

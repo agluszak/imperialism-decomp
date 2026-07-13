@@ -3,7 +3,6 @@
 #include "game/TObject.h"
 #include "game/mfc.h"
 
-// TODO(manifest): describe TDocument and its role. Base edge (TObject) recovered from RTTI CRuntimeClass chain: TDocument -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x00648a60
 class TDocument : public TObject {
 public:
@@ -21,7 +20,6 @@ public:
   virtual undefined OrphanRetStub_00486530(); // slot 0x0a 0x486530
   virtual undefined OrphanRetStub_00486550(); // slot 0x0b 0x486550
 // === END GENERATED DECLS (TDocument) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TDocument 0xCTOR`).
 
   TDocument();
 };

@@ -3,7 +3,6 @@
 #include "game/TControl.h"
 #include "game/mfc.h"
 
-// TODO(manifest): describe TFrameRadioView and its role. Base edge (TControl) recovered from RTTI CRuntimeClass chain: TFrameRadioView -> TControl -> TView -> TEventHandler -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x006561b0
 class TFrameRadioView : public TControl {
 public:
@@ -122,7 +121,6 @@ public:
   // slot 0x6f LogUnhandledDialogMethodAndReturnFalse inherited unchanged (0x4294a0)
   virtual void SetControlStateFlagAndMaybeRefresh(bool fEnabledState, bool fRefreshNow) override; // slot 0x70 0x4fe190
 // === END GENERATED DECLS (TFrameRadioView) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TFrameRadioView 0xCTOR`).
 
   TFrameRadioView();
 };

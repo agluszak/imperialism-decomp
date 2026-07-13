@@ -3,7 +3,6 @@
 #include "game/TNoHilitePicture.h"
 #include "game/mfc.h"
 
-// TODO(manifest): describe TJoinSelectorDialog and its role. Base edge (TNoHilitePicture) recovered from RTTI CRuntimeClass chain: TJoinSelectorDialog -> TNoHilitePicture -> TPicture -> TControl -> TView -> TEventHandler -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x006435e8
 class TJoinSelectorDialog : public TNoHilitePicture {
 public:
@@ -125,7 +124,6 @@ public:
   // slot 0x72 SetPictureResourceIdAndRefresh inherited unchanged (0x48f570)
   // slot 0x73 UniversityDialogMethod_00405623 inherited unchanged (0x572bb0)
 // === END GENERATED DECLS (TJoinSelectorDialog) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TJoinSelectorDialog 0xCTOR`).
 
   TJoinSelectorDialog();
 };

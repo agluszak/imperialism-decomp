@@ -3,7 +3,6 @@
 #include "game/TOffLimitsPicture.h"
 #include "game/mfc.h"
 
-// TODO(manifest): describe TMapUberUberPicture and its role. Base edge (TOffLimitsPicture) recovered from RTTI CRuntimeClass chain: TMapUberUberPicture -> TOffLimitsPicture -> TPicture -> TControl -> TView -> TEventHandler -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x00645650
 class TMapUberUberPicture : public TOffLimitsPicture {
 public:
@@ -126,7 +125,6 @@ public:
   // slot 0x73 ForwardCombineOptionalSourceRegionIntoDestinationAndUpdateBox inherited unchanged (0x573940)
   virtual undefined AutoScrollByEdgeMask(short edgeMask); // slot 0x74 0x45d2a0
   // === END GENERATED DECLS (TMapUberUberPicture) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TMapUberUberPicture 0xCTOR`).
 
   TMapUberUberPicture();
 };

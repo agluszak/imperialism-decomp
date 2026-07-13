@@ -4,7 +4,6 @@
 #include "game/TList.h"
 #include "game/mfc.h"
 
-// TODO(manifest): describe TTacticalPlayer and its role. Base edge (TObject) recovered from RTTI CRuntimeClass chain: TTacticalPlayer -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x00669598
 class TTacticalPlayer : public TObject {
 public:

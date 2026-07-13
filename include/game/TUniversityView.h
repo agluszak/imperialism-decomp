@@ -3,7 +3,6 @@
 #include "game/TBuildingView.h"
 #include "game/mfc.h"
 
-// TODO(manifest): describe TUniversityView and its role. Base edge (TBuildingView) recovered from RTTI CRuntimeClass chain: TUniversityView -> TBuildingView -> TNoHilitePicture -> TPicture -> TControl -> TView -> TEventHandler -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x00651fc0
 class TUniversityView : public TBuildingView {
 public:
@@ -131,7 +130,6 @@ public:
   // slot 0x78 SetUniversityDialogTextAndRefresh inherited unchanged (0x4c6ff0)
   virtual void SelectUniversityRecruitmentEntry(short nRecruitmentEntryIndex); // slot 0x79 0x4cb320
 // === END GENERATED DECLS (TUniversityView) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TUniversityView 0xCTOR`).
 
   TUniversityView();
 };

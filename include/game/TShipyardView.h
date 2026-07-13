@@ -3,7 +3,6 @@
 #include "game/TBuildingView.h"
 #include "game/mfc.h"
 
-// TODO(manifest): describe TShipyardView and its role. Base edge (TBuildingView) recovered from RTTI CRuntimeClass chain: TShipyardView -> TBuildingView -> TNoHilitePicture -> TPicture -> TControl -> TView -> TEventHandler -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x00651b30
 class TShipyardView : public TBuildingView {
 public:
@@ -134,7 +133,6 @@ public:
   virtual undefined BuildIndustryActionCostSummaryTextByActionIndex(); // slot 0x7b 0x4c97c0
   virtual void InitializeCityViewActionButtons(); // slot 0x7c 0x4c8d70
 // === END GENERATED DECLS (TShipyardView) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TShipyardView 0xCTOR`).
 
   TShipyardView();
 };

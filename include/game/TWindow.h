@@ -7,8 +7,6 @@
 // Forward declarations for types referenced by generated signatures.
 class TObject;
 
-// TODO(manifest): describe TWindow and its role. Base edge (TView) recovered from RTTI
-// CRuntimeClass chain: TWindow -> TView -> TEventHandler -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x00649e58
 class TWindow : public TView {
 public:

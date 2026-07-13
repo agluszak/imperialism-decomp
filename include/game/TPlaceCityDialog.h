@@ -3,7 +3,6 @@
 #include "game/TPicture.h"
 #include "game/mfc.h"
 
-// TODO(manifest): describe TPlaceCityDialog and its role. Base edge (TPicture) recovered from RTTI CRuntimeClass chain: TPlaceCityDialog -> TPicture -> TControl -> TView -> TEventHandler -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x00652f58
 class TPlaceCityDialog : public TPicture {
 public:
@@ -125,7 +124,6 @@ public:
   // slot 0x72 SetPictureResourceIdAndRefresh inherited unchanged (0x48f570)
   virtual undefined BuildCityViewResourceRows(); // slot 0x73 0x4d1880
 // === END GENERATED DECLS (TPlaceCityDialog) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TPlaceCityDialog 0xCTOR`).
 
   TPlaceCityDialog();
 };

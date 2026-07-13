@@ -3,7 +3,6 @@
 #include "game/TUberCluster.h"
 #include "game/mfc.h"
 
-// TODO(manifest): describe TTradePolicyCluster and its role. Base edge (TUberCluster) recovered from RTTI CRuntimeClass chain: TTradePolicyCluster -> TUberCluster -> TCluster -> TControl -> TView -> TEventHandler -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x00663de0
 class TTradePolicyCluster : public TUberCluster {
 public:
@@ -125,7 +124,6 @@ public:
   // slot 0x72 OrphanCallChain_C2_I51_00491790 inherited unchanged (0x491790)
   // slot 0x73 IsTradeControlAtMinimum inherited unchanged (0x5714e0)
 // === END GENERATED DECLS (TTradePolicyCluster) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TTradePolicyCluster 0xCTOR`).
 
   TTradePolicyCluster();
 };

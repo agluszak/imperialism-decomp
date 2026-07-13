@@ -3,9 +3,6 @@
 #include "game/TDeluxeText.h"
 #include "game/mfc.h"
 
-// TODO(manifest): describe TInfoBarText and its role. Base edge (TDeluxeText) recovered from RTTI
-// CRuntimeClass chain: TInfoBarText -> TDeluxeText -> TTEView -> TStaticText -> TControl -> TView
-// -> TEventHandler -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x0063eb00
 class TInfoBarText : public TDeluxeText {
 public:

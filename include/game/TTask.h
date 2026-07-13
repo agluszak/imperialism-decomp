@@ -6,7 +6,6 @@
 // Forward declarations for types referenced by generated signatures.
 class TStream;
 
-// TODO(manifest): describe TTask and its role. Base edge (TObject) recovered from RTTI CRuntimeClass chain: TTask -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x0066a970
 class TTask : public TObject {
 public:
@@ -23,7 +22,6 @@ public:
   // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
   virtual undefined OrphanLeaf_NoCall_Ins04_005adc30(); // slot 0x0a 0x5adc30
 // === END GENERATED DECLS (TTask) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TTask 0xCTOR`).
 
   TTask();
 };

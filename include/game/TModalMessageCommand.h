@@ -3,8 +3,6 @@
 #include "game/TCommand.h"
 #include "game/mfc.h"
 
-// TODO(manifest): describe TModalMessageCommand and its role. Base edge (TCommand) recovered from
-// RTTI CRuntimeClass chain: TModalMessageCommand -> TCommand -> TEvent -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x0066f2f0
 class TModalMessageCommand : public TCommand {
 public:
@@ -36,4 +34,3 @@ public:
 };
 
 ASSERT_SIZE(TModalMessageCommand, 0x20);
-

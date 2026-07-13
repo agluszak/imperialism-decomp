@@ -3,8 +3,6 @@
 #include "game/TCommand.h"
 #include "game/mfc.h"
 
-// TODO(manifest): describe TPoseMessageDialog and its role. Base edge (TCommand) recovered from
-// RTTI CRuntimeClass chain: TPoseMessageDialog -> TCommand -> TEvent -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x0065c0e8
 class TPoseMessageDialog : public TCommand {
 public:

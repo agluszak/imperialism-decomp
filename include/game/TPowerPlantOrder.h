@@ -6,7 +6,6 @@
 // Forward declarations for types referenced by generated signatures.
 class TStream;
 
-// TODO(manifest): describe TPowerPlantOrder and its role. Base edge (TProductionOrder) recovered from RTTI CRuntimeClass chain: TPowerPlantOrder -> TProductionOrder -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x0064f848
 class TPowerPlantOrder : public TProductionOrder {
 public:
@@ -30,7 +29,6 @@ public:
   virtual void FillOrderSheet(void* orderSheet, short quantity) override; // slot 0x10 0x4b7c90
   virtual undefined InitializeCityProductionState_Impl(); // slot 0x11 0x4b7ab0
 // === END GENERATED DECLS (TPowerPlantOrder) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TPowerPlantOrder 0xCTOR`).
 
   TPowerPlantOrder();
 };

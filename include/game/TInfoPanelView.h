@@ -3,7 +3,6 @@
 #include "game/TPanelView.h"
 #include "game/mfc.h"
 
-// TODO(manifest): describe TInfoPanelView and its role. Base edge (TPanelView) recovered from RTTI CRuntimeClass chain: TInfoPanelView -> TPanelView -> TView -> TEventHandler -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x0063fe60
 class TInfoPanelView : public TPanelView {
 public:
@@ -115,7 +114,6 @@ public:
   virtual undefined OrphanRetStub_00430550() override; // slot 0x68 0x4facc0
   virtual undefined OrphanLeaf_NoCall_Ins97_004fae00(short param_1); // slot 0x69 0x4fae00
 // === END GENERATED DECLS (TInfoPanelView) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TInfoPanelView 0xCTOR`).
 
   TInfoPanelView();
 };

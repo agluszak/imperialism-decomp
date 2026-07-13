@@ -8,7 +8,6 @@ class astruct_13;
 class TTacticalBattle;
 class TTacticalUnit;
 
-// TODO(manifest): describe TTacticalBattleView and its role. Base edge (TView) recovered from RTTI CRuntimeClass chain: TTacticalBattleView -> TView -> TEventHandler -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x0066a380
 class TTacticalBattleView : public TView {
 public:
@@ -175,7 +174,7 @@ public:
   TTacticalBattleView();
 
   // Tactical-battle UI helpers dispatched from the TTacticalBattle command handlers
-  // (all __thiscall on the live view; verified at every call site). Bodies TODO.
+  // (all __thiscall on the live view; verified at every call site).
   void UpdateTacticalActionControlBitmapForCurrentUnit(char side); // 0x5a9b40
   void InvalidateTacticalHexTileRect(int tileIndex);               // 0x5a8860
   void CenterViewportAroundGridIndexAndSnap(int tileIndex);        // 0x5a8ac0

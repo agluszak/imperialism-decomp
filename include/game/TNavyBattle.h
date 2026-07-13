@@ -3,7 +3,6 @@
 #include "game/TTacticalBattle.h"
 #include "game/mfc.h"
 
-// TODO(manifest): describe TNavyBattle and its role. Base edge (TTacticalBattle) recovered from RTTI CRuntimeClass chain: TNavyBattle -> TTacticalBattle -> TObject -> CObject.
 class TTacticalUnit;
 
 // VTABLE: IMPERIALISM 0x0066a140
@@ -41,7 +40,6 @@ public:
   // slot 0x17 ExecuteTacticalMineActionAndQueuePacket inherited unchanged (0x5a34d0)
   // slot 0x18 ExecuteTacticalDigActionAndConsumeUnitActionPoints inherited unchanged (0x5a3640)
   // === END GENERATED DECLS (TNavyBattle) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TNavyBattle 0xCTOR`).
 
   TNavyBattle();
 };

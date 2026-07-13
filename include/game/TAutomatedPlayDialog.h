@@ -3,7 +3,6 @@
 #include "game/TDialogView.h"
 #include "game/mfc.h"
 
-// TODO(manifest): describe TAutomatedPlayDialog and its role. Base edge (TDialogView) recovered from RTTI CRuntimeClass chain: TAutomatedPlayDialog -> TDialogView -> TView -> TEventHandler -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x0066c178
 class TAutomatedPlayDialog : public TDialogView {
 public:
@@ -113,7 +112,6 @@ public:
   // slot 0x66 AssertMcAppUILine1922 inherited unchanged (0x48c7d0)
   // slot 0x67 CtrlSlot103_SubtractPosAndDispatchSlot19C_Impl inherited unchanged (0x48bac0)
 // === END GENERATED DECLS (TAutomatedPlayDialog) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TAutomatedPlayDialog 0xCTOR`).
 
   TAutomatedPlayDialog();
 };

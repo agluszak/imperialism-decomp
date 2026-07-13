@@ -14,7 +14,6 @@ public:
   short valueAt8;
 };
 
-// TODO(manifest): describe TPopulationMgr and its role. Base edge (TObject) recovered from RTTI CRuntimeClass chain: TPopulationMgr -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x0064f9b0
 class TPopulationMgr : public TObject {
 public:

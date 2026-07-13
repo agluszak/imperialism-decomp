@@ -5,7 +5,6 @@
 
 struct MciMovieWindowState;
 
-// TODO(manifest): describe TMovieView and its role. Base edge (TPicture) recovered from RTTI CRuntimeClass chain: TMovieView -> TPicture -> TControl -> TView -> TEventHandler -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x0066f708
 class TMovieView : public TPicture {
 public:
@@ -127,7 +126,6 @@ public:
   // slot 0x71 ResetPictureResourceEntry inherited unchanged (0x48f520)
   // slot 0x72 SetPictureResourceIdAndRefresh inherited unchanged (0x48f570)
   // === END GENERATED DECLS (TMovieView) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TMovieView 0xCTOR`).
   MciMovieWindowState* movieWindowState; // +0x90
 
   TMovieView();

@@ -3,7 +3,6 @@
 #include "game/TColorKeyPicture.h"
 #include "game/mfc.h"
 
-// TODO(manifest): describe TPageCorner and its role. Base edge (TColorKeyPicture) recovered from RTTI CRuntimeClass chain: TPageCorner -> TColorKeyPicture -> TNoHilitePicture -> TPicture -> TControl -> TView -> TEventHandler -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x0063f1f8
 class TPageCorner : public TColorKeyPicture {
 public:
@@ -126,7 +125,6 @@ public:
   // slot 0x72 SetPictureResourceIdAndRefresh inherited unchanged (0x573040)
   // slot 0x73 UniversityDialogMethod_00405623 inherited unchanged (0x572bb0)
 // === END GENERATED DECLS (TPageCorner) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TPageCorner 0xCTOR`).
 
   TPageCorner();
 };

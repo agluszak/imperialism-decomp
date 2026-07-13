@@ -22,8 +22,6 @@ struct HelpSetRecord {
 
 ASSERT_SIZE(HelpSetRecord, 0xe);
 
-// TODO(manifest): describe THelpMgr and its role. Base edge (TObject) recovered from RTTI
-// CRuntimeClass chain: THelpMgr -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x00657040
 class THelpMgr : public TObject {
 public:

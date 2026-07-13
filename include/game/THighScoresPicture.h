@@ -3,7 +3,6 @@
 #include "game/TNoHilitePicture.h"
 #include "game/mfc.h"
 
-// TODO(manifest): describe THighScoresPicture and its role. Base edge (TNoHilitePicture) recovered from RTTI CRuntimeClass chain: THighScoresPicture -> TNoHilitePicture -> TPicture -> TControl -> TView -> TEventHandler -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x00643ea8
 class THighScoresPicture : public TNoHilitePicture {
 public:
@@ -126,7 +125,6 @@ public:
   // slot 0x72 SetPictureResourceIdAndRefresh inherited unchanged (0x48f570)
   virtual undefined UniversityDialogMethod_00405623() override; // slot 0x73 0x45ada0
   // === END GENERATED DECLS (THighScoresPicture) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery THighScoresPicture 0xCTOR`).
 
   // NOOP: verified empty in original 0x00455a91 (trivial inline ctor: the builder
   // expansion site emits only the base ctor call + vtbl install)

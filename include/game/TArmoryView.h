@@ -3,7 +3,6 @@
 #include "game/TBuildingView.h"
 #include "game/mfc.h"
 
-// TODO(manifest): describe TArmoryView and its role. Base edge (TBuildingView) recovered from RTTI CRuntimeClass chain: TArmoryView -> TBuildingView -> TNoHilitePicture -> TPicture -> TControl -> TView -> TEventHandler -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x00652b10
 class TArmoryView : public TBuildingView {
 public:
@@ -131,7 +130,6 @@ public:
   // slot 0x78 SetUniversityDialogTextAndRefresh inherited unchanged (0x4c6ff0)
   virtual void RefreshCityViewProductionDetails(short nBuildingSlotId); // slot 0x79 0x4cfbd0
 // === END GENERATED DECLS (TArmoryView) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TArmoryView 0xCTOR`).
 
   TArmoryView();
 };

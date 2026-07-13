@@ -3,7 +3,6 @@
 #include "game/TUberCluster.h"
 #include "game/mfc.h"
 
-// TODO(manifest): describe TDipDlgCluster and its role. Base edge (TUberCluster) recovered from RTTI CRuntimeClass chain: TDipDlgCluster -> TUberCluster -> TCluster -> TControl -> TView -> TEventHandler -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x00663bb0
 class TDipDlgCluster : public TUberCluster {
 public:
@@ -125,7 +124,6 @@ public:
   // slot 0x72 OrphanCallChain_C2_I51_00491790 inherited unchanged (0x491790)
   virtual int IsTradeControlAtMinimum() override; // slot 0x73 0x584160
 // === END GENERATED DECLS (TDipDlgCluster) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TDipDlgCluster 0xCTOR`).
 
   TDipDlgCluster();
 };

@@ -7,9 +7,6 @@
 class TObject;
 class TTEView;
 
-// TODO(manifest): describe TNumberedItem and its role. Base edge (TMegaPicture) recovered from
-// constructor/vtable evidence: TNumberedItem -> TMegaPicture -> TNoHilitePicture -> TPicture ->
-// TControl -> TView -> TEventHandler -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x006582f0
 class TNumberedItem : public TMegaPicture {
 public:
@@ -134,9 +131,6 @@ public:
   // slot 0x74 OrphanCallChain_C1_I14_005736c0 inherited unchanged (0x5736c0)
   // slot 0x75 OrphanCallChain_C1_I08_00573690 inherited unchanged (0x573690)
   // === END GENERATED DECLS (TNumberedItem) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TNumberedItem
-  // 0xCTOR`). Base TMegaPicture's own slice isn't mapped yet, so these two fields (read
-  // by ApplyRectSlot110) are declared at their raw offsets with unmapped padding ahead.
   unsigned char pad0[0xac];
   short iconRowIndexAc; // +0xac icon-strip row (badge background variant)
   short badgeCountAe;   // +0xae the number drawn on the badge

@@ -3,7 +3,6 @@
 #include "game/TObject.h"
 #include "game/mfc.h"
 
-// TODO(manifest): describe TLineData and its role. Base edge (TObject) recovered from RTTI CRuntimeClass chain: TLineData -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x0065e230
 class TLineData : public TObject {
 public:
@@ -21,7 +20,6 @@ public:
   virtual undefined OrphanRetStub_0056f460(); // slot 0x0a 0x56f460
   virtual undefined OrphanRetStub_0056f480(); // slot 0x0b 0x56f480
 // === END GENERATED DECLS (TLineData) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TLineData 0xCTOR`).
 
   TLineData();
 };

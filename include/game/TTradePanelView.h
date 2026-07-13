@@ -3,7 +3,6 @@
 #include "game/TPanelView.h"
 #include "game/mfc.h"
 
-// TODO(manifest): describe TTradePanelView and its role. Base edge (TPanelView) recovered from RTTI CRuntimeClass chain: TTradePanelView -> TPanelView -> TView -> TEventHandler -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x0063fc68
 class TTradePanelView : public TPanelView {
 public:
@@ -114,7 +113,6 @@ public:
   // slot 0x67 CtrlSlot103_SubtractPosAndDispatchSlot19C_Impl inherited unchanged (0x48bac0)
   virtual undefined OrphanRetStub_00430550() override; // slot 0x68 0x4f8d50
 // === END GENERATED DECLS (TTradePanelView) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TTradePanelView 0xCTOR`).
 
   TTradePanelView();
 };

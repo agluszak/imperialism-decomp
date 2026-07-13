@@ -4,7 +4,6 @@
 #include "game/TAnimation.h"
 #include "game/mfc.h"
 
-// TODO(manifest): describe TIdleMeAnimation and its role. Base edge (TAnimation) recovered from RTTI CRuntimeClass chain: TIdleMeAnimation -> TAnimation -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x0064dfb8
 class TIdleMeAnimation : public TAnimation {
 public:

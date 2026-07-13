@@ -4,7 +4,6 @@
 #include "game/TPicture.h"
 #include "game/mfc.h"
 
-// TODO(manifest): describe TOffLimitsPicture and its role. Base edge (TPicture) recovered from RTTI CRuntimeClass chain: TOffLimitsPicture -> TPicture -> TControl -> TView -> TEventHandler -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x00660fb0
 class TOffLimitsPicture : public TPicture {
 public:

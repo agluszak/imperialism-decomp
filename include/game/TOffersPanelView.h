@@ -4,7 +4,6 @@
 #include "game/TPanelView.h"
 #include "game/mfc.h"
 
-// TODO(manifest): describe TOffersPanelView and its role. Base edge (TPanelView) recovered from RTTI CRuntimeClass chain: TOffersPanelView -> TPanelView -> TView -> TEventHandler -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x00655fb0
 class TOffersPanelView : public TPanelView {
 public:

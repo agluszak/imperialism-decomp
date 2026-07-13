@@ -3,7 +3,6 @@
 #include "game/TTurnStartEvent.h"
 #include "game/mfc.h"
 
-// TODO(manifest): describe TLandSaleEvent and its role. Base edge (TTurnStartEvent) recovered from RTTI CRuntimeClass chain: TLandSaleEvent -> TTurnStartEvent -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x00653290
 class TLandSaleEvent : public TTurnStartEvent {
 public:

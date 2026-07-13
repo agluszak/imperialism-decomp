@@ -3,7 +3,6 @@
 #include "game/TAnimation.h"
 #include "game/mfc.h"
 
-// TODO(manifest): describe TCouncilTickerAnimation and its role. Base edge (TAnimation) recovered from RTTI CRuntimeClass chain: TCouncilTickerAnimation -> TAnimation -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x0064c410
 class TCouncilTickerAnimation : public TAnimation {
 public:
@@ -22,7 +21,6 @@ public:
   // slot 0x0b RenderBattleReportInsetWithPaletteShift inherited unchanged (0x49f190)
   // slot 0x0c RenderBattleReportViewSurfaceSpriteWithResourceHandle inherited unchanged (0x49f2d0)
   // === END GENERATED DECLS (TCouncilTickerAnimation) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TCouncilTickerAnimation 0xCTOR`).
 
   void InitializeDiplomacyCouncilViewControlsAndTicker();
   void ConstructTCouncilTickerAnimationBaseState(void* hostPanel, int tickMode);

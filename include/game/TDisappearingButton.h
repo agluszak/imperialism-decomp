@@ -3,7 +3,6 @@
 #include "game/TPicture.h"
 #include "game/mfc.h"
 
-// TODO(manifest): describe TDisappearingButton and its role. Base edge (TPicture) recovered from RTTI CRuntimeClass chain: TDisappearingButton -> TPicture -> TControl -> TView -> TEventHandler -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x0065d280
 class TDisappearingButton : public TPicture {
 public:
@@ -125,7 +124,6 @@ public:
   // slot 0x72 SetPictureResourceIdAndRefresh inherited unchanged (0x48f570)
   virtual undefined OrphanCallChain_C2_I18_00568c90(); // slot 0x73 0x568c90
 // === END GENERATED DECLS (TDisappearingButton) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TDisappearingButton 0xCTOR`).
 
   TDisappearingButton();
 };

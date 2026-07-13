@@ -3,7 +3,6 @@
 #include "game/TPicture.h"
 #include "game/mfc.h"
 
-// TODO(manifest): describe TSpecialQuitPicture and its role. Base edge (TPicture) recovered from RTTI CRuntimeClass chain: TSpecialQuitPicture -> TPicture -> TControl -> TView -> TEventHandler -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x00643c78
 class TSpecialQuitPicture : public TPicture {
 public:
@@ -126,7 +125,6 @@ public:
   // slot 0x72 SetPictureResourceIdAndRefresh inherited unchanged (0x48f570)
   virtual undefined OrphanRetStub_0045acb0(); // slot 0x73 0x45acb0
                                               // === END GENERATED DECLS (TSpecialQuitPicture) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TSpecialQuitPicture 0xCTOR`).
 
   // NOOP: verified empty in original 0x00458dcb (trivial inline ctor: the builder
   // expansion site emits only the base ctor call + vtbl install)

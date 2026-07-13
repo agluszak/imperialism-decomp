@@ -3,7 +3,6 @@
 #include "game/TView.h"
 #include "game/mfc.h"
 
-// TODO(manifest): describe TArmyBoyView and its role. Base edge (TView) recovered from RTTI CRuntimeClass chain: TArmyBoyView -> TView -> TEventHandler -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x0064dff8
 class TArmyBoyView : public TView {
 public:
@@ -113,7 +112,6 @@ public:
   // slot 0x66 AssertMcAppUILine1922 inherited unchanged (0x48c7d0)
   // slot 0x67 CtrlSlot103_SubtractPosAndDispatchSlot19C_Impl inherited unchanged (0x48bac0)
   // === END GENERATED DECLS (TArmyBoyView) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TArmyBoyView 0xCTOR`).
   // Unrecovered context object read by ApplyRectSlot110: +2 veterancy level (short),
   // +4 unit/nation name (c-string), +0x24 xp percent (short). Raw storage until the
   // real pointee class is identified.

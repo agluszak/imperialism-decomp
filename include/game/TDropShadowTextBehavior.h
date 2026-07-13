@@ -3,7 +3,6 @@
 #include "game/TBehavior.h"
 #include "game/mfc.h"
 
-// TODO(manifest): describe TDropShadowTextBehavior and its role. Base edge (TBehavior) recovered from RTTI CRuntimeClass chain: TDropShadowTextBehavior -> TBehavior -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x0064eb60
 class TDropShadowTextBehavior : public TBehavior {
 public:

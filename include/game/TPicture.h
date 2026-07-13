@@ -8,7 +8,6 @@
 class TObject;
 class CDib;
 
-// TODO(manifest): describe TPicture and its role. Base edge (TControl) recovered from RTTI CRuntimeClass chain: TPicture -> TControl -> TView -> TEventHandler -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x0064a930
 class TPicture : public TControl {
 public:

@@ -3,7 +3,6 @@
 #include "game/TObject.h"
 #include "game/mfc.h"
 
-// TODO(manifest): describe TTurnStartEvent and its role. Base edge (TObject) recovered from RTTI CRuntimeClass chain: TTurnStartEvent -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x00653d90
 class TTurnStartEvent : public TObject {
 public:

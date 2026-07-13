@@ -7,8 +7,6 @@
 class TView;
 class TMovieView;
 
-// TODO(manifest): describe TAssetMgr and its role. Base edge (TObject) recovered from RTTI
-// CRuntimeClass chain: TAssetMgr -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x0066f508
 class TAssetMgr : public TObject {
 public:

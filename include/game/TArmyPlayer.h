@@ -6,7 +6,6 @@
 class TArmyStack;
 class TTacticalUnit;
 
-// TODO(manifest): describe TArmyPlayer and its role. Base edge (TTacticalPlayer) recovered from RTTI CRuntimeClass chain: TArmyPlayer -> TTacticalPlayer -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x006695f0
 class TArmyPlayer : public TTacticalPlayer {
 public:
@@ -57,7 +56,7 @@ public:
   // vptr store.
   TArmyPlayer() {}
 
-  // Applies the tactical cursor/UI mode profile for this side. Body TODO.
+  // Applies the tactical cursor/UI mode profile for this side.
   // 0x0059c440, __thiscall, ret 4.
   void SelectAndApplyTacticalCursorModeProfile(int cursorProfileMode);
 
@@ -81,13 +80,13 @@ public:
   // are the zone-score-table and per-class-tile-selector deploy strategies.
   void BuildTacticalActionPriorityBucketsWithGridGuard();      // 0x59bcf0
   void DispatchTacticalActionClassSelectionAcrossCursorList(); // 0x59bf20
-  // Prunes unitList4 down to the free-tile capacity. Body TODO. 0x59b990.
+  // Prunes unitList4 down to the free-tile capacity. 0x59b990.
   void RecomputeTacticalCursorProjectionScoresAndPruneList(int maxUnitCount);
-  // Per-class deployment tile selectors. Bodies TODO.
+  // Per-class deployment tile selectors.
   int SelectTacticalTileByActionClassAdjacencyPriority(); // 0x59c140
   int SelectTacticalTileIndexByColumnPriorityVariantA();  // 0x59bfe0
   int SelectTacticalTileIndexByColumnPriorityVariantB();  // 0x59c2a0
-  // Weighted tile-heuristic selectors for the auto-turn controller. Bodies TODO.
+  // Weighted tile-heuristic selectors for the auto-turn controller.
   int SelectBestTacticalTileByWeightedHeuristics(TTacticalUnit* unit,
                                                  int* heuristicWeights15); // 0x59d530
   int SelectBestTacticalTargetTileByActionHeuristics(TTacticalUnit* unit,
@@ -117,7 +116,7 @@ public:
   int ScoreTacticalTileEnemyEdgeColumnZoneBonus(TTacticalUnit* unit, int tileIndex); // 0x59e0d0
 
   // Builds the side's tactical unit records from the stack's army unit chain and
-  // stores the stack into armyStack28. 0x0059b1b0, __thiscall, ret 0x10. Body TODO.
+  // stores the stack into armyStack28. 0x0059b1b0, __thiscall, ret 0x10.
   void InitializeTacticalSideFromArmyUnitList(TArmyStack* stack, int isOurSide, char watchFlag,
                                               int nationIndex);
 };
@@ -130,7 +129,7 @@ ASSERT_SIZE(TArmyPlayer, 0x54);
 typedef int (TArmyPlayer::*TacticalTileHeuristicScorerFn)(TTacticalUnit* unit, int tileIndex);
 
 // Distribution-similarity score between a five-component vector and a reference
-// profile row (movsx short reads). Body TODO; owned alongside its only tactical
+// profile row (movsx short reads). Owned alongside its only tactical
 // caller. 0x005362c0, __cdecl.
 float __cdecl ComputeDistributionSimilarityScoreFromVectorAndReferenceProfile(
     float* vector, unsigned short* referenceProfile, int count);

@@ -3,8 +3,6 @@
 #include "game/TCommand.h"
 #include "game/mfc.h"
 
-// TODO(manifest): describe TSpaceCommand and its role. Base edge (TCommand) recovered from RTTI
-// CRuntimeClass chain: TSpaceCommand -> TCommand -> TEvent -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x00661b10
 class TSpaceCommand : public TCommand {
 public:
@@ -27,4 +25,3 @@ public:
 
   TSpaceCommand();
 };
-

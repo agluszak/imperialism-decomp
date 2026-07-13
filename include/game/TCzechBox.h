@@ -3,7 +3,6 @@
 #include "game/TUpDownPictureButton.h"
 #include "game/mfc.h"
 
-// TODO(manifest): describe TCzechBox and its role. Base edge (TUpDownPictureButton) recovered from RTTI CRuntimeClass chain: TCzechBox -> TUpDownPictureButton -> TPicture -> TControl -> TView -> TEventHandler -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x0065fae0
 class TCzechBox : public TUpDownPictureButton {
 public:
@@ -130,7 +129,6 @@ public:
   virtual undefined OrphanCallChain_C2_I16_00571e40(); // slot 0x77 0x571e40
   virtual undefined OrphanCallChain_C3_I23_00571e80(char param_1, undefined4 param_2); // slot 0x78 0x571e80
 // === END GENERATED DECLS (TCzechBox) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TCzechBox 0xCTOR`).
 
   TCzechBox();
 };

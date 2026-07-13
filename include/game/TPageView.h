@@ -6,7 +6,6 @@
 class TList;
 class TSoundChannelNode;
 
-// TODO(manifest): describe TPageView and its role. Base edge (TView) recovered from RTTI CRuntimeClass chain: TPageView -> TView -> TEventHandler -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x0065e270
 class TPageView : public TView {
 public:

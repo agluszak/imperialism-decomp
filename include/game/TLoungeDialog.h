@@ -3,7 +3,6 @@
 #include "game/TNoHilitePicture.h"
 #include "game/mfc.h"
 
-// TODO(manifest): describe TLoungeDialog and its role. Base edge (TNoHilitePicture) recovered from RTTI CRuntimeClass chain: TLoungeDialog -> TNoHilitePicture -> TPicture -> TControl -> TView -> TEventHandler -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x006433b8
 class TLoungeDialog : public TNoHilitePicture {
 public:
@@ -126,12 +125,11 @@ public:
   // slot 0x72 SetPictureResourceIdAndRefresh inherited unchanged (0x48f570)
   // slot 0x73 UniversityDialogMethod_00405623 inherited unchanged (0x572bb0)
   // === END GENERATED DECLS (TLoungeDialog) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TLoungeDialog 0xCTOR`).
 
   TLoungeDialog();
 
   // 0x54e4c0: refresh the lounge's 'map '/'mess'/'okay' controls for the current
   // scenario/session context (turn-event 0xE receive tail; the original tolerates a
-  // null `this`). Body TODO.
+  // null `this`).
   void RefreshMapAndMessageControlsForCurrentContext();
 };

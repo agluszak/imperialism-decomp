@@ -13,7 +13,6 @@ struct TArmyStackUnitNode {
   TArmyStackUnitNode* next; // +0x04
 };
 
-// TODO(manifest): describe TArmyStack and its role. Base edge (TObject) recovered from RTTI CRuntimeClass chain: TArmyStack -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x0064ca38
 class TArmyStack : public TObject {
 public:
@@ -60,13 +59,12 @@ public:
   // 0x004a82b0, __thiscall, 1 arg.
   void ApplyMeterGrowthToEligibleUnits(bool boosted);
   // Walks the chain accumulating a weighted meter sum and eligible-entry count into the
-  // two out-params, seeded by `counter`. 0x004a7e70, 355 bytes. TODO stub body (not yet
-  // ported); signature verified via TArmyMgr::UpdateDualLinkedEntryMetersAndBlinkState's
-  // callsite disassembly.
+  // two out-params, seeded by `counter`. 0x004a7e70, 355 bytes; signature verified via
+  // TArmyMgr::UpdateDualLinkedEntryMetersAndBlinkState's callsite disassembly.
   void AccumulateWeightedMeterAndCountFromEligibleLinkedEntries(int* outWeightedSum, int* outCount,
                                                                 int counter);
   // Applies a randomized decay to eligible entries using the accumulated weighted sum/
-  // count from the method above. 0x004a8040, 482 bytes. TODO stub body (not yet ported).
+  // count from the method above. 0x004a8040, 482 bytes.
   void ApplyRandomizedMeterDecayToEligibleLinkedEntries(int weightedSum, int count, int counter);
   // Re-initializes the stack for one tactical-battle side: zeroes field4/field6/fieldA/
   // fieldC and stores the owner nation index, owner nation code, and originating tile.

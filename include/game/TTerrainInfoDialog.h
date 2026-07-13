@@ -4,7 +4,6 @@
 #include "game/TNoHilitePicture.h"
 #include "game/mfc.h"
 
-// TODO(manifest): describe TTerrainInfoDialog and its role. Base edge (TNoHilitePicture) recovered from RTTI CRuntimeClass chain: TTerrainInfoDialog -> TNoHilitePicture -> TPicture -> TControl -> TView -> TEventHandler -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x00658d70
 class TTerrainInfoDialog : public TNoHilitePicture {
 public:

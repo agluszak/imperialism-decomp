@@ -3,7 +3,6 @@
 #include "game/TPictureButton.h"
 #include "game/mfc.h"
 
-// TODO(manifest): describe TOnOffRadioButton and its role. Base edge (TPictureButton) recovered from RTTI CRuntimeClass chain: TOnOffRadioButton -> TPictureButton -> TPicture -> TControl -> TView -> TEventHandler -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x0065f8a8
 class TOnOffRadioButton : public TPictureButton {
 public:
@@ -126,7 +125,6 @@ public:
   // slot 0x73 IsSelected inherited unchanged (0x5708c0)
   virtual undefined OrphanCallChain_C2_I16_00571b20(undefined4 param_1, undefined4 param_2); // slot 0x74 0x571b20
 // === END GENERATED DECLS (TOnOffRadioButton) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TOnOffRadioButton 0xCTOR`).
 
   TOnOffRadioButton();
 };

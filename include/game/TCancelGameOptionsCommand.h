@@ -3,9 +3,6 @@
 #include "game/TCommand.h"
 #include "game/mfc.h"
 
-// TODO(manifest): describe TCancelGameOptionsCommand and its role. Base edge (TCommand) recovered
-// from RTTI CRuntimeClass chain: TCancelGameOptionsCommand -> TCommand -> TEvent -> TObject ->
-// CObject.
 // VTABLE: IMPERIALISM 0x0065bff0
 class TCancelGameOptionsCommand : public TCommand {
 public:
@@ -24,8 +21,6 @@ public:
   // slot 0x0a NextDiplomacyCommandVtableSlotE8_NotifyOwnerSlot94 inherited unchanged (0x487900)
   virtual void OrphanRetStub_00487a00() override; // slot 0x0b 0x542520
   // === END GENERATED DECLS (TCancelGameOptionsCommand) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery
-  // TCancelGameOptionsCommand 0xCTOR`).
 
   // Fully inlined at every construction site (base TCommand ctor call + vtable
   // store); defined in-class so `new TCancelGameOptionsCommand()` reproduces that shape.

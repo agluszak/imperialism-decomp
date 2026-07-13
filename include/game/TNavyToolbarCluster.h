@@ -3,7 +3,6 @@
 #include "game/TUberCluster.h"
 #include "game/mfc.h"
 
-// TODO(manifest): describe TNavyToolbarCluster and its role. Base edge (TUberCluster) recovered from RTTI CRuntimeClass chain: TNavyToolbarCluster -> TUberCluster -> TCluster -> TControl -> TView -> TEventHandler -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x0065d6e0
 class TNavyToolbarCluster : public TUberCluster {
 public:
@@ -125,7 +124,6 @@ public:
   virtual void SetControlClassAndRefresh(int classState) override; // slot 0x72 0x5696f0
   virtual int IsTradeControlAtMinimum() override; // slot 0x73 0x5696d0
 // === END GENERATED DECLS (TNavyToolbarCluster) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TNavyToolbarCluster 0xCTOR`).
 
   TNavyToolbarCluster();
 };

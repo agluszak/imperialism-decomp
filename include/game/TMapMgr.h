@@ -151,7 +151,7 @@ struct TGlobalMapCityScoreRecord {
 int GetCityIndexFromCityStatePointer(TGlobalMapCityScoreRecord* cityState, int unusedArg);
 
 // 0x5127e0: tileIndex -> (hex raster column*2 (+1 on odd rows), row = tileIndex/0x6c).
-// TODO(promote): genuine __cdecl free function (pure arithmetic; still an autogen stub).
+// Genuine __cdecl free function (pure arithmetic).
 void SplitTileIndexToHexRasterColumnX2AndRow(short tileIndex, short* outColX2,
                                              unsigned short* outRow);
 
@@ -174,8 +174,6 @@ extern "C" short __cdecl GetHexDirectionBetweenTiles(short sourceTile, short des
 // ComputeHexNeighborTileIndices. Free __cdecl function (no `this`), defined in TMapMgr.cpp.
 extern "C" short* __cdecl BuildHexAreaTileIndexList(short centerTileIndex, short radius);
 
-// TODO(manifest): describe TMapMgr and its role. Base edge (TObject) recovered from RTTI
-// CRuntimeClass chain: TMapMgr -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x006587e0
 class TMapMgr : public TObject {
 public:

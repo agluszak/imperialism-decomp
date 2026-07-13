@@ -3,7 +3,6 @@
 #include "game/TPicture.h"
 #include "game/mfc.h"
 
-// TODO(manifest): describe TNewspaperView and its role. Base edge (TPicture) recovered from RTTI CRuntimeClass chain: TNewspaperView -> TPicture -> TControl -> TView -> TEventHandler -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x00641390
 class TNewspaperView : public TPicture {
 public:
@@ -124,7 +123,6 @@ public:
   // slot 0x71 ResetPictureResourceEntry inherited unchanged (0x48f520)
   // slot 0x72 SetPictureResourceIdAndRefresh inherited unchanged (0x48f570)
 // === END GENERATED DECLS (TNewspaperView) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TNewspaperView 0xCTOR`).
 
   TNewspaperView();
 };

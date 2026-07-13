@@ -5,8 +5,6 @@
 
 class TCity;
 
-// TODO(manifest): describe TShipOrder and its role. Base edge (TProductionOrder)
-// recovered from RTTI CRuntimeClass chain: TShipOrder -> TProductionOrder -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x0064f738
 class TShipOrder : public TProductionOrder {
 public:

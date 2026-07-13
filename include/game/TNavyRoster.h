@@ -3,7 +3,6 @@
 #include "game/TMilitaryPageView.h"
 #include "game/mfc.h"
 
-// TODO(manifest): describe TNavyRoster and its role. Base edge (TMilitaryPageView) recovered from RTTI CRuntimeClass chain: TNavyRoster -> TMilitaryPageView -> TPageView -> TView -> TEventHandler -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x0065cbd0
 class TNavyRoster : public TMilitaryPageView {
 public:
@@ -120,7 +119,6 @@ public:
   // slot 0x6d OrphanCallChain_C4_I18_0056ff90 inherited unchanged (0x56ff90)
   virtual undefined InitializePagedListLineDataControlsAndHeaderBitmap(); // slot 0x6e 0x564dc0
 // === END GENERATED DECLS (TNavyRoster) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TNavyRoster 0xCTOR`).
 
   TNavyRoster();
 };

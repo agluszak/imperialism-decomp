@@ -3,7 +3,6 @@
 #include "game/TControl.h"
 #include "game/mfc.h"
 
-// TODO(manifest): describe TMiniCivView and its role. Base edge (TControl) recovered from RTTI CRuntimeClass chain: TMiniCivView -> TControl -> TView -> TEventHandler -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x0064d9d0
 class TMiniCivView : public TControl {
 public:
@@ -123,7 +122,6 @@ public:
   // slot 0x70 SetControlStateFlagAndMaybeRefresh inherited unchanged (0x48e810)
   virtual undefined OrphanRetStub_004ab800(); // slot 0x71 0x4ab800
 // === END GENERATED DECLS (TMiniCivView) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TMiniCivView 0xCTOR`).
 
   TMiniCivView();
 };

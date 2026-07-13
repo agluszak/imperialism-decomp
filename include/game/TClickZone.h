@@ -3,7 +3,6 @@
 #include "game/TControl.h"
 #include "game/mfc.h"
 
-// TODO(manifest): describe TClickZone and its role. Base edge (TControl) recovered from RTTI CRuntimeClass chain: TClickZone -> TControl -> TView -> TEventHandler -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x00660180
 class TClickZone : public TControl {
 public:
@@ -124,7 +123,6 @@ public:
   // slot 0x70 SetControlStateFlagAndMaybeRefresh inherited unchanged (0x48e810)
   virtual undefined OrphanRetStub_005723d0(); // slot 0x71 0x5723d0
 // === END GENERATED DECLS (TClickZone) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TClickZone 0xCTOR`).
 
   TClickZone();
 };

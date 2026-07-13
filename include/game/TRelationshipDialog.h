@@ -3,7 +3,6 @@
 #include "game/TDialogView.h"
 #include "game/mfc.h"
 
-// TODO(manifest): describe TRelationshipDialog and its role. Base edge (TDialogView) recovered from RTTI CRuntimeClass chain: TRelationshipDialog -> TDialogView -> TView -> TEventHandler -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x0066b998
 class TRelationshipDialog : public TDialogView {
 public:
@@ -114,7 +113,6 @@ public:
   // slot 0x67 CtrlSlot103_SubtractPosAndDispatchSlot19C_Impl inherited unchanged (0x48bac0)
   virtual undefined VTableSlot68(); // slot 0x68 0x5b2f10
 // === END GENERATED DECLS (TRelationshipDialog) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TRelationshipDialog 0xCTOR`).
 
   TRelationshipDialog();
 };

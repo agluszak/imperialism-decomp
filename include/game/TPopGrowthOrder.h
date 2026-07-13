@@ -3,7 +3,6 @@
 #include "game/TProductionOrder.h"
 #include "game/mfc.h"
 
-// TODO(manifest): describe TPopGrowthOrder and its role. Base edge (TProductionOrder) recovered from RTTI CRuntimeClass chain: TPopGrowthOrder -> TProductionOrder -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x0064f620
 class TPopGrowthOrder : public TProductionOrder {
 public:
@@ -27,7 +26,6 @@ public:
   virtual void FillOrderSheet(void* orderSheet, short quantity) override; // slot 0x10 0x4b8440
   virtual undefined ConstructTPopGrowthOrderBaseState(); // slot 0x11 0x4b8160
 // === END GENERATED DECLS (TPopGrowthOrder) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TPopGrowthOrder 0xCTOR`).
 
   TPopGrowthOrder();
 };

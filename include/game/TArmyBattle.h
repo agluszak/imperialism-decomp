@@ -7,7 +7,6 @@
 class TStream;
 class TTacticalUnit;
 
-// TODO(manifest): describe TArmyBattle and its role. Base edge (TTacticalBattle) recovered from RTTI CRuntimeClass chain: TArmyBattle -> TTacticalBattle -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x0064ca68
 class TArmyBattle : public TTacticalBattle {
 public:
@@ -39,7 +38,6 @@ public:
   // slot 0x17 ExecuteTacticalMineActionAndQueuePacket inherited unchanged (0x5a34d0)
   // slot 0x18 ExecuteTacticalDigActionAndConsumeUnitActionPoints inherited unchanged (0x5a3640)
   // === END GENERATED DECLS (TArmyBattle) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TArmyBattle 0xCTOR`).
 
   // Both original construction sites (TArmyMgr::CreateTacticalBattleViewAndInitialize-
   // BattleSetup 0x4a5b60 and the network receive path 0x54a1df) inline this ctor as just
@@ -63,6 +61,6 @@ public:
                                                          int battleSiteIndex);
 
   // Loads the battle-setup tab data (terrain/backdrop selection) for the composition
-  // class + fort level. Body TODO. 0x005a4fc0, __thiscall, ret 8.
+  // class + fort level. 0x005a4fc0, __thiscall, ret 8.
   void LoadBattleSetupTabDataByIndex(int compositionClass, int fortLevel);
 };

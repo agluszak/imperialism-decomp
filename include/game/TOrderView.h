@@ -3,7 +3,6 @@
 #include "game/TView.h"
 #include "game/mfc.h"
 
-// TODO(manifest): describe TOrderView and its role. Base edge (TView) recovered from RTTI CRuntimeClass chain: TOrderView -> TView -> TEventHandler -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x00657eb0
 class TOrderView : public TView {
 public:

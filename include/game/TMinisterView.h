@@ -3,7 +3,6 @@
 #include "game/TView.h"
 #include "game/mfc.h"
 
-// TODO(manifest): describe TMinisterView and its role. Base edge (TView) recovered from RTTI CRuntimeClass chain: TMinisterView -> TView -> TEventHandler -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x00655100
 class TMinisterView : public TView {
 public:

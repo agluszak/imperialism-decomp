@@ -3,7 +3,6 @@
 #include "game/TPicture.h"
 #include "game/mfc.h"
 
-// TODO(manifest): describe TStatusPicture and its role. Base edge (TPicture) recovered from RTTI CRuntimeClass chain: TStatusPicture -> TPicture -> TControl -> TView -> TEventHandler -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x00642268
 class TStatusPicture : public TPicture {
 public:

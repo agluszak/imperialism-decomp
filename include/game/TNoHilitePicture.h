@@ -3,7 +3,6 @@
 #include "game/TPicture.h"
 #include "game/mfc.h"
 
-// TODO(manifest): describe TNoHilitePicture and its role. Base edge (TPicture) recovered from RTTI CRuntimeClass chain: TNoHilitePicture -> TPicture -> TControl -> TView -> TEventHandler -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x006606e8
 class TNoHilitePicture : public TPicture {
 public:

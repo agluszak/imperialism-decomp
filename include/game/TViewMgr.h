@@ -14,8 +14,6 @@ class TDiplomacyMapView;
 class TMovieView;
 class TTaskForce;
 
-// TODO(manifest): describe TViewMgr and its role. Base edge (TObject) recovered from RTTI
-// CRuntimeClass chain: TViewMgr -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x0066f120
 class TViewMgr : public TObject {
 public:

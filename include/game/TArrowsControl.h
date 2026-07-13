@@ -3,7 +3,6 @@
 #include "game/TPicture.h"
 #include "game/mfc.h"
 
-// TODO(manifest): describe TArrowsControl and its role. Base edge (TPicture) recovered from RTTI CRuntimeClass chain: TArrowsControl -> TPicture -> TControl -> TView -> TEventHandler -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x00663318
 class TArrowsControl : public TPicture {
 public:

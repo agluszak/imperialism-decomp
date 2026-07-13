@@ -3,7 +3,6 @@
 #include "game/TView.h"
 #include "game/mfc.h"
 
-// TODO(manifest): describe TIncludeView and its role. Base edge (TView) recovered from RTTI CRuntimeClass chain: TIncludeView -> TView -> TEventHandler -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x00649c60
 class TIncludeView : public TView {
 public:

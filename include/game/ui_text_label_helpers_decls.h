@@ -7,7 +7,7 @@ class TStaticText;
 
 // 0x5c4310: resolve `controlTag` on g_pDisplayMgr->activeDialog, AssertValid it, and
 // forward to ApplyControlThemeStyleAndOptionalCaption. Genuine __cdecl free function
-// (callers clean 0x18). Body TODO.
+// (callers clean 0x18).
 TStaticText* __cdecl RefreshActiveControlThenApplyThemeStyleAndCaption(unsigned int controlTag,
                                                                        int unused2, int pointSize,
                                                                        int themeCode,

@@ -3,9 +3,6 @@
 #include "game/TPictureText.h"
 #include "game/mfc.h"
 
-// TODO(manifest): describe TDropShadowText and its role. Base edge (TPictureText) recovered from
-// RTTI CRuntimeClass chain: TDropShadowText -> TPictureText -> TStaticText -> TControl -> TView ->
-// TEventHandler -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x0066ce00
 class TDropShadowText : public TPictureText {
 public:
@@ -129,8 +126,6 @@ public:
   // slot 0x74 AssignSharedStringFromField84 inherited unchanged (0x4294d0)
   // slot 0x75 RenderControlStateTextBySelectionCode inherited unchanged (0x4900a0)
   // === END GENERATED DECLS (TDropShadowText) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TDropShadowText
-  // 0xCTOR`).
 
   TDropShadowText();
 

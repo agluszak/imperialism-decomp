@@ -3,7 +3,6 @@
 #include "game/TProductionOrder.h"
 #include "game/mfc.h"
 
-// TODO(manifest): describe TFoodProcessingOrder and its role. Base edge (TProductionOrder) recovered from RTTI CRuntimeClass chain: TFoodProcessingOrder -> TProductionOrder -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x0064f7f0
 class TFoodProcessingOrder : public TProductionOrder {
 public:
@@ -27,7 +26,6 @@ public:
   virtual void FillOrderSheet(void* orderSheet, short quantity) override; // slot 0x10 0x4b80c0
   virtual undefined InitializeCityProductionState_Impl_At004b7e80(int param_1); // slot 0x11 0x4b7e80
 // === END GENERATED DECLS (TFoodProcessingOrder) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TFoodProcessingOrder 0xCTOR`).
 
   TFoodProcessingOrder();
 };

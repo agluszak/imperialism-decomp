@@ -3,7 +3,6 @@
 #include "game/TTacticalBattleView.h"
 #include "game/mfc.h"
 
-// TODO(manifest): describe TTacArmyView and its role. Base edge (TTacticalBattleView) recovered from RTTI CRuntimeClass chain: TTacArmyView -> TTacticalBattleView -> TView -> TEventHandler -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x00644fd0
 class TTacArmyView : public TTacticalBattleView {
 public:
@@ -136,7 +135,7 @@ public:
 
   // Initializes the live battle-view state from the freshly set-up TArmyBattle
   // (called by InitializeBattleSetupAndMaybeDispatchTurnEventED8 after resolving the
-  // 'DLOG' control). Not a real constructor despite the symbols.csv name. Body TODO.
+  // 'DLOG' control). Not a real constructor despite the symbols.csv name.
   // 0x5a9d90, __thiscall, ret 8.
   void ConstructTTacArmyViewBaseState(int compositionClass, class TArmyBattle* battle);
 };

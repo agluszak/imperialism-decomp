@@ -4,7 +4,6 @@
 #include "game/TBuildingView.h"
 #include "game/mfc.h"
 
-// TODO(manifest): describe TIndustryView and its role. Base edge (TBuildingView) recovered from RTTI CRuntimeClass chain: TIndustryView -> TBuildingView -> TNoHilitePicture -> TPicture -> TControl -> TView -> TEventHandler -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x00652448
 class TIndustryView : public TBuildingView {
 public:

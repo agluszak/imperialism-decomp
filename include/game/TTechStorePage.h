@@ -6,8 +6,6 @@
 // Forward declarations for types referenced by generated signatures.
 class CityDialogController;
 
-// TODO(manifest): describe TTechStorePage and its role. Base edge (TPageView) recovered from RTTI
-// CRuntimeClass chain: TTechStorePage -> TPageView -> TView -> TEventHandler -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x00645ca8
 class TTechStorePage : public TPageView {
 public:
@@ -131,9 +129,6 @@ public:
   // as TTechStorePage slots 0x84-0x9d. Those declarations were removed; the bodies at
   // 0x479440/0x4796xx etc. belong to TScroller, not TTechStorePage.
   // === END GENERATED DECLS (TTechStorePage) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TTechStorePage
-  // 0xCTOR`).
 
   TTechStorePage();
 };
-

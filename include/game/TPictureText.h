@@ -3,9 +3,6 @@
 #include "game/TStaticText.h"
 #include "game/mfc.h"
 
-// TODO(manifest): describe TPictureText and its role. Base edge (TStaticText) recovered from RTTI
-// CRuntimeClass chain: TPictureText -> TStaticText -> TControl -> TView -> TEventHandler -> TObject
-// -> CObject.
 // VTABLE: IMPERIALISM 0x0066c990
 class TPictureText : public TStaticText {
 public:
@@ -129,9 +126,6 @@ public:
   // slot 0x74 AssignSharedStringFromField84 inherited unchanged (0x4294d0)
   // slot 0x75 RenderControlStateTextBySelectionCode inherited unchanged (0x4900a0)
   // === END GENERATED DECLS (TPictureText) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TPictureText
-  // 0xCTOR`).
 
   TPictureText();
 };
-

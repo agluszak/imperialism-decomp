@@ -3,7 +3,6 @@
 #include "game/TControl.h"
 #include "game/mfc.h"
 
-// TODO(manifest): describe TDealTabControl and its role. Base edge (TControl) recovered from RTTI CRuntimeClass chain: TDealTabControl -> TControl -> TView -> TEventHandler -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x00641168
 class TDealTabControl : public TControl {
 public:
@@ -125,7 +124,6 @@ public:
   // slot 0x70 SetControlStateFlagAndMaybeRefresh inherited unchanged (0x48e810)
   virtual undefined ConstructTDealTabControlBaseState(); // slot 0x71 0x5bc780
   // === END GENERATED DECLS (TDealTabControl) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TDealTabControl 0xCTOR`).
   // Vertical fill-bar slice read by ApplyRectSlot110: negative selectedRow84 means "no
   // selection" (draw the whole strip empty); otherwise the highlight band spans
   // [selectedRow84*rowHeightPx86, +rowHeightPx86) with the empty strip above and below.

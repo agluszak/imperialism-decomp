@@ -3,7 +3,6 @@
 #include "game/TCluster.h"
 #include "game/mfc.h"
 
-// TODO(manifest): describe TMapEditCluster and its role. Base edge (TCluster) recovered from RTTI CRuntimeClass chain: TMapEditCluster -> TCluster -> TControl -> TView -> TEventHandler -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x0066b578
 class TMapEditCluster : public TCluster {
 public:
@@ -124,7 +123,6 @@ public:
   // slot 0x71 OrphanTiny_GetDwordEcxOffset_84_00491770 inherited unchanged (0x491770)
   // slot 0x72 OrphanCallChain_C2_I51_00491790 inherited unchanged (0x491790)
 // === END GENERATED DECLS (TMapEditCluster) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TMapEditCluster 0xCTOR`).
 
   TMapEditCluster();
 };

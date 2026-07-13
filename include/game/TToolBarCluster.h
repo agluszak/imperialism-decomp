@@ -3,7 +3,6 @@
 #include "game/TCluster.h"
 #include "game/mfc.h"
 
-// TODO(manifest): describe TToolBarCluster and its role. Base edge (TCluster) recovered from RTTI CRuntimeClass chain: TToolBarCluster -> TCluster -> TControl -> TView -> TEventHandler -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x00664b00
 class TToolBarCluster : public TCluster {
 public:
@@ -130,7 +129,6 @@ public:
   virtual void UpdateControlTagTreaTextFromNationAndMapContext(int nationId); // slot 0x74 0x585ba0
   virtual undefined SehCleanup_ReleaseTwoTempSharedStringRefs();              // slot 0x75 0x585ee0
   // === END GENERATED DECLS (TToolBarCluster) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TToolBarCluster 0xCTOR`).
   //
   // SetMapInteractionMode/RefreshMapOrderEntryPanel/SetActiveMapOrderEntry (previously
   // declared here per symbols.csv's curated class attribution) moved to TMapUberPicture:

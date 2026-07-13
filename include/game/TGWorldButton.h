@@ -3,7 +3,6 @@
 #include "game/TControl.h"
 #include "game/mfc.h"
 
-// TODO(manifest): describe TGWorldButton and its role. Base edge (TControl) recovered from RTTI CRuntimeClass chain: TGWorldButton -> TControl -> TView -> TEventHandler -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x0065ff60
 class TGWorldButton : public TControl {
 public:
@@ -122,7 +121,6 @@ public:
   // slot 0x6f LogUnhandledDialogMethodAndReturnFalse inherited unchanged (0x4294a0)
   virtual void SetControlStateFlagAndMaybeRefresh(bool fEnabledState, bool fRefreshNow) override; // slot 0x70 0x572200
 // === END GENERATED DECLS (TGWorldButton) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TGWorldButton 0xCTOR`).
 
   TGWorldButton();
 };

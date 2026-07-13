@@ -4,7 +4,6 @@
 #include "game/TIndustryView.h"
 #include "game/mfc.h"
 
-// TODO(manifest): describe TTradeSchoolView and its role. Base edge (TIndustryView) recovered from RTTI CRuntimeClass chain: TTradeSchoolView -> TIndustryView -> TBuildingView -> TNoHilitePicture -> TPicture -> TControl -> TView -> TEventHandler -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x00652690
 class TTradeSchoolView : public TIndustryView {
 public:

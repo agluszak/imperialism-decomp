@@ -6,7 +6,6 @@
 // Forward declarations for types referenced by generated signatures.
 class TStream;
 
-// TODO(manifest): describe TItemOrder and its role. Base edge (TProductionOrder) recovered from RTTI CRuntimeClass chain: TItemOrder -> TProductionOrder -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x0064f958
 class TItemOrder : public TProductionOrder {
 public:

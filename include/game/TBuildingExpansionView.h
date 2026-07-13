@@ -3,7 +3,6 @@
 #include "game/TPicture.h"
 #include "game/mfc.h"
 
-// TODO(manifest): describe TBuildingExpansionView and its role. Base edge (TPicture) recovered from RTTI CRuntimeClass chain: TBuildingExpansionView -> TPicture -> TControl -> TView -> TEventHandler -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x006528d8
 class TBuildingExpansionView : public TPicture {
 public:
@@ -126,7 +125,6 @@ public:
   virtual void OpenCityViewProductionDialog(int nBuildingSlotId, int * pCityStateData, int nDialogFlags); // slot 0x73 0x4ce5a0
   virtual void ApplyCityProductionDialogChanges(int nDialogActionTag); // slot 0x74 0x4cebb0
 // === END GENERATED DECLS (TBuildingExpansionView) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TBuildingExpansionView 0xCTOR`).
 
   TBuildingExpansionView();
 };

@@ -3,7 +3,6 @@
 #include "game/TCheater.h"
 #include "game/mfc.h"
 
-// TODO(manifest): describe TTechCheater and its role. Base edge (TCheater) recovered from RTTI CRuntimeClass chain: TTechCheater -> TCheater -> TView -> TEventHandler -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x0064ee58
 class TTechCheater : public TCheater {
 public:
@@ -114,7 +113,6 @@ public:
   // slot 0x67 CtrlSlot103_SubtractPosAndDispatchSlot19C_Impl inherited unchanged (0x48bac0)
   virtual undefined OrphanRetStub_004b1410() override; // slot 0x68 0x4b1990
 // === END GENERATED DECLS (TTechCheater) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TTechCheater 0xCTOR`).
 
   TTechCheater();
 };

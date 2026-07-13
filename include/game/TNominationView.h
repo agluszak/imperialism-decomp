@@ -3,7 +3,6 @@
 #include "game/TPicture.h"
 #include "game/mfc.h"
 
-// TODO(manifest): describe TNominationView and its role. Base edge (TPicture) recovered from RTTI CRuntimeClass chain: TNominationView -> TPicture -> TControl -> TView -> TEventHandler -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x0063ed78
 class TNominationView : public TPicture {
 public:
@@ -125,7 +124,6 @@ public:
   // slot 0x72 SetPictureResourceIdAndRefresh inherited unchanged (0x48f570)
   virtual undefined OrphanRetStub_004305c0(); // slot 0x73 0x4305c0
 // === END GENERATED DECLS (TNominationView) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TNominationView 0xCTOR`).
 
   TNominationView();
 };

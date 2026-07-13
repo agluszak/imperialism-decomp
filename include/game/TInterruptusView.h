@@ -3,7 +3,6 @@
 #include "game/TItemBoyView.h"
 #include "game/mfc.h"
 
-// TODO(manifest): describe TInterruptusView and its role. Base edge (TItemBoyView) recovered from RTTI CRuntimeClass chain: TInterruptusView -> TItemBoyView -> TView -> TEventHandler -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x0064e7d8
 class TInterruptusView : public TItemBoyView {
 public:
@@ -113,7 +112,6 @@ public:
   // slot 0x66 AssertMcAppUILine1922 inherited unchanged (0x48c7d0)
   // slot 0x67 CtrlSlot103_SubtractPosAndDispatchSlot19C_Impl inherited unchanged (0x48bac0)
 // === END GENERATED DECLS (TInterruptusView) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TInterruptusView 0xCTOR`).
 
   TInterruptusView();
 };

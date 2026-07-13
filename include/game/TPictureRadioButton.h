@@ -3,7 +3,6 @@
 #include "game/TToggleButton.h"
 #include "game/mfc.h"
 
-// TODO(manifest): describe TPictureRadioButton and its role. Base edge (TToggleButton) recovered from RTTI CRuntimeClass chain: TPictureRadioButton -> TToggleButton -> TPicture -> TControl -> TView -> TEventHandler -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x0065ed98
 class TPictureRadioButton : public TToggleButton {
 public:
@@ -129,7 +128,6 @@ public:
   virtual undefined WrapperFor_thunk_SetUiControlVisibleFlagAndMaybeRefreshWindow_At00570de0(char param_1); // slot 0x75 0x570de0
   virtual undefined WrapperFor_CopyOffset10PointPairToOutOrZero_At00570ea0(); // slot 0x76 0x570ea0
 // === END GENERATED DECLS (TPictureRadioButton) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TPictureRadioButton 0xCTOR`).
 
   TPictureRadioButton();
 };

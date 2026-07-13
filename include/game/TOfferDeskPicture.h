@@ -4,7 +4,6 @@
 #include "game/TPicture.h"
 #include "game/mfc.h"
 
-// TODO(manifest): describe TOfferDeskPicture and its role. Base edge (TPicture) recovered from RTTI CRuntimeClass chain: TOfferDeskPicture -> TPicture -> TControl -> TView -> TEventHandler -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x0066e728
 class TOfferDeskPicture : public TPicture {
 public:

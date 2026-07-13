@@ -3,7 +3,6 @@
 #include "game/TPanelView.h"
 #include "game/mfc.h"
 
-// TODO(manifest): describe TGrantsView and its role. Base edge (TPanelView) recovered from RTTI CRuntimeClass chain: TGrantsView -> TPanelView -> TView -> TEventHandler -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x0063fa70
 class TGrantsView : public TPanelView {
 public:
@@ -114,7 +113,6 @@ public:
   // slot 0x67 CtrlSlot103_SubtractPosAndDispatchSlot19C_Impl inherited unchanged (0x48bac0)
   virtual undefined OrphanRetStub_00430550() override; // slot 0x68 0x4f85d0
 // === END GENERATED DECLS (TGrantsView) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TGrantsView 0xCTOR`).
 
   TGrantsView();
 };

@@ -3,7 +3,6 @@
 #include "game/TDialogView.h"
 #include "game/mfc.h"
 
-// TODO(manifest): describe TRailheadDialog and its role. Base edge (TDialogView) recovered from RTTI CRuntimeClass chain: TRailheadDialog -> TDialogView -> TView -> TEventHandler -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x0064fe78
 class TRailheadDialog : public TDialogView {
 public:
@@ -115,7 +114,6 @@ public:
   virtual undefined ConstructTRailheadDialogBaseState(); // slot 0x68 0x4bd040
   virtual undefined VTableSlot69(); // slot 0x69 0x4bd260
 // === END GENERATED DECLS (TRailheadDialog) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TRailheadDialog 0xCTOR`).
 
   TRailheadDialog();
 };

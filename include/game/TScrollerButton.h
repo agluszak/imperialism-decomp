@@ -3,7 +3,6 @@
 #include "game/TPictureButton.h"
 #include "game/mfc.h"
 
-// TODO(manifest): describe TScrollerButton and its role. Base edge (TPictureButton) recovered from RTTI CRuntimeClass chain: TScrollerButton -> TPictureButton -> TPicture -> TControl -> TView -> TEventHandler -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x006616e8
 class TScrollerButton : public TPictureButton {
 public:
@@ -125,7 +124,6 @@ public:
   // slot 0x72 SetPictureResourceIdAndRefresh inherited unchanged (0x48f570)
   // slot 0x73 IsSelected inherited unchanged (0x5708c0)
 // === END GENERATED DECLS (TScrollerButton) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TScrollerButton 0xCTOR`).
 
   TScrollerButton();
 };

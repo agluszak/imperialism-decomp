@@ -3,7 +3,6 @@
 #include "game/TDialogView.h"
 #include "game/mfc.h"
 
-// TODO(manifest): describe TMinorTradeBidsDialog and its role. Base edge (TDialogView) recovered from RTTI CRuntimeClass chain: TMinorTradeBidsDialog -> TDialogView -> TView -> TEventHandler -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x0066b7a0
 class TMinorTradeBidsDialog : public TDialogView {
 public:
@@ -114,7 +113,6 @@ public:
   // slot 0x67 CtrlSlot103_SubtractPosAndDispatchSlot19C_Impl inherited unchanged (0x48bac0)
   virtual undefined ConstructTMinorTradeBidsDialogBaseState(); // slot 0x68 0x5b2aa0
 // === END GENERATED DECLS (TMinorTradeBidsDialog) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TMinorTradeBidsDialog 0xCTOR`).
 
   TMinorTradeBidsDialog();
 };

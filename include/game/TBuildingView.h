@@ -4,7 +4,6 @@
 #include "game/TNoHilitePicture.h"
 #include "game/mfc.h"
 
-// TODO(manifest): describe TBuildingView and its role. Base edge (TNoHilitePicture) recovered from RTTI CRuntimeClass chain: TBuildingView -> TNoHilitePicture -> TPicture -> TControl -> TView -> TEventHandler -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x00651458
 class TBuildingView : public TNoHilitePicture {
 public:

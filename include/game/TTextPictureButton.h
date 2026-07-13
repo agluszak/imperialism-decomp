@@ -3,7 +3,6 @@
 #include "game/TUpDownPictureButton.h"
 #include "game/mfc.h"
 
-// TODO(manifest): describe TTextPictureButton and its role. Base edge (TUpDownPictureButton) recovered from RTTI CRuntimeClass chain: TTextPictureButton -> TUpDownPictureButton -> TPicture -> TControl -> TView -> TEventHandler -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x006603a8
 class TTextPictureButton : public TUpDownPictureButton {
 public:

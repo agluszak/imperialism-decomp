@@ -4,7 +4,6 @@
 #include "game/TPicture.h"
 #include "game/mfc.h"
 
-// TODO(manifest): describe TDealBookPicture and its role. Base edge (TPicture) recovered from RTTI CRuntimeClass chain: TDealBookPicture -> TPicture -> TControl -> TView -> TEventHandler -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x0066dfc0
 class TDealBookPicture : public TPicture {
 public:

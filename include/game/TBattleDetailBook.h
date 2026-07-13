@@ -3,7 +3,6 @@
 #include "game/TBook.h"
 #include "game/mfc.h"
 
-// TODO(manifest): describe TBattleDetailBook and its role. Base edge (TBook) recovered from RTTI CRuntimeClass chain: TBattleDetailBook -> TBook -> TPicture -> TControl -> TView -> TEventHandler -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x0063f428
 class TBattleDetailBook : public TBook {
 public:
@@ -124,7 +123,6 @@ public:
   // slot 0x71 ResetPictureResourceEntry inherited unchanged (0x48f520)
   // slot 0x72 SetPictureResourceIdAndRefresh inherited unchanged (0x48f570)
 // === END GENERATED DECLS (TBattleDetailBook) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TBattleDetailBook 0xCTOR`).
 
   TBattleDetailBook();
 };

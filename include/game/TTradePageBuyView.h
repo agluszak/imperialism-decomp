@@ -3,7 +3,6 @@
 #include "game/TPageView.h"
 #include "game/mfc.h"
 
-// TODO(manifest): describe TTradePageBuyView and its role. Base edge (TPageView) recovered from RTTI CRuntimeClass chain: TTradePageBuyView -> TPageView -> TView -> TEventHandler -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x00640d48
 class TTradePageBuyView : public TPageView {
 public:
@@ -119,7 +118,6 @@ public:
   // slot 0x6c OrphanCallChain_C8_I118_0056fdb0 inherited unchanged (0x56fdb0)
   // slot 0x6d OrphanCallChain_C4_I18_0056ff90 inherited unchanged (0x56ff90)
 // === END GENERATED DECLS (TTradePageBuyView) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TTradePageBuyView 0xCTOR`).
 
   TTradePageBuyView();
 };

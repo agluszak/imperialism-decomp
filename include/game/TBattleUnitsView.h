@@ -3,7 +3,6 @@
 #include "game/TMilitaryPageView.h"
 #include "game/mfc.h"
 
-// TODO(manifest): describe TBattleUnitsView and its role. Base edge (TMilitaryPageView) recovered from RTTI CRuntimeClass chain: TBattleUnitsView -> TMilitaryPageView -> TPageView -> TView -> TEventHandler -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x00640940
 class TBattleUnitsView : public TMilitaryPageView {
 public:
@@ -119,7 +118,6 @@ public:
   // slot 0x6c OrphanCallChain_C8_I118_0056fdb0 inherited unchanged (0x56fdb0)
   // slot 0x6d OrphanCallChain_C4_I18_0056ff90 inherited unchanged (0x56ff90)
 // === END GENERATED DECLS (TBattleUnitsView) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TBattleUnitsView 0xCTOR`).
 
   TBattleUnitsView();
 };

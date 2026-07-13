@@ -3,9 +3,6 @@
 #include "game/TInfoBarText.h"
 #include "game/mfc.h"
 
-// TODO(manifest): describe TInfoBarPictureText and its role. Base edge (TInfoBarText) recovered
-// from RTTI CRuntimeClass chain: TInfoBarPictureText -> TInfoBarText -> TDeluxeText -> TTEView ->
-// TStaticText -> TControl -> TView -> TEventHandler -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x0066d288
 class TInfoBarPictureText : public TInfoBarText {
 public:
@@ -144,8 +141,6 @@ public:
   // slot 0x81 InitializeMapHintTextStyleAndThemeFlags inherited unchanged (0x5b6840)
   // slot 0x82 OrphanCallChain_C1_I05_005b6810 inherited unchanged (0x5b6810)
   // === END GENERATED DECLS (TInfoBarPictureText) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery
-  // TInfoBarPictureText 0xCTOR`).
 
   TInfoBarPictureText();
 };

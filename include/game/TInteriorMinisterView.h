@@ -3,7 +3,6 @@
 #include "game/TMinisterView.h"
 #include "game/mfc.h"
 
-// TODO(manifest): describe TInteriorMinisterView and its role. Base edge (TMinisterView) recovered from RTTI CRuntimeClass chain: TInteriorMinisterView -> TMinisterView -> TView -> TEventHandler -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x00655720
 class TInteriorMinisterView : public TMinisterView {
 public:
@@ -117,7 +116,6 @@ public:
   // slot 0x6a OrphanCallChain_C2_I08_004f2ec0 inherited unchanged (0x4f2ec0)
   // slot 0x6b OrphanLeaf_NoCall_Ins03_004f2ea0 inherited unchanged (0x4f2ea0)
 // === END GENERATED DECLS (TInteriorMinisterView) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TInteriorMinisterView 0xCTOR`).
 
   TInteriorMinisterView();
 };

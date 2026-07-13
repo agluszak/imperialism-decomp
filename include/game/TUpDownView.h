@@ -3,7 +3,6 @@
 #include "game/TControl.h"
 #include "game/mfc.h"
 
-// TODO(manifest): describe TUpDownView and its role. Base edge (TControl) recovered from RTTI CRuntimeClass chain: TUpDownView -> TControl -> TView -> TEventHandler -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x00663770
 class TUpDownView : public TControl {
 public:

@@ -53,7 +53,7 @@ public:
   void ConstructTArmyTacUnitBaseState(TMilitaryUnit* source);
 
   // Fills the float projection vector (+0x44..+0x54) from the source unit's five
-  // per-type stat percentages scaled by strength. Body TODO. 0x5a5fe0, __thiscall.
+  // per-type stat percentages scaled by strength. 0x5a5fe0, __thiscall.
   void ComputeTacticalProjectionScoreVector();
 };
 

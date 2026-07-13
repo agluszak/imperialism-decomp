@@ -297,7 +297,7 @@ public:
                                                                     int policyCode,
                                                                     int sourceNationSlot);
   virtual void NoOpSlotA2(void); // body 0x004e1f20
-  // slot 0xa3 — body 0x004e1f40 (not yet ported); war-commitment threshold consumed by
+  // slot 0xa3 — body 0x004e1f40; war-commitment threshold consumed by
   // slot 0x9e (compared against ComputeMinisterSkillFloatSlot8C).
   virtual float ComputeWarThresholdSlotA3(int targetNation);
   virtual void PruneInvalidTrackedEntriesAndNotifyOwner(); // slot 0xa4 — body 0x004e2190

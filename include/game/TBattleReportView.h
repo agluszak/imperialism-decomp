@@ -5,9 +5,6 @@
 class TAnimator;
 class TIdleMeAnimation;
 
-// TODO(manifest): describe TBattleReportView and its role. Constructor evidence
-// calls TDiplomacyMapView::TDiplomacyMapView, initializes the derived tail at
-// 0x24c8..0x24cc, then installs the complete-object vftable.
 // VTABLE: IMPERIALISM 0x0063efa8
 class TBattleReportView : public TDiplomacyMapView {
 public:

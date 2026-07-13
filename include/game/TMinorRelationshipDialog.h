@@ -3,7 +3,6 @@
 #include "game/TDialogView.h"
 #include "game/mfc.h"
 
-// TODO(manifest): describe TMinorRelationshipDialog and its role. Base edge (TDialogView) recovered from RTTI CRuntimeClass chain: TMinorRelationshipDialog -> TDialogView -> TView -> TEventHandler -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x0066bb90
 class TMinorRelationshipDialog : public TDialogView {
 public:
@@ -114,7 +113,6 @@ public:
   // slot 0x67 CtrlSlot103_SubtractPosAndDispatchSlot19C_Impl inherited unchanged (0x48bac0)
   virtual undefined VTableSlot68(); // slot 0x68 0x5b3570
 // === END GENERATED DECLS (TMinorRelationshipDialog) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TMinorRelationshipDialog 0xCTOR`).
 
   TMinorRelationshipDialog();
 };

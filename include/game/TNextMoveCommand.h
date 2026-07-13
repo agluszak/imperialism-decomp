@@ -5,8 +5,6 @@
 
 class TTacticalBattle;
 
-// TODO(manifest): describe TNextMoveCommand and its role. Base edge (TCommand) recovered from RTTI
-// CRuntimeClass chain: TNextMoveCommand -> TCommand -> TEvent -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x0066a100
 class TNextMoveCommand : public TCommand {
 public:

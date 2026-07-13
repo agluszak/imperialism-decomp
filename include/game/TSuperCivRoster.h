@@ -3,7 +3,6 @@
 #include "game/TPageView.h"
 #include "game/mfc.h"
 
-// TODO(manifest): describe TSuperCivRoster and its role. Base edge (TPageView) recovered from RTTI CRuntimeClass chain: TSuperCivRoster -> TPageView -> TView -> TEventHandler -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x0064d778
 class TSuperCivRoster : public TPageView {
 public:

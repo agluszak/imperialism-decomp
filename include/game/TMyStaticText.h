@@ -3,9 +3,6 @@
 #include "game/TStaticText.h"
 #include "game/mfc.h"
 
-// TODO(manifest): describe TMyStaticText and its role. Base edge (TStaticText) recovered from RTTI
-// CRuntimeClass chain: TMyStaticText -> TStaticText -> TControl -> TView -> TEventHandler ->
-// TObject -> CObject.
 // VTABLE: IMPERIALISM 0x0066cbc8
 class TMyStaticText : public TStaticText {
 public:
@@ -129,9 +126,6 @@ public:
   // slot 0x74 AssignSharedStringFromField84 inherited unchanged (0x4294d0)
   // slot 0x75 RenderControlStateTextBySelectionCode inherited unchanged (0x4900a0)
   // === END GENERATED DECLS (TMyStaticText) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TMyStaticText
-  // 0xCTOR`).
 
   TMyStaticText();
 };
-

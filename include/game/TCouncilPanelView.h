@@ -3,7 +3,6 @@
 #include "game/TPanelView.h"
 #include "game/mfc.h"
 
-// TODO(manifest): describe TCouncilPanelView and its role. Base edge (TPanelView) recovered from RTTI CRuntimeClass chain: TCouncilPanelView -> TPanelView -> TView -> TEventHandler -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x00640060
 class TCouncilPanelView : public TPanelView {
 public:
@@ -114,7 +113,6 @@ public:
   // slot 0x67 CtrlSlot103_SubtractPosAndDispatchSlot19C_Impl inherited unchanged (0x48bac0)
   // slot 0x68 OrphanRetStub_00430550 inherited unchanged (0x430550)
 // === END GENERATED DECLS (TCouncilPanelView) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TCouncilPanelView 0xCTOR`).
 
   TCouncilPanelView();
 };

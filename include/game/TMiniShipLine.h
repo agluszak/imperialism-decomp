@@ -3,7 +3,6 @@
 #include "game/TLineData.h"
 #include "game/mfc.h"
 
-// TODO(manifest): describe TMiniShipLine and its role. Base edge (TLineData) recovered from RTTI CRuntimeClass chain: TMiniShipLine -> TLineData -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x0065db28
 class TMiniShipLine : public TLineData {
 public:
@@ -21,7 +20,6 @@ public:
   virtual undefined OrphanRetStub_0056f460() override; // slot 0x0a 0x569c80
   // slot 0x0b OrphanRetStub_0056f480 inherited unchanged (0x56f480)
 // === END GENERATED DECLS (TMiniShipLine) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TMiniShipLine 0xCTOR`).
 
   TMiniShipLine();
 };

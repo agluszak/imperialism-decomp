@@ -126,7 +126,7 @@ public:
   // 0x560b00: whether this map-order context has a displayable primary navy order for
   // `nation` (-1 = active nation): field10 bit set and a g_pNavyPrimaryOrderListHead
   // ship with field08 == this, matching owner, field0c == 0 (and field34 == 0 unless
-  // skipField34Check). Ghidra's TCivToolbar attribution is junk. Body TODO.
+  // skipField34Check). Ghidra's TCivToolbar attribution is junk.
   char CanDisplayMapOrderEntryInCurrentContext(short nation, char skipField34Check);
   void InvokeObjectVtableMethod24();
   void* HandleTurnEventVtableSlot24CopyPayloadBuffer();

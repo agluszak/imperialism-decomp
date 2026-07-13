@@ -6,7 +6,6 @@
 // Forward declarations for types referenced by generated signatures.
 class TStream;
 
-// TODO(manifest): describe TLaborPool and its role. Base edge (TObject) recovered from RTTI CRuntimeClass chain: TLaborPool -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x0064f540
 class TLaborPool : public TObject {
 public:
@@ -24,7 +23,6 @@ public:
   virtual undefined OrphanLeaf_NoCall_Ins44_004b2270(int param_1, short param_2); // slot 0x0a 0x4b2270
   virtual undefined CreateTCityInstance(int param_1, short param_2); // slot 0x0b 0x4b2340
 // === END GENERATED DECLS (TLaborPool) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TLaborPool 0xCTOR`).
 
   TLaborPool();
 };

@@ -3,7 +3,6 @@
 #include "game/TNoHilitePicture.h"
 #include "game/mfc.h"
 
-// TODO(manifest): describe TNetSelectPicture and its role. Base edge (TNoHilitePicture) recovered from RTTI CRuntimeClass chain: TNetSelectPicture -> TNoHilitePicture -> TPicture -> TControl -> TView -> TEventHandler -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x006440d8
 class TNetSelectPicture : public TNoHilitePicture {
 public:
@@ -126,7 +125,6 @@ public:
   // slot 0x72 SetPictureResourceIdAndRefresh inherited unchanged (0x48f570)
   // slot 0x73 UniversityDialogMethod_00405623 inherited unchanged (0x572bb0)
   // === END GENERATED DECLS (TNetSelectPicture) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TNetSelectPicture 0xCTOR`).
 
   // NOOP: verified empty in original 0x004544c4 (trivial inline ctor: the builder
   // expansion site emits only the base ctor call + vtbl install)

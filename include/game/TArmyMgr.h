@@ -31,7 +31,6 @@ struct MapContextActionRecord {
   unsigned char pad266[0x268 - 0x266];
 };
 
-// TODO(manifest): describe TArmyMgr and its role. Base edge (TObject) recovered from RTTI CRuntimeClass chain: TArmyMgr -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x0064c928
 class TArmyMgr : public TObject {
 public:
@@ -121,7 +120,6 @@ public:
   virtual undefined HandleMapClickByCivilianCursorState(short tileIndex,
                                                         short mode); // slot 0x18 0x4a4ad0
   // === END GENERATED DECLS (TArmyMgr) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TArmyMgr 0xCTOR`).
 
   // Object size 0x3a8 confirmed by RTTI. Only +0x31c is confirmed so far (read from three
   // independent call sites: TArmyPlacard::HandleEvent, TArmyToolbar's equivalent, and
@@ -199,14 +197,10 @@ public:
   void SetActiveProvinceSelection(short tileIndex);
 
   // Civilian-order counterpart of the free-function ComputeMapCursorStateIndex (this one
-  // genuinely reads/writes `this`, e.g. pendingMapActionIndex). 0x004a4c80, 641 bytes;
-  // ground truth's own decompile loses register tracking (unaff_EBX/EBP/retaddr) badly
-  // enough that a faithful body needs dedicated listing-level analysis -- left as a TODO
-  // stub with the verified real signature rather than guessed.
+  // genuinely reads/writes `this`, e.g. pendingMapActionIndex). 0x004a4c80, 641 bytes.
   int ComputeCivilianMapCursorStateIndex(short tileIndex, short mode);
-  // 0x004a5080, 1407 bytes, __thiscall, 1 arg (cityRecordIndex), returns bool. TODO stub:
-  // large and Ghidra's decompile for it is similarly unreliable; signature verified via
-  // the HandleMapClickByCivilianCursorState callsite disassembly.
+  // 0x004a5080, 1407 bytes, __thiscall, 1 arg (cityRecordIndex), returns bool; signature
+  // verified via the HandleMapClickByCivilianCursorState callsite disassembly.
   bool ValidateOrderPlacementPrerequisitesForSelectedTile(short cityRecordIndex);
   // 0x004a5760, 656 bytes, __thiscall, 1 arg (tileIndex). TODO stub body (builds
   // directional order-overlay controls from the tile's adjacent-region list; not yet
@@ -214,7 +208,7 @@ public:
   void SetActiveProvinceAndBuildDirectionalOrderOverlays(short tileIndex);
   // 0x004a5b10, 243 bytes, __thiscall, 3 args (ourStack, enemyStack, ownerNationCodeInt).
   // Called from TryCreateTacticalBattleViewForTileArmies when a real tactical battle
-  // should be created. TODO stub body (SEH-framed; not yet ported).
+  // should be created (SEH-framed).
   void CreateTacticalBattleViewAndInitializeBattleSetup(TArmyStack* ourStack,
                                                         TArmyStack* enemyStack,
                                                         int ownerNationCodeInt);

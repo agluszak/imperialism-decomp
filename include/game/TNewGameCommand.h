@@ -3,8 +3,6 @@
 #include "game/TCommand.h"
 #include "game/mfc.h"
 
-// TODO(manifest): describe TNewGameCommand and its role. Base edge (TCommand) recovered from RTTI
-// CRuntimeClass chain: TNewGameCommand -> TCommand -> TEvent -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x0064c130
 class TNewGameCommand : public TCommand {
 public:
@@ -22,8 +20,6 @@ public:
   // slot 0x0a NextDiplomacyCommandVtableSlotE8_NotifyOwnerSlot94 inherited unchanged (0x487900)
   virtual void OrphanRetStub_00487a00() override; // slot 0x0b 0x49ddb0
   // === END GENERATED DECLS (TNewGameCommand) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TNewGameCommand
-  // 0xCTOR`).
 
   // Fully inlined at every construction site (base TCommand ctor call + vtable
   // store); defined in-class so `new TNewGameCommand()` reproduces that shape.

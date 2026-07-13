@@ -4,7 +4,6 @@
 #include "game/TCluster.h"
 #include "game/mfc.h"
 
-// TODO(manifest): describe TPurchaseCluster and its role. Base edge (TCluster) recovered from RTTI CRuntimeClass chain: TPurchaseCluster -> TCluster -> TControl -> TView -> TEventHandler -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x00652210
 class TPurchaseCluster : public TCluster {
 public:

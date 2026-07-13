@@ -162,7 +162,7 @@ public:
   // returns 1 (marking this entry eliminated) when no child survives.
   char PruneInactiveTaskForceOrderHead();
   // 0x00551100 — hands this order node to `nation` and rebinds the parent counters
-  // (naval capture path). Body TODO.
+  // (naval capture path).
   void ReassignOrderNodeNationAndRebindParentCounters(short nation);
   // Adds delta to tiebreak_strength, capped at 499.
   void AdjustMapOrderNodeStatCapped499(short delta); // 0x550370

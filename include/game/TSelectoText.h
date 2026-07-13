@@ -3,9 +3,6 @@
 #include "game/TStaticText.h"
 #include "game/mfc.h"
 
-// TODO(manifest): describe TSelectoText and its role. Base edge (TStaticText) recovered from RTTI
-// CRuntimeClass chain: TSelectoText -> TStaticText -> TControl -> TView -> TEventHandler -> TObject
-// -> CObject.
 // VTABLE: IMPERIALISM 0x00662640
 class TSelectoText : public TStaticText {
 public:
@@ -130,9 +127,6 @@ public:
   // slot 0x75 RenderControlStateTextBySelectionCode inherited unchanged (0x4900a0)
   virtual void OrphanRetStub_0057b760(); // slot 0x76 0x57b760 — genuinely a 1-byte no-op (bare `ret`)
   // === END GENERATED DECLS (TSelectoText) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TSelectoText
-  // 0xCTOR`).
 
   TSelectoText();
 };
-

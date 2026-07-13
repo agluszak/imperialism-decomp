@@ -3,7 +3,6 @@
 #include "game/TCheater.h"
 #include "game/mfc.h"
 
-// TODO(manifest): describe TGPCheater and its role. Base edge (TCheater) recovered from RTTI CRuntimeClass chain: TGPCheater -> TCheater -> TView -> TEventHandler -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x0064f050
 class TGPCheater : public TCheater {
 public:
@@ -114,7 +113,6 @@ public:
   // slot 0x67 CtrlSlot103_SubtractPosAndDispatchSlot19C_Impl inherited unchanged (0x48bac0)
   // slot 0x68 OrphanRetStub_004b1410 inherited unchanged (0x4b1410)
 // === END GENERATED DECLS (TGPCheater) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TGPCheater 0xCTOR`).
 
   TGPCheater();
 };

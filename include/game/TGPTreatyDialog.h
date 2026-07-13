@@ -3,7 +3,6 @@
 #include "game/TDialogView.h"
 #include "game/mfc.h"
 
-// TODO(manifest): describe TGPTreatyDialog and its role. Base edge (TDialogView) recovered from RTTI CRuntimeClass chain: TGPTreatyDialog -> TDialogView -> TView -> TEventHandler -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x0066bd88
 class TGPTreatyDialog : public TDialogView {
 public:
@@ -114,7 +113,6 @@ public:
   // slot 0x67 CtrlSlot103_SubtractPosAndDispatchSlot19C_Impl inherited unchanged (0x48bac0)
   virtual undefined ConstructTGPTreatyDialogBaseState(); // slot 0x68 0x5b3be0
 // === END GENERATED DECLS (TGPTreatyDialog) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TGPTreatyDialog 0xCTOR`).
 
   TGPTreatyDialog();
 };

@@ -3,7 +3,6 @@
 #include "game/TBehavior.h"
 #include "game/mfc.h"
 
-// TODO(manifest): describe THotspotBehavior and its role. Base edge (TBehavior) recovered from RTTI CRuntimeClass chain: THotspotBehavior -> TBehavior -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x0064eac8
 class THotspotBehavior : public TBehavior {
 public:
@@ -24,7 +23,6 @@ public:
   // slot 0x0d OrphanRetStub_004872e0 inherited unchanged (0x4872e0)
   virtual undefined WrapperFor_AllocateWithFallbackHandler_At004b0c00(); // slot 0x0e 0x4b0c00
 // === END GENERATED DECLS (THotspotBehavior) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery THotspotBehavior 0xCTOR`).
 
   THotspotBehavior();
 };

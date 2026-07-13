@@ -3,9 +3,6 @@
 #include "game/TPicture.h"
 #include "game/mfc.h"
 
-// TODO(manifest): describe TUpDownPictureButton and its role. Base edge (TPicture) recovered from
-// RTTI CRuntimeClass chain: TUpDownPictureButton -> TPicture -> TControl -> TView -> TEventHandler
-// -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x0065f440
 class TUpDownPictureButton : public TPicture {
 public:
@@ -137,4 +134,3 @@ public:
 };
 
 ASSERT_SIZE(TUpDownPictureButton, 0x94);
-

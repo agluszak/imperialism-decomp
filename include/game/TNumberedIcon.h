@@ -3,7 +3,6 @@
 #include "game/TMegaPicture.h"
 #include "game/mfc.h"
 
-// TODO(manifest): describe TNumberedIcon and its role. Base edge (TMegaPicture) recovered from RTTI CRuntimeClass chain: TNumberedIcon -> TMegaPicture -> TNoHilitePicture -> TPicture -> TControl -> TView -> TEventHandler -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x006580b0
 class TNumberedIcon : public TMegaPicture {
 public:

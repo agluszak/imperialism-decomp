@@ -3,7 +3,6 @@
 #include "game/TCluster.h"
 #include "game/mfc.h"
 
-// TODO(manifest): describe TRadioTextCluster and its role. Base edge (TCluster) recovered from RTTI CRuntimeClass chain: TRadioTextCluster -> TCluster -> TControl -> TView -> TEventHandler -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x00662418
 class TRadioTextCluster : public TCluster {
 public:
@@ -125,7 +124,6 @@ public:
   // slot 0x71 OrphanTiny_GetDwordEcxOffset_84_00491770 inherited unchanged (0x491770)
   // slot 0x72 OrphanCallChain_C2_I51_00491790 inherited unchanged (0x491790)
   // === END GENERATED DECLS (TRadioTextCluster) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TRadioTextCluster 0xCTOR`).
 
   TRadioTextCluster();
 

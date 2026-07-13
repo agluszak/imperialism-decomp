@@ -3,7 +3,6 @@
 #include "game/TCzechBox.h"
 #include "game/mfc.h"
 
-// TODO(manifest): describe TMadnessButton and its role. Base edge (TCzechBox) recovered from RTTI CRuntimeClass chain: TMadnessButton -> TCzechBox -> TUpDownPictureButton -> TPicture -> TControl -> TView -> TEventHandler -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x00641df0
 class TMadnessButton : public TCzechBox {
 public:
@@ -130,7 +129,6 @@ public:
   // slot 0x77 OrphanCallChain_C2_I16_00571e40 inherited unchanged (0x571e40)
   // slot 0x78 OrphanCallChain_C3_I23_00571e80 inherited unchanged (0x571e80)
 // === END GENERATED DECLS (TMadnessButton) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TMadnessButton 0xCTOR`).
 
   TMadnessButton();
 };

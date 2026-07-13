@@ -3,7 +3,6 @@
 #include "game/TBuildingView.h"
 #include "game/mfc.h"
 
-// TODO(manifest): describe TWarehouseView and its role. Base edge (TBuildingView) recovered from RTTI CRuntimeClass chain: TWarehouseView -> TBuildingView -> TNoHilitePicture -> TPicture -> TControl -> TView -> TEventHandler -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x006516a0
 class TWarehouseView : public TBuildingView {
 public:
@@ -131,7 +130,6 @@ public:
   // slot 0x77 SetUniversityDialogLocalizedTextAndRefresh inherited unchanged (0x4c70e0)
   // slot 0x78 SetUniversityDialogTextAndRefresh inherited unchanged (0x4c6ff0)
 // === END GENERATED DECLS (TWarehouseView) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TWarehouseView 0xCTOR`).
 
   TWarehouseView();
 };

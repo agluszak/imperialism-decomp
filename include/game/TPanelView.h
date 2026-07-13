@@ -4,7 +4,6 @@
 #include "game/TView.h"
 #include "game/mfc.h"
 
-// TODO(manifest): describe TPanelView and its role. Base edge (TView) recovered from RTTI CRuntimeClass chain: TPanelView -> TView -> TEventHandler -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x00655db8
 class TPanelView : public TView {
 public:

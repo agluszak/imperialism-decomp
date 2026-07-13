@@ -3,7 +3,6 @@
 #include "game/TNavyPlayer.h"
 #include "game/mfc.h"
 
-// TODO(manifest): describe TNavyHumanPlayer and its role. Base edge (TNavyPlayer) recovered from RTTI CRuntimeClass chain: TNavyHumanPlayer -> TNavyPlayer -> TTacticalPlayer -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x00669760
 class TNavyHumanPlayer : public TNavyPlayer {
 public:
@@ -28,7 +27,6 @@ public:
   // slot 0x11 ProceedAfterBattleIntroAccepted inherited unchanged (0x59ae10)
   virtual undefined ConstructTNavyHumanPlayerBaseState(); // slot 0x12 0x59efc0
   // === END GENERATED DECLS (TNavyHumanPlayer) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TNavyHumanPlayer 0xCTOR`).
 
   TNavyHumanPlayer();
 };

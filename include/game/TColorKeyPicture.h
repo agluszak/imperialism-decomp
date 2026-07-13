@@ -3,7 +3,6 @@
 #include "game/TNoHilitePicture.h"
 #include "game/mfc.h"
 
-// TODO(manifest): describe TColorKeyPicture and its role. Base edge (TNoHilitePicture) recovered from RTTI CRuntimeClass chain: TColorKeyPicture -> TNoHilitePicture -> TPicture -> TControl -> TView -> TEventHandler -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x00660b48
 class TColorKeyPicture : public TNoHilitePicture {
 public:
@@ -125,7 +124,6 @@ public:
   virtual void SetPictureResourceIdAndRefresh(short nPictureId, bool fRefreshNow) override; // slot 0x72 0x573040
   // slot 0x73 UniversityDialogMethod_00405623 inherited unchanged (0x572bb0)
 // === END GENERATED DECLS (TColorKeyPicture) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TColorKeyPicture 0xCTOR`).
 
   TColorKeyPicture();
 };

@@ -3,7 +3,6 @@
 #include "game/TControl.h"
 #include "game/mfc.h"
 
-// TODO(manifest): describe TRightLeftView and its role. Base edge (TControl) recovered from RTTI CRuntimeClass chain: TRightLeftView -> TControl -> TView -> TEventHandler -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x00663990
 class TRightLeftView : public TControl {
 public:
@@ -122,7 +121,6 @@ public:
   // slot 0x6f LogUnhandledDialogMethodAndReturnFalse inherited unchanged (0x4294a0)
   // slot 0x70 SetControlStateFlagAndMaybeRefresh inherited unchanged (0x48e810)
 // === END GENERATED DECLS (TRightLeftView) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TRightLeftView 0xCTOR`).
 
   int timingDword84;
 

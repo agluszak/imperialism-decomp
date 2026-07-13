@@ -3,7 +3,6 @@
 #include "game/TNoHilitePicture.h"
 #include "game/mfc.h"
 
-// TODO(manifest): describe TMegaPicture and its role. Base edge (TNoHilitePicture) recovered from RTTI CRuntimeClass chain: TMegaPicture -> TNoHilitePicture -> TPicture -> TControl -> TView -> TEventHandler -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x00660d78
 class TMegaPicture : public TNoHilitePicture {
 public:

@@ -3,7 +3,6 @@
 #include "game/TColorKeyPicture.h"
 #include "game/mfc.h"
 
-// TODO(manifest): describe TColorKeyButton and its role. Base edge (TColorKeyPicture) recovered from RTTI CRuntimeClass chain: TColorKeyButton -> TColorKeyPicture -> TNoHilitePicture -> TPicture -> TControl -> TView -> TEventHandler -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x0065fd28
 class TColorKeyButton : public TColorKeyPicture {
 public:
@@ -126,7 +125,6 @@ public:
   // slot 0x73 UniversityDialogMethod_00405623 inherited unchanged (0x572bb0)
   virtual undefined OrphanCallChain_C1_I05_00572060(); // slot 0x74 0x572060
 // === END GENERATED DECLS (TColorKeyButton) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TColorKeyButton 0xCTOR`).
 
   TColorKeyButton();
 };

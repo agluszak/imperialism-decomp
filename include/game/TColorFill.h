@@ -3,7 +3,6 @@
 #include "game/TAdorner.h"
 #include "game/mfc.h"
 
-// TODO(manifest): describe TColorFill and its role. Base edge (TAdorner) recovered from RTTI CRuntimeClass chain: TColorFill -> TAdorner -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x006566f0
 class TColorFill : public TAdorner {
 public:
@@ -26,7 +25,6 @@ public:
   // slot 0x0f WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049da50 inherited unchanged (0x49da50)
   // slot 0x10 WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049da80 inherited unchanged (0x49da80)
 // === END GENERATED DECLS (TColorFill) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TColorFill 0xCTOR`).
 
   TColorFill();
 };

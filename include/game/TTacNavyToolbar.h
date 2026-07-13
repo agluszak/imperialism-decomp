@@ -3,7 +3,6 @@
 #include "game/TTacticalToolbar.h"
 #include "game/mfc.h"
 
-// TODO(manifest): describe TTacNavyToolbar and its role. Base edge (TTacticalToolbar) recovered from RTTI CRuntimeClass chain: TTacNavyToolbar -> TTacticalToolbar -> TCluster -> TControl -> TView -> TEventHandler -> TObject -> CObject.
 class TTacticalUnit;
 
 // VTABLE: IMPERIALISM 0x0066a5a0
@@ -131,7 +130,6 @@ public:
   virtual undefined
   WrapperFor_InvalidateCityDialogRectRegion_At005acc90(int param_1) override; // slot 0x74 0x5ad0f0
   // === END GENERATED DECLS (TTacNavyToolbar) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TTacNavyToolbar 0xCTOR`).
 
   TTacNavyToolbar();
 };

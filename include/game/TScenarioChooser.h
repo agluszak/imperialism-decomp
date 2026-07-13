@@ -3,7 +3,6 @@
 #include "game/TNoHilitePicture.h"
 #include "game/mfc.h"
 
-// TODO(manifest): describe TScenarioChooser and its role. Base edge (TNoHilitePicture) recovered from RTTI CRuntimeClass chain: TScenarioChooser -> TNoHilitePicture -> TPicture -> TControl -> TView -> TEventHandler -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x00644540
 class TScenarioChooser : public TNoHilitePicture {
 public:
@@ -127,7 +126,6 @@ public:
   virtual undefined ApplyScenarioSelectionAndPostTurnEvent5E4(); // slot 0x74 0x57a350
   virtual undefined PostTurnEvent5DCOrResetScenarioSelectionState(); // slot 0x75 0x57a2d0
 // === END GENERATED DECLS (TScenarioChooser) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TScenarioChooser 0xCTOR`).
 
   TScenarioChooser();
 };

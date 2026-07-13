@@ -4,7 +4,6 @@
 #include "game/TBuildingView.h"
 #include "game/mfc.h"
 
-// TODO(manifest): describe TUnitsView and its role. Base edge (TBuildingView) recovered from RTTI CRuntimeClass chain: TUnitsView -> TBuildingView -> TNoHilitePicture -> TPicture -> TControl -> TView -> TEventHandler -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x006518e8
 class TUnitsView : public TBuildingView {
 public:

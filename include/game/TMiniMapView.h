@@ -9,7 +9,6 @@ class TMapUberPicture;
 // ApplyRectSlot110/DispatchPictureResourceCommand). Constructed by
 // TMapUberPicture::CreateToolWindow_00599CF0 (0x599cf0), which stores the new instance
 // into the owner's field_0xc0.
-// TODO(manifest): describe TMiniMapView and its role. Base edge (TControl) recovered from RTTI CRuntimeClass chain: TMiniMapView -> TControl -> TView -> TEventHandler -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x00669170
 class TMiniMapView : public TControl {
 public:

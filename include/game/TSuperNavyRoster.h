@@ -3,7 +3,6 @@
 #include "game/TPageView.h"
 #include "game/mfc.h"
 
-// TODO(manifest): describe TSuperNavyRoster and its role. Base edge (TPageView) recovered from RTTI CRuntimeClass chain: TSuperNavyRoster -> TPageView -> TView -> TEventHandler -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x0065d910
 class TSuperNavyRoster : public TPageView {
 public:
@@ -120,7 +119,6 @@ public:
   // slot 0x6d OrphanCallChain_C4_I18_0056ff90 inherited unchanged (0x56ff90)
   virtual undefined PopulateNavyOrderPageEntriesByMapContext(); // slot 0x6e 0x5698e0
 // === END GENERATED DECLS (TSuperNavyRoster) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TSuperNavyRoster 0xCTOR`).
 
   TSuperNavyRoster();
 };

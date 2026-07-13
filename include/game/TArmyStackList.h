@@ -3,7 +3,6 @@
 #include "game/TSortedList.h"
 #include "game/mfc.h"
 
-// TODO(manifest): describe TArmyStackList and its role. Base edge (TSortedList) recovered from RTTI CRuntimeClass chain: TArmyStackList -> TSortedList -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x0064c9a0
 class TArmyStackList : public TSortedList {
 public:
@@ -42,7 +41,6 @@ public:
   // slot 0x1d QueueCityRecruitmentSupportCommandsIfDeficit inherited unchanged (0x487bd0)
   // slot 0x1e GetTTaskClassNamePointer inherited unchanged (0x487cc0)
   // === END GENERATED DECLS (TArmyStackList) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TArmyStackList 0xCTOR`).
 
   TArmyStackList();
 };

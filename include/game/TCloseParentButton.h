@@ -3,7 +3,6 @@
 #include "game/TButton.h"
 #include "game/mfc.h"
 
-// TODO(manifest): describe TCloseParentButton and its role. Base edge (TButton) recovered from RTTI CRuntimeClass chain: TCloseParentButton -> TButton -> TCtlMgr -> TControl -> TView -> TEventHandler -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x006648d8
 class TCloseParentButton : public TButton {
 public:
@@ -123,7 +122,6 @@ public:
   // slot 0x70 SetControlStateFlagAndMaybeRefresh inherited unchanged (0x48e810)
   // slot 0x71 WrapperFor_thunk_TemporarilyClearAndRestoreUiInvalidationFlag_At00492db0 inherited unchanged (0x492db0)
 // === END GENERATED DECLS (TCloseParentButton) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TCloseParentButton 0xCTOR`).
 
   TCloseParentButton();
 };

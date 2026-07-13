@@ -4,7 +4,6 @@
 #include "game/TControl.h"
 #include "game/mfc.h"
 
-// TODO(manifest): describe TArmyCheckBox and its role. Base edge (TControl) recovered from RTTI CRuntimeClass chain: TArmyCheckBox -> TControl -> TView -> TEventHandler -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x0064cec0
 class TArmyCheckBox : public TControl {
 public:

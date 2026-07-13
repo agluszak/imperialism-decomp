@@ -5,8 +5,6 @@
 
 class TCommand;
 
-// TODO(manifest): describe TCommandHandler and its role. Base edge (TEventHandler) recovered from
-// RTTI CRuntimeClass chain: TCommandHandler -> TEventHandler -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x00648b20
 class TCommandHandler : public TEventHandler {
 public:
@@ -50,9 +48,6 @@ public:
   // slot 0x24 SetUiResourceOwner inherited unchanged (0x48a4d0)
   virtual void ConstructTCommandHandlerBaseState(TCommand* command); // slot 0x25 0x486650
   // === END GENERATED DECLS (TCommandHandler) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TCommandHandler
-  // 0xCTOR`).
 
   TCommandHandler();
 };
-

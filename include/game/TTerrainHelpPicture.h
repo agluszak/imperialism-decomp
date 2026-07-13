@@ -3,7 +3,6 @@
 #include "game/TPicture.h"
 #include "game/mfc.h"
 
-// TODO(manifest): describe TTerrainHelpPicture and its role. Base edge (TPicture) recovered from RTTI CRuntimeClass chain: TTerrainHelpPicture -> TPicture -> TControl -> TView -> TEventHandler -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x00642038
 class TTerrainHelpPicture : public TPicture {
 public:
@@ -125,7 +124,6 @@ public:
   // slot 0x72 SetPictureResourceIdAndRefresh inherited unchanged (0x48f570)
   virtual undefined VTableSlot73(); // slot 0x73 0x5057a0
 // === END GENERATED DECLS (TTerrainHelpPicture) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TTerrainHelpPicture 0xCTOR`).
 
   TTerrainHelpPicture();
 };

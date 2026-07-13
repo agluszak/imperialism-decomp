@@ -3,10 +3,6 @@
 #include "compat.h"
 #include "game/TNoHilitePicture.h"
 
-// TODO(manifest): describe TCityProductionView and its role. Base edge
-// (TNoHilitePicture) recovered from RTTI CRuntimeClass chain:
-// TCityProductionView -> TNoHilitePicture -> TPicture -> TControl -> TView ->
-// TEventHandler -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x0064fc20
 class TCityProductionView : public TNoHilitePicture {
 public:
@@ -49,4 +45,3 @@ private:
   short currentWeekAtAa;
   char pad_ac[0xe0];
 };
-

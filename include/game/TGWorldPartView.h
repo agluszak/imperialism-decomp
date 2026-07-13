@@ -3,7 +3,6 @@
 #include "game/TView.h"
 #include "game/mfc.h"
 
-// TODO(manifest): describe TGWorldPartView and its role. Base edge (TView) recovered from RTTI CRuntimeClass chain: TGWorldPartView -> TView -> TEventHandler -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x00644ba0
 class TGWorldPartView : public TView {
 public:
@@ -113,7 +112,6 @@ public:
   // slot 0x66 AssertMcAppUILine1922 inherited unchanged (0x48c7d0)
   // slot 0x67 CtrlSlot103_SubtractPosAndDispatchSlot19C_Impl inherited unchanged (0x48bac0)
   // === END GENERATED DECLS (TGWorldPartView) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TGWorldPartView 0xCTOR`).
 
   TGWorldPartView();
 

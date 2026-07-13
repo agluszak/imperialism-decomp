@@ -4,8 +4,6 @@
 #include "game/TWindow.h"
 #include "game/mfc.h"
 
-// TODO(manifest): describe TDlgWindow and its role. Base edge (TWindow) recovered from RTTI
-// CRuntimeClass chain: TDlgWindow -> TWindow -> TView -> TEventHandler -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x00656ce8
 class TDlgWindow : public TWindow {
 public:

@@ -3,7 +3,6 @@
 #include "game/TPicture.h"
 #include "game/mfc.h"
 
-// TODO(manifest): describe THelpPicture and its role. Base edge (TPicture) recovered from RTTI CRuntimeClass chain: THelpPicture -> TPicture -> TControl -> TView -> TEventHandler -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x00657080
 class THelpPicture : public TPicture {
 public:
@@ -128,7 +127,6 @@ public:
   virtual undefined RefreshHelpSubjectListControlsWithPrevNext(); // slot 0x75 0x5046c0
   virtual undefined BuildHelpSubjectListControlsWithPrevNext(); // slot 0x76 0x504220
 // === END GENERATED DECLS (THelpPicture) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery THelpPicture 0xCTOR`).
 
   THelpPicture();
 };

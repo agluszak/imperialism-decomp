@@ -3,7 +3,6 @@
 #include "game/TMapUberUberPicture.h"
 #include "game/mfc.h"
 
-// TODO(manifest): describe TTacMapUberPicture and its role. Base edge (TMapUberUberPicture) recovered from RTTI CRuntimeClass chain: TTacMapUberPicture -> TMapUberUberPicture -> TOffLimitsPicture -> TPicture -> TControl -> TView -> TEventHandler -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x006451f0
 class TTacMapUberPicture : public TMapUberUberPicture {
 public:
@@ -126,7 +125,6 @@ public:
   // slot 0x73 ForwardCombineOptionalSourceRegionIntoDestinationAndUpdateBox inherited unchanged (0x573940)
   virtual undefined AutoScrollByEdgeMask(short edgeMask) override; // slot 0x74 0x45d3b0
   // === END GENERATED DECLS (TTacMapUberPicture) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TTacMapUberPicture 0xCTOR`).
 
   TTacMapUberPicture();
 };

@@ -3,7 +3,6 @@
 #include "game/TMinisterView.h"
 #include "game/mfc.h"
 
-// TODO(manifest): describe TDefenseMinisterView and its role. Base edge (TMinisterView) recovered from RTTI CRuntimeClass chain: TDefenseMinisterView -> TMinisterView -> TView -> TEventHandler -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x00655518
 class TDefenseMinisterView : public TMinisterView {
 public:
@@ -117,7 +116,6 @@ public:
   // slot 0x6a OrphanCallChain_C2_I08_004f2ec0 inherited unchanged (0x4f2ec0)
   // slot 0x6b OrphanLeaf_NoCall_Ins03_004f2ea0 inherited unchanged (0x4f2ea0)
 // === END GENERATED DECLS (TDefenseMinisterView) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TDefenseMinisterView 0xCTOR`).
 
   TDefenseMinisterView();
 };

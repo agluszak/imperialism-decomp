@@ -3,7 +3,6 @@
 #include "game/TNoHilitePicture.h"
 #include "game/mfc.h"
 
-// TODO(manifest): describe TGameScorePicture and its role. Base edge (TNoHilitePicture) recovered from RTTI CRuntimeClass chain: TGameScorePicture -> TNoHilitePicture -> TPicture -> TControl -> TView -> TEventHandler -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x00644970
 class TGameScorePicture : public TNoHilitePicture {
 public:
@@ -125,7 +124,6 @@ public:
   // slot 0x72 SetPictureResourceIdAndRefresh inherited unchanged (0x48f570)
   // slot 0x73 UniversityDialogMethod_00405623 inherited unchanged (0x572bb0)
 // === END GENERATED DECLS (TGameScorePicture) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TGameScorePicture 0xCTOR`).
 
   TGameScorePicture();
 };

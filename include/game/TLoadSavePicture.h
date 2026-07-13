@@ -3,7 +3,6 @@
 #include "game/TPicture.h"
 #include "game/mfc.h"
 
-// TODO(manifest): describe TLoadSavePicture and its role. Base edge (TPicture) recovered from RTTI CRuntimeClass chain: TLoadSavePicture -> TPicture -> TControl -> TView -> TEventHandler -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x006426b8
 class TLoadSavePicture : public TPicture {
 public:
@@ -154,5 +153,5 @@ void __cdecl BuildSavePathStringForMode(CString* out, int saveMode, char* label)
 void __cdecl SaveGameWithModeAndOptionalLabel(int mode, char* label);
 
 // 0x56df40: build the save path for `slot` with `label` and probe the file's metadata;
-// returns whether the save file exists (turn-event 0xE 'load' receive path). Body TODO.
+// returns whether the save file exists (turn-event 0xE 'load' receive path).
 unsigned char __cdecl BuildSaveSlotPathAndProbeMetadata(int slot, const char* label);

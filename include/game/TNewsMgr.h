@@ -6,7 +6,6 @@
 // Forward declarations for types referenced by generated signatures.
 class TStream;
 
-// TODO(manifest): describe TNewsMgr and its role. Base edge (TObject) recovered from RTTI CRuntimeClass chain: TNewsMgr -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x0065c598
 class TNewsMgr : public TObject {
 public:
@@ -22,7 +21,6 @@ public:
   // slot 0x08 ShallowClone inherited unchanged (0x4798d0)
   // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
 // === END GENERATED DECLS (TNewsMgr) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TNewsMgr 0xCTOR`).
 
   TNewsMgr();
 };

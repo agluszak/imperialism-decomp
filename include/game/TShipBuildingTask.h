@@ -6,7 +6,6 @@
 // Forward declarations for types referenced by generated signatures.
 class TStream;
 
-// TODO(manifest): describe TShipBuildingTask and its role. Base edge (TCityTask) recovered from RTTI CRuntimeClass chain: TShipBuildingTask -> TCityTask -> TTask -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x0066a9f8
 class TShipBuildingTask : public TCityTask {
 public:
@@ -28,7 +27,6 @@ public:
   // slot 0x0e QueueCityOrderInputDeltaCommands inherited unchanged (0x5ae240)
   // slot 0x0f QueueCityProductionOrderCommand inherited unchanged (0x5ae4b0)
 // === END GENERATED DECLS (TShipBuildingTask) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TShipBuildingTask 0xCTOR`).
 
   TShipBuildingTask();
 };

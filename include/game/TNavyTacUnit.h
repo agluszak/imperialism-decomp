@@ -3,7 +3,6 @@
 #include "game/TTacticalUnit.h"
 #include "game/mfc.h"
 
-// TODO(manifest): describe TNavyTacUnit and its role. Base edge (TTacticalUnit) recovered from RTTI CRuntimeClass chain: TNavyTacUnit -> TTacticalUnit -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x00669708
 class TNavyTacUnit : public TTacticalUnit {
 public:

@@ -8,7 +8,6 @@ class TTaskForce;
 class TZone;
 class TMiniMapView;
 
-// TODO(manifest): describe TMapUberPicture and its role. Base edge (TMapUberUberPicture) recovered from RTTI CRuntimeClass chain: TMapUberPicture -> TMapUberUberPicture -> TOffLimitsPicture -> TPicture -> TControl -> TView -> TEventHandler -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x00668f08
 class TMapUberPicture : public TMapUberUberPicture {
 public:
@@ -164,7 +163,6 @@ public:
   virtual undefined
   SetTradeToolSubcontrolEnabledStateByFlag(bool enabledState); // slot 0x7f 0x59a180
   // === END GENERATED DECLS (TMapUberPicture) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TMapUberPicture 0xCTOR`).
 
   // Own slice (TMapUberUberPicture ends at 0x94; this object is 0xc4). Layout/roles from
   // ConstructTMapUberPictureBaseState (0x5969e0) and NoOpUiLifecycleHook (0x596a80).
@@ -227,8 +225,7 @@ public:
   // then calls RefreshMapOrderEntryPanel. 0x00597950, __thiscall, 1 arg.
   void SetActiveMapOrderEntry(TZone* pMapOrderContextZone);
   // Enters/exits the mode-specific overlay UI state (called from SetMapInteractionMode
-  // when switching to civilian mode). 0x00599a50, 252 bytes. TODO stub body (not yet
-  // ported).
+  // when switching to civilian mode). 0x00599a50, 252 bytes.
   void EnterMapInteractionOverlayMode(int param1);
   // Opens a context-action dialog for actionType (0..6, i.e. map-context action code - 2)
   // against the resolved tile zone, forwarding the caller's cached map-action-context

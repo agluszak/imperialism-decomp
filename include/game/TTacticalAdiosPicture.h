@@ -3,7 +3,6 @@
 #include "game/TPicture.h"
 #include "game/mfc.h"
 
-// TODO(manifest): describe TTacticalAdiosPicture and its role. Base edge (TPicture) recovered from RTTI CRuntimeClass chain: TTacticalAdiosPicture -> TPicture -> TControl -> TView -> TEventHandler -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x00645428
 class TTacticalAdiosPicture : public TPicture {
 public:
@@ -124,7 +123,6 @@ public:
   // slot 0x71 ResetPictureResourceEntry inherited unchanged (0x48f520)
   // slot 0x72 SetPictureResourceIdAndRefresh inherited unchanged (0x48f570)
 // === END GENERATED DECLS (TTacticalAdiosPicture) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TTacticalAdiosPicture 0xCTOR`).
 
   TTacticalAdiosPicture();
 };

@@ -3,7 +3,6 @@
 #include "game/TDialogView.h"
 #include "game/mfc.h"
 
-// TODO(manifest): describe TMinorTreatyDialog and its role. Base edge (TDialogView) recovered from RTTI CRuntimeClass chain: TMinorTreatyDialog -> TDialogView -> TView -> TEventHandler -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x0066bf80
 class TMinorTreatyDialog : public TDialogView {
 public:
@@ -114,7 +113,6 @@ public:
   // slot 0x67 CtrlSlot103_SubtractPosAndDispatchSlot19C_Impl inherited unchanged (0x48bac0)
   virtual undefined ConstructTMinorTreatyDialogBaseState(); // slot 0x68 0x5b4090
 // === END GENERATED DECLS (TMinorTreatyDialog) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TMinorTreatyDialog 0xCTOR`).
 
   TMinorTreatyDialog();
 };
