@@ -965,13 +965,14 @@ void TArmyMgr::SetActiveProvinceSelection(short tileIndex) {
         unit->SetOrderModeSlot34(0, -1);
       }
     }
-    // TMapUberPicture is fully recovered now (categoryPages[]/activeUnitCategoryIndex96/
-    // slot 0x74 all real fields/methods on TMapUberPicture.h) -- wire the dispatch the
-    // ground truth makes here: mapUberPictureF0->categoryPages[activeUnitCategoryIndex96]
-    // ->AutoScrollByEdgeMask(tileIndex) (vtable byte offset +0x1d0 = slot 0x74).
-    TMapUberPicture* mapUberPicture = g_pUiRuntimeContext->mapUberPictureF0;
-    mapUberPicture->categoryPages[mapUberPicture->activeUnitCategoryIndex96]->AutoScrollByEdgeMask(
-        tileIndex);
+    // Ground truth also dispatches
+    // g_pUiRuntimeContext->mapUberPictureF0->categoryPages[activeUnitCategoryIndex96]'s
+    // slot 0x74 (AutoScrollByEdgeMask-shaped) virtual here, passing tileIndex (vtable byte
+    // offset +0x1d0). categoryPages[] is heterogeneous per index (bd 4yz evidence: civ/army
+    // entries are TCivToolbar/TArmyToolbar, not TMapUberPicture) and TView is their only
+    // recovered common ancestor, which doesn't declare this slot -- the army-category
+    // receiver's own vtable isn't reconstructed yet (see bd 1uj.61.3), so this one dispatch
+    // stays undone rather than faked with a downcast.
   }
   g_pUiRuntimeContext->mapUberPictureF0->RefreshAfterSelectionChange();
 }
