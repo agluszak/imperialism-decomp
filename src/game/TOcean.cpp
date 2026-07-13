@@ -375,19 +375,20 @@ TZone* TOcean::FindPortZoneBySelectedTile(TCity* city) {
     node = node->prev18;
   }
   for (;;) {
-    if (node == 0) {
+    TPortZone* portZone = static_cast<TPortZone*>(node);
+    if (portZone == 0) {
       return 0;
     }
-    if (static_cast<short>(node->field0c) == selectedTileId) {
-      return node;
+    if (static_cast<short>(portZone->field0c) == selectedTileId) {
+      return portZone;
     }
-    if (node->field20 == selectedTileId) {
-      return node;
+    if (portZone->field20 == selectedTileId) {
+      return portZone;
     }
-    if (static_cast<short>(static_cast<TPortZone*>(node)->field48) == selectedTileId) {
+    if (static_cast<short>(portZone->field48) == selectedTileId) {
       break;
     }
-    node = node->prev18;
+    node = portZone->prev18;
     while (node != 0 && node->IsKindOf(RUNTIME_CLASS(TPortZone)) == 0) {
       node = node->prev18;
     }
