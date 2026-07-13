@@ -51,6 +51,12 @@ public:
   // First TArmyMission-introduced virtual (TMission abstract slot 0x27 / offset 0x9c).
   virtual short GetMissionTargetContextIdFromField14(); // 0x535750
 
+  // Accumulate the 5-slot unit-priority vector over orderListAt18, optionally keeping
+  // only units whose order tile matches targetTile (targetTile == -1 disables the
+  // filter). 0x53c9d0, __thiscall, RET 0xC.
+  void AccumulateMissionUnitPriorityVectorWithOptionalFilter(float* vector, short targetTile,
+                                                             short bypassTileFilter);
+
   // Order-vector score including one extra candidate unit contribution
   // (0x53d200 negates the candidate's scale: the "without unit" variant).
   float ComputeArmyMissionScoreDeltaWithCandidateUnit(TMilitaryUnit* candidateUnit); // 0x53d020

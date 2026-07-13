@@ -43,14 +43,6 @@ undefined4 GetCityActionCategoryCodeBySlot(void)
   return 0;
 }
 
-// ghidra_name AccumulateMissionUnitPriorityVectorWithOptionalFilter_Impl
-// ghidra_proto undefined AccumulateMissionUnitPriorityVectorWithOptionalFilter_Impl()
-// FUNCTION: IMPERIALISM 0x005c3500
-undefined4 AccumulateMissionUnitPriorityVectorWithOptionalFilter_Impl(void)
-{
-  return 0;
-}
-
 // ghidra_name GetNormalizedCityActionResourceCostPercent
 // ghidra_proto undefined GetNormalizedCityActionResourceCostPercent()
 // FUNCTION: IMPERIALISM 0x005c3580

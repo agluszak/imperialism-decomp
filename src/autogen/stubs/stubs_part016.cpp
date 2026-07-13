@@ -251,14 +251,6 @@ undefined4 PropagateTargetTileToLinkedUnitsIfDifferent(void)
   return 0;
 }
 
-// ghidra_name AccumulateMissionUnitPriorityVectorWithOptionalFilter
-// ghidra_proto undefined AccumulateMissionUnitPriorityVectorWithOptionalFilter()
-// FUNCTION: IMPERIALISM 0x0053c9d0
-undefined4 AccumulateMissionUnitPriorityVectorWithOptionalFilter(void)
-{
-  return 0;
-}
-
 // ghidra_name ComputeMissionPrioritySimilarityScoreForFilter
 // ghidra_proto undefined ComputeMissionPrioritySimilarityScoreForFilter()
 // FUNCTION: IMPERIALISM 0x0053cac0

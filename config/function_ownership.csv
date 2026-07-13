@@ -2895,6 +2895,7 @@ address|target_cpp|ownership|note
 53c570|src/game/TArmyMission.cpp|manual|marker_sync
 53c5e0|src/game/TArmyMission.cpp|manual|marker_sync
 53c620|src/game/TArmyMission.cpp|manual|marker_sync
+53c9d0|src/game/TArmyMission.cpp|manual|marker_sync
 53cc10|src/game/TArmyMission.cpp|manual|marker_sync
 53ceb0|src/game/TArmyMission.cpp|manual|marker_sync
 53d020|src/game/TArmyMission.cpp|manual|marker_sync
@@ -4700,6 +4701,7 @@ address|target_cpp|ownership|note
 5c3400|src/game/TMilitaryUnit.cpp|manual|marker_sync
 5c3490|src/game/TMilitaryUnit.cpp|manual|marker_sync
 5c34d0|src/game/TMilitaryUnit.cpp|manual|marker_sync
+5c3500|src/game/TMilitaryUnit.cpp|manual|marker_sync
 5c3530|src/game/TMilitaryUnit.cpp|manual|marker_sync
 5c38e0|src/game/TMilitaryUnit.cpp|manual|marker_sync
 5c3b70|src/game/bitmap_descriptor_helpers.cpp|manual|marker_sync

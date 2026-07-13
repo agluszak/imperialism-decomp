@@ -14,11 +14,65 @@
 
 IMPLEMENT_SERIAL(TArmyMission, TMission, 1)
 
+// FUNCTION: IMPERIALISM 0x005356f0
+char TArmyMission::ReturnFalseSlot50() {
+  return 1;
+}
+
+// FUNCTION: IMPERIALISM 0x00535710
+int TArmyMission::ReturnZeroSlot58() {
+  return reinterpret_cast<int>(this);
+}
+
+// FUNCTION: IMPERIALISM 0x00535730
+int TArmyMission::ReturnZeroSlot5C() {
+  return 0;
+}
+
+// FUNCTION: IMPERIALISM 0x00535750
+short TArmyMission::GetMissionTargetContextIdFromField14() {
+  return field_14;
+}
+
+// Default constructor
+TArmyMission::TArmyMission() : TMission() {
+  field_14 = 0;
+  padding_16 = 0;
+  orderListAt18 = nullptr;
+  for (int i = 0; i < 5; ++i) {
+    resourceWeights[i] = 0.0f;
+  }
+}
+
 // SYNTHETIC: IMPERIALISM 0x0053bfb0
 // TArmyMission::CreateObject
 
 // SYNTHETIC: IMPERIALISM 0x0053c030
 // TArmyMission::GetRuntimeClass
+
+// FUNCTION: IMPERIALISM 0x0053c0a0
+TArmyMission::TArmyMission(int nodeKey) : TMission() {
+  nationId04 = 0xffff;
+  pathMarker06 = 0xffff;
+  field_14 = static_cast<short>(nodeKey);
+  padding_16 = static_cast<short>(0xffff);
+
+  TList* list = static_cast<TList*>(TList::CreateObject());
+  orderListAt18 = list;
+  if (list == nullptr) {
+    MessageBoxA(nullptr, "Nil Pointer", "Failure", 0x30);
+    TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\UMissionSubs.cpp", 0x842);
+  }
+
+  for (int i = 0; i < 5; ++i) {
+    resourceWeights[i] = 0.0f;
+  }
+}
+
+// FUNCTION: IMPERIALISM 0x0053c1b0
+char TArmyMission::ReturnFalseSlot28() {
+  return 0;
+}
 // SYNTHETIC: IMPERIALISM 0x0053c1d0
 // TArmyMission::`scalar deleting destructor'
 
@@ -54,60 +108,6 @@ inline void TArmyMission::AccumulateOrderPriorityVector(float* vector) {
         unit, vector, g_ArmyMissionOrderWeightTable_006978c8[weightIndex],
         static_cast<float>(GetProvinceUnitOrderWeight(GetMissionTargetContextIdFromField14())));
   }
-}
-
-// FUNCTION: IMPERIALISM 0x005356f0
-char TArmyMission::ReturnFalseSlot50() {
-  return 1;
-}
-
-// FUNCTION: IMPERIALISM 0x00535710
-int TArmyMission::ReturnZeroSlot58() {
-  return reinterpret_cast<int>(this);
-}
-
-// FUNCTION: IMPERIALISM 0x00535730
-int TArmyMission::ReturnZeroSlot5C() {
-  return 0;
-}
-
-// FUNCTION: IMPERIALISM 0x00535750
-short TArmyMission::GetMissionTargetContextIdFromField14() {
-  return field_14;
-}
-
-// Default constructor
-TArmyMission::TArmyMission() : TMission() {
-  field_14 = 0;
-  padding_16 = 0;
-  orderListAt18 = nullptr;
-  for (int i = 0; i < 5; ++i) {
-    resourceWeights[i] = 0.0f;
-  }
-}
-
-// FUNCTION: IMPERIALISM 0x0053c0a0
-TArmyMission::TArmyMission(int nodeKey) : TMission() {
-  nationId04 = 0xffff;
-  pathMarker06 = 0xffff;
-  field_14 = static_cast<short>(nodeKey);
-  padding_16 = static_cast<short>(0xffff);
-
-  TList* list = static_cast<TList*>(TList::CreateObject());
-  orderListAt18 = list;
-  if (list == nullptr) {
-    MessageBoxA(nullptr, "Nil Pointer", "Failure", 0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\UMissionSubs.cpp", 0x842);
-  }
-
-  for (int i = 0; i < 5; ++i) {
-    resourceWeights[i] = 0.0f;
-  }
-}
-
-// FUNCTION: IMPERIALISM 0x0053c1b0
-char TArmyMission::ReturnFalseSlot28() {
-  return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x0053c220
@@ -248,6 +248,25 @@ int TArmyMission::ReturnZeroSlot2C(int* outBuffer, int unused) {
     total += rounded;
   }
   return total;
+}
+
+// FUNCTION: IMPERIALISM 0x0053c9d0
+void TArmyMission::AccumulateMissionUnitPriorityVectorWithOptionalFilter(float* vector,
+                                                                         short targetTile,
+                                                                         short bypassTileFilter) {
+  for (int i = 0; i < 5; ++i) {
+    vector[i] = 0.0f;
+  }
+  CIterator iter(orderListAt18);
+  for (void* item = iter.Reset(); iter.More(); item = iter.Advance()) {
+    TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(item);
+    unit->AssertValid();
+    if (targetTile == -1 || unit->MatchesTargetTileOrBypass(bypassTileFilter, targetTile)) {
+      AccumulateUnitOrderPriorityVectorContribution(
+          unit, vector, 1.0f,
+          static_cast<float>(GetProvinceUnitOrderWeight(GetMissionTargetContextIdFromField14())));
+    }
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x0053cc10

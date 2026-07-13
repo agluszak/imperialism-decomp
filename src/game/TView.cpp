@@ -327,7 +327,7 @@ void TView::SetState(int state, int refreshFlag) {
 // FUNCTION: IMPERIALISM 0x0048b0b0
 void TView::Free() {
   while (childList44 != 0) {
-    TEventHandler* child = static_cast<TEventHandler*>(childList44->GetTail());
+    TEventHandler* child = static_cast<TEventHandler*>(childList44->GetHead());
     child->Free();
   }
   if (ownerContext != 0) {

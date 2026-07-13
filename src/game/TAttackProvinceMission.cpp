@@ -25,7 +25,6 @@ IMPLEMENT_SERIAL(TAttackProvinceMission, TArmyMission, 1)
 // Not-yet-recovered free functions/subsystems this file calls into. Generic
 // stub signature per the autogen stub definition; real signature applied via
 // a typed cast at each call site so the linker resolves the correct symbol.
-extern undefined4 AccumulateMissionUnitPriorityVectorWithOptionalFilter(void);
 // TGreatPower method, not yet ported (operates on this+0x970 -- see
 // TDefendProvinceMission.cpp for the identical bridge).
 extern undefined4 SetMapStateByteFlag970WithRuntimeGate(void);
@@ -165,12 +164,7 @@ void TAttackProvinceMission::MissionSlot44() {
 
   short contextId = GetMissionTargetContextIdFromField14();
   float vector[5];
-  typedef void(__cdecl * AccumulateMissionUnitPriorityVectorWithOptionalFilter_t)(float*, int, int);
-  AccumulateMissionUnitPriorityVectorWithOptionalFilter_t
-      AccumulateMissionUnitPriorityVectorWithOptionalFilter_fn =
-          reinterpret_cast<AccumulateMissionUnitPriorityVectorWithOptionalFilter_t>(
-              (void*)&AccumulateMissionUnitPriorityVectorWithOptionalFilter);
-  AccumulateMissionUnitPriorityVectorWithOptionalFilter_fn(vector, contextId, 0);
+  AccumulateMissionUnitPriorityVectorWithOptionalFilter(vector, contextId, 0);
 
   float total = 0.0f;
   float weighted = 0.0f;

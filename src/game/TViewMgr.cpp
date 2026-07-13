@@ -1451,9 +1451,7 @@ void TViewMgr::UiRuntimeSlotF8() {
 
   g_pSfxPlaybackSystem->ResetDualAudioCuePools();
   g_pSfxPlaybackSystem->PushCueToDualAudioCuePools(6);
-  // TODO(bd imperialism-decomp-04l): ground truth also calls
-  // g_pSfxPlaybackSystem->SelectAndScheduleRandomAudioCue() here (0x5db8f1) — deferred, see the
-  // TODO on the free-function stub declaration in TSoundPlayer.cpp.
+  g_pSfxPlaybackSystem->SelectAndScheduleRandomAudioCue();
 
   g_pCursorControlPanel = nullptr;
   g_pCursorControlPanel =
