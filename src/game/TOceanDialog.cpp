@@ -1,6 +1,7 @@
 #include "game/TOceanDialog.h"
 
 #include "game/TDisplayMgr.h"
+#include "game/TMapMgr.h"
 #include "game/global_data_tables.h"
 
 // Standalone binary helper also reached via TWorldView.cpp/TMapDialog.cpp's identical
@@ -29,6 +30,56 @@ TOceanDialog::~TOceanDialog() {}
 // FUNCTION: IMPERIALISM 0x00565f50
 void TOceanDialog::NoOpUiLifecycleHook(int arg) {
   (void)arg;
+}
+
+// Computes the viewport-space bounding rectangle of every strategic tile whose owner tag
+// matches the order entry's field at +0x12, converted through the dialog's scroll offsets.
+// Emits a zero rect when nothing matches.
+// FUNCTION: IMPERIALISM 0x00566060
+void TOceanDialog::ComputeTileClassBoundsInViewport(int* outRect, int entry) {
+  tagRECT bounds;
+  bounds.right = -2000;
+  bounds.bottom = -2000;
+  int minLeft = 1000;
+  int minRowMirror = 1000;
+  bounds.left = 1000;
+  bounds.top = 1000;
+  int i = 0;
+  do {
+    if (static_cast<short>(
+            g_pGlobalMapState->terrainStateTable[static_cast<short>(i)].ownerNationTag04) ==
+        *reinterpret_cast<short*>(entry + 0x12)) {
+      int row = i / 0x6c;
+      int col = (row & 1) + 1 + (i % 0x6c) * 2;
+      if (col < minLeft) {
+        minLeft = col;
+        bounds.left = col;
+      }
+      if (bounds.right < col) {
+        bounds.right = col;
+      }
+      if (row < bounds.top) {
+        bounds.top = row;
+      }
+      minRowMirror = bounds.top;
+      if (bounds.bottom < row) {
+        bounds.bottom = row;
+      }
+    }
+    ++i;
+  } while (i < 0x1950);
+  if (minRowMirror == 100) {
+    outRect[0] = 0;
+    outRect[1] = 0;
+    outRect[2] = 0;
+    outRect[3] = 0;
+  } else {
+    OffsetRect(&bounds, scrollColOffset7e * -2, -static_cast<int>(scrollRowOffset7c));
+    outRect[0] = bounds.left * 8;
+    outRect[1] = bounds.top << 4;
+    outRect[2] = bounds.right * 8;
+    outRect[3] = bounds.bottom << 4;
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x005661d0

@@ -40,6 +40,7 @@ public:
   // NormalizeWrappedMapCoord108x60 and returns the resulting linear tile index
   // (row*0x6c + col). 0x00568ab0.
   virtual int ComputeWrappedTileIndexFromObjectOffset7C7E();
+  void ComputeTileClassBoundsInViewport(int* outRect, int entry); // 0x566060
 
   // Nudges scrollRowOffset7c/scrollColOffset7e by +-4 per set bit in directionFlags
   // (bit0/1 adjust the row offset, bit2/3 the column offset), forwards the new (col, row)
