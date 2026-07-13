@@ -946,52 +946,9 @@ void TDiplomacyMapView::RenderDiplomacyPendingPolicyIconsAndFrames() {
   UpdatePaletteIndexWithDefaultFallback(0x13);
 }
 
-// FUNCTION: IMPERIALISM 0x005DA040
-void TDiplomacyMapView::SelectCandidateTilesWithLowGroundUnitCount() {
-  TView* mainView = g_pDisplayMgr->activeDialog;
-  TInfoBarText* cursor = static_cast<TInfoBarText*>(mainView->ResolveControlByTag(kControlTagCurs));
-  g_pCursorControlPanel = cursor;
-  if (cursor != nullptr) {
-    cursor->AssertValid();
-    cursor->RefreshControl();
-  }
-
-  CString emptyString(g_szEmptyString);
-  emptyString = emptyString;
-  EnableAndProcessFlag(emptyString);
-}
-
-// FUNCTION: IMPERIALISM 0x005DA180
-void TDiplomacyMapView::OrphanLeaf_NoCall_Ins07_004d8920() {
-  TView* mainView = g_pDisplayMgr->activeDialog;
-  TInfoBarText* cursor = static_cast<TInfoBarText*>(mainView->ResolveControlByTag(kControlTagCurs));
-  g_pCursorControlPanel = cursor;
-  if (cursor != nullptr) {
-    cursor->AssertValid();
-    cursor->RefreshControl();
-  }
-
-  CString emptyString(g_szEmptyString);
-  emptyString = emptyString;
-  EnableAndProcessFlag(emptyString);
-
-  TControl* queryControl = static_cast<TControl*>(mainView->ResolveControlByTag(kControlTagQuer));
-  if (queryControl != nullptr) {
-    queryControl->AssertValid();
-    CString loadedString;
-    g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&loadedString, 0x2730, 3);
-    queryControl->EnableAndProcessFlag(loadedString);
-  }
-
-  TControl* titleControl = static_cast<TControl*>(mainView->ResolveControlByTag(0x7469744c));
-  if (titleControl != nullptr) {
-    titleControl->AssertValid();
-    titleControl->RefreshControl();
-    static_cast<TInfoBarText*>(titleControl)
-        ->InitializeMapHintTextStyleAndThemeFlags(0x2b6c, 0x2b6b);
-    CString titleString;
-    g_pSimMgr->CopyScenarioNationSetupIntoFlowState(&titleString);
-    titleControl->EnableAndProcessFlag(titleString);
-    titleControl->RefreshHudNationTitleControlsAndTheme(0x2b6c);
-  }
-}
+// 0x005DA040 and 0x005DA180 moved to TViewMgr::HandleTurnEventVtableSlot60ActivateMainDialog
+// / HandleTurnEventVtableSlot64RefreshMainHudTitles (src/game/TViewMgr.cpp): the vtable
+// evidence (`just vtable TViewMgr`) shows both are TViewMgr's own vtable slots 0x60/0x64, not
+// TDiplomacyMapView methods -- neither body ever reads `this`, and this class's prior
+// attribution called TView::EnableAndProcessFlag with an implicit (wrong) `this` receiver
+// instead of the real disassembly's explicitly-resolved 'main' control.

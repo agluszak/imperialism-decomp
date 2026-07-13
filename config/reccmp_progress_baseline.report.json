@@ -380,7 +380,7 @@
     },
     {
       "address": "0x4155b0",
-      "matching": 0.5575757575757576,
+      "matching": 0.5666666666666667,
       "name": "ApplyAutoResolutionModeAndPersist",
       "type": 1
     },
@@ -9638,7 +9638,7 @@
     },
     {
       "address": "0x4b8160",
-      "matching": 0.0,
+      "matching": 0.36363636363636365,
       "name": "TPopGrowthOrder::ConstructTPopGrowthOrderBaseState",
       "type": 1
     },
@@ -16417,7 +16417,7 @@
     },
     {
       "address": "0x50bea0",
-      "matching": 0.20263516583371194,
+      "matching": 0.20990458882326216,
       "name": "TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets",
       "type": 1
     },
@@ -21334,7 +21334,7 @@
     },
     {
       "address": "0x545940",
-      "matching": 0.41544177031174284,
+      "matching": 0.3809985458070771,
       "name": "TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine",
       "type": 1
     },
@@ -29189,7 +29189,7 @@
     },
     {
       "address": "0x59e0d0",
-      "matching": 0.6,
+      "matching": 1.0,
       "name": "TArmyPlayer::ScoreTacticalTileEnemyEdgeColumnZoneBonus",
       "type": 1
     },
@@ -29646,7 +29646,7 @@
     },
     {
       "address": "0x5a3810",
-      "matching": 0.8571428571428571,
+      "matching": 0.7107438016528925,
       "name": "TTacticalBattle::ComputeRallyStrengthAndQueueTacticalRallyCommand",
       "type": 1
     },
@@ -29676,7 +29676,7 @@
     },
     {
       "address": "0x5a3d30",
-      "matching": 0.8163265306122449,
+      "matching": 0.8104956268221575,
       "name": "IsTacticalTargetTileReachableForAction",
       "type": 1
     },
@@ -33193,13 +33193,13 @@
     },
     {
       "address": "0x5da040",
-      "matching": 0.31932773109243695,
+      "matching": 0.532258064516129,
       "name": "HandleTurnEventVtableSlot60ActivateMainDialog",
       "type": 1
     },
     {
       "address": "0x5da180",
-      "matching": 0.28695652173913044,
+      "matching": 0.6183574879227053,
       "name": "HandleTurnEvent2260_RefreshMainHudTitles",
       "type": 1
     },
@@ -33361,7 +33361,7 @@
     },
     {
       "address": "0x5dcf20",
-      "matching": 0.0,
+      "matching": 0.5245901639344263,
       "name": "TViewMgr::HandleTurnEventDialogFactorySlotD8",
       "type": 1
     },
@@ -33385,7 +33385,7 @@
     },
     {
       "address": "0x5dd340",
-      "matching": 0.0,
+      "matching": 0.8125,
       "name": "TViewMgr::HandleTurnEventDialogFactorySlotF0",
       "type": 1
     },
