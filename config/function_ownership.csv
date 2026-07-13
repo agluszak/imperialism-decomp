@@ -1020,7 +1020,7 @@ address|target_cpp|ownership|note
 4a5ec0|src/game/TArmyMgr.cpp|manual|marker_sync
 4a6680|src/game/TArmyMgr.cpp|manual|marker_sync
 4a6dd0|src/game/TArmyMgr.cpp|manual|marker_sync
-4a6e80|src/game/TNavyMgr.cpp|manual|marker_sync
+4a6e80|src/game/TArmyMgr.cpp|manual|marker_sync
 4a6ef0|src/game/TArmyMgr.cpp|manual|marker_sync
 4a76a0|src/game/TArmyStack.cpp|manual|marker_sync
 4a76d0|src/game/TArmyStack.cpp|manual|marker_sync
@@ -2139,7 +2139,7 @@ address|target_cpp|ownership|note
 4fba50|src/game/TCouncilView.cpp|manual|marker_sync
 4fba70|src/game/TCouncilView.cpp|manual|marker_sync
 4fbd60|src/game/TCouncilView.cpp|manual|marker_sync
-4fc2e0|src/game/TCouncilTickerAnimation.cpp|manual|marker_sync
+4fc2e0|src/game/TCouncilView.cpp|manual|marker_sync
 4fc950|src/game/TCouncilView.cpp|manual|marker_sync
 4fc9c0|src/game/TMapKey.cpp|manual|marker_sync
 4fca70|src/game/TMapKey.cpp|manual|marker_sync

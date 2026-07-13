@@ -674,6 +674,11 @@ extern TTaskForce* g_pCachedMapActionContext;
 extern TMapMgr* g_pGlobalMapState;
 extern TCivMgr* g_pSelectedCivilianOrderState; // 0x6a43dc — the TCivMgr instance
 
+// Seed viewport offsets copied into TWorldView::viewportOffsetX/Y by the TOceanDialog
+// ctor; the only known writer (0x56a3b0) zeroes both.
+extern int g_nOceanDialogSeedViewportOffsetX; // 0x6a3ff0
+extern int g_nOceanDialogSeedViewportOffsetY; // 0x6a3ff4
+
 // Assert source-path strings for the UViewMgr TU family.
 extern "C" const char s_SourcePathUViewMgr_0069B6BC[];
 extern "C" const char s_SourcePathUMultiplayerMgr_00698040[];

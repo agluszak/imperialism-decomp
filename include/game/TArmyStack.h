@@ -31,9 +31,11 @@ public:
   // Field layout from ProcessTileUnitListsAndApplyRandomStatusUpdates's construction site
   // (0x4a1f80, `new TArmyStack()` + scatter-init) and OrphanCallChain_C12_I108_004a2390's
   // (0x4a2390) reads. TObject's own vptr occupies the first 4 bytes.
-  short field4;                // +0x04 -- zeroed at construction
-  short field6;                // +0x06 -- zeroed at construction
-  unsigned char categoryFlag8; // +0x08 -- compared against TArmyMgr::perTileOwnerNationCodeCache1c
+  short field4; // +0x04 -- zeroed at construction
+  short field6; // +0x06 -- zeroed at construction
+  // +0x08 -- region/owner category; signed (indexed/compared via movsx/jge in the
+  // original) and compared against TArmyMgr::perTileOwnerNationCodeCache1c.
+  signed char categoryFlag8;
   // +0x09 -- cached g_anFortLevelAttackerPenaltyPercentByLevel lookup for the
   // most-recently-processed unit in UpdateDualLinkedEntryMetersAndBlinkState's Phase 1/2
   // scan; that scan stops early once this hits 0.

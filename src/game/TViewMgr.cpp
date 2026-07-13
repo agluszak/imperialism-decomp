@@ -28,6 +28,7 @@
 #include "game/ui_control_tags.h"
 #include "game/TInfoBarText.h"
 #include "game/TCouncilTickerAnimation.h"
+#include "game/TCouncilView.h"
 #include "game/TToolBarCluster.h"
 #include "game/TPicture.h"
 #include "game/nation_slot_eligibility.h"
@@ -793,8 +794,7 @@ void RefreshMainCouncilTickerPanel() {
   TControl* mainPanel = ResolveMainTaggedControl(kControlTagMain);
   if (mainPanel != nullptr) {
     mainPanel->AssertValid();
-    TCouncilTickerAnimation* councilPanel =
-        static_cast<TCouncilTickerAnimation*>(static_cast<void*>(mainPanel));
+    TCouncilView* councilPanel = static_cast<TCouncilView*>(static_cast<void*>(mainPanel));
     councilPanel->InitializeDiplomacyCouncilViewControlsAndTicker();
   }
 }
@@ -1161,7 +1161,7 @@ void TViewMgr::UiRuntimeSlot50(int payload) {
   static_cast<TInfoBarText*>(cursor)->InitializeMapHintTextStyleAndThemeFlags(0x2b6c, 0x2b67);
   TControl* mainPanel = static_cast<TControl*>(mainView->ResolveControlByTag(kControlTagMain));
   mainPanel->AssertValid();
-  static_cast<TCouncilTickerAnimation*>(static_cast<void*>(mainPanel))
+  static_cast<TCouncilView*>(static_cast<void*>(mainPanel))
       ->InitializeDiplomacyCouncilViewControlsAndTicker();
 }
 

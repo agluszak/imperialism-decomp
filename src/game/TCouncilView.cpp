@@ -1,11 +1,67 @@
 #include "game/TCouncilView.h"
 
+#include "game/TAnimator.h"
 #include "game/TControl.h"
+#include "game/TCouncilTickerAnimation.h"
+#include "game/TDiplomacyMgr.h"
 #include "game/TEvent.h"
 #include "game/TEventHandler.h"
+#include "game/TGreatPower.h"
+#include "game/TMapMgr.h"
+#include "game/TPicture.h"
+#include "game/TSimMgr.h"
+#include "game/TStaticText.h"
+#include "game/TView.h"
 #include "game/TViewMgr.h"
 #include "game/global_data_tables.h"
 #include "game/mfc.h"
+#include "game/quickdraw_rendering.h"
+#include "game/ui_control_tags.h"
+
+// Free-function region-invalidate wrapper (ILT target 0x004f6d90); the base class
+// TDiplomacyMapView calls it through this same thunk-cast at four sites.
+undefined4 thunk_WrapperFor_InvalidateCityDialogRectRegion_At004f6d90(void);
+
+namespace {
+const short kCouncilCoatOfArmsPictureBase = 0x1105;
+const short kCouncilTickerIntervalMapMode = 0x2710;
+const unsigned int kEndControlTagReselect = 0x52655374u;    // mode 0x17
+const unsigned int kEndControlTagReselectAlt = 0x53636f72u; // mode 0x16
+
+void ApplyCouncilCandidateTextStyle(TStaticText* textControl,
+                                    const TControlPictureRectState* style) {
+  textControl->SetCityProductionDialogPictureRectAndMaybeRefresh(
+      const_cast<TControlPictureRectState*>(style), 0);
+}
+
+void RefreshCouncilCandidateNameText(TView* hostPanel, unsigned int controlTag, short nationSlot) {
+  TControl* control = static_cast<TControl*>(hostPanel->ResolveControlByTag(controlTag));
+  if (control == nullptr) {
+    return;
+  }
+  control->AssertValid();
+
+  TGreatPower* nation = g_apNationStates[nationSlot];
+  if (nation == nullptr) {
+    return;
+  }
+
+  CString labelText;
+  nation->LoadNationDisplayNameSharedRefFromField8(&labelText);
+  TStaticText* textControl = static_cast<TStaticText*>(control);
+  textControl->AssignTextSharedRefIfChangedAndMaybeInvalidate(&labelText, 1);
+}
+
+void RefreshCouncilCoatOfArmsPicture(TView* hostPanel, unsigned int controlTag, short nationSlot) {
+  TControl* control = static_cast<TControl*>(hostPanel->ResolveControlByTag(controlTag));
+  if (control == nullptr) {
+    return;
+  }
+  control->AssertValid();
+  const short pictureId = static_cast<short>(nationSlot + kCouncilCoatOfArmsPictureBase);
+  static_cast<TPicture*>(control)->SetPictureResourceIdAndRefresh(pictureId, 1);
+}
+} // namespace
 
 // SYNTHETIC: IMPERIALISM 0x00430660
 // TCouncilView::`scalar deleting destructor'
@@ -47,23 +103,116 @@ void TCouncilView::NoOpUiLifecycleHook(int arg) {
 void TCouncilView::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   if (commandId == 10) {
     if (sourceHandler->controlTag == 0x73746172) { // "star"
-      // TODO(partial 0x4fbd60): kicks the council ticker/controls rebuild (0x4fc2e0,
-      // csv: InitializeDiplomacyCouncilViewControlsAndTicker) — port once that body's
-      // receiver attribution is verified.
+      // Rebuild council controls + restart the vote ticker. 0x4fc2e0's receiver is a
+      // TCouncilView (verified: it writes councilNationCount24c8/field528 and resolves its
+      // own controls via the TView vtable), so it is owned by this class, not the small
+      // TCouncilTickerAnimation it was previously attributed to.
+      this->InitializeDiplomacyCouncilViewControlsAndTicker();
       return;
     }
   } else if (commandId == 0x14) {
+    unsigned int tag = sourceHandler->controlTag;
     int tagIndex = 0;
-    while (tagIndex < 6 && sourceHandler->controlTag != g_councilControlTagTable[tagIndex]) {
-      ++tagIndex;
-    }
+    int* tagTable = g_councilControlTagTable;
+    do {
+      if (tag == *tagTable) {
+        break;
+      }
+      tagTable += 1;
+      tagIndex += 1;
+    } while (reinterpret_cast<int>(tagTable) < reinterpret_cast<int>(g_councilControlTagTable + 6));
     if (tagIndex < 6) {
-      // TODO(partial 0x4fbd60): invalidates the matched council region
-      // (0x4f6d90, csv: WrapperFor_InvalidateCityDialogRectRegion_At004f6d90).
+      reinterpret_cast<void(__stdcall*)(int)>(
+          thunk_WrapperFor_InvalidateCityDialogRectRegion_At004f6d90)(tagIndex);
       return;
     }
   } else {
     TControl::HandleEvent(commandId, sourceHandler, event);
+  }
+}
+
+// Receiver confirmed to be TCouncilView (writes councilNationCount24c8 / field528; resolves
+// its own controls via the TView vtable). NOTE: still 24.80% -- the original inlines the
+// candidate/coat-of-arms/text-style helpers (and a leading CString ctor) rather than calling
+// them out of line as below; a faithful match needs those inlined. TODO: inline helpers.
+// FUNCTION: IMPERIALISM 0x004fc2e0
+void TCouncilView::InitializeDiplomacyCouncilViewControlsAndTicker() {
+  TView* hostPanel = this;
+  char* panelState = reinterpret_cast<char*>(this);
+
+  TControlPictureRectState councilTextStyle;
+  councilTextStyle.mode = 0;
+  councilTextStyle.flag2 = 0;
+  councilTextStyle.pointSize = 0;
+  councilTextStyle.styleRef6 = 0;
+  BuildUiTextStyleDescriptor(&councilTextStyle, 0, 0xe, 0x2b6a);
+
+  *reinterpret_cast<short*>(panelState + 0x24c8) = 0;
+
+  RefreshCouncilCandidateNameText(hostPanel, kControlTagCan0,
+                                  g_pDiplomacyTurnStateManager->selectedSourceNationSlot784);
+  TControl* can0Control = static_cast<TControl*>(hostPanel->ResolveControlByTag(kControlTagCan0));
+  if (can0Control != nullptr) {
+    ApplyCouncilCandidateTextStyle(static_cast<TStaticText*>(can0Control), &councilTextStyle);
+  }
+
+  RefreshCouncilCandidateNameText(hostPanel, kControlTagCan1,
+                                  g_pDiplomacyTurnStateManager->selectedTargetNationSlot786);
+  TControl* can1Control = static_cast<TControl*>(hostPanel->ResolveControlByTag(kControlTagCan1));
+  if (can1Control != nullptr) {
+    ApplyCouncilCandidateTextStyle(static_cast<TStaticText*>(can1Control), &councilTextStyle);
+  }
+
+  RefreshCouncilCoatOfArmsPicture(hostPanel, kControlTagCoa0,
+                                  g_pDiplomacyTurnStateManager->selectedSourceNationSlot784);
+  RefreshCouncilCoatOfArmsPicture(hostPanel, kControlTagCoa1,
+                                  g_pDiplomacyTurnStateManager->selectedTargetNationSlot786);
+
+  const short localizationMode = static_cast<short>(g_pSimMgr->mode);
+  if (localizationMode == 0x16 || localizationMode == 0x17) {
+    const char* tileRecordBytes = reinterpret_cast<const char*>(g_pGlobalMapState->cityScoreTable);
+    int flagIndex = 0;
+    for (int tileOffset = 0; tileOffset < 0xfc00; tileOffset += 0xa8) {
+      if (tileRecordBytes[tileOffset] != -1) {
+        panelState[0x52c + flagIndex] = 1;
+      }
+      ++flagIndex;
+    }
+    *reinterpret_cast<short*>(panelState + 0x528) = kCouncilTickerIntervalMapMode;
+
+    TControl* endControl = static_cast<TControl*>(hostPanel->ResolveControlByTag(kControlTagEnd));
+    if (endControl != nullptr) {
+      endControl->AssertValid();
+      *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(endControl) + 0x1c) =
+          (localizationMode == 0x17) ? kEndControlTagReselect : kEndControlTagReselectAlt;
+    }
+    return;
+  }
+
+  short maxPendingTier = *reinterpret_cast<short*>(panelState + 0x24c8);
+  for (int tierIndex = 0; tierIndex < kDiplomacyPairMatrixEntries; ++tierIndex) {
+    const short tierValue = g_pDiplomacyTurnStateManager->pendingPolicyTierMatrix484[tierIndex];
+    if (tierValue != -1 && maxPendingTier < tierValue) {
+      maxPendingTier = tierValue;
+    }
+  }
+  *reinterpret_cast<short*>(panelState + 0x24c8) = maxPendingTier;
+  *reinterpret_cast<short*>(panelState + 0x528) = 0;
+
+  TCouncilTickerAnimation* tickerAnimation = new TCouncilTickerAnimation();
+  if (tickerAnimation != nullptr) {
+    tickerAnimation->ConstructTCouncilTickerAnimationBaseState(hostPanel, 2);
+    if (g_pUiAnimator != nullptr) {
+      g_pUiAnimator->AddObjectToUiTransientRegistry(tickerAnimation);
+    }
+  }
+
+  SetCursor(static_cast<HCURSOR>(g_pUiRuntimeContext->cursorTable[26]));
+
+  TControl* endControl = static_cast<TControl*>(hostPanel->ResolveControlByTag(kControlTagEnd));
+  if (endControl != nullptr) {
+    endControl->AssertValid();
+    endControl->SetState(0, 0);
   }
 }
 

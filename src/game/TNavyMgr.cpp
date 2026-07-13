@@ -26,18 +26,6 @@ extern undefined4 GenerateThreadLocalRandom15(void);
 extern "C" TShip* g_pNavyPrimaryOrderListHead;
 extern "C" TAdmiral* g_pNavySecondaryOrderListHead;
 
-// FUNCTION: IMPERIALISM 0x004a6e80
-void DispatchMapInteractionPayloadAndResetWorkingFields(MapOrderBattleSnapshot* snapshot) {
-  // TODO: port the leading dispatch call -- an unresolved vtable call on an
-  // unidentified receiver (`(**(*(this+4))+0x3c))(snapshot)`), not yet
-  // reverse-engineered. The trailing field resets below are confirmed real.
-  for (int side = 0; side < 2; ++side) {
-    delete[] snapshot->childRecords[side];
-    snapshot->childRecords[side] = nullptr;
-    snapshot->childCount[side] = 0;
-  }
-}
-
 // Resolves a raw TGlobalMapCityScoreRecord* back into its index in
 // g_pGlobalMapState's cityScoreTable. `unusedArg` is provably dead in the original
 // (0x50e2c0 only ever reads `cityState`), kept only so the real __thiscall
@@ -985,5 +973,5 @@ void TNavyMgr::ResolveMapOrderPairConflictStep(TTaskForce* leftEntry, TTaskForce
                                     leftEntry->childOrderList != nullptr ? leftEntry : nullptr);
   RefreshMapOrderBattleSideSnapshot(&snapshot, 1,
                                     rightEntry->childOrderList != nullptr ? rightEntry : nullptr);
-  DispatchMapInteractionPayloadAndResetWorkingFields(&snapshot);
+  g_pMapContextActionManager->AppendMapContextActionRecordAndResetWorkingFields(&snapshot, 0);
 }

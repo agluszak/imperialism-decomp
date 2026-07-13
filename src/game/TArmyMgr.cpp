@@ -2,6 +2,7 @@
 
 #include "game/TList.h"
 #include "game/TSortedPtrList.h"
+#include "game/map_order_battle_snapshot.h"
 
 #include "game/CIterator.h"
 #include "game/CString.h"
@@ -156,8 +157,7 @@ undefined TArmyMgr::ProcessTileUnitListsAndApplyRandomStatusUpdates() {
               stack = static_cast<TArmyStack*>(this->pendingUnitPool0c->GetEntryByOrdinal(index));
               stack->AssertValid();
               if (stack->ownerNationCodeE == unitFieldC &&
-                  static_cast<short>(static_cast<signed char>(stack->categoryFlag8)) ==
-                      unitField18) {
+                  static_cast<short>(stack->categoryFlag8) == unitField18) {
                 foundExisting = true;
               } else {
                 ++index;
@@ -266,7 +266,7 @@ undefined TArmyMgr::ProcessPendingArmyStacksForBattleOrRelocation() {
           static_cast<TArmyStack*>(this->pendingUnitPool0c->GetEntryByOrdinal(cursor));
       stack->AssertValid();
       if (this->perTileOwnerNationCodeCache1c[stack->ownerNationCodeE] ==
-          static_cast<short>(static_cast<signed char>(stack->categoryFlag8))) {
+          static_cast<short>(stack->categoryFlag8)) {
         stack->cursor18 = stack->head14;
         TArmyStackUnitNode* node = stack->cursor18;
         TUnit* unit = (node != nullptr) ? node->unit : nullptr;
@@ -1300,6 +1300,22 @@ void TArmyMgr::BuildMapHintOverlayTextAndDispatchUiMessages(short cityRecordInde
 // FUNCTION: IMPERIALISM 0x004a6dd0
 unsigned char TArmyMgr::GetByteFlagAtOffset8() {
   return flag8;
+}
+
+// FUNCTION: IMPERIALISM 0x004a6e80
+void TArmyMgr::AppendMapContextActionRecordAndResetWorkingFields(MapOrderBattleSnapshot* record,
+                                                                 int unusedArg2) {
+  (void)unusedArg2;
+  mapContextActionRecordList04->AppendCopiedRecordToPtrList(record);
+  record->childRecords[1] = nullptr; // +0x254
+  record->childRecords[0] = nullptr; // +0x250
+  record->childCount[1] = 0;         // +0x24c
+  record->childCount[0] = 0;         // +0x24a
+  flag8 = 1;
+  // Redundant re-store (both branches write the same 1); preserved to match codegen.
+  if (g_bRandomMapDeveloperCheatFlag != 0) {
+    flag8 = 1;
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x004a6ef0

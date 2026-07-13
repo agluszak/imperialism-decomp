@@ -57,8 +57,8 @@ void TArmyBattle::InitializeBattleSetupAndMaybeDispatchTurnEventED8(TArmyStack* 
   tacticalTileStride40 = 0x1d;
   // AI/watch flags for each side (TGreatPower +0xa0), only when preference slot 0 is
   // set and no multiplayer session mode is active.
-  unsigned char enemySideWatchFlag = 0;
   unsigned char ourSideWatchFlag = 0;
+  unsigned char enemySideWatchFlag = 0;
   if (g_pSimMgr->preferenceValues[0] != 0) {
     unsigned char sessionModeActive = g_pSimMgr->field44 != 0;
     if (sessionModeActive == 0) {

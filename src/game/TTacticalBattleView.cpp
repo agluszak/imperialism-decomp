@@ -284,7 +284,8 @@ undefined TTacticalBattleView::RunOneTimeAnimationModalWaitAndInvalidateCityDial
 undefined TTacticalBattleView::AnimateTacticalUnitMoveBetweenTiles(TTacticalUnit* unit,
                                                                    int fromTileIndex,
                                                                    int toTileIndex) {
-  // TODO(verify): +0x52 = preferenceValues[5] -- animation-enable preference gate.
+  // VERIFIED: 0x5a9248 reads word [g_pSimMgr + 0x52] = preferenceValues[5]
+  // (preferenceValues[0] is at +0x48), the animation-enable preference gate.
   if (g_pSimMgr->preferenceValues[5] == 0) {
     return 0;
   }
@@ -524,15 +525,32 @@ void TTacticalBattleView::TriggerTacticalUiUpdate2711() {
 // FUNCTION: IMPERIALISM 0x005aa670
 short TTacticalBattleView::ComputeTacticalUnitSpriteOrientationIndexByAdjacentType1Occupancy(
     int tileIndex) {
-  // TODO(class-recovery): the real body indexes an unrecovered 20-short lookup table
-  // by an orientation code (0-6) derived from which of two "opposite" hex neighbors
-  // (selected by tileIndex's row/column parity) are trench-deploy tiles
-  // (TacticalTileRecord::deployMark8 == 1); the exact neighbor-slot-to-table mapping
-  // isn't verified. Structurally: compute the 6 neighbors, then look up.
+  // Orientation-code -> sprite-facing lookup (built on the stack as 8 dwords, returned
+  // as a short). The code is derived from which of two parity-selected opposite hex
+  // neighbors are trench-deploy tiles (TacticalTileRecord::deployMark8 == 1): even rows
+  // consult neighbors[0]/[2], odd rows consult neighbors[5]/[3].
+  int orientationTable[8] = {6, 3, 5, 1, 6, 0, 2, 4};
   int neighbors[6];
   tacticalBattle60->ComputeHexNeighborTileIndices_005A0420(tileIndex, neighbors);
-  (void)neighbors;
-  return 0;
+  int code;
+  if ((tileIndex / 29 & 1) != 0) {
+    code = 0;
+    if (neighbors[5] != -1 && tacticalBattle60->tileGrid4[neighbors[5]].deployMark8 == 1) {
+      code = 2;
+    }
+    if (neighbors[3] != -1 && tacticalBattle60->tileGrid4[neighbors[3]].deployMark8 == 1) {
+      code++;
+    }
+  } else {
+    code = 4;
+    if (neighbors[0] != -1 && tacticalBattle60->tileGrid4[neighbors[0]].deployMark8 == 1) {
+      code = 6;
+    }
+    if (neighbors[2] != -1 && tacticalBattle60->tileGrid4[neighbors[2]].deployMark8 == 1) {
+      code++;
+    }
+  }
+  return static_cast<short>(orientationTable[code]);
 }
 
 // FUNCTION: IMPERIALISM 0x005aa7d0
@@ -553,15 +571,24 @@ void TTacticalBattleView::ComputeTacticalUnitSpriteDrawRectAndApplyFacingOffset(
 
   TacticalTileRecord* tile = &tacticalBattle60->tileGrid4[tileIndex];
   if (tile->deployMark8 == 1) {
-    // TODO(class-recovery): applies a per-(unitType, orientation, side) pixel offset
-    // from an unrecovered facing-offset table (runtime-populated, not a static
-    // const -- every entry reads 0 in the static image). Left as a no-op offset.
+    // Ground truth (0x5aa850): orient = ComputeOrientation(tileIndex); then
+    //   OffsetRect(rectOut, tbl[i].dx, tbl[i].dy) via the OffsetRect import at [0x6ab468]
+    // with i = unit->side20 + (orient + unit->unitTypeC*7)*2 into the facing-offset table
+    // at 0x6a4780 (8-byte {dx,dy} entries). VERIFIED not a no-op: the table is runtime-
+    // populated with real pixel offsets by the global init at 0x6a4780 (e.g. {7,0x12},
+    // {7,0x12},{0,0x10}...), so this branch really does shift the sprite rect. Porting it
+    // faithfully needs the 0x6a4780 offset table modeled as a pinned global plus a resync
+    // to remap the autogen _DAT_006a4780.. initializer -- left for a dedicated global-
+    // modeling pass. TODO: model g_aTacticalUnitFacingOffsetTable[0x6a4780] and emit the
+    // OffsetRect call.
     ComputeTacticalUnitSpriteOrientationIndexByAdjacentType1Occupancy(tileIndex);
     return;
   }
-  // DAT_00695528 is a repeating identity-mod-8 table ({0..7} x N); "== 8" can never
-  // hold against a mod-8 read, so this branch is structurally preserved but dead for
-  // every observed table region.
+  // The else path reads word table 0x695528[unit->unitTypeC] (VERIFIED a repeating
+  // identity-mod-8 table {0..7} x N) and tests "== 8", which can never hold against a
+  // mod-8 read -- the branch is structurally preserved but dead for every table region.
+  // Modeled here as unitTypeC % 8 == 8 (equivalently always-false) pending the same
+  // table-global modeling pass noted above.
   if (tile->trenchMask10 != 0 && unit->unitTypeC % 8 == 8) {
     rectOut->right = -200;
   }

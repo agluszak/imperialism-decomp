@@ -22,7 +22,6 @@ public:
   // slot 0x0c RenderBattleReportViewSurfaceSpriteWithResourceHandle inherited unchanged (0x49f2d0)
   // === END GENERATED DECLS (TCouncilTickerAnimation) ===
 
-  void InitializeDiplomacyCouncilViewControlsAndTicker();
   void ConstructTCouncilTickerAnimationBaseState(void* hostPanel, int tickMode);
 
   TCouncilTickerAnimation();

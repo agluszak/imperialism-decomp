@@ -176,6 +176,9 @@ undefined TMapUberPicture::OrphanLeaf_NoCall_Ins23_00597a10() {
 // queue entry located by matching tiebreak_strength against the clicked tile index.
 // FUNCTION: IMPERIALISM 0x00597f80
 void TMapUberPicture::OpenMapEntryOrderDialog(TTaskForce* pMapOrderEntry) {
+  // BLOCKED (still a stub): same shape as OpenMapContextActionDialogByType -- a 1761-byte
+  // dialog-construction routine driving an unrecovered 100+-slot dialog-builder class via its
+  // vtable. Deferred pending recovery of that builder class (see the note at 0x599090).
   (void)pMapOrderEntry;
 }
 
@@ -242,6 +245,11 @@ undefined TMapUberPicture::NotifySubviewOfSelectedTile(short entryIndex) {
 // FUNCTION: IMPERIALISM 0x00599090
 void TMapUberPicture::OpenMapContextActionDialogByType(TZone* zone, int actionType,
                                                        TTaskForce* cachedContext) {
+  // BLOCKED (still a stub): the body builds a dialog by loading localized "titl"/"lab1".."lab4"
+  // strings via g_pSimMgr's UI-string virtual (slot 0x10) and driving a dialog-builder object
+  // through a large vtable (slots 0x6d, 0x72, 0x1ac, 0x1b4, 0x1b8, 0x1c8 => a 100+-slot class).
+  // That builder class is not recovered; porting faithfully without it would require banned
+  // fake-callconv casts, so this is deferred pending recovery of the dialog-builder class.
   (void)zone;
   (void)actionType;
   (void)cachedContext;

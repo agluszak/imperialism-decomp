@@ -239,6 +239,13 @@ public:
   // Bare `this+8` accessor; sole caller is TSimMgr::AdvanceGlobalTurnStateMachine
   // (g_pMapContextActionManager->GetByteFlagAtOffset8()). 0x4a6dd0.
   unsigned char GetByteFlagAtOffset8();
+
+  // Appends the built map-context battle record to mapContextActionRecordList04 (via its
+  // sorted-insert virtual, slot 0x0f), clears the record's scratch working fields, and
+  // marks flag8. `unusedArg2` is present only for stack-cleanup fidelity (RET 8) -- the
+  // body never reads it. 0x4a6e80, __thiscall.
+  void AppendMapContextActionRecordAndResetWorkingFields(struct MapOrderBattleSnapshot* record,
+                                                         int unusedArg2);
   void InitializeMapContextActionManager();
   TArmyMgr();
 };

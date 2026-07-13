@@ -6186,7 +6186,7 @@
     },
     {
       "address": "0x496d40",
-      "matching": 0.09071274298056156,
+      "matching": 0.09090909090909091,
       "name": "BlitRectWithOptionalTransparency",
       "type": 1
     },
@@ -7591,7 +7591,7 @@
     },
     {
       "address": "0x4a3200",
-      "matching": 0.6915520628683693,
+      "matching": 0.6968503937007874,
       "name": "TArmyMgr::TryCreateTacticalBattleViewForTileArmies",
       "type": 1
     },
@@ -7795,7 +7795,7 @@
     },
     {
       "address": "0x4a6e80",
-      "matching": 0.18604651162790697,
+      "matching": 1.0,
       "name": "DispatchMapInteractionPayloadAndResetWorkingFields",
       "type": 1
     },
@@ -12399,7 +12399,7 @@
     },
     {
       "address": "0x4dd430",
-      "matching": 0.5714285714285714,
+      "matching": 0.5142857142857142,
       "name": "TGreatPower::ComputeRemainingDiplomacyAidBudget",
       "type": 1
     },
@@ -12838,7 +12838,8 @@
     },
     {
       "address": "0x4e05d0",
-      "matching": 1.0,
+      "effective": true,
+      "matching": 0.42857142857142855,
       "name": "TGreatPower::OrphanLeaf_NoCall_Ins02_004d7fc0_89",
       "type": 1
     },
@@ -12894,7 +12895,7 @@
     },
     {
       "address": "0x4e09a0",
-      "matching": 0.5180722891566265,
+      "matching": 0.5421686746987951,
       "name": "TGreatPower::ComputeCityOrderCapabilityAggregateScore",
       "type": 1
     },
@@ -15130,7 +15131,7 @@
     },
     {
       "address": "0x4fbd60",
-      "matching": 0.3870967741935484,
+      "matching": 0.64,
       "name": "TCouncilView::HandleEvent",
       "type": 1
     },
@@ -15142,7 +15143,7 @@
     },
     {
       "address": "0x4fc2e0",
-      "matching": 0.24802110817941952,
+      "matching": 0.32432432432432434,
       "name": "TCouncilTickerAnimation::InitializeDiplomacyCouncilViewControlsAndTicker",
       "type": 1
     },
@@ -15191,7 +15192,7 @@
     },
     {
       "address": "0x4fd000",
-      "matching": 0.832,
+      "matching": 0.816,
       "name": "TMapKey::RenderMapHintOverlayMode0",
       "type": 1
     },
@@ -16411,7 +16412,7 @@
     },
     {
       "address": "0x50bea0",
-      "matching": 0.21172194457064972,
+      "matching": 0.20354384370740572,
       "name": "TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets",
       "type": 1
     },
@@ -16862,7 +16863,7 @@
     },
     {
       "address": "0x5136a0",
-      "matching": 1.0,
+      "matching": 0.8888888888888888,
       "name": "TMapMgr::OrphanLeaf_NoCall_Ins35_005136a0",
       "type": 1
     },
@@ -17234,7 +17235,7 @@
     },
     {
       "address": "0x5178f0",
-      "matching": 0.3446601941747573,
+      "matching": 0.32116788321167883,
       "name": "ComputeRepresentativeTileIndexForTerrainTypeWithWrapBias",
       "type": 1
     },
@@ -18308,7 +18309,7 @@
     },
     {
       "address": "0x52d1f0",
-      "matching": 0.2784090909090909,
+      "matching": 0.2621082621082621,
       "name": "ReindexContiguousCityRegionIds",
       "type": 1
     },
@@ -20230,7 +20231,7 @@
     },
     {
       "address": "0x53d020",
-      "matching": 0.38247011952191234,
+      "matching": 0.38095238095238093,
       "name": "ComputeArmyMissionScoreDeltaWithCandidateUnit",
       "type": 1
     },
@@ -21328,7 +21329,7 @@
     },
     {
       "address": "0x545940",
-      "matching": 0.4259857789269554,
+      "matching": 0.42727860374919197,
       "name": "TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine",
       "type": 1
     },
@@ -21892,7 +21893,7 @@
     },
     {
       "address": "0x5501b0",
-      "matching": 0.46511627906976744,
+      "matching": 0.4558139534883721,
       "name": "CalculateMissionOrderPriorityScore",
       "type": 1
     },
@@ -22318,13 +22319,13 @@
     },
     {
       "address": "0x553b10",
-      "matching": 0.4827586206896552,
+      "matching": 0.6206896551724138,
       "name": "HasNoMapOrderEntryChildrenQueued",
       "type": 1
     },
     {
       "address": "0x553b50",
-      "matching": 0.5818181818181818,
+      "matching": 0.5454545454545454,
       "name": "HasActiveMapOrderEntryChildren",
       "type": 1
     },
@@ -22745,7 +22746,7 @@
     },
     {
       "address": "0x55a780",
-      "matching": 0.109375,
+      "matching": 0.11241217798594848,
       "name": "ResolveMapOrderPairConflictStep",
       "type": 1
     },
@@ -23675,7 +23676,7 @@
     },
     {
       "address": "0x565e90",
-      "matching": 0.7692307692307693,
+      "matching": 1.0,
       "name": "TOceanDialog::ConstructTOceanDialogBaseState",
       "type": 1
     },
@@ -29742,7 +29743,7 @@
     },
     {
       "address": "0x5a4790",
-      "matching": 0.8862745098039215,
+      "matching": 0.873015873015873,
       "name": "TArmyBattle::InitializeBattleSetupAndMaybeDispatchTurnEventED8",
       "type": 1
     },
@@ -29754,7 +29755,7 @@
     },
     {
       "address": "0x5a4da0",
-      "matching": 0.7674418604651163,
+      "matching": 0.783625730994152,
       "name": "TArmyBattle::WriteTo",
       "type": 1
     },
@@ -30048,7 +30049,7 @@
     },
     {
       "address": "0x5a6940",
-      "matching": 0.819672131147541,
+      "matching": 0.8360655737704918,
       "name": "ClipRect_AdjustOffset_Validate",
       "type": 1
     },
@@ -30252,7 +30253,7 @@
     },
     {
       "address": "0x5aa670",
-      "matching": 0.06741573033707865,
+      "matching": 1.0,
       "name": "TCivDescription::ComputeTacticalUnitSpriteOrientationIndexByAdjacentType1Occupancy",
       "type": 1
     },

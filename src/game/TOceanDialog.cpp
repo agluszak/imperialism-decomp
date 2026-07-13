@@ -16,12 +16,16 @@ void NormalizeWrappedMapCoord108x60(short* xCoord, short* yCoord);
 
 IMPLEMENT_DYNCREATE(TOceanDialog, TWorldView)
 
-// TODO: ground truth also sets viewportOffsetX/viewportOffsetY from two file-scope
-// globals (0x6a3ff0/0x6a3ff4, both read-only here -- the writer is at 0x56a3b2/0x56a3b7,
-// not yet traced/named) and overwrites field76=4/field78=0x10; deferred pending those
-// globals' real role.
 // FUNCTION: IMPERIALISM 0x00565e90
-TOceanDialog::TOceanDialog() : scrollRowOffset7c(0), scrollColOffset7e(0) {}
+TOceanDialog::TOceanDialog() : scrollRowOffset7c(0), scrollColOffset7e(0) {
+  // Inherited TWorldView viewport fields seeded from the ocean-dialog seed globals
+  // (0x6a3ff0/0x6a3ff4); their only writer is the reset helper at 0x56a3b0 which zeroes
+  // both. field76/field78 are fixed layout constants for the ocean dialog.
+  viewportOffsetX = g_nOceanDialogSeedViewportOffsetX;
+  viewportOffsetY = g_nOceanDialogSeedViewportOffsetY;
+  field76 = 4;
+  field78 = 0x10;
+}
 
 // SYNTHETIC: IMPERIALISM 0x00565ee0
 // TOceanDialog::`scalar deleting destructor'
@@ -158,9 +162,11 @@ void TOceanDialog::UpdateMapDialogTileRowColumnMarkerAndInvalidate(int arg1) {
 
 // FUNCTION: IMPERIALISM 0x00568a40
 void TOceanDialog::ApplyDirectionalNudgeAndRefreshDisplay(unsigned char directionFlags) {
-  // Nudged values are only ever passed to OrphanRetStub_00596680 -- the fields
-  // themselves are not written back here (any persistence happens inside that call,
-  // still a documented TODO stub).
+  // Nudged values are passed to the slot-0x1e4 virtual (OrphanRetStub_00596680), which is
+  // a genuine 3-byte RET-8 no-op in every reachable override -- VERIFIED, so the nudge is
+  // effectively discarded and no persistence happens. Residual <100% here is the original's
+  // 16-bit partial-register load idiom (`mov ax, [+0x7e]`, no sign-extend), which clean C++
+  // can't reproduce without a type-pun; kept as the natural `int` load.
   int col = scrollColOffset7e;
   int row = scrollRowOffset7c;
   if ((directionFlags & 1) != 0) {
