@@ -11,6 +11,13 @@
 
 extern undefined4 GenerateThreadLocalRandom15(void);
 
+// FUNCTION: IMPERIALISM 0x00536f70
+void TMapOrderChildLinkNode::SetChainActiveFlag(unsigned char flag) {
+  for (TMapOrderChildLinkNode* node = this; node != nullptr; node = node->next) {
+    node->active_flag = flag;
+  }
+}
+
 // Sums the four per-category priority contributions (the same category-0..3 blend
 // ComputeNavyOrderPriorityContributionPercentByCategory computes over this entry's
 // order_type/required_count/tiebreak_strength), each scaled by this profile's

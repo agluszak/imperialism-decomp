@@ -33,12 +33,6 @@ public:
   // declaration comment for why this slot returns TZone*.
   virtual TZone*
   RefreshMissionPortZoneContextForNation() override; // slot 0x28 0x53bf90 -- returns null
-
-  // Generic child-link-chain flag setter (not a vtable slot; misattributed
-  // class prefix in Ghidra, kept per Hard Rule 6). Shared by other navy
-  // mission classes walking a TMapOrderChildLinkNode chain.
-  static void SetMapOrderEntryChildFlags(TMapOrderChildLinkNode* node,
-                                         unsigned char flag); // 0x536f70
 };
 
 ASSERT_SIZE(TScatteredShipsMission, 0x3c);

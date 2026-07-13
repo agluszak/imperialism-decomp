@@ -26,6 +26,12 @@ struct TMapOrderChildLinkNode {
   // showed (bd 1uj.16.1 fix). Walks `this` and its `next` chain (null-safe on `this`)
   // for the first node whose object_ptr == child_node.
   TMapOrderChildLinkNode* FindNodeMatching(TTaskForce* child_node); // 0x552510
+
+  // Real __thiscall method (0x536f70, ECX=this node, one stack arg, RET 4) -- was mis-
+  // modeled as a "static" TScatteredShipsMission member taking (node, flag), same class
+  // of bug FindNodeMatching had (bd 1uj.16.3 fix). Null-safe on `this`; sets active_flag
+  // on `this` and every following node in the `next` chain.
+  void SetChainActiveFlag(unsigned char flag); // 0x536f70
 };
 
 ASSERT_SIZE(TMapOrderChildLinkNode, 0x10);

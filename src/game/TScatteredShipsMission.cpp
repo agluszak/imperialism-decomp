@@ -33,16 +33,6 @@ char TScatteredShipsMission::ReturnFalseSlot28() {
   return 1;
 }
 
-// Generic child-link-chain flag setter shared across navy mission classes
-// (misattributed class prefix in Ghidra; see header).
-// FUNCTION: IMPERIALISM 0x00536f70
-void TScatteredShipsMission::SetMapOrderEntryChildFlags(TMapOrderChildLinkNode* node,
-                                                        unsigned char flag) {
-  for (; node != nullptr; node = node->next) {
-    node->active_flag = flag;
-  }
-}
-
 // FUNCTION: IMPERIALISM 0x0053bb90
 void TScatteredShipsMission::Call30() {
   marker11 = 0;
@@ -93,7 +83,7 @@ void TScatteredShipsMission::MissionSlot44() {
   // recovery of the map-action-context selection and order-chain promotion.
   if (orderList24 != nullptr) {
     orderList24->active_flag = 0;
-    SetMapOrderEntryChildFlags(orderList24->next, 0);
+    orderList24->next->SetChainActiveFlag(0);
   }
 }
 
