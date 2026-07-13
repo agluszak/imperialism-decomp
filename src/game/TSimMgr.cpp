@@ -1022,6 +1022,52 @@ CString TSimMgr::AssignSharedStringFromIndexedSlot7C(short slot) {
   return sharedTextSlots[slot];
 }
 
+// Reads a big-endian 32-bit nation slot, a big-endian short production-order index, and a
+// big-endian short value; sets that nation's capital-city production-order slot to the
+// value while accumulating the delta (value - old) into the parallel running-total slot.
+// FUNCTION: IMPERIALISM 0x005822c0
+void TSimMgr::HandleTurnInstruction_Capa_ApplyNationSlotValueWithDelta(void* pInstructionRaw) {
+  STurnInstructionCursor* instruction = static_cast<STurnInstructionCursor*>(pInstructionRaw);
+  unsigned int* cursor = instruction->tokenCursor;
+
+  unsigned int nationToken = *cursor;
+  cursor = cursor + 1;
+  instruction->tokenCursor = cursor;
+  unsigned char* nraw = reinterpret_cast<unsigned char*>(&nationToken);
+  unsigned char nt = nraw[0];
+  nraw[0] = nraw[3];
+  nraw[3] = nt;
+  nt = nraw[1];
+  nraw[1] = nraw[2];
+  nraw[2] = nt;
+
+  unsigned int indexToken = *cursor;
+  cursor = cursor + 1;
+  instruction->tokenCursor = cursor;
+  unsigned char* iraw = reinterpret_cast<unsigned char*>(&indexToken);
+  iraw[0] = iraw[3];
+  iraw[1] = iraw[2];
+
+  unsigned int valueToken = *cursor;
+  cursor = cursor + 1;
+  instruction->tokenCursor = cursor;
+  unsigned char* vraw = reinterpret_cast<unsigned char*>(&valueToken);
+  vraw[0] = vraw[3];
+  vraw[1] = vraw[2];
+
+  TCity* city;
+  if (g_apNationStates[static_cast<int>(nationToken)] == nullptr) {
+    city = nullptr;
+  } else {
+    city = g_apNationStates[static_cast<int>(nationToken)]->city;
+  }
+  int index = static_cast<short>(indexToken);
+  short value = static_cast<short>(valueToken);
+  short* accum = &city->productionAccum1fc[index];
+  *accum = static_cast<short>(*accum + (value - city->productionOrderTable1dc[index]));
+  city->productionOrderTable1dc[index] = value;
+}
+
 // Reads a big-endian 32-bit nation slot, a big-endian short commodity index, and a
 // big-endian short amount; writes the amount into that nation's capital-city commodity
 // stock counter and re-verifies the city's stock invariants.

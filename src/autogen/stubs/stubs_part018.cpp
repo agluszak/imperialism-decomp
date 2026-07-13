@@ -291,14 +291,6 @@ undefined4 HandleTurnInstruction_Labo_SetNationLaborTierCounts(void)
   return 0;
 }
 
-// ghidra_name HandleTurnInstruction_Capa_ApplyNationSlotValueWithDelta
-// ghidra_proto undefined HandleTurnInstruction_Capa_ApplyNationSlotValueWithDelta()
-// FUNCTION: IMPERIALISM 0x005822c0
-undefined4 HandleTurnInstruction_Capa_ApplyNationSlotValueWithDelta(void)
-{
-  return 0;
-}
-
 // ghidra_name HandleTurnInstruction_Army_DeserializeAndCreateRecruitOrders
 // ghidra_proto undefined HandleTurnInstruction_Army_DeserializeAndCreateRecruitOrders()
 // FUNCTION: IMPERIALISM 0x005824c0
