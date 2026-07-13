@@ -14,6 +14,14 @@ TLineData::TLineData() : TObject() {}
 // TLineData::`scalar deleting destructor'
 TLineData::~TLineData() {}
 
+// FUNCTION: IMPERIALISM 0x0056f420
+void TLineData::SetLineDataRowAndBounds(short rowArg, short colArg, int* bounds) {
+  field04 = colArg;
+  field08 = bounds[0];
+  field0c = bounds[1];
+  field06 = rowArg;
+}
+
 undefined TLineData::OrphanRetStub_0056f460() {
   return 0;
 }

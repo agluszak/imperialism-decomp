@@ -3479,6 +3479,7 @@ address|target_cpp|ownership|note
 56f390|src/game/TLineData.cpp|manual|marker_sync
 56f3b0|src/game/TLineData.cpp|manual|marker_sync
 56f3d0|src/game/TLineData.cpp|manual|marker_sync
+56f420|src/game/TLineData.cpp|manual|marker_sync
 56f460|src/game/TLineData.cpp|manual|marker_sync
 56f480|src/game/TLineData.cpp|manual|marker_sync
 56f4a0|src/game/TBook.cpp|manual|marker_sync

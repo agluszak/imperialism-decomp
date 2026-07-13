@@ -6,7 +6,7 @@
 // VTABLE: IMPERIALISM 0x0065e230
 class TLineData : public TObject {
 public:
-// === BEGIN GENERATED DECLS (TLineData) — refreshed by recover-class; do not hand-edit ===
+  // === BEGIN GENERATED DECLS (TLineData) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TLineData)
   virtual ~TLineData() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -19,8 +19,14 @@ public:
   // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
   virtual undefined OrphanRetStub_0056f460(); // slot 0x0a 0x56f460
   virtual undefined OrphanRetStub_0056f480(); // slot 0x0b 0x56f480
-// === END GENERATED DECLS (TLineData) ===
+                                              // === END GENERATED DECLS (TLineData) ===
+
+  short field04; // 0x04
+  short field06; // 0x06
+  int field08;   // 0x08
+  int field0c;   // 0x0c
 
   TLineData();
+  // 0x56f420 — set the row/col shorts and the two bound dwords from a caller pair array.
+  void SetLineDataRowAndBounds(short rowArg, short colArg, int* bounds);
 };
-

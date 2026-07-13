@@ -595,14 +595,6 @@ undefined4 DestructTLineDataAndMaybeFree_Impl(void)
   return 0;
 }
 
-// ghidra_name TLineData::SetLineDataRowAndBounds
-// ghidra_proto undefined SetLineDataRowAndBounds()
-// FUNCTION: IMPERIALISM 0x0056f420
-undefined4 SetLineDataRowAndBounds(void)
-{
-  return 0;
-}
-
 // ghidra_name UpdatePagedListNavigationButtonState
 // ghidra_proto undefined UpdatePagedListNavigationButtonState()
 // FUNCTION: IMPERIALISM 0x0056f6c0
