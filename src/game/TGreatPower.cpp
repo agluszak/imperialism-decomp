@@ -3257,9 +3257,8 @@ void TGreatPower::SetHomeCityTileAndDisplayName(short homeRegionTile, char* city
     CString nameStr(cityName);
     short cityRecordIndex = g_pGlobalMapState->terrainStateTable[regionIndex].cityRecordIndex;
     g_pGlobalMapState->SetGlobalMapCellSharedLabel(cityRecordIndex, &nameStr);
-    void** vtable = *(void***)selectedOrder;
-    typedef void(__fastcall* FastcallSetter)(void* self, int, const char*);
-    ((FastcallSetter)vtable[14])(selectedOrder, 0, (const char*)nameStr);
+    reinterpret_cast<TProductionOrder*>(selectedOrder)->ResetCityOrderItemDerivedStateNoop(
+        (const char*)nameStr);
   }
 
   this->RebuildNationResourceYieldCountersAndDevelopmentTargets();

@@ -51,7 +51,8 @@ undefined TItemOrder::CommitIfPending() {
 }
 
 // FUNCTION: IMPERIALISM 0x004b5620
-undefined TItemOrder::ResetCityOrderItemDerivedStateNoop() {
+undefined TItemOrder::ResetCityOrderItemDerivedStateNoop(const char* name) {
+  (void)name;
   return 0;
 }
 

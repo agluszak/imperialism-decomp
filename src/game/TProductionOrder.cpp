@@ -29,7 +29,10 @@ short TProductionOrder::MaxOrder() { return 0; }
 
 bool TProductionOrder::SetQuantity(short param_1) { return 0; }
 
-undefined TProductionOrder::ResetCityOrderItemDerivedStateNoop() { return 0; }
+undefined TProductionOrder::ResetCityOrderItemDerivedStateNoop(const char* name) {
+  (void)name;
+  return 0;
+}
 
 undefined TProductionOrder::CommitIfPending() { return 0; }
 

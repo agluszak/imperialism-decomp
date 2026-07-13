@@ -21,7 +21,7 @@ public:
   virtual bool SetQuantity(short param_1) override; // slot 0x0b 0x4b7f50
   virtual short MaxOrder() override; // slot 0x0c 0x4b7ed0
   virtual undefined CommitIfPending() override; // slot 0x0d 0x4b8060
-  virtual undefined ResetCityOrderItemDerivedStateNoop() override; // slot 0x0e 0x4b80a0
+  virtual undefined ResetCityOrderItemDerivedStateNoop(const char* name) override; // slot 0x0e 0x4b80a0
   // slot 0x0f Produce inherited unchanged (0x4b5180)
   virtual void FillOrderSheet(void* orderSheet, short quantity) override; // slot 0x10 0x4b80c0
   virtual undefined InitializeCityProductionState_Impl_At004b7e80(int param_1); // slot 0x11 0x4b7e80

@@ -39,7 +39,8 @@ undefined TPowerPlantOrder::CommitIfPending() {
 }
 
 // FUNCTION: IMPERIALISM 0x004b7c40
-undefined TPowerPlantOrder::ResetCityOrderItemDerivedStateNoop() {
+undefined TPowerPlantOrder::ResetCityOrderItemDerivedStateNoop(const char* name) {
+  (void)name;
   return 0;
 }
 

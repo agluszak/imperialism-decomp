@@ -9020,7 +9020,7 @@
     },
     {
       "address": "0x4b4310",
-      "matching": 0.8842105263157894,
+      "matching": 1.0,
       "name": "ComputeAverageWeightWord0TimesTenFromResourceCounts",
       "type": 1
     },
@@ -9158,7 +9158,7 @@
     },
     {
       "address": "0x4b5140",
-      "matching": 0.6666666666666666,
+      "matching": 0.0,
       "name": "TProductionOrder::ResetCityOrderItemDerivedStateNoop",
       "type": 1
     },
@@ -9230,7 +9230,7 @@
     },
     {
       "address": "0x4b5620",
-      "matching": 0.06896551724137931,
+      "matching": 0.0,
       "name": "TItemOrder::ResetCityOrderItemDerivedStateNoop",
       "type": 1
     },
@@ -9440,7 +9440,7 @@
     },
     {
       "address": "0x4b6f00",
-      "matching": 0.6666666666666666,
+      "matching": 0.0,
       "name": "TTrainingOrder::ResetCityOrderItemDerivedStateNoop",
       "type": 1
     },
@@ -9554,7 +9554,7 @@
     },
     {
       "address": "0x4b7c40",
-      "matching": 0.07407407407407407,
+      "matching": 0.0,
       "name": "TPowerPlantOrder::ResetCityOrderItemDerivedStateNoop",
       "type": 1
     },
@@ -9620,7 +9620,7 @@
     },
     {
       "address": "0x4b80a0",
-      "matching": 0.6666666666666666,
+      "matching": 0.0,
       "name": "TFoodProcessingOrder::ResetCityOrderItemDerivedStateNoop",
       "type": 1
     },
@@ -9668,7 +9668,7 @@
     },
     {
       "address": "0x4b8420",
-      "matching": 0.6666666666666666,
+      "matching": 0.0,
       "name": "TPopGrowthOrder::ResetCityOrderItemDerivedStateNoop",
       "type": 1
     },
@@ -12753,7 +12753,7 @@
     },
     {
       "address": "0x4dfd30",
-      "matching": 0.5839080459770115,
+      "matching": 0.5806451612903226,
       "name": "TGreatPower::SetHomeCityTileAndDisplayName",
       "type": 1
     },
@@ -12849,14 +12849,14 @@
     },
     {
       "address": "0x4e05d0",
-      "matching": 1.0,
+      "effective": true,
+      "matching": 0.42857142857142855,
       "name": "TGreatPower::OrphanLeaf_NoCall_Ins02_004d7fc0_89",
       "type": 1
     },
     {
       "address": "0x4e0610",
-      "effective": true,
-      "matching": 0.42857142857142855,
+      "matching": 1.0,
       "name": "TGreatPower::ReturnFalseNationStateActionStub_8a",
       "type": 1
     },
@@ -12868,13 +12868,14 @@
     },
     {
       "address": "0x4e0690",
-      "matching": 1.0,
+      "effective": true,
+      "matching": 0.42857142857142855,
       "name": "TGreatPower::ReturnFalseNationStateCapabilityFlag90",
       "type": 1
     },
     {
       "address": "0x4e06d0",
-      "matching": 0.8095238095238095,
+      "matching": 1.0,
       "name": "TGreatPower::SumNationRuntimeFiveBucketValue44",
       "type": 1
     },

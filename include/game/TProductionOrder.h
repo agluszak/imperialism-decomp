@@ -30,7 +30,7 @@ public:
   virtual bool SetQuantity(short param_1); // slot 0x0b 0x4b5100
   virtual short MaxOrder(); // slot 0x0c 0x4b50e0
   virtual undefined CommitIfPending(); // slot 0x0d 0x4b5160
-  virtual undefined ResetCityOrderItemDerivedStateNoop(); // slot 0x0e 0x4b5140
+  virtual undefined ResetCityOrderItemDerivedStateNoop(const char* name); // slot 0x0e 0x4b5140
   virtual undefined InitializeCityOrderItemWorkingBuffers(undefined4 * param_1); // slot 0x0f 0x4b5180
   virtual void FillOrderSheet(void* orderSheet, short quantity); // slot 0x10 0x4b51b0
 // === END GENERATED DECLS (TProductionOrder) ===
