@@ -1335,21 +1335,23 @@ headers before splicing.
     by address; branch target unchanged). Rarely moves the score alone when a bigger
     register-scheduling diff dominates alignment, but removes two genuine mismatch lines.
 
-90. **A `SlotNN`-named non-virtual method that the original dispatches virtually is a
-    missing base virtual, not a tick-sized fix.** When triage reports a `[call_target]`
-    like `dword ptr [eax + 0x48] vs TClass::SetXxxSlot48 (FUNCTION)` and the orig
-    disassembly is `mov eax,[ecx]; call [eax+0x48]` (vtable load + slot dispatch), the
-    method belongs at vtable slot 0x48 (index 0x48/4) but is declared non-virtual, so
-    every `obj->SetXxxSlot48(...)` callsite emits a direct call that fails to pair. The
-    correct model makes it `virtual` — but the owning slot is a *base*-class slot
-    (0x48 = index 18 sits below a derived class's first new virtual), so the declaration
-    must move up the hierarchy (e.g. TCountry, shared by TGreatPower/TMinor) at exactly
-    the right position to land at that index, with overrides threaded through. That is a
-    base-vtable change with wide blast radius: do it in a dedicated vtable-matching pass
-    with `just vtable <Class>` verification, not as a drive-by edit while porting a
-    caller. Worked example: TGreatPower::SetNationTransferTargetCodeAndNotifyEligiblePeers
-    (0x4de860) and the many `SetDiplomacyStandingSlot48` callers across TMinor.cpp /
-    TDiplomacyMgr.cpp / TGreatPower.cpp all hinge on this one base-slot recovery.
+90. **Before acting on a triage `[call_target]` line that names a vtable slot, run
+    `just vtable <Class>` — an already-100% vtable means the line is a misalignment
+    artifact, not a missing virtual.** Triage reported
+    `dword ptr [eax + 0x48] vs TMinor::SetDiplomacyStandingSlot48 (FUNCTION)` inside
+    TGreatPower::SetNationTransferTargetCodeAndNotifyEligiblePeers (0x4de860), which
+    looks like "slot 0x48 should dispatch a named virtual but our callsite calls it
+    non-virtually." Investigated it fully: `just vtable TMinor` and `just vtable
+    TCountry` both already report **100% match**, so slot 0x48 (index 18) is correctly
+    modeled on both sides; `SetDiplomacyStandingSlot48` is an *unmarked, unpaired*
+    internal helper (not in `symbols.csv`, no `// FUNCTION:` marker), not the slot body.
+    The `[eax+0x48] vs <name>` line was reccmp pairing the orig's slot dispatch against a
+    Ghidra name while our structurally-divergent function had an unrelated instruction at
+    the aligned offset — an artifact of the diff misaligning a heavily-reshaped body, not
+    a real vtable defect. Lesson: a `call_target` line that fingers a vtable slot is only
+    a real bug if `just vtable <owning Class>` is below 100%; when it's already 100%,
+    don't restructure the base vtable — the residual is the caller's own codegen
+    divergence (see note 91). Cheap to check, saves a large wrong-headed base-class edit.
 
 91. **Pointer-walk vs index-loop is an optimizer choice you can't reliably force from a
     source tweak.** When the orig bounds a table loop by `add edi,4; cmp edi, &table_end`
