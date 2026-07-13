@@ -19,22 +19,6 @@ undefined4 SetTaskForceOrderSelectionByNodeId(void)
   return 0;
 }
 
-// ghidra_name CountTaskForceSelectedOrdersByNationClass
-// ghidra_proto undefined CountTaskForceSelectedOrdersByNationClass()
-// FUNCTION: IMPERIALISM 0x00554a30
-undefined4 CountTaskForceSelectedOrdersByNationClass(void)
-{
-  return 0;
-}
-
-// ghidra_name GetMinActionThresholdFromEntryChildren
-// ghidra_proto undefined GetMinActionThresholdFromEntryChildren()
-// FUNCTION: IMPERIALISM 0x00554a80
-undefined4 GetMinActionThresholdFromEntryChildren(void)
-{
-  return 0;
-}
-
 // ghidra_name BuildTaskForceOrderBreakdownSummaryText
 // ghidra_proto undefined BuildTaskForceOrderBreakdownSummaryText()
 // FUNCTION: IMPERIALISM 0x00554b20

@@ -1110,6 +1110,32 @@ void TTaskForce::SetTaskForceOrderSelectionByNationClassAndFlag(short nationClas
   }
 }
 
+// FUNCTION: IMPERIALISM 0x00554a30
+int TTaskForce::CountTaskForceSelectedOrdersByNationClass(short nationClass) {
+  int count = 0;
+  for (TMapOrderChildLinkNode* node = childOrderList; node != nullptr; node = node->next) {
+    if (static_cast<short>(g_NavyOrderResourceDescriptorTable[node->object_ptr->order_type]
+                               .enabledFlagOrBucketOffset) == nationClass &&
+        node->active_flag != 0) {
+      ++count;
+    }
+  }
+  return count;
+}
+
+// FUNCTION: IMPERIALISM 0x00554a80
+unsigned int TTaskForce::GetMinActionThresholdFromEntryChildren() {
+  unsigned int minWeight = 10000;
+  for (TMapOrderChildLinkNode* node = childOrderList; node != nullptr; node = node->next) {
+    if (node->active_flag != 0 &&
+        g_NavyOrderResourceDescriptorTable[node->object_ptr->order_type].descriptorWeight <
+            static_cast<int>(minWeight)) {
+      minWeight = g_NavyOrderResourceDescriptorTable[node->object_ptr->order_type].descriptorWeight;
+    }
+  }
+  return minWeight == 10000 ? 0 : minWeight;
+}
+
 // FUNCTION: IMPERIALISM 0x00554ad0
 int TTaskForce::CalculateMapOrderEntryAverageChildRatingX10() {
   int sum = 0;
