@@ -27,6 +27,8 @@ void EnsurePortZoneForTile(short nTileIndex);
 void RemovePortZoneByTile(short nTileIndex);
 short TraceTerrainFlowToNearestSeaTile(short tileIndex);
 void NormalizeWrappedMapCoord217x60(short* xCoord, short* yCoord);
+undefined4 GetCurrentLocalEpochSecondsWithTimezoneCache(void);
+undefined4 SetSharedStringFromRotatingFlavorTextBySlot(void);
 
 // FUNCTION: IMPERIALISM 0x004a4190
 TMilitaryUnit* TMapMgr::ValidateGridIndexRange0To17F(short index) {
@@ -229,7 +231,39 @@ undefined TMapMgr::LoadPoliticalMapRegionSubtypeTableFromResourceStream() {
 
 // FUNCTION: IMPERIALISM 0x0050f740
 void TMapMgr::RefreshMapContextRotatingStatusStrings() {
-  // TODO: promote body @ 0x0050f740
+  // Hash the scenario tag string to seed the zone status-code PRNG.
+  const char* tag = scenarioTagText1c;
+  int seed = 0x6e616461; // "adan"
+  while (*tag != '\0') {
+    seed = (seed >> 16) + seed * 2 + static_cast<int>(*tag);
+    tag++;
+  }
+  g_zoneStatusCodePrngSeed_006a5aec = seed;
+  if (seed == 0) {
+    g_zoneStatusCodePrngSeed_006a5aec =
+        reinterpret_cast<int(__cdecl*)(void*)>(GetCurrentLocalEpochSecondsWithTimezoneCache)(0);
+  }
+
+  // Reset the rotating-flavor-text slot counters (slot = -1), then assign a
+  // display name to every city record that has at least one linked region.
+  CString local_10;
+  reinterpret_cast<void(__cdecl*)(CString*, short)>(
+      SetSharedStringFromRotatingFlavorTextBySlot)(&local_10, -1);
+
+  for (int i = 0; i < 0x180; i++) {
+    TGlobalMapCityScoreRecord* record = &cityScoreTable[i];
+    if (record->linkedRegionIds[0] != -1) {
+      reinterpret_cast<void(__cdecl*)(CString*, short)>(
+          SetSharedStringFromRotatingFlavorTextBySlot)(&record->cityNameA4,
+                                                       record->ownerNationCode00);
+    }
+  }
+
+  // Reseed the PRNG from the system clock so later status-code generation is
+  // non-deterministic.
+  g_zoneStatusCodePrngSeed_006a5aec = 0;
+  g_zoneStatusCodePrngSeed_006a5aec =
+      reinterpret_cast<int(__cdecl*)(void*)>(GetCurrentLocalEpochSecondsWithTimezoneCache)(0);
 }
 
 // FUNCTION: IMPERIALISM 0x0050fca0

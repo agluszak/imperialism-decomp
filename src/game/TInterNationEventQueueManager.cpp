@@ -17,7 +17,7 @@ struct TInterNationEventDedupPacket {
 // raw-address __fastcall casts through ILT thunks).
 struct TPlaybackWalkState {
   int counter;
-  TPtrList* owner;
+  TSortedPtrList* owner;
 
   void* Begin();
   int IsValid();
@@ -36,7 +36,7 @@ void TInterNationEventQueueManager::QueueInterNationEventIntoNationBucket(int ev
   }
 
   if (isReplayBypass != '\0' || g_pSimMgr->redrawEnabled == 0) {
-    TPtrList* interNationQueue = perNationEventBuckets[eventCode];
+    TSortedPtrList* interNationQueue = perNationEventBuckets[eventCode];
     if (interNationQueue != 0) {
       interNationQueue->InsertCopiedRecordSortedByComparator(&payloadOrNation);
     }
@@ -119,7 +119,7 @@ void TInterNationEventQueueManager::QueueInterNationEventRecordDeduped(int event
   }
 }
 
-TPtrList* TInterNationEventQueueManager::GetInterNationQueueByEventCode(int eventCode) {
+TSortedPtrList* TInterNationEventQueueManager::GetInterNationQueueByEventCode(int eventCode) {
   if (eventCode >= 0 && eventCode < 7) {
     return perNationEventBuckets[eventCode];
   }
@@ -140,7 +140,7 @@ void TInterNationEventQueueManager::QueueInterNationEventType0FWithBitmaskMerge(
   }
 
   if (isReplayBypass != '\0' || g_pSimMgr->redrawEnabled == 0) {
-    TPtrList* mergeQueue = sharedEventRecordQueue;
+    TSortedPtrList* mergeQueue = sharedEventRecordQueue;
     if (mergeQueue == 0) {
       return;
     }

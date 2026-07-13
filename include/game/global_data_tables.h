@@ -433,6 +433,7 @@ extern CArray<void*, void*> g_WNetSerializedPtrArrayA006a5f10;
 extern CArray<void*, void*> g_WNetSerializedPtrArrayB006a5f28;
 extern CList<void*, void*> g_WNetPendingPacketList006a5f40;
 extern TTechMgr* g_pCityOrderCapabilityState;
+extern "C" short g_anCapabilityPriorityRangePairs[52];
 extern TSoundResourceManager g_soundResourceManager;
 // CD-audio MCI device singleton (see game/cd_audio.h).
 extern TCdAudioDevice g_cdAudioDevice; // 0x006a60bc
