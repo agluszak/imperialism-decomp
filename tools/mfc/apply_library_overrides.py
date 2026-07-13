@@ -37,7 +37,10 @@ from tools.common.repo import (
     resolve_repo_path,
 )
 from tools.ghidra.merge_curated_symbols import write_symbols_csv
-from tools.mfc.apply_msvc500_library_region import collect_source_markers
+from tools.mfc.apply_msvc500_library_region import (
+    collect_manual_source_references,
+    collect_source_markers,
+)
 
 DEFAULT_OVERRIDES = "config/msvc500_library_overrides.csv"
 DEFAULT_SYMBOLS = "config/symbols.csv"
@@ -274,6 +277,14 @@ def main() -> int:
         print(f"library overrides applied and current ({len(overrides)} entries).")
         return 0
 
+    # Callsite-orphan guard: an override that newly converts an address to library
+    # removes its autogen stub. If manual source still calls it by its old invented
+    # name, the link breaks (rand's `GenerateThreadLocalRandom15` callsites did
+    # exactly this). Warn loudly so those callsites get migrated to the real symbol.
+    orphan_warnings = _callsite_orphan_warnings(
+        repo_root, overrides, existing_markers, symbols_path, marker_rel
+    )
+
     symbol_changes, _ = apply_symbols(symbols_path, overrides)
     marker_changes, _ = apply_markers(
         marker_path, overrides, existing_markers, marker_rel=marker_rel, target=args.target
@@ -284,7 +295,42 @@ def main() -> int:
     )
     for change in symbol_changes + marker_changes:
         print(f"  - {change}")
+    for warning in orphan_warnings:
+        print(f"  WARNING: {warning}")
     return 0
+
+
+def _callsite_orphan_warnings(
+    repo_root: Path,
+    overrides: list[LibraryOverride],
+    existing_markers: dict[int, object],
+    symbols_path: Path,
+    marker_rel: str,
+) -> list[str]:
+    # Only overrides that will *newly* get a library marker here can orphan a stub.
+    newly_owned = [
+        ov for ov in overrides if existing_markers.get(ov.address) is None
+    ]
+    if not newly_owned:
+        return []
+    old_names: dict[int, str] = {}
+    _fieldnames, rows = read_pipe_table(symbols_path)
+    by_addr = {int(r["address"], 16): r for r in rows if (r.get("address") or "").strip()}
+    for ov in newly_owned:
+        row = by_addr.get(ov.address)
+        if row and (row.get("name") or "") not in ("", ov.name):
+            old_names[ov.address] = row["name"]
+    referenced = collect_manual_source_references(
+        repo_root, set(old_names.values()), marker_rel=marker_rel
+    )
+    warnings: list[str] = []
+    for addr, old in old_names.items():
+        if old in referenced:
+            warnings.append(
+                f"0x{addr:08x}: manual source still calls {old!r}; migrate those "
+                f"callsites to the real symbol or the link will fail (stub removed)."
+            )
+    return warnings
 
 
 def _dry_run_symbols(

@@ -123,22 +123,6 @@ undefined4 PreCreateWindow(void)
   return 0;
 }
 
-// ghidra_name TMacViewMgr_Slot06_Target
-// ghidra_proto undefined TMacViewMgr_Slot06_Target()
-// FUNCTION: IMPERIALISM 0x00608409
-undefined4 TMacViewMgr_Slot06_Target(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanCallChain_C1_I09_0048ff70
-// ghidra_proto undefined DestroyWindow()
-// FUNCTION: IMPERIALISM 0x0060841a
-undefined4 DestroyWindow(void)
-{
-  return 0;
-}
-
 // ghidra_name TMacViewMgr_Slot34_Target
 // ghidra_proto undefined TMacViewMgr_Slot34_Target()
 // FUNCTION: IMPERIALISM 0x006084ae
@@ -227,14 +211,6 @@ undefined4 TMacViewMgr_Slot28_Target(void)
   return 0;
 }
 
-// ghidra_name DispatchReflectedControlMessageOrFallback
-// ghidra_proto undefined DispatchReflectedControlMessageOrFallback()
-// FUNCTION: IMPERIALISM 0x00609c37
-undefined4 DispatchReflectedControlMessageOrFallback(void)
-{
-  return 0;
-}
-
 // ghidra_name UpdateData
 // ghidra_proto undefined UpdateData()
 // FUNCTION: IMPERIALISM 0x0060a1c4
@@ -287,14 +263,6 @@ undefined4 TMacViewMgr_VtblSlot046(void)
 // ghidra_proto undefined Delete()
 // FUNCTION: IMPERIALISM 0x0060aab8
 undefined4 Delete(void)
-{
-  return 0;
-}
-
-// ghidra_name Duplicate
-// ghidra_proto undefined Duplicate()
-// FUNCTION: IMPERIALISM 0x0060ad44
-undefined4 Duplicate(void)
 {
   return 0;
 }
@@ -355,30 +323,6 @@ undefined4 InitVtable0067074cAndMapTileHint_0061499c(void)
   return 0;
 }
 
-// ghidra_name WrapperFor_SetObjectField24Value_At00610728
-// ghidra_proto undefined WrapperFor_SetObjectField24Value_At00610728()
-// FUNCTION: IMPERIALISM 0x00610728
-undefined4 WrapperFor_SetObjectField24Value_At00610728(void)
-{
-  return 0;
-}
-
-// ghidra_name ResetField24ArgAndThisField100
-// ghidra_proto undefined ResetField24ArgAndThisField100()
-// FUNCTION: IMPERIALISM 0x0061073e
-undefined4 ResetField24ArgAndThisField100(void)
-{
-  return 0;
-}
-
-// ghidra_name ConstructTTaskBaseState
-// ghidra_proto undefined OpenDocumentFile()
-// FUNCTION: IMPERIALISM 0x00610752
-undefined4 OpenDocumentFile(void)
-{
-  return 0;
-}
-
 // ghidra_name OrphanLeaf_NoCall_Ins04_005adc30
 // ghidra_proto undefined SetDefaultTitle()
 // FUNCTION: IMPERIALISM 0x006108fe
@@ -419,26 +363,10 @@ undefined4 OrphanLeaf_NoCall_Ins04_005adc30_00610A80(void)
   return 0;
 }
 
-// ghidra_name DispatchVirtual84OrA8_ByControlState
-// ghidra_proto undefined DispatchVirtual84OrA8_ByControlState()
-// FUNCTION: IMPERIALISM 0x00610a9e
-undefined4 DispatchVirtual84OrA8_ByControlState(void)
-{
-  return 0;
-}
-
 // ghidra_name NoOpVirtualStub_00610c08
 // ghidra_proto undefined NoOpVirtualStub_00610c08()
 // FUNCTION: IMPERIALISM 0x00610c08
 undefined4 NoOpVirtualStub_00610c08(void)
-{
-  return 0;
-}
-
-// ghidra_name InvokeVslot84IfVslot98ReturnsNonZero
-// ghidra_proto undefined InvokeVslot84IfVslot98ReturnsNonZero()
-// FUNCTION: IMPERIALISM 0x00610c87
-undefined4 InvokeVslot84IfVslot98ReturnsNonZero(void)
 {
   return 0;
 }
@@ -587,30 +515,6 @@ undefined4 NoOpVirtualStub_00613e44(void)
   return 0;
 }
 
-// ghidra_name InvokeVslotF4WithZeroArgs
-// ghidra_proto undefined InvokeVslotF4WithZeroArgs()
-// FUNCTION: IMPERIALISM 0x00613f04
-undefined4 InvokeVslotF4WithZeroArgs(void)
-{
-  return 0;
-}
-
-// ghidra_name InvalidateWindowRectFromHandleField1C
-// ghidra_proto undefined InvalidateWindowRectFromHandleField1C()
-// FUNCTION: IMPERIALISM 0x00613f12
-undefined4 InvalidateWindowRectFromHandleField1C(void)
-{
-  return 0;
-}
-
-// ghidra_name DispatchVirtualSlotF8_WithArg
-// ghidra_proto undefined DispatchVirtualSlotF8_WithArg()
-// FUNCTION: IMPERIALISM 0x00613f22
-undefined4 DispatchVirtualSlotF8_WithArg(void)
-{
-  return 0;
-}
-
 // ghidra_name OnActivateView
 // ghidra_proto undefined OnActivateView()
 // FUNCTION: IMPERIALISM 0x00613f39
@@ -623,14 +527,6 @@ undefined4 OnActivateView(void)
 // ghidra_proto undefined __thiscall RenderControlStateTextBySelectionCode(int param_1)
 // FUNCTION: IMPERIALISM 0x0061404d
 undefined4 RenderControlStateTextBySelectionCode(void)
-{
-  return 0;
-}
-
-// ghidra_name OnEndPrintPreview
-// ghidra_proto undefined OnEndPrintPreview()
-// FUNCTION: IMPERIALISM 0x0061419f
-undefined4 OnEndPrintPreview(void)
 {
   return 0;
 }
@@ -715,22 +611,6 @@ undefined4 SerializeTMinisterBaseOrderArrayHeader_00614B12(void)
   return 0;
 }
 
-// ghidra_name GetTMinisterClassNamePointer
-// ghidra_proto undefined WrapperFor_InitialUpdateFrame_At00614bef()
-// FUNCTION: IMPERIALISM 0x00614bef
-undefined4 WrapperFor_InitialUpdateFrame_At00614bef(void)
-{
-  return 0;
-}
-
-// ghidra_name DeletingDestructTMinister
-// ghidra_proto undefined __thiscall DeletingDestructTMinister(void)
-// FUNCTION: IMPERIALISM 0x00614c03
-undefined4 DeletingDestructTMinister(void)
-{
-  return 0;
-}
-
 // ghidra_name GetTTaskClassNamePointer
 // ghidra_proto undefined __thiscall GetTTaskClassNamePointer(void)
 // FUNCTION: IMPERIALISM 0x00614c41
@@ -795,26 +675,10 @@ undefined4 OrphanRetStub_0059add0(void)
   return 0;
 }
 
-// ghidra_name CallField80VirtualSlot28OrReturnTrue_006186a4
-// ghidra_proto undefined CallField80VirtualSlot28OrReturnTrue_006186a4()
-// FUNCTION: IMPERIALISM 0x006186a4
-undefined4 CallField80VirtualSlot28OrReturnTrue_006186a4(void)
-{
-  return 0;
-}
-
 // ghidra_name ReleaseRuntimeSelectionOwnerAndDestroyObject
 // ghidra_proto undefined __thiscall ReleaseRuntimeSelectionOwnerAndDestroyObject(undefined4 param_1)
 // FUNCTION: IMPERIALISM 0x006186b7
 undefined4 ReleaseRuntimeSelectionOwnerAndDestroyObject(void)
-{
-  return 0;
-}
-
-// ghidra_name DispatchNestedVirtualSlot24_FromField80
-// ghidra_proto undefined DispatchNestedVirtualSlot24_FromField80()
-// FUNCTION: IMPERIALISM 0x006186f2
-undefined4 DispatchNestedVirtualSlot24_FromField80(void)
 {
   return 0;
 }
@@ -871,14 +735,6 @@ undefined4 DDX_Control(void)
 // ghidra_proto undefined WrapperFor_AllocateWithGlobalNewMode_At00619bbd()
 // FUNCTION: IMPERIALISM 0x00619bbd
 undefined4 WrapperFor_AllocateWithGlobalNewMode_At00619bbd(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_ReallocateHeapBlockWithAllocatorTracking_At00619bca
-// ghidra_proto undefined WrapperFor_ReallocateHeapBlockWithAllocatorTracking_At00619bca()
-// FUNCTION: IMPERIALISM 0x00619bca
-undefined4 WrapperFor_ReallocateHeapBlockWithAllocatorTracking_At00619bca(void)
 {
   return 0;
 }
@@ -1063,14 +919,6 @@ undefined4 GetActiveView(void)
 // ghidra_proto void __thiscall ?SetActiveView@CFrameWnd@@QAEXPAVCView@@H@Z(CView * param_1, int param_2)
 // FUNCTION: IMPERIALISM 0x0061d8a2
 undefined4 Z_0061D8A2(void)
-{
-  return 0;
-}
-
-// ghidra_name TMacViewMgr::WrapperFor_GetObjectValueAtOffset98_At0061d917
-// ghidra_proto undefined WrapperFor_GetObjectValueAtOffset98_At0061d917()
-// FUNCTION: IMPERIALISM 0x0061d917
-undefined4 WrapperFor_GetObjectValueAtOffset98_At0061d917(void)
 {
   return 0;
 }

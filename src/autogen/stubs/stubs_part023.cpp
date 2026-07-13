@@ -75,14 +75,6 @@ undefined4 ProcessShellCommand(void)
   return 0;
 }
 
-// ghidra_name InitializeThreadNameAndSystemAtoms
-// ghidra_proto undefined InitializeThreadNameAndSystemAtoms()
-// FUNCTION: IMPERIALISM 0x00623006
-undefined4 InitializeThreadNameAndSystemAtoms(void)
-{
-  return 0;
-}
-
 // ghidra_name RunFileAssociationShellCommandCleanup
 // ghidra_proto undefined RunFileAssociationShellCommandCleanup()
 // FUNCTION: IMPERIALISM 0x00623050

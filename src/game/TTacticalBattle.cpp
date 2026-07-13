@@ -26,7 +26,7 @@
 #include "game/ui_control_tags.h"
 #include "game/global_data_tables.h"
 
-extern undefined4 GenerateThreadLocalRandom15(void);
+extern "C" int __cdecl rand(void);
 
 using turn_event_dialog::TurnEventDialogNode;
 
@@ -111,7 +111,7 @@ void TTacticalBattle::BuildTacticalBattleStateFromBothSides(TTacticalPlayer* our
     for (TTacticalUnit* ourUnit = static_cast<TTacticalUnit*>(ourIter.Reset()); ourIter.More();
          ourUnit = static_cast<TTacticalUnit*>(ourIter.Advance())) {
       ourUnit->side20 = 0;
-      ourUnit->field24 = static_cast<short>(GenerateThreadLocalRandom15());
+      ourUnit->field24 = static_cast<short>(rand());
       recordList20->AddTail(ourUnit);
     }
   }
@@ -120,7 +120,7 @@ void TTacticalBattle::BuildTacticalBattleStateFromBothSides(TTacticalPlayer* our
     for (TTacticalUnit* enemyUnit = static_cast<TTacticalUnit*>(enemyIter.Reset());
          enemyIter.More(); enemyUnit = static_cast<TTacticalUnit*>(enemyIter.Advance())) {
       enemyUnit->side20 = 1;
-      enemyUnit->field24 = static_cast<short>(GenerateThreadLocalRandom15());
+      enemyUnit->field24 = static_cast<short>(rand());
       recordList20->AddTail(enemyUnit);
     }
   }
@@ -679,10 +679,10 @@ int TTacticalBattle::BuildPathToTargetByDistanceField(int walkTileIndex, int pat
             if (curThreat != 0) {
               swapFlag = 1;
             } else {
-              swapFlag = static_cast<unsigned char>(GenerateThreadLocalRandom15() & 1);
+              swapFlag = static_cast<unsigned char>(rand() & 1);
             }
           } else if (curThreat != 0) {
-            swapFlag = static_cast<unsigned char>(GenerateThreadLocalRandom15() & 1);
+            swapFlag = static_cast<unsigned char>(rand() & 1);
           }
         }
         if (swapFlag != 0) {
@@ -1416,7 +1416,7 @@ void TTacticalBattle::ClearTacticalTileStateRunByStride(int tileIndex) {
 // FUNCTION: IMPERIALISM 0x005a34d0
 void TTacticalBattle::ExecuteTacticalMineActionAndQueuePacket(TTacticalUnit* unit, int tileIndex) {
   int unitType = unit->unitTypeC;
-  int amount = static_cast<int>(GenerateThreadLocalRandom15()) % 400 + unitType * 250 - 5600;
+  int amount = static_cast<int>(rand()) % 400 + unitType * 250 - 5600;
   unsigned char multiplayerActive = g_pSimMgr->field44 != 0;
   if (multiplayerActive != 0) {
     g_pGameFlowState->EmitTacticalCommandPacket(0x6d696e65 /* 'mine' */, 0, tileIndex, amount);
@@ -1525,7 +1525,7 @@ TTacticalBattle::ComputeRallyStrengthAndQueueTacticalRallyCommand(TTacticalUnit*
     newMorale += rallyTarget->strength4 / 10 * (rallyingUnit->qualityLevel10 + 3);
   } else if (newState == 1) {
     int qualityLevel = rallyingUnit->qualityLevel10;
-    if (static_cast<int>(GenerateThreadLocalRandom15()) % 100 < (qualityLevel + 5) * 10) {
+    if (static_cast<int>(rand()) % 100 < (qualityLevel + 5) * 10) {
       newMorale = rallyTarget->strength4 / 10 + 20;
       newState = 0;
     }

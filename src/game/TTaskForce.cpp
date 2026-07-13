@@ -12,7 +12,7 @@
 #include "game/localization_text_helpers.h"
 #include "game/ui_invalidation_guard.h"
 
-extern undefined4 GenerateThreadLocalRandom15(void);
+extern "C" int __cdecl rand(void);
 extern undefined4 ReallocateHeapBlockWithAllocatorTracking(void);
 
 namespace {
@@ -1200,7 +1200,7 @@ char TTaskForce::ResolveTaskForceOrderConflictAndPickCandidate(TTaskForce* other
     if (totalChildren > 10) {
       threshold = static_cast<short>(threshold + (totalChildren - 10));
     }
-    int roll = GenerateThreadLocalRandom15();
+    int roll = rand();
     shouldAttempt = (roll % 100) < threshold;
   }
 
@@ -1267,7 +1267,7 @@ char TTaskForce::ComputeTaskForceOrderTieBreakScore(TTaskForce* other) {
   }
   short otherAverage = (count == 0) ? 0 : static_cast<short>((sum * 10) / count);
 
-  int roll = GenerateThreadLocalRandom15();
+  int roll = rand();
   short threshold = static_cast<short>(
       ((minDescriptorWeight != 10000 ? minDescriptorWeight : 0) + 5) * 10 - otherAverage);
   if (threshold <= roll % 100) {

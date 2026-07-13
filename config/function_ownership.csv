@@ -4961,6 +4961,7 @@ address|target_cpp|ownership|note
 5e54e8|src/game/library_msvc500_fid.cpp|library|marker_sync
 5e5529|src/game/library_msvc500_fid.cpp|library|marker_sync
 5e556b|src/game/library_msvc500_fid.cpp|library|marker_sync
+5e5597|src/game/library_msvc500_oracle.cpp|library|marker_sync
 5e55a4|src/game/library_msvc500_fid.cpp|library|marker_sync
 5e55ee|src/game/library_msvc500_fid.cpp|library|marker_sync
 5e56cd|src/game/library_msvc500_fid.cpp|library|marker_sync
@@ -5061,6 +5062,8 @@ address|target_cpp|ownership|note
 5e722f|src/game/library_msvc500_fid.cpp|library|marker_sync
 5e72f1|src/game/library_msvc500_fid.cpp|library|marker_sync
 5e730d|src/game/library_msvc500_fid.cpp|library|marker_sync
+5e7350|src/game/library_msvc500_oracle.cpp|library|marker_sync
+5e7380|src/game/library_msvc500_oracle.cpp|library|marker_sync
 5e7400|src/game/library_msvc500_fid.cpp|library|marker_sync
 5e7440|src/game/library_msvc500_fid.cpp|library|marker_sync
 5e7450|src/game/library_msvc500_fid.cpp|library|marker_sync
@@ -5121,6 +5124,7 @@ address|target_cpp|ownership|note
 5e9660|src/game/library_msvc500_fid.cpp|library|marker_sync
 5e9840|src/game/library_msvc500_fid.cpp|library|marker_sync
 5e98b0|src/game/library_msvc500_fid.cpp|library|marker_sync
+5e9ae8|src/game/library_msvc500_oracle.cpp|library|marker_sync
 5e9b10|src/game/library_msvc500_fid.cpp|library|marker_sync
 5e9b60|src/game/library_msvc500_fid.cpp|library|marker_sync
 5e9b90|src/game/library_msvc500_fid.cpp|library|marker_sync
@@ -5142,6 +5146,7 @@ address|target_cpp|ownership|note
 5ea6d0|src/game/library_msvc500_fid.cpp|library|marker_sync
 5ea780|src/game/library_msvc500_fid.cpp|library|marker_sync
 5ea810|src/game/library_msvc500_fid.cpp|library|marker_sync
+5ea8b0|src/game/library_msvc500_oracle.cpp|library|marker_sync
 5ea8d0|src/game/library_msvc500_fid.cpp|library|marker_sync
 5ea970|src/game/library_msvc500_fid.cpp|library|marker_sync
 5ea990|src/game/library_msvc500_fid.cpp|library|marker_sync
@@ -5166,6 +5171,13 @@ address|target_cpp|ownership|note
 5ec260|src/game/library_msvc500_fid.cpp|library|marker_sync
 5ec300|src/game/library_msvc500_fid.cpp|library|marker_sync
 5ec370|src/game/library_msvc500_fid.cpp|library|marker_sync
+5ec6c0|src/game/library_msvc500_oracle.cpp|library|marker_sync
+5ec6e0|src/game/library_msvc500_oracle.cpp|library|marker_sync
+5ec730|src/game/library_msvc500_oracle.cpp|library|marker_sync
+5ec760|src/game/library_msvc500_oracle.cpp|library|marker_sync
+5ec8b0|src/game/library_msvc500_oracle.cpp|library|marker_sync
+5eca30|src/game/library_msvc500_oracle.cpp|library|marker_sync
+5ecb60|src/game/library_msvc500_oracle.cpp|library|marker_sync
 5eccc0|src/game/library_msvc500_fid.cpp|library|marker_sync
 5ecd90|src/game/library_msvc500_fid.cpp|library|marker_sync
 5ed050|src/game/library_msvc500_fid.cpp|library|marker_sync
@@ -5263,6 +5275,10 @@ address|target_cpp|ownership|note
 5f3400|src/game/library_msvc500_fid.cpp|library|marker_sync
 5f3490|src/game/library_msvc500_fid.cpp|library|marker_sync
 5f3ec0|src/game/library_msvc500_fid.cpp|library|marker_sync
+5f3f90|src/game/library_msvc500_oracle.cpp|library|marker_sync
+5f3fb0|src/game/library_msvc500_oracle.cpp|library|marker_sync
+5f3fd0|src/game/library_msvc500_oracle.cpp|library|marker_sync
+5f4010|src/game/library_msvc500_oracle.cpp|library|marker_sync
 5f41e0|src/game/library_msvc500_fid.cpp|library|marker_sync
 5f4270|src/game/library_msvc500_fid.cpp|library|marker_sync
 5f4370|src/game/bignum96_math.cpp|manual|marker_sync
@@ -5272,7 +5288,9 @@ address|target_cpp|ownership|note
 5f4510|src/game/bignum96_math.cpp|manual|marker_sync
 5f4520|src/game/bignum96_math.cpp|manual|marker_sync
 5f4540|src/game/bignum96_math.cpp|manual|marker_sync
+5f4600|src/game/library_msvc500_oracle.cpp|library|marker_sync
 5f4950|src/game/library_msvc500_fid.cpp|library|marker_sync
+5f49f0|src/game/library_msvc500_oracle.cpp|library|marker_sync
 5f4a80|src/game/bignum96_math.cpp|manual|marker_sync
 5f4b50|src/game/library_msvc500_fid.cpp|library|marker_sync
 5f4b70|src/game/library_msvc500_fid.cpp|library|marker_sync
@@ -5316,6 +5334,7 @@ address|target_cpp|ownership|note
 5f78d0|src/game/bignum96_math.cpp|manual|marker_sync
 5f7900|src/game/bignum96_math.cpp|manual|marker_sync
 5f7930|src/game/bignum96_math.cpp|manual|marker_sync
+5f8210|src/game/library_msvc500_oracle.cpp|library|marker_sync
 5f8640|src/game/library_msvc500_fid.cpp|library|marker_sync
 5f8680|src/game/library_msvc500_fid.cpp|library|marker_sync
 5f8770|src/game/library_msvc500_fid.cpp|library|marker_sync
@@ -5323,6 +5342,8 @@ address|target_cpp|ownership|note
 5f8a80|src/game/library_msvc500_fid.cpp|library|marker_sync
 5f8bb0|src/game/library_msvc500_fid.cpp|library|marker_sync
 5f8d10|src/game/library_msvc500_fid.cpp|library|marker_sync
+5f8f10|src/game/library_msvc500_oracle.cpp|library|marker_sync
+5f91d0|src/game/library_msvc500_oracle.cpp|library|marker_sync
 5f94b0|src/game/library_msvc500_fid.cpp|library|marker_sync
 5f9780|src/game/library_msvc500_fid.cpp|library|marker_sync
 5f97b0|src/game/library_msvc500_fid.cpp|library|marker_sync
@@ -5474,6 +5495,7 @@ address|target_cpp|ownership|note
 6054aa|src/game/library_msvc500_fid.cpp|library|marker_sync
 6054cb|src/game/library_msvc500_fid.cpp|library|marker_sync
 6055ae|src/game/library_msvc500_fid.cpp|library|marker_sync
+6055d0|src/game/library_msvc500_oracle.cpp|library|marker_sync
 60567e|src/game/library_msvc500_fid.cpp|library|marker_sync
 6056e4|src/game/library_msvc500_fid.cpp|library|marker_sync
 605791|src/game/CString.cpp|library|marker_sync
@@ -5521,6 +5543,7 @@ address|target_cpp|ownership|note
 6061ff|src/game/library_msvc500_fid.cpp|library|marker_sync
 60625e|src/game/library_msvc500_fid.cpp|library|marker_sync
 6062c2|src/game/library_msvc500_fid.cpp|library|marker_sync
+6063b8|src/game/library_msvc500_oracle.cpp|library|marker_sync
 6063cd|src/game/library_msvc500_fid.cpp|library|marker_sync
 6064b0|src/game/library_msvc500_fid.cpp|library|marker_sync
 6065c7|src/game/library_msvc500_fid.cpp|library|marker_sync
@@ -5529,13 +5552,17 @@ address|target_cpp|ownership|note
 60674a|src/game/library_msvc500_fid.cpp|library|marker_sync
 6067a2|src/game/MfcRuntime.cpp|library|marker_sync
 6068e9|src/game/library_msvc500_fid.cpp|library|marker_sync
+606934|src/game/library_msvc500_oracle.cpp|library|marker_sync
+60694f|src/game/library_msvc500_oracle.cpp|library|marker_sync
 6069af|src/game/library_msvc500_fid.cpp|library|marker_sync
 6069cb|src/game/library_msvc500_fid.cpp|library|marker_sync
 606a07|src/game/library_msvc500_fid.cpp|library|marker_sync
 606b1f|src/game/library_msvc500_fid.cpp|library|marker_sync
 606c67|src/game/MfcRuntime.cpp|library|marker_sync
 606c7c|src/game/MfcRuntime.cpp|library|marker_sync
+606c91|src/game/library_msvc500_oracle.cpp|library|marker_sync
 606cbe|src/game/library_msvc500_fid.cpp|library|marker_sync
+606d1b|src/game/library_msvc500_oracle.cpp|library|marker_sync
 606d4d|src/game/library_msvc500_fid.cpp|library|marker_sync
 606ddd|src/game/CCmdUI.cpp|library|marker_sync
 606e3f|src/game/library_msvc500_fid.cpp|library|marker_sync
@@ -5550,6 +5577,7 @@ address|target_cpp|ownership|note
 606ff2|src/game/library_msvc500_fid.cpp|library|marker_sync
 60704b|src/game/library_msvc500_fid.cpp|library|marker_sync
 607077|src/game/CRuntimeClass.cpp|library|marker_sync
+607090|src/game/library_msvc500_oracle.cpp|library|marker_sync
 6070df|src/game/library_msvc500_fid.cpp|library|marker_sync
 607111|src/game/library_msvc500_fid.cpp|library|marker_sync
 60713b|src/game/library_msvc500_fid.cpp|library|marker_sync
@@ -5606,6 +5634,8 @@ address|target_cpp|ownership|note
 608257|src/game/library_msvc500_fid.cpp|library|marker_sync
 6082d3|src/game/library_msvc500_fid.cpp|library|marker_sync
 6082f1|src/game/library_msvc500_fid.cpp|library|marker_sync
+608409|src/game/library_msvc500_oracle.cpp|library|marker_sync
+60841a|src/game/library_msvc500_oracle.cpp|library|marker_sync
 608467|src/game/library_msvc500_fid.cpp|library|marker_sync
 6084b2|src/game/library_msvc500_fid.cpp|library|marker_sync
 6084d1|src/game/library_msvc500_fid.cpp|library|marker_sync
@@ -5647,6 +5677,7 @@ address|target_cpp|ownership|note
 609b24|src/game/library_msvc500_fid.cpp|library|marker_sync
 609b66|src/game/library_msvc500_fid.cpp|library|marker_sync
 609b93|src/game/library_msvc500_fid.cpp|library|marker_sync
+609c37|src/game/library_msvc500_oracle.cpp|library|marker_sync
 609c92|src/game/library_msvc500_fid.cpp|library|marker_sync
 609d88|src/game/library_msvc500_fid.cpp|library|marker_sync
 609dd7|src/game/library_msvc500_fid.cpp|library|marker_sync
@@ -5686,6 +5717,7 @@ address|target_cpp|ownership|note
 60ac08|src/game/library_msvc500_fid.cpp|library|marker_sync
 60ac4c|src/game/library_msvc500_fid.cpp|library|marker_sync
 60acf6|src/game/library_msvc500_fid.cpp|library|marker_sync
+60ad44|src/game/library_msvc500_oracle.cpp|library|marker_sync
 60add5|src/game/library_msvc500_fid.cpp|library|marker_sync
 60aefd|src/game/library_msvc500_fid.cpp|library|marker_sync
 60af37|src/game/library_msvc500_fid.cpp|library|marker_sync
@@ -5762,12 +5794,17 @@ address|target_cpp|ownership|note
 60d2c0|src/game/library_msvc500_fid.cpp|library|marker_sync
 60d39b|src/game/library_msvc500_fid.cpp|library|marker_sync
 60d3fc|src/game/MfcRuntime.cpp|library|marker_sync
+610728|src/game/library_msvc500_oracle.cpp|library|marker_sync
+61073e|src/game/library_msvc500_oracle.cpp|library|marker_sync
+610752|src/game/library_msvc500_oracle.cpp|library|marker_sync
 6109cf|src/game/CDocument.cpp|manual|marker_sync
 6109eb|src/game/CDocument.cpp|library|marker_sync
 610a5f|src/game/CDocument.cpp|library|marker_sync
+610a9e|src/game/library_msvc500_oracle.cpp|library|marker_sync
 610aba|src/game/library_msvc500_fid.cpp|library|marker_sync
 610bbd|src/game/library_msvc500_fid.cpp|library|marker_sync
 610c0b|src/game/library_msvc500_fid.cpp|library|marker_sync
+610c87|src/game/library_msvc500_oracle.cpp|library|marker_sync
 610cb7|src/game/library_msvc500_fid.cpp|library|marker_sync
 610ce5|src/game/library_msvc500_fid.cpp|library|marker_sync
 610e6f|src/game/library_msvc500_fid.cpp|library|marker_sync
@@ -5894,9 +5931,13 @@ address|target_cpp|ownership|note
 613da6|src/game/library_msvc500_fid.cpp|library|marker_sync
 613e49|src/game/MfcRuntime.cpp|library|marker_sync
 613eb0|src/game/library_msvc500_fid.cpp|library|marker_sync
+613f04|src/game/library_msvc500_oracle.cpp|library|marker_sync
+613f12|src/game/library_msvc500_oracle.cpp|library|marker_sync
+613f22|src/game/library_msvc500_oracle.cpp|library|marker_sync
 613f5a|src/game/library_msvc500_fid.cpp|library|marker_sync
 613fef|src/game/library_msvc500_fid.cpp|library|marker_sync
 61416e|src/game/library_msvc500_fid.cpp|library|marker_sync
+61419f|src/game/library_msvc500_oracle.cpp|library|marker_sync
 6142c0|src/game/library_msvc500_fid.cpp|library|marker_sync
 6142dc|src/game/library_msvc500_fid.cpp|library|marker_sync
 614331|src/game/library_msvc500_fid.cpp|library|marker_sync
@@ -5914,6 +5955,8 @@ address|target_cpp|ownership|note
 61499c|src/game/library_msvc500_fid.cpp|library|marker_sync
 614a2e|src/game/library_msvc500_fid.cpp|library|marker_sync
 614b7b|src/game/library_msvc500_fid.cpp|library|marker_sync
+614bef|src/game/library_msvc500_oracle.cpp|library|marker_sync
+614c03|src/game/library_msvc500_oracle.cpp|library|marker_sync
 614c76|src/game/library_msvc500_fid.cpp|library|marker_sync
 614cfa|src/game/library_msvc500_fid.cpp|library|marker_sync
 614e71|src/game/library_msvc500_fid.cpp|library|marker_sync
@@ -5945,6 +5988,8 @@ address|target_cpp|ownership|note
 61852a|src/game/MfcRuntime.cpp|library|marker_sync
 6185e4|src/game/MfcRuntime.cpp|library|marker_sync
 618605|src/game/library_msvc500_fid.cpp|library|marker_sync
+6186a4|src/game/library_msvc500_oracle.cpp|library|marker_sync
+6186f2|src/game/library_msvc500_oracle.cpp|library|marker_sync
 618704|src/game/MfcRuntime.cpp|library|marker_sync
 61873c|src/game/MfcRuntime.cpp|library|marker_sync
 6187eb|src/game/library_msvc500_fid.cpp|library|marker_sync
@@ -5995,6 +6040,7 @@ address|target_cpp|ownership|note
 619af8|src/game/library_msvc500_fid.cpp|library|marker_sync
 619b34|src/game/library_msvc500_fid.cpp|library|marker_sync
 619b71|src/game/library_msvc500_fid.cpp|library|marker_sync
+619bca|src/game/library_msvc500_oracle.cpp|library|marker_sync
 619c12|src/game/library_msvc500_fid.cpp|library|marker_sync
 619c6b|src/game/library_msvc500_fid.cpp|library|marker_sync
 619ccf|src/game/library_msvc500_fid.cpp|library|marker_sync
@@ -6050,6 +6096,7 @@ address|target_cpp|ownership|note
 61d6f6|src/game/library_msvc500_fid.cpp|library|marker_sync
 61d72a|src/game/library_msvc500_fid.cpp|library|marker_sync
 61d7e5|src/game/library_msvc500_fid.cpp|library|marker_sync
+61d917|src/game/library_msvc500_oracle.cpp|library|marker_sync
 61d927|src/game/library_msvc500_fid.cpp|library|marker_sync
 61da22|src/game/library_msvc500_fid.cpp|library|marker_sync
 61db87|src/game/library_msvc500_fid.cpp|library|marker_sync
@@ -6134,6 +6181,7 @@ address|target_cpp|ownership|note
 622bcd|src/game/library_msvc500_fid.cpp|library|marker_sync
 622dfc|src/game/library_msvc500_fid.cpp|library|marker_sync
 622f2b|src/game/library_msvc500_fid.cpp|library|marker_sync
+623006|src/game/library_msvc500_oracle.cpp|library|marker_sync
 623099|src/game/library_msvc500_fid.cpp|library|marker_sync
 6230cc|src/game/library_msvc500_fid.cpp|library|marker_sync
 623160|src/game/library_msvc500_fid.cpp|library|marker_sync

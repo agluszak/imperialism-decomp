@@ -1271,3 +1271,26 @@ headers before splicing.
     (QueueDepot/QueuePortConstructionOrder declared 4-arg; `RET 8` proves 2) is safe to
     correct on the base + stub when no manual overrides/callers exist -- fixing it unblocked
     Rail/Port to 100%.
+
+86. **A FID miss is not evidence of game code — the relocation-masked `.obj` matcher is
+    the authoritative identity oracle.** Ghidra FID has minimum-length/score thresholds,
+    so it silently skips small/aliased CRT/MFC functions (rand at 0x005e83f0 kept the
+    invented name `GenerateThreadLocalRandom15`, no `_rand` symbol, no library ownership).
+    The durable fix is `just build-library-oracle`: parse the vendored
+    `libcmt.lib`/`nafxcw.lib` COFF members, mask each function's relocation fields and trim
+    trailing 0xCC/0x90 padding to a normal form, and exact-match executable function bytes
+    against it — raw bytes differ (linker-assigned addresses) but the masked bodies are
+    equal. Hard-won parser details: (a) function extents come from **EXTERNAL symbols
+    only** — STATIC symbols are internal jump-table labels (memmove.obj is one 821-byte
+    COMDAT section full of `LeadUpVec`/`UnwindUp*` labels; bounding on them truncates the
+    function to 100 bytes). (b) MS archive longnames are **NUL-terminated**, and the
+    offset-0 object member is `/0` (don't skip it). (c) Ghidra function sizes exclude the
+    object's trailing alignment padding, so trim both sides to the last real instruction.
+    (d) **Trivial bodies collide**: an empty ctor/dtor or `return 0` is byte-identical
+    across many classes, so any normal form matched by >1 executable address is
+    non-discriminative — demote to review, never auto-name by body alone. (e) Auto-convert
+    unowned rows to library only inside the dense range and only when the invented name is
+    unreferenced in manual source (else removing its stub breaks the link). The oracle
+    found ~1100 confident identities incl. 48 FID-missed conversions and 25 game-code
+    mislabels (13 libcmt float internals ported as `bignum96_math.cpp`). `just
+    library-identify 0xADDR` surfaces all of this; `library-identity-gate` pins it.

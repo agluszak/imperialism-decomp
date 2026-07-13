@@ -43,14 +43,6 @@ undefined4 memset(void)
   return 0;
 }
 
-// ghidra_name EstablishSehFrameProlog
-// ghidra_proto undefined EstablishSehFrameProlog()
-// FUNCTION: IMPERIALISM 0x005e9ae8
-undefined4 EstablishSehFrameProlog(void)
-{
-  return 0;
-}
-
 // ghidra_name exit
 // ghidra_proto void __cdecl exit(int _Code)
 // FUNCTION: IMPERIALISM 0x005e9bb0
@@ -71,14 +63,6 @@ undefined4 RunCrtExitHandlersAndTerminate(void)
 // ghidra_proto undefined CrtThreadExitWithTlsCleanup()
 // FUNCTION: IMPERIALISM 0x005ea4e0
 undefined4 CrtThreadExitWithTlsCleanup(void)
-{
-  return 0;
-}
-
-// ghidra_name ClassifyDigitCharPlusOne
-// ghidra_proto undefined ClassifyDigitCharPlusOne()
-// FUNCTION: IMPERIALISM 0x005ea8b0
-undefined4 ClassifyDigitCharPlusOne(void)
 {
   return 0;
 }
@@ -131,38 +115,6 @@ undefined4 WrapperFor_LeaveIndexedCriticalSection_At005eae44(void)
   return 0;
 }
 
-// ghidra_name setdefaultprecision
-// ghidra_proto undefined setdefaultprecision()
-// FUNCTION: IMPERIALISM 0x005ec6c0
-undefined4 setdefaultprecision(void)
-{
-  return 0;
-}
-
-// ghidra_name IsRuntimeFloatThresholdNegative_006739C8
-// ghidra_proto undefined IsRuntimeFloatThresholdNegative_006739C8()
-// FUNCTION: IMPERIALISM 0x005ec6e0
-undefined4 IsRuntimeFloatThresholdNegative_006739C8(void)
-{
-  return 0;
-}
-
-// ghidra_name ProbeProcessorFeatureApiOrFallbackInit
-// ghidra_proto undefined ProbeProcessorFeatureApiOrFallbackInit()
-// FUNCTION: IMPERIALISM 0x005ec730
-undefined4 ProbeProcessorFeatureApiOrFallbackInit(void)
-{
-  return 0;
-}
-
-// ghidra_name RotateNumericStringAtExponentAndInsertDecimalPoint
-// ghidra_proto undefined RotateNumericStringAtExponentAndInsertDecimalPoint()
-// FUNCTION: IMPERIALISM 0x005ec760
-undefined4 RotateNumericStringAtExponentAndInsertDecimalPoint(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_ParseDecimalTextAndConvertWithProfileA_At005ec850
 // ghidra_proto undefined WrapperFor_ParseDecimalTextAndConvertWithProfileA_At005ec850()
 // FUNCTION: IMPERIALISM 0x005ec850
@@ -179,14 +131,6 @@ undefined4 WrapperFor_ParseDecimalTextAndConvertWithProfileB_At005ec882(void)
   return 0;
 }
 
-// ghidra_name FormatNumericStringAndAppendWithFlags
-// ghidra_proto undefined FormatNumericStringAndAppendWithFlags()
-// FUNCTION: IMPERIALISM 0x005ec8b0
-undefined4 FormatNumericStringAndAppendWithFlags(void)
-{
-  return 0;
-}
-
 // ghidra_name AppendExponentSuffixToNumericBuffer
 // ghidra_proto undefined AppendExponentSuffixToNumericBuffer()
 // FUNCTION: IMPERIALISM 0x005ec930
@@ -195,26 +139,10 @@ undefined4 AppendExponentSuffixToNumericBuffer(void)
   return 0;
 }
 
-// ghidra_name FormatNumericStringAndAppend
-// ghidra_proto undefined FormatNumericStringAndAppend()
-// FUNCTION: IMPERIALISM 0x005eca30
-undefined4 FormatNumericStringAndAppend(void)
-{
-  return 0;
-}
-
 // ghidra_name AppendFractionalDigitsAndPadNumericBuffer
 // ghidra_proto undefined AppendFractionalDigitsAndPadNumericBuffer()
 // FUNCTION: IMPERIALISM 0x005ecaa0
 undefined4 AppendFractionalDigitsAndPadNumericBuffer(void)
-{
-  return 0;
-}
-
-// ghidra_name FormatNumericStringWithWidthAndTrimRules
-// ghidra_proto undefined FormatNumericStringWithWidthAndTrimRules()
-// FUNCTION: IMPERIALISM 0x005ecb60
-undefined4 FormatNumericStringWithWidthAndTrimRules(void)
 {
   return 0;
 }
@@ -291,38 +219,6 @@ undefined4 RunLocalExceptionFilterChainAndUnwind(void)
   return 0;
 }
 
-// ghidra_name MapFpControlLowByteToRuntimeBits_EntryA
-// ghidra_proto undefined MapFpControlLowByteToRuntimeBits_EntryA()
-// FUNCTION: IMPERIALISM 0x005f3f90
-undefined4 MapFpControlLowByteToRuntimeBits_EntryA(void)
-{
-  return 0;
-}
-
-// ghidra_name MapFpControlLowByteToRuntimeBits_EntryB
-// ghidra_proto undefined MapFpControlLowByteToRuntimeBits_EntryB()
-// FUNCTION: IMPERIALISM 0x005f3fb0
-undefined4 MapFpControlLowByteToRuntimeBits_EntryB(void)
-{
-  return 0;
-}
-
-// ghidra_name MergeMappedFpControlWithMaskAndStore
-// ghidra_proto undefined MergeMappedFpControlWithMaskAndStore()
-// FUNCTION: IMPERIALISM 0x005f3fd0
-undefined4 MergeMappedFpControlWithMaskAndStore(void)
-{
-  return 0;
-}
-
-// ghidra_name MergeMappedFpControlWithMaskClearingBit80000
-// ghidra_proto undefined MergeMappedFpControlWithMaskClearingBit80000()
-// FUNCTION: IMPERIALISM 0x005f4010
-undefined4 MergeMappedFpControlWithMaskClearingBit80000(void)
-{
-  return 0;
-}
-
 // ghidra_name MapFpControlWordToRuntimeControlBits
 // ghidra_proto undefined MapFpControlWordToRuntimeControlBits()
 // FUNCTION: IMPERIALISM 0x005f4060
@@ -343,14 +239,6 @@ undefined4 StoreMappedFpControlBits_NoOp(void)
 // ghidra_proto undefined MapFpControlLowByteToRuntimeBits()
 // FUNCTION: IMPERIALISM 0x005f4190
 undefined4 MapFpControlLowByteToRuntimeBits(void)
-{
-  return 0;
-}
-
-// ghidra_name ConvertExtendedFloatToDecimalState
-// ghidra_proto undefined ConvertExtendedFloatToDecimalState()
-// FUNCTION: IMPERIALISM 0x005f4600
-undefined4 ConvertExtendedFloatToDecimalState(void)
 {
   return 0;
 }
@@ -383,14 +271,6 @@ undefined4 ParseDecimalTextAndConvertWithProfileA(void)
 // ghidra_proto undefined ParseDecimalTextAndConvertWithProfileB()
 // FUNCTION: IMPERIALISM 0x005f4910
 undefined4 ParseDecimalTextAndConvertWithProfileB(void)
-{
-  return 0;
-}
-
-// ghidra_name BuildDecimalConversionStateFromFpInput
-// ghidra_proto undefined BuildDecimalConversionStateFromFpInput()
-// FUNCTION: IMPERIALISM 0x005f49f0
-undefined4 BuildDecimalConversionStateFromFpInput(void)
 {
   return 0;
 }
@@ -535,30 +415,6 @@ undefined4 RaiseRuntimeSignalAndInvokeHandler(void)
 // ghidra_proto undefined ParseFloatingPointTextToInternalState()
 // FUNCTION: IMPERIALISM 0x005f7a30
 undefined4 ParseFloatingPointTextToInternalState(void)
-{
-  return 0;
-}
-
-// ghidra_name ConvertExtendedFloatToStringInternal
-// ghidra_proto undefined ConvertExtendedFloatToStringInternal()
-// FUNCTION: IMPERIALISM 0x005f8210
-undefined4 ConvertExtendedFloatToStringInternal(void)
-{
-  return 0;
-}
-
-// ghidra_name MultiplyExtendedFloatByTableFactor
-// ghidra_proto undefined MultiplyExtendedFloatByTableFactor()
-// FUNCTION: IMPERIALISM 0x005f8f10
-undefined4 MultiplyExtendedFloatByTableFactor(void)
-{
-  return 0;
-}
-
-// ghidra_name ApplyPowerOf10ExponentToExtendedFloat
-// ghidra_proto undefined ApplyPowerOf10ExponentToExtendedFloat()
-// FUNCTION: IMPERIALISM 0x005f91d0
-undefined4 ApplyPowerOf10ExponentToExtendedFloat(void)
 {
   return 0;
 }
@@ -755,14 +611,6 @@ undefined4 WrapperFor_EndDialog_At006054c3(void)
   return 0;
 }
 
-// ghidra_name ConstructTTaskBaseState
-// ghidra_proto undefined PostCustomMessage36AAndNotifyThread()
-// FUNCTION: IMPERIALISM 0x006055d0
-undefined4 PostCustomMessage36AAndNotifyThread(void)
-{
-  return 0;
-}
-
 // ghidra_name HandleWndProcExceptionWithNodeTypeDispatch_00605613
 // ghidra_proto undefined HandleWndProcExceptionWithNodeTypeDispatch_00605613()
 // FUNCTION: IMPERIALISM 0x00605613
@@ -803,34 +651,10 @@ undefined4 AfxGetThread(void)
   return 0;
 }
 
-// ghidra_name DeleteField24ObjectIfPresent_006063b8
-// ghidra_proto undefined DeleteField24ObjectIfPresent_006063b8()
-// FUNCTION: IMPERIALISM 0x006063b8
-undefined4 DeleteField24ObjectIfPresent_006063b8(void)
-{
-  return 0;
-}
-
 // ghidra_name OrphanLeaf_NoCall_Ins04_005adc30
 // ghidra_proto undefined __thiscall OrphanLeaf_NoCall_Ins04_005adc30(int param_1)
 // FUNCTION: IMPERIALISM 0x00606451
 undefined4 OrphanLeaf_NoCall_Ins04_005adc30(void)
-{
-  return 0;
-}
-
-// ghidra_name ConstructTTaskBaseState
-// ghidra_proto undefined WrapperFor_GetOrCreateCWndFromHandle_At00606934()
-// FUNCTION: IMPERIALISM 0x00606934
-undefined4 WrapperFor_GetOrCreateCWndFromHandle_At00606934(void)
-{
-  return 0;
-}
-
-// ghidra_name ConstructTTaskBaseState
-// ghidra_proto undefined PumpMessage()
-// FUNCTION: IMPERIALISM 0x0060694f
-undefined4 PumpMessage(void)
 {
   return 0;
 }
@@ -879,14 +703,6 @@ undefined4 TMacViewMgr_Slot10_Target(void)
 // ghidra_proto undefined TMacViewMgr_Slot11_Target()
 // FUNCTION: IMPERIALISM 0x00606c5f
 undefined4 TMacViewMgr_Slot11_Target(void)
-{
-  return 0;
-}
-
-// ghidra_name CCmdTarget::RestoreWaitCursor
-// ghidra_proto void __thiscall RestoreWaitCursor()
-// FUNCTION: IMPERIALISM 0x00606c91
-undefined4 RestoreWaitCursor(void)
 {
   return 0;
 }
@@ -971,14 +787,6 @@ undefined4 TMacViewMgr_Slot13_Target(void)
   return 0;
 }
 
-// ghidra_name WrapperFor_EnsureMfcModuleThreadStateCreated_At00606d1b
-// ghidra_proto undefined WrapperFor_EnsureMfcModuleThreadStateCreated_At00606d1b()
-// FUNCTION: IMPERIALISM 0x00606d1b
-undefined4 WrapperFor_EnsureMfcModuleThreadStateCreated_At00606d1b(void)
-{
-  return 0;
-}
-
 // ghidra_name CCmdUI
 // ghidra_proto undefined __thiscall ??0CCmdUI@@QAE@XZ(void)
 // FUNCTION: IMPERIALISM 0x00606d27
@@ -991,14 +799,6 @@ undefined4 XZ(void)
 // ghidra_proto undefined WrapperFor_ThrowMfcResourceException_At00606f4e()
 // FUNCTION: IMPERIALISM 0x00606f4e
 undefined4 WrapperFor_ThrowMfcResourceException_At00606f4e(void)
-{
-  return 0;
-}
-
-// ghidra_name TMacViewMgr_Slot39_Target
-// ghidra_proto undefined TMacViewMgr_Slot39_Target()
-// FUNCTION: IMPERIALISM 0x00607090
-undefined4 TMacViewMgr_Slot39_Target(void)
 {
   return 0;
 }

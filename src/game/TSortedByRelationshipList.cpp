@@ -16,7 +16,7 @@ TSortedByRelationshipList::TSortedByRelationshipList() : TSortedPtrList() {}
 // TSortedByRelationshipList::`scalar deleting destructor'
 
 // Not-yet-recovered free functions this file calls into.
-extern undefined4 GenerateThreadLocalRandom15(void);
+extern "C" int __cdecl rand(void);
 
 // FUNCTION: IMPERIALISM 0x004ee5e0
 short TSortedByRelationshipList::Compare(void* a, void* b) {
@@ -28,5 +28,5 @@ short TSortedByRelationshipList::Compare(void* a, void* b) {
   if (aKey < bKey) {
     return -1;
   }
-  return static_cast<short>(static_cast<int>(GenerateThreadLocalRandom15()) % 2 != 0 ? 1 : -1);
+  return static_cast<short>(static_cast<int>(rand()) % 2 != 0 ? 1 : -1);
 }

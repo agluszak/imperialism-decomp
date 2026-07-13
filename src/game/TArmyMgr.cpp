@@ -38,7 +38,7 @@
 
 IMPLEMENT_DYNCREATE(TArmyMgr, TObject)
 
-extern undefined4 GenerateThreadLocalRandom15(void);
+extern "C" int __cdecl rand(void);
 
 // Own-source function (not a TArmyMgr method -- ground truth doesn't touch `this`).
 // Classifies a map-click as: 6 (already visited this pass), 0 (blocked -- dialog/order
@@ -227,7 +227,7 @@ undefined TArmyMgr::ProcessTileUnitListsAndApplyRandomStatusUpdates() {
       }
     }
     item->field4 = g_abStackCompositionClassTable[minClass + maxClass * 4];
-    int roll = GenerateThreadLocalRandom15();
+    int roll = rand();
     item->field6 = static_cast<short>((item->field4 << 8) + (roll & 0xff));
   }
 
@@ -565,7 +565,7 @@ undefined TArmyMgr::RedistributeUnitOrderQueueToRandomAdjacentRegion(TArmyStack*
     return 0;
   }
 
-  short chosenRegion = candidateRegions[GenerateThreadLocalRandom15() % candidateCount];
+  short chosenRegion = candidateRegions[rand() % candidateCount];
   stack->cursor18 = stack->head14;
   TArmyStackUnitNode* node = stack->cursor18;
   TUnit* unit = (node != nullptr) ? node->unit : nullptr;

@@ -11,7 +11,7 @@
 #include "game/ui_invalidation_guard.h"
 #include "game/TShip.h" // GetResourceDescriptorWeightWord0ByType
 
-extern undefined4 GenerateThreadLocalRandom15(void);
+extern "C" int __cdecl rand(void);
 
 static const char kUCityCppPath[] = "D:\\Ambit\\Cross\\UCity.cpp";
 static const unsigned int kAddrClassDescTCity = 0x0064f338;
@@ -328,7 +328,7 @@ int TCity::AllocateRandomResourceCountsWithinWeightBudget(short maxWeight, short
     }
   }
   while (remaining > 0 && static_cast<short>(allocatedWeight) < maxWeight) {
-    int roll = static_cast<int>(GenerateThreadLocalRandom15()) % remaining + 1;
+    int roll = static_cast<int>(rand()) % remaining + 1;
     int type = 0;
     for (;;) {
       if (GetResourceTypeRandomDrawBlockFlag(static_cast<short>(type)) == 0) {
@@ -341,7 +341,7 @@ int TCity::AllocateRandomResourceCountsWithinWeightBudget(short maxWeight, short
     }
     short weight = GetResourceDescriptorWeightWord0ByType(static_cast<short>(type));
     if (maxWeight < weight && GetResourceDescriptorWeightWord0ByType(static_cast<short>(type)) - 1 <
-                                  static_cast<int>(GenerateThreadLocalRandom15()) % maxWeight) {
+                                  static_cast<int>(rand()) % maxWeight) {
       break;
     }
     outCounts[type] = static_cast<short>(outCounts[type] + 1);

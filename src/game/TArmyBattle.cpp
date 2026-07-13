@@ -24,7 +24,7 @@
 #include "game/TViewMgr.h"
 #include "game/global_data_tables.h"
 
-extern undefined4 GenerateThreadLocalRandom15(void);
+extern "C" int __cdecl rand(void);
 
 // SYNTHETIC: IMPERIALISM 0x004a5c50
 // TArmyBattle::`scalar deleting destructor'
@@ -89,7 +89,7 @@ void TArmyBattle::InitializeBattleSetupAndMaybeDispatchTurnEventED8(TArmyStack* 
       ourSideWatchFlag != 0) {
     g_nTurnCooldownDeferCounter006A43C4 = 0;
     g_pSfxPlaybackSystem->RequestAudioPresetChangeWithDeferredApply(
-        static_cast<int>(GenerateThreadLocalRandom15()) % 3 + 6, 0); // battle cue 6..8
+        static_cast<int>(rand()) % 3 + 6, 0); // battle cue 6..8
     g_pUiRuntimeContext->DispatchTurnEventSlot4C(0xed8, 0);
     TTacArmyView* battleView = static_cast<TTacArmyView*>(
         g_pDisplayMgr->activeDialog->ResolveControlByTag(0x444c4f47 /* 'DLOG' */));

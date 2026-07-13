@@ -45,6 +45,10 @@ DEFAULT_OVERRIDES = "config/msvc500_library_overrides.csv"
 DEFAULT_SYMBOLS = "config/symbols.csv"
 DEFAULT_OWNERSHIP = "config/function_ownership.csv"
 DEFAULT_BASELINE = "config/library_identity_gate_baseline.json"
+DEFAULT_ORACLE = "config/msvc500_library_oracle.csv"
+DEFAULT_GAMECODE_ALLOWLIST = "config/library_oracle_gamecode_allowlist.csv"
+
+APPLY_KINDS = {"unique", "unique-via-existing"}
 
 IDENT_RE = re.compile(r"[A-Za-z_][A-Za-z0-9_]*")
 
@@ -55,6 +59,8 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--symbols", default=DEFAULT_SYMBOLS)
     parser.add_argument("--ownership", default=DEFAULT_OWNERSHIP)
     parser.add_argument("--baseline", default=DEFAULT_BASELINE)
+    parser.add_argument("--oracle", default=DEFAULT_ORACLE)
+    parser.add_argument("--gamecode-allowlist", default=DEFAULT_GAMECODE_ALLOWLIST)
     parser.add_argument(
         "--write-baseline",
         action="store_true",
@@ -101,6 +107,77 @@ def index_ownership(ownership_path: Path) -> dict[int, str]:
         except ValueError:
             continue
     return out
+
+
+def index_ownership_full(ownership_path: Path) -> dict[int, tuple[str, str]]:
+    out: dict[int, tuple[str, str]] = {}
+    for row in read_pipe_rows(ownership_path):
+        addr_text = (row.get("address") or "").strip()
+        if not addr_text:
+            continue
+        try:
+            out[int(addr_text, 16)] = (
+                (row.get("target_cpp") or "").strip(),
+                (row.get("ownership") or "").strip().lower(),
+            )
+        except ValueError:
+            continue
+    return out
+
+
+def load_gamecode_allowlist(path: Path) -> set[int]:
+    if not path.is_file():
+        return set()
+    out: set[int] = set()
+    for row in read_pipe_rows(path):
+        addr_text = (row.get("address") or "").strip()
+        if not addr_text:
+            continue
+        try:
+            out.add(int(addr_text, 16))
+        except ValueError:
+            continue
+    return out
+
+
+def check_oracle_gamecode_conflicts(
+    oracle_path: Path, ownership_full: dict[int, tuple[str, str]], allowlist: set[int]
+) -> list[str]:
+    """A high-confidence unique library match must not be labeled manual game code.
+
+    This is the mechanical form of 'unmatched-by-FID != game code': the object
+    matcher independently proves the byte identity, so a confident unique match
+    owned by a game .cpp (e.g. libcmt float internals ported as bignum96_math.cpp)
+    is a mislabel. Pre-existing ones are acknowledged in the allowlist; a NEW one
+    (regression) fails the gate.
+    """
+    if not oracle_path.is_file():
+        return []
+    problems: list[str] = []
+    for row in read_pipe_rows(oracle_path):
+        if (row.get("match_kind") or "") not in APPLY_KINDS:
+            continue
+        if (row.get("confidence") or "") != "high":
+            continue
+        addr_text = (row.get("address") or "").strip()
+        if not addr_text:
+            continue
+        try:
+            address = int(addr_text, 16)
+        except ValueError:
+            continue
+        owner = ownership_full.get(address)
+        if owner is None or owner[1] == "library":
+            continue  # unowned or already library — not a game-code mislabel
+        if address in allowlist:
+            continue
+        problems.append(
+            f"0x{address:08x}: high-confidence library match {row.get('symbol')!r} "
+            f"({row.get('member')}) is labeled game code in {owner[0]} (ownership={owner[1]}). "
+            f"A FID/heuristic miss is not evidence of game ownership — move it to library, "
+            f"or acknowledge in {DEFAULT_GAMECODE_ALLOWLIST}."
+        )
+    return problems
 
 
 def check_override(
@@ -165,6 +242,15 @@ def main() -> int:
     problems: list[str] = []
     for ov in overrides:
         problems.extend(check_override(ov, symbols, ownership))
+
+    # Oracle-aware check: confident unique library matches must not be game code.
+    problems.extend(
+        check_oracle_gamecode_conflicts(
+            resolve_repo_path(repo_root, args.oracle),
+            index_ownership_full(ownership_path),
+            load_gamecode_allowlist(resolve_repo_path(repo_root, args.gamecode_allowlist)),
+        )
+    )
 
     baseline_count = 0
     if baseline_path.is_file():

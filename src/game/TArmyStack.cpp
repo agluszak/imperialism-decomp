@@ -4,7 +4,7 @@
 #include "game/global_data_tables.h"
 #include "game/ui_invalidation_guard.h"
 
-extern undefined4 GenerateThreadLocalRandom15(void);
+extern "C" int __cdecl rand(void);
 
 // Duplicates TArmyMgr.cpp's own (file-static) IsUnitMeterEligible check -- ground truth
 // repeats this same inline test across every meter-related function in this family
@@ -142,7 +142,7 @@ void TArmyStack::ApplyRandomizedMeterDecayToEligibleLinkedEntries(int weightedSu
        decayUnit = this->AdvanceCursorAndGetUnit()) {
     TMilitaryUnit* milUnit = static_cast<TMilitaryUnit*>(decayUnit);
     if (milUnit->field_34 > 0 && (milUnit->field_3A & 2) == 0) {
-      int roll = static_cast<int>(GenerateThreadLocalRandom15());
+      int roll = static_cast<int>(rand());
       if ((milUnit->field_3A & 1) != 0) {
         roll = (kDecayScalePercentByRound[counter] * roll) / 100;
       }

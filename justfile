@@ -106,7 +106,7 @@ sync-ownership:
 # "edit markers -> regen-stubs -> build" is safe.
 [doc('MUTATES: src/autogen/stubs/. Regenerate stubs (runs sync-ownership + symbols-integrity-gate + ownership-integrity-gate first)')]
 [group('sync')]
-regen-stubs: apply-library-overrides sync-ownership symbols-integrity-gate ownership-integrity-gate
+regen-stubs: apply-library-overrides apply-library-oracle sync-ownership symbols-integrity-gate ownership-integrity-gate
   uv run python -m tools.stubgen \
     --name-overrides "{{name_overrides}}" \
     --ownership-csv "{{function_ownership}}"
@@ -1086,6 +1086,21 @@ apply-library-overrides *args:
 [group('ghidra-inspect')]
 library-identify address:
   uv run python -m tools.mfc.library_identify "{{address}}"
+
+# MUTATES: config/msvc500_library_oracle.csv. Rebuild the relocation-masked object
+# identity oracle by matching the original executable against the vendored
+# libcmt.lib/nafxcw.lib COFF members. Needs the original binary (ORIGINAL_BINARY).
+[group('rewrite')]
+build-library-oracle *args:
+  uv run python -m tools.mfc.build_library_oracle {{args}}
+
+# MUTATES: config/symbols.csv + src/game/library_msvc500_oracle.cpp + review CSV.
+# Project confident, unique oracle matches into the derived artifacts (upgrade
+# library symbols/prototypes; convert unowned FID-missed CRT/MFC funcs to library).
+# Idempotent; runs automatically inside regen-stubs. Precedence: override > oracle.
+[group('rewrite')]
+apply-library-oracle *args:
+  uv run python -m tools.mfc.apply_library_oracle {{args}}
 
 # MUTATES: the given paths (clang-format).
 [group('rewrite')]

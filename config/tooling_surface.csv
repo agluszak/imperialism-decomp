@@ -104,3 +104,5 @@ module|tools.workflow.check_function_ownership_integrity|just:ownership-integrit
 module|tools.mfc.apply_library_overrides|just:apply-library-overrides|Project reviewed library-identity overrides onto symbols.csv + LIBRARY markers
 module|tools.mfc.library_identify|just:library-identify|Per-address library-identity diagnostic (symbols/ownership/override/FID/oracle verdict)
 module|tools.workflow.check_library_identity|just:library-identity-gate|Semantic gate: reviewed library overrides applied + ownership=library + ratchet
+module|tools.mfc.apply_library_oracle|just:apply-library-oracle|Project confident oracle matches into symbols.csv + LIBRARY markers (upgrade/convert)
+module|tools.mfc.build_library_oracle|just:build-library-oracle|Relocation-masked object matcher: match exe functions to libcmt/nafxcw COFF members

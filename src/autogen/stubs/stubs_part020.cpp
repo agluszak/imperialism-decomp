@@ -851,14 +851,6 @@ undefined4 WrapperFor_Ordinal13_FromField1C_At005e5561(void)
   return 0;
 }
 
-// ghidra_name DispatchCallbackD8_WithMinusOne_At005e5597
-// ghidra_proto undefined DispatchCallbackD8_WithMinusOne_At005e5597()
-// FUNCTION: IMPERIALISM 0x005e5597
-undefined4 DispatchCallbackD8_WithMinusOne_At005e5597(void)
-{
-  return 0;
-}
-
 // ghidra_name MoveListBoxEntryPreserveItemData
 // ghidra_proto undefined MoveListBoxEntryPreserveItemData()
 // FUNCTION: IMPERIALISM 0x005e5661
@@ -1131,26 +1123,10 @@ undefined4 NoOpRuntimeCallback_005e717b(void)
   return 0;
 }
 
-// ghidra_name fpmath
-// ghidra_proto void __cdecl fpmath(int param_1)
-// FUNCTION: IMPERIALISM 0x005e7350
-undefined4 fpmath(void)
-{
-  return 0;
-}
-
 // ghidra_name NoOpCrtThreadLifecycleHook
 // ghidra_proto undefined NoOpCrtThreadLifecycleHook()
 // FUNCTION: IMPERIALISM 0x005e7370
 undefined4 NoOpCrtThreadLifecycleHook(void)
-{
-  return 0;
-}
-
-// ghidra_name InitializeFpmathAmsgExitHandlerTable
-// ghidra_proto undefined InitializeFpmathAmsgExitHandlerTable()
-// FUNCTION: IMPERIALISM 0x005e7380
-undefined4 InitializeFpmathAmsgExitHandlerTable(void)
 {
   return 0;
 }
