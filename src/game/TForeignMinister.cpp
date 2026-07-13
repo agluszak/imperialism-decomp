@@ -6,6 +6,8 @@
 #include "game/TSortedByRelationshipList.h"
 #include "game/TDiplomacyMgr.h"
 #include "game/global_data_tables.h"
+#include "game/TMapMgr.h"
+#include "game/TSimMgr.h"
 #include "game/mfc.h"
 #include "game/TStream.h"
 
@@ -300,7 +302,37 @@ void TForeignMinister::MinisterSlot17() {}
 void TForeignMinister::MinisterSlot1E() {}
 
 // FUNCTION: IMPERIALISM 0x005308b0
-void TForeignMinister::MinisterSlot1C() {}
+char TForeignMinister::EvaluateLocalizedScoreThresholdPredicateForNationValue(int nationCode) {
+  // Two difficulty-indexed threshold rows (A = [difficulty], B = [difficulty + 5]).
+  int thresholds[10] = {0x15, 0x12, 0xf, 0xd, 0xb, 0x1b, 0x17, 0x13, 0x10, 0xe};
+  int difficulty = g_pSimMgr->redrawEnabled; // [g_pSimMgr + 0x40] scenario/difficulty index
+  int thresholdA = thresholds[difficulty];
+  int thresholdB = thresholds[difficulty + 5];
+  char result = 0;
+
+  TGreatPower* ownerGP = reinterpret_cast<TGreatPower*>(this->ownerContextAt04);
+  char linked = g_pGlobalMapState->AreNationsBorderLinked(ownerGP->nationSlot, nationCode);
+  if (linked == 0) {
+    if (thresholdB < ownerGP->SumNavyOrderPriorityForNationSlot86()) {
+      int scoreA = static_cast<int>(ownerGP->ComputeNavyScoreRatioVsNation(nationCode));
+      int scoreB = static_cast<int>(ownerGP->ComputeNavyScoreStandingRatioVsNation(nationCode));
+      float average = static_cast<float>((scoreA + scoreB) / 2);
+      if (ownerGP->ComputeMinisterSkillFloatSlot88() <= average) {
+        result = 1;
+      }
+    }
+  } else {
+    if (thresholdA < ownerGP->ComputeSelectedMilitaryPowerScore()) {
+      int scoreA = static_cast<int>(ownerGP->ComputeArmyScoreRatioVsNation(nationCode));
+      int scoreB = static_cast<int>(ownerGP->ComputeArmyScoreStandingRatioVsNation(nationCode));
+      float average = static_cast<float>((scoreA + scoreB) / 2);
+      if (ownerGP->ComputeMinisterSkillFloatSlot88() <= average) {
+        return 1;
+      }
+    }
+  }
+  return result;
+}
 
 // FUNCTION: IMPERIALISM 0x00530b30
 void TForeignMinister::MinisterSlot1D() {}

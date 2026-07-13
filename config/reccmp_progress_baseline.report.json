@@ -12850,7 +12850,8 @@
     },
     {
       "address": "0x4e0610",
-      "matching": 1.0,
+      "effective": true,
+      "matching": 0.42857142857142855,
       "name": "TGreatPower::ReturnFalseNationStateActionStub_8a",
       "type": 1
     },
@@ -12898,7 +12899,7 @@
     },
     {
       "address": "0x4e09a0",
-      "matching": 0.5421686746987951,
+      "matching": 0.5180722891566265,
       "name": "TGreatPower::ComputeCityOrderCapabilityAggregateScore",
       "type": 1
     },
@@ -18636,7 +18637,7 @@
     },
     {
       "address": "0x5308b0",
-      "matching": 0.0,
+      "matching": 0.296875,
       "name": "TForeignMinister::EvaluateLocalizedScoreThresholdPredicateForNationValue",
       "type": 1
     },
@@ -31707,7 +31708,7 @@
     },
     {
       "address": "0x5ba0e0",
-      "matching": 1.0,
+      "matching": 0.8181818181818182,
       "name": "BuildInterNationEventSummaryRowsForAdvisorDialog_Impl",
       "type": 1
     },
