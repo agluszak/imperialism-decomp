@@ -116,10 +116,12 @@ public:
   //     0x698b50 inside ProcessTurnInstructionStreamAndFinalizePhase; each reads one or
   //     more big-endian tokens from the cursor and mutates this manager / global state) ---
   void
-  HandleTurnInstruction_Year_UpdateScenarioYearFieldScaledBy4(void* pInstructionRaw); // 0x582ed0
-  void HandleTurnInstruction_Flag_SetNationFlagAndRefresh(void* pInstructionRaw);     // 0x583400
-  void HandleTurnInstruction_Cash_SetNationCash(void* pInstructionRaw);               // 0x583360
-  void HandleTurnInstruction_Tran_SetNationTransportStat(void* pInstructionRaw);      // 0x582860
+  HandleTurnInstruction_Year_UpdateScenarioYearFieldScaledBy4(void* pInstructionRaw);  // 0x582ed0
+  void HandleTurnInstruction_Flag_SetNationFlagAndRefresh(void* pInstructionRaw);      // 0x583400
+  void HandleTurnInstruction_Cash_SetNationCash(void* pInstructionRaw);                // 0x583360
+  void HandleTurnInstruction_Tran_SetNationTransportStat(void* pInstructionRaw);       // 0x582860
+  void HandleTurnInstruction_Tclr_ResetNationRelationBars(void* pInstructionRaw);      // 0x583670
+  void HandleTurnInstruction_Prov_ApplyProvinceAssignmentEntry(void* pInstructionRaw); // 0x582f20
 
   // --- fields (offsets are load-bearing: referenced from many other classes via
   //     g_pSimMgr; do not rename or move) ---

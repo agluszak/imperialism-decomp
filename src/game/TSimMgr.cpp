@@ -1053,6 +1053,31 @@ void TSimMgr::HandleTurnInstruction_Year_UpdateScenarioYearFieldScaledBy4(void* 
   quarterGateTick2c = static_cast<short>(token) * 4;
 }
 
+// Reads a big-endian short city-record index and a big-endian nation tag, then dispatches
+// the province formation-entry action on the global map state.
+// FUNCTION: IMPERIALISM 0x00582f20
+void TSimMgr::HandleTurnInstruction_Prov_ApplyProvinceAssignmentEntry(void* pInstructionRaw) {
+  STurnInstructionCursor* instruction = static_cast<STurnInstructionCursor*>(pInstructionRaw);
+  unsigned int* cursor = instruction->tokenCursor;
+
+  unsigned int cityToken = *cursor;
+  cursor = cursor + 1;
+  instruction->tokenCursor = cursor;
+  unsigned char* craw = reinterpret_cast<unsigned char*>(&cityToken);
+  craw[0] = craw[3];
+  craw[1] = craw[2];
+
+  unsigned int nationToken = *cursor;
+  cursor = cursor + 1;
+  instruction->tokenCursor = cursor;
+  unsigned char* nraw = reinterpret_cast<unsigned char*>(&nationToken);
+  nraw[0] = nraw[3];
+  nraw[1] = nraw[2];
+
+  g_pGlobalMapState->DispatchFormationEntryActionsAndMaybeCreateTurnEvent12(
+      static_cast<short>(cityToken), static_cast<int>(nationToken));
+}
+
 // Reads two big-endian 32-bit tokens (nation slot, then cash amount) and writes the amount
 // into that nation's treasury field.
 // FUNCTION: IMPERIALISM 0x00583360
@@ -1101,6 +1126,32 @@ void TSimMgr::HandleTurnInstruction_Flag_SetNationFlagAndRefresh(void* pInstruct
   field6a = index;
   EnsurePictWvDataGobLoadedBySlot(index);
   g_pStrategicMapViewSystem->ReloadBitmap244AndRefreshUiCaches();
+}
+
+// Reads a big-endian 32-bit nation slot, then rebuilds that nation's resource-yield /
+// development targets and clears all 0x17 need targets back to zero.
+// FUNCTION: IMPERIALISM 0x00583670
+void TSimMgr::HandleTurnInstruction_Tclr_ResetNationRelationBars(void* pInstructionRaw) {
+  STurnInstructionCursor* instruction = static_cast<STurnInstructionCursor*>(pInstructionRaw);
+  unsigned int* cursor = instruction->tokenCursor;
+  unsigned int nationToken = *cursor;
+  instruction->tokenCursor = cursor + 1;
+  unsigned char* nraw = reinterpret_cast<unsigned char*>(&nationToken);
+  unsigned char nt = nraw[0];
+  nraw[0] = nraw[3];
+  nraw[3] = nt;
+  nt = nraw[1];
+  nraw[1] = nraw[2];
+  nraw[2] = nt;
+  int nation = static_cast<int>(nationToken);
+
+  g_apNationStates[nation]->RebuildNationResourceYieldCountersAndDevelopmentTargets();
+  int needIndex = 0;
+  do {
+    g_apNationStates[nation]->UpdateNeedTargetAndAccumulateOverCap(static_cast<short>(needIndex),
+                                                                   0);
+    ++needIndex;
+  } while (needIndex < 0x17);
 }
 
 // FUNCTION: IMPERIALISM 0x005837c0

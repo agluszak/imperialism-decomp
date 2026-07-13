@@ -1233,3 +1233,26 @@ headers before splicing.
     trailing `+ int_field` becomes FIADD (int memory operand), and the outer cast to int
     is `__ftol`. Use this shape for int<-float score/diffusion math instead of a manual
     ftol() bridge.
+
+83. **FourCC-dispatched turn-instruction handlers are TSimMgr __thiscall methods reading
+    big-endian tokens.** The 0x698b50 handler table is walked by
+    TSimMgr::ProcessTurnInstructionStreamAndFinalizePhase (0x581e60), which is reached from
+    AdvanceGlobalTurnStateMachine (TSimMgr vtable slot 0x4c) and preserves ECX across the
+    `call [table+i*4]`, so every handler shares the dispatcher's `this` = g_pSimMgr. Ghidra
+    parks a few of these under other classes (Civi was on TGreatPower) because their bodies
+    ignore `this` -- the real owner is TSimMgr. Handler arg is a cursor whose first field is
+    the current 4-byte-token read pointer (model as `struct { unsigned int* tokenCursor; }`).
+84. **The turn-instruction tokens are big-endian (Mac/CodeWarrior on-disk format) read on
+    x86 via an in-place byte swap; reproduce the swap width exactly.** Two widths seen:
+      - 16-bit high value: `raw[0]=raw[3]; raw[1]=raw[2]; (short)token`  (bytes [2..3] BE)
+      - 32-bit full value: single-reused-temp pair swaps
+        `t=raw[0];raw[0]=raw[3];raw[3]=t; t=raw[1];raw[1]=raw[2];raw[2]=t; (int)token`
+    Two simultaneous temps (`a=raw[0]; b=raw[1]; ...`) force a stack spill and drop the
+    score ~70pp; the single-temp pair-swap is what MSVC5 emits. Advance ONE cursor pointer
+    in place with a write-back after each read (`v=*cursor; cursor=cursor+1; c->tokenCursor
+    =cursor;`) -- computing `cursor+1`/`cursor+2` off a preserved base adds a `push esi` and
+    shifts every stack slot, blocking the match. Verified 100% on Year 0x582ed0 (year*4 ->
+    quarterGateTick2c), Cash 0x583360 (two 32-bit BE -> treasuryValue10), Tran 0x582860,
+    Tclr 0x583670 (real TGreatPower virtuals), Prov 0x582f20 (real TMapMgr virtual). For a
+    16-bit token later passed as a full `int` arg, pass the whole swapped word (not
+    `(short)`): the swap leaves the high half matching the original's int operand.
