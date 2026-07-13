@@ -6353,7 +6353,7 @@ TView* __cdecl BuildTurnEventDialogResourcesForEvent8FC(CWnd* pHostWindow, int n
     size[0] = 0x1e;
     size[1] = 0x30;
     trb2Toolbar->InitializeUiResourceEntryFrameAndParent(0, parent, offset, size, 0, 0, 1);
-    trb2Toolbar->controlTag = static_cast<int>(0x74627232); // 'trb2' (see MISSING-TAG)
+    trb2Toolbar->controlTag = static_cast<int>(kControlTagTbr2);
     trb2Toolbar->controlValue3c = 0;
     trb2Toolbar->SetEnabled(1, 0);
     trb2Toolbar->SetState(0, 0);
@@ -6526,7 +6526,7 @@ TView* __cdecl BuildTurnEventDialogResourcesForEvent8FC(CWnd* pHostWindow, int n
     size[0] = 0x168;
     size[1] = 0x127;
     topPicture->InitializeUiResourceEntryFrameAndParent(0, parent, offset, size, 0, 0, 1);
-    topPicture->controlTag = static_cast<int>(0x746f7020); // 'top ' (see MISSING-TAG)
+    topPicture->controlTag = static_cast<int>(kControlTagTop);
     topPicture->controlValue3c = 0;
     topPicture->SetEnabled(1, 0);
     topPicture->SetState(0, 0);
@@ -6559,7 +6559,7 @@ TView* __cdecl BuildTurnEventDialogResourcesForEvent8FC(CWnd* pHostWindow, int n
     size[0] = 0x108;
     size[1] = 0x20;
     titleText->InitializeUiResourceEntryFrameAndParent(0, parent, offset, size, 0, 0, 1);
-    titleText->controlTag = static_cast<int>(0x7469746c); // 'titl' (see MISSING-TAG)
+    titleText->controlTag = static_cast<int>(kControlTagTitl);
     titleText->controlValue3c = 0;
     titleText->SetEnabled(1, 0);
     titleText->SetState(0, 0);
@@ -6627,7 +6627,7 @@ TView* __cdecl BuildTurnEventDialogResourcesForEvent8FC(CWnd* pHostWindow, int n
     size[0] = 0x156;
     size[1] = 0xaf;
     scrollView->InitializeUiResourceEntryFrameAndParent(0, parent, offset, size, 0, 0, 1);
-    scrollView->controlTag = static_cast<int>(0x73637677); // 'scvw' (see MISSING-TAG)
+    scrollView->controlTag = static_cast<int>(kControlTagScvw);
     scrollView->controlValue3c = 0;
     scrollView->SetEnabled(1, 0);
     scrollView->SetState(0, 0);
@@ -6780,7 +6780,7 @@ TView* __cdecl InitializeTradeScreenBitmapControls(CWnd* pHostWindow, int nEvent
       size[0] = 0x1e;
       size[1] = 0x2c;
       toolbar->InitializeUiResourceEntryFrameAndParent(0, parent, offset, size, 0, 0, 1);
-      toolbar->controlTag = static_cast<int>(0x74627232); // 'tbr2' (see MISSING-TAG)
+      toolbar->controlTag = static_cast<int>(kControlTagTbr2);
       toolbar->controlValue3c = 0;
       toolbar->SetEnabled(1, 0);
       toolbar->SetState(0, 0);

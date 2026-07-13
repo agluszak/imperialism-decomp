@@ -132,3 +132,9 @@ const unsigned int kControlTagCurr = 0x63757272u; // 'curr' — tactical current
 const unsigned int kControlTagAttackerCoat = 0x61636f61u; // 'acoa'
 const unsigned int kControlTagDefenderCoat = 0x64636f61u; // 'dcoa'
 const unsigned int kControlTagPreviewMap = 0x706d6170u;   // 'pmap'
+
+// Turn-event trade-board builder tags (previously raw MISSING-TAG literals)
+const unsigned int kControlTagTbr2 = 0x74627232u; // 'tbr2' — secondary toolbar
+const unsigned int kControlTagTop = 0x746f7020u;  // 'top ' — top picture
+const unsigned int kControlTagTitl = 0x7469746cu; // 'titl' — title text
+const unsigned int kControlTagScvw = 0x73637677u; // 'scvw' — scroll view

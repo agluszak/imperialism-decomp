@@ -165,7 +165,7 @@ public:
   // text-style descriptor (font family/style-flag/size shorts + COLORREF-bearing
   // styleRef at +0x7e, fed to the cached-font engine and CDC by ApplyRectSlot110
   // 0x48ffb0); picture/command widgets store the command-tag default params
-  // (SetControlPictureEntryAndMaybeRefresh writes the +0x7c int).
+  // (SetControlPictureEntryAndMaybeRefresh writes the +0x7e styleRef6 int).
 #pragma pack(push, 2)
   union {
     TControlPictureRectState textStyle78;

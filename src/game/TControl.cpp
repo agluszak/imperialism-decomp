@@ -109,7 +109,7 @@ void TControl::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* 
 
 // FUNCTION: IMPERIALISM 0x0048e7a0
 void TControl::SetControlPictureEntryAndMaybeRefresh(int* pictureEntryRef, bool refreshNow) {
-  commandTagDefaultParam1 = *pictureEntryRef;
+  textStyle78.styleRef6 = *pictureEntryRef;
   if (refreshNow) {
     PaintOrInvalidateControl(0);
   }
