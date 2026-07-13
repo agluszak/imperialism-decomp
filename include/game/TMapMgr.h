@@ -532,11 +532,11 @@ public:
   // activeFlags1c bits 0/5/2 (checked in that priority order) and scaled by
   // ownerNationTag04 below tier 7, else a fixed overflow cell.
   virtual short GetMapImprovementTileSpriteOffset(short tileIndex); // slot 0x48 0x5177f0
-  virtual int QueueDepotConstructionOrder(int* pMapContext, short nTileIndex, short nNationId,
-                                          undefined2 param_4); // slot 0x49 0x5145b0
-  virtual void QueuePortConstructionOrder(int* pMapContext, short nTileIndex, short nNationId,
-                                          undefined2 param_4);     // slot 0x4a 0x5147d0
-  virtual void SetProvinceCapitalTileFlagBit08(short nProvinceId); // slot 0x4b 0x5149d0
+  // slot 0x49 0x5145b0 -- RET 8 confirms two stack args (the earlier pMapContext/param_4 were
+  // Ghidra artifacts); every call site passes (tile index, owner nation tag).
+  virtual int QueueDepotConstructionOrder(short nTileIndex, short nNationId);
+  virtual void QueuePortConstructionOrder(short nTileIndex, short nNationId); // slot 0x4a 0x5147d0
+  virtual void SetProvinceCapitalTileFlagBit08(short nProvinceId);            // slot 0x4b 0x5149d0
   virtual void FloodFillTileRegionMarker(short nTileIndex,
                                          short nOwnerNationId); // slot 0x4c 0x5143d0
   // Moves cityRecordIndex's anchor to nTileIndex (real call into

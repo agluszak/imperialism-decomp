@@ -315,22 +315,6 @@ undefined4 HandleTurnInstruction_Deve_ApplyMapDevelopmentEntry(void)
   return 0;
 }
 
-// ghidra_name HandleTurnInstruction_Rail_ApplyRailPlacementAndCashBonus
-// ghidra_proto undefined HandleTurnInstruction_Rail_ApplyRailPlacementAndCashBonus()
-// FUNCTION: IMPERIALISM 0x005829b0
-undefined4 HandleTurnInstruction_Rail_ApplyRailPlacementAndCashBonus(void)
-{
-  return 0;
-}
-
-// ghidra_name HandleTurnInstruction_Port_ApplyPortPlacementAndCashBonus
-// ghidra_proto undefined HandleTurnInstruction_Port_ApplyPortPlacementAndCashBonus()
-// FUNCTION: IMPERIALISM 0x00582a40
-undefined4 HandleTurnInstruction_Port_ApplyPortPlacementAndCashBonus(void)
-{
-  return 0;
-}
-
 // ghidra_name HandleTurnInstruction_Tech_ApplyTechUnlockAndNotifyNations
 // ghidra_proto undefined HandleTurnInstruction_Tech_ApplyTechUnlockAndNotifyNations()
 // FUNCTION: IMPERIALISM 0x00582ad0

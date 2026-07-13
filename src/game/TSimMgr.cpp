@@ -1139,6 +1139,46 @@ void TSimMgr::HandleTurnInstruction_Tran_SetNationTransportStat(void* pInstructi
   g_apNationStates[static_cast<int>(nationToken)]->needCapA6 = static_cast<short>(valueToken);
 }
 
+// Reads one big-endian short tile index, resolves that tile's owner nation, queues a depot
+// construction order there, and grants the owner a 2000 cash bonus when it is not
+// diplomacy-eligible.
+// FUNCTION: IMPERIALISM 0x005829b0
+void TSimMgr::HandleTurnInstruction_Rail_ApplyRailPlacementAndCashBonus(void* pInstructionRaw) {
+  STurnInstructionCursor* instruction = static_cast<STurnInstructionCursor*>(pInstructionRaw);
+  unsigned int* cursor = instruction->tokenCursor;
+  unsigned int token = *cursor;
+  instruction->tokenCursor = cursor + 1;
+  unsigned char* raw = reinterpret_cast<unsigned char*>(&token);
+  raw[0] = raw[3];
+  raw[1] = raw[2];
+  short tileIndex = static_cast<short>(token);
+  int nationTag = g_pGlobalMapState->terrainStateTable[tileIndex].ownerNationTag04;
+  g_pGlobalMapState->QueueDepotConstructionOrder(tileIndex, static_cast<short>(nationTag));
+  if (g_apNationStates[nationTag]->diplomacyEligibilityA0 == 0) {
+    g_apNationStates[nationTag]->treasuryValue10 += 2000;
+  }
+}
+
+// Reads one big-endian short tile index, resolves that tile's owner nation, queues a port
+// construction order there, and grants the owner a 3000 cash bonus when it is not
+// diplomacy-eligible.
+// FUNCTION: IMPERIALISM 0x00582a40
+void TSimMgr::HandleTurnInstruction_Port_ApplyPortPlacementAndCashBonus(void* pInstructionRaw) {
+  STurnInstructionCursor* instruction = static_cast<STurnInstructionCursor*>(pInstructionRaw);
+  unsigned int* cursor = instruction->tokenCursor;
+  unsigned int token = *cursor;
+  instruction->tokenCursor = cursor + 1;
+  unsigned char* raw = reinterpret_cast<unsigned char*>(&token);
+  raw[0] = raw[3];
+  raw[1] = raw[2];
+  short tileIndex = static_cast<short>(token);
+  int nationTag = g_pGlobalMapState->terrainStateTable[tileIndex].ownerNationTag04;
+  g_pGlobalMapState->QueuePortConstructionOrder(tileIndex, static_cast<short>(nationTag));
+  if (g_apNationStates[nationTag]->diplomacyEligibilityA0 == 0) {
+    g_apNationStates[nationTag]->treasuryValue10 += 3000;
+  }
+}
+
 // Reads two big-endian 32-bit nation slots and a big-endian short relation value, then
 // writes the value symmetrically into both [A][B] and [B][A] of the diplomacy manager's
 // side-effect relation matrix.

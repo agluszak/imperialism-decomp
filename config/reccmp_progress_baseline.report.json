@@ -15203,7 +15203,7 @@
     },
     {
       "address": "0x4fd000",
-      "matching": 0.848,
+      "matching": 0.832,
       "name": "TMapKey::RenderMapHintOverlayMode0",
       "type": 1
     },
@@ -16964,13 +16964,13 @@
     },
     {
       "address": "0x5145b0",
-      "matching": 0.0,
+      "matching": 0.016129032258064516,
       "name": "TMapMgr::QueueDepotConstructionOrder",
       "type": 1
     },
     {
       "address": "0x5147d0",
-      "matching": 0.0,
+      "matching": 0.01680672268907563,
       "name": "TMapMgr::QueuePortConstructionOrder",
       "type": 1
     },
@@ -18339,7 +18339,7 @@
     },
     {
       "address": "0x52d750",
-      "matching": 0.21904761904761905,
+      "matching": 0.22063492063492063,
       "name": "MergeSmallCityRegionsAndCompactIds",
       "type": 1
     },
@@ -26391,13 +26391,13 @@
     },
     {
       "address": "0x5829b0",
-      "matching": 0.0,
+      "matching": 1.0,
       "name": "HandleTurnInstruction_Rail_ApplyRailPlacementAndCashBonus",
       "type": 1
     },
     {
       "address": "0x582a40",
-      "matching": 0.0,
+      "matching": 1.0,
       "name": "HandleTurnInstruction_Port_ApplyPortPlacementAndCashBonus",
       "type": 1
     },
@@ -29195,7 +29195,7 @@
     },
     {
       "address": "0x59e0d0",
-      "matching": 0.6,
+      "matching": 1.0,
       "name": "TArmyPlayer::ScoreTacticalTileEnemyEdgeColumnZoneBonus",
       "type": 1
     },
@@ -29665,7 +29665,7 @@
     },
     {
       "address": "0x5a39a0",
-      "matching": 0.9393939393939394,
+      "matching": 0.9545454545454546,
       "name": "ComputeHexTileDistanceFromIndices",
       "type": 1
     },
@@ -30169,7 +30169,7 @@
     },
     {
       "address": "0x5a8ac0",
-      "matching": 0.6086956521739131,
+      "matching": 0.6867469879518072,
       "name": "TTacticalBattleView::CenterViewportAroundGridIndexAndSnap",
       "type": 1
     },
@@ -30205,7 +30205,7 @@
     },
     {
       "address": "0x5a9240",
-      "matching": 0.5397590361445783,
+      "matching": 0.5533980582524272,
       "name": "TTacticalBattleView::AnimateTacticalUnitMoveBetweenTiles",
       "type": 1
     },

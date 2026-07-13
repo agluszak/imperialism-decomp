@@ -125,8 +125,10 @@ public:
   void HandleTurnInstruction_Coun_SetCountrySlotState(void* pInstructionRaw);          // 0x583700
   void HandleTurnInstruction_Emba_SetEmbassyRelationFlags(void* pInstructionRaw);      // 0x582bf0
   void
-  HandleTurnInstruction_Ware_ApplyNationIndexedShortAndRefresh(void* pInstructionRaw);  // 0x5823e0
-  void HandleTurnInstruction_Capa_ApplyNationSlotValueWithDelta(void* pInstructionRaw); // 0x5822c0
+  HandleTurnInstruction_Ware_ApplyNationIndexedShortAndRefresh(void* pInstructionRaw);   // 0x5823e0
+  void HandleTurnInstruction_Capa_ApplyNationSlotValueWithDelta(void* pInstructionRaw);  // 0x5822c0
+  void HandleTurnInstruction_Rail_ApplyRailPlacementAndCashBonus(void* pInstructionRaw); // 0x5829b0
+  void HandleTurnInstruction_Port_ApplyPortPlacementAndCashBonus(void* pInstructionRaw); // 0x582a40
 
   // --- fields (offsets are load-bearing: referenced from many other classes via
   //     g_pSimMgr; do not rename or move) ---
