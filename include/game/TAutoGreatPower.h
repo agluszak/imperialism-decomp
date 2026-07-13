@@ -41,7 +41,8 @@ public:
   // slot 0x61 — 0x004e7990: foreign-minister slots 0x90/0x94.
   void ResetDiplomacyNeedSlots7012AndRefreshIfModeGateMatches(void) override;
   // slot 0x74 — 0x004e7b20: forward to base policy apply with cost checks.
-  bool ApplyDiplomacyPolicyStateForTargetWithCostChecks(int arg1, int arg2) override;
+  bool ApplyDiplomacyPolicyStateForTargetWithCostChecks(short targetClass,
+                                                        short policyCode) override;
   // slot 0x81 — 0x004e7be0: replay proposal rows then reset policy state.
   void ProcessPendingDiplomacyProposalQueue(void) override;
   // slot 0xa1 — 0x004e9ed0: war-transition propagation from advisory action.

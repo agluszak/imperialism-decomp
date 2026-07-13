@@ -311,8 +311,9 @@ void TAutoGreatPower::BeginTurnDiplomacyPrePassSlot1c8() {
 }
 
 // FUNCTION: IMPERIALISM 0x004e7b20
-bool TAutoGreatPower::ApplyDiplomacyPolicyStateForTargetWithCostChecks(int arg1, int arg2) {
-  return TGreatPower::ApplyDiplomacyPolicyStateForTargetWithCostChecks(arg1, arg2);
+bool TAutoGreatPower::ApplyDiplomacyPolicyStateForTargetWithCostChecks(short targetClass,
+                                                                       short policyCode) {
+  return TGreatPower::ApplyDiplomacyPolicyStateForTargetWithCostChecks(targetClass, policyCode);
 }
 
 // FUNCTION: IMPERIALISM 0x004e7b50
