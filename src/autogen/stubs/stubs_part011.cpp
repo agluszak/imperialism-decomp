@@ -171,14 +171,6 @@ undefined4 DestructTWindowAndUnlinkGlobalWindowNode(void)
   return 0;
 }
 
-// ghidra_name PopSinglyLinkedListHeadPointer
-// ghidra_proto undefined PopSinglyLinkedListHeadPointer()
-// FUNCTION: IMPERIALISM 0x004924c0
-undefined4 PopSinglyLinkedListHeadPointer(void)
-{
-  return 0;
-}
-
 // ghidra_name EnsureChildResourceWindowAndNotify_Impl
 // ghidra_proto undefined EnsureChildResourceWindowAndNotify_Impl()
 // FUNCTION: IMPERIALISM 0x004924e0

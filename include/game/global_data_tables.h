@@ -135,6 +135,12 @@ extern "C" short g_UnitTypeStatDivisorTable_0066ED30[7];
 // directly. 0x5c3450 / 0x5c3580.
 short GetCityActionGateValueBySlot(int slot);
 short GetNormalizedCityActionResourceCostPercent(short unitType, short statIndex);
+// 0x5c34b0: g_awTacticalUnitCategoryCodeBySlot[slot] (standalone sibling of
+// TMilitaryUnit::GetUnitMovementClassId, which uses this->orderType).
+short GetCityActionCategoryCodeBySlot(short slot);
+// 0x54fee0: g_aCategoryMetricBaselineAverage[index] (returns the int metric, not a pointer
+// despite Ghidra's placeholder name).
+int GetNavyContextPointerFromGlobalTableByIndex(int index);
 
 // Minister-skill-indexed float coefficient tables (DAT_0065xxxx), indexed by a
 // minister's skill value at +0x0C. Used by TGreatPower vtable slots 0x88-0x8c.

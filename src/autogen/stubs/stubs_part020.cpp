@@ -27,14 +27,6 @@ undefined4 TickCivWorkOrderCountdownAndComplete(void)
   return 0;
 }
 
-// ghidra_name GetCityActionCategoryCodeBySlot
-// ghidra_proto undefined GetCityActionCategoryCodeBySlot()
-// FUNCTION: IMPERIALISM 0x005c34b0
-undefined4 GetCityActionCategoryCodeBySlot(void)
-{
-  return 0;
-}
-
 // ghidra_name AccumulateMissionUnitPriorityVectorWithOptionalFilter_Impl
 // ghidra_proto undefined AccumulateMissionUnitPriorityVectorWithOptionalFilter_Impl()
 // FUNCTION: IMPERIALISM 0x005c3500

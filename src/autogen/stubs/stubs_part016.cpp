@@ -723,14 +723,6 @@ undefined4 RecomputeGlobalCapabilityAverages(void)
   return 0;
 }
 
-// ghidra_name GetNavyContextPointerFromGlobalTableByIndex
-// ghidra_proto undefined GetNavyContextPointerFromGlobalTableByIndex()
-// FUNCTION: IMPERIALISM 0x0054fee0
-undefined4 GetNavyContextPointerFromGlobalTableByIndex(void)
-{
-  return 0;
-}
-
 // ghidra_name TScatteredShipsMission::GetOrCreateMissionOrderEntryForNode
 // ghidra_proto void * __thiscall GetOrCreateMissionOrderEntryForNode(void)
 // FUNCTION: IMPERIALISM 0x005503a0

@@ -157,6 +157,8 @@ void SplitTileIndexToHexRasterColumnX2AndRow(short tileIndex, short* outColX2,
 // 0x5125a0: tileIndex -> (row = tileIndex/0x6c, col = tileIndex%0x6c). Genuine __cdecl
 // free function (pure arithmetic); Ghidra's TMapDialog:: label is spurious (no `this`).
 void SplitTileIndexToRowAndColumn(short tileIndex, short* outRow, short* outCol);
+// 0x5123e0: recordBase + recordIndex * 0x6c (strided record address). __cdecl free function.
+int ComputeStridedRecordAddress6C(int recordBase, int recordIndex);
 
 struct HexSpiralSearchState {
   int row;

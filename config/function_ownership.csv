@@ -744,6 +744,7 @@ address|target_cpp|ownership|note
 492440|src/game/CWMgrIterator.cpp|manual|marker_sync
 492470|src/game/CWMgrIterator.cpp|manual|marker_sync
 4924a0|src/game/CWMgrIterator.cpp|manual|marker_sync
+4924c0|src/game/CWMgrIterator.cpp|manual|marker_sync
 4927e0|src/game/TTurnEventDialogFactoryRegistry.cpp|manual|marker_sync
 492980|src/game/TTurnEventDialogFactoryRegistry.cpp|manual|marker_sync
 4929b0|src/game/TTurnEventDialogFactoryRegistry.cpp|manual|marker_sync
@@ -1334,6 +1335,7 @@ address|target_cpp|ownership|note
 4b9090|src/game/TExpansionOrder.cpp|manual|marker_sync
 4b91f0|src/game/TExpansionOrder.cpp|manual|marker_sync
 4b9260|src/game/TExpansionOrder.cpp|manual|marker_sync
+4b9340|src/game/TExpansionOrder.cpp|manual|marker_sync
 4b9360|src/game/TExpansionOrder.cpp|manual|marker_sync
 4b95c0|src/game/TToolBarCluster.cpp|manual|marker_sync
 4ba240|src/game/TCityProductionView.cpp|manual|marker_sync
@@ -2382,6 +2384,7 @@ address|target_cpp|ownership|note
 5121d0|src/game/TMapMgr.cpp|manual|marker_sync
 5122b0|src/game/TMapMgr.cpp|manual|marker_sync
 5122d0|src/game/TMapMgr.cpp|manual|marker_sync
+5123e0|src/game/TMapMgr.cpp|manual|marker_sync
 512440|src/game/TMapDialog.cpp|manual|marker_sync
 5125a0|src/game/TMapMgr.cpp|manual|marker_sync
 5127e0|src/game/TMapMgr.cpp|manual|marker_sync
@@ -3121,6 +3124,7 @@ address|target_cpp|ownership|note
 54fab0|src/game/TShip.cpp|manual|marker_sync
 54fb50|src/game/TShip.cpp|manual|marker_sync
 54fbf0|src/game/TShip.cpp|manual|marker_sync
+54fee0|src/game/TShip.cpp|manual|marker_sync
 54ff00|src/game/TShip.cpp|manual|marker_sync
 550090|src/game/TShip.cpp|manual|marker_sync
 5501b0|src/game/TTaskForce.cpp|manual|marker_sync
@@ -4699,6 +4703,7 @@ address|target_cpp|ownership|note
 5c3400|src/game/TMilitaryUnit.cpp|manual|marker_sync
 5c3450|src/game/TMilitaryUnit.cpp|manual|marker_sync
 5c3490|src/game/TMilitaryUnit.cpp|manual|marker_sync
+5c34b0|src/game/TMilitaryUnit.cpp|manual|marker_sync
 5c34d0|src/game/TMilitaryUnit.cpp|manual|marker_sync
 5c3530|src/game/TMilitaryUnit.cpp|manual|marker_sync
 5c3580|src/game/TMilitaryUnit.cpp|manual|marker_sync

@@ -152,6 +152,11 @@ short TMilitaryUnit::GetUnitMovementClassId() {
   return g_awTacticalUnitCategoryCodeBySlot[this->orderType];
 }
 
+// FUNCTION: IMPERIALISM 0x005c34b0
+short GetCityActionCategoryCodeBySlot(short slot) {
+  return g_awTacticalUnitCategoryCodeBySlot[slot];
+}
+
 // FUNCTION: IMPERIALISM 0x005c34d0
 short TMilitaryUnit::IsNotStationedInProvince(short provinceId) {
   return tileIndex06 != provinceId;

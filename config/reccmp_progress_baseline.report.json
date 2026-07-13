@@ -5598,7 +5598,7 @@
     },
     {
       "address": "0x4924c0",
-      "matching": 0.0,
+      "matching": 1.0,
       "name": "PopSinglyLinkedListHeadPointer",
       "type": 1
     },
@@ -6198,7 +6198,7 @@
     },
     {
       "address": "0x496d40",
-      "matching": 0.09071274298056156,
+      "matching": 0.09090909090909091,
       "name": "BlitRectWithOptionalTransparency",
       "type": 1
     },
@@ -7585,7 +7585,7 @@
     },
     {
       "address": "0x4a2900",
-      "matching": 0.13374805598755832,
+      "matching": 0.13063763608087092,
       "name": "BuildArmyContextActionRecordsAndDispatchLabel",
       "type": 1
     },
@@ -9818,7 +9818,7 @@
     },
     {
       "address": "0x4b9340",
-      "matching": 0.25,
+      "matching": 1.0,
       "name": "SwapFirstTwoBytesInBuffer",
       "type": 1
     },
@@ -12411,7 +12411,7 @@
     },
     {
       "address": "0x4dd430",
-      "matching": 0.5142857142857142,
+      "matching": 0.5714285714285714,
       "name": "TGreatPower::ComputeRemainingDiplomacyAidBudget",
       "type": 1
     },
@@ -12645,7 +12645,7 @@
     },
     {
       "address": "0x4de700",
-      "matching": 0.7027027027027027,
+      "matching": 0.7297297297297297,
       "name": "TGreatPower::CanAffordDiplomacyGrantEntryForTarget",
       "type": 1
     },
@@ -12843,15 +12843,13 @@
     },
     {
       "address": "0x4e0590",
-      "effective": true,
-      "matching": 0.42857142857142855,
+      "matching": 1.0,
       "name": "TGreatPower::OrphanRetStub_004d7fa0_88",
       "type": 1
     },
     {
       "address": "0x4e05d0",
-      "effective": true,
-      "matching": 0.42857142857142855,
+      "matching": 1.0,
       "name": "TGreatPower::OrphanLeaf_NoCall_Ins02_004d7fc0_89",
       "type": 1
     },
@@ -12864,8 +12862,7 @@
     },
     {
       "address": "0x4e0650",
-      "effective": true,
-      "matching": 0.42857142857142855,
+      "matching": 1.0,
       "name": "TGreatPower::OrphanRetStub_004d7fe0_8b",
       "type": 1
     },
@@ -12878,7 +12875,7 @@
     },
     {
       "address": "0x4e06d0",
-      "matching": 0.7619047619047619,
+      "matching": 0.8095238095238095,
       "name": "TGreatPower::SumNationRuntimeFiveBucketValue44",
       "type": 1
     },
@@ -15205,13 +15202,13 @@
     },
     {
       "address": "0x4fd000",
-      "matching": 0.832,
+      "matching": 0.816,
       "name": "TMapKey::RenderMapHintOverlayMode0",
       "type": 1
     },
     {
       "address": "0x4fd220",
-      "matching": 0.2955145118733509,
+      "matching": 0.2849604221635884,
       "name": "TMapKey::RenderMapHintOverlayMode4",
       "type": 1
     },
@@ -16425,7 +16422,7 @@
     },
     {
       "address": "0x50bea0",
-      "matching": 0.20990458882326216,
+      "matching": 0.20354384370740572,
       "name": "TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets",
       "type": 1
     },
@@ -16761,7 +16758,7 @@
     },
     {
       "address": "0x5123e0",
-      "matching": 0.25,
+      "matching": 1.0,
       "name": "ComputeStridedRecordAddress6C",
       "type": 1
     },
@@ -16798,7 +16795,7 @@
     },
     {
       "address": "0x512930",
-      "matching": 0.25622775800711745,
+      "matching": 0.2491103202846975,
       "name": "BuildHexAreaTileIndexList",
       "type": 1
     },
@@ -16876,7 +16873,7 @@
     },
     {
       "address": "0x5136a0",
-      "matching": 1.0,
+      "matching": 0.8888888888888888,
       "name": "TMapMgr::OrphanLeaf_NoCall_Ins35_005136a0",
       "type": 1
     },
@@ -17074,7 +17071,7 @@
     },
     {
       "address": "0x515b10",
-      "matching": 0.3167420814479638,
+      "matching": 0.3378995433789954,
       "name": "TMapMgr::MarkSeedNeighborTilesUnavailableByCapabilityMaskProfileB",
       "type": 1
     },
@@ -17248,7 +17245,7 @@
     },
     {
       "address": "0x5178f0",
-      "matching": 0.3446601941747573,
+      "matching": 0.32116788321167883,
       "name": "ComputeRepresentativeTileIndexForTerrainTypeWithWrapBias",
       "type": 1
     },
@@ -17848,7 +17845,8 @@
     },
     {
       "address": "0x522c10",
-      "matching": 1.0,
+      "effective": true,
+      "matching": 0.9848484848484849,
       "name": "TMapDialog::DrawMapDialogWrappedTileConnectionMarker_00522c10",
       "type": 1
     },
@@ -20238,7 +20236,7 @@
     },
     {
       "address": "0x53ceb0",
-      "matching": 0.450261780104712,
+      "matching": 0.4479166666666667,
       "name": "ComputeArmyMissionCompositionAlignmentScore",
       "type": 1
     },
@@ -20250,7 +20248,7 @@
     },
     {
       "address": "0x53d200",
-      "matching": 0.3700787401574803,
+      "matching": 0.3686274509803922,
       "name": "ComputeArmyMissionScoreDeltaWithScaledCandidateUnit",
       "type": 1
     },
@@ -21342,7 +21340,7 @@
     },
     {
       "address": "0x545940",
-      "matching": 0.38170652876535227,
+      "matching": 0.4269553975436328,
       "name": "TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine",
       "type": 1
     },
@@ -21888,7 +21886,7 @@
     },
     {
       "address": "0x54fee0",
-      "matching": 0.4,
+      "matching": 1.0,
       "name": "GetNavyContextPointerFromGlobalTableByIndex",
       "type": 1
     },
@@ -30062,7 +30060,7 @@
     },
     {
       "address": "0x5a6940",
-      "matching": 0.8360655737704918,
+      "matching": 0.819672131147541,
       "name": "ClipRect_AdjustOffset_Validate",
       "type": 1
     },
@@ -30170,7 +30168,7 @@
     },
     {
       "address": "0x5a8ac0",
-      "matching": 0.6867469879518072,
+      "matching": 0.6086956521739131,
       "name": "TTacticalBattleView::CenterViewportAroundGridIndexAndSnap",
       "type": 1
     },
@@ -30194,7 +30192,7 @@
     },
     {
       "address": "0x5a9090",
-      "matching": 0.8208955223880597,
+      "matching": 0.8805970149253731,
       "name": "TTacticalBattleView::PlayTacticalTileEffect",
       "type": 1
     },
@@ -30206,7 +30204,7 @@
     },
     {
       "address": "0x5a9240",
-      "matching": 0.5533980582524272,
+      "matching": 0.5397590361445783,
       "name": "TTacticalBattleView::AnimateTacticalUnitMoveBetweenTiles",
       "type": 1
     },
@@ -32511,7 +32509,7 @@
     },
     {
       "address": "0x5c34b0",
-      "matching": 0.4,
+      "matching": 1.0,
       "name": "GetCityActionCategoryCodeBySlot",
       "type": 1
     },
