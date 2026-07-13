@@ -1,5 +1,7 @@
 #include "game/TArmyMgr.h"
 
+#include <string.h>
+
 #include "game/TList.h"
 #include "game/TSortedPtrList.h"
 #include "game/map_order_battle_snapshot.h"
@@ -1197,27 +1199,79 @@ bool TArmyMgr::ValidateOrderPlacementPrerequisitesForSelectedTile(short cityReco
 
 // FUNCTION: IMPERIALISM 0x004a5760
 void TArmyMgr::SetActiveProvinceAndBuildDirectionalOrderOverlays(short tileIndex) {
-  // TODO: port body @ 0x4a5760 (656 bytes; not yet ported). Partial reconnaissance from
-  // the raw listing for a future pass:
-  //  - direction = (terrainStateTable[tileIndex].perTileVisitedFlag0f - 1) % 6;
-  //    neighborTile = TMapMgr::GetWrappedHexNeighborTileIndexByDirection(tileIndex, direction);
-  //    cityRecordIndex = terrainStateTable[neighborTile].cityRecordIndex.
-  //  - Walks g_apNationStates[GetActiveNationId()]->militaryUnitList44 via CIterator
-  //    (Reset/More/Advance), decrementing a per-nation counter
-  //    (g_apNationStates[nationSlot]->+0x900) for each qualifying member, then calls
-  //    unit->SetOrderModeSlot34(0, -1) once done (same shape as the field_8==4 branch in
-  //    TArmyMgr's other order-clearing loops).
-  //  - Ends by calling the not-yet-recovered TMapMgr::MarkDirectionalMapOverlayFlagsFor-
-  //    NationOrders (0x518d90, 510 bytes, thiscall on g_pGlobalMapState, no explicit
-  //    args) and, unless pendingMapActionIndex == -1, this->SetActiveProvinceSelection
-  //    (already real).
-  //  - A 6-iteration loop over ComputeHexNeighborTileIndices' output clears
-  //    terrainStateTable[...].perTileVisitedFlag0f when it encodes the same direction
-  //    mod 6 as (loopIndex+3), and forwards the tile to goodGoldTagControlA4's slot-0x76
-  //    virtual (InvalidateTileMarkerChain) when clearing succeeds.
-  // Left as a stub rather than guessed further -- a 10-int scratch buffer's role wasn't
-  // pinned down with confidence.
-  (void)tileIndex;
+  short direction = (g_pGlobalMapState->terrainStateTable[tileIndex].perTileVisitedFlag0f - 1) % 6;
+  short neighborTile = TMapMgr::GetWrappedHexNeighborTileIndexByDirection(tileIndex, direction);
+  short cityRecordIndex = g_pGlobalMapState->terrainStateTable[neighborTile].cityRecordIndex;
+
+  short activeNationId = g_pSimMgr->GetActiveNationId();
+  TGreatPower* nationState = g_apNationStates[activeNationId];
+  int categoryCounts[10] = {0};
+
+  // Per-unit "was this order anchored on cityRecordIndex" scratch flags -- one byte per
+  // list entry, walked in lockstep with the CIterator below. Original never frees this
+  // buffer (no operator_delete in the disassembly); reproduced as-is.
+  int unitCount = nationState->militaryUnitList44->GetCount();
+  unsigned char* unitOnTileFlags = new unsigned char[unitCount];
+  memset(unitOnTileFlags, 0, unitCount);
+
+  CIterator unitIter(nationState->militaryUnitList44);
+  unsigned char* flagCursor = unitOnTileFlags;
+  for (TUnit* unit = static_cast<TUnit*>(unitIter.Reset()); unitIter.More();
+       unit = static_cast<TUnit*>(unitIter.Advance())) {
+    if (unit->field_C == cityRecordIndex) {
+      categoryCounts[g_awTacticalUnitCategoryCodeBySlot[unit->orderType]]++;
+      *flagCursor = 1;
+    }
+    ++flagCursor;
+  }
+
+  if (!g_pUiRuntimeContext->DispatchProvinceOrderOverlayConfirmDialog(cityRecordIndex,
+                                                                      categoryCounts)) {
+    short activeNationId2 = g_pSimMgr->GetActiveNationId();
+    bool sameOwner =
+        g_pGlobalMapState->cityScoreTable[cityRecordIndex].ownerNationCode00 == activeNationId2;
+
+    flagCursor = unitOnTileFlags;
+    for (TUnit* unit = static_cast<TUnit*>(unitIter.Reset()); unitIter.More();
+         unit = static_cast<TUnit*>(unitIter.Advance())) {
+      if (*flagCursor != 0) {
+        if (sameOwner &&
+            !g_pGlobalMapState->TileHasMovementClassId(unit->tileIndex06, cityRecordIndex)) {
+          short cost = static_cast<TMilitaryUnit*>(unit)->GetUnitTypeCostPoints();
+          short activeNationId3 = g_pSimMgr->GetActiveNationId();
+          g_apNationStates[activeNationId3]->field900 += cost;
+        }
+        unit->SetOrderModeSlot34(0, -1);
+      }
+      ++flagCursor;
+    }
+
+    short neighborTiles[6];
+    TMapMgr::ComputeHexNeighborTileIndices(tileIndex, neighborTiles,
+                                           g_pGlobalMapState->hexNeighborWrapHorizontally20);
+    for (int i = 0; i < 6; ++i) {
+      short nt = neighborTiles[i];
+      if (nt == -1) {
+        continue;
+      }
+      unsigned char flag = g_pGlobalMapState->terrainStateTable[nt].perTileVisitedFlag0f;
+      if (flag == 0) {
+        continue;
+      }
+      if ((flag - 1) % 6 != (i + 3) % 6) {
+        continue;
+      }
+      g_pGlobalMapState->terrainStateTable[nt].perTileVisitedFlag0f = 0;
+      if (g_pUiRuntimeContext->mapUberPictureF0 != nullptr) {
+        g_pUiRuntimeContext->mapUberPictureF0->InvalidateTileMarkerChain(nt);
+      }
+    }
+
+    g_pGlobalMapState->MarkDirectionalMapOverlayFlagsForNationOrders();
+    if (this->pendingMapActionIndex != -1) {
+      this->SetActiveProvinceSelection(this->pendingMapActionIndex);
+    }
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x004a5b10

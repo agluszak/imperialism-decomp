@@ -1842,6 +1842,19 @@ bool TViewMgr::ShowCivilianReportDialogAndReturnConfirm(TCivUnit* pCivilianOrder
   return resultTag == 0x6f6b6179;
 }
 
+// FUNCTION: IMPERIALISM 0x005de5d0
+bool TViewMgr::DispatchProvinceOrderOverlayConfirmDialog(short cityRecordIndex,
+                                                         int* categoryCounts) {
+  // TODO: port body @ 0x5de5d0 (181 bytes). The dialog-node resolve/SetField84(1)/
+  // ResolveControlByTag('DLOG') prefix mirrors MakePlanetSeedDialog (0x5de010), but the
+  // 'DLOG' control's own slot-0x1cc dispatch (the actual message-formatting call that
+  // forwards cityRecordIndex/categoryCounts) needs a class not yet recovered. Stubbed
+  // to the conservative "not confirmed" default.
+  (void)cityRecordIndex;
+  (void)categoryCounts;
+  return false;
+}
+
 // FUNCTION: IMPERIALISM 0x005de990
 char TViewMgr::ShowLocalizedUiPromptByGroupAndIndex(int uiStringGroup, int uiStringIndex,
                                                     int overlayMode, int arg4) {

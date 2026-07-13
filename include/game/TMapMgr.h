@@ -649,6 +649,17 @@ public:
   // Returns the number of entries appended.
   int CollectSecondDegreeLinksMatchingNodeType(int cityRecordIndex, int nationTag, int* nodeBuffer);
 
+  // 0x518d90 (thiscall, no explicit args). TODO(port): clears perTileVisitedFlag0f
+  // across the whole terrainStateTable, then walks the active nation's
+  // militaryUnitList44 (CIterator) and, for each order whose tile is diplomatically
+  // linked (via g_pDiplomacyTurnStateManager's vtable slot 8.0x04 war-state check and a
+  // pair of unresolved geometry helpers at 0x40907f/0x408b8e), stamps a per-tile
+  // direction-overlay code into perTileVisitedFlag0f and notifies
+  // mapUberPictureF0->InvalidateTileMarkerChain (slot 0x76). Left as a declared-for-real
+  // stub -- the two geometry helpers and the TDiplomacyMgrVtbl slot aren't recovered yet
+  // (see bd imperialism-decomp-1uj.61).
+  void MarkDirectionalMapOverlayFlagsForNationOrders();
+
   // 0x5108d0. Map-tile sprite-variant resolver: reads the tile's terrain type
   // (terrainStateTable byte 0) and feature/subtype code (byte 2, the field the layout
   // calls roadFlag), inspects the west (tile-1) and NE-row (tile-0x6b) neighbors, and

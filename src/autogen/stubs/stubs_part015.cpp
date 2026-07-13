@@ -187,14 +187,6 @@ undefined4 WrapperFor_thunk_HasReachableSeaTileOutsideActiveType3Or4DiplomaticMa
   return 0;
 }
 
-// ghidra_name MarkDirectionalMapOverlayFlagsForNationOrders
-// ghidra_proto undefined MarkDirectionalMapOverlayFlagsForNationOrders()
-// FUNCTION: IMPERIALISM 0x00518d90
-undefined4 MarkDirectionalMapOverlayFlagsForNationOrders(void)
-{
-  return 0;
-}
-
 // ghidra_name DumpAndResetMapScriptState
 // ghidra_proto void __fastcall DumpAndResetMapScriptState(void * pMapState)
 // FUNCTION: IMPERIALISM 0x00519140

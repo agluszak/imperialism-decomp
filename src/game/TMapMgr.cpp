@@ -3073,11 +3073,6 @@ char TMapMgr::AreAllLinkedEntriesTerrainFlagBit2Clear(int regionIndex) {
   }
   return 0;
 }
-
-// Sum the developer purchase cost of the two edge resources on a tile: for each real
-// resource type (< 0x11) weight it via the trade manager's proposal-weight metric (slot
-// 0x13) scaled x20; fixed surcharges for the special types 0x15 (10000) and 0x16 (4000).
-// (Ghidra mis-attributed this to TCivToolbar; `this->field0c` is TMapMgr::terrainStateTable.)
 // FUNCTION: IMPERIALISM 0x00518b40
 int TMapMgr::CalculateDeveloperTilePurchaseCost(short nTileIndex) {
   int total = 0;
@@ -3112,6 +3107,35 @@ namespace {
 // ClassifyCityGateTerrainComposition below (bucket 7, gateFlag 14, scores nothing).
 const unsigned char kGateFlagScoreBucket[15] = {0, 0, 0, 0, 1, 1, 2, 2, 2, 3, 4, 2, 2, 7, 2};
 } // namespace
+
+// FUNCTION: IMPERIALISM 0x00518d90
+void TMapMgr::MarkDirectionalMapOverlayFlagsForNationOrders() {
+  // Real prefix: clears perTileVisitedFlag0f across all 0x1950 tiles (the same body as
+  // the standalone ClearPerTileByte0FForAllMapTiles, inlined here in the original).
+  ClearPerTileByte0FForAllMapTiles();
+
+  // TODO: port the rest of the body (510 bytes total). Declared for real (see
+  // TMapMgr.h) so TArmyMgr::SetActiveProvinceAndBuildDirectionalOrderOverlays gets a
+  // correctly-typed call site (bd imperialism-decomp-1uj.61). Reconnaissance from the
+  // raw listing for the remaining tail:
+  //  - Walks g_apNationStates[GetActiveNationId()]->militaryUnitList44 via CIterator
+  //    (Reset/More/Advance).
+  //  - Per order with tileIndex06 != -1: checks g_pDiplomacyTurnStateManager's vtable
+  //    slot 8.0x04 (a TDiplomacyMgrVtbl war-state query, args built from
+  //    tileOwnershipTable-relative bytes) and two unrecovered geometry helpers
+  //    (0x40907f, 0x408b8e) to derive a target tile index in [0, 0x194f].
+  //  - On success, stamps perTileVisitedFlag0f with a direction-overlay code
+  //    ((sVar3+3)%6 + 1, or +7 when the diplomacy check was true) and, when
+  //    g_pUiRuntimeContext->mapUberPictureF0 is set, forwards the tile through its
+  //    slot-0x76 virtual (InvalidateTileMarkerChain).
+  // Left unported -- 0x40907f/0x408b8e and the TDiplomacyMgrVtbl slot layout are
+  // genuine class-recovery gaps, not a modeling choice.
+}
+
+// Sum the developer purchase cost of the two edge resources on a tile: for each real
+// resource type (< 0x11) weight it via the trade manager's proposal-weight metric (slot
+// 0x13) scaled x20; fixed surcharges for the special types 0x15 (10000) and 0x16 (4000).
+// (Ghidra mis-attributed this to TCivToolbar; `this->field0c` is TMapMgr::terrainStateTable.)
 
 // FUNCTION: IMPERIALISM 0x00519010
 int TMapMgr::ClassifyCityGateTerrainComposition(int cityIndex) {
