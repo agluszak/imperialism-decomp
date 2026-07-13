@@ -1271,3 +1271,40 @@ headers before splicing.
     (QueueDepot/QueuePortConstructionOrder declared 4-arg; `RET 8` proves 2) is safe to
     correct on the base + stub when no manual overrides/callers exist -- fixing it unblocked
     Rail/Port to 100%.
+
+86. **Empty-collection linked-list scan: match MSVC's `xor eax,eax; jmp` null path with a
+    null-case-FIRST if/else-if/else over an UNINITIALIZED result var.** For a "find the
+    matching node, else null" head-scan (e.g. TTaskForce::SetTaskForceOrderSelectionByNodeId
+    0x5549a0), the original emits, right after the head-load + `test`, a leading
+    `jne have_head; xor eax,eax; jmp check` -- i.e. the empty-list case is the fall-through
+    then-block that explicitly zeroes the result. Two C++ forms that look equivalent do NOT
+    reproduce it: (a) `node = head; if (node && node->obj != t) node = ...;` drops the `xor`
+    entirely (compiler knows `node` is already 0) -> 90%; (b) `if (head != null){...} else
+    {node=null;}` (inverted, else-null) pushes the `xor;jmp` to the BOTTOM -> 81%. The one
+    that hits 100% is the null-test-first three-way over an uninitialized var:
+    `TMapOrderChildLinkNode* node; if (head == nullptr) node = nullptr; else if
+    (head->object_ptr == t) node = head; else node = head->next->FindNodeMatching(t);`.
+    Leave `node` uninitialized so each branch assigns it, and put the `== nullptr` branch
+    first so its zero-assignment is the leading then-block. (General rule: the branch whose
+    body is the compiler's fall-through is the one you write first; an uninitialized target
+    forces the explicit `xor` the pre-initialized form elides.)
+
+87. **Verify stub attribution by field-access consistency with ported siblings, NOT Ghidra's
+    `this`-type label or symbols.csv class prefix -- the remaining stub pool is heavily
+    mis-attributed.** A scout sweep of small stubs turned up candidate after candidate whose
+    Ghidra `this` type / curated name was contradicted by the disassembly: 0x598840
+    ("TToolBarCluster") reads `[ecx+0x94]` = TMapUberPicture's `invalidationFlag94` and calls
+    a thiscall on the unrecovered `goodGoldTagControlA4` (a call the codebase deliberately
+    left unmodeled); 0x4e8b50 ("TAttackProvinceMission", ASSERT_SIZE 0x34) writes
+    `[this+0x970]` -- impossible for a 0x34-byte class; 0x4b6a30 ("TTrainingOrder") does
+    `ADD word [ecx+8]` where the real layout has a `TCity*` pointer at +8. The reliable
+    signal that a stub is a clean port target: (i) its address sits BETWEEN two already-owned
+    methods of class C, AND (ii) its disassembly reads only C's own confirmed field offsets
+    and dispatches C's own helpers -- then it is a C method regardless of the label. That is
+    how the 0x5549a0/0x554a30/0x554a80 TTaskForce trio was confirmed (all read
+    `childOrderList`@0x10 + `g_NavyOrderResourceDescriptorTable`, sit among ported TTaskForce
+    siblings). Corollary red flags that a "clean" target is actually entangled: an opaque
+    param whose only use is `*(char*)p` but whose concrete type isn't modeled, a
+    partial-register arg load (`mov ax,[mem]; push eax` rather than `movsx`) that clean C++
+    won't reproduce, or a field used with semantics that contradict its recovered name
+    (required_count passed as a diplomacy `sourceNation`). Skip those rather than mis-model.
