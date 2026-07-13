@@ -22,6 +22,7 @@ public:
   TNavyMission();
   TNavyMission(TZone* targetZone);
 
+  virtual ~TNavyMission() override;                // slot 0x01 dtor 0x535590 / ??_G 0x535560
   virtual void WriteTo(TStream* stream) override;  // slot 0x05
   virtual void ReadFrom(TStream* stream) override; // slot 0x06
   virtual void

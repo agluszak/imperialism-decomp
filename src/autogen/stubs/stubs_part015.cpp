@@ -539,19 +539,3 @@ undefined4 InitializeMissionWithNationIdAndResetPathMarker(void)
   return 0;
 }
 
-// ghidra_name ResetTNavyMissionToSentinelVtable
-// ghidra_proto undefined ResetTNavyMissionToSentinelVtable()
-// FUNCTION: IMPERIALISM 0x00535590
-undefined4 ResetTNavyMissionToSentinelVtable(void)
-{
-  return 0;
-}
-
-// ghidra_name ResetTControlSeaZoneMissionToSentinelVtable
-// ghidra_proto undefined ResetTControlSeaZoneMissionToSentinelVtable()
-// FUNCTION: IMPERIALISM 0x00535620
-undefined4 ResetTControlSeaZoneMissionToSentinelVtable(void)
-{
-  return 0;
-}
-

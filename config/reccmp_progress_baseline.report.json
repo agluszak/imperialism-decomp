@@ -12411,7 +12411,7 @@
     },
     {
       "address": "0x4dd430",
-      "matching": 0.5142857142857142,
+      "matching": 0.5714285714285714,
       "name": "TGreatPower::ComputeRemainingDiplomacyAidBudget",
       "type": 1
     },
@@ -12849,7 +12849,8 @@
     },
     {
       "address": "0x4e05d0",
-      "matching": 1.0,
+      "effective": true,
+      "matching": 0.42857142857142855,
       "name": "TGreatPower::OrphanLeaf_NoCall_Ins02_004d7fc0_89",
       "type": 1
     },
@@ -19376,13 +19377,13 @@
     },
     {
       "address": "0x535560",
-      "matching": 0.9090909090909091,
+      "matching": 1.0,
       "name": "TNavyMission::`scalar deleting destructor'",
       "type": 1
     },
     {
       "address": "0x535590",
-      "matching": 0.5,
+      "matching": 0.0,
       "name": "ResetTNavyMissionToSentinelVtable",
       "type": 1
     },
@@ -19400,13 +19401,13 @@
     },
     {
       "address": "0x5355f0",
-      "matching": 0.9090909090909091,
+      "matching": 1.0,
       "name": "TControlSeaZoneMission::`scalar deleting destructor'",
       "type": 1
     },
     {
       "address": "0x535620",
-      "matching": 0.5,
+      "matching": 0.0,
       "name": "ResetTControlSeaZoneMissionToSentinelVtable",
       "type": 1
     },
@@ -19484,13 +19485,13 @@
     },
     {
       "address": "0x5357d0",
-      "matching": 0.9090909090909091,
+      "matching": 1.0,
       "name": "TDefendProvinceMission::`scalar deleting destructor'",
       "type": 1
     },
     {
       "address": "0x535800",
-      "matching": 0.5,
+      "matching": 0.0,
       "name": "ResetTDefendProvinceMissionToSentinelVtable",
       "type": 1
     },
@@ -19826,13 +19827,13 @@
     },
     {
       "address": "0x539960",
-      "matching": 0.9090909090909091,
+      "matching": 1.0,
       "name": "TEscortMission::`scalar deleting destructor'",
       "type": 1
     },
     {
       "address": "0x539990",
-      "matching": 0.5,
+      "matching": 0.0,
       "name": "ResetTEscortMissionToSentinelVtable",
       "type": 1
     },
@@ -43740,6 +43741,6 @@
       "type": 5
     }
   ],
-  "file": "Imperialism.exe.gog-original",
+  "file": "Imperialism.exe",
   "format": 1
 }

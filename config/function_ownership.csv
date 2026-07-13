@@ -2774,10 +2774,12 @@ address|target_cpp|ownership|note
 535500|src/game/TNavyMission.cpp|manual|marker_sync
 535520|src/game/TNavyMission.cpp|manual|marker_sync
 535540|src/game/TNavyMission.cpp|manual|marker_sync
-535560|src/game/TNavyMission.cpp|manual|name_paired_no_marker
+535560|src/game/TNavyMission.cpp|manual|marker_sync
+535590|src/game/TNavyMission.cpp|manual|marker_sync
 5355b0|src/game/TControlSeaZoneMission.cpp|manual|marker_sync
 5355d0|src/game/TControlSeaZoneMission.cpp|manual|marker_sync
 5355f0|src/game/TControlSeaZoneMission.cpp|manual|marker_sync
+535620|src/game/TControlSeaZoneMission.cpp|manual|marker_sync
 535640|src/game/TScatteredShipsMission.cpp|manual|marker_sync
 535660|src/game/TScatteredShipsMission.cpp|manual|marker_sync
 535680|src/game/TScatteredShipsMission.cpp|manual|marker_sync
@@ -2790,6 +2792,7 @@ address|target_cpp|ownership|note
 535790|src/game/TDefendProvinceMission.cpp|manual|marker_sync
 5357b0|src/game/TDefendProvinceMission.cpp|manual|marker_sync
 5357d0|src/game/TDefendProvinceMission.cpp|manual|marker_sync
+535800|src/game/TDefendProvinceMission.cpp|manual|marker_sync
 535820|src/game/TMission.cpp|manual|marker_sync
 5358a0|src/game/TMission.cpp|manual|marker_sync
 5362c0|src/game/TArmyPlayer.cpp|manual|marker_sync
@@ -2833,6 +2836,7 @@ address|target_cpp|ownership|note
 539920|src/game/TEscortMission.cpp|manual|marker_sync
 539940|src/game/TEscortMission.cpp|manual|marker_sync
 539960|src/game/TEscortMission.cpp|manual|marker_sync
+539990|src/game/TEscortMission.cpp|manual|marker_sync
 5399b0|src/game/TEscortMission.cpp|manual|marker_sync
 539a20|src/game/TEscortMission.cpp|manual|marker_sync
 539a70|src/game/TEscortMission.cpp|manual|marker_sync

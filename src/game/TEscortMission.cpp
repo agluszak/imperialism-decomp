@@ -30,6 +30,9 @@ char TEscortMission::ReturnFalseSlot60() {
 
 TEscortMission::TEscortMission() : TNavyMission() {}
 
+// FUNCTION: IMPERIALISM 0x00539990
+TEscortMission::~TEscortMission() {}
+
 // SYNTHETIC: IMPERIALISM 0x005399b0
 // TEscortMission::GetRuntimeClass
 
