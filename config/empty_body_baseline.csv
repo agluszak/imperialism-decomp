@@ -15,7 +15,7 @@ src/game/TAdmiral.cpp|2|0|0|0
 src/game/TAdorner.cpp|2|0|1|0
 src/game/TAmtBar.cpp|0|0|6|0
 src/game/TAmtBarCluster.cpp|0|0|1|0
-src/game/TApplication.cpp|2|0|0|0
+src/game/TApplication.cpp|1|0|0|0
 src/game/TArmoryView.cpp|3|0|1|0
 src/game/TArmyBoyView.cpp|0|0|1|0
 src/game/TArmyCheckBox.cpp|3|0|1|0
@@ -51,7 +51,7 @@ src/game/TCivAnimation.cpp|0|0|1|0
 src/game/TCivAnimation2.cpp|0|0|1|0
 src/game/TCivDescription.cpp|3|0|1|0
 src/game/TCivMgr.cpp|2|0|1|0
-src/game/TCivToolbar.cpp|1|0|1|0
+src/game/TCivToolbar.cpp|0|0|1|0
 src/game/TCivUnit.cpp|4|0|0|0
 src/game/TClickZone.cpp|1|0|0|0
 src/game/TClientGreatPower.cpp|3|0|0|0
@@ -60,7 +60,7 @@ src/game/TColorFill.cpp|0|0|1|0
 src/game/TColorKeyButton.cpp|1|0|0|0
 src/game/TColorKeyPicture.cpp|3|0|0|0
 src/game/TCombatReportView.cpp|0|0|1|0
-src/game/TControl.cpp|2|0|1|0
+src/game/TControl.cpp|1|0|1|0
 src/game/TControlSeaZoneMission.cpp|1|0|0|0
 src/game/TCouncilPanelView.cpp|1|0|1|0
 src/game/TCouncilTickerAnimation.cpp|0|0|1|0
@@ -73,7 +73,6 @@ src/game/TDealTabControl.cpp|2|0|1|0
 src/game/TDefenseMinister.cpp|2|0|0|0
 src/game/TDefenseMinisterPersonalities.cpp|5|0|0|0
 src/game/TDefenseMinisterView.cpp|1|0|0|0
-src/game/TDeluxeText.cpp|1|0|0|0
 src/game/TDialogView.cpp|0|0|1|0
 src/game/TDiplomacyMapView.cpp|2|0|0|0
 src/game/TDiplomacyMgr.cpp|5|0|2|0
@@ -133,9 +132,8 @@ src/game/TMapEditView.cpp|6|0|1|0
 src/game/TMapKey.cpp|1|0|1|0
 src/game/TMapMaker.cpp|14|0|0|0
 src/game/TMapMgr.cpp|2|0|2|0
-src/game/TMapPreviewView.cpp|3|0|0|0
-src/game/TMapUberPicture.cpp|7|0|0|0
-src/game/TMapUberUberPicture.cpp|1|0|1|0
+src/game/TMapUberPicture.cpp|8|0|0|0
+src/game/TMapUberUberPicture.cpp|0|0|1|0
 src/game/TMegaPicture.cpp|2|0|0|0
 src/game/TMerchantBoyView.cpp|1|0|1|0
 src/game/TMilitaryPageView.cpp|2|0|0|0
@@ -151,7 +149,6 @@ src/game/TMinisterView.cpp|1|0|0|0
 src/game/TMinorRelationshipDialog.cpp|1|0|1|0
 src/game/TMinorTradeBidsDialog.cpp|0|0|1|0
 src/game/TMinorTreatyDialog.cpp|0|0|1|0
-src/game/TModalMessageCommand.cpp|1|0|0|0
 src/game/TMultiMessagePicture.cpp|1|0|1|0
 src/game/TMultiplayerMgr.cpp|3|0|0|0
 src/game/TNavyAutoPlayer.cpp|0|0|1|0
@@ -198,7 +195,6 @@ src/game/TProxyGreatPower.cpp|4|0|1|0
 src/game/TPtrList.cpp|0|0|1|0
 src/game/TPurchaseCluster.cpp|2|0|0|0
 src/game/TQueryFloater.cpp|2|0|1|0
-src/game/TRadioTextCluster.cpp|2|0|0|0
 src/game/TRailCluster.cpp|0|0|1|0
 src/game/TRailheadDialog.cpp|0|0|1|0
 src/game/TRelationshipDialog.cpp|1|0|1|0
@@ -209,7 +205,6 @@ src/game/TScoreGraph.cpp|2|0|1|0
 src/game/TScrollBarView.cpp|6|0|0|0
 src/game/TScrollView.cpp|1|0|1|0
 src/game/TSelectoText.cpp|0|0|1|0
-src/game/TSetupRandomMapPicture.cpp|2|0|0|0
 src/game/TShipBuildingTask.cpp|2|0|0|0
 src/game/TShipFractionCluster.cpp|2|0|0|0
 src/game/TShipLine.cpp|0|0|1|0
@@ -220,7 +215,7 @@ src/game/TShipyardView.cpp|5|0|1|0
 src/game/TSimMgr.cpp|10|0|0|0
 src/game/TSortedPtrList.cpp|0|0|1|0
 src/game/TSoundChannelNode.cpp|4|0|0|0
-src/game/TSpaceCommand.cpp|0|1|1|0
+src/game/TSpaceCommand.cpp|0|0|1|0
 src/game/TSpecialQuitPicture.cpp|2|0|0|0
 src/game/TStatusPicture.cpp|2|0|1|0
 src/game/TStream.cpp|3|0|2|0

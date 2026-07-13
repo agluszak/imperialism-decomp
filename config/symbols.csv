@@ -5243,8 +5243,8 @@ address|name|symbol|size|type|prototype|provenance
 597810|TMapUberPicture::RefreshMapOrderEntryPanel||246|function|void __thiscall RefreshMapOrderEntryPanel(void * pMapOrderEntry)|
 597950|TMapUberPicture::SetActiveMapOrderEntry||113|function|void __thiscall SetActiveMapOrderEntry(void * pMapOrderEntry)|
 5979f0|GetActiveMapOrderEntry||9|function|void * __thiscall GetActiveMapOrderEntry(void)|
-597a10|TMapUberPicture::OrphanLeaf_NoCall_Ins23_00597a10||68|function|undefined OrphanLeaf_NoCall_Ins23_00597a10(void)|
-597a80|TCivToolbar::CycleMapInteractionSelectionAfterHandledClick||996|function|void __thiscall CycleMapInteractionSelectionAfterHandledClick(void)|
+597a10|TMapUberPicture::OrphanLeaf_NoCall_Ins23_00597a10||68|function|bool OrphanLeaf_NoCall_Ins23_00597a10(void)|
+597a80|TMapUberPicture::CycleMapInteractionSelectionAfterHandledClick||996|function|void __thiscall CycleMapInteractionSelectionAfterHandledClick(void)|
 597f80|TMapUberPicture::OpenMapEntryOrderDialog||1761|function|void __thiscall OpenMapEntryOrderDialog(void * pMapOrderEntry)|
 598840|TToolBarCluster::InvalidateMapRegionForEntryIfUiPassive||29|function|undefined InvalidateMapRegionForEntryIfUiPassive()|
 598870|TMapUberPicture::WrapperFor_InvalidateCityDialogRectRegionChain_At00598870||51|function|undefined WrapperFor_InvalidateCityDialogRectRegionChain_At00598870(undefined4 param_1)|

@@ -165,10 +165,29 @@ void TMapUberPicture::SetActiveMapOrderEntry(TZone* pMapOrderContextZone) {
   this->RefreshMapOrderEntryPanel(refreshedTaskForce);
 }
 
+// Reports whether the active unit category (0=civilian, 1=army, 2=navy) currently has a
+// selection/pending order to act on -- used by TArmyMgr::ComputeMapCursorStateIndex to
+// gate map-click cursor state. 68 bytes, ground-truth-confirmed via decompile.
 // FUNCTION: IMPERIALISM 0x00597a10
-undefined TMapUberPicture::OrphanLeaf_NoCall_Ins23_00597a10() {
-  return 0;
+bool TMapUberPicture::OrphanLeaf_NoCall_Ins23_00597a10() {
+  switch (this->activeUnitCategoryIndex96) {
+  case 0:
+    return g_pSelectedCivilianOrderState->selectedEntry != nullptr;
+  case 1:
+    return g_pMapContextActionManager->pendingMapActionIndex != -1;
+  case 2:
+    return g_pActiveMapOrderContext->selectedTaskForce14 != nullptr;
+  default:
+    return false;
+  }
 }
+
+// Cycles map interaction selection to the next civilian/province/map-order candidate after
+// a handled click. TODO: body not yet ported -- see the declaration comment in
+// TMapUberPicture.h for the re-attribution evidence and why the state-machine body itself
+// is deferred (packed-byte switch over ~15 unresolved helper functions).
+// FUNCTION: IMPERIALISM 0x00597a80
+void TMapUberPicture::CycleMapInteractionSelectionAfterHandledClick() {}
 
 // TODO: body not yet ported (1761-byte dialog-construction routine). Real receiver and
 // arity confirmed from TToolBarCluster::TryHandleMapContextAction's case-11 call site

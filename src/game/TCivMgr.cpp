@@ -14,6 +14,7 @@
 #include "game/TSoundPlayer.h"
 #include "game/TGreatPower.h"
 #include "game/TCivToolbar.h"
+#include "game/TInterNationEventQueueManager.h"
 #include "game/TMapUberPicture.h"
 #include "game/TViewMgr.h"
 #include "game/localization_text_helpers.h"
@@ -155,10 +156,11 @@ void TCivMgr::SetActiveCivilianSelection(TCivUnit* entryContext, char refreshCom
   if (refreshCommandPanel != 0) {
     mapUberPicture = g_pUiRuntimeContext->mapUberPictureF0;
     if (mapUberPicture != nullptr) {
-      // categoryPages[] is a heterogeneous array of toolbar subtypes stored generically as
-      // TMapUberPicture* (see TArmyToolbar.cpp's own dual-purpose-slot precedent); the civilian
-      // page is really a TCivToolbar.
-      reinterpret_cast<TCivToolbar*>(
+      // categoryPages[] is a heterogeneous array of toolbar subtypes typed generically as
+      // TView* (see TMapUberPicture.h's categoryPages[] comment for the evidence); the
+      // civilian page is a real TCivToolbar, so this is a legitimate downcast, not a
+      // cross-hierarchy type pun.
+      static_cast<TCivToolbar*>(
           mapUberPicture->categoryPages[mapUberPicture->activeUnitCategoryIndex96])
           ->RefreshCivilianCommandPanelForSelection(entryContext);
     }
@@ -174,15 +176,47 @@ void TCivMgr::QueueImmediateCivilianCommandAndCycleSelection(int commandType) {
 
   TMapUberPicture* mapUberPicture = g_pUiRuntimeContext->mapUberPictureF0;
   if (mapUberPicture != nullptr) {
-    // Same dual-purpose-slot cast as SetActiveCivilianSelection above.
-    reinterpret_cast<TCivToolbar*>(mapUberPicture)->CycleMapInteractionSelectionAfterHandledClick();
+    mapUberPicture->CycleMapInteractionSelectionAfterHandledClick();
   }
 }
 
 // FUNCTION: IMPERIALISM 0x004d2d30
 void TCivMgr::ShowDisbandCivilianConfirmationDialog() {
-  typedef void(__fastcall * Func)(TCivMgr*, int);
-  reinterpret_cast<Func>(0x004d2d30)(this, 0);
+  TCivUnit* entry = this->selectedEntry;
+  if (entry == nullptr) {
+    return;
+  }
+
+  CString titleText;
+  CString confirmText;
+  g_pSimMgr->GetString(0x274d, 3, &titleText);
+  short confirmStringOffset = 4;
+  if (entry->orderType == 7) {
+    confirmStringOffset = 5;
+  }
+  g_pSimMgr->GetString(0x274d, confirmStringOffset, &confirmText);
+
+  char confirmed = g_pUiRuntimeContext->DispatchLocalizedUiMessageWithTemplate(
+      4, titleText, confirmText, &g_cstrCivilianOrderMessageStore, 2, 1);
+  if (confirmed == 0) {
+    return;
+  }
+
+  short tileIndex = entry->tileIndex06;
+  if (entry->orderType == 7) {
+    g_pInterNationEventQueueManager->QueueInterNationEventType11(g_pSimMgr->GetActiveNationId(), 0,
+                                                                 0);
+  }
+  entry->ResetCivWorkOrderAndRefreshCounters();
+
+  TMapUberPicture* mapUberPicture = g_pUiRuntimeContext->mapUberPictureF0;
+  if (mapUberPicture != nullptr) {
+    mapUberPicture->DispatchSelectedTileToSubviewsAndSyncTradeToolState(tileIndex);
+  }
+  mapUberPicture = g_pUiRuntimeContext->mapUberPictureF0;
+  if (mapUberPicture != nullptr) {
+    mapUberPicture->CycleMapInteractionSelectionAfterHandledClick();
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x004d2ef0
@@ -292,8 +326,9 @@ void TCivMgr::HandleCivilianReportDecision(TCivUnit* pCivilianOrderEntry) {
 
     TMapUberPicture* refreshTarget = g_pUiRuntimeContext->mapUberPictureF0;
     if (refreshTarget != nullptr) {
-      // Same dual-purpose-slot cast as TCivMgr::SetActiveCivilianSelection.
-      reinterpret_cast<TCivToolbar*>(
+      // Same downcast as TCivMgr::SetActiveCivilianSelection -- categoryPages[civilian] is
+      // a real TCivToolbar (see TMapUberPicture.h's categoryPages[] comment).
+      static_cast<TCivToolbar*>(
           refreshTarget->categoryPages[refreshTarget->activeUnitCategoryIndex96])
           ->RefreshCivilianCommandPanelForSelection(pCivilianOrderEntry);
     }

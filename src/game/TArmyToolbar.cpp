@@ -3,7 +3,7 @@
 #include <new>
 
 #include "game/TArmyMgr.h"
-#include "game/TCivToolbar.h"
+#include "game/TMapUberPicture.h"
 #include "game/TNumberedArrowButton.h"
 #include "game/TView.h"
 #include "game/TViewMgr.h"
@@ -36,15 +36,14 @@ static __inline void SetMapContextActionMode(int mode) {
   g_pMapContextActionManager->OrphanCallChain_C1_I34_004a4260(mode);
 }
 
-static __inline void InvokeActiveCivToolbarCycleMapInteractionSelection() {
+static __inline void InvokeMapUberPictureCycleMapInteractionSelection() {
   if (g_pUiRuntimeContext == 0) {
     return;
   }
-  // mapUberPictureF0 (+0xf0) is a dual-purpose slot: this caller reads it as a TCivToolbar*,
-  // while the field's declared type (TMapUberPicture*) reflects other callers -- an explicit
-  // type pun, not a modeling error (see the type-modeling guardrail for shared slots).
-  reinterpret_cast<TCivToolbar*>(g_pUiRuntimeContext->mapUberPictureF0)
-      ->CycleMapInteractionSelectionAfterHandledClick();
+  // CycleMapInteractionSelectionAfterHandledClick is a real TMapUberPicture method (bd 4yz,
+  // ground-truth-confirmed via its this+0x96 field read and both real call sites loading
+  // mapUberPictureF0 directly) -- no cast needed.
+  g_pUiRuntimeContext->mapUberPictureF0->CycleMapInteractionSelectionAfterHandledClick();
 }
 
 } // namespace
@@ -110,18 +109,18 @@ void TArmyToolbar::HandleEvent(int commandId, TEventHandler* sourceHandler, TEve
 
   if (controlTag == kTagArmyModeDefend) {
     SetMapContextActionMode(2);
-    InvokeActiveCivToolbarCycleMapInteractionSelection();
+    InvokeMapUberPictureCycleMapInteractionSelection();
     return;
   }
 
   if (controlTag == kTagArmyModeLater) {
     SetMapContextActionMode(3);
-    InvokeActiveCivToolbarCycleMapInteractionSelection();
+    InvokeMapUberPictureCycleMapInteractionSelection();
     return;
   }
 
   if (controlTag == kTagArmyModeDone) {
     SetMapContextActionMode(4);
-    InvokeActiveCivToolbarCycleMapInteractionSelection();
+    InvokeMapUberPictureCycleMapInteractionSelection();
   }
 }

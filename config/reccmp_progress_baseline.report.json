@@ -7573,7 +7573,7 @@
     },
     {
       "address": "0x4a2900",
-      "matching": 0.13063763608087092,
+      "matching": 0.13374805598755832,
       "name": "BuildArmyContextActionRecordsAndDispatchLabel",
       "type": 1
     },
@@ -11522,7 +11522,7 @@
     },
     {
       "address": "0x4d2d30",
-      "matching": 0.0,
+      "matching": 0.7461139896373057,
       "name": "TCivMgr::ShowDisbandCivilianConfirmationDialog",
       "type": 1
     },
@@ -28606,14 +28606,14 @@
     },
     {
       "address": "0x597a10",
-      "matching": 0.16,
+      "matching": 0.24489795918367346,
       "name": "TMapUberPicture::OrphanLeaf_NoCall_Ins23_00597a10",
       "type": 1
     },
     {
       "address": "0x597a80",
       "matching": 0.006779661016949152,
-      "name": "TCivToolbar::CycleMapInteractionSelectionAfterHandledClick",
+      "name": "TMapUberPicture::CycleMapInteractionSelectionAfterHandledClick",
       "type": 1
     },
     {
