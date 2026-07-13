@@ -22,6 +22,7 @@ import argparse
 import json
 from pathlib import Path
 
+from tools.common.baseline_staleness import warn_if_baseline_stale
 from tools.common.pipe_csv import read_pipe_rows
 from tools.common.report_score import effective_matching
 
@@ -93,6 +94,8 @@ def main() -> int:
     ap.add_argument("--unowned-only", action="store_true", help="only functions with no manual owner")
     ap.add_argument("--owned-only", action="store_true", help="only functions already owned manually")
     args = ap.parse_args()
+
+    warn_if_baseline_stale(REPO_ROOT)
 
     lo, hi = (0, 1 << 32)
     if args.range:
