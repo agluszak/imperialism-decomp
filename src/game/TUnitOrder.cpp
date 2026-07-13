@@ -5,10 +5,6 @@
 #include "game/TSimMgr.h"
 #include "game/global_data_tables.h"
 
-static __inline void WriteShort(void* base, int offset, short value) {
-  *reinterpret_cast<short*>(reinterpret_cast<unsigned char*>(base) + offset) = value;
-}
-
 // SYNTHETIC: IMPERIALISM 0x004b6f20
 // TUnitOrder::CreateObject
 
@@ -40,23 +36,23 @@ bool TUnitOrder::SetQuantity(short param_1) {
 }
 
 // FUNCTION: IMPERIALISM 0x004b7320
-void TUnitOrder::FillOrderSheet(void* orderSheet, short quantity) {
-  this->InitializeCityOrderItemWorkingBuffers(reinterpret_cast<undefined4*>(orderSheet));
-  WriteShort(orderSheet, this->primaryInputResourceId * 2,
-             static_cast<short>(this->primaryInputPerUnit * quantity));
+void TUnitOrder::FillOrderSheet(OrderSheet* orderSheet, short quantity) {
+  this->InitializeCityOrderItemWorkingBuffers(orderSheet);
+  orderSheet->ForResourceCode(this->primaryInputResourceId) =
+      static_cast<short>(this->primaryInputPerUnit * quantity);
   if (this->secondaryInputResourceId >= 0) {
-    WriteShort(orderSheet, this->secondaryInputResourceId * 2,
-               static_cast<short>(this->secondaryInputPerUnit * quantity));
+    orderSheet->ForResourceCode(this->secondaryInputResourceId) =
+        static_cast<short>(this->secondaryInputPerUnit * quantity);
   }
   if (this->workforceMode == 2) {
-    WriteShort(orderSheet, 0x2e, quantity);
+    orderSheet->slotByResourceCode[0x17] = quantity;
     return;
   }
   if (this->workforceMode == 4) {
-    WriteShort(orderSheet, 0x30, quantity);
+    orderSheet->slotByResourceCode[0x18] = quantity;
     return;
   }
-  WriteShort(orderSheet, 0x78, quantity);
+  orderSheet->slotByResourceCode[0x3c] = quantity;
 }
 
 // FUNCTION: IMPERIALISM 0x004b73b0

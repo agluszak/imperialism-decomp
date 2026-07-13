@@ -26,7 +26,8 @@ public:
   virtual undefined CommitIfPending() override;                    // slot 0x0d 0x4b5580
   virtual undefined ResetCityOrderItemDerivedStateNoop() override; // slot 0x0e 0x4b5620
   // slot 0x0f Produce inherited unchanged (0x4b5180)
-  virtual void FillOrderSheet(void* orderSheet, short quantity) override; // slot 0x10 0x4b5510
+  virtual void FillOrderSheet(OrderSheet* orderSheet,
+                              short quantity) override; // slot 0x10 0x4b5510
   virtual undefined
   InitializeCityProductionState_Impl_At004b5290(int param_1, undefined2 param_2, undefined2 param_3,
                                                 undefined2 param_4,
@@ -48,4 +49,3 @@ public:
 };
 
 ASSERT_SIZE(TItemOrder, 0x54);
-

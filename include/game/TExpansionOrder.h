@@ -23,7 +23,8 @@ public:
   virtual undefined CommitIfPending() override;     // slot 0x0d 0x4b9090
   // slot 0x0e ResetCityOrderItemDerivedStateNoop inherited unchanged (0x4b5620)
   // slot 0x0f Produce inherited unchanged (0x4b5180)
-  virtual void FillOrderSheet(void* orderSheet, short quantity) override; // slot 0x10 0x4b9360
+  virtual void FillOrderSheet(OrderSheet* orderSheet,
+                              short quantity) override; // slot 0x10 0x4b9360
   // slot 0x11 InitializeCityProductionState_Impl_At004b5290 inherited unchanged (0x4b5290)
   virtual undefined
   InitializeCityProductionState_Impl_At004b9010(int param_1, undefined2 param_2, undefined2 param_3,

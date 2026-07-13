@@ -29,7 +29,7 @@ public:
   // FillOrderSheet unchanged. The real logic once misfiled here as this class's own
   // FillOrderSheet was actually TShipOrder::FillOrderSheet (0x004b8b80) -- moved there.
   bool CanMakeFromCityStock();
-  bool CanFillOrderSheet(void* orderSheet);
+  bool CanFillOrderSheet(OrderSheet* orderSheet);
   static TCapacityOrder* NewForCity(TCity* city);
 
   short quantityField04;
@@ -45,4 +45,3 @@ public:
   short trackingIndex50;
   short field52;
 };
-

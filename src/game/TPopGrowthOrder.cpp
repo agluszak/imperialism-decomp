@@ -1,9 +1,5 @@
 #include "game/TPopGrowthOrder.h"
 
-static __inline void WriteShort(void* base, int offset, short value) {
-  *reinterpret_cast<short*>(reinterpret_cast<unsigned char*>(base) + offset) = value;
-}
-
 // SYNTHETIC: IMPERIALISM 0x004b3050
 // TPopGrowthOrder::`scalar deleting destructor'
 TPopGrowthOrder::~TPopGrowthOrder() {}
@@ -43,9 +39,9 @@ undefined TPopGrowthOrder::ResetCityOrderItemDerivedStateNoop() {
 }
 
 // FUNCTION: IMPERIALISM 0x004b8440
-void TPopGrowthOrder::FillOrderSheet(void* orderSheet, short quantity) {
-  this->InitializeCityOrderItemWorkingBuffers(reinterpret_cast<undefined4*>(orderSheet));
-  WriteShort(orderSheet, 0x1a, quantity);
-  WriteShort(orderSheet, 0x1c, quantity);
-  WriteShort(orderSheet, 0x0e, quantity);
+void TPopGrowthOrder::FillOrderSheet(OrderSheet* orderSheet, short quantity) {
+  this->InitializeCityOrderItemWorkingBuffers(orderSheet);
+  orderSheet->slotByResourceCode[0x0d] = quantity;
+  orderSheet->slotByResourceCode[0x0e] = quantity;
+  orderSheet->slotByResourceCode[0x07] = quantity;
 }

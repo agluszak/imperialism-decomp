@@ -1,9 +1,5 @@
 #include "game/TFoodProcessingOrder.h"
 
-static __inline void WriteShort(void* base, int offset, short value) {
-  *reinterpret_cast<short*>(reinterpret_cast<unsigned char*>(base) + offset) = value;
-}
-
 // SYNTHETIC: IMPERIALISM 0x004b7dc0
 // TFoodProcessingOrder::CreateObject
 
@@ -44,13 +40,13 @@ undefined TFoodProcessingOrder::ResetCityOrderItemDerivedStateNoop() {
 }
 
 // FUNCTION: IMPERIALISM 0x004b80c0
-void TFoodProcessingOrder::FillOrderSheet(void* orderSheet, short quantity) {
+void TFoodProcessingOrder::FillOrderSheet(OrderSheet* orderSheet, short quantity) {
   if (quantity & 1) {
     quantity = static_cast<short>(quantity + 1);
   }
-  this->InitializeCityOrderItemWorkingBuffers(reinterpret_cast<undefined4*>(orderSheet));
-  WriteShort(orderSheet, 0x22, quantity);
-  WriteShort(orderSheet, 0x24, static_cast<short>(quantity / 2));
-  WriteShort(orderSheet, 0x28, static_cast<short>(quantity / 2));
-  WriteShort(orderSheet, 0x7a, quantity);
+  this->InitializeCityOrderItemWorkingBuffers(orderSheet);
+  orderSheet->slotByResourceCode[0x11] = quantity;
+  orderSheet->slotByResourceCode[0x12] = static_cast<short>(quantity / 2);
+  orderSheet->slotByResourceCode[0x14] = static_cast<short>(quantity / 2);
+  orderSheet->slotByResourceCode[0x3d] = quantity;
 }
