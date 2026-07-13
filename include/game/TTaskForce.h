@@ -153,6 +153,13 @@ public:
   // 0x00552a70 — drops this task force's queued order nodes belonging to `nation` and
   // clears the selection state tied to `contextZone` (the selected map-order context).
   void RemoveTaskForceOrderNodesByNationAndClearSelectionState(int nation, TZone* contextZone);
+  // 0x005528c0 — empty post-construction slot invoked thiscall (no args) by both
+  // TTaskForce factory sites right after the ctor; the real body is a single ret.
+  void NoOpTaskForceInitSlot();
+  // 0x005548e0 — averages each child order entry's +0x10 slot and stores the rounded
+  // result as a 32-bit value over this entry's order_type/order_strength dword. See the
+  // .cpp: the +0x10 read semantics are unresolved, so the body is deferred.
+  void RecomputeTaskForceAverageOrderScore();
   // 0x005539c0 — recomputes this task force's per-order selection flags for the active
   // nation's current orders (`mode` selects the pass; the caller passes 0).
   void RefreshTaskForceSelectionFlagsForCurrentNationOrders(int mode);

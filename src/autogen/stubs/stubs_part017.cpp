@@ -11,14 +11,6 @@ undefined4 CancelMapOrderEntryAndRestoreActive(void)
   return 0;
 }
 
-// ghidra_name RecomputeTaskForceAverageOrderScore
-// ghidra_proto undefined RecomputeTaskForceAverageOrderScore()
-// FUNCTION: IMPERIALISM 0x005548e0
-undefined4 RecomputeTaskForceAverageOrderScore(void)
-{
-  return 0;
-}
-
 // ghidra_name SetTaskForceOrderSelectionByNodeId
 // ghidra_proto undefined SetTaskForceOrderSelectionByNodeId()
 // FUNCTION: IMPERIALISM 0x005549a0

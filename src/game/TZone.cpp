@@ -834,13 +834,28 @@ void TZone::SetMapOrderUiFlag(int flag) {
   }
 }
 
-// TODO: port body @ 0x005609e0 (builds a new TTaskForce order entry for this context
-// zone + nation via the TTaskForce(contextAnchor, requiredCount) ctor when eligible).
-// Stub keeps the address owned; EnsureSelectedTaskForceForOrderOwnerAndRefresh calls it
-// as a real TZone method.
 // FUNCTION: IMPERIALISM 0x005609e0
 TTaskForce* TZone::CreateTaskForceFromNavyOrdersForNationIfEligible(short nation) {
-  (void)nation;
+  int resolvedNation = nation;
+  if (resolvedNation == -1) {
+    resolvedNation = g_pSimMgr->GetActiveNationId();
+  }
+  unsigned char nationBit = static_cast<unsigned char>(1 << resolvedNation);
+  if ((field10 & nationBit) != 0) {
+    for (TShip* ship = GetNavyPrimaryOrderListHead(); ship != nullptr; ship = ship->nextOlder24) {
+      if (ship->field08 == this && ship->ownerNationSlot14 == resolvedNation &&
+          ship->field0c == 0) {
+        // contextAnchor is a dual-purpose opaque int slot (see TTaskForce.h); here it
+        // carries this zone. requiredCount seeds from the raw incoming nation arg, which
+        // the original keeps distinct from the active-nation-resolved slot used above.
+        TTaskForce* taskForce = new TTaskForce(reinterpret_cast<int>(this), nation);
+        taskForce->NoOpTaskForceInitSlot();
+        taskForce->RefreshTaskForceSelectionFlagsForCurrentNationOrders(0);
+        taskForce->RecomputeTaskForceAverageOrderScore();
+        return taskForce;
+      }
+    }
+  }
   return nullptr;
 }
 

@@ -427,9 +427,7 @@ void TTaskForce::ReadFrom(TStream* stream) {
 }
 
 // FUNCTION: IMPERIALISM 0x005528c0
-void __cdecl NoOpTaskForceVtableSlot(void) {
-  return;
-}
+void TTaskForce::NoOpTaskForceInitSlot() {}
 
 // FUNCTION: IMPERIALISM 0x005528e0
 void TTaskForce::RelinkMapOrderQueueNodeBetween(TTaskForce* prev_node, TTaskForce* next_node) {
@@ -768,6 +766,25 @@ char TTaskForce::PruneInactiveTaskForceOrderHead() {
     return 1;
   }
   return 0;
+}
+
+// FUNCTION: IMPERIALISM 0x005548e0
+void TTaskForce::RecomputeTaskForceAverageOrderScore() {
+  int sum = 0;
+  int count = 0;
+  for (TMapOrderChildLinkNode* node = childOrderList; node != nullptr; node = node->next) {
+    // Each child entry's +0x10 slot read as a flat aggregate (same opaque order-node
+    // internals SelectPreferredMapOrderEntryByPriorityRules reaches via raw casts).
+    sum += *reinterpret_cast<int*>(reinterpret_cast<char*>(node->object_ptr) + 0x10);
+    ++count;
+  }
+  // The rounded average is written back as one 32-bit store spanning this entry's
+  // order_type/order_strength pair (the original writes a dword at +0x04 in each branch).
+  if (count != 0) {
+    *reinterpret_cast<int*>(&order_type) = (count / 2 + sum) / count;
+    return;
+  }
+  *reinterpret_cast<int*>(&order_type) = 0;
 }
 
 // FUNCTION: IMPERIALISM 0x00554930

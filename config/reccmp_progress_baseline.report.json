@@ -12857,7 +12857,8 @@
     },
     {
       "address": "0x4e0650",
-      "matching": 1.0,
+      "effective": true,
+      "matching": 0.42857142857142855,
       "name": "TGreatPower::OrphanRetStub_004d7fe0_8b",
       "type": 1
     },
@@ -12899,7 +12900,7 @@
     },
     {
       "address": "0x4e09a0",
-      "matching": 0.5180722891566265,
+      "matching": 0.5421686746987951,
       "name": "TGreatPower::ComputeCityOrderCapabilityAggregateScore",
       "type": 1
     },
@@ -22402,7 +22403,7 @@
     },
     {
       "address": "0x5548e0",
-      "matching": 0.05405405405405406,
+      "matching": 0.9565217391304348,
       "name": "RecomputeTaskForceAverageOrderScore",
       "type": 1
     },
@@ -23147,7 +23148,7 @@
     },
     {
       "address": "0x5609e0",
-      "matching": 0.05333333333333334,
+      "matching": 0.9863013698630136,
       "name": "CreateTaskForceFromNavyOrdersForNationIfEligible",
       "type": 1
     },
