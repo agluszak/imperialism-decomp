@@ -229,7 +229,7 @@ undefined TMapMgr::LoadPoliticalMapRegionSubtypeTableFromResourceStream() {
 
 // FUNCTION: IMPERIALISM 0x0050f740
 void TMapMgr::RefreshMapContextRotatingStatusStrings() {
-  reinterpret_cast<void(__fastcall*)(void*, int)>(0x0050f740)(this, 0);
+  // TODO: promote body @ 0x0050f740
 }
 
 // FUNCTION: IMPERIALISM 0x0050fca0
@@ -2409,6 +2409,13 @@ char TMapMgr::TileHasMovementClassId(int nodeContext, int regionIndex) {
 // FUNCTION: IMPERIALISM 0x00515ec0
 void TMapMgr::AssignCityRecordDisplayName(int cityRecordIndex, CString* dest) {
   *dest = cityScoreTable[cityRecordIndex].cityNameA4;
+}
+
+// FUNCTION: IMPERIALISM 0x00515f40
+void TMapMgr::SetGlobalMapCellSharedLabel(int cityRecordIndex, CString* name) {
+  CString* dest = reinterpret_cast<CString*>(reinterpret_cast<char*>(cityScoreTable) +
+                                             cityRecordIndex * 0xa8 + 0xa4);
+  *dest = *name;
 }
 
 // FUNCTION: IMPERIALISM 0x00515f80

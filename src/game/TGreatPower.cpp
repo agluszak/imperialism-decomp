@@ -781,12 +781,6 @@ void TGreatPower::MarkStatusFlag5HandledIfCapabilityActive(void) {
   }
 }
 
-void TGreatPower::SetHomeCityTileAndDisplayName(short homeRegionTile, char* cityName) {
-  (void)homeRegionTile;
-  (void)cityName;
-  // TODO: promote body @ 0x004dfd30
-}
-
 // FUNCTION: IMPERIALISM 0x004da8a0
 void TGreatPower::MarkAllPendingStatusFlagsHandled(void) {
   unsigned char* flags = this->serializedStatusFlags;
@@ -3242,6 +3236,75 @@ void TGreatPower::CreateFrogCityAtHomeRegionAndAttach(void* receiver) {
   }
 }
 
+// FUNCTION: IMPERIALISM 0x004dfd30
+void TGreatPower::SetHomeCityTileAndDisplayName(short homeRegionTile, char* cityName) {
+  TCity* city = this ? this->city : 0;
+  void* selectedOrder = city->selectedOrderB0;
+
+  if (homeRegionTile != -1) {
+    *(short*)((char*)selectedOrder + 0x14) = homeRegionTile;
+  }
+
+  short regionIndex;
+  if (city->selectedOrderB0) {
+    regionIndex = *(short*)((char*)city->selectedOrderB0 + 0x14);
+  } else {
+    regionIndex = 1;
+  }
+  this->homeRegionIndex = regionIndex;
+
+  if (cityName) {
+    CString nameStr(cityName);
+    short cityRecordIndex = g_pGlobalMapState->terrainStateTable[regionIndex].cityRecordIndex;
+    g_pGlobalMapState->SetGlobalMapCellSharedLabel(cityRecordIndex, &nameStr);
+    static_cast<TProductionOrder*>(selectedOrder)
+        ->ResetCityOrderItemDerivedStateNoop((const char*)nameStr);
+  }
+
+  this->RebuildNationResourceYieldCountersAndDevelopmentTargets();
+
+  if (this->interiorMinister) {
+    this->interiorMinister->MinisterSlot14();
+  }
+
+  if (g_pSimMgr->stateFlag114 == 0) {
+    short result1 =
+        g_pGlobalMapState->FindReachableRecruitSpawnTileWithVisitedReset(this->homeRegionIndex, 0);
+    TCivUnit* civ1 = new TCivUnit();
+    civ1->InitializeCivWorkOrderState(1, result1, this->nationSlot);
+
+    short result2 =
+        g_pGlobalMapState->FindReachableRecruitSpawnTileWithVisitedReset(this->homeRegionIndex, 1);
+    TCivUnit* civ2 = new TCivUnit();
+    civ2->InitializeCivWorkOrderState(4, result2, this->nationSlot);
+
+    city->orderCountByType5c[1] += 2;
+
+    if (g_pSimMgr->redrawEnabled == 0 && this->diplomacyEligibilityA0) {
+      city->orderCountByType5c[1] += 6;
+
+      short result3 = g_pGlobalMapState->FindReachableRecruitSpawnTileWithVisitedReset(
+          this->homeRegionIndex, 0);
+      TCivUnit* civ3 = new TCivUnit();
+      civ3->InitializeCivWorkOrderState(1, result3, this->nationSlot);
+
+      short result4 = g_pGlobalMapState->FindReachableRecruitSpawnTileWithVisitedReset(
+          this->homeRegionIndex, 0);
+      TCivUnit* civ4 = new TCivUnit();
+      civ4->InitializeCivWorkOrderState(0, result4, this->nationSlot);
+
+      short result5 = g_pGlobalMapState->FindReachableRecruitSpawnTileWithVisitedReset(
+          this->homeRegionIndex, 0);
+      TCivUnit* civ5 = new TCivUnit();
+      civ5->InitializeCivWorkOrderState(2, result5, this->nationSlot);
+    }
+  }
+
+  g_pDiplomacyTurnStateManager->SetStandingScoreSlot28(this->nationSlot, this->nationSlot, 0x100);
+
+  this->SeedInitialMilitaryAndNavyOrdersForOwnedRegions();
+}
+
 // FUNCTION: IMPERIALISM 0x004e00d0
 void TGreatPower::DispatchGreatPowerQuarterlyStatusMessageLevel2(CString* message) {
   int quarterTick = static_cast<int>(g_pSimMgr->quarterGateTick2c);
@@ -4220,13 +4283,60 @@ void TGreatPower::BuildGreatPowerTurnMessageSummaryAndDispatch(void) {
 // FUNCTION: IMPERIALISM 0x004e6c20
 void TGreatPower::InitializeNationMinisterSubsystemsByPolicyIds(int arg1, int arg2, short arg3,
                                                                 short arg4, short arg5) {
-  reinterpret_cast<void(__fastcall*)(void*, int, int, int, short, short, short)>(0x004e6c20)(
-      this, 0, arg1, arg2, arg3, arg4, arg5);
+  // TODO: promote body @ 0x004e6c20 — creates defense/foreign minister objects
+  // via switch on policy IDs, stores at +0x94/+0x98/+0x9c
+  (void)arg1;
+  (void)arg2;
+  (void)arg3;
+  (void)arg4;
+  (void)arg5;
 }
 
 // FUNCTION: IMPERIALISM 0x004e83d0
 void TGreatPower::QueueMapActionMissionsForPortZoneCandidates() {
-  reinterpret_cast<void(__fastcall*)(void*, int)>(0x004e83d0)(this, 0);
+  TSortedList* regionList = this->ownedRegionList;
+  int regionCount = regionList->GetCount();
+
+  for (int i = 1; i <= regionCount; i++) {
+    int regionId = reinterpret_cast<int>(regionList->GetEntryByOrdinal(i));
+    bool unavailable = g_pGlobalMapState->IsNodeTypeLinkUnavailableAndNoActiveMapActionContext(
+        regionId, this->nationSlot);
+    this->mapNodeStateFlags[regionId] = (unavailable == false);
+    QueueMapActionMissionFromCandidateAndMarkState(kMissionTypeDefendProvince, regionId, 0, -1);
+  }
+
+  TZone* portZone = g_pActiveMapOrderContext->FindFirstPortZoneContextByNation(this->nationSlot);
+
+  if (portZone->PrimaryZoneHeapCapacity() == 0) {
+    void* resized = reinterpret_cast<void*(__cdecl*)(void*, int)>(
+        ReallocateHeapBlockWithAllocatorTracking)(portZone->PrimaryZoneHeapData(), 8);
+    if (resized == 0) {
+      resized = reinterpret_cast<void*(__cdecl*)(void*, int)>(
+          ReallocateHeapBlockWithAllocatorTracking)(portZone->PrimaryZoneHeapData(), 4);
+      portZone->PrimaryZoneHeapData() = static_cast<TZone**>(resized);
+      portZone->PrimaryZoneHeapCapacity() = 1;
+    } else {
+      portZone->PrimaryZoneHeapData() = static_cast<TZone**>(resized);
+      portZone->PrimaryZoneHeapCapacity() = 2;
+    }
+  }
+
+  if (portZone->PrimaryZoneHeapSize() == 0) {
+    portZone->PrimaryZoneHeapSize() = 1;
+  }
+
+  TZone** heapData = portZone->PrimaryZoneHeapData();
+  TZone* firstEntry = *heapData;
+
+  short index = (firstEntry != 0) ? *(short*)((char*)firstEntry + 0x14) : -1;
+  this->portZoneStateFlags[index] = 1;
+  QueueMapActionMissionFromCandidateAndMarkState(kMissionTypeDefendProvince, -1, firstEntry, -1);
+
+  index = (portZone != 0) ? *(short*)((char*)portZone + 0x14) : -1;
+  this->portZoneStateFlags[index] = 1;
+  QueueMapActionMissionFromCandidateAndMarkState(kMissionTypeDefendProvince, -1, portZone, -1);
+
+  QueueMapActionMissionFromCandidateAndMarkState(kMissionTypeBlockadePort, -1, 0, -1);
 }
 
 // FUNCTION: IMPERIALISM 0x004e8540

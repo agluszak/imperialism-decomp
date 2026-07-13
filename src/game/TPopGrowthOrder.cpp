@@ -34,7 +34,8 @@ undefined TPopGrowthOrder::CommitIfPending() {
 }
 
 // FUNCTION: IMPERIALISM 0x004b8420
-undefined TPopGrowthOrder::ResetCityOrderItemDerivedStateNoop() {
+undefined TPopGrowthOrder::ResetCityOrderItemDerivedStateNoop(const char* name) {
+  (void)name;
   return 0;
 }
 

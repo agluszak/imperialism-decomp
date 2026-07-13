@@ -28,11 +28,11 @@ public:
   // slot 0x08 ShallowClone inherited unchanged (0x4798d0)
   // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
   virtual undefined InitializeBasicCityOrderContext(int param_1,
-                                                    undefined2 param_2); // slot 0x0a 0x4b4f70
-  virtual bool SetQuantity(short param_1);                               // slot 0x0b 0x4b5100
-  virtual short MaxOrder();                                              // slot 0x0c 0x4b50e0
-  virtual undefined CommitIfPending();                                   // slot 0x0d 0x4b5160
-  virtual undefined ResetCityOrderItemDerivedStateNoop();                // slot 0x0e 0x4b5140
+                                                    undefined2 param_2);  // slot 0x0a 0x4b4f70
+  virtual bool SetQuantity(short param_1);                                // slot 0x0b 0x4b5100
+  virtual short MaxOrder();                                               // slot 0x0c 0x4b50e0
+  virtual undefined CommitIfPending();                                    // slot 0x0d 0x4b5160
+  virtual undefined ResetCityOrderItemDerivedStateNoop(const char* name); // slot 0x0e 0x4b5140
   virtual undefined
   InitializeCityOrderItemWorkingBuffers(OrderSheet* orderSheet);       // slot 0x0f 0x4b5180
   virtual void FillOrderSheet(OrderSheet* orderSheet, short quantity); // slot 0x10 0x4b51b0

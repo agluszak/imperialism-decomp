@@ -69,7 +69,8 @@ TMinor::~TMinor() {}
 
 // FUNCTION: IMPERIALISM 0x004e38e0
 void TMinor::InitializeTMinorDefaults(int slotIndex) {
-  reinterpret_cast<void(__fastcall*)(void*, int, int)>(0x004e38e0)(this, 0, slotIndex);
+  // TODO: promote body @ 0x004e38e0 — initializes minor nation default state
+  (void)slotIndex;
 }
 
 // FUNCTION: IMPERIALISM 0x004e41c0

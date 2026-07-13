@@ -35,7 +35,8 @@ bool TProductionOrder::SetQuantity(short param_1) {
   return 0;
 }
 
-undefined TProductionOrder::ResetCityOrderItemDerivedStateNoop() {
+undefined TProductionOrder::ResetCityOrderItemDerivedStateNoop(const char* name) {
+  (void)name;
   return 0;
 }
 

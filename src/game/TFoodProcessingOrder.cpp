@@ -35,7 +35,8 @@ undefined TFoodProcessingOrder::CommitIfPending() {
 }
 
 // FUNCTION: IMPERIALISM 0x004b80a0
-undefined TFoodProcessingOrder::ResetCityOrderItemDerivedStateNoop() {
+undefined TFoodProcessingOrder::ResetCityOrderItemDerivedStateNoop(const char* name) {
+  (void)name;
   return 0;
 }
 

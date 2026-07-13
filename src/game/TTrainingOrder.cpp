@@ -47,6 +47,7 @@ undefined TTrainingOrder::CommitIfPending() {
 }
 
 // FUNCTION: IMPERIALISM 0x004b6f00
-undefined TTrainingOrder::ResetCityOrderItemDerivedStateNoop() {
+undefined TTrainingOrder::ResetCityOrderItemDerivedStateNoop(const char* name) {
+  (void)name;
   return 0;
 }

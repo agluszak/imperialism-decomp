@@ -5,10 +5,10 @@
 #include "decomp_types.h"
 #include "game/TObject.h"
 #include "game/TPopulationMgr.h"
+#include "game/TProductionOrder.h"
 
 class TSortedList;
 class TStream;
-class TProductionOrder;
 class TShipOrder;
 class TUnitOrder;
 

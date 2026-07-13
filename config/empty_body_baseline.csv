@@ -19,7 +19,7 @@ src/game/TApplication.cpp|1|0|0|0
 src/game/TArmoryView.cpp|3|0|1|0
 src/game/TArmyBoyView.cpp|0|0|1|0
 src/game/TArmyCheckBox.cpp|3|0|1|0
-src/game/TArmyMgr.cpp|5|0|1|0
+src/game/TArmyMgr.cpp|4|0|1|0
 src/game/TArmyPlacard.cpp|0|0|1|0
 src/game/TArmyPlayer.cpp|2|0|0|0
 src/game/TArmyStack.cpp|3|0|0|0
@@ -61,7 +61,6 @@ src/game/TColorKeyButton.cpp|1|0|0|0
 src/game/TColorKeyPicture.cpp|3|0|0|0
 src/game/TCombatReportView.cpp|0|0|1|0
 src/game/TControl.cpp|1|0|1|0
-src/game/TControlSeaZoneMission.cpp|1|0|0|0
 src/game/TCouncilPanelView.cpp|1|0|1|0
 src/game/TCouncilTickerAnimation.cpp|0|0|1|0
 src/game/TCountry.cpp|0|1|3|0
@@ -131,7 +130,7 @@ src/game/TMapEditCluster.cpp|1|0|1|0
 src/game/TMapEditView.cpp|6|0|1|0
 src/game/TMapKey.cpp|1|0|1|0
 src/game/TMapMaker.cpp|14|0|0|0
-src/game/TMapMgr.cpp|2|0|2|0
+src/game/TMapMgr.cpp|3|0|2|0
 src/game/TMapUberPicture.cpp|8|0|0|0
 src/game/TMapUberUberPicture.cpp|0|0|1|0
 src/game/TMegaPicture.cpp|2|0|0|0
@@ -166,7 +165,7 @@ src/game/TNetMgr.cpp|0|1|0|0
 src/game/TNetSelectPicture.cpp|1|0|0|0
 src/game/TNewGameCommand.cpp|0|1|0|0
 src/game/TNewTownView.cpp|1|0|1|0
-src/game/TNewsMgr.cpp|1|2|1|0
+src/game/TNewsMgr.cpp|2|2|1|0
 src/game/TNewspaperView.cpp|0|0|1|0
 src/game/TNextMoveCommand.cpp|1|0|0|0
 src/game/TNoHiliteText.cpp|0|0|1|0
@@ -212,7 +211,7 @@ src/game/TShipPlacard.cpp|1|0|0|0
 src/game/TShipView.cpp|2|0|1|0
 src/game/TShipyardCluster.cpp|0|0|1|0
 src/game/TShipyardView.cpp|5|0|1|0
-src/game/TSimMgr.cpp|10|0|0|0
+src/game/TSimMgr.cpp|12|0|0|0
 src/game/TSortedPtrList.cpp|0|0|1|0
 src/game/TSoundChannelNode.cpp|4|0|0|0
 src/game/TSpaceCommand.cpp|0|0|1|0
@@ -232,16 +231,16 @@ src/game/TTacticalHolaPicture.cpp|0|0|1|0
 src/game/TTacticalPlayer.cpp|0|5|0|0
 src/game/TTacticalToolbar.cpp|2|0|1|0
 src/game/TTask.cpp|2|0|1|0
-src/game/TTaskForce.cpp|5|0|0|0
+src/game/TTaskForce.cpp|4|0|0|0
 src/game/TTechCheater.cpp|0|0|1|0
 src/game/TTechHistoryView.cpp|0|0|1|0
 src/game/TTechItemLine.cpp|0|0|1|0
 src/game/TTechItemView.cpp|1|0|1|0
-src/game/TTechMgr.cpp|2|0|2|0
+src/game/TTechMgr.cpp|3|0|2|0
 src/game/TTerrainHelpPicture.cpp|1|0|1|0
 src/game/TTextPictureButton.cpp|1|0|0|0
 src/game/TToggleButton.cpp|0|0|1|0
-src/game/TToolBarCluster.cpp|3|0|0|0
+src/game/TToolBarCluster.cpp|2|0|0|0
 src/game/TTown.cpp|0|0|1|0
 src/game/TTownNameDialog.cpp|2|0|0|0
 src/game/TTradeBidNationLine.cpp|0|0|1|0
