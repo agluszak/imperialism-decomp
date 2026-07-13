@@ -363,14 +363,6 @@ undefined4 HandleTurnInstruction_Pric_ApplyDiplomacyPriceEntry(void)
   return 0;
 }
 
-// ghidra_name HandleTurnInstruction_Emba_SetEmbassyRelationFlags
-// ghidra_proto undefined HandleTurnInstruction_Emba_SetEmbassyRelationFlags()
-// FUNCTION: IMPERIALISM 0x00582bf0
-undefined4 HandleTurnInstruction_Emba_SetEmbassyRelationFlags(void)
-{
-  return 0;
-}
-
 // ghidra_name HandleTurnInstruction_Subs_ApplyNationSubsidyEntry
 // ghidra_proto undefined HandleTurnInstruction_Subs_ApplyNationSubsidyEntry()
 // FUNCTION: IMPERIALISM 0x00582ce0
@@ -431,14 +423,6 @@ undefined4 HandleTurnInstruction_Tyer_SetCityOrderCapabilityTierValue(void)
 // ghidra_proto undefined HandleTurnInstruction_Tbar_SetNationRelationBarValue()
 // FUNCTION: IMPERIALISM 0x00583510
 undefined4 HandleTurnInstruction_Tbar_SetNationRelationBarValue(void)
-{
-  return 0;
-}
-
-// ghidra_name HandleTurnInstruction_Coun_SetCountrySlotState
-// ghidra_proto undefined HandleTurnInstruction_Coun_SetCountrySlotState()
-// FUNCTION: IMPERIALISM 0x00583700
-undefined4 HandleTurnInstruction_Coun_SetCountrySlotState(void)
 {
   return 0;
 }

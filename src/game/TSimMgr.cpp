@@ -1049,6 +1049,51 @@ void TSimMgr::HandleTurnInstruction_Tran_SetNationTransportStat(void* pInstructi
   g_apNationStates[static_cast<int>(nationToken)]->needCapA6 = static_cast<short>(valueToken);
 }
 
+// Reads two big-endian 32-bit nation slots and a big-endian short relation value, then
+// writes the value symmetrically into both [A][B] and [B][A] of the diplomacy manager's
+// side-effect relation matrix.
+// FUNCTION: IMPERIALISM 0x00582bf0
+void TSimMgr::HandleTurnInstruction_Emba_SetEmbassyRelationFlags(void* pInstructionRaw) {
+  STurnInstructionCursor* instruction = static_cast<STurnInstructionCursor*>(pInstructionRaw);
+  unsigned int* cursor = instruction->tokenCursor;
+
+  unsigned int nationAToken = *cursor;
+  cursor = cursor + 1;
+  instruction->tokenCursor = cursor;
+  unsigned char* araw = reinterpret_cast<unsigned char*>(&nationAToken);
+  unsigned char at = araw[0];
+  araw[0] = araw[3];
+  araw[3] = at;
+  at = araw[1];
+  araw[1] = araw[2];
+  araw[2] = at;
+
+  unsigned int nationBToken = *cursor;
+  cursor = cursor + 1;
+  instruction->tokenCursor = cursor;
+  unsigned char* braw = reinterpret_cast<unsigned char*>(&nationBToken);
+  unsigned char bt = braw[0];
+  braw[0] = braw[3];
+  braw[3] = bt;
+  bt = braw[1];
+  braw[1] = braw[2];
+  braw[2] = bt;
+
+  unsigned int valueToken = *cursor;
+  cursor = cursor + 1;
+  instruction->tokenCursor = cursor;
+  unsigned char* vraw = reinterpret_cast<unsigned char*>(&valueToken);
+  vraw[0] = vraw[3];
+  vraw[1] = vraw[2];
+
+  int nationA = static_cast<int>(nationAToken);
+  int nationB = static_cast<int>(nationBToken);
+  short value = static_cast<short>(valueToken);
+  TDiplomacyMgr* diplomacy = g_pDiplomacyTurnStateManager;
+  diplomacy->relationSideEffectMatrix1402[nationA * 0x17 + nationB] = value;
+  diplomacy->relationSideEffectMatrix1402[nationB * 0x17 + nationA] = value;
+}
+
 // Reads one big-endian short token (the scenario year) and stores it, scaled to quarter
 // ticks (year * 4), into the turn-flow tick field at +0x2c.
 // FUNCTION: IMPERIALISM 0x00582ed0
@@ -1162,6 +1207,43 @@ void TSimMgr::HandleTurnInstruction_Tclr_ResetNationRelationBars(void* pInstruct
                                                                    0);
     ++needIndex;
   } while (needIndex < 0x17);
+}
+
+// Reads a big-endian 32-bit country slot and a big-endian 32-bit state code. Stores the
+// state's low byte into the per-slot state array based at field6e, and when the state is
+// exactly 2 latches field6c to slot*10 + 0x717.
+// FUNCTION: IMPERIALISM 0x00583700
+void TSimMgr::HandleTurnInstruction_Coun_SetCountrySlotState(void* pInstructionRaw) {
+  STurnInstructionCursor* instruction = static_cast<STurnInstructionCursor*>(pInstructionRaw);
+  unsigned int* cursor = instruction->tokenCursor;
+
+  unsigned int slotToken = *cursor;
+  cursor = cursor + 1;
+  instruction->tokenCursor = cursor;
+  unsigned char* sraw = reinterpret_cast<unsigned char*>(&slotToken);
+  unsigned char st = sraw[0];
+  sraw[0] = sraw[3];
+  sraw[3] = st;
+  st = sraw[1];
+  sraw[1] = sraw[2];
+  sraw[2] = st;
+
+  unsigned int stateToken = *cursor;
+  cursor = cursor + 1;
+  instruction->tokenCursor = cursor;
+  unsigned char* vraw = reinterpret_cast<unsigned char*>(&stateToken);
+  unsigned char vt = vraw[0];
+  vraw[0] = vraw[3];
+  vraw[3] = vt;
+  vt = vraw[1];
+  vraw[1] = vraw[2];
+  vraw[2] = vt;
+
+  int slot = static_cast<int>(slotToken);
+  (&field6e)[slot] = static_cast<unsigned char>(stateToken);
+  if (stateToken == 2) {
+    field6c = static_cast<short>(static_cast<short>(slotToken) * 10 + 0x717);
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x005837c0
