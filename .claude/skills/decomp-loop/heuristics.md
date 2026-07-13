@@ -1308,3 +1308,29 @@ headers before splicing.
     partial-register arg load (`mov ax,[mem]; push eax` rather than `movsx`) that clean C++
     won't reproduce, or a field used with semantics that contradict its recovered name
     (required_count passed as a diplomacy `sourceNation`). Skip those rather than mis-model.
+
+88. **`new T()` callsites are an authoritative sizeof(T) oracle — use them to catch
+    under-modeled classes.** A `push 0xNN; call 0x606f73` (MFC `operator new`) at a
+    `new T()` site pins `sizeof(T)` exactly, and reccmp flags a wrong size as a
+    `[constant]` mismatch on the `push` immediate (`0x80 vs 0x64` = class is 0x1C bytes
+    short, not codegen wobble). Worked example: `TGreatPower::ReadFrom` (0x4d92e0)
+    builds three ministers with `push 0x80` / `push 0x1c4` / `push 0x94`; the recomp
+    pushed 0x64/0x2c/0x2c, exposing that the shared `TMinister` base was 0x2C instead
+    of its real 0x48. Fix belongs on the *base* when the whole family is short: derived
+    ministers each begin their own state at 0x48 (ConstructTForeignMinister @ 0x52f070
+    first writes [this+0x48]), and a header whose trailing array reads `state48[0x80 -
+    0x48]` already assumes base 0x48 — so growing the base (`pad2a[0x48-0x2A]`) fixes
+    every derived size at once with no field shift (derived classes had no modeled
+    members). Don't size-clamp a class that derives through an intermediate you haven't
+    sized (TCityInteriorMinister via TInteriorMinister): you can't attribute the
+    0x48..total region across the chain without each level's own `new` size — defer to
+    real class recovery.
+
+89. **Match the compiler's `>= N` / `> N` compare form, not just the semantics.**
+    `if (ver > 0x16)` and `if (ver >= 0x17)` are identical semantically but MSVC5 emits
+    different code: `> 0x16` -> `cmp 0x16; jle`, `>= 0x17` -> `cmp 0x17; jl`. When
+    triage shows a `[constant]` `0x17 vs 0x16` on a `cmp [global], imm` paired with a
+    `[codegen]` `jl vs jle` at the next address, the original wrote the boundary the
+    other way — flip your operator to match. Cheap, codegen-faithful, safe (reccmp pairs
+    by address; branch target unchanged). Rarely moves the score alone when a bigger
+    register-scheduling diff dominates alignment, but removes two genuine mismatch lines.
