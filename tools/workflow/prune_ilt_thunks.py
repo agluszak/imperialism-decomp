@@ -44,6 +44,7 @@ import re
 import struct
 from pathlib import Path
 
+from tools.common.file_scan import is_excluded_scan_path
 from tools.common.pipe_csv import header_column_indices
 from tools.common.repo import repo_root_from_file
 
@@ -123,6 +124,8 @@ def collect_claimed_addresses(repo_root: Path) -> set[int]:
         for f in glob.glob(str(repo_root / pattern), recursive=True):
             if "autogen" in f:
                 continue
+            if is_excluded_scan_path(Path(f)):
+                continue
             text = Path(f).read_text(errors="ignore")
             for m in MARKER_RE.finditer(text):
                 claimed.add(int(m.group(1), 16))
@@ -134,6 +137,8 @@ def collect_manual_text(repo_root: Path) -> str:
     for pattern in ["src/**/*.cpp", "include/**/*.h"]:
         for f in glob.glob(str(repo_root / pattern), recursive=True):
             if "autogen" in f:
+                continue
+            if is_excluded_scan_path(Path(f)):
                 continue
             chunks.append(Path(f).read_text(errors="ignore"))
     return "\n".join(chunks)

@@ -102,10 +102,11 @@ sync-ownership:
 
 # MUTATES: src/autogen/stubs/ (+ runs sync-ownership first, which rewrites ownership CSV).
 # Regenerate linkable stubs for unowned addresses. Runs sync-ownership and the
-# symbols.csv integrity check first, so "edit markers -> regen-stubs -> build" is safe.
-[doc('MUTATES: src/autogen/stubs/. Regenerate stubs (runs sync-ownership + symbols-integrity-gate first)')]
+# symbols.csv/function_ownership.csv integrity checks first, so
+# "edit markers -> regen-stubs -> build" is safe.
+[doc('MUTATES: src/autogen/stubs/. Regenerate stubs (runs sync-ownership + symbols-integrity-gate + ownership-integrity-gate first)')]
 [group('sync')]
-regen-stubs: sync-ownership symbols-integrity-gate
+regen-stubs: sync-ownership symbols-integrity-gate ownership-integrity-gate
   uv run python -m tools.stubgen \
     --name-overrides "{{name_overrides}}" \
     --ownership-csv "{{function_ownership}}"
@@ -788,6 +789,7 @@ gates:
   just vtable-collision-gate
   just synthetic-gate
   just symbols-integrity-gate
+  just ownership-integrity-gate
   just global-location-gate
   just manual-cruntimeclass-gate
   just decomplint
@@ -870,12 +872,21 @@ synthetic-gate:
   uv run python -m tools.workflow.check_synthetic_names --paths src include
 
 # Structural integrity of config/symbols.csv: header row exactly at line 1, no
-# duplicate headers, parseable hex addresses, no duplicate addresses. (Every consumer
-# is a DictReader that silently degrades when the header is misplaced.)
-[doc('symbols.csv structural integrity: header at line 1, parseable + unique addresses')]
+# duplicate headers, parseable hex addresses, no duplicate addresses, no two
+# function rows claiming overlapping byte ranges. (Every consumer is a DictReader
+# that silently degrades when the header is misplaced.)
+[doc('symbols.csv structural integrity: header at line 1, parseable + unique addresses, no function-range overlaps')]
 [group('gates')]
 symbols-integrity-gate:
   uv run python -m tools.workflow.check_symbols_integrity
+
+# Structural integrity of config/function_ownership.csv: same DictReader-safety
+# checks as symbols-integrity-gate, applied to the file most directly implicated
+# in the "curated suppression note silently pruned" incident class.
+[doc('function_ownership.csv structural integrity: header at line 1, parseable + unique addresses')]
+[group('gates')]
+ownership-integrity-gate:
+  uv run python -m tools.workflow.check_function_ownership_integrity
 
 # Sanity-check a few reccmp-critical symbols.csv rows after Ghidra export.
 [group('gates')]
@@ -945,6 +956,11 @@ format-check *paths:
 [group('baseline-update')]
 stats-baseline-update:
   uv run python -m tools.reccmp.progress_stats --target "{{target}}" --build-dir "{{build_dir}}" --detect-recompiled --commit-baseline
+
+[doc('MUTATES: config/tooling_surface.csv. Appends placeholder rows for justfile modules missing from the manifest (fill in each note); never removes stale rows')]
+[group('baseline-update')]
+tooling-surface-update:
+  uv run python -m tools.workflow.check_tooling_surface --write
 
 # MUTATES: config/vtable_gate_baseline.csv.
 [group('baseline-update')]

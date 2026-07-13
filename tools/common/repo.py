@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 
+import subprocess
 from pathlib import Path
 
 
@@ -23,3 +24,24 @@ def normalize_repo_relative_path(path: Path, repo_root: Path) -> str:
         return rel.as_posix()
     except ValueError:
         return path.resolve().as_posix()
+
+
+def dirty_tracked_paths(repo_root: Path, paths: list[str]) -> list[str]:
+    """Repo-relative paths under `paths` with uncommitted changes (tracked or not).
+
+    Returns an empty list if `repo_root` isn't a git checkout or `git` isn't
+    available — callers use this for an advisory staleness hint, not a hard check.
+    """
+    try:
+        result = subprocess.run(
+            ["git", "status", "--porcelain", "--", *paths],
+            cwd=repo_root,
+            capture_output=True,
+            text=True,
+            timeout=10,
+        )
+    except (OSError, subprocess.TimeoutExpired):
+        return []
+    if result.returncode != 0:
+        return []
+    return [line[3:].strip() for line in result.stdout.splitlines() if line.strip()]

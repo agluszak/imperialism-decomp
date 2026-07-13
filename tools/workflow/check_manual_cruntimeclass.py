@@ -20,6 +20,8 @@ import sys
 from pathlib import Path
 from typing import List, Tuple
 
+from tools.common.file_scan import is_excluded_scan_path
+
 
 def find_manual_cruntimeclass_definitions(source_dir: Path) -> List[Tuple[Path, int, str]]:
     """Find manual CRuntimeClass definitions that should use MFC macros."""
@@ -37,6 +39,8 @@ def find_manual_cruntimeclass_definitions(source_dir: Path) -> List[Tuple[Path, 
     comment_pattern = re.compile(r'^\s*//\s*GLOBAL:\s*IMPERIALISM\s+0x[0-9a-fA-F]+')
     
     for cpp_file in source_dir.rglob("*.cpp"):
+        if is_excluded_scan_path(cpp_file):
+            continue
         # Skip global_data_tables.cpp as it's the migration target
         if cpp_file.name == "global_data_tables.cpp":
             continue

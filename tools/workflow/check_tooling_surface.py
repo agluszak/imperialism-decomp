@@ -28,6 +28,13 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
     parser.add_argument("--manifest", default=str(repo_root / "config" / "tooling_surface.csv"))
     parser.add_argument("--justfile", default=str(repo_root / "justfile"))
+    parser.add_argument(
+        "--write",
+        action="store_true",
+        help="Append a placeholder row for every justfile module missing from the "
+        "manifest (kind=module, source=just:<recipe>, note=TODO) instead of just "
+        "reporting it. Never removes stale rows — those still need a human look.",
+    )
     return parser.parse_args()
 
 
@@ -45,6 +52,50 @@ def parse_just_modules(justfile_path: Path) -> set[str]:
     text = justfile_path.read_text(encoding="utf-8", errors="ignore")
     # Only repo tool modules belong in the manifest (not stdlib ones like unittest).
     return {m.group(1) for m in JUST_MODULE_RE.finditer(text) if m.group(1).startswith("tools.")}
+
+
+_RECIPE_HEADER_RE = re.compile(r"^([a-zA-Z_][a-zA-Z0-9_-]*)")
+
+
+def parse_just_module_recipes(justfile_path: Path) -> dict[str, str]:
+    """Map each `tools.` module referenced via `python -m` to its enclosing recipe.
+
+    Line-based: an unindented line containing `:` (but not `:=`, and not a comment,
+    attribute, `alias`/`set`/`export` line) starts a new recipe; every `python -m`
+    reference on that line or an indented line below it belongs to that recipe. Good
+    enough for `--write`'s placeholder `source=just:<recipe>` — a human fills in the
+    real `note` afterward.
+    """
+    mapping: dict[str, str] = {}
+    current_recipe: str | None = None
+    for raw_line in justfile_path.read_text(encoding="utf-8", errors="ignore").splitlines():
+        if raw_line and raw_line[0] not in " \t":
+            stripped = raw_line.strip()
+            if (
+                stripped
+                and not stripped.startswith(("#", "[", "alias ", "set ", "export "))
+                and ":=" not in stripped
+                and ":" in stripped
+            ):
+                name_match = _RECIPE_HEADER_RE.match(stripped)
+                current_recipe = name_match.group(1) if name_match else None
+            else:
+                current_recipe = None
+        for m in JUST_MODULE_RE.finditer(raw_line):
+            module = m.group(1)
+            if module.startswith("tools.") and current_recipe and module not in mapping:
+                mapping[module] = current_recipe
+    return mapping
+
+
+def write_missing_module_rows(manifest_path: Path, modules: list[str], recipes: dict[str, str]) -> None:
+    lines = manifest_path.read_text(encoding="utf-8").splitlines()
+    if lines and not lines[-1].strip():
+        lines.pop()
+    for module in modules:
+        recipe = recipes.get(module, "UNKNOWN")
+        lines.append(f"module|{module}|just:{recipe}|TODO: describe")
+    manifest_path.write_text("\n".join(lines) + "\n", encoding="utf-8")
 
 
 def find_raw_pipe_splits(repo_root: Path) -> list[str]:
@@ -110,6 +161,15 @@ def main() -> int:
     just_modules = parse_just_modules(justfile_path)
     missing_from_manifest = sorted(just_modules - manifest_modules)
     stale_manifest_just = sorted(manifest_just_modules - just_modules)
+
+    if args.write and missing_from_manifest:
+        recipes = parse_just_module_recipes(justfile_path)
+        write_missing_module_rows(manifest_path, missing_from_manifest, recipes)
+        print(f"Added {len(missing_from_manifest)} placeholder row(s) to {manifest_path}:")
+        for module in missing_from_manifest:
+            print(f"  - module|{module}|just:{recipes.get(module, 'UNKNOWN')}|TODO: describe")
+        print("Fill in each `note` before committing.")
+        missing_from_manifest = []
 
     for module in missing_from_manifest:
         errors.append(f"justfile module not tracked in manifest: {module}")
