@@ -3,7 +3,7 @@
 #include "decomp_types.h"
 #include "game/mfc.h"
 
-int CompareAnsiStringsWithMbcsAwareness(unsigned char* lhs, unsigned char* rhs);
+int CompareAnsiStringsWithMbcsAwareness(const unsigned char* lhs, const unsigned char* rhs);
 
 CString __stdcall operator+(const CString& string1, const CString& string2);
 CString __stdcall operator+(const CString& string1, const char* lpsz);

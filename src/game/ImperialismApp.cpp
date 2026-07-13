@@ -405,6 +405,11 @@ int ImperialismApp::ShowAutoResolutionDialogIfNeeded() {
   return autoResMode;
 }
 
+// FUNCTION: IMPERIALISM 0x00415580
+BOOL ImperialismApp::SetSettingValueInSettingsSection(LPCTSTR key, LPCTSTR value) {
+  return WriteProfileString(SettingsSection(), key, value);
+}
+
 // FUNCTION: IMPERIALISM 0x004155b0
 void ImperialismApp::ApplyAutoResolutionModeAndPersist(int mode) {
   if (appliedAutoResModeC8 == mode) {

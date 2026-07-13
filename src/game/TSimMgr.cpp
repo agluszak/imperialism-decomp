@@ -35,7 +35,6 @@
 
 extern "C" char DAT_006a43c0;
 extern "C" char DAT_006a43f0;
-extern CString DAT_006a4220;
 extern "C" const char s_PictWvGobPathFormat_00698BF4[];
 void __fastcall RebuildNationStateSlotsAndAvailability_Impl(TSimMgr* self, int dummyEdx,
                                                             short* param_1);
@@ -675,7 +674,8 @@ void TSimMgr::RebuildPrimaryNationStateForSlot(int slotIndex, char activate) {
 
   if (slotIndex == activeNationSlot) {
     if (field44 == 0) {
-      g_apTerrainTypeDescriptorTable[slotIndex]->identitySharedString1 = DAT_006a4220;
+      g_apTerrainTypeDescriptorTable[slotIndex]->identitySharedString1 =
+          g_cstrCountryNameSettingValue006A4220;
     } else {
       g_apTerrainTypeDescriptorTable[slotIndex]->identitySharedString1 =
           g_pGameFlowState->nationDisplayNameSlots[slotIndex];
@@ -1020,6 +1020,12 @@ CString TSimMgr::AssignSharedStringFromIndexedSlot7C(short slot) {
   return sharedTextSlots[slot];
 }
 
+// FUNCTION: IMPERIALISM 0x005837c0
+void TSimMgr::SetActiveNationSlotAndRefreshCityCapabilityUiHandles(short nationSlot) {
+  activeNationSlot = nationSlot;
+  g_pStrategicMapViewSystem->RefreshCityCapabilityUiHandlesForActiveNation();
+}
+
 // FUNCTION: IMPERIALISM 0x005d4c10
 unsigned char __cdecl TryGetFileMetadataForPath(CString* path) {
   CFileStatus status;
@@ -1038,4 +1044,9 @@ void __stdcall LoadProfileStringAndAssignSharedRef(CString* outString, LPCTSTR k
   CString result;
   GetProfileStringFromSettingsSection(&result, key, defaultValue);
   *outString = result;
+}
+
+// FUNCTION: IMPERIALISM 0x005e0260
+void SaveSettingValueFromPointerByKey(CString* value, const char* key) {
+  g_pImperialismApp->SetSettingValueInSettingsSection(key, *value);
 }

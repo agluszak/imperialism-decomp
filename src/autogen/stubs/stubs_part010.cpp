@@ -459,14 +459,6 @@ undefined4 DestroyRuntimeSelectionRecordArrayStateAtExit(void)
   return 0;
 }
 
-// ghidra_name ReleaseSharedStringRefOnly_0047f7f0
-// ghidra_proto undefined ReleaseSharedStringRefOnly_0047f7f0()
-// FUNCTION: IMPERIALISM 0x0047f7f0
-undefined4 ReleaseSharedStringRefOnly_0047f7f0(void)
-{
-  return 0;
-}
-
 // ghidra_name OrphanCallChain_C1_I12_0047f810
 // ghidra_proto undefined OrphanCallChain_C1_I12_0047f810()
 // FUNCTION: IMPERIALISM 0x0047f810
@@ -571,14 +563,6 @@ undefined4 CheckConnectivityOrShowLocalizedWarningAndReturnReady_Impl(void)
   return 0;
 }
 
-// ghidra_name ResetRuntimeSelectionRecordBuffer
-// ghidra_proto undefined ResetRuntimeSelectionRecordBuffer()
-// FUNCTION: IMPERIALISM 0x00480400
-undefined4 ResetRuntimeSelectionRecordBuffer(void)
-{
-  return 0;
-}
-
 // ghidra_name ApplyCtrlScrollAccelerationToListStep
 // ghidra_proto undefined ApplyCtrlScrollAccelerationToListStep()
 // FUNCTION: IMPERIALISM 0x004804c0
@@ -671,38 +655,6 @@ undefined4 WrapperFor_EnsureWindowSubclassAndParentConsistency_At00480ad0(void)
 // ghidra_proto undefined OrphanVtableAssignStub_00480b00()
 // FUNCTION: IMPERIALISM 0x00480b00
 undefined4 OrphanVtableAssignStub_00480b00(void)
-{
-  return 0;
-}
-
-// ghidra_name InitializeRuntimeSelectionRecordArrayRuntimeClassFields
-// ghidra_proto undefined InitializeRuntimeSelectionRecordArrayRuntimeClassFields()
-// FUNCTION: IMPERIALISM 0x00480b20
-undefined4 InitializeRuntimeSelectionRecordArrayRuntimeClassFields(void)
-{
-  return 0;
-}
-
-// ghidra_name DestructRuntimeSelectionRecordArrayStateAndRestoreBaseRuntimeClass
-// ghidra_proto undefined DestructRuntimeSelectionRecordArrayStateAndRestoreBaseRuntimeClass()
-// FUNCTION: IMPERIALISM 0x00480b50
-undefined4 DestructRuntimeSelectionRecordArrayStateAndRestoreBaseRuntimeClass(void)
-{
-  return 0;
-}
-
-// ghidra_name SerializeDwordArrayWithAutoReallocFromArchive
-// ghidra_proto undefined SerializeDwordArrayWithAutoReallocFromArchive()
-// FUNCTION: IMPERIALISM 0x00480bd0
-undefined4 SerializeDwordArrayWithAutoReallocFromArchive(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_FreeHeapBufferIfNotNull_At00480dd0
-// ghidra_proto undefined WrapperFor_FreeHeapBufferIfNotNull_At00480dd0()
-// FUNCTION: IMPERIALISM 0x00480dd0
-undefined4 WrapperFor_FreeHeapBufferIfNotNull_At00480dd0(void)
 {
   return 0;
 }

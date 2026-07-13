@@ -3,9 +3,6 @@
 #include "game/TTEView.h"
 #include "game/mfc.h"
 
-// TODO(manifest): describe TDeluxeText and its role. Base edge (TTEView) recovered from RTTI
-// CRuntimeClass chain: TDeluxeText -> TTEView -> TStaticText -> TControl -> TView -> TEventHandler
-// -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x006406d8
 class TDeluxeText : public TTEView {
 public:
@@ -140,7 +137,8 @@ public:
   // its styleRef6 is also cached in the deluxe-text slice at +0x98.
   virtual void ApplyTextStyleDescriptorAndMaybeRefresh(TControlPictureRectState* styleDescriptor,
                                                        int refreshFlag); // slot 0x79 0x5b62a0
-  virtual void BuildCityViewProductionControls_Impl();                   // slot 0x7a 0x5b64e0
+  virtual void BuildCityViewProductionControls_Impl(short codeGroup,
+                                                    short stringIndex); // slot 0x7a 0x5b64e0
   virtual void UpdateTextEntrySharedStringAndMaybeNotify(CString* text,
                                                          char notifyFlag); // slot 0x7b 0x5b64a0
   virtual void UpdateTextEntrySharedString(CString* text);                 // slot 0x7c 0x5b6480

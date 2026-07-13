@@ -253,6 +253,11 @@ unsigned char TNetMgr::Send(NetMessage* message, unsigned char queueOnly) {
   return 0;
 }
 
+// FUNCTION: IMPERIALISM 0x005e3ef0
+void TNetMgr::ResetTurnEventQueueRuntimeRecordBuffer() {
+  g_NetworkSessionManager006a5f60.ResetRuntimeSelectionRecordBuffer();
+}
+
 // FUNCTION: IMPERIALISM 0x005e4280
 int GetSessionActiveNationId() {
   return g_NetworkDefaultNationId006a5fc0;

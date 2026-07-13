@@ -45,6 +45,7 @@ address|target_cpp|ownership|note
 4153a0|src/game/TSimMgr.cpp|manual|marker_sync
 415440|src/game/TSimMgr.cpp|manual|marker_sync
 415540|src/game/TSimMgr.cpp|manual|marker_sync
+415580|src/game/ImperialismApp.cpp|manual|marker_sync
 4155b0|src/game/ImperialismApp.cpp|manual|marker_sync
 415760|src/game/startup_helpers.cpp|manual|marker_sync
 415ce0|src/game/TObject.cpp|manual|marker_sync
@@ -228,9 +229,15 @@ address|target_cpp|ownership|note
 47e3c0|src/game/CDibPal.cpp|manual|marker_sync
 47e440|src/game/CDibPal.cpp|manual|marker_sync
 47e930|src/game/CDibPal.cpp|manual|marker_sync
+47f7f0|src/game/TWNetSessionManager.cpp|manual|marker_sync
 47fd30|src/game/TWNetSessionManager.cpp|manual|marker_sync
+480400|src/game/TWNetSessionManager.cpp|manual|marker_sync
 480850|src/game/TWNetSessionManager.cpp|manual|marker_sync
 4808a0|src/game/TWNetSessionManager.cpp|manual|marker_sync
+480b20|src/game/global_data_tables.cpp|manual|marker_sync
+480b50|src/game/global_data_tables.cpp|manual|marker_sync
+480bd0|src/game/global_data_tables.cpp|manual|marker_sync
+480dd0|src/game/global_data_tables.cpp|manual|marker_sync
 482760|src/game/CIncludeView.cpp|manual|marker_sync
 482850|src/game/CIncludeView.cpp|manual|marker_sync
 482930|src/game/CIncludeView.cpp|manual|marker_sync
@@ -3038,6 +3045,7 @@ address|target_cpp|ownership|note
 5449b0|src/game/TDiplomacyMgr.cpp|manual|marker_sync
 544cd0|src/game/NetMessage.cpp|manual|marker_sync
 544e30|src/game/TMultiplayerMgr.cpp|manual|marker_sync
+545660|src/game/TMultiplayerMgr.cpp|manual|marker_sync
 545940|src/game/TMultiplayerMgr.cpp|manual|marker_sync
 549240|src/game/TSimMgr.cpp|manual|marker_sync
 5493c0|src/game/TMultiplayerMgr.cpp|manual|marker_sync
@@ -3071,6 +3079,7 @@ address|target_cpp|ownership|note
 54c660|src/game/TMultiplayerMgr.cpp|manual|marker_sync
 54c680|src/game/TMultiplayerMgr.cpp|manual|marker_sync
 54c6a0|src/game/TMultiplayerMgr.cpp|manual|marker_sync
+54c6e0|src/game/TMultiplayerMgr.cpp|manual|marker_sync
 54c8e0|src/game/TMultiplayerMgr.cpp|manual|marker_sync
 54cc00|src/game/TMultiplayerMgr.cpp|manual|marker_sync
 54ce80|src/game/TMultiplayerMgr.cpp|manual|marker_sync
@@ -3746,6 +3755,7 @@ address|target_cpp|ownership|note
 581b20|src/game/TSimMgr.cpp|manual|marker_sync
 581bc0|src/game/TSimMgr.cpp|manual|marker_sync
 582630|src/game/TGreatPower.cpp|manual|marker_sync
+5837c0|src/game/TSimMgr.cpp|manual|marker_sync
 5838b0|src/game/TArrowsControl.cpp|manual|marker_sync
 583950|src/game/TArrowsControl.cpp|manual|marker_sync
 583970|src/game/TArrowsControl.cpp|manual|marker_sync
@@ -4811,6 +4821,7 @@ address|target_cpp|ownership|note
 5e0030|src/game/TAssetMgr.cpp|manual|marker_sync
 5e0150|src/game/TAssetMgr.cpp|manual|marker_sync
 5e01a0|src/game/TSimMgr.cpp|manual|marker_sync
+5e0260|src/game/TSimMgr.cpp|manual|marker_sync
 5e0460|src/game/timer_slots.cpp|manual|marker_sync
 5e0520|src/game/timer_slots.cpp|manual|marker_sync
 5e0780|src/game/wave_helpers.cpp|manual|marker_sync
@@ -4844,6 +4855,7 @@ address|target_cpp|ownership|note
 5e34b0|src/game/TMultiplayerMgr.cpp|manual|marker_sync
 5e34f0|src/game/TNetMgr.cpp|manual|marker_sync
 5e3d40|src/game/TNetMgr.cpp|manual|marker_sync
+5e3ef0|src/game/TNetMgr.cpp|manual|marker_sync
 5e4280|src/game/TNetMgr.cpp|manual|marker_sync
 5e42c0|src/game/TNetMgr.cpp|manual|marker_sync
 5e43e0|src/game/TNetMgr.cpp|manual|marker_sync

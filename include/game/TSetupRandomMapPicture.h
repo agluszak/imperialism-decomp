@@ -3,7 +3,6 @@
 #include "game/TNoHilitePicture.h"
 #include "game/mfc.h"
 
-// TODO(manifest): describe TSetupRandomMapPicture and its role. Base edge (TNoHilitePicture) recovered from RTTI CRuntimeClass chain: TSetupRandomMapPicture -> TNoHilitePicture -> TPicture -> TControl -> TView -> TEventHandler -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x006621e0
 class TSetupRandomMapPicture : public TNoHilitePicture {
 public:
@@ -125,19 +124,19 @@ public:
   // slot 0x71 ResetPictureResourceEntry inherited unchanged (0x48f520)
   // slot 0x72 SetPictureResourceIdAndRefresh inherited unchanged (0x48f570)
   // slot 0x73 UniversityDialogMethod_00405623 inherited unchanged (0x572bb0)
-  virtual undefined ApplyNationSelectionAndMaybePostTurnEvent5E4(); // slot 0x74 0x577e40
-  virtual undefined PostTurnEvent5DCOrResetLocalUiState();          // slot 0x75 0x5781f0
+  virtual void ApplyNationSelectionAndMaybePostTurnEvent5E4(); // slot 0x74 0x577e40
+  virtual void PostTurnEvent5DCOrResetLocalUiState();          // slot 0x75 0x5781f0
   // === END GENERATED DECLS (TSetupRandomMapPicture) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TSetupRandomMapPicture 0xCTOR`).
 
   TSetupRandomMapPicture();
 
-  CString countryName94;  // 0x94 — constructed empty by the ctor (0x576d80)
-  unsigned char flag98;   // 0x98 — ctor zeroes it
-  unsigned char pad99[3]; // 0x99
-  int field9C;            // 0x9c — not initialized by the ctor
-  int fieldA0;            // 0xa0
-  unsigned char flagA4;   // 0xa4 — ctor zeroes it
-  unsigned char padA5[3]; // 0xa5
+  CString countryName94;       // 0x94 — constructed empty by the ctor (0x576d80)
+  unsigned char generatedName; // 0x98 — ctor zeroes it
+  unsigned char pad99;         // 0x99
+  short selectedNationSlot9A;  // 0x9a — selected great-power slot
+  int field9C;                 // 0x9c — not initialized by the ctor
+  int fieldA0;                 // 0xa0
+  unsigned char initializedA4; // 0xa4 — ctor zeroes it
+  unsigned char padA5[3];      // 0xa5
 };
 ASSERT_SIZE(TSetupRandomMapPicture, 0xa8);

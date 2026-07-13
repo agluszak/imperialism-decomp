@@ -444,10 +444,10 @@ address|name|symbol|size|type|prototype|provenance
 480aa0|WrapperFor_FreeHeapBufferIfNotNull_At00480aa0||30|function|undefined WrapperFor_FreeHeapBufferIfNotNull_At00480aa0()|
 480ad0|WrapperFor_EnsureWindowSubclassAndParentConsistency_At00480ad0||22|function|undefined WrapperFor_EnsureWindowSubclassAndParentConsistency_At00480ad0()|
 480b00|OrphanVtableAssignStub_00480b00||6|function|undefined OrphanVtableAssignStub_00480b00()|
-480b20|InitializeRuntimeSelectionRecordArrayRuntimeClassFields||23|function|undefined InitializeRuntimeSelectionRecordArrayRuntimeClassFields()|
-480b50|DestructRuntimeSelectionRecordArrayStateAndRestoreBaseRuntimeClass||81|function|undefined DestructRuntimeSelectionRecordArrayStateAndRestoreBaseRuntimeClass()|
-480bd0|SerializeDwordArrayWithAutoReallocFromArchive||392|function|undefined SerializeDwordArrayWithAutoReallocFromArchive()|
-480dd0|WrapperFor_FreeHeapBufferIfNotNull_At00480dd0||30|function|undefined WrapperFor_FreeHeapBufferIfNotNull_At00480dd0()|
+480b20|CArray<RuntimeSelectionRecord*,RuntimeSelectionRecord*>::CArray|??0?$CArray@PAURuntimeSelectionRecord@@PAU1@@@QAE@XZ|23|function|void CArray()|template
+480b50|CArray<RuntimeSelectionRecord*,RuntimeSelectionRecord*>::~CArray|??1?$CArray@PAURuntimeSelectionRecord@@PAU1@@@UAE@XZ|81|function|void ~CArray()|template
+480bd0|CArray<RuntimeSelectionRecord*,RuntimeSelectionRecord*>::Serialize|?Serialize@?$CArray@PAURuntimeSelectionRecord@@PAU1@@@UAEXAAVCArchive@@@Z|392|function|undefined Serialize(CArchive &)|template
+480dd0|CArray<RuntimeSelectionRecord*,RuntimeSelectionRecord*>::`scalar deleting destructor'|??_G?$CArray@PAURuntimeSelectionRecord@@PAU1@@@UAEPAXI@Z|30|function|undefined ScalarDeletingDestructor()|template
 480e00|ResizeDynamicPointerArrayWithGrowthStep||310|function|undefined ResizeDynamicPointerArrayWithGrowthStep()|
 4810c0|WrapperFor_ftol_At004810c0||30|function|undefined WrapperFor_ftol_At004810c0()|
 481130|WrapperFor_FreeHeapBufferIfNotNull_At00481130||30|function|undefined WrapperFor_FreeHeapBufferIfNotNull_At00481130()|
@@ -7882,6 +7882,7 @@ address|name|symbol|size|type|prototype|provenance
 63e328|CAmbitDocument::vftable|||global||
 63e7f8|CAmbitDocument::classRuntimeClass|||global||
 645f40|CUserException::vftable|||global||
+646fb0|CArray<RuntimeSelectionRecord*,RuntimeSelectionRecord*>::`vftable'|??_7?$CArray@PAURuntimeSelectionRecord@@PAU1@@@6B@||global||template
 6481c8|CIncludeView::classRuntimeClass|||global||
 648524|CFrameWnd::vftable|||global||
 648628|CMainFrame::classCMainFrame|||global|Ghidra: TMacViewMgr_RuntimeClass; m_lpszClassName=CMainFrame|
@@ -8499,6 +8500,8 @@ address|name|symbol|size|type|prototype|provenance
 69810c|g_Calculate_Mission_Order_LookupTable_0069810C|||global||
 698110|g_Task_Force_Order_LookupTable_00698110|||global||
 698118|g_Navy_Order_Priority_LookupTable_00698118|||global||
+698ab0|g_nRandomMapSelectedNationSlot00698AB0|||global||
+698ae0|g_szCountryNameProfileKey00698AE0|||global||
 698b10|g_nTurnCooldownSideFlag00698B10|||global||
 698b1a|g_anScenarioNationSetupTable_00698B1A|||global||
 698bf4|s_PictWvGobPathFormat_00698BF4|||global||
@@ -8518,6 +8521,7 @@ address|name|symbol|size|type|prototype|provenance
 6a141c|g_pUiResourceHead|||global||
 6a1420|g_pUiResourceContext|||global||
 6a143c|g_McAppUiFlag_006A143C|||global||
+6a15e0|g_RuntimeSelectionRecords006a15e0|||global||
 6a1890|g_nDibOrientationFlag_006A1890|||global||
 6a18e0|g_pApplicationUiRootController|||global||
 6a1a40|g_LiveViewRegistry|||global||
@@ -8598,6 +8602,7 @@ address|name|symbol|size|type|prototype|provenance
 6a3fc0|g_nMapActionContextCount|||global||
 6a3fc4|g_pMapActionContextDistanceCache|||global||
 6a3fc8|g_pMapActionContextListHead|||global||
+6a4220|g_cstrCountryNameSettingValue006A4220|||global||
 6a4280|g_apSecondaryNationStateSlots|||global||
 6a429c|g_apNationAuxRuntimeStateSlots|||global||
 6a4310|g_apTerrainTypeDescriptorTable|||global||

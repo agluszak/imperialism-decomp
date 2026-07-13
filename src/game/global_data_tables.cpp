@@ -864,7 +864,7 @@ TSoundPlayer* g_pSfxPlaybackSystem = 0;
 // GLOBAL: IMPERIALISM 0x006a43cc
 TTradeMgr* g_pNationInteractionStateManager = 0;
 // GLOBAL: IMPERIALISM 0x006a4220
-CString DAT_006a4220;
+CString g_cstrCountryNameSettingValue006A4220;
 
 extern "C" {
 short g_awEngineerFortBuildCostByLevel[8] = {0};
@@ -998,6 +998,11 @@ extern "C" short g_anTargetTileProfileByCivilianClassAndSlot[45] = {
     8,  9, -1, -1, -1, 8,  9,  10, 11, 12, 6,  5, 2,  -1, -1, 13, -1, -1, -1, -1, -1, -1, -1,
     -1, 0, 3,  7,  -1, -1, -1, -1, -1, -1, -1, 0, -1, -1, -1, -1, 0,  10, 11, 12, -1, -1};
 
+// GLOBAL: IMPERIALISM 0x00698ab0
+int g_nRandomMapSelectedNationSlot00698AB0 = -1;
+// GLOBAL: IMPERIALISM 0x00698ae0
+char g_szCountryNameProfileKey00698AE0[] = "CountryName";
+
 // Turn-flow cooldown defer counter and side flag (IsTurnCooldownCounterActiveOrResetFlag).
 // GLOBAL: IMPERIALISM 0x006a43c4
 short g_nTurnCooldownDeferCounter006A43C4 = 0;
@@ -1083,6 +1088,25 @@ CList<void*, void*> g_WNetPendingPacketList006a5f40(10);
 // DirectPlay session manager object embedded at a fixed address (not a pointer).
 // GLOBAL: IMPERIALISM 0x006a5f60
 TWNetSessionManager g_NetworkSessionManager006a5f60;
+
+// Heap-owned runtime selection records used by the DirectPlay session chooser.
+// This TU's CArray specialization has vtable 0x00646fb0 and ctor 0x00480b20.
+// GLOBAL: IMPERIALISM 0x006a15e0
+CArray<RuntimeSelectionRecord*, RuntimeSelectionRecord*> g_RuntimeSelectionRecords006a15e0;
+
+// Compiler-emitted methods for this TU's RuntimeSelectionRecord pointer-array
+// specialization. The source implementation is the retail MFC CArray template.
+// TEMPLATE: IMPERIALISM 0x00480b20
+// ??0?$CArray@PAURuntimeSelectionRecord@@PAU1@@@QAE@XZ
+
+// TEMPLATE: IMPERIALISM 0x00480b50
+// ??1?$CArray@PAURuntimeSelectionRecord@@PAU1@@@UAE@XZ
+
+// TEMPLATE: IMPERIALISM 0x00480bd0
+// ?Serialize@?$CArray@PAURuntimeSelectionRecord@@PAU1@@@UAEXAAVCArchive@@@Z
+
+// TEMPLATE: IMPERIALISM 0x00480dd0
+// ??_G?$CArray@PAURuntimeSelectionRecord@@PAU1@@@UAEPAXI@Z
 
 // Global TNetMgr (built by new TNetMgr() during multiplayer init, stored here; every
 // turn-event emitter dispatches TNetMgr::Send through it).

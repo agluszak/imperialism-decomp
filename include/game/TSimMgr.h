@@ -110,6 +110,7 @@ public:
   // view's cached bitmap 244 (TMacViewMgr::ReloadBitmap244AndRefreshUiCaches on
   // g_pStrategicMapViewSystem).
   void SetSelectedIndex6AAndTriggerRefresh(short index);
+  void SetActiveNationSlotAndRefreshCityCapabilityUiHandles(short nationSlot); // 0x5837c0
 
   // --- fields (offsets are load-bearing: referenced from many other classes via
   //     g_pSimMgr; do not rename or move) ---
@@ -185,3 +186,5 @@ void __cdecl DeleteFileWithErrorReporting(CString* path);
 // Posts eventCode to the main frame (message 0x2420) unless it is 0, and latches the
 // bootstrap-complete flag DAT_006a43c0 the turn state machine's case 1 keys off.
 void ReinitializeGameFlowAndPostTurnEventCode(int eventCode);
+
+void SaveSettingValueFromPointerByKey(CString* value, const char* key); // 0x5e0260

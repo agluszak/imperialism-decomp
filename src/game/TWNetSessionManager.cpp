@@ -1,10 +1,33 @@
 #include "game/TWNetSessionManager.h"
 
+#include "game/global_data_tables.h"
+
+// FUNCTION: IMPERIALISM 0x0047f7f0
+RuntimeSelectionRecord::~RuntimeSelectionRecord() {}
+
 // FUNCTION: IMPERIALISM 0x0047fd30
 unsigned char TWNetSessionManager::DestroyPlayerAndStoreResult(DWORD idPlayer) {
   long destroyResult = this->directPlayInterface04->DestroyPlayer(idPlayer);
   this->lastErrorCode0c = destroyResult;
   return destroyResult >= 0;
+}
+
+// FUNCTION: IMPERIALISM 0x00480400
+void TWNetSessionManager::ResetRuntimeSelectionRecordBuffer() {
+  for (int index = 0; index < g_RuntimeSelectionRecords006a15e0.GetSize(); ++index) {
+    delete g_RuntimeSelectionRecords006a15e0[index];
+  }
+  g_RuntimeSelectionRecords006a15e0.RemoveAll();
+
+  if (directPlayInterface04 != 0) {
+    directPlayInterface04->Close();
+    directPlayInterface04->Release();
+    directPlayInterface04 = 0;
+  }
+  if (directPlayLobby08 != 0) {
+    directPlayLobby08->Release();
+    directPlayLobby08 = 0;
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x00480850

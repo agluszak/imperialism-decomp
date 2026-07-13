@@ -28,6 +28,7 @@ public:
   // slot 0x0a GetBoolSlot28 inherited unchanged (0x48a240)
   // slot 0x0b SetControlValue inherited unchanged (0x48a260)
   // slot 0x0c QueryStepValue inherited unchanged (0x48a2c0)
+  // Windows override: post the queued command pointer to the main-frame 0xBC0 handler.
   virtual void DispatchQueuedUiCommandAndRelease(void* payload) override; // slot 0x0d 0x486b50
   // slot 0x0e DispatchUiSelectionToHandler inherited unchanged (0x48a3f0)
   // slot 0x0f HandleEvent inherited unchanged (0x48a280)
@@ -67,7 +68,7 @@ public:
   TApplication();
 
   // 0x49e500: build + queue the 'gwen' (game-window-end) turn-event packet through the
-  // UI root controller (turn-event 0x1F 'aced'/'lost'/'quit' receive paths). Body TODO.
+  // UI root controller (turn-event 0x1F 'aced'/'lost'/'quit' receive paths).
   void CreateAndQueueTurnEventPacketTagGWEN();
   ~TApplication() override;
 

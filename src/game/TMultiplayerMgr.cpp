@@ -178,7 +178,6 @@ using turn_event_dialog::TurnEventDialogNode;
 // ECX loads before some calls are optimizer reuse, not a this-arg). Declared extern in the
 // generic repo form per Hard Rule 9 and cast to their real typed signatures at the call sites.
 extern undefined4 NoOpInitializeGlobalTurnEventQueueManager();
-extern undefined4 ResetTurnEventQueueRuntimeRecordBuffer();
 
 // Real definition (0x5e01a0) lives in TSimMgr.cpp, alongside the other Settings-section
 // profile helpers.
@@ -250,7 +249,7 @@ undefined TMultiplayerMgr::InitializeMultiplayerManagerForSessionContext(int ses
   queueSyncDword = 0;
   activeNationSlotIndex = -1;
   pendingNationSlotIndex = -1;
-  reinterpret_cast<void (*)()>(ResetTurnEventQueueRuntimeRecordBuffer)();
+  g_pNetMgr006a6014->ResetTurnEventQueueRuntimeRecordBuffer();
 
   GenerateMappedFlavorTextByCurrentContextNation(&playerNameString);
   LoadProfileStringAndAssignSharedRef(&loadedString, s_PlayerName_0069801c,
@@ -669,6 +668,15 @@ struct TurnEvent2BPresenceMaskPacket : TimelyMessageHeader {
 };
 
 void LoadUiStringAndDispatchSharedMessageCommand(short group, short index, TView* control);
+
+// FUNCTION: IMPERIALISM 0x00545660
+unsigned char TMultiplayerMgr::ResetLocalUiStateAndPostTurnEvent5E5() {
+  lobbyDialogView40 = 0;
+  ResetNationStatusArraysAndTurnEventContext();
+  g_pGlobalUiRootController->PostTurnEventCodeMessage2420(0x5e5);
+  queueSyncDword = 0;
+  return 1;
+}
 
 // Receive-side state machine for every diplomacy/lobby turn event ('time' packets).
 // Dispatches on eventCode 1..0x32 (codes 4..7 return 0); each case applies the payload
@@ -2718,6 +2726,22 @@ void TMultiplayerMgr::EmitTacticalFireCommandPacket(int commandTag, TTacticalUni
   (void)damageA;
   (void)damageB;
   (void)effectCode;
+}
+
+// FUNCTION: IMPERIALISM 0x0054c6e0
+void TMultiplayerMgr::ResetNationStatusArraysAndTurnEventContext() {
+  CString statusText;
+  g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&statusText, 0x2759, 1);
+  for (int nationSlot = 0; nationSlot < kNationSlotCount; ++nationSlot) {
+    nationSessionIds[nationSlot] = 0;
+    nationStatusTags[nationSlot] = 0x756e6173; // 'suna'
+    nationDisplayNameSlots[nationSlot] = statusText;
+    defaultNationTextSlots[nationSlot] = nationDisplayNameSlots[nationSlot];
+  }
+  activeNationSlotIndex = -1;
+  pendingNationSlotIndex = -1;
+  queueSyncDword = 0;
+  g_pNetMgr006a6014->ResetTurnEventQueueRuntimeRecordBuffer();
 }
 
 // Emit the event-0xE session-init snapshot (scenario tag/seed, host game name, save

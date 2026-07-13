@@ -9,12 +9,12 @@ undefined4 EnterIndexedCriticalSectionWithLazyInit(void);
 undefined4 LeaveIndexedCriticalSection(void);
 
 // FUNCTION: IMPERIALISM 0x005e7980
-int CompareAnsiStringsWithMbcsAwareness(unsigned char* lhs, unsigned char* rhs) {
+int CompareAnsiStringsWithMbcsAwareness(const unsigned char* lhs, const unsigned char* rhs) {
   if (g_fMbcsEnabledForStringCompare_006A811C != 0) {
     reinterpret_cast<void(__cdecl*)(int)>(EnterIndexedCriticalSectionWithLazyInit)(0x19);
     while (1) {
       unsigned short lhsUnit = (unsigned short)*lhs;
-      unsigned char* lhsNext = lhs + 1;
+      const unsigned char* lhsNext = lhs + 1;
       if ((g_MbcsCharTypeTable_006A8018[lhsUnit + 1] & 4) != 0) {
         unsigned char trailByte = *lhsNext;
         if (trailByte == 0) {
@@ -25,7 +25,7 @@ int CompareAnsiStringsWithMbcsAwareness(unsigned char* lhs, unsigned char* rhs) 
         }
       }
       unsigned short rhsUnit = (unsigned short)*rhs;
-      unsigned char* rhsNext = rhs + 1;
+      const unsigned char* rhsNext = rhs + 1;
       if ((g_MbcsCharTypeTable_006A8018[rhsUnit + 1] & 4) != 0) {
         unsigned char trailByte = *rhsNext;
         if (trailByte == 0) {

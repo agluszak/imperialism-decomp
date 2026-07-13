@@ -103,11 +103,11 @@ public:
   unsigned char fieldF4;      // +0xf4
   unsigned char padF5[3];
 
-  virtual ~TMultiplayerMgr() override;                              // slot 0x01 0x5427e0
-  virtual void WriteTo(TStream* stream) override;                   // slot 0x05 0x542ff0
-  virtual void ReadFrom(TStream* stream) override;                  // slot 0x06 0x542be0
-  virtual void Free() override;                                     // slot 0x07 0x542b10
-  virtual char DoIdle(int action) override; // slot 0x13 0x544e30
+  virtual ~TMultiplayerMgr() override;             // slot 0x01 0x5427e0
+  virtual void WriteTo(TStream* stream) override;  // slot 0x05 0x542ff0
+  virtual void ReadFrom(TStream* stream) override; // slot 0x06 0x542be0
+  virtual void Free() override;                    // slot 0x07 0x542b10
+  virtual char DoIdle(int action) override;        // slot 0x13 0x544e30
   // Ground truth (0x542923): the argument is stored raw into the inherited int
   // TEventHandler::field10; every observed caller (0x5818ee, TAmbitApplication init)
   // pushes literal 0 — not a by-value CString as Ghidra guessed.
@@ -144,6 +144,9 @@ public:
   void DispatchJoinEmpireModeEventPacket24_27(int sourceNation, int targetNation,
                                               int mode);                        // 0x54c5a0
   unsigned char ProcessDiplomacyTurnStateEventStateMachine(NetMessage* packet); // 0x545940
+  // Clear the active lobby context, rebuild the seven nation-status rows, post
+  // setup event 0x5e5, and clear the queue synchronization word.
+  unsigned char ResetLocalUiStateAndPostTurnEvent5E5(); // 0x545660
   // Genuinely empty in the shipped binary (single `RET 4`); called by
   // TArmyMgr::CreateTacticalBattleViewAndInitializeBattleSetup with the new battle view,
   // discarding both the argument and the (unset) return value. 0x54c660, __thiscall.
@@ -156,6 +159,7 @@ public:
   void EmitTacticalFireCommandPacket(int commandTag, TTacticalUnit* attackerUnit,
                                      TTacticalUnit* targetUnit, int damageA, int damageB,
                                      int effectCode); // 0x54c6a0
+  void ResetNationStatusArraysAndTurnEventContext();  // 0x54c6e0
 
   // Unlike the emitters above, `this` IS used here: called as
   // g_pGameFlowState->EnsureGameFlowStateAndPostTurnEvent5E5() where g_pGameFlowState may
@@ -190,7 +194,7 @@ public:
   // marks the local nation 'redy' and broadcasts the event-0x25 status board.
   void HandleTurnResumeStateTelemetry();
   // 0x54c8e0: re-emit the event-0xE session-init + event-9 name packets for the
-  // requesting session (turn-event 0xD receive path). Body TODO.
+  // requesting session (turn-event 0xD receive path).
   void EmitTurnEventEAnd9SessionContextPackets(NetMessage* packet);
   // 0x549ff0: receive path for turn events 0x28/0x2E..0x32 — reads the 0x1c timely
   // header, derives the acting nation (-1 during teardown), and dispatches by event

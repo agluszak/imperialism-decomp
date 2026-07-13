@@ -3,9 +3,6 @@
 #include "game/TDropShadowText.h"
 #include "game/mfc.h"
 
-// TODO(manifest): describe TRadioText and its role. Base edge (TDropShadowText) recovered from RTTI
-// CRuntimeClass chain: TRadioText -> TDropShadowText -> TPictureText -> TStaticText -> TControl ->
-// TView -> TEventHandler -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x00642b18
 class TRadioText : public TDropShadowText {
 public:
@@ -132,8 +129,6 @@ public:
   // (TView::InvokeSlot13C, same "selection confirmed" hook TTextList uses).
   virtual void RefreshAndNotifyOwnerSlot13C(); // slot 0x76 0x579580
   // === END GENERATED DECLS (TRadioText) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TRadioText
-  // 0xCTOR`).
 
   TRadioText();
 

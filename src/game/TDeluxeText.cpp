@@ -1,6 +1,7 @@
 #include "game/TDeluxeText.h"
 
 #include "game/TModuleLibraryCacheTableStateB.h"
+#include "game/TSimMgr.h"
 #include "game/global_data_tables.h"
 #include "game/quickdraw_rendering.h"
 
@@ -111,10 +112,9 @@ void TDeluxeText::UpdateTextEntrySharedStringAndMaybeNotify(CString* text, char 
 }
 
 // FUNCTION: IMPERIALISM 0x005b64e0
-void TDeluxeText::BuildCityViewProductionControls_Impl() {
-  // TODO(manifest): real body builds a CString via
-  // g_pLocalizationTable's vtable slot 0x10.4, assigns it through
-  // UpdateTextEntrySharedStringIfChanged, then calls RefreshControl() —
-  // g_pLocalizationTable's class isn't recovered yet, left unimplemented
-  // rather than guessed.
+void TDeluxeText::BuildCityViewProductionControls_Impl(short codeGroup, short stringIndex) {
+  CString text;
+  g_pSimMgr->GetString(codeGroup, stringIndex - 1, &text);
+  UpdateTextEntrySharedStringIfChanged(&text);
+  RefreshControl();
 }

@@ -21,6 +21,7 @@
 #include "game/TMinor.h"
 #include "game/TView.h"
 #include "game/TMouseCaptureState.h"
+#include "game/TWNetSessionManager.h"
 
 TGreatPower* GetNationStateBySlot(short slotId);
 short QueryNationMetricBySlot(TGreatPower* nationState, short metricSlot);
@@ -55,7 +56,6 @@ class TTurnEventDialogFactoryRegistry;
 class TSoundPlayer;
 class TCursorControlPanel;
 class TTechMgr;
-class TWNetSessionManager;
 class TMultiplayerMgr;
 class TNetMgr;
 class TTradeMgr;
@@ -388,15 +388,19 @@ extern void* g_pScopedMapQuickDrawViewContext;
 extern CDC* g_pScopedMapQuickDrawDcHandleObject;
 // One-slot CTemporaryRegion reuse cache (see CTemporaryRegion.h).
 extern RgnHandle g_pTemporaryRegionCache;
+extern int g_nRandomMapSelectedNationSlot00698AB0;
+extern char g_szCountryNameProfileKey00698AE0[];
 }
 
 // Typed C++ linkage — see typed-recovered-globals.mdc (not inside extern "C").
 extern TCursorControlPanel* g_pCursorControlPanel;
 extern TTradeMgr* g_pNationInteractionStateManager;
+extern CString g_cstrCountryNameSettingValue006A4220;
 extern "C" short g_nationMetricSlotDispatchOrder006d810[0x11];
 extern GlobalViewportRectDefaultsRecord g_globalViewportRectDefaultsRecord;
 extern GlobalViewportRectDefaultsRecord* g_pGlobalViewportRectDefaultsRecord;
 extern TWNetSessionManager g_NetworkSessionManager006a5f60;
+extern CArray<RuntimeSelectionRecord*, RuntimeSelectionRecord*> g_RuntimeSelectionRecords006a15e0;
 // Global TNetMgr (0x6a6014), created by TMultiplayerMgr session init.
 extern TNetMgr* g_pNetMgr006a6014;
 // WNetMgr.cpp file-scope MFC template statics (all atexit-destroyed; static-init

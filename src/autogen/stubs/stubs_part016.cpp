@@ -539,14 +539,6 @@ undefined4 ResetNationStatusSlotsAndInitializeNameControls(void)
   return 0;
 }
 
-// ghidra_name ResetLocalUiStateAndPostTurnEvent5E5
-// ghidra_proto undefined ResetLocalUiStateAndPostTurnEvent5E5()
-// FUNCTION: IMPERIALISM 0x00545660
-undefined4 ResetLocalUiStateAndPostTurnEvent5E5(void)
-{
-  return 0;
-}
-
 // ghidra_name ResetDialogContextField40AndEmitTurnEvent3Mode18
 // ghidra_proto undefined ResetDialogContextField40AndEmitTurnEvent3Mode18()
 // FUNCTION: IMPERIALISM 0x005456a0
@@ -679,14 +671,6 @@ undefined4 EmitTurnEvent26DiplomacyMatrixSnapshot(void)
 // ghidra_proto undefined SetDialogModeTagInitAndInvokeNoOpHook()
 // FUNCTION: IMPERIALISM 0x0054c630
 undefined4 SetDialogModeTagInitAndInvokeNoOpHook(void)
-{
-  return 0;
-}
-
-// ghidra_name ResetNationStatusArraysAndTurnEventContext
-// ghidra_proto undefined ResetNationStatusArraysAndTurnEventContext()
-// FUNCTION: IMPERIALISM 0x0054c6e0
-undefined4 ResetNationStatusArraysAndTurnEventContext(void)
 {
   return 0;
 }

@@ -499,14 +499,6 @@ undefined4 BuildScenarioPathForModeAndIndex(void)
   return 0;
 }
 
-// ghidra_name SaveSettingValueFromPointerByKey
-// ghidra_proto undefined SaveSettingValueFromPointerByKey()
-// FUNCTION: IMPERIALISM 0x005e0260
-undefined4 SaveSettingValueFromPointerByKey(void)
-{
-  return 0;
-}
-
 // ghidra_name LoadSettingValueByKeyIntoOut
 // ghidra_proto undefined LoadSettingValueByKeyIntoOut()
 // FUNCTION: IMPERIALISM 0x005e0290
@@ -895,14 +887,6 @@ undefined4 ReturnTrueRuntimeCredentialFinalizeStub(void)
 // ghidra_proto undefined OpenJoinGameRuntimeSelectionAndStartSession()
 // FUNCTION: IMPERIALISM 0x005e3c20
 undefined4 OpenJoinGameRuntimeSelectionAndStartSession(void)
-{
-  return 0;
-}
-
-// ghidra_name ResetTurnEventQueueRuntimeRecordBuffer
-// ghidra_proto undefined ResetTurnEventQueueRuntimeRecordBuffer()
-// FUNCTION: IMPERIALISM 0x005e3ef0
-undefined4 ResetTurnEventQueueRuntimeRecordBuffer(void)
 {
   return 0;
 }

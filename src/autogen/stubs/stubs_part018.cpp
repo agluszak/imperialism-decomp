@@ -491,14 +491,6 @@ undefined4 HandleTurnInstruction_Coun_SetCountrySlotState(void)
   return 0;
 }
 
-// ghidra_name WrapperFor_thunk_RefreshCityCapabilityUiHandlesForActiveNation_At005837c0
-// ghidra_proto undefined WrapperFor_thunk_RefreshCityCapabilityUiHandlesForActiveNation_At005837c0()
-// FUNCTION: IMPERIALISM 0x005837c0
-undefined4 WrapperFor_thunk_RefreshCityCapabilityUiHandlesForActiveNation_At005837c0(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_ftol_At00583880
 // ghidra_proto undefined WrapperFor_ftol_At00583880()
 // FUNCTION: IMPERIALISM 0x00583880

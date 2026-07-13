@@ -50,11 +50,9 @@ void TEditText::CallVoidSlotA0() {
 // FUNCTION: IMPERIALISM 0x004906a0
 void TEditText::ApplyRectSlot110(RECT* rectBuffer) {
   (void)rectBuffer;
-  // TODO(manifest): real body dispatches on DispatchSlot9CToLinkedChildren()'s
-  // result to decide between the live-edit-window path and
-  // TStaticText::ApplyRectSlot110(rectBuffer); DispatchSlot9CToLinkedChildren
-  // itself is the dialog-creation keystone blocker (see TWindow sibling
-  // porting notes) so this is left as a stub until that lands.
+  // The retail body dispatches on DispatchSlot9CToLinkedChildren() to choose between the
+  // live-edit-window path and TStaticText::ApplyRectSlot110(rectBuffer). The dialog-creation
+  // dependency below is still unported, so this body remains incomplete.
 }
 
 // FUNCTION: IMPERIALISM 0x004906d0
@@ -89,13 +87,9 @@ void TEditText::SetEnabled(int enabledState, int refreshFlag) {
 
 // FUNCTION: IMPERIALISM 0x004907a0
 void TEditText::DispatchSlot9CToLinkedChildren() {
-  // TODO(manifest): real body (479 bytes) constructs the live edit CWnd
-  // (field_94) on demand via `new CWnd()` + a modal-dialog-style CreateWindowEx
-  // path (InvokeDialogCreateVslot5CWithTemplate45) when nativeWindow50,
-  // field04, and controlTag/field50 preconditions hold. This is the same
-  // window-creation keystone blocked elsewhere (TWindow sibling porting notes)
-  // — needs the CWnd/dialog-template machinery before it can be ported for
-  // real; left unimplemented rather than guessed.
+  // The retail body constructs the live edit CWnd (field_94) on demand through a
+  // modal-dialog-style CreateWindowEx path when nativeWindow50, field04, and controlTag/field50
+  // preconditions hold. It remains unported pending the real CWnd/dialog-template machinery.
 }
 
 // FUNCTION: IMPERIALISM 0x00490a50
@@ -133,11 +127,9 @@ void TEditText::Free() {
 
 // FUNCTION: IMPERIALISM 0x00490bc0
 char TEditText::DispatchUiMouseMoveToChildren(CPoint* point, int arg2, int arg3, int arg4) {
-  // TODO(manifest): forwards to the base TView mouse-move dispatch
-  // (0x48c450) then, on success, fires a command event through an
-  // unidentified vtable slot (raw target 0x48a730 is a bare `xor eax,eax;
-  // ret` placeholder in the original, so the real receiver/slot isn't
-  // resolved yet) — left unimplemented rather than guessed.
+  // The retail body forwards to the base TView mouse-move dispatch and, on success, fires a
+  // command event through a receiver/slot that is not yet recovered. This fallback remains an
+  // incomplete stub rather than guessing that dispatch.
   (void)point;
   (void)arg2;
   (void)arg3;
@@ -179,13 +171,9 @@ void TEditText::SetTextThemeCodeAndMaybeRefresh(short themeCode, char refreshFla
 
 // FUNCTION: IMPERIALISM 0x00490cf0
 void TEditText::InitDialogWindowAndSyncTitleIfChanged(CString* newText, int refreshFlag) {
-  // TODO(manifest): real body (272 bytes) truncates *newText to field_9c
-  // (max chars) via CString::Left, then either forwards to the live edit
-  // window (CMcWindow::SetWindowTextOrDelegateToOwner) or compares against
-  // the cached text and calls RefreshControl() on change — needs the
-  // DispatchSlot9CToLinkedChildren()-gated live/cached branch resolved
-  // first (same "is the live edit CWnd active" check used throughout this
-  // file), left unimplemented rather than guessed.
+  // The retail body truncates *newText to field_9c, then either updates the live edit window or
+  // compares against the cached text and refreshes on change. The live/cached branch depends on
+  // DispatchSlot9CToLinkedChildren(), so this body remains incomplete.
   (void)newText;
   (void)refreshFlag;
 }

@@ -419,14 +419,6 @@ undefined4 WrapperFor_WriteProfileInt_At00415510(void)
   return 0;
 }
 
-// ghidra_name SetSettingValueInSettingsSection
-// ghidra_proto undefined SetSettingValueInSettingsSection()
-// FUNCTION: IMPERIALISM 0x00415580
-undefined4 SetSettingValueInSettingsSection(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_FreeHeapBufferIfNotNull_At005e1c60_Impl
 // ghidra_proto undefined WrapperFor_FreeHeapBufferIfNotNull_At005e1c60_Impl()
 // FUNCTION: IMPERIALISM 0x00415b70
