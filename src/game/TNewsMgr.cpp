@@ -1,5 +1,6 @@
 #include "game/TNewsMgr.h"
 #include "game/TInterNationEventQueueManager.h"
+#include "game/TSortedPtrList.h"
 
 // SYNTHETIC: IMPERIALISM 0x0055b6a0
 // TNewsMgr::`scalar deleting destructor'
@@ -22,5 +23,12 @@ void TNewsMgr::WriteTo(TStream* stream) {}
 
 // FUNCTION: IMPERIALISM 0x0055b710
 void TInterNationEventQueueManager::InitializeInterNationEventQueueManager() {
-  // TODO: promote body @ 0x0055b710
+  for (int i = 0; i < 7; i++) {
+    perNationEventBuckets[i] = reinterpret_cast<TPtrList*>(new TSortedPtrList());
+    *(short*)((char*)perNationEventBuckets[i] + 0x14) = 0x24;
+    perNationUiCounters7[i] = 0;
+  }
+  *(int*)((char*)this + 8) = 0;
+  sharedEventRecordQueue = reinterpret_cast<TPtrList*>(new TSortedPtrList());
+  *(short*)((char*)sharedEventRecordQueue + 0x14) = 0x10;
 }

@@ -10,11 +10,10 @@ public:
   TTechMgr();
   void WriteTo(TStream* stream) override;  // slot 0x14 (0x005af710)
   void ReadFrom(TStream* stream) override; // slot 0x18 (0x005af460)
-  // pad000 is 0x3a (not the raw-disassembly offset 0x3e) because the field below sits at
-  // absolute `this+0x3e`, and the compiler places the first declared data member 4 bytes
-  // in (after the inherited TObject/CObject vtable pointer) -- verified empirically: at
-  // 0x3e the compiled field address was off by exactly 4 bytes until this was corrected.
-  unsigned char pad000[0x3a];
+  // Priority-slot IDs: 3 zero-initialized slots followed by 26 generated slots, each a
+  // short capability-priority identifier written by GenerateRandomCapabilityPrioritySlots
+  // and serialized by ReadFrom/WriteTo as the base capability block at +0x004 (0x3a bytes).
+  short prioritySlots[29];
   // Per-nation/per-resourceType capability value table, index = nationTag*23 + resourceType
   // (row stride 23 shorts). Evidenced independently by three TMapMgr functions that all
   // read this exact formula off g_pCityOrderCapabilityState+0x3e: 0x513720, 0x5155c0,

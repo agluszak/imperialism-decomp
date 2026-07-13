@@ -833,6 +833,14 @@ double g_Compute_Advisory_OnePointFive_00654008 = 1.5;
 // the relation manager's city stock block by TGreatPower slot 0x39 (0x004df810).
 short g_Rebuild_Primary_Nation_Value_00653570[6][0x17] = {0};
 
+// GLOBAL: IMPERIALISM 0x0066aba6
+// Range-pair table for capability priority slot generation (26 pairs of [start, end]).
+// The leading range-start value 1 at 0x66aba4 is accessed via pnRangePairCursor[-1].
+short g_anCapabilityPriorityRangePairs[52] = {
+    5, 6, 10, 6, 10, 6, 10, 6, 10, 11, 15, 11, 15, 16, 20, 21, 25, 21, 25, 26, 30, 26, 30, 31, 35,
+    31, 35, 36, 40, 41, 45, 41, 45, 46, 50, 51, 55, 56, 60, 56, 60, 56, 60, 61, 65, 61, 65, 66, 70,
+    66, 70};
+
 // GLOBAL: IMPERIALISM 0x0066fad0
 double DAT_0066fad0 = 0.092;
 
