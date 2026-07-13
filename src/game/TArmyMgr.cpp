@@ -948,11 +948,13 @@ void TArmyMgr::SetActiveProvinceSelection(short tileIndex) {
         unit->SetOrderModeSlot34(0, -1);
       }
     }
-    // TODO: ground truth also dispatches
-    // g_pUiRuntimeContext->mapUberPictureF0->categoryPages[activeUnitCategoryIndex96]'s
-    // slot-0x74 (NotifyActiveNationChanged-shaped) virtual here, passing tileIndex. The
-    // categoryPages[] receiver class isn't recovered yet (TMapUberPicture.h Hard Rule 12
-    // caveat), so this one dispatch is left undone rather than faked.
+    // TMapUberPicture is fully recovered now (categoryPages[]/activeUnitCategoryIndex96/
+    // slot 0x74 all real fields/methods on TMapUberPicture.h) -- wire the dispatch the
+    // ground truth makes here: mapUberPictureF0->categoryPages[activeUnitCategoryIndex96]
+    // ->AutoScrollByEdgeMask(tileIndex) (vtable byte offset +0x1d0 = slot 0x74).
+    TMapUberPicture* mapUberPicture = g_pUiRuntimeContext->mapUberPictureF0;
+    mapUberPicture->categoryPages[mapUberPicture->activeUnitCategoryIndex96]->AutoScrollByEdgeMask(
+        tileIndex);
   }
   g_pUiRuntimeContext->mapUberPictureF0->RefreshAfterSelectionChange();
 }
