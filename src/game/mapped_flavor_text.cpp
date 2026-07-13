@@ -5,8 +5,6 @@
 #include "game/TLanguageMgr.h"
 #include "game/TSimMgr.h"
 
-extern "C" char DAT_006a43f0;
-
 // FUNCTION: IMPERIALISM 0x0056d5c0
 CString BuildSharedStringFromMappedFlavorTextIndex(short variantIndex) {
   CString result;
@@ -40,8 +38,7 @@ void scanBracketExpressions(void* ctx, void* out, const char* input, ...) {
           if (letter < 'a' || letter > 'z') {
             *result += args[ch - '0'];
           } else {
-            *result +=
-                g_pLanguageMgr->BuildMappedSharedStringFromByteStateTable(args[ch - '0'], letter);
+            *result += g_pLanguageMgr->Localize(args[ch - '0'], letter);
           }
           break;
         }
@@ -92,7 +89,7 @@ void __cdecl BuildUiMessageTextFromBracketTemplate(TSimMgr* sim, CString* out, i
           if (letter < 'a' || letter > 'z') {
             *out += expansion;
           } else {
-            *out += g_pLanguageMgr->BuildMappedSharedStringFromByteStateTable(expansion, letter);
+            *out += g_pLanguageMgr->Localize(expansion, letter);
           }
           break;
         }
@@ -149,7 +146,7 @@ void SetSharedStringFromMappedFlavorTextWithLengthClamp(CString* dest, short tab
   if (g_pSimMgr->useLocalizedNameTables68 == '\0') {
     short variantIndex = g_MappedFlavorTextNationVariantTable_0066EF30[tableSlot].variantIndex;
     GenerateMappedFlavorTextUntilValidationPasses(dest, variantIndex);
-    if (DAT_006a43f0 == '\0') {
+    if (g_bMultiplayerScenarioSetupActive == '\0') {
       while (dest->GetLength() > 0xc) {
         GenerateMappedFlavorTextUntilValidationPasses(dest, variantIndex);
       }

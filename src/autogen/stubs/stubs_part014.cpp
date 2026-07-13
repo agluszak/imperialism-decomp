@@ -595,14 +595,6 @@ undefined4 WrapperFor_ReleaseSharedStringRefIfNotEmpty_At00507db0(void)
   return 0;
 }
 
-// ghidra_name ShowCountrySelectionPromptAndReturnNationId
-// ghidra_proto undefined ShowCountrySelectionPromptAndReturnNationId()
-// FUNCTION: IMPERIALISM 0x00508910
-undefined4 ShowCountrySelectionPromptAndReturnNationId(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_ftol_At00508ee0
 // ghidra_proto undefined WrapperFor_ftol_At00508ee0()
 // FUNCTION: IMPERIALISM 0x00508ee0

@@ -1,7 +1,7 @@
 #include "game/TModalMessageCommand.h"
 
 // FUNCTION: IMPERIALISM 0x005dcd10
-void TModalMessageCommand::OrphanRetStub_00487a00() {}
+void TModalMessageCommand::DoIt() {}
 
 // SYNTHETIC: IMPERIALISM 0x005dcd50
 // TModalMessageCommand::`scalar deleting destructor'

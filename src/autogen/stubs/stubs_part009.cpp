@@ -123,14 +123,6 @@ undefined4 thunk_HandleEngineerConstructionAction(void)
   return 0;
 }
 
-// ghidra_name thunk_DestroyScopedMapQuickDrawContext
-// ghidra_proto undefined thunk_DestroyScopedMapQuickDrawContext()
-// ILT thunk 0x00408035 - unannotated on purpose (see ILT_THUNK_RANGE)
-undefined4 thunk_DestroyScopedMapQuickDrawContext(void)
-{
-  return 0;
-}
-
 // ghidra_name thunk_NormalizeWrappedMapCoord108x60
 // ghidra_proto undefined thunk_NormalizeWrappedMapCoord108x60()
 // ILT thunk 0x00408328 - unannotated on purpose (see ILT_THUNK_RANGE)

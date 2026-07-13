@@ -187,4 +187,6 @@ void __cdecl DeleteFileWithErrorReporting(CString* path);
 // bootstrap-complete flag DAT_006a43c0 the turn state machine's case 1 keys off.
 void ReinitializeGameFlowAndPostTurnEventCode(int eventCode);
 
-void SaveSettingValueFromPointerByKey(CString* value, const char* key); // 0x5e0260
+void __stdcall LoadProfileStringAndAssignSharedRef(CString* outString, LPCTSTR key,
+                                                   LPCTSTR defaultValue); // 0x5e01a0
+void SaveSettingValueFromPointerByKey(CString* value, const char* key);   // 0x5e0260

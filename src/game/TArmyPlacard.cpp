@@ -8,7 +8,6 @@
 #include "game/UiRuntimeContext.h"
 #include "game/TSimMgr.h"
 #include "game/TTechMgr.h"
-#include "game/TSpaceCommand.h"
 // SYNTHETIC: IMPERIALISM 0x0058be30
 // TArmyPlacard::CreateObject
 // SYNTHETIC: IMPERIALISM 0x0058beb0
@@ -27,7 +26,7 @@ TArmyPlacard::TArmyPlacard() : TPicture() {
 // TArmyPlacard::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x0058bf50
-bool TArmyPlacard::IsSelected(short value, bool refreshNow) {
+void TArmyPlacard::SetValue(short value, unsigned char refreshNow) {
   short activeNationId = g_pSimMgr->GetActiveNationId();
   short capValue =
       g_pCityOrderCapabilityState->nationCapRows1e8[activeNationId].caps[this->controlTag];
@@ -42,7 +41,6 @@ bool TArmyPlacard::IsSelected(short value, bool refreshNow) {
     }
   }
   this->glyph90 = value;
-  return true;
 }
 
 // FUNCTION: IMPERIALISM 0x0058bfe0
@@ -71,30 +69,24 @@ void TArmyPlacard::ApplyRectSlot110(RECT* rectBuffer) {
   }
 }
 
-undefined4 ActivateFirstActiveTacticalUnitByCategoryAtTile(void);
-undefined4 ActivateFirstIdleTacticalUnitByCategoryAtTile(void);
-
 // FUNCTION: IMPERIALISM 0x0058c140
 void TArmyPlacard::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   (void)commandId;
-  (void)sourceHandler;
-  TSpaceCommand* spaceEvent = static_cast<TSpaceCommand*>(event);
-  if (spaceEvent != nullptr) {
-    if (spaceEvent->commandTag1c == 0x706c7573) { // "plus"
-      short categoryId = this->controlTag - 0x6330;
-      short tileIndex = g_pMapContextActionManager->pendingMapActionIndex;
-      int unitId = reinterpret_cast<int(__cdecl*)(short, short)>(
-          ActivateFirstActiveTacticalUnitByCategoryAtTile)(categoryId, tileIndex);
-      this->IsSelected(unitId, true);
-      return;
-    }
-    if (spaceEvent->commandTag1c == 0x6d696e75) { // "minu"
-      short categoryId = this->controlTag - 0x6330;
-      short tileIndex = g_pMapContextActionManager->pendingMapActionIndex;
-      int unitId = reinterpret_cast<int(__cdecl*)(short, short)>(
-          ActivateFirstIdleTacticalUnitByCategoryAtTile)(categoryId, tileIndex);
-      this->IsSelected(unitId, true);
-    }
+  (void)event;
+  if (sourceHandler->controlTag == 0x706c7573) { // "plus"
+    short categoryId = this->controlTag - 0x6330;
+    short tileIndex = g_pMapContextActionManager->pendingMapActionIndex;
+    short unitCount = g_pMapContextActionManager->ActivateFirstActiveTacticalUnitByCategoryAtTile(
+        categoryId, tileIndex);
+    this->SetValue(unitCount, 1);
+    return;
+  }
+  if (sourceHandler->controlTag == 0x6d696e75) { // "minu"
+    short categoryId = this->controlTag - 0x6330;
+    short tileIndex = g_pMapContextActionManager->pendingMapActionIndex;
+    short unitCount = g_pMapContextActionManager->ActivateFirstIdleTacticalUnitByCategoryAtTile(
+        categoryId, tileIndex);
+    this->SetValue(unitCount, 1);
   }
 }
 

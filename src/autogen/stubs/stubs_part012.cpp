@@ -179,22 +179,6 @@ undefined4 ComputeSelectedTileCityActionGateSum(void)
   return 0;
 }
 
-// ghidra_name ActivateFirstIdleTacticalUnitByCategoryAtTile
-// ghidra_proto undefined ActivateFirstIdleTacticalUnitByCategoryAtTile()
-// FUNCTION: IMPERIALISM 0x004a43f0
-undefined4 ActivateFirstIdleTacticalUnitByCategoryAtTile(void)
-{
-  return 0;
-}
-
-// ghidra_name ActivateFirstActiveTacticalUnitByCategoryAtTile
-// ghidra_proto undefined ActivateFirstActiveTacticalUnitByCategoryAtTile()
-// FUNCTION: IMPERIALISM 0x004a4490
-undefined4 ActivateFirstActiveTacticalUnitByCategoryAtTile(void)
-{
-  return 0;
-}
-
 // ghidra_name ClearProvinceSelectionHighlightsForNation
 // ghidra_proto undefined ClearProvinceSelectionHighlightsForNation()
 // FUNCTION: IMPERIALISM 0x004a46d0

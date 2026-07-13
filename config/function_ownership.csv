@@ -787,6 +787,7 @@ address|target_cpp|ownership|note
 494680|src/game/ScopedMapQuickDrawContext.cpp|manual|marker_sync
 4946b0|src/game/ScopedMapQuickDrawContext.cpp|manual|marker_sync
 494700|src/game/ScopedMapQuickDrawContext.cpp|manual|marker_sync
+4947e0|src/game/ScopedMapQuickDrawContext.cpp|manual|marker_sync
 4948b0|src/game/ScopedMapQuickDrawContext.cpp|manual|marker_sync
 494950|src/game/quickdraw_rendering.cpp|manual|marker_sync
 494a90|src/game/quickdraw_rendering.cpp|manual|marker_sync
@@ -1003,6 +1004,8 @@ address|target_cpp|ownership|note
 4a3f30|src/game/TArmyMgr.cpp|manual|marker_sync
 4a4190|src/game/TMapMgr.cpp|manual|marker_sync
 4a4260|src/game/TArmyMgr.cpp|manual|marker_sync
+4a43f0|src/game/TArmyMgr.cpp|manual|marker_sync
+4a4490|src/game/TArmyMgr.cpp|manual|marker_sync
 4a4550|src/game/TArmyMgr.cpp|manual|marker_sync
 4a45e0|src/game/TArmyMgr.cpp|manual|marker_sync
 4a4870|src/game/TArmyMgr.cpp|manual|marker_sync
@@ -2307,6 +2310,7 @@ address|target_cpp|ownership|note
 5086a0|src/game/TLanguageMgr.cpp|manual|marker_sync
 508760|src/game/TLanguageMgr.cpp|manual|marker_sync
 508800|src/game/TLanguageMgr.cpp|manual|marker_sync
+508910|src/game/TLanguageMgr.cpp|manual|marker_sync
 508c50|src/game/TLanguageMgr.cpp|manual|marker_sync
 509c00|src/game/TMacViewMgr.cpp|manual|marker_sync
 509c80|src/game/TMacViewMgr.cpp|manual|marker_sync
@@ -3657,19 +3661,24 @@ address|target_cpp|ownership|note
 576d80|src/game/TSetupRandomMapPicture.cpp|manual|marker_sync
 576e00|src/game/TSetupRandomMapPicture.cpp|manual|marker_sync
 576e30|src/game/TSetupRandomMapPicture.cpp|manual|marker_sync
+576fe0|src/game/TSetupRandomMapPicture.cpp|manual|marker_sync
 577030|src/game/TSetupRandomMapPicture.cpp|manual|marker_sync
 5779c0|src/game/TSetupRandomMapPicture.cpp|manual|marker_sync
+577df0|src/game/TGWorldPartView.cpp|manual|marker_sync
 577e40|src/game/TSetupRandomMapPicture.cpp|manual|marker_sync
 5781f0|src/game/TSetupRandomMapPicture.cpp|manual|marker_sync
+578230|src/game/TSetupRandomMapPicture.cpp|manual|marker_sync
 5782f0|src/game/TSetupRandomMapPicture.cpp|manual|marker_sync
+578330|src/game/TSetupRandomMapPicture.cpp|manual|marker_sync
+578680|src/game/TSetupRandomMapPicture.cpp|manual|marker_sync
 5787b0|src/game/TMapPreviewView.cpp|manual|marker_sync
 578830|src/game/TMapPreviewView.cpp|manual|marker_sync
 578850|src/game/TMapPreviewView.cpp|manual|marker_sync
 5789b0|src/game/TMapPreviewView.cpp|manual|marker_sync
 5789e0|src/game/TMapPreviewView.cpp|manual|marker_sync
 578a80|src/game/TMapPreviewView.cpp|manual|marker_sync
-578c10|src/game/TLoadSavePicture.cpp|manual|marker_sync
-579270|src/game/TControl.cpp|manual|marker_sync
+578c10|src/game/TMapPreviewView.cpp|manual|marker_sync
+579270|src/game/TMapPreviewView.cpp|manual|marker_sync
 5793f0|src/game/TRadioText.cpp|manual|marker_sync
 579470|src/game/TRadioText.cpp|manual|marker_sync
 579490|src/game/TRadioText.cpp|manual|marker_sync
@@ -3682,6 +3691,7 @@ address|target_cpp|ownership|note
 579740|src/game/TRadioTextCluster.cpp|manual|marker_sync
 579770|src/game/TRadioTextCluster.cpp|manual|marker_sync
 5797c0|src/game/TRadioTextCluster.cpp|manual|marker_sync
+5798a0|src/game/TRadioTextCluster.cpp|manual|marker_sync
 579a60|src/game/TRadioTextCluster.cpp|manual|marker_sync
 579ae0|src/game/TScenarioChooser.cpp|manual|marker_sync
 579b60|src/game/TScenarioChooser.cpp|manual|marker_sync
@@ -4695,6 +4705,7 @@ address|target_cpp|ownership|note
 5c4910|src/game/ui_text_label_helpers.cpp|manual|marker_sync
 5c49d0|src/game/ui_text_label_helpers.cpp|manual|marker_sync
 5c4a40|src/game/ui_text_label_helpers.cpp|manual|marker_sync
+5c4ab0|src/game/ui_text_label_helpers.cpp|manual|marker_sync
 5c4c60|src/game/map_context_flavor_builders.cpp|manual|marker_sync
 5c57f0|src/game/map_context_flavor_builders.cpp|manual|marker_sync
 5c61a0|src/game/map_context_flavor_builders.cpp|manual|marker_sync
@@ -4798,6 +4809,7 @@ address|target_cpp|ownership|note
 5dd220|src/game/TViewMgr.cpp|manual|marker_sync
 5dd900|src/game/TViewMgr.cpp|manual|marker_sync
 5ddd20|src/game/TViewMgr.cpp|manual|marker_sync
+5de010|src/game/TViewMgr.cpp|manual|marker_sync
 5de4f0|src/game/TViewMgr.cpp|manual|marker_sync
 5de990|src/game/TViewMgr.cpp|manual|marker_sync
 5dea60|src/game/TViewMgr.cpp|manual|marker_sync

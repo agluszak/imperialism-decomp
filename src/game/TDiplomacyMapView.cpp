@@ -23,7 +23,6 @@
 #include "game/TMilitaryUnit.h"
 #include "game/TViewMgr.h"
 #include "game/TSimMgr.h"
-#include "game/TCursorControlPanel.h"
 
 // Defined below in address order (0x4d5d30).
 void __cdecl BuildDiplomacyOverlayHitMaskOpcodeStream(DiplomacyMaskBufferRun* run,
@@ -950,8 +949,7 @@ void TDiplomacyMapView::RenderDiplomacyPendingPolicyIconsAndFrames() {
 // FUNCTION: IMPERIALISM 0x005DA040
 void TDiplomacyMapView::SelectCandidateTilesWithLowGroundUnitCount() {
   TView* mainView = g_pDisplayMgr->activeDialog;
-  TCursorControlPanel* cursor =
-      static_cast<TCursorControlPanel*>(mainView->ResolveControlByTag(kControlTagCurs));
+  TInfoBarText* cursor = static_cast<TInfoBarText*>(mainView->ResolveControlByTag(kControlTagCurs));
   g_pCursorControlPanel = cursor;
   if (cursor != nullptr) {
     cursor->AssertValid();
@@ -966,8 +964,7 @@ void TDiplomacyMapView::SelectCandidateTilesWithLowGroundUnitCount() {
 // FUNCTION: IMPERIALISM 0x005DA180
 void TDiplomacyMapView::OrphanLeaf_NoCall_Ins07_004d8920() {
   TView* mainView = g_pDisplayMgr->activeDialog;
-  TCursorControlPanel* cursor =
-      static_cast<TCursorControlPanel*>(mainView->ResolveControlByTag(kControlTagCurs));
+  TInfoBarText* cursor = static_cast<TInfoBarText*>(mainView->ResolveControlByTag(kControlTagCurs));
   g_pCursorControlPanel = cursor;
   if (cursor != nullptr) {
     cursor->AssertValid();

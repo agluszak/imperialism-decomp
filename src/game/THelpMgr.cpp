@@ -15,8 +15,6 @@
 
 char ShowPeriodicNationComparisonAdvisoryIfNeeded();
 
-extern "C" char DAT_006a43f0;
-
 namespace {
 
 static const HelpSetRecord kHelpSetIndexBootstrapRecords[] = {
@@ -108,7 +106,7 @@ undefined THelpMgr::InitializeHelpManagerIndexArrayAndState() {
   if (list != nullptr) {
     list->recordSize14 = 0xe;
   }
-  if (DAT_006a43f0 == 0 && list != nullptr) {
+  if (g_bMultiplayerScenarioSetupActive == 0 && list != nullptr) {
     int entryIndex;
     for (entryIndex = 0; entryIndex < kHelpSetIndexBootstrapRecordCount; entryIndex++) {
       HelpSetRecord record = kHelpSetIndexBootstrapRecords[entryIndex];
@@ -461,7 +459,7 @@ char THelpMgr::HandlePendingEventActivationByCode(short eventCode) {
   if (ReadLocalizationPendingEventGate5c() == 0) {
     ReleasePendingHelpDialogView(&pendingDialogView8);
   } else {
-    if (eventCode != 0x2103 || DAT_006a43f0 == 0) {
+    if (eventCode != 0x2103 || g_bMultiplayerScenarioSetupActive == 0) {
       int index = 1;
       while (!nationAlreadyCurrent && activateCandidate == 0) {
         if (indexList == 0 || index > GetSortedPtrListEntryCount(indexList)) {

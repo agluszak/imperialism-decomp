@@ -258,12 +258,6 @@ int TModalTemplateDialogBase::FinalizeModalDialogAndRestoreOwnerFocus() {
 
 // KNOWN ILT (retired): 0x004087fb is a 5-byte `jmp TControl::TControl` linker stub — not ported.
 
-// FUNCTION: IMPERIALISM 0x00579270
-void TControl::ApplyPaletteMaskToTileBufferByEventCode() {
-  // TODO: port body @ 0x579270 (not yet ported). Real __thiscall on the control (reads
-  // this->field68); declared so the turn-event-9 lounge map refresh gets a
-  // correctly-typed call site.
-}
 // Real ctor: TControl::TControl @ 0x0048e520 (base via : TView()).
 
 // FUNCTION: IMPERIALISM 0x0058e440

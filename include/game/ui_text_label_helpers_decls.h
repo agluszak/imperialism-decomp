@@ -19,7 +19,14 @@ TStaticText* __cdecl RefreshActiveControlThenApplyThemeStyleAndCaption(unsigned 
 void __cdecl ApplyUiTextStyleAndThemeFlags(TDropShadowText* control, int unused, int pointSize,
                                            int shadowThemeCode, int textThemeCode);
 
+void LoadUiStringByGroupAndIndexToGlobalControlTagAndApply(short group, short index,
+                                                           unsigned int controlTag);
+
 class TView;
+
+// 0x5c4ab0: resolve `controlTag` on the active dialog, assert it, then apply the
+// shared string through the normal control-state path.
+TView* __cdecl ApplySharedStringToGlobalControlTag(CString sharedString, unsigned int controlTag);
 
 // 0x5c4850: load string (group,index) from the module library cache and apply it to the
 // control via ApplySharedStringToControlState.

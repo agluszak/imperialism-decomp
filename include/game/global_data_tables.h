@@ -53,8 +53,9 @@ class TTaskForce;
 class TMapMgr;
 class TCivMgr;
 class TTurnEventDialogFactoryRegistry;
+class TSetupRandomMapPicture;
 class TSoundPlayer;
-class TCursorControlPanel;
+class TInfoBarText;
 class TTechMgr;
 class TMultiplayerMgr;
 class TNetMgr;
@@ -393,9 +394,10 @@ extern char g_szCountryNameProfileKey00698AE0[];
 }
 
 // Typed C++ linkage — see typed-recovered-globals.mdc (not inside extern "C").
-extern TCursorControlPanel* g_pCursorControlPanel;
+extern TInfoBarText* g_pCursorControlPanel;
 extern TTradeMgr* g_pNationInteractionStateManager;
 extern CString g_cstrCountryNameSettingValue006A4220;
+extern TSetupRandomMapPicture* g_pActiveRandomMapSetupPicture006A4268;
 extern "C" short g_nationMetricSlotDispatchOrder006d810[0x11];
 extern GlobalViewportRectDefaultsRecord g_globalViewportRectDefaultsRecord;
 extern GlobalViewportRectDefaultsRecord* g_pGlobalViewportRectDefaultsRecord;
@@ -830,6 +832,10 @@ extern const char s_Chunk_00698C0C[];
 // TSimMgr_AdvanceGlobalTurnStateMachine.cpp / turn_flow_cooldown.cpp — turn-cooldown state.
 extern short g_nTurnCooldownDeferCounter006A43C4;
 extern short g_nTurnCooldownSideFlag00698B10;
+extern "C" char g_bMultiplayerScenarioSetupActive;
+extern "C" const char s_TurnEventCursorNameFormat_0069B6B4[];
+extern "C" const char s_GameName_00698010[];
+extern "C" const char s_PlayerName_0069801c[];
 
 // THelpMgr.cpp — periodic nation-comparison advisory tick.
 extern short g_nTurnFlowNationComparisonAdvisoryTick;

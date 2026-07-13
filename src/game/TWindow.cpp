@@ -8,8 +8,6 @@
 #include "game/global_data_tables.h"
 #include "game/ui_invalidation_guard.h"
 
-extern CPtrList g_ModalViewStack;
-
 // One-shot McAppUI invalidation-flag assert. The original reaches the shared invalidation
 // helper through the incremental-link thunk; each call site is gated by its own
 // g_McAppUiFlag_* one-shot so the assert fires at most once.
@@ -215,16 +213,15 @@ void TWindow::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* e
 }
 
 // FUNCTION: IMPERIALISM 0x0048ddc0
-undefined TWindow::OrphanCallChain_C2_I19_0048ddc0(TWindow* param_1) {
-  if (param_1 == 0) {
-    param_1 = this;
+void TWindow::SetWindowTarget(TEventHandler* target) {
+  if (target == 0) {
+    target = this;
   }
-  if (param_1 != activeLinkedWindow64) {
+  if (target != activeLinkedWindow64) {
     activeLinkedWindow64->DispatchUiCommand19ToParent();
-    activeLinkedWindow64 = param_1;
-    param_1->HandleCityProductionNoOp();
+    activeLinkedWindow64 = target;
+    target->HandleCityProductionNoOp();
   }
-  return 0;
 }
 
 // Realize and show this window: on first call create the host CMcWindow and propagate the

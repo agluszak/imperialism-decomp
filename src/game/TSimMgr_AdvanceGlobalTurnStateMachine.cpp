@@ -24,7 +24,6 @@
 #include "game/TViewMgr.h"
 #include "game/global_data_tables.h"
 
-extern "C" char DAT_006a43f0;
 extern "C" char DAT_006a43c0;
 
 extern undefined4 RefreshNationAdvisorLabelStrings(void);
@@ -155,7 +154,8 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
       if (nation == nullptr) {
         continue;
       }
-      if (nation->ShouldDispatchImmediatelySlot28() == 0 && DAT_006a43f0 == 0) {
+      if (nation->ShouldDispatchImmediatelySlot28() == 0 &&
+          g_bMultiplayerScenarioSetupActive == 0) {
         nation->SetHomeCityTileAndDisplayName(-1, 0);
       }
     }
@@ -166,7 +166,7 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
         activeNation->ResetDiplomacyNeedSlots7012AndRefreshIfModeGateMatches();
       }
     }
-    if (DAT_006a43f0 == 0) {
+    if (g_bMultiplayerScenarioSetupActive == 0) {
       if (stateFlag114 == 0) {
         if (redrawEnabled == 0) {
           RefreshNationAdvisorLabelStrings();
@@ -196,7 +196,7 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
       g_pSimMgr->RebuildGlobalOrderManagersAndCapabilityState(1);
       g_pSimMgr->RebuildMapContextAndGlobalMapState(1, s_Chunk_00698C0C, 1);
     }
-    if (DAT_006a43f0 != 0) {
+    if (g_bMultiplayerScenarioSetupActive != 0) {
       break;
     }
     // Verified against 0x0057db53: real TSimMgr thiscall on `this` this time.

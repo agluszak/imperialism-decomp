@@ -18,7 +18,7 @@ public:
   // slot 0x08 ShallowClone inherited unchanged (0x4798d0)
   // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
   // slot 0x0a NextDiplomacyCommandVtableSlotE8_NotifyOwnerSlot94 inherited unchanged (0x487900)
-  virtual void OrphanRetStub_00487a00() override; // slot 0x0b 0x49ddb0
+  virtual void DoIt() override; // slot 0x0b 0x49ddb0
   // === END GENERATED DECLS (TNewGameCommand) ===
 
   // Fully inlined at every construction site (base TCommand ctor call + vtable

@@ -451,14 +451,6 @@ undefined4 WrapperFor_DeleteRegionHandleFromClipState_At00494370(void)
   return 0;
 }
 
-// ghidra_name ConstructScopedMapQuickDrawContextWithPaletteToken
-// ghidra_proto undefined ConstructScopedMapQuickDrawContextWithPaletteToken()
-// FUNCTION: IMPERIALISM 0x004947e0
-undefined4 ConstructScopedMapQuickDrawContextWithPaletteToken(void)
-{
-  return 0;
-}
-
 // ghidra_name RenderTradeScreenCommoditySummaryRows_Impl
 // ghidra_proto undefined RenderTradeScreenCommoditySummaryRows_Impl()
 // FUNCTION: IMPERIALISM 0x00494bf0

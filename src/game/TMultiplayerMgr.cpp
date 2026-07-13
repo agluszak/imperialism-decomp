@@ -143,6 +143,7 @@ struct TurnEvent15Packet : NetMessage {
 #include "game/TZone.h"
 #include "game/TNextDiplomationCommand.h"
 #include "game/TLoadSavePicture.h"
+#include "game/TMapPreviewView.h"
 #include "game/TViewMgr.h"
 #include "game/TApplication.h"
 #include "game/TAssetMgr.h"
@@ -179,18 +180,9 @@ using turn_event_dialog::TurnEventDialogNode;
 // generic repo form per Hard Rule 9 and cast to their real typed signatures at the call sites.
 extern undefined4 NoOpInitializeGlobalTurnEventQueueManager();
 
-// Real definition (0x5e01a0) lives in TSimMgr.cpp, alongside the other Settings-section
-// profile helpers.
-void __stdcall LoadProfileStringAndAssignSharedRef(CString* outString, LPCTSTR key,
-                                                   LPCTSTR defaultValue);
-
 // Forward decl: real definition (with its // FUNCTION: marker) sits address-ordered
 // further down this file, near TMultiplayerMgr's other 0x5exxxx-adjacent members.
 static char ReturnTrueRuntimeCredentialInitStub();
-
-// Profile-section string literals.
-extern "C" const char s_PlayerName_0069801c[];
-extern "C" const char s_GameName_00698010[];
 
 // FUNCTION: IMPERIALISM 0x0050ec60
 NationStateRecordA8::NationStateRecordA8() {}
@@ -948,10 +940,11 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
           while (mySlot >= 0 && nationSessionIds[mySlot] != GetSessionActiveNationId()) {
             --mySlot;
           }
-          TControl* mapControl = (TControl*)lounge->ResolveControlByTag(0x6d617020 /* 'map ' */);
+          TMapPreviewView* mapControl =
+              static_cast<TMapPreviewView*>(lounge->ResolveControlByTag(0x6d617020 /* 'map ' */));
           mapControl->AssertValid();
-          mapControl->field68 = mySlot;
-          mapControl->ApplyPaletteMaskToTileBufferByEventCode();
+          mapControl->selectedNation68 = mySlot;
+          mapControl->EnhancePhoto();
           RECT mapRect;
           mapControl->QueryContentBounds(&mapRect);
           {

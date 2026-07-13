@@ -870,6 +870,53 @@ undefined TArmyMgr::OrphanCallChain_C1_I34_004a4260(int mode) {
   return 0;
 }
 
+// FUNCTION: IMPERIALISM 0x004a43f0
+short TArmyMgr::ActivateFirstIdleTacticalUnitByCategoryAtTile(short categoryId, short tileIndex) {
+  TMilitaryUnit* unit = nullptr;
+  if (tileIndex >= 0 && tileIndex < 0x180) {
+    unit = g_pGlobalMapState->cityScoreTable[tileIndex].stationedUnitChain98;
+  }
+
+  bool activatedUnit = false;
+  short remainingIdleCount = 0;
+  for (; unit != nullptr; unit = static_cast<TMilitaryUnit*>(unit->nextOnTile)) {
+    if (g_awTacticalUnitCategoryCodeBySlot[unit->orderType] == categoryId && unit->field_8 == 0) {
+      if (activatedUnit) {
+        ++remainingIdleCount;
+      } else {
+        unit->SetOrderModeSlot34(4, -1);
+        activatedUnit = true;
+      }
+    }
+  }
+  return remainingIdleCount;
+}
+
+// FUNCTION: IMPERIALISM 0x004a4490
+short TArmyMgr::ActivateFirstActiveTacticalUnitByCategoryAtTile(short categoryId, short tileIndex) {
+  TMilitaryUnit* unit = nullptr;
+  if (tileIndex >= 0 && tileIndex < 0x180) {
+    unit = g_pGlobalMapState->cityScoreTable[tileIndex].stationedUnitChain98;
+  }
+
+  bool deactivatedUnit = false;
+  short idleCount = 0;
+  for (; unit != nullptr; unit = static_cast<TMilitaryUnit*>(unit->nextOnTile)) {
+    if (g_awTacticalUnitCategoryCodeBySlot[unit->orderType] != categoryId) {
+      continue;
+    }
+    if (unit->field_8 == 0) {
+      ++idleCount;
+    } else if ((unit->field_8 == 2 || unit->field_8 == 4 || unit->field_8 == 3) &&
+               !deactivatedUnit) {
+      unit->SetOrderModeSlot34(0, -1);
+      deactivatedUnit = true;
+      ++idleCount;
+    }
+  }
+  return idleCount;
+}
+
 // FUNCTION: IMPERIALISM 0x004a4550
 bool TArmyMgr::HasEligibleStationedUnitInRegion(short regionId) {
   if (regionId == -1) {

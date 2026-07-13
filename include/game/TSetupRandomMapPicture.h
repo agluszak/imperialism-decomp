@@ -124,19 +124,24 @@ public:
   // slot 0x71 ResetPictureResourceEntry inherited unchanged (0x48f520)
   // slot 0x72 SetPictureResourceIdAndRefresh inherited unchanged (0x48f570)
   // slot 0x73 UniversityDialogMethod_00405623 inherited unchanged (0x572bb0)
-  virtual void ApplyNationSelectionAndMaybePostTurnEvent5E4(); // slot 0x74 0x577e40
-  virtual void PostTurnEvent5DCOrResetLocalUiState();          // slot 0x75 0x5781f0
+  virtual void StartGame();  // slot 0x74 0x577e40
+  virtual void ExitScreen(); // slot 0x75 0x5781f0
   // === END GENERATED DECLS (TSetupRandomMapPicture) ===
 
   TSetupRandomMapPicture();
 
-  CString countryName94;       // 0x94 — constructed empty by the ctor (0x576d80)
-  unsigned char generatedName; // 0x98 — ctor zeroes it
-  unsigned char pad99;         // 0x99
-  short selectedNationSlot9A;  // 0x9a — selected great-power slot
-  int field9C;                 // 0x9c — not initialized by the ctor
-  int fieldA0;                 // 0xa0
-  unsigned char initializedA4; // 0xa4 — ctor zeroes it
-  unsigned char padA5[3];      // 0xa5
+  void RecheckCountryName();                        // 0x576fe0
+  void GroundControlToMajorTom(unsigned char mode); // 0x578230
+  void MajorTomToGroundControl(unsigned char mode); // 0x578330
+  void SpinYourGlobe();                             // 0x578680
+
+  CString planetSeed94;                // 0x94 — random-map seed text
+  unsigned char wrapHorizontally98;    // 0x98 — copied to TMapMgr+0x20
+  unsigned char pad99;                 // 0x99
+  short selectedNationSlot9A;          // 0x9a — selected great-power slot
+  unsigned int lastGlobeTick9C;        // 0x9c — spinner timestamp
+  int globeFrameA0;                    // 0xa0 — 0..23 spinner frame
+  unsigned char countryControlReadyA4; // 0xa4 — ctor zeroes it
+  unsigned char padA5[3];              // 0xa5
 };
 ASSERT_SIZE(TSetupRandomMapPicture, 0xa8);

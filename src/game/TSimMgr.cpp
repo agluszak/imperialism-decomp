@@ -34,7 +34,6 @@
 #include "game/mapped_flavor_text.h"
 
 extern "C" char DAT_006a43c0;
-extern "C" char DAT_006a43f0;
 extern "C" const char s_PictWvGobPathFormat_00698BF4[];
 void __fastcall RebuildNationStateSlotsAndAvailability_Impl(TSimMgr* self, int dummyEdx,
                                                             short* param_1);
@@ -371,7 +370,8 @@ void TSimMgr::RebuildNationStateSlotsNoOp() {}
 // FUNCTION: IMPERIALISM 0x0057c3b0
 void TSimMgr::RebuildGlobalOrderManagersAndCapabilityState(char flag) {
   int i;
-  if (((flag != 0) && (DAT_006a43f0 == 0)) || ((flag == 0) && (DAT_006a43f0 != 0))) {
+  if (((flag != 0) && (g_bMultiplayerScenarioSetupActive == 0)) ||
+      ((flag == 0) && (g_bMultiplayerScenarioSetupActive != 0))) {
     if (flag != 0) {
       short* destCursor = scenarioSetupRows1;
       const short* srcCursor = g_anScenarioNationSetupTable_00698B1A;
@@ -457,7 +457,7 @@ void TSimMgr::RebuildGlobalOrderManagersAndCapabilityState(char flag) {
 // FUNCTION: IMPERIALISM 0x0057c7c0
 void TSimMgr::RebuildMapContextAndGlobalMapState(int arg1, const char* arg2, int arg3) {
   int i;
-  if (DAT_006a43f0 == 0) {
+  if (g_bMultiplayerScenarioSetupActive == 0) {
     CString local_10;
     for (i = 0; i < 0x17; ++i) {
       SetSharedStringFromMappedFlavorTextWithLengthClamp(&local_10, i);
@@ -466,7 +466,7 @@ void TSimMgr::RebuildMapContextAndGlobalMapState(int arg1, const char* arg2, int
   }
 
   if (arg1 != 0) {
-    if (DAT_006a43f0 != 0) {
+    if (g_bMultiplayerScenarioSetupActive != 0) {
       return;
     }
   }
@@ -488,7 +488,7 @@ void TSimMgr::RebuildMapContextAndGlobalMapState(int arg1, const char* arg2, int
   g_pGlobalMapState = new TMapMgr();
   g_pGlobalMapState->InitializeGlobalMapState();
 
-  if (DAT_006a43f0 == 0) {
+  if (g_bMultiplayerScenarioSetupActive == 0) {
     g_pGlobalMapState->hexNeighborWrapHorizontally20 = static_cast<char>(arg3);
     g_pGlobalMapState->BuildOrLoadGlobalMapStateForSession(arg2, nullptr);
   } else {
@@ -521,7 +521,7 @@ unsigned char TSimMgr::RecreateActiveMapContextAndInitializeGlobalMapState(int s
 // FUNCTION: IMPERIALISM 0x0057cad0
 void TSimMgr::RebuildNationStateSlotsAndAvailability(int activate) {
   int i;
-  if (DAT_006a43f0 == 0) {
+  if (g_bMultiplayerScenarioSetupActive == 0) {
     short local_1c[8];
     RebuildNationStateSlotsAndAvailability_Impl(this, 0, local_1c);
 
@@ -565,7 +565,7 @@ void TSimMgr::RebuildNationStateSlotsAndAvailability(int activate) {
     }
   }
 
-  if (DAT_006a43f0 == 0) {
+  if (g_bMultiplayerScenarioSetupActive == 0) {
     RebuildCivilianOrderCompatibilityMatrices(g_pDiplomacyTurnStateManager, 0);
     g_pUiRuntimeContext->InvokeStrategicMapViewMethod74();
     g_pCityOrderCapabilityState->GenerateRandomCapabilityPrioritySlots();
@@ -614,7 +614,7 @@ void TSimMgr::RebuildPrimaryNationStateForSlot(int slotIndex, char activate) {
       g_apNationStates[slotIndex] = pTVar5;
       g_apTerrainTypeDescriptorTable[slotIndex] = pTVar5;
 
-      if (DAT_006a43f0 == 0) {
+      if (g_bMultiplayerScenarioSetupActive == 0) {
         if (activate != 0) {
           pTVar5->ApplyScenarioRelationPresetAndSpawnFrogCity(pTVar5->city);
         }
@@ -630,7 +630,7 @@ void TSimMgr::RebuildPrimaryNationStateForSlot(int slotIndex, char activate) {
       g_apNationStates[slotIndex] = pTVar5;
       g_apTerrainTypeDescriptorTable[slotIndex] = pTVar5;
 
-      if (DAT_006a43f0 == 0) {
+      if (g_bMultiplayerScenarioSetupActive == 0) {
         if (activate != 0) {
           pTVar5->ApplyScenarioRelationPresetAndSpawnFrogCity(pTVar5->city);
         }
@@ -654,11 +654,11 @@ void TSimMgr::RebuildPrimaryNationStateForSlot(int slotIndex, char activate) {
     }
     g_apNationStates[slotIndex]->InitializeNationStateRuntimeSubsystems(1, 1);
     g_apTerrainTypeDescriptorTable[slotIndex] = g_apNationStates[slotIndex];
-    if (DAT_006a43f0 == 0) {
+    if (g_bMultiplayerScenarioSetupActive == 0) {
       activeNationSlot = static_cast<short>(slotIndex);
       g_pStrategicMapViewSystem->RefreshCityCapabilityUiHandlesForActiveNation();
     }
-    if (DAT_006a43f0 == 0) {
+    if (g_bMultiplayerScenarioSetupActive == 0) {
       if (field44 != 0) {
         g_pGameFlowState->processPrimaryEventQueue = 0;
       }

@@ -3,6 +3,8 @@
 #include "game/TView.h"
 #include "game/mfc.h"
 
+struct TQuickDrawSurfaceContext;
+
 // VTABLE: IMPERIALISM 0x00644ba0
 class TGWorldPartView : public TView {
 public:
@@ -115,10 +117,9 @@ public:
 
   TGWorldPartView();
 
-  int field60; // 0x60 — ctor 0x45b000 zeroes it
-  int field64; // 0x64
-  int field68; // 0x68
-  int field6c; // 0x6c
-  int field70; // 0x70
+  void SetSourceRectFromGridCell(int column, int row); // 0x577df0
+
+  TQuickDrawSurfaceContext* sourceSurface60; // 0x60 — ctor 0x45b000 zeroes it
+  RECT sourceRect64;                         // 0x64
 };
 ASSERT_SIZE(TGWorldPartView, 0x74);

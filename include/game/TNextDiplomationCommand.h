@@ -14,7 +14,7 @@ public:
   DECLARE_DYNCREATE(TNextDiplomationCommand)
   // slot 0x0b override (0x4f0db0, Ghidra: DispatchProcessQueuedWarTransitions):
   // forwards to g_pDiplomacyTurnStateManager->ProcessQueuedWarTransitions().
-  void OrphanRetStub_00487a00() override;
+  void DoIt() override;
 
   // Fully inlined at every construction site (base TCommand ctor call + vtable
   // store); defined in-class so `new TNextDiplomationCommand()` reproduces that shape.

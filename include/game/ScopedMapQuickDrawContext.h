@@ -10,6 +10,7 @@ struct ScopedMapQuickDrawContext {
   TView* renderTarget;
 
   explicit ScopedMapQuickDrawContext(TView* renderTarget);
+  ScopedMapQuickDrawContext(TView* renderTarget, RECT* clipRect);
   ~ScopedMapQuickDrawContext();
 
   int* IntersectClipRectOnPrimaryAndSecondaryDc(int* clipRect);

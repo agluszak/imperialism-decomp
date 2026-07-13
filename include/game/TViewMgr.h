@@ -9,7 +9,6 @@ class TToolBarClusterVtbl;
 class TView;
 class TEventHandler;
 class TControl;
-class TCursorControlPanel;
 class TDiplomacyMapView;
 class TMovieView;
 class TTaskForce;
@@ -183,6 +182,13 @@ public:
   // text through a 'DLOG'-tagged control -- not yet ported; stubbed to the conservative
   // "confirm, no changes" default so callers don't act on unverified dialog state.
   bool ShowCivilianReportDialogAndReturnConfirm(class TCivUnit* pCivilianOrderEntry);
+
+  // Mac oracle: TViewMgr::MakePlanetSeedDialog(const char*, CStr32&, const char*,
+  // const char*, int, unsigned char) const. Windows uses CString for the CStr32 value
+  // and returns the selected four-character control tag. 0x5de010.
+  int MakePlanetSeedDialog(const char* instruction, CString& planetSeed, const char* firstChoice,
+                           const char* secondChoice, int initialChoice,
+                           unsigned char showCancel) const;
 
   // Object layout recovered from ctor 0x5d5060 / ReadFrom 0x5d5200 /
   // LoadTurnEventCursorTable 0x5d5100. Field names past the event code are

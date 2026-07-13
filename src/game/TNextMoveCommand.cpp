@@ -11,4 +11,4 @@ IMPLEMENT_DYNCREATE(TNextMoveCommand, TCommand)
 // TNextMoveCommand::`scalar deleting destructor'
 TNextMoveCommand::~TNextMoveCommand() {}
 
-void TNextMoveCommand::OrphanRetStub_00487a00() {}
+void TNextMoveCommand::DoIt() {}

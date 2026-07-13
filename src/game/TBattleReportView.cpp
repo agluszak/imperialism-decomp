@@ -5,7 +5,7 @@
 #include "game/TAnimator.h"
 #include "game/TArmyMgr.h"
 #include "game/TControl.h"
-#include "game/TCursorControlPanel.h"
+#include "game/TInfoBarText.h"
 #include "game/TIdleMeAnimation.h"
 #include "game/TMapMgr.h"
 #include "game/TSimMgr.h"
@@ -215,8 +215,7 @@ void TBattleReportView::NoOpUiLifecycleHook(int arg) {
   animation->ConstructTAnimationBaseState(this, &animationRect, 0, 0, 0, registryTag);
   g_pUiAnimator->AddObjectToUiTransientRegistry(animation);
 
-  TCursorControlPanel* cursorPanel =
-      static_cast<TCursorControlPanel*>(ResolveControlByTag(0x63757273)); // 'surc'
+  TInfoBarText* cursorPanel = static_cast<TInfoBarText*>(ResolveControlByTag(0x63757273)); // 'surc'
   g_pCursorControlPanel = cursorPanel;
   cursorPanel->AssertValid();
   g_pCursorControlPanel->BuildAndApplyTextStyleDescriptor(0, 0xe, 0x2b6b);

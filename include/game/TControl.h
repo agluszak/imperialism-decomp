@@ -192,7 +192,4 @@ public:
   virtual int QuerySelectedIndexSlotBC() override;
 
   void RefreshHudNationTitleControlsAndTheme(int themeCode);
-  // 0x579270: rebuild the palette-masked tile buffer selected by field68 (turn-event-9
-  // lounge 'map ' control refresh; __thiscall, reads this->field68). Body TODO.
-  void ApplyPaletteMaskToTileBufferByEventCode();
 };

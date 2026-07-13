@@ -181,6 +181,13 @@ public:
   // serializedField8c to -1. 0x004a1eb0, __thiscall, no args.
   void ReleaseThreeLinkedObjectsAndResetTerrainDescriptorFlags();
 
+  // Selects the first matching unit in the requested state at tileIndex and returns
+  // the number of matching units left in the opposite toolbar state. Both methods are
+  // real __thiscall members even though their bodies do not read `this`: all four
+  // original callers load g_pMapContextActionManager into ECX before calling them.
+  short ActivateFirstIdleTacticalUnitByCategoryAtTile(short categoryId, short tileIndex);
+  short ActivateFirstActiveTacticalUnitByCategoryAtTile(short categoryId, short tileIndex);
+
   // Walks the region's stationed-unit chain (TGlobalMapCityScoreRecord::stationedUnitChain98,
   // via TUnit::nextOnTile) for one whose field_8 is idle and whose
   // TMilitaryUnit::GetUnitMovementClassId() is nonzero. 0x004a4550, __thiscall (this unused --

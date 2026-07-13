@@ -46,8 +46,9 @@ public:
   virtual void AssignTextSharedRefIfChangedAndMaybeInvalidate(CString* sharedString,
                                                               char refreshNow); // 0x1c8 0x48fe60
   virtual void LoadUiStringAndDispatchViaVslot1C8(short stringResourceGroup,
-                                                  short stringResourceIndex); // 0x1cc 0x48fed0
-  virtual void AssignSharedStringFromField84(CString* out);                   // 0x1d0 0x4294d0
+                                                  short stringResourceIndex,
+                                                  char refreshNow); // 0x1cc 0x48fed0
+  virtual void AssignSharedStringFromField84(CString* out);         // 0x1d0 0x4294d0
   virtual void RenderControlStateTextBySelectionCode(const char* textChars, int textLength,
                                                      RECT* rect,
                                                      short alignmentCode); // 0x1d4 0x4900a0

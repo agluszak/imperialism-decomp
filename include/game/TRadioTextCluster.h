@@ -127,6 +127,10 @@ public:
 
   TRadioTextCluster();
 
+  // Mac CodeWarrior oracle: AddItem(unsigned long, int, const char*, int, int).
+  // Creates, attaches, captions, and enables one TRadioText child. 0x005798a0.
+  class TRadioText* AddItem(unsigned long tag, int value, const char* text, int height, int bottom);
+
   // Non-virtual: 0x5797c0. Shared "selectable text option" primitive used directly (not
   // through the vtable) by several dialog builders (country/protocol/difficulty pickers)
   // that construct a TRadioTextCluster of TRadioText children. Syncs selectedTag88 to
@@ -135,12 +139,12 @@ public:
   // changed (unless tag == 0).
   void SetSelectedTextOptionByTag(int tag, bool refreshOnChange);
 
-  int selectedTag88;      // 0x88 — not initialized by the ctor
-  short word8C;           // 0x8c — ctor 0x5796a0 seeds 0x4b
-  short word8E;           // 0x8e — ctor seeds 0x49
-  short selectedOption90; // 0x90 — ctor seeds -1 (no radio option selected)
-  short word92;           // 0x92 — ctor seeds 0
-  short word94;           // 0x94 — ctor seeds 2
-  short pad96;            // 0x96
+  int selectedTag88;           // 0x88 — DoPostCreate seeds 'nada'
+  short word8C;                // 0x8c — ctor 0x5796a0 seeds 0x4b
+  short word8E;                // 0x8e — ctor seeds 0x49
+  short frameThemeCode90;      // 0x90 — Draw maps this theme and frames the cluster
+  short itemInset92;           // 0x92 — left/right inset for AddItem, ctor seeds 0
+  short itemVerticalSpacing94; // 0x94 — next-item spacing for AddItem, ctor seeds 2
+  short pad96;                 // 0x96
 };
 ASSERT_SIZE(TRadioTextCluster, 0x98);

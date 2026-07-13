@@ -139,14 +139,6 @@ undefined4 ApplyControlTextStyleDescriptorFromThemeCode(void)
   return 0;
 }
 
-// ghidra_name InitializeMainRoutineContextAndRun
-// ghidra_proto undefined InitializeMainRoutineContextAndRun()
-// FUNCTION: IMPERIALISM 0x005c4ab0
-undefined4 InitializeMainRoutineContextAndRun(void)
-{
-  return 0;
-}
-
 // ghidra_name AssignSharedStringToTaggedControlAndProcessState
 // ghidra_proto undefined AssignSharedStringToTaggedControlAndProcessState()
 // FUNCTION: IMPERIALISM 0x005c4b70
@@ -351,14 +343,6 @@ undefined4 HandleTurnEventDialogFactorySlotE8(void)
 // ghidra_proto undefined OpenSuperArmyRosterPageAndActivateProvinceSelection()
 // FUNCTION: IMPERIALISM 0x005dda30
 undefined4 OpenSuperArmyRosterPageAndActivateProvinceSelection(void)
-{
-  return 0;
-}
-
-// ghidra_name RunTaggedOptionDialogAndReturnSelectionTag
-// ghidra_proto undefined RunTaggedOptionDialogAndReturnSelectionTag()
-// FUNCTION: IMPERIALISM 0x005de010
-undefined4 RunTaggedOptionDialogAndReturnSelectionTag(void)
 {
   return 0;
 }

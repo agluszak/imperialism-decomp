@@ -20,7 +20,7 @@ public:
   // slot 0x08 ShallowClone inherited unchanged (0x4798d0)
   // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
   // slot 0x0a NextDiplomacyCommandVtableSlotE8_NotifyOwnerSlot94 inherited unchanged (0x487900)
-  virtual void OrphanRetStub_00487a00() override; // slot 0x0b 0x5a6620
+  virtual void DoIt() override; // slot 0x0b 0x5a6620
   // === END GENERATED DECLS (TNextMoveCommand) ===
   // The battle whose action round this command closes (turn event 0x232a); read
   // back by the slot-0x0b override (0x5a6620).

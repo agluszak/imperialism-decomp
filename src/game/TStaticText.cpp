@@ -128,11 +128,11 @@ void TStaticText::AssignTextSharedRefIfChangedAndMaybeInvalidate(CString* shared
 
 // FUNCTION: IMPERIALISM 0x0048fed0
 void TStaticText::LoadUiStringAndDispatchViaVslot1C8(short stringResourceGroup,
-                                                     short stringResourceIndex) {
+                                                     short stringResourceIndex, char refreshNow) {
   CString loadedString;
   g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(
       &loadedString, stringResourceGroup, stringResourceIndex);
-  AssignTextSharedRefIfChangedAndMaybeInvalidate(&loadedString, 0);
+  AssignTextSharedRefIfChangedAndMaybeInvalidate(&loadedString, refreshNow);
 }
 
 // FUNCTION: IMPERIALISM 0x0048ff70

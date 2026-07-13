@@ -131,54 +131,6 @@ undefined4 DestroySharedStringRef_006A4220_AtExit(void)
   return 0;
 }
 
-// ghidra_name RefreshSetupRandomMapCountryControlIfApplicable
-// ghidra_proto undefined RefreshSetupRandomMapCountryControlIfApplicable()
-// FUNCTION: IMPERIALISM 0x00576fe0
-undefined4 RefreshSetupRandomMapCountryControlIfApplicable(void)
-{
-  return 0;
-}
-
-// ghidra_name UpdateRectFromGridIndicesAndTileSize
-// ghidra_proto undefined UpdateRectFromGridIndicesAndTileSize()
-// FUNCTION: IMPERIALISM 0x00577df0
-undefined4 UpdateRectFromGridIndicesAndTileSize(void)
-{
-  return 0;
-}
-
-// ghidra_name CreateTurnEventPacket_Vtbl00661b10WithInitParam
-// ghidra_proto undefined CreateTurnEventPacket_Vtbl00661b10WithInitParam()
-// FUNCTION: IMPERIALISM 0x00578230
-undefined4 CreateTurnEventPacket_Vtbl00661b10WithInitParam(void)
-{
-  return 0;
-}
-
-// ghidra_name TSpaceCommand::GenerateRandomMapAndRefreshSetupPreview
-// ghidra_proto undefined GenerateRandomMapAndRefreshSetupPreview()
-// FUNCTION: IMPERIALISM 0x00578330
-undefined4 GenerateRandomMapAndRefreshSetupPreview(void)
-{
-  return 0;
-}
-
-// ghidra_name TSpaceCommand::UpdateMapGenerationProgressSpinnerFrame
-// ghidra_proto undefined UpdateMapGenerationProgressSpinnerFrame()
-// FUNCTION: IMPERIALISM 0x00578680
-undefined4 UpdateMapGenerationProgressSpinnerFrame(void)
-{
-  return 0;
-}
-
-// ghidra_name CreateSelectableTextOptionChildEntry
-// ghidra_proto undefined CreateSelectableTextOptionChildEntry()
-// FUNCTION: IMPERIALISM 0x005798a0
-undefined4 CreateSelectableTextOptionChildEntry(void)
-{
-  return 0;
-}
-
 // ghidra_name LoadScenarioMetadataByIndexIntoUiControlCore
 // ghidra_proto undefined LoadScenarioMetadataByIndexIntoUiControlCore()
 // FUNCTION: IMPERIALISM 0x0057a6e0

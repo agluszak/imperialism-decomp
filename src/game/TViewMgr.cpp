@@ -36,18 +36,21 @@
 #include "game/TMultiplayerMgr.h"
 #include "game/localization_text_helpers.h"
 #include "game/TCluster.h"
-#include "game/TCursorControlPanel.h"
 #include "game/TDiplomacyMapView.h"
 #include "game/TModalMessageCommand.h"
 #include "game/TApplication.h"
 #include "game/TSuperCivRoster.h"
 #include "game/TStaticText.h"
+#include "game/TEditText.h"
+#include "game/TRadioText.h"
+#include "game/TRadioTextCluster.h"
 #include "game/TDeluxeText.h"
 #include "game/TCivMgr.h"
 #include "game/TCivUnit.h"
 #include "game/TMapUberPicture.h"
 #include "game/TTurnEventDialogFactoryRegistry.h"
 #include "game/quickdraw_rendering.h" // ApplyControlThemeStyleAndOptionalCaption
+#include "game/ui_text_label_helpers_decls.h"
 
 undefined4 QueueDeferredUiEventPacket(void);
 undefined4 ShowDialogTemplateE0ModalAndReleaseCapture(void);
@@ -94,8 +97,6 @@ const unsigned int kAddrClassDescTViewMgr = 0x0066f0b8;
 const unsigned int kAddrTurnStateSeedLo = 0x006a5b58;
 const unsigned int kAddrTurnStateSeedHi = 0x006a5b5c;
 } // namespace
-
-extern "C" const char s_TurnEventCursorNameFormat_0069B6B4[];
 
 HCURSOR LoadTurnEventCursorByResourceIdOffset1000(int cursorResourceId);
 
@@ -782,7 +783,7 @@ TControl* ResolveMainTaggedControl(unsigned int controlTag) {
 
 void BindCursorPanelAndSetTurnEventCodeRange() {
   TControl* cursor = ResolveMainTaggedControl(kControlTagCurs);
-  g_pCursorControlPanel = static_cast<TCursorControlPanel*>(cursor);
+  g_pCursorControlPanel = static_cast<TInfoBarText*>(cursor);
   if (cursor != nullptr) {
     cursor->AssertValid();
     static_cast<TInfoBarText*>(cursor)->InitializeMapHintTextStyleAndThemeFlags(0x2b6c, 0x2b67);
@@ -1156,7 +1157,7 @@ void TViewMgr::UiRuntimeSlot50(int payload) {
   (void)payload;
   TView* mainView = g_pDisplayMgr->activeDialog;
   TControl* cursor = static_cast<TControl*>(mainView->ResolveControlByTag(kControlTagCurs));
-  g_pCursorControlPanel = static_cast<TCursorControlPanel*>(cursor);
+  g_pCursorControlPanel = static_cast<TInfoBarText*>(cursor);
   cursor->AssertValid();
   static_cast<TInfoBarText*>(cursor)->InitializeMapHintTextStyleAndThemeFlags(0x2b6c, 0x2b67);
   TControl* mainPanel = static_cast<TControl*>(mainView->ResolveControlByTag(kControlTagMain));
@@ -1456,7 +1457,7 @@ void TViewMgr::UiRuntimeSlotF8() {
 
   g_pCursorControlPanel = nullptr;
   g_pCursorControlPanel =
-      static_cast<TCursorControlPanel*>(mainView->ResolveControlByTag(kControlTagCurs));
+      static_cast<TInfoBarText*>(mainView->ResolveControlByTag(kControlTagCurs));
   g_pCursorControlPanel->AssertValid();
 
   g_pCursorControlPanel->InitializeMapHintTextStyleAndThemeFlags(0x2b6b, 0x2b6c);
@@ -1728,6 +1729,99 @@ void TViewMgr::ShowCivilianLedgerDialogAndSelectUnit() {
       g_pSelectedCivilianOrderState->HandleCivilianTileSelectionOrReportClick(selectedIndex, 2);
     }
   }
+}
+
+// FUNCTION: IMPERIALISM 0x005de010
+int TViewMgr::MakePlanetSeedDialog(const char* instruction, CString& planetSeed,
+                                   const char* firstChoice, const char* secondChoice,
+                                   int initialChoice, unsigned char showCancel) const {
+  TWindow* dialog =
+      static_cast<TWindow*>(g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(0x3ba));
+  if (dialog == 0) {
+    MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+    return 0;
+  }
+
+  dialog->SetField84(1);
+  TDialogBehavior* behavior = dialog->GetEmbeddedDialogBehavior();
+  if (behavior != 0) {
+    behavior->defaultCommandCode = kControlTagOkay;
+  }
+
+  TStaticText* instructionText =
+      static_cast<TStaticText*>(dialog->ResolveControlByTag(0x696e7374 /* 'inst' */));
+  instructionText->AssertValid();
+  TControlPictureRectState instructionStyle;
+  instructionStyle.styleRef6 = 0;
+  BuildUiTextStyleDescriptor(&instructionStyle, 0, 0xe, 0);
+  instructionText->SetCityProductionDialogPictureRectAndMaybeRefresh(&instructionStyle, 0);
+  CString instructionString(instruction);
+  instructionText->AssignTextSharedRefIfChangedAndMaybeInvalidate(&instructionString, 0);
+
+  TEditText* planetEdit =
+      static_cast<TEditText*>(dialog->ResolveControlByTag(0x706c616e /* 'plan' */));
+  planetEdit->AssertValid();
+  CString editText(planetSeed);
+  TControlPictureRectState editStyle;
+  editStyle.styleRef6 = 0;
+  BuildUiTextStyleDescriptor(&editStyle, 0, 0xc, 0);
+  planetEdit->SetCityProductionDialogPictureRectAndMaybeRefresh(&editStyle, 0);
+  planetEdit->InitDialogWindowAndSyncTitleIfChanged(&editText, 0);
+  planetEdit->ActivateCityProductionViewIfAllowed();
+  planetEdit->SetEditSelectionAndScrollCaret(0, static_cast<short>(editText.GetLength()), 1);
+  dialog->SetWindowTarget(planetEdit);
+
+  int mappedTheme = 0;
+  MapUiThemeCodeToStyleFlags(0x2b6c, &mappedTheme);
+  g_pDisplayMgr->SetMapTileIconVariantTriplet(reinterpret_cast<undefined1*>(&mappedTheme));
+  UpdatePaletteIndexWithDefaultFallback(0x3b);
+
+  TRadioTextCluster* choiceCluster = 0;
+  if (firstChoice != 0) {
+    choiceCluster =
+        static_cast<TRadioTextCluster*>(dialog->ResolveControlByTag(0x316f7232 /* '1or2' */));
+    choiceCluster->AssertValid();
+    choiceCluster->SetEnabled(1, 0);
+    choiceCluster->frameThemeCode90 = 0x2b6b;
+    choiceCluster->itemInset92 = 2;
+
+    TRadioText* first =
+        static_cast<TRadioText*>(choiceCluster->ResolveControlByTag(0x6f6e6531 /* 'one1' */));
+    first->AssertValid();
+    CString firstText(firstChoice);
+    first->AssignTextSharedRefIfChangedAndMaybeInvalidate(&firstText, 0);
+    ApplyUiTextStyleAndThemeFlags(first, 0, 0xc, 0x2b6b, 0x2b6c);
+    first->SetTextThemeCodeAndMaybeRefresh(1, 0);
+
+    TRadioText* second =
+        static_cast<TRadioText*>(choiceCluster->ResolveControlByTag(0x74776f32 /* 'two2' */));
+    second->AssertValid();
+    CString secondText(secondChoice);
+    second->AssignTextSharedRefIfChangedAndMaybeInvalidate(&secondText, 0);
+    ApplyUiTextStyleAndThemeFlags(second, 0, 0xc, 0x2b6b, 0x2b6c);
+    second->SetTextThemeCodeAndMaybeRefresh(1, 0);
+
+    choiceCluster->SetSelectedTextOptionByTag(
+        initialChoice == 0 ? 0x6f6e6531 /* 'one1' */ : 0x74776f32 /* 'two2' */, false);
+  }
+
+  if (showCancel != 0) {
+    TControl* cancel = static_cast<TControl*>(dialog->ResolveControlByTag(kControlTagCanc));
+    cancel->AssertValid();
+    cancel->SetEnabled(1, 0);
+    cancel->SetState(1, 0);
+  }
+
+  int resultTag = dialog->ExecuteViewModalStateWithPushPopChain();
+  if (choiceCluster != 0) {
+    resultTag = choiceCluster->selectedTag88;
+  }
+
+  planetEdit->GetCurrentText(&editText);
+  planetSeed = editText;
+  dialog->CallVoidSlotA0();
+  dialog->Free();
+  return resultTag;
 }
 
 // FUNCTION: IMPERIALISM 0x005de4f0

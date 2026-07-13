@@ -8,6 +8,7 @@
 #include "game/CTemporaryRegion.h"
 #include "game/TGlobalMapState.h"
 #include "game/TMapUberPicture.h"
+#include "game/ScopedMapQuickDrawContext.h"
 #include "game/TTaskForce.h"
 #include "game/global_data_tables.h"
 #include "game/quickdraw_rendering.h"
@@ -15,8 +16,6 @@
 #include <new>
 
 undefined4 thunk_GetMapActionContextByTileIndex(void);
-undefined4 ConstructScopedMapQuickDrawContextWithPaletteToken(void);
-undefined4 thunk_DestroyScopedMapQuickDrawContext(void);
 void NormalizeWrappedMapCoord108x60(short* xCoord, short* yCoord);
 undefined4 ComputeStridedRecordAddress6C(void);
 
@@ -182,9 +181,7 @@ void TWorldView::RenderMapContextOverlayWithScopedClipAndSurface() {
            reinterpret_cast<RECT*>(intersectPair));
   OffsetRect(reinterpret_cast<RECT*>(&clipRect), absoluteX, absoluteY);
 
-  char scopedContextStorage[24];
-  reinterpret_cast<void(__cdecl*)(void*, void*, void*)>(
-      ConstructScopedMapQuickDrawContextWithPaletteToken)(scopedContextStorage, this, &clipRect);
+  ScopedMapQuickDrawContext scopedContext(this, reinterpret_cast<RECT*>(&clipRect));
   RectRgn(reusableSurfaceB.tempRgn, reinterpret_cast<RECT*>(&clipRect.left));
   SetClip(reusableSurfaceB.tempRgn);
 
@@ -219,7 +216,6 @@ void TWorldView::RenderMapContextOverlayWithScopedClipAndSurface() {
   }
 
   SetClip(reusableSurfaceA.tempRgn);
-  reinterpret_cast<void(__cdecl*)()>(thunk_DestroyScopedMapQuickDrawContext)();
 }
 
 // FUNCTION: IMPERIALISM 0x00596020

@@ -1,7 +1,15 @@
 #include "game/TLanguageMgr.h"
 
 #include "game/ImperialismApp.h"
+#include "game/TAssetMgr.h"
+#include "game/TRadioText.h"
+#include "game/TRadioTextCluster.h"
+#include "game/TSimMgr.h"
+#include "game/TStaticText.h"
+#include "game/TWindow.h"
 #include "game/global_data_tables.h"
+#include "game/quickdraw_rendering.h"
+#include "game/ui_text_label_helpers_decls.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <cstring>
@@ -14,6 +22,17 @@ const char kReadTextMode[] = "rt";
 } // namespace
 
 const char* GetDataDirectoryPathLiteral();
+// SYNTHETIC: IMPERIALISM 0x00507bc0
+// TLanguageMgr::CreateObject
+
+// SYNTHETIC: IMPERIALISM 0x00507c40
+// TLanguageMgr::GetRuntimeClass
+
+IMPLEMENT_DYNCREATE(TLanguageMgr, TObject)
+
+TLanguageMgr::~TLanguageMgr() {}
+
+void TLanguageMgr::Free() {}
 
 // FUNCTION: IMPERIALISM 0x00507c60
 TLanguageMgr::TLanguageMgr() : TObject() {
@@ -27,17 +46,9 @@ TLanguageMgr::TLanguageMgr() : TObject() {
   delimiter = 0x20;
   field30 = 6;
 }
-// SYNTHETIC: IMPERIALISM 0x00507bc0
-// TLanguageMgr::CreateObject
 
-// SYNTHETIC: IMPERIALISM 0x00507c40
-// TLanguageMgr::GetRuntimeClass
-
-IMPLEMENT_DYNCREATE(TLanguageMgr, TObject)
-
-TLanguageMgr::~TLanguageMgr() {}
-
-void TLanguageMgr::Free() {}
+// SYNTHETIC: IMPERIALISM 0x00507d80
+// TLanguageMgr::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x00507e50
 bool TLanguageMgr::LoadNewsTabTexResourcesAndBuildEntries(const char* basePath, int languageTag) {
@@ -142,15 +153,15 @@ void TLanguageMgr::ParseNewsTableRow(char* line) {
 }
 
 // FUNCTION: IMPERIALISM 0x005083f0
-CString TLanguageMgr::BuildMappedSharedStringFromByteStateTable(const char* data, char formatChar) {
+CString TLanguageMgr::Localize(const char* data, unsigned char formatChar) const {
   if (formatChar == '\0') {
     return CString(data);
   }
   unsigned char dataByte = static_cast<unsigned char>(*data);
   CString result;
   unsigned char column = static_cast<unsigned char>(firstColumn);
-  if (formatChar < static_cast<char>(column) ||
-      columnCount <= static_cast<int>((static_cast<unsigned int>(formatChar) & 0xff) - column) ||
+  if (formatChar < column ||
+      columnCount <= static_cast<int>(static_cast<unsigned int>(formatChar) - column) ||
       ((dataByte < static_cast<unsigned char>(firstPrimaryRow) ||
         primaryRowCount <= static_cast<int>(dataByte - firstPrimaryRow)) &&
        (dataByte < static_cast<unsigned char>(firstExtraRow) ||
@@ -163,7 +174,7 @@ CString TLanguageMgr::BuildMappedSharedStringFromByteStateTable(const char* data
       result = CString(data);
     }
   } else {
-    unsigned char mappedColumn = static_cast<unsigned char>(formatChar - column);
+    unsigned char mappedColumn = formatChar - column;
     char rowOffset;
     if (dataByte < static_cast<unsigned char>(firstPrimaryRow) ||
         primaryRowCount + firstPrimaryRow <= static_cast<int>(dataByte)) {
@@ -240,8 +251,64 @@ void TLanguageMgr::BuildNewsTableDimensions(char firstColumnArg, char lastColumn
   }
 }
 
-// SYNTHETIC: IMPERIALISM 0x00507d80
-// TLanguageMgr::`scalar deleting destructor'
+// FUNCTION: IMPERIALISM 0x00508910
+char TLanguageMgr::PickGender(const char* name) const {
+  CString questionText;
+  if (groupCode == 0) {
+    return delimiter;
+  }
+
+  TWindow* dialog =
+      static_cast<TWindow*>(g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(0x3c6));
+  g_pSimMgr->GetString(0x2737, 0x34, &questionText);
+  TStaticText* question = static_cast<TStaticText*>(dialog->ResolveControlByTag(0x71756573));
+  ApplyControlThemeStyleAndOptionalCaption(question, 0, 0xc, 0x2b6b, 1, questionText);
+
+  TRadioTextCluster* form =
+      static_cast<TRadioTextCluster*>(dialog->ResolveControlByTag(0x666f726d));
+  form->AssertValid();
+  form->frameThemeCode90 = 0x2b6b;
+  form->itemInset92 = 2;
+
+  unsigned long firstTag = 0;
+  int rowCount = primaryRowCount + extraRowCount;
+  for (int rowIndex = 0; rowIndex < rowCount; ++rowIndex) {
+    if ((rowFlags & (1u << (rowIndex & 0x1f))) != 0) {
+      int rowOffset;
+      if (rowIndex < primaryRowCount) {
+        rowOffset = static_cast<unsigned char>(firstPrimaryRow);
+      } else {
+        rowOffset = static_cast<unsigned char>(firstExtraRow) - primaryRowCount;
+      }
+
+      CString codedName;
+      codedName += static_cast<char>(rowIndex + rowOffset);
+      codedName += name;
+      CString localizedName = Localize(codedName, groupCode);
+      unsigned long itemTag = 0x66726d30 + rowIndex;
+      TRadioText* item = form->AddItem(itemTag, rowIndex, localizedName, 0xf, -1);
+      ApplyUiTextStyleAndThemeFlags(item, 0, 0xc, 0x2b6b, 0x2b6c);
+      item->SetTextThemeCodeAndMaybeRefresh(1, 0);
+      if (firstTag == 0) {
+        firstTag = itemTag;
+      }
+    }
+  }
+
+  form->SetSelectedTextOptionByTag(firstTag, false);
+  dialog->SetField84(1);
+  TDialogBehavior* behavior = dialog->GetEmbeddedDialogBehavior();
+  if (behavior != 0) {
+    behavior->defaultCommandCode = 0x6f6b6179;
+  }
+  dialog->ExecuteViewModalStateWithPushPopChain();
+
+  unsigned char selectedIndex = static_cast<unsigned char>(form->selectedTag88) - '0';
+  char rowBase = selectedIndex < primaryRowCount ? firstPrimaryRow : firstExtraRow;
+  dialog->CallVoidSlotA0();
+  dialog->Free();
+  return static_cast<char>(selectedIndex + rowBase);
+}
 
 // FUNCTION: IMPERIALISM 0x00508c50
 CString TLanguageMgr::NormalizeRuntimeCredentialNameToken(CString* name) {

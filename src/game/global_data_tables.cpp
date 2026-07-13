@@ -11,7 +11,7 @@
 
 class TControl;
 class TView;
-class TCursorControlPanel;
+class TInfoBarText;
 
 #include "game/TArmyPlayer.h"
 #include "game/mfc.h"
@@ -34,11 +34,12 @@ class TCursorControlPanel;
 #include "game/TLanguageMgr.h"
 #include "game/THelpMgr.h"
 #include "game/TControl.h"
-#include "game/TCursorControlPanel.h"
+#include "game/TInfoBarText.h"
 #include "game/TAnimator.h"
 #include "game/TQuickDrawSurfaceContext.h"
 #include "game/TModuleLibraryCacheTableStateB.h"
 #include "game/TBackdropWindow.h"
+#include "game/TSetupRandomMapPicture.h"
 
 // Typed C++ linkage — see typed-recovered-globals.mdc (not inside extern "C").
 // GLOBAL: IMPERIALISM 0x006a4310
@@ -865,6 +866,8 @@ TSoundPlayer* g_pSfxPlaybackSystem = 0;
 TTradeMgr* g_pNationInteractionStateManager = 0;
 // GLOBAL: IMPERIALISM 0x006a4220
 CString g_cstrCountryNameSettingValue006A4220;
+// GLOBAL: IMPERIALISM 0x006a4268
+TSetupRandomMapPicture* g_pActiveRandomMapSetupPicture006A4268 = 0;
 
 extern "C" {
 short g_awEngineerFortBuildCostByLevel[8] = {0};
@@ -1009,7 +1012,7 @@ short g_nTurnCooldownDeferCounter006A43C4 = 0;
 // GLOBAL: IMPERIALISM 0x006a43c0 — set once scenario/turn-flow bootstrap completes.
 char DAT_006a43c0 = 0;
 // GLOBAL: IMPERIALISM 0x006a43f0 — nonzero during multiplayer scenario setup.
-char DAT_006a43f0 = 0;
+char g_bMultiplayerScenarioSetupActive = 0;
 // GLOBAL: IMPERIALISM 0x00698b10
 short g_nTurnCooldownSideFlag00698B10 = 1;
 
@@ -1126,7 +1129,7 @@ extern "C" void* g_pActiveCityDialogLegendSelectionOwner = 0;
 int g_bCityDialogLegendSelectionInitialized = 0;
 
 // GLOBAL: IMPERIALISM 0x006a590c
-TCursorControlPanel* g_pCursorControlPanel = nullptr;
+TInfoBarText* g_pCursorControlPanel = nullptr;
 
 // GLOBAL: IMPERIALISM 0x006a1ab0
 int g_turnEventDialogAnchorPoint[2] = {0, 0};

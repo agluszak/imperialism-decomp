@@ -16,6 +16,6 @@ IMPLEMENT_DYNCREATE(TCommandHandler, TEventHandler)
 
 // FUNCTION: IMPERIALISM 0x00486650
 void TCommandHandler::ConstructTCommandHandlerBaseState(TCommand* command) {
-  command->OrphanRetStub_00487a00();
+  command->DoIt();
   command->Free();
 }

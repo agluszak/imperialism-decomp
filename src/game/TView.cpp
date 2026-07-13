@@ -3,7 +3,7 @@
 #include "game/TEventHandler.h"
 #include "game/TView.h"
 #include "game/TBehavior.h"
-#include "game/TCursorControlPanel.h"
+#include "game/TInfoBarText.h"
 #include "game/TDialogBehavior.h"
 #include "game/TWindow.h"
 #include "game/ui_resource_pool.h"

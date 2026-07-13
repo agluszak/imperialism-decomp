@@ -74,3 +74,11 @@ void ApplySharedStringToControlState(CString sharedString, TView* control) {
 void AssignSharedStringToControlState(CString sharedString, TView* control) {
   control->EnableAndProcessFlag(sharedString);
 }
+
+// FUNCTION: IMPERIALISM 0x005c4ab0
+TView* __cdecl ApplySharedStringToGlobalControlTag(CString sharedString, unsigned int controlTag) {
+  TView* control = g_pDisplayMgr->activeDialog->ResolveControlByTag(controlTag);
+  control->AssertValid();
+  ApplySharedStringToControlState(sharedString, control);
+  return control;
+}
