@@ -289,9 +289,10 @@ public:
   void DestroyNavyOrderAndChildren(); // 0x556820
 
   // Sets owner (was misread as "active child entry"); when newEntry is
-  // non-null also touches a still-unrecovered dual-purpose region at +0x10
-  // (see bd 1uj.16 follow-up notes). Only ever called with nullptr by the
-  // bd 1uj.16 target cluster.
+  // non-null it AssertValid()s newEntry, copies newEntry's packed
+  // order_type/order_strength dword into this entry's dual-purpose +0x10 slot,
+  // and clears the +0x34 overrun word unless newEntry's kind is 0/4/7/8. The
+  // bd 1uj.16 target cluster only ever calls it with nullptr.
   void SetMapOrderActiveChildEntry(TTaskForce* newEntry); // 0x551220
 
   // Folds SelectPreferredMapOrderEntryByPriorityRules over childOrderList into

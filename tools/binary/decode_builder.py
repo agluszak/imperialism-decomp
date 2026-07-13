@@ -55,9 +55,50 @@ def disasm_function(image: OriginalImage, start: int, length: int):
     return insns
 
 
+# Range/sign conditional jumps MSVC500 emits between a `cmp eax, N` and the
+# equality `je`/`jne` when the case sits inside a binary-search switch ladder
+# (e.g. `cmp eax, 0x5de` / `jg higher` / `je case`). These do not consume the
+# compare's ZF, so the equality jump that resolves value N can follow one.
+_RANGE_JUMPS = frozenset(
+    {"jg", "jge", "jl", "jle", "ja", "jae", "jb", "jbe", "js", "jns", "jo", "jno", "jp", "jnp"}
+)
+
+
+def _find_equality_jump(insns, start: int):
+    """Scan forward from `start` for the equality jump that resolves the eax
+    compare whose ZF is still live. Steps over range jumps (jg/jl/...) and
+    flag-preserving filler (push/pop/nop, and mov to a non-eax destination) that
+    MSVC500 schedules between the `cmp` and the `je`/`jne`. Returns
+    (case_addr, is_je) or None. The search stops at the first instruction that
+    could clobber eax or the compare flags (arithmetic, another cmp/test, a
+    call, an unconditional jump, etc.), so it cannot leak into a sibling case.
+    """
+    for j in range(start, min(start + 8, len(insns))):
+        ins = insns[j]
+        mn = ins.mnemonic
+        if mn == "je":
+            return (int(ins.op_str, 16), True)
+        if mn == "jne":
+            if j + 1 < len(insns):
+                return (insns[j + 1].address, False)
+            return None
+        if mn in _RANGE_JUMPS:
+            continue
+        if mn in ("push", "pop", "nop"):
+            continue
+        if mn == "mov":
+            dst = ins.op_str.split(",", 1)[0].strip()
+            if dst in ("eax", "ax", "al", "ah"):
+                return None  # eax redefined -> compare value no longer live
+            continue
+        return None  # arithmetic/cmp/test/call/jmp/... ends the equality window
+    return None
+
+
 def extract_cases(insns) -> dict[int, set[int]]:
-    """Map case-body address -> eventCode values, from cmp/je, cmp/jne and
-    sub/dec equality ladders on eax."""
+    """Map case-body address -> eventCode values, from cmp/je, cmp/jne (incl.
+    cmp-then-range-jump-then-je binary-search ladders) and sub/dec equality
+    ladders on eax."""
     cases: dict[int, set[int]] = {}
     ladder_base: int | None = None
     for i, ins in enumerate(insns[:-1]):
@@ -67,10 +108,9 @@ def extract_cases(insns) -> dict[int, set[int]]:
         if m:
             value = int(m.group(1), 0)
             ladder_base = None
-            if nxt.mnemonic == "je":
-                cases.setdefault(int(nxt.op_str, 16), set()).add(value)
-            elif nxt.mnemonic == "jne" and i + 2 < len(insns):
-                cases.setdefault(insns[i + 2].address, set()).add(value)
+            hit = _find_equality_jump(insns, i + 1)
+            if hit is not None:
+                cases.setdefault(hit[0], set()).add(value)
             continue
         m = re.fullmatch(r"sub eax, ((?:0x)?[0-9a-f]+)", text)
         if m:

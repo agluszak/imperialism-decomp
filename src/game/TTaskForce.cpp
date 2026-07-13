@@ -292,10 +292,21 @@ void TTaskForce::SetMapOrderActiveChildEntry(TTaskForce* newEntry) {
   if (newEntry == nullptr) {
     return;
   }
-  // TODO: promote body -- 0x55122f-0x551257 (only reached with a non-null
-  // newEntry, which none of the bd 1uj.16 target-cluster callers exercise);
-  // see bd 1uj.16 follow-up notes.
   newEntry->AssertValid();
+
+  // The +0x10 slot (childOrderList in this class's primary role) is reused here
+  // as raw storage for newEntry's packed order_type/order_strength dword -- the
+  // dual-purpose +0x10 region documented in the header (bd 1uj.16).
+  *reinterpret_cast<int*>(reinterpret_cast<char*>(this) + 0x10) =
+      *reinterpret_cast<int*>(reinterpret_cast<char*>(newEntry) + 4);
+
+  short kind = static_cast<short>(newEntry->attachment);
+  if (kind != 0 && kind != 7 && kind != 8 && kind != 4) {
+    // Same node+0x34 overrun documented on
+    // TMapOrderEntryOwnerContext::FindOrCreateChildOrderLink (past TTaskForce's
+    // own 0x34-byte size).
+    *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 0x34) = 0;
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x00552510

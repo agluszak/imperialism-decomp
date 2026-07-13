@@ -9,11 +9,11 @@ The gate compares current pattern counts against a checked-in baseline:
 from __future__ import annotations
 
 import argparse
-import csv
 import re
 from pathlib import Path
 
 from tools.common.file_scan import is_excluded_scan_path, strip_generated_blocks
+from tools.common.ratchet import compare, read_baseline, write_baseline
 from tools.common.repo import normalize_repo_relative_path, repo_root_from_file, resolve_repo_path
 
 PATTERNS: tuple[tuple[str, re.Pattern[str]], ...] = (
@@ -22,6 +22,8 @@ PATTERNS: tuple[tuple[str, re.Pattern[str]], ...] = (
     ("vftable_index", re.compile(r"\bvftable\s*\[")),
     ("vcall_facade", re.compile(r"\bVCall_[A-Za-z0-9_]+\s*\(")),
 )
+
+KEYS = [key for key, _ in PATTERNS]
 
 INFRA_ALLOWLIST: set[str] = set()
 
@@ -83,41 +85,6 @@ def count_patterns(file_path: Path) -> dict[str, int]:
     return counts
 
 
-def read_baseline(path: Path) -> dict[str, dict[str, int]]:
-    out: dict[str, dict[str, int]] = {}
-    if not path.exists():
-        return out
-    with path.open("r", encoding="utf-8", newline="") as fd:
-        reader = csv.DictReader(fd, delimiter="|")
-        for row in reader:
-            file_key = (row.get("file") or "").strip()
-            if not file_key:
-                continue
-            counts: dict[str, int] = {}
-            for pattern_key, _ in PATTERNS:
-                raw = (row.get(pattern_key) or "0").strip()
-                counts[pattern_key] = int(raw) if raw else 0
-            out[file_key] = counts
-    return out
-
-
-def write_baseline(path: Path, data: dict[str, dict[str, int]]) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    fieldnames = ["file"] + [key for key, _ in PATTERNS] + ["total"]
-    with path.open("w", encoding="utf-8", newline="") as fd:
-        writer = csv.DictWriter(fd, fieldnames=fieldnames, delimiter="|")
-        writer.writeheader()
-        for file_key in sorted(data):
-            row = {"file": file_key}
-            total = 0
-            for pattern_key, _ in PATTERNS:
-                value = data[file_key].get(pattern_key, 0)
-                total += value
-                row[pattern_key] = str(value)
-            row["total"] = str(total)
-            writer.writerow(row)
-
-
 def main() -> int:
     args = parse_args()
     repo_root = repo_root_from_file(__file__)
@@ -134,30 +101,24 @@ def main() -> int:
         current[rel] = counts
 
     if args.write_baseline:
-        write_baseline(baseline_path, current)
+        write_baseline(baseline_path, current, KEYS)
         print(f"Wrote baseline: {baseline_path} ({len(current)} files)")
         return 0
 
-    baseline = read_baseline(baseline_path)
+    baseline = read_baseline(baseline_path, KEYS)
     if not baseline:
         print(f"Baseline missing: {baseline_path}")
         print("Run with --write-baseline once, then re-run the gate.")
         return 1
 
-    violations: list[str] = []
-
-    for file_key, counts in sorted(current.items()):
-        base_counts = baseline.get(file_key)
-        if base_counts is None:
-            violations.append(f"{file_key}: new raw-vtable patterns introduced (not in baseline)")
-            continue
-        for pattern_key, _ in PATTERNS:
-            current_count = counts.get(pattern_key, 0)
-            base_count = base_counts.get(pattern_key, 0)
-            if current_count > base_count:
-                violations.append(
-                    f"{file_key}: {pattern_key} increased {base_count} -> {current_count}"
-                )
+    violations = compare(
+        current,
+        baseline,
+        KEYS,
+        new_file_message=lambda file_key, _counts: (
+            f"{file_key}: new raw-vtable patterns introduced (not in baseline)"
+        ),
+    )
 
     if violations:
         print("Raw vtable gate failed:")

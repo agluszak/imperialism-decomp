@@ -1,5 +1,9 @@
 #!/usr/bin/env python3
-"""Audit Hard-Rule-9 typedef casts against binary evidence (dropped-arg detector).
+"""Audit legacy free-function typedef casts against binary evidence (dropped-arg detector).
+
+These are the legacy per-callsite `typedef ... (*Name_t)(...)` casts of generic
+`undefined4 Name(void)` externs that the MSVC500 calling-convention guardrail is
+retiring (they only ever applied to genuine free-function thunks).
 
 `check_typedef_cast_drift` catches two *source files* disagreeing about a cast
 signature — but when every callsite shares the same wrong arity (the QuickDraw

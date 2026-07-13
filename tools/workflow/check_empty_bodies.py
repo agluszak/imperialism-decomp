@@ -30,13 +30,13 @@ findings fail, per-class count increases fail, NOOP-CONTRADICTED always fails.
 from __future__ import annotations
 
 import argparse
-import csv
 import re
 from pathlib import Path
 
 import tree_sitter_cpp
 from tree_sitter import Language, Parser
 
+from tools.common.ratchet import compare, read_baseline, write_baseline
 from tools.common.repo import normalize_repo_relative_path, repo_root_from_file, resolve_repo_path
 from tools.common.symbols import functions_by_name
 
@@ -240,29 +240,6 @@ def counts_per_file(findings: list[dict], repo_root: Path) -> dict[str, dict[str
     return out
 
 
-def read_baseline(path: Path) -> dict[str, dict[str, int]]:
-    out: dict[str, dict[str, int]] = {}
-    if not path.exists():
-        return out
-    with path.open("r", encoding="utf-8", newline="") as fd:
-        for row in csv.DictReader(fd, delimiter="|"):
-            file_key = (row.get("file") or "").strip()
-            if file_key:
-                out[file_key] = {k: int(row.get(k) or 0) for k in VIOLATION_KINDS}
-    return out
-
-
-def write_baseline(path: Path, data: dict[str, dict[str, int]]) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    with path.open("w", encoding="utf-8", newline="") as fd:
-        writer = csv.DictWriter(
-            fd, fieldnames=["file", *VIOLATION_KINDS], delimiter="|", lineterminator="\n"
-        )
-        writer.writeheader()
-        for file_key in sorted(data):
-            writer.writerow({"file": file_key, **{k: str(v) for k, v in data[file_key].items()}})
-
-
 def main() -> int:
     repo_root = repo_root_from_file(__file__)
     parser = argparse.ArgumentParser(description=__doc__)
@@ -281,29 +258,40 @@ def main() -> int:
     current = counts_per_file(findings, repo_root)
 
     if args.write_baseline:
-        write_baseline(resolve_repo_path(repo_root, args.write_baseline), current)
+        write_baseline(
+            resolve_repo_path(repo_root, args.write_baseline),
+            current,
+            VIOLATION_KINDS,
+            include_total=False,
+            lineterminator="\n",
+        )
         print(f"Wrote baseline: {args.write_baseline} ({len(current)} files)")
         return 0
 
     if args.baseline:
-        baseline = read_baseline(resolve_repo_path(repo_root, args.baseline))
+        baseline = read_baseline(resolve_repo_path(repo_root, args.baseline), VIOLATION_KINDS)
         if not baseline:
             print(f"Baseline missing: {args.baseline}")
             print("Run `just noop-gate-update` once, then re-run the gate.")
             return 1
-        violations: list[str] = []
-        for file_key, counts in sorted(current.items()):
-            base = baseline.get(file_key)
-            if counts["noop_contradicted"]:
-                violations.append(f"{file_key}: {counts['noop_contradicted']} NOOP "
-                                  "annotation(s) contradicted by original size")
-            if base is None:
-                present = ", ".join(k for k in VIOLATION_KINDS if counts[k])
-                violations.append(f"{file_key}: new empty-body finding(s) [{present}]")
-                continue
-            for k in VIOLATION_KINDS:
-                if counts[k] > base[k]:
-                    violations.append(f"{file_key}: {k} increased {base[k]} -> {counts[k]}")
+        # A NOOP annotation whose original is not tiny is always a failure,
+        # independent of the ratchet -- flag those first, then run the shared
+        # new-file / per-key-increase compare for the remaining kinds.
+        violations: list[str] = [
+            f"{file_key}: {counts['noop_contradicted']} NOOP "
+            "annotation(s) contradicted by original size"
+            for file_key, counts in sorted(current.items())
+            if counts["noop_contradicted"]
+        ]
+        violations += compare(
+            current,
+            baseline,
+            VIOLATION_KINDS,
+            new_file_message=lambda file_key, counts: (
+                f"{file_key}: new empty-body finding(s) "
+                f"[{', '.join(k for k in VIOLATION_KINDS if counts[k])}]"
+            ),
+        )
         if violations:
             print("Empty-body (NOOP) gate failed:")
             for item in violations:

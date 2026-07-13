@@ -1,4 +1,4 @@
-"""Audit Hard-Rule-9 typedef-cast scaffolding for signature drift.
+"""Audit legacy free-function typedef-cast scaffolding for signature drift.
 
 Old ports call not-yet-ported functions through per-callsite ``typedef ... (*Name_t)(...)``
 casts of generic ``undefined4 Name(void)`` externs. Because every callsite re-declares
