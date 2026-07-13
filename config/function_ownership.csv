@@ -4866,6 +4866,7 @@ address|target_cpp|ownership|note
 5e0fb0|src/game/wave_helpers.cpp|manual|marker_sync
 5e10c0|src/game/wave_helpers.cpp|manual|marker_sync
 5e1500|src/game/wave_helpers.cpp|manual|marker_sync
+5e1590|src/game/wave_helpers.cpp|manual|marker_sync
 5e1850|src/game/cd_audio.cpp|manual|marker_sync
 5e1bc0|src/game/TLowDiskWarningDialog.cpp|manual|marker_sync
 5e1e50|src/game/TSortedPtrList.cpp|manual|marker_sync

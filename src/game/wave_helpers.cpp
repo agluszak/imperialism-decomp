@@ -254,3 +254,22 @@ int __stdcall SetAuxOutputVolumeFromScalar(int scalar) {
   auxSetVolume(g_nAuxOutputDeviceIndex, (scalar << 16) + scalar);
   return 1;
 }
+
+// FUNCTION: IMPERIALISM 0x005e1590
+bool __stdcall SetAuxOutputVolumeAcrossCompatibleDevices(int level) {
+  MMRESULT result = 0;
+  UINT numDevs = auxGetNumDevs();
+  UINT deviceId = 0;
+  if (0 < static_cast<int>(numDevs)) {
+    tagAUXCAPSA caps;
+    do {
+      result = auxGetDevCapsA(deviceId, &caps, sizeof(tagAUXCAPSA));
+      unsigned short pidLow = caps.wPid & 7;
+      if (pidLow == 1 || pidLow == 2) {
+        auxSetVolume(deviceId, level * 0x2000200);
+      }
+      ++deviceId;
+    } while (static_cast<int>(deviceId) < static_cast<int>(numDevs));
+  }
+  return result == 0;
+}

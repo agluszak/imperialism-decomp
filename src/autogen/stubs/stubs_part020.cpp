@@ -515,14 +515,6 @@ undefined4 ProbeAuxOutputDeviceIndexByPidMask(void)
   return 0;
 }
 
-// ghidra_name SetAuxOutputVolumeAcrossCompatibleDevices
-// ghidra_proto undefined SetAuxOutputVolumeAcrossCompatibleDevices()
-// FUNCTION: IMPERIALISM 0x005e1590
-undefined4 SetAuxOutputVolumeAcrossCompatibleDevices(void)
-{
-  return 0;
-}
-
 // ghidra_name GetAuxOutputVolumeFromFirstCompatibleDevice
 // ghidra_proto undefined GetAuxOutputVolumeFromFirstCompatibleDevice()
 // FUNCTION: IMPERIALISM 0x005e1620
