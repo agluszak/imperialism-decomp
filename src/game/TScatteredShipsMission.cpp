@@ -1,8 +1,10 @@
 // TScatteredShipsMission implementations.
 
 #include "game/TScatteredShipsMission.h"
+#include "game/TGreatPower.h"
 #include "game/TStream.h"
 #include "game/TZone.h"
+#include "game/global_data_tables.h"
 
 IMPLEMENT_SERIAL(TScatteredShipsMission, TNavyMission, 1)
 
@@ -61,12 +63,20 @@ void TScatteredShipsMission::ResetValue0CToZero() {
   *reinterpret_cast<float*>(&value0c) = *reinterpret_cast<const float*>(0x0065a9c8);
 }
 
+// Spreads the fixed g_Populate_Beachhead_Mission_LookupTable_00697958 percentages across
+// resourceWeights2c[4], scaled by (1 + this mission's nation's navy-pressure field at +0xb6c,
+// region not otherwise recovered yet). AssertValid()s the nation first (same CObject virtual
+// slot 0xc dispatch used elsewhere in this file family).
 // FUNCTION: IMPERIALISM 0x0053bc40
 void TScatteredShipsMission::NoOpSlot3C() {
-  // TODO: PopulateScatteredShipsMissionResourceWeightsFromNationNavyPressure --
-  // pending recovery of the per-nation navy-pressure field and weight table.
+  TGreatPower* nation = g_apNationStates[nationId04];
+  nation->AssertValid();
+  float navyPressure = *reinterpret_cast<float*>(reinterpret_cast<char*>(nation) + 0xb6c);
+  float scale = (navyPressure + 1.0f) * 0.01f;
+
+  const unsigned short* lookupTable = g_Populate_Beachhead_Mission_LookupTable_00697958;
   for (int i = 0; i < 4; ++i) {
-    resourceWeights2c[i] = 0.0f;
+    resourceWeights2c[i] = static_cast<float>(static_cast<short>(lookupTable[i])) * scale;
   }
 }
 
@@ -79,8 +89,13 @@ char TScatteredShipsMission::MatchesMissionKeySlot4C(int kind, int key, int mode
 
 // FUNCTION: IMPERIALISM 0x0053bdd0
 void TScatteredShipsMission::MissionSlot44() {
-  // TODO: SelectMapActionContextAndPromoteMissionOrderChain -- pending
-  // recovery of the map-action-context selection and order-chain promotion.
+  // TODO: promote the rest of the body (bd 1uj.16.4) -- 339 bytes, several unresolved
+  // sub-calls (g_pSimMgr vtable slot 0x1c for a random roll mod 50, TZone::field_0x18
+  // ring-list traversal via g_pMapActionContextListHead, ApplyJoinEmpireModeForTargetNation
+  // + 0x40408e eligibility gate matching NoOpSlot9C's pattern elsewhere in this family, then
+  // a childOrderList scan/promotion whose exact receiver for the two func_0x0040954d calls
+  // is unclear -- one result is discarded, one stored, suggesting a hidden-arg mismatch).
+  // Left as a documented TODO pending dedicated follow-up rather than guessing.
   if (orderList24 != nullptr) {
     orderList24->active_flag = 0;
     orderList24->next->SetChainActiveFlag(0);
