@@ -1139,6 +1139,36 @@ void TSimMgr::HandleTurnInstruction_Tran_SetNationTransportStat(void* pInstructi
   g_apNationStates[static_cast<int>(nationToken)]->needCapA6 = static_cast<short>(valueToken);
 }
 
+// Reads a big-endian short tile index and a development value byte, then sets that tile's
+// civilian development-class nibble -- selecting the high nibble only when the tile's
+// resource/edge byte is one of the qualifying terrain codes.
+// FUNCTION: IMPERIALISM 0x005828f0
+void TSimMgr::HandleTurnInstruction_Deve_ApplyMapDevelopmentEntry(void* pInstructionRaw) {
+  STurnInstructionCursor* instruction = static_cast<STurnInstructionCursor*>(pInstructionRaw);
+  unsigned int* cursor = instruction->tokenCursor;
+
+  unsigned int tileToken = *cursor;
+  cursor = cursor + 1;
+  instruction->tokenCursor = cursor;
+  unsigned char* traw = reinterpret_cast<unsigned char*>(&tileToken);
+  traw[0] = traw[3];
+  traw[1] = traw[2];
+  short tileIndex = static_cast<short>(tileToken);
+
+  unsigned int valueToken = *cursor;
+  cursor = cursor + 1;
+  instruction->tokenCursor = cursor;
+
+  int terrainCode = g_pGlobalMapState->terrainStateTable[tileIndex].resourceTypeByEdge[0];
+  char selectHighNibble = 0;
+  if (terrainCode == 0x16 || terrainCode == 0x15 || terrainCode == 0x04 || terrainCode == 0x03 ||
+      terrainCode == 0x06) {
+    selectHighNibble = 1;
+  }
+  unsigned char value = reinterpret_cast<unsigned char*>(&valueToken)[3];
+  g_pGlobalMapState->SetCivilianDevelopmentClassNibble(tileIndex, selectHighNibble, value, 1);
+}
+
 // Reads one big-endian short tile index, resolves that tile's owner nation, queues a depot
 // construction order there, and grants the owner a 2000 cash bonus when it is not
 // diplomacy-eligible.

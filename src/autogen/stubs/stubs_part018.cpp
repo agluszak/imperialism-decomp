@@ -307,14 +307,6 @@ undefined4 HandleTurnInstruction_Ship_DeserializeAndCreatePrimaryOrders(void)
   return 0;
 }
 
-// ghidra_name HandleTurnInstruction_Deve_ApplyMapDevelopmentEntry
-// ghidra_proto undefined HandleTurnInstruction_Deve_ApplyMapDevelopmentEntry()
-// FUNCTION: IMPERIALISM 0x005828f0
-undefined4 HandleTurnInstruction_Deve_ApplyMapDevelopmentEntry(void)
-{
-  return 0;
-}
-
 // ghidra_name HandleTurnInstruction_Tech_ApplyTechUnlockAndNotifyNations
 // ghidra_proto undefined HandleTurnInstruction_Tech_ApplyTechUnlockAndNotifyNations()
 // FUNCTION: IMPERIALISM 0x00582ad0
