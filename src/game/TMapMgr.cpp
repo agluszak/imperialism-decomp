@@ -2397,6 +2397,13 @@ void TMapMgr::AssignCityRecordDisplayName(int cityRecordIndex, CString* dest) {
   *dest = cityScoreTable[cityRecordIndex].cityNameA4;
 }
 
+// FUNCTION: IMPERIALISM 0x00515f40
+void TMapMgr::SetGlobalMapCellSharedLabel(int cityRecordIndex, CString* name) {
+  CString* dest = reinterpret_cast<CString*>(reinterpret_cast<char*>(cityScoreTable) +
+                                             cityRecordIndex * 0xa8 + 0xa4);
+  *dest = *name;
+}
+
 // FUNCTION: IMPERIALISM 0x00515f80
 void TMapMgr::SetRegionTileSubtypeAndRefreshNeighborFlags(short cityRecordIndex,
                                                           short newTileIndex) {

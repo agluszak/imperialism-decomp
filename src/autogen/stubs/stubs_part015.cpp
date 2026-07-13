@@ -139,14 +139,6 @@ undefined4 FindReachableRecruitSpawnTileRecursive(void)
   return 0;
 }
 
-// ghidra_name SetGlobalMapCellSharedLabel
-// ghidra_proto undefined SetGlobalMapCellSharedLabel()
-// FUNCTION: IMPERIALISM 0x00515f40
-undefined4 SetGlobalMapCellSharedLabel(void)
-{
-  return 0;
-}
-
 // ghidra_name OrphanDeadLeaf_NoRefs_00517d40
 // ghidra_proto undefined OrphanDeadLeaf_NoRefs_00517d40()
 // FUNCTION: IMPERIALISM 0x00517d40

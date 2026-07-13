@@ -1772,6 +1772,7 @@ address|target_cpp|ownership|note
 4df810|src/game/TGreatPower.cpp|manual|marker_sync
 4dfa20|src/game/TGreatPower.cpp|manual|marker_sync
 4dfae0|src/game/TGreatPower.cpp|manual|marker_sync
+4dfd30|src/game/TGreatPower.cpp|manual|marker_sync
 4e00d0|src/game/TGreatPower.cpp|manual|marker_sync
 4e0140|src/game/TGreatPower.cpp|manual|marker_sync
 4e01b0|src/game/TGreatPower.cpp|manual|marker_sync
@@ -2435,6 +2436,7 @@ address|target_cpp|ownership|note
 515e00|src/game/TOcean.cpp|manual|marker_sync
 515e50|src/game/TMapMgr.cpp|manual|marker_sync
 515ec0|src/game/TMapMgr.cpp|manual|marker_sync
+515f40|src/game/TMapMgr.cpp|manual|marker_sync
 515f80|src/game/TMapMgr.cpp|manual|marker_sync
 516090|src/game/TMapMgr.cpp|manual|marker_sync
 516100|src/game/TMapMgr.cpp|manual|marker_sync

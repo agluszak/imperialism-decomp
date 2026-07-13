@@ -781,12 +781,6 @@ void TGreatPower::MarkStatusFlag5HandledIfCapabilityActive(void) {
   }
 }
 
-void TGreatPower::SetHomeCityTileAndDisplayName(short homeRegionTile, char* cityName) {
-  (void)homeRegionTile;
-  (void)cityName;
-  // TODO: promote body @ 0x004dfd30
-}
-
 // FUNCTION: IMPERIALISM 0x004da8a0
 void TGreatPower::MarkAllPendingStatusFlagsHandled(void) {
   unsigned char* flags = this->serializedStatusFlags;
@@ -3240,6 +3234,76 @@ void TGreatPower::CreateFrogCityAtHomeRegionAndAttach(void* receiver) {
   if (this->diplomacyEligibilityA0 == 0 && this->interiorMinister != 0) {
     this->interiorMinister->NoOpForeignMinisterUtilityStub(receiver);
   }
+}
+
+// FUNCTION: IMPERIALISM 0x004dfd30
+void TGreatPower::SetHomeCityTileAndDisplayName(short homeRegionTile, char* cityName) {
+  TCity* city = this ? this->city : 0;
+  void* selectedOrder = city->selectedOrderB0;
+
+  if (homeRegionTile != -1) {
+    *(short*)((char*)selectedOrder + 0x14) = homeRegionTile;
+  }
+
+  short regionIndex;
+  if (city->selectedOrderB0) {
+    regionIndex = *(short*)((char*)city->selectedOrderB0 + 0x14);
+  } else {
+    regionIndex = 1;
+  }
+  this->homeRegionIndex = regionIndex;
+
+  if (cityName) {
+    CString nameStr(cityName);
+    short cityRecordIndex = g_pGlobalMapState->terrainStateTable[regionIndex].cityRecordIndex;
+    g_pGlobalMapState->SetGlobalMapCellSharedLabel(cityRecordIndex, &nameStr);
+    void** vtable = *(void***)selectedOrder;
+    typedef void(__fastcall* FastcallSetter)(void* self, int, const char*);
+    ((FastcallSetter)vtable[14])(selectedOrder, 0, (const char*)nameStr);
+  }
+
+  this->RebuildNationResourceYieldCountersAndDevelopmentTargets();
+
+  if (this->interiorMinister) {
+    this->interiorMinister->MinisterSlot14();
+  }
+
+  if (g_pSimMgr->stateFlag114 == 0) {
+    short result1 = g_pGlobalMapState->FindReachableRecruitSpawnTileWithVisitedReset(
+        this->homeRegionIndex, 0);
+    TCivUnit* civ1 = new TCivUnit();
+    civ1->InitializeCivWorkOrderState(1, result1, this->nationSlot);
+
+    short result2 = g_pGlobalMapState->FindReachableRecruitSpawnTileWithVisitedReset(
+        this->homeRegionIndex, 1);
+    TCivUnit* civ2 = new TCivUnit();
+    civ2->InitializeCivWorkOrderState(4, result2, this->nationSlot);
+
+    city->orderCountByType5c[1] += 2;
+
+    if (g_pSimMgr->redrawEnabled == 0 && this->diplomacyEligibilityA0) {
+      city->orderCountByType5c[1] += 6;
+
+      short result3 = g_pGlobalMapState->FindReachableRecruitSpawnTileWithVisitedReset(
+          this->homeRegionIndex, 0);
+      TCivUnit* civ3 = new TCivUnit();
+      civ3->InitializeCivWorkOrderState(1, result3, this->nationSlot);
+
+      short result4 = g_pGlobalMapState->FindReachableRecruitSpawnTileWithVisitedReset(
+          this->homeRegionIndex, 0);
+      TCivUnit* civ4 = new TCivUnit();
+      civ4->InitializeCivWorkOrderState(0, result4, this->nationSlot);
+
+      short result5 = g_pGlobalMapState->FindReachableRecruitSpawnTileWithVisitedReset(
+          this->homeRegionIndex, 0);
+      TCivUnit* civ5 = new TCivUnit();
+      civ5->InitializeCivWorkOrderState(2, result5, this->nationSlot);
+    }
+  }
+
+  g_pDiplomacyTurnStateManager->SetStandingScoreSlot28(this->nationSlot, this->nationSlot, 0x100);
+
+  this->SeedInitialMilitaryAndNavyOrdersForOwnedRegions();
 }
 
 // FUNCTION: IMPERIALISM 0x004e00d0
