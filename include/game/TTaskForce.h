@@ -24,17 +24,31 @@ struct TMapOrderChildLinkNode {
 ASSERT_SIZE(TMapOrderChildLinkNode, 0x10);
 
 // Per-owner bucket table for active map-order entries (Ghidra: ObjectPoolOwner).
-// NOTE (bd 1uj.16 follow-up): the internal shape past +0x18 is still under
-// investigation. TTaskForce::RemoveNode (0x550ff0) relies on the
-// {head@0x10, active_node@0x14, bucket_counts_base@0x18} reading used here, but
-// TTaskForce::PromoteMapOrderChainAndQueue (0x5533f0) separately reads a
-// stretch<T>-shaped growable array (data/capacity/count at +0x28/+0x2c/+0x30,
-// realloc'd via the same 0x5e7fc0 helper TZone's primary/secondaryNeighbors use)
-// plus a short comparison field at +0x44 off the SAME owner pointer -- a shape
-// that does not obviously square with a flat 0x100-byte bucket-count table
-// starting at +0x18. Left opaque pending a dedicated class-recovery pass rather
-// than guessing a layout that could silently corrupt the already-working
-// TTaskForce::RemoveNode / TAdmiral.cpp accessors.
+// NOTE (bd 1uj.16 / bd 1uj.47.2 follow-up): `owner` (TTaskForce+0xc) is genuinely
+// polymorphic across call sites, not one class:
+//  - TTaskForce::PromoteMapOrderChainAndQueue (0x5533f0) resolved to real TZone*
+//    (bd 1uj.47.2): `owner`'s data/capacity/count at +0x28/+0x2c/+0x30 plus a short
+//    field at +0x44 are exactly TZone::primaryNeighbors (TZonePrimaryNeighborStretch:
+//    vfptr/data/capacity/count at TZone+0x24/+0x28/+0x2c/+0x30) and TZone::field44 --
+//    confirmed independently by PromoteMapOrderChainAndQueue's own pContextAnchor
+//    argument, which the opening call (ILT thunk 0x4081cf) feeds straight into
+//    TZone::PropagateMapActionContextDistanceLevelsRecursive(-1), and by
+//    TTaskForce::ApplyTaskForceSelectionModeForCurrentNationOrders /
+//    TZone::CreateTaskForceFromNavyOrdersForNationIfEligible independently typing
+//    the same field/ctor-arg as TZone*. See PromoteMapOrderChainAndQueue's body.
+//  - TTaskForce::RemoveNode (0x550ff0) instead relies on a DIFFERENT
+//    {head@0x10, active_node@0x14, bucket_counts_base@0x18} reading of `owner` --
+//    NOT reproducible on TZone (TZone's own +0x10/+0x14 are field10/field12, plain
+//    shorts, not pointers), so this remains a distinct, still-unidentified
+//    TMapOrderEntryOwnerContext shape. RemoveNode's tail additionally reinterprets
+//    its own unrelated `self` int parameter (not `owner`) through this same struct
+//    when calling FindOrCreateChildOrderLink -- see that method's own comment.
+//  - TTaskForce::ReassignOrderNodeNationAndRebindParentCounters reads `owner` as a
+//    parent TTaskForce* (its own required_count/childOrderList/activeChildEntry
+//    shape). Genuinely dual/triple-purpose slot; kept typed as the opaque
+//    TMapOrderEntryOwnerContext* placeholder with a local reinterpret_cast per call
+//    site rather than forcing one real pointer type onto it (type-modeling
+//    guardrail's "opaque/polymorphic slot" exception).
 struct TMapOrderEntryOwnerContext {
   char pad_00[0x10];
   TMapOrderChildLinkNode* head;
@@ -201,11 +215,14 @@ public:
   // node.
   void ClearMapOrderProcessedFlagsChain(); // 0x557870
 
-  // Builds a localized selection-overlay label describing this task-force order entry
-  // (nation name + attachment count) via g_pLocalizationTable's format-string expander.
-  // 0x554c90, 370 bytes. TODO: port body -- the exact resource-string IDs and format
-  // args aren't recovered yet; used by BuildMapOrderBattleSideSnapshot for its overlay
-  // label field, which only needs a real, correctly-typed call site.
+  // Builds a localized selection-overlay label ("<N> <unit(s)> <terrain owner> at
+  // <context> (<order kind>)") via scanBracketExpressions' bracket-template expander.
+  // Bracket substitutions: singular/plural unit template (string group 0x2762, index
+  // 0x11/0x12), g_apTerrainTypeDescriptorTable[required_count]'s terrain/nation name,
+  // contextAnchor's (real TZone*, see TMapOrderEntryOwnerContext note above)
+  // AssignZoneDisplayNameToOutputRef label, the decimal child count, and the
+  // order-kind label (string group 0x2762, index attachment+0x13). 0x554c90.
+  // Used by BuildMapOrderBattleSideSnapshot for its overlay label field.
   void BuildTaskForceSelectionOverlayLabelText(CString* out); // 0x554c90
 
   // Per-entry candidate score blending this order's tiebreak_strength bucket against
@@ -306,13 +323,18 @@ public:
   // and notifies g_pActiveMapOrderContext.
   void SetMapOrderType9AndQueue(); // 0x552f80
 
-  // bd 1uj.16 target: candidate-promotion pass over `owner`'s still-uncharted
-  // growable-array region (see TMapOrderEntryOwnerContext note above), then
-  // the same free-childOrderList / recompute / self-Free-or-queue tail as
-  // SetMapOrderType9AndQueue. The candidate-search body (owner's array) is
-  // left `// TODO: promote body` pending that follow-up class-recovery pass;
-  // the tail is ported for real.
-  void PromoteMapOrderChainAndQueue(void* pContextAnchor); // 0x5533f0
+  // Opens by re-seeding the zone-graph BFS distance levels from `pContextAnchor`
+  // (TZone::PropagateMapActionContextDistanceLevelsRecursive(-1), via ILT thunk
+  // 0x4081cf -- this resolved the TMapOrderEntryOwnerContext identity: `owner`
+  // (this+0xc) is read/written here with TZone's own primaryNeighbors stretch
+  // shape (vfptr/data/capacity/count at owner+0x24/+0x28/+0x2c/+0x30, matching
+  // TZonePrimaryNeighborStretch exactly) and TZone::field44 (owner+0x44), so
+  // TMapOrderEntryOwnerContext IS TZone for this call site). Then walks
+  // owner->primaryNeighbors looking for a neighbor whose BFS distance
+  // (field44) beats owner's own, promoting the first such neighbor found to
+  // be the new `owner`; finally the same free-childOrderList / recompute /
+  // self-Free-or-queue tail as SetMapOrderType9AndQueue.
+  void PromoteMapOrderChainAndQueue(TZone* pContextAnchor); // 0x5533f0
 };
 
 ASSERT_SIZE(TTaskForce, 0x34);

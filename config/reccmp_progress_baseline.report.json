@@ -21892,7 +21892,7 @@
     },
     {
       "address": "0x5501b0",
-      "matching": 0.5446009389671361,
+      "matching": 0.5352112676056338,
       "name": "CalculateMissionOrderPriorityScore",
       "type": 1
     },
@@ -22288,7 +22288,7 @@
     },
     {
       "address": "0x5533f0",
-      "matching": 0.2734375,
+      "matching": 0.34688346883468835,
       "name": "PromoteMapOrderChainAndQueue",
       "type": 1
     },
@@ -22318,13 +22318,13 @@
     },
     {
       "address": "0x553b10",
-      "matching": 0.4827586206896552,
+      "matching": 0.6206896551724138,
       "name": "HasNoMapOrderEntryChildrenQueued",
       "type": 1
     },
     {
       "address": "0x553b50",
-      "matching": 0.5818181818181818,
+      "matching": 0.5454545454545454,
       "name": "HasActiveMapOrderEntryChildren",
       "type": 1
     },
@@ -22438,7 +22438,7 @@
     },
     {
       "address": "0x554c90",
-      "matching": 0.018691588785046728,
+      "matching": 1.0,
       "name": "BuildTaskForceSelectionOverlayLabelText",
       "type": 1
     },
@@ -22462,7 +22462,7 @@
     },
     {
       "address": "0x555420",
-      "matching": 0.5546666666666666,
+      "matching": 0.5653333333333334,
       "name": "ResolveTaskForceOrderConflictAndPickCandidate",
       "type": 1
     },
