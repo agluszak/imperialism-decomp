@@ -23,7 +23,23 @@ TPicture::TPicture()
 
 // SYNTHETIC: IMPERIALISM 0x0048f050
 // TPicture::`scalar deleting destructor'
-TPicture::~TPicture() {}
+
+// Real destructor body (listing at 0x48f250, symbols.csv name
+// "DestructCityDialogSharedBaseState" — a provisional Ghidra label, not a real class;
+// hundreds of scalar deleting destructors across every TPicture-derived class call this
+// one shared address). Releases the glyph/animation slot cached in glyphBase84 and
+// resets the bitmap fields; field8C (cached CDib*) is only zeroed here, not deleted —
+// its lifetime is owned by the picture-resource cache, not per-instance.
+// FUNCTION: IMPERIALISM 0x0048f250
+TPicture::~TPicture() {
+  if (glyphBase84 != -1) {
+    g_pModuleLibraryCacheState->ReleaseRecordById(glyphBase84);
+  }
+  glyphBase84 = -1;
+  bitmapId = 0;
+  field8A = 0;
+  field8C = 0;
+}
 
 // Slot 0x44 override: draw the cached bitmap. 8bpp uncompressed pictures software-blit
 // straight into the active QuickDraw surface; anything else realizes the default DIB

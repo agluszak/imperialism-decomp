@@ -1,13 +1,5 @@
 #include "game/TExpansionOrder.h"
 
-static __inline void WriteShort(void* base, int offset, short value) {
-  *reinterpret_cast<short*>(reinterpret_cast<unsigned char*>(base) + offset) = value;
-}
-
-static __inline short ReadShort(void* base, int offset) {
-  return *reinterpret_cast<short*>(reinterpret_cast<unsigned char*>(base) + offset);
-}
-
 // SYNTHETIC: IMPERIALISM 0x004b8f50
 // TExpansionOrder::CreateObject
 
@@ -51,14 +43,14 @@ void SwapFirstTwoBytesInBuffer(unsigned char* buffer) {
 }
 
 // FUNCTION: IMPERIALISM 0x004b9360
-void TExpansionOrder::FillOrderSheet(void* orderSheet, short quantity) {
-  this->InitializeCityOrderItemWorkingBuffers(reinterpret_cast<undefined4*>(orderSheet));
-  WriteShort(orderSheet, this->field4e * 2, quantity);
-  if (ReadShort(orderSheet, this->field4e * 2) < 0) {
-    WriteShort(orderSheet, this->field4e * 2, 0);
+void TExpansionOrder::FillOrderSheet(OrderSheet* orderSheet, short quantity) {
+  this->InitializeCityOrderItemWorkingBuffers(orderSheet);
+  orderSheet->ForResourceCode(this->field4e) = quantity;
+  if (orderSheet->ForResourceCode(this->field4e) < 0) {
+    orderSheet->ForResourceCode(this->field4e) = 0;
   }
-  WriteShort(orderSheet, this->field50 * 2, quantity);
-  if (ReadShort(orderSheet, this->field50 * 2) < 0) {
-    WriteShort(orderSheet, this->field50 * 2, 0);
+  orderSheet->ForResourceCode(this->field50) = quantity;
+  if (orderSheet->ForResourceCode(this->field50) < 0) {
+    orderSheet->ForResourceCode(this->field50) = 0;
   }
 }

@@ -130,9 +130,8 @@ public:
 
   TMovieView();
   bool OpenMoviePathAndDetachOnSuccess(LPCSTR moviePath); // 0x5e24b0
-  bool PlayMovieIfActive();                               // 0x5e24e0 (MCI_PLAY)
-  bool StopMovieIfActive();                               // 0x5e2500 (MCI_STOP / skip)
+  void PlayMovieIfActive();                               // 0x5e24e0 (MCI_PLAY)
+  void StopMovieIfActive();                               // 0x5e2500 (MCI_STOP / skip)
 };
 
 ASSERT_SIZE(TMovieView, 0x94);
-

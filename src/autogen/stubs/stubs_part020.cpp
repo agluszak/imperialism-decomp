@@ -539,14 +539,6 @@ undefined4 UpdateCursorHelperWindowTextFromUiString(void)
   return 0;
 }
 
-// ghidra_name DestructMovieViewAndCloseOwnedWindow
-// ghidra_proto undefined DestructMovieViewAndCloseOwnedWindow()
-// FUNCTION: IMPERIALISM 0x005e2320
-undefined4 DestructMovieViewAndCloseOwnedWindow(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_ftol_At005e26a0
 // ghidra_proto undefined WrapperFor_ftol_At005e26a0()
 // FUNCTION: IMPERIALISM 0x005e26a0

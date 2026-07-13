@@ -1,6 +1,7 @@
 #pragma once
 
 #include "game/mfc.h"
+#include "game/order_sheet.h"
 
 class CArchive;
 
@@ -23,9 +24,9 @@ public:
   virtual void CommitIfPending();
   TCITYORDERITEM_VTABLE_SLOT(14);
   // slot 0x3c — clears the OrderSheet working buffers (Mac: Produce()).
-  virtual void Produce(void* orderSheet);
-  virtual void FillOrderSheet(void* orderSheet, short quantity);
+  virtual void Produce(OrderSheet* orderSheet);
+  virtual void FillOrderSheet(OrderSheet* orderSheet, short quantity);
   virtual bool CanMakeFromCityStock();
-  virtual bool CanFillOrderSheet(void* orderSheet);
+  virtual bool CanFillOrderSheet(OrderSheet* orderSheet);
   virtual void ApplyCityProductionSlotDelta();
 };
