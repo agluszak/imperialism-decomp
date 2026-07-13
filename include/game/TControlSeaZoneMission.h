@@ -33,8 +33,15 @@ public:
   virtual char ReturnFalseSlot60() override; // slot 0x18 0x5355d0
   virtual char ReturnFalseSlot64() override; // slot 0x19 0x5355b0
 
-  virtual void NoOpSlot9C() override; // slot 0x27 0x539640 -- resolve+queue port-zone map order
-  virtual void RefreshMissionPortZoneContextForNation() override; // slot 0x28 0x539780 (shared)
+  // pMapOrderEntry is the TTaskForce map-order entry passed by MissionSlot44's dispatch
+  // (navyField20); see the TNavyMission::NoOpSlot9C declaration comment.
+  virtual void NoOpSlot9C(
+      void* pMapOrderEntry) override; // slot 0x27 0x539640 -- resolve+queue port-zone map order
+  // Returns the resolved port-zone context TZone* (GetReplacementSlot48 consumes it,
+  // storing the result back into targetZone18 -- confirmed by 0x538900's disassembly,
+  // which calls this virtual and assigns EAX into targetZone18); base TNavyMission
+  // declares it void, but every known caller of the base slot is this override.
+  virtual TZone* RefreshMissionPortZoneContextForNation() override; // slot 0x28 0x539780 (shared)
 };
 
 ASSERT_SIZE(TControlSeaZoneMission, 0x3c);

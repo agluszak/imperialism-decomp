@@ -286,6 +286,25 @@ public:
   // and notifies g_pActiveMapOrderContext.
   void SetMapOrderType9AndQueue(); // 0x552f80
 
+  // bd 1uj.16.2/1uj.16.5 target: sibling of SetMapOrderType9AndQueue for map-order kind
+  // 6 (port-zone blockade orders) -- stores `nOrderTarget` into the dual-purpose `owner`
+  // slot (same pun PromoteMapOrderChainAndQueue uses for `contextAnchor`), sets
+  // attachment=6, then the identical free-inactive-children / recompute /
+  // self-Free-or-queue tail as SetMapOrderType9AndQueue. Ghidra/symbols.csv mis-attribute
+  // this to TControlSeaZoneMission, but its body only ever reads TTaskForce's own field
+  // offsets (owner/attachment/childOrderList/activeChildEntry/bucket-count region) --
+  // real owner is TTaskForce, called from TControlSeaZoneMission::NoOpSlot9C (0x539640)
+  // and TBlockadePortMission::NoOpSlot9C (0x53ba40, "QueueMapOrderType6FromContext
+  // Pointer") on the map-order entry passed to that virtual slot.
+  void SetMapOrderType6AndQueue(int nOrderTarget); // 0x5536c0
+
+  // bd 1uj.16.2 target: another SetMapOrderType9AndQueue sibling, for map-order kind 3
+  // (fUseType4 == 0) or 4 (fUseType4 != 0); does not touch `owner`. Same mis-attribution
+  // to a free function as SetMapOrderType6AndQueue -- real owner is TTaskForce (body only
+  // reads this class's own field offsets). Called from TControlSeaZoneMission::NoOpSlot9C
+  // when no matching port-zone context was found.
+  void SetMapOrderType3Or4AndQueue(char fUseType4); // 0x5530f0
+
   // bd 1uj.16 target: candidate-promotion pass over `owner`'s still-uncharted
   // growable-array region (data/capacity/count at +0x28/+0x2c/+0x30, realloc'd
   // via the same 0x5e7fc0 helper TZone's primary/secondaryNeighbors use, plus a

@@ -53,7 +53,9 @@ TNavyMission::TNavyMission(TZone* targetZone) : TMission() {
 }
 
 // FUNCTION: IMPERIALISM 0x005354c0
-void TNavyMission::NoOpSlot9C() {}
+void TNavyMission::NoOpSlot9C(void* pMapOrderEntry) {
+  (void)pMapOrderEntry;
+}
 
 // FUNCTION: IMPERIALISM 0x005354e0
 char TNavyMission::ReturnFalseSlot54() {
@@ -341,8 +343,8 @@ float TNavyMission::ComputeNavyOrderCategorySimilarityRatio(int excludeCurrent) 
 void TNavyMission::MissionSlot44() {}
 
 // FUNCTION: IMPERIALISM 0x00536fa0
-void TNavyMission::RefreshMissionPortZoneContextForNation() {
-  targetZone14->SelectBestPrimaryNeighborForNationDiplomacyMask(nationId04);
+TZone* TNavyMission::RefreshMissionPortZoneContextForNation() {
+  return targetZone14->SelectBestPrimaryNeighborForNationDiplomacyMask(nationId04);
 }
 
 // FUNCTION: IMPERIALISM 0x00536fc0

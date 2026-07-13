@@ -42,8 +42,10 @@ public:
   virtual char ReturnFalseSlot60() override; // slot 0x18 0x53aa70
   virtual char ReturnFalseSlot64() override; // slot 0x19 0x53aa50
 
-  virtual void
-  NoOpSlot9C() override; // slot 0x27 0x53ba40 -- queue map-order type 6 from context pointer
+  // pMapOrderEntry is the TTaskForce map-order entry MissionSlot44's dispatch passed; see
+  // the TNavyMission::NoOpSlot9C declaration comment.
+  virtual void NoOpSlot9C(void* pMapOrderEntry)
+      override; // slot 0x27 0x53ba40 -- queue map-order type 6 from context pointer
 };
 
 ASSERT_SIZE(TBlockadePortMission, 0x40);

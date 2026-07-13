@@ -57,8 +57,18 @@ public:
       override; // slot 0x98 0x536740 -- clears queued order links/owner pointers, returns true
 
   // TNavyMission-introduced virtuals (TMission abstract slots 0x27+ / offset 0x9c+).
-  virtual void NoOpSlot9C();                             // slot 0x27 0x5354c0
-  virtual void RefreshMissionPortZoneContextForNation(); // slot 0x28 0x536fa0
+  // `pMapOrderEntry` is opaque here (RET 4 confirms one stack arg, real base body is a
+  // pure no-op) -- overrides interpret it as the map-order entry the enclosing
+  // MissionSlot44 dispatch passed (navyField20), concretely a TTaskForce* in every
+  // known override (TControlSeaZoneMission/TBlockadePortMission/TBeachheadMission).
+  virtual void NoOpSlot9C(void* pMapOrderEntry); // slot 0x27 0x5354c0
+  // Returns the best neighbor port zone for the current nation (delegates to
+  // targetZone14->SelectBestPrimaryNeighborForNationDiplomacyMask); every override
+  // (TControlSeaZoneMission/TScatteredShipsMission) also returns a TZone*, and
+  // TControlSeaZoneMission::GetReplacementSlot48 consumes the caller's result, so this
+  // could not stay void (confirmed by 0x538900's disassembly storing EAX back into
+  // targetZone18).
+  virtual TZone* RefreshMissionPortZoneContextForNation(); // slot 0x28 0x536fa0
   virtual void
   ConsolidateMissionOrderEntriesByTargetAndQueue(int* pContextAnchor); // slot 0x29 0x5371d0
   virtual void

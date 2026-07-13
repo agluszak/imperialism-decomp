@@ -11,6 +11,7 @@
 #include "game/TDiplomacyMgr.h"
 #include "game/TGreatPower.h"
 #include "game/TStream.h"
+#include "game/TTaskForce.h"
 #include "game/TZone.h"
 
 IMPLEMENT_SERIAL(TBlockadePortMission, TControlSeaZoneMission, 1)
@@ -108,6 +109,7 @@ char TBlockadePortMission::MatchesMissionKeySlot4C(int kind, int key, int mode) 
 }
 
 // FUNCTION: IMPERIALISM 0x0053ba40
-void TBlockadePortMission::NoOpSlot9C() {
-  // TODO: QueueMapOrderType6FromContextPointer -- pending recovery.
+void TBlockadePortMission::NoOpSlot9C(void* pMapOrderEntry) {
+  static_cast<TTaskForce*>(pMapOrderEntry)
+      ->SetMapOrderType6AndQueue(reinterpret_cast<int>(portZoneContext3c));
 }

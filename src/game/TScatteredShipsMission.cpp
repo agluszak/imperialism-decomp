@@ -98,7 +98,6 @@ void TScatteredShipsMission::MissionSlot44() {
 }
 
 // FUNCTION: IMPERIALISM 0x0053bf90
-void TScatteredShipsMission::RefreshMissionPortZoneContextForNation() {
-  // TODO: ReturnFalseForScatteredShipsMissionCapabilityFlag -- pending
-  // recovery of the original's return-value plumbing for this slot.
+TZone* TScatteredShipsMission::RefreshMissionPortZoneContextForNation() {
+  return nullptr;
 }

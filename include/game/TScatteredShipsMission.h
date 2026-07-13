@@ -29,8 +29,10 @@ public:
   virtual char ReturnFalseSlot60() override; // slot 0x18 0x535660 -- returns true
   virtual char ReturnFalseSlot64() override; // slot 0x19 0x535640 -- returns true
 
-  virtual void
-  RefreshMissionPortZoneContextForNation() override; // slot 0x28 0x53bf90 -- returns false
+  // Unconditionally returns nullptr (xor eax,eax; ret) -- see the TNavyMission base
+  // declaration comment for why this slot returns TZone*.
+  virtual TZone*
+  RefreshMissionPortZoneContextForNation() override; // slot 0x28 0x53bf90 -- returns null
 
   // Generic child-link-chain flag setter (not a vtable slot; misattributed
   // class prefix in Ghidra, kept per Hard Rule 6). Shared by other navy

@@ -60,8 +60,9 @@ char TBeachheadMission::MatchesMissionKeySlot4C(int kind, int key, int mode) {
 }
 
 // FUNCTION: IMPERIALISM 0x0053a800
-void TBeachheadMission::NoOpSlot9C() {
-  // TODO: TryQueueProvinceOrderFromContextMessage -- pending recovery.
+void TBeachheadMission::NoOpSlot9C(void* pMapOrderEntry) {
+  // TODO: TryQueueProvinceOrderFromContextMessage -- pending recovery (bd 1uj.16.6).
+  (void)pMapOrderEntry;
 }
 
 // FUNCTION: IMPERIALISM 0x0053a920
