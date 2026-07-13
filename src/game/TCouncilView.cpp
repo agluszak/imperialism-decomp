@@ -2,21 +2,26 @@
 
 #include "game/TAnimator.h"
 #include "game/TControl.h"
+#include "game/TCountry.h"
 #include "game/TCouncilTickerAnimation.h"
 #include "game/TDiplomacyMgr.h"
+#include "game/TDropShadowText.h"
 #include "game/TEvent.h"
 #include "game/TEventHandler.h"
 #include "game/TGreatPower.h"
 #include "game/TMapMgr.h"
 #include "game/TPicture.h"
 #include "game/TSimMgr.h"
+#include "game/TSoundPlayer.h"
 #include "game/TStaticText.h"
 #include "game/TView.h"
 #include "game/TViewMgr.h"
 #include "game/global_data_tables.h"
+#include "game/mapped_flavor_text.h"
 #include "game/mfc.h"
 #include "game/quickdraw_rendering.h"
 #include "game/ui_control_tags.h"
+#include "game/ui_text_label_helpers_decls.h"
 
 // Free-function region-invalidate wrapper (ILT target 0x004f6d90); the base class
 // TDiplomacyMapView calls it through this same thunk-cast at four sites.
@@ -81,6 +86,10 @@ TCouncilView::TCouncilView() : TDiplomacyMapView() {}
 // labels (the base impl is a no-op, hence the inherited slot name).
 // FUNCTION: IMPERIALISM 0x004fba70
 void TCouncilView::NoOpUiLifecycleHook(int arg) {
+  // Calls the (literally no-op) base-class slot 0x37 impl non-virtually, matching the
+  // ground truth's fixed-address (not vtable) call to 0x48ab70.
+  this->TView::NoOpUiLifecycleHook(arg);
+
   interactionModeAt94 = 5;
   tickerSlots24ca[0] = 0;
   tickerSlots24ca[1] = 0;
@@ -92,9 +101,49 @@ void TCouncilView::NoOpUiLifecycleHook(int arg) {
   tickerSlots24ca[7] = 0;
   tickerSlots24ca[8] = 0;
   tickerSlots24ca[9] = 0;
-  // TODO(partial 0x4fba70): the original then builds the council title/label CStrings
-  // from the localization table (special-casing language ids 0x16/0x17 with an SFX cue),
-  // positions the nation overlays, and pushes them through the picture virtuals.
+
+  this->BuildDiplomacyNationOverlayGeometryAndHitMasks();
+
+  TDropShadowText* titleControl =
+      static_cast<TDropShadowText*>(this->ResolveControlByTag(kControlTagTitl));
+  titleControl->AssertValid();
+  ApplyUiTextStyleAndThemeFlags(titleControl, 0, 0x10, 0x2b6c, 0x2b67);
+  titleControl->SetTextThemeCodeAndMaybeRefresh(-2, 0);
+
+  if (g_pSimMgr->mode == 0x17 || g_pSimMgr->mode == 0x16) {
+    // Map-interaction mode: title shows "<terrain/country name>" expanded through the
+    // localized "[0]" template, plus a self-vs-other SFX cue for the highlighted nation.
+    CString terrainLabel;
+    g_apTerrainTypeDescriptorTable[g_pDiplomacyTurnStateManager->lastProcessedNationSlot78e]
+        ->FormatOverlayTerrainLabelText(&terrainLabel);
+    CString titleTemplate;
+    g_pSimMgr->GetString(0x275d, 3, &titleTemplate);
+    CString finalTitle;
+    scanBracketExpressions(g_pSimMgr, &finalTitle, static_cast<LPCSTR>(titleTemplate),
+                           static_cast<LPCSTR>(terrainLabel));
+    titleControl->AssignTextSharedRefIfChangedAndMaybeInvalidate(&finalTitle, 0);
+
+    if (g_pDiplomacyTurnStateManager->lastProcessedNationSlot78e ==
+        g_pSimMgr->GetActiveNationId()) {
+      g_pSfxPlaybackSystem->PlaySoundEffect(0x1f43, 0, 1);
+    } else {
+      g_pSfxPlaybackSystem->PlaySoundEffect(0x1f44, 0, 1);
+    }
+  } else {
+    // Normal council mode: static council-panel title, then clear/reload the "main"
+    // ticker panel and the "end"/"quer" council-action button captions.
+    CString titleText;
+    g_pSimMgr->GetString(0x2733, 0x5e, &titleText);
+    titleControl->AssignTextSharedRefIfChangedAndMaybeInvalidate(&titleText, 0);
+
+    ApplySharedStringToGlobalControlTag(CString(g_szEmptyString), kControlTagMain);
+
+    TView* endControl = this->ResolveControlByTag(kControlTagEnd);
+    LoadUiStringByGroupAndIndexToControlObject(0x2746, 6, endControl);
+
+    TView* querControl = this->ResolveControlByTag(kControlTagQuer);
+    LoadUiStringByGroupAndIndexToControlObject(0x2730, 3, querControl);
+  }
 }
 
 // slot 0x0f — HandleEvent override: routes council-control events by the source
