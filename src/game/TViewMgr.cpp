@@ -85,6 +85,7 @@ undefined4 DoModal_6051b9(void);
 namespace {
 using turn_event_dialog::GoldCommitControl;
 using turn_event_dialog::GoldDialogControl;
+using turn_event_dialog::TCivilianReportGoldControl;
 using turn_event_dialog::TurnEventDialogNode;
 // g_pUiViewManager (TAssetMgr) @ 0x6a2148 — the UI/view asset registry that resolves
 // turn-event dialog nodes by message context.
@@ -1822,8 +1823,23 @@ int TViewMgr::MakePlanetSeedDialog(const char* instruction, CString& planetSeed,
 
 // FUNCTION: IMPERIALISM 0x005de4f0
 bool TViewMgr::ShowCivilianReportDialogAndReturnConfirm(TCivUnit* pCivilianOrderEntry) {
-  (void)pCivilianOrderEntry;
-  return true;
+  TurnEventDialogNode* node = static_cast<TurnEventDialogNode*>(
+      g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(0xbc4));
+  if (node == nullptr) {
+    MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgrMore_0069B740, 0x2c1);
+  }
+  node->ShowTurnEventDialog(1);
+  TCivilianReportGoldControl* gold = static_cast<TCivilianReportGoldControl*>(
+      static_cast<TView*>(node->ResolveControlByTag(0x444c4f47))); // 'GOLD'
+  gold->PopulateCivilianReportContent(pCivilianOrderEntry);
+  POINT placement;
+  this->ComputeTurnEventDialogPlacementByCode(node, &placement);
+  node->CaptureLayoutF0(reinterpret_cast<int*>(&placement), 0);
+  unsigned int resultTag = node->RefreshTurnEventDialog();
+  node->CallVoidSlotA0();
+  node->Free();
+  return resultTag == 0x6f6b6179;
 }
 
 // FUNCTION: IMPERIALISM 0x005de990
