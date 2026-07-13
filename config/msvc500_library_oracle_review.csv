@@ -79,7 +79,6 @@ address|current_name|current_ownership|oracle_symbol|oracle_name|member|match_ki
 0x0061c5dc|CFrameWnd|unowned|??0CFrameWnd@@QAE@XZ|CFrameWnd::CFrameWnd|winfrm.obj|unique|1|invented_name_referenced_in_source
 0x0061c83a|OnPaletteChanged|unowned|?OnPaletteChanged@CFrameWnd@@IAEXPAVCWnd@@@Z|CFrameWnd::OnPaletteChanged|winfrm.obj|unique|1|invented_name_referenced_in_source
 0x0061d8a2|SetActiveView|unowned|?SetActiveView@CFrameWnd@@QAEXPAVCView@@H@Z|CFrameWnd::SetActiveView|winfrm.obj|unique|1|invented_name_referenced_in_source
-0x0061f342|TTEView::DeflateRect|manual:src/game/TTEView.cpp|?DeflateRect@CRect@@QAEXPBUtagRECT@@@Z|CRect::DeflateRect|wingdix.obj|unique|1|match_owned_by_game_code
 0x0061f46b|GetMfcThreadStateFlagDword30|unowned|?AfxOleGetUserCtrl@@YGHXZ|AfxOleGetUserCtrl|olelock.obj|unique|1|below_min_convert_size
 0x00622a4f|ExitInstance|unowned|?ExitInstance@CWinApp@@UAEHXZ|CWinApp::ExitInstance|appcore.obj|unique|1|invented_name_referenced_in_source
 0x00622cb3|ProcessShellCommand|unowned|?ProcessShellCommand@CWinApp@@QAEHAAVCCommandLineInfo@@@Z|CWinApp::ProcessShellCommand|appui2.obj|unique|1|invented_name_referenced_in_source

@@ -1,7 +1,6 @@
 address|oracle_symbol|owner|note
-0x00489410|??0exception@@QAE@XZ|manual:src/game/TCountingStream.cpp|MFC method inherited by game class; move needs class-recovery + build verification
-0x00534c80|?EnableAggregation@CCmdTarget@@QAEXXZ|manual:src/game/TMission.cpp|MFC method inherited by game class; move needs class-recovery + build verification
-0x006050d0|??0CDialog@@QAE@IPAVCWnd@@@Z|manual:src/game/TControl.cpp|MFC method inherited by game class; move needs class-recovery + build verification
-0x00607318|?GetStyle@CWnd@@QBEKXZ|manual:src/game/TView.cpp|MFC method inherited by game class; move needs class-recovery + build verification
-0x0060a60a|?RunModalLoop@CWnd@@QAEHK@Z|manual:src/game/TView.cpp|MFC method inherited by game class; move needs class-recovery + build verification
-0x0061f342|?DeflateRect@CRect@@QAEXPBUtagRECT@@@Z|manual:src/game/TTEView.cpp|MFC method inherited by game class; move needs class-recovery + build verification
+0x00489410|??0exception@@QAE@XZ|manual:src/game/TCountingStream.cpp|FALSE POSITIVE: real TCountingStream ctor; masks identical to exception ctor (vtable-store vs zero-imm blind spot). Stays game code.
+0x00534c80|?EnableAggregation@CCmdTarget@@QAEXXZ|manual:src/game/TMission.cpp|FALSE POSITIVE: real TMission field-reset (mov [ecx+0xc],0); byte-identical to trivial CCmdTarget::EnableAggregation. Stays game code.
+0x006050d0|??0CDialog@@QAE@IPAVCWnd@@@Z|manual:src/game/TControl.cpp|CONFIRMED CDialog::CDialog; retire needs TModalTemplateDialogBase:CDialog real inheritance across ~15 dialog ctors (construction Hard Rule 1) + reccmp scoring.
+0x00607318|?GetStyle@CWnd@@QBEKXZ|manual:src/game/TView.cpp|CONFIRMED CWnd::GetStyle; retire needs TView-cluster : CWnd inheritance (joint with RunModalLoop) + reccmp scoring.
+0x0060a60a|?RunModalLoop@CWnd@@QAEHK@Z|manual:src/game/TView.cpp|CONFIRMED CWnd::RunModalLoop; retire jointly with GetStyle (it calls GetStyle) via CWnd inheritance + reccmp scoring.

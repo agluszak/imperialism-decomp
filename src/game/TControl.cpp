@@ -2,6 +2,7 @@
 // Use tools/workflow/promote_from_autogen.py to seed functions from autogen.
 
 #include "game/TControl.h"
+#include "game/mfc.h"
 #include "game/quickdraw_regions.h"
 #include "game/TMouseCaptureState.h"
 #include "game/TTEView.h"
@@ -178,7 +179,7 @@ char TControl::PointInBoundsAndActionable(CPoint* point) {
 // FUNCTION: IMPERIALISM 0x0048e980
 void TControl::BuildInsetContentRect(RECT* boundsBuffer) {
   QueryContentBounds(boundsBuffer);
-  reinterpret_cast<TTEView*>(boundsBuffer)->DeflateRect(reinterpret_cast<RECT*>(&field68));
+  reinterpret_cast<CRect*>(boundsBuffer)->DeflateRect(reinterpret_cast<RECT*>(&field68));
 }
 
 // FUNCTION: IMPERIALISM 0x0048e9c0

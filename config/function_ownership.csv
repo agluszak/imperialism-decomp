@@ -6147,7 +6147,6 @@ address|target_cpp|ownership|note
 61f205|src/game/library_msvc500_fid.cpp|library|marker_sync
 61f24a|src/game/library_msvc500_fid.cpp|library|marker_sync
 61f307|src/game/library_msvc500_fid.cpp|library|marker_sync
-61f342|src/game/TTEView.cpp|manual|marker_sync
 61f37d|src/game/library_msvc500_fid.cpp|library|marker_sync
 61f423|src/game/library_msvc500_fid.cpp|library|marker_sync
 61f45c|src/game/library_msvc500_fid.cpp|library|marker_sync

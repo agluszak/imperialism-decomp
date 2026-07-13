@@ -51,6 +51,17 @@ DEFAULT_OUT = "config/msvc500_library_oracle.csv"
 # Below this size a full masked match is not discriminative enough to trust
 # blindly (many tiny thunks share a normal form); such matches are still recorded
 # but never marked confidence=high unless the symbol already agrees.
+#
+# Note on the masking blind spot: relocation masking zeroes address operands, so a
+# vtable-pointer store (`mov [ecx], <reloc>` -> `C7 01 00000000`) is byte-identical
+# to a zero-immediate store (`field = 0` -> `C7 01 00000000`). A tiny game function
+# (`field@X = 0; ret`) can therefore collide with a trivial library method
+# (CCmdTarget::EnableAggregation, exception::exception). A masked-signal (non-zero
+# byte count) threshold does NOT separate these: a real `__fpmath` (23B, 7 non-zero)
+# has *less* signal than a coincidental `exception::exception` match (17B, 12
+# non-zero). So such collisions are resolved by human review + the game-code
+# allowlist, not a byte heuristic. Only cross-address duplication (below) is demoted
+# automatically.
 MIN_CONFIDENT_SIZE = 8
 
 

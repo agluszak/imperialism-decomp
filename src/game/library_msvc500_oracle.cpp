@@ -194,6 +194,9 @@
 // LIBRARY: IMPERIALISM 0x0061d917
 // ?GetActiveDocument@CFrameWnd@@UAEPAVCDocument@@XZ
 
+// LIBRARY: IMPERIALISM 0x0061f342
+// ?DeflateRect@CRect@@QAEXPBUtagRECT@@@Z
+
 // LIBRARY: IMPERIALISM 0x00623006
 // ?EnableShellOpen@CWinApp@@IAEXXZ
 

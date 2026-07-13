@@ -127,6 +127,5 @@ public:
   // slot 0x74 AssignSharedStringFromField84 inherited unchanged (0x4294d0)
   // slot 0x75 RenderControlStateTextBySelectionCode inherited unchanged (0x4900a0)
   // === END GENERATED DECLS (TTEView) ===
-  void DeflateRect(RECT* margins);
   int MeasureCurrentTextWidthInLayoutRect();
 };

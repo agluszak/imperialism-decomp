@@ -7725,7 +7725,7 @@ address|name|symbol|size|type|prototype|provenance
 61f205|CFont::CreatePointFont|?CreatePointFont@CFont@@QAEHHPBDPAVCDC@@@Z|69|function|public: int __thiscall CFont::CreatePointFont(int, char const *, class CDC *)|msvc500_library_oracle
 61f24a|CFont::CreatePointFontIndirect|?CreatePointFontIndirect@CFont@@QAEHPBUtagLOGFONTA@@PAVCDC@@@Z|158|function|public: int __thiscall CFont::CreatePointFontIndirect(struct tagLOGFONTA const *, class CDC *)|msvc500_library_oracle
 61f307|CRect::InflateRect|?InflateRect@CRect@@QAEXPBUtagRECT@@@Z|29|function|public: void __thiscall CRect::InflateRect(struct tagRECT const *)|msvc500_library_oracle
-61f342|TTEView::DeflateRect||29|function|undefined DeflateRect()|
+61f342|CRect::DeflateRect|?DeflateRect@CRect@@QAEXPBUtagRECT@@@Z|29|function|public: void __thiscall CRect::DeflateRect(struct tagRECT const *)|msvc500_library_oracle
 61f37d|CRect::MulDiv|?MulDiv@CRect@@QBE?AV1@HH@Z|95|function|public: class CRect __thiscall CRect::MulDiv(int, int) const|msvc500_library_oracle
 61f423|AfxOleCanExitApp|?AfxOleCanExitApp@@YGHXZ|16|function|int __stdcall AfxOleCanExitApp(void)|msvc500_library_oracle
 61f45c|AfxOleSetUserCtrl|?AfxOleSetUserCtrl@@YGXH@Z|15|function|void __stdcall AfxOleSetUserCtrl(int)|msvc500_library_oracle
