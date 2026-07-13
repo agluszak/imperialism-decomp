@@ -195,6 +195,17 @@ extern "C" const char s_GameName_00698010[];
 // FUNCTION: IMPERIALISM 0x0050ec60
 NationStateRecordA8::NationStateRecordA8() {}
 
+// FUNCTION: IMPERIALISM 0x005421a0
+int FindActiveNationSlotIndexInGameFlowList() {
+  int activeId = GetSessionActiveNationId();
+  for (int i = 0; i < 7; ++i) {
+    if (g_pGameFlowState->nationSessionIds[i] == activeId) {
+      return i;
+    }
+  }
+  return -1;
+}
+
 // SYNTHETIC: IMPERIALISM 0x005425d0
 // TMultiplayerMgr::CreateObject
 
@@ -2479,6 +2490,16 @@ void TMultiplayerMgr::PublishNationDescriptorAndNotifyOrderListeners(TStream* st
       }
     }
   }
+}
+
+// FUNCTION: IMPERIALISM 0x0054a9d0
+int TMultiplayerMgr::IsSpecialNationDialogModeActive() {
+  if (sessionPhaseTag == 0x676f696e) {
+    if (g_pSimMgr->GetActiveNationId() != -1) {
+      return 1;
+    }
+  }
+  return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x0054ab20

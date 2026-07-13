@@ -3032,6 +3032,7 @@ address|target_cpp|ownership|note
 5420a0|src/game/NetMessage.cpp|manual|marker_sync
 5420d0|src/game/NetMessage.cpp|manual|marker_sync
 542120|src/game/NetMessage.cpp|manual|marker_sync
+5421a0|src/game/TMultiplayerMgr.cpp|manual|marker_sync
 5424b0|src/game/TCancelGameOptionsCommand.cpp|manual|marker_sync
 542520|src/game/TCancelGameOptionsCommand.cpp|manual|marker_sync
 542560|src/game/TCancelGameOptionsCommand.cpp|manual|marker_sync
@@ -3076,6 +3077,7 @@ address|target_cpp|ownership|note
 54a5e0|src/game/TMultiplayerMgr.cpp|manual|marker_sync
 54a6d0|src/game/TMultiplayerMgr_HandleDiplomacyTurnEvent.cpp|manual|marker_sync
 54a840|src/game/TMultiplayerMgr_HandleDiplomacyTurnEvent.cpp|manual|marker_sync
+54a9d0|src/game/TMultiplayerMgr.cpp|manual|marker_sync
 54ab20|src/game/TMultiplayerMgr.cpp|manual|marker_sync
 54abf0|src/game/TMultiplayerMgr.cpp|manual|marker_sync
 54ae90|src/game/TMultiplayerMgr.cpp|manual|marker_sync

@@ -395,14 +395,6 @@ undefined4 WrapperFor_ftol_At00541f60(void)
   return 0;
 }
 
-// ghidra_name FindActiveNationSlotIndexInGameFlowList
-// ghidra_proto undefined FindActiveNationSlotIndexInGameFlowList()
-// FUNCTION: IMPERIALISM 0x005421a0
-undefined4 FindActiveNationSlotIndexInGameFlowList(void)
-{
-  return 0;
-}
-
 // ghidra_name DestructCancelGameOptionsCommand
 // ghidra_proto undefined DestructCancelGameOptionsCommand()
 // FUNCTION: IMPERIALISM 0x00542590
@@ -551,14 +543,6 @@ undefined4 DispatchTurnEvent31TaggedPayload(void)
 // ghidra_proto undefined DispatchTextPairEvent8FromContext()
 // FUNCTION: IMPERIALISM 0x0054a410
 undefined4 DispatchTextPairEvent8FromContext(void)
-{
-  return 0;
-}
-
-// ghidra_name IsSpecialNationDialogModeActive
-// ghidra_proto undefined IsSpecialNationDialogModeActive()
-// FUNCTION: IMPERIALISM 0x0054a9d0
-undefined4 IsSpecialNationDialogModeActive(void)
 {
   return 0;
 }
