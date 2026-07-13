@@ -1,4 +1,4 @@
 address|oracle_symbol|owner|note
 0x00489410|??0exception@@QAE@XZ|manual:src/game/TCountingStream.cpp|FALSE POSITIVE: real TCountingStream ctor; masks identical to exception ctor (vtable-store vs zero-imm blind spot).
 0x00534c80|?EnableAggregation@CCmdTarget@@QAEXXZ|manual:src/game/TMission.cpp|FALSE POSITIVE: real TMission field-reset; byte-identical to trivial CCmdTarget::EnableAggregation.
-0x006050d0|??0CDialog@@QAE@IPAVCWnd@@@Z|manual:src/game/TControl.cpp|CONFIRMED CDialog::CDialog (RTTI .?AVCDialog@@, calls CWnd::CWnd base). Retire needs the game dialog classes modeled as CDialog-derived (bigger than the GetStyle/RunModalLoop cast).
+0x006050d0|??0CDialog@@QAE@IPAVCWnd@@@Z|manual:src/game/TControl.cpp|CONFIRMED CDialog::CDialog (raw disasm: CWnd::CWnd @0x6077c6 + mov[esi],0x66fc2c CDialog-vtable + memset + m_pParentWnd@0x50/m_nIDHelp@0x3c/m_lpszTemplateName@0x40). Retire = re-derive the whole game UI framework (67 TView-derived classes) as CWnd/CDialog-based with MFC fields disambiguated from interleaved game fields (childList44/ownerContext). All-or-nothing (no partial state builds/measures); a dedicated multi-class pass, not an incremental retirement.
