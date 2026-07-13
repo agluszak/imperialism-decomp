@@ -307,14 +307,6 @@ undefined4 ContainsCityStatePointerInZoneArrayByCityIndex(void)
   return 0;
 }
 
-// ghidra_name IsZoneMaskOrArrayEntryPresentForKey
-// ghidra_proto undefined IsZoneMaskOrArrayEntryPresentForKey()
-// FUNCTION: IMPERIALISM 0x0055f540
-undefined4 IsZoneMaskOrArrayEntryPresentForKey(void)
-{
-  return 0;
-}
-
 // ghidra_name BuildMapOrderObjectiveDescriptionTextForNation
 // ghidra_proto undefined BuildMapOrderObjectiveDescriptionTextForNation()
 // FUNCTION: IMPERIALISM 0x005606f0

@@ -21,7 +21,6 @@ extern undefined4 FindFirstTrackedHandlerMatchingModeAndShortKey(void);
 extern undefined4 CompareMissionOrderEntriesByPriorityScore(void);
 extern undefined4 GetOrCreateMissionOrderEntryForNode(void);
 extern undefined4 BuildNavyOrderCategoryVectorForNationWithExclusion(void);
-extern undefined4 IsZoneMaskOrArrayEntryPresentForKey(void);
 
 // Swaps float byte order (Big-Endian <-> Little-Endian)
 static inline float SwapFloat(float val) {
@@ -288,11 +287,7 @@ void TNavyMission::RefreshSlot40() {
   ResetValue0CToZero();
   NoOpSlot3C();
 
-  typedef void(__fastcall * IsZoneMaskOrArrayEntryPresentForKey_t)(short);
-  IsZoneMaskOrArrayEntryPresentForKey_t IsZoneMaskOrArrayEntryPresentForKey_fn =
-      reinterpret_cast<IsZoneMaskOrArrayEntryPresentForKey_t>(
-          (void*)&IsZoneMaskOrArrayEntryPresentForKey);
-  IsZoneMaskOrArrayEntryPresentForKey_fn(pathMarker06);
+  targetZone14->IsZoneMaskOrArrayEntryPresentForKey(nationId04);
 
   if (orderList24 == nullptr) {
     navyState28 = 0;

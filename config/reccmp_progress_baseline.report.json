@@ -12405,7 +12405,7 @@
     },
     {
       "address": "0x4dd430",
-      "matching": 0.5714285714285714,
+      "matching": 0.5142857142857142,
       "name": "TGreatPower::ComputeRemainingDiplomacyAidBudget",
       "type": 1
     },
@@ -12844,7 +12844,8 @@
     },
     {
       "address": "0x4e05d0",
-      "matching": 1.0,
+      "effective": true,
+      "matching": 0.42857142857142855,
       "name": "TGreatPower::OrphanLeaf_NoCall_Ins02_004d7fc0_89",
       "type": 1
     },
@@ -12863,7 +12864,8 @@
     },
     {
       "address": "0x4e0690",
-      "matching": 1.0,
+      "effective": true,
+      "matching": 0.42857142857142855,
       "name": "TGreatPower::ReturnFalseNationStateCapabilityFlag90",
       "type": 1
     },
@@ -17065,7 +17067,7 @@
     },
     {
       "address": "0x515b10",
-      "matching": 0.3167420814479638,
+      "matching": 0.3378995433789954,
       "name": "TMapMgr::MarkSeedNeighborTilesUnavailableByCapabilityMaskProfileB",
       "type": 1
     },
@@ -17239,7 +17241,7 @@
     },
     {
       "address": "0x5178f0",
-      "matching": 0.32116788321167883,
+      "matching": 0.3446601941747573,
       "name": "ComputeRepresentativeTileIndexForTerrainTypeWithWrapBias",
       "type": 1
     },
@@ -19598,7 +19600,7 @@
     },
     {
       "address": "0x536b30",
-      "matching": 0.29357798165137616,
+      "matching": 0.3181818181818182,
       "name": "UpdateMissionOrderSelectionStateByNationSimilarityThresholds",
       "type": 1
     },
@@ -21333,7 +21335,7 @@
     },
     {
       "address": "0x545940",
-      "matching": 0.3809985458070771,
+      "matching": 0.3822911617385684,
       "name": "TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine",
       "type": 1
     },
@@ -22323,13 +22325,13 @@
     },
     {
       "address": "0x553b10",
-      "matching": 0.41379310344827586,
+      "matching": 0.4827586206896552,
       "name": "HasNoMapOrderEntryChildrenQueued",
       "type": 1
     },
     {
       "address": "0x553b50",
-      "matching": 0.5454545454545454,
+      "matching": 0.5818181818181818,
       "name": "HasActiveMapOrderEntryChildren",
       "type": 1
     },
@@ -23062,7 +23064,7 @@
     },
     {
       "address": "0x55f540",
-      "matching": 0.04878048780487805,
+      "matching": 0.3855421686746988,
       "name": "IsZoneMaskOrArrayEntryPresentForKey",
       "type": 1
     },
@@ -29657,7 +29659,7 @@
     },
     {
       "address": "0x5a39a0",
-      "matching": 0.9545454545454546,
+      "matching": 0.9393939393939394,
       "name": "ComputeHexTileDistanceFromIndices",
       "type": 1
     },
