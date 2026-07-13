@@ -20,6 +20,7 @@
 #include "game/TMapMgr.h"
 #include "game/TTechMgr.h"
 #include "game/TCivMgr.h"
+#include "game/TTurnInstructionCursor.h"
 #include "game/TNewsMgr.h"
 #include "game/TNavyMgr.h"
 #include "game/TInterNationEventQueueManager.h"
@@ -1018,6 +1019,98 @@ CString* TSimMgr::LoadNormalizedCredentialName(CString* out, short slot) {
 // FUNCTION: IMPERIALISM 0x00581bc0
 CString TSimMgr::AssignSharedStringFromIndexedSlot7C(short slot) {
   return sharedTextSlots[slot];
+}
+
+// Reads a big-endian 32-bit nation slot then a big-endian short transport-capacity value,
+// stored into that nation's needCapA6 field.
+// FUNCTION: IMPERIALISM 0x00582860
+void TSimMgr::HandleTurnInstruction_Tran_SetNationTransportStat(void* pInstructionRaw) {
+  STurnInstructionCursor* instruction = static_cast<STurnInstructionCursor*>(pInstructionRaw);
+  unsigned int* cursor = instruction->tokenCursor;
+
+  unsigned int nationToken = *cursor;
+  cursor = cursor + 1;
+  instruction->tokenCursor = cursor;
+  unsigned char* nraw = reinterpret_cast<unsigned char*>(&nationToken);
+  unsigned char nt = nraw[0];
+  nraw[0] = nraw[3];
+  nraw[3] = nt;
+  nt = nraw[1];
+  nraw[1] = nraw[2];
+  nraw[2] = nt;
+
+  unsigned int valueToken = *cursor;
+  cursor = cursor + 1;
+  instruction->tokenCursor = cursor;
+  unsigned char* vraw = reinterpret_cast<unsigned char*>(&valueToken);
+  vraw[0] = vraw[3];
+  vraw[1] = vraw[2];
+
+  g_apNationStates[static_cast<int>(nationToken)]->needCapA6 = static_cast<short>(valueToken);
+}
+
+// Reads one big-endian short token (the scenario year) and stores it, scaled to quarter
+// ticks (year * 4), into the turn-flow tick field at +0x2c.
+// FUNCTION: IMPERIALISM 0x00582ed0
+void TSimMgr::HandleTurnInstruction_Year_UpdateScenarioYearFieldScaledBy4(void* pInstructionRaw) {
+  STurnInstructionCursor* instruction = static_cast<STurnInstructionCursor*>(pInstructionRaw);
+  unsigned int* cursor = instruction->tokenCursor;
+  unsigned int token = *cursor;
+  instruction->tokenCursor = cursor + 1;
+  unsigned char* raw = reinterpret_cast<unsigned char*>(&token);
+  raw[0] = raw[3];
+  raw[1] = raw[2];
+  quarterGateTick2c = static_cast<short>(token) * 4;
+}
+
+// Reads two big-endian 32-bit tokens (nation slot, then cash amount) and writes the amount
+// into that nation's treasury field.
+// FUNCTION: IMPERIALISM 0x00583360
+void TSimMgr::HandleTurnInstruction_Cash_SetNationCash(void* pInstructionRaw) {
+  STurnInstructionCursor* instruction = static_cast<STurnInstructionCursor*>(pInstructionRaw);
+  unsigned int* cursor = instruction->tokenCursor;
+
+  unsigned int nationToken = *cursor;
+  cursor = cursor + 1;
+  instruction->tokenCursor = cursor;
+  unsigned char* nraw = reinterpret_cast<unsigned char*>(&nationToken);
+  unsigned char nt = nraw[0];
+  nraw[0] = nraw[3];
+  nraw[3] = nt;
+  nt = nraw[1];
+  nraw[1] = nraw[2];
+  nraw[2] = nt;
+
+  unsigned int cashToken = *cursor;
+  cursor = cursor + 1;
+  instruction->tokenCursor = cursor;
+  unsigned char* craw = reinterpret_cast<unsigned char*>(&cashToken);
+  unsigned char ct = craw[0];
+  craw[0] = craw[3];
+  craw[3] = ct;
+  ct = craw[1];
+  craw[1] = craw[2];
+  craw[2] = ct;
+
+  g_apNationStates[static_cast<int>(nationToken)]->treasuryValue10 = static_cast<int>(cashToken);
+}
+
+// Reads one big-endian short token (a nation flag/language index), stores it into the
+// selected-index field, and refreshes the picture-word-data language pack + strategic map
+// bitmap cache (the inlined body of SetSelectedIndex6AAndTriggerRefresh).
+// FUNCTION: IMPERIALISM 0x00583400
+void TSimMgr::HandleTurnInstruction_Flag_SetNationFlagAndRefresh(void* pInstructionRaw) {
+  STurnInstructionCursor* instruction = static_cast<STurnInstructionCursor*>(pInstructionRaw);
+  unsigned int* cursor = instruction->tokenCursor;
+  unsigned int token = *cursor;
+  instruction->tokenCursor = cursor + 1;
+  unsigned char* raw = reinterpret_cast<unsigned char*>(&token);
+  raw[0] = raw[3];
+  raw[1] = raw[2];
+  short index = static_cast<short>(token);
+  field6a = index;
+  EnsurePictWvDataGobLoadedBySlot(index);
+  g_pStrategicMapViewSystem->ReloadBitmap244AndRefreshUiCaches();
 }
 
 // FUNCTION: IMPERIALISM 0x005837c0
