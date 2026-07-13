@@ -353,6 +353,8 @@ extern int DAT_006a601c;
 extern undefined4 DAT_0066ac88;
 extern undefined4 DAT_0066ac8c;
 extern undefined4 DAT_0066ac90;
+// 26 (start, end) capability-priority range pairs (see the .cpp note).
+extern short g_anCapabilityPriorityRangePairs[53];
 extern const char s_DataDirectoryPath_006942A8[];
 extern const char s_IrgGlobPattern_006942FC[];
 extern const char s_NoLanguageFilesMessage_006942B4[];

@@ -1,9 +1,12 @@
 #include "game/TTechMgr.h"
 
 #include "decomp_types.h"
+#include "game/TMultiplayerMgr.h"
+#include "game/TSimMgr.h"
 #include "game/global_data_tables.h"
 
 undefined4 RecomputeGlobalCapabilityAverages(void);
+undefined4 GetCurrentLocalEpochSecondsWithTimezoneCache(void);
 
 TTechMgr* g_pCityOrderCapabilityState = 0;
 // SYNTHETIC: IMPERIALISM 0x005aef30
@@ -169,9 +172,55 @@ void TTechMgr::InitializeCityOrderCapabilityStateDefaults(void) {
   RecomputeGlobalCapabilityAverages();
 }
 
+// Fills the capability-priority selection slots with 26 unique random slot ids, one per
+// (start, end) range pair. The LCG is seeded from the game-flow queue sync dword when session
+// state is active, otherwise from the wall clock. Each candidate is retried until it is unique
+// among the already-selected slots.
 // FUNCTION: IMPERIALISM 0x005af330
 void TTechMgr::GenerateRandomCapabilityPrioritySlots() {
-  // TODO: promote body @ 0x005af330
+  prioritySlots04[1] = 0;
+  prioritySlots04[2] = 0;
+  prioritySlots04[0] = 0;
+
+  unsigned int seed;
+  if (g_pSimMgr->field44 == 0 ||
+      (seed = static_cast<unsigned int>(g_pGameFlowState->queueSyncDword)) == 0) {
+    // Genuine __cdecl free function declared (void); the guardrail-sanctioned arg-adjust cast
+    // pushes the ignored 0 argument the original passes.
+    seed = reinterpret_cast<unsigned int(__cdecl*)(int)>(
+        GetCurrentLocalEpochSecondsWithTimezoneCache)(0);
+  }
+
+  short* pnOutputSlotCursor = &prioritySlots04[3];
+  int nSelectedSlotCount = 3;
+  // Pair i is (cursor[-1], cursor[0]); the reccmp symbol anchors pair 0's END, so pair 0's
+  // START is read one short before the array.
+  for (short* pnRangePairCursor = &g_anCapabilityPriorityRangePairs[0];
+       pnRangePairCursor < &g_anCapabilityPriorityRangePairs[52]; pnRangePairCursor += 2) {
+    short nRangeStartGroup = pnRangePairCursor[-1];
+    short nRangeEndGroup = *pnRangePairCursor;
+    int nRangeSpan =
+        (static_cast<short>(nRangeEndGroup << 2) - static_cast<short>(nRangeStartGroup * 4)) + 1;
+    bool fUniqueCandidate;
+    do {
+      seed = seed * 0x15a4e35 + 1;
+      fUniqueCandidate = true;
+      short nCandidatePrioritySlotId =
+          static_cast<short>(static_cast<int>((seed >> 0xc) & 0x7fff) % nRangeSpan) +
+          static_cast<short>(nRangeStartGroup * 4);
+      *pnOutputSlotCursor = nCandidatePrioritySlotId;
+      short* pnExistingSlotCursor = &prioritySlots04[0];
+      for (int nRemaining = nSelectedSlotCount; nRemaining != 0; nRemaining--) {
+        if (nCandidatePrioritySlotId == *pnExistingSlotCursor) {
+          fUniqueCandidate = false;
+        }
+        pnExistingSlotCursor++;
+      }
+    } while (!fUniqueCandidate);
+    nSelectedSlotCount++;
+    pnOutputSlotCursor++;
+  }
+  RecomputeGlobalCapabilityAverages();
 }
 
 // FUNCTION: IMPERIALISM 0x005af460
