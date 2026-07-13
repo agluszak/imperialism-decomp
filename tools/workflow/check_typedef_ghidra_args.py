@@ -29,6 +29,7 @@ import sys
 from collections import defaultdict
 from pathlib import Path
 
+from tools.common.file_scan import is_excluded_scan_path
 from tools.common.repo import repo_root_from_file
 from tools.common.symbols import functions_by_name
 from tools.workflow.check_typedef_cast_drift import TYPEDEF_RE, normalize, strip_param_names
@@ -93,6 +94,8 @@ def collect_typedefs(root: Path):
     by_name: dict[str, set[tuple[str, str, str]]] = defaultdict(set)
     files_of: dict[str, set[str]] = defaultdict(set)
     for path in sorted(root.rglob("*.cpp")):
+        if is_excluded_scan_path(path):
+            continue
         text = path.read_text(encoding="utf-8", errors="replace")
         for m in TYPEDEF_RE.finditer(text):
             by_name[m.group("name")].add(

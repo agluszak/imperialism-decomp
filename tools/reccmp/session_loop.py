@@ -12,6 +12,7 @@ from dataclasses import dataclass
 from datetime import datetime, timezone
 from pathlib import Path
 
+from tools.common.file_scan import is_excluded_scan_path
 from tools.common.pipe_csv import read_pipe_rows
 from tools.common.repo import repo_root_from_file, resolve_repo_path
 
@@ -89,6 +90,8 @@ def build_annotation_index(src_root: Path, target: str) -> dict[int, list[Locati
     rx = re.compile(ANNOT_RE_TEMPLATE.format(target=re.escape(target)))
     out: dict[int, list[Location]] = {}
     for cpp in src_root.rglob("*.cpp"):
+        if is_excluded_scan_path(cpp):
+            continue
         try:
             text = cpp.read_text(encoding="utf-8", errors="ignore")
         except OSError:
