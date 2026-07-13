@@ -3086,6 +3086,7 @@ address|target_cpp|ownership|note
 54b060|src/game/TPoseMessageDialog.cpp|manual|marker_sync
 54b0d0|src/game/TPoseMessageDialog.cpp|manual|marker_sync
 54b5d0|src/game/TMultiplayerMgr.cpp|manual|marker_sync
+54b8c0|src/game/TMultiplayerMgr.cpp|manual|marker_sync
 54b930|src/game/TMultiplayerMgr.cpp|manual|marker_sync
 54bce0|src/game/TMultiplayerMgr.cpp|manual|marker_sync
 54bd20|src/game/TMultiplayerMgr_HandleDiplomacyTurnEvent.cpp|manual|marker_sync

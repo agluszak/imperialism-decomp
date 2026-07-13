@@ -2660,6 +2660,28 @@ void TMultiplayerMgr::EmitNationDiplomacyNeedStateSnapshotEvent15(char broadcast
   g_pNetMgr006a6014->Send(&packet, 0);
 }
 
+// FUNCTION: IMPERIALISM 0x0054b8c0
+int TMultiplayerMgr::GetNationStatusCodeForSlotOrActiveNation(int slot) {
+  if (slot == -1) {
+    slot = g_pSimMgr->GetActiveNationId();
+    if (slot == -1) {
+      int sessionActive = GetSessionActiveNationId();
+      slot = 0;
+      int* sessionId = g_pGameFlowState->nationSessionIds;
+      do {
+        if (*sessionId == sessionActive) {
+          goto resolved;
+        }
+        ++slot;
+        ++sessionId;
+      } while (slot < 7);
+      slot = -1;
+    }
+  }
+resolved:
+  return nationStatusTags[slot];
+}
+
 // FUNCTION: IMPERIALISM 0x0054b930
 void TMultiplayerMgr::SetNationStatusAwolByNationIdAndDispatchNotices(int networkId) {
   for (int slot = 0; slot < 7; ++slot) {

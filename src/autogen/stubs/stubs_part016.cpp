@@ -603,14 +603,6 @@ undefined4 SetNationStatusCodeForSlotOrActiveAndEmitEvent25(void)
   return 0;
 }
 
-// ghidra_name GetNationStatusCodeForSlotOrActiveNation
-// ghidra_proto undefined GetNationStatusCodeForSlotOrActiveNation()
-// FUNCTION: IMPERIALISM 0x0054b8c0
-undefined4 GetNationStatusCodeForSlotOrActiveNation(void)
-{
-  return 0;
-}
-
 // ghidra_name EmitTurnEvent26DiplomacyMatrixSnapshot
 // ghidra_proto undefined EmitTurnEvent26DiplomacyMatrixSnapshot()
 // FUNCTION: IMPERIALISM 0x0054c480

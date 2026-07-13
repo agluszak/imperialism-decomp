@@ -256,6 +256,9 @@ public:
   // 0x54a9d0: true when sessionPhaseTag is the 'goin' join phase and the active nation
   // slot is valid.
   int IsSpecialNationDialogModeActive();
+  // 0x54b8c0: returns nationStatusTags[slot]; when slot is -1, resolves it from the active
+  // nation id (falling back to the game-flow session-id scan).
+  int GetNationStatusCodeForSlotOrActiveNation(int slot);
 };
 
 // 0x5421a0: 0-based index (0..6) of g_pGameFlowState->nationSessionIds[] matching the
