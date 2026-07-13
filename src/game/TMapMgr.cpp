@@ -2291,13 +2291,12 @@ void TMapMgr::MarkSeedNeighborTilesUnavailableByCapabilityMaskProfileA(
   short nationTag = pCivilianOrderEntry->field_18;
   short tileIndex = pCivilianOrderEntry->tileIndex06;
 
-  // orderCapRows277[nationTag - 1] reads the *previous* nation's row padding -- for
-  // nationTag == 0 this reads out of the array's declared bounds (into the tail of
-  // nationCapRows1e8[6]/pad274), reproducing the original's own out-of-bounds read.
-  if (g_pCityOrderCapabilityState->orderCapRows277[nationTag - 1].unknownFlag28b == 2) {
+  // These flags sit at the head of orderCapRows277[nationTag]'s record (offsets 6/0xc); they
+  // used to be reached via the previous row at the old +0xf phase, now corrected.
+  if (g_pCityOrderCapabilityState->orderCapRows277[nationTag].unknownFlag28b == 2) {
     g_bSeedGateNotifyFlag_00696f0c = 1;
   }
-  if (g_pCityOrderCapabilityState->orderCapRows277[nationTag - 1].unknownFlag291 == 2) {
+  if (g_pCityOrderCapabilityState->orderCapRows277[nationTag].unknownFlag291 == 2) {
     g_bSeedGateNotifyFlag_00696f0a = 1;
   }
   if (g_pCityOrderCapabilityState->orderCapRows277[nationTag].unknownFlag27f == 2) {
@@ -2327,13 +2326,13 @@ void TMapMgr::MarkSeedNeighborTilesUnavailableByCapabilityMaskProfileB(
   short nationTag = pCivilianOrderEntry->field_18;
 
   unsigned char terrainTypeGate[8] = {1, 1, 0, 0, 0, 0, 1, 1};
-  if (g_pCityOrderCapabilityState->orderCapRows277[nationTag - 1].unknownFlag28b == 2) {
+  if (g_pCityOrderCapabilityState->orderCapRows277[nationTag].unknownFlag28b == 2) {
     terrainTypeGate[4] = 1;
     terrainTypeGate[5] = 0;
     terrainTypeGate[6] = 1;
     terrainTypeGate[7] = 1;
   }
-  if (g_pCityOrderCapabilityState->orderCapRows277[nationTag - 1].unknownFlag291 == 2) {
+  if (g_pCityOrderCapabilityState->orderCapRows277[nationTag].unknownFlag291 == 2) {
     terrainTypeGate[0] = 1;
     terrainTypeGate[1] = 1;
     terrainTypeGate[2] = 1;

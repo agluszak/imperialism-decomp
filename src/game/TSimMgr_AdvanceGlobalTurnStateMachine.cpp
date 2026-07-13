@@ -101,8 +101,8 @@ static inline short ReadCityOrderCapabilityField262(void) {
   if (g_pCityOrderCapabilityState == nullptr) {
     return 0;
   }
-  // 0x262 = nationCapRows1e8[6].caps[1] ((0x262-0x1e8) = 122 = 6*sizeof(NationCapRow) + 2).
-  return g_pCityOrderCapabilityState->nationCapRows1e8[6].caps[1];
+  // 0x262 is the active-tech marker short sitting just past the nationCapRows table.
+  return g_pCityOrderCapabilityState->marker262;
 }
 
 static inline void HandleTurnEndSavePaths(TSimMgr* simMgr) {

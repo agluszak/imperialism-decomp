@@ -28,7 +28,9 @@ public:
   // matching the flat write in the original -- see the sibling out-of-bounds reads below).
   unsigned char perTechUnlockFlag180[0x13];
   unsigned char hasProductionOrder193;
-  unsigned char pad194[0x1a2 - 0x194];
+  unsigned char pad194[0x19d - 0x194];
+  unsigned char initFlags19d[4]; // defaults initializer sets all four to 1
+  unsigned char initFlag1a1;     // set to 1
   // City-order capability flags toggled as milestone techs are applied (each set to 1).
   unsigned char capabilityFlag1a2;
   unsigned char capabilityFlag1a3;
@@ -39,65 +41,82 @@ public:
   unsigned char shipCapabilityFlag1a8;
   unsigned char capabilityFlag1a9;
   unsigned char capabilityFlag1aa;
-  unsigned char pad1ab[0x1d2 - 0x1ab];
+  unsigned char initFlags1ab[4]; // defaults initializer sets all four to 1
+  unsigned char initFlags1af[4]; // set to 1
+  unsigned char pad1b3[0x1c3 - 0x1b3];
+  unsigned char flag1c3; // set to 1
+  unsigned char pad1c4[0x1c9 - 0x1c4];
+  unsigned char initFlags1c9[9]; // defaults initializer sets bytes {0,1,2,4,7} = 1, rest 0
   // Paired capability selector shorts updated at specific unlock milestones.
   short techSelectorShort1d2;
   short activeZoneIndex1d4;
-  unsigned char pad1d6[0x1e8 - 0x1d6];
+  // Per-nation capability-slot table (true record base 0x1d6, stride 0x14 = 10 shorts). The
+  // defaults initializer fills slots[0..7] = 0..7, slots[8] = 0x18, slots[9] = 0x1b. Gameplay
+  // readers historically indexed this table from +0x12 (naming it "nationCapRows1e8" and
+  // reading .cap/.caps[]); .cap is slots[9] and .caps[i] is slots[9 + i] in this true frame.
   struct NationCapRow {
-    union {
-      short cap;
-      short caps[10];
-      // On the special last row (index 6) the active-tech marker sits at caps[1] and a
-      // 4-byte city-order rule-table pointer overlays caps[2..3]; expose it as a typed
-      // member so the pointer write needs no reinterpret_cast.
-      struct {
-        short reserved[2];
-        unsigned int ruleTablePointer264;
-      } techState;
-    };
+    short slots[10];
   };
   NationCapRow nationCapRows1e8[7];
-  unsigned char pad274[0x277 - 0x274];
+  // 0x262 active-tech marker + 0x264 city-order rule-table pointer (the 6-byte gap that sits
+  // between the two per-nation tables). ApplyCityOrderCapabilityUnlockByTechId and the defaults
+  // initializer write these; a stray reader used to reach 0x262 as nationCapRows1e8[6].caps[1].
+  short marker262;
+  unsigned int ruleTablePointer264;
   struct OrderCapRow {
-    unsigned char flag;
-    unsigned char pad01[3];
-    unsigned char recruitTierFlag27b;
-    unsigned char pad05[2];
-    // Advanced-fortification flag (row offset +7). GetNationFortLevelCap reads it off
-    // orderCapRows277[nationId]; when set the nation's fort cap is level 3.
-    unsigned char advancedFortFlag;
-    // Read via MarkSeedNeighborTilesUnavailableByCapabilityMaskProfileA off THIS row
-    // (row[nationTag], not the previous-row reads below) -- gates DAT_00696f0b.
-    unsigned char unknownFlag27f;
-    unsigned char secondaryCapabilityFlag280;
-    unsigned char pad06a[10];
-    // The two fields below are read by MarkSeedNeighborTilesUnavailableByCapabilityMaskProfileA
-    // off orderCapRows277[nationTag - 1] (the *previous* nation's row) -- confirmed by address
-    // arithmetic: the original reads absolute offsets 0x26e/0x274 with the same 29-byte
-    // per-nation stride as this array, which lands 9/3 bytes before this row's base (0x277),
-    // i.e. 20/26 bytes into the previous row. Gate DAT_00696f0c / DAT_00696f0a respectively.
-    // For nationTag == 0 this reads out of this array's bounds, into the tail of
-    // nationCapRows1e8[6] and pad274 -- reproduced faithfully via orderCapRows277[-1].
-    unsigned char unknownFlag28b;
-    unsigned char pad06b[4];
-    // Intermediate-fortification flag (row offset +25). GetNationFortLevelCap reads it off
-    // the *previous* nation's row (orderCapRows277[nationId - 1]); when set the fort cap is
-    // level 2. For nation 0 this resolves into pad274 / nationCapRows1e8 tail (documented
-    // out-of-bounds read, same as the previous-row gates above).
-    unsigned char intermediateFortFlag;
-    unsigned char unknownFlag291;
-    unsigned char pad06c[2];
+    // True per-nation order record base 0x268, stride 0x1d. The defaults initializer sets the
+    // first three bytes to 2 and zeroes the rest; the named flags below sit at their real
+    // in-record offsets. Fields formerly reached via orderCapRows277[nationTag - 1] (the
+    // apparent "previous row", an artifact of the old +0xf phase) are just in-record fields
+    // here, read as orderCapRows277[nationTag].
+    unsigned char initReadyFlag[3]; // +0x00
+    unsigned char pad03[3];
+    unsigned char unknownFlag28b; // +0x06 (TMapMgr gate DAT_00696f0c)
+    unsigned char pad07[4];
+    unsigned char intermediateFortFlag; // +0x0b (GetNationFortLevelCap level 2)
+    unsigned char unknownFlag291;       // +0x0c (TMapMgr gate DAT_00696f0a)
+    unsigned char pad0d[2];
+    unsigned char flag; // +0x0f (0x277)
+    unsigned char pad10[3];
+    unsigned char recruitTierFlag27b; // +0x13 (0x27b)
+    unsigned char pad14[2];
+    unsigned char advancedFortFlag;           // +0x16 (0x27e; GetNationFortLevelCap level 3)
+    unsigned char unknownFlag27f;             // +0x17 (0x27f; TMapMgr gate DAT_00696f0b)
+    unsigned char secondaryCapabilityFlag280; // +0x18 (0x280)
+    unsigned char pad19[4];
   };
   OrderCapRow orderCapRows277[7];
-  unsigned char pad342[0x39d - 0x342];
+  // Per-nation table B (true base 0x333, stride 0xe); init-only, no gameplay readers yet.
+  struct CapRowB {
+    unsigned char flags[5]; // init sets [0..4] = 1
+    unsigned char pad05[9];
+  };
+  CapRowB capRowsB333[7];
   struct MilitaryCapRow {
-    unsigned char recruitTierFlag;
-    unsigned char pad01[7];
-    unsigned char eliteRecruitFlag;
-    unsigned char pad09[0x1e - 0x09];
+    // True per-nation military record base 0x395, stride 0x1e. recruitTierFlag/eliteRecruitFlag
+    // keep their absolute addresses (0x39d/0x3a5) at these in-record offsets.
+    unsigned char initFlags[8];    // +0x00 (init sets [0..7] = 1)
+    unsigned char recruitTierFlag; // +0x08 (0x39d)
+    unsigned char pad09[7];
+    unsigned char eliteRecruitFlag; // +0x10 (0x3a5)
+    unsigned char pad11[7];
+    unsigned char initFlag18; // +0x18 (init = 1)
+    unsigned char pad19[2];
+    unsigned char initFlag1b; // +0x1b (init = 1)
+    unsigned char pad1c[2];
   };
   MilitaryCapRow militaryCapRows39d[7];
+  // Per-nation table D (true base 0x467, stride 9); init-only.
+  struct CapRowD {
+    unsigned char flags[9]; // init: [0,1,2,4,7] = 1, rest 0
+  };
+  CapRowD capRowsD467[7];
+  // Per-nation table E (true base 0x4a6, stride 0x3a); init zeroes it. Ends at the real 0x63c
+  // allocation size.
+  struct CapRowE {
+    unsigned char bytes[0x3a];
+  };
+  CapRowE capRowsE4a6[7];
 
   void ConstructCityOrderCapabilityStateVtable();
   void InitializeCityOrderCapabilityStateDefaults();

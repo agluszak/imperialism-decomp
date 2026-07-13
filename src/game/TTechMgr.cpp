@@ -1,6 +1,9 @@
 #include "game/TTechMgr.h"
 
 #include "decomp_types.h"
+
+#include <string.h>
+
 #include "game/TMultiplayerMgr.h"
 #include "game/TSimMgr.h"
 #include "game/global_data_tables.h"
@@ -29,146 +32,99 @@ void TTechMgr::ConstructCityOrderCapabilityStateVtable(void) {}
 
 // FUNCTION: IMPERIALISM 0x005aeff0
 void TTechMgr::InitializeCityOrderCapabilityStateDefaults(void) {
-  int self = reinterpret_cast<int>(this);
-  int iVar1;
-  undefined2* puVar2;
-  undefined2* puVar3;
-  undefined* puVar4;
-  undefined4* puVar5;
-  undefined4* puVar6;
-  undefined4* local_10;
-  undefined4* local_c;
-  undefined4* local_8;
-  undefined* local_4;
+  // Scalar capability defaults (0x180..0x1d6).
+  perTechUnlockFlag180[0] = 1;
+  perTechUnlockFlag180[1] = 1;
+  perTechUnlockFlag180[2] = 1;
+  memset(&perTechUnlockFlag180[3], 0, sizeof(perTechUnlockFlag180) - 3);
+  hasProductionOrder193 = 0;
+  memset(pad194, 0, sizeof(pad194));
+  initFlags19d[0] = 1;
+  initFlags19d[1] = 1;
+  initFlags19d[2] = 1;
+  initFlags19d[3] = 1;
+  initFlag1a1 = 1;
+  capabilityFlag1a2 = 0;
+  capabilityFlag1a3 = 0;
+  capabilityFlag1a4 = 0;
+  shipCapabilityFlag1a5 = 0;
+  capabilityFlag1a6 = 0;
+  capabilityFlag1a7 = 0;
+  shipCapabilityFlag1a8 = 0;
+  capabilityFlag1a9 = 0;
+  capabilityFlag1aa = 0;
+  initFlags1ab[0] = 1;
+  initFlags1ab[1] = 1;
+  initFlags1ab[2] = 1;
+  initFlags1ab[3] = 1;
+  initFlags1af[0] = 1;
+  initFlags1af[1] = 1;
+  initFlags1af[2] = 1;
+  initFlags1af[3] = 1;
+  flag1c3 = 1;
+  memset(initFlags1c9, 0, sizeof(initFlags1c9));
+  initFlags1c9[0] = 1;
+  initFlags1c9[1] = 1;
+  initFlags1c9[2] = 1;
+  initFlags1c9[4] = 1;
+  initFlags1c9[7] = 1;
+  techSelectorShort1d2 = 3;
+  activeZoneIndex1d4 = 4;
 
-  *(undefined*)(self + 0x180) = 1;
-  *(undefined*)(self + 0x181) = 1;
-  *(undefined*)(self + 0x182) = 1;
-  puVar5 = reinterpret_cast<undefined4*>(self + 0x183);
-  for (iVar1 = 6; iVar1 != 0; iVar1 = iVar1 + -1) {
-    *puVar5 = 0;
-    puVar5 = puVar5 + 1;
+  // Per-nation capability tables (7 nations each).
+  int j;
+  for (int n = 0; n < 7; ++n) {
+    // capabilityValueByNationAndResource: clear the row, set the default-unlocked columns.
+    memset(capabilityValueByNationAndResource[n], 0, sizeof(capabilityValueByNationAndResource[n]));
+    capabilityValueByNationAndResource[n][3] = 1;
+    capabilityValueByNationAndResource[n][4] = 1;
+    capabilityValueByNationAndResource[n][0x11] = 1;
+    capabilityValueByNationAndResource[n][0x12] = 1;
+    capabilityValueByNationAndResource[n][0x15] = 1;
+    capabilityValueByNationAndResource[n][0x16] = 1;
+
+    // nationCapRows: slots[0..7] = 0..7, slots[8] = 0x18, slots[9] = 0x1b.
+    for (j = 0; j < 8; ++j) {
+      nationCapRows1e8[n].slots[j] = static_cast<short>(j);
+    }
+    nationCapRows1e8[n].slots[8] = 0x18;
+    nationCapRows1e8[n].slots[9] = 0x1b;
+
+    // orderCapRows: first three bytes = 2, rest cleared.
+    memset(&orderCapRows277[n], 0, sizeof(OrderCapRow));
+    orderCapRows277[n].initReadyFlag[0] = 2;
+    orderCapRows277[n].initReadyFlag[1] = 2;
+    orderCapRows277[n].initReadyFlag[2] = 2;
+
+    // capRowsB: first five bytes = 1, rest cleared.
+    memset(&capRowsB333[n], 0, sizeof(CapRowB));
+    for (j = 0; j < 5; ++j) {
+      capRowsB333[n].flags[j] = 1;
+    }
+
+    // militaryCapRows: initFlags[0..7] = 1 plus the two tail flags; readers' recruit/elite
+    // flags stay cleared.
+    memset(&militaryCapRows39d[n], 0, sizeof(MilitaryCapRow));
+    for (j = 0; j < 8; ++j) {
+      militaryCapRows39d[n].initFlags[j] = 1;
+    }
+    militaryCapRows39d[n].initFlag18 = 1;
+    militaryCapRows39d[n].initFlag1b = 1;
+
+    // capRowsD: flags {0,1,2,4,7} = 1.
+    memset(&capRowsD467[n], 0, sizeof(CapRowD));
+    capRowsD467[n].flags[0] = 1;
+    capRowsD467[n].flags[1] = 1;
+    capRowsD467[n].flags[2] = 1;
+    capRowsD467[n].flags[4] = 1;
+    capRowsD467[n].flags[7] = 1;
+
+    // capRowsE: cleared.
+    memset(&capRowsE4a6[n], 0, sizeof(CapRowE));
   }
-  *(undefined2*)puVar5 = 0;
-  *(undefined4*)(self + 0x19d) = 0x1010101;
-  *(undefined*)(self + 0x1a1) = 1;
-  *(undefined4*)(self + 0x1a2) = 0;
-  *(undefined4*)(self + 0x1a6) = 0;
-  *(undefined*)(self + 0x1aa) = 0;
-  *(undefined2*)(self + 0x1d2) = 3;
-  *(undefined2*)(self + 0x1d4) = 4;
-  *(undefined4*)(self + 0x1c9) = 0;
-  puVar4 = reinterpret_cast<undefined*>(self + 0x269);
-  local_4 = reinterpret_cast<undefined*>(0x7);
-  *(undefined4*)(self + 0x1cd) = 0;
-  *(undefined*)(self + 0x1d1) = 0;
-  *(undefined*)(self + 0x1c9) = 1;
-  local_8 = reinterpret_cast<undefined4*>(self + 0x395);
-  *(undefined*)(self + 0x1ca) = 1;
-  *(undefined*)(self + 0x1cd) = 1;
-  *(undefined*)(self + 0x1cb) = 1;
-  *(undefined*)(self + 0x1d0) = 1;
-  *(undefined4*)(self + 0x1ab) = 0x1010101;
-  local_c = reinterpret_cast<undefined4*>(self + 0x333);
-  local_10 = reinterpret_cast<undefined4*>(self + 0x4a6);
-  *(undefined4*)(self + 0x1af) = 0x1010101;
-  *(undefined*)(self + 0x1c3) = 1;
-  *(undefined2*)(self + 0x262) = 2;
-  puVar5 = reinterpret_cast<undefined4*>(self + 0x467);
-  do {
-    puVar4[-1] = 2;
-    *puVar4 = 2;
-    puVar4[1] = 2;
-    puVar6 = reinterpret_cast<undefined4*>(puVar4 + 2);
-    for (iVar1 = 6; iVar1 != 0; iVar1 = iVar1 + -1) {
-      *puVar6 = 0;
-      puVar6 = puVar6 + 1;
-    }
-    *(undefined2*)puVar6 = 0;
-    puVar4 = puVar4 + 0x1d;
-    puVar6 = local_10;
-    for (iVar1 = 0xe; iVar1 != 0; iVar1 = iVar1 + -1) {
-      *puVar6 = 0;
-      puVar6 = puVar6 + 1;
-    }
-    *(undefined2*)puVar6 = 0;
-    *local_c = 0;
-    local_c[1] = 0;
-    local_c[2] = 0;
-    *(undefined2*)(local_c + 3) = 0;
-    puVar6 = local_8;
-    for (iVar1 = 7; iVar1 != 0; iVar1 = iVar1 + -1) {
-      *puVar6 = 0;
-      puVar6 = puVar6 + 1;
-    }
-    *(undefined2*)puVar6 = 0;
-    *puVar5 = 0;
-    local_8 = reinterpret_cast<undefined4*>(reinterpret_cast<char*>(local_8) + 0x1e);
-    puVar5[1] = 0;
-    *(undefined*)(puVar5 + 2) = 0;
-    *(undefined*)puVar5 = 1;
-    *(undefined*)(reinterpret_cast<char*>(puVar5) + 1) = 1;
-    local_c = reinterpret_cast<undefined4*>(reinterpret_cast<char*>(local_c) + 0xe);
-    *(undefined*)(puVar5 + 1) = 1;
-    *(undefined*)(reinterpret_cast<char*>(puVar5) + 2) = 1;
-    *(undefined*)(reinterpret_cast<char*>(puVar5) + 7) = 1;
-    local_10 = reinterpret_cast<undefined4*>(reinterpret_cast<char*>(local_10) + 0x3a);
-    local_4 = reinterpret_cast<undefined*>(reinterpret_cast<char*>(local_4) + -1);
-    puVar5 = reinterpret_cast<undefined4*>(reinterpret_cast<char*>(puVar5) + 9);
-  } while (local_4 != reinterpret_cast<undefined*>(0));
-  local_10 = reinterpret_cast<undefined4*>(self + 0x338);
-  local_8 = reinterpret_cast<undefined4*>(self + 0x1e6);
-  local_4 = reinterpret_cast<undefined*>(self + 0x3ad);
-  puVar5 = reinterpret_cast<undefined4*>(self + 0x467);
-  puVar3 = reinterpret_cast<undefined2*>(self + 0x62);
-  local_c = reinterpret_cast<undefined4*>(0x7);
-  do {
-    puVar6 = reinterpret_cast<undefined4*>(puVar3 + -0x12);
-    for (iVar1 = 0xb; iVar1 != 0; iVar1 = iVar1 + -1) {
-      *puVar6 = 0;
-      puVar6 = puVar6 + 1;
-    }
-    *(undefined2*)puVar6 = 0;
-    *puVar3 = 1;
-    puVar3[-1] = 1;
-    puVar3[3] = 1;
-    puVar3[-0xe] = 1;
-    puVar3[-0xf] = 1;
-    puVar3[4] = 1;
-    *puVar5 = 0;
-    puVar5[1] = 0;
-    *(undefined*)(puVar5 + 2) = 0;
-    *(undefined*)puVar5 = 1;
-    *(undefined*)(reinterpret_cast<char*>(puVar5) + 1) = 1;
-    *(undefined*)(puVar5 + 1) = 1;
-    *(undefined*)(reinterpret_cast<char*>(puVar5) + 2) = 1;
-    *(undefined*)(reinterpret_cast<char*>(puVar5) + 7) = 1;
-    *(undefined4*)(local_4 + -0x18) = 0x1010101;
-    *(undefined4*)(local_4 + -0x14) = 0x1010101;
-    *local_4 = 1;
-    local_4[3] = 1;
-    *(undefined4*)(reinterpret_cast<char*>(local_10) + -5) = 0x1010101;
-    *(undefined*)(reinterpret_cast<char*>(local_10) + -1) = 1;
-    *local_10 = 0;
-    local_10[1] = 0;
-    *(undefined*)(local_10 + 2) = 0;
-    iVar1 = 0;
-    puVar2 = reinterpret_cast<undefined2*>(reinterpret_cast<char*>(local_8) + -0x10);
-    do {
-      *puVar2 = static_cast<short>(iVar1);
-      iVar1 = iVar1 + 1;
-      puVar2 = puVar2 + 1;
-    } while (iVar1 < 8);
-    local_4 = local_4 + 0x1e;
-    *(undefined2*)local_8 = 0x18;
-    *(undefined2*)(reinterpret_cast<char*>(local_8) + 2) = 0x1b;
-    local_8 = reinterpret_cast<undefined4*>(reinterpret_cast<char*>(local_8) + 0x14);
-    puVar3 = puVar3 + 0x17;
-    puVar5 = reinterpret_cast<undefined4*>(reinterpret_cast<char*>(puVar5) + 9);
-    local_10 = reinterpret_cast<undefined4*>(reinterpret_cast<char*>(local_10) + 0xe);
-    local_c = reinterpret_cast<undefined4*>(reinterpret_cast<char*>(local_c) + -1);
-  } while (local_c != reinterpret_cast<undefined4*>(0));
-  *(undefined4*)(self + 0x264) = DAT_0066ac88;
+
+  marker262 = 2;
+  ruleTablePointer264 = DAT_0066ac88;
   RecomputeGlobalCapabilityAverages();
 }
 
@@ -238,9 +194,7 @@ void TTechMgr::WriteTo(TStream* stream) {
 // shorts for the milestone techs. Ids 0x0b/0x16 swap the rule-table pointer at +0x264.
 // FUNCTION: IMPERIALISM 0x005afba0
 void TTechMgr::ApplyCityOrderCapabilityUnlockByTechId(int nTechId) {
-  // 0x262 lands in nationCapRows1e8[6].caps[1]; 0x264 (the rule-table pointer) overlays the
-  // 4 bytes at caps[2..3] of the same row.
-  nationCapRows1e8[6].caps[1] = static_cast<short>(nTechId);
+  marker262 = static_cast<short>(nTechId);
   perTechUnlockFlag180[nTechId] = 1;
   switch (nTechId) {
   case 9:
@@ -256,7 +210,7 @@ void TTechMgr::ApplyCityOrderCapabilityUnlockByTechId(int nTechId) {
     activeZoneIndex1d4 = 8;
     return;
   case 0xb:
-    nationCapRows1e8[6].techState.ruleTablePointer264 = DAT_0066ac8c;
+    ruleTablePointer264 = DAT_0066ac8c;
     return;
   case 0x15:
     capabilityFlag1a6 = 1;
@@ -274,7 +228,7 @@ void TTechMgr::ApplyCityOrderCapabilityUnlockByTechId(int nTechId) {
     techSelectorShort1d2 = 0xd;
     return;
   case 0x16:
-    nationCapRows1e8[6].techState.ruleTablePointer264 = DAT_0066ac90;
+    ruleTablePointer264 = DAT_0066ac90;
     break;
   }
 }
@@ -289,5 +243,5 @@ int TTechMgr::GetNationFortLevelCap(int nNationId) {
   if (orderCapRows277[nNationId].advancedFortFlag != 0) {
     return 3;
   }
-  return (orderCapRows277[nNationId - 1].intermediateFortFlag != 0) + 1;
+  return (orderCapRows277[nNationId].intermediateFortFlag != 0) + 1;
 }
