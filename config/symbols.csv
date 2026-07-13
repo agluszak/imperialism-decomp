@@ -6911,7 +6911,7 @@ address|name|symbol|size|type|prototype|provenance
 604e5e|CWnd::CreateDlgIndirect|?CreateDlgIndirect@CWnd@@IAEHPBUDLGTEMPLATE@@PAV1@PAUHINSTANCE__@@@Z|516|function|undefined CreateDlgIndirect_604e5e()|
 60507c|TMacViewMgr_Slot47_Target||5|function|undefined TMacViewMgr_Slot47_Target()|
 60508e|CDialog::CDialog|??0CDialog@@QAE@PBDPAVCWnd@@@Z|66|function|public: __thiscall CDialog::CDialog(char const *, class CWnd *)|msvc500_library_oracle
-6050d0|TControl::InitializeDialogTemplateFromId||57|function|undefined InitializeDialogTemplateFromId()|
+6050d0|CDialog::CDialog|??0CDialog@@QAE@IPAVCWnd@@@Z|57|function|public: __thiscall CDialog::CDialog(unsigned int,class CWnd *)|msvc500_library_override
 605144|CDialog::PreModal|?PreModal@CDialog@@IAEPAUHWND__@@XZ|55|function|protected: struct HWND__* __thiscall CDialog::PreModal(void)|msvc500_library_oracle
 60517b|CDialog::PostModal|?PostModal@CDialog@@IAEXXZ|62|function|protected: void __thiscall CDialog::PostModal(void)|msvc500_library_oracle
 6051b9|DoModal_6051b9||328|function|undefined DoModal_6051b9()|

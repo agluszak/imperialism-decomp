@@ -19,7 +19,6 @@ address|current_name|current_ownership|oracle_symbol|oracle_name|member|match_ki
 0x005eadb0|WrapperFor_GetOrCreateCrtThreadDataFromTls_At005eadb0|unowned|___doserrno|__doserrno|dosmap.obj|unique|1|below_min_convert_size
 0x005f4b40|WrapperFor_amsg_exit_At005f4b40|unowned|__fptrap|_fptrap|crt0fp.obj|unique|1|below_min_convert_size
 0x005fa80b|WrapperFor_AfxTermLocalData_At005fa80b|unowned|??1_AFX_TERM_APP_STATE@@QAE@XZ|_AFX_TERM_APP_STATE::~_AFX_TERM_APP_STATE|appmodul.obj|unique|1|below_min_convert_size
-0x006050d0|TControl::InitializeDialogTemplateFromId|manual:src/game/TControl.cpp|??0CDialog@@QAE@IPAVCWnd@@@Z|CDialog::CDialog|dlgcore.obj|unique|1|match_owned_by_game_code
 0x00605e88|SetAt|unowned|?SetAt@CString@@QAEXHD@Z|CString::SetAt|strcore.obj|unique|1|invented_name_referenced_in_source
 0x006060bc|AfxGetThread|unowned|?AfxGetThread@@YGPAVCWinThread@@XZ|AfxGetThread|thrdcore.obj|unique|1|invented_name_referenced_in_source
 0x00606451|OrphanLeaf_NoCall_Ins04_005adc30|unowned|?IsIdleMessage@CWinThread@@UAEHPAUtagMSG@@@Z|CWinThread::IsIdleMessage|thrdcore.obj|unique|1|invented_name_referenced_in_source

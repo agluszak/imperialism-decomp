@@ -15,12 +15,12 @@ struct TControlPictureRectState {
 };
 #pragma pack(pop)
 
+// Widget-hierarchy layout base for TControl: adds the 0x60-0x73 field region between TView
+// (ends 0x60) and TControl (starts 0x74). The template-dialog machinery that used to live
+// here was really CDialog-derived and now lives on TModalDialogBase
+// (include/game/TModalDialogBase.h); this class is a pure widget base with no dialog
+// behaviour.
 class TModalTemplateDialogBase : public TView {
-public:
-  TModalTemplateDialogBase* InitializeDialogTemplateFromId(UINT templateId, void* initParam);
-  int PrepareAndCreateModalFromTemplate();
-  int FinalizeModalDialogAndRestoreOwnerFocus();
-
 protected:
   TModalTemplateDialogBase();
 

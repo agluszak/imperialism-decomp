@@ -883,8 +883,8 @@ address|target_cpp|ownership|note
 49cfa0|src/game/TBackdropWindow.cpp|manual|marker_sync
 49d090|src/game/TBackdropWindow.cpp|manual|marker_sync
 49d180|src/game/TBackdropWindow.cpp|manual|marker_sync
-49d360|src/game/TControl.cpp|manual|marker_sync
-49d450|src/game/TControl.cpp|manual|marker_sync
+49d360|src/game/TModalDialogBase.cpp|manual|marker_sync
+49d450|src/game/TModalDialogBase.cpp|manual|marker_sync
 49d510|src/game/TModalTemplateDialog.cpp|manual|marker_sync
 49d620|src/game/ui_invalidation_guard.cpp|manual|marker_sync
 49d650|src/game/TAdorner.cpp|manual|marker_sync
@@ -5487,7 +5487,7 @@ address|target_cpp|ownership|note
 604e4c|src/game/library_msvc500_fid.cpp|library|marker_sync
 604e5e|src/game/library_msvc500_fid.cpp|library|marker_sync
 60508e|src/game/library_msvc500_fid.cpp|library|marker_sync
-6050d0|src/game/TControl.cpp|manual|marker_sync
+6050d0|src/game/library_msvc500_overrides.cpp|library|marker_sync
 605144|src/game/library_msvc500_fid.cpp|library|marker_sync
 60517b|src/game/library_msvc500_fid.cpp|library|marker_sync
 60531e|src/game/library_msvc500_fid.cpp|library|marker_sync

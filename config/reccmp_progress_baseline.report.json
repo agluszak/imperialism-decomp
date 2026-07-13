@@ -386,7 +386,7 @@
     },
     {
       "address": "0x415760",
-      "matching": 0.18282548476454294,
+      "matching": 0.1907356948228883,
       "name": "WarnLowDiskSpaceAndConfirmContinue",
       "type": 1
     },
@@ -1660,7 +1660,7 @@
     },
     {
       "address": "0x47cfd0",
-      "matching": 0.4,
+      "matching": 0.8918918918918919,
       "name": "InitializeDialogTemplateC2WithTextState",
       "type": 1
     },
@@ -1678,7 +1678,7 @@
     },
     {
       "address": "0x47d1c0",
-      "matching": 0.45714285714285713,
+      "matching": 0.90625,
       "name": "InitializeDialogTemplateD2WithTextState",
       "type": 1
     },
@@ -1810,7 +1810,7 @@
     },
     {
       "address": "0x47dfd0",
-      "matching": 0.5063291139240507,
+      "matching": 0.5405405405405406,
       "name": "InitializeDialogTemplateFBWithDualTextState",
       "type": 1
     },
@@ -2615,7 +2615,7 @@
     },
     {
       "address": "0x4851b0",
-      "matching": 0.6133333333333333,
+      "matching": 0.6036745406824147,
       "name": "TMacViewMgr_OnCommand_ID_800C_ShowCityViewSelectionDialog",
       "type": 1
     },
@@ -2627,7 +2627,7 @@
     },
     {
       "address": "0x4855b0",
-      "matching": 0.4900662251655629,
+      "matching": 0.49032258064516127,
       "name": "TMacViewMgr_OnCommand_ID_8013_ShowTerrainOverlayDialog",
       "type": 1
     },
@@ -4373,7 +4373,7 @@
     },
     {
       "address": "0x48b2d0",
-      "matching": 0.2033898305084746,
+      "matching": 0.19130434782608696,
       "name": "TView::VTableSlotDD",
       "type": 1
     },
@@ -6871,7 +6871,7 @@
     },
     {
       "address": "0x49d450",
-      "matching": 0.42105263157894735,
+      "matching": 0.4657534246575342,
       "name": "TControl::FinalizeModalDialogAndRestoreOwnerFocus",
       "type": 1
     },
@@ -7579,7 +7579,7 @@
     },
     {
       "address": "0x4a2900",
-      "matching": 0.13063763608087092,
+      "matching": 0.13374805598755832,
       "name": "BuildArmyContextActionRecordsAndDispatchLabel",
       "type": 1
     },
@@ -15195,7 +15195,7 @@
     },
     {
       "address": "0x4fd000",
-      "matching": 0.832,
+      "matching": 0.848,
       "name": "TMapKey::RenderMapHintOverlayMode0",
       "type": 1
     },
@@ -16241,7 +16241,7 @@
     },
     {
       "address": "0x5083f0",
-      "matching": 0.39747634069400634,
+      "matching": 0.4037854889589905,
       "name": "TLanguageMgr::Localize",
       "type": 1
     },
@@ -16415,7 +16415,7 @@
     },
     {
       "address": "0x50bea0",
-      "matching": 0.20990458882326216,
+      "matching": 0.21172194457064972,
       "name": "TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets",
       "type": 1
     },
@@ -25837,7 +25837,7 @@
     },
     {
       "address": "0x5798a0",
-      "matching": 0.3235294117647059,
+      "matching": 0.3431372549019608,
       "name": "TRadioTextCluster::AddItem",
       "type": 1
     },
@@ -29525,7 +29525,7 @@
     },
     {
       "address": "0x5a1520",
-      "matching": 0.48148148148148145,
+      "matching": 0.5259259259259259,
       "name": "TTacticalBattle::MoveTacticalUnitTowardTile",
       "type": 1
     },
@@ -29567,7 +29567,7 @@
     },
     {
       "address": "0x5a1ee0",
-      "matching": 0.6604774535809018,
+      "matching": 0.6631299734748011,
       "name": "TTacticalBattle::EvaluateAndResolveTacticalActionAgainstTileOccupant",
       "type": 1
     },
@@ -29645,7 +29645,7 @@
     },
     {
       "address": "0x5a3810",
-      "matching": 0.7107438016528925,
+      "matching": 0.8571428571428571,
       "name": "TTacticalBattle::ComputeRallyStrengthAndQueueTacticalRallyCommand",
       "type": 1
     },
@@ -29657,7 +29657,7 @@
     },
     {
       "address": "0x5a39a0",
-      "matching": 0.9393939393939394,
+      "matching": 0.9545454545454546,
       "name": "ComputeHexTileDistanceFromIndices",
       "type": 1
     },
@@ -29675,7 +29675,7 @@
     },
     {
       "address": "0x5a3d30",
-      "matching": 0.8104956268221575,
+      "matching": 0.8163265306122449,
       "name": "IsTacticalTargetTileReachableForAction",
       "type": 1
     },
@@ -30161,7 +30161,7 @@
     },
     {
       "address": "0x5a8ac0",
-      "matching": 0.6086956521739131,
+      "matching": 0.6867469879518072,
       "name": "TTacticalBattleView::CenterViewportAroundGridIndexAndSnap",
       "type": 1
     },
@@ -30197,7 +30197,7 @@
     },
     {
       "address": "0x5a9240",
-      "matching": 0.5397590361445783,
+      "matching": 0.5533980582524272,
       "name": "TTacticalBattleView::AnimateTacticalUnitMoveBetweenTiles",
       "type": 1
     },
@@ -30299,7 +30299,7 @@
     },
     {
       "address": "0x5acb50",
-      "matching": 0.7466666666666667,
+      "matching": 0.9261744966442953,
       "name": "TTacticalToolbar::UpdateTacticalCurrentUnitControlAndDialogLabel",
       "type": 1
     },
@@ -33702,7 +33702,7 @@
     },
     {
       "address": "0x5e1bc0",
-      "matching": 0.4507042253521127,
+      "matching": 0.6865671641791045,
       "name": "InitializeDialogTemplate98WithSharedText",
       "type": 1
     },
@@ -36534,7 +36534,7 @@
     },
     {
       "address": "0x5ff46f",
-      "matching": 0.9578947368421052,
+      "matching": 0.968421052631579,
       "name": "CFileDialog::CFileDialog",
       "type": 1
     },
@@ -37014,8 +37014,8 @@
     },
     {
       "address": "0x6050d0",
-      "matching": 0.25,
-      "name": "TControl::InitializeDialogTemplateFromId",
+      "matching": 0.9047619047619048,
+      "name": "CDialog::CDialog(unsigned int, class CWnd *)",
       "type": 1
     },
     {
@@ -40386,7 +40386,7 @@
     },
     {
       "address": "0x61a8dd",
-      "matching": 0.9454545454545454,
+      "matching": 0.9636363636363636,
       "name": "CDocManager::OnFileNew",
       "type": 1
     },

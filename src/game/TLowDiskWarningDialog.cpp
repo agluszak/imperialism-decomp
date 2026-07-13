@@ -3,15 +3,8 @@
 #include "game/global_data_tables.h"
 
 // FUNCTION: IMPERIALISM 0x005e1bc0
-TLowDiskWarningDialog::TLowDiskWarningDialog(void* initParam) {
-  InitializeDialogTemplateFromId(0x98, initParam);
-  modalCreated = 0;
-  field5c = 0;
-  hasCommandTagResource = 0;
-  commandTagResourceByte = 0;
-  padding_65_to_67[0] = 0;
-  padding_65_to_67[1] = 0;
-  padding_65_to_67[2] = 0;
+TLowDiskWarningDialog::TLowDiskWarningDialog(void* initParam)
+    : TModalTemplateDialog(0x98, static_cast<CWnd*>(initParam)), promptText() {
   SetPromptText(reinterpret_cast<LPCSTR>(g_szEmptyString));
 }
 

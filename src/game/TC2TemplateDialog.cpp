@@ -12,28 +12,12 @@ static const unsigned int kGreatPowerLabelFmt = 0x00694e70;
 static const unsigned int kMinorNationLabelFmt = 0x00694e54;
 
 // FUNCTION: IMPERIALISM 0x0047cfd0
-TC2TemplateDialog::TC2TemplateDialog(void* initParam) {
-  InitializeDialogTemplateFromId(0xc2, initParam);
-  hasCommandTagResource = 0;
-  commandTagResourceByte = 0;
-  padding_65_to_67[0] = 0;
-  padding_65_to_67[1] = 0;
-  padding_65_to_67[2] = 0;
-}
-
-TC2TemplateDialog::~TC2TemplateDialog() {}
+TC2TemplateDialog::TC2TemplateDialog(void* initParam)
+    : TModalDialogBase(0xc2, static_cast<CWnd*>(initParam)), slider(), listbox() {}
 
 // FUNCTION: IMPERIALISM 0x0047d1c0
-TD2TemplateDialog::TD2TemplateDialog(void* initParam) {
-  InitializeDialogTemplateFromId(0xd2, initParam);
-  hasCommandTagResource = 0;
-  commandTagResourceByte = 0;
-  padding_65_to_67[0] = 0;
-  padding_65_to_67[1] = 0;
-  padding_65_to_67[2] = 0;
-}
-
-TD2TemplateDialog::~TD2TemplateDialog() {}
+TD2TemplateDialog::TD2TemplateDialog(void* initParam)
+    : TModalDialogBase(0xd2, static_cast<CWnd*>(initParam)), listbox() {}
 
 // The ID_800C command: put up the C2 template dialog with a 0..6 city-view slider and a
 // 10-row list box (each row carries a turn-event code as item data). On OK, dispatch the
