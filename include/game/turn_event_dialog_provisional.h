@@ -3,6 +3,8 @@
 #include "game/TControl.h"
 #include "game/TView.h"
 
+class TViewMgr;
+
 // Provisional interfaces for the runtime-resolved turn-event dialog and its 'GOLD'
 // child control. These are never constructed here — they only give names to the
 // vtable slots dispatched on the concrete (not-yet-recovered) dialog/control classes
@@ -55,6 +57,18 @@ struct GoldDialogControl : public TControl {
   virtual void InvokeSlot1D0OneParam(void* content);
 };
 
+// A distinct 'GOLD' concrete class from GoldDialogControl: dialog 0x546's 'GOLD' child
+// (HandleTurnEventDialogFactorySlotD8, 0x5dcf20) dispatches byte 0x1cc with a single
+// TViewMgr* argument, whereas GoldDialogControl's own 0x1cc override (verified at
+// TMacViewMgr::OrphanCallChain_C9_I49_0050d5b0, dialog 0x2404) takes three ints -- proof
+// these are two different runtime classes sharing the 'GOLD' tag and this byte offset,
+// not one type (see the Type-modeling guardrail's "never borrow a type" rule).
+struct GoldFactoryPanel : public TControl {
+  virtual void goldPanel71();                                    // slot 0x71 byte 0x1c4
+  virtual void goldPanelSetControlStateByResource(int a, int b); // slot 0x72 byte 0x1c8
+  virtual void NotifyDialogOwner(TViewMgr* viewMgr);             // slot 0x73 byte 0x1cc
+};
+
 // The 'GOLD' child of the factory dialogs opened by HandleTurnEventDialogFactorySlot78
 // dispatches a zero-argument commit through byte 0x1a0 — a different subclass family
 // than TurnEventDialogNode (whose 0x1a0 is ShowTurnEventDialog(int)) and than TControl
@@ -78,7 +92,9 @@ struct GoldCommitControl : public TView {
   virtual void ApplyGoldTradeSummaryValues(int a, int b, int c);     // slot 0x73 byte 0x1cc
   virtual void ApplyGoldTradeDialogRefreshResult(int refreshResult); // slot 0x74 byte 0x1d0
   virtual void goldSlot75();
-  virtual void goldSlot76();
+  // Notified with TViewMgr::currentTurnEventCode before a dialog-factory slot resolves
+  // its own factory dialog node (HandleTurnEventDialogFactorySlotD8/E8, 0x5dcf20/0x5dd770).
+  virtual void NotifyGoldControlOfTurnEventCode(short eventCode); // slot 0x76 byte 0x1d8
   virtual void goldSlot77();
   virtual void goldSlot78();
   virtual void ConfigureGoldValueCells(int cellWidth, int cellHeight); // slot 0x79 byte 0x1e4

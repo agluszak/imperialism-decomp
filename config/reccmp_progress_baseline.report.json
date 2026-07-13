@@ -16411,7 +16411,7 @@
     },
     {
       "address": "0x50bea0",
-      "matching": 0.2044525215810995,
+      "matching": 0.21172194457064972,
       "name": "TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets",
       "type": 1
     },
@@ -21328,7 +21328,7 @@
     },
     {
       "address": "0x545940",
-      "matching": 0.42610240671943145,
+      "matching": 0.4189953157809724,
       "name": "TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine",
       "type": 1
     },
@@ -29640,7 +29640,7 @@
     },
     {
       "address": "0x5a3810",
-      "matching": 0.8571428571428571,
+      "matching": 0.7107438016528925,
       "name": "TTacticalBattle::ComputeRallyStrengthAndQueueTacticalRallyCommand",
       "type": 1
     },
@@ -33187,13 +33187,13 @@
     },
     {
       "address": "0x5da040",
-      "matching": 0.31932773109243695,
+      "matching": 0.532258064516129,
       "name": "HandleTurnEventVtableSlot60ActivateMainDialog",
       "type": 1
     },
     {
       "address": "0x5da180",
-      "matching": 0.28695652173913044,
+      "matching": 0.6183574879227053,
       "name": "HandleTurnEvent2260_RefreshMainHudTitles",
       "type": 1
     },
@@ -33355,7 +33355,7 @@
     },
     {
       "address": "0x5dcf20",
-      "matching": 0.0,
+      "matching": 0.5245901639344263,
       "name": "TViewMgr::HandleTurnEventDialogFactorySlotD8",
       "type": 1
     },
@@ -33379,7 +33379,7 @@
     },
     {
       "address": "0x5dd340",
-      "matching": 0.0,
+      "matching": 0.8125,
       "name": "TViewMgr::HandleTurnEventDialogFactorySlotF0",
       "type": 1
     },

@@ -85,6 +85,7 @@ undefined4 DoModal_6051b9(void);
 namespace {
 using turn_event_dialog::GoldCommitControl;
 using turn_event_dialog::GoldDialogControl;
+using turn_event_dialog::GoldFactoryPanel;
 using turn_event_dialog::TurnEventDialogNode;
 // g_pUiViewManager (TAssetMgr) @ 0x6a2148 — the UI/view asset registry that resolves
 // turn-event dialog nodes by message context.
@@ -995,7 +996,7 @@ void TViewMgr::DispatchTurnEventSlot4C(short eventCode, int payload) {
       this->UiRuntimeSlot9C();
     } else if (newCode == 0x2260) {
       mainView->RefreshControl();
-      this->UiRuntimeSlot64();
+      this->HandleTurnEventVtableSlot64RefreshMainHudTitles();
     }
     DispatchPostTurnStateUpdatesTail();
     return;
@@ -1065,9 +1066,9 @@ void TViewMgr::DispatchTurnEventSlot4C(short eventCode, int payload) {
       } else if (newCode == 0xf3d) {
         this->HandleTurnEventF3D_PopulateRecentTurnMessages(static_cast<int>(secondary));
       } else if (newCode == 0x2103) {
-        this->UiRuntimeSlot64();
+        this->HandleTurnEventVtableSlot64RefreshMainHudTitles();
       } else if (newCode == 0x2134) {
-        this->UiRuntimeSlot60();
+        this->HandleTurnEventVtableSlot60ActivateMainDialog();
       } else if (newCode == 0x2260) {
         this->UiRuntimeSlot9C();
       }
@@ -1298,17 +1299,50 @@ void TViewMgr::UiRuntimeSlot5C() {
   UiRuntimeSlot58();
 }
 
-void TViewMgr::UiRuntimeSlot60() {
-  TView* mainView = g_pDisplayMgr->activeDialog;
-  if (mainView != nullptr) {
-    static_cast<TDiplomacyMapView*>(mainView)->SelectCandidateTilesWithLowGroundUnitCount();
-  }
+// FUNCTION: IMPERIALISM 0x005da040
+void TViewMgr::HandleTurnEventVtableSlot60ActivateMainDialog() {
+  TView* mainControl =
+      static_cast<TView*>(g_pDisplayMgr->activeDialog->ResolveControlByTag(kControlTagMain));
+  mainControl->AssertValid();
+  mainControl->RefreshControl();
+
+  g_pCursorControlPanel = static_cast<TInfoBarText*>(
+      static_cast<TView*>(g_pDisplayMgr->activeDialog->ResolveControlByTag(kControlTagCurs)));
+  g_pCursorControlPanel->AssertValid();
+  g_pCursorControlPanel->InitializeMapHintTextStyleAndThemeFlags(0x2b6c, 0x2b67);
+
+  CString emptyTitle(g_szEmptyString);
+  ApplySharedStringToControlState(emptyTitle, mainControl);
 }
 
-void TViewMgr::UiRuntimeSlot64() {
+// FUNCTION: IMPERIALISM 0x005da180
+void TViewMgr::HandleTurnEventVtableSlot64RefreshMainHudTitles() {
   TView* mainView = g_pDisplayMgr->activeDialog;
-  if (mainView != nullptr) {
-    static_cast<TDiplomacyMapView*>(mainView)->OrphanLeaf_NoCall_Ins07_004d8920();
+
+  g_pCursorControlPanel =
+      static_cast<TInfoBarText*>(mainView->ResolveControlByTag(kControlTagCurs));
+  g_pCursorControlPanel->AssertValid();
+  g_pCursorControlPanel->InitializeMapHintTextStyleAndThemeFlags(0x2b6c, 0x2b67);
+
+  TView* mainControl = static_cast<TView*>(mainView->ResolveControlByTag(kControlTagMain));
+  mainControl->AssertValid();
+  CString emptyTitle(g_szEmptyString);
+  ApplySharedStringToControlState(emptyTitle, mainControl);
+
+  TView* queryControl = mainControl->ResolveControlByTag(kControlTagQuer);
+  LoadUiStringByGroupAndIndexToControlObject(0x2730, 3, queryControl);
+
+  TControl* titleControl =
+      static_cast<TControl*>(mainControl->ResolveControlByTag(0x7469744c)); // 'titL'
+  if (titleControl != nullptr) {
+    titleControl->AssertValid();
+    titleControl->RefreshControl();
+    static_cast<TInfoBarText*>(titleControl)
+        ->InitializeMapHintTextStyleAndThemeFlags(0x2b6c, 0x2b6b);
+    CString titleString;
+    g_pSimMgr->CopyScenarioNationSetupIntoFlowState(&titleString);
+    titleControl->EnableAndProcessFlag(titleString);
+    titleControl->RefreshHudNationTitleControlsAndTheme(0x2b6c);
   }
 }
 
@@ -1547,19 +1581,6 @@ void TViewMgr::UiRuntimeSlotD0() {
   turn_event_ui_refresh::RefreshMainCouncilTickerPanel();
 }
 
-void TViewMgr::UiRuntimeSlotD8() {}
-
-int TViewMgr::ShowConstructionOptionsDialog() {
-  return 0;
-}
-
-void TViewMgr::UiRuntimeSlotE0() {}
-void TViewMgr::UiRuntimeSlotE8() {}
-// TODO: real slot body not yet ported (see header TODO for call-site evidence).
-void TViewMgr::UiRuntimeSlotF0(TTaskForce* activeMapOrderEntry) {
-  (void)activeMapOrderEntry;
-}
-
 // FUNCTION: IMPERIALISM 0x005dc3f0
 void TViewMgr::HandleTurnEventTable66F220_Slot0C_InvokeGoldViewSlots0C_1E4_14x14() {
   GoldCommitControl* gold = static_cast<GoldCommitControl*>(
@@ -1617,6 +1638,46 @@ void TViewMgr::HandleTurnEventVtableSlot2CInitializeHotKeyDialog() {
   }
 }
 
+// FUNCTION: IMPERIALISM 0x005dcf20
+void TViewMgr::HandleTurnEventDialogFactorySlotD8() {
+  GoldCommitControl* rootGold = static_cast<GoldCommitControl*>(
+      static_cast<TView*>(g_pDisplayMgr->activeDialog->ResolveControlByTag(kControlTagGold)));
+  if (rootGold == nullptr) {
+    MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgrMore_0069B740, 0xe2);
+  }
+  rootGold->NotifyGoldControlOfTurnEventCode(currentTurnEventCode);
+
+  TurnEventDialogNode* node = static_cast<TurnEventDialogNode*>(
+      g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(0x546));
+  if (node == nullptr) {
+    MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgrMore_0069B740, 0xe5);
+  }
+  GoldFactoryPanel* gold = static_cast<GoldFactoryPanel*>(
+      static_cast<TView*>(node->ResolveControlByTag(kControlTagGold)));
+  if (gold == nullptr) {
+    MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgrMore_0069B740, 0xe6);
+  }
+  gold->NotifyDialogOwner(this);
+
+  POINT placement;
+  ComputeTurnEventDialogPlacementByCode(node, &placement);
+  node->CaptureLayoutF0(reinterpret_cast<int*>(&placement), 0);
+  node->ShowTurnEventDialog(1);
+  node->RefreshTurnEventDialog();
+  node->CallVoidSlotA0();
+  node->Free();
+}
+
+int TViewMgr::ShowConstructionOptionsDialog() {
+  return 0;
+}
+
+void TViewMgr::UiRuntimeSlotE0() {}
+void TViewMgr::UiRuntimeSlotE8() {}
+
 // FUNCTION: IMPERIALISM 0x005dd220
 void TViewMgr::HandleTurnEventDialogFactorySlotE4(int stringCode) {
   TurnEventDialogNode* node = static_cast<TurnEventDialogNode*>(
@@ -1637,6 +1698,34 @@ void TViewMgr::HandleTurnEventDialogFactorySlotE4(int stringCode) {
     TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgrMore_0069B740, 0x156);
   }
   nameText->SetTextFromUiStringResourceId(static_cast<short>(stringCode));
+  node->CallVoidSlotA0();
+  node->Free();
+}
+
+// FUNCTION: IMPERIALISM 0x005dd340
+void TViewMgr::HandleTurnEventDialogFactorySlotF0(TTaskForce* activeMapOrderEntry) {
+  TurnEventDialogNode* node = static_cast<TurnEventDialogNode*>(
+      g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(0x2506));
+  if (node == nullptr) {
+    MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgrMore_0069B740, 0x167);
+  }
+  TView* page = node->ResolveControlByTag(0x70616765); // 'page'
+  if (page == nullptr) {
+    MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgrMore_0069B740, 0x169);
+  }
+  // Ground truth (byte 0x1b8) rebuilds 'page's roster around activeMapOrderEntry, but the
+  // concrete roster subclass installed as 'page' here isn't recovered yet (same gap as
+  // HandleTurnEventDialogFactorySlotEC above) -- left undone rather than fake the cast
+  // (Hard Rule 12).
+  (void)page;
+  (void)activeMapOrderEntry;
+
+  POINT placement;
+  ComputeTurnEventDialogPlacementByCode(node, &placement);
+  node->CaptureLayoutF0(reinterpret_cast<int*>(&placement), 0);
+  node->RefreshTurnEventDialog();
   node->CallVoidSlotA0();
   node->Free();
 }

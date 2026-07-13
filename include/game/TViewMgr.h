@@ -48,8 +48,13 @@ public:
   virtual short GetPendingTurnOverlayCode();                          // 0x54
   virtual void UiRuntimeSlot58();                                     // 0x58
   virtual void UiRuntimeSlot5C();                                     // 0x5c
-  virtual void UiRuntimeSlot60();                                     // 0x60
-  virtual void UiRuntimeSlot64();                                     // 0x64
+  // Resolves the active dialog's 'main' and 'curs' panels, refreshes the cursor info
+  // panel's map-hint style, then clears the 'main' panel's title text (0x5da040).
+  virtual void HandleTurnEventVtableSlot60ActivateMainDialog(); // 0x60
+  // Sibling of slot 0x60: refreshes the 'curs' cursor panel, then repopulates the
+  // 'quer' query label and 'titL' nation-title panel from the current scenario setup
+  // (0x5da180).
+  virtual void HandleTurnEventVtableSlot64RefreshMainHudTitles(); // 0x64
 
   // UI runtime helper functions
   virtual void AddPendingTurnOverlayCode(int modeValue); // 0x68
@@ -95,9 +100,12 @@ public:
   virtual void InvokeStrategicMapViewMethod6C();                        // 0xcc 0x5dc160
   virtual void UiRuntimeSlotD0();                                       // 0xd0
   virtual void UiRuntimeSlotD4(int arg);                                // 0xd4
-  virtual void UiRuntimeSlotD8();                                       // 0xd8
-  virtual int ShowConstructionOptionsDialog();                          // 0xdc
-  virtual void UiRuntimeSlotE0();                                       // 0xe0
+  // Resolves the active dialog's 'GOLD' panel, notifies it of the current turn-event
+  // code, then resolves+shows+refreshes the 0x546 factory dialog's own 'GOLD' child
+  // (0x5dcf20).
+  virtual void HandleTurnEventDialogFactorySlotD8(); // 0xd8
+  virtual int ShowConstructionOptionsDialog();       // 0xdc
+  virtual void UiRuntimeSlotE0();                    // 0xe0
   // Opens factory dialog 0x1c52, places it, and sets the 'GOLD'->'name' text from a
   // localized string code (0x5dd220).
   virtual void HandleTurnEventDialogFactorySlotE4(int stringCode); // 0xe4
@@ -105,12 +113,14 @@ public:
   // Refreshes the 0xdac factory dialog's 'page' roster for a tile-selection map click
   // (0x5dd900); reached from TArmyToolbar's map-tile-selection handler.
   virtual void HandleTurnEventDialogFactorySlotEC(int mapSelection); // 0xec
-  // Real arity confirmed from TToolBarCluster::TryHandleMapContextAction's case-10 call
+  // Resolves the 0x2506 factory dialog's 'page' child and forwards the caller-supplied
+  // map-order context to it, then places/refreshes/frees the dialog (0x5dd340). Real
+  // arity confirmed from TToolBarCluster::TryHandleMapContextAction's case-10 call
   // site: ecx=g_pUiRuntimeContext, one pushed arg = GetActiveMapOrderEntry()'s result
-  // (a TTaskForce*). TODO: real slot body not yet ported.
-  virtual void UiRuntimeSlotF0(TTaskForce* activeMapOrderEntry); // 0xf0
-  virtual void HandleTurnEventDialogFactorySlotF4();             // 0xf4
-  virtual void UiRuntimeSlotF8();                                // 0xf8
+  // (a TTaskForce*).
+  virtual void HandleTurnEventDialogFactorySlotF0(TTaskForce* activeMapOrderEntry); // 0xf0
+  virtual void HandleTurnEventDialogFactorySlotF4();                                // 0xf4
+  virtual void UiRuntimeSlotF8();                                                   // 0xf8
   virtual void NoOpTurnEventStateVtableSlotFC(); // 0xfc 0x5dbd10 -- real body is a bare `ret`
   // Turn-event 0x5DE: re-assert + refresh the 'main' view panel (sibling of the 0x5DF
   // handler; the original brackets the body with a scoped empty CString). 0x5dbd30.
