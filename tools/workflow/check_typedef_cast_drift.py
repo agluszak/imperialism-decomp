@@ -23,6 +23,8 @@ import sys
 from collections import defaultdict
 from pathlib import Path
 
+from tools.common.file_scan import is_excluded_scan_path
+
 TYPEDEF_RE = re.compile(
     r"typedef\s+(?P<ret>[^;(]*?)\(\s*(?P<conv>__cdecl|__stdcall|__fastcall|__thiscall)?\s*"
     r"\*\s*(?P<name>\w+)_t\s*\)\s*\((?P<args>[^;]*?)\)\s*;",
@@ -64,6 +66,8 @@ def main() -> int:
     by_name: dict[str, set[tuple[str, str, str]]] = defaultdict(set)
     files_of: dict[str, set[str]] = defaultdict(set)
     for path in sorted(Path(args.root).rglob("*.cpp")):
+        if is_excluded_scan_path(path):
+            continue
         text = path.read_text(encoding="utf-8", errors="replace")
         for m in TYPEDEF_RE.finditer(text):
             ret = normalize(m.group("ret"))

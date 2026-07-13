@@ -35,6 +35,20 @@ lines are the orig side, green `+` the recomp side; a slot with both is a mismat
 `(no orig / …)` on recomp = our function isn't paired to any original (usually a
 scalar-deleting-dtor or stub needing a pairing fix).
 
+## Which `vtable-*` target do I want?
+
+Six `just` targets share the `vtable` prefix but check different things — pick by what
+you're trying to answer, not by name similarity:
+
+| Target | Answers | Needs a build? |
+|---|---|---|
+| `just vtable [Class]` | Is this class's vtable byte-identical to the original, slot by slot? (the day-to-day tool for this skill) | yes |
+| `just vtable-gate` | Does manual source ever index/call through a raw `vftable[...]` instead of a real `virtual`/`override`? (Hard Rule 13 source-text policy gate) | no |
+| `just vtable-annotation-gate` | Is every `// VTABLE:` marker immediately followed by its class/struct, with no interposed comment/blank line? | no |
+| `just vtable-collision-gate` | Does any `symbols.csv` DATA row or `// GLOBAL:` marker collide with a `// VTABLE:` address (which would make reccmp drop the vtable as a duplicate)? | no |
+| `just vtable-coverage` | Which `// VTABLE:` annotations did reccmp fail to match at all (as opposed to matching with wrong slots)? | yes |
+| `just vtable-autofix` | (mutating, dry-run first) Can a repair plan auto-apply safe fixes — slot renames, scalar-dtor spelling, safe ILT thunk pruning? | no |
+
 ## Classify every mismatch, then fix
 
 **First: is it inherited?** Run `just vtable <BaseClass>`. If the same slot mismatches
@@ -68,10 +82,13 @@ but only when the thunk address is **not** claimed as a function on our side. To
 ## Verify loop
 
 After each fix: `just regen-stubs` → `just build` → `just detect`
-→ `just vtable <Class>` (expect `100% match`). Then `just gates` (marker hygiene +
-decomplint ordering) and `just format-check <touched paths>`. If you changed a **base**
-class, re-run `just vtable` on a couple of derived classes and `just stats` — base edits
-touch the whole family. Build the binary before trusting the diff; the
+→ `just vtable <Class>` (expect `100% match`). Then run `just gates` — the full
+mechanical source-policy chain (marker/vtable-annotation/vtable-collision hygiene,
+symbols/ownership integrity, construction anti-patterns, decomplint ordering, and
+more; see the `quality-control` skill for the canonical full list, kept there so this
+doc can't drift from it) — and `just format-check <touched paths>`. If you changed a
+**base** class, re-run `just vtable` on a couple of derived classes and `just stats` —
+base edits touch the whole family. Build the binary before trusting the diff; the
 comparison reads the freshly built `Imperialism.exe`/`.pdb`.
 
 ## Guardrails

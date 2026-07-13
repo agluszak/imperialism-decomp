@@ -16,6 +16,7 @@ import json
 import sys
 from pathlib import Path
 
+from tools.common.baseline_staleness import warn_if_baseline_stale
 from tools.common.pipe_csv import read_pipe_rows
 from tools.common.report_score import effective_matching
 
@@ -57,6 +58,8 @@ def main() -> int:
     if not argv:
         print("usage: func_status 0xADDR [0xADDR ...]", file=sys.stderr)
         return 2
+
+    warn_if_baseline_stale(REPO_ROOT)
 
     symbols = _index_by_address(SYMBOLS_CSV)
     ownership = _index_by_address(OWNERSHIP_CSV)

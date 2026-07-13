@@ -185,6 +185,7 @@ def _evict_daemon_if_running() -> None:
     """
     import json as _json
     import socket as _socket
+    import sys as _sys
     import time as _time
 
     sp = socket_path()
@@ -197,6 +198,11 @@ def _evict_daemon_if_running() -> None:
     except OSError:
         probe.close()
         return  # stale socket; daemon.serve() unlinks it on next start
+    print(
+        "Evicted a running Ghidra inspection daemon (project lock is exclusive); "
+        "run `just ghidra-daemon` again to keep queries fast.",
+        file=_sys.stderr,
+    )
     try:
         probe.sendall(_json.dumps({"cmd": "shutdown"}).encode() + b"\n")
         probe.recv(4096)

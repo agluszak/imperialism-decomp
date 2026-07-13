@@ -1,0 +1,30 @@
+# Pre-existing config/symbols.csv function-range overlaps (bd: file follow-up beads
+# per class as they're cleaned up). Format: outer_addr:inner_addr  # note
+#
+# Each pair is a `type=="function"` row whose byte range fully or partially swallows
+# another row's start address -- a linker-layout impossibility, so one row's
+# address/size is wrong. Most are switch/case pseudo-function bodies mis-split out
+# of a dispatcher (e.g. HandleEvent) by an earlier autogen pass; a couple are inlined
+# leaf helpers whose caller's size wasn't trimmed. Do not add a new pair here without
+# root-causing it -- this file tracks known debt, not a general suppression.
+
+4295a0:42d240  # InitializeCityTradeDiplomacyUiEntries starts inside BuildTurnEventDialogResourcesForEvent547Or7D8
+493800:493819  # WrapperFor_ShowWindowOrForwardToSite_At00493819 starts inside CMcWindow::OnWindowStateMsg468
+493800:493829  # WrapperFor_ShowWindowOrForwardToSite_At00493829 starts inside CMcWindow::OnWindowStateMsg468
+4ccf30:4ccfa2  # DispatchCityViewSelectionChangeAndRefresh starts inside TIndustryView::HandleEvent (case-body split)
+4dd7f0:4dd810  # GetCityProductionValueTimesTwoCallbackA starts inside TGreatPower::OrphanCallChain_C1_I42_004dd7f0
+4dd7f0:4dd823  # GetCityProductionValueTimesTwoCallbackB starts inside TGreatPower::OrphanCallChain_C1_I42_004dd7f0
+4dd7f0:4dd836  # GetCityProductionValueCallbackBase starts inside TGreatPower::OrphanCallChain_C1_I42_004dd7f0
+4dd7f0:4dd847  # GetCityProductionValueTimesTwoCallbackC starts inside TGreatPower::OrphanCallChain_C1_I42_004dd7f0
+4dd7f0:4dd85a  # GetCityProductionValueTimesTwoCallbackD starts inside TGreatPower::OrphanCallChain_C1_I42_004dd7f0
+4dd7f0:4dd86d  # GetCityProductionValueTimesTwoCallbackE starts inside TGreatPower::OrphanCallChain_C1_I42_004dd7f0
+4dd7f0:4dd880  # GetCityProductionValueTimesTwoCallbackF starts inside TGreatPower::OrphanCallChain_C1_I42_004dd7f0
+4dd7f0:4dd893  # GetCityProductionValueTimesTwoCallbackG starts inside TGreatPower::OrphanCallChain_C1_I42_004dd7f0
+50ec90:50ed4d  # RebuildGlobalMapStateAndMaybeDispatchTurnEvent3C0 starts inside TMapMgr::BuildOrLoadGlobalMapStateForSession
+537090:5370f0  # QueueMissionOrderEntriesAcrossSelectionRange starts inside TScatteredShipsMission::QueueMissionOrdersByPriorityForContext
+56ae10:56af74  # HandleOptionsTagApplyFragmentAndMaybePostTurnEvent5DC starts inside TGamePreferencesPicture::HandleEvent (case-body split)
+597340:5974a4  # Helper_Uses_thunk_AssignStringSharedRefAndReturnThis_At005974a4 starts inside TMapUberPicture::HandleEvent (case-body split)
+597340:5974eb  # ReinitializeGameFlowAndPostTurnEvent5DD starts inside TMapUberPicture::HandleEvent (case-body split)
+5b4a10:5b4bd0  # WrapperFor_ReleaseSharedStringRefIfNotEmpty_At005b4bd0 starts inside TSpecialQuitPicture::HandleEvent (case-body split)
+5f28f0:5f29b0  # _strpbrk starts inside _strchr (CRT leaf, likely COMDAT-folded/overlapping thunks)
+619e4e:619f0e  # SendMessage199Minus1AndRefreshSelection starts inside OnInitDialog_619e4e

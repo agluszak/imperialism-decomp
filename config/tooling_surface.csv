@@ -99,3 +99,4 @@ module|tools.workflow.check_typedef_ghidra_args|just:typedef-args-audit|Typedef-
 module|tools.workflow.gen_compile_commands|just:gen-compile-commands|Rewrite lint compile_commands.json for host clangd
 module|tools.common.reccmp_report|dependency:tools.reccmp.compare_batch|Shared full-report runner (reccmp-reccmp --json, diet or full)
 module|tools.common.symbols|dependency:tools.reccmp.triage|Shared symbols.csv / function_ownership.csv loaders
+module|tools.workflow.check_function_ownership_integrity|just:ownership-integrity-gate|function_ownership.csv structural integrity (header/duplicate-address safety)
