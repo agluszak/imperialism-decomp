@@ -5129,6 +5129,12 @@
       "type": 1
     },
     {
+      "address": "0x48f250",
+      "matching": 0.547945205479452,
+      "name": "DestructCityDialogSharedBaseState",
+      "type": 1
+    },
+    {
       "address": "0x48f330",
       "matching": 0.0,
       "name": "InitializePictureEntryBaseAndRefresh",
@@ -5706,31 +5712,31 @@
     },
     {
       "address": "0x492f60",
-      "matching": 0.41379310344827586,
+      "matching": 0.8,
       "name": "InitializeMovieViewOwnedStateBlock_Impl",
       "type": 1
     },
     {
       "address": "0x492fa0",
-      "matching": 0.6666666666666666,
+      "matching": 1.0,
       "name": "SendWmCloseToWindowHandle",
       "type": 1
     },
     {
       "address": "0x492fc0",
-      "matching": 0.7586206896551724,
+      "matching": 1.0,
       "name": "SendMessage499AndDetachOnSuccess",
       "type": 1
     },
     {
       "address": "0x493090",
-      "matching": 0.8666666666666667,
+      "matching": 0.9333333333333333,
       "name": "SendMessage806AndCacheResult",
       "type": 1
     },
     {
       "address": "0x4930d0",
-      "matching": 0.8666666666666667,
+      "matching": 0.9333333333333333,
       "name": "SendMessage808AndCacheResult",
       "type": 1
     },
@@ -33757,25 +33763,25 @@
     },
     {
       "address": "0x5e2230",
-      "matching": 0.8115942028985508,
+      "matching": 1.0,
       "name": "TMovieView::ConstructTMovieViewBaseState",
       "type": 1
     },
     {
       "address": "0x5e22f0",
-      "matching": 0.9090909090909091,
+      "matching": 1.0,
       "name": "TMovieView::`scalar deleting destructor'",
       "type": 1
     },
     {
       "address": "0x5e2320",
-      "matching": 0.08695652173913043,
+      "matching": 0.6436781609195402,
       "name": "DestructMovieViewAndCloseOwnedWindow",
       "type": 1
     },
     {
       "address": "0x5e23f0",
-      "matching": 0.6268656716417911,
+      "matching": 0.935064935064935,
       "name": "TMovieView::NoOpUiLifecycleHook",
       "type": 1
     },
@@ -33787,19 +33793,19 @@
     },
     {
       "address": "0x5e24e0",
-      "matching": 0.14285714285714285,
+      "matching": 1.0,
       "name": "SendMessage806IfSelectionStateActive",
       "type": 1
     },
     {
       "address": "0x5e2500",
-      "matching": 0.14285714285714285,
+      "matching": 1.0,
       "name": "SendMessage808IfSelectionStateActive",
       "type": 1
     },
     {
       "address": "0x5e2520",
-      "matching": 0.7894736842105263,
+      "matching": 1.0,
       "name": "TMovieView::DispatchUiMouseMoveToChildren",
       "type": 1
     },

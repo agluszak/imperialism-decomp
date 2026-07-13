@@ -10,88 +10,48 @@
 
 IMPLEMENT_DYNCREATE(TMovieView, TPicture)
 
-namespace {
-
-// FUNCTION: IMPERIALISM 0x00492f60
-MciMovieWindowState* InitializeMovieViewOwnedStateBlock_Impl(MciMovieWindowState* state,
-                                                             HWND parentHwnd) {
-  AFX_MODULE_STATE* moduleState = AfxGetModuleState();
-  state->hwnd = MCIWndCreateA(parentHwnd, moduleState->m_hCurrentInstanceHandle,
-                              kMciMovieWindowCreateStyle, 0);
-  state->lastResult = 0;
-  return state;
-}
-
-// FUNCTION: IMPERIALISM 0x00492fa0
-void SendWmCloseToWindowHandle(MciMovieWindowState* state) {
-  SendMessageA(state->hwnd, WM_CLOSE, 0, 0);
-}
-
-// FUNCTION: IMPERIALISM 0x00492fc0
-bool SendMessage499AndDetachOnSuccess(MciMovieWindowState* state, LPCSTR moviePath) {
-  state->lastResult =
-      SendMessageA(state->hwnd, MCIWNDM_OPENA, 0, reinterpret_cast<LPARAM>(moviePath));
-  if (state->lastResult != 0) {
-    return false;
-  }
-
-  CWnd window;
-  window.Attach(state->hwnd);
-  window.CenterWindow();
-  window.Detach();
-  return true;
-}
-
-// FUNCTION: IMPERIALISM 0x00493090
-bool PlayMovieAndCacheResult(MciMovieWindowState* state) {
-  state->lastResult = SendMessageA(state->hwnd, MCI_PLAY, 0, 0);
-  return state->lastResult == 0;
-}
-
-// FUNCTION: IMPERIALISM 0x004930d0
-bool StopMovieAndCacheResult(MciMovieWindowState* state) {
-  state->lastResult = SendMessageA(state->hwnd, MCI_STOP, 0, 0);
-  return state->lastResult == 0;
-}
-
-CMainFrame* GetMovieMainFrame() {
-  CWinThread* thread = AfxGetThread();
-  if (thread == 0) {
-    return 0;
-  }
-  return static_cast<CMainFrame*>(thread->GetMainWnd());
-}
-
-} // namespace
-
+// The original calls AfxGetThread() twice (once to null-check, once to fetch
+// GetMainWnd() through it) rather than caching the result across the branch — this is
+// the standard MSVC500 "call again to use" idiom for a value that isn't worth spilling
+// across a conditional. Reproduced verbatim (not factored into a helper) to match.
+// Note: movieWindowState is not explicitly zeroed here (listing at 0x5e2230 has no
+// write to this+0x90) — it stays whatever the allocator handed back until
+// NoOpUiLifecycleHook assigns it. Matches the original; not "fixed" to zero-init.
 // FUNCTION: IMPERIALISM 0x005e2230
-TMovieView::TMovieView() : TPicture(), movieWindowState(0) {
+TMovieView::TMovieView() : TPicture() {
   g_pSfxPlaybackSystem->ClearDirectSoundInitPendingAndResetState();
   g_pSfxPlaybackSystem->HandleBlinkStateAndScheduleTimerTick(1);
 
-  CMainFrame* mainFrame = GetMovieMainFrame();
-  if (mainFrame != 0) {
-    mainFrame->SetFieldC0AndInvalidateWindowIfChanged(0x1000000);
+  CMainFrame* mainFrame;
+  if (AfxGetThread() != 0) {
+    mainFrame = static_cast<CMainFrame*>(AfxGetThread()->GetMainWnd());
   } else {
-    static_cast<CMainFrame*>(0)->SetFieldC0AndInvalidateWindowIfChanged(0x1000000);
+    mainFrame = 0;
   }
+  mainFrame->SetFieldC0AndInvalidateWindowIfChanged(0x1000000);
 }
 
+// The scalar deleting destructor is compiler-generated from the virtual dtor; it is a
+// thin wrapper that calls the real destructor body below (verified at 0x5e22f0: a
+// 30-byte thunk that calls 0x4058df -> 0x5e2320) then conditionally frees.
 // SYNTHETIC: IMPERIALISM 0x005e22f0
 // TMovieView::`scalar deleting destructor'
+
+// FUNCTION: IMPERIALISM 0x005e2320
 TMovieView::~TMovieView() {
   if (movieWindowState != 0) {
-    SendWmCloseToWindowHandle(movieWindowState);
+    movieWindowState->Close();
     delete movieWindowState;
     movieWindowState = 0;
   }
 
-  CMainFrame* mainFrame = GetMovieMainFrame();
-  if (mainFrame != 0) {
-    mainFrame->SetFieldC0AndInvalidateWindowIfChanged(0x100005f);
+  CMainFrame* mainFrame;
+  if (AfxGetThread() != 0) {
+    mainFrame = static_cast<CMainFrame*>(AfxGetThread()->GetMainWnd());
   } else {
-    static_cast<CMainFrame*>(0)->SetFieldC0AndInvalidateWindowIfChanged(0x100005f);
+    mainFrame = 0;
   }
+  mainFrame->SetFieldC0AndInvalidateWindowIfChanged(0x100005f);
 
   g_pSfxPlaybackSystem->RequestDirectSoundInitIfAllowed();
 }
@@ -107,11 +67,7 @@ void TMovieView::NoOpUiLifecycleHook(int arg) {
     parentHwnd = nativeWindow->m_hWnd;
   }
 
-  movieWindowState = 0;
-  MciMovieWindowState* state = new MciMovieWindowState();
-  if (state != 0) {
-    movieWindowState = InitializeMovieViewOwnedStateBlock_Impl(state, parentHwnd);
-  }
+  movieWindowState = new MciMovieWindowState(parentHwnd);
 }
 
 // FUNCTION: IMPERIALISM 0x005e2490
@@ -121,34 +77,38 @@ void TMovieView::ApplyRectSlot110(RECT* rectBuffer) {
 
 // FUNCTION: IMPERIALISM 0x005e24b0
 bool TMovieView::OpenMoviePathAndDetachOnSuccess(LPCSTR moviePath) {
-  if (movieWindowState == 0) {
-    return false;
+  if (movieWindowState != 0) {
+    return movieWindowState->OpenAndCenter(moviePath);
   }
-  return SendMessage499AndDetachOnSuccess(movieWindowState, moviePath);
+  return false;
 }
 
+// Return type is void, not bool: the listing at 0x005e24e0 (`test ecx,ecx; jz +5;
+// jmp Play(); ret`) never sets eax/al on the null path, and both callers
+// (PlayMovieClipAndDispatchTurnStateFollowup at 0x5dfc10, via thunk 0x401839) discard
+// the call's result entirely — there is no bool being consumed here.
 // FUNCTION: IMPERIALISM 0x005e24e0
-bool TMovieView::PlayMovieIfActive() {
-  if (movieWindowState == 0) {
-    return false;
+void TMovieView::PlayMovieIfActive() {
+  if (movieWindowState != 0) {
+    movieWindowState->Play();
   }
-  return PlayMovieAndCacheResult(movieWindowState);
 }
 
 // Stop (skip) the movie: sends MCI_STOP, which makes the MCIWnd notify its parent with
 // MCIWNDM_NOTIFYMODE/MCI_MODE_STOP -> CIncludeView::OnMciNotifyMode advances the turn state.
+// Same void-return shape as PlayMovieIfActive above (0x005e2500 listing; caller
+// ForwardParam at 0x4ffd70 via thunk 0x40485e also discards the result).
 // FUNCTION: IMPERIALISM 0x005e2500
-bool TMovieView::StopMovieIfActive() {
-  if (movieWindowState == 0) {
-    return false;
+void TMovieView::StopMovieIfActive() {
+  if (movieWindowState != 0) {
+    movieWindowState->Stop();
   }
-  return StopMovieAndCacheResult(movieWindowState);
 }
 
 // FUNCTION: IMPERIALISM 0x005e2520
 char TMovieView::DispatchUiMouseMoveToChildren(CPoint* point, int arg2, int arg3, int arg4) {
   if (movieWindowState != 0) {
-    StopMovieAndCacheResult(movieWindowState);
+    movieWindowState->Stop();
   }
   return TPicture::DispatchUiMouseMoveToChildren(point, arg2, arg3, arg4);
 }
