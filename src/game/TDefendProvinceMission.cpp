@@ -48,6 +48,9 @@ char TDefendProvinceMission::ReturnFalseSlot28() {
 }
 
 // Global factory function
+// FUNCTION: IMPERIALISM 0x00535800
+TDefendProvinceMission::~TDefendProvinceMission() {}
+
 // SYNTHETIC: IMPERIALISM 0x0053e5f0
 // TDefendProvinceMission::CreateObject
 

@@ -7,6 +7,8 @@
 class TDefendProvinceMission : public TArmyMission {
   DECLARE_SERIAL(TDefendProvinceMission)
 public:
+  virtual ~TDefendProvinceMission() override; // slot 0x01 dtor 0x00535800 / ??_G 0x005357d0
+public:
   TDefendProvinceMission();
   TDefendProvinceMission(int nodeKey);
 

@@ -11,14 +11,6 @@ undefined4 ResetTScatteredShipsMissionToSentinelVtable(void)
   return 0;
 }
 
-// ghidra_name ResetTDefendProvinceMissionToSentinelVtable
-// ghidra_proto undefined ResetTDefendProvinceMissionToSentinelVtable()
-// FUNCTION: IMPERIALISM 0x00535800
-undefined4 ResetTDefendProvinceMissionToSentinelVtable(void)
-{
-  return 0;
-}
-
 // ghidra_name FindFirstTrackedHandlerMatchingModeAndShortKey
 // ghidra_proto undefined FindFirstTrackedHandlerMatchingModeAndShortKey()
 // FUNCTION: IMPERIALISM 0x00535940
@@ -151,14 +143,6 @@ undefined4 WrapperFor_AFX_CLASSINIT_At005387a0(void)
 // ghidra_proto undefined ComputeNavyOrderDistributionSimilarityScoreForMissionNation()
 // FUNCTION: IMPERIALISM 0x00538dd0
 undefined4 ComputeNavyOrderDistributionSimilarityScoreForMissionNation(void)
-{
-  return 0;
-}
-
-// ghidra_name ResetTEscortMissionToSentinelVtable
-// ghidra_proto undefined ResetTEscortMissionToSentinelVtable()
-// FUNCTION: IMPERIALISM 0x00539990
-undefined4 ResetTEscortMissionToSentinelVtable(void)
 {
   return 0;
 }

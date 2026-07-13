@@ -75,6 +75,14 @@ int TNavyMission::ReturnZeroSlot5C() {
   return reinterpret_cast<int>(this);
 }
 
+// SYNTHETIC: IMPERIALISM 0x00535560
+// TNavyMission::`scalar deleting destructor'
+
+// The trivial base-chain destructors collapse to a single reset of the vptr to CObject's
+// runtime-object base vtable; MSVC emits exactly that write for this empty destructor.
+// FUNCTION: IMPERIALISM 0x00535590
+TNavyMission::~TNavyMission() {}
+
 // SYNTHETIC: IMPERIALISM 0x00536390
 // TNavyMission::CreateObject
 

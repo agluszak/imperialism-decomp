@@ -7,15 +7,21 @@
 class TEscortMission : public TNavyMission {
   DECLARE_SERIAL(TEscortMission)
 public:
+  virtual ~TEscortMission() override; // slot 0x01 dtor 0x00539990 / ??_G 0x00539960
+public:
   TEscortMission();
   TEscortMission(TZone* targetZone);
 
   // Slots 0x0c, 0x0e, 0x0f: TMission's own virtuals, overridden here.
-  virtual void Call30() override;             // slot 0x0c 0x539a70 -- reset dispatch flag, copy target context id
-  virtual void ResetValue0CToZero() override; // slot 0x0e 0x539ca0 -- nation-scaled score using primary port context
-  virtual void NoOpSlot3C() override;         // slot 0x0f 0x539e70 -- resource weights from eligible-nation navy pressure
+  virtual void
+  Call30() override; // slot 0x0c 0x539a70 -- reset dispatch flag, copy target context id
+  virtual void ResetValue0CToZero()
+      override; // slot 0x0e 0x539ca0 -- nation-scaled score using primary port context
+  virtual void NoOpSlot3C()
+      override; // slot 0x0f 0x539e70 -- resource weights from eligible-nation navy pressure
 
-  virtual void MissionSlot44() override; // slot 0x11 0x53a290 -- reset beachhead-child flags, dispatch field5 context
+  virtual void MissionSlot44()
+      override; // slot 0x11 0x53a290 -- reset beachhead-child flags, dispatch field5 context
   virtual TMission* GetReplacementSlot48() override; // slot 0x12 0x539900 -- passthrough
   virtual char MatchesMissionKeySlot4C(int kind, int key, int mode) override; // slot 0x13 0x53a250
 

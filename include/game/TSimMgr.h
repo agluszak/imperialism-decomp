@@ -112,6 +112,15 @@ public:
   void SetSelectedIndex6AAndTriggerRefresh(short index);
   void SetActiveNationSlotAndRefreshCityCapabilityUiHandles(short nationSlot); // 0x5837c0
 
+  // --- turn-instruction stream handlers (dispatched by FourCC through the table at
+  //     0x698b50 inside ProcessTurnInstructionStreamAndFinalizePhase; each reads one or
+  //     more big-endian tokens from the cursor and mutates this manager / global state) ---
+  void
+  HandleTurnInstruction_Year_UpdateScenarioYearFieldScaledBy4(void* pInstructionRaw); // 0x582ed0
+  void HandleTurnInstruction_Flag_SetNationFlagAndRefresh(void* pInstructionRaw);     // 0x583400
+  void HandleTurnInstruction_Cash_SetNationCash(void* pInstructionRaw);               // 0x583360
+  void HandleTurnInstruction_Tran_SetNationTransportStat(void* pInstructionRaw);      // 0x582860
+
   // --- fields (offsets are load-bearing: referenced from many other classes via
   //     g_pSimMgr; do not rename or move) ---
   int turnStateCode;

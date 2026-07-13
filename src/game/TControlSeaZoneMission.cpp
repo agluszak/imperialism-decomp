@@ -53,6 +53,9 @@ char TControlSeaZoneMission::ReturnFalseSlot60() {
 }
 
 // Inherited unchanged by TBeachheadMission (real base class relationship).
+// FUNCTION: IMPERIALISM 0x00535620
+TControlSeaZoneMission::~TControlSeaZoneMission() {}
+
 // FUNCTION: IMPERIALISM 0x005387f0
 void TControlSeaZoneMission::Call30() {
   TGreatPower* owner = reinterpret_cast<TGreatPower*>(targetZone14);

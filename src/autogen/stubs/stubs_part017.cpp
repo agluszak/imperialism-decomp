@@ -507,14 +507,6 @@ undefined4 WrapperFor_InvalidateCityDialogRectRegion_At00565fc0(void)
   return 0;
 }
 
-// ghidra_name ComputeTileClassBoundsInViewport
-// ghidra_proto undefined ComputeTileClassBoundsInViewport()
-// FUNCTION: IMPERIALISM 0x00566060
-undefined4 ComputeTileClassBoundsInViewport(void)
-{
-  return 0;
-}
-
 // ghidra_name Helper_Uses_thunk_DrawCenteredGuideLineOnMapDc_At005663c0
 // ghidra_proto undefined Helper_Uses_thunk_DrawCenteredGuideLineOnMapDc_At005663c0()
 // FUNCTION: IMPERIALISM 0x005663c0

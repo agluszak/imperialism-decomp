@@ -275,14 +275,6 @@ undefined4 HandleTurnInstruction_Ship_DeserializeAndCreatePrimaryOrders(void)
   return 0;
 }
 
-// ghidra_name HandleTurnInstruction_Tran_SetNationTransportStat
-// ghidra_proto undefined HandleTurnInstruction_Tran_SetNationTransportStat()
-// FUNCTION: IMPERIALISM 0x00582860
-undefined4 HandleTurnInstruction_Tran_SetNationTransportStat(void)
-{
-  return 0;
-}
-
 // ghidra_name HandleTurnInstruction_Deve_ApplyMapDevelopmentEntry
 // ghidra_proto undefined HandleTurnInstruction_Deve_ApplyMapDevelopmentEntry()
 // FUNCTION: IMPERIALISM 0x005828f0
@@ -347,14 +339,6 @@ undefined4 HandleTurnInstruction_Trea_ApplyTreatyAndRelationEntry(void)
   return 0;
 }
 
-// ghidra_name HandleTurnInstruction_Year_UpdateScenarioYearFieldScaledBy4
-// ghidra_proto undefined HandleTurnInstruction_Year_UpdateScenarioYearFieldScaledBy4()
-// FUNCTION: IMPERIALISM 0x00582ed0
-undefined4 HandleTurnInstruction_Year_UpdateScenarioYearFieldScaledBy4(void)
-{
-  return 0;
-}
-
 // ghidra_name HandleTurnInstruction_Prov_ApplyProvinceAssignmentEntry
 // ghidra_proto undefined HandleTurnInstruction_Prov_ApplyProvinceAssignmentEntry()
 // FUNCTION: IMPERIALISM 0x00582f20
@@ -391,22 +375,6 @@ undefined4 HandleTurnInstruction_Rela_SetNationRelationValue(void)
 // ghidra_proto undefined HandleTurnInstruction_Pnam_AssignProvinceName()
 // FUNCTION: IMPERIALISM 0x00583270
 undefined4 HandleTurnInstruction_Pnam_AssignProvinceName(void)
-{
-  return 0;
-}
-
-// ghidra_name HandleTurnInstruction_Cash_SetNationCash
-// ghidra_proto undefined HandleTurnInstruction_Cash_SetNationCash()
-// FUNCTION: IMPERIALISM 0x00583360
-undefined4 HandleTurnInstruction_Cash_SetNationCash(void)
-{
-  return 0;
-}
-
-// ghidra_name HandleTurnInstruction_Flag_SetNationFlagAndRefresh
-// ghidra_proto undefined HandleTurnInstruction_Flag_SetNationFlagAndRefresh()
-// FUNCTION: IMPERIALISM 0x00583400
-undefined4 HandleTurnInstruction_Flag_SetNationFlagAndRefresh(void)
 {
   return 0;
 }
