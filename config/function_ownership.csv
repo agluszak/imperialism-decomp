@@ -3764,8 +3764,10 @@ address|target_cpp|ownership|note
 582630|src/game/TGreatPower.cpp|manual|marker_sync
 582860|src/game/TSimMgr.cpp|manual|marker_sync
 582ed0|src/game/TSimMgr.cpp|manual|marker_sync
+582f20|src/game/TSimMgr.cpp|manual|marker_sync
 583360|src/game/TSimMgr.cpp|manual|marker_sync
 583400|src/game/TSimMgr.cpp|manual|marker_sync
+583670|src/game/TSimMgr.cpp|manual|marker_sync
 5837c0|src/game/TSimMgr.cpp|manual|marker_sync
 5838b0|src/game/TArrowsControl.cpp|manual|marker_sync
 583950|src/game/TArrowsControl.cpp|manual|marker_sync

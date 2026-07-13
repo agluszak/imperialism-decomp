@@ -387,14 +387,6 @@ undefined4 HandleTurnInstruction_Trea_ApplyTreatyAndRelationEntry(void)
   return 0;
 }
 
-// ghidra_name HandleTurnInstruction_Prov_ApplyProvinceAssignmentEntry
-// ghidra_proto undefined HandleTurnInstruction_Prov_ApplyProvinceAssignmentEntry()
-// FUNCTION: IMPERIALISM 0x00582f20
-undefined4 HandleTurnInstruction_Prov_ApplyProvinceAssignmentEntry(void)
-{
-  return 0;
-}
-
 // ghidra_name HandleTurnInstruction_Zone_AssignMapActionContextNameByNodeId
 // ghidra_proto undefined HandleTurnInstruction_Zone_AssignMapActionContextNameByNodeId()
 // FUNCTION: IMPERIALISM 0x00582fa0
@@ -439,14 +431,6 @@ undefined4 HandleTurnInstruction_Tyer_SetCityOrderCapabilityTierValue(void)
 // ghidra_proto undefined HandleTurnInstruction_Tbar_SetNationRelationBarValue()
 // FUNCTION: IMPERIALISM 0x00583510
 undefined4 HandleTurnInstruction_Tbar_SetNationRelationBarValue(void)
-{
-  return 0;
-}
-
-// ghidra_name HandleTurnInstruction_Tclr_ResetNationRelationBars
-// ghidra_proto undefined HandleTurnInstruction_Tclr_ResetNationRelationBars()
-// FUNCTION: IMPERIALISM 0x00583670
-undefined4 HandleTurnInstruction_Tclr_ResetNationRelationBars(void)
 {
   return 0;
 }
