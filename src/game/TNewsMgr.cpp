@@ -24,11 +24,11 @@ void TNewsMgr::WriteTo(TStream* stream) {}
 // FUNCTION: IMPERIALISM 0x0055b710
 void TInterNationEventQueueManager::InitializeInterNationEventQueueManager() {
   for (int i = 0; i < 7; i++) {
-    perNationEventBuckets[i] = reinterpret_cast<TPtrList*>(new TSortedPtrList());
-    *(short*)((char*)perNationEventBuckets[i] + 0x14) = 0x24;
+    perNationEventBuckets[i] = new TSortedPtrList();
+    perNationEventBuckets[i]->recordSize14 = 0x24;
     perNationUiCounters7[i] = 0;
   }
   *(int*)((char*)this + 8) = 0;
-  sharedEventRecordQueue = reinterpret_cast<TPtrList*>(new TSortedPtrList());
-  *(short*)((char*)sharedEventRecordQueue + 0x14) = 0x10;
+  sharedEventRecordQueue = new TSortedPtrList();
+  sharedEventRecordQueue->recordSize14 = 0x10;
 }
