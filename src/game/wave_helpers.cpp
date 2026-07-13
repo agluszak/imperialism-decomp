@@ -273,3 +273,27 @@ bool __stdcall SetAuxOutputVolumeAcrossCompatibleDevices(int level) {
   }
   return result == 0;
 }
+
+// FUNCTION: IMPERIALISM 0x005e1620
+int __stdcall GetAuxOutputVolumeFromFirstCompatibleDevice(unsigned int* outVolume) {
+  tagAUXCAPSA caps;
+  DWORD volume;
+  UINT deviceId = 0;
+  UINT numDevs = auxGetNumDevs();
+  if (static_cast<int>(numDevs) < 1) {
+    return 0;
+  }
+  do {
+    MMRESULT result = auxGetDevCapsA(deviceId, &caps, 0x30);
+    auxGetVolume(deviceId, &volume);
+    if ((static_cast<unsigned char>(caps.wPid) & 7) == 1) {
+      if (result == 0) {
+        *outVolume = (volume >> 9) & 0x7f;
+        return 1;
+      }
+      *outVolume = 0;
+    }
+    ++deviceId;
+  } while (static_cast<int>(deviceId) < static_cast<int>(numDevs));
+  return 0;
+}

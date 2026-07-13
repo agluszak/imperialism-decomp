@@ -515,46 +515,6 @@ undefined4 ProbeAuxOutputDeviceIndexByPidMask(void)
   return 0;
 }
 
-// ghidra_name GetAuxOutputVolumeFromFirstCompatibleDevice
-// ghidra_proto undefined GetAuxOutputVolumeFromFirstCompatibleDevice()
-// FUNCTION: IMPERIALISM 0x005e1620
-undefined4 GetAuxOutputVolumeFromFirstCompatibleDevice(void)
-{
-  return 0;
-}
-
-// ghidra_name SendMciStatusCommand814AndIgnoreFailure
-// ghidra_proto undefined SendMciStatusCommand814AndIgnoreFailure()
-// FUNCTION: IMPERIALISM 0x005e16f0
-undefined4 SendMciStatusCommand814AndIgnoreFailure(void)
-{
-  return 0;
-}
-
-// ghidra_name QueryMciStatusField5ViaCommand814
-// ghidra_proto undefined QueryMciStatusField5ViaCommand814()
-// FUNCTION: IMPERIALISM 0x005e1760
-undefined4 QueryMciStatusField5ViaCommand814(void)
-{
-  return 0;
-}
-
-// ghidra_name QueryMciStatusField8ViaCommand814
-// ghidra_proto undefined QueryMciStatusField8ViaCommand814()
-// FUNCTION: IMPERIALISM 0x005e17b0
-undefined4 QueryMciStatusField8ViaCommand814(void)
-{
-  return 0;
-}
-
-// ghidra_name QueryMciStatusField3ViaCommand814
-// ghidra_proto undefined QueryMciStatusField3ViaCommand814()
-// FUNCTION: IMPERIALISM 0x005e1800
-undefined4 QueryMciStatusField3ViaCommand814(void)
-{
-  return 0;
-}
-
 // ghidra_name OpenCdAudioAndProbeAuxOutputDevice
 // ghidra_proto undefined OpenCdAudioAndProbeAuxOutputDevice()
 // FUNCTION: IMPERIALISM 0x005e18f0

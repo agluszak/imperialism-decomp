@@ -50,6 +50,8 @@ int CopyMmioChunkByFourCCViaGlobalBuffer(HMMIO hmmioIn, HMMIO hmmioOut, MMCKINFO
 int __stdcall SetAuxOutputVolumeFromScalar(int scalar);
 // 0x5e1590: sets volume on every aux device whose wPid&7 is 1 or 2; returns whether the
 // last auxGetDevCaps call succeeded.
-bool __stdcall SetAuxOutputVolumeAcrossCompatibleDevices(int level); // 0x5e1500
+bool __stdcall SetAuxOutputVolumeAcrossCompatibleDevices(int level);
+// 0x5e1620: reads volume (>>9 & 0x7f) from the first aux device whose wPid&7==1.
+int __stdcall GetAuxOutputVolumeFromFirstCompatibleDevice(unsigned int* outVolume); // 0x5e1500
 // Thin forwarder (multimedia module copy at 0x47cdd0).
 int __stdcall ApplyAuxOutputVolumeFromScalar(int scalar); // 0x47cdd0
