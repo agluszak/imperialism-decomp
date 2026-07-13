@@ -619,14 +619,6 @@ undefined4 WrapperFor_DeleteRegionHandleFromClipState_At00498610(void)
   return 0;
 }
 
-// ghidra_name ProbeRectEmptyAfterCopyToLocal
-// ghidra_proto undefined ProbeRectEmptyAfterCopyToLocal()
-// FUNCTION: IMPERIALISM 0x00498b10
-undefined4 ProbeRectEmptyAfterCopyToLocal(void)
-{
-  return 0;
-}
-
 // ghidra_name AssertQuickDrawFlag6A1DC8NonZero
 // ghidra_proto void __cdecl AssertQuickDrawFlag6A1DC8NonZero(void* ptr)
 // FUNCTION: IMPERIALISM 0x00498b50

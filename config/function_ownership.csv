@@ -232,6 +232,7 @@ address|target_cpp|ownership|note
 47f7f0|src/game/TWNetSessionManager.cpp|manual|marker_sync
 47fd30|src/game/TWNetSessionManager.cpp|manual|marker_sync
 480400|src/game/TWNetSessionManager.cpp|manual|marker_sync
+4804c0|src/game/TWNetSessionManager.cpp|manual|marker_sync
 480850|src/game/TWNetSessionManager.cpp|manual|marker_sync
 4808a0|src/game/TWNetSessionManager.cpp|manual|marker_sync
 480b20|src/game/global_data_tables.cpp|manual|marker_sync
@@ -847,6 +848,7 @@ address|target_cpp|ownership|note
 498180|src/game/quickdraw_regions.cpp|manual|marker_sync
 498980|src/game/quickdraw_rendering.cpp|manual|marker_sync
 498aa0|src/game/quickdraw_regions.cpp|manual|marker_sync
+498b10|src/game/quickdraw_regions.cpp|manual|marker_sync
 498bb0|src/game/quickdraw_regions.cpp|manual|marker_sync
 498f60|src/game/TModuleLibraryCacheTableStateB.cpp|manual|marker_sync
 498fe0|src/game/TModuleLibraryCacheTableStateB.cpp|manual|marker_sync
@@ -4754,6 +4756,7 @@ address|target_cpp|ownership|note
 5d46b0|src/game/mapped_flavor_text.cpp|manual|marker_sync
 5d46e0|src/game/mapped_flavor_text.cpp|manual|marker_sync
 5d4720|src/game/mapped_flavor_text.cpp|manual|marker_sync
+5d4890|src/game/mapped_flavor_text.cpp|manual|marker_sync
 5d4ba0|src/game/buffered_stream.cpp|library|marker_sync
 5d4c10|src/game/TSimMgr.cpp|manual|marker_sync
 5d4c40|src/game/TSimMgr.cpp|manual|marker_sync

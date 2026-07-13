@@ -139,14 +139,6 @@ undefined4 SetSharedStringFromRotatingFlavorTextBySlot(void)
   return 0;
 }
 
-// ghidra_name IsMappedShortcutKeyPressed
-// ghidra_proto bool __cdecl IsMappedShortcutKeyPressed(short nShortcutCode)
-// FUNCTION: IMPERIALISM 0x005d4890
-undefined4 IsMappedShortcutKeyPressed(void)
-{
-  return 0;
-}
-
 // ghidra_name FormatAndAssignTurnStateSharedTextFromTemplate
 // ghidra_proto undefined FormatAndAssignTurnStateSharedTextFromTemplate()
 // FUNCTION: IMPERIALISM 0x005d48c0

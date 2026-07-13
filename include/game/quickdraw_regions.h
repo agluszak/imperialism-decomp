@@ -44,3 +44,6 @@ unsigned char EmptyRgn(RgnHandle rgn);           // 0x00498aa0
 int PtInRgn(CPoint* point, RgnHandle rgn);       // 0x00495650
 int SectRect(RECT* src1, RECT* src2, RECT* dst); // 0x00498bb0
 int BitMapToRegion(RgnHandle rgn, TBitmapSurfaceNode* surface); // 0x00497ef0
+
+// 0x498b10: copies rect to a local and returns IsRectEmpty of the copy.
+int ProbeRectEmptyAfterCopyToLocal(RECT* rect);

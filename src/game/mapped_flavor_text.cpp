@@ -238,3 +238,11 @@ void GenerateMappedFlavorTextUntilValidationPasses(CString* dest, short variantI
     retry = ShouldRetryMappedFlavorTextGeneration(dest);
   } while (retry != 0);
 }
+
+// FUNCTION: IMPERIALISM 0x005d4890
+bool IsMappedShortcutKeyPressed(short nShortcutCode) {
+  if (nShortcutCode == 2) {
+    nShortcutCode = 0x44;
+  }
+  return (static_cast<unsigned int>(GetAsyncKeyState(nShortcutCode)) >> 0xf) & 1;
+}

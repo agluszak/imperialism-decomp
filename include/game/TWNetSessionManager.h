@@ -43,3 +43,6 @@ public:
   // Free the runtime selection entries and release the DirectPlay interfaces.
   void ResetRuntimeSelectionRecordBuffer(); // 0x00480400
 };
+
+// 0x4804c0: adds 500 to *value and returns 1 when Ctrl is held, else 0.
+int __stdcall ApplyCtrlScrollAccelerationToListStep(int* value);
