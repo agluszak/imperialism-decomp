@@ -1636,13 +1636,13 @@
     },
     {
       "address": "0x47cca0",
-      "matching": 0.18181818181818182,
+      "matching": 0.9411764705882353,
       "name": "ResetAndOpenCdAudioDeviceHandle",
       "type": 1
     },
     {
       "address": "0x47cd00",
-      "matching": 0.18181818181818182,
+      "matching": 1.0,
       "name": "EnsureCdAudioDeviceHandleInitialized",
       "type": 1
     },

@@ -217,8 +217,12 @@ address|target_cpp|ownership|note
 47bde0|src/game/CDib.cpp|manual|marker_sync
 47c080|src/game/CDib.cpp|manual|marker_sync
 47c3d0|src/game/CDib.cpp|manual|marker_sync
+47cca0|src/game/cd_audio.cpp|manual|marker_sync
+47ccd0|src/game/cd_audio.cpp|manual|marker_sync
+47cd00|src/game/cd_audio.cpp|manual|marker_sync
 47cd60|src/game/cd_audio.cpp|manual|marker_sync
 47cdd0|src/game/wave_helpers.cpp|manual|marker_sync
+47cdf0|src/game/cd_audio.cpp|manual|marker_sync
 47cfd0|src/game/TC2TemplateDialog.cpp|manual|marker_sync
 47d1c0|src/game/TC2TemplateDialog.cpp|manual|marker_sync
 47d960|src/game/CBrush.cpp|library|marker_sync
@@ -4900,6 +4904,7 @@ address|target_cpp|ownership|note
 5e17b0|src/game/cd_audio.cpp|manual|marker_sync
 5e1800|src/game/cd_audio.cpp|manual|marker_sync
 5e1850|src/game/cd_audio.cpp|manual|marker_sync
+5e19e0|src/game/cd_audio.cpp|manual|marker_sync
 5e1bc0|src/game/TLowDiskWarningDialog.cpp|manual|marker_sync
 5e1e50|src/game/TSortedPtrList.cpp|manual|marker_sync
 5e1f10|src/game/TSortedPtrList.cpp|manual|marker_sync

@@ -20,9 +20,7 @@ extern char PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
 // symbols.csv). Provisional definition until the owning data block is recovered.
 short DAT_006a4520 = 0;
 
-undefined4 EnsureCdAudioDeviceHandleInitialized(void);
 undefined4 ForwardMciCommand808ToDevice(void);
-undefined4 ForwardMciStatusCommand814IgnoreFailure(void);
 undefined4 ReleaseRuntimeSelectionPeersAndResetOwner_Impl(void);
 
 extern undefined4 GenerateThreadLocalRandom15(void);
@@ -66,7 +64,7 @@ void __fastcall DestructTSoundPlayerBaseState(TSoundPlayer* player) {
 }
 
 void TSoundPlayer::EnsureCdAudioDeviceHandleInitialized() {
-  ::EnsureCdAudioDeviceHandleInitialized();
+  g_cdAudioDevice.EnsureCdAudioDeviceHandleInitialized();
 }
 
 void TSoundPlayer::ForwardMciCommand808ToDevice() {
@@ -74,7 +72,7 @@ void TSoundPlayer::ForwardMciCommand808ToDevice() {
 }
 
 BOOL TSoundPlayer::ForwardMciStatusCommand814IgnoreFailure() {
-  return static_cast<BOOL>(::ForwardMciStatusCommand814IgnoreFailure());
+  return static_cast<BOOL>(g_cdAudioDevice.ForwardMciStatusCommand814IgnoreFailure());
 }
 
 // Slot 0x13 override — pump the audio playback state machine / schedule random cues.
