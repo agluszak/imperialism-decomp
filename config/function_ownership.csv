@@ -855,6 +855,8 @@ address|target_cpp|ownership|note
 498aa0|src/game/quickdraw_regions.cpp|manual|marker_sync
 498b10|src/game/quickdraw_regions.cpp|manual|marker_sync
 498bb0|src/game/quickdraw_regions.cpp|manual|marker_sync
+498c60|src/game/TTacticalBattleView.cpp|manual|marker_sync
+498c80|src/game/TTacticalBattleView.cpp|manual|marker_sync
 498f60|src/game/TModuleLibraryCacheTableStateB.cpp|manual|marker_sync
 498fe0|src/game/TModuleLibraryCacheTableStateB.cpp|manual|marker_sync
 4992a0|src/game/TModuleLibraryCacheTableStateB.cpp|manual|marker_sync

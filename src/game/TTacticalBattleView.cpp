@@ -26,6 +26,13 @@ IMPLEMENT_DYNCREATE(TTacticalBattleView, TView)
 
 TTacticalBattleView::TTacticalBattleView() {}
 
+// No-op bracket hooks around the modal one-time-animation wait (retail build leaves these empty).
+// FUNCTION: IMPERIALISM 0x00498c60
+void NoOpModalAnimWaitBracketHookA_00498c60(void) {}
+
+// FUNCTION: IMPERIALISM 0x00498c80
+void NoOpModalAnimWaitBracketHookB_00498c80(void) {}
+
 // FUNCTION: IMPERIALISM 0x005a83c0
 undefined TTacticalBattleView::DrawTacticalTileInClipRect(int tileIndex, RECT* clipRect) {
   (void)tileIndex;
@@ -249,8 +256,6 @@ undefined TTacticalBattleView::PlayTacticalTileEffect(int tileIndex, int effectI
 
 // 1-byte no-op pair bracketing the modal animation wait (possible Mac
 // HideCursor/ShowCursor shims, like QDLoadResource); autogen-stub-owned.
-extern undefined4 NoOpModalAnimWaitBracketHookA_00498c60(void);
-extern undefined4 NoOpModalAnimWaitBracketHookB_00498c80(void);
 
 // Spawns a TOneTimeAnimation over `rect` (effect sprite `effectId`, `frameCount`
 // frames, `mode` ticks per frame, registry tag = tileIndex), registers it with the
