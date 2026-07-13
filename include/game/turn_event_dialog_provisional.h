@@ -3,6 +3,8 @@
 #include "game/TControl.h"
 #include "game/TView.h"
 
+class TCivUnit;
+
 // Provisional interfaces for the runtime-resolved turn-event dialog and its 'GOLD'
 // child control. These are never constructed here — they only give names to the
 // vtable slots dispatched on the concrete (not-yet-recovered) dialog/control classes
@@ -82,6 +84,58 @@ struct GoldCommitControl : public TView {
   virtual void goldSlot77();
   virtual void goldSlot78();
   virtual void ConfigureGoldValueCells(int cellWidth, int cellHeight); // slot 0x79 byte 0x1e4
+};
+
+// The 'GOLD' child of the Civilian Report dialog (resource 0xbc4, opened by
+// TViewMgr::ShowCivilianReportDialogAndReturnConfirm 0x5de4f0). Dispatches a ONE-arg
+// override at the SAME byte 0x1cc GoldCommitControl uses for its 3-arg
+// ApplyGoldTradeSummaryValues — a different concrete control subclass, not
+// GoldCommitControl itself (same slot-divergence pattern documented above).
+struct TCivilianReportGoldControl : public TView {
+  virtual void reportGoldSlot68();
+  virtual void reportGoldSlot69();
+  virtual void reportGoldSlot6a();
+  virtual void reportGoldSlot6b();
+  virtual void reportGoldSlot6c();
+  virtual void reportGoldSlot6d();
+  virtual void reportGoldSlot6e();
+  virtual void reportGoldSlot6f();
+  virtual void reportGoldSlot70();
+  virtual void reportGoldSlot71();
+  virtual void reportGoldSlot72();
+  // Populates the report text/fields from the civilian order entry. slot 0x73 byte 0x1cc
+  virtual void PopulateCivilianReportContent(TCivUnit* civilianOrderEntry);
+};
+
+// The per-order-slot city-production row container passed to
+// TMacViewMgr::SyncSellTaggedChildControlWithNationState (0x50bc50) — the row that owns
+// the 'Sell'-tagged GoldCommitControl-family child. Concrete class not yet recovered.
+// Dispatches four zero-argument notify hooks through bytes 0x1e0/0x1e4/0x1e8/0x1ec — the
+// SAME byte offsets GoldCommitControl uses for its 2-arg ApplyGoldTradeDialogRefreshResult
+// (0x1d0)/ConfigureGoldValueCells (0x1e4), but with a different (0-arg) signature, so this
+// is a sibling class, not GoldCommitControl itself (same pattern as the TControl-vs-
+// GoldCommitControl slot-0x68 divergence noted above).
+struct TSellOrderRowControl : public TView {
+  virtual void rowSlot68();
+  virtual void rowSlot69();
+  virtual void rowSlot6a();
+  virtual void rowSlot6b();
+  virtual void rowSlot6c();
+  virtual void rowSlot6d();
+  virtual void rowSlot6e();
+  virtual void rowSlot6f();
+  virtual void rowSlot70();
+  virtual void rowSlot71();
+  virtual void rowSlot72();
+  virtual void rowSlot73();
+  virtual void rowSlot74();
+  virtual void rowSlot75();
+  virtual void rowSlot76();
+  virtual void rowSlot77();
+  virtual void NotifySellValueValid();        // slot 0x78 byte 0x1e0 (sellCount >= 0 path)
+  virtual void NotifySellValueUnavailable();  // slot 0x79 byte 0x1e4 (sellCount < 0 path)
+  virtual void NotifySellValueActive();       // slot 0x7a byte 0x1e8 (sellCount > 0 path)
+  virtual void NotifySellCapacityAvailable(); // slot 0x7b byte 0x1ec
 };
 
 } // namespace turn_event_dialog

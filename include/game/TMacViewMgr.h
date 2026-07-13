@@ -33,8 +33,9 @@ public:
   virtual void LoadStrategicMapMarkerAtlas1372();                      // slot 0x0e 0x50a440
   virtual undefined OrphanCallChain_C4_I35_0050bbc0(int* param_1, undefined4 param_2,
                                                     short param_3); // slot 0x0f 0x50bbc0
-  virtual undefined SyncSellTaggedChildControlWithNationState(int* param_1,
-                                                              short param_2); // slot 0x10 0x50bc50
+  virtual undefined
+  SyncSellTaggedChildControlWithNationState(TView* view, short orderSlot,
+                                            short nationIndex); // slot 0x10 0x50bc50
   virtual undefined
   RefreshCityProductionDetailPanelAndArrowWidgets(word param_1);   // slot 0x11 0x50bea0
   virtual undefined ResolveTurnEventDialogOrFailAndInvokeSlot9C(); // slot 0x12 0x50be30
@@ -71,8 +72,8 @@ public:
   WrapperFor_IsPointInsideHitRegion_At0050d6c0(short param_1); // slot 0x24 0x50d6c0
   virtual undefined
   EnsureClipRegionWrapperAtSlotAndMergeSourceRegion(undefined4 param_1,
-                                                    short param_2);      // slot 0x25 0x50d680
-  virtual RgnHandle GetClipRegionSlotByIndex(short index); // slot 0x26 0x509e10
+                                                    short param_2); // slot 0x25 0x50d680
+  virtual RgnHandle GetClipRegionSlotByIndex(short index);          // slot 0x26 0x509e10
   // === END GENERATED DECLS (TMacViewMgr) ===
 
   TView* field04;
@@ -108,4 +109,3 @@ public:
 };
 
 // g_pStrategicMapViewSystem — see game/global_data_tables.h.
-
