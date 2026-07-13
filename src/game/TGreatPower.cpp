@@ -3257,7 +3257,7 @@ void TGreatPower::SetHomeCityTileAndDisplayName(short homeRegionTile, char* city
     CString nameStr(cityName);
     short cityRecordIndex = g_pGlobalMapState->terrainStateTable[regionIndex].cityRecordIndex;
     g_pGlobalMapState->SetGlobalMapCellSharedLabel(cityRecordIndex, &nameStr);
-    reinterpret_cast<TProductionOrder*>(selectedOrder)->ResetCityOrderItemDerivedStateNoop(
+    static_cast<TProductionOrder*>(selectedOrder)->ResetCityOrderItemDerivedStateNoop(
         (const char*)nameStr);
   }
 
@@ -4289,7 +4289,50 @@ void TGreatPower::InitializeNationMinisterSubsystemsByPolicyIds(int arg1, int ar
 
 // FUNCTION: IMPERIALISM 0x004e83d0
 void TGreatPower::QueueMapActionMissionsForPortZoneCandidates() {
-  reinterpret_cast<void(__fastcall*)(void*, int)>(0x004e83d0)(this, 0);
+  TSortedList* regionList = this->ownedRegionList;
+  int regionCount = regionList->GetCount();
+
+  for (int i = 1; i <= regionCount; i++) {
+    int regionId = reinterpret_cast<int>(regionList->GetEntryByOrdinal(i));
+    bool unavailable = g_pGlobalMapState->IsNodeTypeLinkUnavailableAndNoActiveMapActionContext(
+        regionId, this->nationSlot);
+    this->mapNodeStateFlags[regionId] = (unavailable == false);
+    QueueMapActionMissionFromCandidateAndMarkState(kMissionTypeDefendProvince, regionId, 0, -1);
+  }
+
+  TZone* portZone =
+      g_pActiveMapOrderContext->FindFirstPortZoneContextByNation(this->nationSlot);
+
+  if (portZone->PrimaryZoneHeapCapacity() == 0) {
+    void* resized = reinterpret_cast<void*(__cdecl*)(void*, int)>(
+        ReallocateHeapBlockWithAllocatorTracking)(portZone->PrimaryZoneHeapData(), 8);
+    if (resized == 0) {
+      resized = reinterpret_cast<void*(__cdecl*)(void*, int)>(
+          ReallocateHeapBlockWithAllocatorTracking)(portZone->PrimaryZoneHeapData(), 4);
+      portZone->PrimaryZoneHeapData() = static_cast<TZone**>(resized);
+      portZone->PrimaryZoneHeapCapacity() = 1;
+    } else {
+      portZone->PrimaryZoneHeapData() = static_cast<TZone**>(resized);
+      portZone->PrimaryZoneHeapCapacity() = 2;
+    }
+  }
+
+  if (portZone->PrimaryZoneHeapSize() == 0) {
+    portZone->PrimaryZoneHeapSize() = 1;
+  }
+
+  TZone** heapData = portZone->PrimaryZoneHeapData();
+  TZone* firstEntry = *heapData;
+
+  short index = (firstEntry != 0) ? *(short*)((char*)firstEntry + 0x14) : -1;
+  this->portZoneStateFlags[index] = 1;
+  QueueMapActionMissionFromCandidateAndMarkState(kMissionTypeDefendProvince, -1, firstEntry, -1);
+
+  index = (portZone != 0) ? *(short*)((char*)portZone + 0x14) : -1;
+  this->portZoneStateFlags[index] = 1;
+  QueueMapActionMissionFromCandidateAndMarkState(kMissionTypeDefendProvince, -1, portZone, -1);
+
+  QueueMapActionMissionFromCandidateAndMarkState(kMissionTypeBlockadePort, -1, 0, -1);
 }
 
 // FUNCTION: IMPERIALISM 0x004e8540
