@@ -254,3 +254,46 @@ int __stdcall SetAuxOutputVolumeFromScalar(int scalar) {
   auxSetVolume(g_nAuxOutputDeviceIndex, (scalar << 16) + scalar);
   return 1;
 }
+
+// FUNCTION: IMPERIALISM 0x005e1590
+bool __stdcall SetAuxOutputVolumeAcrossCompatibleDevices(int level) {
+  MMRESULT result = 0;
+  UINT numDevs = auxGetNumDevs();
+  UINT deviceId = 0;
+  if (0 < static_cast<int>(numDevs)) {
+    tagAUXCAPSA caps;
+    do {
+      result = auxGetDevCapsA(deviceId, &caps, sizeof(tagAUXCAPSA));
+      unsigned short pidLow = caps.wPid & 7;
+      if (pidLow == 1 || pidLow == 2) {
+        auxSetVolume(deviceId, level * 0x2000200);
+      }
+      ++deviceId;
+    } while (static_cast<int>(deviceId) < static_cast<int>(numDevs));
+  }
+  return result == 0;
+}
+
+// FUNCTION: IMPERIALISM 0x005e1620
+int __stdcall GetAuxOutputVolumeFromFirstCompatibleDevice(unsigned int* outVolume) {
+  tagAUXCAPSA caps;
+  DWORD volume;
+  UINT deviceId = 0;
+  UINT numDevs = auxGetNumDevs();
+  if (static_cast<int>(numDevs) < 1) {
+    return 0;
+  }
+  do {
+    MMRESULT result = auxGetDevCapsA(deviceId, &caps, 0x30);
+    auxGetVolume(deviceId, &volume);
+    if ((static_cast<unsigned char>(caps.wPid) & 7) == 1) {
+      if (result == 0) {
+        *outVolume = (volume >> 9) & 0x7f;
+        return 1;
+      }
+      *outVolume = 0;
+    }
+    ++deviceId;
+  } while (static_cast<int>(deviceId) < static_cast<int>(numDevs));
+  return 0;
+}

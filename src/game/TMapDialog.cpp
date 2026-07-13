@@ -14,7 +14,6 @@
 extern "C" long _ftol(void);
 
 void NormalizeWrappedMapCoord108x60(short* xCoord, short* yCoord);
-undefined4 ComputeStridedRecordAddress6C(void);
 undefined4 thunk_ProjectTileIndexToWrappedScreenOffsetByScale(void);
 undefined4 thunk_SplitTileIndexToRowAndColumn(void);
 

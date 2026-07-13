@@ -30,6 +30,15 @@ void TWNetSessionManager::ResetRuntimeSelectionRecordBuffer() {
   }
 }
 
+// FUNCTION: IMPERIALISM 0x004804c0
+int __stdcall ApplyCtrlScrollAccelerationToListStep(int* value) {
+  if ((GetAsyncKeyState(0x11) & 0x8000) != 0) {
+    *value += 500;
+    return 1;
+  }
+  return 0;
+}
+
 // FUNCTION: IMPERIALISM 0x00480850
 int TWNetSessionManager::TrySendNetworkPacket(int nationId, void* packet, unsigned int byteCount) {
   IDirectPlay2* directPlay = this->directPlayInterface04;

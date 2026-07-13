@@ -187,6 +187,17 @@ static char ReturnTrueRuntimeCredentialInitStub();
 // FUNCTION: IMPERIALISM 0x0050ec60
 NationStateRecordA8::NationStateRecordA8() {}
 
+// FUNCTION: IMPERIALISM 0x005421a0
+int FindActiveNationSlotIndexInGameFlowList() {
+  int activeId = GetSessionActiveNationId();
+  for (int i = 0; i < 7; ++i) {
+    if (g_pGameFlowState->nationSessionIds[i] == activeId) {
+      return i;
+    }
+  }
+  return -1;
+}
+
 // SYNTHETIC: IMPERIALISM 0x005425d0
 // TMultiplayerMgr::CreateObject
 
@@ -2474,6 +2485,16 @@ void TMultiplayerMgr::PublishNationDescriptorAndNotifyOrderListeners(TStream* st
   }
 }
 
+// FUNCTION: IMPERIALISM 0x0054a9d0
+int TMultiplayerMgr::IsSpecialNationDialogModeActive() {
+  if (sessionPhaseTag == 0x676f696e) {
+    if (g_pSimMgr->GetActiveNationId() != -1) {
+      return 1;
+    }
+  }
+  return 0;
+}
+
 // FUNCTION: IMPERIALISM 0x0054ab20
 extern "C" void __stdcall DispatchTileRedrawInvalidateEvent(short tileIndex) {
   TileRedrawInvalidateTurnEventPacket packet;
@@ -2630,6 +2651,28 @@ void TMultiplayerMgr::EmitNationDiplomacyNeedStateSnapshotEvent15(char broadcast
   packet.pendingCommitmentCost = nation->pendingCommitmentCost;
   packet.pressureCounter = nation->pressureCounter;
   g_pNetMgr006a6014->Send(&packet, 0);
+}
+
+// FUNCTION: IMPERIALISM 0x0054b8c0
+int TMultiplayerMgr::GetNationStatusCodeForSlotOrActiveNation(int slot) {
+  if (slot == -1) {
+    slot = g_pSimMgr->GetActiveNationId();
+    if (slot == -1) {
+      int sessionActive = GetSessionActiveNationId();
+      slot = 0;
+      int* sessionId = g_pGameFlowState->nationSessionIds;
+      do {
+        if (*sessionId == sessionActive) {
+          goto resolved;
+        }
+        ++slot;
+        ++sessionId;
+      } while (slot < 7);
+      slot = -1;
+    }
+  }
+resolved:
+  return nationStatusTags[slot];
 }
 
 // FUNCTION: IMPERIALISM 0x0054b930

@@ -5,12 +5,12 @@
 #include "game/TTacticalToolbar.h"
 #include "game/TTacticalUnit.h"
 #include "game/ui_control_tags.h"
+// SYNTHETIC: IMPERIALISM 0x005a5480
+// TNavyBattle::CreateObject
 
 // SYNTHETIC: IMPERIALISM 0x005a54d0
 // TNavyBattle::`scalar deleting destructor'
 TNavyBattle::~TNavyBattle() {}
-// SYNTHETIC: IMPERIALISM 0x005a5480
-// TNavyBattle::CreateObject
 
 // SYNTHETIC: IMPERIALISM 0x005a5520
 // TNavyBattle::GetRuntimeClass
@@ -85,6 +85,13 @@ void TNavyBattle::EvaluateAndResolveTacticalActionAgainstTileOccupant(TTacticalU
                                                                       int targetTileIndex) {
   (void)attackerUnit;
   (void)targetTileIndex;
+}
+
+// FUNCTION: IMPERIALISM 0x005a59a0
+void __stdcall ConvertHexTileIndexToRowAndDoubleColumn(int tileIndex, unsigned int* outRow,
+                                                       int* outCol2X) {
+  *outRow = tileIndex / 0x1d;
+  *outCol2X = (tileIndex / 0x1d & 1) + (tileIndex % 0x1d) * 2;
 }
 
 // FUNCTION: IMPERIALISM 0x005a59f0

@@ -27,26 +27,10 @@ undefined4 TickCivWorkOrderCountdownAndComplete(void)
   return 0;
 }
 
-// ghidra_name GetCityActionGateValueBySlot
-// ghidra_proto undefined GetCityActionGateValueBySlot()
-// FUNCTION: IMPERIALISM 0x005c3450
-undefined4 GetCityActionGateValueBySlot(void)
-{
-  return 0;
-}
-
-// ghidra_name GetCityActionCategoryCodeBySlot
-// ghidra_proto undefined GetCityActionCategoryCodeBySlot()
-// FUNCTION: IMPERIALISM 0x005c34b0
-undefined4 GetCityActionCategoryCodeBySlot(void)
-{
-  return 0;
-}
-
-// ghidra_name GetNormalizedCityActionResourceCostPercent
-// ghidra_proto undefined GetNormalizedCityActionResourceCostPercent()
-// FUNCTION: IMPERIALISM 0x005c3580
-undefined4 GetNormalizedCityActionResourceCostPercent(void)
+// ghidra_name AccumulateMissionUnitPriorityVectorWithOptionalFilter_Impl
+// ghidra_proto undefined AccumulateMissionUnitPriorityVectorWithOptionalFilter_Impl()
+// FUNCTION: IMPERIALISM 0x005c3500
+undefined4 AccumulateMissionUnitPriorityVectorWithOptionalFilter_Impl(void)
 {
   return 0;
 }
@@ -131,18 +115,26 @@ undefined4 ApplyControlTextStyleDescriptorFromThemeCode(void)
   return 0;
 }
 
-// ghidra_name SetSharedStringFromRotatingFlavorTextBySlot
-// ghidra_proto undefined SetSharedStringFromRotatingFlavorTextBySlot()
-// FUNCTION: IMPERIALISM 0x005d4550
-undefined4 SetSharedStringFromRotatingFlavorTextBySlot(void)
+// ghidra_name InitializeMainRoutineContextAndRun
+// ghidra_proto undefined InitializeMainRoutineContextAndRun()
+// FUNCTION: IMPERIALISM 0x005c4ab0
+undefined4 InitializeMainRoutineContextAndRun(void)
 {
   return 0;
 }
 
-// ghidra_name IsMappedShortcutKeyPressed
-// ghidra_proto bool __cdecl IsMappedShortcutKeyPressed(short nShortcutCode)
-// FUNCTION: IMPERIALISM 0x005d4890
-undefined4 IsMappedShortcutKeyPressed(void)
+// ghidra_name AssignSharedStringToTaggedControlAndProcessState
+// ghidra_proto undefined AssignSharedStringToTaggedControlAndProcessState()
+// FUNCTION: IMPERIALISM 0x005c4b70
+undefined4 AssignSharedStringToTaggedControlAndProcessState(void)
+{
+  return 0;
+}
+
+// ghidra_name SetSharedStringFromRotatingFlavorTextBySlot
+// ghidra_proto undefined SetSharedStringFromRotatingFlavorTextBySlot()
+// FUNCTION: IMPERIALISM 0x005d4550
+undefined4 SetSharedStringFromRotatingFlavorTextBySlot(void)
 {
   return 0;
 }
@@ -331,6 +323,14 @@ undefined4 OpenSuperArmyRosterPageAndActivateProvinceSelection(void)
   return 0;
 }
 
+// ghidra_name RunTaggedOptionDialogAndReturnSelectionTag
+// ghidra_proto undefined RunTaggedOptionDialogAndReturnSelectionTag()
+// FUNCTION: IMPERIALISM 0x005de010
+undefined4 RunTaggedOptionDialogAndReturnSelectionTag(void)
+{
+  return 0;
+}
+
 // ghidra_name RefreshCurrentUiViewAndActivePanelState
 // ghidra_proto undefined RefreshCurrentUiViewAndActivePanelState()
 // FUNCTION: IMPERIALISM 0x005de5d0
@@ -511,54 +511,6 @@ undefined4 FormatVersionStringFromVersionResource(void)
 // ghidra_proto undefined ProbeAuxOutputDeviceIndexByPidMask()
 // FUNCTION: IMPERIALISM 0x005e1430
 undefined4 ProbeAuxOutputDeviceIndexByPidMask(void)
-{
-  return 0;
-}
-
-// ghidra_name SetAuxOutputVolumeAcrossCompatibleDevices
-// ghidra_proto undefined SetAuxOutputVolumeAcrossCompatibleDevices()
-// FUNCTION: IMPERIALISM 0x005e1590
-undefined4 SetAuxOutputVolumeAcrossCompatibleDevices(void)
-{
-  return 0;
-}
-
-// ghidra_name GetAuxOutputVolumeFromFirstCompatibleDevice
-// ghidra_proto undefined GetAuxOutputVolumeFromFirstCompatibleDevice()
-// FUNCTION: IMPERIALISM 0x005e1620
-undefined4 GetAuxOutputVolumeFromFirstCompatibleDevice(void)
-{
-  return 0;
-}
-
-// ghidra_name SendMciStatusCommand814AndIgnoreFailure
-// ghidra_proto undefined SendMciStatusCommand814AndIgnoreFailure()
-// FUNCTION: IMPERIALISM 0x005e16f0
-undefined4 SendMciStatusCommand814AndIgnoreFailure(void)
-{
-  return 0;
-}
-
-// ghidra_name QueryMciStatusField5ViaCommand814
-// ghidra_proto undefined QueryMciStatusField5ViaCommand814()
-// FUNCTION: IMPERIALISM 0x005e1760
-undefined4 QueryMciStatusField5ViaCommand814(void)
-{
-  return 0;
-}
-
-// ghidra_name QueryMciStatusField8ViaCommand814
-// ghidra_proto undefined QueryMciStatusField8ViaCommand814()
-// FUNCTION: IMPERIALISM 0x005e17b0
-undefined4 QueryMciStatusField8ViaCommand814(void)
-{
-  return 0;
-}
-
-// ghidra_name QueryMciStatusField3ViaCommand814
-// ghidra_proto undefined QueryMciStatusField3ViaCommand814()
-// FUNCTION: IMPERIALISM 0x005e1800
-undefined4 QueryMciStatusField3ViaCommand814(void)
 {
   return 0;
 }

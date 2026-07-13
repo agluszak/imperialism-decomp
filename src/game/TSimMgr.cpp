@@ -19,6 +19,7 @@
 #include "game/TOcean.h"
 #include "game/TMapMgr.h"
 #include "game/TTechMgr.h"
+#include "game/TCity.h"
 #include "game/TCivMgr.h"
 #include "game/TTurnInstructionCursor.h"
 #include "game/TNewsMgr.h"
@@ -1011,6 +1012,95 @@ CString TSimMgr::AssignSharedStringFromIndexedSlot7C(short slot) {
   return sharedTextSlots[slot];
 }
 
+// Reads a big-endian 32-bit nation slot, a big-endian short production-order index, and a
+// big-endian short value; sets that nation's capital-city production-order slot to the
+// value while accumulating the delta (value - old) into the parallel running-total slot.
+// FUNCTION: IMPERIALISM 0x005822c0
+void TSimMgr::HandleTurnInstruction_Capa_ApplyNationSlotValueWithDelta(void* pInstructionRaw) {
+  STurnInstructionCursor* instruction = static_cast<STurnInstructionCursor*>(pInstructionRaw);
+  unsigned int* cursor = instruction->tokenCursor;
+
+  unsigned int nationToken = *cursor;
+  cursor = cursor + 1;
+  instruction->tokenCursor = cursor;
+  unsigned char* nraw = reinterpret_cast<unsigned char*>(&nationToken);
+  unsigned char nt = nraw[0];
+  nraw[0] = nraw[3];
+  nraw[3] = nt;
+  nt = nraw[1];
+  nraw[1] = nraw[2];
+  nraw[2] = nt;
+
+  unsigned int indexToken = *cursor;
+  cursor = cursor + 1;
+  instruction->tokenCursor = cursor;
+  unsigned char* iraw = reinterpret_cast<unsigned char*>(&indexToken);
+  iraw[0] = iraw[3];
+  iraw[1] = iraw[2];
+
+  unsigned int valueToken = *cursor;
+  cursor = cursor + 1;
+  instruction->tokenCursor = cursor;
+  unsigned char* vraw = reinterpret_cast<unsigned char*>(&valueToken);
+  vraw[0] = vraw[3];
+  vraw[1] = vraw[2];
+
+  TCity* city;
+  if (g_apNationStates[static_cast<int>(nationToken)] == nullptr) {
+    city = nullptr;
+  } else {
+    city = g_apNationStates[static_cast<int>(nationToken)]->city;
+  }
+  int index = static_cast<short>(indexToken);
+  short value = static_cast<short>(valueToken);
+  short* accum = &city->productionAccum1fc[index];
+  *accum = static_cast<short>(*accum + (value - city->productionOrderTable1dc[index]));
+  city->productionOrderTable1dc[index] = value;
+}
+
+// Reads a big-endian 32-bit nation slot, a big-endian short commodity index, and a
+// big-endian short amount; writes the amount into that nation's capital-city commodity
+// stock counter and re-verifies the city's stock invariants.
+// FUNCTION: IMPERIALISM 0x005823e0
+void TSimMgr::HandleTurnInstruction_Ware_ApplyNationIndexedShortAndRefresh(void* pInstructionRaw) {
+  STurnInstructionCursor* instruction = static_cast<STurnInstructionCursor*>(pInstructionRaw);
+  unsigned int* cursor = instruction->tokenCursor;
+
+  unsigned int nationToken = *cursor;
+  cursor = cursor + 1;
+  instruction->tokenCursor = cursor;
+  unsigned char* nraw = reinterpret_cast<unsigned char*>(&nationToken);
+  unsigned char nt = nraw[0];
+  nraw[0] = nraw[3];
+  nraw[3] = nt;
+  nt = nraw[1];
+  nraw[1] = nraw[2];
+  nraw[2] = nt;
+
+  unsigned int indexToken = *cursor;
+  cursor = cursor + 1;
+  instruction->tokenCursor = cursor;
+  unsigned char* iraw = reinterpret_cast<unsigned char*>(&indexToken);
+  iraw[0] = iraw[3];
+  iraw[1] = iraw[2];
+
+  unsigned int valueToken = *cursor;
+  cursor = cursor + 1;
+  instruction->tokenCursor = cursor;
+  unsigned char* vraw = reinterpret_cast<unsigned char*>(&valueToken);
+  vraw[0] = vraw[3];
+  vraw[1] = vraw[2];
+
+  TCity* city;
+  if (g_apNationStates[static_cast<int>(nationToken)] == nullptr) {
+    city = nullptr;
+  } else {
+    city = g_apNationStates[static_cast<int>(nationToken)]->city;
+  }
+  (&city->cityStockCottonB6)[static_cast<short>(indexToken)] = static_cast<short>(valueToken);
+  city->VerifyStocks();
+}
+
 // Reads a big-endian 32-bit nation slot then a big-endian short transport-capacity value,
 // stored into that nation's needCapA6 field.
 // FUNCTION: IMPERIALISM 0x00582860
@@ -1037,6 +1127,121 @@ void TSimMgr::HandleTurnInstruction_Tran_SetNationTransportStat(void* pInstructi
   vraw[1] = vraw[2];
 
   g_apNationStates[static_cast<int>(nationToken)]->needCapA6 = static_cast<short>(valueToken);
+}
+
+// Reads a big-endian short tile index and a development value byte, then sets that tile's
+// civilian development-class nibble -- selecting the high nibble only when the tile's
+// resource/edge byte is one of the qualifying terrain codes.
+// FUNCTION: IMPERIALISM 0x005828f0
+void TSimMgr::HandleTurnInstruction_Deve_ApplyMapDevelopmentEntry(void* pInstructionRaw) {
+  STurnInstructionCursor* instruction = static_cast<STurnInstructionCursor*>(pInstructionRaw);
+  unsigned int* cursor = instruction->tokenCursor;
+
+  unsigned int tileToken = *cursor;
+  cursor = cursor + 1;
+  instruction->tokenCursor = cursor;
+  unsigned char* traw = reinterpret_cast<unsigned char*>(&tileToken);
+  traw[0] = traw[3];
+  traw[1] = traw[2];
+  short tileIndex = static_cast<short>(tileToken);
+
+  unsigned int valueToken = *cursor;
+  cursor = cursor + 1;
+  instruction->tokenCursor = cursor;
+
+  int terrainCode = g_pGlobalMapState->terrainStateTable[tileIndex].resourceTypeByEdge[0];
+  char selectHighNibble = 0;
+  if (terrainCode == 0x16 || terrainCode == 0x15 || terrainCode == 0x04 || terrainCode == 0x03 ||
+      terrainCode == 0x06) {
+    selectHighNibble = 1;
+  }
+  unsigned char value = reinterpret_cast<unsigned char*>(&valueToken)[3];
+  g_pGlobalMapState->SetCivilianDevelopmentClassNibble(tileIndex, selectHighNibble, value, 1);
+}
+
+// Reads one big-endian short tile index, resolves that tile's owner nation, queues a depot
+// construction order there, and grants the owner a 2000 cash bonus when it is not
+// diplomacy-eligible.
+// FUNCTION: IMPERIALISM 0x005829b0
+void TSimMgr::HandleTurnInstruction_Rail_ApplyRailPlacementAndCashBonus(void* pInstructionRaw) {
+  STurnInstructionCursor* instruction = static_cast<STurnInstructionCursor*>(pInstructionRaw);
+  unsigned int* cursor = instruction->tokenCursor;
+  unsigned int token = *cursor;
+  instruction->tokenCursor = cursor + 1;
+  unsigned char* raw = reinterpret_cast<unsigned char*>(&token);
+  raw[0] = raw[3];
+  raw[1] = raw[2];
+  short tileIndex = static_cast<short>(token);
+  int nationTag = g_pGlobalMapState->terrainStateTable[tileIndex].ownerNationTag04;
+  g_pGlobalMapState->QueueDepotConstructionOrder(tileIndex, static_cast<short>(nationTag));
+  if (g_apNationStates[nationTag]->diplomacyEligibilityA0 == 0) {
+    g_apNationStates[nationTag]->treasuryValue10 += 2000;
+  }
+}
+
+// Reads one big-endian short tile index, resolves that tile's owner nation, queues a port
+// construction order there, and grants the owner a 3000 cash bonus when it is not
+// diplomacy-eligible.
+// FUNCTION: IMPERIALISM 0x00582a40
+void TSimMgr::HandleTurnInstruction_Port_ApplyPortPlacementAndCashBonus(void* pInstructionRaw) {
+  STurnInstructionCursor* instruction = static_cast<STurnInstructionCursor*>(pInstructionRaw);
+  unsigned int* cursor = instruction->tokenCursor;
+  unsigned int token = *cursor;
+  instruction->tokenCursor = cursor + 1;
+  unsigned char* raw = reinterpret_cast<unsigned char*>(&token);
+  raw[0] = raw[3];
+  raw[1] = raw[2];
+  short tileIndex = static_cast<short>(token);
+  int nationTag = g_pGlobalMapState->terrainStateTable[tileIndex].ownerNationTag04;
+  g_pGlobalMapState->QueuePortConstructionOrder(tileIndex, static_cast<short>(nationTag));
+  if (g_apNationStates[nationTag]->diplomacyEligibilityA0 == 0) {
+    g_apNationStates[nationTag]->treasuryValue10 += 3000;
+  }
+}
+
+// Reads two big-endian 32-bit nation slots and a big-endian short relation value, then
+// writes the value symmetrically into both [A][B] and [B][A] of the diplomacy manager's
+// side-effect relation matrix.
+// FUNCTION: IMPERIALISM 0x00582bf0
+void TSimMgr::HandleTurnInstruction_Emba_SetEmbassyRelationFlags(void* pInstructionRaw) {
+  STurnInstructionCursor* instruction = static_cast<STurnInstructionCursor*>(pInstructionRaw);
+  unsigned int* cursor = instruction->tokenCursor;
+
+  unsigned int nationAToken = *cursor;
+  cursor = cursor + 1;
+  instruction->tokenCursor = cursor;
+  unsigned char* araw = reinterpret_cast<unsigned char*>(&nationAToken);
+  unsigned char at = araw[0];
+  araw[0] = araw[3];
+  araw[3] = at;
+  at = araw[1];
+  araw[1] = araw[2];
+  araw[2] = at;
+
+  unsigned int nationBToken = *cursor;
+  cursor = cursor + 1;
+  instruction->tokenCursor = cursor;
+  unsigned char* braw = reinterpret_cast<unsigned char*>(&nationBToken);
+  unsigned char bt = braw[0];
+  braw[0] = braw[3];
+  braw[3] = bt;
+  bt = braw[1];
+  braw[1] = braw[2];
+  braw[2] = bt;
+
+  unsigned int valueToken = *cursor;
+  cursor = cursor + 1;
+  instruction->tokenCursor = cursor;
+  unsigned char* vraw = reinterpret_cast<unsigned char*>(&valueToken);
+  vraw[0] = vraw[3];
+  vraw[1] = vraw[2];
+
+  int nationA = static_cast<int>(nationAToken);
+  int nationB = static_cast<int>(nationBToken);
+  short value = static_cast<short>(valueToken);
+  TDiplomacyMgr* diplomacy = g_pDiplomacyTurnStateManager;
+  diplomacy->relationSideEffectMatrix1402[nationA * 0x17 + nationB] = value;
+  diplomacy->relationSideEffectMatrix1402[nationB * 0x17 + nationA] = value;
 }
 
 // Reads one big-endian short token (the scenario year) and stores it, scaled to quarter
@@ -1152,6 +1357,43 @@ void TSimMgr::HandleTurnInstruction_Tclr_ResetNationRelationBars(void* pInstruct
                                                                    0);
     ++needIndex;
   } while (needIndex < 0x17);
+}
+
+// Reads a big-endian 32-bit country slot and a big-endian 32-bit state code. Stores the
+// state's low byte into the per-slot state array based at field6e, and when the state is
+// exactly 2 latches field6c to slot*10 + 0x717.
+// FUNCTION: IMPERIALISM 0x00583700
+void TSimMgr::HandleTurnInstruction_Coun_SetCountrySlotState(void* pInstructionRaw) {
+  STurnInstructionCursor* instruction = static_cast<STurnInstructionCursor*>(pInstructionRaw);
+  unsigned int* cursor = instruction->tokenCursor;
+
+  unsigned int slotToken = *cursor;
+  cursor = cursor + 1;
+  instruction->tokenCursor = cursor;
+  unsigned char* sraw = reinterpret_cast<unsigned char*>(&slotToken);
+  unsigned char st = sraw[0];
+  sraw[0] = sraw[3];
+  sraw[3] = st;
+  st = sraw[1];
+  sraw[1] = sraw[2];
+  sraw[2] = st;
+
+  unsigned int stateToken = *cursor;
+  cursor = cursor + 1;
+  instruction->tokenCursor = cursor;
+  unsigned char* vraw = reinterpret_cast<unsigned char*>(&stateToken);
+  unsigned char vt = vraw[0];
+  vraw[0] = vraw[3];
+  vraw[3] = vt;
+  vt = vraw[1];
+  vraw[1] = vraw[2];
+  vraw[2] = vt;
+
+  int slot = static_cast<int>(slotToken);
+  (&field6e)[slot] = static_cast<unsigned char>(stateToken);
+  if (stateToken == 2) {
+    field6c = static_cast<short>(static_cast<short>(slotToken) * 10 + 0x717);
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x005837c0

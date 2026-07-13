@@ -1256,3 +1256,18 @@ headers before splicing.
     Tclr 0x583670 (real TGreatPower virtuals), Prov 0x582f20 (real TMapMgr virtual). For a
     16-bit token later passed as a full `int` arg, pass the whole swapped word (not
     `(short)`): the swap leaves the high half matching the original's int operand.
+
+85. **Two more TSimMgr turn-instruction matching details (extends 83-84).** (a) A byte
+    field compared against several constants is read/compared as a **sign-extended int**
+    (`movsx` + `cmp eax,k`), so store it in an `int`, not a `char` -- a `char` local gives
+    an 8-bit `cmp al,k` and drops the score. (b) A single `byte`/`unsigned char` argument
+    taken from a token's high byte is produced by a **misaligned char-pointer read**
+    (`reinterpret_cast<unsigned char*>(&token)[3]`), NOT a `>> 24` shift: the compiler
+    passes it by loading the DWORD at the byte's address (garbage upper bytes on the push),
+    which the pointer read reproduces and the shift does not. Both verified taking Deve
+    0x5828f0 from 40% -> 60% -> 100%. Also: `just reorder_marked_functions <file>` after
+    inserting a new `// FUNCTION:` marker keeps address order (else decomplint
+    function_out_of_order fails); and a genuinely wrong Ghidra virtual signature on a stub
+    (QueueDepot/QueuePortConstructionOrder declared 4-arg; `RET 8` proves 2) is safe to
+    correct on the base + stub when no manual overrides/callers exist -- fixing it unblocked
+    Rail/Port to 100%.

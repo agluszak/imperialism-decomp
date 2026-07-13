@@ -1143,6 +1143,17 @@ int TMapMgr::IsAltKeyDown() {
   return GetAsyncKeyState(VK_MENU) & 0x8000;
 }
 
+// FUNCTION: IMPERIALISM 0x005123e0
+int ComputeStridedRecordAddress6C(int recordBase, int recordIndex) {
+  return recordBase + recordIndex * 0x6c;
+}
+
+// FUNCTION: IMPERIALISM 0x005125a0
+void SplitTileIndexToRowAndColumn(short tileIndex, short* outRow, short* outCol) {
+  *outRow = tileIndex / 0x6c;
+  *outCol = tileIndex % 0x6c;
+}
+
 // FUNCTION: IMPERIALISM 0x005127e0
 void SplitTileIndexToHexRasterColumnX2AndRow(short tileIndex, short* outColX2,
                                              unsigned short* outRow) {
@@ -1826,13 +1837,16 @@ void TMapMgr::FloodFillTileRegionMarker(short nTileIndex, short nOwnerNationId) 
   g_nNextRegionMarkerId = static_cast<short>(g_nNextRegionMarkerId) + 1;
 }
 
-int TMapMgr::QueueDepotConstructionOrder(int* pMapContext, short nTileIndex, short nNationId,
-                                         undefined2 param_4) {
+int TMapMgr::QueueDepotConstructionOrder(short nTileIndex, short nNationId) {
+  (void)nTileIndex;
+  (void)nNationId;
   return 0;
 }
 
-void TMapMgr::QueuePortConstructionOrder(int* pMapContext, short nTileIndex, short nNationId,
-                                         undefined2 param_4) {}
+void TMapMgr::QueuePortConstructionOrder(short nTileIndex, short nNationId) {
+  (void)nTileIndex;
+  (void)nNationId;
+}
 
 // FUNCTION: IMPERIALISM 0x005149d0
 void TMapMgr::SetProvinceCapitalTileFlagBit08(short nProvinceId) {

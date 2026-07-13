@@ -683,14 +683,6 @@ undefined4 DestructTExpansionOrderAndMaybeFree(void)
   return 0;
 }
 
-// ghidra_name SwapFirstTwoBytesInBuffer
-// ghidra_proto undefined SwapFirstTwoBytesInBuffer()
-// FUNCTION: IMPERIALISM 0x004b9340
-undefined4 SwapFirstTwoBytesInBuffer(void)
-{
-  return 0;
-}
-
 // ghidra_name WriteWordArrayToOutputCallbackLE
 // ghidra_proto undefined WriteWordArrayToOutputCallbackLE()
 // FUNCTION: IMPERIALISM 0x004b94a0

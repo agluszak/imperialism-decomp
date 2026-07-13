@@ -253,7 +253,17 @@ public:
   // then either send the event-9 lobby-chat drop notice (session init) or show the
   // localized "nation has dropped" advisory and post a 'pogc' cancel command.
   void SetNationStatusAwolByNationIdAndDispatchNotices(int networkId);
+  // 0x54a9d0: true when sessionPhaseTag is the 'goin' join phase and the active nation
+  // slot is valid.
+  int IsSpecialNationDialogModeActive();
+  // 0x54b8c0: returns nationStatusTags[slot]; when slot is -1, resolves it from the active
+  // nation id (falling back to the game-flow session-id scan).
+  int GetNationStatusCodeForSlotOrActiveNation(int slot);
 };
+
+// 0x5421a0: 0-based index (0..6) of g_pGameFlowState->nationSessionIds[] matching the
+// session's active nation id, or -1. Free __cdecl function.
+int FindActiveNationSlotIndexInGameFlowList();
 
 ASSERT_SIZE(TMultiplayerMgr, 0xf8);
 

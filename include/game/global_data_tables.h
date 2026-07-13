@@ -118,6 +118,7 @@ short GetResourceDescriptorWord10ByType(short resourceType);
 short GetResourceDescriptorWord14ByType(short resourceType);
 short GetResourceDescriptorWord18ByType(short resourceType);
 short GetResourceDescriptorWeightWord1ByType(short resourceType);
+short GetResourceDescriptorWord20ByType(short resourceType);
 short GetResourceDescriptorWord08ByTypeOffset(short resourceType, short subslot);
 
 // Per-unit-type military stat records (7 shorts per type, record base 0x695cd2):
@@ -129,6 +130,18 @@ extern "C" short g_UnitTypeMilitaryStatTable_00695CD2[64][7];
 // divisor baseline used by TMilitaryUnit::GetUnitTypeStatPercent (0x5c3530).
 extern "C" short g_UnitTypeStatTable_0066EB88[30][7];
 extern "C" short g_UnitTypeStatDivisorTable_0066ED30[7];
+
+// Standalone (slot-indexed) accessors over the two unit-type tables above; siblings of the
+// TMilitaryUnit::GetUnitTypeCostPoints / GetUnitTypeStatPercent methods but taking the index
+// directly. 0x5c3450 / 0x5c3580.
+short GetCityActionGateValueBySlot(int slot);
+short GetNormalizedCityActionResourceCostPercent(short unitType, short statIndex);
+// 0x5c34b0: g_awTacticalUnitCategoryCodeBySlot[slot] (standalone sibling of
+// TMilitaryUnit::GetUnitMovementClassId, which uses this->orderType).
+short GetCityActionCategoryCodeBySlot(short slot);
+// 0x54fee0: g_aCategoryMetricBaselineAverage[index] (returns the int metric, not a pointer
+// despite Ghidra's placeholder name).
+int GetNavyContextPointerFromGlobalTableByIndex(int index);
 
 // Minister-skill-indexed float coefficient tables (DAT_0065xxxx), indexed by a
 // minister's skill value at +0x0C. Used by TGreatPower vtable slots 0x88-0x8c.

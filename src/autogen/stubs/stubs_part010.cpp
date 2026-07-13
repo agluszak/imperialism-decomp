@@ -563,14 +563,6 @@ undefined4 CheckConnectivityOrShowLocalizedWarningAndReturnReady_Impl(void)
   return 0;
 }
 
-// ghidra_name ApplyCtrlScrollAccelerationToListStep
-// ghidra_proto undefined ApplyCtrlScrollAccelerationToListStep()
-// FUNCTION: IMPERIALISM 0x004804c0
-undefined4 ApplyCtrlScrollAccelerationToListStep(void)
-{
-  return 0;
-}
-
 // ghidra_name ShowRuntimeSelectionDialogAndReturnRecord
 // ghidra_proto undefined ShowRuntimeSelectionDialogAndReturnRecord()
 // FUNCTION: IMPERIALISM 0x00480500

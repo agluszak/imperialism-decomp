@@ -199,6 +199,13 @@ unsigned char EmptyRgn(RgnHandle rgn) {
   return 1;
 }
 
+// FUNCTION: IMPERIALISM 0x00498b10
+int ProbeRectEmptyAfterCopyToLocal(RECT* rect) {
+  tagRECT localRect;
+  CopyRect(&localRect, rect);
+  return IsRectEmpty(&localRect);
+}
+
 // Reorder-wrapper over the Win32 IntersectRect, matching the Mac SectRect
 // argument order (src1, src2, dst).
 // FUNCTION: IMPERIALISM 0x00498bb0

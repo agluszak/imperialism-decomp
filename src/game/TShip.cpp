@@ -135,6 +135,11 @@ void __fastcall RegenerateNavyPrimaryOrderDisplayNameUntilUnique(TShip* shipNode
   } while (1);
 }
 
+// FUNCTION: IMPERIALISM 0x0054fee0
+int GetNavyContextPointerFromGlobalTableByIndex(int index) {
+  return g_aCategoryMetricBaselineAverage[index];
+}
+
 // Receiver-agnostic: also called directly on a TTaskForce's own
 // order_type/required_count/tiebreak_strength fields (TNavyMission::ReturnZeroSlot2C),
 // which happen to share these same 3 offsets with TShip -- see the header comment.

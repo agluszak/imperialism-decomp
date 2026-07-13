@@ -171,14 +171,6 @@ undefined4 DestructTWindowAndUnlinkGlobalWindowNode(void)
   return 0;
 }
 
-// ghidra_name PopSinglyLinkedListHeadPointer
-// ghidra_proto undefined PopSinglyLinkedListHeadPointer()
-// FUNCTION: IMPERIALISM 0x004924c0
-undefined4 PopSinglyLinkedListHeadPointer(void)
-{
-  return 0;
-}
-
 // ghidra_name EnsureChildResourceWindowAndNotify_Impl
 // ghidra_proto undefined EnsureChildResourceWindowAndNotify_Impl()
 // FUNCTION: IMPERIALISM 0x004924e0
@@ -615,14 +607,6 @@ undefined4 InitializeBrushStateVtableAndClearHandle(void)
 // ghidra_proto undefined WrapperFor_DeleteRegionHandleFromClipState_At00498610()
 // FUNCTION: IMPERIALISM 0x00498610
 undefined4 WrapperFor_DeleteRegionHandleFromClipState_At00498610(void)
-{
-  return 0;
-}
-
-// ghidra_name ProbeRectEmptyAfterCopyToLocal
-// ghidra_proto undefined ProbeRectEmptyAfterCopyToLocal()
-// FUNCTION: IMPERIALISM 0x00498b10
-undefined4 ProbeRectEmptyAfterCopyToLocal(void)
 {
   return 0;
 }

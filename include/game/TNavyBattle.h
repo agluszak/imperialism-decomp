@@ -43,3 +43,8 @@ public:
 
   TNavyBattle();
 };
+
+// 0x5a59a0: tileIndex -> (row = tileIndex/0x1d, doubled column = (row&1) + (tileIndex%0x1d)*2)
+// for the 29-wide tactical hex grid. Genuine __stdcall free function (pure arithmetic).
+void __stdcall ConvertHexTileIndexToRowAndDoubleColumn(int tileIndex, unsigned int* outRow,
+                                                       int* outCol2X);

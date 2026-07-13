@@ -91,22 +91,6 @@ undefined4 CheckTilePatternMaskAllowedByModeFlag(void)
   return 0;
 }
 
-// ghidra_name ComputeStridedRecordAddress6C
-// ghidra_proto undefined ComputeStridedRecordAddress6C()
-// FUNCTION: IMPERIALISM 0x005123e0
-undefined4 ComputeStridedRecordAddress6C(void)
-{
-  return 0;
-}
-
-// ghidra_name TMapDialog::SplitTileIndexToRowAndColumn
-// ghidra_proto undefined SplitTileIndexToRowAndColumn()
-// FUNCTION: IMPERIALISM 0x005125a0
-undefined4 SplitTileIndexToRowAndColumn(void)
-{
-  return 0;
-}
-
 // ghidra_name TDeluxeText::CanBuildPortAtTile
 // ghidra_proto char __thiscall CanBuildPortAtTile(int nTileIndex)
 // FUNCTION: IMPERIALISM 0x005137b0
