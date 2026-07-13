@@ -1739,7 +1739,7 @@ int TViewMgr::MakePlanetSeedDialog(const char* instruction, CString& planetSeed,
       static_cast<TWindow*>(g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(0x3ba));
   if (dialog == 0) {
     MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
-    return 0;
+    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgrMore_0069B740, 0x26a);
   }
 
   dialog->SetField84(1);
@@ -1776,11 +1776,10 @@ int TViewMgr::MakePlanetSeedDialog(const char* instruction, CString& planetSeed,
   g_pDisplayMgr->SetMapTileIconVariantTriplet(reinterpret_cast<undefined1*>(&mappedTheme));
   UpdatePaletteIndexWithDefaultFallback(0x3b);
 
-  TRadioTextCluster* choiceCluster = 0;
+  TRadioTextCluster* choiceCluster =
+      static_cast<TRadioTextCluster*>(dialog->ResolveControlByTag(0x316f7232 /* '1or2' */));
+  choiceCluster->AssertValid();
   if (firstChoice != 0) {
-    choiceCluster =
-        static_cast<TRadioTextCluster*>(dialog->ResolveControlByTag(0x316f7232 /* '1or2' */));
-    choiceCluster->AssertValid();
     choiceCluster->SetEnabled(1, 0);
     choiceCluster->frameThemeCode90 = 0x2b6b;
     choiceCluster->itemInset92 = 2;
@@ -1813,7 +1812,7 @@ int TViewMgr::MakePlanetSeedDialog(const char* instruction, CString& planetSeed,
   }
 
   int resultTag = dialog->ExecuteViewModalStateWithPushPopChain();
-  if (choiceCluster != 0) {
+  if (firstChoice != 0) {
     resultTag = choiceCluster->selectedTag88;
   }
 

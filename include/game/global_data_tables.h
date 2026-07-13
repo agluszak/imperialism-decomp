@@ -832,7 +832,9 @@ extern const char s_Chunk_00698C0C[];
 // TSimMgr_AdvanceGlobalTurnStateMachine.cpp / turn_flow_cooldown.cpp — turn-cooldown state.
 extern short g_nTurnCooldownDeferCounter006A43C4;
 extern short g_nTurnCooldownSideFlag00698B10;
+extern "C" char g_bTurnFlowBootstrapComplete;
 extern "C" char g_bMultiplayerScenarioSetupActive;
+extern "C" const char s_PictWvGobPathFormat_00698BF4[];
 extern "C" const char s_TurnEventCursorNameFormat_0069B6B4[];
 extern "C" const char s_GameName_00698010[];
 extern "C" const char s_PlayerName_0069801c[];

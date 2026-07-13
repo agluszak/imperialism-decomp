@@ -33,8 +33,6 @@
 #include "game/global_data_tables.h"
 #include "game/mapped_flavor_text.h"
 
-extern "C" char DAT_006a43c0;
-extern "C" const char s_PictWvGobPathFormat_00698BF4[];
 void __fastcall RebuildNationStateSlotsAndAvailability_Impl(TSimMgr* self, int dummyEdx,
                                                             short* param_1);
 void __fastcall RebuildCivilianOrderCompatibilityMatrices(TDiplomacyMgr* self, int dummyEdx);
@@ -956,7 +954,7 @@ void TSimMgr::InitializeOrLoadEntryArray14AndClampLimits(bool writeBack) {
 }
 
 // The "Done/advance" turn-flow bootstrap primitive (free __cdecl in the TSimMgr TU): the
-// single writer of DAT_006a43c0 and the funnel every menu/score-screen advance routes
+// single writer of g_bTurnFlowBootstrapComplete and the funnel every menu/score-screen advance routes
 // through. eventCode 0x5dd is the "start new game" scenario-setup path: it soft-resets
 // the EXISTING TSimMgr (the reset block is the original's header-inline prefix of
 // InitializeTurnFlowStateDefaults, expanded in place at 0x58191a) and jumps the turn
@@ -999,7 +997,7 @@ void ReinitializeGameFlowAndPostTurnEventCode(int eventCode) {
       g_pGlobalUiRootController->PostTurnEventCodeMessage2420(static_cast<short>(eventCode));
     }
   }
-  DAT_006a43c0 = 1;
+  g_bTurnFlowBootstrapComplete = 1;
 }
 
 // FUNCTION: IMPERIALISM 0x00581ae0

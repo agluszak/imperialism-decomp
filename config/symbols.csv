@@ -8609,7 +8609,7 @@ address|name|symbol|size|type|prototype|provenance
 6a432c|g_apMinorNationCapabilityObjects|||global||
 6a4370|g_apNationStates|||global||
 6a438c|g_apNationStates_End|||global||
-6a43c0|DAT_006a43c0|||global||
+6a43c0|g_bTurnFlowBootstrapComplete|||global||
 6a43c4|g_nTurnCooldownDeferCounter006A43C4|||global||
 6a43c8|g_pGameFlowState|||global||
 6a43cc|g_pNationInteractionStateManager|||global||

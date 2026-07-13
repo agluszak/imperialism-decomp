@@ -24,8 +24,6 @@
 #include "game/TViewMgr.h"
 #include "game/global_data_tables.h"
 
-extern "C" char DAT_006a43c0;
-
 extern undefined4 RefreshNationAdvisorLabelStrings(void);
 extern undefined4 ProcessTurnInstructionStreamAndFinalizePhase(void);
 extern undefined4 ShowTurnAlertsForActiveNation(void);
@@ -135,7 +133,7 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
   switch (turnStateCode) {
   case 1:
     turnStateCode = 3;
-    if (DAT_006a43c0 == 0) {
+    if (g_bTurnFlowBootstrapComplete == 0) {
       // Verified against 0x0057daf5: real event code is 0x11f8, payload 0, no null
       // guard on g_pUiRuntimeContext (matches the original — see heuristics for the
       // full re-verification note on this switch).

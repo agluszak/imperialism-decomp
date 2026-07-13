@@ -119,7 +119,7 @@ void TSetupRandomMapPicture::NoOpUiLifecycleHook(int arg) {
 
   TMapPreviewView* mapPreview = static_cast<TMapPreviewView*>(ResolveControlByTag(kControlTagMapP));
   mapPreview->AssertValid();
-  mapPreview->pendingNation6C = selectedNationSlot9A;
+  mapPreview->selectedNation68 = selectedNationSlot9A;
 
   GroundControlToMajorTom(1);
   g_pCursorControlPanel->SetTextThemeCodeAndMaybeRefresh(1, 0);
