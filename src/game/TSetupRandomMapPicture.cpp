@@ -264,12 +264,10 @@ void TSetupRandomMapPicture::HandleEvent(int commandId, TEventHandler* sourceHan
                                                                 planetSeed, 0, 0, 0, 0);
       wrapHorizontally98 = resultTag == 0x6f6e6531 /* 'one1' */;
 
-      if (CompareAnsiStringsWithMbcsAwareness(
-              reinterpret_cast<const unsigned char*>(static_cast<LPCSTR>(planetSeed)),
-              reinterpret_cast<const unsigned char*>(g_szEmptyString)) != 0 &&
-          CompareAnsiStringsWithMbcsAwareness(
-              reinterpret_cast<const unsigned char*>(static_cast<LPCSTR>(planetSeed)),
-              reinterpret_cast<const unsigned char*>(static_cast<LPCSTR>(planetSeed94))) != 0) {
+      if (_mbscmp(reinterpret_cast<const unsigned char*>(static_cast<LPCSTR>(planetSeed)),
+                  reinterpret_cast<const unsigned char*>(g_szEmptyString)) != 0 &&
+          _mbscmp(reinterpret_cast<const unsigned char*>(static_cast<LPCSTR>(planetSeed)),
+                  reinterpret_cast<const unsigned char*>(static_cast<LPCSTR>(planetSeed94))) != 0) {
         planetSeed94 = planetSeed;
         MajorTomToGroundControl(1);
       } else {
@@ -297,9 +295,8 @@ void TSetupRandomMapPicture::StartGame() {
       if (nationSlot != selectedNationSlot9A) {
         g_pSimMgr->GetString(0x2715, static_cast<short>(nationSlot), &localizedName);
         duplicateName =
-            CompareAnsiStringsWithMbcsAwareness(
-                reinterpret_cast<const unsigned char*>(static_cast<LPCSTR>(localizedName)),
-                reinterpret_cast<const unsigned char*>(static_cast<LPCSTR>(countryText))) == 0;
+            _mbscmp(reinterpret_cast<const unsigned char*>(static_cast<LPCSTR>(localizedName)),
+                    reinterpret_cast<const unsigned char*>(static_cast<LPCSTR>(countryText))) == 0;
       }
     }
     if (duplicateName != 0) {

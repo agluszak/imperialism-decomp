@@ -9,9 +9,8 @@ namespace {
 // confined here. Inlined at both compare sites (the original materializes the ==0 result
 // as a byte: neg/sbb/inc + test al).
 __inline char EqualsCommandToken(LPCSTR text, char* literal) {
-  return CompareAnsiStringsWithMbcsAwareness(
-             const_cast<unsigned char*>(reinterpret_cast<const unsigned char*>(text)),
-             reinterpret_cast<unsigned char*>(literal)) == 0;
+  return _mbscmp(const_cast<unsigned char*>(reinterpret_cast<const unsigned char*>(text)),
+                 reinterpret_cast<unsigned char*>(literal)) == 0;
 }
 
 } // namespace

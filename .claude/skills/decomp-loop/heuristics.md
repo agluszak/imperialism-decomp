@@ -1294,3 +1294,27 @@ headers before splicing.
     found ~1100 confident identities incl. 48 FID-missed conversions and 25 game-code
     mislabels (13 libcmt float internals ported as `bignum96_math.cpp`). `just
     library-identify 0xADDR` surfaces all of this; `library-identity-gate` pins it.
+
+87. **Moving an oracle-flagged game-code mislabel to library: two shapes.** When
+    `library-identity-gate` / `config/msvc500_library_oracle_review.csv` flags a
+    high-confidence unique match owned by manual game code, first classify it:
+    (a) **Whole-file / free-function CRT** with no compiled callers (e.g. the 13
+    float-conversion internals in `bignum96_math.cpp` — `__RoundMan`/`___dtold`/
+    `__mtold12` from intrncvt/cfout/mantold.obj) — delete the body/marker, run
+    `sync-ownership` (prunes the now-marker-less rows) then `apply-library-oracle`
+    (Case B claims the unowned in-range addresses as library). Clean, no caller work.
+    (b) **Free function WITH callers** (e.g. `__mbscmp` at 0x5e7980, was
+    `CompareAnsiStringsWithMbcsAwareness`, called by 8 files) — like the rand fix:
+    replace its header declaration with `extern "C" int __cdecl _mbscmp(...)`, rename
+    every callsite to the real symbol, delete the definition, then prune+convert.
+    Removing a body can *cascade*: functions it called (here `_lock`/`_unlock` from
+    mlock.obj) become unreferenced and auto-convert too. Verify each is a genuine
+    library match (unique/high, cc=1, sensible .obj member) — the build link is the
+    backstop. (c) **MFC method inherited by a game class** (`CWnd::RunModalLoop` at
+    0x60a60a owned by TView, `CWnd::GetStyle`, `CRect::DeflateRect`, `CDialog`/
+    `exception` ctors) — these are NOT mechanical: the address is the inherited MFC
+    method's code, so the fix is real inheritance modeling (class-recovery /
+    vtable-matching), not just re-marking. Leave them allowlisted in
+    `config/library_oracle_gamecode_allowlist.csv` until the class model is recovered.
+    Always rebuild after a move: converting rand exposed 17 callsites of its invented
+    name; a removed stub with a live caller is an LNK2001.

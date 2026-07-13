@@ -195,22 +195,6 @@ undefined4 WrapperFor_AbortWithThreadAbortHookIfPresent_At005eda4e(void)
   return 0;
 }
 
-// ghidra_name EnterIndexedCriticalSectionWithLazyInit
-// ghidra_proto undefined EnterIndexedCriticalSectionWithLazyInit()
-// FUNCTION: IMPERIALISM 0x005edb20
-undefined4 EnterIndexedCriticalSectionWithLazyInit(void)
-{
-  return 0;
-}
-
-// ghidra_name LeaveIndexedCriticalSection
-// ghidra_proto undefined LeaveIndexedCriticalSection()
-// FUNCTION: IMPERIALISM 0x005edba0
-undefined4 LeaveIndexedCriticalSection(void)
-{
-  return 0;
-}
-
 // ghidra_name RunLocalExceptionFilterChainAndUnwind
 // ghidra_proto undefined RunLocalExceptionFilterChainAndUnwind()
 // FUNCTION: IMPERIALISM 0x005eddeb

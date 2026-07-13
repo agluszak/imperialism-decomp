@@ -140,10 +140,9 @@ BOOL ImperialismApp::InitInstance() {
     CIncludeView* mainView = GetMainViewHostFromActiveThread();
     mainView->SetUiRuntimeContextAndActivateMain(g_pDisplayMgr->activeDialog);
 
-    if (CompareAnsiStringsWithMbcsAwareness(
-            const_cast<unsigned char*>(reinterpret_cast<const unsigned char*>(
-                static_cast<LPCSTR>(cmdInfo.m_strMainWindowTitle38))),
-            reinterpret_cast<unsigned char*>(g_szEmptyString)) != 0) {
+    if (_mbscmp(const_cast<unsigned char*>(reinterpret_cast<const unsigned char*>(
+                    static_cast<LPCSTR>(cmdInfo.m_strMainWindowTitle38))),
+                reinterpret_cast<unsigned char*>(g_szEmptyString)) != 0) {
       CIncludeView* uiWindow = GetMainViewHostFromActiveThread();
       if (uiWindow != nullptr) {
         uiWindow->SetWindowText(static_cast<LPCSTR>(cmdInfo.m_strMainWindowTitle38));
@@ -337,11 +336,10 @@ BOOL ImperialismApp::LoadLanguageResourcesFromIrgFiles() {
     languageLabel.ReleaseBuffer(-1);
     languageLabel.MakeUpper();
 
-    if (CompareAnsiStringsWithMbcsAwareness(
-            const_cast<unsigned char*>(
-                reinterpret_cast<const unsigned char*>(static_cast<LPCSTR>(savedLanguage))),
-            const_cast<unsigned char*>(
-                reinterpret_cast<const unsigned char*>(static_cast<LPCSTR>(languageLabel)))) == 0) {
+    if (_mbscmp(const_cast<unsigned char*>(
+                    reinterpret_cast<const unsigned char*>(static_cast<LPCSTR>(savedLanguage))),
+                const_cast<unsigned char*>(reinterpret_cast<const unsigned char*>(
+                    static_cast<LPCSTR>(languageLabel)))) == 0) {
       WriteProfileString(SettingsSection(), LanguageValueName(), savedLanguage);
 
       LoadStringA(irgModule, 0x1e36, languageLabelCC.GetBufferSetLength(0x21), 0x20);

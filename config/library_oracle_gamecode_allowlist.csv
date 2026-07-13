@@ -1,21 +1,7 @@
 address|oracle_symbol|owner|note
-0x00489410|??0exception@@QAE@XZ|manual:src/game/TCountingStream.cpp|pre-existing mislabel; move to library needs build verification of callers
-0x00534c80|?EnableAggregation@CCmdTarget@@QAEXXZ|manual:src/game/TMission.cpp|pre-existing mislabel; move to library needs build verification of callers
-0x005e7980|__mbscmp|manual:src/game/CString.cpp|pre-existing mislabel; move to library needs build verification of callers
-0x005f4370|__ZeroTail|manual:src/game/bignum96_math.cpp|pre-existing mislabel; move to library needs build verification of callers
-0x005f43e0|__IncMan|manual:src/game/bignum96_math.cpp|pre-existing mislabel; move to library needs build verification of callers
-0x005f4450|__RoundMan|manual:src/game/bignum96_math.cpp|pre-existing mislabel; move to library needs build verification of callers
-0x005f44f0|__CopyMan|manual:src/game/bignum96_math.cpp|pre-existing mislabel; move to library needs build verification of callers
-0x005f4510|__FillZeroMan|manual:src/game/bignum96_math.cpp|pre-existing mislabel; move to library needs build verification of callers
-0x005f4520|__IsZeroMan|manual:src/game/bignum96_math.cpp|pre-existing mislabel; move to library needs build verification of callers
-0x005f4540|__ShrMan|manual:src/game/bignum96_math.cpp|pre-existing mislabel; move to library needs build verification of callers
-0x005f4a80|___dtold|manual:src/game/bignum96_math.cpp|pre-existing mislabel; move to library needs build verification of callers
-0x005f7830|___addl|manual:src/game/bignum96_math.cpp|pre-existing mislabel; move to library needs build verification of callers
-0x005f7860|___add_12|manual:src/game/bignum96_math.cpp|pre-existing mislabel; move to library needs build verification of callers
-0x005f78d0|___shl_12|manual:src/game/bignum96_math.cpp|pre-existing mislabel; move to library needs build verification of callers
-0x005f7900|___shr_12|manual:src/game/bignum96_math.cpp|pre-existing mislabel; move to library needs build verification of callers
-0x005f7930|___mtold12|manual:src/game/bignum96_math.cpp|pre-existing mislabel; move to library needs build verification of callers
-0x006050d0|??0CDialog@@QAE@IPAVCWnd@@@Z|manual:src/game/TControl.cpp|pre-existing mislabel; move to library needs build verification of callers
-0x00607318|?GetStyle@CWnd@@QBEKXZ|manual:src/game/TView.cpp|pre-existing mislabel; move to library needs build verification of callers
-0x0060a60a|?RunModalLoop@CWnd@@QAEHK@Z|manual:src/game/TView.cpp|pre-existing mislabel; move to library needs build verification of callers
-0x0061f342|?DeflateRect@CRect@@QAEXPBUtagRECT@@@Z|manual:src/game/TTEView.cpp|pre-existing mislabel; move to library needs build verification of callers
+0x00489410|??0exception@@QAE@XZ|manual:src/game/TCountingStream.cpp|MFC method inherited by game class; move needs class-recovery + build verification
+0x00534c80|?EnableAggregation@CCmdTarget@@QAEXXZ|manual:src/game/TMission.cpp|MFC method inherited by game class; move needs class-recovery + build verification
+0x006050d0|??0CDialog@@QAE@IPAVCWnd@@@Z|manual:src/game/TControl.cpp|MFC method inherited by game class; move needs class-recovery + build verification
+0x00607318|?GetStyle@CWnd@@QBEKXZ|manual:src/game/TView.cpp|MFC method inherited by game class; move needs class-recovery + build verification
+0x0060a60a|?RunModalLoop@CWnd@@QAEHK@Z|manual:src/game/TView.cpp|MFC method inherited by game class; move needs class-recovery + build verification
+0x0061f342|?DeflateRect@CRect@@QAEXPBUtagRECT@@@Z|manual:src/game/TTEView.cpp|MFC method inherited by game class; move needs class-recovery + build verification

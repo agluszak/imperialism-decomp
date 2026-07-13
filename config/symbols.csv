@@ -6432,7 +6432,7 @@ address|name|symbol|size|type|prototype|provenance
 5e7876|__NLG_Notify|__NLG_Notify|24|function|undefined CaptureExceptionContextToGlobalSlots()|
 5e7890|__onexit|__onexit|143|function|undefined AppendPointerToGlobalVectorLocked()|
 5e7920|AppendPointerToGlobalVectorAsStatus||21|function|undefined AppendPointerToGlobalVectorAsStatus()|
-5e7980|CompareAnsiStringsWithMbcsAwareness||247|function|undefined CompareAnsiStringsWithMbcsAwareness()|
+5e7980|_mbscmp|__mbscmp|247|function|undefined CompareAnsiStringsWithMbcsAwareness()|msvc500_library_oracle
 5e7a80|_set_new_handler|?_set_new_handler@@YAP6AHI@ZP6AHI@Z@Z|40|function|_PNH __cdecl _set_new_handler(_PNH)|msvc500_library_oracle
 5e7ac0|__callnewh|__callnewh|32|function|undefined InvokeGlobalAllocationFailureCallback()|
 5e7ae0|FindFirstFileAndPopulateFileInfoRecord|__findfirst|257|function|undefined FindFirstFileAndPopulateFileInfoRecord()|
@@ -6571,8 +6571,8 @@ address|name|symbol|size|type|prototype|provenance
 5ed9e0|_inconsistency|?_inconsistency@@YAXXZ|101|function|undefined AbortOnRuntimeInvariantViolation()|
 5eda4e|WrapperFor_AbortWithThreadAbortHookIfPresent_At005eda4e||6|function|undefined WrapperFor_AbortWithThreadAbortHookIfPresent_At005eda4e()|
 5eda70|__mtinitlocks|__mtinitlocks|43|function|undefined InitializeCrtGlobalCriticalSections()|
-5edb20|EnterIndexedCriticalSectionWithLazyInit||118|function|undefined EnterIndexedCriticalSectionWithLazyInit()|
-5edba0|LeaveIndexedCriticalSection||22|function|undefined LeaveIndexedCriticalSection()|
+5edb20|_lock|__lock|118|function|undefined EnterIndexedCriticalSectionWithLazyInit()|msvc500_library_oracle
+5edba0|_unlock|__unlock|22|function|undefined LeaveIndexedCriticalSection()|msvc500_library_oracle
 5edbc0|CRT FILE stream lock enter|__lock_file|54|function|undefined EnterStreamCriticalSection()|
 5edc00|__lock_file2|__lock_file2|40|function|undefined WrapperFor_EnterIndexedCriticalSectionWithLazyInit_At005edc00()|
 5edc30|CRT FILE stream lock leave|__unlock_file|54|function|undefined LeaveStreamCriticalSection()|
@@ -6663,13 +6663,13 @@ address|name|symbol|size|type|prototype|provenance
 5f4190|MapFpControlLowByteToRuntimeBits||55|function|undefined MapFpControlLowByteToRuntimeBits()|
 5f41e0|_tolower|_tolower|130|function|undefined ToLowerCodepointAsciiOrLocaleAware()|
 5f4270|__tolower_lk|__tolower_lk|252|function|undefined ToLowerCodepointWithLocaleAndMbcFallback()|
-5f4370|Is96BitIntegerZeroAtOrAboveBitIndex||102|function|undefined Is96BitIntegerZeroAtOrAboveBitIndex()|
-5f43e0|SetBitIn96BitIntegerWithCarry||105|function|undefined SetBitIn96BitIntegerWithCarry()|
-5f4450|Truncate96BitIntegerAtBitWithRounding||157|function|undefined Truncate96BitIntegerAtBitWithRounding()|
-5f44f0|Copy96BitIntegerWords||29|function|undefined Copy96BitIntegerWords()|
-5f4510|Zero96BitIntegerWords||15|function|undefined Zero96BitIntegerWords()|
-5f4520|Is96BitIntegerZero||29|function|undefined Is96BitIntegerZero()|
-5f4540|ShiftRight96BitIntegerByBitCount||177|function|undefined ShiftRight96BitIntegerByBitCount()|
+5f4370|_ZeroTail|__ZeroTail|102|function|undefined Is96BitIntegerZeroAtOrAboveBitIndex()|msvc500_library_oracle
+5f43e0|_IncMan|__IncMan|105|function|undefined SetBitIn96BitIntegerWithCarry()|msvc500_library_oracle
+5f4450|_RoundMan|__RoundMan|157|function|undefined Truncate96BitIntegerAtBitWithRounding()|msvc500_library_oracle
+5f44f0|_CopyMan|__CopyMan|29|function|undefined Copy96BitIntegerWords()|msvc500_library_oracle
+5f4510|_FillZeroMan|__FillZeroMan|15|function|undefined Zero96BitIntegerWords()|msvc500_library_oracle
+5f4520|_IsZeroMan|__IsZeroMan|29|function|undefined Is96BitIntegerZero()|msvc500_library_oracle
+5f4540|_ShrMan|__ShrMan|177|function|undefined ShiftRight96BitIntegerByBitCount()|msvc500_library_oracle
 5f4600|_ld12cvt|__ld12cvt|463|function|undefined ConvertExtendedFloatToDecimalState()|msvc500_library_oracle
 5f47d0|ConvertParsedDecimalStateWithProfileA||24|function|undefined ConvertParsedDecimalStateWithProfileA()|
 5f47f0|ConvertParsedDecimalStateWithProfileB||24|function|undefined ConvertParsedDecimalStateWithProfileB()|
@@ -6677,7 +6677,7 @@ address|name|symbol|size|type|prototype|provenance
 5f4910|ParseDecimalTextAndConvertWithProfileB||56|function|undefined ParseDecimalTextAndConvertWithProfileB()|
 5f4950|__fptostr|__fptostr|145|function|undefined RoundAndTrimDecimalDigitBuffer()|
 5f49f0|_fltout2|__fltout2|139|function|undefined BuildDecimalConversionStateFromFpInput()|msvc500_library_oracle
-5f4a80|ConvertFpMantissaTo96BitIntegerAndExponent||190|function|undefined ConvertFpMantissaTo96BitIntegerAndExponent()|
+5f4a80|__dtold|___dtold|190|function|undefined ConvertFpMantissaTo96BitIntegerAndExponent()|msvc500_library_oracle
 5f4b40|WrapperFor_amsg_exit_At005f4b40||11|function|undefined WrapperFor_amsg_exit_At005f4b40()|
 5f4b50|_ValidateRead|?_ValidateRead@@YAHPBXI@Z|32|function|int __cdecl _ValidateRead(void const *, unsigned int)|msvc500_library_oracle
 5f4b70|_ValidateWrite|?_ValidateWrite@@YAHPAXI@Z|32|function|int __cdecl _ValidateWrite(void *, unsigned int)|msvc500_library_oracle
@@ -6732,11 +6732,11 @@ address|name|symbol|size|type|prototype|provenance
 5f7530|ConsoleCtrlHandlerDispatchRuntimeSignalCallbacks||132|function|undefined ConsoleCtrlHandlerDispatchRuntimeSignalCallbacks()|
 5f75c0|RaiseRuntimeSignalAndInvokeHandler||469|function|undefined RaiseRuntimeSignalAndInvokeHandler()|
 5f77d0|_siglookup|_siglookup|63|function|undefined FindMatchingKeyNodeInBucketChain()|
-5f7830|AddUintWithCarryOutFlag||35|function|undefined AddUintWithCarryOutFlag()|
-5f7860|Add96BitIntegerWithCarry||104|function|undefined Add96BitIntegerWithCarry()|
-5f78d0|ShiftLeft96BitIntegerBy1||46|function|undefined ShiftLeft96BitIntegerBy1()|
-5f7900|ShiftRight96BitIntegerBy1||45|function|undefined ShiftRight96BitIntegerBy1()|
-5f7930|Build96BitIntegerFromDigitBytesAndNormalize||241|function|undefined Build96BitIntegerFromDigitBytesAndNormalize()|
+5f7830|__addl|___addl|35|function|undefined AddUintWithCarryOutFlag()|msvc500_library_oracle
+5f7860|__add_12|___add_12|104|function|undefined Add96BitIntegerWithCarry()|msvc500_library_oracle
+5f78d0|__shl_12|___shl_12|46|function|undefined ShiftLeft96BitIntegerBy1()|msvc500_library_oracle
+5f7900|__shr_12|___shr_12|45|function|undefined ShiftRight96BitIntegerBy1()|msvc500_library_oracle
+5f7930|__mtold12|___mtold12|241|function|undefined Build96BitIntegerFromDigitBytesAndNormalize()|msvc500_library_oracle
 5f7a30|ParseFloatingPointTextToInternalState||1632|function|undefined ParseFloatingPointTextToInternalState()|
 5f8210|$I10_OUTPUT|_$I10_OUTPUT|898|function|undefined ConvertExtendedFloatToStringInternal()|msvc500_library_oracle
 5f8640|__mbsnbicoll|__mbsnbicoll|59|function|undefined CompareLocaleMultibytePrefixLength()|
