@@ -1179,11 +1179,3 @@ undefined4 ReallocateHeapBlockWithAllocatorTracking(void)
   return 0;
 }
 
-// ghidra_name GenerateThreadLocalRandom15
-// ghidra_proto undefined GenerateThreadLocalRandom15()
-// FUNCTION: IMPERIALISM 0x005e83f0
-undefined4 GenerateThreadLocalRandom15(void)
-{
-  return 0;
-}
-

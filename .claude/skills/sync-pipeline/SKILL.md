@@ -20,9 +20,41 @@ mutation ledger + re-run procedure in `docs/ghidra-db-mutations.md`.
 | Vtable identity | `// VTABLE:` annotation + real inheritance | any symbols.csv row at that address is a bug (merge drops them) |
 | Reference decompiles | Ghidra DB | `src/ghidra_autogen/`, `include/ghidra_autogen/` |
 | Linkable stubs | symbols.csv + ownership | `src/autogen/stubs/` |
+| Confirmed CRT/MFC library identity | `config/msvc500_library_overrides.csv` | symbols.csv name/symbol/proto + `src/game/library_msvc500_overrides.cpp` marker |
 
 Surgical symbols.csv edits are allowed (deleting junk rows); a full resync
 re-derives the file, and the merge preserves curated values by address.
+
+## Library identity (a FID miss is NOT game code)
+
+Ghidra FID is heuristic — it has minimum-length/score thresholds, so it silently
+skips tiny or aliased CRT/MFC functions (the canonical case: `rand` at
+`0x005e83f0`, whose body is the MSVC LCG `state*0x343fd + 0x269ec3`,
+`(state>>16)&0x7fff`). `apply_msvc500_library_region.py` only sees functions FID
+returned, so a miss keeps its invented Ghidra name (`GenerateThreadLocalRandom15`)
+with no `_rand` symbol and no library ownership — forever.
+
+The **reviewed override layer** fixes such rows durably:
+
+- Add a row to `config/msvc500_library_overrides.csv`
+  (`address|name|symbol|prototype|library_family|object_member|evidence`).
+- `just apply-library-overrides` (idempotent; auto-runs inside `regen-stubs`)
+  projects it into symbols.csv (name/symbol/prototype, `provenance=msvc500_library_override`)
+  and ensures a `// LIBRARY:` marker (in `library_msvc500_overrides.cpp`) so
+  `sync-ownership` sets `ownership=library`. It only adds a marker where none
+  exists, so prototype-only corrections on already-owned FID rows don't duplicate.
+- Precedence: **reviewed override > FID > existing curated > provisional Ghidra**.
+  The FID apply defers override addresses, so a manual FID re-run can't clobber them.
+- `just library-identity-gate` (in `just gates`) pins every override into symbols.csv
+  + `ownership=library` and ratchets the applied count — regressing rand back to a
+  descriptive name fails the gate.
+
+**Before behaviourally naming any MSVC/MFC-range or CRT-shaped function, run
+`just library-identify 0xADDR`.** It aggregates symbols/ownership/override/FID/oracle
+into a verdict; a missing FID result is explicitly flagged as *not* evidence of game
+ownership. The systematic fix (a relocation-masked `.obj` matcher feeding a
+`config/msvc500_library_oracle.csv`) is the durable follow-up; until it lands, the
+reviewed override CSV is how confirmed identities get pinned.
 
 ## The two commands
 

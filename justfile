@@ -106,7 +106,7 @@ sync-ownership:
 # "edit markers -> regen-stubs -> build" is safe.
 [doc('MUTATES: src/autogen/stubs/. Regenerate stubs (runs sync-ownership + symbols-integrity-gate + ownership-integrity-gate first)')]
 [group('sync')]
-regen-stubs: sync-ownership symbols-integrity-gate ownership-integrity-gate
+regen-stubs: apply-library-overrides sync-ownership symbols-integrity-gate ownership-integrity-gate
   uv run python -m tools.stubgen \
     --name-overrides "{{name_overrides}}" \
     --ownership-csv "{{function_ownership}}"
@@ -799,6 +799,7 @@ gates:
   just synthetic-gate
   just symbols-integrity-gate
   just ownership-integrity-gate
+  just library-identity-gate
   just global-location-gate
   just manual-cruntimeclass-gate
   just decomplint
@@ -896,6 +897,20 @@ symbols-integrity-gate:
 [group('gates')]
 ownership-integrity-gate:
   uv run python -m tools.workflow.check_function_ownership_integrity
+
+# Semantic gate for reviewed MSVC500 library identities: every row in
+# config/msvc500_library_overrides.csv must be faithfully applied to symbols.csv
+# (name/symbol/prototype/type) + ownership=library, and the applied count must not
+# fall below the ratchet baseline. Pins e.g. 0x005e83f0 = rand/_rand permanently.
+[doc('Semantic library-identity gate: reviewed overrides applied + ownership=library + ratchet')]
+[group('gates')]
+library-identity-gate:
+  uv run python -m tools.workflow.check_library_identity
+
+[doc('MUTATES config/library_identity_gate_baseline.json: record current applied-override count')]
+[group('baseline-update')]
+library-identity-gate-update:
+  uv run python -m tools.workflow.check_library_identity --write-baseline
 
 # Sanity-check a few reccmp-critical symbols.csv rows after Ghidra export.
 [group('gates')]
@@ -1055,6 +1070,22 @@ mfc-runtime-macros *args:
 [group('rewrite')]
 apply-msvc500-library-region *args:
   uv run python -m tools.mfc.apply_msvc500_library_region {{args}}
+
+# MUTATES: config/symbols.csv + src/game/library_msvc500_overrides.cpp.
+# Project reviewed library-identity overrides (config/msvc500_library_overrides.csv)
+# onto the derived artifacts. Idempotent; runs automatically inside regen-stubs.
+# Reviewed overrides win over FID for confirmed CRT/MFC functions FID missed (rand).
+[group('rewrite')]
+apply-library-overrides *args:
+  uv run python -m tools.mfc.apply_library_overrides {{args}}
+
+# Diagnostic: aggregate every identity signal for one address (symbols, ownership,
+# reviewed override, cached FID match, object-matcher oracle) into a verdict.
+# Run before behaviourally naming any MSVC/MFC-range or CRT-shaped function:
+# a missing FID result is NOT evidence of game ownership. `just library-identify 0xADDR`.
+[group('ghidra-inspect')]
+library-identify address:
+  uv run python -m tools.mfc.library_identify "{{address}}"
 
 # MUTATES: the given paths (clang-format).
 [group('rewrite')]

@@ -6450,9 +6450,9 @@ address|name|symbol|size|type|prototype|provenance
 5e8310|AllocateWithGlobalNewMode|_malloc|20|function|undefined AllocateWithGlobalNewMode()|
 5e8330|__nh_malloc|__nh_malloc|68|function|undefined AllocateWithNewHandlerLoop()|
 5e8380|__heap_alloc|__heap_alloc|85|function|undefined AllocateAligned16FromSmallBlockOrHeap()|
-5e83e0|_srand|_srand|13|function|undefined SetThreadLocalRandomSeed()|
-5e83f0|GenerateThreadLocalRandom15||45|function|undefined GenerateThreadLocalRandom15()|
-5e8420|_memmove|_memmove|664|function|undefined MoveMemoryOverlapSafe()|
+5e83e0|srand|_srand|13|function|void __cdecl srand(unsigned int)|msvc500_library_override
+5e83f0|rand|_rand|45|function|int __cdecl rand(void)|msvc500_library_override
+5e8420|memmove|_memmove|664|function|void * __cdecl memmove(void *,void const *,unsigned int)|msvc500_library_override
 5e8760|atoi-style signed decimal parse|_atol|153|function|undefined ParseSignedIntFromAsciiWithWhitespaceSkip()|
 5e8800|atoi wrapper|_atoi|14|function|undefined ParseSignedIntAndDiscardResult()|
 5e8970|_isdigit|_isdigit|42|function|undefined CheckCharacterTypeFlag4()|
@@ -8333,6 +8333,7 @@ address|name|symbol|size|type|prototype|provenance
 66ed70|TMilitaryUnit::classRuntimeClass|||global||
 66eea0|g_vtblMilitaryUnitOrderState|||global||
 66f0b8|TViewMgr::classTViewMgr|||global||
+66f16c|g_TViewMgrTurnEventDispatchTable|||global||
 66f2a8|TModalMessageCommand::classTModalMessageCommand|||global||
 66f4c0|TAssetMgr::classTAssetMgr|||global||
 66f6e8|TMovieView::classTMovieView|||global||
@@ -8653,4 +8654,3 @@ address|name|symbol|size|type|prototype|provenance
 6a7f88|nRegisteredMessage|||global||xref_oracle
 6a7fac|g_pGlobalCallback_006a7fac|||global||
 6a8018|_mbctype|||global||xref_oracle
-66f16c|g_TViewMgrTurnEventDispatchTable|||global||

@@ -638,6 +638,26 @@ def main() -> int:
         families=families,
         library_symbols=library_symbols,
     )
+
+    # Reviewed library-identity overrides win over FID (precedence: reviewed
+    # override > FID match). Drop FID candidates at override addresses so a manual
+    # re-run of this script never overwrites the curated name/symbol/prototype that
+    # tools/mfc/apply_library_overrides.py owns (e.g. rand at 0x005e83f0).
+    override_path = resolve_repo_path(repo_root, "config/msvc500_library_overrides.csv")
+    override_addresses: set[int] = set()
+    if override_path.is_file():
+        try:
+            from tools.mfc.apply_library_overrides import load_overrides
+
+            override_addresses = {o.address for o in load_overrides(override_path)}
+        except Exception as exc:  # pragma: no cover - defensive
+            print(f"warning: could not read library overrides: {exc}")
+    if override_addresses:
+        before = len(candidates)
+        candidates = [c for c in candidates if c.address not in override_addresses]
+        dropped = before - len(candidates)
+        if dropped:
+            print(f"deferred {dropped} FID candidate(s) to reviewed library overrides")
     sizes = load_function_sizes(range_audit_path)
     markers = collect_source_markers(repo_root, args.target)
     ownership = load_function_ownership(ownership_path)
