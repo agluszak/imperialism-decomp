@@ -27,14 +27,6 @@ undefined4 TickCivWorkOrderCountdownAndComplete(void)
   return 0;
 }
 
-// ghidra_name AccumulateMissionUnitPriorityVectorWithOptionalFilter_Impl
-// ghidra_proto undefined AccumulateMissionUnitPriorityVectorWithOptionalFilter_Impl()
-// FUNCTION: IMPERIALISM 0x005c3500
-undefined4 AccumulateMissionUnitPriorityVectorWithOptionalFilter_Impl(void)
-{
-  return 0;
-}
-
 // ghidra_name ResolveEraCapabilityFallbackSlot
 // ghidra_proto undefined ResolveEraCapabilityFallbackSlot()
 // FUNCTION: IMPERIALISM 0x005c35c0
@@ -111,22 +103,6 @@ undefined4 DispatchToSelectableTextOptionEntries(void)
 // ghidra_proto undefined ApplyControlTextStyleDescriptorFromThemeCode()
 // FUNCTION: IMPERIALISM 0x005c4620
 undefined4 ApplyControlTextStyleDescriptorFromThemeCode(void)
-{
-  return 0;
-}
-
-// ghidra_name InitializeMainRoutineContextAndRun
-// ghidra_proto undefined InitializeMainRoutineContextAndRun()
-// FUNCTION: IMPERIALISM 0x005c4ab0
-undefined4 InitializeMainRoutineContextAndRun(void)
-{
-  return 0;
-}
-
-// ghidra_name AssignSharedStringToTaggedControlAndProcessState
-// ghidra_proto undefined AssignSharedStringToTaggedControlAndProcessState()
-// FUNCTION: IMPERIALISM 0x005c4b70
-undefined4 AssignSharedStringToTaggedControlAndProcessState(void)
 {
   return 0;
 }
@@ -319,14 +295,6 @@ undefined4 HandleTurnEventDialogFactorySlotE8(void)
 // ghidra_proto undefined OpenSuperArmyRosterPageAndActivateProvinceSelection()
 // FUNCTION: IMPERIALISM 0x005dda30
 undefined4 OpenSuperArmyRosterPageAndActivateProvinceSelection(void)
-{
-  return 0;
-}
-
-// ghidra_name RunTaggedOptionDialogAndReturnSelectionTag
-// ghidra_proto undefined RunTaggedOptionDialogAndReturnSelectionTag()
-// FUNCTION: IMPERIALISM 0x005de010
-undefined4 RunTaggedOptionDialogAndReturnSelectionTag(void)
 {
   return 0;
 }
