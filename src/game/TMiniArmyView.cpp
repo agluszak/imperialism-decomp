@@ -30,12 +30,17 @@ void TMiniArmyView::ApplyRectSlot110(RECT* rectBuffer) {
   CString displayName = name;
 
   InitializeUiTextStyleDescriptorAndApplyQuickDraw(0, 0xc, 0x2b6a, 3);
-  short textWidth = MeasureTextExtentWithCachedQuickDrawStyle(&name);
-  if (textWidth > 100) {
-    // TODO(codegen): the real body shortens `name` one character at a time (appending
-    // "...") until it fits in 100px; the decompile drops the shrink-by-one-char
-    // arguments to AssignSharedStringFromMidSubstring, so the exact truncation isn't
-    // modeled. displayName is left as the untruncated name.
+  if (MeasureTextExtentWithCachedQuickDrawStyle(&displayName) > 100) {
+    // Shrink the working copy one character at a time, appending an ellipsis, until the
+    // "name..." form fits within 100px. displayName holds the last-dropped (pre-ellipsis)
+    // form during the loop and the final ellipsized form afterward.
+    CString truncated;
+    do {
+      truncated = displayName.Mid(0, displayName.GetLength() - 1);
+      displayName = truncated;
+      truncated += "...";
+    } while (MeasureTextExtentWithCachedQuickDrawStyle(&truncated) > 100);
+    displayName = truncated;
   }
   SetQuickDrawTextOriginWithContextOffset(0xa, 0xc);
   DrawTextWithCachedStyle(&displayName);

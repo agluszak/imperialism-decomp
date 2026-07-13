@@ -139,14 +139,6 @@ undefined4 ApplyControlTextStyleDescriptorFromThemeCode(void)
   return 0;
 }
 
-// ghidra_name AssignSharedStringToTaggedControlAndProcessState
-// ghidra_proto undefined AssignSharedStringToTaggedControlAndProcessState()
-// FUNCTION: IMPERIALISM 0x005c4b70
-undefined4 AssignSharedStringToTaggedControlAndProcessState(void)
-{
-  return 0;
-}
-
 // ghidra_name SetSharedStringFromRotatingFlavorTextBySlot
 // ghidra_proto undefined SetSharedStringFromRotatingFlavorTextBySlot()
 // FUNCTION: IMPERIALISM 0x005d4550

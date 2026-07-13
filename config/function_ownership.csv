@@ -4717,6 +4717,7 @@ address|target_cpp|ownership|note
 5c49d0|src/game/ui_text_label_helpers.cpp|manual|marker_sync
 5c4a40|src/game/ui_text_label_helpers.cpp|manual|marker_sync
 5c4ab0|src/game/ui_text_label_helpers.cpp|manual|marker_sync
+5c4b70|src/game/ui_text_label_helpers.cpp|manual|marker_sync
 5c4c60|src/game/map_context_flavor_builders.cpp|manual|marker_sync
 5c57f0|src/game/map_context_flavor_builders.cpp|manual|marker_sync
 5c61a0|src/game/map_context_flavor_builders.cpp|manual|marker_sync

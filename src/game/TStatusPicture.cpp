@@ -3,6 +3,7 @@
 #include "game/TCity.h"
 #include "game/TGreatPower.h"
 #include "game/TSimMgr.h"
+#include "game/TViewMgr.h"
 #include "game/UiRuntimeContext.h"
 #include "game/global_data_tables.h"
 #include "game/quickdraw_rendering.h"
@@ -31,9 +32,7 @@ void TStatusPicture::ApplyRectSlot110(RECT* rectBuffer) {
   TPicture::ApplyRectSlot110(rectBuffer);
 
   CString title;
-  // TODO(class-recovery): the real body builds the title via g_pLocalizationTable's
-  // vtable slot 0x10.4 (format string 0x2757, substituting pad90's low short + 8) --
-  // same unrecovered-class gap as the sibling ApplyRectSlot110 overrides.
+  g_pSimMgr->GetString(0x2757, static_cast<short>(comparisonMode90) + 8, &title);
   ApplyUiTextStyleAndSyncColor(0, 0xe, 0x2b6a);
   short titleWidth = MeasureTextExtentWithCachedQuickDrawStyle(&title);
   SetQuickDrawTextOriginWithContextOffset(0x140 - titleWidth / 2, 0x3c);
@@ -50,12 +49,14 @@ void TStatusPicture::ApplyRectSlot110(RECT* rectBuffer) {
     SetQuickDrawTextOriginWithContextOffset(0x9a, rowY - 8);
     DrawTextWithCachedStyle(&label);
 
-    // TODO(codegen): draws a color swatch for this row (SetQuickDrawFillColor(0),
-    // FillRectWithQuickDrawBrushAndContextOffset, OffsetRect(-1,-1),
-    // g_pUiRuntimeContext->ApplyTurnEventPaletteColorByEventCode(pictureIds_b0[i]),
-    // FillRectWithQuickDrawBrushAndContextOffset again) -- the swatch RECT itself is
-    // dropped from the decompile entirely (no field assignments shown at all), so its
-    // geometry isn't modeled rather than guessed.
+    // Horizontal score bar for this row: filled once in fill color 0, then re-filled one
+    // pixel up/left in the nation's turn-event palette color for a 1px drop-shadow effect.
+    RECT swatch = {0x98, rowY + 1, static_cast<short>(values94[i]) + 0x98, rowY + 13};
+    SetQuickDrawFillColor(0);
+    FillRectWithQuickDrawBrushAndContextOffset(&swatch);
+    OffsetRect(&swatch, -1, -1);
+    g_pUiRuntimeContext->ApplyTurnEventPaletteColorByEventCode(pictureIds_b0[i]);
+    FillRectWithQuickDrawBrushAndContextOffset(&swatch);
   }
 }
 

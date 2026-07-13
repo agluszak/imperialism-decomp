@@ -34,3 +34,8 @@ void LoadUiStringByGroupAndIndexToControlObject(short group, short index, TView*
 
 // 0x5c49d0: forward the shared string (by value) to the control's EnableAndProcessFlag.
 void ApplySharedStringToControlState(CString sharedString, TView* control);
+
+// 0x5c4b70: build a CString from `text`, resolve `controlTag` on the active dialog, assert
+// it, then assign the shared string through the normal control-state path.
+TView* __cdecl AssignSharedStringToTaggedControlAndProcessState(const char* text,
+                                                                unsigned int controlTag);

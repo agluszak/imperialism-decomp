@@ -9,13 +9,10 @@
 #include "game/global_data_tables.h"
 #include "game/quickdraw_rendering.h"
 #include "game/ui_control_tags.h"
+#include "game/ui_text_label_helpers_decls.h"
 
 // 0x5c4910, ported in ui_text_label_helpers.cpp.
 void LoadUiStringAndDispatchSharedMessageCommand(short group, short index, TView* control);
-// Shared-string dialog-label setter (autogen stub 0x5c4b70; genuine __cdecl free
-// function, real shape (const char* text, unsigned int controlTag)). TODO(promote):
-// port into ui_text_label_helpers.cpp next to its siblings.
-extern undefined4 AssignSharedStringToTaggedControlAndProcessState(void);
 
 // SYNTHETIC: IMPERIALISM 0x0045d360
 // TTacticalToolbar::`scalar deleting destructor'
@@ -106,9 +103,8 @@ undefined TTacticalToolbar::UpdateTacticalCurrentUnitControlAndDialogLabel(TTact
     // dialog label (the slot receives TArmyTacUnit in the army battle).
     unitName = static_cast<TArmyTacUnit*>(unit)->sourceUnit38->name24;
   }
-  reinterpret_cast<void(__cdecl*)(const char*, unsigned int)>(
-      reinterpret_cast<void (*)()>(AssignSharedStringToTaggedControlAndProcessState))(
-      static_cast<const char*>(unitName), kControlTagGold);
+  AssignSharedStringToTaggedControlAndProcessState(static_cast<const char*>(unitName),
+                                                   kControlTagGold);
   return 0;
 }
 
