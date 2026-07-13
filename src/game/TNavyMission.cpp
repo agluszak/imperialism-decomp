@@ -451,7 +451,7 @@ LAB_0053711a:
     if (*reinterpret_cast<int*>(reinterpret_cast<char*>(orderObj) + 8) == pContextAnchor) {
       entry->SetMapOrderType9AndQueue();
     } else {
-      entry->PromoteMapOrderChainAndQueue(reinterpret_cast<void*>(pContextAnchor));
+      entry->PromoteMapOrderChainAndQueue(reinterpret_cast<TZone*>(pContextAnchor));
     }
   }
 }
@@ -476,7 +476,7 @@ void TNavyMission::ConsolidateMissionOrderEntriesByTargetAndQueue(int* pContextA
           other->active_flag = 1;
         }
       }
-      entry->PromoteMapOrderChainAndQueue(pContextAnchor);
+      entry->PromoteMapOrderChainAndQueue(reinterpret_cast<TZone*>(pContextAnchor));
     }
   }
 }

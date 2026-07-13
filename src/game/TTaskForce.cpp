@@ -2,13 +2,54 @@
 #include "game/TMission.h"
 
 #include "game/CString.h"
+#include "game/TModuleLibraryCacheTableStateB.h"
 #include "game/TNavyMgr.h"
 #include "game/TOcean.h"
 #include "game/TShip.h"
 #include "game/TSimMgr.h"
+#include "game/TZone.h"
 #include "game/global_data_tables.h"
+#include "game/localization_text_helpers.h"
 
 extern undefined4 GenerateThreadLocalRandom15(void);
+extern undefined4 ReallocateHeapBlockWithAllocatorTracking(void);
+
+namespace {
+
+// Reproduces TZonePrimaryNeighborStretch::EnsureSlotAllocatedAndReturnPointer's
+// (0x00558860) grow-on-access body -- same capacity-doubling realloc primitive
+// TZone.cpp's own EnsureSlotAllocatedAndReturnPointer/EnsureCapacityAtLeast use.
+// PromoteMapOrderChainAndQueue's candidate-promotion loop below inlines this same
+// primitive at its two call sites (verified against the raw listing: two separate
+// runs of the doubling-realloc sequence, not a CALL to 0x558860); since that call
+// site lives in a different translation unit than TZone.cpp's definition, the
+// inline expansion has to be reproduced locally here to match the emitted code.
+inline TZone** EnsurePrimaryNeighborSlot(TZonePrimaryNeighborStretch& neighbors,
+                                         unsigned int index) {
+  if (static_cast<unsigned int>(neighbors.Capacity()) <= index) {
+    int wanted = static_cast<int>(index) + 1;
+    unsigned int doubledCapacity = static_cast<unsigned int>(wanted * 2);
+    if (doubledCapacity > 0x7fffffffU) {
+      doubledCapacity = 0x7fffffffU;
+    }
+    void* grownBuffer = reinterpret_cast<void*(__cdecl*)(void*, int)>(
+        ReallocateHeapBlockWithAllocatorTracking)(neighbors.Data(), wanted * 8);
+    if (grownBuffer == 0) {
+      neighbors.Data() = static_cast<TZone**>(reinterpret_cast<void*(__cdecl*)(void*, int)>(
+          ReallocateHeapBlockWithAllocatorTracking)(neighbors.Data(), wanted * 4));
+      neighbors.Capacity() = wanted;
+    } else {
+      neighbors.Data() = static_cast<TZone**>(grownBuffer);
+      neighbors.Capacity() = static_cast<int>(doubledCapacity);
+    }
+  }
+  if (static_cast<unsigned int>(neighbors.Count()) <= index) {
+    neighbors.Count() = static_cast<int>(index) + 1;
+  }
+  return neighbors.Data() + index;
+}
+
+} // namespace
 
 // Sums the four per-category priority contributions (the same category-0..3 blend
 // ComputeNavyOrderPriorityContributionPercentByCategory computes over this entry's
@@ -591,10 +632,12 @@ void TTaskForce::SetMapOrderType9AndQueue() {
 }
 
 // FUNCTION: IMPERIALISM 0x005533f0
-void TTaskForce::PromoteMapOrderChainAndQueue(void* pContextAnchor) {
-  // TODO: promote body -- 0x553403's opening call (thunk 0x4081cf) on
-  // pContextAnchor is not yet recovered; see bd 1uj.16 follow-up notes.
-  (void)pContextAnchor;
+void TTaskForce::PromoteMapOrderChainAndQueue(TZone* pContextAnchor) {
+  // Reseed the zone-graph BFS distance levels (TZone::field44) from
+  // pContextAnchor before using them below to steer the candidate-promotion
+  // walk. level == -1 means "start a fresh search" (see
+  // TZone::PropagateMapActionContextDistanceLevelsRecursive).
+  pContextAnchor->PropagateMapActionContextDistanceLevelsRecursive(-1);
 
   // Minimum g_NavyOrderResourceDescriptorTable[order_type].descriptorWeight
   // among *active* (active_flag != 0) children, clamped to the 10000
@@ -613,12 +656,29 @@ void TTaskForce::PromoteMapOrderChainAndQueue(void* pContextAnchor) {
   owner = reinterpret_cast<TMapOrderEntryOwnerContext*>(contextAnchor);
 
   int iterationBudget = (minPriority < 10000) ? minPriority : 0;
-  if (iterationBudget > 0) {
-    // TODO: promote body -- 0x55345f-0x553590's candidate-promotion loop
-    // over `owner`'s still-uncharted growable-array region (data/capacity/
-    // count at +0x28/+0x2c/+0x30, compared via a short field at +0x44); see
-    // the TMapOrderEntryOwnerContext note in TTaskForce.h and bd 1uj.16
-    // follow-up notes.
+  for (int step = 0; step < iterationBudget; ++step) {
+    // `owner` (this+0xc) is a TZone* here (see the TMapOrderEntryOwnerContext
+    // note in TTaskForce.h); read fresh each time it is dereferenced below,
+    // matching the original's member reload after each ensure-slot call.
+    TZone* current = reinterpret_cast<TZone*>(owner);
+    unsigned int index = 0;
+    if (current->primaryNeighbors.Count() > 0) {
+      do {
+        TZone* candidate = *EnsurePrimaryNeighborSlot(current->primaryNeighbors, index);
+        current = reinterpret_cast<TZone*>(owner);
+        if (candidate->field44 < current->field44) {
+          // Walk one hop closer to pContextAnchor: promote this neighbor to
+          // be the new owner (re-fetches the slot, matching the original's
+          // repeated ensure-slot call rather than reusing `candidate`).
+          TZone* better = (index < static_cast<unsigned int>(current->primaryNeighbors.Count()))
+                              ? *EnsurePrimaryNeighborSlot(current->primaryNeighbors, index)
+                              : nullptr;
+          owner = reinterpret_cast<TMapOrderEntryOwnerContext*>(better);
+          break;
+        }
+        ++index;
+      } while (index < static_cast<unsigned int>(current->primaryNeighbors.Count()));
+    }
   }
 
   for (TMapOrderChildLinkNode* pruneNode = childOrderList; pruneNode != nullptr;) {
@@ -845,13 +905,40 @@ const int kOrderTypePriorityWeight[3] = {200, 100, 50};
 
 // FUNCTION: IMPERIALISM 0x00554c90
 void TTaskForce::BuildTaskForceSelectionOverlayLabelText(CString* out) {
-  // TODO: port body -- builds a localized string via g_pLocalizationTable's
-  // scanBracketExpressions format expander (this entry's required_count-as-nation-slot
-  // name, childOrderList count, and attachment), but the exact resource-string IDs and
-  // format-argument composition aren't recovered yet. See
-  // BuildMapOrderBattleSideSnapshot for the one confirmed callsite and receiver
-  // evidence.
-  *out = g_szEmptyString;
+  int childCount = 0;
+  for (TMapOrderChildLinkNode* node = childOrderList; node != nullptr; node = node->next) {
+    ++childCount;
+  }
+
+  CString unitCountTemplate;
+  CString terrainOwnerLabel;
+  CString contextLabel;
+  CString childCountText;
+  CString orderKindLabel;
+
+  // Singular/plural unit-count template ("1 <unit>" vs "N <unit>s").
+  g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&unitCountTemplate, 0x2762,
+                                                                  (childCount != 1) + 0x11);
+
+  // Nation/terrain name for required_count (reused here as a nation slot index; same
+  // pattern as TNavyMgr.cpp and BuildMapOrderBattleSideSnapshot).
+  g_apTerrainTypeDescriptorTable[required_count]->FormatOverlayTerrainLabelText(&terrainOwnerLabel);
+
+  // `owner`/`contextAnchor` resolved to real TZone* for this call site (see the
+  // TMapOrderEntryOwnerContext note in TTaskForce.h / bd 1uj.47.2-3): slot 0x2c is
+  // TZone::AssignZoneDisplayNameToOutputRef.
+  reinterpret_cast<TZone*>(contextAnchor)->AssignZoneDisplayNameToOutputRef(&contextLabel);
+
+  childCountText.Format(g_szDecimalFormat, childCount);
+
+  // Order-kind label. The original reads only the low 16 bits of `attachment` here
+  // (a `movsx ax` load), so truncate through `short` to match exactly.
+  g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(
+      &orderKindLabel, 0x2762, static_cast<short>(attachment) + 0x13);
+
+  scanBracketExpressions(g_pSimMgr, out, static_cast<LPCSTR>(unitCountTemplate),
+                         static_cast<LPCSTR>(terrainOwnerLabel), static_cast<LPCSTR>(contextLabel),
+                         static_cast<LPCSTR>(childCountText), static_cast<LPCSTR>(orderKindLabel));
 }
 
 // FUNCTION: IMPERIALISM 0x00555420
