@@ -89,3 +89,59 @@ Per-nation ranges (compressed):
 - `techId` in `.SCN` appears to mark technologies granted at scenario start (by nation).
 - University unit availability gates (Forester/Rancher/Driller) are controlled by global researched-tech flags checked by university UI/build-order logic.
 - Next Ghidra step: locate university availability function and bind specific bit/ID checks to named techs using `techId` comparisons and string/bitmap anchors (`9926`, `9930`, `9936`).
+
+## 2026-07-13 update (bd imperialism-decomp-1uj.34): availability check located
+
+Located the actual per-row availability check and the icon-to-role binding (both
+confirmed from Ghidra disassembly, not guessed):
+
+- **Row build/icon binding** — `BuildUniversityRecruitmentRows` (0x00475f84, 9547
+  bytes; symbols.csv currently has no name for this address, but its entry point
+  matches the plan doc's cited `0x00475f84` exactly). A prior Ghidra plate comment on
+  this function already records the confirmed bindings for the string/bitmap anchors
+  cited above: `civ0`->9920 Miner, `civ1`->9922 Prospector, `civ2`->9924 Farmer,
+  **`civ3`->9926 Forester**, `civ4`->9928 Engineer, **`civ5`->9930 Rancher**, and
+  **`civ8`->9936 Driller** (civ6/civ7 unconfirmed/reserved). This directly matches the
+  string-anchor IDs (9926/9930/9936) the bead asked to bind.
+- **Per-row availability read** — `TUniversityView::OrphanRetStub_004c6fd0` (0x4cace0,
+  slot 0x75, currently declared but unported in `include/game/TUniversityView.h`)
+  iterates recruit-row tags `clu0..clu8` (rows 6/7 skipped) and, for each row, reads a
+  single capability byte:
+  `g_pCityOrderCapabilityState[TTechMgr + 0x467 + nationSlot*9 + rowIndex]`
+  (`this + nRecruitControlTag - 0x636c70c9 + nationSlot*9`, where `0x636c7530` is the
+  `'clu0'` tag and `0x467` is the row-index-0 base). When the byte is 0 the row takes
+  a different (unavailable-looking) control path. This is the actual "university
+  availability" gate the bead asks for -- it lives in `TTechMgr` (aka
+  `g_pCityOrderCapabilityState`, `0x006A43D8`), not in `TCountry`/`TGreatPower`. The
+  9-byte-per-nation table at `TTechMgr+0x467` is not yet declared as a named field in
+  `include/game/TTechMgr.h` (it currently ends its explicit fields at
+  `militaryCapRows39d` around `+0x39d..+0x46f`, so this array immediately follows/
+  overlaps that region and needs its own dedicated field).
+- **Global tech-unlock writer (different system, ruled out for civilian rows)** —
+  `ApplyCityOrderCapabilityUnlockByTechId(int nTechId)` (0x5afba0, `__thiscall` on
+  `g_pCityOrderCapabilityState`) is the real per-tech unlock handler: it sets a
+  researched-flag byte at `TTechMgr+0x180+nTechId` (a flat, nation-agnostic bitmask --
+  matches the "tech store" shared-race mechanic, see `TTechStorePage`/
+  `AreTechItemPrerequisitePairCompleted`) and has explicit `case` arms for techId
+  4, 9, 0xb, 0xf, 0x15, 0x16, 0x18, 0x1b that write specific bytes at `+0x1a3..+0x1aa`
+  and selector shorts at `+0x1d2`/`+0x1d4`. Traced its callers
+  (`UpdateCityOrderCapabilityUnlockProgress` 0x5af980, `ApplyTechUnlockAndQueueNation-
+  AbilityNotices` 0x5afb10): confirmed this bitmask is **not** indexed by nation and is
+  **not** the same array `OrphanRetStub_004c6fd0` reads -- it does not write
+  `TTechMgr+0x467`. The `+0x1a3..+0x1aa` bytes it does write look ship/navy-related
+  (two of them are already named `shipCapabilityFlag1a5`/`shipCapabilityFlag1a8` in
+  `TTechMgr.h` from a prior session), so this global tech-race system is a *different*
+  unlock path from the university civilian rows, not the one gating Forester/Rancher/
+  Driller.
+
+**Not yet resolved**: which specific `techId` values (if any -- vs. direct
+scenario-start `.SCN` seeding of the `TTechMgr+0x467` per-nation table, per the
+"Working Hypothesis" above) flip Forester/Rancher/Driller's `TTechMgr+0x467` bytes.
+`InitializeCityOrderCapabilityStateDefaults` (0x5aeff0) seeds that table's bytes to a
+fixed `{1,1,0,0,0,0,0,0,0}`-shaped default per nation at scenario start, and no writer
+touching `+0x467` at a per-tech-unlock callsite was found in this pass -- the remaining
+work is to find whichever save/load or scenario-init path re-seeds this table's
+per-row bytes from the `.SCN` `tech` records (or a runtime writer not yet located).
+Good next-session anchors: `TTechMgr::InitializeCityOrderCapabilityStateDefaults`
+(0x5aeff0), the `.SCN` tech-record loader, and `include/game/TTechMgr.h`'s currently
+undeclared `+0x467` region.
