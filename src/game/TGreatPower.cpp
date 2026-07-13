@@ -387,7 +387,7 @@ void TGreatPower::ReadFrom(TStream* stream) {
   stream->ReadBytes(this->diplomacyState1c6, 0x2E);
   SwapShortArrayBytes(this->diplomacyState1c6, kNationSlotCount);
 
-  if (g_nSaveFormatVersion > 0x16) {
+  if (g_nSaveFormatVersion >= 0x17) {
     stream->ReadBytes(this->diplomacyState1f4, 0x2E);
     SwapShortArrayBytes(this->diplomacyState1f4, kNationSlotCount);
   }
@@ -583,7 +583,7 @@ void TGreatPower::ReadFrom(TStream* stream) {
     }
   }
 
-  if (g_nSaveFormatVersion > 0x25) {
+  if (g_nSaveFormatVersion >= 0x26) {
     stream->ReadBytes(&this->field910, 4);
     stream->ReadBytes(&this->aidAllocationTotal, 4);
   }

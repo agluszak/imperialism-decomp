@@ -48,4 +48,10 @@ public:
   short capabilityFlag24;
   short capabilityFlag26;
   short capabilityFlag28;
+  // Base occupies 0x00..0x48: derived ministers introduce their own state at 0x48
+  // (ConstructTForeignMinister @ 0x52f070 first writes derived fields at [this+0x48];
+  // TDefenseMinister slots 0x48-0x60, TCityInteriorMinister shares 0x48-0x50). The
+  // 0x2A..0x48 region is unrecovered base padding — without it derived `operator new`
+  // sizes (TForeignMinister 0x80, etc.) come out 0x1C bytes short.
+  unsigned char pad2a[0x48 - 0x2A];
 };
