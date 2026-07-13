@@ -12850,7 +12850,8 @@
     },
     {
       "address": "0x4e0610",
-      "matching": 1.0,
+      "effective": true,
+      "matching": 0.42857142857142855,
       "name": "TGreatPower::ReturnFalseNationStateActionStub_8a",
       "type": 1
     },
@@ -12868,7 +12869,7 @@
     },
     {
       "address": "0x4e06d0",
-      "matching": 1.0,
+      "matching": 0.8095238095238095,
       "name": "TGreatPower::SumNationRuntimeFiveBucketValue44",
       "type": 1
     },
@@ -12898,7 +12899,7 @@
     },
     {
       "address": "0x4e09a0",
-      "matching": 0.5421686746987951,
+      "matching": 0.5180722891566265,
       "name": "TGreatPower::ComputeCityOrderCapabilityAggregateScore",
       "type": 1
     },
@@ -22322,13 +22323,13 @@
     },
     {
       "address": "0x553b10",
-      "matching": 0.4827586206896552,
+      "matching": 0.41379310344827586,
       "name": "HasNoMapOrderEntryChildrenQueued",
       "type": 1
     },
     {
       "address": "0x553b50",
-      "matching": 0.5818181818181818,
+      "matching": 0.5454545454545454,
       "name": "HasActiveMapOrderEntryChildren",
       "type": 1
     },
@@ -22412,7 +22413,7 @@
     },
     {
       "address": "0x5549a0",
-      "matching": 0.08695652173913043,
+      "matching": 1.0,
       "name": "SetTaskForceOrderSelectionByNodeId",
       "type": 1
     },

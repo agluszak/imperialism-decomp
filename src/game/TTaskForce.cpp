@@ -1110,6 +1110,25 @@ void TTaskForce::SetTaskForceOrderSelectionByNationClassAndFlag(short nationClas
   }
 }
 
+// FUNCTION: IMPERIALISM 0x005549a0
+void TTaskForce::SetTaskForceOrderSelectionByNodeId(TTaskForce* targetOrderObject,
+                                                    char activeFlag) {
+  TMapOrderChildLinkNode* node;
+  if (childOrderList == nullptr) {
+    node = nullptr;
+  } else if (childOrderList->object_ptr == targetOrderObject) {
+    node = childOrderList;
+  } else {
+    node = childOrderList->next->FindNodeMatching(targetOrderObject);
+  }
+  if (node != nullptr) {
+    node->active_flag = activeFlag;
+    if (activeFlag != 0) {
+      *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(targetOrderObject) + 0x34) = 0;
+    }
+  }
+}
+
 // FUNCTION: IMPERIALISM 0x00554a30
 int TTaskForce::CountTaskForceSelectedOrdersByNationClass(short nationClass) {
   int count = 0;

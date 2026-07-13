@@ -231,6 +231,13 @@ public:
   // returns 0 if none are active (used as a gating predicate for map-order actions).
   unsigned int GetMinActionThresholdFromEntryChildren(); // 0x554a80
 
+  // Finds the childOrderList entry whose object_ptr == targetOrderObject (head fast-path,
+  // else FindNodeMatching from the second node) and, if found, sets its active_flag; when
+  // the flag is nonzero also clears targetOrderObject's +0x34 dword (same idiom as
+  // SetTaskForceOrderSelectionByNationClassAndFlag).
+  void SetTaskForceOrderSelectionByNodeId(TTaskForce* targetOrderObject,
+                                          char activeFlag); // 0x5549a0
+
   // Counts active childOrderList entries whose descriptor enabledFlagOrBucketOffset
   // (low short, reused here as a nation/bucket class) equals nationClass.
   int CountTaskForceSelectedOrdersByNationClass(short nationClass); // 0x554a30
