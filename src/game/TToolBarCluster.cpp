@@ -1,11 +1,15 @@
 #include "game/TToolBarCluster.h"
 
+#include "game/TArmyMgr.h"
 #include "game/TMapUberPicture.h"
 #include "game/TOcean.h"
+#include "game/TSimMgr.h"
+#include "game/TStaticText.h"
 #include "game/TTaskForce.h"
 #include "game/TViewMgr.h"
 #include "game/global_data_tables.h"
 #include "game/map_overlay_geometry.h"
+#include "game/mapped_flavor_text.h"
 
 // Builds the 16 per-slot hover/hit-test rects consumed by
 // TToolBarCluster::HandleCityBuildingHoverSelection from a table of 17 (x,y) anchor points.
@@ -111,12 +115,63 @@ undefined TToolBarCluster::RefreshTurnOrderStatusPanelTextsAndControls() {
 }
 
 // FUNCTION: IMPERIALISM 0x00585ba0
-void TToolBarCluster::UpdateControlTagTreaTextFromNationAndMapContext(int nationId) {
-  // TODO: port body @ 0x585ba0 (refreshes a tag's text from the active nation + map context).
-  (void)nationId;
+void TToolBarCluster::UpdateControlTagTreaTextFromNationAndMapContext(short nationId) {
+  // 'trea' tag: the active nation's treasury balance, only when the slot is eligible
+  // for event processing (matches TSimMgr::IsNationSlotEligibleForEventProcessing's
+  // major-slot/profile-band gate).
+  CString treaText;
+  if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(nationId)) {
+    g_pSimMgr->FormatIntegerString(g_apNationStates[nationId]->treasuryValue10, &treaText);
+  }
+  TView* treaControl = this->ResolveControlByTag(0x74726561); // 'trea'
+  if (treaControl != nullptr) {
+    static_cast<TStaticText*>(treaControl)
+        ->AssignTextSharedRefIfChangedAndMaybeInvalidate(&treaText, 1);
+  }
+
+  // 'seas' tag: "<season>, <year>" turn-status text (present on the main map toolbar).
+  TView* seasControl = this->ResolveControlByTag(0x73656173); // 'seas'
+  if (seasControl != nullptr) {
+    CString seasonText;
+    g_pSimMgr->FormatSeasonName(&seasonText);
+    int year = 1815 + g_pSimMgr->quarterGateTick2c / 4;
+    CString yearText;
+    yearText.Format("%d", year);
+    CString seasText = seasonText + ", " + yearText;
+    static_cast<TStaticText*>(seasControl)
+        ->AssignTextSharedRefIfChangedAndMaybeInvalidate(&seasText, 1);
+    return;
+  }
+
+  // 'forc' tag: pending city-action-gate unit cost (present on the tactical/army
+  // toolbar variant instead of 'seas'), expanded through the localized "[0]" template.
+  TView* forcControl = this->ResolveControlByTag(0x666f7263); // 'forc'
+  if (forcControl == nullptr) {
+    return;
+  }
+  CString countText;
+  if (g_pMapContextActionManager->pendingMapActionIndex != -1) {
+    int cost = g_pMapContextActionManager->ComputeSelectedTileCityActionGateSum();
+    countText.Format("%d", cost);
+  } else {
+    countText = "0";
+  }
+  CString templateText;
+  g_pSimMgr->GetString(0x2732, 0x10, &templateText);
+  CString forcText;
+  scanBracketExpressions(g_pSimMgr, &forcText, static_cast<LPCSTR>(templateText),
+                         static_cast<LPCSTR>(countText));
+  static_cast<TStaticText*>(forcControl)
+      ->AssignTextSharedRefIfChangedAndMaybeInvalidate(&forcText, 1);
 }
 
 // FUNCTION: IMPERIALISM 0x00585ee0
-undefined TToolBarCluster::SehCleanup_ReleaseTwoTempSharedStringRefs() {
-  return 0;
+void TToolBarCluster::SehCleanup_ReleaseTwoTempSharedStringRefs(int unusedArg) {
+  // Ground truth (RET 0x4) has one stack arg, never read by the body, and no
+  // meaningful return value tracked (no AL write before return) -- the whole body
+  // is two default-constructed CString locals immediately going out of scope, i.e.
+  // an SEH cleanup shell with no real logic.
+  (void)unusedArg;
+  CString unused1;
+  CString unused2;
 }

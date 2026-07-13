@@ -7573,7 +7573,7 @@
     },
     {
       "address": "0x4a2900",
-      "matching": 0.13063763608087092,
+      "matching": 0.13374805598755832,
       "name": "BuildArmyContextActionRecordsAndDispatchLabel",
       "type": 1
     },
@@ -7651,7 +7651,7 @@
     },
     {
       "address": "0x4a41d0",
-      "matching": 0.05,
+      "matching": 0.88,
       "name": "ComputeSelectedTileCityActionGateSum",
       "type": 1
     },
@@ -16784,7 +16784,7 @@
     },
     {
       "address": "0x512930",
-      "matching": 0.2491103202846975,
+      "matching": 0.25622775800711745,
       "name": "BuildHexAreaTileIndexList",
       "type": 1
     },
@@ -21328,7 +21328,7 @@
     },
     {
       "address": "0x545940",
-      "matching": 0.42610240671943145,
+      "matching": 0.42739460507187854,
       "name": "TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine",
       "type": 1
     },
@@ -26886,13 +26886,13 @@
     },
     {
       "address": "0x585ba0",
-      "matching": 0.01092896174863388,
+      "matching": 0.48753462603878117,
       "name": "TToolBarCluster::UpdateControlTagTreaTextFromNationAndMapContext",
       "type": 1
     },
     {
       "address": "0x585ee0",
-      "matching": 0.0,
+      "matching": 0.975609756097561,
       "name": "TToolBarCluster::SehCleanup_ReleaseTwoTempSharedStringRefs",
       "type": 1
     },
@@ -33025,7 +33025,7 @@
     },
     {
       "address": "0x5d6b70",
-      "matching": 0.8771929824561403,
+      "matching": 1.0,
       "name": "TViewMgr::RefreshMainViewNationIndicatorForCurrentTurnEvent",
       "type": 1
     },

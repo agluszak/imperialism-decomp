@@ -856,6 +856,21 @@ bool TArmyMgr::CommitCityActionGateCostIfAffordable(int contextArg) {
   return false;
 }
 
+// FUNCTION: IMPERIALISM 0x004a41d0
+int TArmyMgr::ComputeSelectedTileCityActionGateSum() {
+  TMilitaryUnit* unit = nullptr;
+  if (this->pendingMapActionIndex >= 0 && this->pendingMapActionIndex < 0x180) {
+    unit = g_pGlobalMapState->cityScoreTable[this->pendingMapActionIndex].stationedUnitChain98;
+  }
+  int totalCost = 0;
+  for (; unit != nullptr; unit = static_cast<TMilitaryUnit*>(unit->nextOnTile)) {
+    if (unit->field_8 == 0 && unit->GetUnitMovementClassId() != 0) {
+      totalCost += unit->GetUnitTypeCostPoints();
+    }
+  }
+  return totalCost;
+}
+
 // FUNCTION: IMPERIALISM 0x004a4260
 undefined TArmyMgr::OrphanCallChain_C1_I34_004a4260(int mode) {
   TMilitaryUnit* unit = nullptr;
