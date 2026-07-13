@@ -22,8 +22,12 @@ public:
   // slot 0x08 ShallowClone inherited unchanged (0x4798d0)
   // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
   virtual int GetBaseActionPoints(); // slot 0x0a 0x5a5d40
-  // Per-unit-type range value (base returns 0; army/navy overrides read the
-  // 0x6699e8 int table). TODO(verify): exact semantic (fire range vs move range).
+  // Fire/attack range in hex tiles -- the max distance at which this unit can engage a
+  // target (NOT movement range; that derives from action points, slot 0x0a). Consumed by
+  // IsTacticalTargetTileReachableForAction (gates on hexDistance <= range) and by the
+  // threat-field seed (GetUnitRange() + 1). Base returns 0; the army/navy overrides read
+  // the per-unit-type 0x6699e8 range table (defending artillery gets +1). Mac oracle name
+  // is TTacticalUnit::GetRange().
   virtual int GetUnitRange();                                 // slot 0x0b 0x5a5d60
   virtual undefined OrphanLeaf_NoCall_Ins02_005a5d80();       // slot 0x0c 0x5a5d80
   virtual undefined OrphanLeaf_NoCall_Ins02_005a5da0();       // slot 0x0d 0x5a5da0

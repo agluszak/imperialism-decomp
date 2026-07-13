@@ -104,7 +104,7 @@ void TNumberedArrowButton::DispatchPictureResourceCommand(int eventType, void* e
 
 // FUNCTION: IMPERIALISM 0x0058c7c0
 void TNumberedArrowButton::HandleCursorHoverSelectionByChildHitTestAndFallback(CPoint* cursorPoint,
-                                                                               int hitArg) {
+                                                                               RgnHandle hitArg) {
   if (IsActionable() != '\0') {
     if (cursorPoint->y < frameHeight38 / 2) {
       field4e = 0x100;

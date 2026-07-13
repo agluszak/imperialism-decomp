@@ -56,7 +56,8 @@ public:
   // slot 0x29 SetEnabled inherited unchanged (0x48b1c0)
   // slot 0x2a SetState inherited unchanged (0x48b070)
   // slot 0x2b GetField4E inherited unchanged (0x427200)
-  virtual void HandleCursorHoverFallback(CPoint* point, int hitArg) override; // slot 0x2c 0x5a8ca0
+  virtual void HandleCursorHoverFallback(CPoint* point,
+                                         RgnHandle hitArg) override; // slot 0x2c 0x5a8ca0
   // slot 0x2d vmethod_0073 inherited unchanged (0x48c1c0)
   // slot 0x2e RefreshCityProductionViewStateFromContext inherited unchanged (0x48c1e0)
   // slot 0x2f QuerySelectedIndexSlotBC inherited unchanged (0x430bd0)
@@ -65,9 +66,9 @@ public:
   // slot 0x32 ValidateControlRectIfWindowActive inherited unchanged (0x48b690)
   // slot 0x33 EvaluateControlInputGate inherited unchanged (0x48c000)
   // slot 0x34 HasRenderableParentAndContent inherited unchanged (0x48c050)
-  virtual void
-  HandleCursorHoverSelectionByChildHitTestAndFallback(CPoint* point,
-                                                      int hitArg) override; // slot 0x35 0x5a8d40
+  virtual void HandleCursorHoverSelectionByChildHitTestAndFallback(
+      CPoint* point,
+      RgnHandle hitArg) override; // slot 0x35 0x5a8d40
   // slot 0x36 DispatchControlEventToChildrenAndSelf inherited unchanged (0x48aaf0)
   virtual void NoOpUiLifecycleHook(int arg) override; // slot 0x37 0x5a84d0
   // slot 0x38 NoOpUiCallback inherited unchanged (0x48abc0)

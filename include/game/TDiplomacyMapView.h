@@ -37,11 +37,11 @@ public:
   void ForwardParam(int param) override;    // slot 0x12 0x4f7130
   void CallVoidSlotA0() override;           // slot 0x28 0x4f3e30
   void HandleCursorHoverFallback(CPoint* point,
-                                 int hitArg) override; // slot 0x2c 0x4f5f90
+                                 RgnHandle hitArg) override; // slot 0x2c 0x4f5f90
   void HandleCursorHoverSelectionByChildHitTestAndFallback(CPoint* point,
-                                                           int hitArg) override; // slot 0x35
-  void NoOpUiLifecycleHook(int arg) override;                                    // slot 0x37
-  void ApplyRectSlot110(RECT* rectBuffer) override;                              // slot 0x44
+                                                           RgnHandle hitArg) override; // slot 0x35
+  void NoOpUiLifecycleHook(int arg) override;                                          // slot 0x37
+  void ApplyRectSlot110(RECT* rectBuffer) override;                                    // slot 0x44
   void BeginMouseCaptureAndStartRepeatTimer(CPoint* point, int arg2, int arg3,
                                             int arg4) override; // slot 0x47 0x4f5410
 

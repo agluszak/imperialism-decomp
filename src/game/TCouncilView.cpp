@@ -70,7 +70,8 @@ void TCouncilView::HandleEvent(int commandId, TEventHandler* sourceHandler, TEve
 // slot 0x35 — cursor-hover override: base hit test, then force the pointer cursor while
 // hovering the council nation strip.
 // FUNCTION: IMPERIALISM 0x004fc950
-void TCouncilView::HandleCursorHoverSelectionByChildHitTestAndFallback(CPoint* point, int hitArg) {
+void TCouncilView::HandleCursorHoverSelectionByChildHitTestAndFallback(CPoint* point,
+                                                                       RgnHandle hitArg) {
   TView::HandleCursorHoverSelectionByChildHitTestAndFallback(point, hitArg);
   if ((int)field528 < councilNationCount24c8 + 2) {
     SetCursor((HCURSOR)g_pUiRuntimeContext->cursorTable[26]);

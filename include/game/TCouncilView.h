@@ -16,7 +16,7 @@ public:
   void HandleEvent(int commandId, TEventHandler* sourceHandler,
                    TEvent* event) override; // slot 0x0f 0x4fbd60
   void HandleCursorHoverSelectionByChildHitTestAndFallback(CPoint* point,
-                                                           int hitArg) override; // slot 0x35
+                                                           RgnHandle hitArg) override; // slot 0x35
   // slot 0x37 — despite the inherited no-op name, TCouncilView's override rebuilds the
   // council nation-overlay geometry and labels (0x4fba70, 578 bytes).
   void NoOpUiLifecycleHook(int arg) override;

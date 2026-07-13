@@ -72,6 +72,7 @@ module|tools.workflow.check_symbols_integrity|just:symbols-integrity-gate|Struct
 module|tools.ghidra.linear_disasm|query:linear-disasm|Linear disassembly by address ignoring Ghidra function boundaries
 module|tools.workflow.check_class_sizes|just:class-size-check|Modeled class sizes vs RTTI oracle object_size
 module|tools.ghidra.repair_code_gaps|just:repair-code-gaps|Create missing Ghidra functions at vtable/ILT/symbols targets
+module|tools.ghidra.fix_function_bounds|just:fix-function-bounds|Re-bound existing degenerate 1-byte Ghidra functions in place
 module|tools.ghidra.prune_ilt_db_functions|just:prune-ilt-db-functions|Remove Function entities on ILT jmp thunks from the Ghidra DB
 module|tools.workflow.check_typedef_cast_drift|just:typedef-cast-audit|Audit Hard-Rule-9 typedef-cast externs for cross-file signature drift
 module|tools.reccmp.global_xref_oracle|just:global-xref-oracle|Mine reccmp asm diffs for orig-address<->recomp-symbol global pairs

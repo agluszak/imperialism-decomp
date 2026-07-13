@@ -369,7 +369,8 @@ void TTacticalBattle::ComputeTacticalReachableTileCostsByUnitCategory(TTacticalU
           // Transcribed as compiled: the original indexes neighborTiles[1] (or [0] when
           // direction >= 5), NOT [direction + 1]. The branchless codegen proves the
           // literal constants; likely an original bug for the intended "next ring
-          // neighbor". TODO(verify): keep literal for byte match.
+          // neighbor", kept literal for byte match ((4 < direction) - 1 & 1 == 0 for
+          // direction >= 5, else 1).
           short nextDirection = static_cast<short>((direction >= 5) ? 0 : 1);
           int nextNeighbor = neighborTiles[nextDirection];
           if (nextNeighbor != -1) {
@@ -604,9 +605,9 @@ void TTacticalBattle::MoveTacticalUnitTowardTile(TTacticalUnit* unit, int target
       TTacticalPlayer* sidePlayer = (side == 0) ? tacticalPlayer14 : tacticalPlayer18;
       unitMayLeave = sidePlayer->AlwaysTrueTacticalPredicate10(unit);
     }
-    // TODO(verify): original bug -- unitMayLeave is read uninitialized when the battle
-    // runs headless (battleView8 == 0) and the unit's morale is unbroken; the original
-    // compiler homed the local in the dead targetTileIndex arg slot.
+    // Original bug (faithful): unitMayLeave is read uninitialized when the battle runs
+    // headless (battleView8 == 0) and the unit's morale is unbroken -- the original omits
+    // the else branch too.
     if (unitMayLeave != 0) {
       int exitTile = pathTiles[stepCount];
       unit->state1c = 2;
@@ -672,8 +673,8 @@ int TTacticalBattle::BuildPathToTargetByDistanceField(int walkTileIndex, int pat
         if (swapFlag == 0 && tileMoveCostArray24[nextTile] == tileMoveCostArray24[curTile]) {
           char nextThreat = tileThreatLevelArray28[nextTile];
           char curThreat = tileThreatLevelArray28[curTile];
-          // TODO(verify): branch shape of this tiebreak; truth table verified: one
-          // zero-threat side -> it sorts first, both zero / both nonzero -> coin flip.
+          // Tiebreak (truth table verified against the listing): exactly one zero-threat
+          // side -> it sorts first; both zero / both nonzero -> coin flip.
           if (nextThreat == 0) {
             if (curThreat != 0) {
               swapFlag = 1;
@@ -1101,7 +1102,7 @@ void TTacticalBattle::ApplyTacticalActionEffectsAndMaybeRemoveUnit(TTacticalUnit
     short categoryCode = g_awTacticalUnitCategoryCodeBySlot[attackerUnit->unitTypeC];
     if (categoryCode == 6 || categoryCode == 7 || attackerUnit->unitTypeC == 0x15) {
       if (battleView8 != 0) {
-        // TODO(verify): 0xf6e/6 vs 0xf78/3 assumed effect-id + frame-count pair.
+        // effect-id + frame-count pair: 0xf6e/6 here, 0xf78/3 in the else branch (verified).
         battleView8->PlayTacticalTileEffect(targetTileIndex, 0xf6e, 6);
       }
     } else {
@@ -1877,7 +1878,7 @@ void TTacticalBattle::BuildTacticalDistanceFieldForSide(char ourSideFlag) {
           continue;
         }
         // The original emits two consecutive compares here (jl 2, then jle 1), so the
-        // source repeated the wall-mark test; kept literally. TODO(verify) shape.
+        // source repeats the redundant wall-mark test; kept literally.
         if (record->deployMark8 >= 2 && record->deployMark8 > 1) {
           int wallRow = neighborTile / 0x1d;
           if (fortStrengthPoints54[wallRow / 2] > 0) {

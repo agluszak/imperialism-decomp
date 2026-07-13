@@ -724,8 +724,8 @@ undefined TMapDialog::UpdateMapOrderEntryTilePreviewSlot() {
 }
 
 // FUNCTION: IMPERIALISM 0x00523640
-void TMapDialog::RenderMapOrderEntryTilePreview(int arg1, int arg2, int arg3) {
-  (void)arg1;
+void TMapDialog::RenderMapOrderEntryTilePreview(TCivUnit* orderEntry, int arg2, int arg3) {
+  (void)orderEntry;
   (void)arg2;
   (void)arg3;
 }

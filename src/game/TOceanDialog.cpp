@@ -107,8 +107,8 @@ void TOceanDialog::ApplyRectSlot110(RECT* rectBuffer) {
 }
 
 // FUNCTION: IMPERIALISM 0x00567fa0
-void TOceanDialog::RenderMapOrderEntryTilePreview(int arg1, int arg2, int arg3) {
-  (void)arg1;
+void TOceanDialog::RenderMapOrderEntryTilePreview(TCivUnit* orderEntry, int arg2, int arg3) {
+  (void)orderEntry;
   (void)arg2;
   (void)arg3;
 }

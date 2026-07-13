@@ -26,7 +26,7 @@ public:
 
   void ForwardMapDialogTileCoordUpdateToDerivedHandler(int tileX, int tileY);
 
-  virtual void RenderMapOrderEntryTilePreview(int arg1, int arg2, int arg3) override;
+  virtual void RenderMapOrderEntryTilePreview(TCivUnit* orderEntry, int arg2, int arg3) override;
   virtual void RenderTacticalStackCountIndicatorAndUnitBadge(short tileIndex, int arg2,
                                                              int arg3) override;
   virtual void RenderMapDialogTerrainOverlayFrameByTileOwner(short tileIndex, void* dstRect,

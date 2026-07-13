@@ -374,14 +374,14 @@ int TDiplomacyMapView::ResolveDiplomacyActionFromClickAndUpdateTarget(CPoint* cl
 }
 
 // FUNCTION: IMPERIALISM 0x004f5f90
-void TDiplomacyMapView::HandleCursorHoverFallback(CPoint* point, int hitArg) {
+void TDiplomacyMapView::HandleCursorHoverFallback(CPoint* point, RgnHandle hitArg) {
   (void)point;
   (void)hitArg;
 }
 
 // FUNCTION: IMPERIALISM 0x004f5fb0
 void TDiplomacyMapView::HandleCursorHoverSelectionByChildHitTestAndFallback(CPoint* clickPoint,
-                                                                            int dispatchArg) {
+                                                                            RgnHandle dispatchArg) {
   char* self = reinterpret_cast<char*>(this);
   CPoint localPoint;
   localPoint.x = clickPoint->x;

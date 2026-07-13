@@ -100,7 +100,7 @@ void TToolBarCluster::HandleEvent(int commandId, TEventHandler* sourceHandler, T
 
 // FUNCTION: IMPERIALISM 0x005851c0
 void TToolBarCluster::HandleCursorHoverSelectionByChildHitTestAndFallback(CPoint* point,
-                                                                          int hitArg) {
+                                                                          RgnHandle hitArg) {
   (void)point;
   (void)hitArg;
 }

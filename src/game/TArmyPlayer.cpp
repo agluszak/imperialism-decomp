@@ -51,8 +51,8 @@ float __cdecl ComputeDistributionSimilarityScoreFromVectorAndReferenceProfile(
 // FUNCTION: IMPERIALISM 0x0059b070
 short __cdecl CompareTacticalCursorEntriesByActionClassPriority(void* a, void* b, void* context) {
   (void)context;
-  // TODO(verify): the original returns in AX only -- the source return type was
-  // short verdict in AX, matching the TSortedListCompareFunc comparator shape.
+  // The verdict is returned in AX only (short); the upper 16 bits are leftover garbage
+  // in the original, matching the TSortedListCompareFunc comparator shape.
   short priorityByAiClass[5] = {1, 0, 2, 0, 0};
   TTacticalUnit* unitA = static_cast<TTacticalUnit*>(a);
   TTacticalUnit* unitB = static_cast<TTacticalUnit*>(b);
@@ -81,8 +81,7 @@ IMPLEMENT_DYNCREATE(TArmyPlayer, TTacticalPlayer)
 void TArmyPlayer::InitializeTacticalSideFromArmyUnitList(TArmyStack* stack, int isOurSide,
                                                          char watchFlag, int nationIndex) {
   // Scatter-init of the side state, in the original store order.
-  // TODO(verify): the asm only ever touches the low byte of `isOurSide` -- the
-  // original param was likely char/BOOL.
+  // The original only reads the low byte of `isOurSide` (a char/BOOL param).
   isOurSideFlagC = static_cast<char>(isOurSide);
   sideReadyFlag10 = 0;
   watchFlagD = watchFlag;
@@ -111,7 +110,7 @@ void TArmyPlayer::InitializeTacticalSideFromArmyUnitList(TArmyStack* stack, int 
     record->ConstructTArmyTacUnitBaseState(static_cast<TMilitaryUnit*>(unit));
     unitList4->AddTail(record);
     if (static_cast<char>(isOurSide) == 0) {
-      record->selectedFlag18 = 1; // TODO(verify): set only for the enemy side
+      record->selectedFlag18 = 1; // set only for the enemy side (isOurSide == 0)
     }
     TArmyStackUnitNode* node = stack->cursor18;
     if (node != 0) {
@@ -228,7 +227,9 @@ void TArmyPlayer::AccumulateTacticalProjectionMetricsAndUnitRanges() {
 
   // The row-0 score must be sampled before sums[1] is overwritten (both calls read the
   // live sums). Row select: fort present -> row 1, open field -> row 2.
-  // TODO(verify): row sense is inverted vs RecomputeTacticalCursorProjectionScoresAndPruneList.
+  // Row sense here (fort -> 1, open -> 2) is inverted vs
+  // RecomputeTacticalCursorProjectionScoresAndPruneList (fort -> 2, open -> 1); both are
+  // faithful to their originals.
   float baselineProfileScore = ComputeDistributionSimilarityScoreFromVectorAndReferenceProfile(
       projectionScoreSums2C, g_awTacticalCompositionReferenceProfiles_00697870, 5);
   projectionScoreSums2C[1] = ComputeDistributionSimilarityScoreFromVectorAndReferenceProfile(
@@ -334,9 +335,9 @@ void TArmyPlayer::RecomputeTacticalCursorProjectionScoresAndPruneList(int maxUni
     for (int passesLeft = remainingCapacity; passesLeft != 0; --passesLeft) {
       int bestOrdinal = 0;
       float bestScore = 0.0f;
-      // TODO(verify): faithful off-by-one -- the scan starts at ordinal 1 and stops
-      // before GetCount(), so the last entry is never scored; with bestOrdinal left 0,
-      // GetEntryByOrdinal(0) returns 0.
+      // Faithful off-by-one: the scan starts at ordinal 1 and stops before GetCount(),
+      // so the last entry is never scored; with bestOrdinal left 0, GetEntryByOrdinal(0)
+      // returns 0.
       for (int candidateOrdinal = 1; candidateOrdinal < secondaryList8->GetCount();
            ++candidateOrdinal) {
         TArmyTacUnit* candidate =
@@ -406,8 +407,8 @@ void TArmyPlayer::AutoDeploySideUnitsAndMarkReady() {
 void TArmyPlayer::BuildTacticalActionPriorityBucketsWithGridGuard() {
   // Flat local score table; the lookup below indexes from entry 11, so cells decode
   // as [aiClass][col 5..3, odd/even row] for aiClass 0..4, column 3..5.
-  // TODO(verify): a tile passing the guard with a column outside 3..5 indexes out of
-  // this table in the original too.
+  // The guard does not bound the column, so a tile passing it with a column outside 3..5
+  // indexes out of this table in the original too.
   int zoneScoreByClassAndCell[30] = {
       10, 30, 10, 20, 10, 10, // aiClass 0
       10, 20, 30, 40, 50, 60, // aiClass 1
@@ -807,8 +808,8 @@ void TArmyPlayer::ApplyDefenderHoldLineStanceByActionClass() {
       break;
     case 1:
     case 3:
-      // TODO(verify): faithful dead conditions -- counts and the assigned counter are
-      // never negative, so every class-1/3 unit gets 0xe (original-game dead code).
+      // Faithful dead conditions: counts and the assigned counter are never negative, so
+      // every class-1/3 unit gets 0xe (original-game dead code).
       if (actionClassCounts[0] < actionClassCounts[2] && actionClassCounts[0] < 0 &&
           engageAssignedCount < 0) {
         record->aiStateCode2c = 0;
@@ -850,8 +851,8 @@ void TArmyPlayer::ApplyDefenderBombardStanceByActionClass() {
     }
     switch (g_awTacticalUnitAiClassByUnitType_006693B8[record->unitTypeC]) {
     case 0:
-      // TODO(verify): faithful dead conditions -- engageAssignedCount stays 0, so
-      // every infantry unit gets 7 (original-game dead code, kept literally).
+      // Faithful dead conditions: engageAssignedCount stays 0, so every infantry unit
+      // gets 7 (original-game dead code, kept literally).
       if (engageAssignedCount > 0 && escortAssignedCount < actionClassCounts[2]) {
         record->aiStateCode2c = 1;
         ++escortAssignedCount;
@@ -1125,8 +1126,8 @@ int TArmyPlayer::SelectBestTacticalTileByWeightedHeuristics(TTacticalUnit* unit,
     if (score > bestScore ||
         (score == bestScore &&
          battle14->tileMoveCostArray24[tileIndex] < battle14->tileMoveCostArray24[bestTileIndex])) {
-      // TODO(verify): faithful -- on the first tie bestTileIndex is still -1 and the
-      // original reads the move-cost word one slot before the array too.
+      // Faithful: on the first tie bestTileIndex is still -1, so the original reads the
+      // move-cost word one slot before the array too (tileMoveCostArray24[-1]).
       bestTileIndex = tileIndex;
       bestScore = score;
     }
@@ -1147,8 +1148,8 @@ int TArmyPlayer::ScoreTacticalTileHoldPositionBonus(TTacticalUnit* unit, int til
 // FUNCTION: IMPERIALISM 0x0059d6e0
 int TArmyPlayer::ScoreTacticalTileFireOpportunityAndTargetApproach(TTacticalUnit* unit,
                                                                    int tileIndex) {
-  // TODO(verify): dead call in the original (result discarded; the compiler kept the
-  // fetched vtable slot in a stack temp and re-called it inside the loop).
+  // Dead call in the original: the result is discarded, but the compiler fetched the
+  // vtable slot into a stack temp and re-called it inside the loop.
   unit->GetUnitRange();
   int score = 0;
   for (int scanTileIndex = 0; score == 0 && scanTileIndex < battle14->tacticalTileCount3c;
@@ -1482,7 +1483,7 @@ int TArmyPlayer::SelectBestTacticalTargetTileByActionHeuristics(TTacticalUnit* u
     if (!(field48 == 1 && record->state1c == 1) && record->state1c != 0) {
       continue;
     }
-    if (flag != 0) { // TODO(verify): read as a byte in the original (param likely char)
+    if (flag != 0) { // read as a byte (char) in the original
       short reachCategoryCode = g_awTacticalUnitCategoryCodeBySlot[unit->unitTypeC];
       if (battle14->IsTacticalTargetTileReachableForAction(
               unit->tileIndex8, record->tileIndex8,
@@ -1666,8 +1667,9 @@ void TArmyPlayer::RunTacticalAutoTurnControllerForActiveUnit() {
             battle14->ExecuteTacticalMineActionAndQueuePacket(unit, wallTileIndex);
             return; // original returns here without queueing the 0x232a event
           }
-          // TODO(verify): if the wall tile is occupied or already trenched the original
-          // re-tests the unchanged condition -- faithful transcription.
+          // If the wall tile is occupied or already trenched, neither branch runs and the
+          // action points are unchanged, so the original re-tests the same loop condition
+          // (a potential infinite loop in the original game code) -- faithful transcription.
           if (wallTile->occupant4 == 0 && wallTile->trenchMask10 == 0) {
             battle14->ExecuteTacticalDigActionAndConsumeUnitActionPoints(unit, wallTileIndex);
           }

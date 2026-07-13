@@ -94,12 +94,13 @@ void TWorldView::ForwardParam(int param) {
 }
 
 // FUNCTION: IMPERIALISM 0x00595810
-void TWorldView::HandleCursorHoverFallback(CPoint* point, int hitArg) {
+void TWorldView::HandleCursorHoverFallback(CPoint* point, RgnHandle hitArg) {
   TView::HandleCursorHoverFallback(point, hitArg);
 }
 
 // FUNCTION: IMPERIALISM 0x005958b0
-void TWorldView::HandleCursorHoverSelectionByChildHitTestAndFallback(CPoint* point, int hitArg) {
+void TWorldView::HandleCursorHoverSelectionByChildHitTestAndFallback(CPoint* point,
+                                                                     RgnHandle hitArg) {
   TView::HandleCursorHoverSelectionByChildHitTestAndFallback(point, hitArg);
 }
 
@@ -188,10 +189,8 @@ void TWorldView::RenderMapContextOverlayWithScopedClipAndSurface() {
   char regionPresent = EmptyRgn(reusableSurfaceB.tempRgn);
   if (regionPresent == 0) {
     if (interactionMode == 0) {
-      // TODO(typing): RenderMapOrderEntryTilePreview's arg1 is really the selected
-      // TCivUnit*; retyping it means updating the whole TMapDialog override family.
-      int selectedOrder = reinterpret_cast<int>(g_pSelectedCivilianOrderState->selectedEntry);
-      RenderMapOrderEntryTilePreview(selectedOrder, originX, outExtra);
+      RenderMapOrderEntryTilePreview(g_pSelectedCivilianOrderState->selectedEntry, originX,
+                                     outExtra);
     } else if (interactionMode == 1) {
       int previewArgs[4];
       previewArgs[0] = outExtra;
@@ -219,8 +218,8 @@ void TWorldView::RenderMapContextOverlayWithScopedClipAndSurface() {
 }
 
 // FUNCTION: IMPERIALISM 0x00596020
-void TWorldView::RenderMapOrderEntryTilePreview(int arg1, int arg2, int arg3) {
-  (void)arg1;
+void TWorldView::RenderMapOrderEntryTilePreview(TCivUnit* orderEntry, int arg2, int arg3) {
+  (void)orderEntry;
   (void)arg2;
   (void)arg3;
 }

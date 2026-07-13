@@ -214,11 +214,11 @@ void TTacticalBattleView::AdjustTacticalUnitVerticalOffsetAndRefreshMarker(short
 }
 
 // FUNCTION: IMPERIALISM 0x005a8ca0
-void TTacticalBattleView::HandleCursorHoverFallback(CPoint* point, int hitArg) {}
+void TTacticalBattleView::HandleCursorHoverFallback(CPoint* point, RgnHandle hitArg) {}
 
 // FUNCTION: IMPERIALISM 0x005a8d40
 void TTacticalBattleView::HandleCursorHoverSelectionByChildHitTestAndFallback(CPoint* point,
-                                                                              int hitArg) {
+                                                                              RgnHandle hitArg) {
   (void)point;
   (void)hitArg;
 }

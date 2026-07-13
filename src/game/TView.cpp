@@ -740,7 +740,7 @@ char TView::HasRenderableParentAndContent() {
 }
 
 // FUNCTION: IMPERIALISM 0x0048c080
-void TView::HandleCursorHoverSelectionByChildHitTestAndFallback(CPoint* point, int hitArg) {
+void TView::HandleCursorHoverSelectionByChildHitTestAndFallback(CPoint* point, RgnHandle hitArg) {
   if (HasRenderableParentAndContent() != 0) {
     if (childList44 != 0) {
       POSITION pos = childList44->GetHeadPosition();
@@ -758,9 +758,7 @@ void TView::HandleCursorHoverSelectionByChildHitTestAndFallback(CPoint* point, i
     }
   }
 
-  // TODO(typing): hitArg is really a RgnHandle threaded through the whole
-  // slot-0x2c/0x35 hover family (200+ files); retype the family in one pass.
-  if (EmptyRgn(reinterpret_cast<RgnHandle>(hitArg)) != 0 && Refresh() != 0) {
+  if (EmptyRgn(hitArg) != 0 && Refresh() != 0) {
     HandleCursorHoverFallback(point, hitArg);
   }
 }
@@ -782,7 +780,7 @@ void TView::EnableAndProcessFlag(CString sharedString) {
 }
 
 // FUNCTION: IMPERIALISM 0x0048c250
-void TView::HandleCursorHoverFallback(CPoint* point, int hitArg) {
+void TView::HandleCursorHoverFallback(CPoint* point, RgnHandle hitArg) {
   if (field5c != 0) {
     RECT rect;
     BuildRectFromSlot158(&rect);
@@ -794,7 +792,7 @@ void TView::HandleCursorHoverFallback(CPoint* point, int hitArg) {
   }
   if (GetField4E() != 0xffff) {
     CPoint transformedPoint = TransformPointViaSlot138(point);
-    if (PtInRgn(&transformedPoint, reinterpret_cast<RgnHandle>(hitArg))) {
+    if (PtInRgn(&transformedPoint, hitArg)) {
       void* ptr = AssertQuickDrawFlag6A1DCCNonZero(GetField4E());
       AssertQuickDrawFlag6A1DC8NonZero(*reinterpret_cast<void**>(ptr));
       return;

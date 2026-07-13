@@ -61,9 +61,9 @@ public:
   // slot 0x32 ValidateControlRectIfWindowActive inherited unchanged (0x48b690)
   // slot 0x33 EvaluateControlInputGate inherited unchanged (0x48c000)
   // slot 0x34 HasRenderableParentAndContent inherited unchanged (0x48c050)
-  virtual void
-  HandleCursorHoverSelectionByChildHitTestAndFallback(CPoint* point,
-                                                      int hitArg) override; // slot 0x35 0x5851c0
+  virtual void HandleCursorHoverSelectionByChildHitTestAndFallback(
+      CPoint* point,
+      RgnHandle hitArg) override; // slot 0x35 0x5851c0
   // slot 0x36 DispatchControlEventToChildrenAndSelf inherited unchanged (0x48aaf0)
   // slot 0x37 NoOpUiLifecycleHook inherited unchanged (0x48ab70)
   // slot 0x38 NoOpUiCallback inherited unchanged (0x48abc0)

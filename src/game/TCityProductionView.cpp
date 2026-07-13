@@ -125,7 +125,7 @@ void TCityProductionView::RenderNationHeaderDateLabelWithPeriodicRefresh() {
 
 // FUNCTION: IMPERIALISM 0x004bafa0
 void TCityProductionView::HandleCursorHoverSelectionByChildHitTestAndFallback(CPoint* point,
-                                                                              int hitArg) {
+                                                                              RgnHandle hitArg) {
   (void)point;
   (void)hitArg;
 }

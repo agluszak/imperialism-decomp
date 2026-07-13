@@ -694,6 +694,15 @@ repair-code-gaps *args: _require-ghidra-install
   uv run python -m tools.ghidra.repair_code_gaps {{args}}
 
 # MUTATES: Ghidra DB (with --apply).
+# Re-bound existing degenerate 1-byte functions in place (disassemble the entry,
+# then fixupFunctionBody — preserves the curated name). Pass entry addresses.
+# Dry-run by default; --apply writes + saves the DB.
+[doc('MUTATES: Ghidra DB (--apply). Re-bound degenerate 1-byte functions')]
+[group('ghidra-db')]
+fix-function-bounds *args: _require-ghidra-install
+  uv run python -m tools.ghidra.fix_function_bounds {{args}}
+
+# MUTATES: Ghidra DB (with --apply).
 # Remove Function entities sitting on ILT jmp thunks (they block reccmp's thunk
 # auto-resolution and collapse vtable matching). The DB-side counterpart of
 # prune-ilt-thunks; sync-ghidra runs it automatically before the export.
