@@ -12405,7 +12405,7 @@
     },
     {
       "address": "0x4dd430",
-      "matching": 0.5142857142857142,
+      "matching": 0.5714285714285714,
       "name": "TGreatPower::ComputeRemainingDiplomacyAidBudget",
       "type": 1
     },
@@ -12863,14 +12863,13 @@
     },
     {
       "address": "0x4e0690",
-      "effective": true,
-      "matching": 0.42857142857142855,
+      "matching": 1.0,
       "name": "TGreatPower::ReturnFalseNationStateCapabilityFlag90",
       "type": 1
     },
     {
       "address": "0x4e06d0",
-      "matching": 0.8095238095238095,
+      "matching": 0.7619047619047619,
       "name": "TGreatPower::SumNationRuntimeFiveBucketValue44",
       "type": 1
     },
@@ -14271,7 +14270,7 @@
     },
     {
       "address": "0x4eff40",
-      "matching": 0.2857142857142857,
+      "matching": 0.27988338192419826,
       "name": "TDiplomacyMgr::PropagateRelationSideEffectSlot80",
       "type": 1
     },
@@ -16243,7 +16242,7 @@
     },
     {
       "address": "0x5083f0",
-      "matching": 0.39747634069400634,
+      "matching": 0.4037854889589905,
       "name": "TLanguageMgr::Localize",
       "type": 1
     },
@@ -16417,7 +16416,7 @@
     },
     {
       "address": "0x50bea0",
-      "matching": 0.20263516583371194,
+      "matching": 0.20990458882326216,
       "name": "TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets",
       "type": 1
     },
@@ -16790,7 +16789,7 @@
     },
     {
       "address": "0x512930",
-      "matching": 0.25622775800711745,
+      "matching": 0.2491103202846975,
       "name": "BuildHexAreaTileIndexList",
       "type": 1
     },
@@ -18314,7 +18313,7 @@
     },
     {
       "address": "0x52d1f0",
-      "matching": 0.2621082621082621,
+      "matching": 0.2784090909090909,
       "name": "ReindexContiguousCityRegionIds",
       "type": 1
     },
@@ -18332,7 +18331,7 @@
     },
     {
       "address": "0x52d750",
-      "matching": 0.21904761904761905,
+      "matching": 0.22063492063492063,
       "name": "MergeSmallCityRegionsAndCompactIds",
       "type": 1
     },
@@ -21886,7 +21885,7 @@
     },
     {
       "address": "0x54ff00",
-      "matching": 0.49214659685863876,
+      "matching": 0.4816753926701571,
       "name": "TShip::ComputeNavyOrderPriorityContributionPercentByCategory",
       "type": 1
     },
@@ -27451,7 +27450,7 @@
     },
     {
       "address": "0x58a020",
-      "matching": 0.47715736040609136,
+      "matching": 0.45685279187817257,
       "name": "TRailAmtBar::NoOpUiLifecycleHook",
       "type": 1
     },
@@ -29189,7 +29188,7 @@
     },
     {
       "address": "0x59e0d0",
-      "matching": 0.6,
+      "matching": 1.0,
       "name": "TArmyPlayer::ScoreTacticalTileEnemyEdgeColumnZoneBonus",
       "type": 1
     },
@@ -29526,7 +29525,7 @@
     },
     {
       "address": "0x5a1520",
-      "matching": 0.5259259259259259,
+      "matching": 0.48148148148148145,
       "name": "TTacticalBattle::MoveTacticalUnitTowardTile",
       "type": 1
     },
@@ -29658,7 +29657,7 @@
     },
     {
       "address": "0x5a39a0",
-      "matching": 0.9393939393939394,
+      "matching": 0.9545454545454546,
       "name": "ComputeHexTileDistanceFromIndices",
       "type": 1
     },
@@ -29676,7 +29675,7 @@
     },
     {
       "address": "0x5a3d30",
-      "matching": 0.8163265306122449,
+      "matching": 0.8104956268221575,
       "name": "IsTacticalTargetTileReachableForAction",
       "type": 1
     },
@@ -30054,7 +30053,7 @@
     },
     {
       "address": "0x5a6940",
-      "matching": 0.819672131147541,
+      "matching": 0.8360655737704918,
       "name": "ClipRect_AdjustOffset_Validate",
       "type": 1
     },
@@ -30162,7 +30161,7 @@
     },
     {
       "address": "0x5a8ac0",
-      "matching": 0.6086956521739131,
+      "matching": 0.6867469879518072,
       "name": "TTacticalBattleView::CenterViewportAroundGridIndexAndSnap",
       "type": 1
     },
@@ -30198,7 +30197,7 @@
     },
     {
       "address": "0x5a9240",
-      "matching": 0.5304136253041363,
+      "matching": 0.563855421686747,
       "name": "TTacticalBattleView::AnimateTacticalUnitMoveBetweenTiles",
       "type": 1
     },
@@ -30690,7 +30689,7 @@
     },
     {
       "address": "0x5af330",
-      "matching": 0.02531645569620253,
+      "matching": 0.4936708860759494,
       "name": "GenerateRandomCapabilityPrioritySlots",
       "type": 1
     },
@@ -30720,7 +30719,7 @@
     },
     {
       "address": "0x5afba0",
-      "matching": 0.041666666666666664,
+      "matching": 0.6875,
       "name": "ApplyCityOrderCapabilityUnlockByTechId",
       "type": 1
     },
@@ -30780,7 +30779,7 @@
     },
     {
       "address": "0x5b0ca0",
-      "matching": 0.0,
+      "matching": 1.0,
       "name": "GetNationFortLevelCap",
       "type": 1
     },
@@ -43748,6 +43747,6 @@
       "type": 5
     }
   ],
-  "file": "Imperialism.exe.gog-original",
+  "file": "Imperialism.exe",
   "format": 1
 }
