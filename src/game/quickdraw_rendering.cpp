@@ -94,7 +94,7 @@ CFont* __cdecl UpdateGlobalFontPresetAndRebuildCachedFontIfDirty(TControlPicture
 }
 
 // FUNCTION: IMPERIALISM 0x00494950
-void RenderTacticalBattleSelectionAndUnitOverlayPass_Impl() {
+void RenderTacticalBattleSelectionAndUnitOverlayPass_Impl(char glyph) {
   if (g_bQuickDrawMeasureFontDirty != 0 || g_pQuickDrawCachedMeasureFont == 0) {
     if (g_pQuickDrawCachedMeasureFont != 0) {
       delete g_pQuickDrawCachedMeasureFont;
@@ -112,14 +112,27 @@ void RenderTacticalBattleSelectionAndUnitOverlayPass_Impl() {
   if (dc == nullptr) {
     dc = g_pScopedMapQuickDrawDcHandleObject;
   }
-  dc->SetTextColor(static_cast<COLORREF>(g_uQuickDrawStrokeColor));
+  dc->SetTextColor(static_cast<COLORREF>(g_QuickDrawMeasureFontPreset.styleRef6));
+  dc = g_pQuickDrawMemoryDc;
+  if (dc == nullptr) {
+    dc = g_pScopedMapQuickDrawDcHandleObject;
+  }
   dc->SetMapperFlags(1);
+  dc = g_pQuickDrawMemoryDc;
+  if (dc == nullptr) {
+    dc = g_pScopedMapQuickDrawDcHandleObject;
+  }
   UINT prevAlign = dc->SetTextAlign(0x18);
-  // TODO(codegen): the ExtTextOut option/rect/spacing args are dropped by the
-  // decompiler; modeled as a single-space "clear a small area" overlay at the
-  // resolved text origin, matching the surrounding idiom's typical usage.
-  dc->ExtTextOut(g_nQuickDrawResolvedTextOriginX, g_nQuickDrawResolvedTextOriginY, 0, nullptr, " ",
-                 1, nullptr);
+  dc = g_pQuickDrawMemoryDc;
+  if (dc == nullptr) {
+    dc = g_pScopedMapQuickDrawDcHandleObject;
+  }
+  char ch = glyph;
+  dc->TextOut(g_nQuickDrawResolvedTextOriginX, g_nQuickDrawResolvedTextOriginY, &ch, 1);
+  dc = g_pQuickDrawMemoryDc;
+  if (dc == nullptr) {
+    dc = g_pScopedMapQuickDrawDcHandleObject;
+  }
   dc->SetTextAlign(prevAlign);
   dc = g_pQuickDrawMemoryDc;
   if (dc == nullptr) {

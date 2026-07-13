@@ -147,14 +147,6 @@ undefined4 thunk_EnsureSelectedTaskForceForOrderOwnerAndRefresh(void)
   return 0;
 }
 
-// ghidra_name thunk_DispatchLocalizedUiMessageWithTemplateA13A0
-// ghidra_proto undefined thunk_DispatchLocalizedUiMessageWithTemplateA13A0()
-// ILT thunk 0x004096b0 - unannotated on purpose (see ILT_THUNK_RANGE)
-undefined4 thunk_DispatchLocalizedUiMessageWithTemplateA13A0(void)
-{
-  return 0;
-}
-
 // ghidra_name TCivilianButton::thunk_ConstructUiClickablePictureResourceEntry
 // ghidra_proto undefined thunk_ConstructUiClickablePictureResourceEntry()
 // ILT thunk 0x00409980 - unannotated on purpose (see ILT_THUNK_RANGE)

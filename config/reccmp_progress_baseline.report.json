@@ -79,12 +79,6 @@
       "type": 1
     },
     {
-      "address": "0x4096b0",
-      "matching": 0.0,
-      "name": "thunk_DispatchLocalizedUiMessageWithTemplateA13A0",
-      "type": 1
-    },
-    {
       "address": "0x412600",
       "matching": 0.0,
       "name": "InvokeCallbackForRecordRangeWithStride",
@@ -4379,7 +4373,7 @@
     },
     {
       "address": "0x48b2d0",
-      "matching": 0.2033898305084746,
+      "matching": 0.19130434782608696,
       "name": "TView::VTableSlotDD",
       "type": 1
     },
@@ -5928,7 +5922,7 @@
     },
     {
       "address": "0x494950",
-      "matching": 0.5394736842105263,
+      "matching": 0.9259259259259259,
       "name": "RenderTacticalBattleSelectionAndUnitOverlayPass_Impl",
       "type": 1
     },
@@ -6192,7 +6186,7 @@
     },
     {
       "address": "0x496d40",
-      "matching": 0.09090909090909091,
+      "matching": 0.09071274298056156,
       "name": "BlitRectWithOptionalTransparency",
       "type": 1
     },
@@ -7579,7 +7573,7 @@
     },
     {
       "address": "0x4a2900",
-      "matching": 0.13374805598755832,
+      "matching": 0.13063763608087092,
       "name": "BuildArmyContextActionRecordsAndDispatchLabel",
       "type": 1
     },
@@ -7645,7 +7639,7 @@
     },
     {
       "address": "0x4a3f30",
-      "matching": 0.5672727272727273,
+      "matching": 0.5745454545454546,
       "name": "TArmyMgr::CommitCityActionGateCostIfAffordable",
       "type": 1
     },
@@ -11564,7 +11558,7 @@
     },
     {
       "address": "0x4d3a60",
-      "matching": 0.3350676378772112,
+      "matching": 0.5660770031217481,
       "name": "TCivMgr::HandleEngineerConstructionAction",
       "type": 1
     },
@@ -12176,13 +12170,13 @@
     },
     {
       "address": "0x4daf30",
-      "matching": 0.2208955223880597,
+      "matching": 0.22686567164179106,
       "name": "TGreatPower::CompileGreatPowerRelationshipDeltaLinesAndDispatchMessage",
       "type": 1
     },
     {
       "address": "0x4db380",
-      "matching": 0.5397489539748954,
+      "matching": 0.5523012552301255,
       "name": "TGreatPower::UpdateGreatPowerPressureStateAndDispatchEscalationMessage",
       "type": 1
     },
@@ -12753,19 +12747,19 @@
     },
     {
       "address": "0x4e00d0",
-      "matching": 0.9545454545454546,
+      "matching": 1.0,
       "name": "TGreatPower::DispatchGreatPowerQuarterlyStatusMessageLevel2",
       "type": 1
     },
     {
       "address": "0x4e0140",
-      "matching": 0.9545454545454546,
+      "matching": 1.0,
       "name": "TGreatPower::DispatchGreatPowerQuarterlyStatusMessageLevel1",
       "type": 1
     },
     {
       "address": "0x4e01b0",
-      "matching": 0.9545454545454546,
+      "matching": 1.0,
       "name": "TGreatPower::DispatchGreatPowerQuarterlyStatusMessageLevel0",
       "type": 1
     },
@@ -12863,7 +12857,8 @@
     },
     {
       "address": "0x4e0690",
-      "matching": 1.0,
+      "effective": true,
+      "matching": 0.42857142857142855,
       "name": "TGreatPower::ReturnFalseNationStateCapabilityFlag90",
       "type": 1
     },
@@ -15196,7 +15191,7 @@
     },
     {
       "address": "0x4fd000",
-      "matching": 0.816,
+      "matching": 0.832,
       "name": "TMapKey::RenderMapHintOverlayMode0",
       "type": 1
     },
@@ -17839,8 +17834,7 @@
     },
     {
       "address": "0x522c10",
-      "effective": true,
-      "matching": 0.9848484848484849,
+      "matching": 1.0,
       "name": "TMapDialog::DrawMapDialogWrappedTileConnectionMarker_00522c10",
       "type": 1
     },
@@ -21334,7 +21328,7 @@
     },
     {
       "address": "0x545940",
-      "matching": 0.42566257272139624,
+      "matching": 0.4259857789269554,
       "name": "TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine",
       "type": 1
     },
@@ -21568,7 +21562,7 @@
     },
     {
       "address": "0x54b930",
-      "matching": 0.8871391076115486,
+      "matching": 0.8923884514435696,
       "name": "SetNationStatusAwolByNationIdAndDispatchNotices",
       "type": 1
     },
@@ -28495,7 +28489,8 @@
     },
     {
       "address": "0x596810",
-      "matching": 0.2,
+      "effective": true,
+      "matching": 0.7777777777777778,
       "name": "TMapUberUberPicture::NoOpUiLifecycleHook",
       "type": 1
     },
@@ -29525,7 +29520,7 @@
     },
     {
       "address": "0x5a1520",
-      "matching": 0.48148148148148145,
+      "matching": 0.5259259259259259,
       "name": "TTacticalBattle::MoveTacticalUnitTowardTile",
       "type": 1
     },
@@ -30053,7 +30048,7 @@
     },
     {
       "address": "0x5a6940",
-      "matching": 0.8360655737704918,
+      "matching": 0.819672131147541,
       "name": "ClipRect_AdjustOffset_Validate",
       "type": 1
     },
@@ -30161,7 +30156,7 @@
     },
     {
       "address": "0x5a8ac0",
-      "matching": 0.6867469879518072,
+      "matching": 0.6086956521739131,
       "name": "TTacticalBattleView::CenterViewportAroundGridIndexAndSnap",
       "type": 1
     },
@@ -30197,7 +30192,7 @@
     },
     {
       "address": "0x5a9240",
-      "matching": 0.563855421686747,
+      "matching": 0.5397590361445783,
       "name": "TTacticalBattleView::AnimateTacticalUnitMoveBetweenTiles",
       "type": 1
     },
@@ -30269,7 +30264,7 @@
     },
     {
       "address": "0x5aa900",
-      "matching": 0.2775929845781675,
+      "matching": 0.27604953186348535,
       "name": "TTacArmyView::DrawTacticalTileInClipRect",
       "type": 1
     },
@@ -30427,6 +30422,12 @@
       "address": "0x5ad760",
       "matching": 1.0,
       "name": "TTacticalHolaPicture::ConfigureBattleIntroCoatsAndSiteLabels",
+      "type": 1
+    },
+    {
+      "address": "0x5ad9e0",
+      "matching": 1.0,
+      "name": "ResetUiFrameClipOrigin",
       "type": 1
     },
     {
@@ -32982,7 +32983,7 @@
     },
     {
       "address": "0x5d5a70",
-      "matching": 0.9666666666666667,
+      "matching": 1.0,
       "name": "TViewMgr::RunControlStringProviderAndDispatchLocalizedMessage",
       "type": 1
     },
@@ -33324,7 +33325,7 @@
     },
     {
       "address": "0x5dcd10",
-      "matching": 0.8666666666666667,
+      "matching": 0.9333333333333333,
       "name": "TModalMessageCommand::DoIt",
       "type": 1
     },
@@ -33438,7 +33439,7 @@
     },
     {
       "address": "0x5de990",
-      "matching": 0.9772727272727273,
+      "matching": 1.0,
       "name": "TViewMgr::ShowLocalizedUiPromptByGroupAndIndex",
       "type": 1
     },
@@ -33450,7 +33451,7 @@
     },
     {
       "address": "0x5deb40",
-      "matching": 0.8393782383419689,
+      "matching": 0.8497409326424871,
       "name": "TViewMgr::DispatchGameStateEventIfLocalizedPromptAccepted",
       "type": 1
     },

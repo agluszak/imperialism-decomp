@@ -70,7 +70,6 @@ undefined4 HandleTurnEvent8FC_RebuildPageTabsAndTitles(void);
 // Free-function thunks reached through the ILT jump table; declared in the generic
 // repo form and invoked through typed __cdecl casts at the callsites.
 // ILT thunk (generic form per repo policy; typed cast applied at the callsite).
-undefined4 thunk_DispatchLocalizedUiMessageWithTemplateA13A0(void);
 undefined4 InitializeHotKeyDialogTemplateA1WithTripleTextState(void);
 undefined4 RunNationInfoModalAndReturnNonCancel(void);
 undefined4 NoOpUiRuntimeCallback_005db2f0(void);

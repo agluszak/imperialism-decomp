@@ -19,7 +19,6 @@ address|name|symbol|size|type|prototype|provenance
 408328|thunk_NormalizeWrappedMapCoord108x60||5|function|undefined thunk_NormalizeWrappedMapCoord108x60()|
 408ed6|thunk_GetResourceTypeRandomDrawBlockFlag||5|function|undefined thunk_GetResourceTypeRandomDrawBlockFlag()|
 40928c|thunk_EnsureSelectedTaskForceForOrderOwnerAndRefresh||5|function|undefined thunk_EnsureSelectedTaskForceForOrderOwnerAndRefresh()|
-4096b0|thunk_DispatchLocalizedUiMessageWithTemplateA13A0||5|function|undefined thunk_DispatchLocalizedUiMessageWithTemplateA13A0()|
 409980|TCivilianButton::thunk_ConstructUiClickablePictureResourceEntry||5|function|undefined thunk_ConstructUiClickablePictureResourceEntry()|
 4125d0|WrapperFor_ftol_At004125d0||30|function|undefined WrapperFor_ftol_At004125d0()|
 412600|InvokeCallbackForRecordRangeWithStride||42|function|undefined InvokeCallbackForRecordRangeWithStride()|

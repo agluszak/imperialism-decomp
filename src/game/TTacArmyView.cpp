@@ -597,7 +597,8 @@ undefined TTacArmyView::DrawTacticalTileInClipRect(int tileIndex, RECT* clipRect
     if (g_nForceTacticalBattleViewFlag_006A4758 != 0) {
       SetQuickDrawFillColor(0);
       SetQuickDrawTextOriginWithContextOffset(0, 0);
-      RenderTacticalBattleSelectionAndUnitOverlayPass_Impl();
+      RenderTacticalBattleSelectionAndUnitOverlayPass_Impl(
+          static_cast<char>(static_cast<short>(occupant->aiStateCode2c) + 0x61));
     }
   }
 

@@ -4385,6 +4385,7 @@ address|target_cpp|ownership|note
 5ad6c0|src/game/TTacticalHolaPicture.cpp|manual|marker_sync
 5ad740|src/game/TTacticalHolaPicture.cpp|manual|marker_sync
 5ad760|src/game/TTacticalHolaPicture.cpp|manual|marker_sync
+5ad9e0|src/game/TTacticalBattleView.cpp|manual|marker_sync
 5adb40|src/game/TTask.cpp|manual|marker_sync
 5adb70|src/game/TTask.cpp|manual|marker_sync
 5adbb0|src/game/TTask.cpp|manual|marker_sync

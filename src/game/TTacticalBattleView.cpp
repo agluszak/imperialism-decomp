@@ -566,3 +566,9 @@ void TTacticalBattleView::ComputeTacticalUnitSpriteDrawRectAndApplyFacingOffset(
     rectOut->right = -200;
   }
 }
+
+// FUNCTION: IMPERIALISM 0x005ad9e0
+void ResetUiFrameClipOrigin() {
+  g_nUiFrameClipOriginX = 0;
+  g_nUiFrameClipOriginY = 0;
+}

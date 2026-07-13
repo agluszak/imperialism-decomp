@@ -94,10 +94,9 @@ static __inline void UpdatePaletteIndexWithFallback(int paletteIndex) {
 // left unmodeled. 0x004950f0
 void SetQuickDrawFillColorFromPaletteIndex(unsigned short paletteIndex);
 
-// Selects the cached measure-font, draws a single-space overlay via CDC::ExtTextOut at
-// the resolved text origin (used as a "clear a small area" idiom), then restores DC
-// state. 0x00494950
-void RenderTacticalBattleSelectionAndUnitOverlayPass_Impl();
+// Selects the cached measure-font and draws a single character via CDC::TextOut at the
+// resolved text origin (a per-unit letter overlay), then restores DC state. 0x00494950
+void RenderTacticalBattleSelectionAndUnitOverlayPass_Impl(char glyph);
 
 // Draws four short corner-tick brackets around rect's edges (a hex-selection
 // highlight idiom), shrinking rect->right/bottom by 1 first. 0x005a99e0

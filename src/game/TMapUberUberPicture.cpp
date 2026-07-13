@@ -22,8 +22,13 @@ IMPLEMENT_DYNCREATE(TMapUberUberPicture, TOffLimitsPicture)
 
 TMapUberUberPicture::TMapUberUberPicture() {}
 
+// Slot 0x37 override: runs the base picture hook, then registers this picture as the app
+// root's viewport edge-scroll target (read by TAmbitApplication::HandleCursor).
 // FUNCTION: IMPERIALISM 0x00596810
-void TMapUberUberPicture::NoOpUiLifecycleHook(int arg) {}
+void TMapUberUberPicture::NoOpUiLifecycleHook(int arg) {
+  TOffLimitsPicture::NoOpUiLifecycleHook(arg);
+  static_cast<TAmbitApplication*>(g_pGlobalUiRootController)->edgeScrollTarget48 = this;
+}
 
 // Detach from the app root's edge-scroll/active-content backrefs before the shared
 // clip-region teardown in TOffLimitsPicture::Free (0x596840 tail-jumps to 0x573900).
