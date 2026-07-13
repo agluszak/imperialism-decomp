@@ -147,14 +147,6 @@ undefined4 CreateTNavyBattleInstance(void)
   return 0;
 }
 
-// ghidra_name ConvertHexTileIndexToRowAndDoubleColumn
-// ghidra_proto void __stdcall ConvertHexTileIndexToRowAndDoubleColumn(int tileIndex, uint * outRow, int * outCol2X)
-// FUNCTION: IMPERIALISM 0x005a59a0
-undefined4 ConvertHexTileIndexToRowAndDoubleColumn(void)
-{
-  return 0;
-}
-
 // ghidra_name TacticalBattleView::HandleNavyTacticalToolbarModeAndCommandTags_Impl
 // ghidra_proto undefined HandleNavyTacticalToolbarModeAndCommandTags_Impl()
 // FUNCTION: IMPERIALISM 0x005a5b90

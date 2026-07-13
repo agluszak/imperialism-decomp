@@ -2383,6 +2383,7 @@ address|target_cpp|ownership|note
 5122b0|src/game/TMapMgr.cpp|manual|marker_sync
 5122d0|src/game/TMapMgr.cpp|manual|marker_sync
 512440|src/game/TMapDialog.cpp|manual|marker_sync
+5125a0|src/game/TMapMgr.cpp|manual|marker_sync
 5127e0|src/game/TMapMgr.cpp|manual|marker_sync
 512850|src/game/TMapMgr.cpp|manual|marker_sync
 5128f0|src/game/TMapMgr.cpp|manual|marker_sync
@@ -3143,6 +3144,7 @@ address|target_cpp|ownership|note
 550e10|src/game/trade_resource_lookup.cpp|manual|marker_sync
 550e40|src/game/trade_resource_lookup.cpp|manual|marker_sync
 550e70|src/game/TShip.cpp|manual|marker_sync
+550ea0|src/game/trade_resource_lookup.cpp|manual|marker_sync
 550ed0|src/game/trade_resource_lookup.cpp|manual|marker_sync
 550f30|src/game/trade_resource_lookup.cpp|manual|marker_sync
 550f80|src/game/TTaskForce.cpp|manual|marker_sync
@@ -4287,6 +4289,7 @@ address|target_cpp|ownership|note
 5a5520|src/game/TNavyBattle.cpp|manual|marker_sync
 5a55c0|src/game/TNavyBattle.cpp|manual|marker_sync
 5a5730|src/game/TNavyBattle.cpp|manual|marker_sync
+5a59a0|src/game/TNavyBattle.cpp|manual|marker_sync
 5a59f0|src/game/TNavyBattle.cpp|manual|marker_sync
 5a5b70|src/game/TNavyBattle.cpp|manual|marker_sync
 5a5bc0|src/game/TNavyBattle.cpp|manual|marker_sync
@@ -4694,9 +4697,11 @@ address|target_cpp|ownership|note
 5c31c0|src/game/TMilitaryUnit.cpp|manual|marker_sync
 5c3200|src/game/TMilitaryUnit.cpp|manual|marker_sync
 5c3400|src/game/TMilitaryUnit.cpp|manual|marker_sync
+5c3450|src/game/TMilitaryUnit.cpp|manual|marker_sync
 5c3490|src/game/TMilitaryUnit.cpp|manual|marker_sync
 5c34d0|src/game/TMilitaryUnit.cpp|manual|marker_sync
 5c3530|src/game/TMilitaryUnit.cpp|manual|marker_sync
+5c3580|src/game/TMilitaryUnit.cpp|manual|marker_sync
 5c38e0|src/game/TMilitaryUnit.cpp|manual|marker_sync
 5c3b70|src/game/bitmap_descriptor_helpers.cpp|manual|marker_sync
 5c3d20|src/game/quickdraw_rendering.cpp|manual|marker_sync

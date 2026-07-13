@@ -747,14 +747,6 @@ undefined4 PruneOrPromoteOrderNodeWhenChildCostDepleted(void)
   return 0;
 }
 
-// ghidra_name GetResourceDescriptorWord20ByType
-// ghidra_proto undefined GetResourceDescriptorWord20ByType()
-// FUNCTION: IMPERIALISM 0x00550ea0
-undefined4 GetResourceDescriptorWord20ByType(void)
-{
-  return 0;
-}
-
 // ghidra_name InvokeOrderNodeOwnerVfunc38
 // ghidra_proto undefined InvokeOrderNodeOwnerVfunc38()
 // FUNCTION: IMPERIALISM 0x00550f60

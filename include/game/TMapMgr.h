@@ -154,6 +154,9 @@ int GetCityIndexFromCityStatePointer(TGlobalMapCityScoreRecord* cityState, int u
 // Genuine __cdecl free function (pure arithmetic).
 void SplitTileIndexToHexRasterColumnX2AndRow(short tileIndex, short* outColX2,
                                              unsigned short* outRow);
+// 0x5125a0: tileIndex -> (row = tileIndex/0x6c, col = tileIndex%0x6c). Genuine __cdecl
+// free function (pure arithmetic); Ghidra's TMapDialog:: label is spurious (no `this`).
+void SplitTileIndexToRowAndColumn(short tileIndex, short* outRow, short* outCol);
 
 struct HexSpiralSearchState {
   int row;

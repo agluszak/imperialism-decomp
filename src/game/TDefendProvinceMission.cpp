@@ -13,18 +13,12 @@
 
 IMPLEMENT_SERIAL(TDefendProvinceMission, TArmyMission, 1)
 
-// SYNTHETIC: IMPERIALISM 0x0053e670
-// TDefendProvinceMission::GetRuntimeClass
-// SYNTHETIC: IMPERIALISM 0x005357d0
-// TDefendProvinceMission::`scalar deleting destructor'
-
 #include "game/CIterator.h"
 
 // Not-yet-recovered free functions this file calls into (generic stub
 // signature per the autogen stub definition; real signature applied via a
 // typed cast at each call site so the linker resolves the correct symbol).
 extern undefined4 IsMapTileCompatibleWithCurrentTerrainOrActionContext(void);
-extern undefined4 GetNormalizedCityActionResourceCostPercent(void);
 extern undefined4 SetMapStateByteFlag970WithRuntimeGate(void);
 extern undefined4 PropagateTargetTileToLinkedUnitsIfDifferent(void);
 
@@ -46,6 +40,8 @@ char TDefendProvinceMission::ReturnFalseSlot64() {
 char TDefendProvinceMission::ReturnFalseSlot28() {
   return 1;
 }
+// SYNTHETIC: IMPERIALISM 0x005357d0
+// TDefendProvinceMission::`scalar deleting destructor'
 
 // Global factory function
 // FUNCTION: IMPERIALISM 0x00535800
@@ -89,6 +85,9 @@ float NormalizeFiveComponentPriorityVector(const float* vector, float sum,
 }
 
 } // namespace
+
+// SYNTHETIC: IMPERIALISM 0x0053e670
+// TDefendProvinceMission::GetRuntimeClass
 
 // FUNCTION: IMPERIALISM 0x0053e6e0
 float TDefendProvinceMission::ComputeCrossNationSupportVectorScore(int nodeContext) {
@@ -317,19 +316,14 @@ void TDefendProvinceMission::NoOpSlot3C() {
       bVar8 = 0x10;
     }
 
-    typedef short(__cdecl * GetNormalizedCityActionResourceCostPercent_t)(int capFlag, int index);
-    GetNormalizedCityActionResourceCostPercent_t GetNormalizedCityActionResourceCostPercent_fn =
-        reinterpret_cast<GetNormalizedCityActionResourceCostPercent_t>(
-            (void*)&GetNormalizedCityActionResourceCostPercent);
-
     int i;
     int sumCosts = 0;
     for (i = 0; i < 5; ++i) {
-      sumCosts += GetNormalizedCityActionResourceCostPercent_fn(bVar8, i);
+      sumCosts += GetNormalizedCityActionResourceCostPercent(bVar8, static_cast<short>(i));
     }
 
     for (i = 0; i < 5; ++i) {
-      short cost = GetNormalizedCityActionResourceCostPercent_fn(bVar8, i);
+      short cost = GetNormalizedCityActionResourceCostPercent(bVar8, static_cast<short>(i));
       resourceWeights[i] = (static_cast<float>(cost) * fStack_c) / static_cast<float>(sumCosts);
     }
     return;

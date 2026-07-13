@@ -1143,6 +1143,12 @@ int TMapMgr::IsAltKeyDown() {
   return GetAsyncKeyState(VK_MENU) & 0x8000;
 }
 
+// FUNCTION: IMPERIALISM 0x005125a0
+void SplitTileIndexToRowAndColumn(short tileIndex, short* outRow, short* outCol) {
+  *outRow = tileIndex / 0x6c;
+  *outCol = tileIndex % 0x6c;
+}
+
 // FUNCTION: IMPERIALISM 0x005127e0
 void SplitTileIndexToHexRasterColumnX2AndRow(short tileIndex, short* outColX2,
                                              unsigned short* outRow) {
