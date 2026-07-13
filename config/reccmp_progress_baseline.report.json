@@ -13163,7 +13163,7 @@
     },
     {
       "address": "0x4e38e0",
-      "matching": 0.2,
+      "matching": 0.0,
       "name": "TMinor::InitializeTMinorDefaults",
       "type": 1
     },
@@ -13429,7 +13429,7 @@
     },
     {
       "address": "0x4e6c20",
-      "matching": 0.023668639053254437,
+      "matching": 0.006153846153846154,
       "name": "InitializeNationMinisterSubsystemsByPolicyIds",
       "type": 1
     },
@@ -14174,7 +14174,7 @@
     },
     {
       "address": "0x4ee8c0",
-      "matching": 0.0,
+      "matching": 0.006389776357827476,
       "name": "RebuildCivilianOrderCompatibilityMatrices",
       "type": 1
     },
@@ -16632,7 +16632,7 @@
     },
     {
       "address": "0x50f740",
-      "matching": 0.0,
+      "matching": 0.02857142857142857,
       "name": "RefreshMapContextRotatingStatusStrings",
       "type": 1
     },
@@ -17245,7 +17245,7 @@
     },
     {
       "address": "0x5178f0",
-      "matching": 0.3446601941747573,
+      "matching": 0.32116788321167883,
       "name": "ComputeRepresentativeTileIndexForTerrainTypeWithWrapBias",
       "type": 1
     },
@@ -17365,7 +17365,7 @@
     },
     {
       "address": "0x519610",
-      "matching": 0.011695906432748537,
+      "matching": 0.011976047904191617,
       "name": "RebuildNationStateSlotsAndAvailability_Impl",
       "type": 1
     },
@@ -22780,7 +22780,7 @@
     },
     {
       "address": "0x55b710",
-      "matching": 0.0,
+      "matching": 0.03278688524590164,
       "name": "TInterNationEventQueueManager::InitializeInterNationEventQueueManager",
       "type": 1
     },
@@ -26077,7 +26077,7 @@
     },
     {
       "address": "0x57d520",
-      "matching": 0.02702702702702703,
+      "matching": 0.013986013986013986,
       "name": "TSimMgr::RebuildSecondaryNationStateForSlot",
       "type": 1
     },
@@ -30688,7 +30688,7 @@
     },
     {
       "address": "0x5af330",
-      "matching": 0.024691358024691357,
+      "matching": 0.02531645569620253,
       "name": "GenerateRandomCapabilityPrioritySlots",
       "type": 1
     },

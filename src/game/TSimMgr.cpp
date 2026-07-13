@@ -67,13 +67,19 @@ CString& __stdcall GetProfileStringFromSettingsSection(CString* result, LPCTSTR 
 
 // FUNCTION: IMPERIALISM 0x004ee8c0
 void __fastcall RebuildCivilianOrderCompatibilityMatrices(TDiplomacyMgr* self, int dummyEdx) {
-  reinterpret_cast<void(__fastcall*)(TDiplomacyMgr*, int)>(0x004ee8c0)(self, dummyEdx);
+  // TODO: promote body @ 0x004ee8c0 — rebuilds civilian-order compatibility
+  // and diplomacy relation matrices (1137 bytes)
+  (void)self;
+  (void)dummyEdx;
 }
 
 // FUNCTION: IMPERIALISM 0x00519610
 void __fastcall RebuildNationStateSlotsAndAvailability_Impl(TSimMgr* self, int dummyEdx,
                                                             short* param_1) {
-  reinterpret_cast<void(__fastcall*)(TSimMgr*, int, short*)>(0x00519610)(self, dummyEdx, param_1);
+  // TODO: promote body @ 0x00519610
+  (void)self;
+  (void)dummyEdx;
+  (void)param_1;
 }
 
 // FUNCTION: IMPERIALISM 0x00549240
@@ -685,7 +691,8 @@ void TSimMgr::RebuildPrimaryNationStateForSlot(int slotIndex, char activate) {
 
 // FUNCTION: IMPERIALISM 0x0057d520
 void TSimMgr::RebuildSecondaryNationStateForSlot(int slotIndex) {
-  reinterpret_cast<void(__fastcall*)(void*, int, int)>(0x0057d520)(this, 0, slotIndex);
+  // TODO: promote body @ 0x0057d520
+  (void)slotIndex;
 }
 
 // FUNCTION: IMPERIALISM 0x0057d830

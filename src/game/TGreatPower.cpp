@@ -4283,8 +4283,13 @@ void TGreatPower::BuildGreatPowerTurnMessageSummaryAndDispatch(void) {
 // FUNCTION: IMPERIALISM 0x004e6c20
 void TGreatPower::InitializeNationMinisterSubsystemsByPolicyIds(int arg1, int arg2, short arg3,
                                                                 short arg4, short arg5) {
-  reinterpret_cast<void(__fastcall*)(void*, int, int, int, short, short, short)>(0x004e6c20)(
-      this, 0, arg1, arg2, arg3, arg4, arg5);
+  // TODO: promote body @ 0x004e6c20 — creates defense/foreign minister objects
+  // via switch on policy IDs, stores at +0x94/+0x98/+0x9c
+  (void)arg1;
+  (void)arg2;
+  (void)arg3;
+  (void)arg4;
+  (void)arg5;
 }
 
 // FUNCTION: IMPERIALISM 0x004e83d0

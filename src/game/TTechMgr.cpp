@@ -174,7 +174,7 @@ void TTechMgr::InitializeCityOrderCapabilityStateDefaults(void) {
 
 // FUNCTION: IMPERIALISM 0x005af330
 void TTechMgr::GenerateRandomCapabilityPrioritySlots() {
-  reinterpret_cast<void(__fastcall*)(void*, int)>(0x005af330)(this, 0);
+  // TODO: promote body @ 0x005af330
 }
 
 // FUNCTION: IMPERIALISM 0x005af460

@@ -229,7 +229,7 @@ undefined TMapMgr::LoadPoliticalMapRegionSubtypeTableFromResourceStream() {
 
 // FUNCTION: IMPERIALISM 0x0050f740
 void TMapMgr::RefreshMapContextRotatingStatusStrings() {
-  reinterpret_cast<void(__fastcall*)(void*, int)>(0x0050f740)(this, 0);
+  // TODO: promote body @ 0x0050f740
 }
 
 // FUNCTION: IMPERIALISM 0x0050fca0

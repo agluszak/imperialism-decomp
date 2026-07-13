@@ -22,5 +22,5 @@ void TNewsMgr::WriteTo(TStream* stream) {}
 
 // FUNCTION: IMPERIALISM 0x0055b710
 void TInterNationEventQueueManager::InitializeInterNationEventQueueManager() {
-  reinterpret_cast<void(__fastcall*)(void*, int)>(0x0055b710)(this, 0);
+  // TODO: promote body @ 0x0055b710
 }
