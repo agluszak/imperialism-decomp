@@ -72,9 +72,6 @@ TInvadeMission::TInvadeMission(short targetProvince, TZone* beachheadZone)
 // SYNTHETIC: IMPERIALISM 0x0053f3c0
 // TInvadeMission::`scalar deleting destructor'
 
-// Not-yet-recovered free functions/subsystems this file calls into.
-extern undefined4 AccumulateUnitOrderPriorityVectorContribution(void);
-
 TInvadeMission::TInvadeMission() : TAttackProvinceMission(), beachhead34(nullptr) {}
 
 // FUNCTION: IMPERIALISM 0x0053f410
