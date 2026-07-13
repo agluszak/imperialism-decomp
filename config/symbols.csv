@@ -7040,7 +7040,7 @@ address|name|symbol|size|type|prototype|provenance
 60726f|CWnd::IsDlgButtonChecked|?IsDlgButtonChecked@CWnd@@QBEIH@Z|39|function|public: unsigned int __thiscall CWnd::IsDlgButtonChecked(int) const|msvc500_library_oracle
 607296|CWnd::ScrollWindowEx|?ScrollWindowEx@CWnd@@QAEHHHPBUtagRECT@@0PAVCRgn@@PAU2@I@Z|79|function|public: int __thiscall CWnd::ScrollWindowEx(int, int, struct tagRECT const *, struct tagRECT const *, class CRgn *, struct tagRECT *, unsigned int)|msvc500_library_oracle
 6072e5|CWnd::IsDialogMessageA|?IsDialogMessageA@CWnd@@QAEHPAUtagMSG@@@Z|51|function|public: int __thiscall CWnd::IsDialogMessageA(struct tagMSG *)|msvc500_library_oracle
-607318|GetStyle||26|function|undefined GetStyle()|
+607318|CWnd::GetStyle|?GetStyle@CWnd@@QBEKXZ|26|function|public: unsigned long __thiscall CWnd::GetStyle(void)const|msvc500_library_override
 607332|CWnd::GetExStyle|?GetExStyle@CWnd@@QBEKXZ|26|function|public: unsigned long __thiscall CWnd::GetExStyle(void) const|msvc500_library_oracle
 60734c|ModifyStyle||52|function|undefined ModifyStyle()|
 607380|ModifyStyleEx||52|function|undefined ModifyStyleEx()|
@@ -7183,7 +7183,7 @@ address|name|symbol|size|type|prototype|provenance
 60a44b|CWnd::ExecuteDlgInit|?ExecuteDlgInit@CWnd@@QAEHPAX@Z|138|function|public: int __thiscall CWnd::ExecuteDlgInit(void *)|msvc500_library_oracle
 60a4d5|CWnd::UpdateDialogControls|?UpdateDialogControls@CWnd@@QAEXPAVCCmdTarget@@H@Z|261|function|public: void __thiscall CWnd::UpdateDialogControls(class CCmdTarget *, int)|msvc500_library_oracle
 60a5da|CWnd::PreTranslateInput|?PreTranslateInput@CWnd@@QAEHPAUtagMSG@@@Z|48|function|public: int __thiscall CWnd::PreTranslateInput(struct tagMSG *)|msvc500_library_oracle
-60a60a|TMovieView::RunModalLoop||351|function|undefined RunModalLoop()|
+60a60a|CWnd::RunModalLoop|?RunModalLoop@CWnd@@QAEHK@Z|351|function|public: int __thiscall CWnd::RunModalLoop(unsigned long)|msvc500_library_override
 60a769|TMacViewMgr_Slot30_Target||7|function|undefined TMacViewMgr_Slot30_Target()|
 60a770|InitDialogWindowAndSyncTitleIfChanged||36|function|undefined TMacViewMgr_Slot31_Target()|
 60a794|AfxEndDeferRegisterClass|?AfxEndDeferRegisterClass@@YGHF@Z|314|function|int __stdcall AfxEndDeferRegisterClass(short)|msvc500_library_oracle

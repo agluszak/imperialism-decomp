@@ -7,4 +7,10 @@
 // LIBRARY: IMPERIALISM 0x005e83f0
 // _rand
 
+// LIBRARY: IMPERIALISM 0x00607318
+// ?GetStyle@CWnd@@QBEKXZ
+
+// LIBRARY: IMPERIALISM 0x0060a60a
+// ?RunModalLoop@CWnd@@QAEHK@Z
+
 #endif

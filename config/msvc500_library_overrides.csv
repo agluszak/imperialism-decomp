@@ -2,3 +2,5 @@ address|name|symbol|prototype|library_family|object_member|evidence
 0x005e83f0|rand|_rand|int __cdecl rand(void)|libcmt|rand.obj|fid_db_has__rand_from_rand.obj_but_missed_in_exe;adjacent__srand_at_0x5e83e0;msvc5_lcg_state*0x343fd+0x269ec3_then_(state>>16)&0x7fff
 0x005e83e0|srand|_srand|void __cdecl srand(unsigned int)|libcmt|rand.obj|fid_confirmed__srand_from_rand.obj;prototype_correction_over_ghidra_SetThreadLocalRandomSeed
 0x005e8420|memmove|_memmove|void * __cdecl memmove(void *,void const *,unsigned int)|libcmt|memmove.obj|fid_confirmed__memmove_from_memmove.obj;prototype_correction_over_ghidra_MoveMemoryOverlapSafe
+0x00607318|CWnd::GetStyle|?GetStyle@CWnd@@QBEKXZ|public: unsigned long __thiscall CWnd::GetStyle(void)const|nafxcw|winocc.obj|byte_for_byte_CWnd_GetStyle_hand_ported_on_TView;RTTI_CDialog_caller;retired_with_RunModalLoop_cluster
+0x0060a60a|CWnd::RunModalLoop|?RunModalLoop@CWnd@@QAEHK@Z|public: int __thiscall CWnd::RunModalLoop(unsigned long)|nafxcw|wincore.obj|byte_for_byte_CWnd_RunModalLoop_hand_ported_on_TView;caller_casts_this_to_CWnd_base

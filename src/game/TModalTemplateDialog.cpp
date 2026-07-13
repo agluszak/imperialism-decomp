@@ -65,7 +65,7 @@ int TModalTemplateDialog::FinalizeModalDialogAndRestoreOwnerFocus() {
       if (dialogWnd != nullptr && (dialogWnd->GetStyle() & 0x100) != 0) {
         loopKind = 5;
       }
-      RunModalLoop(loopKind);
+      reinterpret_cast<CWnd*>(this)->RunModalLoop(loopKind);
     }
     CWnd* dialogWnd = CWnd::FromHandlePermanent(hModalDialog);
     if (dialogWnd != nullptr) {

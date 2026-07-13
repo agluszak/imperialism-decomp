@@ -26,7 +26,6 @@ address|current_name|current_ownership|oracle_symbol|oracle_name|member|match_ki
 0x0060698f|CCmdTarget|unowned|??0CCmdTarget@@QAE@XZ|CCmdTarget::CCmdTarget|cmdtarg.obj|unique|1|invented_name_referenced_in_source
 0x00606c5f|TTechStorePage::SetCityDialogFlagByte4|unowned|?GetTypeLib@CCmdTarget@@UAEJKPAPAUITypeLib@@@Z|CCmdTarget::GetTypeLib|cmdtarg.obj|unique|1|below_min_convert_size
 0x00606d27|CCmdUI|unowned|??0CCmdUI@@QAE@XZ|CCmdUI::CCmdUI|cmdtarg.obj|unique|1|invented_name_referenced_in_source
-0x00607318|GetStyle|manual:src/game/TView.cpp|?GetStyle@CWnd@@QBEKXZ|CWnd::GetStyle|winocc.obj|unique|1|match_owned_by_game_code
 0x0060734c|ModifyStyle|unowned|?ModifyStyle@CWnd@@QAEHKKI@Z|CWnd::ModifyStyle|winocc.obj|unique|1|invented_name_referenced_in_source
 0x00607380|ModifyStyleEx|unowned|?ModifyStyleEx@CWnd@@QAEHKKI@Z|CWnd::ModifyStyleEx|winocc.obj|unique|1|invented_name_referenced_in_source
 0x006074aa|SetWindowPos|unowned|?SetWindowPos@CWnd@@QAEHPBV1@HHHHI@Z|CWnd::SetWindowPos|winocc.obj|unique|1|invented_name_referenced_in_source
@@ -43,7 +42,6 @@ address|current_name|current_ownership|oracle_symbol|oracle_name|member|match_ki
 0x00608a2b|SetEditSelectionAndScrollCaret|unowned|?WinHelpA@CWnd@@UAEXKI@Z|CWnd::WinHelpA|wincore.obj|unique|1|invented_name_referenced_in_source
 0x006091d9|UpdateControlCachedIntFromWindowText|unowned|?OnNotify@CWnd@@MAEHIJPAJ@Z|CWnd::OnNotify|wincore.obj|unique|1|invented_name_referenced_in_source
 0x0060a267|CDataExchange|unowned|??0CDataExchange@@QAE@PAVCWnd@@H@Z|CDataExchange::CDataExchange|wincore.obj|unique|1|invented_name_referenced_in_source
-0x0060a60a|TMovieView::RunModalLoop|manual:src/game/TView.cpp|?RunModalLoop@CWnd@@QAEHK@Z|CWnd::RunModalLoop|wincore.obj|unique|1|match_owned_by_game_code
 0x0060a770|InitDialogWindowAndSyncTitleIfChanged|unowned|?EndModalLoop@CWnd@@UAEXH@Z|CWnd::EndModalLoop|wincore.obj|unique|1|invented_name_referenced_in_source
 0x0060aab8|Delete|unowned|?Delete@CException@@QAEXXZ|CException::Delete|except.obj|unique|1|invented_name_referenced_in_source
 0x0060ce85|LoadStringA|unowned|?LoadStringA@CString@@QAEHI@Z|CString::LoadStringA|winstr.obj|unique|1|invented_name_referenced_in_source
