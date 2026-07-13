@@ -39,10 +39,12 @@ char TBeachheadMission::ReturnFalseSlot60() {
   return 0;
 }
 
+// TODO: promote body (bd 1uj.16.6) -- 531 bytes; shares the same unresolved sub-call
+// cluster as TBlockadePortMission::NoOpSlot3C and TEscortMission::NoOpSlot3C (order-list
+// iteration helpers, vftable[8].slot_0x04 diplomacy dispatch). Left unported pending a
+// dedicated follow-up covering all three siblings together.
 // FUNCTION: IMPERIALISM 0x0053a500
 void TBeachheadMission::NoOpSlot3C() {
-  // TODO: PopulateBeachheadMissionResourceWeightsFromNavyContext -- pending
-  // recovery of the navy-order-list traversal and category tables.
   for (int i = 0; i < 4; ++i) {
     resourceWeights2c[i] = 0.0f;
   }
@@ -59,9 +61,20 @@ char TBeachheadMission::MatchesMissionKeySlot4C(int kind, int key, int mode) {
   return 0;
 }
 
+// TODO: promote body (bd 1uj.16.6) -- 40 bytes but a genuinely two-branch diplomacy
+// decision, not yet fully resolved. Confirmed pieces: this->parentMission3c->field_0x30
+// (already established elsewhere in this file as a node/city id, see MatchesMissionKeySlot4C)
+// indexes g_pGlobalMapState->cityScoreTable (TMapMgr+0x10) at stride 21*8=168 bytes to read
+// one byte (likely an owner-nation-ish field, TGlobalMapCityScoreRecord isn't ASSERT_SIZE'd
+// yet so the stride is unconfirmed); that byte and this->nationId04 feed
+// g_pDiplomacyTurnStateManager->IsNationPairAtWar (slot 0x44). On the true branch, calls
+// TTaskForce::SetMapOrderType5AndQueue(0x553840, a confirmed sibling of SetMapOrderType6And-
+// Queue/SetMapOrderType3Or4AndQueue -- not yet ported) on the passed-in pMapOrderEntry. On
+// the false branch, a second lookup compares against g_apNationStates[nationId04]-relative
+// state (word at [nation-array-entry]+0xb2 vs 0x131) before an unidentified vtable dispatch
+// (slot 0x1d0). Left unported pending the city-record stride + that final dispatch.
 // FUNCTION: IMPERIALISM 0x0053a800
 void TBeachheadMission::NoOpSlot9C(void* pMapOrderEntry) {
-  // TODO: TryQueueProvinceOrderFromContextMessage -- pending recovery (bd 1uj.16.6).
   (void)pMapOrderEntry;
 }
 
