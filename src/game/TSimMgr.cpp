@@ -681,7 +681,7 @@ void TSimMgr::RebuildSecondaryNationStateForSlot(int slotIndex) {
 }
 
 // FUNCTION: IMPERIALISM 0x0057d830
-void TSimMgr::ApplyScenarioVariantSeedForNationSetup(CString* destString) {
+void TSimMgr::FormatSeasonName(CString* destString) {
   short offset = quarterGateTick2c % 4;
   GetString(10000, offset, destString);
 }

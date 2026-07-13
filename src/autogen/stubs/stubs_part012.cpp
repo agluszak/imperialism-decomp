@@ -171,14 +171,6 @@ undefined4 OrphanVtableAssignStub_004a31e0(void)
   return 0;
 }
 
-// ghidra_name ComputeSelectedTileCityActionGateSum
-// ghidra_proto undefined ComputeSelectedTileCityActionGateSum()
-// FUNCTION: IMPERIALISM 0x004a41d0
-undefined4 ComputeSelectedTileCityActionGateSum(void)
-{
-  return 0;
-}
-
 // ghidra_name ClearProvinceSelectionHighlightsForNation
 // ghidra_proto undefined ClearProvinceSelectionHighlightsForNation()
 // FUNCTION: IMPERIALISM 0x004a46d0

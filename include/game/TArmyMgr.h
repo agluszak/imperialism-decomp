@@ -194,6 +194,13 @@ public:
   // operates purely off g_pGlobalMapState), 1 arg.
   bool HasEligibleStationedUnitInRegion(short regionId);
 
+  // Sums TMilitaryUnit::GetUnitTypeCostPoints() over the same eligible-unit walk as
+  // CommitCityActionGateCostIfAffordable (idle unit, nonzero movement class) for
+  // pendingMapActionIndex's tile, without the affordability/commit side effects --
+  // used purely to display the pending action-gate cost. 0x004a41d0, __thiscall
+  // (this used only for pendingMapActionIndex), 0 args, ret 0.
+  int ComputeSelectedTileCityActionGateSum();
+
   // Sets pendingMapActionIndex (the shared "current map selection" slot) and, unless
   // clearing the selection (-1), resets the order mode of every stationed unit at that
   // tile whose tactical category is nonzero (g_awTacticalUnitCategoryCodeBySlot); always

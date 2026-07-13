@@ -34,7 +34,11 @@ public:
   virtual void RebuildNationStateSlotsNoOp();                                  // 0x28  0x0057c390
   virtual void RebuildPrimaryNationStateForSlot(int slotIndex, char activate); // 0x2c 0x0057cda0
   virtual void RebuildSecondaryNationStateForSlot(int slotIndex);              // 0x30  0x0057d520
-  virtual void ApplyScenarioVariantSeedForNationSetup(CString* destString);    // 0x34  0x0057d830
+  // Ghidra mislabelled this "ApplyScenarioVariantSeedForNationSetup"; the real body
+  // computes the current season index (quarterGateTick2c % 4) and looks it up via
+  // GetString(10000, seasonIndex, destString) -- a localized season-name formatter,
+  // used by the toolbar's turn-status "seas" tag text. 0x0057d830.
+  virtual void FormatSeasonName(CString* destString); // 0x34  0x0057d830
   // 0x38 — copies the scenario nation-setup buffer into this manager's flow state.
   // (Ghidra mislabelled this "RegisterHotKeyDialogState"; the real call site in TViewMgr
   // passes the assembled setup buffer.)

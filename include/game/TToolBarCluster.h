@@ -125,9 +125,10 @@ public:
   // slot 0x70 SetControlStateFlagAndMaybeRefresh inherited unchanged (0x48e810)
   // slot 0x71 OrphanTiny_GetDwordEcxOffset_84_00491770 inherited unchanged (0x491770)
   // slot 0x72 OrphanCallChain_C2_I51_00491790 inherited unchanged (0x491790)
-  virtual undefined RefreshTurnOrderStatusPanelTextsAndControls();            // slot 0x73 0x5853f0
-  virtual void UpdateControlTagTreaTextFromNationAndMapContext(int nationId); // slot 0x74 0x585ba0
-  virtual undefined SehCleanup_ReleaseTwoTempSharedStringRefs();              // slot 0x75 0x585ee0
+  virtual undefined RefreshTurnOrderStatusPanelTextsAndControls(); // slot 0x73 0x5853f0
+  virtual void
+  UpdateControlTagTreaTextFromNationAndMapContext(short nationId);       // slot 0x74 0x585ba0
+  virtual void SehCleanup_ReleaseTwoTempSharedStringRefs(int unusedArg); // slot 0x75 0x585ee0
   // === END GENERATED DECLS (TToolBarCluster) ===
   //
   // SetMapInteractionMode/RefreshMapOrderEntryPanel/SetActiveMapOrderEntry (previously
