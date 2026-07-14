@@ -6,7 +6,10 @@
 
 // SDI main frame for ProcessShellCommand (CRuntimeClass @ 0x00648628, m_lpszClassName
 // "CMainFrame"). Ghidra buckets frame helpers under provisional TMacViewMgr_* labels.
-// No // VTABLE: annotation — retail MFC lacks OLE slots that nafxcw.lib emits (see ImperialismApp).
+// No // VTABLE: annotation yet — the CObject->CCmdTarget->CFrameWnd LIBRARY per-slot pass
+// (the CDialog-vtable pattern) has not been run for this class, so its shared trivial MFC
+// stubs still pair ambiguously. This is NOT an OLE divergence: the game's MFC has OLE
+// support and its vtables carry the OLE-gated CCmdTarget slots (see ImperialismApp).
 class CMainFrameRefTarget {
 public:
   virtual ~CMainFrameRefTarget();

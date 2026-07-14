@@ -412,11 +412,34 @@ vtable *args:
   set -euo pipefail
   args=({{args}})
   extra=()
+  filter_name=""
   if [[ ${#args[@]} -gt 0 && "${args[0]}" != -* ]]; then
-    extra=(--filter "${args[0]}")
+    filter_name="${args[0]}"
+    extra=(--filter "${filter_name}")
     args=("${args[@]:1}")
   fi
-  (cd "{{build_dir}}" && uv run reccmp-vtable --target "{{target}}" "${extra[@]}" "${args[@]}")
+  tmp="$(mktemp)"
+  trap 'rm -f "$tmp"' EXIT
+  set +e
+  (cd "{{build_dir}}" && uv run reccmp-vtable --target "{{target}}" "${extra[@]}" "${args[@]}") | tee "$tmp"
+  rc=${PIPESTATUS[0]}
+  set -e
+  # reccmp-vtable prints "Vtables found: 0.\n100% match." when the name filter matches no
+  # reccmp-paired vtable. That "100% match" is vacuous (nothing was compared) and has
+  # misled us into thinking unmarked/unpaired classes were verified. Turn it into a failure.
+  if grep -qE "Vtables found: 0\." "$tmp"; then
+    echo "" >&2
+    if [[ -n "$filter_name" ]]; then
+      echo "ERROR: no reccmp-paired vtable matched '${filter_name}' — 0 vtables compared." >&2
+      echo "       The '100% match' above is vacuous, not a verification." >&2
+      echo "       Cause: the class has no '// VTABLE: IMPERIALISM 0x...' marker, or its" >&2
+      echo "       marked vtable is not being paired by reccmp (name/address mismatch)." >&2
+    else
+      echo "ERROR: 0 vtables were compared — the '100% match' above is vacuous." >&2
+    fi
+    exit 1
+  fi
+  exit "$rc"
 
 # Compare global data values against the original.
 #   just datacmp          -> all globals (only ones with a problem)
