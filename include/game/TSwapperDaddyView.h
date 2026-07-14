@@ -6,7 +6,7 @@
 // VTABLE: IMPERIALISM 0x0064ddc0
 class TSwapperDaddyView : public TView {
 public:
-// === BEGIN GENERATED DECLS (TSwapperDaddyView) — refreshed by recover-class; do not hand-edit ===
+  // === BEGIN GENERATED DECLS (TSwapperDaddyView) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TSwapperDaddyView)
   virtual ~TSwapperDaddyView() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -111,8 +111,14 @@ public:
   // slot 0x65 AssertMcAppUILine1914 inherited unchanged (0x48c7a0)
   // slot 0x66 AssertMcAppUILine1922 inherited unchanged (0x48c7d0)
   // slot 0x67 CtrlSlot103_SubtractPosAndDispatchSlot19C_Impl inherited unchanged (0x48bac0)
-// === END GENERATED DECLS (TSwapperDaddyView) ===
+  // === END GENERATED DECLS (TSwapperDaddyView) ===
 
   TSwapperDaddyView();
-};
 
+  // Selects the child control whose controlTag matches `tag`: lays the match at the origin
+  // (visible) and every other child off-screen at (1000,1000), caches the tag, and returns
+  // the matched child. If the tag is already the cached one, forwards to ResolveControlByTag.
+  TView* SelectSwapperItemByTag(unsigned int tag); // 0x004ac6c0
+
+  int selectedTag60; // 0x60 — currently displayed child's controlTag
+};

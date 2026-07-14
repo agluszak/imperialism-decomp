@@ -1116,6 +1116,7 @@ address|target_cpp|ownership|note
 4ac5c0|src/game/TSwapperDaddyView.cpp|manual|marker_sync
 4ac650|src/game/TSwapperDaddyView.cpp|manual|marker_sync
 4ac6a0|src/game/TSwapperDaddyView.cpp|manual|marker_sync
+4ac6c0|src/game/TSwapperDaddyView.cpp|manual|marker_sync
 4ac7d0|src/game/TGWorldPartView.cpp|manual|marker_sync
 4ac860|src/game/TGWorldPartView.cpp|manual|marker_sync
 4ac880|src/game/TGWorldPartView.cpp|manual|marker_sync
