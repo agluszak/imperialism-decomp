@@ -53,6 +53,15 @@ public:
   int unknown54;                // +0x54
 
   TAssetMgr();
+  // 0x5dff20 — load the picture-word-data GOB for a language slot. Real __thiscall
+  // whose body ignores `this` (previously mis-modelled as a free __stdcall, which
+  // dropped the ECX load at call sites). Outside callers dispatch through
+  // g_pUiViewManager; sibling TAssetMgr methods (Forward…, …ForLanguageSlot) pass
+  // their own `this` straight through.
+  void EnsurePictWvDataGobLoadedBySlot(int languageTag);
+  // 0x5df3a0 — thiscall passthrough forwarder: calls EnsurePict…BySlot(0), reusing the
+  // incoming `this` in ECX (no reload). Ignores its languageTag argument.
+  void ForwardEnsurePictWvDataGobLoadedBySlot(int languageTag);
   void EnsurePictWvDataGobLoadedForLanguageSlot(int languageTag);
   // Save the MFC document to `savePath`, then restamp its path with the "__saved"
   // marker so later saves re-prompt. `this` is unused; callers still dispatch it
@@ -63,9 +72,5 @@ public:
   // unused; callers dispatch through g_pUiViewManager. 0x005e0150.
   unsigned char OpenMainDocumentFromPathAndMarkLoaded(const CString& loadPath);
 };
-
-void __stdcall EnsurePictWvDataGobLoadedBySlot(int languageTag);
-
-void __stdcall ForwardEnsurePictWvDataGobLoadedBySlot(int languageTag);
 
 void __stdcall AssignScoresDatPathToSharedString(CString* out);

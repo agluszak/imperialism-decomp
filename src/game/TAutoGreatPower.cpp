@@ -306,13 +306,14 @@ void TAutoGreatPower::ClearDiplomacyState1c6Block(void) {
 // FUNCTION: IMPERIALISM 0x004e7af0
 void TAutoGreatPower::BeginTurnDiplomacyPrePassSlot1c8() {
   if (this->city != 0) {
-    this->foreignMinister->Call58();
+    this->foreignMinister->RefreshForeignMinisterStateByLocalizationMode();
   }
 }
 
 // FUNCTION: IMPERIALISM 0x004e7b20
-bool TAutoGreatPower::ApplyDiplomacyPolicyStateForTargetWithCostChecks(int arg1, int arg2) {
-  return TGreatPower::ApplyDiplomacyPolicyStateForTargetWithCostChecks(arg1, arg2);
+bool TAutoGreatPower::ApplyDiplomacyPolicyStateForTargetWithCostChecks(short targetClass,
+                                                                       short policyCode) {
+  return TGreatPower::ApplyDiplomacyPolicyStateForTargetWithCostChecks(targetClass, policyCode);
 }
 
 // FUNCTION: IMPERIALISM 0x004e7b50
@@ -348,7 +349,7 @@ void TAutoGreatPower::ProcessPendingDiplomacyProposalQueue(void) {
   int rowIndex = 1;
   if (this->proposalQueue->GetSize() >= rowIndex) {
     do {
-      this->foreignMinister->MinisterSlot1F(static_cast<short>(rowIndex));
+      this->foreignMinister->ValidateProposalSelectionAndQueueEvent1C(static_cast<short>(rowIndex));
       ++rowIndex;
     } while (rowIndex <= this->proposalQueue->GetSize());
   }

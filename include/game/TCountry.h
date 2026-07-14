@@ -57,7 +57,7 @@ public:
   virtual char TryDispatchNationActionViaUiContextOrFallback(int arg1, int arg2, int arg3,
                                                              int arg4);
   virtual void QueueDiplomacyProposalCodeForTargetNation(short proposalCode, short targetNationId);
-  virtual char ReturnFalseNationStateCapabilityFlag90(int arg);
+  virtual char ReturnFalseNationStateCapabilityFlag90(short arg);
   virtual void NotifyActionSlot94(int sourceNation, int actionCode);
   virtual char ReturnFalseNationStateCapabilityFlag98(void);
   virtual char ReturnFalseNationStateCapabilityFlag9C(void);

@@ -38,6 +38,29 @@ TMilitaryUnit* TMapMgr::ValidateGridIndexRange0To17F(short index) {
   return cityScoreTable[index].stationedUnitChain98;
 }
 
+// Classify a civilian tile click into a dispatcher action code: 0x3F9 (select idle civilian),
+// 0x3F3 (open report/rescind UI on a working civilian), or 0 (no action).
+// FUNCTION: IMPERIALISM 0x004d2540
+unsigned short __stdcall ResolveCivilianTileSelectionOrReportActionCode(short nTileIndex,
+                                                                        short nClickMode) {
+  int actionKind = 0;
+  TCivUnit* entry =
+      g_pGlobalMapState->GetTileUnitEntryByOwner(nTileIndex, g_pSimMgr->GetActiveNationId());
+  if (entry != nullptr) {
+    entry = g_pGlobalMapState->GetTileUnitEntryByOwner(nTileIndex, g_pSimMgr->GetActiveNationId());
+    if (entry->IsInIdleSelectionState() == 0) {
+      actionKind = 10;
+    } else if (nClickMode == 2 ||
+               (g_pGlobalMapState->terrainStateTable[nTileIndex].activeFlags1c >> 5 & 1) == 0) {
+      actionKind = 2;
+    }
+  }
+  if (actionKind == 2) {
+    return 0x3f9;
+  }
+  return (actionKind != 10) - 1 & 0x3f3;
+}
+
 // Hex direction (0-6) from sourceTile to destTile on the 0x6c(108)-wide map, via each tile's
 // doubled-hex-coordinate ("diagonal") position: diag = (row & 1) + col*2. Ghidra's decompile
 // hand-emulates row/col with a magic-multiply division and a sign-correcting parity dance for
@@ -2325,13 +2348,12 @@ void TMapMgr::MarkSeedNeighborTilesUnavailableByCapabilityMaskProfileA(
   short nationTag = pCivilianOrderEntry->field_18;
   short tileIndex = pCivilianOrderEntry->tileIndex06;
 
-  // orderCapRows277[nationTag - 1] reads the *previous* nation's row padding -- for
-  // nationTag == 0 this reads out of the array's declared bounds (into the tail of
-  // nationCapRows1e8[6]/pad274), reproducing the original's own out-of-bounds read.
-  if (g_pCityOrderCapabilityState->orderCapRows277[nationTag - 1].unknownFlag28b == 2) {
+  // These flags sit at the head of orderCapRows277[nationTag]'s record (offsets 6/0xc); they
+  // used to be reached via the previous row at the old +0xf phase, now corrected.
+  if (g_pCityOrderCapabilityState->orderCapRows277[nationTag].unknownFlag28b == 2) {
     g_bSeedGateNotifyFlag_00696f0c = 1;
   }
-  if (g_pCityOrderCapabilityState->orderCapRows277[nationTag - 1].unknownFlag291 == 2) {
+  if (g_pCityOrderCapabilityState->orderCapRows277[nationTag].unknownFlag291 == 2) {
     g_bSeedGateNotifyFlag_00696f0a = 1;
   }
   if (g_pCityOrderCapabilityState->orderCapRows277[nationTag].unknownFlag27f == 2) {
@@ -2361,13 +2383,13 @@ void TMapMgr::MarkSeedNeighborTilesUnavailableByCapabilityMaskProfileB(
   short nationTag = pCivilianOrderEntry->field_18;
 
   unsigned char terrainTypeGate[8] = {1, 1, 0, 0, 0, 0, 1, 1};
-  if (g_pCityOrderCapabilityState->orderCapRows277[nationTag - 1].unknownFlag28b == 2) {
+  if (g_pCityOrderCapabilityState->orderCapRows277[nationTag].unknownFlag28b == 2) {
     terrainTypeGate[4] = 1;
     terrainTypeGate[5] = 0;
     terrainTypeGate[6] = 1;
     terrainTypeGate[7] = 1;
   }
-  if (g_pCityOrderCapabilityState->orderCapRows277[nationTag - 1].unknownFlag291 == 2) {
+  if (g_pCityOrderCapabilityState->orderCapRows277[nationTag].unknownFlag291 == 2) {
     terrainTypeGate[0] = 1;
     terrainTypeGate[1] = 1;
     terrainTypeGate[2] = 1;
@@ -3293,6 +3315,31 @@ void TMapMgr::ChooseNationSetupProfilesForOpenSlots(short* outProfileBySlot) {
       outProfileBySlot[slot] = 3;
     }
   }
+}
+
+// Reset a tile's resource-icon edge cache: resolve resourceTypeByEdge[0] from a fixed 16-entry
+// lookup indexed by the tile's gateFlag, and force resourceTypeByEdge[1] to 0xff.
+// FUNCTION: IMPERIALISM 0x0051da60
+void OrphanDeadLeaf_NoRefs_0051da60(short nTileIndex) {
+  unsigned short lookup[16];
+  lookup[0] = 0xffff;
+  lookup[1] = 0xffff;
+  lookup[2] = 0;
+  lookup[3] = 0x14;
+  lookup[4] = 5;
+  lookup[5] = 0x11;
+  lookup[6] = 0x12;
+  lookup[7] = 1;
+  lookup[8] = 0xffff;
+  lookup[9] = 0xffff;
+  lookup[10] = 0xffff;
+  lookup[11] = 0xffff;
+  lookup[12] = 0xffff;
+  lookup[13] = 2;
+  lookup[14] = 0xffff;
+  TTerrainStateRecordView& tile = g_pGlobalMapState->terrainStateTable[nTileIndex];
+  tile.resourceTypeByEdge[0] = static_cast<signed char>(lookup[tile.gateFlag]);
+  tile.resourceTypeByEdge[1] = static_cast<signed char>(0xff);
 }
 
 // FUNCTION: IMPERIALISM 0x0055e360

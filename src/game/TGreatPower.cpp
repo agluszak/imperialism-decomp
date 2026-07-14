@@ -387,7 +387,7 @@ void TGreatPower::ReadFrom(TStream* stream) {
   stream->ReadBytes(this->diplomacyState1c6, 0x2E);
   SwapShortArrayBytes(this->diplomacyState1c6, kNationSlotCount);
 
-  if (g_nSaveFormatVersion > 0x16) {
+  if (g_nSaveFormatVersion >= 0x17) {
     stream->ReadBytes(this->diplomacyState1f4, 0x2E);
     SwapShortArrayBytes(this->diplomacyState1f4, kNationSlotCount);
   }
@@ -583,7 +583,7 @@ void TGreatPower::ReadFrom(TStream* stream) {
     }
   }
 
-  if (g_nSaveFormatVersion > 0x25) {
+  if (g_nSaveFormatVersion >= 0x26) {
     stream->ReadBytes(&this->field910, 4);
     stream->ReadBytes(&this->aidAllocationTotal, 4);
   }
@@ -2304,17 +2304,16 @@ void TGreatPower::ClearDiplomacyState1c6Block(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x004ddfc0
-bool TGreatPower::ApplyDiplomacyPolicyStateForTargetWithCostChecks(int arg1, int arg2) {
+bool TGreatPower::ApplyDiplomacyPolicyStateForTargetWithCostChecks(short targetClass,
+                                                                   short policyCode) {
   const short kPolicyClear = -1;
   const short kPolicyRequiresCompatibilityStart = 0x12D;
   const short kPolicyTreasurySmall = 0x133;
   const short kPolicyTreasuryLarge = 0x134;
 
-  short targetClass = static_cast<short>(arg1);
-  short policyCode = static_cast<short>(arg2);
   char shouldApply = 1;
 
-  if (policyCode < kPolicyRequiresCompatibilityStart + 1) {
+  if (policyCode <= kPolicyRequiresCompatibilityStart) {
     if (policyCode != kPolicyRequiresCompatibilityStart) {
       if (policyCode == kPolicyClear) {
         short previousPolicy = this->diplomacyPolicyByNation[targetClass];

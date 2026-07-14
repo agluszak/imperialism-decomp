@@ -4,9 +4,35 @@
 
 TCdAudioDevice g_cdAudioDevice; // 0x006a60bc
 
+// FUNCTION: IMPERIALISM 0x0047cca0
+void TCdAudioDevice::ResetAndOpenCdAudioDeviceHandle() {
+  m_deviceId = 0;
+  m_deviceId = OpenCdAudioAndProbeAuxOutputDevice() & 0xffff;
+}
+
+// FUNCTION: IMPERIALISM 0x0047ccd0
+void TCdAudioDevice::SendMciCommand804IfDeviceOpenAndClearHandle() {
+  if (m_deviceId != 0) {
+    SendMciCommand804ToDevice(m_deviceId);
+    m_deviceId = 0;
+  }
+}
+
+// FUNCTION: IMPERIALISM 0x0047cd00
+void TCdAudioDevice::EnsureCdAudioDeviceHandleInitialized() {
+  if (m_deviceId == 0) {
+    m_deviceId = OpenCdAudioAndProbeAuxOutputDevice() & 0xffff;
+  }
+}
+
 // FUNCTION: IMPERIALISM 0x0047cd60
 void TCdAudioDevice::ApplyMciPlaybackRangeFromAudioManager(int trackIndex) {
   SetMciPlaybackRangeByTrackIndexAndDevice(trackIndex, m_deviceId);
+}
+
+// FUNCTION: IMPERIALISM 0x0047cdf0
+bool TCdAudioDevice::ForwardMciStatusCommand814IgnoreFailure() {
+  return SendMciStatusCommand814AndIgnoreFailure(m_deviceId);
 }
 
 // FUNCTION: IMPERIALISM 0x005df8d0
@@ -62,4 +88,10 @@ void __stdcall SetMciPlaybackRangeByTrackIndexAndDevice(int trackIndex, MCIDEVIC
       mciSendCommandA(device, MCI_PLAY, MCI_TO, (DWORD)&playParms);
     }
   }
+}
+
+// FUNCTION: IMPERIALISM 0x005e19e0
+bool __stdcall SendMciCommand804ToDevice(MCIDEVICEID device) {
+  MCIERROR err = mciSendCommandA(device, 0x804, 0, 0);
+  return err == 0;
 }

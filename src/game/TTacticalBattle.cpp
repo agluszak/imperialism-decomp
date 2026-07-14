@@ -1450,8 +1450,8 @@ void TTacticalBattle::HandleTacticalCommandTag_mine(int tileIndex, int amount, c
 // target tile, charge half the unit type's base action points against the pre-action
 // balance, rebuild the reachable-cost plane, and close the round when the unit is spent.
 // FUNCTION: IMPERIALISM 0x005a3640
-undefined TTacticalBattle::ExecuteTacticalDigActionAndConsumeUnitActionPoints(TTacticalUnit* unit,
-                                                                              int tileIndex) {
+void TTacticalBattle::ExecuteTacticalDigActionAndConsumeUnitActionPoints(TTacticalUnit* unit,
+                                                                         int tileIndex) {
   unit->AssertValid();
   // Captured as a word before the dig/move mutate the unit.
   short actionPointsBefore = static_cast<short>(unit->actionPoints28);
@@ -1462,7 +1462,6 @@ undefined TTacticalBattle::ExecuteTacticalDigActionAndConsumeUnitActionPoints(TT
   if (unit->actionPoints28 == 0) {
     QueueTacticalEventPacket232A();
   }
-  return 0;
 }
 
 // 'digg' command: digs a trench link between the unit's tile and an adjacent target

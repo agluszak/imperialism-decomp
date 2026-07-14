@@ -995,30 +995,6 @@ undefined4 WrapperFor_DeleteRegionHandleFromClipState_At0047cb60(void)
   return 0;
 }
 
-// ghidra_name ResetAndOpenCdAudioDeviceHandle
-// ghidra_proto undefined ResetAndOpenCdAudioDeviceHandle()
-// FUNCTION: IMPERIALISM 0x0047cca0
-undefined4 ResetAndOpenCdAudioDeviceHandle(void)
-{
-  return 0;
-}
-
-// ghidra_name SendMciCommand804IfDeviceOpenAndClearHandle
-// ghidra_proto undefined SendMciCommand804IfDeviceOpenAndClearHandle()
-// FUNCTION: IMPERIALISM 0x0047ccd0
-undefined4 SendMciCommand804IfDeviceOpenAndClearHandle(void)
-{
-  return 0;
-}
-
-// ghidra_name EnsureCdAudioDeviceHandleInitialized
-// ghidra_proto undefined EnsureCdAudioDeviceHandleInitialized()
-// FUNCTION: IMPERIALISM 0x0047cd00
-undefined4 EnsureCdAudioDeviceHandleInitialized(void)
-{
-  return 0;
-}
-
 // ghidra_name SendMciCommand804IfDeviceOpenAndClearHandle_FastcallBridge
 // ghidra_proto undefined SendMciCommand804IfDeviceOpenAndClearHandle_FastcallBridge()
 // FUNCTION: IMPERIALISM 0x0047cd30
@@ -1031,14 +1007,6 @@ undefined4 SendMciCommand804IfDeviceOpenAndClearHandle_FastcallBridge(void)
 // ghidra_proto undefined ForwardMciCommand808ToDevice()
 // FUNCTION: IMPERIALISM 0x0047cd80
 undefined4 ForwardMciCommand808ToDevice(void)
-{
-  return 0;
-}
-
-// ghidra_name ForwardMciStatusCommand814IgnoreFailure
-// ghidra_proto undefined ForwardMciStatusCommand814IgnoreFailure()
-// FUNCTION: IMPERIALISM 0x0047cdf0
-undefined4 ForwardMciStatusCommand814IgnoreFailure(void)
 {
   return 0;
 }

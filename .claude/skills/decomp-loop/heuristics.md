@@ -1271,3 +1271,165 @@ headers before splicing.
     (QueueDepot/QueuePortConstructionOrder declared 4-arg; `RET 8` proves 2) is safe to
     correct on the base + stub when no manual overrides/callers exist -- fixing it unblocked
     Rail/Port to 100%.
+
+86. **Empty-collection linked-list scan: match MSVC's `xor eax,eax; jmp` null path with a
+    null-case-FIRST if/else-if/else over an UNINITIALIZED result var.** For a "find the
+    matching node, else null" head-scan (e.g. TTaskForce::SetTaskForceOrderSelectionByNodeId
+    0x5549a0), the original emits, right after the head-load + `test`, a leading
+    `jne have_head; xor eax,eax; jmp check` -- i.e. the empty-list case is the fall-through
+    then-block that explicitly zeroes the result. Two C++ forms that look equivalent do NOT
+    reproduce it: (a) `node = head; if (node && node->obj != t) node = ...;` drops the `xor`
+    entirely (compiler knows `node` is already 0) -> 90%; (b) `if (head != null){...} else
+    {node=null;}` (inverted, else-null) pushes the `xor;jmp` to the BOTTOM -> 81%. The one
+    that hits 100% is the null-test-first three-way over an uninitialized var:
+    `TMapOrderChildLinkNode* node; if (head == nullptr) node = nullptr; else if
+    (head->object_ptr == t) node = head; else node = head->next->FindNodeMatching(t);`.
+    Leave `node` uninitialized so each branch assigns it, and put the `== nullptr` branch
+    first so its zero-assignment is the leading then-block. (General rule: the branch whose
+    body is the compiler's fall-through is the one you write first; an uninitialized target
+    forces the explicit `xor` the pre-initialized form elides.)
+
+87. **Verify stub attribution by field-access consistency with ported siblings, NOT Ghidra's
+    `this`-type label or symbols.csv class prefix -- the remaining stub pool is heavily
+    mis-attributed.** A scout sweep of small stubs turned up candidate after candidate whose
+    Ghidra `this` type / curated name was contradicted by the disassembly: 0x598840
+    ("TToolBarCluster") reads `[ecx+0x94]` = TMapUberPicture's `invalidationFlag94` and calls
+    a thiscall on the unrecovered `goodGoldTagControlA4` (a call the codebase deliberately
+    left unmodeled); 0x4e8b50 ("TAttackProvinceMission", ASSERT_SIZE 0x34) writes
+    `[this+0x970]` -- impossible for a 0x34-byte class; 0x4b6a30 ("TTrainingOrder") does
+    `ADD word [ecx+8]` where the real layout has a `TCity*` pointer at +8. The reliable
+    signal that a stub is a clean port target: (i) its address sits BETWEEN two already-owned
+    methods of class C, AND (ii) its disassembly reads only C's own confirmed field offsets
+    and dispatches C's own helpers -- then it is a C method regardless of the label. That is
+    how the 0x5549a0/0x554a30/0x554a80 TTaskForce trio was confirmed (all read
+    `childOrderList`@0x10 + `g_NavyOrderResourceDescriptorTable`, sit among ported TTaskForce
+    siblings). Corollary red flags that a "clean" target is actually entangled: an opaque
+    param whose only use is `*(char*)p` but whose concrete type isn't modeled, a
+    partial-register arg load (`mov ax,[mem]; push eax` rather than `movsx`) that clean C++
+    won't reproduce, or a field used with semantics that contradict its recovered name
+    (required_count passed as a diplomacy `sourceNation`). Skip those rather than mis-model.
+
+88. **`new T()` callsites are an authoritative sizeof(T) oracle — use them to catch
+    under-modeled classes.** A `push 0xNN; call 0x606f73` (MFC `operator new`) at a
+    `new T()` site pins `sizeof(T)` exactly, and reccmp flags a wrong size as a
+    `[constant]` mismatch on the `push` immediate (`0x80 vs 0x64` = class is 0x1C bytes
+    short, not codegen wobble). Worked example: `TGreatPower::ReadFrom` (0x4d92e0)
+    builds three ministers with `push 0x80` / `push 0x1c4` / `push 0x94`; the recomp
+    pushed 0x64/0x2c/0x2c, exposing that the shared `TMinister` base was 0x2C instead
+    of its real 0x48. Fix belongs on the *base* when the whole family is short: derived
+    ministers each begin their own state at 0x48 (ConstructTForeignMinister @ 0x52f070
+    first writes [this+0x48]), and a header whose trailing array reads `state48[0x80 -
+    0x48]` already assumes base 0x48 — so growing the base (`pad2a[0x48-0x2A]`) fixes
+    every derived size at once with no field shift (derived classes had no modeled
+    members). Don't size-clamp a class that derives through an intermediate you haven't
+    sized (TCityInteriorMinister via TInteriorMinister): you can't attribute the
+    0x48..total region across the chain without each level's own `new` size — defer to
+    real class recovery.
+
+89. **Match the compiler's `>= N` / `> N` compare form, not just the semantics.**
+    `if (ver > 0x16)` and `if (ver >= 0x17)` are identical semantically but MSVC5 emits
+    different code: `> 0x16` -> `cmp 0x16; jle`, `>= 0x17` -> `cmp 0x17; jl`. When
+    triage shows a `[constant]` `0x17 vs 0x16` on a `cmp [global], imm` paired with a
+    `[codegen]` `jl vs jle` at the next address, the original wrote the boundary the
+    other way — flip your operator to match. Cheap, codegen-faithful, safe (reccmp pairs
+    by address; branch target unchanged). Rarely moves the score alone when a bigger
+    register-scheduling diff dominates alignment, but removes two genuine mismatch lines.
+
+90. **Before acting on a triage `[call_target]` line that names a vtable slot, run
+    `just vtable <Class>` — an already-100% vtable means the line is a misalignment
+    artifact, not a missing virtual.** Triage reported
+    `dword ptr [eax + 0x48] vs TMinor::SetDiplomacyStandingSlot48 (FUNCTION)` inside
+    TGreatPower::SetNationTransferTargetCodeAndNotifyEligiblePeers (0x4de860), which
+    looks like "slot 0x48 should dispatch a named virtual but our callsite calls it
+    non-virtually." Investigated it fully: `just vtable TMinor` and `just vtable
+    TCountry` both already report **100% match**, so slot 0x48 (index 18) is correctly
+    modeled on both sides; `SetDiplomacyStandingSlot48` is an *unmarked, unpaired*
+    internal helper (not in `symbols.csv`, no `// FUNCTION:` marker), not the slot body.
+    The `[eax+0x48] vs <name>` line was reccmp pairing the orig's slot dispatch against a
+    Ghidra name while our structurally-divergent function had an unrelated instruction at
+    the aligned offset — an artifact of the diff misaligning a heavily-reshaped body, not
+    a real vtable defect. Lesson: a `call_target` line that fingers a vtable slot is only
+    a real bug if `just vtable <owning Class>` is below 100%; when it's already 100%,
+    don't restructure the base vtable — the residual is the caller's own codegen
+    divergence (see note 91). Cheap to check, saves a large wrong-headed base-class edit.
+
+91. **Pointer-walk vs index-loop is an optimizer choice you can't reliably force from a
+    source tweak.** When the orig bounds a table loop by `add edi,4; cmp edi, &table_end`
+    (a literal end-of-array address, e.g. `0x6a436c` = `&g_apTerrainTypeDescriptorTable[23]`)
+    while your build indexes `table[i]` with a counter compare, the original compiler
+    strength-reduced the index to a pointer. MSVC5 does this only when the loop body lets
+    it drop the integer index entirely; a body that also uses the index as an `int` arg
+    (e.g. an eligibility call `IsEligible(i)`) pins index addressing. Rewriting the C++ as
+    an explicit pointer walk rarely reproduces it cleanly and risks other regressions —
+    treat this residual as expected on table-iteration loops rather than chasing it.
+
+92. **A sudden mass-unpairing after editing a .cpp is almost always incremental-build
+    line staleness — clean-rebuild before believing it.** After adding ~30 lines (four
+    promoted bodies) to TForeignMinister.cpp, `just stats` reported -15 paired / -8
+    aligned, with reccmp erroring `Failed to find function symbol with filename and
+    line: <file>:<N> ... the compiler has probably inlined this function` for real,
+    substantially-ported functions (Call8C 52%, Call90 61%) — clearly not inlined.
+    Editing a file shifts every later function's line number; an incremental
+    `just build` can leave the PDB's line table out of sync so reccmp can't locate the
+    functions by (file, line). `rm -rf build-msvc500 && just build && just detect`
+    restored every pairing and showed the true delta (+2 aligned). Do the clean rebuild
+    before diagnosing a mass-unpairing as a real regression or (worse) reverting good
+    ports over it. Genuine per-function phantom FP wobble (note 18/47) still applies on
+    top, but it never mass-unpairs whole swaths of a TU.
+
+93. **A low-scoring "already-ported" leaf may just carry the WRONG body — re-read the
+    Ghidra decompile before assuming it's an inlining/codegen limit.**
+    TMinor::ReturnFalseNationStateCapabilityFlag90 (0x4e45f0) sat at 9.5% with a body
+    that range-checked `arg in 0xd..0x10` — logic copy-pasted from the unrelated
+    IsSpecialNationInteractionResource predicate. The real body compares `arg` against
+    four saved fields (diplomacySaveFields134[0..3]). Two further matching details took
+    it 24% → 91.7% → 100%: (a) MSVC compiled the original as **init-to-0, set-to-1,
+    single return** (`char r=0; if(...) r=1; return r;`), NOT `if(...) return 1; return
+    0;` — the early-return form emits the `xor al,al` at the wrong point and flips the
+    branch polarity; (b) the original loads the arg as a **word** (`mov dx, word[esp+4]`),
+    proving the vtable slot param is a `short`, not the `int` the base decl carried.
+    Narrowing the slot param to `short` across the base (TCountry, a return-false stub
+    that ignores arg → stays 100%) and the override in lockstep produced the word load.
+    Lesson: for a mispredicting boolean leaf, check body-logic first, then the init/return
+    shape, then the arg width — and a return-false base is free to re-type its ignored
+    param to match a derived override's real word/byte usage.
+
+94. **`undefined`→`void` on a vtable slot with a trailing `+xor al,al` is a clean single-
+    function win ONLY when no override redefines the slot — batching the whole slot is
+    gated by every override being ported.** Removing the phantom `return 0;` (and the
+    `undefined` return) took the standalone slot TTacticalBattle::ExecuteTacticalDigAction
+    (0x5a3640, no overrides) 98.82%→100% in one edit. But the same fix on
+    TAnimation::AdvanceAnimationTickAndInvalidateOnFrameFlip (0x49f140, base 97.87%→100%)
+    forces its ~5 `override`s to `void` too (a void base can't have `undefined`/`return 0`
+    overrides), and the unported stub overrides — previously `{ return 0; }`, which the
+    NOOP gate ignores because a return statement isn't "empty" — become truly-empty `{}`.
+    The `just noop-gate` then correctly fails `empty_but_big` on TIdleMeAnimation (0x4aca60),
+    whose original is a real body (virtual gate-call on ownerView04 slot 0x13 + a
+    g_pUiAnimator->RemoveUiTransientRegistryObjectByTag(registryTag18) via ILT 0x4030a8).
+    That override can't be ported without resolving a polymorphic view slot (TView slot 0x13
+    is DispatchVslot134…(RECT*)void, but IdleMe calls it as char(int) — a concrete-view-type
+    ambiguity), so faking it or a false `// NOOP` are both wrong, and the whole batch had to
+    be dropped. Rule: only batch a slot-wide return-type narrowing when EVERY override is
+    already a real port (or a genuinely small/empty original); otherwise land the isolated
+    no-override slots (like 0x5a3640) and leave the shared slot until its stubs are ported.
+
+95. **A fake `(args…)` forwarder that ignores its args and tail-calls the real `(void)`
+    function silently de-pairs EVERY arg-passing call site — model the real `__cdecl`
+    arg-ignoring function as variadic `(...)` instead.** TemporarilyClearAndRestoreUiInvalidationFlag
+    (0x0049d620) is a bare flag toggler: it ends in plain `ret` (not `ret N`) and never reads
+    `[esp+…]`, yet assert-style call sites `push line; push path; call 0x49d620; add esp,8`
+    — they hand it a source path + line it discards, cleaning the stack __cdecl-style. Our
+    model had TWO overloads: the real `(void)` at 0x49d620 and a second `(const char*,int)`
+    that `(void)`-cast its args and forwarded. That forwarder is a *distinct* function, so
+    every `f(path,line)` call paired against the forwarder's address, not 0x49d620 — a whole
+    family (the five TViewMgr::HandleTurnEventDialogFactorySlot70..80, TView asserts, …) stuck
+    ~97.9%. Fix: declare the real function variadic — `undefined4 f(...)` (legal in C++ with no
+    named param; forced __cdecl; body ignores the varargs, needs no `va_start`, emits the same
+    `ret`). Now `f()` pushes nothing and `f(path,line)` pushes two and cleans — both call
+    0x49d620 directly. One edit: **+10 aligned, 52 improved** (drop the forwarder; update the
+    handful of file-local `extern … (const char*,int)`/`(void)` re-decls to `(...)` or they
+    become separate mangled symbols → link errors). Watch for: (a) a few small untouched TUs
+    reg-schedule-wobble from the link-layout shift (accept, notes 18/47); (b) put the doc
+    comment ABOVE the `// FUNCTION:` marker (Hard Rule 3), not between it and the decl.
+    Smell to grep for: a `void Foo(T a,U b){ (void)a;(void)b; Foo(); }` forwarder next to a
+    marked `Foo(void)`.

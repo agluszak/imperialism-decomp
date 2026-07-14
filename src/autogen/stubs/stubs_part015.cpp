@@ -235,14 +235,6 @@ undefined4 ApplyTileIconOverlayFromEditorSelection(void)
   return 0;
 }
 
-// ghidra_name OrphanDeadLeaf_NoRefs_0051da60
-// ghidra_proto void __cdecl OrphanDeadLeaf_NoRefs_0051da60(short nTileIndex)
-// FUNCTION: IMPERIALISM 0x0051da60
-undefined4 OrphanDeadLeaf_NoRefs_0051da60(void)
-{
-  return 0;
-}
-
 // ghidra_name ApplyTileOrderOverlayMaskAndInvalidate
 // ghidra_proto undefined ApplyTileOrderOverlayMaskAndInvalidate()
 // FUNCTION: IMPERIALISM 0x0051db30

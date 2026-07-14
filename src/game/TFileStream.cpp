@@ -11,7 +11,7 @@ typedef void* hwnd_t;
 // reporter with the source path and line.
 static __inline void FailNilPointer(int line) {
   GAME_FAIL_NIL_POINTER();
-  TemporarilyClearAndRestoreUiInvalidationFlag();
+  TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\McAppStream.cpp", line);
 }
 
 // The backing pointer is an ArchiveStreamAdapter whose archive field holds the

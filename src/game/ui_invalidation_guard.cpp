@@ -30,18 +30,13 @@ int __stdcall PumpUiMessagesAndBackgroundTasks(int nTaskPumpMode) {
   return static_cast<int>(thread->PumpMessage());
 }
 
+// Variadic so assert-style call sites (which push a source path + line) call this
+// directly and clean the stack, matching the original — the body ignores all args.
 // FUNCTION: IMPERIALISM 0x0049d620
-undefined4 TemporarilyClearAndRestoreUiInvalidationFlag(void) {
+undefined4 TemporarilyClearAndRestoreUiInvalidationFlag(...) {
   undefined4 previous = SetGlobalUiInvalidationFlagAndReturnPrevious(0);
   SetGlobalUiInvalidationFlagAndReturnPrevious(previous);
   return 0;
-}
-
-// Overload for assert-style calls with source file and line
-void TemporarilyClearAndRestoreUiInvalidationFlag(const char* sourceFile, int line) {
-  (void)sourceFile;
-  (void)line;
-  TemporarilyClearAndRestoreUiInvalidationFlag();
 }
 
 // Nil-pointer assert helper for USmallViews

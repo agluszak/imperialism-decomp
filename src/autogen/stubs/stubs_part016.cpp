@@ -411,14 +411,6 @@ undefined4 FreePointerIfNotNull(void)
   return 0;
 }
 
-// ghidra_name TMultiplayerMgr::EnableDiplomacyQueueRoutingAndSetContextField44
-// ghidra_proto undefined EnableDiplomacyQueueRoutingAndSetContextField44()
-// FUNCTION: IMPERIALISM 0x005430c0
-undefined4 EnableDiplomacyQueueRoutingAndSetContextField44(void)
-{
-  return 0;
-}
-
 // ghidra_name ResetDiplomacyRuntimeSelectionAndSetModeNada
 // ghidra_proto undefined ResetDiplomacyRuntimeSelectionAndSetModeNada()
 // FUNCTION: IMPERIALISM 0x00544630

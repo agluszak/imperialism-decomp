@@ -126,6 +126,8 @@ public:
   // Appends a queue node (next pointer at node+0x10) to the tail of
   // primaryTurnEventQueueHead. 0x549280.
   void AppendNodeToTurnEventLinkedListAt6C(int node);
+  // 0x5430c0 — enable both diplomacy queue-processing flags and set the routing context.
+  void EnableDiplomacyQueueRoutingAndSetContextField44(int nContext, char fEnable);
   void CreateAndSendTurnEvent11_MapOffsetAndFlags(unsigned char flagByte, int mapOffsetSelector,
                                                   int absoluteOffset, short shortA,
                                                   short shortB);       // 0x5493c0
