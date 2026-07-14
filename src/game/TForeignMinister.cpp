@@ -84,7 +84,16 @@ short TForeignMinister::DispatchNationStateEventCode10(short nationSlot) {
 }
 
 // FUNCTION: IMPERIALISM 0x0052f4b0
-void TForeignMinister::MinisterSlot12() {}
+void TForeignMinister::InitializeForeignMinisterStateFlags() {
+  // Seven-byte fill of flags49 (bytes 0x49-0x4f) with 0x01; MSVC inlines this memset as
+  // a 0x01010101 dword + word + byte store.
+  memset(this->flags49, 1, 7);
+  TGreatPower* ownerGP = reinterpret_cast<TGreatPower*>(this->ownerContextAt04);
+  this->capabilityFlag16 = 0;
+  if (ownerGP->treasuryValue10 < 0) {
+    this->capabilityFlag14 = 1;
+  }
+}
 
 // FUNCTION: IMPERIALISM 0x0052f4f0
 void TForeignMinister::Call4C() {}
@@ -152,7 +161,7 @@ void TForeignMinister::Call8C() {
 
 // FUNCTION: IMPERIALISM 0x0052f940
 void TForeignMinister::Call90() {
-  this->MinisterSlot12();
+  this->InitializeForeignMinisterStateFlags();
   char* raw = reinterpret_cast<char*>(this);
   TGreatPower* owner = reinterpret_cast<TGreatPower*>(this->ownerContextAt04);
   int skipMissionSlot1A = 0;

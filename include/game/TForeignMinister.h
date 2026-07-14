@@ -15,7 +15,9 @@ public:
   void WriteTo(TStream* stream) override;
   void ReadFrom(TStream* stream) override;
   short DispatchNationStateEventCode10(short nationSlot) override;
-  virtual void MinisterSlot12();
+  // slot 0x12 (body 0x0052f4b0) — seed the foreign-minister state bytes (0x49-0x4f)
+  // and capability flags; sets flag 0x14 when the owner's treasury is negative.
+  virtual void InitializeForeignMinisterStateFlags();
   virtual void Call4C();
   virtual void MinisterSlot14();
   virtual void Call54();
@@ -42,5 +44,7 @@ public:
   virtual void DispatchProposalSlot98(int arg1, int arg2, int arg3, int targetNation);
   virtual void RecomputeOrderStateSlot9C();
 
-  unsigned char foreignState48[0x80 - 0x48];
+  unsigned char field48;    // +0x48 — cleared by the constructor
+  unsigned char flags49[7]; // +0x49..0x4f — seeded to 1 by InitializeForeignMinisterStateFlags
+  unsigned char foreignState50[0x80 - 0x50]; // +0x50..0x7f — remaining unrecovered state
 };
