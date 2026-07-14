@@ -1483,3 +1483,24 @@ headers before splicing.
     original source did) rather than a literal 0. CAUTION: the construction anti-pattern gate
     regexes `\boperator\s+(?:new|delete)\s*\(` — a *comment* like "raw operator new (no init)"
     trips it; write "non-value-initializing `new`" instead.
+
+98. **A small __thiscall "iterator/cursor" struct that reads `container->[+0x44]` then walks
+    `+0/+4` links with data at `+8` is an MFC `CList`/`CObList` traversal — model it with the
+    real MFC accessors, not a hand-rolled node struct.** The SelectableTextOptionEntry cursor
+    family (0x004919a0 Initialize / 0x00491a00 Begin / 0x00491a70 Advance / 0x00491ab0 IsValid)
+    looked like a bespoke tree walker, but `container+0x44` is a `TView::childList44`
+    (`CList<TView*,TView*>*`, CObject-derived: vtable +0, `m_pNodeHead` +4, `m_pNodeTail` +8;
+    `CNode{pNext +0, pPrev +4, data +8}`). The disassembly's `*(list+4)`/`*(list+8)` = Get
+    Head/TailPosition, and `node->next/prev` + `node->data` = GetNext/GetPrev's inlined body.
+    Modeling it as `list->GetHeadPosition()/GetNext(pos)` etc. (repo's real `<afxtempl.h>` CList)
+    matched 100% — and the list-object load in `Advance` is optimised away because the inline
+    GetNext/GetPrev only touch the node, not `this` (so a method whose disasm never reads the
+    container still uses `ownerView->childList44->GetNext(pos)` cleanly). Sibling precedent:
+    `CIterator` (Reset/More/Advance over `TSortedList::listState` CPtrList). When you see a
+    ~12-20 byte cursor struct with a POSITION field + a payload field, look for the MFC list it
+    walks before inventing a class. TWO codegen keys that took it from 15%/88% to 100%: (a) an
+    init/"reset" method that ends with `mov eax,ecx`+`this`-in-eax-at-RET RETURNS `this` (model
+    `T* Initialize(){...; return this;}`); (b) a seed-then-check that does `mov [ecx],eax` then
+    re-reads `mov eax,[ecx]` stores the position to the FIELD in each branch and re-reads the
+    field for the null check — don't cache it in a local (`position00 = ...; if (position00 ==
+    0)`, not `pos = ...; ... = pos; if (pos == 0)`).
