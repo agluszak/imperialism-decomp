@@ -37,11 +37,15 @@ public:
   // slot 0x1d (body 0x00530b30) — mark the first eligible nation as an action
   // candidate, but only while no candidate is active yet.
   virtual void DispatchAction210ToFirstEligibleNationIfIdle();
-  virtual void MinisterSlot1E();
+  // slot 0x1e (0x0052fdc0) — set per-nation interaction enable flags from a terrain
+  // class-200 scan and relation-standing threshold.
+  virtual void UpdateNationInteractionEnableFlagsByTerrainAndRelation();
   virtual void MinisterSlot1F(short queueIndex); // byte 0x7c: processes a queued proposal row
   virtual void Call80();
   virtual void MinisterSlot21();
-  virtual char MinisterSlot22();
+  // slot 0x22 (0x0052f730) — true if any diplomacy option (0xd/0xe/0xf) meets the
+  // owner's trade-capacity threshold.
+  virtual int HasAnyOptionDToFMeetingNationThreshold();
   virtual void Call8C();
   virtual void Call90();
   virtual void Call94();

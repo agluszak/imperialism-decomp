@@ -18567,7 +18567,7 @@
     },
     {
       "address": "0x52f730",
-      "matching": 0.058823529411764705,
+      "matching": 1.0,
       "name": "TForeignMinister::HasAnyOptionDToFMeetingNationThreshold",
       "type": 1
     },
@@ -18579,7 +18579,7 @@
     },
     {
       "address": "0x52f940",
-      "matching": 0.6153846153846154,
+      "matching": 0.5897435897435898,
       "name": "TForeignMinister::RunForeignMinisterVtableSlot90Base",
       "type": 1
     },
@@ -18633,7 +18633,7 @@
     },
     {
       "address": "0x530200",
-      "matching": 0.004784688995215311,
+      "matching": 0.06302521008403361,
       "name": "TForeignMinister::QueueTurnEventHintActionsByNationMetricsAndCompatibility",
       "type": 1
     },
