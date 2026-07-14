@@ -1,6 +1,7 @@
 #include "game/TRadioTextCluster.h"
 
 #include "game/TRadioText.h"
+#include "game/TSelectableTextOptionEntryIterator.h"
 #include "game/TViewMgr.h"
 #include "game/global_data_tables.h"
 #include "game/quickdraw_regions.h"
@@ -53,20 +54,26 @@ void TRadioTextCluster::SetSelectedTextOptionByTag(int tag, bool refreshOnChange
     return;
   }
   selectedTag88 = tag;
-  if (childList44 == 0) {
-    return;
-  }
-  POSITION pos = childList44->GetHeadPosition();
-  while (pos != NULL) {
-    TRadioText* child = static_cast<TRadioText*>(childList44->GetNext(pos));
-    child->AssertValid();
-    bool shouldBeSelected = (child->controlTag == selectedTag88);
-    if (shouldBeSelected != (child->isSelectedOption98 != 0)) {
-      child->isSelectedOption98 = shouldBeSelected;
-      if (refreshOnChange) {
-        child->RefreshControl();
+  // The original walks the children with the shared bidirectional cursor (which handles a
+  // null childList44 internally), not a raw GetHeadPosition/GetNext loop.
+  TSelectableTextOptionEntryIterator iter;
+  iter.Initialize(this);
+  TRadioText* child = static_cast<TRadioText*>(iter.Begin());
+  if (iter.IsValid()) {
+    do {
+      child->AssertValid();
+      // Original compares the raw isSelectedOption98 byte directly (cmp al,cl) -- it never
+      // holds anything but 0/1, so no `!= 0` normalization is emitted.
+      unsigned char shouldBeSelected =
+          static_cast<unsigned char>(child->controlTag == selectedTag88);
+      if (shouldBeSelected != child->isSelectedOption98) {
+        child->isSelectedOption98 = shouldBeSelected;
+        if (refreshOnChange) {
+          child->RefreshControl();
+        }
       }
-    }
+      child = static_cast<TRadioText*>(iter.Advance());
+    } while (iter.IsValid());
   }
 }
 

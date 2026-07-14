@@ -1,29 +1,10 @@
 #include "game/TTurnEventDialogFactoryRegistry.h"
 
+#include "game/TSelectableTextOptionEntryIterator.h"
 #include "game/TView.h"
 #include "game/mfc.h"
 #include "game/global_data_tables.h"
 #include "game/turn_event_dialog_factory.h"
-
-// Bidirectional stack cursor over a TView's childList44 (CList<TView*, TView*>). Ghidra
-// names it after the SelectableTextOptionEntry callers (TRadioTextCluster /
-// TSwapperDaddyView option handling), but it is a generic TView child-list cursor: the
-// same shape as CIterator (Reset/More/Advance) plus a reverse-traversal flag and a 4-char
-// filter tag. The traversal is plain MFC CList: GetHeadPosition/GetTailPosition seed the
-// position and GetNext/GetPrev read the node payload while advancing. reccmp pairs the
-// four methods by address.
-struct TSelectableTextOptionEntryIterator {
-  POSITION position00;   // +0x00 current CList position (node)
-  TView* ownerView04;    // +0x04 view whose childList44 is walked
-  int direction08;       // +0x08 1 = forward from head, 0 = reverse from tail
-  int tag0c;             // +0x0c 4-char filter tag, initialised to "    " (0x20202020)
-  TView* currentChild10; // +0x10 payload of the current node (validity field)
-
-  TSelectableTextOptionEntryIterator* Initialize(TView* owner); // 0x004919a0
-  void Begin();                                                 // 0x00491a00
-  void Advance();                                               // 0x00491a70
-  bool IsValid();                                               // 0x00491ab0
-};
 
 // FUNCTION: IMPERIALISM 0x004919a0
 TSelectableTextOptionEntryIterator* TSelectableTextOptionEntryIterator::Initialize(TView* owner) {
@@ -35,7 +16,7 @@ TSelectableTextOptionEntryIterator* TSelectableTextOptionEntryIterator::Initiali
 }
 
 // FUNCTION: IMPERIALISM 0x00491a00
-void TSelectableTextOptionEntryIterator::Begin() {
+TView* TSelectableTextOptionEntryIterator::Begin() {
   TViewChildList* list = ownerView04->childList44;
   if (list == nullptr) {
     position00 = nullptr;
@@ -44,25 +25,29 @@ void TSelectableTextOptionEntryIterator::Begin() {
   }
   if (position00 == nullptr) {
     currentChild10 = nullptr;
-    return;
+    return currentChild10;
   }
   currentChild10 = (direction08 != 0) ? list->GetNext(position00) : list->GetPrev(position00);
+  return currentChild10;
 }
 
 // FUNCTION: IMPERIALISM 0x00491a70
-void TSelectableTextOptionEntryIterator::Advance() {
+TView* TSelectableTextOptionEntryIterator::Advance() {
   if (position00 == nullptr) {
     currentChild10 = nullptr;
-    return;
+    return currentChild10;
   }
   // GetNext/GetPrev only touch the node, not the list object; the owner's childList44 is
   // named only to satisfy the member-call form and is optimised away.
   TViewChildList* list = ownerView04->childList44;
   currentChild10 = (direction08 != 0) ? list->GetNext(position00) : list->GetPrev(position00);
+  return currentChild10;
 }
 
 // FUNCTION: IMPERIALISM 0x00491ab0
-bool TSelectableTextOptionEntryIterator::IsValid() {
+int TSelectableTextOptionEntryIterator::IsValid() {
+  // Returns int (not bool), matching the sibling CIterator::More(): call sites test the
+  // full eax register.
   return currentChild10 != nullptr;
 }
 
