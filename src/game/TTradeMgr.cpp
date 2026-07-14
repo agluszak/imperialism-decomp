@@ -635,7 +635,7 @@ short TTradeMgr::GetNationMetricBucketValueByIndex(short category) {
 // FUNCTION: IMPERIALISM 0x005b9060
 void TTradeMgr::ApplyDiplomacyTransferEffectsAcrossNationMetricRoster(short slot) {
   TDealList* list = this->categoryRankLists[slot];
-  int count = *reinterpret_cast<int*>(reinterpret_cast<char*>(list) + 8);
+  int count = list->GetSize();
   short idx = 1;
   int i = 1;
   if (0 < count) {
@@ -670,7 +670,7 @@ void TTradeMgr::ProcessPendingDiplomacyTransferEntriesUntilBlockedWrapper() {
     short i = *reinterpret_cast<short*>(self + 0x4);
     short idx = g_nationMetricSlotDispatchOrder006d810[i];
     TDealList* list = this->categoryRankLists[idx];
-    if (*reinterpret_cast<int*>(reinterpret_cast<char*>(list) + 8) != 0) {
+    if (list->GetSize() != 0) {
       break;
     }
     next = *reinterpret_cast<short*>(self + 0x4) + 1;
@@ -717,18 +717,15 @@ void TTradeMgr::ProcessPendingDiplomacyTransferEntriesUntilBlocked() {
     }
 
     ++categoryRows[0].resetTransitionFlagB02;
-    if (categoryRows[0].resetTransitionFlagB02 >
-        *reinterpret_cast<int*>(reinterpret_cast<char*>(list) + 8)) {
+    if (categoryRows[0].resetTransitionFlagB02 > list->GetSize()) {
       do {
         ++categoryRows[0].resetTransitionFlagA00;
         if (categoryRows[0].resetTransitionFlagA00 > 0x10) {
           break;
         }
-      } while (*reinterpret_cast<int*>(
-                   reinterpret_cast<char*>(
-                       categoryRankLists[g_nationMetricSlotDispatchOrder006d810
-                                             [categoryRows[0].resetTransitionFlagA00]]) +
-                   8) == 0);
+      } while (categoryRankLists
+                   [g_nationMetricSlotDispatchOrder006d810[categoryRows[0].resetTransitionFlagA00]]
+                       ->GetSize() == 0);
       categoryRows[0].resetTransitionFlagB02 = 1;
     }
   } while (!blocked);
@@ -1151,7 +1148,7 @@ TTradeMgr::AllocateAndPopulateLinkedValueCollectionFromRosterFilter(int rosterSl
   TSoundChannelNode* node = new TSoundChannelNode();
   short idx = 1;
   TDealList* list = this->categoryRankLists[rosterSlot];
-  int count = *reinterpret_cast<int*>(reinterpret_cast<char*>(list) + 8);
+  int count = list->GetSize();
   if (0 < count) {
     int i = 1;
     do {
