@@ -1,5 +1,5 @@
 address|current_name|current_ownership|oracle_symbol|oracle_name|member|match_kind|candidate_count|reason
-0x004796c0|TTechStorePage::VTableSlot9D|unowned|?SetModifiedFlag@CDocument@@UAEXH@Z|CDocument::SetModifiedFlag|doccore.obj|unique|1|outside_library_range
+0x004796c0|CAmbitDocument::SetModifiedFlag|manual:src/game/CAmbitDocument.cpp|?SetModifiedFlag@CDocument@@UAEXH@Z|CDocument::SetModifiedFlag|doccore.obj|unique|1|match_owned_by_game_code
 0x00489410|TCountingStream::ConstructTCountingStreamBaseState|manual:src/game/TCountingStream.cpp|??0exception@@QAE@XZ|exception::exception|stdexcpt.obj|unique|1|match_owned_by_game_code
 0x004995a0|TMacViewMgr::WrapperFor_thunk_ResolveBmpResourceHandleWithDefault3B6_At004995a0|unowned|?AfxDaoGetEngine@@YGPAU_DAODBEngine@@XZ|AfxDaoGetEngine|daocore.obj|unique|1|outside_library_range
 0x00534c80|ResetMissionField0CToZero|manual:src/game/TMission.cpp|?EnableAggregation@CCmdTarget@@QAEXXZ|CCmdTarget::EnableAggregation|oleunk.obj|unique|1|match_owned_by_game_code
@@ -42,10 +42,7 @@ address|current_name|current_ownership|oracle_symbol|oracle_name|member|match_ki
 0x006106bd|CSingleDocTemplate|unowned|??0CSingleDocTemplate@@QAE@IPAUCRuntimeClass@@00@Z|CSingleDocTemplate::CSingleDocTemplate|docsingl.obj|unique|1|invented_name_referenced_in_source
 0x006108fe|OrphanLeaf_NoCall_Ins04_005adc30|unowned|?SetDefaultTitle@CSingleDocTemplate@@UAEXPAVCDocument@@@Z|CSingleDocTemplate::SetDefaultTitle|docsingl.obj|unique|1|invented_name_referenced_in_source
 0x0061096b|CDocument|unowned|??0CDocument@@QAE@XZ|CDocument::CDocument|doccore.obj|unique|1|invented_name_referenced_in_source
-0x00610a57|TTechStorePage::ReadFrom|unowned|?OnFinalRelease@CDocument@@UAEXXZ|CDocument::OnFinalRelease|doccore.obj|unique|1|below_min_convert_size
-0x00610a80|OrphanLeaf_NoCall_Ins04_005adc30|unowned|?SetTitle@CDocument@@UAEXPBD@Z|CDocument::SetTitle|doccore.obj|unique|1|invented_name_referenced_in_source
 0x00611334|GetFile|unowned|?GetFile@CDocument@@UAEPAVCFile@@PBDIPAVCFileException@@@Z|CDocument::GetFile|doccore.obj|unique|1|invented_name_referenced_in_source
-0x00611420|OrphanLeaf_NoCall_Ins04_005adc30|unowned|?OnNewDocument@CDocument@@UAEHXZ|CDocument::OnNewDocument|doccore.obj|unique|1|invented_name_referenced_in_source
 0x00611bb4|CArchive|unowned|??0CArchive@@QAE@PAVCFile@@IHPAX@Z|CArchive::CArchive|arccore.obj|unique|1|invented_name_referenced_in_source
 0x00611ec4|Flush|unowned|?Flush@CArchive@@QAEXXZ|CArchive::Flush|arccore.obj|unique|1|invented_name_referenced_in_source
 0x00613cb1|CView|unowned|??0CView@@IAE@XZ|CView::CView|viewcore.obj|unique|1|invented_name_referenced_in_source

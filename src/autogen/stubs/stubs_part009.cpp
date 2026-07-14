@@ -707,74 +707,10 @@ undefined4 WrapperFor_thunk_ConstructPictureResourceEntryBase_At0045d480(void)
   return 0;
 }
 
-// ghidra_name TTechStorePage::GetCityDialogValueDwordC
-// ghidra_proto undefined OrphanVtableAssignStub_00479460(void)
-// FUNCTION: IMPERIALISM 0x00479460
-undefined4 OrphanVtableAssignStub_00479460(void)
-{
-  return 0;
-}
-
-// ghidra_name TTechStorePage::GetCityDialogZeroValue
-// ghidra_proto undefined SerializeTMinisterBaseOrderArrayHeader(void)
-// FUNCTION: IMPERIALISM 0x004796a0
-undefined4 SerializeTMinisterBaseOrderArrayHeader(void)
-{
-  return 0;
-}
-
-// ghidra_name TTechStorePage::VTableSlot9D
-// ghidra_proto undefined SerializeTMinisterBaseOrderArrayHeader(undefined4 param_1)
-// FUNCTION: IMPERIALISM 0x004796c0
-undefined4 SerializeTMinisterBaseOrderArrayHeader_004796C0(void)
-{
-  return 0;
-}
-
-// ghidra_name TTechStorePage::VTableSlot85
-// ghidra_proto undefined WrapperFor_FreeHeapBufferIfNotNull_At004796e0(byte param_1)
-// FUNCTION: IMPERIALISM 0x004796e0
-undefined4 WrapperFor_FreeHeapBufferIfNotNull_At004796e0(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_OnNewDocument_At004797a0
-// ghidra_proto undefined WrapperFor_OnNewDocument_At004797a0()
-// FUNCTION: IMPERIALISM 0x004797a0
-undefined4 WrapperFor_OnNewDocument_At004797a0(void)
-{
-  return 0;
-}
-
-// ghidra_name TTechStorePage::Serialize
-// ghidra_proto undefined InsertTempObjectNodeAndMarkWindowDirtyWithMfcTempMapLock()
-// FUNCTION: IMPERIALISM 0x004797d0
-undefined4 InsertTempObjectNodeAndMarkWindowDirtyWithMfcTempMapLock(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_FreeHeapBufferIfNotNull_At004798f0_Impl
 // ghidra_proto undefined WrapperFor_FreeHeapBufferIfNotNull_At004798f0_Impl()
 // FUNCTION: IMPERIALISM 0x00479920
 undefined4 WrapperFor_FreeHeapBufferIfNotNull_At004798f0_Impl(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_RunArchiveOperationWithTempMapLock_Mode0x20_At00479960
-// ghidra_proto undefined WrapperFor_RunArchiveOperationWithTempMapLock_Mode0x20_At00479960()
-// FUNCTION: IMPERIALISM 0x00479960
-undefined4 WrapperFor_RunArchiveOperationWithTempMapLock_Mode0x20_At00479960(void)
-{
-  return 0;
-}
-
-// ghidra_name CreateParentDirectoryAndRunArchiveOperation_Mode1012
-// ghidra_proto undefined CreateParentDirectoryAndRunArchiveOperation_Mode1012()
-// FUNCTION: IMPERIALISM 0x00479990
-undefined4 CreateParentDirectoryAndRunArchiveOperation_Mode1012(void)
 {
   return 0;
 }

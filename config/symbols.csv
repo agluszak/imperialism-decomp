@@ -267,20 +267,20 @@ address|name|symbol|size|type|prototype|provenance
 4749a0|BuildUniversityDialogShell||15151|function|int * __fastcall BuildUniversityDialogShell(dword dwPanelId, short nDialogTypeTag)|
 4793c0|CAmbitDocument::CreateObject|?CreateObject@CAmbitDocument@@SGPAVCObject@@XZ|87|function|undefined CreateObject()|rtti
 479440|CAmbitDocument::GetRuntimeClass|?GetRuntimeClass@CAmbitDocument@@UBEPAUCRuntimeClass@@XZ|6|function|undefined __thiscall GetRuntimeClass(void)|rtti
-479460|TTechStorePage::GetCityDialogValueDwordC||6|function|undefined OrphanVtableAssignStub_00479460(void)|
+479460|CAmbitDocument::GetMessageMap|?GetMessageMap@CAmbitDocument@@MBEPBUAFX_MSGMAP@@XZ|6|function|protected: virtual struct AFX_MSGMAP const * __thiscall CAmbitDocument::GetMessageMap(void)const|
 479480|InitializeTurnEventDialogFactoryRegistry||422|function|int * __fastcall InitializeTurnEventDialogFactoryRegistry(int * pFactoryBootstrap)|
-4796a0|TTechStorePage::GetCityDialogZeroValue||4|function|undefined SerializeTMinisterBaseOrderArrayHeader(void)|
-4796c0|TTechStorePage::VTableSlot9D||10|function|undefined SerializeTMinisterBaseOrderArrayHeader(undefined4 param_1)|
-4796e0|TTechStorePage::VTableSlot85||30|function|undefined WrapperFor_FreeHeapBufferIfNotNull_At004796e0(byte param_1)|
+4796a0|CAmbitDocument::IsModified|?IsModified@CAmbitDocument@@UAEHXZ|4|function|public: virtual int __thiscall CAmbitDocument::IsModified(void)|
+4796c0|CAmbitDocument::SetModifiedFlag|?SetModifiedFlag@CAmbitDocument@@UAEXH@Z|10|function|public: virtual void __thiscall CAmbitDocument::SetModifiedFlag(int)|
+4796e0|CAmbitDocument::`scalar deleting destructor'|??_GCAmbitDocument@@UAEPAXI@Z|30|function|undefined ScalarDeletingDestructor()|
 479710|DestroyTurnEventDialogFactoryRegistryAndReleaseGlobalFactory||109|function|undefined DestroyTurnEventDialogFactoryRegistryAndReleaseGlobalFactory()|
-4797a0|WrapperFor_OnNewDocument_At004797a0||19|function|undefined WrapperFor_OnNewDocument_At004797a0()|
-4797d0|TTechStorePage::Serialize||165|function|undefined InsertTempObjectNodeAndMarkWindowDirtyWithMfcTempMapLock()|
+4797a0|CAmbitDocument::OnNewDocument|?OnNewDocument@CAmbitDocument@@UAEHXZ|19|function|public: virtual int __thiscall CAmbitDocument::OnNewDocument(void)|
+4797d0|CAmbitDocument::Serialize|?Serialize@CAmbitDocument@@UAEXAAVCArchive@@@Z|165|function|public: virtual void __thiscall CAmbitDocument::Serialize(class CArchive &)|
 4798b0|TObject::Free||12|function|void __thiscall Free()|
 4798d0|TObject::ShallowClone||5|function|undefined __thiscall ShallowClone()|
 4798f0|ArchiveStreamAdapter::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 479920|WrapperFor_FreeHeapBufferIfNotNull_At004798f0_Impl||7|function|undefined WrapperFor_FreeHeapBufferIfNotNull_At004798f0_Impl()|
-479960|WrapperFor_RunArchiveOperationWithTempMapLock_Mode0x20_At00479960||26|function|undefined WrapperFor_RunArchiveOperationWithTempMapLock_Mode0x20_At00479960()|
-479990|CreateParentDirectoryAndRunArchiveOperation_Mode1012||188|function|undefined CreateParentDirectoryAndRunArchiveOperation_Mode1012()|
+479960|CAmbitDocument::OnOpenDocument|?OnOpenDocument@CAmbitDocument@@UAEHPBD@Z|26|function|public: virtual int __thiscall CAmbitDocument::OnOpenDocument(char const *)|
+479990|CAmbitDocument::OnSaveDocument|?OnSaveDocument@CAmbitDocument@@UAEHPBD@Z|188|function|public: virtual int __thiscall CAmbitDocument::OnSaveDocument(char const *)|
 479a80|PopUiResourcePoolNode_00479A80||89|function|undefined PopUiResourcePoolNode_00479A80()|
 479b00|PushUiResourcePoolNode||125|function|undefined PushUiResourcePoolNode()|
 479ba0|InitializeJoinSelectorDialogControlsAndNationSlots_Impl||4|function|undefined InitializeJoinSelectorDialogControlsAndNationSlots_Impl()|
@@ -7305,9 +7305,10 @@ address|name|symbol|size|type|prototype|provenance
 61096b|CDocument||100|function|undefined CDocument()|
 6109cf|DestructCDocumentBaseStateAndMaybeFree||28|function|undefined DestructCDocumentBaseStateAndMaybeFree()|
 6109eb|CDocument::DestructCDocumentBaseState|??1CDocument@@UAE@XZ|108|function|public: virtual __thiscall CDocument::~CDocument(void)|msvc500_library_oracle
-610a57|TTechStorePage::ReadFrom||8|function|undefined DispatchViaVtableSlot84FromSlot06()|
+610a57|CDocument::OnFinalRelease|?OnFinalRelease@CDocument@@UAEXXZ|8|function|public: virtual void __thiscall CDocument::OnFinalRelease(void)|msvc500_library_override
 610a5f|CDocument::DisconnectViews|?DisconnectViews@CDocument@@QAEXXZ|33|function|public: void __thiscall CDocument::DisconnectViews(void)|msvc500_library_oracle
-610a80|OrphanLeaf_NoCall_Ins04_005adc30||29|function|undefined OrphanLeaf_NoCall_Ins04_005adc30(char * param_1)|
+610a80|CDocument::SetTitle|?SetTitle@CDocument@@UAEXPBD@Z|29|function|public: virtual void __thiscall CDocument::SetTitle(char const *)|msvc500_library_override
+610a9d|CDocument::DeleteContents|?DeleteContents@CDocument@@UAEXXZ||function|public: virtual void __thiscall CDocument::DeleteContents(void)|msvc500_library_override
 610a9e|CDocument::OnChangedViewList|?OnChangedViewList@CDocument@@UAEXXZ|28|function|public: virtual void __thiscall CDocument::OnChangedViewList(void)|msvc500_library_oracle
 610aba|CDocument::UpdateFrameCounts|?UpdateFrameCounts@CDocument@@UAEXXZ|259|function|public: virtual void __thiscall CDocument::UpdateFrameCounts(void)|msvc500_library_oracle
 610bbd|CDocument::CanCloseFrame|?CanCloseFrame@CDocument@@UAEHPAVCFrameWnd@@@Z|75|function|public: virtual int __thiscall CDocument::CanCloseFrame(class CFrameWnd *)|msvc500_library_oracle
@@ -7327,13 +7328,15 @@ address|name|symbol|size|type|prototype|provenance
 6113aa|CCtrlView::`scalar deleting dtor'|??_GCCtrlView@@UAEPAXI@Z|28|function|undefined WrapperFor_FreeHeapBufferIfNotNull_At006113aa()|
 6113c6|CMirrorFile::~CMirrorFile|??1CMirrorFile@@UAE@XZ|49|function|public: virtual __thiscall CMirrorFile::~CMirrorFile(void)|msvc500_library_oracle
 6113f7|CDocument::ReleaseFile|?ReleaseFile@CDocument@@UAEXPAVCFile@@H@Z|41|function|public: virtual void __thiscall CDocument::ReleaseFile(class CFile *, int)|msvc500_library_oracle
-611420|OrphanLeaf_NoCall_Ins04_005adc30||35|function|undefined __thiscall OrphanLeaf_NoCall_Ins04_005adc30(void)|
+611420|CDocument::OnNewDocument|?OnNewDocument@CDocument@@UAEHXZ|35|function|public: virtual int __thiscall CDocument::OnNewDocument(void)|msvc500_library_override
 611443|CDocument::OnOpenDocument|?OnOpenDocument@CDocument@@UAEHPBD@Z|347|function|undefined OnOpenDocument()|
 61160e|CDocument::OnSaveDocument|?OnSaveDocument@CDocument@@UAEHPBD@Z|316|function|undefined OnSaveDocument()|
 6117b5|CDocument::OnCloseDocument|?OnCloseDocument@CDocument@@UAEXXZ|90|function|public: virtual void __thiscall CDocument::OnCloseDocument(void)|msvc500_library_oracle
 61180f|NoOpVirtualStub_0061180f||1|function|undefined NoOpVirtualStub_0061180f()|
 611810|CDocument::AddView|?AddView@CDocument@@QAEXPAVCView@@@Z|32|function|public: void __thiscall CDocument::AddView(class CView *)|msvc500_library_oracle
 611830|CDocument::RemoveView|?RemoveView@CDocument@@QAEXPAVCView@@@Z|47|function|public: void __thiscall CDocument::RemoveView(class CView *)|msvc500_library_oracle
+61185f|CDocument::GetFirstViewPosition|?GetFirstViewPosition@CDocument@@UBEPAU__POSITION@@XZ||function|public: virtual struct __POSITION * __thiscall CDocument::GetFirstViewPosition(void)const|msvc500_library_override
+611863|CDocument::GetNextView|?GetNextView@CDocument@@UBEPAVCView@@AAPAU__POSITION@@@Z||function|public: virtual class CView * __thiscall CDocument::GetNextView(struct __POSITION * &)const|msvc500_library_override
 611877|CDocument::UpdateAllViews|?UpdateAllViews@CDocument@@QAEXPAVCView@@JPAVCObject@@@Z|67|function|public: void __thiscall CDocument::UpdateAllViews(class CView *, long, class CObject *)|msvc500_library_oracle
 6118ba|CDocument::SendInitialUpdate|?SendInitialUpdate@CDocument@@QAEXXZ|51|function|public: void __thiscall CDocument::SendInitialUpdate(void)|msvc500_library_oracle
 6118ed|CDocument::OnCmdMsg|?OnCmdMsg@CDocument@@UAEHIHPAXPAUAFX_CMDHANDLERINFO@@@Z|67|function|public: virtual int __thiscall CDocument::OnCmdMsg(unsigned int, int, void *, struct AFX_CMDHANDLERINFO *)|msvc500_library_oracle

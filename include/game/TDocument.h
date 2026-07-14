@@ -3,6 +3,8 @@
 #include "game/TObject.h"
 #include "game/mfc.h"
 
+class ArchiveStreamAdapter;
+
 // VTABLE: IMPERIALISM 0x00648a60
 class TDocument : public TObject {
 public:
@@ -17,8 +19,8 @@ public:
   // slot 0x07 Free inherited unchanged (0x4798b0)
   // slot 0x08 ShallowClone inherited unchanged (0x4798d0)
   // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
-  virtual undefined OrphanRetStub_00486530(); // slot 0x0a 0x486530
-  virtual undefined OrphanRetStub_00486550(); // slot 0x0b 0x486550
+  virtual undefined OrphanRetStub_00486530(ArchiveStreamAdapter* stream); // slot 0x0a 0x486530
+  virtual undefined OrphanRetStub_00486550(ArchiveStreamAdapter* stream); // slot 0x0b 0x486550
 // === END GENERATED DECLS (TDocument) ===
 
   TDocument();

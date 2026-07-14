@@ -13,6 +13,12 @@ IMPLEMENT_DYNCREATE(TDocument, TObject)
 
 TDocument::TDocument() {}
 
-undefined TDocument::OrphanRetStub_00486530() { return 0; }
+undefined TDocument::OrphanRetStub_00486530(ArchiveStreamAdapter* stream) {
+  (void)stream;
+  return 0;
+}
 
-undefined TDocument::OrphanRetStub_00486550() { return 0; }
+undefined TDocument::OrphanRetStub_00486550(ArchiveStreamAdapter* stream) {
+  (void)stream;
+  return 0;
+}

@@ -1,3 +1,4 @@
 address|oracle_symbol|owner|note
 0x00489410|??0exception@@QAE@XZ|manual:src/game/TCountingStream.cpp|FALSE POSITIVE: real TCountingStream ctor; masks identical to exception ctor (vtable-store vs zero-imm blind spot).
 0x00534c80|?EnableAggregation@CCmdTarget@@QAEXXZ|manual:src/game/TMission.cpp|FALSE POSITIVE: real TMission field-reset; byte-identical to trivial CCmdTarget::EnableAggregation.
+0x004796c0|?SetModifiedFlag@CDocument@@UAEXH@Z|manual:src/game/CAmbitDocument.cpp|FALSE POSITIVE: real CAmbitDocument::SetModifiedFlag override (vtable slot 0x64); byte-identical to trivial CDocument::SetModifiedFlag base.

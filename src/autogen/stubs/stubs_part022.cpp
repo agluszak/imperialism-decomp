@@ -259,22 +259,6 @@ undefined4 CDocument(void)
   return 0;
 }
 
-// ghidra_name TTechStorePage::ReadFrom
-// ghidra_proto undefined DispatchViaVtableSlot84FromSlot06()
-// FUNCTION: IMPERIALISM 0x00610a57
-undefined4 DispatchViaVtableSlot84FromSlot06(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanLeaf_NoCall_Ins04_005adc30
-// ghidra_proto undefined OrphanLeaf_NoCall_Ins04_005adc30(char * param_1)
-// FUNCTION: IMPERIALISM 0x00610a80
-undefined4 OrphanLeaf_NoCall_Ins04_005adc30_00610A80(void)
-{
-  return 0;
-}
-
 // ghidra_name NoOpVirtualStub_00610c08
 // ghidra_proto undefined NoOpVirtualStub_00610c08()
 // FUNCTION: IMPERIALISM 0x00610c08
@@ -303,14 +287,6 @@ undefined4 ReturnZeroStub_00610f87(void)
 // ghidra_proto undefined GetFile()
 // FUNCTION: IMPERIALISM 0x00611334
 undefined4 GetFile(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanLeaf_NoCall_Ins04_005adc30
-// ghidra_proto undefined __thiscall OrphanLeaf_NoCall_Ins04_005adc30(void)
-// FUNCTION: IMPERIALISM 0x00611420
-undefined4 OrphanLeaf_NoCall_Ins04_005adc30_00611420(void)
 {
   return 0;
 }
@@ -502,7 +478,7 @@ undefined4 CreateNewDocument(void)
 // ghidra_name SerializeTMinisterBaseOrderArrayHeader
 // ghidra_proto undefined __thiscall SerializeTMinisterBaseOrderArrayHeader(void)
 // FUNCTION: IMPERIALISM 0x00614b12
-undefined4 SerializeTMinisterBaseOrderArrayHeader_00614B12(void)
+undefined4 SerializeTMinisterBaseOrderArrayHeader(void)
 {
   return 0;
 }

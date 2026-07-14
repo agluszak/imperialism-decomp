@@ -1349,43 +1349,49 @@
     {
       "address": "0x479460",
       "matching": 0.5,
-      "name": "TTechStorePage::GetCityDialogValueDwordC",
+      "name": "CAmbitDocument::GetMessageMap",
       "type": 1
     },
     {
       "address": "0x479480",
-      "matching": 0.5774647887323944,
+      "matching": 0.5915492957746479,
       "name": "InitializeTurnEventDialogFactoryRegistry",
       "type": 1
     },
     {
       "address": "0x4796a0",
-      "matching": 0.5,
-      "name": "TTechStorePage::GetCityDialogZeroValue",
+      "matching": 1.0,
+      "name": "CAmbitDocument::IsModified",
       "type": 1
     },
     {
       "address": "0x4796c0",
-      "matching": 0.0,
-      "name": "TTechStorePage::VTableSlot9D",
+      "matching": 1.0,
+      "name": "CAmbitDocument::SetModifiedFlag",
       "type": 1
     },
     {
       "address": "0x4796e0",
-      "matching": 0.0,
-      "name": "TTechStorePage::VTableSlot85",
+      "matching": 1.0,
+      "name": "CAmbitDocument::`scalar deleting destructor'",
       "type": 1
     },
     {
       "address": "0x479710",
-      "matching": 0.9655172413793104,
+      "matching": 1.0,
       "name": "DestroyTurnEventDialogFactoryRegistryAndReleaseGlobalFactory",
       "type": 1
     },
     {
+      "address": "0x4797a0",
+      "matching": 1.0,
+      "name": "CAmbitDocument::OnNewDocument",
+      "type": 1
+    },
+    {
       "address": "0x4797d0",
-      "matching": 0.0,
-      "name": "TTechStorePage::Serialize",
+      "matching": 0.819047619047619,
+      "name": "CAmbitDocument::Serialize",
       "type": 1
     },
     {
@@ -1407,9 +1413,16 @@
       "type": 1
     },
     {
+      "address": "0x479960",
+      "matching": 1.0,
+      "name": "CAmbitDocument::OnOpenDocument",
+      "type": 1
+    },
+    {
       "address": "0x479990",
-      "matching": 0.0,
-      "name": "CreateParentDirectoryAndRunArchiveOperation_Mode1012",
+      "effective": true,
+      "matching": 0.9833333333333333,
+      "name": "CAmbitDocument::OnSaveDocument",
       "type": 1
     },
     {
@@ -39030,14 +39043,20 @@
     },
     {
       "address": "0x610a57",
-      "matching": 0.0,
-      "name": "TTechStorePage::ReadFrom",
+      "matching": 1.0,
+      "name": "CDocument::OnFinalRelease",
       "type": 1
     },
     {
       "address": "0x610a80",
-      "matching": 0.0,
-      "name": "OrphanLeaf_NoCall_Ins04_005adc30(void)",
+      "matching": 1.0,
+      "name": "CDocument::SetTitle",
+      "type": 1
+    },
+    {
+      "address": "0x610a9d",
+      "matching": 1.0,
+      "name": "CDocument::DeleteContents",
       "type": 1
     },
     {
@@ -39144,8 +39163,8 @@
     },
     {
       "address": "0x611420",
-      "matching": 0.10526315789473684,
-      "name": "OrphanLeaf_NoCall_Ins04_005adc30(void)",
+      "matching": 1.0,
+      "name": "CDocument::OnNewDocument",
       "type": 1
     },
     {
@@ -39164,6 +39183,18 @@
       "address": "0x611830",
       "matching": 1.0,
       "name": "CDocument::RemoveView",
+      "type": 1
+    },
+    {
+      "address": "0x61185f",
+      "matching": 1.0,
+      "name": "CDocument::GetFirstViewPosition",
+      "type": 1
+    },
+    {
+      "address": "0x611863",
+      "matching": 1.0,
+      "name": "CDocument::GetNextView",
       "type": 1
     },
     {
@@ -42032,6 +42063,12 @@
       "address": "0x645ca8",
       "matching": 1.0,
       "name": "TTechStorePage::`vftable'",
+      "type": 5
+    },
+    {
+      "address": "0x645eb8",
+      "matching": 1.0,
+      "name": "CAmbitDocument::`vftable'",
       "type": 5
     },
     {
