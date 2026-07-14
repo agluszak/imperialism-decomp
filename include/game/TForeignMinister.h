@@ -30,16 +30,18 @@ public:
   virtual void MinisterSlot17();
   virtual void MinisterSlot18();
   virtual void MinisterSlot19();
-  virtual void MinisterSlot1A(short arg = 0);
+  // slot 0x1a (0x0052fdc0) — set per-nation interaction enable flags from a terrain
+  // class-200 scan and relation-standing threshold. void (ret 0); Call90 pushes an
+  // ignored short at its call site.
+  virtual void UpdateNationInteractionEnableFlagsByTerrainAndRelation();
   virtual void MinisterSlot1B();
   // slot 0x1c (body 0x005308b0) — difficulty-indexed army/navy score-threshold predicate.
   virtual char EvaluateLocalizedScoreThresholdPredicateForNationValue(int nationCode);
   // slot 0x1d (body 0x00530b30) — mark the first eligible nation as an action
   // candidate, but only while no candidate is active yet.
   virtual void DispatchAction210ToFirstEligibleNationIfIdle();
-  // slot 0x1e (0x0052fdc0) — set per-nation interaction enable flags from a terrain
-  // class-200 scan and relation-standing threshold.
-  virtual void UpdateNationInteractionEnableFlagsByTerrainAndRelation();
+  // slot 0x1e (0x00530200) — 1359-byte SEH turn-event-hint queuer; unported stub.
+  virtual void QueueTurnEventHintActionsByNationMetricsAndCompatibility();
   // slot 0x1f (0x00530fa0) — validate a queued proposal row and dispatch accept/queue.
   virtual void ValidateProposalSelectionAndQueueEvent1C(short queueIndex);
   virtual void Call80();

@@ -194,7 +194,7 @@ void TForeignMinister::Call90() {
     }
   }
   if (skipMissionSlot1A == 0) {
-    owner->foreignMinister->MinisterSlot1A(*reinterpret_cast<short*>(raw + 0x1c));
+    owner->foreignMinister->UpdateNationInteractionEnableFlagsByTerrainAndRelation();
     *reinterpret_cast<unsigned short*>(raw + 0x18) = 0;
   }
   this->MinisterSlot21();
@@ -322,8 +322,8 @@ void TForeignMinister::RefreshForeignMinisterStateByLocalizationMode() {
     this->MinisterSlot19();
   }
   this->MinisterSlot1B();
+  this->QueueTurnEventHintActionsByNationMetricsAndCompatibility();
   this->UpdateNationInteractionEnableFlagsByTerrainAndRelation();
-  this->MinisterSlot1A();
   this->MinisterSlot17();
 }
 
@@ -334,20 +334,12 @@ void TForeignMinister::MinisterSlot18() {}
 void TForeignMinister::MinisterSlot19() {}
 
 // FUNCTION: IMPERIALISM 0x0052fdc0
-void TForeignMinister::MinisterSlot1A(short arg) {
-  (void)arg;
-}
-
-// FUNCTION: IMPERIALISM 0x0052fe90
-void TForeignMinister::MinisterSlot17() {}
-
-// FUNCTION: IMPERIALISM 0x00530200
 void TForeignMinister::UpdateNationInteractionEnableFlagsByTerrainAndRelation() {
   TGreatPower* owner = reinterpret_cast<TGreatPower*>(this->ownerContextAt04);
   bool matched = false;
   short terrainSlot = 7;
   do {
-    if (0x16 < terrainSlot) {
+    if (terrainSlot >= 0x17) {
       break;
     }
     if (g_apTerrainTypeDescriptorTable[terrainSlot]->IsEncodedNationSlotMinus200Equal(
@@ -373,6 +365,13 @@ void TForeignMinister::UpdateNationInteractionEnableFlagsByTerrainAndRelation() 
     ++nation;
   } while (static_cast<short>(nation) < 7);
 }
+
+// FUNCTION: IMPERIALISM 0x0052fe90
+void TForeignMinister::MinisterSlot17() {}
+
+// TODO: port the 1359-byte SEH turn-event-hint queuer body (unported stub for now).
+// FUNCTION: IMPERIALISM 0x00530200
+void TForeignMinister::QueueTurnEventHintActionsByNationMetricsAndCompatibility() {}
 
 // FUNCTION: IMPERIALISM 0x005308b0
 char TForeignMinister::EvaluateLocalizedScoreThresholdPredicateForNationValue(int nationCode) {
