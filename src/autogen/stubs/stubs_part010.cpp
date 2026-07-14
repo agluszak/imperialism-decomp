@@ -243,10 +243,10 @@ undefined4 OrphanVtableAssignStub_0047dfb0(void)
   return 0;
 }
 
-// ghidra_name WrapperFor_FreeHeapBufferIfNotNull_At0047e090
-// ghidra_proto undefined WrapperFor_FreeHeapBufferIfNotNull_At0047e090()
+// ghidra_name TAutoResolutionDialog::`scalar deleting destructor'
+// ghidra_proto undefined ScalarDeletingDestructor()
 // FUNCTION: IMPERIALISM 0x0047e090
-undefined4 WrapperFor_FreeHeapBufferIfNotNull_At0047e090(void)
+undefined4 ScalarDeletingDestructor_0047E090(void)
 {
   return 0;
 }

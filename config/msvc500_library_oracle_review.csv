@@ -23,7 +23,6 @@ address|current_name|current_ownership|oracle_symbol|oracle_name|member|match_ki
 0x006060bc|AfxGetThread|unowned|?AfxGetThread@@YGPAVCWinThread@@XZ|AfxGetThread|thrdcore.obj|unique|1|invented_name_referenced_in_source
 0x00606451|OrphanLeaf_NoCall_Ins04_005adc30|unowned|?IsIdleMessage@CWinThread@@UAEHPAUtagMSG@@@Z|CWinThread::IsIdleMessage|thrdcore.obj|unique|1|invented_name_referenced_in_source
 0x0060698f|CCmdTarget|unowned|??0CCmdTarget@@QAE@XZ|CCmdTarget::CCmdTarget|cmdtarg.obj|unique|1|invented_name_referenced_in_source
-0x00606c5f|TTechStorePage::SetCityDialogFlagByte4|unowned|?GetTypeLib@CCmdTarget@@UAEJKPAPAUITypeLib@@@Z|CCmdTarget::GetTypeLib|cmdtarg.obj|unique|1|below_min_convert_size
 0x00606d27|CCmdUI|unowned|??0CCmdUI@@QAE@XZ|CCmdUI::CCmdUI|cmdtarg.obj|unique|1|invented_name_referenced_in_source
 0x0060734c|ModifyStyle|unowned|?ModifyStyle@CWnd@@QAEHKKI@Z|CWnd::ModifyStyle|winocc.obj|unique|1|invented_name_referenced_in_source
 0x00607380|ModifyStyleEx|unowned|?ModifyStyleEx@CWnd@@QAEHKKI@Z|CWnd::ModifyStyleEx|winocc.obj|unique|1|invented_name_referenced_in_source
@@ -32,16 +31,11 @@ address|current_name|current_ownership|oracle_symbol|oracle_name|member|match_ki
 0x00607a4f|GetCurrentMessage|unowned|?GetCurrentMessage@CWnd@@KGPBUtagMSG@@XZ|CWnd::GetCurrentMessage|wincore.obj|unique|1|invented_name_referenced_in_source
 0x00607b2f|FromHandle|unowned|?FromHandle@CWnd@@SGPAV1@PAUHWND__@@@Z|CWnd::FromHandle|wincore.obj|unique|1|invented_name_referenced_in_source
 0x006080ce|CreateEx|unowned|?CreateEx@CWnd@@QAEHKPBD0KABUtagRECT@@PAV1@IPAX@Z|CWnd::CreateEx|wincore.obj|unique|1|invented_name_referenced_in_source
-0x006081d9|PreCreateWindow|unowned|?PreCreateWindow@CWnd@@UAEHAAUtagCREATESTRUCTA@@@Z|CWnd::PreCreateWindow|wincore.obj|unique|1|invented_name_referenced_in_source
-0x0060852e|AssignSharedStringFromField84|unowned|?OnToolHitTest@CWnd@@UBEHVCPoint@@PAUtagTOOLINFOA@@@Z|CWnd::OnToolHitTest|wincore.obj|unique|1|invented_name_referenced_in_source
 0x00608685|OrphanCallChain_C2_I12_0048dc90|unowned|?OnDrawItem@CWnd@@IAEXHPAUtagDRAWITEMSTRUCT@@@Z|CWnd::OnDrawItem|wincore.obj|unique|1|invented_name_referenced_in_source
 0x006087b6|OrphanCallChain_C2_I39_0048d900|unowned|?OnMeasureItem@CWnd@@IAEXHPAUtagMEASUREITEMSTRUCT@@@Z|CWnd::OnMeasureItem|wincore.obj|unique|1|invented_name_referenced_in_source
 0x0060893b|AfxRegisterWndClass|unowned|?AfxRegisterWndClass@@YGPBDIPAUHICON__@@PAUHBRUSH__@@0@Z|AfxRegisterWndClass|wincore.obj|unique|1|invented_name_referenced_in_source
 0x006089ef|OrphanLeaf_NoCall_Ins07_004d8920|unowned|?OnNTCtlColor@CWnd@@IAEJIJ@Z|CWnd::OnNTCtlColor|wincore.obj|unique|1|invented_name_referenced_in_source
-0x00608a2b|SetEditSelectionAndScrollCaret|unowned|?WinHelpA@CWnd@@UAEXKI@Z|CWnd::WinHelpA|wincore.obj|unique|1|invented_name_referenced_in_source
-0x006091d9|UpdateControlCachedIntFromWindowText|unowned|?OnNotify@CWnd@@MAEHIJPAJ@Z|CWnd::OnNotify|wincore.obj|unique|1|invented_name_referenced_in_source
 0x0060a267|CDataExchange|unowned|??0CDataExchange@@QAE@PAVCWnd@@H@Z|CDataExchange::CDataExchange|wincore.obj|unique|1|invented_name_referenced_in_source
-0x0060a770|InitDialogWindowAndSyncTitleIfChanged|unowned|?EndModalLoop@CWnd@@UAEXH@Z|CWnd::EndModalLoop|wincore.obj|unique|1|invented_name_referenced_in_source
 0x0060aab8|Delete|unowned|?Delete@CException@@QAEXXZ|CException::Delete|except.obj|unique|1|invented_name_referenced_in_source
 0x0060ce85|LoadStringA|unowned|?LoadStringA@CString@@QAEHI@Z|CString::LoadStringA|winstr.obj|unique|1|invented_name_referenced_in_source
 0x0060d16d|IncrementAfxModuleThreadStateTempMapLockDepth|unowned|?AfxLockTempMaps@@YGXXZ|AfxLockTempMaps|winhand.obj|unique|1|below_min_convert_size

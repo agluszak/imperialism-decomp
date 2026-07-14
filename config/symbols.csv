@@ -54,7 +54,7 @@ address|name|symbol|size|type|prototype|provenance
 413a20|WrapperFor_RefreshBackdropOnInputMessages_At00413a20||30|function|undefined WrapperFor_RefreshBackdropOnInputMessages_At00413a20()|
 413a50|ShowSelectedDibInTemplateDDDialog||226|function|undefined ShowSelectedDibInTemplateDDDialog()|
 413b80|WrapperFor_CDialog_At00413b80||86|function|undefined WrapperFor_CDialog_At00413b80()|
-413c00|WrapperFor_FreeHeapBufferIfNotNull_At00413c00||30|function|undefined WrapperFor_FreeHeapBufferIfNotNull_At00413c00()|
+413c00|TModalDialogBase::`scalar deleting destructor'|??_GTModalDialogBase@@UAEPAXI@Z|30|function|undefined ScalarDeletingDestructor()|
 413c30|WrapperFor_FreeHeapBufferIfNotNull_At00413cd0_Impl||117|function|undefined WrapperFor_FreeHeapBufferIfNotNull_At00413cd0_Impl()|
 413cd0|WrapperFor_FreeHeapBufferIfNotNull_At00413cd0||30|function|undefined WrapperFor_FreeHeapBufferIfNotNull_At00413cd0()|
 413d20|ShowNationSelectDialogAndRedispatchCurrentTurnEvent||328|function|undefined ShowNationSelectDialogAndRedispatchCurrentTurnEvent()|
@@ -73,9 +73,9 @@ address|name|symbol|size|type|prototype|provenance
 414870|DetectImperialismInstallDriveAndSetPathPrefix||233|function|undefined DetectImperialismInstallDriveAndSetPathPrefix()|
 4149a0|LoadLanguageResourcesFromIrgFiles||1285|function|undefined LoadLanguageResourcesFromIrgFiles()|
 415000|WrapperFor_GetOrCreateCrtThreadDataFromTls_At00415000||27|function|undefined WrapperFor_GetOrCreateCrtThreadDataFromTls_At00415000()|
-415030|ExecuteNoOpNewGameCommand||3|function|undefined ExecuteNoOpNewGameCommand()|
-415050|OrphanCallChain_C1_I05_00415050||13|function|undefined OrphanCallChain_C1_I05_00415050()|
-415070|OrphanCallChain_C1_I05_00415070||13|function|undefined OrphanCallChain_C1_I05_00415070()|
+415030|CWnd::DoDataExchange|?DoDataExchange@CWnd@@MAEXPAVCDataExchange@@@Z|3|function|protected: virtual void __thiscall CWnd::DoDataExchange(class CDataExchange *)|msvc500_library_override
+415050|CWnd::BeginModalState|?BeginModalState@CWnd@@UAEXXZ|13|function|public: virtual void __thiscall CWnd::BeginModalState(void)|msvc500_library_override
+415070|CWnd::EndModalState|?EndModalState@CWnd@@UAEXXZ|13|function|public: virtual void __thiscall CWnd::EndModalState(void)|msvc500_library_override
 415090|ShowAutoResolutionDialogIfNeeded||455|function|undefined ShowAutoResolutionDialogIfNeeded()|
 4152e0|DestroyDialogWithListBoxAndHotKeyControl||120|function|undefined DestroyDialogWithListBoxAndHotKeyControl()|
 415380|WrapperFor_UpdateCursorHelperWindowVisibilityFromControllerState_At00415380||11|function|undefined WrapperFor_UpdateCursorHelperWindowVisibilityFromControllerState_At00415380()|
@@ -340,12 +340,12 @@ address|name|symbol|size|type|prototype|provenance
 47cdf0|ForwardMciStatusCommand814IgnoreFailure||9|function|undefined ForwardMciStatusCommand814IgnoreFailure()|
 47cfa0|WrapperFor_ftol_At0047cfa0||30|function|undefined WrapperFor_ftol_At0047cfa0()|
 47cfd0|InitializeDialogTemplateC2WithTextState||133|function|undefined InitializeDialogTemplateC2WithTextState()|
-47d090|WrapperFor_FreeHeapBufferIfNotNull_At0047d090||30|function|undefined WrapperFor_FreeHeapBufferIfNotNull_At0047d090()|
+47d090|TC2TemplateDialog::`scalar deleting destructor'|??_GTC2TemplateDialog@@UAEPAXI@Z|30|function|undefined ScalarDeletingDestructor()|
 47d0c0|DestroyDialogWithListBoxAndHotKeyControl_Alias||120|function|undefined DestroyDialogWithListBoxAndHotKeyControl_Alias()|
 47d160|WrapperFor_EnsureWindowSubclassAndParentConsistency_At0047d160||46|function|undefined WrapperFor_EnsureWindowSubclassAndParentConsistency_At0047d160()|
 47d1a0|OrphanVtableAssignStub_0047d1a0||6|function|undefined OrphanVtableAssignStub_0047d1a0()|
 47d1c0|InitializeDialogTemplateD2WithTextState||109|function|undefined InitializeDialogTemplateD2WithTextState()|
-47d250|WrapperFor_FreeHeapBufferIfNotNull_At0047d250||30|function|undefined WrapperFor_FreeHeapBufferIfNotNull_At0047d250()|
+47d250|TD2TemplateDialog::`scalar deleting destructor'|??_GTD2TemplateDialog@@UAEPAXI@Z|30|function|undefined ScalarDeletingDestructor()|
 47d280|WrapperFor_FreeHeapBufferIfNotNull_At0047d250_Impl||104|function|undefined WrapperFor_FreeHeapBufferIfNotNull_At0047d250_Impl()|
 47d310|WrapperFor_EnsureWindowSubclassAndParentConsistency_At0047d310||22|function|undefined WrapperFor_EnsureWindowSubclassAndParentConsistency_At0047d310()|
 47d340|OrphanVtableAssignStub_0047d340||6|function|undefined OrphanVtableAssignStub_0047d340()|
@@ -379,7 +379,7 @@ address|name|symbol|size|type|prototype|provenance
 47df90|OrphanRetStub_0047df90||3|function|undefined OrphanRetStub_0047df90()|
 47dfb0|OrphanVtableAssignStub_0047dfb0||6|function|undefined OrphanVtableAssignStub_0047dfb0()|
 47dfd0|InitializeDialogTemplateFBWithDualTextState||141|function|undefined InitializeDialogTemplateFBWithDualTextState()|
-47e090|WrapperFor_FreeHeapBufferIfNotNull_At0047e090||30|function|undefined WrapperFor_FreeHeapBufferIfNotNull_At0047e090()|
+47e090|TAutoResolutionDialog::`scalar deleting destructor'|??_GTAutoResolutionDialog@@UAEPAXI@Z|30|function|undefined ScalarDeletingDestructor()|
 47e0c0|WrapperFor_GetOrSetButtonCheckStateClamped_At0047e0c0||46|function|undefined WrapperFor_GetOrSetButtonCheckStateClamped_At0047e0c0()|
 47e100|OrphanVtableAssignStub_0047e100||6|function|undefined OrphanVtableAssignStub_0047e100()|
 47e120|RefreshNewGameCommandWindowTextAndData||165|function|undefined RefreshNewGameCommandWindowTextAndData()|
@@ -6170,7 +6170,7 @@ address|name|symbol|size|type|prototype|provenance
 5e1a10|SendMciCommand808ToDeviceWithParam||26|function|undefined SendMciCommand808ToDeviceWithParam()|
 5e1b90|WrapperFor_ftol_At005e1b90||30|function|undefined WrapperFor_ftol_At005e1b90()|
 5e1bc0|InitializeDialogTemplate98WithSharedText||120|function|undefined InitializeDialogTemplate98WithSharedText()|
-5e1c60|WrapperFor_FreeHeapBufferIfNotNull_At005e1c60||30|function|undefined WrapperFor_FreeHeapBufferIfNotNull_At005e1c60()|
+5e1c60|TLowDiskWarningDialog::`scalar deleting destructor'|??_GTLowDiskWarningDialog@@UAEPAXI@Z|30|function|undefined ScalarDeletingDestructor()|
 5e1c90|WrapperFor_DDX_Text_618cbd_At005e1c90||22|function|undefined WrapperFor_DDX_Text_618cbd_At005e1c90()|
 5e1cc0|GetRuntimePtrTable0066F588||6|function|undefined GetRuntimePtrTable0066F588()|
 5e1ce0|UpdateCursorHelperWindowTextFromUiString||120|function|undefined UpdateCursorHelperWindowTextFromUiString()|
@@ -6895,11 +6895,12 @@ address|name|symbol|size|type|prototype|provenance
 603906|CMapStringToOb::RemoveKey|?RemoveKey@CMapStringToOb@@QAEHPBD@Z|104|function|int RemoveKey(char const * key)|
 60396e|GetNextAssoc||107|function|undefined ?GetNextAssoc@CMapStringToOb@@QBEXAAPAU__POSITION@@AAVCString@@AAPAVCObject@@@Z()|
 604b68|AfxDlgProc|?AfxDlgProc@@YGHPAUHWND__@@IIJ@Z|58|function|int __stdcall AfxDlgProc(struct HWND__*, unsigned int, unsigned int, long)|msvc500_library_oracle
-604ba8|TTooltipRelayWindowState::PreTranslateMessageForDialogAndDispatchHotkey||37|function|undefined PreTranslateMessageForDialogAndDispatchHotkey()|
+604ba2|CDialog::GetMessageMap|?GetMessageMap@CDialog@@MBEPBUAFX_MSGMAP@@XZ||function|protected: virtual struct AFX_MSGMAP const * __thiscall CDialog::GetMessageMap(void)const|msvc500_library_override
+604ba8|CDialog::PreTranslateMessage|?PreTranslateMessage@CDialog@@UAEHPAUtagMSG@@@Z|37|function|public: virtual int __thiscall CDialog::PreTranslateMessage(struct tagMSG *)|msvc500_library_override
 604bcd|thunk_NoOpPaddingStub_00604c3c||2|function|undefined thunk_NoOpPaddingStub_00604c3c()|
 604c32|thunk_NoOpPaddingStub_00604c3c_00604C32||2|function|undefined thunk_NoOpPaddingStub_00604c3c_00604C32()|
 604c3c|NoOpPaddingStub_00604c3c||5|function|undefined NoOpPaddingStub_00604c3c()|
-604c41|OnCmdMsg||133|function|undefined ?OnCmdMsg@CPropertySheet@@UAEHIHPAXPAUAFX_CMDHANDLERINFO@@@Z()|
+604c41|CDialog::OnCmdMsg|?OnCmdMsg@CDialog@@UAEHIHPAXPAUAFX_CMDHANDLERINFO@@@Z|133|function|public: virtual int __thiscall CDialog::OnCmdMsg(unsigned int,int,void *,struct AFX_CMDHANDLERINFO *)|msvc500_library_override
 604cc6|CDialog::CDialog|??0CDialog@@QAE@XZ|34|function|public: __thiscall CDialog::CDialog(void)|msvc500_library_oracle
 604ce8|CSharedFile::`scalar deleting destructor'|CSharedFile::`scalar_deleting_destructor'|28|function|undefined ScalarDeletingDestructor()|
 604d04|CDialog::~CDialog|??1CDialog@@UAE@XZ|62|function|void __thiscall ??1CDialog@@UAE@XZ(void)|
@@ -6910,17 +6911,20 @@ address|name|symbol|size|type|prototype|provenance
 604e4c|CWnd::CreateDlgIndirect|?CreateDlgIndirect@CWnd@@IAEHPBUDLGTEMPLATE@@PAV1@@Z|18|function|protected: int __thiscall CWnd::CreateDlgIndirect(struct DLGTEMPLATE const *, class CWnd *)|msvc500_library_oracle
 604e5e|CWnd::CreateDlgIndirect|?CreateDlgIndirect@CWnd@@IAEHPBUDLGTEMPLATE@@PAV1@PAUHINSTANCE__@@@Z|516|function|undefined CreateDlgIndirect_604e5e()|
 60507c|TMacViewMgr_Slot47_Target||5|function|undefined TMacViewMgr_Slot47_Target()|
+605081|CDialog::SetOccDialogInfo|?SetOccDialogInfo@CDialog@@MAEHPAU_AFX_OCC_DIALOG_INFO@@@Z||function|protected: virtual int __thiscall CDialog::SetOccDialogInfo(struct _AFX_OCC_DIALOG_INFO *)|msvc500_library_override
 60508e|CDialog::CDialog|??0CDialog@@QAE@PBDPAVCWnd@@@Z|66|function|public: __thiscall CDialog::CDialog(char const *, class CWnd *)|msvc500_library_oracle
 6050d0|CDialog::CDialog|??0CDialog@@QAE@IPAVCWnd@@@Z|57|function|public: __thiscall CDialog::CDialog(unsigned int,class CWnd *)|msvc500_library_override
 605144|CDialog::PreModal|?PreModal@CDialog@@IAEPAUHWND__@@XZ|55|function|protected: struct HWND__* __thiscall CDialog::PreModal(void)|msvc500_library_oracle
 60517b|CDialog::PostModal|?PostModal@CDialog@@IAEXXZ|62|function|protected: void __thiscall CDialog::PostModal(void)|msvc500_library_oracle
 6051b9|DoModal_6051b9||328|function|undefined DoModal_6051b9()|
 60531e|CDialog::EndDialog|?EndDialog@CDialog@@QAEXH@Z|35|function|public: void __thiscall CDialog::EndDialog(int)|msvc500_library_oracle
+605365|CDialog::PreInitDialog|?PreInitDialog@CDialog@@MAEXXZ||function|protected: virtual void __thiscall CDialog::PreInitDialog(void)|msvc500_library_override
 605366|CDialog::HandleInitDialog|?HandleInitDialog@CDialog@@IAEJIJ@Z|136|function|protected: long __thiscall CDialog::HandleInitDialog(unsigned int, long)|msvc500_library_oracle
 6053ee|AfxHelpEnabled|?AfxHelpEnabled@@YGHXZ|84|function|int __stdcall AfxHelpEnabled(void)|msvc500_library_oracle
+605442|CDialog::OnSetFont|?OnSetFont@CDialog@@UAEXPAVCFont@@@Z||function|protected: virtual void __thiscall CDialog::OnSetFont(class CFont *)|msvc500_library_override
 605445|CDialog::OnInitDialog|?OnInitDialog@CDialog@@UAEHXZ|101|function|public: virtual int __thiscall CDialog::OnInitDialog(void)|msvc500_library_oracle
 6054aa|CDialog::OnOK|?OnOK@CDialog@@MAEXXZ|25|function|protected: virtual void __thiscall CDialog::OnOK(void)|msvc500_library_oracle
-6054c3|WrapperFor_EndDialog_At006054c3||8|function|undefined WrapperFor_EndDialog_At006054c3()|
+6054c3|CDialog::OnCancel|?OnCancel@CDialog@@MAEXXZ|8|function|protected: virtual void __thiscall CDialog::OnCancel(void)|msvc500_library_override
 6054cb|CDialog::CheckAutoCenter|?CheckAutoCenter@CDialog@@UAEHXZ|124|function|public: virtual int __thiscall CDialog::CheckAutoCenter(void)|msvc500_library_oracle
 6055ae|CWinApp::Run|?Run@CWinApp@@UAEHXZ|34|function|public: virtual int __thiscall CWinApp::Run(void)|msvc500_library_oracle
 6055d0|CWinApp::WinHelpA|?WinHelpA@CWinApp@@UAEXKI@Z|55|function|public: virtual void __thiscall CWinApp::WinHelpA(unsigned long, unsigned int)|msvc500_library_oracle
@@ -6993,25 +6997,25 @@ address|name|symbol|size|type|prototype|provenance
 6069cb|CCmdTarget::~CCmdTarget|??1CCmdTarget@@UAE@XZ|60|function|public: virtual __thiscall CCmdTarget::~CCmdTarget(void)|msvc500_library_oracle
 606a07|CCmdTarget::OnCmdMsg|?OnCmdMsg@CCmdTarget@@UAEHIHPAXPAUAFX_CMDHANDLERINFO@@@Z|280|function|public: virtual int __thiscall CCmdTarget::OnCmdMsg(unsigned int, int, void *, struct AFX_CMDHANDLERINFO *)|msvc500_library_oracle
 606b1f|DispatchCmdMsg|?DispatchCmdMsg@@YAHPAVCCmdTarget@@IHP81@AEXXZPAXIPAUAFX_CMDHANDLERINFO@@@Z|263|function|undefined DispatchCmdMsg()|
-606c4e|TTechStorePage::CloseCityDialogChildrenAndReleaseSelf||6|function|undefined TMacViewMgr_Slot07_Target()|
-606c54|TTechStorePage::CloneEngineerDialogStateToNewInstance||5|function|undefined TMacViewMgr_Slot08_Target()|
-606c59|TTechStorePage::ShallowFree||3|function|undefined TMacViewMgr_Slot09_Target()|
-606c5c|TTechStorePage::GetCityDialogFlagByte4||3|function|undefined TMacViewMgr_Slot10_Target()|
-606c5f|TTechStorePage::SetCityDialogFlagByte4||8|function|undefined TMacViewMgr_Slot11_Target()|
+606c4e|CCmdTarget::IsInvokeAllowed|?IsInvokeAllowed@CCmdTarget@@UAEHJ@Z|6|function|public: virtual int __thiscall CCmdTarget::IsInvokeAllowed(long)|msvc500_library_override
+606c54|CCmdTarget::GetDispatchIID|?GetDispatchIID@CCmdTarget@@UAEHPAU_GUID@@@Z|5|function|public: virtual int __thiscall CCmdTarget::GetDispatchIID(struct _GUID *)|msvc500_library_override
+606c59|CCmdTarget::GetTypeInfoCount|?GetTypeInfoCount@CCmdTarget@@UAEIXZ|3|function|public: virtual unsigned int __thiscall CCmdTarget::GetTypeInfoCount(void)|msvc500_library_override
+606c5c|CCmdTarget::GetTypeLibCache|?GetTypeLibCache@CCmdTarget@@UAEPAVCTypeLibCache@@XZ|3|function|public: virtual class CTypeLibCache * __thiscall CCmdTarget::GetTypeLibCache(void)|msvc500_library_override
+606c5f|CCmdTarget::GetTypeLib|?GetTypeLib@CCmdTarget@@UAEJKPAPAUITypeLib@@@Z|8|function|public: virtual long __thiscall CCmdTarget::GetTypeLib(unsigned long,struct ITypeLib * *)|msvc500_library_override
 606c67|CCmdTarget::BeginWaitCursor|?BeginWaitCursor@CCmdTarget@@QAEXXZ|21|function|void __thiscall BeginWaitCursor()|msvc500_library_oracle
 606c7c|CCmdTarget::EndWaitCursor|?EndWaitCursor@CCmdTarget@@QAEXXZ|21|function|void __thiscall EndWaitCursor()|msvc500_library_oracle
 606c91|CCmdTarget::RestoreWaitCursor|?RestoreWaitCursor@CCmdTarget@@QAEXXZ|21|function|public: void __thiscall CCmdTarget::RestoreWaitCursor(void)|msvc500_library_oracle
 606ca6|GetCCmdTargetMessageMap||6|function|undefined GetCCmdTargetMessageMap()|
-606cac|TTechStorePage::DispatchUiSelectionToHandler||6|function|undefined TMacViewMgr_Slot14_Target()|
-606cb2|TTechStorePage::ForwardNotifyParamToPrimaryChildSlot44||6|function|undefined TMacViewMgr_Slot17_Target()|
-606cb8|TTechStorePage::DispatchUiCommandToHandler||6|function|undefined TMacViewMgr_Slot16_Target()|
+606cac|CCmdTarget::GetDispatchMap|?GetDispatchMap@CCmdTarget@@MBEPBUAFX_DISPMAP@@XZ|6|function|protected: virtual struct AFX_DISPMAP const * __thiscall CCmdTarget::GetDispatchMap(void)const|msvc500_library_override
+606cb2|CCmdTarget::GetEventSinkMap|?GetEventSinkMap@CCmdTarget@@MBEPBUAFX_EVENTSINKMAP@@XZ|6|function|protected: virtual struct AFX_EVENTSINKMAP const * __thiscall CCmdTarget::GetEventSinkMap(void)const|msvc500_library_override
+606cb8|CCmdTarget::GetInterfaceMap|?GetInterfaceMap@CCmdTarget@@MBEPBUAFX_INTERFACEMAP@@XZ|6|function|protected: virtual struct AFX_INTERFACEMAP const * __thiscall CCmdTarget::GetInterfaceMap(void)const|msvc500_library_override
 606cbe|CCmdTarget::OnFinalRelease|?OnFinalRelease@CCmdTarget@@UAEXXZ|50|function|public: virtual void __thiscall CCmdTarget::OnFinalRelease(void)|msvc500_library_oracle
-606cf0|TTechStorePage::ForwardCityDialogParamToChildSlot48||4|function|undefined TMacViewMgr_Slot18_Target()|
-606cf4|TTechStorePage::DoIdle||5|function|undefined TMacViewMgr_Slot19_Target()|
-606cf9|TTechStorePage::HandleEvent||6|function|undefined TMacViewMgr_Slot15_Target()|
-606cff|TTechStorePage::SetCityDialogValueDword10||5|function|undefined TMacViewMgr_Slot21_Target()|
-606d04|TTechStorePage::GetCityDialogValueDword10||5|function|undefined TMacViewMgr_Slot20_Target()|
-606d09|TTechStorePage::DispatchQueuedUiCommandAndRelease||6|function|undefined TMacViewMgr_Slot13_Target()|
+606cf0|CCmdTarget::OnCreateAggregates|?OnCreateAggregates@CCmdTarget@@UAEHXZ|4|function|public: virtual int __thiscall CCmdTarget::OnCreateAggregates(void)|msvc500_library_override
+606cf4|CCmdTarget::GetInterfaceHook|?GetInterfaceHook@CCmdTarget@@UAEPAUIUnknown@@PBX@Z|5|function|public: virtual struct IUnknown * __thiscall CCmdTarget::GetInterfaceHook(void const *)|msvc500_library_override
+606cf9|CCmdTarget::GetConnectionMap|?GetConnectionMap@CCmdTarget@@MBEPBUAFX_CONNECTIONMAP@@XZ|6|function|protected: virtual struct AFX_CONNECTIONMAP const * __thiscall CCmdTarget::GetConnectionMap(void)const|msvc500_library_override
+606cff|CCmdTarget::GetConnectionHook|?GetConnectionHook@CCmdTarget@@MAEPAUIConnectionPoint@@ABU_GUID@@@Z|5|function|public: virtual struct IConnectionPoint * __thiscall CCmdTarget::GetConnectionHook(struct _GUID const &)|msvc500_library_override
+606d04|CCmdTarget::GetExtraConnectionPoints|?GetExtraConnectionPoints@CCmdTarget@@MAEHPAVCPtrArray@@@Z|5|function|public: virtual int __thiscall CCmdTarget::GetExtraConnectionPoints(class CPtrArray *)|msvc500_library_override
+606d09|CCmdTarget::GetCommandMap|?GetCommandMap@CCmdTarget@@MBEPBUAFX_OLECMDMAP@@XZ|6|function|protected: virtual struct AFX_CMDMAP const * __thiscall CCmdTarget::GetCommandMap(void)const|msvc500_library_override
 606d1b|CCmdTarget::GetRoutingFrame|?GetRoutingFrame@CCmdTarget@@IAEPAVCFrameWnd@@XZ|12|function|protected: class CFrameWnd * __thiscall CCmdTarget::GetRoutingFrame(void)|msvc500_library_oracle
 606d27|CCmdUI||38|function|undefined __thiscall ??0CCmdUI@@QAE@XZ(void)|
 606d4d|CCmdUI::Enable|?Enable@CCmdUI@@UAEXH@Z|144|function|public: virtual void __thiscall CCmdUI::Enable(int)|msvc500_library_oracle
@@ -7088,7 +7092,7 @@ address|name|symbol|size|type|prototype|provenance
 607b57|CWnd::FromHandlePermanent|?FromHandlePermanent@CWnd@@SGPAV1@PAUHWND__@@@Z|28|function|public: static class CWnd * __stdcall CWnd::FromHandlePermanent(struct HWND__*)|msvc500_library_oracle
 607b73|CWnd::Attach|?Attach@CWnd@@QAEHPAUHWND__@@@Z|57|function|public: int __thiscall CWnd::Attach(struct HWND__*)|msvc500_library_oracle
 607bac|CWnd::Detach|?Detach@CWnd@@QAEPAUHWND__@@XZ|46|function|public: struct HWND__* __thiscall CWnd::Detach(void)|msvc500_library_oracle
-607bda|TMacViewMgr_Slot22_Target||1|function|undefined TMacViewMgr_Slot22_Target()|
+607bda|CWnd::PreSubclassWindow|?PreSubclassWindow@CWnd@@UAEXXZ|1|function|public: virtual void __thiscall CWnd::PreSubclassWindow(void)|msvc500_library_override
 607bdb|AfxWndProc|?AfxWndProc@@YGJPAUHWND__@@IIJ@Z|47|function|long __stdcall AfxWndProc(struct HWND__*, unsigned int, unsigned int, long)|msvc500_library_oracle
 607c0a|GetAfxSubclassWndProcEntry||6|function|undefined GetAfxSubclassWndProcEntry()|
 607c10|_AfxActivationWndProc|?_AfxActivationWndProc@@YGJPAUHWND__@@IIJ@Z|273|function|undefined AfxActivationWndProc()|
@@ -7100,18 +7104,19 @@ address|name|symbol|size|type|prototype|provenance
 60808c|AfxUnhookWindowCreate|?AfxUnhookWindowCreate@@YGHXZ|66|function|int __stdcall AfxUnhookWindowCreate(void)|msvc500_library_oracle
 6080ce|CreateEx||71|function|undefined CreateEx()|
 608115|CWnd::CreateEx|?CreateEx@CWnd@@QAEHKPBD0KHHHHPAUHWND__@@PAUHMENU__@@PAX@Z|196|function|public: int __thiscall CWnd::CreateEx(unsigned long, char const *, char const *, unsigned long, int, int, int, int, struct HWND__*, struct HMENU__*, void *)|msvc500_library_oracle
-6081d9|PreCreateWindow||50|function|undefined PreCreateWindow()|
+6081d9|CWnd::PreCreateWindow|?PreCreateWindow@CWnd@@UAEHAAUtagCREATESTRUCTA@@@Z|50|function|public: virtual int __thiscall CWnd::PreCreateWindow(struct tagCREATESTRUCTA &)|msvc500_library_override
 60820b|CWnd::Create|?Create@CWnd@@UAEHPBD0KABUtagRECT@@PAV1@IPAUCCreateContext@@@Z|76|function|public: virtual int __thiscall CWnd::Create(char const *, char const *, unsigned long, struct tagRECT const &, class CWnd *, unsigned int, struct CCreateContext *)|msvc500_library_oracle
 608257|CWnd::~CWnd|??1CWnd@@UAE@XZ|124|function|void __thiscall ??1CWnd@@UAE@XZ(void)|
 6082d3|CWnd::OnDestroy|?OnDestroy@CWnd@@IAEXXZ|30|function|protected: void __thiscall CWnd::OnDestroy(void)|msvc500_library_oracle
 6082f1|CWnd::OnNcDestroy|?OnNcDestroy@CWnd@@IAEXXZ|279|function|protected: void __thiscall CWnd::OnNcDestroy(void)|msvc500_library_oracle
+608408|CWnd::PostNcDestroy|?PostNcDestroy@CWnd@@MAEXXZ||function|protected: virtual void __thiscall CWnd::PostNcDestroy(void)|msvc500_library_override
 608409|CWnd::OnFinalRelease|?OnFinalRelease@CWnd@@UAEXXZ|17|function|public: virtual void __thiscall CWnd::OnFinalRelease(void)|msvc500_library_oracle
 60841a|CWnd::DestroyWindow|?DestroyWindow@CWnd@@UAEHXZ|77|function|public: virtual int __thiscall CWnd::DestroyWindow(void)|msvc500_library_oracle
 608467|CWnd::DefWindowProcA|?DefWindowProcA@CWnd@@MAEJIIJ@Z|71|function|protected: virtual long __thiscall CWnd::DefWindowProcA(unsigned int, unsigned int, long)|msvc500_library_oracle
-6084ae|TMacViewMgr_Slot34_Target||4|function|undefined TMacViewMgr_Slot34_Target()|
+6084ae|CWnd::GetSuperWndProcAddr|?GetSuperWndProcAddr@CWnd@@MAEPAP6GJPAUHWND__@@IIJ@ZXZ|4|function|protected: virtual long (__stdcall**__thiscall CWnd::GetSuperWndProcAddr(void))(struct HWND__ *,unsigned int,unsigned int,long)|msvc500_library_override
 6084b2|CWnd::PreTranslateMessage|?PreTranslateMessage@CWnd@@UAEHPAUtagMSG@@@Z|31|function|public: virtual int __thiscall CWnd::PreTranslateMessage(struct tagMSG *)|msvc500_library_oracle
 6084d1|CWnd::CancelToolTips|?CancelToolTips@CWnd@@SGXH@Z|93|function|public: static void __stdcall CWnd::CancelToolTips(int)|msvc500_library_oracle
-60852e|AssignSharedStringFromField84||113|function|undefined OnToolHitTest()|
+60852e|CWnd::OnToolHitTest|?OnToolHitTest@CWnd@@UBEHVCPoint@@PAUtagTOOLINFOA@@@Z|113|function|public: virtual int __thiscall CWnd::OnToolHitTest(struct tagPOINT,struct tagTOOLINFOA *)const|msvc500_library_override
 60859f|CMcWindow::GetWindowTextOrDelegateToOwner|?GetWindowTextA@CWnd@@QBEXAAVCString@@@Z|72|function|void __thiscall GetWindowTextOrDelegateToOwner(CString* param_1)|msvc500_library_oracle
 608657|GetWindowPlacementFromThisHwnd||23|function|undefined GetWindowPlacementFromThisHwnd()|
 60866e|SetWindowPlacementFromThisHwnd||23|function|undefined SetWindowPlacementFromThisHwnd()|
@@ -7125,13 +7130,13 @@ address|name|symbol|size|type|prototype|provenance
 608892|AfxRegisterClass|?AfxRegisterClass@@YGHPAUtagWNDCLASSA@@@Z|147|function|undefined AfxRegisterClass()|
 60893b|AfxRegisterWndClass||180|function|undefined AfxRegisterWndClass()|
 6089ef|OrphanLeaf_NoCall_Ins07_004d8920||60|function|undefined OnNTCtlColor()|
-608a2b|SetEditSelectionAndScrollCaret||224|function|undefined RunWinHelpAfterCancelModeBroadcast()|
+608a2b|CWnd::WinHelpA|?WinHelpA@CWnd@@UAEXKI@Z|224|function|public: virtual void __thiscall CWnd::WinHelpA(unsigned long,unsigned int)|msvc500_library_override
 608b11|AfxFindMessageEntry|?AfxFindMessageEntry@@YGPBUAFX_MSGMAP_ENTRY@@PBU1@III@Z|64|function|AFX_MSGMAP_ENTRY * __stdcall ?AfxFindMessageEntry@@YGPBUAFX_MSGMAP_ENTRY@@PBU1@III@Z@00608b11(AFX_MSGMAP_ENTRY * param_1, uint param_2, uint param_3, uint param_4)|msvc500_library_oracle
 608b66|CWnd::WindowProc|?WindowProc@CWnd@@MAEJIIJ@Z|66|function|protected: virtual long __thiscall CWnd::WindowProc(unsigned int, unsigned int, long)|msvc500_library_oracle
 608ba8|CWnd::OnWndMsg|?OnWndMsg@CWnd@@MAEHIIJPAJ@Z|1198|function|undefined OnWndMsg()|
 60911a|CTestCmdUI::CTestCmdUI|??0CTestCmdUI@@QAE@XZ|25|function|public: __thiscall CTestCmdUI::CTestCmdUI(void)|msvc500_library_oracle
 60914d|CWnd::OnCommand|?OnCommand@CWnd@@MAEHIJ@Z|140|function|protected: virtual int __thiscall CWnd::OnCommand(unsigned int, long)|msvc500_library_oracle
-6091d9|UpdateControlCachedIntFromWindowText||122|function|undefined OnNotify()|
+6091d9|CWnd::OnNotify|?OnNotify@CWnd@@MAEHIJPAJ@Z|122|function|protected: virtual int __thiscall CWnd::OnNotify(unsigned int,long,long *)|msvc500_library_override
 609253|CWnd::GetParentFrame|?GetParentFrame@CWnd@@QBEPAVCFrameWnd@@XZ|68|function|public: class CFrameWnd * __thiscall CWnd::GetParentFrame(void) const|msvc500_library_oracle
 609297|AfxGetParentOwner|?AfxGetParentOwner@@YGPAUHWND__@@PAU1@@Z|69|function|HWND__ * __stdcall ?AfxGetParentOwner@@YGPAUHWND__@@PAU1@@Z@00609297(HWND__ * param_1)|msvc500_library_oracle
 6092dc|CWnd::GetTopLevelParent|?GetTopLevelParent@CWnd@@QBEPAV1@XZ|44|function|public: class CWnd * __thiscall CWnd::GetTopLevelParent(void) const|msvc500_library_oracle
@@ -7142,7 +7147,7 @@ address|name|symbol|size|type|prototype|provenance
 609437|CWnd::GetSafeOwner|?GetSafeOwner@CWnd@@SGPAV1@PAV1@PAPAUHWND__@@@Z|160|function|public: static class CWnd * __stdcall CWnd::GetSafeOwner(class CWnd *, struct HWND__**)|msvc500_library_oracle
 6094d7|CWnd::GetDescendantWindow|?GetDescendantWindow@CWnd@@SGPAV1@PAUHWND__@@HH@Z|121|function|public: static class CWnd * __stdcall CWnd::GetDescendantWindow(struct HWND__*, int, int)|msvc500_library_oracle
 609550|CWnd::SendMessageToDescendants|?SendMessageToDescendants@CWnd@@SGXPAUHWND__@@IIJHH@Z|125|function|public: static void __stdcall CWnd::SendMessageToDescendants(struct HWND__*, unsigned int, unsigned int, long, int, int)|msvc500_library_oracle
-6095cd|TMacViewMgr_Slot28_Target||5|function|undefined TMacViewMgr_Slot28_Target()|
+6095cd|CWnd::GetScrollBarCtrl|?GetScrollBarCtrl@CWnd@@UBEPAVCScrollBar@@H@Z|5|function|public: virtual class CScrollBar * __thiscall CWnd::GetScrollBarCtrl(int)const|msvc500_library_override
 6095d2|CWnd::SetScrollPos|?SetScrollPos@CWnd@@QAEHHHH@Z|48|function|public: int __thiscall CWnd::SetScrollPos(int, int, int)|msvc500_library_oracle
 609602|CWnd::GetScrollPos|?GetScrollPos@CWnd@@QBEHH@Z|40|function|public: int __thiscall CWnd::GetScrollPos(int) const|msvc500_library_oracle
 60962a|CWnd::SetScrollRange|?SetScrollRange@CWnd@@QAEXHHHH@Z|51|function|public: void __thiscall CWnd::SetScrollRange(int, int, int, int)|msvc500_library_oracle
@@ -7184,10 +7189,11 @@ address|name|symbol|size|type|prototype|provenance
 60a4d5|CWnd::UpdateDialogControls|?UpdateDialogControls@CWnd@@QAEXPAVCCmdTarget@@H@Z|261|function|public: void __thiscall CWnd::UpdateDialogControls(class CCmdTarget *, int)|msvc500_library_oracle
 60a5da|CWnd::PreTranslateInput|?PreTranslateInput@CWnd@@QAEHPAUtagMSG@@@Z|48|function|public: int __thiscall CWnd::PreTranslateInput(struct tagMSG *)|msvc500_library_oracle
 60a60a|CWnd::RunModalLoop|?RunModalLoop@CWnd@@QAEHK@Z|351|function|public: int __thiscall CWnd::RunModalLoop(unsigned long)|msvc500_library_override
-60a769|TMacViewMgr_Slot30_Target||7|function|undefined TMacViewMgr_Slot30_Target()|
-60a770|InitDialogWindowAndSyncTitleIfChanged||36|function|undefined TMacViewMgr_Slot31_Target()|
+60a769|CWnd::ContinueModal|?ContinueModal@CWnd@@UAEHXZ|7|function|public: virtual int __thiscall CWnd::ContinueModal(void)|msvc500_library_override
+60a770|CWnd::EndModalLoop|?EndModalLoop@CWnd@@UAEXH@Z|36|function|public: virtual void __thiscall CWnd::EndModalLoop(int)|msvc500_library_override
 60a794|AfxEndDeferRegisterClass|?AfxEndDeferRegisterClass@@YGHF@Z|314|function|int __stdcall AfxEndDeferRegisterClass(short)|msvc500_library_oracle
 60a8ce|AfxRegisterWithIcon|AfxRegisterWithIcon|65|function|undefined ?RegisterWithIcon@@YGHPAUtagWNDCLASSA@@PBDI@Z@0060a8ce()|
+60a90f|CWnd::IsFrameWnd|?IsFrameWnd@CWnd@@UBEHXZ||function|public: virtual int __thiscall CWnd::IsFrameWnd(void)const|msvc500_library_override
 60a912|TMacViewMgr::TMacViewMgr_VtblSlot046||4|function|undefined TMacViewMgr_VtblSlot046()|
 60a916|CFrameWnd::IsTracking|?IsTracking@CFrameWnd@@QBEHXZ|31|function|public: int __thiscall CFrameWnd::IsTracking(void) const|msvc500_library_oracle
 60a935|CWnd::SubclassCtl3d|?SubclassCtl3d@CWnd@@QAEHH@Z|74|function|public: int __thiscall CWnd::SubclassCtl3d(int)|msvc500_library_oracle
@@ -7742,6 +7748,7 @@ address|name|symbol|size|type|prototype|provenance
 621267|CDumpContext::operator<<|??6CDumpContext@@QAEAAV0@H@Z|48|function|undefined ??6CDumpContext@@QAEAAV0@H@Z()|
 621297|CDumpContext::HexDump|?HexDump@CDumpContext@@QAEXPBDPAEHH@Z|147|function|public: void __thiscall CDumpContext::HexDump(char const *, unsigned char *, int, int)|msvc500_library_oracle
 62132a|CDumpContext::operator<<|??6CDumpContext@@QAEAAV0@PBG@Z|74|function|public: class CDumpContext & __thiscall CDumpContext::operator<<(unsigned short const *)|msvc500_library_oracle
+622442|CDialog::GetRuntimeClass|?GetRuntimeClass@CDialog@@UBEPAUCRuntimeClass@@XZ||function|public: virtual struct CRuntimeClass * __thiscall CDialog::GetRuntimeClass(void)const|msvc500_library_override
 622448|InitializeThreadObjectVtableProxy||9|function|undefined InitializeThreadObjectVtableProxy()|
 622451|_AFX_WIN_STATE::`scalar deleting dtor'|??_G_AFX_WIN_STATE@@UAEPAXI@Z|27|function|public: virtual void * __thiscall _AFX_WIN_STATE::`scalar deleting dtor'(unsigned int)|msvc500_library_oracle
 62246c|CWinThread::CWinApp|??0CWinApp@@QAE@PBD@Z|234|function|public: __thiscall CWinApp::CWinApp(char const *)|msvc500_library_oracle

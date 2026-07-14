@@ -16,7 +16,10 @@ HWND ResolvePreModalOwner() {
 } // namespace
 
 // Destructors are compiler-generated (implicit) from real CDialog inheritance; the
-// out-of-line anchor here gives the base its own vtable (0x0063e5a0).
+// out-of-line anchor here gives the base its own vtable (0x0063e5a0). The scalar
+// deleting destructor (vtable slot 1) is compiler-generated from the virtual dtor.
+// SYNTHETIC: IMPERIALISM 0x00413c00
+// TModalDialogBase::`scalar deleting destructor'
 TModalDialogBase::~TModalDialogBase() {}
 
 // FUNCTION: IMPERIALISM 0x0049d360

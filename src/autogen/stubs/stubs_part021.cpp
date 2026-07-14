@@ -531,14 +531,6 @@ undefined4 Z_0060396E(void)
   return 0;
 }
 
-// ghidra_name TTooltipRelayWindowState::PreTranslateMessageForDialogAndDispatchHotkey
-// ghidra_proto undefined PreTranslateMessageForDialogAndDispatchHotkey()
-// FUNCTION: IMPERIALISM 0x00604ba8
-undefined4 PreTranslateMessageForDialogAndDispatchHotkey(void)
-{
-  return 0;
-}
-
 // ghidra_name thunk_NoOpPaddingStub_00604c3c
 // ghidra_proto undefined thunk_NoOpPaddingStub_00604c3c()
 // FUNCTION: IMPERIALISM 0x00604bcd
@@ -563,14 +555,6 @@ undefined4 NoOpPaddingStub_00604c3c(void)
   return 0;
 }
 
-// ghidra_name OnCmdMsg
-// ghidra_proto undefined ?OnCmdMsg@CPropertySheet@@UAEHIHPAXPAUAFX_CMDHANDLERINFO@@@Z()
-// FUNCTION: IMPERIALISM 0x00604c41
-undefined4 Z_00604C41(void)
-{
-  return 0;
-}
-
 // ghidra_name TMacViewMgr_Slot47_Target
 // ghidra_proto undefined TMacViewMgr_Slot47_Target()
 // FUNCTION: IMPERIALISM 0x0060507c
@@ -583,14 +567,6 @@ undefined4 TMacViewMgr_Slot47_Target(void)
 // ghidra_proto undefined DoModal_6051b9()
 // FUNCTION: IMPERIALISM 0x006051b9
 undefined4 DoModal_6051b9(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_EndDialog_At006054c3
-// ghidra_proto undefined WrapperFor_EndDialog_At006054c3()
-// FUNCTION: IMPERIALISM 0x006054c3
-undefined4 WrapperFor_EndDialog_At006054c3(void)
 {
   return 0;
 }
@@ -651,122 +627,10 @@ undefined4 CCmdTarget(void)
   return 0;
 }
 
-// ghidra_name TTechStorePage::CloseCityDialogChildrenAndReleaseSelf
-// ghidra_proto undefined TMacViewMgr_Slot07_Target()
-// FUNCTION: IMPERIALISM 0x00606c4e
-undefined4 TMacViewMgr_Slot07_Target(void)
-{
-  return 0;
-}
-
-// ghidra_name TTechStorePage::CloneEngineerDialogStateToNewInstance
-// ghidra_proto undefined TMacViewMgr_Slot08_Target()
-// FUNCTION: IMPERIALISM 0x00606c54
-undefined4 TMacViewMgr_Slot08_Target(void)
-{
-  return 0;
-}
-
-// ghidra_name TTechStorePage::ShallowFree
-// ghidra_proto undefined TMacViewMgr_Slot09_Target()
-// FUNCTION: IMPERIALISM 0x00606c59
-undefined4 TMacViewMgr_Slot09_Target(void)
-{
-  return 0;
-}
-
-// ghidra_name TTechStorePage::GetCityDialogFlagByte4
-// ghidra_proto undefined TMacViewMgr_Slot10_Target()
-// FUNCTION: IMPERIALISM 0x00606c5c
-undefined4 TMacViewMgr_Slot10_Target(void)
-{
-  return 0;
-}
-
-// ghidra_name TTechStorePage::SetCityDialogFlagByte4
-// ghidra_proto undefined TMacViewMgr_Slot11_Target()
-// FUNCTION: IMPERIALISM 0x00606c5f
-undefined4 TMacViewMgr_Slot11_Target(void)
-{
-  return 0;
-}
-
 // ghidra_name GetCCmdTargetMessageMap
 // ghidra_proto undefined GetCCmdTargetMessageMap()
 // FUNCTION: IMPERIALISM 0x00606ca6
 undefined4 GetCCmdTargetMessageMap(void)
-{
-  return 0;
-}
-
-// ghidra_name TTechStorePage::DispatchUiSelectionToHandler
-// ghidra_proto undefined TMacViewMgr_Slot14_Target()
-// FUNCTION: IMPERIALISM 0x00606cac
-undefined4 TMacViewMgr_Slot14_Target(void)
-{
-  return 0;
-}
-
-// ghidra_name TTechStorePage::ForwardNotifyParamToPrimaryChildSlot44
-// ghidra_proto undefined TMacViewMgr_Slot17_Target()
-// FUNCTION: IMPERIALISM 0x00606cb2
-undefined4 TMacViewMgr_Slot17_Target(void)
-{
-  return 0;
-}
-
-// ghidra_name TTechStorePage::DispatchUiCommandToHandler
-// ghidra_proto undefined TMacViewMgr_Slot16_Target()
-// FUNCTION: IMPERIALISM 0x00606cb8
-undefined4 TMacViewMgr_Slot16_Target(void)
-{
-  return 0;
-}
-
-// ghidra_name TTechStorePage::ForwardCityDialogParamToChildSlot48
-// ghidra_proto undefined TMacViewMgr_Slot18_Target()
-// FUNCTION: IMPERIALISM 0x00606cf0
-undefined4 TMacViewMgr_Slot18_Target(void)
-{
-  return 0;
-}
-
-// ghidra_name TTechStorePage::DoIdle
-// ghidra_proto undefined TMacViewMgr_Slot19_Target()
-// FUNCTION: IMPERIALISM 0x00606cf4
-undefined4 TMacViewMgr_Slot19_Target(void)
-{
-  return 0;
-}
-
-// ghidra_name TTechStorePage::HandleEvent
-// ghidra_proto undefined TMacViewMgr_Slot15_Target()
-// FUNCTION: IMPERIALISM 0x00606cf9
-undefined4 TMacViewMgr_Slot15_Target(void)
-{
-  return 0;
-}
-
-// ghidra_name TTechStorePage::SetCityDialogValueDword10
-// ghidra_proto undefined TMacViewMgr_Slot21_Target()
-// FUNCTION: IMPERIALISM 0x00606cff
-undefined4 TMacViewMgr_Slot21_Target(void)
-{
-  return 0;
-}
-
-// ghidra_name TTechStorePage::GetCityDialogValueDword10
-// ghidra_proto undefined TMacViewMgr_Slot20_Target()
-// FUNCTION: IMPERIALISM 0x00606d04
-undefined4 TMacViewMgr_Slot20_Target(void)
-{
-  return 0;
-}
-
-// ghidra_name TTechStorePage::DispatchQueuedUiCommandAndRelease
-// ghidra_proto undefined TMacViewMgr_Slot13_Target()
-// FUNCTION: IMPERIALISM 0x00606d09
-undefined4 TMacViewMgr_Slot13_Target(void)
 {
   return 0;
 }

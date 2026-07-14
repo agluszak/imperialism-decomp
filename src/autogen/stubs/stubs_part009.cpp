@@ -251,14 +251,6 @@ undefined4 WrapperFor_CDialog_At00413b80(void)
   return 0;
 }
 
-// ghidra_name WrapperFor_FreeHeapBufferIfNotNull_At00413c00
-// ghidra_proto undefined WrapperFor_FreeHeapBufferIfNotNull_At00413c00()
-// FUNCTION: IMPERIALISM 0x00413c00
-undefined4 WrapperFor_FreeHeapBufferIfNotNull_At00413c00(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_FreeHeapBufferIfNotNull_At00413cd0_Impl
 // ghidra_proto undefined WrapperFor_FreeHeapBufferIfNotNull_At00413cd0_Impl()
 // FUNCTION: IMPERIALISM 0x00413c30
@@ -351,30 +343,6 @@ undefined4 AssertAmbitSubsystemReadyOrFailWithBmp3B6(void)
 // ghidra_proto undefined WrapperFor_GetOrCreateCrtThreadDataFromTls_At00415000()
 // FUNCTION: IMPERIALISM 0x00415000
 undefined4 WrapperFor_GetOrCreateCrtThreadDataFromTls_At00415000(void)
-{
-  return 0;
-}
-
-// ghidra_name ExecuteNoOpNewGameCommand
-// ghidra_proto undefined ExecuteNoOpNewGameCommand()
-// FUNCTION: IMPERIALISM 0x00415030
-undefined4 ExecuteNoOpNewGameCommand(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanCallChain_C1_I05_00415050
-// ghidra_proto undefined OrphanCallChain_C1_I05_00415050()
-// FUNCTION: IMPERIALISM 0x00415050
-undefined4 OrphanCallChain_C1_I05_00415050(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanCallChain_C1_I05_00415070
-// ghidra_proto undefined OrphanCallChain_C1_I05_00415070()
-// FUNCTION: IMPERIALISM 0x00415070
-undefined4 OrphanCallChain_C1_I05_00415070(void)
 {
   return 0;
 }
@@ -1051,10 +1019,10 @@ undefined4 WrapperFor_ftol_At0047cfa0(void)
   return 0;
 }
 
-// ghidra_name WrapperFor_FreeHeapBufferIfNotNull_At0047d090
-// ghidra_proto undefined WrapperFor_FreeHeapBufferIfNotNull_At0047d090()
+// ghidra_name TC2TemplateDialog::`scalar deleting destructor'
+// ghidra_proto undefined ScalarDeletingDestructor()
 // FUNCTION: IMPERIALISM 0x0047d090
-undefined4 WrapperFor_FreeHeapBufferIfNotNull_At0047d090(void)
+undefined4 ScalarDeletingDestructor(void)
 {
   return 0;
 }
@@ -1083,10 +1051,10 @@ undefined4 OrphanVtableAssignStub_0047d1a0(void)
   return 0;
 }
 
-// ghidra_name WrapperFor_FreeHeapBufferIfNotNull_At0047d250
-// ghidra_proto undefined WrapperFor_FreeHeapBufferIfNotNull_At0047d250()
+// ghidra_name TD2TemplateDialog::`scalar deleting destructor'
+// ghidra_proto undefined ScalarDeletingDestructor()
 // FUNCTION: IMPERIALISM 0x0047d250
-undefined4 WrapperFor_FreeHeapBufferIfNotNull_At0047d250(void)
+undefined4 ScalarDeletingDestructor_0047D250(void)
 {
   return 0;
 }

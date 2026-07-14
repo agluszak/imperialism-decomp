@@ -25,6 +25,7 @@
 // claimed yet: reccmp can only pair the ~50 inherited CWnd/CDialog slots once the full MFC
 // dialog vtable is annotated as LIBRARY (a separate prerequisite); the four dialog-specific
 // slots here are already modelled as real virtuals.
+// VTABLE: IMPERIALISM 0x0063e5a0
 class TModalDialogBase : public CDialog {
 public:
   // Forwards to CDialog::CDialog (0x006050d0) then zeroes the first three scratch fields,

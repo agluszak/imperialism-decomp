@@ -491,10 +491,10 @@ undefined4 WrapperFor_ftol_At005e1b90(void)
   return 0;
 }
 
-// ghidra_name WrapperFor_FreeHeapBufferIfNotNull_At005e1c60
-// ghidra_proto undefined WrapperFor_FreeHeapBufferIfNotNull_At005e1c60()
+// ghidra_name TLowDiskWarningDialog::`scalar deleting destructor'
+// ghidra_proto undefined ScalarDeletingDestructor()
 // FUNCTION: IMPERIALISM 0x005e1c60
-undefined4 WrapperFor_FreeHeapBufferIfNotNull_At005e1c60(void)
+undefined4 ScalarDeletingDestructor_005E1C60(void)
 {
   return 0;
 }

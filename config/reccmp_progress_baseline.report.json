@@ -265,6 +265,12 @@
       "type": 1
     },
     {
+      "address": "0x413c00",
+      "matching": 0.9090909090909091,
+      "name": "TModalDialogBase::`scalar deleting destructor'",
+      "type": 1
+    },
+    {
       "address": "0x413d20",
       "matching": 0.025,
       "name": "ShowNationSelectDialogAndRedispatchCurrentTurnEvent",
@@ -325,15 +331,21 @@
       "type": 1
     },
     {
+      "address": "0x415030",
+      "matching": 1.0,
+      "name": "CWnd::DoDataExchange",
+      "type": 1
+    },
+    {
       "address": "0x415050",
-      "matching": 0.2857142857142857,
-      "name": "OrphanCallChain_C1_I05_00415050",
+      "matching": 1.0,
+      "name": "CWnd::BeginModalState",
       "type": 1
     },
     {
       "address": "0x415070",
-      "matching": 0.2857142857142857,
-      "name": "OrphanCallChain_C1_I05_00415070",
+      "matching": 1.0,
+      "name": "CWnd::EndModalState",
       "type": 1
     },
     {
@@ -1660,8 +1672,14 @@
     },
     {
       "address": "0x47cfd0",
-      "matching": 0.8918918918918919,
+      "matching": 0.918918918918919,
       "name": "InitializeDialogTemplateC2WithTextState",
+      "type": 1
+    },
+    {
+      "address": "0x47d090",
+      "matching": 0.0,
+      "name": "TC2TemplateDialog::`scalar deleting destructor'(unsigned int)",
       "type": 1
     },
     {
@@ -1678,8 +1696,14 @@
     },
     {
       "address": "0x47d1c0",
-      "matching": 0.90625,
+      "matching": 0.9375,
       "name": "InitializeDialogTemplateD2WithTextState",
+      "type": 1
+    },
+    {
+      "address": "0x47d250",
+      "matching": 0.0,
+      "name": "TD2TemplateDialog::`scalar deleting destructor'(unsigned int)",
       "type": 1
     },
     {
@@ -1810,8 +1834,14 @@
     },
     {
       "address": "0x47dfd0",
-      "matching": 0.5405405405405406,
+      "matching": 0.5675675675675675,
       "name": "InitializeDialogTemplateFBWithDualTextState",
+      "type": 1
+    },
+    {
+      "address": "0x47e090",
+      "matching": 0.0,
+      "name": "TAutoResolutionDialog::`scalar deleting destructor'(unsigned int)",
       "type": 1
     },
     {
@@ -33707,6 +33737,12 @@
       "type": 1
     },
     {
+      "address": "0x5e1c60",
+      "matching": 0.0,
+      "name": "TLowDiskWarningDialog::`scalar deleting destructor'(unsigned int)",
+      "type": 1
+    },
+    {
       "address": "0x5e1cc0",
       "matching": 0.5,
       "name": "GetRuntimePtrTable0066F588",
@@ -36582,7 +36618,7 @@
     },
     {
       "address": "0x5ffd49",
-      "matching": 0.9866666666666667,
+      "matching": 1.0,
       "name": "CFileDialog::OnNotify",
       "type": 1
     },
@@ -36923,9 +36959,15 @@
       "type": 1
     },
     {
+      "address": "0x604ba2",
+      "matching": 0.5,
+      "name": "CDialog::GetMessageMap",
+      "type": 1
+    },
+    {
       "address": "0x604ba8",
-      "matching": 0.11764705882352941,
-      "name": "TTooltipRelayWindowState::PreTranslateMessageForDialogAndDispatchHotkey",
+      "matching": 0.4225352112676056,
+      "name": "CDialog::PreTranslateMessage",
       "type": 1
     },
     {
@@ -36948,8 +36990,8 @@
     },
     {
       "address": "0x604c41",
-      "matching": 0.03278688524590164,
-      "name": "OnCmdMsg",
+      "matching": 0.9830508474576272,
+      "name": "CDialog::OnCmdMsg",
       "type": 1
     },
     {
@@ -37007,6 +37049,12 @@
       "type": 1
     },
     {
+      "address": "0x605081",
+      "matching": 1.0,
+      "name": "CDialog::SetOccDialogInfo",
+      "type": 1
+    },
+    {
       "address": "0x60508e",
       "matching": 0.9166666666666666,
       "name": "CDialog::CDialog(char const *, class CWnd *)",
@@ -37043,9 +37091,21 @@
       "type": 1
     },
     {
+      "address": "0x605365",
+      "matching": 1.0,
+      "name": "CDialog::PreInitDialog",
+      "type": 1
+    },
+    {
       "address": "0x605366",
       "matching": 0.9818181818181818,
       "name": "CDialog::HandleInitDialog",
+      "type": 1
+    },
+    {
+      "address": "0x605442",
+      "matching": 1.0,
+      "name": "CDialog::OnSetFont",
       "type": 1
     },
     {
@@ -37058,6 +37118,12 @@
       "address": "0x6054aa",
       "matching": 0.9090909090909091,
       "name": "CDialog::OnOK",
+      "type": 1
+    },
+    {
+      "address": "0x6054c3",
+      "matching": 1.0,
+      "name": "CDialog::OnCancel",
       "type": 1
     },
     {
@@ -37440,32 +37506,32 @@
     },
     {
       "address": "0x606c4e",
-      "matching": 0.0,
-      "name": "TTechStorePage::CloseCityDialogChildrenAndReleaseSelf",
+      "matching": 1.0,
+      "name": "CCmdTarget::IsInvokeAllowed",
       "type": 1
     },
     {
       "address": "0x606c54",
-      "matching": 0.5,
-      "name": "TTechStorePage::CloneEngineerDialogStateToNewInstance",
+      "matching": 1.0,
+      "name": "CCmdTarget::GetDispatchIID",
       "type": 1
     },
     {
       "address": "0x606c59",
       "matching": 1.0,
-      "name": "TTechStorePage::ShallowFree",
+      "name": "CCmdTarget::GetTypeInfoCount",
       "type": 1
     },
     {
       "address": "0x606c5c",
       "matching": 1.0,
-      "name": "TTechStorePage::GetCityDialogFlagByte4",
+      "name": "CCmdTarget::GetTypeLibCache",
       "type": 1
     },
     {
       "address": "0x606c5f",
-      "matching": 0.0,
-      "name": "TTechStorePage::SetCityDialogFlagByte4",
+      "matching": 1.0,
+      "name": "CCmdTarget::GetTypeLib",
       "type": 1
     },
     {
@@ -37495,19 +37561,19 @@
     {
       "address": "0x606cac",
       "matching": 0.5,
-      "name": "TTechStorePage::DispatchUiSelectionToHandler",
+      "name": "CCmdTarget::GetDispatchMap",
       "type": 1
     },
     {
       "address": "0x606cb2",
       "matching": 0.5,
-      "name": "TTechStorePage::ForwardNotifyParamToPrimaryChildSlot44",
+      "name": "CCmdTarget::GetEventSinkMap",
       "type": 1
     },
     {
       "address": "0x606cb8",
       "matching": 0.5,
-      "name": "TTechStorePage::DispatchUiCommandToHandler",
+      "name": "CCmdTarget::GetInterfaceMap",
       "type": 1
     },
     {
@@ -37518,38 +37584,38 @@
     },
     {
       "address": "0x606cf0",
-      "matching": 0.4,
-      "name": "TTechStorePage::ForwardCityDialogParamToChildSlot48",
+      "matching": 1.0,
+      "name": "CCmdTarget::OnCreateAggregates",
       "type": 1
     },
     {
       "address": "0x606cf4",
-      "matching": 0.5,
-      "name": "TTechStorePage::DoIdle",
+      "matching": 1.0,
+      "name": "CCmdTarget::GetInterfaceHook",
       "type": 1
     },
     {
       "address": "0x606cf9",
       "matching": 0.5,
-      "name": "TTechStorePage::HandleEvent",
+      "name": "CCmdTarget::GetConnectionMap",
       "type": 1
     },
     {
       "address": "0x606cff",
-      "matching": 0.5,
-      "name": "TTechStorePage::SetCityDialogValueDword10",
+      "matching": 1.0,
+      "name": "CCmdTarget::GetConnectionHook",
       "type": 1
     },
     {
       "address": "0x606d04",
-      "matching": 0.5,
-      "name": "TTechStorePage::GetCityDialogValueDword10",
+      "matching": 1.0,
+      "name": "CCmdTarget::GetExtraConnectionPoints",
       "type": 1
     },
     {
       "address": "0x606d09",
       "matching": 0.5,
-      "name": "TTechStorePage::DispatchQueuedUiCommandAndRelease",
+      "name": "CCmdTarget::GetCommandMap",
       "type": 1
     },
     {
@@ -37878,8 +37944,8 @@
     },
     {
       "address": "0x607bda",
-      "matching": 0.6666666666666666,
-      "name": "TMacViewMgr_Slot22_Target",
+      "matching": 1.0,
+      "name": "CWnd::PreSubclassWindow",
       "type": 1
     },
     {
@@ -37932,8 +37998,8 @@
     },
     {
       "address": "0x6081d9",
-      "matching": 0.0,
-      "name": "PreCreateWindow",
+      "matching": 0.9444444444444444,
+      "name": "CWnd::PreCreateWindow",
       "type": 1
     },
     {
@@ -37961,6 +38027,12 @@
       "type": 1
     },
     {
+      "address": "0x608408",
+      "matching": 1.0,
+      "name": "CWnd::PostNcDestroy",
+      "type": 1
+    },
+    {
       "address": "0x608409",
       "matching": 1.0,
       "name": "CWnd::OnFinalRelease",
@@ -37980,8 +38052,8 @@
     },
     {
       "address": "0x6084ae",
-      "matching": 0.5,
-      "name": "TMacViewMgr_Slot34_Target",
+      "matching": 1.0,
+      "name": "CWnd::GetSuperWndProcAddr",
       "type": 1
     },
     {
@@ -37998,8 +38070,8 @@
     },
     {
       "address": "0x60852e",
-      "matching": 0.0,
-      "name": "AssignSharedStringFromField84",
+      "matching": 1.0,
+      "name": "CWnd::OnToolHitTest",
       "type": 1
     },
     {
@@ -38070,8 +38142,8 @@
     },
     {
       "address": "0x608a2b",
-      "matching": 0.0,
-      "name": "SetEditSelectionAndScrollCaret(void)",
+      "matching": 1.0,
+      "name": "CWnd::WinHelpA",
       "type": 1
     },
     {
@@ -38106,8 +38178,8 @@
     },
     {
       "address": "0x6091d9",
-      "matching": 0.0,
-      "name": "UpdateControlCachedIntFromWindowText",
+      "matching": 1.0,
+      "name": "CWnd::OnNotify",
       "type": 1
     },
     {
@@ -38172,8 +38244,8 @@
     },
     {
       "address": "0x6095cd",
-      "matching": 0.5,
-      "name": "TMacViewMgr_Slot28_Target",
+      "matching": 1.0,
+      "name": "CWnd::GetScrollBarCtrl",
       "type": 1
     },
     {
@@ -38412,14 +38484,20 @@
     },
     {
       "address": "0x60a769",
-      "matching": 0.4,
-      "name": "TMacViewMgr_Slot30_Target",
+      "matching": 1.0,
+      "name": "CWnd::ContinueModal",
       "type": 1
     },
     {
       "address": "0x60a770",
-      "matching": 0.125,
-      "name": "InitDialogWindowAndSyncTitleIfChanged",
+      "matching": 1.0,
+      "name": "CWnd::EndModalLoop",
+      "type": 1
+    },
+    {
+      "address": "0x60a90f",
+      "matching": 1.0,
+      "name": "CWnd::IsFrameWnd",
       "type": 1
     },
     {
@@ -39479,6 +39557,12 @@
       "type": 1
     },
     {
+      "address": "0x6137e7",
+      "matching": 1.0,
+      "name": "CClientDC::`scalar deleting destructor'",
+      "type": 1
+    },
+    {
       "address": "0x613803",
       "matching": 0.95,
       "name": "CClientDC::~CClientDC",
@@ -39949,7 +40033,7 @@
     {
       "address": "0x6159b9",
       "matching": 0.06060606060606061,
-      "name": "SetEditSelectionAndScrollCaret(void)",
+      "name": "SetEditSelectionAndScrollCaret",
       "type": 1
     },
     {
@@ -40955,6 +41039,12 @@
       "type": 1
     },
     {
+      "address": "0x622442",
+      "matching": 0.5,
+      "name": "CDialog::GetRuntimeClass",
+      "type": 1
+    },
+    {
       "address": "0x622448",
       "matching": 0.4,
       "name": "InitializeThreadObjectVtableProxy",
@@ -41498,6 +41588,12 @@
       "address": "0x63e478",
       "matching": 1.0,
       "name": "ImperialismCommandLineInfo::`vftable'",
+      "type": 5
+    },
+    {
+      "address": "0x63e5a0",
+      "matching": 1.0,
+      "name": "TModalDialogBase::`vftable'",
       "type": 5
     },
     {

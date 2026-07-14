@@ -91,14 +91,6 @@ undefined4 FromHandle(void)
   return 0;
 }
 
-// ghidra_name TMacViewMgr_Slot22_Target
-// ghidra_proto undefined TMacViewMgr_Slot22_Target()
-// FUNCTION: IMPERIALISM 0x00607bda
-undefined4 TMacViewMgr_Slot22_Target(void)
-{
-  return 0;
-}
-
 // ghidra_name GetAfxSubclassWndProcEntry
 // ghidra_proto undefined GetAfxSubclassWndProcEntry()
 // FUNCTION: IMPERIALISM 0x00607c0a
@@ -111,30 +103,6 @@ undefined4 GetAfxSubclassWndProcEntry(void)
 // ghidra_proto undefined CreateEx()
 // FUNCTION: IMPERIALISM 0x006080ce
 undefined4 CreateEx(void)
-{
-  return 0;
-}
-
-// ghidra_name PreCreateWindow
-// ghidra_proto undefined PreCreateWindow()
-// FUNCTION: IMPERIALISM 0x006081d9
-undefined4 PreCreateWindow(void)
-{
-  return 0;
-}
-
-// ghidra_name TMacViewMgr_Slot34_Target
-// ghidra_proto undefined TMacViewMgr_Slot34_Target()
-// FUNCTION: IMPERIALISM 0x006084ae
-undefined4 TMacViewMgr_Slot34_Target(void)
-{
-  return 0;
-}
-
-// ghidra_name AssignSharedStringFromField84
-// ghidra_proto undefined OnToolHitTest()
-// FUNCTION: IMPERIALISM 0x0060852e
-undefined4 OnToolHitTest(void)
 {
   return 0;
 }
@@ -187,30 +155,6 @@ undefined4 OnNTCtlColor(void)
   return 0;
 }
 
-// ghidra_name SetEditSelectionAndScrollCaret
-// ghidra_proto undefined RunWinHelpAfterCancelModeBroadcast()
-// FUNCTION: IMPERIALISM 0x00608a2b
-undefined4 RunWinHelpAfterCancelModeBroadcast(void)
-{
-  return 0;
-}
-
-// ghidra_name UpdateControlCachedIntFromWindowText
-// ghidra_proto undefined OnNotify()
-// FUNCTION: IMPERIALISM 0x006091d9
-undefined4 OnNotify(void)
-{
-  return 0;
-}
-
-// ghidra_name TMacViewMgr_Slot28_Target
-// ghidra_proto undefined TMacViewMgr_Slot28_Target()
-// FUNCTION: IMPERIALISM 0x006095cd
-undefined4 TMacViewMgr_Slot28_Target(void)
-{
-  return 0;
-}
-
 // ghidra_name UpdateData
 // ghidra_proto undefined UpdateData()
 // FUNCTION: IMPERIALISM 0x0060a1c4
@@ -231,22 +175,6 @@ undefined4 CDataExchange(void)
 // ghidra_proto undefined TMacViewMgr_Slot45_Target()
 // FUNCTION: IMPERIALISM 0x0060a3f7
 undefined4 TMacViewMgr_Slot45_Target(void)
-{
-  return 0;
-}
-
-// ghidra_name TMacViewMgr_Slot30_Target
-// ghidra_proto undefined TMacViewMgr_Slot30_Target()
-// FUNCTION: IMPERIALISM 0x0060a769
-undefined4 TMacViewMgr_Slot30_Target(void)
-{
-  return 0;
-}
-
-// ghidra_name InitDialogWindowAndSyncTitleIfChanged
-// ghidra_proto undefined TMacViewMgr_Slot31_Target()
-// FUNCTION: IMPERIALISM 0x0060a770
-undefined4 TMacViewMgr_Slot31_Target(void)
 {
   return 0;
 }
