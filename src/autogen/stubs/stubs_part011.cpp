@@ -155,14 +155,6 @@ undefined4 AdvanceSelectableTextOptionEntryIterator(void)
   return 0;
 }
 
-// ghidra_name IsSelectableTextOptionEntryIteratorValid
-// ghidra_proto undefined IsSelectableTextOptionEntryIteratorValid()
-// FUNCTION: IMPERIALISM 0x00491ab0
-undefined4 IsSelectableTextOptionEntryIteratorValid(void)
-{
-  return 0;
-}
-
 // ghidra_name DestructTWindowAndUnlinkGlobalWindowNode
 // ghidra_proto undefined DestructTWindowAndUnlinkGlobalWindowNode()
 // FUNCTION: IMPERIALISM 0x00492140

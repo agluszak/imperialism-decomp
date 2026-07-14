@@ -5,6 +5,27 @@
 #include "game/global_data_tables.h"
 #include "game/turn_event_dialog_factory.h"
 
+// Cursor over a container's SelectableTextOptionEntry list (built by
+// BeginSelectableTextOptionEntryIterator, 0x00491a00, which is still an autogen stub
+// pending the container/node type recovery). Fields named by offset from the iterator
+// bodies: the traversal walks the container's +0x44 root using direction08 to pick the
+// forward/backward links, caching the resolved entry pointer in currentEntry10. IsValid
+// (0x00491ab0) simply reports whether that cached entry is non-null.
+struct TSelectableTextOptionEntryIterator {
+  void* currentNode00;  // +0x00 current tree/list node
+  void* container04;    // +0x04 owning container (root at +0x44)
+  int direction08;      // +0x08 traversal direction/mode
+  int field0c;          // +0x0c
+  void* currentEntry10; // +0x10 resolved current entry (validity field)
+
+  bool IsValid(); // 0x00491ab0
+};
+
+// FUNCTION: IMPERIALISM 0x00491ab0
+bool TSelectableTextOptionEntryIterator::IsValid() {
+  return currentEntry10 != nullptr;
+}
+
 void RegisterStartupDialogFactoryCallbacks(TTurnEventDialogFactoryRegistry* registry) {
   static TurnEventDialogFactoryProc kStartupFactories[] = {
       BuildTradeSchoolDialogControls,
