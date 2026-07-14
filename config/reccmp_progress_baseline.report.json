@@ -12405,7 +12405,7 @@
     },
     {
       "address": "0x4dd430",
-      "matching": 0.5142857142857142,
+      "matching": 0.5714285714285714,
       "name": "TGreatPower::ComputeRemainingDiplomacyAidBudget",
       "type": 1
     },
@@ -12844,7 +12844,8 @@
     },
     {
       "address": "0x4e05d0",
-      "matching": 1.0,
+      "effective": true,
+      "matching": 0.42857142857142855,
       "name": "TGreatPower::OrphanLeaf_NoCall_Ins02_004d7fc0_89",
       "type": 1
     },
@@ -12863,13 +12864,14 @@
     },
     {
       "address": "0x4e0690",
-      "matching": 1.0,
+      "effective": true,
+      "matching": 0.42857142857142855,
       "name": "TGreatPower::ReturnFalseNationStateCapabilityFlag90",
       "type": 1
     },
     {
       "address": "0x4e06d0",
-      "matching": 1.0,
+      "matching": 0.8095238095238095,
       "name": "TGreatPower::SumNationRuntimeFiveBucketValue44",
       "type": 1
     },
@@ -12899,7 +12901,7 @@
     },
     {
       "address": "0x4e09a0",
-      "matching": 0.5180722891566265,
+      "matching": 0.5421686746987951,
       "name": "TGreatPower::ComputeCityOrderCapabilityAggregateScore",
       "type": 1
     },
@@ -13675,7 +13677,7 @@
     },
     {
       "address": "0x4ea0e0",
-      "matching": 0.723404255319149,
+      "matching": 0.6808510638297872,
       "name": "TAutoGreatPower::OrphanLeaf_NoCall_Ins02_004d7f00",
       "type": 1
     },
@@ -18541,19 +18543,19 @@
     },
     {
       "address": "0x52f4f0",
-      "matching": 0.0,
+      "matching": 1.0,
       "name": "TForeignMinister::AddToForeignMinisterCounterAtIndex",
       "type": 1
     },
     {
       "address": "0x52f520",
-      "matching": 0.6666666666666666,
+      "matching": 1.0,
       "name": "TForeignMinister::SetForeignMinisterReadyFlag14",
       "type": 1
     },
     {
       "address": "0x52f540",
-      "matching": 0.0,
+      "matching": 1.0,
       "name": "TForeignMinister::SetForeignMinisterPrimaryAndSecondaryTargets",
       "type": 1
     },
@@ -18601,7 +18603,7 @@
     },
     {
       "address": "0x52fd10",
-      "matching": 0.0625,
+      "matching": 0.9841269841269841,
       "name": "TForeignMinister::RefreshForeignMinisterStateByLocalizationMode",
       "type": 1
     },

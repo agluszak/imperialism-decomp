@@ -18,11 +18,15 @@ public:
   // slot 0x12 (body 0x0052f4b0) — seed the foreign-minister state bytes (0x49-0x4f)
   // and capability flags; sets flag 0x14 when the owner's treasury is negative.
   virtual void InitializeForeignMinisterStateFlags();
-  virtual void Call4C();
-  virtual void MinisterSlot14();
-  virtual void Call54();
+  // slot 0x13 (0x0052f4f0) — counters1e[index] += delta.
+  virtual void AddToForeignMinisterCounterAtIndex(short index, short delta);
+  // slot 0x14 (0x0052f520) — set capability flag 0x14.
+  virtual void SetForeignMinisterReadyFlag14();
+  // slot 0x15 (0x0052f540) — store primary/secondary targets at 0x10/0x12.
+  virtual void SetForeignMinisterPrimaryAndSecondaryTargets(short primary, short secondary);
 
-  virtual void Call58();
+  // slot 0x16 (0x0052fd10) — refresh minister sub-state gated on the sim-mode getter.
+  virtual void RefreshForeignMinisterStateByLocalizationMode();
   virtual void MinisterSlot17();
   virtual void MinisterSlot18();
   virtual void MinisterSlot19();

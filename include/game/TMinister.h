@@ -38,13 +38,17 @@ public:
   int ownerContextAt04;       // +0x4 — great-power back-pointer from InitializeBaseOrderArray
   TIndexAndRankList* field_8; // +0x8 — minister order array (vtable 0x659c58)
   short skillIndexC;          // +0xC
-  unsigned char pad0e[0x14 - 0x0E];
+  unsigned char pad0e[0x10 - 0x0E];
+  short
+      field10; // +0x10 — foreign-minister primary target (SetForeignMinisterPrimaryAndSecondaryTargets)
+  short field12; // +0x12 — foreign-minister secondary target
   // +0x14/+0x16 — every TCityInteriorMinister-family constructor (TSteelCityMinister,
   // TShipBuilderCityMinister, TEvenCityMinister, ...) sets both to 1; no differentiating
   // value observed across ministers, semantic beyond "capability flag pair" unconfirmed.
   short capabilityFlag14;
   short capabilityFlag16;
-  unsigned char pad18[0x24 - 0x18];
+  unsigned char pad18[0x1e - 0x18];
+  short counters1e[3]; // +0x1e..0x23 — per-index counter array (AddToForeignMinisterCounterAtIndex)
   short capabilityFlag24;
   short capabilityFlag26;
   short capabilityFlag28;

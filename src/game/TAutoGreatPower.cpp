@@ -306,7 +306,7 @@ void TAutoGreatPower::ClearDiplomacyState1c6Block(void) {
 // FUNCTION: IMPERIALISM 0x004e7af0
 void TAutoGreatPower::BeginTurnDiplomacyPrePassSlot1c8() {
   if (this->city != 0) {
-    this->foreignMinister->Call58();
+    this->foreignMinister->RefreshForeignMinisterStateByLocalizationMode();
   }
 }
 

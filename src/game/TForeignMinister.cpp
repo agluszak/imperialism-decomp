@@ -96,13 +96,21 @@ void TForeignMinister::InitializeForeignMinisterStateFlags() {
 }
 
 // FUNCTION: IMPERIALISM 0x0052f4f0
-void TForeignMinister::Call4C() {}
+void TForeignMinister::AddToForeignMinisterCounterAtIndex(short index, short delta) {
+  this->counters1e[index] = static_cast<short>(this->counters1e[index] + delta);
+}
 
 // FUNCTION: IMPERIALISM 0x0052f520
-void TForeignMinister::MinisterSlot14() {}
+void TForeignMinister::SetForeignMinisterReadyFlag14() {
+  this->capabilityFlag14 = 1;
+}
 
 // FUNCTION: IMPERIALISM 0x0052f540
-void TForeignMinister::Call54() {}
+void TForeignMinister::SetForeignMinisterPrimaryAndSecondaryTargets(short primary,
+                                                                    short secondary) {
+  this->field10 = primary;
+  this->field12 = secondary;
+}
 
 // FUNCTION: IMPERIALISM 0x0052f570
 void TForeignMinister::MinisterSlot21() {}
@@ -291,7 +299,18 @@ void TForeignMinister::RecomputeOrderStateSlot9C() {
 }
 
 // FUNCTION: IMPERIALISM 0x0052fd10
-void TForeignMinister::Call58() {}
+void TForeignMinister::RefreshForeignMinisterStateByLocalizationMode() {
+  if (g_pSimMgr->GetTurnTickSlot3C() == 1) {
+    this->MinisterSlot18();
+  }
+  if (g_pSimMgr->GetTurnTickSlot3C() == 2) {
+    this->MinisterSlot19();
+  }
+  this->MinisterSlot1B();
+  this->MinisterSlot1E();
+  this->MinisterSlot1A();
+  this->MinisterSlot17();
+}
 
 // FUNCTION: IMPERIALISM 0x0052fd80
 void TForeignMinister::MinisterSlot18() {}
