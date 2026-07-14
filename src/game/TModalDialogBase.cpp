@@ -53,7 +53,7 @@ int TModalDialogBase::PrepareAndCreateModalFromTemplate() {
 }
 
 // FUNCTION: IMPERIALISM 0x0049d450
-int TModalDialogBase::FinalizeModalDialogAndRestoreOwnerFocus() {
+int TModalDialogBase::DoModal() {
   if (ownerWasDisabled != 0) {
     ::EnableWindow(ownerWindow, TRUE);
   }
@@ -68,4 +68,15 @@ int TModalDialogBase::FinalizeModalDialogAndRestoreOwnerFocus() {
   const int result = reinterpret_cast<const int*>(this)[0x2c / 4];
   finalizeState = 1;
   return result;
+}
+
+// FUNCTION: IMPERIALISM 0x0049d510
+void TModalDialogBase::CleanupModalCreateState() {
+  if (modalCreated != 0) {
+    DestroyWindow();
+    PostModal();
+    finalizeState = 0;
+    createdDialog = nullptr;
+    modalCreated = 0;
+  }
 }

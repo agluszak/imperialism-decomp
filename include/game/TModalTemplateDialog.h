@@ -12,7 +12,6 @@ public:
       : TModalDialogBase(templateId, pParentWnd) {}
   ~TModalTemplateDialog() override;
 
-  void CleanupModalCreateState();         // 0x0049d510
   void DestroyListBoxAndHotKeyChildren(); // 0x004152e0
   BOOL UpdateData(BOOL saveAndValidate);
 

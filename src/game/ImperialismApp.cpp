@@ -395,7 +395,7 @@ int ImperialismApp::ShowAutoResolutionDialogIfNeeded() {
     dialog.PrepareAndCreateModalFromTemplate();
     dialog.autoResolutionCheckState = autoResMode;
     dialog.UpdateData(FALSE);
-    dialog.FinalizeModalDialogAndRestoreOwnerFocus();
+    dialog.DoModal();
     autoResMode = dialog.autoResolutionCheckState;
   }
 

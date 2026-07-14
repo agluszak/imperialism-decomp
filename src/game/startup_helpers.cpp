@@ -207,7 +207,7 @@ BOOL WarnLowDiskSpaceAndConfirmContinue() {
     return FALSE;
   }
   dialog.UpdateData(FALSE);
-  return dialog.FinalizeModalDialogAndRestoreOwnerFocus() == 1 ? TRUE : FALSE;
+  return dialog.DoModal() == 1 ? TRUE : FALSE;
 }
 
 // FUNCTION: IMPERIALISM 0x00493250

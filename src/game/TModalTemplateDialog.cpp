@@ -21,14 +21,3 @@ BOOL TModalTemplateDialog::UpdateData(BOOL saveAndValidate) {
   dialog.Detach();
   return result;
 }
-
-// FUNCTION: IMPERIALISM 0x0049d510
-void TModalTemplateDialog::CleanupModalCreateState() {
-  if (modalCreated != 0) {
-    DestroyWindow();
-    PostModal();
-    finalizeState = 0;
-    createdDialog = nullptr;
-    modalCreated = 0;
-  }
-}

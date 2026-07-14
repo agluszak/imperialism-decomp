@@ -885,7 +885,7 @@ address|target_cpp|ownership|note
 49d180|src/game/TBackdropWindow.cpp|manual|marker_sync
 49d360|src/game/TModalDialogBase.cpp|manual|marker_sync
 49d450|src/game/TModalDialogBase.cpp|manual|marker_sync
-49d510|src/game/TModalTemplateDialog.cpp|manual|marker_sync
+49d510|src/game/TModalDialogBase.cpp|manual|marker_sync
 49d620|src/game/ui_invalidation_guard.cpp|manual|marker_sync
 49d650|src/game/TAdorner.cpp|manual|marker_sync
 49d6d0|src/game/TAdorner.cpp|manual|marker_sync
