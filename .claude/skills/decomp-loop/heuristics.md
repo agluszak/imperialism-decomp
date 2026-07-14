@@ -1384,3 +1384,25 @@ ground truth because it is built from real nafxcw.lib. Method that worked for CI
    `?GetMessageMap@Class@@MBEPBUAFX_MSGMAP@@XZ`, same as the dialog GetMessageMaps.
 Only after every slot pairs can the `// VTABLE:` marker go on (the vtable gate requires 100%
 for marked vtables). A subagent is well-suited to the mechanical step-2/3 triangulation.
+
+## 90. A game "override" that forwards to the base but isn't in the orig vtable slot is a mis-attribution — check the raw slot
+Extending note 89 to the CFrameWnd family (CMainFrame vtable 0x6488d8, 63 slots, 100%): most
+slots were already claimed by the CDialog+CView passes (shared CObject/CCmdTarget/CWnd base),
+leaving 5 CFrameWnd library slots (PreTranslateMessage/PostNcDestroy/IsFrameWnd/GetActiveFrame/
+DelayUpdateFrameMenu) + 3 class-specific (GetMessageMap slot 12 SYNTHETIC, scalar-dtor SYNTHETIC,
+a real WinHelp override). Two transferable lessons:
+- **Slot 12 GetMessageMap and the scalar deleting destructor are per-class SYNTHETIC**, claimed
+  with `// SYNTHETIC:` + `?GetMessageMap@Class@@MBEPBUAFX_MSGMAP@@XZ` / `??_GClass@@UAEPAXI@Z`
+  (add the `??_G` row to symbols.csv if Ghidra never emitted the function).
+- **When a class declares `virtual X() override` whose body just forwards to `Base::X()`, verify
+  the ORIGINAL vtable slot actually points to that game function — not the inherited library
+  one.** CMainFrame carried a bogus `CMainFrame::PreTranslateMessage` (forwarding to
+  `CFrameWnd::PreTranslateMessage`), but orig slot 0x98 held the *library* CFrameWnd function
+  (raw bytes `B7 C7 61 00` = 0x61c7b7). The function it was mapped to (0x413a20) is referenced
+  from a *different* vtable (ImperialismApp slot 0x60, via thunk) and its body calls
+  `CWinThread::PreTranslateMessage` — so it was really `ImperialismApp::PreTranslateMessage`
+  (a CWinApp/CWinThread override) mis-attributed to CMainFrame with a wrong base call. A
+  forwarding override that installs a function the original never put in that slot both breaks
+  the marked vtable and hides the real owner. Re-home by: raw-reading the orig slot, xref'ing
+  the function to find which vtable actually references it, and confirming the base call in the
+  body identifies the parent class.

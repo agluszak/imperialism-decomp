@@ -127,6 +127,9 @@
 // LIBRARY: IMPERIALISM 0x0060a90f
 // ?IsFrameWnd@CWnd@@UBEHXZ
 
+// LIBRARY: IMPERIALISM 0x0060a912
+// ?IsFrameWnd@CFrameWnd@@UBEHXZ
+
 // LIBRARY: IMPERIALISM 0x00613dd5
 // ?PostNcDestroy@CView@@MAEXXZ
 
@@ -171,6 +174,15 @@
 
 // LIBRARY: IMPERIALISM 0x0061419c
 // ?OnEndPrinting@CView@@MAEXPAVCDC@@PAUCPrintInfo@@@Z
+
+// LIBRARY: IMPERIALISM 0x0061c82e
+// ?PostNcDestroy@CFrameWnd@@MAEXXZ
+
+// LIBRARY: IMPERIALISM 0x0061e419
+// ?DelayUpdateFrameMenu@CFrameWnd@@UAEXPAUHMENU__@@@Z
+
+// LIBRARY: IMPERIALISM 0x0061e49c
+// ?GetActiveFrame@CFrameWnd@@UAEPAV1@XZ
 
 // LIBRARY: IMPERIALISM 0x00622442
 // ?GetRuntimeClass@CDialog@@UBEPAUCRuntimeClass@@XZ

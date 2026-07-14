@@ -259,6 +259,12 @@
       "type": 1
     },
     {
+      "address": "0x413a20",
+      "matching": 1.0,
+      "name": "ImperialismApp::PreTranslateMessage",
+      "type": 1
+    },
+    {
       "address": "0x413a50",
       "matching": 0.0425531914893617,
       "name": "ShowSelectedDibInTemplateDDDialog",
@@ -2592,7 +2598,7 @@
     {
       "address": "0x484bd0",
       "matching": 0.5,
-      "name": "GetTMacViewMgrMessageMap",
+      "name": "CMainFrame::GetMessageMap",
       "type": 1
     },
     {
@@ -2608,8 +2614,14 @@
       "type": 1
     },
     {
+      "address": "0x484c40",
+      "matching": 1.0,
+      "name": "CMainFrame::`scalar deleting destructor'",
+      "type": 1
+    },
+    {
       "address": "0x484c70",
-      "matching": 0.6551724137931034,
+      "matching": 0.6896551724137931,
       "name": "TMacViewMgr::DestroyTMacViewMgrObject",
       "type": 1
     },
@@ -2705,8 +2717,8 @@
     },
     {
       "address": "0x485c20",
-      "matching": 0.0,
-      "name": "SendF1KeyDownToActiveMainWindow",
+      "matching": 0.8181818181818182,
+      "name": "CMainFrame::WinHelp",
       "type": 1
     },
     {
@@ -16277,7 +16289,7 @@
     },
     {
       "address": "0x5083f0",
-      "matching": 0.4037854889589905,
+      "matching": 0.39747634069400634,
       "name": "TLanguageMgr::Localize",
       "type": 1
     },
@@ -21369,7 +21381,7 @@
     },
     {
       "address": "0x545940",
-      "matching": 0.4277176546599903,
+      "matching": 0.4264254563075432,
       "name": "TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine",
       "type": 1
     },
@@ -38508,8 +38520,8 @@
     },
     {
       "address": "0x60a912",
-      "matching": 0.4,
-      "name": "TMacViewMgr::TMacViewMgr_VtblSlot046",
+      "matching": 1.0,
+      "name": "CFrameWnd::IsFrameWnd",
       "type": 1
     },
     {
@@ -40650,8 +40662,8 @@
     },
     {
       "address": "0x61c82e",
-      "matching": 0.25,
-      "name": "TMacViewMgr::TMacViewMgr_VtblSlot043",
+      "matching": 1.0,
+      "name": "CFrameWnd::PostNcDestroy",
       "type": 1
     },
     {
@@ -40943,6 +40955,12 @@
       "type": 1
     },
     {
+      "address": "0x61e419",
+      "matching": 1.0,
+      "name": "CFrameWnd::DelayUpdateFrameMenu",
+      "type": 1
+    },
+    {
       "address": "0x61e42d",
       "matching": 1.0,
       "name": "CFrameWnd::OnIdleUpdateCmdUI",
@@ -40950,8 +40968,8 @@
     },
     {
       "address": "0x61e49c",
-      "matching": 0.5,
-      "name": "TMacViewMgr::TMacViewMgr_VtblSlot050",
+      "matching": 1.0,
+      "name": "CFrameWnd::GetActiveFrame",
       "type": 1
     },
     {
@@ -42068,6 +42086,12 @@
       "address": "0x6485c0",
       "matching": 1.0,
       "name": "TObject::`vftable'",
+      "type": 5
+    },
+    {
+      "address": "0x6488d8",
+      "matching": 1.0,
+      "name": "CMainFrame::`vftable'",
       "type": 5
     },
     {

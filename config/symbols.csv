@@ -51,7 +51,7 @@ address|name|symbol|size|type|prototype|provenance
 4138b0|ImperialismApp::PostStartupCommand100||23|function|undefined PostCommand100ToMainWindow()|
 413950|HandleStartupCommand100||114|function|undefined HandleStartupCommand100()|
 4139f0|ImperialismApp::RestoreWaitCursorIfStartupBusy||24|function|undefined WrapperFor_GetOrCreateMfcModuleThreadState_At004139f0()|
-413a20|WrapperFor_RefreshBackdropOnInputMessages_At00413a20||30|function|undefined WrapperFor_RefreshBackdropOnInputMessages_At00413a20()|
+413a20|ImperialismApp::PreTranslateMessage|?PreTranslateMessage@ImperialismApp@@UAEHPAUtagMSG@@@Z|30|function|public: virtual int __thiscall ImperialismApp::PreTranslateMessage(struct tagMSG *)|
 413a50|ShowSelectedDibInTemplateDDDialog||226|function|undefined ShowSelectedDibInTemplateDDDialog()|
 413b80|WrapperFor_CDialog_At00413b80||86|function|undefined WrapperFor_CDialog_At00413b80()|
 413c00|TModalDialogBase::`scalar deleting destructor'|??_GTModalDialogBase@@UAEPAXI@Z|30|function|undefined ScalarDeletingDestructor()|
@@ -548,9 +548,10 @@ address|name|symbol|size|type|prototype|provenance
 484ac0|WrapperFor_ftol_At00484ac0||30|function|undefined WrapperFor_ftol_At00484ac0()|
 484af0|CMainFrame::CreateObject|?CreateObject@CMainFrame@@SGPAVCObject@@XZ|143|function|CMainFrame * __cdecl CreateObject(void)|rtti
 484bb0|CMainFrame::GetRuntimeClass|?GetRuntimeClass@CMainFrame@@UBEPAUCRuntimeClass@@XZ|6|function|undefined GetRuntimeClass()|rtti
-484bd0|GetTMacViewMgrMessageMap||6|function|undefined GetTMacViewMgrMessageMap()|
+484bd0|CMainFrame::GetMessageMap|?GetMessageMap@CMainFrame@@MBEPBUAFX_MSGMAP@@XZ|6|function|protected: virtual struct AFX_MSGMAP const * __thiscall CMainFrame::GetMessageMap(void)const|
 484bf0|TMacViewMgr::ConstructTMacViewMgrInPlace||32|function|undefined ConstructTMacViewMgrInPlace()|
 484c10|OrphanDeadLeaf_NoRefs_00484c10||20|function|undefined OrphanDeadLeaf_NoRefs_00484c10()|
+484c40|CMainFrame::`scalar deleting destructor'|??_GCMainFrame@@UAEPAXI@Z|30|function|undefined ScalarDeletingDestructor()|
 484c70|TMacViewMgr::DestroyTMacViewMgrObject||108|function|undefined DestroyTMacViewMgrObject()|
 484d00|TMacViewMgr::TMacViewMgr_OnMsg_WM_CREATE_Impl||1|function|undefined TMacViewMgr_OnMsg_WM_CREATE_Impl()|
 484d70|ConfigureTopLevelWindowStyleAndPlacement||238|function|undefined ConfigureTopLevelWindowStyleAndPlacement()|
@@ -571,7 +572,7 @@ address|name|symbol|size|type|prototype|provenance
 4859d0|CMainFrame::OnEraseBkgnd||392|function|undefined TMacViewMgr_OnMsg_WM_ERASEBKGND_Impl()|
 485bd0|CMainFrame::OnPaint||26|function|void __thiscall OnPaint()|
 485c00|CMainFrame::OnChar||8|function|void __thiscall OnChar(uint,uint,uint)|
-485c20|SendF1KeyDownToActiveMainWindow||36|function|undefined SendF1KeyDownToActiveMainWindow()|
+485c20|CMainFrame::WinHelp|?WinHelpA@CMainFrame@@UAEXKI@Z|36|function|public: virtual void __thiscall CMainFrame::WinHelp(unsigned long,unsigned int)|
 485c60|CMainFrame::OnActivate||23|function|void __thiscall OnActivate(uint,CWnd *,int)|
 485c90|CMainFrame::OnActivateApp||98|function|undefined CreateTObjectInstance()|
 485df0|TObject::CreateObject|?CreateObject@TObject@@SGPAVCObject@@XZ|24|function|undefined CreateObject()|rtti
@@ -7194,7 +7195,7 @@ address|name|symbol|size|type|prototype|provenance
 60a794|AfxEndDeferRegisterClass|?AfxEndDeferRegisterClass@@YGHF@Z|314|function|int __stdcall AfxEndDeferRegisterClass(short)|msvc500_library_oracle
 60a8ce|AfxRegisterWithIcon|AfxRegisterWithIcon|65|function|undefined ?RegisterWithIcon@@YGHPAUtagWNDCLASSA@@PBDI@Z@0060a8ce()|
 60a90f|CWnd::IsFrameWnd|?IsFrameWnd@CWnd@@UBEHXZ||function|public: virtual int __thiscall CWnd::IsFrameWnd(void)const|msvc500_library_override
-60a912|TMacViewMgr::TMacViewMgr_VtblSlot046||4|function|undefined TMacViewMgr_VtblSlot046()|
+60a912|CFrameWnd::IsFrameWnd|?IsFrameWnd@CFrameWnd@@UBEHXZ|4|function|public: virtual int __thiscall CFrameWnd::IsFrameWnd(void)const|msvc500_library_override
 60a916|CFrameWnd::IsTracking|?IsTracking@CFrameWnd@@QBEHXZ|31|function|public: int __thiscall CFrameWnd::IsTracking(void) const|msvc500_library_oracle
 60a935|CWnd::SubclassCtl3d|?SubclassCtl3d@CWnd@@QAEHH@Z|74|function|public: int __thiscall CWnd::SubclassCtl3d(int)|msvc500_library_oracle
 60a97f|CWnd::SubclassDlg3d|?SubclassDlg3d@CWnd@@QAEHK@Z|53|function|public: int __thiscall CWnd::SubclassDlg3d(unsigned long)|msvc500_library_oracle
@@ -7650,8 +7651,8 @@ address|name|symbol|size|type|prototype|provenance
 61c749|CFrameWnd::RemoveFrameWnd|?RemoveFrameWnd@CFrameWnd@@IAEXXZ|36|function|protected: void __thiscall CFrameWnd::RemoveFrameWnd(void)|msvc500_library_oracle
 61c76d|CFrameWnd::LoadAccelTable|?LoadAccelTable@CFrameWnd@@QAEHPBD@Z|38|function|public: int __thiscall CFrameWnd::LoadAccelTable(char const *)|msvc500_library_oracle
 61c793|CFrameWnd::GetDefaultAccelerator|?GetDefaultAccelerator@CFrameWnd@@UAEPAUHACCEL__@@XZ|36|function|public: virtual struct HACCEL__* __thiscall CFrameWnd::GetDefaultAccelerator(void)|msvc500_library_oracle
-61c7b7|CFrameWnd::PreTranslateMessage|?PreTranslateMessage@CFrameWnd@@UAEHPAUtagMSG@@@Z|119|function|public: virtual int __thiscall CFrameWnd::PreTranslateMessage(struct tagMSG *)|msvc500_library_oracle
-61c82e|TMacViewMgr::TMacViewMgr_VtblSlot043||12|function|undefined TMacViewMgr_VtblSlot043()|
+61c7b7|CFrameWnd::PreTranslateMessage|?PreTranslateMessage@CFrameWnd@@UAEHPAUtagMSG@@@Z|119|function|public: virtual int __thiscall CFrameWnd::PreTranslateMessage(struct tagMSG *)|msvc500_library_override
+61c82e|CFrameWnd::PostNcDestroy|?PostNcDestroy@CFrameWnd@@MAEXXZ|12|function|protected: virtual void __thiscall CFrameWnd::PostNcDestroy(void)|msvc500_library_override
 61c83a|OnPaletteChanged||28|function|undefined OnPaletteChanged()|
 61c856|CFrameWnd::OnQueryNewPalette|?OnQueryNewPalette@CFrameWnd@@IAEHXZ|33|function|protected: int __thiscall CFrameWnd::OnQueryNewPalette(void)|msvc500_library_oracle
 61c877|CFrameWnd::ExitHelpMode|?ExitHelpMode@CFrameWnd@@UAEXXZ|107|function|public: virtual void __thiscall CFrameWnd::ExitHelpMode(void)|msvc500_library_oracle
@@ -7702,8 +7703,9 @@ address|name|symbol|size|type|prototype|provenance
 61e0bd|CFrameWnd::OnUpdateFrameTitle|?OnUpdateFrameTitle@CFrameWnd@@UAEXH@Z|68|function|void __thiscall ?OnUpdateFrameTitle@CFrameWnd@@UAEXH@Z(int param_1)|
 61e101|CFrameWnd::UpdateFrameTitleForDocument|?UpdateFrameTitleForDocument@CFrameWnd@@IAEXPBD@Z|253|function|protected: void __thiscall CFrameWnd::UpdateFrameTitleForDocument(char const *)|msvc500_library_oracle
 61e1fe|CFrameWnd::OnSetPreviewMode|?OnSetPreviewMode@CFrameWnd@@UAEXHPAUCPrintPreviewState@@@Z|539|function|public: virtual void __thiscall CFrameWnd::OnSetPreviewMode(int, struct CPrintPreviewState *)|msvc500_library_oracle
+61e419|CFrameWnd::DelayUpdateFrameMenu|?DelayUpdateFrameMenu@CFrameWnd@@UAEXPAUHMENU__@@@Z||function|public: virtual void __thiscall CFrameWnd::DelayUpdateFrameMenu(struct HMENU__ *)|msvc500_library_override
 61e42d|CFrameWnd::OnIdleUpdateCmdUI|?OnIdleUpdateCmdUI@CFrameWnd@@IAEXXZ|111|function|protected: void __thiscall CFrameWnd::OnIdleUpdateCmdUI(void)|msvc500_library_oracle
-61e49c|TMacViewMgr::TMacViewMgr_VtblSlot050||3|function|undefined TMacViewMgr_VtblSlot050()|
+61e49c|CFrameWnd::GetActiveFrame|?GetActiveFrame@CFrameWnd@@UAEPAV1@XZ|3|function|public: virtual class CFrameWnd * __thiscall CFrameWnd::GetActiveFrame(void)|msvc500_library_override
 61e49f|CFrameWnd::RecalcLayout|?RecalcLayout@CFrameWnd@@UAEXH@Z|237|function|public: virtual void __thiscall CFrameWnd::RecalcLayout(int)|msvc500_library_oracle
 61e58c|CFrameWnd::NegotiateBorderSpace|?NegotiateBorderSpace@CFrameWnd@@UAEHIPAUtagRECT@@@Z|122|function|public: virtual int __thiscall CFrameWnd::NegotiateBorderSpace(unsigned int, struct tagRECT *)|msvc500_library_oracle
 61e606|CFrameWnd::OnSize|?OnSize@CFrameWnd@@IAEXIHH@Z|31|function|protected: void __thiscall CFrameWnd::OnSize(unsigned int, int, int)|msvc500_library_oracle

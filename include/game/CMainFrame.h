@@ -16,6 +16,7 @@ public:
   virtual void ReleaseWithFlag(int freeMemory) = 0;
 };
 
+// VTABLE: IMPERIALISM 0x006488d8
 class CMainFrame : public CFrameWnd {
 public:
   DECLARE_DYNCREATE(CMainFrame)
@@ -26,6 +27,9 @@ public:
   ~CMainFrame() override;
 
   afx_msg BOOL PreCreateWindow(CREATESTRUCT& cs) override;
+  // WinHelp override (vtable slot 0x74): instead of launching help, post a WM_KEYDOWN
+  // VK_F1 to the main include-view host window. 0x00485c20.
+  void WinHelp(DWORD dwData, UINT nCmd) override; // 0x00485c20
   afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
   // ON_COMMAND(100): the startup command InitInstance posts once the frame is up.
   afx_msg void OnStartupCommand100(); // 0x00484fd0
@@ -56,8 +60,6 @@ public:
   // ON_MESSAGE(0xBC0): validate then execute a queued UI command object carried in
   // lParam (posted by TApplication::DispatchQueuedUiCommandAndRelease). 0x00485960.
   afx_msg LRESULT OnMsg0BC0(WPARAM wParam, LPARAM lParam);
-
-  virtual BOOL PreTranslateMessage(MSG* msg) override;
 
   void ConfigureTopLevelWindowStyleAndPlacement(int width, int height);
   int SetFieldC0AndInvalidateWindowIfChanged(int styleValue); // 0x00485990

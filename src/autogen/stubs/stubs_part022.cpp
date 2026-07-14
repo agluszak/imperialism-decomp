@@ -171,14 +171,6 @@ undefined4 CDataExchange(void)
   return 0;
 }
 
-// ghidra_name TMacViewMgr::TMacViewMgr_VtblSlot046
-// ghidra_proto undefined TMacViewMgr_VtblSlot046()
-// FUNCTION: IMPERIALISM 0x0060a912
-undefined4 TMacViewMgr_VtblSlot046(void)
-{
-  return 0;
-}
-
 // ghidra_name Delete
 // ghidra_proto undefined Delete()
 // FUNCTION: IMPERIALISM 0x0060aab8
@@ -787,14 +779,6 @@ undefined4 CFrameWnd(void)
   return 0;
 }
 
-// ghidra_name TMacViewMgr::TMacViewMgr_VtblSlot043
-// ghidra_proto undefined TMacViewMgr_VtblSlot043()
-// FUNCTION: IMPERIALISM 0x0061c82e
-undefined4 TMacViewMgr_VtblSlot043(void)
-{
-  return 0;
-}
-
 // ghidra_name OnPaletteChanged
 // ghidra_proto undefined OnPaletteChanged()
 // FUNCTION: IMPERIALISM 0x0061c83a
@@ -823,14 +807,6 @@ undefined4 GetActiveView(void)
 // ghidra_proto void __thiscall ?SetActiveView@CFrameWnd@@QAEXPAVCView@@H@Z(CView * param_1, int param_2)
 // FUNCTION: IMPERIALISM 0x0061d8a2
 undefined4 Z_0061D8A2(void)
-{
-  return 0;
-}
-
-// ghidra_name TMacViewMgr::TMacViewMgr_VtblSlot050
-// ghidra_proto undefined TMacViewMgr_VtblSlot050()
-// FUNCTION: IMPERIALISM 0x0061e49c
-undefined4 TMacViewMgr_VtblSlot050(void)
 {
   return 0;
 }

@@ -1187,14 +1187,6 @@ undefined4 WrapperFor_ftol_At00484ac0(void)
   return 0;
 }
 
-// ghidra_name GetTMacViewMgrMessageMap
-// ghidra_proto undefined GetTMacViewMgrMessageMap()
-// FUNCTION: IMPERIALISM 0x00484bd0
-undefined4 GetTMacViewMgrMessageMap(void)
-{
-  return 0;
-}
-
 // ghidra_name OrphanDeadLeaf_NoRefs_00484c10
 // ghidra_proto undefined OrphanDeadLeaf_NoRefs_00484c10()
 // FUNCTION: IMPERIALISM 0x00484c10
@@ -1207,14 +1199,6 @@ undefined4 OrphanDeadLeaf_NoRefs_00484c10(void)
 // ghidra_proto undefined WrapperFor_TMacViewMgr_OnMsg_MSG_030F_At00485150()
 // FUNCTION: IMPERIALISM 0x00485150
 undefined4 WrapperFor_TMacViewMgr_OnMsg_MSG_030F_At00485150(void)
-{
-  return 0;
-}
-
-// ghidra_name SendF1KeyDownToActiveMainWindow
-// ghidra_proto undefined SendF1KeyDownToActiveMainWindow()
-// FUNCTION: IMPERIALISM 0x00485c20
-undefined4 SendF1KeyDownToActiveMainWindow(void)
 {
   return 0;
 }

@@ -37,6 +37,9 @@ public:
   // CWinApp lifecycle overrides resolved by DispatchMfcAppLifecycle.
   virtual BOOL InitInstance() override; // slot +0x58, 0x00412dc0
   virtual int ExitInstance() override;  // slot +0x70, 0x00413780
+  // CWinThread::PreTranslateMessage override (vtable slot +0x60): refresh the tiled
+  // backdrop on input messages, then chain to the base pump.
+  virtual BOOL PreTranslateMessage(MSG* pMsg) override; // slot +0x60, 0x00413a20
 
   int ShowAutoResolutionDialogIfNeeded();                            // 0x00415090
   BOOL SetSettingValueInSettingsSection(LPCTSTR key, LPCTSTR value); // 0x00415580

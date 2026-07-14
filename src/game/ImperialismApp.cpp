@@ -6,6 +6,7 @@
 #include "game/TSimMgr.h"
 #include "game/TModuleLibraryCacheTableStateB.h"
 #include "game/TAmbitApplication.h"
+#include "game/TBackdropWindow.h" // RefreshBackdropOnInputMessages
 #include "game/TSoundPlayer.h"
 #include "game/TDisplayMgr.h"
 #include "game/CAmbitDocument.h"
@@ -240,6 +241,16 @@ void ImperialismApp::RestoreWaitCursorIfStartupBusy() {
   if (waitCursorAnchorC0 != 0) {
     AfxGetApp()->RestoreWaitCursor();
   }
+}
+
+// CWinThread::PreTranslateMessage override (vtable slot +0x60): give the tiled backdrop a
+// chance to repaint on input traffic, then defer to the normal CWinThread pump. (Was
+// previously mis-attributed to CMainFrame::PreTranslateMessage with a CFrameWnd base call;
+// the vtable slot and the CWinThread base call both prove it is the CWinApp-level override.)
+// FUNCTION: IMPERIALISM 0x00413a20
+BOOL ImperialismApp::PreTranslateMessage(MSG* pMsg) {
+  RefreshBackdropOnInputMessages(pMsg);
+  return CWinThread::PreTranslateMessage(pMsg);
 }
 
 // Post WM_CLOSE to the main thread's window. Faithful to the original: when
