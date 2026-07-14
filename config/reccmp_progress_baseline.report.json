@@ -5568,19 +5568,19 @@
     },
     {
       "address": "0x4923f0",
-      "matching": 0.16666666666666666,
+      "matching": 1.0,
       "name": "CWMgrIterator::Reset",
       "type": 1
     },
     {
       "address": "0x492440",
-      "matching": 0.6086956521739131,
+      "matching": 1.0,
       "name": "CWMgrIterator::FirstWindow",
       "type": 1
     },
     {
       "address": "0x492470",
-      "matching": 0.43478260869565216,
+      "matching": 1.0,
       "name": "CWMgrIterator::NextWindow",
       "type": 1
     },
