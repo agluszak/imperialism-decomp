@@ -1318,3 +1318,40 @@ headers before splicing.
     `config/library_oracle_gamecode_allowlist.csv` until the class model is recovered.
     Always rebuild after a move: converting rand exposed 17 callsites of its invented
     name; a removed stub with a live caller is an LNK2001.
+
+88. **CDialog / CWnd vtable slots don't fail from ICF — MSVC500 doesn't fold — they
+    fail from trivial-stub pairing ambiguity + symbols.csv mislabels.** After
+    re-parenting the dialog subtree onto real MFC `CDialog` (note: TModalDialogBase :
+    CDialog, see the 0x6050d0 retirement), a `// VTABLE:` marker on a dialog class shows
+    the four dialog-specific slots modelled (scalar dtor / DoModal override at index 48 /
+    Prepare+Cleanup new virtuals at 54/55) and the *non-trivial* inherited CWnd slots
+    pairing (Create/DestroyWindow/WindowProc/OnInitDialog/OnOK/OnCancel), but ~15
+    **trivial** CCmdTarget slots (index 7-21: IsInvokeAllowed/GetDispatchIID/
+    GetTypeInfoCount/GetTypeLibCache/GetTypeLib and the OLE aggregation/connection
+    virtuals, all `return 0`/`return 1`/`return this` 2-6 byte stubs) show as mismatches.
+    Diagnosis steps and result:
+    (a) **It is NOT ICF/COMDAT folding.** Rebuilt with `-DIMPERIALISM_MATCH_LINK_FLAGS_CSV=
+    /OPT:NOICF`; the output binary differed from the folded build in only ~15 bytes (PE
+    timestamp + a few debug-dir bytes) — MSVC 5.0's linker predates `/OPT:ICF` and does
+    no identical-COMDAT folding. `/OPT:NOICF` is a no-op here; do not reach for it.
+    (b) **Root cause: dozens of identical trivial stubs are ambiguous to pair**, and the
+    orig-side rows are mislabelled in `config/symbols.csv` (e.g. 0x606c4e = a 6-byte
+    `return 1` is named `TTechStorePage::CloseCityDialogChildrenAndReleaseSelf`; it is
+    really `CCmdTarget::IsInvokeAllowed`). reccmp then can't map orig↔recomp for those
+    slots and picks a wrong name.
+    (c) **The fix is the CObject.cpp pattern applied to the whole CDialog vtable**
+    (0x0066fc2c, 54 slots): model `CObject->CCmdTarget->CWnd->CDialog` as LIBRARY with a
+    `// LIBRARY: 0xADDR` + canonical MFC name per slot, taking the slot order from the MFC
+    headers (afx.h CObject: GetRuntimeClass/~/Serialize/AssertValid/Dump; afxwin.h
+    CCmdTarget: OnCmdMsg/OnFinalRelease/IsInvokeAllowed/GetDispatchIID/GetTypeInfoCount/
+    GetTypeLibCache/GetTypeLib/...; CWnd: ...Create/DestroyWindow/PreCreateWindow/... at
+    index 22+) — NOT from the body-ambiguous oracle, which mis-guesses the trivial slots
+    (`AfxGetAfxWndProc`×5, `COleUILinkInfo::AddRef`×4). Verify the non-trivial anchors
+    against the raw vtable (Create=0x60820b idx23, WindowProc=0x60820b… OnInitDialog=
+    0x605445 idx49, OnOK=0x6054aa idx51, OnCancel=0x6054c3 idx52, DoModal=0x6051b9 idx48).
+    (d) **Complication making this a dedicated pass, not dialog-local:** those trivial MFC
+    stubs are shared across many game-class vtables (the addresses are currently owned/
+    named after game classes like TTechStorePage), so renaming+LIBRARY-annotating them is
+    a binary-wide MFC-vtable-modelling effort that touches those game classes' vtables
+    too. Until it's done, leave the dialog `// VTABLE:` markers unclaimed (the four
+    dialog-specific slots are already real virtuals; see TModalDialogBase.h).
