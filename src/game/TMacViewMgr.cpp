@@ -36,6 +36,9 @@
 undefined4 RebuildSurfaceRowsWithTemporaryRowBuffer(void);
 undefined4 BuildHexNeighborHighlightPolygonForTile(void);
 undefined4 CallObjectOffset24Vslot54IfPresent(void);
+// Genuine __cdecl(void*, int) heap-block reallocator; cast at call sites (same pattern
+// as TAutoGreatPower.cpp/TCountry.cpp). Returns the new block, or 0 on failure.
+undefined4 ReallocateHeapBlockWithAllocatorTracking(void);
 
 namespace {
 
@@ -214,10 +217,32 @@ void StrategicMapCallbackRecord::BuildBitmapMaskOpcodeBufferFromResourceRows(int
 }
 
 // FUNCTION: IMPERIALISM 0x004d5580
-void StrategicMapCallbackRecord::AppendOpcodeByte(int value) {
-  int index = field10;
-  field10 = index + 1;
-  *EnsureOpcodeBufferByteAtIndex(index) = static_cast<unsigned char>(value);
+StrategicMapCallbackRecord* StrategicMapCallbackRecord::AppendOpcodeByte(int value) {
+  unsigned int index = static_cast<unsigned int>(field10);
+  int newCount = index + 1;
+  field10 = newCount;
+  if (index >= static_cast<unsigned int>(field08)) {
+    unsigned int grownCapacity = static_cast<unsigned int>(newCount) * 2;
+    unsigned int clampedCapacity = grownCapacity;
+    if (0x7fffffff < grownCapacity) {
+      clampedCapacity = 0x7fffffff;
+    }
+    char* grown = reinterpret_cast<char*(__cdecl*)(char*, int)>(
+        ReallocateHeapBlockWithAllocatorTracking)(ownedBuffer04, grownCapacity);
+    if (grown == 0) {
+      ownedBuffer04 = reinterpret_cast<char*(__cdecl*)(char*, int)>(
+          ReallocateHeapBlockWithAllocatorTracking)(ownedBuffer04, newCount);
+      field08 = newCount;
+    } else {
+      ownedBuffer04 = grown;
+      field08 = clampedCapacity;
+    }
+  }
+  if (index >= static_cast<unsigned int>(field0c)) {
+    field0c = newCount;
+  }
+  ownedBuffer04[index] = static_cast<char>(value);
+  return this;
 }
 
 // FUNCTION: IMPERIALISM 0x004d5610

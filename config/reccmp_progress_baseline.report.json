@@ -11642,7 +11642,7 @@
     },
     {
       "address": "0x4d5580",
-      "matching": 0.07547169811320754,
+      "matching": 1.0,
       "name": "StrategicMapCallbackRecord::AppendOpcodeByte",
       "type": 1
     },
@@ -16418,7 +16418,7 @@
     },
     {
       "address": "0x50bea0",
-      "matching": 0.20990458882326216,
+      "matching": 0.2044525215810995,
       "name": "TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets",
       "type": 1
     },
