@@ -228,7 +228,7 @@ void TNavyMission::NoOpSlot84(int a, int b) {
     owner->NoOpSlot8C(a, b);
   }
   owner = this;
-  TMapOrderChildLinkNode* node = TTaskForce::CreateLinkedOrderNode(orderList24, item);
+  TMapOrderChildLinkNode* node = orderList24->CreateLinkedOrderNode(item);
   orderList24 = node;
   if (static_cast<char>(b) != 0) {
     RefreshSlot40();

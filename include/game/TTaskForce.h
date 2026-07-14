@@ -38,6 +38,13 @@ struct TMapOrderChildLinkNode {
   // node in the `this`/`next` chain whose object_ptr == child_node (unlink + delete) and
   // returns the chain head as seen from this node.
   TMapOrderChildLinkNode* RemoveLinkedOrderNodeByValueRecursive(TTaskForce* child_node); // 0x5525d0
+
+  // Real __thiscall method (0x552650, ECX=this node, one stack arg, RET 4) -- same
+  // mis-modeled-as-static bug as FindNodeMatching (was a TTaskForce static taking
+  // (next_node, child_node)). Allocates a fresh node (raw operator new, no zeroing)
+  // that prepends before `this` (the next node), links it in, and returns it.
+  // Null-safe on `this` (guards the back-link write), and asserts on alloc failure.
+  TMapOrderChildLinkNode* CreateLinkedOrderNode(TTaskForce* child_node); // 0x552650
 };
 
 ASSERT_SIZE(TMapOrderChildLinkNode, 0x10);
@@ -140,8 +147,6 @@ public:
 
   static TMapOrderChildLinkNode*
   DeleteMapOrderChildLinkAndReturnNext(TMapOrderChildLinkNode* child_link_node);
-  static TMapOrderChildLinkNode* CreateLinkedOrderNode(TMapOrderChildLinkNode* next_node,
-                                                       TTaskForce* child_node);
   static TMapOrderChildLinkNode*
   PruneDefeatedMapOrderChildrenAndReturnHead(TMapOrderChildLinkNode* child_link_head);
 

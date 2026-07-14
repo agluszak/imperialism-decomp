@@ -406,28 +406,38 @@ TMapOrderChildLinkNode::RemoveLinkedOrderNodeByValueRecursive(TTaskForce* child_
 }
 
 // FUNCTION: IMPERIALISM 0x00552650
-TMapOrderChildLinkNode* TTaskForce::CreateLinkedOrderNode(TMapOrderChildLinkNode* next_node,
-                                                          TTaskForce* child_node) {
-  TMapOrderChildLinkNode* new_node = new TMapOrderChildLinkNode();
-  if (new_node == 0) {
-    return 0;
+TMapOrderChildLinkNode* TMapOrderChildLinkNode::CreateLinkedOrderNode(TTaskForce* child_node) {
+  // `this` is the next node to prepend before (ECX); a raw non-value-initializing `new`
+  // matches the original's field-by-field write of exactly these four members.
+  // `raw` (the operator-new result) is only live during construction and stays in a
+  // scratch register; `result` is the phi materialized at the merge into the callee-saved
+  // return register, which the original reuses for `this` before construction (their live
+  // ranges do not overlap), so only one callee-saved register is needed.
+  TMapOrderChildLinkNode* raw = new TMapOrderChildLinkNode;
+  TMapOrderChildLinkNode* result;
+  if (raw != 0) {
+    raw->next = this;
+    raw->object_ptr = child_node;
+    raw->prev_link = 0;
+    raw->active_flag = 1;
+    if (this != 0) {
+      this->prev_link = raw;
+    }
+    if (raw->prev_link != 0) {
+      raw->prev_link->next = raw;
+    }
+    result = raw;
+  } else {
+    result = 0;
   }
-
-  new_node->object_ptr = child_node;
-  new_node->next = next_node;
-  new_node->prev_link = 0;
-  new_node->active_flag = 1;
-  new_node->pad_0d = 0;
-  new_node->pad_0e = 0;
-  new_node->pad_0f = 0;
-
-  if (next_node != 0) {
-    next_node->prev_link = new_node;
+  if (result == 0) {
+    // Original passes the (nil) node pointer as the HWND -- the compiler reuses that
+    // register for the return value, so keep the variable here rather than a literal 0.
+    MessageBoxA(reinterpret_cast<HWND>(result), g_szUiNilPointerMessage, g_szUiFailureMessage,
+                0x30);
+    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUNavy_006983C8, 0x64e);
   }
-  if (new_node->prev_link != 0) {
-    new_node->prev_link->next = new_node;
-  }
-  return new_node;
+  return result;
 }
 
 // FUNCTION: IMPERIALISM 0x005526e0
