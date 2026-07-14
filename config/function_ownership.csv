@@ -504,6 +504,7 @@ address|target_cpp|ownership|note
 489bf0|src/game/TMouseCaptureState.cpp|manual|marker_sync
 489cb0|src/game/TMouseCaptureState.cpp|manual|marker_sync
 489d40|src/game/TMouseCaptureState.cpp|manual|marker_sync
+489e40|src/game/TMouseCaptureState.cpp|manual|marker_sync
 489f00|src/game/TEvent.cpp|manual|marker_sync
 489f40|src/game/TEvent.cpp|manual|marker_sync
 48a070|src/game/TEventHandler.cpp|manual|marker_sync

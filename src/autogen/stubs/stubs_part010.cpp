@@ -1459,14 +1459,6 @@ undefined4 WrapperFor_AppendPointerToGlobalVectorAsStatus_At00489ab0(void)
   return 0;
 }
 
-// ghidra_name RenderMapOrderEntryTilePreview_Impl
-// ghidra_proto undefined RenderMapOrderEntryTilePreview_Impl()
-// FUNCTION: IMPERIALISM 0x00489e40
-undefined4 RenderMapOrderEntryTilePreview_Impl(void)
-{
-  return 0;
-}
-
 // ghidra_name TEvent::CreateTEventInstance
 // ghidra_proto undefined CreateTEventInstance()
 // FUNCTION: IMPERIALISM 0x00489ee0
