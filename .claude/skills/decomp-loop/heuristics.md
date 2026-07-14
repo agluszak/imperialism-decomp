@@ -1433,3 +1433,23 @@ headers before splicing.
     comment ABOVE the `// FUNCTION:` marker (Hard Rule 3), not between it and the decl.
     Smell to grep for: a `void Foo(T a,U b){ (void)a;(void)b; Foo(); }` forwarder next to a
     marked `Foo(void)`.
+
+96. **Resolve a method's real address through the vtable's ILT thunks before trusting a
+    header slot comment — a body can be mis-attached across two markers even when
+    `just vtable` reads 100%.** `just vtable` scores the slot-pointer *correspondence*, not
+    the function *bodies*, so a swapped body/marker pair passes it while both functions
+    score badly. Ground-truth recipe: dump the orig vtable (`objdump -s --start-address=
+    <vtable+slot*4> …`), take the slot's dword (an ILT thunk `0x40xxxx`), then
+    `objdump -d` that thunk to read its `jmp <realAddr>`. Documented pre-existing tangle in
+    TForeignMinister (both branch and origin/main): vtable slot 0x1a→0x52fdc0, slot
+    0x1e→0x530200. The real terrainSlot=7 "update per-nation interaction enable flags" body
+    is at 0x52fdc0 (slot 0x1a) per disasm (`xor bl,bl; mov esi,7`), but the source models
+    0x52fdc0 as an empty `MinisterSlot1A(short)` stub (0%) and attaches that terrainSlot=7
+    body to the `UpdateNation…()` method marked 0x530200 (really QueueTurnEventHint, a big
+    SEH fn, symbols.csv l.3498) → 6%. The header comment "slot 0x1e (0x0052fdc0)" is wrong.
+    Fix (needs class-recovery/vtable-matching care, not a routine tick): swap the slot-0x1a
+    and slot-0x1e *declarations* so the terrainSlot=7 body lands in slot 0x1a with marker
+    0x52fdc0 (drop its phantom `short arg` — RefreshForeignMinisterState 0x52fd10 calls it
+    arg-less; that's the lone `+push 0` diff there), stub 0x530200 as QueueTurnEventHint, and
+    re-verify each caller's dispatched slot offset (`call [reg+off]`) before trusting the
+    rename. Vtable stays 100% through the swap because the pointer pairing is unchanged.
