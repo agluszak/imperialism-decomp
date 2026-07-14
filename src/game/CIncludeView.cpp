@@ -102,6 +102,22 @@ ON_MESSAGE(0x4ef, OnDialogTreeHostMsg4EF)
 ON_MESSAGE(0x4c8, OnMciNotifyMode) // MCIWNDM_NOTIFYMODE
 END_MESSAGE_MAP()
 #endif
+// ?Serialize@?$CList@UIncludeViewOverlayRectRecord@@AAU1@@@UAEXAAVCArchive@@@Z
+
+// Every field is initialized in the member-initializer list in declaration order: the
+// original zeroes 0x40/0x44/0x48 before constructing the embedded m_overlayRectQueue
+// CList (0x4c), then 0x6c/0x70/0x74 and 0x90 after it, and writes the vptr LAST — the
+// MSVC signature of an all-init-list ctor with an empty body. Body assignments would
+// instead run after member construction and after the vptr write, scrambling the order.
+// m_overlayRectQueue (default CList ctor), m_overlayRectCursor68, and the capture CPoints
+// are left default/uninitialized, matching the original (no stores to 0x68 or 0x78-0x8f).
+// FUNCTION: IMPERIALISM 0x00482950
+CIncludeView::CIncludeView()
+    : CView(), m_activeDialogContext(0), m_field44(0), m_pOffscreenDib(0), m_tickTimerId(0),
+      m_field70(0), m_capturedControl74(0), m_uiInteractiveFlag90(1) {}
+
+// SYNTHETIC: IMPERIALISM 0x004829c0
+// CIncludeView::`scalar deleting destructor'
 
 // Compiler-emitted bodies of the m_overlayRectQueue CList<IncludeViewOverlayRectRecord,
 // IncludeViewOverlayRectRecord&> instantiation. The original emitted the set twice (one
@@ -121,19 +137,6 @@ END_MESSAGE_MAP()
 
 // TEMPLATE: IMPERIALISM 0x00484610
 // ?Serialize@?$CList@UIncludeViewOverlayRectRecord@@AAU1@@@UAEXAAVCArchive@@@Z
-
-// FUNCTION: IMPERIALISM 0x00482950
-CIncludeView::CIncludeView() : CView() {
-  m_activeDialogContext = 0;
-  m_field44 = 0;
-  m_pOffscreenDib = 0;
-  m_tickTimerId = 0;
-  m_capturedControl74 = 0;
-  m_uiInteractiveFlag90 = 1;
-}
-
-// SYNTHETIC: IMPERIALISM 0x004829c0
-// CIncludeView::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x00482ab0
 CIncludeView::~CIncludeView() {
@@ -297,6 +300,29 @@ void CIncludeView::OnLButtonUp(UINT nFlags, CPoint point) {
     }
     g_McAppMouseCaptureState.EndMouseCaptureAndStopRepeatTimer(nFlags, point.x, point.y);
   }
+}
+
+// Overrides CWnd::PreCreateWindow (vtable slot 0x64): register a private "AmbitGameWindow"
+// window class (3 = CS_VREDRAW|CS_HREDRAW, DefWindowProc, app icon 0x7a02, background
+// value 5) and force cs.lpszClass + the WS_CHILD|WS_VISIBLE style bits (0x06000000) before
+// delegating to CView::PreCreateWindow.
+// FUNCTION: IMPERIALISM 0x00483db0
+BOOL CIncludeView::PreCreateWindow(CREATESTRUCT& cs) {
+  WNDCLASS wndClass;
+  memset(&wndClass, 0, sizeof(wndClass));
+  wndClass.lpfnWndProc = ::DefWindowProc;
+  wndClass.hInstance = AfxGetInstanceHandle();
+  wndClass.style = CS_VREDRAW | CS_HREDRAW;
+  wndClass.hbrBackground = reinterpret_cast<HBRUSH>(5);
+  wndClass.lpszClassName = "AmbitGameWindow";
+  wndClass.hIcon = ::LoadIcon(AfxGetResourceHandle(), MAKEINTRESOURCE(0x7a02));
+  if (wndClass.hIcon == NULL) {
+    wndClass.hIcon = ::LoadIcon(NULL, IDI_APPLICATION);
+  }
+  AfxRegisterClass(&wndClass);
+  cs.lpszClass = "AmbitGameWindow";
+  cs.style |= 0x06000000;
+  return CView::PreCreateWindow(cs);
 }
 
 // Everything the hosted activeDialog TView tree ever draws on screen flows through

@@ -29,6 +29,21 @@ struct IncludeViewOverlayRectRecord {
 };
 ASSERT_SIZE(IncludeViewOverlayRectRecord, 0x18);
 
+// No `// VTABLE: IMPERIALISM 0x00648418` marker yet (deliberate, like CMainFrame/
+// ImperialismApp). The CIncludeView-specific slots (PreCreateWindow 0x64, CalcWindowRect
+// 0x68, OnInitialUpdate/OnActivateView/OnDraw, the message-map handlers) are modelled and
+// would pair, but `just gates` requires every marked vtable to be 100%, and two slot
+// classes are not yet matched:
+//   - slot 0x80 CWnd::OnCommand is overridden by 0x00483e80 (not yet owned): its body does
+//     two virtual dispatches (on a GWL_USERDATA object at vtable+0xe4, and on
+//     m_activeDialogContext/TView at vtable+0x13c) whose receiver classes aren't recovered
+//     yet, so the override is left for a focused follow-up.
+//   - the inherited CView/CWnd/CCmdTarget library slots at 0x70/0xac/0xb4/0xc0-0xe0/0xf0/...
+//     are real nafxcw functions (0x60xxxx/0x613xxx/0x614xxx) still carrying game-class names
+//     in config/symbols.csv; matching them is the binary-wide MFC-vtable LIBRARY-annotation
+//     pass (heuristics note 88), shared across every CView/CFrameWnd-family vtable.
+// Add the marker once both are resolved. `just vtable CIncludeView` currently (and honestly)
+// reports "no reccmp-paired vtable" — an unverified vtable, not a vacuous 100%.
 class CIncludeView : public CView {
 public:
   DECLARE_DYNCREATE(CIncludeView)
@@ -39,6 +54,9 @@ public:
   void SetUiRuntimeContextAndActivateMain(TView* activeDialog); // 0x00483340
 
 protected:
+  // Registers the "AmbitGameWindow" WNDCLASS and pins cs.lpszClass + cs.style before
+  // chaining to CView::PreCreateWindow. (vtable slot 0x64.)
+  BOOL PreCreateWindow(CREATESTRUCT& cs) override; // 0x00483db0
   // The layout keystone for the whole main screen: whatever client rect the frame's
   // RecalcLayout/RepositionBars proposes for the leftover pane, reinterpret it as "a
   // 640x480 view centered in that rect" (clamped to the top-left when smaller). This is
@@ -90,7 +108,7 @@ public:
   CList<IncludeViewOverlayRectRecord, IncludeViewOverlayRectRecord&> m_overlayRectQueue;
   POSITION m_overlayRectCursor68; // 0x68 — iteration cursor of the repaint pass (0x482fc0)
   UINT m_tickTimerId;             // 0x6c — 17ms UI tick timer (id 0xd00d) driving cursor dispatch
-  unsigned char pad70[4];         // 0x70 — zeroed in the ctor, not yet resolved to a field
+  int m_field70;                  // 0x70 — ctor-zeroed dword, purpose not yet resolved
   // 0x74 — this view's own captured-control track (a second copy of the
   // TMouseCaptureState shape: control + start/last/current points). OnMouseMove sends
   // it the state-1 drag command through TControl slots 0x67/0x68; the writer that arms

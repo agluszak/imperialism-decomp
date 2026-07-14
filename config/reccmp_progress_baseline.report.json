@@ -2363,7 +2363,7 @@
     },
     {
       "address": "0x482950",
-      "matching": 0.6976744186046512,
+      "matching": 0.8636363636363636,
       "name": "CIncludeView::CIncludeView",
       "type": 1
     },
@@ -2489,8 +2489,8 @@
     },
     {
       "address": "0x483db0",
-      "matching": 0.043478260869565216,
-      "name": "RegisterAmbitGameWindowClass",
+      "matching": 1.0,
+      "name": "CIncludeView::PreCreateWindow",
       "type": 1
     },
     {

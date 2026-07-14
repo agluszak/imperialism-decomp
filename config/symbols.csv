@@ -529,7 +529,7 @@ address|name|symbol|size|type|prototype|provenance
 483ab0|WrapperFor_FreeHeapBufferIfNotNull_At00483ad0_Impl||7|function|undefined WrapperFor_FreeHeapBufferIfNotNull_At00483ad0_Impl()|
 483ad0|TUiEvent::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 483ba0|WrapperFor_AllocateAndLinkBlockHead_At00483ba0||284|function|undefined WrapperFor_AllocateAndLinkBlockHead_At00483ba0()|
-483db0|RegisterAmbitGameWindowClass||156|function|undefined RegisterAmbitGameWindowClass()|
+483db0|CIncludeView::PreCreateWindow|?PreCreateWindow@CIncludeView@@MAEHAAUtagCREATESTRUCTA@@@Z|156|function|protected: virtual int __thiscall CIncludeView::PreCreateWindow(struct tagCREATESTRUCTA &)|
 483e80|WrapperFor_RouteCommandByIdWithUiProbe_At00483e80||74|function|undefined WrapperFor_RouteCommandByIdWithUiProbe_At00483e80()|
 484060|CIncludeView::GetUiInteractiveFlag90||7|function|int __thiscall GetUiInteractiveFlag90()|
 484080|TCommand::RunCommandModalLoopAndFinalizeState_Impl||25|function|undefined RunCommandModalLoopAndFinalizeState_Impl()|
