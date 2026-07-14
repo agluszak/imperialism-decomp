@@ -1412,3 +1412,24 @@ headers before splicing.
     be dropped. Rule: only batch a slot-wide return-type narrowing when EVERY override is
     already a real port (or a genuinely small/empty original); otherwise land the isolated
     no-override slots (like 0x5a3640) and leave the shared slot until its stubs are ported.
+
+95. **A fake `(args…)` forwarder that ignores its args and tail-calls the real `(void)`
+    function silently de-pairs EVERY arg-passing call site — model the real `__cdecl`
+    arg-ignoring function as variadic `(...)` instead.** TemporarilyClearAndRestoreUiInvalidationFlag
+    (0x0049d620) is a bare flag toggler: it ends in plain `ret` (not `ret N`) and never reads
+    `[esp+…]`, yet assert-style call sites `push line; push path; call 0x49d620; add esp,8`
+    — they hand it a source path + line it discards, cleaning the stack __cdecl-style. Our
+    model had TWO overloads: the real `(void)` at 0x49d620 and a second `(const char*,int)`
+    that `(void)`-cast its args and forwarded. That forwarder is a *distinct* function, so
+    every `f(path,line)` call paired against the forwarder's address, not 0x49d620 — a whole
+    family (the five TViewMgr::HandleTurnEventDialogFactorySlot70..80, TView asserts, …) stuck
+    ~97.9%. Fix: declare the real function variadic — `undefined4 f(...)` (legal in C++ with no
+    named param; forced __cdecl; body ignores the varargs, needs no `va_start`, emits the same
+    `ret`). Now `f()` pushes nothing and `f(path,line)` pushes two and cleans — both call
+    0x49d620 directly. One edit: **+10 aligned, 52 improved** (drop the forwarder; update the
+    handful of file-local `extern … (const char*,int)`/`(void)` re-decls to `(...)` or they
+    become separate mangled symbols → link errors). Watch for: (a) a few small untouched TUs
+    reg-schedule-wobble from the link-layout shift (accept, notes 18/47); (b) put the doc
+    comment ABOVE the `// FUNCTION:` marker (Hard Rule 3), not between it and the decl.
+    Smell to grep for: a `void Foo(T a,U b){ (void)a;(void)b; Foo(); }` forwarder next to a
+    marked `Foo(void)`.
