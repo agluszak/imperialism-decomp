@@ -131,30 +131,6 @@ undefined4 OrphanCallChain_C1_I31_004915d0(void)
   return 0;
 }
 
-// ghidra_name InitializeSelectableTextOptionEntryIteratorContext
-// ghidra_proto undefined InitializeSelectableTextOptionEntryIteratorContext()
-// FUNCTION: IMPERIALISM 0x004919a0
-undefined4 InitializeSelectableTextOptionEntryIteratorContext(void)
-{
-  return 0;
-}
-
-// ghidra_name BeginSelectableTextOptionEntryIterator
-// ghidra_proto undefined BeginSelectableTextOptionEntryIterator()
-// FUNCTION: IMPERIALISM 0x00491a00
-undefined4 BeginSelectableTextOptionEntryIterator(void)
-{
-  return 0;
-}
-
-// ghidra_name AdvanceSelectableTextOptionEntryIterator
-// ghidra_proto undefined AdvanceSelectableTextOptionEntryIterator()
-// FUNCTION: IMPERIALISM 0x00491a70
-undefined4 AdvanceSelectableTextOptionEntryIterator(void)
-{
-  return 0;
-}
-
 // ghidra_name DestructTWindowAndUnlinkGlobalWindowNode
 // ghidra_proto undefined DestructTWindowAndUnlinkGlobalWindowNode()
 // FUNCTION: IMPERIALISM 0x00492140

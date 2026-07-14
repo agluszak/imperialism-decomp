@@ -732,6 +732,9 @@ address|target_cpp|ownership|note
 491770|src/game/TCluster.cpp|manual|marker_sync
 491790|src/game/TCluster.cpp|manual|marker_sync
 4918a0|src/game/TCluster.cpp|manual|marker_sync
+4919a0|src/game/TTurnEventDialogFactoryRegistry.cpp|manual|marker_sync
+491a00|src/game/TTurnEventDialogFactoryRegistry.cpp|manual|marker_sync
+491a70|src/game/TTurnEventDialogFactoryRegistry.cpp|manual|marker_sync
 491ab0|src/game/TTurnEventDialogFactoryRegistry.cpp|manual|marker_sync
 491ad0|src/game/TTurnEventDialogFactoryRegistry.cpp|manual|marker_sync
 491b10|src/game/TTurnEventDialogFactoryRegistry.cpp|manual|marker_sync

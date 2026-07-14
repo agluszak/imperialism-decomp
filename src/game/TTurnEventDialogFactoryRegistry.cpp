@@ -5,25 +5,65 @@
 #include "game/global_data_tables.h"
 #include "game/turn_event_dialog_factory.h"
 
-// Cursor over a container's SelectableTextOptionEntry list (built by
-// BeginSelectableTextOptionEntryIterator, 0x00491a00, which is still an autogen stub
-// pending the container/node type recovery). Fields named by offset from the iterator
-// bodies: the traversal walks the container's +0x44 root using direction08 to pick the
-// forward/backward links, caching the resolved entry pointer in currentEntry10. IsValid
-// (0x00491ab0) simply reports whether that cached entry is non-null.
+// Bidirectional stack cursor over a TView's childList44 (CList<TView*, TView*>). Ghidra
+// names it after the SelectableTextOptionEntry callers (TRadioTextCluster /
+// TSwapperDaddyView option handling), but it is a generic TView child-list cursor: the
+// same shape as CIterator (Reset/More/Advance) plus a reverse-traversal flag and a 4-char
+// filter tag. The traversal is plain MFC CList: GetHeadPosition/GetTailPosition seed the
+// position and GetNext/GetPrev read the node payload while advancing. reccmp pairs the
+// four methods by address.
 struct TSelectableTextOptionEntryIterator {
-  void* currentNode00;  // +0x00 current tree/list node
-  void* container04;    // +0x04 owning container (root at +0x44)
-  int direction08;      // +0x08 traversal direction/mode
-  int field0c;          // +0x0c
-  void* currentEntry10; // +0x10 resolved current entry (validity field)
+  POSITION position00;   // +0x00 current CList position (node)
+  TView* ownerView04;    // +0x04 view whose childList44 is walked
+  int direction08;       // +0x08 1 = forward from head, 0 = reverse from tail
+  int tag0c;             // +0x0c 4-char filter tag, initialised to "    " (0x20202020)
+  TView* currentChild10; // +0x10 payload of the current node (validity field)
 
-  bool IsValid(); // 0x00491ab0
+  TSelectableTextOptionEntryIterator* Initialize(TView* owner); // 0x004919a0
+  void Begin();                                                 // 0x00491a00
+  void Advance();                                               // 0x00491a70
+  bool IsValid();                                               // 0x00491ab0
 };
+
+// FUNCTION: IMPERIALISM 0x004919a0
+TSelectableTextOptionEntryIterator* TSelectableTextOptionEntryIterator::Initialize(TView* owner) {
+  ownerView04 = owner;
+  direction08 = 1;
+  tag0c = 0x20202020;
+  currentChild10 = nullptr;
+  return this; // original leaves `this` in eax at RET
+}
+
+// FUNCTION: IMPERIALISM 0x00491a00
+void TSelectableTextOptionEntryIterator::Begin() {
+  TViewChildList* list = ownerView04->childList44;
+  if (list == nullptr) {
+    position00 = nullptr;
+  } else {
+    position00 = (direction08 != 0) ? list->GetHeadPosition() : list->GetTailPosition();
+  }
+  if (position00 == nullptr) {
+    currentChild10 = nullptr;
+    return;
+  }
+  currentChild10 = (direction08 != 0) ? list->GetNext(position00) : list->GetPrev(position00);
+}
+
+// FUNCTION: IMPERIALISM 0x00491a70
+void TSelectableTextOptionEntryIterator::Advance() {
+  if (position00 == nullptr) {
+    currentChild10 = nullptr;
+    return;
+  }
+  // GetNext/GetPrev only touch the node, not the list object; the owner's childList44 is
+  // named only to satisfy the member-call form and is optimised away.
+  TViewChildList* list = ownerView04->childList44;
+  currentChild10 = (direction08 != 0) ? list->GetNext(position00) : list->GetPrev(position00);
+}
 
 // FUNCTION: IMPERIALISM 0x00491ab0
 bool TSelectableTextOptionEntryIterator::IsValid() {
-  return currentEntry10 != nullptr;
+  return currentChild10 != nullptr;
 }
 
 void RegisterStartupDialogFactoryCallbacks(TTurnEventDialogFactoryRegistry* registry) {

@@ -5460,19 +5460,19 @@
     },
     {
       "address": "0x4919a0",
-      "matching": 0.0,
+      "matching": 1.0,
       "name": "InitializeSelectableTextOptionEntryIteratorContext",
       "type": 1
     },
     {
       "address": "0x491a00",
-      "matching": 0.06060606060606061,
+      "matching": 1.0,
       "name": "BeginSelectableTextOptionEntryIterator",
       "type": 1
     },
     {
       "address": "0x491a70",
-      "matching": 0.1,
+      "matching": 1.0,
       "name": "AdvanceSelectableTextOptionEntryIterator",
       "type": 1
     },
