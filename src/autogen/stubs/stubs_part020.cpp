@@ -91,14 +91,6 @@ undefined4 ConfigureUiControlStyleValueAndCaptionFromStringResource(void)
   return 0;
 }
 
-// ghidra_name DispatchToSelectableTextOptionEntries
-// ghidra_proto undefined DispatchToSelectableTextOptionEntries()
-// FUNCTION: IMPERIALISM 0x005c43b0
-undefined4 DispatchToSelectableTextOptionEntries(void)
-{
-  return 0;
-}
-
 // ghidra_name ApplyControlTextStyleDescriptorFromThemeCode
 // ghidra_proto undefined ApplyControlTextStyleDescriptorFromThemeCode()
 // FUNCTION: IMPERIALISM 0x005c4620

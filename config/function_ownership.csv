@@ -4763,6 +4763,7 @@ address|target_cpp|ownership|note
 5c3f50|src/game/quickdraw_rendering.cpp|manual|marker_sync
 5c4020|src/game/quickdraw_rendering.cpp|manual|marker_sync
 5c4310|src/game/ui_text_label_helpers.cpp|manual|marker_sync
+5c43b0|src/game/ui_text_label_helpers.cpp|manual|marker_sync
 5c4470|src/game/quickdraw_rendering.cpp|manual|marker_sync
 5c4500|src/game/quickdraw_rendering.cpp|manual|marker_sync
 5c4590|src/game/ui_text_label_helpers.cpp|manual|marker_sync
