@@ -1504,3 +1504,23 @@ headers before splicing.
     re-reads `mov eax,[ecx]` stores the position to the FIELD in each branch and re-reads the
     field for the null check — don't cache it in a local (`position00 = ...; if (position00 ==
     0)`, not `pos = ...; ... = pos; if (pos == 0)`).
+
+99. **Claiming a small "Construct<Class>BaseState" ctor stub is a marker-only win ONLY when
+    the ctor is already defined out-of-line in a .cpp; moving a header-inline ctor into a
+    .cpp to attach the marker regresses every call site that inlined it.** These 18-byte
+    stubs (e.g. 0x534870 TIndexAndRankList, 0x5b6a00 TNoHiliteText, 0x5a6560 TNextMoveCommand)
+    are the compiler's out-of-line COMDAT copy of `T::T() : Base() {}` — base ctor call +
+    vtable install + `mov eax,ecx` return-this. If the class's ctor already lives in the .cpp
+    as `T::T() {}` (TNoHiliteText, TIndexAndRankList), just add `// FUNCTION: 0x...` above it
+    — the body already emits the right code. BUT if the ctor is header-inline
+    (`T() : Base() {}` in the .h, as TNextMoveCommand was), MSVC inlines it into every
+    `new T()` / DYNCREATE CreateObject site, and those matched 100% *because* the original
+    inlined it there too. Moving it out-of-line to attach the marker flipped
+    TNextMoveCommand::CreateObject 100%->49% and a `new TNextMoveCommand()` caller 100%->82%
+    while gaining only the one out-of-line copy — a net loss. Keep header-inline ctors inline;
+    only claim the marker on ctors already out-of-line. Also: a `T : TSortedPtrList`/deep base
+    ctor may cap at ~86% (0x534870) because the original inlines the intermediate base ctor
+    (calls CPtrArray() directly) while the out-of-line recompile calls TSortedPtrList() — the
+    accepted cross-TU base-ctor-inlining residual (same shape as note on TEscortMission).
+    Always re-check `just stats` delta and diff the report for offsetting drops after a
+    ctor-marker change, since the aligned count can stay flat while hiding a swap.
