@@ -53,7 +53,7 @@ public:
   char TryDispatchNationActionViaUiContextOrFallback(int arg1, int arg2, int arg3,
                                                      int arg4) override;
   void QueueDiplomacyProposalCodeForTargetNation(short proposalCode, short targetNationId) override;
-  char ReturnFalseNationStateCapabilityFlag90(int arg) override;
+  char ReturnFalseNationStateCapabilityFlag90(short arg) override;
   void NotifyActionSlot94(int sourceNation, int actionCode) override;
 
   // slot 0x2a (+0xa8), TMinor's first new virtual — vtable 0x653c90+0xa8 -> 0x4e46a0,
