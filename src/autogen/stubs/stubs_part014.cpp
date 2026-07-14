@@ -419,14 +419,6 @@ undefined4 CreateTColorFillInstance(void)
   return 0;
 }
 
-// ghidra_name InitializeCityInteriorMinister_Impl
-// ghidra_proto undefined InitializeCityInteriorMinister_Impl()
-// FUNCTION: IMPERIALISM 0x004ff750
-undefined4 InitializeCityInteriorMinister_Impl(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_GenerateThreadLocalRandom15_At004ff840
 // ghidra_proto undefined WrapperFor_GenerateThreadLocalRandom15_At004ff840()
 // FUNCTION: IMPERIALISM 0x004ff840

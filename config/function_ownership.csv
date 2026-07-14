@@ -2217,6 +2217,7 @@ address|target_cpp|ownership|note
 4ff6e0|src/game/TFuzzySet.cpp|manual|marker_sync
 4ff700|src/game/TFuzzySet.cpp|manual|marker_sync
 4ff730|src/game/TFuzzySet.cpp|manual|marker_sync
+4ff750|src/game/TFuzzySet.cpp|manual|marker_sync
 4ff780|src/game/TFuzzySet.cpp|manual|marker_sync
 4ff7d0|src/game/TFuzzyVar.cpp|manual|marker_sync
 4ffb30|src/game/TGameWindow.cpp|manual|marker_sync
