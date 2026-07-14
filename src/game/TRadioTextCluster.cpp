@@ -82,16 +82,20 @@ TRadioText* TRadioTextCluster::AddItem(unsigned long tag, int value, const char*
                                        int bottom) {
   if (bottom == -1) {
     bottom = itemInset92;
-    if (childList44 != 0) {
-      POSITION pos = childList44->GetHeadPosition();
-      while (pos != NULL) {
-        TView* child = childList44->GetNext(pos);
+    // The original accumulates the max child bottom via the shared cursor (which handles a
+    // null childList44 internally), not a raw GetHeadPosition/GetNext loop.
+    TSelectableTextOptionEntryIterator iter;
+    iter.Initialize(this);
+    TView* child = iter.Begin();
+    if (iter.IsValid()) {
+      do {
         child->AssertValid();
         int childBottom = child->ownerLocalY + child->frameHeight38 + itemVerticalSpacing94;
         if (childBottom > bottom) {
           bottom = childBottom;
         }
-      }
+        child = iter.Advance();
+      } while (iter.IsValid());
     }
   }
 
