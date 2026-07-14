@@ -233,7 +233,10 @@ address|target_cpp|ownership|note
 47d340|src/game/TC2TemplateDialog.cpp|manual|marker_sync
 47d960|src/game/CBrush.cpp|library|marker_sync
 47dfd0|src/game/TAutoResolutionDialog.cpp|manual|marker_sync
+47e090|src/game/TAutoResolutionDialog.cpp|manual|marker_sync
 47e0c0|src/game/TAutoResolutionDialog.cpp|manual|marker_sync
+47e100|src/game/TAutoResolutionDialog.cpp|manual|marker_sync
+47e120|src/game/TAutoResolutionDialog.cpp|manual|marker_sync
 47e360|src/game/CDibPal.cpp|manual|marker_sync
 47e390|src/game/CDibPal.cpp|manual|marker_sync
 47e3c0|src/game/CDibPal.cpp|manual|marker_sync
@@ -4911,6 +4914,10 @@ address|target_cpp|ownership|note
 5e1800|src/game/cd_audio.cpp|manual|marker_sync
 5e1850|src/game/cd_audio.cpp|manual|marker_sync
 5e1bc0|src/game/TLowDiskWarningDialog.cpp|manual|marker_sync
+5e1c60|src/game/TLowDiskWarningDialog.cpp|manual|marker_sync
+5e1c90|src/game/TLowDiskWarningDialog.cpp|manual|marker_sync
+5e1cc0|src/game/TLowDiskWarningDialog.cpp|manual|marker_sync
+5e1ce0|src/game/TLowDiskWarningDialog.cpp|manual|marker_sync
 5e1e50|src/game/TSortedPtrList.cpp|manual|marker_sync
 5e1f10|src/game/TSortedPtrList.cpp|manual|marker_sync
 5e1fa0|src/game/TInterNationEventQueueManager.cpp|manual|marker_sync

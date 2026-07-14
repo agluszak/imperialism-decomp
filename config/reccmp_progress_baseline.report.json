@@ -1834,20 +1834,20 @@
     },
     {
       "address": "0x47dfd0",
-      "matching": 0.5675675675675675,
+      "matching": 0.5945945945945946,
       "name": "InitializeDialogTemplateFBWithDualTextState",
       "type": 1
     },
     {
       "address": "0x47e090",
-      "matching": 0.0,
-      "name": "TAutoResolutionDialog::`scalar deleting destructor'(unsigned int)",
+      "matching": 0.9090909090909091,
+      "name": "TAutoResolutionDialog::`scalar deleting destructor'",
       "type": 1
     },
     {
       "address": "0x47e100",
       "matching": 0.5,
-      "name": "OrphanVtableAssignStub_0047e100",
+      "name": "TAutoResolutionDialog::GetMessageMap",
       "type": 1
     },
     {
@@ -33732,25 +33732,25 @@
     },
     {
       "address": "0x5e1bc0",
-      "matching": 0.6865671641791045,
+      "matching": 0.7164179104477612,
       "name": "InitializeDialogTemplate98WithSharedText",
       "type": 1
     },
     {
       "address": "0x5e1c60",
-      "matching": 0.0,
-      "name": "TLowDiskWarningDialog::`scalar deleting destructor'(unsigned int)",
+      "matching": 0.9090909090909091,
+      "name": "TLowDiskWarningDialog::`scalar deleting destructor'",
       "type": 1
     },
     {
       "address": "0x5e1cc0",
       "matching": 0.5,
-      "name": "GetRuntimePtrTable0066F588",
+      "name": "TLowDiskWarningDialog::GetMessageMap",
       "type": 1
     },
     {
       "address": "0x5e1ce0",
-      "matching": 0.06060606060606061,
+      "matching": 1.0,
       "name": "UpdateCursorHelperWindowTextFromUiString",
       "type": 1
     },
@@ -41951,6 +41951,12 @@
       "type": 5
     },
     {
+      "address": "0x646958",
+      "matching": 1.0,
+      "name": "TAutoResolutionDialog::`vftable'",
+      "type": 5
+    },
+    {
       "address": "0x646a68",
       "matching": 1.0,
       "name": "CDibPal::`vftable'",
@@ -44042,6 +44048,12 @@
       "address": "0x66f508",
       "matching": 1.0,
       "name": "TAssetMgr::`vftable'",
+      "type": 5
+    },
+    {
+      "address": "0x66f5d8",
+      "matching": 1.0,
+      "name": "TLowDiskWarningDialog::`vftable'",
       "type": 5
     },
     {

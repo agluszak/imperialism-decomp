@@ -381,7 +381,7 @@ address|name|symbol|size|type|prototype|provenance
 47dfd0|InitializeDialogTemplateFBWithDualTextState||141|function|undefined InitializeDialogTemplateFBWithDualTextState()|
 47e090|TAutoResolutionDialog::`scalar deleting destructor'|??_GTAutoResolutionDialog@@UAEPAXI@Z|30|function|undefined ScalarDeletingDestructor()|
 47e0c0|WrapperFor_GetOrSetButtonCheckStateClamped_At0047e0c0||46|function|undefined WrapperFor_GetOrSetButtonCheckStateClamped_At0047e0c0()|
-47e100|OrphanVtableAssignStub_0047e100||6|function|undefined OrphanVtableAssignStub_0047e100()|
+47e100|TAutoResolutionDialog::GetMessageMap|?GetMessageMap@TAutoResolutionDialog@@MBEPBUAFX_MSGMAP@@XZ|6|function|undefined GetMessageMap()|
 47e120|RefreshNewGameCommandWindowTextAndData||165|function|undefined RefreshNewGameCommandWindowTextAndData()|
 47e360|CDibPal::CDibPal||17|function|CDibPal()|
 47e390|CDibPal::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
@@ -6172,7 +6172,7 @@ address|name|symbol|size|type|prototype|provenance
 5e1bc0|InitializeDialogTemplate98WithSharedText||120|function|undefined InitializeDialogTemplate98WithSharedText()|
 5e1c60|TLowDiskWarningDialog::`scalar deleting destructor'|??_GTLowDiskWarningDialog@@UAEPAXI@Z|30|function|undefined ScalarDeletingDestructor()|
 5e1c90|WrapperFor_DDX_Text_618cbd_At005e1c90||22|function|undefined WrapperFor_DDX_Text_618cbd_At005e1c90()|
-5e1cc0|GetRuntimePtrTable0066F588||6|function|undefined GetRuntimePtrTable0066F588()|
+5e1cc0|TLowDiskWarningDialog::GetMessageMap|?GetMessageMap@TLowDiskWarningDialog@@MBEPBUAFX_MSGMAP@@XZ|6|function|undefined GetMessageMap()|
 5e1ce0|UpdateCursorHelperWindowTextFromUiString||120|function|undefined UpdateCursorHelperWindowTextFromUiString()|
 5e1e50|TSortedPtrList::ReadFrom||136|function|undefined EnumerateStreamEntriesWithDualCallbacksAndTempBuffer()|
 5e1f10|TSortedPtrList::WriteTo||103|function|undefined EnumerateStateEntriesAndInvokeObjectCallback()|

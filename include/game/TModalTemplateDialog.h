@@ -22,10 +22,16 @@ public:
 
 // Low-disk-space warning dialog (template id 0x98, own vtable 0x66f5d8): a
 // TModalTemplateDialog with a prompt string at +0x74.
+// VTABLE: IMPERIALISM 0x0066f5d8
 class TLowDiskWarningDialog : public TModalTemplateDialog {
 public:
   explicit TLowDiskWarningDialog(void* initParam = nullptr); // 0x005e1bc0
   void SetPromptText(LPCSTR text);
 
   CString promptText; // 0x74
+
+protected:
+  BOOL OnInitDialog() override;                     // 0x005e1ce0 (vtable index 49)
+  void DoDataExchange(CDataExchange* pDX) override; // 0x005e1c90 (vtable index 35)
+  DECLARE_MESSAGE_MAP()                             // GetMessageMap 0x005e1cc0 (index 12)
 };

@@ -227,30 +227,6 @@ undefined4 OrphanVtableAssignStub_0047dfb0(void)
   return 0;
 }
 
-// ghidra_name TAutoResolutionDialog::`scalar deleting destructor'
-// ghidra_proto undefined ScalarDeletingDestructor()
-// FUNCTION: IMPERIALISM 0x0047e090
-undefined4 ScalarDeletingDestructor(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanVtableAssignStub_0047e100
-// ghidra_proto undefined OrphanVtableAssignStub_0047e100()
-// FUNCTION: IMPERIALISM 0x0047e100
-undefined4 OrphanVtableAssignStub_0047e100(void)
-{
-  return 0;
-}
-
-// ghidra_name RefreshNewGameCommandWindowTextAndData
-// ghidra_proto undefined RefreshNewGameCommandWindowTextAndData()
-// FUNCTION: IMPERIALISM 0x0047e120
-undefined4 RefreshNewGameCommandWindowTextAndData(void)
-{
-  return 0;
-}
-
 // ghidra_name DrawPalettePreviewGridRectanglesToViewDc
 // ghidra_proto undefined DrawPalettePreviewGridRectanglesToViewDc()
 // FUNCTION: IMPERIALISM 0x0047e590

@@ -491,38 +491,6 @@ undefined4 WrapperFor_ftol_At005e1b90(void)
   return 0;
 }
 
-// ghidra_name TLowDiskWarningDialog::`scalar deleting destructor'
-// ghidra_proto undefined ScalarDeletingDestructor()
-// FUNCTION: IMPERIALISM 0x005e1c60
-undefined4 ScalarDeletingDestructor_005E1C60(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_DDX_Text_618cbd_At005e1c90
-// ghidra_proto undefined WrapperFor_DDX_Text_618cbd_At005e1c90()
-// FUNCTION: IMPERIALISM 0x005e1c90
-undefined4 WrapperFor_DDX_Text_618cbd_At005e1c90(void)
-{
-  return 0;
-}
-
-// ghidra_name GetRuntimePtrTable0066F588
-// ghidra_proto undefined GetRuntimePtrTable0066F588()
-// FUNCTION: IMPERIALISM 0x005e1cc0
-undefined4 GetRuntimePtrTable0066F588(void)
-{
-  return 0;
-}
-
-// ghidra_name UpdateCursorHelperWindowTextFromUiString
-// ghidra_proto undefined UpdateCursorHelperWindowTextFromUiString()
-// FUNCTION: IMPERIALISM 0x005e1ce0
-undefined4 UpdateCursorHelperWindowTextFromUiString(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_ftol_At005e26a0
 // ghidra_proto undefined WrapperFor_ftol_At005e26a0()
 // FUNCTION: IMPERIALISM 0x005e26a0
