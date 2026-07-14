@@ -289,7 +289,7 @@
 // ??0CMemoryException@@QAE@HI@Z
 
 // LIBRARY: IMPERIALISM 0x005e7079
-// CSharedFile::`scalar_deleting_destructor'
+// CSharedFile::`scalar deleting destructor'
 
 // LIBRARY: IMPERIALISM 0x005e709d
 // CCtrlView::~CListView
@@ -1270,7 +1270,7 @@
 // ??0CDialog@@QAE@XZ
 
 // LIBRARY: IMPERIALISM 0x00604ce8
-// CSharedFile::`scalar_deleting_destructor'
+// CSharedFile::`scalar deleting destructor'
 
 // LIBRARY: IMPERIALISM 0x00604d04
 // ??1CDialog@@UAE@XZ
@@ -2284,7 +2284,7 @@
 // ?DPtoLP@CDC@@QBEXPAUtagSIZE@@@Z
 
 // LIBRARY: IMPERIALISM 0x006137e7
-// CClientDC::`scalar_deleting_destructor'
+// CClientDC::`scalar deleting destructor'
 
 // LIBRARY: IMPERIALISM 0x00613845
 // ??0CWindowDC@@QAE@PAVCWnd@@@Z
