@@ -58,7 +58,7 @@ void TSetupRandomMapPicture::RecheckCountryName() {
 // FUNCTION: IMPERIALISM 0x00577030
 void TSetupRandomMapPicture::NoOpUiLifecycleHook(int arg) {
   TNoHilitePicture::NoOpUiLifecycleHook(arg);
-  EnsurePictWvDataGobLoadedBySlot(0);
+  g_pUiViewManager->EnsurePictWvDataGobLoadedBySlot(0);
   g_pSimMgr->stateFlag114 = 0;
 
   if (g_pGlobalMapState == 0) {

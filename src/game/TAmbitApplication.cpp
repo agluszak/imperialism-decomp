@@ -59,7 +59,7 @@ void TAmbitApplication::InitializeGlobalRuntimeSystems() {
   g_pSimMgr = simMgr;
 
   TAssetMgr* assetMgr = new TAssetMgr();
-  ForwardEnsurePictWvDataGobLoadedBySlot(languagePackId50);
+  assetMgr->ForwardEnsurePictWvDataGobLoadedBySlot(languagePackId50);
   g_pUiViewManager = assetMgr;
 
   EnsureTurnEventDialogFactoryRegistryInitialized();

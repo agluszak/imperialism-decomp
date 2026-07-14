@@ -7015,7 +7015,7 @@
     },
     {
       "address": "0x49ded0",
-      "matching": 0.8430232558139535,
+      "matching": 0.8463768115942029,
       "name": "InitializeGlobalRuntimeSystemsFromConfig",
       "type": 1
     },
@@ -25663,7 +25663,7 @@
     },
     {
       "address": "0x577030",
-      "matching": 0.5559772296015181,
+      "matching": 0.557345971563981,
       "name": "TSetupRandomMapPicture::NoOpUiLifecycleHook",
       "type": 1
     },
@@ -26023,7 +26023,7 @@
     },
     {
       "address": "0x57bea0",
-      "matching": 0.7154811715481172,
+      "matching": 0.7181628392484343,
       "name": "TSimMgr::ReadFrom",
       "type": 1
     },
@@ -26059,7 +26059,7 @@
     },
     {
       "address": "0x57cad0",
-      "matching": 0.7088607594936709,
+      "matching": 0.7255520504731862,
       "name": "RebuildNationStateSlotsAndAvailability",
       "type": 1
     },
@@ -26305,7 +26305,7 @@
     },
     {
       "address": "0x581ae0",
-      "matching": 0.9411764705882353,
+      "matching": 1.0,
       "name": "SetSelectedIndex6AAndTriggerRefresh",
       "type": 1
     },
@@ -26468,7 +26468,7 @@
     },
     {
       "address": "0x583400",
-      "matching": 0.975609756097561,
+      "matching": 1.0,
       "name": "HandleTurnInstruction_Flag_SetNationFlagAndRefresh",
       "type": 1
     },
@@ -33517,7 +33517,7 @@
     {
       "address": "0x5df3a0",
       "matching": 1.0,
-      "name": "ForwardEnsurePictWvDataGobLoadedBySlot",
+      "name": "TAssetMgr::ForwardEnsurePictWvDataGobLoadedBySlot",
       "type": 1
     },
     {
@@ -33618,8 +33618,8 @@
     },
     {
       "address": "0x5dff20",
-      "matching": 0.7378640776699029,
-      "name": "EnsurePictWvDataGobLoadedBySlot",
+      "matching": 0.9444444444444444,
+      "name": "TAssetMgr::EnsurePictWvDataGobLoadedBySlot",
       "type": 1
     },
     {
