@@ -978,15 +978,32 @@ void TView::ReturnFromUiSlot63(int arg1, int arg2) {
 // cannot bind two original addresses to one recomp symbol, so the twins stay
 // stub-owned; their symbols.csv rows carry the truthful `TView::~TView` label.
 
+// bd imperialism-decomp-1uj.70 RESOLVED (2026-07-13): the "polymorphic receiver" at
+// [this+0x38] here is NOT a game class -- 0x00607318 is byte-for-byte the real MFC
+// CWnd::GetStyle() from winocc.cpp (vendored MSVC500 MFC source):
+//   DWORD CWnd::GetStyle() const {
+//     if (m_pCtrlSite == NULL) return (DWORD)GetWindowLong(m_hWnd, GWL_STYLE);
+//     else return m_pCtrlSite->GetStyle();
+//   }
+// `frameHeight38` in THIS function's compiled body is really `CWnd::m_pCtrlSite` (an
+// OLE-control-site pointer used only by MFC's OCC/ActiveX-control hosting, whose own
+// vtable slot 0x1e/byte 0x78 is the site's own GetStyle) -- coincidentally the same
+// byte offset as TView's own (unrelated) frameHeight38 field, not the same field. This
+// address's whole xref list (_AfxPreInitDialog, CalcWindowRect, OnSysColorChange,
+// RecalcLayout, CWnd::CenterWindow -- itself already LIBRARY-claimed in
+// MfcRuntime.cpp -- etc.) is exclusively real MFC-internal callers, matching the
+// established "MFC library-wrapper detection" pattern (memory
+// mfc-library-wrapper-detection: CWnd::m_pCtrlSite branch at +0x38 = SetWindowText/
+// EnableWindow/GetWindowText/SetFocus/GetStyle, all implemented this same way). Left
+// attributed to TView rather than retired to // LIBRARY: because the immediate caller
+// TView::RunModalLoop (0x0060a60a, below) shows the same MFC-internal-only xref
+// signature and very likely needs the *same* retirement -- untangling GetStyle alone
+// would leave RunModalLoop's `GetStyle()` call with no receiver. Retiring the whole
+// modal-loop cluster to real CWnd library calls is a follow-up (see beads); this
+// comment is the definitive class-recovery answer so nobody re-investigates frameHeight38
+// as a hidden game class here.
 // FUNCTION: IMPERIALISM 0x00607318
 UINT TView::GetStyle() {
-  if (frameHeight38 != 0) {
-    // TODO(class-recovery): frameHeight38, when non-null, is some other polymorphic object
-    // whose own vtable slot 0x1e is tail-called here for the style value; that class
-    // isn't recovered yet. Falls back to the window-handle path below in the meantime
-    // (identical to the frameHeight38 == 0 case). Dead for TView::RunModalLoop's movie path
-    // (loopKind == 0 never reaches here).
-  }
   return GetWindowLong(reinterpret_cast<HWND>(controlTag), GWL_STYLE);
 }
 

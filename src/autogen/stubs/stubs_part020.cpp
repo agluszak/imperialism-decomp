@@ -243,14 +243,6 @@ undefined4 HandleTurnEventDialogFactorySlotB4(void)
   return 0;
 }
 
-// ghidra_name TViewMgr::HandleTurnEventDialogFactorySlotD8
-// ghidra_proto undefined HandleTurnEventDialogFactorySlotD8()
-// FUNCTION: IMPERIALISM 0x005dcf20
-undefined4 HandleTurnEventDialogFactorySlotD8(void)
-{
-  return 0;
-}
-
 // ghidra_name TViewMgr::ExecuteUiFactoryModalDialogAndReturnResultTag
 // ghidra_proto undefined ExecuteUiFactoryModalDialogAndReturnResultTag()
 // FUNCTION: IMPERIALISM 0x005dd0a0
@@ -263,14 +255,6 @@ undefined4 ExecuteUiFactoryModalDialogAndReturnResultTag(void)
 // ghidra_proto undefined HandleGlobalMapNationContextSelection()
 // FUNCTION: IMPERIALISM 0x005dd180
 undefined4 HandleGlobalMapNationContextSelection(void)
-{
-  return 0;
-}
-
-// ghidra_name TViewMgr::HandleTurnEventDialogFactorySlotF0
-// ghidra_proto undefined HandleTurnEventDialogFactorySlotF0()
-// FUNCTION: IMPERIALISM 0x005dd340
-undefined4 HandleTurnEventDialogFactorySlotF0(void)
 {
   return 0;
 }

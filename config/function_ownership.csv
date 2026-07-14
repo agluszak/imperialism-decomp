@@ -4844,8 +4844,8 @@ address|target_cpp|ownership|note
 5d8040|src/game/TViewMgr.cpp|manual|marker_sync
 5d83b0|src/game/TViewMgr.cpp|manual|marker_sync
 5d8dd0|src/game/TViewMgr.cpp|manual|marker_sync
-5da040|src/game/TDiplomacyMapView.cpp|manual|marker_sync
-5da180|src/game/TDiplomacyMapView.cpp|manual|marker_sync
+5da040|src/game/TViewMgr.cpp|manual|marker_sync
+5da180|src/game/TViewMgr.cpp|manual|marker_sync
 5da360|src/game/TViewMgr.cpp|manual|marker_sync
 5db3b0|src/game/TViewMgr.cpp|manual|marker_sync
 5db620|src/game/TViewMgr.cpp|manual|marker_sync
@@ -4868,7 +4868,9 @@ address|target_cpp|ownership|note
 5dcd50|src/game/TModalMessageCommand.cpp|manual|marker_sync
 5dcd80|src/game/TModalMessageCommand.cpp|manual|marker_sync
 5dcdd0|src/game/TModalMessageCommand.cpp|manual|marker_sync
+5dcf20|src/game/TViewMgr.cpp|manual|marker_sync
 5dd220|src/game/TViewMgr.cpp|manual|marker_sync
+5dd340|src/game/TViewMgr.cpp|manual|marker_sync
 5dd900|src/game/TViewMgr.cpp|manual|marker_sync
 5ddd20|src/game/TViewMgr.cpp|manual|marker_sync
 5de010|src/game/TViewMgr.cpp|manual|marker_sync

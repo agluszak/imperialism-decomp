@@ -76,7 +76,7 @@ bool TToolBarCluster::TryHandleMapContextAction(short nTileIndex, int nInputFlag
     return true;
   }
   case 10: {
-    g_pUiRuntimeContext->UiRuntimeSlotF0(GetActiveMapOrderEntry());
+    g_pUiRuntimeContext->HandleTurnEventDialogFactorySlotF0(GetActiveMapOrderEntry());
     return true;
   }
   default:

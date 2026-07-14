@@ -66,8 +66,6 @@ public:
   void BuildTurnEventMonochromeMaskBuffers(int maskIndex, int eventCode);
   void InvalidateAndRunChildWaitSheet(void* arg1, void* arg2, void* arg3, void* arg4);
   void RenderDiplomacyPendingPolicyIconsAndFrames();
-  void SelectCandidateTilesWithLowGroundUnitCount(); // 0x005da040
-  void OrphanLeaf_NoCall_Ins07_004d8920();           // 0x005da180
 
 protected:
   // 0x90 — compared against a terrain-descriptor index in

@@ -1,8 +1,7 @@
 #pragma once
 
 #include "decomp_types.h"
-
-class TPtrList;
+#include "game/TSortedPtrList.h"
 
 // Global singleton at g_pInterNationEventQueueManager (0x006A43E8).
 // Ghidra labels calls through this pointer as TCountry* / TGreatPower*; that is
@@ -26,15 +25,15 @@ public:
   void InitializeInterNationEventQueueManager();
 
 private:
-  TPtrList* GetInterNationQueueByEventCode(int eventCode);
+  TSortedPtrList* GetInterNationQueueByEventCode(int eventCode);
 
   unsigned char pad00[0x58C];
-  TPtrList* dedupRecordQueue58c;
+  TSortedPtrList* dedupRecordQueue58c;
   unsigned char pad590[0xED4 - 0x590];
-  // The queues are TPtrList instances (vtable 0x649068): the ctor 0x55b710
+  // The queues are TSortedPtrList instances (vtable 0x649010): the ctor 0x55b710
   // allocates the 7 buckets with recordSize14 0x24 and the shared record
   // queue with recordSize14 0x10.
-  TPtrList* perNationEventBuckets[7];
-  TPtrList* sharedEventRecordQueue;
+  TSortedPtrList* perNationEventBuckets[7];
+  TSortedPtrList* sharedEventRecordQueue;
   int perNationUiCounters7[7];
 };

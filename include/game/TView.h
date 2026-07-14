@@ -191,5 +191,16 @@ public:
   // TView's real vtable is 104 slots (0x00-0x19c). Slots 0x1A0+ belong to the sibling
   // branches (TControl, TCivDescription, TAmtBar, ...). The destructor is slot 1
   // (TEventHandler override), so its declaration position is irrelevant.
+  //
+  // bd imperialism-decomp-1uj.27 EXPERIMENT RESULT (tested 2026-07-13, reverted): moving
+  // this definition header-inline (matching the original's own per-TU-duplicated layout
+  // at 0x0048a9d0/0x0048cb00/0x0048ec30/0x0048ee00) was tried and measured a net
+  // regression -- 1 fewer 100%-aligned function elsewhere, 18 functions across unrelated
+  // files (TGreatPower, TMapMgr, TMultiplayerMgr, ...) with lower similarity, and +160
+  // recomp-only orphan global symbols (COMDAT-per-TU noise), while the three "twin"
+  // addresses still only weakly auto-paired at 6.25% (no real per-TU duplication
+  // reproduced by our own compiler) -- vs 0x48a9d0's unchanged 90.32% either way. Do not
+  // repeat this for TView or roll it out to other classes; keep the out-of-line
+  // definition in TView.cpp.
   virtual ~TView() override;
 };

@@ -1,6 +1,9 @@
 #include "game/TTechMgr.h"
 
 #include "decomp_types.h"
+#include "game/TSimMgr.h"
+#include "game/TMultiplayerMgr.h"
+#include "game/global_data_tables.h"
 
 #include <string.h>
 

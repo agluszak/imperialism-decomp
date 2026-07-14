@@ -411,9 +411,9 @@ BOOL ImperialismApp::SetSettingValueInSettingsSection(LPCTSTR key, LPCTSTR value
 }
 
 // FUNCTION: IMPERIALISM 0x004155b0
-void ImperialismApp::ApplyAutoResolutionModeAndPersist(int mode) {
+BOOL ImperialismApp::ApplyAutoResolutionModeAndPersist(int mode) {
   if (appliedAutoResModeC8 == mode) {
-    return;
+    return TRUE;
   }
 
   appliedAutoResModeC8 = mode;
@@ -448,7 +448,9 @@ void ImperialismApp::ApplyAutoResolutionModeAndPersist(int mode) {
 
   if (appliedAutoResModeC8 == mode) {
     WriteProfileInt(SettingsSection(), AutoResValueName(), appliedAutoResModeC8);
+    return TRUE;
   }
+  return FALSE;
 }
 
 // FUNCTION: IMPERIALISM 0x005df7a0
