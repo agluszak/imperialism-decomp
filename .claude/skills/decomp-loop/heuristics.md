@@ -1376,3 +1376,20 @@ headers before splicing.
     before diagnosing a mass-unpairing as a real regression or (worse) reverting good
     ports over it. Genuine per-function phantom FP wobble (note 18/47) still applies on
     top, but it never mass-unpairs whole swaths of a TU.
+
+93. **A low-scoring "already-ported" leaf may just carry the WRONG body — re-read the
+    Ghidra decompile before assuming it's an inlining/codegen limit.**
+    TMinor::ReturnFalseNationStateCapabilityFlag90 (0x4e45f0) sat at 9.5% with a body
+    that range-checked `arg in 0xd..0x10` — logic copy-pasted from the unrelated
+    IsSpecialNationInteractionResource predicate. The real body compares `arg` against
+    four saved fields (diplomacySaveFields134[0..3]). Two further matching details took
+    it 24% → 91.7% → 100%: (a) MSVC compiled the original as **init-to-0, set-to-1,
+    single return** (`char r=0; if(...) r=1; return r;`), NOT `if(...) return 1; return
+    0;` — the early-return form emits the `xor al,al` at the wrong point and flips the
+    branch polarity; (b) the original loads the arg as a **word** (`mov dx, word[esp+4]`),
+    proving the vtable slot param is a `short`, not the `int` the base decl carried.
+    Narrowing the slot param to `short` across the base (TCountry, a return-false stub
+    that ignores arg → stays 100%) and the override in lockstep produced the word load.
+    Lesson: for a mispredicting boolean leaf, check body-logic first, then the init/return
+    shape, then the arg width — and a return-false base is free to re-type its ignored
+    param to match a derived override's real word/byte usage.
