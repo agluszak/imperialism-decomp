@@ -1362,3 +1362,17 @@ headers before splicing.
     (e.g. an eligibility call `IsEligible(i)`) pins index addressing. Rewriting the C++ as
     an explicit pointer walk rarely reproduces it cleanly and risks other regressions —
     treat this residual as expected on table-iteration loops rather than chasing it.
+
+92. **A sudden mass-unpairing after editing a .cpp is almost always incremental-build
+    line staleness — clean-rebuild before believing it.** After adding ~30 lines (four
+    promoted bodies) to TForeignMinister.cpp, `just stats` reported -15 paired / -8
+    aligned, with reccmp erroring `Failed to find function symbol with filename and
+    line: <file>:<N> ... the compiler has probably inlined this function` for real,
+    substantially-ported functions (Call8C 52%, Call90 61%) — clearly not inlined.
+    Editing a file shifts every later function's line number; an incremental
+    `just build` can leave the PDB's line table out of sync so reccmp can't locate the
+    functions by (file, line). `rm -rf build-msvc500 && just build && just detect`
+    restored every pairing and showed the true delta (+2 aligned). Do the clean rebuild
+    before diagnosing a mass-unpairing as a real regression or (worse) reverting good
+    ports over it. Genuine per-function phantom FP wobble (note 18/47) still applies on
+    top, but it never mass-unpairs whole swaths of a TU.
