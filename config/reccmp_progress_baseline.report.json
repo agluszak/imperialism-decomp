@@ -3197,7 +3197,7 @@
     },
     {
       "address": "0x487ef0",
-      "matching": 0.5,
+      "matching": 0.9230769230769231,
       "name": "InitializeLinkedListCursorFromOwnerHead",
       "type": 1
     },
@@ -3209,7 +3209,7 @@
     },
     {
       "address": "0x487f40",
-      "matching": 0.4166666666666667,
+      "matching": 0.9090909090909091,
       "name": "AdvanceLinkedListCursor",
       "type": 1
     },
