@@ -411,14 +411,6 @@ undefined4 ConsumeFirstPendingAbilityUnlock(void)
   return 0;
 }
 
-// ghidra_name SetCityOrderCapabilityTierScaledValueByIndex
-// ghidra_proto undefined SetCityOrderCapabilityTierScaledValueByIndex()
-// FUNCTION: IMPERIALISM 0x005b0c70
-undefined4 SetCityOrderCapabilityTierScaledValueByIndex(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_ftol_At005b0e40
 // ghidra_proto undefined WrapperFor_ftol_At005b0e40()
 // FUNCTION: IMPERIALISM 0x005b0e40

@@ -122,6 +122,8 @@ public:
   void InitializeCityOrderCapabilityStateDefaults();
   void GenerateRandomCapabilityPrioritySlots();
   void ApplyCityOrderCapabilityUnlockByTechId(int nTechId);
+  // Stores value*4 into prioritySlots04[index] (the "Tyer" turn-instruction handler). 0x5b0c70
+  void SetCityOrderCapabilityTierScaledValueByIndex(int index, int value);
   int GetNationFortLevelCap(int nNationId);
 
   ~TTechMgr() override;

@@ -236,6 +236,11 @@ void TTechMgr::ApplyCityOrderCapabilityUnlockByTechId(int nTechId) {
   }
 }
 
+// FUNCTION: IMPERIALISM 0x005b0c70
+void TTechMgr::SetCityOrderCapabilityTierScaledValueByIndex(int index, int value) {
+  prioritySlots04[index] = static_cast<short>(value * 4);
+}
+
 // Returns a nation's maximum fortification level (1..3): level 3 if the advanced-fort flag is
 // set, level 2 if the intermediate flag is set, else level 1. The advanced flag lives in the
 // nation's own orderCapRows277 row; the intermediate flag lives 4 bytes before it, i.e. in the

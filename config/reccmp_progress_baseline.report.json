@@ -12844,7 +12844,8 @@
     },
     {
       "address": "0x4e05d0",
-      "matching": 1.0,
+      "effective": true,
+      "matching": 0.42857142857142855,
       "name": "TGreatPower::OrphanLeaf_NoCall_Ins02_004d7fc0_89",
       "type": 1
     },
@@ -12857,7 +12858,8 @@
     },
     {
       "address": "0x4e0650",
-      "matching": 1.0,
+      "effective": true,
+      "matching": 0.42857142857142855,
       "name": "TGreatPower::OrphanRetStub_004d7fe0_8b",
       "type": 1
     },
@@ -12870,7 +12872,7 @@
     },
     {
       "address": "0x4e06d0",
-      "matching": 0.8095238095238095,
+      "matching": 0.8571428571428571,
       "name": "TGreatPower::SumNationRuntimeFiveBucketValue44",
       "type": 1
     },
@@ -12900,7 +12902,7 @@
     },
     {
       "address": "0x4e09a0",
-      "matching": 0.5180722891566265,
+      "matching": 0.5421686746987951,
       "name": "TGreatPower::ComputeCityOrderCapabilityAggregateScore",
       "type": 1
     },
@@ -16417,7 +16419,7 @@
     },
     {
       "address": "0x50bea0",
-      "matching": 0.2044525215810995,
+      "matching": 0.21172194457064972,
       "name": "TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets",
       "type": 1
     },
@@ -17241,7 +17243,7 @@
     },
     {
       "address": "0x5178f0",
-      "matching": 0.32116788321167883,
+      "matching": 0.3446601941747573,
       "name": "ComputeRepresentativeTileIndexForTerrainTypeWithWrapBias",
       "type": 1
     },
@@ -30776,7 +30778,7 @@
     },
     {
       "address": "0x5b0c70",
-      "matching": 0.0,
+      "matching": 1.0,
       "name": "SetCityOrderCapabilityTierScaledValueByIndex",
       "type": 1
     },
