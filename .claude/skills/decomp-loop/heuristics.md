@@ -1453,3 +1453,11 @@ headers before splicing.
     arg-less; that's the lone `+push 0` diff there), stub 0x530200 as QueueTurnEventHint, and
     re-verify each caller's dispatched slot offset (`call [reg+off]`) before trusting the
     rename. Vtable stays 100% through the swap because the pointer pairing is unchanged.
+    RESOLVED (commit d3373409): no declaration reorder was even needed — the markers were
+    already correct (line-33 method→0x52fdc0=slot 0x1a, line-42→0x530200=slot 0x1e); only the
+    *bodies+names* were swapped. Moved the terrainSlot=7 body onto the 0x52fdc0 method
+    (renamed UpdateNation, void, arg dropped), stubbed 0x530200 as QueueTurnEventHint, fixed
+    the three call sites by dispatched slot. 0x52fdc0 0%→51%, RefreshForeignMinisterState
+    →100%, vtable still 100%. Confirmed the definitive arg check: 0x52fdc0 ends in `c3`
+    (`ret 0`) so it's void — Call90's `push eax` before `call [edx+0x68]` (no cleanup) is a
+    partial-port artifact, not a real short param.
