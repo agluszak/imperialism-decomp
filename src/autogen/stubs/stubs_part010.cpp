@@ -3,22 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name WrapperFor_EnsureWindowSubclassAndParentConsistency_At0047d310
-// ghidra_proto undefined WrapperFor_EnsureWindowSubclassAndParentConsistency_At0047d310()
-// FUNCTION: IMPERIALISM 0x0047d310
-undefined4 WrapperFor_EnsureWindowSubclassAndParentConsistency_At0047d310(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanVtableAssignStub_0047d340
-// ghidra_proto undefined OrphanVtableAssignStub_0047d340()
-// FUNCTION: IMPERIALISM 0x0047d340
-undefined4 OrphanVtableAssignStub_0047d340(void)
-{
-  return 0;
-}
-
 // ghidra_name InitializeDialogTemplateDBWithTextState
 // ghidra_proto undefined InitializeDialogTemplateDBWithTextState()
 // FUNCTION: IMPERIALISM 0x0047d360
@@ -246,7 +230,7 @@ undefined4 OrphanVtableAssignStub_0047dfb0(void)
 // ghidra_name TAutoResolutionDialog::`scalar deleting destructor'
 // ghidra_proto undefined ScalarDeletingDestructor()
 // FUNCTION: IMPERIALISM 0x0047e090
-undefined4 ScalarDeletingDestructor_0047E090(void)
+undefined4 ScalarDeletingDestructor(void)
 {
   return 0;
 }

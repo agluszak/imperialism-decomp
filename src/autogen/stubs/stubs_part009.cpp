@@ -1019,42 +1019,10 @@ undefined4 WrapperFor_ftol_At0047cfa0(void)
   return 0;
 }
 
-// ghidra_name TC2TemplateDialog::`scalar deleting destructor'
-// ghidra_proto undefined ScalarDeletingDestructor()
-// FUNCTION: IMPERIALISM 0x0047d090
-undefined4 ScalarDeletingDestructor(void)
-{
-  return 0;
-}
-
 // ghidra_name DestroyDialogWithListBoxAndHotKeyControl_Alias
 // ghidra_proto undefined DestroyDialogWithListBoxAndHotKeyControl_Alias()
 // FUNCTION: IMPERIALISM 0x0047d0c0
 undefined4 DestroyDialogWithListBoxAndHotKeyControl_Alias(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_EnsureWindowSubclassAndParentConsistency_At0047d160
-// ghidra_proto undefined WrapperFor_EnsureWindowSubclassAndParentConsistency_At0047d160()
-// FUNCTION: IMPERIALISM 0x0047d160
-undefined4 WrapperFor_EnsureWindowSubclassAndParentConsistency_At0047d160(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanVtableAssignStub_0047d1a0
-// ghidra_proto undefined OrphanVtableAssignStub_0047d1a0()
-// FUNCTION: IMPERIALISM 0x0047d1a0
-undefined4 OrphanVtableAssignStub_0047d1a0(void)
-{
-  return 0;
-}
-
-// ghidra_name TD2TemplateDialog::`scalar deleting destructor'
-// ghidra_proto undefined ScalarDeletingDestructor()
-// FUNCTION: IMPERIALISM 0x0047d250
-undefined4 ScalarDeletingDestructor_0047D250(void)
 {
   return 0;
 }

@@ -343,12 +343,12 @@ address|name|symbol|size|type|prototype|provenance
 47d090|TC2TemplateDialog::`scalar deleting destructor'|??_GTC2TemplateDialog@@UAEPAXI@Z|30|function|undefined ScalarDeletingDestructor()|
 47d0c0|DestroyDialogWithListBoxAndHotKeyControl_Alias||120|function|undefined DestroyDialogWithListBoxAndHotKeyControl_Alias()|
 47d160|WrapperFor_EnsureWindowSubclassAndParentConsistency_At0047d160||46|function|undefined WrapperFor_EnsureWindowSubclassAndParentConsistency_At0047d160()|
-47d1a0|OrphanVtableAssignStub_0047d1a0||6|function|undefined OrphanVtableAssignStub_0047d1a0()|
+47d1a0|TC2TemplateDialog::GetMessageMap|?GetMessageMap@TC2TemplateDialog@@MBEPBUAFX_MSGMAP@@XZ|6|function|undefined GetMessageMap()|
 47d1c0|InitializeDialogTemplateD2WithTextState||109|function|undefined InitializeDialogTemplateD2WithTextState()|
 47d250|TD2TemplateDialog::`scalar deleting destructor'|??_GTD2TemplateDialog@@UAEPAXI@Z|30|function|undefined ScalarDeletingDestructor()|
 47d280|WrapperFor_FreeHeapBufferIfNotNull_At0047d250_Impl||104|function|undefined WrapperFor_FreeHeapBufferIfNotNull_At0047d250_Impl()|
 47d310|WrapperFor_EnsureWindowSubclassAndParentConsistency_At0047d310||22|function|undefined WrapperFor_EnsureWindowSubclassAndParentConsistency_At0047d310()|
-47d340|OrphanVtableAssignStub_0047d340||6|function|undefined OrphanVtableAssignStub_0047d340()|
+47d340|TD2TemplateDialog::GetMessageMap|?GetMessageMap@TD2TemplateDialog@@MBEPBUAFX_MSGMAP@@XZ|6|function|undefined GetMessageMap()|
 47d360|InitializeDialogTemplateDBWithTextState||109|function|undefined InitializeDialogTemplateDBWithTextState()|
 47d3f0|WrapperFor_FreeHeapBufferIfNotNull_At0047d3f0||30|function|undefined WrapperFor_FreeHeapBufferIfNotNull_At0047d3f0()|
 47d420|WrapperFor_EnsureWindowSubclassAndParentConsistency_At0047d420||22|function|undefined WrapperFor_EnsureWindowSubclassAndParentConsistency_At0047d420()|

@@ -10,15 +10,17 @@
 // 0x3c). Built by InitializeDialogTemplateC2WithTextState (0x0047cfd0) and driven modally
 // through the TModalDialogBase template helpers. Used by the ID_800C
 // city-view-selection and ID_8013 terrain-overlay command handlers.
+// VTABLE: IMPERIALISM 0x006461f0
 class TC2TemplateDialog : public TModalDialogBase {
 public:
   TC2TemplateDialog(void* initParam); // 0x0047cfd0
-  // Destructor is compiler-generated (implicit) — destroys the embedded controls and the
-  // CDialog base. Keeping it implicit avoids a second function body between the 0x0047cfd0
-  // and 0x0047d1c0 constructor markers (reccmp requires one function per marker range).
 
   CSliderCtrl slider; // +0x74
   CListBox listbox;   // +0xb0
+
+protected:
+  void DoDataExchange(CDataExchange* pDX) override; // 0x0047d160 (vtable index 35)
+  DECLARE_MESSAGE_MAP()                             // GetMessageMap 0x0047d1a0 (vtable index 12)
 };
 
 ASSERT_SIZE(TC2TemplateDialog, 0xec);
@@ -27,12 +29,16 @@ ASSERT_SIZE(TC2TemplateDialog, 0xec);
 // TModalDialogBase base with a single embedded CListBox at +0x74. Built by
 // InitializeDialogTemplateD2WithTextState (0x0047d1c0); used by the ID_8013
 // terrain-overlay command handler.
+// VTABLE: IMPERIALISM 0x00646300
 class TD2TemplateDialog : public TModalDialogBase {
 public:
   TD2TemplateDialog(void* initParam); // 0x0047d1c0
-  // Destructor is compiler-generated (implicit); see TC2TemplateDialog above.
 
   CListBox listbox; // +0x74
+
+protected:
+  void DoDataExchange(CDataExchange* pDX) override; // 0x0047d310 (vtable index 35)
+  DECLARE_MESSAGE_MAP()                             // GetMessageMap 0x0047d340 (vtable index 12)
 };
 
 ASSERT_SIZE(TD2TemplateDialog, 0xb0);

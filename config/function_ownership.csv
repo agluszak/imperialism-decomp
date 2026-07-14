@@ -224,7 +224,13 @@ address|target_cpp|ownership|note
 47cd60|src/game/cd_audio.cpp|manual|marker_sync
 47cdd0|src/game/wave_helpers.cpp|manual|marker_sync
 47cfd0|src/game/TC2TemplateDialog.cpp|manual|marker_sync
+47d090|src/game/TC2TemplateDialog.cpp|manual|marker_sync
+47d160|src/game/TC2TemplateDialog.cpp|manual|marker_sync
+47d1a0|src/game/TC2TemplateDialog.cpp|manual|marker_sync
 47d1c0|src/game/TC2TemplateDialog.cpp|manual|marker_sync
+47d250|src/game/TC2TemplateDialog.cpp|manual|marker_sync
+47d310|src/game/TC2TemplateDialog.cpp|manual|marker_sync
+47d340|src/game/TC2TemplateDialog.cpp|manual|marker_sync
 47d960|src/game/CBrush.cpp|library|marker_sync
 47dfd0|src/game/TAutoResolutionDialog.cpp|manual|marker_sync
 47e0c0|src/game/TAutoResolutionDialog.cpp|manual|marker_sync

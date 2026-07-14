@@ -1672,14 +1672,14 @@
     },
     {
       "address": "0x47cfd0",
-      "matching": 0.918918918918919,
+      "matching": 0.9459459459459459,
       "name": "InitializeDialogTemplateC2WithTextState",
       "type": 1
     },
     {
       "address": "0x47d090",
-      "matching": 0.0,
-      "name": "TC2TemplateDialog::`scalar deleting destructor'(unsigned int)",
+      "matching": 0.9090909090909091,
+      "name": "TC2TemplateDialog::`scalar deleting destructor'",
       "type": 1
     },
     {
@@ -1691,25 +1691,25 @@
     {
       "address": "0x47d1a0",
       "matching": 0.5,
-      "name": "OrphanVtableAssignStub_0047d1a0",
+      "name": "TC2TemplateDialog::GetMessageMap",
       "type": 1
     },
     {
       "address": "0x47d1c0",
-      "matching": 0.9375,
+      "matching": 0.96875,
       "name": "InitializeDialogTemplateD2WithTextState",
       "type": 1
     },
     {
       "address": "0x47d250",
-      "matching": 0.0,
-      "name": "TD2TemplateDialog::`scalar deleting destructor'(unsigned int)",
+      "matching": 0.9090909090909091,
+      "name": "TD2TemplateDialog::`scalar deleting destructor'",
       "type": 1
     },
     {
       "address": "0x47d340",
       "matching": 0.5,
-      "name": "OrphanVtableAssignStub_0047d340",
+      "name": "TD2TemplateDialog::GetMessageMap",
       "type": 1
     },
     {
@@ -41936,6 +41936,18 @@
       "address": "0x645fc8",
       "matching": 1.0,
       "name": "CDib::`vftable'",
+      "type": 5
+    },
+    {
+      "address": "0x6461f0",
+      "matching": 1.0,
+      "name": "TC2TemplateDialog::`vftable'",
+      "type": 5
+    },
+    {
+      "address": "0x646300",
+      "matching": 1.0,
+      "name": "TD2TemplateDialog::`vftable'",
       "type": 5
     },
     {
