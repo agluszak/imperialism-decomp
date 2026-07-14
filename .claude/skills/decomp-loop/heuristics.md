@@ -1393,3 +1393,22 @@ headers before splicing.
     Lesson: for a mispredicting boolean leaf, check body-logic first, then the init/return
     shape, then the arg width — and a return-false base is free to re-type its ignored
     param to match a derived override's real word/byte usage.
+
+94. **`undefined`→`void` on a vtable slot with a trailing `+xor al,al` is a clean single-
+    function win ONLY when no override redefines the slot — batching the whole slot is
+    gated by every override being ported.** Removing the phantom `return 0;` (and the
+    `undefined` return) took the standalone slot TTacticalBattle::ExecuteTacticalDigAction
+    (0x5a3640, no overrides) 98.82%→100% in one edit. But the same fix on
+    TAnimation::AdvanceAnimationTickAndInvalidateOnFrameFlip (0x49f140, base 97.87%→100%)
+    forces its ~5 `override`s to `void` too (a void base can't have `undefined`/`return 0`
+    overrides), and the unported stub overrides — previously `{ return 0; }`, which the
+    NOOP gate ignores because a return statement isn't "empty" — become truly-empty `{}`.
+    The `just noop-gate` then correctly fails `empty_but_big` on TIdleMeAnimation (0x4aca60),
+    whose original is a real body (virtual gate-call on ownerView04 slot 0x13 + a
+    g_pUiAnimator->RemoveUiTransientRegistryObjectByTag(registryTag18) via ILT 0x4030a8).
+    That override can't be ported without resolving a polymorphic view slot (TView slot 0x13
+    is DispatchVslot134…(RECT*)void, but IdleMe calls it as char(int) — a concrete-view-type
+    ambiguity), so faking it or a false `// NOOP` are both wrong, and the whole batch had to
+    be dropped. Rule: only batch a slot-wide return-type narrowing when EVERY override is
+    already a real port (or a genuinely small/empty original); otherwise land the isolated
+    no-override slots (like 0x5a3640) and leave the shared slot until its stubs are ported.
