@@ -2363,7 +2363,7 @@
     },
     {
       "address": "0x482950",
-      "matching": 0.8636363636363636,
+      "matching": 0.9090909090909091,
       "name": "CIncludeView::CIncludeView",
       "type": 1
     },
@@ -2387,14 +2387,14 @@
     },
     {
       "address": "0x482ab0",
-      "matching": 0.9130434782608695,
+      "matching": 0.927536231884058,
       "name": "CIncludeView::~CIncludeView",
       "type": 1
     },
     {
       "address": "0x482bd0",
       "matching": 0.5,
-      "name": "OrphanVtableAssignStub_00482bd0",
+      "name": "CIncludeView::GetMessageMap",
       "type": 1
     },
     {
@@ -37050,8 +37050,8 @@
     },
     {
       "address": "0x60507c",
-      "matching": 0.5,
-      "name": "TMacViewMgr_Slot47_Target",
+      "matching": 1.0,
+      "name": "CWnd::SetOccDialogInfo",
       "type": 1
     },
     {
@@ -38454,8 +38454,8 @@
     },
     {
       "address": "0x60a3f7",
-      "matching": 0.4,
-      "name": "TMacViewMgr_Slot45_Target",
+      "matching": 1.0,
+      "name": "CWnd::CheckAutoCenter",
       "type": 1
     },
     {
@@ -39695,6 +39695,12 @@
       "type": 1
     },
     {
+      "address": "0x613dd5",
+      "matching": 1.0,
+      "name": "CView::PostNcDestroy",
+      "type": 1
+    },
+    {
       "address": "0x613de1",
       "matching": 0.0,
       "name": "AdjustWindowRectForClientAndScrollStyles",
@@ -39743,15 +39749,75 @@
       "type": 1
     },
     {
+      "address": "0x613f34",
+      "matching": 1.0,
+      "name": "CView::IsSelected",
+      "type": 1
+    },
+    {
       "address": "0x613f39",
       "matching": 0.0,
       "name": "OnActivateView",
       "type": 1
     },
     {
+      "address": "0x613f57",
+      "matching": 1.0,
+      "name": "CView::OnActivateFrame",
+      "type": 1
+    },
+    {
       "address": "0x613f5a",
       "matching": 0.9787234042553191,
       "name": "CView::OnMouseActivate",
+      "type": 1
+    },
+    {
+      "address": "0x613fc7",
+      "matching": 1.0,
+      "name": "CView::OnScroll",
+      "type": 1
+    },
+    {
+      "address": "0x613fcc",
+      "matching": 1.0,
+      "name": "CView::OnScrollBy",
+      "type": 1
+    },
+    {
+      "address": "0x613fd1",
+      "matching": 1.0,
+      "name": "CView::OnDragScroll",
+      "type": 1
+    },
+    {
+      "address": "0x613fd9",
+      "matching": 1.0,
+      "name": "CView::OnDragEnter",
+      "type": 1
+    },
+    {
+      "address": "0x613fde",
+      "matching": 1.0,
+      "name": "CView::OnDragOver",
+      "type": 1
+    },
+    {
+      "address": "0x613fe3",
+      "matching": 1.0,
+      "name": "CView::OnDrop",
+      "type": 1
+    },
+    {
+      "address": "0x613fe8",
+      "matching": 1.0,
+      "name": "CView::OnDropEx",
+      "type": 1
+    },
+    {
+      "address": "0x613fee",
+      "matching": 1.0,
+      "name": "CView::OnDragLeave",
       "type": 1
     },
     {
@@ -39762,14 +39828,32 @@
     },
     {
       "address": "0x61404d",
-      "matching": 0.046511627906976744,
-      "name": "RenderControlStateTextBySelectionCode",
+      "matching": 1.0,
+      "name": "CView::GetScrollBarCtrl",
       "type": 1
     },
     {
       "address": "0x61416e",
       "matching": 1.0,
       "name": "CView::OnPrepareDC",
+      "type": 1
+    },
+    {
+      "address": "0x614193",
+      "matching": 1.0,
+      "name": "CView::OnPreparePrinting",
+      "type": 1
+    },
+    {
+      "address": "0x614199",
+      "matching": 1.0,
+      "name": "CView::OnBeginPrinting",
+      "type": 1
+    },
+    {
+      "address": "0x61419c",
+      "matching": 1.0,
+      "name": "CView::OnEndPrinting",
       "type": 1
     },
     {
@@ -41972,6 +42056,12 @@
       "address": "0x646fb0",
       "matching": 1.0,
       "name": "CArray<RuntimeSelectionRecord *, struct RuntimeSelectionRecord *>::`vftable'",
+      "type": 5
+    },
+    {
+      "address": "0x648418",
+      "matching": 1.0,
+      "name": "CIncludeView::`vftable'",
       "type": 5
     },
     {

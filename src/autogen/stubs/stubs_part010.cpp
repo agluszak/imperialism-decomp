@@ -1051,14 +1051,6 @@ undefined4 InitializeChildWindowSurfaceAndTickTimer_Impl_At00482820(void)
   return 0;
 }
 
-// ghidra_name OrphanVtableAssignStub_00482bd0
-// ghidra_proto undefined OrphanVtableAssignStub_00482bd0()
-// FUNCTION: IMPERIALISM 0x00482bd0
-undefined4 OrphanVtableAssignStub_00482bd0(void)
-{
-  return 0;
-}
-
 // ghidra_name BlitMapDialogSurfaceToHdcWithClipBounds
 // ghidra_proto undefined BlitMapDialogSurfaceToHdcWithClipBounds()
 // FUNCTION: IMPERIALISM 0x00482d00

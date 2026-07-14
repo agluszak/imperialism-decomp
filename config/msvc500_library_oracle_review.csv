@@ -50,7 +50,6 @@ address|current_name|current_ownership|oracle_symbol|oracle_name|member|match_ki
 0x00611ec4|Flush|unowned|?Flush@CArchive@@QAEXXZ|CArchive::Flush|arccore.obj|unique|1|invented_name_referenced_in_source
 0x00613cb1|CView|unowned|??0CView@@IAE@XZ|CView::CView|viewcore.obj|unique|1|invented_name_referenced_in_source
 0x00613f39|OnActivateView|unowned|?OnActivateView@CView@@MAEXHPAV1@0@Z|CView::OnActivateView|viewcore.obj|unique|1|invented_name_referenced_in_source
-0x0061404d|RenderControlStateTextBySelectionCode|unowned|?GetScrollBarCtrl@CView@@UBEPAVCScrollBar@@H@Z|CView::GetScrollBarCtrl|viewcore.obj|unique|1|invented_name_referenced_in_source
 0x006148af|ReleaseRuntimeSelectionOwnerAndDestroyObject|unowned|?LoadTemplate@CDocTemplate@@UAEXXZ|CDocTemplate::LoadTemplate|doctempl.obj|unique|1|invented_name_referenced_in_source
 0x00614a04|OrphanLeaf_NoCall_Ins04_005adc30|unowned|?GetDocString@CDocTemplate@@UBEHAAVCString@@W4DocStringIndex@1@@Z|CDocTemplate::GetDocString|doctempl.obj|unique|1|invented_name_referenced_in_source
 0x00614a19|SetObjectField24Value|unowned|?AddDocument@CDocTemplate@@UAEXPAVCDocument@@@Z|CDocTemplate::AddDocument|doctempl.obj|unique|1|below_min_convert_size

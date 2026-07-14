@@ -509,7 +509,7 @@ address|name|symbol|size|type|prototype|provenance
 4829f0|CList<IncludeViewOverlayRectRecord,IncludeViewOverlayRectRecord &>::`scalar deleting destructor'|??_G?$CList@UIncludeViewOverlayRectRecord@@AAU1@@@UAEPAXI@Z|30|function|undefined WrapperFor_FreeHeapBufferIfNotNull_At004829f0()|template
 482a20|CList<IncludeViewOverlayRectRecord,IncludeViewOverlayRectRecord &>::~CList|??1?$CList@UIncludeViewOverlayRectRecord@@AAU1@@@UAE@XZ|101|function|undefined DestructCViewOwnedBufferChainState_00648578_AndFreeChain_At00482a20()|template
 482ab0|CIncludeView::~CIncludeView|??1CIncludeView@@UAE@XZ|213|function|undefined DestructCViewOwnedBufferRegistryStateAndReleaseOwnedBuffers()|
-482bd0|OrphanVtableAssignStub_00482bd0||6|function|undefined OrphanVtableAssignStub_00482bd0()|
+482bd0|CIncludeView::GetMessageMap|?GetMessageMap@CIncludeView@@MBEPBUAFX_MSGMAP@@XZ|6|function|protected: virtual struct AFX_MSGMAP const * __thiscall CIncludeView::GetMessageMap(void)const|
 482bf0|CIncludeView::OnDialogTreeHostMsg4EF||119|function|LRESULT OnDialogTreeHostMsg4EF(WPARAM wParam, LPARAM lParam)|
 482c90|CIncludeView::OnDraw||80|function|void OnDraw(CDC* pDC)|
 482d00|BlitMapDialogSurfaceToHdcWithClipBounds||359|function|undefined BlitMapDialogSurfaceToHdcWithClipBounds()|
@@ -6910,7 +6910,7 @@ address|name|symbol|size|type|prototype|provenance
 604e08|CWnd::CreateDlg|?CreateDlg@CWnd@@IAEHPBDPAV1@@Z|68|function|protected: int __thiscall CWnd::CreateDlg(char const *, class CWnd *)|msvc500_library_oracle
 604e4c|CWnd::CreateDlgIndirect|?CreateDlgIndirect@CWnd@@IAEHPBUDLGTEMPLATE@@PAV1@@Z|18|function|protected: int __thiscall CWnd::CreateDlgIndirect(struct DLGTEMPLATE const *, class CWnd *)|msvc500_library_oracle
 604e5e|CWnd::CreateDlgIndirect|?CreateDlgIndirect@CWnd@@IAEHPBUDLGTEMPLATE@@PAV1@PAUHINSTANCE__@@@Z|516|function|undefined CreateDlgIndirect_604e5e()|
-60507c|TMacViewMgr_Slot47_Target||5|function|undefined TMacViewMgr_Slot47_Target()|
+60507c|CWnd::SetOccDialogInfo|?SetOccDialogInfo@CWnd@@MAEHPAU_AFX_OCC_DIALOG_INFO@@@Z|5|function|protected: virtual int __thiscall CWnd::SetOccDialogInfo(struct _AFX_OCC_DIALOG_INFO *)|msvc500_library_override
 605081|CDialog::SetOccDialogInfo|?SetOccDialogInfo@CDialog@@MAEHPAU_AFX_OCC_DIALOG_INFO@@@Z||function|protected: virtual int __thiscall CDialog::SetOccDialogInfo(struct _AFX_OCC_DIALOG_INFO *)|msvc500_library_override
 60508e|CDialog::CDialog|??0CDialog@@QAE@PBDPAVCWnd@@@Z|66|function|public: __thiscall CDialog::CDialog(char const *, class CWnd *)|msvc500_library_oracle
 6050d0|CDialog::CDialog|??0CDialog@@QAE@IPAVCWnd@@@Z|57|function|public: __thiscall CDialog::CDialog(unsigned int,class CWnd *)|msvc500_library_override
@@ -7183,7 +7183,7 @@ address|name|symbol|size|type|prototype|provenance
 60a1c4|UpdateData||124|function|undefined UpdateData()|
 60a267|CDataExchange||22|function|undefined CDataExchange()|
 60a27d|CWnd::CenterWindow|?CenterWindow@CWnd@@QAEXPAV1@@Z|378|function|public: void __thiscall CWnd::CenterWindow(class CWnd *)|msvc500_library_oracle
-60a3f7|TMacViewMgr_Slot45_Target||4|function|undefined TMacViewMgr_Slot45_Target()|
+60a3f7|CWnd::CheckAutoCenter|?CheckAutoCenter@CWnd@@UAEHXZ|4|function|public: virtual int __thiscall CWnd::CheckAutoCenter(void)|msvc500_library_override
 60a3fb|CWnd::ExecuteDlgInit|?ExecuteDlgInit@CWnd@@QAEHPBD@Z|80|function|public: int __thiscall CWnd::ExecuteDlgInit(char const *)|msvc500_library_oracle
 60a44b|CWnd::ExecuteDlgInit|?ExecuteDlgInit@CWnd@@QAEHPAX@Z|138|function|public: int __thiscall CWnd::ExecuteDlgInit(void *)|msvc500_library_oracle
 60a4d5|CWnd::UpdateDialogControls|?UpdateDialogControls@CWnd@@QAEXPAVCCmdTarget@@H@Z|261|function|public: void __thiscall CWnd::UpdateDialogControls(class CCmdTarget *, int)|msvc500_library_oracle
@@ -7451,7 +7451,7 @@ address|name|symbol|size|type|prototype|provenance
 613d23|CView::PreCreateWindow|?PreCreateWindow@CView@@MAEHAAUtagCREATESTRUCTA@@@Z|83|function|protected: virtual int __thiscall CView::PreCreateWindow(struct tagCREATESTRUCTA &)|msvc500_library_oracle
 613d76|CView::OnCreate|?OnCreate@CView@@IAEHPAUtagCREATESTRUCTA@@@Z|48|function|protected: int __thiscall CView::OnCreate(struct tagCREATESTRUCTA *)|msvc500_library_oracle
 613da6|CView::OnDestroy|?OnDestroy@CView@@IAEXXZ|47|function|protected: void __thiscall CView::OnDestroy(void)|msvc500_library_oracle
-613dd5|DeleteObjectViaVirtualDtorIfNonNull_00613dd5||12|function|undefined DeleteObjectViaVirtualDtorIfNonNull_00613dd5()|
+613dd5|CView::PostNcDestroy|?PostNcDestroy@CView@@MAEXXZ|12|function|protected: virtual void __thiscall CView::PostNcDestroy(void)|msvc500_library_override
 613de1|AdjustWindowRectForClientAndScrollStyles||85|function|undefined AdjustWindowRectForClientAndScrollStyles()|
 613e36|thunk_NoOpVirtualStub_00613e44||2|function|undefined thunk_NoOpVirtualStub_00613e44()|
 613e44|NoOpVirtualStub_00613e44||5|function|undefined NoOpVirtualStub_00613e44()|
@@ -7460,12 +7460,25 @@ address|name|symbol|size|type|prototype|provenance
 613f04|CView::OnInitialUpdate|?OnInitialUpdate@CView@@UAEXXZ|14|function|public: virtual void __thiscall CView::OnInitialUpdate(void)|msvc500_library_oracle
 613f12|CView::OnUpdate|?OnUpdate@CView@@MAEXPAV1@JPAVCObject@@@Z|16|function|protected: virtual void __thiscall CView::OnUpdate(class CView *, long, class CObject *)|msvc500_library_oracle
 613f22|CView::OnPrint|?OnPrint@CView@@MAEXPAVCDC@@PAUCPrintInfo@@@Z|15|function|protected: virtual void __thiscall CView::OnPrint(class CDC *, struct CPrintInfo *)|msvc500_library_oracle
+613f34|CView::IsSelected|?IsSelected@CView@@UBEHPBVCObject@@@Z||function|public: virtual int __thiscall CView::IsSelected(class CObject const *)const|msvc500_library_override
 613f39|OnActivateView||30|function|undefined OnActivateView()|
+613f57|CView::OnActivateFrame|?OnActivateFrame@CView@@MAEXIPAVCFrameWnd@@@Z||function|protected: virtual void __thiscall CView::OnActivateFrame(unsigned int,class CFrameWnd *)|msvc500_library_override
 613f5a|CView::OnMouseActivate|?OnMouseActivate@CView@@IAEHPAVCWnd@@II@Z|109|function|protected: int __thiscall CView::OnMouseActivate(class CWnd *, unsigned int, unsigned int)|msvc500_library_oracle
+613fc7|CView::OnScroll|?OnScroll@CView@@UAEHIIH@Z||function|public: virtual int __thiscall CView::OnScroll(unsigned int,unsigned int,int)|msvc500_library_override
+613fcc|CView::OnScrollBy|?OnScrollBy@CView@@UAEHVCSize@@H@Z||function|public: virtual int __thiscall CView::OnScrollBy(class CSize,int)|msvc500_library_override
+613fd1|CView::OnDragScroll|?OnDragScroll@CView@@UAEKKVCPoint@@@Z||function|public: virtual unsigned long __thiscall CView::OnDragScroll(unsigned long,class CPoint)|msvc500_library_override
+613fd9|CView::OnDragEnter|?OnDragEnter@CView@@UAEKPAVCOleDataObject@@KVCPoint@@@Z||function|public: virtual unsigned long __thiscall CView::OnDragEnter(class COleDataObject *,unsigned long,class CPoint)|msvc500_library_override
+613fde|CView::OnDragOver|?OnDragOver@CView@@UAEKPAVCOleDataObject@@KVCPoint@@@Z||function|public: virtual unsigned long __thiscall CView::OnDragOver(class COleDataObject *,unsigned long,class CPoint)|msvc500_library_override
+613fe3|CView::OnDrop|?OnDrop@CView@@UAEHPAVCOleDataObject@@KVCPoint@@@Z||function|public: virtual int __thiscall CView::OnDrop(class COleDataObject *,unsigned long,class CPoint)|msvc500_library_override
+613fe8|CView::OnDropEx|?OnDropEx@CView@@UAEKPAVCOleDataObject@@KKVCPoint@@@Z||function|public: virtual unsigned long __thiscall CView::OnDropEx(class COleDataObject *,unsigned long,unsigned long,class CPoint)|msvc500_library_override
+613fee|CView::OnDragLeave|?OnDragLeave@CView@@UAEXXZ||function|public: virtual void __thiscall CView::OnDragLeave(void)|msvc500_library_override
 613fef|CView::GetParentSplitter|?GetParentSplitter@CView@@SGPAVCSplitterWnd@@PBVCWnd@@H@Z|94|function|public: static class CSplitterWnd * __stdcall CView::GetParentSplitter(class CWnd const *, int)|msvc500_library_oracle
-61404d|RenderControlStateTextBySelectionCode||117|function|undefined __thiscall RenderControlStateTextBySelectionCode(int param_1)|
+61404d|CView::GetScrollBarCtrl|?GetScrollBarCtrl@CView@@UBEPAVCScrollBar@@H@Z|117|function|public: virtual class CScrollBar * __thiscall CView::GetScrollBarCtrl(int)const|msvc500_library_override
 61416e|CView::OnPrepareDC|?OnPrepareDC@CView@@UAEXPAVCDC@@PAUCPrintInfo@@@Z|37|function|public: virtual void __thiscall CView::OnPrepareDC(class CDC *, struct CPrintInfo *)|msvc500_library_oracle
-61419f|CView::OnEndPrintPreview|?OnEndPrintPreview@CView@@MAEXPAVCDC@@PAUCPrintInfo@@UtagPOINT@@PAVCPreviewView@@@Z|202|function|protected: virtual void __thiscall CView::OnEndPrintPreview(class CDC *, struct CPrintInfo *, struct tagPOINT, class CPreviewView *)|msvc500_library_oracle
+614193|CView::OnPreparePrinting|?OnPreparePrinting@CView@@MAEHPAUCPrintInfo@@@Z||function|protected: virtual int __thiscall CView::OnPreparePrinting(struct CPrintInfo *)|msvc500_library_override
+614199|CView::OnBeginPrinting|?OnBeginPrinting@CView@@MAEXPAVCDC@@PAUCPrintInfo@@@Z||function|protected: virtual void __thiscall CView::OnBeginPrinting(class CDC *,struct CPrintInfo *)|msvc500_library_override
+61419c|CView::OnEndPrinting|?OnEndPrinting@CView@@MAEXPAVCDC@@PAUCPrintInfo@@@Z||function|protected: virtual void __thiscall CView::OnEndPrinting(class CDC *,struct CPrintInfo *)|msvc500_library_override
+61419f|CView::OnEndPrintPreview|?OnEndPrintPreview@CView@@MAEXPAVCDC@@PAUCPrintInfo@@UtagPOINT@@PAVCPreviewView@@@Z|202|function|protected: virtual void __thiscall CView::OnEndPrintPreview(class CDC *,struct CPrintInfo *,struct tagPOINT,class CPreviewView *)|msvc500_library_override
 6142c0|CCtrlView::`scalar deleting dtor'|??_GCCtrlView@@UAEPAXI@Z|28|function|undefined WrapperFor_FreeHeapBufferIfNotNull_At006142c0()|
 6142dc|CCtrlView::PreCreateWindow|?PreCreateWindow@CCtrlView@@MAEHAAUtagCREATESTRUCTA@@@Z|77|function|protected: virtual int __thiscall CCtrlView::PreCreateWindow(struct tagCREATESTRUCTA &)|msvc500_library_oracle
 614331|AfxCustomLogFont|?AfxCustomLogFont@@YGHIPAUtagLOGFONTA@@@Z|120|function|int __stdcall AfxCustomLogFont(unsigned int, struct tagLOGFONTA *)|msvc500_library_oracle

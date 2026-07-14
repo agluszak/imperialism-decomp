@@ -29,17 +29,13 @@ struct IncludeViewOverlayRectRecord {
 };
 ASSERT_SIZE(IncludeViewOverlayRectRecord, 0x18);
 
-// No `// VTABLE: IMPERIALISM 0x00648418` marker yet (deliberate, like CMainFrame/
-// ImperialismApp). All CIncludeView-specific slots are now modelled and pair — the two
-// game overrides (PreCreateWindow 0x64, OnCommand 0x80) plus CalcWindowRect 0x68,
-// OnInitialUpdate/OnActivateView/OnDraw and the message-map handlers. `just gates` still
-// requires every *marked* vtable to be 100%, and one class of slot remains unmatched:
-//   - the inherited CView/CWnd/CCmdTarget library slots at 0x70/0xac/0xb4/0xc0-0xe0/0xf0/...
-//     are real nafxcw functions (0x60xxxx/0x613xxx/0x614xxx) still carrying game-class names
-//     in config/symbols.csv; matching them is the binary-wide MFC-vtable LIBRARY-annotation
-//     pass (heuristics note 88), shared across every CView/CFrameWnd-family vtable.
-// Add the marker once that pass lands. `just vtable CIncludeView` currently (and honestly)
-// reports "no reccmp-paired vtable" — an unverified vtable, not a vacuous 100%.
+// Full 68-slot vtable. The two game overrides (PreCreateWindow 0x64, OnCommand 0x80),
+// CalcWindowRect 0x68, OnInitialUpdate/OnActivateView/OnDraw and the message-map handlers
+// are modelled here; every inherited CObject/CCmdTarget/CWnd/CView library slot is claimed
+// by the reviewed nafxcw identity overrides in config/msvc500_library_overrides.csv (the
+// CView-family MFC-vtable pass — GetScrollBarCtrl, PostNcDestroy, the OLE drag-drop /
+// scroll / print virtuals, etc.; heuristics note 88).
+// VTABLE: IMPERIALISM 0x00648418
 class CIncludeView : public CView {
 public:
   DECLARE_DYNCREATE(CIncludeView)

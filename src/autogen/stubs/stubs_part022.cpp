@@ -171,14 +171,6 @@ undefined4 CDataExchange(void)
   return 0;
 }
 
-// ghidra_name TMacViewMgr_Slot45_Target
-// ghidra_proto undefined TMacViewMgr_Slot45_Target()
-// FUNCTION: IMPERIALISM 0x0060a3f7
-undefined4 TMacViewMgr_Slot45_Target(void)
-{
-  return 0;
-}
-
 // ghidra_name TMacViewMgr::TMacViewMgr_VtblSlot046
 // ghidra_proto undefined TMacViewMgr_VtblSlot046()
 // FUNCTION: IMPERIALISM 0x0060a912
@@ -411,14 +403,6 @@ undefined4 CView(void)
   return 0;
 }
 
-// ghidra_name DeleteObjectViaVirtualDtorIfNonNull_00613dd5
-// ghidra_proto undefined DeleteObjectViaVirtualDtorIfNonNull_00613dd5()
-// FUNCTION: IMPERIALISM 0x00613dd5
-undefined4 DeleteObjectViaVirtualDtorIfNonNull_00613dd5(void)
-{
-  return 0;
-}
-
 // ghidra_name AdjustWindowRectForClientAndScrollStyles
 // ghidra_proto undefined AdjustWindowRectForClientAndScrollStyles()
 // FUNCTION: IMPERIALISM 0x00613de1
@@ -447,14 +431,6 @@ undefined4 NoOpVirtualStub_00613e44(void)
 // ghidra_proto undefined OnActivateView()
 // FUNCTION: IMPERIALISM 0x00613f39
 undefined4 OnActivateView(void)
-{
-  return 0;
-}
-
-// ghidra_name RenderControlStateTextBySelectionCode
-// ghidra_proto undefined __thiscall RenderControlStateTextBySelectionCode(int param_1)
-// FUNCTION: IMPERIALISM 0x0061404d
-undefined4 RenderControlStateTextBySelectionCode(void)
 {
   return 0;
 }

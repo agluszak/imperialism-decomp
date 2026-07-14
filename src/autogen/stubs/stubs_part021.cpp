@@ -555,14 +555,6 @@ undefined4 NoOpPaddingStub_00604c3c(void)
   return 0;
 }
 
-// ghidra_name TMacViewMgr_Slot47_Target
-// ghidra_proto undefined TMacViewMgr_Slot47_Target()
-// FUNCTION: IMPERIALISM 0x0060507c
-undefined4 TMacViewMgr_Slot47_Target(void)
-{
-  return 0;
-}
-
 // ghidra_name DoModal_6051b9
 // ghidra_proto undefined DoModal_6051b9()
 // FUNCTION: IMPERIALISM 0x006051b9

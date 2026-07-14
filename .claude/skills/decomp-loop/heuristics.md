@@ -1355,3 +1355,32 @@ headers before splicing.
     a binary-wide MFC-vtable-modelling effort that touches those game classes' vtables
     too. Until it's done, leave the dialog `// VTABLE:` markers unclaimed (the four
     dialog-specific slots are already real virtuals; see TModalDialogBase.h).
+
+## 89. CView/CFrameWnd-family vtable LIBRARY pass: align the RECOMP vtable slot-by-slot, don't guess names
+The note-88 pass (claim inherited MFC slots as LIBRARY so a CView/CFrameWnd-derived class
+vtable can be marked and reach 100%) is driven from the **recompiled** vtable, which is
+ground truth because it is built from real nafxcw.lib. Method that worked for CIncludeView
+(`0x648418`, 68 slots, all 18 remaining red slots resolved, +0.11pp, no regressions):
+1. Dump the ORIG vtable (`just ghidra-vtable-dump Class 0xADDR`) → slot byte-offset → orig
+   addr. Game overrides appear as `0x40xxxx` ILT thunks (reccmp resolves them) or `0x48xxxx`
+   game addresses; the red LIBRARY slots are direct `0x60xxxx/0x613xxx/0x614xxx` addrs
+   carrying junk `symbols.csv` names.
+2. Read the RECOMP vtable (`??_7Class@@6B@` from `cvdump -p`; its pointer array) and resolve
+   each recomp slot → mangled symbol via the PDB's `S_GPROC32`/`S_PUB32` records.
+3. Align by **byte offset** (identical MFC layout): recomp name+symbol at offset 0xNN is the
+   canonical identity of the orig addr at offset 0xNN. VALIDATE the alignment on 3-4 slots
+   that are already green (e.g. `CView::OnPrepareDC/OnUpdate/OnPrint`) before trusting it,
+   and confirm orig and recomp vtables are the **same length** — if recomp is longer
+   (extra OCC/OLE tail), the class can't reach 100% and it's a structural divergence, not a
+   naming bug.
+4. Emit one `config/msvc500_library_overrides.csv` row per red slot
+   (`addr|CView::Name|<recomp mangled symbol>|<prototype>|nafxcw|<obj>|evidence`); take the
+   mangled symbol verbatim from the recomp PDB, never hand-mangle. `just regen-stubs` applies
+   them. These are shared nafxcw functions, so the rows also fix every other CView-family
+   vtable that references them — run the full `just precommit` (all vtables) to confirm no
+   regression.
+5. Slot 12 (`0x30`) `GetMessageMap` is the class's own compiler-generated override (from
+   `BEGIN_MESSAGE_MAP`), NOT a library slot — claim it with a `// SYNTHETIC:` marker +
+   `?GetMessageMap@Class@@MBEPBUAFX_MSGMAP@@XZ`, same as the dialog GetMessageMaps.
+Only after every slot pairs can the `// VTABLE:` marker go on (the vtable gate requires 100%
+for marked vtables). A subagent is well-suited to the mechanical step-2/3 triangulation.
