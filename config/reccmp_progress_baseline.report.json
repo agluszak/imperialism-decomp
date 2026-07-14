@@ -645,13 +645,13 @@
     },
     {
       "address": "0x429470",
-      "matching": 0.6153846153846154,
+      "matching": 1.0,
       "name": "TControl::AssertCityProductionGlobalStateInitialized",
       "type": 1
     },
     {
       "address": "0x4294a0",
-      "matching": 0.6666666666666666,
+      "matching": 1.0,
       "name": "TControl::LogUnhandledDialogMethodAndReturnFalse",
       "type": 1
     },
@@ -922,7 +922,7 @@
     },
     {
       "address": "0x435760",
-      "matching": 0.6666666666666666,
+      "matching": 1.0,
       "name": "TControl::ShallowClone",
       "type": 1
     },
