@@ -148,7 +148,12 @@ public:
   int field30;
   int field34;
   unsigned int turnFlowStatusFlags;
+  // +0x3c — session/turn-flow flag word: zeroed by the ctor, OR'd with 0x40 by
+  // AdvanceGlobalTurnStateMachine, and serialized as a byte. NOT the mode index below —
+  // reader code that compares a value to 0/1/2/4 wants redrawEnabled (+0x40), not this.
   int runtimeSubsystemIndex;
+  // +0x40 — mode/scenario/localization index (0/1/2/4); read all over TCountry/TGreatPower/
+  // TDiplomacyMgr/etc. (the "redrawEnabled" name is a misnomer kept for churn reasons).
   int redrawEnabled;
   // +0x44 — the multiplayer/session-mode dword: zeroed by the constructor (0x57bae7),
   // compared against 1 and 2 all over TMultiplayerMgr/TMapMgr/TArmyMgr, and tested

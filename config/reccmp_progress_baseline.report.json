@@ -11816,7 +11816,7 @@
     },
     {
       "address": "0x4d71b0",
-      "matching": 0.8511821974965229,
+      "matching": 0.8650904033379694,
       "name": "TCountry::SeedRecruitAndNavyOrdersForEligibleCoastalCities",
       "type": 1
     },
@@ -12411,7 +12411,7 @@
     },
     {
       "address": "0x4dd470",
-      "matching": 0.9705882352941176,
+      "matching": 1.0,
       "name": "TGreatPower::ResetDiplomacyNeedSlots7012AndRefreshIfModeGateMatches",
       "type": 1
     },
