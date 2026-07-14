@@ -15,6 +15,7 @@ address|target_cpp|ownership|note
 412640|src/game/startup_helpers.cpp|manual|marker_sync
 412840|src/game/startup_helpers.cpp|manual|marker_sync
 412a70|src/game/startup_helpers.cpp|manual|marker_sync
+412aa0|src/game/ImperialismApp.cpp|manual|marker_sync
 412ac0|src/game/ImperialismApp.cpp|manual|marker_sync
 412bd0|src/game/CObject.cpp|library|marker_sync
 412bf0|src/game/CObject.cpp|library|marker_sync
@@ -35,6 +36,7 @@ address|target_cpp|ownership|note
 4139f0|src/game/ImperialismApp.cpp|manual|marker_sync
 413a20|src/game/ImperialismApp.cpp|manual|marker_sync
 413c00|src/game/TModalDialogBase.cpp|manual|marker_sync
+4145f0|src/game/ImperialismApp.cpp|manual|marker_sync
 4146d0|src/game/ImperialismApp.cpp|manual|marker_sync
 414720|src/game/TApplication.cpp|manual|marker_sync
 414770|src/game/TAmbitApplication.cpp|manual|marker_sync
@@ -5537,6 +5539,7 @@ address|target_cpp|ownership|note
 6054cb|src/game/library_msvc500_fid.cpp|library|marker_sync
 6055ae|src/game/library_msvc500_fid.cpp|library|marker_sync
 6055d0|src/game/library_msvc500_oracle.cpp|library|marker_sync
+605607|src/game/library_msvc500_overrides.cpp|library|marker_sync
 60567e|src/game/library_msvc500_fid.cpp|library|marker_sync
 6056e4|src/game/library_msvc500_fid.cpp|library|marker_sync
 605791|src/game/CString.cpp|library|marker_sync
@@ -5586,6 +5589,7 @@ address|target_cpp|ownership|note
 6062c2|src/game/library_msvc500_fid.cpp|library|marker_sync
 6063b8|src/game/library_msvc500_oracle.cpp|library|marker_sync
 6063cd|src/game/library_msvc500_fid.cpp|library|marker_sync
+606451|src/game/library_msvc500_overrides.cpp|library|marker_sync
 6064b0|src/game/library_msvc500_fid.cpp|library|marker_sync
 6065c7|src/game/library_msvc500_fid.cpp|library|marker_sync
 606640|src/game/library_msvc500_fid.cpp|library|marker_sync
@@ -6073,11 +6077,13 @@ address|target_cpp|ownership|note
 61842f|src/game/library_msvc500_fid.cpp|library|marker_sync
 61844a|src/game/library_msvc500_fid.cpp|library|marker_sync
 61846b|src/game/library_msvc500_fid.cpp|library|marker_sync
+61849d|src/game/library_msvc500_overrides.cpp|library|marker_sync
 6184fc|src/game/library_msvc500_fid.cpp|library|marker_sync
 61852a|src/game/MfcRuntime.cpp|library|marker_sync
 6185e4|src/game/MfcRuntime.cpp|library|marker_sync
 618605|src/game/library_msvc500_fid.cpp|library|marker_sync
 6186a4|src/game/library_msvc500_oracle.cpp|library|marker_sync
+6186b7|src/game/library_msvc500_overrides.cpp|library|marker_sync
 6186f2|src/game/library_msvc500_oracle.cpp|library|marker_sync
 618704|src/game/MfcRuntime.cpp|library|marker_sync
 61873c|src/game/MfcRuntime.cpp|library|marker_sync
@@ -6268,6 +6274,7 @@ address|target_cpp|ownership|note
 6228af|src/game/library_msvc500_fid.cpp|library|marker_sync
 6228de|src/game/library_msvc500_fid.cpp|library|marker_sync
 622a13|src/game/library_msvc500_fid.cpp|library|marker_sync
+622a85|src/game/library_msvc500_overrides.cpp|library|marker_sync
 622b3c|src/game/library_msvc500_fid.cpp|library|marker_sync
 622b58|src/game/MfcRuntime.cpp|library|marker_sync
 622b95|src/game/library_msvc500_fid.cpp|library|marker_sync

@@ -29,6 +29,7 @@
 // be asserted. (Note: OnCmdMsg and GetMessageMap are NOT OLE-gated — both remain even
 // under _AFX_NO_OLE_SUPPORT — so neither was ever an "OLE slot" difference.) The CWinApp
 // inheritance itself is correct and drives DispatchMfcAppLifecycle as designed.
+// VTABLE: IMPERIALISM 0x0063e2d0
 class ImperialismApp : public CWinApp {
 public:
   ImperialismApp();
@@ -40,6 +41,9 @@ public:
   // CWinThread::PreTranslateMessage override (vtable slot +0x60): refresh the tiled
   // backdrop on input messages, then chain to the base pump.
   virtual BOOL PreTranslateMessage(MSG* pMsg) override; // slot +0x60, 0x00413a20
+  // CWinThread::OnIdle override (vtable slot +0x68): drive the game UI root's per-phase
+  // Idle after the base idle work.
+  virtual BOOL OnIdle(LONG lCount) override; // slot +0x68, 0x004145f0
 
   int ShowAutoResolutionDialogIfNeeded();                            // 0x00415090
   BOOL SetSettingValueInSettingsSection(LPCTSTR key, LPCTSTR value); // 0x00415580
@@ -68,6 +72,8 @@ public:
   CString field_DC;               // 0xDC — string 0x80
   CString languageCodeStringE0;   // 0xE0 — string 0x323, three-letter language code
   int languagePackIdE4;           // 0xE4 — languageCodeStringE0 packed little-endian
+
+  DECLARE_MESSAGE_MAP()
 };
 
 extern ImperialismApp theApp;

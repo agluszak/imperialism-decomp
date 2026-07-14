@@ -26,7 +26,7 @@ address|name|symbol|size|type|prototype|provenance
 412720|OrphanCallChain_C7_I93_00412720||216|function|undefined OrphanCallChain_C7_I93_00412720()|
 412840|ReadOrCreateRegistryStringValueWithFallback||440|function|undefined ReadOrCreateRegistryStringValueWithFallback()|
 412a70|GetMainViewHostFromActiveThread||32|function|void* __cdecl GetMainViewHostFromActiveThread(void)|
-412aa0|NoOpThunkTargetHandler||6|function|undefined NoOpThunkTargetHandler()|
+412aa0|ImperialismApp::GetMessageMap|?GetMessageMap@ImperialismApp@@MBEPBUAFX_MSGMAP@@XZ|6|function|protected: virtual struct AFX_MSGMAP const * __thiscall ImperialismApp::GetMessageMap(void)const|
 412ac0|ConstructImperialismApplicationSingleton||195|function|undefined ConstructImperialismApplicationSingleton()|
 412bd0|CObject::Serialize||3|function|undefined Serialize()|
 412bf0|CObject::AssertValid||1|function|void AssertValid() const|
@@ -64,7 +64,7 @@ address|name|symbol|size|type|prototype|provenance
 4140f0|ApplyDialogSelectionToNationState||444|function|undefined ApplyDialogSelectionToNationState()|
 414320|WrapperFor_FreeHeapBufferIfNotNull_At0047dc40_Impl||104|function|undefined WrapperFor_FreeHeapBufferIfNotNull_At0047dc40_Impl()|
 4143b0|LoadAndPreviewDibFromDialogInput||428|function|undefined LoadAndPreviewDibFromDialogInput()|
-4145f0|WrapperFor_OnIdle_At004145f0||55|function|undefined WrapperFor_OnIdle_At004145f0()|
+4145f0|ImperialismApp::OnIdle|?OnIdle@ImperialismApp@@UAEHJ@Z|55|function|public: virtual int __thiscall ImperialismApp::OnIdle(long)|
 414640|AssertAmbitSubsystemReadyOrFailWithBmp3B6||28|function|undefined AssertAmbitSubsystemReadyOrFailWithBmp3B6()|
 4146d0|PostWmCloseToMainThreadWindow||55|function|undefined PostWmCloseToMainThreadWindow()|
 414720|TApplication::PostTurnEventCodeMessage2420||51|function|undefined PostTurnEventCodeMessage2420()|
@@ -6929,6 +6929,7 @@ address|name|symbol|size|type|prototype|provenance
 6054cb|CDialog::CheckAutoCenter|?CheckAutoCenter@CDialog@@UAEHXZ|124|function|public: virtual int __thiscall CDialog::CheckAutoCenter(void)|msvc500_library_oracle
 6055ae|CWinApp::Run|?Run@CWinApp@@UAEHXZ|34|function|public: virtual int __thiscall CWinApp::Run(void)|msvc500_library_oracle
 6055d0|CWinApp::WinHelpA|?WinHelpA@CWinApp@@UAEXKI@Z|55|function|public: virtual void __thiscall CWinApp::WinHelpA(unsigned long, unsigned int)|msvc500_library_oracle
+605607|CWinApp::ProcessWndProcException|?ProcessWndProcException@CWinApp@@UAEJPAVCException@@PBUtagMSG@@@Z||function|public: virtual long __thiscall CWinApp::ProcessWndProcException(class CException *,struct tagMSG const *)|msvc500_library_override
 605613|HandleWndProcExceptionWithNodeTypeDispatch_00605613||59|function|undefined HandleWndProcExceptionWithNodeTypeDispatch_00605613()|
 60564e|thunk_DispatchVirtualSlot18OnImplicitObject||2|function|undefined thunk_DispatchVirtualSlot18OnImplicitObject()|
 605665|DispatchVirtualSlot18OnImplicitObject||15|function|undefined DispatchVirtualSlot18OnImplicitObject()|
@@ -6983,7 +6984,7 @@ address|name|symbol|size|type|prototype|provenance
 6062c2|CWinThread::CreateThread|?CreateThread@CWinThread@@QAEHKIPAU_SECURITY_ATTRIBUTES@@@Z|246|function|public: int __thiscall CWinThread::CreateThread(unsigned long, unsigned int, struct _SECURITY_ATTRIBUTES *)|msvc500_library_oracle
 6063b8|CWinThread::Delete|?Delete@CWinThread@@UAEXXZ|18|function|public: virtual void __thiscall CWinThread::Delete(void)|msvc500_library_oracle
 6063cd|CWinThread::Run|?Run@CWinThread@@UAEHXZ|132|function|public: virtual int __thiscall CWinThread::Run(void)|msvc500_library_oracle
-606451|OrphanLeaf_NoCall_Ins04_005adc30||91|function|undefined __thiscall OrphanLeaf_NoCall_Ins04_005adc30(int param_1)|
+606451|CWinThread::IsIdleMessage|?IsIdleMessage@CWinThread@@UAEHPAUtagMSG@@@Z|91|function|public: virtual int __thiscall CWinThread::IsIdleMessage(struct tagMSG *)|msvc500_library_override
 6064b0|CWinThread::OnIdle|?OnIdle@CWinThread@@UAEHJ@Z|267|function|public: virtual int __thiscall CWinThread::OnIdle(long)|msvc500_library_oracle
 6065c7|CWinThread::DispatchThreadMessageEx|?DispatchThreadMessageEx@CWinThread@@IAEHPAUtagMSG@@@Z|121|function|protected: int __thiscall CWinThread::DispatchThreadMessageEx(struct tagMSG *)|msvc500_library_oracle
 606640|CWinThread::PreTranslateMessage|?PreTranslateMessage@CWinThread@@UAEHPAUtagMSG@@@Z|229|function|public: virtual int __thiscall CWinThread::PreTranslateMessage(struct tagMSG *)|msvc500_library_oracle
@@ -7546,16 +7547,16 @@ address|name|symbol|size|type|prototype|provenance
 61842f|CWinApp::OnFileNew|?OnFileNew@CWinApp@@IAEXXZ|16|function|protected: void __thiscall CWinApp::OnFileNew(void)|msvc500_library_oracle
 61844a|CWinApp::DoPromptFileName|?DoPromptFileName@CWinApp@@QAEHAAVCString@@IKHPAVCDocTemplate@@@Z|33|function|public: int __thiscall CWinApp::DoPromptFileName(class CString &, unsigned int, unsigned long, int, class CDocTemplate *)|msvc500_library_oracle
 61846b|CWinApp::HideApplication|?HideApplication@CWinApp@@QAEXXZ|50|function|public: void __thiscall CWinApp::HideApplication(void)|msvc500_library_oracle
-61849d|OrphanRetStub_0059add0||95|function|undefined OrphanRetStub_0059add0()|
+61849d|CWinApp::DoWaitCursor|?DoWaitCursor@CWinApp@@UAEXH@Z|95|function|public: virtual void __thiscall CWinApp::DoWaitCursor(int)|msvc500_library_override
 6184fc|CWinApp::EnableModeless|?EnableModeless@CWinApp@@QAEXH@Z|46|function|public: void __thiscall CWinApp::EnableModeless(int)|msvc500_library_oracle
 61852a|CWinApp::DoMessageBox|?DoMessageBox@CWinApp@@UAEHPBDII@Z|186|function|public: virtual int __thiscall CWinApp::DoMessageBox(char const *, unsigned int, unsigned int)|msvc500_library_oracle
 6185e4|AfxMessageBox (LPCTSTR, UINT, UINT) — forwards to AfxGetApp()->DoMessageBox|?AfxMessageBox@@YGHPBDII@Z|33|function|int __stdcall AfxMessageBox(char const *, unsigned int, unsigned int)|msvc500_library_oracle
 618605|AfxMessageBox|?AfxMessageBox@@YGHIII@Z|102|function|int __stdcall AfxMessageBox(unsigned int, unsigned int, unsigned int)|msvc500_library_oracle
 6186a4|CWinApp::SaveAllModified|?SaveAllModified@CWinApp@@UAEHXZ|19|function|public: virtual int __thiscall CWinApp::SaveAllModified(void)|msvc500_library_oracle
-6186b7|ReleaseRuntimeSelectionOwnerAndDestroyObject||59|function|undefined __thiscall ReleaseRuntimeSelectionOwnerAndDestroyObject(undefined4 param_1)|
+6186b7|CWinApp::AddToRecentFileList|?AddToRecentFileList@CWinApp@@UAEXPBD@Z|59|function|public: virtual void __thiscall CWinApp::AddToRecentFileList(char const *)|msvc500_library_override
 6186f2|CWinApp::OpenDocumentFile|?OpenDocumentFile@CWinApp@@UAEPAVCDocument@@PBD@Z|18|function|public: virtual class CDocument * __thiscall CWinApp::OpenDocumentFile(char const *)|msvc500_library_oracle
 618704|CWinApp::CloseAllDocuments|?CloseAllDocuments@CWinApp@@QAEXH@Z|22|function|public: void __thiscall CWinApp::CloseAllDocuments(int)|msvc500_library_oracle
-61873c|CWinApp::CallField80VirtualSlot38OrReturnFalse_0061873c||19|function|undefined CallField80VirtualSlot38OrReturnFalse_0061873c()|
+61873c|CWinApp::OnDDECommand|?OnDDECommand@CWinApp@@UAEHPAD@Z|19|function|public: virtual int __thiscall CWinApp::OnDDECommand(char *)|msvc500_library_override
 61874f|thunk_NoOpVirtualStub_00618753||2|function|undefined thunk_NoOpVirtualStub_00618753()|
 618753|NoOpVirtualStub_00618753||3|function|undefined NoOpVirtualStub_00618753()|
 61878f|AddDocTemplate||92|function|undefined AddDocTemplate()|
@@ -7783,6 +7784,7 @@ address|name|symbol|size|type|prototype|provenance
 6228de|CWinApp::~CWinApp|??1CWinApp@@UAE@XZ|309|function|public: virtual __thiscall CWinApp::~CWinApp(void)|msvc500_library_oracle
 622a13|CWinApp::SaveStdProfileSettings|?SaveStdProfileSettings@CWinApp@@IAEXXZ|60|function|protected: void __thiscall CWinApp::SaveStdProfileSettings(void)|msvc500_library_oracle
 622a4f|ExitInstance||54|function|undefined ExitInstance()|
+622a85|CWinApp::GetRuntimeClass|?GetRuntimeClass@CWinApp@@UBEPAUCRuntimeClass@@XZ||function|public: virtual struct CRuntimeClass * __thiscall CWinApp::GetRuntimeClass(void)const|msvc500_library_override
 622a8b|WrapperFor_NoOpThreadInitializationStub_At00622a8b||5|function|undefined WrapperFor_NoOpThreadInitializationStub_At00622a8b()|
 622a95|NoOpThreadInitializationStub||1|function|undefined NoOpThreadInitializationStub()|
 622a96|WrapperFor_AppendPointerToGlobalVectorAsStatus_At00622a96||12|function|undefined WrapperFor_AppendPointerToGlobalVectorAsStatus_At00622a96()|

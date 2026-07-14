@@ -111,12 +111,12 @@
     {
       "address": "0x412aa0",
       "matching": 0.5,
-      "name": "NoOpThunkTargetHandler",
+      "name": "ImperialismApp::GetMessageMap",
       "type": 1
     },
     {
       "address": "0x412ac0",
-      "matching": 0.6511627906976745,
+      "matching": 0.6744186046511628,
       "name": "ConstructImperialismApplicationSingleton",
       "type": 1
     },
@@ -298,6 +298,12 @@
       "address": "0x4143b0",
       "matching": 0.02127659574468085,
       "name": "LoadAndPreviewDibFromDialogInput",
+      "type": 1
+    },
+    {
+      "address": "0x4145f0",
+      "matching": 1.0,
+      "name": "ImperialismApp::OnIdle",
       "type": 1
     },
     {
@@ -21394,7 +21400,7 @@
     },
     {
       "address": "0x545940",
-      "matching": 0.4264254563075432,
+      "matching": 0.4278558733236387,
       "name": "TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine",
       "type": 1
     },
@@ -37176,6 +37182,12 @@
       "type": 1
     },
     {
+      "address": "0x605607",
+      "matching": 0.2222222222222222,
+      "name": "CWinApp::ProcessWndProcException",
+      "type": 1
+    },
+    {
       "address": "0x605613",
       "matching": 0.0,
       "name": "HandleWndProcExceptionWithNodeTypeDispatch_00605613",
@@ -37453,8 +37465,8 @@
     },
     {
       "address": "0x606451",
-      "matching": 0.05555555555555555,
-      "name": "OrphanLeaf_NoCall_Ins04_005adc30(void)",
+      "matching": 1.0,
+      "name": "CWinThread::IsIdleMessage",
       "type": 1
     },
     {
@@ -40213,8 +40225,8 @@
     },
     {
       "address": "0x61849d",
-      "matching": 0.0,
-      "name": "OrphanRetStub_0059add0",
+      "matching": 1.0,
+      "name": "CWinApp::DoWaitCursor",
       "type": 1
     },
     {
@@ -40243,8 +40255,8 @@
     },
     {
       "address": "0x6186b7",
-      "matching": 0.0,
-      "name": "ReleaseRuntimeSelectionOwnerAndDestroyObject(void)",
+      "matching": 1.0,
+      "name": "CWinApp::AddToRecentFileList",
       "type": 1
     },
     {
@@ -40257,6 +40269,12 @@
       "address": "0x618704",
       "matching": 1.0,
       "name": "CWinApp::CloseAllDocuments",
+      "type": 1
+    },
+    {
+      "address": "0x61873c",
+      "matching": 0.8,
+      "name": "CWinApp::OnDDECommand",
       "type": 1
     },
     {
@@ -41274,6 +41292,12 @@
       "type": 1
     },
     {
+      "address": "0x622a85",
+      "matching": 0.5,
+      "name": "CWinApp::GetRuntimeClass",
+      "type": 1
+    },
+    {
       "address": "0x622a95",
       "matching": 0.6666666666666666,
       "name": "NoOpThreadInitializationStub",
@@ -41716,6 +41740,12 @@
       "matching": 0.975609756097561,
       "name": "CDocManager::~CDocManager",
       "type": 1
+    },
+    {
+      "address": "0x63e2d0",
+      "matching": 1.0,
+      "name": "ImperialismApp::`vftable'",
+      "type": 5
     },
     {
       "address": "0x63e398",

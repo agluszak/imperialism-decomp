@@ -539,22 +539,6 @@ undefined4 OnVScroll(void)
   return 0;
 }
 
-// ghidra_name OrphanRetStub_0059add0
-// ghidra_proto undefined OrphanRetStub_0059add0()
-// FUNCTION: IMPERIALISM 0x0061849d
-undefined4 OrphanRetStub_0059add0(void)
-{
-  return 0;
-}
-
-// ghidra_name ReleaseRuntimeSelectionOwnerAndDestroyObject
-// ghidra_proto undefined __thiscall ReleaseRuntimeSelectionOwnerAndDestroyObject(undefined4 param_1)
-// FUNCTION: IMPERIALISM 0x006186b7
-undefined4 ReleaseRuntimeSelectionOwnerAndDestroyObject(void)
-{
-  return 0;
-}
-
 // ghidra_name thunk_NoOpVirtualStub_00618753
 // ghidra_proto undefined thunk_NoOpVirtualStub_00618753()
 // FUNCTION: IMPERIALISM 0x0061874f

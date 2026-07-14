@@ -43,6 +43,12 @@
 // LIBRARY: IMPERIALISM 0x006054c3
 // ?OnCancel@CDialog@@MAEXXZ
 
+// LIBRARY: IMPERIALISM 0x00605607
+// ?ProcessWndProcException@CWinApp@@UAEJPAVCException@@PBUtagMSG@@@Z
+
+// LIBRARY: IMPERIALISM 0x00606451
+// ?IsIdleMessage@CWinThread@@UAEHPAUtagMSG@@@Z
+
 // LIBRARY: IMPERIALISM 0x00606c4e
 // ?IsInvokeAllowed@CCmdTarget@@UAEHJ@Z
 
@@ -193,6 +199,12 @@
 // LIBRARY: IMPERIALISM 0x0061419c
 // ?OnEndPrinting@CView@@MAEXPAVCDC@@PAUCPrintInfo@@@Z
 
+// LIBRARY: IMPERIALISM 0x0061849d
+// ?DoWaitCursor@CWinApp@@UAEXH@Z
+
+// LIBRARY: IMPERIALISM 0x006186b7
+// ?AddToRecentFileList@CWinApp@@UAEXPBD@Z
+
 // LIBRARY: IMPERIALISM 0x0061c82e
 // ?PostNcDestroy@CFrameWnd@@MAEXXZ
 
@@ -204,5 +216,8 @@
 
 // LIBRARY: IMPERIALISM 0x00622442
 // ?GetRuntimeClass@CDialog@@UBEPAUCRuntimeClass@@XZ
+
+// LIBRARY: IMPERIALISM 0x00622a85
+// ?GetRuntimeClass@CWinApp@@UBEPAUCRuntimeClass@@XZ
 
 #endif

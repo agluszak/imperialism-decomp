@@ -179,14 +179,6 @@ undefined4 OrphanCallChain_C7_I93_00412720(void)
   return 0;
 }
 
-// ghidra_name NoOpThunkTargetHandler
-// ghidra_proto undefined NoOpThunkTargetHandler()
-// FUNCTION: IMPERIALISM 0x00412aa0
-undefined4 NoOpThunkTargetHandler(void)
-{
-  return 0;
-}
-
 // ghidra_name InitializeImperialismAppSingletonGlobal
 // ghidra_proto undefined InitializeImperialismAppSingletonGlobal()
 // FUNCTION: IMPERIALISM 0x00412d40
@@ -319,14 +311,6 @@ undefined4 WrapperFor_FreeHeapBufferIfNotNull_At0047dc40_Impl(void)
 // ghidra_proto undefined LoadAndPreviewDibFromDialogInput()
 // FUNCTION: IMPERIALISM 0x004143b0
 undefined4 LoadAndPreviewDibFromDialogInput(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_OnIdle_At004145f0
-// ghidra_proto undefined WrapperFor_OnIdle_At004145f0()
-// FUNCTION: IMPERIALISM 0x004145f0
-undefined4 WrapperFor_OnIdle_At004145f0(void)
 {
   return 0;
 }

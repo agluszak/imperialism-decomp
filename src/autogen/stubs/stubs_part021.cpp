@@ -603,14 +603,6 @@ undefined4 AfxGetThread(void)
   return 0;
 }
 
-// ghidra_name OrphanLeaf_NoCall_Ins04_005adc30
-// ghidra_proto undefined __thiscall OrphanLeaf_NoCall_Ins04_005adc30(int param_1)
-// FUNCTION: IMPERIALISM 0x00606451
-undefined4 OrphanLeaf_NoCall_Ins04_005adc30(void)
-{
-  return 0;
-}
-
 // ghidra_name CCmdTarget
 // ghidra_proto undefined CCmdTarget()
 // FUNCTION: IMPERIALISM 0x0060698f
