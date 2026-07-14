@@ -40,7 +40,8 @@ public:
   // slot 0x1e (0x0052fdc0) — set per-nation interaction enable flags from a terrain
   // class-200 scan and relation-standing threshold.
   virtual void UpdateNationInteractionEnableFlagsByTerrainAndRelation();
-  virtual void MinisterSlot1F(short queueIndex); // byte 0x7c: processes a queued proposal row
+  // slot 0x1f (0x00530fa0) — validate a queued proposal row and dispatch accept/queue.
+  virtual void ValidateProposalSelectionAndQueueEvent1C(short queueIndex);
   virtual void Call80();
   virtual void MinisterSlot21();
   // slot 0x22 (0x0052f730) — true if any diplomacy option (0xd/0xe/0xf) meets the

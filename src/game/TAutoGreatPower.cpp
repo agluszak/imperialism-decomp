@@ -349,7 +349,7 @@ void TAutoGreatPower::ProcessPendingDiplomacyProposalQueue(void) {
   int rowIndex = 1;
   if (this->proposalQueue->GetSize() >= rowIndex) {
     do {
-      this->foreignMinister->MinisterSlot1F(static_cast<short>(rowIndex));
+      this->foreignMinister->ValidateProposalSelectionAndQueueEvent1C(static_cast<short>(rowIndex));
       ++rowIndex;
     } while (rowIndex <= this->proposalQueue->GetSize());
   }

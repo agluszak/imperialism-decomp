@@ -8,6 +8,7 @@
 #include "game/global_data_tables.h"
 #include "game/TMapMgr.h"
 #include "game/TSimMgr.h"
+#include "game/TInterNationEventQueueManager.h"
 #include "game/mfc.h"
 #include "game/TStream.h"
 
@@ -428,7 +429,51 @@ void TForeignMinister::DispatchAction210ToFirstEligibleNationIfIdle() {
 void TForeignMinister::MinisterSlot1B() {}
 
 // FUNCTION: IMPERIALISM 0x00530fa0
-void TForeignMinister::MinisterSlot1F(short) {}
+void TForeignMinister::ValidateProposalSelectionAndQueueEvent1C(short queueIndex) {
+  TGreatPower* gp = reinterpret_cast<TGreatPower*>(this->ownerContextAt04);
+  char valid = 0;
+  short* record =
+      static_cast<short*>(gp->proposalQueue->GetPtrListEntryByOneBasedIndex(queueIndex));
+  short targetNation = record[1];
+  if (gp->diplomacyPolicyByNation[targetNation] == record[0]) {
+    valid = 1;
+  } else {
+    switch (record[0]) {
+    case 0x12d:
+      valid = 0;
+      break;
+    case 0x12e:
+      if (g_pDiplomacyTurnStateManager->GetNationPairDiplomacyRelationCode(gp->nationSlot,
+                                                                           targetNation) != 4) {
+        valid = 0;
+      } else {
+        valid = gp->ReturnZeroSlot9D(targetNation);
+      }
+      break;
+    case 0x12f:
+      valid = 1;
+      break;
+    case 0x130:
+      valid = gp->EvaluateJoinWarAgainstNationAndQueueEvent(targetNation);
+      if (valid == 0) {
+        gp->QueueInterNationEventForProposalCode12D_130(queueIndex);
+        return;
+      }
+      g_pInterNationEventQueueManager->QueueInterNationEventRecordDeduped(0x1c, gp->nationSlot,
+                                                                          targetNation, '\0');
+      break;
+    case 0x132:
+      valid =
+          (g_pDiplomacyTurnStateManager->HasAllianceGuardSlot60(targetNation, gp->nationSlot) == 0);
+      break;
+    }
+  }
+  if (valid != 0) {
+    gp->ApplyAcceptedDiplomacyProposalCode(queueIndex);
+    return;
+  }
+  gp->QueueInterNationEventForProposalCode12D_130(queueIndex);
+}
 
 // FUNCTION: IMPERIALISM 0x00531110
 void TForeignMinister::Call80() {}
