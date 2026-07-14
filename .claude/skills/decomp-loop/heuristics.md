@@ -1461,3 +1461,25 @@ headers before splicing.
     →100%, vtable still 100%. Confirmed the definitive arg check: 0x52fdc0 ends in `c3`
     (`ret 0`) so it's void — Call90's `push eax` before `call [edx+0x68]` (no cleanup) is a
     partial-port artifact, not a real short param.
+
+97. **Force MSVC's callee-saved-register live-range SPLIT with a genuine phi variable when
+    a nil-alloc pattern holds `this` across `new` AND the result across a later `MessageBoxA`.**
+    The `p = new T; if (p) {construct} ; if (!p) {MessageBoxA; assert} return p;` idiom
+    (CreateLinkedOrderNode 0x00552650) has TWO values needing callee-saved registers: `this`
+    (live across the `new` call) and the node result (live across the assert's MessageBoxA).
+    The original reuses ONE register (ESI): `this` in ESI up to `this->prev_link = node`,
+    then ESI is dead and reused for the result via a `mov esi,eax` at the alloc-check merge
+    (`if p==0: xor esi,esi` / else: construct-in-EAX then `mov esi,eax`). Modeling it with a
+    single variable (`node = new; if (node){...}; if(!node){...}; return node;`) makes MSVC
+    keep the node in ESI for its *whole* range and spill `this` into an extra EDI
+    (`push edi`) → ~50%. Fix: split into a scratch `raw = new T` used only during
+    construction (stays in EAX) and a distinct `result` phi assigned in BOTH branches
+    (`if (raw != 0){ construct; result = raw; } else { result = 0; }`), then assert/return
+    `result`. The distinct two-branch assignment materializes the phi into the callee-saved
+    return register at the merge, freeing `this`'s register for reuse → 100%. Also: put the
+    non-null (construction) branch FIRST as the `if (raw != 0)` fall-through so the `xor`
+    null-branch lands at the end, matching the original's block order; and pass the (nil)
+    result pointer as the MessageBoxA HWND (`reinterpret_cast<HWND>(result)`, what the
+    original source did) rather than a literal 0. CAUTION: the construction anti-pattern gate
+    regexes `\boperator\s+(?:new|delete)\s*\(` — a *comment* like "raw operator new (no init)"
+    trips it; write "non-value-initializing `new`" instead.
