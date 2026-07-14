@@ -1,7 +1,7 @@
 #include "game/TRadioTextCluster.h"
 
 #include "game/TRadioText.h"
-#include "game/TSelectableTextOptionEntryIterator.h"
+#include "game/CSubViewIterator.h"
 #include "game/TViewMgr.h"
 #include "game/global_data_tables.h"
 #include "game/quickdraw_regions.h"
@@ -56,10 +56,9 @@ void TRadioTextCluster::SetSelectedTextOptionByTag(int tag, bool refreshOnChange
   selectedTag88 = tag;
   // The original walks the children with the shared bidirectional cursor (which handles a
   // null childList44 internally), not a raw GetHeadPosition/GetNext loop.
-  TSelectableTextOptionEntryIterator iter;
-  iter.Initialize(this);
-  TRadioText* child = static_cast<TRadioText*>(iter.Begin());
-  if (iter.IsValid()) {
+  CSubViewIterator iter(this);
+  TRadioText* child = static_cast<TRadioText*>(iter.FirstSubView());
+  if (iter.MoreSubViews()) {
     do {
       child->AssertValid();
       // Original compares the raw isSelectedOption98 byte directly (cmp al,cl) -- it never
@@ -72,8 +71,8 @@ void TRadioTextCluster::SetSelectedTextOptionByTag(int tag, bool refreshOnChange
           child->RefreshControl();
         }
       }
-      child = static_cast<TRadioText*>(iter.Advance());
-    } while (iter.IsValid());
+      child = static_cast<TRadioText*>(iter.NextSubView());
+    } while (iter.MoreSubViews());
   }
 }
 
@@ -84,18 +83,17 @@ TRadioText* TRadioTextCluster::AddItem(unsigned long tag, int value, const char*
     bottom = itemInset92;
     // The original accumulates the max child bottom via the shared cursor (which handles a
     // null childList44 internally), not a raw GetHeadPosition/GetNext loop.
-    TSelectableTextOptionEntryIterator iter;
-    iter.Initialize(this);
-    TView* child = iter.Begin();
-    if (iter.IsValid()) {
+    CSubViewIterator iter(this);
+    TView* child = iter.FirstSubView();
+    if (iter.MoreSubViews()) {
       do {
         child->AssertValid();
         int childBottom = child->ownerLocalY + child->frameHeight38 + itemVerticalSpacing94;
         if (childBottom > bottom) {
           bottom = childBottom;
         }
-        child = iter.Advance();
-      } while (iter.IsValid());
+        child = iter.NextSubView();
+      } while (iter.MoreSubViews());
     }
   }
 

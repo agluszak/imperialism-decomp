@@ -1,15 +1,14 @@
 #include "game/TSwapperDaddyView.h"
 
-#include "game/TSelectableTextOptionEntryIterator.h"
+#include "game/CSubViewIterator.h"
 
 // FUNCTION: IMPERIALISM 0x004ac6c0
 TView* TSwapperDaddyView::SelectSwapperItemByTag(unsigned int tag) {
   if (tag != static_cast<unsigned int>(selectedTag60)) {
     TView* matched = nullptr;
-    TSelectableTextOptionEntryIterator iter;
-    iter.Initialize(this);
-    TView* child = iter.Begin();
-    while (iter.IsValid()) {
+    CSubViewIterator iter(this);
+    TView* child = iter.FirstSubView();
+    while (iter.MoreSubViews()) {
       if (child->controlTag == tag) {
         int matchLayout[2] = {0, 0};
         child->CaptureLayoutF0(matchLayout, 1);
@@ -18,7 +17,7 @@ TView* TSwapperDaddyView::SelectSwapperItemByTag(unsigned int tag) {
         int offscreenLayout[2] = {1000, 1000};
         child->CaptureLayoutF0(offscreenLayout, 0);
       }
-      child = iter.Advance();
+      child = iter.NextSubView();
     }
     selectedTag60 = tag;
     return matched;

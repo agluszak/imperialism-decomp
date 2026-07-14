@@ -1,22 +1,23 @@
 #include "game/TTurnEventDialogFactoryRegistry.h"
 
-#include "game/TSelectableTextOptionEntryIterator.h"
+#include "game/CSubViewIterator.h"
 #include "game/TView.h"
 #include "game/mfc.h"
 #include "game/global_data_tables.h"
 #include "game/turn_event_dialog_factory.h"
 
 // FUNCTION: IMPERIALISM 0x004919a0
-TSelectableTextOptionEntryIterator* TSelectableTextOptionEntryIterator::Initialize(TView* owner) {
+CSubViewIterator::CSubViewIterator(const TView* owner) {
+  // The single-arg (const TView*) ctor defaults the traversal forward; position00 is left
+  // uninitialised until FirstSubView(), matching the original (which never writes +0 here).
   ownerView04 = owner;
   direction08 = 1;
-  tag0c = 0x20202020;
+  identTag0c = 0x20202020;
   currentChild10 = nullptr;
-  return this; // original leaves `this` in eax at RET
 }
 
 // FUNCTION: IMPERIALISM 0x00491a00
-TView* TSelectableTextOptionEntryIterator::Begin() {
+TView* CSubViewIterator::FirstSubView() {
   TViewChildList* list = ownerView04->childList44;
   if (list == nullptr) {
     position00 = nullptr;
@@ -32,7 +33,7 @@ TView* TSelectableTextOptionEntryIterator::Begin() {
 }
 
 // FUNCTION: IMPERIALISM 0x00491a70
-TView* TSelectableTextOptionEntryIterator::Advance() {
+TView* CSubViewIterator::NextSubView() {
   if (position00 == nullptr) {
     currentChild10 = nullptr;
     return currentChild10;
@@ -45,7 +46,7 @@ TView* TSelectableTextOptionEntryIterator::Advance() {
 }
 
 // FUNCTION: IMPERIALISM 0x00491ab0
-int TSelectableTextOptionEntryIterator::IsValid() {
+int CSubViewIterator::MoreSubViews() {
   // Returns int (not bool), matching the sibling CIterator::More(): call sites test the
   // full eax register.
   return currentChild10 != nullptr;
