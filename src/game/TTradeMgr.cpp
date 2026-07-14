@@ -16,10 +16,10 @@
 #include "game/TSoundChannelNode.h"
 #include "game/TMultiplayerMgr.h"
 
-// Preset seed table for the metric rows (original global @ 0x69a910) and the proposal-code
-// lookup used by the code-resolver. Kept file-local until modeled as recovered globals.
+// Preset seed table for the metric rows (original global @ 0x69a910). Kept file-local until
+// modeled as a recovered global. (The proposal-code lookup formerly here was replaced by the
+// real global g_nationMetricSlotDispatchOrder006d810.)
 static short kNationMetricCategoryPresetValues[0x11];
-static short kNationMetricCodeLookup[0x20];
 
 typedef void(__fastcall* MinorSlot80Fn)(TMinor* self, int unusedEdx, int arg1, int arg2, int arg3);
 typedef void(__fastcall* MinorSlot6CFn)(TMinor* self, int unusedEdx, int arg);
@@ -1166,20 +1166,25 @@ TTradeMgr::AllocateAndPopulateLinkedValueCollectionFromRosterFilter(int rosterSl
   return node;
 }
 
+// Scan the 0x11-entry metric-slot dispatch table for whichever of the two codes appears
+// first, preferring proposalCode at each slot; fall through to proposalCode if neither is
+// present. Word-wide args; the slot value is read once at the loop head. (Residual diff is
+// loop-rotation only: MSVC peels the first iteration where the original keeps a single
+// bottom-tested body — logic, registers, global ref and read-once all match.)
 // FUNCTION: IMPERIALISM 0x005ba090
-short TTradeMgr::ResolveProposalCodeForCategorySlot84(int proposalCode, int category) {
-  short* lookupCursor = kNationMetricCodeLookup;
-  short resolvedCode = static_cast<short>(proposalCode);
-  while ((*lookupCursor != static_cast<short>(proposalCode)) &&
-         (resolvedCode = static_cast<short>(category),
-          *lookupCursor != static_cast<short>(category))) {
-    lookupCursor = lookupCursor + 1;
-    if (reinterpret_cast<int>(lookupCursor) >
-        reinterpret_cast<int>(kNationMetricCodeLookup + 0x20)) {
-      return static_cast<short>(proposalCode);
+short TTradeMgr::ResolveProposalCodeForCategorySlot84(short proposalCode, short category) {
+  short* lookupCursor = g_nationMetricSlotDispatchOrder006d810;
+  do {
+    short slotValue = *lookupCursor;
+    if (slotValue == proposalCode) {
+      return proposalCode;
     }
-  }
-  return resolvedCode;
+    if (slotValue == category) {
+      return category;
+    }
+    lookupCursor = lookupCursor + 1;
+  } while (lookupCursor < &g_nationMetricSlotDispatchOrder006d810[0x11]);
+  return proposalCode;
 }
 
 // FUNCTION: IMPERIALISM 0x005ba0e0
