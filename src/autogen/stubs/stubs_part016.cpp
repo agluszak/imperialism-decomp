@@ -595,14 +595,6 @@ undefined4 EmitTurnEvent26DiplomacyMatrixSnapshot(void)
   return 0;
 }
 
-// ghidra_name SetDialogModeTagInitAndInvokeNoOpHook
-// ghidra_proto undefined SetDialogModeTagInitAndInvokeNoOpHook()
-// FUNCTION: IMPERIALISM 0x0054c630
-undefined4 SetDialogModeTagInitAndInvokeNoOpHook(void)
-{
-  return 0;
-}
-
 // ghidra_name HandleActiveNationAwolTransitionOrRecovery
 // ghidra_proto undefined HandleActiveNationAwolTransitionOrRecovery()
 // FUNCTION: IMPERIALISM 0x0054c800

@@ -747,14 +747,6 @@ undefined4 PopNextTurnEventPacketOrProcessSpecialQueueRecords(void)
   return 0;
 }
 
-// ghidra_name NoOpDialogModeTagChangedHook
-// ghidra_proto undefined NoOpDialogModeTagChangedHook()
-// FUNCTION: IMPERIALISM 0x005e42a0
-undefined4 NoOpDialogModeTagChangedHook(void)
-{
-  return 0;
-}
-
 // ghidra_name CheckConnectivityOrShowLocalizedWarningAndReturnReady
 // ghidra_proto undefined CheckConnectivityOrShowLocalizedWarningAndReturnReady()
 // FUNCTION: IMPERIALISM 0x005e42f0
