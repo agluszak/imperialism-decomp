@@ -186,14 +186,13 @@ undefined TPageView::OrphanCallChain_C8_I118_0056fdb0(short param_1) {
 }
 
 // FUNCTION: IMPERIALISM 0x0056ff90
-undefined TPageView::OrphanCallChain_C4_I18_0056ff90() {
+void TPageView::OrphanCallChain_C4_I18_0056ff90() {
   this->ResetSelectableOptionEntriesExceptColorAndOkay();
   this->field_0x78->RemoveAll();
   this->field_0x7c->RemoveAll();
   this->field_0x80->StopOrResetActivePlaybackSlot30();
   this->field_0x62 = 0;
   this->field_0x60 = 0;
-  return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x0056ffe0

@@ -1439,13 +1439,12 @@ undefined TMacViewMgr::OrphanCallChain_C9_I49_0050d5b0(undefined4 param_1) {
 }
 
 // FUNCTION: IMPERIALISM 0x0050d680
-undefined TMacViewMgr::EnsureClipRegionWrapperAtSlotAndMergeSourceRegion(undefined4 param_1,
-                                                                         short param_2) {
+void TMacViewMgr::EnsureClipRegionWrapperAtSlotAndMergeSourceRegion(undefined4 param_1,
+                                                                    short param_2) {
   if (regionSlots[param_2] == 0) {
     regionSlots[param_2] = NewRgn();
   }
   CopyRgn(reinterpret_cast<RgnHandle>(param_1), regionSlots[param_2]);
-  return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x0050d6c0
