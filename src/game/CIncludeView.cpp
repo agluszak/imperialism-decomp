@@ -325,6 +325,24 @@ BOOL CIncludeView::PreCreateWindow(CREATESTRUCT& cs) {
   return CView::PreCreateWindow(cs);
 }
 
+// Overrides CWnd::OnCommand (vtable slot 0x80). For a custom notify code 0x400 (HIWORD of
+// wParam) from a child control, recover the control's owning TView from its GWL_USERDATA
+// (both receivers are TView-hierarchy objects: the control's slot 0xe4 is TView::RefreshControl
+// at 0x48b6d0, and m_activeDialogContext's slot 0x13c is TView::InvokeSlot13C at 0x48b700),
+// refresh the control, and reset the hosted dialog tree's input capture. Then default-route.
+// FUNCTION: IMPERIALISM 0x00483e80
+BOOL CIncludeView::OnCommand(WPARAM wParam, LPARAM lParam) {
+  if (HIWORD(wParam) == 0x400) {
+    TView* controlView =
+        reinterpret_cast<TView*>(::GetWindowLong(reinterpret_cast<HWND>(lParam), GWL_USERDATA));
+    if (controlView != NULL) {
+      controlView->RefreshControl();
+      m_activeDialogContext->InvokeSlot13C();
+    }
+  }
+  return CWnd::OnCommand(wParam, lParam);
+}
+
 // Everything the hosted activeDialog TView tree ever draws on screen flows through
 // here (CView::OnPaint -> OnDraw): clip box -> slot-0x43 paint recursion, gated on the
 // global UI-active flag (deliberately 0 while a dialog factory body runs).

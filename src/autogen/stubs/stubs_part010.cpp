@@ -1139,14 +1139,6 @@ undefined4 WrapperFor_AllocateAndLinkBlockHead_At00483ba0(void)
   return 0;
 }
 
-// ghidra_name WrapperFor_RouteCommandByIdWithUiProbe_At00483e80
-// ghidra_proto undefined WrapperFor_RouteCommandByIdWithUiProbe_At00483e80()
-// FUNCTION: IMPERIALISM 0x00483e80
-undefined4 WrapperFor_RouteCommandByIdWithUiProbe_At00483e80(void)
-{
-  return 0;
-}
-
 // ghidra_name TCommand::RunCommandModalLoopAndFinalizeState_Impl
 // ghidra_proto undefined RunCommandModalLoopAndFinalizeState_Impl()
 // FUNCTION: IMPERIALISM 0x00484080

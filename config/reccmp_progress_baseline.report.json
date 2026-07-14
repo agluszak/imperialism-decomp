@@ -2494,6 +2494,12 @@
       "type": 1
     },
     {
+      "address": "0x483e80",
+      "matching": 1.0,
+      "name": "CIncludeView::OnCommand",
+      "type": 1
+    },
+    {
       "address": "0x484060",
       "matching": 1.0,
       "name": "CIncludeView::GetUiInteractiveFlag90",

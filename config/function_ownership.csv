@@ -271,6 +271,7 @@ address|target_cpp|ownership|note
 483ad0|src/game/TUiEvent.cpp|manual|marker_sync
 483b00|src/game/CIncludeView.cpp|manual|marker_sync
 483db0|src/game/CIncludeView.cpp|manual|marker_sync
+483e80|src/game/CIncludeView.cpp|manual|marker_sync
 484060|src/game/CIncludeView.cpp|manual|marker_sync
 4840b0|src/game/CIncludeView.cpp|manual|marker_sync
 4840d0|src/game/CIncludeView.cpp|manual|marker_sync
