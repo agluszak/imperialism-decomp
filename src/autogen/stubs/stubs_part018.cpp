@@ -499,14 +499,6 @@ undefined4 TrySelectNextValidMapOrderEntry(void)
   return 0;
 }
 
-// ghidra_name ResetMapInteractionToCivilianMode
-// ghidra_proto void __thiscall ResetMapInteractionToCivilianMode(void * pMapInteractionState)
-// FUNCTION: IMPERIALISM 0x005999f0
-undefined4 ResetMapInteractionToCivilianMode(void)
-{
-  return 0;
-}
-
 // ghidra_name NotifyTaskForceSelectionListenerByWord62
 // ghidra_proto undefined NotifyTaskForceSelectionListenerByWord62()
 // FUNCTION: IMPERIALISM 0x00599a20
