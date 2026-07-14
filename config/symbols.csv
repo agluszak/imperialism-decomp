@@ -7899,7 +7899,6 @@ address|name|symbol|size|type|prototype|provenance
 63e070|ImperialismApp_MessageMapEntries|||global||
 63e0b8|ImperialismApp_OnCommand8016_MsgEntry|||global||
 63e1f0|ImperialismApp_OnCommand100_MsgEntry|||global||
-63e328|CAmbitDocument::vftable|||global||
 63e7f8|CAmbitDocument::classRuntimeClass|||global||
 645f40|CUserException::vftable|||global||
 646fb0|CArray<RuntimeSelectionRecord*,RuntimeSelectionRecord*>::`vftable'|??_7?$CArray@PAURuntimeSelectionRecord@@PAU1@@@6B@||global||template
@@ -7915,7 +7914,6 @@ address|name|symbol|size|type|prototype|provenance
 648a38|TFileBasedDocument::classTFileBasedDocument|||global||
 648ae0|TCommandHandler::classTCommandHandler|||global||
 648af8|TApplication::classTApplication|||global||
-648ca8|ApplicationUiRootEmbeddedList::'vftable'|||global||
 648cf8|TBehavior::classTBehavior|||global||
 648d10|TDialogBehavior::classTDialogBehavior|||global||
 648e08|TCommand::classTCommand|||global||
@@ -8113,8 +8111,6 @@ address|name|symbol|size|type|prototype|provenance
 656fb0|TTerrainHelpWindow::classTTerrainHelpWindow|||global||
 656fc8|TTerrainHelpPicture::classTTerrainHelpPicture|||global||
 656fe0|TLonelyTileView::classTLonelyTileView|||global||
-6572dc|CMcWindow::vftable|||global||
-65751c|CMcWindow::vftable|||global||
 657970|TIconBar::classTIconBar|||global||
 657988|TIconSlider::classTIconSlider|||global||
 6579a0|TOrderView::classTOrderView|||global||
