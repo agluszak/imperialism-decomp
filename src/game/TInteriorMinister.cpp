@@ -4,13 +4,17 @@
 
 // Slots 0x16-0x1f own bodies (honest stubs; slot ownership drives vtable matching).
 // FUNCTION: IMPERIALISM 0x004be150
-void TInteriorMinister::InteriorSlot1D() {}
+short TInteriorMinister::InteriorSlot1D(int arg) {
+  return static_cast<short>(arg);
+}
 
 // FUNCTION: IMPERIALISM 0x004be170
-void TInteriorMinister::InteriorSlot1E() {}
+short TInteriorMinister::InteriorSlot1E(int arg) {
+  return static_cast<short>(arg);
+}
 
 // FUNCTION: IMPERIALISM 0x004be190
-void TInteriorMinister::InteriorSlot1F() {}
+void TInteriorMinister::InteriorSlot1F(int) {}
 // SYNTHETIC: IMPERIALISM 0x004be0d0
 // TInteriorMinister::CreateObject
 
