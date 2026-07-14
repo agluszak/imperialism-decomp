@@ -353,6 +353,13 @@ public:
   // Pointer") on the map-order entry passed to that virtual slot.
   void SetMapOrderType6AndQueue(int nOrderTarget); // 0x5536c0
 
+  // Sibling of SetMapOrderType6AndQueue for map-order kind 5 -- byte-identical body except
+  // it stores attachment=5 instead of 6 (owner=nOrderTarget, activeChildEntry=null, same
+  // free-inactive-children / recompute / self-Free-or-queue tail). Ghidra/symbols.csv model
+  // it as a free __thiscall function; real owner is TTaskForce (body reads only this class's
+  // own field offsets).
+  void SetMapOrderType5AndQueue(int nOrderTarget); // 0x553840
+
   // bd 1uj.16.2 target: another SetMapOrderType9AndQueue sibling, for map-order kind 3
   // (fUseType4 == 0) or 4 (fUseType4 != 0); does not touch `owner`. Same mis-attribution
   // to a free function as SetMapOrderType6AndQueue -- real owner is TTaskForce (body only

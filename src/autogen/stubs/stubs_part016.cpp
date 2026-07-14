@@ -755,14 +755,6 @@ undefined4 RecomputeNavyOrderSelectionPriorityChain_00552349(void)
   return 0;
 }
 
-// ghidra_name SetMapOrderType5AndQueue
-// ghidra_proto void __thiscall SetMapOrderType5AndQueue(int nOrderTarget)
-// FUNCTION: IMPERIALISM 0x00553840
-undefined4 SetMapOrderType5AndQueue(void)
-{
-  return 0;
-}
-
 // ghidra_name ObjectPool::RemoveTaskForceOrderNodeById
 // ghidra_proto undefined RemoveTaskForceOrderNodeById()
 // FUNCTION: IMPERIALISM 0x00553d40

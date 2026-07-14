@@ -889,6 +889,86 @@ void TTaskForce::SetMapOrderType6AndQueue(int nOrderTarget) {
   g_pActiveMapOrderContext->FinalizeQueuedMapOrderEntry(this);
 }
 
+// Sibling of SetMapOrderType6AndQueue for map-order kind 5 (see the header comment).
+// FUNCTION: IMPERIALISM 0x00553840
+void TTaskForce::SetMapOrderType5AndQueue(int nOrderTarget) {
+  owner = reinterpret_cast<TTaskForce*>(nOrderTarget);
+  attachment = 5;
+  activeChildEntry = nullptr;
+
+  for (TMapOrderChildLinkNode* node = childOrderList; node != nullptr;) {
+    if (node->active_flag != 0) {
+      node = node->next;
+      continue;
+    }
+
+    TTaskForce* child = node->object_ptr;
+    child->owner = nullptr;
+
+    short bucketIndex = static_cast<short>(
+        g_NavyOrderResourceDescriptorTable[child->order_type].enabledFlagOrBucketOffset);
+    short* bucketCounter =
+        reinterpret_cast<short*>(reinterpret_cast<char*>(this) + 0x1e + bucketIndex * 2);
+    --*bucketCounter;
+
+    if (node == childOrderList) {
+      childOrderList = node->next;
+    }
+
+    TMapOrderChildLinkNode* next = node->next;
+    if (next != nullptr) {
+      next->prev_link = node->prev_link;
+    }
+    if (node->prev_link != nullptr) {
+      node->prev_link->next = next;
+    }
+    delete node;
+    node = next;
+  }
+
+  RecomputeMapOrderChildAggregateMetric();
+
+  AssertValid();
+
+  TTaskForce* head = g_pNavyOrderManager->orderListHead04;
+  bool alreadyQueued = false;
+  for (TTaskForce* queuedEntry = head; queuedEntry != nullptr;
+       queuedEntry = queuedEntry->queue_next) {
+    if (queuedEntry == this) {
+      alreadyQueued = true;
+      break;
+    }
+  }
+
+  if (!alreadyQueued) {
+    int childCount = 0;
+    for (TMapOrderChildLinkNode* countNode = childOrderList; countNode != nullptr;
+         countNode = countNode->next) {
+      ++childCount;
+    }
+
+    if (childCount <= 0) {
+      Free();
+      return;
+    }
+
+    if (queue_prev != nullptr) {
+      queue_prev->queue_next = queue_next;
+    }
+    if (queue_next != nullptr) {
+      queue_next->queue_prev = queue_prev;
+    }
+    queue_prev = nullptr;
+    queue_next = head;
+    if (head != nullptr) {
+      head->queue_prev = this;
+    }
+    g_pNavyOrderManager->orderListHead04 = this;
+  }
+
+  g_pActiveMapOrderContext->FinalizeQueuedMapOrderEntry(this);
+}
+
 // TODO: port body @ 0x005539c0 (recomputes this task force's per-order selection flags
 // for the active nation's current orders).
 

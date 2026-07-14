@@ -3211,6 +3211,7 @@ address|target_cpp|ownership|note
 5530f0|src/game/TTaskForce.cpp|manual|marker_sync
 5533f0|src/game/TTaskForce.cpp|manual|marker_sync
 5536c0|src/game/TTaskForce.cpp|manual|marker_sync
+553840|src/game/TTaskForce.cpp|manual|marker_sync
 5539c0|src/game/TTaskForce.cpp|manual|marker_sync
 553a50|src/game/TTaskForce.cpp|manual|marker_sync
 553b10|src/game/TTaskForce.cpp|manual|marker_sync
