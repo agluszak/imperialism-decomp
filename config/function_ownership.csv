@@ -4375,6 +4375,7 @@ address|target_cpp|ownership|note
 5a6370|src/game/TNavyTacUnit.cpp|manual|marker_sync
 5a64d0|src/game/TNextMoveCommand.cpp|manual|marker_sync
 5a6540|src/game/TNextMoveCommand.cpp|manual|marker_sync
+5a6560|src/game/TNextMoveCommand.cpp|manual|marker_sync
 5a6590|src/game/TNextMoveCommand.cpp|manual|marker_sync
 5a6620|src/game/TNextMoveCommand.cpp|manual|marker_sync
 5a6940|src/game/quickdraw_rendering.cpp|manual|marker_sync
@@ -4582,6 +4583,7 @@ address|target_cpp|ownership|note
 5b6930|src/game/TInfoBarText.cpp|manual|marker_sync
 5b6960|src/game/TNoHiliteText.cpp|manual|marker_sync
 5b69e0|src/game/TNoHiliteText.cpp|manual|marker_sync
+5b6a00|src/game/TNoHiliteText.cpp|manual|marker_sync
 5b6a30|src/game/TNoHiliteText.cpp|manual|marker_sync
 5b6c10|src/game/TTown.cpp|manual|marker_sync
 5b6c40|src/game/TTown.cpp|manual|marker_sync

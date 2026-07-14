@@ -179,14 +179,6 @@ undefined4 ApplyTacticalDamageAndDeathState(void)
   return 0;
 }
 
-// ghidra_name TNextMoveCommand::ConstructTNextMoveCommandBaseState
-// ghidra_proto undefined ConstructTNextMoveCommandBaseState()
-// FUNCTION: IMPERIALISM 0x005a6560
-undefined4 ConstructTNextMoveCommandBaseState(void)
-{
-  return 0;
-}
-
 // ghidra_name DestructTNextMoveCommandAndMaybeFree_Impl
 // ghidra_proto undefined DestructTNextMoveCommandAndMaybeFree_Impl()
 // FUNCTION: IMPERIALISM 0x005a65c0
@@ -495,14 +487,6 @@ undefined4 DestructTInfoBarPictureTextAndMaybeFree(void)
 // ghidra_proto undefined ConstructTDeluxeTextBaseState()
 // FUNCTION: IMPERIALISM 0x005b5ff0
 undefined4 ConstructTDeluxeTextBaseState(void)
-{
-  return 0;
-}
-
-// ghidra_name TNoHiliteText::ConstructUiStatusListTextEntry
-// ghidra_proto undefined ConstructUiStatusListTextEntry()
-// FUNCTION: IMPERIALISM 0x005b6a00
-undefined4 ConstructUiStatusListTextEntry(void)
 {
   return 0;
 }

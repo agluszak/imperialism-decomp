@@ -30038,12 +30038,6 @@
       "type": 1
     },
     {
-      "address": "0x5a6560",
-      "matching": 0.2222222222222222,
-      "name": "TNextMoveCommand::ConstructTNextMoveCommandBaseState",
-      "type": 1
-    },
-    {
       "address": "0x5a6590",
       "matching": 0.9090909090909091,
       "name": "TNextMoveCommand::`scalar deleting destructor'",
@@ -31443,7 +31437,7 @@
     },
     {
       "address": "0x5b6a00",
-      "matching": 0.2222222222222222,
+      "matching": 1.0,
       "name": "TNoHiliteText::ConstructUiStatusListTextEntry",
       "type": 1
     },
