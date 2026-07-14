@@ -515,14 +515,6 @@ undefined4 CommitPendingUiModeChangeAndRefreshViews(void)
   return 0;
 }
 
-// ghidra_name InvokeViewSlotE4IfContextPresent
-// ghidra_proto undefined InvokeViewSlotE4IfContextPresent()
-// FUNCTION: IMPERIALISM 0x00599fa0
-undefined4 InvokeViewSlotE4IfContextPresent(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_ftol_At0059acf0
 // ghidra_proto undefined WrapperFor_ftol_At0059acf0()
 // FUNCTION: IMPERIALISM 0x0059acf0

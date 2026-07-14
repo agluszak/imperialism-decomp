@@ -356,6 +356,16 @@ undefined TMapUberPicture::CreateToolWindow_00599CF0() {
   return this->SetTradeToolSubcontrolEnabledStateByFlag(0);
 }
 
+// FUNCTION: IMPERIALISM 0x00599fa0
+void TMapUberPicture::InvokeViewSlotE4IfContextPresent() {
+  if (this == nullptr) {
+    return;
+  }
+  if (field_0xc0 != nullptr) {
+    field_0xc0->RefreshControl();
+  }
+}
+
 // FUNCTION: IMPERIALISM 0x00599fd0
 undefined TMapUberPicture::SwapToolInfoSubviewAndRefreshClipRegion() {
   return 0;

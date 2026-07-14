@@ -4185,6 +4185,7 @@ address|target_cpp|ownership|note
 5999f0|src/game/TMapUberPicture.cpp|manual|marker_sync
 599a50|src/game/TMapUberPicture.cpp|manual|marker_sync
 599cf0|src/game/TMapUberPicture.cpp|manual|marker_sync
+599fa0|src/game/TMapUberPicture.cpp|manual|marker_sync
 599fd0|src/game/TMapUberPicture.cpp|manual|marker_sync
 59a180|src/game/TMapUberPicture.cpp|manual|marker_sync
 59a290|src/game/TMiniMapView.cpp|manual|marker_sync
