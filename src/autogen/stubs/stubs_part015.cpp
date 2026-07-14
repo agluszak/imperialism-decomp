@@ -459,14 +459,6 @@ undefined4 DestructTArmsForeignMinister(void)
   return 0;
 }
 
-// ghidra_name TIndexAndRankList::ConstructTIndexAndRankList
-// ghidra_proto undefined ConstructTIndexAndRankList()
-// FUNCTION: IMPERIALISM 0x00534870
-undefined4 ConstructTIndexAndRankList(void)
-{
-  return 0;
-}
-
 // ghidra_name TIndexAndRankList::DestructTIndexAndRankList
 // ghidra_proto undefined DestructTIndexAndRankList()
 // FUNCTION: IMPERIALISM 0x005348d0

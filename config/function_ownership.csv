@@ -2760,6 +2760,7 @@ address|target_cpp|ownership|note
 5347b0|src/game/TSortByPriceList.cpp|manual|marker_sync
 5347e0|src/game/TIndexAndRankList.cpp|manual|marker_sync
 534850|src/game/TIndexAndRankList.cpp|manual|marker_sync
+534870|src/game/TIndexAndRankList.cpp|manual|marker_sync
 5348a0|src/game/TIndexAndRankList.cpp|manual|marker_sync
 534910|src/game/TIndexAndRankList.cpp|manual|marker_sync
 534bc0|src/game/TMission.cpp|manual|marker_sync
