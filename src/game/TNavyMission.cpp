@@ -243,7 +243,7 @@ void TNavyMission::NoOpSlot8C(int a, int b) {
     if (orderList24->object_ptr == item) {
       orderList24 = TTaskForce::DeleteMapOrderChildLinkAndReturnNext(orderList24);
     } else {
-      TTaskForce::RemoveLinkedOrderNodeByValueRecursive(orderList24->next, item);
+      orderList24->next->RemoveLinkedOrderNodeByValueRecursive(item);
     }
   }
   *reinterpret_cast<int*>(reinterpret_cast<char*>(item) + 0x2c) = 0;

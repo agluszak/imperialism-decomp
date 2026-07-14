@@ -32,6 +32,12 @@ struct TMapOrderChildLinkNode {
   // of bug FindNodeMatching had (bd 1uj.16.3 fix). Null-safe on `this`; sets active_flag
   // on `this` and every following node in the `next` chain.
   void SetChainActiveFlag(unsigned char flag); // 0x536f70
+
+  // Real __thiscall method (0x5525d0, ECX=this node, one stack arg, RET 4) -- same
+  // mis-modeled-as-static bug as FindNodeMatching. Null-safe on `this`; removes the first
+  // node in the `this`/`next` chain whose object_ptr == child_node (unlink + delete) and
+  // returns the chain head as seen from this node.
+  TMapOrderChildLinkNode* RemoveLinkedOrderNodeByValueRecursive(TTaskForce* child_node); // 0x5525d0
 };
 
 ASSERT_SIZE(TMapOrderChildLinkNode, 0x10);
@@ -134,8 +140,6 @@ public:
 
   static TMapOrderChildLinkNode*
   DeleteMapOrderChildLinkAndReturnNext(TMapOrderChildLinkNode* child_link_node);
-  static void RemoveLinkedOrderNodeByValueRecursive(TMapOrderChildLinkNode* node,
-                                                    TTaskForce* child_node);
   static TMapOrderChildLinkNode* CreateLinkedOrderNode(TMapOrderChildLinkNode* next_node,
                                                        TTaskForce* child_node);
   static TMapOrderChildLinkNode*

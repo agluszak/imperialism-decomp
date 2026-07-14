@@ -243,7 +243,7 @@ void TTaskForce::RemoveNode(TTaskForce* self) {
         if (this == list_head->object_ptr) {
           list_head = DeleteMapOrderChildLinkAndReturnNext(list_head);
         } else {
-          RemoveLinkedOrderNodeByValueRecursive(list_head->next, this);
+          list_head->next->RemoveLinkedOrderNodeByValueRecursive(this);
         }
       }
 
@@ -294,7 +294,7 @@ void TTaskForce::ReassignOrderNodeNationAndRebindParentCounters(short nation) {
         if (this == head->object_ptr) {
           head = DeleteMapOrderChildLinkAndReturnNext(head);
         } else {
-          RemoveLinkedOrderNodeByValueRecursive(head->next, this);
+          head->next->RemoveLinkedOrderNodeByValueRecursive(this);
         }
       }
       parent->childOrderList = head;
@@ -383,24 +383,26 @@ TTaskForce::DeleteMapOrderChildLinkAndReturnNext(TMapOrderChildLinkNode* child_l
 }
 
 // FUNCTION: IMPERIALISM 0x005525d0
-void TTaskForce::RemoveLinkedOrderNodeByValueRecursive(TMapOrderChildLinkNode* node,
-                                                       TTaskForce* child_node) {
-  if (node == 0) {
-    return;
+TMapOrderChildLinkNode*
+TMapOrderChildLinkNode::RemoveLinkedOrderNodeByValueRecursive(TTaskForce* child_node) {
+  if (this == 0) {
+    return 0;
   }
 
-  if (node->object_ptr == child_node) {
-    if (node->next != 0) {
-      node->next->prev_link = node->prev_link;
+  if (this->object_ptr == child_node) {
+    TMapOrderChildLinkNode* next = this->next;
+    if (next != 0) {
+      next->prev_link = this->prev_link;
     }
-    if (node->prev_link != 0) {
-      node->prev_link->next = node->next;
+    if (this->prev_link != 0) {
+      this->prev_link->next = this->next;
     }
-    delete node;
-    return;
+    delete this;
+    return next;
   }
 
-  RemoveLinkedOrderNodeByValueRecursive(node->next, child_node);
+  this->next->RemoveLinkedOrderNodeByValueRecursive(child_node);
+  return this;
 }
 
 // FUNCTION: IMPERIALISM 0x00552650

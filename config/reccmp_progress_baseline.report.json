@@ -12844,8 +12844,7 @@
     },
     {
       "address": "0x4e05d0",
-      "effective": true,
-      "matching": 0.42857142857142855,
+      "matching": 1.0,
       "name": "TGreatPower::OrphanLeaf_NoCall_Ins02_004d7fc0_89",
       "type": 1
     },
@@ -19583,7 +19582,7 @@
     },
     {
       "address": "0x5367d0",
-      "matching": 0.36363636363636365,
+      "matching": 0.38095238095238093,
       "name": "DetachMissionOrderChildAndClearPrimaryIfMatch",
       "type": 1
     },
@@ -22068,13 +22067,13 @@
     },
     {
       "address": "0x550ff0",
-      "matching": 0.5,
+      "matching": 0.5373134328358209,
       "name": "ObjectPool::RemoveNode",
       "type": 1
     },
     {
       "address": "0x551100",
-      "matching": 0.6896551724137931,
+      "matching": 0.7832167832167832,
       "name": "ReassignOrderNodeNationAndRebindParentCounters",
       "type": 1
     },
@@ -22194,7 +22193,8 @@
     },
     {
       "address": "0x5525d0",
-      "matching": 0.13114754098360656,
+      "effective": true,
+      "matching": 0.972972972972973,
       "name": "RemoveLinkedOrderNodeByValueRecursive",
       "type": 1
     },
@@ -22470,7 +22470,7 @@
     },
     {
       "address": "0x555420",
-      "matching": 0.5546666666666666,
+      "matching": 0.5653333333333334,
       "name": "ResolveTaskForceOrderConflictAndPickCandidate",
       "type": 1
     },
@@ -29660,7 +29660,7 @@
     },
     {
       "address": "0x5a39a0",
-      "matching": 0.9393939393939394,
+      "matching": 0.9545454545454546,
       "name": "ComputeHexTileDistanceFromIndices",
       "type": 1
     },
