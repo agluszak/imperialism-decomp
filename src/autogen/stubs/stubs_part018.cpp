@@ -619,14 +619,6 @@ undefined4 WrapperFor_thunk_ApplyTacticalCursorModeProfile6_DefaultByActionClass
   return 0;
 }
 
-// ghidra_name SetLinkedListEntryState2CTo13ForAllNodes
-// ghidra_proto undefined SetLinkedListEntryState2CTo13ForAllNodes()
-// FUNCTION: IMPERIALISM 0x0059ca32
-undefined4 SetLinkedListEntryState2CTo13ForAllNodes(void)
-{
-  return 0;
-}
-
 // ghidra_name IterateLinkedListCursorEntries_0059cc70
 // ghidra_proto undefined IterateLinkedListCursorEntries_0059cc70()
 // FUNCTION: IMPERIALISM 0x0059cc70

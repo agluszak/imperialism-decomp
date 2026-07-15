@@ -4244,6 +4244,7 @@ address|target_cpp|ownership|note
 59c2a0|src/game/TArmyPlayer.cpp|manual|marker_sync
 59c3c0|src/game/TArmyPlayer.cpp|manual|marker_sync
 59c440|src/game/TArmyPlayer.cpp|manual|marker_sync
+59ca32|src/game/TArmyPlayer.cpp|manual|marker_sync
 59caf0|src/game/TArmyPlayer.cpp|manual|marker_sync
 59cd00|src/game/TArmyPlayer.cpp|manual|marker_sync
 59ce90|src/game/TArmyPlayer.cpp|manual|marker_sync

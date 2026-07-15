@@ -66,6 +66,7 @@ public:
   void AccumulateTacticalProjectionMetricsAndUnitRanges();
   // Per-mode stance-profile appliers: set each record's aiStateCode2c by action class
   // for the matching cursor mode (mode number noted per address).
+  void SetAllUnitAiStateCodesTo13();               // 0x59ca32
   void ApplyDefenderHoldLineStanceByActionClass(); // mode 0, 0x59caf0
   void ApplyDefenderBombardStanceByActionClass();  // mode 2, 0x59cd00
   void ApplyAttackerSiegeStanceByActionClass();    // mode 3, 0x59ce90

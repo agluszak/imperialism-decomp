@@ -780,8 +780,17 @@ void TArmyPlayer::SelectAndApplyTacticalCursorModeProfile(int cursorProfileMode)
   }
 }
 
-// Mode 0 (defender balanced/hold): infantry(class 0) engage (0), artillery(class 2)
-// bombard (9), cavalry/flankers(classes 1,3) screen (0xe), class 4 splits mortar/sapper
+// Blanket-sets every tactical unit's aiStateCode2c to 0x13 (a fixed stance code), unlike the
+// per-action-class stance appliers below.
+// FUNCTION: IMPERIALISM 0x0059ca32
+void TArmyPlayer::SetAllUnitAiStateCodesTo13() {
+  CIterator iter(unitList4);
+  for (TTacticalUnit* record = static_cast<TTacticalUnit*>(iter.Reset()); iter.More();
+       record = static_cast<TTacticalUnit*>(iter.Advance())) {
+    record->aiStateCode2c = 0x13;
+  }
+}
+
 // (unitType >= 27 -> 0xb, else 0xc). Skips broken/destroyed records.
 // FUNCTION: IMPERIALISM 0x0059caf0
 void TArmyPlayer::ApplyDefenderHoldLineStanceByActionClass() {
