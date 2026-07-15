@@ -15,8 +15,6 @@
 
 char ShowPeriodicNationComparisonAdvisoryIfNeeded();
 
-extern "C" char DAT_006a43f0;
-
 namespace {
 
 static const HelpSetRecord kHelpSetIndexBootstrapRecords[] = {
@@ -106,13 +104,13 @@ undefined THelpMgr::InitializeHelpManagerIndexArrayAndState() {
   TSortedPtrList* list = new TSortedPtrList();
   indexList = list;
   if (list != nullptr) {
-    list->relationType = 0xe;
+    list->recordSize14 = 0xe;
   }
-  if (DAT_006a43f0 == 0 && list != nullptr) {
+  if (g_bMultiplayerScenarioSetupActive == 0 && list != nullptr) {
     int entryIndex;
     for (entryIndex = 0; entryIndex < kHelpSetIndexBootstrapRecordCount; entryIndex++) {
       HelpSetRecord record = kHelpSetIndexBootstrapRecords[entryIndex];
-      list->AddEntrySlot38(&record);
+      list->InsertCopiedRecordSortedByComparator(&record);
     }
   }
   return 0;
@@ -461,13 +459,14 @@ char THelpMgr::HandlePendingEventActivationByCode(short eventCode) {
   if (ReadLocalizationPendingEventGate5c() == 0) {
     ReleasePendingHelpDialogView(&pendingDialogView8);
   } else {
-    if (eventCode != 0x2103 || DAT_006a43f0 == 0) {
+    if (eventCode != 0x2103 || g_bMultiplayerScenarioSetupActive == 0) {
       int index = 1;
       while (!nationAlreadyCurrent && activateCandidate == 0) {
         if (indexList == 0 || index > GetSortedPtrListEntryCount(indexList)) {
           break;
         }
-        HelpSetRecord* entry = static_cast<HelpSetRecord*>(indexList->GetEntrySlot2C(index));
+        HelpSetRecord* entry =
+            static_cast<HelpSetRecord*>(indexList->GetPtrListEntryByOneBasedIndex(index));
         if (entry->contextId == eventCode) {
           // NOT GetActiveNationId — original loads ECX from g_pSimMgr and
           // dispatches vtable slot 0x3c (GetTurnTickSlot3C), same call as the currentTurn

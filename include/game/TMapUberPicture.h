@@ -8,7 +8,6 @@ class TTaskForce;
 class TZone;
 class TMiniMapView;
 
-// TODO(manifest): describe TMapUberPicture and its role. Base edge (TMapUberUberPicture) recovered from RTTI CRuntimeClass chain: TMapUberPicture -> TMapUberUberPicture -> TOffLimitsPicture -> TPicture -> TControl -> TView -> TEventHandler -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x00668f08
 class TMapUberPicture : public TMapUberUberPicture {
 public:
@@ -33,23 +32,23 @@ public:
   // slot 0x10 DispatchUiCommandToHandler inherited unchanged (0x48a2e0)
   virtual void vmethod_0017(int param) override; // slot 0x11 0x597600
   virtual void ForwardParam(int param) override; // slot 0x12 0x597770
-  // slot 0x13 CanHandleCityDialogActionFalse inherited unchanged (0x48a480)
+  // slot 0x13 DoIdle inherited unchanged (0x48a480)
   // slot 0x14 GetCityDialogValueDword10 inherited unchanged (0x415d50)
   // slot 0x15 SetCityDialogValueDword10 inherited unchanged (0x415d70)
   // slot 0x16 OwnerPanel inherited unchanged (0x48b180)
   // slot 0x17 vmethod_0023 inherited unchanged (0x48a530)
-  // slot 0x18 vmethod_0024 inherited unchanged (0x48a550)
-  // slot 0x19 vmethod_0025 inherited unchanged (0x48a690)
-  // slot 0x1a vmethod_0026 inherited unchanged (0x48a6b0)
+  // slot 0x18 GetDeactivateVetoCode inherited unchanged (0x48a550)
+  // slot 0x19 OnDeactivated inherited unchanged (0x48a690)
+  // slot 0x1a OnDeactivateVetoed inherited unchanged (0x48a6b0)
   // slot 0x1b HandleCityProductionNoOp inherited unchanged (0x48a650)
   // slot 0x1c DispatchUiCommand19ToParent inherited unchanged (0x48a6d0)
   // slot 0x1d DispatchCityProductionAction1A inherited unchanged (0x48a670)
   // slot 0x1e DispatchCityProductionAction1B inherited unchanged (0x48a6f0)
   // slot 0x1f ActivateCityProductionViewIfAllowed inherited unchanged (0x48a570)
-  // slot 0x20 vmethod_0080 inherited unchanged (0x48a5e0)
+  // slot 0x20 TryDeactivateActiveView inherited unchanged (0x48a5e0)
   // slot 0x21 vmethod_0081 inherited unchanged (0x48a710)
-  // slot 0x22 vmethod_0032 inherited unchanged (0x48a500)
-  // slot 0x23 vmethod_0033 inherited unchanged (0x48a4a0)
+  // slot 0x22 IsActiveView inherited unchanged (0x48a500)
+  // slot 0x23 DetachUiResourceOwnerIfMatches inherited unchanged (0x48a4a0)
   // slot 0x24 SetUiResourceOwner inherited unchanged (0x48a4d0)
   // slot 0x25 ResolveControlByTag inherited unchanged (0x48afd0)
   // slot 0x26 SwitchActiveChildAndNotify inherited unchanged (0x48af80)
@@ -149,7 +148,7 @@ public:
   // Forwards entryIndex to the +0xac subview's byte-0x1f0 virtual (verified 1-arg
   // thiscall, RET 4; the previous declaration had dropped the argument).
   virtual undefined NotifySubviewOfSelectedTile(short entryIndex);       // slot 0x7a 0x598a20
-  virtual undefined OrphanLeaf_NoCall_Ins23_00597a10();                  // slot 0x7b 0x597a10
+  virtual bool OrphanLeaf_NoCall_Ins23_00597a10();                       // slot 0x7b 0x597a10
   virtual undefined OrphanCallChain_C2_I11_00598910(undefined4 param_1); // slot 0x7c 0x598910
   // Ground truth (final RET has no operand) proves the previous 1-arg
   // __fastcall(astruct_20*)/void-return declaration was a poison-pill: real signature is
@@ -164,7 +163,6 @@ public:
   virtual undefined
   SetTradeToolSubcontrolEnabledStateByFlag(bool enabledState); // slot 0x7f 0x59a180
   // === END GENERATED DECLS (TMapUberPicture) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TMapUberPicture 0xCTOR`).
 
   // Own slice (TMapUberUberPicture ends at 0x94; this object is 0xc4). Layout/roles from
   // ConstructTMapUberPictureBaseState (0x5969e0) and NoOpUiLifecycleHook (0x596a80).
@@ -199,11 +197,27 @@ public:
   // TMapUberPicture-family vtable prefix evidence as categoryPages[] below.
   TMapUberPicture* subviewAc;
   // 0xb0..0xbf: per-category ('uciv'/'uarm'/'unav'/unused) sub-controls resolved by
-  // NoOpUiLifecycleHook via ResolveControlByTag. Typed TMapUberPicture* per
-  // SetMapInteractionMode's own disassembly (its categoryPages[oldMode/newMode] entries
-  // are dispatched through slot 0x74/CaptureLayoutF0, both real TMapUberPicture-family
-  // slots) -- these are further TMapUberPicture instances, not a distinct class.
-  TMapUberPicture* categoryPages[4];
+  // NoOpUiLifecycleHook via ResolveControlByTag. NOT a homogeneous TMapUberPicture array
+  // (that was the old theory): bd 4yz's evidence disproves it two ways. (a) TCivMgr's
+  // SetActiveCivilianSelection (0x4d2c60) makes a direct non-virtual call from
+  // categoryPages[0] to TCivToolbar::RefreshCivilianCommandPanelForSelection (0x58eb20,
+  // ground-truth-confirmed, not a vtable dispatch), which only produces correct behavior
+  // if categoryPages[0] really is a TCivToolbar object. (b) TArmyMgr's
+  // SetActiveProvinceSelection (0x4a45e0) dispatches categoryPages[1]'s own vtable slot at
+  // byte offset 0x1d0 -- but TArmyToolbar's real vtable (dumped at 0x667ad0) is far larger
+  // than TMapUberPicture's (entries confirmed past index 0xb7), and slot 0x1d0 there
+  // resolves to TArmyToolbar's own 0x58df60, not TMapUberPicture::AutoScrollByEdgeMask.
+  // So categoryPages[] is genuinely heterogeneous per index (civ=TCivToolbar,
+  // army=TArmyToolbar, navy presumably TNavyToolbarCluster) -- distinct TView-derived
+  // hierarchies, not further TMapUberPicture instances. TView is their true common
+  // ancestor (TCivToolbar/TArmyToolbar: TView<-...<-TCluster<-TControl chain;
+  // TMapUberPicture: TView<-TEventHandler<-TPicture<-... chain), which is why
+  // SetMapInteractionMode's own categoryPages[]->CaptureLayoutF0 calls (a slot inherited
+  // unchanged at the same byte offset in every one of these subclasses) work regardless of
+  // the concrete type. Callers that need a concrete page (TCivMgr.cpp) downcast with
+  // static_cast<TCivToolbar*> at the specific call site instead of typing the whole array
+  // to one caller's concrete class.
+  TView* categoryPages[4];
   // The mini-map tool-window created by CreateToolWindow_00599CF0 (0x599cf0), which
   // allocates a TMiniMapView (vtable 0x669170, size 0xa0), sets its owner backref, and
   // stores the result here.
@@ -227,7 +241,31 @@ public:
   // then calls RefreshMapOrderEntryPanel. 0x00597950, __thiscall, 1 arg.
   void SetActiveMapOrderEntry(TZone* pMapOrderContextZone);
   // Enters/exits the mode-specific overlay UI state (called from SetMapInteractionMode
-  // when switching to civilian mode). 0x00599a50, 252 bytes. TODO stub body (not yet
-  // ported).
+  // when switching to civilian mode). 0x00599a50, 252 bytes.
   void EnterMapInteractionOverlayMode(int param1);
+  // Cycles map interaction selection to the next civilian/province/map-order candidate
+  // after a handled click (priority: civilian, then province, then map-order entry;
+  // clears the active pointer if none remain). 0x00597a80, __thiscall, 0 args, 996 bytes.
+  // Re-attributed from a `TCivToolbar::` mis-label (symbols.csv/bd 4yz): its body reads
+  // this+0x96 (activeUnitCategoryIndex96, MOV BL,byte[ESI+0x96]) and both real call sites
+  // (TCivMgr::QueueImmediateCivilianCommandAndCycleSelection's thunk 0x408b93, and
+  // TArmyToolbar.cpp's own call) load ECX from g_pUiRuntimeContext->mapUberPictureF0
+  // directly -- ground-truth-confirmed via `just ghidra-listing`, not a categoryPages[]
+  // dispatch. TODO: body still an honest stub; the real state machine is a packed-byte
+  // switch over ~15 unresolved func_0x00... helpers (civilian/province/map-order
+  // candidate walkers) that need their own raw-listing recovery pass before this can be
+  // ported faithfully.
+  void CycleMapInteractionSelectionAfterHandledClick();
+  // Opens a context-action dialog for actionType (0..6, i.e. map-context action code - 2)
+  // against the resolved tile zone, forwarding the caller's cached map-action-context
+  // pointer for dialog continuity. Called from TToolBarCluster::TryHandleMapContextAction
+  // for action codes 2..8. 0x00599090, __thiscall, 1405 bytes. TODO: body not yet ported
+  // (large dialog-construction routine).
+  void OpenMapContextActionDialogByType(TZone* zone, int actionType, TTaskForce* cachedContext);
+  // Opens the entry-order dialog for a specific TTaskForce queue entry. Called from
+  // TToolBarCluster::TryHandleMapContextAction for action code 11 (entry located by
+  // walking the queue_next chain rooted at TToolBarCluster's inherited TEventHandler::
+  // field04 for a tiebreak_strength == tile index match). 0x00597f80, __thiscall, 1761
+  // bytes. TODO: body not yet ported (large dialog-construction routine).
+  void OpenMapEntryOrderDialog(TTaskForce* pMapOrderEntry);
 };

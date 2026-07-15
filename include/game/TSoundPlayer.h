@@ -33,7 +33,7 @@ public:
   BOOL ForwardMciStatusCommand814IgnoreFailure();
 
   void Free() override;                                     // 0x07 -> 0x5e51d0
-  char CanHandleCityDialogActionFalse(int action) override; // 0x13 -> 0x593400
+  char DoIdle(int action) override; // 0x13 -> 0x593400
 
   // TSoundPlayer-introduced slots (0x25+).
   virtual void InitializeSoundSubsystemAndAllocateChannelLists(int param_1); // 0x25 -> 0x5e4e70
@@ -54,7 +54,7 @@ public:
 
   // Non-virtual: queue an audio-preset (music cue) change applied on the next audio
   // tick. Called with rand%3+6 for the tactical-battle cues. Both original callsites
-  // load ECX = g_pSfxPlaybackSystem. Body TODO. 0x593920.
+  // load ECX = g_pSfxPlaybackSystem. 0x593920.
   void RequestAudioPresetChangeWithDeferredApply(int presetId, int flag);
 
   // Non-virtual: scale a 0-255 aux-volume preference into the 16-bit auxSetVolume range

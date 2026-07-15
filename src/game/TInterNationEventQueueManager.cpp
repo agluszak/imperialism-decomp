@@ -17,7 +17,7 @@ struct TInterNationEventDedupPacket {
 // raw-address __fastcall casts through ILT thunks).
 struct TPlaybackWalkState {
   int counter;
-  TPtrList* owner;
+  TSortedPtrList* owner;
 
   void* Begin();
   int IsValid();
@@ -36,9 +36,9 @@ void TInterNationEventQueueManager::QueueInterNationEventIntoNationBucket(int ev
   }
 
   if (isReplayBypass != '\0' || g_pSimMgr->redrawEnabled == 0) {
-    TPtrList* interNationQueue = perNationEventBuckets[eventCode];
+    TSortedPtrList* interNationQueue = perNationEventBuckets[eventCode];
     if (interNationQueue != 0) {
-      interNationQueue->AddEntrySlot38(&payloadOrNation);
+      interNationQueue->InsertCopiedRecordSortedByComparator(&payloadOrNation);
     }
     return;
   }
@@ -105,7 +105,7 @@ void TInterNationEventQueueManager::QueueInterNationEventRecordDeduped(int event
     packetA.nationSlot2 = static_cast<short>(nationA);
     packetA.nationMask4 = 1 << (nationB & 0x1f);
     if (sharedEventRecordQueue != 0) {
-      sharedEventRecordQueue->AddEntrySlot38(&packetA);
+      sharedEventRecordQueue->InsertCopiedRecordSortedByComparator(&packetA);
     }
   }
   if (nationB < 7 && eventCode > 1 && eventCode < 0x19) {
@@ -114,12 +114,12 @@ void TInterNationEventQueueManager::QueueInterNationEventRecordDeduped(int event
     packetB.nationSlot2 = static_cast<short>(nationB);
     packetB.nationMask4 = 1 << (nationA & 0x1f);
     if (sharedEventRecordQueue != 0) {
-      sharedEventRecordQueue->AddEntrySlot38(&packetB);
+      sharedEventRecordQueue->InsertCopiedRecordSortedByComparator(&packetB);
     }
   }
 }
 
-TPtrList* TInterNationEventQueueManager::GetInterNationQueueByEventCode(int eventCode) {
+TSortedPtrList* TInterNationEventQueueManager::GetInterNationQueueByEventCode(int eventCode) {
   if (eventCode >= 0 && eventCode < 7) {
     return perNationEventBuckets[eventCode];
   }
@@ -140,7 +140,7 @@ void TInterNationEventQueueManager::QueueInterNationEventType0FWithBitmaskMerge(
   }
 
   if (isReplayBypass != '\0' || g_pSimMgr->redrawEnabled == 0) {
-    TPtrList* mergeQueue = sharedEventRecordQueue;
+    TSortedPtrList* mergeQueue = sharedEventRecordQueue;
     if (mergeQueue == 0) {
       return;
     }
@@ -151,7 +151,7 @@ void TInterNationEventQueueManager::QueueInterNationEventType0FWithBitmaskMerge(
       do {
         TInterNationEventType0FMergePayload* existingEntry =
             reinterpret_cast<TInterNationEventType0FMergePayload*>(
-                mergeQueue->GetEntrySlot2C(entryIndex));
+                mergeQueue->GetPtrListEntryByOneBasedIndex(entryIndex));
         if (existingEntry != 0 && existingEntry->eventMarker0 == 0x0F &&
             existingEntry->nationB12 == nationB && existingEntry->eventCode4 == eventCode) {
           existingEntry->nationMask8 |= 1 << (nationA & 0x1f);
@@ -166,7 +166,7 @@ void TInterNationEventQueueManager::QueueInterNationEventType0FWithBitmaskMerge(
     payload.eventCode4 = eventCode;
     payload.nationMask8 = 1 << (nationA & 0x1f);
     payload.nationB12 = nationB;
-    mergeQueue->AddEntrySlot38(reinterpret_cast<int*>(&payload));
+    mergeQueue->InsertCopiedRecordSortedByComparator(reinterpret_cast<int*>(&payload));
     return;
   }
 
@@ -202,7 +202,7 @@ void TInterNationEventQueueManager::QueueInterNationEventType11(int eventParam, 
     record[2] = value;
     record[1] = eventParam;
     record[0] = 0x11;
-    sharedEventRecordQueue->AddTailSlot38(record);
+    sharedEventRecordQueue->InsertCopiedRecordSortedByComparator(record);
   }
 }
 
@@ -218,7 +218,7 @@ void TInterNationEventQueueManager::AddOrUpdateBilateralActionRelationEntry(int 
   int entryIndex = 1;
   while (!(nationAHandled && nationBHandled) && entryIndex <= sharedEventRecordQueue->GetSize()) {
     TBilateralActionRelationEntry* entry = static_cast<TBilateralActionRelationEntry*>(
-        sharedEventRecordQueue->GetEntrySlot2C(entryIndex));
+        sharedEventRecordQueue->GetPtrListEntryByOneBasedIndex(entryIndex));
     if (entry->eventCode0 == eventCode) {
       if (!nationAHandled && entry->nationSlot4 == nationA) {
         nationAHandled = true;
@@ -236,21 +236,21 @@ void TInterNationEventQueueManager::AddOrUpdateBilateralActionRelationEntry(int 
     newEntryA.eventCode0 = eventCode;
     newEntryA.nationSlot4 = nationA;
     newEntryA.nationMask8 = 1 << (nationB & 0x1f);
-    sharedEventRecordQueue->AddEntrySlot38(&newEntryA.eventCode0);
+    sharedEventRecordQueue->InsertCopiedRecordSortedByComparator(&newEntryA.eventCode0);
   }
   if (!nationBHandled) {
     TBilateralActionRelationEntry newEntryB;
     newEntryB.eventCode0 = eventCode;
     newEntryB.nationSlot4 = nationB;
     newEntryB.nationMask8 = 1 << (nationA & 0x1f);
-    sharedEventRecordQueue->AddEntrySlot38(&newEntryB.eventCode0);
+    sharedEventRecordQueue->InsertCopiedRecordSortedByComparator(&newEntryB.eventCode0);
   }
 }
 
 // FUNCTION: IMPERIALISM 0x005e1fa0
 void* TPlaybackWalkState::Begin() {
   counter = 2;
-  return owner->GetEntrySlot2C(1);
+  return owner->GetPtrListEntryByOneBasedIndex(1);
 }
 
 // FUNCTION: IMPERIALISM 0x005e1fd0
@@ -262,5 +262,5 @@ int TPlaybackWalkState::IsValid() {
 void* TPlaybackWalkState::Next() {
   int index = counter;
   counter = index + 1;
-  return owner->GetEntrySlot2C(index);
+  return owner->GetPtrListEntryByOneBasedIndex(index);
 }

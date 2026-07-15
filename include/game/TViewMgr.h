@@ -9,12 +9,10 @@ class TToolBarClusterVtbl;
 class TView;
 class TEventHandler;
 class TControl;
-class TCursorControlPanel;
 class TDiplomacyMapView;
 class TMovieView;
+class TTaskForce;
 
-// TODO(manifest): describe TViewMgr and its role. Base edge (TObject) recovered from RTTI
-// CRuntimeClass chain: TViewMgr -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x0066f120
 class TViewMgr : public TObject {
 public:
@@ -50,8 +48,13 @@ public:
   virtual short GetPendingTurnOverlayCode();                          // 0x54
   virtual void UiRuntimeSlot58();                                     // 0x58
   virtual void UiRuntimeSlot5C();                                     // 0x5c
-  virtual void UiRuntimeSlot60();                                     // 0x60
-  virtual void UiRuntimeSlot64();                                     // 0x64
+  // Resolves the active dialog's 'main' and 'curs' panels, refreshes the cursor info
+  // panel's map-hint style, then clears the 'main' panel's title text (0x5da040).
+  virtual void HandleTurnEventVtableSlot60ActivateMainDialog(); // 0x60
+  // Sibling of slot 0x60: refreshes the 'curs' cursor panel, then repopulates the
+  // 'quer' query label and 'titL' nation-title panel from the current scenario setup
+  // (0x5da180).
+  virtual void HandleTurnEventVtableSlot64RefreshMainHudTitles(); // 0x64
 
   // UI runtime helper functions
   virtual void AddPendingTurnOverlayCode(int modeValue); // 0x68
@@ -97,9 +100,12 @@ public:
   virtual void InvokeStrategicMapViewMethod6C();                        // 0xcc 0x5dc160
   virtual void UiRuntimeSlotD0();                                       // 0xd0
   virtual void UiRuntimeSlotD4(int arg);                                // 0xd4
-  virtual void UiRuntimeSlotD8();                                       // 0xd8
-  virtual int ShowConstructionOptionsDialog();                          // 0xdc
-  virtual void UiRuntimeSlotE0();                                       // 0xe0
+  // Resolves the active dialog's 'GOLD' panel, notifies it of the current turn-event
+  // code, then resolves+shows+refreshes the 0x546 factory dialog's own 'GOLD' child
+  // (0x5dcf20).
+  virtual void HandleTurnEventDialogFactorySlotD8(); // 0xd8
+  virtual int ShowConstructionOptionsDialog();       // 0xdc
+  virtual void UiRuntimeSlotE0();                    // 0xe0
   // Opens factory dialog 0x1c52, places it, and sets the 'GOLD'->'name' text from a
   // localized string code (0x5dd220).
   virtual void HandleTurnEventDialogFactorySlotE4(int stringCode); // 0xe4
@@ -107,9 +113,14 @@ public:
   // Refreshes the 0xdac factory dialog's 'page' roster for a tile-selection map click
   // (0x5dd900); reached from TArmyToolbar's map-tile-selection handler.
   virtual void HandleTurnEventDialogFactorySlotEC(int mapSelection); // 0xec
-  virtual void UiRuntimeSlotF0();                                    // 0xf0
-  virtual void HandleTurnEventDialogFactorySlotF4();                 // 0xf4
-  virtual void UiRuntimeSlotF8();                                    // 0xf8
+  // Resolves the 0x2506 factory dialog's 'page' child and forwards the caller-supplied
+  // map-order context to it, then places/refreshes/frees the dialog (0x5dd340). Real
+  // arity confirmed from TToolBarCluster::TryHandleMapContextAction's case-10 call
+  // site: ecx=g_pUiRuntimeContext, one pushed arg = GetActiveMapOrderEntry()'s result
+  // (a TTaskForce*).
+  virtual void HandleTurnEventDialogFactorySlotF0(TTaskForce* activeMapOrderEntry); // 0xf0
+  virtual void HandleTurnEventDialogFactorySlotF4();                                // 0xf4
+  virtual void UiRuntimeSlotF8();                                                   // 0xf8
   virtual void NoOpTurnEventStateVtableSlotFC(); // 0xfc 0x5dbd10 -- real body is a bare `ret`
   // Turn-event 0x5DE: re-assert + refresh the 'main' view panel (sibling of the 0x5DF
   // handler; the original brackets the body with a scoped empty CString). 0x5dbd30.
@@ -181,6 +192,23 @@ public:
   // text through a 'DLOG'-tagged control -- not yet ported; stubbed to the conservative
   // "confirm, no changes" default so callers don't act on unverified dialog state.
   bool ShowCivilianReportDialogAndReturnConfirm(class TCivUnit* pCivilianOrderEntry);
+
+  // 0x5de5d0 (ret 0x8). Resolves the turn-event dialog node for message context 0xc1c,
+  // marks it via TWindow::SetField84(1) (same idiom as MakePlanetSeedDialog),
+  // resolves its 'DLOG'-tagged child control, and forwards cityRecordIndex/
+  // categoryCounts into that control's own (unrecovered) slot-0x1cc dispatch, finally
+  // comparing the dialog's result tag to kControlTagOkay. TODO(port): the 'DLOG'
+  // control's own class/vtable (slot 0x1cc onward) isn't recovered yet; stubbed to the
+  // conservative "not confirmed" default, same posture as
+  // ShowCivilianReportDialogAndReturnConfirm (bd imperialism-decomp-1uj.61).
+  bool DispatchProvinceOrderOverlayConfirmDialog(short cityRecordIndex, int* categoryCounts);
+
+  // Mac oracle: TViewMgr::MakePlanetSeedDialog(const char*, CStr32&, const char*,
+  // const char*, int, unsigned char) const. Windows uses CString for the CStr32 value
+  // and returns the selected four-character control tag. 0x5de010.
+  int MakePlanetSeedDialog(const char* instruction, CString& planetSeed, const char* firstChoice,
+                           const char* secondChoice, int initialChoice,
+                           unsigned char showCancel) const;
 
   // Object layout recovered from ctor 0x5d5060 / ReadFrom 0x5d5200 /
   // LoadTurnEventCursorTable 0x5d5100. Field names past the event code are

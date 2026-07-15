@@ -7,8 +7,8 @@
 // TProductionOrder (its own vtable region); this parallel TCityOrderItem chain
 // (TCapacityOrder) shares the same slot but cannot own the address, so this is an
 // unmarked stub. Direct callers (TCapacityOrder::...) still resolve to it.
-void TCityOrderItem::Produce(void* orderSheet) {
-  undefined4* cursor = static_cast<undefined4*>(orderSheet);
+void TCityOrderItem::Produce(OrderSheet* orderSheet) {
+  undefined4* cursor = reinterpret_cast<undefined4*>(orderSheet->slotByResourceCode);
   int remaining = 0x1e;
   while (remaining != 0) {
     *cursor = 0;
@@ -16,8 +16,8 @@ void TCityOrderItem::Produce(void* orderSheet) {
     remaining = remaining + -1;
   }
   *reinterpret_cast<short*>(cursor) = 0;
-  *reinterpret_cast<short*>(reinterpret_cast<unsigned char*>(orderSheet) + 0x7a) = 0;
-  *reinterpret_cast<short*>(reinterpret_cast<unsigned char*>(orderSheet) + 0x7c) = 0;
+  orderSheet->slotByResourceCode[0x3d] = 0;
+  orderSheet->slotByResourceCode[0x3e] = 0;
 }
 
 short TCityOrderItem::MaxOrder() {
@@ -31,7 +31,7 @@ bool TCityOrderItem::SetQuantity(short quantity) {
 
 void TCityOrderItem::CommitIfPending() {}
 
-void TCityOrderItem::FillOrderSheet(void* orderSheet, short quantity) {
+void TCityOrderItem::FillOrderSheet(OrderSheet* orderSheet, short quantity) {
   (void)orderSheet;
   (void)quantity;
 }
@@ -40,7 +40,7 @@ bool TCityOrderItem::CanMakeFromCityStock() {
   return false;
 }
 
-bool TCityOrderItem::CanFillOrderSheet(void* orderSheet) {
+bool TCityOrderItem::CanFillOrderSheet(OrderSheet* orderSheet) {
   (void)orderSheet;
   return false;
 }

@@ -1,13 +1,5 @@
 #include "game/TExpansionOrder.h"
 
-static __inline void WriteShort(void* base, int offset, short value) {
-  *reinterpret_cast<short*>(reinterpret_cast<unsigned char*>(base) + offset) = value;
-}
-
-static __inline short ReadShort(void* base, int offset) {
-  return *reinterpret_cast<short*>(reinterpret_cast<unsigned char*>(base) + offset);
-}
-
 // SYNTHETIC: IMPERIALISM 0x004b8f50
 // TExpansionOrder::CreateObject
 
@@ -23,7 +15,8 @@ TExpansionOrder::TExpansionOrder() {}
 TExpansionOrder::~TExpansionOrder() {}
 
 // FUNCTION: IMPERIALISM 0x004b9010
-undefined TExpansionOrder::InitializeCityProductionState_Impl_At004b9010(int param_1, undefined2 param_2, undefined2 param_3, undefined2 param_4, undefined2 param_5) {
+undefined TExpansionOrder::InitializeCityProductionState_Impl_At004b9010(
+    int param_1, undefined2 param_2, undefined2 param_3, undefined2 param_4, undefined2 param_5) {
   return 0;
 }
 
@@ -42,15 +35,22 @@ bool TExpansionOrder::SetQuantity(short param_1) {
   return 0;
 }
 
+// FUNCTION: IMPERIALISM 0x004b9340
+void SwapFirstTwoBytesInBuffer(unsigned char* buffer) {
+  unsigned char tmp = buffer[0];
+  buffer[0] = buffer[1];
+  buffer[1] = tmp;
+}
+
 // FUNCTION: IMPERIALISM 0x004b9360
-void TExpansionOrder::FillOrderSheet(void* orderSheet, short quantity) {
-  this->InitializeCityOrderItemWorkingBuffers(reinterpret_cast<undefined4*>(orderSheet));
-  WriteShort(orderSheet, this->field4e * 2, quantity);
-  if (ReadShort(orderSheet, this->field4e * 2) < 0) {
-    WriteShort(orderSheet, this->field4e * 2, 0);
+void TExpansionOrder::FillOrderSheet(OrderSheet* orderSheet, short quantity) {
+  this->InitializeCityOrderItemWorkingBuffers(orderSheet);
+  orderSheet->ForResourceCode(this->field4e) = quantity;
+  if (orderSheet->ForResourceCode(this->field4e) < 0) {
+    orderSheet->ForResourceCode(this->field4e) = 0;
   }
-  WriteShort(orderSheet, this->field50 * 2, quantity);
-  if (ReadShort(orderSheet, this->field50 * 2) < 0) {
-    WriteShort(orderSheet, this->field50 * 2, 0);
+  orderSheet->ForResourceCode(this->field50) = quantity;
+  if (orderSheet->ForResourceCode(this->field50) < 0) {
+    orderSheet->ForResourceCode(this->field50) = 0;
   }
 }

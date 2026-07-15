@@ -8,7 +8,6 @@ class astruct_13;
 class TTacticalBattle;
 class TTacticalUnit;
 
-// TODO(manifest): describe TTacticalBattleView and its role. Base edge (TView) recovered from RTTI CRuntimeClass chain: TTacticalBattleView -> TView -> TEventHandler -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x0066a380
 class TTacticalBattleView : public TView {
 public:
@@ -32,23 +31,23 @@ public:
   // slot 0x10 DispatchUiCommandToHandler inherited unchanged (0x48a2e0)
   // slot 0x11 vmethod_0017 inherited unchanged (0x48a310)
   virtual void ForwardParam(int param) override; // slot 0x12 0x5a8550
-  // slot 0x13 CanHandleCityDialogActionFalse inherited unchanged (0x48a480)
+  // slot 0x13 DoIdle inherited unchanged (0x48a480)
   // slot 0x14 GetCityDialogValueDword10 inherited unchanged (0x415d50)
   // slot 0x15 SetCityDialogValueDword10 inherited unchanged (0x415d70)
   // slot 0x16 OwnerPanel inherited unchanged (0x48b180)
   // slot 0x17 vmethod_0023 inherited unchanged (0x48a530)
-  // slot 0x18 vmethod_0024 inherited unchanged (0x48a550)
-  // slot 0x19 vmethod_0025 inherited unchanged (0x48a690)
-  // slot 0x1a vmethod_0026 inherited unchanged (0x48a6b0)
+  // slot 0x18 GetDeactivateVetoCode inherited unchanged (0x48a550)
+  // slot 0x19 OnDeactivated inherited unchanged (0x48a690)
+  // slot 0x1a OnDeactivateVetoed inherited unchanged (0x48a6b0)
   // slot 0x1b HandleCityProductionNoOp inherited unchanged (0x48a650)
   // slot 0x1c DispatchUiCommand19ToParent inherited unchanged (0x48a6d0)
   // slot 0x1d DispatchCityProductionAction1A inherited unchanged (0x48a670)
   // slot 0x1e DispatchCityProductionAction1B inherited unchanged (0x48a6f0)
   // slot 0x1f ActivateCityProductionViewIfAllowed inherited unchanged (0x48a570)
-  // slot 0x20 vmethod_0080 inherited unchanged (0x48a5e0)
+  // slot 0x20 TryDeactivateActiveView inherited unchanged (0x48a5e0)
   // slot 0x21 vmethod_0081 inherited unchanged (0x48a710)
-  // slot 0x22 vmethod_0032 inherited unchanged (0x48a500)
-  // slot 0x23 vmethod_0033 inherited unchanged (0x48a4a0)
+  // slot 0x22 IsActiveView inherited unchanged (0x48a500)
+  // slot 0x23 DetachUiResourceOwnerIfMatches inherited unchanged (0x48a4a0)
   // slot 0x24 SetUiResourceOwner inherited unchanged (0x48a4d0)
   // slot 0x25 ResolveControlByTag inherited unchanged (0x48afd0)
   // slot 0x26 SwitchActiveChildAndNotify inherited unchanged (0x48af80)
@@ -57,7 +56,8 @@ public:
   // slot 0x29 SetEnabled inherited unchanged (0x48b1c0)
   // slot 0x2a SetState inherited unchanged (0x48b070)
   // slot 0x2b GetField4E inherited unchanged (0x427200)
-  virtual void HandleCursorHoverFallback(CPoint* point, int hitArg) override; // slot 0x2c 0x5a8ca0
+  virtual void HandleCursorHoverFallback(CPoint* point,
+                                         RgnHandle hitArg) override; // slot 0x2c 0x5a8ca0
   // slot 0x2d vmethod_0073 inherited unchanged (0x48c1c0)
   // slot 0x2e RefreshCityProductionViewStateFromContext inherited unchanged (0x48c1e0)
   // slot 0x2f QuerySelectedIndexSlotBC inherited unchanged (0x430bd0)
@@ -66,9 +66,9 @@ public:
   // slot 0x32 ValidateControlRectIfWindowActive inherited unchanged (0x48b690)
   // slot 0x33 EvaluateControlInputGate inherited unchanged (0x48c000)
   // slot 0x34 HasRenderableParentAndContent inherited unchanged (0x48c050)
-  virtual void
-  HandleCursorHoverSelectionByChildHitTestAndFallback(CPoint* point,
-                                                      int hitArg) override; // slot 0x35 0x5a8d40
+  virtual void HandleCursorHoverSelectionByChildHitTestAndFallback(
+      CPoint* point,
+      RgnHandle hitArg) override; // slot 0x35 0x5a8d40
   // slot 0x36 DispatchControlEventToChildrenAndSelf inherited unchanged (0x48aaf0)
   virtual void NoOpUiLifecycleHook(int arg) override; // slot 0x37 0x5a84d0
   // slot 0x38 NoOpUiCallback inherited unchanged (0x48abc0)
@@ -126,8 +126,9 @@ public:
   // Writes the on-screen RECT of a unit's tile (grown 0x18 px upward, bottom-4;
   // zero RECT when tileIndex8 == -1). Hedged name.
   virtual undefined ComputeTacticalUnitTileScreenRect(TTacticalUnit* unit,
-                                                      RECT* rectOut);   // slot 0x6a 0x5a89f0
-  virtual undefined AdjustTacticalUnitVerticalOffsetAndRefreshMarker(); // slot 0x6b 0x5a8be0
+                                                      RECT* rectOut); // slot 0x6a 0x5a89f0
+  virtual void
+  AdjustTacticalUnitVerticalOffsetAndRefreshMarker(short scrollDirection); // slot 0x6b 0x5a8be0
   // Per-tile drawer for the rect applier's 0..0x1b2 pass (base = no-op; the army view
   // override renders the tile). Old OrphanRetStub name was junk; ret 8 = 2 args.
   virtual undefined DrawTacticalTileInClipRect(int tileIndex, RECT* clipRect); // slot 0x6c 0x5a83c0
@@ -170,16 +171,19 @@ public:
   RECT moveAnimSpriteSrcRectAC;          // +0xac sprite-sheet source rect
   struct TQuickDrawSurfaceContext* unitSpriteScratchSurfaceBC; // +0xbc 2x3-cell scratch
   RECT moveAnimScreenRectC0;                                   // +0xc0 on-screen animation rect
+  int fieldD0; // +0xd0 zeroed by ctor; use unobserved
 
   TTacticalBattleView();
 
   // Tactical-battle UI helpers dispatched from the TTacticalBattle command handlers
-  // (all __thiscall on the live view; verified at every call site). Bodies TODO.
+  // (all __thiscall on the live view; verified at every call site).
   void UpdateTacticalActionControlBitmapForCurrentUnit(char side); // 0x5a9b40
   void InvalidateTacticalHexTileRect(int tileIndex);               // 0x5a8860
   void CenterViewportAroundGridIndexAndSnap(int tileIndex);        // 0x5a8ac0
   void SpawnTacticalUiMarkerAtUnitTile();                          // 0x5a9bb0
-  void TriggerTacticalUiUpdate2711();                              // 0x5a9cc0
+  // Maps a screen point to a clamped hex (row, col) on this battle's grid. 0x5a86d0.
+  void ConvertScreenPointToHexGridCoordClamped(POINT* screenPoint, int* outRow, int* outCol);
+  void TriggerTacticalUiUpdate2711(); // 0x5a9cc0
   // Writes the on-screen RECT of a bare hex tile (no unit growth). 0x5a87d0.
   void ComputeTacticalHexTileScreenRect(RECT* rectOut, int tileIndex);
   // Writes unit's on-screen sprite rect (tile rect grown 0x14px upward), then applies

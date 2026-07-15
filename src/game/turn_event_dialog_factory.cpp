@@ -6,6 +6,7 @@
 #include "game/TDeluxeText.h"
 #include "game/TDropShadowNumberText.h"
 #include "game/TDropShadowText.h"
+#include "game/TDlgWindow.h"
 #include "game/TEditText.h"
 #include "game/TGWorldPartView.h"
 #include "game/TMapPreviewView.h"
@@ -356,21 +357,128 @@ TView* __cdecl InitializeDealBookScreenControlsAndCommandTags(CWnd* pHostWindow,
 
 // FUNCTION: IMPERIALISM 0x004357b0
 TView* __cdecl BuildTurnEventDialogUiByCode(CWnd* pHostWindow, int nEventCode) {
-  (void)pHostWindow;
   g_pUiResourceHead = 0;
 
-  switch (static_cast<unsigned short>(nEventCode)) {
-  case 0x7d1:
-    return BuildTurnOrderNavigationWindow(5, 0x32, 0x258, 400, 2);
+  switch (static_cast<short>(nEventCode)) {
+  case 0x3b6: {
+    TDlgWindow* window = new TDlgWindow();
+    RegisterUiResourceEntry(0x77696e64 /* 'wind' */, kControlTagWind, window, 0x28, 0x28, 0x226,
+                            0x15e, 1, 1, 0, 0);
+    SetUiResourceStateFlags(1, 1);
+    SetUiResourceContextFlagsAndMetrics(8, 3, 0, 0, 0, 0, 0, 1);
+    ApplyUiResourceColorTripletFromContext(1, 0, 0x20202020, 0x20202020);
+    ClearUiResourceContext();
+
+    TNoHilitePicture* backdrop = new TNoHilitePicture();
+    RegisterUiResourceEntry(kControlTagPict, kControlTagOkay, backdrop, 0, 0, 0x226, 0x15e, 1, 1,
+                            kControlTagWind, 0);
+    SetUiResourceStateFlags(1, 1);
+    SetUiResourceLayoutValues(0x22, 0, 0, 0, 0);
+    SetUiResourceContextPictureId(0x3b6);
+    ClearUiResourceContext();
+    PopUiResourcePoolNode(kControlTagOkay);
+  } break;
+
+  case 0x3ba: {
+    TWindow* window = new TWindow();
+    RegisterUiResourceEntry(0x77696e64 /* 'wind' */, kControlTagWind, window, 0xa0, 0x8a, 0xfc,
+                            0xb1, 1, 1, 0, 0);
+    SetUiResourceStateFlags(1, 1);
+    SetUiResourceContextFlagsAndMetrics(8, 2, 0, 1, 1, 0, 0, 1);
+    ApplyUiResourceColorTripletFromContext(1, 1, 0x20202020, 0x20202020);
+    ClearUiResourceContext();
+
+    TPicture* backdrop = new TPicture();
+    RegisterUiResourceEntry(kControlTagPict, kControlTagGold, backdrop, 0, 0, 0xfc, 0xb1, 0, 1,
+                            kControlTagWind, 0);
+    SetUiResourceStateFlags(1, 1);
+    SetUiResourceLayoutValues(0xa, 0, 0, 0, 0);
+    SetUiResourceContextPictureId(0x11b7);
+    ClearUiResourceContext();
+
+    TRadioTextCluster* choiceCluster = new TRadioTextCluster();
+    RegisterUiResourceEntry(kControlTagClus, 0x316f7232 /* '1or2' */, choiceCluster, 0x27, 0x6e,
+                            0xaf, 0x14, 0, 0, kControlTagGold, 0);
+    SetUiResourceStateFlags(1, 1);
+    SetUiResourceLayoutValues(5, 0, 0, 0, 0);
+    SetUiResourceContextStringCode(0x20202020);
+    ClearUiResourceContext();
+
+    TRadioText* firstChoice = new TRadioText();
+    RegisterUiResourceEntry(kControlTagStat, 0x6f6e6531 /* 'one1' */, firstChoice, 2, 2, 0x55, 0x10,
+                            1, 1, 0x316f7232, 0);
+    SetUiResourceStateFlags(1, 1);
+    SetUiResourceLayoutValues(0xd, 0, 0, 0, 0);
+    BindUiResourceTextAndStyle(0x514, -1, g_szEmptyString, 0, 0, 0, 0, 1);
+    ClearUiResourceContext();
+    PopUiResourcePoolNode(0x6f6e6531 /* 'one1' */);
+
+    TRadioText* secondChoice = new TRadioText();
+    RegisterUiResourceEntry(kControlTagStat, 0x74776f32 /* 'two2' */, secondChoice, 0x58, 2, 0x55,
+                            0x10, 1, 1, 0x316f7232, 0);
+    SetUiResourceStateFlags(1, 1);
+    SetUiResourceLayoutValues(0xd, 0, 0, 0, 0);
+    BindUiResourceTextAndStyle(0x514, -1, g_szEmptyString, 0, 0, 0, 0, 1);
+    ClearUiResourceContext();
+    PopUiResourcePoolNode(0x74776f32 /* 'two2' */);
+    PopUiResourcePoolNode(0x316f7232 /* '1or2' */);
+
+    TStaticText* instruction = new TStaticText();
+    RegisterUiResourceEntry(kControlTagStat, 0x696e7374 /* 'inst' */, instruction, 0x25, 0x16, 0xb6,
+                            0x37, 0, 1, kControlTagGold, 0);
+    SetUiResourceStateFlags(1, 1);
+    SetUiResourceLayoutValues(0xd, 0, 0, 0, 0);
+    BindUiResourceTextAndStyle(0x514, 3, g_szUiPickAPlanet_00694530, 3, 1, 0xc, 0, 0);
+    ClearUiResourceContext();
+    PopUiResourcePoolNode(0x696e7374 /* 'inst' */);
+
+    TEditText* planetName = new TEditText();
+    RegisterUiResourceEntry(kControlTagEdit, 0x706c616e /* 'plan' */, planetName, 0x28, 0x4f, 0xaf,
+                            0x17, 1, 1, kControlTagGold, 0);
+    SetUiResourceStateFlags(1, 0);
+    SetUiResourceLayoutValues(6, 3, 3, 3, 3);
+    BindUiResourceTextAndStyle(0x3b9, 1, g_szUiDefaultPlanetName_00694528, 3, 0, 0, 0, 1);
+    SetUiResourceContextMaxCharCount(0x20);
+    ClearUiResourceContext();
+    PopUiResourcePoolNode(0x706c616e /* 'plan' */);
+
+    TUpDownPictureButton* okay = new TUpDownPictureButton();
+    RegisterUiResourceEntry(kControlTagPict, kControlTagOkay, okay, 0x9e, 0x8a, 0x3d, 0x18, 1, 1,
+                            kControlTagGold, 0);
+    SetUiResourceStateFlags(1, 1);
+    SetUiResourceLayoutValues(0x22, 0, 0, 0, 0);
+    SetUiResourceContextPictureId(0x24c2);
+    ClearUiResourceContext();
+    PopUiResourcePoolNode(kControlTagOkay);
+
+    TUpDownPictureButton* cancel = new TUpDownPictureButton();
+    RegisterUiResourceEntry(kControlTagPict, kControlTagCanc, cancel, 0x21, 0x8a, 0x3d, 0x18, 0, 0,
+                            kControlTagGold, 0);
+    SetUiResourceStateFlags(1, 1);
+    SetUiResourceLayoutValues(0x22, 0, 0, 0, 0);
+    SetUiResourceContextPictureId(0x24c4);
+    ClearUiResourceContext();
+    PopUiResourcePoolNode(kControlTagCanc);
+    PopUiResourcePoolNode(kControlTagGold);
+  } break;
+
   case 0x7d2:
     return BuildTurnOrderNavigationWindow(0, 0x28, 0x280, 0x1e0, 4);
+  case 0x7d1:
+    return BuildTurnOrderNavigationWindow(5, 0x32, 0x258, 400, 2);
   case 0x3a98:
     return BuildBareGoldEventWindow3A98();
   case 0x11f8:
     return BuildStartupIntroBackground();
   default:
-    return nullptr;
+    return 0;
   }
+
+  PopUiResourcePoolNode(kControlTagWind);
+  if (g_pUiResourceHead != 0) {
+    g_pUiResourceHead->PropagateUiResourceContextRecursive(pHostWindow);
+  }
+  return g_pUiResourceHead;
 }
 
 // FUNCTION: IMPERIALISM 0x0043dbc0
@@ -3436,7 +3544,9 @@ TView* __cdecl BuildTurnEventDialogResources_2508(CWnd* pHostWindow, int nEventC
   static_cast<TWindow*>(g_pUiResourceContext)->field9c = 8;
   static_cast<TWindow*>(g_pUiResourceContext)->windowStyleType = 2;
   static_cast<TWindow*>(g_pUiResourceContext)->GetEmbeddedDialogBehavior()->SetFlag0C(1);
-  static_cast<TWindow*>(g_pUiResourceContext)->GetEmbeddedDialogBehavior()->SetUiColorDescriptorGoldTriplet(1, 0x20202020, 0x20202020);
+  static_cast<TWindow*>(g_pUiResourceContext)
+      ->GetEmbeddedDialogBehavior()
+      ->SetUiColorDescriptorGoldTriplet(1, 0x20202020, 0x20202020);
   g_pUiResourceContext = 0;
 
   // 'GOLD' background picture
@@ -6243,7 +6353,7 @@ TView* __cdecl BuildTurnEventDialogResourcesForEvent8FC(CWnd* pHostWindow, int n
     size[0] = 0x1e;
     size[1] = 0x30;
     trb2Toolbar->InitializeUiResourceEntryFrameAndParent(0, parent, offset, size, 0, 0, 1);
-    trb2Toolbar->controlTag = static_cast<int>(0x74627232); // 'trb2' (see MISSING-TAG)
+    trb2Toolbar->controlTag = static_cast<int>(kControlTagTbr2);
     trb2Toolbar->controlValue3c = 0;
     trb2Toolbar->SetEnabled(1, 0);
     trb2Toolbar->SetState(0, 0);
@@ -6416,7 +6526,7 @@ TView* __cdecl BuildTurnEventDialogResourcesForEvent8FC(CWnd* pHostWindow, int n
     size[0] = 0x168;
     size[1] = 0x127;
     topPicture->InitializeUiResourceEntryFrameAndParent(0, parent, offset, size, 0, 0, 1);
-    topPicture->controlTag = static_cast<int>(0x746f7020); // 'top ' (see MISSING-TAG)
+    topPicture->controlTag = static_cast<int>(kControlTagTop);
     topPicture->controlValue3c = 0;
     topPicture->SetEnabled(1, 0);
     topPicture->SetState(0, 0);
@@ -6449,7 +6559,7 @@ TView* __cdecl BuildTurnEventDialogResourcesForEvent8FC(CWnd* pHostWindow, int n
     size[0] = 0x108;
     size[1] = 0x20;
     titleText->InitializeUiResourceEntryFrameAndParent(0, parent, offset, size, 0, 0, 1);
-    titleText->controlTag = static_cast<int>(0x7469746c); // 'titl' (see MISSING-TAG)
+    titleText->controlTag = static_cast<int>(kControlTagTitl);
     titleText->controlValue3c = 0;
     titleText->SetEnabled(1, 0);
     titleText->SetState(0, 0);
@@ -6517,7 +6627,7 @@ TView* __cdecl BuildTurnEventDialogResourcesForEvent8FC(CWnd* pHostWindow, int n
     size[0] = 0x156;
     size[1] = 0xaf;
     scrollView->InitializeUiResourceEntryFrameAndParent(0, parent, offset, size, 0, 0, 1);
-    scrollView->controlTag = static_cast<int>(0x73637677); // 'scvw' (see MISSING-TAG)
+    scrollView->controlTag = static_cast<int>(kControlTagScvw);
     scrollView->controlValue3c = 0;
     scrollView->SetEnabled(1, 0);
     scrollView->SetState(0, 0);
@@ -6670,7 +6780,7 @@ TView* __cdecl InitializeTradeScreenBitmapControls(CWnd* pHostWindow, int nEvent
       size[0] = 0x1e;
       size[1] = 0x2c;
       toolbar->InitializeUiResourceEntryFrameAndParent(0, parent, offset, size, 0, 0, 1);
-      toolbar->controlTag = static_cast<int>(0x74627232); // 'tbr2' (see MISSING-TAG)
+      toolbar->controlTag = static_cast<int>(kControlTagTbr2);
       toolbar->controlValue3c = 0;
       toolbar->SetEnabled(1, 0);
       toolbar->SetState(0, 0);

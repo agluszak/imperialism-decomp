@@ -10,6 +10,12 @@
 #include "game/TTurnEventDialogFactoryRegistry.h"
 #include "game/TViewMgr.h"
 #include "game/global_data_tables.h"
+// SYNTHETIC: IMPERIALISM 0x005df1d0
+// TAssetMgr::CreateObject
+
+// SYNTHETIC: IMPERIALISM 0x005df260
+// TAssetMgr::GetRuntimeClass
+
 IMPLEMENT_DYNCREATE(TAssetMgr, TObject)
 
 // FUNCTION: IMPERIALISM 0x005df280
@@ -20,7 +26,7 @@ TAssetMgr::TAssetMgr() : TObject(), sharedTextSlots() {}
 TAssetMgr::~TAssetMgr() {}
 
 // FUNCTION: IMPERIALISM 0x005df3a0
-void __stdcall ForwardEnsurePictWvDataGobLoadedBySlot(int languageTag) {
+void TAssetMgr::ForwardEnsurePictWvDataGobLoadedBySlot(int languageTag) {
   (void)languageTag;
   EnsurePictWvDataGobLoadedBySlot(0);
 }
@@ -102,7 +108,7 @@ extern "C" const char s_MissingFilePrefix_0069B820[];
 extern "C" const char s_MissingFileSuffix_0069B810[];
 
 // FUNCTION: IMPERIALISM 0x005dff20
-void __stdcall EnsurePictWvDataGobLoadedBySlot(int languageTag) {
+void TAssetMgr::EnsurePictWvDataGobLoadedBySlot(int languageTag) {
   CString path;
   path.Format(s_PictWvGobPathFormat_00698BF4, languageTag);
 
@@ -110,10 +116,11 @@ void __stdcall EnsurePictWvDataGobLoadedBySlot(int languageTag) {
     return;
   }
 
-  CString message(s_MissingFilePrefix_0069B820);
-  message += path;
-  message += s_MissingFileSuffix_0069B810;
-  AfxMessageBox(static_cast<LPCTSTR>(message), MB_OK, 0);
+  // Original builds the message with operator+ temporaries (prefix + path + suffix),
+  // not in-place +=; the leading const-char*+CString picks the global operator+.
+  AfxMessageBox(
+      static_cast<LPCTSTR>(s_MissingFilePrefix_0069B820 + path + s_MissingFileSuffix_0069B810),
+      MB_OK, 0);
 }
 
 namespace {

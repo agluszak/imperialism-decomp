@@ -38,6 +38,3 @@ void BuildMapOrderBattleSideSnapshot(MapOrderBattleSnapshot* snapshot, int side,
 // 0x0054f340
 void RefreshMapOrderBattleSideSnapshot(MapOrderBattleSnapshot* snapshot, int side,
                                        TTaskForce* entry);
-// 0x004a6e80 -- body not yet reverse-engineered (unresolved vtable dispatch on an
-// unidentified receiver); only the confirmed field resets are ported.
-void DispatchMapInteractionPayloadAndResetWorkingFields(MapOrderBattleSnapshot* snapshot);

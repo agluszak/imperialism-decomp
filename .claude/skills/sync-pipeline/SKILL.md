@@ -20,9 +20,71 @@ mutation ledger + re-run procedure in `docs/ghidra-db-mutations.md`.
 | Vtable identity | `// VTABLE:` annotation + real inheritance | any symbols.csv row at that address is a bug (merge drops them) |
 | Reference decompiles | Ghidra DB | `src/ghidra_autogen/`, `include/ghidra_autogen/` |
 | Linkable stubs | symbols.csv + ownership | `src/autogen/stubs/` |
+| Confirmed CRT/MFC library identity (reviewed) | `config/msvc500_library_overrides.csv` | symbols.csv name/symbol/proto + `src/game/library_msvc500_overrides.cpp` marker |
+| CRT/MFC identity (object-matcher oracle) | `libcmt.lib`/`nafxcw.lib` via `just build-library-oracle` | `config/msvc500_library_oracle.csv` + symbols.csv + `src/game/library_msvc500_oracle.cpp` marker |
 
 Surgical symbols.csv edits are allowed (deleting junk rows); a full resync
 re-derives the file, and the merge preserves curated values by address.
+
+## Library identity (a FID miss is NOT game code)
+
+Ghidra FID is heuristic — it has minimum-length/score thresholds, so it silently
+skips tiny or aliased CRT/MFC functions (the canonical case: `rand` at
+`0x005e83f0`, whose body is the MSVC LCG `state*0x343fd + 0x269ec3`,
+`(state>>16)&0x7fff`). `apply_msvc500_library_region.py` only sees functions FID
+returned, so a miss keeps its invented Ghidra name (`GenerateThreadLocalRandom15`)
+with no `_rand` symbol and no library ownership — forever.
+
+The **reviewed override layer** fixes such rows durably:
+
+- Add a row to `config/msvc500_library_overrides.csv`
+  (`address|name|symbol|prototype|library_family|object_member|evidence`).
+- `just apply-library-overrides` (idempotent; auto-runs inside `regen-stubs`)
+  projects it into symbols.csv (name/symbol/prototype, `provenance=msvc500_library_override`)
+  and ensures a `// LIBRARY:` marker (in `library_msvc500_overrides.cpp`) so
+  `sync-ownership` sets `ownership=library`. It only adds a marker where none
+  exists, so prototype-only corrections on already-owned FID rows don't duplicate.
+- Precedence: **reviewed override > FID > existing curated > provisional Ghidra**.
+  The FID apply defers override addresses, so a manual FID re-run can't clobber them.
+- `just library-identity-gate` (in `just gates`) pins every override into symbols.csv
+  + `ownership=library` and ratchets the applied count — regressing rand back to a
+  descriptive name fails the gate.
+
+**Before behaviourally naming any MSVC/MFC-range or CRT-shaped function, run
+`just library-identify 0xADDR`.** It aggregates symbols/ownership/override/FID/oracle
+into a verdict; a missing FID result is explicitly flagged as *not* evidence of game
+ownership.
+
+### The object-matcher oracle (systematic identity)
+
+`just build-library-oracle` is the authoritative identity source — it does not
+depend on FID. It parses the vendored `vendor/msvc500/lib/{libcmt,nafxcw}.lib` COFF
+object members, masks each function's relocation fields (call/jmp targets, absolute
+data refs) and trims alignment padding to a normal form, then matches every
+executable function's bytes against it. An exact-size, exact-masked match is a
+confident identity regardless of where the linker placed anything. Output:
+`config/msvc500_library_oracle.csv`
+(`address|name|symbol|prototype|library|member|match_kind|confidence|candidate_count`).
+
+`just apply-library-oracle` (idempotent; auto-runs in `regen-stubs`) projects the
+confident, unique matches: it **upgrades the exact decorated `symbol` + prototype**
+on already-library rows, and **converts unowned FID-missed functions** (in the dense
+range, large enough, invented name unreferenced in source) to library ownership.
+Guards that keep it safe:
+- Bodies shared across multiple executable addresses (empty ctors/dtors, trivial
+  thunks) are demoted to `duplicate-body/review` — byte matching can't disambiguate
+  them, so they are never auto-applied.
+- Manually curated game code is **never** rewritten. A confident unique match owned
+  by a game `.cpp` (e.g. libcmt float-conversion internals ported as
+  `bignum96_math.cpp`) is a mislabel routed to `config/msvc500_library_oracle_review.csv`
+  and flagged by `library-identity-gate` unless acknowledged in
+  `config/library_oracle_gamecode_allowlist.csv`. Moving one to library needs a build
+  to confirm its callers still link.
+
+Precedence: **reviewed override > object-match > FID > curated game identity >
+provisional Ghidra**. Library names/prototypes converge into the Ghidra DB on the
+next `db-resync` (`sync-ghidra` runs `push-names --include-library-symbols` over the
+dense range).
 
 ## The two commands
 

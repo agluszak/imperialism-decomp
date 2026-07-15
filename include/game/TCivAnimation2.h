@@ -1,5 +1,6 @@
 #pragma once
 
+#include "compat.h"
 #include "game/TAnimation.h"
 #include "game/mfc.h"
 
@@ -10,13 +11,9 @@
 // upcast-constructed as a real object in TCouncilTickerAnimation.cpp
 // (g_pUiAnimator) and TMapDialog.cpp. It is a battle-report civ animation
 // state machine, not a misattribution.
-// TODO(manifest): field_0x24 is a polymorphic receiver called through vtable
-// slot 0x30/4=12 in AddObjectToUiTransientRegistry (0x4a0d10) — needs class
-// recovery (slice-discovery) to type; current body is a stub, not a real
-// port. FindLinkedListNodeByIdFieldAt18 (0x4a0d30) is an orphaned real
-// thiscall method on this class (walks a linked list of nodes each with an
-// id field at +0x18) still living in autogen stubs as free-function
-// `undefined4(void)` — needs promotion to a member + typed list.
+// (AddObjectToUiTransientRegistry 0x4a0d10 and the registry walker 0x4a0d30,
+// once bucketed here by Ghidra, are really TAnimator methods -- the receiver
+// is the g_pUiAnimator global, proven by the callers' `mov ecx,[0x6a43e0]`.)
 // VTABLE: IMPERIALISM 0x0064c390
 class TCivAnimation2 : public TAnimation {
 public:
@@ -35,14 +32,24 @@ public:
   virtual undefined RenderBattleReportInsetWithPaletteShift() override;      // slot 0x0b 0x49f8e0
   // slot 0x0c RenderBattleReportViewSurfaceSpriteWithResourceHandle inherited unchanged (0x49f2d0)
   // === END GENERATED DECLS (TCivAnimation2) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TCivAnimation2 0xCTOR`).
-
-  void AddObjectToUiTransientRegistry(TAnimation* animationObject);
-  // Walks the field_0x24 list for a node whose id field (+0x18) matches nodeId; 0 if
-  // this is null, the list is empty, or nothing matches. The list/node classes aren't
-  // recovered yet (MFC-collection-shaped internals -- CPtrList-style iteration), so
-  // the walk itself is left unmodeled. 0x4a0d30
-  void* FindLinkedListNodeByIdFieldAt18(int nodeId);
+  // TAnimation's own slice ends at 0x2c (ASSERT_SIZE); RTTI oracle confirms
+  // sizeof(TCivAnimation2) == 0x30. Caches the ctor's `kind` selector (see the ctor
+  // below) for later reference; real reader not yet identified.
+  short kindIndex2c; // +0x2c
+  short pad2e;       // +0x2e
 
   TCivAnimation2();
+
+  // Real ctor (0x49f6a0): looks up a per-kind (stringId, ticksPerFrame) pair from two
+  // 9-entry tables baked into the original as immediate stores (kind 0..8 -- battle
+  // report civ animation variants) and forwards them to the already-ported
+  // TAnimation::ConstructTAnimationBaseState with frameCount pinned to 0 (this class
+  // overrides AdvanceAnimationTickAndInvalidateOnFrameFlip itself, so the inherited
+  // frame-index scheme is unused). Confirmed against both call sites
+  // (OrphanTiny_ReturnZero_0048a730 and ApplyRectSlot110): param_1 is the enclosing
+  // TView, param_2 a RECT computed from a (x,y) origin, param_3 the kind index read
+  // from another object's +0x4 field, param_4 an opaque tag forwarded verbatim.
+  TCivAnimation2(TView* ownerView, RECT* rect, int kind, int tag);
 };
+
+ASSERT_SIZE(TCivAnimation2, 0x30);

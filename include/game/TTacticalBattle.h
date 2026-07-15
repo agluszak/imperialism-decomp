@@ -71,7 +71,7 @@ public:
                                                    TArmyTacUnit* rallyTarget); // slot 0x16 0x5a3810
   virtual void ExecuteTacticalMineActionAndQueuePacket(TTacticalUnit* unit,
                                                        int tileIndex); // slot 0x17 0x5a34d0
-  virtual undefined
+  virtual void
   ExecuteTacticalDigActionAndConsumeUnitActionPoints(TTacticalUnit* unit,
                                                      int tileIndex); // slot 0x18 0x5a3640
   // === END GENERATED DECLS (TTacticalBattle) ===
@@ -128,7 +128,7 @@ public:
   void StartBattle();
 
   // Battle-state assembly (Mac oracle: InitTacticalBattle); sets tacticalPlayer14/18
-  // and allocates the tile grid. Body TODO. 0x0059f890.
+  // and allocates the tile grid. 0x0059f890.
   void BuildTacticalBattleStateFromBothSides(TTacticalPlayer* ourPlayer,
                                              TTacticalPlayer* enemyPlayer);
 
@@ -160,42 +160,50 @@ public:
   // the live-battle toolbar controls and queues the 0x232a event. 0x59fdb0, __thiscall.
   void FinalizeTacticalTurnStateAndQueueEvent232A();
 
-  // Helpers the command family dispatches into (all __thiscall on the battle;
-  // bodies TODO).
+  // Top-level tactical toolbar command dispatch for the current side (tags done/auto/retr/
+  // skip/targ); no-op unless the current side is human-watched. 0x5a0c50, __thiscall.
+  void HandleTacticalBattleCommandTag(int commandTag);
+  // "targ" command: cycles the selected unit's target to the next reachable enemy unit,
+  // recentering the view on it (or plays a "no target" cue). 0x5a3f10, __thiscall.
+  void HandleTacticalCommandTag_targ();
+  // Sets the current side's navy ship-panel display mode (hull/crew/sail) from the navy
+  // toolbar; the players are TNavyPlayer in a sea battle. 0x5a5b90, __thiscall.
+  void SetCurrentSideNavyShipDisplayMode(int mode);
+
+  // Helpers the command family dispatches into (all __thiscall on the battle).
   void ApplyTacticalDoneSelectionAndRefreshUi(TTacticalUnit* unit);                   // 0x59fe40
   void ComputeHexNeighborTileIndices_005A0420(int tileIndex, int* outNeighborTiles6); // 0x5a0420
   void ConsumeFortStrengthPointsAndInvalidateIfDepleted(int tileIndex,
                                                         int consumeAmount); // 0x5a3c20
   void EvaluateTacticalSideStateAndShowBattleSummaryDialog();               // 0x5a2750
   // Queues the 0x232a end-of-action turn event (news a TCommand and clears field48).
-  // Body TODO. 0x5a0d60, __thiscall.
+  // 0x5a0d60, __thiscall.
   void QueueTacticalEventPacket232A();
-  // Paths the unit toward the target tile. Body TODO. 0x5a1520, __thiscall.
+  // Paths the unit toward the target tile. 0x5a1520, __thiscall.
   void MoveTacticalUnitTowardTile(TTacticalUnit* unit, int targetTileIndex);
   // Whether the selected unit still has a valid follow-up target for the current
-  // action. Body TODO. 0x5a1d70, __thiscall.
+  // action. 0x5a1d70, __thiscall.
   unsigned char HasValidTacticalFollowupTargetForCurrentAction();
   // Fort-wall tile index where the firing line between the two tiles crosses the wall
   // column, 0 when it does not. 0x5a3a70, __thiscall.
   int FindFortWallTileCrossedByFiringLine(int targetTileIndex, int attackerTileIndex);
   // Recursive distance-field path builder into outPathTiles (caller pre-seeds
-  // outPathTiles[0] = target); returns the path depth or -1. Body TODO. 0x5a16e0.
+  // outPathTiles[0] = target); returns the path depth or -1. 0x5a16e0.
   int BuildPathToTargetByDistanceField(int walkTileIndex, int pathDepth, int goalTileIndex,
                                        int* outPathTiles);
-  // Reaction checks fired when a unit enters a tile; nonzero stops the walk.
-  // Body TODO. 0x5a1a20.
+  // Reaction checks fired when a unit enters a tile; nonzero stops the walk. 0x5a1a20.
   unsigned char ResolveTacticalReactionChecksForTile(int tileIndex);
   // Whether the target tile is reachable for the current action (range scaled by the
-  // attacker category's direct-fire flag). Body TODO. 0x5a3d30, ret 0x10.
+  // attacker category's direct-fire flag). 0x5a3d30, ret 0x10.
   unsigned char IsTacticalTargetTileReachableForAction(int attackerTileIndex, int targetTileIndex,
                                                        char directFireFlag, int range);
   // Builds the per-tile distance field into tileIntArray30 for the given side
-  // (consumed by the AI advance heuristic). Body TODO. 0x5a4460.
+  // (consumed by the AI advance heuristic). 0x5a4460.
   void BuildTacticalDistanceFieldForSide(char ourSideFlag);
   // Whether the tile sits on a fort-wall gun-slot row (5/7/9) at the wall column.
-  // Body TODO. 0x5a4690.
+  // 0x5a4690.
   unsigned char IsTacticalTileAtFortWallSectionSlot(int tileIndex);
-  // Deployment-zone queries (bodies TODO). 0x5a4240 / 0x5a41c0 / 0x5a4330.
+  // Deployment-zone queries. 0x5a4240 / 0x5a41c0 / 0x5a4330.
   int CountFreeDeploymentZoneTilesForCurrentSide();
   unsigned char ApplyGridColumnSelectionGuard(int tileIndex);
   // True when there is no fort or a wall section is breached (curated name kept).
@@ -208,7 +216,7 @@ public:
 ASSERT_SIZE(TTacticalBattle, 0x78);
 
 // Turn-order comparator for the battle record list (0x59fdb0 passes it to
-// SortEntriesWithComparator): higher base action points first, then higher quality,
-// then the +0x24 serialized word. Returns its -1/0/1 verdict in AX (short), so the
-// sort callsite adjusts the return type with a function-pointer cast.
-short __cdecl CompareTacticalUnitsForTurnOrder(void* a, void* b); // 0x59f610
+// SortBy): higher base action points first, then higher quality, then the +0x24
+// serialized word. Returns its -1/0/1 verdict in AX (short); the context argument
+// (the battle, passed by the SortBy call site) is unused.
+short __cdecl CompareTacticalUnitsForTurnOrder(void* a, void* b, void* context); // 0x59f610

@@ -165,9 +165,40 @@ void TMapUberPicture::SetActiveMapOrderEntry(TZone* pMapOrderContextZone) {
   this->RefreshMapOrderEntryPanel(refreshedTaskForce);
 }
 
+// Reports whether the active unit category (0=civilian, 1=army, 2=navy) currently has a
+// selection/pending order to act on -- used by TArmyMgr::ComputeMapCursorStateIndex to
+// gate map-click cursor state. 68 bytes, ground-truth-confirmed via decompile.
 // FUNCTION: IMPERIALISM 0x00597a10
-undefined TMapUberPicture::OrphanLeaf_NoCall_Ins23_00597a10() {
-  return 0;
+bool TMapUberPicture::OrphanLeaf_NoCall_Ins23_00597a10() {
+  switch (this->activeUnitCategoryIndex96) {
+  case 0:
+    return g_pSelectedCivilianOrderState->selectedEntry != nullptr;
+  case 1:
+    return g_pMapContextActionManager->pendingMapActionIndex != -1;
+  case 2:
+    return g_pActiveMapOrderContext->selectedTaskForce14 != nullptr;
+  default:
+    return false;
+  }
+}
+
+// Cycles map interaction selection to the next civilian/province/map-order candidate after
+// a handled click. TODO: body not yet ported -- see the declaration comment in
+// TMapUberPicture.h for the re-attribution evidence and why the state-machine body itself
+// is deferred (packed-byte switch over ~15 unresolved helper functions).
+// FUNCTION: IMPERIALISM 0x00597a80
+void TMapUberPicture::CycleMapInteractionSelectionAfterHandledClick() {}
+
+// TODO: body not yet ported (1761-byte dialog-construction routine). Real receiver and
+// arity confirmed from TToolBarCluster::TryHandleMapContextAction's case-11 call site
+// (ecx = mapUberPictureF0 immediately before the call); pMapOrderEntry is the TTaskForce
+// queue entry located by matching tiebreak_strength against the clicked tile index.
+// FUNCTION: IMPERIALISM 0x00597f80
+void TMapUberPicture::OpenMapEntryOrderDialog(TTaskForce* pMapOrderEntry) {
+  // BLOCKED (still a stub): same shape as OpenMapContextActionDialogByType -- a 1761-byte
+  // dialog-construction routine driving an unrecovered 100+-slot dialog-builder class via its
+  // vtable. Deferred pending recovery of that builder class (see the note at 0x599090).
+  (void)pMapOrderEntry;
 }
 
 // FUNCTION: IMPERIALISM 0x00598870
@@ -223,6 +254,24 @@ undefined TMapUberPicture::OrphanCallChain_C2_I16_005989d0(int tileX, int tileY)
 // FUNCTION: IMPERIALISM 0x00598a20
 undefined TMapUberPicture::NotifySubviewOfSelectedTile(short entryIndex) {
   return this->subviewAc->OrphanCallChain_C2_I11_00598910(entryIndex);
+}
+
+// TODO: body not yet ported (1405-byte dialog-construction routine). Real receiver and
+// arity confirmed from TToolBarCluster::TryHandleMapContextAction's case-2..8 call site
+// (ecx = mapUberPictureF0 immediately before the call); actionType is the map-context
+// action code minus 2 (range 0..6), cachedContext is the caller's cached map-action-
+// context pointer (g_pCachedMapActionContext) forwarded for dialog continuity.
+// FUNCTION: IMPERIALISM 0x00599090
+void TMapUberPicture::OpenMapContextActionDialogByType(TZone* zone, int actionType,
+                                                       TTaskForce* cachedContext) {
+  // BLOCKED (still a stub): the body builds a dialog by loading localized "titl"/"lab1".."lab4"
+  // strings via g_pSimMgr's UI-string virtual (slot 0x10) and driving a dialog-builder object
+  // through a large vtable (slots 0x6d, 0x72, 0x1ac, 0x1b4, 0x1b8, 0x1c8 => a 100+-slot class).
+  // That builder class is not recovered; porting faithfully without it would require banned
+  // fake-callconv casts, so this is deferred pending recovery of the dialog-builder class.
+  (void)zone;
+  (void)actionType;
+  (void)cachedContext;
 }
 
 // FUNCTION: IMPERIALISM 0x00599a50

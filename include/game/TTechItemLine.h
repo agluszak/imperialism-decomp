@@ -3,7 +3,6 @@
 #include "game/TLineData.h"
 #include "game/mfc.h"
 
-// TODO(manifest): describe TTechItemLine and its role. Base edge (TLineData) recovered from RTTI CRuntimeClass chain: TTechItemLine -> TLineData -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x0066aec8
 class TTechItemLine : public TLineData {
 public:
@@ -21,7 +20,6 @@ public:
   virtual undefined OrphanRetStub_0056f460() override; // slot 0x0a 0x5b1160
   // slot 0x0b OrphanRetStub_0056f480 inherited unchanged (0x56f480)
 // === END GENERATED DECLS (TTechItemLine) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TTechItemLine 0xCTOR`).
 
   TTechItemLine();
 };

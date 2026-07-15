@@ -5,6 +5,8 @@
 #include "game/TView.h"
 #include "game/mfc.h"
 
+class TCivUnit;
+
 // VTABLE: IMPERIALISM 0x668cb0
 class TWorldView : public TView {
 public:
@@ -29,15 +31,15 @@ public:
 
   virtual void HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) override;
   virtual void ForwardParam(int param) override;
-  virtual void HandleCursorHoverFallback(CPoint* point, int hitArg) override;
+  virtual void HandleCursorHoverFallback(CPoint* point, RgnHandle hitArg) override;
   virtual void HandleCursorHoverSelectionByChildHitTestAndFallback(CPoint* point,
-                                                                   int hitArg) override;
+                                                                   RgnHandle hitArg) override;
   virtual void NoOpUiLifecycleHook(int arg) override;
   virtual char DispatchUiMouseMoveToChildren(CPoint* point, int arg2, int arg3, int arg4) override;
 
   virtual void SetFlagByteAndInvokeVslot1A4(unsigned char flagByte);
   virtual void RenderMapContextOverlayWithScopedClipAndSurface();
-  virtual void RenderMapOrderEntryTilePreview(int arg1, int arg2, int arg3);
+  virtual void RenderMapOrderEntryTilePreview(TCivUnit* orderEntry, int arg2, int arg3);
   virtual void RenderTacticalStackCountIndicatorAndUnitBadge(short tileIndex, int arg2, int arg3);
   virtual void RenderMapDialogTerrainOverlayFrameByTileOwner(short tileIndex, void* dstRect,
                                                              unsigned char altOverlay);

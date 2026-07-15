@@ -3,6 +3,7 @@
 
 #include "game/TControl.h"
 #include "game/TMapKey.h"
+#include "game/mfc.h"
 #include "game/quickdraw_regions.h"
 #include "game/TMouseCaptureState.h"
 #include "game/TTEView.h"
@@ -23,13 +24,13 @@ void TControl::AssertCityProductionGlobalStateInitialized(int arg1, int arg2) {
   (void)arg1;
   (void)arg2;
   if (g_McAppUiFlag_006A143C == 0) {
-    TemporarilyClearAndRestoreUiInvalidationFlag();
+    TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiHeaderPath_006943CC, 0x56f);
   }
 }
 
 // FUNCTION: IMPERIALISM 0x004294a0
 char TControl::LogUnhandledDialogMethodAndReturnFalse() {
-  TemporarilyClearAndRestoreUiInvalidationFlag();
+  TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiHeaderPath_006943CC, 0x58f);
   return 0;
 }
 
@@ -38,7 +39,7 @@ char TControl::LogUnhandledDialogMethodAndReturnFalse() {
 
 // FUNCTION: IMPERIALISM 0x00435760
 TObject* TControl::ShallowClone() {
-  TemporarilyClearAndRestoreUiInvalidationFlag();
+  TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiHeaderPath_006943CC, 0x594);
   return 0;
 }
 // IMPLEMENT_DYNCREATE also emits `TControl::CreateObject`; the original copy at
@@ -110,7 +111,7 @@ void TControl::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* 
 
 // FUNCTION: IMPERIALISM 0x0048e7a0
 void TControl::SetControlPictureEntryAndMaybeRefresh(int* pictureEntryRef, bool refreshNow) {
-  commandTagDefaultParam1 = *pictureEntryRef;
+  textStyle78.styleRef6 = *pictureEntryRef;
   if (refreshNow) {
     PaintOrInvalidateControl(0);
   }
@@ -179,7 +180,7 @@ char TControl::PointInBoundsAndActionable(CPoint* point) {
 // FUNCTION: IMPERIALISM 0x0048e980
 void TControl::BuildInsetContentRect(RECT* boundsBuffer) {
   QueryContentBounds(boundsBuffer);
-  reinterpret_cast<TTEView*>(boundsBuffer)->DeflateRect(reinterpret_cast<RECT*>(&field68));
+  reinterpret_cast<CRect*>(boundsBuffer)->DeflateRect(reinterpret_cast<RECT*>(&field68));
 }
 
 // FUNCTION: IMPERIALISM 0x0048e9c0
@@ -193,69 +194,12 @@ undefined TControl::ReturnZeroFromUiSlot6C() {
   return 0;
 }
 
-namespace {
-
-HWND ResolvePreModalOwner() {
-  if (AfxGetApp() == nullptr || AfxGetApp()->m_pMainWnd == nullptr) {
-    return nullptr;
-  }
-  return AfxGetApp()->m_pMainWnd->GetSafeHwnd();
-}
-
-} // namespace
-
-// FUNCTION: IMPERIALISM 0x0049d360
-int TModalTemplateDialogBase::PrepareAndCreateModalFromTemplate() {
-  void* lockedTemplateBytes = stylePayload48;
-  field70 = reinterpret_cast<int>(childList44);
-  const UINT resourceTemplateId = static_cast<UINT>(resourceTemplateId40);
-  if (resourceTemplateId != 0) {
-    AFX_MODULE_STATE* moduleState = AfxGetModuleState();
-    HMODULE module = moduleState->m_hCurrentInstanceHandle;
-    HRSRC resourceInfo = FindResourceA(module, MAKEINTRESOURCEA(resourceTemplateId), RT_DIALOG);
-    if (resourceInfo == nullptr) {
-      return 0;
-    }
-    field70 = reinterpret_cast<int>(LoadResource(module, resourceInfo));
-  }
-  if (reinterpret_cast<HGLOBAL>(field70) != nullptr) {
-    lockedTemplateBytes = LockResource(reinterpret_cast<HGLOBAL>(field70));
-  }
-  if (lockedTemplateBytes == nullptr) {
-    return 0;
-  }
-
-  field6C = reinterpret_cast<int>(ResolvePreModalOwner());
-  field68 = 0;
-  if (field6C != 0 && IsWindowEnabled(reinterpret_cast<HWND>(field6C))) {
-    EnableWindow(reinterpret_cast<HWND>(field6C), FALSE);
-    field68 = 1;
-  }
-  hasCommandTagResource = reinterpret_cast<int>(::CreateDialogIndirectA(
-      AfxGetInstanceHandle(), static_cast<LPCDLGTEMPLATE>(lockedTemplateBytes),
-      reinterpret_cast<HWND>(field6C), nullptr));
-  field5c = 1;
-  return reinterpret_cast<HWND>(hasCommandTagResource) != nullptr ? 1 : 0;
-}
-
-// FUNCTION: IMPERIALISM 0x0049d450
-int TModalTemplateDialogBase::FinalizeModalDialogAndRestoreOwnerFocus() {
-  if (field68 != 0) {
-    EnableWindow(reinterpret_cast<HWND>(field6C), TRUE);
-  }
-  if (field6C != 0) {
-    HWND activeWindow = GetActiveWindow();
-    if (activeWindow == reinterpret_cast<HWND>(hasCommandTagResource)) {
-      SetActiveWindow(reinterpret_cast<HWND>(field6C));
-    }
-  }
-  const int result = absoluteX;
-  commandTagResourceByte = 1;
-  padding_65_to_67[0] = 0;
-  padding_65_to_67[1] = 0;
-  padding_65_to_67[2] = 0;
-  return result;
-}
+// The template-dialog modal helpers (PrepareAndCreateModalFromTemplate 0x0049d360 and
+// FinalizeModalDialogAndRestoreOwnerFocus 0x0049d450) and the CDialog constructor
+// (0x006050d0) that used to be modelled here as TModalTemplateDialogBase methods were
+// really MFC-dialog machinery on the CDialog-derived dialog classes, not on the TControl
+// widget hierarchy. They now live on TModalDialogBase (src/game/TModalDialogBase.cpp);
+// 0x006050d0 is the LIBRARY CDialog::CDialog constructor.
 
 // KNOWN ILT (retired): 0x004087fb is a 5-byte `jmp TControl::TControl` linker stub — not ported.
 
@@ -279,13 +223,6 @@ void TControl::SetDiplomacyNationSelectionFilterAndRefreshRows(short selectedNat
     child->SetEnabled(selectedNation == i, 0);
   }
 }
-
-// FUNCTION: IMPERIALISM 0x00579270
-void TControl::ApplyPaletteMaskToTileBufferByEventCode() {
-  // TODO: port body @ 0x579270 (not yet ported). Real __thiscall on the control (reads
-  // this->field68); declared so the turn-event-9 lounge map refresh gets a
-  // correctly-typed call site.
-}
 // Real ctor: TControl::TControl @ 0x0048e520 (base via : TView()).
 
 // FUNCTION: IMPERIALISM 0x0058e440
@@ -299,20 +236,3 @@ void TControl::RefreshHudNationTitleControlsAndTheme(int themeCode) {
 }
 
 TControl::~TControl() {}
-
-// FUNCTION: IMPERIALISM 0x006050d0
-TModalTemplateDialogBase*
-TModalTemplateDialogBase::InitializeDialogTemplateFromId(UINT templateId, void* initParam) {
-  sharedStringRef.~CString();
-  memset(&controlValue3c, 0, 0x20);
-  new (&sharedStringRef) CString();
-  nativeWindow50 = reinterpret_cast<CWnd*>(initParam);
-  controlValue3c = static_cast<int>(templateId);
-  resourceTemplateId40 = static_cast<int>(templateId & 0xffff);
-  field5c = 0;
-  hasCommandTagResource = 0;
-  field68 = 0;
-  field6C = 0;
-  field70 = 0;
-  return this;
-}

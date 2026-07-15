@@ -1,7 +1,7 @@
 #include "game/TCancelGameOptionsCommand.h"
 
 // FUNCTION: IMPERIALISM 0x00542520
-void TCancelGameOptionsCommand::OrphanRetStub_00487a00() {}
+void TCancelGameOptionsCommand::DoIt() {}
 
 // SYNTHETIC: IMPERIALISM 0x00542560
 // TCancelGameOptionsCommand::`scalar deleting destructor'
@@ -13,4 +13,3 @@ TCancelGameOptionsCommand::~TCancelGameOptionsCommand() {}
 // TCancelGameOptionsCommand::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TCancelGameOptionsCommand, TCommand)
-

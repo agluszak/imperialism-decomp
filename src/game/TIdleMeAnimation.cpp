@@ -1,5 +1,8 @@
 #include "game/TIdleMeAnimation.h"
 
+#include "game/TAnimator.h"
+#include "game/global_data_tables.h"
+
 // SYNTHETIC: IMPERIALISM 0x004ac950
 // TIdleMeAnimation::`scalar deleting destructor'
 TIdleMeAnimation::~TIdleMeAnimation() {}
@@ -11,7 +14,18 @@ TIdleMeAnimation::~TIdleMeAnimation() {}
 
 IMPLEMENT_DYNCREATE(TIdleMeAnimation, TAnimation)
 
-TIdleMeAnimation::TIdleMeAnimation() {}
+// FUNCTION: IMPERIALISM 0x004ac9c0
+void TIdleMeAnimation::ConstructTIdleMeAnimationBaseState(TView* ownerView) {
+  int tag = g_nIdleMeAnimationNextRegistryTag;
+  g_nIdleMeAnimationNextRegistryTag = tag + 1;
+  RECT rect;
+  rect.left = 0;
+  rect.top = 0;
+  rect.right = 0;
+  rect.bottom = 0;
+  ConstructTAnimationBaseState(ownerView, &rect, 0, 0, 0, tag);
+  g_pUiAnimator->AddObjectToUiTransientRegistry(this);
+}
 
 // FUNCTION: IMPERIALISM 0x004aca60
 undefined TIdleMeAnimation::AdvanceAnimationTickAndInvalidateOnFrameFlip() {

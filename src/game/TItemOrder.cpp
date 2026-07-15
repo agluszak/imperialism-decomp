@@ -1,9 +1,5 @@
 #include "game/TItemOrder.h"
 
-static __inline void WriteShort(void* base, int offset, short value) {
-  *reinterpret_cast<short*>(reinterpret_cast<unsigned char*>(base) + offset) = value;
-}
-
 TItemOrder::TItemOrder() {}
 // SYNTHETIC: IMPERIALISM 0x004b51d0
 // TItemOrder::CreateObject
@@ -18,7 +14,10 @@ IMPLEMENT_DYNCREATE(TItemOrder, TProductionOrder)
 TItemOrder::~TItemOrder() {}
 
 // FUNCTION: IMPERIALISM 0x004b5290
-undefined TItemOrder::InitializeCityProductionState_Impl_At004b5290(int param_1, undefined2 param_2, undefined2 param_3, undefined2 param_4, undefined2 param_5) {
+undefined TItemOrder::InitializeCityProductionState_Impl_At004b5290(int param_1, undefined2 param_2,
+                                                                    undefined2 param_3,
+                                                                    undefined2 param_4,
+                                                                    undefined2 param_5) {
   return 0;
 }
 
@@ -33,15 +32,15 @@ bool TItemOrder::SetQuantity(short param_1) {
 }
 
 // FUNCTION: IMPERIALISM 0x004b5510
-void TItemOrder::FillOrderSheet(void* orderSheet, short quantity) {
-  this->InitializeCityOrderItemWorkingBuffers(reinterpret_cast<undefined4*>(orderSheet));
+void TItemOrder::FillOrderSheet(OrderSheet* orderSheet, short quantity) {
+  this->InitializeCityOrderItemWorkingBuffers(orderSheet);
   if (this->field50 >= 0) {
-    WriteShort(orderSheet, this->field4e * 2, quantity);
-    WriteShort(orderSheet, this->field50 * 2, quantity);
-    WriteShort(orderSheet, 0x7a, static_cast<short>(quantity * 2));
+    orderSheet->ForResourceCode(this->field4e) = quantity;
+    orderSheet->ForResourceCode(this->field50) = quantity;
+    orderSheet->slotByResourceCode[0x3d] = static_cast<short>(quantity * 2);
   } else {
-    WriteShort(orderSheet, this->field4e * 2, static_cast<short>(quantity * 2));
-    WriteShort(orderSheet, 0x7a, static_cast<short>(quantity * 2));
+    orderSheet->ForResourceCode(this->field4e) = static_cast<short>(quantity * 2);
+    orderSheet->slotByResourceCode[0x3d] = static_cast<short>(quantity * 2);
   }
 }
 
@@ -51,14 +50,13 @@ undefined TItemOrder::CommitIfPending() {
 }
 
 // FUNCTION: IMPERIALISM 0x004b5620
-undefined TItemOrder::ResetCityOrderItemDerivedStateNoop() {
+undefined TItemOrder::ResetCityOrderItemDerivedStateNoop(const char* name) {
+  (void)name;
   return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004b5670
-void TItemOrder::WriteTo(TStream* stream) {
-}
+void TItemOrder::WriteTo(TStream* stream) {}
 
 // FUNCTION: IMPERIALISM 0x004b5710
-void TItemOrder::ReadFrom(TStream* stream) {
-}
+void TItemOrder::ReadFrom(TStream* stream) {}

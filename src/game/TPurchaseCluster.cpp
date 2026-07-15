@@ -7,7 +7,8 @@
 
 IMPLEMENT_DYNCREATE(TPurchaseCluster, TCluster)
 
-TPurchaseCluster::TPurchaseCluster() {}
+// FUNCTION: IMPERIALISM 0x004cc3c0
+TPurchaseCluster::TPurchaseCluster() : TCluster(), field88(0) {}
 
 // SYNTHETIC: IMPERIALISM 0x004cc3f0
 // TPurchaseCluster::`scalar deleting destructor'
@@ -20,15 +21,14 @@ undefined TPurchaseCluster::OrphanCallChain_C1_I08_004cc440(int param_1) {
 
 // FUNCTION: IMPERIALISM 0x004cc470
 void TPurchaseCluster::BeginMouseCaptureAndStartRepeatTimer(CPoint* point, int arg2, int arg3,
-                                                            int arg4) {
-}
+                                                            int arg4) {}
 
 // FUNCTION: IMPERIALISM 0x004cc490
-void TPurchaseCluster::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) { }
+void TPurchaseCluster::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {}
 
 // FUNCTION: IMPERIALISM 0x004cc550
-void __fastcall TPurchaseCluster::SetCityViewValueControlAmount(int * pCityViewDialog, short nValue) {
-}
+void __fastcall TPurchaseCluster::SetCityViewValueControlAmount(int* pCityViewDialog,
+                                                                short nValue) {}
 
 // FUNCTION: IMPERIALISM 0x004cc640
 undefined TPurchaseCluster::UpdateCityViewValueControl() {

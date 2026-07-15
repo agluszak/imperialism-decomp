@@ -9,7 +9,9 @@
 class TList : public TSortedList {
 public:
   DECLARE_DYNCREATE(TList)
-  TList();
+  // NOOP: verified empty in original (the ctor chain is just TSortedList's; inline so
+  // construction sites match the original's fully inlined new-expressions).
+  TList() {}
 };
 
 ASSERT_SIZE(TList, 0x20);

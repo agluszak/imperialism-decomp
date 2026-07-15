@@ -31,6 +31,12 @@ bool TPortZone::QueryZoneCapabilityFlagC() {
 
 // SYNTHETIC: IMPERIALISM 0x005616c0
 // TPortZone::`scalar deleting destructor'
+//
+// TPortZone has no members of its own to destruct, so this body is empty; the original
+// inlined TZone::~TZone's real cleanup body (0x5627a0) directly here instead of calling
+// it out-of-line, the same compiler-inlining divergence documented elsewhere this
+// session (e.g. TEscortMission::CreateObject).
+// FUNCTION: IMPERIALISM 0x005616f0
 TPortZone::~TPortZone() {}
 
 // slot 0x00 — GetRuntimeClass override.

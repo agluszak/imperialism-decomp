@@ -3,8 +3,6 @@
 #include "game/TGreatPower.h"
 #include "game/mfc.h"
 
-// TODO(manifest): describe TProxyGreatPower and its role. Base edge (TGreatPower) recovered from
-// RTTI CRuntimeClass chain: TProxyGreatPower -> TGreatPower -> TCountry -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x0065b078
 class TProxyGreatPower : public TGreatPower {
 public:
@@ -195,9 +193,6 @@ public:
   // slot 0xb0 SetNationTransferTargetCodeAndNotifyEligiblePeers_b0 inherited unchanged (0x4e2b00)
   // slot 0xb1 BuildGreatPowerTurnMessageSummaryAndDispatch inherited unchanged (0x4e2b70)
   // === END GENERATED DECLS (TProxyGreatPower) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TProxyGreatPower
-  // 0xCTOR`).
 
   TProxyGreatPower();
 };
-

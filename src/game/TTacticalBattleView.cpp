@@ -6,7 +6,6 @@
 
 #include "game/TAnimation.h"
 #include "game/TAnimator.h"
-#include "game/TCivAnimation2.h"
 #include "game/TPicture.h"
 #include "game/TSimMgr.h"
 #include "game/TTacticalBattle.h"
@@ -17,6 +16,13 @@
 #include "game/quickdraw_rendering.h"
 #include "game/startup_helpers.h"
 #include "game/ui_control_tags.h"
+
+// No-op bracket hooks around the modal one-time-animation wait (retail build leaves these empty).
+// FUNCTION: IMPERIALISM 0x00498c60
+void NoOpModalAnimWaitBracketHookA_00498c60(void) {}
+
+// FUNCTION: IMPERIALISM 0x00498c80
+void NoOpModalAnimWaitBracketHookB_00498c80(void) {}
 // SYNTHETIC: IMPERIALISM 0x005a82b0
 // TTacticalBattleView::CreateObject
 
@@ -25,7 +31,22 @@
 
 IMPLEMENT_DYNCREATE(TTacticalBattleView, TView)
 
-TTacticalBattleView::TTacticalBattleView() {}
+// The original zeroes the offscreen-surface slots and anim state with body assignments in
+// this exact order (all POD), so mirror that rather than a member-init list.
+// FUNCTION: IMPERIALISM 0x005a8350
+TTacticalBattleView::TTacticalBattleView() : TView() {
+  tacticalBattle60 = 0;
+  battlefieldSurface64 = 0;
+  viewOriginX78 = 0;
+  fieldD0 = 0;
+  unitSpriteAtlasSurface68 = 0;
+  fortLevelAtlasSurface6C = 0;
+  tileScratchSurface70 = 0;
+  effectAtlasSurface74 = 0;
+  unitSpriteScratchSurfaceBC = 0;
+  modalAnimWaitDoneFlag98 = 1;
+  moveAnimUnitOffsetXA4 = -1;
+}
 
 // FUNCTION: IMPERIALISM 0x005a83c0
 undefined TTacticalBattleView::DrawTacticalTileInClipRect(int tileIndex, RECT* clipRect) {
@@ -54,6 +75,37 @@ void TTacticalBattleView::BeginMouseCaptureAndStartRepeatTimer(CPoint* point, in
   (void)arg2;
   (void)arg3;
   (void)arg4;
+}
+
+// Converts a screen point to a clamped hex grid (row, col) for this battle: row from the
+// point's Y over the tile row height, column from viewOriginX + point X (shifted half a
+// tile on odd rows) over the tile width, each clamped into the battle's playable range.
+// FUNCTION: IMPERIALISM 0x005A86D0
+void TTacticalBattleView::ConvertScreenPointToHexGridCoordClamped(POINT* screenPoint, int* outRow,
+                                                                  int* outCol) {
+  int row = screenPoint->y / tileRowHeightPx8C;
+  *outRow = row;
+  if (row < 0) {
+    *outRow = 0;
+  }
+  int maxRow = frameHeight38 / tileRowHeightPx8C + -1;
+  if (*outRow >= maxRow) {
+    *outRow = maxRow;
+  }
+  int col = viewOriginX78 + screenPoint->x;
+  *outCol = col;
+  if ((*outRow & 1) != 0) {
+    *outCol = col - tileWidthPx88 / 2;
+  }
+  col = *outCol / tileWidthPx88;
+  *outCol = col;
+  if (col < 0) {
+    *outCol = 0;
+  }
+  int maxCol = tacticalBattle60->battlefieldColumnCount34;
+  if (*outCol >= maxCol) {
+    *outCol = maxCol + -1;
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x005a87d0
@@ -160,17 +212,35 @@ void TTacticalBattleView::CenterViewportAroundGridIndexAndSnap(int tileIndex) {
   RefreshControl();
 }
 
+// Horizontal battlefield scroll: on direction 8 pans left by one tile while origin > 0,
+// on direction 4 pans right by one tile while within the scrollable content width, then
+// repaints and refreshes the unit marker. Gated on the modal-wait-done flag.
 // FUNCTION: IMPERIALISM 0x005a8be0
-undefined TTacticalBattleView::AdjustTacticalUnitVerticalOffsetAndRefreshMarker() {
-  return 0;
+void TTacticalBattleView::AdjustTacticalUnitVerticalOffsetAndRefreshMarker(short scrollDirection) {
+  if (modalAnimWaitDoneFlag98 != 0) {
+    if (scrollDirection == 8) {
+      if (viewOriginX78 > 0) {
+        viewOriginX78 = viewOriginX78 - static_cast<short>(tileWidthPx88);
+        RefreshControl();
+        SpawnTacticalUiMarkerAtUnitTile();
+        return;
+      }
+    } else if (scrollDirection == 4 &&
+               static_cast<int>(viewOriginX78) <
+                   (static_cast<int>(scrollableContentWidth7A) - frameWidth34) - tileWidthPx88) {
+      viewOriginX78 = static_cast<short>(tileWidthPx88) + viewOriginX78;
+      RefreshControl();
+    }
+    SpawnTacticalUiMarkerAtUnitTile();
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x005a8ca0
-void TTacticalBattleView::HandleCursorHoverFallback(CPoint* point, int hitArg) {}
+void TTacticalBattleView::HandleCursorHoverFallback(CPoint* point, RgnHandle hitArg) {}
 
 // FUNCTION: IMPERIALISM 0x005a8d40
 void TTacticalBattleView::HandleCursorHoverSelectionByChildHitTestAndFallback(CPoint* point,
-                                                                              int hitArg) {
+                                                                              RgnHandle hitArg) {
   (void)point;
   (void)hitArg;
 }
@@ -201,8 +271,6 @@ undefined TTacticalBattleView::PlayTacticalTileEffect(int tileIndex, int effectI
 
 // 1-byte no-op pair bracketing the modal animation wait (possible Mac
 // HideCursor/ShowCursor shims, like QDLoadResource); autogen-stub-owned.
-extern undefined4 NoOpModalAnimWaitBracketHookA_00498c60(void);
-extern undefined4 NoOpModalAnimWaitBracketHookB_00498c80(void);
 
 // Spawns a TOneTimeAnimation over `rect` (effect sprite `effectId`, `frameCount`
 // frames, `mode` ticks per frame, registry tag = tileIndex), registers it with the
@@ -218,8 +286,8 @@ undefined TTacticalBattleView::RunOneTimeAnimationModalWaitAndInvalidateCityDial
                                                  static_cast<short>(effectId), mode, tileIndex);
   // The registry stores heterogeneous animation objects; TOneTimeAnimation is
   // CObject-rooted, not TAnimation-derived, so this is a genuine pun confined here.
-  static_cast<TCivAnimation2*>(static_cast<void*>(g_pUiAnimator))
-      ->AddObjectToUiTransientRegistry(static_cast<TAnimation*>(static_cast<void*>(animation)));
+  g_pUiAnimator->AddObjectToUiTransientRegistry(
+      static_cast<TAnimation*>(static_cast<void*>(animation)));
   NoOpModalAnimWaitBracketHookA_00498c60();
   modalAnimWaitDoneFlag98 = 0;
   while (animation->completeFlag == 0) {
@@ -236,7 +304,8 @@ undefined TTacticalBattleView::RunOneTimeAnimationModalWaitAndInvalidateCityDial
 undefined TTacticalBattleView::AnimateTacticalUnitMoveBetweenTiles(TTacticalUnit* unit,
                                                                    int fromTileIndex,
                                                                    int toTileIndex) {
-  // TODO(verify): +0x52 = preferenceValues[5] -- animation-enable preference gate.
+  // VERIFIED: 0x5a9248 reads word [g_pSimMgr + 0x52] = preferenceValues[5]
+  // (preferenceValues[0] is at +0x48), the animation-enable preference gate.
   if (g_pSimMgr->preferenceValues[5] == 0) {
     return 0;
   }
@@ -465,8 +534,7 @@ void TTacticalBattleView::SpawnTacticalUiMarkerAtUnitTile() {
   TAnimation* marker = new TAnimation;
   // Original calls the init body unconditionally on the new-result (no null guard).
   marker->ConstructTAnimationBaseState(this, &tileRect, 2, 0, 0xa, 0x2711);
-  TCivAnimation2* animator = static_cast<TCivAnimation2*>(static_cast<void*>(g_pUiAnimator));
-  animator->AddObjectToUiTransientRegistry(marker);
+  g_pUiAnimator->AddObjectToUiTransientRegistry(marker);
 }
 
 // FUNCTION: IMPERIALISM 0x005a9cc0
@@ -477,15 +545,32 @@ void TTacticalBattleView::TriggerTacticalUiUpdate2711() {
 // FUNCTION: IMPERIALISM 0x005aa670
 short TTacticalBattleView::ComputeTacticalUnitSpriteOrientationIndexByAdjacentType1Occupancy(
     int tileIndex) {
-  // TODO(class-recovery): the real body indexes an unrecovered 20-short lookup table
-  // by an orientation code (0-6) derived from which of two "opposite" hex neighbors
-  // (selected by tileIndex's row/column parity) are trench-deploy tiles
-  // (TacticalTileRecord::deployMark8 == 1); the exact neighbor-slot-to-table mapping
-  // isn't verified. Structurally: compute the 6 neighbors, then look up.
+  // Orientation-code -> sprite-facing lookup (built on the stack as 8 dwords, returned
+  // as a short). The code is derived from which of two parity-selected opposite hex
+  // neighbors are trench-deploy tiles (TacticalTileRecord::deployMark8 == 1): even rows
+  // consult neighbors[0]/[2], odd rows consult neighbors[5]/[3].
+  int orientationTable[8] = {6, 3, 5, 1, 6, 0, 2, 4};
   int neighbors[6];
   tacticalBattle60->ComputeHexNeighborTileIndices_005A0420(tileIndex, neighbors);
-  (void)neighbors;
-  return 0;
+  int code;
+  if ((tileIndex / 29 & 1) != 0) {
+    code = 0;
+    if (neighbors[5] != -1 && tacticalBattle60->tileGrid4[neighbors[5]].deployMark8 == 1) {
+      code = 2;
+    }
+    if (neighbors[3] != -1 && tacticalBattle60->tileGrid4[neighbors[3]].deployMark8 == 1) {
+      code++;
+    }
+  } else {
+    code = 4;
+    if (neighbors[0] != -1 && tacticalBattle60->tileGrid4[neighbors[0]].deployMark8 == 1) {
+      code = 6;
+    }
+    if (neighbors[2] != -1 && tacticalBattle60->tileGrid4[neighbors[2]].deployMark8 == 1) {
+      code++;
+    }
+  }
+  return static_cast<short>(orientationTable[code]);
 }
 
 // FUNCTION: IMPERIALISM 0x005aa7d0
@@ -506,16 +591,31 @@ void TTacticalBattleView::ComputeTacticalUnitSpriteDrawRectAndApplyFacingOffset(
 
   TacticalTileRecord* tile = &tacticalBattle60->tileGrid4[tileIndex];
   if (tile->deployMark8 == 1) {
-    // TODO(class-recovery): applies a per-(unitType, orientation, side) pixel offset
-    // from an unrecovered facing-offset table (runtime-populated, not a static
-    // const -- every entry reads 0 in the static image). Left as a no-op offset.
+    // Ground truth (0x5aa850): orient = ComputeOrientation(tileIndex); then
+    //   OffsetRect(rectOut, tbl[i].dx, tbl[i].dy) via the OffsetRect import at [0x6ab468]
+    // with i = unit->side20 + (orient + unit->unitTypeC*7)*2 into the facing-offset table
+    // at 0x6a4780 (8-byte {dx,dy} entries). VERIFIED not a no-op: the table is runtime-
+    // populated with real pixel offsets by the global init at 0x6a4780 (e.g. {7,0x12},
+    // {7,0x12},{0,0x10}...), so this branch really does shift the sprite rect. Porting it
+    // faithfully needs the 0x6a4780 offset table modeled as a pinned global plus a resync
+    // to remap the autogen _DAT_006a4780.. initializer -- left for a dedicated global-
+    // modeling pass. TODO: model g_aTacticalUnitFacingOffsetTable[0x6a4780] and emit the
+    // OffsetRect call.
     ComputeTacticalUnitSpriteOrientationIndexByAdjacentType1Occupancy(tileIndex);
     return;
   }
-  // DAT_00695528 is a repeating identity-mod-8 table ({0..7} x N); "== 8" can never
-  // hold against a mod-8 read, so this branch is structurally preserved but dead for
-  // every observed table region.
+  // The else path reads word table 0x695528[unit->unitTypeC] (VERIFIED a repeating
+  // identity-mod-8 table {0..7} x N) and tests "== 8", which can never hold against a
+  // mod-8 read -- the branch is structurally preserved but dead for every table region.
+  // Modeled here as unitTypeC % 8 == 8 (equivalently always-false) pending the same
+  // table-global modeling pass noted above.
   if (tile->trenchMask10 != 0 && unit->unitTypeC % 8 == 8) {
     rectOut->right = -200;
   }
+}
+
+// FUNCTION: IMPERIALISM 0x005ad9e0
+void ResetUiFrameClipOrigin() {
+  g_nUiFrameClipOriginX = 0;
+  g_nUiFrameClipOriginY = 0;
 }

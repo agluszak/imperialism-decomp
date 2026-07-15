@@ -37,7 +37,7 @@ TShip* CreateNavyPrimaryOrderNodeAndAssignDisplayName(short resourceType, TZone*
     for (TShip* existing = g_pNavyPrimaryOrderListHead; existing != 0;
          existing = existing->nextOlder24) {
       if (existing != shipNode &&
-          CompareAnsiStringsWithMbcsAwareness(
+          _mbscmp(
               reinterpret_cast<unsigned char*>((char*)static_cast<LPCSTR>(existing->displayName18)),
               reinterpret_cast<unsigned char*>(
                   (char*)static_cast<LPCSTR>(shipNode->displayName18))) == 0) {

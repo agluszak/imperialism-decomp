@@ -94,7 +94,9 @@ void TApplication::Idle(int idlePhase) {
 // nothing from `this`; the original dereferences the view host unguarded.
 
 // FUNCTION: IMPERIALISM 0x00486b50
-void TApplication::DispatchQueuedUiCommandAndRelease(void* payload) {}
+void TApplication::DispatchQueuedUiCommandAndRelease(void* payload) {
+  AfxGetMainWnd()->PostMessage(0xbc0, 0, reinterpret_cast<LPARAM>(payload));
+}
 
 // FUNCTION: IMPERIALISM 0x00486ba0
 void TApplication::vmethod_0017(int param) {}

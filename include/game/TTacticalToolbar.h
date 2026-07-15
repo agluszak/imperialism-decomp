@@ -3,9 +3,9 @@
 #include "game/TCluster.h"
 
 class TTacticalUnit;
+class TArmyTacUnit;
 #include "game/mfc.h"
 
-// TODO(manifest): describe TTacticalToolbar and its role. Base edge (TCluster) recovered from RTTI CRuntimeClass chain: TTacticalToolbar -> TCluster -> TControl -> TView -> TEventHandler -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x00644d98
 class TTacticalToolbar : public TCluster {
 public:
@@ -30,23 +30,23 @@ public:
   // slot 0x10 DispatchUiCommandToHandler inherited unchanged (0x48a2e0)
   // slot 0x11 vmethod_0017 inherited unchanged (0x48a310)
   // slot 0x12 ForwardParam inherited unchanged (0x48a380)
-  // slot 0x13 CanHandleCityDialogActionFalse inherited unchanged (0x48a480)
+  // slot 0x13 DoIdle inherited unchanged (0x48a480)
   // slot 0x14 GetCityDialogValueDword10 inherited unchanged (0x415d50)
   // slot 0x15 SetCityDialogValueDword10 inherited unchanged (0x415d70)
   // slot 0x16 OwnerPanel inherited unchanged (0x48b180)
   // slot 0x17 vmethod_0023 inherited unchanged (0x48a530)
-  // slot 0x18 vmethod_0024 inherited unchanged (0x48a550)
-  // slot 0x19 vmethod_0025 inherited unchanged (0x48a690)
-  // slot 0x1a vmethod_0026 inherited unchanged (0x48a6b0)
+  // slot 0x18 GetDeactivateVetoCode inherited unchanged (0x48a550)
+  // slot 0x19 OnDeactivated inherited unchanged (0x48a690)
+  // slot 0x1a OnDeactivateVetoed inherited unchanged (0x48a6b0)
   // slot 0x1b HandleCityProductionNoOp inherited unchanged (0x48a650)
   // slot 0x1c DispatchUiCommand19ToParent inherited unchanged (0x48a6d0)
   // slot 0x1d DispatchCityProductionAction1A inherited unchanged (0x48a670)
   // slot 0x1e DispatchCityProductionAction1B inherited unchanged (0x48a6f0)
   // slot 0x1f ActivateCityProductionViewIfAllowed inherited unchanged (0x48a570)
-  // slot 0x20 vmethod_0080 inherited unchanged (0x48a5e0)
+  // slot 0x20 TryDeactivateActiveView inherited unchanged (0x48a5e0)
   // slot 0x21 vmethod_0081 inherited unchanged (0x48a710)
-  // slot 0x22 vmethod_0032 inherited unchanged (0x48a500)
-  // slot 0x23 vmethod_0033 inherited unchanged (0x48a4a0)
+  // slot 0x22 IsActiveView inherited unchanged (0x48a500)
+  // slot 0x23 DetachUiResourceOwnerIfMatches inherited unchanged (0x48a4a0)
   // slot 0x24 SetUiResourceOwner inherited unchanged (0x48a4d0)
   // slot 0x25 ResolveControlByTag inherited unchanged (0x48afd0)
   // slot 0x26 SwitchActiveChildAndNotify inherited unchanged (0x48af80)
@@ -136,14 +136,16 @@ public:
   // === END GENERATED DECLS (TTacticalToolbar) ===
   // Toolbar slice (base TCluster ends at +0x88). battle88/unitSpriteAtlasSurface94 are
   // wired by the live-battle initializer 0x5a9d90; currentUnit8C by slot 0x73.
-  class TTacticalBattle* battle88;                           // +0x88
-  class TTacticalUnit* currentUnit8C;                        // +0x8c current-unit control source
-  unsigned char pad90[4];                                    // +0x90 unobserved
+  class TTacticalBattle* battle88;    // +0x88
+  class TTacticalUnit* currentUnit8C; // +0x8c current-unit control source
+  // ApplyRectSlot110 (0x5ac950) reads a second current-unit pointer here, alongside
+  // currentUnit8C, to draw each side's xp progress bar -- same slot shape, other side.
+  class TArmyTacUnit* otherSideCurrentUnit90;                // +0x90
   struct TQuickDrawSurfaceContext* unitSpriteAtlasSurface94; // +0x94 the 0xee2 atlas
 
   // Arms/disarms the 'targ'/'done'/'retr'/'auto' control cluster for the live-battle
   // vs deployment phase (mode 1 = battle live). Resolves the child controls on
-  // itself via slot 0x25. Body TODO. 0x5acd60, __thiscall, ret 4.
+  // itself via slot 0x25. 0x5acd60, __thiscall, ret 4.
   void ConfigureTacticalTargetDoneRetreatAutoControls(int mode);
 
   TTacticalToolbar();

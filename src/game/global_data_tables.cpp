@@ -11,7 +11,7 @@
 
 class TControl;
 class TView;
-class TCursorControlPanel;
+class TInfoBarText;
 
 #include "game/TArmyPlayer.h"
 #include "game/mfc.h"
@@ -34,17 +34,29 @@ class TCursorControlPanel;
 #include "game/TLanguageMgr.h"
 #include "game/THelpMgr.h"
 #include "game/TControl.h"
-#include "game/TCursorControlPanel.h"
+#include "game/TInfoBarText.h"
 #include "game/TAnimator.h"
 #include "game/TQuickDrawSurfaceContext.h"
 #include "game/TModuleLibraryCacheTableStateB.h"
 #include "game/TBackdropWindow.h"
+#include "game/TSetupRandomMapPicture.h"
 
 // Typed C++ linkage — see typed-recovered-globals.mdc (not inside extern "C").
 // GLOBAL: IMPERIALISM 0x006a4310
 TCountry* g_apTerrainTypeDescriptorTable[kTerrainTypeDescriptorTableCount] = {0};
 // GLOBAL: IMPERIALISM 0x006a2158
 TDisplayMgr* g_pDisplayMgr = 0;
+// Bounds of the TAnimator offscreen surface (only known live reader:
+// TAnimator::InitializeUiTransientObjectRegistry at 0x4a0b20).
+// GLOBAL: IMPERIALISM 0x006a2228
+int g_nUiAnimatorSurfaceBoundsWidth = 0;
+// GLOBAL: IMPERIALISM 0x006a222c
+int g_nUiAnimatorSurfaceBoundsHeight = 0;
+// Monotonic registry-tag counter for TIdleMeAnimation instances, seeded with the
+// byte pattern "0TUA" (multichar 'AUT0'); the class-name string "TIdleMeAnimation"
+// follows at 0x695938, which Ghidra folds into one s_0TUATIdleMeAnimation label.
+// GLOBAL: IMPERIALISM 0x00695934
+int g_nIdleMeAnimationNextRegistryTag = 0x41555430;
 // GLOBAL: IMPERIALISM 0x006a21a8
 TMacViewMgr* g_pStrategicMapViewSystem = 0;
 // GLOBAL: IMPERIALISM 0x006a21bc
@@ -93,6 +105,15 @@ TDiplomacyMgr* g_pDiplomacyTurnStateManager = 0;
 TNavyMgr* g_pNavyOrderManager = 0;
 // GLOBAL: IMPERIALISM 0x006a3338
 TArmyMgr* g_pMapContextActionManager = 0;
+
+// GLOBAL: IMPERIALISM 0x00695428
+extern const unsigned char g_MapContextStaticTable_00695428[0x20] = {
+    0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0};
+// GLOBAL: IMPERIALISM 0x0064dc30
+char* g_pBattleReportSharedText_0064dc30 = g_szEmptyString;
+// GLOBAL: IMPERIALISM 0x00695448
+extern const unsigned char g_MapContextStaticTable_00695448[0x20] = {
+    1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0};
 char g_vtblTSortedByRelationshipList = 0;
 // Last cursor edge-auto-scroll timestamp in GetTickCountDiv16 units
 // (TAmbitApplication::HandleCursor, 0x49e320).
@@ -168,6 +189,12 @@ const char* const g_apszQuickDrawFontFaceNames[5] = {
 char g_szUiPlaceholderSeason_006943BC[] = "Winter, 1888";
 // GLOBAL: IMPERIALISM 0x00694a98
 char g_szUiPlaceholderSampleText_00694A98[] = "Sample Text 1\n2\n3\n4\n5\n6\n7\n8";
+// Provisional: selects the CDib picture-preview blit path in TDDTemplateDialog::OnPaint
+// (0x0047d5f0) — nonzero (1 in the binary) picks the CreateCompatibleDC + BitBlt of a
+// device bitmap; zero picks a plain StretchDIBits from the stored DIB bits. Only observed
+// use so far is that OnPaint; name is a behavioral guess.
+// GLOBAL: IMPERIALISM 0x00694c50
+int g_useCompatibleBitmapBlit = 1;
 // New-game setup screen (turn event 0x5dd) placeholder label strings, bound by the
 // screen builder (group 0x514) until real localized strings replace them.
 // GLOBAL: IMPERIALISM 0x006949e0
@@ -210,6 +237,11 @@ char g_szUiCommodityLabel_00694AEC[] = "Commodity";
 // GLOBAL: IMPERIALISM 0x00694af8
 char g_szUiBoardOfTradeLabel_00694AF8[] = "Board of Trade";
 
+// Default text baked into the event 0x3ba planet-name dialog.
+// GLOBAL: IMPERIALISM 0x00694528
+char g_szUiDefaultPlanetName_00694528[] = "Skyron";
+// GLOBAL: IMPERIALISM 0x00694530
+char g_szUiPickAPlanet_00694530[] = "Pick a planet";
 // Placeholder strings baked into the army/navy report screen builders
 // (InitializeArmyNavyReportViewsAndCommandTags, events 0x546..0x2506).
 // GLOBAL: IMPERIALISM 0x00694540
@@ -460,6 +492,14 @@ short g_industryActionCostWeightResCode03[16] = {0,  0,  0,  0,  0, 10, 0, 10,
 // GLOBAL: IMPERIALISM 0x00695bf0
 short g_industryActionCostWeightResCode0C[16] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 20, 20, 0, 0};
 
+// GLOBAL: IMPERIALISM 0x00696198
+short g_anCityBuildingSlotCoords[36] = {200, 235, 340, 300, 281, 184, 340, 266, 87, 286, 230, 310,
+                                        340, 139, 240, 35,  50,  220, 50,  107, 50, 35,  340, 139,
+                                        82,  35,  300, 35,  340, 44,  150, 95,  1,  0,   1,   0};
+
+// GLOBAL: IMPERIALISM 0x006a2998
+CRect g_aCityBuildingHoverSelectionRects[16];
+
 // GLOBAL: IMPERIALISM 0x006a1da4
 HRGN g_hOpenRgnAccumulator = nullptr;
 
@@ -561,6 +601,21 @@ extern "C" {
 // stubs (read pointer at 0x0065a468, immediately before the TMission vtable).
 // GLOBAL: IMPERIALISM 0x0065a468
 extern const float g_MissionDefaultScore_0065a468 = 0.0f;
+
+// Weighting factor (0.2) applied to each adjacent region's score when diffusing the
+// strategic heatmap (RecomputeTileStrategicScoreHeatmap 0x518130).
+// GLOBAL: IMPERIALISM 0x00658780
+float g_TileHeatmapNeighborDiffusionFactor = 0.2f;
+
+// Order-type index rankings (0..13) sorted by descending descriptor weight, rebuilt by
+// InitializeNavyOrderPriorityTables (0x556610): by resolveWeight, calculateWeight, and
+// navyPriorityWeight respectively. Runtime-filled, so zero in the on-disk image.
+// GLOBAL: IMPERIALISM 0x006a3e28
+short g_NavyResolveOrderRanking[14];
+// GLOBAL: IMPERIALISM 0x006a3e50
+short g_NavyMissionOrderRanking[14];
+// GLOBAL: IMPERIALISM 0x006a3e90
+short g_NavyPriorityOrderRanking[14];
 
 // Minister-skill-indexed float coefficient tables (DAT_0065xxxx), indexed by a
 // minister's skill value at +0x0C. Used by TGreatPower vtable slots 0x88-0x8c.
@@ -738,11 +793,19 @@ float g_fMissionScoreNormalizationDivisor = 5000.0f;
 MappedFlavorTextNationVariantEntry g_MappedFlavorTextNationVariantTable_0066EF30[32] = {0};
 
 // Defend-province / mission priority-vector normalization (0x53e6e0 / 0x53ea70 family).
+// GLOBAL: IMPERIALISM 0x0065a9bc
+extern const float g_Recompute_Nation_Order_LookupTable_0065A9BC = 0.05f;
+// GLOBAL: IMPERIALISM 0x0065a9c4
+extern const float g_Recompute_Nation_Order_LookupTable_0065A9C4 = -1000.0f;
 extern const float g_Recompute_Nation_Order_LookupTable_0065A9E8 = 0.0f;
+// GLOBAL: IMPERIALISM 0x0065a9e0
+extern const double g_Recompute_Nation_Order_LookupTable_0065A9E0 = -1.0;
 extern const double g_Recompute_Nation_Order_LookupTable_0065A9F0 = 0.0;
 double g_Recompute_Nation_Order_LookupTable_0065A9F8 = 0.01;
 double g_Recompute_Nation_Order_LookupTable_0065AA00 = 0.5;
 double g_Recompute_Nation_Order_LookupTable_0065AA08 = 1.0;
+// GLOBAL: IMPERIALISM 0x0065aa20
+extern const float g_Recompute_Nation_Order_LookupTable_0065AA20 = 139069760.0f;
 // GLOBAL: IMPERIALISM 0x00697870
 // Tactical composition reference profiles (4 rows x 5 action classes, shorts at
 // 0x697870): row 0 baseline, row 1 fort-siege, row 2 open-field, row 3 unattributed.
@@ -784,6 +847,7 @@ double DAT_0066fad0 = 0.092;
 
 #include "game/TZone.h"
 #include "game/TOcean.h"
+#include "game/TTaskForce.h"
 #include "game/TMapMgr.h"
 #include "game/TMinor.h"
 #include "game/TCivMgr.h"
@@ -797,11 +861,26 @@ TZone* g_pMapActionContextListHead = 0;
 TOcean* g_pActiveMapOrderContext = 0;
 TMapMgr* g_pGlobalMapState = 0;
 TCivMgr* g_pSelectedCivilianOrderState = 0;
+// Seed viewport offsets copied into TWorldView::viewportOffsetX/Y by the TOceanDialog
+// ctor (0x565e90). Only known writer is the reset helper at 0x56a3b0 (`xor eax,eax;
+// mov [6a3ff0],eax; mov [6a3ff4],eax; ret`), which zeroes both.
+// GLOBAL: IMPERIALISM 0x006a3ff0
+int g_nOceanDialogSeedViewportOffsetX = 0;
+// GLOBAL: IMPERIALISM 0x006a3ff4
+int g_nOceanDialogSeedViewportOffsetY = 0;
+// GLOBAL: IMPERIALISM 0x0065c2f0
+short g_awMapContextActionLabelTokenByCommand[17] = {0,     0x3f0, 0x3f2, 0x3f2, 0x3f2, 0x3f2,
+                                                     0x3f2, 0x3f2, 0x3f2, 0x3f1, 0x3f3, 0x3f3,
+                                                     0x3f6, 0x3f8, 0x3f4, 0x3f5, 0x3f7};
+// GLOBAL: IMPERIALISM 0x006a3ed8
+TTaskForce* g_pCachedMapActionContext = 0;
 TSoundPlayer* g_pSfxPlaybackSystem = 0;
 // GLOBAL: IMPERIALISM 0x006a43cc
 TTradeMgr* g_pNationInteractionStateManager = 0;
 // GLOBAL: IMPERIALISM 0x006a4220
-CString DAT_006a4220;
+CString g_cstrCountryNameSettingValue006A4220;
+// GLOBAL: IMPERIALISM 0x006a4268
+TSetupRandomMapPicture* g_pActiveRandomMapSetupPicture006A4268 = 0;
 
 extern "C" {
 short g_awEngineerFortBuildCostByLevel[8] = {0};
@@ -837,6 +916,17 @@ int g_NetworkDefaultNationId006a5fc0 = 0;
 // GLOBAL: IMPERIALISM 0x006a5fc4
 int g_NetworkBroadcastNationId006a5fc4 = 0;
 undefined4 DAT_0066ac88 = 0;
+undefined4 DAT_0066ac8c = 0;
+undefined4 DAT_0066ac90 = 0;
+
+// 26 (start, end) capability-priority range pairs walked by
+// TTechMgr::GenerateRandomCapabilityPrioritySlots. The reccmp symbol points at pair 0's END
+// value; pair 0's START value (1) lives one short earlier and is read via cursor[-1].
+// GLOBAL: IMPERIALISM 0x0066aba6
+short g_anCapabilityPriorityRangePairs[53] = {
+    5,  6,  10, 6,  10, 6,  10, 6,  10, 11, 15, 11, 15, 16, 20, 21, 25, 21,
+    25, 26, 30, 26, 30, 31, 35, 31, 35, 36, 40, 41, 45, 41, 45, 46, 50, 51,
+    55, 56, 60, 56, 60, 56, 60, 61, 65, 61, 65, 66, 70, 66, 70, 0,  0};
 // GLOBAL: IMPERIALISM 0x006a601c
 int DAT_006a601c = 0;
 
@@ -935,13 +1025,18 @@ extern "C" short g_anTargetTileProfileByCivilianClassAndSlot[45] = {
     8,  9, -1, -1, -1, 8,  9,  10, 11, 12, 6,  5, 2,  -1, -1, 13, -1, -1, -1, -1, -1, -1, -1,
     -1, 0, 3,  7,  -1, -1, -1, -1, -1, -1, -1, 0, -1, -1, -1, -1, 0,  10, 11, 12, -1, -1};
 
+// GLOBAL: IMPERIALISM 0x00698ab0
+int g_nRandomMapSelectedNationSlot00698AB0 = -1;
+// GLOBAL: IMPERIALISM 0x00698ae0
+char g_szCountryNameProfileKey00698AE0[] = "CountryName";
+
 // Turn-flow cooldown defer counter and side flag (IsTurnCooldownCounterActiveOrResetFlag).
 // GLOBAL: IMPERIALISM 0x006a43c4
 short g_nTurnCooldownDeferCounter006A43C4 = 0;
 // GLOBAL: IMPERIALISM 0x006a43c0 — set once scenario/turn-flow bootstrap completes.
-char DAT_006a43c0 = 0;
+char g_bTurnFlowBootstrapComplete = 0;
 // GLOBAL: IMPERIALISM 0x006a43f0 — nonzero during multiplayer scenario setup.
-char DAT_006a43f0 = 0;
+char g_bMultiplayerScenarioSetupActive = 0;
 // GLOBAL: IMPERIALISM 0x00698b10
 short g_nTurnCooldownSideFlag00698B10 = 1;
 
@@ -1021,6 +1116,25 @@ CList<void*, void*> g_WNetPendingPacketList006a5f40(10);
 // GLOBAL: IMPERIALISM 0x006a5f60
 TWNetSessionManager g_NetworkSessionManager006a5f60;
 
+// Heap-owned runtime selection records used by the DirectPlay session chooser.
+// This TU's CArray specialization has vtable 0x00646fb0 and ctor 0x00480b20.
+// GLOBAL: IMPERIALISM 0x006a15e0
+CArray<RuntimeSelectionRecord*, RuntimeSelectionRecord*> g_RuntimeSelectionRecords006a15e0;
+
+// Compiler-emitted methods for this TU's RuntimeSelectionRecord pointer-array
+// specialization. The source implementation is the retail MFC CArray template.
+// TEMPLATE: IMPERIALISM 0x00480b20
+// ??0?$CArray@PAURuntimeSelectionRecord@@PAU1@@@QAE@XZ
+
+// TEMPLATE: IMPERIALISM 0x00480b50
+// ??1?$CArray@PAURuntimeSelectionRecord@@PAU1@@@UAE@XZ
+
+// TEMPLATE: IMPERIALISM 0x00480bd0
+// ?Serialize@?$CArray@PAURuntimeSelectionRecord@@PAU1@@@UAEXAAVCArchive@@@Z
+
+// TEMPLATE: IMPERIALISM 0x00480dd0
+// ??_G?$CArray@PAURuntimeSelectionRecord@@PAU1@@@UAEPAXI@Z
+
 // Global TNetMgr (built by new TNetMgr() during multiplayer init, stored here; every
 // turn-event emitter dispatches TNetMgr::Send through it).
 // GLOBAL: IMPERIALISM 0x006a6014
@@ -1039,7 +1153,7 @@ extern "C" void* g_pActiveCityDialogLegendSelectionOwner = 0;
 int g_bCityDialogLegendSelectionInitialized = 0;
 
 // GLOBAL: IMPERIALISM 0x006a590c
-TCursorControlPanel* g_pCursorControlPanel = nullptr;
+TInfoBarText* g_pCursorControlPanel = nullptr;
 
 // GLOBAL: IMPERIALISM 0x006a1ab0
 int g_turnEventDialogAnchorPoint[2] = {0, 0};

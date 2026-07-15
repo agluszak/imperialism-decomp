@@ -3,7 +3,7 @@
 #include "game/CString.h"
 #include "game/TCountry.h"
 #include "game/TDeluxeText.h"
-#include "game/TLoadSavePicture.h"
+#include "game/TMapPreviewView.h"
 #include "game/TMapMgr.h"
 #include "game/TSimMgr.h"
 #include "game/global_data_tables.h"
@@ -62,13 +62,10 @@ void TTacticalHolaPicture::ConfigureBattleIntroCoatsAndSiteLabels(int nationA, i
   infoControl->BuildAndApplyTextStyleDescriptor(0, 0xc, 0x2b6a);
   infoControl->RecenterTextFromMeasuredWidthAndMaybeInvalidate(1);
 
-  TLoadSavePicture* previewMap =
-      static_cast<TLoadSavePicture*>(ResolveControlByTag(kControlTagPreviewMap));
+  TMapPreviewView* previewMap =
+      static_cast<TMapPreviewView*>(ResolveControlByTag(kControlTagPreviewMap));
   previewMap->AssertValid();
-  previewMap->RasterizeHexNeighborTerrainPaletteMap(0);
-  // The battle-intro preview stores the battle-site record index as a dword in the
-  // +0x64 base slot that button subclasses use as a state byte (dual-purpose slot;
-  // the pun stays confined to this one write).
-  *reinterpret_cast<int*>(&previewMap->commandTagResourceByte) = battleSiteIndex;
+  previewMap->TakeSatellitePhoto(0);
+  previewMap->selectedRegion64 = battleSiteIndex;
   previewMap->RefreshControl();
 }

@@ -1,14 +1,23 @@
 #pragma once
 
+#include "compat.h"
 #include "game/TEventHandler.h"
 #include "game/mfc.h"
 
 // Forward declarations for types referenced by generated signatures.
+class TAnimation;
+class TList;
 class TStream;
 struct TQuickDrawSurfaceContext;
 
-// TODO(manifest): describe TAnimator and its role. Base edge (TEventHandler) recovered from RTTI
-// CRuntimeClass chain: TAnimator -> TEventHandler -> TObject -> CObject.
+// The UI animator: a MacApp-style idle cohandler (g_pUiAnimator, uninstalled from
+// g_pGlobalUiRootController via InstallCohandler(this, 0) in Free) that owns the
+// transient-animation registry -- a TList of TAnimation-shaped objects keyed by
+// their +0x18 registry tag -- plus the shared offscreen surface the animations
+// blit into. field10 (the inherited TEventHandler idle-frequency slot) is set by
+// InitializeUiTransientObjectRegistry and serialized in WriteTo/ReadFrom.
+// Base edge (TEventHandler) recovered from RTTI CRuntimeClass chain:
+// TAnimator -> TEventHandler -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x0064c4e8
 class TAnimator : public TEventHandler {
 public:
@@ -32,36 +41,49 @@ public:
   // slot 0x10 DispatchUiCommandToHandler inherited unchanged (0x48a2e0)
   // slot 0x11 vmethod_0017 inherited unchanged (0x48a310)
   // slot 0x12 ForwardParam inherited unchanged (0x48a380)
-  virtual char CanHandleCityDialogActionFalse(int action) override; // slot 0x13 0x4a0c30
+  virtual char DoIdle(int action) override; // slot 0x13 0x4a0c30
   // slot 0x14 GetCityDialogValueDword10 inherited unchanged (0x415d50)
   // slot 0x15 SetCityDialogValueDword10 inherited unchanged (0x415d70)
   // slot 0x16 OwnerPanel inherited unchanged (0x48a730)
   // slot 0x17 vmethod_0023 inherited unchanged (0x48a530)
-  // slot 0x18 vmethod_0024 inherited unchanged (0x48a550)
-  // slot 0x19 vmethod_0025 inherited unchanged (0x48a690)
-  // slot 0x1a vmethod_0026 inherited unchanged (0x48a6b0)
+  // slot 0x18 GetDeactivateVetoCode inherited unchanged (0x48a550)
+  // slot 0x19 OnDeactivated inherited unchanged (0x48a690)
+  // slot 0x1a OnDeactivateVetoed inherited unchanged (0x48a6b0)
   // slot 0x1b HandleCityProductionNoOp inherited unchanged (0x48a650)
   // slot 0x1c DispatchUiCommand19ToParent inherited unchanged (0x48a6d0)
   // slot 0x1d DispatchCityProductionAction1A inherited unchanged (0x48a670)
   // slot 0x1e DispatchCityProductionAction1B inherited unchanged (0x48a6f0)
   // slot 0x1f ActivateCityProductionViewIfAllowed inherited unchanged (0x48a570)
-  // slot 0x20 vmethod_0080 inherited unchanged (0x48a5e0)
+  // slot 0x20 TryDeactivateActiveView inherited unchanged (0x48a5e0)
   // slot 0x21 vmethod_0081 inherited unchanged (0x48a710)
-  // slot 0x22 vmethod_0032 inherited unchanged (0x48a500)
-  // slot 0x23 vmethod_0033 inherited unchanged (0x48a4a0)
+  // slot 0x22 IsActiveView inherited unchanged (0x48a500)
+  // slot 0x23 DetachUiResourceOwnerIfMatches inherited unchanged (0x48a4a0)
   // slot 0x24 SetUiResourceOwner inherited unchanged (0x48a4d0)
   virtual undefined OrphanCallChain_C2_I13_004a0c00(); // slot 0x25 0x4a0c00
                                                        // === END GENERATED DECLS (TAnimator) ===
   void RemoveUiTransientRegistryObjectByTag(int tag);
-  void InitializeUiTransientObjectRegistry(int maxCount);
+  // Creates the shared offscreen surface (bounds from the global surface dims, bit
+  // depth 8) and the registry TList, and stores the idle frequency into the
+  // inherited field10 slot. 0x4a0b20.
+  void InitializeUiTransientObjectRegistry(int idleFrequency);
+  // Appends an animation object to the registry list. The registry stores
+  // heterogeneous animation-shaped objects (tag at +0x18, Free at vtable slot 7);
+  // TAnimation* keeps the common call sites cast-free. 0x4a0d10.
+  void AddObjectToUiTransientRegistry(TAnimation* animationObject);
+  // Walks the registry for the animation whose registryTag18 matches `tag`;
+  // null if the animator is null, the list is empty, or nothing matches. 0x4a0d30.
+  TAnimation* FindRegisteredAnimationByTag(int tag);
 
   // Object size 0x30 (base TEventHandler ends at 0x20). +0x20 is the offscreen
   // surface the focus animations blit into (read as `*(g_pUiAnimator) + 0x20` at
-  // 0x4a0810 and 0x4a05c0); the remaining three dwords are not yet recovered.
+  // 0x4a0810 and 0x4a05c0). field28 is not touched by the ctor (only zeroed in
+  // InitializeUiTransientObjectRegistry); its reader is not yet identified.
   TQuickDrawSurfaceContext* renderSurfaceContext; // +0x20
-  int field24;                                    // +0x24
+  TList* registryList24;                          // +0x24 transient-animation registry
   int field28;                                    // +0x28
   int field2c;                                    // +0x2c
 
   TAnimator();
 };
+
+ASSERT_SIZE(TAnimator, 0x30);

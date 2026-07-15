@@ -102,6 +102,13 @@ public:
   // 0x55f300 — find-or-append `zone` to primaryNeighbors via the stretch's virtual
   // GetOrAppendUnique (Ghidra: DispatchMapActionContextCallbackViaField24).
   void AppendUniquePrimaryNeighbor(TZone* zone);
+  // Picks the primaryNeighbors entry most at war with nationSlot: a neighbor qualifies
+  // if it isn't a port zone or `nationSlot` doesn't hold flag D there, then scores it by
+  // how many of the (up to 7) g_apTerrainTypeDescriptorTable nations it lists in field10
+  // (its key mask) are currently at war with nationSlot per
+  // TDiplomacyMgr::IsNationPairAtWar. Returns the highest-scoring neighbor, or null if
+  // none qualify. 0x560e70.
+  TZone* SelectBestPrimaryNeighborForNationDiplomacyMask(int nationSlot);
   // BFS relaxation step over primaryNeighbors, writing shortest known distance
   // (in "hops") into field44. level == -1 means "start a fresh search": resets
   // every zone's field44 to the 0x29a sentinel first, then reseeds at level 0.
@@ -116,10 +123,13 @@ public:
   // 0x0055f4d0 — true when any secondaryNeighbors entry (a TGlobalMapCityScoreRecord*
   // under the documented stretch pun) has byte 0 (ownerNationCode00) == nationTag.
   char HasSecondaryNeighborWithNationTag(short nationTag);
+  // 0x0055f540 — true when key's bit is set in field10's low byte, or any
+  // secondaryNeighbors entry (TGlobalMapCityScoreRecord* stretch pun) has byte 0 == key.
+  char IsZoneMaskOrArrayEntryPresentForKey(short key);
   // 0x560b00: whether this map-order context has a displayable primary navy order for
   // `nation` (-1 = active nation): field10 bit set and a g_pNavyPrimaryOrderListHead
   // ship with field08 == this, matching owner, field0c == 0 (and field34 == 0 unless
-  // skipField34Check). Ghidra's TCivToolbar attribution is junk. Body TODO.
+  // skipField34Check). Ghidra's TCivToolbar attribution is junk.
   char CanDisplayMapOrderEntryInCurrentContext(short nation, char skipField34Check);
   void InvokeObjectVtableMethod24();
   void* HandleTurnEventVtableSlot24CopyPayloadBuffer();

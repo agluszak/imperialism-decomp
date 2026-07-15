@@ -84,6 +84,78 @@ int QueryFreeDiskMegabytesOnWindowsVolume(LPCSTR windowsDirectory) {
 
 } // namespace
 
+// FUNCTION: IMPERIALISM 0x00412640
+HKEY OpenOrCreateCompanyProductRegistryKey(LPCSTR company, LPCSTR product) {
+  HKEY hSoftware = nullptr;
+  HKEY hCompany = nullptr;
+  HKEY hProduct = nullptr;
+  DWORD disposition = 0;
+
+  if (RegOpenKeyExA(HKEY_CURRENT_USER, "Software", 0, 0x2001f, &hSoftware) == ERROR_SUCCESS) {
+    if (RegCreateKeyExA(hSoftware, company, 0, nullptr, 0, 0x2001f, nullptr, &hCompany,
+                        &disposition) == ERROR_SUCCESS) {
+      RegCreateKeyExA(hCompany, product, 0, nullptr, 0, 0x2001f, nullptr, &hProduct, &disposition);
+    }
+  }
+  if (hSoftware != nullptr) {
+    RegCloseKey(hSoftware);
+  }
+  if (hCompany != nullptr) {
+    RegCloseKey(hCompany);
+  }
+  return hProduct;
+}
+
+// FUNCTION: IMPERIALISM 0x00412840
+CString ReadOrCreateRegistryStringValueWithFallback(LPCSTR company, LPCSTR product, LPCSTR section,
+                                                    LPCSTR valueName, LPCSTR defaultValue) {
+  HKEY hSoftware = nullptr;
+  HKEY hCompany = nullptr;
+  HKEY hProduct = nullptr;
+  HKEY hSection = nullptr;
+  DWORD disposition = 0;
+
+  if (RegOpenKeyExA(HKEY_CURRENT_USER, "Software", 0, 0x2001f, &hSoftware) == ERROR_SUCCESS &&
+      RegCreateKeyExA(hSoftware, company, 0, nullptr, 0, 0x2001f, nullptr, &hCompany,
+                      &disposition) == ERROR_SUCCESS) {
+    RegCreateKeyExA(hCompany, product, 0, nullptr, 0, 0x2001f, nullptr, &hProduct, &disposition);
+  }
+  if (hSoftware != nullptr) {
+    RegCloseKey(hSoftware);
+  }
+  if (hCompany != nullptr) {
+    RegCloseKey(hCompany);
+  }
+
+  HKEY hFinal = hProduct;
+  if (hProduct == nullptr) {
+    hFinal = nullptr;
+  } else {
+    RegCreateKeyExA(hProduct, section, 0, nullptr, 0, 0x2001f, nullptr, &hSection, &disposition);
+    RegCloseKey(hProduct);
+    hFinal = hSection;
+  }
+
+  if (hFinal == nullptr) {
+    return CString(defaultValue);
+  }
+
+  CString value;
+  DWORD dataType = 0;
+  DWORD dataSize = 0;
+  LONG status = RegQueryValueExA(hFinal, valueName, nullptr, &dataType, nullptr, &dataSize);
+  if (status == ERROR_SUCCESS) {
+    LPBYTE buffer = reinterpret_cast<LPBYTE>(value.GetBuffer(dataSize));
+    status = RegQueryValueExA(hFinal, valueName, nullptr, &dataType, buffer, &dataSize);
+    value.ReleaseBuffer(-1);
+  }
+  RegCloseKey(hFinal);
+  if (status == ERROR_SUCCESS) {
+    return value;
+  }
+  return CString(defaultValue);
+}
+
 // FUNCTION: IMPERIALISM 0x00412a70
 CIncludeView* GetMainViewHostFromActiveThread() {
   CFrameWnd* mainFrame = GetMainFrameFromActiveThread();
@@ -135,7 +207,7 @@ BOOL WarnLowDiskSpaceAndConfirmContinue() {
     return FALSE;
   }
   dialog.UpdateData(FALSE);
-  return dialog.FinalizeModalDialogAndRestoreOwnerFocus() == 1 ? TRUE : FALSE;
+  return dialog.DoModal() == 1 ? TRUE : FALSE;
 }
 
 // FUNCTION: IMPERIALISM 0x00493250

@@ -23,20 +23,20 @@ public:
                              TEvent* event);                              // slot 16 / 0x40
   virtual void vmethod_0017(int param);                                   // slot 17 / 0x44
   virtual void ForwardParam(int param);                                   // slot 18 / 0x48
-  virtual char CanHandleCityDialogActionFalse(int action);                // slot 19 / 0x4c
+  virtual char DoIdle(int action);                                        // slot 19 / 0x4c
   virtual int GetCityDialogValueDword10();                                // slot 20 / 0x50
   virtual void SetCityDialogValueDword10(int value);                      // slot 21 / 0x54
   virtual TView* OwnerPanel();                                            // slot 22 / 0x58
   virtual char vmethod_0023();                                            // slot 23 / 0x5c
-  virtual char vmethod_0024();                                            // slot 24 / 0x60
-  virtual void vmethod_0025();                                            // slot 25 / 0x64
-  virtual void vmethod_0026(int gate);                                    // slot 26 / 0x68
+  virtual char GetDeactivateVetoCode();                                   // slot 24 / 0x60
+  virtual void OnDeactivated();                                           // slot 25 / 0x64
+  virtual void OnDeactivateVetoed(int gate);                              // slot 26 / 0x68
   virtual void HandleCityProductionNoOp();                                // slot 27 / 0x6c
   virtual void DispatchUiCommand19ToParent();                             // slot 28 / 0x70
   virtual void DispatchCityProductionAction1A();                          // slot 29 / 0x74
   virtual void DispatchCityProductionAction1B();                          // slot 30 / 0x78
   virtual char ActivateCityProductionViewIfAllowed();                     // slot 31 / 0x7c
-  virtual char vmethod_0080();                                            // slot 32 / 0x80
+  virtual char TryDeactivateActiveView();                                 // slot 32 / 0x80
   virtual int GetFineGridCellBasePointerFromCoarseIndex(int coarseIndex); // slot 33 / 0x84
 
   // TMapMaker's real vtable (0x006598f8) ends at its last reachable slot (0x21 /
@@ -50,6 +50,10 @@ public:
   // City-region id (tile[4] - 0x17) at a tile index, or -1 if the tile is out of range or
   // not a city-region tile (tile[0] != 5). 0x0052a670.
   int GetCityRegionIdAtTileIndex(int tileIndex);
+
+  // True when some column of regionClassGrid10 is entirely unassigned (all 15 rows == -1).
+  // 0x00526710.
+  char ValidateAllColumnsHaveAssignedRegionClass();
 
   // Scans every tile's hex neighbours and emits a Seapoint into the overlay-quad table for
   // each city-region border edge (single edges + 3-region triple junctions). 0x0052c1a0.
@@ -89,11 +93,13 @@ public:
   void RebuildUMapperRouteRecordsAndActiveMapRects();
 
   // --- data fields (raw pad except the two the region-merge pass reads) ---
-  char pad_04[0x08 - 0x04];  // +0x04
-  char* mapTileGrid08;       // +0x08 base of the 6480-tile (108x60) grid, stride 0x24
-  char pad_0c[0x2a4 - 0x0c]; // +0x0c
-  int cityRegionCount2a4;    // +0x2a4 number of active city regions
+  char pad_04[0x08 - 0x04]; // +0x04
+  char* mapTileGrid08;      // +0x08 base of the 6480-tile (108x60) grid, stride 0x24
+  char pad_0c[0x10 - 0x0c]; // +0x0c
+  // +0x10 region-class grid: 15 rows x 27 columns of region-class bytes (-1 = unassigned).
+  signed char regionClassGrid10[15][27];
+  char pad_1a5[0x2a4 - 0x1a5]; // +0x1a5
+  int cityRegionCount2a4;      // +0x2a4 number of active city regions
 };
 
 ASSERT_SIZE(TMapMaker, 0x2a8);
-

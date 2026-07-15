@@ -5,7 +5,6 @@
 
 class TStream;
 
-// TODO(manifest): describe THostGreatPower and its role. Base edge (TGreatPower) recovered from RTTI CRuntimeClass chain: THostGreatPower -> TGreatPower -> TCountry -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x0065b3d0
 class THostGreatPower : public TGreatPower {
 public:

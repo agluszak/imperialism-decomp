@@ -18,7 +18,7 @@
 #include "game/sea_geometry.h"
 
 // UMapper.cpp assert reporter (see the merge/rotate passes).
-extern void TemporarilyClearAndRestoreUiInvalidationFlag(const char* file, int line);
+undefined4 TemporarilyClearAndRestoreUiInvalidationFlag(...);
 
 namespace {
 const char kUMapperPath[] = "D:\\Ambit\\Cross\\UMapper.cpp";

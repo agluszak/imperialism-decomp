@@ -1,4 +1,7 @@
 #include "game/TMapDialog.h"
+
+#include <stdlib.h>
+#include "game/TMapMgr.h"
 #include "game/CTemporaryRegion.h"
 #include "game/TGlobalMapState.h"
 #include "game/TQuickDrawSurfaceContext.h"
@@ -10,8 +13,7 @@
 
 extern "C" long _ftol(void);
 
-undefined4 thunk_NormalizeWrappedMapCoord108x60(void);
-undefined4 ComputeStridedRecordAddress6C(void);
+void NormalizeWrappedMapCoord108x60(short* xCoord, short* yCoord);
 undefined4 thunk_ProjectTileIndexToWrappedScreenOffsetByScale(void);
 undefined4 thunk_SplitTileIndexToRowAndColumn(void);
 
@@ -191,8 +193,7 @@ void TMapDialog::ComputeWrappedMapCellAndRegionBandFromScreenCoord(int overlayRe
     rowValue = static_cast<short>(_ftol()) - 1;
   }
   *outRow = rowValue;
-  reinterpret_cast<void(__cdecl*)(short*, short*)>(thunk_NormalizeWrappedMapCoord108x60)(
-      outRow, reinterpret_cast<short*>(outCol));
+  NormalizeWrappedMapCoord108x60(outRow, reinterpret_cast<short*>(outCol));
 
   int wrappedY = viewportOffsetY + tileOffset[1];
   unsigned short signY = static_cast<unsigned short>(wrappedY >> 31);
@@ -313,53 +314,266 @@ undefined TMapDialog::RenderMapDialogBilateralRelationMarkers() {
 }
 
 // FUNCTION: IMPERIALISM 0x00520970
-undefined TMapDialog::DrawMapDialogGuidePatternSetA_00520970() {
-  return 0;
+void TMapDialog::DrawMapDialogGuidePatternSetA_00520970(int originX, int originY, short variant) {
+  int y1;
+  int y2;
+  if (variant == 0) {
+    SetQuickDrawTextOriginWithContextOffset(originX + 0x18, originY);
+    DrawCenteredGuideLineOnMapDc(originX + 0x20, originY + 9);
+    DrawCenteredGuideLineOnMapDc(originX + 0x26, originY + 6);
+    DrawCenteredGuideLineOnMapDc(originX + 0x2c, originY + 8);
+    return;
+  }
+  if (variant == 1) {
+    SetQuickDrawTextOriginWithContextOffset(originX + 0x16, originY);
+    y1 = originY + 10;
+    DrawCenteredGuideLineOnMapDc(originX + 0x1e, y1);
+    y2 = originY + 8;
+  } else {
+    if (variant != 2) {
+      return;
+    }
+    SetQuickDrawTextOriginWithContextOffset(originX + 0x1a, originY);
+    y1 = originY + 6;
+    DrawCenteredGuideLineOnMapDc(originX + 0x22, y1);
+    y2 = originY + 4;
+  }
+  DrawCenteredGuideLineOnMapDc(originX + 0x26, y2);
+  DrawCenteredGuideLineOnMapDc(originX + 0x2c, y1);
 }
 
 // FUNCTION: IMPERIALISM 0x00520A90
-undefined TMapDialog::DrawMapDialogGuidePatternSetB_00520a90() {
-  return 0;
+void TMapDialog::DrawMapDialogGuidePatternSetB_00520a90(int originX, int originY, short variant) {
+  if (variant == 0) {
+    SetQuickDrawTextOriginWithContextOffset(originX + 0x2c, originY + 8);
+    DrawCenteredGuideLineOnMapDc(originX + 0x36, originY + 0xd);
+    DrawCenteredGuideLineOnMapDc(originX + 0x34, originY + 0x14);
+    DrawCenteredGuideLineOnMapDc(originX + 0x3a, originY + 0x19);
+    DrawCenteredGuideLineOnMapDc(originX + 0x38, originY + 0x20);
+    return;
+  }
+  if (variant == 1) {
+    SetQuickDrawTextOriginWithContextOffset(originX + 0x2c, originY + 10);
+    DrawCenteredGuideLineOnMapDc(originX + 0x34, originY + 0xf);
+    DrawCenteredGuideLineOnMapDc(originX + 0x31, originY + 0x14);
+    DrawCenteredGuideLineOnMapDc(originX + 0x38, originY + 0x19);
+    DrawCenteredGuideLineOnMapDc(originX + 0x36, originY + 0x20);
+    return;
+  }
+  if (variant == 2) {
+    SetQuickDrawTextOriginWithContextOffset(originX + 0x2c, originY + 6);
+    DrawCenteredGuideLineOnMapDc(originX + 0x37, originY + 0xb);
+    DrawCenteredGuideLineOnMapDc(originX + 0x36, originY + 0x13);
+    DrawCenteredGuideLineOnMapDc(originX + 0x3c, originY + 0x19);
+    DrawCenteredGuideLineOnMapDc(originX + 0x3a, originY + 0x20);
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x00520C10
-undefined TMapDialog::DrawMapDialogGuidePatternSetC_00520c10() {
-  return 0;
+void TMapDialog::DrawMapDialogGuidePatternSetC_00520c10(int originX, int originY, short variant) {
+  int x1;
+  int x2;
+  int x3;
+  if (variant == 1) {
+    x1 = originX + 0x36;
+    SetQuickDrawTextOriginWithContextOffset(x1, originY);
+    x2 = originX + 0x34;
+    DrawCenteredGuideLineOnMapDc(x2, originY + 9);
+    x3 = originX + 0x38;
+  } else if (variant == 2) {
+    x1 = originX + 0x3a;
+    SetQuickDrawTextOriginWithContextOffset(x1, originY);
+    x2 = originX + 0x38;
+    DrawCenteredGuideLineOnMapDc(x2, originY + 9);
+    x3 = originX + 0x3c;
+  } else {
+    x1 = originX + 0x38;
+    SetQuickDrawTextOriginWithContextOffset(x1, originY);
+    x2 = originX + 0x36;
+    DrawCenteredGuideLineOnMapDc(x2, originY + 9);
+    x3 = originX + 0x3a;
+  }
+  DrawCenteredGuideLineOnMapDc(x3, originY + 0x12);
+  DrawCenteredGuideLineOnMapDc(x2, originY + 0x19);
+  DrawCenteredGuideLineOnMapDc(x1, originY + 0x20);
 }
 
 // FUNCTION: IMPERIALISM 0x00520D20
-undefined TMapDialog::DrawMapDialogGuidePatternSetD_00520d20() {
-  return 0;
+void TMapDialog::DrawMapDialogGuidePatternSetD_00520d20(int originX, int originY, short variant) {
+  if (variant == 1) {
+    SetQuickDrawTextOriginWithContextOffset(originX + 0x2c, originY + 10);
+    DrawCenteredGuideLineOnMapDc(originX + 0x39, originY);
+    return;
+  }
+  if (variant == 2) {
+    SetQuickDrawTextOriginWithContextOffset(originX + 0x2c, originY + 5);
+    DrawCenteredGuideLineOnMapDc(originX + 0x37, originY + -3);
+    return;
+  }
+  SetQuickDrawTextOriginWithContextOffset(originX + 0x2c, originY + 8);
+  DrawCenteredGuideLineOnMapDc(originX + 0x38, originY);
 }
 
 // FUNCTION: IMPERIALISM 0x00520DE0
-undefined TMapDialog::DrawMapDialogTileGuidePatternByVariant() {
-  return 0;
+void TMapDialog::DrawMapDialogTileGuidePatternByVariant(int originX, int originY, short variant) {
+  if (variant == 0) {
+    SetQuickDrawTextOriginWithContextOffset(originX + 0x2c, originY + 8);
+    DrawCenteredGuideLineOnMapDc(originX + 0x36, originY + 0xd);
+    DrawCenteredGuideLineOnMapDc(originX + 0x34, originY + 0x14);
+    DrawCenteredGuideLineOnMapDc(originX + 0x3a, originY + 0x19);
+    DrawCenteredGuideLineOnMapDc(originX + 0x38, originY + 0x20);
+    SetQuickDrawTextOriginWithContextOffset(originX + 0x2c, originY + 8);
+    DrawCenteredGuideLineOnMapDc(originX + 0x38, originY);
+    return;
+  }
+  if (variant == 1) {
+    SetQuickDrawTextOriginWithContextOffset(originX + 0x2c, originY + 10);
+    DrawCenteredGuideLineOnMapDc(originX + 0x34, originY + 0xf);
+    DrawCenteredGuideLineOnMapDc(originX + 0x31, originY + 0x14);
+    DrawCenteredGuideLineOnMapDc(originX + 0x38, originY + 0x19);
+    DrawCenteredGuideLineOnMapDc(originX + 0x36, originY + 0x20);
+    SetQuickDrawTextOriginWithContextOffset(originX + 0x2c, originY + 10);
+    DrawCenteredGuideLineOnMapDc(originX + 0x39, originY);
+    return;
+  }
+  if (variant == 2) {
+    SetQuickDrawTextOriginWithContextOffset(originX + 0x2c, originY + 6);
+    DrawCenteredGuideLineOnMapDc(originX + 0x37, originY + 0xb);
+    DrawCenteredGuideLineOnMapDc(originX + 0x36, originY + 0x13);
+    DrawCenteredGuideLineOnMapDc(originX + 0x3c, originY + 0x19);
+    DrawCenteredGuideLineOnMapDc(originX + 0x3a, originY + 0x20);
+    SetQuickDrawTextOriginWithContextOffset(originX + 0x2c, originY + 5);
+    DrawCenteredGuideLineOnMapDc(originX + 0x37, originY + -3);
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x00520FC0
-undefined TMapDialog::DrawMapDialogGuidePatternSetE_00520fc0() {
-  return 0;
+void TMapDialog::DrawMapDialogGuidePatternSetE_00520fc0(int originX, int originY, short variant) {
+  if (variant == 1) {
+    SetQuickDrawTextOriginWithContextOffset(originX + 0x2c, originY + 0x36);
+    DrawCenteredGuideLineOnMapDc(originX + 0x39, originY + 0x3e);
+    return;
+  }
+  if (variant == 2) {
+    SetQuickDrawTextOriginWithContextOffset(originX + 0x2c, originY + 0x3a);
+    DrawCenteredGuideLineOnMapDc(originX + 0x3a, originY + 0x42);
+    return;
+  }
+  SetQuickDrawTextOriginWithContextOffset(originX + 0x2c, originY + 0x38);
+  DrawCenteredGuideLineOnMapDc(originX + 0x39, originY + 0x40);
 }
 
 // FUNCTION: IMPERIALISM 0x00521090
-undefined TMapDialog::DrawMapDialogGuidePatternSetF_00521090() {
-  return 0;
+void TMapDialog::DrawMapDialogGuidePatternSetF_00521090(int originX, int originY, short variant) {
+  int x1;
+  int x2;
+  if (variant == 1) {
+    x1 = originX + 0x36;
+    SetQuickDrawTextOriginWithContextOffset(x1, originY + 0x20);
+    x2 = originX + 0x34;
+    DrawCenteredGuideLineOnMapDc(x2, originY + 0x29);
+    DrawCenteredGuideLineOnMapDc(originX + 0x38, originY + 0x32);
+  } else if (variant == 2) {
+    x1 = originX + 0x3a;
+    SetQuickDrawTextOriginWithContextOffset(x1, originY + 0x20);
+    x2 = originX + 0x38;
+    DrawCenteredGuideLineOnMapDc(x2, originY + 0x29);
+    DrawCenteredGuideLineOnMapDc(originX + 0x3c, originY + 0x32);
+  } else {
+    x1 = originX + 0x38;
+    SetQuickDrawTextOriginWithContextOffset(x1, originY + 0x20);
+    x2 = originX + 0x36;
+    DrawCenteredGuideLineOnMapDc(x2, originY + 0x29);
+    DrawCenteredGuideLineOnMapDc(originX + 0x3a, originY + 0x32);
+  }
+  DrawCenteredGuideLineOnMapDc(x2, originY + 0x39);
+  DrawCenteredGuideLineOnMapDc(x1, originY + 0x40);
 }
 
 // FUNCTION: IMPERIALISM 0x005211C0
-undefined TMapDialog::DrawMapDialogGuidePatternSetG_005211c0() {
-  return 0;
+void TMapDialog::DrawMapDialogGuidePatternSetG_005211c0(int originX, int originY, short variant) {
+  if (variant == 0) {
+    SetQuickDrawTextOriginWithContextOffset(originX + 0x2c, originY + 0x38);
+    DrawCenteredGuideLineOnMapDc(originX + 0x36, originY + 0x33);
+    DrawCenteredGuideLineOnMapDc(originX + 0x34, originY + 0x2c);
+    DrawCenteredGuideLineOnMapDc(originX + 0x3a, originY + 0x27);
+    DrawCenteredGuideLineOnMapDc(originX + 0x38, originY + 0x20);
+    return;
+  }
+  if (variant == 1) {
+    SetQuickDrawTextOriginWithContextOffset(originX + 0x2c, originY + 0x36);
+    DrawCenteredGuideLineOnMapDc(originX + 0x34, originY + 0x31);
+    DrawCenteredGuideLineOnMapDc(originX + 0x30, originY + 0x2c);
+    DrawCenteredGuideLineOnMapDc(originX + 0x37, originY + 0x27);
+    DrawCenteredGuideLineOnMapDc(originX + 0x36, originY + 0x20);
+    return;
+  }
+  if (variant == 2) {
+    SetQuickDrawTextOriginWithContextOffset(originX + 0x2c, originY + 0x3a);
+    DrawCenteredGuideLineOnMapDc(originX + 0x37, originY + 0x35);
+    DrawCenteredGuideLineOnMapDc(originX + 0x36, originY + 0x2d);
+    DrawCenteredGuideLineOnMapDc(originX + 0x3c, originY + 0x27);
+    DrawCenteredGuideLineOnMapDc(originX + 0x3a, originY + 0x20);
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x00521340
-undefined TMapDialog::DrawMapDialogGuidePatternSetH_00521340() {
-  return 0;
+void TMapDialog::DrawMapDialogGuidePatternSetH_00521340(int originX, int originY, short variant) {
+  if (variant == 0) {
+    SetQuickDrawTextOriginWithContextOffset(originX + 0x2c, originY + 0x38);
+    DrawCenteredGuideLineOnMapDc(originX + 0x36, originY + 0x33);
+    DrawCenteredGuideLineOnMapDc(originX + 0x34, originY + 0x2c);
+    DrawCenteredGuideLineOnMapDc(originX + 0x3a, originY + 0x27);
+    DrawCenteredGuideLineOnMapDc(originX + 0x38, originY + 0x20);
+    SetQuickDrawTextOriginWithContextOffset(originX + 0x2c, originY + 0x38);
+    DrawCenteredGuideLineOnMapDc(originX + 0x39, originY + 0x40);
+    return;
+  }
+  if (variant == 1) {
+    SetQuickDrawTextOriginWithContextOffset(originX + 0x2c, originY + 0x36);
+    DrawCenteredGuideLineOnMapDc(originX + 0x34, originY + 0x31);
+    DrawCenteredGuideLineOnMapDc(originX + 0x30, originY + 0x2c);
+    DrawCenteredGuideLineOnMapDc(originX + 0x37, originY + 0x27);
+    DrawCenteredGuideLineOnMapDc(originX + 0x36, originY + 0x20);
+    SetQuickDrawTextOriginWithContextOffset(originX + 0x2c, originY + 0x36);
+    DrawCenteredGuideLineOnMapDc(originX + 0x39, originY + 0x3e);
+    return;
+  }
+  if (variant == 2) {
+    SetQuickDrawTextOriginWithContextOffset(originX + 0x2c, originY + 0x3a);
+    DrawCenteredGuideLineOnMapDc(originX + 0x37, originY + 0x35);
+    DrawCenteredGuideLineOnMapDc(originX + 0x36, originY + 0x2d);
+    DrawCenteredGuideLineOnMapDc(originX + 0x3c, originY + 0x27);
+    DrawCenteredGuideLineOnMapDc(originX + 0x3a, originY + 0x20);
+    SetQuickDrawTextOriginWithContextOffset(originX + 0x2c, originY + 0x3a);
+    DrawCenteredGuideLineOnMapDc(originX + 0x3a, originY + 0x42);
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x00521540
-undefined TMapDialog::DrawMapDialogGuidePatternSetI_00521540() {
-  return 0;
+void TMapDialog::DrawMapDialogGuidePatternSetI_00521540(int originX, int originY, short variant) {
+  int y1;
+  if (variant == 0) {
+    SetQuickDrawTextOriginWithContextOffset(originX + 0x18, originY + 0x40);
+    DrawCenteredGuideLineOnMapDc(originX + 0x1a, originY + 0x3b);
+    DrawCenteredGuideLineOnMapDc(originX + 0x24, originY + 0x36);
+    y1 = originY + 0x38;
+  } else if (variant == 1) {
+    SetQuickDrawTextOriginWithContextOffset(originX + 0x16, originY + 0x3f);
+    DrawCenteredGuideLineOnMapDc(originX + 0x18, originY + 0x39);
+    DrawCenteredGuideLineOnMapDc(originX + 0x24, originY + 0x33);
+    y1 = originY + 0x36;
+  } else {
+    if (variant != 2) {
+      return;
+    }
+    SetQuickDrawTextOriginWithContextOffset(originX + 0x1a, originY + 0x40);
+    DrawCenteredGuideLineOnMapDc(originX + 0x1c, originY + 0x3b);
+    DrawCenteredGuideLineOnMapDc(originX + 0x24, originY + 0x38);
+    y1 = originY + 0x3a;
+  }
+  DrawCenteredGuideLineOnMapDc(originX + 0x2a, y1);
+  DrawCenteredGuideLineOnMapDc(originX + 0x2c, y1);
 }
 
 // FUNCTION: IMPERIALISM 0x00521680
@@ -373,8 +587,24 @@ undefined TMapDialog::EmitHexAdjacencyTransitionEventsByBitmask() {
 }
 
 // FUNCTION: IMPERIALISM 0x00522000
-undefined TMapDialog::DrawMapDialogOwnershipMarkerForNation_00522000() {
-  return 0;
+void TMapDialog::DrawMapDialogOwnershipMarkerForNation_00522000(unsigned char edgeMask, int screenX,
+                                                                int screenY, short tileIndex) {
+  g_pUiRuntimeContext->ApplyTurnEventPaletteColorByEventCode(
+      g_pGlobalMapState->terrainStateTable[tileIndex].ownerNationTag04);
+  if ((edgeMask & 0x20) != 0) {
+    SetQuickDrawTextOriginWithContextOffset(screenX + 8, screenY + 8);
+    DrawCenteredGuideLineOnMapDc(screenX + 0xc, screenY + 8);
+    return;
+  }
+  if ((edgeMask & 8) != 0) {
+    SetQuickDrawTextOriginWithContextOffset(screenX + 8, screenY + 0x38);
+    DrawCenteredGuideLineOnMapDc(screenX + 0xc, screenY + 0x38);
+    return;
+  }
+  if ((edgeMask & 2) != 0) {
+    SetQuickDrawTextOriginWithContextOffset(screenX + 0x2c, screenY + 0x2e);
+    DrawCenteredGuideLineOnMapDc(screenX + 0x30, screenY + 0x2e);
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x005220F0
@@ -382,14 +612,104 @@ undefined TMapDialog::RenderMapDialogDiplomacyNeighborRelationHints() {
   return 0;
 }
 
+// Draws a guide line between two tiles' screen centers, wrapping the far tile across the
+// 108-column seam and culling the line when both endpoints fall off the same screen edge.
 // FUNCTION: IMPERIALISM 0x00522C10
-undefined TMapDialog::DrawMapDialogWrappedTileConnectionMarker_00522c10() {
-  return 0;
+void TMapDialog::DrawMapDialogWrappedTileConnectionMarker_00522c10(short col1, int row1, short col2,
+                                                                   int row2) {
+  if (abs(static_cast<int>(col1) - static_cast<int>(col2)) > 0x6c) {
+    if (col1 > 0x6c) {
+      col1 = col1 - 0xd8;
+    } else if (col2 > 0x6c) {
+      col2 = col2 - 0xd8;
+    }
+  }
+  if (col1 < 0) {
+    if (col2 < 0) {
+      return;
+    }
+  } else if (col1 > 0x12 && col2 > 0x12) {
+    return;
+  }
+  if (static_cast<short>(row1) < 0) {
+    if (static_cast<short>(row2) < 0) {
+      return;
+    }
+  } else if (static_cast<short>(row1) > 8 && static_cast<short>(row2) > 8) {
+    return;
+  }
+  SetQuickDrawTextOriginWithContextOffset((col1 * 0x40) / 2 + 0x40, (row1 + 1) * 0x40);
+  DrawCenteredGuideLineOnMapDc((col2 * 0x40) / 2 + 0x40, (row2 + 1) * 0x40);
 }
 
+// Draws the coastline "connection" line pattern linking this ocean tile to its ocean
+// neighbors, per the 6-bit connectionMask (which adjacent hexes are ocean and joined).
 // FUNCTION: IMPERIALISM 0x00522CF0
-undefined TMapDialog::DrawHexNeighborConnectionMask() {
-  return 0;
+void TMapDialog::DrawHexNeighborConnectionMask(unsigned char connectionMask, int screenX,
+                                               int screenY, short tileIndex) {
+  short neighborTiles[6];
+  TMapMgr::ComputeHexNeighborTileIndices(tileIndex, neighborTiles,
+                                         g_pGlobalMapState->hexNeighborWrapHorizontally20);
+  TTerrainStateRecordView* tiles = g_pGlobalMapState->terrainStateTable;
+  unsigned char northeastOcean = connectionMask & 2;
+
+  if ((connectionMask & 2) != 0 && tiles[neighborTiles[1]].terrainType00 == 5) {
+    if ((connectionMask & 1) == 0 || tiles[neighborTiles[2]].terrainType00 != 5) {
+      SetQuickDrawTextOriginWithContextOffset(screenX + 0x38, screenY);
+      DrawCenteredGuideLineOnMapDc(screenX + 0x30, screenY + 8);
+      DrawCenteredGuideLineOnMapDc(screenX + 0x30, screenY + 0x14);
+      DrawCenteredGuideLineOnMapDc(screenX + 0x38, screenY + 0x20);
+    } else {
+      SetQuickDrawTextOriginWithContextOffset(screenX + 0x2c, screenY + 8);
+      DrawCenteredGuideLineOnMapDc(screenX + 0x38, screenY + 0x14);
+      DrawCenteredGuideLineOnMapDc(screenX + 0x38, screenY + 0x20);
+      if ((connectionMask & 0x40) != 0) {
+        SetQuickDrawTextOriginWithContextOffset(screenX + 0x38, screenY + 0x14);
+        DrawCenteredGuideLineOnMapDc(screenX + 0x3c, screenY + 8);
+        DrawCenteredGuideLineOnMapDc(screenX + 0x38, screenY);
+      }
+    }
+
+    int bottomY;
+    if ((connectionMask & 4) == 0 || tiles[neighborTiles[0]].terrainType00 != 5) {
+      SetQuickDrawTextOriginWithContextOffset(screenX + 0x38, screenY + 0x20);
+      DrawCenteredGuideLineOnMapDc(screenX + 0x3c, screenY + 0x28);
+      bottomY = screenY + 0x34;
+    } else {
+      SetQuickDrawTextOriginWithContextOffset(screenX + 0x38, screenY + 0x20);
+      DrawCenteredGuideLineOnMapDc(screenX + 0x38, screenY + 0x28);
+      DrawCenteredGuideLineOnMapDc(screenX + 0x2c, screenY + 0x38);
+      if ((connectionMask & 0x80) == 0) {
+        goto tail;
+      }
+      SetQuickDrawTextOriginWithContextOffset(screenX + 0x38, screenY + 0x28);
+      bottomY = screenY + 0x38;
+    }
+    DrawCenteredGuideLineOnMapDc(screenX + 0x3c, bottomY);
+    DrawCenteredGuideLineOnMapDc(screenX + 0x38, screenY + 0x40);
+  }
+
+tail:
+  if ((connectionMask & 1) != 0 && tiles[neighborTiles[2]].terrainType00 == 5) {
+    SetQuickDrawTextOriginWithContextOffset(screenX + 0x18, screenY);
+    DrawCenteredGuideLineOnMapDc(screenX + 0x20, screenY + 8);
+    DrawCenteredGuideLineOnMapDc(screenX + 0x2c, screenY + 8);
+    if (northeastOcean == 0 && tiles[neighborTiles[1]].terrainType00 == 5) {
+      SetQuickDrawTextOriginWithContextOffset(screenX + 0x38, screenY);
+      DrawCenteredGuideLineOnMapDc(screenX + 0x30, screenY + 8);
+      DrawCenteredGuideLineOnMapDc(screenX + 0x2c, screenY + 8);
+    }
+  }
+  if ((connectionMask & 4) != 0 && tiles[neighborTiles[0]].terrainType00 == 5) {
+    SetQuickDrawTextOriginWithContextOffset(screenX + 0x18, screenY + 0x40);
+    DrawCenteredGuideLineOnMapDc(screenX + 0x20, screenY + 0x38);
+    DrawCenteredGuideLineOnMapDc(screenX + 0x2c, screenY + 0x38);
+    if (northeastOcean == 0 && tiles[neighborTiles[1]].terrainType00 == 5) {
+      SetQuickDrawTextOriginWithContextOffset(screenX + 0x2c, screenY + 0x38);
+      DrawCenteredGuideLineOnMapDc(screenX + 0x30, screenY + 0x38);
+      DrawCenteredGuideLineOnMapDc(screenX + 0x38, screenY + 0x40);
+    }
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x00523060
@@ -403,8 +723,8 @@ undefined TMapDialog::UpdateMapOrderEntryTilePreviewSlot() {
 }
 
 // FUNCTION: IMPERIALISM 0x00523640
-void TMapDialog::RenderMapOrderEntryTilePreview(int arg1, int arg2, int arg3) {
-  (void)arg1;
+void TMapDialog::RenderMapOrderEntryTilePreview(TCivUnit* orderEntry, int arg2, int arg3) {
+  (void)orderEntry;
   (void)arg2;
   (void)arg3;
 }
@@ -540,9 +860,37 @@ undefined TMapDialog::CopyDiagonalMaskWideningBlockKernel() {
   return 0;
 }
 
+// Copies a 64-row tile block, 16 dwords (64 bytes) per row via two unrolled 8-dword
+// stores, advancing source and destination by their own dword strides between rows.
 // FUNCTION: IMPERIALISM 0x00525670
-undefined TMapDialog::Copy64x64TileBlockWithStrideAdjustment() {
-  return 0;
+void TMapDialog::Copy64x64TileBlockWithStrideAdjustment(int* src, int* dest, short srcStride,
+                                                        short destStride) {
+  int srcStrideDwords = static_cast<short>(srcStride / 4);
+  int destStrideDwords = static_cast<short>(destStride / 4);
+  int row = 0x40;
+  do {
+    int inner = 2;
+    int* s;
+    int* d;
+    do {
+      s = src;
+      d = dest;
+      d[0] = s[0];
+      d[1] = s[1];
+      d[2] = s[2];
+      d[3] = s[3];
+      d[4] = s[4];
+      d[5] = s[5];
+      d[6] = s[6];
+      d[7] = s[7];
+      inner = inner - 1;
+      dest = d + 8;
+      src = s + 8;
+    } while (inner != 0);
+    row = row - 1;
+    dest = d + destStrideDwords - 8;
+    src = s + srcStrideDwords - 8;
+  } while (row != 0);
 }
 
 // FUNCTION: IMPERIALISM 0x00525730

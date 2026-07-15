@@ -45,6 +45,22 @@ struct NationStateRecordA8 {
   NationStateRecordA8& operator=(const NationStateRecordA8& source);
 };
 
+// One of TMultiplayerMgr::nationStatusControlSlots' 4 elements. Ground truth from
+// TMultiplayerMgr::~TMultiplayerMgr (0x542810): each slot's destructor frees dataPtr via
+// a raw operator delete (no typed destructor on the pointee), gated on non-null. Neither
+// the pointee type nor tagOrSize's meaning is recovered yet; no reader/writer of the
+// array besides the ctor's memset zero-init is ported.
+struct TMultiplayerSlotHandle {
+  void* dataPtr;
+  int tagOrSize;
+
+  ~TMultiplayerSlotHandle() {
+    if (dataPtr != 0) {
+      operator delete(dataPtr);
+    }
+  }
+};
+
 // Multiplayer session / game-flow manager (g_pGameFlowState). Inherits the shared
 // TEventHandler control surface used by UI roots; vtable @ 0x0065c030.
 // VTABLE: IMPERIALISM 0x0065c030
@@ -53,7 +69,7 @@ public:
   DECLARE_DYNCREATE(TMultiplayerMgr)
   enum { kNationSlotCount = 7 };
 
-  int nationStatusControlSlots[8]; // +0x20
+  TMultiplayerSlotHandle nationStatusControlSlots[4]; // +0x20
   // +0x40 — the active lobby dialog view when one is open; the code-9 receive path
   // checks IsKindOf(RUNTIME_CLASS(TLoungeDialog)) before using it as the lounge.
   TView* lobbyDialogView40;               // +0x40
@@ -87,11 +103,11 @@ public:
   unsigned char fieldF4;      // +0xf4
   unsigned char padF5[3];
 
-  virtual ~TMultiplayerMgr() override;                              // slot 0x01 0x5427e0
-  virtual void WriteTo(TStream* stream) override;                   // slot 0x05 0x542ff0
-  virtual void ReadFrom(TStream* stream) override;                  // slot 0x06 0x542be0
-  virtual void Free() override;                                     // slot 0x07 0x542b10
-  virtual char CanHandleCityDialogActionFalse(int action) override; // slot 0x13 0x544e30
+  virtual ~TMultiplayerMgr() override;             // slot 0x01 0x5427e0
+  virtual void WriteTo(TStream* stream) override;  // slot 0x05 0x542ff0
+  virtual void ReadFrom(TStream* stream) override; // slot 0x06 0x542be0
+  virtual void Free() override;                    // slot 0x07 0x542b10
+  virtual char DoIdle(int action) override;        // slot 0x13 0x544e30
   // Ground truth (0x542923): the argument is stored raw into the inherited int
   // TEventHandler::field10; every observed caller (0x5818ee, TAmbitApplication init)
   // pushes literal 0 — not a by-value CString as Ghidra guessed.
@@ -105,10 +121,22 @@ public:
   // callee-cleanup `ret n`, so these are real TMultiplayerMgr methods, not free
   // functions. They build a stack packet and hand it to TNetMgr::Send via the
   // g_pNetMgr006a6014 global.
-  void EmitTurnEvent3Mode18WithActiveNation();                         // 0x5446a0
+  void EmitTurnEvent3Mode18WithActiveNation(); // 0x5446a0
+  void EmitTurnEvent10ForFlaggedNationSlots(); // 0x544720
+  // Appends a queue node (next pointer at node+0x10) to the tail of
+  // primaryTurnEventQueueHead. 0x549280.
+  void AppendNodeToTurnEventLinkedListAt6C(int node);
+  // 0x5430c0 — enable both diplomacy queue-processing flags and set the routing context.
+  void EnableDiplomacyQueueRoutingAndSetContextField44(int nContext, char fEnable);
+  void CreateAndSendTurnEvent11_MapOffsetAndFlags(unsigned char flagByte, int mapOffsetSelector,
+                                                  int absoluteOffset, short shortA,
+                                                  short shortB);       // 0x5493c0
   void CreateAndSendTurnEvent12_TwoShorts(short shortA, short shortB); // 0x5494b0
   void CreateAndSendTurnEvent13_NationAndNineDwords(int nationSlot,
-                                                    int* payloadDwords);             // 0x549540
+                                                    int* payloadDwords); // 0x549540
+  void CreateAndSendTurnEvent1C_BoolAndSixShorts(bool broadcastFlag, short shortA, short shortB,
+                                                 short shortC, short shortD, short shortE,
+                                                 short shortF);                      // 0x5499b0
   void CreateAndSendTurnEvent22_ByteAndShort(unsigned char byteVal, short shortVal); // 0x549720
   void CreateAndSendTurnEvent20_ShortAndTwoBytes(short eventParam, unsigned char byteA,
                                                  unsigned char byteB); // 0x5495e0
@@ -122,6 +150,9 @@ public:
   void DispatchJoinEmpireModeEventPacket24_27(int sourceNation, int targetNation,
                                               int mode);                        // 0x54c5a0
   unsigned char ProcessDiplomacyTurnStateEventStateMachine(NetMessage* packet); // 0x545940
+  // Clear the active lobby context, rebuild the seven nation-status rows, post
+  // setup event 0x5e5, and clear the queue synchronization word.
+  unsigned char ResetLocalUiStateAndPostTurnEvent5E5(); // 0x545660
   // Genuinely empty in the shipped binary (single `RET 4`); called by
   // TArmyMgr::CreateTacticalBattleViewAndInitializeBattleSetup with the new battle view,
   // discarding both the argument and the (unset) return value. 0x54c660, __thiscall.
@@ -134,6 +165,7 @@ public:
   void EmitTacticalFireCommandPacket(int commandTag, TTacticalUnit* attackerUnit,
                                      TTacticalUnit* targetUnit, int damageA, int damageB,
                                      int effectCode); // 0x54c6a0
+  void ResetNationStatusArraysAndTurnEventContext();  // 0x54c6e0
 
   // Unlike the emitters above, `this` IS used here: called as
   // g_pGameFlowState->EnsureGameFlowStateAndPostTurnEvent5E5() where g_pGameFlowState may
@@ -168,7 +200,7 @@ public:
   // marks the local nation 'redy' and broadcasts the event-0x25 status board.
   void HandleTurnResumeStateTelemetry();
   // 0x54c8e0: re-emit the event-0xE session-init + event-9 name packets for the
-  // requesting session (turn-event 0xD receive path). Body TODO.
+  // requesting session (turn-event 0xD receive path).
   void EmitTurnEventEAnd9SessionContextPackets(NetMessage* packet);
   // 0x549ff0: receive path for turn events 0x28/0x2E..0x32 — reads the 0x1c timely
   // header, derives the acting nation (-1 during teardown), and dispatches by event
@@ -223,7 +255,17 @@ public:
   // then either send the event-9 lobby-chat drop notice (session init) or show the
   // localized "nation has dropped" advisory and post a 'pogc' cancel command.
   void SetNationStatusAwolByNationIdAndDispatchNotices(int networkId);
+  // 0x54a9d0: true when sessionPhaseTag is the 'goin' join phase and the active nation
+  // slot is valid.
+  int IsSpecialNationDialogModeActive();
+  // 0x54b8c0: returns nationStatusTags[slot]; when slot is -1, resolves it from the active
+  // nation id (falling back to the game-flow session-id scan).
+  int GetNationStatusCodeForSlotOrActiveNation(int slot);
 };
+
+// 0x5421a0: 0-based index (0..6) of g_pGameFlowState->nationSessionIds[] matching the
+// session's active nation id, or -1. Free __cdecl function.
+int FindActiveNationSlotIndexInGameFlowList();
 
 ASSERT_SIZE(TMultiplayerMgr, 0xf8);
 

@@ -3,7 +3,8 @@
 #include "game/TView.h"
 #include "game/mfc.h"
 
-// TODO(manifest): describe TGWorldPartView and its role. Base edge (TView) recovered from RTTI CRuntimeClass chain: TGWorldPartView -> TView -> TEventHandler -> TObject -> CObject.
+struct TQuickDrawSurfaceContext;
+
 // VTABLE: IMPERIALISM 0x00644ba0
 class TGWorldPartView : public TView {
 public:
@@ -27,23 +28,23 @@ public:
   // slot 0x10 DispatchUiCommandToHandler inherited unchanged (0x48a2e0)
   // slot 0x11 vmethod_0017 inherited unchanged (0x48a310)
   // slot 0x12 ForwardParam inherited unchanged (0x48a380)
-  // slot 0x13 CanHandleCityDialogActionFalse inherited unchanged (0x48a480)
+  // slot 0x13 DoIdle inherited unchanged (0x48a480)
   // slot 0x14 GetCityDialogValueDword10 inherited unchanged (0x415d50)
   // slot 0x15 SetCityDialogValueDword10 inherited unchanged (0x415d70)
   // slot 0x16 OwnerPanel inherited unchanged (0x48b180)
   // slot 0x17 vmethod_0023 inherited unchanged (0x48a530)
-  // slot 0x18 vmethod_0024 inherited unchanged (0x48a550)
-  // slot 0x19 vmethod_0025 inherited unchanged (0x48a690)
-  // slot 0x1a vmethod_0026 inherited unchanged (0x48a6b0)
+  // slot 0x18 GetDeactivateVetoCode inherited unchanged (0x48a550)
+  // slot 0x19 OnDeactivated inherited unchanged (0x48a690)
+  // slot 0x1a OnDeactivateVetoed inherited unchanged (0x48a6b0)
   // slot 0x1b HandleCityProductionNoOp inherited unchanged (0x48a650)
   // slot 0x1c DispatchUiCommand19ToParent inherited unchanged (0x48a6d0)
   // slot 0x1d DispatchCityProductionAction1A inherited unchanged (0x48a670)
   // slot 0x1e DispatchCityProductionAction1B inherited unchanged (0x48a6f0)
   // slot 0x1f ActivateCityProductionViewIfAllowed inherited unchanged (0x48a570)
-  // slot 0x20 vmethod_0080 inherited unchanged (0x48a5e0)
+  // slot 0x20 TryDeactivateActiveView inherited unchanged (0x48a5e0)
   // slot 0x21 vmethod_0081 inherited unchanged (0x48a710)
-  // slot 0x22 vmethod_0032 inherited unchanged (0x48a500)
-  // slot 0x23 vmethod_0033 inherited unchanged (0x48a4a0)
+  // slot 0x22 IsActiveView inherited unchanged (0x48a500)
+  // slot 0x23 DetachUiResourceOwnerIfMatches inherited unchanged (0x48a4a0)
   // slot 0x24 SetUiResourceOwner inherited unchanged (0x48a4d0)
   // slot 0x25 ResolveControlByTag inherited unchanged (0x48afd0)
   // slot 0x26 SwitchActiveChildAndNotify inherited unchanged (0x48af80)
@@ -113,14 +114,12 @@ public:
   // slot 0x66 AssertMcAppUILine1922 inherited unchanged (0x48c7d0)
   // slot 0x67 CtrlSlot103_SubtractPosAndDispatchSlot19C_Impl inherited unchanged (0x48bac0)
   // === END GENERATED DECLS (TGWorldPartView) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TGWorldPartView 0xCTOR`).
 
   TGWorldPartView();
 
-  int field60; // 0x60 — ctor 0x45b000 zeroes it
-  int field64; // 0x64
-  int field68; // 0x68
-  int field6c; // 0x6c
-  int field70; // 0x70
+  void SetSourceRectFromGridCell(int column, int row); // 0x577df0
+
+  TQuickDrawSurfaceContext* sourceSurface60; // 0x60 — ctor 0x45b000 zeroes it
+  RECT sourceRect64;                         // 0x64
 };
 ASSERT_SIZE(TGWorldPartView, 0x74);

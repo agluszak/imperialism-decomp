@@ -7,7 +7,8 @@
 
 IMPLEMENT_DYNCREATE(TTerrainInfoDialog, TNoHilitePicture)
 
-TTerrainInfoDialog::TTerrainInfoDialog() {}
+// FUNCTION: IMPERIALISM 0x0051b140
+TTerrainInfoDialog::TTerrainInfoDialog() : TNoHilitePicture() {}
 
 // SYNTHETIC: IMPERIALISM 0x0051b170
 // TTerrainInfoDialog::`scalar deleting destructor'

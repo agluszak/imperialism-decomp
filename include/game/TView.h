@@ -98,8 +98,6 @@ public:
   void CopyViewStateFromSource(TView* source);
   void EnableAndProcessFlag(CString sharedString);
   void PropagateUiResourceContextRecursive(CWnd* nativeWindow);
-  UINT GetStyle();
-  int RunModalLoop(unsigned char loopKind);
 
   // Base-slot overrides (vtable bodies differ from TEventHandler's).
   DECLARE_DYNCREATE(TView)
@@ -118,7 +116,7 @@ public:
   virtual void SetEnabled(int enabledState, int refreshFlag);                   // 0x29 0x48b1c0
   virtual void SetState(int state, int refreshFlag);                            // 0x2a 0x48b070
   virtual unsigned short GetField4E();                                          // 0x2b 0x427200
-  virtual void HandleCursorHoverFallback(CPoint* point, int hitArg);            // 0x2c
+  virtual void HandleCursorHoverFallback(CPoint* point, RgnHandle hitArg);      // 0x2c
   virtual void NoOpClipRegionSlot2D(int arg1, int arg2);                        // 0x2d 0x48c1c0
   virtual void RefreshCityProductionViewStateFromContext(RgnHandle clipRegion); // 0x2e 0x48c1e0
   virtual int QuerySelectedIndexSlotBC();                                       // 0x2f
@@ -127,18 +125,19 @@ public:
   virtual void ValidateControlRectIfWindowActive(RECT* rect);                   // 0x32 0x48b690
   virtual char EvaluateControlInputGate();                                      // 0x33 0x48c000
   virtual char HasRenderableParentAndContent();                                 // 0x34 0x48c050
-  virtual void HandleCursorHoverSelectionByChildHitTestAndFallback(CPoint* point,
-                                                                   int hitArg); // 0x35 0x48c080
-  virtual void DispatchControlEventToChildrenAndSelf(int eventArg);             // 0x36 0x48aaf0
-  virtual void NoOpUiLifecycleHook(int arg);                                    // 0x37 0x48ab70
-  virtual void NoOpUiCallback();                                                // 0x38 0x48abc0
-  virtual void RefreshControl();                                                // 0x39 0x48b6d0
-  virtual class TView* QueryOwnerContextPanel();                                // 0x3a 0x48b1a0
-  virtual char IsActionable();                                                  // 0x3b 0x48b200
-  virtual void CaptureLayoutF0(int* buffer, int modeFlag);                      // 0x3c 0x48b250
-  virtual void CaptureLayout(int* buffer, int modeFlag);                        // 0x3d 0x48b3f0
-  virtual char Refresh();                                                       // 0x3e 0x48b770
-  virtual void PostRenderSlotFC();                                              // 0x3f
+  virtual void
+  HandleCursorHoverSelectionByChildHitTestAndFallback(CPoint* point,
+                                                      RgnHandle hitArg); // 0x35 0x48c080
+  virtual void DispatchControlEventToChildrenAndSelf(int eventArg);      // 0x36 0x48aaf0
+  virtual void NoOpUiLifecycleHook(int arg);                             // 0x37 0x48ab70
+  virtual void NoOpUiCallback();                                         // 0x38 0x48abc0
+  virtual void RefreshControl();                                         // 0x39 0x48b6d0
+  virtual class TView* QueryOwnerContextPanel();                         // 0x3a 0x48b1a0
+  virtual char IsActionable();                                           // 0x3b 0x48b200
+  virtual void CaptureLayoutF0(int* buffer, int modeFlag);               // 0x3c 0x48b250
+  virtual void CaptureLayout(int* buffer, int modeFlag);                 // 0x3d 0x48b3f0
+  virtual char Refresh();                                                // 0x3e 0x48b770
+  virtual void PostRenderSlotFC();                                       // 0x3f
   // The "DC handle" flowing through slots 0x40/0x41/0x43/0x45 is a caller-supplied MFC
   // CDC* (or null = bind a fresh window DC): CMcWindow::OnPaint (0x4938c0) passes its
   // CPaintDC here, and BindScopedMapQuickDrawDcHandle stores it as the active DC object.
@@ -190,5 +189,16 @@ public:
   // TView's real vtable is 104 slots (0x00-0x19c). Slots 0x1A0+ belong to the sibling
   // branches (TControl, TCivDescription, TAmtBar, ...). The destructor is slot 1
   // (TEventHandler override), so its declaration position is irrelevant.
+  //
+  // bd imperialism-decomp-1uj.27 EXPERIMENT RESULT (tested 2026-07-13, reverted): moving
+  // this definition header-inline (matching the original's own per-TU-duplicated layout
+  // at 0x0048a9d0/0x0048cb00/0x0048ec30/0x0048ee00) was tried and measured a net
+  // regression -- 1 fewer 100%-aligned function elsewhere, 18 functions across unrelated
+  // files (TGreatPower, TMapMgr, TMultiplayerMgr, ...) with lower similarity, and +160
+  // recomp-only orphan global symbols (COMDAT-per-TU noise), while the three "twin"
+  // addresses still only weakly auto-paired at 6.25% (no real per-TU duplication
+  // reproduced by our own compiler) -- vs 0x48a9d0's unchanged 90.32% either way. Do not
+  // repeat this for TView or roll it out to other classes; keep the out-of-line
+  // definition in TView.cpp.
   virtual ~TView() override;
 };

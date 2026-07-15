@@ -77,6 +77,9 @@ public:
   short GetUnitTypeCostPoints();                    // 0x5c3400
   short IsNotStationedInProvince(short provinceId); // 0x5c34d0
   short GetUnitTypeStatPercent(short statIndex);    // 0x5c3530
+  // Mission-scoring predicate: when bypassTileFilter == 0, keep the unit only if its
+  // order tile (tileIndex06) matches targetTile; otherwise accept unconditionally.
+  bool MatchesTargetTileOrBypass(short bypassTileFilter, short targetTile); // 0x5c3500
   // Sets or clears the bits of `mask` in field_3A. 0x004a3b30, __thiscall, 2 args.
   void SetOrClearWordMaskBits3a(short mask, bool setFlag);
 };

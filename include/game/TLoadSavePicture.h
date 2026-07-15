@@ -3,7 +3,6 @@
 #include "game/TPicture.h"
 #include "game/mfc.h"
 
-// TODO(manifest): describe TLoadSavePicture and its role. Base edge (TPicture) recovered from RTTI CRuntimeClass chain: TLoadSavePicture -> TPicture -> TControl -> TView -> TEventHandler -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x006426b8
 class TLoadSavePicture : public TPicture {
 public:
@@ -28,23 +27,23 @@ public:
   // slot 0x10 DispatchUiCommandToHandler inherited unchanged (0x48a2e0)
   // slot 0x11 vmethod_0017 inherited unchanged (0x48a310)
   virtual void ForwardParam(int param) override; // slot 0x12 0x56d1e0
-  // slot 0x13 CanHandleCityDialogActionFalse inherited unchanged (0x48a480)
+  // slot 0x13 DoIdle inherited unchanged (0x48a480)
   // slot 0x14 GetCityDialogValueDword10 inherited unchanged (0x415d50)
   // slot 0x15 SetCityDialogValueDword10 inherited unchanged (0x415d70)
   // slot 0x16 OwnerPanel inherited unchanged (0x48b180)
   // slot 0x17 vmethod_0023 inherited unchanged (0x48a530)
-  // slot 0x18 vmethod_0024 inherited unchanged (0x48a550)
-  // slot 0x19 vmethod_0025 inherited unchanged (0x48a690)
-  // slot 0x1a vmethod_0026 inherited unchanged (0x48a6b0)
+  // slot 0x18 GetDeactivateVetoCode inherited unchanged (0x48a550)
+  // slot 0x19 OnDeactivated inherited unchanged (0x48a690)
+  // slot 0x1a OnDeactivateVetoed inherited unchanged (0x48a6b0)
   // slot 0x1b HandleCityProductionNoOp inherited unchanged (0x48a650)
   // slot 0x1c DispatchUiCommand19ToParent inherited unchanged (0x48a6d0)
   // slot 0x1d DispatchCityProductionAction1A inherited unchanged (0x48a670)
   // slot 0x1e DispatchCityProductionAction1B inherited unchanged (0x48a6f0)
   // slot 0x1f ActivateCityProductionViewIfAllowed inherited unchanged (0x48a570)
-  // slot 0x20 vmethod_0080 inherited unchanged (0x48a5e0)
+  // slot 0x20 TryDeactivateActiveView inherited unchanged (0x48a5e0)
   // slot 0x21 vmethod_0081 inherited unchanged (0x48a710)
-  // slot 0x22 vmethod_0032 inherited unchanged (0x48a500)
-  // slot 0x23 vmethod_0033 inherited unchanged (0x48a4a0)
+  // slot 0x22 IsActiveView inherited unchanged (0x48a500)
+  // slot 0x23 DetachUiResourceOwnerIfMatches inherited unchanged (0x48a4a0)
   // slot 0x24 SetUiResourceOwner inherited unchanged (0x48a4d0)
   // slot 0x25 ResolveControlByTag inherited unchanged (0x48afd0)
   // slot 0x26 SwitchActiveChildAndNotify inherited unchanged (0x48af80)
@@ -137,12 +136,6 @@ public:
   unsigned char pad94[0xa8 - 0x94];
 
   TLoadSavePicture();
-
-  // 0x578c10: rasterize the owner-nation palette preview map (3x3 px per hex, 0x1950
-  // tiles) into this control's surface buffer. `tileOwnerTagTable`, when non-null, is a
-  // per-tile signed-byte owner-tag table; null falls back to the live map's
-  // terrainStateTable ownerNationTag04 bytes.
-  void RasterizeHexNeighborTerrainPaletteMap(signed char* tileOwnerTagTable);
 };
 
 ASSERT_SIZE(TLoadSavePicture, 0xa8);
@@ -154,5 +147,5 @@ void __cdecl BuildSavePathStringForMode(CString* out, int saveMode, char* label)
 void __cdecl SaveGameWithModeAndOptionalLabel(int mode, char* label);
 
 // 0x56df40: build the save path for `slot` with `label` and probe the file's metadata;
-// returns whether the save file exists (turn-event 0xE 'load' receive path). Body TODO.
+// returns whether the save file exists (turn-event 0xE 'load' receive path).
 unsigned char __cdecl BuildSaveSlotPathAndProbeMetadata(int slot, const char* label);

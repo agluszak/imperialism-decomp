@@ -7,7 +7,8 @@
 
 IMPLEMENT_DYNCREATE(TMinisterView, TView)
 
-TMinisterView::TMinisterView() {}
+// FUNCTION: IMPERIALISM 0x004f2c60
+TMinisterView::TMinisterView() : TView(), field60(0) {}
 
 // SYNTHETIC: IMPERIALISM 0x004f2c90
 // TMinisterView::`scalar deleting destructor'
@@ -19,7 +20,8 @@ undefined TMinisterView::OrphanLeaf_NoCall_Ins04_004f2ce0(short param_1) {
 }
 
 // FUNCTION: IMPERIALISM 0x004f2d10
-char TMinisterView::DispatchUiMouseEventToChildrenOrSelf_Impl(CPoint* point, int arg2, int arg3, int arg4) {
+char TMinisterView::DispatchUiMouseEventToChildrenOrSelf_Impl(CPoint* point, int arg2, int arg3,
+                                                              int arg4) {
   (void)point;
   (void)arg2;
   (void)arg3;
@@ -28,7 +30,7 @@ char TMinisterView::DispatchUiMouseEventToChildrenOrSelf_Impl(CPoint* point, int
 }
 
 // FUNCTION: IMPERIALISM 0x004f2e00
-void TMinisterView::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) { }
+void TMinisterView::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {}
 
 // FUNCTION: IMPERIALISM 0x004f2ea0
 undefined TMinisterView::OrphanLeaf_NoCall_Ins03_004f2ea0() {

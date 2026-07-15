@@ -20,12 +20,10 @@ extern char PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
 // symbols.csv). Provisional definition until the owning data block is recovered.
 short DAT_006a4520 = 0;
 
-undefined4 EnsureCdAudioDeviceHandleInitialized(void);
 undefined4 ForwardMciCommand808ToDevice(void);
-undefined4 ForwardMciStatusCommand814IgnoreFailure(void);
 undefined4 ReleaseRuntimeSelectionPeersAndResetOwner_Impl(void);
 
-extern undefined4 GenerateThreadLocalRandom15(void);
+extern "C" int __cdecl rand(void);
 // The deferred-apply timer callback (0x593210); registered by ScheduleTimerSlotCallbackWithInterval
 // as a real function pointer (its return keeps/clears the slot).
 extern undefined4 Helper_Uses_ForwardMciCommand808ToDevice_At00593210(void);
@@ -66,7 +64,7 @@ void __fastcall DestructTSoundPlayerBaseState(TSoundPlayer* player) {
 }
 
 void TSoundPlayer::EnsureCdAudioDeviceHandleInitialized() {
-  ::EnsureCdAudioDeviceHandleInitialized();
+  g_cdAudioDevice.EnsureCdAudioDeviceHandleInitialized();
 }
 
 void TSoundPlayer::ForwardMciCommand808ToDevice() {
@@ -74,13 +72,13 @@ void TSoundPlayer::ForwardMciCommand808ToDevice() {
 }
 
 BOOL TSoundPlayer::ForwardMciStatusCommand814IgnoreFailure() {
-  return static_cast<BOOL>(::ForwardMciStatusCommand814IgnoreFailure());
+  return static_cast<BOOL>(g_cdAudioDevice.ForwardMciStatusCommand814IgnoreFailure());
 }
 
 // Slot 0x13 override — pump the audio playback state machine / schedule random cues.
 
 // FUNCTION: IMPERIALISM 0x00593400
-char TSoundPlayer::CanHandleCityDialogActionFalse(int action) {
+char TSoundPlayer::DoIdle(int action) {
   (void)action;
   if (g_pSimMgr->preferenceValues[3] == 0) {
     if (this->stateByte78 != 0) {
@@ -158,7 +156,7 @@ void TSoundPlayer::SelectAndScheduleRandomAudioCue() {
   }
 
   int total = this->runtimePeerAt70->QueryPendingPlaybackCountSlot28();
-  int pick = static_cast<int>(GenerateThreadLocalRandom15()) % total + 1;
+  int pick = static_cast<int>(rand()) % total + 1;
   int chosen = this->runtimePeerAt70->SoundChannelNodeDummy04(pick);
   this->runtimePeerAt70->SoundChannelNodeDummy2C(pick);
 

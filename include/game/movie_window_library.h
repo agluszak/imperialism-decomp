@@ -7,7 +7,19 @@
 #define NOAVIFILE
 #include <vfw.h>
 
+// Small non-polymorphic state block owned by TMovieView (this->movieWindowState). Every
+// member here is a genuine __thiscall method on this struct in the original (verified via
+// listing at 0x492f60/0x492fa0/0x492fc0/0x493090/0x4930d0 — each reads/writes through
+// `in_ECX`, not an explicit pointer argument), not a free function taking the state as a
+// parameter.
 struct MciMovieWindowState {
+  MciMovieWindowState(HWND parentHwnd); // 0x492f60
+
+  void Close();                         // 0x492fa0 — send WM_CLOSE to hwnd
+  bool OpenAndCenter(LPCSTR moviePath); // 0x492fc0 — MCIWNDM_OPENA, center on success
+  bool Play();                          // 0x493090 — MCI_PLAY
+  bool Stop();                          // 0x4930d0 — MCI_STOP (also used to skip)
+
   HWND hwnd;
   LRESULT lastResult;
 };

@@ -6,7 +6,6 @@
 // Forward declarations for types referenced by generated signatures.
 class TStream;
 
-// TODO(manifest): describe TAdorner and its role. Base edge (TObject) recovered from RTTI CRuntimeClass chain: TAdorner -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x0064bdd0
 class TAdorner : public TObject {
 public:
@@ -29,7 +28,6 @@ public:
   virtual undefined WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049da50(); // slot 0x0f 0x49da50
   virtual undefined WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049da80(); // slot 0x10 0x49da80
 // === END GENERATED DECLS (TAdorner) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TAdorner 0xCTOR`).
 
   TAdorner();
 };

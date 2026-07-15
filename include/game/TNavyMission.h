@@ -16,12 +16,13 @@ public:
   int navyField1c;                     // +0x1c
   TObject* navyField20;                // +0x20
   TMapOrderChildLinkNode* orderList24; // +0x24 -- head of child order-node chain
-  float navyField28;                   // +0x28
-  float resourceWeights2c[4];          // +0x2c
+  int navyState28;            // +0x28 target-selection state (0 -> zone18 active, 1..2 -> zone14)
+  float resourceWeights2c[4]; // +0x2c
 
   TNavyMission();
   TNavyMission(TZone* targetZone);
 
+  virtual ~TNavyMission() override;                // slot 0x01 dtor 0x535590 / ??_G 0x535560
   virtual void WriteTo(TStream* stream) override;  // slot 0x05
   virtual void ReadFrom(TStream* stream) override; // slot 0x06
   virtual void
@@ -40,10 +41,11 @@ public:
   virtual float ReturnZeroFloatSlot68() override;    // slot 0x68 0x537f40
   virtual float
   ReturnZeroFloatSlot6C() override; // slot 0x6c 0x5378c0 -- dot product with baseline profile
-  virtual float
-  ReturnZeroFloatSlot74() override; // slot 0x74 0x537270 -- match delta vs candidate navy order
-  virtual float
-  ReturnZeroFloatSlot7C() override; // slot 0x7c 0x537610 -- order penalty vs target profile
+  virtual float ReturnZeroFloatSlot74(
+      void* candidate) override; // slot 0x74 0x537270 -- match delta vs candidate navy order
+  virtual float ReturnZeroFloatSlot7C(
+      void* candidate,
+      void* targetProfile) override; // slot 0x7c 0x537610 -- order penalty vs target profile
   virtual void
   NoOpSlot84(int a,
              int b) override; // slot 0x84 0x536780 -- attach order child as queued and notify
@@ -55,14 +57,25 @@ public:
       override; // slot 0x98 0x536740 -- clears queued order links/owner pointers, returns true
 
   // TNavyMission-introduced virtuals (TMission abstract slots 0x27+ / offset 0x9c+).
-  virtual void NoOpSlot9C();                             // slot 0x27 0x5354c0
-  virtual void RefreshMissionPortZoneContextForNation(); // slot 0x28 0x536fa0
+  // `pMapOrderEntry` is opaque here (RET 4 confirms one stack arg, real base body is a
+  // pure no-op) -- overrides interpret it as the map-order entry the enclosing
+  // MissionSlot44 dispatch passed (navyField20), concretely a TTaskForce* in every
+  // known override (TControlSeaZoneMission/TBlockadePortMission/TBeachheadMission).
+  virtual void NoOpSlot9C(void* pMapOrderEntry); // slot 0x27 0x5354c0
+  // Returns the best neighbor port zone for the current nation (delegates to
+  // targetZone14->SelectBestPrimaryNeighborForNationDiplomacyMask); every override
+  // (TControlSeaZoneMission/TScatteredShipsMission) also returns a TZone*, and
+  // TControlSeaZoneMission::GetReplacementSlot48 consumes the caller's result, so this
+  // could not stay void (confirmed by 0x538900's disassembly storing EAX back into
+  // targetZone18).
+  virtual TZone* RefreshMissionPortZoneContextForNation(); // slot 0x28 0x536fa0
   virtual void
   ConsolidateMissionOrderEntriesByTargetAndQueue(int* pContextAnchor); // slot 0x29 0x5371d0
   virtual void
   QueueMissionOrdersByPriorityForContext(int pContextAnchor,
                                          int* ppSelectedChildNode); // slot 0x2a 0x537090
-  virtual int GetMissionOrderBudgetByMode(int mode);                // slot 0x2b 0x537060
+  // Selects the active target zone from lifecycle state28 (0 -> zone18, 1..2 -> zone14).
+  virtual TZone* GetActiveTargetZoneByState28(); // slot 0x2b 0x537060
 
   static float ComputeOrderDistributionSimilarityScoreForExactSourceNation(int sourceNation,
                                                                            TZone* nodeContext);

@@ -7,7 +7,8 @@
 
 IMPLEMENT_DYNCREATE(TPictureText, TStaticText)
 
-TPictureText::TPictureText() {}
+// FUNCTION: IMPERIALISM 0x005b5300
+TPictureText::TPictureText() : TStaticText() {}
 
 // SYNTHETIC: IMPERIALISM 0x005b5330
 // TPictureText::`scalar deleting destructor'

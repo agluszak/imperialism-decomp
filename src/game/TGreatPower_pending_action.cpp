@@ -44,7 +44,7 @@ void TGreatPower::ExecuteNationPendingActionStateMachine(void) {
   if (this->serializedStatusFlags[1] == 0x32) {
     TMilitaryUnit* militaryOrder = new TMilitaryUnit();
     int nodeContext = this->GetHomeRegionCityRecordIndex();
-    short capValue = g_pCityOrderCapabilityState->nationCapRows1e8[nationSlot].cap;
+    short capValue = g_pCityOrderCapabilityState->nationCapRows1e8[nationSlot].slots[9];
     militaryOrder->InitializeRecruitOrderState(capValue, nodeContext, nationSlot);
     this->DispatchTurnOrderActionSlotB0(3, capValue, 1);
   }

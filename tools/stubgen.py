@@ -249,7 +249,7 @@ def chunked_rows(
 
 # Incremental-link (ILT) jmp-thunk table of the original binary: 5-byte `jmp target`
 # linker stubs, never real functions. Legacy manual code still links against a few of
-# these via the extern-thunk pattern (Hard Rule 9), so their stub DEFINITIONS must
+# these via the legacy free-function extern-thunk pattern, so their stub DEFINITIONS must
 # exist — but they must NOT carry a `// FUNCTION:` annotation: an entity at a thunk
 # address blocks reccmp's automatic thunk-to-target resolution (it broke 364/379
 # vtable comparisons when annotated).

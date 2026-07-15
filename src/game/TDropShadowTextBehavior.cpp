@@ -7,7 +7,9 @@
 
 IMPLEMENT_DYNCREATE(TDropShadowTextBehavior, TBehavior)
 
-TDropShadowTextBehavior::TDropShadowTextBehavior() {}
+// FUNCTION: IMPERIALISM 0x004b10a0
+TDropShadowTextBehavior::TDropShadowTextBehavior()
+    : TBehavior(), field10(0), field11(0), field12(0), field13(0) {}
 
 // SYNTHETIC: IMPERIALISM 0x004b10d0
 // TDropShadowTextBehavior::`scalar deleting destructor'

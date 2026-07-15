@@ -54,4 +54,4 @@ void TCommand::NextDiplomacyCommandVtableSlotE8_NotifyOwnerSlot94() {
 }
 
 // FUNCTION: IMPERIALISM 0x00487a00
-void TCommand::OrphanRetStub_00487a00() {}
+void TCommand::DoIt() {}

@@ -26,7 +26,7 @@
 #include "game/TMultiplayerMgr.h"
 #include "game/TShip.h"
 
-undefined4 GenerateThreadLocalRandom15(void);
+extern "C" int __cdecl rand(void);
 
 // kNationSlotCount (0x17) comes from TDiplomacyMgr.h.
 static const int kAidAllocationRowCount = 0x10;
@@ -180,7 +180,7 @@ void TAutoGreatPower::AssignNeedSlotFromSourceSlot19C(short needSlot, short sour
                                 ->relationStandingScoreMatrix79c[this->nationSlot * 0x17 +
                                                                  static_cast<short>(sourceNation)];
       double scaledScore = static_cast<double>(relationScore) * g_DAT_00653fc0_Value_00653FC0;
-      int roll = GenerateThreadLocalRandom15();
+      int roll = rand();
       if (static_cast<double>(roll) > scaledScore * g_DAT_00653fc8_Value_00653FC8) {
         this->OrphanCallChain_C4_I28_004e75c0(needSlot);
       }
@@ -306,13 +306,14 @@ void TAutoGreatPower::ClearDiplomacyState1c6Block(void) {
 // FUNCTION: IMPERIALISM 0x004e7af0
 void TAutoGreatPower::BeginTurnDiplomacyPrePassSlot1c8() {
   if (this->city != 0) {
-    this->foreignMinister->Call58();
+    this->foreignMinister->RefreshForeignMinisterStateByLocalizationMode();
   }
 }
 
 // FUNCTION: IMPERIALISM 0x004e7b20
-bool TAutoGreatPower::ApplyDiplomacyPolicyStateForTargetWithCostChecks(int arg1, int arg2) {
-  return TGreatPower::ApplyDiplomacyPolicyStateForTargetWithCostChecks(arg1, arg2);
+bool TAutoGreatPower::ApplyDiplomacyPolicyStateForTargetWithCostChecks(short targetClass,
+                                                                       short policyCode) {
+  return TGreatPower::ApplyDiplomacyPolicyStateForTargetWithCostChecks(targetClass, policyCode);
 }
 
 // FUNCTION: IMPERIALISM 0x004e7b50
@@ -348,7 +349,7 @@ void TAutoGreatPower::ProcessPendingDiplomacyProposalQueue(void) {
   int rowIndex = 1;
   if (this->proposalQueue->GetSize() >= rowIndex) {
     do {
-      this->foreignMinister->MinisterSlot1F(static_cast<short>(rowIndex));
+      this->foreignMinister->ValidateProposalSelectionAndQueueEvent1C(static_cast<short>(rowIndex));
       ++rowIndex;
     } while (rowIndex <= this->proposalQueue->GetSize());
   }

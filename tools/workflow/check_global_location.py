@@ -11,13 +11,17 @@ import sys
 from pathlib import Path
 from typing import List, Tuple
 
+from tools.common.file_scan import is_excluded_scan_path
+
 
 def find_global_markers(source_dir: Path) -> List[Tuple[Path, int, str]]:
     """Find all // GLOBAL: markers in source files."""
     violations = []
     global_pattern = re.compile(r'^\s*//\s*GLOBAL:\s*IMPERIALISM\s+0x[0-9a-fA-F]+')
-    
+
     for cpp_file in source_dir.rglob("*.cpp"):
+        if is_excluded_scan_path(cpp_file):
+            continue
         if cpp_file.name == "global_data_tables.cpp":
             continue  # This is the allowed location
             
@@ -37,6 +41,8 @@ def check_global_declarations(header_dir: Path) -> List[Tuple[Path, int, str]]:
     extern_pattern = re.compile(r'^\s*extern\s+\w+.*\s+g_\w+')
     
     for header_file in header_dir.rglob("*.h"):
+        if is_excluded_scan_path(header_file):
+            continue
         if header_file.name == "global_data_tables.h":
             continue  # This is the allowed location
         if header_file.name.startswith("mfc_"):

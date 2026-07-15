@@ -14,6 +14,9 @@
 #include "game/ui_widget_thunks.h"
 #include "game/bitmap_descriptor_helpers.h"
 
+// SYNTHETIC: IMPERIALISM 0x004a03f0
+// TTransFocusAnimation::CreateObject
+
 IMPLEMENT_DYNCREATE(TTransFocusAnimation, TFocusAnimation)
 
 // Default constructor for MFC dynamic creation

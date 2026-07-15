@@ -701,7 +701,7 @@ void TMultiplayerMgr::CreateCivilianWorkOrdersForSelectedNations(TStream* stream
   }
 }
 
-extern undefined4 GenerateThreadLocalRandom15(void);
+extern "C" int __cdecl rand(void);
 
 // Replace the nation in `nationSlot` with a freshly rolled AI (TAutoGreatPower):
 // broadcast the 'uhed' (event-0x1F) notice when hosting, deep-copy the vacating
@@ -734,9 +734,9 @@ void TMultiplayerMgr::ReplaceNationStateForSlotAndRefreshStatus(int nationSlot) 
     }
     TGreatPower* oldNation = g_apNationStates[nationSlot];
     if (oldNation != 0 && oldNation->diplomacyEligibilityA0 != 0 && isLocalNation == 0) {
-      int policyDice5 = GenerateThreadLocalRandom15() % 5;
-      int policyDice6 = GenerateThreadLocalRandom15() % 6;
-      int policyDice4 = GenerateThreadLocalRandom15() % 4;
+      int policyDice5 = rand() % 5;
+      int policyDice6 = rand() % 6;
+      int policyDice4 = rand() % 4;
       TAutoGreatPower* newNation = new TAutoGreatPower();
       newNation->InitializeNationMinisterSubsystemsByPolicyIds(
           nationSlot, 2, static_cast<short>(policyDice4), static_cast<short>(policyDice6),
@@ -756,7 +756,7 @@ void TMultiplayerMgr::ReplaceNationStateForSlotAndRefreshStatus(int nationSlot) 
              sizeof(newNation->unitNameOrdinalByType));
       newNation->unitNameCounter84 = oldNation->unitNameCounter84;
       newNation->homeRegionIndex = oldNation->homeRegionIndex;
-      newNation->serializedField8c = oldNation->serializedField8c;
+      newNation->overlayAnchorTileCache8c = oldNation->overlayAnchorTileCache8c;
       TSortedList* ownedRegions = newNation->ownedRegionList;
       newNation->ownedRegionList = oldNation->ownedRegionList;
       oldNation->ownedRegionList = ownedRegions;

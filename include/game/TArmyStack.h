@@ -13,7 +13,6 @@ struct TArmyStackUnitNode {
   TArmyStackUnitNode* next; // +0x04
 };
 
-// TODO(manifest): describe TArmyStack and its role. Base edge (TObject) recovered from RTTI CRuntimeClass chain: TArmyStack -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x0064ca38
 class TArmyStack : public TObject {
 public:
@@ -32,9 +31,11 @@ public:
   // Field layout from ProcessTileUnitListsAndApplyRandomStatusUpdates's construction site
   // (0x4a1f80, `new TArmyStack()` + scatter-init) and OrphanCallChain_C12_I108_004a2390's
   // (0x4a2390) reads. TObject's own vptr occupies the first 4 bytes.
-  short field4;                // +0x04 -- zeroed at construction
-  short field6;                // +0x06 -- zeroed at construction
-  unsigned char categoryFlag8; // +0x08 -- compared against TArmyMgr::perTileOwnerNationCodeCache1c
+  short field4; // +0x04 -- zeroed at construction
+  short field6; // +0x06 -- zeroed at construction
+  // +0x08 -- region/owner category; signed (indexed/compared via movsx/jge in the
+  // original) and compared against TArmyMgr::perTileOwnerNationCodeCache1c.
+  signed char categoryFlag8;
   // +0x09 -- cached g_anFortLevelAttackerPenaltyPercentByLevel lookup for the
   // most-recently-processed unit in UpdateDualLinkedEntryMetersAndBlinkState's Phase 1/2
   // scan; that scan stops early once this hits 0.
@@ -60,13 +61,12 @@ public:
   // 0x004a82b0, __thiscall, 1 arg.
   void ApplyMeterGrowthToEligibleUnits(bool boosted);
   // Walks the chain accumulating a weighted meter sum and eligible-entry count into the
-  // two out-params, seeded by `counter`. 0x004a7e70, 355 bytes. TODO stub body (not yet
-  // ported); signature verified via TArmyMgr::UpdateDualLinkedEntryMetersAndBlinkState's
-  // callsite disassembly.
+  // two out-params, seeded by `counter`. 0x004a7e70, 355 bytes; signature verified via
+  // TArmyMgr::UpdateDualLinkedEntryMetersAndBlinkState's callsite disassembly.
   void AccumulateWeightedMeterAndCountFromEligibleLinkedEntries(int* outWeightedSum, int* outCount,
                                                                 int counter);
   // Applies a randomized decay to eligible entries using the accumulated weighted sum/
-  // count from the method above. 0x004a8040, 482 bytes. TODO stub body (not yet ported).
+  // count from the method above. 0x004a8040, 482 bytes.
   void ApplyRandomizedMeterDecayToEligibleLinkedEntries(int weightedSum, int count, int counter);
   // Re-initializes the stack for one tactical-battle side: zeroes field4/field6/fieldA/
   // fieldC and stores the owner nation index, owner nation code, and originating tile.

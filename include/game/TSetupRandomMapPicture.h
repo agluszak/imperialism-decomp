@@ -3,7 +3,6 @@
 #include "game/TNoHilitePicture.h"
 #include "game/mfc.h"
 
-// TODO(manifest): describe TSetupRandomMapPicture and its role. Base edge (TNoHilitePicture) recovered from RTTI CRuntimeClass chain: TSetupRandomMapPicture -> TNoHilitePicture -> TPicture -> TControl -> TView -> TEventHandler -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x006621e0
 class TSetupRandomMapPicture : public TNoHilitePicture {
 public:
@@ -28,23 +27,23 @@ public:
   // slot 0x10 DispatchUiCommandToHandler inherited unchanged (0x48a2e0)
   // slot 0x11 vmethod_0017 inherited unchanged (0x48a310)
   virtual void ForwardParam(int param) override; // slot 0x12 0x5782f0
-  // slot 0x13 CanHandleCityDialogActionFalse inherited unchanged (0x48a480)
+  // slot 0x13 DoIdle inherited unchanged (0x48a480)
   // slot 0x14 GetCityDialogValueDword10 inherited unchanged (0x415d50)
   // slot 0x15 SetCityDialogValueDword10 inherited unchanged (0x415d70)
   // slot 0x16 OwnerPanel inherited unchanged (0x48b180)
   // slot 0x17 vmethod_0023 inherited unchanged (0x48a530)
-  // slot 0x18 vmethod_0024 inherited unchanged (0x48a550)
-  // slot 0x19 vmethod_0025 inherited unchanged (0x48a690)
-  // slot 0x1a vmethod_0026 inherited unchanged (0x48a6b0)
+  // slot 0x18 GetDeactivateVetoCode inherited unchanged (0x48a550)
+  // slot 0x19 OnDeactivated inherited unchanged (0x48a690)
+  // slot 0x1a OnDeactivateVetoed inherited unchanged (0x48a6b0)
   // slot 0x1b HandleCityProductionNoOp inherited unchanged (0x48a650)
   // slot 0x1c DispatchUiCommand19ToParent inherited unchanged (0x48a6d0)
   // slot 0x1d DispatchCityProductionAction1A inherited unchanged (0x48a670)
   // slot 0x1e DispatchCityProductionAction1B inherited unchanged (0x48a6f0)
   // slot 0x1f ActivateCityProductionViewIfAllowed inherited unchanged (0x48a570)
-  // slot 0x20 vmethod_0080 inherited unchanged (0x48a5e0)
+  // slot 0x20 TryDeactivateActiveView inherited unchanged (0x48a5e0)
   // slot 0x21 vmethod_0081 inherited unchanged (0x48a710)
-  // slot 0x22 vmethod_0032 inherited unchanged (0x48a500)
-  // slot 0x23 vmethod_0033 inherited unchanged (0x48a4a0)
+  // slot 0x22 IsActiveView inherited unchanged (0x48a500)
+  // slot 0x23 DetachUiResourceOwnerIfMatches inherited unchanged (0x48a4a0)
   // slot 0x24 SetUiResourceOwner inherited unchanged (0x48a4d0)
   // slot 0x25 ResolveControlByTag inherited unchanged (0x48afd0)
   // slot 0x26 SwitchActiveChildAndNotify inherited unchanged (0x48af80)
@@ -125,19 +124,24 @@ public:
   // slot 0x71 ResetPictureResourceEntry inherited unchanged (0x48f520)
   // slot 0x72 SetPictureResourceIdAndRefresh inherited unchanged (0x48f570)
   // slot 0x73 UniversityDialogMethod_00405623 inherited unchanged (0x572bb0)
-  virtual undefined ApplyNationSelectionAndMaybePostTurnEvent5E4(); // slot 0x74 0x577e40
-  virtual undefined PostTurnEvent5DCOrResetLocalUiState();          // slot 0x75 0x5781f0
+  virtual void StartGame();  // slot 0x74 0x577e40
+  virtual void ExitScreen(); // slot 0x75 0x5781f0
   // === END GENERATED DECLS (TSetupRandomMapPicture) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TSetupRandomMapPicture 0xCTOR`).
 
   TSetupRandomMapPicture();
 
-  CString countryName94;  // 0x94 — constructed empty by the ctor (0x576d80)
-  unsigned char flag98;   // 0x98 — ctor zeroes it
-  unsigned char pad99[3]; // 0x99
-  int field9C;            // 0x9c — not initialized by the ctor
-  int fieldA0;            // 0xa0
-  unsigned char flagA4;   // 0xa4 — ctor zeroes it
-  unsigned char padA5[3]; // 0xa5
+  void RecheckCountryName();                        // 0x576fe0
+  void GroundControlToMajorTom(unsigned char mode); // 0x578230
+  void MajorTomToGroundControl(unsigned char mode); // 0x578330
+  void SpinYourGlobe();                             // 0x578680
+
+  CString planetSeed94;                // 0x94 — random-map seed text
+  unsigned char wrapHorizontally98;    // 0x98 — copied to TMapMgr+0x20
+  unsigned char pad99;                 // 0x99
+  short selectedNationSlot9A;          // 0x9a — selected great-power slot
+  unsigned int lastGlobeTick9C;        // 0x9c — spinner timestamp
+  int globeFrameA0;                    // 0xa0 — 0..23 spinner frame
+  unsigned char countryControlReadyA4; // 0xa4 — ctor zeroes it
+  unsigned char padA5[3];              // 0xa5
 };
 ASSERT_SIZE(TSetupRandomMapPicture, 0xa8);

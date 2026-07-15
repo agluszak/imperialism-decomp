@@ -3,7 +3,6 @@
 #include "game/TLineData.h"
 #include "game/mfc.h"
 
-// TODO(manifest): describe TTradeTotalsLine and its role. Base edge (TLineData) recovered from RTTI CRuntimeClass chain: TTradeTotalsLine -> TLineData -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x0066e1f8
 class TTradeTotalsLine : public TLineData {
 public:
@@ -21,7 +20,6 @@ public:
   virtual undefined OrphanRetStub_0056f460() override; // slot 0x0a 0x5c19c0
   // slot 0x0b OrphanRetStub_0056f480 inherited unchanged (0x56f480)
 // === END GENERATED DECLS (TTradeTotalsLine) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TTradeTotalsLine 0xCTOR`).
 
   TTradeTotalsLine();
 };

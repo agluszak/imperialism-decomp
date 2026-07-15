@@ -3,7 +3,7 @@
 #include "game/TEventHandler.h"
 #include "game/TView.h"
 #include "game/TBehavior.h"
-#include "game/TCursorControlPanel.h"
+#include "game/TInfoBarText.h"
 #include "game/TDialogBehavior.h"
 #include "game/TWindow.h"
 #include "game/ui_resource_pool.h"
@@ -327,7 +327,7 @@ void TView::SetState(int state, int refreshFlag) {
 // FUNCTION: IMPERIALISM 0x0048b0b0
 void TView::Free() {
   while (childList44 != 0) {
-    TEventHandler* child = static_cast<TEventHandler*>(childList44->GetTail());
+    TEventHandler* child = static_cast<TEventHandler*>(childList44->GetHead());
     child->Free();
   }
   if (ownerContext != 0) {
@@ -740,7 +740,7 @@ char TView::HasRenderableParentAndContent() {
 }
 
 // FUNCTION: IMPERIALISM 0x0048c080
-void TView::HandleCursorHoverSelectionByChildHitTestAndFallback(CPoint* point, int hitArg) {
+void TView::HandleCursorHoverSelectionByChildHitTestAndFallback(CPoint* point, RgnHandle hitArg) {
   if (HasRenderableParentAndContent() != 0) {
     if (childList44 != 0) {
       POSITION pos = childList44->GetHeadPosition();
@@ -758,9 +758,7 @@ void TView::HandleCursorHoverSelectionByChildHitTestAndFallback(CPoint* point, i
     }
   }
 
-  // TODO(typing): hitArg is really a RgnHandle threaded through the whole
-  // slot-0x2c/0x35 hover family (200+ files); retype the family in one pass.
-  if (EmptyRgn(reinterpret_cast<RgnHandle>(hitArg)) != 0 && Refresh() != 0) {
+  if (EmptyRgn(hitArg) != 0 && Refresh() != 0) {
     HandleCursorHoverFallback(point, hitArg);
   }
 }
@@ -782,7 +780,7 @@ void TView::EnableAndProcessFlag(CString sharedString) {
 }
 
 // FUNCTION: IMPERIALISM 0x0048c250
-void TView::HandleCursorHoverFallback(CPoint* point, int hitArg) {
+void TView::HandleCursorHoverFallback(CPoint* point, RgnHandle hitArg) {
   if (field5c != 0) {
     RECT rect;
     BuildRectFromSlot158(&rect);
@@ -794,7 +792,7 @@ void TView::HandleCursorHoverFallback(CPoint* point, int hitArg) {
   }
   if (GetField4E() != 0xffff) {
     CPoint transformedPoint = TransformPointViaSlot138(point);
-    if (PtInRgn(&transformedPoint, reinterpret_cast<RgnHandle>(hitArg))) {
+    if (PtInRgn(&transformedPoint, hitArg)) {
       void* ptr = AssertQuickDrawFlag6A1DCCNonZero(GetField4E());
       AssertQuickDrawFlag6A1DC8NonZero(*reinterpret_cast<void**>(ptr));
       return;
@@ -980,87 +978,8 @@ void TView::ReturnFromUiSlot63(int arg1, int arg2) {
 // cannot bind two original addresses to one recomp symbol, so the twins stay
 // stub-owned; their symbols.csv rows carry the truthful `TView::~TView` label.
 
-// FUNCTION: IMPERIALISM 0x00607318
-UINT TView::GetStyle() {
-  if (frameHeight38 != 0) {
-    // TODO(class-recovery): frameHeight38, when non-null, is some other polymorphic object
-    // whose own vtable slot 0x1e is tail-called here for the style value; that class
-    // isn't recovered yet. Falls back to the window-handle path below in the meantime
-    // (identical to the frameHeight38 == 0 case). Dead for TView::RunModalLoop's movie path
-    // (loopKind == 0 never reaches here).
-  }
-  return GetWindowLong(reinterpret_cast<HWND>(controlTag), GWL_STYLE);
-}
-
-// MFC-private message sent by RunModalLoop to itself each idle cycle (afxpriv.h
-// WM_KICKIDLE, not vendored here).
-namespace {
-const UINT kMsgKickIdle = 0x036a;
-}
-
-// FUNCTION: IMPERIALISM 0x0060a60a
-int TView::RunModalLoop(unsigned char loopKind) {
-  bool idleModeActive = true;
-  int idleMessageCount = 0;
-  bool showOnFirstNonInputMessage = false;
-  if ((loopKind & 4) != 0) {
-    showOnFirstNonInputMessage = (GetStyle() & WS_VISIBLE) == 0;
-  }
-
-  HWND parentHwnd = GetParent(reinterpret_cast<HWND>(controlTag));
-  ownerLocalX |= 0x18;
-
-  CWinThread* thread = AfxGetThread();
-  LPMSG msg = &thread->m_msgCur;
-
-  for (;;) {
-    while (!idleModeActive || PeekMessageA(msg, nullptr, 0, 0, PM_NOREMOVE) != 0) {
-      if (!thread->PumpMessage()) {
-        AfxPostQuitMessage(0);
-        return -1;
-      }
-
-      if (showOnFirstNonInputMessage && (msg->message == 0x118 || msg->message == WM_SYSKEYDOWN)) {
-        // Original calls CWnd::ShowWindow/UpdateWindow directly on `this`; modeled here
-        // against the hosted native window until TView's relationship to that call is
-        // understood (dead for loopKind == 0, the movie path).
-        if (nativeWindow50 != 0) {
-          nativeWindow50->ShowWindow(SW_SHOWNORMAL);
-        }
-        UpdateWindow(reinterpret_cast<HWND>(controlTag));
-        showOnFirstNonInputMessage = false;
-      }
-
-      if (!ContinueModal()) {
-        ownerLocalX &= ~0x18;
-        return absoluteX;
-      }
-
-      if (thread->IsIdleMessage(msg)) {
-        idleModeActive = true;
-        idleMessageCount = 0;
-      }
-    }
-
-    if (showOnFirstNonInputMessage) {
-      if (nativeWindow50 != 0) {
-        nativeWindow50->ShowWindow(SW_SHOWNORMAL);
-      }
-      UpdateWindow(reinterpret_cast<HWND>(controlTag));
-      showOnFirstNonInputMessage = false;
-    }
-
-    if ((loopKind & 1) == 0 && parentHwnd != 0 && idleMessageCount == 0) {
-      SendMessageA(parentHwnd, WM_ENTERIDLE, 0, static_cast<LPARAM>(controlTag));
-    }
-
-    if ((loopKind & 2) == 0) {
-      const int currentIdleCount = idleMessageCount++;
-      if (SendMessageA(reinterpret_cast<HWND>(controlTag), kMsgKickIdle, 0, currentIdleCount) !=
-          0) {
-        continue;
-      }
-    }
-    idleModeActive = false;
-  }
-}
+// 0x00607318 CWnd::GetStyle and 0x0060a60a CWnd::RunModalLoop were byte-for-byte MFC
+// library methods hand-ported onto TView (both matched poorly, 24-40%). Retired to
+// // LIBRARY: (see config/msvc500_library_overrides.csv); RunModalLoop's one caller
+// (TModalTemplateDialog::FinalizeModalDialogAndRestoreOwnerFocus) now calls the real
+// CWnd::RunModalLoop on the CWnd base. GetStyle's only caller was RunModalLoop itself.

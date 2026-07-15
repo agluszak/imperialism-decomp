@@ -24,9 +24,6 @@
 #include "game/TViewMgr.h"
 #include "game/global_data_tables.h"
 
-extern "C" char DAT_006a43f0;
-extern "C" char DAT_006a43c0;
-
 extern undefined4 RefreshNationAdvisorLabelStrings(void);
 extern undefined4 ProcessTurnInstructionStreamAndFinalizePhase(void);
 extern undefined4 ShowTurnAlertsForActiveNation(void);
@@ -35,7 +32,6 @@ extern undefined4 RebuildNationRankingDataAndUiCache(void);
 extern undefined4 UpdateCityOrderCapabilityUnlockProgress(void);
 extern undefined4 ConsumeFirstPendingAbilityUnlock(void);
 extern undefined4 RefreshNavyOrderCycleAndClearReadyFlags(void);
-extern undefined4 RecomputeTileStrategicScoreHeatmap(void);
 extern undefined4 RecomputeNationOrderPriorityMetrics(void);
 extern undefined4 RemoveNationSlotAndNotifyPeers(void);
 extern undefined4 SetOutputDevice(void);
@@ -105,8 +101,8 @@ static inline short ReadCityOrderCapabilityField262(void) {
   if (g_pCityOrderCapabilityState == nullptr) {
     return 0;
   }
-  // 0x262 = nationCapRows1e8[6].caps[1] ((0x262-0x1e8) = 122 = 6*sizeof(NationCapRow) + 2).
-  return g_pCityOrderCapabilityState->nationCapRows1e8[6].caps[1];
+  // 0x262 is the active-tech marker short sitting just past the nationCapRows table.
+  return g_pCityOrderCapabilityState->marker262;
 }
 
 static inline void HandleTurnEndSavePaths(TSimMgr* simMgr) {
@@ -137,7 +133,7 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
   switch (turnStateCode) {
   case 1:
     turnStateCode = 3;
-    if (DAT_006a43c0 == 0) {
+    if (g_bTurnFlowBootstrapComplete == 0) {
       // Verified against 0x0057daf5: real event code is 0x11f8, payload 0, no null
       // guard on g_pUiRuntimeContext (matches the original — see heuristics for the
       // full re-verification note on this switch).
@@ -156,7 +152,8 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
       if (nation == nullptr) {
         continue;
       }
-      if (nation->ShouldDispatchImmediatelySlot28() == 0 && DAT_006a43f0 == 0) {
+      if (nation->ShouldDispatchImmediatelySlot28() == 0 &&
+          g_bMultiplayerScenarioSetupActive == 0) {
         nation->SetHomeCityTileAndDisplayName(-1, 0);
       }
     }
@@ -167,7 +164,7 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
         activeNation->ResetDiplomacyNeedSlots7012AndRefreshIfModeGateMatches();
       }
     }
-    if (DAT_006a43f0 == 0) {
+    if (g_bMultiplayerScenarioSetupActive == 0) {
       if (stateFlag114 == 0) {
         if (redrawEnabled == 0) {
           RefreshNationAdvisorLabelStrings();
@@ -197,7 +194,7 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
       g_pSimMgr->RebuildGlobalOrderManagersAndCapabilityState(1);
       g_pSimMgr->RebuildMapContextAndGlobalMapState(1, s_Chunk_00698C0C, 1);
     }
-    if (DAT_006a43f0 != 0) {
+    if (g_bMultiplayerScenarioSetupActive != 0) {
       break;
     }
     // Verified against 0x0057db53: real TSimMgr thiscall on `this` this time.
@@ -531,7 +528,7 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
     turnStateCode = 0xd;
     RefreshNavyOrderCycleAndClearReadyFlags();
     if (redrawEnabled != 2) {
-      RecomputeTileStrategicScoreHeatmap();
+      g_pGlobalMapState->RecomputeTileStrategicScoreHeatmap();
       RecomputeNationOrderPriorityMetrics();
       for (short nationSlot = 0; nationSlot < 7; ++nationSlot) {
         if (nationSlot == -1 || g_apTerrainTypeDescriptorTable[nationSlot] == nullptr) {

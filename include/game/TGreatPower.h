@@ -209,11 +209,12 @@ public:
   virtual void ReadTrackedSlotEntryFields(short slotIndex, short ordinal, short* outKind,
                                           short* outValue, short* outTargetNation, int* outPayload);
   virtual void AssignPayloadToTrackedSlotEntryMatchingField2(int targetSlot, int matchKey,
-                                                             int payload);           // slot 0x70
-  virtual void ClearDiplomacyState1c6Block(void);                                    // index 113
-  virtual void BeginTurnDiplomacyPrePassSlot1c8();                                   // index 114
-  virtual void ResetDiplomacyPolicyAndGrantEntriesPreserveRecurringGrants(void);     // index 115
-  virtual bool ApplyDiplomacyPolicyStateForTargetWithCostChecks(int arg1, int arg2); // index 116
+                                                             int payload);       // slot 0x70
+  virtual void ClearDiplomacyState1c6Block(void);                                // index 113
+  virtual void BeginTurnDiplomacyPrePassSlot1c8();                               // index 114
+  virtual void ResetDiplomacyPolicyAndGrantEntriesPreserveRecurringGrants(void); // index 115
+  virtual bool ApplyDiplomacyPolicyStateForTargetWithCostChecks(short targetClass,
+                                                                short policyCode);   // index 116
   virtual bool SetDiplomacyGrantEntryForTargetAndUpdateTreasury(int arg1, int arg2); // index 117
   virtual void
   RevokeDiplomacyGrantForTargetAndAdjustInfluenceSlot1d8(int sourceNation); // index 118
@@ -297,7 +298,7 @@ public:
                                                                     int policyCode,
                                                                     int sourceNationSlot);
   virtual void NoOpSlotA2(void); // body 0x004e1f20
-  // slot 0xa3 — body 0x004e1f40 (not yet ported); war-commitment threshold consumed by
+  // slot 0xa3 — body 0x004e1f40; war-commitment threshold consumed by
   // slot 0x9e (compared against ComputeMinisterSkillFloatSlot8C).
   virtual float ComputeWarThresholdSlotA3(int targetNation);
   virtual void PruneInvalidTrackedEntriesAndNotifyOwner(); // slot 0xa4 — body 0x004e2190
@@ -452,4 +453,11 @@ public:
   TCity* GetCityState(void) {
     return city;
   }
+
+  // Writes `value` into a per-port-zone-context byte flag array starting at this+0xaf0
+  // (region not otherwise recovered yet); `contextOrdinal` is a TZone::GetContextOrdinal-
+  // OrInvalid() result. Called from TControlSeaZoneMission::GetReplacementSlot48's
+  // terrain-coverage-not-found path (0x5389a9) to clear this nation's flag for the
+  // target port zone's context ordinal.
+  void SetByteFlagAtOffsetAF0ByIndex(int contextOrdinal, char value); // 0x4e8bf0
 };

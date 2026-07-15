@@ -94,11 +94,27 @@ static __inline void UpdatePaletteIndexWithFallback(int paletteIndex) {
 // left unmodeled. 0x004950f0
 void SetQuickDrawFillColorFromPaletteIndex(unsigned short paletteIndex);
 
-// Selects the cached measure-font, draws a single-space overlay via CDC::ExtTextOut at
-// the resolved text origin (used as a "clear a small area" idiom), then restores DC
-// state. 0x00494950
-void RenderTacticalBattleSelectionAndUnitOverlayPass_Impl();
+// Selects the cached measure-font and draws a single character via CDC::TextOut at the
+// resolved text origin (a per-unit letter overlay), then restores DC state. 0x00494950
+void RenderTacticalBattleSelectionAndUnitOverlayPass_Impl(char glyph);
 
 // Draws four short corner-tick brackets around rect's edges (a hex-selection
 // highlight idiom), shrinking rect->right/bottom by 1 first. 0x005a99e0
 void DrawHexSelectionOutlineSegments(RECT* rect);
+
+// Classic "simulate TransparentBlt" masked-BitBlt technique (cf. Microsoft KB Q79212):
+// builds a monochrome mask from sourceBitmap's pixels matching colorKey, uses it to AND
+// out the transparent area of the destination background and the opaque area of the
+// source image, then ORs the two together and blits the composited result onto destDc
+// at (destX, destY). No xrefs found in the retail binary (dead code, or reached only via
+// an unrecovered indirect call); ported directly from the decompile since the technique
+// and every callee are fully understood Win32 GDI primitives. 0x00496450
+void TransparentBlitBitmapUsingMaskedRasterOps(HDC destDc, HBITMAP sourceBitmap, short destX,
+                                               short destY, COLORREF colorKey);
+
+// Same technique as TransparentBlitBitmapUsingMaskedRasterOps, but blits only a
+// (srcX, srcY, width, height) sub-region of the composited image instead of the whole
+// bitmap. 0x004967e0
+void TransparentBlitBitmapRegionUsingMaskedRasterOps(HDC destDc, HBITMAP sourceBitmap, short destX,
+                                                     short destY, COLORREF colorKey, short srcX,
+                                                     short srcY, short width, short height);

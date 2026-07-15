@@ -1,13 +1,13 @@
 #pragma once
 
+#include "compat.h"
 #include "game/TPicture.h"
 #include "game/mfc.h"
 
-// TODO(manifest): describe TDealBookPicture and its role. Base edge (TPicture) recovered from RTTI CRuntimeClass chain: TDealBookPicture -> TPicture -> TControl -> TView -> TEventHandler -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x0066dfc0
 class TDealBookPicture : public TPicture {
 public:
-// === BEGIN GENERATED DECLS (TDealBookPicture) — refreshed by recover-class; do not hand-edit ===
+  // === BEGIN GENERATED DECLS (TDealBookPicture) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TDealBookPicture)
   virtual ~TDealBookPicture() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -23,27 +23,28 @@ public:
   // slot 0x0c QueryStepValue inherited unchanged (0x48a2c0)
   // slot 0x0d DispatchQueuedUiCommandAndRelease inherited unchanged (0x48a3b0)
   // slot 0x0e DispatchUiSelectionToHandler inherited unchanged (0x48a3f0)
-  virtual void HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) override; // slot 0x0f 0x005bbc30
+  virtual void HandleEvent(int commandId, TEventHandler* sourceHandler,
+                           TEvent* event) override; // slot 0x0f 0x005bbc30
   // slot 0x10 DispatchEvent inherited unchanged (0x48a2e0)
   // slot 0x11 vmethod_0017 inherited unchanged (0x48a310)
   // slot 0x12 ForwardParam inherited unchanged (0x48a380)
-  // slot 0x13 CanHandleCityDialogActionFalse inherited unchanged (0x48a480)
+  // slot 0x13 DoIdle inherited unchanged (0x48a480)
   // slot 0x14 GetCityDialogValueDword10 inherited unchanged (0x415d50)
   // slot 0x15 SetCityDialogValueDword10 inherited unchanged (0x415d70)
   // slot 0x16 OwnerPanel inherited unchanged (0x48b180)
   // slot 0x17 vmethod_0023 inherited unchanged (0x48a530)
-  // slot 0x18 vmethod_0024 inherited unchanged (0x48a550)
-  // slot 0x19 vmethod_0025 inherited unchanged (0x48a690)
-  // slot 0x1a vmethod_0026 inherited unchanged (0x48a6b0)
+  // slot 0x18 GetDeactivateVetoCode inherited unchanged (0x48a550)
+  // slot 0x19 OnDeactivated inherited unchanged (0x48a690)
+  // slot 0x1a OnDeactivateVetoed inherited unchanged (0x48a6b0)
   // slot 0x1b HandleCityProductionNoOp inherited unchanged (0x48a650)
   // slot 0x1c DispatchUiCommand19ToParent inherited unchanged (0x48a6d0)
   // slot 0x1d DispatchCityProductionAction1A inherited unchanged (0x48a670)
   // slot 0x1e DispatchCityProductionAction1B inherited unchanged (0x48a6f0)
   // slot 0x1f ActivateCityProductionViewIfAllowed inherited unchanged (0x48a570)
-  // slot 0x20 vmethod_0080 inherited unchanged (0x48a5e0)
+  // slot 0x20 TryDeactivateActiveView inherited unchanged (0x48a5e0)
   // slot 0x21 vmethod_0081 inherited unchanged (0x48a710)
-  // slot 0x22 vmethod_0032 inherited unchanged (0x48a500)
-  // slot 0x23 vmethod_0033 inherited unchanged (0x48a4a0)
+  // slot 0x22 IsActiveView inherited unchanged (0x48a500)
+  // slot 0x23 DetachUiResourceOwnerIfMatches inherited unchanged (0x48a4a0)
   // slot 0x24 SetUiResourceOwner inherited unchanged (0x48a4d0)
   // slot 0x25 ResolveControlByTag inherited unchanged (0x48afd0)
   // slot 0x26 SwitchActiveChildAndNotify inherited unchanged (0x48af80)
@@ -124,10 +125,17 @@ public:
   // slot 0x71 ResetPictureResourceEntry inherited unchanged (0x48f520)
   // slot 0x72 SetPictureResourceIdAndRefresh inherited unchanged (0x48f570)
   virtual undefined UpdateDealBookResourceSelectionAndToggleControls(); // slot 0x73 0x5baf70
-  virtual undefined BuildSelectedNationOrderCapabilityRows(); // slot 0x74 0x5bb2e0
-// === END GENERATED DECLS (TDealBookPicture) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TDealBookPicture 0xCTOR`).
+  virtual undefined BuildSelectedNationOrderCapabilityRows();           // slot 0x74 0x5bb2e0
+  // === END GENERATED DECLS (TDealBookPicture) ===
+  // TPicture's slice ends at 0x90; RTTI oracle confirms sizeof(TDealBookPicture) == 0xb4.
+  // The ctor (0x5babc0) writes field90 (= 8) and fieldB2 (= 0); the intervening region and
+  // the 0xb3 byte are unconfirmed padding.
+  short field90;             // +0x90 initialized to 8
+  unsigned char pad92[0x20]; // +0x92
+  unsigned char fieldB2;     // +0xb2 initialized to 0
+  unsigned char padB3;       // +0xb3
 
   TDealBookPicture();
 };
 
+ASSERT_SIZE(TDealBookPicture, 0xb4);

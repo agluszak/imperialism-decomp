@@ -30,4 +30,4 @@ void TNextTradeCommand::InitializeRangePairFromDiplomacyConstants() {
 }
 
 // FUNCTION: IMPERIALISM 0x005ba4b0
-void TNextTradeCommand::OrphanRetStub_00487a00() {}
+void TNextTradeCommand::DoIt() {}

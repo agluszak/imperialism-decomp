@@ -47,7 +47,7 @@ int SignedDivideBy100(int value) {
 
 } // namespace
 
-extern undefined4 GenerateThreadLocalRandom15(void);
+extern "C" int __cdecl rand(void);
 
 // SYNTHETIC: IMPERIALISM 0x004e3660
 // TMinor::CreateObject
@@ -61,9 +61,7 @@ void* TMinor::GetTMinorClassNamePointer() {
 }
 
 // FUNCTION: IMPERIALISM 0x004e3710
-TMinor::TMinor() {
-  encodedNationSlot = 0;
-}
+TMinor::TMinor() {}
 
 // SYNTHETIC: IMPERIALISM 0x004e3790
 // TMinor::`scalar deleting destructor'
@@ -71,7 +69,8 @@ TMinor::~TMinor() {}
 
 // FUNCTION: IMPERIALISM 0x004e38e0
 void TMinor::InitializeTMinorDefaults(int slotIndex) {
-  reinterpret_cast<void(__fastcall*)(void*, int, int)>(0x004e38e0)(this, 0, slotIndex);
+  // TODO: promote body @ 0x004e38e0 — initializes minor nation default state
+  (void)slotIndex;
 }
 
 // FUNCTION: IMPERIALISM 0x004e41c0
@@ -123,9 +122,17 @@ void TMinor::WriteTo(TStream* stream) {
   WriteShortArrayElems(stream, diplomacySaveExt13c, 0x17);
 }
 
+// Overrides the base (which is a plain "return false"): true when `arg` matches any of
+// the four saved diplomacy nation slots at diplomacySaveFields134[0..3]. The vtable slot
+// param is a short (word compares), not the int the base decl formerly used.
 // FUNCTION: IMPERIALISM 0x004e45f0
-char TMinor::ReturnFalseNationStateCapabilityFlag90(int arg) {
-  return (arg > 0xc && arg < 0x11) ? 1 : 0;
+char TMinor::ReturnFalseNationStateCapabilityFlag90(short arg) {
+  char result = 0;
+  if (arg == diplomacySaveFields134[0] || arg == diplomacySaveFields134[1] ||
+      arg == diplomacySaveFields134[2] || arg == diplomacySaveFields134[3]) {
+    result = 1;
+  }
+  return result;
 }
 
 // FUNCTION: IMPERIALISM 0x004e4630
@@ -252,7 +259,7 @@ void TMinor::SeedRandomDiplomacyPolicyThresholds(void) {
   short savedPredicate = this->diplomacyPolicyPredicateCode12c;
   short proposalWeight = 0;
   if (this == 0 || this->encodedNationSlot <= 99 || this->encodedNationSlot >= 200) {
-    int randomBucket = static_cast<int>(GenerateThreadLocalRandom15()) % 100;
+    int randomBucket = static_cast<int>(rand()) % 100;
     int resourceType = 0;
     if (randomBucket < 0x19) {
       resourceType = 0;
@@ -309,7 +316,7 @@ void TMinor::SeedRandomDiplomacyPolicyThresholds(void) {
   if (savedPredicate == this->diplomacyPolicyPredicateCode12c) {
     short rolledPredicate = this->diplomacyPolicyPredicateCode12c;
     do {
-      int roll = static_cast<int>(GenerateThreadLocalRandom15()) % 100;
+      int roll = static_cast<int>(rand()) % 100;
       if (roll < 0x1e) {
         rolledPredicate = 0xd;
       } else if (roll < 0x3c) {

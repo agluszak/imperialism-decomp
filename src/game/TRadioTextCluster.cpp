@@ -1,6 +1,10 @@
 #include "game/TRadioTextCluster.h"
 
 #include "game/TRadioText.h"
+#include "game/TViewMgr.h"
+#include "game/global_data_tables.h"
+#include "game/quickdraw_regions.h"
+#include "game/quickdraw_rendering.h"
 #include "game/ui_control_tags.h"
 // SYNTHETIC: IMPERIALISM 0x005795b0
 // TRadioTextCluster::CreateObject
@@ -14,9 +18,9 @@ IMPLEMENT_DYNCREATE(TRadioTextCluster, TCluster)
 TRadioTextCluster::TRadioTextCluster() : TCluster() {
   word8C = 0x4b;
   word8E = 0x49;
-  selectedOption90 = -1;
-  word92 = 0;
-  word94 = 2;
+  frameThemeCode90 = -1;
+  itemInset92 = 0;
+  itemVerticalSpacing94 = 2;
 }
 
 // SYNTHETIC: IMPERIALISM 0x005796f0
@@ -24,7 +28,10 @@ TRadioTextCluster::TRadioTextCluster() : TCluster() {
 TRadioTextCluster::~TRadioTextCluster() {}
 
 // FUNCTION: IMPERIALISM 0x00579740
-void TRadioTextCluster::NoOpUiLifecycleHook(int arg) {}
+void TRadioTextCluster::NoOpUiLifecycleHook(int arg) {
+  TCluster::NoOpUiLifecycleHook(arg);
+  selectedTag88 = kTagNada;
+}
 
 // FUNCTION: IMPERIALISM 0x00579770
 void TRadioTextCluster::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
@@ -63,5 +70,47 @@ void TRadioTextCluster::SetSelectedTextOptionByTag(int tag, bool refreshOnChange
   }
 }
 
+// FUNCTION: IMPERIALISM 0x005798a0
+TRadioText* TRadioTextCluster::AddItem(unsigned long tag, int value, const char* text, int height,
+                                       int bottom) {
+  if (bottom == -1) {
+    bottom = itemInset92;
+    if (childList44 != 0) {
+      POSITION pos = childList44->GetHeadPosition();
+      while (pos != NULL) {
+        TView* child = childList44->GetNext(pos);
+        child->AssertValid();
+        int childBottom = child->ownerLocalY + child->frameHeight38 + itemVerticalSpacing94;
+        if (childBottom > bottom) {
+          bottom = childBottom;
+        }
+      }
+    }
+  }
+
+  TRadioText* item = new TRadioText();
+  int offset[2];
+  int size[2];
+  offset[0] = itemInset92;
+  offset[1] = bottom;
+  size[0] = frameWidth34 - itemInset92 * 2;
+  size[1] = height;
+  item->InitializeTextEntryBaseAndOptionalStringResource(this, offset, size, 5, 5, -1, 1);
+  item->controlTag = static_cast<int>(tag);
+  item->controlValue3c = value;
+  CString itemText(text);
+  item->AssignTextSharedRefIfChangedAndMaybeInvalidate(&itemText, 1);
+  item->SetControlValue(1);
+  return item;
+}
+
 // FUNCTION: IMPERIALISM 0x00579a60
-void TRadioTextCluster::ApplyRectSlot110(RECT* rectBuffer) {}
+void TRadioTextCluster::ApplyRectSlot110(RECT* rectBuffer) {
+  (void)rectBuffer;
+  if (frameThemeCode90 > -1) {
+    RECT frame = {0, 0, frameWidth34, frameHeight38};
+    g_pUiRuntimeContext->ApplyLegendSplitSlot34(frameThemeCode90);
+    QDFrameRect(&frame);
+    SetQuickDrawFillColor(0);
+  }
+}

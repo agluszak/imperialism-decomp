@@ -5,7 +5,6 @@
 
 struct TQuickDrawSurfaceContext;
 
-// TODO(manifest): describe TMapPreviewView and its role. Base edge (TView) recovered from RTTI CRuntimeClass chain: TMapPreviewView -> TView -> TEventHandler -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x006419d8
 class TMapPreviewView : public TView {
 public:
@@ -29,23 +28,23 @@ public:
   // slot 0x10 DispatchUiCommandToHandler inherited unchanged (0x48a2e0)
   // slot 0x11 vmethod_0017 inherited unchanged (0x48a310)
   // slot 0x12 ForwardParam inherited unchanged (0x48a380)
-  // slot 0x13 CanHandleCityDialogActionFalse inherited unchanged (0x48a480)
+  // slot 0x13 DoIdle inherited unchanged (0x48a480)
   // slot 0x14 GetCityDialogValueDword10 inherited unchanged (0x415d50)
   // slot 0x15 SetCityDialogValueDword10 inherited unchanged (0x415d70)
   // slot 0x16 OwnerPanel inherited unchanged (0x48b180)
   // slot 0x17 vmethod_0023 inherited unchanged (0x48a530)
-  // slot 0x18 vmethod_0024 inherited unchanged (0x48a550)
-  // slot 0x19 vmethod_0025 inherited unchanged (0x48a690)
-  // slot 0x1a vmethod_0026 inherited unchanged (0x48a6b0)
+  // slot 0x18 GetDeactivateVetoCode inherited unchanged (0x48a550)
+  // slot 0x19 OnDeactivated inherited unchanged (0x48a690)
+  // slot 0x1a OnDeactivateVetoed inherited unchanged (0x48a6b0)
   // slot 0x1b HandleCityProductionNoOp inherited unchanged (0x48a650)
   // slot 0x1c DispatchUiCommand19ToParent inherited unchanged (0x48a6d0)
   // slot 0x1d DispatchCityProductionAction1A inherited unchanged (0x48a670)
   // slot 0x1e DispatchCityProductionAction1B inherited unchanged (0x48a6f0)
   // slot 0x1f ActivateCityProductionViewIfAllowed inherited unchanged (0x48a570)
-  // slot 0x20 vmethod_0080 inherited unchanged (0x48a5e0)
+  // slot 0x20 TryDeactivateActiveView inherited unchanged (0x48a5e0)
   // slot 0x21 vmethod_0081 inherited unchanged (0x48a710)
-  // slot 0x22 vmethod_0032 inherited unchanged (0x48a500)
-  // slot 0x23 vmethod_0033 inherited unchanged (0x48a4a0)
+  // slot 0x22 IsActiveView inherited unchanged (0x48a500)
+  // slot 0x23 DetachUiResourceOwnerIfMatches inherited unchanged (0x48a4a0)
   // slot 0x24 SetUiResourceOwner inherited unchanged (0x48a4d0)
   // slot 0x25 ResolveControlByTag inherited unchanged (0x48afd0)
   // slot 0x26 SwitchActiveChildAndNotify inherited unchanged (0x48af80)
@@ -116,14 +115,19 @@ public:
   // slot 0x66 AssertMcAppUILine1922 inherited unchanged (0x48c7d0)
   // slot 0x67 CtrlSlot103_SubtractPosAndDispatchSlot19C_Impl inherited unchanged (0x48bac0)
   // === END GENERATED DECLS (TMapPreviewView) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TMapPreviewView 0xCTOR`).
 
   TMapPreviewView();
 
+  // Rasterize the owner-nation map into the offscreen preview surface. A non-null
+  // table supplies one signed owner tag per map tile; null uses the live map state.
+  void TakeSatellitePhoto(char* tileOwnerTagTable); // 0x578c10
+  // Rebuild the selected-nation boundary mask in the offscreen preview surface.
+  void EnhancePhoto(); // 0x579270
+
   // 0x60 — offscreen preview surface; deleted+cleared in Free (0x5789b0).
   TQuickDrawSurfaceContext* previewSurface60;
-  int selectedRegion64; // 0x64 — ctor 0x43d590 seeds -1 (no region selected)
-  int field68;          // 0x68
-  int field6c;          // 0x6c
+  int selectedRegion64; // 0x64 — city/region marker; ctor seeds -1 (none)
+  int selectedNation68; // 0x68 — nation whose boundary is highlighted (-1 = none)
+  int pendingNation6C;  // 0x6c — nation hit by the most recent mouse command
 };
 ASSERT_SIZE(TMapPreviewView, 0x70);

@@ -41,8 +41,6 @@ IMPERIALISM_END_INTENTIONAL_NON_VIRTUAL_DTOR
 ASSERT_SIZE(TBitmapResourceLoaderState, 0x1c);
 ASSERT_SIZE(TBitmapResourceLoader, 0x20);
 
-// TODO(manifest): describe TAnimation and its role. Base edge (TObject) recovered from RTTI
-// CRuntimeClass chain: TAnimation -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x0064c300
 class TAnimation : public TObject {
 public:
@@ -72,7 +70,7 @@ public:
   int registryTag18;        // +0x18 animator-registry tag (0x2711 = selection marker)
   RECT screenRect1C;        // +0x1c on-screen rect invalidated per flip
 
-  TAnimation();
+  TAnimation() {}
 
   // Post-construction init used by the tactical selection marker (0x5a9bb0): owner
   // view, screen rect, frame count, mode word, tick interval, registry tag.

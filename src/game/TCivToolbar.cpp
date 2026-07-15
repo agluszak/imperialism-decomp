@@ -199,13 +199,4 @@ void TCivToolbar::HandleEvent(int commandId, TEventHandler* sourceHandler, TEven
   this->TCluster::HandleEvent(commandId, sourceHandler, event);
 }
 
-// TODO: unported. Ground truth (src/ghidra_autogen/TCivToolbar.cpp ~L1205) is a
-// civilian/province/map-order selection-cycling state machine built from partial-register
-// byte-field tricks (classic Ghidra decompiler artifact on optimized switch code) and ~15
-// still-unresolved func_0x... helpers. Needs raw-listing analysis to resolve those helpers
-// to real methods before this can be ported faithfully; left as an honest stub rather than a
-// fake calling-convention dispatch.
-// FUNCTION: IMPERIALISM 0x00597a80
-void TCivToolbar::CycleMapInteractionSelectionAfterHandledClick() {}
-
 TCivToolbar::~TCivToolbar() {}

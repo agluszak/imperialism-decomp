@@ -3,8 +3,8 @@
 #include "game/TCommand.h"
 #include "game/mfc.h"
 
-// TODO(manifest): describe TSpaceCommand and its role. Base edge (TCommand) recovered from RTTI
-// CRuntimeClass chain: TSpaceCommand -> TCommand -> TEvent -> TObject -> CObject.
+class TSetupRandomMapPicture;
+
 // VTABLE: IMPERIALISM 0x00661b10
 class TSpaceCommand : public TCommand {
 public:
@@ -20,11 +20,11 @@ public:
   // slot 0x08 ShallowClone inherited unchanged (0x4798d0)
   // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
   // slot 0x0a NextDiplomacyCommandVtableSlotE8_NotifyOwnerSlot94 inherited unchanged (0x487900)
-  virtual void OrphanRetStub_00487a00() override; // slot 0x0b 0x5751f0
+  virtual void DoIt() override; // slot 0x0b 0x5751f0
   // === END GENERATED DECLS (TSpaceCommand) ===
-  int pad18;        // +0x18 (purpose unknown)
-  int commandTag1c; // +0x1c — four-char tag identifying interaction type (e.g. "plus"/"minu")
+  TSetupRandomMapPicture* setupPicture18; // +0x18
+  unsigned char mode1c;                   // +0x1c
+  unsigned char pad1d[3];
 
   TSpaceCommand();
 };
-

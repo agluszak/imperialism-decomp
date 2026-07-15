@@ -416,6 +416,31 @@ char TZone::HasSecondaryNeighborWithNationTag(short nationTag) {
   return 0;
 }
 
+// FUNCTION: IMPERIALISM 0x0055f540
+char TZone::IsZoneMaskOrArrayEntryPresentForKey(short key) {
+  unsigned char keyBit = static_cast<unsigned char>(1 << key);
+  if ((field10 & keyBit) != 0) {
+    return 1;
+  }
+  unsigned int entryCount = static_cast<unsigned int>(this->secondaryNeighbors.Count());
+  if (entryCount == 0) {
+    return 0;
+  }
+  for (unsigned int entryIndex = 0; entryIndex < entryCount; ++entryIndex) {
+    // Inlined bounds-guarded stretch element access, as in the original (mirrors
+    // HasSecondaryNeighborWithNationTag). Entries are TGlobalMapCityScoreRecord* under
+    // the documented stretch pun; byte 0 of the record is its ownerNationCode00.
+    TZone* const* entrySlot =
+        (entryIndex < entryCount) ? this->secondaryNeighbors.Data() + entryIndex : 0;
+    const void* record = *entrySlot;
+    short entryKey = *static_cast<const signed char*>(record);
+    if (entryKey == key) {
+      return 1;
+    }
+  }
+  return 0;
+}
+
 // FUNCTION: IMPERIALISM 0x0055f5c0
 void TZone::GenerateZoneStatusCodeIfUnset() {
   if (field04 != -1) {
@@ -834,13 +859,28 @@ void TZone::SetMapOrderUiFlag(int flag) {
   }
 }
 
-// TODO: port body @ 0x005609e0 (builds a new TTaskForce order entry for this context
-// zone + nation via the TTaskForce(contextAnchor, requiredCount) ctor when eligible).
-// Stub keeps the address owned; EnsureSelectedTaskForceForOrderOwnerAndRefresh calls it
-// as a real TZone method.
 // FUNCTION: IMPERIALISM 0x005609e0
 TTaskForce* TZone::CreateTaskForceFromNavyOrdersForNationIfEligible(short nation) {
-  (void)nation;
+  int resolvedNation = nation;
+  if (resolvedNation == -1) {
+    resolvedNation = g_pSimMgr->GetActiveNationId();
+  }
+  unsigned char nationBit = static_cast<unsigned char>(1 << resolvedNation);
+  if ((field10 & nationBit) != 0) {
+    for (TShip* ship = GetNavyPrimaryOrderListHead(); ship != nullptr; ship = ship->nextOlder24) {
+      if (ship->field08 == this && ship->ownerNationSlot14 == resolvedNation &&
+          ship->field0c == 0) {
+        // contextAnchor is a dual-purpose opaque int slot (see TTaskForce.h); here it
+        // carries this zone. requiredCount seeds from the raw incoming nation arg, which
+        // the original keeps distinct from the active-nation-resolved slot used above.
+        TTaskForce* taskForce = new TTaskForce(reinterpret_cast<int>(this), nation);
+        taskForce->NoOpTaskForceInitSlot();
+        taskForce->RefreshTaskForceSelectionFlagsForCurrentNationOrders(0);
+        taskForce->RecomputeTaskForceAverageOrderScore();
+        return taskForce;
+      }
+    }
+  }
   return nullptr;
 }
 
@@ -867,6 +907,30 @@ char TZone::CanDisplayMapOrderEntryInCurrentContext(short nation, char skipField
     }
   }
   return 0;
+}
+
+// FUNCTION: IMPERIALISM 0x00560e70
+TZone* TZone::SelectBestPrimaryNeighborForNationDiplomacyMask(int nationSlot) {
+  TZone* bestNeighbor = 0;
+  int bestWarCount = -1;
+  for (int neighborIndex = 0; neighborIndex < primaryNeighbors.GetSize(); ++neighborIndex) {
+    TZone* neighbor = primaryNeighbors.GetAt(neighborIndex);
+    if (!neighbor->QueryPortZoneCapability() || neighbor->QueryZoneCapabilityFlagD(nationSlot)) {
+      int warCount = 0;
+      for (int otherNation = 0; otherNation < 7; ++otherNation) {
+        if (g_apTerrainTypeDescriptorTable[otherNation] != 0 &&
+            (neighbor->field10 & (1 << otherNation)) != 0 &&
+            g_pDiplomacyTurnStateManager->IsNationPairAtWar(nationSlot, otherNation)) {
+          ++warCount;
+        }
+      }
+      if (bestWarCount < warCount) {
+        bestWarCount = warCount;
+        bestNeighbor = neighbor;
+      }
+    }
+  }
+  return bestNeighbor;
 }
 
 // FUNCTION: IMPERIALISM 0x00560f80
@@ -1074,12 +1138,31 @@ TZone* TZone::GetNextPortZone() {
   return cursor;
 }
 
-// Destructors are compiler-generated (implicit virtual dtor).
 // PortZone vtable bodies (0x005616c0..0x00561e40) live in TPortZone.cpp.
 
 // SYNTHETIC: IMPERIALISM 0x00562880
 // TZone::`vector deleting destructor'
-TZone::~TZone() {}
+
+// Unlinks this zone from g_pMapActionContextListHead (via prev18/next1c); member
+// teardown (secondaryNeighbors, primaryNeighbors, displayName) happens automatically in
+// reverse declaration order. Ground truth for this function is reached via the vector
+// deleting destructor's thunk at 0x407775; TPortZone::~TPortZone (0x5616f0) is
+// instruction-for-instruction identical since TPortZone has no unique members of its own
+// -- the original inlined this same body there too instead of calling it out-of-line.
+// FUNCTION: IMPERIALISM 0x005627a0
+TZone::~TZone() {
+  if (g_pMapActionContextListHead == this) {
+    g_pMapActionContextListHead = prev18;
+  }
+  if (prev18 != 0) {
+    prev18->next1c = next1c;
+  }
+  if (next1c != 0) {
+    next1c->prev18 = prev18;
+  }
+  next1c = 0;
+  prev18 = 0;
+}
 
 // Reseeds the zone status-code PRNG from a hash of the scenario tag string (falling back
 // to the wall clock when the tag hashes to zero), then walks the whole map-action-context

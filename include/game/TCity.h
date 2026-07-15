@@ -5,10 +5,10 @@
 #include "decomp_types.h"
 #include "game/TObject.h"
 #include "game/TPopulationMgr.h"
+#include "game/TProductionOrder.h"
 
 class TSortedList;
 class TStream;
-class TProductionOrder;
 class TShipOrder;
 class TUnitOrder;
 
@@ -188,8 +188,8 @@ public:
   short field26c;                         // 0x26C — zeroed by the ctor
   short pad26e;
   TSortedList* trackedOrderList270; // 0x270 — released via FreePayloadsAndDestroy
-  // 0x274 — TPtrList (vtable 0x649068, relationType 4; allocated in
-  // InitializeCityProductionState 0x4b2dca); released via ReleaseSlot24.
+  // 0x274 — TPtrList (vtable 0x649068, recordSize14 4; allocated in
+  // InitializeCityProductionState 0x4b2dca); released via ReleasePtrList.
   class TPtrList* eventQueue274;
   unsigned char pad278[0x2d4 - 0x278];
 

@@ -1,6 +1,7 @@
 #include "game/TArmyBoyView.h"
 
 #include "game/TQuickDrawSurfaceContext.h"
+#include "game/TSimMgr.h"
 #include "game/global_data_tables.h"
 #include "game/quickdraw_rendering.h"
 
@@ -30,27 +31,30 @@ void TArmyBoyView::ApplyRectSlot110(RECT* rectBuffer) {
   DrawTextWithCachedStyle(&nameString);
   SetQuickDrawFillColor(0);
 
-  // The blit source surface is a per-level icon strip cached on TMacViewMgr; that
-  // field isn't recovered yet, so it's read via a raw offset like the rest of this
-  // function's still-untyped context object.
-  TQuickDrawBlitSurface* iconStripSurface = reinterpret_cast<TQuickDrawBlitSurface*>(
-      *reinterpret_cast<char**>(reinterpret_cast<char*>(g_pStrategicMapViewSystem) + 0x694) + 4);
+  short sVar1 = level / 0x19 + 1;
+  if (sVar1 > 0x14) {
+    sVar1 = 0x14;
+  }
+  // Level-bucket row within the icon strip: <5 -> row 0x1a, 5-14 -> row 18, >14 -> row 10.
+  short sVar2 = (sVar1 < 5) ? 0x1a : ((sVar1 > 0xe) ? 10 : 18);
+  RECT srcRect = {0, sVar2, sVar1 * 4 - 1, sVar2 + 7};
+  RECT dstRect = {0x43, 0x1f, sVar1 * 4 + 0x42, 0x26};
 
   if (level < 1) {
-    // TODO(class-recovery): the real body builds a localized "in training" string via
-    // g_pLocalizationTable's vtable slot 0x10.4 (same unrecovered-class gap as
-    // TDeluxeText::BuildCityViewProductionControls_Impl / TTaskForce's format-string
-    // expander) before measuring/drawing it centered. Left unimplemented rather than
-    // guessed.
+    // Untrained unit: draw the localized "in training" string centered. String group
+    // 0x273c, index 0x20 for the sentinel level -86 (fresh recruit) else 0x1f.
+    ApplyUiTextStyleAndSyncColor(1, 0xc, 0x2b67);
+    CString trainingText;
+    g_pSimMgr->GetString(0x273c, (level == -86) ? 0x20 : 0x1f, &trainingText);
+    short trainingWidth = MeasureTextExtentWithCachedQuickDrawStyle(&trainingText);
+    SetQuickDrawTextOriginWithContextOffset(0x6a - trainingWidth / 2, 0x26);
+    DrawTextWithCachedStyle(&trainingText);
   } else {
-    short sVar1 = level / 0x19 + 1;
-    if (sVar1 > 0x14) {
-      sVar1 = 0x14;
-    }
-    // Level-bucket row within the icon strip: <5 -> row 0x1a, 5-14 -> row 18, >14 -> row 10.
-    short sVar2 = (sVar1 < 5) ? 0x1a : ((sVar1 > 0xe) ? 10 : 18);
-    RECT srcRect = {0, sVar2, sVar1 * 4 - 1, sVar2 + 7};
-    RECT dstRect = {0x43, 0x1f, sVar1 * 4 + 0x42, 0x26};
+    // The blit source surface is a per-level icon strip cached on TMacViewMgr; that
+    // field isn't recovered yet, so it's read via a raw offset like the rest of this
+    // function's still-untyped context object.
+    TQuickDrawBlitSurface* iconStripSurface = reinterpret_cast<TQuickDrawBlitSurface*>(
+        *reinterpret_cast<char**>(reinterpret_cast<char*>(g_pStrategicMapViewSystem) + 0x694) + 4);
     UpdatePaletteIndexWithDefaultFallback(0x10);
     BlitRectWithOptionalTransparency(iconStripSurface,
                                      g_pActiveQuickDrawSurfaceContext->GetBlitSurface(), &srcRect,
@@ -70,6 +74,8 @@ void TArmyBoyView::ApplyRectSlot110(RECT* rectBuffer) {
     barWidth += 5;
   }
   if (barWidth != 0) {
+    TQuickDrawBlitSurface* iconStripSurface = reinterpret_cast<TQuickDrawBlitSurface*>(
+        *reinterpret_cast<char**>(reinterpret_cast<char*>(g_pStrategicMapViewSystem) + 0x694) + 4);
     RECT srcRect = {0, 0, barWidth, 10};
     RECT dstRect = {0x94, 0x1f, barWidth + 0x94, 0x29};
     UpdatePaletteIndexWithDefaultFallback(0x10);

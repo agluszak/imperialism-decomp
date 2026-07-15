@@ -2,7 +2,6 @@
 
 #include <cstring>
 
-#include "game/TCursorControlPanel.h"
 #include "game/global_data_tables.h"
 #include "game/quickdraw_rendering.h"
 

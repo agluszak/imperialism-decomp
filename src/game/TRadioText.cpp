@@ -19,7 +19,8 @@ void TRadioText::NoOpUiLifecycleHook(int arg) {}
 
 // FUNCTION: IMPERIALISM 0x005794b0
 void TRadioText::ApplyRectSlot110(RECT* rectBuffer) {
-  // TODO(manifest): original draws selected/hover radio decoration before the text pass.
+  // The retail body draws selected/hover radio decoration before this text pass; that decoration
+  // remains unported.
   TDropShadowText::ApplyRectSlot110(rectBuffer);
 }
 

@@ -3,7 +3,6 @@
 #include "game/TCluster.h"
 #include "game/mfc.h"
 
-// TODO(manifest): describe TRadioTextCluster and its role. Base edge (TCluster) recovered from RTTI CRuntimeClass chain: TRadioTextCluster -> TCluster -> TControl -> TView -> TEventHandler -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x00662418
 class TRadioTextCluster : public TCluster {
 public:
@@ -28,23 +27,23 @@ public:
   // slot 0x10 DispatchUiCommandToHandler inherited unchanged (0x48a2e0)
   // slot 0x11 vmethod_0017 inherited unchanged (0x48a310)
   // slot 0x12 ForwardParam inherited unchanged (0x48a380)
-  // slot 0x13 CanHandleCityDialogActionFalse inherited unchanged (0x48a480)
+  // slot 0x13 DoIdle inherited unchanged (0x48a480)
   // slot 0x14 GetCityDialogValueDword10 inherited unchanged (0x415d50)
   // slot 0x15 SetCityDialogValueDword10 inherited unchanged (0x415d70)
   // slot 0x16 OwnerPanel inherited unchanged (0x48b180)
   // slot 0x17 vmethod_0023 inherited unchanged (0x48a530)
-  // slot 0x18 vmethod_0024 inherited unchanged (0x48a550)
-  // slot 0x19 vmethod_0025 inherited unchanged (0x48a690)
-  // slot 0x1a vmethod_0026 inherited unchanged (0x48a6b0)
+  // slot 0x18 GetDeactivateVetoCode inherited unchanged (0x48a550)
+  // slot 0x19 OnDeactivated inherited unchanged (0x48a690)
+  // slot 0x1a OnDeactivateVetoed inherited unchanged (0x48a6b0)
   // slot 0x1b HandleCityProductionNoOp inherited unchanged (0x48a650)
   // slot 0x1c DispatchUiCommand19ToParent inherited unchanged (0x48a6d0)
   // slot 0x1d DispatchCityProductionAction1A inherited unchanged (0x48a670)
   // slot 0x1e DispatchCityProductionAction1B inherited unchanged (0x48a6f0)
   // slot 0x1f ActivateCityProductionViewIfAllowed inherited unchanged (0x48a570)
-  // slot 0x20 vmethod_0080 inherited unchanged (0x48a5e0)
+  // slot 0x20 TryDeactivateActiveView inherited unchanged (0x48a5e0)
   // slot 0x21 vmethod_0081 inherited unchanged (0x48a710)
-  // slot 0x22 vmethod_0032 inherited unchanged (0x48a500)
-  // slot 0x23 vmethod_0033 inherited unchanged (0x48a4a0)
+  // slot 0x22 IsActiveView inherited unchanged (0x48a500)
+  // slot 0x23 DetachUiResourceOwnerIfMatches inherited unchanged (0x48a4a0)
   // slot 0x24 SetUiResourceOwner inherited unchanged (0x48a4d0)
   // slot 0x25 ResolveControlByTag inherited unchanged (0x48afd0)
   // slot 0x26 SwitchActiveChildAndNotify inherited unchanged (0x48af80)
@@ -125,9 +124,12 @@ public:
   // slot 0x71 OrphanTiny_GetDwordEcxOffset_84_00491770 inherited unchanged (0x491770)
   // slot 0x72 OrphanCallChain_C2_I51_00491790 inherited unchanged (0x491790)
   // === END GENERATED DECLS (TRadioTextCluster) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TRadioTextCluster 0xCTOR`).
 
   TRadioTextCluster();
+
+  // Mac CodeWarrior oracle: AddItem(unsigned long, int, const char*, int, int).
+  // Creates, attaches, captions, and enables one TRadioText child. 0x005798a0.
+  class TRadioText* AddItem(unsigned long tag, int value, const char* text, int height, int bottom);
 
   // Non-virtual: 0x5797c0. Shared "selectable text option" primitive used directly (not
   // through the vtable) by several dialog builders (country/protocol/difficulty pickers)
@@ -137,12 +139,12 @@ public:
   // changed (unless tag == 0).
   void SetSelectedTextOptionByTag(int tag, bool refreshOnChange);
 
-  int selectedTag88;      // 0x88 — not initialized by the ctor
-  short word8C;           // 0x8c — ctor 0x5796a0 seeds 0x4b
-  short word8E;           // 0x8e — ctor seeds 0x49
-  short selectedOption90; // 0x90 — ctor seeds -1 (no radio option selected)
-  short word92;           // 0x92 — ctor seeds 0
-  short word94;           // 0x94 — ctor seeds 2
-  short pad96;            // 0x96
+  int selectedTag88;           // 0x88 — DoPostCreate seeds 'nada'
+  short word8C;                // 0x8c — ctor 0x5796a0 seeds 0x4b
+  short word8E;                // 0x8e — ctor seeds 0x49
+  short frameThemeCode90;      // 0x90 — Draw maps this theme and frames the cluster
+  short itemInset92;           // 0x92 — left/right inset for AddItem, ctor seeds 0
+  short itemVerticalSpacing94; // 0x94 — next-item spacing for AddItem, ctor seeds 2
+  short pad96;                 // 0x96
 };
 ASSERT_SIZE(TRadioTextCluster, 0x98);

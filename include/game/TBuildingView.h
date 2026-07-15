@@ -1,13 +1,13 @@
 #pragma once
 
+#include "compat.h"
 #include "game/TNoHilitePicture.h"
 #include "game/mfc.h"
 
-// TODO(manifest): describe TBuildingView and its role. Base edge (TNoHilitePicture) recovered from RTTI CRuntimeClass chain: TBuildingView -> TNoHilitePicture -> TPicture -> TControl -> TView -> TEventHandler -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x00651458
 class TBuildingView : public TNoHilitePicture {
 public:
-// === BEGIN GENERATED DECLS (TBuildingView) — refreshed by recover-class; do not hand-edit ===
+  // === BEGIN GENERATED DECLS (TBuildingView) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TBuildingView)
   virtual ~TBuildingView() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -27,23 +27,23 @@ public:
   // slot 0x10 DispatchEvent inherited unchanged (0x48a2e0)
   // slot 0x11 vmethod_0017 inherited unchanged (0x48a310)
   // slot 0x12 ForwardParam inherited unchanged (0x48a380)
-  // slot 0x13 CanHandleCityDialogActionFalse inherited unchanged (0x48a480)
+  // slot 0x13 DoIdle inherited unchanged (0x48a480)
   // slot 0x14 GetCityDialogValueDword10 inherited unchanged (0x415d50)
   // slot 0x15 SetCityDialogValueDword10 inherited unchanged (0x415d70)
   // slot 0x16 OwnerPanel inherited unchanged (0x48b180)
   // slot 0x17 vmethod_0023 inherited unchanged (0x48a530)
-  // slot 0x18 vmethod_0024 inherited unchanged (0x48a550)
-  // slot 0x19 vmethod_0025 inherited unchanged (0x48a690)
-  // slot 0x1a vmethod_0026 inherited unchanged (0x48a6b0)
+  // slot 0x18 GetDeactivateVetoCode inherited unchanged (0x48a550)
+  // slot 0x19 OnDeactivated inherited unchanged (0x48a690)
+  // slot 0x1a OnDeactivateVetoed inherited unchanged (0x48a6b0)
   // slot 0x1b HandleCityProductionNoOp inherited unchanged (0x48a650)
   // slot 0x1c DispatchUiCommand19ToParent inherited unchanged (0x48a6d0)
   // slot 0x1d DispatchCityProductionAction1A inherited unchanged (0x48a670)
   // slot 0x1e DispatchCityProductionAction1B inherited unchanged (0x48a6f0)
   // slot 0x1f ActivateCityProductionViewIfAllowed inherited unchanged (0x48a570)
-  // slot 0x20 vmethod_0080 inherited unchanged (0x48a5e0)
+  // slot 0x20 TryDeactivateActiveView inherited unchanged (0x48a5e0)
   // slot 0x21 vmethod_0081 inherited unchanged (0x48a710)
-  // slot 0x22 vmethod_0032 inherited unchanged (0x48a500)
-  // slot 0x23 vmethod_0033 inherited unchanged (0x48a4a0)
+  // slot 0x22 IsActiveView inherited unchanged (0x48a500)
+  // slot 0x23 DetachUiResourceOwnerIfMatches inherited unchanged (0x48a4a0)
   // slot 0x24 SetUiResourceOwner inherited unchanged (0x48a4d0)
   // slot 0x25 ResolveControlByTag inherited unchanged (0x48afd0)
   // slot 0x26 SwitchActiveChildAndNotify inherited unchanged (0x48af80)
@@ -125,13 +125,20 @@ public:
   // slot 0x72 SetPictureResourceIdAndRefresh inherited unchanged (0x48f570)
   // slot 0x73 UniversityDialogMethod_00405623 inherited unchanged (0x572bb0)
   virtual undefined ApplyCityViewSelectionPayloadAndRefreshControls(); // slot 0x74 0x4c6f30
-  virtual undefined OrphanRetStub_004c6fd0(); // slot 0x75 0x4c6fd0
-  virtual undefined OrphanRetStub_004c6fb0(); // slot 0x76 0x4c6fb0
-  virtual undefined SetUniversityDialogLocalizedTextAndRefresh(); // slot 0x77 0x4c70e0
-  virtual undefined SetUniversityDialogTextAndRefresh(); // slot 0x78 0x4c6ff0
-// === END GENERATED DECLS (TBuildingView) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TBuildingView 0xCTOR`).
+  virtual undefined OrphanRetStub_004c6fd0();                          // slot 0x75 0x4c6fd0
+  virtual undefined OrphanRetStub_004c6fb0();                          // slot 0x76 0x4c6fb0
+  virtual undefined SetUniversityDialogLocalizedTextAndRefresh();      // slot 0x77 0x4c70e0
+  virtual undefined SetUniversityDialogTextAndRefresh();               // slot 0x78 0x4c6ff0
+  // === END GENERATED DECLS (TBuildingView) ===
+  // TNoHilitePicture's own slice ends at 0x94 (its ctor writes field90); RTTI oracle
+  // confirms sizeof(TBuildingView) == 0xa0. The ctor (0x4c6eb0) only writes field94;
+  // field98 is a base-declared slot that some derived ctors init (e.g. TShipyardView)
+  // while TBuildingView's own ctor leaves it untouched; 0x9c is unconfirmed padding.
+  int field94; // +0x94
+  int field98; // +0x98
+  int pad9c;   // +0x9c
 
   TBuildingView();
 };
 
+ASSERT_SIZE(TBuildingView, 0xa0);

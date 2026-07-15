@@ -12,10 +12,6 @@ static __inline short ReadWeight(const short* tableBase, short index) {
   return tableBase[static_cast<unsigned int>(index)];
 }
 
-static __inline short ReadShort(void* base, int offset) {
-  return *reinterpret_cast<short*>(reinterpret_cast<unsigned char*>(base) + offset);
-}
-
 enum {
   kResourceWeightIndex03 = 3,
   kResourceWeightIndex08 = 8,
@@ -70,7 +66,7 @@ bool TCapacityOrder::CanMakeFromCityStock() {
   return false;
 }
 
-bool TCapacityOrder::CanFillOrderSheet(void* orderSheet) {
+bool TCapacityOrder::CanFillOrderSheet(OrderSheet* orderSheet) {
   const short weightIndex = this->resourceTypeIndex48;
   const short weight09 = ReadWeight(g_industryActionCostWeightResCode09, weightIndex);
   const short weight08 = ReadWeight(g_industryActionCostWeightResCode08, weightIndex);
@@ -79,12 +75,21 @@ bool TCapacityOrder::CanFillOrderSheet(void* orderSheet) {
   const short weight03 = ReadWeight(g_industryActionCostWeightResCode03, weightIndex);
   const short weight0C = ReadWeight(g_industryActionCostWeightResCode0C, weightIndex);
 
-  if (static_cast<int>(weight09) <= static_cast<int>(ReadShort(orderSheet, 0x22) + weight09) &&
-      static_cast<int>(weight08) <= static_cast<int>(ReadShort(orderSheet, 0x20) + weight08) &&
-      static_cast<int>(weight10) <= static_cast<int>(ReadShort(orderSheet, 0x30) + weight10) &&
-      static_cast<int>(weight0B) <= static_cast<int>(ReadShort(orderSheet, 0x26) + weight0B) &&
-      static_cast<int>(weight03) <= static_cast<int>(ReadShort(orderSheet, 0x16) + weight03) &&
-      static_cast<int>(weight0C) <= static_cast<int>(ReadShort(orderSheet, 0x28) + weight0C)) {
+  // Note: this checks a different set of order-sheet slots (0x11/0x10/0x18/0x13/0x0b/0x14)
+  // than TShipOrder::FillOrderSheet writes (0x09/0x08/0x10/0x0b/0x03/0x0c) -- only indices
+  // 0x10 and 0x0b overlap. TCapacityOrder is the industrial-capacity sibling, not naval.
+  if (static_cast<int>(weight09) <=
+          static_cast<int>(orderSheet->slotByResourceCode[0x11] + weight09) &&
+      static_cast<int>(weight08) <=
+          static_cast<int>(orderSheet->slotByResourceCode[0x10] + weight08) &&
+      static_cast<int>(weight10) <=
+          static_cast<int>(orderSheet->slotByResourceCode[0x18] + weight10) &&
+      static_cast<int>(weight0B) <=
+          static_cast<int>(orderSheet->slotByResourceCode[0x13] + weight0B) &&
+      static_cast<int>(weight03) <=
+          static_cast<int>(orderSheet->slotByResourceCode[0x0b] + weight03) &&
+      static_cast<int>(weight0C) <=
+          static_cast<int>(orderSheet->slotByResourceCode[0x14] + weight0C)) {
     return true;
   }
   return false;

@@ -1,6 +1,10 @@
 #include "game/TSpaceCommand.h"
+#include "game/TSetupRandomMapPicture.h"
 
-void TSpaceCommand::OrphanRetStub_00487a00() {}
+// FUNCTION: IMPERIALISM 0x005751f0
+void TSpaceCommand::DoIt() {
+  setupPicture18->MajorTomToGroundControl(mode1c);
+}
 
 // SYNTHETIC: IMPERIALISM 0x00575210
 // TSpaceCommand::`scalar deleting destructor'

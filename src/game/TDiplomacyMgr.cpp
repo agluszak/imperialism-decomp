@@ -91,7 +91,7 @@ TDiplomacyMgr::~TDiplomacyMgr() {}
 // FUNCTION: IMPERIALISM 0x004ee7a0
 void TDiplomacyMgr::InitializeTDiplomacyTurnStateManagerDefaults() {
   TSortedPtrList* queue = new TSortedPtrList();
-  queue->relationType = 4;
+  queue->recordSize14 = 4;
   pendingWarTransitionQueue18d4 = queue;
 
   register int zero = 0;
@@ -170,7 +170,7 @@ void TDiplomacyMgr::ResetTerrainAdjacencyMatrixRowAndSymmetricLink(short nationS
 // FUNCTION: IMPERIALISM 0x004ef040
 void TDiplomacyMgr::Free() {
   if (pendingWarTransitionQueue18d4 != 0) {
-    pendingWarTransitionQueue18d4->ReleaseSlot24();
+    pendingWarTransitionQueue18d4->ReleasePtrList();
     pendingWarTransitionQueue18d4 = 0;
   }
 }
@@ -690,7 +690,7 @@ void TDiplomacyMgr::QueueNationPairWarTransition(int sourceNationSlot, int targe
   WarTransitionPair pair;
   pair.sourceNationSlot = static_cast<short>(sourceNationSlot);
   pair.targetNationSlot = static_cast<short>(targetNationSlot);
-  pendingWarTransitionQueue18d4->PushPairSlot40(&pair);
+  pendingWarTransitionQueue18d4->InsertCopiedRecordAtFrontOfPtrList(&pair);
   SetRelationCodeSlot74WithMode(sourceNationSlot, targetNationSlot, 6, 1);
 }
 
@@ -699,10 +699,10 @@ void TDiplomacyMgr::ProcessQueuedWarTransitions() {
   if (pendingWarTransitionQueue18d4->GetSize() != 0) {
     char propagatedTransition = 0;
     WarTransitionPair* pair =
-        static_cast<WarTransitionPair*>(pendingWarTransitionQueue18d4->PeekFirstPairSlot34());
+        static_cast<WarTransitionPair*>(pendingWarTransitionQueue18d4->PeekFirstPtrListEntry());
     int targetNationSlot = pair->targetNationSlot;
     int sourceNationSlot = pair->sourceNationSlot;
-    pendingWarTransitionQueue18d4->RemoveFirstPairSlot30(1);
+    pendingWarTransitionQueue18d4->RemovePtrListEntryByOneBasedIndexAndFree(1);
 
     if (HasPolicyWithNationSlot44(sourceNationSlot, targetNationSlot) == 0) {
       SetRelationCodeSlot74WithMode(sourceNationSlot, targetNationSlot, 6, 0);
@@ -954,7 +954,7 @@ char TDiplomacyMgr::IsPrimaryNationSlotIndex(int nationSlot) {
 void TDiplomacyMgr::BuildRelationshipListSlot88(int sourceNationSlot, int primaryOnlyFlag,
                                                 void* listHandle) {
   // The slot signature is the native void* handle; recover the common list base once
-  // (AddEntrySlot38 is a TIndexAndRankList virtual, shared by every sorted-list leaf).
+  // (InsertCopiedRecordSortedByComparator is a TIndexAndRankList virtual, shared by every sorted-list leaf).
   TIndexAndRankList* list = static_cast<TIndexAndRankList*>(listHandle);
   short candidateNationSlot;
   short lastNationSlot;
@@ -981,7 +981,7 @@ void TDiplomacyMgr::BuildRelationshipListSlot88(int sourceNationSlot, int primar
       int source = static_cast<short>(sourceNationSlot);
       entry.standingScore =
           relationStandingScoreMatrix79c[source * kNationSlotCount + candidateIndex];
-      list->AddEntrySlot38(&entry);
+      list->InsertCopiedRecordSortedByComparator(&entry);
     }
     candidateNationSlot++;
     candidateIndex++;
@@ -1025,17 +1025,17 @@ int TDiplomacyMgr::GetNthAlliedMajorNationSlot90(int nthAllianceIndex, int sourc
 int TDiplomacyMgr::SelectNationSlotFromCollectedStandingEntriesSlot98(int sourceNationSlot,
                                                                       int primaryOnlyFlag) {
   TSortedByRelationshipList* list = new TSortedByRelationshipList();
-  list->relationType = 4;
+  list->recordSize14 = 4;
   BuildRelationshipListSlot88(sourceNationSlot, static_cast<char>(primaryOnlyFlag), list);
   if (list->GetSize() < 1) {
     return -1;
   }
 
   RelationshipRankEntry* entry =
-      static_cast<RelationshipRankEntry*>(list->GetEntrySlot2C(list->GetSize()));
+      static_cast<RelationshipRankEntry*>(list->GetPtrListEntryByOneBasedIndex(list->GetSize()));
   int nationSlot = entry->nationSlot;
   if (list != 0) {
-    list->ReleaseSlot24();
+    list->ReleasePtrList();
   }
   return nationSlot;
 }
@@ -1049,7 +1049,7 @@ int TDiplomacyMgr::SelectDiplomacyTargetNationFromCandidateSetSlot94(int sourceN
   }
 
   TSortedByRelationshipList* list = new TSortedByRelationshipList();
-  list->relationType = 4;
+  list->recordSize14 = 4;
   BuildRelationshipListSlot88(sourceNationSlot, static_cast<char>(primaryOnlyFlag), list);
   int entryIndex = list->GetSize();
   if (entryIndex < 1) {
@@ -1059,7 +1059,7 @@ int TDiplomacyMgr::SelectDiplomacyTargetNationFromCandidateSetSlot94(int sourceN
   int matchedNationSlot = -1;
   while (entryIndex > 0 && matchedNationSlot == -1) {
     RelationshipRankEntry* entry =
-        static_cast<RelationshipRankEntry*>(list->GetEntrySlot2C(entryIndex));
+        static_cast<RelationshipRankEntry*>(list->GetPtrListEntryByOneBasedIndex(entryIndex));
     int candidateNationSlot = entry->nationSlot;
     int source = static_cast<short>(sourceNationSlot);
     if (relationSideEffectMatrix1402[source * kNationSlotCount + candidateNationSlot] ==
@@ -1070,7 +1070,7 @@ int TDiplomacyMgr::SelectDiplomacyTargetNationFromCandidateSetSlot94(int sourceN
   }
 
   if (list != 0) {
-    list->ReleaseSlot24();
+    list->ReleasePtrList();
   }
   return matchedNationSlot;
 }

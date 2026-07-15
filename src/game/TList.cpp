@@ -5,8 +5,6 @@
 
 IMPLEMENT_DYNCREATE(TList, TSortedList)
 
-TList::TList() {}
-
 // SYNTHETIC: IMPERIALISM 0x00487e50
 // TList::CreateObject
 

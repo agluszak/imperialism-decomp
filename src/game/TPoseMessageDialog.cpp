@@ -1,6 +1,6 @@
 #include "game/TPoseMessageDialog.h"
 
-void TPoseMessageDialog::OrphanRetStub_00487a00() {}
+void TPoseMessageDialog::DoIt() {}
 
 // SYNTHETIC: IMPERIALISM 0x0054b010
 // TPoseMessageDialog::`scalar deleting destructor'
@@ -12,4 +12,3 @@ TPoseMessageDialog::~TPoseMessageDialog() {}
 // TPoseMessageDialog::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TPoseMessageDialog, TCommand)
-

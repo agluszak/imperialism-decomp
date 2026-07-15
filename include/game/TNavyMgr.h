@@ -15,7 +15,6 @@ struct TMapOrderInteractionSelection {
   TTaskForce* selectedEntry;   // +0x08
 };
 
-// TODO(manifest): describe TNavyMgr and its role. Base edge (TObject) recovered from RTTI CRuntimeClass chain: TNavyMgr -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x0065c4c8
 class TNavyMgr : public TObject {
 public:

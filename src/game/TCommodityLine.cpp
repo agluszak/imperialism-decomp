@@ -7,7 +7,8 @@
 
 IMPLEMENT_DYNCREATE(TCommodityLine, TLineData)
 
-TCommodityLine::TCommodityLine() {}
+// FUNCTION: IMPERIALISM 0x005c14c0
+TCommodityLine::TCommodityLine() : TLineData() {}
 
 // SYNTHETIC: IMPERIALISM 0x005c14f0
 // TCommodityLine::`scalar deleting destructor'

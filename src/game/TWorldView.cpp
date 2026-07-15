@@ -8,6 +8,7 @@
 #include "game/CTemporaryRegion.h"
 #include "game/TGlobalMapState.h"
 #include "game/TMapUberPicture.h"
+#include "game/ScopedMapQuickDrawContext.h"
 #include "game/TTaskForce.h"
 #include "game/global_data_tables.h"
 #include "game/quickdraw_rendering.h"
@@ -15,10 +16,8 @@
 #include <new>
 
 undefined4 thunk_GetMapActionContextByTileIndex(void);
-undefined4 ConstructScopedMapQuickDrawContextWithPaletteToken(void);
-undefined4 thunk_DestroyScopedMapQuickDrawContext(void);
-undefined4 thunk_NormalizeWrappedMapCoord108x60(void);
-undefined4 ComputeStridedRecordAddress6C(void);
+void NormalizeWrappedMapCoord108x60(short* xCoord, short* yCoord);
+int ComputeStridedRecordAddress6C(int recordBase, int recordIndex);
 
 namespace {
 
@@ -95,12 +94,13 @@ void TWorldView::ForwardParam(int param) {
 }
 
 // FUNCTION: IMPERIALISM 0x00595810
-void TWorldView::HandleCursorHoverFallback(CPoint* point, int hitArg) {
+void TWorldView::HandleCursorHoverFallback(CPoint* point, RgnHandle hitArg) {
   TView::HandleCursorHoverFallback(point, hitArg);
 }
 
 // FUNCTION: IMPERIALISM 0x005958b0
-void TWorldView::HandleCursorHoverSelectionByChildHitTestAndFallback(CPoint* point, int hitArg) {
+void TWorldView::HandleCursorHoverSelectionByChildHitTestAndFallback(CPoint* point,
+                                                                     RgnHandle hitArg) {
   TView::HandleCursorHoverSelectionByChildHitTestAndFallback(point, hitArg);
 }
 
@@ -182,19 +182,15 @@ void TWorldView::RenderMapContextOverlayWithScopedClipAndSurface() {
            reinterpret_cast<RECT*>(intersectPair));
   OffsetRect(reinterpret_cast<RECT*>(&clipRect), absoluteX, absoluteY);
 
-  char scopedContextStorage[24];
-  reinterpret_cast<void(__cdecl*)(void*, void*, void*)>(
-      ConstructScopedMapQuickDrawContextWithPaletteToken)(scopedContextStorage, this, &clipRect);
+  ScopedMapQuickDrawContext scopedContext(this, reinterpret_cast<RECT*>(&clipRect));
   RectRgn(reusableSurfaceB.tempRgn, reinterpret_cast<RECT*>(&clipRect.left));
   SetClip(reusableSurfaceB.tempRgn);
 
   char regionPresent = EmptyRgn(reusableSurfaceB.tempRgn);
   if (regionPresent == 0) {
     if (interactionMode == 0) {
-      // TODO(typing): RenderMapOrderEntryTilePreview's arg1 is really the selected
-      // TCivUnit*; retyping it means updating the whole TMapDialog override family.
-      int selectedOrder = reinterpret_cast<int>(g_pSelectedCivilianOrderState->selectedEntry);
-      RenderMapOrderEntryTilePreview(selectedOrder, originX, outExtra);
+      RenderMapOrderEntryTilePreview(g_pSelectedCivilianOrderState->selectedEntry, originX,
+                                     outExtra);
     } else if (interactionMode == 1) {
       int previewArgs[4];
       previewArgs[0] = outExtra;
@@ -219,12 +215,11 @@ void TWorldView::RenderMapContextOverlayWithScopedClipAndSurface() {
   }
 
   SetClip(reusableSurfaceA.tempRgn);
-  reinterpret_cast<void(__cdecl*)()>(thunk_DestroyScopedMapQuickDrawContext)();
 }
 
 // FUNCTION: IMPERIALISM 0x00596020
-void TWorldView::RenderMapOrderEntryTilePreview(int arg1, int arg2, int arg3) {
-  (void)arg1;
+void TWorldView::RenderMapOrderEntryTilePreview(TCivUnit* orderEntry, int arg2, int arg3) {
+  (void)orderEntry;
   (void)arg2;
   (void)arg3;
 }
@@ -286,11 +281,9 @@ char TWorldView::DispatchUiMouseMoveToChildren(CPoint* point, int arg2, int arg3
   unsigned short tileCol = 0;
   short regionBand = 0;
   ComputeWrappedMapCellAndRegionBandFromScreenCoord(overlayRecord, &tileRow, &tileCol, &regionBand);
-  reinterpret_cast<void(__cdecl*)(short*, short*)>(thunk_NormalizeWrappedMapCoord108x60)(
-      &tileRow, reinterpret_cast<short*>(&tileCol));
+  NormalizeWrappedMapCoord108x60(&tileRow, reinterpret_cast<short*>(&tileCol));
 
-  int stridedRecord = reinterpret_cast<int(__cdecl*)(int, int)>(ComputeStridedRecordAddress6C)(
-      (int)tileRow, (int)tileCol);
+  int stridedRecord = ComputeStridedRecordAddress6C((int)tileRow, (int)tileCol);
   if (*reinterpret_cast<int*>(overlayRecord + 0x24) == 1) {
     DispatchOverlayEvent78FromStridedRecord(stridedRecord, regionBand);
     return 1;

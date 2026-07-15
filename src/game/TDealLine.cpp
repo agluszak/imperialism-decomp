@@ -7,7 +7,8 @@
 
 IMPLEMENT_DYNCREATE(TDealLine, TLineData)
 
-TDealLine::TDealLine() {}
+// FUNCTION: IMPERIALISM 0x005c0d80
+TDealLine::TDealLine() : TLineData() {}
 
 // SYNTHETIC: IMPERIALISM 0x005c0db0
 // TDealLine::`scalar deleting destructor'

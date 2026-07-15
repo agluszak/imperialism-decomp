@@ -143,6 +143,7 @@ struct TurnEvent15Packet : NetMessage {
 #include "game/TZone.h"
 #include "game/TNextDiplomationCommand.h"
 #include "game/TLoadSavePicture.h"
+#include "game/TMapPreviewView.h"
 #include "game/TViewMgr.h"
 #include "game/TApplication.h"
 #include "game/TAssetMgr.h"
@@ -178,19 +179,24 @@ using turn_event_dialog::TurnEventDialogNode;
 // ECX loads before some calls are optimizer reuse, not a this-arg). Declared extern in the
 // generic repo form per Hard Rule 9 and cast to their real typed signatures at the call sites.
 extern undefined4 NoOpInitializeGlobalTurnEventQueueManager();
-extern undefined4 ResetTurnEventQueueRuntimeRecordBuffer();
-extern undefined4 LoadProfileStringAndAssignSharedRef();
 
 // Forward decl: real definition (with its // FUNCTION: marker) sits address-ordered
 // further down this file, near TMultiplayerMgr's other 0x5exxxx-adjacent members.
 static char ReturnTrueRuntimeCredentialInitStub();
 
-// Profile-section string literals.
-extern "C" const char s_PlayerName_0069801c[];
-extern "C" const char s_GameName_00698010[];
-
 // FUNCTION: IMPERIALISM 0x0050ec60
 NationStateRecordA8::NationStateRecordA8() {}
+
+// FUNCTION: IMPERIALISM 0x005421a0
+int FindActiveNationSlotIndexInGameFlowList() {
+  int activeId = GetSessionActiveNationId();
+  for (int i = 0; i < 7; ++i) {
+    if (g_pGameFlowState->nationSessionIds[i] == activeId) {
+      return i;
+    }
+  }
+  return -1;
+}
 
 // SYNTHETIC: IMPERIALISM 0x005425d0
 // TMultiplayerMgr::CreateObject
@@ -216,6 +222,8 @@ TMultiplayerMgr::TMultiplayerMgr()
 
 // SYNTHETIC: IMPERIALISM 0x005427e0
 // TMultiplayerMgr::`scalar deleting destructor'
+
+// FUNCTION: IMPERIALISM 0x00542810
 TMultiplayerMgr::~TMultiplayerMgr() {}
 
 // FUNCTION: IMPERIALISM 0x00542900
@@ -244,19 +252,17 @@ undefined TMultiplayerMgr::InitializeMultiplayerManagerForSessionContext(int ses
   queueSyncDword = 0;
   activeNationSlotIndex = -1;
   pendingNationSlotIndex = -1;
-  reinterpret_cast<void (*)()>(ResetTurnEventQueueRuntimeRecordBuffer)();
+  g_pNetMgr006a6014->ResetTurnEventQueueRuntimeRecordBuffer();
 
   GenerateMappedFlavorTextByCurrentContextNation(&playerNameString);
-  reinterpret_cast<void (*)(CString*, const char*, const char*)>(
-      LoadProfileStringAndAssignSharedRef)(&loadedString, s_PlayerName_0069801c,
-                                           static_cast<LPCSTR>(playerNameString));
+  LoadProfileStringAndAssignSharedRef(&loadedString, s_PlayerName_0069801c,
+                                      static_cast<LPCSTR>(playerNameString));
   playerNameString = loadedString;
   playerNameMirror = playerNameString;
 
   GenerateMappedFlavorTextByCurrentContextNation(&gameNameString);
-  reinterpret_cast<void (*)(CString*, const char*, const char*)>(
-      LoadProfileStringAndAssignSharedRef)(&loadedString, s_GameName_00698010,
-                                           static_cast<LPCSTR>(gameNameString));
+  LoadProfileStringAndAssignSharedRef(&loadedString, s_GameName_00698010,
+                                      static_cast<LPCSTR>(gameNameString));
   gameNameString = loadedString;
   return 0;
 }
@@ -272,6 +278,17 @@ void TMultiplayerMgr::ReadFrom(TStream* stream) {
 // FUNCTION: IMPERIALISM 0x00542ff0
 void TMultiplayerMgr::WriteTo(TStream* stream) {
   (void)stream;
+}
+
+// FUNCTION: IMPERIALISM 0x005430c0
+void TMultiplayerMgr::EnableDiplomacyQueueRoutingAndSetContextField44(int nContext, char fEnable) {
+  processPrimaryEventQueue = 1;
+  processSecondaryEventQueue = 1;
+  if (fEnable != '\0') {
+    diplomacyQueueContext = nContext;
+    return;
+  }
+  diplomacyQueueContext = 0;
 }
 
 // FUNCTION: IMPERIALISM 0x00543120
@@ -359,8 +376,28 @@ void TMultiplayerMgr::EmitTurnEvent3Mode18WithActiveNation() {
   g_pNetMgr006a6014->Send(&packet, 1);
 }
 
+// Broadcasts an event-0x10 "time" packet (same minimal payload as event 3) to every nation
+// slot that has both a live network session id and its pending-nation bit set.
+// FUNCTION: IMPERIALISM 0x00544720
+void TMultiplayerMgr::EmitTurnEvent10ForFlaggedNationSlots() {
+  for (int slot = 0; slot < kNationSlotCount; ++slot) {
+    if (nationSessionIds[slot] != 0 && (pendingNationBitmask & (1 << slot)) != 0) {
+      TurnEvent3Mode18Packet packet;
+      packet.packetTag = 0x74696d65;
+      packet.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetActiveNationId());
+      packet.eventCode = 0;
+      packet.fromNetworkId = 0;
+      packet.messageLength = 0;
+      packet.eventCode = 0x10;
+      packet.messageLength = 0x18;
+      packet.toNetworkId = g_pGameFlowState->nationSessionIds[slot];
+      g_pNetMgr006a6014->Send(&packet, 0);
+    }
+  }
+}
+
 // FUNCTION: IMPERIALISM 0x00544e30
-char TMultiplayerMgr::CanHandleCityDialogActionFalse(int action) {
+char TMultiplayerMgr::DoIdle(int action) {
   (void)action;
   return 0;
 }
@@ -666,6 +703,15 @@ struct TurnEvent2BPresenceMaskPacket : TimelyMessageHeader {
 
 void LoadUiStringAndDispatchSharedMessageCommand(short group, short index, TView* control);
 
+// FUNCTION: IMPERIALISM 0x00545660
+unsigned char TMultiplayerMgr::ResetLocalUiStateAndPostTurnEvent5E5() {
+  lobbyDialogView40 = 0;
+  ResetNationStatusArraysAndTurnEventContext();
+  g_pGlobalUiRootController->PostTurnEventCodeMessage2420(0x5e5);
+  queueSyncDword = 0;
+  return 1;
+}
+
 // Receive-side state machine for every diplomacy/lobby turn event ('time' packets).
 // Dispatches on eventCode 1..0x32 (codes 4..7 return 0); each case applies the payload
 // to the local session/world state and often re-broadcasts or acknowledges. Case bodies
@@ -916,10 +962,11 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
           while (mySlot >= 0 && nationSessionIds[mySlot] != GetSessionActiveNationId()) {
             --mySlot;
           }
-          TControl* mapControl = (TControl*)lounge->ResolveControlByTag(0x6d617020 /* 'map ' */);
+          TMapPreviewView* mapControl =
+              static_cast<TMapPreviewView*>(lounge->ResolveControlByTag(0x6d617020 /* 'map ' */));
           mapControl->AssertValid();
-          mapControl->field68 = mySlot;
-          mapControl->ApplyPaletteMaskToTileBufferByEventCode();
+          mapControl->selectedNation68 = mySlot;
+          mapControl->EnhancePhoto();
           RECT mapRect;
           mapControl->QueryContentBounds(&mapRect);
           {
@@ -2019,6 +2066,54 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
   return 1;
 }
 
+struct TurnEvent11Packet : NetMessage {
+  int packetTag;
+  unsigned char activeNationId;
+  unsigned char flagByte;
+  short pad16; // alignment gap before mapOffsetSelector
+  int mapOffsetSelector;
+  int mapOffset;
+  short shortA;
+  short shortB;
+  unsigned char pad24[4]; // original frame/messageLength is 0x28
+};
+
+// FUNCTION: IMPERIALISM 0x00549280
+void TMultiplayerMgr::AppendNodeToTurnEventLinkedListAt6C(int node) {
+  *reinterpret_cast<int*>(node + 0x10) = 0;
+  int* tail = &primaryTurnEventQueueHead;
+  for (int n = primaryTurnEventQueueHead; n != 0; n = *reinterpret_cast<int*>(n + 0x10)) {
+    tail = reinterpret_cast<int*>(n + 0x10);
+  }
+  *tail = node;
+}
+
+// FUNCTION: IMPERIALISM 0x005493c0
+void TMultiplayerMgr::CreateAndSendTurnEvent11_MapOffsetAndFlags(unsigned char flagByte,
+                                                                 int mapOffsetSelector,
+                                                                 int absoluteOffset, short shortA,
+                                                                 short shortB) {
+  TurnEvent11Packet packet;
+  packet.eventCode = 0x11;
+  packet.fromNetworkId = 0;
+  packet.toNetworkId = (g_pSimMgr->field44 == 1) ? 0 : -1;
+  packet.messageLength = 0x28;
+  packet.packetTag = 0x74696d65;
+  packet.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetActiveNationId());
+  packet.flagByte = flagByte;
+  packet.mapOffsetSelector = mapOffsetSelector;
+  int base = 0;
+  if (mapOffsetSelector == 0) {
+    base = reinterpret_cast<int>(g_pGlobalMapState->terrainStateTable);
+  } else if (mapOffsetSelector == 1) {
+    base = reinterpret_cast<int>(g_pGlobalMapState->cityScoreTable);
+  }
+  packet.mapOffset = absoluteOffset - base;
+  packet.shortA = shortA;
+  packet.shortB = shortB;
+  g_pNetMgr006a6014->Send(&packet, 0);
+}
+
 // FUNCTION: IMPERIALISM 0x005494b0
 void TMultiplayerMgr::CreateAndSendTurnEvent12_TwoShorts(short shortA, short shortB) {
   TurnEvent12Packet packet;
@@ -2177,14 +2272,42 @@ void TMultiplayerMgr::DispatchTurnEvent1AWithNationActionPayload(short param0, s
   g_pNetMgr006a6014->Send(&packet, 1);
 }
 
-struct TaggedGameStateTurnEventPacket : NetMessage {
+struct TurnEvent1CPacket : NetMessage {
   int packetTag;
   unsigned char activeNationId;
   unsigned char pad15[3];
-  int resolvedNationId;
-  int tagParam;
-  int valueParam;
+  short pendingNationSlotIndexLow;
+  short shortA;
+  short shortB;
+  // Ground truth stores shortD/shortE before shortC (declaration order matches the
+  // original's field offsets, not the parameter order).
+  short shortD;
+  short shortE;
+  short shortC;
+  short shortF;
 };
+
+// FUNCTION: IMPERIALISM 0x005499b0
+void TMultiplayerMgr::CreateAndSendTurnEvent1C_BoolAndSixShorts(bool broadcastFlag, short shortA,
+                                                                short shortB, short shortC,
+                                                                short shortD, short shortE,
+                                                                short shortF) {
+  TurnEvent1CPacket packet;
+  packet.eventCode = 0x1c;
+  packet.fromNetworkId = 0;
+  packet.toNetworkId = broadcastFlag ? -1 : 0;
+  packet.messageLength = 0x28;
+  packet.packetTag = 0x74696d65;
+  packet.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetActiveNationId());
+  packet.pendingNationSlotIndexLow = static_cast<short>(g_pGameFlowState->pendingNationSlotIndex);
+  packet.shortA = shortA;
+  packet.shortB = shortB;
+  packet.shortD = shortD;
+  packet.shortE = shortE;
+  packet.shortC = shortC;
+  packet.shortF = shortF;
+  g_pNetMgr006a6014->Send(&packet, 0);
+}
 
 // FUNCTION: IMPERIALISM 0x00549ad0
 void TMultiplayerMgr::DispatchTurnEventPacketWithCodeAndPayloadBuffer(short eventTag,
@@ -2262,6 +2385,15 @@ void TMultiplayerMgr::SerializeOrderDataIntoTurnEventByTag(TStream* stream, shor
     g_pNationInteractionStateManager->WriteTo(stream);
   }
 }
+
+struct TaggedGameStateTurnEventPacket : NetMessage {
+  int packetTag;
+  unsigned char activeNationId;
+  unsigned char pad15[3];
+  int resolvedNationId;
+  int tagParam;
+  int valueParam;
+};
 
 // FUNCTION: IMPERIALISM 0x0054a340
 void TMultiplayerMgr::DispatchTaggedGameStateEvent1F20(int packetTag, int param2,
@@ -2362,6 +2494,16 @@ void TMultiplayerMgr::PublishNationDescriptorAndNotifyOrderListeners(TStream* st
       }
     }
   }
+}
+
+// FUNCTION: IMPERIALISM 0x0054a9d0
+int TMultiplayerMgr::IsSpecialNationDialogModeActive() {
+  if (sessionPhaseTag == 0x676f696e) {
+    if (g_pSimMgr->GetActiveNationId() != -1) {
+      return 1;
+    }
+  }
+  return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x0054ab20
@@ -2522,6 +2664,28 @@ void TMultiplayerMgr::EmitNationDiplomacyNeedStateSnapshotEvent15(char broadcast
   g_pNetMgr006a6014->Send(&packet, 0);
 }
 
+// FUNCTION: IMPERIALISM 0x0054b8c0
+int TMultiplayerMgr::GetNationStatusCodeForSlotOrActiveNation(int slot) {
+  if (slot == -1) {
+    slot = g_pSimMgr->GetActiveNationId();
+    if (slot == -1) {
+      int sessionActive = GetSessionActiveNationId();
+      slot = 0;
+      int* sessionId = g_pGameFlowState->nationSessionIds;
+      do {
+        if (*sessionId == sessionActive) {
+          goto resolved;
+        }
+        ++slot;
+        ++sessionId;
+      } while (slot < 7);
+      slot = -1;
+    }
+  }
+resolved:
+  return nationStatusTags[slot];
+}
+
 // FUNCTION: IMPERIALISM 0x0054b930
 void TMultiplayerMgr::SetNationStatusAwolByNationIdAndDispatchNotices(int networkId) {
   for (int slot = 0; slot < 7; ++slot) {
@@ -2639,6 +2803,22 @@ void TMultiplayerMgr::EmitTacticalFireCommandPacket(int commandTag, TTacticalUni
   (void)damageA;
   (void)damageB;
   (void)effectCode;
+}
+
+// FUNCTION: IMPERIALISM 0x0054c6e0
+void TMultiplayerMgr::ResetNationStatusArraysAndTurnEventContext() {
+  CString statusText;
+  g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&statusText, 0x2759, 1);
+  for (int nationSlot = 0; nationSlot < kNationSlotCount; ++nationSlot) {
+    nationSessionIds[nationSlot] = 0;
+    nationStatusTags[nationSlot] = 0x756e6173; // 'suna'
+    nationDisplayNameSlots[nationSlot] = statusText;
+    defaultNationTextSlots[nationSlot] = nationDisplayNameSlots[nationSlot];
+  }
+  activeNationSlotIndex = -1;
+  pendingNationSlotIndex = -1;
+  queueSyncDword = 0;
+  g_pNetMgr006a6014->ResetTurnEventQueueRuntimeRecordBuffer();
 }
 
 // Emit the event-0xE session-init snapshot (scenario tag/seed, host game name, save

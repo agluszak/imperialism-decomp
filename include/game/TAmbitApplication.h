@@ -4,7 +4,7 @@
 #include "decomp_types.h"
 #include "game/TApplication.h"
 
-class TMapUberPicture;
+class TMapUberUberPicture;
 class TStream;
 class TWindow;
 
@@ -41,9 +41,10 @@ public:
   void InitializeGlobalRuntimeSystems(); // 0x49ded0
 
   // 0x48 — receiver of HandleCursor's viewport-edge auto-scroll dispatch
-  // (AutoScrollByEdgeMask, slot 0x74). Cleared by InitializeGlobalRuntimeSystems;
-  // the runtime writer is not yet located.
-  TMapUberPicture* edgeScrollTarget48;
+  // (AutoScrollByEdgeMask, slot 0x74). Cleared by InitializeGlobalRuntimeSystems and the
+  // map pictures' Free; set to the active map picture by the slot-0x37 lifecycle hook
+  // (TMapUberUberPicture::NoOpUiLifecycleHook 0x596810 and the TMapUberPicture override).
+  TMapUberUberPicture* edgeScrollTarget48;
   // 0x4c — a busy/dispatch-in-progress byte, set to 1 across many turn-event dispatch
   // branches in TViewMgr's state machine (0x5d7240) and cleared to 0 once handling
   // completes; ground truth confirms a byte-sized write (`MOV byte ptr [EAX+0x4c],1`),

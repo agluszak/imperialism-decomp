@@ -942,47 +942,49 @@ undefined TMacViewMgr::OrphanCallChain_C4_I35_0050bbc0(int* param_1, undefined4 
 }
 
 // FUNCTION: IMPERIALISM 0x0050bc50
-undefined TMacViewMgr::SyncSellTaggedChildControlWithNationState(int* param_1, short param_2) {
-  TView* controlView = reinterpret_cast<TView*>(param_1);
-  short sellCount;
-  TControl* sellControl;
-  controlView->SetState(0, 0);
-  *reinterpret_cast<short*>(reinterpret_cast<char*>(param_1) + 0x88) =
-      static_cast<short>(reinterpret_cast<int>(param_1));
+undefined TMacViewMgr::SyncSellTaggedChildControlWithNationState(TView* view, short orderSlot,
+                                                                 short nationIndex) {
+  using turn_event_dialog::GoldCommitControl;
+  using turn_event_dialog::TSellOrderRowControl;
+  TSellOrderRowControl* row = static_cast<TSellOrderRowControl*>(view);
+  view->NoOpUiLifecycleHook(0);
+  *reinterpret_cast<short*>(reinterpret_cast<char*>(view) + 0x88) = orderSlot;
   if (g_pCityOrderCapabilityState->hasProductionOrder193 == 0 &&
-      (reinterpret_cast<int>(param_1) == 6 || reinterpret_cast<int>(param_1) == 0xc)) {
-    controlView->SetEnabled(0, 0);
+      (orderSlot == 6 || orderSlot == 0xc)) {
+    view->SetEnabled(0, 0);
   }
-  sellCount = g_apNationStates[param_2]->QueryNationMetricBySlot7C(param_2);
-  if (sellCount > 0 && g_apNationStates[param_2]->tradeCapacity == 0) {
-    g_apNationStates[param_2]->SetDiplomacyState1c6ClampedToCounterA4(0, 0);
+  short sellCount = g_apNationStates[nationIndex]->QueryNationMetricBySlot7C(orderSlot);
+  // The clamp branch resets the nation index used by the trailing capacity check below to
+  // 0 (matches the original: it reuses the same stack slot that held nationIndex).
+  short effectiveNationIndex = nationIndex;
+  if (sellCount > 0 && g_apNationStates[nationIndex]->tradeCapacity == 0) {
+    g_apNationStates[nationIndex]->SetDiplomacyState1c6ClampedToCounterA4(orderSlot, 0);
     sellCount = 0;
+    effectiveNationIndex = 0;
   }
-  sellControl = static_cast<TControl*>(controlView->ResolveControlByTag(0x53656c6c));
+  GoldCommitControl* sellControl =
+      static_cast<GoldCommitControl*>(view->ResolveControlByTag(kControlTagSell));
   if (sellControl == 0) {
     MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
     TemporarilyClearAndRestoreUiInvalidationFlag();
   }
   if (sellCount < 0) {
-    controlView->RefreshCityProductionViewStateFromContext(0);
-    sellControl->RefreshCityProductionViewStateFromContext(0);
+    row->NotifySellValueUnavailable();
+    sellControl->ConfigureGoldValueCells(0, 0);
     sellControl->SetEnabled(0, 1);
   } else {
-    controlView->InvalidateOffsetRegionUsingChildClipRect(0);
+    row->NotifySellValueValid();
   }
   if (sellCount > 0) {
-    controlView->ForwardMapViewVirtualC4IfPresent(sellCount);
-    // TODO(mis-port): the original (0x50bc50) calls vtable slot 0x79 (+0x1e4) with
-    // (sellCount, 0) here — a TControl-extension slot not yet modeled (184-slot job) —
-    // not slot 0x2e; this call is a placeholder carried over from the old port.
-    sellControl->RefreshCityProductionViewStateFromContext(reinterpret_cast<RgnHandle>(sellCount));
+    row->NotifySellValueActive();
+    sellControl->ConfigureGoldValueCells(sellCount, 0);
     sellControl->SetEnabled(1, 1);
     return 0;
   }
-  if (g_apNationStates[param_2]->tradeCapacity != 0) {
-    controlView->DispatchSlot9CToLinkedChildren();
+  if (g_apNationStates[effectiveNationIndex]->tradeCapacity != 0) {
+    row->NotifySellCapacityAvailable();
   }
-  sellControl->RefreshCityProductionViewStateFromContext(0);
+  sellControl->ConfigureGoldValueCells(0, 0);
   sellControl->SetEnabled(0, 1);
   return 0;
 }

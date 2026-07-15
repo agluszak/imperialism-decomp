@@ -25,3 +25,7 @@ public:
   int fForward;          // +0x04 — iteration-direction flag captured by Reset
   void* current;         // +0x08 — current live view (null once past the end)
 };
+
+// 0x4924c0: pops the singly-linked list head (*head advances to next) and returns the
+// popped node payload (node + 8 bytes).
+int __stdcall PopSinglyLinkedListHeadPointer(int* head);

@@ -4,14 +4,75 @@
 
 TCdAudioDevice g_cdAudioDevice; // 0x006a60bc
 
+// FUNCTION: IMPERIALISM 0x0047cca0
+void TCdAudioDevice::ResetAndOpenCdAudioDeviceHandle() {
+  m_deviceId = 0;
+  m_deviceId = OpenCdAudioAndProbeAuxOutputDevice() & 0xffff;
+}
+
+// FUNCTION: IMPERIALISM 0x0047ccd0
+void TCdAudioDevice::SendMciCommand804IfDeviceOpenAndClearHandle() {
+  if (m_deviceId != 0) {
+    SendMciCommand804ToDevice(m_deviceId);
+    m_deviceId = 0;
+  }
+}
+
+// FUNCTION: IMPERIALISM 0x0047cd00
+void TCdAudioDevice::EnsureCdAudioDeviceHandleInitialized() {
+  if (m_deviceId == 0) {
+    m_deviceId = OpenCdAudioAndProbeAuxOutputDevice() & 0xffff;
+  }
+}
+
 // FUNCTION: IMPERIALISM 0x0047cd60
 void TCdAudioDevice::ApplyMciPlaybackRangeFromAudioManager(int trackIndex) {
   SetMciPlaybackRangeByTrackIndexAndDevice(trackIndex, m_deviceId);
 }
 
+// FUNCTION: IMPERIALISM 0x0047cdf0
+bool TCdAudioDevice::ForwardMciStatusCommand814IgnoreFailure() {
+  return SendMciStatusCommand814AndIgnoreFailure(m_deviceId);
+}
+
 // FUNCTION: IMPERIALISM 0x005df8d0
 int ReturnTrueStub(void) {
   return 1;
+}
+
+// FUNCTION: IMPERIALISM 0x005e16f0
+bool __stdcall SendMciStatusCommand814AndIgnoreFailure(MCIDEVICEID device) {
+  MCI_STATUS_PARMS parms;
+  parms.dwItem = 4;
+  MCIERROR err = mciSendCommandA(device, MCI_STATUS, MCI_STATUS_ITEM, (DWORD)&parms);
+  if (err != 0) {
+    return false;
+  }
+  return parms.dwReturn != 0x20d;
+}
+
+// FUNCTION: IMPERIALISM 0x005e1760
+unsigned int QueryMciStatusField5ViaCommand814(MCIDEVICEID device) {
+  MCI_STATUS_PARMS parms;
+  parms.dwItem = 5;
+  MCIERROR err = mciSendCommandA(device, MCI_STATUS, MCI_STATUS_ITEM, (DWORD)&parms);
+  return ~-static_cast<unsigned int>(err != 0) & parms.dwReturn;
+}
+
+// FUNCTION: IMPERIALISM 0x005e17b0
+unsigned int QueryMciStatusField8ViaCommand814(MCIDEVICEID device) {
+  MCI_STATUS_PARMS parms;
+  parms.dwItem = 8;
+  MCIERROR err = mciSendCommandA(device, MCI_STATUS, MCI_STATUS_ITEM, (DWORD)&parms);
+  return ~-static_cast<unsigned int>(err != 0) & parms.dwReturn;
+}
+
+// FUNCTION: IMPERIALISM 0x005e1800
+unsigned int QueryMciStatusField3ViaCommand814(MCIDEVICEID device) {
+  MCI_STATUS_PARMS parms;
+  parms.dwItem = 3;
+  MCIERROR err = mciSendCommandA(device, MCI_STATUS, MCI_STATUS_ITEM, (DWORD)&parms);
+  return ~-static_cast<unsigned int>(err != 0) & parms.dwReturn;
 }
 
 // FUNCTION: IMPERIALISM 0x005e1850
@@ -27,4 +88,10 @@ void __stdcall SetMciPlaybackRangeByTrackIndexAndDevice(int trackIndex, MCIDEVIC
       mciSendCommandA(device, MCI_PLAY, MCI_TO, (DWORD)&playParms);
     }
   }
+}
+
+// FUNCTION: IMPERIALISM 0x005e19e0
+bool __stdcall SendMciCommand804ToDevice(MCIDEVICEID device) {
+  MCIERROR err = mciSendCommandA(device, 0x804, 0, 0);
+  return err == 0;
 }

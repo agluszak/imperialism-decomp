@@ -7,6 +7,10 @@
 
 IMPLEMENT_DYNCREATE(TShipyardView, TBuildingView)
 
+// Ctor at 0x4c82c0 (`: TBuildingView() { field98 = 0; }`) is intentionally NOT claimed:
+// unlike its TBuildingView siblings, our toolchain does not emit a uniquely-pairable
+// out-of-line copy for it, so reccmp hard-fails to match the address. Left markerless
+// rather than faking the match.
 TShipyardView::TShipyardView() {}
 
 // SYNTHETIC: IMPERIALISM 0x004c82f0
@@ -14,8 +18,7 @@ TShipyardView::TShipyardView() {}
 TShipyardView::~TShipyardView() {}
 
 // FUNCTION: IMPERIALISM 0x004c8340
-void TShipyardView::Free() {
-}
+void TShipyardView::Free() {}
 
 // FUNCTION: IMPERIALISM 0x004c8390
 undefined TShipyardView::OrphanRetStub_004c6fd0() {
@@ -28,15 +31,13 @@ undefined TShipyardView::OrphanRetStub_004c6fb0() {
 }
 
 // FUNCTION: IMPERIALISM 0x004c8ac0
-void TShipyardView::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) { }
+void TShipyardView::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {}
 
 // FUNCTION: IMPERIALISM 0x004c8d70
-void TShipyardView::InitializeCityViewActionButtons() {
-}
+void TShipyardView::InitializeCityViewActionButtons() {}
 
 // FUNCTION: IMPERIALISM 0x004c9150
-void TShipyardView::ApplyRectSlot110(RECT* rectBuffer) {
-}
+void TShipyardView::ApplyRectSlot110(RECT* rectBuffer) {}
 
 // FUNCTION: IMPERIALISM 0x004c97c0
 undefined TShipyardView::BuildIndustryActionCostSummaryTextByActionIndex() {
@@ -44,8 +45,7 @@ undefined TShipyardView::BuildIndustryActionCostSummaryTextByActionIndex() {
 }
 
 // FUNCTION: IMPERIALISM 0x004c9a60
-void __fastcall TShipyardView::RefreshCityViewStatusPanel(int * pCityViewDialog) {
-}
+void __fastcall TShipyardView::RefreshCityViewStatusPanel(int* pCityViewDialog) {}
 
 // FUNCTION: IMPERIALISM 0x004c9d20
 undefined TShipyardView::OrphanCallChain_C1_I15_004c9d20(int param_1) {

@@ -26,7 +26,7 @@ public:
 
   void ForwardMapDialogTileCoordUpdateToDerivedHandler(int tileX, int tileY);
 
-  virtual void RenderMapOrderEntryTilePreview(int arg1, int arg2, int arg3) override;
+  virtual void RenderMapOrderEntryTilePreview(TCivUnit* orderEntry, int arg2, int arg3) override;
   virtual void RenderTacticalStackCountIndicatorAndUnitBadge(short tileIndex, int arg2,
                                                              int arg3) override;
   virtual void RenderMapDialogTerrainOverlayFrameByTileOwner(short tileIndex, void* dstRect,
@@ -55,20 +55,23 @@ public:
   virtual undefined EmitHexAdjacencyTransitionEventsByBitmask();
   virtual undefined DrawHexEdgeConnectionGlyphsByMask();
   virtual undefined RenderMapDialogBilateralRelationMarkers();
-  virtual undefined DrawMapDialogGuidePatternSetA_00520970();
-  virtual undefined DrawMapDialogGuidePatternSetB_00520a90();
-  virtual undefined DrawMapDialogGuidePatternSetC_00520c10();
-  virtual undefined DrawMapDialogGuidePatternSetD_00520d20();
-  virtual undefined DrawMapDialogTileGuidePatternByVariant();
-  virtual undefined DrawMapDialogGuidePatternSetE_00520fc0();
-  virtual undefined DrawMapDialogGuidePatternSetF_00521090();
-  virtual undefined DrawMapDialogGuidePatternSetG_005211c0();
-  virtual undefined DrawMapDialogGuidePatternSetH_00521340();
-  virtual undefined DrawMapDialogGuidePatternSetI_00521540();
-  virtual undefined DrawMapDialogOwnershipMarkerForNation_00522000();
+  virtual void DrawMapDialogGuidePatternSetA_00520970(int originX, int originY, short variant);
+  virtual void DrawMapDialogGuidePatternSetB_00520a90(int originX, int originY, short variant);
+  virtual void DrawMapDialogGuidePatternSetC_00520c10(int originX, int originY, short variant);
+  virtual void DrawMapDialogGuidePatternSetD_00520d20(int originX, int originY, short variant);
+  virtual void DrawMapDialogTileGuidePatternByVariant(int originX, int originY, short variant);
+  virtual void DrawMapDialogGuidePatternSetE_00520fc0(int originX, int originY, short variant);
+  virtual void DrawMapDialogGuidePatternSetF_00521090(int originX, int originY, short variant);
+  virtual void DrawMapDialogGuidePatternSetG_005211c0(int originX, int originY, short variant);
+  virtual void DrawMapDialogGuidePatternSetH_00521340(int originX, int originY, short variant);
+  virtual void DrawMapDialogGuidePatternSetI_00521540(int originX, int originY, short variant);
+  virtual void DrawMapDialogOwnershipMarkerForNation_00522000(unsigned char edgeMask, int screenX,
+                                                              int screenY, short tileIndex);
   virtual undefined RenderMapDialogDiplomacyNeighborRelationHints();
-  virtual undefined DrawMapDialogWrappedTileConnectionMarker_00522c10();
-  virtual undefined DrawHexNeighborConnectionMask();
+  virtual void DrawMapDialogWrappedTileConnectionMarker_00522c10(short col1, int row1, short col2,
+                                                                 int row2);
+  virtual void DrawHexNeighborConnectionMask(unsigned char connectionMask, int screenX, int screenY,
+                                             short tileIndex);
   virtual undefined WrapperFor_SetQuickDrawFillColor_At00523060();
   virtual undefined UpdateMapOrderEntryTilePreviewSlot();
   virtual undefined OrphanLeaf_NoCall_Ins100_005241b0();
@@ -83,7 +86,8 @@ public:
   virtual undefined CopyDiamondMaskBlockKernel();
   virtual undefined CopyDiagonalMaskNarrowingBlockKernel();
   virtual undefined CopyDiagonalMaskWideningBlockKernel();
-  virtual undefined Copy64x64TileBlockWithStrideAdjustment();
+  virtual void Copy64x64TileBlockWithStrideAdjustment(int* src, int* dest, short srcStride,
+                                                      short destStride);
   virtual undefined HasRenderableParentAndContentSlotA2();
   virtual undefined ReleaseRuntimeSelectionOwnerAndDestroyObject(int param_1, int param_2,
                                                                  int param_3);

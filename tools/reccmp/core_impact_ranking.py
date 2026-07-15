@@ -130,6 +130,12 @@ def load_roadmap_rows(path: Path) -> list[dict[str, str]]:
     return out
 
 
+def parse_int_field(raw: str) -> int:
+    """Parse a roadmap numeric column that may be hex (0x-prefixed) or decimal."""
+    value = raw.strip()
+    return int(value, 16) if value.lower().startswith("0x") else int(value)
+
+
 def hint_prefix(name: str) -> str | None:
     for prefix, rx in WRAPPER_HINTS:
         if rx.search(name):
@@ -157,7 +163,7 @@ def main() -> int:
     wrapper_candidates: list[RankedFunction] = []
 
     for row in roadmap_rows:
-        addr = int(str(row["orig_addr"]).strip(), 10)
+        addr = parse_int_field(str(row["orig_addr"]))
         row_name = (row.get("name") or "").strip()
         module = (row.get("module") or "").strip()
 
@@ -168,7 +174,7 @@ def main() -> int:
         size_text = (row.get("size") or "").strip()
         if size_text:
             try:
-                size = int(size_text, 10)
+                size = parse_int_field(size_text)
             except ValueError:
                 size = 0
         if size <= 0 and sym and sym.size:

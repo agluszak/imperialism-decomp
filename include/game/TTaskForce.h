@@ -19,44 +19,31 @@ struct TMapOrderChildLinkNode {
   unsigned char pad_0d;
   unsigned char pad_0e;
   unsigned char pad_0f;
+
+  // Real __thiscall method (0x552510, ECX=this node, one stack arg, RET 4) --
+  // was mis-modeled as a "static" TTaskForce member taking (node, child_node) as
+  // two ordinary params, which mismatched the callee-cleans-1-arg convention Ghidra
+  // showed (bd 1uj.16.1 fix). Walks `this` and its `next` chain (null-safe on `this`)
+  // for the first node whose object_ptr == child_node.
+  TMapOrderChildLinkNode* FindNodeMatching(TTaskForce* child_node); // 0x552510
+
+  // Real __thiscall method (0x536f70, ECX=this node, one stack arg, RET 4) -- was mis-
+  // modeled as a "static" TScatteredShipsMission member taking (node, flag), same class
+  // of bug FindNodeMatching had (bd 1uj.16.3 fix). Null-safe on `this`; sets active_flag
+  // on `this` and every following node in the `next` chain.
+  void SetChainActiveFlag(unsigned char flag); // 0x536f70
 };
 
 ASSERT_SIZE(TMapOrderChildLinkNode, 0x10);
 
-// Per-owner bucket table for active map-order entries (Ghidra: ObjectPoolOwner).
-// NOTE (bd 1uj.16 follow-up): the internal shape past +0x18 is still under
-// investigation. TTaskForce::RemoveNode (0x550ff0) relies on the
-// {head@0x10, active_node@0x14, bucket_counts_base@0x18} reading used here, but
-// TTaskForce::PromoteMapOrderChainAndQueue (0x5533f0) separately reads a
-// stretch<T>-shaped growable array (data/capacity/count at +0x28/+0x2c/+0x30,
-// realloc'd via the same 0x5e7fc0 helper TZone's primary/secondaryNeighbors use)
-// plus a short comparison field at +0x44 off the SAME owner pointer -- a shape
-// that does not obviously square with a flat 0x100-byte bucket-count table
-// starting at +0x18. Left opaque pending a dedicated class-recovery pass rather
-// than guessing a layout that could silently corrupt the already-working
-// TTaskForce::RemoveNode / TAdmiral.cpp accessors.
-struct TMapOrderEntryOwnerContext {
-  char pad_00[0x10];
-  TMapOrderChildLinkNode* head;
-  TTaskForce* active_node;
-  char bucket_counts_base[0x100];
-
-  // Called from TTaskForce::RemoveNode's tail (0x550ff0, via ILT thunk
-  // 0x4027de) with RemoveNode's own `self` int parameter reinterpreted as
-  // this receiver -- confirmed __thiscall via ECX=this register evidence
-  // (0x553bc0 immediately does `mov edi, ecx`), and this receiver's own
-  // +0x10/+0x14 fields are read/compared exactly like head/active_node here.
-  // Searches head for an existing link to `node`; if none exists, allocates
-  // (operator new, 0x606f73) and inserts a new TMapOrderChildLinkNode in
-  // priority-sorted order (via a lookup table at 0x698120), bumps a bucket
-  // counter, and then makes a virtual dispatch through this receiver's own
-  // (still-uncharted) vtable whose consequences are not yet understood --
-  // including a write at node+0x34, past TTaskForce's own 0x34-byte size,
-  // that is only reached when this receiver's own +0x8 field takes an
-  // uncommon value. Left `// TODO: promote body` rather than guess at the
-  // owner's own polymorphic identity; see bd 1uj.16 follow-up notes.
-  void FindOrCreateChildOrderLink(TTaskForce* node); // 0x553bc0
-};
+// The former TMapOrderEntryOwnerContext placeholder struct (this comment block
+// used to sit here) is gone: bd 1uj.16.1 resolved FindOrCreateChildOrderLink's
+// receiver to be TTaskForce itself (the parent order entry), not a distinct
+// manager class -- see the `owner` field comment below and FindOrCreateChildOrderLink's
+// own declaration. `owner` remains genuinely dual-purpose (TTaskForce::
+// PromoteMapOrderChainAndQueue instead reads it as TZone*, per bd 1uj.47.2 --
+// see that method's body for the local reinterpret_cast), consistent with the
+// type-modeling guardrail's "opaque/polymorphic slot" exception.
 
 // Map-order queue entry (0x34 bytes). RTTI-confirmed real name TTaskForce
 // (CRuntimeClass chain: TTaskForce -> TObject -> CObject; see
@@ -94,18 +81,27 @@ public:
   // to avoid touching working code; see bd 1uj.16 notes.
   int attachment;
   // Was read as a generic "targetRecord" pointer (compared against a
-  // cityRecordPtr) by TNavyMgr's order filter, and as a
-  // TMapOrderEntryOwnerContext* by RemoveNode -- an opaque per-order owner/
-  // target-context pointer whose real class is still unconfirmed.
-  TMapOrderEntryOwnerContext* owner;
+  // cityRecordPtr) by TNavyMgr's order filter, and, when a child order node's
+  // own owner, as the PARENT TTaskForce entry acting as this node's queue/bucket
+  // owner (bd 1uj.16.1 merge): RemoveNode (0x550ff0), ReassignOrderNodeNation-
+  // AndRebindParentCounters, and FindOrCreateChildOrderLink (0x553bc0) all read
+  // the pointee at the SAME offsets childOrderList/activeChildEntry/bucket-count
+  // region use on `this` -- i.e. `owner` doesn't point at a distinct manager
+  // object (the former TMapOrderEntryOwnerContext guess), it points at another
+  // TTaskForce (the parent order this entry is queued under). TAdmiral's own
+  // primary-order-node accessors (TAdmiral.cpp) read the same +0xc/+0x10/+0x14
+  // shape off a TShip-typed primary order node.
+  TTaskForce* owner;
   // Head of this entry's own child order-node chain (was opaque pad_10[0]).
-  // Same TMapOrderChildLinkNode shape TNavyMission::orderList24 walks.
+  // Same TMapOrderChildLinkNode shape TNavyMission::orderList24 walks. When
+  // `this` is referenced via a child's `owner` pointer, this is that child's
+  // sibling list head (former TMapOrderEntryOwnerContext::head).
   TMapOrderChildLinkNode* childOrderList; // +0x10
   // Cached "preferred active child" pointer, recomputed by
   // RecomputeMapOrderChildAggregateMetric (0x553e30) folding
   // SelectPreferredMapOrderEntryByPriorityRules over childOrderList -- the
-  // same role TMapOrderEntryOwnerContext::active_node plays for TAdmiral's
-  // primary-order owner (was opaque pad_10[4]).
+  // same role this plays for TAdmiral's primary-order owner and for a child's
+  // `owner->activeChildEntry` (former TMapOrderEntryOwnerContext::active_node).
   TTaskForce* activeChildEntry; // +0x14
   // Copied from the source order node's own +0x08 field when this entry is
   // created (GetOrCreateMissionOrderEntryForNode, 0x5503a0); compared against
@@ -136,8 +132,6 @@ public:
   // required_count.
   TTaskForce(int contextAnchorArg, short requiredCountArg);
 
-  static TMapOrderChildLinkNode* FindMissionOrderNodeById(TMapOrderChildLinkNode* node,
-                                                          TTaskForce* child_node);
   static TMapOrderChildLinkNode*
   DeleteMapOrderChildLinkAndReturnNext(TMapOrderChildLinkNode* child_link_node);
   static void RemoveLinkedOrderNodeByValueRecursive(TMapOrderChildLinkNode* node,
@@ -153,6 +147,13 @@ public:
   // 0x00552a70 — drops this task force's queued order nodes belonging to `nation` and
   // clears the selection state tied to `contextZone` (the selected map-order context).
   void RemoveTaskForceOrderNodesByNationAndClearSelectionState(int nation, TZone* contextZone);
+  // 0x005528c0 — empty post-construction slot invoked thiscall (no args) by both
+  // TTaskForce factory sites right after the ctor; the real body is a single ret.
+  void NoOpTaskForceInitSlot();
+  // 0x005548e0 — averages each child order entry's +0x10 slot and stores the rounded
+  // result as a 32-bit value over this entry's order_type/order_strength dword. See the
+  // .cpp: the +0x10 read semantics are unresolved, so the body is deferred.
+  void RecomputeTaskForceAverageOrderScore();
   // 0x005539c0 — recomputes this task force's per-order selection flags for the active
   // nation's current orders (`mode` selects the pass; the caller passes 0).
   void RefreshTaskForceSelectionFlagsForCurrentNationOrders(int mode);
@@ -162,7 +163,7 @@ public:
   // returns 1 (marking this entry eliminated) when no child survives.
   char PruneInactiveTaskForceOrderHead();
   // 0x00551100 — hands this order node to `nation` and rebinds the parent counters
-  // (naval capture path). Body TODO.
+  // (naval capture path).
   void ReassignOrderNodeNationAndRebindParentCounters(short nation);
   // Adds delta to tiebreak_strength, capped at 499.
   void AdjustMapOrderNodeStatCapped499(short delta); // 0x550370
@@ -172,7 +173,9 @@ public:
   void ResetOrderTypeAndStrengthDword(int packedValue); // 0x552f60
   TTaskForce* SelectPreferredMapOrderEntryByPriorityRules(TTaskForce* candidate,
                                                           int compareAttachedFlag);
-  void RemoveNode(int self);
+  // `self` is the caller's own order entry, re-attached as `this` child's new owner
+  // (see the RemoveNode body for the exact unlink/rebind sequence).
+  void RemoveNode(TTaskForce* self);
 
   // Null-safe (returns true on null `this`). Sums 4 consecutive shorts spanning
   // pad_1e, attached_entity's two halves, and pad_24 -- the original reads this whole
@@ -194,17 +197,22 @@ public:
   // node.
   void ClearMapOrderProcessedFlagsChain(); // 0x557870
 
-  // Builds a localized selection-overlay label describing this task-force order entry
-  // (nation name + attachment count) via g_pLocalizationTable's format-string expander.
-  // 0x554c90, 370 bytes. TODO: port body -- the exact resource-string IDs and format
-  // args aren't recovered yet; used by BuildMapOrderBattleSideSnapshot for its overlay
-  // label field, which only needs a real, correctly-typed call site.
+  // Builds a localized selection-overlay label ("<N> <unit(s)> <terrain owner> at
+  // <context> (<order kind>)") via scanBracketExpressions' bracket-template expander.
+  // Bracket substitutions: singular/plural unit template (string group 0x2762, index
+  // 0x11/0x12), g_apTerrainTypeDescriptorTable[required_count]'s terrain/nation name,
+  // contextAnchor's (real TZone*, see TMapOrderEntryOwnerContext note above)
+  // AssignZoneDisplayNameToOutputRef label, the decimal child count, and the
+  // order-kind label (string group 0x2762, index attachment+0x13). 0x554c90.
+  // Used by BuildMapOrderBattleSideSnapshot for its overlay label field.
   void BuildTaskForceSelectionOverlayLabelText(CString* out); // 0x554c90
 
   // Per-entry candidate score blending this order's tiebreak_strength bucket against
   // its resource-type's navy-priority/resolve/calculate/task-force weight columns
   // (g_NavyOrderResourceDescriptorTable[order_type]) plus required_count. Used by the
   // order-selection cluster to rank candidate task-force order entries.
+  // Simplified single-term variant of ComputeMapOrderEntryHeuristicScore. 0x550840.
+  int ComputeOrderNodeDerivedScoreFromQuantityAndWord18();
   int ComputeMapOrderEntryHeuristicScore(); // 0x550aa0
 
   // Weighted 4-category priority score for the given score profile: sums each
@@ -218,6 +226,21 @@ public:
   // Number of childOrderList entries; null-safe on `this` (returns 0), matching a call
   // site that invokes it without checking for a null receiver first.
   int GetMapOrderEntryChildCount(); // 0x5562c0
+
+  // Minimum resource-type descriptorWeight across active childOrderList entries;
+  // returns 0 if none are active (used as a gating predicate for map-order actions).
+  unsigned int GetMinActionThresholdFromEntryChildren(); // 0x554a80
+
+  // Finds the childOrderList entry whose object_ptr == targetOrderObject (head fast-path,
+  // else FindNodeMatching from the second node) and, if found, sets its active_flag; when
+  // the flag is nonzero also clears targetOrderObject's +0x34 dword (same idiom as
+  // SetTaskForceOrderSelectionByNationClassAndFlag).
+  void SetTaskForceOrderSelectionByNodeId(TTaskForce* targetOrderObject,
+                                          char activeFlag); // 0x5549a0
+
+  // Counts active childOrderList entries whose descriptor enabledFlagOrBucketOffset
+  // (low short, reused here as a nation/bucket class) equals nationClass.
+  int CountTaskForceSelectedOrdersByNationClass(short nationClass); // 0x554a30
 
   // Average (x10) of the resource-type descriptorWeight column across active
   // childOrderList entries; 0 if none are active.
@@ -256,11 +279,10 @@ public:
   short GetOrderNodeDescriptorWord0CByResourceType(); // 0x550820
 
   // Marks every active childOrderList entry's order node (object_ptr+0x34 -- same
-  // out-of-bounds write documented on TMapOrderEntryOwnerContext::FindOrCreateChildOrderLink)
-  // with a 1-or-2 selection-mode code depending on `reserveExtraSlot`, then scans the
-  // global primary navy order list (g_pNavyPrimaryOrderListHead) for TShip nodes
-  // matching this entry's contextAnchor/required_count and re-attaches each one via the
-  // same `this`-as-TMapOrderEntryOwnerContext reinterpretation RemoveNode's tail uses,
+  // out-of-bounds write documented on FindOrCreateChildOrderLink) with a 1-or-2
+  // selection-mode code depending on `reserveExtraSlot`, then scans the global primary
+  // navy order list (g_pNavyPrimaryOrderListHead) for TShip nodes matching this entry's
+  // contextAnchor/required_count and re-attaches each one via FindOrCreateChildOrderLink,
   // and finally recomputes each childOrderList entry's active_flag from whether its
   // node+0x34 slot was left at 0.
   void ApplyTaskForceSelectionModeForCurrentNationOrders(char reserveExtraSlot); // 0x553a50
@@ -280,9 +302,10 @@ public:
   void DestroyNavyOrderAndChildren(); // 0x556820
 
   // Sets owner (was misread as "active child entry"); when newEntry is
-  // non-null also touches a still-unrecovered dual-purpose region at +0x10
-  // (see bd 1uj.16 follow-up notes). Only ever called with nullptr by the
-  // bd 1uj.16 target cluster.
+  // non-null it AssertValid()s newEntry, copies newEntry's packed
+  // order_type/order_strength dword into this entry's dual-purpose +0x10 slot,
+  // and clears the +0x34 overrun word unless newEntry's kind is 0/4/7/8. The
+  // bd 1uj.16 target cluster only ever calls it with nullptr.
   void SetMapOrderActiveChildEntry(TTaskForce* newEntry); // 0x551220
 
   // Folds SelectPreferredMapOrderEntryByPriorityRules over childOrderList into
@@ -296,13 +319,52 @@ public:
   // and notifies g_pActiveMapOrderContext.
   void SetMapOrderType9AndQueue(); // 0x552f80
 
-  // bd 1uj.16 target: candidate-promotion pass over `owner`'s still-uncharted
-  // growable-array region (see TMapOrderEntryOwnerContext note above), then
-  // the same free-childOrderList / recompute / self-Free-or-queue tail as
-  // SetMapOrderType9AndQueue. The candidate-search body (owner's array) is
-  // left `// TODO: promote body` pending that follow-up class-recovery pass;
-  // the tail is ported for real.
-  void PromoteMapOrderChainAndQueue(void* pContextAnchor); // 0x5533f0
+  // Opens by re-seeding the zone-graph BFS distance levels from `pContextAnchor`
+  // (TZone::PropagateMapActionContextDistanceLevelsRecursive(-1), via ILT thunk
+  // 0x4081cf -- this resolved the `owner` field's TZone identity for this call
+  // site: `owner` (this+0xc) is read/written here with TZone's own
+  // primaryNeighbors stretch shape (vfptr/data/capacity/count at
+  // owner+0x24/+0x28/+0x2c/+0x30, matching TZonePrimaryNeighborStretch exactly)
+  // and TZone::field44 (owner+0x44)). Then walks owner->primaryNeighbors
+  // looking for a neighbor whose BFS distance (field44) beats owner's own,
+  // promoting the first such neighbor found to be the new `owner`; finally the
+  // same free-childOrderList / recompute / self-Free-or-queue tail as
+  // SetMapOrderType9AndQueue.
+  void PromoteMapOrderChainAndQueue(TZone* pContextAnchor); // 0x5533f0
+
+  // bd 1uj.16.2/1uj.16.5 target: sibling of SetMapOrderType9AndQueue for map-order kind
+  // 6 (port-zone blockade orders) -- stores `nOrderTarget` into the dual-purpose `owner`
+  // slot (same pun PromoteMapOrderChainAndQueue uses for `contextAnchor`), sets
+  // attachment=6, then the identical free-inactive-children / recompute /
+  // self-Free-or-queue tail as SetMapOrderType9AndQueue. Ghidra/symbols.csv mis-attribute
+  // this to TControlSeaZoneMission, but its body only ever reads TTaskForce's own field
+  // offsets (owner/attachment/childOrderList/activeChildEntry/bucket-count region) --
+  // real owner is TTaskForce, called from TControlSeaZoneMission::NoOpSlot9C (0x539640)
+  // and TBlockadePortMission::NoOpSlot9C (0x53ba40, "QueueMapOrderType6FromContext
+  // Pointer") on the map-order entry passed to that virtual slot.
+  void SetMapOrderType6AndQueue(int nOrderTarget); // 0x5536c0
+
+  // bd 1uj.16.2 target: another SetMapOrderType9AndQueue sibling, for map-order kind 3
+  // (fUseType4 == 0) or 4 (fUseType4 != 0); does not touch `owner`. Same mis-attribution
+  // to a free function as SetMapOrderType6AndQueue -- real owner is TTaskForce (body only
+  // reads this class's own field offsets). Called from TControlSeaZoneMission::NoOpSlot9C
+  // when no matching port-zone context was found.
+  void SetMapOrderType3Or4AndQueue(char fUseType4); // 0x5530f0
+
+  // Called from RemoveNode's tail (0x550ff0, via ILT thunk 0x4027de) with
+  // RemoveNode's `self` argument re-attached as `node`'s new owner, and from
+  // ApplyTaskForceSelectionModeForCurrentNationOrders for each stale TShip
+  // primary-order node matching this entry's contextAnchor/required_count.
+  // Searches childOrderList for an existing link to `node`; if none exists,
+  // allocates (operator new, 0x606f73) and inserts a new TMapOrderChildLinkNode
+  // in priority-sorted order (by g_NavyOrderResourceDescriptorTable[order_type]
+  // .enabledFlagOrBucketOffset), bumps this entry's bucket counter, sets
+  // node->owner = this, then calls this->AssertValid() (CObject virtual, slot
+  // 0xc) and copies this entry's own packed order_type/order_strength dword and
+  // attachment-kind gate onto `node` -- the same fields/gate
+  // SetMapOrderActiveChildEntry applies, just with `this` playing the role of
+  // that method's `newEntry` parameter (bd 1uj.16.1).
+  void FindOrCreateChildOrderLink(TTaskForce* node); // 0x553bc0
 };
 
 ASSERT_SIZE(TTaskForce, 0x34);

@@ -35,14 +35,6 @@ undefined4 SetMapStateByteFlag970WithRuntimeGate(void)
   return 0;
 }
 
-// ghidra_name SetByteFlagAtOffsetAF0ByIndex
-// ghidra_proto undefined SetByteFlagAtOffsetAF0ByIndex()
-// FUNCTION: IMPERIALISM 0x004e8bf0
-undefined4 SetByteFlagAtOffsetAF0ByIndex(void)
-{
-  return 0;
-}
-
 // ghidra_name ComputeAdvisoryMapNodeCompositeScoreByMode
 // ghidra_proto undefined ComputeAdvisoryMapNodeCompositeScoreByMode()
 // FUNCTION: IMPERIALISM 0x004e8c50
@@ -315,54 +307,6 @@ undefined4 WrapperFor_ftol_At004f2b10(void)
   return 0;
 }
 
-// ghidra_name TMinisterView::ConstructTMinisterViewBaseState
-// ghidra_proto undefined ConstructTMinisterViewBaseState()
-// FUNCTION: IMPERIALISM 0x004f2c60
-undefined4 ConstructTMinisterViewBaseState(void)
-{
-  return 0;
-}
-
-// ghidra_name TForeignMinisterView::ConstructTForeignMinisterViewBaseState
-// ghidra_proto undefined ConstructTForeignMinisterViewBaseState()
-// FUNCTION: IMPERIALISM 0x004f2fd0
-undefined4 ConstructTForeignMinisterViewBaseState(void)
-{
-  return 0;
-}
-
-// ghidra_name TDefenseMinisterView::ConstructTDefenseMinisterViewBaseState
-// ghidra_proto undefined ConstructTDefenseMinisterViewBaseState()
-// FUNCTION: IMPERIALISM 0x004f32f0
-undefined4 ConstructTDefenseMinisterViewBaseState(void)
-{
-  return 0;
-}
-
-// ghidra_name TInteriorMinisterView::ConstructTInteriorMinisterViewBaseState
-// ghidra_proto undefined ConstructTInteriorMinisterViewBaseState()
-// FUNCTION: IMPERIALISM 0x004f3690
-undefined4 ConstructTInteriorMinisterViewBaseState(void)
-{
-  return 0;
-}
-
-// ghidra_name BuildDiplomacyNationOverlayGeometryAndHitMasks_Impl_At004f3a50
-// ghidra_proto undefined BuildDiplomacyNationOverlayGeometryAndHitMasks_Impl_At004f3a50()
-// FUNCTION: IMPERIALISM 0x004f3a50
-undefined4 BuildDiplomacyNationOverlayGeometryAndHitMasks_Impl_At004f3a50(void)
-{
-  return 0;
-}
-
-// ghidra_name TDiplomacyMapView::BuildDiplomacyNationOverlayGeometryAndHitMasks
-// ghidra_proto undefined BuildDiplomacyNationOverlayGeometryAndHitMasks()
-// FUNCTION: IMPERIALISM 0x004f3ea0
-undefined4 BuildDiplomacyNationOverlayGeometryAndHitMasks(void)
-{
-  return 0;
-}
-
 // ghidra_name TToolBarCluster::InitializeDiplomacyMinisterActionControlsAndLabels
 // ghidra_proto undefined InitializeDiplomacyMinisterActionControlsAndLabels()
 // FUNCTION: IMPERIALISM 0x004f4620
@@ -407,14 +351,6 @@ undefined4 ShowDiplomacyActionRejectedNotice(void)
 // ghidra_proto undefined ValidateDiplomacyProposalTargetAndShowBlockedDetails()
 // FUNCTION: IMPERIALISM 0x004f74f0
 undefined4 ValidateDiplomacyProposalTargetAndShowBlockedDetails(void)
-{
-  return 0;
-}
-
-// ghidra_name TOffersPanelView::ConstructTOffersPanelViewBaseState
-// ghidra_proto undefined ConstructTOffersPanelViewBaseState()
-// FUNCTION: IMPERIALISM 0x004f8f70
-undefined4 ConstructTOffersPanelViewBaseState(void)
 {
   return 0;
 }
@@ -495,14 +431,6 @@ undefined4 WrapperFor_GenerateThreadLocalRandom15_At004ff840(void)
 // ghidra_proto undefined WrapperFor_ftol_At004ffb00()
 // FUNCTION: IMPERIALISM 0x004ffb00
 undefined4 WrapperFor_ftol_At004ffb00(void)
-{
-  return 0;
-}
-
-// ghidra_name TDlgWindow::ConstructTurnEventWindowEntryStaticBackdrop
-// ghidra_proto undefined ConstructTurnEventWindowEntryStaticBackdrop()
-// FUNCTION: IMPERIALISM 0x00500320
-undefined4 ConstructTurnEventWindowEntryStaticBackdrop(void)
 {
   return 0;
 }
@@ -611,14 +539,6 @@ undefined4 BuildMapTileActionContextMenu(void)
   return 0;
 }
 
-// ghidra_name TLonelyTileView::ConstructTLonelyTileViewBaseState
-// ghidra_proto undefined ConstructTLonelyTileViewBaseState()
-// FUNCTION: IMPERIALISM 0x00505ae0
-undefined4 ConstructTLonelyTileViewBaseState(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_ftol_At00505f20
 // ghidra_proto undefined WrapperFor_ftol_At00505f20()
 // FUNCTION: IMPERIALISM 0x00505f20
@@ -627,42 +547,10 @@ undefined4 WrapperFor_ftol_At00505f20(void)
   return 0;
 }
 
-// ghidra_name TIconBar::ConstructTIconBarBaseState
-// ghidra_proto undefined ConstructTIconBarBaseState()
-// FUNCTION: IMPERIALISM 0x00505ff0
-undefined4 ConstructTIconBarBaseState(void)
-{
-  return 0;
-}
-
 // ghidra_name AddCityCommodityIconControl
 // ghidra_proto void __thiscall AddCityCommodityIconControl(int * pCityView, int * pRect, int * pLayoutData, int nXPad, int nYPad, int nIconId, int nAmount)
 // FUNCTION: IMPERIALISM 0x00506070
 undefined4 AddCityCommodityIconControl(void)
-{
-  return 0;
-}
-
-// ghidra_name TIconSlider::ConstructTIconSliderBaseState
-// ghidra_proto undefined ConstructTIconSliderBaseState()
-// FUNCTION: IMPERIALISM 0x005063c0
-undefined4 ConstructTIconSliderBaseState(void)
-{
-  return 0;
-}
-
-// ghidra_name TOrderView::ConstructTOrderViewBaseState
-// ghidra_proto undefined ConstructTOrderViewBaseState()
-// FUNCTION: IMPERIALISM 0x00506a80
-undefined4 ConstructTOrderViewBaseState(void)
-{
-  return 0;
-}
-
-// ghidra_name TNumberedIcon::ConstructTNumberedIconBaseState
-// ghidra_proto undefined ConstructTNumberedIconBaseState()
-// FUNCTION: IMPERIALISM 0x005073a0
-undefined4 ConstructTNumberedIconBaseState(void)
 {
   return 0;
 }
@@ -687,14 +575,6 @@ undefined4 WrapperFor_ftol_At00507b90(void)
 // ghidra_proto undefined WrapperFor_ReleaseSharedStringRefIfNotEmpty_At00507db0()
 // FUNCTION: IMPERIALISM 0x00507db0
 undefined4 WrapperFor_ReleaseSharedStringRefIfNotEmpty_At00507db0(void)
-{
-  return 0;
-}
-
-// ghidra_name ShowCountrySelectionPromptAndReturnNationId
-// ghidra_proto undefined ShowCountrySelectionPromptAndReturnNationId()
-// FUNCTION: IMPERIALISM 0x00508910
-undefined4 ShowCountrySelectionPromptAndReturnNationId(void)
 {
   return 0;
 }

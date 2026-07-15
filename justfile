@@ -102,10 +102,11 @@ sync-ownership:
 
 # MUTATES: src/autogen/stubs/ (+ runs sync-ownership first, which rewrites ownership CSV).
 # Regenerate linkable stubs for unowned addresses. Runs sync-ownership and the
-# symbols.csv integrity check first, so "edit markers -> regen-stubs -> build" is safe.
-[doc('MUTATES: src/autogen/stubs/. Regenerate stubs (runs sync-ownership + symbols-integrity-gate first)')]
+# symbols.csv/function_ownership.csv integrity checks first, so
+# "edit markers -> regen-stubs -> build" is safe.
+[doc('MUTATES: src/autogen/stubs/. Regenerate stubs (runs sync-ownership + symbols-integrity-gate + ownership-integrity-gate first)')]
 [group('sync')]
-regen-stubs: sync-ownership symbols-integrity-gate
+regen-stubs: apply-library-overrides apply-library-oracle sync-ownership symbols-integrity-gate ownership-integrity-gate
   uv run python -m tools.stubgen \
     --name-overrides "{{name_overrides}}" \
     --ownership-csv "{{function_ownership}}"
@@ -411,11 +412,34 @@ vtable *args:
   set -euo pipefail
   args=({{args}})
   extra=()
+  filter_name=""
   if [[ ${#args[@]} -gt 0 && "${args[0]}" != -* ]]; then
-    extra=(--filter "${args[0]}")
+    filter_name="${args[0]}"
+    extra=(--filter "${filter_name}")
     args=("${args[@]:1}")
   fi
-  (cd "{{build_dir}}" && uv run reccmp-vtable --target "{{target}}" "${extra[@]}" "${args[@]}")
+  tmp="$(mktemp)"
+  trap 'rm -f "$tmp"' EXIT
+  set +e
+  (cd "{{build_dir}}" && uv run reccmp-vtable --target "{{target}}" "${extra[@]}" "${args[@]}") | tee "$tmp"
+  rc=${PIPESTATUS[0]}
+  set -e
+  # reccmp-vtable prints "Vtables found: 0.\n100% match." when the name filter matches no
+  # reccmp-paired vtable. That "100% match" is vacuous (nothing was compared) and has
+  # misled us into thinking unmarked/unpaired classes were verified. Turn it into a failure.
+  if grep -qE "Vtables found: 0\." "$tmp"; then
+    echo "" >&2
+    if [[ -n "$filter_name" ]]; then
+      echo "ERROR: no reccmp-paired vtable matched '${filter_name}' — 0 vtables compared." >&2
+      echo "       The '100% match' above is vacuous, not a verification." >&2
+      echo "       Cause: the class has no '// VTABLE: IMPERIALISM 0x...' marker, or its" >&2
+      echo "       marked vtable is not being paired by reccmp (name/address mismatch)." >&2
+    else
+      echo "ERROR: 0 vtables were compared — the '100% match' above is vacuous." >&2
+    fi
+    exit 1
+  fi
+  exit "$rc"
 
 # Compare global data values against the original.
 #   just datacmp          -> all globals (only ones with a problem)
@@ -693,6 +717,15 @@ repair-code-gaps *args: _require-ghidra-install
   uv run python -m tools.ghidra.repair_code_gaps {{args}}
 
 # MUTATES: Ghidra DB (with --apply).
+# Re-bound existing degenerate 1-byte functions in place (disassemble the entry,
+# then fixupFunctionBody — preserves the curated name). Pass entry addresses.
+# Dry-run by default; --apply writes + saves the DB.
+[doc('MUTATES: Ghidra DB (--apply). Re-bound degenerate 1-byte functions')]
+[group('ghidra-db')]
+fix-function-bounds *args: _require-ghidra-install
+  uv run python -m tools.ghidra.fix_function_bounds {{args}}
+
+# MUTATES: Ghidra DB (with --apply).
 # Remove Function entities sitting on ILT jmp thunks (they block reccmp's thunk
 # auto-resolution and collapse vtable matching). The DB-side counterpart of
 # prune-ilt-thunks; sync-ghidra runs it automatically before the export.
@@ -788,6 +821,8 @@ gates:
   just vtable-collision-gate
   just synthetic-gate
   just symbols-integrity-gate
+  just ownership-integrity-gate
+  just library-identity-gate
   just global-location-gate
   just manual-cruntimeclass-gate
   just decomplint
@@ -870,12 +905,35 @@ synthetic-gate:
   uv run python -m tools.workflow.check_synthetic_names --paths src include
 
 # Structural integrity of config/symbols.csv: header row exactly at line 1, no
-# duplicate headers, parseable hex addresses, no duplicate addresses. (Every consumer
-# is a DictReader that silently degrades when the header is misplaced.)
-[doc('symbols.csv structural integrity: header at line 1, parseable + unique addresses')]
+# duplicate headers, parseable hex addresses, no duplicate addresses, no two
+# function rows claiming overlapping byte ranges. (Every consumer is a DictReader
+# that silently degrades when the header is misplaced.)
+[doc('symbols.csv structural integrity: header at line 1, parseable + unique addresses, no function-range overlaps')]
 [group('gates')]
 symbols-integrity-gate:
   uv run python -m tools.workflow.check_symbols_integrity
+
+# Structural integrity of config/function_ownership.csv: same DictReader-safety
+# checks as symbols-integrity-gate, applied to the file most directly implicated
+# in the "curated suppression note silently pruned" incident class.
+[doc('function_ownership.csv structural integrity: header at line 1, parseable + unique addresses')]
+[group('gates')]
+ownership-integrity-gate:
+  uv run python -m tools.workflow.check_function_ownership_integrity
+
+# Semantic gate for reviewed MSVC500 library identities: every row in
+# config/msvc500_library_overrides.csv must be faithfully applied to symbols.csv
+# (name/symbol/prototype/type) + ownership=library, and the applied count must not
+# fall below the ratchet baseline. Pins e.g. 0x005e83f0 = rand/_rand permanently.
+[doc('Semantic library-identity gate: reviewed overrides applied + ownership=library + ratchet')]
+[group('gates')]
+library-identity-gate:
+  uv run python -m tools.workflow.check_library_identity
+
+[doc('MUTATES config/library_identity_gate_baseline.json: record current applied-override count')]
+[group('baseline-update')]
+library-identity-gate-update:
+  uv run python -m tools.workflow.check_library_identity --write-baseline
 
 # Sanity-check a few reccmp-critical symbols.csv rows after Ghidra export.
 [group('gates')]
@@ -945,6 +1003,11 @@ format-check *paths:
 [group('baseline-update')]
 stats-baseline-update:
   uv run python -m tools.reccmp.progress_stats --target "{{target}}" --build-dir "{{build_dir}}" --detect-recompiled --commit-baseline
+
+[doc('MUTATES: config/tooling_surface.csv. Appends placeholder rows for justfile modules missing from the manifest (fill in each note); never removes stale rows')]
+[group('baseline-update')]
+tooling-surface-update:
+  uv run python -m tools.workflow.check_tooling_surface --write
 
 # MUTATES: config/vtable_gate_baseline.csv.
 [group('baseline-update')]
@@ -1030,6 +1093,37 @@ mfc-runtime-macros *args:
 [group('rewrite')]
 apply-msvc500-library-region *args:
   uv run python -m tools.mfc.apply_msvc500_library_region {{args}}
+
+# MUTATES: config/symbols.csv + src/game/library_msvc500_overrides.cpp.
+# Project reviewed library-identity overrides (config/msvc500_library_overrides.csv)
+# onto the derived artifacts. Idempotent; runs automatically inside regen-stubs.
+# Reviewed overrides win over FID for confirmed CRT/MFC functions FID missed (rand).
+[group('rewrite')]
+apply-library-overrides *args:
+  uv run python -m tools.mfc.apply_library_overrides {{args}}
+
+# Diagnostic: aggregate every identity signal for one address (symbols, ownership,
+# reviewed override, cached FID match, object-matcher oracle) into a verdict.
+# Run before behaviourally naming any MSVC/MFC-range or CRT-shaped function:
+# a missing FID result is NOT evidence of game ownership. `just library-identify 0xADDR`.
+[group('ghidra-inspect')]
+library-identify address:
+  uv run python -m tools.mfc.library_identify "{{address}}"
+
+# MUTATES: config/msvc500_library_oracle.csv. Rebuild the relocation-masked object
+# identity oracle by matching the original executable against the vendored
+# libcmt.lib/nafxcw.lib COFF members. Needs the original binary (ORIGINAL_BINARY).
+[group('rewrite')]
+build-library-oracle *args:
+  uv run python -m tools.mfc.build_library_oracle {{args}}
+
+# MUTATES: config/symbols.csv + src/game/library_msvc500_oracle.cpp + review CSV.
+# Project confident, unique oracle matches into the derived artifacts (upgrade
+# library symbols/prototypes; convert unowned FID-missed CRT/MFC funcs to library).
+# Idempotent; runs automatically inside regen-stubs. Precedence: override > oracle.
+[group('rewrite')]
+apply-library-oracle *args:
+  uv run python -m tools.mfc.apply_library_oracle {{args}}
 
 # MUTATES: the given paths (clang-format).
 [group('rewrite')]

@@ -47,6 +47,11 @@ public:
   // g_pNetMgr006a6014 singleton (every caller loads it into ecx); `this` unused.
   int ProbeNationReachabilityAndMarkAwolBitmask();
 
+  // Reset the DirectPlay runtime-selection buffer on the global session manager.
+  // The body does not use `this`, but both retail callers load g_pNetMgr006a6014
+  // into ECX before dispatching it.
+  void ResetTurnEventQueueRuntimeRecordBuffer(); // 0x5e3ef0
+
   // Map a DirectPlay error HRESULT to detail text and pose the localized error dialog.
   // Mac oracle: TNetMgr::HandleError(int). Asserts with D:\Ambit\WNetMgr.cpp line 451.
   void HandleError(int errorCode);

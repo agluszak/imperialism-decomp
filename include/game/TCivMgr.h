@@ -3,8 +3,6 @@
 #include "game/TObject.h"
 #include "game/mfc.h"
 
-// TODO(manifest): describe TCivMgr and its role. Base edge (TObject) recovered from RTTI
-// CRuntimeClass chain: TCivMgr -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x00653248
 class TCivMgr : public TObject {
 public:
@@ -73,4 +71,3 @@ public:
   // selection. Same mis-attribution as the functions above.
   void HandleCivilianReportDecision(class TCivUnit* pCivilianOrderEntry);
 };
-

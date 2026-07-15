@@ -1,6 +1,7 @@
 #include "game/TArmyUnitView.h"
 
 #include "game/TQuickDrawSurfaceContext.h"
+#include "game/TSimMgr.h"
 #include "game/global_data_tables.h"
 #include "game/quickdraw_rendering.h"
 // SYNTHETIC: IMPERIALISM 0x004a9450
@@ -11,7 +12,8 @@
 
 IMPLEMENT_DYNCREATE(TArmyUnitView, TView)
 
-TArmyUnitView::TArmyUnitView() {}
+// FUNCTION: IMPERIALISM 0x004a94e0
+TArmyUnitView::TArmyUnitView() : TView() {}
 
 // SYNTHETIC: IMPERIALISM 0x004a9510
 // TArmyUnitView::`scalar deleting destructor'
@@ -22,19 +24,27 @@ void TArmyUnitView::ApplyRectSlot110(RECT* rectBuffer) {
   (void)rectBuffer; // dead parameter in this override, like the other ApplyRectSlot110s
   char* context = static_cast<char*>(field60);
 
+  CString unitTypeName;
+  CString descriptor;
+
   ApplyUiTextStyleAndSyncColor(0, 0xc, 0);
   SetQuickDrawColorAndSyncGlobals(0x1c474b);
-  CString unitTypeName = *reinterpret_cast<CString*>(context + 0x24);
+  unitTypeName = *reinterpret_cast<CString*>(context + 0x24);
   SetQuickDrawTextOriginWithContextOffset(0x40, 0x10);
   DrawTextWithCachedStyle(&unitTypeName);
 
-  // TODO(class-recovery): the localized descriptor string (one of two format
-  // templates, 0x2746 with a numeric substitution when the unit-type code == 0xe,
-  // else 0x272c) is built via g_pLocalizationTable's vtable slot 0x84.4 -- same
-  // unrecovered-class gap as TDeluxeText::BuildCityViewProductionControls_Impl.
+  // Localized unit descriptor: string group 0x2746 substituting a literal 7 for the
+  // special-cased unit-type 0xe, otherwise group 0x272c substituting the unit-type code.
   ApplyUiTextStyleAndSyncColor(2, 9, 0);
   SetQuickDrawColorAndSyncGlobals(0x1c474b);
+  int unitTypeCode = *reinterpret_cast<int*>(context + 8);
+  if (unitTypeCode == 0xe) {
+    g_pSimMgr->GetString(0x2746, 7, &descriptor);
+  } else {
+    g_pSimMgr->GetString(0x272c, unitTypeCode, &descriptor);
+  }
   SetQuickDrawTextOriginWithContextOffset(0x40, 0x1f);
+  DrawTextWithCachedStyle(&descriptor);
   SetQuickDrawFillColor(0);
 
   short level = *reinterpret_cast<short*>(context + 0x34);

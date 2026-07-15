@@ -19,7 +19,9 @@
 #include "game/TOcean.h"
 #include "game/TMapMgr.h"
 #include "game/TTechMgr.h"
+#include "game/TCity.h"
 #include "game/TCivMgr.h"
+#include "game/TTurnInstructionCursor.h"
 #include "game/TNewsMgr.h"
 #include "game/TNavyMgr.h"
 #include "game/TInterNationEventQueueManager.h"
@@ -33,17 +35,10 @@
 #include "game/global_data_tables.h"
 #include "game/mapped_flavor_text.h"
 
-extern "C" char DAT_006a43c0;
-extern "C" char DAT_006a43f0;
-extern CString DAT_006a4220;
-extern "C" const char s_PictWvGobPathFormat_00698BF4[];
-void __fastcall RebuildNationStateSlotsAndAvailability_Impl(TSimMgr* self, int dummyEdx,
-                                                            short* param_1);
 void __fastcall RebuildCivilianOrderCompatibilityMatrices(TDiplomacyMgr* self, int dummyEdx);
 int __cdecl TouchSessionActiveNationId(void);
 void __cdecl ResetPortZoneGlobalContextCounters(void);
 void RegenerateAllMapActionContextStatusCodes();
-void __stdcall EnsurePictWvDataGobLoadedBySlot(int slotIndex);
 
 // FUNCTION: IMPERIALISM 0x004153a0
 int ReadSettingsPrefIntByIndex(int index, int defaultValue) {
@@ -59,15 +54,19 @@ void WriteSettingsPrefIntByIndex(int index, int value) {
   g_pImperialismApp->WriteProfileInt("Settings", key, value);
 }
 
-// FUNCTION: IMPERIALISM 0x004ee8c0
-void __fastcall RebuildCivilianOrderCompatibilityMatrices(TDiplomacyMgr* self, int dummyEdx) {
-  reinterpret_cast<void(__fastcall*)(TDiplomacyMgr*, int)>(0x004ee8c0)(self, dummyEdx);
+// FUNCTION: IMPERIALISM 0x00415540
+CString& __stdcall GetProfileStringFromSettingsSection(CString* result, LPCTSTR key,
+                                                       LPCTSTR defaultValue) {
+  *result = g_pImperialismApp->GetProfileString("Settings", key, defaultValue);
+  return *result;
 }
 
-// FUNCTION: IMPERIALISM 0x00519610
-void __fastcall RebuildNationStateSlotsAndAvailability_Impl(TSimMgr* self, int dummyEdx,
-                                                            short* param_1) {
-  reinterpret_cast<void(__fastcall*)(TSimMgr*, int, short*)>(0x00519610)(self, dummyEdx, param_1);
+// FUNCTION: IMPERIALISM 0x004ee8c0
+void __fastcall RebuildCivilianOrderCompatibilityMatrices(TDiplomacyMgr* self, int dummyEdx) {
+  // TODO: promote body @ 0x004ee8c0 — rebuilds civilian-order compatibility
+  // and diplomacy relation matrices (1137 bytes)
+  (void)self;
+  (void)dummyEdx;
 }
 
 // FUNCTION: IMPERIALISM 0x00549240
@@ -290,7 +289,7 @@ void TSimMgr::ReadFrom(TStream* stream) {
     field6a = (stateFlag114 != 0) ? 1 : 0;
   }
 
-  EnsurePictWvDataGobLoadedBySlot(field6a);
+  g_pUiViewManager->EnsurePictWvDataGobLoadedBySlot(field6a);
   g_pStrategicMapViewSystem->ReloadBitmap244AndRefreshUiCaches();
 
   if (g_nSaveFormatVersion >= 0x36) {
@@ -365,7 +364,8 @@ void TSimMgr::RebuildNationStateSlotsNoOp() {}
 // FUNCTION: IMPERIALISM 0x0057c3b0
 void TSimMgr::RebuildGlobalOrderManagersAndCapabilityState(char flag) {
   int i;
-  if (((flag != 0) && (DAT_006a43f0 == 0)) || ((flag == 0) && (DAT_006a43f0 != 0))) {
+  if (((flag != 0) && (g_bMultiplayerScenarioSetupActive == 0)) ||
+      ((flag == 0) && (g_bMultiplayerScenarioSetupActive != 0))) {
     if (flag != 0) {
       short* destCursor = scenarioSetupRows1;
       const short* srcCursor = g_anScenarioNationSetupTable_00698B1A;
@@ -451,7 +451,7 @@ void TSimMgr::RebuildGlobalOrderManagersAndCapabilityState(char flag) {
 // FUNCTION: IMPERIALISM 0x0057c7c0
 void TSimMgr::RebuildMapContextAndGlobalMapState(int arg1, const char* arg2, int arg3) {
   int i;
-  if (DAT_006a43f0 == 0) {
+  if (g_bMultiplayerScenarioSetupActive == 0) {
     CString local_10;
     for (i = 0; i < 0x17; ++i) {
       SetSharedStringFromMappedFlavorTextWithLengthClamp(&local_10, i);
@@ -460,7 +460,7 @@ void TSimMgr::RebuildMapContextAndGlobalMapState(int arg1, const char* arg2, int
   }
 
   if (arg1 != 0) {
-    if (DAT_006a43f0 != 0) {
+    if (g_bMultiplayerScenarioSetupActive != 0) {
       return;
     }
   }
@@ -482,7 +482,7 @@ void TSimMgr::RebuildMapContextAndGlobalMapState(int arg1, const char* arg2, int
   g_pGlobalMapState = new TMapMgr();
   g_pGlobalMapState->InitializeGlobalMapState();
 
-  if (DAT_006a43f0 == 0) {
+  if (g_bMultiplayerScenarioSetupActive == 0) {
     g_pGlobalMapState->hexNeighborWrapHorizontally20 = static_cast<char>(arg3);
     g_pGlobalMapState->BuildOrLoadGlobalMapStateForSession(arg2, nullptr);
   } else {
@@ -492,21 +492,35 @@ void TSimMgr::RebuildMapContextAndGlobalMapState(int arg1, const char* arg2, int
 
 // FUNCTION: IMPERIALISM 0x0057c9a0
 unsigned char TSimMgr::RecreateActiveMapContextAndInitializeGlobalMapState(int scenarioIndex) {
-  // TODO: port body @ 0x57c9a0 (not yet ported). Declared for real so the
-  // turn-event-0xE receive path gets a correctly-typed call site.
-  (void)scenarioIndex;
-  return 0;
+  stateFlag114 = static_cast<short>(scenarioIndex + 1);
+
+  if (g_pActiveMapOrderContext != nullptr) {
+    g_pActiveMapOrderContext->Free();
+    g_pActiveMapOrderContext = nullptr;
+  }
+  g_pActiveMapOrderContext = new TOcean();
+  ResetPortZoneGlobalContextCounters();
+
+  if (g_pGlobalMapState != nullptr) {
+    g_pGlobalMapState->Free();
+    g_pGlobalMapState = nullptr;
+  }
+  g_pGlobalMapState = new TMapMgr();
+  g_pGlobalMapState->InitializeGlobalMapState();
+  g_pGlobalMapState->hexNeighborWrapHorizontally20 = 1;
+  return static_cast<unsigned char>(
+      g_pGlobalMapState->BuildOrLoadGlobalMapStateForSession(g_szEmptyString, g_szEmptyString));
 }
 
 // FUNCTION: IMPERIALISM 0x0057cad0
 void TSimMgr::RebuildNationStateSlotsAndAvailability(int activate) {
   int i;
-  if (DAT_006a43f0 == 0) {
-    short local_1c[8];
-    RebuildNationStateSlotsAndAvailability_Impl(this, 0, local_1c);
+  if (g_bMultiplayerScenarioSetupActive == 0) {
+    short profileBySlot[8];
+    g_pGlobalMapState->ChooseNationSetupProfilesForOpenSlots(profileBySlot);
 
     for (i = 0; i < 7; ++i) {
-      int val = local_1c[i];
+      int val = profileBySlot[i];
       scenarioSetupRows1[i] = g_anScenarioNationSetupTable_00698B1A[val * 4];
       scenarioSetupRows2[i] = g_anScenarioNationSetupTable_00698B1A[val * 4 + 1];
       scenarioSetupRows3[i] = g_anScenarioNationSetupTable_00698B1A[val * 4 + 2];
@@ -545,7 +559,7 @@ void TSimMgr::RebuildNationStateSlotsAndAvailability(int activate) {
     }
   }
 
-  if (DAT_006a43f0 == 0) {
+  if (g_bMultiplayerScenarioSetupActive == 0) {
     RebuildCivilianOrderCompatibilityMatrices(g_pDiplomacyTurnStateManager, 0);
     g_pUiRuntimeContext->InvokeStrategicMapViewMethod74();
     g_pCityOrderCapabilityState->GenerateRandomCapabilityPrioritySlots();
@@ -559,7 +573,7 @@ void TSimMgr::RebuildNationStateSlotsAndAvailability(int activate) {
       CString path;
       path.Format(s_PictWvGobPathFormat_00698BF4, tagText[1] - '0');
       if (TryGetFileMetadataForPath(&path)) {
-        EnsurePictWvDataGobLoadedBySlot(tagText[1] - '0');
+        g_pUiViewManager->EnsurePictWvDataGobLoadedBySlot(tagText[1] - '0');
       }
     }
   }
@@ -594,7 +608,7 @@ void TSimMgr::RebuildPrimaryNationStateForSlot(int slotIndex, char activate) {
       g_apNationStates[slotIndex] = pTVar5;
       g_apTerrainTypeDescriptorTable[slotIndex] = pTVar5;
 
-      if (DAT_006a43f0 == 0) {
+      if (g_bMultiplayerScenarioSetupActive == 0) {
         if (activate != 0) {
           pTVar5->ApplyScenarioRelationPresetAndSpawnFrogCity(pTVar5->city);
         }
@@ -610,7 +624,7 @@ void TSimMgr::RebuildPrimaryNationStateForSlot(int slotIndex, char activate) {
       g_apNationStates[slotIndex] = pTVar5;
       g_apTerrainTypeDescriptorTable[slotIndex] = pTVar5;
 
-      if (DAT_006a43f0 == 0) {
+      if (g_bMultiplayerScenarioSetupActive == 0) {
         if (activate != 0) {
           pTVar5->ApplyScenarioRelationPresetAndSpawnFrogCity(pTVar5->city);
         }
@@ -634,11 +648,11 @@ void TSimMgr::RebuildPrimaryNationStateForSlot(int slotIndex, char activate) {
     }
     g_apNationStates[slotIndex]->InitializeNationStateRuntimeSubsystems(1, 1);
     g_apTerrainTypeDescriptorTable[slotIndex] = g_apNationStates[slotIndex];
-    if (DAT_006a43f0 == 0) {
+    if (g_bMultiplayerScenarioSetupActive == 0) {
       activeNationSlot = static_cast<short>(slotIndex);
       g_pStrategicMapViewSystem->RefreshCityCapabilityUiHandlesForActiveNation();
     }
-    if (DAT_006a43f0 == 0) {
+    if (g_bMultiplayerScenarioSetupActive == 0) {
       if (field44 != 0) {
         g_pGameFlowState->processPrimaryEventQueue = 0;
       }
@@ -654,7 +668,8 @@ void TSimMgr::RebuildPrimaryNationStateForSlot(int slotIndex, char activate) {
 
   if (slotIndex == activeNationSlot) {
     if (field44 == 0) {
-      g_apTerrainTypeDescriptorTable[slotIndex]->identitySharedString1 = DAT_006a4220;
+      g_apTerrainTypeDescriptorTable[slotIndex]->identitySharedString1 =
+          g_cstrCountryNameSettingValue006A4220;
     } else {
       g_apTerrainTypeDescriptorTable[slotIndex]->identitySharedString1 =
           g_pGameFlowState->nationDisplayNameSlots[slotIndex];
@@ -664,11 +679,12 @@ void TSimMgr::RebuildPrimaryNationStateForSlot(int slotIndex, char activate) {
 
 // FUNCTION: IMPERIALISM 0x0057d520
 void TSimMgr::RebuildSecondaryNationStateForSlot(int slotIndex) {
-  reinterpret_cast<void(__fastcall*)(void*, int, int)>(0x0057d520)(this, 0, slotIndex);
+  // TODO: promote body @ 0x0057d520
+  (void)slotIndex;
 }
 
 // FUNCTION: IMPERIALISM 0x0057d830
-void TSimMgr::ApplyScenarioVariantSeedForNationSetup(CString* destString) {
+void TSimMgr::FormatSeasonName(CString* destString) {
   short offset = quarterGateTick2c % 4;
   GetString(10000, offset, destString);
 }
@@ -935,7 +951,7 @@ void TSimMgr::InitializeOrLoadEntryArray14AndClampLimits(bool writeBack) {
 }
 
 // The "Done/advance" turn-flow bootstrap primitive (free __cdecl in the TSimMgr TU): the
-// single writer of DAT_006a43c0 and the funnel every menu/score-screen advance routes
+// single writer of g_bTurnFlowBootstrapComplete and the funnel every menu/score-screen advance routes
 // through. eventCode 0x5dd is the "start new game" scenario-setup path: it soft-resets
 // the EXISTING TSimMgr (the reset block is the original's header-inline prefix of
 // InitializeTurnFlowStateDefaults, expanded in place at 0x58191a) and jumps the turn
@@ -978,13 +994,13 @@ void ReinitializeGameFlowAndPostTurnEventCode(int eventCode) {
       g_pGlobalUiRootController->PostTurnEventCodeMessage2420(static_cast<short>(eventCode));
     }
   }
-  DAT_006a43c0 = 1;
+  g_bTurnFlowBootstrapComplete = 1;
 }
 
 // FUNCTION: IMPERIALISM 0x00581ae0
 void TSimMgr::SetSelectedIndex6AAndTriggerRefresh(short index) {
   field6a = index;
-  EnsurePictWvDataGobLoadedBySlot(index);
+  g_pUiViewManager->EnsurePictWvDataGobLoadedBySlot(index);
   g_pStrategicMapViewSystem->ReloadBitmap244AndRefreshUiCaches();
 }
 
@@ -999,6 +1015,396 @@ CString TSimMgr::AssignSharedStringFromIndexedSlot7C(short slot) {
   return sharedTextSlots[slot];
 }
 
+// Reads a big-endian 32-bit nation slot, a big-endian short production-order index, and a
+// big-endian short value; sets that nation's capital-city production-order slot to the
+// value while accumulating the delta (value - old) into the parallel running-total slot.
+// FUNCTION: IMPERIALISM 0x005822c0
+void TSimMgr::HandleTurnInstruction_Capa_ApplyNationSlotValueWithDelta(void* pInstructionRaw) {
+  STurnInstructionCursor* instruction = static_cast<STurnInstructionCursor*>(pInstructionRaw);
+  unsigned int* cursor = instruction->tokenCursor;
+
+  unsigned int nationToken = *cursor;
+  cursor = cursor + 1;
+  instruction->tokenCursor = cursor;
+  unsigned char* nraw = reinterpret_cast<unsigned char*>(&nationToken);
+  unsigned char nt = nraw[0];
+  nraw[0] = nraw[3];
+  nraw[3] = nt;
+  nt = nraw[1];
+  nraw[1] = nraw[2];
+  nraw[2] = nt;
+
+  unsigned int indexToken = *cursor;
+  cursor = cursor + 1;
+  instruction->tokenCursor = cursor;
+  unsigned char* iraw = reinterpret_cast<unsigned char*>(&indexToken);
+  iraw[0] = iraw[3];
+  iraw[1] = iraw[2];
+
+  unsigned int valueToken = *cursor;
+  cursor = cursor + 1;
+  instruction->tokenCursor = cursor;
+  unsigned char* vraw = reinterpret_cast<unsigned char*>(&valueToken);
+  vraw[0] = vraw[3];
+  vraw[1] = vraw[2];
+
+  TCity* city;
+  if (g_apNationStates[static_cast<int>(nationToken)] == nullptr) {
+    city = nullptr;
+  } else {
+    city = g_apNationStates[static_cast<int>(nationToken)]->city;
+  }
+  int index = static_cast<short>(indexToken);
+  short value = static_cast<short>(valueToken);
+  short* accum = &city->productionAccum1fc[index];
+  *accum = static_cast<short>(*accum + (value - city->productionOrderTable1dc[index]));
+  city->productionOrderTable1dc[index] = value;
+}
+
+// Reads a big-endian 32-bit nation slot, a big-endian short commodity index, and a
+// big-endian short amount; writes the amount into that nation's capital-city commodity
+// stock counter and re-verifies the city's stock invariants.
+// FUNCTION: IMPERIALISM 0x005823e0
+void TSimMgr::HandleTurnInstruction_Ware_ApplyNationIndexedShortAndRefresh(void* pInstructionRaw) {
+  STurnInstructionCursor* instruction = static_cast<STurnInstructionCursor*>(pInstructionRaw);
+  unsigned int* cursor = instruction->tokenCursor;
+
+  unsigned int nationToken = *cursor;
+  cursor = cursor + 1;
+  instruction->tokenCursor = cursor;
+  unsigned char* nraw = reinterpret_cast<unsigned char*>(&nationToken);
+  unsigned char nt = nraw[0];
+  nraw[0] = nraw[3];
+  nraw[3] = nt;
+  nt = nraw[1];
+  nraw[1] = nraw[2];
+  nraw[2] = nt;
+
+  unsigned int indexToken = *cursor;
+  cursor = cursor + 1;
+  instruction->tokenCursor = cursor;
+  unsigned char* iraw = reinterpret_cast<unsigned char*>(&indexToken);
+  iraw[0] = iraw[3];
+  iraw[1] = iraw[2];
+
+  unsigned int valueToken = *cursor;
+  cursor = cursor + 1;
+  instruction->tokenCursor = cursor;
+  unsigned char* vraw = reinterpret_cast<unsigned char*>(&valueToken);
+  vraw[0] = vraw[3];
+  vraw[1] = vraw[2];
+
+  TCity* city;
+  if (g_apNationStates[static_cast<int>(nationToken)] == nullptr) {
+    city = nullptr;
+  } else {
+    city = g_apNationStates[static_cast<int>(nationToken)]->city;
+  }
+  (&city->cityStockCottonB6)[static_cast<short>(indexToken)] = static_cast<short>(valueToken);
+  city->VerifyStocks();
+}
+
+// Reads a big-endian 32-bit nation slot then a big-endian short transport-capacity value,
+// stored into that nation's needCapA6 field.
+// FUNCTION: IMPERIALISM 0x00582860
+void TSimMgr::HandleTurnInstruction_Tran_SetNationTransportStat(void* pInstructionRaw) {
+  STurnInstructionCursor* instruction = static_cast<STurnInstructionCursor*>(pInstructionRaw);
+  unsigned int* cursor = instruction->tokenCursor;
+
+  unsigned int nationToken = *cursor;
+  cursor = cursor + 1;
+  instruction->tokenCursor = cursor;
+  unsigned char* nraw = reinterpret_cast<unsigned char*>(&nationToken);
+  unsigned char nt = nraw[0];
+  nraw[0] = nraw[3];
+  nraw[3] = nt;
+  nt = nraw[1];
+  nraw[1] = nraw[2];
+  nraw[2] = nt;
+
+  unsigned int valueToken = *cursor;
+  cursor = cursor + 1;
+  instruction->tokenCursor = cursor;
+  unsigned char* vraw = reinterpret_cast<unsigned char*>(&valueToken);
+  vraw[0] = vraw[3];
+  vraw[1] = vraw[2];
+
+  g_apNationStates[static_cast<int>(nationToken)]->needCapA6 = static_cast<short>(valueToken);
+}
+
+// Reads a big-endian short tile index and a development value byte, then sets that tile's
+// civilian development-class nibble -- selecting the high nibble only when the tile's
+// resource/edge byte is one of the qualifying terrain codes.
+// FUNCTION: IMPERIALISM 0x005828f0
+void TSimMgr::HandleTurnInstruction_Deve_ApplyMapDevelopmentEntry(void* pInstructionRaw) {
+  STurnInstructionCursor* instruction = static_cast<STurnInstructionCursor*>(pInstructionRaw);
+  unsigned int* cursor = instruction->tokenCursor;
+
+  unsigned int tileToken = *cursor;
+  cursor = cursor + 1;
+  instruction->tokenCursor = cursor;
+  unsigned char* traw = reinterpret_cast<unsigned char*>(&tileToken);
+  traw[0] = traw[3];
+  traw[1] = traw[2];
+  short tileIndex = static_cast<short>(tileToken);
+
+  unsigned int valueToken = *cursor;
+  cursor = cursor + 1;
+  instruction->tokenCursor = cursor;
+
+  int terrainCode = g_pGlobalMapState->terrainStateTable[tileIndex].resourceTypeByEdge[0];
+  char selectHighNibble = 0;
+  if (terrainCode == 0x16 || terrainCode == 0x15 || terrainCode == 0x04 || terrainCode == 0x03 ||
+      terrainCode == 0x06) {
+    selectHighNibble = 1;
+  }
+  unsigned char value = reinterpret_cast<unsigned char*>(&valueToken)[3];
+  g_pGlobalMapState->SetCivilianDevelopmentClassNibble(tileIndex, selectHighNibble, value, 1);
+}
+
+// Reads one big-endian short tile index, resolves that tile's owner nation, queues a depot
+// construction order there, and grants the owner a 2000 cash bonus when it is not
+// diplomacy-eligible.
+// FUNCTION: IMPERIALISM 0x005829b0
+void TSimMgr::HandleTurnInstruction_Rail_ApplyRailPlacementAndCashBonus(void* pInstructionRaw) {
+  STurnInstructionCursor* instruction = static_cast<STurnInstructionCursor*>(pInstructionRaw);
+  unsigned int* cursor = instruction->tokenCursor;
+  unsigned int token = *cursor;
+  instruction->tokenCursor = cursor + 1;
+  unsigned char* raw = reinterpret_cast<unsigned char*>(&token);
+  raw[0] = raw[3];
+  raw[1] = raw[2];
+  short tileIndex = static_cast<short>(token);
+  int nationTag = g_pGlobalMapState->terrainStateTable[tileIndex].ownerNationTag04;
+  g_pGlobalMapState->QueueDepotConstructionOrder(tileIndex, static_cast<short>(nationTag));
+  if (g_apNationStates[nationTag]->diplomacyEligibilityA0 == 0) {
+    g_apNationStates[nationTag]->treasuryValue10 += 2000;
+  }
+}
+
+// Reads one big-endian short tile index, resolves that tile's owner nation, queues a port
+// construction order there, and grants the owner a 3000 cash bonus when it is not
+// diplomacy-eligible.
+// FUNCTION: IMPERIALISM 0x00582a40
+void TSimMgr::HandleTurnInstruction_Port_ApplyPortPlacementAndCashBonus(void* pInstructionRaw) {
+  STurnInstructionCursor* instruction = static_cast<STurnInstructionCursor*>(pInstructionRaw);
+  unsigned int* cursor = instruction->tokenCursor;
+  unsigned int token = *cursor;
+  instruction->tokenCursor = cursor + 1;
+  unsigned char* raw = reinterpret_cast<unsigned char*>(&token);
+  raw[0] = raw[3];
+  raw[1] = raw[2];
+  short tileIndex = static_cast<short>(token);
+  int nationTag = g_pGlobalMapState->terrainStateTable[tileIndex].ownerNationTag04;
+  g_pGlobalMapState->QueuePortConstructionOrder(tileIndex, static_cast<short>(nationTag));
+  if (g_apNationStates[nationTag]->diplomacyEligibilityA0 == 0) {
+    g_apNationStates[nationTag]->treasuryValue10 += 3000;
+  }
+}
+
+// Reads two big-endian 32-bit nation slots and a big-endian short relation value, then
+// writes the value symmetrically into both [A][B] and [B][A] of the diplomacy manager's
+// side-effect relation matrix.
+// FUNCTION: IMPERIALISM 0x00582bf0
+void TSimMgr::HandleTurnInstruction_Emba_SetEmbassyRelationFlags(void* pInstructionRaw) {
+  STurnInstructionCursor* instruction = static_cast<STurnInstructionCursor*>(pInstructionRaw);
+  unsigned int* cursor = instruction->tokenCursor;
+
+  unsigned int nationAToken = *cursor;
+  cursor = cursor + 1;
+  instruction->tokenCursor = cursor;
+  unsigned char* araw = reinterpret_cast<unsigned char*>(&nationAToken);
+  unsigned char at = araw[0];
+  araw[0] = araw[3];
+  araw[3] = at;
+  at = araw[1];
+  araw[1] = araw[2];
+  araw[2] = at;
+
+  unsigned int nationBToken = *cursor;
+  cursor = cursor + 1;
+  instruction->tokenCursor = cursor;
+  unsigned char* braw = reinterpret_cast<unsigned char*>(&nationBToken);
+  unsigned char bt = braw[0];
+  braw[0] = braw[3];
+  braw[3] = bt;
+  bt = braw[1];
+  braw[1] = braw[2];
+  braw[2] = bt;
+
+  unsigned int valueToken = *cursor;
+  cursor = cursor + 1;
+  instruction->tokenCursor = cursor;
+  unsigned char* vraw = reinterpret_cast<unsigned char*>(&valueToken);
+  vraw[0] = vraw[3];
+  vraw[1] = vraw[2];
+
+  int nationA = static_cast<int>(nationAToken);
+  int nationB = static_cast<int>(nationBToken);
+  short value = static_cast<short>(valueToken);
+  TDiplomacyMgr* diplomacy = g_pDiplomacyTurnStateManager;
+  diplomacy->relationSideEffectMatrix1402[nationA * 0x17 + nationB] = value;
+  diplomacy->relationSideEffectMatrix1402[nationB * 0x17 + nationA] = value;
+}
+
+// Reads one big-endian short token (the scenario year) and stores it, scaled to quarter
+// ticks (year * 4), into the turn-flow tick field at +0x2c.
+// FUNCTION: IMPERIALISM 0x00582ed0
+void TSimMgr::HandleTurnInstruction_Year_UpdateScenarioYearFieldScaledBy4(void* pInstructionRaw) {
+  STurnInstructionCursor* instruction = static_cast<STurnInstructionCursor*>(pInstructionRaw);
+  unsigned int* cursor = instruction->tokenCursor;
+  unsigned int token = *cursor;
+  instruction->tokenCursor = cursor + 1;
+  unsigned char* raw = reinterpret_cast<unsigned char*>(&token);
+  raw[0] = raw[3];
+  raw[1] = raw[2];
+  quarterGateTick2c = static_cast<short>(token) * 4;
+}
+
+// Reads a big-endian short city-record index and a big-endian nation tag, then dispatches
+// the province formation-entry action on the global map state.
+// FUNCTION: IMPERIALISM 0x00582f20
+void TSimMgr::HandleTurnInstruction_Prov_ApplyProvinceAssignmentEntry(void* pInstructionRaw) {
+  STurnInstructionCursor* instruction = static_cast<STurnInstructionCursor*>(pInstructionRaw);
+  unsigned int* cursor = instruction->tokenCursor;
+
+  unsigned int cityToken = *cursor;
+  cursor = cursor + 1;
+  instruction->tokenCursor = cursor;
+  unsigned char* craw = reinterpret_cast<unsigned char*>(&cityToken);
+  craw[0] = craw[3];
+  craw[1] = craw[2];
+
+  unsigned int nationToken = *cursor;
+  cursor = cursor + 1;
+  instruction->tokenCursor = cursor;
+  unsigned char* nraw = reinterpret_cast<unsigned char*>(&nationToken);
+  nraw[0] = nraw[3];
+  nraw[1] = nraw[2];
+
+  g_pGlobalMapState->DispatchFormationEntryActionsAndMaybeCreateTurnEvent12(
+      static_cast<short>(cityToken), static_cast<int>(nationToken));
+}
+
+// Reads two big-endian 32-bit tokens (nation slot, then cash amount) and writes the amount
+// into that nation's treasury field.
+// FUNCTION: IMPERIALISM 0x00583360
+void TSimMgr::HandleTurnInstruction_Cash_SetNationCash(void* pInstructionRaw) {
+  STurnInstructionCursor* instruction = static_cast<STurnInstructionCursor*>(pInstructionRaw);
+  unsigned int* cursor = instruction->tokenCursor;
+
+  unsigned int nationToken = *cursor;
+  cursor = cursor + 1;
+  instruction->tokenCursor = cursor;
+  unsigned char* nraw = reinterpret_cast<unsigned char*>(&nationToken);
+  unsigned char nt = nraw[0];
+  nraw[0] = nraw[3];
+  nraw[3] = nt;
+  nt = nraw[1];
+  nraw[1] = nraw[2];
+  nraw[2] = nt;
+
+  unsigned int cashToken = *cursor;
+  cursor = cursor + 1;
+  instruction->tokenCursor = cursor;
+  unsigned char* craw = reinterpret_cast<unsigned char*>(&cashToken);
+  unsigned char ct = craw[0];
+  craw[0] = craw[3];
+  craw[3] = ct;
+  ct = craw[1];
+  craw[1] = craw[2];
+  craw[2] = ct;
+
+  g_apNationStates[static_cast<int>(nationToken)]->treasuryValue10 = static_cast<int>(cashToken);
+}
+
+// Reads one big-endian short token (a nation flag/language index), stores it into the
+// selected-index field, and refreshes the picture-word-data language pack + strategic map
+// bitmap cache (the inlined body of SetSelectedIndex6AAndTriggerRefresh).
+// FUNCTION: IMPERIALISM 0x00583400
+void TSimMgr::HandleTurnInstruction_Flag_SetNationFlagAndRefresh(void* pInstructionRaw) {
+  STurnInstructionCursor* instruction = static_cast<STurnInstructionCursor*>(pInstructionRaw);
+  unsigned int* cursor = instruction->tokenCursor;
+  unsigned int token = *cursor;
+  instruction->tokenCursor = cursor + 1;
+  unsigned char* raw = reinterpret_cast<unsigned char*>(&token);
+  raw[0] = raw[3];
+  raw[1] = raw[2];
+  short index = static_cast<short>(token);
+  field6a = index;
+  g_pUiViewManager->EnsurePictWvDataGobLoadedBySlot(index);
+  g_pStrategicMapViewSystem->ReloadBitmap244AndRefreshUiCaches();
+}
+
+// Reads a big-endian 32-bit nation slot, then rebuilds that nation's resource-yield /
+// development targets and clears all 0x17 need targets back to zero.
+// FUNCTION: IMPERIALISM 0x00583670
+void TSimMgr::HandleTurnInstruction_Tclr_ResetNationRelationBars(void* pInstructionRaw) {
+  STurnInstructionCursor* instruction = static_cast<STurnInstructionCursor*>(pInstructionRaw);
+  unsigned int* cursor = instruction->tokenCursor;
+  unsigned int nationToken = *cursor;
+  instruction->tokenCursor = cursor + 1;
+  unsigned char* nraw = reinterpret_cast<unsigned char*>(&nationToken);
+  unsigned char nt = nraw[0];
+  nraw[0] = nraw[3];
+  nraw[3] = nt;
+  nt = nraw[1];
+  nraw[1] = nraw[2];
+  nraw[2] = nt;
+  int nation = static_cast<int>(nationToken);
+
+  g_apNationStates[nation]->RebuildNationResourceYieldCountersAndDevelopmentTargets();
+  int needIndex = 0;
+  do {
+    g_apNationStates[nation]->UpdateNeedTargetAndAccumulateOverCap(static_cast<short>(needIndex),
+                                                                   0);
+    ++needIndex;
+  } while (needIndex < 0x17);
+}
+
+// Reads a big-endian 32-bit country slot and a big-endian 32-bit state code. Stores the
+// state's low byte into the per-slot state array based at field6e, and when the state is
+// exactly 2 latches field6c to slot*10 + 0x717.
+// FUNCTION: IMPERIALISM 0x00583700
+void TSimMgr::HandleTurnInstruction_Coun_SetCountrySlotState(void* pInstructionRaw) {
+  STurnInstructionCursor* instruction = static_cast<STurnInstructionCursor*>(pInstructionRaw);
+  unsigned int* cursor = instruction->tokenCursor;
+
+  unsigned int slotToken = *cursor;
+  cursor = cursor + 1;
+  instruction->tokenCursor = cursor;
+  unsigned char* sraw = reinterpret_cast<unsigned char*>(&slotToken);
+  unsigned char st = sraw[0];
+  sraw[0] = sraw[3];
+  sraw[3] = st;
+  st = sraw[1];
+  sraw[1] = sraw[2];
+  sraw[2] = st;
+
+  unsigned int stateToken = *cursor;
+  cursor = cursor + 1;
+  instruction->tokenCursor = cursor;
+  unsigned char* vraw = reinterpret_cast<unsigned char*>(&stateToken);
+  unsigned char vt = vraw[0];
+  vraw[0] = vraw[3];
+  vraw[3] = vt;
+  vt = vraw[1];
+  vraw[1] = vraw[2];
+  vraw[2] = vt;
+
+  int slot = static_cast<int>(slotToken);
+  (&field6e)[slot] = static_cast<unsigned char>(stateToken);
+  if (stateToken == 2) {
+    field6c = static_cast<short>(static_cast<short>(slotToken) * 10 + 0x717);
+  }
+}
+
+// FUNCTION: IMPERIALISM 0x005837c0
+void TSimMgr::SetActiveNationSlotAndRefreshCityCapabilityUiHandles(short nationSlot) {
+  activeNationSlot = nationSlot;
+  g_pStrategicMapViewSystem->RefreshCityCapabilityUiHandlesForActiveNation();
+}
+
 // FUNCTION: IMPERIALISM 0x005d4c10
 unsigned char __cdecl TryGetFileMetadataForPath(CString* path) {
   CFileStatus status;
@@ -1009,4 +1415,17 @@ unsigned char __cdecl TryGetFileMetadataForPath(CString* path) {
 // FUNCTION: IMPERIALISM 0x005d4c40
 void __cdecl DeleteFileWithErrorReporting(CString* path) {
   CFile::Remove(*path);
+}
+
+// FUNCTION: IMPERIALISM 0x005e01a0
+void __stdcall LoadProfileStringAndAssignSharedRef(CString* outString, LPCTSTR key,
+                                                   LPCTSTR defaultValue) {
+  CString result;
+  GetProfileStringFromSettingsSection(&result, key, defaultValue);
+  *outString = result;
+}
+
+// FUNCTION: IMPERIALISM 0x005e0260
+void SaveSettingValueFromPointerByKey(CString* value, const char* key) {
+  g_pImperialismApp->SetSettingValueInSettingsSection(key, *value);
 }

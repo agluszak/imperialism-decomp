@@ -46,7 +46,7 @@ public:
   // receiver-agnostic ComputeNavyOrderPriorityContributionPercentByCategory
   // free function -- the same body is also called on a plain TTaskForce*
   // (TNavyMission::ReturnZeroSlot2C), so the shared logic takes values, not `this`.
-  int ComputeNavyOrderPriorityContributionPercentByCategory(int category);
+  short ComputeNavyOrderPriorityContributionPercentByCategory(int category);
   // Per-resourceType-04 normalization base (the "stock cap" field of the
   // shared per-resource-type descriptor table, TNavyOrderResourceDescriptor).
   // Thin wrapper, same receiver-agnostic reasoning as above.
@@ -83,14 +83,13 @@ int SumNavyOrderPriorityForNationAndNodeType(TGreatPower* nationObj, int nodeTyp
 // stock/tiebreak field. Called both on TShip nodes (the primary navy order
 // list, via TShip::ComputeNavyOrderPriorityContributionPercentByCategory) and
 // on plain TTaskForce nodes (TNavyMission::ReturnZeroSlot2C's orderList24
-// chain) -- both classes happen to carry the same 3 fields at the offsets the
-// original reads (+0x04 resource/order type, +0x1c stock/required-count,
-// +0x30 a tiebreak/context field), so this takes them by value instead of by
-// receiver type.
-int ComputeNavyOrderPriorityContributionPercentByCategory(short resourceType,
-                                                          short stockOrRequiredCount,
-                                                          short tiebreakField, int category);
+// chain) -- the original dispatches 0x54ff00 __thiscall on BOTH receiver types,
+// which share the read offsets (+0x04 resource/order type, +0x1c
+// stock/required-count, +0x30 a tiebreak/context field). It is modelled as a
+// TShip method; the one TTaskForce call site keeps the original's receiver pun.
 short GetNavyOrderNormalizationBaseByResourceType(short resourceType);
+void __cdecl AccumulateNavyOrderCategoryVectorWithScale(TShip* orderNode, float* vector,
+                                                        float scale);
 
 // Per-category (0..3) normalized cost percent for a resource type, over the same
 // divisor + TNavyOrderResourceDescriptor tables as the helper above but a distinct

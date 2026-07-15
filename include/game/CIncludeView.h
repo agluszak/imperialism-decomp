@@ -29,6 +29,13 @@ struct IncludeViewOverlayRectRecord {
 };
 ASSERT_SIZE(IncludeViewOverlayRectRecord, 0x18);
 
+// Full 68-slot vtable. The two game overrides (PreCreateWindow 0x64, OnCommand 0x80),
+// CalcWindowRect 0x68, OnInitialUpdate/OnActivateView/OnDraw and the message-map handlers
+// are modelled here; every inherited CObject/CCmdTarget/CWnd/CView library slot is claimed
+// by the reviewed nafxcw identity overrides in config/msvc500_library_overrides.csv (the
+// CView-family MFC-vtable pass — GetScrollBarCtrl, PostNcDestroy, the OLE drag-drop /
+// scroll / print virtuals, etc.; heuristics note 88).
+// VTABLE: IMPERIALISM 0x00648418
 class CIncludeView : public CView {
 public:
   DECLARE_DYNCREATE(CIncludeView)
@@ -39,6 +46,13 @@ public:
   void SetUiRuntimeContextAndActivateMain(TView* activeDialog); // 0x00483340
 
 protected:
+  // Registers the "AmbitGameWindow" WNDCLASS and pins cs.lpszClass + cs.style before
+  // chaining to CView::PreCreateWindow. (vtable slot 0x64.)
+  BOOL PreCreateWindow(CREATESTRUCT& cs) override; // 0x00483db0
+  // On a custom notify code 0x400, refresh the sending control's owning TView (recovered
+  // from its GWL_USERDATA) and reset the hosted dialog tree's input capture, then default.
+  // (vtable slot 0x80.)
+  BOOL OnCommand(WPARAM wParam, LPARAM lParam) override; // 0x00483e80
   // The layout keystone for the whole main screen: whatever client rect the frame's
   // RecalcLayout/RepositionBars proposes for the leftover pane, reinterpret it as "a
   // 640x480 view centered in that rect" (clamped to the top-left when smaller). This is
@@ -90,7 +104,7 @@ public:
   CList<IncludeViewOverlayRectRecord, IncludeViewOverlayRectRecord&> m_overlayRectQueue;
   POSITION m_overlayRectCursor68; // 0x68 — iteration cursor of the repaint pass (0x482fc0)
   UINT m_tickTimerId;             // 0x6c — 17ms UI tick timer (id 0xd00d) driving cursor dispatch
-  unsigned char pad70[4];         // 0x70 — zeroed in the ctor, not yet resolved to a field
+  int m_field70;                  // 0x70 — ctor-zeroed dword, purpose not yet resolved
   // 0x74 — this view's own captured-control track (a second copy of the
   // TMouseCaptureState shape: control + start/last/current points). OnMouseMove sends
   // it the state-1 drag command through TControl slots 0x67/0x68; the writer that arms

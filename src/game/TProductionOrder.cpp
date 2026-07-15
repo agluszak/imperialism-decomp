@@ -19,26 +19,37 @@ IMPLEMENT_DYNCREATE(TProductionOrder, TObject)
 // TProductionOrder::`scalar deleting destructor'
 TProductionOrder::~TProductionOrder() {}
 
-undefined TProductionOrder::InitializeBasicCityOrderContext(int param_1, undefined2 param_2) { return 0; }
+undefined TProductionOrder::InitializeBasicCityOrderContext(int param_1, undefined2 param_2) {
+  return 0;
+}
 
 void TProductionOrder::WriteTo(TStream* stream) {}
 
 void TProductionOrder::ReadFrom(TStream* stream) {}
 
-short TProductionOrder::MaxOrder() { return 0; }
+short TProductionOrder::MaxOrder() {
+  return 0;
+}
 
-bool TProductionOrder::SetQuantity(short param_1) { return 0; }
+bool TProductionOrder::SetQuantity(short param_1) {
+  return 0;
+}
 
-undefined TProductionOrder::ResetCityOrderItemDerivedStateNoop() { return 0; }
+undefined TProductionOrder::ResetCityOrderItemDerivedStateNoop(const char* name) {
+  (void)name;
+  return 0;
+}
 
-undefined TProductionOrder::CommitIfPending() { return 0; }
+undefined TProductionOrder::CommitIfPending() {
+  return 0;
+}
 
 // Slot 0x3c (Mac: Produce) — clears the OrderSheet working buffers. The body lives
 // in TProductionOrder's own vtable region; TCityOrderItem (TCapacityOrder's parallel
 // chain) shares the same slot but cannot own the address.
 // FUNCTION: IMPERIALISM 0x004b5180
-undefined TProductionOrder::InitializeCityOrderItemWorkingBuffers(undefined4* param_1) {
-  undefined4* cursor = param_1;
+undefined TProductionOrder::InitializeCityOrderItemWorkingBuffers(OrderSheet* orderSheet) {
+  undefined4* cursor = reinterpret_cast<undefined4*>(orderSheet->slotByResourceCode);
   int remaining = 0x1e;
   while (remaining != 0) {
     *cursor = 0;
@@ -46,13 +57,13 @@ undefined TProductionOrder::InitializeCityOrderItemWorkingBuffers(undefined4* pa
     remaining = remaining + -1;
   }
   *reinterpret_cast<short*>(cursor) = 0;
-  *reinterpret_cast<short*>(reinterpret_cast<unsigned char*>(param_1) + 0x7a) = 0;
-  *reinterpret_cast<short*>(reinterpret_cast<unsigned char*>(param_1) + 0x7c) = 0;
+  orderSheet->slotByResourceCode[0x3d] = 0;
+  orderSheet->slotByResourceCode[0x3e] = 0;
   return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004b51b0
-void TProductionOrder::FillOrderSheet(void* orderSheet, short quantity) {
+void TProductionOrder::FillOrderSheet(OrderSheet* orderSheet, short quantity) {
   (void)quantity;
-  this->InitializeCityOrderItemWorkingBuffers(reinterpret_cast<undefined4*>(orderSheet));
+  this->InitializeCityOrderItemWorkingBuffers(orderSheet);
 }

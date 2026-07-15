@@ -25,6 +25,12 @@ short GetResourceDescriptorWord18ByType(short resourceType) {
   return static_cast<short>(g_NavyOrderResourceDescriptorTable[resourceType].navyPriorityWeight);
 }
 
+// FUNCTION: IMPERIALISM 0x00550ea0
+short GetResourceDescriptorWord20ByType(short resourceType) {
+  return static_cast<short>(
+      g_NavyOrderResourceDescriptorTable[resourceType].enabledFlagOrBucketOffset);
+}
+
 // FUNCTION: IMPERIALISM 0x00550ed0
 short GetResourceDescriptorWeightWord1ByType(short resourceType) {
   return g_NavyOrderResourceDescriptorTable[resourceType].descriptorWeight;

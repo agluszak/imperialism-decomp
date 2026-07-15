@@ -34,7 +34,11 @@ public:
   virtual void RebuildNationStateSlotsNoOp();                                  // 0x28  0x0057c390
   virtual void RebuildPrimaryNationStateForSlot(int slotIndex, char activate); // 0x2c 0x0057cda0
   virtual void RebuildSecondaryNationStateForSlot(int slotIndex);              // 0x30  0x0057d520
-  virtual void ApplyScenarioVariantSeedForNationSetup(CString* destString);    // 0x34  0x0057d830
+  // Ghidra mislabelled this "ApplyScenarioVariantSeedForNationSetup"; the real body
+  // computes the current season index (quarterGateTick2c % 4) and looks it up via
+  // GetString(10000, seasonIndex, destString) -- a localized season-name formatter,
+  // used by the toolbar's turn-status "seas" tag text. 0x0057d830.
+  virtual void FormatSeasonName(CString* destString); // 0x34  0x0057d830
   // 0x38 — copies the scenario nation-setup buffer into this manager's flow state.
   // (Ghidra mislabelled this "RegisterHotKeyDialogState"; the real call site in TViewMgr
   // passes the assembled setup buffer.)
@@ -100,8 +104,7 @@ public:
   // raw address.
   void RebuildMapContextAndGlobalMapState(int param1, const char* param2, int param3);
   // 0x57c9a0: rebuild the active map context + global map state for a numbered
-  // scenario ('scn0'..'scz9' session-init tags); returns whether the scenario data
-  // loaded. Body TODO.
+  // scenario ('scn0'..'scz9' session-init tags); returns whether the scenario data loaded.
   unsigned char RecreateActiveMapContextAndInitializeGlobalMapState(int scenarioIndex);
   // 0x57cad0. Verified against 0x0057db53: real __thiscall on `this` (not
   // g_pSimMgr this time), 1 stack arg (`RET 0x4`).
@@ -111,6 +114,26 @@ public:
   // view's cached bitmap 244 (TMacViewMgr::ReloadBitmap244AndRefreshUiCaches on
   // g_pStrategicMapViewSystem).
   void SetSelectedIndex6AAndTriggerRefresh(short index);
+  void SetActiveNationSlotAndRefreshCityCapabilityUiHandles(short nationSlot); // 0x5837c0
+
+  // --- turn-instruction stream handlers (dispatched by FourCC through the table at
+  //     0x698b50 inside ProcessTurnInstructionStreamAndFinalizePhase; each reads one or
+  //     more big-endian tokens from the cursor and mutates this manager / global state) ---
+  void
+  HandleTurnInstruction_Year_UpdateScenarioYearFieldScaledBy4(void* pInstructionRaw);  // 0x582ed0
+  void HandleTurnInstruction_Flag_SetNationFlagAndRefresh(void* pInstructionRaw);      // 0x583400
+  void HandleTurnInstruction_Cash_SetNationCash(void* pInstructionRaw);                // 0x583360
+  void HandleTurnInstruction_Tran_SetNationTransportStat(void* pInstructionRaw);       // 0x582860
+  void HandleTurnInstruction_Tclr_ResetNationRelationBars(void* pInstructionRaw);      // 0x583670
+  void HandleTurnInstruction_Prov_ApplyProvinceAssignmentEntry(void* pInstructionRaw); // 0x582f20
+  void HandleTurnInstruction_Coun_SetCountrySlotState(void* pInstructionRaw);          // 0x583700
+  void HandleTurnInstruction_Emba_SetEmbassyRelationFlags(void* pInstructionRaw);      // 0x582bf0
+  void
+  HandleTurnInstruction_Ware_ApplyNationIndexedShortAndRefresh(void* pInstructionRaw);   // 0x5823e0
+  void HandleTurnInstruction_Capa_ApplyNationSlotValueWithDelta(void* pInstructionRaw);  // 0x5822c0
+  void HandleTurnInstruction_Rail_ApplyRailPlacementAndCashBonus(void* pInstructionRaw); // 0x5829b0
+  void HandleTurnInstruction_Port_ApplyPortPlacementAndCashBonus(void* pInstructionRaw); // 0x582a40
+  void HandleTurnInstruction_Deve_ApplyMapDevelopmentEntry(void* pInstructionRaw);       // 0x5828f0
 
   // --- fields (offsets are load-bearing: referenced from many other classes via
   //     g_pSimMgr; do not rename or move) ---
@@ -186,3 +209,7 @@ void __cdecl DeleteFileWithErrorReporting(CString* path);
 // Posts eventCode to the main frame (message 0x2420) unless it is 0, and latches the
 // bootstrap-complete flag DAT_006a43c0 the turn state machine's case 1 keys off.
 void ReinitializeGameFlowAndPostTurnEventCode(int eventCode);
+
+void __stdcall LoadProfileStringAndAssignSharedRef(CString* outString, LPCTSTR key,
+                                                   LPCTSTR defaultValue); // 0x5e01a0
+void SaveSettingValueFromPointerByKey(CString* value, const char* key);   // 0x5e0260

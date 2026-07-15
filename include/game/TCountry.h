@@ -57,7 +57,7 @@ public:
   virtual char TryDispatchNationActionViaUiContextOrFallback(int arg1, int arg2, int arg3,
                                                              int arg4);
   virtual void QueueDiplomacyProposalCodeForTargetNation(short proposalCode, short targetNationId);
-  virtual char ReturnFalseNationStateCapabilityFlag90(int arg);
+  virtual char ReturnFalseNationStateCapabilityFlag90(short arg);
   virtual void NotifyActionSlot94(int sourceNation, int actionCode);
   virtual char ReturnFalseNationStateCapabilityFlag98(void);
   virtual char ReturnFalseNationStateCapabilityFlag9C(void);
@@ -96,6 +96,9 @@ public:
   // caller, over g_apTerrainTypeDescriptorTable entries). 0x0057f0e0, __thiscall.
   bool IsNationProfileInMinorRange100To199();
 
+  // 0x4d7170: lazily computes and caches the nation's overlay-anchor tile index.
+  short GetOrComputeOverlayAnchorTileIndex();
+
   CString identitySharedString0;
   CString identitySharedString1;
   short nationSlot;
@@ -117,9 +120,10 @@ public:
   // narrow it to a short (0x004d87b0/0x004d71b0 `movsx word`) — expressed here as
   // an int field with static_cast<short> at the narrow readers.
   int homeRegionIndex;
-  // 0x8c — serialized as a 4-byte block by slots 0x0a/0x0b together with
-  // homeRegionIndex.
-  int serializedField8c;
+  // 0x8c — cached overlay-anchor tile index (-1 = unset; lazily computed by
+  // GetOrComputeOverlayAnchorTileIndex); serialized as a 4-byte block by slots
+  // 0x0a/0x0b together with homeRegionIndex.
+  int overlayAnchorTileCache8c;
   TSortedList* ownedRegionList;
 
   // Defined inline so MSVC inlines the two CString-member constructions (and the

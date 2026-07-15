@@ -1,6 +1,6 @@
 #include "game/TNewGameCommand.h"
 
-void TNewGameCommand::OrphanRetStub_00487a00() {}
+void TNewGameCommand::DoIt() {}
 
 // SYNTHETIC: IMPERIALISM 0x0049ddd0
 // TNewGameCommand::`scalar deleting destructor'
@@ -12,4 +12,3 @@ TNewGameCommand::~TNewGameCommand() {}
 // TNewGameCommand::GetRuntimeClass
 
 IMPLEMENT_DYNCREATE(TNewGameCommand, TCommand)
-

@@ -3,7 +3,6 @@
 #include "game/TList.h"
 #include "game/mfc.h"
 
-// TODO(manifest): describe TTaskList and its role. Base edge (TList) recovered from RTTI CRuntimeClass chain: TTaskList -> TList -> TSortedList -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x0066aa48
 class TTaskList : public TList {
 public:
@@ -41,7 +40,6 @@ public:
   // slot 0x1e GetTTaskClassNamePointer inherited unchanged (0x487cc0)
   virtual int CreateTTechMgrInstance(); // slot 0x1f byte 0x7c 0x5aed50 (new virtual)
                                         // === END GENERATED DECLS (TTaskList) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TTaskList 0xCTOR`).
 
   TTaskList();
 };

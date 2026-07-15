@@ -139,9 +139,22 @@ short TMilitaryUnit::GetUnitTypeCostPoints() {
   return 0;
 }
 
+// FUNCTION: IMPERIALISM 0x005c3450
+short GetCityActionGateValueBySlot(int slot) {
+  if (g_UnitTypeMilitaryStatTable_00695CD2[slot][0] == 0x10) {
+    return g_UnitTypeMilitaryStatTable_00695CD2[slot][1];
+  }
+  return 0;
+}
+
 // FUNCTION: IMPERIALISM 0x005c3490
 short TMilitaryUnit::GetUnitMovementClassId() {
   return g_awTacticalUnitCategoryCodeBySlot[this->orderType];
+}
+
+// FUNCTION: IMPERIALISM 0x005c34b0
+short GetCityActionCategoryCodeBySlot(short slot) {
+  return g_awTacticalUnitCategoryCodeBySlot[slot];
 }
 
 // FUNCTION: IMPERIALISM 0x005c34d0
@@ -149,9 +162,23 @@ short TMilitaryUnit::IsNotStationedInProvince(short provinceId) {
   return tileIndex06 != provinceId;
 }
 
+// FUNCTION: IMPERIALISM 0x005c3500
+bool TMilitaryUnit::MatchesTargetTileOrBypass(short bypassTileFilter, short targetTile) {
+  if (bypassTileFilter == 0) {
+    return tileIndex06 == targetTile;
+  }
+  return true;
+}
+
 // FUNCTION: IMPERIALISM 0x005c3530
 short TMilitaryUnit::GetUnitTypeStatPercent(short statIndex) {
   return static_cast<short>((g_UnitTypeStatTable_0066EB88[orderType][statIndex] * 100) /
+                            g_UnitTypeStatDivisorTable_0066ED30[statIndex]);
+}
+
+// FUNCTION: IMPERIALISM 0x005c3580
+short GetNormalizedCityActionResourceCostPercent(short unitType, short statIndex) {
+  return static_cast<short>((g_UnitTypeStatTable_0066EB88[unitType][statIndex] * 100) /
                             g_UnitTypeStatDivisorTable_0066ED30[statIndex]);
 }
 

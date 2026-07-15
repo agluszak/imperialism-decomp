@@ -25,12 +25,14 @@ undefined TAmbitFileBasedDocument::OrphanRetStub_0049e680() {
 }
 
 // FUNCTION: IMPERIALISM 0x0049e6a0
-undefined TAmbitFileBasedDocument::OrphanRetStub_00486530() {
+undefined TAmbitFileBasedDocument::OrphanRetStub_00486530(ArchiveStreamAdapter* stream) {
+  (void)stream;
   return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x0049eb30
-undefined TAmbitFileBasedDocument::OrphanRetStub_00486550() {
+undefined TAmbitFileBasedDocument::OrphanRetStub_00486550(ArchiveStreamAdapter* stream) {
+  (void)stream;
   return 0;
 }
 

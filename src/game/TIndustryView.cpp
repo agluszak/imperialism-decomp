@@ -7,7 +7,8 @@
 
 IMPLEMENT_DYNCREATE(TIndustryView, TBuildingView)
 
-TIndustryView::TIndustryView() {}
+// FUNCTION: IMPERIALISM 0x004cc790
+TIndustryView::TIndustryView() : TBuildingView(), fieldA0(0), fieldA4(static_cast<short>(0xffff)) {}
 
 // SYNTHETIC: IMPERIALISM 0x004cc7d0
 // TIndustryView::`scalar deleting destructor'
@@ -19,7 +20,7 @@ undefined TIndustryView::OrphanRetStub_004c6fd0() {
 }
 
 // FUNCTION: IMPERIALISM 0x004ccf30
-void TIndustryView::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) { }
+void TIndustryView::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {}
 
 // FUNCTION: IMPERIALISM 0x004cd040
 undefined TIndustryView::OrphanRetStub_004c6fb0() {

@@ -27,6 +27,8 @@ void EnsurePortZoneForTile(short nTileIndex);
 void RemovePortZoneByTile(short nTileIndex);
 short TraceTerrainFlowToNearestSeaTile(short tileIndex);
 void NormalizeWrappedMapCoord217x60(short* xCoord, short* yCoord);
+undefined4 GetCurrentLocalEpochSecondsWithTimezoneCache(void);
+undefined4 SetSharedStringFromRotatingFlavorTextBySlot(void);
 
 // FUNCTION: IMPERIALISM 0x004a4190
 TMilitaryUnit* TMapMgr::ValidateGridIndexRange0To17F(short index) {
@@ -34,6 +36,29 @@ TMilitaryUnit* TMapMgr::ValidateGridIndexRange0To17F(short index) {
     return nullptr;
   }
   return cityScoreTable[index].stationedUnitChain98;
+}
+
+// Classify a civilian tile click into a dispatcher action code: 0x3F9 (select idle civilian),
+// 0x3F3 (open report/rescind UI on a working civilian), or 0 (no action).
+// FUNCTION: IMPERIALISM 0x004d2540
+unsigned short __stdcall ResolveCivilianTileSelectionOrReportActionCode(short nTileIndex,
+                                                                        short nClickMode) {
+  int actionKind = 0;
+  TCivUnit* entry =
+      g_pGlobalMapState->GetTileUnitEntryByOwner(nTileIndex, g_pSimMgr->GetActiveNationId());
+  if (entry != nullptr) {
+    entry = g_pGlobalMapState->GetTileUnitEntryByOwner(nTileIndex, g_pSimMgr->GetActiveNationId());
+    if (entry->IsInIdleSelectionState() == 0) {
+      actionKind = 10;
+    } else if (nClickMode == 2 ||
+               (g_pGlobalMapState->terrainStateTable[nTileIndex].activeFlags1c >> 5 & 1) == 0) {
+      actionKind = 2;
+    }
+  }
+  if (actionKind == 2) {
+    return 0x3f9;
+  }
+  return (actionKind != 10) - 1 & 0x3f3;
 }
 
 // Hex direction (0-6) from sourceTile to destTile on the 0x6c(108)-wide map, via each tile's
@@ -168,8 +193,7 @@ void TMapMgr::AllocateAndResetTerrainAndCityScoreTables() {
     tile->pad16 = 0xff;
     tile->railFlags17 = 0;
     tile->secondaryOwnerNationTag18 = -1;
-    tile->pad19[1] = 0xff;
-    tile->pad19[2] = 0xff;
+    tile->tileActionOrdinal1a = -1;
     tile->activeFlags1c = 0;
     tile->pad1d[0] = 0;
     tile->firstCivilianOrder20 = 0;
@@ -230,7 +254,39 @@ undefined TMapMgr::LoadPoliticalMapRegionSubtypeTableFromResourceStream() {
 
 // FUNCTION: IMPERIALISM 0x0050f740
 void TMapMgr::RefreshMapContextRotatingStatusStrings() {
-  reinterpret_cast<void(__fastcall*)(void*, int)>(0x0050f740)(this, 0);
+  // Hash the scenario tag string to seed the zone status-code PRNG.
+  const char* tag = scenarioTagText1c;
+  int seed = 0x6e616461; // "adan"
+  while (*tag != '\0') {
+    seed = (seed >> 16) + seed * 2 + static_cast<int>(*tag);
+    tag++;
+  }
+  g_zoneStatusCodePrngSeed_006a5aec = seed;
+  if (seed == 0) {
+    g_zoneStatusCodePrngSeed_006a5aec =
+        reinterpret_cast<int(__cdecl*)(void*)>(GetCurrentLocalEpochSecondsWithTimezoneCache)(0);
+  }
+
+  // Reset the rotating-flavor-text slot counters (slot = -1), then assign a
+  // display name to every city record that has at least one linked region.
+  CString local_10;
+  reinterpret_cast<void(__cdecl*)(CString*, short)>(
+      SetSharedStringFromRotatingFlavorTextBySlot)(&local_10, -1);
+
+  for (int i = 0; i < 0x180; i++) {
+    TGlobalMapCityScoreRecord* record = &cityScoreTable[i];
+    if (record->linkedRegionIds[0] != -1) {
+      reinterpret_cast<void(__cdecl*)(CString*, short)>(
+          SetSharedStringFromRotatingFlavorTextBySlot)(&record->cityNameA4,
+                                                       record->ownerNationCode00);
+    }
+  }
+
+  // Reseed the PRNG from the system clock so later status-code generation is
+  // non-deterministic.
+  g_zoneStatusCodePrngSeed_006a5aec = 0;
+  g_zoneStatusCodePrngSeed_006a5aec =
+      reinterpret_cast<int(__cdecl*)(void*)>(GetCurrentLocalEpochSecondsWithTimezoneCache)(0);
 }
 
 // FUNCTION: IMPERIALISM 0x0050fca0
@@ -1144,12 +1200,43 @@ int TMapMgr::IsAltKeyDown() {
   return GetAsyncKeyState(VK_MENU) & 0x8000;
 }
 
+// FUNCTION: IMPERIALISM 0x005123e0
+int ComputeStridedRecordAddress6C(int recordBase, int recordIndex) {
+  return recordBase + recordIndex * 0x6c;
+}
+
+// FUNCTION: IMPERIALISM 0x005125a0
+void SplitTileIndexToRowAndColumn(short tileIndex, short* outRow, short* outCol) {
+  *outRow = tileIndex / 0x6c;
+  *outCol = tileIndex % 0x6c;
+}
+
 // FUNCTION: IMPERIALISM 0x005127e0
 void SplitTileIndexToHexRasterColumnX2AndRow(short tileIndex, short* outColX2,
                                              unsigned short* outRow) {
   short row = tileIndex / 0x6c;
   *outColX2 = static_cast<short>(row % 2 + (tileIndex % 0x6c) * 2);
   *outRow = row;
+}
+
+// Combines a doubled hex-raster column (columnX2, as produced by
+// SplitTileIndexToHexRasterColumnX2AndRow) and a row back into a linear tile index.
+// FUNCTION: IMPERIALISM 0x00512850
+int ComputeTileIndexFromHexColumnX2AndRow(int columnX2, int row) {
+  return columnX2 / 2 + row * 0x6c;
+}
+
+// Row delta (in tiles) for one of the six hex-neighbour directions, wrapping the direction
+// index into [0,6). Column deltas live in the sibling table g_Build_Hex_Area_LookupTable_00696E70.
+// FUNCTION: IMPERIALISM 0x005128f0
+short LookupHexNeighborRowDeltaByDirection(short direction) {
+  if (direction < 0) {
+    return g_Build_Hex_Area_LookupTable_00696E80[static_cast<short>(direction + 6)];
+  }
+  if (direction > 5) {
+    direction = static_cast<short>(direction - 6);
+  }
+  return g_Build_Hex_Area_LookupTable_00696E80[direction];
 }
 
 // FUNCTION: IMPERIALISM 0x00512930
@@ -1332,15 +1419,35 @@ extern "C" short __cdecl GetHexDirectionBetweenTiles(short sourceTile, short des
   return 3;
 }
 
+// FUNCTION: IMPERIALISM 0x00513050
+void NormalizeWrappedMapCoord108x60(short* xCoord, short* yCoord) {
+  short x = *xCoord;
+  if (x >= 108) {
+    x = x - 108;
+  } else {
+    if (x >= 0)
+      goto clampY;
+    x = x + 108;
+  }
+  *xCoord = x;
+clampY:
+  if (*yCoord < 0) {
+    *yCoord = 0;
+    return;
+  }
+  if (*yCoord > 59)
+    *yCoord = 59;
+}
+
 // FUNCTION: IMPERIALISM 0x00513120
 void NormalizeWrappedMapCoord217x60(short* xCoord, short* yCoord) {
   short x = *xCoord;
-  if (x < 216) {
+  if (x > 215) {
+    x = x - 217;
+  } else {
     if (x >= 0)
       goto clampY;
     x = x + 216;
-  } else {
-    x = x - 217;
   }
   *xCoord = x;
 clampY:
@@ -1787,13 +1894,16 @@ void TMapMgr::FloodFillTileRegionMarker(short nTileIndex, short nOwnerNationId) 
   g_nNextRegionMarkerId = static_cast<short>(g_nNextRegionMarkerId) + 1;
 }
 
-int TMapMgr::QueueDepotConstructionOrder(int* pMapContext, short nTileIndex, short nNationId,
-                                         undefined2 param_4) {
+int TMapMgr::QueueDepotConstructionOrder(short nTileIndex, short nNationId) {
+  (void)nTileIndex;
+  (void)nNationId;
   return 0;
 }
 
-void TMapMgr::QueuePortConstructionOrder(int* pMapContext, short nTileIndex, short nNationId,
-                                         undefined2 param_4) {}
+void TMapMgr::QueuePortConstructionOrder(short nTileIndex, short nNationId) {
+  (void)nTileIndex;
+  (void)nNationId;
+}
 
 // FUNCTION: IMPERIALISM 0x005149d0
 void TMapMgr::SetProvinceCapitalTileFlagBit08(short nProvinceId) {
@@ -2238,13 +2348,12 @@ void TMapMgr::MarkSeedNeighborTilesUnavailableByCapabilityMaskProfileA(
   short nationTag = pCivilianOrderEntry->field_18;
   short tileIndex = pCivilianOrderEntry->tileIndex06;
 
-  // orderCapRows277[nationTag - 1] reads the *previous* nation's row padding -- for
-  // nationTag == 0 this reads out of the array's declared bounds (into the tail of
-  // nationCapRows1e8[6]/pad274), reproducing the original's own out-of-bounds read.
-  if (g_pCityOrderCapabilityState->orderCapRows277[nationTag - 1].unknownFlag28b == 2) {
+  // These flags sit at the head of orderCapRows277[nationTag]'s record (offsets 6/0xc); they
+  // used to be reached via the previous row at the old +0xf phase, now corrected.
+  if (g_pCityOrderCapabilityState->orderCapRows277[nationTag].unknownFlag28b == 2) {
     g_bSeedGateNotifyFlag_00696f0c = 1;
   }
-  if (g_pCityOrderCapabilityState->orderCapRows277[nationTag - 1].unknownFlag291 == 2) {
+  if (g_pCityOrderCapabilityState->orderCapRows277[nationTag].unknownFlag291 == 2) {
     g_bSeedGateNotifyFlag_00696f0a = 1;
   }
   if (g_pCityOrderCapabilityState->orderCapRows277[nationTag].unknownFlag27f == 2) {
@@ -2274,13 +2383,13 @@ void TMapMgr::MarkSeedNeighborTilesUnavailableByCapabilityMaskProfileB(
   short nationTag = pCivilianOrderEntry->field_18;
 
   unsigned char terrainTypeGate[8] = {1, 1, 0, 0, 0, 0, 1, 1};
-  if (g_pCityOrderCapabilityState->orderCapRows277[nationTag - 1].unknownFlag28b == 2) {
+  if (g_pCityOrderCapabilityState->orderCapRows277[nationTag].unknownFlag28b == 2) {
     terrainTypeGate[4] = 1;
     terrainTypeGate[5] = 0;
     terrainTypeGate[6] = 1;
     terrainTypeGate[7] = 1;
   }
-  if (g_pCityOrderCapabilityState->orderCapRows277[nationTag - 1].unknownFlag291 == 2) {
+  if (g_pCityOrderCapabilityState->orderCapRows277[nationTag].unknownFlag291 == 2) {
     terrainTypeGate[0] = 1;
     terrainTypeGate[1] = 1;
     terrainTypeGate[2] = 1;
@@ -2356,6 +2465,13 @@ char TMapMgr::TileHasMovementClassId(int nodeContext, int regionIndex) {
 // FUNCTION: IMPERIALISM 0x00515ec0
 void TMapMgr::AssignCityRecordDisplayName(int cityRecordIndex, CString* dest) {
   *dest = cityScoreTable[cityRecordIndex].cityNameA4;
+}
+
+// FUNCTION: IMPERIALISM 0x00515f40
+void TMapMgr::SetGlobalMapCellSharedLabel(int cityRecordIndex, CString* name) {
+  CString* dest = reinterpret_cast<CString*>(reinterpret_cast<char*>(cityScoreTable) +
+                                             cityRecordIndex * 0xa8 + 0xa4);
+  *dest = *name;
 }
 
 // FUNCTION: IMPERIALISM 0x00515f80
@@ -2821,6 +2937,43 @@ char TMapMgr::AreNationsBorderLinked(int nationA, int nationB) {
   return 0;
 }
 
+// FUNCTION: IMPERIALISM 0x00517dd0
+bool TMapMgr::HasDirectOrFallbackLinkedNodeType(int cityRecordIndex, int nationCode,
+                                                char allowFallback) {
+  TGlobalMapCityScoreRecord* record = &cityScoreTable[cityRecordIndex];
+  int neighborCount = record->adjacentRegionCount08;
+
+  if (allowFallback == 0 || nationCode > 6) {
+    for (int neighborIndex = 0; neighborIndex < neighborCount; ++neighborIndex) {
+      short neighborRegionId = record->adjacentRegionIds0A[neighborIndex];
+      if (cityScoreTable[neighborRegionId].ownerNationCode00 == nationCode) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  for (int neighborIndex = 0; neighborIndex < neighborCount; ++neighborIndex) {
+    short neighborRegionId = record->adjacentRegionIds0A[neighborIndex];
+    if (cityScoreTable[neighborRegionId].ownerNationCode00 == nationCode) {
+      return true;
+    }
+  }
+
+  for (int minorSlot = 7; minorSlot < 0x17; ++minorSlot) {
+    if (g_apTerrainTypeDescriptorTable[minorSlot] != nullptr &&
+        g_apSecondaryNationStateSlots[minorSlot]->IsEncodedNationSlotMinus200Equal(nationCode)) {
+      for (int neighborIndex = 0; neighborIndex < neighborCount; ++neighborIndex) {
+        short neighborRegionId = record->adjacentRegionIds0A[neighborIndex];
+        if (cityScoreTable[neighborRegionId].ownerNationCode00 == minorSlot) {
+          return true;
+        }
+      }
+    }
+  }
+  return false;
+}
+
 // FUNCTION: IMPERIALISM 0x00517f80
 int TMapMgr::CollectSecondDegreeLinksMatchingNodeType(int cityRecordIndex, int nationTag,
                                                       int* nodeBuffer) {
@@ -2845,6 +2998,95 @@ int TMapMgr::CollectSecondDegreeLinksMatchingNodeType(int cityRecordIndex, int n
     }
   }
   return resultCount;
+}
+
+// FUNCTION: IMPERIALISM 0x00518130
+void TMapMgr::RecomputeTileStrategicScoreHeatmap() {
+  int r;
+  int i;
+  int edge;
+  // The original reserves a 6-int scratch here (zero-filled via rep stosd, then seeded
+  // {[4]=500,[5]=200}) that is never read afterwards; MSVC5 elides this dead local in the
+  // recompile, so its frame is 0x14 smaller and the resulting register/stack-offset
+  // allocation diverges from the original even though every instruction matches in kind
+  // and order (the FPU diffusion + vtable calls are exact). Left documented, not forced.
+  // Per-resource-type weight, pulled from the nation-interaction metric buckets.
+  int resourceWeights[17];
+  for (int resType = 0; resType < 0x11; ++resType) {
+    resourceWeights[resType] = g_pNationInteractionStateManager->GetNationMetricBucketValueByIndex(
+        static_cast<short>(resType));
+  }
+
+  int regionScores[0x180];
+
+  // Pass 1: base each region's score on the resource yields of its linked tiles.
+  TGlobalMapCityScoreRecord* region = cityScoreTable;
+  for (r = 0; r < 0x180; ++r) {
+    int score = 200;
+    int linkedCount = region->linkedRegionCount;
+    if (linkedCount > 0) {
+      short* linkedTile = region->linkedRegionIds;
+      do {
+        TTerrainStateRecordView* tile = &terrainStateTable[*linkedTile];
+        for (edge = 0; edge < 2; ++edge) {
+          int resType = tile->resourceTypeByEdge[edge];
+          if ((resType != 6 || g_pCityOrderCapabilityState->hasProductionOrder193 != 0) &&
+              resType != -1) {
+            score += g_abUniversityRequirementLevelById[resType][tile->developmentClassNibbles0c] *
+                     resourceWeights[resType];
+          }
+        }
+        ++linkedTile;
+      } while (--linkedCount != 0);
+    }
+    regionScores[r] = score;
+    region = reinterpret_cast<TGlobalMapCityScoreRecord*>(reinterpret_cast<char*>(region) + 0xa8);
+  }
+
+  // Pass 2: development-stage bonus.
+  char* stagePtr = reinterpret_cast<char*>(cityScoreTable) + 2;
+  for (r = 0; r < 0x180; ++r) {
+    regionScores[r] += (*stagePtr + 3) * 1000;
+    stagePtr += 0xa8;
+  }
+
+  // Pass 3: terrain-type descriptor bonuses (first 7 weighted higher than the next 16).
+  for (i = 0; i < 7; ++i) {
+    if (g_apTerrainTypeDescriptorTable[i] != nullptr) {
+      short idx =
+          static_cast<short>(g_apTerrainTypeDescriptorTable[i]->GetHomeRegionCityRecordIndex());
+      regionScores[idx] += 10000;
+    }
+  }
+  for (i = 7; i < 23; ++i) {
+    if (g_apTerrainTypeDescriptorTable[i] != nullptr) {
+      short idx =
+          static_cast<short>(g_apTerrainTypeDescriptorTable[i]->GetHomeRegionCityRecordIndex());
+      regionScores[idx] += 8000;
+    }
+  }
+
+  // Pass 4: store each region's score, then diffuse a weighted share of each adjacent
+  // region's score back into it.
+  region = cityScoreTable;
+  for (r = 0; r < 0x180; ++r) {
+    region->cityScoreValue = regionScores[r];
+    for (i = region->adjacentRegionCount08 - 1; i >= 0; --i) {
+      short adjIdx = region->adjacentRegionIds0A[i];
+      region->cityScoreValue = static_cast<int>(
+          regionScores[adjIdx] * g_TileHeatmapNeighborDiffusionFactor + region->cityScoreValue);
+    }
+    region = reinterpret_cast<TGlobalMapCityScoreRecord*>(reinterpret_cast<char*>(region) + 0xa8);
+  }
+
+  // Pass 5: cityScoreTotal = mean region score.
+  cityScoreTotal = 0;
+  region = cityScoreTable;
+  for (r = 0; r < 0x180; ++r) {
+    cityScoreTotal += region->cityScoreValue;
+    region = reinterpret_cast<TGlobalMapCityScoreRecord*>(reinterpret_cast<char*>(region) + 0xa8);
+  }
+  cityScoreTotal = cityScoreTotal / 0x180;
 }
 
 // FUNCTION: IMPERIALISM 0x00518470
@@ -2894,11 +3136,6 @@ char TMapMgr::AreAllLinkedEntriesTerrainFlagBit2Clear(int regionIndex) {
   }
   return 0;
 }
-
-// Sum the developer purchase cost of the two edge resources on a tile: for each real
-// resource type (< 0x11) weight it via the trade manager's proposal-weight metric (slot
-// 0x13) scaled x20; fixed surcharges for the special types 0x15 (10000) and 0x16 (4000).
-// (Ghidra mis-attributed this to TCivToolbar; `this->field0c` is TMapMgr::terrainStateTable.)
 // FUNCTION: IMPERIALISM 0x00518b40
 int TMapMgr::CalculateDeveloperTilePurchaseCost(short nTileIndex) {
   int total = 0;
@@ -2933,6 +3170,35 @@ namespace {
 // ClassifyCityGateTerrainComposition below (bucket 7, gateFlag 14, scores nothing).
 const unsigned char kGateFlagScoreBucket[15] = {0, 0, 0, 0, 1, 1, 2, 2, 2, 3, 4, 2, 2, 7, 2};
 } // namespace
+
+// FUNCTION: IMPERIALISM 0x00518d90
+void TMapMgr::MarkDirectionalMapOverlayFlagsForNationOrders() {
+  // Real prefix: clears perTileVisitedFlag0f across all 0x1950 tiles (the same body as
+  // the standalone ClearPerTileByte0FForAllMapTiles, inlined here in the original).
+  ClearPerTileByte0FForAllMapTiles();
+
+  // TODO: port the rest of the body (510 bytes total). Declared for real (see
+  // TMapMgr.h) so TArmyMgr::SetActiveProvinceAndBuildDirectionalOrderOverlays gets a
+  // correctly-typed call site (bd imperialism-decomp-1uj.61). Reconnaissance from the
+  // raw listing for the remaining tail:
+  //  - Walks g_apNationStates[GetActiveNationId()]->militaryUnitList44 via CIterator
+  //    (Reset/More/Advance).
+  //  - Per order with tileIndex06 != -1: checks g_pDiplomacyTurnStateManager's vtable
+  //    slot 8.0x04 (a TDiplomacyMgrVtbl war-state query, args built from
+  //    tileOwnershipTable-relative bytes) and two unrecovered geometry helpers
+  //    (0x40907f, 0x408b8e) to derive a target tile index in [0, 0x194f].
+  //  - On success, stamps perTileVisitedFlag0f with a direction-overlay code
+  //    ((sVar3+3)%6 + 1, or +7 when the diplomacy check was true) and, when
+  //    g_pUiRuntimeContext->mapUberPictureF0 is set, forwards the tile through its
+  //    slot-0x76 virtual (InvalidateTileMarkerChain).
+  // Left unported -- 0x40907f/0x408b8e and the TDiplomacyMgrVtbl slot layout are
+  // genuine class-recovery gaps, not a modeling choice.
+}
+
+// Sum the developer purchase cost of the two edge resources on a tile: for each real
+// resource type (< 0x11) weight it via the trade manager's proposal-weight metric (slot
+// 0x13) scaled x20; fixed surcharges for the special types 0x15 (10000) and 0x16 (4000).
+// (Ghidra mis-attributed this to TCivToolbar; `this->field0c` is TMapMgr::terrainStateTable.)
 
 // FUNCTION: IMPERIALISM 0x00519010
 int TMapMgr::ClassifyCityGateTerrainComposition(int cityIndex) {
@@ -2974,6 +3240,106 @@ int TMapMgr::ClassifyCityGateTerrainComposition(int cityIndex) {
     return 2;
   }
   return tallyA > tallyB ? 1 : 0;
+}
+
+// FUNCTION: IMPERIALISM 0x00519610
+void TMapMgr::ChooseNationSetupProfilesForOpenSlots(short* outProfileBySlot) {
+  // The AI profile ids are handed out in this fixed priority order, and each profile
+  // prefers a particular slot-isolation class; the three passes below relax that
+  // preference in the profile's own order.
+  short profileOrder[7] = {1, 5, 4, 6, 2, 3, 3};
+  short preferredIsolationByProfile[7][3] = {{0, 1, 2}, {2, 1, 0}, {0, 1, 2}, {0, 1, 2},
+                                             {1, 2, 0}, {1, 2, 0}, {0, 1, 2}};
+  short slotIsolation[7];
+  short nationRegionClass[0x17];
+  int slot;
+  int openSlot;
+  int recordsLeft;
+  int remaining;
+  int pass;
+  bool assigned;
+
+  // Region class of each nation's territory. Every region a nation owns carries the same
+  // class, so the last one seen wins.
+  TGlobalMapCityScoreRecord* record = cityScoreTable;
+  for (recordsLeft = 0x180; recordsLeft != 0; --recordsLeft) {
+    if (record->ownerNationCode00 != -1) {
+      nationRegionClass[record->ownerNationCode00] = record->regionClassA3;
+    }
+    ++record;
+  }
+
+  // Isolation class of each great-power slot: 2 when its region class is unique, 1 when it
+  // is shared only with a minor, 0 when another great power sits on the same class.
+  short openSlotCount = 0;
+  for (slot = 0; slot < 7; ++slot) {
+    slotIsolation[slot] = 2;
+    for (int power = 0; power < 7; ++power) {
+      if (power != slot && nationRegionClass[power] == nationRegionClass[slot]) {
+        slotIsolation[slot] = 0;
+      }
+    }
+    if (slotIsolation[slot] == 2) {
+      for (int minor = 7; minor < 0x17; ++minor) {
+        if (minor != slot && nationRegionClass[minor] == nationRegionClass[slot]) {
+          slotIsolation[slot] = 1;
+        }
+      }
+    }
+    if (g_pSimMgr->scenarioSetupRows0[slot] == 2) {
+      ++openSlotCount;
+    }
+    outProfileBySlot[slot] = -1;
+  }
+
+  // Give each open slot a profile, walking the priority order and taking the first
+  // still-unassigned open slot whose isolation class the profile is currently asking for.
+  short* profile = profileOrder;
+  for (remaining = openSlotCount; remaining > 0; --remaining) {
+    assigned = false;
+    for (pass = 0; pass < 3 && !assigned; ++pass) {
+      for (openSlot = 0; openSlot < 7 && !assigned; ++openSlot) {
+        if (g_pSimMgr->scenarioSetupRows0[openSlot] == 2 &&
+            slotIsolation[openSlot] == preferredIsolationByProfile[*profile][pass] &&
+            outProfileBySlot[openSlot] == -1) {
+          assigned = true;
+          outProfileBySlot[openSlot] = *profile;
+        }
+      }
+    }
+    ++profile;
+  }
+
+  for (slot = 0; slot < 7; ++slot) {
+    if (g_pSimMgr->scenarioSetupRows0[slot] != 2) {
+      outProfileBySlot[slot] = 3;
+    }
+  }
+}
+
+// Reset a tile's resource-icon edge cache: resolve resourceTypeByEdge[0] from a fixed 16-entry
+// lookup indexed by the tile's gateFlag, and force resourceTypeByEdge[1] to 0xff.
+// FUNCTION: IMPERIALISM 0x0051da60
+void OrphanDeadLeaf_NoRefs_0051da60(short nTileIndex) {
+  unsigned short lookup[16];
+  lookup[0] = 0xffff;
+  lookup[1] = 0xffff;
+  lookup[2] = 0;
+  lookup[3] = 0x14;
+  lookup[4] = 5;
+  lookup[5] = 0x11;
+  lookup[6] = 0x12;
+  lookup[7] = 1;
+  lookup[8] = 0xffff;
+  lookup[9] = 0xffff;
+  lookup[10] = 0xffff;
+  lookup[11] = 0xffff;
+  lookup[12] = 0xffff;
+  lookup[13] = 2;
+  lookup[14] = 0xffff;
+  TTerrainStateRecordView& tile = g_pGlobalMapState->terrainStateTable[nTileIndex];
+  tile.resourceTypeByEdge[0] = static_cast<signed char>(lookup[tile.gateFlag]);
+  tile.resourceTypeByEdge[1] = static_cast<signed char>(0xff);
 }
 
 // FUNCTION: IMPERIALISM 0x0055e360
@@ -3068,6 +3434,17 @@ short TMapMgr::TileIndexFromRowCol(int row, int col) {
     return -1;
   }
   return static_cast<short>(col + row * 0x6c);
+}
+
+// Maps a tile index to its owning city/province record (cityScoreTable indexed by the tile's
+// cityRecordIndex), or null when the tile belongs to no province.
+// FUNCTION: IMPERIALISM 0x00563360
+TGlobalMapCityScoreRecord* __stdcall GetProvinceByTileIndex(short nTileIndex) {
+  short recordIndex = g_pGlobalMapState->terrainStateTable[nTileIndex].cityRecordIndex;
+  if (recordIndex == -1) {
+    return nullptr;
+  }
+  return &g_pGlobalMapState->cityScoreTable[recordIndex];
 }
 
 // FUNCTION: IMPERIALISM 0x005635e0

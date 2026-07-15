@@ -80,6 +80,23 @@ ScopedMapQuickDrawContext::ScopedMapQuickDrawContext(TView* renderTargetArg)
   }
 }
 
+// FUNCTION: IMPERIALISM 0x004947e0
+ScopedMapQuickDrawContext::ScopedMapQuickDrawContext(TView* renderTargetArg, RECT* clipRect)
+    : clientDc(renderTargetArg->nativeWindow50), renderTarget(renderTargetArg) {
+  renderTarget->Refresh();
+  IntersectClipRectOnPrimaryAndSecondaryDc(reinterpret_cast<int*>(clipRect));
+  g_pScopedMapQuickDrawViewContext = renderTarget;
+  if (this != 0) {
+    g_pScopedMapQuickDrawDcHandleObject = &clientDc;
+  } else if (renderTarget->nativeWindow50 == 0) {
+    g_pScopedMapQuickDrawDcHandleObject = 0;
+  } else {
+    // LIBRARY: CDC::FromHandle (0x00612736)
+    g_pScopedMapQuickDrawDcHandleObject =
+        CDC::FromHandle(GetDC(reinterpret_cast<HWND>(renderTarget->nativeWindow50->m_hWnd)));
+  }
+}
+
 // FUNCTION: IMPERIALISM 0x004948b0
 ScopedMapQuickDrawContext::~ScopedMapQuickDrawContext() {
   if (this == 0) {

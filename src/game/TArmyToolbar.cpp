@@ -3,7 +3,8 @@
 #include <new>
 
 #include "game/TArmyMgr.h"
-#include "game/TCivToolbar.h"
+#include "game/TMapUberPicture.h"
+#include "game/TNumberedArrowButton.h"
 #include "game/TView.h"
 #include "game/TViewMgr.h"
 #include "game/global_data_tables.h"
@@ -11,16 +12,8 @@
 #include "game/ui_control_tags.h"
 
 undefined4 OpenSuperArmyRosterPageAndActivateProvinceSelection(void);
-undefined4 ActivateFirstIdleTacticalUnitByCategoryAtTile(void);
-undefined4 ActivateFirstActiveTacticalUnitByCategoryAtTile(void);
 
 namespace {
-
-struct ArmyCommandPayload {
-  void* vftable;
-  char pad_04[0x18];
-  unsigned int controlTag;
-};
 
 static __inline void DispatchUiRuntimeSlot48() {
   if (g_pUiRuntimeContext == 0) {
@@ -43,23 +36,14 @@ static __inline void SetMapContextActionMode(int mode) {
   g_pMapContextActionManager->OrphanCallChain_C1_I34_004a4260(mode);
 }
 
-static __inline void InvokeActiveCivToolbarCycleMapInteractionSelection() {
+static __inline void InvokeMapUberPictureCycleMapInteractionSelection() {
   if (g_pUiRuntimeContext == 0) {
     return;
   }
-  // mapUberPictureF0 (+0xf0) is a dual-purpose slot: this caller reads it as a TCivToolbar*,
-  // while the field's declared type (TMapUberPicture*) reflects other callers -- an explicit
-  // type pun, not a modeling error (see the type-modeling guardrail for shared slots).
-  reinterpret_cast<TCivToolbar*>(g_pUiRuntimeContext->mapUberPictureF0)
-      ->CycleMapInteractionSelectionAfterHandledClick();
-}
-
-static __inline void SetArmyPayloadRatioOrModeSelection(ArmyCommandPayload* payload, int value) {
-  if (payload == 0) {
-    return;
-  }
-  reinterpret_cast<void(__fastcall*)(void*, int, int, int)>(
-      reinterpret_cast<int*>(payload->vftable)[0x71])(payload, 0, value, 1);
+  // CycleMapInteractionSelectionAfterHandledClick is a real TMapUberPicture method (bd 4yz,
+  // ground-truth-confirmed via its this+0x96 field read and both real call sites loading
+  // mapUberPictureF0 directly) -- no cast needed.
+  g_pUiRuntimeContext->mapUberPictureF0->CycleMapInteractionSelectionAfterHandledClick();
 }
 
 } // namespace
@@ -85,18 +69,22 @@ TArmyToolbar::~TArmyToolbar() {}
 
 // FUNCTION: IMPERIALISM 0x0058e1c0
 void TArmyToolbar::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
-  (void)sourceHandler;
-  ArmyCommandPayload* payload = reinterpret_cast<ArmyCommandPayload*>(event);
-  unsigned int controlTag = payload->controlTag;
+  (void)event;
+  unsigned int controlTag = sourceHandler->controlTag;
 
   if ((kTagArmyRatioMin <= controlTag) && (controlTag <= kTagArmyRatioMax)) {
-    int selectedRatioOrMode = 0;
+    short categoryId = static_cast<short>(controlTag) - 0x7230;
+    short selectedRatioOrMode = 0;
     if (commandId == 100) {
-      selectedRatioOrMode = (int)ActivateFirstActiveTacticalUnitByCategoryAtTile();
+      selectedRatioOrMode =
+          g_pMapContextActionManager->ActivateFirstActiveTacticalUnitByCategoryAtTile(
+              categoryId, static_cast<short>(field88));
     } else {
-      selectedRatioOrMode = (int)ActivateFirstIdleTacticalUnitByCategoryAtTile();
+      selectedRatioOrMode =
+          g_pMapContextActionManager->ActivateFirstIdleTacticalUnitByCategoryAtTile(
+              categoryId, static_cast<short>(field88));
     }
-    SetArmyPayloadRatioOrModeSelection(payload, selectedRatioOrMode);
+    static_cast<TNumberedArrowButton*>(sourceHandler)->SetValue(selectedRatioOrMode, 1);
     DispatchUiRuntimeSlot48();
     return;
   }
@@ -121,18 +109,18 @@ void TArmyToolbar::HandleEvent(int commandId, TEventHandler* sourceHandler, TEve
 
   if (controlTag == kTagArmyModeDefend) {
     SetMapContextActionMode(2);
-    InvokeActiveCivToolbarCycleMapInteractionSelection();
+    InvokeMapUberPictureCycleMapInteractionSelection();
     return;
   }
 
   if (controlTag == kTagArmyModeLater) {
     SetMapContextActionMode(3);
-    InvokeActiveCivToolbarCycleMapInteractionSelection();
+    InvokeMapUberPictureCycleMapInteractionSelection();
     return;
   }
 
   if (controlTag == kTagArmyModeDone) {
     SetMapContextActionMode(4);
-    InvokeActiveCivToolbarCycleMapInteractionSelection();
+    InvokeMapUberPictureCycleMapInteractionSelection();
   }
 }

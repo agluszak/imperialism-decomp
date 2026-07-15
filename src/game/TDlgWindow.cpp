@@ -18,7 +18,8 @@ static __inline void AssertUGameWindowInvalidation(const char* path, int line) {
 
 IMPLEMENT_DYNCREATE(TDlgWindow, TWindow)
 
-TDlgWindow::TDlgWindow() {}
+// FUNCTION: IMPERIALISM 0x00500320
+TDlgWindow::TDlgWindow() : TWindow() {}
 
 // SYNTHETIC: IMPERIALISM 0x00500350
 // TDlgWindow::`scalar deleting destructor'

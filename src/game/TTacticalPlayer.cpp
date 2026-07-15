@@ -31,6 +31,11 @@ void TTacticalPlayer::ProceedAfterBattleIntroAccepted() {}
 
 // SYNTHETIC: IMPERIALISM 0x0059ae30
 // TTacticalPlayer::`scalar deleting destructor'
+
+// Trivial virtual destructor: restores the vtable pointer and returns (7 bytes at
+// 0x0059ae60). Ghidra mislabeled this address as `CreateTTacticalPlayerInstance`; the
+// scalar deleting destructor above calls it.
+// FUNCTION: IMPERIALISM 0x0059ae60
 TTacticalPlayer::~TTacticalPlayer() {}
 
 // SYNTHETIC: IMPERIALISM 0x0059ae80
@@ -56,7 +61,7 @@ TTacticalUnit* TTacticalPlayer::SelectNextTacticalUnitForDoneCommand() {
   TTacticalUnit* unit;
   do {
     cursorIndex18 = cursorIndex18 + 1;
-    if (unitList4->GetCount() < cursorIndex18) {
+    if (cursorIndex18 > unitList4->GetCount()) {
       cursorIndex18 = 1; // 1-based ordinal wrap
     }
     unit = static_cast<TTacticalUnit*>(unitList4->GetEntryByOrdinal(cursorIndex18));
@@ -92,6 +97,16 @@ void TTacticalPlayer::AddTacticalUnitToUnitListHead(TTacticalUnit* unit) {
 // FUNCTION: IMPERIALISM 0x0059b010
 unsigned char TTacticalPlayer::IsTacticalControllerOwnedByActiveNation() {
   return static_cast<unsigned char>(nationIndex1C == g_pSimMgr->GetActiveNationId());
+}
+
+// "skip" tactical command: unless the selected unit's type category is 8, mark this side and
+// queue the end-of-action turn event on the battle.
+// FUNCTION: IMPERIALISM 0x0059b040
+void TTacticalPlayer::HandleTacticalCommandTag_skip() {
+  if (g_awTacticalUnitCategoryCodeBySlot[battle14->selectedUnit1c->unitTypeC] != 8) {
+    field20 = 1;
+    battle14->QueueTacticalEventPacket232A();
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x0059b740

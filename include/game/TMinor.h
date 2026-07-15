@@ -3,8 +3,14 @@
 #include "game/TCountry.h"
 
 // Minor-power nation row (g_apTerrainTypeDescriptorTable[7..], g_apSecondaryNationStateSlots).
-// Inherits the TCountry prefix (0x94) and extends with minor-only tail state to 0x2cc.
+// Inherits the TCountry prefix (0x94) and extends with minor-only tail state to 0x2dc.
 // VTABLE: IMPERIALISM 0x00653c90
+struct TMinorRuntimeStatusEntry {
+  short fields[7];
+};
+
+ASSERT_SIZE(TMinorRuntimeStatusEntry, 0x0e);
+
 class TMinor : public TCountry {
 public:
   TMinor();
@@ -47,7 +53,7 @@ public:
   char TryDispatchNationActionViaUiContextOrFallback(int arg1, int arg2, int arg3,
                                                      int arg4) override;
   void QueueDiplomacyProposalCodeForTargetNation(short proposalCode, short targetNationId) override;
-  char ReturnFalseNationStateCapabilityFlag90(int arg) override;
+  char ReturnFalseNationStateCapabilityFlag90(short arg) override;
   void NotifyActionSlot94(int sourceNation, int actionCode) override;
 
   // slot 0x2a (+0xa8), TMinor's first new virtual — vtable 0x653c90+0xa8 -> 0x4e46a0,
@@ -98,11 +104,15 @@ public:
   short diplomacySaveExt13c[0x17]; // 0x13c
 private:
   short recurringGrantByResource[0x17];
+  // +0x198. The initializer clears this as seven 0x0e-byte rows.
   short relationGrantLinkMatrix[7][7];
-  unsigned char minorTailPad1fa[0x2cc - 0x1fa];
+  // +0x1fa. The following sixteen 0x0e-byte records share the initializer's same clearing
+  // loop; their individual business meanings are not yet recovered.
+  TMinorRuntimeStatusEntry runtimeStatusEntries[16];
+  short runtimeStatusTail2da;
 
 protected:
   ~TMinor() override;
 };
 
-ASSERT_SIZE(TMinor, 0x2cc);
+ASSERT_SIZE(TMinor, 0x2dc);

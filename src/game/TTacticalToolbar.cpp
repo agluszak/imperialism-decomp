@@ -4,15 +4,15 @@
 #include "game/TArmyTacUnit.h"
 #include "game/TMilitaryUnit.h"
 #include "game/TPicture.h"
+#include "game/TQuickDrawSurfaceContext.h"
 #include "game/TTacticalUnit.h"
+#include "game/global_data_tables.h"
+#include "game/quickdraw_rendering.h"
 #include "game/ui_control_tags.h"
+#include "game/ui_text_label_helpers_decls.h"
 
 // 0x5c4910, ported in ui_text_label_helpers.cpp.
 void LoadUiStringAndDispatchSharedMessageCommand(short group, short index, TView* control);
-// Shared-string dialog-label setter (autogen stub 0x5c4b70; genuine __cdecl free
-// function, real shape (const char* text, unsigned int controlTag)). TODO(promote):
-// port into ui_text_label_helpers.cpp next to its siblings.
-extern undefined4 AssignSharedStringToTaggedControlAndProcessState(void);
 
 // SYNTHETIC: IMPERIALISM 0x0045d360
 // TTacticalToolbar::`scalar deleting destructor'
@@ -30,8 +30,51 @@ TTacticalToolbar::TTacticalToolbar() {}
 // FUNCTION: IMPERIALISM 0x005ac840
 void TTacticalToolbar::NoOpUiLifecycleHook(int arg) {}
 
+// Draws each side's xp progress bar (bar width = qualityLevel * 11, +5 rounding bump
+// past .50) from the shared per-level icon strip, same idiom as
+// TArmyBoyView/TArmyUnitView::ApplyRectSlot110.
 // FUNCTION: IMPERIALISM 0x005ac950
-void TTacticalToolbar::ApplyRectSlot110(RECT* rectBuffer) {}
+void TTacticalToolbar::ApplyRectSlot110(RECT* rectBuffer) {
+  (void)rectBuffer; // dead parameter in this override, like the other ApplyRectSlot110s
+  TQuickDrawBlitSurface* iconStripSurface = reinterpret_cast<TQuickDrawBlitSurface*>(
+      *reinterpret_cast<char**>(reinterpret_cast<char*>(g_pStrategicMapViewSystem) + 0x694) + 4);
+
+  TArmyTacUnit* sideAUnit = static_cast<TArmyTacUnit*>(currentUnit8C);
+  if (sideAUnit != nullptr) {
+    int qualityPercent = sideAUnit->sourceUnit38->field_38;
+    short barWidth = static_cast<short>(sideAUnit->qualityLevel10) * 0xb;
+    if (qualityPercent % 100 > 0x31) {
+      barWidth += 5;
+    }
+    if (barWidth != 0) {
+      RECT srcRect = {0, 0, barWidth, 10};
+      RECT dstRect = {2, 0x119, barWidth + 2, 0x123};
+      UpdatePaletteIndexWithDefaultFallback(0x10);
+      BlitRectWithOptionalTransparency(iconStripSurface,
+                                       g_pActiveQuickDrawSurfaceContext->GetBlitSurface(), &srcRect,
+                                       &dstRect, 0x24, 0);
+      SetQuickDrawStrokeColor(0x13);
+    }
+  }
+
+  TArmyTacUnit* sideBUnit = otherSideCurrentUnit90;
+  if (sideBUnit != nullptr) {
+    short barWidth = static_cast<short>(sideBUnit->qualityLevel10) * 0xb;
+    int qualityPercent = sideBUnit->sourceUnit38->field_38;
+    if (qualityPercent % 100 > 0x31) {
+      barWidth += 5;
+    }
+    if (barWidth != 0) {
+      RECT srcRect = {0, 0, barWidth, 10};
+      RECT dstRect = {2, 0x159, barWidth + 2, 0x163};
+      UpdatePaletteIndexWithDefaultFallback(0x10);
+      BlitRectWithOptionalTransparency(iconStripSurface,
+                                       g_pActiveQuickDrawSurfaceContext->GetBlitSurface(), &srcRect,
+                                       &dstRect, 0x24, 0);
+      SetQuickDrawStrokeColor(0x13);
+    }
+  }
+}
 
 // Stores the selected unit, updates the 'curr' portrait control (bitmap
 // 0xf1e + unitType*2 + side), and writes the unit's name into the dialog label.
@@ -60,9 +103,8 @@ undefined TTacticalToolbar::UpdateTacticalCurrentUnitControlAndDialogLabel(TTact
     // dialog label (the slot receives TArmyTacUnit in the army battle).
     unitName = static_cast<TArmyTacUnit*>(unit)->sourceUnit38->name24;
   }
-  reinterpret_cast<void(__cdecl*)(const char*, unsigned int)>(
-      reinterpret_cast<void (*)()>(AssignSharedStringToTaggedControlAndProcessState))(
-      static_cast<const char*>(unitName), kControlTagGold);
+  AssignSharedStringToTaggedControlAndProcessState(static_cast<const char*>(unitName),
+                                                   kControlTagGold);
   return 0;
 }
 

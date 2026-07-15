@@ -20,7 +20,7 @@ SCALAR_DTOR_MARK = "scalar deleting destructor"
 # the symbol isn't marked `??_G`/`??_E`. These are PROVISIONAL Ghidra names, so we
 # only *flag* such slots (never silently reclassify): a real compiler scalar
 # deleting destructor must be claimed via `// SYNTHETIC` + a symbols.csv backtick
-# name (Hard Rule 9) — never hand-written as a `Destruct*AndMaybeFree` bridge.
+# name (construction Hard Rule 10) — never hand-written as a `Destruct*AndMaybeFree` bridge.
 _DTOR_NAME_FRAGMENTS = ("andmaybefree", "scalardeletingdestructor", "??_g", "??_e")
 
 
@@ -193,7 +193,7 @@ def classify_slots(
 
         # Flag (don't reclassify) deleting-destructor-shaped slots that weren't
         # already marked scalar in symbols.csv, so the porter claims them
-        # SYNTHETIC instead of hand-writing a banned bridge (Hard Rule 9).
+        # SYNTHETIC instead of hand-writing a banned bridge (construction Hard Rule 10).
         dtor_suspect = kind in ("override", "new") and looks_like_deleting_dtor(qualified)
 
         out.append(

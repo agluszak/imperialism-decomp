@@ -6,7 +6,6 @@
 // Forward declarations for types referenced by generated signatures.
 class TStream;
 
-// TODO(manifest): describe TItemOrder and its role. Base edge (TProductionOrder) recovered from RTTI CRuntimeClass chain: TItemOrder -> TProductionOrder -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x0064f958
 class TItemOrder : public TProductionOrder {
 public:
@@ -22,12 +21,14 @@ public:
   // slot 0x08 ShallowClone inherited unchanged (0x4798d0)
   // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
   // slot 0x0a InitializeBasicCityOrderContext inherited unchanged (0x4b4f70)
-  virtual bool SetQuantity(short param_1) override;                // slot 0x0b 0x4b53d0
-  virtual short MaxOrder() override;                               // slot 0x0c 0x4b5310
-  virtual undefined CommitIfPending() override;                    // slot 0x0d 0x4b5580
-  virtual undefined ResetCityOrderItemDerivedStateNoop() override; // slot 0x0e 0x4b5620
+  virtual bool SetQuantity(short param_1) override; // slot 0x0b 0x4b53d0
+  virtual short MaxOrder() override;                // slot 0x0c 0x4b5310
+  virtual undefined CommitIfPending() override;     // slot 0x0d 0x4b5580
+  virtual undefined
+  ResetCityOrderItemDerivedStateNoop(const char* name) override; // slot 0x0e 0x4b5620
   // slot 0x0f Produce inherited unchanged (0x4b5180)
-  virtual void FillOrderSheet(void* orderSheet, short quantity) override; // slot 0x10 0x4b5510
+  virtual void FillOrderSheet(OrderSheet* orderSheet,
+                              short quantity) override; // slot 0x10 0x4b5510
   virtual undefined
   InitializeCityProductionState_Impl_At004b5290(int param_1, undefined2 param_2, undefined2 param_3,
                                                 undefined2 param_4,
@@ -49,4 +50,3 @@ public:
 };
 
 ASSERT_SIZE(TItemOrder, 0x54);
-

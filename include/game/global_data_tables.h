@@ -1,5 +1,7 @@
 #pragma once
 
+#include "game/CString.h"
+
 // reccmp `// GLOBAL:` address markers for symbols declared here live in
 // src/game/global_data_tables.cpp only (one marker per address).
 
@@ -19,6 +21,7 @@
 #include "game/TMinor.h"
 #include "game/TView.h"
 #include "game/TMouseCaptureState.h"
+#include "game/TWNetSessionManager.h"
 
 TGreatPower* GetNationStateBySlot(short slotId);
 short QueryNationMetricBySlot(TGreatPower* nationState, short metricSlot);
@@ -46,13 +49,14 @@ class TControl;
 class TBackdropWindow;
 class TOcean;
 class TZone;
+class TTaskForce;
 class TMapMgr;
 class TCivMgr;
 class TTurnEventDialogFactoryRegistry;
+class TSetupRandomMapPicture;
 class TSoundPlayer;
-class TCursorControlPanel;
+class TInfoBarText;
 class TTechMgr;
-class TWNetSessionManager;
 class TMultiplayerMgr;
 class TNetMgr;
 class TTradeMgr;
@@ -114,6 +118,7 @@ short GetResourceDescriptorWord10ByType(short resourceType);
 short GetResourceDescriptorWord14ByType(short resourceType);
 short GetResourceDescriptorWord18ByType(short resourceType);
 short GetResourceDescriptorWeightWord1ByType(short resourceType);
+short GetResourceDescriptorWord20ByType(short resourceType);
 short GetResourceDescriptorWord08ByTypeOffset(short resourceType, short subslot);
 
 // Per-unit-type military stat records (7 shorts per type, record base 0x695cd2):
@@ -125,6 +130,18 @@ extern "C" short g_UnitTypeMilitaryStatTable_00695CD2[64][7];
 // divisor baseline used by TMilitaryUnit::GetUnitTypeStatPercent (0x5c3530).
 extern "C" short g_UnitTypeStatTable_0066EB88[30][7];
 extern "C" short g_UnitTypeStatDivisorTable_0066ED30[7];
+
+// Standalone (slot-indexed) accessors over the two unit-type tables above; siblings of the
+// TMilitaryUnit::GetUnitTypeCostPoints / GetUnitTypeStatPercent methods but taking the index
+// directly. 0x5c3450 / 0x5c3580.
+short GetCityActionGateValueBySlot(int slot);
+short GetNormalizedCityActionResourceCostPercent(short unitType, short statIndex);
+// 0x5c34b0: g_awTacticalUnitCategoryCodeBySlot[slot] (standalone sibling of
+// TMilitaryUnit::GetUnitMovementClassId, which uses this->orderType).
+short GetCityActionCategoryCodeBySlot(short slot);
+// 0x54fee0: g_aCategoryMetricBaselineAverage[index] (returns the int metric, not a pointer
+// despite Ghidra's placeholder name).
+int GetNavyContextPointerFromGlobalTableByIndex(int index);
 
 // Minister-skill-indexed float coefficient tables (DAT_0065xxxx), indexed by a
 // minister's skill value at +0x0C. Used by TGreatPower vtable slots 0x88-0x8c.
@@ -331,6 +348,13 @@ extern TMultiplayerMgr* g_pGameFlowState;
 extern int g_NetworkDefaultNationId006a5fc0;
 extern int g_NetworkBroadcastNationId006a5fc4;
 extern int DAT_006a601c;
+// City-order capability rule-table pointer slots written into TTechMgr+0x264 as tech
+// unlocks are applied (default at construction, alternates for tech ids 0x0b/0x16).
+extern undefined4 DAT_0066ac88;
+extern undefined4 DAT_0066ac8c;
+extern undefined4 DAT_0066ac90;
+// 26 (start, end) capability-priority range pairs (see the .cpp note).
+extern short g_anCapabilityPriorityRangePairs[53];
 extern const char s_DataDirectoryPath_006942A8[];
 extern const char s_IrgGlobPattern_006942FC[];
 extern const char s_NoLanguageFilesMessage_006942B4[];
@@ -339,6 +363,14 @@ extern const char s_ErrorCaption_00694204[];
 extern TDiplomacyMgr* g_pDiplomacyTurnStateManager;
 extern TNavyMgr* g_pNavyOrderManager;
 extern TArmyMgr* g_pMapContextActionManager;
+// Two 0x20-byte flag tables installed into TArmyMgr+0x14/+0x18 by
+// InitializeMapContextActionManager (0x4a18f0); 8 rows x 4 flag bytes.
+extern const unsigned char g_MapContextStaticTable_00695448[0x20];
+extern const unsigned char g_MapContextStaticTable_00695428[0x20];
+// Pointer to the current battle-report shared text (points at g_szEmptyString until
+// something retargets it); both 0x4acb60 and 0x4af0b0 wrap it in a CString for
+// ApplySharedStringToControlState.
+extern char* g_pBattleReportSharedText_0064dc30;
 extern int g_lastEdgeAutoScrollTick16;
 extern int g_nSaveFormatVersion;
 extern char g_szCmdSwitchLang_00694250[];
@@ -352,6 +384,15 @@ extern short g_industryActionCostWeightResCode10[16];
 extern short g_industryActionCostWeightResCode0B[16];
 extern short g_industryActionCostWeightResCode03[16];
 extern short g_industryActionCostWeightResCode0C[16];
+// 17 (x,y) anchor points used to build the 16 city-building hover/hit-test rects (each a
+// fixed 10x10 box at its anchor, except slots 10-11 which span between two consecutive
+// anchors), plus a trailing (1,0) pair with no known consumer that shares this data blob.
+// 0x696198.
+extern short g_anCityBuildingSlotCoords[36];
+// Per-building-slot hover/hit-test rects (indexed by slotId, see
+// TToolBarCluster::HandleCityBuildingHoverSelection), built by
+// InitializeCityBuildingHoverSelectionRects_004b95c0. 0x6a2998.
+extern CRect g_aCityBuildingHoverSelectionRects[16];
 // QuickDraw OpenRgn/CloseRgn recording accumulator (QDFrameRect XORs framed rects into it).
 extern HRGN g_hOpenRgnAccumulator;
 extern char g_Sanitize_City_Counter_Value_006A24D4;
@@ -368,15 +409,20 @@ extern void* g_pScopedMapQuickDrawViewContext;
 extern CDC* g_pScopedMapQuickDrawDcHandleObject;
 // One-slot CTemporaryRegion reuse cache (see CTemporaryRegion.h).
 extern RgnHandle g_pTemporaryRegionCache;
+extern int g_nRandomMapSelectedNationSlot00698AB0;
+extern char g_szCountryNameProfileKey00698AE0[];
 }
 
 // Typed C++ linkage — see typed-recovered-globals.mdc (not inside extern "C").
-extern TCursorControlPanel* g_pCursorControlPanel;
+extern TInfoBarText* g_pCursorControlPanel;
 extern TTradeMgr* g_pNationInteractionStateManager;
+extern CString g_cstrCountryNameSettingValue006A4220;
+extern TSetupRandomMapPicture* g_pActiveRandomMapSetupPicture006A4268;
 extern "C" short g_nationMetricSlotDispatchOrder006d810[0x11];
 extern GlobalViewportRectDefaultsRecord g_globalViewportRectDefaultsRecord;
 extern GlobalViewportRectDefaultsRecord* g_pGlobalViewportRectDefaultsRecord;
 extern TWNetSessionManager g_NetworkSessionManager006a5f60;
+extern CArray<RuntimeSelectionRecord*, RuntimeSelectionRecord*> g_RuntimeSelectionRecords006a15e0;
 // Global TNetMgr (0x6a6014), created by TMultiplayerMgr session init.
 extern TNetMgr* g_pNetMgr006a6014;
 // WNetMgr.cpp file-scope MFC template statics (all atexit-destroyed; static-init
@@ -403,6 +449,9 @@ extern UINT g_timerSlotIds[10];                  // 0x006a5c98
 extern int g_timerDispatchSuppressAssert;        // 0x006a5d24
 extern TCountry* g_apTerrainTypeDescriptorTable[kTerrainTypeDescriptorTableCount];
 extern TDisplayMgr* g_pDisplayMgr;
+extern int g_nUiAnimatorSurfaceBoundsWidth;   // 0x006a2228
+extern int g_nUiAnimatorSurfaceBoundsHeight;  // 0x006a222c
+extern int g_nIdleMeAnimationNextRegistryTag; // 0x00695934
 extern TMacViewMgr* g_pStrategicMapViewSystem;
 extern TViewMgr* g_pUiRuntimeContext;
 extern "C" int g_councilControlTagTable[6];
@@ -484,6 +533,8 @@ extern char g_szUiPlaceholderStaticText_00694354[];
 extern char g_szUiPlaceholderTreasury_006943B0[];
 extern char g_szUiPlaceholderSeason_006943BC[];
 extern char g_szUiPlaceholderSampleText_00694A98[];
+// Provisional flag (0x00694c50) selecting the CDib blit path in TDDTemplateDialog::OnPaint.
+extern int g_useCompatibleBitmapBlit;
 // New-game setup screen (turn event 0x5dd) placeholder label strings.
 extern char g_szNewGameAllAutoGPs_006949E0[];
 extern char g_szNewGameNamesRandom_006949F0[];
@@ -499,6 +550,8 @@ extern char g_szNewGameScenarioPlaceholderTitle_00694A68[];
 extern char g_szNewGameGameNameLabel_00694A88[];
 extern char g_szUiPlaceholderZero_00694378[];
 extern char g_szUiOrdersLabel_006948A4[];
+extern char g_szUiDefaultPlanetName_00694528[];
+extern char g_szUiPickAPlanet_00694530[];
 extern char g_szUiAsEstimatedBy_00694540[];
 extern char g_szUiForeignShippingObserved_00694554[];
 extern char g_szUiHalfDozenShips_00694574[];
@@ -629,11 +682,24 @@ extern int g_mapActionContextDisplayNameCacheId_006984b8;
 // added to the key after each headline resource pick.
 extern int g_mapActionContextDisplayNameCacheStep_006984bc;
 
+// Localized-label string-group indices, keyed by GetMapContextActionCode's return value
+// (0..0x10 hold real tokens 0x3f0..0x3f8; the table is read by
+// GetMapContextActionLabelTokenByActionCode, 0x559dd0).
+extern short g_awMapContextActionLabelTokenByCommand[17];
+
 // Game singleton pointers (markers in global_data_tables.cpp).
 extern TZone* g_pMapActionContextListHead;
 extern TOcean* g_pActiveMapOrderContext;
+// Resolved-context cache written by GetMapContextActionCode (0x559a70) for a downstream
+// dialog branch; not yet consumed by any ported reader.
+extern TTaskForce* g_pCachedMapActionContext;
 extern TMapMgr* g_pGlobalMapState;
 extern TCivMgr* g_pSelectedCivilianOrderState; // 0x6a43dc — the TCivMgr instance
+
+// Seed viewport offsets copied into TWorldView::viewportOffsetX/Y by the TOceanDialog
+// ctor; the only known writer (0x56a3b0) zeroes both.
+extern int g_nOceanDialogSeedViewportOffsetX; // 0x6a3ff0
+extern int g_nOceanDialogSeedViewportOffsetY; // 0x6a3ff4
 
 // Assert source-path strings for the UViewMgr TU family.
 extern "C" const char s_SourcePathUViewMgr_0069B6BC[];
@@ -708,11 +774,15 @@ extern TControlPictureRectState g_UiResourceEntryDefaultTextStyle;
 
 // TControlSeaZoneMission.cpp / TDefendProvinceMission.cpp / TNavyMission.cpp —
 // defend-province / mission priority-vector normalization constants.
+extern const float g_Recompute_Nation_Order_LookupTable_0065A9BC;
+extern const float g_Recompute_Nation_Order_LookupTable_0065A9C4;
 extern const float g_Recompute_Nation_Order_LookupTable_0065A9E8;
+extern const double g_Recompute_Nation_Order_LookupTable_0065A9E0;
 extern const double g_Recompute_Nation_Order_LookupTable_0065A9F0;
 extern double g_Recompute_Nation_Order_LookupTable_0065A9F8;
 extern double g_Recompute_Nation_Order_LookupTable_0065AA00;
 extern double g_Recompute_Nation_Order_LookupTable_0065AA08;
+extern const float g_Recompute_Nation_Order_LookupTable_0065AA20;
 extern unsigned short g_awTacticalCompositionReferenceProfiles_00697870[];
 extern unsigned short g_Populate_Beachhead_Mission_LookupTable_00697958[];
 
@@ -774,6 +844,10 @@ extern float g_ApplyIndexedResourceDeltaScale_00653728;
 
 // TMission.cpp — default mission score constant.
 extern const float g_MissionDefaultScore_0065a468;
+extern float g_TileHeatmapNeighborDiffusionFactor;
+extern short g_NavyResolveOrderRanking[14];
+extern short g_NavyMissionOrderRanking[14];
+extern short g_NavyPriorityOrderRanking[14];
 
 // TSimMgr.cpp — per-nation scenario setup source table.
 extern short g_anScenarioNationSetupTable_00698B1A[27];
@@ -785,6 +859,12 @@ extern const char s_Chunk_00698C0C[];
 // TSimMgr_AdvanceGlobalTurnStateMachine.cpp / turn_flow_cooldown.cpp — turn-cooldown state.
 extern short g_nTurnCooldownDeferCounter006A43C4;
 extern short g_nTurnCooldownSideFlag00698B10;
+extern "C" char g_bTurnFlowBootstrapComplete;
+extern "C" char g_bMultiplayerScenarioSetupActive;
+extern "C" const char s_PictWvGobPathFormat_00698BF4[];
+extern "C" const char s_TurnEventCursorNameFormat_0069B6B4[];
+extern "C" const char s_GameName_00698010[];
+extern "C" const char s_PlayerName_0069801c[];
 
 // THelpMgr.cpp — periodic nation-comparison advisory tick.
 extern short g_nTurnFlowNationComparisonAdvisoryTick;

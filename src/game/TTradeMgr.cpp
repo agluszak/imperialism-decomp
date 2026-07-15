@@ -16,19 +16,10 @@
 #include "game/TSoundChannelNode.h"
 #include "game/TMultiplayerMgr.h"
 
-// Preset seed table for the metric rows (original global @ 0x69a910) and the proposal-code
-// lookup used by the code-resolver. Kept file-local until modeled as recovered globals.
+// Preset seed table for the metric rows (original global @ 0x69a910). Kept file-local until
+// modeled as a recovered global. (The proposal-code lookup formerly here was replaced by the
+// real global g_nationMetricSlotDispatchOrder006d810.)
 static short kNationMetricCategoryPresetValues[0x11];
-static short kNationMetricCodeLookup[0x20];
-
-extern undefined4 CreateAndSendTurnEvent1C_BoolAndSixShorts(void);
-
-static void InvokeCreateAndSendTurnEvent1C(int arg0, int arg1, int arg2, int arg3, int arg4,
-                                           int arg5, int arg6) {
-  typedef void(__cdecl * CreateEventFn)(int, int, int, int, int, int, int);
-  reinterpret_cast<CreateEventFn>(CreateAndSendTurnEvent1C_BoolAndSixShorts)(arg0, arg1, arg2, arg3,
-                                                                             arg4, arg5, arg6);
-}
 
 typedef void(__fastcall* MinorSlot80Fn)(TMinor* self, int unusedEdx, int arg1, int arg2, int arg3);
 typedef void(__fastcall* MinorSlot6CFn)(TMinor* self, int unusedEdx, int arg);
@@ -81,7 +72,7 @@ void TTradeMgr::InitializeNationInteractionStateManagerDefaults() {
     *reinterpret_cast<short*>(rowCursor + 0x0c) = *reinterpret_cast<short*>(rowCursor - 0x06);
 
     TDealList* list = new TDealList();
-    list->relationType = 0x10;
+    list->recordSize14 = 0x10;
     *rankListCursor = list;
 
     short* cellCursor = reinterpret_cast<short*>(rowCursor + 0x6a);
@@ -107,7 +98,7 @@ void TTradeMgr::Free() {
   int i = 0x11;
   do {
     if (*p != 0) {
-      (*p)->ReleaseSlot24();
+      (*p)->ReleasePtrList();
     }
     *p = 0;
     p = p + 1;
@@ -168,8 +159,8 @@ void TTradeMgr::ReadFrom(TStream* stream) {
   TDealList** p = this->categoryRankLists;
   int i = 0x11;
   do {
-    (*p)->ResetPtrListRecordsSlot1C();
-    (*p)->slot18();
+    (*p)->ClearAndFreeAllPtrListRecords();
+    (*p)->ReadFrom(stream);
     p = p + 1;
     i = i + -1;
   } while (i != 0);
@@ -218,8 +209,9 @@ void TTradeMgr::WriteTo(TStream* stream) {
   TDealList** p = this->categoryRankLists;
   int i = 0x11;
   do {
-    (*p)->ResetPtrListRecordsSlot1C();
-    (*p)->slot18();
+    // The original WriteTo loop only serializes; the previous port wrongly copied the
+    // ReadFrom pair here and cleared every category rank list during a save.
+    (*p)->WriteTo(stream);
     p = p + 1;
     i = i + -1;
   } while (i != 0);
@@ -251,21 +243,21 @@ void TTradeMgr::OrphanCallChain_C3_I50_005b7fc0() {
   TDealList** p = &this->categoryRankLists[0xd];
   int i = 4;
   do {
-    (*p)->ResetPtrListRecordsSlot1C();
+    (*p)->ClearAndFreeAllPtrListRecords();
     p = p + 1;
     i = i + -1;
   } while (i != 0);
   p = &this->categoryRankLists[7];
   i = 6;
   do {
-    (*p)->ResetPtrListRecordsSlot1C();
+    (*p)->ClearAndFreeAllPtrListRecords();
     p = p + 1;
     i = i + -1;
   } while (i != 0);
   p = &this->categoryRankLists[0];
   i = 7;
   do {
-    (*p)->ResetPtrListRecordsSlot1C();
+    (*p)->ClearAndFreeAllPtrListRecords();
     p = p + 1;
     i = i + -1;
   } while (i != 0);
@@ -327,7 +319,7 @@ void TTradeMgr::AccumulateDiplomacyRelationChangesAndQueueEvents() {
               this->ComputeNationMetricDispatchScoreAndResolveScale(
                   static_cast<short>(source), static_cast<short>(target),
                   categoryRows[row].proposalWeightScale06, categoryRows[row].field16);
-              this->categoryRankLists[row]->AddEntrySlot38(&event);
+              this->categoryRankLists[row]->InsertCopiedRecordSortedByComparator(&event);
             }
             source = source + 1;
           } while (source < 7);
@@ -358,7 +350,7 @@ void TTradeMgr::AccumulateDiplomacyRelationChangesAndQueueEvents() {
               this->ComputeNationMetricDispatchScoreAndResolveScale(
                   static_cast<short>(source), static_cast<short>(secTarget),
                   categoryRows[row].proposalWeightScale06, categoryRows[row].field16);
-              this->categoryRankLists[row]->AddEntrySlot38(&event);
+              this->categoryRankLists[row]->InsertCopiedRecordSortedByComparator(&event);
             }
             source = source + 1;
           } while (source < 7);
@@ -394,7 +386,7 @@ void TTradeMgr::AccumulateDiplomacyRelationChangesAndQueueEvents() {
               this->ComputeNationMetricDispatchScoreAndResolveScale(
                   static_cast<short>(source), static_cast<short>(target),
                   categoryRows[midRow].proposalWeightScale06, categoryRows[midRow].field16);
-              this->categoryRankLists[midRow]->AddEntrySlot38(&event);
+              this->categoryRankLists[midRow]->InsertCopiedRecordSortedByComparator(&event);
             }
             source = source + 1;
           } while (source < 7);
@@ -429,7 +421,7 @@ void TTradeMgr::AccumulateDiplomacyRelationChangesAndQueueEvents() {
                 this->ComputeNationMetricDispatchScoreAndResolveScale(
                     static_cast<short>(source), static_cast<short>(secTarget),
                     categoryRows[7].proposalWeightScale06, categoryRows[7].field16);
-                this->categoryRankLists[7]->AddEntrySlot38(&event);
+                this->categoryRankLists[7]->InsertCopiedRecordSortedByComparator(&event);
               }
               source = source + 1;
             } while (source < 7);
@@ -467,7 +459,7 @@ void TTradeMgr::AccumulateDiplomacyRelationChangesAndQueueEvents() {
               this->ComputeNationMetricDispatchScoreAndResolveScale(
                   static_cast<short>(source), static_cast<short>(target),
                   categoryRows[lastRow].proposalWeightScale06, categoryRows[lastRow].field16);
-              this->categoryRankLists[lastRow]->AddEntrySlot38(&event);
+              this->categoryRankLists[lastRow]->InsertCopiedRecordSortedByComparator(&event);
             }
             source = source + 1;
           } while (source < 7);
@@ -648,7 +640,7 @@ void TTradeMgr::ApplyDiplomacyTransferEffectsAcrossNationMetricRoster(short slot
   int i = 1;
   if (0 < count) {
     do {
-      short* entry = reinterpret_cast<short*>(list->GetEntrySlot2C(i));
+      short* entry = reinterpret_cast<short*>(list->GetPtrListEntryByOneBasedIndex(i));
       int transfer =
           g_apTerrainTypeDescriptorTable[entry[1]]->SumDiplomacyState1c6AndRelationDeltaSnapshot(
               slot);
@@ -702,9 +694,9 @@ void TTradeMgr::ProcessPendingDiplomacyTransferEntriesUntilBlocked() {
     TDealList* list = categoryRankLists[dispatchIdx];
     // TDealList entry record layout not yet recovered: entry[0]=source nation slot,
     // entry[1]=target nation slot, entry[4]=amount-ish field (raw short offsets, matching
-    // the original's own untyped short* walk over the GetEntrySlot2C result).
-    short* entry =
-        static_cast<short*>(list->GetEntrySlot2C(categoryRows[0].resetTransitionFlagB02));
+    // the original's own untyped short* walk over the GetPtrListEntryByOneBasedIndex result).
+    short* entry = static_cast<short*>(
+        list->GetPtrListEntryByOneBasedIndex(categoryRows[0].resetTransitionFlagB02));
 
     int relationDelta =
         g_apTerrainTypeDescriptorTable[entry[1]]->SumDiplomacyState1c6AndRelationDeltaSnapshot(
@@ -822,13 +814,15 @@ void TTradeMgr::DispatchProposalAmountSlot60(short ownerNation, int sourceContex
                                              int maxAmount, int targetNation, char emitEventFlag,
                                              char skipLocalizationBranch) {
   if ((skipLocalizationBranch == 0) && (g_pSimMgr->redrawEnabled == 2)) {
-    InvokeCreateAndSendTurnEvent1C(1, ownerNation, sourceContext, amount, maxAmount, targetNation,
-                                   emitEventFlag);
+    g_pGameFlowState->CreateAndSendTurnEvent1C_BoolAndSixShorts(
+        true, ownerNation, static_cast<short>(sourceContext), static_cast<short>(amount),
+        static_cast<short>(maxAmount), static_cast<short>(targetNation), emitEventFlag);
     return;
   }
   if (g_pSimMgr->redrawEnabled == 1) {
-    InvokeCreateAndSendTurnEvent1C(0, ownerNation, sourceContext, amount, maxAmount, targetNation,
-                                   emitEventFlag);
+    g_pGameFlowState->CreateAndSendTurnEvent1C_BoolAndSixShorts(
+        false, ownerNation, static_cast<short>(sourceContext), static_cast<short>(amount),
+        static_cast<short>(maxAmount), static_cast<short>(targetNation), emitEventFlag);
   }
 
   short ownerSlot = ownerNation;
@@ -1161,7 +1155,7 @@ TTradeMgr::AllocateAndPopulateLinkedValueCollectionFromRosterFilter(int rosterSl
   if (0 < count) {
     int i = 1;
     do {
-      short* entry = reinterpret_cast<short*>(list->GetEntrySlot2C(i));
+      short* entry = reinterpret_cast<short*>(list->GetPtrListEntryByOneBasedIndex(i));
       if (entry[1] == filterValue) {
         node->SoundChannelNodeDummy00(*entry);
       }
@@ -1172,20 +1166,25 @@ TTradeMgr::AllocateAndPopulateLinkedValueCollectionFromRosterFilter(int rosterSl
   return node;
 }
 
+// Scan the 0x11-entry metric-slot dispatch table for whichever of the two codes appears
+// first, preferring proposalCode at each slot; fall through to proposalCode if neither is
+// present. Word-wide args; the slot value is read once at the loop head. (Residual diff is
+// loop-rotation only: MSVC peels the first iteration where the original keeps a single
+// bottom-tested body — logic, registers, global ref and read-once all match.)
 // FUNCTION: IMPERIALISM 0x005ba090
-short TTradeMgr::ResolveProposalCodeForCategorySlot84(int proposalCode, int category) {
-  short* lookupCursor = kNationMetricCodeLookup;
-  short resolvedCode = static_cast<short>(proposalCode);
-  while ((*lookupCursor != static_cast<short>(proposalCode)) &&
-         (resolvedCode = static_cast<short>(category),
-          *lookupCursor != static_cast<short>(category))) {
-    lookupCursor = lookupCursor + 1;
-    if (reinterpret_cast<int>(lookupCursor) >
-        reinterpret_cast<int>(kNationMetricCodeLookup + 0x20)) {
-      return static_cast<short>(proposalCode);
+short TTradeMgr::ResolveProposalCodeForCategorySlot84(short proposalCode, short category) {
+  short* lookupCursor = g_nationMetricSlotDispatchOrder006d810;
+  do {
+    short slotValue = *lookupCursor;
+    if (slotValue == proposalCode) {
+      return proposalCode;
     }
-  }
-  return resolvedCode;
+    if (slotValue == category) {
+      return category;
+    }
+    lookupCursor = lookupCursor + 1;
+  } while (lookupCursor < &g_nationMetricSlotDispatchOrder006d810[0x11]);
+  return proposalCode;
 }
 
 // FUNCTION: IMPERIALISM 0x005ba0e0

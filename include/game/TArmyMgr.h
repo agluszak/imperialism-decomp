@@ -9,7 +9,28 @@ class TSortedList;
 class TArmyStack;
 struct TControlPictureRectState;
 
-// TODO(manifest): describe TArmyMgr and its role. Base edge (TObject) recovered from RTTI CRuntimeClass chain: TArmyMgr -> TObject -> CObject.
+// 0x268-byte by-value POD record stored in TArmyMgr::mapContextActionRecordList04.
+// Field evidence from the battle-report layout hook (0x4acb60): the first bytes are a
+// small nation-id array indexed by participantIndex02; actionType04 selects how
+// tileOrObject08 is interpreted (0/3/4 -> index into g_pGlobalMapState's stride-0xa8
+// table; otherwise a pointer whose short at +0xc is the map cell). The +0x258 tail is
+// the report-marker placement state stamped by that hook.
+struct MapContextActionRecord {
+  unsigned char nationIds[2];       // +0x00
+  unsigned char participantIndex02; // +0x02
+  unsigned char pad03;              // +0x03
+  int actionType04;                 // +0x04 (0..4; 2 widens the marker sprite code)
+  int tileOrObject08;               // +0x08 (dual-purpose per actionType04 -- keep int)
+  unsigned char pad0c[0x258 - 0x0c];
+  int markerPixelX258;         // +0x258
+  int markerPixelY25c;         // +0x25c
+  unsigned char placedFlag260; // +0x260
+  unsigned char pad261;        // +0x261
+  short markerSpriteCode262;   // +0x262
+  short listOrdinal264;        // +0x264
+  unsigned char pad266[0x268 - 0x266];
+};
+
 // VTABLE: IMPERIALISM 0x0064c928
 class TArmyMgr : public TObject {
 public:
@@ -99,7 +120,6 @@ public:
   virtual undefined HandleMapClickByCivilianCursorState(short tileIndex,
                                                         short mode); // slot 0x18 0x4a4ad0
   // === END GENERATED DECLS (TArmyMgr) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TArmyMgr 0xCTOR`).
 
   // Object size 0x3a8 confirmed by RTTI. Only +0x31c is confirmed so far (read from three
   // independent call sites: TArmyPlacard::HandleEvent, TArmyToolbar's equivalent, and
@@ -111,7 +131,11 @@ public:
   // NOTE: TObject's own vptr occupies the object's first 4 bytes (ASSERT_SIZE(TObject,
   // 0x4)), so every "+0xNN" comment below is an absolute this-relative offset and this
   // pad must be 4 bytes short of its target to land the next field correctly.
-  unsigned char pad04[0x08 - 0x04];
+  // +0x04 -- by-value record list of map-context action records (battle markers etc.):
+  // a TSortedPtrList whose recordSize14 is set to sizeof(MapContextActionRecord) == 0x268
+  // by InitializeMapContextActionManager. Walked ordinally by the battle-report layout
+  // hook (0x4acb60).
+  class TSortedPtrList* mapContextActionRecordList04;
   // +0x08 -- read by GetByteFlagAtOffset8 (0x4a6dd0, a bare `this+8` thiscall getter);
   // sole call site is TSimMgr::AdvanceGlobalTurnStateMachine case 0xd, gating whether the
   // terrain-eligibility branch runs. No confirmed writer site yet.
@@ -124,7 +148,10 @@ public:
   // +0x10 -- set to 1 by OrphanCallChain_C4_I26_004a1e40's non-turn-3 branch right before
   // calling OrphanCallChain_C12_I108_004a2390; role not pinned down beyond that write site.
   int pendingRebuildFlag10;
-  unsigned char pad18[0x1c - 0x14];
+  // +0x14/+0x18 -- static lookup-table pointers installed by
+  // InitializeMapContextActionManager (0x695448 / 0x695428); consumers not yet mapped.
+  const void* staticTable14;
+  const void* staticTable18;
   // +0x1c..+0x31b -- one entry per map tile (0x180 = 384 tiles, confirmed by
   // ProcessTileUnitListsAndApplyRandomStatusUpdates's own fill loop at 0x4a1f80, which
   // writes exactly 0x180 consecutive shorts starting here via
@@ -154,11 +181,25 @@ public:
   // serializedField8c to -1. 0x004a1eb0, __thiscall, no args.
   void ReleaseThreeLinkedObjectsAndResetTerrainDescriptorFlags();
 
+  // Selects the first matching unit in the requested state at tileIndex and returns
+  // the number of matching units left in the opposite toolbar state. Both methods are
+  // real __thiscall members even though their bodies do not read `this`: all four
+  // original callers load g_pMapContextActionManager into ECX before calling them.
+  short ActivateFirstIdleTacticalUnitByCategoryAtTile(short categoryId, short tileIndex);
+  short ActivateFirstActiveTacticalUnitByCategoryAtTile(short categoryId, short tileIndex);
+
   // Walks the region's stationed-unit chain (TGlobalMapCityScoreRecord::stationedUnitChain98,
   // via TUnit::nextOnTile) for one whose field_8 is idle and whose
   // TMilitaryUnit::GetUnitMovementClassId() is nonzero. 0x004a4550, __thiscall (this unused --
   // operates purely off g_pGlobalMapState), 1 arg.
   bool HasEligibleStationedUnitInRegion(short regionId);
+
+  // Sums TMilitaryUnit::GetUnitTypeCostPoints() over the same eligible-unit walk as
+  // CommitCityActionGateCostIfAffordable (idle unit, nonzero movement class) for
+  // pendingMapActionIndex's tile, without the affordability/commit side effects --
+  // used purely to display the pending action-gate cost. 0x004a41d0, __thiscall
+  // (this used only for pendingMapActionIndex), 0 args, ret 0.
+  int ComputeSelectedTileCityActionGateSum();
 
   // Sets pendingMapActionIndex (the shared "current map selection" slot) and, unless
   // clearing the selection (-1), resets the order mode of every stationed unit at that
@@ -170,14 +211,10 @@ public:
   void SetActiveProvinceSelection(short tileIndex);
 
   // Civilian-order counterpart of the free-function ComputeMapCursorStateIndex (this one
-  // genuinely reads/writes `this`, e.g. pendingMapActionIndex). 0x004a4c80, 641 bytes;
-  // ground truth's own decompile loses register tracking (unaff_EBX/EBP/retaddr) badly
-  // enough that a faithful body needs dedicated listing-level analysis -- left as a TODO
-  // stub with the verified real signature rather than guessed.
+  // genuinely reads/writes `this`, e.g. pendingMapActionIndex). 0x004a4c80, 641 bytes.
   int ComputeCivilianMapCursorStateIndex(short tileIndex, short mode);
-  // 0x004a5080, 1407 bytes, __thiscall, 1 arg (cityRecordIndex), returns bool. TODO stub:
-  // large and Ghidra's decompile for it is similarly unreliable; signature verified via
-  // the HandleMapClickByCivilianCursorState callsite disassembly.
+  // 0x004a5080, 1407 bytes, __thiscall, 1 arg (cityRecordIndex), returns bool; signature
+  // verified via the HandleMapClickByCivilianCursorState callsite disassembly.
   bool ValidateOrderPlacementPrerequisitesForSelectedTile(short cityRecordIndex);
   // 0x004a5760, 656 bytes, __thiscall, 1 arg (tileIndex). TODO stub body (builds
   // directional order-overlay controls from the tile's adjacent-region list; not yet
@@ -185,7 +222,7 @@ public:
   void SetActiveProvinceAndBuildDirectionalOrderOverlays(short tileIndex);
   // 0x004a5b10, 243 bytes, __thiscall, 3 args (ourStack, enemyStack, ownerNationCodeInt).
   // Called from TryCreateTacticalBattleViewForTileArmies when a real tactical battle
-  // should be created. TODO stub body (SEH-framed; not yet ported).
+  // should be created (SEH-framed).
   void CreateTacticalBattleViewAndInitializeBattleSetup(TArmyStack* ourStack,
                                                         TArmyStack* enemyStack,
                                                         int ownerNationCodeInt);
@@ -209,6 +246,13 @@ public:
   // Bare `this+8` accessor; sole caller is TSimMgr::AdvanceGlobalTurnStateMachine
   // (g_pMapContextActionManager->GetByteFlagAtOffset8()). 0x4a6dd0.
   unsigned char GetByteFlagAtOffset8();
+
+  // Appends the built map-context battle record to mapContextActionRecordList04 (via its
+  // sorted-insert virtual, slot 0x0f), clears the record's scratch working fields, and
+  // marks flag8. `unusedArg2` is present only for stack-cleanup fidelity (RET 8) -- the
+  // body never reads it. 0x4a6e80, __thiscall.
+  void AppendMapContextActionRecordAndResetWorkingFields(struct MapOrderBattleSnapshot* record,
+                                                         int unusedArg2);
   void InitializeMapContextActionManager();
   TArmyMgr();
 };

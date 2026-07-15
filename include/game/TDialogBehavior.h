@@ -3,8 +3,6 @@
 #include "game/TBehavior.h"
 #include "game/mfc.h"
 
-// TODO(manifest): describe TDialogBehavior and its role. Base edge (TBehavior) recovered from RTTI
-// CRuntimeClass chain: TDialogBehavior -> TBehavior -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x00648da8
 class TDialogBehavior : public TBehavior {
 public:
@@ -49,4 +47,3 @@ public:
 };
 
 ASSERT_SIZE(TDialogBehavior, 0x24);
-

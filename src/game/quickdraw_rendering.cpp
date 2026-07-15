@@ -94,7 +94,7 @@ CFont* __cdecl UpdateGlobalFontPresetAndRebuildCachedFontIfDirty(TControlPicture
 }
 
 // FUNCTION: IMPERIALISM 0x00494950
-void RenderTacticalBattleSelectionAndUnitOverlayPass_Impl() {
+void RenderTacticalBattleSelectionAndUnitOverlayPass_Impl(char glyph) {
   if (g_bQuickDrawMeasureFontDirty != 0 || g_pQuickDrawCachedMeasureFont == 0) {
     if (g_pQuickDrawCachedMeasureFont != 0) {
       delete g_pQuickDrawCachedMeasureFont;
@@ -112,14 +112,27 @@ void RenderTacticalBattleSelectionAndUnitOverlayPass_Impl() {
   if (dc == nullptr) {
     dc = g_pScopedMapQuickDrawDcHandleObject;
   }
-  dc->SetTextColor(static_cast<COLORREF>(g_uQuickDrawStrokeColor));
+  dc->SetTextColor(static_cast<COLORREF>(g_QuickDrawMeasureFontPreset.styleRef6));
+  dc = g_pQuickDrawMemoryDc;
+  if (dc == nullptr) {
+    dc = g_pScopedMapQuickDrawDcHandleObject;
+  }
   dc->SetMapperFlags(1);
+  dc = g_pQuickDrawMemoryDc;
+  if (dc == nullptr) {
+    dc = g_pScopedMapQuickDrawDcHandleObject;
+  }
   UINT prevAlign = dc->SetTextAlign(0x18);
-  // TODO(codegen): the ExtTextOut option/rect/spacing args are dropped by the
-  // decompiler; modeled as a single-space "clear a small area" overlay at the
-  // resolved text origin, matching the surrounding idiom's typical usage.
-  dc->ExtTextOut(g_nQuickDrawResolvedTextOriginX, g_nQuickDrawResolvedTextOriginY, 0, nullptr, " ",
-                 1, nullptr);
+  dc = g_pQuickDrawMemoryDc;
+  if (dc == nullptr) {
+    dc = g_pScopedMapQuickDrawDcHandleObject;
+  }
+  char ch = glyph;
+  dc->TextOut(g_nQuickDrawResolvedTextOriginX, g_nQuickDrawResolvedTextOriginY, &ch, 1);
+  dc = g_pQuickDrawMemoryDc;
+  if (dc == nullptr) {
+    dc = g_pScopedMapQuickDrawDcHandleObject;
+  }
   dc->SetTextAlign(prevAlign);
   dc = g_pQuickDrawMemoryDc;
   if (dc == nullptr) {
@@ -239,6 +252,17 @@ void SetQuickDrawFillColor(int fillColor) {
   g_QuickDrawMeasureFontPreset.styleRef6 = fillColor;
 }
 
+// Sets the current QuickDraw draw color, propagating it to the active surface context and the
+// cached measure-font style ref, but only when it actually changed.
+// FUNCTION: IMPERIALISM 0x00495030
+void SetQuickDrawColorAndPropagateIfChanged(int newColor) {
+  if (g_Quick_Draw_Color_State_006950FC != newColor) {
+    g_Quick_Draw_Color_State_006950FC = newColor;
+    g_pActiveQuickDrawSurfaceContext->quickDrawColor = newColor;
+    g_QuickDrawMeasureFontPreset.styleRef6 = newColor;
+  }
+}
+
 // FUNCTION: IMPERIALISM 0x00495070
 void SetQuickDrawStrokeColor(int strokeColor) {
   g_uQuickDrawStrokeColor = strokeColor;
@@ -346,6 +370,113 @@ CRgn* EnsureGlobalClipRegionHandleObject() {
 void SetGlobalQuickDrawOrigin(short originX, short originY) {
   g_nQuickDrawOriginX = originX;
   g_nQuickDrawOriginY = originY;
+}
+
+// FUNCTION: IMPERIALISM 0x00496450
+void TransparentBlitBitmapUsingMaskedRasterOps(HDC destDc, HBITMAP sourceBitmap, short destX,
+                                               short destY, COLORREF colorKey) {
+  HDC hdcSrc = CreateCompatibleDC(destDc);
+  SelectObject(hdcSrc, sourceBitmap);
+  BITMAP bm;
+  GetObjectA(sourceBitmap, sizeof(BITMAP), &bm);
+  POINT size;
+  size.x = bm.bmWidth;
+  size.y = bm.bmHeight;
+  DPtoLP(hdcSrc, &size, 1);
+
+  HDC hdcInverse = CreateCompatibleDC(destDc);
+  HDC hdcMask = CreateCompatibleDC(destDc);
+  HDC hdcResult = CreateCompatibleDC(destDc);
+  HDC hdcSave = CreateCompatibleDC(destDc);
+
+  HBITMAP bmpInverse = CreateBitmap(size.x, size.y, 1, 1, nullptr);
+  HBITMAP bmpMask = CreateBitmap(size.x, size.y, 1, 1, nullptr);
+  HBITMAP bmpResult = CreateCompatibleBitmap(destDc, size.x, size.y);
+  HBITMAP bmpSave = CreateCompatibleBitmap(destDc, size.x, size.y);
+
+  HGDIOBJ oldInverse = SelectObject(hdcInverse, bmpInverse);
+  HGDIOBJ oldMask = SelectObject(hdcMask, bmpMask);
+  HGDIOBJ oldResult = SelectObject(hdcResult, bmpResult);
+  HGDIOBJ oldSave = SelectObject(hdcSave, bmpSave);
+
+  int mapMode = GetMapMode(destDc);
+  SetMapMode(hdcSrc, mapMode);
+
+  BitBlt(hdcSave, 0, 0, size.x, size.y, hdcSrc, 0, 0, SRCCOPY);
+  COLORREF oldBkColor = SetBkColor(hdcSrc, colorKey);
+  BitBlt(hdcMask, 0, 0, size.x, size.y, hdcSrc, 0, 0, SRCCOPY);
+  SetBkColor(hdcSrc, oldBkColor);
+  BitBlt(hdcInverse, 0, 0, size.x, size.y, hdcMask, 0, 0, NOTSRCCOPY);
+  BitBlt(hdcResult, 0, 0, size.x, size.y, destDc, destX, destY, SRCCOPY);
+  BitBlt(hdcResult, 0, 0, size.x, size.y, hdcMask, 0, 0, SRCAND);
+  BitBlt(hdcSrc, 0, 0, size.x, size.y, hdcInverse, 0, 0, SRCAND);
+  BitBlt(hdcResult, 0, 0, size.x, size.y, hdcSrc, 0, 0, SRCPAINT);
+  BitBlt(destDc, destX, destY, size.x, size.y, hdcResult, 0, 0, SRCCOPY);
+  BitBlt(hdcSrc, 0, 0, size.x, size.y, hdcSave, 0, 0, SRCCOPY);
+
+  DeleteObject(SelectObject(hdcInverse, oldInverse));
+  DeleteObject(SelectObject(hdcMask, oldMask));
+  DeleteObject(SelectObject(hdcResult, oldResult));
+  DeleteObject(SelectObject(hdcSave, oldSave));
+  DeleteDC(hdcResult);
+  DeleteDC(hdcInverse);
+  DeleteDC(hdcMask);
+  DeleteDC(hdcSave);
+  DeleteDC(hdcSrc);
+}
+
+// FUNCTION: IMPERIALISM 0x004967e0
+void TransparentBlitBitmapRegionUsingMaskedRasterOps(HDC destDc, HBITMAP sourceBitmap, short destX,
+                                                     short destY, COLORREF colorKey, short srcX,
+                                                     short srcY, short width, short height) {
+  HDC hdcSrc = CreateCompatibleDC(destDc);
+  SelectObject(hdcSrc, sourceBitmap);
+  BITMAP bm;
+  GetObjectA(sourceBitmap, sizeof(BITMAP), &bm);
+  POINT size;
+  size.x = bm.bmWidth;
+  size.y = bm.bmHeight;
+  DPtoLP(hdcSrc, &size, 1);
+
+  HDC hdcInverse = CreateCompatibleDC(destDc);
+  HDC hdcMask = CreateCompatibleDC(destDc);
+  HDC hdcResult = CreateCompatibleDC(destDc);
+  HDC hdcSave = CreateCompatibleDC(destDc);
+
+  HBITMAP bmpInverse = CreateBitmap(size.x, size.y, 1, 1, nullptr);
+  HBITMAP bmpMask = CreateBitmap(size.x, size.y, 1, 1, nullptr);
+  HBITMAP bmpResult = CreateCompatibleBitmap(destDc, size.x, size.y);
+  HBITMAP bmpSave = CreateCompatibleBitmap(destDc, size.x, size.y);
+
+  HGDIOBJ oldInverse = SelectObject(hdcInverse, bmpInverse);
+  HGDIOBJ oldMask = SelectObject(hdcMask, bmpMask);
+  HGDIOBJ oldResult = SelectObject(hdcResult, bmpResult);
+  HGDIOBJ oldSave = SelectObject(hdcSave, bmpSave);
+
+  int mapMode = GetMapMode(destDc);
+  SetMapMode(hdcSrc, mapMode);
+
+  BitBlt(hdcSave, 0, 0, size.x, size.y, hdcSrc, 0, 0, SRCCOPY);
+  COLORREF oldBkColor = SetBkColor(hdcSrc, colorKey);
+  BitBlt(hdcMask, 0, 0, size.x, size.y, hdcSrc, 0, 0, SRCCOPY);
+  SetBkColor(hdcSrc, oldBkColor);
+  BitBlt(hdcInverse, 0, 0, size.x, size.y, hdcMask, 0, 0, NOTSRCCOPY);
+  BitBlt(hdcResult, 0, 0, size.x, size.y, destDc, destX, destY, SRCCOPY);
+  BitBlt(hdcResult, 0, 0, size.x, size.y, hdcMask, 0, 0, SRCAND);
+  BitBlt(hdcSrc, 0, 0, size.x, size.y, hdcInverse, 0, 0, SRCAND);
+  BitBlt(hdcResult, 0, 0, size.x, size.y, hdcSrc, 0, 0, SRCPAINT);
+  BitBlt(destDc, destX, destY, width, height, hdcResult, srcX, srcY, SRCCOPY);
+  BitBlt(hdcSrc, 0, 0, size.x, size.y, hdcSave, 0, 0, SRCCOPY);
+
+  DeleteObject(SelectObject(hdcInverse, oldInverse));
+  DeleteObject(SelectObject(hdcMask, oldMask));
+  DeleteObject(SelectObject(hdcResult, oldResult));
+  DeleteObject(SelectObject(hdcSave, oldSave));
+  DeleteDC(hdcResult);
+  DeleteDC(hdcInverse);
+  DeleteDC(hdcMask);
+  DeleteDC(hdcSave);
+  DeleteDC(hdcSrc);
 }
 
 // FUNCTION: IMPERIALISM 0x00496d40

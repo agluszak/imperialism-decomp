@@ -7,12 +7,12 @@
 
 IMPLEMENT_DYNCREATE(TTradeTotalsView, TView)
 
-TTradeTotalsView::TTradeTotalsView() {}
+// FUNCTION: IMPERIALISM 0x005c1b10
+TTradeTotalsView::TTradeTotalsView() : TView() {}
 
 // SYNTHETIC: IMPERIALISM 0x005c1b40
 // TTradeTotalsView::`scalar deleting destructor'
 TTradeTotalsView::~TTradeTotalsView() {}
 
 // FUNCTION: IMPERIALISM 0x005c1bd0
-void TTradeTotalsView::ApplyRectSlot110(RECT* rectBuffer) {
-}
+void TTradeTotalsView::ApplyRectSlot110(RECT* rectBuffer) {}

@@ -31,6 +31,16 @@ TTacticalUnit::~TTacticalUnit() {}
 
 IMPLEMENT_DYNCREATE(TTacticalUnit, TObject)
 
+// FUNCTION: IMPERIALISM 0x005a5e30
+void TTacticalUnit::ConstructTTacticalUnitBaseState() {
+  tileIndex8 = -2;
+  selectedFlag18 = 0;
+  state1c = 0;
+  actionPoints28 = GetBaseActionPoints();
+  aiStateCode2c = 0;
+  field30 = 0;
+}
+
 // FUNCTION: IMPERIALISM 0x005a5e70
 void TTacticalUnit::ApplyTacticalDamage(int damageA, int damageB) {
   (void)damageB;

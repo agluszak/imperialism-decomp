@@ -3,7 +3,6 @@
 #include "game/TAnimation.h"
 #include "game/mfc.h"
 
-// TODO(manifest): describe TCivAnimation and its role. Base edge (TAnimation) recovered from RTTI CRuntimeClass chain: TCivAnimation -> TAnimation -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x0064c350
 class TCivAnimation : public TAnimation {
 public:
@@ -22,7 +21,6 @@ public:
   // slot 0x0b RenderBattleReportInsetWithPaletteShift inherited unchanged (0x49f190)
   // slot 0x0c RenderBattleReportViewSurfaceSpriteWithResourceHandle inherited unchanged (0x49f2d0)
   // === END GENERATED DECLS (TCivAnimation) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TCivAnimation 0xCTOR`).
 
   TCivAnimation();
 };

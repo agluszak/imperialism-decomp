@@ -171,30 +171,6 @@ undefined4 WrapperFor_ftol_At004c6cb0(void)
   return 0;
 }
 
-// ghidra_name TBuildingView::ConstructTBuildingViewBaseState
-// ghidra_proto undefined ConstructTBuildingViewBaseState()
-// FUNCTION: IMPERIALISM 0x004c6eb0
-undefined4 ConstructTBuildingViewBaseState(void)
-{
-  return 0;
-}
-
-// ghidra_name TWarehouseView::ConstructTWarehouseViewBaseState
-// ghidra_proto undefined ConstructTWarehouseViewBaseState()
-// FUNCTION: IMPERIALISM 0x004c72b0
-undefined4 ConstructTWarehouseViewBaseState(void)
-{
-  return 0;
-}
-
-// ghidra_name TUnitsView::ConstructTUnitsViewBaseState
-// ghidra_proto undefined ConstructTUnitsViewBaseState()
-// FUNCTION: IMPERIALISM 0x004c7fd0
-undefined4 ConstructTUnitsViewBaseState(void)
-{
-  return 0;
-}
-
 // ghidra_name TShipyardView::ConstructTShipyardViewBaseState
 // ghidra_proto undefined ConstructTShipyardViewBaseState()
 // FUNCTION: IMPERIALISM 0x004c82c0
@@ -227,14 +203,6 @@ undefined4 UpdateCityViewCountControlAndRefreshSelectionAlt(void)
   return 0;
 }
 
-// ghidra_name TBuildingConstructionView::ConstructTBuildingConstructionViewBaseState
-// ghidra_proto undefined ConstructTBuildingConstructionViewBaseState()
-// FUNCTION: IMPERIALISM 0x004c9e30
-undefined4 ConstructTBuildingConstructionViewBaseState(void)
-{
-  return 0;
-}
-
 // ghidra_name UpdateUniversityCountControlAndRefreshView
 // ghidra_proto undefined UpdateUniversityCountControlAndRefreshView()
 // FUNCTION: IMPERIALISM 0x004cb9cd
@@ -251,34 +219,10 @@ undefined4 UpdateUniversityCountControlAndRefreshViewAlt(void)
   return 0;
 }
 
-// ghidra_name TPurchaseCluster::ConstructTPurchaseClusterBaseState
-// ghidra_proto undefined ConstructTPurchaseClusterBaseState()
-// FUNCTION: IMPERIALISM 0x004cc3c0
-undefined4 ConstructTPurchaseClusterBaseState(void)
-{
-  return 0;
-}
-
-// ghidra_name TIndustryView::ConstructTIndustryViewBaseState
-// ghidra_proto undefined ConstructTIndustryViewBaseState()
-// FUNCTION: IMPERIALISM 0x004cc790
-undefined4 ConstructTIndustryViewBaseState(void)
-{
-  return 0;
-}
-
 // ghidra_name DispatchCityViewSelectionChangeAndRefresh
 // ghidra_proto undefined DispatchCityViewSelectionChangeAndRefresh()
 // FUNCTION: IMPERIALISM 0x004ccfa2
 undefined4 DispatchCityViewSelectionChangeAndRefresh(void)
-{
-  return 0;
-}
-
-// ghidra_name TTradeSchoolView::ConstructTTradeSchoolViewBaseState
-// ghidra_proto undefined ConstructTTradeSchoolViewBaseState()
-// FUNCTION: IMPERIALISM 0x004cd840
-undefined4 ConstructTTradeSchoolViewBaseState(void)
 {
   return 0;
 }
@@ -411,14 +355,6 @@ undefined4 SelectFirstAvailableCivilianForNation(void)
   return 0;
 }
 
-// ghidra_name ResolveCivilianTileSelectionOrReportActionCode
-// ghidra_proto ushort __stdcall ResolveCivilianTileSelectionOrReportActionCode(short nTileIndex, short nClickMode)
-// FUNCTION: IMPERIALISM 0x004d2540
-undefined4 ResolveCivilianTileSelectionOrReportActionCode(void)
-{
-  return 0;
-}
-
 // ghidra_name TMapMgr::QueueCivilianWorkOrderWithCostCheck
 // ghidra_proto bool __thiscall QueueCivilianWorkOrderWithCostCheck(short nTileIndex)
 // FUNCTION: IMPERIALISM 0x004d3310
@@ -539,22 +475,6 @@ undefined4 WrapperFor_IsPointInsideHitRegion_At004d59a0(void)
   return 0;
 }
 
-// ghidra_name WrapperFor_thunk_BuildDiplomacyOverlayHitMaskOpcodeStream_At004d5cf0
-// ghidra_proto undefined WrapperFor_thunk_BuildDiplomacyOverlayHitMaskOpcodeStream_At004d5cf0()
-// FUNCTION: IMPERIALISM 0x004d5cf0
-undefined4 WrapperFor_thunk_BuildDiplomacyOverlayHitMaskOpcodeStream_At004d5cf0(void)
-{
-  return 0;
-}
-
-// ghidra_name BuildDiplomacyOverlayHitMaskOpcodeStream
-// ghidra_proto undefined BuildDiplomacyOverlayHitMaskOpcodeStream()
-// FUNCTION: IMPERIALISM 0x004d5d30
-undefined4 BuildDiplomacyOverlayHitMaskOpcodeStream(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_ReallocateHeapBlockWithAllocatorTracking_At004d62d0
 // ghidra_proto undefined WrapperFor_ReallocateHeapBlockWithAllocatorTracking_At004d62d0()
 // FUNCTION: IMPERIALISM 0x004d62d0
@@ -599,14 +519,6 @@ undefined4 WrapperFor_ReleaseSharedStringRefIfNotEmpty_At004d6880(void)
 // ghidra_proto CString & __thiscall operator=(CString const &)
 // FUNCTION: IMPERIALISM 0x004d6b70
 undefined4 CString_operator(void)
-{
-  return 0;
-}
-
-// ghidra_name GetOrComputeOverlayAnchorTileIndex
-// ghidra_proto undefined GetOrComputeOverlayAnchorTileIndex()
-// FUNCTION: IMPERIALISM 0x004d7170
-undefined4 GetOrComputeOverlayAnchorTileIndex(void)
 {
   return 0;
 }
@@ -687,14 +599,6 @@ undefined4 GetCityProductionValueTimesTwoCallbackF(void)
 // ghidra_proto undefined GetCityProductionValueTimesTwoCallbackG()
 // FUNCTION: IMPERIALISM 0x004dd893
 undefined4 GetCityProductionValueTimesTwoCallbackG(void)
-{
-  return 0;
-}
-
-// ghidra_name TGreatPower::SetHomeCityTileAndDisplayName
-// ghidra_proto undefined RefreshNationCivilianWorkOrdersForTurn()
-// FUNCTION: IMPERIALISM 0x004dfd30
-undefined4 RefreshNationCivilianWorkOrdersForTurn(void)
 {
   return 0;
 }

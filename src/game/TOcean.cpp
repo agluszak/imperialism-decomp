@@ -22,7 +22,6 @@
 #include "game/TShip.h"
 #include "game/TTaskForce.h"
 
-undefined4 RelaxMapTileCostFieldByNeighborTerrain(void);
 undefined4 SelectBestSeedTileForNationFromCostField(void);
 
 namespace {
@@ -168,6 +167,53 @@ void TOcean::WriteTo(TStream* stream) {
   (void)stream;
 }
 
+// One relaxation sweep of the ground-cost wavefront: for every still-unset tile (cost 0),
+// mark it reached (-1) when any hex neighbor is off-map or has a different owner-nation
+// terrain class, otherwise pull in the cheapest positive neighbor cost as -(1+cost). A
+// final pass flips the tentative negative costs positive. Returns the number of tiles
+// changed this sweep (0 => converged).
+// FUNCTION: IMPERIALISM 0x00562AF0
+int RelaxMapTileCostFieldByNeighborTerrain(short* costField) {
+  int changedCount = 0;
+  int tileIndex = 0;
+  int tileByteOffset = 0;
+  short* pCost = costField;
+  do {
+    if (*pCost == 0) {
+      for (int direction = 0; direction < 6; direction++) {
+        short neighbor = TMapMgr::StepHexTileIndexByDirectionWithWrapRules(
+            static_cast<short>(tileIndex), static_cast<short>(direction));
+        short cur = *pCost;
+        char* tiles = reinterpret_cast<char*>(g_pGlobalMapState->terrainStateTable);
+        if (cur == 0 &&
+            (neighbor == -1 || tiles[4 + neighbor * 0x24] != tiles[tileByteOffset + 4])) {
+          *pCost = -1;
+          changedCount++;
+        } else {
+          short neighborCost = costField[neighbor];
+          if (neighborCost > 0 && (cur == 0 || neighborCost < -cur)) {
+            *pCost = static_cast<short>(-1 - neighborCost);
+            changedCount++;
+          }
+        }
+      }
+    }
+    tileByteOffset += 0x24;
+    tileIndex++;
+    pCost++;
+    if (tileIndex > 0x194f) {
+      short* clear = costField;
+      for (int i = 0x1950; i != 0; i--) {
+        if (*clear < 0) {
+          *clear = static_cast<short>(-*clear);
+        }
+        clear++;
+      }
+      return changedCount;
+    }
+  } while (true);
+}
+
 // FUNCTION: IMPERIALISM 0x00562d90
 void TOcean::InitializeMapActionContextsForNationCountUsingCostField(int nationCountArg) {
   TZone* contextBase;
@@ -193,11 +239,9 @@ void TOcean::InitializeMapActionContextsForNationCountUsingCostField(int nationC
       clearCursor = clearCursor + 1;
     }
   }
-  relaxPassCount =
-      reinterpret_cast<int(__cdecl*)(int*)>(RelaxMapTileCostFieldByNeighborTerrain)(costField);
+  relaxPassCount = RelaxMapTileCostFieldByNeighborTerrain(reinterpret_cast<short*>(costField));
   while (relaxPassCount != 0) {
-    relaxPassCount =
-        reinterpret_cast<int(__cdecl*)(int*)>(RelaxMapTileCostFieldByNeighborTerrain)(costField);
+    relaxPassCount = RelaxMapTileCostFieldByNeighborTerrain(reinterpret_cast<short*>(costField));
   }
   nationIndex = 0;
   if (0 < static_cast<int>(static_cast<short>(nationCountArg))) {
@@ -307,6 +351,7 @@ void TOcean::RefreshMapActionContextNationOverlaysAndOrderRanks() {
   }
 }
 
+// FUNCTION: IMPERIALISM 0x005633b0
 TZone* TOcean::GetLinkedZoneForSeaTile(short seaTileIndex) {
   TTerrainStateRecordView& terrainRecord = g_pGlobalMapState->terrainStateTable[seaTileIndex];
   signed char terrainClass = static_cast<signed char>(terrainRecord.pad16);
@@ -330,19 +375,20 @@ TZone* TOcean::FindPortZoneBySelectedTile(TCity* city) {
     node = node->prev18;
   }
   for (;;) {
-    if (node == 0) {
+    TPortZone* portZone = static_cast<TPortZone*>(node);
+    if (portZone == 0) {
       return 0;
     }
-    if (static_cast<short>(node->field0c) == selectedTileId) {
-      return node;
+    if (static_cast<short>(portZone->field0c) == selectedTileId) {
+      return portZone;
     }
-    if (node->field20 == selectedTileId) {
-      return node;
+    if (portZone->field20 == selectedTileId) {
+      return portZone;
     }
-    if (static_cast<short>(static_cast<TPortZone*>(node)->field48) == selectedTileId) {
+    if (static_cast<short>(portZone->field48) == selectedTileId) {
       break;
     }
-    node = node->prev18;
+    node = portZone->prev18;
     while (node != 0 && node->IsKindOf(RUNTIME_CLASS(TPortZone)) == 0) {
       node = node->prev18;
     }
@@ -439,4 +485,9 @@ TTaskForce* TOcean::EnsureSelectedTaskForceForOrderOwnerAndRefresh(TZone* pMapOr
 // follow-up notes.
 void TOcean::FinalizeQueuedMapOrderEntry(TTaskForce* entry) {
   (void)entry;
+}
+
+// FUNCTION: IMPERIALISM 0x005979f0
+TTaskForce* GetActiveMapOrderEntry() {
+  return g_pActiveMapOrderContext->selectedTaskForce14;
 }

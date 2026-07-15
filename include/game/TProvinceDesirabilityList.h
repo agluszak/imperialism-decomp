@@ -10,6 +10,8 @@ public:
   DECLARE_DYNCREATE(TProvinceDesirabilityList)
 
   TProvinceDesirabilityList();
+  // Descending by the desirability short at record+2; ties broken pseudo-randomly.
+  short Compare(void* a, void* b) override; // slot 0x44 0x4d6630
 };
 
 ASSERT_SIZE(TProvinceDesirabilityList, 0x18);

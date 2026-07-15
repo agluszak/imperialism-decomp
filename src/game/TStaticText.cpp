@@ -116,9 +116,8 @@ void TStaticText::InitializeTextEntryBaseAndOptionalStringResource(
 // FUNCTION: IMPERIALISM 0x0048fe60
 void TStaticText::AssignTextSharedRefIfChangedAndMaybeInvalidate(CString* sharedString,
                                                                  char refreshNow) {
-  if (CompareAnsiStringsWithMbcsAwareness(
-          reinterpret_cast<unsigned char*>((char*)static_cast<LPCSTR>(*sharedString)),
-          reinterpret_cast<unsigned char*>((char*)static_cast<LPCSTR>(*text))) != 0) {
+  if (_mbscmp(reinterpret_cast<unsigned char*>((char*)static_cast<LPCSTR>(*sharedString)),
+              reinterpret_cast<unsigned char*>((char*)static_cast<LPCSTR>(*text))) != 0) {
     *text = *sharedString;
     if (refreshNow != 0) {
       RefreshControl();
@@ -128,11 +127,11 @@ void TStaticText::AssignTextSharedRefIfChangedAndMaybeInvalidate(CString* shared
 
 // FUNCTION: IMPERIALISM 0x0048fed0
 void TStaticText::LoadUiStringAndDispatchViaVslot1C8(short stringResourceGroup,
-                                                     short stringResourceIndex) {
+                                                     short stringResourceIndex, char refreshNow) {
   CString loadedString;
   g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(
       &loadedString, stringResourceGroup, stringResourceIndex);
-  AssignTextSharedRefIfChangedAndMaybeInvalidate(&loadedString, 0);
+  AssignTextSharedRefIfChangedAndMaybeInvalidate(&loadedString, refreshNow);
 }
 
 // FUNCTION: IMPERIALISM 0x0048ff70

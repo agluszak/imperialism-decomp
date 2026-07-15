@@ -5,10 +5,6 @@
 #include "game/TSimMgr.h"
 #include "game/global_data_tables.h"
 
-static __inline void WriteShort(void* base, int offset, short value) {
-  *reinterpret_cast<short*>(reinterpret_cast<unsigned char*>(base) + offset) = value;
-}
-
 // SYNTHETIC: IMPERIALISM 0x004b6f20
 // TUnitOrder::CreateObject
 
@@ -40,31 +36,33 @@ bool TUnitOrder::SetQuantity(short param_1) {
 }
 
 // FUNCTION: IMPERIALISM 0x004b7320
-void TUnitOrder::FillOrderSheet(void* orderSheet, short quantity) {
-  this->InitializeCityOrderItemWorkingBuffers(reinterpret_cast<undefined4*>(orderSheet));
-  WriteShort(orderSheet, this->primaryInputResourceId * 2,
-             static_cast<short>(this->primaryInputPerUnit * quantity));
+void TUnitOrder::FillOrderSheet(OrderSheet* orderSheet, short quantity) {
+  this->InitializeCityOrderItemWorkingBuffers(orderSheet);
+  orderSheet->ForResourceCode(this->primaryInputResourceId) =
+      static_cast<short>(this->primaryInputPerUnit * quantity);
   if (this->secondaryInputResourceId >= 0) {
-    WriteShort(orderSheet, this->secondaryInputResourceId * 2,
-               static_cast<short>(this->secondaryInputPerUnit * quantity));
+    orderSheet->ForResourceCode(this->secondaryInputResourceId) =
+        static_cast<short>(this->secondaryInputPerUnit * quantity);
   }
   if (this->workforceMode == 2) {
-    WriteShort(orderSheet, 0x2e, quantity);
+    orderSheet->slotByResourceCode[0x17] = quantity;
     return;
   }
   if (this->workforceMode == 4) {
-    WriteShort(orderSheet, 0x30, quantity);
+    orderSheet->slotByResourceCode[0x18] = quantity;
     return;
   }
-  WriteShort(orderSheet, 0x78, quantity);
+  orderSheet->slotByResourceCode[0x3c] = quantity;
 }
 
+// Slot 0x0d: commit the pending recruitment delta for this city order. TUnitOrder's base
+// override does the real work (subclasses like TPowerPlantOrder override it with a no-op).
+// Reads the inherited TProductionOrder recipe fields (quantity/city/resource-type) plus this
+// class's specialistMode, then spawns quantityField04 TCivUnit work orders into the city.
 // FUNCTION: IMPERIALISM 0x004b73b0
 undefined TUnitOrder::CommitIfPending() {
-  unsigned char* raw = reinterpret_cast<unsigned char*>(this);
-  short* pendingDeltaRef = reinterpret_cast<short*>(raw + 0x04);
-  short pendingDelta = *pendingDeltaRef;
-  void* cityContext = *reinterpret_cast<void**>(raw + 0x08);
+  short pendingDelta = quantityField04;
+  TCity* cityContext = cityField08;
   if (pendingDelta <= 0 || cityContext == 0) {
     return 0;
   }
@@ -72,11 +70,11 @@ undefined TUnitOrder::CommitIfPending() {
   CString sharedRefA;
   CString sharedRefB;
 
-  short entryId = *reinterpret_cast<short*>(raw + 0x48);
-  unsigned char specialistMode = raw[0x58];
+  short entryId = resourceTypeIndex48;
+  unsigned char specialist = specialistMode;
   TSimMgr* localization = g_pSimMgr;
   if (localization != 0) {
-    localization->GetString(static_cast<short>((specialistMode == 0) ? 0x2718 : 0x2717), entryId,
+    localization->GetString(static_cast<short>((specialist == 0) ? 0x2718 : 0x2717), entryId,
                             &sharedRefB);
   }
 
@@ -97,11 +95,11 @@ undefined TUnitOrder::CommitIfPending() {
       continue;
     }
 
-    short packedOrderType = static_cast<short>(entryId);
+    short packedOrderType = entryId;
     orderObject->InitializeCivWorkOrderState(packedOrderType, i, ownerNationSlot);
   }
 
-  *pendingDeltaRef = 0;
+  quantityField04 = 0;
   return 0;
 }
 

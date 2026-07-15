@@ -7,8 +7,6 @@
 // Forward declarations for types referenced by generated signatures.
 class TObject;
 
-// TODO(manifest): describe TWindow and its role. Base edge (TView) recovered from RTTI
-// CRuntimeClass chain: TWindow -> TView -> TEventHandler -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x00649e58
 class TWindow : public TView {
 public:
@@ -34,23 +32,23 @@ public:
                              TEvent* event) override; // slot 0x10 0x48dd10
   // slot 0x11 vmethod_0017 inherited unchanged (0x48a310)
   // slot 0x12 ForwardParam inherited unchanged (0x48a380)
-  // slot 0x13 CanHandleCityDialogActionFalse inherited unchanged (0x48a480)
+  // slot 0x13 DoIdle inherited unchanged (0x48a480)
   // slot 0x14 GetCityDialogValueDword10 inherited unchanged (0x415d50)
   // slot 0x15 SetCityDialogValueDword10 inherited unchanged (0x415d70)
   virtual class TView* OwnerPanel() override; // slot 0x16 0x492cc0
   // slot 0x17 vmethod_0023 inherited unchanged (0x48a530)
-  // slot 0x18 vmethod_0024 inherited unchanged (0x48a550)
-  // slot 0x19 vmethod_0025 inherited unchanged (0x48a690)
-  // slot 0x1a vmethod_0026 inherited unchanged (0x48a6b0)
+  // slot 0x18 GetDeactivateVetoCode inherited unchanged (0x48a550)
+  // slot 0x19 OnDeactivated inherited unchanged (0x48a690)
+  // slot 0x1a OnDeactivateVetoed inherited unchanged (0x48a6b0)
   // slot 0x1b HandleCityProductionNoOp inherited unchanged (0x48a650)
   // slot 0x1c DispatchUiCommand19ToParent inherited unchanged (0x48a6d0)
   // slot 0x1d DispatchCityProductionAction1A inherited unchanged (0x48a670)
   // slot 0x1e DispatchCityProductionAction1B inherited unchanged (0x48a6f0)
   // slot 0x1f ActivateCityProductionViewIfAllowed inherited unchanged (0x48a570)
-  // slot 0x20 vmethod_0080 inherited unchanged (0x48a5e0)
+  // slot 0x20 TryDeactivateActiveView inherited unchanged (0x48a5e0)
   // slot 0x21 vmethod_0081 inherited unchanged (0x48a710)
-  // slot 0x22 vmethod_0032 inherited unchanged (0x48a500)
-  // slot 0x23 vmethod_0033 inherited unchanged (0x48a4a0)
+  // slot 0x22 IsActiveView inherited unchanged (0x48a500)
+  // slot 0x23 DetachUiResourceOwnerIfMatches inherited unchanged (0x48a4a0)
   // slot 0x24 SetUiResourceOwner inherited unchanged (0x48a4d0)
   // slot 0x25 ResolveControlByTag inherited unchanged (0x48afd0)
   // slot 0x26 SwitchActiveChildAndNotify inherited unchanged (0x48af80)
@@ -129,7 +127,8 @@ public:
                                                     undefined4 param_2); // slot 0x6d 0x48dc90
   virtual TDialogBehavior* GetEmbeddedDialogBehavior();                  // slot 0x6e 0x48dcc0
   virtual void AssertMcAppUILine2554();                                  // slot 0x6f 0x48dce0
-  virtual undefined OrphanCallChain_C2_I19_0048ddc0(TWindow* param_1);   // slot 0x70 0x48ddc0
+  // Switching notifies the previous and new targets through TEventHandler slots.
+  virtual void SetWindowTarget(TEventHandler* target); // slot 0x70 0x48ddc0
   virtual undefined
   WrapperFor_CenterWindowWithinOwnerOrWorkArea_At0048e150(char param_1,
                                                           char param_2); // slot 0x71 0x48e150
@@ -150,7 +149,7 @@ public:
   unsigned char padding_62_to_63[0x02];
   // 0x64 — the currently-active linked window (init = this); switching targets
   // notifies the previous one via DispatchUiCommand19ToParent.
-  class TWindow* activeLinkedWindow64;
+  TEventHandler* activeLinkedWindow64;
   unsigned char padding_68_to_6b[0x04]; // 0x68
   // 0x6c-0x71 — style/behavior flag bytes written per-window by the turn-event dialog
   // factory builders (names hedged; only useCaptionedFrameFlag6d/field70 have verified consumers).

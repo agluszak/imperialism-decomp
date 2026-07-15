@@ -5,8 +5,6 @@
 
 class TTacticalBattle;
 
-// TODO(manifest): describe TNextMoveCommand and its role. Base edge (TCommand) recovered from RTTI
-// CRuntimeClass chain: TNextMoveCommand -> TCommand -> TEvent -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x0066a100
 class TNextMoveCommand : public TCommand {
 public:
@@ -22,14 +20,17 @@ public:
   // slot 0x08 ShallowClone inherited unchanged (0x4798d0)
   // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
   // slot 0x0a NextDiplomacyCommandVtableSlotE8_NotifyOwnerSlot94 inherited unchanged (0x487900)
-  virtual void OrphanRetStub_00487a00() override; // slot 0x0b 0x5a6620
+  virtual void DoIt() override; // slot 0x0b 0x5a6620
   // === END GENERATED DECLS (TNextMoveCommand) ===
   // The battle whose action round this command closes (turn event 0x232a); read
   // back by the slot-0x0b override (0x5a6620).
   TTacticalBattle* battle18; // +0x18
 
   // The posting site (0x5a0d60) inlines the ctor as TCommand() + vtable store, so it
-  // must stay in-class; 0x5a6560 is the compiler-emitted out-of-line copy.
+  // must stay in-class; the original also keeps a compiler-emitted out-of-line copy at
+  // 0x5a6560, but our toolchain fully inlines this trivial ctor away at its call
+  // sites (no matching recompiled address) -- a genuine optimizer-choice mismatch, not
+  // a modeling gap, so that address is left unclaimed rather than faked.
   TNextMoveCommand() : TCommand() {}
 };
 

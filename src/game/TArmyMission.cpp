@@ -14,45 +14,6 @@
 
 IMPLEMENT_SERIAL(TArmyMission, TMission, 1)
 
-// SYNTHETIC: IMPERIALISM 0x0053c030
-// TArmyMission::GetRuntimeClass
-// SYNTHETIC: IMPERIALISM 0x0053c1d0
-// TArmyMission::`scalar deleting destructor'
-
-// Swaps float byte order (Big-Endian <-> Little-Endian)
-static inline float SwapFloat(float val) {
-  union {
-    float f;
-    unsigned char b[4];
-  } src, dst;
-  src.f = val;
-  dst.b[0] = src.b[3];
-  dst.b[1] = src.b[2];
-  dst.b[2] = src.b[1];
-  dst.b[3] = src.b[0];
-  return dst.f;
-}
-
-// Shared accumulation loop over orderListAt18 (0x53c620 / 0x53ceb0 / 0x53d020 /
-// 0x53d200 all repeat this exact per-unit vector-contribution pattern).
-inline void TArmyMission::AccumulateOrderPriorityVector(float* vector) {
-  if (orderListAt18 == nullptr) {
-    return;
-  }
-  CIterator iter(orderListAt18);
-  for (void* item = iter.Reset(); iter.More(); item = iter.Advance()) {
-    TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(item);
-    unit->AssertValid();
-    short weightIndex = unit->IsNotStationedInProvince(GetMissionTargetContextIdFromField14());
-    if (weightIndex > 5) {
-      weightIndex = 5;
-    }
-    AccumulateUnitOrderPriorityVectorContribution(
-        unit, vector, g_ArmyMissionOrderWeightTable_006978c8[weightIndex],
-        static_cast<float>(GetProvinceUnitOrderWeight(GetMissionTargetContextIdFromField14())));
-  }
-}
-
 // FUNCTION: IMPERIALISM 0x005356f0
 char TArmyMission::ReturnFalseSlot50() {
   return 1;
@@ -83,6 +44,12 @@ TArmyMission::TArmyMission() : TMission() {
   }
 }
 
+// SYNTHETIC: IMPERIALISM 0x0053bfb0
+// TArmyMission::CreateObject
+
+// SYNTHETIC: IMPERIALISM 0x0053c030
+// TArmyMission::GetRuntimeClass
+
 // FUNCTION: IMPERIALISM 0x0053c0a0
 TArmyMission::TArmyMission(int nodeKey) : TMission() {
   nationId04 = 0xffff;
@@ -105,6 +72,46 @@ TArmyMission::TArmyMission(int nodeKey) : TMission() {
 // FUNCTION: IMPERIALISM 0x0053c1b0
 char TArmyMission::ReturnFalseSlot28() {
   return 0;
+}
+// SYNTHETIC: IMPERIALISM 0x0053c1d0
+// TArmyMission::`scalar deleting destructor'
+
+// Swaps float byte order (Big-Endian <-> Little-Endian)
+static inline float SwapFloat(float val) {
+  union {
+    float f;
+    unsigned char b[4];
+  } src, dst;
+  src.f = val;
+  dst.b[0] = src.b[3];
+  dst.b[1] = src.b[2];
+  dst.b[2] = src.b[1];
+  dst.b[3] = src.b[0];
+  return dst.f;
+}
+
+// Shared accumulation loop over orderListAt18 (0x53c620 / 0x53ceb0 / 0x53d020 / 0x53d200 /
+// 0x53fc10 all repeat this exact per-unit vector-contribution pattern -- kept `inline` and
+// TU-local: giving it real external linkage (tried during bd 1uj.16.7) changed this TU's own
+// inlining decisions at its two callers below and regressed 4 sibling functions by 8-25pp, so
+// TInvadeMission::ReturnZeroSlot2C duplicates the loop body instead of calling this, matching
+// the original's own apparent per-callsite inlining).
+inline void TArmyMission::AccumulateOrderPriorityVector(float* vector) {
+  if (orderListAt18 == nullptr) {
+    return;
+  }
+  CIterator iter(orderListAt18);
+  for (void* item = iter.Reset(); iter.More(); item = iter.Advance()) {
+    TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(item);
+    unit->AssertValid();
+    short weightIndex = unit->IsNotStationedInProvince(GetMissionTargetContextIdFromField14());
+    if (weightIndex > 5) {
+      weightIndex = 5;
+    }
+    AccumulateUnitOrderPriorityVectorContribution(
+        unit, vector, g_ArmyMissionOrderWeightTable_006978c8[weightIndex],
+        static_cast<float>(GetProvinceUnitOrderWeight(GetMissionTargetContextIdFromField14())));
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x0053c220
@@ -245,6 +252,25 @@ int TArmyMission::ReturnZeroSlot2C(int* outBuffer, int unused) {
     total += rounded;
   }
   return total;
+}
+
+// FUNCTION: IMPERIALISM 0x0053c9d0
+void TArmyMission::AccumulateMissionUnitPriorityVectorWithOptionalFilter(float* vector,
+                                                                         short targetTile,
+                                                                         short bypassTileFilter) {
+  for (int i = 0; i < 5; ++i) {
+    vector[i] = 0.0f;
+  }
+  CIterator iter(orderListAt18);
+  for (void* item = iter.Reset(); iter.More(); item = iter.Advance()) {
+    TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(item);
+    unit->AssertValid();
+    if (targetTile == -1 || unit->MatchesTargetTileOrBypass(bypassTileFilter, targetTile)) {
+      AccumulateUnitOrderPriorityVectorContribution(
+          unit, vector, 1.0f,
+          static_cast<float>(GetProvinceUnitOrderWeight(GetMissionTargetContextIdFromField14())));
+    }
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x0053cc10

@@ -6,7 +6,6 @@
 // Forward declarations for types referenced by generated signatures.
 class TStream;
 
-// TODO(manifest): describe TCityTask and its role. Base edge (TTask) recovered from RTTI CRuntimeClass chain: TCityTask -> TTask -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x0066a9a8
 class TCityTask : public TTask {
 public:
@@ -28,7 +27,6 @@ public:
   virtual void DeserializeCityProductionQueueCommand(void* pCommandQueue); // slot 0x0e 0x5ae240
   virtual void OrphanRetStub_0059add0(void* pCommandQueue); // slot 0x0f 0x5ae4b0
 // === END GENERATED DECLS (TCityTask) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TCityTask 0xCTOR`).
 
   TCityTask();
 };

@@ -2,7 +2,7 @@
 
 #include "game/CString.h"
 #include "game/TDropShadowText.h"
-#include "game/TLoadSavePicture.h"
+#include "game/TMapPreviewView.h"
 #include "game/TModuleLibraryCacheTableStateB.h"
 #include "game/TMultiplayerMgr.h"
 #include "game/TStaticText.h"
@@ -30,7 +30,7 @@ void TLoungeDialog::Free() {}
 void TLoungeDialog::NoOpUiLifecycleHook(int arg) {}
 
 // FUNCTION: IMPERIALISM 0x0054db40
-char TLoungeDialog::CanHandleCityDialogActionFalse(int action) {
+char TLoungeDialog::DoIdle(int action) {
   return 0;
 }
 
@@ -64,10 +64,11 @@ void TLoungeDialog::RefreshMapAndMessageControlsForCurrentContext() {
       static_cast<const char*>(g_pGameFlowState->gameNameString));
   nameControl->AssertValid();
   ApplyUiTextStyleAndThemeFlags((TDropShadowText*)nameControl, 0, 0xc, 0x2b6b, 0x2b6c);
-  TLoadSavePicture* mapControl = (TLoadSavePicture*)ResolveControlByTag(0x6d617020 /* 'map ' */);
+  TMapPreviewView* mapControl =
+      static_cast<TMapPreviewView*>(ResolveControlByTag(0x6d617020 /* 'map ' */));
   mapControl->AssertValid();
-  mapControl->RasterizeHexNeighborTerrainPaletteMap(0);
-  mapControl->ApplyPaletteMaskToTileBufferByEventCode();
+  mapControl->TakeSatellitePhoto(0);
+  mapControl->EnhancePhoto();
   RECT mapBounds;
   mapControl->QueryBounds(&mapBounds);
   RECT invalidBounds = mapBounds;

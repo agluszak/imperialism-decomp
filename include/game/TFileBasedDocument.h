@@ -3,7 +3,6 @@
 #include "game/TDocument.h"
 #include "game/mfc.h"
 
-// TODO(manifest): describe TFileBasedDocument and its role. Base edge (TDocument) recovered from RTTI CRuntimeClass chain: TFileBasedDocument -> TDocument -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x00648aa0
 class TFileBasedDocument : public TDocument {
 public:
@@ -21,7 +20,6 @@ public:
   // slot 0x0a OrphanRetStub_00486530 inherited unchanged (0x486530)
   // slot 0x0b OrphanRetStub_00486550 inherited unchanged (0x486550)
 // === END GENERATED DECLS (TFileBasedDocument) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TFileBasedDocument 0xCTOR`).
 
   TFileBasedDocument();
 };

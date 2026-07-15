@@ -3,7 +3,6 @@
 #include "game/TFileBasedDocument.h"
 #include "game/mfc.h"
 
-// TODO(manifest): describe TAmbitFileBasedDocument and its role. Base edge (TFileBasedDocument) recovered from RTTI CRuntimeClass chain: TAmbitFileBasedDocument -> TFileBasedDocument -> TDocument -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x0064c170
 class TAmbitFileBasedDocument : public TFileBasedDocument {
 public:
@@ -18,13 +17,12 @@ public:
   // slot 0x07 Free inherited unchanged (0x4798b0)
   // slot 0x08 ShallowClone inherited unchanged (0x4798d0)
   // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
-  virtual undefined OrphanRetStub_00486530() override; // slot 0x0a 0x49e6a0
-  virtual undefined OrphanRetStub_00486550() override; // slot 0x0b 0x49eb30
+  virtual undefined OrphanRetStub_00486530(ArchiveStreamAdapter* stream) override; // slot 0x0a 0x49e6a0
+  virtual undefined OrphanRetStub_00486550(ArchiveStreamAdapter* stream) override; // slot 0x0b 0x49eb30
   virtual undefined OrphanRetStub_0049e660(); // slot 0x0c 0x49e660
   virtual undefined OrphanRetStub_0049e680(); // slot 0x0d 0x49e680
   virtual undefined AssertUAmbitLine1335(); // slot 0x0e 0x49ee70
 // === END GENERATED DECLS (TAmbitFileBasedDocument) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TAmbitFileBasedDocument 0xCTOR`).
 
   TAmbitFileBasedDocument();
 };

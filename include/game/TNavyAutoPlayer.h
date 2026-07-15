@@ -3,7 +3,6 @@
 #include "game/TNavyPlayer.h"
 #include "game/mfc.h"
 
-// TODO(manifest): describe TNavyAutoPlayer and its role. Base edge (TNavyPlayer) recovered from RTTI CRuntimeClass chain: TNavyAutoPlayer -> TNavyPlayer -> TTacticalPlayer -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x006697c0
 class TNavyAutoPlayer : public TNavyPlayer {
 public:
@@ -27,7 +26,6 @@ public:
   // slot 0x10 AlwaysTrueTacticalPredicate10 inherited unchanged (0x59adf0)
   // slot 0x11 ProceedAfterBattleIntroAccepted inherited unchanged (0x59ae10)
   // === END GENERATED DECLS (TNavyAutoPlayer) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TNavyAutoPlayer 0xCTOR`).
 
   TNavyAutoPlayer();
 };

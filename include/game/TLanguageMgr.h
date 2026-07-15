@@ -3,8 +3,6 @@
 #include "game/TObject.h"
 #include "game/mfc.h"
 
-// TODO(manifest): describe TLanguageMgr and its role. Base edge (TObject) recovered from RTTI
-// CRuntimeClass chain: TLanguageMgr -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x006585a8
 class TLanguageMgr : public TObject {
 public:
@@ -44,15 +42,15 @@ public:
   void BuildNewsTableDimensions(char firstColumn, char lastColumn, char firstPrimaryRow,
                                 char lastPrimaryRow, char firstExtraRow, char lastExtraRow);
   void ParseNewsTableRow(char* line);
+  // Mac CodeWarrior oracle: TLanguageMgr::Localize(const char*, unsigned char) const.
+  // Maps a data byte through the news-string table for the requested format column,
+  // expanding '*' in the mapped fragment to the raw data string. 0x005083f0.
+  CString Localize(const char* data, unsigned char formatChar) const;
+  char PickGender(const char* name) const; // 0x00508910
   // 0x508c50: normalize a player-name credential token (returns the CString by value —
   // ret 8 with a hidden return slot). Names starting with '(' or an uppercase letter
   // pass through; otherwise the first character is stripped when the news table is
   // loaded or the name starts with a space. Turn-event-9 lounge name-label path.
   CString NormalizeRuntimeCredentialNameToken(CString* name);
   bool ReloadPreplutNewsTableAndResources(int languageTag);
-
-  // Maps a data byte through the news-string table for the given format column, expanding
-  // '*' in the mapped fragment to the raw data string. Returns the built CString by value.
-  // Out of range (or formatChar 0) falls back to the raw data string. 0x005083f0.
-  CString BuildMappedSharedStringFromByteStateTable(const char* data, char formatChar);
 };

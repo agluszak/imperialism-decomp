@@ -7,15 +7,15 @@
 
 IMPLEMENT_DYNCREATE(TNumberedIcon, TMegaPicture)
 
-TNumberedIcon::TNumberedIcon() {}
+// FUNCTION: IMPERIALISM 0x005073a0
+TNumberedIcon::TNumberedIcon() : TMegaPicture(), fieldAc(0) {}
 
 // SYNTHETIC: IMPERIALISM 0x005073d0
 // TNumberedIcon::`scalar deleting destructor'
 TNumberedIcon::~TNumberedIcon() {}
 
 // FUNCTION: IMPERIALISM 0x005074e0
-void TNumberedIcon::NoOpUiLifecycleHook(int arg) {
-}
+void TNumberedIcon::NoOpUiLifecycleHook(int arg) {}
 
 // FUNCTION: IMPERIALISM 0x00507570
 undefined TNumberedIcon::Helper_Uses_ConstructTMyNumberTextBaseState_At00507570() {

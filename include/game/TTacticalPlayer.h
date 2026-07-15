@@ -4,7 +4,6 @@
 #include "game/TList.h"
 #include "game/mfc.h"
 
-// TODO(manifest): describe TTacticalPlayer and its role. Base edge (TObject) recovered from RTTI CRuntimeClass chain: TTacticalPlayer -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x00669598
 class TTacticalPlayer : public TObject {
 public:
@@ -51,6 +50,10 @@ public:
   // Returns the next selectable unit (tileIndex8 != -2) from unitList4, advancing
   // cursorIndex18. 0x0059af20, __thiscall.
   class TTacticalUnit* SelectNextTacticalUnitForDoneCommand();
+
+  // Handles the "skip" tactical command: unless the selected unit's type category is 8,
+  // sets field20 and queues the battle's turn event (232A). 0x0059b040, __thiscall.
+  void HandleTacticalCommandTag_skip();
 
   // Moves every never-deployed unit (tileIndex8 == -2) from unitList4 to the head of
   // secondaryList8 and strips the retired units from the battle's turn-order record

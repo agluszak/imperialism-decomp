@@ -11,7 +11,7 @@
 #include "game/ui_invalidation_guard.h"
 #include "game/TShip.h" // GetResourceDescriptorWeightWord0ByType
 
-extern undefined4 GenerateThreadLocalRandom15(void);
+extern "C" int __cdecl rand(void);
 
 static const char kUCityCppPath[] = "D:\\Ambit\\Cross\\UCity.cpp";
 static const unsigned int kAddrClassDescTCity = 0x0064f338;
@@ -91,7 +91,7 @@ void TCity::Free() {
   }
   this->trackedOrderList270 = 0;
   if (this->eventQueue274 != 0) {
-    this->eventQueue274->ReleaseSlot24();
+    this->eventQueue274->ReleasePtrList();
   }
   this->eventQueue274 = 0;
   delete this;
@@ -328,7 +328,7 @@ int TCity::AllocateRandomResourceCountsWithinWeightBudget(short maxWeight, short
     }
   }
   while (remaining > 0 && static_cast<short>(allocatedWeight) < maxWeight) {
-    int roll = static_cast<int>(GenerateThreadLocalRandom15()) % remaining + 1;
+    int roll = static_cast<int>(rand()) % remaining + 1;
     int type = 0;
     for (;;) {
       if (GetResourceTypeRandomDrawBlockFlag(static_cast<short>(type)) == 0) {
@@ -341,7 +341,7 @@ int TCity::AllocateRandomResourceCountsWithinWeightBudget(short maxWeight, short
     }
     short weight = GetResourceDescriptorWeightWord0ByType(static_cast<short>(type));
     if (maxWeight < weight && GetResourceDescriptorWeightWord0ByType(static_cast<short>(type)) - 1 <
-                                  static_cast<int>(GenerateThreadLocalRandom15()) % maxWeight) {
+                                  static_cast<int>(rand()) % maxWeight) {
       break;
     }
     outCounts[type] = static_cast<short>(outCounts[type] + 1);
@@ -374,7 +374,7 @@ short* TCity::GetCitySummaryRecordSlot74() {
 // FUNCTION: IMPERIALISM 0x004b4540
 void TCity::AddTransportRequest(short low, short high) {
   int packed = (static_cast<unsigned short>(high) << 16) | static_cast<unsigned short>(low);
-  this->eventQueue274->AddEntrySlot38(&packed);
+  this->eventQueue274->InsertCopiedRecordSortedByComparator(&packed);
 }
 
 // FUNCTION: IMPERIALISM 0x004b4580
@@ -382,7 +382,7 @@ void TCity::MakeTown() {}
 
 // FUNCTION: IMPERIALISM 0x004b46c0
 void TCity::TransferTransportRequests(void*) {
-  this->eventQueue274->slot20();
+  this->eventQueue274->InvokePtrListResetHook();
 }
 
 // FUNCTION: IMPERIALISM 0x004b46e0

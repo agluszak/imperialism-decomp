@@ -66,25 +66,25 @@ public:
   virtual void HandleEvent(int commandId, TEventHandler* sourceHandler,
                            TEvent* event); // 0x0f 0x48a280
   virtual void DispatchEvent(int commandId, TEventHandler* sourceHandler,
-                             TEvent* event);               // 0x10 0x48a2e0 DoEvent
-  virtual void vmethod_0017(int param);                    // 0x11 0x48a310
-  virtual void ForwardParam(int param);                    // 0x12 0x48a380
-  virtual char CanHandleCityDialogActionFalse(int action); // 0x13 0x48a480 (MacApp DoIdle)
-  virtual int GetCityDialogValueDword10();                 // 0x14 0x415d50 field10
-  virtual void SetCityDialogValueDword10(int value);       // 0x15 0x415d70
-  virtual class TView* OwnerPanel();                       // 0x16
-  virtual char vmethod_0023();                             // 0x17 0x48a530
-  virtual char vmethod_0024();                             // 0x18 0x48a550
-  virtual void vmethod_0025();                             // 0x19 0x48a690
-  virtual void vmethod_0026(int gate);                     // 0x1a 0x48a6b0
-  virtual void HandleCityProductionNoOp();                 // 0x1b 0x48a650
-  virtual void DispatchUiCommand19ToParent();              // 0x1c 0x48a6d0
-  virtual void DispatchCityProductionAction1A();           // 0x1d 0x48a670
-  virtual bool ContinueModal();                            // 0x1e 0x48a6f0
-  virtual char ActivateCityProductionViewIfAllowed();      // 0x1f 0x48a570
-  virtual char vmethod_0080();                             // 0x20 0x48a5e0
-  virtual void vmethod_0081(int param);                    // 0x21 0x48a710
-  virtual char vmethod_0032();                             // 0x22 0x48a500
-  virtual void vmethod_0033(TEventHandler* owner);         // 0x23 0x48a4a0
-  virtual void SetUiResourceOwner(TEventHandler* owner);   // 0x24 0x48a4d0
+                             TEvent* event);          // 0x10 0x48a2e0 DoEvent
+  virtual void vmethod_0017(int param);               // 0x11 0x48a310
+  virtual void ForwardParam(int param);               // 0x12 0x48a380
+  virtual char DoIdle(int action);                    // 0x13 0x48a480 (MacApp DoIdle)
+  virtual int GetCityDialogValueDword10();            // 0x14 0x415d50 field10
+  virtual void SetCityDialogValueDword10(int value);  // 0x15 0x415d70
+  virtual class TView* OwnerPanel();                  // 0x16
+  virtual char vmethod_0023();                        // 0x17 0x48a530
+  virtual char GetDeactivateVetoCode();               // 0x18 0x48a550
+  virtual void OnDeactivated();                       // 0x19 0x48a690
+  virtual void OnDeactivateVetoed(int gate);          // 0x1a 0x48a6b0
+  virtual void HandleCityProductionNoOp();            // 0x1b 0x48a650
+  virtual void DispatchUiCommand19ToParent();         // 0x1c 0x48a6d0
+  virtual void DispatchCityProductionAction1A();      // 0x1d 0x48a670
+  virtual bool ContinueModal();                       // 0x1e 0x48a6f0
+  virtual char ActivateCityProductionViewIfAllowed(); // 0x1f 0x48a570
+  virtual char TryDeactivateActiveView();             // 0x20 0x48a5e0
+  virtual void vmethod_0081(int param);               // 0x21 0x48a710
+  virtual char IsActiveView();                        // 0x22 0x48a500
+  virtual void DetachUiResourceOwnerIfMatches(TEventHandler* owner); // 0x23 0x48a4a0
+  virtual void SetUiResourceOwner(TEventHandler* owner);             // 0x24 0x48a4d0
 };

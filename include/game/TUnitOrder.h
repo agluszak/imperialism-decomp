@@ -6,7 +6,6 @@
 // Forward declarations for types referenced by generated signatures.
 class TStream;
 
-// TODO(manifest): describe TUnitOrder and its role. Base edge (TProductionOrder) recovered from RTTI CRuntimeClass chain: TUnitOrder -> TProductionOrder -> TObject -> CObject.
 // VTABLE: IMPERIALISM 0x0064f8a0
 class TUnitOrder : public TProductionOrder {
 public:
@@ -27,7 +26,8 @@ public:
   virtual undefined CommitIfPending() override;     // slot 0x0d 0x4b73b0
   // slot 0x0e ResetCityOrderItemDerivedStateNoop inherited unchanged (0x4b5140)
   // slot 0x0f Produce inherited unchanged (0x4b5180)
-  virtual void FillOrderSheet(void* orderSheet, short quantity) override; // slot 0x10 0x4b7320
+  virtual void FillOrderSheet(OrderSheet* orderSheet,
+                              short quantity) override; // slot 0x10 0x4b7320
   virtual void InitializeCityRecruitmentOrderContext(
       void* pCityState, short nEntryId, short nPrimaryInputResourceId, short nPrimaryInputPerUnit,
       short nSecondaryInputResourceId, short nSecondaryInputPerUnit, short nCashCostPerUnit,
@@ -51,4 +51,3 @@ public:
 };
 
 ASSERT_SIZE(TUnitOrder, 0x5c);
-

@@ -13,6 +13,9 @@
 #include <cstring>
 #include <new>
 
+// SYNTHETIC: IMPERIALISM 0x005e3390
+// TNetMgr::CreateObject
+
 IMPLEMENT_DYNCREATE(TNetMgr, TObject)
 
 // FUNCTION: IMPERIALISM 0x005e33e0
@@ -248,6 +251,11 @@ unsigned char TNetMgr::Send(NetMessage* message, unsigned char queueOnly) {
   }
   HandleError(g_NetworkSessionManager006a5f60.lastErrorCode0c);
   return 0;
+}
+
+// FUNCTION: IMPERIALISM 0x005e3ef0
+void TNetMgr::ResetTurnEventQueueRuntimeRecordBuffer() {
+  g_NetworkSessionManager006a5f60.ResetRuntimeSelectionRecordBuffer();
 }
 
 // FUNCTION: IMPERIALISM 0x005e4280
