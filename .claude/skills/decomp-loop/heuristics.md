@@ -1843,3 +1843,26 @@ itself is fine. Recover from the raw listing: real stack args are the `MOVSX/MOV
 (`CALL [reg + 0x214/0x218/...]`) are just unqualified member calls on `this` that C++
 regenerates verbatim from a plain switch. 527B of "undecompilable" render dispatch ported
 to 86% in one pass this way (residual: one EDI/EBX assignment swap).
+
+## Note 115 — Big-stub triage workflow: portprep dossier + const-stores extraction
+
+Two purpose-built tools make the biggest stubs tractable in one pass each:
+- `just ghidra-portprep 0xADDR` — the whole investigation in one query: current owner,
+  callers (with owners), every direct call with ILT thunks chased AND the target's
+  ownership (so the callee-porting cascade is visible up front), vtable-slot calls with
+  slot indices, IAT imports, referenced globals with consecutive runs collapsed, jump
+  tables, and the decompile. Read the "direct calls" owners column FIRST: a big stub whose
+  callees are all owned (manual files) is pure logic and portable now; one with 5+ STUB
+  callees is a cascade — either port the leaves first or defer.
+- `just const-stores 0xADDR` — capstone over the ORIGINAL binary (no Ghidra): ordered
+  address->constant store map with register constant tracking. A function whose body is
+  ~all tracked stores and no untracked (indexed) stores is an unrolled TABLE INITIALIZER:
+  model the target table as a typed global, then GENERATE the initializer as assignments
+  in original store order (the compiler re-derives the value-grouped register caching).
+  The 5KB facing-offset initializer (largest stub in the project) went 0->92.8% this way;
+  batch-probing all 300B+ stubs found the complete set of such functions in one run.
+Known hard case: a CRT static initializer that CALLS out-of-line ctors (e.g. 31x
+CRect::CRect for file-scope CRect globals, 0x4b98b0) cannot be expressed as a plain marked
+function — the ctor-on-global calls only arise from real file-scope declarations whose
+compiler-generated initializer cannot carry a FUNCTION marker. Needs a dedicated
+static-init modeling decision; defer rather than fake with placement-new.
