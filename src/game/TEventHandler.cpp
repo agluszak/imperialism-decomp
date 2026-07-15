@@ -195,9 +195,10 @@ char TEventHandler::DoIdle(int action) {
   return 0;
 }
 
-// If the given object is our currently-linked resourceOwner target, detach it both ways.
+// Slot 0x23: if the given object is our currently-linked resourceOwner target, detach it
+// both ways (inverse of SetUiResourceOwner at slot 0x24).
 // FUNCTION: IMPERIALISM 0x0048a4a0
-void TEventHandler::vmethod_0033(TEventHandler* owner) {
+void TEventHandler::DetachUiResourceOwnerIfMatches(TEventHandler* owner) {
   if (linkedResourceOwner != 0 && linkedResourceOwner == owner) {
     linkedResourceOwner = 0;
     owner->resourceOwnerBackLink = 0;
@@ -215,7 +216,7 @@ void TEventHandler::SetUiResourceOwner(TEventHandler* owner) {
 
 // True iff this view is the root controller's current active view.
 // FUNCTION: IMPERIALISM 0x0048a500
-char TEventHandler::vmethod_0032() {
+char TEventHandler::IsActiveView() {
   return this == g_pApplicationUiRootController->GetActiveView();
 }
 
@@ -224,8 +225,11 @@ char TEventHandler::vmethod_0023() {
   return 0;
 }
 
+// Slot 0x18: veto gate consulted by TryDeactivateActiveView before the active view is torn
+// down. 0 == no objection (base default); a nonzero code blocks deactivation and is echoed
+// back through OnDeactivateVetoed.
 // FUNCTION: IMPERIALISM 0x0048a550
-char TEventHandler::vmethod_0024() {
+char TEventHandler::GetDeactivateVetoCode() {
   return 0;
 }
 
@@ -237,15 +241,20 @@ char TEventHandler::ActivateCityProductionViewIfAllowed() {
   if (this == active) {
     return 1;
   }
-  if (active != 0 && active->vmethod_0080() != 0) {
+  if (active != 0 && active->TryDeactivateActiveView() != 0) {
     g_pApplicationUiRootController->SetActiveView(this);
     return 1;
   }
   return 0;
 }
 
+// Slot 0x20: ask the root controller's current active view to relinquish. It consults the
+// active view's GetDeactivateVetoCode: no veto -> notify it via OnDeactivated, hand the
+// active slot back to the root controller, and report success; otherwise notify the active
+// view via OnDeactivateVetoed(reason) and report failure. Called by
+// ActivateCityProductionViewIfAllowed on the incumbent before a new view takes over.
 // FUNCTION: IMPERIALISM 0x0048a5e0
-char TEventHandler::vmethod_0080() {
+char TEventHandler::TryDeactivateActiveView() {
   if (g_pApplicationUiRootController == 0) {
     return 0;
   }
@@ -253,13 +262,13 @@ char TEventHandler::vmethod_0080() {
   if (activeView == 0) {
     return 0;
   }
-  char gate = activeView->vmethod_0024();
+  char gate = activeView->GetDeactivateVetoCode();
   if (gate == 0) {
-    activeView->vmethod_0025();
+    activeView->OnDeactivated();
     g_pApplicationUiRootController->SetActiveView(g_pApplicationUiRootController);
     return 1;
   }
-  activeView->vmethod_0026(gate);
+  activeView->OnDeactivateVetoed(gate);
   return 0;
 }
 
@@ -271,11 +280,15 @@ void TEventHandler::DispatchCityProductionAction1A() {
   DispatchEvent(0x1a, this, 0);
 }
 
+// Slot 0x19: notification hook fired on the active view when TryDeactivateActiveView is
+// letting it go (base is a no-op).
 // FUNCTION: IMPERIALISM 0x0048a690
-void TEventHandler::vmethod_0025() {}
+void TEventHandler::OnDeactivated() {}
 
+// Slot 0x1a: notification hook fired on the active view when its own GetDeactivateVetoCode
+// blocked deactivation, passed the veto reason (base is a no-op).
 // FUNCTION: IMPERIALISM 0x0048a6b0
-void TEventHandler::vmethod_0026(int gate) {
+void TEventHandler::OnDeactivateVetoed(int gate) {
   (void)gate;
 }
 

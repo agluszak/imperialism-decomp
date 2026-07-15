@@ -1406,3 +1406,39 @@ a real WinHelp override). Two transferable lessons:
   the marked vtable and hides the real owner. Re-home by: raw-reading the orig slot, xref'ing
   the function to find which vtable actually references it, and confirming the base call in the
   body identifies the parent class.
+
+## Note 91 — A scalar-deleting-destructor stuck below 100% often means the real dtor is mislabeled
+
+When a `??_G` scalar deleting destructor won't reach 100% and the only diff is its *call
+target* name (`just compare` shows orig calling `SomeGhidraPlaceholder` where recomp calls
+`~Class`), the placeholder IS the real virtual destructor. The scalar deleting destructor's
+one non-trivial instruction is `call <destructor>`; reccmp resolves the orig call target to
+whatever name owns that address, so a Ghidra placeholder there surfaces as a name mismatch.
+
+Fix: identify the address (grep the placeholder name → symbols.csv/index.csv), confirm it is
+a trivial destructor (`just ghidra-decompile` shows a ~7-byte `this->vftable = &PTR_...;
+return;`), then (1) add `// FUNCTION: IMPERIALISM 0xADDR` to the manual `~Class()` body,
+(2) rename the symbols.csv row `ADDR|Class::~Class|??1Class@@UAE@XZ|...`, (3) give the scalar
+deleting destructor its own `??_GClass@@UAEPAXI@Z` mangled name in the same file, (4)
+`just regen-stubs` to drop the placeholder stub and claim the address. TTacticalPlayer's dtor
+at 0x59ae60 masqueraded as `CreateTTacticalPlayerInstance`; claiming it took both the dtor and
+its scalar-deleting sibling to 100% (+2 aligned).
+
+## Note 92 — Name shared base vtable slots from a coherent in-file protocol, not one slot at a time
+
+The TEventHandler/TView base declares ~10 `vmethod_00NN` placeholder virtuals overridden by
+~200 UI subclasses; each rename touches ~200 files. Don't invent names per isolated slot.
+Instead read the base `.cpp` for a *cluster that calls each other* and name the whole protocol
+at once. TEventHandler's active-view arbitration was fully legible in one file:
+`IsActiveView` (0x22, `this==root->GetActiveView()`), `TryDeactivateActiveView` (0x20, asks the
+incumbent to step aside), `GetDeactivateVetoCode` (0x18, veto gate: 0=allow), `OnDeactivated`
+(0x19) and `OnDeactivateVetoed` (0x1a) notification hooks, plus `DetachUiResourceOwnerIfMatches`
+(0x23, inverse of `SetUiResourceOwner` 0x24). Slots whose base is a bare `return 0;`/no-op with
+no in-file caller (`vmethod_0017/0023/0081`) stay hedged — no evidence to name them.
+
+Execution: the rename is codegen-neutral (reccmp pairs by address), so a word-boundary
+find/replace across `src/game`+`include/game` (NOT autogen) + symbols.csv is safe — the `override`
+keyword makes the compiler reject any inconsistency, and `just vtable` confirms 0 slot drift.
+1191 replacements across 199 files, build green, all affected vtables still 100%, stats +0.
+The Mac oracle gives candidate *names* but never the slot→name mapping (Hard Rule 12); derive
+the mapping from behavior, then optionally cross-check the name exists in the Mac symbol list.

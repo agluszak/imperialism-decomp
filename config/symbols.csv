@@ -3397,7 +3397,7 @@ address|name|symbol|size|type|prototype|provenance
 5275a0|TMapMaker::DispatchUiSelectionToHandler||314|function|undefined BuildFineGridRegionOverlayFromCoarseState()|
 527730|TMapMaker::HandleEvent||1175|function|undefined GenerateCoarseAndFineRegionSeedMap()|
 527d00|TMapMaker::vmethod_0023||367|function|undefined PickRandomType3SeedAndAttemptExpansion()|
-527ed0|TMapMaker::vmethod_0024||493|function|undefined TryAssignCellTypeWithDirectionalConstraints()|
+527ed0|TMapMaker::GetDeactivateVetoCode||493|function|undefined TryAssignCellTypeWithDirectionalConstraints()|
 528140|TMapMaker::OwnerPanel||499|function|undefined TryPlaceType1CoarseCellWithAdjacencyRules()|
 5283c0|TMapMaker::ForwardParam||533|function|undefined TryPlaceType3CoarseCellWithAdjacencyRules()|
 528670|TMapMaker::DoIdle||202|function|undefined BalanceGrowthBudgetAcrossPrimaryAndSecondaryBands()|
@@ -3413,7 +3413,7 @@ address|name|symbol|size|type|prototype|provenance
 5298a0|TMapMaker::vmethod_0081||74|function|undefined GetFineGridCellBasePointerFromCoarseIndex()|
 529960|RotateMapColumnsByPeakCityTileDensity||636|function|undefined RotateMapColumnsByPeakCityTileDensity()|
 529d90|OrphanDeadLeaf_NoRefs_00529d90||358|function|undefined OrphanDeadLeaf_NoRefs_00529d90()|
-529f60|TMapMaker::vmethod_0025||247|function|undefined ReindexType5CellsAndRebuildRegionOverlays()|
+529f60|TMapMaker::OnDeactivated||247|function|undefined ReindexType5CellsAndRebuildRegionOverlays()|
 52a0a0|OrphanDeadLeaf_NoRefs_0052a0a0||143|function|undefined OrphanDeadLeaf_NoRefs_0052a0a0()|
 52a160|GenerateCityRegionIdsBySeedAndNeighborPropagation||940|function|undefined GenerateCityRegionIdsBySeedAndNeighborPropagation()|
 52a670|GetCityRegionIdAtTileIndex||45|function|undefined GetCityRegionIdAtTileIndex()|
@@ -3449,7 +3449,7 @@ address|name|symbol|size|type|prototype|provenance
 52e310|ReallocateRouteRecordBufferByCountStride18||38|function|undefined ReallocateRouteRecordBufferByCountStride18()|
 52e350|RebuildUMapperRouteRecordsAndActiveMapRects||881|function|undefined RebuildUMapperRouteRecordsAndActiveMapRects()|
 52e7b0|AllocateRouteNodeStateBufferByCount||104|function|undefined AllocateRouteNodeStateBufferByCount()|
-52e840|TMapMaker::vmethod_0026||52|function|undefined NormalizeRouteNodeMarkerValuesAndReportChanges()|
+52e840|TMapMaker::OnDeactivateVetoed||52|function|undefined NormalizeRouteNodeMarkerValuesAndReportChanges()|
 52e890|TMapMaker::GetCityDialogFlagByte4||80|function|undefined MarkRouteNodePendingAndActivateUnvisitedNeighbors()|
 52e900|TMapMaker::HandleCityProductionNoOp||105|function|undefined 'scalar_deleting_destructor'(void)|
 52e990|AreRoutePointPairsEqual||33|function|undefined AreRoutePointPairsEqual()|
