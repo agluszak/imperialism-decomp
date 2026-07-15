@@ -31,6 +31,8 @@ public:
   // Navy slice (base TTacticalPlayer ends at +0x28).
   class TTaskForce* taskForce28; // +0x28 the side's fleet order node (0x59edd0 marks it
                                  // eliminated and prunes its order head after commit)
+  int shipDisplayMode2c;         // +0x2c ship-panel display mode set by the navy toolbar
+                                 // (hull=0, crew=1, sail=2)
 
   TNavyPlayer();
 };

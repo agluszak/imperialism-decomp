@@ -44,8 +44,9 @@ address|name|symbol|size|type|prototype|provenance
 413550|ImperialismCommandLineInfo::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 413580|ImperialismCommandLineInfo::~ImperialismCommandLineInfo||71|function|undefined ~ImperialismCommandLineInfo()|
 4135f0|TAmbitApplication::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
+413670|T64TemplateDialog::`scalar deleting destructor'|??_GT64TemplateDialog@@UAEPAXI@Z|30|function|undefined ScalarDeletingDestructor()|
 4136c0|OrphanRetStub_004136c0||3|function|undefined OrphanRetStub_004136c0()|
-4136e0|OrphanVtableAssignStub_004136e0||6|function|undefined OrphanVtableAssignStub_004136e0()|
+4136e0|T64TemplateDialog::GetMessageMap|?GetMessageMap@T64TemplateDialog@@MBEPBUAFX_MSGMAP@@XZ|6|function|undefined GetMessageMap()|
 413700|ShowDialogTemplate64Modal||94|function|undefined ShowDialogTemplate64Modal()|
 413780|ShutdownImperialismApplicationInstance||226|function|undefined ShutdownImperialismApplicationInstance()|
 4138b0|ImperialismApp::PostStartupCommand100||23|function|undefined PostCommand100ToMainWindow()|
@@ -53,10 +54,10 @@ address|name|symbol|size|type|prototype|provenance
 4139f0|ImperialismApp::RestoreWaitCursorIfStartupBusy||24|function|undefined WrapperFor_GetOrCreateMfcModuleThreadState_At004139f0()|
 413a20|ImperialismApp::PreTranslateMessage|?PreTranslateMessage@ImperialismApp@@UAEHPAUtagMSG@@@Z|30|function|public: virtual int __thiscall ImperialismApp::PreTranslateMessage(struct tagMSG *)|
 413a50|ShowSelectedDibInTemplateDDDialog||226|function|undefined ShowSelectedDibInTemplateDDDialog()|
-413b80|WrapperFor_CDialog_At00413b80||86|function|undefined WrapperFor_CDialog_At00413b80()|
+413b80|TModalDialogBase::~TModalDialogBase|??1TModalDialogBase@@UAE@XZ|86|function|public: virtual __thiscall TModalDialogBase::~TModalDialogBase(void)|
 413c00|TModalDialogBase::`scalar deleting destructor'|??_GTModalDialogBase@@UAEPAXI@Z|30|function|undefined ScalarDeletingDestructor()|
-413c30|WrapperFor_FreeHeapBufferIfNotNull_At00413cd0_Impl||117|function|undefined WrapperFor_FreeHeapBufferIfNotNull_At00413cd0_Impl()|
-413cd0|WrapperFor_FreeHeapBufferIfNotNull_At00413cd0||30|function|undefined WrapperFor_FreeHeapBufferIfNotNull_At00413cd0()|
+413c30|TDDTemplateDialog::~TDDTemplateDialog|??1TDDTemplateDialog@@UAE@XZ|117|function|public: virtual __thiscall TDDTemplateDialog::~TDDTemplateDialog(void)|
+413cd0|TDDTemplateDialog::`scalar deleting destructor'|??_GTDDTemplateDialog@@UAEPAXI@Z|30|function|undefined ScalarDeletingDestructor()|
 413d20|ShowNationSelectDialogAndRedispatchCurrentTurnEvent||328|function|undefined ShowNationSelectDialogAndRedispatchCurrentTurnEvent()|
 413ed0|WrapperFor_FreeHeapBufferIfNotNull_At0047d3f0_Impl||104|function|undefined WrapperFor_FreeHeapBufferIfNotNull_At0047d3f0_Impl()|
 413f60|HandleDialogResultAndPostCommand100||208|function|undefined HandleDialogResultAndPostCommand100()|
@@ -350,34 +351,35 @@ address|name|symbol|size|type|prototype|provenance
 47d310|WrapperFor_EnsureWindowSubclassAndParentConsistency_At0047d310||22|function|undefined WrapperFor_EnsureWindowSubclassAndParentConsistency_At0047d310()|
 47d340|TD2TemplateDialog::GetMessageMap|?GetMessageMap@TD2TemplateDialog@@MBEPBUAFX_MSGMAP@@XZ|6|function|undefined GetMessageMap()|
 47d360|InitializeDialogTemplateDBWithTextState||109|function|undefined InitializeDialogTemplateDBWithTextState()|
-47d3f0|WrapperFor_FreeHeapBufferIfNotNull_At0047d3f0||30|function|undefined WrapperFor_FreeHeapBufferIfNotNull_At0047d3f0()|
+47d3f0|TDBTemplateDialog::`scalar deleting destructor'|??_GTDBTemplateDialog@@UAEPAXI@Z|30|function|undefined ScalarDeletingDestructor()|
 47d420|WrapperFor_EnsureWindowSubclassAndParentConsistency_At0047d420||22|function|undefined WrapperFor_EnsureWindowSubclassAndParentConsistency_At0047d420()|
-47d450|OrphanVtableAssignStub_0047d450||6|function|undefined OrphanVtableAssignStub_0047d450()|
+47d450|TDBTemplateDialog::GetMessageMap|?GetMessageMap@TDBTemplateDialog@@MBEPBUAFX_MSGMAP@@XZ|6|function|undefined GetMessageMap()|
 47d470|InitializeDialogTemplateDCBaseState||44|function|undefined InitializeDialogTemplateDCBaseState()|
-47d4b0|WrapperFor_FreeHeapBufferIfNotNull_At0047d4b0||30|function|undefined WrapperFor_FreeHeapBufferIfNotNull_At0047d4b0()|
+47d4b0|TDCTemplateDialog::`scalar deleting destructor'|??_GTDCTemplateDialog@@UAEPAXI@Z|30|function|undefined ScalarDeletingDestructor()|
 47d4e0|WrapperFor_DDX_Text_At0047d4e0||42|function|undefined WrapperFor_DDX_Text_At0047d4e0()|
-47d520|OrphanVtableAssignStub_0047d520||6|function|undefined OrphanVtableAssignStub_0047d520()|
+47d520|TDCTemplateDialog::GetMessageMap|?GetMessageMap@TDCTemplateDialog@@MBEPBUAFX_MSGMAP@@XZ|6|function|undefined GetMessageMap()|
 47d540|InitializeDialogTemplateDDPictureState||65|function|undefined InitializeDialogTemplateDDPictureState()|
 47d5b0|OrphanRetStub_0047d5b0||3|function|undefined OrphanRetStub_0047d5b0()|
-47d5d0|OrphanVtableAssignStub_0047d5d0||6|function|undefined OrphanVtableAssignStub_0047d5d0()|
+47d5d0|TDDTemplateDialog::GetMessageMap|?GetMessageMap@TDDTemplateDialog@@MBEPBUAFX_MSGMAP@@XZ|6|function|undefined GetMessageMap()|
 47d5f0|RenderMapTileDibSurfaceWithClipRegionAndGdiPrimitives||699|function|undefined RenderMapTileDibSurfaceWithClipRegionAndGdiPrimitives()|
 47d960|CGdiObject::~CGdiObject||70|function|undefined ~CGdiObject()|
 47d9d0|WrapperFor_DeleteRegionHandleFromClipState_At0047d9d0||70|function|undefined WrapperFor_DeleteRegionHandleFromClipState_At0047d9d0()|
 47da70|WrapperFor_DeleteRegionHandleFromClipState_At0047da70||70|function|undefined WrapperFor_DeleteRegionHandleFromClipState_At0047da70()|
 47dae0|UpdateCursorHelperWindowLayoutAndMask||128|function|undefined UpdateCursorHelperWindowLayoutAndMask()|
 47dba0|InitializeDialogTemplateDEWithTextState||123|function|undefined InitializeDialogTemplateDEWithTextState()|
-47dc40|WrapperFor_FreeHeapBufferIfNotNull_At0047dc40||30|function|undefined WrapperFor_FreeHeapBufferIfNotNull_At0047dc40()|
+47dc40|TDETemplateDialog::`scalar deleting destructor'|??_GTDETemplateDialog@@UAEPAXI@Z|30|function|undefined ScalarDeletingDestructor()|
 47dc70|Helper_Uses_DDX_Text_At0047dc70||64|function|undefined Helper_Uses_DDX_Text_At0047dc70()|
-47dcc0|OrphanVtableAssignStub_0047dcc0||6|function|undefined OrphanVtableAssignStub_0047dcc0()|
+47dcc0|TDETemplateDialog::GetMessageMap|?GetMessageMap@TDETemplateDialog@@MBEPBUAFX_MSGMAP@@XZ|6|function|undefined GetMessageMap()|
 47dce0|InitializeDialogTemplateDFBaseState||50|function|undefined InitializeDialogTemplateDFBaseState()|
+47dd30|TDFTemplateDialog::`scalar deleting destructor'|??_GTDFTemplateDialog@@UAEPAXI@Z|30|function|undefined ScalarDeletingDestructor()|
 47dd60|Helper_Uses_DDX_Text_618c5f_At0047dd60||103|function|undefined Helper_Uses_DDX_Text_618c5f_At0047dd60()|
-47ddf0|OrphanVtableAssignStub_0047ddf0||6|function|undefined OrphanVtableAssignStub_0047ddf0()|
+47ddf0|TDFTemplateDialog::GetMessageMap|?GetMessageMap@TDFTemplateDialog@@MBEPBUAFX_MSGMAP@@XZ|6|function|undefined GetMessageMap()|
 47de10|OrphanCallChain_C2_I09_0047de10||24|function|undefined OrphanCallChain_C2_I09_0047de10()|
 47de40|TControl::InitializeDialogTemplateFAWithTextState||109|function|undefined InitializeDialogTemplateFAWithTextState()|
-47ded0|WrapperFor_FreeHeapBufferIfNotNull_At0047ded0||30|function|undefined WrapperFor_FreeHeapBufferIfNotNull_At0047ded0()|
+47ded0|TFATemplateDialog::`scalar deleting destructor'|??_GTFATemplateDialog@@UAEPAXI@Z|30|function|undefined ScalarDeletingDestructor()|
 47df00|WrapperFor_FreeHeapBufferIfNotNull_At0047ded0_Impl||104|function|undefined WrapperFor_FreeHeapBufferIfNotNull_At0047ded0_Impl()|
 47df90|OrphanRetStub_0047df90||3|function|undefined OrphanRetStub_0047df90()|
-47dfb0|OrphanVtableAssignStub_0047dfb0||6|function|undefined OrphanVtableAssignStub_0047dfb0()|
+47dfb0|TFATemplateDialog::GetMessageMap|?GetMessageMap@TFATemplateDialog@@MBEPBUAFX_MSGMAP@@XZ|6|function|undefined GetMessageMap()|
 47dfd0|InitializeDialogTemplateFBWithDualTextState||141|function|undefined InitializeDialogTemplateFBWithDualTextState()|
 47e090|TAutoResolutionDialog::`scalar deleting destructor'|??_GTAutoResolutionDialog@@UAEPAXI@Z|30|function|undefined ScalarDeletingDestructor()|
 47e0c0|WrapperFor_GetOrSetButtonCheckStateClamped_At0047e0c0||46|function|undefined WrapperFor_GetOrSetButtonCheckStateClamped_At0047e0c0()|
@@ -405,10 +407,10 @@ address|name|symbol|size|type|prototype|provenance
 47f410|OrphanRetStub_0047f410||3|function|undefined OrphanRetStub_0047f410()|
 47f430|OrphanVtableAssignStub_0047f430||6|function|undefined OrphanVtableAssignStub_0047f430()|
 47f450|TControl::InitializeDialogTemplateADWithTextState||109|function|undefined InitializeDialogTemplateADWithTextState()|
-47f4e0|WrapperFor_FreeHeapBufferIfNotNull_At0047f4e0||30|function|undefined WrapperFor_FreeHeapBufferIfNotNull_At0047f4e0()|
+47f4e0|TADTemplateDialog::`scalar deleting destructor'|??_GTADTemplateDialog@@UAEPAXI@Z|30|function|undefined ScalarDeletingDestructor()|
 47f510|WrapperFor_FreeHeapBufferIfNotNull_At0047f4e0_Impl||104|function|undefined WrapperFor_FreeHeapBufferIfNotNull_At0047f4e0_Impl()|
 47f5d0|WrapperFor_EnsureWindowSubclassAndParentConsistency_At0047f5d0||22|function|undefined WrapperFor_EnsureWindowSubclassAndParentConsistency_At0047f5d0()|
-47f600|OrphanVtableAssignStub_0047f600||6|function|undefined OrphanVtableAssignStub_0047f600()|
+47f600|TADTemplateDialog::GetMessageMap|?GetMessageMap@TADTemplateDialog@@MBEPBUAFX_MSGMAP@@XZ|6|function|undefined GetMessageMap()|
 47f620|WrapperFor_UpdateCursorHelperWindowVisibilityFromControllerState_At0047f620||11|function|undefined WrapperFor_UpdateCursorHelperWindowVisibilityFromControllerState_At0047f620()|
 47f710|InitializeRuntimeSelectionRecordArrayStateAndRegisterAtExit||24|function|undefined InitializeRuntimeSelectionRecordArrayStateAndRegisterAtExit()|
 47f740|DestroyRuntimeSelectionRecordArrayStateAtExit||5|function|undefined DestroyRuntimeSelectionRecordArrayStateAtExit()|
@@ -439,9 +441,9 @@ address|name|symbol|size|type|prototype|provenance
 480990|CacheObjectVslot74ResultToField0C||44|function|undefined CacheObjectVslot74ResultToField0C()|
 4809d0|WrapperFor_thunk_ReportWNetManagerErrorCodeAndNotifyUi_At005e2900_Impl||45|function|undefined WrapperFor_thunk_ReportWNetManagerErrorCodeAndNotifyUi_At005e2900_Impl()|
 480a10|TControl::InitializeDialogTemplate104WithRegionState||109|function|undefined InitializeDialogTemplate104WithRegionState()|
-480aa0|WrapperFor_FreeHeapBufferIfNotNull_At00480aa0||30|function|undefined WrapperFor_FreeHeapBufferIfNotNull_At00480aa0()|
+480aa0|T104TemplateDialog::`scalar deleting destructor'|??_GT104TemplateDialog@@UAEPAXI@Z|30|function|undefined ScalarDeletingDestructor()|
 480ad0|WrapperFor_EnsureWindowSubclassAndParentConsistency_At00480ad0||22|function|undefined WrapperFor_EnsureWindowSubclassAndParentConsistency_At00480ad0()|
-480b00|OrphanVtableAssignStub_00480b00||6|function|undefined OrphanVtableAssignStub_00480b00()|
+480b00|T104TemplateDialog::GetMessageMap|?GetMessageMap@T104TemplateDialog@@MBEPBUAFX_MSGMAP@@XZ|6|function|undefined GetMessageMap()|
 480b20|CArray<RuntimeSelectionRecord*,RuntimeSelectionRecord*>::CArray|??0?$CArray@PAURuntimeSelectionRecord@@PAU1@@@QAE@XZ|23|function|void CArray()|template
 480b50|CArray<RuntimeSelectionRecord*,RuntimeSelectionRecord*>::~CArray|??1?$CArray@PAURuntimeSelectionRecord@@PAU1@@@UAE@XZ|81|function|void ~CArray()|template
 480bd0|CArray<RuntimeSelectionRecord*,RuntimeSelectionRecord*>::Serialize|?Serialize@?$CArray@PAURuntimeSelectionRecord@@PAU1@@@UAEXAAVCArchive@@@Z|392|function|undefined Serialize(CArchive &)|template
@@ -455,19 +457,19 @@ address|name|symbol|size|type|prototype|provenance
 481220|WrapperFor_UpdateCursorHelperWindowVisibilityFromControllerState_At00481220||11|function|undefined WrapperFor_UpdateCursorHelperWindowVisibilityFromControllerState_At00481220()|
 481370|WrapperFor_ftol_At00481370||30|function|undefined WrapperFor_ftol_At00481370()|
 4813a0|InitializeHotKeyDialogTemplateA1WithTripleTextState||164|function|undefined InitializeHotKeyDialogTemplateA1WithTripleTextState()|
-481480|WrapperFor_FreeHeapBufferIfNotNull_At00481480||30|function|undefined WrapperFor_FreeHeapBufferIfNotNull_At00481480()|
+481480|TA1TemplateDialog::`scalar deleting destructor'|??_GTA1TemplateDialog@@UAEPAXI@Z|30|function|undefined ScalarDeletingDestructor()|
 4814b0|WrapperFor_FreeHeapBufferIfNotNull_At00481480_Impl||108|function|undefined WrapperFor_FreeHeapBufferIfNotNull_At00481480_Impl()|
 481540|Helper_Uses_EnsureWindowSubclassAndParentConsistency_At00481540||100|function|undefined Helper_Uses_EnsureWindowSubclassAndParentConsistency_At00481540()|
-4815d0|OrphanVtableAssignStub_004815d0||6|function|undefined OrphanVtableAssignStub_004815d0()|
+4815d0|TA1TemplateDialog::GetMessageMap|?GetMessageMap@TA1TemplateDialog@@MBEPBUAFX_MSGMAP@@XZ|6|function|undefined GetMessageMap()|
 481670|OrphanRetStub_00481670||3|function|undefined OrphanRetStub_00481670()|
 481690|OrphanVtableAssignStub_00481690||6|function|undefined OrphanVtableAssignStub_00481690()|
 481730|OrphanRetStub_00481730||3|function|undefined OrphanRetStub_00481730()|
 481750|OrphanVtableAssignStub_00481750||6|function|undefined OrphanVtableAssignStub_00481750()|
 481770|TControl::InitializeDialogTemplateA7WithSharedText||107|function|undefined InitializeDialogTemplateA7WithSharedText()|
-481800|WrapperFor_FreeHeapBufferIfNotNull_At00481800||30|function|undefined WrapperFor_FreeHeapBufferIfNotNull_At00481800()|
+481800|TA7TemplateDialog::`scalar deleting destructor'|??_GTA7TemplateDialog@@UAEPAXI@Z|30|function|undefined ScalarDeletingDestructor()|
 481830|WrapperFor_FreeHeapBufferIfNotNull_At00481800_Impl||71|function|undefined WrapperFor_FreeHeapBufferIfNotNull_At00481800_Impl()|
 4818a0|WrapperFor_DDX_Text_618cbd_At004818a0||22|function|undefined WrapperFor_DDX_Text_618cbd_At004818a0()|
-4818d0|OrphanVtableAssignStub_004818d0||6|function|undefined OrphanVtableAssignStub_004818d0()|
+4818d0|TA7TemplateDialog::GetMessageMap|?GetMessageMap@TA7TemplateDialog@@MBEPBUAFX_MSGMAP@@XZ|6|function|undefined GetMessageMap()|
 481970|OrphanRetStub_00481970||3|function|undefined OrphanRetStub_00481970()|
 481990|OrphanVtableAssignStub_00481990||6|function|undefined OrphanVtableAssignStub_00481990()|
 481a30|OrphanRetStub_00481a30||3|function|undefined OrphanRetStub_00481a30()|
@@ -475,24 +477,24 @@ address|name|symbol|size|type|prototype|provenance
 481af0|OrphanRetStub_00481af0||3|function|undefined OrphanRetStub_00481af0()|
 481b10|OrphanVtableAssignStub_00481b10||6|function|undefined OrphanVtableAssignStub_00481b10()|
 481b30|TControl::InitializeDialogTemplateABWithDualTextState||136|function|undefined InitializeDialogTemplateABWithDualTextState()|
-481bf0|WrapperFor_FreeHeapBufferIfNotNull_At00481bf0||30|function|undefined WrapperFor_FreeHeapBufferIfNotNull_At00481bf0()|
+481bf0|TABTemplateDialog::`scalar deleting destructor'|??_GTABTemplateDialog@@UAEPAXI@Z|30|function|undefined ScalarDeletingDestructor()|
 481c20|WrapperFor_FreeHeapBufferIfNotNull_At00481bf0_Impl||89|function|undefined WrapperFor_FreeHeapBufferIfNotNull_At00481bf0_Impl()|
 481ca0|WrapperFor_DDX_Text_At00481ca0||43|function|undefined WrapperFor_DDX_Text_At00481ca0()|
-481ce0|OrphanVtableAssignStub_00481ce0||6|function|undefined OrphanVtableAssignStub_00481ce0()|
+481ce0|TABTemplateDialog::GetMessageMap|?GetMessageMap@TABTemplateDialog@@MBEPBUAFX_MSGMAP@@XZ|6|function|undefined GetMessageMap()|
 481d80|OrphanRetStub_00481d80||3|function|undefined OrphanRetStub_00481d80()|
 481da0|OrphanVtableAssignStub_00481da0||6|function|undefined OrphanVtableAssignStub_00481da0()|
 481dc0|TControl::InitializeDialogTemplateAEWithDualTextState||136|function|undefined InitializeDialogTemplateAEWithDualTextState()|
-481e80|WrapperFor_FreeHeapBufferIfNotNull_At00481e80||30|function|undefined WrapperFor_FreeHeapBufferIfNotNull_At00481e80()|
+481e80|TAETemplateDialog::`scalar deleting destructor'|??_GTAETemplateDialog@@UAEPAXI@Z|30|function|undefined ScalarDeletingDestructor()|
 481eb0|WrapperFor_FreeHeapBufferIfNotNull_At00481e80_Impl||89|function|undefined WrapperFor_FreeHeapBufferIfNotNull_At00481e80_Impl()|
 481f30|WrapperFor_DDX_Text_At00481f30||43|function|undefined WrapperFor_DDX_Text_At00481f30()|
-481f70|OrphanVtableAssignStub_00481f70||6|function|undefined OrphanVtableAssignStub_00481f70()|
+481f70|TAETemplateDialog::GetMessageMap|?GetMessageMap@TAETemplateDialog@@MBEPBUAFX_MSGMAP@@XZ|6|function|undefined GetMessageMap()|
 482010|OrphanRetStub_00482010||3|function|undefined OrphanRetStub_00482010()|
 482030|OrphanVtableAssignStub_00482030||6|function|undefined OrphanVtableAssignStub_00482030()|
 482050|TControl::InitializeDialogTemplateB1WithSharedText||107|function|undefined InitializeDialogTemplateB1WithSharedText()|
-4820e0|WrapperFor_FreeHeapBufferIfNotNull_At004820e0||30|function|undefined WrapperFor_FreeHeapBufferIfNotNull_At004820e0()|
+4820e0|TB1TemplateDialog::`scalar deleting destructor'|??_GTB1TemplateDialog@@UAEPAXI@Z|30|function|undefined ScalarDeletingDestructor()|
 482110|WrapperFor_FreeHeapBufferIfNotNull_At004820e0_Impl||71|function|undefined WrapperFor_FreeHeapBufferIfNotNull_At004820e0_Impl()|
 482180|WrapperFor_DDX_Text_618cbd_At00482180||22|function|undefined WrapperFor_DDX_Text_618cbd_At00482180()|
-4821b0|OrphanVtableAssignStub_004821b0||6|function|undefined OrphanVtableAssignStub_004821b0()|
+4821b0|TB1TemplateDialog::GetMessageMap|?GetMessageMap@TB1TemplateDialog@@MBEPBUAFX_MSGMAP@@XZ|6|function|undefined GetMessageMap()|
 4821d0|HandleTurnEventVtableSlot2CInitializeHotKeyDialog_Impl||13|function|undefined HandleTurnEventVtableSlot2CInitializeHotKeyDialog_Impl()|
 4821f0|SyncTripleSelectionControlsFromState||180|function|undefined SyncTripleSelectionControlsFromState()|
 4822e0|OrphanRetStub_004822e0||1|function|undefined OrphanRetStub_004822e0()|
@@ -1242,7 +1244,7 @@ address|name|symbol|size|type|prototype|provenance
 498ca0|NoOpCallback_00498ca0||1|function|undefined NoOpCallback_00498ca0()|
 498cc0|ShowDialogTemplateE0ModalAndReleaseCapture||117|function|undefined ShowDialogTemplateE0ModalAndReleaseCapture()|
 498d60|WrapperFor_CDialog_At00498d60||80|function|undefined WrapperFor_CDialog_At00498d60()|
-498dd0|WrapperFor_FreeHeapBufferIfNotNull_At00498dd0||30|function|undefined WrapperFor_FreeHeapBufferIfNotNull_At00498dd0()|
+498dd0|TE0TemplateDialog::`scalar deleting destructor'|??_GTE0TemplateDialog@@UAEPAXI@Z|30|function|undefined ScalarDeletingDestructor()|
 498e00|WrapperFor_thunk_ResolveBmpResourceHandleWithDefault3B6_At00498e00||31|function|undefined WrapperFor_thunk_ResolveBmpResourceHandleWithDefault3B6_At00498e00()|
 498f60|TModuleLibraryCacheTableStateB::TModuleLibraryCacheTableStateB||87|function|undefined TModuleLibraryCacheTableStateB()|
 498fe0|TModuleLibraryCacheTableStateB::~TModuleLibraryCacheTableStateB||527|function|undefined ~TModuleLibraryCacheTableStateB()|
@@ -1292,9 +1294,10 @@ address|name|symbol|size|type|prototype|provenance
 49bc70|ResetGlobalQuad6A1F28To6A1F34||23|function|undefined ResetGlobalQuad6A1F28To6A1F34()|
 49bca0|ResetGlobalDword6A1E68||30|function|undefined ResetGlobalDword6A1E68()|
 49bcd0|InitializeDialogTemplateD0WithTextState||106|function|undefined InitializeDialogTemplateD0WithTextState()|
+49bd60|TD0TemplateDialog::`scalar deleting destructor'|??_GTD0TemplateDialog@@UAEPAXI@Z|30|function|undefined ScalarDeletingDestructor()|
 49bd90|PopulateListBoxFromDelimitedText||327|function|undefined PopulateListBoxFromDelimitedText()|
 49bf60|WrapperFor_EnsureWindowSubclassAndParentConsistency_At0049bf60||22|function|undefined WrapperFor_EnsureWindowSubclassAndParentConsistency_At0049bf60()|
-49bf90|OrphanVtableAssignStub_0049bf90||6|function|undefined OrphanVtableAssignStub_0049bf90()|
+49bf90|TD0TemplateDialog::GetMessageMap|?GetMessageMap@TD0TemplateDialog@@MBEPBUAFX_MSGMAP@@XZ|6|function|undefined GetMessageMap()|
 49bfb0|OrphanRetStub_0049bfb0||1|function|undefined OrphanRetStub_0049bfb0()|
 49bfd0|WrapperFor_ShowWindowOrForwardToSite_At0049bfd0||8|function|undefined WrapperFor_ShowWindowOrForwardToSite_At0049bfd0()|
 49bff0|ResetGlobalPair6A1F78And6A1F7C||13|function|undefined ResetGlobalPair6A1F78And6A1F7C()|
@@ -5291,7 +5294,7 @@ address|name|symbol|size|type|prototype|provenance
 59afa0|TTacticalPlayer::RemoveTacticalUnitFromUnitList||37|function|undefined Helper_Uses_FindListNodeByKeyFromNodeOrHead_At0059afa0(void)|
 59afe0|TTacticalPlayer::AddTacticalUnitToUnitListHead||28|function|undefined WrapperFor_AddHead_At0059afe0(int * param_1)|
 59b010|TTacticalPlayer::IsTacticalControllerOwnedByActiveNation||31|function|undefined IsTacticalControllerOwnedByActiveNation()|
-59b040|HandleTacticalCommandTag_skip||32|function|undefined HandleTacticalCommandTag_skip()|
+59b040|TTacticalPlayer::HandleTacticalCommandTag_skip||32|function|undefined HandleTacticalCommandTag_skip()|
 59b070|CompareTacticalCursorEntriesByActionClassPriority||119|function|undefined CompareTacticalCursorEntriesByActionClassPriority()|
 59b110|TArmyPlayer::CreateObject|?CreateObject@TArmyPlayer@@SGPAVCObject@@XZ|24|function|undefined CreateObject()|rtti
 59b140|TArmyPlayer::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
@@ -5401,7 +5404,7 @@ address|name|symbol|size|type|prototype|provenance
 5a0550|IsHexNeighborTileIndex||57|function|undefined IsHexNeighborTileIndex()|
 5a05a0|ComputeTacticalHoverCursorStateIndex||1002|function|undefined ComputeTacticalHoverCursorStateIndex()|
 5a0a90|ResolveTacticalHoverCursorToken||348|function|undefined ResolveTacticalHoverCursorToken()|
-5a0c50|TacticalBattleView::HandleTacticalBattleCommandTag||193|function|void __thiscall HandleTacticalBattleCommandTag(int commandTag)|
+5a0c50|TTacticalBattle::HandleTacticalBattleCommandTag||193|function|void __thiscall HandleTacticalBattleCommandTag(int commandTag)|
 5a0d60|QueueTacticalEventPacket232A||139|function|undefined QueueTacticalEventPacket232A()|
 5a0ea0|AdvanceToNextTacticalUnitTurnStep||277|function|undefined AdvanceToNextTacticalUnitTurnStep()|
 5a1010|TTacticalBattle::SetCurrentTacticalUnitSelection||155|function|undefined SetCurrentTacticalUnitSelection()|
@@ -5434,7 +5437,7 @@ address|name|symbol|size|type|prototype|provenance
 5a3a70|TTacticalBattle::FindFortWallTileCrossedByFiringLine||328|function|undefined TestGridSegmentCrossesViewportThreshold()|
 5a3c20|TTacticalBattle::ConsumeFortStrengthPointsAndInvalidateIfDepleted||125|function|void __thiscall ConsumeTacticalSideResourcePoolAndInvalidateIfEmpty(int tileIndex, int consumeAmount)|
 5a3d30|IsTacticalTargetTileReachableForAction||383|function|undefined IsTacticalTargetTileReachableForAction()|
-5a3f10|TacticalBattleView::HandleTacticalCommandTag_targ||532|function|undefined HandleTacticalCommandTag_targ()|
+5a3f10|TTacticalBattle::HandleTacticalCommandTag_targ||532|function|undefined HandleTacticalCommandTag_targ()|
 5a41c0|TTacticalBattle::ApplyGridColumnSelectionGuard||96|function|undefined ApplyGridColumnSelectionGuard()|
 5a4240|TTacticalBattle::CountFreeDeploymentZoneTilesForCurrentSide||125|function|undefined TArmyTacUnit_VtblSlot06_Impl()|
 5a42e0|RenderTacticalBattleSelectionAndUnitOverlayPass_Impl_At005a42e0||64|function|undefined RenderTacticalBattleSelectionAndUnitOverlayPass_Impl_At005a42e0()|
@@ -5461,7 +5464,7 @@ address|name|symbol|size|type|prototype|provenance
 5a59a0|ConvertHexTileIndexToRowAndDoubleColumn||58|function|void __stdcall ConvertHexTileIndexToRowAndDoubleColumn(int tileIndex, uint * outRow, int * outCol2X)|
 5a59f0|TNavyBattle::ComputeTacticalReachableTileCostsByUnitCategory||293|function|undefined ComputeReachableTileDistanceByMoveBudget()|
 5a5b70|TNavyBattle::CreateTTacticalBattleInstance||14|function|undefined ResolveNavyOrderChainsForTurnPhase()|
-5a5b90|TacticalBattleView::HandleNavyTacticalToolbarModeAndCommandTags_Impl||17|function|undefined HandleNavyTacticalToolbarModeAndCommandTags_Impl()|
+5a5b90|TTacticalBattle::SetCurrentSideNavyShipDisplayMode||17|function|undefined HandleNavyTacticalToolbarModeAndCommandTags_Impl()|
 5a5bc0|TNavyBattle::ExecuteTacticalActionAndQueueEventIfNoAdjacentValidTarget||111|function|undefined ExecuteTacticalActionAndQueueEventIfSupportUnavailable()|
 5a5c50|TNavyBattle::MoveTacticalUnitAndQueueEvent232AIfNoAdjacentReachableTarget||141|function|undefined MoveTacticalUnitAndQueueEvent232AOnBlockedEngagementState()|
 5a5d10|TTacticalUnit::CreateObject|?CreateObject@TTacticalUnit@@SGPAVCObject@@XZ|24|function|undefined CreateObject()|rtti
@@ -6111,7 +6114,7 @@ address|name|symbol|size|type|prototype|provenance
 5dee20|WrapperFor_ftol_At005dee20||30|function|undefined WrapperFor_ftol_At005dee20()|
 5dee50|InitializeDialogTemplateE0||30|function|undefined InitializeDialogTemplateE0()|
 5dee80|NoOpRuntimeUiCallback_005dee80||3|function|undefined NoOpRuntimeUiCallback_005dee80()|
-5deea0|GetRuntimePtrTable0066F368||6|function|undefined GetRuntimePtrTable0066F368()|
+5deea0|TE0TemplateDialog::GetMessageMap|?GetMessageMap@TE0TemplateDialog@@MBEPBUAFX_MSGMAP@@XZ|6|function|undefined GetMessageMap()|
 5def40|WrapperFor_EnsureMainFrameClassNameAssigned_At005def40||24|function|undefined WrapperFor_EnsureMainFrameClassNameAssigned_At005def40()|
 5def70|SetCursorFromResourceE4AndClampRange||65|function|undefined SetCursorFromResourceE4AndClampRange()|
 5df040|NoOpOnPaintWithCPaintDCScope_005df040||26|function|undefined NoOpOnPaintWithCPaintDCScope_005df040()|
@@ -6917,7 +6920,7 @@ address|name|symbol|size|type|prototype|provenance
 6050d0|CDialog::CDialog|??0CDialog@@QAE@IPAVCWnd@@@Z|57|function|public: __thiscall CDialog::CDialog(unsigned int,class CWnd *)|msvc500_library_override
 605144|CDialog::PreModal|?PreModal@CDialog@@IAEPAUHWND__@@XZ|55|function|protected: struct HWND__* __thiscall CDialog::PreModal(void)|msvc500_library_oracle
 60517b|CDialog::PostModal|?PostModal@CDialog@@IAEXXZ|62|function|protected: void __thiscall CDialog::PostModal(void)|msvc500_library_oracle
-6051b9|DoModal_6051b9||328|function|undefined DoModal_6051b9()|
+6051b9|CDialog::DoModal|?DoModal@CDialog@@UAEHXZ|328|function|public: virtual int __thiscall CDialog::DoModal(void)|msvc500_library_override
 60531e|CDialog::EndDialog|?EndDialog@CDialog@@QAEXH@Z|35|function|public: void __thiscall CDialog::EndDialog(int)|msvc500_library_oracle
 605365|CDialog::PreInitDialog|?PreInitDialog@CDialog@@MAEXXZ||function|protected: virtual void __thiscall CDialog::PreInitDialog(void)|msvc500_library_override
 605366|CDialog::HandleInitDialog|?HandleInitDialog@CDialog@@IAEJIJ@Z|136|function|protected: long __thiscall CDialog::HandleInitDialog(unsigned int, long)|msvc500_library_oracle
@@ -7577,7 +7580,7 @@ address|name|symbol|size|type|prototype|provenance
 618c5f|DDX_Text|?DDX_Text@@YGXPAVCDataExchange@@HAAJ@Z|47|function|undefined DDX_Text_618c5f()|
 618c8e|DDX_Text|?DDX_Text@@YGXPAVCDataExchange@@HAAK@Z|47|function|undefined DDX_Text_618c8e()|
 618cbd|DDX_Text|?DDX_Text@@YGXPAVCDataExchange@@HAAVCString@@@Z|82|function|void __stdcall DDX_Text(class CDataExchange *, int, class CString &)|msvc500_library_oracle
-618d0f|DDX_Check||82|function|undefined DDX_Check()|
+618d0f|DDX_Check|?DDX_Check@@YGXPAVCDataExchange@@HAAH@Z|82|function|void __stdcall DDX_Check(class CDataExchange *, int, int &)|msvc500_library_oracle
 618d61|DDX_Radio|?DDX_Radio@@YGXPAVCDataExchange@@HAAH@Z|145|function|void __stdcall DDX_Radio(class CDataExchange *, int, int &)|msvc500_library_oracle
 618df2|DDX_LBString|?DDX_LBString@@YGXPAVCDataExchange@@HAAVCString@@@Z|128|function|void __stdcall DDX_LBString(astruct_1 * itemCountPtr, undefined4 controlId, LPARAM * itemDataPtr)|
 618e72|DDX_LBStringExact||52|function|void __stdcall DDX_LBStringExact(int * state_flag, undefined4 owner_id, LPARAM * lparam_in)|
@@ -8465,6 +8468,7 @@ address|name|symbol|size|type|prototype|provenance
 69430c|g_szDecimalFormat|||global||
 6943cc|g_szMcAppUiHeaderPath_006943CC|||global||
 694b48|CDib::classCDib|||global||
+694c50|g_useCompatibleBitmapBlit|||global||
 694eb8|TObject::classTObject|||global||
 694fc8|g_szUiNilPointerMessage|||global||
 694fd8|g_szUiFailureMessage|||global||

@@ -171,6 +171,7 @@ public:
   RECT moveAnimSpriteSrcRectAC;          // +0xac sprite-sheet source rect
   struct TQuickDrawSurfaceContext* unitSpriteScratchSurfaceBC; // +0xbc 2x3-cell scratch
   RECT moveAnimScreenRectC0;                                   // +0xc0 on-screen animation rect
+  int fieldD0; // +0xd0 zeroed by ctor; use unobserved
 
   TTacticalBattleView();
 

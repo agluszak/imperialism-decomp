@@ -299,54 +299,6 @@ undefined4 WrapperFor_ftol_At005dee20(void)
   return 0;
 }
 
-// ghidra_name InitializeDialogTemplateE0
-// ghidra_proto undefined InitializeDialogTemplateE0()
-// FUNCTION: IMPERIALISM 0x005dee50
-undefined4 InitializeDialogTemplateE0(void)
-{
-  return 0;
-}
-
-// ghidra_name NoOpRuntimeUiCallback_005dee80
-// ghidra_proto undefined NoOpRuntimeUiCallback_005dee80()
-// FUNCTION: IMPERIALISM 0x005dee80
-undefined4 NoOpRuntimeUiCallback_005dee80(void)
-{
-  return 0;
-}
-
-// ghidra_name GetRuntimePtrTable0066F368
-// ghidra_proto undefined GetRuntimePtrTable0066F368()
-// FUNCTION: IMPERIALISM 0x005deea0
-undefined4 GetRuntimePtrTable0066F368(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_EnsureMainFrameClassNameAssigned_At005def40
-// ghidra_proto undefined WrapperFor_EnsureMainFrameClassNameAssigned_At005def40()
-// FUNCTION: IMPERIALISM 0x005def40
-undefined4 WrapperFor_EnsureMainFrameClassNameAssigned_At005def40(void)
-{
-  return 0;
-}
-
-// ghidra_name SetCursorFromResourceE4AndClampRange
-// ghidra_proto undefined SetCursorFromResourceE4AndClampRange()
-// FUNCTION: IMPERIALISM 0x005def70
-undefined4 SetCursorFromResourceE4AndClampRange(void)
-{
-  return 0;
-}
-
-// ghidra_name NoOpOnPaintWithCPaintDCScope_005df040
-// ghidra_proto undefined NoOpOnPaintWithCPaintDCScope_005df040()
-// FUNCTION: IMPERIALISM 0x005df040
-undefined4 NoOpOnPaintWithCPaintDCScope_005df040(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_ftol_At005df1a0
 // ghidra_proto undefined WrapperFor_ftol_At005df1a0()
 // FUNCTION: IMPERIALISM 0x005df1a0
