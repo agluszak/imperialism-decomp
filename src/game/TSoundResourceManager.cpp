@@ -19,6 +19,16 @@ extern "C" int __stdcall DirectSoundCreate(void* pcGuidDevice, IDirectSound** pp
 
 TSoundResourceManager g_soundResourceManager;
 
+// FUNCTION: IMPERIALISM 0x0049c0c0
+void InitializeGlobalPair6A1FE8And6A1FECDefault() {
+  g_ScaleDefault6A1FE8 = 0.015625;
+}
+
+// FUNCTION: IMPERIALISM 0x0049c0f0
+void InitializeGlobalPair6A1FC0And6A1FC4Default() {
+  g_ScaleDefault6A1FC0 = 0.015625;
+}
+
 // FUNCTION: IMPERIALISM 0x0049c150
 int TSoundResourceManager::CreateChannelBuffer(IDirectSoundBuffer** ppChannel) {
   WAVEFORMATEX wfx;

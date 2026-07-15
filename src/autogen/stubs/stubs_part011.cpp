@@ -995,22 +995,6 @@ undefined4 ResetGlobalDword6A1F70(void)
   return 0;
 }
 
-// ghidra_name InitializeGlobalPair6A1FE8And6A1FECDefault
-// ghidra_proto undefined InitializeGlobalPair6A1FE8And6A1FECDefault()
-// FUNCTION: IMPERIALISM 0x0049c0c0
-undefined4 InitializeGlobalPair6A1FE8And6A1FECDefault(void)
-{
-  return 0;
-}
-
-// ghidra_name InitializeGlobalPair6A1FC0And6A1FC4Default
-// ghidra_proto undefined InitializeGlobalPair6A1FC0And6A1FC4Default()
-// FUNCTION: IMPERIALISM 0x0049c0f0
-undefined4 InitializeGlobalPair6A1FC0And6A1FC4Default(void)
-{
-  return 0;
-}
-
 // ghidra_name UpdateGlobalWord6A2008FromScaled6A1FC0
 // ghidra_proto undefined UpdateGlobalWord6A2008FromScaled6A1FC0()
 // FUNCTION: IMPERIALISM 0x0049c120

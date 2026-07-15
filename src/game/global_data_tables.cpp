@@ -609,6 +609,14 @@ double g_MapPreviewScaleX6A3410;
 // GLOBAL: IMPERIALISM 0x006a33d0
 double g_MapPreviewScaleY6A33D0;
 
+// Two more 1/64 (0.015625) scale-factor doubles reset to default by the same defaults-table
+// initializers (0x49c0c0 / 0x49c0f0); g_ScaleDefault6A1FC0 is scaled by
+// UpdateGlobalWord6A2008FromScaled6A1FC0 (0x49c120). Zero on disk (runtime-set).
+// GLOBAL: IMPERIALISM 0x006a1fe8
+double g_ScaleDefault6A1FE8;
+// GLOBAL: IMPERIALISM 0x006a1fc0
+double g_ScaleDefault6A1FC0;
+
 // Order-type index rankings (0..13) sorted by descending descriptor weight, rebuilt by
 // InitializeNavyOrderPriorityTables (0x556610): by resolveWeight, calculateWeight, and
 // navyPriorityWeight respectively. Runtime-filled, so zero in the on-disk image.
