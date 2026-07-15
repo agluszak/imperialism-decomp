@@ -8401,7 +8401,7 @@
     },
     {
       "address": "0x4acb60",
-      "matching": 0.507533703409992,
+      "matching": 0.5154639175257731,
       "name": "TBattleReportView::BuildBattleReportLayoutAndMarkers",
       "type": 1
     },
@@ -17353,7 +17353,7 @@
     },
     {
       "address": "0x519140",
-      "matching": 0.5511265164644714,
+      "matching": 0.561344537815126,
       "name": "DumpAndResetMapScriptState",
       "type": 1
     },
@@ -22906,6 +22906,18 @@
       "type": 1
     },
     {
+      "address": "0x55e360",
+      "matching": 0.7329192546583851,
+      "name": "StepHexTileIndexByDirectionWithWrapRules",
+      "type": 1
+    },
+    {
+      "address": "0x55e550",
+      "matching": 0.543046357615894,
+      "name": "StepHexRowColByDirectionWithWrapRules",
+      "type": 1
+    },
+    {
       "address": "0x55e660",
       "matching": 1.0,
       "name": "TZone::CreateObject",
@@ -23075,7 +23087,7 @@
     },
     {
       "address": "0x55fb60",
-      "matching": 0.6666666666666666,
+      "matching": 0.7037037037037037,
       "name": "TZone::SetMapActionContextTargetTileAndRefreshMarkers",
       "type": 1
     },
@@ -23099,19 +23111,25 @@
     },
     {
       "address": "0x55ff70",
-      "matching": 0.3879310344827586,
+      "matching": 0.39655172413793105,
       "name": "TZone::ScoreCoastalTileForContextAndCityStateAffinity",
       "type": 1
     },
     {
       "address": "0x560150",
-      "matching": 0.506265664160401,
+      "matching": 0.5263157894736842,
       "name": "TZone::FindBestCoastalTileForContextAndCityStateByHeuristic_35_35_35_35_35",
       "type": 1
     },
     {
+      "address": "0x560470",
+      "matching": 0.5373134328358209,
+      "name": "AdvanceSpiralSearchStateAndStepHexCoordinates",
+      "type": 1
+    },
+    {
       "address": "0x560580",
-      "matching": 0.3157894736842105,
+      "matching": 0.3263157894736842,
       "name": "TZone::SetMapOrderUiFlag_36_36_36_36_36",
       "type": 1
     },
@@ -23381,7 +23399,7 @@
     },
     {
       "address": "0x562af0",
-      "matching": 0.8187919463087249,
+      "matching": 0.8322147651006712,
       "name": "RelaxMapTileCostFieldByNeighborTerrain",
       "type": 1
     },
@@ -23447,7 +23465,7 @@
     },
     {
       "address": "0x563990",
-      "matching": 0.6060606060606061,
+      "matching": 0.6147186147186147,
       "name": "TraceTerrainFlowToNearestSeaTile",
       "type": 1
     },
@@ -23459,7 +23477,7 @@
     },
     {
       "address": "0x563da0",
-      "matching": 0.611353711790393,
+      "matching": 0.6200873362445415,
       "name": "PopulatePortZoneAdjacencyToNearbyCityContexts",
       "type": 1
     },

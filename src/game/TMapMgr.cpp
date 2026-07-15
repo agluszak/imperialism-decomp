@@ -3266,8 +3266,10 @@ void TMapMgr::DumpAndResetMapScriptState() {
   }
 
   for (TShip* node = GetNavyPrimaryOrderListHead(); node != nullptr; node = node->nextOlder24) {
-    fprintf(logFile, g_szFmtShip_006972d0, node->ownerNationSlot14, node->resourceType04,
-            node->field08->GetContextOrdinalOrInvalid(), 1);
+    short shipResource = node->resourceType04;
+    short shipNation = node->ownerNationSlot14;
+    short shipOrdinal = node->field08->GetContextOrdinalOrInvalid();
+    fprintf(logFile, g_szFmtShip_006972d0, shipNation, shipResource, shipOrdinal, 1);
   }
 
   int recordIndex = 0;
@@ -3352,18 +3354,22 @@ void TMapMgr::DumpAndResetMapScriptState() {
       }
     }
     TGreatPower* nation = *nationSlot;
-    TCity* city = (nation != nullptr) ? nation->city : nullptr;
-    fprintf(
-        logFile, g_szFmtLabo_00697268, nationIndex,
-        *reinterpret_cast<short*>(
-            *reinterpret_cast<int*>(reinterpret_cast<char*>(city->productionSummary1d8) + 0x10) +
-            4),
-        *reinterpret_cast<short*>(
-            *reinterpret_cast<int*>(reinterpret_cast<char*>(city->productionSummary1d8) + 0x10) +
-            6),
-        *reinterpret_cast<short*>(
-            *reinterpret_cast<int*>(reinterpret_cast<char*>(city->productionSummary1d8) + 0x10) +
-            8));
+    TCity* laborCity1 = (nation != nullptr) ? nation->city : nullptr;
+    TCity* laborCity2 = (nation != nullptr) ? nation->city : nullptr;
+    TCity* laborCity3 = (nation != nullptr) ? nation->city : nullptr;
+    fprintf(logFile, g_szFmtLabo_00697268, nationIndex,
+            *reinterpret_cast<short*>(
+                *reinterpret_cast<int*>(reinterpret_cast<char*>(laborCity1->productionSummary1d8) +
+                                        0x10) +
+                4),
+            *reinterpret_cast<short*>(
+                *reinterpret_cast<int*>(reinterpret_cast<char*>(laborCity2->productionSummary1d8) +
+                                        0x10) +
+                6),
+            *reinterpret_cast<short*>(
+                *reinterpret_cast<int*>(reinterpret_cast<char*>(laborCity3->productionSummary1d8) +
+                                        0x10) +
+                8));
     for (slot = 0; slot < 0x17; ++slot) {
       short embargo =
           g_pDiplomacyTurnStateManager->LookupOrderCompatibilityMatrixValue(nationIndex, slot);
