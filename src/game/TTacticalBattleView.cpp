@@ -16,6 +16,13 @@
 #include "game/quickdraw_rendering.h"
 #include "game/startup_helpers.h"
 #include "game/ui_control_tags.h"
+
+// No-op bracket hooks around the modal one-time-animation wait (retail build leaves these empty).
+// FUNCTION: IMPERIALISM 0x00498c60
+void NoOpModalAnimWaitBracketHookA_00498c60(void) {}
+
+// FUNCTION: IMPERIALISM 0x00498c80
+void NoOpModalAnimWaitBracketHookB_00498c80(void) {}
 // SYNTHETIC: IMPERIALISM 0x005a82b0
 // TTacticalBattleView::CreateObject
 
@@ -24,14 +31,22 @@
 
 IMPLEMENT_DYNCREATE(TTacticalBattleView, TView)
 
-TTacticalBattleView::TTacticalBattleView() {}
-
-// No-op bracket hooks around the modal one-time-animation wait (retail build leaves these empty).
-// FUNCTION: IMPERIALISM 0x00498c60
-void NoOpModalAnimWaitBracketHookA_00498c60(void) {}
-
-// FUNCTION: IMPERIALISM 0x00498c80
-void NoOpModalAnimWaitBracketHookB_00498c80(void) {}
+// The original zeroes the offscreen-surface slots and anim state with body assignments in
+// this exact order (all POD), so mirror that rather than a member-init list.
+// FUNCTION: IMPERIALISM 0x005a8350
+TTacticalBattleView::TTacticalBattleView() : TView() {
+  tacticalBattle60 = 0;
+  battlefieldSurface64 = 0;
+  viewOriginX78 = 0;
+  fieldD0 = 0;
+  unitSpriteAtlasSurface68 = 0;
+  fortLevelAtlasSurface6C = 0;
+  tileScratchSurface70 = 0;
+  effectAtlasSurface74 = 0;
+  unitSpriteScratchSurfaceBC = 0;
+  modalAnimWaitDoneFlag98 = 1;
+  moveAnimUnitOffsetXA4 = -1;
+}
 
 // FUNCTION: IMPERIALISM 0x005a83c0
 undefined TTacticalBattleView::DrawTacticalTileInClipRect(int tileIndex, RECT* clipRect) {

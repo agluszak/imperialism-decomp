@@ -30277,7 +30277,7 @@
     },
     {
       "address": "0x5a82b0",
-      "matching": 0.9166666666666666,
+      "matching": 0.9583333333333334,
       "name": "TTacticalBattleView::CreateObject",
       "type": 1
     },
@@ -30289,7 +30289,7 @@
     },
     {
       "address": "0x5a8350",
-      "matching": 0.19047619047619047,
+      "matching": 1.0,
       "name": "TacticalBattleView::ConstructTacticalBattleViewBaseState",
       "type": 1
     },
@@ -30445,7 +30445,7 @@
     },
     {
       "address": "0x5a9cf0",
-      "matching": 0.4897959183673469,
+      "matching": 0.4489795918367347,
       "name": "TTacArmyView::CreateObject",
       "type": 1
     },
@@ -30457,7 +30457,7 @@
     },
     {
       "address": "0x5a9d90",
-      "matching": 0.6260032102728732,
+      "matching": 0.622792937399679,
       "name": "TTacArmyView::ConstructTTacArmyViewBaseState",
       "type": 1
     },

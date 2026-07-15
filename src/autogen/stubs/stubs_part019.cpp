@@ -211,14 +211,6 @@ undefined4 OrphanLeaf_NoCall_Ins838_005a6a20(void)
   return 0;
 }
 
-// ghidra_name TacticalBattleView::ConstructTacticalBattleViewBaseState
-// ghidra_proto undefined ConstructTacticalBattleViewBaseState()
-// FUNCTION: IMPERIALISM 0x005a8350
-undefined4 ConstructTacticalBattleViewBaseState(void)
-{
-  return 0;
-}
-
 // ghidra_name HandleTurnEventVtableSlotA0SyncStatusPanel_Impl
 // ghidra_proto undefined HandleTurnEventVtableSlotA0SyncStatusPanel_Impl()
 // FUNCTION: IMPERIALISM 0x005a8790
