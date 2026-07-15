@@ -14,7 +14,13 @@
 #include "game/TPortZone.h"
 #include "game/TOcean.h"
 #include "game/TZone.h"
+#include "game/TShip.h"
+#include "game/TCity.h"
+#include "game/TDiplomacyMgr.h"
+#include "game/ImperialismApp.h"
 #include "game/global_data_tables.h"
+
+#include <cstdio>
 #include "game/TTradeMgr.h"
 #include "game/TTechMgr.h"
 #include "game/TGreatPower.h"
@@ -270,8 +276,8 @@ void TMapMgr::RefreshMapContextRotatingStatusStrings() {
   // Reset the rotating-flavor-text slot counters (slot = -1), then assign a
   // display name to every city record that has at least one linked region.
   CString local_10;
-  reinterpret_cast<void(__cdecl*)(CString*, short)>(
-      SetSharedStringFromRotatingFlavorTextBySlot)(&local_10, -1);
+  reinterpret_cast<void(__cdecl*)(CString*, short)>(SetSharedStringFromRotatingFlavorTextBySlot)(
+      &local_10, -1);
 
   for (int i = 0; i < 0x180; i++) {
     TGlobalMapCityScoreRecord* record = &cityScoreTable[i];
@@ -3240,6 +3246,147 @@ int TMapMgr::ClassifyCityGateTerrainComposition(int cityIndex) {
     return 2;
   }
   return tallyA > tallyB ? 1 : 0;
+}
+
+// Debug/script-state dump-and-reset. No xrefs in the retail binary (reached via an
+// unrecovered debug hook). Writes a "script" text log of the current map state -- zones,
+// ships, per-owner army counts, civilians, port/rail markers, capabilities, labor,
+// embargoes, and the year -- then clears the per-tile/per-city runtime state. Confirmed
+// flag bits on terrainStateTable[tile].activeFlags1c: 0x04 => "port", 0x10 => "rail",
+// each logged (unless bit 0x01 is set) and then cleared.
+// FUNCTION: IMPERIALISM 0x00519140
+void TMapMgr::DumpAndResetMapScriptState() {
+  FILE* logFile = fopen(g_szScriptFileName_006972f8, s_mcflavor_00697238);
+
+  for (TZone* zone = g_pMapActionContextListHead; zone != nullptr; zone = zone->prev18) {
+    CString name;
+    zone->AssignZoneDisplayNameToOutputRef(&name);
+    fprintf(logFile, g_szFmtZone_006972e8, zone->GetContextOrdinalOrInvalid(),
+            static_cast<const char*>(name));
+  }
+
+  for (TShip* node = GetNavyPrimaryOrderListHead(); node != nullptr; node = node->nextOlder24) {
+    short shipResource = node->resourceType04;
+    short shipNation = node->ownerNationSlot14;
+    short shipOrdinal = node->field08->GetContextOrdinalOrInvalid();
+    fprintf(logFile, g_szFmtShip_006972d0, shipNation, shipResource, shipOrdinal, 1);
+  }
+
+  int recordIndex = 0;
+  int byteOffset = 0;
+  int i;
+  do {
+    unsigned char* rec = reinterpret_cast<unsigned char*>(cityScoreTable) + byteOffset;
+    rec[8] = 0;
+    rec[0x3b] = 0;
+    rec[0x3c] = 0;
+    *reinterpret_cast<unsigned short*>(rec + 0x3e) = 0xffff;
+    *reinterpret_cast<unsigned short*>(rec + 0x40) = 0xffff;
+    for (i = 0; i < 12; ++i) {
+      *reinterpret_cast<unsigned short*>(rec + 0x0a + i * 2) = 0xffff;
+      *reinterpret_cast<unsigned short*>(rec + 0x22 + i * 2) = 0xffff;
+    }
+    rec[0x3a] = 0;
+    for (i = 0; i < 32; ++i) {
+      *reinterpret_cast<unsigned short*>(rec + 0x42 + i * 2) = 0xffff;
+    }
+    int unitNode = *reinterpret_cast<int*>(rec + 0x98);
+    if (unitNode != 0) {
+      short armyCountByOwner[30];
+      for (i = 0; i < 30; ++i) {
+        armyCountByOwner[i] = 0;
+      }
+      do {
+        armyCountByOwner[*reinterpret_cast<short*>(unitNode + 4)]++;
+        unitNode = *reinterpret_cast<int*>(unitNode + 0x14);
+      } while (unitNode != 0);
+      for (i = 0; i < 30; ++i) {
+        if (armyCountByOwner[i] > 0) {
+          fprintf(logFile, g_szFmtArmy_006972bc, recordIndex, i, armyCountByOwner[i]);
+        }
+      }
+    }
+    *reinterpret_cast<int*>(rec + 0x98) = 0;
+    rec[0xa3] = 0xff;
+    byteOffset += 0xa8;
+    recordIndex++;
+  } while (byteOffset < 0xfc00);
+
+  int tileIndex = 0;
+  int tileOffset = 0;
+  do {
+    unsigned char* tile = reinterpret_cast<unsigned char*>(terrainStateTable) + tileOffset;
+    int civilianOrder = *reinterpret_cast<int*>(tile + 0x20);
+    if (civilianOrder != 0) {
+      fprintf(logFile, g_szFmtCivi_006972ac, *reinterpret_cast<short*>(civilianOrder + 4),
+              tileIndex);
+      *reinterpret_cast<int*>(tile + 0x20) = 0;
+    }
+    unsigned short flags = *reinterpret_cast<unsigned short*>(tile + 0x1c);
+    if ((flags & 4) != 0) {
+      if ((flags & 1) == 0) {
+        fprintf(logFile, g_szFmtPort_006972a0, tileIndex);
+      }
+      tile[0x1c] &= 0xfb;
+    }
+    flags = *reinterpret_cast<unsigned short*>(tile + 0x1c);
+    if ((flags & 0x10) != 0) {
+      if ((flags & 1) == 0) {
+        fprintf(logFile, g_szFmtRail_00697294, tileIndex);
+      }
+      tile[0x1c] &= 0xef;
+    }
+    tile[5] = 0xff;
+    tile[0x16] = 0xff;
+    tileOffset += 0x24;
+    tileIndex++;
+  } while (tileOffset < 0x38f40);
+
+  TGreatPower** nationSlot = g_apNationStates;
+  int nationIndex = 0;
+  int slot;
+  do {
+    for (slot = 0; slot < 6; ++slot) {
+      TCity* city = (*nationSlot != nullptr) ? (*nationSlot)->city : nullptr;
+      int value = city->GetBuildingType(static_cast<short>(slot));
+      if (static_cast<short>(value) > 0) {
+        fprintf(logFile, g_szFmtCapa_00697280, nationIndex, slot, static_cast<short>(value));
+      }
+    }
+    TGreatPower* nation = *nationSlot;
+    TCity* laborCity1 = (nation != nullptr) ? nation->city : nullptr;
+    TCity* laborCity2 = (nation != nullptr) ? nation->city : nullptr;
+    TCity* laborCity3 = (nation != nullptr) ? nation->city : nullptr;
+    fprintf(logFile, g_szFmtLabo_00697268, nationIndex,
+            *reinterpret_cast<short*>(
+                *reinterpret_cast<int*>(reinterpret_cast<char*>(laborCity1->productionSummary1d8) +
+                                        0x10) +
+                4),
+            *reinterpret_cast<short*>(
+                *reinterpret_cast<int*>(reinterpret_cast<char*>(laborCity2->productionSummary1d8) +
+                                        0x10) +
+                6),
+            *reinterpret_cast<short*>(
+                *reinterpret_cast<int*>(reinterpret_cast<char*>(laborCity3->productionSummary1d8) +
+                                        0x10) +
+                8));
+    for (slot = 0; slot < 0x17; ++slot) {
+      short embargo =
+          g_pDiplomacyTurnStateManager->LookupOrderCompatibilityMatrixValue(nationIndex, slot);
+      if (embargo > 0) {
+        embargo =
+            g_pDiplomacyTurnStateManager->LookupOrderCompatibilityMatrixValue(nationIndex, slot);
+        fprintf(logFile, g_szFmtEmba_00697254, nationIndex, slot, embargo);
+      }
+    }
+    nationSlot++;
+    nationIndex++;
+  } while (nationSlot < g_apNationStates + 7);
+
+  fprintf(logFile, g_szFmtYear_00697248,
+          *reinterpret_cast<short*>(reinterpret_cast<char*>(g_pSimMgr) + 0x2c) / 4);
+  fclose(logFile);
+  PostWmCloseToMainThreadWindow();
 }
 
 // FUNCTION: IMPERIALISM 0x00519610

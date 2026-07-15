@@ -82,3 +82,13 @@ void TMouseCaptureState::EndMouseCaptureAndStopRepeatTimer(unsigned int nFlags, 
   capturedControl->DispatchPictureResourceCommand(2, &startPoint, &lastPoint, &currentPoint, 1);
   capturedControl = 0;
 }
+
+// Copies the global mouse-capture state's latest tracked point into the caller's buffer.
+// FUNCTION: IMPERIALISM 0x00489e40
+void __cdecl RenderMapOrderEntryTilePreview_Impl(CPoint* out) {
+  // Loads both members then stores both, matching the original's POD point copy.
+  LONG y = g_McAppMouseCaptureState.currentPoint.y;
+  LONG x = g_McAppMouseCaptureState.currentPoint.x;
+  out->x = x;
+  out->y = y;
+}

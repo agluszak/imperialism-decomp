@@ -7,6 +7,7 @@
 #include "game/mfc.h"
 #include "game/CTemporaryRegion.h"
 #include "game/TGlobalMapState.h"
+#include "game/TMapMgr.h"
 #include "game/TMapUberPicture.h"
 #include "game/ScopedMapQuickDrawContext.h"
 #include "game/TTaskForce.h"
@@ -17,7 +18,6 @@
 
 undefined4 thunk_GetMapActionContextByTileIndex(void);
 void NormalizeWrappedMapCoord108x60(short* xCoord, short* yCoord);
-int ComputeStridedRecordAddress6C(int recordBase, int recordIndex);
 
 namespace {
 

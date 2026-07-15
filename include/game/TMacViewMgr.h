@@ -70,7 +70,7 @@ public:
   RenderOffscreenBitmapTileSpanAndRestoreContext(int param_1); // slot 0x23 0x50d700
   virtual undefined
   WrapperFor_IsPointInsideHitRegion_At0050d6c0(short param_1); // slot 0x24 0x50d6c0
-  virtual undefined
+  virtual void
   EnsureClipRegionWrapperAtSlotAndMergeSourceRegion(undefined4 param_1,
                                                     short param_2); // slot 0x25 0x50d680
   virtual RgnHandle GetClipRegionSlotByIndex(short index);          // slot 0x26 0x509e10

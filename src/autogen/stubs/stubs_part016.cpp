@@ -595,14 +595,6 @@ undefined4 EmitTurnEvent26DiplomacyMatrixSnapshot(void)
   return 0;
 }
 
-// ghidra_name SetDialogModeTagInitAndInvokeNoOpHook
-// ghidra_proto undefined SetDialogModeTagInitAndInvokeNoOpHook()
-// FUNCTION: IMPERIALISM 0x0054c630
-undefined4 SetDialogModeTagInitAndInvokeNoOpHook(void)
-{
-  return 0;
-}
-
 // ghidra_name HandleActiveNationAwolTransitionOrRecovery
 // ghidra_proto undefined HandleActiveNationAwolTransitionOrRecovery()
 // FUNCTION: IMPERIALISM 0x0054c800
@@ -751,14 +743,6 @@ undefined4 OrphanRecovered_00552340_OverlappingStub(void)
 // ghidra_proto undefined RecomputeNavyOrderSelectionPriorityChain_00552349()
 // FUNCTION: IMPERIALISM 0x00552349
 undefined4 RecomputeNavyOrderSelectionPriorityChain_00552349(void)
-{
-  return 0;
-}
-
-// ghidra_name SetMapOrderType5AndQueue
-// ghidra_proto void __thiscall SetMapOrderType5AndQueue(int nOrderTarget)
-// FUNCTION: IMPERIALISM 0x00553840
-undefined4 SetMapOrderType5AndQueue(void)
 {
   return 0;
 }

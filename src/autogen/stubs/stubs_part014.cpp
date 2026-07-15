@@ -419,14 +419,6 @@ undefined4 CreateTColorFillInstance(void)
   return 0;
 }
 
-// ghidra_name InitializeCityInteriorMinister_Impl
-// ghidra_proto undefined InitializeCityInteriorMinister_Impl()
-// FUNCTION: IMPERIALISM 0x004ff750
-undefined4 InitializeCityInteriorMinister_Impl(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_GenerateThreadLocalRandom15_At004ff840
 // ghidra_proto undefined WrapperFor_GenerateThreadLocalRandom15_At004ff840()
 // FUNCTION: IMPERIALISM 0x004ff840
@@ -591,14 +583,6 @@ undefined4 WrapperFor_ReleaseSharedStringRefIfNotEmpty_At00507db0(void)
 // ghidra_proto undefined WrapperFor_ftol_At00508ee0()
 // FUNCTION: IMPERIALISM 0x00508ee0
 undefined4 WrapperFor_ftol_At00508ee0(void)
-{
-  return 0;
-}
-
-// ghidra_name BuildHexNeighborHighlightPolygonForTile
-// ghidra_proto undefined BuildHexNeighborHighlightPolygonForTile()
-// FUNCTION: IMPERIALISM 0x00508f30
-undefined4 BuildHexNeighborHighlightPolygonForTile(void)
 {
   return 0;
 }

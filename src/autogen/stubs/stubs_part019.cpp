@@ -155,14 +155,6 @@ undefined4 ApplyTacticalDamageAndDeathState(void)
   return 0;
 }
 
-// ghidra_name TNextMoveCommand::ConstructTNextMoveCommandBaseState
-// ghidra_proto undefined ConstructTNextMoveCommandBaseState()
-// FUNCTION: IMPERIALISM 0x005a6560
-undefined4 ConstructTNextMoveCommandBaseState(void)
-{
-  return 0;
-}
-
 // ghidra_name DestructTNextMoveCommandAndMaybeFree_Impl
 // ghidra_proto undefined DestructTNextMoveCommandAndMaybeFree_Impl()
 // FUNCTION: IMPERIALISM 0x005a65c0
@@ -339,50 +331,10 @@ undefined4 UpdateSelectionAndRecalculateScores(void)
   return 0;
 }
 
-// ghidra_name AreTechItemPrerequisitePairCompleted
-// ghidra_proto undefined AreTechItemPrerequisitePairCompleted()
-// FUNCTION: IMPERIALISM 0x005b0a20
-undefined4 AreTechItemPrerequisitePairCompleted(void)
-{
-  return 0;
-}
-
-// ghidra_name SelectMissingTechItemPrerequisitesFromPair
-// ghidra_proto undefined SelectMissingTechItemPrerequisitesFromPair()
-// FUNCTION: IMPERIALISM 0x005b0a90
-undefined4 SelectMissingTechItemPrerequisitesFromPair(void)
-{
-  return 0;
-}
-
-// ghidra_name ApplyTechItemPurchaseCostAndState
-// ghidra_proto undefined ApplyTechItemPurchaseCostAndState()
-// FUNCTION: IMPERIALISM 0x005b0b30
-undefined4 ApplyTechItemPurchaseCostAndState(void)
-{
-  return 0;
-}
-
-// ghidra_name RefundTechItemPurchaseCostAndClearState
-// ghidra_proto undefined RefundTechItemPurchaseCostAndClearState()
-// FUNCTION: IMPERIALISM 0x005b0bb0
-undefined4 RefundTechItemPurchaseCostAndClearState(void)
-{
-  return 0;
-}
-
 // ghidra_name ConsumeFirstPendingAbilityUnlock
 // ghidra_proto undefined ConsumeFirstPendingAbilityUnlock()
 // FUNCTION: IMPERIALISM 0x005b0c20
 undefined4 ConsumeFirstPendingAbilityUnlock(void)
-{
-  return 0;
-}
-
-// ghidra_name SetCityOrderCapabilityTierScaledValueByIndex
-// ghidra_proto undefined SetCityOrderCapabilityTierScaledValueByIndex()
-// FUNCTION: IMPERIALISM 0x005b0c70
-undefined4 SetCityOrderCapabilityTierScaledValueByIndex(void)
 {
   return 0;
 }
@@ -471,14 +423,6 @@ undefined4 DestructTInfoBarPictureTextAndMaybeFree(void)
 // ghidra_proto undefined ConstructTDeluxeTextBaseState()
 // FUNCTION: IMPERIALISM 0x005b5ff0
 undefined4 ConstructTDeluxeTextBaseState(void)
-{
-  return 0;
-}
-
-// ghidra_name TNoHiliteText::ConstructUiStatusListTextEntry
-// ghidra_proto undefined ConstructUiStatusListTextEntry()
-// FUNCTION: IMPERIALISM 0x005b6a00
-undefined4 ConstructUiStatusListTextEntry(void)
 {
   return 0;
 }

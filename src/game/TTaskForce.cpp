@@ -243,7 +243,7 @@ void TTaskForce::RemoveNode(TTaskForce* self) {
         if (this == list_head->object_ptr) {
           list_head = DeleteMapOrderChildLinkAndReturnNext(list_head);
         } else {
-          RemoveLinkedOrderNodeByValueRecursive(list_head->next, this);
+          list_head->next->RemoveLinkedOrderNodeByValueRecursive(this);
         }
       }
 
@@ -294,7 +294,7 @@ void TTaskForce::ReassignOrderNodeNationAndRebindParentCounters(short nation) {
         if (this == head->object_ptr) {
           head = DeleteMapOrderChildLinkAndReturnNext(head);
         } else {
-          RemoveLinkedOrderNodeByValueRecursive(head->next, this);
+          head->next->RemoveLinkedOrderNodeByValueRecursive(this);
         }
       }
       parent->childOrderList = head;
@@ -383,49 +383,61 @@ TTaskForce::DeleteMapOrderChildLinkAndReturnNext(TMapOrderChildLinkNode* child_l
 }
 
 // FUNCTION: IMPERIALISM 0x005525d0
-void TTaskForce::RemoveLinkedOrderNodeByValueRecursive(TMapOrderChildLinkNode* node,
-                                                       TTaskForce* child_node) {
-  if (node == 0) {
-    return;
-  }
-
-  if (node->object_ptr == child_node) {
-    if (node->next != 0) {
-      node->next->prev_link = node->prev_link;
-    }
-    if (node->prev_link != 0) {
-      node->prev_link->next = node->next;
-    }
-    delete node;
-    return;
-  }
-
-  RemoveLinkedOrderNodeByValueRecursive(node->next, child_node);
-}
-
-// FUNCTION: IMPERIALISM 0x00552650
-TMapOrderChildLinkNode* TTaskForce::CreateLinkedOrderNode(TMapOrderChildLinkNode* next_node,
-                                                          TTaskForce* child_node) {
-  TMapOrderChildLinkNode* new_node = new TMapOrderChildLinkNode();
-  if (new_node == 0) {
+TMapOrderChildLinkNode*
+TMapOrderChildLinkNode::RemoveLinkedOrderNodeByValueRecursive(TTaskForce* child_node) {
+  if (this == 0) {
     return 0;
   }
 
-  new_node->object_ptr = child_node;
-  new_node->next = next_node;
-  new_node->prev_link = 0;
-  new_node->active_flag = 1;
-  new_node->pad_0d = 0;
-  new_node->pad_0e = 0;
-  new_node->pad_0f = 0;
+  if (this->object_ptr == child_node) {
+    TMapOrderChildLinkNode* next = this->next;
+    if (next != 0) {
+      next->prev_link = this->prev_link;
+    }
+    if (this->prev_link != 0) {
+      this->prev_link->next = this->next;
+    }
+    delete this;
+    return next;
+  }
 
-  if (next_node != 0) {
-    next_node->prev_link = new_node;
+  this->next->RemoveLinkedOrderNodeByValueRecursive(child_node);
+  return this;
+}
+
+// FUNCTION: IMPERIALISM 0x00552650
+TMapOrderChildLinkNode* TMapOrderChildLinkNode::CreateLinkedOrderNode(TTaskForce* child_node) {
+  // `this` is the next node to prepend before (ECX); a raw non-value-initializing `new`
+  // matches the original's field-by-field write of exactly these four members.
+  // `raw` (the operator-new result) is only live during construction and stays in a
+  // scratch register; `result` is the phi materialized at the merge into the callee-saved
+  // return register, which the original reuses for `this` before construction (their live
+  // ranges do not overlap), so only one callee-saved register is needed.
+  TMapOrderChildLinkNode* raw = new TMapOrderChildLinkNode;
+  TMapOrderChildLinkNode* result;
+  if (raw != 0) {
+    raw->next = this;
+    raw->object_ptr = child_node;
+    raw->prev_link = 0;
+    raw->active_flag = 1;
+    if (this != 0) {
+      this->prev_link = raw;
+    }
+    if (raw->prev_link != 0) {
+      raw->prev_link->next = raw;
+    }
+    result = raw;
+  } else {
+    result = 0;
   }
-  if (new_node->prev_link != 0) {
-    new_node->prev_link->next = new_node;
+  if (result == 0) {
+    // Original passes the (nil) node pointer as the HWND -- the compiler reuses that
+    // register for the return value, so keep the variable here rather than a literal 0.
+    MessageBoxA(reinterpret_cast<HWND>(result), g_szUiNilPointerMessage, g_szUiFailureMessage,
+                0x30);
+    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUNavy_006983C8, 0x64e);
   }
-  return new_node;
+  return result;
 }
 
 // FUNCTION: IMPERIALISM 0x005526e0
@@ -802,6 +814,86 @@ void TTaskForce::PromoteMapOrderChainAndQueue(TZone* pContextAnchor) {
 void TTaskForce::SetMapOrderType6AndQueue(int nOrderTarget) {
   owner = reinterpret_cast<TTaskForce*>(nOrderTarget);
   attachment = 6;
+  activeChildEntry = nullptr;
+
+  for (TMapOrderChildLinkNode* node = childOrderList; node != nullptr;) {
+    if (node->active_flag != 0) {
+      node = node->next;
+      continue;
+    }
+
+    TTaskForce* child = node->object_ptr;
+    child->owner = nullptr;
+
+    short bucketIndex = static_cast<short>(
+        g_NavyOrderResourceDescriptorTable[child->order_type].enabledFlagOrBucketOffset);
+    short* bucketCounter =
+        reinterpret_cast<short*>(reinterpret_cast<char*>(this) + 0x1e + bucketIndex * 2);
+    --*bucketCounter;
+
+    if (node == childOrderList) {
+      childOrderList = node->next;
+    }
+
+    TMapOrderChildLinkNode* next = node->next;
+    if (next != nullptr) {
+      next->prev_link = node->prev_link;
+    }
+    if (node->prev_link != nullptr) {
+      node->prev_link->next = next;
+    }
+    delete node;
+    node = next;
+  }
+
+  RecomputeMapOrderChildAggregateMetric();
+
+  AssertValid();
+
+  TTaskForce* head = g_pNavyOrderManager->orderListHead04;
+  bool alreadyQueued = false;
+  for (TTaskForce* queuedEntry = head; queuedEntry != nullptr;
+       queuedEntry = queuedEntry->queue_next) {
+    if (queuedEntry == this) {
+      alreadyQueued = true;
+      break;
+    }
+  }
+
+  if (!alreadyQueued) {
+    int childCount = 0;
+    for (TMapOrderChildLinkNode* countNode = childOrderList; countNode != nullptr;
+         countNode = countNode->next) {
+      ++childCount;
+    }
+
+    if (childCount <= 0) {
+      Free();
+      return;
+    }
+
+    if (queue_prev != nullptr) {
+      queue_prev->queue_next = queue_next;
+    }
+    if (queue_next != nullptr) {
+      queue_next->queue_prev = queue_prev;
+    }
+    queue_prev = nullptr;
+    queue_next = head;
+    if (head != nullptr) {
+      head->queue_prev = this;
+    }
+    g_pNavyOrderManager->orderListHead04 = this;
+  }
+
+  g_pActiveMapOrderContext->FinalizeQueuedMapOrderEntry(this);
+}
+
+// Sibling of SetMapOrderType6AndQueue for map-order kind 5 (see the header comment).
+// FUNCTION: IMPERIALISM 0x00553840
+void TTaskForce::SetMapOrderType5AndQueue(int nOrderTarget) {
+  owner = reinterpret_cast<TTaskForce*>(nOrderTarget);
+  attachment = 5;
   activeChildEntry = nullptr;
 
   for (TMapOrderChildLinkNode* node = childOrderList; node != nullptr;) {
