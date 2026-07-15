@@ -114,8 +114,11 @@ public:
   // slot 0x67 CtrlSlot103_SubtractPosAndDispatchSlot19C_Impl inherited unchanged (0x48bac0)
   virtual undefined OrphanRetStub_00430550(); // slot 0x68 0x430550
   // === END GENERATED DECLS (TPanelView) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TPanelView 0xCTOR`).
-  void* m_panelData; // 0x60
+  // TView's slice ends at 0x60; RTTI oracle confirms sizeof(TPanelView) == 0x64. The one
+  // own field is zeroed at construction. TPanelView's ctor has no standalone
+  // out-of-line address -- the compiler always inlines it (e.g. into CreateObject at
+  // 0x4f78e0 and into TOffersPanelView's ctor) -- so it carries no // FUNCTION marker.
+  void* m_panelData; // +0x60
 
   TPanelView();
 };

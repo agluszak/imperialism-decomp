@@ -11,9 +11,9 @@
   "failed_to_match_function_count": 0,
   "flo_orig_only_count": 253,
   "flo_recomp_only_count": 0,
-  "git_branch": "devin/merge-all-open-prs",
-  "git_commit": "237e03583aa65fb7553b4c4614fa7f0c38ba4d38",
-  "git_commit_date": "2026-07-15T17:40:28+00:00",
+  "git_branch": "devin/merge-open-prs-1784136607",
+  "git_commit": "f80753b66ef40f1d999a41ce44366f3769b4f53d",
+  "git_commit_date": "2026-07-15T17:36:20+00:00",
   "global_coverage_pct": 21.83736345812716,
   "global_orig_only_count": 8372,
   "global_recomp_only_count": 5026,
@@ -59,7 +59,7 @@
   "str_orig_only_count": 365,
   "str_recomp_only_count": 84,
   "target": "IMPERIALISM",
-  "timestamp_utc": "2026-07-15T17:43:58+00:00",
+  "timestamp_utc": "2026-07-15T17:51:52+00:00",
   "wid_orig_only_count": 0,
   "wid_recomp_only_count": 2
 }

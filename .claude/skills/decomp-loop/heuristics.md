@@ -1433,7 +1433,6 @@ headers before splicing.
     comment ABOVE the `// FUNCTION:` marker (Hard Rule 3), not between it and the decl.
     Smell to grep for: a `void Foo(T a,U b){ (void)a;(void)b; Foo(); }` forwarder next to a
     marked `Foo(void)`.
-
 96. **A FID miss is not evidence of game code — the relocation-masked `.obj` matcher is
     the authoritative identity oracle.** Ghidra FID has minimum-length/score thresholds,
     so it silently skips small/aliased CRT/MFC functions (rand at 0x005e83f0 kept the

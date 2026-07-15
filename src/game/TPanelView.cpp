@@ -18,9 +18,7 @@ IMPLEMENT_DYNCREATE(TPanelView, TView)
 
 // Always inlined by the compiler (no standalone out-of-line address), so no // FUNCTION
 // marker: TView base construction then m_panelData = 0.
-TPanelView::TPanelView() : TView() {
-  m_panelData = 0;
-}
+TPanelView::TPanelView() : TView(), m_panelData(0) {}
 
 // FUNCTION: IMPERIALISM 0x004f79e0
 void TPanelView::NoOpUiLifecycleHook(int arg) {}

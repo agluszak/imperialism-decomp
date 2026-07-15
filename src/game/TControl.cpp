@@ -2,8 +2,8 @@
 // Use tools/workflow/promote_from_autogen.py to seed functions from autogen.
 
 #include "game/TControl.h"
-#include "game/TMapKey.h"
 #include "game/mfc.h"
+#include "game/TMapKey.h"
 #include "game/quickdraw_regions.h"
 #include "game/TMouseCaptureState.h"
 #include "game/TTEView.h"

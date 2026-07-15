@@ -115,8 +115,7 @@ public:
   virtual undefined OrphanRetStub_00430550() override;               // slot 0x68 0x4facc0
   virtual undefined OrphanLeaf_NoCall_Ins97_004fae00(short param_1); // slot 0x69 0x4fae00
   // === END GENERATED DECLS (TInfoPanelView) ===
-  // TODO(manifest): add data members from the object slice (`just slice-discovery TInfoPanelView 0xCTOR`).
-  short field_0x64[4]; // 0x64
+  short field_0x64[4];  // 0x64
   int m_selectedNation; // 0x6c
 
   TInfoPanelView();
