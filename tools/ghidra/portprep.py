@@ -24,6 +24,14 @@ import sys
 
 from tools.ghidra import decompile_one
 
+
+def _addr_int(addr) -> int | None:
+  """Numeric offset of a default-space address; None for EXTERNAL:/OTHER spaces."""
+  try:
+    return int(str(addr), 16)
+  except ValueError:
+    return None
+
 _MARKER_RE = re.compile(r"(?:FUNCTION|STUB|SYNTHETIC|LIBRARY): IMPERIALISM 0x([0-9a-fA-F]{6,8})")
 
 
@@ -147,7 +155,7 @@ def run(program, argv: list[str]) -> int:
     if src_fn is None:
       callers.append(f"  {src} (thunk/loose)")
       continue
-    src_entry = int(str(src_fn.getEntryPoint()), 16)
+    src_entry = _addr_int(src_fn.getEntryPoint()) or 0
     src_name = symbols.get(src_entry, (src_fn.getName(), ""))[0]
     callers.append(f"  {src} in {src_name} (0x{src_entry:08x}) [{_owner_str(src_entry, owners)}]")
   for line in callers[:12] or ["  (none found)"]:
@@ -171,9 +179,13 @@ def run(program, argv: list[str]) -> int:
       if flows:
         tgt = flows[0]
         real, hops = _chase_thunk(program, listing, fm, tgt)
-        real_int = int(str(real), 16)
+        real_int = _addr_int(real)
+        tgt_int = _addr_int(tgt)
+        if real_int is None:
+          import_calls.append(f"  {ins.getAddress()}  {text}   -> {fm.getFunctionAt(real) or real}")
+          continue
         label = symbols.get(real_int, (str(fm.getFunctionAt(real) or real), ""))[0]
-        via = f" via thunk 0x{int(str(tgt), 16):08x}" if hops else ""
+        via = f" via thunk 0x{tgt_int:08x}" if hops and tgt_int is not None else ""
         direct.setdefault(real_int, [label, _owner_str(real_int, owners), via, "0"])
         direct[real_int][3] = str(int(direct[real_int][3]) + 1)
       elif "[" in text:
@@ -198,8 +210,8 @@ def run(program, argv: list[str]) -> int:
       to = ref.getToAddress()
       if not to.isMemoryAddress():
         continue
-      to_int = int(str(to), 16)
-      if to_int >= data_min and (ref.getReferenceType().isRead() or ref.getReferenceType().isWrite()
+      to_int = _addr_int(to)
+      if to_int is not None and to_int >= data_min and (ref.getReferenceType().isRead() or ref.getReferenceType().isWrite()
                                  or ref.getReferenceType().isData()):
         mode = "W" if ref.getReferenceType().isWrite() else "R"
         prev = globals_seen.get(to_int, "")
