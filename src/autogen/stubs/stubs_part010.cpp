@@ -691,14 +691,6 @@ undefined4 RunCommandModalLoopAndFinalizeState_Impl(void)
   return 0;
 }
 
-// ghidra_name DereferencePointerCellInPlace
-// ghidra_proto undefined DereferencePointerCellInPlace()
-// FUNCTION: IMPERIALISM 0x004845f0
-undefined4 DereferencePointerCellInPlace(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_FreeLinkedBlockChain_At00484860
 // ghidra_proto undefined WrapperFor_FreeLinkedBlockChain_At00484860()
 // FUNCTION: IMPERIALISM 0x00484860
@@ -927,14 +919,6 @@ undefined4 WrapperFor_ftol_At00489a20(void)
 // ghidra_proto undefined WrapperFor_AppendPointerToGlobalVectorAsStatus_At00489ab0()
 // FUNCTION: IMPERIALISM 0x00489ab0
 undefined4 WrapperFor_AppendPointerToGlobalVectorAsStatus_At00489ab0(void)
-{
-  return 0;
-}
-
-// ghidra_name RenderMapOrderEntryTilePreview_Impl
-// ghidra_proto undefined RenderMapOrderEntryTilePreview_Impl()
-// FUNCTION: IMPERIALISM 0x00489e40
-undefined4 RenderMapOrderEntryTilePreview_Impl(void)
 {
   return 0;
 }

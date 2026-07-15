@@ -707,6 +707,7 @@ public:
   void NotifyCityRecordSlot12C(int cityRecordIndex);
   void LinkRegionToNationSlot134(int regionId, int nationSlot);
   void AssignCityRecordDisplayName(int cityRecordIndex, CString* dest);
+  void DumpAndResetMapScriptState(); // 0x00519140
 
   // Join-empire (mode 0) reset: walk the +0x0c tile table (0x24-byte records, one per
   // tile) and clear the owner-nation byte (+0x18) wherever it matches nationSlot for

@@ -2,6 +2,7 @@
 #include "game/TDisplayMgr.h"
 #include "game/TModuleLibraryCacheTableStateB.h"
 #include "game/TDropShadowText.h"
+#include "game/CSubViewIterator.h"
 #include "game/TStaticText.h"
 #include "game/TView.h"
 #include "game/ui_text_label_helpers_decls.h"
@@ -21,6 +22,26 @@ TStaticText* __cdecl RefreshActiveControlThenApplyThemeStyleAndCaption(unsigned 
   control->AssertValid();
   return ApplyControlThemeStyleAndOptionalCaption(static_cast<TStaticText*>(control), unused2,
                                                   pointSize, themeCode, themeCode2, caption);
+}
+
+// Recursively applies a picture-rect/theme state to every TStaticText control in `view`'s
+// subtree: if `view` itself is a TStaticText it gets the state, then each subview is visited
+// via the shared CSubViewIterator (which recurses into their subviews in turn).
+// FUNCTION: IMPERIALISM 0x005c43b0
+void __cdecl DispatchToSelectableTextOptionEntries(TView* view, TControlPictureRectState* state,
+                                                   int flag) {
+  if (view->IsKindOf(RUNTIME_CLASS(TStaticText))) {
+    view->AssertValid();
+    static_cast<TControl*>(view)->SetCityProductionDialogPictureRectAndMaybeRefresh(state, flag);
+  }
+  CSubViewIterator iter(view);
+  TView* child = iter.FirstSubView();
+  if (iter.MoreSubViews()) {
+    do {
+      DispatchToSelectableTextOptionEntries(child, state, flag);
+      child = iter.NextSubView();
+    } while (iter.MoreSubViews());
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x005c4590

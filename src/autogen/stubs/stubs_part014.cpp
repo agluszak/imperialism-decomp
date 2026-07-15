@@ -379,14 +379,6 @@ undefined4 AdvanceCivilianTerrainSelectionStep(void)
   return 0;
 }
 
-// ghidra_name TControl::SetDiplomacyNationSelectionFilterAndRefreshRows
-// ghidra_proto undefined SetDiplomacyNationSelectionFilterAndRefreshRows()
-// FUNCTION: IMPERIALISM 0x004fcea0
-undefined4 SetDiplomacyNationSelectionFilterAndRefreshRows(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_ftol_At004fe670
 // ghidra_proto undefined WrapperFor_ftol_At004fe670()
 // FUNCTION: IMPERIALISM 0x004fe670
@@ -415,14 +407,6 @@ undefined4 DestroySharedStringRefBatch_006A3060_AtExit(void)
 // ghidra_proto undefined CreateTColorFillInstance()
 // FUNCTION: IMPERIALISM 0x004ff180
 undefined4 CreateTColorFillInstance(void)
-{
-  return 0;
-}
-
-// ghidra_name InitializeCityInteriorMinister_Impl
-// ghidra_proto undefined InitializeCityInteriorMinister_Impl()
-// FUNCTION: IMPERIALISM 0x004ff750
-undefined4 InitializeCityInteriorMinister_Impl(void)
 {
   return 0;
 }
@@ -591,14 +575,6 @@ undefined4 WrapperFor_ReleaseSharedStringRefIfNotEmpty_At00507db0(void)
 // ghidra_proto undefined WrapperFor_ftol_At00508ee0()
 // FUNCTION: IMPERIALISM 0x00508ee0
 undefined4 WrapperFor_ftol_At00508ee0(void)
-{
-  return 0;
-}
-
-// ghidra_name BuildHexNeighborHighlightPolygonForTile
-// ghidra_proto undefined BuildHexNeighborHighlightPolygonForTile()
-// FUNCTION: IMPERIALISM 0x00508f30
-undefined4 BuildHexNeighborHighlightPolygonForTile(void)
 {
   return 0;
 }

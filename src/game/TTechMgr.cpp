@@ -1,6 +1,7 @@
 #include "game/TTechMgr.h"
 
 #include "decomp_types.h"
+#include "game/TGreatPower.h"
 #include "game/TSimMgr.h"
 #include "game/TMultiplayerMgr.h"
 #include "game/global_data_tables.h"
@@ -11,7 +12,7 @@
 #include "game/TSimMgr.h"
 #include "game/global_data_tables.h"
 
-undefined4 RecomputeGlobalCapabilityAverages(void);
+void RecomputeGlobalCapabilityAverages(void);
 undefined4 GetCurrentLocalEpochSecondsWithTimezoneCache(void);
 
 TTechMgr* g_pCityOrderCapabilityState = 0;
@@ -234,6 +235,86 @@ void TTechMgr::ApplyCityOrderCapabilityUnlockByTechId(int nTechId) {
     ruleTablePointer264 = DAT_0066ac90;
     break;
   }
+}
+
+// Whether both capability flags of a tech prerequisite pair are completed (== 2) for a
+// nation: the pair's two in-record byte offsets come from
+// g_awTechPrereqCapabilityFieldOffsetPairs_0066ac10[prereqPairIndex], read against the
+// nation's orderCapRows277 row.
+// FUNCTION: IMPERIALISM 0x005b0a20
+unsigned char TTechMgr::AreTechItemPrerequisitePairCompleted(int prereqPairIndex, int nationIndex) {
+  // Each capability flag is read as a "column": shift the object base by the flag's
+  // in-record byte offset, then index orderCapRows277 by nation. Reinterpreting the
+  // shifted base as a TTechMgr keeps (this + offset) as the record base and lets the
+  // 0x268 member displacement + nation*0x1d stride ride the addressing mode, matching the
+  // original's [this + fieldOffset + nation*0x1d + 0x268] grouping. The record's offset-0
+  // byte then IS the shifted field.
+  const short* offsets = g_awTechPrereqCapabilityFieldOffsetPairs_0066ac10[prereqPairIndex];
+  if (reinterpret_cast<TTechMgr*>(reinterpret_cast<unsigned char*>(this) + offsets[0])
+              ->orderCapRows277[nationIndex]
+              .initReadyFlag[0] == 2 &&
+      reinterpret_cast<TTechMgr*>(reinterpret_cast<unsigned char*>(this) + offsets[1])
+              ->orderCapRows277[nationIndex]
+              .initReadyFlag[0] == 2) {
+    return 1;
+  }
+  return 0;
+}
+
+// If the pair's first capability flag is already completed (== 2) for the nation, reports
+// the second offset into *outFirst and 0 into *outSecond; otherwise reports the first
+// (missing) offset into *outFirst and the second offset into *outSecond only when its flag
+// is also not completed (else 0). Offsets index an OrderCapRow; the pair comes from
+// g_awTechPrereqCapabilityFieldOffsetPairs_0066ac10[prereqPairIndex].
+// FUNCTION: IMPERIALISM 0x005b0a90
+void TTechMgr::SelectMissingTechItemPrerequisitesFromPair(int prereqPairIndex, int nationIndex,
+                                                          int* outFirst, int* outSecond) {
+  // Check A folds nation*0x1d into the row base; the flagB check (else) keeps (this + offB)
+  // as the base with nation*0x1d riding the index, matching the original's two groupings.
+  unsigned char* row = reinterpret_cast<unsigned char*>(&orderCapRows277[nationIndex]);
+  if (row[g_awTechPrereqCapabilityFieldOffsetPairs_0066ac10[prereqPairIndex][0]] == 2) {
+    *outFirst = g_awTechPrereqCapabilityFieldOffsetPairs_0066ac10[prereqPairIndex][1];
+    *outSecond = 0;
+  } else {
+    *outFirst = g_awTechPrereqCapabilityFieldOffsetPairs_0066ac10[prereqPairIndex][0];
+    short offB = g_awTechPrereqCapabilityFieldOffsetPairs_0066ac10[prereqPairIndex][1];
+    unsigned char flagB = reinterpret_cast<TTechMgr*>(reinterpret_cast<unsigned char*>(this) + offB)
+                              ->orderCapRows277[nationIndex]
+                              .initReadyFlag[0];
+    *outSecond = (flagB != 2) ? offB : 0;
+  }
+}
+
+// Purchases a tech-item slot for a nation: spends the slot's cost from the nation's
+// field-0x10 metric (AddToNationMetricAtField10 with the negated cost), marks the slot
+// state byte 1 in the nation's orderCapRows277 row, and stamps the current quarter tick / 4
+// into the parallel capRowsE4a6 word.
+// FUNCTION: IMPERIALISM 0x005b0b30
+void TTechMgr::ApplyTechItemPurchaseCostAndState(int slot, int nationIndex) {
+  g_apNationStates[nationIndex]->AddToNationMetricAtField10(
+      -g_anTechItemPurchaseCostBySlot_0066aae8[slot]);
+  reinterpret_cast<TTechMgr*>(reinterpret_cast<unsigned char*>(this) + slot)
+      ->orderCapRows277[nationIndex]
+      .initReadyFlag[0] = 1;
+  reinterpret_cast<short*>(&capRowsE4a6[nationIndex])[slot] =
+      static_cast<short>(g_pSimMgr->quarterGateTick2c / 4);
+}
+
+// Inverse of ApplyTechItemPurchaseCostAndState: refunds the slot's cost back to the
+// nation's field-0x10 metric and clears both the state byte and the capRowsE4a6 word.
+// FUNCTION: IMPERIALISM 0x005b0bb0
+void TTechMgr::RefundTechItemPurchaseCostAndClearState(int slot, int nationIndex) {
+  g_apNationStates[nationIndex]->AddToNationMetricAtField10(
+      g_anTechItemPurchaseCostBySlot_0066aae8[slot]);
+  reinterpret_cast<TTechMgr*>(reinterpret_cast<unsigned char*>(this) + slot)
+      ->orderCapRows277[nationIndex]
+      .initReadyFlag[0] = 0;
+  reinterpret_cast<short*>(&capRowsE4a6[nationIndex])[slot] = 0;
+}
+
+// FUNCTION: IMPERIALISM 0x005b0c70
+void TTechMgr::SetCityOrderCapabilityTierScaledValueByIndex(int index, int value) {
+  prioritySlots04[index] = static_cast<short>(value * 4);
 }
 
 // Returns a nation's maximum fortification level (1..3): level 3 if the advanced-fort flag is

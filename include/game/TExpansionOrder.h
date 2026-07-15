@@ -37,3 +37,8 @@ public:
 
 // 0x4b9340: swaps the first two bytes of the buffer (byte-order swap helper).
 void SwapFirstTwoBytesInBuffer(unsigned char* buffer);
+
+class TStream;
+// 0x4b94a0: writes `count` shorts to the stream, each byte-swapped, via the stream's
+// WriteBytesSlot78 primitive.
+void WriteWordArrayToOutputCallbackLE(TStream* stream, short* words, int count);

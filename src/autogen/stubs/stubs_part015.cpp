@@ -179,14 +179,6 @@ undefined4 WrapperFor_thunk_HasReachableSeaTileOutsideActiveType3Or4DiplomaticMa
   return 0;
 }
 
-// ghidra_name DumpAndResetMapScriptState
-// ghidra_proto void __fastcall DumpAndResetMapScriptState(void * pMapState)
-// FUNCTION: IMPERIALISM 0x00519140
-undefined4 DumpAndResetMapScriptState(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_ftol_At00519970
 // ghidra_proto undefined WrapperFor_ftol_At00519970()
 // FUNCTION: IMPERIALISM 0x00519970
@@ -259,22 +251,6 @@ undefined4 PromoteTileToCityAndRefreshNeighbors(void)
   return 0;
 }
 
-// ghidra_name InitializeMapInteractionPreviewScaleXDefault
-// ghidra_proto undefined InitializeMapInteractionPreviewScaleXDefault()
-// FUNCTION: IMPERIALISM 0x0051e0b0
-undefined4 InitializeMapInteractionPreviewScaleXDefault(void)
-{
-  return 0;
-}
-
-// ghidra_name InitializeMapInteractionPreviewScaleYDefault
-// ghidra_proto undefined InitializeMapInteractionPreviewScaleYDefault()
-// FUNCTION: IMPERIALISM 0x0051e0e0
-undefined4 InitializeMapInteractionPreviewScaleYDefault(void)
-{
-  return 0;
-}
-
 // ghidra_name RecomputeMapInteractionPreviewVerticalOffsetFromScale
 // ghidra_proto undefined RecomputeMapInteractionPreviewVerticalOffsetFromScale()
 // FUNCTION: IMPERIALISM 0x0051e110
@@ -319,14 +295,6 @@ undefined4 GenerateMapFromTuningStringAndApplyScenarioOverrides(void)
 // ghidra_proto undefined ValidateTerrainClassAdjacencyCoverageMask()
 // FUNCTION: IMPERIALISM 0x00526760
 undefined4 ValidateTerrainClassAdjacencyCoverageMask(void)
-{
-  return 0;
-}
-
-// ghidra_name ValidateSeedCandidateExistsForEachTerrainClass
-// ghidra_proto undefined ValidateSeedCandidateExistsForEachTerrainClass()
-// FUNCTION: IMPERIALISM 0x005267f0
-undefined4 ValidateSeedCandidateExistsForEachTerrainClass(void)
 {
   return 0;
 }
@@ -455,14 +423,6 @@ undefined4 DestructTTraderForeignMinister(void)
 // ghidra_proto undefined DestructTArmsForeignMinister()
 // FUNCTION: IMPERIALISM 0x005340b0
 undefined4 DestructTArmsForeignMinister(void)
-{
-  return 0;
-}
-
-// ghidra_name TIndexAndRankList::ConstructTIndexAndRankList
-// ghidra_proto undefined ConstructTIndexAndRankList()
-// FUNCTION: IMPERIALISM 0x00534870
-undefined4 ConstructTIndexAndRankList(void)
 {
   return 0;
 }

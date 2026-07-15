@@ -59,6 +59,12 @@ public:
   // Applies the tactical cursor/UI mode profile for this side.
   // 0x0059c440, __thiscall, ret 4.
   void SelectAndApplyTacticalCursorModeProfile(int cursorProfileMode);
+  // Applies the per-unit stance profile for the side's already-selected mode
+  // (this->lastAppliedCursorMode44, 0..7). The pure "apply" half of the switch that
+  // SelectAndApplyTacticalCursorModeProfile inlines after computing the mode: cases
+  // 0/2..6 delegate to the Apply*StanceByActionClass appliers, cases 1 and 7 set
+  // aiStateCode2c inline. 0x0059c970, __thiscall.
+  void ApplyTacticalStanceProfileForCurrentCursorMode();
 
   // Rebuilds projectionScoreSums2C/maxUnitRange40/42 and field51 (active artillery or
   // sapper present) from the active records, then folds sums[0]/sums[1] into
@@ -72,6 +78,9 @@ public:
   void ApplyAttackerAssaultStanceByActionClass();  // mode 4, 0x59d020
   void ApplyAttackerStandoffStanceByActionClass(); // mode 5, 0x59d1a0
   void ApplyUnopposedAdvanceStanceByActionClass(); // mode 6, 0x59d320
+  // Blanket hold-fire stance: sets every unit's aiStateCode2c to 0x13 (the standalone
+  // sibling of mode 7's inline loop). 0x0059d400, __thiscall.
+  void SetAllUnitAiStateCodesTo13();
   // Whether the opposing side has a deployed, still-active artillery-class unit.
   // 0x0059d470, __thiscall.
   unsigned char OpponentHasDeployedActiveArtilleryUnit();

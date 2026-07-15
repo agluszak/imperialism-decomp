@@ -228,7 +228,7 @@ void TNavyMission::NoOpSlot84(int a, int b) {
     owner->NoOpSlot8C(a, b);
   }
   owner = this;
-  TMapOrderChildLinkNode* node = TTaskForce::CreateLinkedOrderNode(orderList24, item);
+  TMapOrderChildLinkNode* node = orderList24->CreateLinkedOrderNode(item);
   orderList24 = node;
   if (static_cast<char>(b) != 0) {
     RefreshSlot40();
@@ -243,7 +243,7 @@ void TNavyMission::NoOpSlot8C(int a, int b) {
     if (orderList24->object_ptr == item) {
       orderList24 = TTaskForce::DeleteMapOrderChildLinkAndReturnNext(orderList24);
     } else {
-      TTaskForce::RemoveLinkedOrderNodeByValueRecursive(orderList24->next, item);
+      orderList24->next->RemoveLinkedOrderNodeByValueRecursive(item);
     }
   }
   *reinterpret_cast<int*>(reinterpret_cast<char*>(item) + 0x2c) = 0;

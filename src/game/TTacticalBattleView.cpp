@@ -147,13 +147,12 @@ undefined TTacticalBattleView::WrapperFor_InvalidateCityDialogRectRegion_At005a8
 }
 
 // FUNCTION: IMPERIALISM 0x005a89a0
-undefined TTacticalBattleView::InvalidateTacticalUnitTileRect(TTacticalUnit* unit) {
+void TTacticalBattleView::InvalidateTacticalUnitTileRect(TTacticalUnit* unit) {
   RECT unitRect;
   if (unit->tileIndex8 != -1) {
     ComputeTacticalUnitTileScreenRect(unit, &unitRect);
     InvalidateCityDialogRectRegion(&unitRect, 1);
   }
-  return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x005a89f0

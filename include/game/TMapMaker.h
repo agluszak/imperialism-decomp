@@ -55,6 +55,11 @@ public:
   // 0x00526710.
   char ValidateAllColumnsHaveAssignedRegionClass();
 
+  // True when every terrain class present on the map has at least one valid seed candidate
+  // (a land tile whose hex neighbourhood holds a city-region tile with uniform-class
+  // neighbours); reservoir-samples the chosen candidate per class. 0x005267f0.
+  char ValidateSeedCandidateExistsForEachTerrainClass();
+
   // Scans every tile's hex neighbours and emits a Seapoint into the overlay-quad table for
   // each city-region border edge (single edges + 3-region triple junctions). 0x0052c1a0.
   void BuildCityRegionBorderOverlaySegments();

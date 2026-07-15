@@ -5318,15 +5318,7 @@ address|name|symbol|size|type|prototype|provenance
 59c2a0|TArmyPlayer::SelectTacticalTileIndexByColumnPriorityVariantB||209|function|undefined SelectTacticalTileIndexByColumnPriorityVariantB()|
 59c3c0|TArmyPlayer::TArmyTacUnit_VtblSlot07||89|function|undefined TArmyTacUnit_VtblSlot07()|
 59c440|TArmyPlayer::SelectAndApplyTacticalCursorModeProfile||1023|function|undefined SelectAndApplyTacticalCursorModeProfile()|
-59c98d|WrapperFor_thunk_ApplyTacticalCursorModeProfile0_ByActionClassCounts_At0059c98d||12|function|undefined WrapperFor_thunk_ApplyTacticalCursorModeProfile0_ByActionClassCounts_At0059c98d()|
-59c999|SetLinkedListEntryState2CForTacticalCategory0||62|function|undefined SetLinkedListEntryState2CForTacticalCategory0()|
-59c9d7|IterateLinkedListCursorAndAdvanceToEnd_0059c9d7||31|function|undefined IterateLinkedListCursorAndAdvanceToEnd_0059c9d7()|
-59c9f6|WrapperFor_thunk_ApplyTacticalCursorModeProfile2_ByActionClassCounts_At0059c9f6||12|function|undefined WrapperFor_thunk_ApplyTacticalCursorModeProfile2_ByActionClassCounts_At0059c9f6()|
-59ca02|WrapperFor_thunk_ApplyTacticalCursorModeProfile3_ClassAware_At0059ca02||12|function|undefined WrapperFor_thunk_ApplyTacticalCursorModeProfile3_ClassAware_At0059ca02()|
-59ca0e|WrapperFor_thunk_ApplyTacticalCursorModeProfile4_ClassAware_At0059ca0e||12|function|undefined WrapperFor_thunk_ApplyTacticalCursorModeProfile4_ClassAware_At0059ca0e()|
-59ca1a|WrapperFor_thunk_ApplyTacticalCursorModeProfile5_ClassAware_At0059ca1a||12|function|undefined WrapperFor_thunk_ApplyTacticalCursorModeProfile5_ClassAware_At0059ca1a()|
-59ca26|WrapperFor_thunk_ApplyTacticalCursorModeProfile6_DefaultByActionClass_At0059ca26||12|function|undefined WrapperFor_thunk_ApplyTacticalCursorModeProfile6_DefaultByActionClass_At0059ca26()|
-59ca32|SetLinkedListEntryState2CTo13ForAllNodes||70|function|undefined SetLinkedListEntryState2CTo13ForAllNodes()|
+59c970|TArmyPlayer::ApplyTacticalStanceProfileForCurrentCursorMode||296|function|undefined ApplyTacticalStanceProfileForCurrentCursorMode()|
 59caf0|TArmyPlayer::ApplyDefenderHoldLineStanceByActionClass||276|function|undefined ApplyTacticalCursorModeProfile0_ByActionClassCounts()|
 59cc70|IterateLinkedListCursorEntries_0059cc70||100|function|undefined IterateLinkedListCursorEntries_0059cc70()|
 59cd00|TArmyPlayer::ApplyDefenderBombardStanceByActionClass||296|function|undefined ApplyTacticalCursorModeProfile2_ByActionClassCounts()|
@@ -5334,7 +5326,7 @@ address|name|symbol|size|type|prototype|provenance
 59d020|TArmyPlayer::ApplyAttackerAssaultStanceByActionClass||272|function|undefined ApplyTacticalCursorModeProfile4_ClassAware()|
 59d1a0|TArmyPlayer::ApplyAttackerStandoffStanceByActionClass||272|function|undefined ApplyTacticalCursorModeProfile5_ClassAware()|
 59d320|TArmyPlayer::ApplyUnopposedAdvanceStanceByActionClass||149|function|undefined ApplyTacticalCursorModeProfile6_DefaultByActionClass()|
-59d400|SetLinkedListNodeField2CTo13ForAllNodes||74|function|undefined SetLinkedListNodeField2CTo13ForAllNodes()|
+59d400|TArmyPlayer::SetAllUnitAiStateCodesTo13||74|function|undefined SetLinkedListNodeField2CTo13ForAllNodes()|
 59d470|TArmyPlayer::OpponentHasDeployedActiveArtilleryUnit||140|function|undefined HasReachableActiveArtilleryClassCursorEntry()|
 59d530|TArmyPlayer::SelectBestTacticalTileByWeightedHeuristics||297|function|undefined SelectBestTacticalTileByWeightedHeuristics()|
 59d6b0|TArmyPlayer::ScoreTacticalTileHoldPositionBonus||25|function|undefined EvaluateTacticalTileScore_CurrentTileMatchBonus()|
@@ -8310,7 +8302,9 @@ address|name|symbol|size|type|prototype|provenance
 66a8c8|TCityTask::classTCityTask|||global||
 66a8e0|TShipBuildingTask::classTShipBuildingTask|||global||
 66a8f8|TTaskList::classTTaskList|||global||
+66aae8|g_anTechItemPurchaseCostBySlot_0066aae8|||global||
 66aba6|g_anCapabilityPriorityRangePairs|||global||
+66ac10|g_awTechPrereqCapabilityFieldOffsetPairs_0066ac10|||global||
 66ac98|TTechMgr::classTTechMgr|||global||
 66ae10|TTechStorePage::classTTechStorePage|||global||
 66ae28|TTechItemLine::classTTechItemLine|||global||

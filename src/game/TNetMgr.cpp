@@ -263,6 +263,13 @@ int GetSessionActiveNationId() {
   return g_NetworkDefaultNationId006a5fc0;
 }
 
+// Empty session-phase-tag-changed hook (RET 4); invoked when TMultiplayerMgr sets the
+// 'init' phase tag.
+// FUNCTION: IMPERIALISM 0x005e42a0
+void TNetMgr::NoOpDialogModeTagChangedHook(int arg) {
+  (void)arg;
+}
+
 // FUNCTION: IMPERIALISM 0x005e42c0
 void TNetMgr::NotifyIfNationMatchesSessionActiveNation(int nationId) {
   if (nationId == g_NetworkDefaultNationId006a5fc0) {

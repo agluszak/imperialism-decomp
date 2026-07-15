@@ -288,6 +288,16 @@ undefined TMapDialog::UpdateMapInteractionPreviewParityAndRenderTransientSprites
   return 0;
 }
 
+// FUNCTION: IMPERIALISM 0x0051e0b0
+void InitializeMapInteractionPreviewScaleXDefault() {
+  g_MapPreviewScaleX6A3410 = 0.015625;
+}
+
+// FUNCTION: IMPERIALISM 0x0051e0e0
+void InitializeMapInteractionPreviewScaleYDefault() {
+  g_MapPreviewScaleY6A33D0 = 0.015625;
+}
+
 // FUNCTION: IMPERIALISM 0x0051e1a0
 undefined TMapDialog::OrphanCallChain_C1_I20_0051e1a0() {
   return 0;
