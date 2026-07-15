@@ -3187,6 +3187,7 @@ address|target_cpp|ownership|note
 54fab0|src/game/TShip.cpp|manual|marker_sync
 54fb50|src/game/TShip.cpp|manual|marker_sync
 54fbf0|src/game/TShip.cpp|manual|marker_sync
+54fd50|src/game/TShip.cpp|manual|marker_sync
 54fee0|src/game/TShip.cpp|manual|marker_sync
 54ff00|src/game/TShip.cpp|manual|marker_sync
 550090|src/game/TShip.cpp|manual|marker_sync
