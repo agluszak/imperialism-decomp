@@ -703,6 +703,10 @@ extern TCivMgr* g_pSelectedCivilianOrderState; // 0x6a43dc — the TCivMgr insta
 extern int g_nOceanDialogSeedViewportOffsetX; // 0x6a3ff0
 extern int g_nOceanDialogSeedViewportOffsetY; // 0x6a3ff4
 
+// Map-dialog viewport width in tiles (0x51ac40 centers on a tile by column - span/2).
+// int, not short: 0x51adf0 reads the full dword; word readers use static_cast<short>.
+extern int g_wMapDialogViewportTileSpan; // 0x6a33b0
+
 // Assert source-path strings for the UViewMgr TU family.
 extern "C" const char s_SourcePathUViewMgr_0069B6BC[];
 extern "C" const char s_SourcePathUMultiplayerMgr_00698040[];

@@ -4,6 +4,12 @@
 
 struct TQuickDrawSurfaceContext;
 
+// Genuine __cdecl free function (0x00512440, owned by TMapDialog.cpp): projects a tile
+// index to a wrapped screen offset at the given scale. Note the vertical output comes
+// third, the horizontal fourth.
+void ProjectTileIndexToWrappedScreenOffsetByScale(short tileIndex, short* originXY, short* outY,
+                                                  short* outX, short scale);
+
 // One transient tile-marker slot (8 bytes): a flag byte plus three sentinel-initialized
 // coordinate/state shorts. The map dialog keeps an array of 90 (0x5a) of these.
 struct TMapDialogTileMarker {
@@ -44,8 +50,6 @@ public:
 
   void ApplyRectSlot110(RECT* rectBuffer) override;
 
-  void ForwardMapDialogTileCoordUpdateToDerivedHandler(int tileX, int tileY);
-
   virtual void RenderMapOrderEntryTilePreview(TCivUnit* orderEntry, int arg2, int arg3) override;
   virtual void RenderTacticalStackCountIndicatorAndUnitBadge(short tileIndex, int arg2,
                                                              int arg3) override;
@@ -54,8 +58,6 @@ public:
   virtual void RenderStrategicTileSelectionAndNeighborHighlights() override;
   virtual void ForwardProjectTileIndexToWrappedScreenOffsetByScale(int arg1, int arg2, int arg3,
                                                                    int arg4, int arg5) override;
-  void ProjectTileIndexToWrappedScreenOffsetByScale(short tileIndex, short* originXY, short* outX,
-                                                    short* outY, short scale);
   virtual void ComputeWrappedMapCellAndRegionBandFromScreenCoord(int overlayRecord, short* outRow,
                                                                  unsigned short* outCol,
                                                                  short* outBand) override;
@@ -65,8 +67,8 @@ public:
 
   void OrphanRetStub_005966c0(short arg1) override;
   undefined OrphanLeaf_NoCall_Ins02_005966e0(short arg1) override;
-  void OrphanRetStub_005966a0(int arg1) override;
-  void OrphanRetStub_00596680(int arg1, int arg2) override;
+  void SetMapViewTileIndex(int arg1) override;
+  void SetMapViewCellCoordinates(int arg1, int arg2) override;
   virtual void DrawHexNeighborOutlineFromTileArray(short* neighborTiles);
   // Resets the map-tile sprite variants and all 90 transient tile-marker slots to sentinels.
   virtual void ResetAllTileMarkersToSentinel(); // 0x0051e1a0
@@ -116,8 +118,7 @@ public:
   virtual void Copy64x64TileBlockWithStrideAdjustment(int* src, int* dest, short srcStride,
                                                       short destStride);
   virtual undefined HasRenderableParentAndContentSlotA2();
-  virtual undefined ReleaseRuntimeSelectionOwnerAndDestroyObject(int param_1, int param_2,
-                                                                 int param_3);
+  virtual void SetMapDialogCellCoordinatesAndRefresh(int col, int row, int mode);
   virtual undefined UpdateMapInteractionPreviewParityAndRenderTransientSprites();
 };
 

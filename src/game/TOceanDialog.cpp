@@ -150,7 +150,7 @@ undefined TOceanDialog::OrphanLeaf_NoCall_Ins02_005966e0(short arg1) {
 }
 
 // FUNCTION: IMPERIALISM 0x005688d0
-void TOceanDialog::OrphanRetStub_00596680(int arg1, int arg2) {
+void TOceanDialog::SetMapViewCellCoordinates(int arg1, int arg2) {
   (void)arg1;
   (void)arg2;
 }
@@ -162,7 +162,7 @@ void TOceanDialog::UpdateMapDialogTileRowColumnMarkerAndInvalidate(int arg1) {
 
 // FUNCTION: IMPERIALISM 0x00568a40
 void TOceanDialog::ApplyDirectionalNudgeAndRefreshDisplay(unsigned char directionFlags) {
-  // Nudged values are passed to the slot-0x1e4 virtual (OrphanRetStub_00596680), which is
+  // Nudged values are passed to the slot-0x1e4 virtual (SetMapViewCellCoordinates), which is
   // a genuine 3-byte RET-8 no-op in every reachable override -- VERIFIED, so the nudge is
   // effectively discarded and no persistence happens. Residual <100% here is the original's
   // 16-bit partial-register load idiom (`mov ax, [+0x7e]`, no sign-extend), which clean C++
@@ -179,7 +179,7 @@ void TOceanDialog::ApplyDirectionalNudgeAndRefreshDisplay(unsigned char directio
   } else if ((directionFlags & 8) != 0) {
     col -= 4;
   }
-  OrphanRetStub_00596680(col, row);
+  SetMapViewCellCoordinates(col, row);
   g_pDisplayMgr->activeDialog->InvokeSlot13C();
 }
 

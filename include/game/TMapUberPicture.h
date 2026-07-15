@@ -234,6 +234,10 @@ public:
   // moved here rather than left mis-attributed (see also TWorldView.cpp's own
   // independent caveat about the same object).
   void SetMapInteractionMode(short nMode);
+  // Refreshes the mini-map tool window (field_0xc0) if it exists. Null-receiver-safe:
+  // call sites invoke this on a possibly-null ownerContext. 0x00599fa0, __thiscall,
+  // 0 args.
+  void RefreshMiniMapIfPresent();
   // Refreshes the 4 order-quota slider controls ("0slc".."3slc") from
   // orderEntryContext98, or clears them if it's null. 0x00597810, __thiscall, 1 arg.
   void RefreshMapOrderEntryPanel(TTaskForce* pMapOrderEntry);

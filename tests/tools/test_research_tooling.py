@@ -112,6 +112,7 @@ class QueryRegistryTests(unittest.TestCase):
         "func-sig",
         "field-xrefs",
         "string-oracle",
+        "portprep",
     }
 
     def test_registry_serves_the_documented_command_surface(self) -> None:

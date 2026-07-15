@@ -1448,7 +1448,7 @@ address|name|symbol|size|type|prototype|provenance
 4a0dc0|TAnimator::Free||56|function|undefined ResetUiViewStateAndReleaseRuntimeSelectionOwner()|
 4a0e10|TAnimator::ReadFrom||45|function|undefined GetTEventHandlerClassNamePointer(int * param_1)|
 4a0e50|TAnimator::WriteTo||35|function|undefined 'scalar_deleting_destructor'(int * param_1)|
-4a0e90|TranslateListRectsAndDropNonIntersectingEntries||186|function|undefined TranslateListRectsAndDropNonIntersectingEntries()|
+4a0e90|TAnimator::TranslateListRectsAndDropNonIntersectingEntries||186|function|undefined TranslateListRectsAndDropNonIntersectingEntries()|
 4a0f80|CallObjectOffset24Vslot54IfPresent||13|function|undefined CallObjectOffset24Vslot54IfPresent()|
 4a0fa0|TAnimator::RemoveUiTransientRegistryObjectByTag||135|function|void RemoveUiTransientRegistryObjectByTag(int tag)|
 4a1100|TBitmapResourceLoader::TemporarilyClearAndRestoreUiInvalidationFlag||21|function|undefined TemporarilyClearAndRestoreUiInvalidationFlag(void)|
@@ -3165,7 +3165,7 @@ address|name|symbol|size|type|prototype|provenance
 5122b0|TMapMgr::IsShiftKeyDown||14|function|undefined IsShiftKeyDown()|
 5122d0|TMapMgr::IsAltKeyDown||14|function|undefined IsAltKeyDown()|
 5123e0|ComputeStridedRecordAddress6C||18|function|undefined ComputeStridedRecordAddress6C()|
-512440|TMapDialog::ProjectTileIndexToWrappedScreenOffsetByScale||141|function|undefined ProjectTileIndexToWrappedScreenOffsetByScale()|
+512440|ProjectTileIndexToWrappedScreenOffsetByScale||141|function|undefined ProjectTileIndexToWrappedScreenOffsetByScale()|
 5125a0|TMapDialog::SplitTileIndexToRowAndColumn||47|function|undefined SplitTileIndexToRowAndColumn()|
 5127e0|SplitTileIndexToHexRasterColumnX2AndRow||71|function|undefined SplitTileIndexToHexRasterColumnX2AndRow()|
 512850|NoOpMapTilePredicateStub||24|function|undefined NoOpMapTilePredicateStub()|
@@ -3294,10 +3294,10 @@ address|name|symbol|size|type|prototype|provenance
 51a990|TMapDialog::OrphanRetStub_005960c0||242|function|undefined ComputeWrappedMapCellAndRegionBandFromScreenCoord()|
 51aad0|TMapDialog::OrphanRetStub_005966c0||111|function|undefined OrphanRetStub_005966c0(void)|
 51ab60|TMapDialog::OrphanLeaf_NoCall_Ins02_005966e0||168|function|undefined ComputeMapDialogProjectedTileClipIntersection()|
-51ac40|TMapDialog::OrphanRetStub_00594fc0||115|function|undefined UpdateMapDialogTileRowColumnMarkerAndInvalidate()|
+51ac40|TMapDialog::UpdateMapViewTileMarker||115|function|undefined UpdateMapDialogTileRowColumnMarkerAndInvalidate()|
 51ace0|TMapDialog::HasRenderableParentAndContent||97|function|undefined HasRenderableParentAndContent(void)|
-51ad70|TMapDialog::OrphanRetStub_005966a0||52|function|undefined OrphanRetStub_005966a0(void)|
-51adc0|TMapDialog::OrphanRetStub_00596680||23|function|undefined ForwardMapDialogTileCoordUpdateToDerivedHandler()|
+51ad70|TMapDialog::SetMapViewTileIndex||52|function|undefined OrphanRetStub_005966a0(void)|
+51adc0|TMapDialog::SetMapViewCellCoordinates||23|function|undefined ForwardMapDialogTileCoordUpdateToDerivedHandler()|
 51adf0|TMapDialog::SetMapDialogCellCoordinatesAndRefresh||278|function|undefined SetMapDialogCellCoordinatesAndRefresh()|
 51af60|TMapDialog::UpdateMapInteractionPreviewParityAndRenderTransientSprites||249|function|undefined UpdateMapInteractionPreviewParityAndRenderTransientSprites()|
 51b0a0|TTerrainInfoDialog::CreateObject|?CreateObject@TTerrainInfoDialog@@SGPAVCObject@@XZ|83|function|undefined CreateObject()|rtti
@@ -3316,8 +3316,8 @@ address|name|symbol|size|type|prototype|provenance
 51beb0|TCitySiteView::TCitySiteView||185|function|undefined TCitySiteView()|
 51bfa0|TCitySiteView::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 51bff0|TCitySiteView::NoOpUiLifecycleHook||536|function|undefined OrphanLeaf_NoCall_Ins07_004d8920(void)|
-51c2a0|TCitySiteView::OrphanRetStub_005966a0||52|function|undefined OrphanRetStub_005966a0(undefined4 param_1)|
-51c2f0|TCitySiteView::OrphanRetStub_00596680||23|function|undefined OrphanRetStub_00596680(void)|
+51c2a0|TCitySiteView::SetMapViewTileIndex||52|function|undefined OrphanRetStub_005966a0(undefined4 param_1)|
+51c2f0|TCitySiteView::SetMapViewCellCoordinates||23|function|undefined OrphanRetStub_00596680(void)|
 51c320|TCitySiteView::SetMapDialogCellCoordinatesAndRefresh||107|function|undefined ClampTileCoordsToMapDialogBoundsAndRefresh()|
 51c3b0|TCitySiteView::OrphanRetStub_00596080||746|function|undefined OrphanRetStub_00596080(void)|
 51c760|TCitySiteView::HandleMapClickByInteractionMode||669|function|undefined HandleTileClickForHomeSelectionOrPortBuild()|
@@ -4402,7 +4402,7 @@ address|name|symbol|size|type|prototype|provenance
 5682d0|TOceanDialog::OrphanRetStub_00596060||699|function|undefined OrphanRetStub_00596060(short param_1, RECT * param_2)|
 568640|TOceanDialog::OrphanRetStub_005960e0||101|function|undefined OrphanRetStub_005960e0(short param_1, short * param_2, short * param_3)|
 5687b0|TOceanDialog::OrphanLeaf_NoCall_Ins02_005966e0||98|function|undefined OrphanLeaf_NoCall_Ins02_005966e0(short param_1)|
-5688d0|TOceanDialog::OrphanRetStub_00596680||222|function|undefined OrphanRetStub_00596680(short param_1, short param_2)|
+5688d0|TOceanDialog::SetMapViewCellCoordinates||222|function|undefined OrphanRetStub_00596680(short param_1, short param_2)|
 5689f0|TOceanDialog::OrphanRetStub_00594fc0||57|function|undefined OrphanRetStub_00594fc0(short param_1)|
 568a40|TOceanDialog::ApplyDirectionalNudgeAndRefreshDisplay||79|function|undefined ApplyDirectionalNudgeAndRefreshDisplay()|
 568ab0|TOceanDialog::ComputeWrappedTileIndexFromObjectOffset7C7E||66|function|undefined ComputeWrappedTileIndexFromObjectOffset7C7E()|
@@ -5197,7 +5197,7 @@ address|name|symbol|size|type|prototype|provenance
 594c00|TStatusPicture::SortSevenEntriesAndUpdatePictureWidgets||225|function|undefined SortSevenEntriesAndUpdatePictureWidgets()|
 594ed0|WrapperFor_ftol_At00594ed0||30|function|undefined WrapperFor_ftol_At00594ed0()|
 594f20|TWorldView::CreateObject|?CreateObject@TWorldView@@SGPAVCObject@@XZ|123|function|undefined CreateObject()|rtti
-594fc0|TWorldView::OrphanRetStub_00594fc0||3|function|undefined OrphanRetStub_00594fc0(void)|
+594fc0|TWorldView::UpdateMapViewTileMarker||3|function|undefined OrphanRetStub_00594fc0(void)|
 594fe0|TWorldView::GetRuntimeClass||6|function|undefined GetTWorldViewClassNamePointer()|rtti
 595000|TWorldView::ConstructTWorldViewBaseState||42|function|undefined ConstructTWorldViewBaseState()|
 595040|TWorldView::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
@@ -5221,8 +5221,8 @@ address|name|symbol|size|type|prototype|provenance
 5963d0|TWorldView::WrapperFor_AllocateWithFallbackHandler_At005963d0||79|function|undefined WrapperFor_AllocateWithFallbackHandler_At005963d0(void)|
 596440|TWorldView::WrapperFor_AllocateWithFallbackHandler_At00596440||79|function|undefined WrapperFor_AllocateWithFallbackHandler_At00596440(void)|
 5964b0|TWorldView::HandleMapClickByInteractionMode||339|function|void __thiscall HandleMapClickByInteractionMode(short nTileIndex, int nInputFlags)|
-596680|TWorldView::OrphanRetStub_00596680||3|function|undefined OrphanRetStub_00596680(void)|
-5966a0|TWorldView::OrphanRetStub_005966a0||3|function|undefined OrphanRetStub_005966a0(void)|
+596680|TWorldView::SetMapViewCellCoordinates||3|function|undefined OrphanRetStub_00596680(void)|
+5966a0|TWorldView::SetMapViewTileIndex||3|function|undefined OrphanRetStub_005966a0(void)|
 5966c0|TWorldView::OrphanRetStub_005966c0||3|function|undefined OrphanRetStub_005966c0(void)|
 5966e0|TWorldView::OrphanLeaf_NoCall_Ins02_005966e0||5|function|undefined OrphanLeaf_NoCall_Ins02_005966e0(void)|
 596700|TWorldView::OrphanCallChain_C6_I29_00596700||74|function|undefined OrphanCallChain_C6_I29_00596700(void)|
@@ -5269,7 +5269,7 @@ address|name|symbol|size|type|prototype|provenance
 599a50|TacticalBattleView::EnterMapInteractionOverlayMode||252|function|undefined EnterMapInteractionOverlayMode()|
 599b90|CommitPendingUiModeChangeAndRefreshViews||263|function|undefined CommitPendingUiModeChangeAndRefreshViews()|
 599cf0|TMapUberPicture::CreateToolWindow_00599CF0||541|function|void __fastcall CreateToolWindow_00599CF0(astruct_20 * this_obj)|
-599fa0|InvokeViewSlotE4IfContextPresent||23|function|undefined InvokeViewSlotE4IfContextPresent()|
+599fa0|TMapUberPicture::RefreshMiniMapIfPresent||23|function|undefined InvokeViewSlotE4IfContextPresent()|
 599fd0|TMapUberPicture::SwapToolInfoSubviewAndRefreshClipRegion||328|function|undefined SwapToolInfoSubviewAndRefreshClipRegion()|
 59a180|TMapUberPicture::SetTradeToolSubcontrolEnabledStateByFlag||193|function|undefined SetTradeToolSubcontrolEnabledStateByFlag()|
 59a290|TMiniMapView::CreateObject|?CreateObject@TMiniMapView@@SGPAVCObject@@XZ|151|function|undefined CreateObject()|rtti
@@ -8621,6 +8621,7 @@ address|name|symbol|size|type|prototype|provenance
 6a31bc|g_nTurnFlowNationComparisonAdvisoryTick|||global||
 6a327c|g_pLanguageMgr|||global||
 6a3338|g_pMapContextActionManager|||global||
+6a33b0|g_wMapDialogViewportTileSpan|||global||
 6a3ebc|g_pNavySecondaryOrderListHead|||global||
 6a3ed8|g_pCachedMapActionContext|||global||
 6a3edc|g_pNavyPrimaryOrderListHead|||global||

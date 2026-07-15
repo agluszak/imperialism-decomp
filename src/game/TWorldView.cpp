@@ -7,6 +7,7 @@
 #include "game/mfc.h"
 #include "game/CTemporaryRegion.h"
 #include "game/TGlobalMapState.h"
+#include "game/TMapMgr.h"
 #include "game/TMapUberPicture.h"
 #include "game/ScopedMapQuickDrawContext.h"
 #include "game/TTaskForce.h"
@@ -17,7 +18,6 @@
 
 undefined4 thunk_GetMapActionContextByTileIndex(void);
 void NormalizeWrappedMapCoord108x60(short* xCoord, short* yCoord);
-int ComputeStridedRecordAddress6C(int recordBase, int recordIndex);
 
 namespace {
 
@@ -371,13 +371,13 @@ void TWorldView::HandleMapClickByInteractionMode(short nTileIndex, int nInputFla
 }
 
 // FUNCTION: IMPERIALISM 0x00596680
-void TWorldView::OrphanRetStub_00596680(int arg1, int arg2) {
+void TWorldView::SetMapViewCellCoordinates(int arg1, int arg2) {
   (void)arg1;
   (void)arg2;
 }
 
 // FUNCTION: IMPERIALISM 0x005966a0
-void TWorldView::OrphanRetStub_005966a0(int arg1) {
+void TWorldView::SetMapViewTileIndex(int arg1) {
   (void)arg1;
 }
 

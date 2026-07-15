@@ -1,8 +1,10 @@
 #include "game/TMapDialog.h"
 
 #include <stdlib.h>
+#include "game/TAnimator.h"
 #include "game/TDiplomacyMgr.h"
 #include "game/TMapMgr.h"
+#include "game/TMapUberPicture.h"
 #include "game/CTemporaryRegion.h"
 #include "game/TGlobalMapState.h"
 #include "game/TQuickDrawSurfaceContext.h"
@@ -15,23 +17,23 @@
 extern "C" long _ftol(void);
 
 void NormalizeWrappedMapCoord108x60(short* xCoord, short* yCoord);
-undefined4 thunk_ProjectTileIndexToWrappedScreenOffsetByScale(void);
-undefined4 thunk_SplitTileIndexToRowAndColumn(void);
 
-#define g_wMapDialogTileRowMarker (*reinterpret_cast<short*>(0x006a33b0))
-
+// Genuine __cdecl free function (bare RET; every caller cleans the 0x14 arg bytes) — not a
+// TMapDialog member, despite living among the map-dialog projection code. The vertical
+// (row-based) output is the THIRD parameter and the horizontal the fourth — the original
+// stores through [esp+0x18] for Y and [esp+0x1c] for X.
 // FUNCTION: IMPERIALISM 0x00512440
-void TMapDialog::ProjectTileIndexToWrappedScreenOffsetByScale(short tileIndex, short* originXY,
-                                                              short* outX, short* outY,
-                                                              short scale) {
+void ProjectTileIndexToWrappedScreenOffsetByScale(short tileIndex, short* originXY, short* outY,
+                                                  short* outX, short scale) {
   unsigned int row = static_cast<unsigned int>(tileIndex / 0x6c);
   *outY = static_cast<short>(row) * 0x40 - originXY[2];
   short projectedX = static_cast<short>((tileIndex % 0x6c) << 6) - *originXY;
   *outX = projectedX;
   if ((row & 1U) != 0) {
-    *outX = static_cast<short>(projectedX + 0x20);
-    if (0x1adf < *outX) {
-      *outX = static_cast<short>(projectedX - 0x1ae0);
+    projectedX = static_cast<short>(projectedX + 0x20);
+    *outX = projectedX;
+    if (projectedX >= 0x1ae0) {
+      *outX = static_cast<short>(projectedX - 0x1b00);
     }
   }
   while (*outX < -0x40) {
@@ -63,7 +65,7 @@ TMapDialog::TMapDialog() : TWorldView() {
   viewportOffsetY = 0;
   SplitTileIndexToRowAndColumn(g_pGlobalMapState->field6, reinterpret_cast<short*>(&row),
                                reinterpret_cast<short*>(&col));
-  OrphanRetStub_00596680(col, row);
+  SetMapViewCellCoordinates(col, row);
   field354 = 0;
   field356 = -1;
   field358 = 0;
@@ -97,100 +99,99 @@ void TMapDialog::RenderStrategicTileSelectionAndNeighborHighlights() {}
 // tiles (neighborTiles[0..5], -1 = none), project it to screen and stroke the
 // shared hex-cell edges, skipping an interior edge when the adjacent neighbor is
 // also present so shared borders are drawn once. 0x3f is the cell size, 0x20 the
-// half-cell. The projection's two outputs land as (outY = horizontal, outX =
-// vertical) here.
+// half-cell.
 // FUNCTION: IMPERIALISM 0x0051a2a0
 void TMapDialog::DrawHexNeighborOutlineFromTileArray(short* neighborTiles) {
   short* originXY = reinterpret_cast<short*>(reinterpret_cast<char*>(this) + 0x60);
-  short outX;
   short outY;
+  short outX;
 
   g_pUiRuntimeContext->ApplyLegendSplitSlot34(0x3f);
 
   if (neighborTiles[0] != -1) {
-    ProjectTileIndexToWrappedScreenOffsetByScale(neighborTiles[0], originXY, &outX, &outY, 1);
-    SetQuickDrawTextOriginWithContextOffset(outY, outX);
-    DrawCenteredGuideLineOnMapDc(outY + 0x3f, outX);
-    DrawCenteredGuideLineOnMapDc(outY + 0x3f, outX + 0x3f);
+    ProjectTileIndexToWrappedScreenOffsetByScale(neighborTiles[0], originXY, &outY, &outX, 1);
+    SetQuickDrawTextOriginWithContextOffset(outX, outY);
+    DrawCenteredGuideLineOnMapDc(outX + 0x3f, outY);
+    DrawCenteredGuideLineOnMapDc(outX + 0x3f, outY + 0x3f);
     if (neighborTiles[5] == -1) {
-      SetQuickDrawTextOriginWithContextOffset(outY, outX);
-      DrawCenteredGuideLineOnMapDc(outY, outX + 0x3f);
+      SetQuickDrawTextOriginWithContextOffset(outX, outY);
+      DrawCenteredGuideLineOnMapDc(outX, outY + 0x3f);
     }
     if (neighborTiles[1] == -1) {
-      SetQuickDrawTextOriginWithContextOffset(outY + 0x20, outX);
-      DrawCenteredGuideLineOnMapDc(outY + 0x20, outX + 0x3f);
+      SetQuickDrawTextOriginWithContextOffset(outX + 0x20, outY);
+      DrawCenteredGuideLineOnMapDc(outX + 0x20, outY + 0x3f);
     }
   }
   if (neighborTiles[1] != -1) {
-    ProjectTileIndexToWrappedScreenOffsetByScale(neighborTiles[1], originXY, &outX, &outY, 1);
-    SetQuickDrawTextOriginWithContextOffset(outY + 0x20, outX);
-    DrawCenteredGuideLineOnMapDc(outY + 0x3f, outX);
-    DrawCenteredGuideLineOnMapDc(outY + 0x3f, outX + 0x3f);
-    DrawCenteredGuideLineOnMapDc(outY + 0x20, outX + 0x3f);
+    ProjectTileIndexToWrappedScreenOffsetByScale(neighborTiles[1], originXY, &outY, &outX, 1);
+    SetQuickDrawTextOriginWithContextOffset(outX + 0x20, outY);
+    DrawCenteredGuideLineOnMapDc(outX + 0x3f, outY);
+    DrawCenteredGuideLineOnMapDc(outX + 0x3f, outY + 0x3f);
+    DrawCenteredGuideLineOnMapDc(outX + 0x20, outY + 0x3f);
     if (neighborTiles[0] == -1) {
-      SetQuickDrawTextOriginWithContextOffset(outY, outX);
-      DrawCenteredGuideLineOnMapDc(outY + 0x20, outX);
+      SetQuickDrawTextOriginWithContextOffset(outX, outY);
+      DrawCenteredGuideLineOnMapDc(outX + 0x20, outY);
     }
     if (neighborTiles[2] == -1) {
-      SetQuickDrawTextOriginWithContextOffset(outY, outX + 0x3f);
-      DrawCenteredGuideLineOnMapDc(outY + 0x20, outX + 0x3f);
+      SetQuickDrawTextOriginWithContextOffset(outX, outY + 0x3f);
+      DrawCenteredGuideLineOnMapDc(outX + 0x20, outY + 0x3f);
     }
   }
   if (neighborTiles[2] != -1) {
-    ProjectTileIndexToWrappedScreenOffsetByScale(neighborTiles[2], originXY, &outX, &outY, 1);
-    SetQuickDrawTextOriginWithContextOffset(outY, outX + 0x3f);
-    DrawCenteredGuideLineOnMapDc(outY + 0x3f, outX + 0x3f);
-    DrawCenteredGuideLineOnMapDc(outY + 0x3f, outX);
+    ProjectTileIndexToWrappedScreenOffsetByScale(neighborTiles[2], originXY, &outY, &outX, 1);
+    SetQuickDrawTextOriginWithContextOffset(outX, outY + 0x3f);
+    DrawCenteredGuideLineOnMapDc(outX + 0x3f, outY + 0x3f);
+    DrawCenteredGuideLineOnMapDc(outX + 0x3f, outY);
     if (neighborTiles[3] == -1) {
-      SetQuickDrawTextOriginWithContextOffset(outY, outX);
-      DrawCenteredGuideLineOnMapDc(outY, outX + 0x3f);
+      SetQuickDrawTextOriginWithContextOffset(outX, outY);
+      DrawCenteredGuideLineOnMapDc(outX, outY + 0x3f);
     }
     if (neighborTiles[1] == -1) {
-      SetQuickDrawTextOriginWithContextOffset(outY + 0x20, outX);
-      DrawCenteredGuideLineOnMapDc(outY + 0x3f, outX);
+      SetQuickDrawTextOriginWithContextOffset(outX + 0x20, outY);
+      DrawCenteredGuideLineOnMapDc(outX + 0x3f, outY);
     }
   }
   if (neighborTiles[3] != -1) {
-    ProjectTileIndexToWrappedScreenOffsetByScale(neighborTiles[3], originXY, &outX, &outY, 1);
-    SetQuickDrawTextOriginWithContextOffset(outY + 0x3f, outX + 0x3f);
-    DrawCenteredGuideLineOnMapDc(outY, outX + 0x3f);
-    DrawCenteredGuideLineOnMapDc(outY, outX);
+    ProjectTileIndexToWrappedScreenOffsetByScale(neighborTiles[3], originXY, &outY, &outX, 1);
+    SetQuickDrawTextOriginWithContextOffset(outX + 0x3f, outY + 0x3f);
+    DrawCenteredGuideLineOnMapDc(outX, outY + 0x3f);
+    DrawCenteredGuideLineOnMapDc(outX, outY);
     if (neighborTiles[2] == -1) {
-      SetQuickDrawTextOriginWithContextOffset(outY + 0x3f, outX);
-      DrawCenteredGuideLineOnMapDc(outY + 0x3f, outX + 0x3f);
+      SetQuickDrawTextOriginWithContextOffset(outX + 0x3f, outY);
+      DrawCenteredGuideLineOnMapDc(outX + 0x3f, outY + 0x3f);
     }
     if (neighborTiles[4] == -1) {
-      SetQuickDrawTextOriginWithContextOffset(outY, outX);
-      DrawCenteredGuideLineOnMapDc(outY + 0x20, outX);
+      SetQuickDrawTextOriginWithContextOffset(outX, outY);
+      DrawCenteredGuideLineOnMapDc(outX + 0x20, outY);
     }
   }
   if (neighborTiles[4] != -1) {
-    ProjectTileIndexToWrappedScreenOffsetByScale(neighborTiles[4], originXY, &outX, &outY, 1);
-    SetQuickDrawTextOriginWithContextOffset(outY + 0x20, outX);
-    DrawCenteredGuideLineOnMapDc(outY, outX);
-    DrawCenteredGuideLineOnMapDc(outY, outX + 0x3f);
-    DrawCenteredGuideLineOnMapDc(outY + 0x20, outX + 0x3f);
+    ProjectTileIndexToWrappedScreenOffsetByScale(neighborTiles[4], originXY, &outY, &outX, 1);
+    SetQuickDrawTextOriginWithContextOffset(outX + 0x20, outY);
+    DrawCenteredGuideLineOnMapDc(outX, outY);
+    DrawCenteredGuideLineOnMapDc(outX, outY + 0x3f);
+    DrawCenteredGuideLineOnMapDc(outX + 0x20, outY + 0x3f);
     if (neighborTiles[5] == -1) {
-      SetQuickDrawTextOriginWithContextOffset(outY + 0x20, outX);
-      DrawCenteredGuideLineOnMapDc(outY + 0x3f, outX);
+      SetQuickDrawTextOriginWithContextOffset(outX + 0x20, outY);
+      DrawCenteredGuideLineOnMapDc(outX + 0x3f, outY);
     }
     if (neighborTiles[3] == -1) {
-      SetQuickDrawTextOriginWithContextOffset(outY + 0x20, outX + 0x3f);
-      DrawCenteredGuideLineOnMapDc(outY + 0x3f, outX + 0x3f);
+      SetQuickDrawTextOriginWithContextOffset(outX + 0x20, outY + 0x3f);
+      DrawCenteredGuideLineOnMapDc(outX + 0x3f, outY + 0x3f);
     }
   }
   if (neighborTiles[5] != -1) {
-    ProjectTileIndexToWrappedScreenOffsetByScale(neighborTiles[5], originXY, &outX, &outY, 1);
-    SetQuickDrawTextOriginWithContextOffset(outY, outX + 0x3f);
-    DrawCenteredGuideLineOnMapDc(outY, outX);
-    DrawCenteredGuideLineOnMapDc(outY + 0x3f, outX);
+    ProjectTileIndexToWrappedScreenOffsetByScale(neighborTiles[5], originXY, &outY, &outX, 1);
+    SetQuickDrawTextOriginWithContextOffset(outX, outY + 0x3f);
+    DrawCenteredGuideLineOnMapDc(outX, outY);
+    DrawCenteredGuideLineOnMapDc(outX + 0x3f, outY);
     if (neighborTiles[0] == -1) {
-      SetQuickDrawTextOriginWithContextOffset(outY + 0x3f, outX);
-      DrawCenteredGuideLineOnMapDc(outY + 0x3f, outX + 0x3f);
+      SetQuickDrawTextOriginWithContextOffset(outX + 0x3f, outY);
+      DrawCenteredGuideLineOnMapDc(outX + 0x3f, outY + 0x3f);
     }
     if (neighborTiles[4] == -1) {
-      SetQuickDrawTextOriginWithContextOffset(outY, outX + 0x3f);
-      DrawCenteredGuideLineOnMapDc(outY + 0x20, outX + 0x3f);
+      SetQuickDrawTextOriginWithContextOffset(outX, outY + 0x3f);
+      DrawCenteredGuideLineOnMapDc(outX + 0x20, outY + 0x3f);
     }
   }
   SetQuickDrawFillColor(0);
@@ -257,17 +258,21 @@ undefined TMapDialog::OrphanLeaf_NoCall_Ins02_005966e0(short arg1) {
   return 0;
 }
 
+// Centers the map view on the given tile (column offset by half the viewport tile span,
+// row offset by 3) and invalidates the whole 0x200x0x1c0 dialog surface. The split writes
+// only the low words of the arg slot / col local (same short*-into-int idiom as the ctor).
 // FUNCTION: IMPERIALISM 0x0051ac40
 void TMapDialog::UpdateMapDialogTileRowColumnMarkerAndInvalidate(int arg1) {
-  int tileRowOutput[5] = {0};
-  reinterpret_cast<void(__fastcall*)(TMapDialog*, int, int, int*, int*)>(
-      thunk_SplitTileIndexToRowAndColumn)(this, 0, arg1, reinterpret_cast<int*>(&arg1),
-                                          reinterpret_cast<int*>(&tileRowOutput[0]));
-  ForwardMapDialogTileCoordUpdateToDerivedHandler(
-      tileRowOutput[0] - static_cast<int>(g_wMapDialogTileRowMarker) / 2, arg1 - 3);
-  int invalidateRect[3] = {0, 0x1ff, 0x1bf};
-  reinterpret_cast<TView*>(this)->InvalidateCityDialogRectRegion(
-      reinterpret_cast<RECT*>(&invalidateRect[0]), 1);
+  int col;
+  SplitTileIndexToRowAndColumn(static_cast<short>(arg1), reinterpret_cast<short*>(&arg1),
+                               reinterpret_cast<short*>(&col));
+  SetMapViewCellCoordinates(col - static_cast<short>(g_wMapDialogViewportTileSpan) / 2, arg1 - 3);
+  RECT invalidateRect;
+  invalidateRect.left = 0;
+  invalidateRect.top = 0;
+  invalidateRect.right = 0x1ff;
+  invalidateRect.bottom = 0x1bf;
+  InvalidateCityDialogRectRegion(&invalidateRect, 1);
 }
 
 // FUNCTION: IMPERIALISM 0x0051ace0
@@ -276,33 +281,71 @@ undefined TMapDialog::HasRenderableParentAndContentSlotA2() {
 }
 
 // FUNCTION: IMPERIALISM 0x0051ad70
-void TMapDialog::OrphanRetStub_005966a0(int arg1) {
+void TMapDialog::SetMapViewTileIndex(int arg1) {
   int tileCol;
-  reinterpret_cast<void(__cdecl*)(short, int*, int*)>(thunk_SplitTileIndexToRowAndColumn)(
-      static_cast<short>(arg1), &arg1, &tileCol);
-  OrphanRetStub_00596680(tileCol, arg1);
+  SplitTileIndexToRowAndColumn(static_cast<short>(arg1), reinterpret_cast<short*>(&arg1),
+                               reinterpret_cast<short*>(&tileCol));
+  SetMapViewCellCoordinates(tileCol, arg1);
 }
 
 // FUNCTION: IMPERIALISM 0x0051adc0
-void TMapDialog::OrphanRetStub_00596680(int arg1, int arg2) {
-  ReleaseRuntimeSelectionOwnerAndDestroyObject(arg1, arg2, 0);
+void TMapDialog::SetMapViewCellCoordinates(int arg1, int arg2) {
+  SetMapDialogCellCoordinatesAndRefresh(arg1, arg2, 0);
 }
 
+// Clamps/wraps the requested viewport cell (108x54 tile map, viewport span from
+// g_wMapDialogViewportTileSpan when horizontal wrap is off), commits the new viewport
+// offsets (Y before X, matching the original store order), records the new center tile
+// in g_pGlobalMapState->field6, invalidates the dialog surface, refreshes the owning
+// uber-picture's mini-map, and translates/prunes the transient animation rects.
+// `mode` is dead in this implementation (the slot's convention keeps it; TCitySiteView's
+// override forwards it here unchanged, and all known call sites pass 0).
 // FUNCTION: IMPERIALISM 0x0051adf0
-undefined TMapDialog::ReleaseRuntimeSelectionOwnerAndDestroyObject(int param_1, int param_2,
-                                                                   int param_3) {
-  (void)param_1;
-  (void)param_2;
-  (void)param_3;
-  return 0;
-}
+void TMapDialog::SetMapDialogCellCoordinatesAndRefresh(int col, int row, int mode) {
+  (void)mode;
+  if (g_pGlobalMapState->hexNeighborWrapHorizontally20 != 0) {
+    int span = g_wMapDialogViewportTileSpan;
+    if (static_cast<short>(col) > 0x6e - static_cast<short>(span)) {
+      col = 0x6e - span;
+    } else if (static_cast<short>(col) < 1) {
+      col = 1;
+    }
+  }
+  if (static_cast<short>(col) < 0) {
+    col = col + 0x6c;
+  } else if (static_cast<short>(col) >= 0x6c) {
+    col = col - 0x6c;
+  }
+  if (static_cast<short>(row) < 0) {
+    row = 0;
+  } else if (static_cast<short>(row) > 0x35) {
+    row = 0x35;
+  }
 
-void TMapDialog::ForwardMapDialogTileCoordUpdateToDerivedHandler(int tileX, int tileY) {
-  typedef void(__fastcall * TileCoordHandlerFn)(TView * self, int unusedEdx, int x, int y,
-                                                int mode);
-  TView* view = this;
-  int* vtable = *reinterpret_cast<int**>(view);
-  reinterpret_cast<TileCoordHandlerFn>(vtable[0x28c / 4])(view, 0, tileX, tileY, 0);
+  int oldY = viewportOffsetY;
+  int oldX = viewportOffsetX;
+  viewportOffsetY = static_cast<short>(row) << 6;
+  viewportOffsetX = static_cast<short>(col) << 6;
+
+  g_pGlobalMapState->field6 = static_cast<short>(ComputeStridedRecordAddress6C(col, row));
+
+  if (ownerContext != 0) {
+    RECT rect;
+    rect.left = 0;
+    rect.top = 0;
+    rect.right = 0x200;
+    rect.bottom = 0x1c0;
+    InvalidateCityDialogRectRegion(&rect, 1);
+    static_cast<TMapUberPicture*>(ownerContext)->RefreshMiniMapIfPresent();
+  }
+  int dx = oldX - viewportOffsetX;
+  int dy = oldY - viewportOffsetY;
+  RECT clip;
+  clip.left = -0x40;
+  clip.top = -0x40;
+  clip.right = 0x240;
+  clip.bottom = 0x200;
+  g_pUiAnimator->TranslateListRectsAndDropNonIntersectingEntries(dx, dy, clip);
 }
 
 // FUNCTION: IMPERIALISM 0x0051AF60
@@ -315,9 +358,9 @@ void TMapDialog::ResetAllTileMarkersToSentinel() {
   g_pGlobalMapState->ResetAllTileSpriteVariantIndexToSentinel();
   for (int i = 0; i < 90; i++) {
     tileMarkers7c[i].flag = 0;
-    tileMarkers7c[i].a = 0xffff;
-    tileMarkers7c[i].b = 0xffff;
-    tileMarkers7c[i].c = 0xffff;
+    tileMarkers7c[i].a = -1;
+    tileMarkers7c[i].b = -1;
+    tileMarkers7c[i].c = -1;
   }
 }
 
@@ -1012,7 +1055,7 @@ void TMapDialog::Copy64x64TileBlockWithStrideAdjustment(int* src, int* dest, sho
 // FUNCTION: IMPERIALISM 0x00525730
 void TMapDialog::ForwardProjectTileIndexToWrappedScreenOffsetByScale(int arg1, int arg2, int arg3,
                                                                      int arg4, int arg5) {
-  reinterpret_cast<void(__fastcall*)(TMapDialog*, int, int, int, int, int, int)>(
-      thunk_ProjectTileIndexToWrappedScreenOffsetByScale)(reinterpret_cast<TMapDialog*>(arg1), 0,
-                                                          arg1, arg2, arg3, arg4, arg5);
+  ProjectTileIndexToWrappedScreenOffsetByScale(
+      static_cast<short>(arg1), reinterpret_cast<short*>(arg2), reinterpret_cast<short*>(arg3),
+      reinterpret_cast<short*>(arg4), static_cast<short>(arg5));
 }

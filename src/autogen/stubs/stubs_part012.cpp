@@ -51,14 +51,6 @@ undefined4 DestructTAnimatorAndMaybeFree_Impl(void)
   return 0;
 }
 
-// ghidra_name TranslateListRectsAndDropNonIntersectingEntries
-// ghidra_proto undefined TranslateListRectsAndDropNonIntersectingEntries()
-// FUNCTION: IMPERIALISM 0x004a0e90
-undefined4 TranslateListRectsAndDropNonIntersectingEntries(void)
-{
-  return 0;
-}
-
 // ghidra_name CallObjectOffset24Vslot54IfPresent
 // ghidra_proto undefined CallObjectOffset24Vslot54IfPresent()
 // FUNCTION: IMPERIALISM 0x004a0f80

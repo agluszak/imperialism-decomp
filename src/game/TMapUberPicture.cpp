@@ -350,6 +350,15 @@ undefined TMapUberPicture::CreateToolWindow_00599CF0() {
   return this->SetTradeToolSubcontrolEnabledStateByFlag(0);
 }
 
+// FUNCTION: IMPERIALISM 0x00599fa0
+void TMapUberPicture::RefreshMiniMapIfPresent() {
+  // The original null-checks the receiver: call sites invoke this on a possibly-null
+  // ownerContext without guarding it.
+  if (this != 0 && field_0xc0 != 0) {
+    field_0xc0->RefreshControl();
+  }
+}
+
 // FUNCTION: IMPERIALISM 0x00599fd0
 undefined TMapUberPicture::SwapToolInfoSubviewAndRefreshClipRegion() {
   return 0;

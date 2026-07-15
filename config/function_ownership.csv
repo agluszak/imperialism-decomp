@@ -1098,6 +1098,7 @@ address|target_cpp|ownership|note
 4a0dc0|src/game/TAnimator.cpp|manual|marker_sync
 4a0e10|src/game/TAnimator.cpp|manual|marker_sync
 4a0e50|src/game/TAnimator.cpp|manual|marker_sync
+4a0e90|src/game/TAnimator.cpp|manual|marker_sync
 4a0fa0|src/game/TAnimator.cpp|manual|marker_sync
 4a1100|src/game/TAnimation.cpp|manual|marker_sync
 4a1130|src/game/TAnimation.cpp|manual|marker_sync
@@ -4292,6 +4293,7 @@ address|target_cpp|ownership|note
 599090|src/game/TMapUberPicture.cpp|manual|marker_sync
 599a50|src/game/TMapUberPicture.cpp|manual|marker_sync
 599cf0|src/game/TMapUberPicture.cpp|manual|marker_sync
+599fa0|src/game/TMapUberPicture.cpp|manual|marker_sync
 599fd0|src/game/TMapUberPicture.cpp|manual|marker_sync
 59a180|src/game/TMapUberPicture.cpp|manual|marker_sync
 59a290|src/game/TMiniMapView.cpp|manual|marker_sync

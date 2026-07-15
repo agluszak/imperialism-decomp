@@ -58,8 +58,8 @@ public:
   virtual void HandleMapClickByInteractionMode(short nTileIndex, int nInputFlags);
   virtual void UpdateMapDialogTileRowColumnMarkerAndInvalidate(int arg1);
   virtual short QueryMinusOneWordSlot77();
-  virtual void OrphanRetStub_005966a0(int arg1);
-  virtual void OrphanRetStub_00596680(int arg1, int arg2);
+  virtual void SetMapViewTileIndex(int arg1);
+  virtual void SetMapViewCellCoordinates(int arg1, int arg2);
   virtual void OrphanRetStub_005966c0(short arg1);
   virtual undefined OrphanLeaf_NoCall_Ins02_005966e0(short arg1);
   virtual void OrphanCallChain_C6_I29_00596700();

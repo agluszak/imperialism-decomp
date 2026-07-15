@@ -7,6 +7,7 @@
 #include "game/TList.h"
 #include "game/TStream.h"
 #include "game/global_data_tables.h"
+#include "game/quickdraw_regions.h"
 // SYNTHETIC: IMPERIALISM 0x004a09f0
 // TAnimator::CreateObject
 
@@ -93,6 +94,32 @@ void TAnimator::ReadFrom(TStream* stream) {
 void TAnimator::WriteTo(TStream* stream) {
   stream->streamSlot8c(field10);
   TObject::WriteTo(stream);
+}
+
+// FUNCTION: IMPERIALISM 0x004a0e90
+void TAnimator::TranslateListRectsAndDropNonIntersectingEntries(int dx, int dy, RECT clipRect) {
+  // The original null-checks the receiver: the call site invokes this on g_pUiAnimator
+  // without guarding it.
+  if (this != 0) {
+    CIterator cursor(registryList24);
+    TAnimation* entry = static_cast<TAnimation*>(cursor.Reset());
+    while (cursor.More()) {
+      entry->screenRect1C.left += dx;
+      entry->screenRect1C.top += dy;
+      entry->screenRect1C.right += dx;
+      entry->screenRect1C.bottom += dy;
+      RECT scratch;
+      if (!SectRect(&entry->screenRect1C, &clipRect, &scratch)) {
+        CPtrList* list = &registryList24->listState;
+        POSITION pos = list->Find(entry, 0);
+        if (pos != 0) {
+          list->RemoveAt(pos);
+        }
+        entry->Free();
+      }
+      entry = static_cast<TAnimation*>(cursor.Advance());
+    }
+  }
 }
 
 // The original inlines FindRegisteredAnimationByTag here (same loop, including the
