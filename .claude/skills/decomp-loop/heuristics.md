@@ -1473,3 +1473,39 @@ displayed under the phantom name by reccmp (symbols.csv drives the display name 
 manual owner is a different class). Finish it: delete the phantom `.h`/`.cpp`, rename the
 `symbols.csv` row to the real owner, `just regen-stubs`. Never trust "not polymorphic" without
 running step 1 or 2 — reporting a disguise as a genuine data class hides a whole class merge.
+
+## Note 94 — Auditing the binary for unrecovered vtables (two detection passes)
+
+To find vtables present in the binary but not yet annotated with `// VTABLE:`:
+
+**Pass 1 (fast, DYNCREATE only): RTTI-oracle name diff.** `config/rtti_class_oracle.csv`
+lists every MFC CRuntimeClass (DECLARE_DYNCREATE) class with its ground-truth name. Diff its
+class names against the classes that own a `// VTABLE:` marker
+(`grep -rlE "// VTABLE:" include/game | xargs grep -hoE "^class \w+"`). Non-`C`-prefixed names
+in the oracle with no marker are unrecovered game classes. This surfaced TOneTimeAnimation and
+CMcWindow — both of which HAD a header/.cpp but no `// VTABLE:` marker (so they were excluded
+from the "recovered" set precisely because they lacked the annotation).
+
+**Pass 2 (thorough, catches non-DYNCREATE): direct vtable scan.** DYNCREATE-only RTTI misses
+polymorphic classes without CRuntimeClass (CObject-helper families, TEvent subclasses,
+dialog-template subclasses, TBitmapResourceLoader-style classes). Enumerate every `.rdata`
+datum in ~0x63c000-0x672000 that (a) is referenced from `.text` by a `mov [reg], offset` and
+(b) holds a run of >=2 pointers into code; subtract the `// VTABLE:` marker set; drop MFC/CRT
+library vtables (CObject/CWnd/CDialog/CCmdTarget/common-controls/AFX_* module-state) and
+DAT_-sentinel false positives. Caveat: vtables installed only through a shared runtime helper
+(no direct `mov [reg], offset vtbl`) are a blind spot for both passes.
+
+**Two recurring recovery shapes once found:**
+- *Marker-only miss* (class fully modeled, marker absent): add `// VTABLE:` and drive the few
+  mismatched slots to 100% (CMcWindow: scalar-dtor + real dtor + GetMessageMap + PreCreateWindow
+  + OnCommand overrides, all ex-stubs with Ghidra placeholder names).
+- *Wrong-inheritance miss* (modeled as a flat `: public CObject` with duplicated base fields):
+  re-parent to the real RTTI base, add the marker, drop the duplicated fields, and model the
+  handful of overridden slots (TOneTimeAnimation -> TAnimation). RTTI `base_descriptor` in the
+  oracle is the ground truth for the parent.
+
+A leaf trivial destructor whose original is a single `mov [ecx], <base-most vftable>; ret` is a
+fully ICF-collapsed chain; our out-of-line base dtors emit `mov own_vtbl; jmp ~Base` instead, so
+that one function stays low while the vtable and scalar dtor still reach 100% — accept it (Hard
+Rule 12). The `IMPLEMENT_RUNTIMECLASS` CRuntimeClass DATA global must be named `class<Class>` in
+symbols.csv (not the generic `classRuntimeClass` placeholder) or GetRuntimeClass stalls at 50%.
