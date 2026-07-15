@@ -1804,3 +1804,42 @@ tweak) TUnit::RegisterUnitOrderWithOwnerManager 91%->100% in one line each. Ther
 bare no-arg calls across src/game (TButton/TCity/TDlgWindow/TEventHandler/TMacViewMgr/TNetMgr…)
 — sweep them when hunting cheap wins. NOTE the file often differs per function
 (UCountry.cpp / UCountryAuto.cpp / UUnit.cpp / UNavy.cpp) — always read the callee, don't assume.
+
+## Note 112 — Full-diff forensics beats decompile-reading on hard functions
+
+When a big function stalls below ~80%, capture the ENTIRE reccmp diff to a file
+(`just compare 0xADDR > f.txt` after stripping color codes) and read it as a frame-layout
+map, not line noise. Track every `[esp+N]` operand back to an E0-relative slot (E0 = ESP at
+entry before the prologue; account for pushes at each site). Three payoffs seen on
+TGreatPower::WriteTo: (1) a 288-line "mismatch" reduced to ONE slot-assignment difference
+(identical instructions, shifted offsets — the frame size delta hides in the encodings);
+(2) helper-vs-inline structure diffs are visible as cached-pointer registers + spills where
+the original re-reads a member per use — write list/collection loops with repeated
+`this->member->...` access, not a hoisted local, when the original does; (3) real bugs
+surface (a slot-0x14 call where the original calls slot 5 = the port called the WRONG
+METHOD — TransferTransportRequests vs WriteTo).
+
+## Note 113 — The dead-arg-slot assignment is one global, source-immune allocator choice
+
+MSVC500 reuses a dead argument's stack slot for one address-taken local. WHICH local gets
+it is a whole-function allocation decision that (in 8 tested configurations) could not be
+flipped from source: scratch-pointer helpers, by-value inline params, fn-scope vs
+block-scope vs union temps, and declaration reordering all left the same winner (the swap
+temp), while the original gave the slot to a later list-count. Worse, the choice is
+chaotic: bracing ONE late count block reshuffled the entire frame and cost 9pp elsewhere.
+Practical protocol: (a) find the config that matches the MOST slots and freeze it;
+(b) A/B one change at a time — a probe build after each single edit, never batch two frame
+knobs; (c) when only the slot-winner differs, stop — that's the ceiling; document it at the
+function. Related fact: locals allocate by FIRST USE (argument evaluation is right-to-left,
+so `f(&a,&b)` allocates b first); declaration position does not matter.
+
+## Note 114 — A "broken" Ghidra decompile (phantom register args) still has a clean listing
+
+Phantom `unaff_BX`/`unaff_SI` parameters + a bogus switch usually mean Ghidra lost stack
+tracking across a __cdecl call whose `ADD ESP,N` cleanup was scheduled late — the function
+itself is fine. Recover from the raw listing: real stack args are the `MOVSX/MOV reg,
+[esp+4/8/0xc...]` reads at entry (count them; `RET 0x14` = 5 args), jump tables read as
+`JMP [reg*4 + table]` with dense case blocks after, and consecutive-slot virtual calls
+(`CALL [reg + 0x214/0x218/...]`) are just unqualified member calls on `this` that C++
+regenerates verbatim from a plain switch. 527B of "undecompilable" render dispatch ported
+to 86% in one pass this way (residual: one EDI/EBX assignment swap).
