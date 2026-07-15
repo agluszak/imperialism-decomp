@@ -217,20 +217,26 @@
       "type": 1
     },
     {
+      "address": "0x413670",
+      "matching": 0.9090909090909091,
+      "name": "T64TemplateDialog::`scalar deleting destructor'",
+      "type": 1
+    },
+    {
       "address": "0x4136c0",
-      "matching": 0.0,
+      "matching": 1.0,
       "name": "OrphanRetStub_004136c0",
       "type": 1
     },
     {
       "address": "0x4136e0",
       "matching": 0.5,
-      "name": "OrphanVtableAssignStub_004136e0",
+      "name": "T64TemplateDialog::GetMessageMap",
       "type": 1
     },
     {
       "address": "0x413700",
-      "matching": 0.08695652173913043,
+      "matching": 0.7619047619047619,
       "name": "ShowDialogTemplate64Modal",
       "type": 1
     },
@@ -274,6 +280,12 @@
       "address": "0x413c00",
       "matching": 0.9090909090909091,
       "name": "TModalDialogBase::`scalar deleting destructor'",
+      "type": 1
+    },
+    {
+      "address": "0x413cd0",
+      "matching": 0.9090909090909091,
+      "name": "TDDTemplateDialog::`scalar deleting destructor'",
       "type": 1
     },
     {
@@ -1775,20 +1787,20 @@
     },
     {
       "address": "0x47d540",
-      "matching": 0.09523809523809523,
+      "matching": 0.8484848484848485,
       "name": "InitializeDialogTemplateDDPictureState",
       "type": 1
     },
     {
       "address": "0x47d5b0",
-      "matching": 0.0,
+      "matching": 1.0,
       "name": "OrphanRetStub_0047d5b0",
       "type": 1
     },
     {
       "address": "0x47d5d0",
       "matching": 0.5,
-      "name": "OrphanVtableAssignStub_0047d5d0",
+      "name": "TDDTemplateDialog::GetMessageMap",
       "type": 1
     },
     {
@@ -1805,7 +1817,7 @@
     },
     {
       "address": "0x47dae0",
-      "matching": 0.044444444444444446,
+      "matching": 0.13043478260869565,
       "name": "UpdateCursorHelperWindowLayoutAndMask",
       "type": 1
     },
@@ -2220,20 +2232,26 @@
     },
     {
       "address": "0x4813a0",
-      "matching": 0.0,
+      "matching": 0.8974358974358975,
       "name": "InitializeHotKeyDialogTemplateA1WithTripleTextState",
       "type": 1
     },
     {
+      "address": "0x481480",
+      "matching": 0.9090909090909091,
+      "name": "TA1TemplateDialog::`scalar deleting destructor'",
+      "type": 1
+    },
+    {
       "address": "0x481540",
-      "matching": 0.0,
+      "matching": 0.84375,
       "name": "Helper_Uses_EnsureWindowSubclassAndParentConsistency_At00481540",
       "type": 1
     },
     {
       "address": "0x4815d0",
       "matching": 0.5,
-      "name": "OrphanVtableAssignStub_004815d0",
+      "name": "TA1TemplateDialog::GetMessageMap",
       "type": 1
     },
     {
@@ -2400,7 +2418,7 @@
     },
     {
       "address": "0x4821f0",
-      "matching": 0.034482758620689655,
+      "matching": 0.1016949152542373,
       "name": "SyncTripleSelectionControlsFromState",
       "type": 1
     },
@@ -2412,7 +2430,7 @@
     },
     {
       "address": "0x482300",
-      "matching": 0.05,
+      "matching": 0.0,
       "name": "SyncTripleSelectionStateViaMessage400",
       "type": 1
     },
@@ -6558,6 +6576,12 @@
       "type": 1
     },
     {
+      "address": "0x498dd0",
+      "matching": 0.9090909090909091,
+      "name": "TE0TemplateDialog::`scalar deleting destructor'",
+      "type": 1
+    },
+    {
       "address": "0x498f60",
       "matching": 0.6938775510204082,
       "name": "TModuleLibraryCacheTableStateB::TModuleLibraryCacheTableStateB",
@@ -6812,8 +6836,14 @@
     },
     {
       "address": "0x49bcd0",
-      "matching": 0.0,
+      "matching": 0.9454545454545454,
       "name": "InitializeDialogTemplateD0WithTextState",
+      "type": 1
+    },
+    {
+      "address": "0x49bd60",
+      "matching": 0.9090909090909091,
+      "name": "TD0TemplateDialog::`scalar deleting destructor'",
       "type": 1
     },
     {
@@ -6825,12 +6855,12 @@
     {
       "address": "0x49bf90",
       "matching": 0.5,
-      "name": "OrphanVtableAssignStub_0049bf90",
+      "name": "TD0TemplateDialog::GetMessageMap",
       "type": 1
     },
     {
       "address": "0x49bfb0",
-      "matching": 0.6666666666666666,
+      "matching": 1.0,
       "name": "OrphanRetStub_0049bfb0",
       "type": 1
     },
@@ -33481,7 +33511,7 @@
     },
     {
       "address": "0x5dcaa0",
-      "matching": 0.5148514851485149,
+      "matching": 0.7522935779816514,
       "name": "TViewMgr::HandleTurnEventVtableSlot2CInitializeHotKeyDialog",
       "type": 1
     },
@@ -33625,25 +33655,25 @@
     },
     {
       "address": "0x5dee50",
-      "matching": 0.0,
+      "matching": 1.0,
       "name": "InitializeDialogTemplateE0",
       "type": 1
     },
     {
       "address": "0x5dee80",
-      "matching": 0.0,
+      "matching": 1.0,
       "name": "NoOpRuntimeUiCallback_005dee80",
       "type": 1
     },
     {
       "address": "0x5deea0",
       "matching": 0.5,
-      "name": "GetRuntimePtrTable0066F368",
+      "name": "TE0TemplateDialog::GetMessageMap",
       "type": 1
     },
     {
       "address": "0x5def70",
-      "matching": 0.09090909090909091,
+      "matching": 0.2608695652173913,
       "name": "SetCursorFromResourceE4AndClampRange",
       "type": 1
     },
@@ -41856,9 +41886,21 @@
       "type": 5
     },
     {
+      "address": "0x63e498",
+      "matching": 1.0,
+      "name": "T64TemplateDialog::`vftable'",
+      "type": 5
+    },
+    {
       "address": "0x63e5a0",
       "matching": 1.0,
       "name": "TModalDialogBase::`vftable'",
+      "type": 5
+    },
+    {
+      "address": "0x63e6b0",
+      "matching": 1.0,
+      "name": "TDDTemplateDialog::`vftable'",
       "type": 5
     },
     {
@@ -42282,6 +42324,12 @@
       "type": 5
     },
     {
+      "address": "0x647428",
+      "matching": 1.0,
+      "name": "TA1TemplateDialog::`vftable'",
+      "type": 5
+    },
+    {
       "address": "0x647740",
       "matching": 1.0,
       "name": "TA7TemplateDialog::`vftable'",
@@ -42507,6 +42555,18 @@
       "address": "0x64b7c8",
       "matching": 1.0,
       "name": "CMcWindow::`vftable'",
+      "type": 5
+    },
+    {
+      "address": "0x64b960",
+      "matching": 1.0,
+      "name": "TE0TemplateDialog::`vftable'",
+      "type": 5
+    },
+    {
+      "address": "0x64bac0",
+      "matching": 1.0,
+      "name": "TD0TemplateDialog::`vftable'",
       "type": 5
     },
     {

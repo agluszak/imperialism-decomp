@@ -1,4 +1,5 @@
 #include "game/TViewMgr.h"
+#include "game/TC2TemplateDialog.h"
 
 #include "game/TModuleLibraryCacheTableStateB.h"
 
@@ -71,7 +72,6 @@ undefined4 HandleTurnEvent8FC_RebuildPageTabsAndTitles(void);
 // Free-function thunks reached through the ILT jump table; declared in the generic
 // repo form and invoked through typed __cdecl casts at the callsites.
 // ILT thunk (generic form per repo policy; typed cast applied at the callsite).
-undefined4 InitializeHotKeyDialogTemplateA1WithTripleTextState(void);
 undefined4 RunNationInfoModalAndReturnNonCancel(void);
 undefined4 NoOpUiRuntimeCallback_005db2f0(void);
 undefined4 NoOpRuntimeCallback_005d5d10(void);
@@ -1622,13 +1622,12 @@ void TViewMgr::HandleTurnEventF3D_PopulateRecentTurnMessages(int nationSlot) {
 
 // FUNCTION: IMPERIALISM 0x005dcaa0
 void TViewMgr::HandleTurnEventVtableSlot2CInitializeHotKeyDialog() {
-  CDialog dialog;
-  reinterpret_cast<void(__cdecl*)(void)>(InitializeHotKeyDialogTemplateA1WithTripleTextState)();
+  TA1TemplateDialog dialog(NULL);
 
   char* buffer = new char[0x3e];
   if (buffer != 0) {
     CopyHotKeyDialogTemplateToBuffer(reinterpret_cast<int>(buffer));
-    *reinterpret_cast<void**>(buffer + 0x118) = &dialog;
+    dialog.state118 = buffer;
 
     int modalResult = dialog.DoModal();
     if (modalResult != 0) {

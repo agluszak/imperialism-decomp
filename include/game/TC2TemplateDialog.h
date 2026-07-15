@@ -245,3 +245,108 @@ protected:
 };
 
 ASSERT_SIZE(TB1TemplateDialog, 0x60);
+
+// Sibling "DD" picture-preview template dialog (template id 0xdd, own vtable 0x63e6b0):
+// TModalDialogBase-derived, owns an HDIB/heap buffer at +0x8c (created in OnInitDialog, freed
+// in the destructor) plus preview flags/dimensions at 0x78-0x90. Built by
+// InitializeDialogTemplateDDPictureState (0x0047d540). (OnInitDialog's DIB-sizing body and the
+// WM_PAINT/WM_LBUTTONDBLCLK message handlers are follow-up refinements.)
+// VTABLE: IMPERIALISM 0x0063e6b0
+class TDDTemplateDialog : public TModalDialogBase {
+public:
+  TDDTemplateDialog(void* initParam); // 0x0047d540
+
+  unsigned char previewState[0x94 - 0x74]; // 0x74-0x94 — preview flags/dims + HDIB at +0x8c
+
+protected:
+  BOOL OnInitDialog() override;                     // 0x0047dae0 (slot 0xc4)
+  void DoDataExchange(CDataExchange* pDX) override; // 0x0047d5b0 (empty body)
+  DECLARE_MESSAGE_MAP()                             // GetMessageMap 0x0047d5d0 (vtable index 12)
+};
+
+ASSERT_SIZE(TDDTemplateDialog, 0x94);
+
+// Sibling "64" template dialog (template id 0x64, own vtable 0x63e498): a PLAIN CDialog subclass
+// with no data members and a trivial OnInitDialog override. Constructed inline by its only
+// driver ShowDialogTemplate64Modal (0x00413700), so it has no standalone constructor function.
+// VTABLE: IMPERIALISM 0x0063e498
+class T64TemplateDialog : public CDialog {
+public:
+  T64TemplateDialog() : CDialog(0x64) {}
+
+  unsigned char scratch5c[0x74 - 0x5c]; // 0x5c-0x74 — template scratch written by the ctor
+
+protected:
+  BOOL OnInitDialog() override;                     // 0x00415380 (slot 0xc4)
+  void DoDataExchange(CDataExchange* pDX) override; // 0x004136c0 (empty body)
+  DECLARE_MESSAGE_MAP()                             // GetMessageMap 0x004136e0 (vtable index 12)
+};
+
+ASSERT_SIZE(T64TemplateDialog, 0x74);
+
+// Sibling "D0" template dialog (template id 0xd0, own vtable 0x64bac0): a PLAIN CDialog subclass
+// with an embedded CListBox at +0x5c (DDX_Control 0x419). OnOK is a no-op (suppresses default
+// close) and OnCancel minimizes instead of closing. Built by
+// InitializeDialogTemplateD0WithTextState (0x0049bcd0).
+// VTABLE: IMPERIALISM 0x0064bac0
+class TD0TemplateDialog : public CDialog {
+public:
+  TD0TemplateDialog(void* initParam); // 0x0049bcd0
+
+  CListBox listbox; // +0x5c
+
+protected:
+  void OnOK() override;                             // 0x0049bfb0 (empty)
+  void OnCancel() override;                         // 0x0049bfd0 (SW_MINIMIZE)
+  void DoDataExchange(CDataExchange* pDX) override; // 0x0049bf60 (vtable index 35)
+  DECLARE_MESSAGE_MAP()                             // GetMessageMap 0x0049bf90 (vtable index 12)
+};
+
+ASSERT_SIZE(TD0TemplateDialog, 0x98);
+
+// Sibling "E0" full-screen overlay template dialog (template id 0xe0, own vtable 0x64b960): a
+// PLAIN CDialog subclass with no DDX members. Overrides PreCreateWindow (forces a huge window)
+// and OnInitDialog (custom cursor + 2000x2000 MoveWindow); its message map carries the input
+// handlers (WM_CHAR/KEYDOWN/mouse/cursor/paint — follow-up). Built by InitializeDialogTemplateE0
+// (0x005dee50).
+// VTABLE: IMPERIALISM 0x0064b960
+class TE0TemplateDialog : public CDialog {
+public:
+  TE0TemplateDialog(void* initParam); // 0x005dee50
+
+  unsigned char scratch5c[0x74 - 0x5c]; // 0x5c-0x74 — template scratch written by the ctor
+
+protected:
+  BOOL PreCreateWindow(CREATESTRUCT& cs) override;  // 0x005def40 (slot 0x64)
+  BOOL OnInitDialog() override;                     // 0x005def70 (slot 0xc4)
+  void DoDataExchange(CDataExchange* pDX) override; // 0x005dee80 (empty body)
+  DECLARE_MESSAGE_MAP()                             // GetMessageMap 0x005deea0 (vtable index 12)
+};
+
+ASSERT_SIZE(TE0TemplateDialog, 0x74);
+
+// Sibling "A1" hot-key/slider template dialog (template id 0xa1, own vtable 0x647428): a PLAIN
+// CDialog subclass with three embedded CSliderCtrl trackbars at +0x5c/+0x98/+0xd4, two DDX_Check
+// flags at +0x110/+0x114, and a caller-supplied state pointer at +0x118. Overrides OnInitDialog
+// (SetRange + TBM_SETPOS) and OnOK (TBM_GETPOS write-back) — those bodies are follow-up. Built by
+// InitializeHotKeyDialogTemplateA1WithTripleTextState (0x004813a0).
+// VTABLE: IMPERIALISM 0x00647428
+class TA1TemplateDialog : public CDialog {
+public:
+  TA1TemplateDialog(void* initParam); // 0x004813a0
+
+  CSliderCtrl slider5c; // +0x5c
+  CSliderCtrl slider98; // +0x98
+  CSliderCtrl sliderD4; // +0xd4
+  int check110;         // +0x110 — DDX_Check control 0x404
+  int check114;         // +0x114 — DDX_Check control 0x405
+  void* state118;       // +0x118 — caller-supplied selection state
+
+protected:
+  BOOL OnInitDialog() override;                     // 0x004821f0 (slot 0xc4)
+  void OnOK() override;                             // 0x00482300 (slot 0xcc)
+  void DoDataExchange(CDataExchange* pDX) override; // 0x00481540 (vtable index 35)
+  DECLARE_MESSAGE_MAP()                             // GetMessageMap 0x004815d0 (vtable index 12)
+};
+
+ASSERT_SIZE(TA1TemplateDialog, 0x11c);

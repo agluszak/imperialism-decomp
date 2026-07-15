@@ -203,30 +203,6 @@ undefined4 OrphanCallChain_C1_I08_004133a0(void)
   return 0;
 }
 
-// ghidra_name OrphanRetStub_004136c0
-// ghidra_proto undefined OrphanRetStub_004136c0()
-// FUNCTION: IMPERIALISM 0x004136c0
-undefined4 OrphanRetStub_004136c0(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanVtableAssignStub_004136e0
-// ghidra_proto undefined OrphanVtableAssignStub_004136e0()
-// FUNCTION: IMPERIALISM 0x004136e0
-undefined4 OrphanVtableAssignStub_004136e0(void)
-{
-  return 0;
-}
-
-// ghidra_name ShowDialogTemplate64Modal
-// ghidra_proto undefined ShowDialogTemplate64Modal()
-// FUNCTION: IMPERIALISM 0x00413700
-undefined4 ShowDialogTemplate64Modal(void)
-{
-  return 0;
-}
-
 // ghidra_name ShowSelectedDibInTemplateDDDialog
 // ghidra_proto undefined ShowSelectedDibInTemplateDDDialog()
 // FUNCTION: IMPERIALISM 0x00413a50
@@ -247,14 +223,6 @@ undefined4 WrapperFor_CDialog_At00413b80(void)
 // ghidra_proto undefined WrapperFor_FreeHeapBufferIfNotNull_At00413cd0_Impl()
 // FUNCTION: IMPERIALISM 0x00413c30
 undefined4 WrapperFor_FreeHeapBufferIfNotNull_At00413cd0_Impl(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_FreeHeapBufferIfNotNull_At00413cd0
-// ghidra_proto undefined WrapperFor_FreeHeapBufferIfNotNull_At00413cd0()
-// FUNCTION: IMPERIALISM 0x00413cd0
-undefined4 WrapperFor_FreeHeapBufferIfNotNull_At00413cd0(void)
 {
   return 0;
 }
@@ -327,14 +295,6 @@ undefined4 AssertAmbitSubsystemReadyOrFailWithBmp3B6(void)
 // ghidra_proto undefined WrapperFor_GetOrCreateCrtThreadDataFromTls_At00415000()
 // FUNCTION: IMPERIALISM 0x00415000
 undefined4 WrapperFor_GetOrCreateCrtThreadDataFromTls_At00415000(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_UpdateCursorHelperWindowVisibilityFromControllerState_At00415380
-// ghidra_proto undefined WrapperFor_UpdateCursorHelperWindowVisibilityFromControllerState_At00415380()
-// FUNCTION: IMPERIALISM 0x00415380
-undefined4 WrapperFor_UpdateCursorHelperWindowVisibilityFromControllerState_At00415380(void)
 {
   return 0;
 }

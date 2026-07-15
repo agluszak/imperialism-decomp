@@ -619,14 +619,6 @@ undefined4 WrapperFor_CDialog_At00498d60(void)
   return 0;
 }
 
-// ghidra_name WrapperFor_FreeHeapBufferIfNotNull_At00498dd0
-// ghidra_proto undefined WrapperFor_FreeHeapBufferIfNotNull_At00498dd0()
-// FUNCTION: IMPERIALISM 0x00498dd0
-undefined4 WrapperFor_FreeHeapBufferIfNotNull_At00498dd0(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_thunk_ResolveBmpResourceHandleWithDefault3B6_At00498e00
 // ghidra_proto undefined WrapperFor_thunk_ResolveBmpResourceHandleWithDefault3B6_At00498e00()
 // FUNCTION: IMPERIALISM 0x00498e00
@@ -899,50 +891,10 @@ undefined4 ResetGlobalDword6A1E68(void)
   return 0;
 }
 
-// ghidra_name InitializeDialogTemplateD0WithTextState
-// ghidra_proto undefined InitializeDialogTemplateD0WithTextState()
-// FUNCTION: IMPERIALISM 0x0049bcd0
-undefined4 InitializeDialogTemplateD0WithTextState(void)
-{
-  return 0;
-}
-
 // ghidra_name PopulateListBoxFromDelimitedText
 // ghidra_proto undefined PopulateListBoxFromDelimitedText()
 // FUNCTION: IMPERIALISM 0x0049bd90
 undefined4 PopulateListBoxFromDelimitedText(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_EnsureWindowSubclassAndParentConsistency_At0049bf60
-// ghidra_proto undefined WrapperFor_EnsureWindowSubclassAndParentConsistency_At0049bf60()
-// FUNCTION: IMPERIALISM 0x0049bf60
-undefined4 WrapperFor_EnsureWindowSubclassAndParentConsistency_At0049bf60(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanVtableAssignStub_0049bf90
-// ghidra_proto undefined OrphanVtableAssignStub_0049bf90()
-// FUNCTION: IMPERIALISM 0x0049bf90
-undefined4 OrphanVtableAssignStub_0049bf90(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanRetStub_0049bfb0
-// ghidra_proto undefined OrphanRetStub_0049bfb0()
-// FUNCTION: IMPERIALISM 0x0049bfb0
-undefined4 OrphanRetStub_0049bfb0(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_ShowWindowOrForwardToSite_At0049bfd0
-// ghidra_proto undefined WrapperFor_ShowWindowOrForwardToSite_At0049bfd0()
-// FUNCTION: IMPERIALISM 0x0049bfd0
-undefined4 WrapperFor_ShowWindowOrForwardToSite_At0049bfd0(void)
 {
   return 0;
 }

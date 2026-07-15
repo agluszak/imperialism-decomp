@@ -3,30 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name InitializeDialogTemplateDDPictureState
-// ghidra_proto undefined InitializeDialogTemplateDDPictureState()
-// FUNCTION: IMPERIALISM 0x0047d540
-undefined4 InitializeDialogTemplateDDPictureState(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanRetStub_0047d5b0
-// ghidra_proto undefined OrphanRetStub_0047d5b0()
-// FUNCTION: IMPERIALISM 0x0047d5b0
-undefined4 OrphanRetStub_0047d5b0(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanVtableAssignStub_0047d5d0
-// ghidra_proto undefined OrphanVtableAssignStub_0047d5d0()
-// FUNCTION: IMPERIALISM 0x0047d5d0
-undefined4 OrphanVtableAssignStub_0047d5d0(void)
-{
-  return 0;
-}
-
 // ghidra_name RenderMapTileDibSurfaceWithClipRegionAndGdiPrimitives
 // ghidra_proto undefined RenderMapTileDibSurfaceWithClipRegionAndGdiPrimitives()
 // FUNCTION: IMPERIALISM 0x0047d5f0
@@ -47,14 +23,6 @@ undefined4 WrapperFor_DeleteRegionHandleFromClipState_At0047d9d0(void)
 // ghidra_proto undefined WrapperFor_DeleteRegionHandleFromClipState_At0047da70()
 // FUNCTION: IMPERIALISM 0x0047da70
 undefined4 WrapperFor_DeleteRegionHandleFromClipState_At0047da70(void)
-{
-  return 0;
-}
-
-// ghidra_name UpdateCursorHelperWindowLayoutAndMask
-// ghidra_proto undefined UpdateCursorHelperWindowLayoutAndMask()
-// FUNCTION: IMPERIALISM 0x0047dae0
-undefined4 UpdateCursorHelperWindowLayoutAndMask(void)
 {
   return 0;
 }
@@ -443,42 +411,10 @@ undefined4 WrapperFor_ftol_At00481370(void)
   return 0;
 }
 
-// ghidra_name InitializeHotKeyDialogTemplateA1WithTripleTextState
-// ghidra_proto undefined InitializeHotKeyDialogTemplateA1WithTripleTextState()
-// FUNCTION: IMPERIALISM 0x004813a0
-undefined4 InitializeHotKeyDialogTemplateA1WithTripleTextState(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_FreeHeapBufferIfNotNull_At00481480
-// ghidra_proto undefined WrapperFor_FreeHeapBufferIfNotNull_At00481480()
-// FUNCTION: IMPERIALISM 0x00481480
-undefined4 WrapperFor_FreeHeapBufferIfNotNull_At00481480(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_FreeHeapBufferIfNotNull_At00481480_Impl
 // ghidra_proto undefined WrapperFor_FreeHeapBufferIfNotNull_At00481480_Impl()
 // FUNCTION: IMPERIALISM 0x004814b0
 undefined4 WrapperFor_FreeHeapBufferIfNotNull_At00481480_Impl(void)
-{
-  return 0;
-}
-
-// ghidra_name Helper_Uses_EnsureWindowSubclassAndParentConsistency_At00481540
-// ghidra_proto undefined Helper_Uses_EnsureWindowSubclassAndParentConsistency_At00481540()
-// FUNCTION: IMPERIALISM 0x00481540
-undefined4 Helper_Uses_EnsureWindowSubclassAndParentConsistency_At00481540(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanVtableAssignStub_004815d0
-// ghidra_proto undefined OrphanVtableAssignStub_004815d0()
-// FUNCTION: IMPERIALISM 0x004815d0
-undefined4 OrphanVtableAssignStub_004815d0(void)
 {
   return 0;
 }
@@ -635,26 +571,10 @@ undefined4 HandleTurnEventVtableSlot2CInitializeHotKeyDialog_Impl(void)
   return 0;
 }
 
-// ghidra_name SyncTripleSelectionControlsFromState
-// ghidra_proto undefined SyncTripleSelectionControlsFromState()
-// FUNCTION: IMPERIALISM 0x004821f0
-undefined4 SyncTripleSelectionControlsFromState(void)
-{
-  return 0;
-}
-
 // ghidra_name OrphanRetStub_004822e0
 // ghidra_proto undefined OrphanRetStub_004822e0()
 // FUNCTION: IMPERIALISM 0x004822e0
 undefined4 OrphanRetStub_004822e0(void)
-{
-  return 0;
-}
-
-// ghidra_name SyncTripleSelectionStateViaMessage400
-// ghidra_proto undefined SyncTripleSelectionStateViaMessage400()
-// FUNCTION: IMPERIALISM 0x00482300
-undefined4 SyncTripleSelectionStateViaMessage400(void)
 {
   return 0;
 }

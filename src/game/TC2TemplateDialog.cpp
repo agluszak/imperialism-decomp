@@ -11,6 +11,38 @@
 static const unsigned int kGreatPowerLabelFmt = 0x00694e70;
 static const unsigned int kMinorNationLabelFmt = 0x00694e54;
 
+// SYNTHETIC: IMPERIALISM 0x00413670
+// T64TemplateDialog::`scalar deleting destructor'
+
+// FUNCTION: IMPERIALISM 0x004136c0
+void T64TemplateDialog::DoDataExchange(CDataExchange* pDX) {
+  (void)pDX;
+}
+
+// SYNTHETIC: IMPERIALISM 0x004136e0
+// T64TemplateDialog::GetMessageMap
+#ifndef IMPERIALISM_LINT
+BEGIN_MESSAGE_MAP(T64TemplateDialog, CDialog)
+END_MESSAGE_MAP()
+#endif
+
+// Constructs the template-0x64 dialog on the stack and runs it modally. This is what emits
+// the T64TemplateDialog vtable (the dialog is never constructed elsewhere).
+// FUNCTION: IMPERIALISM 0x00413700
+void ShowDialogTemplate64Modal() {
+  T64TemplateDialog dialog;
+  dialog.DoModal();
+}
+
+// SYNTHETIC: IMPERIALISM 0x00413cd0
+// TDDTemplateDialog::`scalar deleting destructor'
+
+// FUNCTION: IMPERIALISM 0x00415380
+BOOL T64TemplateDialog::OnInitDialog() {
+  CDialog::OnInitDialog();
+  return TRUE;
+}
+
 // FUNCTION: IMPERIALISM 0x0047cfd0
 TC2TemplateDialog::TC2TemplateDialog(void* initParam)
     : TModalDialogBase(0xc2, static_cast<CWnd*>(initParam)), slider(), listbox() {}
@@ -90,6 +122,31 @@ void TDCTemplateDialog::DoDataExchange(CDataExchange* pDX) {
 BEGIN_MESSAGE_MAP(TDCTemplateDialog, CDialog)
 END_MESSAGE_MAP()
 #endif
+// sorts them). Complex OnInitDialog/OnOK/PreCreateWindow bodies are minimal placeholders for
+// now — the vtable slots are correct; the full bodies are a follow-up.
+// ============================================================================================
+
+// FUNCTION: IMPERIALISM 0x0047d540
+TDDTemplateDialog::TDDTemplateDialog(void* initParam)
+    : TModalDialogBase(0xdd, static_cast<CWnd*>(initParam)) {}
+
+// FUNCTION: IMPERIALISM 0x0047d5b0
+void TDDTemplateDialog::DoDataExchange(CDataExchange* pDX) {
+  (void)pDX;
+}
+
+// SYNTHETIC: IMPERIALISM 0x0047d5d0
+// TDDTemplateDialog::GetMessageMap
+#ifndef IMPERIALISM_LINT
+BEGIN_MESSAGE_MAP(TDDTemplateDialog, CDialog)
+END_MESSAGE_MAP()
+#endif
+
+// FUNCTION: IMPERIALISM 0x0047dae0
+BOOL TDDTemplateDialog::OnInitDialog() {
+  CDialog::OnInitDialog();
+  return TRUE;
+}
 
 // FUNCTION: IMPERIALISM 0x0047dba0
 TDETemplateDialog::TDETemplateDialog(void* initParam)
@@ -208,6 +265,30 @@ BEGIN_MESSAGE_MAP(T104TemplateDialog, CDialog)
 END_MESSAGE_MAP()
 #endif
 
+// FUNCTION: IMPERIALISM 0x004813a0
+TA1TemplateDialog::TA1TemplateDialog(void* initParam)
+    : CDialog(0xa1, static_cast<CWnd*>(initParam)), slider5c(), slider98(), sliderD4(), check110(0),
+      check114(0) {}
+
+// SYNTHETIC: IMPERIALISM 0x00481480
+// TA1TemplateDialog::`scalar deleting destructor'
+
+// FUNCTION: IMPERIALISM 0x00481540
+void TA1TemplateDialog::DoDataExchange(CDataExchange* pDX) {
+  DDX_Control(pDX, 0x3fa, slider5c);
+  DDX_Control(pDX, 0x406, slider98);
+  DDX_Control(pDX, 0x3f9, sliderD4);
+  DDX_Check(pDX, 0x404, check110);
+  DDX_Check(pDX, 0x405, check114);
+}
+
+// SYNTHETIC: IMPERIALISM 0x004815d0
+// TA1TemplateDialog::GetMessageMap
+#ifndef IMPERIALISM_LINT
+BEGIN_MESSAGE_MAP(TA1TemplateDialog, CDialog)
+END_MESSAGE_MAP()
+#endif
+
 // FUNCTION: IMPERIALISM 0x00481770
 TA7TemplateDialog::TA7TemplateDialog(void* initParam)
     : CDialog(0xa7, static_cast<CWnd*>(initParam)), text5c() {
@@ -295,6 +376,17 @@ void TB1TemplateDialog::DoDataExchange(CDataExchange* pDX) {
 BEGIN_MESSAGE_MAP(TB1TemplateDialog, CDialog)
 END_MESSAGE_MAP()
 #endif
+
+// FUNCTION: IMPERIALISM 0x004821f0
+BOOL TA1TemplateDialog::OnInitDialog() {
+  CDialog::OnInitDialog();
+  return TRUE;
+}
+
+// FUNCTION: IMPERIALISM 0x00482300
+void TA1TemplateDialog::OnOK() {
+  CDialog::OnOK();
+}
 
 // The ID_800C command: put up the C2 template dialog with a 0..6 city-view slider and a
 // 10-row list box (each row carries a turn-event code as item data). On OK, dispatch the
@@ -388,4 +480,66 @@ void TMacViewMgr_OnCommand_ID_8013_ShowTerrainOverlayDialog(void) {
     }
   }
   g_pImperialismApp->PostStartupCommand100();
+}
+
+// ============================================================================================
+// Additional template dialogs (out of address order below; `just reorder-marked-functions`
+
+// SYNTHETIC: IMPERIALISM 0x00498dd0
+// TE0TemplateDialog::`scalar deleting destructor'
+
+// FUNCTION: IMPERIALISM 0x0049bcd0
+TD0TemplateDialog::TD0TemplateDialog(void* initParam)
+    : CDialog(0xd0, static_cast<CWnd*>(initParam)), listbox() {}
+
+// SYNTHETIC: IMPERIALISM 0x0049bd60
+// TD0TemplateDialog::`scalar deleting destructor'
+
+// FUNCTION: IMPERIALISM 0x0049bf60
+void TD0TemplateDialog::DoDataExchange(CDataExchange* pDX) {
+  DDX_Control(pDX, 0x419, listbox);
+}
+
+// SYNTHETIC: IMPERIALISM 0x0049bf90
+// TD0TemplateDialog::GetMessageMap
+#ifndef IMPERIALISM_LINT
+BEGIN_MESSAGE_MAP(TD0TemplateDialog, CDialog)
+END_MESSAGE_MAP()
+#endif
+
+// FUNCTION: IMPERIALISM 0x0049bfb0
+void TD0TemplateDialog::OnOK() {}
+
+// FUNCTION: IMPERIALISM 0x0049bfd0
+void TD0TemplateDialog::OnCancel() {
+  ShowWindow(SW_MINIMIZE);
+}
+
+// FUNCTION: IMPERIALISM 0x005dee50
+TE0TemplateDialog::TE0TemplateDialog(void* initParam)
+    : CDialog(0xe0, static_cast<CWnd*>(initParam)) {}
+
+// FUNCTION: IMPERIALISM 0x005dee80
+void TE0TemplateDialog::DoDataExchange(CDataExchange* pDX) {
+  (void)pDX;
+}
+
+// SYNTHETIC: IMPERIALISM 0x005deea0
+// TE0TemplateDialog::GetMessageMap
+#ifndef IMPERIALISM_LINT
+BEGIN_MESSAGE_MAP(TE0TemplateDialog, CDialog)
+END_MESSAGE_MAP()
+#endif
+
+// FUNCTION: IMPERIALISM 0x005def40
+BOOL TE0TemplateDialog::PreCreateWindow(CREATESTRUCT& cs) {
+  cs.cx = -1000;
+  cs.cy = -1000;
+  return CDialog::PreCreateWindow(cs);
+}
+
+// FUNCTION: IMPERIALISM 0x005def70
+BOOL TE0TemplateDialog::OnInitDialog() {
+  CDialog::OnInitDialog();
+  return TRUE;
 }
