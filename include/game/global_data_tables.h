@@ -851,6 +851,8 @@ extern double g_MapPreviewScaleX6A3410;
 extern double g_MapPreviewScaleY6A33D0;
 extern double g_ScaleDefault6A1FE8;
 extern double g_ScaleDefault6A1FC0;
+extern int g_ResetStateDword6A1E20;
+extern int g_ResetStateDword6A1E24;
 extern short g_NavyResolveOrderRanking[14];
 extern short g_NavyMissionOrderRanking[14];
 extern short g_NavyPriorityOrderRanking[14];

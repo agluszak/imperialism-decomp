@@ -19,6 +19,14 @@ extern "C" int __stdcall DirectSoundCreate(void* pcGuidDevice, IDirectSound** pp
 
 TSoundResourceManager g_soundResourceManager;
 
+// Cleanup handler (registered in the shutdown handler table at 0x692668) that zeroes the
+// 0x6a1e20 reset-region dword pair.
+// FUNCTION: IMPERIALISM 0x0049b9d0
+void ResetGlobalPair6A1E20And6A1E24() {
+  g_ResetStateDword6A1E20 = 0;
+  g_ResetStateDword6A1E24 = 0;
+}
+
 // FUNCTION: IMPERIALISM 0x0049c0c0
 void InitializeGlobalPair6A1FE8And6A1FECDefault() {
   g_ScaleDefault6A1FE8 = 0.015625;

@@ -619,6 +619,14 @@ double g_ScaleDefault6A1FE8;
 // GLOBAL: IMPERIALISM 0x006a1fc0
 double g_ScaleDefault6A1FC0;
 
+// Two dword slots in the 0x6a1e20 reset region, zeroed together by the cleanup handler
+// ResetGlobalPair6A1E20And6A1E24 (0x49b9d0). Only ever written (to 0); purpose not yet
+// recovered. Zero on disk.
+// GLOBAL: IMPERIALISM 0x006a1e20
+int g_ResetStateDword6A1E20;
+// GLOBAL: IMPERIALISM 0x006a1e24
+int g_ResetStateDword6A1E24;
+
 // Order-type index rankings (0..13) sorted by descending descriptor weight, rebuilt by
 // InitializeNavyOrderPriorityTables (0x556610): by resolveWeight, calculateWeight, and
 // navyPriorityWeight respectively. Runtime-filled, so zero in the on-disk image.

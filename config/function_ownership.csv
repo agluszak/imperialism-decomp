@@ -877,6 +877,7 @@ address|target_cpp|ownership|note
 49a390|src/game/TModuleLibraryCacheTableStateB.cpp|manual|marker_sync
 49ae30|src/game/TModuleLibraryCacheTableStateB.cpp|manual|marker_sync
 49b270|src/game/TModuleLibraryCacheTableStateB.cpp|manual|marker_sync
+49b9d0|src/game/TSoundResourceManager.cpp|manual|marker_sync
 49c0c0|src/game/TSoundResourceManager.cpp|manual|marker_sync
 49c0f0|src/game/TSoundResourceManager.cpp|manual|marker_sync
 49c150|src/game/TSoundResourceManager.cpp|manual|marker_sync

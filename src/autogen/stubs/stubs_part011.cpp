@@ -803,14 +803,6 @@ undefined4 ComputeBucketIndexAndScanNodeByKey(void)
   return 0;
 }
 
-// ghidra_name ResetGlobalPair6A1E20And6A1E24
-// ghidra_proto undefined ResetGlobalPair6A1E20And6A1E24()
-// FUNCTION: IMPERIALISM 0x0049b9d0
-undefined4 ResetGlobalPair6A1E20And6A1E24(void)
-{
-  return 0;
-}
-
 // ghidra_name ResetGlobalPair6A1E48And6A1E4C
 // ghidra_proto undefined ResetGlobalPair6A1E48And6A1E4C()
 // FUNCTION: IMPERIALISM 0x0049b9f0
