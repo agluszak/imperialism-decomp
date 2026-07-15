@@ -1478,6 +1478,7 @@ address|target_cpp|ownership|note
 4b9360|src/game/TExpansionOrder.cpp|manual|marker_sync
 4b94a0|src/game/TExpansionOrder.cpp|manual|marker_sync
 4b95c0|src/game/TToolBarCluster.cpp|manual|marker_sync
+4b98b0|src/game/TToolBarCluster.cpp|manual|marker_sync
 4ba240|src/game/TCityProductionView.cpp|manual|marker_sync
 4ba2c0|src/game/TCityProductionView.cpp|manual|marker_sync
 4ba360|src/game/TCityProductionView.cpp|manual|marker_sync

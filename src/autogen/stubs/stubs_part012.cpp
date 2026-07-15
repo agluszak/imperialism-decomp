@@ -643,14 +643,6 @@ undefined4 WrapperFor_ftol_At004b9570(void)
   return 0;
 }
 
-// ghidra_name InitializeCityBuildingLayoutData
-// ghidra_proto undefined InitializeCityBuildingLayoutData()
-// FUNCTION: IMPERIALISM 0x004b98b0
-undefined4 InitializeCityBuildingLayoutData(void)
-{
-  return 0;
-}
-
 // ghidra_name InitializeCityProductionView
 // ghidra_proto undefined InitializeCityProductionView()
 // FUNCTION: IMPERIALISM 0x004ba2e0

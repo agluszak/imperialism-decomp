@@ -8603,7 +8603,8 @@ address|name|symbol|size|type|prototype|provenance
 6a21bc|g_pUiRuntimeContext|||global||
 6a21c0|g_lastEdgeAutoScrollTick16|||global||
 6a24d4|g_Sanitize_City_Counter_Value_006A24D4|||global||
-6a24e8|g_aCityBuildingActionRects|||global||
+6a24e8|g_anCityBuildingLayoutValues|||global||
+6a2778|g_aCityBuildingActionRects|||global||
 6a2abc|g_nCityBuildingSlotXOffsetIndex|||global||
 6a2ac0|g_nCityBuildingDrawYOffsetIndex|||global||
 6a3060|g_cstrUiFontBelweLight|||global||

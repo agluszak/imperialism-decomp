@@ -502,6 +502,17 @@ short g_anCityBuildingSlotCoords[36] = {200, 235, 340, 300, 281, 184, 340, 266, 
 // GLOBAL: IMPERIALISM 0x006a2998
 CRect g_aCityBuildingHoverSelectionRects[16];
 
+// Packed int table consumed by the city-building screen layout (icon/highlight coordinates
+// and 0/1 flags; per-field semantics not yet recovered). Populated by
+// InitializeCityBuildingLayoutData.
+// GLOBAL: IMPERIALISM 0x006a24e8
+int g_anCityBuildingLayoutValues[164] = {0};
+
+// 31 action-button rects for the city-building screen, placement-constructed by
+// InitializeCityBuildingLayoutData (immediately after g_anCityBuildingLayoutValues).
+// GLOBAL: IMPERIALISM 0x006a2778
+CRect g_aCityBuildingActionRects[31];
+
 // GLOBAL: IMPERIALISM 0x006a1da4
 HRGN g_hOpenRgnAccumulator = nullptr;
 

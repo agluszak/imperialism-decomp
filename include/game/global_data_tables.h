@@ -393,6 +393,13 @@ extern short g_anCityBuildingSlotCoords[36];
 // TToolBarCluster::HandleCityBuildingHoverSelection), built by
 // InitializeCityBuildingHoverSelectionRects_004b95c0. 0x6a2998.
 extern CRect g_aCityBuildingHoverSelectionRects[16];
+// Packed int table consumed by the city-building screen layout (icon/highlight coordinates
+// and 0/1 flags; per-field semantics not yet recovered). Populated by
+// InitializeCityBuildingLayoutData. 0x6a24e8.
+extern int g_anCityBuildingLayoutValues[164];
+// 31 action-button rects for the city-building screen, placement-constructed by
+// InitializeCityBuildingLayoutData (immediately after g_anCityBuildingLayoutValues). 0x6a2778.
+extern CRect g_aCityBuildingActionRects[31];
 // QuickDraw OpenRgn/CloseRgn recording accumulator (QDFrameRect XORs framed rects into it).
 extern HRGN g_hOpenRgnAccumulator;
 extern char g_Sanitize_City_Counter_Value_006A24D4;
