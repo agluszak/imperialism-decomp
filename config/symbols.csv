@@ -5294,7 +5294,7 @@ address|name|symbol|size|type|prototype|provenance
 59afa0|TTacticalPlayer::RemoveTacticalUnitFromUnitList||37|function|undefined Helper_Uses_FindListNodeByKeyFromNodeOrHead_At0059afa0(void)|
 59afe0|TTacticalPlayer::AddTacticalUnitToUnitListHead||28|function|undefined WrapperFor_AddHead_At0059afe0(int * param_1)|
 59b010|TTacticalPlayer::IsTacticalControllerOwnedByActiveNation||31|function|undefined IsTacticalControllerOwnedByActiveNation()|
-59b040|HandleTacticalCommandTag_skip||32|function|undefined HandleTacticalCommandTag_skip()|
+59b040|TTacticalPlayer::HandleTacticalCommandTag_skip||32|function|undefined HandleTacticalCommandTag_skip()|
 59b070|CompareTacticalCursorEntriesByActionClassPriority||119|function|undefined CompareTacticalCursorEntriesByActionClassPriority()|
 59b110|TArmyPlayer::CreateObject|?CreateObject@TArmyPlayer@@SGPAVCObject@@XZ|24|function|undefined CreateObject()|rtti
 59b140|TArmyPlayer::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
@@ -5404,7 +5404,7 @@ address|name|symbol|size|type|prototype|provenance
 5a0550|IsHexNeighborTileIndex||57|function|undefined IsHexNeighborTileIndex()|
 5a05a0|ComputeTacticalHoverCursorStateIndex||1002|function|undefined ComputeTacticalHoverCursorStateIndex()|
 5a0a90|ResolveTacticalHoverCursorToken||348|function|undefined ResolveTacticalHoverCursorToken()|
-5a0c50|TacticalBattleView::HandleTacticalBattleCommandTag||193|function|void __thiscall HandleTacticalBattleCommandTag(int commandTag)|
+5a0c50|TTacticalBattle::HandleTacticalBattleCommandTag||193|function|void __thiscall HandleTacticalBattleCommandTag(int commandTag)|
 5a0d60|QueueTacticalEventPacket232A||139|function|undefined QueueTacticalEventPacket232A()|
 5a0ea0|AdvanceToNextTacticalUnitTurnStep||277|function|undefined AdvanceToNextTacticalUnitTurnStep()|
 5a1010|TTacticalBattle::SetCurrentTacticalUnitSelection||155|function|undefined SetCurrentTacticalUnitSelection()|
@@ -5437,7 +5437,7 @@ address|name|symbol|size|type|prototype|provenance
 5a3a70|TTacticalBattle::FindFortWallTileCrossedByFiringLine||328|function|undefined TestGridSegmentCrossesViewportThreshold()|
 5a3c20|TTacticalBattle::ConsumeFortStrengthPointsAndInvalidateIfDepleted||125|function|void __thiscall ConsumeTacticalSideResourcePoolAndInvalidateIfEmpty(int tileIndex, int consumeAmount)|
 5a3d30|IsTacticalTargetTileReachableForAction||383|function|undefined IsTacticalTargetTileReachableForAction()|
-5a3f10|TacticalBattleView::HandleTacticalCommandTag_targ||532|function|undefined HandleTacticalCommandTag_targ()|
+5a3f10|TTacticalBattle::HandleTacticalCommandTag_targ||532|function|undefined HandleTacticalCommandTag_targ()|
 5a41c0|TTacticalBattle::ApplyGridColumnSelectionGuard||96|function|undefined ApplyGridColumnSelectionGuard()|
 5a4240|TTacticalBattle::CountFreeDeploymentZoneTilesForCurrentSide||125|function|undefined TArmyTacUnit_VtblSlot06_Impl()|
 5a42e0|RenderTacticalBattleSelectionAndUnitOverlayPass_Impl_At005a42e0||64|function|undefined RenderTacticalBattleSelectionAndUnitOverlayPass_Impl_At005a42e0()|
@@ -5464,7 +5464,7 @@ address|name|symbol|size|type|prototype|provenance
 5a59a0|ConvertHexTileIndexToRowAndDoubleColumn||58|function|void __stdcall ConvertHexTileIndexToRowAndDoubleColumn(int tileIndex, uint * outRow, int * outCol2X)|
 5a59f0|TNavyBattle::ComputeTacticalReachableTileCostsByUnitCategory||293|function|undefined ComputeReachableTileDistanceByMoveBudget()|
 5a5b70|TNavyBattle::CreateTTacticalBattleInstance||14|function|undefined ResolveNavyOrderChainsForTurnPhase()|
-5a5b90|TacticalBattleView::HandleNavyTacticalToolbarModeAndCommandTags_Impl||17|function|undefined HandleNavyTacticalToolbarModeAndCommandTags_Impl()|
+5a5b90|TTacticalBattle::HandleNavyTacticalToolbarModeAndCommandTags_Impl||17|function|undefined HandleNavyTacticalToolbarModeAndCommandTags_Impl()|
 5a5bc0|TNavyBattle::ExecuteTacticalActionAndQueueEventIfNoAdjacentValidTarget||111|function|undefined ExecuteTacticalActionAndQueueEventIfSupportUnavailable()|
 5a5c50|TNavyBattle::MoveTacticalUnitAndQueueEvent232AIfNoAdjacentReachableTarget||141|function|undefined MoveTacticalUnitAndQueueEvent232AOnBlockedEngagementState()|
 5a5d10|TTacticalUnit::CreateObject|?CreateObject@TTacticalUnit@@SGPAVCObject@@XZ|24|function|undefined CreateObject()|rtti

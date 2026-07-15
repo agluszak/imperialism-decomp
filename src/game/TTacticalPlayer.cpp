@@ -99,6 +99,16 @@ unsigned char TTacticalPlayer::IsTacticalControllerOwnedByActiveNation() {
   return static_cast<unsigned char>(nationIndex1C == g_pSimMgr->GetActiveNationId());
 }
 
+// "skip" tactical command: unless the selected unit's type category is 8, mark this side and
+// queue the end-of-action turn event on the battle.
+// FUNCTION: IMPERIALISM 0x0059b040
+void TTacticalPlayer::HandleTacticalCommandTag_skip() {
+  if (g_awTacticalUnitCategoryCodeBySlot[battle14->selectedUnit1c->unitTypeC] != 8) {
+    field20 = 1;
+    battle14->QueueTacticalEventPacket232A();
+  }
+}
+
 // FUNCTION: IMPERIALISM 0x0059b740
 void TTacticalPlayer::RetireUndeployedUnitsToReserveList() {
   int ordinal;

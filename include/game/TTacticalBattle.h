@@ -160,6 +160,13 @@ public:
   // the live-battle toolbar controls and queues the 0x232a event. 0x59fdb0, __thiscall.
   void FinalizeTacticalTurnStateAndQueueEvent232A();
 
+  // Top-level tactical toolbar command dispatch for the current side (tags done/auto/retr/
+  // skip/targ); no-op unless the current side is human-watched. 0x5a0c50, __thiscall.
+  void HandleTacticalBattleCommandTag(int commandTag);
+  // "targ" command: cycles the selected unit's target to the next reachable enemy unit,
+  // recentering the view on it (or plays a "no target" cue). 0x5a3f10, __thiscall.
+  void HandleTacticalCommandTag_targ();
+
   // Helpers the command family dispatches into (all __thiscall on the battle).
   void ApplyTacticalDoneSelectionAndRefreshUi(TTacticalUnit* unit);                   // 0x59fe40
   void ComputeHexNeighborTileIndices_005A0420(int tileIndex, int* outNeighborTiles6); // 0x5a0420

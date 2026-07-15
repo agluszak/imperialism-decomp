@@ -539,14 +539,6 @@ undefined4 WrapperFor_ftol_At0059acf0(void)
   return 0;
 }
 
-// ghidra_name HandleTacticalCommandTag_skip
-// ghidra_proto undefined HandleTacticalCommandTag_skip()
-// FUNCTION: IMPERIALISM 0x0059b040
-undefined4 HandleTacticalCommandTag_skip(void)
-{
-  return 0;
-}
-
 // ghidra_name TArmyPlayer::CreateTArmyPlayerInstance
 // ghidra_proto undefined CreateTArmyPlayerInstance()
 // FUNCTION: IMPERIALISM 0x0059b170
