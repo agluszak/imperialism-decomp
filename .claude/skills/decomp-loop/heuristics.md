@@ -1786,3 +1786,21 @@ unblocked), document the residual, and don't sink hours chasing the last registe
 would require reverse-engineering the exact optimized instruction schedule, rarely worth it.
 Also: a slot the disassembly calls virtually but that isn't a modeled callable (CObject-style
 `AssertValid`, vtable slot 3) is fine to omit with a note — one missing no-op CALL.
+
+## Note 111 — Missing assert file/line args are a cheap, systematic score win
+
+`TemporarilyClearAndRestoreUiInvalidationFlag(...)` (0x0049d620) is variadic: called bare `()`
+it's a flag toggler, but the retail asserts push the Mac source path + line before it (via the
+ILT thunk 0x004057a4). MANY ported nil-pointer failure paths call it with NO args, so the
+original's `MessageBox` + `assert(sourcePath, line)` sequence never gets emitted — a fixed
+block of missing instructions that caps the function below 100%. Fix: pass the real path/line,
+e.g. `TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\UCountry.cpp", 0xa0e)`.
+Find the exact string+line from the callee's decompile (`func_0x004057a4(s_D__Ambit_..._cpp, N)`);
+reccmp pairs the string literal by content, so a plain literal is enough (no kAddr needed). The
+grep that finds candidates:
+`for f in $(grep -rl 'TemporarilyClearAndRestoreUiInvalidationFlag();' src/game); do awk '/GAME_FAIL_NIL_POINTER\(\);/{p=NR} /...Flag\(\);/&&NR==p+1{print FILENAME":"NR}' $f; done`
+Took UpdateOrderEntryAvailabilityByConnectedRegionMask 98%->100% and (with a counter-reread
+tweak) TUnit::RegisterUnitOrderWithOwnerManager 91%->100% in one line each. There are ~12 more
+bare no-arg calls across src/game (TButton/TCity/TDlgWindow/TEventHandler/TMacViewMgr/TNetMgr…)
+— sweep them when hunting cheap wins. NOTE the file often differs per function
+(UCountry.cpp / UCountryAuto.cpp / UUnit.cpp / UNavy.cpp) — always read the callee, don't assume.
