@@ -809,6 +809,7 @@ MappedFlavorTextNationVariantEntry g_MappedFlavorTextNationVariantTable_0066EF30
 extern const float g_Recompute_Nation_Order_LookupTable_0065A9BC = 0.05f;
 // GLOBAL: IMPERIALISM 0x0065a9c4
 extern const float g_Recompute_Nation_Order_LookupTable_0065A9C4 = -1000.0f;
+// GLOBAL: IMPERIALISM 0x0065a9e8
 extern const float g_Recompute_Nation_Order_LookupTable_0065A9E8 = 0.0f;
 // GLOBAL: IMPERIALISM 0x0065a9e0
 extern const double g_Recompute_Nation_Order_LookupTable_0065A9E0 = -1.0;

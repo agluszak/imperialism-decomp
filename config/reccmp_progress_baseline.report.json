@@ -20253,7 +20253,7 @@
     },
     {
       "address": "0x53d420",
-      "matching": 0.9714285714285714,
+      "matching": 1.0,
       "name": "ComputeArmyMissionScoreDeltaAgainstCurrentSelection",
       "type": 1
     },
