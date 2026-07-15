@@ -379,14 +379,6 @@ undefined4 AdvanceCivilianTerrainSelectionStep(void)
   return 0;
 }
 
-// ghidra_name TControl::SetDiplomacyNationSelectionFilterAndRefreshRows
-// ghidra_proto undefined SetDiplomacyNationSelectionFilterAndRefreshRows()
-// FUNCTION: IMPERIALISM 0x004fcea0
-undefined4 SetDiplomacyNationSelectionFilterAndRefreshRows(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_ftol_At004fe670
 // ghidra_proto undefined WrapperFor_ftol_At004fe670()
 // FUNCTION: IMPERIALISM 0x004fe670

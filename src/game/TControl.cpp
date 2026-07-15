@@ -3,6 +3,7 @@
 
 #include "game/TControl.h"
 #include "game/mfc.h"
+#include "game/TMapKey.h"
 #include "game/quickdraw_regions.h"
 #include "game/TMouseCaptureState.h"
 #include "game/TTEView.h"
@@ -202,6 +203,26 @@ undefined TControl::ReturnZeroFromUiSlot6C() {
 
 // KNOWN ILT (retired): 0x004087fb is a 5-byte `jmp TControl::TControl` linker stub — not ported.
 
+// FUNCTION: IMPERIALISM 0x004fcea0
+void TControl::SetDiplomacyNationSelectionFilterAndRefreshRows(short selectedNation) {
+  short pictureId;
+  if (selectedNation <= 0) {
+    pictureId = 0x1393;
+  } else {
+    short table[5] = {0, 2, 3, 0, 1};
+    pictureId = 0x1394 + table[selectedNation];
+  }
+
+  TMapKey& mapKey = *static_cast<TMapKey*>(this);
+  mapKey.viewMode90 = selectedNation;
+  mapKey.SetPictureResourceIdAndRefresh(pictureId, 1);
+
+  for (int i = 0; i < 7; i++) {
+    TView* child = mapKey.ResolveControlByTag(0x6e616d30 + i);
+    child->AssertValid();
+    child->SetEnabled(selectedNation == i, 0);
+  }
+}
 // Real ctor: TControl::TControl @ 0x0048e520 (base via : TView()).
 
 // FUNCTION: IMPERIALISM 0x0058e440

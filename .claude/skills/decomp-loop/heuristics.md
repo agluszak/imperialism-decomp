@@ -1785,7 +1785,6 @@ unblocked), document the residual, and don't sink hours chasing the last registe
 would require reverse-engineering the exact optimized instruction schedule, rarely worth it.
 Also: a slot the disassembly calls virtually but that isn't a modeled callable (CObject-style
 `AssertValid`, vtable slot 3) is fine to omit with a note — one missing no-op CALL.
-||||||| 009cf7c2
 
 99. **Resolve a method's real address through the vtable's ILT thunks before trusting a
     header slot comment — a body can be mis-attached across two markers even when
