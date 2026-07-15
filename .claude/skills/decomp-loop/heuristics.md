@@ -1524,3 +1524,33 @@ headers before splicing.
     accepted cross-TU base-ctor-inlining residual (same shape as note on TEscortMission).
     Always re-check `just stats` delta and diff the report for offsetting drops after a
     ctor-marker change, since the aligned count can stay flat while hiding a swap.
+
+100. **Near-miss (95–99%) triage-bucket fix taxonomy — which are clean single-line wins
+     and which are traps.** After `just triage 0xADDR`, the bucket + one diff line usually
+     tells you if it's fixable in isolation. **Reliably fixable (each a 1-line source fix
+     verified this session):** (a) *missing assert args* — a `codegen` bucket showing
+     `orig-only: push 0xLINE; push "D:\Ambit\...cpp"; add esp,8` means a
+     `TemporarilyClearAndRestoreUiInvalidationFlag()` call is missing its `(path,line)`
+     arguments; model the path as a real `// GLOBAL:` string (read it via
+     `just ghidra-read-data 0xADDR str`) and pass `(g_sz...Path, 0xLINE)` (e.g. 0x4db7d0).
+     (b) *literal-vs-named-constant* — a `codegen`/data line `fld [g_Named]` vs
+     `fld [<OFFSET1>]` where a bare `return 0.0f;`/literal makes MSVC allocate a fresh
+     constant, but the original reuses an existing zero/constant global; return the named
+     global instead of the literal AND ensure that global carries its `// GLOBAL:` marker so
+     reccmp pairs the data symbol (e.g. 0x53d420 → g_..._0065A9E8, which was ALSO missing its
+     marker). (c) *wrong calling convention* — a `codegen` line `ret 4` vs `ret`: verify the
+     callee's real `RET`/`RET 0x4` in Ghidra, then annotate the free function `__stdcall`
+     (callee-cleans) on BOTH prototype and definition (e.g. 0x5a99e0 DrawHexSelectionOutline).
+     **Traps — do NOT chase (verified dead ends this session):** (d) *ax-vs-eax / bx-vs-bl
+     register-width `reg_alloc` on a single `movsx`/`mov`* — the types are already correct;
+     MSVC's 16- vs 32-bit destination choice is register-reuse (it relies on stale high bits
+     of a reused index reg), not source-controllable; flipping `short`↔`int` just moves the
+     mismatch (0x5a24a0 sfx token, 0x522000). (e) *`call_target` on a LIBRARY function*
+     (AfxMessageBox `(LPCTSTR,UINT,UINT)` vs `(char const*,...)`, or a thiscall method whose
+     ILT thunk resolves fine but shows `(short)` vs `(void)`) — an MFC/symbols pairing
+     artifact, not a codegen diff. (f) *`missing_annotation` on an end-of-array pointer
+     sentinel* (`cmp esi, &table[N]` labeled as the adjacent global) — the loop-end address
+     is unnamed in both binaries so reccmp can't pair it; no clean source fix. (g) *widening
+     a shared struct field or a virtual's param to drop one caller's `movsx`* — correct in
+     isolation but regresses the other N consumers; only do it with full multi-site + stats
+     verification, never as a one-function win.
