@@ -3,38 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name InitializeDialogTemplateDCBaseState
-// ghidra_proto undefined InitializeDialogTemplateDCBaseState()
-// FUNCTION: IMPERIALISM 0x0047d470
-undefined4 InitializeDialogTemplateDCBaseState(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_FreeHeapBufferIfNotNull_At0047d4b0
-// ghidra_proto undefined WrapperFor_FreeHeapBufferIfNotNull_At0047d4b0()
-// FUNCTION: IMPERIALISM 0x0047d4b0
-undefined4 WrapperFor_FreeHeapBufferIfNotNull_At0047d4b0(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_DDX_Text_At0047d4e0
-// ghidra_proto undefined WrapperFor_DDX_Text_At0047d4e0()
-// FUNCTION: IMPERIALISM 0x0047d4e0
-undefined4 WrapperFor_DDX_Text_At0047d4e0(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanVtableAssignStub_0047d520
-// ghidra_proto undefined OrphanVtableAssignStub_0047d520()
-// FUNCTION: IMPERIALISM 0x0047d520
-undefined4 OrphanVtableAssignStub_0047d520(void)
-{
-  return 0;
-}
-
 // ghidra_name InitializeDialogTemplateDDPictureState
 // ghidra_proto undefined InitializeDialogTemplateDDPictureState()
 // FUNCTION: IMPERIALISM 0x0047d540

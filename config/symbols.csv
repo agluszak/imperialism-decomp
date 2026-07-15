@@ -354,9 +354,9 @@ address|name|symbol|size|type|prototype|provenance
 47d420|WrapperFor_EnsureWindowSubclassAndParentConsistency_At0047d420||22|function|undefined WrapperFor_EnsureWindowSubclassAndParentConsistency_At0047d420()|
 47d450|TDBTemplateDialog::GetMessageMap|?GetMessageMap@TDBTemplateDialog@@MBEPBUAFX_MSGMAP@@XZ|6|function|undefined GetMessageMap()|
 47d470|InitializeDialogTemplateDCBaseState||44|function|undefined InitializeDialogTemplateDCBaseState()|
-47d4b0|WrapperFor_FreeHeapBufferIfNotNull_At0047d4b0||30|function|undefined WrapperFor_FreeHeapBufferIfNotNull_At0047d4b0()|
+47d4b0|TDCTemplateDialog::`scalar deleting destructor'|??_GTDCTemplateDialog@@UAEPAXI@Z|30|function|undefined ScalarDeletingDestructor()|
 47d4e0|WrapperFor_DDX_Text_At0047d4e0||42|function|undefined WrapperFor_DDX_Text_At0047d4e0()|
-47d520|OrphanVtableAssignStub_0047d520||6|function|undefined OrphanVtableAssignStub_0047d520()|
+47d520|TDCTemplateDialog::GetMessageMap|?GetMessageMap@TDCTemplateDialog@@MBEPBUAFX_MSGMAP@@XZ|6|function|undefined GetMessageMap()|
 47d540|InitializeDialogTemplateDDPictureState||65|function|undefined InitializeDialogTemplateDDPictureState()|
 47d5b0|OrphanRetStub_0047d5b0||3|function|undefined OrphanRetStub_0047d5b0()|
 47d5d0|OrphanVtableAssignStub_0047d5d0||6|function|undefined OrphanVtableAssignStub_0047d5d0()|

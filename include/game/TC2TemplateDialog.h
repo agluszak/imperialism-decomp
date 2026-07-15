@@ -59,3 +59,20 @@ protected:
 };
 
 ASSERT_SIZE(TDBTemplateDialog, 0xb0);
+
+// Sibling "DC" template dialog (template id 0xdc, own vtable 0x646520): a TModalDialogBase
+// with a single edit field exchanged as a 0..999 UINT (no embedded control object). Built by
+// InitializeDialogTemplateDCBaseState (0x0047d470).
+// VTABLE: IMPERIALISM 0x00646520
+class TDCTemplateDialog : public TModalDialogBase {
+public:
+  TDCTemplateDialog(void* initParam); // 0x0047d470
+
+  unsigned int value74; // +0x74 — DDX_Text edit value (validated 0..999)
+
+protected:
+  void DoDataExchange(CDataExchange* pDX) override; // 0x0047d4e0 (vtable index 35)
+  DECLARE_MESSAGE_MAP()                             // GetMessageMap 0x0047d520 (vtable index 12)
+};
+
+ASSERT_SIZE(TDCTemplateDialog, 0x78);
