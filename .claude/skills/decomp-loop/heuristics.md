@@ -1442,3 +1442,34 @@ keyword makes the compiler reject any inconsistency, and `just vtable` confirms 
 1191 replacements across 199 files, build green, all affected vtables still 100%, stats +0.
 The Mac oracle gives candidate *names* but never the slot→name mapping (Hard Rule 12); derive
 the mapping from behavior, then optionally cross-check the name exists in the Mac symbol list.
+
+## Note 93 — A baseless, vtable-less game class is a red flag: disguise-or-find-the-vtable
+
+In this codebase virtually everything descends from `CObject`/`TObject`, so a `class TFoo {`
+with no base, no `// VTABLE:`, and a leading `pad_00[4]` (or `field0` = 0) deserves a check —
+it is usually one of: (a) a **disguise** of a real polymorphic class that should be merged, or
+(b) genuinely polymorphic with an **unfound vtable**, or (c) a genuine non-poly data manager
+whose vtable(s) belong to **members it holds**, not itself.
+
+Decision procedure (all from Ghidra, fast):
+1. `just ghidra-xrefs 0xMETHOD` on the class's method. If the xref is `from 0xNNNN [DATA
+   address-taken]` in the vtable region, the method is a **virtual slot** → the object is
+   polymorphic. Then find the owning vtable: list the neighbours of the method address in
+   symbols.csv (functions in the same 0xNNNxxx TU) and match a nearby `// VTABLE:` base
+   (`base + slot*4 == the DATA address`). That base's class is the real owner → **merge the
+   phantom into it.** (TCityRecruitmentOrderContext's one method was TUnitOrder vtable slot
+   0x0d; the phantom's fields were TProductionOrder/TUnitOrder inherited members.)
+2. If methods are only `UNCONDITIONAL_CALL` (never vtable DATA), check the **constructor**:
+   `*(this+0)=0` (or a scalar) means offset 0 is a plain field, not a vptr → genuinely
+   non-poly. Any vtable writes the ctor makes at non-zero offsets (`*(this+4)=&vtblA`) are
+   **embedded members** (e.g. CMap), not the object's own vptr.
+3. Confirm by decompiling a hot method: dispatch like `(**(code**)(*(int**)&this->field_0xNN
+   + 0x38))(...)` on a **non-zero** field is dispatch through a held member (TSortedPtrList,
+   IDirectPlay2, CMap), not self-polymorphism.
+
+Half-finished merges leave a tell: a `.cpp` whose body was "moved to the real vtable owner"
+but the phantom class/header/`symbols.csv` name were never deleted, and the address ends up
+displayed under the phantom name by reccmp (symbols.csv drives the display name even when the
+manual owner is a different class). Finish it: delete the phantom `.h`/`.cpp`, rename the
+`symbols.csv` row to the real owner, `just regen-stubs`. Never trust "not polymorphic" without
+running step 1 or 2 — reporting a disguise as a genuine data class hides a whole class merge.
