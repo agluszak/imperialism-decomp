@@ -1751,3 +1751,38 @@ raw handles. Recipe that matched well:
   library FromHandle identity. Writing raw field accesses inline (no locals) recovers *some* of
   the double-abs but not the header-pointer CSE. Per the philosophy, stop here — don't contort
   the source to chase the last MSVC-scheduling percent on an architecturally-correct paint body.
+
+## Note 108 — Ghidra's provisional class namespace can mis-home a method to a sibling class
+
+Ghidra auto-names methods with a provisional namespace that can be a DIFFERENT class from the
+recovered one — e.g. `TacticalBattleView::` (no `T` prefix) is NOT the recovered
+`TTacticalBattleView`; here three "TacticalBattleView" methods were actually `TTacticalBattle`
+methods. Before homing a stubbed method onto the class its symbols.csv name suggests, VERIFY
+`this`'s real type by cross-checking every `this+off` access against candidate class headers
+(field offsets, the vtable, the method-address cluster range). Seven field matches
+(battleView8/currentSideC/field10/tacticalPlayer14/18/selectedUnit1c) pinned `this` as
+`TTacticalBattle`, not the view. Fix the symbols.csv namespace and put the body in the right
+`.cpp`. (Hard Rule 6: names are provisional; pair by behavior, not by name.)
+
+## Note 109 — POD-only constructors: body assignments in observed store order, not init lists
+
+For a constructor whose members are ALL POD (pointers/ints/shorts/bytes, no sub-objects), MSVC
+emits the field stores in SOURCE order and sets the vptr first. A member-initializer list runs
+in DECLARATION order and often mismatches the original's store order (it stored 0x78/0xd0 before
+0x68, i.e. not declaration order) — and `-Wreorder` forces the list back to declaration order
+anyway. So mirror the original with body assignments in the exact observed store order; the
+vptr write lands first automatically. Took the TTacticalBattleView ctor 78.9%→100%. (This is
+the flip side of construction Hard Rule 3, which mandates init lists ONLY when a scalar must be
+set before a later NON-POD member is constructed.)
+
+## Note 110 — Deeply-optimized functions may not reach a high match from clean C++
+
+A 532-byte target-cycling function (HandleTacticalCommandTag_targ) capped at ~33% despite a
+verified algorithm: MSVC had fused comma-operator conditions, reused stack slots, duplicated
+the reach-check inline, and DCE'd a validation block. Clean, correct C++ compiles to a
+structurally different shape. When the decompile shows these optimizer fingerprints, expect a
+low ceiling and budget accordingly — port it faithfully (architecture correct, callers
+unblocked), document the residual, and don't sink hours chasing the last register. A 100% match
+would require reverse-engineering the exact optimized instruction schedule, rarely worth it.
+Also: a slot the disassembly calls virtually but that isn't a modeled callable (CObject-style
+`AssertValid`, vtable slot 3) is fine to omit with a note — one missing no-op CALL.
