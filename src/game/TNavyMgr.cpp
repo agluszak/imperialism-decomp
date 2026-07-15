@@ -21,7 +21,7 @@
 #include "game/localization_text_helpers.h"
 #include "game/map_order_battle_snapshot.h"
 
-extern undefined4 GenerateThreadLocalRandom15(void);
+extern "C" int __cdecl rand(void);
 
 extern "C" TShip* g_pNavyPrimaryOrderListHead;
 extern "C" TAdmiral* g_pNavySecondaryOrderListHead;
@@ -103,11 +103,9 @@ void ApplyMapOrderConflictAttrition(TMapOrderChildLinkNode* head, int currentCou
   int selected = 0;
   for (TMapOrderChildLinkNode* node = head; node != nullptr && selected < target;
        node = node->next) {
-    if (currentCount == target ||
-        static_cast<int>(GenerateThreadLocalRandom15()) % currentCount < target) {
+    if (currentCount == target || static_cast<int>(rand()) % currentCount < target) {
       ++selected;
-      int roll = static_cast<int>(GenerateThreadLocalRandom15()) % 100 +
-                 static_cast<int>(GenerateThreadLocalRandom15()) % 100 + 100;
+      int roll = static_cast<int>(rand()) % 100 + static_cast<int>(rand()) % 100 + 100;
       TTaskForce* child = node->object_ptr;
       float delta = 0.5f + g_NavyOrderResourceDescriptorTable[child->order_type].taskForceWeight *
                                (roll * 0.005f) * favorRatio * -0.01f;
@@ -609,8 +607,7 @@ char TNavyMgr::SelectEligibleMapOrderInteractionForNationAndContext(
       TTaskForce* child = node->object_ptr;
       char active = 1;
       if (child->required_count < g_NavyOrderResourceDescriptorTable[child->order_type].stockCap ||
-          static_cast<int>(priorityRatio) <=
-              static_cast<int>(GenerateThreadLocalRandom15()) % 100) {
+          static_cast<int>(priorityRatio) <= static_cast<int>(rand()) % 100) {
         active = 0;
       }
       node->active_flag = active;
@@ -672,7 +669,7 @@ char TNavyMgr::SelectEligibleMapOrderInteractionForNationAndContext(
     int nationChildren = (nationEntry != nullptr) ? nationEntry->GetMapOrderEntryChildCount() : 0;
     int threshold = entryChildren + nationChildren + (attachment != 6 ? -0x1e : 0) +
                     (rating - entryScore) + 0x28 + perChildOffer;
-    if (static_cast<int>(GenerateThreadLocalRandom15()) % 100 >= threshold) {
+    if (static_cast<int>(rand()) % 100 >= threshold) {
       continue;
     }
 
@@ -686,7 +683,7 @@ char TNavyMgr::SelectEligibleMapOrderInteractionForNationAndContext(
             nation, entry->required_count) == 0) {
       return 1;
     }
-    short roll = static_cast<short>(static_cast<int>(GenerateThreadLocalRandom15()) % 100);
+    short roll = static_cast<short>(static_cast<int>(rand()) % 100);
     short bias = static_cast<short>(entryChildren + 10);
     if (roll >= bias) {
       if (roll < bias * 2) {
@@ -899,7 +896,7 @@ void TNavyMgr::ResolveMapOrderPairConflictStep(TTaskForce* leftEntry, TTaskForce
         (rightBucket + 10) * rightEntry->CalculateMapOrderEntryAverageChildRatingX10();
     int totalWeight = leftWeight + rightWeight;
 
-    if (static_cast<int>(GenerateThreadLocalRandom15()) % totalWeight < leftWeight) {
+    if (static_cast<int>(rand()) % totalWeight < leftWeight) {
       if (leftTierAdjust == 0) {
         --candidateTier;
       }
@@ -907,7 +904,7 @@ void TNavyMgr::ResolveMapOrderPairConflictStep(TTaskForce* leftEntry, TTaskForce
         ++candidateTier;
       }
     }
-    if (static_cast<int>(GenerateThreadLocalRandom15()) % totalWeight < rightWeight) {
+    if (static_cast<int>(rand()) % totalWeight < rightWeight) {
       if (rightTierAdjust == 0) {
         --candidateTier;
       }

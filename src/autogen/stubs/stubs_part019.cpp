@@ -75,14 +75,6 @@ undefined4 ResolveTacticalHoverCursorToken(void)
   return 0;
 }
 
-// ghidra_name TacticalBattleView::HandleTacticalBattleCommandTag
-// ghidra_proto void __thiscall HandleTacticalBattleCommandTag(int commandTag)
-// FUNCTION: IMPERIALISM 0x005a0c50
-undefined4 HandleTacticalBattleCommandTag(void)
-{
-  return 0;
-}
-
 // ghidra_name AdvanceToNextTacticalUnitTurnStep
 // ghidra_proto undefined AdvanceToNextTacticalUnitTurnStep()
 // FUNCTION: IMPERIALISM 0x005a0ea0
@@ -123,14 +115,6 @@ undefined4 DispatchTacticalActionByHoverStateIndex(void)
   return 0;
 }
 
-// ghidra_name TacticalBattleView::HandleTacticalCommandTag_targ
-// ghidra_proto undefined HandleTacticalCommandTag_targ()
-// FUNCTION: IMPERIALISM 0x005a3f10
-undefined4 HandleTacticalCommandTag_targ(void)
-{
-  return 0;
-}
-
 // ghidra_name TArmyBattle::ConstructTArmyBattleBaseState
 // ghidra_proto undefined ConstructTArmyBattleBaseState()
 // FUNCTION: IMPERIALISM 0x005a4770
@@ -143,14 +127,6 @@ undefined4 ConstructTArmyBattleBaseState(void)
 // ghidra_proto undefined CreateTNavyBattleInstance()
 // FUNCTION: IMPERIALISM 0x005a5500
 undefined4 CreateTNavyBattleInstance(void)
-{
-  return 0;
-}
-
-// ghidra_name TacticalBattleView::HandleNavyTacticalToolbarModeAndCommandTags_Impl
-// ghidra_proto undefined HandleNavyTacticalToolbarModeAndCommandTags_Impl()
-// FUNCTION: IMPERIALISM 0x005a5b90
-undefined4 HandleNavyTacticalToolbarModeAndCommandTags_Impl(void)
 {
   return 0;
 }
@@ -199,14 +175,6 @@ undefined4 WrapperFor_ftol_At005a67e0(void)
 // ghidra_proto undefined OrphanLeaf_NoCall_Ins838_005a6a20()
 // FUNCTION: IMPERIALISM 0x005a6a20
 undefined4 OrphanLeaf_NoCall_Ins838_005a6a20(void)
-{
-  return 0;
-}
-
-// ghidra_name TacticalBattleView::ConstructTacticalBattleViewBaseState
-// ghidra_proto undefined ConstructTacticalBattleViewBaseState()
-// FUNCTION: IMPERIALISM 0x005a8350
-undefined4 ConstructTacticalBattleViewBaseState(void)
 {
   return 0;
 }

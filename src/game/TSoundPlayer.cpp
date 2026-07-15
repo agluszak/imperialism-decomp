@@ -23,7 +23,7 @@ short DAT_006a4520 = 0;
 undefined4 ForwardMciCommand808ToDevice(void);
 undefined4 ReleaseRuntimeSelectionPeersAndResetOwner_Impl(void);
 
-extern undefined4 GenerateThreadLocalRandom15(void);
+extern "C" int __cdecl rand(void);
 // The deferred-apply timer callback (0x593210); registered by ScheduleTimerSlotCallbackWithInterval
 // as a real function pointer (its return keeps/clears the slot).
 extern undefined4 Helper_Uses_ForwardMciCommand808ToDevice_At00593210(void);
@@ -156,7 +156,7 @@ void TSoundPlayer::SelectAndScheduleRandomAudioCue() {
   }
 
   int total = this->runtimePeerAt70->QueryPendingPlaybackCountSlot28();
-  int pick = static_cast<int>(GenerateThreadLocalRandom15()) % total + 1;
+  int pick = static_cast<int>(rand()) % total + 1;
   int chosen = this->runtimePeerAt70->SoundChannelNodeDummy04(pick);
   this->runtimePeerAt70->SoundChannelNodeDummy2C(pick);
 

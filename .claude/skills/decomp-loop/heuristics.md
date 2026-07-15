@@ -1434,7 +1434,360 @@ headers before splicing.
     Smell to grep for: a `void Foo(T a,U b){ (void)a;(void)b; Foo(); }` forwarder next to a
     marked `Foo(void)`.
 
-96. **Resolve a method's real address through the vtable's ILT thunks before trusting a
+96. **A FID miss is not evidence of game code — the relocation-masked `.obj` matcher is
+    the authoritative identity oracle.** Ghidra FID has minimum-length/score thresholds,
+    so it silently skips small/aliased CRT/MFC functions (rand at 0x005e83f0 kept the
+    invented name `GenerateThreadLocalRandom15`, no `_rand` symbol, no library ownership).
+    The durable fix is `just build-library-oracle`: parse the vendored
+    `libcmt.lib`/`nafxcw.lib` COFF members, mask each function's relocation fields and trim
+    trailing 0xCC/0x90 padding to a normal form, and exact-match executable function bytes
+    against it — raw bytes differ (linker-assigned addresses) but the masked bodies are
+    equal. Hard-won parser details: (a) function extents come from **EXTERNAL symbols
+    only** — STATIC symbols are internal jump-table labels (memmove.obj is one 821-byte
+    COMDAT section full of `LeadUpVec`/`UnwindUp*` labels; bounding on them truncates the
+    function to 100 bytes). (b) MS archive longnames are **NUL-terminated**, and the
+    offset-0 object member is `/0` (don't skip it). (c) Ghidra function sizes exclude the
+    object's trailing alignment padding, so trim both sides to the last real instruction.
+    (d) **Trivial bodies collide**: an empty ctor/dtor or `return 0` is byte-identical
+    across many classes, so any normal form matched by >1 executable address is
+    non-discriminative — demote to review, never auto-name by body alone. (e) Auto-convert
+    unowned rows to library only inside the dense range and only when the invented name is
+    unreferenced in manual source (else removing its stub breaks the link). The oracle
+    found ~1100 confident identities incl. 48 FID-missed conversions and 25 game-code
+    mislabels (13 libcmt float internals ported as `bignum96_math.cpp`). `just
+    library-identify 0xADDR` surfaces all of this; `library-identity-gate` pins it.
+
+97. **Moving an oracle-flagged game-code mislabel to library: two shapes.** When
+    `library-identity-gate` / `config/msvc500_library_oracle_review.csv` flags a
+    high-confidence unique match owned by manual game code, first classify it:
+    (a) **Whole-file / free-function CRT** with no compiled callers (e.g. the 13
+    float-conversion internals in `bignum96_math.cpp` — `__RoundMan`/`___dtold`/
+    `__mtold12` from intrncvt/cfout/mantold.obj) — delete the body/marker, run
+    `sync-ownership` (prunes the now-marker-less rows) then `apply-library-oracle`
+    (Case B claims the unowned in-range addresses as library). Clean, no caller work.
+    (b) **Free function WITH callers** (e.g. `__mbscmp` at 0x5e7980, was
+    `CompareAnsiStringsWithMbcsAwareness`, called by 8 files) — like the rand fix:
+    replace its header declaration with `extern "C" int __cdecl _mbscmp(...)`, rename
+    every callsite to the real symbol, delete the definition, then prune+convert.
+    Removing a body can *cascade*: functions it called (here `_lock`/`_unlock` from
+    mlock.obj) become unreferenced and auto-convert too. Verify each is a genuine
+    library match (unique/high, cc=1, sensible .obj member) — the build link is the
+    backstop. (c) **MFC method inherited by a game class** (`CWnd::RunModalLoop` at
+    0x60a60a owned by TView, `CWnd::GetStyle`, `CRect::DeflateRect`, `CDialog`/
+    `exception` ctors) — these are NOT mechanical: the address is the inherited MFC
+    method's code, so the fix is real inheritance modeling (class-recovery /
+    vtable-matching), not just re-marking. Leave them allowlisted in
+    `config/library_oracle_gamecode_allowlist.csv` until the class model is recovered.
+    Always rebuild after a move: converting rand exposed 17 callsites of its invented
+    name; a removed stub with a live caller is an LNK2001.
+
+98. **CDialog / CWnd vtable slots don't fail from ICF — MSVC500 doesn't fold — they
+    fail from trivial-stub pairing ambiguity + symbols.csv mislabels.** After
+    re-parenting the dialog subtree onto real MFC `CDialog` (note: TModalDialogBase :
+    CDialog, see the 0x6050d0 retirement), a `// VTABLE:` marker on a dialog class shows
+    the four dialog-specific slots modelled (scalar dtor / DoModal override at index 48 /
+    Prepare+Cleanup new virtuals at 54/55) and the *non-trivial* inherited CWnd slots
+    pairing (Create/DestroyWindow/WindowProc/OnInitDialog/OnOK/OnCancel), but ~15
+    **trivial** CCmdTarget slots (index 7-21: IsInvokeAllowed/GetDispatchIID/
+    GetTypeInfoCount/GetTypeLibCache/GetTypeLib and the OLE aggregation/connection
+    virtuals, all `return 0`/`return 1`/`return this` 2-6 byte stubs) show as mismatches.
+    Diagnosis steps and result:
+    (a) **It is NOT ICF/COMDAT folding.** Rebuilt with `-DIMPERIALISM_MATCH_LINK_FLAGS_CSV=
+    /OPT:NOICF`; the output binary differed from the folded build in only ~15 bytes (PE
+    timestamp + a few debug-dir bytes) — MSVC 5.0's linker predates `/OPT:ICF` and does
+    no identical-COMDAT folding. `/OPT:NOICF` is a no-op here; do not reach for it.
+    (b) **Root cause: dozens of identical trivial stubs are ambiguous to pair**, and the
+    orig-side rows are mislabelled in `config/symbols.csv` (e.g. 0x606c4e = a 6-byte
+    `return 1` is named `TTechStorePage::CloseCityDialogChildrenAndReleaseSelf`; it is
+    really `CCmdTarget::IsInvokeAllowed`). reccmp then can't map orig↔recomp for those
+    slots and picks a wrong name.
+    (c) **The fix is the CObject.cpp pattern applied to the whole CDialog vtable**
+    (0x0066fc2c, 54 slots): model `CObject->CCmdTarget->CWnd->CDialog` as LIBRARY with a
+    `// LIBRARY: 0xADDR` + canonical MFC name per slot, taking the slot order from the MFC
+    headers (afx.h CObject: GetRuntimeClass/~/Serialize/AssertValid/Dump; afxwin.h
+    CCmdTarget: OnCmdMsg/OnFinalRelease/IsInvokeAllowed/GetDispatchIID/GetTypeInfoCount/
+    GetTypeLibCache/GetTypeLib/...; CWnd: ...Create/DestroyWindow/PreCreateWindow/... at
+    index 22+) — NOT from the body-ambiguous oracle, which mis-guesses the trivial slots
+    (`AfxGetAfxWndProc`×5, `COleUILinkInfo::AddRef`×4). Verify the non-trivial anchors
+    against the raw vtable (Create=0x60820b idx23, WindowProc=0x60820b… OnInitDialog=
+    0x605445 idx49, OnOK=0x6054aa idx51, OnCancel=0x6054c3 idx52, DoModal=0x6051b9 idx48).
+    (d) **Complication making this a dedicated pass, not dialog-local:** those trivial MFC
+    stubs are shared across many game-class vtables (the addresses are currently owned/
+    named after game classes like TTechStorePage), so renaming+LIBRARY-annotating them is
+    a binary-wide MFC-vtable-modelling effort that touches those game classes' vtables
+    too. Until it's done, leave the dialog `// VTABLE:` markers unclaimed (the four
+    dialog-specific slots are already real virtuals; see TModalDialogBase.h).
+
+## 89. CView/CFrameWnd-family vtable LIBRARY pass: align the RECOMP vtable slot-by-slot, don't guess names
+The note-88 pass (claim inherited MFC slots as LIBRARY so a CView/CFrameWnd-derived class
+vtable can be marked and reach 100%) is driven from the **recompiled** vtable, which is
+ground truth because it is built from real nafxcw.lib. Method that worked for CIncludeView
+(`0x648418`, 68 slots, all 18 remaining red slots resolved, +0.11pp, no regressions):
+1. Dump the ORIG vtable (`just ghidra-vtable-dump Class 0xADDR`) → slot byte-offset → orig
+   addr. Game overrides appear as `0x40xxxx` ILT thunks (reccmp resolves them) or `0x48xxxx`
+   game addresses; the red LIBRARY slots are direct `0x60xxxx/0x613xxx/0x614xxx` addrs
+   carrying junk `symbols.csv` names.
+2. Read the RECOMP vtable (`??_7Class@@6B@` from `cvdump -p`; its pointer array) and resolve
+   each recomp slot → mangled symbol via the PDB's `S_GPROC32`/`S_PUB32` records.
+3. Align by **byte offset** (identical MFC layout): recomp name+symbol at offset 0xNN is the
+   canonical identity of the orig addr at offset 0xNN. VALIDATE the alignment on 3-4 slots
+   that are already green (e.g. `CView::OnPrepareDC/OnUpdate/OnPrint`) before trusting it,
+   and confirm orig and recomp vtables are the **same length** — if recomp is longer
+   (extra OCC/OLE tail), the class can't reach 100% and it's a structural divergence, not a
+   naming bug.
+4. Emit one `config/msvc500_library_overrides.csv` row per red slot
+   (`addr|CView::Name|<recomp mangled symbol>|<prototype>|nafxcw|<obj>|evidence`); take the
+   mangled symbol verbatim from the recomp PDB, never hand-mangle. `just regen-stubs` applies
+   them. These are shared nafxcw functions, so the rows also fix every other CView-family
+   vtable that references them — run the full `just precommit` (all vtables) to confirm no
+   regression.
+5. Slot 12 (`0x30`) `GetMessageMap` is the class's own compiler-generated override (from
+   `BEGIN_MESSAGE_MAP`), NOT a library slot — claim it with a `// SYNTHETIC:` marker +
+   `?GetMessageMap@Class@@MBEPBUAFX_MSGMAP@@XZ`, same as the dialog GetMessageMaps.
+Only after every slot pairs can the `// VTABLE:` marker go on (the vtable gate requires 100%
+for marked vtables). A subagent is well-suited to the mechanical step-2/3 triangulation.
+
+## 90. A game "override" that forwards to the base but isn't in the orig vtable slot is a mis-attribution — check the raw slot
+Extending note 89 to the CFrameWnd family (CMainFrame vtable 0x6488d8, 63 slots, 100%): most
+slots were already claimed by the CDialog+CView passes (shared CObject/CCmdTarget/CWnd base),
+leaving 5 CFrameWnd library slots (PreTranslateMessage/PostNcDestroy/IsFrameWnd/GetActiveFrame/
+DelayUpdateFrameMenu) + 3 class-specific (GetMessageMap slot 12 SYNTHETIC, scalar-dtor SYNTHETIC,
+a real WinHelp override). Two transferable lessons:
+- **Slot 12 GetMessageMap and the scalar deleting destructor are per-class SYNTHETIC**, claimed
+  with `// SYNTHETIC:` + `?GetMessageMap@Class@@MBEPBUAFX_MSGMAP@@XZ` / `??_GClass@@UAEPAXI@Z`
+  (add the `??_G` row to symbols.csv if Ghidra never emitted the function).
+- **When a class declares `virtual X() override` whose body just forwards to `Base::X()`, verify
+  the ORIGINAL vtable slot actually points to that game function — not the inherited library
+  one.** CMainFrame carried a bogus `CMainFrame::PreTranslateMessage` (forwarding to
+  `CFrameWnd::PreTranslateMessage`), but orig slot 0x98 held the *library* CFrameWnd function
+  (raw bytes `B7 C7 61 00` = 0x61c7b7). The function it was mapped to (0x413a20) is referenced
+  from a *different* vtable (ImperialismApp slot 0x60, via thunk) and its body calls
+  `CWinThread::PreTranslateMessage` — so it was really `ImperialismApp::PreTranslateMessage`
+  (a CWinApp/CWinThread override) mis-attributed to CMainFrame with a wrong base call. A
+  forwarding override that installs a function the original never put in that slot both breaks
+  the marked vtable and hides the real owner. Re-home by: raw-reading the orig slot, xref'ing
+  the function to find which vtable actually references it, and confirming the base call in the
+  body identifies the parent class.
+
+## Note 101 — A scalar-deleting-destructor stuck below 100% often means the real dtor is mislabeled
+
+When a `??_G` scalar deleting destructor won't reach 100% and the only diff is its *call
+target* name (`just compare` shows orig calling `SomeGhidraPlaceholder` where recomp calls
+`~Class`), the placeholder IS the real virtual destructor. The scalar deleting destructor's
+one non-trivial instruction is `call <destructor>`; reccmp resolves the orig call target to
+whatever name owns that address, so a Ghidra placeholder there surfaces as a name mismatch.
+
+Fix: identify the address (grep the placeholder name → symbols.csv/index.csv), confirm it is
+a trivial destructor (`just ghidra-decompile` shows a ~7-byte `this->vftable = &PTR_...;
+return;`), then (1) add `// FUNCTION: IMPERIALISM 0xADDR` to the manual `~Class()` body,
+(2) rename the symbols.csv row `ADDR|Class::~Class|??1Class@@UAE@XZ|...`, (3) give the scalar
+deleting destructor its own `??_GClass@@UAEPAXI@Z` mangled name in the same file, (4)
+`just regen-stubs` to drop the placeholder stub and claim the address. TTacticalPlayer's dtor
+at 0x59ae60 masqueraded as `CreateTTacticalPlayerInstance`; claiming it took both the dtor and
+its scalar-deleting sibling to 100% (+2 aligned).
+
+## Note 102 — Name shared base vtable slots from a coherent in-file protocol, not one slot at a time
+
+The TEventHandler/TView base declares ~10 `vmethod_00NN` placeholder virtuals overridden by
+~200 UI subclasses; each rename touches ~200 files. Don't invent names per isolated slot.
+Instead read the base `.cpp` for a *cluster that calls each other* and name the whole protocol
+at once. TEventHandler's active-view arbitration was fully legible in one file:
+`IsActiveView` (0x22, `this==root->GetActiveView()`), `TryDeactivateActiveView` (0x20, asks the
+incumbent to step aside), `GetDeactivateVetoCode` (0x18, veto gate: 0=allow), `OnDeactivated`
+(0x19) and `OnDeactivateVetoed` (0x1a) notification hooks, plus `DetachUiResourceOwnerIfMatches`
+(0x23, inverse of `SetUiResourceOwner` 0x24). Slots whose base is a bare `return 0;`/no-op with
+no in-file caller (`vmethod_0017/0023/0081`) stay hedged — no evidence to name them.
+
+Execution: the rename is codegen-neutral (reccmp pairs by address), so a word-boundary
+find/replace across `src/game`+`include/game` (NOT autogen) + symbols.csv is safe — the `override`
+keyword makes the compiler reject any inconsistency, and `just vtable` confirms 0 slot drift.
+1191 replacements across 199 files, build green, all affected vtables still 100%, stats +0.
+The Mac oracle gives candidate *names* but never the slot→name mapping (Hard Rule 12); derive
+the mapping from behavior, then optionally cross-check the name exists in the Mac symbol list.
+
+## Note 103 — A baseless, vtable-less game class is a red flag: disguise-or-find-the-vtable
+
+In this codebase virtually everything descends from `CObject`/`TObject`, so a `class TFoo {`
+with no base, no `// VTABLE:`, and a leading `pad_00[4]` (or `field0` = 0) deserves a check —
+it is usually one of: (a) a **disguise** of a real polymorphic class that should be merged, or
+(b) genuinely polymorphic with an **unfound vtable**, or (c) a genuine non-poly data manager
+whose vtable(s) belong to **members it holds**, not itself.
+
+Decision procedure (all from Ghidra, fast):
+1. `just ghidra-xrefs 0xMETHOD` on the class's method. If the xref is `from 0xNNNN [DATA
+   address-taken]` in the vtable region, the method is a **virtual slot** → the object is
+   polymorphic. Then find the owning vtable: list the neighbours of the method address in
+   symbols.csv (functions in the same 0xNNNxxx TU) and match a nearby `// VTABLE:` base
+   (`base + slot*4 == the DATA address`). That base's class is the real owner → **merge the
+   phantom into it.** (TCityRecruitmentOrderContext's one method was TUnitOrder vtable slot
+   0x0d; the phantom's fields were TProductionOrder/TUnitOrder inherited members.)
+2. If methods are only `UNCONDITIONAL_CALL` (never vtable DATA), check the **constructor**:
+   `*(this+0)=0` (or a scalar) means offset 0 is a plain field, not a vptr → genuinely
+   non-poly. Any vtable writes the ctor makes at non-zero offsets (`*(this+4)=&vtblA`) are
+   **embedded members** (e.g. CMap), not the object's own vptr.
+3. Confirm by decompiling a hot method: dispatch like `(**(code**)(*(int**)&this->field_0xNN
+   + 0x38))(...)` on a **non-zero** field is dispatch through a held member (TSortedPtrList,
+   IDirectPlay2, CMap), not self-polymorphism.
+
+Half-finished merges leave a tell: a `.cpp` whose body was "moved to the real vtable owner"
+but the phantom class/header/`symbols.csv` name were never deleted, and the address ends up
+displayed under the phantom name by reccmp (symbols.csv drives the display name even when the
+manual owner is a different class). Finish it: delete the phantom `.h`/`.cpp`, rename the
+`symbols.csv` row to the real owner, `just regen-stubs`. Never trust "not polymorphic" without
+running step 1 or 2 — reporting a disguise as a genuine data class hides a whole class merge.
+
+## Note 104 — Auditing the binary for unrecovered vtables (two detection passes)
+
+To find vtables present in the binary but not yet annotated with `// VTABLE:`:
+
+**Pass 1 (fast, DYNCREATE only): RTTI-oracle name diff.** `config/rtti_class_oracle.csv`
+lists every MFC CRuntimeClass (DECLARE_DYNCREATE) class with its ground-truth name. Diff its
+class names against the classes that own a `// VTABLE:` marker
+(`grep -rlE "// VTABLE:" include/game | xargs grep -hoE "^class \w+"`). Non-`C`-prefixed names
+in the oracle with no marker are unrecovered game classes. This surfaced TOneTimeAnimation and
+CMcWindow — both of which HAD a header/.cpp but no `// VTABLE:` marker (so they were excluded
+from the "recovered" set precisely because they lacked the annotation).
+
+**Pass 2 (thorough, catches non-DYNCREATE): direct vtable scan.** DYNCREATE-only RTTI misses
+polymorphic classes without CRuntimeClass (CObject-helper families, TEvent subclasses,
+dialog-template subclasses, TBitmapResourceLoader-style classes). Enumerate every `.rdata`
+datum in ~0x63c000-0x672000 that (a) is referenced from `.text` by a `mov [reg], offset` and
+(b) holds a run of >=2 pointers into code; subtract the `// VTABLE:` marker set; drop MFC/CRT
+library vtables (CObject/CWnd/CDialog/CCmdTarget/common-controls/AFX_* module-state) and
+DAT_-sentinel false positives. Caveat: vtables installed only through a shared runtime helper
+(no direct `mov [reg], offset vtbl`) are a blind spot for both passes.
+
+**Two recurring recovery shapes once found:**
+- *Marker-only miss* (class fully modeled, marker absent): add `// VTABLE:` and drive the few
+  mismatched slots to 100% (CMcWindow: scalar-dtor + real dtor + GetMessageMap + PreCreateWindow
+  + OnCommand overrides, all ex-stubs with Ghidra placeholder names).
+- *Wrong-inheritance miss* (modeled as a flat `: public CObject` with duplicated base fields):
+  re-parent to the real RTTI base, add the marker, drop the duplicated fields, and model the
+  handful of overridden slots (TOneTimeAnimation -> TAnimation). RTTI `base_descriptor` in the
+  oracle is the ground truth for the parent.
+
+A leaf trivial destructor whose original is a single `mov [ecx], <base-most vftable>; ret` is a
+fully ICF-collapsed chain; our out-of-line base dtors emit `mov own_vtbl; jmp ~Base` instead, so
+that one function stays low while the vtable and scalar dtor still reach 100% — accept it (Hard
+Rule 12). The `IMPLEMENT_RUNTIMECLASS` CRuntimeClass DATA global must be named `class<Class>` in
+symbols.csv (not the generic `classRuntimeClass` placeholder) or GetRuntimeClass stalls at 50%.
+
+## Note 105 — Recovering a family of MFC dialog-template subclasses (16 at once)
+
+Recovered the whole modal-dialog-template family (TC2/TD2 + 13 more: DB/DC/DE/DF/FA/AD/104/
+A7/AB/AE/B1/A1/D0/E0/DD/64). Each is a game CDialog subclass built by an
+`InitializeDialogTemplate<ID>` ctor; model = `// VTABLE:` + ctor (`: TModalDialogBase(id,...)`
+or `: CDialog(id,...)`) + members + DoDataExchange override + scalar-dtor/GetMessageMap
+SYNTHETIC + empty message map. Four traps that each cost a wrong first attempt:
+
+1. **Distinguish TModalDialogBase-derived from plain CDialog by the RIGHT slots.** Slots
+   0x08/0x14/0x88 are shared by *every* CDialog subclass and prove nothing. The decisive slots
+   are 0xc0/0xd8/0xdc: TModalDialogBase overrides them (DoModal 0x4055f6→0x49d450, +0x4076ee,
+   +0x402ca7); a plain CDialog subclass has the library `CDialog::DoModal` (0x6051b9) at 0xc0
+   and NULL at 0xd8/0xdc (its vtable ends at 0xd4). Plain-CDialog members start at 0x5c (they
+   occupy what would be TModalDialogBase's modal scratch); TModalDialogBase members start at
+   0x74. A second tell: the ctor of a TModalDialogBase subclass writes an *intermediate* vtable
+   (0x63e5a0) before its own; a plain-CDialog ctor writes only its own.
+
+2. **Plain-CDialog subclasses can't reach 100% until `CDialog::DoModal` is a named library
+   function.** Their inherited slot 0xc0 references it, but if 0x6051b9 is an unnamed placeholder
+   the recomp's COMDAT copies don't pair. Add it to `msvc500_library_overrides.csv`
+   (`?DoModal@CDialog@@UAEHXZ`, nafxcw/dlgcore.obj) — fixes all of them at once. Then retire the
+   freed `DoModal_6051b9` stub: its game callers become real `dialog.DoModal()`.
+
+3. **MSVC emits a class vtable only in the TU that CONSTRUCTS it** (vtable is tied to the ctor,
+   not to a key function as in the Itanium ABI). A dialog whose only constructor is *inlined into
+   its driver* (T64 → ShowDialogTemplate64Modal) never emits its vtable from the class TU alone —
+   `just vtable` reports a vacuous "Vtables found: 0". Recover the driver so it constructs the
+   real class; that emits and pairs the vtable.
+
+4. **Embedded-control vtable identities:** 0x6714cc = CSliderCtrl, 0x671d1c = CListBox (verify
+   from the reference ctor, e.g. TC2 installs CSliderCtrl@+0x74 / CListBox@+0xb0). Getting this
+   backwards mislabels the member type and mis-installs the control vtable in the ctor.
+
+Parallelize the per-dialog Ghidra investigation across subagents (one recipe per dialog: base
+test, overridden slots with resolved ILT targets, DDX body, members, size), then model + build +
+`just vtable` serially. Message-map handlers and complex OnInitDialog/OnOK bodies are NOT vtable
+slots — minimal override bodies still give a 100% vtable; refine bodies later.
+
+## Note 106 — Inlined virtual base destructor: watch for COMDAT-fold collateral
+
+A derived dtor in the original often *inlines* the base dtor's tail (set base vptr → base
+cleanup → chain to the library base dtor). To make ONE derived dtor inline-match, it is
+tempting to move the base dtor's body `inline` into the header so it's visible in the derived
+TU. **Do not do this reflexively.** When the base has many member-less leaf subclasses, an
+inline base dtor makes their compiler-generated (real) destructors byte-identical, the linker
+COMDAT-folds them, and the *scalar-deleting-destructor addresses in their vtables shift* — every
+folded sibling's `` `vftable' `` drops from 100% (one slot now points at a folded address that
+reccmp pairs to another class's dtor). Net for TModalDialogBase: +2 (two dtors reach 100%) but
+−15 aligned (≈10 sibling vtables + some folded no-op leaves). **Keep the base dtor out-of-line**
+and accept that the one derived dtor stays ~83% (it emits a `call` to the base dtor instead of
+inlining it). A single +100% is never worth breaking 10 sibling vtables. Diagnose which funcs
+regressed by diffing `config/reccmp_progress_baseline.report.json` (per-function `matching`)
+against a fresh `reccmp-reccmp --json` capture — aggregate stats alone won't tell you WHAT fell.
+
+## Note 107 — Recovering an MFC GDI OnPaint (CPaintDC/CPen/CBrush/CRgn + DIB blits)
+
+`mfc.h` includes the real `<afxwin.h>`, so CPaintDC/CDC/CPen/CBrush/CRgn/CDibPal and
+`CDC::FromHandle` are all available as genuine MFC classes — model the paint body with them, not
+raw handles. Recipe that matched well:
+- **`CPaintDC dc(this);`** at the top; scope CPen in its own `{}` block and CRgn+CBrush in
+  theirs so the EH funclet nesting matches.
+- **`dc.GetSafeHdc()`** reproduces the `lea; neg; sbb; and` null-guard idiom the disassembly
+  shows at every GDI handle pass; a bare `dc.m_hDC` / `(dc?dc->m_hDC:0)` ternary emits the
+  branch in the *opposite* order (then-block first) and misses. Prefer `GetSafeHdc()` — it also
+  fixed CreateDibBitmapFromStoredInfo 86%→100%.
+- **`memcpy`/`memset` of a dynamic byte count → `rep movsd`+`rep movsb`** matches the original's
+  inlined copy; **do NOT** pre-mask the count with `& 0x3fffffff` (that mask is Ghidra's artifact
+  of `(n*4)>>2`; the real code is just `n*4`). Inline the count expression per call — the
+  original recomputes it, doesn't hoist a `tableBytes` local.
+- **Memory-DC BitBlt path uses raw Win32** (`::CreateCompatibleDC`/`::SelectObject`/`::BitBlt`/
+  `::DeleteDC`) because it selects an HBITMAP directly; CDC::BitBlt wants a CDC* src and won't match.
+- **A single-use gating global** (e.g. 0x694c50) needs full plumbing to pair its operand: a
+  `symbols.csv` `…|global||` row + a `// GLOBAL:` def in `global_data_tables.cpp` + `extern` in
+  the `.h`. Name it behaviorally and hedge as provisional if only one reader is known.
+- **Ceiling ~70%:** the residual is MSVC CSE (the original re-reads `picture->m_pInfoHeader` and
+  recomputes `abs(biHeight)` per height arg; cleaner C++ gets CSE'd to fewer instructions) and a
+  library FromHandle identity. Writing raw field accesses inline (no locals) recovers *some* of
+  the double-abs but not the header-pointer CSE. Per the philosophy, stop here — don't contort
+  the source to chase the last MSVC-scheduling percent on an architecturally-correct paint body.
+
+## Note 108 — Ghidra's provisional class namespace can mis-home a method to a sibling class
+
+Ghidra auto-names methods with a provisional namespace that can be a DIFFERENT class from the
+recovered one — e.g. `TacticalBattleView::` (no `T` prefix) is NOT the recovered
+`TTacticalBattleView`; here three "TacticalBattleView" methods were actually `TTacticalBattle`
+methods. Before homing a stubbed method onto the class its symbols.csv name suggests, VERIFY
+`this`'s real type by cross-checking every `this+off` access against candidate class headers
+(field offsets, the vtable, the method-address cluster range). Seven field matches
+(battleView8/currentSideC/field10/tacticalPlayer14/18/selectedUnit1c) pinned `this` as
+`TTacticalBattle`, not the view. Fix the symbols.csv namespace and put the body in the right
+`.cpp`. (Hard Rule 6: names are provisional; pair by behavior, not by name.)
+
+## Note 109 — POD-only constructors: body assignments in observed store order, not init lists
+
+For a constructor whose members are ALL POD (pointers/ints/shorts/bytes, no sub-objects), MSVC
+emits the field stores in SOURCE order and sets the vptr first. A member-initializer list runs
+in DECLARATION order and often mismatches the original's store order (it stored 0x78/0xd0 before
+0x68, i.e. not declaration order) — and `-Wreorder` forces the list back to declaration order
+anyway. So mirror the original with body assignments in the exact observed store order; the
+vptr write lands first automatically. Took the TTacticalBattleView ctor 78.9%→100%. (This is
+the flip side of construction Hard Rule 3, which mandates init lists ONLY when a scalar must be
+set before a later NON-POD member is constructed.)
+
+## Note 110 — Deeply-optimized functions may not reach a high match from clean C++
+
+A 532-byte target-cycling function (HandleTacticalCommandTag_targ) capped at ~33% despite a
+verified algorithm: MSVC had fused comma-operator conditions, reused stack slots, duplicated
+the reach-check inline, and DCE'd a validation block. Clean, correct C++ compiles to a
+structurally different shape. When the decompile shows these optimizer fingerprints, expect a
+low ceiling and budget accordingly — port it faithfully (architecture correct, callers
+unblocked), document the residual, and don't sink hours chasing the last register. A 100% match
+would require reverse-engineering the exact optimized instruction schedule, rarely worth it.
+Also: a slot the disassembly calls virtually but that isn't a modeled callable (CObject-style
+`AssertValid`, vtable slot 3) is fine to omit with a note — one missing no-op CALL.
+
+99. **Resolve a method's real address through the vtable's ILT thunks before trusting a
     header slot comment — a body can be mis-attached across two markers even when
     `just vtable` reads 100%.** `just vtable` scores the slot-pointer *correspondence*, not
     the function *bodies*, so a swapped body/marker pair passes it while both functions
@@ -1462,7 +1815,7 @@ headers before splicing.
     (`ret 0`) so it's void — Call90's `push eax` before `call [edx+0x68]` (no cleanup) is a
     partial-port artifact, not a real short param.
 
-97. **Force MSVC's callee-saved-register live-range SPLIT with a genuine phi variable when
+100. **Force MSVC's callee-saved-register live-range SPLIT with a genuine phi variable when
     a nil-alloc pattern holds `this` across `new` AND the result across a later `MessageBoxA`.**
     The `p = new T; if (p) {construct} ; if (!p) {MessageBoxA; assert} return p;` idiom
     (CreateLinkedOrderNode 0x00552650) has TWO values needing callee-saved registers: `this`
@@ -1484,7 +1837,7 @@ headers before splicing.
     regexes `\boperator\s+(?:new|delete)\s*\(` — a *comment* like "raw operator new (no init)"
     trips it; write "non-value-initializing `new`" instead.
 
-98. **A small __thiscall "iterator/cursor" struct that reads `container->[+0x44]` then walks
+101. **A small __thiscall "iterator/cursor" struct that reads `container->[+0x44]` then walks
     `+0/+4` links with data at `+8` is an MFC `CList`/`CObList` traversal — model it with the
     real MFC accessors, not a hand-rolled node struct.** The SelectableTextOptionEntry cursor
     family (0x004919a0 Initialize / 0x00491a00 Begin / 0x00491a70 Advance / 0x00491ab0 IsValid)
@@ -1505,7 +1858,7 @@ headers before splicing.
     field for the null check — don't cache it in a local (`position00 = ...; if (position00 ==
     0)`, not `pos = ...; ... = pos; if (pos == 0)`).
 
-99. **Claiming a small "Construct<Class>BaseState" ctor stub is a marker-only win ONLY when
+102. **Claiming a small "Construct<Class>BaseState" ctor stub is a marker-only win ONLY when
     the ctor is already defined out-of-line in a .cpp; moving a header-inline ctor into a
     .cpp to attach the marker regresses every call site that inlined it.** These 18-byte
     stubs (e.g. 0x534870 TIndexAndRankList, 0x5b6a00 TNoHiliteText, 0x5a6560 TNextMoveCommand)
@@ -1525,7 +1878,7 @@ headers before splicing.
     Always re-check `just stats` delta and diff the report for offsetting drops after a
     ctor-marker change, since the aligned count can stay flat while hiding a swap.
 
-100. **Near-miss (95–99%) triage-bucket fix taxonomy — which are clean single-line wins
+103. **Near-miss (95–99%) triage-bucket fix taxonomy — which are clean single-line wins
      and which are traps.** After `just triage 0xADDR`, the bucket + one diff line usually
      tells you if it's fixable in isolation. **Reliably fixable (each a 1-line source fix
      verified this session):** (a) *missing assert args* — a `codegen` bucket showing
@@ -1555,7 +1908,7 @@ headers before splicing.
      isolation but regresses the other N consumers; only do it with full multi-site + stats
      verification, never as a one-function win.
 
-101. **A jump-table switch dispatcher that Ghidra split into per-case pseudo-functions: port
+104. **A jump-table switch dispatcher that Ghidra split into per-case pseudo-functions: port
      the PARENT as one function, then delete every interior fragment row from symbols.csv —
      do NOT port a case fragment standalone.** The tell: a function entry with a tiny DB size
      whose body is `MOV EAX,[ECX+off]; CMP EAX,N; JA end; JMP [EAX*4 + table]` (e.g.
@@ -1582,7 +1935,7 @@ headers before splicing.
      /ILT-thunk targets with a raw rel32 walk of the .exe (`E8/E9` at file offset O →
      `off2va(O)+5+rel32 == target`), since `just xrefs` misses address-taken/table dispatch.
 
-102. **A referenced .rdata data table Ghidra never symbolized shows up as `g_prev+N` in the
+105. **A referenced .rdata data table Ghidra never symbolized shows up as `g_prev+N` in the
      reccmp diff — give it its own `global` row in symbols.csv so both sides pair.** When a
      ported function reads a const table (e.g. 0x66ac10) that has no symbol, reccmp attributes
      the ORIGINAL reference to the nearest preceding global (`g_anCapabilityPriorityRangePairs+106`)

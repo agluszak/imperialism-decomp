@@ -101,3 +101,8 @@ module|tools.workflow.gen_compile_commands|just:gen-compile-commands|Rewrite lin
 module|tools.common.reccmp_report|dependency:tools.reccmp.compare_batch|Shared full-report runner (reccmp-reccmp --json, diet or full)
 module|tools.common.symbols|dependency:tools.reccmp.triage|Shared symbols.csv / function_ownership.csv loaders
 module|tools.workflow.check_function_ownership_integrity|just:ownership-integrity-gate|function_ownership.csv structural integrity (header/duplicate-address safety)
+module|tools.mfc.apply_library_overrides|just:apply-library-overrides|Project reviewed library-identity overrides onto symbols.csv + LIBRARY markers
+module|tools.mfc.library_identify|just:library-identify|Per-address library-identity diagnostic (symbols/ownership/override/FID/oracle verdict)
+module|tools.workflow.check_library_identity|just:library-identity-gate|Semantic gate: reviewed library overrides applied + ownership=library + ratchet
+module|tools.mfc.apply_library_oracle|just:apply-library-oracle|Project confident oracle matches into symbols.csv + LIBRARY markers (upgrade/convert)
+module|tools.mfc.build_library_oracle|just:build-library-oracle|Relocation-masked object matcher: match exe functions to libcmt/nafxcw COFF members

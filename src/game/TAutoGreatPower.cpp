@@ -26,7 +26,7 @@
 #include "game/TMultiplayerMgr.h"
 #include "game/TShip.h"
 
-undefined4 GenerateThreadLocalRandom15(void);
+extern "C" int __cdecl rand(void);
 
 // kNationSlotCount (0x17) comes from TDiplomacyMgr.h.
 static const int kAidAllocationRowCount = 0x10;
@@ -180,7 +180,7 @@ void TAutoGreatPower::AssignNeedSlotFromSourceSlot19C(short needSlot, short sour
                                 ->relationStandingScoreMatrix79c[this->nationSlot * 0x17 +
                                                                  static_cast<short>(sourceNation)];
       double scaledScore = static_cast<double>(relationScore) * g_DAT_00653fc0_Value_00653FC0;
-      int roll = GenerateThreadLocalRandom15();
+      int roll = rand();
       if (static_cast<double>(roll) > scaledScore * g_DAT_00653fc8_Value_00653FC8) {
         this->OrphanCallChain_C4_I28_004e75c0(needSlot);
       }

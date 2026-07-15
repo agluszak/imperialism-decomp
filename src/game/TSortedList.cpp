@@ -13,7 +13,7 @@ IMPLEMENT_DYNCREATE(TSortedList, TObject)
 // TSortedList::CreateObject
 
 // Not-yet-recovered free functions this file calls into.
-extern undefined4 GenerateThreadLocalRandom15(void);
+extern "C" int __cdecl rand(void);
 
 // Default-compare trampoline whose address Sort() passes as the comparator: adapts the
 // three-arg __cdecl comparator shape onto the virtual Compare of the list supplied as
@@ -72,7 +72,7 @@ int TSortedList::QSPartitionCore(int lo, int hi, TSortedListCompareFunc compare,
 int TSortedList::QSPartition(int lo, int hi, TSortedListCompareFunc compare, void* context) {
   int pivotOrdinal = lo;
   if (lo != hi) {
-    pivotOrdinal = static_cast<int>(GenerateThreadLocalRandom15()) % abs(hi - lo) + lo;
+    pivotOrdinal = static_cast<int>(rand()) % abs(hi - lo) + lo;
   }
   // Swap the random pick into the pivot position through the public CPtrList API
   // (FindIndex+SetAt compile to the same node-data stores the original emits).

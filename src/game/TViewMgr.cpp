@@ -1,4 +1,5 @@
 #include "game/TViewMgr.h"
+#include "game/TC2TemplateDialog.h"
 
 #include "game/TModuleLibraryCacheTableStateB.h"
 
@@ -71,11 +72,9 @@ undefined4 HandleTurnEvent8FC_RebuildPageTabsAndTitles(void);
 // Free-function thunks reached through the ILT jump table; declared in the generic
 // repo form and invoked through typed __cdecl casts at the callsites.
 // ILT thunk (generic form per repo policy; typed cast applied at the callsite).
-undefined4 InitializeHotKeyDialogTemplateA1WithTripleTextState(void);
 undefined4 RunNationInfoModalAndReturnNonCancel(void);
 undefined4 NoOpUiRuntimeCallback_005db2f0(void);
 undefined4 NoOpRuntimeCallback_005d5d10(void);
-undefined4 DoModal_6051b9(void);
 
 // Provisional dispatch interfaces for the runtime-resolved turn-event dialog node and
 // its 'GOLD' child control now live in one shared header so the TViewMgr and
@@ -85,8 +84,8 @@ undefined4 DoModal_6051b9(void);
 namespace {
 using turn_event_dialog::GoldCommitControl;
 using turn_event_dialog::GoldDialogControl;
-using turn_event_dialog::TCivilianReportGoldControl;
 using turn_event_dialog::GoldFactoryPanel;
+using turn_event_dialog::TCivilianReportGoldControl;
 using turn_event_dialog::TurnEventDialogNode;
 // g_pUiViewManager (TAssetMgr) @ 0x6a2148 — the UI/view asset registry that resolves
 // turn-event dialog nodes by message context.
@@ -1623,15 +1622,14 @@ void TViewMgr::HandleTurnEventF3D_PopulateRecentTurnMessages(int nationSlot) {
 
 // FUNCTION: IMPERIALISM 0x005dcaa0
 void TViewMgr::HandleTurnEventVtableSlot2CInitializeHotKeyDialog() {
-  CDialog dialog;
-  reinterpret_cast<void(__cdecl*)(void)>(InitializeHotKeyDialogTemplateA1WithTripleTextState)();
+  TA1TemplateDialog dialog(NULL);
 
   char* buffer = new char[0x3e];
   if (buffer != 0) {
     CopyHotKeyDialogTemplateToBuffer(reinterpret_cast<int>(buffer));
-    *reinterpret_cast<void**>(buffer + 0x118) = &dialog;
+    dialog.state118 = buffer;
 
-    int modalResult = reinterpret_cast<int(__cdecl*)(void)>(DoModal_6051b9)();
+    int modalResult = dialog.DoModal();
     if (modalResult != 0) {
       g_pSimMgr->CopyScenarioNationSetupIntoFlowState(reinterpret_cast<void*>(buffer));
     }

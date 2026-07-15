@@ -37,10 +37,9 @@ TAdmiral::TAdmiral(short terrainTypeIndex)
       if (node == this) {
         continue;
       }
-      if (CompareAnsiStringsWithMbcsAwareness(
-              reinterpret_cast<unsigned char*>((char*)static_cast<LPCSTR>(node->displayName)),
-              reinterpret_cast<unsigned char*>((char*)static_cast<LPCSTR>(this->displayName))) ==
-          0) {
+      if (_mbscmp(reinterpret_cast<unsigned char*>((char*)static_cast<LPCSTR>(node->displayName)),
+                  reinterpret_cast<unsigned char*>(
+                      (char*)static_cast<LPCSTR>(this->displayName))) == 0) {
         this->Free();
       }
     }
@@ -123,9 +122,9 @@ void TAdmiral::RemoveDuplicateNavySecondaryOrdersByDisplayName() {
     if (node == this) {
       continue;
     }
-    if (CompareAnsiStringsWithMbcsAwareness(
-            reinterpret_cast<unsigned char*>((char*)static_cast<LPCSTR>(node->displayName)),
-            reinterpret_cast<unsigned char*>((char*)static_cast<LPCSTR>(this->displayName))) == 0) {
+    if (_mbscmp(reinterpret_cast<unsigned char*>((char*)static_cast<LPCSTR>(node->displayName)),
+                reinterpret_cast<unsigned char*>((char*)static_cast<LPCSTR>(this->displayName))) ==
+        0) {
       this->RemoveDuplicateNavySecondaryOrdersByDisplayName();
     }
   }

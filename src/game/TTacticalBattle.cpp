@@ -20,13 +20,16 @@
 #include "game/TNextMoveCommand.h"
 #include "game/TSimMgr.h"
 #include "game/TSoundPlayer.h"
+#include "game/TNavyPlayer.h"
 #include "game/TTacticalBattleView.h"
 #include "game/TTacticalPlayer.h"
 #include "game/TTacticalToolbar.h"
+#include "game/TViewMgr.h"
+#include "game/global_data_tables.h"
 #include "game/ui_control_tags.h"
 #include "game/global_data_tables.h"
 
-extern undefined4 GenerateThreadLocalRandom15(void);
+extern "C" int __cdecl rand(void);
 
 using turn_event_dialog::TurnEventDialogNode;
 
@@ -111,7 +114,7 @@ void TTacticalBattle::BuildTacticalBattleStateFromBothSides(TTacticalPlayer* our
     for (TTacticalUnit* ourUnit = static_cast<TTacticalUnit*>(ourIter.Reset()); ourIter.More();
          ourUnit = static_cast<TTacticalUnit*>(ourIter.Advance())) {
       ourUnit->side20 = 0;
-      ourUnit->field24 = static_cast<short>(GenerateThreadLocalRandom15());
+      ourUnit->field24 = static_cast<short>(rand());
       recordList20->AddTail(ourUnit);
     }
   }
@@ -120,7 +123,7 @@ void TTacticalBattle::BuildTacticalBattleStateFromBothSides(TTacticalPlayer* our
     for (TTacticalUnit* enemyUnit = static_cast<TTacticalUnit*>(enemyIter.Reset());
          enemyIter.More(); enemyUnit = static_cast<TTacticalUnit*>(enemyIter.Advance())) {
       enemyUnit->side20 = 1;
-      enemyUnit->field24 = static_cast<short>(GenerateThreadLocalRandom15());
+      enemyUnit->field24 = static_cast<short>(rand());
       recordList20->AddTail(enemyUnit);
     }
   }
@@ -490,6 +493,45 @@ void TTacticalBattle::ComputeHexNeighborTileIndices_005A0420(int tileIndex,
   }
 }
 
+// Top-level tactical toolbar command dispatch for the current side. Ignored unless the side
+// is human-watched; then routes the 4-char command tag to the matching handler.
+// FUNCTION: IMPERIALISM 0x005a0c50
+void TTacticalBattle::HandleTacticalBattleCommandTag(int commandTag) {
+  TTacticalPlayer* player = (&tacticalPlayer14)[currentSideC];
+  if (player->watchFlagD == 0) {
+    return;
+  }
+  switch (commandTag) {
+  case 0x646f6e65: // 'done'
+    if (field10 == 1) {
+      QueueTacticalEventPacket232A();
+      return;
+    }
+    ApplyTacticalDoneSelectionAndRefreshUi(player->SelectNextTacticalUnitForDoneCommand());
+    return;
+  case 0x6175746f: // 'auto'
+    player->ProceedAfterBattleIntroAccepted();
+    return;
+  case 0x72657472: // 'retr'
+    if (field10 == 0) {
+      HandleTacticalCommandTag_retr();
+      return;
+    }
+    if (g_pUiRuntimeContext->ShowLocalizedUiPromptByGroupAndIndex(0x273d, 0x32, 1, 1)) {
+      player = (&tacticalPlayer14)[currentSideC];
+      player->fieldF = 1;
+      player->ProceedAfterBattleIntroAccepted();
+    }
+    return;
+  case 0x736b6970: // 'skip'
+    player->HandleTacticalCommandTag_skip();
+    return;
+  case 0x74617267: // 'targ'
+    HandleTacticalCommandTag_targ();
+    return;
+  }
+}
+
 // Ends the current action round: clears the follow-up latch and posts a 'next move'
 // command (turn event 0x232a) carrying this battle to the UI root controller.
 // FUNCTION: IMPERIALISM 0x005a0d60
@@ -679,10 +721,10 @@ int TTacticalBattle::BuildPathToTargetByDistanceField(int walkTileIndex, int pat
             if (curThreat != 0) {
               swapFlag = 1;
             } else {
-              swapFlag = static_cast<unsigned char>(GenerateThreadLocalRandom15() & 1);
+              swapFlag = static_cast<unsigned char>(rand() & 1);
             }
           } else if (curThreat != 0) {
-            swapFlag = static_cast<unsigned char>(GenerateThreadLocalRandom15() & 1);
+            swapFlag = static_cast<unsigned char>(rand() & 1);
           }
         }
         if (swapFlag != 0) {
@@ -1416,7 +1458,7 @@ void TTacticalBattle::ClearTacticalTileStateRunByStride(int tileIndex) {
 // FUNCTION: IMPERIALISM 0x005a34d0
 void TTacticalBattle::ExecuteTacticalMineActionAndQueuePacket(TTacticalUnit* unit, int tileIndex) {
   int unitType = unit->unitTypeC;
-  int amount = static_cast<int>(GenerateThreadLocalRandom15()) % 400 + unitType * 250 - 5600;
+  int amount = static_cast<int>(rand()) % 400 + unitType * 250 - 5600;
   unsigned char multiplayerActive = g_pSimMgr->field44 != 0;
   if (multiplayerActive != 0) {
     g_pGameFlowState->EmitTacticalCommandPacket(0x6d696e65 /* 'mine' */, 0, tileIndex, amount);
@@ -1524,7 +1566,7 @@ TTacticalBattle::ComputeRallyStrengthAndQueueTacticalRallyCommand(TTacticalUnit*
     newMorale += rallyTarget->strength4 / 10 * (rallyingUnit->qualityLevel10 + 3);
   } else if (newState == 1) {
     int qualityLevel = rallyingUnit->qualityLevel10;
-    if (static_cast<int>(GenerateThreadLocalRandom15()) % 100 < (qualityLevel + 5) * 10) {
+    if (static_cast<int>(rand()) % 100 < (qualityLevel + 5) * 10) {
       newMorale = rallyTarget->strength4 / 10 + 20;
       newState = 0;
     }
@@ -1699,6 +1741,95 @@ unsigned char TTacticalBattle::IsTacticalTargetTileReachableForAction(int attack
     return 1;
   }
   return 0;
+}
+
+// "targ" command: cycles the selected unit's target to the next reachable enemy unit in the
+// opposing side's list, starting after the current target (which is recentered if still
+// valid), recentering the view on the first reachable candidate; sets the selected unit's
+// target field, or plays a "no target" cue if none was found. NOTE: the original also calls
+// the candidate's AssertValid (vtable slot 0x03, a retail no-op) each iteration; that call is
+// omitted here because AssertValid is not modeled as a callable TObject method.
+// FUNCTION: IMPERIALISM 0x005a3f10
+void TTacticalBattle::HandleTacticalCommandTag_targ() {
+  TTacticalUnit* selected = selectedUnit1c;
+  TTacticalUnit* result = NULL;
+  if (selected == NULL || battleView8 == NULL) {
+    return;
+  }
+  // field30 is a dual-purpose slot (see TTacticalUnit.h); here it carries the target unit.
+  TTacticalUnit* marker = reinterpret_cast<TTacticalUnit*>(selected->field30);
+  TList* list = (&tacticalPlayer14)[selected->side20 == 0]->unitList4;
+
+  // Locate the current target's ordinal in the opposing list (0 if it is gone).
+  int position = 0;
+  if (marker != NULL) {
+    int count = list->GetCount();
+    for (int i = 1; i <= count; i++) {
+      if (list->GetEntryByOrdinal(i) == marker) {
+        position = i;
+      }
+      count = list->GetCount();
+    }
+    if (position == 0) {
+      marker = NULL;
+    }
+  }
+
+  // If the current target is still valid and reachable, recenter the view on it.
+  if (marker != NULL && marker->state1c == 0) {
+    char reachable;
+    if (selectedUnit1c->selectedFlag18 == 0) {
+      reachable = 0;
+    } else {
+      reachable = IsTacticalTargetTileReachableForAction(
+          selectedUnit1c->tileIndex8, marker->tileIndex8,
+          static_cast<char>(g_afTacticalDirectFireFlagByCategory
+                                [g_awTacticalUnitCategoryCodeBySlot[selectedUnit1c->unitTypeC]]),
+          selectedUnit1c->GetUnitRange());
+    }
+    if (reachable != 0) {
+      battleView8->CenterViewportAroundGridIndexAndSnap(marker->tileIndex8);
+    }
+  }
+
+  if (position == 0 || position == list->GetCount()) {
+    position = 1;
+  }
+
+  int cursor = position;
+  do {
+    int next = cursor + 1;
+    if (list->GetCount() < next) {
+      next = 1;
+    }
+    TTacticalUnit* candidate = static_cast<TTacticalUnit*>(list->GetEntryByOrdinal(next));
+    if (candidate->state1c == 0) {
+      char reachable;
+      if (selectedUnit1c->selectedFlag18 == 0) {
+        reachable = 0;
+      } else {
+        reachable = IsTacticalTargetTileReachableForAction(
+            selectedUnit1c->tileIndex8, candidate->tileIndex8,
+            static_cast<char>(g_afTacticalDirectFireFlagByCategory
+                                  [g_awTacticalUnitCategoryCodeBySlot[selectedUnit1c->unitTypeC]]),
+            selectedUnit1c->GetUnitRange());
+      }
+      if (reachable != 0) {
+        if (marker == NULL) {
+          battleView8->CenterViewportAroundGridIndexAndSnap(candidate->tileIndex8);
+          marker = candidate;
+        } else {
+          result = candidate;
+        }
+      }
+    }
+    cursor = next;
+  } while (cursor != position && result == NULL);
+
+  selectedUnit1c->field30 = reinterpret_cast<int>(result);
+  if (result == NULL) {
+    g_pSfxPlaybackSystem->PlaySoundEffect(0x1b5a, 0, 1);
+  }
 }
 
 // Whether a tile is a legal deployment target for the current side: not in the first
@@ -1939,4 +2070,11 @@ TArmyTacUnit* TTacticalBattle::SeekLinkedListCursorByNestedId(int nestedId) {
     }
   }
   return 0;
+}
+
+// Sets the current side's navy ship-panel display mode from the navy toolbar (hull/crew/sail).
+// The players are TNavyPlayer in a sea battle, so the mode lands in the navy-slice field.
+// FUNCTION: IMPERIALISM 0x005a5b90
+void TTacticalBattle::SetCurrentSideNavyShipDisplayMode(int mode) {
+  static_cast<TNavyPlayer*>((&tacticalPlayer14)[currentSideC])->shipDisplayMode2c = mode;
 }

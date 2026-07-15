@@ -116,9 +116,8 @@ void TStaticText::InitializeTextEntryBaseAndOptionalStringResource(
 // FUNCTION: IMPERIALISM 0x0048fe60
 void TStaticText::AssignTextSharedRefIfChangedAndMaybeInvalidate(CString* sharedString,
                                                                  char refreshNow) {
-  if (CompareAnsiStringsWithMbcsAwareness(
-          reinterpret_cast<unsigned char*>((char*)static_cast<LPCSTR>(*sharedString)),
-          reinterpret_cast<unsigned char*>((char*)static_cast<LPCSTR>(*text))) != 0) {
+  if (_mbscmp(reinterpret_cast<unsigned char*>((char*)static_cast<LPCSTR>(*sharedString)),
+              reinterpret_cast<unsigned char*>((char*)static_cast<LPCSTR>(*text))) != 0) {
     *text = *sharedString;
     if (refreshNow != 0) {
       RefreshControl();

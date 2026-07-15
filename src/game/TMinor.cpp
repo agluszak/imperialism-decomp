@@ -47,7 +47,7 @@ int SignedDivideBy100(int value) {
 
 } // namespace
 
-extern undefined4 GenerateThreadLocalRandom15(void);
+extern "C" int __cdecl rand(void);
 
 // SYNTHETIC: IMPERIALISM 0x004e3660
 // TMinor::CreateObject
@@ -259,7 +259,7 @@ void TMinor::SeedRandomDiplomacyPolicyThresholds(void) {
   short savedPredicate = this->diplomacyPolicyPredicateCode12c;
   short proposalWeight = 0;
   if (this == 0 || this->encodedNationSlot <= 99 || this->encodedNationSlot >= 200) {
-    int randomBucket = static_cast<int>(GenerateThreadLocalRandom15()) % 100;
+    int randomBucket = static_cast<int>(rand()) % 100;
     int resourceType = 0;
     if (randomBucket < 0x19) {
       resourceType = 0;
@@ -316,7 +316,7 @@ void TMinor::SeedRandomDiplomacyPolicyThresholds(void) {
   if (savedPredicate == this->diplomacyPolicyPredicateCode12c) {
     short rolledPredicate = this->diplomacyPolicyPredicateCode12c;
     do {
-      int roll = static_cast<int>(GenerateThreadLocalRandom15()) % 100;
+      int roll = static_cast<int>(rand()) % 100;
       if (roll < 0x1e) {
         rolledPredicate = 0xd;
       } else if (roll < 0x3c) {

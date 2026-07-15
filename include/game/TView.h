@@ -98,8 +98,6 @@ public:
   void CopyViewStateFromSource(TView* source);
   void EnableAndProcessFlag(CString sharedString);
   void PropagateUiResourceContextRecursive(CWnd* nativeWindow);
-  UINT GetStyle();
-  int RunModalLoop(unsigned char loopKind);
 
   // Base-slot overrides (vtable bodies differ from TEventHandler's).
   DECLARE_DYNCREATE(TView)

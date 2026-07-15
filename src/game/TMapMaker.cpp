@@ -71,7 +71,7 @@ char TMapMaker::vmethod_0023() {
 }
 
 // FUNCTION: IMPERIALISM 0x00527ed0
-char TMapMaker::vmethod_0024() {
+char TMapMaker::GetDeactivateVetoCode() {
   return 0;
 }
 
@@ -111,7 +111,7 @@ char TMapMaker::ActivateCityProductionViewIfAllowed() {
 }
 
 // FUNCTION: IMPERIALISM 0x005297e0
-char TMapMaker::vmethod_0080() {
+char TMapMaker::TryDeactivateActiveView() {
   return 0;
 }
 
@@ -128,7 +128,7 @@ int TMapMaker::GetFineGridCellBasePointerFromCoarseIndex(int coarseIndex) {
 }
 
 // FUNCTION: IMPERIALISM 0x00529f60
-void TMapMaker::vmethod_0025() {}
+void TMapMaker::OnDeactivated() {}
 
 // FUNCTION: IMPERIALISM 0x0052a670
 int TMapMaker::GetCityRegionIdAtTileIndex(int tileIndex) {
@@ -142,7 +142,7 @@ int TMapMaker::GetCityRegionIdAtTileIndex(int tileIndex) {
 }
 
 // FUNCTION: IMPERIALISM 0x0052e840
-void TMapMaker::vmethod_0026(int gate) {}
+void TMapMaker::OnDeactivateVetoed(int gate) {}
 
 // FUNCTION: IMPERIALISM 0x0052e890
 void TMapMaker::DispatchUiCommand19ToParent() {}

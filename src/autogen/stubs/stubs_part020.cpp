@@ -291,54 +291,6 @@ undefined4 WrapperFor_ftol_At005dee20(void)
   return 0;
 }
 
-// ghidra_name InitializeDialogTemplateE0
-// ghidra_proto undefined InitializeDialogTemplateE0()
-// FUNCTION: IMPERIALISM 0x005dee50
-undefined4 InitializeDialogTemplateE0(void)
-{
-  return 0;
-}
-
-// ghidra_name NoOpRuntimeUiCallback_005dee80
-// ghidra_proto undefined NoOpRuntimeUiCallback_005dee80()
-// FUNCTION: IMPERIALISM 0x005dee80
-undefined4 NoOpRuntimeUiCallback_005dee80(void)
-{
-  return 0;
-}
-
-// ghidra_name GetRuntimePtrTable0066F368
-// ghidra_proto undefined GetRuntimePtrTable0066F368()
-// FUNCTION: IMPERIALISM 0x005deea0
-undefined4 GetRuntimePtrTable0066F368(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_EnsureMainFrameClassNameAssigned_At005def40
-// ghidra_proto undefined WrapperFor_EnsureMainFrameClassNameAssigned_At005def40()
-// FUNCTION: IMPERIALISM 0x005def40
-undefined4 WrapperFor_EnsureMainFrameClassNameAssigned_At005def40(void)
-{
-  return 0;
-}
-
-// ghidra_name SetCursorFromResourceE4AndClampRange
-// ghidra_proto undefined SetCursorFromResourceE4AndClampRange()
-// FUNCTION: IMPERIALISM 0x005def70
-undefined4 SetCursorFromResourceE4AndClampRange(void)
-{
-  return 0;
-}
-
-// ghidra_name NoOpOnPaintWithCPaintDCScope_005df040
-// ghidra_proto undefined NoOpOnPaintWithCPaintDCScope_005df040()
-// FUNCTION: IMPERIALISM 0x005df040
-undefined4 NoOpOnPaintWithCPaintDCScope_005df040(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_ftol_At005df1a0
 // ghidra_proto undefined WrapperFor_ftol_At005df1a0()
 // FUNCTION: IMPERIALISM 0x005df1a0
@@ -471,38 +423,6 @@ undefined4 SendMciCommand808ToDeviceWithParam(void)
 // ghidra_proto undefined WrapperFor_ftol_At005e1b90()
 // FUNCTION: IMPERIALISM 0x005e1b90
 undefined4 WrapperFor_ftol_At005e1b90(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_FreeHeapBufferIfNotNull_At005e1c60
-// ghidra_proto undefined WrapperFor_FreeHeapBufferIfNotNull_At005e1c60()
-// FUNCTION: IMPERIALISM 0x005e1c60
-undefined4 WrapperFor_FreeHeapBufferIfNotNull_At005e1c60(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_DDX_Text_618cbd_At005e1c90
-// ghidra_proto undefined WrapperFor_DDX_Text_618cbd_At005e1c90()
-// FUNCTION: IMPERIALISM 0x005e1c90
-undefined4 WrapperFor_DDX_Text_618cbd_At005e1c90(void)
-{
-  return 0;
-}
-
-// ghidra_name GetRuntimePtrTable0066F588
-// ghidra_proto undefined GetRuntimePtrTable0066F588()
-// FUNCTION: IMPERIALISM 0x005e1cc0
-undefined4 GetRuntimePtrTable0066F588(void)
-{
-  return 0;
-}
-
-// ghidra_name UpdateCursorHelperWindowTextFromUiString
-// ghidra_proto undefined UpdateCursorHelperWindowTextFromUiString()
-// FUNCTION: IMPERIALISM 0x005e1ce0
-undefined4 UpdateCursorHelperWindowTextFromUiString(void)
 {
   return 0;
 }
@@ -827,14 +747,6 @@ undefined4 WrapperFor_Ordinal13_FromField1C_At005e5561(void)
   return 0;
 }
 
-// ghidra_name DispatchCallbackD8_WithMinusOne_At005e5597
-// ghidra_proto undefined DispatchCallbackD8_WithMinusOne_At005e5597()
-// FUNCTION: IMPERIALISM 0x005e5597
-undefined4 DispatchCallbackD8_WithMinusOne_At005e5597(void)
-{
-  return 0;
-}
-
 // ghidra_name MoveListBoxEntryPreserveItemData
 // ghidra_proto undefined MoveListBoxEntryPreserveItemData()
 // FUNCTION: IMPERIALISM 0x005e5661
@@ -1107,26 +1019,10 @@ undefined4 NoOpRuntimeCallback_005e717b(void)
   return 0;
 }
 
-// ghidra_name fpmath
-// ghidra_proto void __cdecl fpmath(int param_1)
-// FUNCTION: IMPERIALISM 0x005e7350
-undefined4 fpmath(void)
-{
-  return 0;
-}
-
 // ghidra_name NoOpCrtThreadLifecycleHook
 // ghidra_proto undefined NoOpCrtThreadLifecycleHook()
 // FUNCTION: IMPERIALISM 0x005e7370
 undefined4 NoOpCrtThreadLifecycleHook(void)
-{
-  return 0;
-}
-
-// ghidra_name InitializeFpmathAmsgExitHandlerTable
-// ghidra_proto undefined InitializeFpmathAmsgExitHandlerTable()
-// FUNCTION: IMPERIALISM 0x005e7380
-undefined4 InitializeFpmathAmsgExitHandlerTable(void)
 {
   return 0;
 }
@@ -1151,14 +1047,6 @@ undefined4 AppendPointerToGlobalVectorAsStatus(void)
 // ghidra_proto undefined ReallocateHeapBlockWithAllocatorTracking()
 // FUNCTION: IMPERIALISM 0x005e7fc0
 undefined4 ReallocateHeapBlockWithAllocatorTracking(void)
-{
-  return 0;
-}
-
-// ghidra_name GenerateThreadLocalRandom15
-// ghidra_proto undefined GenerateThreadLocalRandom15()
-// FUNCTION: IMPERIALISM 0x005e83f0
-undefined4 GenerateThreadLocalRandom15(void)
 {
   return 0;
 }

@@ -159,6 +159,43 @@ int CDib::StretchDibitsRectToDc(CDC* dc, int xDest, int yDest, int destWidth, in
                          srcWidth, srcHeight, m_dibBits, m_pInfoHeader, DIB_RGB_COLORS, SRCCOPY);
 }
 
+// Two-pass transparent stretch-blit: entry `paletteIndex` of the color table is forced white
+// over an otherwise-black table for the AND pass (ROP 0x8800c6), then cleared to black over
+// the restored table for the paint pass (ROP 0xee0086). The color table is saved to a scratch
+// buffer up front and fully restored before returning. Returns TRUE only if both passes blit.
+// FUNCTION: IMPERIALISM 0x0047ac50
+BOOL CDib::StretchDibitsWithCopiedPaletteTable(CDC* dc, int paletteIndex, int xDest, int yDest,
+                                               int destWidth, int destHeight, int xSrc, int ySrc,
+                                               int srcWidth, int srcHeight) {
+  unsigned char* savedTable = new unsigned char[0x400];
+  memcpy(savedTable, m_colorTablePixels, m_paletteCount * 4);
+  memset(m_colorTablePixels, 0, m_paletteCount * 4);
+
+  int entry = paletteIndex * 4;
+  static_cast<unsigned char*>(m_colorTablePixels)[entry] = 0xff;
+  static_cast<unsigned char*>(m_colorTablePixels)[entry + 1] = 0xff;
+  static_cast<unsigned char*>(m_colorTablePixels)[entry + 2] = 0xff;
+  int blitted =
+      ::StretchDIBits(dc->GetSafeHdc(), xDest, yDest, destWidth, destHeight, xSrc, ySrc, srcWidth,
+                      srcHeight, m_dibBits, m_pInfoHeader, DIB_RGB_COLORS, 0x8800c6);
+
+  memcpy(m_colorTablePixels, savedTable, m_paletteCount * 4);
+  static_cast<unsigned char*>(m_colorTablePixels)[entry] = 0;
+  static_cast<unsigned char*>(m_colorTablePixels)[entry + 1] = 0;
+  static_cast<unsigned char*>(m_colorTablePixels)[entry + 2] = 0;
+  BOOL result = FALSE;
+  if (blitted != 0) {
+    if (::StretchDIBits(dc->GetSafeHdc(), xDest, yDest, destWidth, destHeight, xSrc, ySrc, srcWidth,
+                        srcHeight, m_dibBits, m_pInfoHeader, DIB_RGB_COLORS, 0xee0086) != 0) {
+      result = TRUE;
+    }
+  }
+
+  memcpy(m_colorTablePixels, savedTable, m_paletteCount * 4);
+  delete[] savedTable;
+  return result;
+}
+
 // FUNCTION: IMPERIALISM 0x0047ae20
 HBITMAP CDib::EnsureDibSectionCreated(CDC* dc) {
   if (m_pInfoHeader == NULL) {
@@ -205,6 +242,17 @@ void CDib::CopyRgbQuadTableFrom(const LOGPALETTE* source) {
     dest[i].rgbBlue = source->palPalEntry[i].peBlue;
     dest[i].rgbReserved = source->palPalEntry[i].peFlags;
   }
+}
+
+// Build a device-dependent bitmap (CreateDIBitmap + CBM_INIT) from the stored header and
+// bits, compatible with the given DC. Returns NULL when there is no pixel buffer.
+// FUNCTION: IMPERIALISM 0x0047b280
+HBITMAP CDib::CreateDibBitmapFromStoredInfo(CDC* dc) {
+  if (m_pixelBytes == 0) {
+    return NULL;
+  }
+  return ::CreateDIBitmap(dc->GetSafeHdc(), &m_pInfoHeader->bmiHeader, CBM_INIT, m_dibBits,
+                          m_pInfoHeader, DIB_RGB_COLORS);
 }
 
 // FUNCTION: IMPERIALISM 0x0047b6d0

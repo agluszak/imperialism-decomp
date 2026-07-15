@@ -1,31 +1,40 @@
 #pragma once
 
-#include "compat.h"
-#include "game/mfc.h"
+#include "game/TAnimation.h"
 
 class TView;
 
 // One-shot tile-effect animation (explosions, sap blasts) pumped modally by
 // TTacticalBattleView::RunOneTimeAnimationModalWaitAndInvalidateCityDialog (0x5a9170).
-// Derives from the MFC CObject root: the factory at 0x0049fd20 installs the shared
-// CObject runtime vtable (0x0066fec4), and TOneTimeAnimation adds no virtuals of its
-// own; the animation fields begin at offset 0x4.
-class TOneTimeAnimation : public CObject {
+//
+// A TAnimation subclass (RTTI base descriptor 0x64c1f0, CRuntimeClass 0x64c238) with its own
+// vtable 0x64c3d0 — DYNCREATE (CreateObject 0x49fcc0). It reuses TAnimation's frame/rect
+// slice unchanged and overrides only the per-tick frame advance (slot 0x0a), adding a
+// completion flag at +0x2c (object size 0x30 vs TAnimation's 0x2c). The inherited fields
+// carry effect-specific meaning here: field0C is the effect sprite id and ticksPerFrame14
+// the per-effect tick limit (see ConstructTOneTimeAnimationBaseState).
+//
+// (Previously mismodeled as a flat `: public CObject` with duplicated fields and no vtable
+// annotation; the ctor's write of the shared CObject vtable 0x0066fec4 is just the base-most
+// step of the trivial destructor chain, not evidence of direct CObject inheritance.)
+// VTABLE: IMPERIALISM 0x0064c3d0
+class TOneTimeAnimation : public TAnimation {
 public:
-  TView* scopedRenderTarget; // 0x04 — render-target view for the scoped QuickDraw context
-  short currentFrame;        // 0x08
-  short frameCount;          // 0x0a
-  short effectId0C;          // 0x0c effect sprite id
-  char pad_0e[2];
-  int frameTick;      // 0x10
-  int frameTickLimit; // 0x14
-  int registryTag18;  // 0x18 UI transient-registry tag (the tile index)
-  RECT targetRect;    // 0x1c
-  char completeFlag;  // 0x2c
+  DECLARE_DYNCREATE(TOneTimeAnimation)
+  virtual ~TOneTimeAnimation() override; // slot 0x01 (scalar deleting destructor); dtor 0x49fd20
 
-  // Field initializer invoked right after `new` (0x49fd60, __thiscall, ret 0x18).
+  // Override of TAnimation::AdvanceAnimationTickAndInvalidateOnFrameFlip (slot 0x0a): tick the
+  // one-shot animation, invalidate + repaint the target rect on each frame flip, and latch
+  // completeFlag once the last frame has played.
+  virtual undefined AdvanceAnimationTickAndInvalidateOnFrameFlip() override; // slot 0x0a 0x49fde0
+
+  char completeFlag; // 0x2c — set once all frames have played (stops the modal pump)
+  char pad2d[3];
+
+  // Field initializer invoked right after `new` (0x49fd60, __thiscall, ret 0x18); fills the
+  // inherited TAnimation slice for the one-shot effect.
   void ConstructTOneTimeAnimationBaseState(TView* view, RECT* rect, short frameCountArg,
                                            short effectId, int tickLimit, int registryTag);
-
-  void AdvanceOneTimeAnimationFrameAndInvalidateTargetRect();
 };
+
+ASSERT_SIZE(TOneTimeAnimation, 0x30);

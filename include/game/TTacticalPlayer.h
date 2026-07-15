@@ -51,6 +51,10 @@ public:
   // cursorIndex18. 0x0059af20, __thiscall.
   class TTacticalUnit* SelectNextTacticalUnitForDoneCommand();
 
+  // Handles the "skip" tactical command: unless the selected unit's type category is 8,
+  // sets field20 and queues the battle's turn event (232A). 0x0059b040, __thiscall.
+  void HandleTacticalCommandTag_skip();
+
   // Moves every never-deployed unit (tileIndex8 == -2) from unitList4 to the head of
   // secondaryList8 and strips the retired units from the battle's turn-order record
   // list. Runs when the deployment phase finalizes. 0x0059b740, __thiscall.

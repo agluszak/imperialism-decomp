@@ -15,7 +15,7 @@
 #include "game/turn_event_dialog_provisional.h"
 #include "game/ui_invalidation_guard.h"
 
-extern undefined4 GenerateThreadLocalRandom15(void);
+extern "C" int __cdecl rand(void);
 
 using turn_event_dialog::TurnEventDialogNode;
 
@@ -131,7 +131,7 @@ void TArmyPlayer::InitializeTacticalSideFromArmyUnitList(TArmyStack* stack, int 
   watchFlagD = watchFlag; // duplicate store present in the original
   notWatchedFlagE = (watchFlag == 0);
   lastAppliedCursorMode44 = -1;
-  unsigned char coinFlip = static_cast<unsigned char>(GenerateThreadLocalRandom15() & 1);
+  unsigned char coinFlip = static_cast<unsigned char>(rand() & 1);
   field4C = -1;
   randomParityByte50 = coinFlip;
   field51 = 0;
@@ -1592,8 +1592,8 @@ int TArmyPlayer::SelectBestTacticalTargetTileByActionHeuristics(TTacticalUnit* u
       // row stride), rerolling while it lands on a wall gun-slot row (5/7/9).
       int rolledTileIndex;
       do {
-        rolledTileIndex = (static_cast<int>(GenerateThreadLocalRandom15()) % 0xd) * 29 +
-                          battle14->battlefieldColumnCount34 + 0x17;
+        rolledTileIndex =
+            (static_cast<int>(rand()) % 0xd) * 29 + battle14->battlefieldColumnCount34 + 0x17;
         field4C = rolledTileIndex;
       } while (battle14->IsTacticalTileAtFortWallSectionSlot(rolledTileIndex) != 0);
     }

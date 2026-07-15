@@ -17,6 +17,7 @@ src/game/TAmtBar.cpp|0|0|6|0
 src/game/TAmtBarCluster.cpp|0|0|1|0
 src/game/TApplication.cpp|1|0|0|0
 src/game/TArmoryView.cpp|3|0|1|0
+src/game/TArmyBattle.cpp|0|0|1|0
 src/game/TArmyBoyView.cpp|0|0|1|0
 src/game/TArmyCheckBox.cpp|3|0|1|0
 src/game/TArmyMgr.cpp|4|0|1|0
@@ -36,7 +37,6 @@ src/game/TBoycottButton.cpp|0|0|1|0
 src/game/TBuildingConstructionView.cpp|2|0|0|0
 src/game/TBuildingExpansionView.cpp|2|0|1|0
 src/game/TBuildingView.cpp|1|0|0|0
-src/game/TC2TemplateDialog.cpp|0|0|2|0
 src/game/TCancelGameOptionsCommand.cpp|1|0|0|0
 src/game/TCapacityOrder.cpp|0|0|1|0
 src/game/TCheater.cpp|0|0|1|0
@@ -130,7 +130,7 @@ src/game/TMapEditCluster.cpp|1|0|1|0
 src/game/TMapEditView.cpp|6|0|1|0
 src/game/TMapKey.cpp|1|0|1|0
 src/game/TMapMaker.cpp|14|0|0|0
-src/game/TMapMgr.cpp|3|0|2|0
+src/game/TMapMgr.cpp|2|0|2|0
 src/game/TMapUberPicture.cpp|8|0|0|0
 src/game/TMapUberUberPicture.cpp|0|0|1|0
 src/game/TMegaPicture.cpp|2|0|0|0
@@ -148,6 +148,7 @@ src/game/TMinisterView.cpp|1|0|0|0
 src/game/TMinorRelationshipDialog.cpp|1|0|1|0
 src/game/TMinorTradeBidsDialog.cpp|0|0|1|0
 src/game/TMinorTreatyDialog.cpp|0|0|1|0
+src/game/TModalDialogBase.cpp|0|0|1|0
 src/game/TMultiMessagePicture.cpp|1|0|1|0
 src/game/TMultiplayerMgr.cpp|3|0|0|0
 src/game/TNavyAutoPlayer.cpp|0|0|1|0
@@ -165,7 +166,7 @@ src/game/TNetMgr.cpp|0|1|0|0
 src/game/TNetSelectPicture.cpp|1|0|0|0
 src/game/TNewGameCommand.cpp|0|1|0|0
 src/game/TNewTownView.cpp|1|0|1|0
-src/game/TNewsMgr.cpp|2|2|1|0
+src/game/TNewsMgr.cpp|1|2|1|0
 src/game/TNewspaperView.cpp|0|0|1|0
 src/game/TNextMoveCommand.cpp|1|0|0|0
 src/game/TNoHiliteText.cpp|0|0|1|0
@@ -236,7 +237,7 @@ src/game/TTechCheater.cpp|0|0|1|0
 src/game/TTechHistoryView.cpp|0|0|1|0
 src/game/TTechItemLine.cpp|0|0|1|0
 src/game/TTechItemView.cpp|1|0|1|0
-src/game/TTechMgr.cpp|3|0|2|0
+src/game/TTechMgr.cpp|2|0|2|0
 src/game/TTerrainHelpPicture.cpp|1|0|1|0
 src/game/TTextPictureButton.cpp|1|0|0|0
 src/game/TToggleButton.cpp|0|0|1|0
@@ -265,6 +266,6 @@ src/game/TUberCluster.cpp|0|0|1|0
 src/game/TUnitOrder.cpp|3|0|1|0
 src/game/TUnitToolbarCluster.cpp|0|0|1|0
 src/game/TUniversityView.cpp|4|0|0|0
-src/game/TViewMgr.cpp|1|0|9|0
+src/game/TViewMgr.cpp|1|0|7|0
 src/game/TWarehouseView.cpp|1|0|0|0
 src/game/TWorldView.cpp|2|0|0|0
