@@ -8,14 +8,25 @@
 
 #include <string.h>
 
-#include "game/TMultiplayerMgr.h"
-#include "game/TSimMgr.h"
-#include "game/global_data_tables.h"
-
 void RecomputeGlobalCapabilityAverages(void);
 undefined4 GetCurrentLocalEpochSecondsWithTimezoneCache(void);
 
 TTechMgr* g_pCityOrderCapabilityState = 0;
+
+// FUNCTION: IMPERIALISM 0x005572d0
+short GetEnabledIndustryCapabilitySlotByClass(short classId) {
+  unsigned char* flagRegion = reinterpret_cast<unsigned char*>(g_pCityOrderCapabilityState) + 0x19d;
+  short slot = 13;
+  const IndustryCapabilityClassSlotEntry* entry = &g_aIndustryCapabilityClassSlotTable[13];
+  while (entry->classId != classId || flagRegion[slot] == 0) {
+    entry--;
+    slot--;
+    if (entry == g_aIndustryCapabilityClassSlotTable) {
+      return 0;
+    }
+  }
+  return slot;
+}
 // SYNTHETIC: IMPERIALISM 0x005aef30
 // TTechMgr::CreateObject
 

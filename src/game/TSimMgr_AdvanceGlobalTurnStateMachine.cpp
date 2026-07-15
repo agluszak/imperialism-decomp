@@ -13,6 +13,7 @@
 #include "game/TCountry.h"
 #include "game/TDiplomacyMgr.h"
 #include "game/TGreatPower.h"
+#include "game/TGreatPower_internal.h"
 #include "game/THelpMgr.h"
 #include "game/TMapMgr.h"
 #include "game/TMinor.h"
@@ -32,7 +33,6 @@ extern undefined4 RebuildNationRankingDataAndUiCache(void);
 extern undefined4 UpdateCityOrderCapabilityUnlockProgress(void);
 extern undefined4 ConsumeFirstPendingAbilityUnlock(void);
 extern undefined4 RefreshNavyOrderCycleAndClearReadyFlags(void);
-extern undefined4 RecomputeNationOrderPriorityMetrics(void);
 extern undefined4 RemoveNationSlotAndNotifyPeers(void);
 extern undefined4 SetOutputDevice(void);
 

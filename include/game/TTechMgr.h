@@ -139,3 +139,9 @@ public:
 
   ~TTechMgr() override;
 };
+
+// Resolves the first enabled industry-capability slot (1..13) for a given class index
+// by scanning g_aIndustryCapabilityClassSlotTable (descending) and testing the
+// per-slot enabled flag at g_pCityOrderCapabilityState+0x19d+slot; returns 0 if none
+// match (slot 0 itself is never reached by the scan). 0x5572d0.
+short GetEnabledIndustryCapabilitySlotByClass(short classId);

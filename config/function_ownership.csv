@@ -3117,6 +3117,7 @@ address|target_cpp|ownership|note
 53fc10|src/game/TInvadeMission.cpp|manual|marker_sync
 53fdc0|src/game/TInvadeMission.cpp|manual|marker_sync
 53fe10|src/game/TInvadeMission.cpp|manual|marker_sync
+53fe30|src/game/TGreatPower_power_score.cpp|manual|marker_sync
 540840|src/game/TProxyGreatPower.cpp|manual|marker_sync
 5408c0|src/game/TProxyGreatPower.cpp|manual|marker_sync
 5408e0|src/game/TProxyGreatPower.cpp|manual|marker_sync
@@ -3388,6 +3389,7 @@ address|target_cpp|ownership|note
 557080|src/game/TNavyMgr.cpp|manual|marker_sync
 557170|src/game/TNavyMgr.cpp|manual|marker_sync
 557210|src/game/TNavyMgr.cpp|manual|marker_sync
+5572d0|src/game/TTechMgr.cpp|manual|marker_sync
 557870|src/game/TTaskForce.cpp|manual|marker_sync
 557f10|src/game/TNavyMgr.cpp|manual|marker_sync
 558860|src/game/TZone.cpp|manual|marker_sync

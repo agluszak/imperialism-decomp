@@ -323,14 +323,6 @@ undefined4 ComputeInvadeMissionPriorityScore(void)
   return 0;
 }
 
-// ghidra_name RecomputeNationOrderPriorityMetrics
-// ghidra_proto undefined RecomputeNationOrderPriorityMetrics()
-// FUNCTION: IMPERIALISM 0x0053fe30
-undefined4 RecomputeNationOrderPriorityMetrics(void)
-{
-  return 0;
-}
-
 // ghidra_name ComputeBestNationTileDevelopmentScore
 // ghidra_proto undefined ComputeBestNationTileDevelopmentScore()
 // FUNCTION: IMPERIALISM 0x00540440

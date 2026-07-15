@@ -112,6 +112,31 @@ extern "C" TNavyOrderResourceDescriptor g_NavyOrderResourceDescriptorTable[64];
 extern "C" int g_aCategoryMetricBaselineAverage[4];
 extern "C" float g_fMissionScoreNormalizationDivisor;
 
+// Per-nation (0..6) output caches written by RecomputeNationOrderPriorityMetrics
+// (0x53fe30): a queue-demand divergence score (blended from the 4-category
+// TShip navy-order contribution percentages, normalized against
+// g_Populate_Beachhead_Mission_LookupTable_00697958), a "mobile units"
+// divergence/score pair (from militaryUnitList44 entries with a nonzero
+// GetUnitMovementClassId, normalized against g_awTacticalCompositionReferenceProfiles_00697870),
+// a "combined units" divergence (mobile + static units), and a final
+// military-power-weighted order score.
+extern "C" float g_afNationOrderQueueDivergence_006a3a88[7];
+extern "C" float g_afNationOrderQueueDivergenceMirror_006a3ac0[7];
+extern "C" float g_afNationMobileUnitDivergence_006a3ae0[7];
+extern "C" float g_afNationWeightedMilitaryOrderScore_006a3b20[7];
+extern "C" float g_afNationCombinedUnitDivergence_006a3b50[7];
+extern "C" float g_afNationMobileUnitScore_006a3b88[7];
+
+// Class-id -> capability-slot lookup table (0x698120, 14 entries, only the leading
+// classId field is read by GetEnabledIndustryCapabilitySlotByClass; the remaining 8
+// ints of each 0x24-byte record are unmapped (raw, preserved for byte-exact datacmp)).
+// Index 0 (classId -1) is never actually reached by that scan (see the function body).
+struct IndustryCapabilityClassSlotEntry {
+  int classId;
+  int raw[8];
+};
+extern "C" IndustryCapabilityClassSlotEntry g_aIndustryCapabilityClassSlotTable[14];
+
 short GetResourceTypeRandomDrawBlockFlag(short resourceType);
 short GetResourceDescriptorWord0CByType(short resourceType);
 short GetResourceDescriptorWord10ByType(short resourceType);

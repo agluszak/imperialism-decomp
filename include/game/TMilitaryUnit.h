@@ -89,3 +89,10 @@ ASSERT_SIZE(TMilitaryUnit, 0x44);
 // Finds a military unit by its TUnit::field_20 id across every terrain descriptor's
 // militaryUnitList44; 0 when unitId is 0 or nothing matches. 0x005c38e0, __cdecl.
 TMilitaryUnit* FindMilitaryUnitByIdAcrossTerrainDescriptors(int unitId);
+
+// Receiver-agnostic variants of TMilitaryUnit::GetUnitMovementClassId /
+// GetUnitTypeStatPercent that take the unit-type slot explicitly (used by the AI
+// city-development selectors, which score unit types without a live TMilitaryUnit).
+// 0x5c34b0 / 0x5c3580.
+short GetCityActionCategoryCodeBySlot(short unitTypeSlot);
+short GetNormalizedCityActionResourceCostPercent(short unitTypeSlot, short statIndex);

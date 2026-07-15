@@ -107,14 +107,6 @@ undefined4 RefreshNavyOrderCycleAndClearReadyFlags(void)
   return 0;
 }
 
-// ghidra_name GetEnabledIndustryCapabilitySlotByClass
-// ghidra_proto undefined GetEnabledIndustryCapabilitySlotByClass()
-// FUNCTION: IMPERIALISM 0x005572d0
-undefined4 GetEnabledIndustryCapabilitySlotByClass(void)
-{
-  return 0;
-}
-
 // ghidra_name BuildNavyOrderPromptTextByLocalizationMode
 // ghidra_proto undefined BuildNavyOrderPromptTextByLocalizationMode()
 // FUNCTION: IMPERIALISM 0x00557320

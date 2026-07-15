@@ -8520,6 +8520,7 @@ address|name|symbol|size|type|prototype|provenance
 69810c|g_Calculate_Mission_Order_LookupTable_0069810C|||global||
 698110|g_Task_Force_Order_LookupTable_00698110|||global||
 698118|g_Navy_Order_Priority_LookupTable_00698118|||global||
+698120|g_aIndustryCapabilityClassSlotTable|||global||
 698ab0|g_nRandomMapSelectedNationSlot00698AB0|||global||
 698ae0|g_szCountryNameProfileKey00698AE0|||global||
 698b10|g_nTurnCooldownSideFlag00698B10|||global||
@@ -8616,6 +8617,12 @@ address|name|symbol|size|type|prototype|provenance
 6a31bc|g_nTurnFlowNationComparisonAdvisoryTick|||global||
 6a327c|g_pLanguageMgr|||global||
 6a3338|g_pMapContextActionManager|||global||
+6a3a88|g_afNationOrderQueueDivergence_006a3a88|||global||
+6a3ac0|g_afNationOrderQueueDivergenceMirror_006a3ac0|||global||
+6a3ae0|g_afNationMobileUnitDivergence_006a3ae0|||global||
+6a3b20|g_afNationWeightedMilitaryOrderScore_006a3b20|||global||
+6a3b50|g_afNationCombinedUnitDivergence_006a3b50|||global||
+6a3b88|g_afNationMobileUnitScore_006a3b88|||global||
 6a3ebc|g_pNavySecondaryOrderListHead|||global||
 6a3ed8|g_pCachedMapActionContext|||global||
 6a3edc|g_pNavyPrimaryOrderListHead|||global||
