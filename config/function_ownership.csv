@@ -254,6 +254,10 @@ address|target_cpp|ownership|note
 47d4e0|src/game/TC2TemplateDialog.cpp|manual|marker_sync
 47d520|src/game/TC2TemplateDialog.cpp|manual|marker_sync
 47d960|src/game/CBrush.cpp|library|marker_sync
+47dba0|src/game/TC2TemplateDialog.cpp|manual|marker_sync
+47dc40|src/game/TC2TemplateDialog.cpp|manual|marker_sync
+47dc70|src/game/TC2TemplateDialog.cpp|manual|marker_sync
+47dcc0|src/game/TC2TemplateDialog.cpp|manual|marker_sync
 47dfd0|src/game/TAutoResolutionDialog.cpp|manual|marker_sync
 47e090|src/game/TAutoResolutionDialog.cpp|manual|marker_sync
 47e0c0|src/game/TAutoResolutionDialog.cpp|manual|marker_sync

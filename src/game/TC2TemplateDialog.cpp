@@ -91,6 +91,27 @@ BEGIN_MESSAGE_MAP(TDCTemplateDialog, CDialog)
 END_MESSAGE_MAP()
 #endif
 
+// FUNCTION: IMPERIALISM 0x0047dba0
+TDETemplateDialog::TDETemplateDialog(void* initParam)
+    : TModalDialogBase(0xde, static_cast<CWnd*>(initParam)), listbox(), valueB0(0), valueB4(0) {}
+
+// SYNTHETIC: IMPERIALISM 0x0047dc40
+// TDETemplateDialog::`scalar deleting destructor'
+
+// FUNCTION: IMPERIALISM 0x0047dc70
+void TDETemplateDialog::DoDataExchange(CDataExchange* pDX) {
+  DDX_Control(pDX, 0x3f8, listbox);
+  DDX_Text(pDX, 0x422, valueB0);
+  DDX_Text(pDX, 0x421, valueB4);
+}
+
+// SYNTHETIC: IMPERIALISM 0x0047dcc0
+// TDETemplateDialog::GetMessageMap
+#ifndef IMPERIALISM_LINT
+BEGIN_MESSAGE_MAP(TDETemplateDialog, CDialog)
+END_MESSAGE_MAP()
+#endif
+
 // The ID_800C command: put up the C2 template dialog with a 0..6 city-view slider and a
 // 10-row list box (each row carries a turn-event code as item data). On OK, dispatch the
 // selected row's event code with the slider position through the UI runtime.

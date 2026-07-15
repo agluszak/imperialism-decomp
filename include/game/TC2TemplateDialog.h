@@ -76,3 +76,22 @@ protected:
 };
 
 ASSERT_SIZE(TDCTemplateDialog, 0x78);
+
+// Sibling "DE" template dialog (template id 0xde, own vtable 0x646630): a TModalDialogBase
+// with an embedded CListBox at +0x74 plus two DDX_Text UINT fields at +0xb0/+0xb4. Built by
+// InitializeDialogTemplateDEWithTextState (0x0047dba0).
+// VTABLE: IMPERIALISM 0x00646630
+class TDETemplateDialog : public TModalDialogBase {
+public:
+  TDETemplateDialog(void* initParam); // 0x0047dba0
+
+  CListBox listbox;     // +0x74
+  unsigned int valueB0; // +0xb0 — DDX_Text control 0x422
+  unsigned int valueB4; // +0xb4 — DDX_Text control 0x421
+
+protected:
+  void DoDataExchange(CDataExchange* pDX) override; // 0x0047dc70 (vtable index 35)
+  DECLARE_MESSAGE_MAP()                             // GetMessageMap 0x0047dcc0 (vtable index 12)
+};
+
+ASSERT_SIZE(TDETemplateDialog, 0xb8);

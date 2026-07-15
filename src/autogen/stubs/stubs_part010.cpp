@@ -59,38 +59,6 @@ undefined4 UpdateCursorHelperWindowLayoutAndMask(void)
   return 0;
 }
 
-// ghidra_name InitializeDialogTemplateDEWithTextState
-// ghidra_proto undefined InitializeDialogTemplateDEWithTextState()
-// FUNCTION: IMPERIALISM 0x0047dba0
-undefined4 InitializeDialogTemplateDEWithTextState(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_FreeHeapBufferIfNotNull_At0047dc40
-// ghidra_proto undefined WrapperFor_FreeHeapBufferIfNotNull_At0047dc40()
-// FUNCTION: IMPERIALISM 0x0047dc40
-undefined4 WrapperFor_FreeHeapBufferIfNotNull_At0047dc40(void)
-{
-  return 0;
-}
-
-// ghidra_name Helper_Uses_DDX_Text_At0047dc70
-// ghidra_proto undefined Helper_Uses_DDX_Text_At0047dc70()
-// FUNCTION: IMPERIALISM 0x0047dc70
-undefined4 Helper_Uses_DDX_Text_At0047dc70(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanVtableAssignStub_0047dcc0
-// ghidra_proto undefined OrphanVtableAssignStub_0047dcc0()
-// FUNCTION: IMPERIALISM 0x0047dcc0
-undefined4 OrphanVtableAssignStub_0047dcc0(void)
-{
-  return 0;
-}
-
 // ghidra_name InitializeDialogTemplateDFBaseState
 // ghidra_proto undefined InitializeDialogTemplateDFBaseState()
 // FUNCTION: IMPERIALISM 0x0047dce0

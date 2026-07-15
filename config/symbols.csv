@@ -366,9 +366,9 @@ address|name|symbol|size|type|prototype|provenance
 47da70|WrapperFor_DeleteRegionHandleFromClipState_At0047da70||70|function|undefined WrapperFor_DeleteRegionHandleFromClipState_At0047da70()|
 47dae0|UpdateCursorHelperWindowLayoutAndMask||128|function|undefined UpdateCursorHelperWindowLayoutAndMask()|
 47dba0|InitializeDialogTemplateDEWithTextState||123|function|undefined InitializeDialogTemplateDEWithTextState()|
-47dc40|WrapperFor_FreeHeapBufferIfNotNull_At0047dc40||30|function|undefined WrapperFor_FreeHeapBufferIfNotNull_At0047dc40()|
+47dc40|TDETemplateDialog::`scalar deleting destructor'|??_GTDETemplateDialog@@UAEPAXI@Z|30|function|undefined ScalarDeletingDestructor()|
 47dc70|Helper_Uses_DDX_Text_At0047dc70||64|function|undefined Helper_Uses_DDX_Text_At0047dc70()|
-47dcc0|OrphanVtableAssignStub_0047dcc0||6|function|undefined OrphanVtableAssignStub_0047dcc0()|
+47dcc0|TDETemplateDialog::GetMessageMap|?GetMessageMap@TDETemplateDialog@@MBEPBUAFX_MSGMAP@@XZ|6|function|undefined GetMessageMap()|
 47dce0|InitializeDialogTemplateDFBaseState||50|function|undefined InitializeDialogTemplateDFBaseState()|
 47dd60|Helper_Uses_DDX_Text_618c5f_At0047dd60||103|function|undefined Helper_Uses_DDX_Text_618c5f_At0047dd60()|
 47ddf0|OrphanVtableAssignStub_0047ddf0||6|function|undefined OrphanVtableAssignStub_0047ddf0()|

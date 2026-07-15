@@ -1811,20 +1811,26 @@
     },
     {
       "address": "0x47dba0",
-      "matching": 0.0,
+      "matching": 0.9444444444444444,
       "name": "InitializeDialogTemplateDEWithTextState",
       "type": 1
     },
     {
+      "address": "0x47dc40",
+      "matching": 0.9090909090909091,
+      "name": "TDETemplateDialog::`scalar deleting destructor'",
+      "type": 1
+    },
+    {
       "address": "0x47dc70",
-      "matching": 0.0,
+      "matching": 0.8636363636363636,
       "name": "Helper_Uses_DDX_Text_At0047dc70",
       "type": 1
     },
     {
       "address": "0x47dcc0",
       "matching": 0.5,
-      "name": "OrphanVtableAssignStub_0047dcc0",
+      "name": "TDETemplateDialog::GetMessageMap",
       "type": 1
     },
     {
@@ -42177,6 +42183,12 @@
       "address": "0x646520",
       "matching": 1.0,
       "name": "TDCTemplateDialog::`vftable'",
+      "type": 5
+    },
+    {
+      "address": "0x646630",
+      "matching": 1.0,
+      "name": "TDETemplateDialog::`vftable'",
       "type": 5
     },
     {
