@@ -236,6 +236,30 @@ void TTechMgr::ApplyCityOrderCapabilityUnlockByTechId(int nTechId) {
   }
 }
 
+// Whether both capability flags of a tech prerequisite pair are completed (== 2) for a
+// nation: the pair's two in-record byte offsets come from
+// g_awTechPrereqCapabilityFieldOffsetPairs_0066ac10[prereqPairIndex], read against the
+// nation's orderCapRows277 row.
+// FUNCTION: IMPERIALISM 0x005b0a20
+unsigned char TTechMgr::AreTechItemPrerequisitePairCompleted(int prereqPairIndex, int nationIndex) {
+  // Each capability flag is read as a "column": shift the object base by the flag's
+  // in-record byte offset, then index orderCapRows277 by nation. Reinterpreting the
+  // shifted base as a TTechMgr keeps (this + offset) as the record base and lets the
+  // 0x268 member displacement + nation*0x1d stride ride the addressing mode, matching the
+  // original's [this + fieldOffset + nation*0x1d + 0x268] grouping. The record's offset-0
+  // byte then IS the shifted field.
+  const short* offsets = g_awTechPrereqCapabilityFieldOffsetPairs_0066ac10[prereqPairIndex];
+  if (reinterpret_cast<TTechMgr*>(reinterpret_cast<unsigned char*>(this) + offsets[0])
+              ->orderCapRows277[nationIndex]
+              .initReadyFlag[0] == 2 &&
+      reinterpret_cast<TTechMgr*>(reinterpret_cast<unsigned char*>(this) + offsets[1])
+              ->orderCapRows277[nationIndex]
+              .initReadyFlag[0] == 2) {
+    return 1;
+  }
+  return 0;
+}
+
 // FUNCTION: IMPERIALISM 0x005b0c70
 void TTechMgr::SetCityOrderCapabilityTierScaledValueByIndex(int index, int value) {
   prioritySlots04[index] = static_cast<short>(value * 4);

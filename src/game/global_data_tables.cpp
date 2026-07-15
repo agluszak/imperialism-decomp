@@ -1526,6 +1526,16 @@ int g_nUiInvalidationAssertFlagLine495 = 0;
 SeapointStretch g_seapointQuadTable_006a3478;
 SeaSegmentStretch g_regionBorderLinkTable_006a3900;
 
+// Per tech-prerequisite-pair index, the two in-record byte offsets (into a TTechMgr
+// OrderCapRow, stride 0x1d) of the capability flags that must both be "completed"
+// (== 2). Consumed by TTechMgr::AreTechItemPrerequisitePairCompleted (0x5b0a20) and
+// SelectMissingTechItemPrerequisitesFromPair (0x5b0a90).
+const short g_awTechPrereqCapabilityFieldOffsetPairs_0066ac10[34][2] = {
+    {0, 0},  {0, 0},  {0, 0}, {0, 0},  {0, 0},  {1, 0},  {1, 0},  {0, 0},  {7, 3},
+    {0, 0},  {2, 0},  {0, 0}, {6, 0},  {0, 0},  {11, 0}, {0, 0},  {8, 0},  {10, 0},
+    {10, 0}, {0, 0},  {7, 0}, {15, 0}, {13, 0}, {5, 12}, {9, 10}, {14, 0}, {19, 0},
+    {24, 0}, {26, 0}, {0, 0}, {25, 0}, {25, 0}, {25, 0}, {0, 0}};
+
 // Hex-neighbour offset tables (direction 0..5) for the 108-wide offset-coordinate grid.
 const int g_hexColOffsetEvenRow_00697450[6] = {0, 1, 0, -1, -1, -1};
 const int g_hexRowOffset_00697468[6] = {-1, 0, 1, 1, 0, -1};

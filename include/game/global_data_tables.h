@@ -924,6 +924,7 @@ extern SeaSegmentStretch g_regionBorderLinkTable_006a3900;
 
 // Hex-neighbour offset tables (offset-coordinate grid; even/odd rows shift columns
 // differently), indexed by direction 0..5. Read by the city-region border/merge passes.
+extern const short g_awTechPrereqCapabilityFieldOffsetPairs_0066ac10[34][2];
 extern const int g_hexColOffsetEvenRow_00697450[6];
 extern const int g_hexRowOffset_00697468[6];
 extern const int g_hexColOffsetOddRow_00697480[6];

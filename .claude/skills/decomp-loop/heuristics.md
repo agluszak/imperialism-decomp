@@ -1581,3 +1581,22 @@ headers before splicing.
      that sibling. Result: parent 0%→100%, junk fragments gone. Scan for the parent's callers
      /ILT-thunk targets with a raw rel32 walk of the .exe (`E8/E9` at file offset O →
      `off2va(O)+5+rel32 == target`), since `just xrefs` misses address-taken/table dispatch.
+
+102. **A referenced .rdata data table Ghidra never symbolized shows up as `g_prev+N` in the
+     reccmp diff — give it its own `global` row in symbols.csv so both sides pair.** When a
+     ported function reads a const table (e.g. 0x66ac10) that has no symbol, reccmp attributes
+     the ORIGINAL reference to the nearest preceding global (`g_anCapabilityPriorityRangePairs+106`)
+     while the RECOMP references your new `g_..._0066ac10` — same address, different symbol, so
+     the operand never pairs and the score sticks low. Fix: define the table with the correct
+     values read from the binary (`va2off` + `struct.unpack`), then add a bare
+     `ADDR|g_name_00ADDR|||global||` row in symbols.csv (globals have no size, so no
+     overlap-gate issue). reccmp then resolves the original address to your symbol (exact match
+     beats `+N`) and the reference pairs. Then, to match MSVC's address *grouping* when a
+     table-driven byte offset is added to `this` and the record base is a struct member: the
+     original keeps `[this + fieldOffset]` as the pointer with the member displacement (0x268)
+     and row stride (`row*0x1d`) riding the addressing mode — reproduce by
+     `reinterpret_cast<TCls*>((unsigned char*)this + fieldOffset)->memberArray[row].firstByte`,
+     NOT `&memberArray[row]` byte-indexed by fieldOffset (that folds 0x268+row*stride into the
+     base and mis-groups). Fold the `this` cast inline (no named `self` local) so `this` stays
+     in ECX (`add esi,ecx`) instead of being copied to a callee-saved reg. Took 0x5b0a20 from
+     26%→74% (residual is one MSVC regalloc quirk on the first `&&` branch — not worth chasing).
