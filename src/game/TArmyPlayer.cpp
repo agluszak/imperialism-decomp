@@ -780,14 +780,55 @@ void TArmyPlayer::SelectAndApplyTacticalCursorModeProfile(int cursorProfileMode)
   }
 }
 
-// Blanket-sets every tactical unit's aiStateCode2c to 0x13 (a fixed stance code), unlike the
-// per-action-class stance appliers below.
-// FUNCTION: IMPERIALISM 0x0059ca32
-void TArmyPlayer::SetAllUnitAiStateCodesTo13() {
-  CIterator iter(unitList4);
-  for (TTacticalUnit* record = static_cast<TTacticalUnit*>(iter.Reset()); iter.More();
-       record = static_cast<TTacticalUnit*>(iter.Advance())) {
-    record->aiStateCode2c = 0x13;
+// Applies the per-unit stance profile for the side's already-selected cursor mode
+// (this->lastAppliedCursorMode44). This is the standalone copy of the apply-switch that
+// SelectAndApplyTacticalCursorModeProfile (0x59c440) inlines after deriving the mode:
+// modes 0/2..6 delegate to the per-action-class appliers, modes 1 and 7 set aiStateCode2c
+// inline (retreat: 0xc/7 by category; garrison: 0x13). Modes >7 are a no-op.
+// FUNCTION: IMPERIALISM 0x0059c970
+void TArmyPlayer::ApplyTacticalStanceProfileForCurrentCursorMode() {
+  switch (lastAppliedCursorMode44) {
+  case 0:
+    ApplyDefenderHoldLineStanceByActionClass();
+    return;
+  case 1: {
+    // Retreat/fallback stance: non-category-0 units get state 0xc, category-0 get 7.
+    CIterator retreatIter(unitList4);
+    for (TTacticalUnit* retreatRecord = static_cast<TTacticalUnit*>(retreatIter.Reset());
+         retreatIter.More(); retreatRecord = static_cast<TTacticalUnit*>(retreatIter.Advance())) {
+      if (g_awTacticalUnitCategoryCodeBySlot[retreatRecord->unitTypeC] != 0) {
+        retreatRecord->aiStateCode2c = 0xc;
+      } else {
+        retreatRecord->aiStateCode2c = 7;
+      }
+    }
+    return;
+  }
+  case 2:
+    ApplyDefenderBombardStanceByActionClass();
+    return;
+  case 3:
+    ApplyAttackerSiegeStanceByActionClass();
+    return;
+  case 4:
+    ApplyAttackerAssaultStanceByActionClass();
+    return;
+  case 5:
+    ApplyAttackerStandoffStanceByActionClass();
+    return;
+  case 6:
+    ApplyUnopposedAdvanceStanceByActionClass();
+    return;
+  case 7: {
+    // Hold-fire garrison stance: every unit gets state 0x13.
+    CIterator garrisonIter(unitList4);
+    for (TTacticalUnit* garrisonRecord = static_cast<TTacticalUnit*>(garrisonIter.Reset());
+         garrisonIter.More();
+         garrisonRecord = static_cast<TTacticalUnit*>(garrisonIter.Advance())) {
+      garrisonRecord->aiStateCode2c = 0x13;
+    }
+    return;
+  }
   }
 }
 

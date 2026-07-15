@@ -29027,21 +29027,9 @@
       "type": 1
     },
     {
-      "address": "0x59c999",
-      "matching": 0.0,
-      "name": "SetLinkedListEntryState2CForTacticalCategory0",
-      "type": 1
-    },
-    {
-      "address": "0x59c9d7",
-      "matching": 0.14285714285714285,
-      "name": "IterateLinkedListCursorAndAdvanceToEnd_0059c9d7",
-      "type": 1
-    },
-    {
-      "address": "0x59ca32",
-      "matching": 0.625,
-      "name": "SetLinkedListEntryState2CTo13ForAllNodes",
+      "address": "0x59c970",
+      "matching": 1.0,
+      "name": "TArmyPlayer::ApplyTacticalStanceProfileForCurrentCursorMode",
       "type": 1
     },
     {
@@ -29190,7 +29178,7 @@
     },
     {
       "address": "0x59e0d0",
-      "matching": 0.6,
+      "matching": 1.0,
       "name": "TArmyPlayer::ScoreTacticalTileEnemyEdgeColumnZoneBonus",
       "type": 1
     },

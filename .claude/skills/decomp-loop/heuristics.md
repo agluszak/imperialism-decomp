@@ -1554,3 +1554,30 @@ headers before splicing.
      a shared struct field or a virtual's param to drop one caller's `movsx`* — correct in
      isolation but regresses the other N consumers; only do it with full multi-site + stats
      verification, never as a one-function win.
+
+101. **A jump-table switch dispatcher that Ghidra split into per-case pseudo-functions: port
+     the PARENT as one function, then delete every interior fragment row from symbols.csv —
+     do NOT port a case fragment standalone.** The tell: a function entry with a tiny DB size
+     whose body is `MOV EAX,[ECX+off]; CMP EAX,N; JA end; JMP [EAX*4 + table]` (e.g.
+     FUN_0059c970, size 29), and the addresses *inside* its range each carry their own
+     symbols.csv `function` row — thunk-forwarder case bodies (`CALL <ILT>; POP…; RET`, 12
+     bytes), inline case bodies, and loop-tail fragments — while the parent entry itself has
+     NO symbols.csv row (it was pruned as a jump thunk). Each case depends on registers the
+     parent prologue set (here `MOV EBX,0x7`, resolving the `unaff_EBX`=7 mystery), so a
+     standalone case port can never reach 100% (my earlier 0x59ca32 fragment capped at 62.5%).
+     Fix, entirely source-side (no Ghidra DB resync needed — sync-pipeline junk taxonomy #4,
+     "delete the row for marker-owned addresses"): (a) add `// FUNCTION:` for the parent entry
+     in the owning class .cpp and write the whole switch (cases delegating to the real applier
+     methods for ILT-thunk cases — resolve each `CALL <ILT>` to its jmp target with the
+     binary-scan below — and inline loops for the inline cases); (b) add ONE symbols.csv row
+     for the parent sized code+inline-jump-table (RET→end-of-table, NOT the trailing
+     NOP/INT3 alignment padding: here 0x59c970..0x59ca98 = 296); (c) delete all the interior
+     fragment rows (their ranges now overlap the parent — the symbols-integrity-gate's
+     no-overlap check both forces and validates this); (d) `just regen-stubs` prunes the old
+     fragment ownership + drops the now-orphaned stubs (stub-count falls → ratchet).
+     Frequently the parent switch is a verbatim copy of an apply-switch another function
+     already inlines (0x59c970's body == the mode-apply switch inside 0x59c440
+     SelectAndApplyTacticalCursorModeProfile), so the case bodies can be lifted straight from
+     that sibling. Result: parent 0%→100%, junk fragments gone. Scan for the parent's callers
+     /ILT-thunk targets with a raw rel32 walk of the .exe (`E8/E9` at file offset O →
+     `off2va(O)+5+rel32 == target`), since `just xrefs` misses address-taken/table dispatch.
