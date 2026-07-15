@@ -41,6 +41,30 @@ TPicture::~TPicture() {
   field8C = 0;
 }
 
+// FUNCTION: IMPERIALISM 0x0048f330
+void TPicture::InitializePictureEntryBaseAndRefresh(TView* panel, int* offsetLayout,
+                                                    int* sizeLayout, int layoutParam4,
+                                                    int layoutParam5, short pictureId) {
+  (void)layoutParam4;
+  (void)layoutParam5;
+  if (panel != 0) {
+    nativeWindow50 = panel->nativeWindow50;
+  }
+  controlTag = 0x20202020; // '    '
+  field04 = 1;
+  field08 = 1;
+  linkedChildHandler = panel;
+  ownerLocalX = offsetLayout[0];
+  ownerLocalY = offsetLayout[1];
+  frameWidth34 = sizeLayout[0];
+  frameHeight38 = sizeLayout[1];
+  if (panel != 0) {
+    panel->AttachChildControl(this, 0);
+  }
+  uiResourceContext40 = 0;
+  SetPictureResourceIdAndRefresh(pictureId, 0);
+}
+
 // Slot 0x44 override: draw the cached bitmap. 8bpp uncompressed pictures software-blit
 // straight into the active QuickDraw surface; anything else realizes the default DIB
 // palette and StretchDIBits-es to the active DC at the control's cached position.

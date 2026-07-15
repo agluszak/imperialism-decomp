@@ -1554,7 +1554,7 @@ address|name|symbol|size|type|prototype|provenance
 4a8d30|TArmyUnitLine::ConstructTArmyUnitLineBaseState||18|function|undefined ConstructTArmyUnitLineBaseState()|
 4a8d60|TArmyUnitLine::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 4a8d90|DestructTArmyUnitLineAndMaybeFree_Impl||7|function|undefined DestructTArmyUnitLineAndMaybeFree_Impl()|
-4a8df0|TArmyUnitLine::OrphanRetStub_0056f460||1221|function|undefined OrphanRetStub_0056f460(int param_1)|
+4a8df0|TArmyUnitLine::CreateLineItemView||1221|function|void CreateLineItemView(TView* panel, int* offsetLayout)|
 4a9400|TArmyCheckBox::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 4a9450|TArmyUnitView::CreateObject|?CreateObject@TArmyUnitView@@SGPAVCObject@@XZ|80|function|undefined CreateObject()|rtti
 4a94c0|TArmyUnitView::GetRuntimeClass||6|function|undefined GetTArmyUnitViewClassNamePointer()|rtti
@@ -1584,7 +1584,7 @@ address|name|symbol|size|type|prototype|provenance
 4aa870|ResetObjectToCObjectSentinelVtable_Impl||7|function|undefined ResetObjectToCObjectSentinelVtable_Impl()|
 4aa890|TMiniArmyLine::CreateObject|?CreateObject@TMiniArmyLine@@SGPAVCObject@@XZ|80|function|undefined CreateObject()|rtti
 4aa900|TMiniArmyLine::GetRuntimeClass||6|function|undefined GetTMiniArmyLineClassNamePointer()|rtti
-4aa960|TMiniArmyLine::OrphanRetStub_0056f460||753|function|undefined OrphanRetStub_0056f460(undefined4 param_1, undefined4 param_2)|
+4aa960|TMiniArmyLine::CreateLineItemView||753|function|void CreateLineItemView(TView* panel, int* offsetLayout)|
 4aad20|TMiniArmyView::OrphanRetStub_004aad20||1|function|undefined OrphanRetStub_004aad20(void)|
 4aad40|TMiniArmyView::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 4aad90|TMiniArmyView::CreateObject|?CreateObject@TMiniArmyView@@SGPAVCObject@@XZ|83|function|undefined CreateObject()|rtti
@@ -1599,7 +1599,7 @@ address|name|symbol|size|type|prototype|provenance
 4ab650|DestructTSuperCivRosterAndMaybeFree_Impl||7|function|undefined DestructTSuperCivRosterAndMaybeFree_Impl()|
 4ab670|TMiniCivLine::CreateObject|?CreateObject@TMiniCivLine@@SGPAVCObject@@XZ|80|function|undefined CreateObject()|rtti
 4ab6e0|TMiniCivLine::GetRuntimeClass||6|function|undefined GetTMiniCivLineClassNamePointer()|rtti
-4ab740|TMiniCivLine::OrphanRetStub_0056f460||136|function|undefined OrphanRetStub_0056f460(undefined4 param_1, undefined4 param_2)|
+4ab740|TMiniCivLine::CreateLineItemView||136|function|void CreateLineItemView(TView* panel, int* offsetLayout)|
 4ab800|TMiniCivView::OrphanRetStub_004ab800||1|function|undefined OrphanRetStub_004ab800(void)|
 4ab820|TMiniCivView::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 4ab850|DestructTMiniCivLineAndMaybeFree_Impl||74|function|undefined DestructTMiniCivLineAndMaybeFree_Impl()|
@@ -1665,7 +1665,7 @@ address|name|symbol|size|type|prototype|provenance
 4affd0|TBatRepDetLine::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 4b0000|TBatRepDetLine::CreateTBatRepDetLineInstance||7|function|undefined CreateTBatRepDetLineInstance()|
 4b0020|TBatRepDetLine::GetRuntimeClass||6|function|undefined GetTBatRepDetLineClassNamePointer()|rtti
-4b0040|TBatRepDetLine::OrphanRetStub_0056f460||1214|function|undefined OrphanRetStub_0056f460(int * param_1, undefined4 param_2)|
+4b0040|TBatRepDetLine::CreateLineItemView||1214|function|void CreateLineItemView(TView* panel, int* offsetLayout)|
 4b0630|TBattleUnitsView::CreateObject|?CreateObject@TBattleUnitsView@@SGPAVCObject@@XZ|113|function|undefined CreateObject()|rtti
 4b06d0|TBattleUnitsView::GetRuntimeClass||6|function|undefined GetTBattleUnitsViewClassNamePointer()|rtti
 4b06f0|TBattleUnitsView::ConstructTBattleUnitsViewBaseState||389|function|undefined ConstructTBattleUnitsViewBaseState()|
@@ -4376,7 +4376,7 @@ address|name|symbol|size|type|prototype|provenance
 564fe0|TNavyRoster::CallVoidSlotA0||59|function|undefined GetTEventHandlerClassNamePointer(void)|
 565030|TShipLine::CreateObject|?CreateObject@TShipLine@@SGPAVCObject@@XZ|80|function|undefined CreateObject()|rtti
 5650a0|TShipLine::GetRuntimeClass||6|function|undefined GetTShipLineClassNamePointer()|rtti
-565100|TShipLine::OrphanRetStub_0056f460||535|function|undefined OrphanRetStub_0056f460(int param_1)|
+565100|TShipLine::CreateLineItemView||535|function|void CreateLineItemView(TView* panel, int* offsetLayout)|
 5653b0|TShipView::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 565400|TShipView::CreateObject|?CreateObject@TShipView@@SGPAVCObject@@XZ|80|function|undefined CreateObject()|rtti
 565470|TShipView::GetRuntimeClass||6|function|undefined GetTShipViewClassNamePointer()|rtti
@@ -4439,7 +4439,7 @@ address|name|symbol|size|type|prototype|provenance
 569b90|DestructTSuperNavyRosterAndMaybeFree_Impl||7|function|undefined DestructTSuperNavyRosterAndMaybeFree_Impl()|
 569bb0|TMiniShipLine::CreateObject|?CreateObject@TMiniShipLine@@SGPAVCObject@@XZ|80|function|undefined CreateObject()|rtti
 569c20|TMiniShipLine::GetRuntimeClass||6|function|undefined GetTMiniShipLineClassNamePointer()|rtti
-569c80|TMiniShipLine::OrphanRetStub_0056f460||148|function|undefined OrphanRetStub_0056f460(undefined4 param_1, undefined4 param_2)|
+569c80|TMiniShipLine::CreateLineItemView||148|function|void CreateLineItemView(TView* panel, int* offsetLayout)|
 569d50|TMiniShipView::OrphanRetStub_00569d50||1|function|undefined OrphanRetStub_00569d50(void)|
 569d70|TMiniShipView::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 569dc0|TMiniShipView::CreateObject|?CreateObject@TMiniShipView@@SGPAVCObject@@XZ|83|function|undefined CreateObject()|rtti
@@ -4498,7 +4498,7 @@ address|name|symbol|size|type|prototype|provenance
 56f3d0|TLineData::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 56f400|DestructTLineDataAndMaybeFree_Impl||7|function|undefined DestructTLineDataAndMaybeFree_Impl()|
 56f420|TLineData::SetLineDataRowAndBounds||36|function|undefined SetLineDataRowAndBounds()|
-56f460|TLineData::OrphanRetStub_0056f460||3|function|undefined OrphanRetStub_0056f460(void)|
+56f460|TLineData::CreateLineItemView||3|function|void CreateLineItemView(TView* panel, int* offsetLayout)|
 56f480|TLineData::OrphanRetStub_0056f480||1|function|undefined OrphanRetStub_0056f480(void)|
 56f4a0|TBook::CreateObject|?CreateObject@TBook@@SGPAVCObject@@XZ|123|function|undefined CreateObject()|rtti
 56f540|TBook::GetRuntimeClass||6|function|undefined GetTBookClassNamePointer()|rtti
@@ -4524,7 +4524,7 @@ address|name|symbol|size|type|prototype|provenance
 570060|TPictureLine::GetRuntimeClass||6|function|undefined GetTPictureLineClassNamePointer()|rtti
 5700a0|TPictureLine::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 5700d0|TPictureLine::DestructTPictureLineAndMaybeFree||7|function|undefined DestructTPictureLineAndMaybeFree()|
-570130|TPictureLine::OrphanRetStub_0056f460||121|function|undefined OrphanRetStub_0056f460(undefined4 param_1, undefined4 param_2)|
+570130|TPictureLine::CreateLineItemView||121|function|void CreateLineItemView(TView* panel, int* offsetLayout)|
 5701d0|TTextLine::CreateObject|?CreateObject@TTextLine@@SGPAVCObject@@XZ|125|function|undefined CreateObject()|rtti
 570270|TTextLine::GetRuntimeClass||6|function|undefined GetTTextLineClassNamePointer()|rtti
 570290|TTextLine::ConstructTTextLineBaseState||87|function|undefined ConstructTTextLineBaseState()|
@@ -4534,7 +4534,7 @@ address|name|symbol|size|type|prototype|provenance
 570420|WrapperFor_StringShared_AssignFromPtr_At00570420||16|function|undefined WrapperFor_StringShared_AssignFromPtr_At00570420()|
 570440|CopyTwoDwordsAndWordToObjectOffset14||28|function|undefined CopyTwoDwordsAndWordToObjectOffset14()|
 5704e0|SetObjectField1EWord||12|function|undefined SetObjectField1EWord()|
-570500|TTextLine::OrphanRetStub_0056f460||179|function|undefined OrphanRetStub_0056f460(undefined4 param_1, undefined4 param_2)|
+570500|TTextLine::CreateLineItemView||179|function|void CreateLineItemView(TView* panel, int* offsetLayout)|
 570720|WrapperFor_ftol_At00570720||30|function|undefined WrapperFor_ftol_At00570720()|
 570750|TPictureButton::CreateObject|?CreateObject@TPictureButton@@SGPAVCObject@@XZ|92|function|undefined CreateObject()|rtti
 5707d0|TPictureButton::GetRuntimeClass||6|function|class CRuntimeClass * __thiscall GetRuntimeClass(void)|rtti
@@ -4630,7 +4630,7 @@ address|name|symbol|size|type|prototype|provenance
 5725d0|TLineData::ConstructPictureScreenVariantEntry||113|function|undefined ConstructPictureScreenVariantEntry()|
 572670|TTextPictureButton::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 5726a0|DestructTTextPictureButtonAndMaybeFree_Impl||74|function|undefined DestructTTextPictureButtonAndMaybeFree_Impl()|
-572710|WrapperFor_StringShared_AssignFromPtr_At00572710||90|function|undefined WrapperFor_StringShared_AssignFromPtr_At00572710()|
+572710|TTextPictureButton::InitializeTextPictureButtonAndTextStyle||90|function|undefined WrapperFor_StringShared_AssignFromPtr_At00572710()|
 572790|TTextPictureButton::ApplyRectSlot110||319|function|undefined RenderTextPictureButtonCaptionWithPressedOffset()|
 572a50|WrapperFor_ftol_At00572a50||30|function|undefined WrapperFor_ftol_At00572a50()|
 572a80|TNoHilitePicture::CreateObject|?CreateObject@TNoHilitePicture@@SGPAVCObject@@XZ|110|function|undefined CreateObject()|rtti
@@ -5624,8 +5624,8 @@ address|name|symbol|size|type|prototype|provenance
 5afd00|HandleAbilityUnlock||1160|function|void __thiscall HandleAbilityUnlock(int menu_state, int action_id)|
 5b0340|ActivateSlotAndUpdateUI||344|function|void __thiscall ActivateSlotAndUpdateUI(int base_ptr, int slot_idx)|
 5b0500|UpdateSelectionAndRecalculateScores||1037|function|void __stdcall UpdateSelectionAndRecalculateScores(int slot_idx, int player_idx)|
-5b0a20|AreTechItemPrerequisitePairCompleted||71|function|undefined AreTechItemPrerequisitePairCompleted()|
-5b0a90|SelectMissingTechItemPrerequisitesFromPair||113|function|undefined SelectMissingTechItemPrerequisitesFromPair()|
+5b0a20|TTechMgr::AreTechItemPrerequisitePairCompleted||71|function|undefined AreTechItemPrerequisitePairCompleted()|
+5b0a90|TTechMgr::SelectMissingTechItemPrerequisitesFromPair||113|function|undefined SelectMissingTechItemPrerequisitesFromPair()|
 5b0b30|ApplyTechItemPurchaseCostAndState||90|function|undefined ApplyTechItemPurchaseCostAndState()|
 5b0bb0|RefundTechItemPurchaseCostAndClearState||71|function|undefined RefundTechItemPurchaseCostAndClearState()|
 5b0c20|ConsumeFirstPendingAbilityUnlock||64|function|undefined ConsumeFirstPendingAbilityUnlock()|
@@ -5639,7 +5639,7 @@ address|name|symbol|size|type|prototype|provenance
 5b1070|DestructTTechStorePageAndMaybeFree_Impl||7|function|undefined DestructTTechStorePageAndMaybeFree_Impl()|
 5b1090|TTechItemLine::CreateObject|?CreateObject@TTechItemLine@@SGPAVCObject@@XZ|80|function|undefined CreateObject()|rtti
 5b1100|TTechItemLine::GetRuntimeClass||6|function|undefined GetTTechItemLineClassNamePointer()|rtti
-5b1160|TTechItemLine::OrphanRetStub_0056f460||121|function|undefined OrphanRetStub_0056f460(void)|
+5b1160|TTechItemLine::CreateLineItemView||121|function|void CreateLineItemView(TView* panel, int* offsetLayout)|
 5b1200|TTechItemView::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 5b1250|TTechItemView::CreateObject|?CreateObject@TTechItemView@@SGPAVCObject@@XZ|80|function|undefined CreateObject()|rtti
 5b12c0|TTechItemView::GetRuntimeClass||6|function|undefined GetTTechItemViewClassNamePointer()|rtti
@@ -5727,7 +5727,7 @@ address|name|symbol|size|type|prototype|provenance
 5b5fd0|TDeluxeText::GetRuntimeClass||6|function|undefined GetTDeluxeTextClassNamePointer()|rtti
 5b5ff0|TDeluxeText::ConstructTDeluxeTextBaseState||77|function|undefined ConstructTDeluxeTextBaseState()|
 5b6060|TDeluxeText::NoOpUiLifecycleHook||36|function|undefined OrphanLeaf_NoCall_Ins07_004d8920(void)|
-5b60a0|TDeluxeText::OrphanCallChain_C1_I08_005b60a0||27|function|undefined OrphanCallChain_C1_I08_005b60a0(char param_1)|
+5b60a0|TDeluxeText::SetSelectedFlagAndState||27|function|undefined SetSelectedFlagAndState(char param_1)|
 5b60d0|TDeluxeText::SetTextFromUiStringResourceId||116|function|undefined SetTextFromUiStringResourceId(short stringId)|
 5b6170|TDeluxeText::ApplyRectSlot110||237|function|undefined OrphanTiny_ReturnZero_0048a730(void)|
 5b62a0|TDeluxeText::ApplyTextStyleDescriptorAndMaybeRefresh||45|function|void ApplyTextStyleDescriptorAndMaybeRefresh(TControlPictureRectState * styleDescriptor, int refreshFlag)|
@@ -5843,7 +5843,7 @@ address|name|symbol|size|type|prototype|provenance
 5bcfa0|TTradePageSellView::DestructTTradePageSellViewAndMaybeFree_Impl||7|function|undefined DestructTTradePageSellViewAndMaybeFree_Impl()|
 5bcfc0|TTradeOfferNationLine::CreateObject|?CreateObject@TTradeOfferNationLine@@SGPAVCObject@@XZ|80|function|undefined CreateObject()|rtti
 5bd030|TTradeOfferNationLine::GetRuntimeClass||6|function|undefined GetTTradeOfferNationLineClassNamePointer()|rtti
-5bd090|TTradeOfferNationLine::OrphanRetStub_0056f460||205|function|undefined OrphanRetStub_0056f460(int param_1, undefined4 param_2)|
+5bd090|TTradeOfferNationLine::CreateLineItemView||205|function|void CreateLineItemView(TView* panel, int* offsetLayout)|
 5bd1a0|TTradeOfferNationView::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 5bd1f0|TTradeOfferNationView::CreateObject|?CreateObject@TTradeOfferNationView@@SGPAVCObject@@XZ|80|function|undefined CreateObject()|rtti
 5bd260|TTradeOfferNationView::GetRuntimeClass||6|function|undefined GetTTradeOfferNationViewClassNamePointer()|rtti
@@ -5855,7 +5855,7 @@ address|name|symbol|size|type|prototype|provenance
 5bd930|TTradePageBuyView::DestructTTradePageBuyViewAndMaybeFree_Impl||7|function|undefined DestructTTradePageBuyViewAndMaybeFree_Impl()|
 5bd950|TTradeBidNationLine::CreateObject|?CreateObject@TTradeBidNationLine@@SGPAVCObject@@XZ|80|function|undefined CreateObject()|rtti
 5bd9c0|TTradeBidNationLine::GetRuntimeClass||6|function|undefined GetTTradeBidNationLineClassNamePointer()|rtti
-5bda20|TTradeBidNationLine::OrphanRetStub_0056f460||149|function|undefined OrphanRetStub_0056f460(int param_1, undefined4 param_2)|
+5bda20|TTradeBidNationLine::CreateLineItemView||149|function|void CreateLineItemView(TView* panel, int* offsetLayout)|
 5bdaf0|TTradeBidNationView::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 5bdb40|TTradeBidNationView::CreateObject|?CreateObject@TTradeBidNationView@@SGPAVCObject@@XZ|80|function|undefined CreateObject()|rtti
 5bdbb0|TTradeBidNationView::GetRuntimeClass||6|function|undefined GetTTradeBidNationViewClassNamePointer()|rtti
@@ -5883,19 +5883,19 @@ address|name|symbol|size|type|prototype|provenance
 5c0d80|TDealLine::ConstructTDealLineBaseState||18|function|undefined ConstructTDealLineBaseState()|
 5c0db0|TDealLine::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 5c0de0|DestructTDealLineAndMaybeFree_Impl||7|function|undefined DestructTDealLineAndMaybeFree_Impl()|
-5c0e50|TDealLine::OrphanRetStub_0056f460||1190|function|undefined OrphanRetStub_0056f460(int * param_1)|
+5c0e50|TDealLine::CreateLineItemView||1190|function|void CreateLineItemView(TView* panel, int* offsetLayout)|
 5c1430|TCommodityLine::CreateObject|?CreateObject@TCommodityLine@@SGPAVCObject@@XZ|80|function|undefined CreateObject()|rtti
 5c14a0|TCommodityLine::GetRuntimeClass||6|function|undefined GetTCommodityLineClassNamePointer()|rtti
 5c14c0|TCommodityLine::ConstructTCommodityLineBaseState||18|function|undefined ConstructTCommodityLineBaseState()|
 5c14f0|TCommodityLine::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 5c1520|DestructTCommodityLineAndMaybeFree_Impl||7|function|undefined DestructTCommodityLineAndMaybeFree_Impl()|
-5c1580|TCommodityLine::OrphanRetStub_0056f460||591|function|undefined OrphanRetStub_0056f460(void)|
+5c1580|TCommodityLine::CreateLineItemView||591|function|void CreateLineItemView(TView* panel, int* offsetLayout)|
 5c1870|TTradeTotalsLine::CreateObject|?CreateObject@TTradeTotalsLine@@SGPAVCObject@@XZ|80|function|undefined CreateObject()|rtti
 5c18e0|TTradeTotalsLine::GetRuntimeClass||6|function|undefined GetTTradeTotalsLineClassNamePointer()|rtti
 5c1900|TTradeTotalsLine::ConstructTTradeTotalsLineBaseState||18|function|undefined ConstructTTradeTotalsLineBaseState()|
 5c1930|TTradeTotalsLine::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 5c1960|TTradeTotalsLine::DestructTTradeTotalsLineAndMaybeFree_Impl||7|function|undefined DestructTTradeTotalsLineAndMaybeFree_Impl()|
-5c19c0|TTradeTotalsLine::OrphanRetStub_0056f460||137|function|undefined OrphanRetStub_0056f460(undefined4 param_1, undefined4 param_2)|
+5c19c0|TTradeTotalsLine::CreateLineItemView||137|function|void CreateLineItemView(TView* panel, int* offsetLayout)|
 5c1a80|TTradeTotalsView::CreateObject|?CreateObject@TTradeTotalsView@@SGPAVCObject@@XZ|80|function|undefined CreateObject()|rtti
 5c1af0|TTradeTotalsView::GetRuntimeClass||6|function|undefined GetTTradeTotalsViewClassNamePointer()|rtti
 5c1b10|TTradeTotalsView::ConstructTTradeTotalsViewBaseState||18|function|undefined ConstructTTradeTotalsViewBaseState()|
@@ -8311,6 +8311,7 @@ address|name|symbol|size|type|prototype|provenance
 66a8e0|TShipBuildingTask::classTShipBuildingTask|||global||
 66a8f8|TTaskList::classTTaskList|||global||
 66aba6|g_anCapabilityPriorityRangePairs|||global||
+66ac10|g_aTechItemPrerequisitePairs|||global||
 66ac98|TTechMgr::classTTechMgr|||global||
 66ae10|TTechStorePage::classTTechStorePage|||global||
 66ae28|TTechItemLine::classTTechItemLine|||global||

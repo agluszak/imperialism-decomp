@@ -3,6 +3,8 @@
 #include "game/TObject.h"
 #include "game/mfc.h"
 
+class TView;
+
 // VTABLE: IMPERIALISM 0x0065e230
 class TLineData : public TObject {
 public:
@@ -17,9 +19,9 @@ public:
   // slot 0x07 Free inherited unchanged (0x4798b0)
   // slot 0x08 ShallowClone inherited unchanged (0x4798d0)
   // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
-  virtual undefined OrphanRetStub_0056f460(); // slot 0x0a 0x56f460
-  virtual undefined OrphanRetStub_0056f480(); // slot 0x0b 0x56f480
-                                              // === END GENERATED DECLS (TLineData) ===
+  virtual void CreateLineItemView(TView* panel, int* offsetLayout); // slot 0x0a 0x56f460
+  virtual undefined OrphanRetStub_0056f480();                       // slot 0x0b 0x56f480
+  // === END GENERATED DECLS (TLineData) ===
 
   short field04; // 0x04
   short field06; // 0x06

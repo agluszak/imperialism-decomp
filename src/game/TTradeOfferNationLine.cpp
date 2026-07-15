@@ -14,6 +14,7 @@ IMPLEMENT_DYNCREATE(TTradeOfferNationLine, TLineData)
 TTradeOfferNationLine::TTradeOfferNationLine() {}
 
 // FUNCTION: IMPERIALISM 0x005bd090
-undefined TTradeOfferNationLine::OrphanRetStub_0056f460() {
-  return 0;
+void TTradeOfferNationLine::CreateLineItemView(TView* panel, int* offsetLayout) {
+  (void)panel;
+  (void)offsetLayout;
 }

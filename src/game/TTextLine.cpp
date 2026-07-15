@@ -15,6 +15,7 @@ TTextLine::TTextLine() {}
 TTextLine::~TTextLine() {}
 
 // FUNCTION: IMPERIALISM 0x00570500
-undefined TTextLine::OrphanRetStub_0056f460() {
-  return 0;
+void TTextLine::CreateLineItemView(TView* panel, int* offsetLayout) {
+  (void)panel;
+  (void)offsetLayout;
 }

@@ -14,6 +14,7 @@ TPictureLine::TPictureLine() {}
 TPictureLine::~TPictureLine() {}
 
 // FUNCTION: IMPERIALISM 0x00570130
-undefined TPictureLine::OrphanRetStub_0056f460() {
-  return 0;
+void TPictureLine::CreateLineItemView(TView* panel, int* offsetLayout) {
+  (void)panel;
+  (void)offsetLayout;
 }

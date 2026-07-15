@@ -5,6 +5,9 @@
 #include "game/global_data_tables.h"
 #include "game/quickdraw_rendering.h"
 
+// FUNCTION: IMPERIALISM 0x00430950
+TDeluxeText::TDeluxeText() : TTEView(), cursorThemeCode98(0), cursorThemeCode9c(0), fieldA0(0) {}
+
 // SYNTHETIC: IMPERIALISM 0x004309e0
 // TDeluxeText::`scalar deleting destructor'
 TDeluxeText::~TDeluxeText() {}
@@ -16,18 +19,25 @@ TDeluxeText::~TDeluxeText() {}
 
 IMPLEMENT_DYNCREATE(TDeluxeText, TTEView)
 
-// FUNCTION: IMPERIALISM 0x00430950
-TDeluxeText::TDeluxeText() : TTEView(), cursorThemeCode98(0), cursorThemeCode9c(0), fieldA0(0) {}
+// FUNCTION: IMPERIALISM 0x005b5ff0
+void TDeluxeText::ConstructTDeluxeTextBaseState(TView* panel, int* offsetLayout, int* sizeLayout,
+                                                RECT* insetRect, TControlPictureRectState* style,
+                                                short styleWord90) {
+  ConstructTTEViewBaseState(0, panel, offsetLayout, sizeLayout, 5, 5, insetRect, style, styleWord90,
+                            0, 1);
+  cursorThemeCode98 = style->styleRef6;
+  SetSelectedFlagAndState(0);
+}
 
 // FUNCTION: IMPERIALISM 0x005b6060
 void TDeluxeText::NoOpUiLifecycleHook(int arg) {
   TView::NoOpUiLifecycleHook(arg);
   field95 = 0;
-  OrphanCallChain_C1_I08_005b60a0(0);
+  SetSelectedFlagAndState(0);
 }
 
 // FUNCTION: IMPERIALISM 0x005b60a0
-void TDeluxeText::OrphanCallChain_C1_I08_005b60a0(char param_1) {
+void TDeluxeText::SetSelectedFlagAndState(char param_1) {
   field94 = param_1;
   SetState(param_1, 0);
 }

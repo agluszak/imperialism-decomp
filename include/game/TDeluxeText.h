@@ -125,7 +125,7 @@ public:
   // slot 0x73 LoadUiStringAndDispatchViaVslot1C8 inherited unchanged (0x48fed0)
   // slot 0x74 AssignSharedStringFromField84 inherited unchanged (0x4294d0)
   // slot 0x75 RenderControlStateTextBySelectionCode inherited unchanged (0x4900a0)
-  virtual void OrphanCallChain_C1_I08_005b60a0(char param_1); // slot 0x76 0x5b60a0
+  virtual void SetSelectedFlagAndState(char param_1); // slot 0x76 0x5b60a0
   // Loads the localized UI string `stringId` from the module cache and assigns it
   // via UpdateTextEntrySharedStringAndMaybeNotify (verified 1-arg thiscall, RET 4;
   // the old InitializeTechHistoryViewTitleAndMapKeyControls name was junk and the
@@ -162,4 +162,12 @@ public:
   unsigned char paddingA1[3]; // +0xa1
 
   TDeluxeText();
+
+  // Mac-style second-phase init: forwards to TTEView::ConstructTTEViewBaseState with the
+  // fixed (0, ..., 5, 5, ..., 0, 1) filler args, copies style->styleRef6 into
+  // cursorThemeCode98, and clears the selected flag via the slot-0x76 virtual.
+  // 0x5b5ff0, __thiscall, RET 0x18.
+  void ConstructTDeluxeTextBaseState(TView* panel, int* offsetLayout, int* sizeLayout,
+                                     RECT* insetRect, TControlPictureRectState* style,
+                                     short styleWord90);
 };

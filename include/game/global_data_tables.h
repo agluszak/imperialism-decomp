@@ -707,6 +707,11 @@ extern int g_nOceanDialogSeedViewportOffsetY; // 0x6a3ff4
 // int, not short: 0x51adf0 reads the full dword; word readers use static_cast<short>.
 extern int g_wMapDialogViewportTileSpan; // 0x6a33b0
 
+// Per-tech prerequisite pair (tech ids; 0 = none), indexed by tech id. 0x66ac10.
+extern short g_aTechItemPrerequisitePairs[34][2];
+// Per-tech research cost in gold, indexed by tech id. 0x66ad58.
+extern int g_anTechItemResearchCostByTechId[29];
+
 // Assert source-path strings for the UViewMgr TU family.
 extern "C" const char s_SourcePathUViewMgr_0069B6BC[];
 extern "C" const char s_SourcePathUMultiplayerMgr_00698040[];

@@ -236,6 +236,32 @@ void TTechMgr::ApplyCityOrderCapabilityUnlockByTechId(int nTechId) {
   }
 }
 
+// FUNCTION: IMPERIALISM 0x005b0a20
+bool TTechMgr::AreTechItemPrerequisitePairCompleted(int techId, int nationSlot) {
+  short p1 = g_aTechItemPrerequisitePairs[techId][0];
+  if (orderCapRows277[nationSlot].techStatusByTechId[p1] == 2) {
+    short p2 = g_aTechItemPrerequisitePairs[techId][1];
+    if (orderCapRows277[nationSlot].techStatusByTechId[p2] == 2) {
+      return true;
+    }
+  }
+  return false;
+}
+
+// FUNCTION: IMPERIALISM 0x005b0a90
+void TTechMgr::SelectMissingTechItemPrerequisitesFromPair(int techId, int nationSlot, int* missing1,
+                                                          int* missing2) {
+  short p1 = g_aTechItemPrerequisitePairs[techId][0];
+  if (orderCapRows277[nationSlot].techStatusByTechId[p1] == 2) {
+    *missing1 = g_aTechItemPrerequisitePairs[techId][1];
+    *missing2 = 0;
+  } else {
+    *missing1 = p1;
+    short p2 = g_aTechItemPrerequisitePairs[techId][1];
+    *missing2 = (orderCapRows277[nationSlot].techStatusByTechId[p2] != 2) ? p2 : 0;
+  }
+}
+
 // Returns a nation's maximum fortification level (1..3): level 3 if the advanced-fort flag is
 // set, level 2 if the intermediate flag is set, else level 1. The advanced flag lives in the
 // nation's own orderCapRows277 row; the intermediate flag lives 4 bytes before it, i.e. in the

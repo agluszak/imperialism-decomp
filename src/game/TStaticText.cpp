@@ -82,7 +82,7 @@ TObject* TStaticText::ShallowClone() {
 
 // FUNCTION: IMPERIALISM 0x0048fd00
 void TStaticText::InitializeTextEntryBaseAndOptionalStringResource(
-    TControl* panel, int* offsetLayout, int* sizeLayout, int layoutParam6, int layoutParam7,
+    TView* panel, int* offsetLayout, int* sizeLayout, int layoutParam6, int layoutParam7,
     short stringResourceGroup, short stringResourceIndex) {
   (void)layoutParam6;
   (void)layoutParam7;
@@ -92,7 +92,7 @@ void TStaticText::InitializeTextEntryBaseAndOptionalStringResource(
   controlTag = 0x20202020;
   field04 = 1;
   field08 = 1;
-  field0c = reinterpret_cast<int>(panel);
+  linkedChildHandler = panel;
   ownerLocalX = offsetLayout[0];
   ownerLocalY = offsetLayout[1];
   frameWidth34 = sizeLayout[0];

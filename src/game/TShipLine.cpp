@@ -14,6 +14,7 @@ IMPLEMENT_DYNCREATE(TShipLine, TLineData)
 TShipLine::TShipLine() {}
 
 // FUNCTION: IMPERIALISM 0x00565100
-undefined TShipLine::OrphanRetStub_0056f460() {
-  return 0;
+void TShipLine::CreateLineItemView(TView* panel, int* offsetLayout) {
+  (void)panel;
+  (void)offsetLayout;
 }

@@ -643,14 +643,6 @@ undefined4 DestructTTextPictureButtonAndMaybeFree_Impl(void)
   return 0;
 }
 
-// ghidra_name WrapperFor_StringShared_AssignFromPtr_At00572710
-// ghidra_proto undefined WrapperFor_StringShared_AssignFromPtr_At00572710()
-// FUNCTION: IMPERIALISM 0x00572710
-undefined4 WrapperFor_StringShared_AssignFromPtr_At00572710(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_ftol_At00572a50
 // ghidra_proto undefined WrapperFor_ftol_At00572a50()
 // FUNCTION: IMPERIALISM 0x00572a50

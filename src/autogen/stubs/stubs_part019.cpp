@@ -331,22 +331,6 @@ undefined4 UpdateSelectionAndRecalculateScores(void)
   return 0;
 }
 
-// ghidra_name AreTechItemPrerequisitePairCompleted
-// ghidra_proto undefined AreTechItemPrerequisitePairCompleted()
-// FUNCTION: IMPERIALISM 0x005b0a20
-undefined4 AreTechItemPrerequisitePairCompleted(void)
-{
-  return 0;
-}
-
-// ghidra_name SelectMissingTechItemPrerequisitesFromPair
-// ghidra_proto undefined SelectMissingTechItemPrerequisitesFromPair()
-// FUNCTION: IMPERIALISM 0x005b0a90
-undefined4 SelectMissingTechItemPrerequisitesFromPair(void)
-{
-  return 0;
-}
-
 // ghidra_name ApplyTechItemPurchaseCostAndState
 // ghidra_proto undefined ApplyTechItemPurchaseCostAndState()
 // FUNCTION: IMPERIALISM 0x005b0b30
@@ -403,14 +387,6 @@ undefined4 DestructTTechStorePageAndMaybeFree_Impl(void)
   return 0;
 }
 
-// ghidra_name TTechItemView::ConstructTTechItemViewBaseState
-// ghidra_proto undefined ConstructTTechItemViewBaseState()
-// FUNCTION: IMPERIALISM 0x005b12e0
-undefined4 ConstructTTechItemViewBaseState(void)
-{
-  return 0;
-}
-
 // ghidra_name TTechHistoryView::ConstructTTechHistoryViewBaseState
 // ghidra_proto undefined ConstructTTechHistoryViewBaseState()
 // FUNCTION: IMPERIALISM 0x005b22c0
@@ -455,14 +431,6 @@ undefined4 WrapperFor_ftol_At005b4ee0(void)
 // ghidra_proto undefined DestructTInfoBarPictureTextAndMaybeFree()
 // FUNCTION: IMPERIALISM 0x005b5c90
 undefined4 DestructTInfoBarPictureTextAndMaybeFree(void)
-{
-  return 0;
-}
-
-// ghidra_name TDeluxeText::ConstructTDeluxeTextBaseState
-// ghidra_proto undefined ConstructTDeluxeTextBaseState()
-// FUNCTION: IMPERIALISM 0x005b5ff0
-undefined4 ConstructTDeluxeTextBaseState(void)
 {
   return 0;
 }

@@ -400,6 +400,7 @@ address|target_cpp|ownership|note
 485f90|src/game/TObject.cpp|manual|marker_sync
 485fb0|src/game/TTEView.cpp|manual|marker_sync
 486030|src/game/TTEView.cpp|manual|marker_sync
+486050|src/game/TTEView.cpp|manual|marker_sync
 4860e0|src/game/TTEView.cpp|manual|marker_sync
 486290|src/game/TStaticText.cpp|manual|marker_sync
 486320|src/game/TDocument.cpp|manual|marker_sync
@@ -778,6 +779,7 @@ address|target_cpp|ownership|note
 48efc0|src/game/TPicture.cpp|manual|marker_sync
 48f050|src/game/TPicture.cpp|manual|marker_sync
 48f250|src/game/TPicture.cpp|manual|marker_sync
+48f330|src/game/TPicture.cpp|manual|marker_sync
 48f3c0|src/game/TPicture.cpp|manual|marker_sync
 48f520|src/game/TPicture.cpp|manual|marker_sync
 48f570|src/game/TPicture.cpp|manual|marker_sync
@@ -3721,6 +3723,7 @@ address|target_cpp|ownership|note
 5725b0|src/game/TTextPictureButton.cpp|manual|marker_sync
 5725d0|src/game/TTextPictureButton.cpp|manual|marker_sync
 572670|src/game/TTextPictureButton.cpp|manual|marker_sync
+572710|src/game/TTextPictureButton.cpp|manual|marker_sync
 572790|src/game/TTextPictureButton.cpp|manual|marker_sync
 572a80|src/game/TNoHilitePicture.cpp|manual|marker_sync
 572b10|src/game/TNoHilitePicture.cpp|manual|marker_sync
@@ -4587,6 +4590,8 @@ address|target_cpp|ownership|note
 5af460|src/game/TTechMgr.cpp|manual|marker_sync
 5af710|src/game/TTechMgr.cpp|manual|marker_sync
 5afba0|src/game/TTechMgr.cpp|manual|marker_sync
+5b0a20|src/game/TTechMgr.cpp|manual|marker_sync
+5b0a90|src/game/TTechMgr.cpp|manual|marker_sync
 5b0ca0|src/game/TTechMgr.cpp|manual|marker_sync
 5b0e70|src/game/TTechStorePage.cpp|manual|marker_sync
 5b0ef0|src/game/TTechStorePage.cpp|manual|marker_sync
@@ -4597,6 +4602,7 @@ address|target_cpp|ownership|note
 5b1200|src/game/TTechItemView.cpp|manual|marker_sync
 5b1250|src/game/TTechItemView.cpp|manual|marker_sync
 5b12c0|src/game/TTechItemView.cpp|manual|marker_sync
+5b12e0|src/game/TTechItemView.cpp|manual|marker_sync
 5b1e20|src/game/TTechItemView.cpp|manual|marker_sync
 5b2230|src/game/TTechHistoryView.cpp|manual|marker_sync
 5b22a0|src/game/TTechHistoryView.cpp|manual|marker_sync
@@ -4672,6 +4678,7 @@ address|target_cpp|ownership|note
 5b5dd0|src/game/TInfoBarPictureText.cpp|manual|marker_sync
 5b5ee0|src/game/TDeluxeText.cpp|manual|marker_sync
 5b5fd0|src/game/TDeluxeText.cpp|manual|marker_sync
+5b5ff0|src/game/TDeluxeText.cpp|manual|marker_sync
 5b6060|src/game/TDeluxeText.cpp|manual|marker_sync
 5b60a0|src/game/TDeluxeText.cpp|manual|marker_sync
 5b60d0|src/game/TDeluxeText.cpp|manual|marker_sync

@@ -763,14 +763,6 @@ undefined4 WrapperFor_AFX_CLASSINIT_At00485e40(void)
   return 0;
 }
 
-// ghidra_name TTEView::ConstructTTEViewBaseState
-// ghidra_proto undefined ConstructTTEViewBaseState()
-// FUNCTION: IMPERIALISM 0x00486050
-undefined4 ConstructTTEViewBaseState(void)
-{
-  return 0;
-}
-
 // ghidra_name AssignTextFromResourceIdAndMaybeInvalidate
 // ghidra_proto undefined AssignTextFromResourceIdAndMaybeInvalidate()
 // FUNCTION: IMPERIALISM 0x004861f0

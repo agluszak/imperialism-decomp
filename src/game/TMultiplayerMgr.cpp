@@ -1008,9 +1008,9 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
           }
           okayButton->SetState(canStart, 0);
           okayButton->SetEnabled(canStart, 1);
-          okayButton->field9A = 0x2b6c;
-          okayButton->field9C = 0x2b6b;
-          okayButton->field98 = 0xc;
+          okayButton->themeCode9A = 0x2b6c;
+          okayButton->themeCode9C = 0x2b6b;
+          okayButton->pointSize98 = 0xc;
           TView* messControl = lounge->ResolveControlByTag(0x6d657373 /* 'mess' */);
           messControl->AssertValid();
           messControl->SetEnabled(canStart == 0, 1);

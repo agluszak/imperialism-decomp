@@ -15,6 +15,7 @@ TCommodityLine::TCommodityLine() : TLineData() {}
 TCommodityLine::~TCommodityLine() {}
 
 // FUNCTION: IMPERIALISM 0x005c1580
-undefined TCommodityLine::OrphanRetStub_0056f460() {
-  return 0;
+void TCommodityLine::CreateLineItemView(TView* panel, int* offsetLayout) {
+  (void)panel;
+  (void)offsetLayout;
 }

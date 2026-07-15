@@ -14,6 +14,7 @@ IMPLEMENT_DYNCREATE(TMiniCivLine, TLineData)
 TMiniCivLine::TMiniCivLine() {}
 
 // FUNCTION: IMPERIALISM 0x004ab740
-undefined TMiniCivLine::OrphanRetStub_0056f460() {
-  return 0;
+void TMiniCivLine::CreateLineItemView(TView* panel, int* offsetLayout) {
+  (void)panel;
+  (void)offsetLayout;
 }

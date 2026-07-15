@@ -69,21 +69,30 @@ public:
     // in-record offsets. Fields formerly reached via orderCapRows277[nationTag - 1] (the
     // apparent "previous row", an artifact of the old +0xf phase) are just in-record fields
     // here, read as orderCapRows277[nationTag].
-    unsigned char initReadyFlag[3]; // +0x00
-    unsigned char pad03[3];
-    unsigned char unknownFlag28b; // +0x06 (TMapMgr gate DAT_00696f0c)
-    unsigned char pad07[4];
-    unsigned char intermediateFortFlag; // +0x0b (GetNationFortLevelCap level 2)
-    unsigned char unknownFlag291;       // +0x0c (TMapMgr gate DAT_00696f0a)
-    unsigned char pad0d[2];
-    unsigned char flag; // +0x0f (0x277)
-    unsigned char pad10[3];
-    unsigned char recruitTierFlag27b; // +0x13 (0x27b)
-    unsigned char pad14[2];
-    unsigned char advancedFortFlag;           // +0x16 (0x27e; GetNationFortLevelCap level 3)
-    unsigned char unknownFlag27f;             // +0x17 (0x27f; TMapMgr gate DAT_00696f0b)
-    unsigned char secondaryCapabilityFlag280; // +0x18 (0x280)
-    unsigned char pad19[4];
+    union {
+      // Per-tech research-status view of the whole row: byte[techId], 2 = researched,
+      // 1 = in progress (readers: 0x5b0a20/0x5b0a90/0x5b12e0/0x5b192c). The named flags
+      // below are the same bytes for the specific tech ids that unlock them — the row
+      // genuinely carries both interpretations, hence the union.
+      unsigned char techStatusByTechId[0x1d];
+      struct {
+        unsigned char initReadyFlag[3]; // +0x00
+        unsigned char pad03[3];
+        unsigned char unknownFlag28b; // +0x06 (TMapMgr gate DAT_00696f0c)
+        unsigned char pad07[4];
+        unsigned char intermediateFortFlag; // +0x0b (GetNationFortLevelCap level 2)
+        unsigned char unknownFlag291;       // +0x0c (TMapMgr gate DAT_00696f0a)
+        unsigned char pad0d[2];
+        unsigned char flag; // +0x0f (0x277)
+        unsigned char pad10[3];
+        unsigned char recruitTierFlag27b; // +0x13 (0x27b)
+        unsigned char pad14[2];
+        unsigned char advancedFortFlag;           // +0x16 (0x27e; GetNationFortLevelCap level 3)
+        unsigned char unknownFlag27f;             // +0x17 (0x27f; TMapMgr gate DAT_00696f0b)
+        unsigned char secondaryCapabilityFlag280; // +0x18 (0x280)
+        unsigned char pad19[4];
+      };
+    };
   };
   OrderCapRow orderCapRows277[7];
   // Per-nation table B (true base 0x333, stride 0xe); init-only, no gameplay readers yet.
@@ -112,9 +121,13 @@ public:
   };
   CapRowD capRowsD467[7];
   // Per-nation table E (true base 0x4a6, stride 0x3a); init zeroes it. Ends at the real 0x63c
-  // allocation size.
+  // allocation size. Word view: per-tech completion-year offset (added to 0x717 by the
+  // tech-item completion-date line, 0x5b12e0).
   struct CapRowE {
-    unsigned char bytes[0x3a];
+    union {
+      unsigned char bytes[0x3a];
+      short completionYearOffsetByTechId[0x1d];
+    };
   };
   CapRowE capRowsE4a6[7];
 
@@ -123,6 +136,14 @@ public:
   void GenerateRandomCapabilityPrioritySlots();
   void ApplyCityOrderCapabilityUnlockByTechId(int nTechId);
   int GetNationFortLevelCap(int nNationId);
+  // True when both prerequisite techs of `techId` (from g_aTechItemPrerequisitePairs;
+  // 0 = none, and status byte 0 is always 2) are researched for the nation. 0x5b0a20.
+  bool AreTechItemPrerequisitePairCompleted(int techId, int nationSlot);
+  // Writes the not-yet-researched prerequisites of `techId` for the nation: if the first
+  // is done, missing1 = the second (0 if none) and missing2 = 0; otherwise missing1 = the
+  // first and missing2 = the second if it is also unresearched. 0x5b0a90.
+  void SelectMissingTechItemPrerequisitesFromPair(int techId, int nationSlot, int* missing1,
+                                                  int* missing2);
 
   ~TTechMgr() override;
 };

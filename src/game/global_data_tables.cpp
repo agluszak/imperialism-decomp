@@ -885,6 +885,22 @@ int g_wMapDialogViewportTileSpan;
 short g_awMapContextActionLabelTokenByCommand[17] = {0,     0x3f0, 0x3f2, 0x3f2, 0x3f2, 0x3f2,
                                                      0x3f2, 0x3f2, 0x3f2, 0x3f1, 0x3f3, 0x3f3,
                                                      0x3f6, 0x3f8, 0x3f4, 0x3f5, 0x3f7};
+// Per-tech prerequisite pair (tech ids; 0 = none). Indexed by tech id in
+// TTechMgr::AreTechItemPrerequisitePairCompleted / SelectMissingTechItemPrerequisitesFromPair
+// (0x5b0a20/0x5b0a90). 34 entries; ends where the CRuntimeClass at 0x66ac98 begins.
+// Per-tech research cost in gold, indexed by tech id (readers: 0x5b12e0 buy-button label,
+// TTechItemView::HandleEvent 0x5b1e20).
+// GLOBAL: IMPERIALISM 0x0066ad58
+int g_anTechItemResearchCostByTechId[29] = {
+    0,     0,     1000,  1000,  1500,  1500,   1500,   1500,   3000,  3000,
+    3000,  6000,  7000,  10000, 12000, 12000,  12000,  12000,  12000, 25000,
+    20000, 40000, 40000, 40000, 40000, 100000, 120000, 150000, 150000};
+// GLOBAL: IMPERIALISM 0x0066ac10
+short g_aTechItemPrerequisitePairs[34][2] = {
+    {0, 0},  {0, 0},  {0, 0}, {0, 0},  {0, 0},  {1, 0},  {1, 0},  {0, 0},  {7, 3},
+    {0, 0},  {2, 0},  {0, 0}, {6, 0},  {0, 0},  {11, 0}, {0, 0},  {8, 0},  {10, 0},
+    {10, 0}, {0, 0},  {7, 0}, {15, 0}, {13, 0}, {5, 12}, {9, 10}, {14, 0}, {19, 0},
+    {24, 0}, {26, 0}, {0, 0}, {25, 0}, {25, 0}, {25, 0}, {0, 0}};
 // GLOBAL: IMPERIALISM 0x006a3ed8
 TTaskForce* g_pCachedMapActionContext = 0;
 TSoundPlayer* g_pSfxPlaybackSystem = 0;

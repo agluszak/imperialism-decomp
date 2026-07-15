@@ -16,6 +16,24 @@ IMPLEMENT_DYNCREATE(TTEView, TStaticText)
 // FUNCTION: IMPERIALISM 0x0045ad20
 TTEView::TTEView() {}
 
+// FUNCTION: IMPERIALISM 0x00486050
+void TTEView::ConstructTTEViewBaseState(int unusedA, TView* panel, int* offsetLayout,
+                                        int* sizeLayout, int layoutParam5, int layoutParam6,
+                                        RECT* insetRect, TControlPictureRectState* style,
+                                        short styleWord90, int unusedB, int unusedC) {
+  (void)unusedA;
+  (void)unusedB;
+  (void)unusedC;
+  InitializeTextEntryBaseAndOptionalStringResource(panel, offsetLayout, sizeLayout, layoutParam5,
+                                                   layoutParam6, -1, 0);
+  field68 = insetRect->left;
+  field6C = insetRect->top;
+  field70 = insetRect->right;
+  field74 = insetRect->bottom;
+  textStyle78 = *style;
+  field90 = styleWord90;
+}
+
 // FUNCTION: IMPERIALISM 0x004860e0
 int TTEView::MeasureCurrentTextWidthInLayoutRect() {
   CDC dc;
