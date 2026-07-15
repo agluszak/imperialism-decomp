@@ -2504,6 +2504,7 @@ address|target_cpp|ownership|note
 518bd0|src/game/TMapMgr.cpp|manual|marker_sync
 518d90|src/game/TMapMgr.cpp|manual|marker_sync
 519010|src/game/TMapMgr.cpp|manual|marker_sync
+519140|src/game/TMapMgr.cpp|manual|marker_sync
 519610|src/game/TMapMgr.cpp|manual|marker_sync
 5199c0|src/game/TMapDialog.cpp|manual|marker_sync
 519af0|src/game/TWorldView.cpp|manual|marker_sync

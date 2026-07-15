@@ -179,14 +179,6 @@ undefined4 WrapperFor_thunk_HasReachableSeaTileOutsideActiveType3Or4DiplomaticMa
   return 0;
 }
 
-// ghidra_name DumpAndResetMapScriptState
-// ghidra_proto void __fastcall DumpAndResetMapScriptState(void * pMapState)
-// FUNCTION: IMPERIALISM 0x00519140
-undefined4 DumpAndResetMapScriptState(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_ftol_At00519970
 // ghidra_proto undefined WrapperFor_ftol_At00519970()
 // FUNCTION: IMPERIALISM 0x00519970

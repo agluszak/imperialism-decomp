@@ -1567,6 +1567,29 @@ char s_mcflavor_00696674[] = "";
 char s_mcflavor_00696d10[] = "";
 // GLOBAL: IMPERIALISM 0x00697238
 char s_mcflavor_00697238[] = "";
+// Script-dump format strings for TMapMgr::DumpAndResetMapScriptState (0x519140).
+// GLOBAL: IMPERIALISM 0x006972f8
+char g_szScriptFileName_006972f8[] = "script";
+// GLOBAL: IMPERIALISM 0x006972e8
+char g_szFmtZone_006972e8[] = "zone %d %s\n";
+// GLOBAL: IMPERIALISM 0x006972d0
+char g_szFmtShip_006972d0[] = "ship %d %d %d %d\n";
+// GLOBAL: IMPERIALISM 0x006972bc
+char g_szFmtArmy_006972bc[] = "army %d %d %d\n";
+// GLOBAL: IMPERIALISM 0x006972ac
+char g_szFmtCivi_006972ac[] = "civi %d %d\n";
+// GLOBAL: IMPERIALISM 0x006972a0
+char g_szFmtPort_006972a0[12] = "port %d\n";
+// GLOBAL: IMPERIALISM 0x00697294
+char g_szFmtRail_00697294[12] = "rail %d\n";
+// GLOBAL: IMPERIALISM 0x00697280
+char g_szFmtCapa_00697280[] = "capa %d %d %d\n";
+// GLOBAL: IMPERIALISM 0x00697268
+char g_szFmtLabo_00697268[] = "labo %d %d %d %d\n";
+// GLOBAL: IMPERIALISM 0x00697254
+char g_szFmtEmba_00697254[] = "emba %d %d %d\n";
+// GLOBAL: IMPERIALISM 0x00697248
+char g_szFmtYear_00697248[12] = "year %d\n";
 // GLOBAL: IMPERIALISM 0x006976e0
 char s_mcflavor_006976e0[] = "";
 // GLOBAL: IMPERIALISM 0x00698b0c

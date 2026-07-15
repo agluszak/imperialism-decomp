@@ -42,6 +42,9 @@ g_pszMultiplayerSavePrefix_0065DDD4|0x65ddd4|WARN|3
 g_pszSingleSlotSavePrefix_0065DDD0|0x65ddd0|WARN|3
 g_szAutosaveSlotLabel_0069872C|0x69872c|WARN|4
 g_szDecimalFormat|0x69430c|WARN|4
+g_szFmtPort_006972a0|0x6972a0|WARN|4
+g_szFmtRail_00697294|0x697294|WARN|4
+g_szFmtYear_00697248|0x697248|WARN|4
 g_szLoadedDocumentMarker_0069B854|0x69b854|WARN|4
 g_szSaveFileReadBinaryMode_00698720|0x698720|WARN|4
 g_szUiAvailableLabel_00694AD8|0x694ad8|WARN|4
