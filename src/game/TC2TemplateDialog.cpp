@@ -1,7 +1,10 @@
 #include "game/TC2TemplateDialog.h"
 
+#include "game/CDib.h"
+#include "game/CDibPal.h"
 #include "game/ImperialismApp.h"
 #include "game/TCountry.h"
+#include "game/TModuleLibraryCacheTableStateB.h"
 #include "game/TSimMgr.h"
 #include "game/TViewMgr.h"
 #include "game/global_data_tables.h"
@@ -10,6 +13,45 @@
 // compiled code passes the exact original pointer, matching the codebase's kAddr idiom).
 static const unsigned int kGreatPowerLabelFmt = 0x00694e70;
 static const unsigned int kMinorNationLabelFmt = 0x00694e54;
+
+// SYNTHETIC: IMPERIALISM 0x00413670
+// T64TemplateDialog::`scalar deleting destructor'
+
+// FUNCTION: IMPERIALISM 0x004136c0
+void T64TemplateDialog::DoDataExchange(CDataExchange* pDX) {
+  (void)pDX;
+}
+
+// SYNTHETIC: IMPERIALISM 0x004136e0
+// T64TemplateDialog::GetMessageMap
+#ifndef IMPERIALISM_LINT
+BEGIN_MESSAGE_MAP(T64TemplateDialog, CDialog)
+END_MESSAGE_MAP()
+#endif
+
+// Constructs the template-0x64 dialog on the stack and runs it modally. This is what emits
+// the T64TemplateDialog vtable (the dialog is never constructed elsewhere).
+// FUNCTION: IMPERIALISM 0x00413700
+void ShowDialogTemplate64Modal() {
+  T64TemplateDialog dialog;
+  dialog.DoModal();
+}
+
+// Frees the heap silhouette-outline buffer; the base finalize (owner re-enable +
+// modal-state cleanup) is inlined from ~TModalDialogBase.
+// FUNCTION: IMPERIALISM 0x00413c30
+TDDTemplateDialog::~TDDTemplateDialog() {
+  delete outlinePolygon;
+}
+
+// SYNTHETIC: IMPERIALISM 0x00413cd0
+// TDDTemplateDialog::`scalar deleting destructor'
+
+// FUNCTION: IMPERIALISM 0x00415380
+BOOL T64TemplateDialog::OnInitDialog() {
+  CDialog::OnInitDialog();
+  return TRUE;
+}
 
 // FUNCTION: IMPERIALISM 0x0047cfd0
 TC2TemplateDialog::TC2TemplateDialog(void* initParam)
@@ -51,6 +93,420 @@ void TD2TemplateDialog::DoDataExchange(CDataExchange* pDX) {
 BEGIN_MESSAGE_MAP(TD2TemplateDialog, CDialog)
 END_MESSAGE_MAP()
 #endif
+
+// FUNCTION: IMPERIALISM 0x0047d360
+TDBTemplateDialog::TDBTemplateDialog(void* initParam)
+    : TModalDialogBase(0xdb, static_cast<CWnd*>(initParam)), slider() {}
+
+// SYNTHETIC: IMPERIALISM 0x0047d3f0
+// TDBTemplateDialog::`scalar deleting destructor'
+
+// FUNCTION: IMPERIALISM 0x0047d420
+void TDBTemplateDialog::DoDataExchange(CDataExchange* pDX) {
+  DDX_Control(pDX, 0x3f8, slider);
+}
+
+// SYNTHETIC: IMPERIALISM 0x0047d450
+// TDBTemplateDialog::GetMessageMap
+#ifndef IMPERIALISM_LINT
+BEGIN_MESSAGE_MAP(TDBTemplateDialog, CDialog)
+END_MESSAGE_MAP()
+#endif
+
+// FUNCTION: IMPERIALISM 0x0047d470
+TDCTemplateDialog::TDCTemplateDialog(void* initParam)
+    : TModalDialogBase(0xdc, static_cast<CWnd*>(initParam)), value74(0) {}
+
+// SYNTHETIC: IMPERIALISM 0x0047d4b0
+// TDCTemplateDialog::`scalar deleting destructor'
+
+// FUNCTION: IMPERIALISM 0x0047d4e0
+void TDCTemplateDialog::DoDataExchange(CDataExchange* pDX) {
+  DDX_Text(pDX, 0x421, value74);
+  DDV_MinMaxUInt(pDX, value74, 0, 999);
+}
+
+// SYNTHETIC: IMPERIALISM 0x0047d520
+// TDCTemplateDialog::GetMessageMap
+#ifndef IMPERIALISM_LINT
+BEGIN_MESSAGE_MAP(TDCTemplateDialog, CDialog)
+END_MESSAGE_MAP()
+#endif
+
+// FUNCTION: IMPERIALISM 0x0047d540
+TDDTemplateDialog::TDDTemplateDialog(void* initParam)
+    : TModalDialogBase(0xdd, static_cast<CWnd*>(initParam)), drawOutline(0), fillPolygon(0),
+      renderMode(0), flag84(0), outlinePolygon(0) {}
+
+// FUNCTION: IMPERIALISM 0x0047d5b0
+void TDDTemplateDialog::DoDataExchange(CDataExchange* pDX) {
+  (void)pDX;
+}
+
+// SYNTHETIC: IMPERIALISM 0x0047d5d0
+// TDDTemplateDialog::GetMessageMap
+#ifndef IMPERIALISM_LINT
+BEGIN_MESSAGE_MAP(TDDTemplateDialog, CDialog)
+ON_WM_PAINT()
+ON_WM_LBUTTONDBLCLK()
+END_MESSAGE_MAP()
+#endif
+
+// Draws the preview picture into the client area, then optionally overlays a red silhouette
+// outline (Polyline) and/or fill (FillRgn) built from the picture's non-transparent-pixel
+// polygon (outlinePolygon: [0]=POINT count, POINTs from index 2). Three blit modes:
+//   renderMode != 0            -> palette-masked StretchDIBits (StretchDibitsWithCopiedPaletteTable)
+//   g_useCompatibleBitmapBlit  -> CreateCompatibleDC + BitBlt of a device bitmap, using the
+//                                 module palette cache's default palette
+//   otherwise                  -> plain StretchDIBits from the stored DIB bits
+// The temporary device bitmap (created here when the CDib has none cached) is released after.
+// FUNCTION: IMPERIALISM 0x0047d5f0
+void TDDTemplateDialog::OnPaint() {
+  CPaintDC dc(this);
+  HBITMAP bitmap = picture->m_hBitmap;
+  if (bitmap == NULL) {
+    bitmap = picture->CreateDibBitmapFromStoredInfo(&dc);
+  }
+  if (renderMode != 0) {
+    picture->SelectAndRealizeDibPalette(&dc, FALSE);
+    // The original re-reads the header and re-computes abs(biHeight) per height argument (no
+    // CSE), so the two abs expressions are written inline rather than hoisted.
+    picture->StretchDibitsWithCopiedPaletteTable(CDC::FromHandle(dc.GetSafeHdc()), 0x10, 0, 0,
+                                                 picture->m_pInfoHeader->bmiHeader.biWidth,
+                                                 picture->m_pInfoHeader->bmiHeader.biHeight > 0
+                                                     ? picture->m_pInfoHeader->bmiHeader.biHeight
+                                                     : -picture->m_pInfoHeader->bmiHeader.biHeight,
+                                                 0, 0, picture->m_pInfoHeader->bmiHeader.biWidth,
+                                                 picture->m_pInfoHeader->bmiHeader.biHeight > 0
+                                                     ? picture->m_pInfoHeader->bmiHeader.biHeight
+                                                     : -picture->m_pInfoHeader->bmiHeader.biHeight);
+  } else if (g_useCompatibleBitmapBlit != 0) {
+    CDibPal* palette = g_pModuleLibraryCacheState->EnsureDefaultDibPalette();
+    palette->SelectIntoDcAndRealize(&dc, FALSE);
+    HDC memoryDc = ::CreateCompatibleDC(dc.GetSafeHdc());
+    HGDIOBJ oldBitmap = ::SelectObject(memoryDc, bitmap);
+    int width = picture->m_pInfoHeader->bmiHeader.biWidth;
+    int height = picture->m_pInfoHeader->bmiHeader.biHeight;
+    if (height <= 0) {
+      height = -height;
+    }
+    ::BitBlt(dc.GetSafeHdc(), 0, 0, width, height, memoryDc, 0, 0, SRCCOPY);
+    ::SelectObject(memoryDc, oldBitmap);
+    ::DeleteDC(memoryDc);
+  } else {
+    picture->SelectAndRealizeDibPalette(&dc, FALSE);
+    CPoint origin(0, 0);
+    picture->StretchDibitsFromStoredBitmapToHdc(&dc, &origin);
+  }
+  if (picture->m_hBitmap == NULL) {
+    ::DeleteObject(bitmap);
+  }
+  if (drawOutline != 0) {
+    CPen pen(PS_SOLID, 1, RGB(0xff, 0, 0));
+    CPen* oldPen = dc.SelectObject(&pen);
+    dc.Polyline(reinterpret_cast<POINT*>(outlinePolygon + 2), outlinePolygon[0]);
+    dc.SelectObject(oldPen);
+  }
+  if (fillPolygon != 0) {
+    CRgn region;
+    region.CreatePolygonRgn(reinterpret_cast<POINT*>(outlinePolygon + 2), outlinePolygon[0],
+                            ALTERNATE);
+    CBrush brush(RGB(0xff, 0, 0));
+    dc.FillRgn(&region, &brush);
+  }
+}
+
+// FUNCTION: IMPERIALISM 0x0047dae0
+BOOL TDDTemplateDialog::OnInitDialog() {
+  CDialog::OnInitDialog();
+  // CopyBitmapDimensionsToPoint returns its out-pointer; the original reads width/height back
+  // through it (the register wobble vs the local is MSVC500 MoveWindow-arg scheduling).
+  CPoint size;
+  CPoint* dims = picture->CopyBitmapDimensionsToPoint(&size);
+  MoveWindow(0, 0, dims->x + 0x1e, dims->y + 0x32, TRUE);
+  CenterWindow();
+  SetWindowText(windowTitle);
+  flag84 = flags88 & 1;
+  if (drawOutline != 0 || fillPolygon != 0) {
+    outlinePolygon = picture->BuildNonTransparentOutlinePolygon(0xffffffff);
+  }
+  return TRUE;
+}
+
+// Empty in the original (double-click on the preview does nothing); present only so the
+// message map's ON_WM_LBUTTONDBLCLK entry has a handler.
+// FUNCTION: IMPERIALISM 0x0047db80
+void TDDTemplateDialog::OnLButtonDblClk(UINT nFlags, CPoint point) {
+  (void)nFlags;
+  (void)point;
+}
+
+// FUNCTION: IMPERIALISM 0x0047dba0
+TDETemplateDialog::TDETemplateDialog(void* initParam)
+    : TModalDialogBase(0xde, static_cast<CWnd*>(initParam)), slider(), valueB0(0), valueB4(0) {}
+
+// SYNTHETIC: IMPERIALISM 0x0047dc40
+// TDETemplateDialog::`scalar deleting destructor'
+
+// FUNCTION: IMPERIALISM 0x0047dc70
+void TDETemplateDialog::DoDataExchange(CDataExchange* pDX) {
+  DDX_Control(pDX, 0x3f8, slider);
+  DDX_Text(pDX, 0x422, valueB0);
+  DDX_Text(pDX, 0x421, valueB4);
+}
+
+// SYNTHETIC: IMPERIALISM 0x0047dcc0
+// TDETemplateDialog::GetMessageMap
+#ifndef IMPERIALISM_LINT
+BEGIN_MESSAGE_MAP(TDETemplateDialog, CDialog)
+END_MESSAGE_MAP()
+#endif
+
+// FUNCTION: IMPERIALISM 0x0047dce0
+TDFTemplateDialog::TDFTemplateDialog(void* initParam)
+    : CDialog(0xdf, static_cast<CWnd*>(initParam)), editValue5c(0), checkFlag60(0), checkFlag64(0),
+      checkFlag68(0), checkFlag6c(0), checkFlag70(0) {}
+
+// SYNTHETIC: IMPERIALISM 0x0047dd30
+// TDFTemplateDialog::`scalar deleting destructor'
+
+// FUNCTION: IMPERIALISM 0x0047dd60
+void TDFTemplateDialog::DoDataExchange(CDataExchange* pDX) {
+  DDX_Text(pDX, 0x421, editValue5c);
+  DDX_Check(pDX, 0x3f5, checkFlag60);
+  DDX_Check(pDX, 0x422, checkFlag64);
+  DDX_Check(pDX, 0x423, checkFlag68);
+  DDX_Check(pDX, 0x424, checkFlag6c);
+  DDX_Check(pDX, 0x427, checkFlag70);
+}
+
+// SYNTHETIC: IMPERIALISM 0x0047ddf0
+// TDFTemplateDialog::GetMessageMap
+#ifndef IMPERIALISM_LINT
+BEGIN_MESSAGE_MAP(TDFTemplateDialog, CDialog)
+END_MESSAGE_MAP()
+#endif
+
+// FUNCTION: IMPERIALISM 0x0047de10
+BOOL TDFTemplateDialog::OnInitDialog() {
+  CDialog::OnInitDialog();
+  UpdateData(FALSE);
+  return TRUE;
+}
+
+// FUNCTION: IMPERIALISM 0x0047de40
+TFATemplateDialog::TFATemplateDialog(void* initParam)
+    : TModalDialogBase(0xfa, static_cast<CWnd*>(initParam)), listbox() {}
+
+// SYNTHETIC: IMPERIALISM 0x0047ded0
+// TFATemplateDialog::`scalar deleting destructor'
+
+// DoDataExchange is an empty override in the original (the listbox is wired up outside DDX).
+// FUNCTION: IMPERIALISM 0x0047df90
+void TFATemplateDialog::DoDataExchange(CDataExchange* pDX) {
+  (void)pDX;
+}
+
+// SYNTHETIC: IMPERIALISM 0x0047dfb0
+// TFATemplateDialog::GetMessageMap
+#ifndef IMPERIALISM_LINT
+BEGIN_MESSAGE_MAP(TFATemplateDialog, CDialog)
+END_MESSAGE_MAP()
+#endif
+
+// FUNCTION: IMPERIALISM 0x0047f450
+TADTemplateDialog::TADTemplateDialog(void* initParam)
+    : TModalDialogBase(0xad, static_cast<CWnd*>(initParam)), listbox() {}
+
+// SYNTHETIC: IMPERIALISM 0x0047f4e0
+// TADTemplateDialog::`scalar deleting destructor'
+
+// FUNCTION: IMPERIALISM 0x0047f5d0
+void TADTemplateDialog::DoDataExchange(CDataExchange* pDX) {
+  DDX_Control(pDX, 0x3ff, listbox);
+}
+
+// SYNTHETIC: IMPERIALISM 0x0047f600
+// TADTemplateDialog::GetMessageMap
+#ifndef IMPERIALISM_LINT
+BEGIN_MESSAGE_MAP(TADTemplateDialog, CDialog)
+END_MESSAGE_MAP()
+#endif
+
+// FUNCTION: IMPERIALISM 0x0047f620
+BOOL TADTemplateDialog::OnInitDialog() {
+  CDialog::OnInitDialog();
+  return TRUE;
+}
+
+// FUNCTION: IMPERIALISM 0x00480a10
+T104TemplateDialog::T104TemplateDialog(void* initParam)
+    : TModalDialogBase(0x104, static_cast<CWnd*>(initParam)), listbox() {}
+
+// SYNTHETIC: IMPERIALISM 0x00480aa0
+// T104TemplateDialog::`scalar deleting destructor'
+
+// FUNCTION: IMPERIALISM 0x00480ad0
+void T104TemplateDialog::DoDataExchange(CDataExchange* pDX) {
+  DDX_Control(pDX, 0x435, listbox);
+}
+
+// SYNTHETIC: IMPERIALISM 0x00480b00
+// T104TemplateDialog::GetMessageMap
+#ifndef IMPERIALISM_LINT
+BEGIN_MESSAGE_MAP(T104TemplateDialog, CDialog)
+END_MESSAGE_MAP()
+#endif
+
+// FUNCTION: IMPERIALISM 0x004813a0
+TA1TemplateDialog::TA1TemplateDialog(void* initParam)
+    : CDialog(0xa1, static_cast<CWnd*>(initParam)), slider5c(), slider98(), sliderD4(), check110(0),
+      check114(0) {}
+
+// SYNTHETIC: IMPERIALISM 0x00481480
+// TA1TemplateDialog::`scalar deleting destructor'
+
+// FUNCTION: IMPERIALISM 0x00481540
+void TA1TemplateDialog::DoDataExchange(CDataExchange* pDX) {
+  DDX_Control(pDX, 0x3fa, slider5c);
+  DDX_Control(pDX, 0x406, slider98);
+  DDX_Control(pDX, 0x3f9, sliderD4);
+  DDX_Check(pDX, 0x404, check110);
+  DDX_Check(pDX, 0x405, check114);
+}
+
+// SYNTHETIC: IMPERIALISM 0x004815d0
+// TA1TemplateDialog::GetMessageMap
+#ifndef IMPERIALISM_LINT
+BEGIN_MESSAGE_MAP(TA1TemplateDialog, CDialog)
+END_MESSAGE_MAP()
+#endif
+
+// FUNCTION: IMPERIALISM 0x00481770
+TA7TemplateDialog::TA7TemplateDialog(void* initParam)
+    : CDialog(0xa7, static_cast<CWnd*>(initParam)), text5c() {
+  text5c = "";
+}
+
+// SYNTHETIC: IMPERIALISM 0x00481800
+// TA7TemplateDialog::`scalar deleting destructor'
+
+// FUNCTION: IMPERIALISM 0x004818a0
+void TA7TemplateDialog::DoDataExchange(CDataExchange* pDX) {
+  DDX_Text(pDX, 0x3fc, text5c);
+}
+
+// SYNTHETIC: IMPERIALISM 0x004818d0
+// TA7TemplateDialog::GetMessageMap
+#ifndef IMPERIALISM_LINT
+BEGIN_MESSAGE_MAP(TA7TemplateDialog, CDialog)
+END_MESSAGE_MAP()
+#endif
+
+// FUNCTION: IMPERIALISM 0x00481b30
+TABTemplateDialog::TABTemplateDialog(void* initParam)
+    : CDialog(0xab, static_cast<CWnd*>(initParam)), text5c(), text60() {
+  text5c = "";
+  text60 = "";
+}
+
+// SYNTHETIC: IMPERIALISM 0x00481bf0
+// TABTemplateDialog::`scalar deleting destructor'
+
+// FUNCTION: IMPERIALISM 0x00481ca0
+void TABTemplateDialog::DoDataExchange(CDataExchange* pDX) {
+  DDX_Text(pDX, 0x3fd, text5c);
+  DDX_Text(pDX, 0x3fe, text60);
+}
+
+// SYNTHETIC: IMPERIALISM 0x00481ce0
+// TABTemplateDialog::GetMessageMap
+#ifndef IMPERIALISM_LINT
+BEGIN_MESSAGE_MAP(TABTemplateDialog, CDialog)
+END_MESSAGE_MAP()
+#endif
+
+// FUNCTION: IMPERIALISM 0x00481dc0
+TAETemplateDialog::TAETemplateDialog(void* initParam)
+    : CDialog(0xae, static_cast<CWnd*>(initParam)), text5c(), text60() {
+  text5c = "";
+  text60 = "";
+}
+
+// SYNTHETIC: IMPERIALISM 0x00481e80
+// TAETemplateDialog::`scalar deleting destructor'
+
+// FUNCTION: IMPERIALISM 0x00481f30
+void TAETemplateDialog::DoDataExchange(CDataExchange* pDX) {
+  DDX_Text(pDX, 0x400, text5c);
+  DDX_Text(pDX, 0x401, text60);
+}
+
+// SYNTHETIC: IMPERIALISM 0x00481f70
+// TAETemplateDialog::GetMessageMap
+#ifndef IMPERIALISM_LINT
+BEGIN_MESSAGE_MAP(TAETemplateDialog, CDialog)
+END_MESSAGE_MAP()
+#endif
+
+// FUNCTION: IMPERIALISM 0x00482050
+TB1TemplateDialog::TB1TemplateDialog(void* initParam)
+    : CDialog(0xb1, static_cast<CWnd*>(initParam)), text5c() {
+  text5c = "";
+}
+
+// SYNTHETIC: IMPERIALISM 0x004820e0
+// TB1TemplateDialog::`scalar deleting destructor'
+
+// FUNCTION: IMPERIALISM 0x00482180
+void TB1TemplateDialog::DoDataExchange(CDataExchange* pDX) {
+  DDX_Text(pDX, 0x403, text5c);
+}
+
+// SYNTHETIC: IMPERIALISM 0x004821b0
+// TB1TemplateDialog::GetMessageMap
+#ifndef IMPERIALISM_LINT
+BEGIN_MESSAGE_MAP(TB1TemplateDialog, CDialog)
+END_MESSAGE_MAP()
+#endif
+
+// Selection state behind TA1TemplateDialog::state118 (+0x118): an array of 0xe-byte records,
+// of which only the leading short of each is used here (mode + the three slider positions).
+struct TA1TripleSelectionState {
+  short field00;  // +0x00 (unobserved)
+  short mode;     // +0x02 selection mode: read (== 1) on init, written 2-(check!=0) on OK
+  char gap04[12]; // +0x04
+  short pos5c;    // +0x10 slider5c value (0..5)
+  char gap12[12]; // +0x12
+  short pos98;    // +0x1e slider98 value (0..5)
+  char gap20[12]; // +0x20
+  short posD4;    // +0x2c sliderD4 value (0..5)
+};
+
+// FUNCTION: IMPERIALISM 0x004821f0
+BOOL TA1TemplateDialog::OnInitDialog() {
+  CDialog::OnInitDialog();
+  TA1TripleSelectionState* state = static_cast<TA1TripleSelectionState*>(state118);
+  check110 = (state->mode == 1);
+  slider5c.SetRange(0, 5, FALSE);
+  slider98.SetRange(0, 5, FALSE);
+  sliderD4.SetRange(0, 5, FALSE);
+  slider5c.SetPos(state->pos5c);
+  slider98.SetPos(state->pos98);
+  sliderD4.SetPos(state->posD4);
+  UpdateData(FALSE);
+  return TRUE;
+}
+
+// FUNCTION: IMPERIALISM 0x00482300
+void TA1TemplateDialog::OnOK() {
+  CDialog::OnOK();
+  TA1TripleSelectionState* state = static_cast<TA1TripleSelectionState*>(state118);
+  state->mode = static_cast<short>(2 - (check110 != 0));
+  state->pos5c = static_cast<short>(slider5c.GetPos());
+  state->pos98 = static_cast<short>(slider98.GetPos());
+  state->posD4 = static_cast<short>(sliderD4.GetPos());
+}
 
 // The ID_800C command: put up the C2 template dialog with a 0..6 city-view slider and a
 // 10-row list box (each row carries a turn-event code as item data). On OK, dispatch the
@@ -144,4 +600,133 @@ void TMacViewMgr_OnCommand_ID_8013_ShowTerrainOverlayDialog(void) {
     }
   }
   g_pImperialismApp->PostStartupCommand100();
+}
+
+// Releases the input capture the overlay grabbed; the vtable reset + base-dtor chain are
+// compiler-emitted.
+// FUNCTION: IMPERIALISM 0x00498d60
+TE0TemplateDialog::~TE0TemplateDialog() {
+  ::ReleaseCapture();
+}
+
+// SYNTHETIC: IMPERIALISM 0x00498dd0
+// TE0TemplateDialog::`scalar deleting destructor'
+
+// FUNCTION: IMPERIALISM 0x0049bcd0
+TD0TemplateDialog::TD0TemplateDialog(void* initParam)
+    : CDialog(0xd0, static_cast<CWnd*>(initParam)), listbox() {}
+
+// SYNTHETIC: IMPERIALISM 0x0049bd60
+// TD0TemplateDialog::`scalar deleting destructor'
+
+// FUNCTION: IMPERIALISM 0x0049bf60
+void TD0TemplateDialog::DoDataExchange(CDataExchange* pDX) {
+  DDX_Control(pDX, 0x419, listbox);
+}
+
+// SYNTHETIC: IMPERIALISM 0x0049bf90
+// TD0TemplateDialog::GetMessageMap
+#ifndef IMPERIALISM_LINT
+BEGIN_MESSAGE_MAP(TD0TemplateDialog, CDialog)
+END_MESSAGE_MAP()
+#endif
+
+// FUNCTION: IMPERIALISM 0x0049bfb0
+void TD0TemplateDialog::OnOK() {}
+
+// FUNCTION: IMPERIALISM 0x0049bfd0
+void TD0TemplateDialog::OnCancel() {
+  ShowWindow(SW_MINIMIZE);
+}
+
+// FUNCTION: IMPERIALISM 0x005dee50
+TE0TemplateDialog::TE0TemplateDialog(void* initParam)
+    : CDialog(0xe0, static_cast<CWnd*>(initParam)) {}
+
+// FUNCTION: IMPERIALISM 0x005dee80
+void TE0TemplateDialog::DoDataExchange(CDataExchange* pDX) {
+  (void)pDX;
+}
+
+// SYNTHETIC: IMPERIALISM 0x005deea0
+// TE0TemplateDialog::GetMessageMap
+#ifndef IMPERIALISM_LINT
+BEGIN_MESSAGE_MAP(TE0TemplateDialog, CDialog)
+ON_WM_CHAR()
+ON_WM_KEYDOWN()
+ON_WM_LBUTTONDOWN()
+ON_WM_RBUTTONDOWN()
+ON_WM_SETCURSOR()
+ON_WM_NCPAINT()
+ON_WM_PAINT()
+END_MESSAGE_MAP()
+#endif
+
+// FUNCTION: IMPERIALISM 0x005deec0
+void TE0TemplateDialog::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags) {
+  (void)nChar;
+  (void)nRepCnt;
+  (void)nFlags;
+  EndDialog(0);
+}
+
+// FUNCTION: IMPERIALISM 0x005deee0
+void TE0TemplateDialog::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags) {
+  (void)nChar;
+  (void)nRepCnt;
+  (void)nFlags;
+  EndDialog(0);
+}
+
+// FUNCTION: IMPERIALISM 0x005def00
+void TE0TemplateDialog::OnLButtonDown(UINT nFlags, CPoint point) {
+  (void)nFlags;
+  (void)point;
+  EndDialog(0);
+}
+
+// FUNCTION: IMPERIALISM 0x005def20
+void TE0TemplateDialog::OnRButtonDown(UINT nFlags, CPoint point) {
+  (void)nFlags;
+  (void)point;
+  EndDialog(0);
+}
+
+// FUNCTION: IMPERIALISM 0x005def40
+BOOL TE0TemplateDialog::PreCreateWindow(CREATESTRUCT& cs) {
+  cs.cx = -1000;
+  cs.cy = -1000;
+  return CDialog::PreCreateWindow(cs);
+}
+
+// FUNCTION: IMPERIALISM 0x005def70
+BOOL TE0TemplateDialog::OnInitDialog() {
+  CDialog::OnInitDialog();
+  AFX_MODULE_STATE* moduleState = AfxGetModuleState();
+  HCURSOR hCursor = ::LoadCursorA(moduleState->m_hCurrentInstanceHandle, MAKEINTRESOURCEA(0xe4));
+  ::SetCursor(hCursor);
+  MoveWindow(0, 0, 2000, 2000, TRUE);
+  return TRUE;
+}
+
+// WM_SETCURSOR: reassert the custom cursor (resource 0xe4) and swallow the message.
+// FUNCTION: IMPERIALISM 0x005defe0
+BOOL TE0TemplateDialog::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message) {
+  (void)pWnd;
+  (void)nHitTest;
+  (void)message;
+  AFX_MODULE_STATE* moduleState = AfxGetModuleState();
+  HCURSOR hCursor = ::LoadCursorA(moduleState->m_hCurrentInstanceHandle, MAKEINTRESOURCEA(0xe4));
+  ::SetCursor(hCursor);
+  return TRUE;
+}
+
+// WM_NCPAINT: suppress non-client painting (bare ret in the original).
+// FUNCTION: IMPERIALISM 0x005df020
+void TE0TemplateDialog::OnNcPaint() {}
+
+// WM_PAINT: validate the paint region with a CPaintDC and draw nothing.
+// FUNCTION: IMPERIALISM 0x005df040
+void TE0TemplateDialog::OnPaint() {
+  CPaintDC dc(this);
 }

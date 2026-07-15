@@ -1671,3 +1671,118 @@ fully ICF-collapsed chain; our out-of-line base dtors emit `mov own_vtbl; jmp ~B
 that one function stays low while the vtable and scalar dtor still reach 100% — accept it (Hard
 Rule 12). The `IMPLEMENT_RUNTIMECLASS` CRuntimeClass DATA global must be named `class<Class>` in
 symbols.csv (not the generic `classRuntimeClass` placeholder) or GetRuntimeClass stalls at 50%.
+
+## Note 105 — Recovering a family of MFC dialog-template subclasses (16 at once)
+
+Recovered the whole modal-dialog-template family (TC2/TD2 + 13 more: DB/DC/DE/DF/FA/AD/104/
+A7/AB/AE/B1/A1/D0/E0/DD/64). Each is a game CDialog subclass built by an
+`InitializeDialogTemplate<ID>` ctor; model = `// VTABLE:` + ctor (`: TModalDialogBase(id,...)`
+or `: CDialog(id,...)`) + members + DoDataExchange override + scalar-dtor/GetMessageMap
+SYNTHETIC + empty message map. Four traps that each cost a wrong first attempt:
+
+1. **Distinguish TModalDialogBase-derived from plain CDialog by the RIGHT slots.** Slots
+   0x08/0x14/0x88 are shared by *every* CDialog subclass and prove nothing. The decisive slots
+   are 0xc0/0xd8/0xdc: TModalDialogBase overrides them (DoModal 0x4055f6→0x49d450, +0x4076ee,
+   +0x402ca7); a plain CDialog subclass has the library `CDialog::DoModal` (0x6051b9) at 0xc0
+   and NULL at 0xd8/0xdc (its vtable ends at 0xd4). Plain-CDialog members start at 0x5c (they
+   occupy what would be TModalDialogBase's modal scratch); TModalDialogBase members start at
+   0x74. A second tell: the ctor of a TModalDialogBase subclass writes an *intermediate* vtable
+   (0x63e5a0) before its own; a plain-CDialog ctor writes only its own.
+
+2. **Plain-CDialog subclasses can't reach 100% until `CDialog::DoModal` is a named library
+   function.** Their inherited slot 0xc0 references it, but if 0x6051b9 is an unnamed placeholder
+   the recomp's COMDAT copies don't pair. Add it to `msvc500_library_overrides.csv`
+   (`?DoModal@CDialog@@UAEHXZ`, nafxcw/dlgcore.obj) — fixes all of them at once. Then retire the
+   freed `DoModal_6051b9` stub: its game callers become real `dialog.DoModal()`.
+
+3. **MSVC emits a class vtable only in the TU that CONSTRUCTS it** (vtable is tied to the ctor,
+   not to a key function as in the Itanium ABI). A dialog whose only constructor is *inlined into
+   its driver* (T64 → ShowDialogTemplate64Modal) never emits its vtable from the class TU alone —
+   `just vtable` reports a vacuous "Vtables found: 0". Recover the driver so it constructs the
+   real class; that emits and pairs the vtable.
+
+4. **Embedded-control vtable identities:** 0x6714cc = CSliderCtrl, 0x671d1c = CListBox (verify
+   from the reference ctor, e.g. TC2 installs CSliderCtrl@+0x74 / CListBox@+0xb0). Getting this
+   backwards mislabels the member type and mis-installs the control vtable in the ctor.
+
+Parallelize the per-dialog Ghidra investigation across subagents (one recipe per dialog: base
+test, overridden slots with resolved ILT targets, DDX body, members, size), then model + build +
+`just vtable` serially. Message-map handlers and complex OnInitDialog/OnOK bodies are NOT vtable
+slots — minimal override bodies still give a 100% vtable; refine bodies later.
+
+## Note 106 — Inlined virtual base destructor: watch for COMDAT-fold collateral
+
+A derived dtor in the original often *inlines* the base dtor's tail (set base vptr → base
+cleanup → chain to the library base dtor). To make ONE derived dtor inline-match, it is
+tempting to move the base dtor's body `inline` into the header so it's visible in the derived
+TU. **Do not do this reflexively.** When the base has many member-less leaf subclasses, an
+inline base dtor makes their compiler-generated (real) destructors byte-identical, the linker
+COMDAT-folds them, and the *scalar-deleting-destructor addresses in their vtables shift* — every
+folded sibling's `` `vftable' `` drops from 100% (one slot now points at a folded address that
+reccmp pairs to another class's dtor). Net for TModalDialogBase: +2 (two dtors reach 100%) but
+−15 aligned (≈10 sibling vtables + some folded no-op leaves). **Keep the base dtor out-of-line**
+and accept that the one derived dtor stays ~83% (it emits a `call` to the base dtor instead of
+inlining it). A single +100% is never worth breaking 10 sibling vtables. Diagnose which funcs
+regressed by diffing `config/reccmp_progress_baseline.report.json` (per-function `matching`)
+against a fresh `reccmp-reccmp --json` capture — aggregate stats alone won't tell you WHAT fell.
+
+## Note 107 — Recovering an MFC GDI OnPaint (CPaintDC/CPen/CBrush/CRgn + DIB blits)
+
+`mfc.h` includes the real `<afxwin.h>`, so CPaintDC/CDC/CPen/CBrush/CRgn/CDibPal and
+`CDC::FromHandle` are all available as genuine MFC classes — model the paint body with them, not
+raw handles. Recipe that matched well:
+- **`CPaintDC dc(this);`** at the top; scope CPen in its own `{}` block and CRgn+CBrush in
+  theirs so the EH funclet nesting matches.
+- **`dc.GetSafeHdc()`** reproduces the `lea; neg; sbb; and` null-guard idiom the disassembly
+  shows at every GDI handle pass; a bare `dc.m_hDC` / `(dc?dc->m_hDC:0)` ternary emits the
+  branch in the *opposite* order (then-block first) and misses. Prefer `GetSafeHdc()` — it also
+  fixed CreateDibBitmapFromStoredInfo 86%→100%.
+- **`memcpy`/`memset` of a dynamic byte count → `rep movsd`+`rep movsb`** matches the original's
+  inlined copy; **do NOT** pre-mask the count with `& 0x3fffffff` (that mask is Ghidra's artifact
+  of `(n*4)>>2`; the real code is just `n*4`). Inline the count expression per call — the
+  original recomputes it, doesn't hoist a `tableBytes` local.
+- **Memory-DC BitBlt path uses raw Win32** (`::CreateCompatibleDC`/`::SelectObject`/`::BitBlt`/
+  `::DeleteDC`) because it selects an HBITMAP directly; CDC::BitBlt wants a CDC* src and won't match.
+- **A single-use gating global** (e.g. 0x694c50) needs full plumbing to pair its operand: a
+  `symbols.csv` `…|global||` row + a `// GLOBAL:` def in `global_data_tables.cpp` + `extern` in
+  the `.h`. Name it behaviorally and hedge as provisional if only one reader is known.
+- **Ceiling ~70%:** the residual is MSVC CSE (the original re-reads `picture->m_pInfoHeader` and
+  recomputes `abs(biHeight)` per height arg; cleaner C++ gets CSE'd to fewer instructions) and a
+  library FromHandle identity. Writing raw field accesses inline (no locals) recovers *some* of
+  the double-abs but not the header-pointer CSE. Per the philosophy, stop here — don't contort
+  the source to chase the last MSVC-scheduling percent on an architecturally-correct paint body.
+
+## Note 108 — Ghidra's provisional class namespace can mis-home a method to a sibling class
+
+Ghidra auto-names methods with a provisional namespace that can be a DIFFERENT class from the
+recovered one — e.g. `TacticalBattleView::` (no `T` prefix) is NOT the recovered
+`TTacticalBattleView`; here three "TacticalBattleView" methods were actually `TTacticalBattle`
+methods. Before homing a stubbed method onto the class its symbols.csv name suggests, VERIFY
+`this`'s real type by cross-checking every `this+off` access against candidate class headers
+(field offsets, the vtable, the method-address cluster range). Seven field matches
+(battleView8/currentSideC/field10/tacticalPlayer14/18/selectedUnit1c) pinned `this` as
+`TTacticalBattle`, not the view. Fix the symbols.csv namespace and put the body in the right
+`.cpp`. (Hard Rule 6: names are provisional; pair by behavior, not by name.)
+
+## Note 109 — POD-only constructors: body assignments in observed store order, not init lists
+
+For a constructor whose members are ALL POD (pointers/ints/shorts/bytes, no sub-objects), MSVC
+emits the field stores in SOURCE order and sets the vptr first. A member-initializer list runs
+in DECLARATION order and often mismatches the original's store order (it stored 0x78/0xd0 before
+0x68, i.e. not declaration order) — and `-Wreorder` forces the list back to declaration order
+anyway. So mirror the original with body assignments in the exact observed store order; the
+vptr write lands first automatically. Took the TTacticalBattleView ctor 78.9%→100%. (This is
+the flip side of construction Hard Rule 3, which mandates init lists ONLY when a scalar must be
+set before a later NON-POD member is constructed.)
+
+## Note 110 — Deeply-optimized functions may not reach a high match from clean C++
+
+A 532-byte target-cycling function (HandleTacticalCommandTag_targ) capped at ~33% despite a
+verified algorithm: MSVC had fused comma-operator conditions, reused stack slots, duplicated
+the reach-check inline, and DCE'd a validation block. Clean, correct C++ compiles to a
+structurally different shape. When the decompile shows these optimizer fingerprints, expect a
+low ceiling and budget accordingly — port it faithfully (architecture correct, callers
+unblocked), document the residual, and don't sink hours chasing the last register. A 100% match
+would require reverse-engineering the exact optimized instruction schedule, rarely worth it.
+Also: a slot the disassembly calls virtually but that isn't a modeled callable (CObject-style
+`AssertValid`, vtable slot 3) is fine to omit with a note — one missing no-op CALL.

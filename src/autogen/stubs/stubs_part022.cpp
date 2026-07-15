@@ -564,7 +564,7 @@ undefined4 AddDocTemplate(void)
 }
 
 // ghidra_name DDX_Check
-// ghidra_proto undefined DDX_Check()
+// ghidra_proto void __stdcall DDX_Check(class CDataExchange *, int, int &)
 // FUNCTION: IMPERIALISM 0x00618d0f
 undefined4 DDX_Check(void)
 {

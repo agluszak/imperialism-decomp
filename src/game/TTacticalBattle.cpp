@@ -20,9 +20,12 @@
 #include "game/TNextMoveCommand.h"
 #include "game/TSimMgr.h"
 #include "game/TSoundPlayer.h"
+#include "game/TNavyPlayer.h"
 #include "game/TTacticalBattleView.h"
 #include "game/TTacticalPlayer.h"
 #include "game/TTacticalToolbar.h"
+#include "game/TViewMgr.h"
+#include "game/global_data_tables.h"
 #include "game/ui_control_tags.h"
 #include "game/global_data_tables.h"
 
@@ -487,6 +490,45 @@ void TTacticalBattle::ComputeHexNeighborTileIndices_005A0420(int tileIndex,
     // Top row: no northern neighbors.
     outNeighborTiles6[0] = -1;
     outNeighborTiles6[5] = -1;
+  }
+}
+
+// Top-level tactical toolbar command dispatch for the current side. Ignored unless the side
+// is human-watched; then routes the 4-char command tag to the matching handler.
+// FUNCTION: IMPERIALISM 0x005a0c50
+void TTacticalBattle::HandleTacticalBattleCommandTag(int commandTag) {
+  TTacticalPlayer* player = (&tacticalPlayer14)[currentSideC];
+  if (player->watchFlagD == 0) {
+    return;
+  }
+  switch (commandTag) {
+  case 0x646f6e65: // 'done'
+    if (field10 == 1) {
+      QueueTacticalEventPacket232A();
+      return;
+    }
+    ApplyTacticalDoneSelectionAndRefreshUi(player->SelectNextTacticalUnitForDoneCommand());
+    return;
+  case 0x6175746f: // 'auto'
+    player->ProceedAfterBattleIntroAccepted();
+    return;
+  case 0x72657472: // 'retr'
+    if (field10 == 0) {
+      HandleTacticalCommandTag_retr();
+      return;
+    }
+    if (g_pUiRuntimeContext->ShowLocalizedUiPromptByGroupAndIndex(0x273d, 0x32, 1, 1)) {
+      player = (&tacticalPlayer14)[currentSideC];
+      player->fieldF = 1;
+      player->ProceedAfterBattleIntroAccepted();
+    }
+    return;
+  case 0x736b6970: // 'skip'
+    player->HandleTacticalCommandTag_skip();
+    return;
+  case 0x74617267: // 'targ'
+    HandleTacticalCommandTag_targ();
+    return;
   }
 }
 
@@ -1701,6 +1743,95 @@ unsigned char TTacticalBattle::IsTacticalTargetTileReachableForAction(int attack
   return 0;
 }
 
+// "targ" command: cycles the selected unit's target to the next reachable enemy unit in the
+// opposing side's list, starting after the current target (which is recentered if still
+// valid), recentering the view on the first reachable candidate; sets the selected unit's
+// target field, or plays a "no target" cue if none was found. NOTE: the original also calls
+// the candidate's AssertValid (vtable slot 0x03, a retail no-op) each iteration; that call is
+// omitted here because AssertValid is not modeled as a callable TObject method.
+// FUNCTION: IMPERIALISM 0x005a3f10
+void TTacticalBattle::HandleTacticalCommandTag_targ() {
+  TTacticalUnit* selected = selectedUnit1c;
+  TTacticalUnit* result = NULL;
+  if (selected == NULL || battleView8 == NULL) {
+    return;
+  }
+  // field30 is a dual-purpose slot (see TTacticalUnit.h); here it carries the target unit.
+  TTacticalUnit* marker = reinterpret_cast<TTacticalUnit*>(selected->field30);
+  TList* list = (&tacticalPlayer14)[selected->side20 == 0]->unitList4;
+
+  // Locate the current target's ordinal in the opposing list (0 if it is gone).
+  int position = 0;
+  if (marker != NULL) {
+    int count = list->GetCount();
+    for (int i = 1; i <= count; i++) {
+      if (list->GetEntryByOrdinal(i) == marker) {
+        position = i;
+      }
+      count = list->GetCount();
+    }
+    if (position == 0) {
+      marker = NULL;
+    }
+  }
+
+  // If the current target is still valid and reachable, recenter the view on it.
+  if (marker != NULL && marker->state1c == 0) {
+    char reachable;
+    if (selectedUnit1c->selectedFlag18 == 0) {
+      reachable = 0;
+    } else {
+      reachable = IsTacticalTargetTileReachableForAction(
+          selectedUnit1c->tileIndex8, marker->tileIndex8,
+          static_cast<char>(g_afTacticalDirectFireFlagByCategory
+                                [g_awTacticalUnitCategoryCodeBySlot[selectedUnit1c->unitTypeC]]),
+          selectedUnit1c->GetUnitRange());
+    }
+    if (reachable != 0) {
+      battleView8->CenterViewportAroundGridIndexAndSnap(marker->tileIndex8);
+    }
+  }
+
+  if (position == 0 || position == list->GetCount()) {
+    position = 1;
+  }
+
+  int cursor = position;
+  do {
+    int next = cursor + 1;
+    if (list->GetCount() < next) {
+      next = 1;
+    }
+    TTacticalUnit* candidate = static_cast<TTacticalUnit*>(list->GetEntryByOrdinal(next));
+    if (candidate->state1c == 0) {
+      char reachable;
+      if (selectedUnit1c->selectedFlag18 == 0) {
+        reachable = 0;
+      } else {
+        reachable = IsTacticalTargetTileReachableForAction(
+            selectedUnit1c->tileIndex8, candidate->tileIndex8,
+            static_cast<char>(g_afTacticalDirectFireFlagByCategory
+                                  [g_awTacticalUnitCategoryCodeBySlot[selectedUnit1c->unitTypeC]]),
+            selectedUnit1c->GetUnitRange());
+      }
+      if (reachable != 0) {
+        if (marker == NULL) {
+          battleView8->CenterViewportAroundGridIndexAndSnap(candidate->tileIndex8);
+          marker = candidate;
+        } else {
+          result = candidate;
+        }
+      }
+    }
+    cursor = next;
+  } while (cursor != position && result == NULL);
+
+  selectedUnit1c->field30 = reinterpret_cast<int>(result);
+  if (result == NULL) {
+    g_pSfxPlaybackSystem->PlaySoundEffect(0x1b5a, 0, 1);
+  }
+}
+
 // Whether a tile is a legal deployment target for the current side: not in the first
 // grid row, not water/impassable terrain (type 4), unoccupied, and inside the side's
 // deployment column band (side 0: columns 3..5; side 1: columnCount-5..columnCount-3).
@@ -1939,4 +2070,11 @@ TArmyTacUnit* TTacticalBattle::SeekLinkedListCursorByNestedId(int nestedId) {
     }
   }
   return 0;
+}
+
+// Sets the current side's navy ship-panel display mode from the navy toolbar (hull/crew/sail).
+// The players are TNavyPlayer in a sea battle, so the mode lands in the navy-slice field.
+// FUNCTION: IMPERIALISM 0x005a5b90
+void TTacticalBattle::SetCurrentSideNavyShipDisplayMode(int mode) {
+  static_cast<TNavyPlayer*>((&tacticalPlayer14)[currentSideC])->shipDisplayMode2c = mode;
 }

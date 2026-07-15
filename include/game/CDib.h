@@ -59,6 +59,15 @@ public:
   // DIB_RGB_COLORS + SRCCOPY, null-tolerant CDC. 0x0047abe0
   int StretchDibitsRectToDc(CDC* dc, int xDest, int yDest, int destWidth, int destHeight, int xSrc,
                             int ySrc, int srcWidth, int srcHeight);
+  // CreateDIBitmap from the stored header/bits (CBM_INIT), compatible with the given DC.
+  // Returns NULL if no pixel buffer. 0x0047b280
+  HBITMAP CreateDibBitmapFromStoredInfo(CDC* dc);
+  // StretchDIBits with the color-table entry `paletteIndex` temporarily forced white (then
+  // restored): masks that palette slot to white for the blit. Two-pass (AND then paint ROP).
+  // 0x0047ac50
+  BOOL StretchDibitsWithCopiedPaletteTable(CDC* dc, int paletteIndex, int xDest, int yDest,
+                                           int destWidth, int destHeight, int xSrc, int ySrc,
+                                           int srcWidth, int srcHeight);
   // Load an RT_BITMAP resource from a module into the DIB state. 0x0047c080
   int LoadBitmapResourceAndInitializeSurfaceState(LPCSTR resourceName, HMODULE module);
   // Software-blit a `width`x`height` rect from this DIB's pixel buffer (top-left at

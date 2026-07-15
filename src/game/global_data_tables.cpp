@@ -189,6 +189,12 @@ const char* const g_apszQuickDrawFontFaceNames[5] = {
 char g_szUiPlaceholderSeason_006943BC[] = "Winter, 1888";
 // GLOBAL: IMPERIALISM 0x00694a98
 char g_szUiPlaceholderSampleText_00694A98[] = "Sample Text 1\n2\n3\n4\n5\n6\n7\n8";
+// Provisional: selects the CDib picture-preview blit path in TDDTemplateDialog::OnPaint
+// (0x0047d5f0) — nonzero (1 in the binary) picks the CreateCompatibleDC + BitBlt of a
+// device bitmap; zero picks a plain StretchDIBits from the stored DIB bits. Only observed
+// use so far is that OnPaint; name is a behavioral guess.
+// GLOBAL: IMPERIALISM 0x00694c50
+int g_useCompatibleBitmapBlit = 1;
 // New-game setup screen (turn event 0x5dd) placeholder label strings, bound by the
 // screen builder (group 0x514) until real localized strings replace them.
 // GLOBAL: IMPERIALISM 0x006949e0
