@@ -293,31 +293,31 @@ void TCountry::SeedInitialMilitaryAndNavyOrdersForOwnedRegions(void) {
       if ((g_pGlobalMapState->terrainStateTable[regionTerrainId].activeFlags1c & 1) != 0) {
         TMilitaryUnit* order = new TMilitaryUnit();
         order->InitializeRecruitOrderState(2, regionId, this->nationSlot);
-        if (g_pSimMgr->runtimeSubsystemIndex < 2) {
+        if (g_pSimMgr->redrawEnabled < 2) {
           order->SetOrderModeSlot34(2, -1);
         }
         order = new TMilitaryUnit();
         order->InitializeRecruitOrderState(2, regionId, this->nationSlot);
-        if (g_pSimMgr->runtimeSubsystemIndex < 2) {
+        if (g_pSimMgr->redrawEnabled < 2) {
           order->SetOrderModeSlot34(2, -1);
         }
         order = new TMilitaryUnit();
         order->InitializeRecruitOrderState(7, regionId, this->nationSlot);
-        if (g_pSimMgr->runtimeSubsystemIndex < 2) {
+        if (g_pSimMgr->redrawEnabled < 2) {
           order->SetOrderModeSlot34(2, -1);
         }
         g_pGlobalMapState->NotifyCityRecordSlot12C(regionId);
         if (this->nationSlot < 7 &&
             g_apNationStates[this->nationSlot]->diplomacyEligibilityA0 == 0 &&
-            g_pSimMgr->runtimeSubsystemIndex == 4) {
+            g_pSimMgr->redrawEnabled == 4) {
           order = new TMilitaryUnit();
           order->InitializeRecruitOrderState(6, regionId, this->nationSlot);
-          if (g_pSimMgr->runtimeSubsystemIndex < 2) {
+          if (g_pSimMgr->redrawEnabled < 2) {
             order->SetOrderModeSlot34(2, -1);
           }
           order = new TMilitaryUnit();
           order->InitializeRecruitOrderState(5, regionId, this->nationSlot);
-          if (g_pSimMgr->runtimeSubsystemIndex < 2) {
+          if (g_pSimMgr->redrawEnabled < 2) {
             order->SetOrderModeSlot34(2, -1);
           }
           TGreatPower* nation = g_apNationStates[this->nationSlot];
@@ -327,7 +327,7 @@ void TCountry::SeedInitialMilitaryAndNavyOrdersForOwnedRegions(void) {
         }
         if (this->nationSlot < 7) {
           TGreatPower* nation = g_apNationStates[this->nationSlot];
-          if (nation->diplomacyEligibilityA0 != 0 && g_pSimMgr->runtimeSubsystemIndex == 0) {
+          if (nation->diplomacyEligibilityA0 != 0 && g_pSimMgr->redrawEnabled == 0) {
             TCity* cityForPort = (nation != 0) ? nation->city : 0;
             TZone* portZone = g_pActiveMapOrderContext->FindPortZoneBySelectedTile(cityForPort);
             if (portZone->PrimaryZoneHeapCapacity() == 0) {
@@ -355,7 +355,7 @@ void TCountry::SeedInitialMilitaryAndNavyOrdersForOwnedRegions(void) {
       this->CreateMilitaryRecruitOrderForNode(regionId);
       this->CreateMilitaryRecruitOrderForNode(regionId);
       this->CreateMilitaryRecruitOrderForNode(regionId);
-      if (g_pSimMgr->runtimeSubsystemIndex > 2) {
+      if (g_pSimMgr->redrawEnabled > 2) {
         this->CreateMilitaryRecruitOrderForNode(regionId);
         if (this->nationSlot >= 7) {
           TMilitaryUnit* lateOrder = new TMilitaryUnit();

@@ -1,9 +1,56 @@
 #include "game/TTurnEventDialogFactoryRegistry.h"
 
+#include "game/CSubViewIterator.h"
 #include "game/TView.h"
 #include "game/mfc.h"
 #include "game/global_data_tables.h"
 #include "game/turn_event_dialog_factory.h"
+
+// FUNCTION: IMPERIALISM 0x004919a0
+CSubViewIterator::CSubViewIterator(const TView* owner) {
+  // The single-arg (const TView*) ctor defaults the traversal forward; position00 is left
+  // uninitialised until FirstSubView(), matching the original (which never writes +0 here).
+  ownerView04 = owner;
+  direction08 = 1;
+  identTag0c = 0x20202020;
+  currentChild10 = nullptr;
+}
+
+// FUNCTION: IMPERIALISM 0x00491a00
+TView* CSubViewIterator::FirstSubView() {
+  TViewChildList* list = ownerView04->childList44;
+  if (list == nullptr) {
+    position00 = nullptr;
+  } else {
+    position00 = (direction08 != 0) ? list->GetHeadPosition() : list->GetTailPosition();
+  }
+  if (position00 == nullptr) {
+    currentChild10 = nullptr;
+    return currentChild10;
+  }
+  currentChild10 = (direction08 != 0) ? list->GetNext(position00) : list->GetPrev(position00);
+  return currentChild10;
+}
+
+// FUNCTION: IMPERIALISM 0x00491a70
+TView* CSubViewIterator::NextSubView() {
+  if (position00 == nullptr) {
+    currentChild10 = nullptr;
+    return currentChild10;
+  }
+  // GetNext/GetPrev only touch the node, not the list object; the owner's childList44 is
+  // named only to satisfy the member-call form and is optimised away.
+  TViewChildList* list = ownerView04->childList44;
+  currentChild10 = (direction08 != 0) ? list->GetNext(position00) : list->GetPrev(position00);
+  return currentChild10;
+}
+
+// FUNCTION: IMPERIALISM 0x00491ab0
+int CSubViewIterator::MoreSubViews() {
+  // Returns int (not bool), matching the sibling CIterator::More(): call sites test the
+  // full eax register.
+  return currentChild10 != nullptr;
+}
 
 void RegisterStartupDialogFactoryCallbacks(TTurnEventDialogFactoryRegistry* registry) {
   static TurnEventDialogFactoryProc kStartupFactories[] = {

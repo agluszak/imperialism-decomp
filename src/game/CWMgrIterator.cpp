@@ -1,37 +1,38 @@
 #include "game/CWMgrIterator.h"
 
 // FUNCTION: IMPERIALISM 0x004923f0
-void CWMgrIterator::Reset(unsigned char fForwardArg) {
+CWMgrIterator* CWMgrIterator::Reset(char fForwardArg) {
+  // Returns this (original leaves this in eax at RET); the flag is a signed char stored
+  // sign-extended into the int field (movsx), so the parameter is char, not unsigned char.
   nextPosition = NULL;
   fForward = fForwardArg;
   current = 0;
+  return this;
 }
 
 // Arm the cursor on the head of the live-view registry: stash the head position, then read
 // the first entry (advancing the position to the next node) or clear out when empty.
 // FUNCTION: IMPERIALISM 0x00492440
 void* CWMgrIterator::FirstWindow() {
-  POSITION pos = g_LiveViewRegistry.GetHeadPosition();
-  nextPosition = pos;
-  if (pos == NULL) {
-    current = 0;
-    return 0;
+  // Seed nextPosition directly in the field and let GetNext read-and-advance it (heuristic
+  // 98) rather than caching in a local and re-storing.
+  nextPosition = g_LiveViewRegistry.GetHeadPosition();
+  if (nextPosition != NULL) {
+    current = g_LiveViewRegistry.GetNext(nextPosition);
+    return current;
   }
-  current = g_LiveViewRegistry.GetNext(pos);
-  nextPosition = pos;
-  return current;
+  current = 0;
+  return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x00492470
 void* CWMgrIterator::NextWindow() {
-  POSITION pos = nextPosition;
-  if (pos == NULL) {
-    current = 0;
-    return 0;
+  if (nextPosition != NULL) {
+    current = g_LiveViewRegistry.GetNext(nextPosition);
+    return current;
   }
-  current = g_LiveViewRegistry.GetNext(pos);
-  nextPosition = pos;
-  return current;
+  current = 0;
+  return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004924a0

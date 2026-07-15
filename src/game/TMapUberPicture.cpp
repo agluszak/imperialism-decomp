@@ -274,6 +274,12 @@ void TMapUberPicture::OpenMapContextActionDialogByType(TZone* zone, int actionTy
   (void)cachedContext;
 }
 
+// FUNCTION: IMPERIALISM 0x005999f0
+void TMapUberPicture::ResetMapInteractionToCivilianMode() {
+  EnterMapInteractionOverlayMode(0);
+  SetMapInteractionMode(0);
+}
+
 // FUNCTION: IMPERIALISM 0x00599a50
 void TMapUberPicture::EnterMapInteractionOverlayMode(int param1) {
   if (this->invalidationFlag94 != 0) {
@@ -348,6 +354,16 @@ undefined TMapUberPicture::CreateToolWindow_00599CF0() {
   }
 
   return this->SetTradeToolSubcontrolEnabledStateByFlag(0);
+}
+
+// FUNCTION: IMPERIALISM 0x00599fa0
+void TMapUberPicture::InvokeViewSlotE4IfContextPresent() {
+  if (this == nullptr) {
+    return;
+  }
+  if (field_0xc0 != nullptr) {
+    field_0xc0->RefreshControl();
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x00599fd0

@@ -156,6 +156,7 @@ public:
   // Genuinely empty in the shipped binary (single `RET 4`); called by
   // TArmyMgr::CreateTacticalBattleViewAndInitializeBattleSetup with the new battle view,
   // discarding both the argument and the (unset) return value. 0x54c660, __thiscall.
+  void SetDialogModeTagInitAndInvokeNoOpHook(); // 0x54c630
   void NoOpCallbackRet4(void* param);
   // Multiplayer tactical-command echo hooks, dispatched thiscall on g_pGameFlowState by
   // every TTacticalBattle command handler. Retail bodies are empty (0x54c680 = bare

@@ -379,7 +379,7 @@ float TArmyMission::ReturnZeroFloatSlot6C() {
 // FUNCTION: IMPERIALISM 0x0053d420
 float TArmyMission::ReturnZeroFloatSlot70(TMilitaryUnit* candidateUnit) {
   if (flag10 != 0) {
-    return 0.0f;
+    return g_Recompute_Nation_Order_LookupTable_0065A9E8;
   }
 
   if (candidateUnit->ownerMission40 == this) {

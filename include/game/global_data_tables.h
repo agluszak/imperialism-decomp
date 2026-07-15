@@ -612,6 +612,10 @@ extern char g_szUiBoardOfTradeLabel_00694AF8[];
 // the UI invalidation-flag assert helper from the TDlgWindow/UGameWindow assert hooks.
 extern char g_szUGameWindowSourcePath_00696bc0[];
 
+// Source-file path string ("D:\\Ambit\\Cross\\UCountry.cpp") passed with a line number to
+// the UI invalidation-flag assert helper from TGreatPower nil-pointer assert hooks.
+extern char g_szUCountrySourcePath_00696728[];
+
 // Gate checked by TControl::AssertCityProductionGlobalStateInitialized before the
 // McAppUI.h line-0x56f assert path runs.
 extern int g_McAppUiFlag_006A143C;
@@ -844,7 +848,20 @@ extern float g_ApplyIndexedResourceDeltaScale_00653728;
 
 // TMission.cpp — default mission score constant.
 extern const float g_MissionDefaultScore_0065a468;
+extern const float g_HexHighlightScreenScale_00658640;
 extern float g_TileHeatmapNeighborDiffusionFactor;
+extern double g_MapPreviewScaleX6A3410;
+extern double g_MapPreviewScaleY6A33D0;
+extern double g_ScaleDefault6A1FE8;
+extern double g_ScaleDefault6A1FC0;
+extern int g_ResetStateDword6A1E20;
+extern int g_ResetStateDword6A1E24;
+extern int g_ResetStateDword6A1E48;
+extern int g_ResetStateDword6A1E4C;
+extern int g_ResetStateDword6A1E70;
+extern int g_ResetStateDword6A1E74;
+extern int g_ResetStateDword6A1F38;
+extern int g_ResetStateDword6A1F3C;
 extern short g_NavyResolveOrderRanking[14];
 extern short g_NavyMissionOrderRanking[14];
 extern short g_NavyPriorityOrderRanking[14];
@@ -909,6 +926,8 @@ extern SeaSegmentStretch g_regionBorderLinkTable_006a3900;
 
 // Hex-neighbour offset tables (offset-coordinate grid; even/odd rows shift columns
 // differently), indexed by direction 0..5. Read by the city-region border/merge passes.
+extern const int g_anTechItemPurchaseCostBySlot_0066aae8[34];
+extern const short g_awTechPrereqCapabilityFieldOffsetPairs_0066ac10[34][2];
 extern const int g_hexColOffsetEvenRow_00697450[6];
 extern const int g_hexRowOffset_00697468[6];
 extern const int g_hexColOffsetOddRow_00697480[6];
@@ -938,6 +957,17 @@ extern char s_mcflavor_00695794[];
 extern char s_mcflavor_00696674[];
 extern char s_mcflavor_00696d10[];
 extern char s_mcflavor_00697238[];
+extern char g_szScriptFileName_006972f8[];
+extern char g_szFmtZone_006972e8[];
+extern char g_szFmtShip_006972d0[];
+extern char g_szFmtArmy_006972bc[];
+extern char g_szFmtCivi_006972ac[];
+extern char g_szFmtPort_006972a0[];
+extern char g_szFmtRail_00697294[];
+extern char g_szFmtCapa_00697280[];
+extern char g_szFmtLabo_00697268[];
+extern char g_szFmtEmba_00697254[];
+extern char g_szFmtYear_00697248[];
 extern char s_mcflavor_006976e0[];
 extern char s_mcflavor_00698b0c[];
 extern char s_mcflavor_0069ab00[];

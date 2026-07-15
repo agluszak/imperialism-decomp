@@ -92,19 +92,21 @@ void TUnit::DispatchSlot2C() {
 
 // FUNCTION: IMPERIALISM 0x005c2680
 void TUnit::Free() {
-  void* manager = nullptr;
+  // The owning list is a TSortedList (TCountry::militaryUnitList44 at terrain+0x44, or the
+  // nation's list at +0x89c); +4 reaches its embedded CPtrList listState, so walk that
+  // member's real API rather than casting the raw offset.
+  TSortedList* manager = nullptr;
   if (this->field_1C == 0) {
     void* nation = g_apNationStates[this->field_18];
-    manager = *reinterpret_cast<void**>(reinterpret_cast<char*>(nation) + 0x89c);
+    manager = *reinterpret_cast<TSortedList**>(reinterpret_cast<char*>(nation) + 0x89c);
   } else {
     void* terrain = g_apTerrainTypeDescriptorTable[this->field_18];
-    manager = *reinterpret_cast<void**>(reinterpret_cast<char*>(terrain) + 0x44);
+    manager = *reinterpret_cast<TSortedList**>(reinterpret_cast<char*>(terrain) + 0x44);
   }
   if (manager != nullptr) {
-    CPtrList* list = reinterpret_cast<CPtrList*>(reinterpret_cast<char*>(manager) + 4);
-    POSITION pos = list->Find(this);
+    POSITION pos = manager->listState.Find(this);
     if (pos != nullptr) {
-      list->RemoveAt(pos);
+      manager->listState.RemoveAt(pos);
     }
   }
   delete this;

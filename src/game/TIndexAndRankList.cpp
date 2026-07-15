@@ -10,6 +10,7 @@
 
 IMPLEMENT_DYNCREATE(TIndexAndRankList, TSortedPtrList)
 
+// FUNCTION: IMPERIALISM 0x00534870
 TIndexAndRankList::TIndexAndRankList() {}
 
 // SYNTHETIC: IMPERIALISM 0x005348a0

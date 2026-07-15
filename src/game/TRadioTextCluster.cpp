@@ -1,6 +1,7 @@
 #include "game/TRadioTextCluster.h"
 
 #include "game/TRadioText.h"
+#include "game/CSubViewIterator.h"
 #include "game/TViewMgr.h"
 #include "game/global_data_tables.h"
 #include "game/quickdraw_regions.h"
@@ -53,20 +54,25 @@ void TRadioTextCluster::SetSelectedTextOptionByTag(int tag, bool refreshOnChange
     return;
   }
   selectedTag88 = tag;
-  if (childList44 == 0) {
-    return;
-  }
-  POSITION pos = childList44->GetHeadPosition();
-  while (pos != NULL) {
-    TRadioText* child = static_cast<TRadioText*>(childList44->GetNext(pos));
-    child->AssertValid();
-    bool shouldBeSelected = (child->controlTag == selectedTag88);
-    if (shouldBeSelected != (child->isSelectedOption98 != 0)) {
-      child->isSelectedOption98 = shouldBeSelected;
-      if (refreshOnChange) {
-        child->RefreshControl();
+  // The original walks the children with the shared bidirectional cursor (which handles a
+  // null childList44 internally), not a raw GetHeadPosition/GetNext loop.
+  CSubViewIterator iter(this);
+  TRadioText* child = static_cast<TRadioText*>(iter.FirstSubView());
+  if (iter.MoreSubViews()) {
+    do {
+      child->AssertValid();
+      // Original compares the raw isSelectedOption98 byte directly (cmp al,cl) -- it never
+      // holds anything but 0/1, so no `!= 0` normalization is emitted.
+      unsigned char shouldBeSelected =
+          static_cast<unsigned char>(child->controlTag == selectedTag88);
+      if (shouldBeSelected != child->isSelectedOption98) {
+        child->isSelectedOption98 = shouldBeSelected;
+        if (refreshOnChange) {
+          child->RefreshControl();
+        }
       }
-    }
+      child = static_cast<TRadioText*>(iter.NextSubView());
+    } while (iter.MoreSubViews());
   }
 }
 
@@ -75,16 +81,19 @@ TRadioText* TRadioTextCluster::AddItem(unsigned long tag, int value, const char*
                                        int bottom) {
   if (bottom == -1) {
     bottom = itemInset92;
-    if (childList44 != 0) {
-      POSITION pos = childList44->GetHeadPosition();
-      while (pos != NULL) {
-        TView* child = childList44->GetNext(pos);
+    // The original accumulates the max child bottom via the shared cursor (which handles a
+    // null childList44 internally), not a raw GetHeadPosition/GetNext loop.
+    CSubViewIterator iter(this);
+    TView* child = iter.FirstSubView();
+    if (iter.MoreSubViews()) {
+      do {
         child->AssertValid();
         int childBottom = child->ownerLocalY + child->frameHeight38 + itemVerticalSpacing94;
         if (childBottom > bottom) {
           bottom = childBottom;
         }
-      }
+        child = iter.NextSubView();
+      } while (iter.MoreSubViews());
     }
   }
 

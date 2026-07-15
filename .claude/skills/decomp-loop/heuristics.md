@@ -1786,3 +1786,170 @@ unblocked), document the residual, and don't sink hours chasing the last registe
 would require reverse-engineering the exact optimized instruction schedule, rarely worth it.
 Also: a slot the disassembly calls virtually but that isn't a modeled callable (CObject-style
 `AssertValid`, vtable slot 3) is fine to omit with a note — one missing no-op CALL.
+
+99. **Resolve a method's real address through the vtable's ILT thunks before trusting a
+    header slot comment — a body can be mis-attached across two markers even when
+    `just vtable` reads 100%.** `just vtable` scores the slot-pointer *correspondence*, not
+    the function *bodies*, so a swapped body/marker pair passes it while both functions
+    score badly. Ground-truth recipe: dump the orig vtable (`objdump -s --start-address=
+    <vtable+slot*4> …`), take the slot's dword (an ILT thunk `0x40xxxx`), then
+    `objdump -d` that thunk to read its `jmp <realAddr>`. Documented pre-existing tangle in
+    TForeignMinister (both branch and origin/main): vtable slot 0x1a→0x52fdc0, slot
+    0x1e→0x530200. The real terrainSlot=7 "update per-nation interaction enable flags" body
+    is at 0x52fdc0 (slot 0x1a) per disasm (`xor bl,bl; mov esi,7`), but the source models
+    0x52fdc0 as an empty `MinisterSlot1A(short)` stub (0%) and attaches that terrainSlot=7
+    body to the `UpdateNation…()` method marked 0x530200 (really QueueTurnEventHint, a big
+    SEH fn, symbols.csv l.3498) → 6%. The header comment "slot 0x1e (0x0052fdc0)" is wrong.
+    Fix (needs class-recovery/vtable-matching care, not a routine tick): swap the slot-0x1a
+    and slot-0x1e *declarations* so the terrainSlot=7 body lands in slot 0x1a with marker
+    0x52fdc0 (drop its phantom `short arg` — RefreshForeignMinisterState 0x52fd10 calls it
+    arg-less; that's the lone `+push 0` diff there), stub 0x530200 as QueueTurnEventHint, and
+    re-verify each caller's dispatched slot offset (`call [reg+off]`) before trusting the
+    rename. Vtable stays 100% through the swap because the pointer pairing is unchanged.
+    RESOLVED (commit d3373409): no declaration reorder was even needed — the markers were
+    already correct (line-33 method→0x52fdc0=slot 0x1a, line-42→0x530200=slot 0x1e); only the
+    *bodies+names* were swapped. Moved the terrainSlot=7 body onto the 0x52fdc0 method
+    (renamed UpdateNation, void, arg dropped), stubbed 0x530200 as QueueTurnEventHint, fixed
+    the three call sites by dispatched slot. 0x52fdc0 0%→51%, RefreshForeignMinisterState
+    →100%, vtable still 100%. Confirmed the definitive arg check: 0x52fdc0 ends in `c3`
+    (`ret 0`) so it's void — Call90's `push eax` before `call [edx+0x68]` (no cleanup) is a
+    partial-port artifact, not a real short param.
+
+100. **Force MSVC's callee-saved-register live-range SPLIT with a genuine phi variable when
+    a nil-alloc pattern holds `this` across `new` AND the result across a later `MessageBoxA`.**
+    The `p = new T; if (p) {construct} ; if (!p) {MessageBoxA; assert} return p;` idiom
+    (CreateLinkedOrderNode 0x00552650) has TWO values needing callee-saved registers: `this`
+    (live across the `new` call) and the node result (live across the assert's MessageBoxA).
+    The original reuses ONE register (ESI): `this` in ESI up to `this->prev_link = node`,
+    then ESI is dead and reused for the result via a `mov esi,eax` at the alloc-check merge
+    (`if p==0: xor esi,esi` / else: construct-in-EAX then `mov esi,eax`). Modeling it with a
+    single variable (`node = new; if (node){...}; if(!node){...}; return node;`) makes MSVC
+    keep the node in ESI for its *whole* range and spill `this` into an extra EDI
+    (`push edi`) → ~50%. Fix: split into a scratch `raw = new T` used only during
+    construction (stays in EAX) and a distinct `result` phi assigned in BOTH branches
+    (`if (raw != 0){ construct; result = raw; } else { result = 0; }`), then assert/return
+    `result`. The distinct two-branch assignment materializes the phi into the callee-saved
+    return register at the merge, freeing `this`'s register for reuse → 100%. Also: put the
+    non-null (construction) branch FIRST as the `if (raw != 0)` fall-through so the `xor`
+    null-branch lands at the end, matching the original's block order; and pass the (nil)
+    result pointer as the MessageBoxA HWND (`reinterpret_cast<HWND>(result)`, what the
+    original source did) rather than a literal 0. CAUTION: the construction anti-pattern gate
+    regexes `\boperator\s+(?:new|delete)\s*\(` — a *comment* like "raw operator new (no init)"
+    trips it; write "non-value-initializing `new`" instead.
+
+101. **A small __thiscall "iterator/cursor" struct that reads `container->[+0x44]` then walks
+    `+0/+4` links with data at `+8` is an MFC `CList`/`CObList` traversal — model it with the
+    real MFC accessors, not a hand-rolled node struct.** The SelectableTextOptionEntry cursor
+    family (0x004919a0 Initialize / 0x00491a00 Begin / 0x00491a70 Advance / 0x00491ab0 IsValid)
+    looked like a bespoke tree walker, but `container+0x44` is a `TView::childList44`
+    (`CList<TView*,TView*>*`, CObject-derived: vtable +0, `m_pNodeHead` +4, `m_pNodeTail` +8;
+    `CNode{pNext +0, pPrev +4, data +8}`). The disassembly's `*(list+4)`/`*(list+8)` = Get
+    Head/TailPosition, and `node->next/prev` + `node->data` = GetNext/GetPrev's inlined body.
+    Modeling it as `list->GetHeadPosition()/GetNext(pos)` etc. (repo's real `<afxtempl.h>` CList)
+    matched 100% — and the list-object load in `Advance` is optimised away because the inline
+    GetNext/GetPrev only touch the node, not `this` (so a method whose disasm never reads the
+    container still uses `ownerView->childList44->GetNext(pos)` cleanly). Sibling precedent:
+    `CIterator` (Reset/More/Advance over `TSortedList::listState` CPtrList). When you see a
+    ~12-20 byte cursor struct with a POSITION field + a payload field, look for the MFC list it
+    walks before inventing a class. TWO codegen keys that took it from 15%/88% to 100%: (a) an
+    init/"reset" method that ends with `mov eax,ecx`+`this`-in-eax-at-RET RETURNS `this` (model
+    `T* Initialize(){...; return this;}`); (b) a seed-then-check that does `mov [ecx],eax` then
+    re-reads `mov eax,[ecx]` stores the position to the FIELD in each branch and re-reads the
+    field for the null check — don't cache it in a local (`position00 = ...; if (position00 ==
+    0)`, not `pos = ...; ... = pos; if (pos == 0)`).
+
+102. **Claiming a small "Construct<Class>BaseState" ctor stub is a marker-only win ONLY when
+    the ctor is already defined out-of-line in a .cpp; moving a header-inline ctor into a
+    .cpp to attach the marker regresses every call site that inlined it.** These 18-byte
+    stubs (e.g. 0x534870 TIndexAndRankList, 0x5b6a00 TNoHiliteText, 0x5a6560 TNextMoveCommand)
+    are the compiler's out-of-line COMDAT copy of `T::T() : Base() {}` — base ctor call +
+    vtable install + `mov eax,ecx` return-this. If the class's ctor already lives in the .cpp
+    as `T::T() {}` (TNoHiliteText, TIndexAndRankList), just add `// FUNCTION: 0x...` above it
+    — the body already emits the right code. BUT if the ctor is header-inline
+    (`T() : Base() {}` in the .h, as TNextMoveCommand was), MSVC inlines it into every
+    `new T()` / DYNCREATE CreateObject site, and those matched 100% *because* the original
+    inlined it there too. Moving it out-of-line to attach the marker flipped
+    TNextMoveCommand::CreateObject 100%->49% and a `new TNextMoveCommand()` caller 100%->82%
+    while gaining only the one out-of-line copy — a net loss. Keep header-inline ctors inline;
+    only claim the marker on ctors already out-of-line. Also: a `T : TSortedPtrList`/deep base
+    ctor may cap at ~86% (0x534870) because the original inlines the intermediate base ctor
+    (calls CPtrArray() directly) while the out-of-line recompile calls TSortedPtrList() — the
+    accepted cross-TU base-ctor-inlining residual (same shape as note on TEscortMission).
+    Always re-check `just stats` delta and diff the report for offsetting drops after a
+    ctor-marker change, since the aligned count can stay flat while hiding a swap.
+
+103. **Near-miss (95–99%) triage-bucket fix taxonomy — which are clean single-line wins
+     and which are traps.** After `just triage 0xADDR`, the bucket + one diff line usually
+     tells you if it's fixable in isolation. **Reliably fixable (each a 1-line source fix
+     verified this session):** (a) *missing assert args* — a `codegen` bucket showing
+     `orig-only: push 0xLINE; push "D:\Ambit\...cpp"; add esp,8` means a
+     `TemporarilyClearAndRestoreUiInvalidationFlag()` call is missing its `(path,line)`
+     arguments; model the path as a real `// GLOBAL:` string (read it via
+     `just ghidra-read-data 0xADDR str`) and pass `(g_sz...Path, 0xLINE)` (e.g. 0x4db7d0).
+     (b) *literal-vs-named-constant* — a `codegen`/data line `fld [g_Named]` vs
+     `fld [<OFFSET1>]` where a bare `return 0.0f;`/literal makes MSVC allocate a fresh
+     constant, but the original reuses an existing zero/constant global; return the named
+     global instead of the literal AND ensure that global carries its `// GLOBAL:` marker so
+     reccmp pairs the data symbol (e.g. 0x53d420 → g_..._0065A9E8, which was ALSO missing its
+     marker). (c) *wrong calling convention* — a `codegen` line `ret 4` vs `ret`: verify the
+     callee's real `RET`/`RET 0x4` in Ghidra, then annotate the free function `__stdcall`
+     (callee-cleans) on BOTH prototype and definition (e.g. 0x5a99e0 DrawHexSelectionOutline).
+     **Traps — do NOT chase (verified dead ends this session):** (d) *ax-vs-eax / bx-vs-bl
+     register-width `reg_alloc` on a single `movsx`/`mov`* — the types are already correct;
+     MSVC's 16- vs 32-bit destination choice is register-reuse (it relies on stale high bits
+     of a reused index reg), not source-controllable; flipping `short`↔`int` just moves the
+     mismatch (0x5a24a0 sfx token, 0x522000). (e) *`call_target` on a LIBRARY function*
+     (AfxMessageBox `(LPCTSTR,UINT,UINT)` vs `(char const*,...)`, or a thiscall method whose
+     ILT thunk resolves fine but shows `(short)` vs `(void)`) — an MFC/symbols pairing
+     artifact, not a codegen diff. (f) *`missing_annotation` on an end-of-array pointer
+     sentinel* (`cmp esi, &table[N]` labeled as the adjacent global) — the loop-end address
+     is unnamed in both binaries so reccmp can't pair it; no clean source fix. (g) *widening
+     a shared struct field or a virtual's param to drop one caller's `movsx`* — correct in
+     isolation but regresses the other N consumers; only do it with full multi-site + stats
+     verification, never as a one-function win.
+
+104. **A jump-table switch dispatcher that Ghidra split into per-case pseudo-functions: port
+     the PARENT as one function, then delete every interior fragment row from symbols.csv —
+     do NOT port a case fragment standalone.** The tell: a function entry with a tiny DB size
+     whose body is `MOV EAX,[ECX+off]; CMP EAX,N; JA end; JMP [EAX*4 + table]` (e.g.
+     FUN_0059c970, size 29), and the addresses *inside* its range each carry their own
+     symbols.csv `function` row — thunk-forwarder case bodies (`CALL <ILT>; POP…; RET`, 12
+     bytes), inline case bodies, and loop-tail fragments — while the parent entry itself has
+     NO symbols.csv row (it was pruned as a jump thunk). Each case depends on registers the
+     parent prologue set (here `MOV EBX,0x7`, resolving the `unaff_EBX`=7 mystery), so a
+     standalone case port can never reach 100% (my earlier 0x59ca32 fragment capped at 62.5%).
+     Fix, entirely source-side (no Ghidra DB resync needed — sync-pipeline junk taxonomy #4,
+     "delete the row for marker-owned addresses"): (a) add `// FUNCTION:` for the parent entry
+     in the owning class .cpp and write the whole switch (cases delegating to the real applier
+     methods for ILT-thunk cases — resolve each `CALL <ILT>` to its jmp target with the
+     binary-scan below — and inline loops for the inline cases); (b) add ONE symbols.csv row
+     for the parent sized code+inline-jump-table (RET→end-of-table, NOT the trailing
+     NOP/INT3 alignment padding: here 0x59c970..0x59ca98 = 296); (c) delete all the interior
+     fragment rows (their ranges now overlap the parent — the symbols-integrity-gate's
+     no-overlap check both forces and validates this); (d) `just regen-stubs` prunes the old
+     fragment ownership + drops the now-orphaned stubs (stub-count falls → ratchet).
+     Frequently the parent switch is a verbatim copy of an apply-switch another function
+     already inlines (0x59c970's body == the mode-apply switch inside 0x59c440
+     SelectAndApplyTacticalCursorModeProfile), so the case bodies can be lifted straight from
+     that sibling. Result: parent 0%→100%, junk fragments gone. Scan for the parent's callers
+     /ILT-thunk targets with a raw rel32 walk of the .exe (`E8/E9` at file offset O →
+     `off2va(O)+5+rel32 == target`), since `just xrefs` misses address-taken/table dispatch.
+
+105. **A referenced .rdata data table Ghidra never symbolized shows up as `g_prev+N` in the
+     reccmp diff — give it its own `global` row in symbols.csv so both sides pair.** When a
+     ported function reads a const table (e.g. 0x66ac10) that has no symbol, reccmp attributes
+     the ORIGINAL reference to the nearest preceding global (`g_anCapabilityPriorityRangePairs+106`)
+     while the RECOMP references your new `g_..._0066ac10` — same address, different symbol, so
+     the operand never pairs and the score sticks low. Fix: define the table with the correct
+     values read from the binary (`va2off` + `struct.unpack`), then add a bare
+     `ADDR|g_name_00ADDR|||global||` row in symbols.csv (globals have no size, so no
+     overlap-gate issue). reccmp then resolves the original address to your symbol (exact match
+     beats `+N`) and the reference pairs. Then, to match MSVC's address *grouping* when a
+     table-driven byte offset is added to `this` and the record base is a struct member: the
+     original keeps `[this + fieldOffset]` as the pointer with the member displacement (0x268)
+     and row stride (`row*0x1d`) riding the addressing mode — reproduce by
+     `reinterpret_cast<TCls*>((unsigned char*)this + fieldOffset)->memberArray[row].firstByte`,
+     NOT `&memberArray[row]` byte-indexed by fieldOffset (that folds 0x268+row*stride into the
+     base and mis-groups). Fold the `this` cast inline (no named `self` local) so `this` stays
+     in ECX (`add esi,ecx`) instead of being copied to a callee-saved reg. Took 0x5b0a20 from
+     26%→74% (residual is one MSVC regalloc quirk on the first `&&` branch — not worth chasing).

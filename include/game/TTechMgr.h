@@ -122,6 +122,19 @@ public:
   void InitializeCityOrderCapabilityStateDefaults();
   void GenerateRandomCapabilityPrioritySlots();
   void ApplyCityOrderCapabilityUnlockByTechId(int nTechId);
+  // True iff both capability flags of tech prerequisite-pair `prereqPairIndex` are
+  // completed (== 2) in nation `nationIndex`'s orderCapRows277 row. 0x5b0a20.
+  unsigned char AreTechItemPrerequisitePairCompleted(int prereqPairIndex, int nationIndex);
+  // Reports the not-yet-completed capability field offsets of a prerequisite pair for a
+  // nation into *outFirst/*outSecond (0 = none). 0x5b0a90.
+  void SelectMissingTechItemPrerequisitesFromPair(int prereqPairIndex, int nationIndex,
+                                                  int* outFirst, int* outSecond);
+  // Purchase / refund a tech-item slot for a nation (spends/refunds the slot cost, sets or
+  // clears the orderCapRows277 state byte + capRowsE4a6 tick word). 0x5b0b30 / 0x5b0bb0.
+  void ApplyTechItemPurchaseCostAndState(int slot, int nationIndex);
+  void RefundTechItemPurchaseCostAndClearState(int slot, int nationIndex);
+  // Stores value*4 into prioritySlots04[index] (the "Tyer" turn-instruction handler). 0x5b0c70
+  void SetCityOrderCapabilityTierScaledValueByIndex(int index, int value);
   int GetNationFortLevelCap(int nNationId);
 
   ~TTechMgr() override;

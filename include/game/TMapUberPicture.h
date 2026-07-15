@@ -243,6 +243,12 @@ public:
   // Enters/exits the mode-specific overlay UI state (called from SetMapInteractionMode
   // when switching to civilian mode). 0x00599a50, 252 bytes.
   void EnterMapInteractionOverlayMode(int param1);
+  // Resets map interaction back to civilian-selection mode: enters the overlay mode with
+  // no explicit control, then sets interaction mode 0. 0x005999f0, __thiscall, 0 args.
+  void ResetMapInteractionToCivilianMode();
+  // Refreshes the minimap subview (field_0xc0) if both this and that subview are present.
+  // 0x005999a0... 0x00599fa0, __thiscall, 0 args.
+  void InvokeViewSlotE4IfContextPresent();
   // Cycles map interaction selection to the next civilian/province/map-order candidate
   // after a handled click (priority: civilian, then province, then map-order entry;
   // clears the active pointer if none remain). 0x00597a80, __thiscall, 0 args, 996 bytes.

@@ -349,6 +349,8 @@ char g_szUiLevel1_00694B38[] = "Level\n1";
 char g_szMcAppUiHeaderPath_006943CC[] = "D:\\Ambit\\McAppUI.h";
 // GLOBAL: IMPERIALISM 0x00696bc0
 char g_szUGameWindowSourcePath_00696bc0[] = "D:\\Ambit\\Cross\\UGameWindow.cpp";
+// GLOBAL: IMPERIALISM 0x00696728
+char g_szUCountrySourcePath_00696728[] = "D:\\Ambit\\Cross\\UCountry.cpp";
 // TCouncilView::HandleEvent's council-control 4-char tag table ("tfni", "ttrt", "targ",
 // "tart", "tuoc", "rffo" as stored).
 // GLOBAL: IMPERIALISM 0x00696978
@@ -607,6 +609,44 @@ extern const float g_MissionDefaultScore_0065a468 = 0.0f;
 // GLOBAL: IMPERIALISM 0x00658780
 float g_TileHeatmapNeighborDiffusionFactor = 0.2f;
 
+// Map-interaction preview scale factors (default 1/64 = 0.015625), multiplied into the map
+// dialog's rect layout by TMapDialog::ApplyRectSlot110 (0x51e260). Runtime-set to the default
+// by InitializeMapInteractionPreviewScale{X,Y}Default (0x51e0b0 / 0x51e0e0), so zero on disk.
+// GLOBAL: IMPERIALISM 0x006a3410
+double g_MapPreviewScaleX6A3410;
+// GLOBAL: IMPERIALISM 0x006a33d0
+double g_MapPreviewScaleY6A33D0;
+
+// Two more 1/64 (0.015625) scale-factor doubles reset to default by the same defaults-table
+// initializers (0x49c0c0 / 0x49c0f0); g_ScaleDefault6A1FC0 is scaled by
+// UpdateGlobalWord6A2008FromScaled6A1FC0 (0x49c120). Zero on disk (runtime-set).
+// GLOBAL: IMPERIALISM 0x006a1fe8
+double g_ScaleDefault6A1FE8;
+// GLOBAL: IMPERIALISM 0x006a1fc0
+double g_ScaleDefault6A1FC0;
+
+// Two dword slots in the 0x6a1e20 reset region, zeroed together by the cleanup handler
+// ResetGlobalPair6A1E20And6A1E24 (0x49b9d0). Only ever written (to 0); purpose not yet
+// recovered. Zero on disk.
+// GLOBAL: IMPERIALISM 0x006a1e20
+int g_ResetStateDword6A1E20;
+// GLOBAL: IMPERIALISM 0x006a1e24
+int g_ResetStateDword6A1E24;
+// More dword slots in the same 0x6a1exx/0x6a1fxx reset region, each zeroed by its own
+// ResetGlobalPair cleanup handler (0x49b9f0 / 0x49bc00 / 0x49bc20). Only ever written to 0.
+// GLOBAL: IMPERIALISM 0x006a1e48
+int g_ResetStateDword6A1E48;
+// GLOBAL: IMPERIALISM 0x006a1e4c
+int g_ResetStateDword6A1E4C;
+// GLOBAL: IMPERIALISM 0x006a1e70
+int g_ResetStateDword6A1E70;
+// GLOBAL: IMPERIALISM 0x006a1e74
+int g_ResetStateDword6A1E74;
+// GLOBAL: IMPERIALISM 0x006a1f38
+int g_ResetStateDword6A1F38;
+// GLOBAL: IMPERIALISM 0x006a1f3c
+int g_ResetStateDword6A1F3C;
+
 // Order-type index rankings (0..13) sorted by descending descriptor weight, rebuilt by
 // InitializeNavyOrderPriorityTables (0x556610): by resolveWeight, calculateWeight, and
 // navyPriorityWeight respectively. Runtime-filled, so zero in the on-disk image.
@@ -797,6 +837,7 @@ MappedFlavorTextNationVariantEntry g_MappedFlavorTextNationVariantTable_0066EF30
 extern const float g_Recompute_Nation_Order_LookupTable_0065A9BC = 0.05f;
 // GLOBAL: IMPERIALISM 0x0065a9c4
 extern const float g_Recompute_Nation_Order_LookupTable_0065A9C4 = -1000.0f;
+// GLOBAL: IMPERIALISM 0x0065a9e8
 extern const float g_Recompute_Nation_Order_LookupTable_0065A9E8 = 0.0f;
 // GLOBAL: IMPERIALISM 0x0065a9e0
 extern const double g_Recompute_Nation_Order_LookupTable_0065A9E0 = -1.0;
@@ -1491,6 +1532,24 @@ int g_nUiInvalidationAssertFlagLine495 = 0;
 SeapointStretch g_seapointQuadTable_006a3478;
 SeaSegmentStretch g_regionBorderLinkTable_006a3900;
 
+// Per tech-item slot, the purchase cost applied/refunded against a nation's field-0x10
+// metric by TTechMgr::ApplyTechItemPurchaseCostAndState (0x5b0b30) /
+// RefundTechItemPurchaseCostAndClearState (0x5b0bb0). Locked/unused slots are -1.
+const int g_anTechItemPurchaseCostBySlot_0066aae8[34] = {
+    0,     0,      1000,   1000,   1500,   1500,  1500,  1500,  3000,  3000,  3000,  6000,
+    7000,  10000,  12000,  12000,  12000,  12000, 12000, 25000, 20000, 40000, 40000, 40000,
+    40000, 100000, 120000, 150000, 150000, 0,     -1,    -1,    -1,    0};
+
+// Per tech-prerequisite-pair index, the two in-record byte offsets (into a TTechMgr
+// OrderCapRow, stride 0x1d) of the capability flags that must both be "completed"
+// (== 2). Consumed by TTechMgr::AreTechItemPrerequisitePairCompleted (0x5b0a20) and
+// SelectMissingTechItemPrerequisitesFromPair (0x5b0a90).
+const short g_awTechPrereqCapabilityFieldOffsetPairs_0066ac10[34][2] = {
+    {0, 0},  {0, 0},  {0, 0}, {0, 0},  {0, 0},  {1, 0},  {1, 0},  {0, 0},  {7, 3},
+    {0, 0},  {2, 0},  {0, 0}, {6, 0},  {0, 0},  {11, 0}, {0, 0},  {8, 0},  {10, 0},
+    {10, 0}, {0, 0},  {7, 0}, {15, 0}, {13, 0}, {5, 12}, {9, 10}, {14, 0}, {19, 0},
+    {24, 0}, {26, 0}, {0, 0}, {25, 0}, {25, 0}, {25, 0}, {0, 0}};
+
 // Hex-neighbour offset tables (direction 0..5) for the 108-wide offset-coordinate grid.
 const int g_hexColOffsetEvenRow_00697450[6] = {0, 1, 0, -1, -1, -1};
 const int g_hexRowOffset_00697468[6] = {-1, 0, 1, 1, 0, -1};
@@ -1532,6 +1591,29 @@ char s_mcflavor_00696674[] = "";
 char s_mcflavor_00696d10[] = "";
 // GLOBAL: IMPERIALISM 0x00697238
 char s_mcflavor_00697238[] = "";
+// Script-dump format strings for TMapMgr::DumpAndResetMapScriptState (0x519140).
+// GLOBAL: IMPERIALISM 0x006972f8
+char g_szScriptFileName_006972f8[] = "script";
+// GLOBAL: IMPERIALISM 0x006972e8
+char g_szFmtZone_006972e8[] = "zone %d %s\n";
+// GLOBAL: IMPERIALISM 0x006972d0
+char g_szFmtShip_006972d0[] = "ship %d %d %d %d\n";
+// GLOBAL: IMPERIALISM 0x006972bc
+char g_szFmtArmy_006972bc[] = "army %d %d %d\n";
+// GLOBAL: IMPERIALISM 0x006972ac
+char g_szFmtCivi_006972ac[] = "civi %d %d\n";
+// GLOBAL: IMPERIALISM 0x006972a0
+char g_szFmtPort_006972a0[12] = "port %d\n";
+// GLOBAL: IMPERIALISM 0x00697294
+char g_szFmtRail_00697294[12] = "rail %d\n";
+// GLOBAL: IMPERIALISM 0x00697280
+char g_szFmtCapa_00697280[] = "capa %d %d %d\n";
+// GLOBAL: IMPERIALISM 0x00697268
+char g_szFmtLabo_00697268[] = "labo %d %d %d %d\n";
+// GLOBAL: IMPERIALISM 0x00697254
+char g_szFmtEmba_00697254[] = "emba %d %d %d\n";
+// GLOBAL: IMPERIALISM 0x00697248
+char g_szFmtYear_00697248[12] = "year %d\n";
 // GLOBAL: IMPERIALISM 0x006976e0
 char s_mcflavor_006976e0[] = "";
 // GLOBAL: IMPERIALISM 0x00698b0c
@@ -2740,3 +2822,9 @@ char s_mcflavor_0069b638[] = "";
 char s_mcflavor_0069b640[] = "";
 // GLOBAL: IMPERIALISM 0x0069b7fc
 char s_Data_scores_dat_0069b7fc[] = "Data\\scores.dat";
+
+// Screen-offset scale (-0.3125 = -5/16) applied to a tile's isometric screen offset when
+// positioning the hex-neighbor highlight polygon (BuildHexNeighborHighlightPolygonForTile
+// 0x508f30).
+// GLOBAL: IMPERIALISM 0x00658640
+extern const float g_HexHighlightScreenScale_00658640 = -0.3125f;

@@ -7,6 +7,7 @@
 
 IMPLEMENT_DYNCREATE(TNoHiliteText, TStaticText)
 
+// FUNCTION: IMPERIALISM 0x005b6a00
 TNoHiliteText::TNoHiliteText() {}
 
 // SYNTHETIC: IMPERIALISM 0x005b6a30

@@ -132,7 +132,8 @@ void ReleasePendingHelpDialogView(TView** dialogView) {
 }
 
 int GetSortedPtrListEntryCount(TSortedPtrList* list) {
-  return *reinterpret_cast<int*>(reinterpret_cast<char*>(list) + 0x8);
+  // +0x8 is CPtrArray::m_nSize; GetSize() reads exactly that.
+  return list->GetSize();
 }
 
 short ReadLocalizationFlowMode() {
