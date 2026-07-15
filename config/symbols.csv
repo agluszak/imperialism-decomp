@@ -1827,7 +1827,7 @@ address|name|symbol|size|type|prototype|provenance
 4b729a|apply_worker_group_delta|||global||
 4b72a4|deduct_city_cash_for_order_delta|||global||
 4b7320|TUnitOrder::FillOrderSheet||102|function|undefined AccumulateCityEntryCostsByAmount()|
-4b73b0|TCityRecruitmentOrderContext::CommitCityRecruitmentOrderDelta||839|function|void __thiscall CommitCityRecruitmentOrderDelta(void)|
+4b73b0|TUnitOrder::CommitIfPending||839|function|void __thiscall CommitIfPending(void)|
 4b77e0|UIState_ActivateSlotAndUpdateUI_Impl||66|function|undefined UIState_ActivateSlotAndUpdateUI_Impl()|
 4b7850|TUnitOrder::WriteTo||155|function|undefined WrapperFor_HandleCityDialogNoOpSlot14_At004b7850(int * param_1)|
 4b7920|TUnitOrder::ReadFrom||155|function|void __thiscall SyncCityEntryOrderStateWithArchive(int * pArchive)|
