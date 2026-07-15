@@ -1,5 +1,5 @@
 address|current_name|current_ownership|oracle_symbol|oracle_name|member|match_kind|candidate_count|reason
-0x004796c0|CAmbitDocument::SetModifiedFlag|unowned|?SetModifiedFlag@CDocument@@UAEXH@Z|CDocument::SetModifiedFlag|doccore.obj|unique|1|outside_library_range
+0x004796c0|CAmbitDocument::SetModifiedFlag|manual:src/game/CAmbitDocument.cpp|?SetModifiedFlag@CDocument@@UAEXH@Z|CDocument::SetModifiedFlag|doccore.obj|unique|1|match_owned_by_game_code
 0x00489410|TCountingStream::ConstructTCountingStreamBaseState|manual:src/game/TCountingStream.cpp|??0exception@@QAE@XZ|exception::exception|stdexcpt.obj|unique|1|match_owned_by_game_code
 0x004995a0|TMacViewMgr::WrapperFor_thunk_ResolveBmpResourceHandleWithDefault3B6_At004995a0|unowned|?AfxDaoGetEngine@@YGPAU_DAODBEngine@@XZ|AfxDaoGetEngine|daocore.obj|unique|1|outside_library_range
 0x00534c80|ResetMissionField0CToZero|manual:src/game/TMission.cpp|?EnableAggregation@CCmdTarget@@QAEXXZ|CCmdTarget::EnableAggregation|oleunk.obj|unique|1|match_owned_by_game_code
@@ -10,7 +10,6 @@ address|current_name|current_ownership|oracle_symbol|oracle_name|member|match_ki
 0x005e69e7|Create|unowned|?Create@CImageList@@QAEHHHIHH@Z|CImageList::Create|winctrl2.obj|unique|1|invented_name_referenced_in_source
 0x005e73d0|ftol|unowned|__ftol|_ftol|ftol.obj|unique|1|invented_name_referenced_in_source
 0x005e7920|AppendPointerToGlobalVectorAsStatus|unowned|_atexit|atexit|onexit.obj|unique|1|invented_name_referenced_in_source
-0x005e7980|_mbscmp|manual:src/game/CString.cpp|__mbscmp|_mbscmp|mbscmp.obj|unique|1|match_owned_by_game_code
 0x005e7fc0|ReallocateHeapBlockWithAllocatorTracking|unowned|_realloc|realloc|realloc.obj|unique|1|invented_name_referenced_in_source
 0x005e8cf0|ConvertEpochSecondsToLocalTmWithDstAdjust|unowned|_localtime|localtime|localtim.obj|unique|1|invented_name_referenced_in_source
 0x005e8ee0|GetCurrentLocalEpochSecondsWithTimezoneCache|unowned|_time|time|time.obj|unique|1|invented_name_referenced_in_source
@@ -18,20 +17,7 @@ address|current_name|current_ownership|oracle_symbol|oracle_name|member|match_ki
 0x005e9bb0|exit|unowned|__exit|_exit|crt0dat.obj|unique|1|invented_name_referenced_in_source
 0x005ead10|WrapperFor_amsg_exit_At005ead10|unowned|__purecall|_purecall|purevirt.obj|unique|1|below_min_convert_size
 0x005eadb0|WrapperFor_GetOrCreateCrtThreadDataFromTls_At005eadb0|unowned|___doserrno|__doserrno|dosmap.obj|unique|1|below_min_convert_size
-0x005f4370|_ZeroTail|manual:src/game/bignum96_math.cpp|__ZeroTail|_ZeroTail|intrncvt.obj|unique|1|match_owned_by_game_code
-0x005f43e0|_IncMan|manual:src/game/bignum96_math.cpp|__IncMan|_IncMan|intrncvt.obj|unique|1|match_owned_by_game_code
-0x005f4450|_RoundMan|manual:src/game/bignum96_math.cpp|__RoundMan|_RoundMan|intrncvt.obj|unique|1|match_owned_by_game_code
-0x005f44f0|_CopyMan|manual:src/game/bignum96_math.cpp|__CopyMan|_CopyMan|intrncvt.obj|unique|1|match_owned_by_game_code
-0x005f4510|_FillZeroMan|manual:src/game/bignum96_math.cpp|__FillZeroMan|_FillZeroMan|intrncvt.obj|unique|1|match_owned_by_game_code
-0x005f4520|_IsZeroMan|manual:src/game/bignum96_math.cpp|__IsZeroMan|_IsZeroMan|intrncvt.obj|unique|1|match_owned_by_game_code
-0x005f4540|_ShrMan|manual:src/game/bignum96_math.cpp|__ShrMan|_ShrMan|intrncvt.obj|unique|1|match_owned_by_game_code
-0x005f4a80|__dtold|manual:src/game/bignum96_math.cpp|___dtold|__dtold|cfout.obj|unique|1|match_owned_by_game_code
 0x005f4b40|WrapperFor_amsg_exit_At005f4b40|unowned|__fptrap|_fptrap|crt0fp.obj|unique|1|below_min_convert_size
-0x005f7830|__addl|manual:src/game/bignum96_math.cpp|___addl|__addl|mantold.obj|unique|1|match_owned_by_game_code
-0x005f7860|__add_12|manual:src/game/bignum96_math.cpp|___add_12|__add_12|mantold.obj|unique|1|match_owned_by_game_code
-0x005f78d0|__shl_12|manual:src/game/bignum96_math.cpp|___shl_12|__shl_12|mantold.obj|unique|1|match_owned_by_game_code
-0x005f7900|__shr_12|manual:src/game/bignum96_math.cpp|___shr_12|__shr_12|mantold.obj|unique|1|match_owned_by_game_code
-0x005f7930|__mtold12|manual:src/game/bignum96_math.cpp|___mtold12|__mtold12|mantold.obj|unique|1|match_owned_by_game_code
 0x005fa80b|WrapperFor_AfxTermLocalData_At005fa80b|unowned|??1_AFX_TERM_APP_STATE@@QAE@XZ|_AFX_TERM_APP_STATE::~_AFX_TERM_APP_STATE|appmodul.obj|unique|1|below_min_convert_size
 0x00605e88|SetAt|unowned|?SetAt@CString@@QAEXHD@Z|CString::SetAt|strcore.obj|unique|1|invented_name_referenced_in_source
 0x006060bc|AfxGetThread|unowned|?AfxGetThread@@YGPAVCWinThread@@XZ|AfxGetThread|thrdcore.obj|unique|1|invented_name_referenced_in_source
@@ -77,7 +63,6 @@ address|current_name|current_ownership|oracle_symbol|oracle_name|member|match_ki
 0x0061c5dc|CFrameWnd|unowned|??0CFrameWnd@@QAE@XZ|CFrameWnd::CFrameWnd|winfrm.obj|unique|1|invented_name_referenced_in_source
 0x0061c83a|OnPaletteChanged|unowned|?OnPaletteChanged@CFrameWnd@@IAEXPAVCWnd@@@Z|CFrameWnd::OnPaletteChanged|winfrm.obj|unique|1|invented_name_referenced_in_source
 0x0061d8a2|SetActiveView|unowned|?SetActiveView@CFrameWnd@@QAEXPAVCView@@H@Z|CFrameWnd::SetActiveView|winfrm.obj|unique|1|invented_name_referenced_in_source
-0x0061f342|CRect::DeflateRect|manual:src/game/TTEView.cpp|?DeflateRect@CRect@@QAEXPBUtagRECT@@@Z|CRect::DeflateRect|wingdix.obj|unique|1|match_owned_by_game_code
 0x0061f46b|GetMfcThreadStateFlagDword30|unowned|?AfxOleGetUserCtrl@@YGHXZ|AfxOleGetUserCtrl|olelock.obj|unique|1|below_min_convert_size
 0x00622a4f|ExitInstance|unowned|?ExitInstance@CWinApp@@UAEHXZ|CWinApp::ExitInstance|appcore.obj|unique|1|invented_name_referenced_in_source
 0x00622cb3|ProcessShellCommand|unowned|?ProcessShellCommand@CWinApp@@QAEHAAVCCommandLineInfo@@@Z|CWinApp::ProcessShellCommand|appui2.obj|unique|1|invented_name_referenced_in_source
