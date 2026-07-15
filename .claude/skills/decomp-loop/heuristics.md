@@ -1709,3 +1709,45 @@ Parallelize the per-dialog Ghidra investigation across subagents (one recipe per
 test, overridden slots with resolved ILT targets, DDX body, members, size), then model + build +
 `just vtable` serially. Message-map handlers and complex OnInitDialog/OnOK bodies are NOT vtable
 slots — minimal override bodies still give a 100% vtable; refine bodies later.
+
+## Note 106 — Inlined virtual base destructor: watch for COMDAT-fold collateral
+
+A derived dtor in the original often *inlines* the base dtor's tail (set base vptr → base
+cleanup → chain to the library base dtor). To make ONE derived dtor inline-match, it is
+tempting to move the base dtor's body `inline` into the header so it's visible in the derived
+TU. **Do not do this reflexively.** When the base has many member-less leaf subclasses, an
+inline base dtor makes their compiler-generated (real) destructors byte-identical, the linker
+COMDAT-folds them, and the *scalar-deleting-destructor addresses in their vtables shift* — every
+folded sibling's `` `vftable' `` drops from 100% (one slot now points at a folded address that
+reccmp pairs to another class's dtor). Net for TModalDialogBase: +2 (two dtors reach 100%) but
+−15 aligned (≈10 sibling vtables + some folded no-op leaves). **Keep the base dtor out-of-line**
+and accept that the one derived dtor stays ~83% (it emits a `call` to the base dtor instead of
+inlining it). A single +100% is never worth breaking 10 sibling vtables. Diagnose which funcs
+regressed by diffing `config/reccmp_progress_baseline.report.json` (per-function `matching`)
+against a fresh `reccmp-reccmp --json` capture — aggregate stats alone won't tell you WHAT fell.
+
+## Note 107 — Recovering an MFC GDI OnPaint (CPaintDC/CPen/CBrush/CRgn + DIB blits)
+
+`mfc.h` includes the real `<afxwin.h>`, so CPaintDC/CDC/CPen/CBrush/CRgn/CDibPal and
+`CDC::FromHandle` are all available as genuine MFC classes — model the paint body with them, not
+raw handles. Recipe that matched well:
+- **`CPaintDC dc(this);`** at the top; scope CPen in its own `{}` block and CRgn+CBrush in
+  theirs so the EH funclet nesting matches.
+- **`dc.GetSafeHdc()`** reproduces the `lea; neg; sbb; and` null-guard idiom the disassembly
+  shows at every GDI handle pass; a bare `dc.m_hDC` / `(dc?dc->m_hDC:0)` ternary emits the
+  branch in the *opposite* order (then-block first) and misses. Prefer `GetSafeHdc()` — it also
+  fixed CreateDibBitmapFromStoredInfo 86%→100%.
+- **`memcpy`/`memset` of a dynamic byte count → `rep movsd`+`rep movsb`** matches the original's
+  inlined copy; **do NOT** pre-mask the count with `& 0x3fffffff` (that mask is Ghidra's artifact
+  of `(n*4)>>2`; the real code is just `n*4`). Inline the count expression per call — the
+  original recomputes it, doesn't hoist a `tableBytes` local.
+- **Memory-DC BitBlt path uses raw Win32** (`::CreateCompatibleDC`/`::SelectObject`/`::BitBlt`/
+  `::DeleteDC`) because it selects an HBITMAP directly; CDC::BitBlt wants a CDC* src and won't match.
+- **A single-use gating global** (e.g. 0x694c50) needs full plumbing to pair its operand: a
+  `symbols.csv` `…|global||` row + a `// GLOBAL:` def in `global_data_tables.cpp` + `extern` in
+  the `.h`. Name it behaviorally and hedge as provisional if only one reader is known.
+- **Ceiling ~70%:** the residual is MSVC CSE (the original re-reads `picture->m_pInfoHeader` and
+  recomputes `abs(biHeight)` per height arg; cleaner C++ gets CSE'd to fewer instructions) and a
+  library FromHandle identity. Writing raw field accesses inline (no locals) recovers *some* of
+  the double-abs but not the header-pointer CSE. Per the philosophy, stop here — don't contort
+  the source to chase the last MSVC-scheduling percent on an architecturally-correct paint body.
