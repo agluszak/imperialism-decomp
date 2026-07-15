@@ -20,6 +20,7 @@
 #include "game/TNextMoveCommand.h"
 #include "game/TSimMgr.h"
 #include "game/TSoundPlayer.h"
+#include "game/TNavyPlayer.h"
 #include "game/TTacticalBattleView.h"
 #include "game/TTacticalPlayer.h"
 #include "game/TTacticalToolbar.h"
@@ -2069,4 +2070,11 @@ TArmyTacUnit* TTacticalBattle::SeekLinkedListCursorByNestedId(int nestedId) {
     }
   }
   return 0;
+}
+
+// Sets the current side's navy ship-panel display mode from the navy toolbar (hull/crew/sail).
+// The players are TNavyPlayer in a sea battle, so the mode lands in the navy-slice field.
+// FUNCTION: IMPERIALISM 0x005a5b90
+void TTacticalBattle::SetCurrentSideNavyShipDisplayMode(int mode) {
+  static_cast<TNavyPlayer*>((&tacticalPlayer14)[currentSideC])->shipDisplayMode2c = mode;
 }

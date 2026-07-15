@@ -4452,6 +4452,7 @@ address|target_cpp|ownership|note
 5a59a0|src/game/TNavyBattle.cpp|manual|marker_sync
 5a59f0|src/game/TNavyBattle.cpp|manual|marker_sync
 5a5b70|src/game/TNavyBattle.cpp|manual|marker_sync
+5a5b90|src/game/TTacticalBattle.cpp|manual|marker_sync
 5a5bc0|src/game/TNavyBattle.cpp|manual|marker_sync
 5a5c50|src/game/TNavyBattle.cpp|manual|marker_sync
 5a5d10|src/game/TTacticalUnit.cpp|manual|marker_sync

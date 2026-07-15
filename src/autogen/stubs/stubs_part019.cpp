@@ -131,14 +131,6 @@ undefined4 CreateTNavyBattleInstance(void)
   return 0;
 }
 
-// ghidra_name TTacticalBattle::HandleNavyTacticalToolbarModeAndCommandTags_Impl
-// ghidra_proto undefined HandleNavyTacticalToolbarModeAndCommandTags_Impl()
-// FUNCTION: IMPERIALISM 0x005a5b90
-undefined4 HandleNavyTacticalToolbarModeAndCommandTags_Impl(void)
-{
-  return 0;
-}
-
 // ghidra_name TTacticalUnit::CreateTTacticalUnitInstance
 // ghidra_proto undefined CreateTTacticalUnitInstance()
 // FUNCTION: IMPERIALISM 0x005a5df0

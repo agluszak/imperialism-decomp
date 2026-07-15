@@ -5464,7 +5464,7 @@ address|name|symbol|size|type|prototype|provenance
 5a59a0|ConvertHexTileIndexToRowAndDoubleColumn||58|function|void __stdcall ConvertHexTileIndexToRowAndDoubleColumn(int tileIndex, uint * outRow, int * outCol2X)|
 5a59f0|TNavyBattle::ComputeTacticalReachableTileCostsByUnitCategory||293|function|undefined ComputeReachableTileDistanceByMoveBudget()|
 5a5b70|TNavyBattle::CreateTTacticalBattleInstance||14|function|undefined ResolveNavyOrderChainsForTurnPhase()|
-5a5b90|TTacticalBattle::HandleNavyTacticalToolbarModeAndCommandTags_Impl||17|function|undefined HandleNavyTacticalToolbarModeAndCommandTags_Impl()|
+5a5b90|TTacticalBattle::SetCurrentSideNavyShipDisplayMode||17|function|undefined HandleNavyTacticalToolbarModeAndCommandTags_Impl()|
 5a5bc0|TNavyBattle::ExecuteTacticalActionAndQueueEventIfNoAdjacentValidTarget||111|function|undefined ExecuteTacticalActionAndQueueEventIfSupportUnavailable()|
 5a5c50|TNavyBattle::MoveTacticalUnitAndQueueEvent232AIfNoAdjacentReachableTarget||141|function|undefined MoveTacticalUnitAndQueueEvent232AOnBlockedEngagementState()|
 5a5d10|TTacticalUnit::CreateObject|?CreateObject@TTacticalUnit@@SGPAVCObject@@XZ|24|function|undefined CreateObject()|rtti
