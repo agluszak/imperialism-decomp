@@ -587,14 +587,6 @@ undefined4 WrapperFor_ftol_At00508ee0(void)
   return 0;
 }
 
-// ghidra_name BuildHexNeighborHighlightPolygonForTile
-// ghidra_proto undefined BuildHexNeighborHighlightPolygonForTile()
-// FUNCTION: IMPERIALISM 0x00508f30
-undefined4 BuildHexNeighborHighlightPolygonForTile(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_InvokeCallbackNTimesWithSehGuard_At00509e60
 // ghidra_proto undefined WrapperFor_InvokeCallbackNTimesWithSehGuard_At00509e60()
 // FUNCTION: IMPERIALISM 0x00509e60

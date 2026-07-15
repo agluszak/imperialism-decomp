@@ -2340,6 +2340,7 @@ address|target_cpp|ownership|note
 508800|src/game/TLanguageMgr.cpp|manual|marker_sync
 508910|src/game/TLanguageMgr.cpp|manual|marker_sync
 508c50|src/game/TLanguageMgr.cpp|manual|marker_sync
+508f30|src/game/map_overlay_geometry.cpp|manual|marker_sync
 509c00|src/game/TMacViewMgr.cpp|manual|marker_sync
 509c80|src/game/TMacViewMgr.cpp|manual|marker_sync
 509ca0|src/game/TMacViewMgr.cpp|manual|marker_sync

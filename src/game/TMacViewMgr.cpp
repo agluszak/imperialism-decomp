@@ -1,4 +1,5 @@
 #include "game/TMacViewMgr.h"
+#include "game/map_overlay_geometry.h"
 
 #include "game/turn_event_dialog_provisional.h"
 
@@ -34,7 +35,6 @@
 #include <string.h>
 
 undefined4 RebuildSurfaceRowsWithTemporaryRowBuffer(void);
-undefined4 BuildHexNeighborHighlightPolygonForTile(void);
 undefined4 CallObjectOffset24Vslot54IfPresent(void);
 // Genuine __cdecl(void*, int) heap-block reallocator; cast at call sites (same pattern
 // as TAutoGreatPower.cpp/TCountry.cpp). Returns the new block, or 0 on failure.
@@ -87,8 +87,7 @@ static undefined4 QueryPointInsideHitRegion(short x, short y, RgnHandle region) 
 }
 
 static void InvokeBuildHexNeighborHighlightPolygonForTile(short tileId, int tileIndex) {
-  reinterpret_cast<void(__cdecl*)(short, int)>(
-      reinterpret_cast<void (*)()>(BuildHexNeighborHighlightPolygonForTile))(tileId, tileIndex);
+  BuildHexNeighborHighlightPolygonForTile(tileId, tileIndex);
 }
 
 static void InvokeCallObjectOffset24Vslot54IfPresent(void) {

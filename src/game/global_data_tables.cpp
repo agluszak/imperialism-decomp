@@ -2798,3 +2798,9 @@ char s_mcflavor_0069b638[] = "";
 char s_mcflavor_0069b640[] = "";
 // GLOBAL: IMPERIALISM 0x0069b7fc
 char s_Data_scores_dat_0069b7fc[] = "Data\\scores.dat";
+
+// Screen-offset scale (-0.3125 = -5/16) applied to a tile's isometric screen offset when
+// positioning the hex-neighbor highlight polygon (BuildHexNeighborHighlightPolygonForTile
+// 0x508f30).
+// GLOBAL: IMPERIALISM 0x00658640
+extern const float g_HexHighlightScreenScale_00658640 = -0.3125f;
