@@ -601,6 +601,14 @@ extern const float g_MissionDefaultScore_0065a468 = 0.0f;
 // GLOBAL: IMPERIALISM 0x00658780
 float g_TileHeatmapNeighborDiffusionFactor = 0.2f;
 
+// Map-interaction preview scale factors (default 1/64 = 0.015625), multiplied into the map
+// dialog's rect layout by TMapDialog::ApplyRectSlot110 (0x51e260). Runtime-set to the default
+// by InitializeMapInteractionPreviewScale{X,Y}Default (0x51e0b0 / 0x51e0e0), so zero on disk.
+// GLOBAL: IMPERIALISM 0x006a3410
+double g_MapPreviewScaleX6A3410;
+// GLOBAL: IMPERIALISM 0x006a33d0
+double g_MapPreviewScaleY6A33D0;
+
 // Order-type index rankings (0..13) sorted by descending descriptor weight, rebuilt by
 // InitializeNavyOrderPriorityTables (0x556610): by resolveWeight, calculateWeight, and
 // navyPriorityWeight respectively. Runtime-filled, so zero in the on-disk image.

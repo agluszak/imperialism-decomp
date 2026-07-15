@@ -2547,6 +2547,8 @@ address|target_cpp|ownership|note
 51d210|src/game/TMapEditView.cpp|manual|marker_sync
 51da60|src/game/TMapMgr.cpp|manual|marker_sync
 51deb0|src/game/TMapEditView.cpp|manual|marker_sync
+51e0b0|src/game/TMapDialog.cpp|manual|marker_sync
+51e0e0|src/game/TMapDialog.cpp|manual|marker_sync
 51e1a0|src/game/TMapDialog.cpp|manual|marker_sync
 51e1f0|src/game/TMapDialog.cpp|manual|marker_sync
 51e260|src/game/TMapDialog.cpp|manual|marker_sync

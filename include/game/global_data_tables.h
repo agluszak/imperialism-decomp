@@ -843,6 +843,8 @@ extern float g_ApplyIndexedResourceDeltaScale_00653728;
 // TMission.cpp — default mission score constant.
 extern const float g_MissionDefaultScore_0065a468;
 extern float g_TileHeatmapNeighborDiffusionFactor;
+extern double g_MapPreviewScaleX6A3410;
+extern double g_MapPreviewScaleY6A33D0;
 extern short g_NavyResolveOrderRanking[14];
 extern short g_NavyMissionOrderRanking[14];
 extern short g_NavyPriorityOrderRanking[14];

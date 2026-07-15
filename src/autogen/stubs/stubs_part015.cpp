@@ -259,22 +259,6 @@ undefined4 PromoteTileToCityAndRefreshNeighbors(void)
   return 0;
 }
 
-// ghidra_name InitializeMapInteractionPreviewScaleXDefault
-// ghidra_proto undefined InitializeMapInteractionPreviewScaleXDefault()
-// FUNCTION: IMPERIALISM 0x0051e0b0
-undefined4 InitializeMapInteractionPreviewScaleXDefault(void)
-{
-  return 0;
-}
-
-// ghidra_name InitializeMapInteractionPreviewScaleYDefault
-// ghidra_proto undefined InitializeMapInteractionPreviewScaleYDefault()
-// FUNCTION: IMPERIALISM 0x0051e0e0
-undefined4 InitializeMapInteractionPreviewScaleYDefault(void)
-{
-  return 0;
-}
-
 // ghidra_name RecomputeMapInteractionPreviewVerticalOffsetFromScale
 // ghidra_proto undefined RecomputeMapInteractionPreviewVerticalOffsetFromScale()
 // FUNCTION: IMPERIALISM 0x0051e110
