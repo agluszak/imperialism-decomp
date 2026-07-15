@@ -299,14 +299,6 @@ undefined4 ValidateTerrainClassAdjacencyCoverageMask(void)
   return 0;
 }
 
-// ghidra_name ValidateSeedCandidateExistsForEachTerrainClass
-// ghidra_proto undefined ValidateSeedCandidateExistsForEachTerrainClass()
-// FUNCTION: IMPERIALISM 0x005267f0
-undefined4 ValidateSeedCandidateExistsForEachTerrainClass(void)
-{
-  return 0;
-}
-
 // ghidra_name OrphanDeadLeaf_NoRefs_00529d90
 // ghidra_proto undefined OrphanDeadLeaf_NoRefs_00529d90()
 // FUNCTION: IMPERIALISM 0x00529d90

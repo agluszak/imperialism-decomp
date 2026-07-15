@@ -2286,6 +2286,7 @@ address|target_cpp|ownership|note
 4fc9c0|src/game/TMapKey.cpp|manual|marker_sync
 4fca70|src/game/TMapKey.cpp|manual|marker_sync
 4fcac0|src/game/TMapKey.cpp|manual|marker_sync
+4fcea0|src/game/TControl.cpp|manual|marker_sync
 4fcf80|src/game/TMapKey.cpp|manual|marker_sync
 4fd000|src/game/TMapKey.cpp|manual|marker_sync
 4fd220|src/game/TMapKey.cpp|manual|marker_sync
@@ -2718,6 +2719,7 @@ address|target_cpp|ownership|note
 525990|src/game/TMapMaker.cpp|manual|marker_sync
 5259c0|src/game/TMapMaker.cpp|manual|marker_sync
 526710|src/game/TMapMaker.cpp|manual|marker_sync
+5267f0|src/game/TMapMaker.cpp|manual|marker_sync
 526ba0|src/game/TMapMaker.cpp|manual|marker_sync
 526c20|src/game/TMapMaker.cpp|manual|marker_sync
 527040|src/game/TMapMaker.cpp|manual|marker_sync
@@ -3283,6 +3285,7 @@ address|target_cpp|ownership|note
 54fab0|src/game/TShip.cpp|manual|marker_sync
 54fb50|src/game/TShip.cpp|manual|marker_sync
 54fbf0|src/game/TShip.cpp|manual|marker_sync
+54fd50|src/game/TShip.cpp|manual|marker_sync
 54fee0|src/game/TShip.cpp|manual|marker_sync
 54ff00|src/game/TShip.cpp|manual|marker_sync
 550090|src/game/TShip.cpp|manual|marker_sync

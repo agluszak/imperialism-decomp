@@ -160,6 +160,8 @@ public:
   virtual void SetControlStateFlagAndMaybeRefresh(bool enabledState,
                                                   bool refreshNow); // slot 0x70 0x48e810
   // === END GENERATED DECLS (TControl) ===
+  void SetDiplomacyNationSelectionFilterAndRefreshRows(short selectedNation);
+
   int field74;
   // 0x78-0x81 — one 10-byte region, two verified views: text widgets store the packed
   // text-style descriptor (font family/style-flag/size shorts + COLORREF-bearing
