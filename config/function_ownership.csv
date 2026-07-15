@@ -973,6 +973,10 @@ address|target_cpp|ownership|note
 49f6a0|src/game/TCivAnimation2.cpp|manual|marker_sync
 49f7c0|src/game/TCivAnimation2.cpp|manual|marker_sync
 49f8e0|src/game/TCivAnimation2.cpp|manual|marker_sync
+49fcc0|src/game/TOneTimeAnimation.cpp|manual|marker_sync
+49fcf0|src/game/TOneTimeAnimation.cpp|manual|marker_sync
+49fd20|src/game/TOneTimeAnimation.cpp|manual|marker_sync
+49fd40|src/game/TOneTimeAnimation.cpp|manual|marker_sync
 49fd60|src/game/TOneTimeAnimation.cpp|manual|marker_sync
 49fde0|src/game/TOneTimeAnimation.cpp|manual|marker_sync
 49fef0|src/game/TCouncilTickerAnimation.cpp|manual|marker_sync

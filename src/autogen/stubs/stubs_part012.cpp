@@ -19,38 +19,6 @@ undefined4 CreateTCivAnimation2Instance(void)
   return 0;
 }
 
-// ghidra_name TOneTimeAnimation::CreateObject
-// ghidra_proto undefined CreateObject()
-// FUNCTION: IMPERIALISM 0x0049fcc0
-undefined4 CreateObject(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_FreeHeapBufferIfNotNull_At0049fcf0
-// ghidra_proto undefined WrapperFor_FreeHeapBufferIfNotNull_At0049fcf0()
-// FUNCTION: IMPERIALISM 0x0049fcf0
-undefined4 WrapperFor_FreeHeapBufferIfNotNull_At0049fcf0(void)
-{
-  return 0;
-}
-
-// ghidra_name TOneTimeAnimation::CreateTOneTimeAnimationInstance
-// ghidra_proto undefined CreateTOneTimeAnimationInstance()
-// FUNCTION: IMPERIALISM 0x0049fd20
-undefined4 CreateTOneTimeAnimationInstance(void)
-{
-  return 0;
-}
-
-// ghidra_name TOneTimeAnimation::GetRuntimeClass
-// ghidra_proto undefined __thiscall GetRuntimeClass(void)
-// FUNCTION: IMPERIALISM 0x0049fd40
-undefined4 GetRuntimeClass(void)
-{
-  return 0;
-}
-
 // ghidra_name TCouncilTickerAnimation::CreateTCouncilTickerAnimationInstance
 // ghidra_proto undefined CreateTCouncilTickerAnimationInstance()
 // FUNCTION: IMPERIALISM 0x0049ff50

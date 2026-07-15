@@ -7292,19 +7292,25 @@
     },
     {
       "address": "0x49fcc0",
-      "matching": 0.36363636363636365,
+      "matching": 1.0,
       "name": "TOneTimeAnimation::CreateObject",
       "type": 1
     },
     {
+      "address": "0x49fcf0",
+      "matching": 1.0,
+      "name": "TOneTimeAnimation::`scalar deleting destructor'",
+      "type": 1
+    },
+    {
       "address": "0x49fd20",
-      "matching": 0.5,
-      "name": "TOneTimeAnimation::CreateTOneTimeAnimationInstance",
+      "matching": 0.0,
+      "name": "TOneTimeAnimation::~TOneTimeAnimation",
       "type": 1
     },
     {
       "address": "0x49fd40",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "TOneTimeAnimation::GetRuntimeClass",
       "type": 1
     },
@@ -7312,6 +7318,12 @@
       "address": "0x49fd60",
       "matching": 0.8148148148148148,
       "name": "TOneTimeAnimation::ConstructTOneTimeAnimationBaseState",
+      "type": 1
+    },
+    {
+      "address": "0x49fde0",
+      "matching": 0.8688524590163934,
+      "name": "TOneTimeAnimation::AdvanceAnimationTickAndInvalidateOnFrameFlip",
       "type": 1
     },
     {
@@ -9550,7 +9562,7 @@
     {
       "address": "0x4b73b0",
       "matching": 0.2314540059347181,
-      "name": "TCityRecruitmentOrderContext::CommitCityRecruitmentOrderDelta(void)",
+      "name": "TUnitOrder::CommitIfPending",
       "type": 1
     },
     {
@@ -18135,7 +18147,7 @@
     {
       "address": "0x527ed0",
       "matching": 0.011627906976744186,
-      "name": "TMapMaker::vmethod_0024",
+      "name": "TMapMaker::GetDeactivateVetoCode",
       "type": 1
     },
     {
@@ -18231,7 +18243,7 @@
     {
       "address": "0x529f60",
       "matching": 0.0,
-      "name": "TMapMaker::vmethod_0025",
+      "name": "TMapMaker::OnDeactivated",
       "type": 1
     },
     {
@@ -18423,7 +18435,7 @@
     {
       "address": "0x52e840",
       "matching": 0.0,
-      "name": "TMapMaker::vmethod_0026",
+      "name": "TMapMaker::OnDeactivateVetoed",
       "type": 1
     },
     {
@@ -21400,7 +21412,7 @@
     },
     {
       "address": "0x545940",
-      "matching": 0.4278558733236387,
+      "matching": 0.4264254563075432,
       "name": "TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine",
       "type": 1
     },
@@ -30227,7 +30239,7 @@
     },
     {
       "address": "0x5a8ac0",
-      "matching": 0.6867469879518072,
+      "matching": 0.6086956521739131,
       "name": "TTacticalBattleView::CenterViewportAroundGridIndexAndSnap",
       "type": 1
     },
@@ -30257,13 +30269,13 @@
     },
     {
       "address": "0x5a9170",
-      "matching": 0.9272727272727272,
+      "matching": 0.9454545454545454,
       "name": "TTacticalBattleView::RunOneTimeAnimationModalWaitAndInvalidateCityDialog",
       "type": 1
     },
     {
       "address": "0x5a9240",
-      "matching": 0.5533980582524272,
+      "matching": 0.563855421686747,
       "name": "TTacticalBattleView::AnimateTacticalUnitMoveBetweenTiles",
       "type": 1
     },
@@ -42386,6 +42398,12 @@
       "address": "0x64c390",
       "matching": 1.0,
       "name": "TCivAnimation2::`vftable'",
+      "type": 5
+    },
+    {
+      "address": "0x64c3d0",
+      "matching": 1.0,
+      "name": "TOneTimeAnimation::`vftable'",
       "type": 5
     },
     {

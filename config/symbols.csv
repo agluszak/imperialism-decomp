@@ -1404,11 +1404,11 @@ address|name|symbol|size|type|prototype|provenance
 49f7c0|TCivAnimation2::WrapperFor_InvalidateCityDialogRectRegion_At0049f140||182|function|undefined DestructTCivAnimation2AndMaybeFree(void)|
 49f8e0|TCivAnimation2::RenderBattleReportInsetWithPaletteShift||769|function|undefined InitializeCombatLookupTableAndDispatchBattleReportSlot()|
 49fcc0|TOneTimeAnimation::CreateObject|?CreateObject@TOneTimeAnimation@@SGPAVCObject@@XZ|24|function|undefined CreateObject()|rtti
-49fcf0|WrapperFor_FreeHeapBufferIfNotNull_At0049fcf0||30|function|undefined WrapperFor_FreeHeapBufferIfNotNull_At0049fcf0()|
-49fd20|TOneTimeAnimation::CreateTOneTimeAnimationInstance||7|function|undefined CreateTOneTimeAnimationInstance()|
+49fcf0|TOneTimeAnimation::`scalar deleting destructor'|??_GTOneTimeAnimation@@UAEPAXI@Z|30|function|undefined ScalarDeletingDestructor()|
+49fd20|TOneTimeAnimation::~TOneTimeAnimation|??1TOneTimeAnimation@@UAE@XZ|7|function|undefined ~TOneTimeAnimation()|
 49fd40|TOneTimeAnimation::GetRuntimeClass|?GetRuntimeClass@TOneTimeAnimation@@UBEPAUCRuntimeClass@@XZ|6|function|undefined __thiscall GetRuntimeClass(void)|rtti
 49fd60|TOneTimeAnimation::ConstructTOneTimeAnimationBaseState||85|function|undefined ConstructTOneTimeAnimationBaseState()|
-49fde0|TOneTimeAnimation::DestructTOneTimeAnimationAndMaybeFree||197|function|undefined DestructTOneTimeAnimationAndMaybeFree()|
+49fde0|TOneTimeAnimation::AdvanceAnimationTickAndInvalidateOnFrameFlip||197|function|undefined AdvanceAnimationTickAndInvalidateOnFrameFlip()|
 49fef0|TCouncilTickerAnimation::CreateObject|?CreateObject@TCouncilTickerAnimation@@SGPAVCObject@@XZ|24|function|undefined CreateObject()|rtti
 49ff20|TCouncilTickerAnimation::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 49ff50|TCouncilTickerAnimation::CreateTCouncilTickerAnimationInstance||7|function|undefined CreateTCouncilTickerAnimationInstance()|
@@ -7958,7 +7958,7 @@ address|name|symbol|size|type|prototype|provenance
 64c1f0|TAnimation::classTAnimation|||global||
 64c208|TCivAnimation::classTCivAnimation|||global||
 64c220|TCivAnimation2::classTCivAnimation2|||global||
-64c238|TOneTimeAnimation::classRuntimeClass|||global||
+64c238|TOneTimeAnimation::classTOneTimeAnimation|||global||
 64c250|TCouncilTickerAnimation::classTCouncilTickerAnimation|||global||
 64c268|TFocusAnimation::classRuntimeClass|||global||
 64c280|TTransFocusAnimation::classRuntimeClass|||global||
