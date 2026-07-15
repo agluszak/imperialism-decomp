@@ -533,6 +533,8 @@ extern char g_szUiPlaceholderStaticText_00694354[];
 extern char g_szUiPlaceholderTreasury_006943B0[];
 extern char g_szUiPlaceholderSeason_006943BC[];
 extern char g_szUiPlaceholderSampleText_00694A98[];
+// Provisional flag (0x00694c50) selecting the CDib blit path in TDDTemplateDialog::OnPaint.
+extern int g_useCompatibleBitmapBlit;
 // New-game setup screen (turn event 0x5dd) placeholder label strings.
 extern char g_szNewGameAllAutoGPs_006949E0[];
 extern char g_szNewGameNamesRandom_006949F0[];

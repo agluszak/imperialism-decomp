@@ -715,14 +715,6 @@ undefined4 BlitDibBitsWithStretchDIBits(void)
   return 0;
 }
 
-// ghidra_name StretchDibitsWithCopiedPaletteTable
-// ghidra_proto undefined StretchDibitsWithCopiedPaletteTable()
-// FUNCTION: IMPERIALISM 0x0047ac50
-undefined4 StretchDibitsWithCopiedPaletteTable(void)
-{
-  return 0;
-}
-
 // ghidra_name ReinitializeIncludeViewMainPaneAndRedrawWindow_Impl
 // ghidra_proto undefined ReinitializeIncludeViewMainPaneAndRedrawWindow_Impl()
 // FUNCTION: IMPERIALISM 0x0047af60
@@ -735,14 +727,6 @@ undefined4 ReinitializeIncludeViewMainPaneAndRedrawWindow_Impl(void)
 // ghidra_proto undefined OrphanDeadLeaf_NoRefs_0047b130()
 // FUNCTION: IMPERIALISM 0x0047b130
 undefined4 OrphanDeadLeaf_NoRefs_0047b130(void)
-{
-  return 0;
-}
-
-// ghidra_name CreateDibBitmapFromStoredInfo
-// ghidra_proto undefined CreateDibBitmapFromStoredInfo()
-// FUNCTION: IMPERIALISM 0x0047b280
-undefined4 CreateDibBitmapFromStoredInfo(void)
 {
   return 0;
 }

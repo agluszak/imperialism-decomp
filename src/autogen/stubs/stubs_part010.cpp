@@ -3,14 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name RenderMapTileDibSurfaceWithClipRegionAndGdiPrimitives
-// ghidra_proto undefined RenderMapTileDibSurfaceWithClipRegionAndGdiPrimitives()
-// FUNCTION: IMPERIALISM 0x0047d5f0
-undefined4 RenderMapTileDibSurfaceWithClipRegionAndGdiPrimitives(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_DeleteRegionHandleFromClipState_At0047d9d0
 // ghidra_proto undefined WrapperFor_DeleteRegionHandleFromClipState_At0047d9d0()
 // FUNCTION: IMPERIALISM 0x0047d9d0

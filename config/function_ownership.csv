@@ -229,9 +229,11 @@ address|target_cpp|ownership|note
 47aa70|src/game/CDib.cpp|manual|marker_sync
 47ab60|src/game/CDib.cpp|manual|marker_sync
 47abe0|src/game/CDib.cpp|manual|marker_sync
+47ac50|src/game/CDib.cpp|manual|marker_sync
 47ae20|src/game/CDib.cpp|manual|marker_sync
 47ae90|src/game/CDib.cpp|manual|marker_sync
 47b0c0|src/game/CDib.cpp|manual|marker_sync
+47b280|src/game/CDib.cpp|manual|marker_sync
 47b6d0|src/game/CDib.cpp|manual|marker_sync
 47b9f0|src/game/CDib.cpp|manual|marker_sync
 47bb10|src/game/CDib.cpp|manual|marker_sync
@@ -264,8 +266,10 @@ address|target_cpp|ownership|note
 47d540|src/game/TC2TemplateDialog.cpp|manual|marker_sync
 47d5b0|src/game/TC2TemplateDialog.cpp|manual|marker_sync
 47d5d0|src/game/TC2TemplateDialog.cpp|manual|marker_sync
+47d5f0|src/game/TC2TemplateDialog.cpp|manual|marker_sync
 47d960|src/game/CBrush.cpp|library|marker_sync
 47dae0|src/game/TC2TemplateDialog.cpp|manual|marker_sync
+47db80|src/game/TC2TemplateDialog.cpp|manual|marker_sync
 47dba0|src/game/TC2TemplateDialog.cpp|manual|marker_sync
 47dc40|src/game/TC2TemplateDialog.cpp|manual|marker_sync
 47dc70|src/game/TC2TemplateDialog.cpp|manual|marker_sync

@@ -8468,6 +8468,7 @@ address|name|symbol|size|type|prototype|provenance
 69430c|g_szDecimalFormat|||global||
 6943cc|g_szMcAppUiHeaderPath_006943CC|||global||
 694b48|CDib::classCDib|||global||
+694c50|g_useCompatibleBitmapBlit|||global||
 694eb8|TObject::classTObject|||global||
 694fc8|g_szUiNilPointerMessage|||global||
 694fd8|g_szUiFailureMessage|||global||

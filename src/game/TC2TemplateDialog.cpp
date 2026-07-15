@@ -1,8 +1,10 @@
 #include "game/TC2TemplateDialog.h"
 
 #include "game/CDib.h"
+#include "game/CDibPal.h"
 #include "game/ImperialismApp.h"
 #include "game/TCountry.h"
+#include "game/TModuleLibraryCacheTableStateB.h"
 #include "game/TSimMgr.h"
 #include "game/TViewMgr.h"
 #include "game/global_data_tables.h"
@@ -145,8 +147,74 @@ void TDDTemplateDialog::DoDataExchange(CDataExchange* pDX) {
 // TDDTemplateDialog::GetMessageMap
 #ifndef IMPERIALISM_LINT
 BEGIN_MESSAGE_MAP(TDDTemplateDialog, CDialog)
+ON_WM_PAINT()
+ON_WM_LBUTTONDBLCLK()
 END_MESSAGE_MAP()
 #endif
+
+// Draws the preview picture into the client area, then optionally overlays a red silhouette
+// outline (Polyline) and/or fill (FillRgn) built from the picture's non-transparent-pixel
+// polygon (outlinePolygon: [0]=POINT count, POINTs from index 2). Three blit modes:
+//   renderMode != 0            -> palette-masked StretchDIBits (StretchDibitsWithCopiedPaletteTable)
+//   g_useCompatibleBitmapBlit  -> CreateCompatibleDC + BitBlt of a device bitmap, using the
+//                                 module palette cache's default palette
+//   otherwise                  -> plain StretchDIBits from the stored DIB bits
+// The temporary device bitmap (created here when the CDib has none cached) is released after.
+// FUNCTION: IMPERIALISM 0x0047d5f0
+void TDDTemplateDialog::OnPaint() {
+  CPaintDC dc(this);
+  HBITMAP bitmap = picture->m_hBitmap;
+  if (bitmap == NULL) {
+    bitmap = picture->CreateDibBitmapFromStoredInfo(&dc);
+  }
+  if (renderMode != 0) {
+    picture->SelectAndRealizeDibPalette(&dc, FALSE);
+    // The original re-reads the header and re-computes abs(biHeight) per height argument (no
+    // CSE), so the two abs expressions are written inline rather than hoisted.
+    picture->StretchDibitsWithCopiedPaletteTable(CDC::FromHandle(dc.GetSafeHdc()), 0x10, 0, 0,
+                                                 picture->m_pInfoHeader->bmiHeader.biWidth,
+                                                 picture->m_pInfoHeader->bmiHeader.biHeight > 0
+                                                     ? picture->m_pInfoHeader->bmiHeader.biHeight
+                                                     : -picture->m_pInfoHeader->bmiHeader.biHeight,
+                                                 0, 0, picture->m_pInfoHeader->bmiHeader.biWidth,
+                                                 picture->m_pInfoHeader->bmiHeader.biHeight > 0
+                                                     ? picture->m_pInfoHeader->bmiHeader.biHeight
+                                                     : -picture->m_pInfoHeader->bmiHeader.biHeight);
+  } else if (g_useCompatibleBitmapBlit != 0) {
+    CDibPal* palette = g_pModuleLibraryCacheState->EnsureDefaultDibPalette();
+    palette->SelectIntoDcAndRealize(&dc, FALSE);
+    HDC memoryDc = ::CreateCompatibleDC(dc.GetSafeHdc());
+    HGDIOBJ oldBitmap = ::SelectObject(memoryDc, bitmap);
+    int width = picture->m_pInfoHeader->bmiHeader.biWidth;
+    int height = picture->m_pInfoHeader->bmiHeader.biHeight;
+    if (height <= 0) {
+      height = -height;
+    }
+    ::BitBlt(dc.GetSafeHdc(), 0, 0, width, height, memoryDc, 0, 0, SRCCOPY);
+    ::SelectObject(memoryDc, oldBitmap);
+    ::DeleteDC(memoryDc);
+  } else {
+    picture->SelectAndRealizeDibPalette(&dc, FALSE);
+    CPoint origin(0, 0);
+    picture->StretchDibitsFromStoredBitmapToHdc(&dc, &origin);
+  }
+  if (picture->m_hBitmap == NULL) {
+    ::DeleteObject(bitmap);
+  }
+  if (drawOutline != 0) {
+    CPen pen(PS_SOLID, 1, RGB(0xff, 0, 0));
+    CPen* oldPen = dc.SelectObject(&pen);
+    dc.Polyline(reinterpret_cast<POINT*>(outlinePolygon + 2), outlinePolygon[0]);
+    dc.SelectObject(oldPen);
+  }
+  if (fillPolygon != 0) {
+    CRgn region;
+    region.CreatePolygonRgn(reinterpret_cast<POINT*>(outlinePolygon + 2), outlinePolygon[0],
+                            ALTERNATE);
+    CBrush brush(RGB(0xff, 0, 0));
+    dc.FillRgn(&region, &brush);
+  }
+}
 
 // FUNCTION: IMPERIALISM 0x0047dae0
 BOOL TDDTemplateDialog::OnInitDialog() {
@@ -163,6 +231,14 @@ BOOL TDDTemplateDialog::OnInitDialog() {
     outlinePolygon = picture->BuildNonTransparentOutlinePolygon(0xffffffff);
   }
   return TRUE;
+}
+
+// Empty in the original (double-click on the preview does nothing); present only so the
+// message map's ON_WM_LBUTTONDBLCLK entry has a handler.
+// FUNCTION: IMPERIALISM 0x0047db80
+void TDDTemplateDialog::OnLButtonDblClk(UINT nFlags, CPoint point) {
+  (void)nFlags;
+  (void)point;
 }
 
 // FUNCTION: IMPERIALISM 0x0047dba0
