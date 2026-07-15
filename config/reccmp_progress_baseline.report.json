@@ -1739,14 +1739,20 @@
     },
     {
       "address": "0x47d360",
-      "matching": 0.058823529411764705,
+      "matching": 0.96875,
       "name": "InitializeDialogTemplateDBWithTextState",
+      "type": 1
+    },
+    {
+      "address": "0x47d3f0",
+      "matching": 0.9090909090909091,
+      "name": "TDBTemplateDialog::`scalar deleting destructor'",
       "type": 1
     },
     {
       "address": "0x47d450",
       "matching": 0.5,
-      "name": "OrphanVtableAssignStub_0047d450",
+      "name": "TDBTemplateDialog::GetMessageMap",
       "type": 1
     },
     {
@@ -42153,6 +42159,12 @@
       "address": "0x646300",
       "matching": 1.0,
       "name": "TD2TemplateDialog::`vftable'",
+      "type": 5
+    },
+    {
+      "address": "0x646410",
+      "matching": 1.0,
+      "name": "TDBTemplateDialog::`vftable'",
       "type": 5
     },
     {

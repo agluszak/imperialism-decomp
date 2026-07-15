@@ -42,3 +42,20 @@ protected:
 };
 
 ASSERT_SIZE(TD2TemplateDialog, 0xb0);
+
+// Sibling "DB" template dialog (template id 0xdb, own vtable 0x646410): same TModalDialogBase
+// base with a single embedded CListBox at +0x74. Built by
+// InitializeDialogTemplateDBWithTextState (0x0047d360).
+// VTABLE: IMPERIALISM 0x00646410
+class TDBTemplateDialog : public TModalDialogBase {
+public:
+  TDBTemplateDialog(void* initParam); // 0x0047d360
+
+  CListBox listbox; // +0x74
+
+protected:
+  void DoDataExchange(CDataExchange* pDX) override; // 0x0047d420 (vtable index 35)
+  DECLARE_MESSAGE_MAP()                             // GetMessageMap 0x0047d450 (vtable index 12)
+};
+
+ASSERT_SIZE(TDBTemplateDialog, 0xb0);
