@@ -2286,6 +2286,7 @@ address|target_cpp|ownership|note
 4fc9c0|src/game/TMapKey.cpp|manual|marker_sync
 4fca70|src/game/TMapKey.cpp|manual|marker_sync
 4fcac0|src/game/TMapKey.cpp|manual|marker_sync
+4fcea0|src/game/TControl.cpp|manual|marker_sync
 4fcf80|src/game/TMapKey.cpp|manual|marker_sync
 4fd000|src/game/TMapKey.cpp|manual|marker_sync
 4fd220|src/game/TMapKey.cpp|manual|marker_sync

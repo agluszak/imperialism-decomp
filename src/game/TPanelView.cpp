@@ -17,9 +17,9 @@ TPanelView::~TPanelView() {}
 IMPLEMENT_DYNCREATE(TPanelView, TView)
 
 // Always inlined by the compiler (no standalone out-of-line address), so no // FUNCTION
-// marker: TView base construction then field60 = 0.
+// marker: TView base construction then m_panelData = 0.
 TPanelView::TPanelView() : TView() {
-  field60 = 0;
+  m_panelData = 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004f79e0
