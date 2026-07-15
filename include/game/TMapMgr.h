@@ -70,7 +70,9 @@ struct TTerrainStateRecordView {
   // TMapMgr::ClearPerTileByte0FForAllMapTiles (0x409250); reader/setter beyond that not
   // yet identified.
   unsigned char perTileVisitedFlag0f;
-  unsigned char pad10;
+  // Index (0..89, -1 = none) of the TMapDialog transient tile-marker slot this tile occupies;
+  // reset to 0xff by TMapDialog's marker-release path. Read MOVSX (signed).
+  signed char markerSlotIndex10;
   signed char resourceTypeByEdge[2];
   // Signed: same MOVSX-index evidence as terrainType00/spriteVariantIndex01 above.
   signed char gateFlag;

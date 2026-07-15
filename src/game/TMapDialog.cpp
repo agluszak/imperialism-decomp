@@ -289,13 +289,28 @@ undefined TMapDialog::UpdateMapInteractionPreviewParityAndRenderTransientSprites
 }
 
 // FUNCTION: IMPERIALISM 0x0051e1a0
-undefined TMapDialog::OrphanCallChain_C1_I20_0051e1a0() {
-  return 0;
+void TMapDialog::ResetAllTileMarkersToSentinel() {
+  g_pGlobalMapState->ResetAllTileSpriteVariantIndexToSentinel();
+  for (int i = 0; i < 90; i++) {
+    tileMarkers7c[i].flag = 0;
+    tileMarkers7c[i].a = 0xffff;
+    tileMarkers7c[i].b = 0xffff;
+    tileMarkers7c[i].c = 0xffff;
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x0051e1f0
-undefined TMapDialog::OrphanLeaf_NoCall_Ins21_0051e1f0() {
-  return 0;
+void TMapDialog::ReleaseTileMarkerForTile(short tileIndex) {
+  // Architecturally complete; the residual vs the original is MSVC hoisting the shared -1
+  // sentinel into a callee-saved register (bl/bx/ebx) rather than immediates.
+  short slot = g_pGlobalMapState->terrainStateTable[tileIndex].markerSlotIndex10;
+  if (slot != -1) {
+    g_pGlobalMapState->terrainStateTable[tileIndex].markerSlotIndex10 = -1;
+    tileMarkers7c[slot].flag = 0;
+    tileMarkers7c[slot].a = -1;
+    tileMarkers7c[slot].b = -1;
+    tileMarkers7c[slot].c = -1;
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x0051e260

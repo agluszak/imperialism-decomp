@@ -3342,8 +3342,8 @@ address|name|symbol|size|type|prototype|provenance
 51e0e0|InitializeMapInteractionPreviewScaleYDefault||21|function|undefined InitializeMapInteractionPreviewScaleYDefault()|
 51e110|RecomputeMapInteractionPreviewVerticalOffsetFromScale||30|function|undefined RecomputeMapInteractionPreviewVerticalOffsetFromScale()|
 51e160|WrapperFor_SetQuickDrawFillColor_At0051e160||43|function|undefined WrapperFor_SetQuickDrawFillColor_At0051e160()|
-51e1a0|TMapDialog::OrphanCallChain_C1_I20_0051e1a0||51|function|undefined OrphanCallChain_C1_I20_0051e1a0(void)|
-51e1f0|TMapDialog::OrphanLeaf_NoCall_Ins21_0051e1f0||77|function|undefined OrphanLeaf_NoCall_Ins21_0051e1f0(void)|
+51e1a0|TMapDialog::ResetAllTileMarkersToSentinel||51|function|undefined OrphanCallChain_C1_I20_0051e1a0(void)|
+51e1f0|TMapDialog::ReleaseTileMarkerForTile||77|function|undefined OrphanLeaf_NoCall_Ins21_0051e1f0(void)|
 51e260|TMapDialog::ApplyRectSlot110||1780|function|undefined RenderMapInteractionPreviewSlotsAndTransientSprites()|
 51eb40|TMapDialog::RenderStrategicMapTileCell||5443|function|undefined RenderStrategicMapTileCell()|
 520670|TMapDialog::RenderMapDialogBilateralRelationMarkers||527|function|undefined RenderMapDialogBilateralRelationMarkers()|

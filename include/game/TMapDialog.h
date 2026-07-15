@@ -4,11 +4,22 @@
 
 struct TQuickDrawSurfaceContext;
 
+// One transient tile-marker slot (8 bytes): a flag byte plus three sentinel-initialized
+// coordinate/state shorts. The map dialog keeps an array of 90 (0x5a) of these.
+struct TMapDialogTileMarker {
+  char flag;  // +0x00
+  char pad01; // +0x01
+  short a;    // +0x02 (init 0xffff)
+  short b;    // +0x04 (init 0xffff)
+  short c;    // +0x06 (init 0xffff)
+};
+
 // VTABLE: IMPERIALISM 0x658a58
 class TMapDialog : public TWorldView {
 public:
   // CreateObject (0x00519c0e) allocates 0x364 bytes for the concrete object.
-  unsigned char pad7c[0x350 - 0x7c];
+  TMapDialogTileMarker tileMarkers7c[90]; // +0x7c .. +0x34c
+  int field34c;                           // +0x34c
   // Released (set to null) by Free(); read by RenderMapDialogTerrainOverlayFrameByTileOwner as
   // the source surface for tile-owner/terrain-frame blits.
   TQuickDrawSurfaceContext* quickDrawSurface350;
@@ -48,8 +59,11 @@ public:
   void OrphanRetStub_005966a0(int arg1) override;
   void OrphanRetStub_00596680(int arg1, int arg2) override;
   virtual void DrawHexNeighborOutlineFromTileArray(short* neighborTiles);
-  virtual undefined OrphanCallChain_C1_I20_0051e1a0();
-  virtual undefined OrphanLeaf_NoCall_Ins21_0051e1f0();
+  // Resets the map-tile sprite variants and all 90 transient tile-marker slots to sentinels.
+  virtual void ResetAllTileMarkersToSentinel(); // 0x0051e1a0
+  // Releases the transient tile-marker slot the given tile occupies (marks the tile's
+  // terrain record slot 0xff and re-sentinels that marker). 0x0051e1f0
+  virtual void ReleaseTileMarkerForTile(short tileIndex);
   virtual undefined UpdateMapDialogProjectedTileMarkerAndInvalidate();
   virtual undefined RenderStrategicMapTileCell();
   virtual undefined EmitHexAdjacencyTransitionEventsByBitmask();
