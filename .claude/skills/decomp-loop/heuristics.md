@@ -1866,3 +1866,37 @@ CRect::CRect for file-scope CRect globals, 0x4b98b0) cannot be expressed as a pl
 function — the ctor-on-global calls only arise from real file-scope declarations whose
 compiler-generated initializer cannot carry a FUNCTION marker. Needs a dedicated
 static-init modeling decision; defer rather than fake with placement-new.
+
+## Note 116 — Trivial-ctor factories: define the empty ctor inline in the header
+
+When a small factory (`new T()` + second-phase init call) scores badly and its diff shows
+`CALL <base ctor thunk>` + `MOV [reg], offset vftable` where the recompile has one `CALL
+T::T`, the original defined `T::T()` inline in the class (MSVC500 /Ob1 expands it at every
+`new` site as: out-of-line BASE ctor call + own vptr store). Fix: move the empty ctor
+definition into the header (`T() {}` in-class) and delete the .cpp definition (it carries
+no FUNCTION marker when no standalone copy exists in the binary). This took the
+TTechItemLine::CreateLineItemView factory (0x5b1160) from 41.6% to 100% in one edit. The
+same applies transitively: a ctor whose INLINE expansion at call sites shows the
+grandparent ctor call means the parent's ctor is header-inline too. Caveat: if a
+standalone copy of the ctor DOES exist at an address (it has a FUNCTION marker), making it
+header-inline changes where the out-of-line copy is emitted — check `just compare` on the
+marked address after the move.
+
+## Note 117 — Mac-style two-phase construction: `Construct*BaseState` are methods, not ctors
+
+In this binary the `Construct<Class>BaseState` functions (TTEView 0x486050, TDeluxeText
+0x5b5ff0, TTechItemView 0x5b12e0) are NOT constructors: none stores a vptr; each is called
+explicitly after `new T()` (the MacApp IViewClass second-phase-init idiom). Port them as
+plain member methods with the real arg lists (dead filler args included — `RET 0x2c` = 11
+args even if three are never read), and port the callers as `T* p = new T(); p->Construct...
+(args)`. Do not fold them into the C++ ctor: the original ctor is the separate trivial
+inline (note 116), and merging them mismatches both.
+
+## Note 118 — Dual-width global reads: type by the widest reader, cast at the narrow ones
+
+When one function loads a global as a full dword (`MOV reg, dword [g]` then uses both the
+sign-extended low word AND the raw dword) while another reads it `MOVSX reg, word [g]`,
+model the global as `int` and have word readers write `static_cast<short>(g)` — MSVC500
+emits `MOVSX reg, word ptr [g]` for a (short) cast of an int lvalue in memory, so both
+codegen shapes fall out (g_wMapDialogViewportTileSpan 0x6a33b0: 0x51adf0 dword reader,
+0x51ac40 movsx-word reader). A `short` global can never reproduce the dword load.
