@@ -1,6 +1,8 @@
 #include "game/TMapMaker.h"
 #include "game/TObject.h"
 #include "game/TControl.h"
+#include "game/TMapMgr.h"
+#include "game/global_data_tables.h"
 
 // SYNTHETIC: IMPERIALISM 0x00525950
 // TMapMaker::GetRuntimeClass
@@ -34,6 +36,140 @@ char TMapMaker::ValidateAllColumnsHaveAssignedRegionClass() {
     }
   }
   return foundEmptyColumn;
+}
+
+// True when every terrain class (0..0x16) that appears on the map has at least one valid
+// "seed candidate" tile: a tile of land type {0,1,6,7} one of whose six hex neighbours is a
+// city-region tile (tile[0]==5) whose own neighbours all share the seed tile's class. For
+// each qualifying class the chosen candidate index is reservoir-sampled with the map-gen LCG.
+// Grid is 108 (0x6c) columns x 60 (0x3c) rows, tile stride 0x24, tile[4] = terrain class.
+// 0x005267f0.
+// FUNCTION: IMPERIALISM 0x005267f0
+char TMapMaker::ValidateSeedCandidateExistsForEachTerrainClass() {
+  int seedFound[23];
+  int seedCandidate[23];
+  int i;
+
+  int* pInit = seedFound;
+  for (i = 0x17; i != 0; i = i + -1) {
+    *pInit = 0;
+    pInit = pInit + 1;
+  }
+  pInit = seedCandidate;
+  for (i = 0x17; i != 0; i = i + -1) {
+    *pInit = 0;
+    pInit = pInit + 1;
+  }
+
+  int tileIndex = 0;
+  int tileOffset = 0;
+  do {
+    char* tiles = mapTileGrid08;
+    int cls = (int)tiles[tileOffset + 4];
+    if ((cls < 0x17) && (-1 < cls)) {
+      if (seedFound[cls] == 0) {
+        int row = tileIndex / 0x6c;
+        int col = tileIndex % 0x6c;
+        char wrapFlag = g_pGlobalMapState->hexNeighborWrapHorizontally20;
+        bool haveCandidate = false;
+        short dir = 0;
+        do {
+          int idx = (int)dir;
+          int nCol;
+          if ((row & 1U) == 0) {
+            nCol = g_hexColOffsetEvenRow_00697450[idx];
+          } else {
+            nCol = g_hexColOffsetOddRow_00697480[idx];
+          }
+          nCol = col + nCol;
+          int nRow = row + g_hexRowOffset_00697468[idx];
+          short nIdx;
+          if (wrapFlag == '\0') {
+            if (nCol < 0) {
+              nCol = nCol + 0x6c;
+            } else if (0x6b < nCol) {
+              nCol = nCol + -0x6c;
+            }
+          LAB_neighbor_index:
+            if ((nRow < 0) || (0x3b < nRow))
+              goto LAB_neighbor_invalid;
+            nIdx = (short)nCol + (short)nRow * 0x6c;
+          } else {
+            if ((-1 < nCol) && (nCol < 0x6c))
+              goto LAB_neighbor_index;
+          LAB_neighbor_invalid:
+            nIdx = -1;
+          }
+          if ((nIdx != -1) && (idx = (int)nIdx, tiles[idx * 0x24] == '\x05')) {
+            haveCandidate = true;
+            int seedRow = idx / 0x6c;
+            int seedCol = idx % 0x6c;
+            int k = 0;
+            do {
+              int sCol;
+              if ((seedRow & 1U) == 0) {
+                sCol = g_hexColOffsetEvenRow_00697450[k];
+              } else {
+                sCol = g_hexColOffsetOddRow_00697480[k];
+              }
+              sCol = seedCol + sCol;
+              int sRow = seedRow + g_hexRowOffset_00697468[k];
+              if (wrapFlag == '\0') {
+                if (sCol < 0) {
+                  sCol = sCol + 0x6c;
+                } else if (0x6b < sCol) {
+                  sCol = sCol + -0x6c;
+                }
+              LAB_seed_neighbor_index:
+                if ((sRow < 0) || (0x3b < sRow))
+                  goto LAB_seed_neighbor_invalid;
+                sCol = sCol + sRow * 0x6c;
+              } else {
+                if ((-1 < sCol) && (sCol < 0x6c))
+                  goto LAB_seed_neighbor_index;
+              LAB_seed_neighbor_invalid:
+                sCol = -1;
+              }
+              char nbCls;
+              if (((sCol != -1) && (nbCls = tiles[4 + sCol * 0x24], nbCls < '\x17')) &&
+                  (nbCls != cls)) {
+                haveCandidate = false;
+                break;
+              }
+              k = k + 1;
+            } while (k < 6);
+            if (haveCandidate) {
+              if ((seedCandidate[cls] == 0) ||
+                  (g_mapGenLcgState_006a38e8 = g_mapGenLcgState_006a38e8 * 0x15a4e35 + 1,
+                   (g_mapGenLcgState_006a38e8 >> 0xc & 0x7fff) % 5 == 3)) {
+                seedCandidate[cls] = (int)nIdx;
+              }
+              break;
+            }
+          }
+          dir = dir + 1;
+        } while (dir < 6);
+        char typeByte;
+        if (haveCandidate &&
+            (((typeByte = mapTileGrid08[tileOffset], typeByte == '\0') || (typeByte == '\a')) ||
+             ((typeByte == '\x01') || (typeByte == '\x06')))) {
+          seedFound[cls] = 1;
+        }
+      }
+    }
+    tileOffset = tileOffset + 0x24;
+    tileIndex = tileIndex + 1;
+    if (0x38f3f < tileOffset) {
+      int* p = seedFound;
+      for (i = 0; i < 0x17; i = i + 1) {
+        if (*p == 0) {
+          return '\0';
+        }
+        p = p + 1;
+      }
+      return '\x01';
+    }
+  } while (true);
 }
 
 // FUNCTION: IMPERIALISM 0x00526ba0

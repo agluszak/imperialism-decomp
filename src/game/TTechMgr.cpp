@@ -12,7 +12,7 @@
 #include "game/TSimMgr.h"
 #include "game/global_data_tables.h"
 
-undefined4 RecomputeGlobalCapabilityAverages(void);
+void RecomputeGlobalCapabilityAverages(void);
 undefined4 GetCurrentLocalEpochSecondsWithTimezoneCache(void);
 
 TTechMgr* g_pCityOrderCapabilityState = 0;

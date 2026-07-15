@@ -135,6 +135,65 @@ void __fastcall RegenerateNavyPrimaryOrderDisplayNameUntilUnique(TShip* shipNode
   } while (1);
 }
 
+// Recompute the four per-category capability metric baseline averages
+// (g_aCategoryMetricBaselineAverage) read back as normalization divisors by the
+// navy/map-order scoring helpers. Iterates resource descriptors 1..13, including only
+// capabilities enabled in g_pCityOrderCapabilityState's +0x19d per-slot flag array,
+// accumulates four metric channels (weighted products / ratios / priority / industry
+// cost), then normalizes each channel by the active-capability count with rounding.
+// 0x0054fd50.
+// FUNCTION: IMPERIALISM 0x0054fd50
+void RecomputeGlobalCapabilityAverages() {
+  if (g_pCityOrderCapabilityState != 0) {
+    g_aCategoryMetricBaselineAverage[0] = 0;
+    g_aCategoryMetricBaselineAverage[1] = 0;
+    g_aCategoryMetricBaselineAverage[2] = 0;
+    g_aCategoryMetricBaselineAverage[3] = 0;
+    int activeCount = 0;
+    short rec = 1;
+    TNavyOrderResourceDescriptor* d = &g_NavyOrderResourceDescriptorTable[1];
+    do {
+      // The descriptor's leading dword doubles as an enabled/present gate.
+      if ((0 < *reinterpret_cast<int*>(d)) &&
+          (reinterpret_cast<unsigned char*>(g_pCityOrderCapabilityState)[0x19d + (int)rec] !=
+           '\0')) {
+        activeCount = activeCount + 1;
+        int channel = 0;
+        do {
+          int value;
+          switch (channel) {
+          case 0:
+            value = (int)d->resolveWeight * (int)d->calculateWeight * (int)d->calculateWeight;
+            break;
+          case 1:
+            value = ((int)d->calculateWeight * (int)d->stockCap * 100) / (int)d->taskForceWeight;
+            break;
+          case 2:
+            value = (int)(short)d->navyPriorityWeight;
+            break;
+          case 3:
+            value = (int)g_industryActionCostWeightResCode10[(int)rec];
+            break;
+          default:
+            value = 0;
+          }
+          g_aCategoryMetricBaselineAverage[channel] =
+              g_aCategoryMetricBaselineAverage[channel] + value;
+          channel = channel + 1;
+        } while (channel < 4);
+      }
+      d = d + 1;
+      rec = rec + 1;
+    } while (d < &g_NavyOrderResourceDescriptorTable[14]);
+    int c = 0;
+    do {
+      g_aCategoryMetricBaselineAverage[c] =
+          (activeCount / 2 + g_aCategoryMetricBaselineAverage[c]) / activeCount;
+      c = c + 1;
+    } while (c < 4);
+  }
+}
+
 // FUNCTION: IMPERIALISM 0x0054fee0
 int GetNavyContextPointerFromGlobalTableByIndex(int index) {
   return g_aCategoryMetricBaselineAverage[index];
@@ -184,6 +243,7 @@ short TShip::ComputeNavyOrderPriorityContributionPercentByCategory(int category)
 // table as ComputeNavyOrderPriorityContributionPercentByCategory, but a distinct blend per
 // category; the original inlines the descriptor-field reads, so they are reproduced
 // inline here.
+
 // FUNCTION: IMPERIALISM 0x00550090
 int GetNormalizedIndustryActionResourceCostPercent(int nCategory, short nResourceType) {
   int divisor = g_aCategoryMetricBaselineAverage[nCategory];
