@@ -19,13 +19,22 @@ class TMapDialog : public TWorldView {
 public:
   // CreateObject (0x00519c0e) allocates 0x364 bytes for the concrete object.
   TMapDialogTileMarker tileMarkers7c[90]; // +0x7c .. +0x34c
-  int field34c;                           // +0x34c
+  // Suppress-tile-marker-rerender gate: ApplyRectSlot110 (0x51e260) only blits the marker
+  // overlay into quickDrawSurface350 while this is 0. Zeroed by the ctor.
+  unsigned char field34c; // +0x34c
+  unsigned char pad34d[3];
   // Released (set to null) by Free(); read by RenderMapDialogTerrainOverlayFrameByTileOwner as
   // the source surface for tile-owner/terrain-frame blits.
   TQuickDrawSurfaceContext* quickDrawSurface350;
-  unsigned char pad354[0x35c - 0x354];
+  short field354;         // +0x354 zeroed by the ctor; no confirmed reader yet
+  short field356;         // +0x356 ctor-init 0xffff (tile-index "none" sentinel idiom)
+  unsigned char field358; // +0x358 zeroed by the ctor; no confirmed reader yet
+  unsigned char pad359[3];
   void* field35c; // released (set to null) by Free(); no other confirmed reader.
-  unsigned char pad360[0x364 - 0x360];
+  // Per-tile debug/text-overlay gate read by RenderStrategicMapTileCell (0x51eb40). Zeroed
+  // by the ctor.
+  unsigned char field360; // +0x360
+  unsigned char pad361[3];
 
   DECLARE_DYNCREATE(TMapDialog)
   TMapDialog();
@@ -68,7 +77,11 @@ public:
   virtual undefined RenderStrategicMapTileCell();
   virtual undefined EmitHexAdjacencyTransitionEventsByBitmask();
   virtual undefined DrawHexEdgeConnectionGlyphsByMask();
-  virtual undefined RenderMapDialogBilateralRelationMarkers();
+  // Draws a two-toned bilateral-relation marker: the guide pattern selected by
+  // relationLevel (0-9) is drawn twice at (originX, originY) — variant 1 tinted for
+  // nationA, variant 2 for nationB (0x35 = minor-nation fallback color).
+  virtual void RenderMapDialogBilateralRelationMarkers(short relationLevel, int originX,
+                                                       int originY, int nationA, int nationB);
   virtual void DrawMapDialogGuidePatternSetA_00520970(int originX, int originY, short variant);
   virtual void DrawMapDialogGuidePatternSetB_00520a90(int originX, int originY, short variant);
   virtual void DrawMapDialogGuidePatternSetC_00520c10(int originX, int originY, short variant);

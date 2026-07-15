@@ -1,6 +1,7 @@
 #include "game/TMapDialog.h"
 
 #include <stdlib.h>
+#include "game/TDiplomacyMgr.h"
 #include "game/TMapMgr.h"
 #include "game/CTemporaryRegion.h"
 #include "game/TGlobalMapState.h"
@@ -47,8 +48,29 @@ void TMapDialog::ProjectTileIndexToWrappedScreenOffsetByScale(short tileIndex, s
 
 IMPLEMENT_DYNCREATE(TMapDialog, TWorldView)
 
+// Zero the marker/overlay state, center the view on the map's current tile (splitting
+// g_pGlobalMapState->field6 into row/col and dispatching the coordinate update virtually —
+// the vptr is already TMapDialog's), then seed the scroll/zoom words (field78 = 0x40 tile
+// pixel size). The split writes only the low words of the two locals, so they are ints whose
+// addresses pass as short* (the high words are dead), matching the original stack reads.
 // FUNCTION: IMPERIALISM 0x00519b50
-TMapDialog::TMapDialog() {}
+TMapDialog::TMapDialog() : TWorldView() {
+  int row;
+  int col;
+  viewportOffsetX = 0;
+  field34c = 0;
+  field35c = 0;
+  viewportOffsetY = 0;
+  SplitTileIndexToRowAndColumn(g_pGlobalMapState->field6, reinterpret_cast<short*>(&row),
+                               reinterpret_cast<short*>(&col));
+  OrphanRetStub_00596680(col, row);
+  field354 = 0;
+  field356 = -1;
+  field358 = 0;
+  field76 = 1;
+  field78 = 0x40;
+  field360 = 0;
+}
 
 // SYNTHETIC: IMPERIALISM 0x00519C40
 // TMapDialog::`scalar deleting destructor'
@@ -323,9 +345,88 @@ undefined TMapDialog::RenderStrategicMapTileCell() {
   return 0;
 }
 
+// Two 10-way switches on the same pattern selector, each dispatching virtually into the
+// guide-pattern family (slots 0x85-0x8e) with variant 1 (nationA's tint) then variant 2
+// (nationB's). Ghidra's decompile of this function is broken (phantom register args from
+// the deferred __cdecl stack cleanup); ported from the raw listing.
 // FUNCTION: IMPERIALISM 0x00520670
-undefined TMapDialog::RenderMapDialogBilateralRelationMarkers() {
-  return 0;
+void TMapDialog::RenderMapDialogBilateralRelationMarkers(short relationLevel, int originX,
+                                                         int originY, int nationA, int nationB) {
+  if (g_pDiplomacyTurnStateManager->IsPrimaryNationSlotIndex(nationA) == 0) {
+    g_pUiRuntimeContext->ApplyTurnEventPaletteColorByEventCode(0x35);
+  } else {
+    g_pUiRuntimeContext->ApplyTurnEventPaletteColorByEventCode(nationA);
+  }
+  SetQuickDrawStylePair_1D08_1D0C_AndMarkDirty(2, 2);
+  switch (relationLevel) {
+  case 0:
+    DrawMapDialogGuidePatternSetA_00520970(originX, originY, 1);
+    break;
+  case 1:
+    DrawMapDialogGuidePatternSetB_00520a90(originX, originY, 1);
+    break;
+  case 2:
+    DrawMapDialogGuidePatternSetC_00520c10(originX, originY, 1);
+    break;
+  case 3:
+    DrawMapDialogGuidePatternSetD_00520d20(originX, originY, 1);
+    break;
+  case 4:
+    DrawMapDialogTileGuidePatternByVariant(originX, originY, 1);
+    break;
+  case 5:
+    DrawMapDialogGuidePatternSetE_00520fc0(originX, originY, 1);
+    break;
+  case 6:
+    DrawMapDialogGuidePatternSetF_00521090(originX, originY, 1);
+    break;
+  case 7:
+    DrawMapDialogGuidePatternSetG_005211c0(originX, originY, 1);
+    break;
+  case 8:
+    DrawMapDialogGuidePatternSetH_00521340(originX, originY, 1);
+    break;
+  case 9:
+    DrawMapDialogGuidePatternSetI_00521540(originX, originY, 1);
+    break;
+  }
+  if (g_pDiplomacyTurnStateManager->IsPrimaryNationSlotIndex(nationB) == 0) {
+    g_pUiRuntimeContext->ApplyTurnEventPaletteColorByEventCode(0x35);
+  } else {
+    g_pUiRuntimeContext->ApplyTurnEventPaletteColorByEventCode(nationB);
+  }
+  switch (relationLevel) {
+  case 0:
+    DrawMapDialogGuidePatternSetA_00520970(originX, originY, 2);
+    break;
+  case 1:
+    DrawMapDialogGuidePatternSetB_00520a90(originX, originY, 2);
+    break;
+  case 2:
+    DrawMapDialogGuidePatternSetC_00520c10(originX, originY, 2);
+    break;
+  case 3:
+    DrawMapDialogGuidePatternSetD_00520d20(originX, originY, 2);
+    break;
+  case 4:
+    DrawMapDialogTileGuidePatternByVariant(originX, originY, 2);
+    break;
+  case 5:
+    DrawMapDialogGuidePatternSetE_00520fc0(originX, originY, 2);
+    break;
+  case 6:
+    DrawMapDialogGuidePatternSetF_00521090(originX, originY, 2);
+    break;
+  case 7:
+    DrawMapDialogGuidePatternSetG_005211c0(originX, originY, 2);
+    break;
+  case 8:
+    DrawMapDialogGuidePatternSetH_00521340(originX, originY, 2);
+    break;
+  case 9:
+    DrawMapDialogGuidePatternSetI_00521540(originX, originY, 2);
+    break;
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x00520970

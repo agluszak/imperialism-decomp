@@ -623,7 +623,7 @@ void TGreatPower::WriteTo(TStream* stream) {
   WriteIntArrayElems(stream, this->aidAllocationMatrix, 0x170);
 
   stream->WriteBytesSlot78(&this->serializedStatusFlags[0], 0xd);
-  WriteShortArrayElems(stream, this->field8d6, 0xd);
+  WriteShortArrayElemsRev(stream, this->field8d6, 0xd);
 
   this->turnEventQueue->WriteTo(stream);
   this->proposalQueue->WriteTo(stream);
@@ -655,11 +655,30 @@ void TGreatPower::WriteTo(TStream* stream) {
     this->defenseMinister->WriteTo(stream);
   }
   if (this->city != 0) {
-    this->city->TransferTransportRequests(stream);
+    this->city->WriteTo(stream);
   }
 
-  WriteTrackedListToStream(stream, this->townMarkerList);
-  WriteTrackedListToStream(stream, this->trackedObjectList);
+  // Written out per-list (not via WriteTrackedListToStream): the original re-reads the
+  // member field for every list operation instead of caching the pointer in a register,
+  // and its entry count lives in the dead `stream` argument stack slot.
+  this->townMarkerList->WriteTo(stream);
+  {
+    int entryCount = this->townMarkerList->GetCount();
+    stream->WriteBytesSlot78(&entryCount, 4);
+    for (int ordinal = 1; ordinal <= entryCount; ++ordinal) {
+      TUnit* entry = reinterpret_cast<TUnit*>(this->townMarkerList->GetEntryByOrdinal(ordinal));
+      entry->WriteTo(stream);
+    }
+  }
+  this->trackedObjectList->WriteTo(stream);
+  {
+    int entryCount = this->trackedObjectList->GetCount();
+    stream->WriteBytesSlot78(&entryCount, 4);
+    for (int ordinal = 1; ordinal <= entryCount; ++ordinal) {
+      TUnit* entry = reinterpret_cast<TUnit*>(this->trackedObjectList->GetEntryByOrdinal(ordinal));
+      entry->WriteTo(stream);
+    }
+  }
 
   stream->WriteBytesSlot78(this->candidateNationFlags, 0x17);
   stream->WriteBytesSlot78(&this->diplomacyBudgetBase, 4);
