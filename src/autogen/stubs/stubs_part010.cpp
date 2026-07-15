@@ -1203,14 +1203,6 @@ undefined4 RunCommandModalLoopAndFinalizeState_Impl(void)
   return 0;
 }
 
-// ghidra_name DereferencePointerCellInPlace
-// ghidra_proto undefined DereferencePointerCellInPlace()
-// FUNCTION: IMPERIALISM 0x004845f0
-undefined4 DereferencePointerCellInPlace(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_FreeLinkedBlockChain_At00484860
 // ghidra_proto undefined WrapperFor_FreeLinkedBlockChain_At00484860()
 // FUNCTION: IMPERIALISM 0x00484860
