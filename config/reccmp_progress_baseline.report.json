@@ -1859,7 +1859,7 @@
     },
     {
       "address": "0x47dd60",
-      "matching": 0.8648648648648649,
+      "matching": 1.0,
       "name": "Helper_Uses_DDX_Text_618c5f_At0047dd60",
       "type": 1
     },
@@ -2244,7 +2244,7 @@
     },
     {
       "address": "0x481540",
-      "matching": 0.84375,
+      "matching": 0.90625,
       "name": "Helper_Uses_EnsureWindowSubclassAndParentConsistency_At00481540",
       "type": 1
     },
@@ -2418,7 +2418,7 @@
     },
     {
       "address": "0x4821f0",
-      "matching": 0.1016949152542373,
+      "matching": 0.5585585585585585,
       "name": "SyncTripleSelectionControlsFromState",
       "type": 1
     },
@@ -2430,7 +2430,7 @@
     },
     {
       "address": "0x482300",
-      "matching": 0.0,
+      "matching": 0.44155844155844154,
       "name": "SyncTripleSelectionStateViaMessage400",
       "type": 1
     },
@@ -6577,7 +6577,7 @@
     },
     {
       "address": "0x498dd0",
-      "matching": 0.9090909090909091,
+      "matching": 1.0,
       "name": "TE0TemplateDialog::`scalar deleting destructor'",
       "type": 1
     },
@@ -33672,14 +33672,50 @@
       "type": 1
     },
     {
+      "address": "0x5deec0",
+      "matching": 1.0,
+      "name": "TE0TemplateDialog::OnChar",
+      "type": 1
+    },
+    {
+      "address": "0x5deee0",
+      "matching": 1.0,
+      "name": "TE0TemplateDialog::OnKeyDown",
+      "type": 1
+    },
+    {
+      "address": "0x5def00",
+      "matching": 1.0,
+      "name": "TE0TemplateDialog::OnLButtonDown",
+      "type": 1
+    },
+    {
+      "address": "0x5def20",
+      "matching": 1.0,
+      "name": "TE0TemplateDialog::OnRButtonDown",
+      "type": 1
+    },
+    {
       "address": "0x5def70",
-      "matching": 0.2608695652173913,
+      "matching": 1.0,
       "name": "SetCursorFromResourceE4AndClampRange",
       "type": 1
     },
     {
+      "address": "0x5defe0",
+      "matching": 1.0,
+      "name": "TE0TemplateDialog::OnSetCursor",
+      "type": 1
+    },
+    {
+      "address": "0x5df020",
+      "matching": 1.0,
+      "name": "TE0TemplateDialog::OnNcPaint",
+      "type": 1
+    },
+    {
       "address": "0x5df040",
-      "matching": 0.2,
+      "matching": 1.0,
       "name": "NoOpOnPaintWithCPaintDCScope_005df040",
       "type": 1
     },
@@ -40520,7 +40556,7 @@
     {
       "address": "0x618d0f",
       "matching": 0.0,
-      "name": "DDX_Check(void)",
+      "name": "DDX_Check(class CDataExchange *, int, int &)",
       "type": 1
     },
     {

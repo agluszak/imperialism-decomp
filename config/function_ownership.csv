@@ -953,6 +953,7 @@ address|target_cpp|ownership|note
 498bb0|src/game/quickdraw_regions.cpp|manual|marker_sync
 498c60|src/game/TTacticalBattleView.cpp|manual|marker_sync
 498c80|src/game/TTacticalBattleView.cpp|manual|marker_sync
+498d60|src/game/TC2TemplateDialog.cpp|manual|marker_sync
 498dd0|src/game/TC2TemplateDialog.cpp|manual|marker_sync
 498f60|src/game/TModuleLibraryCacheTableStateB.cpp|manual|marker_sync
 498fe0|src/game/TModuleLibraryCacheTableStateB.cpp|manual|marker_sync
@@ -4990,8 +4991,15 @@ address|target_cpp|ownership|note
 5dee50|src/game/TC2TemplateDialog.cpp|manual|marker_sync
 5dee80|src/game/TC2TemplateDialog.cpp|manual|marker_sync
 5deea0|src/game/TC2TemplateDialog.cpp|manual|marker_sync
+5deec0|src/game/TC2TemplateDialog.cpp|manual|marker_sync
+5deee0|src/game/TC2TemplateDialog.cpp|manual|marker_sync
+5def00|src/game/TC2TemplateDialog.cpp|manual|marker_sync
+5def20|src/game/TC2TemplateDialog.cpp|manual|marker_sync
 5def40|src/game/TC2TemplateDialog.cpp|manual|marker_sync
 5def70|src/game/TC2TemplateDialog.cpp|manual|marker_sync
+5defe0|src/game/TC2TemplateDialog.cpp|manual|marker_sync
+5df020|src/game/TC2TemplateDialog.cpp|manual|marker_sync
+5df040|src/game/TC2TemplateDialog.cpp|manual|marker_sync
 5df1d0|src/game/TAssetMgr.cpp|manual|marker_sync
 5df260|src/game/TAssetMgr.cpp|manual|marker_sync
 5df280|src/game/TAssetMgr.cpp|manual|marker_sync

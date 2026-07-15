@@ -7580,7 +7580,7 @@ address|name|symbol|size|type|prototype|provenance
 618c5f|DDX_Text|?DDX_Text@@YGXPAVCDataExchange@@HAAJ@Z|47|function|undefined DDX_Text_618c5f()|
 618c8e|DDX_Text|?DDX_Text@@YGXPAVCDataExchange@@HAAK@Z|47|function|undefined DDX_Text_618c8e()|
 618cbd|DDX_Text|?DDX_Text@@YGXPAVCDataExchange@@HAAVCString@@@Z|82|function|void __stdcall DDX_Text(class CDataExchange *, int, class CString &)|msvc500_library_oracle
-618d0f|DDX_Check||82|function|undefined DDX_Check()|
+618d0f|DDX_Check|?DDX_Check@@YGXPAVCDataExchange@@HAAH@Z|82|function|void __stdcall DDX_Check(class CDataExchange *, int, int &)|msvc500_library_oracle
 618d61|DDX_Radio|?DDX_Radio@@YGXPAVCDataExchange@@HAAH@Z|145|function|void __stdcall DDX_Radio(class CDataExchange *, int, int &)|msvc500_library_oracle
 618df2|DDX_LBString|?DDX_LBString@@YGXPAVCDataExchange@@HAAVCString@@@Z|128|function|void __stdcall DDX_LBString(astruct_1 * itemCountPtr, undefined4 controlId, LPARAM * itemDataPtr)|
 618e72|DDX_LBStringExact||52|function|void __stdcall DDX_LBStringExact(int * state_flag, undefined4 owner_id, LPARAM * lparam_in)|

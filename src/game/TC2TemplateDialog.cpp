@@ -122,9 +122,6 @@ void TDCTemplateDialog::DoDataExchange(CDataExchange* pDX) {
 BEGIN_MESSAGE_MAP(TDCTemplateDialog, CDialog)
 END_MESSAGE_MAP()
 #endif
-// sorts them). Complex OnInitDialog/OnOK/PreCreateWindow bodies are minimal placeholders for
-// now — the vtable slots are correct; the full bodies are a follow-up.
-// ============================================================================================
 
 // FUNCTION: IMPERIALISM 0x0047d540
 TDDTemplateDialog::TDDTemplateDialog(void* initParam)
@@ -377,15 +374,42 @@ BEGIN_MESSAGE_MAP(TB1TemplateDialog, CDialog)
 END_MESSAGE_MAP()
 #endif
 
+// Selection state behind TA1TemplateDialog::state118 (+0x118): an array of 0xe-byte records,
+// of which only the leading short of each is used here (mode + the three slider positions).
+struct TA1TripleSelectionState {
+  short field00;  // +0x00 (unobserved)
+  short mode;     // +0x02 selection mode: read (== 1) on init, written 2-(check!=0) on OK
+  char gap04[12]; // +0x04
+  short pos5c;    // +0x10 slider5c value (0..5)
+  char gap12[12]; // +0x12
+  short pos98;    // +0x1e slider98 value (0..5)
+  char gap20[12]; // +0x20
+  short posD4;    // +0x2c sliderD4 value (0..5)
+};
+
 // FUNCTION: IMPERIALISM 0x004821f0
 BOOL TA1TemplateDialog::OnInitDialog() {
   CDialog::OnInitDialog();
+  TA1TripleSelectionState* state = static_cast<TA1TripleSelectionState*>(state118);
+  check110 = (state->mode == 1);
+  slider5c.SetRange(0, 5, FALSE);
+  slider98.SetRange(0, 5, FALSE);
+  sliderD4.SetRange(0, 5, FALSE);
+  slider5c.SetPos(state->pos5c);
+  slider98.SetPos(state->pos98);
+  sliderD4.SetPos(state->posD4);
+  UpdateData(FALSE);
   return TRUE;
 }
 
 // FUNCTION: IMPERIALISM 0x00482300
 void TA1TemplateDialog::OnOK() {
   CDialog::OnOK();
+  TA1TripleSelectionState* state = static_cast<TA1TripleSelectionState*>(state118);
+  state->mode = static_cast<short>(2 - (check110 != 0));
+  state->pos5c = static_cast<short>(slider5c.GetPos());
+  state->pos98 = static_cast<short>(slider98.GetPos());
+  state->posD4 = static_cast<short>(sliderD4.GetPos());
 }
 
 // The ID_800C command: put up the C2 template dialog with a 0..6 city-view slider and a
@@ -482,8 +506,12 @@ void TMacViewMgr_OnCommand_ID_8013_ShowTerrainOverlayDialog(void) {
   g_pImperialismApp->PostStartupCommand100();
 }
 
-// ============================================================================================
-// Additional template dialogs (out of address order below; `just reorder-marked-functions`
+// Releases the input capture the overlay grabbed; the vtable reset + base-dtor chain are
+// compiler-emitted.
+// FUNCTION: IMPERIALISM 0x00498d60
+TE0TemplateDialog::~TE0TemplateDialog() {
+  ::ReleaseCapture();
+}
 
 // SYNTHETIC: IMPERIALISM 0x00498dd0
 // TE0TemplateDialog::`scalar deleting destructor'
@@ -528,8 +556,45 @@ void TE0TemplateDialog::DoDataExchange(CDataExchange* pDX) {
 // TE0TemplateDialog::GetMessageMap
 #ifndef IMPERIALISM_LINT
 BEGIN_MESSAGE_MAP(TE0TemplateDialog, CDialog)
+ON_WM_CHAR()
+ON_WM_KEYDOWN()
+ON_WM_LBUTTONDOWN()
+ON_WM_RBUTTONDOWN()
+ON_WM_SETCURSOR()
+ON_WM_NCPAINT()
+ON_WM_PAINT()
 END_MESSAGE_MAP()
 #endif
+
+// FUNCTION: IMPERIALISM 0x005deec0
+void TE0TemplateDialog::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags) {
+  (void)nChar;
+  (void)nRepCnt;
+  (void)nFlags;
+  EndDialog(0);
+}
+
+// FUNCTION: IMPERIALISM 0x005deee0
+void TE0TemplateDialog::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags) {
+  (void)nChar;
+  (void)nRepCnt;
+  (void)nFlags;
+  EndDialog(0);
+}
+
+// FUNCTION: IMPERIALISM 0x005def00
+void TE0TemplateDialog::OnLButtonDown(UINT nFlags, CPoint point) {
+  (void)nFlags;
+  (void)point;
+  EndDialog(0);
+}
+
+// FUNCTION: IMPERIALISM 0x005def20
+void TE0TemplateDialog::OnRButtonDown(UINT nFlags, CPoint point) {
+  (void)nFlags;
+  (void)point;
+  EndDialog(0);
+}
 
 // FUNCTION: IMPERIALISM 0x005def40
 BOOL TE0TemplateDialog::PreCreateWindow(CREATESTRUCT& cs) {
@@ -541,5 +606,31 @@ BOOL TE0TemplateDialog::PreCreateWindow(CREATESTRUCT& cs) {
 // FUNCTION: IMPERIALISM 0x005def70
 BOOL TE0TemplateDialog::OnInitDialog() {
   CDialog::OnInitDialog();
+  AFX_MODULE_STATE* moduleState = AfxGetModuleState();
+  HCURSOR hCursor = ::LoadCursorA(moduleState->m_hCurrentInstanceHandle, MAKEINTRESOURCEA(0xe4));
+  ::SetCursor(hCursor);
+  MoveWindow(0, 0, 2000, 2000, TRUE);
   return TRUE;
+}
+
+// WM_SETCURSOR: reassert the custom cursor (resource 0xe4) and swallow the message.
+// FUNCTION: IMPERIALISM 0x005defe0
+BOOL TE0TemplateDialog::OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message) {
+  (void)pWnd;
+  (void)nHitTest;
+  (void)message;
+  AFX_MODULE_STATE* moduleState = AfxGetModuleState();
+  HCURSOR hCursor = ::LoadCursorA(moduleState->m_hCurrentInstanceHandle, MAKEINTRESOURCEA(0xe4));
+  ::SetCursor(hCursor);
+  return TRUE;
+}
+
+// WM_NCPAINT: suppress non-client painting (bare ret in the original).
+// FUNCTION: IMPERIALISM 0x005df020
+void TE0TemplateDialog::OnNcPaint() {}
+
+// WM_PAINT: validate the paint region with a CPaintDC and draw nothing.
+// FUNCTION: IMPERIALISM 0x005df040
+void TE0TemplateDialog::OnPaint() {
+  CPaintDC dc(this);
 }

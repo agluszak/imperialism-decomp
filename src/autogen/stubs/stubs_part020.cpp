@@ -299,14 +299,6 @@ undefined4 WrapperFor_ftol_At005dee20(void)
   return 0;
 }
 
-// ghidra_name NoOpOnPaintWithCPaintDCScope_005df040
-// ghidra_proto undefined NoOpOnPaintWithCPaintDCScope_005df040()
-// FUNCTION: IMPERIALISM 0x005df040
-undefined4 NoOpOnPaintWithCPaintDCScope_005df040(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_ftol_At005df1a0
 // ghidra_proto undefined WrapperFor_ftol_At005df1a0()
 // FUNCTION: IMPERIALISM 0x005df1a0

@@ -611,14 +611,6 @@ undefined4 ShowDialogTemplateE0ModalAndReleaseCapture(void)
   return 0;
 }
 
-// ghidra_name WrapperFor_CDialog_At00498d60
-// ghidra_proto undefined WrapperFor_CDialog_At00498d60()
-// FUNCTION: IMPERIALISM 0x00498d60
-undefined4 WrapperFor_CDialog_At00498d60(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_thunk_ResolveBmpResourceHandleWithDefault3B6_At00498e00
 // ghidra_proto undefined WrapperFor_thunk_ResolveBmpResourceHandleWithDefault3B6_At00498e00()
 // FUNCTION: IMPERIALISM 0x00498e00

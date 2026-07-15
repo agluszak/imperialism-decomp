@@ -317,10 +317,23 @@ public:
   unsigned char scratch5c[0x74 - 0x5c]; // 0x5c-0x74 — template scratch written by the ctor
 
 protected:
+  ~TE0TemplateDialog() override; // 0x00498d60 — ReleaseCapture()
+
   BOOL PreCreateWindow(CREATESTRUCT& cs) override;  // 0x005def40 (slot 0x64)
   BOOL OnInitDialog() override;                     // 0x005def70 (slot 0xc4)
   void DoDataExchange(CDataExchange* pDX) override; // 0x005dee80 (empty body)
-  DECLARE_MESSAGE_MAP()                             // GetMessageMap 0x005deea0 (vtable index 12)
+
+  // Full-screen overlay input handlers: any key or L/R click dismisses; WM_SETCURSOR reasserts
+  // the custom cursor; NCPAINT/PAINT suppress painting.
+  afx_msg void OnChar(UINT nChar, UINT nRepCnt, UINT nFlags);        // 0x005deec0
+  afx_msg void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);     // 0x005deee0
+  afx_msg void OnLButtonDown(UINT nFlags, CPoint point);             // 0x005def00
+  afx_msg void OnRButtonDown(UINT nFlags, CPoint point);             // 0x005def20
+  afx_msg BOOL OnSetCursor(CWnd* pWnd, UINT nHitTest, UINT message); // 0x005defe0
+  afx_msg void OnNcPaint();                                          // 0x005df020
+  afx_msg void OnPaint();                                            // 0x005df040
+
+  DECLARE_MESSAGE_MAP() // GetMessageMap 0x005deea0 (vtable index 12)
 };
 
 ASSERT_SIZE(TE0TemplateDialog, 0x74);
