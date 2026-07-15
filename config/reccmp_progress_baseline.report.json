@@ -277,14 +277,26 @@
       "type": 1
     },
     {
+      "address": "0x413b80",
+      "matching": 1.0,
+      "name": "TModalDialogBase::~TModalDialogBase",
+      "type": 1
+    },
+    {
       "address": "0x413c00",
-      "matching": 0.9090909090909091,
+      "matching": 1.0,
       "name": "TModalDialogBase::`scalar deleting destructor'",
       "type": 1
     },
     {
+      "address": "0x413c30",
+      "matching": 0.8301886792452831,
+      "name": "TDDTemplateDialog::~TDDTemplateDialog",
+      "type": 1
+    },
+    {
       "address": "0x413cd0",
-      "matching": 0.9090909090909091,
+      "matching": 1.0,
       "name": "TDDTemplateDialog::`scalar deleting destructor'",
       "type": 1
     },
@@ -1787,7 +1799,8 @@
     },
     {
       "address": "0x47d540",
-      "matching": 0.8484848484848485,
+      "effective": true,
+      "matching": 0.9473684210526315,
       "name": "InitializeDialogTemplateDDPictureState",
       "type": 1
     },
@@ -1817,7 +1830,7 @@
     },
     {
       "address": "0x47dae0",
-      "matching": 0.13043478260869565,
+      "matching": 0.7674418604651163,
       "name": "UpdateCursorHelperWindowLayoutAndMask",
       "type": 1
     },

@@ -1,5 +1,6 @@
 #include "game/TC2TemplateDialog.h"
 
+#include "game/CDib.h"
 #include "game/ImperialismApp.h"
 #include "game/TCountry.h"
 #include "game/TSimMgr.h"
@@ -32,6 +33,13 @@ END_MESSAGE_MAP()
 void ShowDialogTemplate64Modal() {
   T64TemplateDialog dialog;
   dialog.DoModal();
+}
+
+// Frees the heap silhouette-outline buffer; the base finalize (owner re-enable +
+// modal-state cleanup) is inlined from ~TModalDialogBase.
+// FUNCTION: IMPERIALISM 0x00413c30
+TDDTemplateDialog::~TDDTemplateDialog() {
+  delete outlinePolygon;
 }
 
 // SYNTHETIC: IMPERIALISM 0x00413cd0
@@ -125,7 +133,8 @@ END_MESSAGE_MAP()
 
 // FUNCTION: IMPERIALISM 0x0047d540
 TDDTemplateDialog::TDDTemplateDialog(void* initParam)
-    : TModalDialogBase(0xdd, static_cast<CWnd*>(initParam)) {}
+    : TModalDialogBase(0xdd, static_cast<CWnd*>(initParam)), drawOutline(0), fillPolygon(0),
+      renderMode(0), flag84(0), outlinePolygon(0) {}
 
 // FUNCTION: IMPERIALISM 0x0047d5b0
 void TDDTemplateDialog::DoDataExchange(CDataExchange* pDX) {
@@ -142,6 +151,17 @@ END_MESSAGE_MAP()
 // FUNCTION: IMPERIALISM 0x0047dae0
 BOOL TDDTemplateDialog::OnInitDialog() {
   CDialog::OnInitDialog();
+  // CopyBitmapDimensionsToPoint returns its out-pointer; the original reads width/height back
+  // through it (the register wobble vs the local is MSVC500 MoveWindow-arg scheduling).
+  CPoint size;
+  CPoint* dims = picture->CopyBitmapDimensionsToPoint(&size);
+  MoveWindow(0, 0, dims->x + 0x1e, dims->y + 0x32, TRUE);
+  CenterWindow();
+  SetWindowText(windowTitle);
+  flag84 = flags88 & 1;
+  if (drawOutline != 0 || fillPolygon != 0) {
+    outlinePolygon = picture->BuildNonTransparentOutlinePolygon(0xffffffff);
+  }
   return TRUE;
 }
 

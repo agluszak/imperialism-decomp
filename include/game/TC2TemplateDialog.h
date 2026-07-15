@@ -5,6 +5,8 @@
 #include "game/TModalDialogBase.h" // CDialog-derived modal base
 #include "game/mfc.h"              // CListBox (afxwin.h)
 
+class CDib;
+
 // Shared "C2" template modal dialog: a CDialog subclass (via TModalDialogBase, template
 // id 0xc2) with an embedded CSliderCtrl at +0x74 and CListBox at +0xb0 (both CWnd-sized,
 // 0x3c). Built by InitializeDialogTemplateC2WithTextState (0x0047cfd0) and driven modally
@@ -247,21 +249,31 @@ protected:
 ASSERT_SIZE(TB1TemplateDialog, 0x60);
 
 // Sibling "DD" picture-preview template dialog (template id 0xdd, own vtable 0x63e6b0):
-// TModalDialogBase-derived, owns an HDIB/heap buffer at +0x8c (created in OnInitDialog, freed
-// in the destructor) plus preview flags/dimensions at 0x78-0x90. Built by
-// InitializeDialogTemplateDDPictureState (0x0047d540). (OnInitDialog's DIB-sizing body and the
-// WM_PAINT/WM_LBUTTONDBLCLK message handlers are follow-up refinements.)
+// TModalDialogBase-derived, previews a CDib picture (sized to the window in OnInitDialog, drawn
+// in OnPaint) and optionally overlays a red silhouette outline/fill built from the picture's
+// non-transparent pixels (heap buffer at +0x8c, freed in the destructor). Built by
+// InitializeDialogTemplateDDPictureState (0x0047d540).
 // VTABLE: IMPERIALISM 0x0063e6b0
 class TDDTemplateDialog : public TModalDialogBase {
 public:
   TDDTemplateDialog(void* initParam); // 0x0047d540
+  ~TDDTemplateDialog() override;      // 0x00413c30 — frees the outline buffer
 
-  unsigned char previewState[0x94 - 0x74]; // 0x74-0x94 — preview flags/dims + HDIB at +0x8c
+  CDib* picture;        // 0x74 source picture/DIB (not owned here; set by the caller)
+  int drawOutline;      // 0x78 != 0 -> draw red silhouette polyline in OnPaint
+  int fillPolygon;      // 0x7c != 0 -> fill silhouette region red in OnPaint
+  int renderMode;       // 0x80 OnPaint blit-mode selector (0 = simple/blit, != 0 = masked stretch)
+  unsigned int flag84;  // 0x84 = flags88 & 1 (computed in OnInitDialog)
+  unsigned int flags88; // 0x88 flags source (set by the caller)
+  int* outlinePolygon;  // 0x8c heap silhouette buffer: [0]=count, POINT pairs from index 2
+  char* windowTitle;    // 0x90 LPCSTR passed to SetWindowText (set by the caller)
 
 protected:
-  BOOL OnInitDialog() override;                     // 0x0047dae0 (slot 0xc4)
-  void DoDataExchange(CDataExchange* pDX) override; // 0x0047d5b0 (empty body)
-  DECLARE_MESSAGE_MAP()                             // GetMessageMap 0x0047d5d0 (vtable index 12)
+  BOOL OnInitDialog() override;                            // 0x0047dae0 (slot 0xc4)
+  void DoDataExchange(CDataExchange* pDX) override;        // 0x0047d5b0 (empty body)
+  afx_msg void OnPaint();                                  // 0x0047d5f0
+  afx_msg void OnLButtonDblClk(UINT nFlags, CPoint point); // 0x0047db80
+  DECLARE_MESSAGE_MAP() // GetMessageMap 0x0047d5d0 (vtable index 12)
 };
 
 ASSERT_SIZE(TDDTemplateDialog, 0x94);

@@ -211,22 +211,6 @@ undefined4 ShowSelectedDibInTemplateDDDialog(void)
   return 0;
 }
 
-// ghidra_name WrapperFor_CDialog_At00413b80
-// ghidra_proto undefined WrapperFor_CDialog_At00413b80()
-// FUNCTION: IMPERIALISM 0x00413b80
-undefined4 WrapperFor_CDialog_At00413b80(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_FreeHeapBufferIfNotNull_At00413cd0_Impl
-// ghidra_proto undefined WrapperFor_FreeHeapBufferIfNotNull_At00413cd0_Impl()
-// FUNCTION: IMPERIALISM 0x00413c30
-undefined4 WrapperFor_FreeHeapBufferIfNotNull_At00413cd0_Impl(void)
-{
-  return 0;
-}
-
 // ghidra_name ShowNationSelectDialogAndRedispatchCurrentTurnEvent
 // ghidra_proto undefined ShowNationSelectDialogAndRedispatchCurrentTurnEvent()
 // FUNCTION: IMPERIALISM 0x00413d20

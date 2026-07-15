@@ -54,9 +54,9 @@ address|name|symbol|size|type|prototype|provenance
 4139f0|ImperialismApp::RestoreWaitCursorIfStartupBusy||24|function|undefined WrapperFor_GetOrCreateMfcModuleThreadState_At004139f0()|
 413a20|ImperialismApp::PreTranslateMessage|?PreTranslateMessage@ImperialismApp@@UAEHPAUtagMSG@@@Z|30|function|public: virtual int __thiscall ImperialismApp::PreTranslateMessage(struct tagMSG *)|
 413a50|ShowSelectedDibInTemplateDDDialog||226|function|undefined ShowSelectedDibInTemplateDDDialog()|
-413b80|WrapperFor_CDialog_At00413b80||86|function|undefined WrapperFor_CDialog_At00413b80()|
+413b80|TModalDialogBase::~TModalDialogBase|??1TModalDialogBase@@UAE@XZ|86|function|public: virtual __thiscall TModalDialogBase::~TModalDialogBase(void)|
 413c00|TModalDialogBase::`scalar deleting destructor'|??_GTModalDialogBase@@UAEPAXI@Z|30|function|undefined ScalarDeletingDestructor()|
-413c30|WrapperFor_FreeHeapBufferIfNotNull_At00413cd0_Impl||117|function|undefined WrapperFor_FreeHeapBufferIfNotNull_At00413cd0_Impl()|
+413c30|TDDTemplateDialog::~TDDTemplateDialog|??1TDDTemplateDialog@@UAE@XZ|117|function|public: virtual __thiscall TDDTemplateDialog::~TDDTemplateDialog(void)|
 413cd0|TDDTemplateDialog::`scalar deleting destructor'|??_GTDDTemplateDialog@@UAEPAXI@Z|30|function|undefined ScalarDeletingDestructor()|
 413d20|ShowNationSelectDialogAndRedispatchCurrentTurnEvent||328|function|undefined ShowNationSelectDialogAndRedispatchCurrentTurnEvent()|
 413ed0|WrapperFor_FreeHeapBufferIfNotNull_At0047d3f0_Impl||104|function|undefined WrapperFor_FreeHeapBufferIfNotNull_At0047d3f0_Impl()|

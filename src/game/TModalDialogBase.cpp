@@ -15,12 +15,21 @@ HWND ResolvePreModalOwner() {
 
 } // namespace
 
-// Destructors are compiler-generated (implicit) from real CDialog inheritance; the
-// out-of-line anchor here gives the base its own vtable (0x0063e5a0). The scalar
-// deleting destructor (vtable slot 1) is compiler-generated from the virtual dtor.
+// The virtual destructor finalizes any still-open modal create-state before chaining to
+// ~CDialog. Kept out-of-line here (not inline in the header): inlining it into every leaf
+// dialog's destructor causes the linker to COMDAT-fold identical member-less leaf dtors,
+// which shifts the scalar-deleting-destructor addresses in ~10 sibling dialog vtables and
+// regresses them. The leaf dtors that inline this sequence in the original therefore accept
+// a call to this copy here instead. The scalar deleting destructor (vtable slot 1,
+// 0x00413c00) is compiler-generated and calls this.
 // SYNTHETIC: IMPERIALISM 0x00413c00
 // TModalDialogBase::`scalar deleting destructor'
-TModalDialogBase::~TModalDialogBase() {}
+// FUNCTION: IMPERIALISM 0x00413b80
+TModalDialogBase::~TModalDialogBase() {
+  if (finalizeState != 0) {
+    CleanupModalCreateState();
+  }
+}
 
 // FUNCTION: IMPERIALISM 0x0049d360
 int TModalDialogBase::PrepareAndCreateModalFromTemplate() {
