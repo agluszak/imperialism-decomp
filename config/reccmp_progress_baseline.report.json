@@ -30204,7 +30204,7 @@
     },
     {
       "address": "0x5a99e0",
-      "matching": 0.9888888888888889,
+      "matching": 1.0,
       "name": "DrawHexSelectionOutlineSegments",
       "type": 1
     },
@@ -30264,7 +30264,7 @@
     },
     {
       "address": "0x5aa900",
-      "matching": 0.27604953186348535,
+      "matching": 0.2762163795708673,
       "name": "TTacArmyView::DrawTacticalTileInClipRect",
       "type": 1
     },

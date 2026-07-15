@@ -669,7 +669,7 @@ BOOL __stdcall ClipSrcRectToBoundsAndOffsetDstRect(RECT* bounds, RECT* dstRect, 
 }
 
 // FUNCTION: IMPERIALISM 0x005a99e0
-void DrawHexSelectionOutlineSegments(RECT* rect) {
+void __stdcall DrawHexSelectionOutlineSegments(RECT* rect) {
   rect->right -= 1;
   rect->bottom -= 1;
   SetQuickDrawTextOriginWithContextOffset(static_cast<short>(rect->left),

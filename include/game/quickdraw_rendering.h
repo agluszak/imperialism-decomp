@@ -100,7 +100,7 @@ void RenderTacticalBattleSelectionAndUnitOverlayPass_Impl(char glyph);
 
 // Draws four short corner-tick brackets around rect's edges (a hex-selection
 // highlight idiom), shrinking rect->right/bottom by 1 first. 0x005a99e0
-void DrawHexSelectionOutlineSegments(RECT* rect);
+void __stdcall DrawHexSelectionOutlineSegments(RECT* rect);
 
 // Classic "simulate TransparentBlt" masked-BitBlt technique (cf. Microsoft KB Q79212):
 // builds a monochrome mask from sourceBitmap's pixels matching colorKey, uses it to AND
