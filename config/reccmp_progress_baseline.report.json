@@ -1835,44 +1835,56 @@
     },
     {
       "address": "0x47dce0",
-      "matching": 0.10526315789473684,
+      "matching": 1.0,
       "name": "InitializeDialogTemplateDFBaseState",
       "type": 1
     },
     {
+      "address": "0x47dd30",
+      "matching": 0.9090909090909091,
+      "name": "TDFTemplateDialog::`scalar deleting destructor'",
+      "type": 1
+    },
+    {
       "address": "0x47dd60",
-      "matching": 0.0,
+      "matching": 0.8648648648648649,
       "name": "Helper_Uses_DDX_Text_618c5f_At0047dd60",
       "type": 1
     },
     {
       "address": "0x47ddf0",
       "matching": 0.5,
-      "name": "OrphanVtableAssignStub_0047ddf0",
+      "name": "TDFTemplateDialog::GetMessageMap",
       "type": 1
     },
     {
       "address": "0x47de10",
-      "matching": 0.18181818181818182,
+      "matching": 0.8888888888888888,
       "name": "OrphanCallChain_C2_I09_0047de10",
       "type": 1
     },
     {
       "address": "0x47de40",
-      "matching": 0.058823529411764705,
+      "matching": 0.96875,
       "name": "TControl::InitializeDialogTemplateFAWithTextState",
       "type": 1
     },
     {
+      "address": "0x47ded0",
+      "matching": 0.9090909090909091,
+      "name": "TFATemplateDialog::`scalar deleting destructor'",
+      "type": 1
+    },
+    {
       "address": "0x47df90",
-      "matching": 0.0,
+      "matching": 1.0,
       "name": "OrphanRetStub_0047df90",
       "type": 1
     },
     {
       "address": "0x47dfb0",
       "matching": 0.5,
-      "name": "OrphanVtableAssignStub_0047dfb0",
+      "name": "TFATemplateDialog::GetMessageMap",
       "type": 1
     },
     {
@@ -1980,14 +1992,20 @@
     },
     {
       "address": "0x47f450",
-      "matching": 0.058823529411764705,
+      "matching": 0.96875,
       "name": "TControl::InitializeDialogTemplateADWithTextState",
+      "type": 1
+    },
+    {
+      "address": "0x47f4e0",
+      "matching": 0.9090909090909091,
+      "name": "TADTemplateDialog::`scalar deleting destructor'",
       "type": 1
     },
     {
       "address": "0x47f600",
       "matching": 0.5,
-      "name": "OrphanVtableAssignStub_0047f600",
+      "name": "TADTemplateDialog::GetMessageMap",
       "type": 1
     },
     {
@@ -2142,14 +2160,20 @@
     },
     {
       "address": "0x480a10",
-      "matching": 0.058823529411764705,
+      "matching": 0.96875,
       "name": "TControl::InitializeDialogTemplate104WithRegionState",
+      "type": 1
+    },
+    {
+      "address": "0x480aa0",
+      "matching": 0.9090909090909091,
+      "name": "T104TemplateDialog::`scalar deleting destructor'",
       "type": 1
     },
     {
       "address": "0x480b00",
       "matching": 0.5,
-      "name": "OrphanVtableAssignStub_00480b00",
+      "name": "T104TemplateDialog::GetMessageMap",
       "type": 1
     },
     {
@@ -2238,14 +2262,20 @@
     },
     {
       "address": "0x481770",
-      "matching": 0.0,
+      "matching": 0.9666666666666667,
       "name": "TControl::InitializeDialogTemplateA7WithSharedText",
+      "type": 1
+    },
+    {
+      "address": "0x481800",
+      "matching": 0.9090909090909091,
+      "name": "TA7TemplateDialog::`scalar deleting destructor'",
       "type": 1
     },
     {
       "address": "0x4818d0",
       "matching": 0.5,
-      "name": "OrphanVtableAssignStub_004818d0",
+      "name": "TA7TemplateDialog::GetMessageMap",
       "type": 1
     },
     {
@@ -2286,14 +2316,20 @@
     },
     {
       "address": "0x481b30",
-      "matching": 0.0,
+      "matching": 0.9487179487179487,
       "name": "TControl::InitializeDialogTemplateABWithDualTextState",
+      "type": 1
+    },
+    {
+      "address": "0x481bf0",
+      "matching": 0.9090909090909091,
+      "name": "TABTemplateDialog::`scalar deleting destructor'",
       "type": 1
     },
     {
       "address": "0x481ce0",
       "matching": 0.5,
-      "name": "OrphanVtableAssignStub_00481ce0",
+      "name": "TABTemplateDialog::GetMessageMap",
       "type": 1
     },
     {
@@ -2310,14 +2346,20 @@
     },
     {
       "address": "0x481dc0",
-      "matching": 0.0,
+      "matching": 0.9487179487179487,
       "name": "TControl::InitializeDialogTemplateAEWithDualTextState",
+      "type": 1
+    },
+    {
+      "address": "0x481e80",
+      "matching": 0.9090909090909091,
+      "name": "TAETemplateDialog::`scalar deleting destructor'",
       "type": 1
     },
     {
       "address": "0x481f70",
       "matching": 0.5,
-      "name": "OrphanVtableAssignStub_00481f70",
+      "name": "TAETemplateDialog::GetMessageMap",
       "type": 1
     },
     {
@@ -2334,14 +2376,20 @@
     },
     {
       "address": "0x482050",
-      "matching": 0.0,
+      "matching": 0.9666666666666667,
       "name": "TControl::InitializeDialogTemplateB1WithSharedText",
+      "type": 1
+    },
+    {
+      "address": "0x4820e0",
+      "matching": 0.9090909090909091,
+      "name": "TB1TemplateDialog::`scalar deleting destructor'",
       "type": 1
     },
     {
       "address": "0x4821b0",
       "matching": 0.5,
-      "name": "OrphanVtableAssignStub_004821b0",
+      "name": "TB1TemplateDialog::GetMessageMap",
       "type": 1
     },
     {
@@ -33433,7 +33481,7 @@
     },
     {
       "address": "0x5dcaa0",
-      "matching": 0.5,
+      "matching": 0.5148514851485149,
       "name": "TViewMgr::HandleTurnEventVtableSlot2CInitializeHotKeyDialog",
       "type": 1
     },
@@ -37165,8 +37213,8 @@
     },
     {
       "address": "0x6051b9",
-      "matching": 0.017094017094017096,
-      "name": "DoModal_6051b9",
+      "matching": 0.9173553719008265,
+      "name": "CDialog::DoModal",
       "type": 1
     },
     {
@@ -40669,7 +40717,7 @@
     },
     {
       "address": "0x61a8dd",
-      "matching": 0.9636363636363636,
+      "matching": 0.9818181818181818,
       "name": "CDocManager::OnFileNew",
       "type": 1
     },
@@ -42192,6 +42240,18 @@
       "type": 5
     },
     {
+      "address": "0x646740",
+      "matching": 1.0,
+      "name": "TDFTemplateDialog::`vftable'",
+      "type": 5
+    },
+    {
+      "address": "0x646848",
+      "matching": 1.0,
+      "name": "TFATemplateDialog::`vftable'",
+      "type": 5
+    },
+    {
       "address": "0x646958",
       "matching": 1.0,
       "name": "TAutoResolutionDialog::`vftable'",
@@ -42204,9 +42264,45 @@
       "type": 5
     },
     {
+      "address": "0x646d68",
+      "matching": 1.0,
+      "name": "TADTemplateDialog::`vftable'",
+      "type": 5
+    },
+    {
+      "address": "0x646ea0",
+      "matching": 1.0,
+      "name": "T104TemplateDialog::`vftable'",
+      "type": 5
+    },
+    {
       "address": "0x646fb0",
       "matching": 1.0,
       "name": "CArray<RuntimeSelectionRecord *, struct RuntimeSelectionRecord *>::`vftable'",
+      "type": 5
+    },
+    {
+      "address": "0x647740",
+      "matching": 1.0,
+      "name": "TA7TemplateDialog::`vftable'",
+      "type": 5
+    },
+    {
+      "address": "0x647b60",
+      "matching": 1.0,
+      "name": "TABTemplateDialog::`vftable'",
+      "type": 5
+    },
+    {
+      "address": "0x647d70",
+      "matching": 1.0,
+      "name": "TAETemplateDialog::`vftable'",
+      "type": 5
+    },
+    {
+      "address": "0x647f80",
+      "matching": 1.0,
+      "name": "TB1TemplateDialog::`vftable'",
       "type": 5
     },
     {

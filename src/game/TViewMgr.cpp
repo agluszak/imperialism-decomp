@@ -75,7 +75,6 @@ undefined4 InitializeHotKeyDialogTemplateA1WithTripleTextState(void);
 undefined4 RunNationInfoModalAndReturnNonCancel(void);
 undefined4 NoOpUiRuntimeCallback_005db2f0(void);
 undefined4 NoOpRuntimeCallback_005d5d10(void);
-undefined4 DoModal_6051b9(void);
 
 // Provisional dispatch interfaces for the runtime-resolved turn-event dialog node and
 // its 'GOLD' child control now live in one shared header so the TViewMgr and
@@ -85,8 +84,8 @@ undefined4 DoModal_6051b9(void);
 namespace {
 using turn_event_dialog::GoldCommitControl;
 using turn_event_dialog::GoldDialogControl;
-using turn_event_dialog::TCivilianReportGoldControl;
 using turn_event_dialog::GoldFactoryPanel;
+using turn_event_dialog::TCivilianReportGoldControl;
 using turn_event_dialog::TurnEventDialogNode;
 // g_pUiViewManager (TAssetMgr) @ 0x6a2148 — the UI/view asset registry that resolves
 // turn-event dialog nodes by message context.
@@ -1631,7 +1630,7 @@ void TViewMgr::HandleTurnEventVtableSlot2CInitializeHotKeyDialog() {
     CopyHotKeyDialogTemplateToBuffer(reinterpret_cast<int>(buffer));
     *reinterpret_cast<void**>(buffer + 0x118) = &dialog;
 
-    int modalResult = reinterpret_cast<int(__cdecl*)(void)>(DoModal_6051b9)();
+    int modalResult = dialog.DoModal();
     if (modalResult != 0) {
       g_pSimMgr->CopyScenarioNationSetupIntoFlowState(reinterpret_cast<void*>(buffer));
     }

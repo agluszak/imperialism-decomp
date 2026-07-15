@@ -555,14 +555,6 @@ undefined4 NoOpPaddingStub_00604c3c(void)
   return 0;
 }
 
-// ghidra_name DoModal_6051b9
-// ghidra_proto undefined DoModal_6051b9()
-// FUNCTION: IMPERIALISM 0x006051b9
-undefined4 DoModal_6051b9(void)
-{
-  return 0;
-}
-
 // ghidra_name HandleWndProcExceptionWithNodeTypeDispatch_00605613
 // ghidra_proto undefined HandleWndProcExceptionWithNodeTypeDispatch_00605613()
 // FUNCTION: IMPERIALISM 0x00605613

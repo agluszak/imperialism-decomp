@@ -54,14 +54,14 @@ END_MESSAGE_MAP()
 
 // FUNCTION: IMPERIALISM 0x0047d360
 TDBTemplateDialog::TDBTemplateDialog(void* initParam)
-    : TModalDialogBase(0xdb, static_cast<CWnd*>(initParam)), listbox() {}
+    : TModalDialogBase(0xdb, static_cast<CWnd*>(initParam)), slider() {}
 
 // SYNTHETIC: IMPERIALISM 0x0047d3f0
 // TDBTemplateDialog::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x0047d420
 void TDBTemplateDialog::DoDataExchange(CDataExchange* pDX) {
-  DDX_Control(pDX, 0x3f8, listbox);
+  DDX_Control(pDX, 0x3f8, slider);
 }
 
 // SYNTHETIC: IMPERIALISM 0x0047d450
@@ -93,14 +93,14 @@ END_MESSAGE_MAP()
 
 // FUNCTION: IMPERIALISM 0x0047dba0
 TDETemplateDialog::TDETemplateDialog(void* initParam)
-    : TModalDialogBase(0xde, static_cast<CWnd*>(initParam)), listbox(), valueB0(0), valueB4(0) {}
+    : TModalDialogBase(0xde, static_cast<CWnd*>(initParam)), slider(), valueB0(0), valueB4(0) {}
 
 // SYNTHETIC: IMPERIALISM 0x0047dc40
 // TDETemplateDialog::`scalar deleting destructor'
 
 // FUNCTION: IMPERIALISM 0x0047dc70
 void TDETemplateDialog::DoDataExchange(CDataExchange* pDX) {
-  DDX_Control(pDX, 0x3f8, listbox);
+  DDX_Control(pDX, 0x3f8, slider);
   DDX_Text(pDX, 0x422, valueB0);
   DDX_Text(pDX, 0x421, valueB4);
 }
@@ -109,6 +109,190 @@ void TDETemplateDialog::DoDataExchange(CDataExchange* pDX) {
 // TDETemplateDialog::GetMessageMap
 #ifndef IMPERIALISM_LINT
 BEGIN_MESSAGE_MAP(TDETemplateDialog, CDialog)
+END_MESSAGE_MAP()
+#endif
+
+// FUNCTION: IMPERIALISM 0x0047dce0
+TDFTemplateDialog::TDFTemplateDialog(void* initParam)
+    : CDialog(0xdf, static_cast<CWnd*>(initParam)), editValue5c(0), checkFlag60(0), checkFlag64(0),
+      checkFlag68(0), checkFlag6c(0), checkFlag70(0) {}
+
+// SYNTHETIC: IMPERIALISM 0x0047dd30
+// TDFTemplateDialog::`scalar deleting destructor'
+
+// FUNCTION: IMPERIALISM 0x0047dd60
+void TDFTemplateDialog::DoDataExchange(CDataExchange* pDX) {
+  DDX_Text(pDX, 0x421, editValue5c);
+  DDX_Check(pDX, 0x3f5, checkFlag60);
+  DDX_Check(pDX, 0x422, checkFlag64);
+  DDX_Check(pDX, 0x423, checkFlag68);
+  DDX_Check(pDX, 0x424, checkFlag6c);
+  DDX_Check(pDX, 0x427, checkFlag70);
+}
+
+// SYNTHETIC: IMPERIALISM 0x0047ddf0
+// TDFTemplateDialog::GetMessageMap
+#ifndef IMPERIALISM_LINT
+BEGIN_MESSAGE_MAP(TDFTemplateDialog, CDialog)
+END_MESSAGE_MAP()
+#endif
+
+// FUNCTION: IMPERIALISM 0x0047de10
+BOOL TDFTemplateDialog::OnInitDialog() {
+  CDialog::OnInitDialog();
+  UpdateData(FALSE);
+  return TRUE;
+}
+
+// FUNCTION: IMPERIALISM 0x0047de40
+TFATemplateDialog::TFATemplateDialog(void* initParam)
+    : TModalDialogBase(0xfa, static_cast<CWnd*>(initParam)), listbox() {}
+
+// SYNTHETIC: IMPERIALISM 0x0047ded0
+// TFATemplateDialog::`scalar deleting destructor'
+
+// DoDataExchange is an empty override in the original (the listbox is wired up outside DDX).
+// FUNCTION: IMPERIALISM 0x0047df90
+void TFATemplateDialog::DoDataExchange(CDataExchange* pDX) {
+  (void)pDX;
+}
+
+// SYNTHETIC: IMPERIALISM 0x0047dfb0
+// TFATemplateDialog::GetMessageMap
+#ifndef IMPERIALISM_LINT
+BEGIN_MESSAGE_MAP(TFATemplateDialog, CDialog)
+END_MESSAGE_MAP()
+#endif
+
+// FUNCTION: IMPERIALISM 0x0047f450
+TADTemplateDialog::TADTemplateDialog(void* initParam)
+    : TModalDialogBase(0xad, static_cast<CWnd*>(initParam)), listbox() {}
+
+// SYNTHETIC: IMPERIALISM 0x0047f4e0
+// TADTemplateDialog::`scalar deleting destructor'
+
+// FUNCTION: IMPERIALISM 0x0047f5d0
+void TADTemplateDialog::DoDataExchange(CDataExchange* pDX) {
+  DDX_Control(pDX, 0x3ff, listbox);
+}
+
+// SYNTHETIC: IMPERIALISM 0x0047f600
+// TADTemplateDialog::GetMessageMap
+#ifndef IMPERIALISM_LINT
+BEGIN_MESSAGE_MAP(TADTemplateDialog, CDialog)
+END_MESSAGE_MAP()
+#endif
+
+// FUNCTION: IMPERIALISM 0x0047f620
+BOOL TADTemplateDialog::OnInitDialog() {
+  CDialog::OnInitDialog();
+  return TRUE;
+}
+
+// FUNCTION: IMPERIALISM 0x00480a10
+T104TemplateDialog::T104TemplateDialog(void* initParam)
+    : TModalDialogBase(0x104, static_cast<CWnd*>(initParam)), listbox() {}
+
+// SYNTHETIC: IMPERIALISM 0x00480aa0
+// T104TemplateDialog::`scalar deleting destructor'
+
+// FUNCTION: IMPERIALISM 0x00480ad0
+void T104TemplateDialog::DoDataExchange(CDataExchange* pDX) {
+  DDX_Control(pDX, 0x435, listbox);
+}
+
+// SYNTHETIC: IMPERIALISM 0x00480b00
+// T104TemplateDialog::GetMessageMap
+#ifndef IMPERIALISM_LINT
+BEGIN_MESSAGE_MAP(T104TemplateDialog, CDialog)
+END_MESSAGE_MAP()
+#endif
+
+// FUNCTION: IMPERIALISM 0x00481770
+TA7TemplateDialog::TA7TemplateDialog(void* initParam)
+    : CDialog(0xa7, static_cast<CWnd*>(initParam)), text5c() {
+  text5c = "";
+}
+
+// SYNTHETIC: IMPERIALISM 0x00481800
+// TA7TemplateDialog::`scalar deleting destructor'
+
+// FUNCTION: IMPERIALISM 0x004818a0
+void TA7TemplateDialog::DoDataExchange(CDataExchange* pDX) {
+  DDX_Text(pDX, 0x3fc, text5c);
+}
+
+// SYNTHETIC: IMPERIALISM 0x004818d0
+// TA7TemplateDialog::GetMessageMap
+#ifndef IMPERIALISM_LINT
+BEGIN_MESSAGE_MAP(TA7TemplateDialog, CDialog)
+END_MESSAGE_MAP()
+#endif
+
+// FUNCTION: IMPERIALISM 0x00481b30
+TABTemplateDialog::TABTemplateDialog(void* initParam)
+    : CDialog(0xab, static_cast<CWnd*>(initParam)), text5c(), text60() {
+  text5c = "";
+  text60 = "";
+}
+
+// SYNTHETIC: IMPERIALISM 0x00481bf0
+// TABTemplateDialog::`scalar deleting destructor'
+
+// FUNCTION: IMPERIALISM 0x00481ca0
+void TABTemplateDialog::DoDataExchange(CDataExchange* pDX) {
+  DDX_Text(pDX, 0x3fd, text5c);
+  DDX_Text(pDX, 0x3fe, text60);
+}
+
+// SYNTHETIC: IMPERIALISM 0x00481ce0
+// TABTemplateDialog::GetMessageMap
+#ifndef IMPERIALISM_LINT
+BEGIN_MESSAGE_MAP(TABTemplateDialog, CDialog)
+END_MESSAGE_MAP()
+#endif
+
+// FUNCTION: IMPERIALISM 0x00481dc0
+TAETemplateDialog::TAETemplateDialog(void* initParam)
+    : CDialog(0xae, static_cast<CWnd*>(initParam)), text5c(), text60() {
+  text5c = "";
+  text60 = "";
+}
+
+// SYNTHETIC: IMPERIALISM 0x00481e80
+// TAETemplateDialog::`scalar deleting destructor'
+
+// FUNCTION: IMPERIALISM 0x00481f30
+void TAETemplateDialog::DoDataExchange(CDataExchange* pDX) {
+  DDX_Text(pDX, 0x400, text5c);
+  DDX_Text(pDX, 0x401, text60);
+}
+
+// SYNTHETIC: IMPERIALISM 0x00481f70
+// TAETemplateDialog::GetMessageMap
+#ifndef IMPERIALISM_LINT
+BEGIN_MESSAGE_MAP(TAETemplateDialog, CDialog)
+END_MESSAGE_MAP()
+#endif
+
+// FUNCTION: IMPERIALISM 0x00482050
+TB1TemplateDialog::TB1TemplateDialog(void* initParam)
+    : CDialog(0xb1, static_cast<CWnd*>(initParam)), text5c() {
+  text5c = "";
+}
+
+// SYNTHETIC: IMPERIALISM 0x004820e0
+// TB1TemplateDialog::`scalar deleting destructor'
+
+// FUNCTION: IMPERIALISM 0x00482180
+void TB1TemplateDialog::DoDataExchange(CDataExchange* pDX) {
+  DDX_Text(pDX, 0x403, text5c);
+}
+
+// SYNTHETIC: IMPERIALISM 0x004821b0
+// TB1TemplateDialog::GetMessageMap
+#ifndef IMPERIALISM_LINT
+BEGIN_MESSAGE_MAP(TB1TemplateDialog, CDialog)
 END_MESSAGE_MAP()
 #endif
 
