@@ -667,14 +667,6 @@ undefined4 DestructTExpansionOrderAndMaybeFree(void)
   return 0;
 }
 
-// ghidra_name WriteWordArrayToOutputCallbackLE
-// ghidra_proto undefined WriteWordArrayToOutputCallbackLE()
-// FUNCTION: IMPERIALISM 0x004b94a0
-undefined4 WriteWordArrayToOutputCallbackLE(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_ftol_At004b9570
 // ghidra_proto undefined WrapperFor_ftol_At004b9570()
 // FUNCTION: IMPERIALISM 0x004b9570
