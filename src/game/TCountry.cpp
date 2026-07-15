@@ -555,7 +555,7 @@ short TCountry::QueryNationMetricBySlot7C(short metricSlot) {
 }
 
 // FUNCTION: IMPERIALISM 0x004d7f60
-char TCountry::ReturnFalseNationStateCapabilityFlag90(int arg) {
+char TCountry::ReturnFalseNationStateCapabilityFlag90(short arg) {
   (void)arg;
   return 0;
 }

@@ -348,6 +348,13 @@ extern TMultiplayerMgr* g_pGameFlowState;
 extern int g_NetworkDefaultNationId006a5fc0;
 extern int g_NetworkBroadcastNationId006a5fc4;
 extern int DAT_006a601c;
+// City-order capability rule-table pointer slots written into TTechMgr+0x264 as tech
+// unlocks are applied (default at construction, alternates for tech ids 0x0b/0x16).
+extern undefined4 DAT_0066ac88;
+extern undefined4 DAT_0066ac8c;
+extern undefined4 DAT_0066ac90;
+// 26 (start, end) capability-priority range pairs (see the .cpp note).
+extern short g_anCapabilityPriorityRangePairs[53];
 extern const char s_DataDirectoryPath_006942A8[];
 extern const char s_IrgGlobPattern_006942FC[];
 extern const char s_NoLanguageFilesMessage_006942B4[];
@@ -433,7 +440,6 @@ extern CArray<void*, void*> g_WNetSerializedPtrArrayA006a5f10;
 extern CArray<void*, void*> g_WNetSerializedPtrArrayB006a5f28;
 extern CList<void*, void*> g_WNetPendingPacketList006a5f40;
 extern TTechMgr* g_pCityOrderCapabilityState;
-extern "C" short g_anCapabilityPriorityRangePairs[52];
 extern TSoundResourceManager g_soundResourceManager;
 // CD-audio MCI device singleton (see game/cd_audio.h).
 extern TCdAudioDevice g_cdAudioDevice; // 0x006a60bc

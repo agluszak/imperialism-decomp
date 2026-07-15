@@ -416,6 +416,31 @@ char TZone::HasSecondaryNeighborWithNationTag(short nationTag) {
   return 0;
 }
 
+// FUNCTION: IMPERIALISM 0x0055f540
+char TZone::IsZoneMaskOrArrayEntryPresentForKey(short key) {
+  unsigned char keyBit = static_cast<unsigned char>(1 << key);
+  if ((field10 & keyBit) != 0) {
+    return 1;
+  }
+  unsigned int entryCount = static_cast<unsigned int>(this->secondaryNeighbors.Count());
+  if (entryCount == 0) {
+    return 0;
+  }
+  for (unsigned int entryIndex = 0; entryIndex < entryCount; ++entryIndex) {
+    // Inlined bounds-guarded stretch element access, as in the original (mirrors
+    // HasSecondaryNeighborWithNationTag). Entries are TGlobalMapCityScoreRecord* under
+    // the documented stretch pun; byte 0 of the record is its ownerNationCode00.
+    TZone* const* entrySlot =
+        (entryIndex < entryCount) ? this->secondaryNeighbors.Data() + entryIndex : 0;
+    const void* record = *entrySlot;
+    short entryKey = *static_cast<const signed char*>(record);
+    if (entryKey == key) {
+      return 1;
+    }
+  }
+  return 0;
+}
+
 // FUNCTION: IMPERIALISM 0x0055f5c0
 void TZone::GenerateZoneStatusCodeIfUnset() {
   if (field04 != -1) {

@@ -355,14 +355,6 @@ undefined4 SelectFirstAvailableCivilianForNation(void)
   return 0;
 }
 
-// ghidra_name ResolveCivilianTileSelectionOrReportActionCode
-// ghidra_proto ushort __stdcall ResolveCivilianTileSelectionOrReportActionCode(short nTileIndex, short nClickMode)
-// FUNCTION: IMPERIALISM 0x004d2540
-undefined4 ResolveCivilianTileSelectionOrReportActionCode(void)
-{
-  return 0;
-}
-
 // ghidra_name TMapMgr::QueueCivilianWorkOrderWithCostCheck
 // ghidra_proto bool __thiscall QueueCivilianWorkOrderWithCostCheck(short nTileIndex)
 // FUNCTION: IMPERIALISM 0x004d3310

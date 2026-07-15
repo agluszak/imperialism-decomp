@@ -472,7 +472,7 @@ void TViewMgr::BuildAndShowTurnOverlayByMode(int overlayMode, int contextArg) {
   case 1: {
     g_pSimMgr->GetString(0, 0, &templateText);
     short nationId = g_pSimMgr->GetActiveNationId();
-    short cap = g_pCityOrderCapabilityState->nationCapRows1e8[nationId].cap;
+    short cap = g_pCityOrderCapabilityState->nationCapRows1e8[nationId].slots[9];
     if (cap == 0x1c) {
       resourceId = 0x2518;
     } else {

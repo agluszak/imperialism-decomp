@@ -123,6 +123,9 @@ public:
   // 0x0055f4d0 — true when any secondaryNeighbors entry (a TGlobalMapCityScoreRecord*
   // under the documented stretch pun) has byte 0 (ownerNationCode00) == nationTag.
   char HasSecondaryNeighborWithNationTag(short nationTag);
+  // 0x0055f540 — true when key's bit is set in field10's low byte, or any
+  // secondaryNeighbors entry (TGlobalMapCityScoreRecord* stretch pun) has byte 0 == key.
+  char IsZoneMaskOrArrayEntryPresentForKey(short key);
   // 0x560b00: whether this map-order context has a displayable primary navy order for
   // `nation` (-1 = active nation): field10 bit set and a g_pNavyPrimaryOrderListHead
   // ship with field08 == this, matching owner, field0c == 0 (and field34 == 0 unless

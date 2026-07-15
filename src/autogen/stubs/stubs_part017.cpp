@@ -11,30 +11,6 @@ undefined4 CancelMapOrderEntryAndRestoreActive(void)
   return 0;
 }
 
-// ghidra_name SetTaskForceOrderSelectionByNodeId
-// ghidra_proto undefined SetTaskForceOrderSelectionByNodeId()
-// FUNCTION: IMPERIALISM 0x005549a0
-undefined4 SetTaskForceOrderSelectionByNodeId(void)
-{
-  return 0;
-}
-
-// ghidra_name CountTaskForceSelectedOrdersByNationClass
-// ghidra_proto undefined CountTaskForceSelectedOrdersByNationClass()
-// FUNCTION: IMPERIALISM 0x00554a30
-undefined4 CountTaskForceSelectedOrdersByNationClass(void)
-{
-  return 0;
-}
-
-// ghidra_name GetMinActionThresholdFromEntryChildren
-// ghidra_proto undefined GetMinActionThresholdFromEntryChildren()
-// FUNCTION: IMPERIALISM 0x00554a80
-undefined4 GetMinActionThresholdFromEntryChildren(void)
-{
-  return 0;
-}
-
 // ghidra_name BuildTaskForceOrderBreakdownSummaryText
 // ghidra_proto undefined BuildTaskForceOrderBreakdownSummaryText()
 // FUNCTION: IMPERIALISM 0x00554b20
@@ -331,14 +307,6 @@ undefined4 ContainsCityStatePointerInZoneArrayByCityIndex(void)
   return 0;
 }
 
-// ghidra_name IsZoneMaskOrArrayEntryPresentForKey
-// ghidra_proto undefined IsZoneMaskOrArrayEntryPresentForKey()
-// FUNCTION: IMPERIALISM 0x0055f540
-undefined4 IsZoneMaskOrArrayEntryPresentForKey(void)
-{
-  return 0;
-}
-
 // ghidra_name BuildMapOrderObjectiveDescriptionTextForNation
 // ghidra_proto undefined BuildMapOrderObjectiveDescriptionTextForNation()
 // FUNCTION: IMPERIALISM 0x005606f0
@@ -591,14 +559,6 @@ undefined4 WrapperFor_ftol_At0056f330(void)
 // ghidra_proto undefined DestructTLineDataAndMaybeFree_Impl()
 // FUNCTION: IMPERIALISM 0x0056f400
 undefined4 DestructTLineDataAndMaybeFree_Impl(void)
-{
-  return 0;
-}
-
-// ghidra_name TLineData::SetLineDataRowAndBounds
-// ghidra_proto undefined SetLineDataRowAndBounds()
-// FUNCTION: IMPERIALISM 0x0056f420
-undefined4 SetLineDataRowAndBounds(void)
 {
   return 0;
 }

@@ -39,7 +39,6 @@ void __fastcall RebuildCivilianOrderCompatibilityMatrices(TDiplomacyMgr* self, i
 int __cdecl TouchSessionActiveNationId(void);
 void __cdecl ResetPortZoneGlobalContextCounters(void);
 void RegenerateAllMapActionContextStatusCodes();
-void __stdcall EnsurePictWvDataGobLoadedBySlot(int slotIndex);
 
 // FUNCTION: IMPERIALISM 0x004153a0
 int ReadSettingsPrefIntByIndex(int index, int defaultValue) {
@@ -290,7 +289,7 @@ void TSimMgr::ReadFrom(TStream* stream) {
     field6a = (stateFlag114 != 0) ? 1 : 0;
   }
 
-  EnsurePictWvDataGobLoadedBySlot(field6a);
+  g_pUiViewManager->EnsurePictWvDataGobLoadedBySlot(field6a);
   g_pStrategicMapViewSystem->ReloadBitmap244AndRefreshUiCaches();
 
   if (g_nSaveFormatVersion >= 0x36) {
@@ -574,7 +573,7 @@ void TSimMgr::RebuildNationStateSlotsAndAvailability(int activate) {
       CString path;
       path.Format(s_PictWvGobPathFormat_00698BF4, tagText[1] - '0');
       if (TryGetFileMetadataForPath(&path)) {
-        EnsurePictWvDataGobLoadedBySlot(tagText[1] - '0');
+        g_pUiViewManager->EnsurePictWvDataGobLoadedBySlot(tagText[1] - '0');
       }
     }
   }
@@ -1001,7 +1000,7 @@ void ReinitializeGameFlowAndPostTurnEventCode(int eventCode) {
 // FUNCTION: IMPERIALISM 0x00581ae0
 void TSimMgr::SetSelectedIndex6AAndTriggerRefresh(short index) {
   field6a = index;
-  EnsurePictWvDataGobLoadedBySlot(index);
+  g_pUiViewManager->EnsurePictWvDataGobLoadedBySlot(index);
   g_pStrategicMapViewSystem->ReloadBitmap244AndRefreshUiCaches();
 }
 
@@ -1333,7 +1332,7 @@ void TSimMgr::HandleTurnInstruction_Flag_SetNationFlagAndRefresh(void* pInstruct
   raw[1] = raw[2];
   short index = static_cast<short>(token);
   field6a = index;
-  EnsurePictWvDataGobLoadedBySlot(index);
+  g_pUiViewManager->EnsurePictWvDataGobLoadedBySlot(index);
   g_pStrategicMapViewSystem->ReloadBitmap244AndRefreshUiCaches();
 }
 

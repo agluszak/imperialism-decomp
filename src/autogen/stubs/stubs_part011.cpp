@@ -595,22 +595,6 @@ undefined4 WrapperFor_AttachRegionHandleToClipStateAndRegister_At00498be0(void)
   return 0;
 }
 
-// ghidra_name NoOpModalAnimWaitBracketHookA_00498c60
-// ghidra_proto undefined4 __cdecl NoOpModalAnimWaitBracketHookA_00498c60()
-// FUNCTION: IMPERIALISM 0x00498c60
-undefined4 NoOpModalAnimWaitBracketHookA_00498c60(void)
-{
-  return 0;
-}
-
-// ghidra_name NoOpModalAnimWaitBracketHookB_00498c80
-// ghidra_proto undefined4 __cdecl NoOpModalAnimWaitBracketHookB_00498c80()
-// FUNCTION: IMPERIALISM 0x00498c80
-undefined4 NoOpModalAnimWaitBracketHookB_00498c80(void)
-{
-  return 0;
-}
-
 // ghidra_name NoOpCallback_00498ca0
 // ghidra_proto undefined NoOpCallback_00498ca0()
 // FUNCTION: IMPERIALISM 0x00498ca0

@@ -227,6 +227,21 @@ public:
   // site that invokes it without checking for a null receiver first.
   int GetMapOrderEntryChildCount(); // 0x5562c0
 
+  // Minimum resource-type descriptorWeight across active childOrderList entries;
+  // returns 0 if none are active (used as a gating predicate for map-order actions).
+  unsigned int GetMinActionThresholdFromEntryChildren(); // 0x554a80
+
+  // Finds the childOrderList entry whose object_ptr == targetOrderObject (head fast-path,
+  // else FindNodeMatching from the second node) and, if found, sets its active_flag; when
+  // the flag is nonzero also clears targetOrderObject's +0x34 dword (same idiom as
+  // SetTaskForceOrderSelectionByNationClassAndFlag).
+  void SetTaskForceOrderSelectionByNodeId(TTaskForce* targetOrderObject,
+                                          char activeFlag); // 0x5549a0
+
+  // Counts active childOrderList entries whose descriptor enabledFlagOrBucketOffset
+  // (low short, reused here as a nation/bucket class) equals nationClass.
+  int CountTaskForceSelectedOrdersByNationClass(short nationClass); // 0x554a30
+
   // Average (x10) of the resource-type descriptorWeight column across active
   // childOrderList entries; 0 if none are active.
   int CalculateMapOrderEntryAverageChildRatingX10(); // 0x554ad0

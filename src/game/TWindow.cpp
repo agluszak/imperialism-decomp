@@ -12,9 +12,7 @@
 // helper through the incremental-link thunk; each call site is gated by its own
 // g_McAppUiFlag_* one-shot so the assert fires at most once.
 static __inline void AssertMcAppUiInvalidation(const char* path, int line) {
-  (void)path;
-  (void)line;
-  TemporarilyClearAndRestoreUiInvalidationFlag();
+  TemporarilyClearAndRestoreUiInvalidationFlag(path, line);
 }
 
 // FUNCTION: IMPERIALISM 0x0048d500

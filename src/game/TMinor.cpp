@@ -122,9 +122,17 @@ void TMinor::WriteTo(TStream* stream) {
   WriteShortArrayElems(stream, diplomacySaveExt13c, 0x17);
 }
 
+// Overrides the base (which is a plain "return false"): true when `arg` matches any of
+// the four saved diplomacy nation slots at diplomacySaveFields134[0..3]. The vtable slot
+// param is a short (word compares), not the int the base decl formerly used.
 // FUNCTION: IMPERIALISM 0x004e45f0
-char TMinor::ReturnFalseNationStateCapabilityFlag90(int arg) {
-  return (arg > 0xc && arg < 0x11) ? 1 : 0;
+char TMinor::ReturnFalseNationStateCapabilityFlag90(short arg) {
+  char result = 0;
+  if (arg == diplomacySaveFields134[0] || arg == diplomacySaveFields134[1] ||
+      arg == diplomacySaveFields134[2] || arg == diplomacySaveFields134[3]) {
+    result = 1;
+  }
+  return result;
 }
 
 // FUNCTION: IMPERIALISM 0x004e4630

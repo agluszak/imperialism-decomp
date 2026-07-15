@@ -6121,7 +6121,7 @@ address|name|symbol|size|type|prototype|provenance
 5df280|ConstructUiViewManager||90|function|void * __fastcall ConstructUiViewManager(void * pUiViewManager)|
 5df300|TAssetMgr::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 5df330|TAssetMgr::WrapperFor_InvokeCallbackNTimesWithSehGuard_At005df330||72|function|undefined WrapperFor_InvokeCallbackNTimesWithSehGuard_At005df330()|
-5df3a0|ForwardEnsurePictWvDataGobLoadedBySlot||10|function|void __cdecl ForwardEnsurePictWvDataGobLoadedBySlot(int languageTag)|
+5df3a0|TAssetMgr::ForwardEnsurePictWvDataGobLoadedBySlot||10|function|void ForwardEnsurePictWvDataGobLoadedBySlot(int languageTag)|
 5df3c0|TAssetMgr::ResolveTurnEventDialogNodeByMessageContext||21|function|undefined ResolveTurnEventDialogNodeByMessageContext()|
 5df3f0|TAssetMgr::NoOpRuntimeUiCallback_005df3f0||3|function|undefined NoOpRuntimeUiCallback_005df3f0(void)|
 5df410|TAssetMgr::NoOpRuntimeUiCallback_005df410||3|function|undefined NoOpRuntimeUiCallback_005df410(void)|
@@ -6140,7 +6140,7 @@ address|name|symbol|size|type|prototype|provenance
 5dfc10|TAssetMgr::PlayMovieClipAndDispatchTurnStateFollowup||260|function|undefined PlayMovieClipAndDispatchTurnStateFollowup()|
 5dfd70|BuildScenarioPathForModeAndIndex||225|function|undefined BuildScenarioPathForModeAndIndex()|
 5dfea0|AssignScoresDatPathToSharedString||92|function|undefined AssignScoresDatPathToSharedString()|
-5dff20|EnsurePictWvDataGobLoadedBySlot||206|function|void __stdcall EnsurePictWvDataGobLoadedBySlot(int languageTag)|
+5dff20|TAssetMgr::EnsurePictWvDataGobLoadedBySlot||206|function|void EnsurePictWvDataGobLoadedBySlot(int languageTag)|
 5e0030|TAssetMgr::SaveMainDocumentToPathAndMarkSaved||210|function|unsigned char __thiscall SaveMainDocumentToPathAndMarkSaved(CString const &)|
 5e0150|TAssetMgr::OpenMainDocumentFromPathAndMarkLoaded||49|function|unsigned char __thiscall OpenMainDocumentFromPathAndMarkLoaded(CString const &)|
 5e01a0|LoadProfileStringAndAssignSharedRef||132|function|undefined LoadProfileStringAndAssignSharedRef()|

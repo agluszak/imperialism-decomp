@@ -467,14 +467,6 @@ undefined4 OpenCdAudioAndProbeAuxOutputDevice(void)
   return 0;
 }
 
-// ghidra_name SendMciCommand804ToDevice
-// ghidra_proto undefined SendMciCommand804ToDevice()
-// FUNCTION: IMPERIALISM 0x005e19e0
-undefined4 SendMciCommand804ToDevice(void)
-{
-  return 0;
-}
-
 // ghidra_name SendMciCommand808ToDeviceWithParam
 // ghidra_proto undefined SendMciCommand808ToDeviceWithParam()
 // FUNCTION: IMPERIALISM 0x005e1a10

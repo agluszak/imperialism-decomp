@@ -209,11 +209,12 @@ public:
   virtual void ReadTrackedSlotEntryFields(short slotIndex, short ordinal, short* outKind,
                                           short* outValue, short* outTargetNation, int* outPayload);
   virtual void AssignPayloadToTrackedSlotEntryMatchingField2(int targetSlot, int matchKey,
-                                                             int payload);           // slot 0x70
-  virtual void ClearDiplomacyState1c6Block(void);                                    // index 113
-  virtual void BeginTurnDiplomacyPrePassSlot1c8();                                   // index 114
-  virtual void ResetDiplomacyPolicyAndGrantEntriesPreserveRecurringGrants(void);     // index 115
-  virtual bool ApplyDiplomacyPolicyStateForTargetWithCostChecks(int arg1, int arg2); // index 116
+                                                             int payload);       // slot 0x70
+  virtual void ClearDiplomacyState1c6Block(void);                                // index 113
+  virtual void BeginTurnDiplomacyPrePassSlot1c8();                               // index 114
+  virtual void ResetDiplomacyPolicyAndGrantEntriesPreserveRecurringGrants(void); // index 115
+  virtual bool ApplyDiplomacyPolicyStateForTargetWithCostChecks(short targetClass,
+                                                                short policyCode);   // index 116
   virtual bool SetDiplomacyGrantEntryForTargetAndUpdateTreasury(int arg1, int arg2); // index 117
   virtual void
   RevokeDiplomacyGrantForTargetAndAdjustInfluenceSlot1d8(int sourceNation); // index 118

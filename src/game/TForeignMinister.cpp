@@ -6,6 +6,9 @@
 #include "game/TSortedByRelationshipList.h"
 #include "game/TDiplomacyMgr.h"
 #include "game/global_data_tables.h"
+#include "game/TMapMgr.h"
+#include "game/TSimMgr.h"
+#include "game/TInterNationEventQueueManager.h"
 #include "game/mfc.h"
 #include "game/TStream.h"
 
@@ -82,23 +85,54 @@ short TForeignMinister::DispatchNationStateEventCode10(short nationSlot) {
 }
 
 // FUNCTION: IMPERIALISM 0x0052f4b0
-void TForeignMinister::MinisterSlot12() {}
+void TForeignMinister::InitializeForeignMinisterStateFlags() {
+  // Seven-byte fill of flags49 (bytes 0x49-0x4f) with 0x01; MSVC inlines this memset as
+  // a 0x01010101 dword + word + byte store.
+  memset(this->flags49, 1, 7);
+  TGreatPower* ownerGP = reinterpret_cast<TGreatPower*>(this->ownerContextAt04);
+  this->capabilityFlag16 = 0;
+  if (ownerGP->treasuryValue10 < 0) {
+    this->capabilityFlag14 = 1;
+  }
+}
 
 // FUNCTION: IMPERIALISM 0x0052f4f0
-void TForeignMinister::Call4C() {}
+void TForeignMinister::AddToForeignMinisterCounterAtIndex(short index, short delta) {
+  this->counters1e[index] = static_cast<short>(this->counters1e[index] + delta);
+}
 
 // FUNCTION: IMPERIALISM 0x0052f520
-void TForeignMinister::MinisterSlot14() {}
+void TForeignMinister::SetForeignMinisterReadyFlag14() {
+  this->capabilityFlag14 = 1;
+}
 
 // FUNCTION: IMPERIALISM 0x0052f540
-void TForeignMinister::Call54() {}
+void TForeignMinister::SetForeignMinisterPrimaryAndSecondaryTargets(short primary,
+                                                                    short secondary) {
+  this->field10 = primary;
+  this->field12 = secondary;
+}
 
 // FUNCTION: IMPERIALISM 0x0052f570
 void TForeignMinister::MinisterSlot21() {}
 
 // FUNCTION: IMPERIALISM 0x0052f730
-char TForeignMinister::MinisterSlot22() {
-  return 0;
+int TForeignMinister::HasAnyOptionDToFMeetingNationThreshold() {
+  // The original reloads the owner (this->ownerContextAt04) once per comparison.
+  TGreatPower* gp = reinterpret_cast<TGreatPower*>(this->ownerContextAt04);
+  short cap = gp->tradeCapacity;
+  if (gp->GetDiplomacyExternalStateByTarget(0xd) < cap) {
+    gp = reinterpret_cast<TGreatPower*>(this->ownerContextAt04);
+    cap = gp->tradeCapacity;
+    if (gp->GetDiplomacyExternalStateByTarget(0xe) < cap) {
+      gp = reinterpret_cast<TGreatPower*>(this->ownerContextAt04);
+      cap = gp->tradeCapacity;
+      if (gp->GetDiplomacyExternalStateByTarget(0xf) < cap) {
+        return 0;
+      }
+    }
+  }
+  return 1;
 }
 
 // FUNCTION: IMPERIALISM 0x0052f7b0
@@ -150,12 +184,12 @@ void TForeignMinister::Call8C() {
 
 // FUNCTION: IMPERIALISM 0x0052f940
 void TForeignMinister::Call90() {
-  this->MinisterSlot12();
+  this->InitializeForeignMinisterStateFlags();
   char* raw = reinterpret_cast<char*>(this);
   TGreatPower* owner = reinterpret_cast<TGreatPower*>(this->ownerContextAt04);
   int skipMissionSlot1A = 0;
   if (*reinterpret_cast<short*>(raw + 0x18) < *reinterpret_cast<short*>(raw + 0x1a)) {
-    if (this->MinisterSlot22() == 0) {
+    if (this->HasAnyOptionDToFMeetingNationThreshold() == 0) {
       skipMissionSlot1A = 1;
     }
   }
@@ -280,7 +314,18 @@ void TForeignMinister::RecomputeOrderStateSlot9C() {
 }
 
 // FUNCTION: IMPERIALISM 0x0052fd10
-void TForeignMinister::Call58() {}
+void TForeignMinister::RefreshForeignMinisterStateByLocalizationMode() {
+  if (g_pSimMgr->GetTurnTickSlot3C() == 1) {
+    this->MinisterSlot18();
+  }
+  if (g_pSimMgr->GetTurnTickSlot3C() == 2) {
+    this->MinisterSlot19();
+  }
+  this->MinisterSlot1B();
+  this->UpdateNationInteractionEnableFlagsByTerrainAndRelation();
+  this->MinisterSlot1A();
+  this->MinisterSlot17();
+}
 
 // FUNCTION: IMPERIALISM 0x0052fd80
 void TForeignMinister::MinisterSlot18() {}
@@ -297,19 +342,138 @@ void TForeignMinister::MinisterSlot1A(short arg) {
 void TForeignMinister::MinisterSlot17() {}
 
 // FUNCTION: IMPERIALISM 0x00530200
-void TForeignMinister::MinisterSlot1E() {}
+void TForeignMinister::UpdateNationInteractionEnableFlagsByTerrainAndRelation() {
+  TGreatPower* owner = reinterpret_cast<TGreatPower*>(this->ownerContextAt04);
+  bool matched = false;
+  short terrainSlot = 7;
+  do {
+    if (0x16 < terrainSlot) {
+      break;
+    }
+    if (g_apTerrainTypeDescriptorTable[terrainSlot]->IsEncodedNationSlotMinus200Equal(
+            owner->nationSlot) != 0) {
+      matched = true;
+    }
+    ++terrainSlot;
+  } while (!matched);
+
+  int nation = 0;
+  do {
+    if (static_cast<short>(nation) != owner->nationSlot) {
+      if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(nation) != 0) {
+        if (matched &&
+            g_pDiplomacyTurnStateManager
+                    ->relationStandingScoreMatrix79c[owner->nationSlot * 0x17 + nation] < 0x96) {
+          owner->SetDiplomacyColonyBoycottFlagForTargetAndRefreshMinorNations(nation, 1);
+        } else {
+          owner->SetDiplomacyColonyBoycottFlagForTargetAndRefreshMinorNations(nation, 0);
+        }
+      }
+    }
+    ++nation;
+  } while (static_cast<short>(nation) < 7);
+}
 
 // FUNCTION: IMPERIALISM 0x005308b0
-void TForeignMinister::MinisterSlot1C() {}
+char TForeignMinister::EvaluateLocalizedScoreThresholdPredicateForNationValue(int nationCode) {
+  // Two difficulty-indexed threshold rows (A = [difficulty], B = [difficulty + 5]).
+  int thresholds[10] = {0x15, 0x12, 0xf, 0xd, 0xb, 0x1b, 0x17, 0x13, 0x10, 0xe};
+  int difficulty = g_pSimMgr->redrawEnabled; // [g_pSimMgr + 0x40] scenario/difficulty index
+  int thresholdA = thresholds[difficulty];
+  int thresholdB = thresholds[difficulty + 5];
+  char result = 0;
+
+  TGreatPower* ownerGP = reinterpret_cast<TGreatPower*>(this->ownerContextAt04);
+  char linked = g_pGlobalMapState->AreNationsBorderLinked(ownerGP->nationSlot, nationCode);
+  if (linked == 0) {
+    if (thresholdB < ownerGP->SumNavyOrderPriorityForNationSlot86()) {
+      int scoreA = static_cast<int>(ownerGP->ComputeNavyScoreRatioVsNation(nationCode));
+      int scoreB = static_cast<int>(ownerGP->ComputeNavyScoreStandingRatioVsNation(nationCode));
+      float average = static_cast<float>((scoreA + scoreB) / 2);
+      if (ownerGP->ComputeMinisterSkillFloatSlot88() <= average) {
+        result = 1;
+      }
+    }
+  } else {
+    if (thresholdA < ownerGP->ComputeSelectedMilitaryPowerScore()) {
+      int scoreA = static_cast<int>(ownerGP->ComputeArmyScoreRatioVsNation(nationCode));
+      int scoreB = static_cast<int>(ownerGP->ComputeArmyScoreStandingRatioVsNation(nationCode));
+      float average = static_cast<float>((scoreA + scoreB) / 2);
+      if (ownerGP->ComputeMinisterSkillFloatSlot88() <= average) {
+        return 1;
+      }
+    }
+  }
+  return result;
+}
 
 // FUNCTION: IMPERIALISM 0x00530b30
-void TForeignMinister::MinisterSlot1D() {}
+void TForeignMinister::DispatchAction210ToFirstEligibleNationIfIdle() {
+  // The original reloads the owning great power (this->ownerContextAt04) at each use
+  // rather than caching it; access it inline so the same reload codegen is emitted.
+  for (int nationSlot = 0; nationSlot < 7; ++nationSlot) {
+    if (reinterpret_cast<TGreatPower*>(this->ownerContextAt04)->HasActiveCandidateNationSlots() !=
+        0) {
+      return;
+    }
+    if (nationSlot != reinterpret_cast<TGreatPower*>(this->ownerContextAt04)->nationSlot &&
+        g_pSimMgr->IsNationSlotEligibleForEventProcessing(nationSlot) != 0 &&
+        this->EvaluateLocalizedScoreThresholdPredicateForNationValue(nationSlot) != 0) {
+      reinterpret_cast<TGreatPower*>(this->ownerContextAt04)
+          ->SetCandidateNationFlagAndPortZoneState(nationSlot);
+    }
+  }
+}
 
 // FUNCTION: IMPERIALISM 0x00530bb0
 void TForeignMinister::MinisterSlot1B() {}
 
 // FUNCTION: IMPERIALISM 0x00530fa0
-void TForeignMinister::MinisterSlot1F(short) {}
+void TForeignMinister::ValidateProposalSelectionAndQueueEvent1C(short queueIndex) {
+  TGreatPower* gp = reinterpret_cast<TGreatPower*>(this->ownerContextAt04);
+  char valid = 0;
+  short* record =
+      static_cast<short*>(gp->proposalQueue->GetPtrListEntryByOneBasedIndex(queueIndex));
+  short targetNation = record[1];
+  if (gp->diplomacyPolicyByNation[targetNation] == record[0]) {
+    valid = 1;
+  } else {
+    switch (record[0]) {
+    case 0x12d:
+      valid = 0;
+      break;
+    case 0x12e:
+      if (g_pDiplomacyTurnStateManager->GetNationPairDiplomacyRelationCode(gp->nationSlot,
+                                                                           targetNation) != 4) {
+        valid = 0;
+      } else {
+        valid = gp->ReturnZeroSlot9D(targetNation);
+      }
+      break;
+    case 0x12f:
+      valid = 1;
+      break;
+    case 0x130:
+      valid = gp->EvaluateJoinWarAgainstNationAndQueueEvent(targetNation);
+      if (valid == 0) {
+        gp->QueueInterNationEventForProposalCode12D_130(queueIndex);
+        return;
+      }
+      g_pInterNationEventQueueManager->QueueInterNationEventRecordDeduped(0x1c, gp->nationSlot,
+                                                                          targetNation, '\0');
+      break;
+    case 0x132:
+      valid =
+          (g_pDiplomacyTurnStateManager->HasAllianceGuardSlot60(targetNation, gp->nationSlot) == 0);
+      break;
+    }
+  }
+  if (valid != 0) {
+    gp->ApplyAcceptedDiplomacyProposalCode(queueIndex);
+    return;
+  }
+  gp->QueueInterNationEventForProposalCode12D_130(queueIndex);
+}
 
 // FUNCTION: IMPERIALISM 0x00531110
 void TForeignMinister::Call80() {}

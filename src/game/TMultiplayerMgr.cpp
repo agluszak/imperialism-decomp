@@ -280,6 +280,17 @@ void TMultiplayerMgr::WriteTo(TStream* stream) {
   (void)stream;
 }
 
+// FUNCTION: IMPERIALISM 0x005430c0
+void TMultiplayerMgr::EnableDiplomacyQueueRoutingAndSetContextField44(int nContext, char fEnable) {
+  processPrimaryEventQueue = 1;
+  processSecondaryEventQueue = 1;
+  if (fEnable != '\0') {
+    diplomacyQueueContext = nContext;
+    return;
+  }
+  diplomacyQueueContext = 0;
+}
+
 // FUNCTION: IMPERIALISM 0x00543120
 void TMultiplayerMgr::ConfigureTurnResumeStateAndNationMask(int pendingNationSlot,
                                                             int activeNationSlot) {

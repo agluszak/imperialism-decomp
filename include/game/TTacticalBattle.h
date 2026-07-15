@@ -71,7 +71,7 @@ public:
                                                    TArmyTacUnit* rallyTarget); // slot 0x16 0x5a3810
   virtual void ExecuteTacticalMineActionAndQueuePacket(TTacticalUnit* unit,
                                                        int tileIndex); // slot 0x17 0x5a34d0
-  virtual undefined
+  virtual void
   ExecuteTacticalDigActionAndConsumeUnitActionPoints(TTacticalUnit* unit,
                                                      int tileIndex); // slot 0x18 0x5a3640
   // === END GENERATED DECLS (TTacticalBattle) ===

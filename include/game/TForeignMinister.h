@@ -15,29 +15,45 @@ public:
   void WriteTo(TStream* stream) override;
   void ReadFrom(TStream* stream) override;
   short DispatchNationStateEventCode10(short nationSlot) override;
-  virtual void MinisterSlot12();
-  virtual void Call4C();
-  virtual void MinisterSlot14();
-  virtual void Call54();
+  // slot 0x12 (body 0x0052f4b0) — seed the foreign-minister state bytes (0x49-0x4f)
+  // and capability flags; sets flag 0x14 when the owner's treasury is negative.
+  virtual void InitializeForeignMinisterStateFlags();
+  // slot 0x13 (0x0052f4f0) — counters1e[index] += delta.
+  virtual void AddToForeignMinisterCounterAtIndex(short index, short delta);
+  // slot 0x14 (0x0052f520) — set capability flag 0x14.
+  virtual void SetForeignMinisterReadyFlag14();
+  // slot 0x15 (0x0052f540) — store primary/secondary targets at 0x10/0x12.
+  virtual void SetForeignMinisterPrimaryAndSecondaryTargets(short primary, short secondary);
 
-  virtual void Call58();
+  // slot 0x16 (0x0052fd10) — refresh minister sub-state gated on the sim-mode getter.
+  virtual void RefreshForeignMinisterStateByLocalizationMode();
   virtual void MinisterSlot17();
   virtual void MinisterSlot18();
   virtual void MinisterSlot19();
   virtual void MinisterSlot1A(short arg = 0);
   virtual void MinisterSlot1B();
-  virtual void MinisterSlot1C();
-  virtual void MinisterSlot1D();
-  virtual void MinisterSlot1E();
-  virtual void MinisterSlot1F(short queueIndex); // byte 0x7c: processes a queued proposal row
+  // slot 0x1c (body 0x005308b0) — difficulty-indexed army/navy score-threshold predicate.
+  virtual char EvaluateLocalizedScoreThresholdPredicateForNationValue(int nationCode);
+  // slot 0x1d (body 0x00530b30) — mark the first eligible nation as an action
+  // candidate, but only while no candidate is active yet.
+  virtual void DispatchAction210ToFirstEligibleNationIfIdle();
+  // slot 0x1e (0x0052fdc0) — set per-nation interaction enable flags from a terrain
+  // class-200 scan and relation-standing threshold.
+  virtual void UpdateNationInteractionEnableFlagsByTerrainAndRelation();
+  // slot 0x1f (0x00530fa0) — validate a queued proposal row and dispatch accept/queue.
+  virtual void ValidateProposalSelectionAndQueueEvent1C(short queueIndex);
   virtual void Call80();
   virtual void MinisterSlot21();
-  virtual char MinisterSlot22();
+  // slot 0x22 (0x0052f730) — true if any diplomacy option (0xd/0xe/0xf) meets the
+  // owner's trade-capacity threshold.
+  virtual int HasAnyOptionDToFMeetingNationThreshold();
   virtual void Call8C();
   virtual void Call90();
   virtual void Call94();
   virtual void DispatchProposalSlot98(int arg1, int arg2, int arg3, int targetNation);
   virtual void RecomputeOrderStateSlot9C();
 
-  unsigned char foreignState48[0x80 - 0x48];
+  unsigned char field48;    // +0x48 — cleared by the constructor
+  unsigned char flags49[7]; // +0x49..0x4f — seeded to 1 by InitializeForeignMinisterStateFlags
+  unsigned char foreignState50[0x80 - 0x50]; // +0x50..0x7f — remaining unrecovered state
 };

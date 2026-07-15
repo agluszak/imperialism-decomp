@@ -64,8 +64,8 @@ public:
   virtual TSoundChannelNode*
   AllocateAndPopulateLinkedValueCollectionFromRosterFilter(int rosterSlot,
                                                            int filterValue); // 0x20 0x5b9fd0
-  virtual short ResolveProposalCodeForCategorySlot84(int proposalCode,
-                                                     int category);          // 0x21 0x5ba090
+  virtual short ResolveProposalCodeForCategorySlot84(short proposalCode,
+                                                     short category);        // 0x21 0x5ba090
   virtual double ComputeNationMetricPowerScale(double base, short exponent); // 0x22 0x5b9f30
 
   TTradeMgr();
