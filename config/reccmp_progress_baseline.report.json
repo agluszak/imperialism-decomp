@@ -28906,14 +28906,14 @@
     },
     {
       "address": "0x59ae30",
-      "matching": 0.9090909090909091,
+      "matching": 1.0,
       "name": "TTacticalPlayer::`scalar deleting destructor'",
       "type": 1
     },
     {
       "address": "0x59ae60",
-      "matching": 0.5,
-      "name": "TTacticalPlayer::CreateTTacticalPlayerInstance",
+      "matching": 1.0,
+      "name": "TTacticalPlayer::~TTacticalPlayer",
       "type": 1
     },
     {
@@ -28930,8 +28930,7 @@
     },
     {
       "address": "0x59af20",
-      "effective": true,
-      "matching": 0.95,
+      "matching": 1.0,
       "name": "TTacticalPlayer::SelectNextTacticalUnitForDoneCommand",
       "type": 1
     },

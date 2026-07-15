@@ -4209,6 +4209,7 @@ address|target_cpp|ownership|note
 59adf0|src/game/TTacticalPlayer.cpp|manual|marker_sync
 59ae10|src/game/TTacticalPlayer.cpp|manual|marker_sync
 59ae30|src/game/TTacticalPlayer.cpp|manual|marker_sync
+59ae60|src/game/TTacticalPlayer.cpp|manual|marker_sync
 59ae80|src/game/TTacticalPlayer.cpp|manual|marker_sync
 59aee0|src/game/TTacticalPlayer.cpp|manual|marker_sync
 59af20|src/game/TTacticalPlayer.cpp|manual|marker_sync

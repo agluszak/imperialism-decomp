@@ -5283,8 +5283,8 @@ address|name|symbol|size|type|prototype|provenance
 59add0|TTacticalPlayer::CommitTacticalResultsToSourceUnits||3|function|undefined OrphanRetStub_0059add0(void)|
 59adf0|TTacticalPlayer::AlwaysTrueTacticalPredicate10||5|function|undefined TArmyTacUnit_VtblSlot04()|
 59ae10|TTacticalPlayer::ProceedAfterBattleIntroAccepted||1|function|undefined OrphanRetStub_0059ae10(void)|
-59ae30|TTacticalPlayer::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
-59ae60|TTacticalPlayer::CreateTTacticalPlayerInstance||7|function|undefined CreateTTacticalPlayerInstance()|
+59ae30|TTacticalPlayer::`scalar deleting destructor'|??_GTTacticalPlayer@@UAEPAXI@Z|30|function|undefined ScalarDeletingDestructor()|
+59ae60|TTacticalPlayer::~TTacticalPlayer|??1TTacticalPlayer@@UAE@XZ|7|function|undefined ~TTacticalPlayer()|
 59ae80|TTacticalPlayer::GetRuntimeClass||6|function|undefined GetTTacticalPlayerClassNamePointer()|rtti
 59aee0|TTacticalPlayer::Free||42|function|undefined ConstructTTacticalPlayerBaseState()|
 59af20|TTacticalPlayer::SelectNextTacticalUnitForDoneCommand||90|function|undefined SelectNextTacticalUnitForDoneCommand()|
