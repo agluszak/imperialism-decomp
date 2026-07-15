@@ -159,3 +159,4 @@ address|name|prototype
 0x00491a00|CSubViewIterator::FirstSubView|TView* __thiscall FirstSubView()
 0x00491a70|CSubViewIterator::NextSubView|TView* __thiscall NextSubView()
 0x00491ab0|CSubViewIterator::MoreSubViews|int __thiscall MoreSubViews()
+0x0059d400|TArmyPlayer::SetAllUnitAiStateCodesTo13|void __thiscall SetAllUnitAiStateCodesTo13()

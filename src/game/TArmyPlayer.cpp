@@ -1116,6 +1116,17 @@ void TArmyPlayer::ApplyUnopposedAdvanceStanceByActionClass() {
   }
 }
 
+// Blanket hold-fire stance: sets every unit's aiStateCode2c to 0x13. The standalone
+// sibling of ApplyTacticalStanceProfileForCurrentCursorMode's mode-7 inline loop.
+// FUNCTION: IMPERIALISM 0x0059d400
+void TArmyPlayer::SetAllUnitAiStateCodesTo13() {
+  CIterator iter(unitList4);
+  for (TTacticalUnit* record = static_cast<TTacticalUnit*>(iter.Reset()); iter.More();
+       record = static_cast<TTacticalUnit*>(iter.Advance())) {
+    record->aiStateCode2c = 0x13;
+  }
+}
+
 // Whether the opposing side has a deployed (tileIndex8 >= 0), still-active
 // (state1c == 0) artillery-class (aiClass 2) unit.
 // FUNCTION: IMPERIALISM 0x0059d470

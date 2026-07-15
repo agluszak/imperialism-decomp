@@ -5322,7 +5322,7 @@ address|name|symbol|size|type|prototype|provenance
 59d020|TArmyPlayer::ApplyAttackerAssaultStanceByActionClass||272|function|undefined ApplyTacticalCursorModeProfile4_ClassAware()|
 59d1a0|TArmyPlayer::ApplyAttackerStandoffStanceByActionClass||272|function|undefined ApplyTacticalCursorModeProfile5_ClassAware()|
 59d320|TArmyPlayer::ApplyUnopposedAdvanceStanceByActionClass||149|function|undefined ApplyTacticalCursorModeProfile6_DefaultByActionClass()|
-59d400|SetLinkedListNodeField2CTo13ForAllNodes||74|function|undefined SetLinkedListNodeField2CTo13ForAllNodes()|
+59d400|TArmyPlayer::SetAllUnitAiStateCodesTo13||74|function|undefined SetLinkedListNodeField2CTo13ForAllNodes()|
 59d470|TArmyPlayer::OpponentHasDeployedActiveArtilleryUnit||140|function|undefined HasReachableActiveArtilleryClassCursorEntry()|
 59d530|TArmyPlayer::SelectBestTacticalTileByWeightedHeuristics||297|function|undefined SelectBestTacticalTileByWeightedHeuristics()|
 59d6b0|TArmyPlayer::ScoreTacticalTileHoldPositionBonus||25|function|undefined EvaluateTacticalTileScore_CurrentTileMatchBonus()|
