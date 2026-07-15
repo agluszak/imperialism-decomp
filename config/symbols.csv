@@ -1114,9 +1114,9 @@ address|name|symbol|size|type|prototype|provenance
 4933d0|CMcWindow::CreateObject|?CreateObject@CMcWindow@@SGPAVCObject@@XZ|89|function|undefined CreateObject()|rtti
 493450|CMcWindow::GetRuntimeClass|?GetRuntimeClass@CMcWindow@@UBEPAUCRuntimeClass@@XZ|6|function|undefined GetRuntimeClass()|rtti
 493470|CMcWindow::CMcWindow||521|function|void __thiscall CMcWindow(TWindow* param_1)|
-493730|WrapperFor_FreeHeapBufferIfNotNull_At00493730||30|function|undefined WrapperFor_FreeHeapBufferIfNotNull_At00493730()|
-493760|WrapperFor_CWnd_At00493760||89|function|undefined WrapperFor_CWnd_At00493760()|
-4937e0|OrphanVtableAssignStub_004937e0||6|function|undefined OrphanVtableAssignStub_004937e0()|
+493730|CMcWindow::`scalar deleting destructor'|??_GCMcWindow@@UAEPAXI@Z|30|function|undefined ScalarDeletingDestructor()|
+493760|CMcWindow::~CMcWindow|??1CMcWindow@@UAE@XZ|89|function|undefined ~CMcWindow()|
+4937e0|CMcWindow::GetMessageMap|?GetMessageMap@CMcWindow@@MBEPBUAFX_MSGMAP@@XZ|6|function|protected: virtual struct AFX_MSGMAP const * __thiscall CMcWindow::GetMessageMap(void)const|
 493800|CMcWindow::OnWindowStateMsg468||52|function|undefined OnWindowStateMsg468()|
 493819|WrapperFor_ShowWindowOrForwardToSite_At00493819||16|function|undefined WrapperFor_ShowWindowOrForwardToSite_At00493819()|
 493829|WrapperFor_ShowWindowOrForwardToSite_At00493829||16|function|undefined WrapperFor_ShowWindowOrForwardToSite_At00493829()|
@@ -1128,11 +1128,11 @@ address|name|symbol|size|type|prototype|provenance
 493b00|CMcWindow::OnClose|?OnClose@CMcWindow@@IAEXXZ|25|function|undefined OnClose()|
 493b30|CMcWindow::OnKeyDown||3|function|undefined OnKeyDown()|
 493b50|CMcWindow::OnKeyUp||8|function|undefined OnKeyUp()|
-493c30|WrapperFor_RouteCommandByIdWithUiProbe_At00493c30||74|function|undefined WrapperFor_RouteCommandByIdWithUiProbe_At00493c30()|
+493c30|CMcWindow::OnCommand|?OnCommand@CMcWindow@@MAEHIJ@Z|74|function|protected: virtual int __thiscall CMcWindow::OnCommand(unsigned int,long)|
 493cc0|CMcWindow::OnPaletteChanged||8|function|undefined OnPaletteChanged()|
 493ce0|AppendStatusPointerAndDispatchMessageFallback||59|function|undefined AppendStatusPointerAndDispatchMessageFallback()|
 493d30|thunk_WrapperFor_FreeHeapBufferIfNotNull_At00483ad0_Impl_At00493d30||10|function|undefined thunk_WrapperFor_FreeHeapBufferIfNotNull_At00483ad0_Impl_At00493d30()|
-493d80|RegisterAmbitMcWindowClass||91|function|undefined RegisterAmbitMcWindowClass()|
+493d80|CMcWindow::PreCreateWindow|?PreCreateWindow@CMcWindow@@MAEHAAUtagCREATESTRUCTA@@@Z|91|function|protected: virtual int __thiscall CMcWindow::PreCreateWindow(struct tagCREATESTRUCTA &)|
 493f30|WrapperFor_ftol_At00493f30||30|function|undefined WrapperFor_ftol_At00493f30()|
 493f90|InitializeDefaultQuickDrawSurfaceContextAndRegisterAtExit||24|function|undefined InitializeDefaultQuickDrawSurfaceContextAndRegisterAtExit()|
 493fc0|DestroyDefaultQuickDrawSurfaceContextAtExit||10|function|undefined DestroyDefaultQuickDrawSurfaceContextAtExit()|

@@ -797,6 +797,9 @@ address|target_cpp|ownership|note
 4933d0|src/game/CMcWindow.cpp|manual|marker_sync
 493450|src/game/CMcWindow.cpp|manual|marker_sync
 493470|src/game/CMcWindow.cpp|manual|marker_sync
+493730|src/game/CMcWindow.cpp|manual|marker_sync
+493760|src/game/CMcWindow.cpp|manual|marker_sync
+4937e0|src/game/CMcWindow.cpp|manual|marker_sync
 493800|src/game/CMcWindow.cpp|manual|marker_sync
 4938c0|src/game/CMcWindow.cpp|manual|marker_sync
 493990|src/game/CMcWindow.cpp|manual|marker_sync
@@ -805,8 +808,10 @@ address|target_cpp|ownership|note
 493b00|src/game/CMcWindow.cpp|manual|marker_sync
 493b30|src/game/CMcWindow.cpp|manual|marker_sync
 493b50|src/game/CMcWindow.cpp|manual|marker_sync
+493c30|src/game/CMcWindow.cpp|manual|marker_sync
 493ca0|src/game/CMcWindow.cpp|manual|marker_sync
 493cc0|src/game/CMcWindow.cpp|manual|marker_sync
+493d80|src/game/CMcWindow.cpp|manual|marker_sync
 494130|src/game/quickdraw_rendering.cpp|manual|marker_sync
 4943e0|src/game/crt_io_library.cpp|library|marker_sync
 494430|src/game/crt_io_library.cpp|library|marker_sync

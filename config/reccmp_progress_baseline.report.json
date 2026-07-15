@@ -5839,14 +5839,26 @@
     },
     {
       "address": "0x493470",
-      "matching": 0.40540540540540543,
+      "matching": 0.41216216216216217,
       "name": "CMcWindow::CMcWindow",
+      "type": 1
+    },
+    {
+      "address": "0x493730",
+      "matching": 1.0,
+      "name": "CMcWindow::`scalar deleting destructor'",
+      "type": 1
+    },
+    {
+      "address": "0x493760",
+      "matching": 1.0,
+      "name": "CMcWindow::~CMcWindow",
       "type": 1
     },
     {
       "address": "0x4937e0",
       "matching": 0.5,
-      "name": "OrphanVtableAssignStub_004937e0",
+      "name": "CMcWindow::GetMessageMap",
       "type": 1
     },
     {
@@ -5898,6 +5910,12 @@
       "type": 1
     },
     {
+      "address": "0x493c30",
+      "matching": 1.0,
+      "name": "CMcWindow::OnCommand",
+      "type": 1
+    },
+    {
       "address": "0x493ca0",
       "matching": 1.0,
       "name": "CMcWindow::OnQueryNewPalette",
@@ -5917,8 +5935,8 @@
     },
     {
       "address": "0x493d80",
-      "matching": 0.06666666666666667,
-      "name": "RegisterAmbitMcWindowClass",
+      "matching": 1.0,
+      "name": "CMcWindow::PreCreateWindow",
       "type": 1
     },
     {
@@ -42350,6 +42368,12 @@
       "address": "0x64b340",
       "matching": 1.0,
       "name": "TFloatWindow::`vftable'",
+      "type": 5
+    },
+    {
+      "address": "0x64b7c8",
+      "matching": 1.0,
+      "name": "CMcWindow::`vftable'",
       "type": 5
     },
     {

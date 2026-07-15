@@ -307,30 +307,6 @@ undefined4 WrapperFor_ftol_At004933a0(void)
   return 0;
 }
 
-// ghidra_name WrapperFor_FreeHeapBufferIfNotNull_At00493730
-// ghidra_proto undefined WrapperFor_FreeHeapBufferIfNotNull_At00493730()
-// FUNCTION: IMPERIALISM 0x00493730
-undefined4 WrapperFor_FreeHeapBufferIfNotNull_At00493730(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_CWnd_At00493760
-// ghidra_proto undefined WrapperFor_CWnd_At00493760()
-// FUNCTION: IMPERIALISM 0x00493760
-undefined4 WrapperFor_CWnd_At00493760(void)
-{
-  return 0;
-}
-
-// ghidra_name OrphanVtableAssignStub_004937e0
-// ghidra_proto undefined OrphanVtableAssignStub_004937e0()
-// FUNCTION: IMPERIALISM 0x004937e0
-undefined4 OrphanVtableAssignStub_004937e0(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_ShowWindowOrForwardToSite_At00493819
 // ghidra_proto undefined WrapperFor_ShowWindowOrForwardToSite_At00493819()
 // FUNCTION: IMPERIALISM 0x00493819
@@ -355,14 +331,6 @@ undefined4 DestructObjectAndReleaseWithFlag_Field0F(void)
   return 0;
 }
 
-// ghidra_name WrapperFor_RouteCommandByIdWithUiProbe_At00493c30
-// ghidra_proto undefined WrapperFor_RouteCommandByIdWithUiProbe_At00493c30()
-// FUNCTION: IMPERIALISM 0x00493c30
-undefined4 WrapperFor_RouteCommandByIdWithUiProbe_At00493c30(void)
-{
-  return 0;
-}
-
 // ghidra_name AppendStatusPointerAndDispatchMessageFallback
 // ghidra_proto undefined AppendStatusPointerAndDispatchMessageFallback()
 // FUNCTION: IMPERIALISM 0x00493ce0
@@ -375,14 +343,6 @@ undefined4 AppendStatusPointerAndDispatchMessageFallback(void)
 // ghidra_proto undefined thunk_WrapperFor_FreeHeapBufferIfNotNull_At00483ad0_Impl_At00493d30()
 // FUNCTION: IMPERIALISM 0x00493d30
 undefined4 thunk_WrapperFor_FreeHeapBufferIfNotNull_At00483ad0_Impl_At00493d30(void)
-{
-  return 0;
-}
-
-// ghidra_name RegisterAmbitMcWindowClass
-// ghidra_proto undefined RegisterAmbitMcWindowClass()
-// FUNCTION: IMPERIALISM 0x00493d80
-undefined4 RegisterAmbitMcWindowClass(void)
 {
   return 0;
 }
