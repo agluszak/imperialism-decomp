@@ -1526,6 +1526,14 @@ int g_nUiInvalidationAssertFlagLine495 = 0;
 SeapointStretch g_seapointQuadTable_006a3478;
 SeaSegmentStretch g_regionBorderLinkTable_006a3900;
 
+// Per tech-item slot, the purchase cost applied/refunded against a nation's field-0x10
+// metric by TTechMgr::ApplyTechItemPurchaseCostAndState (0x5b0b30) /
+// RefundTechItemPurchaseCostAndClearState (0x5b0bb0). Locked/unused slots are -1.
+const int g_anTechItemPurchaseCostBySlot_0066aae8[34] = {
+    0,     0,      1000,   1000,   1500,   1500,  1500,  1500,  3000,  3000,  3000,  6000,
+    7000,  10000,  12000,  12000,  12000,  12000, 12000, 25000, 20000, 40000, 40000, 40000,
+    40000, 100000, 120000, 150000, 150000, 0,     -1,    -1,    -1,    0};
+
 // Per tech-prerequisite-pair index, the two in-record byte offsets (into a TTechMgr
 // OrderCapRow, stride 0x1d) of the capability flags that must both be "completed"
 // (== 2). Consumed by TTechMgr::AreTechItemPrerequisitePairCompleted (0x5b0a20) and

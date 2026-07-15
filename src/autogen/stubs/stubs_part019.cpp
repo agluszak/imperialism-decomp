@@ -363,22 +363,6 @@ undefined4 UpdateSelectionAndRecalculateScores(void)
   return 0;
 }
 
-// ghidra_name ApplyTechItemPurchaseCostAndState
-// ghidra_proto undefined ApplyTechItemPurchaseCostAndState()
-// FUNCTION: IMPERIALISM 0x005b0b30
-undefined4 ApplyTechItemPurchaseCostAndState(void)
-{
-  return 0;
-}
-
-// ghidra_name RefundTechItemPurchaseCostAndClearState
-// ghidra_proto undefined RefundTechItemPurchaseCostAndClearState()
-// FUNCTION: IMPERIALISM 0x005b0bb0
-undefined4 RefundTechItemPurchaseCostAndClearState(void)
-{
-  return 0;
-}
-
 // ghidra_name ConsumeFirstPendingAbilityUnlock
 // ghidra_proto undefined ConsumeFirstPendingAbilityUnlock()
 // FUNCTION: IMPERIALISM 0x005b0c20

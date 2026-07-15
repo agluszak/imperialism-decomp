@@ -1,6 +1,7 @@
 #include "game/TTechMgr.h"
 
 #include "decomp_types.h"
+#include "game/TGreatPower.h"
 #include "game/TSimMgr.h"
 #include "game/TMultiplayerMgr.h"
 #include "game/global_data_tables.h"
@@ -282,6 +283,33 @@ void TTechMgr::SelectMissingTechItemPrerequisitesFromPair(int prereqPairIndex, i
                               .initReadyFlag[0];
     *outSecond = (flagB != 2) ? offB : 0;
   }
+}
+
+// Purchases a tech-item slot for a nation: spends the slot's cost from the nation's
+// field-0x10 metric (AddToNationMetricAtField10 with the negated cost), marks the slot
+// state byte 1 in the nation's orderCapRows277 row, and stamps the current quarter tick / 4
+// into the parallel capRowsE4a6 word.
+// FUNCTION: IMPERIALISM 0x005b0b30
+void TTechMgr::ApplyTechItemPurchaseCostAndState(int slot, int nationIndex) {
+  g_apNationStates[nationIndex]->AddToNationMetricAtField10(
+      -g_anTechItemPurchaseCostBySlot_0066aae8[slot]);
+  reinterpret_cast<TTechMgr*>(reinterpret_cast<unsigned char*>(this) + slot)
+      ->orderCapRows277[nationIndex]
+      .initReadyFlag[0] = 1;
+  reinterpret_cast<short*>(&capRowsE4a6[nationIndex])[slot] =
+      static_cast<short>(g_pSimMgr->quarterGateTick2c / 4);
+}
+
+// Inverse of ApplyTechItemPurchaseCostAndState: refunds the slot's cost back to the
+// nation's field-0x10 metric and clears both the state byte and the capRowsE4a6 word.
+// FUNCTION: IMPERIALISM 0x005b0bb0
+void TTechMgr::RefundTechItemPurchaseCostAndClearState(int slot, int nationIndex) {
+  g_apNationStates[nationIndex]->AddToNationMetricAtField10(
+      g_anTechItemPurchaseCostBySlot_0066aae8[slot]);
+  reinterpret_cast<TTechMgr*>(reinterpret_cast<unsigned char*>(this) + slot)
+      ->orderCapRows277[nationIndex]
+      .initReadyFlag[0] = 0;
+  reinterpret_cast<short*>(&capRowsE4a6[nationIndex])[slot] = 0;
 }
 
 // FUNCTION: IMPERIALISM 0x005b0c70

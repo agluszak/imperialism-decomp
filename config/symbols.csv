@@ -8276,6 +8276,7 @@ address|name|symbol|size|type|prototype|provenance
 66a8c8|TCityTask::classTCityTask|||global||
 66a8e0|TShipBuildingTask::classTShipBuildingTask|||global||
 66a8f8|TTaskList::classTTaskList|||global||
+66aae8|g_anTechItemPurchaseCostBySlot_0066aae8|||global||
 66aba6|g_anCapabilityPriorityRangePairs|||global||
 66ac10|g_awTechPrereqCapabilityFieldOffsetPairs_0066ac10|||global||
 66ac98|TTechMgr::classTTechMgr|||global||
