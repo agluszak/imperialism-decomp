@@ -1063,7 +1063,7 @@ void TGreatPower::BuildTransportLinkedInfluenceMap(char** outInfluenceMap) {
   char* influenceMap = new char[0x1950];
   if (influenceMap == 0) {
     GAME_FAIL_NIL_POINTER();
-    TemporarilyClearAndRestoreUiInvalidationFlag();
+    TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\UCountry.cpp", 0xa0e);
   }
   memset(influenceMap, 0, 0x1950);
 
@@ -4366,7 +4366,7 @@ void TGreatPower::QueueMapActionMissionFromCandidateAndMarkState(eMissionType ar
       this->nationSlot, missionKind, arg2, reinterpret_cast<int>(portZoneContext), arg4);
   if (missionObj == 0) {
     GAME_FAIL_NIL_POINTER();
-    TemporarilyClearAndRestoreUiInvalidationFlag();
+    TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\UCountryAuto.cpp", 0x5ed);
   }
 
   TSortedList* missionQueue = this->missionQueue;
