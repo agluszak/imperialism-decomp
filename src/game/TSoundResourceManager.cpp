@@ -27,6 +27,24 @@ void ResetGlobalPair6A1E20And6A1E24() {
   g_ResetStateDword6A1E24 = 0;
 }
 
+// FUNCTION: IMPERIALISM 0x0049b9f0
+void ResetGlobalPair6A1E48And6A1E4C() {
+  g_ResetStateDword6A1E48 = 0;
+  g_ResetStateDword6A1E4C = 0;
+}
+
+// FUNCTION: IMPERIALISM 0x0049bc00
+void ResetGlobalPair6A1E70And6A1E74() {
+  g_ResetStateDword6A1E70 = 0;
+  g_ResetStateDword6A1E74 = 0;
+}
+
+// FUNCTION: IMPERIALISM 0x0049bc20
+void ResetGlobalPair6A1F38And6A1F3C() {
+  g_ResetStateDword6A1F38 = 0;
+  g_ResetStateDword6A1F3C = 0;
+}
+
 // FUNCTION: IMPERIALISM 0x0049c0c0
 void InitializeGlobalPair6A1FE8And6A1FECDefault() {
   g_ScaleDefault6A1FE8 = 0.015625;

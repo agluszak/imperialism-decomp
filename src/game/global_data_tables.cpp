@@ -626,6 +626,20 @@ double g_ScaleDefault6A1FC0;
 int g_ResetStateDword6A1E20;
 // GLOBAL: IMPERIALISM 0x006a1e24
 int g_ResetStateDword6A1E24;
+// More dword slots in the same 0x6a1exx/0x6a1fxx reset region, each zeroed by its own
+// ResetGlobalPair cleanup handler (0x49b9f0 / 0x49bc00 / 0x49bc20). Only ever written to 0.
+// GLOBAL: IMPERIALISM 0x006a1e48
+int g_ResetStateDword6A1E48;
+// GLOBAL: IMPERIALISM 0x006a1e4c
+int g_ResetStateDword6A1E4C;
+// GLOBAL: IMPERIALISM 0x006a1e70
+int g_ResetStateDword6A1E70;
+// GLOBAL: IMPERIALISM 0x006a1e74
+int g_ResetStateDword6A1E74;
+// GLOBAL: IMPERIALISM 0x006a1f38
+int g_ResetStateDword6A1F38;
+// GLOBAL: IMPERIALISM 0x006a1f3c
+int g_ResetStateDword6A1F3C;
 
 // Order-type index rankings (0..13) sorted by descending descriptor weight, rebuilt by
 // InitializeNavyOrderPriorityTables (0x556610): by resolveWeight, calculateWeight, and

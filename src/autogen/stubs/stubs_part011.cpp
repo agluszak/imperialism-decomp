@@ -803,14 +803,6 @@ undefined4 ComputeBucketIndexAndScanNodeByKey(void)
   return 0;
 }
 
-// ghidra_name ResetGlobalPair6A1E48And6A1E4C
-// ghidra_proto undefined ResetGlobalPair6A1E48And6A1E4C()
-// FUNCTION: IMPERIALISM 0x0049b9f0
-undefined4 ResetGlobalPair6A1E48And6A1E4C(void)
-{
-  return 0;
-}
-
 // ghidra_name ResetGlobalQuad6A1E28To6A1E34
 // ghidra_proto undefined ResetGlobalQuad6A1E28To6A1E34()
 // FUNCTION: IMPERIALISM 0x0049ba10
@@ -855,22 +847,6 @@ undefined4 CleanupStaticDialogTemplateD0AtExit(void)
 // ghidra_proto undefined DestructStaticDialogTemplateD0Object()
 // FUNCTION: IMPERIALISM 0x0049baf0
 undefined4 DestructStaticDialogTemplateD0Object(void)
-{
-  return 0;
-}
-
-// ghidra_name ResetGlobalPair6A1E70And6A1E74
-// ghidra_proto undefined ResetGlobalPair6A1E70And6A1E74()
-// FUNCTION: IMPERIALISM 0x0049bc00
-undefined4 ResetGlobalPair6A1E70And6A1E74(void)
-{
-  return 0;
-}
-
-// ghidra_name ResetGlobalPair6A1F38And6A1F3C
-// ghidra_proto undefined ResetGlobalPair6A1F38And6A1F3C()
-// FUNCTION: IMPERIALISM 0x0049bc20
-undefined4 ResetGlobalPair6A1F38And6A1F3C(void)
 {
   return 0;
 }
