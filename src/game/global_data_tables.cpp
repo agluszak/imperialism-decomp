@@ -343,6 +343,8 @@ char g_szUiLevel1_00694B38[] = "Level\n1";
 char g_szMcAppUiHeaderPath_006943CC[] = "D:\\Ambit\\McAppUI.h";
 // GLOBAL: IMPERIALISM 0x00696bc0
 char g_szUGameWindowSourcePath_00696bc0[] = "D:\\Ambit\\Cross\\UGameWindow.cpp";
+// GLOBAL: IMPERIALISM 0x00696728
+char g_szUCountrySourcePath_00696728[] = "D:\\Ambit\\Cross\\UCountry.cpp";
 // TCouncilView::HandleEvent's council-control 4-char tag table ("tfni", "ttrt", "targ",
 // "tart", "tuoc", "rffo" as stored).
 // GLOBAL: IMPERIALISM 0x00696978

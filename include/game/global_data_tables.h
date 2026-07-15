@@ -610,6 +610,10 @@ extern char g_szUiBoardOfTradeLabel_00694AF8[];
 // the UI invalidation-flag assert helper from the TDlgWindow/UGameWindow assert hooks.
 extern char g_szUGameWindowSourcePath_00696bc0[];
 
+// Source-file path string ("D:\\Ambit\\Cross\\UCountry.cpp") passed with a line number to
+// the UI invalidation-flag assert helper from TGreatPower nil-pointer assert hooks.
+extern char g_szUCountrySourcePath_00696728[];
+
 // Gate checked by TControl::AssertCityProductionGlobalStateInitialized before the
 // McAppUI.h line-0x56f assert path runs.
 extern int g_McAppUiFlag_006A143C;
