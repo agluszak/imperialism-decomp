@@ -363,14 +363,6 @@ undefined4 UpdateSelectionAndRecalculateScores(void)
   return 0;
 }
 
-// ghidra_name SelectMissingTechItemPrerequisitesFromPair
-// ghidra_proto undefined SelectMissingTechItemPrerequisitesFromPair()
-// FUNCTION: IMPERIALISM 0x005b0a90
-undefined4 SelectMissingTechItemPrerequisitesFromPair(void)
-{
-  return 0;
-}
-
 // ghidra_name ApplyTechItemPurchaseCostAndState
 // ghidra_proto undefined ApplyTechItemPurchaseCostAndState()
 // FUNCTION: IMPERIALISM 0x005b0b30

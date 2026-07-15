@@ -260,6 +260,30 @@ unsigned char TTechMgr::AreTechItemPrerequisitePairCompleted(int prereqPairIndex
   return 0;
 }
 
+// If the pair's first capability flag is already completed (== 2) for the nation, reports
+// the second offset into *outFirst and 0 into *outSecond; otherwise reports the first
+// (missing) offset into *outFirst and the second offset into *outSecond only when its flag
+// is also not completed (else 0). Offsets index an OrderCapRow; the pair comes from
+// g_awTechPrereqCapabilityFieldOffsetPairs_0066ac10[prereqPairIndex].
+// FUNCTION: IMPERIALISM 0x005b0a90
+void TTechMgr::SelectMissingTechItemPrerequisitesFromPair(int prereqPairIndex, int nationIndex,
+                                                          int* outFirst, int* outSecond) {
+  // Check A folds nation*0x1d into the row base; the flagB check (else) keeps (this + offB)
+  // as the base with nation*0x1d riding the index, matching the original's two groupings.
+  unsigned char* row = reinterpret_cast<unsigned char*>(&orderCapRows277[nationIndex]);
+  if (row[g_awTechPrereqCapabilityFieldOffsetPairs_0066ac10[prereqPairIndex][0]] == 2) {
+    *outFirst = g_awTechPrereqCapabilityFieldOffsetPairs_0066ac10[prereqPairIndex][1];
+    *outSecond = 0;
+  } else {
+    *outFirst = g_awTechPrereqCapabilityFieldOffsetPairs_0066ac10[prereqPairIndex][0];
+    short offB = g_awTechPrereqCapabilityFieldOffsetPairs_0066ac10[prereqPairIndex][1];
+    unsigned char flagB = reinterpret_cast<TTechMgr*>(reinterpret_cast<unsigned char*>(this) + offB)
+                              ->orderCapRows277[nationIndex]
+                              .initReadyFlag[0];
+    *outSecond = (flagB != 2) ? offB : 0;
+  }
+}
+
 // FUNCTION: IMPERIALISM 0x005b0c70
 void TTechMgr::SetCityOrderCapabilityTierScaledValueByIndex(int index, int value) {
   prioritySlots04[index] = static_cast<short>(value * 4);

@@ -2,7 +2,7 @@
   "aligned_fun_count": 2458,
   "aligned_vs_original_pct": 31.589769952448272,
   "aligned_vs_paired_pct": 32.80395035366342,
-  "avg_matching_pct": 62.01989878101508,
+  "avg_matching_pct": 62.02477388581171,
   "compared_fun_count": 7284,
   "coverage_pct": 96.29867626269117,
   "dat_orig_only_count": 1578,
@@ -12,8 +12,8 @@
   "flo_orig_only_count": 253,
   "flo_recomp_only_count": 0,
   "git_branch": "claude/imperialism-exe-decomp-je8p9v",
-  "git_commit": "b5eb62f7fc8e541e894147bb962eea3f5e30e290",
-  "git_commit_date": "2026-07-15T12:57:48+00:00",
+  "git_commit": "9d6638f6f05306f11248aba6eef615afe29337ca",
+  "git_commit_date": "2026-07-15T13:21:40+00:00",
   "global_coverage_pct": 21.777279940259497,
   "global_orig_only_count": 8380,
   "global_recomp_only_count": 4865,
@@ -59,7 +59,7 @@
   "str_orig_only_count": 368,
   "str_recomp_only_count": 84,
   "target": "IMPERIALISM",
-  "timestamp_utc": "2026-07-15T13:20:44+00:00",
+  "timestamp_utc": "2026-07-15T13:31:05+00:00",
   "wid_orig_only_count": 0,
   "wid_recomp_only_count": 2
 }

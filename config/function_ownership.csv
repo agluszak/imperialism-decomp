@@ -4492,6 +4492,7 @@ address|target_cpp|ownership|note
 5af710|src/game/TTechMgr.cpp|manual|marker_sync
 5afba0|src/game/TTechMgr.cpp|manual|marker_sync
 5b0a20|src/game/TTechMgr.cpp|manual|marker_sync
+5b0a90|src/game/TTechMgr.cpp|manual|marker_sync
 5b0c70|src/game/TTechMgr.cpp|manual|marker_sync
 5b0ca0|src/game/TTechMgr.cpp|manual|marker_sync
 5b0e70|src/game/TTechStorePage.cpp|manual|marker_sync
