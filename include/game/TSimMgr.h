@@ -48,21 +48,22 @@ public:
   // 0x44 — posts command 100 to the main window so the turn-flow UI re-evaluates. This is the
   // single slot behind both the old "CallSlot44" (TDiplomacyMgr) and "PostTurnFlowUiRefresh"
   // (TGameWindow) names.
-  virtual void PostMainWindowCommand100ForTurnFlow();                         // 0x44  0x0057d970
-  virtual void SetGlobalTurnStateCodeIfAllowed(int turnStateCode);            // 0x48  0x0057d990
-  virtual void AdvanceGlobalTurnStateMachine();                               // 0x4c  0x0057da70
-  virtual int IsTurnFlowPhaseOutsideRange4To5();                              // 0x50  0x0057f110
-  virtual void RefreshEligibleNationTurnPhaseHandlers();                      // 0x54  0x0057f140
-  virtual void DispatchEligibleNationTurnCallback158();                       // 0x58  0x0057f200
-  virtual void RefreshMapSystemsAndPrepareOrderExecution();                   // 0x5c  0x0057f280
-  virtual void DispatchTurnEvent2134AndRefreshNationPanels();                 // 0x60  0x0057f3c0
-  virtual int AreAllActiveNationsReady();                                     // 0x64  0x0057f4f0
-  virtual void ClearActiveNationReadyFlags();                                 // 0x68  0x0057f530
-  virtual int ReturnZeroSlot6c();                                             // 0x6c  0x0057f490
-  virtual void MergeTurnFlowStatusFlags(unsigned int flags);                  // 0x70  0x0057f4b0
-  virtual void FormatIntegerString(int value, CString* destString);           // 0x74  0x0057f5b0
-  virtual void FormatOrdinalString(int value, CString* destString);           // 0x78  0x0057f8f0
-  virtual void TriggerScenarioVariantFormatSlot7c();                          // 0x7c  0x0057fe90
+  virtual void PostMainWindowCommand100ForTurnFlow();               // 0x44  0x0057d970
+  virtual void SetGlobalTurnStateCodeIfAllowed(int turnStateCode);  // 0x48  0x0057d990
+  virtual void AdvanceGlobalTurnStateMachine();                     // 0x4c  0x0057da70
+  virtual int IsTurnFlowPhaseOutsideRange4To5();                    // 0x50  0x0057f110
+  virtual void RefreshEligibleNationTurnPhaseHandlers();            // 0x54  0x0057f140
+  virtual void DispatchEligibleNationTurnCallback158();             // 0x58  0x0057f200
+  virtual void RefreshMapSystemsAndPrepareOrderExecution();         // 0x5c  0x0057f280
+  virtual void DispatchTurnEvent2134AndRefreshNationPanels();       // 0x60  0x0057f3c0
+  virtual int AreAllActiveNationsReady();                           // 0x64  0x0057f4f0
+  virtual void ClearActiveNationReadyFlags();                       // 0x68  0x0057f530
+  virtual int ReturnZeroSlot6c();                                   // 0x6c  0x0057f490
+  virtual void MergeTurnFlowStatusFlags(unsigned int flags);        // 0x70  0x0057f4b0
+  virtual void FormatIntegerString(int value, CString* destString); // 0x74  0x0057f5b0
+  virtual void FormatOrdinalString(int value, CString* destString); // 0x78  0x0057f8f0
+  // Copy string-resource group 0x2711 (commodity names) entry `offset` into dest.
+  virtual void GetStringPrelude(short offset, CString* destString);           // 0x7c  0x0057fe90
   virtual void ReseedThreadLocalRandom();                                     // 0x80  0x0057fec0
   virtual void GetString(short codeGroup, short offset, CString* destString); // 0x84 0x00580760
   // Copy the per-slot shared credential/name text (sharedTextSlots[slot]) into out and

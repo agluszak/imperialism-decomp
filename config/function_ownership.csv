@@ -4804,6 +4804,7 @@ address|target_cpp|ownership|note
 5bea00|src/game/TOfferDeskPicture.cpp|manual|marker_sync
 5bf740|src/game/TOfferDeskPicture.cpp|manual|marker_sync
 5bf860|src/game/TOfferDeskPicture.cpp|manual|marker_sync
+5bf930|src/game/TOfferDeskPicture.cpp|manual|marker_sync
 5c0930|src/game/TOfferDeskPicture.cpp|manual|marker_sync
 5c0cf0|src/game/TDealLine.cpp|manual|marker_sync
 5c0d60|src/game/TDealLine.cpp|manual|marker_sync

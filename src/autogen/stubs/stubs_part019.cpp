@@ -579,14 +579,6 @@ undefined4 UpdatePagerButtonStatesAndRefreshPanels(void)
   return 0;
 }
 
-// ghidra_name RefreshSelectedNationOrderCompatibilityInfo
-// ghidra_proto undefined RefreshSelectedNationOrderCompatibilityInfo()
-// FUNCTION: IMPERIALISM 0x005bf930
-undefined4 RefreshSelectedNationOrderCompatibilityInfo(void)
-{
-  return 0;
-}
-
 // ghidra_name TNextTradeCommand::CreateNextTradeCommandAndFormatPrompt
 // ghidra_proto undefined CreateNextTradeCommandAndFormatPrompt()
 // FUNCTION: IMPERIALISM 0x005c04f0

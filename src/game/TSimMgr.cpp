@@ -849,10 +849,10 @@ void TSimMgr::FormatIntegerString(int, CString*) {}
 // FUNCTION: IMPERIALISM 0x0057f8f0
 void TSimMgr::FormatOrdinalString(int, CString*) {}
 
-// TODO: port the scenario-variant format trigger.
-
 // FUNCTION: IMPERIALISM 0x0057fe90
-void TSimMgr::TriggerScenarioVariantFormatSlot7c() {}
+void TSimMgr::GetStringPrelude(short offset, CString* destString) {
+  GetString(0x2711, offset, destString);
+}
 
 // TODO: port reseeding of the thread-local RNG from the wall clock.
 

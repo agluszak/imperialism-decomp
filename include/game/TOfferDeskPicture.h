@@ -128,15 +128,25 @@ public:
   virtual undefined InitializeTradeScreenControlsLabelsAndNationContext(); // slot 0x73 0x5bea00
   // === END GENERATED DECLS (TOfferDeskPicture) ===
   // TPicture's own slice ends at 0x90 (ASSERT_SIZE); RTTI oracle confirms
-  // sizeof(TOfferDeskPicture) == 0xa8. The ctor only touches field9e/fieldA0/fieldA4;
-  // the two gaps (0x90..0x9e and 0x9f..0xa0) are left as unconfirmed padding.
-  unsigned char pad90[14];
+  // sizeof(TOfferDeskPicture) == 0xa8. The ctor only touches field9e/fieldA0/fieldA4.
+  // 0x90/0x92/0x96 identified from RefreshSelectedNationOrderCompatibilityInfo (hedged
+  // names); 0x94 and 0x98..0x9d remain unconfirmed padding.
+  short nationSlot90;       // +0x90 selected/source major nation slot (indexes g_apNationStates)
+  short targetNationSlot92; // +0x92 trade-target nation slot (index into the 23-nation tables)
+  unsigned char pad94[2];   // +0x94
+  short commodityType96;    // +0x96 commodity/need-type index 0..0x16 (0/1 = Cotton+Wool pair)
+  unsigned char pad98[6];   // +0x98
   unsigned char field9e;
   unsigned char pad9f;
   int fieldA0;
   int fieldA4;
 
   TOfferDeskPicture();
+
+  // Rebuilds the 'info' static-text control's trade-compatibility text for the selected
+  // source nation / target nation / commodity, at the current help detail level.
+  // 0x005bf930, __thiscall (non-virtual helper called by slot 0x73 and HandleEvent).
+  void RefreshSelectedNationOrderCompatibilityInfo();
 };
 
 ASSERT_SIZE(TOfferDeskPicture, 0xa8);
