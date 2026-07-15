@@ -527,6 +527,20 @@ ghidra-daemon-status:
 ghidra-listing *args: _require-ghidra-install
   uv run python -m tools.ghidra.query listing {{args}}
 
+# One-shot porting dossier for a stub: identity+owner, callers, direct calls with
+# ILT thunks chased (and each target's owner), vtable-slot/IAT calls, named globals,
+# jump tables, and the decompile. `just ghidra-portprep 0xADDR [--no-decompile]`.
+[group('ghidra-inspect')]
+ghidra-portprep *args: _require-ghidra-install
+  uv run python -m tools.ghidra.query portprep {{args}}
+
+# Ordered (address -> constant) store map of an unrolled table-initializer function,
+# read straight from the original binary via capstone (no Ghidra round-trip).
+# `just const-stores 0xADDR [--len N] [--cpp NAME:BASE:STRIDE:f0,f1]`.
+[group('ghidra-inspect')]
+const-stores *args:
+  uv run python -m tools.binary.const_stores {{args}}
+
 # Decode a turn-event screen-builder into widget-block pseudo-source (bd 1uj.51):
 # per-eventCode case map + helper-call sequences with FourCC tags decoded. Reads the
 # ORIGINAL binary directly (no Ghidra round-trip; works where the decompiler

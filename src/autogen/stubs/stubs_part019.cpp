@@ -179,14 +179,6 @@ undefined4 WrapperFor_ftol_At005a67e0(void)
   return 0;
 }
 
-// ghidra_name OrphanLeaf_NoCall_Ins838_005a6a20
-// ghidra_proto undefined OrphanLeaf_NoCall_Ins838_005a6a20()
-// FUNCTION: IMPERIALISM 0x005a6a20
-undefined4 OrphanLeaf_NoCall_Ins838_005a6a20(void)
-{
-  return 0;
-}
-
 // ghidra_name HandleTurnEventVtableSlotA0SyncStatusPanel_Impl
 // ghidra_proto undefined HandleTurnEventVtableSlotA0SyncStatusPanel_Impl()
 // FUNCTION: IMPERIALISM 0x005a8790

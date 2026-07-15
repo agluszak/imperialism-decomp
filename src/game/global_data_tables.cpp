@@ -856,6 +856,13 @@ double DAT_0066fad0 = 0.092;
 // Named global pointers read with a direct absolute load in the original (vs the
 // ReadGlobalPointer(imm) shortcut, which emits an extra indirection that cannot pair).
 // Defined outside extern "C" so they keep C++ linkage and match typed header declarations.
+// Tactical unit sprite facing-offset table: [unit type 0..28][orientation 0..6][side 0..1]
+// pixel deltas OffsetRect-applied to the sprite rect for units on a fresh trench-deploy
+// tile (reader: TTacticalBattleView::ComputeTacticalUnitSpriteDrawRectAndApplyFacingOffset,
+// filler: InitializeTacticalUnitFacingOffsetTable, a CRT static initializer in the original).
+// GLOBAL: IMPERIALISM 0x006a4780
+POINT g_aTacticalUnitFacingOffsetTable[29][7][2];
+
 TZone* g_pMapActionContextListHead = 0;
 // GLOBAL: IMPERIALISM 0x006a3fbc
 TOcean* g_pActiveMapOrderContext = 0;

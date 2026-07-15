@@ -5503,7 +5503,7 @@ address|name|symbol|size|type|prototype|provenance
 5a6620|TNextMoveCommand::DoIt||99|function|void DoIt(void)|
 5a67e0|WrapperFor_ftol_At005a67e0||30|function|undefined WrapperFor_ftol_At005a67e0()|
 5a6940|ClipRect_AdjustOffset_Validate||144|function|undefined4 __stdcall ClipRect_AdjustOffset_Validate(int * bounds, astruct_15 * param_2, astruct_16 * param_3)|
-5a6a20|OrphanLeaf_NoCall_Ins838_005a6a20||5022|function|undefined OrphanLeaf_NoCall_Ins838_005a6a20()|
+5a6a20|InitializeTacticalUnitFacingOffsetTable||5022|function|undefined OrphanLeaf_NoCall_Ins838_005a6a20()|
 5a82b0|TTacticalBattleView::CreateObject|?CreateObject@TTacticalBattleView@@SGPAVCObject@@XZ|90|function|undefined CreateObject()|rtti
 5a8330|TTacticalBattleView::GetRuntimeClass||6|function|undefined GetTacticalBattleViewClassNamePointer()|rtti
 5a8350|TacticalBattleView::ConstructTacticalBattleViewBaseState||71|function|undefined ConstructTacticalBattleViewBaseState()|
@@ -8655,6 +8655,7 @@ address|name|symbol|size|type|prototype|provenance
 6a44b0|g_pActiveCityDialogLegendSelectionOwner|||global||
 6a44b4|g_bCityDialogLegendSelectionInitialized|||global||
 6a4520|DAT_006a4520|||global||xref_oracle
+6a4780|g_aTacticalUnitFacingOffsetTable|||global||
 6a5458|g_nUiFrameClipOriginX|||global||
 6a545c|g_nUiFrameClipOriginY|||global||
 6a590c|g_pCursorControlPanel|||global||

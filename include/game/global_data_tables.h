@@ -448,6 +448,8 @@ extern undefined4 (*g_timerSlotCallbacks[10])(); // 0x006a5cf8
 extern UINT g_timerSlotIds[10];                  // 0x006a5c98
 extern int g_timerDispatchSuppressAssert;        // 0x006a5d24
 extern TCountry* g_apTerrainTypeDescriptorTable[kTerrainTypeDescriptorTableCount];
+// Tactical unit facing-offset table (0x006a4780); see global_data_tables.cpp.
+extern POINT g_aTacticalUnitFacingOffsetTable[29][7][2];
 extern TDisplayMgr* g_pDisplayMgr;
 extern int g_nUiAnimatorSurfaceBoundsWidth;   // 0x006a2228
 extern int g_nUiAnimatorSurfaceBoundsHeight;  // 0x006a222c

@@ -4485,6 +4485,7 @@ address|target_cpp|ownership|note
 5a6590|src/game/TNextMoveCommand.cpp|manual|marker_sync
 5a6620|src/game/TNextMoveCommand.cpp|manual|marker_sync
 5a6940|src/game/quickdraw_rendering.cpp|manual|marker_sync
+5a6a20|src/game/TTacticalBattleView.cpp|manual|marker_sync
 5a82b0|src/game/TTacticalBattleView.cpp|manual|marker_sync
 5a8330|src/game/TTacticalBattleView.cpp|manual|marker_sync
 5a8350|src/game/TTacticalBattleView.cpp|manual|marker_sync
