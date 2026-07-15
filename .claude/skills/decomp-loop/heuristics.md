@@ -1671,3 +1671,41 @@ fully ICF-collapsed chain; our out-of-line base dtors emit `mov own_vtbl; jmp ~B
 that one function stays low while the vtable and scalar dtor still reach 100% — accept it (Hard
 Rule 12). The `IMPLEMENT_RUNTIMECLASS` CRuntimeClass DATA global must be named `class<Class>` in
 symbols.csv (not the generic `classRuntimeClass` placeholder) or GetRuntimeClass stalls at 50%.
+
+## Note 105 — Recovering a family of MFC dialog-template subclasses (16 at once)
+
+Recovered the whole modal-dialog-template family (TC2/TD2 + 13 more: DB/DC/DE/DF/FA/AD/104/
+A7/AB/AE/B1/A1/D0/E0/DD/64). Each is a game CDialog subclass built by an
+`InitializeDialogTemplate<ID>` ctor; model = `// VTABLE:` + ctor (`: TModalDialogBase(id,...)`
+or `: CDialog(id,...)`) + members + DoDataExchange override + scalar-dtor/GetMessageMap
+SYNTHETIC + empty message map. Four traps that each cost a wrong first attempt:
+
+1. **Distinguish TModalDialogBase-derived from plain CDialog by the RIGHT slots.** Slots
+   0x08/0x14/0x88 are shared by *every* CDialog subclass and prove nothing. The decisive slots
+   are 0xc0/0xd8/0xdc: TModalDialogBase overrides them (DoModal 0x4055f6→0x49d450, +0x4076ee,
+   +0x402ca7); a plain CDialog subclass has the library `CDialog::DoModal` (0x6051b9) at 0xc0
+   and NULL at 0xd8/0xdc (its vtable ends at 0xd4). Plain-CDialog members start at 0x5c (they
+   occupy what would be TModalDialogBase's modal scratch); TModalDialogBase members start at
+   0x74. A second tell: the ctor of a TModalDialogBase subclass writes an *intermediate* vtable
+   (0x63e5a0) before its own; a plain-CDialog ctor writes only its own.
+
+2. **Plain-CDialog subclasses can't reach 100% until `CDialog::DoModal` is a named library
+   function.** Their inherited slot 0xc0 references it, but if 0x6051b9 is an unnamed placeholder
+   the recomp's COMDAT copies don't pair. Add it to `msvc500_library_overrides.csv`
+   (`?DoModal@CDialog@@UAEHXZ`, nafxcw/dlgcore.obj) — fixes all of them at once. Then retire the
+   freed `DoModal_6051b9` stub: its game callers become real `dialog.DoModal()`.
+
+3. **MSVC emits a class vtable only in the TU that CONSTRUCTS it** (vtable is tied to the ctor,
+   not to a key function as in the Itanium ABI). A dialog whose only constructor is *inlined into
+   its driver* (T64 → ShowDialogTemplate64Modal) never emits its vtable from the class TU alone —
+   `just vtable` reports a vacuous "Vtables found: 0". Recover the driver so it constructs the
+   real class; that emits and pairs the vtable.
+
+4. **Embedded-control vtable identities:** 0x6714cc = CSliderCtrl, 0x671d1c = CListBox (verify
+   from the reference ctor, e.g. TC2 installs CSliderCtrl@+0x74 / CListBox@+0xb0). Getting this
+   backwards mislabels the member type and mis-installs the control vtable in the ctor.
+
+Parallelize the per-dialog Ghidra investigation across subagents (one recipe per dialog: base
+test, overridden slots with resolved ILT targets, DDX body, members, size), then model + build +
+`just vtable` serially. Message-map handlers and complex OnInitDialog/OnOK bodies are NOT vtable
+slots — minimal override bodies still give a 100% vtable; refine bodies later.
