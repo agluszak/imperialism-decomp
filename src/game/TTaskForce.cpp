@@ -117,6 +117,67 @@ void TTaskForce::AdjustMapOrderNodeStatCapped499(short delta) {
   }
 }
 
+// FUNCTION: IMPERIALISM 0x005503a0
+TTaskForce* TTaskForce::GetOrCreateMissionOrderEntryForNode() {
+  TTaskForce* owner_ctx = owner;
+  if (owner_ctx != nullptr) {
+    owner_ctx->AssertValid();
+
+    short childCount = 0;
+    TMapOrderChildLinkNode* head = owner_ctx->childOrderList;
+    for (TMapOrderChildLinkNode* node = head; node != nullptr; node = node->next) {
+      ++childCount;
+    }
+
+    if (childCount > 1) {
+      TMapOrderChildLinkNode* found;
+      if (head == nullptr) {
+        found = nullptr;
+      } else if (head->object_ptr == this) {
+        found = head;
+      } else {
+        found = head->next->FindNodeMatching(this);
+      }
+      if (found != nullptr) {
+        owner_ctx->childOrderList = head->RemoveLinkedOrderNodeByValueRecursive(this);
+
+        short bucketIndex = static_cast<short>(
+            g_NavyOrderResourceDescriptorTable[order_type].enabledFlagOrBucketOffset);
+        short* bucketCounter =
+            reinterpret_cast<short*>(reinterpret_cast<char*>(owner_ctx) + 0x1e + bucketIndex * 2);
+        --*bucketCounter;
+      }
+      if (this == owner_ctx->activeChildEntry) {
+        owner_ctx->RecomputeMapOrderChildAggregateMetric();
+      }
+      SetMapOrderActiveChildEntry(nullptr);
+      owner_ctx = nullptr;
+    }
+
+    if (owner_ctx != nullptr) {
+      return owner_ctx;
+    }
+  }
+
+  // Same node+0x14 short slot ReassignOrderNodeNationAndRebindParentCounters writes
+  // (TShip-shaped node evidence, bd 1uj.16).
+  short requiredCountArg = *reinterpret_cast<short*>(reinterpret_cast<char*>(this) + 0x14);
+  // Real construction (TTaskForce::TTaskForce(int, short), 0x552800). The original
+  // compiles this one call site's construction as inlined field stores rather than a
+  // call to that ctor (likely a disabled-ICF duplicate, matching TArmyMission-style
+  // per-callsite reproduction elsewhere in this codebase); that inlining is not
+  // reproducible from C++ source without a manual vtable write, which construction
+  // Hard Rule 2 forbids outside quarantined runtime files. `new T()` is the correct
+  // model here even though it costs some match percentage at this address.
+  TTaskForce* entry = new TTaskForce(attachment, requiredCountArg);
+  if (entry == nullptr) {
+    MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+    TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\UNavy.cpp", 0x306);
+  }
+  entry->FindOrCreateChildOrderLink(this);
+  return entry;
+}
+
 // FUNCTION: IMPERIALISM 0x00550510
 short TTaskForce::GetOrderNodeDescriptorWord20ByResourceType() {
   return static_cast<short>(

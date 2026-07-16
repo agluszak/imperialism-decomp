@@ -17,7 +17,6 @@ IMPLEMENT_SERIAL(TNavyMission, TMission, 1)
 // signature per the autogen stub definition; real signature applied via a
 // typed cast at each call site so the linker resolves the correct symbol).
 extern undefined4 GetNavyPrimaryOrderNodeByIndex(void);
-extern undefined4 GetOrCreateMissionOrderEntryForNode(void);
 
 // Swaps float byte order (Big-Endian <-> Little-Endian)
 static inline float SwapFloat(float val) {
@@ -398,11 +397,6 @@ LAB_0053711a:
   void* startOrder = reinterpret_cast<void*>(*ppSelectedChildNode);
   void* orders[2] = {startOrder, topOrder};
 
-  typedef void*(__fastcall * GetOrCreateMissionOrderEntryForNode_t)(void* self, int dummyEdx);
-  GetOrCreateMissionOrderEntryForNode_t GetOrCreateMissionOrderEntryForNode_fn =
-      reinterpret_cast<GetOrCreateMissionOrderEntryForNode_t>(
-          (void*)&GetOrCreateMissionOrderEntryForNode);
-
   for (int i = 0; i < 2; ++i) {
     void* orderObj = orders[i];
     if (orderObj == nullptr)
@@ -413,10 +407,7 @@ LAB_0053711a:
     TMapOrderChildLinkNode* node =
         orderList24->FindNodeMatching(static_cast<TTaskForce*>(orderObj));
     node->active_flag = 1;
-    // GetOrCreateMissionOrderEntryForNode (0x5503a0) creates/returns a TTaskForce
-    // entry -- see the contextAnchor field comment in TTaskForce.h.
-    TTaskForce* entry =
-        static_cast<TTaskForce*>(GetOrCreateMissionOrderEntryForNode_fn(orderObj, 0));
+    TTaskForce* entry = static_cast<TTaskForce*>(orderObj)->GetOrCreateMissionOrderEntryForNode();
 
     if (static_cast<TTaskForce*>(orderObj)->attachment == pContextAnchor) {
       entry->SetMapOrderType9AndQueue();
@@ -428,18 +419,10 @@ LAB_0053711a:
 
 // FUNCTION: IMPERIALISM 0x005371d0
 void TNavyMission::ConsolidateMissionOrderEntriesByTargetAndQueue(int* pContextAnchor) {
-  typedef void*(__fastcall * GetOrCreateMissionOrderEntryForNode_t)(void* self, int dummyEdx);
-  GetOrCreateMissionOrderEntryForNode_t GetOrCreateMissionOrderEntryForNode_fn =
-      reinterpret_cast<GetOrCreateMissionOrderEntryForNode_t>(
-          (void*)&GetOrCreateMissionOrderEntryForNode);
-
   for (TMapOrderChildLinkNode* node = orderList24; node != nullptr; node = node->next) {
     if (node->active_flag == 0) {
       node->active_flag = 1;
-      // GetOrCreateMissionOrderEntryForNode (0x5503a0) creates/returns a TTaskForce
-      // entry -- see the contextAnchor field comment in TTaskForce.h.
-      TTaskForce* entry =
-          static_cast<TTaskForce*>(GetOrCreateMissionOrderEntryForNode_fn(node->object_ptr, 0));
+      TTaskForce* entry = node->object_ptr->GetOrCreateMissionOrderEntryForNode();
       for (TMapOrderChildLinkNode* other = orderList24; other != nullptr; other = other->next) {
         if (other->active_flag == 0 && other->object_ptr->attachment == entry->contextAnchor) {
           other->object_ptr->RemoveNode(entry);

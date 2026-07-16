@@ -206,6 +206,14 @@ public:
   void ResetOrderTypeAndStrengthDword(int packedValue); // 0x552f60
   TTaskForce* SelectPreferredMapOrderEntryByPriorityRules(TTaskForce* candidate,
                                                           int compareAttachedFlag);
+  // If `owner` already exists and it has exactly one child (this node itself), reuses
+  // `owner` directly as this node's own order entry. Otherwise detaches `this` from a
+  // shared owner (if any -- same unlink/rebind sequence as RemoveNode, just expressed
+  // without RemoveNode's head-vs-mid-chain branch since RemoveLinkedOrderNodeByValueRecursive
+  // already self-checks its receiver) and builds a fresh dedicated TTaskForce entry
+  // wrapping just `this`, seeded from this node's own +0x08/+0x14 fields (attachment /
+  // the TShip-shaped required_count slot -- bd 1uj.16).
+  TTaskForce* GetOrCreateMissionOrderEntryForNode(); // 0x5503a0
   // `self` is the caller's own order entry, re-attached as `this` child's new owner
   // (see the RemoveNode body for the exact unlink/rebind sequence).
   void RemoveNode(TTaskForce* self);
