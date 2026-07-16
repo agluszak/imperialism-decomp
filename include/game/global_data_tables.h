@@ -1003,6 +1003,12 @@ extern const unsigned short g_hexDirectionBitMasksAlt_00696ea8[7];
 // shared by the city-region seeding/template passes.
 extern unsigned int g_mapGenLcgState_006a38e8;
 extern int g_regionSeedGridRows_006a38ec;
+extern int g_mapGenDesertQuota_006a38bc;
+extern int g_mapGenMountainQuota_006a3470;
+extern int g_mapGenHillsQuota_006a38c0;
+extern int g_mapGenForestQuota_006a38f8;
+extern int g_mapGenSwampQuota_006a38e0;
+extern int g_mapGenRiverCount_006a38e4;
 extern int g_regionSeedGridCols_006a38f0;
 
 // One-shot assert-suppression flags for the UMapper overlay-segment passes (0x006a3910 for the

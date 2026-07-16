@@ -275,22 +275,6 @@ undefined4 CreateObject(void)
   return 0;
 }
 
-// ghidra_name TSpaceCommand::GenerateMapFromTuningStringAndApplyScenarioOverrides
-// ghidra_proto undefined GenerateMapFromTuningStringAndApplyScenarioOverrides()
-// FUNCTION: IMPERIALISM 0x00525a30
-undefined4 GenerateMapFromTuningStringAndApplyScenarioOverrides(void)
-{
-  return 0;
-}
-
-// ghidra_name ValidateTerrainClassAdjacencyCoverageMask
-// ghidra_proto undefined ValidateTerrainClassAdjacencyCoverageMask()
-// FUNCTION: IMPERIALISM 0x00526760
-undefined4 ValidateTerrainClassAdjacencyCoverageMask(void)
-{
-  return 0;
-}
-
 // ghidra_name OrphanDeadLeaf_NoRefs_00529d90
 // ghidra_proto undefined OrphanDeadLeaf_NoRefs_00529d90()
 // FUNCTION: IMPERIALISM 0x00529d90

@@ -3388,17 +3388,17 @@ address|name|symbol|size|type|prototype|provenance
 525970|TMapMaker::ConstructTMapMaker||16|function|undefined ConstructTMapMaker()|
 525990|TMapMaker::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 5259c0|TMapMaker::DestructTMapMaker||7|function|undefined DestructTMapMaker()|
-525a30|TSpaceCommand::GenerateMapFromTuningStringAndApplyScenarioOverrides||2291|function|undefined GenerateMapFromTuningStringAndApplyScenarioOverrides()|
+525a30|TMapMaker::GenerateMapFromTuningStringAndApplyScenarioOverrides||2291|function|void __thiscall GenerateMapFromTuningStringAndApplyScenarioOverrides(char * tileGrid, int contextArg, CString * tuningString)|
 526710|ValidateAllColumnsHaveAssignedRegionClass||53|function|undefined ValidateAllColumnsHaveAssignedRegionClass()|
-526760|ValidateTerrainClassAdjacencyCoverageMask||106|function|undefined ValidateTerrainClassAdjacencyCoverageMask()|
+526760|TMapMaker::ValidateTerrainClassAdjacencyCoverageMask||106|function|char __thiscall ValidateTerrainClassAdjacencyCoverageMask(void)|
 5267f0|ValidateSeedCandidateExistsForEachTerrainClass||737|function|undefined ValidateSeedCandidateExistsForEachTerrainClass()|
 526ba0|TMapMaker::GetBoolSlot28||81|function|undefined TMapMaker_GenerateRandomCoarseGridCoord27x15()|
-526c20|TMapMaker::SetControlValue||747|function|undefined InitializeRegionGenerationStateAndSeedCoarseGrid()|
+526c20|TMapMaker::RunMapGenerationAttempt||747|function|void __thiscall RunMapGenerationAttempt(void)|
 527040|TMapMaker::QueryStepValue||500|function|undefined ExpandCoarseRegionNodeWithNeighborChecks()|
 527300|TMapMaker::DispatchQueuedUiCommandAndRelease||358|function|undefined MergeCoarseRegionSetsAcrossNeighbors()|
 5274d0|TMapMaker::DispatchEvent||155|function|undefined ValidateCoarseRegionMergeConsistency()|
-5275a0|TMapMaker::DispatchUiSelectionToHandler||314|function|undefined BuildFineGridRegionOverlayFromCoarseState()|
-527730|TMapMaker::HandleEvent||1175|function|undefined GenerateCoarseAndFineRegionSeedMap()|
+5275a0|TMapMaker::MapGenPassSlot0E||314|function|void __thiscall MapGenPassSlot0E(void)|
+527730|TMapMaker::MapGenPassSlot0F||1175|function|void __thiscall MapGenPassSlot0F(void)|
 527d00|TMapMaker::vmethod_0023||367|function|undefined PickRandomType3SeedAndAttemptExpansion()|
 527ed0|TMapMaker::GetDeactivateVetoCode||493|function|undefined TryAssignCellTypeWithDirectionalConstraints()|
 528140|TMapMaker::OwnerPanel||499|function|undefined TryPlaceType1CoarseCellWithAdjacencyRules()|
@@ -3407,16 +3407,16 @@ address|name|symbol|size|type|prototype|provenance
 528780|TMapMaker::GetCityDialogValueDword10||222|function|undefined SpreadType6CellsAcrossCoarseRowSegments()|
 5288a0|TMapMaker::SetCityDialogValueDword10||698|function|undefined SpreadType6CellsWithSecondaryNeighborPass()|
 528c10|GetNeighborTileIndexOnMap108x60||145|function|undefined GetNeighborTileIndexOnMap108x60()|
-528ce0|TMapMaker::DispatchCityProductionAction1A||125|function|undefined GetNeighborIndexOnCoarseGrid27x15()|
+528ce0|TMapMaker::GetAdjacentRegionGridCell||125|function|int __thiscall GetAdjacentRegionGridCell(int cell, int direction)|
 528e50|TMapMaker::vmethod_0017||940|function|undefined SmoothCityRegionOwnershipByNeighborSampling()|
-5292f0|TMapMaker::DispatchCityProductionAction1B||166|function|undefined RebuildCoarseCellNeighborTransitionState()|
+5292f0|TMapMaker::MapGenPassSlot1E||166|function|void __thiscall MapGenPassSlot1E(void)|
 5293d0|RandomizeRegionTemplateBanksForMismatchedNeighborClasses||470|function|undefined RandomizeRegionTemplateBanksForMismatchedNeighborClasses()|
 5296a0|TMapMaker::ActivateCityProductionViewIfAllowed||247|function|undefined CopyFinePatternFromNeighborCellByMode()|
 5297e0|TMapMaker::FindUiChildControlByWindowHandleRecursive_25||133|function|undefined RestoreFinePatternBandFromNeighborCell()|
 5298a0|TMapMaker::vmethod_0081||74|function|undefined GetFineGridCellBasePointerFromCoarseIndex()|
 529960|RotateMapColumnsByPeakCityTileDensity||636|function|undefined RotateMapColumnsByPeakCityTileDensity()|
 529d90|OrphanDeadLeaf_NoRefs_00529d90||358|function|undefined OrphanDeadLeaf_NoRefs_00529d90()|
-529f60|TMapMaker::OnDeactivated||247|function|undefined ReindexType5CellsAndRebuildRegionOverlays()|
+529f60|TMapMaker::MapGenFinalizePassSlot19||247|function|void __thiscall MapGenFinalizePassSlot19(int mode)|
 52a0a0|OrphanDeadLeaf_NoRefs_0052a0a0||143|function|undefined OrphanDeadLeaf_NoRefs_0052a0a0()|
 52a160|GenerateCityRegionIdsBySeedAndNeighborPropagation||940|function|undefined GenerateCityRegionIdsBySeedAndNeighborPropagation()|
 52a670|GetCityRegionIdAtTileIndex||45|function|undefined GetCityRegionIdAtTileIndex()|
@@ -3452,7 +3452,7 @@ address|name|symbol|size|type|prototype|provenance
 52e310|ReallocateRouteRecordBufferByCountStride18||38|function|undefined ReallocateRouteRecordBufferByCountStride18()|
 52e350|RebuildUMapperRouteRecordsAndActiveMapRects||881|function|undefined RebuildUMapperRouteRecordsAndActiveMapRects()|
 52e7b0|AllocateRouteNodeStateBufferByCount||104|function|undefined AllocateRouteNodeStateBufferByCount()|
-52e840|TMapMaker::OnDeactivateVetoed||52|function|undefined NormalizeRouteNodeMarkerValuesAndReportChanges()|
+52e840|TMapMaker::HasMapGenerationFailed||52|function|char __thiscall HasMapGenerationFailed(void)|
 52e890|TMapMaker::GetCityDialogFlagByte4||80|function|undefined MarkRouteNodePendingAndActivateUnvisitedNeighbors()|
 52e900|TMapMaker::HandleCityProductionNoOp||105|function|undefined 'scalar_deleting_destructor'(void)|
 52e990|AreRoutePointPairsEqual||33|function|undefined AreRoutePointPairsEqual()|

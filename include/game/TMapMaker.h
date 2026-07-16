@@ -12,29 +12,45 @@ public:
   TMapMaker();
   virtual ~TMapMaker() override;
 
-  virtual char GetBoolSlot28();                                  // slot 10 / 0x28
-  virtual void SetControlValue(int value);                       // slot 11 / 0x2c
+  virtual char GetBoolSlot28(); // slot 10 / 0x28
+  // Runs one full terrain-generation attempt over the tile grid (was junk-named
+  // SetControlValue; 0-arg __thiscall, verified RET 0). Driver retries it until the
+  // validity checks pass. slot 11 / 0x2c
+  virtual void RunMapGenerationAttempt();
   virtual TEventHandler* QueryStepValue();                       // slot 12 / 0x30
   virtual void DispatchQueuedUiCommandAndRelease(void* payload); // slot 13 / 0x34
-  virtual void DispatchUiSelectionToHandler(void* payload);      // slot 14 / 0x38
-  virtual void HandleEvent(int commandId, TEventHandler* sourceHandler,
-                           TEvent* event); // slot 15 / 0x3c
+  // Map-gen pass dispatched right after city-region ids are assigned (was junk-named
+  // DispatchUiSelectionToHandler; 0-arg __thiscall, verified RET 0). slot 14 / 0x38
+  virtual void MapGenPassSlot0E();
+  // Map-gen pass (was junk-named HandleEvent with 3 phantom args; 0-arg __thiscall).
+  // slot 15 / 0x3c
+  virtual void MapGenPassSlot0F();
   virtual void DispatchEvent(int commandId, TEventHandler* sourceHandler,
-                             TEvent* event);                              // slot 16 / 0x40
-  virtual void vmethod_0017(int param);                                   // slot 17 / 0x44
-  virtual void ForwardParam(int param);                                   // slot 18 / 0x48
-  virtual char DoIdle(int action);                                        // slot 19 / 0x4c
-  virtual int GetCityDialogValueDword10();                                // slot 20 / 0x50
-  virtual void SetCityDialogValueDword10(int value);                      // slot 21 / 0x54
-  virtual TView* OwnerPanel();                                            // slot 22 / 0x58
-  virtual char vmethod_0023();                                            // slot 23 / 0x5c
-  virtual char GetDeactivateVetoCode();                                   // slot 24 / 0x60
-  virtual void OnDeactivated();                                           // slot 25 / 0x64
-  virtual void OnDeactivateVetoed(int gate);                              // slot 26 / 0x68
-  virtual void HandleCityProductionNoOp();                                // slot 27 / 0x6c
-  virtual void DispatchUiCommand19ToParent();                             // slot 28 / 0x70
-  virtual void DispatchCityProductionAction1A();                          // slot 29 / 0x74
-  virtual void DispatchCityProductionAction1B();                          // slot 30 / 0x78
+                             TEvent* event);         // slot 16 / 0x40
+  virtual void vmethod_0017(int param);              // slot 17 / 0x44
+  virtual void ForwardParam(int param);              // slot 18 / 0x48
+  virtual char DoIdle(int action);                   // slot 19 / 0x4c
+  virtual int GetCityDialogValueDword10();           // slot 20 / 0x50
+  virtual void SetCityDialogValueDword10(int value); // slot 21 / 0x54
+  virtual TView* OwnerPanel();                       // slot 22 / 0x58
+  virtual char vmethod_0023();                       // slot 23 / 0x5c
+  virtual char GetDeactivateVetoCode();              // slot 24 / 0x60
+  // Map-gen finalize pass (was junk-named OnDeactivated; takes one mode arg the
+  // driver passes as 0 -- verified RET 4). slot 25 / 0x64
+  virtual void MapGenFinalizePassSlot19(int mode);
+  // Post-attempt validity probe: nonzero means the attempt failed and the driver
+  // regenerates (was junk-named OnDeactivateVetoed(int); really a 0-arg __thiscall
+  // returning AL). slot 26 / 0x68
+  virtual char HasMapGenerationFailed();
+  virtual void HandleCityProductionNoOp();    // slot 27 / 0x6c
+  virtual void DispatchUiCommand19ToParent(); // slot 28 / 0x70
+  // Resolves the region-grid cell adjacent to `cell` in hex `direction` 0..5 (was
+  // junk-named DispatchCityProductionAction1A; verified two-arg __thiscall returning
+  // the neighbour cell index). slot 29 / 0x74
+  virtual int GetAdjacentRegionGridCell(int cell, int direction);
+  // Map-gen pass run between MapGenPassSlot0E and MapGenPassSlot0F (was junk-named
+  // DispatchCityProductionAction1B; 0-arg __thiscall). slot 30 / 0x78
+  virtual void MapGenPassSlot1E();
   virtual char ActivateCityProductionViewIfAllowed();                     // slot 31 / 0x7c
   virtual char TryDeactivateActiveView();                                 // slot 32 / 0x80
   virtual int GetFineGridCellBasePointerFromCoarseIndex(int coarseIndex); // slot 33 / 0x84
@@ -54,6 +70,11 @@ public:
   // True when some column of regionClassGrid10 is entirely unassigned (all 15 rows == -1).
   // 0x00526710.
   char ValidateAllColumnsHaveAssignedRegionClass();
+
+  // True when every one of the 23 region classes has at least one assigned grid cell
+  // adjacent to an unassigned cell (mask of frontier-touching classes == 0x7fffff).
+  // 0x00526760.
+  char ValidateTerrainClassAdjacencyCoverageMask();
 
   // True when every terrain class present on the map has at least one valid seed candidate
   // (a land tile whose hex neighbourhood holds a city-region tile with uniform-class
@@ -97,14 +118,33 @@ public:
   // refreshes port-zone adjacency and zone status codes. 0x0052e350.
   void RebuildUMapperRouteRecordsAndActiveMapRects();
 
-  // --- data fields (raw pad except the two the region-merge pass reads) ---
+  // Second-phase entry: parses the map-tuning string into the terrain-class quota
+  // globals, seeds the map-gen PRNG from the string hash, then loops generation
+  // attempts (RunMapGenerationAttempt + validity checks), assigns region ids, runs
+  // the follow-on passes, applies the easter-egg keyword terrain overrides, and
+  // retries the whole pipeline until ValidateSeedCandidateExistsForEachTerrainClass
+  // accepts the map. 0x525a30, __thiscall, RET 0xc.
+  void GenerateMapFromTuningStringAndApplyScenarioOverrides(char* tileGrid, int contextArg,
+                                                            CString* tuningString);
+
+  // --- data fields (raw pad except the ones the ported passes read) ---
   char pad_04[0x08 - 0x04]; // +0x04
   char* mapTileGrid08;      // +0x08 base of the 6480-tile (108x60) grid, stride 0x24
-  char pad_0c[0x10 - 0x0c]; // +0x0c
+  // +0x0c second driver argument, stored verbatim by the 0x525a30 entry (semantics
+  // not yet recovered downstream).
+  int contextArg0c;
   // +0x10 region-class grid: 15 rows x 27 columns of region-class bytes (-1 = unassigned).
   signed char regionClassGrid10[15][27];
-  char pad_1a5[0x2a4 - 0x1a5]; // +0x1a5
-  int cityRegionCount2a4;      // +0x2a4 number of active city regions
+  char pad_1a5[0x1fc - 0x1a5]; // +0x1a5
+  // +0x1fc next city-region id + the 0x17-entry id table the driver backfills
+  // (-1 slots get ++cityRegionNextId1fc).
+  int cityRegionNextId1fc;
+  int cityRegionIds200[0x17];
+  char pad_25c[0x2a1 - 0x25c]; // +0x25c
+  // +0x2a1 mode byte copied in by the BuildOrLoadGlobalMapStateForSession caller.
+  unsigned char modeByte2a1;
+  char pad_2a2[2];
+  int cityRegionCount2a4; // +0x2a4 number of active city regions
 };
 
 ASSERT_SIZE(TMapMaker, 0x2a8);

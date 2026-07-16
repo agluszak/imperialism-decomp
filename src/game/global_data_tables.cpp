@@ -1666,7 +1666,6 @@ const int g_anTechItemPurchaseCostBySlot_0066aae8[34] = {
     7000,  10000,  12000,  12000,  12000,  12000, 12000, 25000, 20000, 40000, 40000, 40000,
     40000, 100000, 120000, 150000, 150000, 0,     -1,    -1,    -1,    0};
 
-
 // Hex-neighbour offset tables (direction 0..5) for the 108-wide offset-coordinate grid.
 const int g_hexColOffsetEvenRow_00697450[6] = {0, 1, 0, -1, -1, -1};
 const int g_hexRowOffset_00697468[6] = {-1, 0, 1, 1, 0, -1};
@@ -1678,11 +1677,34 @@ const unsigned short g_hexDirectionBitMasks_00696e40[6] = {1, 2, 4, 8, 16, 32};
 // GLOBAL: IMPERIALISM 0x00696ea8
 const unsigned short g_hexDirectionBitMasksAlt_00696ea8[7] = {1, 2, 4, 8, 16, 32, 0};
 
-// Map-generation PRNG state + region-seed grid dimensions (plain mutable globals at
-// 0x006a38e8/ec/f0, runtime-initialized to 0).
+// Map-generation PRNG state + region-seed grid dimensions, runtime-initialized to 0.
+// GLOBAL: IMPERIALISM 0x006a38e8
 unsigned int g_mapGenLcgState_006a38e8 = 0;
+// GLOBAL: IMPERIALISM 0x006a38ec
 int g_regionSeedGridRows_006a38ec = 0;
+// GLOBAL: IMPERIALISM 0x006a38f0
 int g_regionSeedGridCols_006a38f0 = 0;
+// Per-mille terrain-class tile quotas seeded/scaled by the map-tuning-string parser
+// (TMapMaker 0x525a30): defaults {desert 200, mountain 150, hills 250, forest 250,
+// swamp 150} sum to the 1000 budget. Tuning letters map upper=more/lower=less:
+// 'D'/'d' desert 300/100, 'M'/'m' mountain 300/100, 'H'/'h' hills 500/100,
+// 'F'/'f' forest 500/100, 'S'/'s' swamp 300/100, 'P'/'p' total budget 750/1500,
+// 'R'/'r' rivers 20/5, 'C'/'c' region seed grid 10x6 / 18x10 (fewer/more regions);
+// the parser rescales the five quotas to the chosen budget. Class binding inferred
+// from the tuning letters; hedged until the 0x526c20 generation pass is ported.
+// GLOBAL: IMPERIALISM 0x006a38bc
+int g_mapGenDesertQuota_006a38bc = 0;
+// GLOBAL: IMPERIALISM 0x006a3470
+int g_mapGenMountainQuota_006a3470 = 0;
+// GLOBAL: IMPERIALISM 0x006a38c0
+int g_mapGenHillsQuota_006a38c0 = 0;
+// GLOBAL: IMPERIALISM 0x006a38f8
+int g_mapGenForestQuota_006a38f8 = 0;
+// GLOBAL: IMPERIALISM 0x006a38e0
+int g_mapGenSwampQuota_006a38e0 = 0;
+// Map-gen feature count set alongside the quotas (default 10; tuning 'm' = 20, 'p' = 5).
+// GLOBAL: IMPERIALISM 0x006a38e4
+int g_mapGenRiverCount_006a38e4 = 0;
 
 // One-shot assert-suppression flags for the UMapper overlay passes (0x006a3910/0x006a3914).
 int DAT_006a3910 = 0;
