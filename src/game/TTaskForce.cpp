@@ -1401,6 +1401,48 @@ char TTaskForce::ResolveTaskForceOrderConflictAndPickCandidate(TTaskForce* other
   return 0;
 }
 
+// FUNCTION: IMPERIALISM 0x00555920
+char TTaskForce::TryMarkLosingMapOrderEntryFromForceBalance(TTaskForce* other) {
+  int thisTotal = 0;
+  for (TMapOrderChildLinkNode* node = childOrderList; node != nullptr; node = node->next) {
+    thisTotal += node->object_ptr->ComputeMapOrderEntryHeuristicScore();
+  }
+  int otherTotal = 0;
+  for (TMapOrderChildLinkNode* otherNode = other->childOrderList; otherNode != nullptr;
+       otherNode = otherNode->next) {
+    otherTotal += otherNode->object_ptr->ComputeMapOrderEntryHeuristicScore();
+  }
+
+  if (thisTotal * 100 < kOrderTypePriorityWeight[order_type] * otherTotal) {
+    int thisAggregateScore = ComputeTaskForceOrderAggregateScore();
+    if (otherTotal * 100 < kOrderTypePriorityWeight[other->order_type] * thisAggregateScore ||
+        other->eliminatedFlag26 != 0) {
+      return 0;
+    }
+
+    unsigned int minWeight = GetMinActionThresholdFromEntryChildren();
+    int threshold =
+        static_cast<int>(minWeight + 5) * 10 - other->CalculateMapOrderEntryAverageChildRatingX10();
+    if (rand() % 100 < threshold) {
+      eliminatedFlag26 = 1;
+      return 0;
+    }
+    return 1;
+  }
+
+  if (otherTotal * 100 < kOrderTypePriorityWeight[other->order_type] * thisTotal) {
+    unsigned int minWeight = other->GetMinActionThresholdFromEntryChildren();
+    int threshold =
+        static_cast<int>(minWeight + 5) * 10 - CalculateMapOrderEntryAverageChildRatingX10();
+    if (rand() % 100 < threshold) {
+      other->eliminatedFlag26 = 1;
+      return 0;
+    }
+    return 1;
+  }
+  return 1;
+}
+
 // FUNCTION: IMPERIALISM 0x00555c20
 char TTaskForce::ComputeTaskForceOrderTieBreakScore(TTaskForce* other) {
   unsigned short minDescriptorWeight = 10000;

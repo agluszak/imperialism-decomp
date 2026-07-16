@@ -51,14 +51,6 @@ undefined4 ShouldAttemptMapOrderPairResolution(void)
   return 0;
 }
 
-// ghidra_name TryMarkLosingMapOrderEntryFromForceBalance
-// ghidra_proto undefined TryMarkLosingMapOrderEntryFromForceBalance()
-// FUNCTION: IMPERIALISM 0x00555920
-undefined4 TryMarkLosingMapOrderEntryFromForceBalance(void)
-{
-  return 0;
-}
-
 // ghidra_name TryResolveMapOrderEntryPairExecution
 // ghidra_proto undefined TryResolveMapOrderEntryPairExecution()
 // FUNCTION: IMPERIALISM 0x00555d10

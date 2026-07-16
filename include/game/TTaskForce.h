@@ -305,6 +305,17 @@ public:
   // hands off to TNavyMgr::ResolveMapOrderPairConflictStep and returns false.
   char ResolveTaskForceOrderConflictAndPickCandidate(TTaskForce* other); // 0x555420
 
+  // Direct sibling of ResolveTaskForceOrderConflictAndPickCandidate/ComputeTaskForceOrder-
+  // TieBreakScore -- same per-order-type {200,100,50} weighted-heuristic-sum comparison,
+  // checked both ways, but with its own inline elimination roll (not a call to either
+  // sibling): whichever side's ComputeMapOrderEntryHeuristicScore-summed heuristic total
+  // is priority-weighted weaker gets one shot at elimination (gap between the OTHER
+  // side's best active child and this side's average active-child rating), and only when
+  // the reciprocal aggregate-score check doesn't already favor it and it isn't already
+  // eliminated. Returns 0 when `this` or `other` gets eliminatedFlag26 set (or the
+  // reciprocal check bails early), 1 when no elimination happens.
+  char TryMarkLosingMapOrderEntryFromForceBalance(TTaskForce* other); // 0x555920
+
   // Low word of this order's resource-type enabledFlagOrBucketOffset column (same field
   // RemoveNode reads as a bucket_offset).
   short GetOrderNodeDescriptorWord20ByResourceType(); // 0x550510
