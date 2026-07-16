@@ -577,6 +577,30 @@ void TNavyMgr::RemoveOrdersByNationFromPrimarySecondaryAndTaskForceLists(short n
   RemoveMatchingTaskForceOrders(this, nationSlot);
 }
 
+// FUNCTION: IMPERIALISM 0x00557e10
+TTaskForce* TNavyMgr::UpdateType7NavyOrderChildSelectionByChanceThreshold(short requiredCount,
+                                                                          short chancePercent) {
+  TTaskForce* entry = orderListHead04;
+  while (entry != nullptr) {
+    if (entry->required_count == requiredCount && entry->attachment == 7) {
+      break;
+    }
+    entry = entry->queue_next;
+  }
+
+  if (entry != nullptr) {
+    for (TMapOrderChildLinkNode* node = entry->childOrderList; node != nullptr; node = node->next) {
+      TTaskForce* child = node->object_ptr;
+      bool notSelected =
+          child->required_count < g_NavyOrderResourceDescriptorTable[child->order_type].stockCap ||
+          chancePercent <= rand() % 100;
+      node->active_flag = notSelected ? 0 : 1;
+    }
+  }
+
+  return entry;
+}
+
 // FUNCTION: IMPERIALISM 0x00557f10
 char TNavyMgr::SelectEligibleMapOrderInteractionForNationAndContext(
     TMapOrderInteractionSelection* outResult, int portZoneContext, short nation,

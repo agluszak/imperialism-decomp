@@ -44,6 +44,14 @@ public:
 
   void RemoveOrdersByNationFromPrimarySecondaryAndTaskForceLists(short nationSlot);
 
+  // Finds the first orderListHead04 entry with attachment==7 (a "type 7" task-force
+  // order kind) and matching required_count, then walks its childOrderList setting each
+  // child's active_flag: false if the child's required_count is below its resource
+  // type's stockCap column, otherwise a chancePercent-vs-rand()%100 coin flip. Returns
+  // the matched entry (or null). 0x557e10.
+  TTaskForce* UpdateType7NavyOrderChildSelectionByChanceThreshold(short requiredCount,
+                                                                  short chancePercent);
+
   // 0x5568f0 - stream out the three navy order lists (primary TShip chain tail-first,
   // TAdmiral secondary chain, orderListHead04 task-force chain), each prefixed with a
   // 16-bit count; nationFilter -1 serializes every nation's entries.

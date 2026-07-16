@@ -147,14 +147,6 @@ undefined4 ResolveMapOrderChainsForTurnPhase(void)
   return 0;
 }
 
-// ghidra_name UpdateType7NavyOrderChildSelectionByChanceThreshold
-// ghidra_proto undefined UpdateType7NavyOrderChildSelectionByChanceThreshold()
-// FUNCTION: IMPERIALISM 0x00557e10
-undefined4 UpdateType7NavyOrderChildSelectionByChanceThreshold(void)
-{
-  return 0;
-}
-
 // ghidra_name GetMapContextActionLabelToken
 // ghidra_proto ushort __cdecl GetMapContextActionLabelToken(short nTileIndex, int dwInputFlags)
 // FUNCTION: IMPERIALISM 0x00559e00
