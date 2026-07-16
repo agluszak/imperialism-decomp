@@ -19,7 +19,6 @@ IMPLEMENT_SERIAL(TDefendProvinceMission, TArmyMission, 1)
 // signature per the autogen stub definition; real signature applied via a
 // typed cast at each call site so the linker resolves the correct symbol).
 extern undefined4 IsMapTileCompatibleWithCurrentTerrainOrActionContext(void);
-extern undefined4 SetMapStateByteFlag970WithRuntimeGate(void);
 
 // FUNCTION: IMPERIALISM 0x00535770
 void TDefendProvinceMission::MissionSlot44() {
@@ -227,12 +226,7 @@ void TDefendProvinceMission::Free() {
   TGreatPower* nationState = g_apNationStates[nationId04];
   nationState->AssertValid();
 
-  typedef void(__fastcall * SetMapStateByteFlag970WithRuntimeGate_t)(void* self, int dummyEdx,
-                                                                     int arg1, int arg2);
-  SetMapStateByteFlag970WithRuntimeGate_t SetMapStateByteFlag970WithRuntimeGate_fn =
-      reinterpret_cast<SetMapStateByteFlag970WithRuntimeGate_t>(
-          (void*)&SetMapStateByteFlag970WithRuntimeGate);
-  SetMapStateByteFlag970WithRuntimeGate_fn(nationState, 0, field_14, 0);
+  nationState->SetMapStateByteFlag970WithRuntimeGate(field_14, 0);
 
   if (orderListAt18 != nullptr) {
     CIterator iter(orderListAt18);

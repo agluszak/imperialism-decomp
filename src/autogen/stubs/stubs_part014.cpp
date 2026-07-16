@@ -27,14 +27,6 @@ undefined4 DispatchToFirstMatchingListNodeAndRemove(void)
   return 0;
 }
 
-// ghidra_name TAttackProvinceMission::SetMapStateByteFlag970WithRuntimeGate
-// ghidra_proto undefined SetMapStateByteFlag970WithRuntimeGate()
-// FUNCTION: IMPERIALISM 0x004e8b50
-undefined4 SetMapStateByteFlag970WithRuntimeGate(void)
-{
-  return 0;
-}
-
 // ghidra_name ComputeAdvisoryMapNodeCompositeScoreByMode
 // ghidra_proto undefined ComputeAdvisoryMapNodeCompositeScoreByMode()
 // FUNCTION: IMPERIALISM 0x004e8c50

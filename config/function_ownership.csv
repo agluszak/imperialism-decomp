@@ -2053,6 +2053,7 @@ address|target_cpp|ownership|note
 4e83d0|src/game/TGreatPower.cpp|manual|marker_sync
 4e8540|src/game/TGreatPower.cpp|manual|marker_sync
 4e8750|src/game/TGreatPower.cpp|manual|marker_sync
+4e8b50|src/game/TGreatPower.cpp|manual|marker_sync
 4e8bf0|src/game/TGreatPower.cpp|manual|marker_sync
 4e9060|src/game/TGreatPower.cpp|manual|marker_sync
 4e9a50|src/game/TAutoGreatPower.cpp|manual|marker_sync

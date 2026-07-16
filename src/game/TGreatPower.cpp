@@ -4542,6 +4542,18 @@ float TGreatPower::ComputeAdvisoryMapNodeScoreFactorByCaseMetric(int metricCase,
     return kOne;
   }
 }
+// Sets mapNodeStateFlags[provinceIndex] to `value`, except when value == 1 and the
+// province's map-action-context link is unavailable for this nation, in which case it's
+// forced to 0 -- the same gate/array QueueMapActionMissionsForPortZoneCandidates above
+// already uses directly.
+// FUNCTION: IMPERIALISM 0x004e8b50
+void TGreatPower::SetMapStateByteFlag970WithRuntimeGate(int provinceIndex, int value) {
+  if (value == 1 && g_pGlobalMapState->IsNodeTypeLinkUnavailableAndNoActiveMapActionContext(
+                        provinceIndex, nationSlot)) {
+    value = 0;
+  }
+  mapNodeStateFlags[provinceIndex] = static_cast<unsigned char>(value);
+}
 
 // FUNCTION: IMPERIALISM 0x004e8bf0
 void TGreatPower::SetByteFlagAtOffsetAF0ByIndex(int contextOrdinal, char value) {
