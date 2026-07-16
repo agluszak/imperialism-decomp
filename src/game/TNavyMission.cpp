@@ -729,6 +729,44 @@ void __cdecl AccumulateNavyOrderCategoryVectorWithScale(TShip* orderNode, float*
       vector[3];
 }
 
+// Same per-ship math as AccumulateNavyOrderCategoryVectorWithScale (ratio =
+// (stockLevel1c/normalizationBase)*weight, categories 0-2 scaled by ratio, category 3 by
+// the raw distance weight alone), but the weight itself is derived per-ship from the
+// active target zone's hop distance rather than passed in by the caller. Reproduced
+// inline (not via a call to 0x537c60) to match the original, which inlines its own copy
+// here rather than calling out.
+// FUNCTION: IMPERIALISM 0x00537d40
+void TNavyMission::BuildMissionQueuedOrderCategoryVector(float* vector) {
+  vector[0] = 0.0f;
+  vector[1] = 0.0f;
+  vector[2] = 0.0f;
+  vector[3] = 0.0f;
+  for (TMapOrderChildLinkNode* node = orderList24; node != nullptr; node = node->next) {
+    TShip* ship = reinterpret_cast<TShip*>(node->object_ptr);
+    TZone* targetZone = GetActiveTargetZoneByState28();
+    short distanceIndex = 0;
+    if (targetZone != nullptr) {
+      distanceIndex =
+          ship->ComputeOrderNodeDistanceQuotientByDescriptorWord24(GetActiveTargetZoneByState28());
+    }
+    if (distanceIndex > 5) {
+      distanceIndex = 5;
+    }
+    float weight = g_NavyOrderDistanceDecayWeightTable_006978c8[distanceIndex];
+    float ratio =
+        static_cast<float>(ship->stockLevel1c / ship->GetNavyOrderNormalizationBaseByNationType()) *
+        weight;
+    vector[0] +=
+        static_cast<float>(ship->ComputeNavyOrderPriorityContributionPercentByCategory(0)) * ratio;
+    vector[1] +=
+        static_cast<float>(ship->ComputeNavyOrderPriorityContributionPercentByCategory(1)) * ratio;
+    vector[2] +=
+        static_cast<float>(ship->ComputeNavyOrderPriorityContributionPercentByCategory(2)) * ratio;
+    vector[3] +=
+        static_cast<float>(ship->ComputeNavyOrderPriorityContributionPercentByCategory(3)) * weight;
+  }
+}
+
 // Same shape as ComputeNavyOrderCategorySimilarityRatio above, but always scores against
 // targetZone14 (near) / targetZone18 (far) instead of navyField20, with an explicit
 // caller-supplied distance threshold instead of a fixed 0/1.

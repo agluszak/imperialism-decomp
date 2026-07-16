@@ -83,14 +83,6 @@ undefined4 QueueMissionOrderEntryAndPropagateSelectionRange(void)
   return 0;
 }
 
-// ghidra_name BuildMissionQueuedOrderCategoryVector
-// ghidra_proto undefined BuildMissionQueuedOrderCategoryVector()
-// FUNCTION: IMPERIALISM 0x00537d40
-undefined4 BuildMissionQueuedOrderCategoryVector(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_AFX_CLASSINIT_At005387a0
 // ghidra_proto undefined WrapperFor_AFX_CLASSINIT_At005387a0()
 // FUNCTION: IMPERIALISM 0x005387a0

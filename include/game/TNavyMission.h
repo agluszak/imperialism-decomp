@@ -123,6 +123,12 @@ public:
   void BuildNavyOrderCategoryVectorForNationWithExclusion(float* vector, TZone* nearZone,
                                                           short distanceThreshold,
                                                           TObject* farZone);
+  // Builds a per-category priority vector over every orderList24 ship, each weighted by
+  // (stockLevel1c/normalizationBase) * a distance-decay factor (0.8^hopDistance to the
+  // active target zone, clamped to index 5) -- same per-ship math as
+  // AccumulateNavyOrderCategoryVectorWithScale, but the original inlines its own copy here
+  // rather than calling out to 0x537c60, so the body is reproduced inline to match. 0x537d40.
+  void BuildMissionQueuedOrderCategoryVector(float* vector);
   // Same shape as ComputeNavyOrderCategorySimilarityRatio (BuildNavyOrderCategoryVectorFor-
   // NationWithExclusion + a sqrt-coefficient tail), but always uses targetZone14 as the near
   // zone and targetZone18 as the far zone (instead of navyField20), with an explicit caller-

@@ -13062,7 +13062,8 @@
     },
     {
       "address": "0x4e0610",
-      "matching": 1.0,
+      "effective": true,
+      "matching": 0.42857142857142855,
       "name": "TGreatPower::ReturnFalseNationStateActionStub_8a",
       "type": 1
     },
@@ -13111,7 +13112,7 @@
     },
     {
       "address": "0x4e09a0",
-      "matching": 0.5542168674698795,
+      "matching": 0.5301204819277109,
       "name": "TGreatPower::ComputeCityOrderCapabilityAggregateScore",
       "type": 1
     },
@@ -19908,7 +19909,7 @@
     },
     {
       "address": "0x537d40",
-      "matching": 0.020833333333333332,
+      "matching": 0.7891891891891892,
       "name": "BuildMissionQueuedOrderCategoryVector",
       "type": 1
     },
