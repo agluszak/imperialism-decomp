@@ -43,14 +43,6 @@ undefined4 InitializeUMapAuxEntryDefaultsAndSharedNameFields(void)
   return 0;
 }
 
-// ghidra_name RebuildGlobalMapStateAndMaybeDispatchTurnEvent3C0
-// ghidra_proto undefined RebuildGlobalMapStateAndMaybeDispatchTurnEvent3C0()
-// FUNCTION: IMPERIALISM 0x0050ed4d
-undefined4 RebuildGlobalMapStateAndMaybeDispatchTurnEvent3C0(void)
-{
-  return 0;
-}
-
 // ghidra_name VerifyMapDataAndWriteReport
 // ghidra_proto void __fastcall VerifyMapDataAndWriteReport(int pMapDataContext)
 // FUNCTION: IMPERIALISM 0x0050f3c0
