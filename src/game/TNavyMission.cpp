@@ -949,3 +949,83 @@ float TNavyMission::ComputeOrderDistributionSimilarityScoreForZone(TZone* nodeCo
   return total * (static_cast<float>(g_Recompute_Nation_Order_LookupTable_0065AA08) -
                   diffSum * static_cast<float>(g_Recompute_Nation_Order_LookupTable_0065AA00));
 }
+// If `portZone` has a definite single owner (owner code 0..6), scores directly for that
+// owner (same divergence-score shape as TShip.cpp's ComputeNavyOrderDistributionScoreForNation,
+// reproduced inline). Otherwise scans nations allied with this mission's own nationId04
+// and keeps the best such score -- each iteration re-reads portZone's (still
+// out-of-range) owner code as the ship filter rather than the candidate ally's index, so
+// in practice this branch only ever contributes 0; modeled exactly as observed (Hard
+// Rule 6) rather than "corrected" to use the loop index.
+// FUNCTION: IMPERIALISM 0x0053b350
+float TNavyMission::ComputeMissionNavyOrderDistributionScoreForPortOwnerOrAllies(TZone* portZone) {
+  float best = g_Recompute_Nation_Order_LookupTable_0065A9E8;
+  short ownerNation = portZone->GetPortZoneOwnerNationCodeFromMissionField48();
+  if (ownerNation < 7) {
+    float vector[4] = {g_Recompute_Nation_Order_LookupTable_0065A9E8,
+                       g_Recompute_Nation_Order_LookupTable_0065A9E8,
+                       g_Recompute_Nation_Order_LookupTable_0065A9E8,
+                       g_Recompute_Nation_Order_LookupTable_0065A9E8};
+    for (TShip* ship = GetNavyPrimaryOrderListHead(); ship != nullptr; ship = ship->nextOlder24) {
+      if (ship->ownerNationSlot14 == ownerNation && ship->field08->QueryPortZoneCapability() &&
+          ship->GetNavyOrderNormalizationBaseByNationType() <= ship->stockLevel1c) {
+        AccumulateNavyOrderCategoryVectorWithScale(
+            ship, vector, static_cast<float>(g_Recompute_Nation_Order_LookupTable_0065AA08));
+      }
+    }
+    float total = vector[0] + vector[1] + vector[2] + vector[3];
+    if (total == static_cast<float>(g_Recompute_Nation_Order_LookupTable_0065A9F0)) {
+      return g_Recompute_Nation_Order_LookupTable_0065A9E8;
+    }
+    float diffSum = g_Recompute_Nation_Order_LookupTable_0065A9E8;
+    for (int i = 0; i < 4; ++i) {
+      float diff = vector[i] / total -
+                   static_cast<float>(g_NavyOrderDistributionCategoryWeights_00697978[i]) *
+                       static_cast<float>(g_Recompute_Nation_Order_LookupTable_0065A9F8);
+      if (diff <= static_cast<float>(g_Recompute_Nation_Order_LookupTable_0065A9F0)) {
+        diff = -diff;
+      }
+      diffSum += diff;
+    }
+    return total * (static_cast<float>(g_Recompute_Nation_Order_LookupTable_0065AA08) -
+                    diffSum * static_cast<float>(g_Recompute_Nation_Order_LookupTable_0065AA00));
+  }
+
+  for (short allyIdx = 0; allyIdx < 7; ++allyIdx) {
+    if (g_apNationStates[allyIdx] != nullptr &&
+        g_pDiplomacyTurnStateManager->HasPolicyWithNationSlot44(nationId04, allyIdx) != 0) {
+      short scoreNation = portZone->GetPortZoneOwnerNationCodeFromMissionField48();
+      float vector[4] = {g_Recompute_Nation_Order_LookupTable_0065A9E8,
+                         g_Recompute_Nation_Order_LookupTable_0065A9E8,
+                         g_Recompute_Nation_Order_LookupTable_0065A9E8,
+                         g_Recompute_Nation_Order_LookupTable_0065A9E8};
+      for (TShip* ship = GetNavyPrimaryOrderListHead(); ship != nullptr; ship = ship->nextOlder24) {
+        if (ship->ownerNationSlot14 == scoreNation && ship->field08->QueryPortZoneCapability() &&
+            ship->GetNavyOrderNormalizationBaseByNationType() <= ship->stockLevel1c) {
+          AccumulateNavyOrderCategoryVectorWithScale(
+              ship, vector, static_cast<float>(g_Recompute_Nation_Order_LookupTable_0065AA08));
+        }
+      }
+      float total = vector[0] + vector[1] + vector[2] + vector[3];
+      float score = g_Recompute_Nation_Order_LookupTable_0065A9E8;
+      if (total != static_cast<float>(g_Recompute_Nation_Order_LookupTable_0065A9F0)) {
+        float diffSum = g_Recompute_Nation_Order_LookupTable_0065A9E8;
+        for (int i = 0; i < 4; ++i) {
+          float diff = vector[i] / total -
+                       static_cast<float>(g_NavyOrderDistributionCategoryWeights_00697978[i]) *
+                           static_cast<float>(g_Recompute_Nation_Order_LookupTable_0065A9F8);
+          if (diff <= static_cast<float>(g_Recompute_Nation_Order_LookupTable_0065A9F0)) {
+            diff = -diff;
+          }
+          diffSum += diff;
+        }
+        score =
+            total * (static_cast<float>(g_Recompute_Nation_Order_LookupTable_0065AA08) -
+                     diffSum * static_cast<float>(g_Recompute_Nation_Order_LookupTable_0065AA00));
+      }
+      if (score > best) {
+        best = score;
+      }
+    }
+  }
+  return best;
+}

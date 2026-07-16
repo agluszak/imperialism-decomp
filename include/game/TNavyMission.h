@@ -93,7 +93,7 @@ public:
   float ComputeOrderDistributionSimilarityScoreForZoneWithBaseProfile(TZone* nodeContext);
   // Builds a 4-category priority vector from every existing orderList24 ship plus
   // `candidateOrder` (each contribution weighted by a per-ship distance-decay factor,
-  // see AccumulateNavyOrderCategoryVectorByDistanceWeight), then scores it against
+  // see g_NavyOrderDistanceDecayWeightTable_006978c8), then scores it against
   // resourceWeights2c via a Bhattacharyya-coefficient-style similarity:
   // sum(sqrt(resourceWeights2c[i] * vector[i])) / sum(resourceWeights2c[i]). Used to
   // evaluate how well adding `candidateOrder` would fit this mission's target profile.
@@ -104,6 +104,15 @@ public:
   // it -- evaluating the profile with the candidate order REMOVED rather than added.
   // 0x5383f0.
   float ComputeMissionOrderMatchScoreWithScaledCandidateNavyOrder(TShip* candidateOrder);
+  // If `portZone` has a definite single owner nation (owner code 0..6), returns
+  // ComputeNavyOrderDistributionScoreForNation-equivalent score for that owner directly.
+  // Otherwise (owner code >= 7, no clear single owner) scans nations allied with this
+  // mission's own nationId04 and takes the best such score -- though each iteration
+  // re-reads portZone's (still out-of-range) owner code as the ship filter rather than
+  // the candidate ally's index, so in practice this branch only ever contributes 0 (no
+  // ship's ownerNationSlot14 can equal an out-of-range code); modeled exactly as observed
+  // rather than "corrected", per Hard Rule 6. 0x53b350.
+  float ComputeMissionNavyOrderDistributionScoreForPortOwnerOrAllies(TZone* portZone);
 
 private:
   // Shared by RefreshSlot40's mode-transition checks (0x536b30).

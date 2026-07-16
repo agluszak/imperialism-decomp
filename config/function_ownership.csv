@@ -3030,6 +3030,7 @@ address|target_cpp|ownership|note
 53adf0|src/game/TBlockadePortMission.cpp|manual|marker_sync
 53ae90|src/game/TBlockadePortMission.cpp|manual|marker_sync
 53aeb0|src/game/TBlockadePortMission.cpp|manual|marker_sync
+53b350|src/game/TNavyMission.cpp|manual|marker_sync
 53b800|src/game/TShip.cpp|manual|marker_sync
 53ba10|src/game/TBlockadePortMission.cpp|manual|marker_sync
 53ba40|src/game/TBlockadePortMission.cpp|manual|marker_sync

@@ -171,14 +171,6 @@ undefined4 WrapperFor_AFX_CLASSINIT_At0053ab00(void)
   return 0;
 }
 
-// ghidra_name ComputeMissionNavyOrderDistributionScoreForPortOwnerOrAllies
-// ghidra_proto undefined ComputeMissionNavyOrderDistributionScoreForPortOwnerOrAllies()
-// FUNCTION: IMPERIALISM 0x0053b350
-undefined4 ComputeMissionNavyOrderDistributionScoreForPortOwnerOrAllies(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_AFX_CLASSINIT_At0053bb40
 // ghidra_proto undefined WrapperFor_AFX_CLASSINIT_At0053bb40()
 // FUNCTION: IMPERIALISM 0x0053bb40
