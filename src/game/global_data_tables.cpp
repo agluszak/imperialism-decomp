@@ -615,6 +615,11 @@ extern "C" {
 // GLOBAL: IMPERIALISM 0x0065a468
 extern const float g_MissionDefaultScore_0065a468 = 0.0f;
 
+// 1.0 constant (double), used by CompareMissionOrderEntriesByPriorityScore (0x536090)
+// to compute each side's "remaining priority" as 1.0 - ReturnZeroFloatSlot68().
+// GLOBAL: IMPERIALISM 0x0065a470
+extern const double g_MissionScoreOneConstant_0065a470 = 1.0;
+
 // Weighting factor (0.2) applied to each adjacent region's score when diffusing the
 // strategic heatmap (RecomputeTileStrategicScoreHeatmap 0x518130).
 // GLOBAL: IMPERIALISM 0x00658780

@@ -249,3 +249,32 @@ void TMission::ReadFrom(TStream* stream) {
   }
   stream->ReadBytes(&marker11, 1);
 }
+
+// qsort-style comparator: descending order by a "remaining priority" score --
+// (1.0 - ReturnZeroFloatSlot68()) scaled by value0c (multiplied when that difference is
+// >= 0, divided when negative). Call30() is invoked on both sides first (a no-op in the
+// base TMission; concrete missions override it), matching the ground truth's double-
+// dispatch shape before the scores are read.
+// FUNCTION: IMPERIALISM 0x00536090
+short __cdecl CompareMissionOrderEntriesByPriorityScore(TMission* a, TMission* b) {
+  a->Call30();
+  b->Call30();
+
+  float diffA = static_cast<float>(g_MissionScoreOneConstant_0065a470) - a->ReturnZeroFloatSlot68();
+  float weightedA = (diffA >= g_MissionDefaultScore_0065a468)
+                        ? diffA * *reinterpret_cast<float*>(&a->value0c)
+                        : diffA / *reinterpret_cast<float*>(&a->value0c);
+
+  float diffB = static_cast<float>(g_MissionScoreOneConstant_0065a470) - b->ReturnZeroFloatSlot68();
+  float weightedB = (diffB >= g_MissionDefaultScore_0065a468)
+                        ? diffB * *reinterpret_cast<float*>(&b->value0c)
+                        : diffB / *reinterpret_cast<float*>(&b->value0c);
+
+  if (weightedB < weightedA) {
+    return -1;
+  }
+  if (weightedA < weightedB) {
+    return 1;
+  }
+  return 0;
+}

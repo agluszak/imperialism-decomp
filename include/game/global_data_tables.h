@@ -888,6 +888,7 @@ extern float g_ApplyIndexedResourceDeltaScale_00653728;
 
 // TMission.cpp — default mission score constant.
 extern const float g_MissionDefaultScore_0065a468;
+extern const double g_MissionScoreOneConstant_0065a470;
 extern const float g_HexHighlightScreenScale_00658640;
 extern float g_TileHeatmapNeighborDiffusionFactor;
 extern double g_MapPreviewScaleX6A3410;

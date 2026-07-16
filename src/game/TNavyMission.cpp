@@ -18,7 +18,6 @@ IMPLEMENT_SERIAL(TNavyMission, TMission, 1)
 // typed cast at each call site so the linker resolves the correct symbol).
 extern undefined4 GetNavyPrimaryOrderNodeByIndex(void);
 extern undefined4 FindFirstTrackedHandlerMatchingModeAndShortKey(void);
-extern undefined4 CompareMissionOrderEntriesByPriorityScore(void);
 extern undefined4 GetOrCreateMissionOrderEntryForNode(void);
 
 // Swaps float byte order (Big-Endian <-> Little-Endian)
@@ -361,13 +360,12 @@ void TNavyMission::QueueMissionOrdersByPriorityForContext(int pContextAnchor,
   void* topOrder = nullptr;
   int maxScore = -1;
 
-  typedef int(__cdecl * CompareMissionOrderEntriesByPriorityScore_t)(void*, int);
-  CompareMissionOrderEntriesByPriorityScore_t CompareMissionOrderEntriesByPriorityScore_fn =
-      reinterpret_cast<CompareMissionOrderEntriesByPriorityScore_t>(
-          (void*)&CompareMissionOrderEntriesByPriorityScore);
-
+  // Was bridged through a mis-targeted "CompareMissionOrderEntriesByPriorityScore" cdecl
+  // stub cast (a name collision with the unrelated real function at 0x536090); the actual
+  // callee here (verified via the 0x403e77 ILT thunk row) is the already-ported
+  // TTaskForce::CalculateMissionOrderPriorityScore (0x5501b0).
   for (TMapOrderChildLinkNode* node = orderList24; node != nullptr; node = node->next) {
-    int score = CompareMissionOrderEntriesByPriorityScore_fn(node->object_ptr, 3);
+    int score = node->object_ptr->CalculateMissionOrderPriorityScore(3);
     if (maxScore < score) {
       topOrder = node->object_ptr;
       maxScore = score;

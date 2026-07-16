@@ -35,14 +35,6 @@ undefined4 CompareMissionOrderEntriesByMovementClassThenEfficiency(void)
   return 0;
 }
 
-// ghidra_name CompareMissionOrderEntriesByPriorityScore
-// ghidra_proto undefined CompareMissionOrderEntriesByPriorityScore()
-// FUNCTION: IMPERIALISM 0x00536090
-undefined4 CompareMissionOrderEntriesByPriorityScore(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_ftol_At00536290
 // ghidra_proto undefined WrapperFor_ftol_At00536290()
 // FUNCTION: IMPERIALISM 0x00536290
