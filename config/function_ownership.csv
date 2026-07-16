@@ -3000,6 +3000,7 @@ address|target_cpp|ownership|note
 5399b0|src/game/TEscortMission.cpp|manual|marker_sync
 539a20|src/game/TEscortMission.cpp|manual|marker_sync
 539a70|src/game/TEscortMission.cpp|manual|marker_sync
+539a90|src/game/TNavyMission.cpp|manual|marker_sync
 539ca0|src/game/TEscortMission.cpp|manual|marker_sync
 539e70|src/game/TEscortMission.cpp|manual|marker_sync
 53a250|src/game/TEscortMission.cpp|manual|marker_sync

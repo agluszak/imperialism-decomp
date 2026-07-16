@@ -155,14 +155,6 @@ undefined4 WrapperFor_AFX_CLASSINIT_At005399d0(void)
   return 0;
 }
 
-// ghidra_name ComputeNavyOrderDistributionSimilarityScoreForNation
-// ghidra_proto undefined ComputeNavyOrderDistributionSimilarityScoreForNation()
-// FUNCTION: IMPERIALISM 0x00539a90
-undefined4 ComputeNavyOrderDistributionSimilarityScoreForNation(void)
-{
-  return 0;
-}
-
 // ghidra_name ResetTBeachheadMissionToSentinelVtable
 // ghidra_proto undefined ResetTBeachheadMissionToSentinelVtable()
 // FUNCTION: IMPERIALISM 0x0053a400

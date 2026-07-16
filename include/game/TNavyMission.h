@@ -81,6 +81,11 @@ public:
                                                                            TZone* nodeContext);
   static float ComputeOrderDistributionSimilarityScoreWithDiplomacyFilter(int sourceNation,
                                                                           TZone* nodeContext);
+  // Instance form of the diplomacy-filtered scorer above: sources the filter's source
+  // nation from this->nationId04 instead of taking it as an explicit argument, and
+  // scores against g_Populate_Beachhead_Mission_LookupTable_00697958[4..7] instead of
+  // [0..3]. 0x539a90.
+  float ComputeOrderDistributionSimilarityScoreForZone(TZone* nodeContext);
 
 private:
   // Shared by RefreshSlot40's mode-transition checks (0x536b30).

@@ -896,7 +896,12 @@ extern const float g_Recompute_Nation_Order_LookupTable_0065AA20 = 139069760.0f;
 // Consumed by the distribution-similarity scorer (0x5362c0) callers.
 unsigned short g_awTacticalCompositionReferenceProfiles_00697870[20] = {
     40, 27, 0, 17, 16, 27, 36, 0, 17, 20, 26, 31, 20, 23, 0, 40, 22, 0, 38, 0};
-unsigned short g_Populate_Beachhead_Mission_LookupTable_00697958[0x10] = {0};
+// 4 back-to-back 4-entry target-percentage profiles consumed by distinct navy-order
+// divergence-score callers: [0..3] NormalizeFourComponentNavyVector's callers, [4..7]
+// TNavyMission::ComputeOrderDistributionSimilarityScoreForZone, [8..15] two further
+// profiles used by sibling scorers in this same cluster.
+unsigned short g_Populate_Beachhead_Mission_LookupTable_00697958[0x10] = {
+    40, 40, 20, 0, 40, 30, 30, 0, 35, 35, 0, 30, 0, 20, 80, 0};
 const short g_NavyOrderDistributionCategoryWeights_00697978[4] = {40, 30, 30, 0};
 
 // Army-mission order-priority weight/scoring tables (0x53c620 / 0x53ceb0 /

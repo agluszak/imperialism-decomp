@@ -734,6 +734,45 @@ float TNavyMission::ComputeOrderDistributionSimilarityScoreForExactSourceNation(
   return NormalizeFourComponentNavyVector(vector, sum);
 }
 
+// Instance form of ComputeOrderDistributionSimilarityScoreWithDiplomacyFilter: sources
+// the diplomacy filter's source nation from nationId04 (inherited from TMission) rather
+// than an explicit argument, uses the fixed-category (0..3) accumulation shape (matching
+// ComputeNavyOrderDistributionScoreForNation in TShip.cpp) instead of the rotating-category
+// AccumulateNavyOrderVectorFromNode, and scores against
+// g_Populate_Beachhead_Mission_LookupTable_00697958[4..7] instead of [0..3].
+// FUNCTION: IMPERIALISM 0x00539a90
+float TNavyMission::ComputeOrderDistributionSimilarityScoreForZone(TZone* nodeContext) {
+  float vector[4] = {
+      g_Recompute_Nation_Order_LookupTable_0065A9E8, g_Recompute_Nation_Order_LookupTable_0065A9E8,
+      g_Recompute_Nation_Order_LookupTable_0065A9E8, g_Recompute_Nation_Order_LookupTable_0065A9E8};
+  for (TShip* orderNode = GetNavyPrimaryOrderListHead(); orderNode != 0;
+       orderNode = orderNode->nextOlder24) {
+    if (orderNode->field08 == nodeContext &&
+        g_pDiplomacyTurnStateManager->HasPolicyWithNationSlot44(
+            nationId04, orderNode->ownerNationSlot14) != 0) {
+      AccumulateNavyOrderCategoryVectorWithScale(
+          orderNode, vector, static_cast<float>(g_Recompute_Nation_Order_LookupTable_0065AA08));
+    }
+  }
+  float total = vector[0] + vector[1] + vector[2] + vector[3];
+  if (total == static_cast<float>(g_Recompute_Nation_Order_LookupTable_0065A9F0)) {
+    return g_Recompute_Nation_Order_LookupTable_0065A9E8;
+  }
+  float diffSum = g_Recompute_Nation_Order_LookupTable_0065A9E8;
+  for (int i = 0; i < 4; ++i) {
+    float diff = vector[i] / total -
+                 static_cast<float>(
+                     static_cast<short>(g_Populate_Beachhead_Mission_LookupTable_00697958[4 + i])) *
+                     static_cast<float>(g_Recompute_Nation_Order_LookupTable_0065A9F8);
+    if (diff <= static_cast<float>(g_Recompute_Nation_Order_LookupTable_0065A9F0)) {
+      diff = -diff;
+    }
+    diffSum += diff;
+  }
+  return total * (static_cast<float>(g_Recompute_Nation_Order_LookupTable_0065AA08) -
+                  diffSum * static_cast<float>(g_Recompute_Nation_Order_LookupTable_0065AA00));
+}
+
 // Default constructor
 TNavyMission::TNavyMission() : TMission() {
   targetZone14 = nullptr;
