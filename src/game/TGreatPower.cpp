@@ -4542,7 +4542,7 @@ float TGreatPower::ComputeAdvisoryMapNodeScoreFactorByCaseMetric(int metricCase,
                        static_cast<float>(globalMapState->cityScoreTotal);
 
     signed char primaryNation = cityRecord->ownerNationCode00;
-    signed char controllingNation = static_cast<signed char>(cityRecord->byte01);
+    signed char controllingNation = cityRecord->formerOwnerNationCode01;
     if (controllingNation == this->nationSlot && primaryNation != this->nationSlot) {
       TDiplomacyMgr* diplomacyManager = g_pDiplomacyTurnStateManager;
       if (diplomacyManager != 0 && g_pDiplomacyTurnStateManager->HasPolicyWithNationSlot44(

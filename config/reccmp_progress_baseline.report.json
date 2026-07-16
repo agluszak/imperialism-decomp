@@ -7965,7 +7965,7 @@
     },
     {
       "address": "0x4a5760",
-      "matching": 0.585956416464891,
+      "matching": 0.6034063260340633,
       "name": "SetActiveProvinceAndBuildDirectionalOrderOverlays",
       "type": 1
     },
@@ -16117,7 +16117,7 @@
     },
     {
       "address": "0x504df0",
-      "matching": 0.4489795918367347,
+      "matching": 0.4897959183673469,
       "name": "TTerrainHelpPicture::CreateObject",
       "type": 1
     },
@@ -16129,14 +16129,14 @@
     },
     {
       "address": "0x504e90",
-      "matching": 0.00392156862745098,
-      "name": "BuildMapTileActionContextMenu",
+      "matching": 0.6490196078431373,
+      "name": "TTerrainHelpPicture::BuildMapTileActionContextMenu",
       "type": 1
     },
     {
       "address": "0x5057a0",
-      "matching": 0.0,
-      "name": "TTerrainHelpPicture::VTableSlot73",
+      "matching": 0.3333333333333333,
+      "name": "TTerrainHelpPicture::HighlightSelectedMenuItemAndRefreshDetailText",
       "type": 1
     },
     {

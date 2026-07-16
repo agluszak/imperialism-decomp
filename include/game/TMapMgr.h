@@ -69,9 +69,9 @@ struct TTerrainStateRecordView {
   unsigned char pendingDevelopmentFlag0d;
   unsigned char recruitSearchVisited0e; // 0x0e
   // 0x0f -- cleared to 0 across all 0x1950 tiles by
-  // TMapMgr::ClearPerTileByte0FForAllMapTiles (0x409250); reader/setter beyond that not
-  // yet identified.
-  unsigned char perTileVisitedFlag0f;
+  // TMapMgr::ClearPerTileByte0FForAllMapTiles (0x409250); read signed (> 0) by the tile
+  // context menu (0x504e90) to gate menu item 0x2a.
+  signed char perTileVisitedFlag0f;
   // Index (0..89, -1 = none) of the TMapDialog transient tile-marker slot this tile occupies;
   // reset to 0xff by TMapDialog's marker-release path. Read MOVSX (signed).
   signed char markerSlotIndex10;
@@ -79,7 +79,10 @@ struct TTerrainStateRecordView {
   // Signed: same MOVSX-index evidence as terrainType00/spriteVariantIndex01 above.
   signed char gateFlag;
   short cityRecordIndex;
-  unsigned char pad16;
+  // Tile action class (structure/site type): equality-compared against 2..6/0xe/0x10/0x11
+  // by the tile context menu (0x504e90) to pick menu items 0x2b..0x31; read signed by
+  // map_overlay_geometry; reset to -1 by the TMapMgr table init.
+  signed char tileActionClass16;
   unsigned char railFlags17; // 0x17
   // Secondary/alternate owner nation tag (offset 0x18): the recruit-search-eligibility
   // family (0x5155c0, 0x515890) accepts a tile as owned by a nation if EITHER
@@ -101,7 +104,10 @@ struct TTerrainStateRecordView {
 // the CString city display name (also read by AssignCityRecordDisplayName).
 struct TGlobalMapCityScoreRecord {
   signed char ownerNationCode00;
-  unsigned char byte01;
+  // Previous/founding owner nation code: the tile context menu (0x504e90) renders a
+  // "formerly of <nation>" line when it differs from ownerNationCode00 (same idiom as
+  // TTerrainStateRecordView::formerOwnerNationTag03); read signed everywhere.
+  signed char formerOwnerNationCode01;
   // Signed: 0x517540's switch on this reads it via MOVSX, not MOVZX.
   signed char developmentStage;
   unsigned char fortLevel03; // fort level (indexes g_awEngineerFortBuildCostByLevel)

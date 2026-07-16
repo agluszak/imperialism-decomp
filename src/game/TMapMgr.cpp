@@ -190,7 +190,7 @@ void TMapMgr::AllocateAndResetTerrainAndCityScoreTables() {
     tile->resourceTypeByEdge[1] = -1;
     tile->gateFlag = -1;
     tile->cityRecordIndex = -1;
-    tile->pad16 = 0xff;
+    tile->tileActionClass16 = -1;
     tile->railFlags17 = 0;
     tile->secondaryOwnerNationTag18 = -1;
     tile->tileActionOrdinal1a = -1;
@@ -210,7 +210,7 @@ void TMapMgr::AllocateAndResetTerrainAndCityScoreTables() {
   for (i = 0; i < 0x180; ++i) {
     TGlobalMapCityScoreRecord* record = &cityScoreTable[i];
     record->ownerNationCode00 = -1;
-    record->byte01 = 0xff;
+    record->formerOwnerNationCode01 = -1;
     record->developmentStage = 0;
     record->fortLevel03 = 0;
     record->cityTileIndex04 = -1;

@@ -2545,7 +2545,7 @@ void TMultiplayerMgr::DispatchCityRedrawInvalidateEvent(short cityId) {
 
   const TGlobalMapCityScoreRecord* src = &g_pGlobalMapState->cityScoreTable[cityId];
   packet.cityHeader00[0] = src->ownerNationCode00;
-  packet.cityHeader00[1] = src->byte01;
+  packet.cityHeader00[1] = src->formerOwnerNationCode01;
   packet.cityHeader00[2] = src->developmentStage;
   packet.cityHeader00[3] = src->fortLevel03;
   packet.cityWord04 = src->cityTileIndex04;

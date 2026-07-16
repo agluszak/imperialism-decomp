@@ -2383,6 +2383,7 @@ address|target_cpp|ownership|note
 504dc0|src/game/TTerrainHelpWindow.cpp|manual|marker_sync
 504df0|src/game/TTerrainHelpPicture.cpp|manual|marker_sync
 504e70|src/game/TTerrainHelpPicture.cpp|manual|marker_sync
+504e90|src/game/TTerrainHelpPicture.cpp|manual|marker_sync
 5057a0|src/game/TTerrainHelpPicture.cpp|manual|marker_sync
 5059d0|src/game/TTerrainHelpPicture.cpp|manual|marker_sync
 505a50|src/game/TLonelyTileView.cpp|manual|marker_sync

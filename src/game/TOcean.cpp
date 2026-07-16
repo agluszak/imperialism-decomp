@@ -38,7 +38,7 @@ void NotifyMapUberPictureTileMarker(short tileIndex) {
 }
 
 void SetMapTileStateByteAndNotifyObserver(int tileIndex, int stateByte) {
-  g_pGlobalMapState->terrainStateTable[static_cast<short>(tileIndex)].pad16 =
+  g_pGlobalMapState->terrainStateTable[static_cast<short>(tileIndex)].tileActionClass16 =
       static_cast<unsigned char>(stateByte);
   NotifyMapUberPictureTileMarker(tileIndex);
 }
@@ -275,8 +275,8 @@ void TOcean::RefreshMapActionContextNationOverlaysAndOrderRanks() {
   // 3) Reset overlay tile states across the whole map: nation-overlay states (7..0xd)
   // clear to -1, linked-zone overlay states (0xe..0x15) flip to their negated value.
   for (short overlayTile = 0; overlayTile < 0x1950; ++overlayTile) {
-    short overlayState =
-        static_cast<signed char>(g_pGlobalMapState->terrainStateTable[overlayTile].pad16);
+    short overlayState = static_cast<signed char>(
+        g_pGlobalMapState->terrainStateTable[overlayTile].tileActionClass16);
     unsigned char isNationOverlay = (overlayState >= 7 && overlayState <= 0xd);
     if (isNationOverlay != 0) {
       SetMapTileStateByteAndNotifyObserver(overlayTile, -1);
@@ -354,7 +354,7 @@ void TOcean::RefreshMapActionContextNationOverlaysAndOrderRanks() {
 // FUNCTION: IMPERIALISM 0x005633b0
 TZone* TOcean::GetLinkedZoneForSeaTile(short seaTileIndex) {
   TTerrainStateRecordView& terrainRecord = g_pGlobalMapState->terrainStateTable[seaTileIndex];
-  signed char terrainClass = static_cast<signed char>(terrainRecord.pad16);
+  signed char terrainClass = static_cast<signed char>(terrainRecord.tileActionClass16);
   if (terrainClass == 3 || terrainClass == 0x0e) {
     return TZone::FindPortZoneByTile(seaTileIndex);
   }

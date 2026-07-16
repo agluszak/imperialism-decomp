@@ -3010,8 +3010,8 @@ address|name|symbol|size|type|prototype|provenance
 504dc0|TTerrainHelpWindow::CallVoidSlotA0||18|function|undefined WrapperFor_ResetChildSelectionAndNotifyParent468Alt_At00504dc0()|
 504df0|TTerrainHelpPicture::CreateObject|?CreateObject@TTerrainHelpPicture@@SGPAVCObject@@XZ|83|function|undefined CreateObject()|rtti
 504e70|TTerrainHelpPicture::GetRuntimeClass||6|function|undefined GetTTerrainHelpPictureClassNamePointer()|rtti
-504e90|BuildMapTileActionContextMenu||1804|function|void __thiscall BuildMapTileActionContextMenu(void * pMenuDialogState, short nTileIndex)|
-5057a0|TTerrainHelpPicture::VTableSlot73||434|function|undefined DestructTTerrainHelpPictureAndMaybeFree(void)|
+504e90|TTerrainHelpPicture::BuildMapTileActionContextMenu||1804|function|void BuildMapTileActionContextMenu(short nTileIndex)|
+5057a0|TTerrainHelpPicture::HighlightSelectedMenuItemAndRefreshDetailText||434|function|void HighlightSelectedMenuItemAndRefreshDetailText(int selectedIndex)|
 5059d0|TTerrainHelpPicture::HandleEvent||96|function|undefined OrphanRetStub_0059add0(int param_1, int param_2)|
 505a50|TLonelyTileView::CreateObject|?CreateObject@TLonelyTileView@@SGPAVCObject@@XZ|80|function|undefined CreateObject()|rtti
 505ac0|TLonelyTileView::GetRuntimeClass||6|function|undefined GetTLonelyTileViewClassNamePointer()|rtti
