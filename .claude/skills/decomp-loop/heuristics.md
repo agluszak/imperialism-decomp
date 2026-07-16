@@ -1900,3 +1900,27 @@ model the global as `int` and have word readers write `static_cast<short>(g)` �
 emits `MOVSX reg, word ptr [g]` for a (short) cast of an int lvalue in memory, so both
 codegen shapes fall out (g_wMapDialogViewportTileSpan 0x6a33b0: 0x51adf0 dword reader,
 0x51ac40 movsx-word reader). A `short` global can never reproduce the dword load.
+
+## Note 119 — Never model overlapping views with a union: pick one model, migrate all accessors
+
+When a byte/word region has both a dynamic-index reader (array walk) and named per-offset
+readers, the union "both views" answer is wrong modeling — always. Determine the single
+true model and migrate every accessor to it: the named flags usually turn out to be
+specific indices of the array (TTechMgr::OrderCapRow's fort/recruit "flags" were
+techStatusByTechId[0x0b/0x16/0x13...]; TGlobalMapCityScoreRecord's stage1/stage2
+"counters" were resourceDevelopmentCounts82[1..8]). Before merging, verify every access
+site's RECEIVER is the same class/table (same global, same stride, same base offset) —
+distinct classes sharing a layout region are not the same object (TCommand ≠ TEvent).
+Keep the semantic map (index → meaning) in the struct comment, and land the migration as
+one pass over all users (grep the old field names to zero before building). Renamed
+accesses are codegen-neutral; confirm with the affected functions' baseline scores.
+
+## Note 120 — nmake U1054 "cannot create inline file" = stale nn?00192 temps
+
+A crashed docker build leaves nmake inline-file temps (nn[a-z]00192, nm?00192, a00820*)
+in build-msvc500/; once the namespace is exhausted every subsequent build fails with
+U1054 while `just stats`/`just compare` silently measure the STALE binary — which
+presents as a phantom mass drop (dozens of functions, off-by-one-function diffs from
+shifted PDB lines). If stats suddenly shows ~100 regressions in untouched code, first
+verify the build actually relinked ("Built target Imperialism"), then `rm -f
+build-msvc500/nn?00192 build-msvc500/nm?00192 build-msvc500/a00820*` and rebuild.
