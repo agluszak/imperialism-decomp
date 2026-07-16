@@ -1,5 +1,6 @@
 name|address|status|diffs
 afxDataNil|0x69be08|WARN|3
+g_Compute_Advisory_Zero_00653FD0|0x653fd0|WARN|2
 g_DAT_006533b0_Value_006533B0|0x6533b0|WARN|32
 g_DAT_006533d0_Value_006533D0|0x6533d0|WARN|32
 g_DAT_006533e8_Value_006533E8|0x6533e8|WARN|32
@@ -13,6 +14,7 @@ g_DAT_Value_00653398|0x653398|WARN|32
 g_DAT_Value_00653408|0x653408|WARN|32
 g_Populate_Beachhead_Mission_LookupTable_00697958|0x697958|WARN|32
 g_Rebuild_Primary_Nation_Value_00653570|0x653570|WARN|276
+g_Recompute_Nation_Order_LookupTable_0065AA20|0x65aa20|WARN|2
 g_Render_Nation_Header_Value_006961E0|0x6961e0|WARN|24
 g_Render_Nation_Header_Value_006961F8|0x6961f8|WARN|24
 g_Render_Nation_Header_Value_00696210|0x696210|WARN|24

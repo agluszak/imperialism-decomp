@@ -897,6 +897,7 @@ extern const float g_Recompute_Nation_Order_LookupTable_0065AA20 = 139069760.0f;
 unsigned short g_awTacticalCompositionReferenceProfiles_00697870[20] = {
     40, 27, 0, 17, 16, 27, 36, 0, 17, 20, 26, 31, 20, 23, 0, 40, 22, 0, 38, 0};
 unsigned short g_Populate_Beachhead_Mission_LookupTable_00697958[0x10] = {0};
+const short g_NavyOrderDistributionCategoryWeights_00697978[4] = {40, 30, 30, 0};
 
 // Army-mission order-priority weight/scoring tables (0x53c620 / 0x53ceb0 /
 // 0x53d4a0 family). Sizes are the minimum proven by observed index use;

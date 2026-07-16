@@ -821,6 +821,11 @@ extern double g_Recompute_Nation_Order_LookupTable_0065AA08;
 extern const float g_Recompute_Nation_Order_LookupTable_0065AA20;
 extern unsigned short g_awTacticalCompositionReferenceProfiles_00697870[];
 extern unsigned short g_Populate_Beachhead_Mission_LookupTable_00697958[];
+// TShip.cpp — per-category target-percentage weights (40/30/30/0) used by
+// ComputeNavyOrderDistributionScoreForNation's divergence-score formula. Read via
+// sign-extend (movsx) in the original despite being small positive values, so the
+// storage type must be signed short to match the codegen.
+extern const short g_NavyOrderDistributionCategoryWeights_00697978[4];
 
 // TMapMgr.cpp — per-resourceType requirement level table (0x513610).
 extern unsigned char g_abUniversityRequirementLevelById[24][4];

@@ -78,6 +78,15 @@ int ComputeOrderNodeCompositeEconomicScore(TShip* node);
 int SumNavyOrderPriorityForNation(TGreatPower* nationObj);
 int SumNavyOrderPriorityForNationAndNodeType(TGreatPower* nationObj, int nodeType);
 
+// Walks the primary navy order list for `nation`'s eligible port-owner ships (owner
+// matches, the order's zone is a port zone, and the ship's normalization base doesn't
+// exceed its stock), accumulates a 4-category priority vector (categories 0..2 scaled
+// by stockLevel1c/normalizationBase, category 3 unscaled), then scores the vector's
+// divergence from g_NavyOrderDistributionCategoryWeights_00697978's target percentages
+// (same divergence-score shape as TNavyMission's NormalizeFourComponentNavyVector).
+// Returns 0 if the vector sums to zero. 0x53b800.
+float ComputeNavyOrderDistributionScoreForNation(short nation);
+
 // Shared navy-order-priority helper (0x54ff00): reads the per-resourceType
 // TNavyOrderResourceDescriptor and blends it with the caller's own
 // stock/tiebreak field. Called both on TShip nodes (the primary navy order

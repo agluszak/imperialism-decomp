@@ -44,6 +44,36 @@ int SumNavyOrderPriorityForNation(TGreatPower* nationObj) {
   }
   return sum;
 }
+
+// FUNCTION: IMPERIALISM 0x0053b800
+float ComputeNavyOrderDistributionScoreForNation(short nation) {
+  float categoryVector[4] = {
+      g_Recompute_Nation_Order_LookupTable_0065A9E8, g_Recompute_Nation_Order_LookupTable_0065A9E8,
+      g_Recompute_Nation_Order_LookupTable_0065A9E8, g_Recompute_Nation_Order_LookupTable_0065A9E8};
+  for (TShip* ship = GetNavyPrimaryOrderListHead(); ship != nullptr; ship = ship->nextOlder24) {
+    if (ship->ownerNationSlot14 == nation && ship->field08->QueryPortZoneCapability() &&
+        ship->GetNavyOrderNormalizationBaseByNationType() <= ship->stockLevel1c) {
+      AccumulateNavyOrderCategoryVectorWithScale(
+          ship, categoryVector, static_cast<float>(g_Recompute_Nation_Order_LookupTable_0065AA08));
+    }
+  }
+  float total = categoryVector[0] + categoryVector[1] + categoryVector[2] + categoryVector[3];
+  if (total == static_cast<float>(g_Recompute_Nation_Order_LookupTable_0065A9F0)) {
+    return g_Recompute_Nation_Order_LookupTable_0065A9E8;
+  }
+  float diffSum = g_Recompute_Nation_Order_LookupTable_0065A9E8;
+  for (int i = 0; i < 4; ++i) {
+    float diff = categoryVector[i] / total -
+                 static_cast<float>(g_NavyOrderDistributionCategoryWeights_00697978[i]) *
+                     static_cast<float>(g_Recompute_Nation_Order_LookupTable_0065A9F8);
+    if (diff <= static_cast<float>(g_Recompute_Nation_Order_LookupTable_0065A9F0)) {
+      diff = -diff;
+    }
+    diffSum += diff;
+  }
+  return total * (static_cast<float>(g_Recompute_Nation_Order_LookupTable_0065AA08) -
+                  diffSum * static_cast<float>(g_Recompute_Nation_Order_LookupTable_0065AA00));
+}
 // SYNTHETIC: IMPERIALISM 0x0054f460
 // TShip::CreateObject
 
