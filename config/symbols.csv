@@ -6675,10 +6675,10 @@ address|name|symbol|size|type|prototype|provenance
 5f4520|_IsZeroMan|__IsZeroMan|29|function|undefined Is96BitIntegerZero()|msvc500_library_oracle
 5f4540|_ShrMan|__ShrMan|177|function|undefined ShiftRight96BitIntegerByBitCount()|msvc500_library_oracle
 5f4600|_ld12cvt|__ld12cvt|463|function|undefined ConvertExtendedFloatToDecimalState()|msvc500_library_oracle
-5f47d0|ConvertParsedDecimalStateWithProfileA||24|function|undefined ConvertParsedDecimalStateWithProfileA()|
-5f47f0|ConvertParsedDecimalStateWithProfileB||24|function|undefined ConvertParsedDecimalStateWithProfileB()|
-5f4890|ParseDecimalTextAndConvertWithProfileA||56|function|undefined ParseDecimalTextAndConvertWithProfileA()|
-5f4910|ParseDecimalTextAndConvertWithProfileB||56|function|undefined ParseDecimalTextAndConvertWithProfileB()|
+5f47d0|__ld12tod|___ld12tod|24|function|int __cdecl __ld12tod(_LDBL12 *,double *)|msvc500_library_override
+5f47f0|__ld12tof|___ld12tof|24|function|int __cdecl __ld12tof(_LDBL12 *,float *)|msvc500_library_override
+5f4890|_atodbl|__atodbl|56|function|int __cdecl _atodbl(_CRT_DOUBLE *,char *)|msvc500_library_override
+5f4910|_atoflt|__atoflt|56|function|int __cdecl _atoflt(_CRT_FLOAT *,char *)|msvc500_library_override
 5f4950|__fptostr|__fptostr|145|function|undefined RoundAndTrimDecimalDigitBuffer()|
 5f49f0|_fltout2|__fltout2|139|function|undefined BuildDecimalConversionStateFromFpInput()|msvc500_library_oracle
 5f4a80|__dtold|___dtold|190|function|undefined ConvertFpMantissaTo96BitIntegerAndExponent()|msvc500_library_oracle
@@ -6741,7 +6741,7 @@ address|name|symbol|size|type|prototype|provenance
 5f78d0|__shl_12|___shl_12|46|function|undefined ShiftLeft96BitIntegerBy1()|msvc500_library_oracle
 5f7900|__shr_12|___shr_12|45|function|undefined ShiftRight96BitIntegerBy1()|msvc500_library_oracle
 5f7930|__mtold12|___mtold12|241|function|undefined Build96BitIntegerFromDigitBytesAndNormalize()|msvc500_library_oracle
-5f7a30|ParseFloatingPointTextToInternalState||1632|function|undefined ParseFloatingPointTextToInternalState()|
+5f7a30|__strgtold12|___strgtold12|1632|function|unsigned int __cdecl __strgtold12(_LDBL12 *,char const * *,char const *,int,int,int,int)|msvc500_library_override
 5f8210|$I10_OUTPUT|_$I10_OUTPUT|898|function|undefined ConvertExtendedFloatToStringInternal()|msvc500_library_oracle
 5f8640|__mbsnbicoll|__mbsnbicoll|59|function|undefined CompareLocaleMultibytePrefixLength()|
 5f8680|___wtomb_environ|___wtomb_environ|122|function|undefined PopulateNarrowEnvironmentFromWideList()|

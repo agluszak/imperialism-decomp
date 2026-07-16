@@ -36142,26 +36142,26 @@
     },
     {
       "address": "0x5f47d0",
-      "matching": 0.2,
-      "name": "ConvertParsedDecimalStateWithProfileA",
+      "matching": 0.5833333333333334,
+      "name": "__ld12tod",
       "type": 1
     },
     {
       "address": "0x5f47f0",
-      "matching": 0.2,
-      "name": "ConvertParsedDecimalStateWithProfileB",
+      "matching": 0.5833333333333334,
+      "name": "__ld12tof",
       "type": 1
     },
     {
       "address": "0x5f4890",
-      "matching": 0.08695652173913043,
-      "name": "ParseDecimalTextAndConvertWithProfileA",
+      "matching": 0.84,
+      "name": "__atodbl",
       "type": 1
     },
     {
       "address": "0x5f4910",
-      "matching": 0.08695652173913043,
-      "name": "ParseDecimalTextAndConvertWithProfileB",
+      "matching": 0.84,
+      "name": "__atoflt",
       "type": 1
     },
     {
@@ -36430,8 +36430,8 @@
     },
     {
       "address": "0x5f7a30",
-      "matching": 0.008213552361396304,
-      "name": "ParseFloatingPointTextToInternalState",
+      "matching": 0.7869674185463659,
+      "name": "___strgtold12",
       "type": 1
     },
     {
