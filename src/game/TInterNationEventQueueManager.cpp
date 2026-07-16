@@ -1,14 +1,16 @@
-#include "game/TInterNationEventQueueManager.h"
+#include "game/TNewsMgr.h"
 
 #include "game/global_data_tables.h"
 #include "game/TMultiplayerMgr.h"
 #include "game/TSimMgr.h"
 #include "game/TPtrList.h"
 
+// Record layout is three dwords — the original 0x55c9f0 compares and stores dwords
+// ({int code, int nation, int mask}), same shape as TBilateralActionRelationEntry.
 struct TInterNationEventDedupPacket {
-  short eventCode0;
-  short nationSlot2;
-  int nationMask4;
+  int eventCode0;
+  int nationSlot4;
+  int nationMask8;
 };
 
 // Forward iterator over a TPtrList's 1-based entry array. `owner` is the
@@ -25,9 +27,8 @@ struct TPlaybackWalkState {
 };
 
 // FUNCTION: IMPERIALISM 0x0055c970
-void TInterNationEventQueueManager::QueueInterNationEventIntoNationBucket(int eventCode,
-                                                                          int payloadOrNation,
-                                                                          char isReplayBypass) {
+void TNewsMgr::QueueInterNationEventIntoNationBucket(int eventCode, int payloadOrNation,
+                                                     char isReplayBypass) {
   if (g_pSimMgr == 0) {
     return;
   }
@@ -55,9 +56,8 @@ struct TInterNationEventType0FMergePayload {
 };
 
 // FUNCTION: IMPERIALISM 0x0055c9f0
-void TInterNationEventQueueManager::QueueInterNationEventRecordDeduped(int eventCode, int nationA,
-                                                                       int nationB,
-                                                                       char isReplayBypass) {
+void TNewsMgr::QueueInterNationEventRecordDeduped(int eventCode, int nationA, int nationB,
+                                                  char isReplayBypass) {
   if (g_pSimMgr == 0) {
     return;
   }
@@ -87,12 +87,12 @@ void TInterNationEventQueueManager::QueueInterNationEventRecordDeduped(int event
       static_cast<TInterNationEventDedupPacket*>(playbackState.Begin());
   while (playbackState.IsValid() != 0) {
     if (packet->eventCode0 == static_cast<short>(eventCode)) {
-      if (packet->nationSlot2 == static_cast<short>(nationA) &&
-          (packet->nationMask4 & (1 << (nationB & 0x1f))) != 0) {
+      if (packet->nationSlot4 == static_cast<short>(nationA) &&
+          (packet->nationMask8 & (1 << (nationB & 0x1f))) != 0) {
         return;
       }
-      if (packet->nationSlot2 == static_cast<short>(nationB) &&
-          (packet->nationMask4 & (1 << (nationA & 0x1f))) != 0) {
+      if (packet->nationSlot4 == static_cast<short>(nationB) &&
+          (packet->nationMask8 & (1 << (nationA & 0x1f))) != 0) {
         return;
       }
     }
@@ -102,8 +102,8 @@ void TInterNationEventQueueManager::QueueInterNationEventRecordDeduped(int event
   if (nationA < 7) {
     TInterNationEventDedupPacket packetA;
     packetA.eventCode0 = static_cast<short>(eventCode);
-    packetA.nationSlot2 = static_cast<short>(nationA);
-    packetA.nationMask4 = 1 << (nationB & 0x1f);
+    packetA.nationSlot4 = static_cast<short>(nationA);
+    packetA.nationMask8 = 1 << (nationB & 0x1f);
     if (sharedEventRecordQueue != 0) {
       sharedEventRecordQueue->InsertCopiedRecordSortedByComparator(&packetA);
     }
@@ -111,15 +111,15 @@ void TInterNationEventQueueManager::QueueInterNationEventRecordDeduped(int event
   if (nationB < 7 && eventCode > 1 && eventCode < 0x19) {
     TInterNationEventDedupPacket packetB;
     packetB.eventCode0 = static_cast<short>(eventCode);
-    packetB.nationSlot2 = static_cast<short>(nationB);
-    packetB.nationMask4 = 1 << (nationA & 0x1f);
+    packetB.nationSlot4 = static_cast<short>(nationB);
+    packetB.nationMask8 = 1 << (nationA & 0x1f);
     if (sharedEventRecordQueue != 0) {
       sharedEventRecordQueue->InsertCopiedRecordSortedByComparator(&packetB);
     }
   }
 }
 
-TSortedPtrList* TInterNationEventQueueManager::GetInterNationQueueByEventCode(int eventCode) {
+TSortedPtrList* TNewsMgr::GetInterNationQueueByEventCode(int eventCode) {
   if (eventCode >= 0 && eventCode < 7) {
     return perNationEventBuckets[eventCode];
   }
@@ -130,8 +130,8 @@ TSortedPtrList* TInterNationEventQueueManager::GetInterNationQueueByEventCode(in
 }
 
 // FUNCTION: IMPERIALISM 0x0055cbd0
-void TInterNationEventQueueManager::QueueInterNationEventType0FWithBitmaskMerge(
-    int eventCode, int nationA, int nationB, char isReplayBypass) {
+void TNewsMgr::QueueInterNationEventType0FWithBitmaskMerge(int eventCode, int nationA, int nationB,
+                                                           char isReplayBypass) {
   if (g_pSimMgr == 0) {
     return;
   }
@@ -185,8 +185,7 @@ struct TBilateralActionRelationEntry {
 };
 
 // FUNCTION: IMPERIALISM 0x0055cd00
-void TInterNationEventQueueManager::QueueInterNationEventType11(int eventParam, int value,
-                                                                char isReplayBypass) {
+void TNewsMgr::QueueInterNationEventType11(int eventParam, int value, char isReplayBypass) {
   if (g_pSimMgr->gateFlag7a == 0) {
     if (isReplayBypass == 0) {
       unsigned char multiplayerActive = g_pSimMgr->field44 != 0;
@@ -207,9 +206,7 @@ void TInterNationEventQueueManager::QueueInterNationEventType11(int eventParam, 
 }
 
 // FUNCTION: IMPERIALISM 0x0055cda0
-void TInterNationEventQueueManager::AddOrUpdateBilateralActionRelationEntry(int eventCode,
-                                                                            int nationA,
-                                                                            int nationB) {
+void TNewsMgr::AddOrUpdateBilateralActionRelationEntry(int eventCode, int nationA, int nationB) {
   bool nationAHandled = 6 < nationA;
   bool nationBHandled = 6 < nationB;
   if (((6 < eventCode && eventCode < 0xe)) || eventCode == 0x12 || eventCode == 0x14) {

@@ -12,7 +12,7 @@
 #include "game/TGreatPower.h"
 #include "game/TMinor.h"
 #include "game/TNextTradeCommand.h"
-#include "game/TInterNationEventQueueManager.h"
+#include "game/TNewsMgr.h"
 #include "game/TApplication.h"
 #include "game/TStream.h"
 #include "game/TMultiplayerMgr.h"

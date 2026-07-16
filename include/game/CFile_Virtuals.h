@@ -21,7 +21,7 @@ public:
   virtual void dummy2C() = 0;
   virtual void SeekSlot30(int arg1, int arg2) = 0; // 0x30
   virtual void dummy34() = 0;
-  virtual void dummy38() = 0;
+  virtual int GetLengthSlot38() = 0; // 0x38 — stream length (CFile::GetLength)
   virtual int ReadBytesSlot3C(void* buffer, int count) = 0;   // 0x3C
   virtual void WriteBytesSlot40(void* buffer, int count) = 0; // 0x40
   virtual void dummy44() = 0;

@@ -24,7 +24,7 @@
 #include "game/TTurnInstructionCursor.h"
 #include "game/TNewsMgr.h"
 #include "game/TNavyMgr.h"
-#include "game/TInterNationEventQueueManager.h"
+#include "game/TNewsMgr.h"
 #include "game/TMinor.h"
 #include "game/TRemoteGreatPower.h"
 #include "game/TProxyGreatPower.h"
@@ -416,11 +416,11 @@ void TSimMgr::RebuildGlobalOrderManagersAndCapabilityState(char flag) {
     g_pNationInteractionStateManager = new TTradeMgr();
 
     if (g_pInterNationEventQueueManager != nullptr) {
-      reinterpret_cast<TNewsMgr*>(g_pInterNationEventQueueManager)->Free();
+      g_pInterNationEventQueueManager->Free();
       g_pInterNationEventQueueManager = nullptr;
     }
-    g_pInterNationEventQueueManager =
-        reinterpret_cast<TInterNationEventQueueManager*>(new TNewsMgr());
+    g_pInterNationEventQueueManager = new TNewsMgr();
+    g_pInterNationEventQueueManager->InitializeInterNationEventQueueManager();
 
     if (g_pMapContextActionManager != nullptr) {
       g_pMapContextActionManager->Free();

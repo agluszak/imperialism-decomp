@@ -195,54 +195,6 @@ undefined4 ResetTNewsMgrToSentinelVtable(void)
   return 0;
 }
 
-// ghidra_name RebuildNationRankingDataAndUiCache
-// ghidra_proto undefined RebuildNationRankingDataAndUiCache()
-// FUNCTION: IMPERIALISM 0x0055b8e0
-undefined4 RebuildNationRankingDataAndUiCache(void)
-{
-  return 0;
-}
-
-// ghidra_name GetRankingTableStringBaseAtOffset28
-// ghidra_proto undefined GetRankingTableStringBaseAtOffset28()
-// FUNCTION: IMPERIALISM 0x0055ba10
-undefined4 GetRankingTableStringBaseAtOffset28(void)
-{
-  return 0;
-}
-
-// ghidra_name LoadAndByteSwapRankingTableResource
-// ghidra_proto undefined LoadAndByteSwapRankingTableResource()
-// FUNCTION: IMPERIALISM 0x0055ba30
-undefined4 LoadAndByteSwapRankingTableResource(void)
-{
-  return 0;
-}
-
-// ghidra_name GetNewsMgrEntryArrayBaseAtOffset2C
-// ghidra_proto undefined GetNewsMgrEntryArrayBaseAtOffset2C()
-// FUNCTION: IMPERIALISM 0x0055bbf0
-undefined4 GetNewsMgrEntryArrayBaseAtOffset2C(void)
-{
-  return 0;
-}
-
-// ghidra_name BuildNationRankingRowsForNation
-// ghidra_proto undefined BuildNationRankingRowsForNation()
-// FUNCTION: IMPERIALISM 0x0055bc10
-undefined4 BuildNationRankingRowsForNation(void)
-{
-  return 0;
-}
-
-// ghidra_name BuildNationActionOptionCardsFromRelationTable
-// ghidra_proto undefined BuildNationActionOptionCardsFromRelationTable()
-// FUNCTION: IMPERIALISM 0x0055c010
-undefined4 BuildNationActionOptionCardsFromRelationTable(void)
-{
-  return 0;
-}
-
 // ghidra_name BuildInterNationEventSummaryRowsForAdvisorDialog
 // ghidra_proto undefined BuildInterNationEventSummaryRowsForAdvisorDialog()
 // FUNCTION: IMPERIALISM 0x0055d200

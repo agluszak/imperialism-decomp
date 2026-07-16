@@ -34,6 +34,11 @@ public:
   unsigned char padding26[2];
   CString newsTexPath;
   CString newsTabPath;
+
+  // Header-inline accessors in the original whose COMDAT copies landed in the
+  // UNewspaper TU (0x55ba10/0x55bbf0); the news phase calls them on g_pLanguageMgr.
+  CString& GetNewsTexPath();
+  CString& GetNewsTabPath();
   int field30;
 
   TLanguageMgr();

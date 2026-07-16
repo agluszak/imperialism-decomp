@@ -37,7 +37,7 @@ class TDiplomacyMgr;
 class TNavyMgr;
 class TSimMgr;
 class TAssetMgr;
-class TInterNationEventQueueManager;
+class TNewsMgr;
 
 class TLanguageMgr;
 class THelpMgr;
@@ -295,7 +295,7 @@ extern TGreatPower* g_apNationStates[7];
 extern void* g_apNationStates_End;
 extern TSimMgr* g_pSimMgr;
 extern THelpMgr* g_pHelpMgr;
-extern TInterNationEventQueueManager* g_pInterNationEventQueueManager;
+extern TNewsMgr* g_pInterNationEventQueueManager;
 extern TApplication* g_pGlobalUiRootController;
 
 // The live tactical battle (turn-event 0x29/0x2a receive dispatch target).
@@ -715,6 +715,7 @@ extern int g_anTechItemResearchCostByTechId[29];
 // Assert source-path strings for the UViewMgr TU family.
 extern "C" const char s_SourcePathUViewMgr_0069B6BC[];
 extern "C" const char s_SourcePathUMapDlog_006973D0[];
+extern "C" const char s_SourcePathUNewspaper_00698470[];
 extern "C" const char s_SourcePathUMultiplayerMgr_00698040[];
 extern "C" const char s_SourcePathUNavy_006983C8[];
 extern "C" const char s_SourcePathUTacViews_00699FF4[];

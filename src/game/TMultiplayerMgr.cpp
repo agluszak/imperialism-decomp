@@ -155,7 +155,7 @@ struct TurnEvent15Packet : NetMessage {
 #include "game/TControl.h"
 #include "game/TDeluxeText.h"
 #include "game/TDropShadowText.h"
-#include "game/TInterNationEventQueueManager.h"
+#include "game/TNewsMgr.h"
 #include "game/TLanguageMgr.h"
 #include "game/TLoungeDialog.h"
 #include "game/TNextTradeCommand.h"

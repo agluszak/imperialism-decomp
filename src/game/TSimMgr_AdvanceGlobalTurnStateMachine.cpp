@@ -6,6 +6,7 @@
 // out-of-line calls.
 
 #include "game/TLoadSavePicture.h"
+#include "game/TNewsMgr.h"
 #include "game/TSimMgr.h"
 
 #include "decomp_types.h"
@@ -28,7 +29,6 @@ extern undefined4 RefreshNationAdvisorLabelStrings(void);
 extern undefined4 ProcessTurnInstructionStreamAndFinalizePhase(void);
 extern undefined4 ShowTurnAlertsForActiveNation(void);
 extern undefined4 UpdatePersistentTopTenNationScores(void);
-extern undefined4 RebuildNationRankingDataAndUiCache(void);
 extern undefined4 UpdateCityOrderCapabilityUnlockProgress(void);
 extern undefined4 ConsumeFirstPendingAbilityUnlock(void);
 extern undefined4 RefreshNavyOrderCycleAndClearReadyFlags(void);
@@ -398,7 +398,7 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
     if (g_pUiViewManager != nullptr) {
       // TODO: port TAssetMgr/TViewMgr slot used at 0x005df3f0.
     }
-    RebuildNationRankingDataAndUiCache();
+    g_pInterNationEventQueueManager->StartNewsPhase();
     DispatchUiSlot4C();
     for (short nationSlot = 0; nationSlot < 7; ++nationSlot) {
       if (!IsNationTerrainEligible(nationSlot)) {

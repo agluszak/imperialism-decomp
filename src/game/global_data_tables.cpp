@@ -26,7 +26,7 @@ class TInfoBarText;
 #include "game/TDiplomacyMgr.h"
 #include "game/TDisplayMgr.h"
 #include "game/TGreatPower.h"
-#include "game/TInterNationEventQueueManager.h"
+#include "game/TNewsMgr.h"
 #include "game/TNavyMgr.h"
 #include "game/TSimMgr.h"
 #include "game/TAssetMgr.h"
@@ -94,7 +94,7 @@ TSimMgr* g_pSimMgr = 0;
 // GLOBAL: IMPERIALISM 0x006a21b8
 THelpMgr* g_pHelpMgr = 0;
 // GLOBAL: IMPERIALISM 0x006a43e8
-TInterNationEventQueueManager* g_pInterNationEventQueueManager = 0;
+TNewsMgr* g_pInterNationEventQueueManager = 0;
 // GLOBAL: IMPERIALISM 0x006a1344
 TApplication* g_pGlobalUiRootController = 0;
 // GLOBAL: IMPERIALISM 0x006a43c8
@@ -990,6 +990,8 @@ extern "C" const char s_TurnEventCursorNameFormat_0069B6B4[] = "~C%d";
 extern "C" const char s_SourcePathUViewMgr_0069B6BC[] = "D:\\Ambit\\Cross\\UViewMgr.cpp";
 // GLOBAL: IMPERIALISM 0x006973d0
 extern "C" const char s_SourcePathUMapDlog_006973D0[] = "D:\\Ambit\\Cross\\UMapDlog.cpp";
+// GLOBAL: IMPERIALISM 0x00698470
+extern "C" const char s_SourcePathUNewspaper_00698470[] = "D:\\Ambit\\Cross\\UNewspaper.cpp";
 // GLOBAL: IMPERIALISM 0x00698040
 extern "C" const char s_SourcePathUMultiplayerMgr_00698040[] =
     "D:\\Ambit\\Cross\\UMultiplayerMgr.cpp";

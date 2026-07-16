@@ -3382,6 +3382,12 @@ address|target_cpp|ownership|note
 55b820|src/game/TNewsMgr.cpp|manual|marker_sync
 55b8a0|src/game/TNewsMgr.cpp|manual|marker_sync
 55b8c0|src/game/TNewsMgr.cpp|manual|marker_sync
+55b8e0|src/game/TNewsMgr.cpp|manual|marker_sync
+55ba10|src/game/TLanguageMgr.cpp|manual|marker_sync
+55ba30|src/game/TNewsMgr.cpp|manual|marker_sync
+55bbf0|src/game/TLanguageMgr.cpp|manual|marker_sync
+55bc10|src/game/TNewsMgr.cpp|manual|marker_sync
+55c010|src/game/TNewsMgr.cpp|manual|marker_sync
 55c970|src/game/TInterNationEventQueueManager.cpp|manual|marker_sync
 55c9f0|src/game/TInterNationEventQueueManager.cpp|manual|marker_sync
 55cbd0|src/game/TInterNationEventQueueManager.cpp|manual|marker_sync
@@ -5035,6 +5041,7 @@ address|target_cpp|ownership|note
 5df430|src/game/TAssetMgr.cpp|manual|marker_sync
 5df6d0|src/game/TAssetMgr.cpp|manual|marker_sync
 5df700|src/game/TAssetMgr.cpp|manual|marker_sync
+5df760|src/game/TAssetMgr.cpp|manual|marker_sync
 5df780|src/game/TAssetMgr.cpp|manual|marker_sync
 5df7a0|src/game/ImperialismApp.cpp|manual|marker_sync
 5df890|src/game/ImperialismApp.cpp|manual|marker_sync

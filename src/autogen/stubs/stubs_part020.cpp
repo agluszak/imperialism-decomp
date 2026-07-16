@@ -347,14 +347,6 @@ undefined4 InvokeVtableSlot30OnTargetObject(void)
   return 0;
 }
 
-// ghidra_name GetResourceStreamSize
-// ghidra_proto undefined GetResourceStreamSize()
-// FUNCTION: IMPERIALISM 0x005df760
-undefined4 GetResourceStreamSize(void)
-{
-  return 0;
-}
-
 // ghidra_name BuildScenarioPathForModeAndIndex
 // ghidra_proto undefined BuildScenarioPathForModeAndIndex()
 // FUNCTION: IMPERIALISM 0x005dfd70

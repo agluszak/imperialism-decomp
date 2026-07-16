@@ -31,11 +31,11 @@ g_nationMetricSlotDispatchOrder006d810|0x66d810|WARN|36
 g_pActiveQuickDrawSurfaceContextHead|0x6950f8|WARN|5
 g_pRegistryAppKey_0063E03C|0x63e03c|WARN|3
 g_pRegistryAutoResKey_0063E048|0x63e048|WARN|3
-g_pRegistryCompanyKey_0063E038|0x63e038|WARN|3
-g_pRegistryLanguageKey_0063E04C|0x63e04c|WARN|3
-g_pRegistryProfileAppName_0063E050|0x63e050|WARN|3
-g_pRegistrySettingsSectionAlt_0063E044|0x63e044|WARN|3
-g_pRegistrySettingsSection_0063E040|0x63e040|WARN|3
+g_pRegistryCompanyKey_0063E038|0x63e038|WARN|2
+g_pRegistryLanguageKey_0063E04C|0x63e04c|WARN|2
+g_pRegistryProfileAppName_0063E050|0x63e050|WARN|2
+g_pRegistrySettingsSectionAlt_0063E044|0x63e044|WARN|2
+g_pRegistrySettingsSection_0063E040|0x63e040|WARN|2
 g_pszClientSavePrefix_0065BF5C|0x65bf5c|WARN|6
 g_pszImpSaveExtension_0065DDD8|0x65ddd8|WARN|3
 g_pszMultiplayerSavePrefix_0065DDD4|0x65ddd4|WARN|3

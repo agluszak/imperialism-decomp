@@ -8,7 +8,7 @@
 #include "game/global_data_tables.h"
 #include "game/TMapMgr.h"
 #include "game/TSimMgr.h"
-#include "game/TInterNationEventQueueManager.h"
+#include "game/TNewsMgr.h"
 #include "game/mfc.h"
 #include "game/TStream.h"
 

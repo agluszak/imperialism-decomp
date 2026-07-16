@@ -4231,12 +4231,12 @@ address|name|symbol|size|type|prototype|provenance
 55b820|TNewsMgr::Free||81|function|undefined DestroyTNewsMgrAndReleaseHeadlineEntries()|
 55b8a0|TNewsMgr::ReadFrom||13|function|undefined IsDiplomacyTargetClassCode200Match(void)|
 55b8c0|TNewsMgr::WriteTo||13|function|undefined ApplyJoinEmpireMode2FinalizeNationNameState(void)|
-55b8e0|RebuildNationRankingDataAndUiCache||240|function|undefined RebuildNationRankingDataAndUiCache()|
-55ba10|GetRankingTableStringBaseAtOffset28||4|function|undefined GetRankingTableStringBaseAtOffset28()|
-55ba30|LoadAndByteSwapRankingTableResource||341|function|undefined LoadAndByteSwapRankingTableResource()|
-55bbf0|GetNewsMgrEntryArrayBaseAtOffset2C||4|function|undefined GetNewsMgrEntryArrayBaseAtOffset2C()|
-55bc10|BuildNationRankingRowsForNation||816|function|undefined BuildNationRankingRowsForNation()|
-55c010|BuildNationActionOptionCardsFromRelationTable||1701|function|undefined BuildNationActionOptionCardsFromRelationTable()|
+55b8e0|TNewsMgr::StartNewsPhase||240|function|void StartNewsPhase()|
+55ba10|TLanguageMgr::GetNewsTexPath||4|function|CString& GetNewsTexPath()|
+55ba30|TNewsMgr::LoadNewsTable||341|function|void LoadNewsTable()|
+55bbf0|TLanguageMgr::GetNewsTabPath||4|function|CString& GetNewsTabPath()|
+55bc10|TNewsMgr::CreateNewspaper||816|function|void CreateNewspaper(int nation)|
+55c010|TNewsMgr::CreateEventStories||1701|function|void CreateEventStories(int nation, int* majorCursor, int* minorCursor)|
 55c970|TInterNationEventQueueManager::QueueInterNationEventIntoNationBucket||85|function|void __thiscall QueueInterNationEventIntoNationBucket(int eventCode,int payloadOrNation,char isReplayBypass)|
 55c9f0|TInterNationEventQueueManager::QueueInterNationEventRecordDeduped||379|function|void __thiscall QueueInterNationEventRecordDeduped(int eventCode,int nationA,int nationB,char isReplayBypass)|
 55cbd0|TInterNationEventQueueManager::QueueInterNationEventType0FWithBitmaskMerge||226|function|void __thiscall QueueInterNationEventType0FWithBitmaskMerge(int eventCode,int nationA,int nationB,char isReplayBypass)|
@@ -6135,7 +6135,7 @@ address|name|symbol|size|type|prototype|provenance
 5df6d0|TAssetMgr::ReleaseResourceStreamIfNotNull||18|function|undefined ReleaseResourceStreamIfNotNull()|
 5df700|TAssetMgr::ReadResourceStreamIntoBufferAndAdvance||30|function|undefined ReadResourceStreamIntoBufferAndAdvance()|
 5df730|InvokeVtableSlot30OnTargetObject||19|function|undefined InvokeVtableSlot30OnTargetObject()|
-5df760|GetResourceStreamSize||12|function|undefined GetResourceStreamSize()|
+5df760|TAssetMgr::GetResourceStreamSize||12|function|int GetResourceStreamSize(CFile_Virtuals* stream)|
 5df780|TAssetMgr::NoOpRuntimeUiCallback_005df780||3|function|undefined NoOpRuntimeUiCallback_005df780(void)|
 5df7a0|QueryVolumeInformationForDriveIndex||178|function|undefined QueryVolumeInformationForDriveIndex()|
 5df890|QueryDriveTypeByDriveIndex||44|function|undefined QueryDriveTypeByDriveIndex()|

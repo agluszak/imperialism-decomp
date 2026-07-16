@@ -42,6 +42,8 @@ public:
   int ReadResourceStreamIntoBufferAndAdvance(class CFile_Virtuals* stream, void* buffer,
                                              int* countInOut);
   void ReleaseResourceStreamIfNotNull(class CFile_Virtuals* stream); // 0x5df6d0
+  // Thiscall member that ignores `this` and returns the stream's length (slot 0x38).
+  int GetResourceStreamSize(class CFile_Virtuals* stream); // 0x5df760
 
   // Layout recovered from ctor 0x5df280: the 13 shared UI string-reference slots live at
   // offset 0x20, preceded by an as-yet-unidentified 0x1c-byte region and followed by one

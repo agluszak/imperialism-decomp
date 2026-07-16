@@ -28,7 +28,7 @@
 #include "game/TGreatPower.h"
 #include "game/TGreatPower_internal.h"
 #include "game/THelpMgr.h"
-#include "game/TInterNationEventQueueManager.h"
+#include "game/TNewsMgr.h"
 #include "game/TMinister.h"
 #include "game/TMinor.h"
 #include "game/TMission.h"
@@ -2138,7 +2138,7 @@ int TGreatPower::SumDiplomacyState1c6AndRelationDeltaSnapshot(short nationSlot) 
 
 // FUNCTION: IMPERIALISM 0x004dda90
 void TGreatPower::AssignNeedSlotFromSourceSlot19C(short targetNationSlot, short sourceNationSlot) {
-  TInterNationEventQueueManager* queueManager = g_pInterNationEventQueueManager;
+  TNewsMgr* queueManager = g_pInterNationEventQueueManager;
   if (queueManager != 0) {
     queueManager->QueueInterNationEventType0FWithBitmaskMerge(this->nationSlot, sourceNationSlot,
                                                               targetNationSlot, '\0');
@@ -4295,7 +4295,7 @@ void TGreatPower::BuildGreatPowerTurnMessageSummaryAndDispatch(void) {
     return;
   }
 
-  TInterNationEventQueueManager* queueManager = g_pInterNationEventQueueManager;
+  TNewsMgr* queueManager = g_pInterNationEventQueueManager;
   if (queueManager != 0) {
     queueManager->QueueInterNationEventIntoNationBucket(0x13A0, mergedNationMask, '\0');
   }
