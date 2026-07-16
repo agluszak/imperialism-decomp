@@ -3405,6 +3405,7 @@ address|target_cpp|ownership|note
 557170|src/game/TNavyMgr.cpp|manual|marker_sync
 557210|src/game/TNavyMgr.cpp|manual|marker_sync
 5572d0|src/game/TTechMgr.cpp|manual|marker_sync
+5577b0|src/game/TNavyMgr.cpp|manual|marker_sync
 557870|src/game/TTaskForce.cpp|manual|marker_sync
 557e10|src/game/TNavyMgr.cpp|manual|marker_sync
 557f10|src/game/TNavyMgr.cpp|manual|marker_sync

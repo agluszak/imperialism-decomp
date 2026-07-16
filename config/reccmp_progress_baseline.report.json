@@ -12618,7 +12618,7 @@
     },
     {
       "address": "0x4dd430",
-      "matching": 0.5142857142857142,
+      "matching": 0.5714285714285714,
       "name": "TGreatPower::ComputeRemainingDiplomacyAidBudget",
       "type": 1
     },
@@ -13057,8 +13057,7 @@
     },
     {
       "address": "0x4e05d0",
-      "effective": true,
-      "matching": 0.42857142857142855,
+      "matching": 1.0,
       "name": "TGreatPower::OrphanLeaf_NoCall_Ins02_004d7fc0_89",
       "type": 1
     },
@@ -13077,7 +13076,8 @@
     },
     {
       "address": "0x4e0690",
-      "matching": 1.0,
+      "effective": true,
+      "matching": 0.42857142857142855,
       "name": "TGreatPower::ReturnFalseNationStateCapabilityFlag90",
       "type": 1
     },
@@ -22540,13 +22540,13 @@
     },
     {
       "address": "0x553b10",
-      "matching": 0.4827586206896552,
+      "matching": 0.6206896551724138,
       "name": "HasNoMapOrderEntryChildrenQueued",
       "type": 1
     },
     {
       "address": "0x553b50",
-      "matching": 0.5818181818181818,
+      "matching": 0.5454545454545454,
       "name": "HasActiveMapOrderEntryChildren",
       "type": 1
     },
@@ -22895,7 +22895,7 @@
     },
     {
       "address": "0x5577b0",
-      "matching": 0.0,
+      "matching": 0.6206896551724138,
       "name": "PrepareMapOrdersForExecutionPhase",
       "type": 1
     },
@@ -22919,7 +22919,7 @@
     },
     {
       "address": "0x557f10",
-      "matching": 0.1943502824858757,
+      "matching": 0.2054176072234763,
       "name": "SelectEligibleMapOrderInteractionForNationAndContext",
       "type": 1
     },
@@ -29862,7 +29862,7 @@
     },
     {
       "address": "0x5a39a0",
-      "matching": 0.9545454545454546,
+      "matching": 0.9393939393939394,
       "name": "ComputeHexTileDistanceFromIndices",
       "type": 1
     },

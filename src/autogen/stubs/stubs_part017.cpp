@@ -131,14 +131,6 @@ undefined4 RevalidateAndRequeueMapOrdersForTurn(void)
   return 0;
 }
 
-// ghidra_name PrepareMapOrdersForExecutionPhase
-// ghidra_proto void __fastcall PrepareMapOrdersForExecutionPhase(int * pOrderManager, int nQueueDomain, short nPhaseId)
-// FUNCTION: IMPERIALISM 0x005577b0
-undefined4 PrepareMapOrdersForExecutionPhase(void)
-{
-  return 0;
-}
-
 // ghidra_name ResolveMapOrderChainsForTurnPhase
 // ghidra_proto void __fastcall ResolveMapOrderChainsForTurnPhase(int * pOrderManager)
 // FUNCTION: IMPERIALISM 0x005578a0

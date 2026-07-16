@@ -12,6 +12,7 @@
 #include "game/TDiplomacyMgr.h"
 #include "game/TObject.h"
 #include "game/TPortZone.h"
+#include "game/TMultiplayerMgr.h"
 #include "game/TSimMgr.h"
 #include "game/TTaskForce.h"
 #include "game/TZone.h"
@@ -25,6 +26,11 @@ extern "C" int __cdecl rand(void);
 
 extern "C" TShip* g_pNavyPrimaryOrderListHead;
 extern "C" TAdmiral* g_pNavySecondaryOrderListHead;
+
+// Not-yet-recovered free function this file calls into (generic stub signature
+// per the autogen stub definition; real receiver/signature applied via a typed
+// cast at the one call site so the linker resolves the correct symbol).
+extern undefined4 RevalidateAndRequeueMapOrdersForTurn(void);
 
 // Resolves a raw TGlobalMapCityScoreRecord* back into its index in
 // g_pGlobalMapState's cityScoreTable. `unusedArg` is provably dead in the original
@@ -575,6 +581,32 @@ void TNavyMgr::RemoveOrdersByNationFromPrimarySecondaryAndTaskForceLists(short n
 
   RemoveMatchingSecondaryOrders(nationSlot);
   RemoveMatchingTaskForceOrders(this, nationSlot);
+}
+
+// FUNCTION: IMPERIALISM 0x005577b0
+void TNavyMgr::PrepareMapOrdersForExecutionPhase(short phaseId) {
+  for (int provinceIndex = 0; provinceIndex < 0x180; ++provinceIndex) {
+    TGlobalMapCityScoreRecord* record = &g_pGlobalMapState->cityScoreTable[provinceIndex];
+    if (record->exploredByNationMaskA1 != 0) {
+      record->exploredByNationMaskA1 = 0;
+      if (g_pSimMgr->field44 == 1) {
+        g_pGameFlowState->DispatchCityRedrawInvalidateEvent(static_cast<short>(provinceIndex));
+      }
+    }
+  }
+
+  field08 = phaseId;
+
+  typedef void*(__fastcall * RevalidateAndRequeueMapOrdersForTurn_t)(void* self, int dummyEdx);
+  RevalidateAndRequeueMapOrdersForTurn_t RevalidateAndRequeueMapOrdersForTurn_fn =
+      reinterpret_cast<RevalidateAndRequeueMapOrdersForTurn_t>(
+          (void*)&RevalidateAndRequeueMapOrdersForTurn);
+  RevalidateAndRequeueMapOrdersForTurn_fn(this, 0);
+
+  if (orderListHead04 != nullptr) {
+    orderListHead04->eliminatedFlag26 = 0;
+    orderListHead04->queue_next->ClearMapOrderProcessedFlagsChain();
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x00557e10
