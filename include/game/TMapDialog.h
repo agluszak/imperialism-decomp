@@ -63,6 +63,13 @@ public:
                                                                  short* outBand) override;
   virtual void UpdateMapDialogTileRowColumnMarkerAndInvalidate(int arg1) override;
 
+  // Fills the map-context info panel's 'titl' / 'info' / 'loca' text controls for the
+  // selected tile (terrain title, city resource counters + edge-resource requirement
+  // levels, and the "city, owner" location line). Attributed to TMapDialog by TU/address
+  // locality — the asserts cite D:\Ambit\Cross\UMapDlog.cpp and no live caller references
+  // the thunk. The second argument is never read. 0x51b1c0, __thiscall, RET 0x8.
+  void PopulateMapContextInfoPanelStringsByTileSelection(short tileIndex, int unusedArg);
+
   virtual void NoOpUiLifecycleHook(int arg) override;
 
   void OrphanRetStub_005966c0(short arg1) override;

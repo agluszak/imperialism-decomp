@@ -31,7 +31,9 @@ struct TTerrainStateRecordView {
   // evidence basis as terrainType00 above; also MOVSX-read there.
   signed char spriteVariantIndex01;
   unsigned char roadFlag;
-  unsigned char pad03;
+  // Previous owner-nation tag: the map context info panel (0x51b1c0) compares it with
+  // ownerNationTag04 and renders a "(formerly of <nation>)" suffix when they differ.
+  signed char formerOwnerNationTag03;
   signed char ownerNationTag04; // 0x04
   // Read as a signed byte and equality-compared between a town's own tile and its hex
   // neighbors by MarkType5NeighborTilesUnavailableByNationCapability (matches a coastal
@@ -120,16 +122,15 @@ struct TGlobalMapCityScoreRecord {
   // neighbors preferred; also snapshotted by the city-redraw packet.
   short secondaryNeighborTileIndex3e; // 0x3e
   short primaryNeighborTileIndex40;   // 0x40
-  short linkedRegionIds[0x21];
-  short stage1CounterA;
-  short stage1CounterB;
-  short pad88;
-  short stage1CounterC;
-  short stage1CounterD;
-  short stage2CounterA;
-  short stage2CounterB;
-  short stage2CounterC;
-  short field94; // 0x94 — snapshotted by the city-redraw packet
+  short linkedRegionIds[0x20];
+  // 0x82..0x95 — per-resource-type development counters, indexed by resourceType - 7
+  // (resource types 7..0x10). One array everywhere: the development advance
+  // (TGreatPower 0x4dbf00) increments individual entries against building caps, the
+  // city-redraw packet (TMultiplayerMgr) snapshots/patches all ten words, and the map
+  // context info panel (0x51b1c0) renders each nonzero entry as "<count> <resource
+  // name>" via GetString(0x2711, resourceType). Formerly split into
+  // stage1CounterA..stage2CounterC / pad88 / field94 names.
+  short resourceDevelopmentCounts82[10];
   unsigned char pad96[2];
   TMilitaryUnit* stationedUnitChain98; // 0x98
   int cityScoreValue;
@@ -323,7 +324,7 @@ public:
   // only for water tiles (always) or tiles owned by pCivilianOrderEntry->field_18 (nationTag)
   // or diplomatically compatible (TDiplomacyMgr::LookupOrderCompatibilityMatrixValue == 2),
   // further gated on gateFlag being in {8,9} (or {10,11,12} when
-  // g_pCityOrderCapabilityState->orderCapRows277[nationTag].recruitTierFlag27b == 2), and
+  // g_pCityOrderCapabilityState->orderCapRows277[nationTag].techStatusByTechId[0x13] == 2), and
   // finally on this nation's bit not already being set in pendingDevelopmentFlag0d.
   virtual void WrapperFor_LookupOrderCompatibilityMatrixValue_At00515330(
       class TCivUnit* pCivilianOrderEntry); // slot 0x23 0x515330
@@ -332,7 +333,7 @@ public:
   // (TDiplomacyMgr::LookupOrderCompatibilityMatrixValue == 2, ownerNationTag04 >= 7),
   // secondaryOwnerNationTag18 == -1, g_abGateFlagQualifies[gateFlag] != 0, and at least one
   // of its two edge resourceTypes qualifying (0/1/2 always; 3/4/0x15/0x16, or 6 when
-  // recruitTierFlag27b == 2, only when this nation's bit is already set in
+  // techStatusByTechId[0x13] == 2, only when this nation's bit is already set in
   // pendingDevelopmentFlag0d).
   virtual void WrapperFor_LookupOrderCompatibilityMatrixValue_At00515460(
       class TCivUnit* pCivilianOrderEntry); // slot 0x24 0x515460
@@ -366,7 +367,7 @@ public:
   // whose terrain type also gates and whose owner nation matches, provided
   // this tile's adjacencyBits06 doesn't already have that direction's bit set. Also flips 3
   // notification flag globals based on nation-indexed OrderCapRow padding bytes (see
-  // TTechMgr::OrderCapRow's unknownFlag27f/28b/291 comments).
+  // TTechMgr::OrderCapRow's tech-status gate comments (ids 0x17/0x06/0x0c)).
   virtual void MarkSeedNeighborTilesUnavailableByCapabilityMaskProfileA(
       class TCivUnit* pCivilianOrderEntry); // slot 0x28 0x5159b0
   // Same shape as ProfileA (slot 0x28), but the terrainType00 gate is a per-call local

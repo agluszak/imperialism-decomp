@@ -2631,6 +2631,7 @@ address|target_cpp|ownership|note
 51b120|src/game/TTerrainInfoDialog.cpp|manual|marker_sync
 51b140|src/game/TTerrainInfoDialog.cpp|manual|marker_sync
 51b170|src/game/TTerrainInfoDialog.cpp|manual|marker_sync
+51b1c0|src/game/TMapDialog.cpp|manual|marker_sync
 51ba70|src/game/TTownNameDialog.cpp|manual|marker_sync
 51baf0|src/game/TTownNameDialog.cpp|manual|marker_sync
 51bb10|src/game/TTownNameDialog.cpp|manual|marker_sync

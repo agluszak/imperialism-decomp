@@ -988,6 +988,8 @@ extern "C" const char s_BmpResourceNameFormat_006951C4[] = "%d.BMP";
 extern "C" const char s_TurnEventCursorNameFormat_0069B6B4[] = "~C%d";
 // GLOBAL: IMPERIALISM 0x0069b6bc
 extern "C" const char s_SourcePathUViewMgr_0069B6BC[] = "D:\\Ambit\\Cross\\UViewMgr.cpp";
+// GLOBAL: IMPERIALISM 0x006973d0
+extern "C" const char s_SourcePathUMapDlog_006973D0[] = "D:\\Ambit\\Cross\\UMapDlog.cpp";
 // GLOBAL: IMPERIALISM 0x00698040
 extern "C" const char s_SourcePathUMultiplayerMgr_00698040[] =
     "D:\\Ambit\\Cross\\UMultiplayerMgr.cpp";

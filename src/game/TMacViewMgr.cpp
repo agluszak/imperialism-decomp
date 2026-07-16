@@ -471,9 +471,9 @@ void TMacViewMgr::RefreshCityCapabilityUiHandlesForActiveNation() {
   }
   g_pUiViewManager->NoOpRuntimeUiCallback_005df3f0(3);
   nationId = g_pSimMgr->GetActiveNationId();
-  variant = g_pCityOrderCapabilityState->orderCapRows277[nationId].flag != 0;
+  variant = g_pCityOrderCapabilityState->orderCapRows277[nationId].techStatusByTechId[0x0f] != 0;
   nationId = g_pSimMgr->GetActiveNationId();
-  if (g_pCityOrderCapabilityState->orderCapRows277[nationId].secondaryCapabilityFlag280 != 0) {
+  if (g_pCityOrderCapabilityState->orderCapRows277[nationId].techStatusByTechId[0x18] != 0) {
     variant = 2;
   }
   nationId = g_pSimMgr->GetActiveNationId();

@@ -95,9 +95,9 @@ void TTechMgr::InitializeCityOrderCapabilityStateDefaults(void) {
 
     // orderCapRows: first three bytes = 2, rest cleared.
     memset(&orderCapRows277[n], 0, sizeof(OrderCapRow));
-    orderCapRows277[n].initReadyFlag[0] = 2;
-    orderCapRows277[n].initReadyFlag[1] = 2;
-    orderCapRows277[n].initReadyFlag[2] = 2;
+    orderCapRows277[n].techStatusByTechId[0] = 2;
+    orderCapRows277[n].techStatusByTechId[1] = 2;
+    orderCapRows277[n].techStatusByTechId[2] = 2;
 
     // capRowsB: first five bytes = 1, rest cleared.
     memset(&capRowsB333[n], 0, sizeof(CapRowB));
@@ -269,8 +269,8 @@ void TTechMgr::SelectMissingTechItemPrerequisitesFromPair(int techId, int nation
 // OrderCapRow for nation 0).
 // FUNCTION: IMPERIALISM 0x005b0ca0
 int TTechMgr::GetNationFortLevelCap(int nNationId) {
-  if (orderCapRows277[nNationId].advancedFortFlag != 0) {
+  if (orderCapRows277[nNationId].techStatusByTechId[0x16] != 0) {
     return 3;
   }
-  return (orderCapRows277[nNationId].intermediateFortFlag != 0) + 1;
+  return (orderCapRows277[nNationId].techStatusByTechId[0x0b] != 0) + 1;
 }

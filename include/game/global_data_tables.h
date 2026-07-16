@@ -714,6 +714,7 @@ extern int g_anTechItemResearchCostByTechId[29];
 
 // Assert source-path strings for the UViewMgr TU family.
 extern "C" const char s_SourcePathUViewMgr_0069B6BC[];
+extern "C" const char s_SourcePathUMapDlog_006973D0[];
 extern "C" const char s_SourcePathUMultiplayerMgr_00698040[];
 extern "C" const char s_SourcePathUNavy_006983C8[];
 extern "C" const char s_SourcePathUTacViews_00699FF4[];

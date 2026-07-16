@@ -3,8 +3,12 @@
 #include <stdlib.h>
 #include "game/TAnimator.h"
 #include "game/TDiplomacyMgr.h"
+#include "game/TGreatPower.h"
 #include "game/TMapMgr.h"
 #include "game/TMapUberPicture.h"
+#include "game/TOcean.h"
+#include "game/TSimMgr.h"
+#include "game/TStaticText.h"
 #include "game/CTemporaryRegion.h"
 #include "game/TGlobalMapState.h"
 #include "game/TQuickDrawSurfaceContext.h"
@@ -351,6 +355,109 @@ void TMapDialog::SetMapDialogCellCoordinatesAndRefresh(int col, int row, int mod
 // FUNCTION: IMPERIALISM 0x0051AF60
 undefined TMapDialog::UpdateMapInteractionPreviewParityAndRenderTransientSprites() {
   return 0;
+}
+
+// FUNCTION: IMPERIALISM 0x0051b1c0
+void TMapDialog::PopulateMapContextInfoPanelStringsByTileSelection(short tileIndex, int unusedArg) {
+  (void)unusedArg;
+  CString mainText;
+  CString numberText;
+  CString nameText;
+  CString cityName;
+
+  TView* titleControl = ResolveControlByTag(0x7469746c); // 'titl'
+  if (titleControl == 0) {
+    MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUMapDlog_006973D0, 0x459);
+  }
+  g_pSimMgr->GetString(0x1cb7, g_pGlobalMapState->terrainStateTable[tileIndex].terrainType00,
+                       &mainText);
+  numberText.Format(g_szDecimalFormat, tileIndex);
+  mainText += " (#" + numberText + g_szUiCloseParen_006973C8;
+  static_cast<TStaticText*>(titleControl)
+      ->AssignTextSharedRefIfChangedAndMaybeInvalidate(&mainText, 1);
+
+  TView* infoControl = ResolveControlByTag(0x696e666f); // 'info'
+  if (infoControl == 0) {
+    MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUMapDlog_006973D0, 0x463);
+  }
+  mainText = CString(g_szEmptyString);
+
+  TView* locationControl;
+  short cityIndex = g_pGlobalMapState->terrainStateTable[tileIndex].cityRecordIndex;
+  if (cityIndex != -1) {
+    if (g_pGlobalMapState->cityScoreTable[cityIndex].cityTileIndex04 == tileIndex) {
+      if (g_pGlobalMapState->terrainStateTable[tileIndex].activeFlags1c & 1) {
+        mainText += "National Capitol\n";
+      } else {
+        mainText += "Province Capitol\n";
+      }
+      for (short resourceType = 7; resourceType <= 0x10; resourceType++) {
+        short count = g_pGlobalMapState->cityScoreTable[cityIndex]
+                          .resourceDevelopmentCounts82[resourceType - 7];
+        if (count != 0) {
+          numberText.Format(g_szDecimalFormat, count);
+          g_pSimMgr->GetString(0x2711, resourceType, &nameText);
+          mainText += numberText + " " + nameText + "\n";
+        }
+      }
+    }
+    for (int edge = 0; edge < 2; edge++) {
+      short resourceType = g_pGlobalMapState->terrainStateTable[tileIndex].resourceTypeByEdge[edge];
+      if (resourceType != -1) {
+        g_pSimMgr->GetString(0x2711, resourceType, &nameText);
+        numberText.Format(
+            g_szDecimalFormat,
+            static_cast<signed char>(
+                g_pGlobalMapState->FindResourceCapabilityRequirementLevel(tileIndex, edge)));
+        mainText += numberText + " " + nameText + "\n";
+      }
+    }
+    static_cast<TStaticText*>(infoControl)
+        ->AssignTextSharedRefIfChangedAndMaybeInvalidate(&mainText, 1);
+
+    g_pGlobalMapState->AssignCityRecordDisplayName(cityIndex, &cityName);
+    TCountry* owner = g_apTerrainTypeDescriptorTable[g_pGlobalMapState->terrainStateTable[tileIndex]
+                                                         .ownerNationTag04];
+    if (owner != 0 && owner->encodedNationSlot >= 0x64 && owner->encodedNationSlot < 0xc8) {
+      static_cast<TGreatPower*>(owner)->LoadNationDisplayNameSharedRefFromField8(&nameText);
+    } else {
+      // The original invokes this on the table entry even when it is null.
+      owner->FormatOverlayTerrainLabelText(&nameText);
+    }
+    mainText = cityName + ", " + nameText;
+
+    char currentOwner = g_pGlobalMapState->terrainStateTable[tileIndex].ownerNationTag04;
+    char formerOwner = g_pGlobalMapState->terrainStateTable[tileIndex].formerOwnerNationTag03;
+    if (currentOwner != formerOwner) {
+      if (static_cast<short>(formerOwner) >= 0 && static_cast<short>(formerOwner) <= 0x17 &&
+          g_apTerrainTypeDescriptorTable[formerOwner] != 0) {
+        static_cast<TGreatPower*>(g_apTerrainTypeDescriptorTable[formerOwner])
+            ->LoadNationDisplayNameSharedRefFromField8(&nameText);
+      } else {
+        nameText.Format(g_szDecimalFormat, static_cast<short>(formerOwner));
+        nameText = "#" + nameText;
+      }
+      mainText = mainText + " (formerly of " + nameText + g_szUiCloseParen_006973C8;
+    }
+    locationControl = ResolveControlByTag(0x6c6f6361); // 'loca'
+    if (locationControl == 0) {
+      MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+      TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUMapDlog_006973D0, 0x4a3);
+    }
+  } else {
+    TZone* zone = g_pActiveMapOrderContext->GetMapActionContextEntryByNationCodeOffset17(
+        g_pGlobalMapState->terrainStateTable[tileIndex].ownerNationTag04);
+    zone->AssignZoneDisplayNameToOutputRef(&mainText);
+    locationControl = ResolveControlByTag(0x6c6f6361); // 'loca'
+    if (locationControl == 0) {
+      MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+      TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUMapDlog_006973D0, 0x4ab);
+    }
+  }
+  static_cast<TStaticText*>(locationControl)
+      ->AssignTextSharedRefIfChangedAndMaybeInvalidate(&mainText, 1);
 }
 
 // FUNCTION: IMPERIALISM 0x0051e1a0

@@ -348,7 +348,8 @@ char ShowPeriodicNationComparisonAdvisoryIfNeeded() {
       if (best <= 4) {
         break;
       }
-      if (g_pCityOrderCapabilityState->orderCapRows277[activeNation].recruitTierFlag27b != 0) {
+      if (g_pCityOrderCapabilityState->orderCapRows277[activeNation].techStatusByTechId[0x13] !=
+          0) {
         g_apNationStates[bestNation]->FormatOverlayTerrainLabelText(&nationName);
         g_pSimMgr->GetString(0x2753, 0xc, &formatText);
         g_pSimMgr->GetString(0x2753, 0xd, &templateText);

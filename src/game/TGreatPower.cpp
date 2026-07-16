@@ -741,7 +741,9 @@ void TGreatPower::NoOpNationPendingActionHook(void) {}
 void TGreatPower::DispatchPendingStatusPrompts(void) {
   unsigned char* flags = this->serializedStatusFlags;
   char flag5Handled = static_cast<signed char>(flags[5]) >= 0x33;
-  if (!flag5Handled && g_pCityOrderCapabilityState->orderCapRows277[this->nationSlot].flag == 2) {
+  if (!flag5Handled &&
+      g_pCityOrderCapabilityState->orderCapRows277[this->nationSlot].techStatusByTechId[0x0f] ==
+          2) {
     g_pUiRuntimeContext->QueueTurnStatusPromptSlot3C(5, this->field8d6[5]);
   }
   if (flags[6] == 0x32) {
@@ -795,7 +797,8 @@ void TGreatPower::DispatchPendingStatusPrompts(void) {
 
 // FUNCTION: IMPERIALISM 0x004da860
 void TGreatPower::MarkStatusFlag5HandledIfCapabilityActive(void) {
-  if (g_pCityOrderCapabilityState->orderCapRows277[this->nationSlot].flag == 2) {
+  if (g_pCityOrderCapabilityState->orderCapRows277[this->nationSlot].techStatusByTechId[0x0f] ==
+      2) {
     this->serializedStatusFlags[5] = 0x33;
   }
 }
@@ -804,7 +807,9 @@ void TGreatPower::MarkStatusFlag5HandledIfCapabilityActive(void) {
 void TGreatPower::MarkAllPendingStatusFlagsHandled(void) {
   unsigned char* flags = this->serializedStatusFlags;
   char flag5Handled = static_cast<signed char>(flags[5]) >= 0x33;
-  if (!flag5Handled && g_pCityOrderCapabilityState->orderCapRows277[this->nationSlot].flag == 2) {
+  if (!flag5Handled &&
+      g_pCityOrderCapabilityState->orderCapRows277[this->nationSlot].techStatusByTechId[0x0f] ==
+          2) {
     flags[5] = 0x33;
   }
   if (flags[6] == 0x32) {
@@ -1212,10 +1217,8 @@ void TGreatPower::RebuildNationResourceYieldCountersAndDevelopmentTargets(void) 
           TGlobalMapCityScoreRecord* cityRecord = &cityTable[cityIndex];
           if (cityRecord->cityTileIndex04 == static_cast<short>(regionIndex)) {
             for (int devIdx = 0; devIdx < 10; ++devIdx) {
-              // 0x82..0x94 — the 10-short development-accumulator run overlaying
-              // the tail of linkedRegionIds and the stage counters.
               developmentByType[devIdx] = static_cast<short>(
-                  developmentByType[devIdx] + cityRecord->linkedRegionIds[0x20 + devIdx]);
+                  developmentByType[devIdx] + cityRecord->resourceDevelopmentCounts82[devIdx]);
             }
           }
         }
@@ -1286,13 +1289,13 @@ void TGreatPower::AdvanceOwnedRegionDevelopmentCountersAndDispatchEvents(void) {
             ++linkedIndex;
           }
 
-          short* stage1CounterA = &cityRecord->stage1CounterA;
-          short* stage1CounterB = &cityRecord->stage1CounterB;
-          short* stage1CounterC = &cityRecord->stage1CounterC;
-          short* stage1CounterD = &cityRecord->stage1CounterD;
-          short* stage2CounterA = &cityRecord->stage2CounterA;
-          short* stage2CounterB = &cityRecord->stage2CounterB;
-          short* stage2CounterC = &cityRecord->stage2CounterC;
+          short* stage1CounterA = &cityRecord->resourceDevelopmentCounts82[1];
+          short* stage1CounterB = &cityRecord->resourceDevelopmentCounts82[2];
+          short* stage1CounterC = &cityRecord->resourceDevelopmentCounts82[4];
+          short* stage1CounterD = &cityRecord->resourceDevelopmentCounts82[5];
+          short* stage2CounterA = &cityRecord->resourceDevelopmentCounts82[6];
+          short* stage2CounterB = &cityRecord->resourceDevelopmentCounts82[7];
+          short* stage2CounterC = &cityRecord->resourceDevelopmentCounts82[8];
 
           if ((turnDelta & 1U) == 0) {
             int sum01 = resourceSums[0] + resourceSums[1];

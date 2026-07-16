@@ -3304,7 +3304,7 @@ address|name|symbol|size|type|prototype|provenance
 51b120|TTerrainInfoDialog::GetRuntimeClass||6|function|undefined GetTTerrainInfoDialogClassNamePointer()|rtti
 51b140|TTerrainInfoDialog::ConstructTTerrainInfoDialogBaseState||18|function|undefined ConstructTTerrainInfoDialogBaseState()|
 51b170|TTerrainInfoDialog::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
-51b1c0|PopulateMapContextInfoPanelStringsByTileSelection||1764|function|undefined PopulateMapContextInfoPanelStringsByTileSelection()|
+51b1c0|TMapDialog::PopulateMapContextInfoPanelStringsByTileSelection||1764|function|undefined PopulateMapContextInfoPanelStringsByTileSelection()|
 51ba70|TTownNameDialog::CreateObject|?CreateObject@TTownNameDialog@@SGPAVCObject@@XZ|83|function|undefined CreateObject()|rtti
 51baf0|TTownNameDialog::GetRuntimeClass||6|function|undefined GetTTownNameDialogClassNamePointer()|rtti
 51bb10|TTownNameDialog::ConstructTTownNameDialogBaseState||18|function|undefined ConstructTTownNameDialogBaseState()|
