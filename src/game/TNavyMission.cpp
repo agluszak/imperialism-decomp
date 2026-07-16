@@ -734,6 +734,59 @@ float TNavyMission::ComputeOrderDistributionSimilarityScoreForExactSourceNation(
   return NormalizeFourComponentNavyVector(vector, sum);
 }
 
+// Same shape as ComputeOrderDistributionSimilarityScoreForZone above, but scores against
+// g_Populate_Beachhead_Mission_LookupTable_00697958[0..3] (the same table slice
+// NormalizeFourComponentNavyVector's other callers use). The divergence-score tail is
+// reproduced inline (not via NormalizeFourComponentNavyVector) to match the original's
+// per-callsite inlining -- delegating to the shared helper collapsed the codegen shape
+// and tanked the score (16.85% vs the ~29-37% this idiom otherwise reaches).
+// FUNCTION: IMPERIALISM 0x00538dd0
+float TNavyMission::ComputeOrderDistributionSimilarityScoreForZoneWithBaseProfile(
+    TZone* nodeContext) {
+  float vector[4] = {
+      g_Recompute_Nation_Order_LookupTable_0065A9E8, g_Recompute_Nation_Order_LookupTable_0065A9E8,
+      g_Recompute_Nation_Order_LookupTable_0065A9E8, g_Recompute_Nation_Order_LookupTable_0065A9E8};
+  for (TShip* orderNode = GetNavyPrimaryOrderListHead(); orderNode != 0;
+       orderNode = orderNode->nextOlder24) {
+    if (orderNode->field08 == nodeContext &&
+        g_pDiplomacyTurnStateManager->HasPolicyWithNationSlot44(
+            nationId04, orderNode->ownerNationSlot14) != 0) {
+      AccumulateNavyOrderCategoryVectorWithScale(
+          orderNode, vector, static_cast<float>(g_Recompute_Nation_Order_LookupTable_0065AA08));
+    }
+  }
+  float total = vector[0] + vector[1] + vector[2] + vector[3];
+  if (total == static_cast<float>(g_Recompute_Nation_Order_LookupTable_0065A9F0)) {
+    return g_Recompute_Nation_Order_LookupTable_0065A9E8;
+  }
+  float diffSum = g_Recompute_Nation_Order_LookupTable_0065A9E8;
+  for (int i = 0; i < 4; ++i) {
+    float diff = vector[i] / total -
+                 static_cast<float>(
+                     static_cast<short>(g_Populate_Beachhead_Mission_LookupTable_00697958[i])) *
+                     static_cast<float>(g_Recompute_Nation_Order_LookupTable_0065A9F8);
+    if (diff <= static_cast<float>(g_Recompute_Nation_Order_LookupTable_0065A9F0)) {
+      diff = -diff;
+    }
+    diffSum += diff;
+  }
+  return total * (static_cast<float>(g_Recompute_Nation_Order_LookupTable_0065AA08) -
+                  diffSum * static_cast<float>(g_Recompute_Nation_Order_LookupTable_0065AA00));
+}
+
+// Default constructor
+TNavyMission::TNavyMission() : TMission() {
+  targetZone14 = nullptr;
+  targetZone18 = nullptr;
+  navyField1c = 0;
+  navyField20 = nullptr;
+  orderList24 = nullptr;
+  navyState28 = 0;
+  for (int i = 0; i < 4; ++i) {
+    resourceWeights2c[i] = 0.0f;
+  }
+}
+
 // Instance form of ComputeOrderDistributionSimilarityScoreWithDiplomacyFilter: sources
 // the diplomacy filter's source nation from nationId04 (inherited from TMission) rather
 // than an explicit argument, uses the fixed-category (0..3) accumulation shape (matching
@@ -771,17 +824,4 @@ float TNavyMission::ComputeOrderDistributionSimilarityScoreForZone(TZone* nodeCo
   }
   return total * (static_cast<float>(g_Recompute_Nation_Order_LookupTable_0065AA08) -
                   diffSum * static_cast<float>(g_Recompute_Nation_Order_LookupTable_0065AA00));
-}
-
-// Default constructor
-TNavyMission::TNavyMission() : TMission() {
-  targetZone14 = nullptr;
-  targetZone18 = nullptr;
-  navyField1c = 0;
-  navyField20 = nullptr;
-  orderList24 = nullptr;
-  navyState28 = 0;
-  for (int i = 0; i < 4; ++i) {
-    resourceWeights2c[i] = 0.0f;
-  }
 }

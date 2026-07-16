@@ -139,14 +139,6 @@ undefined4 WrapperFor_AFX_CLASSINIT_At005387a0(void)
   return 0;
 }
 
-// ghidra_name ComputeNavyOrderDistributionSimilarityScoreForMissionNation
-// ghidra_proto undefined ComputeNavyOrderDistributionSimilarityScoreForMissionNation()
-// FUNCTION: IMPERIALISM 0x00538dd0
-undefined4 ComputeNavyOrderDistributionSimilarityScoreForMissionNation(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_AFX_CLASSINIT_At005399d0
 // ghidra_proto undefined WrapperFor_AFX_CLASSINIT_At005399d0()
 // FUNCTION: IMPERIALISM 0x005399d0

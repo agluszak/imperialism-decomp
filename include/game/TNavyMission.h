@@ -86,6 +86,10 @@ public:
   // scores against g_Populate_Beachhead_Mission_LookupTable_00697958[4..7] instead of
   // [0..3]. 0x539a90.
   float ComputeOrderDistributionSimilarityScoreForZone(TZone* nodeContext);
+  // Same shape as ComputeOrderDistributionSimilarityScoreForZone but scores against
+  // g_Populate_Beachhead_Mission_LookupTable_00697958[0..3] (the same table/slice
+  // NormalizeFourComponentNavyVector's other callers use). 0x538dd0.
+  float ComputeOrderDistributionSimilarityScoreForZoneWithBaseProfile(TZone* nodeContext);
 
 private:
   // Shared by RefreshSlot40's mode-transition checks (0x536b30).
