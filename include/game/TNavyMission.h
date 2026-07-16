@@ -5,6 +5,7 @@
 
 class TZone;
 class TList;
+class TShip;
 
 // Navy-mission branch base (fills TMission abstract slots 0x27+; ctor 0x535470).
 // VTABLE: IMPERIALISM 0x0065a818
@@ -90,6 +91,14 @@ public:
   // g_Populate_Beachhead_Mission_LookupTable_00697958[0..3] (the same table/slice
   // NormalizeFourComponentNavyVector's other callers use). 0x538dd0.
   float ComputeOrderDistributionSimilarityScoreForZoneWithBaseProfile(TZone* nodeContext);
+  // Builds a 4-category priority vector from every existing orderList24 ship plus
+  // `candidateOrder` (each contribution weighted by a per-ship distance-decay factor,
+  // see AccumulateNavyOrderCategoryVectorByDistanceWeight), then scores it against
+  // resourceWeights2c via a Bhattacharyya-coefficient-style similarity:
+  // sum(sqrt(resourceWeights2c[i] * vector[i])) / sum(resourceWeights2c[i]). Used to
+  // evaluate how well adding `candidateOrder` would fit this mission's target profile.
+  // 0x538120.
+  float ComputeMissionOrderMatchScoreWithCandidateNavyOrder(TShip* candidateOrder);
 
 private:
   // Shared by RefreshSlot40's mode-transition checks (0x536b30).

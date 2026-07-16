@@ -115,14 +115,6 @@ undefined4 ComputeMissionQueuedOrderSimilarityForTargetNation(void)
   return 0;
 }
 
-// ghidra_name ComputeMissionOrderMatchScoreWithCandidateNavyOrder
-// ghidra_proto undefined ComputeMissionOrderMatchScoreWithCandidateNavyOrder()
-// FUNCTION: IMPERIALISM 0x00538120
-undefined4 ComputeMissionOrderMatchScoreWithCandidateNavyOrder(void)
-{
-  return 0;
-}
-
 // ghidra_name ComputeMissionOrderMatchScoreWithScaledCandidateNavyOrder
 // ghidra_proto undefined ComputeMissionOrderMatchScoreWithScaledCandidateNavyOrder()
 // FUNCTION: IMPERIALISM 0x005383f0

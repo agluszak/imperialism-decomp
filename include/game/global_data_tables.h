@@ -826,6 +826,9 @@ extern unsigned short g_Populate_Beachhead_Mission_LookupTable_00697958[];
 // sign-extend (movsx) in the original despite being small positive values, so the
 // storage type must be signed short to match the codegen.
 extern const short g_NavyOrderDistributionCategoryWeights_00697978[4];
+// TNavyMission.cpp — per-hop distance decay weight (0.8^index, clamped index 0..5) used
+// by ComputeMissionOrderMatchScoreWithCandidateNavyOrder's per-ship accumulation.
+extern const float g_NavyOrderDistanceDecayWeightTable_006978c8[6];
 
 // TMapMgr.cpp — per-resourceType requirement level table (0x513610).
 extern unsigned char g_abUniversityRequirementLevelById[24][4];
