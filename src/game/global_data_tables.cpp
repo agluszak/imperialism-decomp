@@ -353,6 +353,8 @@ char g_szUiLevel1_00694B38[] = "Level\n1";
 char g_szMcAppUiHeaderPath_006943CC[] = "D:\\Ambit\\McAppUI.h";
 // GLOBAL: IMPERIALISM 0x00696bc0
 char g_szUGameWindowSourcePath_00696bc0[] = "D:\\Ambit\\Cross\\UGameWindow.cpp";
+// GLOBAL: IMPERIALISM 0x00696728
+char g_szUCountrySourcePath_00696728[] = "D:\\Ambit\\Cross\\UCountry.cpp";
 // TCouncilView::HandleEvent's council-control 4-char tag table ("tfni", "ttrt", "targ",
 // "tart", "tuoc", "rffo" as stored).
 // GLOBAL: IMPERIALISM 0x00696978
@@ -504,6 +506,17 @@ short g_anCityBuildingSlotCoords[36] = {200, 235, 340, 300, 281, 184, 340, 266, 
 // GLOBAL: IMPERIALISM 0x006a2998
 CRect g_aCityBuildingHoverSelectionRects[16];
 
+// Packed int table consumed by the city-building screen layout (icon/highlight coordinates
+// and 0/1 flags; per-field semantics not yet recovered). Populated by
+// InitializeCityBuildingLayoutData.
+// GLOBAL: IMPERIALISM 0x006a24e8
+int g_anCityBuildingLayoutValues[164] = {0};
+
+// 31 action-button rects for the city-building screen, placement-constructed by
+// InitializeCityBuildingLayoutData (immediately after g_anCityBuildingLayoutValues).
+// GLOBAL: IMPERIALISM 0x006a2778
+CRect g_aCityBuildingActionRects[31];
+
 // GLOBAL: IMPERIALISM 0x006a1da4
 HRGN g_hOpenRgnAccumulator = nullptr;
 
@@ -606,10 +619,53 @@ extern "C" {
 // GLOBAL: IMPERIALISM 0x0065a468
 extern const float g_MissionDefaultScore_0065a468 = 0.0f;
 
+// 1.0 constant (double), used by CompareMissionOrderEntriesByPriorityScore (0x536090)
+// to compute each side's "remaining priority" as 1.0 - ReturnZeroFloatSlot68().
+// GLOBAL: IMPERIALISM 0x0065a470
+extern const double g_MissionScoreOneConstant_0065a470 = 1.0;
+
 // Weighting factor (0.2) applied to each adjacent region's score when diffusing the
 // strategic heatmap (RecomputeTileStrategicScoreHeatmap 0x518130).
 // GLOBAL: IMPERIALISM 0x00658780
 float g_TileHeatmapNeighborDiffusionFactor = 0.2f;
+
+// Map-interaction preview scale factors (default 1/64 = 0.015625), multiplied into the map
+// dialog's rect layout by TMapDialog::ApplyRectSlot110 (0x51e260). Runtime-set to the default
+// by InitializeMapInteractionPreviewScale{X,Y}Default (0x51e0b0 / 0x51e0e0), so zero on disk.
+// GLOBAL: IMPERIALISM 0x006a3410
+double g_MapPreviewScaleX6A3410;
+// GLOBAL: IMPERIALISM 0x006a33d0
+double g_MapPreviewScaleY6A33D0;
+
+// Two more 1/64 (0.015625) scale-factor doubles reset to default by the same defaults-table
+// initializers (0x49c0c0 / 0x49c0f0); g_ScaleDefault6A1FC0 is scaled by
+// UpdateGlobalWord6A2008FromScaled6A1FC0 (0x49c120). Zero on disk (runtime-set).
+// GLOBAL: IMPERIALISM 0x006a1fe8
+double g_ScaleDefault6A1FE8;
+// GLOBAL: IMPERIALISM 0x006a1fc0
+double g_ScaleDefault6A1FC0;
+
+// Two dword slots in the 0x6a1e20 reset region, zeroed together by the cleanup handler
+// ResetGlobalPair6A1E20And6A1E24 (0x49b9d0). Only ever written (to 0); purpose not yet
+// recovered. Zero on disk.
+// GLOBAL: IMPERIALISM 0x006a1e20
+int g_ResetStateDword6A1E20;
+// GLOBAL: IMPERIALISM 0x006a1e24
+int g_ResetStateDword6A1E24;
+// More dword slots in the same 0x6a1exx/0x6a1fxx reset region, each zeroed by its own
+// ResetGlobalPair cleanup handler (0x49b9f0 / 0x49bc00 / 0x49bc20). Only ever written to 0.
+// GLOBAL: IMPERIALISM 0x006a1e48
+int g_ResetStateDword6A1E48;
+// GLOBAL: IMPERIALISM 0x006a1e4c
+int g_ResetStateDword6A1E4C;
+// GLOBAL: IMPERIALISM 0x006a1e70
+int g_ResetStateDword6A1E70;
+// GLOBAL: IMPERIALISM 0x006a1e74
+int g_ResetStateDword6A1E74;
+// GLOBAL: IMPERIALISM 0x006a1f38
+int g_ResetStateDword6A1F38;
+// GLOBAL: IMPERIALISM 0x006a1f3c
+int g_ResetStateDword6A1F3C;
 
 // Order-type index rankings (0..13) sorted by descending descriptor weight, rebuilt by
 // InitializeNavyOrderPriorityTables (0x556610): by resolveWeight, calculateWeight, and
@@ -813,6 +869,38 @@ int g_aCategoryMetricBaselineAverage[4] = {0};
 // GLOBAL: IMPERIALISM 0x0065a9c0
 float g_fMissionScoreNormalizationDivisor = 5000.0f;
 
+// Per-nation output caches for RecomputeNationOrderPriorityMetrics (0x53fe30).
+// GLOBAL: IMPERIALISM 0x006a3a88
+float g_afNationOrderQueueDivergence_006a3a88[7] = {0};
+// GLOBAL: IMPERIALISM 0x006a3ac0
+float g_afNationOrderQueueDivergenceMirror_006a3ac0[7] = {0};
+// GLOBAL: IMPERIALISM 0x006a3ae0
+float g_afNationMobileUnitDivergence_006a3ae0[7] = {0};
+// GLOBAL: IMPERIALISM 0x006a3b20
+float g_afNationWeightedMilitaryOrderScore_006a3b20[7] = {0};
+// GLOBAL: IMPERIALISM 0x006a3b50
+float g_afNationCombinedUnitDivergence_006a3b50[7] = {0};
+// GLOBAL: IMPERIALISM 0x006a3b88
+float g_afNationMobileUnitScore_006a3b88[7] = {0};
+
+// GLOBAL: IMPERIALISM 0x00698120
+IndustryCapabilityClassSlotEntry g_aIndustryCapabilityClassSlotTable[14] = {
+    {-1, {0x0, 0x0, 0x0, 0x0, 0x64, 0x258, 0x0, 0x2}},
+    {-1, {0x1, 0x0, 0x0, 0x0, 0x5f, 0x3e8, 0x0, 0x4}},
+    {-1, {0x1, 0x0, 0x12c, 0x5, 0x5a, 0x384, 0x4, 0x0}},
+    {1, {0x3, 0x1, 0x258, 0x6, 0x50, 0x6a4, 0x3, 0x0}},
+    {0, {0x2, 0x1, 0x0, 0x0, 0x5f, 0x384, 0x0, 0x8}},
+    {-1, {0x1, 0x0, 0x0, 0x0, 0x64, 0x258, 0x0, 0x4}},
+    {-1, {0x1, 0x0, 0x12c, 0x7, 0x50, 0x2bc, 0x7, 0x0}},
+    {2, {0x5, 0x2, 0x1f4, 0x8, 0x2d, 0x4b0, 0x5, 0x0}},
+    {3, {0x3, 0x2, 0x3e8, 0xa, 0x28, 0x708, 0x6, 0x0}},
+    {0, {0x4, 0x3, 0x0, 0x0, 0x4b, 0x4b0, 0x0, 0x10}},
+    {-1, {0x1, 0x0, 0x258, 0x9, 0x32, 0x3e8, 0x8, 0x0}},
+    {1, {0x6, 0x3, 0x7d0, 0xd, 0x1e, 0xaf0, 0x7, 0x0}},
+    {3, {0x5, 0x4, 0x708, 0xd, 0x2d, 0x898, 0x9, 0x0}},
+    {2, {0x6, 0x4, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0}},
+};
+
 MappedFlavorTextNationVariantEntry g_MappedFlavorTextNationVariantTable_0066EF30[32] = {0};
 
 // Defend-province / mission priority-vector normalization (0x53e6e0 / 0x53ea70 family).
@@ -820,6 +908,7 @@ MappedFlavorTextNationVariantEntry g_MappedFlavorTextNationVariantTable_0066EF30
 extern const float g_Recompute_Nation_Order_LookupTable_0065A9BC = 0.05f;
 // GLOBAL: IMPERIALISM 0x0065a9c4
 extern const float g_Recompute_Nation_Order_LookupTable_0065A9C4 = -1000.0f;
+// GLOBAL: IMPERIALISM 0x0065a9e8
 extern const float g_Recompute_Nation_Order_LookupTable_0065A9E8 = 0.0f;
 // GLOBAL: IMPERIALISM 0x0065a9e0
 extern const double g_Recompute_Nation_Order_LookupTable_0065A9E0 = -1.0;
@@ -835,7 +924,15 @@ extern const float g_Recompute_Nation_Order_LookupTable_0065AA20 = 139069760.0f;
 // Consumed by the distribution-similarity scorer (0x5362c0) callers.
 unsigned short g_awTacticalCompositionReferenceProfiles_00697870[20] = {
     40, 27, 0, 17, 16, 27, 36, 0, 17, 20, 26, 31, 20, 23, 0, 40, 22, 0, 38, 0};
-unsigned short g_Populate_Beachhead_Mission_LookupTable_00697958[0x10] = {0};
+// 4 back-to-back 4-entry target-percentage profiles consumed by distinct navy-order
+// divergence-score callers: [0..3] NormalizeFourComponentNavyVector's callers, [4..7]
+// TNavyMission::ComputeOrderDistributionSimilarityScoreForZone, [8..15] two further
+// profiles used by sibling scorers in this same cluster.
+unsigned short g_Populate_Beachhead_Mission_LookupTable_00697958[0x10] = {
+    40, 40, 20, 0, 40, 30, 30, 0, 35, 35, 0, 30, 0, 20, 80, 0};
+const short g_NavyOrderDistributionCategoryWeights_00697978[4] = {40, 30, 30, 0};
+const float g_NavyOrderDistanceDecayWeightTable_006978c8[6] = {1.0f,   0.8f,    0.64f,
+                                                               0.512f, 0.4096f, 0.32768f};
 
 // Army-mission order-priority weight/scoring tables (0x53c620 / 0x53ceb0 /
 // 0x53d4a0 family). Sizes are the minimum proven by observed index use;
@@ -1561,6 +1658,15 @@ int g_nUiInvalidationAssertFlagLine495 = 0;
 SeapointStretch g_seapointQuadTable_006a3478;
 SeaSegmentStretch g_regionBorderLinkTable_006a3900;
 
+// Per tech-item slot, the purchase cost applied/refunded against a nation's field-0x10
+// metric by TTechMgr::ApplyTechItemPurchaseCostAndState (0x5b0b30) /
+// RefundTechItemPurchaseCostAndClearState (0x5b0bb0). Locked/unused slots are -1.
+const int g_anTechItemPurchaseCostBySlot_0066aae8[34] = {
+    0,     0,      1000,   1000,   1500,   1500,  1500,  1500,  3000,  3000,  3000,  6000,
+    7000,  10000,  12000,  12000,  12000,  12000, 12000, 25000, 20000, 40000, 40000, 40000,
+    40000, 100000, 120000, 150000, 150000, 0,     -1,    -1,    -1,    0};
+
+
 // Hex-neighbour offset tables (direction 0..5) for the 108-wide offset-coordinate grid.
 const int g_hexColOffsetEvenRow_00697450[6] = {0, 1, 0, -1, -1, -1};
 const int g_hexRowOffset_00697468[6] = {-1, 0, 1, 1, 0, -1};
@@ -1602,6 +1708,29 @@ char s_mcflavor_00696674[] = "";
 char s_mcflavor_00696d10[] = "";
 // GLOBAL: IMPERIALISM 0x00697238
 char s_mcflavor_00697238[] = "";
+// Script-dump format strings for TMapMgr::DumpAndResetMapScriptState (0x519140).
+// GLOBAL: IMPERIALISM 0x006972f8
+char g_szScriptFileName_006972f8[] = "script";
+// GLOBAL: IMPERIALISM 0x006972e8
+char g_szFmtZone_006972e8[] = "zone %d %s\n";
+// GLOBAL: IMPERIALISM 0x006972d0
+char g_szFmtShip_006972d0[] = "ship %d %d %d %d\n";
+// GLOBAL: IMPERIALISM 0x006972bc
+char g_szFmtArmy_006972bc[] = "army %d %d %d\n";
+// GLOBAL: IMPERIALISM 0x006972ac
+char g_szFmtCivi_006972ac[] = "civi %d %d\n";
+// GLOBAL: IMPERIALISM 0x006972a0
+char g_szFmtPort_006972a0[12] = "port %d\n";
+// GLOBAL: IMPERIALISM 0x00697294
+char g_szFmtRail_00697294[12] = "rail %d\n";
+// GLOBAL: IMPERIALISM 0x00697280
+char g_szFmtCapa_00697280[] = "capa %d %d %d\n";
+// GLOBAL: IMPERIALISM 0x00697268
+char g_szFmtLabo_00697268[] = "labo %d %d %d %d\n";
+// GLOBAL: IMPERIALISM 0x00697254
+char g_szFmtEmba_00697254[] = "emba %d %d %d\n";
+// GLOBAL: IMPERIALISM 0x00697248
+char g_szFmtYear_00697248[12] = "year %d\n";
 // GLOBAL: IMPERIALISM 0x006976e0
 char s_mcflavor_006976e0[] = "";
 // GLOBAL: IMPERIALISM 0x00698b0c
@@ -2810,3 +2939,9 @@ char s_mcflavor_0069b638[] = "";
 char s_mcflavor_0069b640[] = "";
 // GLOBAL: IMPERIALISM 0x0069b7fc
 char s_Data_scores_dat_0069b7fc[] = "Data\\scores.dat";
+
+// Screen-offset scale (-0.3125 = -5/16) applied to a tile's isometric screen offset when
+// positioning the hex-neighbor highlight polygon (BuildHexNeighborHighlightPolygonForTile
+// 0x508f30).
+// GLOBAL: IMPERIALISM 0x00658640
+extern const float g_HexHighlightScreenScale_00658640 = -0.3125f;

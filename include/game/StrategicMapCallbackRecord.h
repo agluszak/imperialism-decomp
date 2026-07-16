@@ -8,7 +8,7 @@ struct StrategicMapCallbackRecord {
 
   void AppendPackedColorDword(int surface, int packedColor);
   unsigned char* EnsureOpcodeBufferByteAtIndex(int index);
-  void AppendOpcodeByte(int value);
+  StrategicMapCallbackRecord* AppendOpcodeByte(int value); // returns this (original mov eax,esi)
   void AppendOpcodeBytePair(int value);
   void FinalizeOpcodeBufferAlignment();
   void BuildBitmapMaskOpcodeBufferFromResourceRows(int resourceId, int width, int height,

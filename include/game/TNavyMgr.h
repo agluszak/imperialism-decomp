@@ -44,6 +44,22 @@ public:
 
   void RemoveOrdersByNationFromPrimarySecondaryAndTaskForceLists(short nationSlot);
 
+  // Clears every cityScoreTable record's exploredByNationMaskA1 flag (dispatching a
+  // per-province redraw-invalidate event through g_pGameFlowState while g_pSimMgr's
+  // multiplayer/session-mode field44 == 1, for each record found dirty), stores
+  // `phaseId` into field08, revalidates/requeues the map-order queue for the new turn
+  // phase, then clears eliminatedFlag26 across the whole orderListHead04 chain
+  // (directly on the head, via ClearMapOrderProcessedFlagsChain for the rest). 0x5577b0.
+  void PrepareMapOrdersForExecutionPhase(short phaseId);
+
+  // Finds the first orderListHead04 entry with attachment==7 (a "type 7" task-force
+  // order kind) and matching required_count, then walks its childOrderList setting each
+  // child's active_flag: false if the child's required_count is below its resource
+  // type's stockCap column, otherwise a chancePercent-vs-rand()%100 coin flip. Returns
+  // the matched entry (or null). 0x557e10.
+  TTaskForce* UpdateType7NavyOrderChildSelectionByChanceThreshold(short requiredCount,
+                                                                  short chancePercent);
+
   // 0x5568f0 - stream out the three navy order lists (primary TShip chain tail-first,
   // TAdmiral secondary chain, orderListHead04 task-force chain), each prefixed with a
   // 16-bit count; nationFilter -1 serializes every nation's entries.

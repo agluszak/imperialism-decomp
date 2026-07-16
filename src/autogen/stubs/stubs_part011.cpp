@@ -123,38 +123,6 @@ undefined4 OrphanCallChain_C1_I31_004915d0(void)
   return 0;
 }
 
-// ghidra_name InitializeSelectableTextOptionEntryIteratorContext
-// ghidra_proto undefined InitializeSelectableTextOptionEntryIteratorContext()
-// FUNCTION: IMPERIALISM 0x004919a0
-undefined4 InitializeSelectableTextOptionEntryIteratorContext(void)
-{
-  return 0;
-}
-
-// ghidra_name BeginSelectableTextOptionEntryIterator
-// ghidra_proto undefined BeginSelectableTextOptionEntryIterator()
-// FUNCTION: IMPERIALISM 0x00491a00
-undefined4 BeginSelectableTextOptionEntryIterator(void)
-{
-  return 0;
-}
-
-// ghidra_name AdvanceSelectableTextOptionEntryIterator
-// ghidra_proto undefined AdvanceSelectableTextOptionEntryIterator()
-// FUNCTION: IMPERIALISM 0x00491a70
-undefined4 AdvanceSelectableTextOptionEntryIterator(void)
-{
-  return 0;
-}
-
-// ghidra_name IsSelectableTextOptionEntryIteratorValid
-// ghidra_proto undefined IsSelectableTextOptionEntryIteratorValid()
-// FUNCTION: IMPERIALISM 0x00491ab0
-undefined4 IsSelectableTextOptionEntryIteratorValid(void)
-{
-  return 0;
-}
-
 // ghidra_name DestructTWindowAndUnlinkGlobalWindowNode
 // ghidra_proto undefined DestructTWindowAndUnlinkGlobalWindowNode()
 // FUNCTION: IMPERIALISM 0x00492140
@@ -771,22 +739,6 @@ undefined4 ComputeBucketIndexAndScanNodeByKey(void)
   return 0;
 }
 
-// ghidra_name ResetGlobalPair6A1E20And6A1E24
-// ghidra_proto undefined ResetGlobalPair6A1E20And6A1E24()
-// FUNCTION: IMPERIALISM 0x0049b9d0
-undefined4 ResetGlobalPair6A1E20And6A1E24(void)
-{
-  return 0;
-}
-
-// ghidra_name ResetGlobalPair6A1E48And6A1E4C
-// ghidra_proto undefined ResetGlobalPair6A1E48And6A1E4C()
-// FUNCTION: IMPERIALISM 0x0049b9f0
-undefined4 ResetGlobalPair6A1E48And6A1E4C(void)
-{
-  return 0;
-}
-
 // ghidra_name ResetGlobalQuad6A1E28To6A1E34
 // ghidra_proto undefined ResetGlobalQuad6A1E28To6A1E34()
 // FUNCTION: IMPERIALISM 0x0049ba10
@@ -831,22 +783,6 @@ undefined4 CleanupStaticDialogTemplateD0AtExit(void)
 // ghidra_proto undefined DestructStaticDialogTemplateD0Object()
 // FUNCTION: IMPERIALISM 0x0049baf0
 undefined4 DestructStaticDialogTemplateD0Object(void)
-{
-  return 0;
-}
-
-// ghidra_name ResetGlobalPair6A1E70And6A1E74
-// ghidra_proto undefined ResetGlobalPair6A1E70And6A1E74()
-// FUNCTION: IMPERIALISM 0x0049bc00
-undefined4 ResetGlobalPair6A1E70And6A1E74(void)
-{
-  return 0;
-}
-
-// ghidra_name ResetGlobalPair6A1F38And6A1F3C
-// ghidra_proto undefined ResetGlobalPair6A1F38And6A1F3C()
-// FUNCTION: IMPERIALISM 0x0049bc20
-undefined4 ResetGlobalPair6A1F38And6A1F3C(void)
 {
   return 0;
 }
@@ -919,22 +855,6 @@ undefined4 ResetGlobalQuad6A1F98To6A1FA4(void)
 // ghidra_proto undefined ResetGlobalDword6A1F70()
 // FUNCTION: IMPERIALISM 0x0049c090
 undefined4 ResetGlobalDword6A1F70(void)
-{
-  return 0;
-}
-
-// ghidra_name InitializeGlobalPair6A1FE8And6A1FECDefault
-// ghidra_proto undefined InitializeGlobalPair6A1FE8And6A1FECDefault()
-// FUNCTION: IMPERIALISM 0x0049c0c0
-undefined4 InitializeGlobalPair6A1FE8And6A1FECDefault(void)
-{
-  return 0;
-}
-
-// ghidra_name InitializeGlobalPair6A1FC0And6A1FC4Default
-// ghidra_proto undefined InitializeGlobalPair6A1FC0And6A1FC4Default()
-// FUNCTION: IMPERIALISM 0x0049c0f0
-undefined4 InitializeGlobalPair6A1FC0And6A1FC4Default(void)
 {
   return 0;
 }

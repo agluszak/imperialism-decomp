@@ -34,6 +34,11 @@ public:
 
   static float ComputeLocalSupportVectorScore(int nodeContext);
   static float ComputeCrossNationSupportVectorScore(int nodeContext);
+
+  // Walks orderListAt18 and re-issues TUnit::SetOrderModeSlot34(1, newTile) on every
+  // linked TMilitaryUnit whose tileIndex06 differs from newTile (propagating this
+  // mission's new target tile to units still ordered against the old one). 0x53c950.
+  void PropagateTargetTileToLinkedUnitsIfDifferent(short newTile);
 };
 
 ASSERT_SIZE(TDefendProvinceMission, 0x30);

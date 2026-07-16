@@ -4,12 +4,95 @@
 #include "game/map_overlay_geometry.h"
 
 #include "game/TGlobalMapState.h"
+#include "game/TMapMgr.h"
+#include "game/quickdraw_regions.h"
 #include "game/TMapUberPicture.h"
 #include "game/TNavyMgr.h"
 #include "game/TOcean.h"
 #include "game/TTaskForce.h"
 #include "game/TViewMgr.h"
 #include "game/global_data_tables.h"
+
+// Draws the hex-cell border-highlight polygon for a tile: computes the tile's isometric
+// screen position, then emits a QDFrameRect segment for each hex edge whose neighbor either
+// has a different owner (owner != compareValue on both sides of the edge) or forms a
+// type-5 (ocean) pairing. Neighbor tile indices [0..5] come from ComputeHexNeighborTileIndices.
+// Called from TMacViewMgr's map-highlight pass. terrainStateTable owner is the +0x14 short,
+// terrain type is the +0x00 byte (== 5 for ocean); both indexed by the 0x24-byte tile record.
+// FUNCTION: IMPERIALISM 0x00508f30
+void BuildHexNeighborHighlightPolygonForTile(short tileId, int compareValue) {
+  short neighborTiles[6];
+  TMapMgr::ComputeHexNeighborTileIndices(tileId, neighborTiles,
+                                         *(reinterpret_cast<char*>(g_pGlobalMapState) + 0x20));
+  int screenXY[2];
+  ComputeWrappedIsometricScreenOffsetFromTile(tileId, screenXY, 0x10, 0, 0);
+  int baseX = static_cast<short>(
+      0x31 - static_cast<int>(static_cast<float>(static_cast<short>(screenXY[0])) *
+                              g_HexHighlightScreenScale_00658640));
+  int baseY = static_cast<short>(
+      0x2d - static_cast<int>(static_cast<float>(static_cast<short>(screenXY[1])) *
+                              g_HexHighlightScreenScale_00658640));
+  int rightX = baseX + 5;
+  int bottomY = baseY + 5;
+
+  unsigned char* terrain = reinterpret_cast<unsigned char*>(g_pGlobalMapState->terrainStateTable);
+
+  RECT edgeTop = {baseX, baseY, rightX, bottomY};
+  QDFrameRect(&edgeTop);
+
+  RECT edgeUpperLeft = {baseX, baseY + 4, baseX + 1, bottomY};
+  RECT edgeCornerTL = {baseX, baseY, baseX + 1, baseY + 1};
+  RECT edgeLowerLeft = {baseX - 1, baseY + 4, baseX, bottomY};
+  RECT edgeUpperRight = {baseX + 4, baseY + 4, rightX, bottomY};
+  RECT edgeLowerRight = {rightX, baseY + 4, baseX + 6, bottomY};
+  RECT edgeCornerBL = {baseX - 1, baseY, baseX, baseY + 1};
+  RECT edgeCornerBR = {rightX, baseY, baseX + 6, baseY + 1};
+  RECT edgeCornerTR = {baseX + 4, baseY, rightX, baseY + 1};
+
+#define TERRAIN_OWNER(n) (*reinterpret_cast<short*>(terrain + (n) * 0x24 + 0x14))
+#define TERRAIN_TYPE(n) (*reinterpret_cast<char*>(terrain + (n) * 0x24))
+
+  if (neighborTiles[1] != -1 && neighborTiles[2] != -1 &&
+      TERRAIN_OWNER(neighborTiles[1]) != compareValue &&
+      TERRAIN_OWNER(neighborTiles[2]) == compareValue) {
+    QDFrameRect(&edgeLowerRight);
+  }
+  if (neighborTiles[4] != -1 && neighborTiles[3] != -1 && TERRAIN_TYPE(neighborTiles[4]) == 5 &&
+      TERRAIN_TYPE(neighborTiles[3]) == 5) {
+    QDFrameRect(&edgeUpperLeft);
+  }
+  if (neighborTiles[0] != -1 && neighborTiles[1] != -1 &&
+      TERRAIN_OWNER(neighborTiles[1]) != compareValue &&
+      TERRAIN_OWNER(neighborTiles[0]) == compareValue) {
+    QDFrameRect(&edgeCornerBR);
+  }
+  if (neighborTiles[4] != -1) {
+    if (neighborTiles[5] != -1 && TERRAIN_TYPE(neighborTiles[4]) == 5 &&
+        TERRAIN_TYPE(neighborTiles[5]) == 5) {
+      QDFrameRect(&edgeCornerTL);
+    }
+    if (neighborTiles[3] != -1 && TERRAIN_OWNER(neighborTiles[4]) != compareValue &&
+        TERRAIN_OWNER(neighborTiles[3]) == compareValue) {
+      QDFrameRect(&edgeLowerLeft);
+    }
+  }
+  if (neighborTiles[1] != -1 && neighborTiles[2] != -1 && TERRAIN_TYPE(neighborTiles[1]) == 5 &&
+      TERRAIN_TYPE(neighborTiles[2]) == 5) {
+    QDFrameRect(&edgeUpperRight);
+  }
+  if (neighborTiles[4] != -1 && neighborTiles[5] != -1 &&
+      TERRAIN_OWNER(neighborTiles[4]) != compareValue &&
+      TERRAIN_OWNER(neighborTiles[5]) == compareValue) {
+    QDFrameRect(&edgeCornerBL);
+  }
+  if (neighborTiles[1] != -1 && neighborTiles[0] != -1 && TERRAIN_TYPE(neighborTiles[1]) == 5 &&
+      TERRAIN_TYPE(neighborTiles[0]) == 5) {
+    QDFrameRect(&edgeCornerTR);
+  }
+
+#undef TERRAIN_OWNER
+#undef TERRAIN_TYPE
+}
 
 // FUNCTION: IMPERIALISM 0x00528c10
 int GetNeighborTileIndexOnMap108x60(int tileIndex, int direction) {

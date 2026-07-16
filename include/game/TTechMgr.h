@@ -114,6 +114,12 @@ public:
   void InitializeCityOrderCapabilityStateDefaults();
   void GenerateRandomCapabilityPrioritySlots();
   void ApplyCityOrderCapabilityUnlockByTechId(int nTechId);
+  // Purchase / refund a tech-item slot for a nation (spends/refunds the slot cost, sets or
+  // clears the orderCapRows277 state byte + capRowsE4a6 tick word). 0x5b0b30 / 0x5b0bb0.
+  void ApplyTechItemPurchaseCostAndState(int slot, int nationIndex);
+  void RefundTechItemPurchaseCostAndClearState(int slot, int nationIndex);
+  // Stores value*4 into prioritySlots04[index] (the "Tyer" turn-instruction handler). 0x5b0c70
+  void SetCityOrderCapabilityTierScaledValueByIndex(int index, int value);
   int GetNationFortLevelCap(int nNationId);
   // True when both prerequisite techs of `techId` (from g_aTechItemPrerequisitePairs;
   // 0 = none, and status byte 0 is always 2) are researched for the nation. 0x5b0a20.
@@ -144,3 +150,9 @@ public:
 
   ~TTechMgr() override;
 };
+
+// Resolves the first enabled industry-capability slot (1..13) for a given class index
+// by scanning g_aIndustryCapabilityClassSlotTable (descending) and testing the
+// per-slot enabled flag at g_pCityOrderCapabilityState+0x19d+slot; returns 0 if none
+// match (slot 0 itself is never reached by the scan). 0x5572d0.
+short GetEnabledIndustryCapabilitySlotByClass(short classId);

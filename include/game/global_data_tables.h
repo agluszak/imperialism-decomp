@@ -115,6 +115,31 @@ extern "C" int g_aCategoryMetricBaselineAverage[4];
 void RecomputeGlobalCapabilityAverages(void);
 extern "C" float g_fMissionScoreNormalizationDivisor;
 
+// Per-nation (0..6) output caches written by RecomputeNationOrderPriorityMetrics
+// (0x53fe30): a queue-demand divergence score (blended from the 4-category
+// TShip navy-order contribution percentages, normalized against
+// g_Populate_Beachhead_Mission_LookupTable_00697958), a "mobile units"
+// divergence/score pair (from militaryUnitList44 entries with a nonzero
+// GetUnitMovementClassId, normalized against g_awTacticalCompositionReferenceProfiles_00697870),
+// a "combined units" divergence (mobile + static units), and a final
+// military-power-weighted order score.
+extern "C" float g_afNationOrderQueueDivergence_006a3a88[7];
+extern "C" float g_afNationOrderQueueDivergenceMirror_006a3ac0[7];
+extern "C" float g_afNationMobileUnitDivergence_006a3ae0[7];
+extern "C" float g_afNationWeightedMilitaryOrderScore_006a3b20[7];
+extern "C" float g_afNationCombinedUnitDivergence_006a3b50[7];
+extern "C" float g_afNationMobileUnitScore_006a3b88[7];
+
+// Class-id -> capability-slot lookup table (0x698120, 14 entries, only the leading
+// classId field is read by GetEnabledIndustryCapabilitySlotByClass; the remaining 8
+// ints of each 0x24-byte record are unmapped (raw, preserved for byte-exact datacmp)).
+// Index 0 (classId -1) is never actually reached by that scan (see the function body).
+struct IndustryCapabilityClassSlotEntry {
+  int classId;
+  int raw[8];
+};
+extern "C" IndustryCapabilityClassSlotEntry g_aIndustryCapabilityClassSlotTable[14];
+
 short GetResourceTypeRandomDrawBlockFlag(short resourceType);
 short GetResourceDescriptorWord0CByType(short resourceType);
 short GetResourceDescriptorWord10ByType(short resourceType);
@@ -393,6 +418,13 @@ extern short g_anCityBuildingSlotCoords[36];
 // TToolBarCluster::HandleCityBuildingHoverSelection), built by
 // InitializeCityBuildingHoverSelectionRects_004b95c0. 0x6a2998.
 extern CRect g_aCityBuildingHoverSelectionRects[16];
+// Packed int table consumed by the city-building screen layout (icon/highlight coordinates
+// and 0/1 flags; per-field semantics not yet recovered). Populated by
+// InitializeCityBuildingLayoutData. 0x6a24e8.
+extern int g_anCityBuildingLayoutValues[164];
+// 31 action-button rects for the city-building screen, placement-constructed by
+// InitializeCityBuildingLayoutData (immediately after g_anCityBuildingLayoutValues). 0x6a2778.
+extern CRect g_aCityBuildingActionRects[31];
 // QuickDraw OpenRgn/CloseRgn recording accumulator (QDFrameRect XORs framed rects into it).
 extern HRGN g_hOpenRgnAccumulator;
 extern char g_Sanitize_City_Counter_Value_006A24D4;
@@ -614,6 +646,10 @@ extern char g_szUiBoardOfTradeLabel_00694AF8[];
 // the UI invalidation-flag assert helper from the TDlgWindow/UGameWindow assert hooks.
 extern char g_szUGameWindowSourcePath_00696bc0[];
 
+// Source-file path string ("D:\\Ambit\\Cross\\UCountry.cpp") passed with a line number to
+// the UI invalidation-flag assert helper from TGreatPower nil-pointer assert hooks.
+extern char g_szUCountrySourcePath_00696728[];
+
 // Gate checked by TControl::AssertCityProductionGlobalStateInitialized before the
 // McAppUI.h line-0x56f assert path runs.
 extern int g_McAppUiFlag_006A143C;
@@ -802,6 +838,14 @@ extern double g_Recompute_Nation_Order_LookupTable_0065AA08;
 extern const float g_Recompute_Nation_Order_LookupTable_0065AA20;
 extern unsigned short g_awTacticalCompositionReferenceProfiles_00697870[];
 extern unsigned short g_Populate_Beachhead_Mission_LookupTable_00697958[];
+// TShip.cpp — per-category target-percentage weights (40/30/30/0) used by
+// ComputeNavyOrderDistributionScoreForNation's divergence-score formula. Read via
+// sign-extend (movsx) in the original despite being small positive values, so the
+// storage type must be signed short to match the codegen.
+extern const short g_NavyOrderDistributionCategoryWeights_00697978[4];
+// TNavyMission.cpp — per-hop distance decay weight (0.8^index, clamped index 0..5) used
+// by ComputeMissionOrderMatchScoreWithCandidateNavyOrder's per-ship accumulation.
+extern const float g_NavyOrderDistanceDecayWeightTable_006978c8[6];
 
 // TMapMgr.cpp — per-resourceType requirement level table (0x513610).
 extern unsigned char g_abUniversityRequirementLevelById[24][4];
@@ -862,7 +906,21 @@ extern float g_ApplyIndexedResourceDeltaScale_00653728;
 
 // TMission.cpp — default mission score constant.
 extern const float g_MissionDefaultScore_0065a468;
+extern const double g_MissionScoreOneConstant_0065a470;
+extern const float g_HexHighlightScreenScale_00658640;
 extern float g_TileHeatmapNeighborDiffusionFactor;
+extern double g_MapPreviewScaleX6A3410;
+extern double g_MapPreviewScaleY6A33D0;
+extern double g_ScaleDefault6A1FE8;
+extern double g_ScaleDefault6A1FC0;
+extern int g_ResetStateDword6A1E20;
+extern int g_ResetStateDword6A1E24;
+extern int g_ResetStateDword6A1E48;
+extern int g_ResetStateDword6A1E4C;
+extern int g_ResetStateDword6A1E70;
+extern int g_ResetStateDword6A1E74;
+extern int g_ResetStateDword6A1F38;
+extern int g_ResetStateDword6A1F3C;
 extern short g_NavyResolveOrderRanking[14];
 extern short g_NavyMissionOrderRanking[14];
 extern short g_NavyPriorityOrderRanking[14];
@@ -927,6 +985,7 @@ extern SeaSegmentStretch g_regionBorderLinkTable_006a3900;
 
 // Hex-neighbour offset tables (offset-coordinate grid; even/odd rows shift columns
 // differently), indexed by direction 0..5. Read by the city-region border/merge passes.
+extern const int g_anTechItemPurchaseCostBySlot_0066aae8[34];
 extern const int g_hexColOffsetEvenRow_00697450[6];
 extern const int g_hexRowOffset_00697468[6];
 extern const int g_hexColOffsetOddRow_00697480[6];
@@ -956,6 +1015,17 @@ extern char s_mcflavor_00695794[];
 extern char s_mcflavor_00696674[];
 extern char s_mcflavor_00696d10[];
 extern char s_mcflavor_00697238[];
+extern char g_szScriptFileName_006972f8[];
+extern char g_szFmtZone_006972e8[];
+extern char g_szFmtShip_006972d0[];
+extern char g_szFmtArmy_006972bc[];
+extern char g_szFmtCivi_006972ac[];
+extern char g_szFmtPort_006972a0[];
+extern char g_szFmtRail_00697294[];
+extern char g_szFmtCapa_00697280[];
+extern char g_szFmtLabo_00697268[];
+extern char g_szFmtEmba_00697254[];
+extern char g_szFmtYear_00697248[];
 extern char s_mcflavor_006976e0[];
 extern char s_mcflavor_00698b0c[];
 extern char s_mcflavor_0069ab00[];

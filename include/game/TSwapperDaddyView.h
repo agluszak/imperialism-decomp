@@ -31,18 +31,18 @@ public:
   // slot 0x15 SetCityDialogValueDword10 inherited unchanged (0x415d70)
   // slot 0x16 OwnerPanel inherited unchanged (0x48b180)
   // slot 0x17 vmethod_0023 inherited unchanged (0x48a530)
-  // slot 0x18 GetDeactivateVetoCode inherited unchanged (0x48a550)
-  // slot 0x19 OnDeactivated inherited unchanged (0x48a690)
-  // slot 0x1a OnDeactivateVetoed inherited unchanged (0x48a6b0)
+  // slot 0x18 vmethod_0024 inherited unchanged (0x48a550)
+  // slot 0x19 vmethod_0025 inherited unchanged (0x48a690)
+  // slot 0x1a vmethod_0026 inherited unchanged (0x48a6b0)
   // slot 0x1b HandleCityProductionNoOp inherited unchanged (0x48a650)
   // slot 0x1c DispatchUiCommand19ToParent inherited unchanged (0x48a6d0)
   // slot 0x1d DispatchCityProductionAction1A inherited unchanged (0x48a670)
   // slot 0x1e DispatchCityProductionAction1B inherited unchanged (0x48a6f0)
   // slot 0x1f ActivateCityProductionViewIfAllowed inherited unchanged (0x48a570)
-  // slot 0x20 TryDeactivateActiveView inherited unchanged (0x48a5e0)
+  // slot 0x20 vmethod_0080 inherited unchanged (0x48a5e0)
   // slot 0x21 vmethod_0081 inherited unchanged (0x48a710)
-  // slot 0x22 IsActiveView inherited unchanged (0x48a500)
-  // slot 0x23 DetachUiResourceOwnerIfMatches inherited unchanged (0x48a4a0)
+  // slot 0x22 vmethod_0032 inherited unchanged (0x48a500)
+  // slot 0x23 vmethod_0033 inherited unchanged (0x48a4a0)
   // slot 0x24 SetUiResourceOwner inherited unchanged (0x48a4d0)
   // slot 0x25 ResolveControlByTag inherited unchanged (0x48afd0)
   // slot 0x26 SwitchActiveChildAndNotify inherited unchanged (0x48af80)
@@ -114,4 +114,11 @@ public:
   // === END GENERATED DECLS (TSwapperDaddyView) ===
 
   TSwapperDaddyView();
+
+  // Selects the child control whose controlTag matches `tag`: lays the match at the origin
+  // (visible) and every other child off-screen at (1000,1000), caches the tag, and returns
+  // the matched child. If the tag is already the cached one, forwards to ResolveControlByTag.
+  TView* SelectSwapperItemByTag(unsigned int tag); // 0x004ac6c0
+
+  int selectedTag60; // 0x60 — currently displayed child's controlTag
 };

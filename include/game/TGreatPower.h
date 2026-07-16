@@ -460,4 +460,10 @@ public:
   // terrain-coverage-not-found path (0x5389a9) to clear this nation's flag for the
   // target port zone's context ordinal.
   void SetByteFlagAtOffsetAF0ByIndex(int contextOrdinal, char value); // 0x4e8bf0
+
+  // Sets mapNodeStateFlags[provinceIndex] to `value`, except when value == 1 and the
+  // province's map-action-context link is unavailable (no active context for this
+  // nation), in which case it's forced to 0 instead. Same gate/array
+  // QueueMapActionMissionsForPortZoneCandidates already uses directly. 0x4e8b50.
+  void SetMapStateByteFlag970WithRuntimeGate(int provinceIndex, int value);
 };

@@ -75,14 +75,6 @@ undefined4 ConfigureUiControlStyleValueAndCaptionFromStringResource(void)
   return 0;
 }
 
-// ghidra_name DispatchToSelectableTextOptionEntries
-// ghidra_proto undefined DispatchToSelectableTextOptionEntries()
-// FUNCTION: IMPERIALISM 0x005c43b0
-undefined4 DispatchToSelectableTextOptionEntries(void)
-{
-  return 0;
-}
-
 // ghidra_name ApplyControlTextStyleDescriptorFromThemeCode
 // ghidra_proto undefined ApplyControlTextStyleDescriptorFromThemeCode()
 // FUNCTION: IMPERIALISM 0x005c4620
@@ -647,14 +639,6 @@ undefined4 FreeTurnEventPacketBuffer(void)
 // ghidra_proto undefined PopNextTurnEventPacketOrProcessSpecialQueueRecords()
 // FUNCTION: IMPERIALISM 0x005e3f30
 undefined4 PopNextTurnEventPacketOrProcessSpecialQueueRecords(void)
-{
-  return 0;
-}
-
-// ghidra_name NoOpDialogModeTagChangedHook
-// ghidra_proto undefined NoOpDialogModeTagChangedHook()
-// FUNCTION: IMPERIALISM 0x005e42a0
-undefined4 NoOpDialogModeTagChangedHook(void)
 {
   return 0;
 }

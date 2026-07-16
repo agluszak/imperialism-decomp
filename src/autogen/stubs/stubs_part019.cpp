@@ -155,14 +155,6 @@ undefined4 ApplyTacticalDamageAndDeathState(void)
   return 0;
 }
 
-// ghidra_name TNextMoveCommand::ConstructTNextMoveCommandBaseState
-// ghidra_proto undefined ConstructTNextMoveCommandBaseState()
-// FUNCTION: IMPERIALISM 0x005a6560
-undefined4 ConstructTNextMoveCommandBaseState(void)
-{
-  return 0;
-}
-
 // ghidra_name DestructTNextMoveCommandAndMaybeFree_Impl
 // ghidra_proto undefined DestructTNextMoveCommandAndMaybeFree_Impl()
 // FUNCTION: IMPERIALISM 0x005a65c0
@@ -307,34 +299,10 @@ undefined4 ApplyTechUnlockAndQueueNationAbilityNotices(void)
   return 0;
 }
 
-// ghidra_name ApplyTechItemPurchaseCostAndState
-// ghidra_proto undefined ApplyTechItemPurchaseCostAndState()
-// FUNCTION: IMPERIALISM 0x005b0b30
-undefined4 ApplyTechItemPurchaseCostAndState(void)
-{
-  return 0;
-}
-
-// ghidra_name RefundTechItemPurchaseCostAndClearState
-// ghidra_proto undefined RefundTechItemPurchaseCostAndClearState()
-// FUNCTION: IMPERIALISM 0x005b0bb0
-undefined4 RefundTechItemPurchaseCostAndClearState(void)
-{
-  return 0;
-}
-
 // ghidra_name ConsumeFirstPendingAbilityUnlock
 // ghidra_proto undefined ConsumeFirstPendingAbilityUnlock()
 // FUNCTION: IMPERIALISM 0x005b0c20
 undefined4 ConsumeFirstPendingAbilityUnlock(void)
-{
-  return 0;
-}
-
-// ghidra_name SetCityOrderCapabilityTierScaledValueByIndex
-// ghidra_proto undefined SetCityOrderCapabilityTierScaledValueByIndex()
-// FUNCTION: IMPERIALISM 0x005b0c70
-undefined4 SetCityOrderCapabilityTierScaledValueByIndex(void)
 {
   return 0;
 }
@@ -407,14 +375,6 @@ undefined4 WrapperFor_ftol_At005b4ee0(void)
 // ghidra_proto undefined DestructTInfoBarPictureTextAndMaybeFree()
 // FUNCTION: IMPERIALISM 0x005b5c90
 undefined4 DestructTInfoBarPictureTextAndMaybeFree(void)
-{
-  return 0;
-}
-
-// ghidra_name TNoHiliteText::ConstructUiStatusListTextEntry
-// ghidra_proto undefined ConstructUiStatusListTextEntry()
-// FUNCTION: IMPERIALISM 0x005b6a00
-undefined4 ConstructUiStatusListTextEntry(void)
 {
   return 0;
 }

@@ -339,14 +339,6 @@ undefined4 WrapperFor_ftol_At004ac570(void)
   return 0;
 }
 
-// ghidra_name TSwapperDaddyView::ConstructTSwapperDaddyViewBaseState
-// ghidra_proto undefined ConstructTSwapperDaddyViewBaseState()
-// FUNCTION: IMPERIALISM 0x004ac6c0
-undefined4 ConstructTSwapperDaddyViewBaseState(void)
-{
-  return 0;
-}
-
 // ghidra_name TIdleMeAnimation::CreateTIdleMeAnimationInstance
 // ghidra_proto undefined CreateTIdleMeAnimationInstance()
 // FUNCTION: IMPERIALISM 0x004ac980
@@ -619,26 +611,10 @@ undefined4 DestructTExpansionOrderAndMaybeFree(void)
   return 0;
 }
 
-// ghidra_name WriteWordArrayToOutputCallbackLE
-// ghidra_proto undefined WriteWordArrayToOutputCallbackLE()
-// FUNCTION: IMPERIALISM 0x004b94a0
-undefined4 WriteWordArrayToOutputCallbackLE(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_ftol_At004b9570
 // ghidra_proto undefined WrapperFor_ftol_At004b9570()
 // FUNCTION: IMPERIALISM 0x004b9570
 undefined4 WrapperFor_ftol_At004b9570(void)
-{
-  return 0;
-}
-
-// ghidra_name InitializeCityBuildingLayoutData
-// ghidra_proto undefined InitializeCityBuildingLayoutData()
-// FUNCTION: IMPERIALISM 0x004b98b0
-undefined4 InitializeCityBuildingLayoutData(void)
 {
   return 0;
 }

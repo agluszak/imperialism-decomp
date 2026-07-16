@@ -121,8 +121,8 @@ public:
   // slot 0x66 AssertMcAppUILine1922 inherited unchanged (0x48c7d0)
   // slot 0x67 CtrlSlot103_SubtractPosAndDispatchSlot19C_Impl inherited unchanged (0x48bac0)
   virtual undefined
-  WrapperFor_InvalidateCityDialogRectRegion_At005a8900(int param_1);     // slot 0x68 0x5a8900
-  virtual undefined InvalidateTacticalUnitTileRect(TTacticalUnit* unit); // slot 0x69 0x5a89a0
+  WrapperFor_InvalidateCityDialogRectRegion_At005a8900(int param_1); // slot 0x68 0x5a8900
+  virtual void InvalidateTacticalUnitTileRect(TTacticalUnit* unit);  // slot 0x69 0x5a89a0
   // Writes the on-screen RECT of a unit's tile (grown 0x18 px upward, bottom-4;
   // zero RECT when tileIndex8 == -1). Hedged name.
   virtual undefined ComputeTacticalUnitTileScreenRect(TTacticalUnit* unit,

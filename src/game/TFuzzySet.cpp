@@ -19,6 +19,14 @@ TFuzzySet::TFuzzySet() {}
 // TFuzzySet::~TFuzzySet
 TFuzzySet::~TFuzzySet() {}
 
+// FUNCTION: IMPERIALISM 0x004ff750
+void TFuzzySet::Clear() {
+  m_memberCount = 0;
+  for (int i = 0; i < 10; ++i) {
+    m_members[i] = nullptr;
+  }
+}
+
 // FUNCTION: IMPERIALISM 0x004ff780
 void TFuzzySet::Free() {
   for (int i = 0; i < m_memberCount; ++i) {

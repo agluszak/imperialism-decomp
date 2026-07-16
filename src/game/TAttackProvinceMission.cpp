@@ -22,13 +22,6 @@ IMPLEMENT_SERIAL(TAttackProvinceMission, TArmyMission, 1)
 // SYNTHETIC: IMPERIALISM 0x0053d7c0
 // TAttackProvinceMission::`scalar deleting destructor'
 
-// Not-yet-recovered free functions/subsystems this file calls into. Generic
-// stub signature per the autogen stub definition; real signature applied via
-// a typed cast at each call site so the linker resolves the correct symbol.
-// TGreatPower method, not yet ported (operates on this+0x970 -- see
-// TDefendProvinceMission.cpp for the identical bridge).
-extern undefined4 SetMapStateByteFlag970WithRuntimeGate(void);
-
 namespace {
 // See TArmyMission.cpp's identical TArmyMissionOrderItemLayout/OwnerOf --
 // orderListAt18 payloads are an unrecovered subtype; only the owner
@@ -81,12 +74,7 @@ void TAttackProvinceMission::Free() {
   TGreatPower* nationState = g_apNationStates[nationId04];
   nationState->AssertValid();
 
-  typedef void(__fastcall * SetMapStateByteFlag970WithRuntimeGate_t)(void* self, int dummyEdx,
-                                                                     int arg1, int arg2);
-  SetMapStateByteFlag970WithRuntimeGate_t SetMapStateByteFlag970WithRuntimeGate_fn =
-      reinterpret_cast<SetMapStateByteFlag970WithRuntimeGate_t>(
-          (void*)&SetMapStateByteFlag970WithRuntimeGate);
-  SetMapStateByteFlag970WithRuntimeGate_fn(nationState, 0, targetProvince30, 0);
+  nationState->SetMapStateByteFlag970WithRuntimeGate(targetProvince30, 0);
 
   if (orderListAt18 != nullptr) {
     CIterator iter(orderListAt18);

@@ -499,14 +499,6 @@ undefined4 TrySelectNextValidMapOrderEntry(void)
   return 0;
 }
 
-// ghidra_name ResetMapInteractionToCivilianMode
-// ghidra_proto void __thiscall ResetMapInteractionToCivilianMode(void * pMapInteractionState)
-// FUNCTION: IMPERIALISM 0x005999f0
-undefined4 ResetMapInteractionToCivilianMode(void)
-{
-  return 0;
-}
-
 // ghidra_name NotifyTaskForceSelectionListenerByWord62
 // ghidra_proto undefined NotifyTaskForceSelectionListenerByWord62()
 // FUNCTION: IMPERIALISM 0x00599a20
@@ -547,90 +539,10 @@ undefined4 DestructTArmyPlayerAndMaybeFree_Impl(void)
   return 0;
 }
 
-// ghidra_name WrapperFor_thunk_ApplyTacticalCursorModeProfile0_ByActionClassCounts_At0059c98d
-// ghidra_proto undefined WrapperFor_thunk_ApplyTacticalCursorModeProfile0_ByActionClassCounts_At0059c98d()
-// FUNCTION: IMPERIALISM 0x0059c98d
-undefined4 WrapperFor_thunk_ApplyTacticalCursorModeProfile0_ByActionClassCounts_At0059c98d(void)
-{
-  return 0;
-}
-
-// ghidra_name SetLinkedListEntryState2CForTacticalCategory0
-// ghidra_proto undefined SetLinkedListEntryState2CForTacticalCategory0()
-// FUNCTION: IMPERIALISM 0x0059c999
-undefined4 SetLinkedListEntryState2CForTacticalCategory0(void)
-{
-  return 0;
-}
-
-// ghidra_name IterateLinkedListCursorAndAdvanceToEnd_0059c9d7
-// ghidra_proto undefined IterateLinkedListCursorAndAdvanceToEnd_0059c9d7()
-// FUNCTION: IMPERIALISM 0x0059c9d7
-undefined4 IterateLinkedListCursorAndAdvanceToEnd_0059c9d7(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_thunk_ApplyTacticalCursorModeProfile2_ByActionClassCounts_At0059c9f6
-// ghidra_proto undefined WrapperFor_thunk_ApplyTacticalCursorModeProfile2_ByActionClassCounts_At0059c9f6()
-// FUNCTION: IMPERIALISM 0x0059c9f6
-undefined4 WrapperFor_thunk_ApplyTacticalCursorModeProfile2_ByActionClassCounts_At0059c9f6(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_thunk_ApplyTacticalCursorModeProfile3_ClassAware_At0059ca02
-// ghidra_proto undefined WrapperFor_thunk_ApplyTacticalCursorModeProfile3_ClassAware_At0059ca02()
-// FUNCTION: IMPERIALISM 0x0059ca02
-undefined4 WrapperFor_thunk_ApplyTacticalCursorModeProfile3_ClassAware_At0059ca02(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_thunk_ApplyTacticalCursorModeProfile4_ClassAware_At0059ca0e
-// ghidra_proto undefined WrapperFor_thunk_ApplyTacticalCursorModeProfile4_ClassAware_At0059ca0e()
-// FUNCTION: IMPERIALISM 0x0059ca0e
-undefined4 WrapperFor_thunk_ApplyTacticalCursorModeProfile4_ClassAware_At0059ca0e(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_thunk_ApplyTacticalCursorModeProfile5_ClassAware_At0059ca1a
-// ghidra_proto undefined WrapperFor_thunk_ApplyTacticalCursorModeProfile5_ClassAware_At0059ca1a()
-// FUNCTION: IMPERIALISM 0x0059ca1a
-undefined4 WrapperFor_thunk_ApplyTacticalCursorModeProfile5_ClassAware_At0059ca1a(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_thunk_ApplyTacticalCursorModeProfile6_DefaultByActionClass_At0059ca26
-// ghidra_proto undefined WrapperFor_thunk_ApplyTacticalCursorModeProfile6_DefaultByActionClass_At0059ca26()
-// FUNCTION: IMPERIALISM 0x0059ca26
-undefined4 WrapperFor_thunk_ApplyTacticalCursorModeProfile6_DefaultByActionClass_At0059ca26(void)
-{
-  return 0;
-}
-
-// ghidra_name SetLinkedListEntryState2CTo13ForAllNodes
-// ghidra_proto undefined SetLinkedListEntryState2CTo13ForAllNodes()
-// FUNCTION: IMPERIALISM 0x0059ca32
-undefined4 SetLinkedListEntryState2CTo13ForAllNodes(void)
-{
-  return 0;
-}
-
 // ghidra_name IterateLinkedListCursorEntries_0059cc70
 // ghidra_proto undefined IterateLinkedListCursorEntries_0059cc70()
 // FUNCTION: IMPERIALISM 0x0059cc70
 undefined4 IterateLinkedListCursorEntries_0059cc70(void)
-{
-  return 0;
-}
-
-// ghidra_name SetLinkedListNodeField2CTo13ForAllNodes
-// ghidra_proto undefined SetLinkedListNodeField2CTo13ForAllNodes()
-// FUNCTION: IMPERIALISM 0x0059d400
-undefined4 SetLinkedListNodeField2CTo13ForAllNodes(void)
 {
   return 0;
 }

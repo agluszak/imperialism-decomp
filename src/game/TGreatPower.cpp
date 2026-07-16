@@ -141,7 +141,7 @@ TGreatPower::TGreatPower()
 
   int localeIndex = 0;
   if (g_pSimMgr != 0) {
-    localeIndex = g_pSimMgr->runtimeSubsystemIndex;
+    localeIndex = g_pSimMgr->redrawEnabled;
   }
   this->diplomacyBudgetBase = g_anNationBasePressureByLocale[localeIndex] * 100;
   this->escalationCounter =
@@ -207,7 +207,7 @@ void TGreatPower::InitializeNationStateRuntimeSubsystems(int arg1, int arg2) {
 
   TSimMgr* localizationRuntime = g_pSimMgr;
   if (localizationRuntime != 0) {
-    int runtimeIndex = localizationRuntime->runtimeSubsystemIndex;
+    int runtimeIndex = localizationRuntime->redrawEnabled;
     this->treasuryValue10 = g_anNationStartingTreasuryByLocale[runtimeIndex];
   } else {
     this->treasuryValue10 = 0;
@@ -915,7 +915,7 @@ void TGreatPower::CompileGreatPowerRelationshipDeltaLinesAndDispatchMessage(void
   TSimMgr* localizationRuntime = g_pSimMgr;
   int localeIndex = 0;
   if (localizationRuntime != 0) {
-    localeIndex = localizationRuntime->runtimeSubsystemIndex;
+    localeIndex = localizationRuntime->redrawEnabled;
   }
   int compileThreshold = g_anGreatPowerCompileThresholdByLocale[localeIndex];
   if (compileThreshold > static_cast<int>(this->pressureCounter)) {
@@ -980,7 +980,7 @@ void TGreatPower::UpdateGreatPowerPressureStateAndDispatchEscalationMessage(void
   TSimMgr* localizationRuntime = g_pSimMgr;
   int localeIndex = 0;
   if (localizationRuntime != 0) {
-    localeIndex = localizationRuntime->runtimeSubsystemIndex;
+    localeIndex = localizationRuntime->redrawEnabled;
   }
 
   int treasuryValue10 = this->treasuryValue10;
@@ -1087,7 +1087,7 @@ void TGreatPower::BuildTransportLinkedInfluenceMap(char** outInfluenceMap) {
   char* influenceMap = new char[0x1950];
   if (influenceMap == 0) {
     GAME_FAIL_NIL_POINTER();
-    TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\UCountry.cpp", 0xa0e);
+    TemporarilyClearAndRestoreUiInvalidationFlag(g_szUCountrySourcePath_00696728, 0xa0e);
   }
   memset(influenceMap, 0, 0x1950);
 
@@ -1937,7 +1937,7 @@ int TGreatPower::ComputeRemainingDiplomacyAidBudget(void) {
 // FUNCTION: IMPERIALISM 0x004dd470
 void TGreatPower::ResetDiplomacyNeedSlots7012AndRefreshIfModeGateMatches(void) {
   TSimMgr* localizationTable = g_pSimMgr;
-  if (localizationTable->runtimeSubsystemIndex != 0 || localizationTable->mode != 2) {
+  if (localizationTable->redrawEnabled != 0 || localizationTable->mode != 2) {
     return;
   }
 
@@ -3174,7 +3174,7 @@ void TGreatPower::ApplyScenarioRelationPresetAndSpawnFrogCity(TCity* mgr) {
   if (this->diplomacyEligibilityA0 == 0) {
     presetLevel = 2;
   } else {
-    presetLevel = g_pSimMgr->runtimeSubsystemIndex;
+    presetLevel = g_pSimMgr->redrawEnabled;
   }
   const short* presetRow = g_Rebuild_Primary_Nation_Value_00653570[presetLevel];
   for (int needIndex = 0; needIndex < 0x17; ++needIndex) {
@@ -3199,7 +3199,7 @@ void TGreatPower::ApplyScenarioRelationPresetAndSpawnFrogCity(TCity* mgr) {
     notifySink->NotifyProductionPresetSlot2C(4, 2, 1);
   }
   TSimMgr* localization = g_pSimMgr;
-  if (this->diplomacyEligibilityA0 == 0 || localization->runtimeSubsystemIndex < 2 ||
+  if (this->diplomacyEligibilityA0 == 0 || localization->redrawEnabled < 2 ||
       localization->stateFlag114 != 0) {
     if (this->ShouldDispatchImmediatelySlot28() == 0 || localization->stateFlag114 != 0) {
       this->CreateFrogCityAtHomeRegionAndAttach(mgr);
@@ -4563,6 +4563,18 @@ float TGreatPower::ComputeAdvisoryMapNodeScoreFactorByCaseMetric(int metricCase,
   default:
     return kOne;
   }
+}
+// Sets mapNodeStateFlags[provinceIndex] to `value`, except when value == 1 and the
+// province's map-action-context link is unavailable for this nation, in which case it's
+// forced to 0 -- the same gate/array QueueMapActionMissionsForPortZoneCandidates above
+// already uses directly.
+// FUNCTION: IMPERIALISM 0x004e8b50
+void TGreatPower::SetMapStateByteFlag970WithRuntimeGate(int provinceIndex, int value) {
+  if (value == 1 && g_pGlobalMapState->IsNodeTypeLinkUnavailableAndNoActiveMapActionContext(
+                        provinceIndex, nationSlot)) {
+    value = 0;
+  }
+  mapNodeStateFlags[provinceIndex] = static_cast<unsigned char>(value);
 }
 
 // FUNCTION: IMPERIALISM 0x004e8bf0

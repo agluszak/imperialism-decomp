@@ -273,6 +273,22 @@ void TArmyMission::AccumulateMissionUnitPriorityVectorWithOptionalFilter(float* 
   }
 }
 
+// FUNCTION: IMPERIALISM 0x0053cb50
+void TArmyMission::AccumulateMissionUnitPriorityContributionWithScaleMode(TMilitaryUnit* unit,
+                                                                          float* vector,
+                                                                          bool scaleMode) {
+  short weightIndex = unit->IsNotStationedInProvince(GetMissionTargetContextIdFromField14());
+  if (weightIndex > 5) {
+    weightIndex = 5;
+  }
+  float sign = scaleMode ? static_cast<float>(g_Recompute_Nation_Order_LookupTable_0065AA08)
+                         : static_cast<float>(g_Recompute_Nation_Order_LookupTable_0065A9E0);
+  float scale = g_NavyOrderDistanceDecayWeightTable_006978c8[weightIndex] * sign;
+  float weight =
+      static_cast<float>(GetProvinceUnitOrderWeight(GetMissionTargetContextIdFromField14()));
+  AccumulateUnitOrderPriorityVectorContribution(unit, vector, scale, weight);
+}
+
 // FUNCTION: IMPERIALISM 0x0053cc10
 void AccumulateUnitOrderPriorityVectorContribution(TMilitaryUnit* unit, float* vector, float scale,
                                                    float weight) {
@@ -379,7 +395,7 @@ float TArmyMission::ReturnZeroFloatSlot6C() {
 // FUNCTION: IMPERIALISM 0x0053d420
 float TArmyMission::ReturnZeroFloatSlot70(TMilitaryUnit* candidateUnit) {
   if (flag10 != 0) {
-    return 0.0f;
+    return g_Recompute_Nation_Order_LookupTable_0065A9E8;
   }
 
   if (candidateUnit->ownerMission40 == this) {

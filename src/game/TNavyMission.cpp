@@ -18,9 +18,7 @@ IMPLEMENT_SERIAL(TNavyMission, TMission, 1)
 // typed cast at each call site so the linker resolves the correct symbol).
 extern undefined4 GetNavyPrimaryOrderNodeByIndex(void);
 extern undefined4 FindFirstTrackedHandlerMatchingModeAndShortKey(void);
-extern undefined4 CompareMissionOrderEntriesByPriorityScore(void);
 extern undefined4 GetOrCreateMissionOrderEntryForNode(void);
-extern undefined4 BuildNavyOrderCategoryVectorForNationWithExclusion(void);
 
 // Swaps float byte order (Big-Endian <-> Little-Endian)
 static inline float SwapFloat(float val) {
@@ -313,27 +311,6 @@ void TNavyMission::RefreshSlot40() {
   }
 }
 
-// Shared helper for RefreshSlot40 (0x536b30's inlined similarity-ratio computation).
-float TNavyMission::ComputeNavyOrderCategorySimilarityRatio(int excludeCurrent) {
-  typedef void(__fastcall * BuildNavyOrderCategoryVectorForNationWithExclusion_t)(float*, TZone*,
-                                                                                  int, TObject*);
-  BuildNavyOrderCategoryVectorForNationWithExclusion_t
-      BuildNavyOrderCategoryVectorForNationWithExclusion_fn =
-          reinterpret_cast<BuildNavyOrderCategoryVectorForNationWithExclusion_t>(
-              (void*)&BuildNavyOrderCategoryVectorForNationWithExclusion);
-
-  float vector[4];
-  BuildNavyOrderCategoryVectorForNationWithExclusion_fn(vector, targetZone14, excludeCurrent,
-                                                        navyField20);
-  float numerator = 0.0f;
-  float denominator = 0.0f;
-  for (int i = 0; i < 4; ++i) {
-    numerator += sqrtf(resourceWeights2c[i] * vector[i]);
-    denominator += resourceWeights2c[i];
-  }
-  return numerator / denominator;
-}
-
 // FUNCTION: IMPERIALISM 0x00536e40
 void TNavyMission::MissionSlot44() {}
 
@@ -383,13 +360,12 @@ void TNavyMission::QueueMissionOrdersByPriorityForContext(int pContextAnchor,
   void* topOrder = nullptr;
   int maxScore = -1;
 
-  typedef int(__cdecl * CompareMissionOrderEntriesByPriorityScore_t)(void*, int);
-  CompareMissionOrderEntriesByPriorityScore_t CompareMissionOrderEntriesByPriorityScore_fn =
-      reinterpret_cast<CompareMissionOrderEntriesByPriorityScore_t>(
-          (void*)&CompareMissionOrderEntriesByPriorityScore);
-
+  // Was bridged through a mis-targeted "CompareMissionOrderEntriesByPriorityScore" cdecl
+  // stub cast (a name collision with the unrelated real function at 0x536090); the actual
+  // callee here (verified via the 0x403e77 ILT thunk row) is the already-ported
+  // TTaskForce::CalculateMissionOrderPriorityScore (0x5501b0).
   for (TMapOrderChildLinkNode* node = orderList24; node != nullptr; node = node->next) {
-    int score = CompareMissionOrderEntriesByPriorityScore_fn(node->object_ptr, 3);
+    int score = node->object_ptr->CalculateMissionOrderPriorityScore(3);
     if (maxScore < score) {
       topOrder = node->object_ptr;
       maxScore = score;
@@ -667,6 +643,65 @@ float TNavyMission::ReturnZeroFloatSlot6C() {
   }
   return static_cast<float>(total);
 }
+// Builds a per-category priority vector over every orderList24 ship: a ship counts if
+// it's within `distanceThreshold` hops of `nearZone` (or unconditionally when `nearZone`
+// is null), OR -- when farther than that -- if it's within `distanceThreshold` hops of
+// `farZone` instead (when farZone is both non-null and != nearZone). The per-ship
+// contribution accumulation (ratio = stockLevel1c/normalizationBase, categories 0-2
+// scaled by ratio, category 3 unscaled) is reproduced inline at both convergent call
+// sites rather than via AccumulateNavyOrderCategoryVectorWithScale -- this specific
+// function inlines its own copy in the original rather than calling out to 0x537c60.
+// FUNCTION: IMPERIALISM 0x00537900
+void TNavyMission::BuildNavyOrderCategoryVectorForNationWithExclusion(float* vector,
+                                                                      TZone* nearZone,
+                                                                      short distanceThreshold,
+                                                                      TObject* farZone) {
+  vector[0] = 0.0f;
+  vector[1] = 0.0f;
+  vector[2] = 0.0f;
+  vector[3] = 0.0f;
+  if (farZone == nearZone) {
+    farZone = nullptr;
+  }
+  for (TMapOrderChildLinkNode* node = orderList24; node != nullptr; node = node->next) {
+    TShip* ship = reinterpret_cast<TShip*>(node->object_ptr);
+    bool inRange = true;
+    if (nearZone != nullptr &&
+        ship->ComputeOrderNodeDistanceQuotientByDescriptorWord24(nearZone) > distanceThreshold) {
+      inRange = farZone != nullptr && ship->ComputeOrderNodeDistanceQuotientByDescriptorWord24(
+                                          static_cast<TZone*>(farZone)) <= distanceThreshold;
+    }
+    if (inRange) {
+      short normBase = ship->GetNavyOrderNormalizationBaseByNationType();
+      float ratio = static_cast<float>(ship->stockLevel1c / normBase);
+      vector[0] +=
+          static_cast<float>(ship->ComputeNavyOrderPriorityContributionPercentByCategory(0)) *
+          ratio;
+      vector[1] +=
+          static_cast<float>(ship->ComputeNavyOrderPriorityContributionPercentByCategory(1)) *
+          ratio;
+      vector[2] +=
+          static_cast<float>(ship->ComputeNavyOrderPriorityContributionPercentByCategory(2)) *
+          ratio;
+      vector[3] +=
+          static_cast<float>(ship->ComputeNavyOrderPriorityContributionPercentByCategory(3));
+    }
+  }
+}
+
+// Shared helper for RefreshSlot40 (0x536b30's inlined similarity-ratio computation).
+float TNavyMission::ComputeNavyOrderCategorySimilarityRatio(int excludeCurrent) {
+  float vector[4];
+  BuildNavyOrderCategoryVectorForNationWithExclusion(
+      vector, targetZone14, static_cast<short>(excludeCurrent), navyField20);
+  float numerator = 0.0f;
+  float denominator = 0.0f;
+  for (int i = 0; i < 4; ++i) {
+    numerator += sqrtf(resourceWeights2c[i] * vector[i]);
+    denominator += resourceWeights2c[i];
+  }
+  return numerator / denominator;
+}
 // 0-2 scaled by (stock/normalization base)*scale and category 3 by scale alone.
 // FUNCTION: IMPERIALISM 0x00537c60
 void __cdecl AccumulateNavyOrderCategoryVectorWithScale(TShip* orderNode, float* vector,
@@ -692,9 +727,188 @@ void __cdecl AccumulateNavyOrderCategoryVectorWithScale(TShip* orderNode, float*
       vector[3];
 }
 
+// Same per-ship math as AccumulateNavyOrderCategoryVectorWithScale (ratio =
+// (stockLevel1c/normalizationBase)*weight, categories 0-2 scaled by ratio, category 3 by
+// the raw distance weight alone), but the weight itself is derived per-ship from the
+// active target zone's hop distance rather than passed in by the caller. Reproduced
+// inline (not via a call to 0x537c60) to match the original, which inlines its own copy
+// here rather than calling out.
+// FUNCTION: IMPERIALISM 0x00537d40
+void TNavyMission::BuildMissionQueuedOrderCategoryVector(float* vector) {
+  vector[0] = 0.0f;
+  vector[1] = 0.0f;
+  vector[2] = 0.0f;
+  vector[3] = 0.0f;
+  for (TMapOrderChildLinkNode* node = orderList24; node != nullptr; node = node->next) {
+    TShip* ship = reinterpret_cast<TShip*>(node->object_ptr);
+    TZone* targetZone = GetActiveTargetZoneByState28();
+    short distanceIndex = 0;
+    if (targetZone != nullptr) {
+      distanceIndex =
+          ship->ComputeOrderNodeDistanceQuotientByDescriptorWord24(GetActiveTargetZoneByState28());
+    }
+    if (distanceIndex > 5) {
+      distanceIndex = 5;
+    }
+    float weight = g_NavyOrderDistanceDecayWeightTable_006978c8[distanceIndex];
+    float ratio =
+        static_cast<float>(ship->stockLevel1c / ship->GetNavyOrderNormalizationBaseByNationType()) *
+        weight;
+    vector[0] +=
+        static_cast<float>(ship->ComputeNavyOrderPriorityContributionPercentByCategory(0)) * ratio;
+    vector[1] +=
+        static_cast<float>(ship->ComputeNavyOrderPriorityContributionPercentByCategory(1)) * ratio;
+    vector[2] +=
+        static_cast<float>(ship->ComputeNavyOrderPriorityContributionPercentByCategory(2)) * ratio;
+    vector[3] +=
+        static_cast<float>(ship->ComputeNavyOrderPriorityContributionPercentByCategory(3)) * weight;
+  }
+}
+
+// Same shape as ComputeNavyOrderCategorySimilarityRatio above, but always scores against
+// targetZone14 (near) / targetZone18 (far) instead of navyField20, with an explicit
+// caller-supplied distance threshold instead of a fixed 0/1.
+// FUNCTION: IMPERIALISM 0x00537eb0
+float TNavyMission::ComputeMissionQueuedOrderSimilarityForTargetNation(short distanceThreshold) {
+  float vector[4];
+  BuildNavyOrderCategoryVectorForNationWithExclusion(vector, targetZone14, distanceThreshold,
+                                                     targetZone18);
+  float numerator = 0.0f;
+  float denominator = 0.0f;
+  for (int i = 0; i < 4; ++i) {
+    numerator += sqrtf(resourceWeights2c[i] * vector[i]);
+    denominator += resourceWeights2c[i];
+  }
+  return numerator / denominator;
+}
+
 // FUNCTION: IMPERIALISM 0x00537f40
 float TNavyMission::ReturnZeroFloatSlot68() {
   return 0.0f;
+}
+// Weights all 4 categories uniformly by (stockLevel1c/normalizationBase) * a
+// distance-decay factor (0.8^hopDistance, clamped to index 5) from a per-ship
+// accumulator, over every existing orderList24 ship plus `candidateOrder`, then scores
+// the resulting vector against resourceWeights2c via a Bhattacharyya-coefficient-style
+// similarity. The per-ship accumulation is reproduced inline at both call sites (the
+// loop body and the trailing candidate-ship call) rather than factored into a shared
+// helper -- factoring it collapsed the codegen shape and tanked the score (9.48% vs the
+// ~30%+ this idiom otherwise reaches), matching the original's per-callsite inlining.
+// FUNCTION: IMPERIALISM 0x00538120
+float TNavyMission::ComputeMissionOrderMatchScoreWithCandidateNavyOrder(TShip* candidateOrder) {
+  float vector[4] = {
+      g_Recompute_Nation_Order_LookupTable_0065A9E8, g_Recompute_Nation_Order_LookupTable_0065A9E8,
+      g_Recompute_Nation_Order_LookupTable_0065A9E8, g_Recompute_Nation_Order_LookupTable_0065A9E8};
+  for (TMapOrderChildLinkNode* node = orderList24; node != nullptr; node = node->next) {
+    TShip* ship = reinterpret_cast<TShip*>(node->object_ptr);
+    TZone* targetZone = GetActiveTargetZoneByState28();
+    short distanceIndex = 0;
+    if (targetZone != nullptr) {
+      distanceIndex =
+          ship->ComputeOrderNodeDistanceQuotientByDescriptorWord24(GetActiveTargetZoneByState28());
+    }
+    if (distanceIndex > 5) {
+      distanceIndex = 5;
+    }
+    float scale =
+        g_NavyOrderDistanceDecayWeightTable_006978c8[distanceIndex] *
+        static_cast<float>(ship->stockLevel1c / ship->GetNavyOrderNormalizationBaseByNationType());
+    for (int componentIndex = 0; componentIndex < 4; ++componentIndex) {
+      vector[componentIndex] +=
+          static_cast<float>(
+              ship->ComputeNavyOrderPriorityContributionPercentByCategory(componentIndex)) *
+          scale;
+    }
+  }
+
+  TZone* targetZone = GetActiveTargetZoneByState28();
+  short distanceIndex = 0;
+  if (targetZone != nullptr) {
+    distanceIndex = candidateOrder->ComputeOrderNodeDistanceQuotientByDescriptorWord24(
+        GetActiveTargetZoneByState28());
+  }
+  if (distanceIndex > 5) {
+    distanceIndex = 5;
+  }
+  float scale = g_NavyOrderDistanceDecayWeightTable_006978c8[distanceIndex] *
+                static_cast<float>(candidateOrder->stockLevel1c /
+                                   candidateOrder->GetNavyOrderNormalizationBaseByNationType());
+  for (int componentIndex = 0; componentIndex < 4; ++componentIndex) {
+    vector[componentIndex] +=
+        static_cast<float>(
+            candidateOrder->ComputeNavyOrderPriorityContributionPercentByCategory(componentIndex)) *
+        scale;
+  }
+
+  float sumWeights = g_Recompute_Nation_Order_LookupTable_0065A9E8;
+  float coefficient = g_Recompute_Nation_Order_LookupTable_0065A9E8;
+  for (int i = 0; i < 4; ++i) {
+    sumWeights += resourceWeights2c[i];
+    coefficient += sqrtf(resourceWeights2c[i] * vector[i]);
+  }
+  return coefficient / sumWeights;
+}
+
+// Same shape as ComputeMissionOrderMatchScoreWithCandidateNavyOrder above, but negates
+// the candidate ship's distance-weighted scale (* g_Recompute_Nation_Order_LookupTable_0065A9E0,
+// which holds -1.0) before accumulating its contribution -- evaluating the profile with
+// the candidate order removed rather than added. The existing orderList24 ships'
+// contributions are unaffected (still added with a positive scale).
+// FUNCTION: IMPERIALISM 0x005383f0
+float TNavyMission::ComputeMissionOrderMatchScoreWithScaledCandidateNavyOrder(
+    TShip* candidateOrder) {
+  float vector[4] = {
+      g_Recompute_Nation_Order_LookupTable_0065A9E8, g_Recompute_Nation_Order_LookupTable_0065A9E8,
+      g_Recompute_Nation_Order_LookupTable_0065A9E8, g_Recompute_Nation_Order_LookupTable_0065A9E8};
+  for (TMapOrderChildLinkNode* node = orderList24; node != nullptr; node = node->next) {
+    TShip* ship = reinterpret_cast<TShip*>(node->object_ptr);
+    TZone* targetZone = GetActiveTargetZoneByState28();
+    short distanceIndex = 0;
+    if (targetZone != nullptr) {
+      distanceIndex =
+          ship->ComputeOrderNodeDistanceQuotientByDescriptorWord24(GetActiveTargetZoneByState28());
+    }
+    if (distanceIndex > 5) {
+      distanceIndex = 5;
+    }
+    float scale =
+        g_NavyOrderDistanceDecayWeightTable_006978c8[distanceIndex] *
+        static_cast<float>(ship->stockLevel1c / ship->GetNavyOrderNormalizationBaseByNationType());
+    for (int componentIndex = 0; componentIndex < 4; ++componentIndex) {
+      vector[componentIndex] +=
+          static_cast<float>(
+              ship->ComputeNavyOrderPriorityContributionPercentByCategory(componentIndex)) *
+          scale;
+    }
+  }
+
+  TZone* targetZone = GetActiveTargetZoneByState28();
+  short distanceIndex = 0;
+  if (targetZone != nullptr) {
+    distanceIndex = candidateOrder->ComputeOrderNodeDistanceQuotientByDescriptorWord24(
+        GetActiveTargetZoneByState28());
+  }
+  if (distanceIndex > 5) {
+    distanceIndex = 5;
+  }
+  float scale = g_NavyOrderDistanceDecayWeightTable_006978c8[distanceIndex] *
+                static_cast<float>(g_Recompute_Nation_Order_LookupTable_0065A9E0) *
+                static_cast<float>(candidateOrder->stockLevel1c /
+                                   candidateOrder->GetNavyOrderNormalizationBaseByNationType());
+  for (int componentIndex = 0; componentIndex < 4; ++componentIndex) {
+    vector[componentIndex] +=
+        static_cast<float>(
+            candidateOrder->ComputeNavyOrderPriorityContributionPercentByCategory(componentIndex)) *
+        scale;
+  }
+
+  float sumWeights = g_Recompute_Nation_Order_LookupTable_0065A9E8;
+  float coefficient = g_Recompute_Nation_Order_LookupTable_0065A9E8;
+  for (int i = 0; i < 4; ++i) {
+    sumWeights += resourceWeights2c[i];
+    coefficient += sqrtf(resourceWeights2c[i] * vector[i]);
+  }
+  return coefficient / sumWeights;
 }
 
 // FUNCTION: IMPERIALISM 0x005389f0
@@ -734,6 +948,46 @@ float TNavyMission::ComputeOrderDistributionSimilarityScoreForExactSourceNation(
   return NormalizeFourComponentNavyVector(vector, sum);
 }
 
+// Same shape as ComputeOrderDistributionSimilarityScoreForZone above, but scores against
+// g_Populate_Beachhead_Mission_LookupTable_00697958[0..3] (the same table slice
+// NormalizeFourComponentNavyVector's other callers use). The divergence-score tail is
+// reproduced inline (not via NormalizeFourComponentNavyVector) to match the original's
+// per-callsite inlining -- delegating to the shared helper collapsed the codegen shape
+// and tanked the score (16.85% vs the ~29-37% this idiom otherwise reaches).
+// FUNCTION: IMPERIALISM 0x00538dd0
+float TNavyMission::ComputeOrderDistributionSimilarityScoreForZoneWithBaseProfile(
+    TZone* nodeContext) {
+  float vector[4] = {
+      g_Recompute_Nation_Order_LookupTable_0065A9E8, g_Recompute_Nation_Order_LookupTable_0065A9E8,
+      g_Recompute_Nation_Order_LookupTable_0065A9E8, g_Recompute_Nation_Order_LookupTable_0065A9E8};
+  for (TShip* orderNode = GetNavyPrimaryOrderListHead(); orderNode != 0;
+       orderNode = orderNode->nextOlder24) {
+    if (orderNode->field08 == nodeContext &&
+        g_pDiplomacyTurnStateManager->HasPolicyWithNationSlot44(
+            nationId04, orderNode->ownerNationSlot14) != 0) {
+      AccumulateNavyOrderCategoryVectorWithScale(
+          orderNode, vector, static_cast<float>(g_Recompute_Nation_Order_LookupTable_0065AA08));
+    }
+  }
+  float total = vector[0] + vector[1] + vector[2] + vector[3];
+  if (total == static_cast<float>(g_Recompute_Nation_Order_LookupTable_0065A9F0)) {
+    return g_Recompute_Nation_Order_LookupTable_0065A9E8;
+  }
+  float diffSum = g_Recompute_Nation_Order_LookupTable_0065A9E8;
+  for (int i = 0; i < 4; ++i) {
+    float diff = vector[i] / total -
+                 static_cast<float>(
+                     static_cast<short>(g_Populate_Beachhead_Mission_LookupTable_00697958[i])) *
+                     static_cast<float>(g_Recompute_Nation_Order_LookupTable_0065A9F8);
+    if (diff <= static_cast<float>(g_Recompute_Nation_Order_LookupTable_0065A9F0)) {
+      diff = -diff;
+    }
+    diffSum += diff;
+  }
+  return total * (static_cast<float>(g_Recompute_Nation_Order_LookupTable_0065AA08) -
+                  diffSum * static_cast<float>(g_Recompute_Nation_Order_LookupTable_0065AA00));
+}
+
 // Default constructor
 TNavyMission::TNavyMission() : TMission() {
   targetZone14 = nullptr;
@@ -745,4 +999,123 @@ TNavyMission::TNavyMission() : TMission() {
   for (int i = 0; i < 4; ++i) {
     resourceWeights2c[i] = 0.0f;
   }
+}
+
+// Instance form of ComputeOrderDistributionSimilarityScoreWithDiplomacyFilter: sources
+// the diplomacy filter's source nation from nationId04 (inherited from TMission) rather
+// than an explicit argument, uses the fixed-category (0..3) accumulation shape (matching
+// ComputeNavyOrderDistributionScoreForNation in TShip.cpp) instead of the rotating-category
+// AccumulateNavyOrderVectorFromNode, and scores against
+// g_Populate_Beachhead_Mission_LookupTable_00697958[4..7] instead of [0..3].
+// FUNCTION: IMPERIALISM 0x00539a90
+float TNavyMission::ComputeOrderDistributionSimilarityScoreForZone(TZone* nodeContext) {
+  float vector[4] = {
+      g_Recompute_Nation_Order_LookupTable_0065A9E8, g_Recompute_Nation_Order_LookupTable_0065A9E8,
+      g_Recompute_Nation_Order_LookupTable_0065A9E8, g_Recompute_Nation_Order_LookupTable_0065A9E8};
+  for (TShip* orderNode = GetNavyPrimaryOrderListHead(); orderNode != 0;
+       orderNode = orderNode->nextOlder24) {
+    if (orderNode->field08 == nodeContext &&
+        g_pDiplomacyTurnStateManager->HasPolicyWithNationSlot44(
+            nationId04, orderNode->ownerNationSlot14) != 0) {
+      AccumulateNavyOrderCategoryVectorWithScale(
+          orderNode, vector, static_cast<float>(g_Recompute_Nation_Order_LookupTable_0065AA08));
+    }
+  }
+  float total = vector[0] + vector[1] + vector[2] + vector[3];
+  if (total == static_cast<float>(g_Recompute_Nation_Order_LookupTable_0065A9F0)) {
+    return g_Recompute_Nation_Order_LookupTable_0065A9E8;
+  }
+  float diffSum = g_Recompute_Nation_Order_LookupTable_0065A9E8;
+  for (int i = 0; i < 4; ++i) {
+    float diff = vector[i] / total -
+                 static_cast<float>(
+                     static_cast<short>(g_Populate_Beachhead_Mission_LookupTable_00697958[4 + i])) *
+                     static_cast<float>(g_Recompute_Nation_Order_LookupTable_0065A9F8);
+    if (diff <= static_cast<float>(g_Recompute_Nation_Order_LookupTable_0065A9F0)) {
+      diff = -diff;
+    }
+    diffSum += diff;
+  }
+  return total * (static_cast<float>(g_Recompute_Nation_Order_LookupTable_0065AA08) -
+                  diffSum * static_cast<float>(g_Recompute_Nation_Order_LookupTable_0065AA00));
+}
+// If `portZone` has a definite single owner (owner code 0..6), scores directly for that
+// owner (same divergence-score shape as TShip.cpp's ComputeNavyOrderDistributionScoreForNation,
+// reproduced inline). Otherwise scans nations allied with this mission's own nationId04
+// and keeps the best such score -- each iteration re-reads portZone's (still
+// out-of-range) owner code as the ship filter rather than the candidate ally's index, so
+// in practice this branch only ever contributes 0; modeled exactly as observed (Hard
+// Rule 6) rather than "corrected" to use the loop index.
+// FUNCTION: IMPERIALISM 0x0053b350
+float TNavyMission::ComputeMissionNavyOrderDistributionScoreForPortOwnerOrAllies(TZone* portZone) {
+  float best = g_Recompute_Nation_Order_LookupTable_0065A9E8;
+  short ownerNation = portZone->GetPortZoneOwnerNationCodeFromMissionField48();
+  if (ownerNation < 7) {
+    float vector[4] = {g_Recompute_Nation_Order_LookupTable_0065A9E8,
+                       g_Recompute_Nation_Order_LookupTable_0065A9E8,
+                       g_Recompute_Nation_Order_LookupTable_0065A9E8,
+                       g_Recompute_Nation_Order_LookupTable_0065A9E8};
+    for (TShip* ship = GetNavyPrimaryOrderListHead(); ship != nullptr; ship = ship->nextOlder24) {
+      if (ship->ownerNationSlot14 == ownerNation && ship->field08->QueryPortZoneCapability() &&
+          ship->GetNavyOrderNormalizationBaseByNationType() <= ship->stockLevel1c) {
+        AccumulateNavyOrderCategoryVectorWithScale(
+            ship, vector, static_cast<float>(g_Recompute_Nation_Order_LookupTable_0065AA08));
+      }
+    }
+    float total = vector[0] + vector[1] + vector[2] + vector[3];
+    if (total == static_cast<float>(g_Recompute_Nation_Order_LookupTable_0065A9F0)) {
+      return g_Recompute_Nation_Order_LookupTable_0065A9E8;
+    }
+    float diffSum = g_Recompute_Nation_Order_LookupTable_0065A9E8;
+    for (int i = 0; i < 4; ++i) {
+      float diff = vector[i] / total -
+                   static_cast<float>(g_NavyOrderDistributionCategoryWeights_00697978[i]) *
+                       static_cast<float>(g_Recompute_Nation_Order_LookupTable_0065A9F8);
+      if (diff <= static_cast<float>(g_Recompute_Nation_Order_LookupTable_0065A9F0)) {
+        diff = -diff;
+      }
+      diffSum += diff;
+    }
+    return total * (static_cast<float>(g_Recompute_Nation_Order_LookupTable_0065AA08) -
+                    diffSum * static_cast<float>(g_Recompute_Nation_Order_LookupTable_0065AA00));
+  }
+
+  for (short allyIdx = 0; allyIdx < 7; ++allyIdx) {
+    if (g_apNationStates[allyIdx] != nullptr &&
+        g_pDiplomacyTurnStateManager->HasPolicyWithNationSlot44(nationId04, allyIdx) != 0) {
+      short scoreNation = portZone->GetPortZoneOwnerNationCodeFromMissionField48();
+      float vector[4] = {g_Recompute_Nation_Order_LookupTable_0065A9E8,
+                         g_Recompute_Nation_Order_LookupTable_0065A9E8,
+                         g_Recompute_Nation_Order_LookupTable_0065A9E8,
+                         g_Recompute_Nation_Order_LookupTable_0065A9E8};
+      for (TShip* ship = GetNavyPrimaryOrderListHead(); ship != nullptr; ship = ship->nextOlder24) {
+        if (ship->ownerNationSlot14 == scoreNation && ship->field08->QueryPortZoneCapability() &&
+            ship->GetNavyOrderNormalizationBaseByNationType() <= ship->stockLevel1c) {
+          AccumulateNavyOrderCategoryVectorWithScale(
+              ship, vector, static_cast<float>(g_Recompute_Nation_Order_LookupTable_0065AA08));
+        }
+      }
+      float total = vector[0] + vector[1] + vector[2] + vector[3];
+      float score = g_Recompute_Nation_Order_LookupTable_0065A9E8;
+      if (total != static_cast<float>(g_Recompute_Nation_Order_LookupTable_0065A9F0)) {
+        float diffSum = g_Recompute_Nation_Order_LookupTable_0065A9E8;
+        for (int i = 0; i < 4; ++i) {
+          float diff = vector[i] / total -
+                       static_cast<float>(g_NavyOrderDistributionCategoryWeights_00697978[i]) *
+                           static_cast<float>(g_Recompute_Nation_Order_LookupTable_0065A9F8);
+          if (diff <= static_cast<float>(g_Recompute_Nation_Order_LookupTable_0065A9F0)) {
+            diff = -diff;
+          }
+          diffSum += diff;
+        }
+        score =
+            total * (static_cast<float>(g_Recompute_Nation_Order_LookupTable_0065AA08) -
+                     diffSum * static_cast<float>(g_Recompute_Nation_Order_LookupTable_0065AA00));
+      }
+      if (score > best) {
+        best = score;
+      }
+    }
+  }
+  return best;
 }

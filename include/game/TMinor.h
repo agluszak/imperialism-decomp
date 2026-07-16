@@ -100,7 +100,9 @@ private:
   // the sibling diplomacyGrantByNation/recurringGrantByResource tables, but the indexed
   // dimension (nation vs. resource) is not yet confirmed.
   short diplomacySaveFields134[4]; // 0x134
+public:
   short diplomacySaveExt13c[0x17]; // 0x13c
+private:
   short recurringGrantByResource[0x17];
   // +0x198. The initializer clears this as seven 0x0e-byte rows.
   short relationGrantLinkMatrix[7][7];

@@ -5,6 +5,7 @@
 
 class TZone;
 class TList;
+class TShip;
 
 // Navy-mission branch base (fills TMission abstract slots 0x27+; ctor 0x535470).
 // VTABLE: IMPERIALISM 0x0065a818
@@ -81,6 +82,58 @@ public:
                                                                            TZone* nodeContext);
   static float ComputeOrderDistributionSimilarityScoreWithDiplomacyFilter(int sourceNation,
                                                                           TZone* nodeContext);
+  // Instance form of the diplomacy-filtered scorer above: sources the filter's source
+  // nation from this->nationId04 instead of taking it as an explicit argument, and
+  // scores against g_Populate_Beachhead_Mission_LookupTable_00697958[4..7] instead of
+  // [0..3]. 0x539a90.
+  float ComputeOrderDistributionSimilarityScoreForZone(TZone* nodeContext);
+  // Same shape as ComputeOrderDistributionSimilarityScoreForZone but scores against
+  // g_Populate_Beachhead_Mission_LookupTable_00697958[0..3] (the same table/slice
+  // NormalizeFourComponentNavyVector's other callers use). 0x538dd0.
+  float ComputeOrderDistributionSimilarityScoreForZoneWithBaseProfile(TZone* nodeContext);
+  // Builds a 4-category priority vector from every existing orderList24 ship plus
+  // `candidateOrder` (each contribution weighted by a per-ship distance-decay factor,
+  // see g_NavyOrderDistanceDecayWeightTable_006978c8), then scores it against
+  // resourceWeights2c via a Bhattacharyya-coefficient-style similarity:
+  // sum(sqrt(resourceWeights2c[i] * vector[i])) / sum(resourceWeights2c[i]). Used to
+  // evaluate how well adding `candidateOrder` would fit this mission's target profile.
+  // 0x538120.
+  float ComputeMissionOrderMatchScoreWithCandidateNavyOrder(TShip* candidateOrder);
+  // Same shape as ComputeMissionOrderMatchScoreWithCandidateNavyOrder, but negates the
+  // candidate ship's distance-weighted contribution (scale * -1.0) before accumulating
+  // it -- evaluating the profile with the candidate order REMOVED rather than added.
+  // 0x5383f0.
+  float ComputeMissionOrderMatchScoreWithScaledCandidateNavyOrder(TShip* candidateOrder);
+  // If `portZone` has a definite single owner nation (owner code 0..6), returns
+  // ComputeNavyOrderDistributionScoreForNation-equivalent score for that owner directly.
+  // Otherwise (owner code >= 7, no clear single owner) scans nations allied with this
+  // mission's own nationId04 and takes the best such score -- though each iteration
+  // re-reads portZone's (still out-of-range) owner code as the ship filter rather than
+  // the candidate ally's index, so in practice this branch only ever contributes 0 (no
+  // ship's ownerNationSlot14 can equal an out-of-range code); modeled exactly as observed
+  // rather than "corrected", per Hard Rule 6. 0x53b350.
+  float ComputeMissionNavyOrderDistributionScoreForPortOwnerOrAllies(TZone* portZone);
+  // Builds a per-category priority vector over every orderList24 ship: a ship counts if
+  // it's within `distanceThreshold` hops of `nearZone` (or unconditionally if `nearZone`
+  // is null), OR (when farther than that) if it's within `distanceThreshold` hops of
+  // `farZone` instead (when farZone is non-null and != nearZone). farZone is TObject*
+  // because navyField20 (the usual caller-supplied value) is genuinely dual-typed -- see
+  // its own field comment -- so the TZone cast is confined to this one call site.
+  // 0x537900.
+  void BuildNavyOrderCategoryVectorForNationWithExclusion(float* vector, TZone* nearZone,
+                                                          short distanceThreshold,
+                                                          TObject* farZone);
+  // Builds a per-category priority vector over every orderList24 ship, each weighted by
+  // (stockLevel1c/normalizationBase) * a distance-decay factor (0.8^hopDistance to the
+  // active target zone, clamped to index 5) -- same per-ship math as
+  // AccumulateNavyOrderCategoryVectorWithScale, but the original inlines its own copy here
+  // rather than calling out to 0x537c60, so the body is reproduced inline to match. 0x537d40.
+  void BuildMissionQueuedOrderCategoryVector(float* vector);
+  // Same shape as ComputeNavyOrderCategorySimilarityRatio (BuildNavyOrderCategoryVectorFor-
+  // NationWithExclusion + a sqrt-coefficient tail), but always uses targetZone14 as the near
+  // zone and targetZone18 as the far zone (instead of navyField20), with an explicit caller-
+  // supplied distance threshold instead of a fixed 0/1. 0x537eb0.
+  float ComputeMissionQueuedOrderSimilarityForTargetNation(short distanceThreshold);
 
 private:
   // Shared by RefreshSlot40's mode-transition checks (0x536b30).

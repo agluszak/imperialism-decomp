@@ -1,4 +1,6 @@
 #include "game/TPageView.h"
+
+#include "game/CSubViewIterator.h"
 #include "game/TList.h"
 #include "game/TSoundChannelNode.h"
 
@@ -59,22 +61,26 @@ POSITION TPageView::OrphanCallChain_C1_I06_0056fbd0(void* item) {
 }
 
 // FUNCTION: IMPERIALISM 0x0056fbf0
-undefined TPageView::ResetSelectableOptionEntriesExceptColorAndOkay() {
+void TPageView::ResetSelectableOptionEntriesExceptColorAndOkay() {
   // Skip "rocl"/"rocr" (color) and "yako" (okay) option-entry tags, plus "tond" resource IDs.
   static const unsigned int kColorTagA = 0x6c636f72; // "rocl"
   static const unsigned int kColorTagB = 0x72636f72; // "rocr"
   static const unsigned int kOkayTag = 0x6f6b6179;   // "yako"
   static const unsigned int kSkipId = 0x646f6e74;    // "tond"
 
-  POSITION pos = this->childList44->GetHeadPosition();
-  while (pos != nullptr) {
-    TView* child = this->childList44->GetNext(pos);
-    if (child->controlTag != kColorTagA && child->controlTag != kColorTagB &&
-        child->controlTag != kOkayTag && child->controlValue3c != kSkipId) {
-      child->Free();
-    }
+  // The original walks the option entries with the shared CSubViewIterator, not a raw
+  // GetHeadPosition/GetNext loop.
+  CSubViewIterator iter(this);
+  TView* child = iter.FirstSubView();
+  if (iter.MoreSubViews()) {
+    do {
+      if (child->controlTag != kColorTagA && child->controlTag != kColorTagB &&
+          child->controlTag != kOkayTag && child->controlValue3c != kSkipId) {
+        child->Free();
+      }
+      child = iter.NextSubView();
+    } while (iter.MoreSubViews());
   }
-  return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x0056fc80
@@ -186,14 +192,13 @@ undefined TPageView::OrphanCallChain_C8_I118_0056fdb0(short param_1) {
 }
 
 // FUNCTION: IMPERIALISM 0x0056ff90
-undefined TPageView::OrphanCallChain_C4_I18_0056ff90() {
+void TPageView::OrphanCallChain_C4_I18_0056ff90() {
   this->ResetSelectableOptionEntriesExceptColorAndOkay();
   this->field_0x78->RemoveAll();
   this->field_0x7c->RemoveAll();
   this->field_0x80->StopOrResetActivePlaybackSlot30();
   this->field_0x62 = 0;
   this->field_0x60 = 0;
-  return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x0056ffe0

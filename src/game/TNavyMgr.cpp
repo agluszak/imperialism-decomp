@@ -12,6 +12,7 @@
 #include "game/TDiplomacyMgr.h"
 #include "game/TObject.h"
 #include "game/TPortZone.h"
+#include "game/TMultiplayerMgr.h"
 #include "game/TSimMgr.h"
 #include "game/TTaskForce.h"
 #include "game/TZone.h"
@@ -25,6 +26,11 @@ extern "C" int __cdecl rand(void);
 
 extern "C" TShip* g_pNavyPrimaryOrderListHead;
 extern "C" TAdmiral* g_pNavySecondaryOrderListHead;
+
+// Not-yet-recovered free function this file calls into (generic stub signature
+// per the autogen stub definition; real receiver/signature applied via a typed
+// cast at the one call site so the linker resolves the correct symbol).
+extern undefined4 RevalidateAndRequeueMapOrdersForTurn(void);
 
 // Resolves a raw TGlobalMapCityScoreRecord* back into its index in
 // g_pGlobalMapState's cityScoreTable. `unusedArg` is provably dead in the original
@@ -575,6 +581,56 @@ void TNavyMgr::RemoveOrdersByNationFromPrimarySecondaryAndTaskForceLists(short n
 
   RemoveMatchingSecondaryOrders(nationSlot);
   RemoveMatchingTaskForceOrders(this, nationSlot);
+}
+
+// FUNCTION: IMPERIALISM 0x005577b0
+void TNavyMgr::PrepareMapOrdersForExecutionPhase(short phaseId) {
+  for (int provinceIndex = 0; provinceIndex < 0x180; ++provinceIndex) {
+    TGlobalMapCityScoreRecord* record = &g_pGlobalMapState->cityScoreTable[provinceIndex];
+    if (record->exploredByNationMaskA1 != 0) {
+      record->exploredByNationMaskA1 = 0;
+      if (g_pSimMgr->field44 == 1) {
+        g_pGameFlowState->DispatchCityRedrawInvalidateEvent(static_cast<short>(provinceIndex));
+      }
+    }
+  }
+
+  field08 = phaseId;
+
+  typedef void*(__fastcall * RevalidateAndRequeueMapOrdersForTurn_t)(void* self, int dummyEdx);
+  RevalidateAndRequeueMapOrdersForTurn_t RevalidateAndRequeueMapOrdersForTurn_fn =
+      reinterpret_cast<RevalidateAndRequeueMapOrdersForTurn_t>(
+          (void*)&RevalidateAndRequeueMapOrdersForTurn);
+  RevalidateAndRequeueMapOrdersForTurn_fn(this, 0);
+
+  if (orderListHead04 != nullptr) {
+    orderListHead04->eliminatedFlag26 = 0;
+    orderListHead04->queue_next->ClearMapOrderProcessedFlagsChain();
+  }
+}
+
+// FUNCTION: IMPERIALISM 0x00557e10
+TTaskForce* TNavyMgr::UpdateType7NavyOrderChildSelectionByChanceThreshold(short requiredCount,
+                                                                          short chancePercent) {
+  TTaskForce* entry = orderListHead04;
+  while (entry != nullptr) {
+    if (entry->required_count == requiredCount && entry->attachment == 7) {
+      break;
+    }
+    entry = entry->queue_next;
+  }
+
+  if (entry != nullptr) {
+    for (TMapOrderChildLinkNode* node = entry->childOrderList; node != nullptr; node = node->next) {
+      TTaskForce* child = node->object_ptr;
+      bool notSelected =
+          child->required_count < g_NavyOrderResourceDescriptorTable[child->order_type].stockCap ||
+          chancePercent <= rand() % 100;
+      node->active_flag = notSelected ? 0 : 1;
+    }
+  }
+
+  return entry;
 }
 
 // FUNCTION: IMPERIALISM 0x00557f10

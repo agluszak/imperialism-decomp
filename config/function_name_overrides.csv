@@ -155,3 +155,8 @@ address|name|prototype
 0x005c4ab0|ApplySharedStringToGlobalControlTag|TView* __cdecl ApplySharedStringToGlobalControlTag(CString sharedString,unsigned int controlTag)
 0x005dcd10|TModalMessageCommand::DoIt|void __thiscall DoIt(void)
 0x005de010|TViewMgr::MakePlanetSeedDialog|int __thiscall MakePlanetSeedDialog(const char* instruction,CString& planetSeed,const char* firstChoice,const char* secondChoice,int initialChoice,unsigned char showCancel) const
+0x004919a0|CSubViewIterator::CSubViewIterator|void __thiscall CSubViewIterator(TView* owner)
+0x00491a00|CSubViewIterator::FirstSubView|TView* __thiscall FirstSubView()
+0x00491a70|CSubViewIterator::NextSubView|TView* __thiscall NextSubView()
+0x00491ab0|CSubViewIterator::MoreSubViews|int __thiscall MoreSubViews()
+0x0059d400|TArmyPlayer::SetAllUnitAiStateCodesTo13|void __thiscall SetAllUnitAiStateCodesTo13()

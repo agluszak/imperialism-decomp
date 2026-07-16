@@ -107,14 +107,6 @@ undefined4 RefreshNavyOrderCycleAndClearReadyFlags(void)
   return 0;
 }
 
-// ghidra_name GetEnabledIndustryCapabilitySlotByClass
-// ghidra_proto undefined GetEnabledIndustryCapabilitySlotByClass()
-// FUNCTION: IMPERIALISM 0x005572d0
-undefined4 GetEnabledIndustryCapabilitySlotByClass(void)
-{
-  return 0;
-}
-
 // ghidra_name BuildNavyOrderPromptTextByLocalizationMode
 // ghidra_proto undefined BuildNavyOrderPromptTextByLocalizationMode()
 // FUNCTION: IMPERIALISM 0x00557320
@@ -139,26 +131,10 @@ undefined4 RevalidateAndRequeueMapOrdersForTurn(void)
   return 0;
 }
 
-// ghidra_name PrepareMapOrdersForExecutionPhase
-// ghidra_proto void __fastcall PrepareMapOrdersForExecutionPhase(int * pOrderManager, int nQueueDomain, short nPhaseId)
-// FUNCTION: IMPERIALISM 0x005577b0
-undefined4 PrepareMapOrdersForExecutionPhase(void)
-{
-  return 0;
-}
-
 // ghidra_name ResolveMapOrderChainsForTurnPhase
 // ghidra_proto void __fastcall ResolveMapOrderChainsForTurnPhase(int * pOrderManager)
 // FUNCTION: IMPERIALISM 0x005578a0
 undefined4 ResolveMapOrderChainsForTurnPhase(void)
-{
-  return 0;
-}
-
-// ghidra_name UpdateType7NavyOrderChildSelectionByChanceThreshold
-// ghidra_proto undefined UpdateType7NavyOrderChildSelectionByChanceThreshold()
-// FUNCTION: IMPERIALISM 0x00557e10
-undefined4 UpdateType7NavyOrderChildSelectionByChanceThreshold(void)
 {
   return 0;
 }
@@ -247,14 +223,6 @@ undefined4 AppendInterNationEventSummaryTextEntry(void)
 // ghidra_proto undefined WrapperFor_ftol_At0055e330()
 // FUNCTION: IMPERIALISM 0x0055e330
 undefined4 WrapperFor_ftol_At0055e330(void)
-{
-  return 0;
-}
-
-// ghidra_name ContainsCityStatePointerInZoneArrayByCityIndex
-// ghidra_proto undefined ContainsCityStatePointerInZoneArrayByCityIndex()
-// FUNCTION: IMPERIALISM 0x0055f440
-undefined4 ContainsCityStatePointerInZoneArrayByCityIndex(void)
 {
   return 0;
 }

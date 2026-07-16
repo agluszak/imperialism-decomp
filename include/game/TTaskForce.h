@@ -345,6 +345,14 @@ public:
   // activeChildEntry (bd 1uj.16 target cluster).
   void RecomputeMapOrderChildAggregateMetric(); // 0x553e30
 
+  // Removes every childOrderList entry whose link node is inactive (unlink + delete,
+  // clearing the freed entry's owner and decrementing its resource-type bucket counter
+  // -- same +0x1e-based bucket region ApplyTaskForceSelectionModeForCurrentNationOrders /
+  // PruneInactiveTaskForceOrderHead use), then recomputes activeChildEntry over the
+  // survivors. The original inlines both passes here rather than calling
+  // RecomputeMapOrderChildAggregateMetric for the second pass.
+  void RebuildMapOrderEntryChildren(); // 0x553f10
+
   // bd 1uj.16 target: sets attachment=9 (map-order kind 9), frees any
   // childOrderList entries whose owning link is inactive, recomputes
   // activeChildEntry, then either self-Frees (no live children) or
@@ -376,6 +384,13 @@ public:
   // and TBlockadePortMission::NoOpSlot9C (0x53ba40, "QueueMapOrderType6FromContext
   // Pointer") on the map-order entry passed to that virtual slot.
   void SetMapOrderType6AndQueue(int nOrderTarget); // 0x5536c0
+
+  // Sibling of SetMapOrderType6AndQueue for map-order kind 5 -- byte-identical body except
+  // it stores attachment=5 instead of 6 (owner=nOrderTarget, activeChildEntry=null, same
+  // free-inactive-children / recompute / self-Free-or-queue tail). Ghidra/symbols.csv model
+  // it as a free __thiscall function; real owner is TTaskForce (body reads only this class's
+  // own field offsets).
+  void SetMapOrderType5AndQueue(int nOrderTarget); // 0x553840
 
   // bd 1uj.16.2 target: another SetMapOrderType9AndQueue sibling, for map-order kind 3
   // (fUseType4 == 0) or 4 (fUseType4 != 0); does not touch `owner`. Same mis-attribution

@@ -2775,6 +2775,12 @@ void TMultiplayerMgr::DispatchJoinEmpireModeEventPacket24_27(int sourceNation, i
   g_pNetMgr006a6014->Send(&packet, 0);
 }
 
+// FUNCTION: IMPERIALISM 0x0054c630
+void TMultiplayerMgr::SetDialogModeTagInitAndInvokeNoOpHook() {
+  sessionPhaseTag = 0x696e6974; // 'init'
+  g_pNetMgr006a6014->NoOpDialogModeTagChangedHook(1);
+}
+
 // FUNCTION: IMPERIALISM 0x0054c660
 void TMultiplayerMgr::NoOpCallbackRet4(void* param) {
   (void)param;

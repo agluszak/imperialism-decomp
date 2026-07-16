@@ -19,14 +19,6 @@ undefined4 FindFirstTrackedHandlerMatchingModeAndShortKey(void)
   return 0;
 }
 
-// ghidra_name IsMapTileCompatibleWithCurrentTerrainOrActionContext
-// ghidra_proto undefined IsMapTileCompatibleWithCurrentTerrainOrActionContext()
-// FUNCTION: IMPERIALISM 0x005359e0
-undefined4 IsMapTileCompatibleWithCurrentTerrainOrActionContext(void)
-{
-  return 0;
-}
-
 // ghidra_name SelectBestCityDevelopmentFromResourcePools
 // ghidra_proto undefined SelectBestCityDevelopmentFromResourcePools()
 // FUNCTION: IMPERIALISM 0x00535b00
@@ -39,14 +31,6 @@ undefined4 SelectBestCityDevelopmentFromResourcePools(void)
 // ghidra_proto undefined CompareMissionOrderEntriesByMovementClassThenEfficiency()
 // FUNCTION: IMPERIALISM 0x00535f80
 undefined4 CompareMissionOrderEntriesByMovementClassThenEfficiency(void)
-{
-  return 0;
-}
-
-// ghidra_name CompareMissionOrderEntriesByPriorityScore
-// ghidra_proto undefined CompareMissionOrderEntriesByPriorityScore()
-// FUNCTION: IMPERIALISM 0x00536090
-undefined4 CompareMissionOrderEntriesByPriorityScore(void)
 {
   return 0;
 }
@@ -91,46 +75,6 @@ undefined4 QueueMissionOrderEntryAndPropagateSelectionRange(void)
   return 0;
 }
 
-// ghidra_name BuildNavyOrderCategoryVectorForNationWithExclusion
-// ghidra_proto undefined BuildNavyOrderCategoryVectorForNationWithExclusion()
-// FUNCTION: IMPERIALISM 0x00537900
-undefined4 BuildNavyOrderCategoryVectorForNationWithExclusion(void)
-{
-  return 0;
-}
-
-// ghidra_name BuildMissionQueuedOrderCategoryVector
-// ghidra_proto undefined BuildMissionQueuedOrderCategoryVector()
-// FUNCTION: IMPERIALISM 0x00537d40
-undefined4 BuildMissionQueuedOrderCategoryVector(void)
-{
-  return 0;
-}
-
-// ghidra_name ComputeMissionQueuedOrderSimilarityForTargetNation
-// ghidra_proto undefined ComputeMissionQueuedOrderSimilarityForTargetNation()
-// FUNCTION: IMPERIALISM 0x00537eb0
-undefined4 ComputeMissionQueuedOrderSimilarityForTargetNation(void)
-{
-  return 0;
-}
-
-// ghidra_name ComputeMissionOrderMatchScoreWithCandidateNavyOrder
-// ghidra_proto undefined ComputeMissionOrderMatchScoreWithCandidateNavyOrder()
-// FUNCTION: IMPERIALISM 0x00538120
-undefined4 ComputeMissionOrderMatchScoreWithCandidateNavyOrder(void)
-{
-  return 0;
-}
-
-// ghidra_name ComputeMissionOrderMatchScoreWithScaledCandidateNavyOrder
-// ghidra_proto undefined ComputeMissionOrderMatchScoreWithScaledCandidateNavyOrder()
-// FUNCTION: IMPERIALISM 0x005383f0
-undefined4 ComputeMissionOrderMatchScoreWithScaledCandidateNavyOrder(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_AFX_CLASSINIT_At005387a0
 // ghidra_proto undefined WrapperFor_AFX_CLASSINIT_At005387a0()
 // FUNCTION: IMPERIALISM 0x005387a0
@@ -139,26 +83,10 @@ undefined4 WrapperFor_AFX_CLASSINIT_At005387a0(void)
   return 0;
 }
 
-// ghidra_name ComputeNavyOrderDistributionSimilarityScoreForMissionNation
-// ghidra_proto undefined ComputeNavyOrderDistributionSimilarityScoreForMissionNation()
-// FUNCTION: IMPERIALISM 0x00538dd0
-undefined4 ComputeNavyOrderDistributionSimilarityScoreForMissionNation(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_AFX_CLASSINIT_At005399d0
 // ghidra_proto undefined WrapperFor_AFX_CLASSINIT_At005399d0()
 // FUNCTION: IMPERIALISM 0x005399d0
 undefined4 WrapperFor_AFX_CLASSINIT_At005399d0(void)
-{
-  return 0;
-}
-
-// ghidra_name ComputeNavyOrderDistributionSimilarityScoreForNation
-// ghidra_proto undefined ComputeNavyOrderDistributionSimilarityScoreForNation()
-// FUNCTION: IMPERIALISM 0x00539a90
-undefined4 ComputeNavyOrderDistributionSimilarityScoreForNation(void)
 {
   return 0;
 }
@@ -203,22 +131,6 @@ undefined4 WrapperFor_AFX_CLASSINIT_At0053ab00(void)
   return 0;
 }
 
-// ghidra_name ComputeMissionNavyOrderDistributionScoreForPortOwnerOrAllies
-// ghidra_proto undefined ComputeMissionNavyOrderDistributionScoreForPortOwnerOrAllies()
-// FUNCTION: IMPERIALISM 0x0053b350
-undefined4 ComputeMissionNavyOrderDistributionScoreForPortOwnerOrAllies(void)
-{
-  return 0;
-}
-
-// ghidra_name ComputeNavyOrderDistributionScoreForNation
-// ghidra_proto undefined ComputeNavyOrderDistributionScoreForNation()
-// FUNCTION: IMPERIALISM 0x0053b800
-undefined4 ComputeNavyOrderDistributionScoreForNation(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_AFX_CLASSINIT_At0053bb40
 // ghidra_proto undefined WrapperFor_AFX_CLASSINIT_At0053bb40()
 // FUNCTION: IMPERIALISM 0x0053bb40
@@ -243,26 +155,10 @@ undefined4 ResetTArmyMissionToSentinelVtable(void)
   return 0;
 }
 
-// ghidra_name PropagateTargetTileToLinkedUnitsIfDifferent
-// ghidra_proto undefined PropagateTargetTileToLinkedUnitsIfDifferent()
-// FUNCTION: IMPERIALISM 0x0053c950
-undefined4 PropagateTargetTileToLinkedUnitsIfDifferent(void)
-{
-  return 0;
-}
-
 // ghidra_name ComputeMissionPrioritySimilarityScoreForFilter
 // ghidra_proto undefined ComputeMissionPrioritySimilarityScoreForFilter()
 // FUNCTION: IMPERIALISM 0x0053cac0
 undefined4 ComputeMissionPrioritySimilarityScoreForFilter(void)
-{
-  return 0;
-}
-
-// ghidra_name AccumulateMissionUnitPriorityContributionWithScaleMode
-// ghidra_proto undefined AccumulateMissionUnitPriorityContributionWithScaleMode()
-// FUNCTION: IMPERIALISM 0x0053cb50
-undefined4 AccumulateMissionUnitPriorityContributionWithScaleMode(void)
 {
   return 0;
 }
@@ -319,14 +215,6 @@ undefined4 ResetTInvadeMissionToSentinelVtable(void)
 // ghidra_proto undefined ComputeInvadeMissionPriorityScore()
 // FUNCTION: IMPERIALISM 0x0053f800
 undefined4 ComputeInvadeMissionPriorityScore(void)
-{
-  return 0;
-}
-
-// ghidra_name RecomputeNationOrderPriorityMetrics
-// ghidra_proto undefined RecomputeNationOrderPriorityMetrics()
-// FUNCTION: IMPERIALISM 0x0053fe30
-undefined4 RecomputeNationOrderPriorityMetrics(void)
 {
   return 0;
 }
@@ -595,14 +483,6 @@ undefined4 EmitTurnEvent26DiplomacyMatrixSnapshot(void)
   return 0;
 }
 
-// ghidra_name SetDialogModeTagInitAndInvokeNoOpHook
-// ghidra_proto undefined SetDialogModeTagInitAndInvokeNoOpHook()
-// FUNCTION: IMPERIALISM 0x0054c630
-undefined4 SetDialogModeTagInitAndInvokeNoOpHook(void)
-{
-  return 0;
-}
-
 // ghidra_name HandleActiveNationAwolTransitionOrRecovery
 // ghidra_proto undefined HandleActiveNationAwolTransitionOrRecovery()
 // FUNCTION: IMPERIALISM 0x0054c800
@@ -731,26 +611,10 @@ undefined4 RecomputeNavyOrderSelectionPriorityChain_00552349(void)
   return 0;
 }
 
-// ghidra_name SetMapOrderType5AndQueue
-// ghidra_proto void __thiscall SetMapOrderType5AndQueue(int nOrderTarget)
-// FUNCTION: IMPERIALISM 0x00553840
-undefined4 SetMapOrderType5AndQueue(void)
-{
-  return 0;
-}
-
 // ghidra_name ObjectPool::RemoveTaskForceOrderNodeById
 // ghidra_proto undefined RemoveTaskForceOrderNodeById()
 // FUNCTION: IMPERIALISM 0x00553d40
 undefined4 RemoveTaskForceOrderNodeById(void)
-{
-  return 0;
-}
-
-// ghidra_name RebuildMapOrderEntryChildren
-// ghidra_proto undefined RebuildMapOrderEntryChildren()
-// FUNCTION: IMPERIALISM 0x00553f10
-undefined4 RebuildMapOrderEntryChildren(void)
 {
   return 0;
 }

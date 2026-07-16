@@ -8,6 +8,7 @@
 #include "game/TNavyMgr.h"
 #include "game/TList.h"
 #include "game/TGreatPower.h"
+#include "game/TZone.h"
 #include "game/global_data_tables.h"
 #include "game/TTechMgr.h"
 
@@ -15,20 +16,9 @@ IMPLEMENT_SERIAL(TDefendProvinceMission, TArmyMission, 1)
 
 #include "game/CIterator.h"
 
-// Not-yet-recovered free functions this file calls into (generic stub
-// signature per the autogen stub definition; real signature applied via a
-// typed cast at each call site so the linker resolves the correct symbol).
-extern undefined4 IsMapTileCompatibleWithCurrentTerrainOrActionContext(void);
-extern undefined4 SetMapStateByteFlag970WithRuntimeGate(void);
-extern undefined4 PropagateTargetTileToLinkedUnitsIfDifferent(void);
-
 // FUNCTION: IMPERIALISM 0x00535770
 void TDefendProvinceMission::MissionSlot44() {
-  typedef void(__fastcall * PropagateTargetTileToLinkedUnitsIfDifferent_t)(short);
-  PropagateTargetTileToLinkedUnitsIfDifferent_t PropagateTargetTileToLinkedUnitsIfDifferent_fn =
-      reinterpret_cast<PropagateTargetTileToLinkedUnitsIfDifferent_t>(
-          (void*)&PropagateTargetTileToLinkedUnitsIfDifferent);
-  PropagateTargetTileToLinkedUnitsIfDifferent_fn(field_14);
+  PropagateTargetTileToLinkedUnitsIfDifferent(field_14);
 }
 
 // FUNCTION: IMPERIALISM 0x00535790
@@ -46,6 +36,54 @@ char TDefendProvinceMission::ReturnFalseSlot28() {
 // Global factory function
 // FUNCTION: IMPERIALISM 0x00535800
 TDefendProvinceMission::~TDefendProvinceMission() {}
+
+// True if tileIndex is the home region of its own owner nation, or has an adjacent
+// region owned by a different valid nation, or is claimed (secondaryNeighbors array
+// entry) by some other map-action-context zone whose field10 mask has a bit set outside
+// the owner's own bit.
+// FUNCTION: IMPERIALISM 0x005359e0
+int IsMapTileCompatibleWithCurrentTerrainOrActionContext(int tileIndex) {
+  TGlobalMapCityScoreRecord& record = g_pGlobalMapState->cityScoreTable[tileIndex];
+  signed char primaryOwner = record.ownerNationCode00;
+  if (g_apTerrainTypeDescriptorTable[primaryOwner]->GetHomeRegionCityRecordIndex() == tileIndex) {
+    return 1;
+  }
+
+  for (int i = record.adjacentRegionCount08 - 1; i >= 0; --i) {
+    short neighborTile = record.adjacentRegionIds0A[i];
+    signed char neighborOwner = g_pGlobalMapState->cityScoreTable[neighborTile].ownerNationCode00;
+    if (neighborOwner < 7 && neighborOwner != primaryOwner) {
+      return 1;
+    }
+  }
+
+  TZone* zone = g_pMapActionContextListHead;
+  if (zone == nullptr) {
+    return 0;
+  }
+  unsigned char excludeOwnerMask = static_cast<unsigned char>((1 << (primaryOwner & 0x1f)) ^ 0x7f);
+  while ((zone->field10 & excludeOwnerMask) == 0 ||
+         !zone->ContainsCityStatePointerInZoneArrayByCityIndex(static_cast<short>(tileIndex))) {
+    zone = zone->prev18;
+    if (zone == nullptr) {
+      return 0;
+    }
+  }
+  return 1;
+}
+
+// Walks orderListAt18 and re-issues TUnit::SetOrderModeSlot34(1, newTile) on every linked
+// TMilitaryUnit whose tileIndex06 differs from newTile.
+// FUNCTION: IMPERIALISM 0x0053c950
+void TDefendProvinceMission::PropagateTargetTileToLinkedUnitsIfDifferent(short newTile) {
+  CIterator iter(orderListAt18);
+  for (void* item = iter.Reset(); iter.More(); item = iter.Advance()) {
+    TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(item);
+    if (unit->tileIndex06 != newTile) {
+      unit->SetOrderModeSlot34(1, newTile);
+    }
+  }
+}
 
 // SYNTHETIC: IMPERIALISM 0x0053e5f0
 // TDefendProvinceMission::CreateObject
@@ -219,12 +257,7 @@ void TDefendProvinceMission::Free() {
   TGreatPower* nationState = g_apNationStates[nationId04];
   nationState->AssertValid();
 
-  typedef void(__fastcall * SetMapStateByteFlag970WithRuntimeGate_t)(void* self, int dummyEdx,
-                                                                     int arg1, int arg2);
-  SetMapStateByteFlag970WithRuntimeGate_t SetMapStateByteFlag970WithRuntimeGate_fn =
-      reinterpret_cast<SetMapStateByteFlag970WithRuntimeGate_t>(
-          (void*)&SetMapStateByteFlag970WithRuntimeGate);
-  SetMapStateByteFlag970WithRuntimeGate_fn(nationState, 0, field_14, 0);
+  nationState->SetMapStateByteFlag970WithRuntimeGate(field_14, 0);
 
   if (orderListAt18 != nullptr) {
     CIterator iter(orderListAt18);
@@ -299,12 +332,7 @@ void TDefendProvinceMission::NoOpSlot3C() {
     fStack_c = *p_1_0_0065A9B8;
   }
 
-  typedef int(__cdecl * IsMapTileCompatibleWithCurrentTerrainOrActionContext_t)(int tileIndex);
-  IsMapTileCompatibleWithCurrentTerrainOrActionContext_t
-      IsMapTileCompatibleWithCurrentTerrainOrActionContext_fn =
-          reinterpret_cast<IsMapTileCompatibleWithCurrentTerrainOrActionContext_t>(
-              (void*)&IsMapTileCompatibleWithCurrentTerrainOrActionContext);
-  int compat = IsMapTileCompatibleWithCurrentTerrainOrActionContext_fn(field_14);
+  int compat = IsMapTileCompatibleWithCurrentTerrainOrActionContext(field_14);
 
   if (compat == 0) {
     unsigned char bVar8;

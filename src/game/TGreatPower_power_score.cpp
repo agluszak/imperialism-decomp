@@ -1,6 +1,7 @@
 #include "game/TGreatPower_internal.h"
 
 #include "game/CIterator.h"
+#include "game/TArmyMission.h"
 #include "game/TDiplomacyMgr.h"
 #include "game/TGreatPower.h"
 #include "game/TSimMgr.h"
@@ -68,4 +69,150 @@ float TruncatedScoreFactorToFloat(float score) {
     truncated = 1;
   }
   return static_cast<float>(truncated);
+}
+
+// Recomputes per-nation navy/army order-priority metrics from queued map-order
+// distributions. Runs in game-flow state 0x15, before the per-nation +0x2B8/+0x108
+// passes. For each eligible nation (g_pSimMgr->IsNationSlotEligibleForEventProcessing):
+//  1. Blends the 4-category TShip navy-order contribution percentages for that
+//     nation's ships into a queue-demand divergence score (normalized against
+//     g_Populate_Beachhead_Mission_LookupTable_00697958), cached in both
+//     g_afNationOrderQueueDivergence_006a3a88 and its mirror at 006a3ac0.
+//  2. Accumulates a per-unit-type weighted vector over the nation's militaryUnitList44
+//     entries with a nonzero GetUnitMovementClassId ("mobile" units), normalized
+//     against two different slices of g_awTacticalCompositionReferenceProfiles_00697870
+//     -- one cached as the "mobile unit score" (006a3b88), the other as a divergence
+//     figure (006a3ae0).
+//  3. Continues accumulating the same vector over the remaining ("static",
+//     GetUnitMovementClassId == 0) units without resetting it, then re-normalizes
+//     the combined vector the same way into g_afNationCombinedUnitDivergence_006a3b50.
+//  4. Scales the mobile-unit score by the nation's military-power-to-navy-order-cost
+//     ratio (capped at 1.0) into g_afNationWeightedMilitaryOrderScore_006a3b20.
+// A second pass then triggers the (no-op) NoOpTailStateHookSlot2B4 callback on every
+// eligible nation.
+// FUNCTION: IMPERIALISM 0x0053fe30
+void RecomputeNationOrderPriorityMetrics() {
+  for (short nationIdx = 0; nationIdx < 7; ++nationIdx) {
+    if (!g_pSimMgr->IsNationSlotEligibleForEventProcessing(nationIdx)) {
+      continue;
+    }
+    TGreatPower* nation = g_apNationStates[nationIdx];
+
+    float categoryVector[4] = {0.0f, 0.0f, 0.0f, 0.0f};
+    for (TShip* ship = GetNavyPrimaryOrderListHead(); ship != nullptr; ship = ship->nextOlder24) {
+      if (ship->ownerNationSlot14 == nationIdx) {
+        ship->GetNavyOrderNormalizationBaseByNationType();
+        categoryVector[0] +=
+            static_cast<float>(ship->ComputeNavyOrderPriorityContributionPercentByCategory(0));
+        categoryVector[1] +=
+            static_cast<float>(ship->ComputeNavyOrderPriorityContributionPercentByCategory(1));
+        categoryVector[2] +=
+            static_cast<float>(ship->ComputeNavyOrderPriorityContributionPercentByCategory(2));
+        categoryVector[3] +=
+            static_cast<float>(ship->ComputeNavyOrderPriorityContributionPercentByCategory(3));
+      }
+    }
+    float queueSum = categoryVector[0] + categoryVector[1] + categoryVector[2] + categoryVector[3];
+    float queueDivergence = 0.0f;
+    if (queueSum != 0.0f) {
+      float diffSum = 0.0f;
+      for (int i = 0; i < 4; ++i) {
+        float diff =
+            categoryVector[i] / queueSum -
+            static_cast<float>(g_Populate_Beachhead_Mission_LookupTable_00697958[i]) * 0.01f;
+        if (diff <= 0.0f) {
+          diff = -diff;
+        }
+        diffSum += diff;
+      }
+      queueDivergence = queueSum * (1.0f - diffSum * 0.5f);
+    }
+    g_afNationOrderQueueDivergence_006a3a88[nationIdx] = queueDivergence;
+    g_afNationOrderQueueDivergenceMirror_006a3ac0[nationIdx] = queueDivergence;
+
+    float unitVector[5] = {0.0f, 0.0f, 0.0f, 0.0f, 0.0f};
+    CIterator mobileIter(nation->militaryUnitList44);
+    for (TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(mobileIter.Reset()); mobileIter.More();
+         unit = static_cast<TMilitaryUnit*>(mobileIter.Advance())) {
+      if (unit->GetUnitMovementClassId() != 0) {
+        AccumulateUnitOrderPriorityVectorContribution(unit, unitVector, 1.0f, 0.33f);
+      }
+    }
+
+    float mobileSum = unitVector[0] + unitVector[1] + unitVector[2] + unitVector[3] + unitVector[4];
+    float mobileUnitScore = 0.0f;
+    if (mobileSum != 0.0f) {
+      float diffSum = 0.0f;
+      for (int i = 0; i < 5; ++i) {
+        float diff =
+            unitVector[i] / mobileSum -
+            static_cast<float>(g_awTacticalCompositionReferenceProfiles_00697870[5 + i]) * 0.01f;
+        if (diff <= 0.0f) {
+          diff = -diff;
+        }
+        diffSum += diff;
+      }
+      mobileUnitScore = mobileSum * (1.0f - diffSum * 0.5f);
+    }
+    g_afNationMobileUnitScore_006a3b88[nationIdx] = mobileUnitScore;
+
+    float mobileSum2 =
+        unitVector[0] + unitVector[1] + unitVector[2] + unitVector[3] + unitVector[4];
+    float mobileUnitDivergence = 0.0f;
+    if (mobileSum2 != 0.0f) {
+      float diffSum = 0.0f;
+      for (int i = 0; i < 5; ++i) {
+        float diff =
+            unitVector[i] / mobileSum2 -
+            static_cast<float>(g_awTacticalCompositionReferenceProfiles_00697870[i]) * 0.01f;
+        if (diff <= 0.0f) {
+          diff = -diff;
+        }
+        diffSum += diff;
+      }
+      mobileUnitDivergence = mobileSum2 * (1.0f - diffSum * 0.5f);
+    }
+    g_afNationMobileUnitDivergence_006a3ae0[nationIdx] = mobileUnitDivergence;
+
+    CIterator staticIter(nation->militaryUnitList44);
+    for (TMilitaryUnit* staticUnit = static_cast<TMilitaryUnit*>(staticIter.Reset());
+         staticIter.More(); staticUnit = static_cast<TMilitaryUnit*>(staticIter.Advance())) {
+      if (staticUnit->GetUnitMovementClassId() == 0) {
+        AccumulateUnitOrderPriorityVectorContribution(staticUnit, unitVector, 1.0f, 0.33f);
+      }
+    }
+
+    float combinedSum =
+        unitVector[0] + unitVector[1] + unitVector[2] + unitVector[3] + unitVector[4];
+    float combinedUnitDivergence = 0.0f;
+    if (combinedSum != 0.0f) {
+      float diffSum = 0.0f;
+      for (int i = 0; i < 5; ++i) {
+        float diff =
+            unitVector[i] / combinedSum -
+            static_cast<float>(g_awTacticalCompositionReferenceProfiles_00697870[i]) * 0.01f;
+        if (diff <= 0.0f) {
+          diff = -diff;
+        }
+        diffSum += diff;
+      }
+      combinedUnitDivergence = combinedSum * (1.0f - diffSum * 0.5f);
+    }
+    g_afNationCombinedUnitDivergence_006a3b50[nationIdx] = combinedUnitDivergence;
+
+    int militaryPower = nation->ComputeSelectedMilitaryPowerScore();
+    int navyOrderIndustrySum = nation->SumNavyOrderPriorityForNationSlot86();
+    float powerRatio = 1.0f;
+    if (static_cast<float>(militaryPower) < static_cast<float>(navyOrderIndustrySum)) {
+      powerRatio = static_cast<float>(militaryPower) / static_cast<float>(navyOrderIndustrySum);
+    }
+    g_afNationWeightedMilitaryOrderScore_006a3b20[nationIdx] =
+        g_afNationMobileUnitScore_006a3b88[nationIdx] * powerRatio;
+  }
+
+  for (short finalNationIdx = 0; finalNationIdx < 7; ++finalNationIdx) {
+    if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(finalNationIdx)) {
+      g_apNationStates[finalNationIdx]->NoOpTailStateHookSlot2B4();
+    }
+  }
 }

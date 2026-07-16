@@ -274,6 +274,12 @@ void TMapUberPicture::OpenMapContextActionDialogByType(TZone* zone, int actionTy
   (void)cachedContext;
 }
 
+// FUNCTION: IMPERIALISM 0x005999f0
+void TMapUberPicture::ResetMapInteractionToCivilianMode() {
+  EnterMapInteractionOverlayMode(0);
+  SetMapInteractionMode(0);
+}
+
 // FUNCTION: IMPERIALISM 0x00599a50
 void TMapUberPicture::EnterMapInteractionOverlayMode(int param1) {
   if (this->invalidationFlag94 != 0) {

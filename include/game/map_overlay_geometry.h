@@ -55,3 +55,7 @@ unsigned short __stdcall GetMapContextActionLabelTokenByActionCode(short nTileIn
 // the hex stagger. 0x00565d20.
 void ComputeWrappedIsometricScreenOffsetFromTile(int tileIndex, int* outScreenXY, int tileScale,
                                                  short originCol, short originRow);
+
+// Draws the hex-cell border-highlight polygon for a tile (per-edge QDFrameRect segments
+// where the tile borders a different owner or an ocean neighbor). 0x00508f30.
+void BuildHexNeighborHighlightPolygonForTile(short tileId, int compareValue);

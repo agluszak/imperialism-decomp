@@ -460,6 +460,16 @@ void TMapDialog::PopulateMapContextInfoPanelStringsByTileSelection(short tileInd
       ->AssignTextSharedRefIfChangedAndMaybeInvalidate(&mainText, 1);
 }
 
+// FUNCTION: IMPERIALISM 0x0051e0b0
+void InitializeMapInteractionPreviewScaleXDefault() {
+  g_MapPreviewScaleX6A3410 = 0.015625;
+}
+
+// FUNCTION: IMPERIALISM 0x0051e0e0
+void InitializeMapInteractionPreviewScaleYDefault() {
+  g_MapPreviewScaleY6A33D0 = 0.015625;
+}
+
 // FUNCTION: IMPERIALISM 0x0051e1a0
 void TMapDialog::ResetAllTileMarkersToSentinel() {
   g_pGlobalMapState->ResetAllTileSpriteVariantIndexToSentinel();

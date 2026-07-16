@@ -1,6 +1,7 @@
 #include "game/TTechMgr.h"
 
 #include "decomp_types.h"
+#include "game/TGreatPower.h"
 #include "game/TSimMgr.h"
 #include "game/TMultiplayerMgr.h"
 #include "game/global_data_tables.h"
@@ -29,6 +30,21 @@
 undefined4 GetCurrentLocalEpochSecondsWithTimezoneCache(void);
 
 TTechMgr* g_pCityOrderCapabilityState = 0;
+
+// FUNCTION: IMPERIALISM 0x005572d0
+short GetEnabledIndustryCapabilitySlotByClass(short classId) {
+  unsigned char* flagRegion = reinterpret_cast<unsigned char*>(g_pCityOrderCapabilityState) + 0x19d;
+  short slot = 13;
+  const IndustryCapabilityClassSlotEntry* entry = &g_aIndustryCapabilityClassSlotTable[13];
+  while (entry->classId != classId || flagRegion[slot] == 0) {
+    entry--;
+    slot--;
+    if (entry == g_aIndustryCapabilityClassSlotTable) {
+      return 0;
+    }
+  }
+  return slot;
+}
 // SYNTHETIC: IMPERIALISM 0x005aef30
 // TTechMgr::CreateObject
 
@@ -588,6 +604,35 @@ void TTechMgr::SelectMissingTechItemPrerequisitesFromPair(int techId, int nation
     short p2 = g_aTechItemPrerequisitePairs[techId][1];
     *missing2 = (orderCapRows277[nationSlot].techStatusByTechId[p2] != 2) ? p2 : 0;
   }
+}
+
+
+// Purchases a tech-item slot for a nation: spends the slot's cost from the nation's
+// field-0x10 metric (AddToNationMetricAtField10 with the negated cost), marks the slot
+// status byte 1 in the nation's orderCapRows277 row, and stamps the current quarter
+// tick / 4 into the parallel capRowsE4a6 word.
+// FUNCTION: IMPERIALISM 0x005b0b30
+void TTechMgr::ApplyTechItemPurchaseCostAndState(int slot, int nationIndex) {
+  g_apNationStates[nationIndex]->AddToNationMetricAtField10(
+      -g_anTechItemPurchaseCostBySlot_0066aae8[slot]);
+  orderCapRows277[nationIndex].techStatusByTechId[slot] = 1;
+  capRowsE4a6[nationIndex].completionYearOffsetByTechId[slot] =
+      static_cast<short>(g_pSimMgr->quarterGateTick2c / 4);
+}
+
+// Inverse of ApplyTechItemPurchaseCostAndState: refunds the slot's cost back to the
+// nation's field-0x10 metric and clears both the status byte and the capRowsE4a6 word.
+// FUNCTION: IMPERIALISM 0x005b0bb0
+void TTechMgr::RefundTechItemPurchaseCostAndClearState(int slot, int nationIndex) {
+  g_apNationStates[nationIndex]->AddToNationMetricAtField10(
+      g_anTechItemPurchaseCostBySlot_0066aae8[slot]);
+  orderCapRows277[nationIndex].techStatusByTechId[slot] = 0;
+  capRowsE4a6[nationIndex].completionYearOffsetByTechId[slot] = 0;
+}
+
+// FUNCTION: IMPERIALISM 0x005b0c70
+void TTechMgr::SetCityOrderCapabilityTierScaledValueByIndex(int index, int value) {
+  prioritySlots04[index] = static_cast<short>(value * 4);
 }
 
 // Returns a nation's maximum fortification level (1..3): level 3 if the advanced-fort flag is
