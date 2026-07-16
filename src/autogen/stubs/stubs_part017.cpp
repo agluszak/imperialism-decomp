@@ -291,14 +291,6 @@ undefined4 WrapperFor_ftol_At0055e330(void)
   return 0;
 }
 
-// ghidra_name ContainsCityStatePointerInZoneArrayByCityIndex
-// ghidra_proto undefined ContainsCityStatePointerInZoneArrayByCityIndex()
-// FUNCTION: IMPERIALISM 0x0055f440
-undefined4 ContainsCityStatePointerInZoneArrayByCityIndex(void)
-{
-  return 0;
-}
-
 // ghidra_name BuildMapOrderObjectiveDescriptionTextForNation
 // ghidra_proto undefined BuildMapOrderObjectiveDescriptionTextForNation()
 // FUNCTION: IMPERIALISM 0x005606f0

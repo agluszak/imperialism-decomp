@@ -7,6 +7,7 @@
 #include "game/mapped_flavor_text.h"
 #include "game/mfc.h"
 #include "game/TGlobalMapState.h"
+#include "game/TMapMgr.h"
 #include "game/TOcean.h"
 #include "game/TDiplomacyMgr.h"
 #include "game/TPortZone.h"
@@ -392,6 +393,25 @@ TZone* FindMapActionContextByNodeId(short nodeId) {
 // FUNCTION: IMPERIALISM 0x0055f300
 void TZone::AppendUniquePrimaryNeighbor(TZone* zone) {
   primaryNeighbors.GetOrAppendUnique(zone);
+}
+
+// FUNCTION: IMPERIALISM 0x0055f440
+char TZone::ContainsCityStatePointerInZoneArrayByCityIndex(short cityIndex) {
+  unsigned int entryCount = static_cast<unsigned int>(this->secondaryNeighbors.Count());
+  if (entryCount == 0) {
+    return 0;
+  }
+  const void* target = &g_pGlobalMapState->cityScoreTable[cityIndex];
+  for (unsigned int entryIndex = 0; entryIndex < entryCount; ++entryIndex) {
+    // Inlined bounds-guarded stretch element access, as in the original (mirrors
+    // HasSecondaryNeighborWithNationTag / IsZoneMaskOrArrayEntryPresentForKey).
+    TZone* const* entrySlot =
+        (entryIndex < entryCount) ? this->secondaryNeighbors.Data() + entryIndex : 0;
+    if (*entrySlot == target) {
+      return 1;
+    }
+  }
+  return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x0055f4d0

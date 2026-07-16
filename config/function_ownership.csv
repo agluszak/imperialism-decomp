@@ -2956,6 +2956,7 @@ address|target_cpp|ownership|note
 535800|src/game/TDefendProvinceMission.cpp|manual|marker_sync
 535820|src/game/TMission.cpp|manual|marker_sync
 5358a0|src/game/TMission.cpp|manual|marker_sync
+5359e0|src/game/TDefendProvinceMission.cpp|manual|marker_sync
 5362c0|src/game/TArmyPlayer.cpp|manual|marker_sync
 536390|src/game/TNavyMission.cpp|manual|marker_sync
 536450|src/game/TNavyMission.cpp|manual|name_paired_no_marker
@@ -3446,6 +3447,7 @@ address|target_cpp|ownership|note
 55f100|src/game/TZone.cpp|manual|marker_sync
 55f140|src/game/TGreatPower.cpp|manual|marker_sync
 55f300|src/game/TZone.cpp|manual|marker_sync
+55f440|src/game/TZone.cpp|manual|marker_sync
 55f4d0|src/game/TZone.cpp|manual|marker_sync
 55f540|src/game/TZone.cpp|manual|marker_sync
 55f5c0|src/game/TZone.cpp|manual|marker_sync

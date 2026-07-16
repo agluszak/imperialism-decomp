@@ -19,14 +19,6 @@ undefined4 FindFirstTrackedHandlerMatchingModeAndShortKey(void)
   return 0;
 }
 
-// ghidra_name IsMapTileCompatibleWithCurrentTerrainOrActionContext
-// ghidra_proto undefined IsMapTileCompatibleWithCurrentTerrainOrActionContext()
-// FUNCTION: IMPERIALISM 0x005359e0
-undefined4 IsMapTileCompatibleWithCurrentTerrainOrActionContext(void)
-{
-  return 0;
-}
-
 // ghidra_name SelectBestCityDevelopmentFromResourcePools
 // ghidra_proto undefined SelectBestCityDevelopmentFromResourcePools()
 // FUNCTION: IMPERIALISM 0x00535b00

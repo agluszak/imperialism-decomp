@@ -8,17 +8,13 @@
 #include "game/TNavyMgr.h"
 #include "game/TList.h"
 #include "game/TGreatPower.h"
+#include "game/TZone.h"
 #include "game/global_data_tables.h"
 #include "game/TTechMgr.h"
 
 IMPLEMENT_SERIAL(TDefendProvinceMission, TArmyMission, 1)
 
 #include "game/CIterator.h"
-
-// Not-yet-recovered free functions this file calls into (generic stub
-// signature per the autogen stub definition; real signature applied via a
-// typed cast at each call site so the linker resolves the correct symbol).
-extern undefined4 IsMapTileCompatibleWithCurrentTerrainOrActionContext(void);
 
 // FUNCTION: IMPERIALISM 0x00535770
 void TDefendProvinceMission::MissionSlot44() {
@@ -40,6 +36,41 @@ char TDefendProvinceMission::ReturnFalseSlot28() {
 // Global factory function
 // FUNCTION: IMPERIALISM 0x00535800
 TDefendProvinceMission::~TDefendProvinceMission() {}
+
+// True if tileIndex is the home region of its own owner nation, or has an adjacent
+// region owned by a different valid nation, or is claimed (secondaryNeighbors array
+// entry) by some other map-action-context zone whose field10 mask has a bit set outside
+// the owner's own bit.
+// FUNCTION: IMPERIALISM 0x005359e0
+int IsMapTileCompatibleWithCurrentTerrainOrActionContext(int tileIndex) {
+  TGlobalMapCityScoreRecord& record = g_pGlobalMapState->cityScoreTable[tileIndex];
+  signed char primaryOwner = record.ownerNationCode00;
+  if (g_apTerrainTypeDescriptorTable[primaryOwner]->GetHomeRegionCityRecordIndex() == tileIndex) {
+    return 1;
+  }
+
+  for (int i = record.adjacentRegionCount08 - 1; i >= 0; --i) {
+    short neighborTile = record.adjacentRegionIds0A[i];
+    signed char neighborOwner = g_pGlobalMapState->cityScoreTable[neighborTile].ownerNationCode00;
+    if (neighborOwner < 7 && neighborOwner != primaryOwner) {
+      return 1;
+    }
+  }
+
+  TZone* zone = g_pMapActionContextListHead;
+  if (zone == nullptr) {
+    return 0;
+  }
+  unsigned char excludeOwnerMask = static_cast<unsigned char>((1 << (primaryOwner & 0x1f)) ^ 0x7f);
+  while ((zone->field10 & excludeOwnerMask) == 0 ||
+         !zone->ContainsCityStatePointerInZoneArrayByCityIndex(static_cast<short>(tileIndex))) {
+    zone = zone->prev18;
+    if (zone == nullptr) {
+      return 0;
+    }
+  }
+  return 1;
+}
 
 // Walks orderListAt18 and re-issues TUnit::SetOrderModeSlot34(1, newTile) on every linked
 // TMilitaryUnit whose tileIndex06 differs from newTile.
@@ -301,12 +332,7 @@ void TDefendProvinceMission::NoOpSlot3C() {
     fStack_c = *p_1_0_0065A9B8;
   }
 
-  typedef int(__cdecl * IsMapTileCompatibleWithCurrentTerrainOrActionContext_t)(int tileIndex);
-  IsMapTileCompatibleWithCurrentTerrainOrActionContext_t
-      IsMapTileCompatibleWithCurrentTerrainOrActionContext_fn =
-          reinterpret_cast<IsMapTileCompatibleWithCurrentTerrainOrActionContext_t>(
-              (void*)&IsMapTileCompatibleWithCurrentTerrainOrActionContext);
-  int compat = IsMapTileCompatibleWithCurrentTerrainOrActionContext_fn(field_14);
+  int compat = IsMapTileCompatibleWithCurrentTerrainOrActionContext(field_14);
 
   if (compat == 0) {
     unsigned char bVar8;
