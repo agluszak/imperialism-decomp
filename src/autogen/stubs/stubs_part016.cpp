@@ -91,14 +91,6 @@ undefined4 QueueMissionOrderEntryAndPropagateSelectionRange(void)
   return 0;
 }
 
-// ghidra_name BuildNavyOrderCategoryVectorForNationWithExclusion
-// ghidra_proto undefined BuildNavyOrderCategoryVectorForNationWithExclusion()
-// FUNCTION: IMPERIALISM 0x00537900
-undefined4 BuildNavyOrderCategoryVectorForNationWithExclusion(void)
-{
-  return 0;
-}
-
 // ghidra_name BuildMissionQueuedOrderCategoryVector
 // ghidra_proto undefined BuildMissionQueuedOrderCategoryVector()
 // FUNCTION: IMPERIALISM 0x00537d40

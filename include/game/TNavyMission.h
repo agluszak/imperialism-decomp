@@ -113,6 +113,16 @@ public:
   // ship's ownerNationSlot14 can equal an out-of-range code); modeled exactly as observed
   // rather than "corrected", per Hard Rule 6. 0x53b350.
   float ComputeMissionNavyOrderDistributionScoreForPortOwnerOrAllies(TZone* portZone);
+  // Builds a per-category priority vector over every orderList24 ship: a ship counts if
+  // it's within `distanceThreshold` hops of `nearZone` (or unconditionally if `nearZone`
+  // is null), OR (when farther than that) if it's within `distanceThreshold` hops of
+  // `farZone` instead (when farZone is non-null and != nearZone). farZone is TObject*
+  // because navyField20 (the usual caller-supplied value) is genuinely dual-typed -- see
+  // its own field comment -- so the TZone cast is confined to this one call site.
+  // 0x537900.
+  void BuildNavyOrderCategoryVectorForNationWithExclusion(float* vector, TZone* nearZone,
+                                                          short distanceThreshold,
+                                                          TObject* farZone);
 
 private:
   // Shared by RefreshSlot40's mode-transition checks (0x536b30).

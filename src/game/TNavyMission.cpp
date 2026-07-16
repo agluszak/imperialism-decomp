@@ -20,7 +20,6 @@ extern undefined4 GetNavyPrimaryOrderNodeByIndex(void);
 extern undefined4 FindFirstTrackedHandlerMatchingModeAndShortKey(void);
 extern undefined4 CompareMissionOrderEntriesByPriorityScore(void);
 extern undefined4 GetOrCreateMissionOrderEntryForNode(void);
-extern undefined4 BuildNavyOrderCategoryVectorForNationWithExclusion(void);
 
 // Swaps float byte order (Big-Endian <-> Little-Endian)
 static inline float SwapFloat(float val) {
@@ -311,27 +310,6 @@ void TNavyMission::RefreshSlot40() {
       navyField20 = static_cast<TObject*>(GetReplacementSlot48());
     }
   }
-}
-
-// Shared helper for RefreshSlot40 (0x536b30's inlined similarity-ratio computation).
-float TNavyMission::ComputeNavyOrderCategorySimilarityRatio(int excludeCurrent) {
-  typedef void(__fastcall * BuildNavyOrderCategoryVectorForNationWithExclusion_t)(float*, TZone*,
-                                                                                  int, TObject*);
-  BuildNavyOrderCategoryVectorForNationWithExclusion_t
-      BuildNavyOrderCategoryVectorForNationWithExclusion_fn =
-          reinterpret_cast<BuildNavyOrderCategoryVectorForNationWithExclusion_t>(
-              (void*)&BuildNavyOrderCategoryVectorForNationWithExclusion);
-
-  float vector[4];
-  BuildNavyOrderCategoryVectorForNationWithExclusion_fn(vector, targetZone14, excludeCurrent,
-                                                        navyField20);
-  float numerator = 0.0f;
-  float denominator = 0.0f;
-  for (int i = 0; i < 4; ++i) {
-    numerator += sqrtf(resourceWeights2c[i] * vector[i]);
-    denominator += resourceWeights2c[i];
-  }
-  return numerator / denominator;
 }
 
 // FUNCTION: IMPERIALISM 0x00536e40
@@ -666,6 +644,65 @@ float TNavyMission::ReturnZeroFloatSlot6C() {
     total += static_cast<double>(resourceWeights2c[i]);
   }
   return static_cast<float>(total);
+}
+// Builds a per-category priority vector over every orderList24 ship: a ship counts if
+// it's within `distanceThreshold` hops of `nearZone` (or unconditionally when `nearZone`
+// is null), OR -- when farther than that -- if it's within `distanceThreshold` hops of
+// `farZone` instead (when farZone is both non-null and != nearZone). The per-ship
+// contribution accumulation (ratio = stockLevel1c/normalizationBase, categories 0-2
+// scaled by ratio, category 3 unscaled) is reproduced inline at both convergent call
+// sites rather than via AccumulateNavyOrderCategoryVectorWithScale -- this specific
+// function inlines its own copy in the original rather than calling out to 0x537c60.
+// FUNCTION: IMPERIALISM 0x00537900
+void TNavyMission::BuildNavyOrderCategoryVectorForNationWithExclusion(float* vector,
+                                                                      TZone* nearZone,
+                                                                      short distanceThreshold,
+                                                                      TObject* farZone) {
+  vector[0] = 0.0f;
+  vector[1] = 0.0f;
+  vector[2] = 0.0f;
+  vector[3] = 0.0f;
+  if (farZone == nearZone) {
+    farZone = nullptr;
+  }
+  for (TMapOrderChildLinkNode* node = orderList24; node != nullptr; node = node->next) {
+    TShip* ship = reinterpret_cast<TShip*>(node->object_ptr);
+    bool inRange = true;
+    if (nearZone != nullptr &&
+        ship->ComputeOrderNodeDistanceQuotientByDescriptorWord24(nearZone) > distanceThreshold) {
+      inRange = farZone != nullptr && ship->ComputeOrderNodeDistanceQuotientByDescriptorWord24(
+                                          static_cast<TZone*>(farZone)) <= distanceThreshold;
+    }
+    if (inRange) {
+      short normBase = ship->GetNavyOrderNormalizationBaseByNationType();
+      float ratio = static_cast<float>(ship->stockLevel1c / normBase);
+      vector[0] +=
+          static_cast<float>(ship->ComputeNavyOrderPriorityContributionPercentByCategory(0)) *
+          ratio;
+      vector[1] +=
+          static_cast<float>(ship->ComputeNavyOrderPriorityContributionPercentByCategory(1)) *
+          ratio;
+      vector[2] +=
+          static_cast<float>(ship->ComputeNavyOrderPriorityContributionPercentByCategory(2)) *
+          ratio;
+      vector[3] +=
+          static_cast<float>(ship->ComputeNavyOrderPriorityContributionPercentByCategory(3));
+    }
+  }
+}
+
+// Shared helper for RefreshSlot40 (0x536b30's inlined similarity-ratio computation).
+float TNavyMission::ComputeNavyOrderCategorySimilarityRatio(int excludeCurrent) {
+  float vector[4];
+  BuildNavyOrderCategoryVectorForNationWithExclusion(
+      vector, targetZone14, static_cast<short>(excludeCurrent), navyField20);
+  float numerator = 0.0f;
+  float denominator = 0.0f;
+  for (int i = 0; i < 4; ++i) {
+    numerator += sqrtf(resourceWeights2c[i] * vector[i]);
+    denominator += resourceWeights2c[i];
+  }
+  return numerator / denominator;
 }
 // 0-2 scaled by (stock/normalization base)*scale and category 3 by scale alone.
 // FUNCTION: IMPERIALISM 0x00537c60
