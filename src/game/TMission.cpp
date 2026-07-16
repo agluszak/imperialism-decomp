@@ -118,7 +118,7 @@ float TMission::ReturnZeroFloatSlot78(TMilitaryUnit* candidateUnit, float* refer
   return g_MissionDefaultScore_0065a468;
 }
 // FUNCTION: IMPERIALISM 0x00534ed0
-void TMission::NoOpSlot84(int a, int b) {
+void TMission::NoOpSlot84(void* a, int b) {
   (void)a;
   (void)b;
 }
@@ -128,7 +128,7 @@ void TMission::NoOpSlot80(TMilitaryUnit* unit, int notify) {
   (void)notify;
 }
 // FUNCTION: IMPERIALISM 0x00534f10
-void TMission::NoOpSlot8C(int a, int b) {
+void TMission::NoOpSlot8C(void* a, int b) {
   (void)a;
   (void)b;
 }
@@ -138,7 +138,7 @@ void TMission::NoOpSlot88(TMilitaryUnit* unit, int unused) {
   (void)unused;
 }
 // FUNCTION: IMPERIALISM 0x00534f50
-void TMission::NoOpSlot90(int a) {
+void TMission::NoOpSlot90(void* a) {
   (void)a;
 }
 // FUNCTION: IMPERIALISM 0x00534f70

@@ -25,21 +25,21 @@ char TInvadeMission::ReturnFalseSlot54() {
 }
 
 // FUNCTION: IMPERIALISM 0x0053f160
-void TInvadeMission::NoOpSlot90(int a) {
+void TInvadeMission::NoOpSlot90(void* a) {
   if (beachhead34 != nullptr) {
     beachhead34->NoOpSlot90(a);
   }
 }
 
 // FUNCTION: IMPERIALISM 0x0053f190
-void TInvadeMission::NoOpSlot84(int a, int b) {
+void TInvadeMission::NoOpSlot84(void* a, int b) {
   if (beachhead34 != nullptr) {
     beachhead34->NoOpSlot84(a, b);
   }
 }
 
 // FUNCTION: IMPERIALISM 0x0053f1c0
-void TInvadeMission::NoOpSlot8C(int a, int b) {
+void TInvadeMission::NoOpSlot8C(void* a, int b) {
   if (beachhead34 != nullptr) {
     beachhead34->NoOpSlot8C(a, b);
   }

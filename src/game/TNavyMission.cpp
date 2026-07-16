@@ -195,7 +195,7 @@ void TNavyMission::ReadFrom(TStream* stream) {
   if (nodeIdx > -1) {
     do {
       TShip* orderNode = GetNavyPrimaryOrderNodeByIndex(nodeIdx);
-      NoOpSlot84(reinterpret_cast<int>(orderNode), 0);
+      NoOpSlot84(orderNode, 0);
       nodeIdx = stream->ReadShort();
     } while (nodeIdx >= 0);
   }
@@ -218,8 +218,8 @@ char TNavyMission::ReturnFalseSlot98() {
 }
 
 // FUNCTION: IMPERIALISM 0x00536780
-void TNavyMission::NoOpSlot84(int a, int b) {
-  TTaskForce* item = reinterpret_cast<TTaskForce*>(a);
+void TNavyMission::NoOpSlot84(void* a, int b) {
+  TTaskForce* item = static_cast<TTaskForce*>(a);
   TMission*& owner = *reinterpret_cast<TMission**>(reinterpret_cast<char*>(item) + 0x2c);
   if (owner != nullptr) {
     owner->NoOpSlot8C(a, b);
@@ -233,9 +233,9 @@ void TNavyMission::NoOpSlot84(int a, int b) {
 }
 
 // FUNCTION: IMPERIALISM 0x005367d0
-void TNavyMission::NoOpSlot8C(int a, int b) {
+void TNavyMission::NoOpSlot8C(void* a, int b) {
   (void)b;
-  TTaskForce* item = reinterpret_cast<TTaskForce*>(a);
+  TTaskForce* item = static_cast<TTaskForce*>(a);
   if (orderList24 != nullptr) {
     if (orderList24->object_ptr == item) {
       orderList24 = orderList24->DeleteMapOrderChildLinkAndReturnNext();
@@ -244,14 +244,14 @@ void TNavyMission::NoOpSlot8C(int a, int b) {
     }
   }
   *reinterpret_cast<int*>(reinterpret_cast<char*>(item) + 0x2c) = 0;
-  if (navyField1c == a) {
+  if (navyField1c == reinterpret_cast<int>(a)) {
     navyField1c = 0;
   }
 }
 
 // FUNCTION: IMPERIALISM 0x00536810
-void TNavyMission::NoOpSlot90(int a) {
-  if (reinterpret_cast<int>(navyField20) == a) {
+void TNavyMission::NoOpSlot90(void* a) {
+  if (navyField20 == a) {
     navyField20 = nullptr;
   }
 }

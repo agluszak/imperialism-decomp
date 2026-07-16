@@ -323,7 +323,7 @@ void TTaskForce::ReassignOrderNodeNationAndRebindParentCounters(short nation) {
   // model has other fields -- TShip-shaped node evidence, bd 1uj.16).
   TMission* missionBackref = *reinterpret_cast<TMission**>(reinterpret_cast<char*>(this) + 0x2c);
   if (missionBackref != 0 && missionBackref->nationId04 != nation) {
-    missionBackref->NoOpSlot8C(reinterpret_cast<int>(this), 1);
+    missionBackref->NoOpSlot8C(this, 1);
   }
 
   // Same node+0x14 nation-word slot the TShip reading calls ownerNationSlot14.
