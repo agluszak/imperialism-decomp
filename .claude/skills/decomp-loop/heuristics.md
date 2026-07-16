@@ -2142,3 +2142,43 @@ match the pass structure before chasing store order (24.9% -> 69.3%).
      base and mis-groups). Fold the `this` cast inline (no named `self` local) so `this` stays
      in ECX (`add esi,ecx`) instead of being copied to a callee-saved reg. Took 0x5b0a20 from
      26%→74% (residual is one MSVC regalloc quirk on the first `&&` branch — not worth chasing).
+
+106. **Caller-side `movsx`+`push eax` of a short expression + callee reading its param as a raw
+     dword (`mov ebx,[esp+..]`, no movsx) = the param is really `int`, not `short`.** Declaring
+     it short makes the recomp truncate (`dec ax`/`mov cx,word`) where the orig sign-extends
+     (`movsx`/`dec eax`); retype the callee param to int and every call site snaps into place
+     (0x518540 scenarioIndex, TMapMgr slots 0x0e/0x2c). Conversely, a call site that RELOADS the
+     raw incoming arg slot (`mov eax,[esp+argoff]; push eax`) is passing an untouched short
+     param — keep that param short and pass the parameter variable itself (0x518990 →
+     RemovePortZoneByTile).
+
+107. **CString temp placement: a named local (`CString t(x); target = t;`) re-materializes its
+     address with `lea` and can land in a dead ARG slot; the unnamed `target = CString(x)` form
+     reuses the ctor's EAX return and gets elided by our compiler where MSVC5 kept a real copy.**
+     If the orig shows ctor→`lea` reload→operator=→dtor, use a named local; if it shows
+     ctor→`push eax` directly, use the unnamed temp (0x50ec90 tuningOverride vs 0x5dfd70
+     fullPath). Wrapping in an extra `{}` block to move the dtors shifts EH-state numbering and
+     usually scores worse — pick the local form, not the block form.
+
+108. **Two writes at a fixed offset delta inside one bounded loop = parallel arrays, not one
+     long array.** 0x50f860 inserts `record id` at `[slot]` and a companion tile at
+     `[slot+0x18]` under the same k<0xc bound, and the 0x518840 byte-swapper swaps `[p]` and
+     `[p+0x18]` pairs in a 0xc-count loop → TGlobalMapCityScoreRecord's `[0x18]` short array is
+     really `adjacentRegionIds0A[0xc]` + `adjacentRegionAnchorTiles22[0xc]`. Grep for existing
+     `[i + 12]`-style accessors before splitting — they confirm the boundary and are exactly the
+     sites the split cleans up.
+
+109. **A 16-bit store spanning a byte field and its "pad" (`mov word ptr [..+0x1c],1`) means the
+     field is really a short.** Retyping (TTerrainStateRecordView::activeFlags1c uchar→ushort)
+     turns two-store sites (`flags = X; pad[0] = 0;`) into the matching single word store, and
+     `&`-mask reads / `|=` low-bit writes on the short still compile to the orig's byte-wide
+     test/or forms, so existing 100% users keep matching. It also deletes the
+     `*reinterpret_cast<short*>(&...)` copy hacks at snapshot sites.
+
+110. **An inlined-ctor `new` site whose field stores are NOT in declaration order (and whose
+     vptr store lands last) is a body-assignment ctor, not a member-init list.** Write the
+     header-inline ctor with body assignments in the observed store order (TSoundChannelNode:
+     0xc,0x10,0x8,0x4,0x14,0x18). If no standalone ctor symbol exists in the binary, the ctor
+     must be defined inline in the header or every `new T()` site emits a call that the orig
+     doesn't have. The vptr-store position (recomp first, orig last) is compiler-internal and
+     costs ~2 lines — accept it.
