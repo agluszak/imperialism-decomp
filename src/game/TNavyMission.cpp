@@ -759,6 +759,68 @@ float TNavyMission::ComputeMissionOrderMatchScoreWithCandidateNavyOrder(TShip* c
   return coefficient / sumWeights;
 }
 
+// Same shape as ComputeMissionOrderMatchScoreWithCandidateNavyOrder above, but negates
+// the candidate ship's distance-weighted scale (* g_Recompute_Nation_Order_LookupTable_0065A9E0,
+// which holds -1.0) before accumulating its contribution -- evaluating the profile with
+// the candidate order removed rather than added. The existing orderList24 ships'
+// contributions are unaffected (still added with a positive scale).
+// FUNCTION: IMPERIALISM 0x005383f0
+float TNavyMission::ComputeMissionOrderMatchScoreWithScaledCandidateNavyOrder(
+    TShip* candidateOrder) {
+  float vector[4] = {
+      g_Recompute_Nation_Order_LookupTable_0065A9E8, g_Recompute_Nation_Order_LookupTable_0065A9E8,
+      g_Recompute_Nation_Order_LookupTable_0065A9E8, g_Recompute_Nation_Order_LookupTable_0065A9E8};
+  for (TMapOrderChildLinkNode* node = orderList24; node != nullptr; node = node->next) {
+    TShip* ship = reinterpret_cast<TShip*>(node->object_ptr);
+    TZone* targetZone = GetActiveTargetZoneByState28();
+    short distanceIndex = 0;
+    if (targetZone != nullptr) {
+      distanceIndex =
+          ship->ComputeOrderNodeDistanceQuotientByDescriptorWord24(GetActiveTargetZoneByState28());
+    }
+    if (distanceIndex > 5) {
+      distanceIndex = 5;
+    }
+    float scale =
+        g_NavyOrderDistanceDecayWeightTable_006978c8[distanceIndex] *
+        static_cast<float>(ship->stockLevel1c / ship->GetNavyOrderNormalizationBaseByNationType());
+    for (int componentIndex = 0; componentIndex < 4; ++componentIndex) {
+      vector[componentIndex] +=
+          static_cast<float>(
+              ship->ComputeNavyOrderPriorityContributionPercentByCategory(componentIndex)) *
+          scale;
+    }
+  }
+
+  TZone* targetZone = GetActiveTargetZoneByState28();
+  short distanceIndex = 0;
+  if (targetZone != nullptr) {
+    distanceIndex = candidateOrder->ComputeOrderNodeDistanceQuotientByDescriptorWord24(
+        GetActiveTargetZoneByState28());
+  }
+  if (distanceIndex > 5) {
+    distanceIndex = 5;
+  }
+  float scale = g_NavyOrderDistanceDecayWeightTable_006978c8[distanceIndex] *
+                static_cast<float>(g_Recompute_Nation_Order_LookupTable_0065A9E0) *
+                static_cast<float>(candidateOrder->stockLevel1c /
+                                   candidateOrder->GetNavyOrderNormalizationBaseByNationType());
+  for (int componentIndex = 0; componentIndex < 4; ++componentIndex) {
+    vector[componentIndex] +=
+        static_cast<float>(
+            candidateOrder->ComputeNavyOrderPriorityContributionPercentByCategory(componentIndex)) *
+        scale;
+  }
+
+  float sumWeights = g_Recompute_Nation_Order_LookupTable_0065A9E8;
+  float coefficient = g_Recompute_Nation_Order_LookupTable_0065A9E8;
+  for (int i = 0; i < 4; ++i) {
+    sumWeights += resourceWeights2c[i];
+    coefficient += sqrtf(resourceWeights2c[i] * vector[i]);
+  }
+  return coefficient / sumWeights;
+}
+
 // FUNCTION: IMPERIALISM 0x005389f0
 float TNavyMission::ComputeOrderDistributionSimilarityScoreWithDiplomacyFilter(int sourceNation,
                                                                                TZone* nodeContext) {

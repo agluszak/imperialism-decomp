@@ -99,6 +99,11 @@ public:
   // evaluate how well adding `candidateOrder` would fit this mission's target profile.
   // 0x538120.
   float ComputeMissionOrderMatchScoreWithCandidateNavyOrder(TShip* candidateOrder);
+  // Same shape as ComputeMissionOrderMatchScoreWithCandidateNavyOrder, but negates the
+  // candidate ship's distance-weighted contribution (scale * -1.0) before accumulating
+  // it -- evaluating the profile with the candidate order REMOVED rather than added.
+  // 0x5383f0.
+  float ComputeMissionOrderMatchScoreWithScaledCandidateNavyOrder(TShip* candidateOrder);
 
 private:
   // Shared by RefreshSlot40's mode-transition checks (0x536b30).
