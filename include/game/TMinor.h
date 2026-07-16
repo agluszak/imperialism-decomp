@@ -77,7 +77,13 @@ public:
   char HasStandingPropagationBridgeSlot90(int targetNation);
   void NotifyNationAuxRuntimeFinalizeSlotC0(void);
   void ClearNationAuxRuntimeGrantSlotC4(int grantValue);
-  void InitializeTMinorDefaults(int slotIndex);
+  // Full (re)initialization of a minor nation's per-session state: nation identity +
+  // owned-region list, diplomacy policy defaults, the five per-resource/per-nation
+  // short tables and all 23 status rows cleared, need counters recounted from owned
+  // map tiles, home tile selected (flagged tile, else a random valid candidate) with
+  // its port zone ensured, and the per-slot diplomacy random thresholds and save
+  // fields set from the 16-way nation-slot table. 0x4e3830, __thiscall, RET 4.
+  void InitializeSecondaryNationStateAndSelectHomeTile(short nationSlot);
 
 private:
   short needCurrentByType[0x17];
@@ -104,11 +110,12 @@ public:
   short diplomacySaveExt13c[0x17]; // 0x13c
 private:
   short recurringGrantByResource[0x17];
-  // +0x198. The initializer clears this as seven 0x0e-byte rows.
-  short relationGrantLinkMatrix[7][7];
-  // +0x1fa. The following sixteen 0x0e-byte records share the initializer's same clearing
-  // loop; their individual business meanings are not yet recovered.
-  TMinorRuntimeStatusEntry runtimeStatusEntries[16];
+  // +0x198. 23 rows of seven shorts, cleared row-by-row (as one 0x0e-byte memset per
+  // row) by the same 0x17-iteration loop that clears the five short tables above
+  // (0x4e3830). Rows 0..6 form the relation/grant/link matrix indexed
+  // [relationSlot][majorNationSlot]; the individual meanings of rows 7..22 are not
+  // yet recovered.
+  TMinorRuntimeStatusEntry statusRows[0x17];
   short runtimeStatusTail2da;
 
 protected:

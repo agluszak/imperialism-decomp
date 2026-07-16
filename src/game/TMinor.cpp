@@ -11,6 +11,10 @@
 #include "game/TGreatPower.h"
 #include "game/TNewsMgr.h"
 #include "game/TMilitaryUnit.h"
+#include "game/TMapMgr.h"
+#include "game/TOcean.h"
+#include "game/TSimMgr.h"
+#include "game/TSoundChannelNode.h"
 #include "game/TStream.h"
 #include "game/TTown.h"
 #include "game/TUnit.h"
@@ -67,10 +71,294 @@ TMinor::TMinor() {}
 // TMinor::`scalar deleting destructor'
 TMinor::~TMinor() {}
 
-// FUNCTION: IMPERIALISM 0x004e38e0
-void TMinor::InitializeTMinorDefaults(int slotIndex) {
-  // TODO: promote body @ 0x004e38e0 — initializes minor nation default state
-  (void)slotIndex;
+// FUNCTION: IMPERIALISM 0x004e3830
+void TMinor::InitializeSecondaryNationStateAndSelectHomeTile(short nationSlot) {
+  // Constructed and destroyed unused in the original (EH state 0) -- kept for the
+  // matching EH frame.
+  CString unusedText;
+  InitializeNationStateIdentityAndOwnedRegionList(nationSlot);
+
+  diplomacyPolicyGate130 = 0;
+  diplomacyPolicyPredicateCode12c = -10;
+  diplomacyPolicyPredicateCode12e = -10;
+  diplomacyPolicyGate132 = 0;
+  int i;
+  for (i = 0; i < 0x17; ++i) {
+    diplomacyPolicyByNation[i] = 0;
+    diplomacyGrantByNation[i] = 0;
+    needCurrentByType[i] = 0;
+    diplomacySaveExt13c[i] = 0;
+    recurringGrantByResource[i] = 0;
+    memset(&statusRows[i], 0, sizeof(TMinorRuntimeStatusEntry));
+  }
+
+  // Recount the need tables from the map: every non-depleted resource edge on a tile
+  // this nation owns bumps the per-type counters.
+  int tileCount;
+  int tileIndex = 0;
+  for (tileCount = 0x1950; tileCount != 0; --tileCount) {
+    if (g_pGlobalMapState->terrainStateTable[tileIndex].ownerNationTag04 == this->nationSlot) {
+      int edgeCount;
+      int edge = 0;
+      for (edgeCount = 2; edgeCount != 0; --edgeCount) {
+        char resourceType =
+            g_pGlobalMapState->terrainStateTable[tileIndex].resourceTypeByEdge[edge];
+        if (g_pGlobalMapState->terrainStateTable[tileIndex].gateFlag != 0xf && resourceType != -1) {
+          ++needCurrentByType[resourceType];
+          ++diplomacySaveExt13c[resourceType];
+        }
+        ++edge;
+      }
+    }
+    ++tileIndex;
+  }
+
+  if (g_bMultiplayerScenarioSetupActive == 0) {
+    char noImmediateDispatch = ShouldDispatchImmediatelySlot28() == 0;
+    if (noImmediateDispatch || g_pSimMgr->stateFlag114 != 0) {
+      TSoundChannelNode* candidateTiles = new TSoundChannelNode();
+      short selectedTile = -1;
+      short tile;
+      for (tile = 0; tile < 0x1950; ++tile) {
+        if (g_pGlobalMapState->terrainStateTable[tile].ownerNationTag04 == nationSlot) {
+          TTerrainStateRecordView* record = &g_pGlobalMapState->terrainStateTable[tile];
+          if (record->activeFlags1c & 1) {
+            selectedTile = tile;
+          }
+          if (g_pGlobalMapState->IsValidSecondaryNationHomeTileCandidate(tile)) {
+            candidateTiles->SoundChannelNodeDummy00(tile);
+          }
+        }
+      }
+      if (selectedTile == -1) {
+        int candidateCount = candidateTiles->QueryPendingPlaybackCountSlot28();
+        // LIBRARY: rand (0x005e83f0)
+        selectedTile = static_cast<short>(
+            candidateTiles->SoundChannelNodeDummy04(rand() % candidateCount + 1));
+      }
+      // Constructed and destroyed unused in the original (EH states 1/2).
+      CString unusedTextA;
+      CString unusedTextB;
+      g_pGlobalMapState->ResetTileToBaseTransportFlag(selectedTile);
+      homeRegionIndex = selectedTile;
+      if (candidateTiles != 0) {
+        candidateTiles->ReleaseChannelNodeSlot38();
+      }
+      g_pActiveMapOrderContext->EnsurePortZoneForTile(static_cast<short>(homeRegionIndex));
+    }
+  }
+
+  needCurrentByType[7] = 5;
+  switch (nationSlot) {
+  case 7:
+    diplomacyRandomThreshold11e = 0x44c;
+    diplomacyRandomThreshold120 = 0x23a;
+    diplomacyRandomThreshold122 = 0xc3;
+    diplomacyRandomThreshold124 = 0x5a;
+    diplomacyRandomThreshold126 = 0x69;
+    diplomacyRandomThreshold128 = 0x8a;
+    diplomacyRandomThreshold12a = 0x90;
+    diplomacySaveFields134[0] = 7;
+    diplomacySaveFields134[1] = 8;
+    diplomacySaveFields134[2] = 9;
+    diplomacySaveFields134[3] = 0xa;
+    break;
+  case 8:
+    diplomacyRandomThreshold11e = 0x47e;
+    diplomacyRandomThreshold120 = 0x249;
+    diplomacyRandomThreshold122 = 0xaf;
+    diplomacyRandomThreshold124 = 0x52;
+    diplomacyRandomThreshold126 = 0x75;
+    diplomacyRandomThreshold128 = 0x72;
+    diplomacyRandomThreshold12a = 0x84;
+    diplomacySaveFields134[0] = 7;
+    diplomacySaveFields134[1] = 8;
+    diplomacySaveFields134[2] = 9;
+    diplomacySaveFields134[3] = 0xa;
+    break;
+  case 9:
+    diplomacyRandomThreshold11e = 0x4b0;
+    diplomacyRandomThreshold120 = 0x258;
+    diplomacyRandomThreshold122 = 0x9b;
+    diplomacyRandomThreshold124 = 0x4a;
+    diplomacyRandomThreshold126 = 0x81;
+    diplomacyRandomThreshold128 = 0x7e;
+    diplomacyRandomThreshold12a = 0x78;
+    diplomacySaveFields134[0] = 7;
+    diplomacySaveFields134[1] = 8;
+    diplomacySaveFields134[2] = 9;
+    diplomacySaveFields134[3] = 0xa;
+    break;
+  case 10:
+    diplomacyRandomThreshold11e = 0x4e2;
+    diplomacyRandomThreshold120 = 0x267;
+    diplomacyRandomThreshold122 = 0x87;
+    diplomacyRandomThreshold124 = 0x42;
+    diplomacyRandomThreshold126 = 0x8d;
+    diplomacyRandomThreshold128 = 0x90;
+    diplomacyRandomThreshold12a = 0x6f;
+    diplomacySaveFields134[0] = 7;
+    diplomacySaveFields134[1] = 8;
+    diplomacySaveFields134[2] = 9;
+    diplomacySaveFields134[3] = 0xa;
+    break;
+  case 11:
+    diplomacyRandomThreshold11e = 0x514;
+    diplomacyRandomThreshold120 = 0x276;
+    diplomacyRandomThreshold122 = 0xbe;
+    diplomacyRandomThreshold124 = 0x58;
+    diplomacyRandomThreshold126 = 0x6c;
+    diplomacyRandomThreshold128 = 0x8d;
+    diplomacyRandomThreshold12a = 0x93;
+    diplomacySaveFields134[0] = 0xb;
+    diplomacySaveFields134[1] = 0xc;
+    diplomacySaveFields134[2] = 0xd;
+    diplomacySaveFields134[3] = 0xe;
+    break;
+  case 12:
+    diplomacyRandomThreshold11e = 0x546;
+    diplomacyRandomThreshold120 = 0x285;
+    diplomacyRandomThreshold122 = 0xaa;
+    diplomacyRandomThreshold124 = 0x50;
+    diplomacyRandomThreshold126 = 0x78;
+    diplomacyRandomThreshold128 = 0x69;
+    diplomacyRandomThreshold12a = 0x87;
+    diplomacySaveFields134[0] = 0xb;
+    diplomacySaveFields134[1] = 0xc;
+    diplomacySaveFields134[2] = 0xd;
+    diplomacySaveFields134[3] = 0xe;
+    break;
+  case 13:
+    diplomacyRandomThreshold11e = 0x578;
+    diplomacyRandomThreshold120 = 0x294;
+    diplomacyRandomThreshold122 = 0x96;
+    diplomacyRandomThreshold124 = 0x48;
+    diplomacyRandomThreshold126 = 0x84;
+    diplomacyRandomThreshold128 = 0x7b;
+    diplomacyRandomThreshold12a = 0x75;
+    diplomacySaveFields134[0] = 0xb;
+    diplomacySaveFields134[1] = 0xc;
+    diplomacySaveFields134[2] = 0xd;
+    diplomacySaveFields134[3] = 0xe;
+    break;
+  case 14:
+    diplomacyRandomThreshold11e = 0x5aa;
+    diplomacyRandomThreshold120 = 0x2a3;
+    diplomacyRandomThreshold122 = 0x82;
+    diplomacyRandomThreshold124 = 0x40;
+    diplomacyRandomThreshold126 = 0x90;
+    diplomacyRandomThreshold128 = 0x81;
+    diplomacyRandomThreshold12a = 0x72;
+    diplomacySaveFields134[0] = 0xb;
+    diplomacySaveFields134[1] = 0xc;
+    diplomacySaveFields134[2] = 0xd;
+    diplomacySaveFields134[3] = 0xe;
+    break;
+  case 15:
+    diplomacyRandomThreshold11e = 0x5dc;
+    diplomacyRandomThreshold120 = 0x2b2;
+    diplomacyRandomThreshold122 = 0xb9;
+    diplomacyRandomThreshold124 = 0x56;
+    diplomacyRandomThreshold126 = 0x6f;
+    diplomacyRandomThreshold128 = 0x93;
+    diplomacyRandomThreshold12a = 0x96;
+    diplomacySaveFields134[0] = 0xf;
+    diplomacySaveFields134[1] = 0x10;
+    diplomacySaveFields134[2] = 0x11;
+    diplomacySaveFields134[3] = 0x12;
+    break;
+  case 16:
+    diplomacyRandomThreshold11e = 0x60e;
+    diplomacyRandomThreshold120 = 0x2c1;
+    diplomacyRandomThreshold122 = 0xa5;
+    diplomacyRandomThreshold124 = 0x4e;
+    diplomacyRandomThreshold126 = 0x7b;
+    diplomacyRandomThreshold128 = 0x6c;
+    diplomacyRandomThreshold12a = 0x8a;
+    diplomacySaveFields134[0] = 0xf;
+    diplomacySaveFields134[1] = 0x10;
+    diplomacySaveFields134[2] = 0x11;
+    diplomacySaveFields134[3] = 0x12;
+    break;
+  case 17:
+    diplomacyRandomThreshold11e = 0x640;
+    diplomacyRandomThreshold120 = 0x2d0;
+    diplomacyRandomThreshold122 = 0x91;
+    diplomacyRandomThreshold124 = 0x46;
+    diplomacyRandomThreshold126 = 0x87;
+    diplomacyRandomThreshold128 = 0x78;
+    diplomacyRandomThreshold12a = 0x7e;
+    diplomacySaveFields134[0] = 0xf;
+    diplomacySaveFields134[1] = 0x10;
+    diplomacySaveFields134[2] = 0x11;
+    diplomacySaveFields134[3] = 0x12;
+    break;
+  case 18:
+    diplomacyRandomThreshold11e = 0x672;
+    diplomacyRandomThreshold120 = 0x2df;
+    diplomacyRandomThreshold122 = 0x7d;
+    diplomacyRandomThreshold124 = 0x3e;
+    diplomacyRandomThreshold126 = 0x93;
+    diplomacyRandomThreshold128 = 0x84;
+    diplomacyRandomThreshold12a = 0x69;
+    diplomacySaveFields134[0] = 0xf;
+    diplomacySaveFields134[1] = 0x10;
+    diplomacySaveFields134[2] = 0x11;
+    diplomacySaveFields134[3] = 0x12;
+    break;
+  case 19:
+    diplomacyRandomThreshold11e = 0x6a4;
+    diplomacyRandomThreshold120 = 0x2ee;
+    diplomacyRandomThreshold122 = 0xb4;
+    diplomacyRandomThreshold124 = 0x54;
+    diplomacyRandomThreshold126 = 0x72;
+    diplomacyRandomThreshold128 = 0x96;
+    diplomacyRandomThreshold12a = 0x8d;
+    diplomacySaveFields134[0] = 0x13;
+    diplomacySaveFields134[1] = 0x14;
+    diplomacySaveFields134[2] = 0x15;
+    diplomacySaveFields134[3] = 0x16;
+    break;
+  case 20:
+    diplomacyRandomThreshold11e = 0x6d6;
+    diplomacyRandomThreshold120 = 0x2fd;
+    diplomacyRandomThreshold122 = 0xa0;
+    diplomacyRandomThreshold124 = 0x4c;
+    diplomacyRandomThreshold126 = 0x7e;
+    diplomacyRandomThreshold128 = 0x6f;
+    diplomacyRandomThreshold12a = 0x81;
+    diplomacySaveFields134[0] = 0x13;
+    diplomacySaveFields134[1] = 0x14;
+    diplomacySaveFields134[2] = 0x15;
+    diplomacySaveFields134[3] = 0x16;
+    break;
+  case 21:
+    diplomacyRandomThreshold11e = 0x708;
+    diplomacyRandomThreshold120 = 0x302;
+    diplomacyRandomThreshold122 = 0x8c;
+    diplomacyRandomThreshold124 = 0x44;
+    diplomacyRandomThreshold126 = 0x8a;
+    diplomacyRandomThreshold128 = 0x7b;
+    diplomacyRandomThreshold12a = 0x75;
+    diplomacySaveFields134[0] = 0x13;
+    diplomacySaveFields134[1] = 0x14;
+    diplomacySaveFields134[2] = 0x15;
+    diplomacySaveFields134[3] = 0x16;
+    break;
+  case 22:
+    diplomacyRandomThreshold11e = 0x73a;
+    diplomacyRandomThreshold120 = 0x311;
+    diplomacyRandomThreshold122 = 0x78;
+    diplomacyRandomThreshold124 = 0x3c;
+    diplomacyRandomThreshold126 = 0x96;
+    diplomacyRandomThreshold128 = 0x87;
+    diplomacyRandomThreshold12a = 0x6c;
+    diplomacySaveFields134[0] = 0x13;
+    diplomacySaveFields134[1] = 0x14;
+    diplomacySaveFields134[2] = 0x15;
+    diplomacySaveFields134[3] = 0x16;
+    break;
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x004e41c0
@@ -216,7 +504,7 @@ void TMinor::ApplyIndexedResourceDeltaAndAdjustNationTotals(int resourceIndex, i
     if (g_apTerrainTypeDescriptorTable[majorNationSlot] == 0) {
       continue;
     }
-    short linkValue = this->relationGrantLinkMatrix[resourceSlot][majorNationSlot];
+    short linkValue = this->statusRows[resourceSlot].fields[majorNationSlot];
     if (linkValue == 0) {
       continue;
     }
@@ -411,7 +699,7 @@ char TMinor::HasStandingPropagationBridgeSlot90(int targetNation) {
     return 0;
   }
   for (int resourceType = 0; resourceType < 7; ++resourceType) {
-    if (this->relationGrantLinkMatrix[resourceType][targetNation] != 0) {
+    if (this->statusRows[resourceType].fields[targetNation] != 0) {
       return 1;
     }
   }
@@ -421,7 +709,7 @@ char TMinor::HasStandingPropagationBridgeSlot90(int targetNation) {
 void TMinor::NotifyNationAuxRuntimeFinalizeSlotC0(void) {
   for (int resourceType = 0; resourceType < 7; ++resourceType) {
     for (int majorNationSlot = 0; majorNationSlot < 7; ++majorNationSlot) {
-      this->relationGrantLinkMatrix[resourceType][majorNationSlot] = 0;
+      this->statusRows[resourceType].fields[majorNationSlot] = 0;
     }
   }
 }

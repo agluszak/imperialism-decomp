@@ -2520,7 +2520,7 @@ address|name|symbol|size|type|prototype|provenance
 4e3710|TMinor::TMinor||88|function|undefined TMinor()|
 4e3790|TMinor::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 4e37c0|WrapperFor_ReleaseSharedStringRefIfNotEmpty_At004e37c0||80|function|undefined WrapperFor_ReleaseSharedStringRefIfNotEmpty_At004e37c0()|
-4e3830|InitializeSecondaryNationStateAndSelectHomeTile||1888|function|undefined InitializeSecondaryNationStateAndSelectHomeTile()|
+4e3830|TMinor::InitializeSecondaryNationStateAndSelectHomeTile||1952|function|void __thiscall InitializeSecondaryNationStateAndSelectHomeTile(short nationSlot)|
 4e41c0|TMinor::ReadFrom||360|function|undefined DeserializeDiplomacyNationStateFromStream()|
 4e4390|TMinor::WriteTo||476|function|undefined SerializeDiplomacyNationStateToStream()|
 4e45f0|TMinor::ReturnFalseNationStateCapabilityFlag90||48|function|undefined IsPolicyCodeInSpecialNationPolicySet()|
@@ -3147,7 +3147,7 @@ address|name|symbol|size|type|prototype|provenance
 50fca0|TMapMgr::UpdateTilePrimaryAndSecondaryNeighborLinksByPriority||285|function|undefined UpdateTilePrimaryAndSecondaryNeighborLinksByPriority()|
 50fe10|TMapMgr::UpdateTileNeighborBorderInfluenceCounters||812|function|undefined UpdateTileNeighborBorderInfluenceCounters()|
 510210|TMapMgr::UpdateMapTileAdjacencyMasksAndVariantForTile||1177|function|uchar * __thiscall UpdateMapTileAdjacencyMasksAndVariantForTile(short tileIndex)|
-5107e0|TMapMgr::InitializeTileNeighborConnectionMaskIfNeeded||190|function|undefined InitializeTileNeighborConnectionMaskIfNeeded()|
+5107e0|TMapMgr::InitializeTileNeighborConnectionMaskIfNeeded||190|function|void __thiscall InitializeTileNeighborConnectionMaskIfNeeded(int tileIndex)|
 5108d0|ResolveMapTileVariantSpriteFromAdjacencyState||1972|function|undefined ResolveMapTileVariantSpriteFromAdjacencyState()|
 5112f0|CheckTileVariantCodeMembershipSetA||65|function|undefined CheckTileVariantCodeMembershipSetA()|
 511360|CheckTileVariantCodeMembershipSetB||65|function|undefined CheckTileVariantCodeMembershipSetB()|
@@ -3185,7 +3185,7 @@ address|name|symbol|size|type|prototype|provenance
 5136a0|TMapMgr::OrphanLeaf_NoCall_Ins35_005136a0||90|function|undefined OrphanLeaf_NoCall_Ins35_005136a0(short param_1, char param_2, byte param_3, char param_4)|
 513720|TMapMgr::OrphanLeaf_NoCall_Ins37_00513720||105|function|undefined OrphanLeaf_NoCall_Ins37_00513720(short param_1, char param_2, int param_3)|
 5137b0|TDeluxeText::CanBuildPortAtTile||362|function|char __thiscall CanBuildPortAtTile(int nTileIndex)|
-513980|IsValidSecondaryNationHomeTileCandidate||632|function|undefined IsValidSecondaryNationHomeTileCandidate()|
+513980|TMapMgr::IsValidSecondaryNationHomeTileCandidate||632|function|bool __thiscall IsValidSecondaryNationHomeTileCandidate(short tileIndex)|
 513ca0|HasReachableSeaTileOutsideActiveType3Or4DiplomaticMask||443|function|undefined HasReachableSeaTileOutsideActiveType3Or4DiplomaticMask()|
 513ed0|CheckTileProspectingDiscoveryCandidate||100|function|byte __thiscall CheckTileProspectingDiscoveryCandidate(short nTileIndex)|
 513ef2|loop_scan_resource_slots|||global||
@@ -3236,7 +3236,7 @@ address|name|symbol|size|type|prototype|provenance
 515e50|TileHasMovementClassId||76|function|undefined TileHasMovementClassId()|
 515ec0|AssignCityRecordDisplayName||37|function|undefined AssignCityRecordDisplayName()|
 515f40|SetGlobalMapCellSharedLabel||37|function|undefined SetGlobalMapCellSharedLabel()|
-515f80|TMapMgr::SetRegionTileSubtypeAndRefreshNeighborFlags||206|function|undefined SetRegionTileSubtypeAndRefreshNeighborFlags(int param_1, int param_2)|
+515f80|TMapMgr::SetRegionTileSubtypeAndRefreshNeighborFlags||206|function|void __thiscall SetRegionTileSubtypeAndRefreshNeighborFlags(int cityRecordIndex, int newTileIndex)|
 516090|TMapMgr::OrphanLeaf_NoCall_Ins27_00516090||66|function|undefined OrphanLeaf_NoCall_Ins27_00516090(int param_1, int param_2)|
 516100|TMapMgr::OrphanLeaf_NoCall_Ins18_00516100||59|function|undefined OrphanLeaf_NoCall_Ins18_00516100(int param_1)|
 516150|TMapMgr::OrphanLeaf_NoCall_Ins14_00516150||55|function|undefined OrphanLeaf_NoCall_Ins14_00516150(short param_1)|
@@ -3268,9 +3268,9 @@ address|name|symbol|size|type|prototype|provenance
 5184e0|GetProvinceUnitOrderWeight||7|function|undefined GetProvinceUnitOrderWeight()|
 518540|TMapMgr::LoadScenarioMapStateFromTableResource||536|function|char __thiscall LoadScenarioMapStateFromTableResource(int scenarioIndex)|
 5187f0|LoadScenarioMetadataByIndexIntoUiControlCore_Impl||62|function|undefined LoadScenarioMetadataByIndexIntoUiControlCore_Impl()|
-518840|LoadScenarioMapStateFromTableResource_Impl||219|function|undefined LoadScenarioMapStateFromTableResource_Impl()|
+518840|ByteSwapCityScoreTableShortFields||219|function|void __cdecl ByteSwapCityScoreTableShortFields(TGlobalMapCityScoreRecord * table)|
 518960|TGlobalMapState::SetRegionDevelopmentStageByte||29|function|undefined SetRegionDevelopmentStageByte()|
-518990|ResetTileToBaseTransportFlag||98|function|undefined ResetTileToBaseTransportFlag()|
+518990|TMapMgr::ResetTileToBaseTransportFlag||98|function|void __thiscall ResetTileToBaseTransportFlag(short tileIndex)|
 518a20|AreAllLinkedEntriesTerrainFlagBit2Clear||85|function|undefined AreAllLinkedEntriesTerrainFlagBit2Clear()|
 518aa0|WrapperFor_thunk_HasReachableSeaTileOutsideActiveType3Or4DiplomaticMask_At00518aa0||115|function|undefined WrapperFor_thunk_HasReachableSeaTileOutsideActiveType3Or4DiplomaticMask_At00518aa0()|
 518b40|TMapMgr::CalculateDeveloperTilePurchaseCost||111|function|int __thiscall CalculateDeveloperTilePurchaseCost(short nTileIndex)|
@@ -4343,12 +4343,12 @@ address|name|symbol|size|type|prototype|provenance
 5633b0|TOcean::GetLinkedZoneForSeaTile||180|function|TZone * __thiscall GetLinkedZoneForSeaTile(short seaTileIndex)|
 5634a0|FindPortZoneBySelectedTile||127|function|void * __stdcall FindPortZoneBySelectedTile(void * pMapState)|
 563540|FindFirstPortZoneContextByNation||114|function|undefined FindFirstPortZoneContextByNation()|
-5635e0|EnsurePortZoneForTile||749|function|void __stdcall EnsurePortZoneForTile(short nTileIndex)|
+5635e0|TOcean::EnsurePortZoneForTile||749|function|void __thiscall EnsurePortZoneForTile(short tileIndex)|
 563990|TraceTerrainFlowToNearestSeaTile||369|function|undefined TraceTerrainFlowToNearestSeaTile()|
 563b70|EvaluateTerrainFlowCrossNationBoundaryToSea||436|function|undefined EvaluateTerrainFlowCrossNationBoundaryToSea()|
 563da0|PopulatePortZoneAdjacencyToNearbyCityContexts||326|function|undefined PopulatePortZoneAdjacencyToNearbyCityContexts()|
 563f50|RefreshPortZoneNeighborContextLinksAndFallbacks||578|function|undefined RefreshPortZoneNeighborContextLinksAndFallbacks()|
-564240|RemovePortZoneByTile||114|function|void __stdcall RemovePortZoneByTile(short nTileIndex)|
+564240|TOcean::RemovePortZoneByTile||114|function|void __thiscall RemovePortZoneByTile(short tileIndex)|
 5642e0|FinalizeQueuedMapOrderEntry||209|function|undefined __stdcall FinalizeQueuedMapOrderEntry(int * pMapOrderEntry)|
 564400|HandleNavyOrderNodeRemovalAndSelectionRefresh||187|function|undefined HandleNavyOrderNodeRemovalAndSelectionRefresh()|
 564530|ComputeGlobalMapActionContextNodeValueAverage||43|function|undefined ComputeGlobalMapActionContextNodeValueAverage()|
@@ -6132,7 +6132,7 @@ address|name|symbol|size|type|prototype|provenance
 5df890|QueryDriveTypeByDriveIndex||44|function|undefined QueryDriveTypeByDriveIndex()|
 5df8d0|ReturnTrueStub||6|function|undefined ReturnTrueStub()|
 5dfc10|TAssetMgr::PlayMovieClipAndDispatchTurnStateFollowup||260|function|undefined PlayMovieClipAndDispatchTurnStateFollowup()|
-5dfd70|BuildScenarioPathForModeAndIndex||225|function|undefined BuildScenarioPathForModeAndIndex()|
+5dfd70|TAssetMgr::BuildScenarioPathForModeAndIndex||225|function|void __thiscall BuildScenarioPathForModeAndIndex(int scenarioIndex, int mode, CString * outPath)|
 5dfea0|AssignScoresDatPathToSharedString||92|function|undefined AssignScoresDatPathToSharedString()|
 5dff20|TAssetMgr::EnsurePictWvDataGobLoadedBySlot||206|function|void EnsurePictWvDataGobLoadedBySlot(int languageTag)|
 5e0030|TAssetMgr::SaveMainDocumentToPathAndMarkSaved||210|function|unsigned char __thiscall SaveMainDocumentToPathAndMarkSaved(CString const &)|

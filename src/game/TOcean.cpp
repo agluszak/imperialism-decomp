@@ -436,6 +436,51 @@ TZone* TOcean::FindFirstPortZoneContextByNation(short nationSlot) {
   return 0;
 }
 
+// FUNCTION: IMPERIALISM 0x005635e0
+void TOcean::EnsurePortZoneForTile(short nTileIndex) {
+  if (g_pGlobalMapState == 0) {
+    return;
+  }
+  TTerrainStateRecordView* terrainTable = g_pGlobalMapState->terrainStateTable;
+  int tileIndex = static_cast<int>(nTileIndex);
+  if ((terrainTable[tileIndex].activeFlags1c & 1) == 0) {
+    return;
+  }
+  signed char nationSeed = terrainTable[tileIndex].ownerNationTag04;
+  if (TZone::FindPortZoneByTile(nTileIndex) != 0) {
+    return;
+  }
+
+  TPortZone* portZone = static_cast<TPortZone*>(TPortZone::CreateObject());
+  if (portZone == 0) {
+    return;
+  }
+  portZone->field48 = static_cast<int>(nTileIndex);
+  portZone->SetMapActionContextTargetTileAndRefreshMarkers(static_cast<int>(nationSeed), -1);
+  portZone->field0c = tileIndex;
+  portZone->GenerateZoneStatusCodeIfUnset();
+  portZone->GenerateMapActionContextDisplayNameAndHeadline(0, 0);
+
+  short seaTileIndex = FindSeaTileForPortZoneCreation(nTileIndex, nationSeed);
+  TZone* linkedContext = g_pActiveMapOrderContext->GetLinkedZoneForSeaTile(seaTileIndex);
+  LinkPortZoneToContextIfMissing(portZone, linkedContext);
+
+  SetMapTileStateByteAndNotifyObserver(static_cast<int>(seaTileIndex), 3);
+  portZone->field0c = static_cast<int>(seaTileIndex);
+  portZone->field20 = portZone->GetActiveNationSlotTile();
+}
+
+// FUNCTION: IMPERIALISM 0x00564240
+void TOcean::RemovePortZoneByTile(short nTileIndex) {
+  for (TZone* zone = TZone::GetFirstPortZone(); zone != 0; zone = zone->GetNextPortZone()) {
+    if (static_cast<short>(zone->field0c) == nTileIndex || zone->field20 == nTileIndex ||
+        static_cast<short>(static_cast<TPortZone*>(zone)->field48) == nTileIndex) {
+      zone->Free();
+      return;
+    }
+  }
+}
+
 // FUNCTION: IMPERIALISM 0x00564530
 int ComputeGlobalMapActionContextNodeValueAverage(void) {
   int sum = 0;

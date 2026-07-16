@@ -1,8 +1,5 @@
 #include "game/TSoundChannelNode.h"
 
-TSoundChannelNode::TSoundChannelNode()
-    : field4(0), field8(0), fieldC(0), field10(0), field14(0), field18(10) {}
-
 // FUNCTION: IMPERIALISM 0x00487f70
 void TSoundChannelNode::SoundChannelNodeDummy02() {}
 

@@ -136,7 +136,7 @@ src/game/TMapEditCluster.cpp|1|0|1|0
 src/game/TMapEditView.cpp|6|0|1|0
 src/game/TMapKey.cpp|1|0|1|0
 src/game/TMapMaker.cpp|12|0|0|0
-src/game/TMapMgr.cpp|3|0|2|0
+src/game/TMapMgr.cpp|2|0|2|0
 src/game/TMapUberPicture.cpp|8|0|0|0
 src/game/TMapUberUberPicture.cpp|0|0|1|0
 src/game/TMegaPicture.cpp|2|0|0|0

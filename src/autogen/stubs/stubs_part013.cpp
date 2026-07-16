@@ -651,11 +651,3 @@ undefined4 WrapperFor_ReleaseSharedStringRefIfNotEmpty_At004e37c0(void)
   return 0;
 }
 
-// ghidra_name InitializeSecondaryNationStateAndSelectHomeTile
-// ghidra_proto undefined InitializeSecondaryNationStateAndSelectHomeTile()
-// FUNCTION: IMPERIALISM 0x004e3830
-undefined4 InitializeSecondaryNationStateAndSelectHomeTile(void)
-{
-  return 0;
-}
-

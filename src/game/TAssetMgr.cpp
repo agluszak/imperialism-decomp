@@ -103,6 +103,25 @@ void TAssetMgr::PlayMovieClipAndDispatchTurnStateFollowup(CString movieName,
   movieView->PlayMovieIfActive();
 }
 
+// FUNCTION: IMPERIALISM 0x005dfd70
+void TAssetMgr::BuildScenarioPathForModeAndIndex(int scenarioIndex, int mode, CString* outPath) {
+  CString numberText;
+  numberText.Format(g_szDecimalFormat, scenarioIndex);
+  CString fullPath = "Scenario/s" + numberText;
+  *outPath = fullPath;
+  switch (mode) {
+  case 0:
+    *outPath += ".inf";
+    break;
+  case 1:
+    *outPath += ".map";
+    break;
+  case 2:
+    *outPath += ".scn";
+    break;
+  }
+}
+
 // FUNCTION: IMPERIALISM 0x005dfea0
 void __stdcall AssignScoresDatPathToSharedString(CString* out) {
   *out = CString(s_Data_scores_dat_0069b7fc);

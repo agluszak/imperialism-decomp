@@ -36,6 +36,9 @@ public:
 
   // Non-virtual resource-stream helpers (every call site loads ECX = g_pUiViewManager;
   // the callees ignore `this`). Used by the battle-setup .tab loader (0x5a4fc0).
+  // Compose the on-disk path for a scenario table resource (mode 1 = map state) into
+  // outPath. 0x5dfd70; `this` ignored (same singleton idiom as the siblings below).
+  void BuildScenarioPathForModeAndIndex(int scenarioIndex, int mode, CString* outPath);
   class CFile_Virtuals* LoadTableResourceStreamByName(CString name); // 0x5df430, body TODO
   // Reads *countInOut bytes from the stream into buffer, writes bytes-read back
   // through countInOut. 0x5df700.

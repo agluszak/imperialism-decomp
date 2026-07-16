@@ -75,8 +75,8 @@ undefined4 CanBuildPortAtTile(void)
   return 0;
 }
 
-// ghidra_name IsValidSecondaryNationHomeTileCandidate
-// ghidra_proto undefined IsValidSecondaryNationHomeTileCandidate()
+// ghidra_name TMapMgr::IsValidSecondaryNationHomeTileCandidate
+// ghidra_proto bool __thiscall IsValidSecondaryNationHomeTileCandidate(short tileIndex)
 // FUNCTION: IMPERIALISM 0x00513980
 undefined4 IsValidSecondaryNationHomeTileCandidate(void)
 {
@@ -119,22 +119,6 @@ undefined4 CollectSecondDegreeLinksWithMinorNationFallback(void)
 // ghidra_proto undefined LoadScenarioMetadataByIndexIntoUiControlCore_Impl()
 // FUNCTION: IMPERIALISM 0x005187f0
 undefined4 LoadScenarioMetadataByIndexIntoUiControlCore_Impl(void)
-{
-  return 0;
-}
-
-// ghidra_name LoadScenarioMapStateFromTableResource_Impl
-// ghidra_proto undefined LoadScenarioMapStateFromTableResource_Impl()
-// FUNCTION: IMPERIALISM 0x00518840
-undefined4 LoadScenarioMapStateFromTableResource_Impl(void)
-{
-  return 0;
-}
-
-// ghidra_name ResetTileToBaseTransportFlag
-// ghidra_proto undefined ResetTileToBaseTransportFlag()
-// FUNCTION: IMPERIALISM 0x00518990
-undefined4 ResetTileToBaseTransportFlag(void)
 {
   return 0;
 }

@@ -323,14 +323,6 @@ undefined4 InvokeVtableSlot30OnTargetObject(void)
   return 0;
 }
 
-// ghidra_name BuildScenarioPathForModeAndIndex
-// ghidra_proto undefined BuildScenarioPathForModeAndIndex()
-// FUNCTION: IMPERIALISM 0x005dfd70
-undefined4 BuildScenarioPathForModeAndIndex(void)
-{
-  return 0;
-}
-
 // ghidra_name LoadSettingValueByKeyIntoOut
 // ghidra_proto undefined LoadSettingValueByKeyIntoOut()
 // FUNCTION: IMPERIALISM 0x005e0290

@@ -93,8 +93,11 @@ struct TTerrainStateRecordView {
   // uses it to pick the Nth queued TTaskForce entry whose required_count matches the tile's
   // class). Not padding.
   short tileActionOrdinal1a;
-  unsigned char activeFlags1c; // 0x1c
-  unsigned char pad1d[0x20 - 0x1d];
+  // 0x1c -- written as a full 16-bit unit by the transport-flag setters (0x518990
+  // stores 0x0001, 0x514a20 stores 0x0017), read/or'd byte-wise elsewhere (the
+  // compiler narrows &-mask tests and |= on the low byte).
+  unsigned short activeFlags1c;
+  unsigned char pad1e[0x20 - 0x1e];
   TCivUnit* firstCivilianOrder20; // 0x20
 };
 
@@ -117,7 +120,12 @@ struct TGlobalMapCityScoreRecord {
   short lastTurnTick;
   signed char adjacentRegionCount08;
   unsigned char pad09;
-  short adjacentRegionIds0A[0x18];
+  // +0x0a adjacent city-record ids (-1-terminated, up to 12; adjacentRegionCount08 is
+  // the live count), rebuilt by RebuildTileOwnerNeighborCachesAndFallbackAssignments.
+  short adjacentRegionIds0A[0xc];
+  // +0x22 parallel array: for each adjacent record above, one representative linked
+  // tile of THIS record that borders it (written alongside the id insert in 0x50f860).
+  short adjacentRegionAnchorTiles22[0xc];
   signed char linkedRegionCount;
   unsigned char byte3B;
   unsigned char byte3C;
@@ -146,13 +154,20 @@ struct TGlobalMapCityScoreRecord {
   // pending nation has previously been adjacent/hostile here. Exact set-site not yet
   // identified.
   unsigned char exploredByNationMaskA1;
-  unsigned char padA2;
+  // +0xa2 bitmask of resource types (bit = resourceTypeByEdge value) present on this
+  // record's linked tiles; rebuilt by RebuildTileOwnerNeighborCachesAndFallbackAssignments.
+  unsigned char resourcePresenceMaskA2;
   // Region-class code (0..23), read via MOVSX in
   // TMapMaker_CheckTerrainTypePairReachabilityByRegionClassMask to index a 24-entry
   // per-class "seen" flag array.
   signed char regionClassA3;
   CString cityNameA4; // 0xa4 — city display name
 };
+
+// Endian fixup of every city-score record's short fields after a raw scenario table
+// load (called only by TMapMgr::LoadScenarioMapStateFromTableResource). 0x518840,
+// __cdecl, defined in TMapMgr.cpp.
+void ByteSwapCityScoreTableShortFields(TGlobalMapCityScoreRecord* table);
 
 // Resolve a raw TGlobalMapCityScoreRecord* back into its cityScoreTable index; the
 // second arg is provably dead in the original (kept for the call-shape). 0x0050e2c0,
@@ -221,7 +236,7 @@ public:
   // resourceTypeByEdge to {0x11, 0xff}, refreshes gateFlag via
   // ResolveRegionTileSubtypeCodeForTileIndex, then for each hex neighbor clears the
   // corresponding "opposite direction" bit in that neighbor's adjacencyMaskA0a if set.
-  virtual void InitializeTileNeighborConnectionMaskIfNeeded(short tileIndex); // slot 0x0e 0x5107e0
+  virtual void InitializeTileNeighborConnectionMaskIfNeeded(int tileIndex); // slot 0x0e 0x5107e0
   // Recomputes tileIndex's ownerBorderMask07/cityBorderMask08/waterAdjacencyMask09 from its 6
   // hex neighbors. For each direction: if the neighbor is off-map, always counts as a border
   // (bit set unconditionally); if tileIndex is water, only counts a differently-owned water
@@ -417,9 +432,8 @@ public:
   // 0x20 bit from all of the city's linkedRegionIds tiles (unconditionally, even if
   // newTileIndex is itself one of them -- matches the original's literal statement order).
   // Finishes by recomputing the city's primary/secondary neighbor links.
-  virtual void
-  SetRegionTileSubtypeAndRefreshNeighborFlags(short cityRecordIndex,
-                                              short newTileIndex); // slot 0x2c 0x515f80
+  virtual void SetRegionTileSubtypeAndRefreshNeighborFlags(int cityRecordIndex,
+                                                           int newTileIndex); // slot 0x2c 0x515f80
   // Real body is just `ret 0xc` (pops 3 stack dwords, no other instructions) -- no evidence
   // for the real parameter types since none are read; typed as unused ints to match the
   // stack-cleanup byte count.
@@ -726,6 +740,12 @@ public:
   // WrapperFor_IsValidSecondaryNationHomeTileCandidate_At00514dc0. TODO stub: large body not
   // yet ported.
   bool IsValidSecondaryNationHomeTileCandidate(short tileIndex);
+
+  // Reset tileIndex's transport/anchor flags to the base state: re-anchor its city
+  // record to it (SetRegionTileSubtypeAndRefreshNeighborFlags), drop its port zone if
+  // the 0x4 flag was set, write activeFlags1c = 1 then set the 0x20 anchor bit, and
+  // refresh the neighbor connection mask. 0x518990, __thiscall, RET 4.
+  void ResetTileToBaseTransportFlag(short tileIndex);
 
   char CallMetricSlotC4(int regionIndex, int edgeIndex);
   short QueryIconStripXSlot110(int iconCode);

@@ -47,6 +47,17 @@ public:
   // Map-action context (TZone, stride 0x48) at the given index in contextArray. 0x00563330.
   TZone* GetMapActionContextEntryByIndex(short index);
 
+  // Ensure a port zone exists for the given tile: creates a TPortZone anchored at the
+  // tile, links it to the sea-tile zone chain, and refreshes its status/name.
+  // 0x005635e0, __thiscall, RET 4.
+  void EnsurePortZoneForTile(short nTileIndex);
+
+  // Remove the port zone anchored at the given tile: walks the port-zone chain for the
+  // entry matching the tile at +0xc/+0x20/+0x48 and frees it. 0x00564240, __thiscall,
+  // RET 4; `this` unused by the body (same singleton idiom as
+  // FindFirstPortZoneContextByNation).
+  void RemovePortZoneByTile(short nTileIndex);
+
   // 0x00563540 — walk g_pMapActionContextListHead for TPortZone contexts owned by
   // nationSlot. Real __thiscall on the TOcean singleton (ret 4; callers load
   // g_pActiveMapOrderContext into ecx); `this` is unused by the body.
@@ -94,6 +105,10 @@ void PopulatePortZoneAdjacencyToNearbyCityContexts(); // 0x00563da0
 void RegenerateAllMapActionContextStatusCodes();      // 0x00563220
 
 void SetMapTileStateByteAndNotifyObserver(int tileIndex, int stateByte);
+
+// Free helpers defined in TMapMgr.cpp (0x563-area port-zone plumbing).
+short FindSeaTileForPortZoneCreation(short portTileIndex, signed char nationSeed);
+void LinkPortZoneToContextIfMissing(TZone* portZone, TZone* contextZone);
 int ComputeGlobalMapActionContextNodeValueAverage(void);
 
 // Returns the currently active map-order entry (g_pActiveMapOrderContext->

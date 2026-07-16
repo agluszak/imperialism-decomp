@@ -1892,10 +1892,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
     tile->pendingDevelopmentFlag0d = (unsigned char)(tile->pendingDevelopmentFlag0d |
                                                      tileState->record.pendingDevelopmentFlag0d);
     tile->secondaryOwnerNationTag18 = tileState->record.secondaryOwnerNationTag18;
-    // Single word store covering +0x1c..+0x1d (activeFlags1c + the adjacent byte); the
-    // original copies both with one 16-bit move.
-    *reinterpret_cast<short*>(&tile->activeFlags1c) =
-        *reinterpret_cast<short*>(&tileState->record.activeFlags1c);
+    tile->activeFlags1c = tileState->record.activeFlags1c;
     break;
   }
   case 0x24: { // patch selected fields of one city-score record
@@ -1919,7 +1916,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
       } while (wordCountdown != 0);
     }
     city24->exploredByNationMaskA1 = cityRecord->record.fieldA1;
-    city24->padA2 = cityRecord->record.fieldA2;
+    city24->resourcePresenceMaskA2 = cityRecord->record.fieldA2;
     break;
   }
   case 0x25: { // merge nation status tags; ding when exactly one nation stays busy
@@ -2554,7 +2551,7 @@ void TMultiplayerMgr::DispatchCityRedrawInvalidateEvent(short cityId) {
 
   for (int wordIndex = 0; wordIndex < 12; ++wordIndex) {
     packet.adjacentRegionIds0A[wordIndex] = src->adjacentRegionIds0A[wordIndex];
-    packet.adjacentRegionIds22[wordIndex] = src->adjacentRegionIds0A[wordIndex + 12];
+    packet.adjacentRegionIds22[wordIndex] = src->adjacentRegionAnchorTiles22[wordIndex];
   }
 
   packet.cityBytes3A[0] = src->linkedRegionCount;
@@ -2581,7 +2578,7 @@ void TMultiplayerMgr::DispatchCityRedrawInvalidateEvent(short cityId) {
   packet.cityScoreValue9C = src->cityScoreValue;
   packet.cityBytesA0[0] = src->padA0;
   packet.cityBytesA0[1] = src->exploredByNationMaskA1;
-  packet.cityBytesA0[2] = src->padA2;
+  packet.cityBytesA0[2] = src->resourcePresenceMaskA2;
   packet.cityBytesA0[3] = src->regionClassA3;
   packet.cityNameA4 = src->cityNameA4;
 

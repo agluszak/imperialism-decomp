@@ -1983,7 +1983,7 @@ address|target_cpp|ownership|note
 4e36f0|src/game/TMinor.cpp|manual|marker_sync
 4e3710|src/game/TMinor.cpp|manual|marker_sync
 4e3790|src/game/TMinor.cpp|manual|marker_sync
-4e38e0|src/game/TMinor.cpp|manual|marker_sync
+4e3830|src/game/TMinor.cpp|manual|marker_sync
 4e41c0|src/game/TMinor.cpp|manual|marker_sync
 4e4390|src/game/TMinor.cpp|manual|marker_sync
 4e45f0|src/game/TMinor.cpp|manual|marker_sync
@@ -2626,7 +2626,9 @@ address|target_cpp|ownership|note
 518470|src/game/TMapMgr.cpp|manual|marker_sync
 5184e0|src/game/TMapMgr.cpp|manual|marker_sync
 518540|src/game/TMapMgr.cpp|manual|marker_sync
+518840|src/game/TMapMgr.cpp|manual|marker_sync
 518960|src/game/TMapMgr.cpp|manual|marker_sync
+518990|src/game/TMapMgr.cpp|manual|marker_sync
 518a20|src/game/TMapMgr.cpp|manual|marker_sync
 518b40|src/game/TMapMgr.cpp|manual|marker_sync
 518bd0|src/game/TMapMgr.cpp|manual|marker_sync
@@ -3535,10 +3537,10 @@ address|target_cpp|ownership|note
 5633b0|src/game/TOcean.cpp|manual|marker_sync
 5634a0|src/game/TOcean.cpp|manual|marker_sync
 563540|src/game/TOcean.cpp|manual|marker_sync
-5635e0|src/game/TMapMgr.cpp|manual|marker_sync
+5635e0|src/game/TOcean.cpp|manual|marker_sync
 563990|src/game/TMapMgr.cpp|manual|marker_sync
 563da0|src/game/TZone.cpp|manual|marker_sync
-564240|src/game/TMapMgr.cpp|manual|marker_sync
+564240|src/game/TOcean.cpp|manual|marker_sync
 564530|src/game/TOcean.cpp|manual|marker_sync
 564570|src/game/TZone.cpp|manual|marker_sync
 564600|src/game/TOcean.cpp|manual|marker_sync
@@ -5116,6 +5118,7 @@ address|target_cpp|ownership|note
 5df890|src/game/ImperialismApp.cpp|manual|marker_sync
 5df8d0|src/game/cd_audio.cpp|manual|marker_sync
 5dfc10|src/game/TAssetMgr.cpp|manual|marker_sync
+5dfd70|src/game/TAssetMgr.cpp|manual|marker_sync
 5dfea0|src/game/TAssetMgr.cpp|manual|marker_sync
 5dff20|src/game/TAssetMgr.cpp|manual|marker_sync
 5e0030|src/game/TAssetMgr.cpp|manual|marker_sync

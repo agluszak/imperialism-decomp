@@ -13,7 +13,18 @@ public:
   int field14;
   int field18;
 
-  TSoundChannelNode();
+  // Defined inline: the original inlines this constructor at every `new` site (no
+  // standalone ctor body exists in the binary). Body assignments in this order --
+  // not a member-init list -- to match the original's inlined store order
+  // (see 0x4e3830: 0xc, 0x10, 0x8, 0x4, 0x14, 0x18).
+  TSoundChannelNode() {
+    fieldC = 0;
+    field10 = 0;
+    field8 = 0;
+    field4 = 0;
+    field14 = 0;
+    field18 = 10;
+  }
   ~TSoundChannelNode() override;
   void Serialize(CArchive& ar) override;
   void Dump(CDumpContext& dc) const override;
