@@ -58,6 +58,10 @@ public:
   // shared per-resource-type descriptor table, TNavyOrderResourceDescriptor).
   // Thin wrapper, same receiver-agnostic reasoning as above.
   short GetNavyOrderNormalizationBaseByNationType();
+  // 0x00550b60 — composite economic score of this order node (quantity + descriptor
+  // weights, normalized by the task-force weight). Real __thiscall (reads
+  // [ecx+4]/[ecx+0x30]; the SumNavyOrderPriority loops call it with ecx = node).
+  int ComputeOrderNodeCompositeEconomicScore();
   // Position of `this` in the primary navy order list, counted from
   // g_pNavyPrimaryOrderListHead (used when serializing orderList24 nodes by index).
   int GetIndexInPrimaryOrderList();
@@ -85,7 +89,6 @@ TShip* GetNavyPrimaryOrderNodeByIndex(short index);
 int FindCumulativeWeightBucketIndex(short* weightTable, short roll);
 short GetIndustryActionCostWeightByResourceType(short resourceType);
 short GetResourceDescriptorWeightWord0ByType(short resourceType);
-int ComputeOrderNodeCompositeEconomicScore(TShip* node);
 // 0x004e04b0 / 0x004e0460 moved to TGreatPower::SumNavyOrderPriorityForNation[AndNodeType]
 // — both bodies compare the ship owner tag against [ecx+0xc] (real __thiscall methods).
 

@@ -636,8 +636,7 @@ int ResolveTerrainNationSlotFromTarget(int targetNationSlot) {
 
 // FUNCTION: IMPERIALISM 0x004d8390
 int TCountry::ComputeWeightedNeighborLinkScoreForNode(int nodeIndex) {
-  return g_pMapContextActionManager->ComputeWeightedNeighborLinkScoreForNodeIndex(
-      static_cast<short>(nodeIndex));
+  return g_pMapContextActionManager->ComputeWeightedNeighborLinkScoreForNodeIndex(nodeIndex);
 }
 
 // FUNCTION: IMPERIALISM 0x004d83c0
@@ -646,7 +645,7 @@ int TCountry::SumWeightedNeighborLinkScoreForLinkedNodes(void) {
   int index = 1;
   while (index <= ownedRegionList->GetSize()) {
     sum += g_pMapContextActionManager->ComputeWeightedNeighborLinkScoreForNodeIndex(
-        static_cast<short>(ownedRegionList->At(index)));
+        ownedRegionList->At(index));
     ++index;
   }
   return sum;

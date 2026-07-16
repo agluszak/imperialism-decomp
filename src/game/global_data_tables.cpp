@@ -1421,6 +1421,13 @@ int g_nTurnEvent2BNationMaskAccumulator;
 // Per-unit-type combat-category word table (.rdata): 0 infantry-like, 1/2/3 ranged
 // classes, 4 support; indexed by TUnit::orderType.
 // GLOBAL: IMPERIALISM 0x00669858
+// Per-unit-type weight table summed by TArmyMgr::ComputeWeightedNeighborLinkScore-
+// ForNodeIndex (0x004a5aa0) over a tile's stationed military units.
+int g_anWeightedNeighborUnitScoreByType_006955F0[32] = {
+    70,  137, 135, 164, 165, 211,  193, 300, 95,  243, 230, 265, 230, 275, 323, 549,
+    170, 450, 471, 495, 493, 1010, 715, 913, 193, 260, 360, 200, 200, 200, 0,   1000,
+};
+
 short g_anUnitTypeCombatCategoryByType00669858[32] = {
     0, 0, 0, 0, 1, 1, 2, 2, 0, 0, 0, 0, 1, 1, 2, 2, 0, 0, 0, 0, 1, 3, 2, 2, 4, 4, 4, 4, 4, 4, 0, 0};
 

@@ -3400,7 +3400,7 @@ int TGreatPower::SumNavyOrderPriorityForNationAndNodeType(TZone* zone) {
   int sum = 0;
   for (TShip* node = GetNavyPrimaryOrderListHead(); node != 0; node = node->nextOlder24) {
     if (node->ownerNationSlot14 == this->nationSlot && node->field08 == zone) {
-      sum += ComputeOrderNodeCompositeEconomicScore(node);
+      sum += node->ComputeOrderNodeCompositeEconomicScore();
     }
   }
   return sum;
@@ -3411,7 +3411,7 @@ int TGreatPower::SumNavyOrderPriorityForNation() {
   int sum = 0;
   for (TShip* node = GetNavyPrimaryOrderListHead(); node != 0; node = node->nextOlder24) {
     if (node->ownerNationSlot14 == this->nationSlot) {
-      sum += ComputeOrderNodeCompositeEconomicScore(node);
+      sum += node->ComputeOrderNodeCompositeEconomicScore();
     }
   }
   return sum;

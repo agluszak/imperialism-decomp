@@ -27,8 +27,10 @@ public:
   bool HasZoneActiveChildCount(int unused) override;                           // slot 0x12 0x561dc0
   short FindNearestActiveSeaContextTileFromOffset216() override;               // slot 0x13 0x561e40
 
-  int field48; // +0x48 selected/coastal tile index
+  // +0x48 selected/coastal tile index. Genuinely a short: every original reader
+  // is a `movsx word` (0x55f157, 0x562e15, ...).
+  short field48;
+  unsigned char pad4a[2]; // +0x4a
 };
 
 ASSERT_SIZE(TPortZone, 0x4c);
-

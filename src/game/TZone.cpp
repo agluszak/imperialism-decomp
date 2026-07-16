@@ -394,27 +394,24 @@ TZone* FindMapActionContextByNodeId(short nodeId) {
 int TZone::ComputeMapActionContextNodeValueAverage() {
   if (QueryPortZoneCapability()) {
     AssertValid();
-    signed char ownerTag =
-        g_pGlobalMapState->terrainStateTable[static_cast<TPortZone*>(this)->field48]
-            .ownerNationTag04;
+    int ownerTag = g_pGlobalMapState->terrainStateTable[static_cast<TPortZone*>(this)->field48]
+                       .ownerNationTag04;
     if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(ownerTag) != 0) {
       return g_pGlobalMapState
           ->cityScoreTable[g_apTerrainTypeDescriptorTable[ownerTag]->GetHomeRegionCityRecordIndex()]
           .cityScoreValue;
     }
-    return 0;
+  } else if (secondaryNeighbors.Count() != 0) {
+    unsigned int sum = 0;
+    for (unsigned int i = 0; i < static_cast<unsigned int>(secondaryNeighbors.Count()); ++i) {
+      sum += g_pGlobalMapState
+                 ->cityScoreTable[static_cast<short>(GetCityIndexFromCityStatePointer(
+                     reinterpret_cast<TGlobalMapCityScoreRecord*>(secondaryNeighbors[i])))]
+                 .cityScoreValue;
+    }
+    return sum / secondaryNeighbors.Count();
   }
-  if (secondaryNeighbors.Count() == 0) {
-    return 0;
-  }
-  unsigned int sum = 0;
-  for (unsigned int i = 0; i < static_cast<unsigned int>(secondaryNeighbors.Count()); ++i) {
-    sum += g_pGlobalMapState
-               ->cityScoreTable[static_cast<short>(GetCityIndexFromCityStatePointer(
-                   reinterpret_cast<TGlobalMapCityScoreRecord*>(secondaryNeighbors[i])))]
-               .cityScoreValue;
-  }
-  return sum / secondaryNeighbors.Count();
+  return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x0055f300
@@ -1142,7 +1139,7 @@ void TZone::ResolvePortZoneOwnerContextAndDispatch() {
 
 // FUNCTION: IMPERIALISM 0x00561b90
 short TZone::GetPortZoneOwnerNationCodeFromMissionField48() {
-  short tileIndex = static_cast<short>(static_cast<TPortZone*>(this)->field48);
+  short tileIndex = static_cast<TPortZone*>(this)->field48;
   return g_pGlobalMapState->terrainStateTable[tileIndex].ownerNationTag04;
 }
 
@@ -1157,7 +1154,7 @@ TZone* TZone::FindPortZoneByTile(short nTileIndex) {
       return 0;
     }
     if (static_cast<short>(zone->field0c) == nTileIndex || zone->field20 == nTileIndex ||
-        static_cast<short>(static_cast<TPortZone*>(zone)->field48) == nTileIndex) {
+        static_cast<TPortZone*>(zone)->field48 == nTileIndex) {
       return zone;
     }
     zone = zone->prev18;
@@ -1262,7 +1259,7 @@ void PopulatePortZoneAdjacencyToNearbyCityContexts(void) {
       while (context != 0) {
         short ti = static_cast<short>(tileIndex);
         if (static_cast<short>(context->field0c) == ti || context->field20 == ti ||
-            static_cast<short>(static_cast<TPortZone*>(context)->field48) == ti) {
+            static_cast<TPortZone*>(context)->field48 == ti) {
           break;
         }
         context = context->GetNextPortZone();

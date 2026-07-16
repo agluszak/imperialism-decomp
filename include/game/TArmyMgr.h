@@ -126,7 +126,7 @@ public:
   // Real __thiscall on the TArmyMgr singleton (ret 4; both original callsites,
   // 0x004d8390 and 0x004d83c0, load g_pMapContextActionManager into ecx); `this`
   // is unused by the body.
-  int ComputeWeightedNeighborLinkScoreForNodeIndex(short nodeIndex);
+  int ComputeWeightedNeighborLinkScoreForNodeIndex(int nodeIndex);
 
   // Object size 0x3a8 confirmed by RTTI. Only +0x31c is confirmed so far (read from three
   // independent call sites: TArmyPlacard::HandleEvent, TArmyToolbar's equivalent, and

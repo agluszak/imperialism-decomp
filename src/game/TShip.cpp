@@ -15,12 +15,12 @@
 
 extern "C" TShip* g_pNavyPrimaryOrderListHead = 0;
 
-static short SignedMod100(short value) {
+static __inline short SignedMod100(short value) {
   return (short)((value / 100 + (value >> 15)) -
                  (short)(((__int64)(int)value * 0x51eb851f) >> 0x3f));
 }
 
-static short SignedDiv10(int value) {
+static __inline short SignedDiv10(int value) {
   return (short)(((short)(value / 10) + (short)(value >> 0x1f)) -
                  (short)(((__int64)value * 0x66666667) >> 0x3f));
 }
@@ -378,14 +378,18 @@ void TShip::PruneOrPromoteOrderNodeWhenChildCostDepleted() {
 }
 
 // FUNCTION: IMPERIALISM 0x00550b60
-int ComputeOrderNodeCompositeEconomicScore(TShip* node) {
+int TShip::ComputeOrderNodeCompositeEconomicScore() {
   const TNavyOrderResourceDescriptor& descriptor =
-      g_NavyOrderResourceDescriptorTable[node->resourceType04];
-  int quantityTerm = static_cast<int>(SignedMod100(node->field30));
-  int navyTerm = quantityTerm + 5 + descriptor.navyPriorityWeight * 10;
-  int resolveTerm = quantityTerm + 5 + descriptor.resolveWeight * 10;
-  return (SignedDiv10(resolveTerm) + (SignedDiv10(navyTerm) + descriptor.calculateWeight) * 100 +
-          static_cast<int>(node->stockLevel1c)) /
+      g_NavyOrderResourceDescriptorTable[resourceType04];
+  short quantityTerm = static_cast<short>(field30 / 100);
+  short navyTerm = static_cast<short>((quantityTerm + descriptor.navyPriorityWeight * 10 + 5) / 10);
+  // resolveWeight is read as a full dword here (its pad02 is always zero) -- the usual
+  // dual-width read, kept as a one-spot wide-read cast (heuristic 118).
+  return ((navyTerm + descriptor.calculateWeight) * 100 +
+          static_cast<short>(
+              (quantityTerm + *reinterpret_cast<const int*>(&descriptor.resolveWeight) * 10 + 5) /
+              10) +
+          stockLevel1c) /
          descriptor.taskForceWeight;
 }
 

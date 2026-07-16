@@ -385,7 +385,7 @@ TZone* TOcean::FindPortZoneBySelectedTile(TCity* city) {
     if (portZone->field20 == selectedTileId) {
       return portZone;
     }
-    if (static_cast<short>(portZone->field48) == selectedTileId) {
+    if (portZone->field48 == selectedTileId) {
       break;
     }
     node = portZone->prev18;
@@ -414,7 +414,7 @@ TZone* TOcean::FindFirstPortZoneContextByNation(short nationSlot) {
   }
 
   do {
-    short tileIndex = static_cast<short>(static_cast<TPortZone*>(eax)->field48);
+    short tileIndex = static_cast<TPortZone*>(eax)->field48;
     short ownerTag =
         static_cast<short>(g_pGlobalMapState->terrainStateTable[tileIndex].ownerNationTag04);
     if (ownerTag == nationSlot) {
@@ -455,7 +455,7 @@ void TOcean::EnsurePortZoneForTile(short nTileIndex) {
   if (portZone == 0) {
     return;
   }
-  portZone->field48 = static_cast<int>(nTileIndex);
+  portZone->field48 = nTileIndex;
   portZone->SetMapActionContextTargetTileAndRefreshMarkers(static_cast<int>(nationSeed), -1);
   portZone->field0c = tileIndex;
   portZone->GenerateZoneStatusCodeIfUnset();
@@ -474,7 +474,7 @@ void TOcean::EnsurePortZoneForTile(short nTileIndex) {
 void TOcean::RemovePortZoneByTile(short nTileIndex) {
   for (TZone* zone = TZone::GetFirstPortZone(); zone != 0; zone = zone->GetNextPortZone()) {
     if (static_cast<short>(zone->field0c) == nTileIndex || zone->field20 == nTileIndex ||
-        static_cast<short>(static_cast<TPortZone*>(zone)->field48) == nTileIndex) {
+        static_cast<TPortZone*>(zone)->field48 == nTileIndex) {
       zone->Free();
       return;
     }
@@ -498,15 +498,8 @@ int TOcean::ComputeGlobalMapActionContextNodeValueAverage() {
 TZone* TOcean::FindMapActionContextContainingNodeByIndex(int cityRecordIndex) {
   TGlobalMapCityScoreRecord* target = &g_pGlobalMapState->cityScoreTable[cityRecordIndex];
   for (TZone* zone = g_pMapActionContextListHead; zone != 0; zone = zone->prev18) {
-    int count = zone->secondaryNeighbors.Count();
-    if (count != 0) {
-      TGlobalMapCityScoreRecord** entries =
-          reinterpret_cast<TGlobalMapCityScoreRecord**>(zone->secondaryNeighbors.Data());
-      for (int i = 0; i < count; ++i) {
-        if (entries[i] == target) {
-          return zone;
-        }
-      }
+    if (zone->secondaryNeighbors.ContainsEntry(reinterpret_cast<TZone*>(target))) {
+      return zone;
     }
   }
   return 0;

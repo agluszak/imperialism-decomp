@@ -38,6 +38,25 @@ public:
 // VTABLE: IMPERIALISM 0x0065c748
 class TZoneSecondaryNeighborStretch : public stretch<TZone*, TZoneSecondaryNeighborTag> {
 public:
+  // Linear scan for `value`; returns the matching slot or null. Always inlined
+  // (ground truth: TOcean::FindMapActionContextContainingNodeByIndex, 0x00564570,
+  // where the index/count comparisons are unsigned and the hit materializes as a
+  // slot pointer). Lives here rather than on stretch<> because MSVC500 eagerly
+  // instantiates template members for element types without operator==.
+  TZone** FindEntry(TZone* value) {
+    unsigned int count = Count();
+    for (unsigned int index = 0; index < count; ++index) {
+      if (Data()[index] == value) {
+        return &Data()[index];
+      }
+    }
+    return 0;
+  }
+  bool ContainsEntry(TZone* value) {
+    return FindEntry(value) != 0;
+  }
+
+public:
   TZone** GetOrAppendUnique(TZone* zone) override; // 0x55e9c0
   // Not a vtable slot (see stretch.h); called only on the concrete type. The orig
   // vtable at 0x0065c748 is confirmed exactly 1 slot long (GetOrAppendUnique only).

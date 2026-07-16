@@ -1504,7 +1504,7 @@ address|name|symbol|size|type|prototype|provenance
 4a4fc0|TArmyMgr::OrphanCallChain_C2_I54_004a4fc0||144|function|undefined OrphanCallChain_C2_I54_004a4fc0()|
 4a5080|ValidateOrderPlacementPrerequisitesForSelectedTile||1407|function|undefined ValidateOrderPlacementPrerequisitesForSelectedTile()|
 4a5760|SetActiveProvinceAndBuildDirectionalOrderOverlays||656|function|undefined SetActiveProvinceAndBuildDirectionalOrderOverlays()|
-4a5aa0|TArmyMgr::ComputeWeightedNeighborLinkScoreForNodeIndex||75|function|int __thiscall ComputeWeightedNeighborLinkScoreForNodeIndex(short nodeIndex)|
+4a5aa0|TArmyMgr::ComputeWeightedNeighborLinkScoreForNodeIndex||75|function|int __thiscall ComputeWeightedNeighborLinkScoreForNodeIndex(int nodeIndex)|
 4a5b10|CreateTacticalBattleViewAndInitializeBattleSetup||243|function|undefined CreateTacticalBattleViewAndInitializeBattleSetup()|
 4a5c50|TArmyBattle::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 4a5c80|WrapperFor_FreeHeapBufferIfNotNull_At004a5c50_Impl||7|function|undefined WrapperFor_FreeHeapBufferIfNotNull_At004a5c50_Impl()|
@@ -4084,7 +4084,7 @@ address|name|symbol|size|type|prototype|provenance
 550970|GetIndustryActionCostWeightByResourceType||14|function|short __cdecl GetIndustryActionCostWeightByResourceType(short resourceType)|
 5509c0|PruneOrPromoteOrderNodeWhenChildCostDepleted||171|function|undefined PruneOrPromoteOrderNodeWhenChildCostDepleted()|
 550aa0|ComputeMapOrderEntryHeuristicScore||141|function|undefined ComputeMapOrderEntryHeuristicScore()|
-550b60|ComputeOrderNodeCompositeEconomicScore||141|function|int __cdecl ComputeOrderNodeCompositeEconomicScore(TShip* node)|
+550b60|TShip::ComputeOrderNodeCompositeEconomicScore||141|function|int __thiscall ComputeOrderNodeCompositeEconomicScore(void)|
 550c20|FormatLocalizedCommodityCountLabelByIndex||264|function|undefined FormatLocalizedCommodityCountLabelByIndex()|
 550d80|GetResourceTypeRandomDrawBlockFlag||17|function|undefined GetResourceTypeRandomDrawBlockFlag()|
 550db0|GetResourceDescriptorWord0CByType||17|function|undefined GetResourceDescriptorWord0CByType()|
@@ -8479,6 +8479,7 @@ address|name|symbol|size|type|prototype|provenance
 695188|s_MissingRequiredFileFormat_00695188|||global||
 6951c4|s_BmpResourceNameFormat_006951C4|||global||
 695278|g_nSaveFormatVersion|||global||
+6955f0|g_anWeightedNeighborUnitScoreByType_006955F0|||global||
 695b50|g_industryActionCostWeightResCode09|||global||
 695b70|g_industryActionCostWeightResCode08|||global||
 695b90|g_industryActionCostWeightResCode10|||global||

@@ -2231,3 +2231,19 @@ match the pass structure before chasing store order (24.9% -> 69.3%).
      Port shape: declare `float result;` once, `switch` with per-case `return expr / result`
      after assigning `result = <temp>`, cases that fall through `break` into a single trailing
      `return result;` — the dead default path reading garbage is original behaviour, keep it.
+
+116. **A callee-cleaned call with `mov ecx, node` inside a list walk is a method on the
+     ELEMENT, not a free scorer.** TShip::ComputeOrderNodeCompositeEconomicScore (0x550b60)
+     was ported as `int f(TShip*)` cdecl; the SumNavyOrderPriority loops call it with
+     ecx = the ship node and no stack args. Same class of fix as note 112 but for list
+     elements. Its body is also a warning about invented math: the "SignedMod100" helper
+     was a hand-rolled int64 bit-twiddle where the original is a plain `short / 100`
+     (magic 0x51eb851f + sar 5) — write the division and let MSVC500 emit the magic.
+
+117. **stretch<T> containment scans are two nested inlines: `T* FindEntry(T)` (for-loop,
+     unsigned index/count compares, hit returned as `&Data()[index]`) and a bool
+     `ContainsEntry` wrapper whose return materializes via SETNE.** 0x564570 went
+     48% -> 100% by modeling both on TZoneSecondaryNeighborStretch (NOT on the template:
+     MSVC500 eagerly instantiates template members, and stretch<Seapoint> has no
+     operator==). The rotated for-loop shape (pre-test `jbe`, body compare at top,
+     backward `jb`) only falls out of the indexed for-form, not a do-while.

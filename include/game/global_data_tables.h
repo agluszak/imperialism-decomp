@@ -331,6 +331,7 @@ extern TApplication* g_pGlobalUiRootController;
 extern TTacticalBattle* g_pActiveTacticalBattle;
 // OR-accumulator for the turn-event-0x2b presence-mask exchange.
 extern int g_nTurnEvent2BNationMaskAccumulator;
+extern int g_anWeightedNeighborUnitScoreByType_006955F0[32];
 extern short g_anUnitTypeCombatCategoryByType00669858[32];
 extern short g_awUnitTypeBaseActionPointTable[32];
 extern short g_awTacticalFireSfxTokenByUnitType[32];

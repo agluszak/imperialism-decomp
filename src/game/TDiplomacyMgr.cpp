@@ -970,14 +970,18 @@ void TDiplomacyMgr::BuildRelationshipListSlot88(short sourceNationSlot, short pr
   TCountry** terrainCursor = &g_apTerrainTypeDescriptorTable[candidateIndex];
   do {
     TCountry* terrain = *terrainCursor;
-    if (terrain != 0 && terrain->encodedNationSlot == -1 &&
-        candidateNationSlot != sourceNationSlot) {
-      RelationshipRankEntry entry;
-      entry.nationSlot = candidateNationSlot;
-      int source = sourceNationSlot;
-      entry.standingScore =
-          relationStandingScoreMatrix79c[source * kNationSlotCount + candidateIndex];
-      list->InsertCopiedRecordSortedByComparator(&entry);
+    if (terrain != 0) {
+      // Materialized bool in the original (xor/sete/test), separate from the
+      // slot-inequality test.
+      char isUnclaimed = terrain->encodedNationSlot == -1;
+      if (isUnclaimed && candidateNationSlot != sourceNationSlot) {
+        RelationshipRankEntry entry;
+        entry.nationSlot = candidateNationSlot;
+        int source = sourceNationSlot;
+        entry.standingScore =
+            relationStandingScoreMatrix79c[source * kNationSlotCount + candidateIndex];
+        list->InsertCopiedRecordSortedByComparator(&entry);
+      }
     }
     candidateNationSlot++;
     candidateIndex++;

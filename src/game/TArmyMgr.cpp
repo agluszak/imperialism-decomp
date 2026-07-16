@@ -1293,18 +1293,19 @@ void TArmyMgr::SetActiveProvinceAndBuildDirectionalOrderOverlays(short tileIndex
   }
 }
 
-static const unsigned int kAddrWeightedNeighborScoreByUnitType = 0x006955F0;
-
 // FUNCTION: IMPERIALISM 0x004a5aa0
-int TArmyMgr::ComputeWeightedNeighborLinkScoreForNodeIndex(short nodeIndex) {
-  if (nodeIndex < 0 || nodeIndex > 0x17f) {
-    return 0;
+int TArmyMgr::ComputeWeightedNeighborLinkScoreForNodeIndex(int nodeIndexArg) {
+  short nodeIndex = static_cast<short>(nodeIndexArg);
+  TMilitaryUnit* chain;
+  if (nodeIndex < 0 || nodeIndex >= 0x180) {
+    chain = 0;
+  } else {
+    chain = static_cast<TMilitaryUnit*>(
+        g_pGlobalMapState->cityScoreTable[nodeIndex].stationedUnitChain98);
   }
-  TMilitaryUnit* chain = static_cast<TMilitaryUnit*>(
-      g_pGlobalMapState->cityScoreTable[nodeIndex].stationedUnitChain98);
   int sum = 0;
   for (; chain != 0; chain = static_cast<TMilitaryUnit*>(chain->nextOnTile)) {
-    sum += *reinterpret_cast<int*>(kAddrWeightedNeighborScoreByUnitType + chain->orderType * 4);
+    sum += g_anWeightedNeighborUnitScoreByType_006955F0[chain->orderType];
   }
   return sum;
 }
