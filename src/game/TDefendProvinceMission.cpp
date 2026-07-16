@@ -20,15 +20,10 @@ IMPLEMENT_SERIAL(TDefendProvinceMission, TArmyMission, 1)
 // typed cast at each call site so the linker resolves the correct symbol).
 extern undefined4 IsMapTileCompatibleWithCurrentTerrainOrActionContext(void);
 extern undefined4 SetMapStateByteFlag970WithRuntimeGate(void);
-extern undefined4 PropagateTargetTileToLinkedUnitsIfDifferent(void);
 
 // FUNCTION: IMPERIALISM 0x00535770
 void TDefendProvinceMission::MissionSlot44() {
-  typedef void(__fastcall * PropagateTargetTileToLinkedUnitsIfDifferent_t)(short);
-  PropagateTargetTileToLinkedUnitsIfDifferent_t PropagateTargetTileToLinkedUnitsIfDifferent_fn =
-      reinterpret_cast<PropagateTargetTileToLinkedUnitsIfDifferent_t>(
-          (void*)&PropagateTargetTileToLinkedUnitsIfDifferent);
-  PropagateTargetTileToLinkedUnitsIfDifferent_fn(field_14);
+  PropagateTargetTileToLinkedUnitsIfDifferent(field_14);
 }
 
 // FUNCTION: IMPERIALISM 0x00535790
@@ -46,6 +41,19 @@ char TDefendProvinceMission::ReturnFalseSlot28() {
 // Global factory function
 // FUNCTION: IMPERIALISM 0x00535800
 TDefendProvinceMission::~TDefendProvinceMission() {}
+
+// Walks orderListAt18 and re-issues TUnit::SetOrderModeSlot34(1, newTile) on every linked
+// TMilitaryUnit whose tileIndex06 differs from newTile.
+// FUNCTION: IMPERIALISM 0x0053c950
+void TDefendProvinceMission::PropagateTargetTileToLinkedUnitsIfDifferent(short newTile) {
+  CIterator iter(orderListAt18);
+  for (void* item = iter.Reset(); iter.More(); item = iter.Advance()) {
+    TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(item);
+    if (unit->tileIndex06 != newTile) {
+      unit->SetOrderModeSlot34(1, newTile);
+    }
+  }
+}
 
 // SYNTHETIC: IMPERIALISM 0x0053e5f0
 // TDefendProvinceMission::CreateObject

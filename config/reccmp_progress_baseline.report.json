@@ -12617,7 +12617,7 @@
     },
     {
       "address": "0x4dd430",
-      "matching": 0.5142857142857142,
+      "matching": 0.5714285714285714,
       "name": "TGreatPower::ComputeRemainingDiplomacyAidBudget",
       "type": 1
     },
@@ -13062,7 +13062,8 @@
     },
     {
       "address": "0x4e0610",
-      "matching": 1.0,
+      "effective": true,
+      "matching": 0.42857142857142855,
       "name": "TGreatPower::ReturnFalseNationStateActionStub_8a",
       "type": 1
     },
@@ -13075,13 +13076,14 @@
     },
     {
       "address": "0x4e0690",
-      "matching": 1.0,
+      "effective": true,
+      "matching": 0.42857142857142855,
       "name": "TGreatPower::ReturnFalseNationStateCapabilityFlag90",
       "type": 1
     },
     {
       "address": "0x4e06d0",
-      "matching": 0.7619047619047619,
+      "matching": 0.8095238095238095,
       "name": "TGreatPower::SumNationRuntimeFiveBucketValue44",
       "type": 1
     },
@@ -13111,7 +13113,7 @@
     },
     {
       "address": "0x4e09a0",
-      "matching": 0.5542168674698795,
+      "matching": 0.5301204819277109,
       "name": "TGreatPower::ComputeCityOrderCapabilityAggregateScore",
       "type": 1
     },
@@ -19674,7 +19676,7 @@
     },
     {
       "address": "0x535770",
-      "matching": 0.0,
+      "matching": 1.0,
       "name": "PropagateMissionTargetContextIdToLinkedUnits",
       "type": 1
     },
@@ -20407,7 +20409,7 @@
     },
     {
       "address": "0x53c950",
-      "matching": 0.0,
+      "matching": 0.7936507936507936,
       "name": "PropagateTargetTileToLinkedUnitsIfDifferent",
       "type": 1
     },

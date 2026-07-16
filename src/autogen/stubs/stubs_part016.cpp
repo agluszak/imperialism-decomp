@@ -179,14 +179,6 @@ undefined4 ResetTArmyMissionToSentinelVtable(void)
   return 0;
 }
 
-// ghidra_name PropagateTargetTileToLinkedUnitsIfDifferent
-// ghidra_proto undefined PropagateTargetTileToLinkedUnitsIfDifferent()
-// FUNCTION: IMPERIALISM 0x0053c950
-undefined4 PropagateTargetTileToLinkedUnitsIfDifferent(void)
-{
-  return 0;
-}
-
 // ghidra_name ComputeMissionPrioritySimilarityScoreForFilter
 // ghidra_proto undefined ComputeMissionPrioritySimilarityScoreForFilter()
 // FUNCTION: IMPERIALISM 0x0053cac0
