@@ -1924,3 +1924,54 @@ presents as a phantom mass drop (dozens of functions, off-by-one-function diffs 
 shifted PDB lines). If stats suddenly shows ~100 regressions in untouched code, first
 verify the build actually relinked ("Built target Imperialism"), then `rm -f
 build-msvc500/nn?00192 build-msvc500/nm?00192 build-msvc500/a00820*` and rebuild.
+
+## Note 121 — Switch case bodies are emitted in source order: reorder cases to the binary layout
+
+MSVC500 lays out `switch` case BODIES in the order they appear in source (the jump table
+maps values to those blocks; the blocks themselves follow source order). For a big
+dispatch (TTechMgr::HandleAbilityUnlock 0x5afd00, 27 cases), writing cases in ascending
+numeric order scored 47%; reordering the case blocks to the addresses in the original's
+body (read the jump table, sort targets, emit `case` labels in that order) took it to
+95%+ with no other change. Dump the jump table (dword array right after the dispatch),
+map each target back to its case value, and write the C++ cases in target-address order.
+
+## Note 122 — "Static member taking a node parameter" is usually a __thiscall method on the node
+
+If a helper is modeled as a static/free function whose first parameter is a struct
+pointer, but every original call site loads that pointer into ECX with no stack push,
+it is a real __thiscall method ON THAT STRUCT — including plain non-polymorphic PODs
+(TMapOrderChildLinkNode: FindNodeMatching, SetChainActiveFlag, and later
+Delete/Remove/Create/PruneDefeated 0x552590/0x5525d0/0x552650/0x5526e0, four scores
+41-51% -> three 100%). Null receivers are fine: the original calls with ECX=0 and the
+body starts `if (this == 0)`. Two follow-on tells from the same family:
+- If the recomp turns a recursive helper into a loop but the original keeps a real
+  recursive CALL, the original function RETURNS A VALUE (the return in tail position
+  blocks MSVC5's tail-recursion elimination) — find the per-path return values
+  (0/next/this) and add the return type (0x5525d0: void->node* was the whole 20->100%).
+- An alloc + guarded field-store block at a `new` site (call new; test eax; je; stores;
+  result=eax / xor result) is an INLINE CONSTRUCTOR with arguments, not caller code:
+  declare `T(args)` in-class and write `new T(args)` (0x552650, 47->100%), with the
+  FailNilPointerWithAssert idiom for the null branch.
+
+## Note 123 — Helpers the original inlines everywhere must be `static inline`; spell member re-reads at the caller
+
+When the same multi-line sequence (null-check + loop) appears verbatim inside several
+original functions but is also a standalone function nowhere, it was an inline helper:
+define it `static inline` in the .cpp (MSVC500 /Ob1 expands it, including loops) —
+TAdmiral.cpp's RecomputeMapOrderOwnerActiveSelection took 0x552250 from 14% to 85%.
+Watch the argument expression: if the original reloads `this->field` after an
+intervening store (e.g. `[node+0x20]=0` then re-reads `[this+8]`), the caller passed
+`this->field->member` (re-evaluated), not a saved local — write the member expression
+at each call site instead of hoisting it.
+
+## Note 124 — Small memsets: value-fills become 0x01010101 dwords; clears may span several named fields
+
+`memset(p, 1, 4)` emits `mov dword [p], 0x1010101`; `memset(p, 0, 8)` two zero dword
+stores; sizes >= ~26 use `rep stosd (+stosw/stosb)`. When an init function's original
+shows merged dword stores of 0x01010101 or a rep-clear whose byte count crosses several
+named fields (0x5aeff0: one 0x1a-byte clear covering perTechUnlockFlag180[3..] +
+hasProductionOrder193 + pad194), the source was a memset over the flat span — write
+exactly that memset (with a comment naming the fields it crosses) instead of per-field
+stores. Also from the same function: seven-nation table inits ran as TWO separate
+`for (n = 0; n < 7; ++n)` passes (different table subsets each), not one merged loop —
+match the pass structure before chasing store order (24.9% -> 69.3%).
