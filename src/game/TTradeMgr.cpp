@@ -13,7 +13,7 @@
 #include "game/TCountry.h"
 #include "game/nation_slot_eligibility.h"
 #include "game/TStream.h"
-#include "game/TSoundChannelNode.h"
+#include "game/TLongintList.h"
 #include "game/TMultiplayerMgr.h"
 
 // Preset seed table for the metric rows (original global @ 0x69a910). Kept file-local until
@@ -1142,10 +1142,9 @@ char TTradeMgr::IsNationMetricCellPositive(int row, int col) {
 }
 
 // FUNCTION: IMPERIALISM 0x005b9fd0
-TSoundChannelNode*
-TTradeMgr::AllocateAndPopulateLinkedValueCollectionFromRosterFilter(int rosterSlot,
-                                                                    int filterValue) {
-  TSoundChannelNode* node = new TSoundChannelNode();
+TLongintList* TTradeMgr::AllocateAndPopulateLinkedValueCollectionFromRosterFilter(int rosterSlot,
+                                                                                  int filterValue) {
+  TLongintList* node = new TLongintList();
   short idx = 1;
   TDealList* list = this->categoryRankLists[rosterSlot];
   int count = list->GetSize();
@@ -1154,7 +1153,7 @@ TTradeMgr::AllocateAndPopulateLinkedValueCollectionFromRosterFilter(int rosterSl
     do {
       short* entry = reinterpret_cast<short*>(list->GetPtrListEntryByOneBasedIndex(i));
       if (entry[1] == filterValue) {
-        node->SoundChannelNodeDummy00(*entry);
+        node->InsertLast(*entry);
       }
       idx = idx + 1;
       i = static_cast<int>(idx);

@@ -2,7 +2,7 @@
 
 #include "game/CSubViewIterator.h"
 #include "game/TList.h"
-#include "game/TSoundChannelNode.h"
+#include "game/TLongintList.h"
 
 // Option-entry item held in TPageView's field_0x78/field_0x7c lists. It carries the
 // tag used to look up the actual renderable entry and the short metrics used by
@@ -43,7 +43,7 @@ void TPageView::NoOpUiLifecycleHook(int arg) {
   (void)arg;
   this->field_0x7c = new TList();
   this->field_0x78 = new TList();
-  this->field_0x80 = new TSoundChannelNode();
+  this->field_0x80 = new TLongintList();
   this->pageRect.bottom = this->frameHeight38 - 1;
   this->pageRect.top = 0;
   this->pageRect.left = 0;
@@ -85,8 +85,8 @@ void TPageView::ResetSelectableOptionEntriesExceptColorAndOkay() {
 
 // FUNCTION: IMPERIALISM 0x0056fc80
 undefined TPageView::OrphanCallChain_C8_I82_0056fc80() {
-  this->field_0x80->StopOrResetActivePlaybackSlot30();
-  this->field_0x80->SoundChannelNodeDummy00(1);
+  this->field_0x80->RemoveAll();
+  this->field_0x80->InsertLast(1);
 
   int count = this->field_0x7c->GetCount();
   short y = (short)this->pageRect.top;
@@ -115,7 +115,7 @@ undefined TPageView::OrphanCallChain_C8_I82_0056fc80() {
     if (bottom > this->pageRect.bottom) {
       overflowCount++;
       y = this->pageRect.top + height;
-      this->field_0x80->SoundChannelNodeDummy00(i);
+      this->field_0x80->InsertLast(i);
       if (entry->tag != 0) {
         TSelectableTextOptionEntry* lookup = static_cast<TSelectableTextOptionEntry*>(
             this->field_0x78->GetEntryByOrdinal(entry->tag));
@@ -142,11 +142,11 @@ undefined TPageView::OrphanCallChain_C8_I118_0056fdb0(short param_1) {
 
   short previousTag = 0;
   for (int column = param_1; column < param_1 + this->field_0x64; column++) {
-    if (this->field_0x80->QueryPendingPlaybackCountSlot28() < column) {
+    if (this->field_0x80->GetSize() < column) {
       continue;
     }
 
-    int startIndex = this->field_0x80->SoundChannelNodeDummy04(column);
+    int startIndex = this->field_0x80->At(column);
     int perColumnWidth = this->frameWidth34 / this->field_0x64;
     short x = (short)(this->pageRect.left + perColumnWidth * (column - param_1));
 
@@ -196,7 +196,7 @@ void TPageView::OrphanCallChain_C4_I18_0056ff90() {
   this->ResetSelectableOptionEntriesExceptColorAndOkay();
   this->field_0x78->RemoveAll();
   this->field_0x7c->RemoveAll();
-  this->field_0x80->StopOrResetActivePlaybackSlot30();
+  this->field_0x80->RemoveAll();
   this->field_0x62 = 0;
   this->field_0x60 = 0;
 }
@@ -210,7 +210,7 @@ void TPageView::Free() {
     this->field_0x7c->FreePayloadsAndDestroy();
   }
   if (this->field_0x80 != nullptr) {
-    this->field_0x80->ReleaseChannelNodeSlot38();
+    this->field_0x80->Free();
   }
   TView::Free();
 }

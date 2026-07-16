@@ -670,8 +670,8 @@ address|name|symbol|size|type|prototype|provenance
 487ef0|InitializeLinkedListCursorFromOwnerHead||29|function|undefined InitializeLinkedListCursorFromOwnerHead()|
 487f20|LinkedListCursorHasCurrent||11|function|undefined LinkedListCursorHasCurrent()|
 487f40|AdvanceLinkedListCursor||23|function|undefined AdvanceLinkedListCursor()|
-487f70|TSoundChannelNode::SoundChannelNodeDummy02||3|function|void SoundChannelNodeDummy02()|
-487f90|TSoundChannelNode::SoundChannelNodeDummy03||3|function|void SoundChannelNodeDummy03()|
+487f70|TLongintList::NoOpWriteTo||3|function|void __thiscall NoOpWriteTo(TStream * stream)|
+487f90|TLongintList::NoOpReadFrom||3|function|void __thiscall NoOpReadFrom(TStream * stream)|
 487fb0|ClearInvalidArmyTileSelectionsAndCycleInteraction_Impl_At00487fb0||29|function|undefined ClearInvalidArmyTileSelectionsAndCycleInteraction_Impl_At00487fb0()|
 487fe0|ClearInvalidArmyTileSelectionsAndCycleInteraction_Impl_At00487fe0||11|function|undefined ClearInvalidArmyTileSelectionsAndCycleInteraction_Impl_At00487fe0()|
 488000|ClearInvalidArmyTileSelectionsAndCycleInteraction_Impl||23|function|undefined ClearInvalidArmyTileSelectionsAndCycleInteraction_Impl()|
@@ -1964,7 +1964,7 @@ address|name|symbol|size|type|prototype|provenance
 4be880|TCityInteriorMinister::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 4be8b0|DestroyTCityInteriorMinister_Impl||7|function|undefined DestroyTCityInteriorMinister_Impl()|
 4be8d0|InitializeCityInteriorMinister||654|function|undefined InitializeCityInteriorMinister()|
-4bec10|TSoundChannelNode::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
+4bec10|TLongintList::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 4bec40|TLinkedBlockChainState_00650A50::DestructLinkedBlockChainState_00650A50_AndFreeChain_At004bec40||101|function|undefined DestructLinkedBlockChainState_00650A50_AndFreeChain_At004bec40()|
 4becd0|TCityInteriorMinister::Free||105|function|undefined 'scalar_deleting_destructor'(void)|
 4bed60|TCityInteriorMinister::GetTEventHandlerClassNamePointer_20||135|function|undefined GetTEventHandlerClassNamePointer(void)|
@@ -2050,18 +2050,18 @@ address|name|symbol|size|type|prototype|provenance
 4c6360|DestructTRailCityMinisterAndMaybeFree_Impl||7|function|undefined DestructTRailCityMinisterAndMaybeFree_Impl()|
 4c6380|WrapperFor_thunk_InitializeCityInteriorMinister_At004c6380||13|function|undefined WrapperFor_thunk_InitializeCityInteriorMinister_At004c6380()|
 4c63a0|ConfigureCityInteriorMinisterPriorityPreset_004c63a0||315|function|undefined ConfigureCityInteriorMinisterPriorityPreset_004c63a0()|
-4c65d0|TSoundChannelNode::Serialize||280|function|void Serialize(CArchive& ar)|
-4c6740|TSoundChannelNode::SoundChannelNodeDummy00||125|function|void SoundChannelNodeDummy00()|
-4c67e0|TSoundChannelNode::SoundChannelNodeDummy01||125|function|void SoundChannelNodeDummy01()|
-4c6880|TSoundChannelNode::SoundChannelNodeDummy04||46|function|void SoundChannelNodeDummy04()|
-4c68c0|TSoundChannelNode::QueryPendingPlaybackCountSlot28||4|function|int QueryPendingPlaybackCountSlot28()|
-4c68e0|TSoundChannelNode::SoundChannelNodeDummy2C||136|function|void SoundChannelNodeDummy2C()|
-4c69a0|TSoundChannelNode::StopOrResetActivePlaybackSlot30||45|function|int StopOrResetActivePlaybackSlot30()|
-4c69e0|TSoundChannelNode::SoundChannelNodeDummy34||133|function|void SoundChannelNodeDummy34()|
+4c65d0|CList<long,long>::Serialize|?Serialize@?$CList@JJ@@UAEXAAVCArchive@@@Z|280|function|undefined Serialize(CArchive &)|template
+4c6740|TLongintList::InsertLast||125|function|void __thiscall InsertLast(int value)|
+4c67e0|TLongintList::InsertLastEx||125|function|void __thiscall InsertLastEx(int value, int unused1, int unused2)|
+4c6880|TLongintList::At||46|function|int __thiscall At(int oneBasedIndex)|
+4c68c0|TLongintList::GetSize||4|function|int __thiscall GetSize(void)|
+4c68e0|TLongintList::AtDelete||136|function|void __thiscall AtDelete(int oneBasedIndex)|
+4c69a0|TLongintList::RemoveAll||45|function|void __thiscall RemoveAll(void)|
+4c69e0|TLongintList::Delete||133|function|void __thiscall Delete(int value)|
 4c6aa0|WrapperFor_FreeHeapBufferIfNotNull_At004c6aa0||30|function|undefined WrapperFor_FreeHeapBufferIfNotNull_At004c6aa0()|
 4c6ad0|TLinkedBlockChainState_00650A50::DestructLinkedBlockChainState_00650A50_AndFreeChain_At004c6ad0||101|function|undefined DestructLinkedBlockChainState_00650A50_AndFreeChain_At004c6ad0()|
-4c6b60|TSoundChannelNode::Dump||99|function|void Dump(CDumpContext& dc) const|
-4c6bf0|TSoundChannelNode::ReleaseChannelNodeSlot38||23|function|int ReleaseChannelNodeSlot38()|
+4c6b60|TLongintList::Dump||99|function|void __thiscall Dump(CDumpContext & dc)|
+4c6bf0|TLongintList::Free||23|function|void __thiscall Free(void)|
 4c6cb0|WrapperFor_ftol_At004c6cb0||30|function|undefined WrapperFor_ftol_At004c6cb0()|
 4c6df0|TBuildingView::CreateObject|?CreateObject@TBuildingView@@SGPAVCObject@@XZ|113|function|undefined CreateObject()|rtti
 4c6e90|TBuildingView::GetRuntimeClass||6|function|undefined GetTBuildingViewClassNamePointer()|rtti

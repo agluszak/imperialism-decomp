@@ -1411,27 +1411,27 @@ void TMapMgr::ForwardComputeRepresentativeTileIndexForTerrainTypeWithWrapBias(un
 }
 
 namespace {
-void MarkOwnedRegionClasses(TSortedList* regionList, bool* regionClassSeen) {
+void MarkOwnedRegionClasses(TLongintList* regionList, bool* regionClassSeen) {
   int ordinal = 1;
-  int count = regionList->GetCount();
+  int count = regionList->GetSize();
   while (ordinal <= count) {
-    int regionId = regionList->GetIntByOrdinal(ordinal);
+    int regionId = regionList->At(ordinal);
     regionClassSeen[g_pGlobalMapState->cityScoreTable[regionId].regionClassA3] = true;
     ++ordinal;
-    count = regionList->GetCount();
+    count = regionList->GetSize();
   }
 }
 
-bool AnyOwnedRegionClassSeen(TSortedList* regionList, const bool* regionClassSeen) {
+bool AnyOwnedRegionClassSeen(TLongintList* regionList, const bool* regionClassSeen) {
   int ordinal = 1;
-  int count = regionList->GetCount();
+  int count = regionList->GetSize();
   while (ordinal <= count) {
-    int regionId = regionList->GetIntByOrdinal(ordinal);
+    int regionId = regionList->At(ordinal);
     if (regionClassSeen[g_pGlobalMapState->cityScoreTable[regionId].regionClassA3]) {
       return true;
     }
     ++ordinal;
-    count = regionList->GetCount();
+    count = regionList->GetSize();
   }
   return false;
 }
@@ -1447,12 +1447,12 @@ bool TMapMgr::TMapMaker_CheckTerrainTypePairReachabilityByRegionClassMask(short 
   for (i = 0; i < 16; ++i) {
     TMinor* minor = g_apNationAuxRuntimeStateSlots[i];
     if (minor != 0 && minor->IsEncodedNationSlotMinus200Equal(nationA) &&
-        minor->ownedRegionList->GetCount() >= 1) {
+        minor->ownedRegionList->GetSize() >= 1) {
       MarkOwnedRegionClasses(g_apMinorNationCapabilityObjects[i]->ownedRegionList, regionClassSeen);
     }
   }
 
-  if (g_apTerrainTypeDescriptorTable[nationB]->ownedRegionList->GetCount() >= 1 &&
+  if (g_apTerrainTypeDescriptorTable[nationB]->ownedRegionList->GetSize() >= 1 &&
       AnyOwnedRegionClassSeen(g_apTerrainTypeDescriptorTable[nationB]->ownedRegionList,
                               regionClassSeen)) {
     return true;
@@ -1460,7 +1460,7 @@ bool TMapMgr::TMapMaker_CheckTerrainTypePairReachabilityByRegionClassMask(short 
   for (i = 0; i < 16; ++i) {
     TMinor* minor = g_apNationAuxRuntimeStateSlots[i];
     if (minor != 0 && minor->IsEncodedNationSlotMinus200Equal(nationB) &&
-        minor->ownedRegionList->GetCount() >= 1 &&
+        minor->ownedRegionList->GetSize() >= 1 &&
         AnyOwnedRegionClassSeen(g_apMinorNationCapabilityObjects[i]->ownedRegionList,
                                 regionClassSeen)) {
       return true;
@@ -3126,8 +3126,8 @@ short TMapMgr::ComputeRepresentativeTileIndexForTerrainTypeWithWrapBias(short te
 
   short fallbackTile = -1;
   if (terrainType < 0x17 && g_apTerrainTypeDescriptorTable[terrainType] != 0) {
-    TSortedList* ownedRegions = g_apTerrainTypeDescriptorTable[terrainType]->ownedRegionList;
-    if (ownedRegions != 0 && ownedRegions->GetCount() > 0) {
+    TLongintList* ownedRegions = g_apTerrainTypeDescriptorTable[terrainType]->ownedRegionList;
+    if (ownedRegions != 0 && ownedRegions->GetSize() > 0) {
       int lastMatch = -1;
       for (int tileIndex = 0; tileIndex < 0x1950; ++tileIndex) {
         if (static_cast<signed char>(tileTable[tileIndex * 0x24 + 4]) == terrainType) {
@@ -3201,13 +3201,13 @@ void LinkPortZoneToContextIfMissing(TZone* portZone, TZone* contextZone) {
 
 // FUNCTION: IMPERIALISM 0x00517c30
 char TMapMgr::AreNationsBorderLinked(int nationA, int nationB) {
-  TSortedList* regionList = g_apTerrainTypeDescriptorTable[nationA]->ownedRegionList;
-  if (regionList->GetCount() < 1) {
+  TLongintList* regionList = g_apTerrainTypeDescriptorTable[nationA]->ownedRegionList;
+  if (regionList->GetSize() < 1) {
     return 0;
   }
   int ordinal = 1;
   do {
-    int regionId = regionList->GetIntByOrdinal(ordinal);
+    int regionId = regionList->At(ordinal);
     TGlobalMapCityScoreRecord* record = &cityScoreTable[regionId];
     char found = 0;
     int neighborCount = record->adjacentRegionCount08;
@@ -3224,7 +3224,7 @@ char TMapMgr::AreNationsBorderLinked(int nationA, int nationB) {
       return 1;
     }
     ++ordinal;
-  } while (ordinal <= regionList->GetCount());
+  } while (ordinal <= regionList->GetSize());
   return 0;
 }
 

@@ -227,7 +227,7 @@ void BuildMapContextStatusStringVariantC(CString* out) {
     const char* text = 0;
     switch (token) {
     case '/':
-      text = s_mcflavor_00695794;
+      text = s_szSpaceSeparator_00695794;
       break;
     case 'G': {
       const char* strings[14] = {
@@ -546,7 +546,7 @@ void BuildMapContextStatusStringVariantG(CString* out) {
     const char* text = 0;
     switch (token) {
     case '/':
-      text = s_mcflavor_00695794;
+      text = s_szSpaceSeparator_00695794;
       break;
     case 'G': {
       const char* strings[14] = {
@@ -879,7 +879,7 @@ void BuildMapContextStatusStringVariantK(CString* out) {
     const char* text = 0;
     switch (token) {
     case '/':
-      text = s_mcflavor_00695794;
+      text = s_szSpaceSeparator_00695794;
       break;
     case 'K': {
       const char* strings[10] = {s_mcflavor_0069ac24, s_mcflavor_0069ac14, s_mcflavor_0069ac10,

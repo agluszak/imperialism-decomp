@@ -4,6 +4,7 @@
 #include "game/CString.h"
 #include "game/nation_domain_types.h"
 #include "game/TObject.h"
+#include "game/TLongintList.h"
 #include "game/TSortedList.h"
 
 class TStream;
@@ -124,7 +125,9 @@ public:
   // GetOrComputeOverlayAnchorTileIndex); serialized as a 4-byte block by slots
   // 0x0a/0x0b together with homeRegionIndex.
   int overlayAnchorTileCache8c;
-  TSortedList* ownedRegionList;
+  // The region-id list is a TLongintList (vtable 0x650a08 written by the inline ctor
+  // at 0x4d6a5d), not a TSortedList; entries are cityScoreTable indices.
+  TLongintList* ownedRegionList;
 
   // Defined inline so MSVC inlines the two CString-member constructions (and the
   // resulting EH frame) into derived ctors, matching the original TGreatPower ctor

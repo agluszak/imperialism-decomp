@@ -4,7 +4,7 @@
 #include "game/mfc.h"
 
 class TList;
-class TSoundChannelNode;
+class TLongintList;
 
 // VTABLE: IMPERIALISM 0x0065e270
 class TPageView : public TView {
@@ -124,14 +124,14 @@ public:
 
   // TPageView slice (+0x60..+0x83, size 0x24). Field names are hedged until the
   // page UI flow is fully recovered; offsets and init values are from the ctor.
-  short field_0x60;              // +0x60
-  short field_0x62;              // +0x62, ctor writes 0xffff
-  short field_0x64;              // +0x64, ctor writes 0x0001
-  short pad_0x66;                // +0x66
-  RECT pageRect;                 // +0x68 (left, top, right, bottom)
-  TList* field_0x78;             // +0x78
-  TList* field_0x7c;             // +0x7c
-  TSoundChannelNode* field_0x80; // +0x80
+  short field_0x60;         // +0x60
+  short field_0x62;         // +0x62, ctor writes 0xffff
+  short field_0x64;         // +0x64, ctor writes 0x0001
+  short pad_0x66;           // +0x66
+  RECT pageRect;            // +0x68 (left, top, right, bottom)
+  TList* field_0x78;        // +0x78
+  TList* field_0x7c;        // +0x7c
+  TLongintList* field_0x80; // +0x80
 
   TPageView();
 };

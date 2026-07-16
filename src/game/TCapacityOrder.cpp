@@ -250,19 +250,19 @@ undefined TCapacityOrder::CommitIfPending() {
   if (slotIndex == 0xf) {
     TGreatPower* owner = city->ownerNationAc;
     if (*reinterpret_cast<char*>(reinterpret_cast<unsigned char*>(owner) + 0x8d1) < '3') {
-      int laborPool = owner->ownedRegionList->GetCount();
+      int laborPool = owner->ownedRegionList->GetSize();
       if ((laborPool + ((laborPool < 0) ? 3 : 0)) >> 2 < 2) {
         newValue = 1;
       } else {
-        laborPool = owner->ownedRegionList->GetCount();
+        laborPool = owner->ownedRegionList->GetSize();
         newValue = static_cast<short>((laborPool + ((laborPool < 0) ? 3 : 0)) >> 2);
       }
     } else {
-      int laborPool = owner->ownedRegionList->GetCount();
+      int laborPool = owner->ownedRegionList->GetSize();
       if (laborPool / 3 < 2) {
         newValue = 1;
       } else {
-        laborPool = owner->ownedRegionList->GetCount();
+        laborPool = owner->ownedRegionList->GetSize();
         newValue = static_cast<short>(laborPool / 3);
       }
     }

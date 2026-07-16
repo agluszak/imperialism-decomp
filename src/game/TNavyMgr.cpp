@@ -228,7 +228,7 @@ void FormatLocalizedCommodityCountLabelByIndex(CString* out, unsigned int commod
   if (count >= 0) {
     CString numberText;
     numberText.Format(g_szDecimalFormat, static_cast<int>(count));
-    *out = numberText + s_mcflavor_00695794 + *out;
+    *out = numberText + s_szSpaceSeparator_00695794 + *out;
   }
 }
 

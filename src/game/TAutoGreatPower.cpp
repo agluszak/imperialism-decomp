@@ -622,7 +622,7 @@ char TAutoGreatPower::HasActiveCandidateNationSlots(void) {
   TMinor** minorCursor = g_apNationAuxRuntimeStateSlots;
   do {
     if (this->candidateNationFlags[candidate] != 0) {
-      if ((*minorCursor)->ownedRegionList->GetCount() == 0) {
+      if ((*minorCursor)->ownedRegionList->GetSize() == 0) {
         this->candidateNationFlags[candidate] = 0;
         if (g_pDiplomacyTurnStateManager->HasPolicyWithNationSlot44(this->nationSlot, candidate) !=
             0) {
@@ -656,7 +656,7 @@ void TAutoGreatPower::SetCandidateNationFlagAndPortZoneState(int targetNation) {
   }
   this->candidateNationFlags[targetNation] = 1;
   if (g_apTerrainTypeDescriptorTable[targetNation] != 0) {
-    if (g_apTerrainTypeDescriptorTable[targetNation]->ownedRegionList->GetCount() > 0) {
+    if (g_apTerrainTypeDescriptorTable[targetNation]->ownedRegionList->GetSize() > 0) {
       short ownerTag;
       if (g_apTerrainTypeDescriptorTable[targetNation] == 0 ||
           (ownerTag = g_apTerrainTypeDescriptorTable[targetNation]->encodedNationSlot,
@@ -675,7 +675,7 @@ void TAutoGreatPower::SetCandidateNationFlagAndPortZoneState(int targetNation) {
 void TAutoGreatPower::NotifyAllianceSlot214(int targetNation) {
   this->candidateNationFlags[targetNation] = 0;
   if (g_apTerrainTypeDescriptorTable[targetNation] != 0) {
-    if (g_apTerrainTypeDescriptorTable[targetNation]->ownedRegionList->GetCount() > 0) {
+    if (g_apTerrainTypeDescriptorTable[targetNation]->ownedRegionList->GetSize() > 0) {
       g_pActiveMapOrderContext->FindFirstPortZoneContextByNation(static_cast<short>(targetNation));
       short portZoneId = g_pMapActionContextListHead->GetContextOrdinalOrInvalid();
       this->portZoneStateFlags[portZoneId] = 0;
@@ -734,15 +734,15 @@ void TAutoGreatPower::AddRegionIdToNationOwnedRegionList(int regionId) {
 void TAutoGreatPower::ResetNationDiplomacySlotsAndMarkRelatedNations(int targetNation) {
   TGreatPower::ResetNationDiplomacySlotsAndMarkRelatedNations(targetNation);
   int ordinal = 1;
-  TSortedList* regionList = g_apTerrainTypeDescriptorTable[targetNation]->ownedRegionList;
-  if (regionList->GetCount() > 0) {
+  TLongintList* regionList = g_apTerrainTypeDescriptorTable[targetNation]->ownedRegionList;
+  if (regionList->GetSize() > 0) {
     do {
-      int regionId = regionList->GetIntByOrdinal(ordinal);
+      int regionId = regionList->At(ordinal);
       this->mapNodeStateFlags[regionId] = 1;
       this->QueueMapActionMissionFromCandidateAndMarkState(kMissionTypeDefendProvince, regionId, 0,
                                                            -1);
       ++ordinal;
-    } while (ordinal <= regionList->GetCount());
+    } while (ordinal <= regionList->GetSize());
   }
   TZone* portZone =
       g_pActiveMapOrderContext->FindFirstPortZoneContextByNation(static_cast<short>(targetNation));

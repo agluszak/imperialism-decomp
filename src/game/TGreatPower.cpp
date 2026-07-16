@@ -352,7 +352,7 @@ void TGreatPower::Free(void) {
   }
   this->militaryUnitList44 = 0;
   if (this->ownedRegionList != 0) {
-    this->ownedRegionList->AddTailSlot38();
+    this->ownedRegionList->Free();
     this->ownedRegionList = 0;
   }
   delete this;
@@ -739,8 +739,8 @@ void TGreatPower::NoOpNationPendingActionHook(void) {}
 
 // FUNCTION: IMPERIALISM 0x004da5e0
 void TGreatPower::DispatchPendingStatusPrompts(void) {
-  unsigned char* flags = this->serializedStatusFlags;
-  char flag5Handled = static_cast<signed char>(flags[5]) >= 0x33;
+  signed char* flags = this->serializedStatusFlags;
+  char flag5Handled = (flags[5]) >= 0x33;
   if (!flag5Handled &&
       g_pCityOrderCapabilityState->orderCapRows277[this->nationSlot].techStatusByTechId[0x0f] ==
           2) {
@@ -805,8 +805,8 @@ void TGreatPower::MarkStatusFlag5HandledIfCapabilityActive(void) {
 
 // FUNCTION: IMPERIALISM 0x004da8a0
 void TGreatPower::MarkAllPendingStatusFlagsHandled(void) {
-  unsigned char* flags = this->serializedStatusFlags;
-  char flag5Handled = static_cast<signed char>(flags[5]) >= 0x33;
+  signed char* flags = this->serializedStatusFlags;
+  char flag5Handled = (flags[5]) >= 0x33;
   if (!flag5Handled &&
       g_pCityOrderCapabilityState->orderCapRows277[this->nationSlot].techStatusByTechId[0x0f] ==
           2) {
@@ -1240,15 +1240,15 @@ void TGreatPower::RebuildNationResourceYieldCountersAndDevelopmentTargets(void) 
 
 // FUNCTION: IMPERIALISM 0x004dbf00
 void TGreatPower::AdvanceOwnedRegionDevelopmentCountersAndDispatchEvents(void) {
-  TSortedList* regionList = this->ownedRegionList;
+  TLongintList* regionList = this->ownedRegionList;
   if (regionList == 0) {
     return;
   }
 
-  int totalRegions = regionList->GetCount();
+  int totalRegions = regionList->GetSize();
   int regionOrdinal = 1;
   while (regionOrdinal <= totalRegions) {
-    short regionId = static_cast<short>(regionList->GetIntByOrdinal(regionOrdinal));
+    short regionId = static_cast<short>(regionList->At(regionOrdinal));
     unsigned char pendingStage = 0;
     unsigned char needsRedraw = 0;
 
@@ -3971,19 +3971,23 @@ void TGreatPower::ApplyJoinEmpireModeForTargetNation(int targetNationSlot, int m
 
 // FUNCTION: IMPERIALISM 0x004e2270
 void TGreatPower::RemoveRegionIdFromNationOwnedRegionList(int regionId) {
-  this->ownedRegionList->AddTailIntEx(regionId);
+  this->ownedRegionList->Delete(regionId);
   this->NotifyRegionEventSlot298(regionId);
 }
 
 // FUNCTION: IMPERIALISM 0x004e22b0
 void TGreatPower::AddRegionIdToNationOwnedRegionList(int regionId) {
-  this->ownedRegionList->AddHeadInt(regionId);
-  int ownedRegionCount = this->ownedRegionList->GetCount();
-
-  unsigned char pressureGate = this->serializedStatusFlags[6];
-  unsigned char nationGate = this->expansionEventGate;
-  if (ownedRegionCount > 8 && pressureGate > 0x32 && nationGate < 3) {
-    this->SetNationPendingActionStateAndPayload(0x0C, -1);
+  this->ownedRegionList->InsertLast(regionId);
+  if (this->ownedRegionList->GetSize() >= 9) {
+    signed char pressureHigh = this->serializedStatusFlags[6];
+    pressureHigh = pressureHigh >= 0x33;
+    if (pressureHigh != 0) {
+      signed char gateHigh = this->expansionEventGate;
+      gateHigh = gateHigh >= 0x33;
+      if (gateHigh == 0) {
+        this->SetNationPendingActionStateAndPayload(0x0C, -1);
+      }
+    }
   }
 }
 
@@ -4295,11 +4299,11 @@ void TGreatPower::InitializeNationMinisterSubsystemsByPolicyIds(int arg1, int ar
 
 // FUNCTION: IMPERIALISM 0x004e83d0
 void TGreatPower::QueueMapActionMissionsForPortZoneCandidates() {
-  TSortedList* regionList = this->ownedRegionList;
-  int regionCount = regionList->GetCount();
+  TLongintList* regionList = this->ownedRegionList;
+  int regionCount = regionList->GetSize();
 
   for (int i = 1; i <= regionCount; i++) {
-    int regionId = reinterpret_cast<int>(regionList->GetEntryByOrdinal(i));
+    int regionId = regionList->At(i);
     bool unavailable = g_pGlobalMapState->IsNodeTypeLinkUnavailableAndNoActiveMapActionContext(
         regionId, this->nationSlot);
     this->mapNodeStateFlags[regionId] = (unavailable == false);
@@ -4459,7 +4463,7 @@ float TGreatPower::ComputeAdvisoryMapNodeScoreFactorByCaseMetric(int metricCase,
       return kOne;
     }
 
-    int nodeWeight = terrainView->ownedRegionList->GetCount();
+    int nodeWeight = terrainView->ownedRegionList->GetSize();
     int weightedNeighbor = ComputeWeightedNeighborLinkScoreForNode(relationTargetNation);
     int linkedNodeTotal = terrainView->SumWeightedNeighborLinkScoreForLinkedNodes();
 

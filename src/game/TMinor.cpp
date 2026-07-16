@@ -14,7 +14,7 @@
 #include "game/TMapMgr.h"
 #include "game/TOcean.h"
 #include "game/TSimMgr.h"
-#include "game/TSoundChannelNode.h"
+#include "game/TLongintList.h"
 #include "game/TStream.h"
 #include "game/TTown.h"
 #include "game/TUnit.h"
@@ -116,7 +116,7 @@ void TMinor::InitializeSecondaryNationStateAndSelectHomeTile(short nationSlot) {
   if (g_bMultiplayerScenarioSetupActive == 0) {
     char noImmediateDispatch = ShouldDispatchImmediatelySlot28() == 0;
     if (noImmediateDispatch || g_pSimMgr->stateFlag114 != 0) {
-      TSoundChannelNode* candidateTiles = new TSoundChannelNode();
+      TLongintList* candidateTiles = new TLongintList();
       short selectedTile = -1;
       short tile;
       for (tile = 0; tile < 0x1950; ++tile) {
@@ -126,15 +126,14 @@ void TMinor::InitializeSecondaryNationStateAndSelectHomeTile(short nationSlot) {
             selectedTile = tile;
           }
           if (g_pGlobalMapState->IsValidSecondaryNationHomeTileCandidate(tile)) {
-            candidateTiles->SoundChannelNodeDummy00(tile);
+            candidateTiles->InsertLast(tile);
           }
         }
       }
       if (selectedTile == -1) {
-        int candidateCount = candidateTiles->QueryPendingPlaybackCountSlot28();
+        int candidateCount = candidateTiles->GetSize();
         // LIBRARY: rand (0x005e83f0)
-        selectedTile = static_cast<short>(
-            candidateTiles->SoundChannelNodeDummy04(rand() % candidateCount + 1));
+        selectedTile = static_cast<short>(candidateTiles->At(rand() % candidateCount + 1));
       }
       // Constructed and destroyed unused in the original (EH states 1/2).
       CString unusedTextA;
@@ -142,7 +141,7 @@ void TMinor::InitializeSecondaryNationStateAndSelectHomeTile(short nationSlot) {
       g_pGlobalMapState->ResetTileToBaseTransportFlag(selectedTile);
       homeRegionIndex = selectedTile;
       if (candidateTiles != 0) {
-        candidateTiles->ReleaseChannelNodeSlot38();
+        candidateTiles->Free();
       }
       g_pActiveMapOrderContext->EnsurePortZoneForTile(static_cast<short>(homeRegionIndex));
     }
@@ -887,15 +886,15 @@ void TMinor::SetNationTransferTargetCodeAndNotifyEligiblePeers(int targetNationS
   }
 
   if (this->ownedRegionList != 0) {
-    int ownedCount = this->ownedRegionList->GetCount();
+    int ownedCount = this->ownedRegionList->GetSize();
     int oneBasedIndex = 1;
     while (oneBasedIndex <= ownedCount) {
-      short regionId = static_cast<short>(this->ownedRegionList->GetIntByOrdinal(oneBasedIndex));
+      short regionId = static_cast<short>(this->ownedRegionList->At(oneBasedIndex));
       if (oneBasedIndex - 1 < 10) {
         ownedRegionIds[oneBasedIndex - 1] = regionId;
       }
       oneBasedIndex++;
-      ownedCount = this->ownedRegionList->GetCount();
+      ownedCount = this->ownedRegionList->GetSize();
     }
   }
 
@@ -1054,10 +1053,10 @@ void TMinor::ClearTileActivityOverlayByProvinceId(int provinceId) {
     if (this->ownedRegionList == 0) {
       return;
     }
-    int ownedCount = this->ownedRegionList->GetCount();
+    int ownedCount = this->ownedRegionList->GetSize();
     int oneBasedIndex = 1;
     while (oneBasedIndex <= ownedCount) {
-      int regionId = this->ownedRegionList->GetIntByOrdinal(oneBasedIndex);
+      int regionId = this->ownedRegionList->At(oneBasedIndex);
       TGlobalMapCityScoreRecord* regionRecord = &g_pGlobalMapState->cityScoreTable[regionId];
       if (regionRecord->linkedRegionCount > 0) {
         int linkedIndex = 0;
@@ -1068,7 +1067,7 @@ void TMinor::ClearTileActivityOverlayByProvinceId(int provinceId) {
         }
       }
       oneBasedIndex++;
-      ownedCount = this->ownedRegionList->GetCount();
+      ownedCount = this->ownedRegionList->GetSize();
     }
     return;
   }
@@ -1097,10 +1096,10 @@ void TMinor::QueueInterNationEvent17ForState300AffectedNations(void) {
   char* terrainBytes = reinterpret_cast<char*>(terrainTiles);
 
   if (this->ownedRegionList != 0) {
-    int ownedCount = this->ownedRegionList->GetCount();
+    int ownedCount = this->ownedRegionList->GetSize();
     int oneBasedIndex = 1;
     while (oneBasedIndex <= ownedCount) {
-      int regionId = this->ownedRegionList->GetIntByOrdinal(oneBasedIndex);
+      int regionId = this->ownedRegionList->At(oneBasedIndex);
       TGlobalMapCityScoreRecord* regionRecord = &g_pGlobalMapState->cityScoreTable[regionId];
       if (regionRecord->linkedRegionCount > 0) {
         int linkedIndex = 0;
@@ -1115,7 +1114,7 @@ void TMinor::QueueInterNationEvent17ForState300AffectedNations(void) {
         }
       }
       oneBasedIndex++;
-      ownedCount = this->ownedRegionList->GetCount();
+      ownedCount = this->ownedRegionList->GetSize();
     }
   }
 
@@ -1146,10 +1145,10 @@ void TMinor::ApplyDiplomacyRelationMaskToProvinceLinkedObjects(short provinceId)
     if (this->ownedRegionList == 0) {
       return;
     }
-    int ownedCount = this->ownedRegionList->GetCount();
+    int ownedCount = this->ownedRegionList->GetSize();
     int oneBasedIndex = 1;
     while (oneBasedIndex <= ownedCount) {
-      int regionId = this->ownedRegionList->GetIntByOrdinal(oneBasedIndex);
+      int regionId = this->ownedRegionList->At(oneBasedIndex);
       TGlobalMapCityScoreRecord* regionRecord = &g_pGlobalMapState->cityScoreTable[regionId];
       if (regionRecord->linkedRegionCount > 0) {
         int linkedIndex = 0;
@@ -1160,7 +1159,7 @@ void TMinor::ApplyDiplomacyRelationMaskToProvinceLinkedObjects(short provinceId)
         }
       }
       oneBasedIndex++;
-      ownedCount = this->ownedRegionList->GetCount();
+      ownedCount = this->ownedRegionList->GetSize();
     }
     return;
   }
@@ -1184,10 +1183,10 @@ void TMinor::ReassignTileObjectOwnerAndNotifyForSelectedCells(int priorOwnerNati
     return;
   }
 
-  int ownedCount = this->ownedRegionList->GetCount();
+  int ownedCount = this->ownedRegionList->GetSize();
   int oneBasedIndex = 1;
   while (oneBasedIndex <= ownedCount) {
-    short regionId = static_cast<short>(this->ownedRegionList->GetIntByOrdinal(oneBasedIndex));
+    short regionId = static_cast<short>(this->ownedRegionList->At(oneBasedIndex));
     if (regionId < 0 || regionId >= 0x180) {
       oneBasedIndex++;
       continue;
@@ -1208,7 +1207,7 @@ void TMinor::ReassignTileObjectOwnerAndNotifyForSelectedCells(int priorOwnerNati
       unitNode = nextNode;
     }
     oneBasedIndex++;
-    ownedCount = this->ownedRegionList->GetCount();
+    ownedCount = this->ownedRegionList->GetSize();
   }
 }
 
@@ -1298,10 +1297,10 @@ void TMinor::ReassignUnitOrdersForCountryTargetChange(short provinceId,
     if (this->ownedRegionList == 0) {
       return;
     }
-    int ownedCount = this->ownedRegionList->GetCount();
+    int ownedCount = this->ownedRegionList->GetSize();
     int oneBasedIndex = 1;
     while (oneBasedIndex <= ownedCount) {
-      int regionId = this->ownedRegionList->GetIntByOrdinal(oneBasedIndex);
+      int regionId = this->ownedRegionList->At(oneBasedIndex);
       TGlobalMapCityScoreRecord* regionRecord = &g_pGlobalMapState->cityScoreTable[regionId];
       if (regionRecord->linkedRegionCount > 0) {
         int linkedIndex = 0;
@@ -1312,7 +1311,7 @@ void TMinor::ReassignUnitOrdersForCountryTargetChange(short provinceId,
         }
       }
       oneBasedIndex++;
-      ownedCount = this->ownedRegionList->GetCount();
+      ownedCount = this->ownedRegionList->GetSize();
     }
     return;
   }
@@ -1331,7 +1330,7 @@ void TMinor::ReassignUnitOrdersForCountryTargetChange(short provinceId,
 // FUNCTION: IMPERIALISM 0x004e64a0
 void TMinor::RemoveRegionIdFromNationOwnedRegionList(int regionId) {
   if (this->ownedRegionList != 0) {
-    this->ownedRegionList->AddTailEx(reinterpret_cast<void*>(regionId));
+    this->ownedRegionList->Delete(regionId);
   }
   this->ClearTileActivityOverlayByProvinceId(regionId);
   this->ApplyDiplomacyRelationMaskToProvinceLinkedObjects(regionId);
@@ -1341,7 +1340,7 @@ void TMinor::RemoveRegionIdFromNationOwnedRegionList(int regionId) {
 // FUNCTION: IMPERIALISM 0x004e64f0
 void TMinor::AddRegionIdToNationOwnedRegionList(int regionId) {
   if (this->ownedRegionList != 0) {
-    this->ownedRegionList->AddHead(reinterpret_cast<void*>(regionId));
+    this->ownedRegionList->InsertLast(regionId);
   }
 }
 

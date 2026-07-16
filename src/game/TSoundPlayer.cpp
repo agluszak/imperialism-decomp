@@ -5,7 +5,7 @@
 #include "game/global_data_tables.h"
 #include "game/TSimMgr.h"
 #include "game/TApplication.h"
-#include "game/TSoundChannelNode.h"
+#include "game/TLongintList.h"
 #include "game/TSoundResourceManager.h"
 #include "game/startup_helpers.h"
 #include "game/cd_audio.h"
@@ -91,10 +91,10 @@ char TSoundPlayer::DoIdle(int action) {
   }
 
   if (this->stateByte80 != 0 && this->stateDword7c == 0) {
-    int n = this->runtimePeerAt6c->QueryPendingPlaybackCountSlot28();
+    int n = this->runtimePeerAt6c->GetSize();
     if (n > 0) {
-      this->runtimePeerAt6c->StopOrResetActivePlaybackSlot30();
-      this->runtimePeerAt70->StopOrResetActivePlaybackSlot30();
+      this->runtimePeerAt6c->RemoveAll();
+      this->runtimePeerAt70->RemoveAll();
     }
     if (this->stateByte78 != 0) {
       this->ForwardMciCommand808ToDevice();
@@ -111,7 +111,7 @@ char TSoundPlayer::DoIdle(int action) {
     return 0;
   }
 
-  int n = this->runtimePeerAt6c->QueryPendingPlaybackCountSlot28();
+  int n = this->runtimePeerAt6c->GetSize();
   if (n > 0) {
     DAT_006a4520 = static_cast<short>(DAT_006a4520 + 1);
     if (DAT_006a4520 > 4) {
@@ -126,14 +126,14 @@ char TSoundPlayer::DoIdle(int action) {
 
 // FUNCTION: IMPERIALISM 0x00593730
 void TSoundPlayer::ResetDualAudioCuePools() {
-  runtimePeerAt6c->StopOrResetActivePlaybackSlot30();
-  runtimePeerAt70->StopOrResetActivePlaybackSlot30();
+  runtimePeerAt6c->RemoveAll();
+  runtimePeerAt70->RemoveAll();
 }
 
 // FUNCTION: IMPERIALISM 0x00593760
 void TSoundPlayer::PushCueToDualAudioCuePools(int cueId) {
-  runtimePeerAt6c->SoundChannelNodeDummy00(cueId);
-  runtimePeerAt70->SoundChannelNodeDummy00(cueId);
+  runtimePeerAt6c->InsertLast(cueId);
+  runtimePeerAt70->InsertLast(cueId);
 }
 
 // FUNCTION: IMPERIALISM 0x00593790
@@ -142,23 +142,23 @@ void TSoundPlayer::SelectAndScheduleRandomAudioCue() {
     return;
   }
 
-  if (this->runtimePeerAt70->QueryPendingPlaybackCountSlot28() == 0) {
-    int available = this->runtimePeerAt6c->QueryPendingPlaybackCountSlot28();
+  if (this->runtimePeerAt70->GetSize() == 0) {
+    int available = this->runtimePeerAt6c->GetSize();
     if (available == 0) {
       return;
     }
     for (int i = 1; i <= available; ++i) {
-      TSoundChannelNode* peer70 = this->runtimePeerAt70;
-      int cue = this->runtimePeerAt6c->SoundChannelNodeDummy04(i);
-      peer70->SoundChannelNodeDummy00(cue);
+      TLongintList* peer70 = this->runtimePeerAt70;
+      int cue = this->runtimePeerAt6c->At(i);
+      peer70->InsertLast(cue);
     }
     this->fieldShort74 = 0;
   }
 
-  int total = this->runtimePeerAt70->QueryPendingPlaybackCountSlot28();
+  int total = this->runtimePeerAt70->GetSize();
   int pick = static_cast<int>(rand()) % total + 1;
-  int chosen = this->runtimePeerAt70->SoundChannelNodeDummy04(pick);
-  this->runtimePeerAt70->SoundChannelNodeDummy2C(pick);
+  int chosen = this->runtimePeerAt70->At(pick);
+  this->runtimePeerAt70->AtDelete(pick);
 
   if (g_pSimMgr->preferenceValues[3] == 0 || IsTurnCooldownCounterActiveOrResetFlag() != 0) {
     return;
@@ -225,10 +225,10 @@ void TSoundPlayer::RequestAudioPresetChangeWithDeferredApply(int presetId, int f
 
 // FUNCTION: IMPERIALISM 0x00593c10
 void TSoundPlayer::HandleBlinkStateAndScheduleTimerTick(char enabled) {
-  int pendingCount = runtimePeerAt6c->QueryPendingPlaybackCountSlot28();
+  int pendingCount = runtimePeerAt6c->GetSize();
   if (pendingCount > 0) {
-    runtimePeerAt6c->StopOrResetActivePlaybackSlot30();
-    runtimePeerAt70->StopOrResetActivePlaybackSlot30();
+    runtimePeerAt6c->RemoveAll();
+    runtimePeerAt70->RemoveAll();
   }
 
   if (stateByte78 == 0) {
@@ -267,8 +267,8 @@ void TSoundPlayer::InitializeSoundSubsystemAndAllocateChannelLists(int param_1) 
     this->RequestDirectSoundInitIfAllowed();
   }
 
-  this->runtimePeerAt6c = new TSoundChannelNode();
-  this->runtimePeerAt70 = new TSoundChannelNode();
+  this->runtimePeerAt6c = new TLongintList();
+  this->runtimePeerAt70 = new TLongintList();
 
   this->fieldShort74 = 0;
   EnsureCdAudioDeviceHandleInitialized();
@@ -361,11 +361,11 @@ int TSoundPlayer::PlaySoundEffect(int sfxToken, int param_2, int param_3) {
 // FUNCTION: IMPERIALISM 0x005e51d0
 void TSoundPlayer::Free() {
   if (this->runtimePeerAt70 != 0) {
-    this->runtimePeerAt70->ReleaseChannelNodeSlot38();
+    this->runtimePeerAt70->Free();
   }
   this->runtimePeerAt70 = 0;
   if (this->runtimePeerAt6c != 0) {
-    this->runtimePeerAt6c->ReleaseChannelNodeSlot38();
+    this->runtimePeerAt6c->Free();
   }
   this->runtimePeerAt6c = 0;
   ReleaseRuntimeSelectionPeersAndResetOwner_Impl();

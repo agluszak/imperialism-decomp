@@ -141,11 +141,11 @@ void TCountry::InitializeNationStateIdentityAndOwnedRegionList(short nationSlot)
   } while (ordinalIndex < 0xf);
   this->unitNameCounter84 = 1;
 
-  TSortedList* ownedRegions = new TSortedList();
+  TLongintList* ownedRegions = new TLongintList();
   for (int cityIndex = 0; cityIndex < 0x180; ++cityIndex) {
     if (static_cast<short>(g_pGlobalMapState->cityScoreTable[cityIndex].ownerNationCode00) ==
         nationSlot) {
-      ownedRegions->AddTailEx(reinterpret_cast<void*>(cityIndex));
+      ownedRegions->InsertLast(cityIndex);
     }
   }
   this->ownedRegionList = ownedRegions;
@@ -158,7 +158,7 @@ void TCountry::Free(void) {
   }
   this->militaryUnitList44 = 0;
   if (this->ownedRegionList != 0) {
-    this->ownedRegionList->AddTailSlot38();
+    this->ownedRegionList->Free();
     this->ownedRegionList = 0;
   }
   delete this;
@@ -204,10 +204,10 @@ void TCountry::ReadFrom(TStream* stream) {
     } while (recruitIndex <= recruitCount);
   }
 
-  if (this->ownedRegionList->GetCount() != 0) {
-    this->ownedRegionList->AddTailSlot38();
+  if (this->ownedRegionList->GetSize() != 0) {
+    this->ownedRegionList->RemoveAll();
   }
-  this->ownedRegionList->ShallowClone();
+  this->ownedRegionList->NoOpReadFrom(stream);
   int regionDeserializeCount = 0;
   stream->ReadBytes(&regionDeserializeCount, 4);
   int regionIndex = 1;
@@ -215,7 +215,7 @@ void TCountry::ReadFrom(TStream* stream) {
     do {
       int entryValue = 0;
       stream->ReadBytes(&entryValue, 4);
-      this->ownedRegionList->WriteTo(stream);
+      this->ownedRegionList->InsertLast(entryValue);
       regionIndex = regionIndex + 1;
     } while (regionIndex <= regionDeserializeCount);
   }
@@ -286,9 +286,9 @@ void TCountry::SeedInitialMilitaryAndNavyOrdersForOwnedRegions(void) {
     return;
   }
   int ordinal = 1;
-  if (this->ownedRegionList->GetCount() >= 1) {
+  if (this->ownedRegionList->GetSize() >= 1) {
     do {
-      int regionId = this->ownedRegionList->GetIntByOrdinal(ordinal);
+      int regionId = this->ownedRegionList->At(ordinal);
       short regionTerrainId = g_pGlobalMapState->cityScoreTable[regionId].cityTileIndex04;
       if ((g_pGlobalMapState->terrainStateTable[regionTerrainId].activeFlags1c & 1) != 0) {
         TMilitaryUnit* order = new TMilitaryUnit();
@@ -368,7 +368,7 @@ void TCountry::SeedInitialMilitaryAndNavyOrdersForOwnedRegions(void) {
         bonusOrder->SetOrderModeSlot34(2, -1);
       }
       ++ordinal;
-    } while (ordinal <= this->ownedRegionList->GetCount());
+    } while (ordinal <= this->ownedRegionList->GetSize());
   }
   this->AssignDisplayNamesToUnnamedMilitaryUnits();
 }
@@ -495,12 +495,12 @@ void TCountry::ApplyJoinEmpireMode2FinalizeNationNameState(void) {
 
 // FUNCTION: IMPERIALISM 0x004d7d70
 void TCountry::RemoveRegionIdFromNationOwnedRegionList(int regionId) {
-  this->ownedRegionList->AddTailEx(reinterpret_cast<void*>(regionId));
+  this->ownedRegionList->Delete(regionId);
 }
 
 // FUNCTION: IMPERIALISM 0x004d7da0
 void TCountry::AddRegionIdToNationOwnedRegionList(int regionId) {
-  this->ownedRegionList->AddHead(reinterpret_cast<void*>(regionId));
+  this->ownedRegionList->InsertLast(regionId);
 }
 
 // FUNCTION: IMPERIALISM 0x004d7dd0
@@ -655,22 +655,22 @@ int ComputeWeightedNeighborLinkScoreForNode(int nodeIndex) {
 // FUNCTION: IMPERIALISM 0x004d83c0
 int TCountry::SumWeightedNeighborLinkScoreForLinkedNodes(void) {
   int sum = 0;
-  TSortedList* linkedList = this->ownedRegionList;
+  TLongintList* linkedList = this->ownedRegionList;
   if (linkedList == 0) {
     return 0;
   }
 
   int index = 1;
-  int count = linkedList->GetCount();
+  int count = linkedList->GetSize();
   if (count <= 0) {
     return 0;
   }
 
   do {
-    int nodeId = linkedList->GetIntByOrdinal(index);
+    int nodeId = linkedList->At(index);
     sum += ComputeWeightedNeighborLinkScoreForNodeIndex(static_cast<short>(nodeId));
     ++index;
-    count = linkedList->GetCount();
+    count = linkedList->GetSize();
   } while (index <= count);
 
   return sum;
@@ -705,13 +705,13 @@ void TCountry::QueueRecruitOrdersForUndergarrisonedRegions(void) {
     garrisonThreshold = 4;
   }
 
-  int regionCount = this->ownedRegionList->GetCount();
+  int regionCount = this->ownedRegionList->GetSize();
   int ordinal = 1;
   if (ordinal > regionCount) {
     return;
   }
   do {
-    short regionId = static_cast<short>(this->ownedRegionList->GetIntByOrdinal(ordinal));
+    short regionId = static_cast<short>(this->ownedRegionList->At(ordinal));
     short garrisonCount = 0;
     TMilitaryUnit* unitChain;
     if ((regionId < 0) || (0x17f < regionId)) {
@@ -730,7 +730,7 @@ void TCountry::QueueRecruitOrdersForUndergarrisonedRegions(void) {
       this->CreateMilitaryRecruitOrderForNode(static_cast<int>(regionId));
     }
     ordinal = ordinal + 1;
-    regionCount = this->ownedRegionList->GetCount();
+    regionCount = this->ownedRegionList->GetSize();
   } while (ordinal <= regionCount);
 }
 

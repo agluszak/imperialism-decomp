@@ -6,7 +6,7 @@
 
 class TStream;
 class TDealList;
-class TSoundChannelNode;
+class TLongintList;
 
 // The nation-interaction / trade-metric manager. Its singleton instance is the global
 // g_pNationInteractionStateManager (0x6a43cc), allocated 0xaf0 bytes and constructed via
@@ -61,7 +61,7 @@ public:
   virtual void BuildEligibleNationMetricBucketsAndWeightedTrendScores();     // 0x1d 0x5b98d0
   virtual char IsNationMetricCellNegative(int row, int col);                 // 0x1e 0x5b9f70
   virtual char IsNationMetricCellPositive(int row, int col);                 // 0x1f 0x5b9fa0
-  virtual TSoundChannelNode*
+  virtual TLongintList*
   AllocateAndPopulateLinkedValueCollectionFromRosterFilter(int rosterSlot,
                                                            int filterValue); // 0x20 0x5b9fd0
   virtual short ResolveProposalCodeForCategorySlot84(short proposalCode,

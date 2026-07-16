@@ -2,7 +2,7 @@
 
 #include "game/TEventHandler.h"
 #include "game/global_data_tables.h"
-#include "game/TSoundChannelNode.h"
+#include "game/TLongintList.h"
 
 struct CRuntimeClass;
 
@@ -13,8 +13,8 @@ public:
   unsigned char directSoundInitOkAt20;      // 0x20 — set by InitializeSoundSubsystem
   unsigned char directSoundInitPendingAt21; // 0x21 — set by RequestDirectSoundInitIfAllowed
   char pad22[0x4a];
-  TSoundChannelNode* runtimePeerAt6c;
-  TSoundChannelNode* runtimePeerAt70;
+  TLongintList* runtimePeerAt6c;
+  TLongintList* runtimePeerAt70;
   unsigned short fieldShort74;
   unsigned short fieldShort76;
   unsigned char stateByte78;
@@ -32,7 +32,7 @@ public:
   void ForwardMciCommand808ToDevice();
   BOOL ForwardMciStatusCommand814IgnoreFailure();
 
-  void Free() override;                                     // 0x07 -> 0x5e51d0
+  void Free() override;             // 0x07 -> 0x5e51d0
   char DoIdle(int action) override; // 0x13 -> 0x593400
 
   // TSoundPlayer-introduced slots (0x25+).
@@ -70,7 +70,7 @@ public:
   // Non-virtual: reset both channel peers' active playback (StopOrResetActivePlaybackSlot30
   // on each). Callsite 0x5db798 (TViewMgr::UiRuntimeSlotF8) loads ECX = g_pSfxPlaybackSystem.
   void ResetDualAudioCuePools(); // 0x593730
-  // Non-virtual: push cueId onto both channel peers' queues (SoundChannelNodeDummy00 on
+  // Non-virtual: push cueId onto both channel peers' queues (InsertLast on
   // each). Same callsite as above.
   void PushCueToDualAudioCuePools(int cueId); // 0x593760
 };

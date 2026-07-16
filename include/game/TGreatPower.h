@@ -385,12 +385,13 @@ public:
   // 0x8c8 — pending-action status flag block. The serialization block is 0x0D bytes
   // (0x8c8..0x8d4) and slot 0x2c/0x2d sweep indices 0..0xc, so indices 8..0xc
   // address the named bytes that follow (expansionAlertCounter..expansionEventGate).
-  unsigned char serializedStatusFlags[8];
+  // Compared signed (setge vs 0x33) by the region-list growth check (0x4e22b0).
+  signed char serializedStatusFlags[8];
   signed char expansionAlertCounter;
   unsigned char field8d1;
   unsigned char field8d2;
   unsigned char field8d3;
-  unsigned char expansionEventGate;
+  signed char expansionEventGate;
   unsigned char field8d5;
   short field8d6[0x0d];
   int diplomacyBudgetBase;

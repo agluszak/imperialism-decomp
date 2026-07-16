@@ -757,7 +757,7 @@ void TMultiplayerMgr::ReplaceNationStateForSlotAndRefreshStatus(int nationSlot) 
       newNation->unitNameCounter84 = oldNation->unitNameCounter84;
       newNation->homeRegionIndex = oldNation->homeRegionIndex;
       newNation->overlayAnchorTileCache8c = oldNation->overlayAnchorTileCache8c;
-      TSortedList* ownedRegions = newNation->ownedRegionList;
+      TLongintList* ownedRegions = newNation->ownedRegionList;
       newNation->ownedRegionList = oldNation->ownedRegionList;
       oldNation->ownedRegionList = ownedRegions;
       newNation->diplomacyCounterA2 = oldNation->diplomacyCounterA2;

@@ -1,5 +1,7 @@
 #pragma once
 
+#include "game/TLongintList.h"
+
 #include "game/TSortedList.h"
 #include "game/TStream.h"
 #include "game/TUnit.h"
@@ -93,14 +95,14 @@ static __inline void WriteTrackedListToStream(TStream* stream, TSortedList* list
   }
 }
 
-// Writes a plain int list (ownedRegionList): the list write-header (slot 0x1c), then the
+// Writes a plain int list (ownedRegionList): the no-op write hook (slot 0x1c), then the
 // entry count (slot 0x28), then each 1-based int value (slot 0x24).
-static __inline void WriteIntListToStream(TStream* stream, TSortedList* list) {
-  list->WriteTo(stream);
-  int entryCount = list->GetCount();
+static __inline void WriteIntListToStream(TStream* stream, TLongintList* list) {
+  list->NoOpWriteTo(stream);
+  int entryCount = list->GetSize();
   stream->WriteBytesSlot78(&entryCount, 4);
   for (int ordinal = 1; ordinal <= entryCount; ++ordinal) {
-    int entryValue = list->GetIntByOrdinal(ordinal);
+    int entryValue = list->At(ordinal);
     stream->WriteBytesSlot78(&entryValue, 4);
   }
 }

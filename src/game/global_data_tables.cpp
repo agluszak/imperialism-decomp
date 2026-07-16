@@ -1728,7 +1728,7 @@ int g_mapActionContextDisplayNameCacheStep_006984bc = 7;
 // referenced by the BuildMapContextStatusString / GenerateMappedFlavorText family).
 // Empty content: reccmp pairs by the // GLOBAL address marker, not by value. ===
 // GLOBAL: IMPERIALISM 0x00695794
-char s_mcflavor_00695794[] = "";
+char s_szSpaceSeparator_00695794[] = " ";
 // GLOBAL: IMPERIALISM 0x00696674
 char s_mcflavor_00696674[] = "";
 // GLOBAL: IMPERIALISM 0x00696d10

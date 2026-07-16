@@ -389,7 +389,7 @@ void TCity::TransferTransportRequests(void*) {
 short TCity::GetMaxBuildingCapacity(int buildingSlot) {
   if (buildingSlot == 0xf) {
     TGreatPower* owner = this->ownerNationAc;
-    int regionCount = owner->ownedRegionList->GetCount();
+    int regionCount = owner->ownedRegionList->GetSize();
     if (static_cast<signed char>(owner->serializedStatusFlags[9]) < 0x33) {
       if (regionCount / 4 > 1) {
         return static_cast<short>(regionCount / 4);
@@ -496,12 +496,12 @@ int TCity::GetBuildingType(short buildingSlot) {
   }
   TGreatPower* owner = this->ownerNationAc;
   if (static_cast<signed char>(owner->serializedStatusFlags[9]) < 0x33) {
-    if (owner->ownedRegionList->GetCount() / 4 > 1) {
-      return this->ownerNationAc->ownedRegionList->GetCount() / 4;
+    if (owner->ownedRegionList->GetSize() / 4 > 1) {
+      return this->ownerNationAc->ownedRegionList->GetSize() / 4;
     }
   } else {
-    if (owner->ownedRegionList->GetCount() / 3 > 1) {
-      return this->ownerNationAc->ownedRegionList->GetCount() / 3;
+    if (owner->ownedRegionList->GetSize() / 3 > 1) {
+      return this->ownerNationAc->ownedRegionList->GetSize() / 3;
     }
   }
   return 1;

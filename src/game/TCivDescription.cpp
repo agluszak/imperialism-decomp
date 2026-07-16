@@ -150,13 +150,13 @@ void TCivDescription::BeginMouseCaptureAndStartRepeatTimer(CPoint* point, int ar
   do {
     if (PtInRect(reinterpret_cast<const RECT*>(legendRect), *reinterpret_cast<POINT*>(point)) !=
         0) {
-      TSortedList* ownerNationProvinceCollection =
+      TLongintList* ownerNationProvinceCollection =
           g_apTerrainTypeDescriptorTable[this->ownerNationId]->ownedRegionList;
-      provinceCount = ownerNationProvinceCollection->GetCount();
+      provinceCount = ownerNationProvinceCollection->GetSize();
       if (0 < provinceCount) {
         provinceOrdinal = 1;
         do {
-          provinceId = ownerNationProvinceCollection->GetIntByOrdinal(provinceOrdinal);
+          provinceId = ownerNationProvinceCollection->At(provinceOrdinal);
           provinceTileCount =
               (int)*(char*)(reinterpret_cast<char*>(g_pGlobalMapState->cityScoreTable) +
                             provinceId * 0xa8 + 0x3a);
@@ -192,7 +192,7 @@ void TCivDescription::BeginMouseCaptureAndStartRepeatTimer(CPoint* point, int ar
             }
           }
           provinceOrdinal = provinceOrdinal + 1;
-          provinceCount = ownerNationProvinceCollection->GetCount();
+          provinceCount = ownerNationProvinceCollection->GetSize();
         } while (provinceOrdinal <= provinceCount);
       }
     }
@@ -220,7 +220,7 @@ void TCivDescription::UpdateCivilianOrderTargetTileCountsForOwnerNation(TCivUnit
   int provinceTileIndex;
   char* tableBase;
   short tileProfileId;
-  TSortedList* ownerNationProvinceCollection;
+  TLongintList* ownerNationProvinceCollection;
   int provinceCount;
 
   provinceOrdinal = 1;
@@ -233,12 +233,12 @@ void TCivDescription::UpdateCivilianOrderTargetTileCountsForOwnerNation(TCivUnit
   context->targetTileCountsBySlot[2] = 0;
   context->targetTileCountsBySlot[1] = 0;
   context->targetTileCountsBySlot[0] = 0;
-  provinceCount = ownerNationProvinceCollection->GetCount();
+  provinceCount = ownerNationProvinceCollection->GetSize();
   if (provinceCount < provinceOrdinal) {
     return;
   }
   do {
-    int provinceRecordId = ownerNationProvinceCollection->GetIntByOrdinal(provinceOrdinal);
+    int provinceRecordId = ownerNationProvinceCollection->At(provinceOrdinal);
     provinceTileOrdinal = 0;
     provinceRecord =
         reinterpret_cast<char*>(g_pGlobalMapState->cityScoreTable) + provinceRecordId * 0xa8;
@@ -269,7 +269,7 @@ void TCivDescription::UpdateCivilianOrderTargetTileCountsForOwnerNation(TCivUnit
       } while (provinceTileOrdinal < *(char*)(provinceRecord + 0x3a));
     }
     provinceOrdinal = provinceOrdinal + 1;
-    provinceCount = ownerNationProvinceCollection->GetCount();
+    provinceCount = ownerNationProvinceCollection->GetSize();
   } while (provinceOrdinal <= provinceCount);
 }
 
