@@ -418,7 +418,7 @@ LAB_0053711a:
     TTaskForce* entry =
         static_cast<TTaskForce*>(GetOrCreateMissionOrderEntryForNode_fn(orderObj, 0));
 
-    if (*reinterpret_cast<int*>(reinterpret_cast<char*>(orderObj) + 8) == pContextAnchor) {
+    if (static_cast<TTaskForce*>(orderObj)->attachment == pContextAnchor) {
       entry->SetMapOrderType9AndQueue();
     } else {
       entry->PromoteMapOrderChainAndQueue(reinterpret_cast<TZone*>(pContextAnchor));
