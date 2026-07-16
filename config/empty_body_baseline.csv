@@ -7,6 +7,7 @@ include/game/TArmyTacUnit.h|0|0|1|0
 include/game/TDiplomacyMapView.h|0|1|0|0
 include/game/TIdleMeAnimation.h|0|0|1|0
 include/game/TList.h|0|0|1|0
+include/game/TMiniCivView.h|0|0|1|0
 include/game/TTacticalPlayer.h|0|0|1|0
 include/game/TTacticalUnit.h|0|0|1|0
 include/game/TTaskForce.h|0|0|1|0
@@ -145,8 +146,8 @@ src/game/TMilitaryPageView.cpp|2|0|0|0
 src/game/TMilitaryUnit.cpp|2|0|0|0
 src/game/TMiniArmyLine.cpp|1|0|1|0
 src/game/TMiniArmyView.cpp|1|0|1|0
-src/game/TMiniCivLine.cpp|1|0|1|0
-src/game/TMiniCivView.cpp|2|0|1|0
+src/game/TMiniCivLine.cpp|0|0|1|0
+src/game/TMiniCivView.cpp|2|0|0|0
 src/game/TMiniMapView.cpp|2|0|0|0
 src/game/TMiniShipLine.cpp|1|0|1|0
 src/game/TMiniShipView.cpp|2|0|1|0

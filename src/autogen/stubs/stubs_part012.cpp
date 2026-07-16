@@ -323,14 +323,6 @@ undefined4 DestructTMiniCivLineAndMaybeFree_Impl(void)
   return 0;
 }
 
-// ghidra_name TMiniCivView::ConstructTMiniCivViewBaseState
-// ghidra_proto undefined ConstructTMiniCivViewBaseState()
-// FUNCTION: IMPERIALISM 0x004ab970
-undefined4 ConstructTMiniCivViewBaseState(void)
-{
-  return 0;
-}
-
 // ghidra_name AssignSharedStringFromMidSubstring
 // ghidra_proto undefined AssignSharedStringFromMidSubstring()
 // FUNCTION: IMPERIALISM 0x004ac3a0

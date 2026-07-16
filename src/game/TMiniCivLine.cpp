@@ -1,5 +1,7 @@
 #include "game/TMiniCivLine.h"
 
+#include "game/TMiniCivView.h"
+
 // SYNTHETIC: IMPERIALISM 0x004ab620
 // TMiniCivLine::`scalar deleting destructor'
 TMiniCivLine::~TMiniCivLine() {}
@@ -15,6 +17,6 @@ TMiniCivLine::TMiniCivLine() {}
 
 // FUNCTION: IMPERIALISM 0x004ab740
 void TMiniCivLine::CreateLineItemView(TView* panel, int* offsetLayout) {
-  (void)panel;
-  (void)offsetLayout;
+  TMiniCivView* view = new TMiniCivView();
+  view->ConstructTMiniCivViewBaseState(panel, offsetLayout, &field08, civUnit10);
 }

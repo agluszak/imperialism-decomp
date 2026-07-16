@@ -1223,6 +1223,7 @@ address|target_cpp|ownership|note
 4ab820|src/game/TMiniCivView.cpp|manual|marker_sync
 4ab8c0|src/game/TMiniCivView.cpp|manual|marker_sync
 4ab950|src/game/TMiniCivView.cpp|manual|marker_sync
+4ab970|src/game/TMiniCivView.cpp|manual|marker_sync
 4ac000|src/game/TMiniCivView.cpp|manual|marker_sync
 4ac320|src/game/TMiniCivView.cpp|manual|marker_sync
 4ac370|src/game/mfc_heap_library.cpp|library|marker_sync

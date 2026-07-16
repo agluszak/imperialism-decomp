@@ -370,6 +370,7 @@ extern const unsigned char g_MapContextStaticTable_00695428[0x20];
 // something retargets it); both 0x4acb60 and 0x4af0b0 wrap it in a CString for
 // ApplySharedStringToControlState.
 extern char* g_pBattleReportSharedText_0064dc30;
+extern char* g_pMiniCivSharedText_0064cb18;
 extern int g_lastEdgeAutoScrollTick16;
 extern int g_nSaveFormatVersion;
 extern char g_szCmdSwitchLang_00694250[];
@@ -808,6 +809,7 @@ extern unsigned char g_abResourceTypeUsesHighNibbleFlag[24];
 // TMapMgr.cpp — per-resourceType capability-category code, compared for equality against
 // a caller-supplied category code by FindMaxResourceCapabilityValueForTile (0x513720).
 extern unsigned char g_abResourceTypeCapabilityCategory[24];
+extern unsigned char g_abResourceTypeMiniCivMentionFlag[24];
 // TMapMgr.cpp — per-resourceType required-order-type code (short), compared against
 // pCivilianOrderEntry->orderType by SeedRecruitSearchVisitedStateByCapabilityThresholdAlt
 // (0x515890).

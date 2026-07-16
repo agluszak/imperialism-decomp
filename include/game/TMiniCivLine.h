@@ -3,6 +3,8 @@
 #include "game/TLineData.h"
 #include "game/mfc.h"
 
+class TCivUnit;
+
 // VTABLE: IMPERIALISM 0x0064d990
 class TMiniCivLine : public TLineData {
 public:
@@ -21,5 +23,11 @@ public:
   // slot 0x0b OrphanRetStub_0056f480 inherited unchanged (0x56f480)
   // === END GENERATED DECLS (TMiniCivLine) ===
 
+  // The civilian unit this line row is bound to; CreateLineItemView hands it (with
+  // the inherited field08/field0c layout pair) to the TMiniCivView it creates.
+  TCivUnit* civUnit10;
+
   TMiniCivLine();
 };
+
+ASSERT_SIZE(TMiniCivLine, 0x14);

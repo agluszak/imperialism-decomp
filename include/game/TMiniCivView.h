@@ -1,8 +1,13 @@
 #pragma once
 
+#include "game/CString.h"
 #include "game/TControl.h"
 #include "game/mfc.h"
 
+class TCivUnit;
+
+// Per-civilian-unit info line view (the "mini civ" row): shows the unit's current
+// order/state as assembled text (unitText88).
 // VTABLE: IMPERIALISM 0x0064d9d0
 class TMiniCivView : public TControl {
 public:
@@ -124,5 +129,20 @@ public:
   virtual undefined OrphanRetStub_004ab800(); // slot 0x71 0x4ab800
                                               // === END GENERATED DECLS (TMiniCivView) ===
 
-  TMiniCivView();
+  // The civilian unit this row describes (stored by the second-phase init).
+  TCivUnit* civUnit84;
+  // Assembled multi-line status text ("<order line>\n...").
+  CString unitText88;
+
+  // Trivial in-class ctor (heuristic 116): the factory's `new TMiniCivView()`
+  // (TMiniCivLine::CreateLineItemView 0x4ab740) inline-expands the TControl base
+  // ctor call, the unitText88 CString ctor, and the vptr store.
+  TMiniCivView() {}
+
+  // MacApp second-phase init (0x4ab970): frames the control, binds the civ unit,
+  // and assembles unitText88 from the unit's order state (field_8 switch).
+  void ConstructTMiniCivViewBaseState(TView* panel, int* offsetLayout, int* sizeLayout,
+                                      TCivUnit* civUnit);
 };
+
+ASSERT_SIZE(TMiniCivView, 0x8c);

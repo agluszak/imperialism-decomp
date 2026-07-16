@@ -1605,7 +1605,7 @@ address|name|symbol|size|type|prototype|provenance
 4ab850|DestructTMiniCivLineAndMaybeFree_Impl||74|function|undefined DestructTMiniCivLineAndMaybeFree_Impl()|
 4ab8c0|TMiniCivView::CreateObject|?CreateObject@TMiniCivView@@SGPAVCObject@@XZ|99|function|undefined CreateObject()|rtti
 4ab950|TMiniCivView::GetRuntimeClass||6|function|undefined GetTMiniCivViewClassNamePointer()|rtti
-4ab970|TMiniCivView::ConstructTMiniCivViewBaseState||1304|function|undefined ConstructTMiniCivViewBaseState()|
+4ab970|TMiniCivView::ConstructTMiniCivViewBaseState||1304|function|void __thiscall ConstructTMiniCivViewBaseState(TView * panel, int * offsetLayout, int * sizeLayout, TCivUnit * civUnit)|
 4ac000|TMiniCivView::ApplyRectSlot110||628|function|undefined DestructTMiniCivViewAndMaybeFree()|
 4ac320|TMiniCivView::HandleEvent||64|function|undefined OrphanRetStub_0059add0(int param_1, TMiniCivView * param_2)|
 4ac370|CString::CString(char const *)||19|function|undefined CString(char const *)|
@@ -7969,6 +7969,7 @@ address|name|symbol|size|type|prototype|provenance
 64c828|TArmyMgr::classTArmyMgr|||global||
 64c840|TArmyStack::classTArmyStack|||global||
 64c858|TArmyStackList::classTArmyStackList|||global||
+64cb18|g_pMiniCivSharedText_0064cb18|||global||
 64cb20|TGarrisonView::classTGarrisonView|||global||
 64cb38|TArmyUnitLine::classTArmyUnitLine|||global||
 64cb50|TArmyUnitView::classTArmyUnitView|||global||
@@ -8500,6 +8501,7 @@ address|name|symbol|size|type|prototype|provenance
 6961f8|g_Render_Nation_Header_Value_006961F8|||global||
 696210|g_Render_Nation_Header_Value_00696210|||global||
 696228|g_Render_Nation_Header_Value_00696228|||global||
+6963e8|g_abResourceTypeMiniCivMentionFlag|||global||
 6966d0|g_DAT_006966d0_Value_006966D0|||global||
 696b6c|g_szUiFontLiteralPalatino|||global||
 696b78|g_szUiFontLiteralBelweLight|||global||

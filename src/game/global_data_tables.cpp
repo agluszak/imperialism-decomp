@@ -111,6 +111,10 @@ extern const unsigned char g_MapContextStaticTable_00695428[0x20] = {
     0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0};
 // GLOBAL: IMPERIALISM 0x0064dc30
 char* g_pBattleReportSharedText_0064dc30 = g_szEmptyString;
+// Shared text pointer the mini-civ row view (0x4ab970) seeds its control text and
+// assembled-string accumulator from; only the empty-string default is observed so far.
+// GLOBAL: IMPERIALISM 0x0064cb18
+char* g_pMiniCivSharedText_0064cb18 = g_szEmptyString;
 // GLOBAL: IMPERIALISM 0x00695448
 extern const unsigned char g_MapContextStaticTable_00695448[0x20] = {
     1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0};
@@ -735,6 +739,12 @@ unsigned char g_abResourceTypeUsesHighNibbleFlag[24] = {0, 0, 0, 1, 1, 0, 1, 0, 
 // Per-resourceType capability-category code. Read by FindMaxResourceCapabilityValueForTile
 // (0x513720).
 unsigned char g_abResourceTypeCapabilityCategory[24] = {0, 0, 0, 1, 1, 0, 1, 0, 0, 0, 0, 0,
+                                                        0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0};
+// Third binary copy of the same per-resourceType flag pattern (the linker kept three);
+// this one gates whether the mini-civ row (0x4ab970) and civ report name a tile edge's
+// resource type in their "improvable resources" text.
+// GLOBAL: IMPERIALISM 0x006963e8
+unsigned char g_abResourceTypeMiniCivMentionFlag[24] = {0, 0, 0, 1, 1, 0, 1, 0, 0, 0, 0, 0,
                                                         0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0};
 // Per-resourceType required-order-type code. Read by
 // SeedRecruitSearchVisitedStateByCapabilityThresholdAlt (0x515890).
