@@ -2182,3 +2182,20 @@ match the pass structure before chasing store order (24.9% -> 69.3%).
      must be defined inline in the header or every `new T()` site emits a call that the orig
      doesn't have. The vptr-store position (recomp first, orig last) is compiler-internal and
      costs ~2 lines — accept it.
+
+111. **A game class whose method bodies look like hand-inlined MFC collection internals is a
+     thin virtual facade over an MFC TEMPLATE base — model the inheritance, not the internals.**
+     TLongintList (vtable 0x650a08, junk-named TSoundChannelNode) is
+     `class TLongintList : public CList<long, long>` with ten one-liner virtuals
+     (`InsertLast { AddTail(value); }`, `At { return GetAt(FindIndex(i-1)); }`, ...): the
+     template's header-inline members expand under /Ob1 to byte-identical code, so every method
+     hit 100% on the first build. Tells: ctor store order matching the template ctor's chained
+     null assignments (c,10,8,4,14,18 for CList), a "double store" that is really
+     ConstructElement's memset + the assignment, a "vestigial walk" that is DestructElement over
+     trivial elements, vtable slot 0 = inherited CObject::GetRuntimeClass, and a Serialize slot
+     whose size equals a known CList instantiation (280B). Claim the template-emitted bodies
+     (Serialize, ~CList, sdd) with `// TEMPLATE:` markers + mangled names (TView.cpp precedent),
+     NOT FUNCTION markers. Always cross-check the field's constructor site: ownedRegionList's
+     `new` wrote vtable 0x650a08, so its declared TSortedList* type (different vtable, different
+     slot map) had silently mismodeled every accessor — the "AddTailEx" calls in the
+     Remove-region family were really `Delete(value)` at +0x34.
