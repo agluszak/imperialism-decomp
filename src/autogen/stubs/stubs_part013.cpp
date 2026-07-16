@@ -499,14 +499,6 @@ undefined4 WrapperFor_ftol_At004d64d0(void)
   return 0;
 }
 
-// ghidra_name InitializeObArrayVtable653810ModeField
-// ghidra_proto undefined InitializeObArrayVtable653810ModeField()
-// FUNCTION: IMPERIALISM 0x004d6610
-undefined4 InitializeObArrayVtable653810ModeField(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_ReleaseSharedStringRefIfNotEmpty_At004d6880
 // ghidra_proto undefined WrapperFor_ReleaseSharedStringRefIfNotEmpty_At004d6880()
 // FUNCTION: IMPERIALISM 0x004d6880

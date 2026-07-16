@@ -2277,7 +2277,7 @@ address|name|symbol|size|type|prototype|provenance
 4d6570|TProvinceDesirabilityList::GetRuntimeClass||6|function|undefined GetRuntimeClass()|rtti
 4d6590|ConstructObArrayWithVtable653810||18|function|undefined ConstructObArrayWithVtable653810()|
 4d65c0|TProvinceDesirabilityList::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
-4d6610|InitializeObArrayVtable653810ModeField||7|function|undefined InitializeObArrayVtable653810ModeField()|
+4d6610|TProvinceDesirabilityList::InitializeProvinceRecordSize||7|function|void __thiscall InitializeProvinceRecordSize(void)|
 4d6630|TProvinceDesirabilityList::Compare||65|function|undefined OrphanRetStub_0059add0(void)|
 4d66a0|TCountry::CreateObject|?CreateObject@TCountry@@SGPAVCObject@@XZ|108|function|undefined CreateObject()|rtti
 4d6730|TCountry::ReturnFalseNationStateCapabilityFlag98||3|function|undefined ReturnFalseNationStateCapabilityFlag98()|
@@ -2602,7 +2602,7 @@ address|name|symbol|size|type|prototype|provenance
 4e8bf0|SetByteFlagAtOffsetAF0ByIndex||18|function|undefined SetByteFlagAtOffsetAF0ByIndex()|
 4e8c50|ComputeAdvisoryMapNodeCompositeScoreByMode||823|function|undefined ComputeAdvisoryMapNodeCompositeScoreByMode()|
 4e9060|TGreatPower::ComputeMapActionContextCompositeScoreForNation||458|function|undefined ComputeMapActionContextCompositeScoreForNation()|
-4e92b0|PopulateCase16AdvisoryMapNodeCandidateState||1548|function|undefined PopulateCase16AdvisoryMapNodeCandidateState()|
+4e92b0|TGreatPower::PopulateCase16AdvisoryMapNodeCandidateState||1548|function|void __thiscall PopulateCase16AdvisoryMapNodeCandidateState(void)|
 4e9a50|TGreatPower::SelectAndQueueAdvisoryMapMissionsCase16||901|function|undefined SelectAndQueueAdvisoryMapMissionsCase16()|
 4e9ed0|TGreatPower::QueueWarTransitionFromAdvisoryAction||40|function|undefined QueueWarTransitionFromAdvisoryAction()|
 4e9f10|TAutoGreatPower::HasActiveCandidateNationSlots||172|function|undefined HasActiveCandidateNationSlots()|
@@ -3262,7 +3262,7 @@ address|name|symbol|size|type|prototype|provenance
 517d40|OrphanDeadLeaf_NoRefs_00517d40||98|function|undefined OrphanDeadLeaf_NoRefs_00517d40()|
 517dd0|HasDirectOrFallbackLinkedNodeType||328|function|undefined HasDirectOrFallbackLinkedNodeType()|
 517f80|CollectSecondDegreeLinksMatchingNodeType||204|function|undefined CollectSecondDegreeLinksMatchingNodeType()|
-518090|CollectSecondDegreeLinksWithMinorNationFallback||126|function|undefined CollectSecondDegreeLinksWithMinorNationFallback()|
+518090|TMapMgr::CollectSecondDegreeLinksWithMinorNationFallback||126|function|int __thiscall CollectSecondDegreeLinksWithMinorNationFallback(int cityRecordIndex, int nationTag, int * nodeBuffer, char allowFallback)|
 518130|RecomputeTileStrategicScoreHeatmap||643|function|undefined RecomputeTileStrategicScoreHeatmap()|
 518470|ApplyJoinEmpireMode0GlobalDiplomacyReset_Impl||66|function|undefined ApplyJoinEmpireMode0GlobalDiplomacyReset_Impl()|
 5184e0|GetProvinceUnitOrderWeight||7|function|undefined GetProvinceUnitOrderWeight()|

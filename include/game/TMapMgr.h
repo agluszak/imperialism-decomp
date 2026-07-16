@@ -156,7 +156,8 @@ struct TGlobalMapCityScoreRecord {
   unsigned char exploredByNationMaskA1;
   // +0xa2 bitmask of resource types (bit = resourceTypeByEdge value) present on this
   // record's linked tiles; rebuilt by RebuildTileOwnerNeighborCachesAndFallbackAssignments.
-  unsigned char resourcePresenceMaskA2;
+  // Read MOVSX (signed) by the case-16 advisory candidate scan (0x4e92b0).
+  signed char resourcePresenceMaskA2;
   // Region-class code (0..23), read via MOVSX in
   // TMapMaker_CheckTerrainTypePairReachabilityByRegionClassMask to index a 24-entry
   // per-class "seen" flag array.
@@ -662,6 +663,11 @@ public:
   // IsEncodedNationSlotMinus200Equal(nationCode) holds for it, checks whether the minor's own
   // slot number is among cityRecordIndex's adjacent owners too.
   bool HasDirectOrFallbackLinkedNodeType(int cityRecordIndex, int nationCode, char allowFallback);
+  // 0x518090. CollectSecondDegreeLinksMatchingNodeType for nationTag; when that finds
+  // nothing and allowFallback is set (and nationTag >= 7), retries each minor slot 7..22
+  // whose capability object exists and whose nation row decodes to nationTag.
+  int CollectSecondDegreeLinksWithMinorNationFallback(int cityRecordIndex, int nationTag,
+                                                      int* nodeBuffer, char allowFallback);
   // 0x515e50. Despite the name, checks whether regionIndex is in nodeContext's
   // adjacent-region list -- see the .cpp body comment.
   char TileHasMovementClassId(int nodeContext, int regionIndex);

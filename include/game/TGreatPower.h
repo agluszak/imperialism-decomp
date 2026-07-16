@@ -450,6 +450,11 @@ public:
   void InitializeNationMinisterSubsystemsByPolicyIds(int arg1, int arg2, short arg3, short arg4,
                                                      short arg5);
   void QueueMapActionMissionsForPortZoneCandidates();
+
+  // Case-16 advisory pass: resets transient candidate flags, re-marks candidate regions
+  // from flagged nations'/minors' owned-region lists, and (when not at war) scores and
+  // flags the top provinces per advisory order type {2,3,4,6}. 0x4e92b0, __thiscall.
+  void PopulateCase16AdvisoryMapNodeCandidateState();
   void HandleTurnInstruction_Civi_DeserializeAndCreateWorkOrder(void* pInstructionRaw);
   void QueueInterNationEventType0FForNationPairContext(short targetNationSlot,
                                                        short sourceNationSlot);

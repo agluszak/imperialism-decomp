@@ -19,6 +19,11 @@ TProvinceDesirabilityList::TProvinceDesirabilityList() {}
 // Not-yet-recovered free functions this file calls into.
 extern "C" int __cdecl rand(void);
 
+// FUNCTION: IMPERIALISM 0x004d6610
+void TProvinceDesirabilityList::InitializeProvinceRecordSize() {
+  recordSize14 = 4;
+}
+
 // FUNCTION: IMPERIALISM 0x004d6630
 short TProvinceDesirabilityList::Compare(void* a, void* b) {
   short aKey = *reinterpret_cast<short*>(static_cast<char*>(a) + 2);

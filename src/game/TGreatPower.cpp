@@ -30,6 +30,7 @@
 #include "game/THelpMgr.h"
 #include "game/TNewsMgr.h"
 #include "game/TMinister.h"
+#include "game/TProvinceDesirabilityList.h"
 #include "game/TMinor.h"
 #include "game/TMission.h"
 #include "game/TMultiplayerMgr.h"
@@ -4644,6 +4645,192 @@ float TGreatPower::ComputeMapActionContextCompositeScoreForNation(int nodeType) 
   }
 
   return compositeScore;
+}
+
+// FUNCTION: IMPERIALISM 0x004e92b0
+void TGreatPower::PopulateCase16AdvisoryMapNodeCandidateState() {
+  int orderTypes[4];
+  orderTypes[0] = 2;
+  orderTypes[1] = 3;
+  orderTypes[2] = 4;
+  orderTypes[3] = 6;
+
+  // Reset the transient (value 1) candidate flags; sticky values survive.
+  int i;
+  for (i = 0; i < 0x180; ++i) {
+    if (mapNodeStateFlags[i] == 1) {
+      mapNodeStateFlags[i] = 0;
+    }
+  }
+
+  // Mark candidate regions from every flagged great power's owned regions, plus (for
+  // eligible slots) the minors whose capability rows decode to that slot.
+  int slot;
+  for (slot = 0; slot < 7; ++slot) {
+    if (g_apNationStates[slot] != 0 && candidateNationFlags[slot] != 0) {
+      int j;
+      for (j = 1; j <= g_apNationStates[slot]->ownedRegionList->GetSize(); ++j) {
+        int region = g_apNationStates[slot]->ownedRegionList->At(j);
+        if (mapNodeStateFlags[region] == 0) {
+          char markValue = 1;
+          if (g_pGlobalMapState->IsNodeTypeLinkUnavailableAndNoActiveMapActionContext(
+                  region, this->nationSlot) != 0) {
+            markValue = 0;
+          }
+          mapNodeStateFlags[region] = markValue;
+        }
+      }
+      if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(slot) != 0) {
+        int minorIndex;
+        for (minorIndex = 0; minorIndex < 9; ++minorIndex) {
+          if (g_apMinorNationCapabilityObjects[minorIndex]->IsEncodedNationSlotMinus200Equal(
+                  slot) != 0) {
+            int m;
+            for (m = 1;
+                 m <= g_apMinorNationCapabilityObjects[minorIndex]->ownedRegionList->GetSize();
+                 ++m) {
+              int minorRegion =
+                  g_apMinorNationCapabilityObjects[minorIndex]->ownedRegionList->At(m);
+              if (mapNodeStateFlags[minorRegion] == 0) {
+                char markValue = 1;
+                if (g_pGlobalMapState->IsNodeTypeLinkUnavailableAndNoActiveMapActionContext(
+                        minorRegion, this->nationSlot) != 0) {
+                  markValue = 0;
+                }
+                mapNodeStateFlags[minorRegion] = markValue;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  // Same marking for every flagged minor's own regions.
+  int minorSlot;
+  for (minorSlot = 0; minorSlot < 16; ++minorSlot) {
+    if (candidateNationFlags[7 + minorSlot] != 0) {
+      int j;
+      for (j = 1; j <= g_apSecondaryNationStateSlots[7 + minorSlot]->ownedRegionList->GetSize();
+           ++j) {
+        int region = g_apSecondaryNationStateSlots[7 + minorSlot]->ownedRegionList->At(j);
+        if (mapNodeStateFlags[region] == 0) {
+          char markValue = 1;
+          if (g_pGlobalMapState->IsNodeTypeLinkUnavailableAndNoActiveMapActionContext(
+                  region, this->nationSlot) != 0) {
+            markValue = 0;
+          }
+          mapNodeStateFlags[region] = markValue;
+        }
+      }
+    }
+  }
+
+  if (g_pDiplomacyTurnStateManager->HasAnyWarRelationForNation(this->nationSlot) != 0) {
+    // At war: purge the interior minister's queues for each advisory order type.
+    int t;
+    for (t = 0; t < 4; ++t) {
+      interiorMinister->InteriorSlot1F(orderTypes[t]);
+    }
+    return;
+  }
+
+  CString nationText;
+  CString turnText;
+  CString preludeText;
+  FormatOverlayTerrainLabelText(&nationText);
+  turnText.Format(g_szDecimalFormat, static_cast<short>(g_pSimMgr->quarterGateTick2c / 4));
+
+  int t;
+  for (t = 0; t < 4; ++t) {
+    g_pSimMgr->GetStringPrelude(static_cast<short>(orderTypes[t]), &preludeText);
+    if (interiorMinister->InteriorSlot1E(orderTypes[t]) >= 5) {
+      TProvinceDesirabilityList* candidates = new TProvinceDesirabilityList();
+      candidates->InitializeProvinceRecordSize();
+
+      int rec;
+      for (rec = 0; rec < 0x180; ++rec) {
+        short owner = g_pGlobalMapState->cityScoreTable[rec].ownerNationCode00;
+        if (owner == -1) {
+          continue;
+        }
+        if (g_pDiplomacyTurnStateManager->GetNationPairDiplomacyRelationCode(this->nationSlot,
+                                                                             owner) == 2) {
+          continue;
+        }
+        if (g_apTerrainTypeDescriptorTable[owner]->encodedNationSlot >= 200) {
+          if (g_pDiplomacyTurnStateManager->GetNationPairDiplomacyRelationCode(
+                  this->nationSlot,
+                  g_apTerrainTypeDescriptorTable[owner]->DecodeOwnerNationSlot()) == 2) {
+            continue;
+          }
+        }
+        if (mapNodeStateFlags[rec] != 0) {
+          continue;
+        }
+        if (((1 << orderTypes[t]) &
+             g_pGlobalMapState->cityScoreTable[rec].resourcePresenceMaskA2) == 0) {
+          continue;
+        }
+
+        short score = g_pDiplomacyTurnStateManager
+                          ->relationStandingScoreMatrix79c[this->nationSlot * 0x17 + owner];
+        int linkBonus;
+        int nodeBuffer[12];
+        if (g_pGlobalMapState->HasDirectOrFallbackLinkedNodeType(rec, this->nationSlot, 1) != 0) {
+          linkBonus = 0;
+        } else if (g_pGlobalMapState->CollectSecondDegreeLinksWithMinorNationFallback(
+                       rec, this->nationSlot, nodeBuffer, 1) != 0) {
+          linkBonus = 0x14;
+        } else if (FindMapActionContextContainingNodeByIndex(rec) != 0) {
+          linkBonus = 0x28;
+        } else {
+          continue;
+        }
+        score = static_cast<short>(score + linkBonus);
+
+        struct ProvinceCandidateRecord {
+          short regionIndex;
+          short score;
+        } candidate;
+        candidate.regionIndex = static_cast<short>(rec);
+        candidate.score = score;
+        if (owner < 7 && g_pSimMgr->IsNationSlotEligibleForEventProcessing(owner) != 0) {
+          candidate.score = static_cast<short>(candidate.score + 0x14);
+        }
+        candidates->InsertCopiedRecordSortedByComparator(&candidate);
+      }
+
+      // Flag the top one or two candidates.
+      if (candidates->GetSize() != 0) {
+        short* topRecord = static_cast<short*>(candidates->GetPtrListEntryByOneBasedIndex(1));
+        int topRegion = topRecord[0];
+        if (mapNodeStateFlags[topRegion] == 0) {
+          char markValue = 1;
+          if (g_pGlobalMapState->IsNodeTypeLinkUnavailableAndNoActiveMapActionContext(
+                  topRegion, this->nationSlot) != 0) {
+            markValue = 0;
+          }
+          mapNodeStateFlags[topRegion] = markValue;
+        }
+        if (candidates->GetSize() >= 2) {
+          short* secondRecord = static_cast<short*>(candidates->GetPtrListEntryByOneBasedIndex(2));
+          int secondRegion = secondRecord[0];
+          if (mapNodeStateFlags[secondRegion] == 0) {
+            char markValue = 1;
+            if (g_pGlobalMapState->IsNodeTypeLinkUnavailableAndNoActiveMapActionContext(
+                    secondRegion, this->nationSlot) != 0) {
+              markValue = 0;
+            }
+            mapNodeStateFlags[secondRegion] = markValue;
+          }
+        }
+      }
+      if (candidates != 0) {
+        candidates->ReleasePtrList();
+      }
+    }
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x0055f140

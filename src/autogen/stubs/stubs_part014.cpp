@@ -35,14 +35,6 @@ undefined4 ComputeAdvisoryMapNodeCompositeScoreByMode(void)
   return 0;
 }
 
-// ghidra_name PopulateCase16AdvisoryMapNodeCandidateState
-// ghidra_proto undefined PopulateCase16AdvisoryMapNodeCandidateState()
-// FUNCTION: IMPERIALISM 0x004e92b0
-undefined4 PopulateCase16AdvisoryMapNodeCandidateState(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_ftol_At004ea5e0
 // ghidra_proto undefined WrapperFor_ftol_At004ea5e0()
 // FUNCTION: IMPERIALISM 0x004ea5e0

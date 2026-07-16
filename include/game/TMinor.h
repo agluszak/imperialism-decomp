@@ -15,23 +15,6 @@ class TMinor : public TCountry {
 public:
   TMinor();
 
-  // Decode the owning great-power slot from encodedNationSlot: >= 200 -> tag - 200,
-  // 100..199 -> tag - 100, else this nation's own slot. Header-inline: the original
-  // bodies open-code this decode at each site.
-  short DecodeOwnerNationSlot() const {
-    short ownerNationSlot = encodedNationSlot;
-    if (ownerNationSlot < 200) {
-      if (ownerNationSlot < 100) {
-        ownerNationSlot = nationSlot;
-      } else {
-        ownerNationSlot = static_cast<short>(ownerNationSlot - 100);
-      }
-    } else {
-      ownerNationSlot = static_cast<short>(ownerNationSlot - 200);
-    }
-    return ownerNationSlot;
-  }
-
   static void* GetTMinorClassNamePointer();
 
   DECLARE_DYNCREATE(TMinor)

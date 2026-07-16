@@ -3291,6 +3291,28 @@ int TMapMgr::CollectSecondDegreeLinksMatchingNodeType(int cityRecordIndex, int n
   return resultCount;
 }
 
+// FUNCTION: IMPERIALISM 0x00518090
+int TMapMgr::CollectSecondDegreeLinksWithMinorNationFallback(int cityRecordIndex, int nationTag,
+                                                             int* nodeBuffer, char allowFallback) {
+  int resultCount =
+      CollectSecondDegreeLinksMatchingNodeType(cityRecordIndex, nationTag, nodeBuffer);
+  if (resultCount <= 0 && allowFallback != 0 && nationTag >= 7) {
+    int minorIndex;
+    for (minorIndex = 0; minorIndex < 16; ++minorIndex) {
+      if (g_apMinorNationCapabilityObjects[minorIndex] != 0 &&
+          g_apSecondaryNationStateSlots[7 + minorIndex]->IsEncodedNationSlotMinus200Equal(
+              nationTag) != 0) {
+        resultCount =
+            CollectSecondDegreeLinksMatchingNodeType(cityRecordIndex, 7 + minorIndex, nodeBuffer);
+        if (resultCount > 0) {
+          break;
+        }
+      }
+    }
+  }
+  return resultCount;
+}
+
 // FUNCTION: IMPERIALISM 0x00518130
 void TMapMgr::RecomputeTileStrategicScoreHeatmap() {
   int r;

@@ -1759,6 +1759,7 @@ address|target_cpp|ownership|note
 4d6570|src/game/TProvinceDesirabilityList.cpp|manual|marker_sync
 4d6590|src/game/TProvinceDesirabilityList.cpp|manual|marker_sync
 4d65c0|src/game/TProvinceDesirabilityList.cpp|manual|marker_sync
+4d6610|src/game/TProvinceDesirabilityList.cpp|manual|marker_sync
 4d6630|src/game/TProvinceDesirabilityList.cpp|manual|marker_sync
 4d66a0|src/game/TCountry.cpp|manual|marker_sync
 4d6730|src/game/TCountry.cpp|manual|marker_sync
@@ -2061,6 +2062,7 @@ address|target_cpp|ownership|note
 4e8b50|src/game/TGreatPower.cpp|manual|marker_sync
 4e8bf0|src/game/TGreatPower.cpp|manual|marker_sync
 4e9060|src/game/TGreatPower.cpp|manual|marker_sync
+4e92b0|src/game/TGreatPower.cpp|manual|marker_sync
 4e9a50|src/game/TAutoGreatPower.cpp|manual|marker_sync
 4e9ed0|src/game/TAutoGreatPower.cpp|manual|marker_sync
 4e9f10|src/game/TAutoGreatPower.cpp|manual|marker_sync
@@ -2624,6 +2626,7 @@ address|target_cpp|ownership|note
 517c30|src/game/TMapMgr.cpp|manual|marker_sync
 517dd0|src/game/TMapMgr.cpp|manual|marker_sync
 517f80|src/game/TMapMgr.cpp|manual|marker_sync
+518090|src/game/TMapMgr.cpp|manual|marker_sync
 518130|src/game/TMapMgr.cpp|manual|marker_sync
 518470|src/game/TMapMgr.cpp|manual|marker_sync
 5184e0|src/game/TMapMgr.cpp|manual|marker_sync
