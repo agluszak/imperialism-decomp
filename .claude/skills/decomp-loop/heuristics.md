@@ -2199,3 +2199,35 @@ match the pass structure before chasing store order (24.9% -> 69.3%).
      `new` wrote vtable 0x650a08, so its declared TSortedList* type (different vtable, different
      slot map) had silently mismodeled every accessor — the "AddTailEx" calls in the
      Remove-region family were really `Delete(value)` at +0x34.
+
+112. **A "cdecl" callee whose original callsites all load ECX right before the CALL is a real
+     __thiscall method — even when the body never touches `this`, and even for singletons.**
+     The advisory-scoring sweep found five in one cluster: SumNavyOrderPriorityForNation[AndNodeType]
+     (methods on TGreatPower, `cmp [ecx+0xc]`), ComputeWeightedNeighborLinkScoreForNode (TCountry,
+     this unused), ComputeWeightedNeighborLinkScoreForNodeIndex (TArmyMgr singleton, this unused),
+     and FindMapActionContextContainingNodeByIndex / ComputeGlobalMapActionContextNodeValueAverage
+     (TOcean singleton, this unused). Tells: callee cleans its own stack (RET n) while the ported
+     "free cdecl" form forces caller cleanup, and the "dead" `mov ecx, <global>` at every callsite.
+     Check callee RET + one caller's ECX setup before trusting any free-function model; a wrong
+     convention silently costs lines in EVERY caller, not just the callee.
+
+113. **MSVC500 keeps a loop's array bound compare SIGNED (JL) when the source loop is
+     index-based and strength-reduced, but UNSIGNED (JB) for an explicit pointer-cursor loop.**
+     `for (slot = 0; slot < 7; ++slot) use(g_apNationStates[slot])` strength-reduces to the same
+     add/inc/cmp-pointer shape as a hand-written cursor loop but emits `cmp esi, END; jl`;
+     writing the cursor loop by hand emits `jb`. When the orig bound check is JL, write the
+     indexed form and let the compiler derive the cursors (it will also derive parallel cursors
+     for flags[i]/priorities[i]/nations[i] in one loop — don't hand-hoist them).
+
+114. **Byte-flag guards that load into AL before comparing (`mov al, [flags+r]; cmp al, 1`) are
+     a byte LOCAL in the source; a direct `cmp byte ptr [...], imm` is the memberless form.**
+     0x4e9a50's region loop only matched (+11pp) after `unsigned char nodeFlag =
+     mapNodeStateFlags[region]; if (nodeFlag != 1) continue;` — with the adjacent `linkRegion=-1`
+     init placed BETWEEN the load and the compare, exactly where the orig schedules `or ebx,-1`.
+
+115. **The shared uninitialized `float result` of a switch-heavy scorer doubles as each case's
+     scratch temp.** 0x4e8750: every case's stored float temp (case-1/2 denominator, case-3/4
+     product, case-6 ratio) lands in the SAME arg-slot the merged `return result;` tail FLDs.
+     Port shape: declare `float result;` once, `switch` with per-case `return expr / result`
+     after assigning `result = <temp>`, cases that fall through `break` into a single trailing
+     `return result;` — the dead default path reading garbage is original behaviour, keep it.

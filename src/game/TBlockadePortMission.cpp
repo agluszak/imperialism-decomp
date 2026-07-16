@@ -63,8 +63,7 @@ void TBlockadePortMission::ReadFrom(TStream* stream) {
 
 // FUNCTION: IMPERIALISM 0x0053ace0
 void TBlockadePortMission::Call30() {
-  TGreatPower* owner = reinterpret_cast<TGreatPower*>(targetZone14);
-  float score = static_cast<float>(owner->ComputeMapActionContextNodeValueAverage());
+  float score = static_cast<float>(targetZone14->ComputeMapActionContextNodeValueAverage());
 
   for (TZone* zone = TZone::GetFirstPortZone(); zone != nullptr; zone = zone->GetNextPortZone()) {
     // See TControlSeaZoneMission::Call30 -- per-zone owner cache not yet modeled.

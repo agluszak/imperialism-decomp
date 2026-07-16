@@ -947,14 +947,14 @@ char TDiplomacyMgr::IsPrimaryNationSlotIndex(int nationSlot) {
 }
 
 // FUNCTION: IMPERIALISM 0x004f1f70
-void TDiplomacyMgr::BuildRelationshipListSlot88(int sourceNationSlot, int primaryOnlyFlag,
+void TDiplomacyMgr::BuildRelationshipListSlot88(short sourceNationSlot, short primaryOnlyFlag,
                                                 void* listHandle) {
   // The slot signature is the native void* handle; recover the common list base once
   // (InsertCopiedRecordSortedByComparator is a TIndexAndRankList virtual, shared by every sorted-list leaf).
   TIndexAndRankList* list = static_cast<TIndexAndRankList*>(listHandle);
   short candidateNationSlot;
   short lastNationSlot;
-  if (static_cast<short>(primaryOnlyFlag) == 0) {
+  if (primaryOnlyFlag == 0) {
     candidateNationSlot = 7;
     lastNationSlot = 0x16;
   } else {
@@ -971,10 +971,10 @@ void TDiplomacyMgr::BuildRelationshipListSlot88(int sourceNationSlot, int primar
   do {
     TCountry* terrain = *terrainCursor;
     if (terrain != 0 && terrain->encodedNationSlot == -1 &&
-        candidateNationSlot != static_cast<short>(sourceNationSlot)) {
+        candidateNationSlot != sourceNationSlot) {
       RelationshipRankEntry entry;
       entry.nationSlot = candidateNationSlot;
-      int source = static_cast<short>(sourceNationSlot);
+      int source = sourceNationSlot;
       entry.standingScore =
           relationStandingScoreMatrix79c[source * kNationSlotCount + candidateIndex];
       list->InsertCopiedRecordSortedByComparator(&entry);

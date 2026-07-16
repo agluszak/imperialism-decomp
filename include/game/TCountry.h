@@ -84,6 +84,10 @@ public:
   virtual void NoOpNationSelectedRegionAndMapCellLabelHook(int arg1, int arg2);
 
   int SumWeightedNeighborLinkScoreForLinkedNodes(void);
+  // 0x004d8390 — forwards to g_pMapContextActionManager's per-node weighted stationed-
+  // unit score. Real __thiscall (ret 4; the 0x004e8750 metric-3 callsite loads the
+  // country into ecx); `this` is unused by the body.
+  int ComputeWeightedNeighborLinkScoreForNode(int nodeIndex);
 
   // Diplomacy / nation-state helpers (bodies may access TGreatPower tail via `this`).
   void DeserializeDiplomacyNationStateFromStream(TStream* stream);
@@ -155,10 +159,10 @@ public:
 
 // g_apTerrainTypeDescriptorTable — see game/global_data_tables.h.
 
-// Nation-slot decode and linked-node scoring helpers (terrain table rows are TCountry*).
+// Nation-slot decode helpers (terrain table rows are TCountry*).
 int DecodeTerrainNationSlotFromDescriptor(const TCountry* terrain, short encodedNationSlot);
 int ResolveTerrainNationSlotFromTarget(int targetNationSlot);
-int ComputeWeightedNeighborLinkScoreForNode(int nodeIndex);
-int ComputeWeightedNeighborLinkScoreForNodeIndex(short nodeIndex);
+// 0x004a5aa0 moved to TArmyMgr::ComputeWeightedNeighborLinkScoreForNodeIndex — both
+// original callsites load ecx = g_pMapContextActionManager (thiscall, this unused).
 
 ASSERT_SIZE(TCountry, 0x94);

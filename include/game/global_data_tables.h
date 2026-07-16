@@ -192,10 +192,12 @@ extern float g_Iterate_Linked_List_Value_00653718;                  // 0.25f
 extern float g_Compute_City_Order_Value_0065371C;                   // 0.5f
 extern float g_Compute_Advisory_Handler_LookupTable_00653720;       // -90.0f
 extern float g_Compute_Advisory_Peer_LookupTable_00653724;          // -0.5f
+extern float g_afAdvisoryMissionTierThresholdByMinisterSkill_00653F18[5][6];
 extern const float g_Compute_Advisory_Zero_00653FD0;
 extern float g_Compute_Advisory_Map_Value_00653FD4;
 extern double g_Compute_Advisory_MinusSix_00653FE8;
 extern double g_Compute_Advisory_MinusHundred_00653FF0;
+extern float g_Compute_Advisory_MinusSixFloat_00653FF8;
 extern double g_Compute_Advisory_Hundred_00654000;
 extern double g_Compute_Advisory_OnePointFive_00654008;
 

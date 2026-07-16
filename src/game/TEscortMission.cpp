@@ -67,8 +67,7 @@ void TEscortMission::ResetValue0CToZero() {
   TZone* homePortZone = g_pActiveMapOrderContext->FindFirstPortZoneContextByNation(nationId04);
   TZone** cachedOwnerSlot = homePortZone->primaryNeighbors.EnsureSlotAllocatedAndReturnPointer(0);
   TZone* cachedOwner = *cachedOwnerSlot;
-  float score = static_cast<float>(
-      reinterpret_cast<TGreatPower*>(cachedOwner)->ComputeMapActionContextNodeValueAverage());
+  float score = static_cast<float>(cachedOwner->ComputeMapActionContextNodeValueAverage());
 
   for (TZone* zone = TZone::GetFirstPortZone(); zone != nullptr; zone = zone->GetNextPortZone()) {
     TZone** zoneOwnerSlot = zone->primaryNeighbors.EnsureSlotAllocatedAndReturnPointer(0);

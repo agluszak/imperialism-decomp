@@ -170,10 +170,10 @@ struct TGlobalMapCityScoreRecord {
 // __cdecl, defined in TMapMgr.cpp.
 void ByteSwapCityScoreTableShortFields(TGlobalMapCityScoreRecord* table);
 
-// Resolve a raw TGlobalMapCityScoreRecord* back into its cityScoreTable index; the
-// second arg is provably dead in the original (kept for the call-shape). 0x0050e2c0,
-// defined in TNavyMgr.cpp.
-int GetCityIndexFromCityStatePointer(TGlobalMapCityScoreRecord* cityState, int unusedArg);
+// Resolve a raw TGlobalMapCityScoreRecord* back into its cityScoreTable index.
+// Real __fastcall (single ecx arg, no stack cleanup: every original callsite loads
+// ecx and pushes nothing). 0x0050e2c0, defined in TNavyMgr.cpp.
+int __fastcall GetCityIndexFromCityStatePointer(TGlobalMapCityScoreRecord* cityState);
 
 // 0x5127e0: tileIndex -> (hex raster column*2 (+1 on odd rows), row = tileIndex/0x6c).
 // Genuine __cdecl free function (pure arithmetic).

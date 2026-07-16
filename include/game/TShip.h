@@ -86,8 +86,8 @@ int FindCumulativeWeightBucketIndex(short* weightTable, short roll);
 short GetIndustryActionCostWeightByResourceType(short resourceType);
 short GetResourceDescriptorWeightWord0ByType(short resourceType);
 int ComputeOrderNodeCompositeEconomicScore(TShip* node);
-int SumNavyOrderPriorityForNation(TGreatPower* nationObj);
-int SumNavyOrderPriorityForNationAndNodeType(TGreatPower* nationObj, int nodeType);
+// 0x004e04b0 / 0x004e0460 moved to TGreatPower::SumNavyOrderPriorityForNation[AndNodeType]
+// — both bodies compare the ship owner tag against [ecx+0xc] (real __thiscall methods).
 
 // Walks the primary navy order list for `nation`'s eligible port-owner ships (owner
 // matches, the order's zone is a port zone, and the ship's normalization base doesn't

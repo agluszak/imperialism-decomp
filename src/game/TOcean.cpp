@@ -331,7 +331,7 @@ void TOcean::RefreshMapActionContextNationOverlaysAndOrderRanks() {
       continue;
     }
     int cityIndex = GetCityIndexFromCityStatePointer(
-        reinterpret_cast<TGlobalMapCityScoreRecord*>(rankEntry->owner), 0);
+        reinterpret_cast<TGlobalMapCityScoreRecord*>(rankEntry->owner));
     if (static_cast<short>(g_pGlobalMapState->cityScoreTable[cityIndex].ownerNationCode00) !=
         g_pSimMgr->GetActiveNationId()) {
       continue;
@@ -482,17 +482,34 @@ void TOcean::RemovePortZoneByTile(short nTileIndex) {
 }
 
 // FUNCTION: IMPERIALISM 0x00564530
-int ComputeGlobalMapActionContextNodeValueAverage(void) {
+int TOcean::ComputeGlobalMapActionContextNodeValueAverage() {
   int sum = 0;
   int count = 0;
 
   for (TZone* zone = g_pMapActionContextListHead; zone != 0; zone = zone->prev18) {
-    TGreatPower* nationState = g_apNationStates[zone->field12];
-    sum += static_cast<int>(nationState->ComputeMapActionContextNodeValueAverage());
+    sum += zone->ComputeMapActionContextNodeValueAverage();
     ++count;
   }
 
   return sum / count;
+}
+
+// FUNCTION: IMPERIALISM 0x00564570
+TZone* TOcean::FindMapActionContextContainingNodeByIndex(int cityRecordIndex) {
+  TGlobalMapCityScoreRecord* target = &g_pGlobalMapState->cityScoreTable[cityRecordIndex];
+  for (TZone* zone = g_pMapActionContextListHead; zone != 0; zone = zone->prev18) {
+    int count = zone->secondaryNeighbors.Count();
+    if (count != 0) {
+      TGlobalMapCityScoreRecord** entries =
+          reinterpret_cast<TGlobalMapCityScoreRecord**>(zone->secondaryNeighbors.Data());
+      for (int i = 0; i < count; ++i) {
+        if (entries[i] == target) {
+          return zone;
+        }
+      }
+    }
+  }
+  return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x00564600

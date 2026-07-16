@@ -49,7 +49,7 @@ public:
   void ApplyDiplomacyRelationCodeAndNotifyThirdPartySlot284(int targetNationSlot, int policyCode,
                                                             int sourceNationSlot) override;
   // slot 0xa2 — 0x004e9a50: select and queue advisory map missions (case 16).
-  void NoOpSlotA2(void) override;
+  void SelectAndQueueAdvisoryMapMissionsCase16(void) override;
   // slot 0xa4 — 0x004eb0d0: prune invalid missionQueue entries.
   void PruneInvalidTrackedEntriesAndNotifyOwner(void) override;
   // slots 0xad/0xae — 0x004eaa20/0x004eae70: AI turn tail hooks.

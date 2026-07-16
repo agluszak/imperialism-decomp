@@ -25,27 +25,8 @@ static short SignedDiv10(int value) {
                  (short)(((__int64)value * 0x66666667) >> 0x3f));
 }
 
-// FUNCTION: IMPERIALISM 0x004e0460
-int SumNavyOrderPriorityForNationAndNodeType(TGreatPower* nationObj, int nodeType) {
-  int sum = 0;
-  for (TShip* node = GetNavyPrimaryOrderListHead(); node != 0; node = node->nextOlder24) {
-    if (node->ownerNationSlot14 == nationObj->nationSlot && node->field08 == (void*)nodeType) {
-      sum += ComputeOrderNodeCompositeEconomicScore(node);
-    }
-  }
-  return sum;
-}
-
-// FUNCTION: IMPERIALISM 0x004e04b0
-int SumNavyOrderPriorityForNation(TGreatPower* nationObj) {
-  int sum = 0;
-  for (TShip* node = GetNavyPrimaryOrderListHead(); node != 0; node = node->nextOlder24) {
-    if (node->ownerNationSlot14 == nationObj->nationSlot) {
-      sum += ComputeOrderNodeCompositeEconomicScore(node);
-    }
-  }
-  return sum;
-}
+// 0x004e0460 / 0x004e04b0 (SumNavyOrderPriorityForNation[AndNodeType]) are real
+// TGreatPower __thiscall methods; bodies live in TGreatPower.cpp.
 
 // FUNCTION: IMPERIALISM 0x0053b800
 float ComputeNavyOrderDistributionScoreForNation(short nation) {

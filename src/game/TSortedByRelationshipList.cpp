@@ -11,6 +11,11 @@ IMPLEMENT_DYNCREATE(TSortedByRelationshipList, TSortedPtrList)
 // FUNCTION: IMPERIALISM 0x004ee540
 TSortedByRelationshipList::TSortedByRelationshipList() : TSortedPtrList() {}
 
+// FUNCTION: IMPERIALISM 0x004ee5c0
+void TSortedByRelationshipList::InitializeRelationshipRecordSize() {
+  recordSize14 = 4;
+}
+
 // Destructors are compiler-generated (implicit) from real inheritance.
 // SYNTHETIC: IMPERIALISM 0x004ee570
 // TSortedByRelationshipList::`scalar deleting destructor'

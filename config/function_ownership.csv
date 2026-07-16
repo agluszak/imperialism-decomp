@@ -1153,7 +1153,7 @@ address|target_cpp|ownership|note
 4a4c80|src/game/TArmyMgr.cpp|manual|marker_sync
 4a5080|src/game/TArmyMgr.cpp|manual|marker_sync
 4a5760|src/game/TArmyMgr.cpp|manual|marker_sync
-4a5aa0|src/game/TCountry.cpp|manual|marker_sync
+4a5aa0|src/game/TArmyMgr.cpp|manual|marker_sync
 4a5b10|src/game/TArmyMgr.cpp|manual|marker_sync
 4a5c50|src/game/TArmyBattle.cpp|manual|marker_sync
 4a5ec0|src/game/TArmyMgr.cpp|manual|marker_sync
@@ -1933,8 +1933,8 @@ address|target_cpp|ownership|note
 4e0400|src/game/TGreatPower.cpp|manual|marker_sync
 4e0420|src/game/TGreatPower.cpp|manual|marker_sync
 4e0440|src/game/TGreatPower.cpp|manual|marker_sync
-4e0460|src/game/TShip.cpp|manual|marker_sync
-4e04b0|src/game/TShip.cpp|manual|marker_sync
+4e0460|src/game/TGreatPower.cpp|manual|marker_sync
+4e04b0|src/game/TGreatPower.cpp|manual|marker_sync
 4e0500|src/game/TGreatPower.cpp|manual|marker_sync
 4e0550|src/game/TGreatPower.cpp|manual|marker_sync
 4e0590|src/game/TGreatPower.cpp|manual|marker_sync
@@ -2061,6 +2061,8 @@ address|target_cpp|ownership|note
 4e8750|src/game/TGreatPower.cpp|manual|marker_sync
 4e8b50|src/game/TGreatPower.cpp|manual|marker_sync
 4e8bf0|src/game/TGreatPower.cpp|manual|marker_sync
+4e8c20|src/game/TGreatPower.cpp|manual|marker_sync
+4e8c50|src/game/TGreatPower.cpp|manual|marker_sync
 4e9060|src/game/TGreatPower.cpp|manual|marker_sync
 4e92b0|src/game/TGreatPower.cpp|manual|marker_sync
 4e9a50|src/game/TAutoGreatPower.cpp|manual|marker_sync
@@ -2128,6 +2130,7 @@ address|target_cpp|ownership|note
 4ee520|src/game/TSortedByRelationshipList.cpp|manual|marker_sync
 4ee540|src/game/TSortedByRelationshipList.cpp|manual|marker_sync
 4ee570|src/game/TSortedByRelationshipList.cpp|manual|marker_sync
+4ee5c0|src/game/TSortedByRelationshipList.cpp|manual|marker_sync
 4ee5e0|src/game/TSortedByRelationshipList.cpp|manual|marker_sync
 4ee650|src/game/TDiplomacyMgr.cpp|manual|marker_sync
 4ee6a0|src/game/TDiplomacyMgr.cpp|manual|marker_sync
@@ -3478,7 +3481,7 @@ address|target_cpp|ownership|note
 55f090|src/game/TZone.cpp|manual|marker_sync
 55f0b0|src/game/TZone.cpp|manual|marker_sync
 55f100|src/game/TZone.cpp|manual|marker_sync
-55f140|src/game/TGreatPower.cpp|manual|marker_sync
+55f140|src/game/TZone.cpp|manual|marker_sync
 55f300|src/game/TZone.cpp|manual|marker_sync
 55f440|src/game/TZone.cpp|manual|marker_sync
 55f4d0|src/game/TZone.cpp|manual|marker_sync
@@ -3547,7 +3550,7 @@ address|target_cpp|ownership|note
 563da0|src/game/TZone.cpp|manual|marker_sync
 564240|src/game/TOcean.cpp|manual|marker_sync
 564530|src/game/TOcean.cpp|manual|marker_sync
-564570|src/game/TZone.cpp|manual|marker_sync
+564570|src/game/TOcean.cpp|manual|marker_sync
 564600|src/game/TOcean.cpp|manual|marker_sync
 564860|src/game/TMilitaryPageView.cpp|manual|marker_sync
 564900|src/game/TMilitaryPageView.cpp|manual|marker_sync

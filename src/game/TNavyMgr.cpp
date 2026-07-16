@@ -33,12 +33,10 @@ extern "C" TAdmiral* g_pNavySecondaryOrderListHead;
 extern undefined4 RevalidateAndRequeueMapOrdersForTurn(void);
 
 // Resolves a raw TGlobalMapCityScoreRecord* back into its index in
-// g_pGlobalMapState's cityScoreTable. `unusedArg` is provably dead in the original
-// (0x50e2c0 only ever reads `cityState`), kept only so the real __thiscall
-// signature/stack cleanup matches.
+// g_pGlobalMapState's cityScoreTable. Real __fastcall: the single arg arrives in ecx
+// and no original callsite pushes anything.
 // FUNCTION: IMPERIALISM 0x0050e2c0
-int GetCityIndexFromCityStatePointer(TGlobalMapCityScoreRecord* cityState, int unusedArg) {
-  (void)unusedArg;
+int __fastcall GetCityIndexFromCityStatePointer(TGlobalMapCityScoreRecord* cityState) {
   return static_cast<int>(cityState - g_pGlobalMapState->cityScoreTable);
 }
 
@@ -209,7 +207,7 @@ void RefreshMapOrderBattleSideSnapshot(MapOrderBattleSnapshot* snapshot, int sid
 
   if (entry != nullptr && entry->attachment == 5) {
     int cityIndex = GetCityIndexFromCityStatePointer(
-        reinterpret_cast<TGlobalMapCityScoreRecord*>(entry->owner), 0);
+        reinterpret_cast<TGlobalMapCityScoreRecord*>(entry->owner));
     g_pMapContextActionManager->TrimExcessNavyOrderSupportAndRebuildOrderBuffer(
         snapshot->requiredCountByte[side], cityIndex);
   }

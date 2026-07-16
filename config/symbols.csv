@@ -1504,7 +1504,7 @@ address|name|symbol|size|type|prototype|provenance
 4a4fc0|TArmyMgr::OrphanCallChain_C2_I54_004a4fc0||144|function|undefined OrphanCallChain_C2_I54_004a4fc0()|
 4a5080|ValidateOrderPlacementPrerequisitesForSelectedTile||1407|function|undefined ValidateOrderPlacementPrerequisitesForSelectedTile()|
 4a5760|SetActiveProvinceAndBuildDirectionalOrderOverlays||656|function|undefined SetActiveProvinceAndBuildDirectionalOrderOverlays()|
-4a5aa0|ComputeWeightedNeighborLinkScoreForNodeIndex||75|function|undefined ComputeWeightedNeighborLinkScoreForNodeIndex()|
+4a5aa0|TArmyMgr::ComputeWeightedNeighborLinkScoreForNodeIndex||75|function|int __thiscall ComputeWeightedNeighborLinkScoreForNodeIndex(short nodeIndex)|
 4a5b10|CreateTacticalBattleViewAndInitializeBattleSetup||243|function|undefined CreateTacticalBattleViewAndInitializeBattleSetup()|
 4a5c50|TArmyBattle::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 4a5c80|WrapperFor_FreeHeapBufferIfNotNull_At004a5c50_Impl||7|function|undefined WrapperFor_FreeHeapBufferIfNotNull_At004a5c50_Impl()|
@@ -2325,7 +2325,7 @@ address|name|symbol|size|type|prototype|provenance
 4d7fc0|TCountry::OrphanLeaf_NoCall_Ins02_004d7fc0||5|function|undefined OrphanLeaf_NoCall_Ins02_004d7fc0(void)|
 4d7fe0|TCountry::OrphanRetStub_004d7fe0||3|function|undefined OrphanRetStub_004d7fe0(void)|
 4d8000|TCountry::PopulateSelectableEntryFlavorTextAndOrdinals||711|function|undefined PopulateSelectableEntryFlavorTextAndOrdinals()|
-4d8390|ComputeWeightedNeighborLinkScoreForNode||19|function|int __cdecl ComputeWeightedNeighborLinkScoreForNode(int nodeIndex)|
+4d8390|TCountry::ComputeWeightedNeighborLinkScoreForNode||19|function|int __thiscall ComputeWeightedNeighborLinkScoreForNode(int nodeIndex)|
 4d83c0|SumWeightedNeighborLinkScoreForLinkedNodes||75|function|int __thiscall SumWeightedNeighborLinkScoreForLinkedNodes(TCountry* this)|
 4d8430|ComputeSelectedMilitaryPowerScore||91|function|undefined ComputeSelectedMilitaryPowerScore()|
 4d84b0|ClassifyNationMilitaryPowerBandAgainstGlobalMean||594|function|undefined ClassifyNationMilitaryPowerBandAgainstGlobalMean()|
@@ -2463,8 +2463,8 @@ address|name|symbol|size|type|prototype|provenance
 4e0400|TGreatPower::HasActiveCandidateNationSlots||3|function|undefined HasActiveCandidateNationSlots()|
 4e0420|TGreatPower::OrphanLeaf_NoCall_Ins02_004d7ee0_84||3|function|undefined OrphanLeaf_NoCall_Ins02_004d7ee0(void)|
 4e0440|TGreatPower::OrphanLeaf_NoCall_Ins02_004d7f00_85||3|function|undefined OrphanLeaf_NoCall_Ins02_004d7f00(void)|
-4e0460|SumNavyOrderPriorityForNationAndNodeType||63|function|int __cdecl SumNavyOrderPriorityForNationAndNodeType(TGreatPower* nationObj,int nodeType)|
-4e04b0|SumNavyOrderPriorityForNation||50|function|int __cdecl SumNavyOrderPriorityForNation(TGreatPower* nationObj)|
+4e0460|TGreatPower::SumNavyOrderPriorityForNationAndNodeType||63|function|int __thiscall SumNavyOrderPriorityForNationAndNodeType(TZone* zone)|
+4e04b0|TGreatPower::SumNavyOrderPriorityForNation||50|function|int __thiscall SumNavyOrderPriorityForNation(void)|
 4e0500|TGreatPower::ComputeNavyOrderIndustryCostWeightSumForNation||59|function|undefined ComputeNavyOrderIndustryCostWeightSumForNation()|
 4e0550|TGreatPower::OrphanLeaf_NoCall_Ins02_004d7f40_87||36|function|undefined OrphanLeaf_NoCall_Ins02_004d7f40(void)|
 4e0590|TGreatPower::OrphanRetStub_004d7fa0_88||35|function|undefined OrphanRetStub_004d7fa0(void)|
@@ -2494,7 +2494,7 @@ address|name|symbol|size|type|prototype|provenance
 4e1c20|TGreatPower::EvaluateJoinWarAgainstNationAndQueueEvent||230|function|undefined EvaluateJoinWarAgainstNationAndQueueEvent()|
 4e1d50|TGreatPower::ExecuteAdvisoryPromptAndApplyActionType1||192|function|undefined ExecuteAdvisoryPromptAndApplyActionType1()|
 4e1e40|TGreatPower::ExecuteAdvisoryPromptAndApplyActionType2OrFallback||168|function|undefined ExecuteAdvisoryPromptAndApplyActionType2OrFallback()|
-4e1f20|TGreatPower::DeserializeRecruitScenarioAndInstantiateOrders_a2||1|function|undefined DeserializeRecruitScenarioAndInstantiateOrders(void)|
+4e1f20|TGreatPower::SelectAndQueueAdvisoryMapMissionsCase16||1|function|void __thiscall SelectAndQueueAdvisoryMapMissionsCase16(void)|
 4e1f40|TGreatPower::ComputeWarThresholdSlotA3||452|function|undefined ComputeWarThresholdSlotA3()|
 4e2190|TGreatPower::PruneInvalidTrackedEntriesAndNotifyOwner||1|function|undefined PruneInvalidTrackedEntriesAndNotifyOwner(void)|
 4e21b0|TGreatPower::ApplyJoinEmpireModeForTargetNation||132|function|void __thiscall ApplyJoinEmpireModeForTargetNation(int targetNationSlot,int mode)|
@@ -2597,13 +2597,14 @@ address|name|symbol|size|type|prototype|provenance
 4e83d0|QueueMapActionMissionsForPortZoneCandidates||287|function|undefined QueueMapActionMissionsForPortZoneCandidates()|
 4e8540|TGreatPower::QueueMapActionMissionFromCandidateAndMarkState||248|function|undefined QueueMapActionMissionFromCandidateAndMarkState()|
 4e8680|TAutoGreatPower::DispatchToFirstMatchingListNodeAndRemove||157|function|undefined DispatchToFirstMatchingListNodeAndRemove()|
-4e8750|TGreatPower::ComputeAdvisoryMapNodeScoreFactorByCaseMetric||785|function|undefined ComputeAdvisoryMapNodeScoreFactorByCaseMetric()|
+4e8750|TGreatPower::ComputeAdvisoryMapNodeScoreFactorByCaseMetric||785|function|float __thiscall ComputeAdvisoryMapNodeScoreFactorByCaseMetric(int metricCase,int cityIndex,TZone* zone,int selectedNationSlot)|
 4e8b50|TAttackProvinceMission::SetMapStateByteFlag970WithRuntimeGate||56|function|undefined SetMapStateByteFlag970WithRuntimeGate()|
 4e8bf0|SetByteFlagAtOffsetAF0ByIndex||18|function|undefined SetByteFlagAtOffsetAF0ByIndex()|
-4e8c50|ComputeAdvisoryMapNodeCompositeScoreByMode||823|function|undefined ComputeAdvisoryMapNodeCompositeScoreByMode()|
-4e9060|TGreatPower::ComputeMapActionContextCompositeScoreForNation||458|function|undefined ComputeMapActionContextCompositeScoreForNation()|
+4e8c20|TGreatPower::ComputeAdvisoryMapNodeCompositeScore||20|function|float __thiscall ComputeAdvisoryMapNodeCompositeScore(int cityRecordIndex,int mode)|
+4e8c50|TGreatPower::ComputeAdvisoryMapNodeCompositeScoreByMode||823|function|float __thiscall ComputeAdvisoryMapNodeCompositeScoreByMode(int cityRecordIndex,int mode,int linkCityRecordIndex)|
+4e9060|TGreatPower::ComputeMapActionContextCompositeScoreForNation||458|function|float __thiscall ComputeMapActionContextCompositeScoreForNation(TZone* zone)|
 4e92b0|TGreatPower::PopulateCase16AdvisoryMapNodeCandidateState||1548|function|void __thiscall PopulateCase16AdvisoryMapNodeCandidateState(void)|
-4e9a50|TGreatPower::SelectAndQueueAdvisoryMapMissionsCase16||901|function|undefined SelectAndQueueAdvisoryMapMissionsCase16()|
+4e9a50|TAutoGreatPower::SelectAndQueueAdvisoryMapMissionsCase16||901|function|void __thiscall SelectAndQueueAdvisoryMapMissionsCase16(void)|
 4e9ed0|TGreatPower::QueueWarTransitionFromAdvisoryAction||40|function|undefined QueueWarTransitionFromAdvisoryAction()|
 4e9f10|TAutoGreatPower::HasActiveCandidateNationSlots||172|function|undefined HasActiveCandidateNationSlots()|
 4e9ff0|TAutoGreatPower::OrphanLeaf_NoCall_Ins02_004d7ee0||184|function|undefined VTableSlot84_Provisional(void)|
@@ -2692,7 +2693,7 @@ address|name|symbol|size|type|prototype|provenance
 4ee520|TSortedByRelationshipList::GetRuntimeClass||6|function|undefined GetRuntimeClass()|rtti
 4ee540|TSortedByRelationshipList::ConstructObArrayWithVtable654D38||18|function|undefined ConstructObArrayWithVtable654D38()|
 4ee570|TSortedByRelationshipList::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
-4ee5c0|InitializeObArrayVtable654D38ModeField||7|function|undefined InitializeObArrayVtable654D38ModeField()|
+4ee5c0|TSortedByRelationshipList::InitializeRelationshipRecordSize||7|function|void __thiscall InitializeRelationshipRecordSize(void)|
 4ee5e0|TSortedByRelationshipList::Compare||65|function|undefined CreateTDiplomacyMgrInstance()|
 4ee650|TDiplomacyMgr::CreateObject|?CreateObject@TDiplomacyMgr@@SGPAVCObject@@XZ|57|function|undefined CreateObject()|rtti
 4ee6a0|TDiplomacyMgr::GetRuntimeClass||6|function|undefined GetTDiplomacyMgrClassNamePointer()|rtti
@@ -3122,7 +3123,7 @@ address|name|symbol|size|type|prototype|provenance
 50df40|TMacViewMgr::DrawStrategicMapUnitIconOverlay||230|function|void __thiscall DrawStrategicMapUnitIconOverlay(int * pDstSurface, ushort wOverlayIconId, short nVariantRow, short nDstX, short nYShift)|
 50e070|BlitStrategicMapUnitActivityOverlayFrame||189|function|void __thiscall BlitStrategicMapUnitActivityOverlayFrame(int * pDstSurface, short nOverlayRowIndex, short nDstXOffset, short nDstYOffsetFromBottom)|
 50e290|WrapperFor_ftol_At0050e290||30|function|undefined WrapperFor_ftol_At0050e290()|
-50e2c0|GetCityIndexFromCityStatePointer||30|function|int __fastcall GetCityIndexFromCityStatePointer(int pCityState)|
+50e2c0|GetCityIndexFromCityStatePointer||30|function|int __fastcall GetCityIndexFromCityStatePointer(TGlobalMapCityScoreRecord* cityState)|
 50e2f0|TMapMgr::CreateObject|?CreateObject@TMapMgr@@SGPAVCObject@@XZ|138|function|undefined CreateObject()|rtti
 50e3b0|TMapMgr::GetRuntimeClass||6|function|undefined GetTMapMgrClassNamePointer()|rtti
 50e3d0|ConstructGlobalMapState||100|function|void * __fastcall ConstructGlobalMapState(void * pGlobalMapState)|
@@ -4272,7 +4273,7 @@ address|name|symbol|size|type|prototype|provenance
 55f090|TZone::AssignZoneDisplayNameAliasToOutputRef_2c_2c_2c_2c_2c||16|function|undefined AssignZoneDisplayNameAliasToOutputRef()|
 55f0b0|TZone::GetContextOrdinalOrInvalid||14|function|short __thiscall GetContextOrdinalOrInvalid(void)|
 55f100|FindMapActionContextByNodeId||47|function|undefined FindMapActionContextByNodeId()|
-55f140|TGreatPower::ComputeMapActionContextNodeValueAverage||337|function|undefined ComputeMapActionContextNodeValueAverage()|
+55f140|TZone::ComputeMapActionContextNodeValueAverage||337|function|int __thiscall ComputeMapActionContextNodeValueAverage(void)|
 55f300|DispatchMapActionContextCallbackViaField24||16|function|undefined DispatchMapActionContextCallbackViaField24()|
 55f440|ContainsCityStatePointerInZoneArrayByCityIndex||104|function|undefined ContainsCityStatePointerInZoneArrayByCityIndex()|
 55f4d0|TZone::HasSecondaryNeighborWithNationTag||73|function|undefined HasSecondaryNeighborWithNationTag()|
@@ -4351,8 +4352,8 @@ address|name|symbol|size|type|prototype|provenance
 564240|TOcean::RemovePortZoneByTile||114|function|void __thiscall RemovePortZoneByTile(short tileIndex)|
 5642e0|FinalizeQueuedMapOrderEntry||209|function|undefined __stdcall FinalizeQueuedMapOrderEntry(int * pMapOrderEntry)|
 564400|HandleNavyOrderNodeRemovalAndSelectionRefresh||187|function|undefined HandleNavyOrderNodeRemovalAndSelectionRefresh()|
-564530|ComputeGlobalMapActionContextNodeValueAverage||43|function|undefined ComputeGlobalMapActionContextNodeValueAverage()|
-564570|FindMapActionContextContainingNodeByIndex||97|function|undefined FindMapActionContextContainingNodeByIndex()|
+564530|TOcean::ComputeGlobalMapActionContextNodeValueAverage||43|function|int __thiscall ComputeGlobalMapActionContextNodeValueAverage(void)|
+564570|TOcean::FindMapActionContextContainingNodeByIndex||97|function|TZone* __thiscall FindMapActionContextContainingNodeByIndex(int cityRecordIndex)|
 564600|EnsureSelectedTaskForceForOrderOwnerAndRefresh||116|function|undefined EnsureSelectedTaskForceForOrderOwnerAndRefresh()|
 5647d0|WrapperFor_ftol_At005647d0||30|function|undefined WrapperFor_ftol_At005647d0()|
 564800|WrapperFor_thunk_MapTurnEventCodeToPaletteIndex_At00564800||19|function|undefined WrapperFor_thunk_MapTurnEventCodeToPaletteIndex_At00564800()|
@@ -8061,6 +8062,7 @@ address|name|symbol|size|type|prototype|provenance
 653720|g_Compute_Advisory_Handler_LookupTable_00653720|||global||
 653724|g_Compute_Advisory_Peer_LookupTable_00653724|||global||
 653728|g_ApplyIndexedResourceDeltaScale_00653728|||global||
+653f18|g_afAdvisoryMissionTierThresholdByMinisterSkill_00653F18|||global||
 653f90|TAutoGreatPower::classTAutoGreatPower|||global||
 653fc0|g_DAT_00653fc0_Value_00653FC0|||global||
 653fc8|g_DAT_00653fc8_Value_00653FC8|||global||
@@ -8069,6 +8071,7 @@ address|name|symbol|size|type|prototype|provenance
 653fd8|g_Evaluate_Advisory_Case11_Value_00653FD8|||global||
 653fe8|g_Compute_Advisory_MinusSix_00653FE8|||global||
 653ff0|g_Compute_Advisory_MinusHundred_00653FF0|||global||
+653ff8|g_Compute_Advisory_MinusSixFloat_00653FF8|||global||
 654000|g_Compute_Advisory_Hundred_00654000|||global||
 654008|g_Compute_Advisory_OnePointFive_00654008|||global||
 654838|TDefenseMinister::classTDefenseMinister|||global||

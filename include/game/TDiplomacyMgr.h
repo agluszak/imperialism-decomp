@@ -64,7 +64,9 @@ public:
   virtual void PropagateRelationSideEffectSlot80(int sourceNation, int targetNation,
                                                  int updateMode); // 32 (0x80)
   virtual char IsPrimaryNationSlotIndex(int nationSlot);          // 33 (0x84)
-  virtual void BuildRelationshipListSlot88(int sourceNation, int targetNation,
+  // Both scalar params are genuinely short: the body reads primaryOnlyFlag as a word
+  // and callers push the raw partial register (mov dx, [this+0xc]; push edx).
+  virtual void BuildRelationshipListSlot88(short sourceNation, short primaryOnlyFlag,
                                            void* list);                              // 34 (0x88)
   virtual int CountMajorAllianceRelationsSlot8c(int sourceNation);                   // 35 (0x8c)
   virtual int GetNthAlliedMajorNationSlot90(int nthAllianceIndex, int sourceNation); // 36 (0x90)

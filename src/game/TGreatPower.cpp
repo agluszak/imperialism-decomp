@@ -3395,6 +3395,28 @@ void TGreatPower::NotifyAllianceSlot214(int targetNation) {
   (void)targetNation;
 }
 
+// FUNCTION: IMPERIALISM 0x004e0460
+int TGreatPower::SumNavyOrderPriorityForNationAndNodeType(TZone* zone) {
+  int sum = 0;
+  for (TShip* node = GetNavyPrimaryOrderListHead(); node != 0; node = node->nextOlder24) {
+    if (node->ownerNationSlot14 == this->nationSlot && node->field08 == zone) {
+      sum += ComputeOrderNodeCompositeEconomicScore(node);
+    }
+  }
+  return sum;
+}
+
+// FUNCTION: IMPERIALISM 0x004e04b0
+int TGreatPower::SumNavyOrderPriorityForNation() {
+  int sum = 0;
+  for (TShip* node = GetNavyPrimaryOrderListHead(); node != 0; node = node->nextOlder24) {
+    if (node->ownerNationSlot14 == this->nationSlot) {
+      sum += ComputeOrderNodeCompositeEconomicScore(node);
+    }
+  }
+  return sum;
+}
+
 // FUNCTION: IMPERIALISM 0x004e0500
 int TGreatPower::SumNavyOrderPriorityForNationSlot86(void) {
   int prioritySum = 0;
@@ -3890,7 +3912,7 @@ int TGreatPower::PropagateWarTransitionSlot280(int targetNation, int sourceNatio
 }
 
 // FUNCTION: IMPERIALISM 0x004e1f20
-void TGreatPower::NoOpSlotA2(void) {}
+void TGreatPower::SelectAndQueueAdvisoryMapMissionsCase16(void) {}
 
 // --- Relative military/naval power score family (vtable slots 0x8e-0x9e) ---
 // Helpers live in TGreatPower_power_score.cpp (TGreatPower_internal.h).
@@ -4397,157 +4419,93 @@ void TGreatPower::QueueMapActionMissionFromCandidateAndMarkState(eMissionType ar
 
 // FUNCTION: IMPERIALISM 0x004e8750
 float TGreatPower::ComputeAdvisoryMapNodeScoreFactorByCaseMetric(int metricCase, int cityIndex,
-                                                                 int relationTargetNation,
+                                                                 TZone* zone,
                                                                  int selectedNationSlot) {
-  switch (metricCase - 1) {
-  case 0: {
-    float sum = 0.0f;
-    float selected = 0.0f;
-    TGreatPower** nationCursor = g_apNationStates;
-
-    for (; nationCursor < g_apNationStates + kMajorNationCount; ++nationCursor) {
-      int slot = static_cast<int>(nationCursor - g_apNationStates);
-      if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(static_cast<short>(slot)) == 0) {
-        continue;
-      }
-      TGreatPower* nationObj = *nationCursor;
-      float slotValue = nationObj->GetScoreFactorSlot23C();
-      sum += slotValue;
-      if (slot == selectedNationSlot) {
-        selected = slotValue;
-      }
-    }
-
-    if (selected == g_Compute_Advisory_Zero_00653FD0) {
-      selected = kOne;
-    }
-    int field30 = g_pSimMgr->GetField30();
-    float denominator = static_cast<float>(field30) * selected -
-                        static_cast<float>(g_Compute_Advisory_MinusSix_00653FE8);
-    float numerator = sum - static_cast<float>(g_Compute_Advisory_MinusSix_00653FE8);
-    return numerator / denominator;
-  }
+  float result;
+  switch (metricCase) {
   case 1: {
     float sum = 0.0f;
-    float selected = 0.0f;
-    TGreatPower** nationCursor = g_apNationStates;
-
-    for (; nationCursor < g_apNationStates + kMajorNationCount; ++nationCursor) {
-      int slot = static_cast<int>(nationCursor - g_apNationStates);
-      if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(static_cast<short>(slot)) == 0) {
-        continue;
-      }
-      TGreatPower* nationObj = *nationCursor;
-      float slotValue = nationObj->GetScoreFactorSlot240();
-      sum += slotValue;
-      if (slot == selectedNationSlot) {
-        selected = slotValue;
+    int slot;
+    for (slot = 0; slot < kMajorNationCount; ++slot) {
+      if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(static_cast<short>(slot)) != 0) {
+        sum += g_apNationStates[slot]->GetScoreFactorSlot23C();
+        if (slot == selectedNationSlot) {
+          result = g_apNationStates[slot]->GetScoreFactorSlot23C();
+        }
       }
     }
-
-    if (selected == g_Compute_Advisory_Zero_00653FD0) {
-      selected = kOne;
+    if (result == g_Compute_Advisory_Zero_00653FD0) {
+      result = 1.0f;
     }
-    int field30 = g_pSimMgr->GetField30();
-    float denominator = static_cast<float>(field30) * selected -
-                        static_cast<float>(g_Compute_Advisory_MinusSix_00653FE8);
-    float numerator = sum - static_cast<float>(g_Compute_Advisory_MinusSix_00653FE8);
-    return numerator / denominator;
+    result =
+        static_cast<float>(g_pSimMgr->GetField30() * result - g_Compute_Advisory_MinusSix_00653FE8);
+    return (sum - g_Compute_Advisory_MinusSix_00653FE8) / result;
   }
   case 2: {
-    TCountry* terrainView = g_apTerrainTypeDescriptorTable[selectedNationSlot];
-    if (terrainView == 0) {
-      return kOne;
-    }
-
-    if (terrainView->ownedRegionList == 0) {
-      return kOne;
-    }
-
-    int nodeWeight = terrainView->ownedRegionList->GetSize();
-    int weightedNeighbor = ComputeWeightedNeighborLinkScoreForNode(relationTargetNation);
-    int linkedNodeTotal = terrainView->SumWeightedNeighborLinkScoreForLinkedNodes();
-
-    float denominator = static_cast<float>(weightedNeighbor * nodeWeight) -
-                        static_cast<float>(g_Compute_Advisory_Map_Value_00653FD4);
-    if (denominator == g_Compute_Advisory_Zero_00653FD0) {
-      return kOne;
-    }
-    return (static_cast<float>(linkedNodeTotal) -
-            static_cast<float>(g_Compute_Advisory_MinusHundred_00653FF0)) /
-           denominator;
-  }
-  case 3: {
-    if (selectedNationSlot < 0 || selectedNationSlot >= 7) {
-      return g_Compute_Advisory_Zero_00653FD0;
-    }
-
-    TGreatPower* nationObj = g_apNationStates[selectedNationSlot];
-    if (nationObj == 0) {
-      return g_Compute_Advisory_Zero_00653FD0;
-    }
-
-    int priorityForNode = SumNavyOrderPriorityForNationAndNodeType(nationObj, relationTargetNation);
-    int nodeMultiplier = nationObj->GetMultiplierSlot21C();
-    int totalPriority = SumNavyOrderPriorityForNation(nationObj);
-
-    float denominator = static_cast<float>(priorityForNode * nodeMultiplier) -
-                        static_cast<float>(g_Compute_Advisory_MinusSix_00653FE8);
-    if (denominator == g_Compute_Advisory_Zero_00653FD0) {
-      return g_Compute_Advisory_Zero_00653FD0;
-    }
-    return (static_cast<float>(totalPriority) -
-            static_cast<float>(g_Compute_Advisory_MinusSix_00653FE8)) /
-           denominator;
-  }
-  case 4: {
-    TDiplomacyMgr* mgr = g_pDiplomacyTurnStateManager;
-    if (mgr == 0) {
-      return kOne;
-    }
-    short relationValue =
-        g_pDiplomacyTurnStateManager
-            ->relationStandingScoreMatrix79c[(relationTargetNation) * 0x17 + (this->nationSlot)];
-    if (relationValue == 0) {
-      return kOne;
-    }
-    return static_cast<float>(g_Compute_Advisory_Hundred_00654000) /
-           static_cast<float>(relationValue);
-  }
-  case 5: {
-    TMapMgr* globalMapState = g_pGlobalMapState;
-    if (globalMapState == 0) {
-      return kOne;
-    }
-    if (globalMapState->cityScoreTable == 0 || globalMapState->cityScoreTotal == 0) {
-      return kOne;
-    }
-    const TGlobalMapCityScoreRecord* cityRecord = globalMapState->cityScoreTable + cityIndex;
-    float scoreRatio = static_cast<float>(cityRecord->cityScoreValue) /
-                       static_cast<float>(globalMapState->cityScoreTotal);
-
-    signed char primaryNation = cityRecord->ownerNationCode00;
-    signed char controllingNation = cityRecord->formerOwnerNationCode01;
-    if (controllingNation == this->nationSlot && primaryNation != this->nationSlot) {
-      TDiplomacyMgr* diplomacyManager = g_pDiplomacyTurnStateManager;
-      if (diplomacyManager != 0 && g_pDiplomacyTurnStateManager->HasPolicyWithNationSlot44(
-                                       this->nationSlot, primaryNation) != 0) {
-        scoreRatio = scoreRatio * static_cast<float>(g_Compute_Advisory_OnePointFive_00654008);
+    float sum = 0.0f;
+    int slot;
+    for (slot = 0; slot < kMajorNationCount; ++slot) {
+      if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(static_cast<short>(slot)) != 0) {
+        sum += g_apNationStates[slot]->GetScoreFactorSlot240();
+        if (slot == selectedNationSlot) {
+          result = g_apNationStates[slot]->GetScoreFactorSlot240();
+        }
       }
     }
-    return scoreRatio;
-  }
-  case 6: {
-    int globalAverage = ComputeGlobalMapActionContextNodeValueAverage();
-    if (globalAverage == 0) {
-      return kOne;
+    if (result == g_Compute_Advisory_Zero_00653FD0) {
+      result = 1.0f;
     }
-    unsigned int nodeValue = this->ComputeMapActionContextNodeValueAverage();
-    return static_cast<float>(nodeValue) / static_cast<float>(globalAverage);
+    result =
+        static_cast<float>(g_pSimMgr->GetField30() * result - g_Compute_Advisory_MinusSix_00653FE8);
+    return (sum - g_Compute_Advisory_MinusSix_00653FE8) / result;
   }
-  default:
-    return kOne;
+  case 3: {
+    int ownedRegionCount =
+        g_apTerrainTypeDescriptorTable[selectedNationSlot]->ownedRegionList->GetSize();
+    result = static_cast<float>(
+        g_apTerrainTypeDescriptorTable[selectedNationSlot]->ComputeWeightedNeighborLinkScoreForNode(
+            cityIndex) *
+        ownedRegionCount);
+    return (g_apTerrainTypeDescriptorTable[selectedNationSlot]
+                ->SumWeightedNeighborLinkScoreForLinkedNodes() -
+            g_Compute_Advisory_MinusHundred_00653FF0) /
+           (result - g_Compute_Advisory_Map_Value_00653FD4);
   }
+  case 4: {
+    if (selectedNationSlot >= 7) {
+      return g_Compute_Advisory_Zero_00653FD0;
+    }
+    TGreatPower* nation = g_apNationStates[selectedNationSlot];
+    result = static_cast<float>(nation->SumNavyOrderPriorityForNationAndNodeType(zone) *
+                                nation->CountMapActionContextNodesWithNationBit());
+    return (g_apNationStates[selectedNationSlot]->SumNavyOrderPriorityForNation() -
+            g_Compute_Advisory_MinusSix_00653FE8) /
+           (result - g_Compute_Advisory_MinusSixFloat_00653FF8);
+  }
+  case 5:
+    return g_Compute_Advisory_Hundred_00654000 /
+           g_pDiplomacyTurnStateManager
+               ->relationStandingScoreMatrix79c[nationSlot * kNationSlotCount +
+                                                static_cast<short>(selectedNationSlot)];
+  case 6: {
+    const TGlobalMapCityScoreRecord* record = &g_pGlobalMapState->cityScoreTable[cityIndex];
+    result = static_cast<float>(record->cityScoreValue) / g_pGlobalMapState->cityScoreTotal;
+    short claimantTag =
+        g_pGlobalMapState->cityScoreTable[static_cast<short>(cityIndex)].formerOwnerNationCode01;
+    if (claimantTag == nationSlot) {
+      short ownerTag = record->ownerNationCode00;
+      if (ownerTag != nationSlot &&
+          g_pDiplomacyTurnStateManager->IsNationPairAtWar(nationSlot, ownerTag) != 0) {
+        return result * g_Compute_Advisory_OnePointFive_00654008;
+      }
+    }
+    break;
+  }
+  case 7:
+    return static_cast<float>(zone->ComputeMapActionContextNodeValueAverage()) /
+           g_pActiveMapOrderContext->ComputeGlobalMapActionContextNodeValueAverage();
+  }
+  return result;
 }
 // Sets mapNodeStateFlags[provinceIndex] to `value`, except when value == 1 and the
 // province's map-action-context link is unavailable for this nation, in which case it's
@@ -4567,13 +4525,83 @@ void TGreatPower::SetByteFlagAtOffsetAF0ByIndex(int contextOrdinal, char value) 
   *(reinterpret_cast<char*>(this) + 0xaf0 + contextOrdinal) = value;
 }
 
+// FUNCTION: IMPERIALISM 0x004e8c20
+float TGreatPower::ComputeAdvisoryMapNodeCompositeScore(int cityRecordIndex, int mode) {
+  return ComputeAdvisoryMapNodeCompositeScoreByMode(cityRecordIndex, mode, -1);
+}
+
+// FUNCTION: IMPERIALISM 0x004e8c50
+float TGreatPower::ComputeAdvisoryMapNodeCompositeScoreByMode(int cityRecordIndex, int mode,
+                                                              int linkCityRecordIndex) {
+  int ownerTag = g_pGlobalMapState->cityScoreTable[cityRecordIndex].ownerNationCode00;
+  if (g_pDiplomacyTurnStateManager->IsPrimaryNationSlotIndex(ownerTag) != 0) {
+    if (mode == 0) {
+      float f1 = ComputeAdvisoryMapNodeScoreFactorByCaseMetric(1, cityRecordIndex, 0, ownerTag);
+      float f3 = ComputeAdvisoryMapNodeScoreFactorByCaseMetric(3, cityRecordIndex, 0, ownerTag);
+      float f5 = ComputeAdvisoryMapNodeScoreFactorByCaseMetric(5, cityRecordIndex, 0, ownerTag);
+      float score = ComputeAdvisoryMapNodeScoreFactorByCaseMetric(6, cityRecordIndex, 0, ownerTag) *
+                    f5 * f3 * f1 * f1;
+      return score * score;
+    }
+    if (mode == 1) {
+      int linkOwnerTag = g_pGlobalMapState->cityScoreTable[linkCityRecordIndex].ownerNationCode00;
+      if (linkOwnerTag != ownerTag) {
+        return g_Compute_Advisory_Zero_00653FD0;
+      }
+      float f1 = ComputeAdvisoryMapNodeScoreFactorByCaseMetric(1, cityRecordIndex, 0, ownerTag);
+      float f3 = ComputeAdvisoryMapNodeScoreFactorByCaseMetric(3, cityRecordIndex, 0, ownerTag);
+      float f5 = ComputeAdvisoryMapNodeScoreFactorByCaseMetric(5, cityRecordIndex, 0, ownerTag);
+      float f6 = ComputeAdvisoryMapNodeScoreFactorByCaseMetric(6, cityRecordIndex, 0, ownerTag);
+      float score =
+          ComputeAdvisoryMapNodeScoreFactorByCaseMetric(3, linkCityRecordIndex, 0, linkOwnerTag) *
+          f6 * f5 * f3 * f1;
+      return score * score;
+    }
+    TZone* zone =
+        g_pActiveMapOrderContext->FindMapActionContextContainingNodeByIndex(cityRecordIndex);
+    float f1 = ComputeAdvisoryMapNodeScoreFactorByCaseMetric(1, cityRecordIndex, 0, ownerTag);
+    float f2 = ComputeAdvisoryMapNodeScoreFactorByCaseMetric(2, cityRecordIndex, 0, ownerTag);
+    float f3 = ComputeAdvisoryMapNodeScoreFactorByCaseMetric(3, cityRecordIndex, 0, ownerTag);
+    float f4 = ComputeAdvisoryMapNodeScoreFactorByCaseMetric(4, cityRecordIndex, zone, ownerTag);
+    float f5 = ComputeAdvisoryMapNodeScoreFactorByCaseMetric(5, cityRecordIndex, 0, ownerTag);
+    float f6 = ComputeAdvisoryMapNodeScoreFactorByCaseMetric(6, cityRecordIndex, 0, ownerTag);
+    return ComputeAdvisoryMapNodeScoreFactorByCaseMetric(7, cityRecordIndex, zone, ownerTag) * f6 *
+           f4 * f5 * f2 * f3 * f1;
+  }
+  if (mode == 0) {
+    float f3 = ComputeAdvisoryMapNodeScoreFactorByCaseMetric(3, cityRecordIndex, 0, ownerTag);
+    float f5 = ComputeAdvisoryMapNodeScoreFactorByCaseMetric(5, cityRecordIndex, 0, ownerTag);
+    return ComputeAdvisoryMapNodeScoreFactorByCaseMetric(6, cityRecordIndex, 0, ownerTag) * f5 * f3;
+  }
+  if (mode == 1) {
+    int linkOwnerTag = g_pGlobalMapState->cityScoreTable[linkCityRecordIndex].ownerNationCode00;
+    if (linkOwnerTag != ownerTag) {
+      return g_Compute_Advisory_Zero_00653FD0;
+    }
+    float f1 = ComputeAdvisoryMapNodeScoreFactorByCaseMetric(1, cityRecordIndex, 0, ownerTag);
+    float f3 = ComputeAdvisoryMapNodeScoreFactorByCaseMetric(3, cityRecordIndex, 0, ownerTag);
+    float f5 = ComputeAdvisoryMapNodeScoreFactorByCaseMetric(5, cityRecordIndex, 0, ownerTag);
+    float f6 = ComputeAdvisoryMapNodeScoreFactorByCaseMetric(6, cityRecordIndex, 0, ownerTag);
+    return ComputeAdvisoryMapNodeScoreFactorByCaseMetric(3, linkCityRecordIndex, 0, linkOwnerTag) *
+           f6 * f5 * f3 * f1;
+  }
+  TZone* zone =
+      g_pActiveMapOrderContext->FindMapActionContextContainingNodeByIndex(cityRecordIndex);
+  float f1 = ComputeAdvisoryMapNodeScoreFactorByCaseMetric(1, cityRecordIndex, 0, ownerTag);
+  float f3 = ComputeAdvisoryMapNodeScoreFactorByCaseMetric(3, cityRecordIndex, 0, ownerTag);
+  float f5 = ComputeAdvisoryMapNodeScoreFactorByCaseMetric(5, cityRecordIndex, 0, ownerTag);
+  float f6 = ComputeAdvisoryMapNodeScoreFactorByCaseMetric(6, cityRecordIndex, 0, ownerTag);
+  return ComputeAdvisoryMapNodeScoreFactorByCaseMetric(7, cityRecordIndex, zone, ownerTag) * f6 *
+         f5 * f3 * f1;
+}
+
 // FUNCTION: IMPERIALISM 0x004e9060
-float TGreatPower::ComputeMapActionContextCompositeScoreForNation(int nodeType) {
+float TGreatPower::ComputeMapActionContextCompositeScoreForNation(TZone* zone) {
   unsigned char* candidateFlags = this->candidateNationFlags;
   int activeCandidateCount = 0;
   int selectedCandidateIndex = 0;
   float compositeScore = 0.0f;
-  int i = 0;
+  int i;
 
   for (i = 0; i < 0x17; ++i) {
     if (candidateFlags[i] != 0) {
@@ -4582,23 +4610,13 @@ float TGreatPower::ComputeMapActionContextCompositeScoreForNation(int nodeType) 
   }
 
   if (activeCandidateCount == 0) {
-    TSortedByRelationshipList* relationshipList =
-        static_cast<TSortedByRelationshipList*>(TSortedByRelationshipList::CreateObject());
+    TSortedByRelationshipList* relationshipList = new TSortedByRelationshipList();
+    relationshipList->InitializeRelationshipRecordSize();
+    g_pDiplomacyTurnStateManager->BuildRelationshipListSlot88(this->nationSlot, 1,
+                                                              relationshipList);
+    selectedCandidateIndex =
+        *static_cast<short*>(relationshipList->GetPtrListEntryByOneBasedIndex(1));
     if (relationshipList != 0) {
-      relationshipList->recordSize14 = 4;
-    }
-
-    TDiplomacyMgr* diplomacyManager = g_pDiplomacyTurnStateManager;
-    if (diplomacyManager != 0 && relationshipList != 0) {
-      g_pDiplomacyTurnStateManager->BuildRelationshipListSlot88(this->nationSlot, 1,
-                                                                relationshipList);
-    }
-
-    if (relationshipList != 0) {
-      short* firstEntry = static_cast<short*>(relationshipList->GetPtrListEntryByOneBasedIndex(1));
-      if (firstEntry != 0) {
-        selectedCandidateIndex = static_cast<int>(*firstEntry);
-      }
       relationshipList->ReleasePtrList();
     }
   } else if (activeCandidateCount == 1) {
@@ -4608,23 +4626,25 @@ float TGreatPower::ComputeMapActionContextCompositeScoreForNation(int nodeType) 
       }
       ++selectedCandidateIndex;
     }
-  } else if (activeCandidateCount > 1) {
-    short navyPriorities[7];
-    for (i = 0; i < 7; ++i) {
-      navyPriorities[i] = 0;
+    if (selectedCandidateIndex >= 0x17) {
+      // Original artifact: an exhausted scan falls back to the raw argument bits
+      // (dead in practice -- activeCandidateCount == 1 guarantees a hit).
+      selectedCandidateIndex = reinterpret_cast<int>(zone);
     }
-
-    for (i = 0; i < 7; ++i) {
+  } else {
+    short navyPriorities[7] = {0, 0, 0, 0, 0, 0, 0};
+    for (i = 0; i < kMajorNationCount; ++i) {
       if (candidateFlags[i] != 0) {
-        navyPriorities[i] = static_cast<short>(
-            SumNavyOrderPriorityForNationAndNodeType(g_apNationStates[i], nodeType));
+        navyPriorities[i] =
+            static_cast<short>(g_apNationStates[i]->SumNavyOrderPriorityForNationAndNodeType(zone));
       }
     }
 
-    short maxPriority = 0;
+    int maxPriority = 0;
     for (i = 0; i < 7; ++i) {
-      if (maxPriority < navyPriorities[i]) {
+      if (navyPriorities[i] > maxPriority) {
         maxPriority = navyPriorities[i];
+        selectedCandidateIndex = i;
       }
     }
     if (maxPriority == 0) {
@@ -4632,16 +4652,12 @@ float TGreatPower::ComputeMapActionContextCompositeScoreForNation(int nodeType) 
     }
   }
 
-  if (compositeScore == 0.0f) {
-    float factor2 =
-        ComputeAdvisoryMapNodeScoreFactorByCaseMetric(2, -1, nodeType, selectedCandidateIndex);
-    float factor4 =
-        ComputeAdvisoryMapNodeScoreFactorByCaseMetric(4, -1, nodeType, selectedCandidateIndex);
-    float factor5 =
-        ComputeAdvisoryMapNodeScoreFactorByCaseMetric(5, -1, nodeType, selectedCandidateIndex);
-    float factor7 =
-        ComputeAdvisoryMapNodeScoreFactorByCaseMetric(7, -1, nodeType, selectedCandidateIndex);
-    compositeScore = factor2 * factor4 * factor5 * factor7;
+  if (compositeScore == g_Compute_Advisory_Zero_00653FD0) {
+    float f2 = ComputeAdvisoryMapNodeScoreFactorByCaseMetric(2, -1, zone, selectedCandidateIndex);
+    float f4 = ComputeAdvisoryMapNodeScoreFactorByCaseMetric(4, -1, zone, selectedCandidateIndex);
+    float f5 = ComputeAdvisoryMapNodeScoreFactorByCaseMetric(5, -1, zone, selectedCandidateIndex);
+    float f7 = ComputeAdvisoryMapNodeScoreFactorByCaseMetric(7, -1, zone, selectedCandidateIndex);
+    compositeScore = f5 * f7 * f2 * f4;
   }
 
   return compositeScore;
@@ -4782,7 +4798,7 @@ void TGreatPower::PopulateCase16AdvisoryMapNodeCandidateState() {
         } else if (g_pGlobalMapState->CollectSecondDegreeLinksWithMinorNationFallback(
                        rec, this->nationSlot, nodeBuffer, 1) != 0) {
           linkBonus = 0x14;
-        } else if (FindMapActionContextContainingNodeByIndex(rec) != 0) {
+        } else if (g_pActiveMapOrderContext->FindMapActionContextContainingNodeByIndex(rec) != 0) {
           linkBonus = 0x28;
         } else {
           continue;
@@ -4833,33 +4849,6 @@ void TGreatPower::PopulateCase16AdvisoryMapNodeCandidateState() {
   }
 }
 
-// FUNCTION: IMPERIALISM 0x0055f140
-unsigned int TGreatPower::ComputeMapActionContextNodeValueAverage(void) {
-  TMapMgr* globalMapState = g_pGlobalMapState;
-  if (globalMapState == 0 || globalMapState->cityScoreTable == 0) {
-    return 0;
-  }
-
-  unsigned int totalValue = 0;
-  unsigned int selectedCount = 0;
-
-  for (int nodeIndex = 0; nodeIndex < kMapNodeCount; ++nodeIndex) {
-    if (this->mapNodeStateFlags[nodeIndex] == 0) {
-      continue;
-    }
-    totalValue +=
-        static_cast<unsigned int>(globalMapState->cityScoreTable[nodeIndex].cityScoreValue);
-    ++selectedCount;
-  }
-
-  if (selectedCount == 0) {
-    return static_cast<unsigned int>(
-        globalMapState->cityScoreTable[this->nationSlot].cityScoreValue);
-  }
-
-  return totalValue / selectedCount;
-}
-
 // FUNCTION: IMPERIALISM 0x00582630
 void TGreatPower::HandleTurnInstruction_Civi_DeserializeAndCreateWorkOrder(void* pInstructionRaw) {
   STurnInstructionCiviCursor* instruction =
@@ -4892,9 +4881,6 @@ void TGreatPower::HandleTurnInstruction_Civi_DeserializeAndCreateWorkOrder(void*
                                            static_cast<int>(cityOwnerTag));
 }
 
-int TGreatPower::GetMultiplierSlot21C(void) {
-  return 0;
-}
 void TGreatPower::AbsorbCityNeedVectorSlotFC(short*) {}
 
 // Ghidra mislabels this 0x005b7f50 leaf "ApplyIndexedResourceDeltaAndAdjustNationTotals_Impl";

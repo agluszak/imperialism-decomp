@@ -947,12 +947,23 @@ float g_ArmyMissionCandidateScoreTable_006978f8[48] = {0};
 double g_DAT_00653fc0_Value_00653FC0 = 0.00392156862745098;
 double g_DAT_00653fc8_Value_00653FC8 = 32767.0;
 
+// Case-16 advisory mission acceptance thresholds, indexed by the defense minister's
+// skillIndexC row and the mission tier column (0 attack, 1 amass, 2 invade,
+// 3 defend, 4 blockade, 5 unused). Read by 0x004e9a50.
+float g_afAdvisoryMissionTierThresholdByMinisterSkill_00653F18[5][6] = {
+    {1.5f, 1.5f, 2.5f, 0.0f, 2.25f, 2.0f},  {1.75f, 1.75f, 2.5f, 0.0f, 2.25f, 2.25f},
+    {2.0f, 2.0f, 2.0f, 0.0f, 1.5f, 1.5f},   {2.0f, 2.0f, 3.0f, 0.0f, 2.0f, 2.0f},
+    {1.5f, 1.5f, 2.5f, 0.0f, 1.75f, 1.75f},
+};
+
 // TAutoGreatPower slot 0x9d / 0xa7 scoring constants: -100.0f and 0.5 (double).
 float g_Compute_Advisory_Map_Value_00653FD4 = -100.0f;
 double g_Evaluate_Advisory_Case11_Value_00653FD8 = 0.5;
 extern const float g_Compute_Advisory_Zero_00653FD0 = 0.0f;
 double g_Compute_Advisory_MinusSix_00653FE8 = -6.0;
 double g_Compute_Advisory_MinusHundred_00653FF0 = -100.0;
+// Float twin of the -6.0 double above (metric-4 denominator in 0x004e8750).
+float g_Compute_Advisory_MinusSixFloat_00653FF8 = -6.0f;
 double g_Compute_Advisory_Hundred_00654000 = 100.0;
 double g_Compute_Advisory_OnePointFive_00654008 = 1.5;
 

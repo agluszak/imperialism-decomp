@@ -548,50 +548,168 @@ char TAutoGreatPower::ReturnZeroSlot9D(int targetNation) {
 }
 
 // FUNCTION: IMPERIALISM 0x004e9a50
-void TAutoGreatPower::NoOpSlotA2(void) {
+void TAutoGreatPower::SelectAndQueueAdvisoryMapMissionsCase16(void) {
+  // Declaration order fixes the frame slot layout (0x12..0x34); the split
+  // assignment blocks mirror the original's two init waves around the city gate.
+  char hasActiveMission;
+  char queueSecondaryDefend;
+  float bestScore;
+  int bestRegion;
+  float bestDirectScore;
+  int bestTier;
+  int directRegion;
+  float secondBestDirectScore;
+  TZone* bestPortZone;
+  int bestLinkRegion;
+  int secondBestDirectRegion;
+
+  bestTier = -1;
+  bestPortZone = 0;
+  bestLinkRegion = -1;
+  hasActiveMission = 0;
+  bestDirectScore = 0.0f;
+  directRegion = -1;
+  queueSecondaryDefend = 0;
   if (this->city == 0) {
     return;
   }
+  bestScore = 0.0f;
+  bestRegion = -1;
+  secondBestDirectScore = 0.0f;
+  secondBestDirectRegion = -1;
 
-  // TEMP: 0x004e92b0 (PopulateCase16AdvisoryMapNodeCandidateState) is still an
-  // autogen stub; call it through the generic thunk declaration until it is ported.
   PopulateCase16AdvisoryMapNodeCandidateState();
 
-  int bestNodeIndex = -1;
-  float bestNodeScore = 0.0f;
-
-  for (int nodeIndex = 0; nodeIndex < 0x180; ++nodeIndex) {
-    if (this->mapNodeStateFlags[nodeIndex] != 1) {
+  int region;
+  for (region = 0; region < 0x180; ++region) {
+    unsigned char nodeFlag = mapNodeStateFlags[region];
+    int linkRegion = -1;
+    if (nodeFlag != 1) {
       continue;
     }
-
-    float nodeScore = this->ComputeMapActionContextCompositeScoreForNation(nodeIndex);
-    if (bestNodeIndex < 0 || nodeScore > bestNodeScore) {
-      bestNodeIndex = nodeIndex;
-      bestNodeScore = nodeScore;
+    float score;
+    // Garbage on the no-link path exactly like the original: a zero score can never
+    // beat bestScore, so the tier value is never consumed there.
+    int tier;
+    int nodeBuffer[12];
+    if (g_pGlobalMapState->HasDirectOrFallbackLinkedNodeType(region, nationSlot, 1) != 0) {
+      score = ComputeAdvisoryMapNodeCompositeScoreByMode(region, 0, -1);
+      bestDirectScore = score;
+      tier = 0;
+      directRegion = region;
+    } else if (g_pGlobalMapState->CollectSecondDegreeLinksWithMinorNationFallback(
+                   region, nationSlot, nodeBuffer, 1) != 0) {
+      linkRegion = nodeBuffer[0];
+      score = ComputeAdvisoryMapNodeCompositeScoreByMode(region, 1, linkRegion);
+      tier = 1;
+    } else if (g_pActiveMapOrderContext->FindMapActionContextContainingNodeByIndex(region) != 0) {
+      score = ComputeAdvisoryMapNodeCompositeScoreByMode(region, 2, -1);
+      tier = 2;
+    } else {
+      score = g_Compute_Advisory_Zero_00653FD0;
+      mapNodeStateFlags[region] = 0;
+    }
+    if (score > bestScore) {
+      bestScore = score;
+      bestRegion = region;
+      bestLinkRegion = linkRegion;
+      bestTier = tier;
+    }
+    if (bestDirectScore > secondBestDirectScore && directRegion != -1) {
+      secondBestDirectRegion = directRegion;
+      secondBestDirectScore = bestDirectScore;
     }
   }
 
-  if (bestNodeIndex < 0) {
-    return;
-  }
-
-  this->QueueMapActionMissionFromCandidateAndMarkState(kMissionTypeDefendProvince, bestNodeIndex, 0,
-                                                       -1);
-
-  int strongestNation = -1;
-  int strongestNeed = 0;
-  for (int nationSlot = 0; nationSlot < 0x17; ++nationSlot) {
-    int needValue = static_cast<int>(this->needLevelByNation[nationSlot]);
-    if (needValue > strongestNeed) {
-      strongestNeed = needValue;
-      strongestNation = nationSlot;
+  // Port-zone contexts flagged available (state 1) compete with the region winner.
+  TZone* zone;
+  for (zone = g_pMapActionContextListHead; zone != 0; zone = zone->prev18) {
+    if (portZoneStateFlags[zone->GetContextOrdinalOrInvalid()] == 1) {
+      float zoneScore = ComputeMapActionContextCompositeScoreForNation(zone);
+      if (zoneScore > bestScore) {
+        bestPortZone = zone;
+        zone->GetContextOrdinalOrInvalid(); // dead call kept from the original
+        bestScore = zoneScore;
+        bestTier = zone->QueryPortZoneCapability() ? 4 : 2;
+      }
     }
   }
 
-  if (strongestNation >= 0 && strongestNation != this->nationSlot) {
-    this->QueueInterNationEventType0FForNationPairContext(static_cast<short>(strongestNation),
-                                                          this->nationSlot);
+  int tier = bestTier;
+  if (tier != -1) {
+    char acceptMission = 0;
+    if (g_afAdvisoryMissionTierThresholdByMinisterSkill_00653F18[defenseMinister->skillIndexC]
+                                                                [tier] < bestScore) {
+      acceptMission = 1;
+    } else if (g_pDiplomacyTurnStateManager->HasAnyWarRelationForNation(nationSlot) != 0) {
+      CIterator missionIter(missionQueue);
+      for (TMission* mission = static_cast<TMission*>(missionIter.Reset()); missionIter.More();
+           mission = static_cast<TMission*>(missionIter.Advance())) {
+        if ((mission->marker11 & 1) != 0) {
+          hasActiveMission = 1;
+          break;
+        }
+      }
+      if (hasActiveMission == 0) {
+        queueSecondaryDefend = 1;
+      }
+    }
+    if (acceptMission != 0) {
+      if (bestPortZone == 0) {
+        if (tier == 2) {
+          TZone* contextZone =
+              g_pActiveMapOrderContext->FindMapActionContextContainingNodeByIndex(bestRegion);
+          if (contextZone != 0) {
+            QueueMapActionMissionFromCandidateAndMarkState(static_cast<eMissionType>(tier), -1,
+                                                           contextZone, bestRegion);
+          } else {
+            mapNodeStateFlags[bestRegion] = 0;
+          }
+        } else if (bestLinkRegion != -1) {
+          QueueMapActionMissionFromCandidateAndMarkState(static_cast<eMissionType>(tier),
+                                                         bestLinkRegion, 0, bestRegion);
+        } else {
+          QueueMapActionMissionFromCandidateAndMarkState(static_cast<eMissionType>(tier),
+                                                         bestRegion, 0, -1);
+        }
+      } else {
+        QueueMapActionMissionFromCandidateAndMarkState(static_cast<eMissionType>(tier), -1,
+                                                       bestPortZone, -1);
+      }
+    }
+    if (queueSecondaryDefend != 0 && secondBestDirectRegion != -1) {
+      QueueMapActionMissionFromCandidateAndMarkState(kMissionTypeAttackProvince,
+                                                     secondBestDirectRegion, 0, -1);
+    }
+  }
+
+  // War fallback: when any eligible major is at war with us, queue defend missions on
+  // non-queued contexts whose secondary neighbors include this nation.
+  char anyEligibleAtWar = 0;
+  int n;
+  for (n = 0; n < 7 && anyEligibleAtWar == 0; ++n) {
+    if (g_pDiplomacyTurnStateManager->IsNationPairAtWar(static_cast<short>(n), nationSlot) != 0 &&
+        g_pSimMgr->IsNationSlotEligibleForEventProcessing(static_cast<short>(n)) != 0) {
+      anyEligibleAtWar = 1;
+    }
+  }
+  if (anyEligibleAtWar != 0) {
+    for (zone = g_pMapActionContextListHead; zone != 0; zone = zone->prev18) {
+      short contextOrdinal = zone->GetContextOrdinalOrInvalid();
+      if (portZoneStateFlags[contextOrdinal] != 2 &&
+          zone->HasSecondaryNeighborWithNationTag(nationSlot) != 0) {
+        for (n = 0; n < 7; ++n) {
+          if (n != nationSlot &&
+              g_pDiplomacyTurnStateManager->IsNationPairAtWar(nationSlot, static_cast<short>(n)) !=
+                  0 &&
+              (zone->field10 & static_cast<unsigned char>(1 << n)) != 0) {
+            portZoneStateFlags[contextOrdinal] = 1;
+            QueueMapActionMissionFromCandidateAndMarkState(kMissionTypeDefendProvince, -1, zone,
+                                                           -1);
+          }
+        }
+      }
+    }
   }
 }
 

@@ -300,7 +300,9 @@ public:
   virtual void ApplyDiplomacyRelationCodeAndNotifyThirdPartySlot284(int targetNationSlot,
                                                                     int policyCode,
                                                                     int sourceNationSlot);
-  virtual void NoOpSlotA2(void); // body 0x004e1f20
+  // slot 0xa2 — base body 0x004e1f20 is an empty hook; TAutoGreatPower's override
+  // (0x004e9a50) selects and queues the case-16 advisory map missions.
+  virtual void SelectAndQueueAdvisoryMapMissionsCase16(void); // body 0x004e1f20
   // slot 0xa3 — body 0x004e1f40; war-commitment threshold consumed by
   // slot 0x9e (compared against ComputeMinisterSkillFloatSlot8C).
   virtual float ComputeWarThresholdSlotA3(int targetNation);
@@ -440,12 +442,34 @@ public:
   bool ExecuteAdvisoryPromptAndApplyActionType1(int arg1, int arg2);
   void AbsorbCityNeedVectorSlotFC(short* needVector);
   void RevokeDiplomacyGrantForTargetAndAdjustInfluence(int arg1);
-  int GetMultiplierSlot21C(void);
-  float ComputeMapActionContextCompositeScoreForNation(int nodeType);
-  unsigned int ComputeMapActionContextNodeValueAverage(void);
-  float ComputeAdvisoryMapNodeScoreFactorByCaseMetric(int metricCase, int cityIndex,
-                                                      int relationTargetNation,
+  // 0x004e9060 — composite advisory score for the nation selected from
+  // candidateNationFlags (or from the diplomacy standing list when no flag is set):
+  // product of metric factors 5*7*2*4 for (zone, selected nation). `zone` is the
+  // map-action context the caller resolved for the scored node; it flows unchanged
+  // into metric 4 (navy-order zone match) and metric 7 (zone value average).
+  float ComputeMapActionContextCompositeScoreForNation(TZone* zone);
+  // 0x004e8750 — one metric factor for the advisory map-node scoring family.
+  // metricCase 1/2: eligible-nation army/navy strength share for selectedNationSlot;
+  // 3: owned-region-weighted neighbor-link ratio (cityIndex node, selectedNationSlot
+  // country); 4: navy-order priority share for `zone` (major slots only); 5: 100 /
+  // diplomacy standing(this nation -> selectedNationSlot); 6: node city-score ratio
+  // (1.5x when a claimed-but-not-owned node's owner is at war with us); 7: zone value
+  // average vs global average.
+  float ComputeAdvisoryMapNodeScoreFactorByCaseMetric(int metricCase, int cityIndex, TZone* zone,
                                                       int selectedNationSlot);
+  // 0x004e8c50 — composite advisory score for one map node: metric-factor product
+  // keyed off the node's owner (primary nations square the product; mode 0 = plain
+  // node, mode 1 = link pair with linkCityRecordIndex, other = zone-context form).
+  float ComputeAdvisoryMapNodeCompositeScoreByMode(int cityRecordIndex, int mode,
+                                                   int linkCityRecordIndex);
+  // 0x004e8c20 — two-arg convenience wrapper (linkCityRecordIndex = -1).
+  float ComputeAdvisoryMapNodeCompositeScore(int cityRecordIndex, int mode);
+  // 0x004e0460 / 0x004e04b0 — sum ComputeOrderNodeCompositeEconomicScore over the
+  // g_pNavyPrimaryOrderListHead chain entries owned by this nation (optionally only
+  // those targeting `zone`). Real __thiscall methods: both bodies compare the ship's
+  // owner tag against [this+0xc] (ret 4 / ret).
+  int SumNavyOrderPriorityForNationAndNodeType(TZone* zone);
+  int SumNavyOrderPriorityForNation();
   void InitializeNationStateRuntimeSubsystems(int arg1, int arg2);
   void InitializeNationMinisterSubsystemsByPolicyIds(int arg1, int arg2, short arg3, short arg4,
                                                      short arg5);

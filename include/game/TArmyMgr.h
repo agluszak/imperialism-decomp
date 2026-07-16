@@ -121,6 +121,13 @@ public:
                                                         short mode); // slot 0x18 0x4a4ad0
   // === END GENERATED DECLS (TArmyMgr) ===
 
+  // 0x004a5aa0 — weighted sum (g_WeightedNeighborScoreByUnitType table at 0x6955f0)
+  // over the military units stationed on cityScoreTable[nodeIndex]'s tile chain.
+  // Real __thiscall on the TArmyMgr singleton (ret 4; both original callsites,
+  // 0x004d8390 and 0x004d83c0, load g_pMapContextActionManager into ecx); `this`
+  // is unused by the body.
+  int ComputeWeightedNeighborLinkScoreForNodeIndex(short nodeIndex);
+
   // Object size 0x3a8 confirmed by RTTI. Only +0x31c is confirmed so far (read from three
   // independent call sites: TArmyPlacard::HandleEvent, TArmyToolbar's equivalent, and
   // TWorldView::RenderMapContextOverlayWithScopedClipAndSurface) -- a pending map-order/

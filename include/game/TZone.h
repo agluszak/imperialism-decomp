@@ -137,6 +137,12 @@ public:
   char CanDisplayMapOrderEntryInCurrentContext(short nation, char skipField34Check);
   void InvokeObjectVtableMethod24();
   void* HandleTurnEventVtableSlot24CopyPayloadBuffer();
+  // 0x0055f140 — average node value of this context. Port zones (QueryPortZone-
+  // Capability true) refresh via AssertValid, then return the home-region city score
+  // of the terrain-table owner nation under the port tile (0 if that nation isn't
+  // eligible); other contexts average cityScoreValue over the secondaryNeighbors
+  // entries (TGlobalMapCityScoreRecord* stretch pun).
+  int ComputeMapActionContextNodeValueAverage();
 
   short field04;                                // +0x04
   char pad06[2];                                // +0x06
@@ -213,11 +219,5 @@ ASSERT_SIZE(TZone, 0x48);
 // ordinal matches nodeId; -1 and misses return 0. Used by mission deserialization.
 TZone* FindMapActionContextByNodeId(short nodeId); // 0x55f100
 
-// Walks g_pMapActionContextListHead (via prev18) for the zone whose secondaryNeighbors
-// list contains a pointer to g_pGlobalMapState->cityScoreTable[cityRecordIndex] --
-// despite the TZone* element type, the ground truth compares raw addresses against a
-// TGlobalMapCityScoreRecord*, matching the existing secondaryNeighbors int*/TZone* pun
-// already used in TZone.cpp (e.g. PropagateMapActionContextDistanceLevelsRecursive's
-// neighbor-city append in PopulatePortZoneAdjacencyToNearbyCityContexts). __stdcall free
-// function (no `this`).
-TZone* __stdcall FindMapActionContextContainingNodeByIndex(int cityRecordIndex); // 0x564570
+// 0x564570 moved to TOcean::FindMapActionContextContainingNodeByIndex — every original
+// callsite loads ecx = g_pActiveMapOrderContext before the call (thiscall, this unused).

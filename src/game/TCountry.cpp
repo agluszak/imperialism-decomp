@@ -7,6 +7,7 @@
 #include "game/global_data_tables.h"
 #include "game/TGreatPower.h"
 
+#include "game/TArmyMgr.h"
 #include "game/TNewsMgr.h"
 #include "game/TCity.h"
 #include "game/TGlobalMapState.h"
@@ -58,20 +59,6 @@ static void SwapAdjacentBytesInShortArray(short* entries, int pairCount) {
   }
 }
 
-static const unsigned int kAddrWeightedNeighborScoreByUnitType = 0x006955F0;
-
-// FUNCTION: IMPERIALISM 0x004a5aa0
-int ComputeWeightedNeighborLinkScoreForNodeIndex(short nodeIndex) {
-  if (nodeIndex < 0 || nodeIndex > 0x17f) {
-    return 0;
-  }
-  TMilitaryUnit* chain = g_pGlobalMapState->cityScoreTable[nodeIndex].stationedUnitChain98;
-  int sum = 0;
-  for (; chain != 0; chain = static_cast<TMilitaryUnit*>(chain->nextOnTile)) {
-    sum += *reinterpret_cast<int*>(kAddrWeightedNeighborScoreByUnitType + chain->orderType * 4);
-  }
-  return sum;
-}
 // SYNTHETIC: IMPERIALISM 0x004d66a0
 // TCountry::CreateObject
 
@@ -648,31 +635,20 @@ int ResolveTerrainNationSlotFromTarget(int targetNationSlot) {
 }
 
 // FUNCTION: IMPERIALISM 0x004d8390
-int ComputeWeightedNeighborLinkScoreForNode(int nodeIndex) {
-  return ComputeWeightedNeighborLinkScoreForNodeIndex(static_cast<short>(nodeIndex));
+int TCountry::ComputeWeightedNeighborLinkScoreForNode(int nodeIndex) {
+  return g_pMapContextActionManager->ComputeWeightedNeighborLinkScoreForNodeIndex(
+      static_cast<short>(nodeIndex));
 }
 
 // FUNCTION: IMPERIALISM 0x004d83c0
 int TCountry::SumWeightedNeighborLinkScoreForLinkedNodes(void) {
   int sum = 0;
-  TLongintList* linkedList = this->ownedRegionList;
-  if (linkedList == 0) {
-    return 0;
-  }
-
   int index = 1;
-  int count = linkedList->GetSize();
-  if (count <= 0) {
-    return 0;
-  }
-
-  do {
-    int nodeId = linkedList->At(index);
-    sum += ComputeWeightedNeighborLinkScoreForNodeIndex(static_cast<short>(nodeId));
+  while (index <= ownedRegionList->GetSize()) {
+    sum += g_pMapContextActionManager->ComputeWeightedNeighborLinkScoreForNodeIndex(
+        static_cast<short>(ownedRegionList->At(index)));
     ++index;
-    count = linkedList->GetSize();
-  } while (index <= count);
-
+  }
   return sum;
 }
 

@@ -390,6 +390,33 @@ TZone* FindMapActionContextByNodeId(short nodeId) {
   return node;
 }
 
+// FUNCTION: IMPERIALISM 0x0055f140
+int TZone::ComputeMapActionContextNodeValueAverage() {
+  if (QueryPortZoneCapability()) {
+    AssertValid();
+    signed char ownerTag =
+        g_pGlobalMapState->terrainStateTable[static_cast<TPortZone*>(this)->field48]
+            .ownerNationTag04;
+    if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(ownerTag) != 0) {
+      return g_pGlobalMapState
+          ->cityScoreTable[g_apTerrainTypeDescriptorTable[ownerTag]->GetHomeRegionCityRecordIndex()]
+          .cityScoreValue;
+    }
+    return 0;
+  }
+  if (secondaryNeighbors.Count() == 0) {
+    return 0;
+  }
+  unsigned int sum = 0;
+  for (unsigned int i = 0; i < static_cast<unsigned int>(secondaryNeighbors.Count()); ++i) {
+    sum += g_pGlobalMapState
+               ->cityScoreTable[static_cast<short>(GetCityIndexFromCityStatePointer(
+                   reinterpret_cast<TGlobalMapCityScoreRecord*>(secondaryNeighbors[i])))]
+               .cityScoreValue;
+  }
+  return sum / secondaryNeighbors.Count();
+}
+
 // FUNCTION: IMPERIALISM 0x0055f300
 void TZone::AppendUniquePrimaryNeighbor(TZone* zone) {
   primaryNeighbors.GetOrAppendUnique(zone);
@@ -1295,20 +1322,5 @@ void PopulatePortZoneAdjacencyToNearbyCityContexts(void) {
   } while (static_cast<short>(tileIndex) < 0x1950);
 }
 
-// FUNCTION: IMPERIALISM 0x00564570
-TZone* __stdcall FindMapActionContextContainingNodeByIndex(int cityRecordIndex) {
-  TGlobalMapCityScoreRecord* target = &g_pGlobalMapState->cityScoreTable[cityRecordIndex];
-  for (TZone* zone = g_pMapActionContextListHead; zone != 0; zone = zone->prev18) {
-    int count = zone->secondaryNeighbors.Count();
-    if (count != 0) {
-      TGlobalMapCityScoreRecord** entries =
-          reinterpret_cast<TGlobalMapCityScoreRecord**>(zone->secondaryNeighbors.Data());
-      for (int i = 0; i < count; ++i) {
-        if (entries[i] == target) {
-          return zone;
-        }
-      }
-    }
-  }
-  return 0;
-}
+// 0x00564570 (FindMapActionContextContainingNodeByIndex) is a real TOcean __thiscall
+// method; body lives in TOcean.cpp.

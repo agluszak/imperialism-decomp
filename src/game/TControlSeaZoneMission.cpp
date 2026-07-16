@@ -52,8 +52,7 @@ TControlSeaZoneMission::~TControlSeaZoneMission() {}
 
 // FUNCTION: IMPERIALISM 0x005387f0
 void TControlSeaZoneMission::Call30() {
-  TGreatPower* owner = reinterpret_cast<TGreatPower*>(targetZone14);
-  float score = static_cast<float>(owner->ComputeMapActionContextNodeValueAverage());
+  float score = static_cast<float>(targetZone14->ComputeMapActionContextNodeValueAverage());
 
   for (TZone* zone = TZone::GetFirstPortZone(); zone != nullptr; zone = zone->GetNextPortZone()) {
     // NOTE: original also refreshes a lazily-allocated per-zone owner cache
@@ -116,8 +115,7 @@ void TControlSeaZoneMission::SetStateByte8To2() {
 // Inherited unchanged by TBeachheadMission and TBlockadePortMission (real base class relationship).
 // FUNCTION: IMPERIALISM 0x00539290
 void TControlSeaZoneMission::ResetValue0CToZero() {
-  TGreatPower* owner = reinterpret_cast<TGreatPower*>(targetZone14);
-  float score = static_cast<float>(owner->ComputeMapActionContextNodeValueAverage());
+  float score = static_cast<float>(targetZone14->ComputeMapActionContextNodeValueAverage());
 
   for (TZone* zone = TZone::GetFirstPortZone(); zone != nullptr; zone = zone->GetNextPortZone()) {
     // See Call30 note above re: the per-zone owner cache.

@@ -1489,7 +1489,8 @@ bool TMapMgr::IsNodeTypeLinkUnavailableAndNoActiveMapActionContext(int cityRecor
       0) {
     return false;
   }
-  return FindMapActionContextContainingNodeByIndex(cityRecordIndex) == nullptr;
+  return g_pActiveMapOrderContext->FindMapActionContextContainingNodeByIndex(cityRecordIndex) ==
+         nullptr;
 }
 
 // FUNCTION: IMPERIALISM 0x005122b0

@@ -27,14 +27,6 @@ undefined4 DispatchToFirstMatchingListNodeAndRemove(void)
   return 0;
 }
 
-// ghidra_name ComputeAdvisoryMapNodeCompositeScoreByMode
-// ghidra_proto undefined ComputeAdvisoryMapNodeCompositeScoreByMode()
-// FUNCTION: IMPERIALISM 0x004e8c50
-undefined4 ComputeAdvisoryMapNodeCompositeScoreByMode(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_ftol_At004ea5e0
 // ghidra_proto undefined WrapperFor_ftol_At004ea5e0()
 // FUNCTION: IMPERIALISM 0x004ea5e0
@@ -215,14 +207,6 @@ undefined4 InitializeMinisterOrderArrayPreset_25_10_20_50(void)
 // ghidra_proto undefined WrapperFor_ftol_At004ee480()
 // FUNCTION: IMPERIALISM 0x004ee480
 undefined4 WrapperFor_ftol_At004ee480(void)
-{
-  return 0;
-}
-
-// ghidra_name InitializeObArrayVtable654D38ModeField
-// ghidra_proto undefined InitializeObArrayVtable654D38ModeField()
-// FUNCTION: IMPERIALISM 0x004ee5c0
-undefined4 InitializeObArrayVtable654D38ModeField(void)
 {
   return 0;
 }

@@ -4,6 +4,10 @@
 
 #include "decomp_types.h"
 
+// 0x005e7fc0 — realloc-family growth used by every stretch mutator (legacy bridge
+// form shared with the out-of-line Add bodies in TZone.cpp; retire together).
+undefined4 ReallocateHeapBlockWithAllocatorTracking(void);
+
 // Project-local growable array template. Mac CodeWarrior symbols expose this family as
 // stretch<T> with Add/operator[]/OverStretch members; the Windows TZone evidence shows
 // a polymorphic 0x10-byte layout: vfptr, data, capacity, count.
@@ -41,6 +45,33 @@ public:
     return data[index];
   }
   T& ElementAt(int index) {
+    return data[index];
+  }
+  // Mac oracle: stretch<T>::operator[](unsigned int) — index access that grows the
+  // buffer on overrun (same realloc-with-halving-fallback shape as the Add bodies in
+  // TZone.cpp) and stretches `count` up to cover the touched slot. Always inlined by
+  // MSVC500 (ground truth: the read loop of TZone::ComputeMapActionContextNodeValue-
+  // Average, 0x0055f140).
+  T& operator[](unsigned int index) {
+    if (index >= static_cast<unsigned int>(capacity)) {
+      unsigned int doubledCapacity = (index + 1) * 2;
+      if (doubledCapacity > 0x7fffffffU) {
+        doubledCapacity = 0x7fffffffU;
+      }
+      void* grownBuffer = reinterpret_cast<void*(__cdecl*)(void*, int)>(
+          ReallocateHeapBlockWithAllocatorTracking)(data, (index + 1) * 8);
+      if (grownBuffer == 0) {
+        data = static_cast<T*>(reinterpret_cast<void*(__cdecl*)(void*, int)>(
+            ReallocateHeapBlockWithAllocatorTracking)(data, (index + 1) * 4));
+        capacity = index + 1;
+      } else {
+        data = static_cast<T*>(grownBuffer);
+        capacity = static_cast<int>(doubledCapacity);
+      }
+    }
+    if (static_cast<unsigned int>(count) <= index) {
+      count = index + 1;
+    }
     return data[index];
   }
 
