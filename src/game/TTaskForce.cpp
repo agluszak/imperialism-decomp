@@ -1120,6 +1120,45 @@ void TTaskForce::RecomputeMapOrderChildAggregateMetric() {
   }
 }
 
+// FUNCTION: IMPERIALISM 0x00553f10
+void TTaskForce::RebuildMapOrderEntryChildren() {
+  activeChildEntry = nullptr;
+  TMapOrderChildLinkNode* node = childOrderList;
+  while (node != nullptr) {
+    if (node->active_flag == 0) {
+      TTaskForce* entry = node->object_ptr;
+      entry->owner = nullptr;
+
+      short bucketIndex = static_cast<short>(
+          g_NavyOrderResourceDescriptorTable[entry->order_type].enabledFlagOrBucketOffset);
+      short* bucketCounter =
+          reinterpret_cast<short*>(reinterpret_cast<char*>(this) + 0x1e + bucketIndex * 2);
+      --*bucketCounter;
+
+      if (node == childOrderList) {
+        childOrderList = node->next;
+      }
+      TMapOrderChildLinkNode* next = node->next;
+      if (next != nullptr) {
+        next->prev_link = node->prev_link;
+      }
+      if (node->prev_link != nullptr) {
+        node->prev_link->next = node->next;
+      }
+      delete node;
+      node = next;
+    } else {
+      node = node->next;
+    }
+  }
+
+  activeChildEntry = nullptr;
+  for (node = childOrderList; node != nullptr; node = node->next) {
+    activeChildEntry =
+        node->object_ptr->SelectPreferredMapOrderEntryByPriorityRules(activeChildEntry, 0);
+  }
+}
+
 // FUNCTION: IMPERIALISM 0x00553fe0
 char TTaskForce::PruneInactiveTaskForceOrderHead() {
   TMapOrderChildLinkNode* head = childOrderList;

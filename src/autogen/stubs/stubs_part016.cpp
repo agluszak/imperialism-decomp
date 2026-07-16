@@ -635,14 +635,6 @@ undefined4 RemoveTaskForceOrderNodeById(void)
   return 0;
 }
 
-// ghidra_name RebuildMapOrderEntryChildren
-// ghidra_proto undefined RebuildMapOrderEntryChildren()
-// FUNCTION: IMPERIALISM 0x00553f10
-undefined4 RebuildMapOrderEntryChildren(void)
-{
-  return 0;
-}
-
 // ghidra_name TScatteredShipsMission::ApplyMapOrderTypeAndQueue
 // ghidra_proto void __thiscall ApplyMapOrderTypeAndQueue(int nOrderType, int nOrderArg)
 // FUNCTION: IMPERIALISM 0x005540b0

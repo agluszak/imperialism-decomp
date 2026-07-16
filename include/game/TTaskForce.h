@@ -321,6 +321,14 @@ public:
   // activeChildEntry (bd 1uj.16 target cluster).
   void RecomputeMapOrderChildAggregateMetric(); // 0x553e30
 
+  // Removes every childOrderList entry whose link node is inactive (unlink + delete,
+  // clearing the freed entry's owner and decrementing its resource-type bucket counter
+  // -- same +0x1e-based bucket region ApplyTaskForceSelectionModeForCurrentNationOrders /
+  // PruneInactiveTaskForceOrderHead use), then recomputes activeChildEntry over the
+  // survivors. The original inlines both passes here rather than calling
+  // RecomputeMapOrderChildAggregateMetric for the second pass.
+  void RebuildMapOrderEntryChildren(); // 0x553f10
+
   // bd 1uj.16 target: sets attachment=9 (map-order kind 9), frees any
   // childOrderList entries whose owning link is inactive, recomputes
   // activeChildEntry, then either self-Frees (no live children) or
