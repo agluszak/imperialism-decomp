@@ -253,7 +253,7 @@ void TAttackProvinceMission::ResetValue0CToZero() {
              *reinterpret_cast<const float*>(0x0065a9e0)) *
             score;
   }
-  *reinterpret_cast<float*>(&value0c) = score / g_fMissionScoreNormalizationDivisor;
+  value0c = score / g_fMissionScoreNormalizationDivisor;
 }
 
 // Shared with TInvadeMission (COMDAT-folded body).

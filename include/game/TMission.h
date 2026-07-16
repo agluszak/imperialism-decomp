@@ -42,7 +42,7 @@ public:
   short pathMarker06;    // 0x06 path/dispatch marker (set 0xffff)
   unsigned char state08; // 0x08 lifecycle state byte (ctor = 2)
   unsigned char padding09[3];
-  int value0c;            // 0x0c cached score/value (ctor = 0)
+  float value0c;          // 0x0c cached score/value (ctor = 0.0f)
   unsigned char flag10;   // 0x10 dispatch flag (SetMissionField10FromArgSlot94)
   unsigned char marker11; // 0x11 status byte (ctor = 0xff)
   unsigned char padding12[2];

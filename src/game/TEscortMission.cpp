@@ -78,7 +78,7 @@ void TEscortMission::ResetValue0CToZero() {
     }
   }
 
-  *reinterpret_cast<float*>(&value0c) =
+  value0c =
       (score / 5000.0f) * static_cast<float>(nation->tradeCapacity) / static_cast<float>(needCap);
 }
 

@@ -316,7 +316,7 @@ void TDefendProvinceMission::ResetValue0CToZero() {
               local_8;
   }
 
-  *reinterpret_cast<float*>(&value0c) = local_8 / g_fMissionScoreNormalizationDivisor;
+  value0c = local_8 / g_fMissionScoreNormalizationDivisor;
 }
 
 // FUNCTION: IMPERIALISM 0x0053edf0
