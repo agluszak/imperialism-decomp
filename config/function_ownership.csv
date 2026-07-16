@@ -2520,7 +2520,9 @@ address|target_cpp|ownership|note
 50ec60|src/game/TMultiplayerMgr.cpp|manual|marker_sync
 50ec90|src/game/TMapMgr.cpp|manual|marker_sync
 50f200|src/game/TMapMgr.cpp|manual|marker_sync
+50f6b0|src/game/TMapMgr.cpp|manual|marker_sync
 50f740|src/game/TMapMgr.cpp|manual|marker_sync
+50f860|src/game/TMapMgr.cpp|manual|marker_sync
 50fca0|src/game/TMapMgr.cpp|manual|marker_sync
 50fe10|src/game/TMapMgr.cpp|manual|marker_sync
 510210|src/game/TMapMgr.cpp|manual|marker_sync
@@ -2623,6 +2625,7 @@ address|target_cpp|ownership|note
 518130|src/game/TMapMgr.cpp|manual|marker_sync
 518470|src/game/TMapMgr.cpp|manual|marker_sync
 5184e0|src/game/TMapMgr.cpp|manual|marker_sync
+518540|src/game/TMapMgr.cpp|manual|marker_sync
 518960|src/game/TMapMgr.cpp|manual|marker_sync
 518a20|src/game/TMapMgr.cpp|manual|marker_sync
 518b40|src/game/TMapMgr.cpp|manual|marker_sync

@@ -42,10 +42,10 @@ static __inline char TuningKeywordMatches(const char* text, const char* keyword)
 }
 
 // FUNCTION: IMPERIALISM 0x00525a30
-void TMapMaker::GenerateMapFromTuningStringAndApplyScenarioOverrides(char* tileGrid, int contextArg,
-                                                                     CString* tuningString) {
+void TMapMaker::GenerateMapFromTuningStringAndApplyScenarioOverrides(
+    char* tileGrid, TGlobalMapCityScoreRecord* cityTable, CString* tuningString) {
   mapTileGrid08 = tileGrid;
-  contextArg0c = contextArg;
+  cityScoreTable0c = cityTable;
   g_mapGenDesertQuota_006a38bc = 200;
   g_mapGenMountainQuota_006a3470 = 150;
   g_mapGenHillsQuota_006a38c0 = 250;

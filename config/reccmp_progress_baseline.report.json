@@ -12394,7 +12394,7 @@
     },
     {
       "address": "0x4db380",
-      "matching": 0.5564853556485355,
+      "matching": 0.5523012552301255,
       "name": "TGreatPower::UpdateGreatPowerPressureStateAndDispatchEscalationMessage",
       "type": 1
     },
@@ -13063,14 +13063,14 @@
     },
     {
       "address": "0x4e0610",
-      "matching": 1.0,
+      "effective": true,
+      "matching": 0.42857142857142855,
       "name": "TGreatPower::ReturnFalseNationStateActionStub_8a",
       "type": 1
     },
     {
       "address": "0x4e0650",
-      "effective": true,
-      "matching": 0.42857142857142855,
+      "matching": 1.0,
       "name": "TGreatPower::OrphanRetStub_004d7fe0_8b",
       "type": 1
     },
@@ -13083,7 +13083,7 @@
     },
     {
       "address": "0x4e06d0",
-      "matching": 0.8095238095238095,
+      "matching": 0.7619047619047619,
       "name": "TGreatPower::SumNationRuntimeFiveBucketValue44",
       "type": 1
     },
@@ -13113,7 +13113,7 @@
     },
     {
       "address": "0x4e09a0",
-      "matching": 0.5542168674698795,
+      "matching": 0.5301204819277109,
       "name": "TGreatPower::ComputeCityOrderCapabilityAggregateScore",
       "type": 1
     },
@@ -16630,7 +16630,7 @@
     },
     {
       "address": "0x50bea0",
-      "matching": 0.2080872330758746,
+      "matching": 0.21081326669695594,
       "name": "TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets",
       "type": 1
     },
@@ -16810,14 +16810,8 @@
     },
     {
       "address": "0x50ec90",
-      "matching": 0.0,
+      "matching": 0.9799635701275046,
       "name": "TMapMgr::BuildOrLoadGlobalMapStateForSession",
-      "type": 1
-    },
-    {
-      "address": "0x50ed4d",
-      "matching": 0.0,
-      "name": "RebuildGlobalMapStateAndMaybeDispatchTurnEvent3C0",
       "type": 1
     },
     {
@@ -16834,8 +16828,8 @@
     },
     {
       "address": "0x50f6b0",
-      "matching": 0.0,
-      "name": "TSpaceCommand::SetMapRecordFlagA3AndPropagateToChildren",
+      "matching": 1.0,
+      "name": "TMapMgr::SetMapRecordFlagA3AndPropagateToChildren",
       "type": 1
     },
     {
@@ -16847,8 +16841,8 @@
     },
     {
       "address": "0x50f860",
-      "matching": 0.0149812734082397,
-      "name": "RebuildTileOwnerNeighborCachesAndFallbackAssignments",
+      "matching": 0.007518796992481203,
+      "name": "TMapMgr::RebuildTileOwnerNeighborCachesAndFallbackAssignments",
       "type": 1
     },
     {
@@ -16865,7 +16859,7 @@
     },
     {
       "address": "0x510210",
-      "matching": 0.32545931758530183,
+      "matching": 0.2804718217562254,
       "name": "TMapMgr::UpdateMapTileAdjacencyMasksAndVariantForTile",
       "type": 1
     },
@@ -16925,7 +16919,7 @@
     },
     {
       "address": "0x511e80",
-      "matching": 0.7441860465116279,
+      "matching": 1.0,
       "name": "TMapMgr::TMapMaker_EnsureMapDataStreamOpenedAndMaybeTickUiProgress",
       "type": 1
     },
@@ -17082,7 +17076,7 @@
     },
     {
       "address": "0x5136a0",
-      "matching": 0.8888888888888888,
+      "matching": 1.0,
       "name": "TMapMgr::OrphanLeaf_NoCall_Ins35_005136a0",
       "type": 1
     },
@@ -17508,8 +17502,8 @@
     },
     {
       "address": "0x518540",
-      "matching": 0.0,
-      "name": "LoadScenarioMapStateFromTableResource",
+      "matching": 0.02564102564102564,
+      "name": "TMapMgr::LoadScenarioMapStateFromTableResource",
       "type": 1
     },
     {
@@ -18510,7 +18504,7 @@
     },
     {
       "address": "0x52d030",
-      "matching": 1.0,
+      "matching": 0.7766990291262136,
       "name": "ComputeWrappedOverlayCoordDeltaMetric",
       "type": 1
     },
@@ -18528,7 +18522,7 @@
     },
     {
       "address": "0x52d1f0",
-      "matching": 0.2784090909090909,
+      "matching": 0.2621082621082621,
       "name": "ReindexContiguousCityRegionIds",
       "type": 1
     },
@@ -20444,7 +20438,7 @@
     },
     {
       "address": "0x53ceb0",
-      "matching": 0.450261780104712,
+      "matching": 0.4479166666666667,
       "name": "ComputeArmyMissionCompositionAlignmentScore",
       "type": 1
     },
@@ -20456,7 +20450,7 @@
     },
     {
       "address": "0x53d200",
-      "matching": 0.3686274509803922,
+      "matching": 0.3700787401574803,
       "name": "ComputeArmyMissionScoreDeltaWithScaledCandidateUnit",
       "type": 1
     },
@@ -21548,7 +21542,7 @@
     },
     {
       "address": "0x545940",
-      "matching": 0.4316639741518578,
+      "matching": 0.42146089204912734,
       "name": "TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine",
       "type": 1
     },
@@ -25749,7 +25743,7 @@
     },
     {
       "address": "0x575900",
-      "matching": 0.38966202783300197,
+      "matching": 0.37375745526838966,
       "name": "TGameSetupPicture::HandleEvent",
       "type": 1
     },
@@ -26277,13 +26271,13 @@
     },
     {
       "address": "0x57c7c0",
-      "matching": 0.5486725663716814,
+      "matching": 0.5405405405405406,
       "name": "RebuildMapContextAndGlobalMapState",
       "type": 1
     },
     {
       "address": "0x57c9a0",
-      "matching": 0.5846153846153846,
+      "matching": 0.6031746031746031,
       "name": "RecreateActiveMapContextAndInitializeGlobalMapState",
       "type": 1
     },
@@ -29785,7 +29779,7 @@
     },
     {
       "address": "0x5a1ee0",
-      "matching": 0.6604774535809018,
+      "matching": 0.6631299734748011,
       "name": "TTacticalBattle::EvaluateAndResolveTacticalActionAgainstTileOccupant",
       "type": 1
     },
@@ -29863,7 +29857,7 @@
     },
     {
       "address": "0x5a3810",
-      "matching": 0.7107438016528925,
+      "matching": 0.8571428571428571,
       "name": "TTacticalBattle::ComputeRallyStrengthAndQueueTacticalRallyCommand",
       "type": 1
     },
@@ -29875,7 +29869,7 @@
     },
     {
       "address": "0x5a39a0",
-      "matching": 0.9545454545454546,
+      "matching": 0.9393939393939394,
       "name": "ComputeHexTileDistanceFromIndices",
       "type": 1
     },
@@ -29893,7 +29887,7 @@
     },
     {
       "address": "0x5a3d30",
-      "matching": 0.8104956268221575,
+      "matching": 0.8163265306122449,
       "name": "IsTacticalTargetTileReachableForAction",
       "type": 1
     },

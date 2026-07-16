@@ -207,11 +207,16 @@ public:
   // construct), then resets every record to its sentinel defaults (-1 for
   // unassigned owner/region/index fields, 0 for counters/masks, 999 for lastTurnTick).
   virtual void AllocateAndResetTerrainAndCityScoreTables(); // slot 0x0a 0x50e8b0
-  virtual undefined BuildOrLoadGlobalMapStateForSession(CString param_1,
-                                                        char* param_2);     // slot 0x0b 0x50ec90
+  // Builds (or loads, for replay/scenario sessions) the whole per-session map state:
+  // resets the tables, drives TMapMaker's generation pipeline off the tuning string,
+  // then runs the tile/city post-passes. Returns 0 only when a scenario load fails.
+  // mapStreamName ("mapdata" from the idle-tick caller) is only tested for non-null
+  // here: a named stream means the tile grid is already populated, so skip generation.
+  virtual char BuildOrLoadGlobalMapStateForSession(const char* mapStreamName,
+                                                   char* tuningOverride);   // slot 0x0b 0x50ec90
   virtual undefined LoadPoliticalMapRegionSubtypeTableFromResourceStream(); // slot 0x0c 0x50f200
   virtual unsigned char*
-  UpdateMapTileAdjacencyMasksAndVariantForTile(uint param_1); // slot 0x0d 0x510210
+  UpdateMapTileAdjacencyMasksAndVariantForTile(short tileIndex); // slot 0x0d 0x510210
   // If tileIndex's gateFlag != 1 (not yet initialized): resets terrainType00 to 0 and
   // resourceTypeByEdge to {0x11, 0xff}, refreshes gateFlag via
   // ResolveRegionTileSubtypeCodeForTileIndex, then for each hex neighbor clears the
@@ -394,6 +399,17 @@ public:
   // (TArmyMgr::HasEligibleStationedUnitInRegion) but discards the result -- the original's
   // own call site never reads the return value either, so this is vestigial/dead code.
   virtual void ApplyUnitMovementClassForTileIfValid(int tileIndex); // slot 0x2b 0x515d60
+  // Recursive region-class flood: stamps cityScoreTable[recordIndex].regionClassA3 =
+  // classCode (no-op when already stamped) and recurses over the record's
+  // adjacentRegionIds0A children. 0x0050f6b0, RET 8.
+  void SetMapRecordFlagA3AndPropagateToChildren(int recordIndex, int classCode);
+  // 0x0050f860 -- rebuilds the per-tile owner/neighbor caches and fallback assignments
+  // after generation/load (858B; body deferred).
+  void RebuildTileOwnerNeighborCachesAndFallbackAssignments();
+  // 0x00518540 -- loads a scenario map state from the table resource by index; returns
+  // 0 on failure (536B; body deferred). RET 4.
+  char LoadScenarioMapStateFromTableResource(int scenarioIndex);
+
   // Moves cityRecordIndex's "anchor" tile (cityScoreTable[cityRecordIndex].cityTileIndex04,
   // reused here as a tile index) to newTileIndex: clears the old anchor tile's activeFlags1c
   // (0x20 bit) and refreshes its gateFlag/resourceTypeByEdge[0], sets the new tile's

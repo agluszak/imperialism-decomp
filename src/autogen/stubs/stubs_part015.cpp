@@ -59,22 +59,6 @@ undefined4 WrapperFor_thunk_SetMapRecordFlagA3AndPropagateToChildren_At0050f5f0(
   return 0;
 }
 
-// ghidra_name TSpaceCommand::SetMapRecordFlagA3AndPropagateToChildren
-// ghidra_proto undefined SetMapRecordFlagA3AndPropagateToChildren()
-// FUNCTION: IMPERIALISM 0x0050f6b0
-undefined4 SetMapRecordFlagA3AndPropagateToChildren(void)
-{
-  return 0;
-}
-
-// ghidra_name RebuildTileOwnerNeighborCachesAndFallbackAssignments
-// ghidra_proto undefined RebuildTileOwnerNeighborCachesAndFallbackAssignments()
-// FUNCTION: IMPERIALISM 0x0050f860
-undefined4 RebuildTileOwnerNeighborCachesAndFallbackAssignments(void)
-{
-  return 0;
-}
-
 // ghidra_name CheckTilePatternMaskAllowedByModeFlag
 // ghidra_proto undefined CheckTilePatternMaskAllowedByModeFlag()
 // FUNCTION: IMPERIALISM 0x005114b0
@@ -127,14 +111,6 @@ undefined4 OrphanDeadLeaf_NoRefs_00517d40(void)
 // ghidra_proto undefined CollectSecondDegreeLinksWithMinorNationFallback()
 // FUNCTION: IMPERIALISM 0x00518090
 undefined4 CollectSecondDegreeLinksWithMinorNationFallback(void)
-{
-  return 0;
-}
-
-// ghidra_name LoadScenarioMapStateFromTableResource
-// ghidra_proto undefined LoadScenarioMapStateFromTableResource()
-// FUNCTION: IMPERIALISM 0x00518540
-undefined4 LoadScenarioMapStateFromTableResource(void)
 {
   return 0;
 }

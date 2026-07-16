@@ -1,5 +1,9 @@
 #include "game/TMapMgr.h"
 
+#include "game/TMapMaker.h"
+#include "game/TSetupRandomMapPicture.h"
+#include "game/mapped_flavor_text.h"
+
 #include "game/CString.h"
 #include "game/TArmyMgr.h"
 #include "game/TCivMgr.h"
@@ -250,12 +254,153 @@ void TMapMgr::AllocateAndResetTerrainAndCityScoreTables() {
   }
 }
 
-undefined TMapMgr::BuildOrLoadGlobalMapStateForSession(CString param_1, char* param_2) {
+undefined TMapMgr::LoadPoliticalMapRegionSubtypeTableFromResourceStream() {
   return 0;
 }
 
-undefined TMapMgr::LoadPoliticalMapRegionSubtypeTableFromResourceStream() {
-  return 0;
+// Builds (or loads) the whole per-session map state. Three entry modes: replay
+// (TSimMgr field112 set) reloads the political tables and refreshes tiles in place;
+// scenario (stateFlag114 set) loads the fixed map table (returning 0 on failure);
+// otherwise a fresh map is generated from the tuning string unless mapStreamName
+// names an already-populated stream. Every phase is bracketed by setup-globe spins.
+// FUNCTION: IMPERIALISM 0x0050ec90
+char TMapMgr::BuildOrLoadGlobalMapStateForSession(const char* mapStreamName, char* tuningOverride) {
+  if (g_pActiveRandomMapSetupPicture006A4268 != 0) {
+    g_pActiveRandomMapSetupPicture006A4268->SpinYourGlobe();
+  }
+  AllocateAndResetTerrainAndCityScoreTables();
+  if (g_pActiveRandomMapSetupPicture006A4268 != 0) {
+    g_pActiveRandomMapSetupPicture006A4268->SpinYourGlobe();
+  }
+  TMapMaker* mapMaker = new TMapMaker();
+
+  char sessionActive;
+  if (g_pSimMgr->field112 != 0 || g_pSimMgr->stateFlag114 != 0) {
+    sessionActive = 1;
+  } else {
+    sessionActive = 0;
+  }
+  mapMaker->modeByte2a1 = hexNeighborWrapHorizontally20;
+
+  if (sessionActive != 0) {
+    if (g_pSimMgr->field112 != 0) {
+      // Replay path: reload the political tables and refresh every tile in place.
+      LoadPoliticalMapRegionSubtypeTableFromResourceStream();
+      short tile;
+      for (tile = 0; tile < 0x1950; ++tile) {
+        UpdateMapTileAdjacencyMasksAndVariantForTile(tile);
+        UpdateTileNeighborBorderInfluenceCounters(tile, 0);
+      }
+      g_pUiRuntimeContext->DispatchTurnEventSlot4C(0x3c0, 0);
+    } else {
+      // Scenario path: load the fixed map; bail out entirely when that fails.
+      if (LoadScenarioMapStateFromTableResource(g_pSimMgr->stateFlag114 - 1) == 0) {
+        if (mapMaker != 0) {
+          mapMaker->Free();
+        }
+        Free();
+        g_pGlobalMapState = 0;
+        return 0;
+      }
+    }
+    mapMaker->mapTileGrid08 = reinterpret_cast<char*>(terrainStateTable);
+    mapMaker->MapGenFinalizePassSlot19(1);
+  } else if (mapStreamName == 0) {
+    if (tuningOverride != 0) {
+      CString overrideText(tuningOverride);
+      scenarioTagText1c = overrideText;
+    } else {
+      GenerateMappedFlavorTextByCurrentContextNation(&scenarioTagText1c);
+    }
+    mapMaker->GenerateMapFromTuningStringAndApplyScenarioOverrides(
+        reinterpret_cast<char*>(terrainStateTable), cityScoreTable, &scenarioTagText1c);
+  }
+
+  if (g_pActiveRandomMapSetupPicture006A4268 != 0) {
+    g_pActiveRandomMapSetupPicture006A4268->SpinYourGlobe();
+  }
+  if (sessionActive == 0) {
+    // Fresh map: stamp the icon variants and snapshot every tile's owner as the
+    // former owner.
+    short tile;
+    for (tile = 0; tile < 0x1950; ++tile) {
+      UpdateStrategicMapTileIconVariantState(tile);
+      TTerrainStateRecordView& tileRecord = terrainStateTable[tile];
+      tileRecord.formerOwnerNationTag03 = tileRecord.ownerNationTag04;
+    }
+  }
+  if (g_pActiveRandomMapSetupPicture006A4268 != 0) {
+    g_pActiveRandomMapSetupPicture006A4268->SpinYourGlobe();
+  }
+  RebuildTileOwnerNeighborCachesAndFallbackAssignments();
+  if (sessionActive != 0) {
+    // Loaded map: assign contiguous region-class codes across the linked city records.
+    int nextClassCode = 0;
+    int rec;
+    for (rec = 0; rec < 0x180; ++rec) {
+      TGlobalMapCityScoreRecord* record = cityScoreTable + rec;
+      if (record->linkedRegionIds[0] != -1 && record->regionClassA3 == -1) {
+        int classCode = nextClassCode;
+        ++nextClassCode;
+        if (cityScoreTable[rec].regionClassA3 != classCode) {
+          record->regionClassA3 = static_cast<char>(classCode);
+          int i;
+          for (i = 0; i < cityScoreTable[rec].adjacentRegionCount08; ++i) {
+            SetMapRecordFlagA3AndPropagateToChildren(cityScoreTable[rec].adjacentRegionIds0A[i],
+                                                     classCode);
+          }
+        }
+      }
+    }
+  }
+  if (g_pActiveRandomMapSetupPicture006A4268 != 0) {
+    g_pActiveRandomMapSetupPicture006A4268->SpinYourGlobe();
+  }
+  if (sessionActive == 0) {
+    TMapMaker_EnsureRegionClassHasSubtype3And4AssignmentsWithRng();
+  }
+  if (g_pActiveRandomMapSetupPicture006A4268 != 0) {
+    g_pActiveRandomMapSetupPicture006A4268->SpinYourGlobe();
+  }
+  mapMaker->RebuildUMapperRouteRecordsAndActiveMapRects();
+  g_pSimMgr->ReseedThreadLocalRandom();
+  g_zoneStatusCodePrngSeed_006a5aec = 0;
+  g_zoneStatusCodePrngSeed_006a5aec = reinterpret_cast<unsigned int(__cdecl*)(int)>(
+      GetCurrentLocalEpochSecondsWithTimezoneCache)(0);
+  if (g_pActiveRandomMapSetupPicture006A4268 != 0) {
+    g_pActiveRandomMapSetupPicture006A4268->SpinYourGlobe();
+  }
+  if (sessionActive == 0) {
+    short tile;
+    for (tile = 0; tile < 0x1950; ++tile) {
+      UpdateMapTileAdjacencyMasksAndVariantForTile(tile);
+      UpdateTileNeighborBorderInfluenceCounters(tile, 0);
+    }
+  }
+  if (g_pActiveRandomMapSetupPicture006A4268 != 0) {
+    g_pActiveRandomMapSetupPicture006A4268->SpinYourGlobe();
+  }
+  g_pUiRuntimeContext->InvokeStrategicMapViewMethod70();
+  if (g_pActiveRandomMapSetupPicture006A4268 != 0) {
+    g_pActiveRandomMapSetupPicture006A4268->SpinYourGlobe();
+  }
+  field8 = 1;
+  if (mapMaker != 0) {
+    mapMaker->Free();
+  }
+  return 1;
+}
+
+// FUNCTION: IMPERIALISM 0x0050f6b0
+void TMapMgr::SetMapRecordFlagA3AndPropagateToChildren(int recordIndex, int classCode) {
+  if (cityScoreTable[recordIndex].regionClassA3 != classCode) {
+    cityScoreTable[recordIndex].regionClassA3 = static_cast<char>(classCode);
+    int i;
+    for (i = 0; i < cityScoreTable[recordIndex].adjacentRegionCount08; ++i) {
+      SetMapRecordFlagA3AndPropagateToChildren(cityScoreTable[recordIndex].adjacentRegionIds0A[i],
+                                               classCode);
+    }
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x0050f740
@@ -294,6 +439,9 @@ void TMapMgr::RefreshMapContextRotatingStatusStrings() {
   g_zoneStatusCodePrngSeed_006a5aec =
       reinterpret_cast<int(__cdecl*)(void*)>(GetCurrentLocalEpochSecondsWithTimezoneCache)(0);
 }
+
+// FUNCTION: IMPERIALISM 0x0050f860
+void TMapMgr::RebuildTileOwnerNeighborCachesAndFallbackAssignments() {}
 
 // FUNCTION: IMPERIALISM 0x0050fca0
 void TMapMgr::UpdateTilePrimaryAndSecondaryNeighborLinksByPriority(short cityRecordIndex) {
@@ -439,18 +587,13 @@ void TMapMgr::UpdateTileNeighborBorderInfluenceCounters(short tileIndex, short m
 // modeled the same way per the kNextHexDirection precedent above (table lookup, not modulo).
 static const short kOppositeHexDirection[6] = {3, 4, 5, 0, 1, 2};
 
-// Recompute a tile's per-direction adjacency masks (bytes 0x0a/0x0b) and its sprite-variant
-// code (byte 2) from its six hex neighbors, using the map-gen LCG for random tie-breaks.
-// Branches on terrain type (byte 0): type 5 = water/coast, else land. Returns the last EAX
-// value (a tile-byte pointer or an incidental scalar); callers ignore it.
 // FUNCTION: IMPERIALISM 0x00510210
-unsigned char* TMapMgr::UpdateMapTileAdjacencyMasksAndVariantForTile(uint param_1) {
-  short tileIndex = (short)param_1;
+unsigned char* TMapMgr::UpdateMapTileAdjacencyMasksAndVariantForTile(short tileIndex) {
   short neighbors[6];
   unsigned char* result;
 
   if (terrainStateTable[tileIndex].terrainType00 != 5) {
-    ComputeHexNeighborTileIndices(param_1, neighbors, hexNeighborWrapHorizontally20);
+    ComputeHexNeighborTileIndices(tileIndex, neighbors, hexNeighborWrapHorizontally20);
     result = reinterpret_cast<unsigned char*>(terrainStateTable);
     for (int d = 0; d < 6; ++d) {
       if (neighbors[d] != -1 &&
@@ -524,7 +667,7 @@ unsigned char* TMapMgr::UpdateMapTileAdjacencyMasksAndVariantForTile(uint param_
     unsigned char variant = terrainStateTable[tileIndex].roadFlag;
     if (variant != 0) {
       if ((variant & 0x80) == 0) {
-        int resolved = ResolveMapTileVariantSpriteFromAdjacencyState(param_1);
+        int resolved = ResolveMapTileVariantSpriteFromAdjacencyState(tileIndex);
         terrainStateTable[tileIndex].roadFlag = (unsigned char)resolved;
       } else {
         terrainStateTable[tileIndex].roadFlag = variant & 0x7f;
@@ -537,7 +680,7 @@ unsigned char* TMapMgr::UpdateMapTileAdjacencyMasksAndVariantForTile(uint param_
       return reinterpret_cast<unsigned char*>((unsigned int)(unsigned char)(finalVariant - 0x10));
     }
   } else {
-    ComputeHexNeighborTileIndices(param_1, neighbors, hexNeighborWrapHorizontally20);
+    ComputeHexNeighborTileIndices(tileIndex, neighbors, hexNeighborWrapHorizontally20);
     unsigned int lcg = g_mapGenLcgState_006a38e8;
     for (int d = 0; d < 6; ++d) {
       if (neighbors[d] != -1 && terrainStateTable[neighbors[d]].terrainType00 != 5) {
@@ -560,7 +703,7 @@ unsigned char* TMapMgr::UpdateMapTileAdjacencyMasksAndVariantForTile(uint param_
         return result;
       }
       if ((variant & 0x80) == 0) {
-        int resolved = ResolveMapTileVariantSpriteFromAdjacencyState(param_1);
+        int resolved = ResolveMapTileVariantSpriteFromAdjacencyState(tileIndex);
         terrainStateTable[tileIndex].roadFlag = (unsigned char)resolved;
         return reinterpret_cast<unsigned char*>(resolved);
       }
@@ -588,7 +731,7 @@ unsigned char* TMapMgr::UpdateMapTileAdjacencyMasksAndVariantForTile(uint param_
         return result;
       }
       pendingRiverMouthTile22 = tileIndex;
-      return reinterpret_cast<unsigned char*>(param_1 & 0xffff);
+      return reinterpret_cast<unsigned char*>(tileIndex & 0xffff);
     }
     g_mapGenLcgState_006a38e8 = lcg * 0x15a4e35 + 1;
     unsigned int roll = g_mapGenLcgState_006a38e8 >> 0xc & 0x7fff;
@@ -3118,6 +3261,12 @@ short __stdcall GetProvinceUnitOrderWeight(short provinceId) {
   // mission scoring converts it to float for the accumulate dampening factor.
   (void)provinceId;
   return 0x21;
+}
+
+// FUNCTION: IMPERIALISM 0x00518540
+char TMapMgr::LoadScenarioMapStateFromTableResource(int scenarioIndex) {
+  (void)scenarioIndex;
+  return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x00518960

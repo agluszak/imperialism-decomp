@@ -3137,16 +3137,16 @@ address|name|symbol|size|type|prototype|provenance
 50e901|InitializeUMapPrimaryTileRecordDefaultsAndEnsureAuxBuffer||341|function|undefined InitializeUMapPrimaryTileRecordDefaultsAndEnsureAuxBuffer()|
 50ea56|InitializeUMapAuxEntryDefaultsAndSharedNameFields||325|function|undefined InitializeUMapAuxEntryDefaultsAndSharedNameFields()|
 50ec60|NationStateRecordA8::NationStateRecordA8||18|function|undefined InitializeSharedStringRefAndReturnThis()|
-50ec90|TMapMgr::BuildOrLoadGlobalMapStateForSession||874|function|char __thiscall BuildOrLoadGlobalMapStateForSession(int skipGenerate, char * tuningOverride)|
+50ec90|TMapMgr::BuildOrLoadGlobalMapStateForSession||874|function|char __thiscall BuildOrLoadGlobalMapStateForSession(const char * mapStreamName, char * tuningOverride)|
 50f200|TMapMgr::LoadPoliticalMapRegionSubtypeTableFromResourceStream||337|function|undefined LoadPoliticalMapRegionSubtypeTableFromResourceStream()|
 50f3c0|VerifyMapDataAndWriteReport||434|function|void __fastcall VerifyMapDataAndWriteReport(int pMapDataContext)|
 50f5f0|WrapperFor_thunk_SetMapRecordFlagA3AndPropagateToChildren_At0050f5f0||139|function|undefined WrapperFor_thunk_SetMapRecordFlagA3AndPropagateToChildren_At0050f5f0()|
-50f6b0|TSpaceCommand::SetMapRecordFlagA3AndPropagateToChildren||110|function|undefined SetMapRecordFlagA3AndPropagateToChildren()|
+50f6b0|TMapMgr::SetMapRecordFlagA3AndPropagateToChildren||110|function|void __thiscall SetMapRecordFlagA3AndPropagateToChildren(int recordIndex, int classCode)|
 50f740|RefreshMapContextRotatingStatusStrings||221|function|undefined RefreshMapContextRotatingStatusStrings()|
-50f860|RebuildTileOwnerNeighborCachesAndFallbackAssignments||858|function|undefined RebuildTileOwnerNeighborCachesAndFallbackAssignments()|
+50f860|TMapMgr::RebuildTileOwnerNeighborCachesAndFallbackAssignments||858|function|void __thiscall RebuildTileOwnerNeighborCachesAndFallbackAssignments()|
 50fca0|TMapMgr::UpdateTilePrimaryAndSecondaryNeighborLinksByPriority||285|function|undefined UpdateTilePrimaryAndSecondaryNeighborLinksByPriority()|
 50fe10|TMapMgr::UpdateTileNeighborBorderInfluenceCounters||812|function|undefined UpdateTileNeighborBorderInfluenceCounters()|
-510210|TMapMgr::UpdateMapTileAdjacencyMasksAndVariantForTile||1177|function|undefined UpdateMapTileAdjacencyMasksAndVariantForTile()|
+510210|TMapMgr::UpdateMapTileAdjacencyMasksAndVariantForTile||1177|function|uchar * __thiscall UpdateMapTileAdjacencyMasksAndVariantForTile(short tileIndex)|
 5107e0|TMapMgr::InitializeTileNeighborConnectionMaskIfNeeded||190|function|undefined InitializeTileNeighborConnectionMaskIfNeeded()|
 5108d0|ResolveMapTileVariantSpriteFromAdjacencyState||1972|function|undefined ResolveMapTileVariantSpriteFromAdjacencyState()|
 5112f0|CheckTileVariantCodeMembershipSetA||65|function|undefined CheckTileVariantCodeMembershipSetA()|
@@ -3266,7 +3266,7 @@ address|name|symbol|size|type|prototype|provenance
 518130|RecomputeTileStrategicScoreHeatmap||643|function|undefined RecomputeTileStrategicScoreHeatmap()|
 518470|ApplyJoinEmpireMode0GlobalDiplomacyReset_Impl||66|function|undefined ApplyJoinEmpireMode0GlobalDiplomacyReset_Impl()|
 5184e0|GetProvinceUnitOrderWeight||7|function|undefined GetProvinceUnitOrderWeight()|
-518540|LoadScenarioMapStateFromTableResource||536|function|undefined LoadScenarioMapStateFromTableResource()|
+518540|TMapMgr::LoadScenarioMapStateFromTableResource||536|function|char __thiscall LoadScenarioMapStateFromTableResource(int scenarioIndex)|
 5187f0|LoadScenarioMetadataByIndexIntoUiControlCore_Impl||62|function|undefined LoadScenarioMetadataByIndexIntoUiControlCore_Impl()|
 518840|LoadScenarioMapStateFromTableResource_Impl||219|function|undefined LoadScenarioMapStateFromTableResource_Impl()|
 518960|TGlobalMapState::SetRegionDevelopmentStageByte||29|function|undefined SetRegionDevelopmentStageByte()|
@@ -3387,7 +3387,7 @@ address|name|symbol|size|type|prototype|provenance
 525970|TMapMaker::ConstructTMapMaker||16|function|undefined ConstructTMapMaker()|
 525990|TMapMaker::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 5259c0|TMapMaker::DestructTMapMaker||7|function|undefined DestructTMapMaker()|
-525a30|TMapMaker::GenerateMapFromTuningStringAndApplyScenarioOverrides||2291|function|void __thiscall GenerateMapFromTuningStringAndApplyScenarioOverrides(char * tileGrid, int contextArg, CString * tuningString)|
+525a30|TMapMaker::GenerateMapFromTuningStringAndApplyScenarioOverrides||2291|function|void __thiscall GenerateMapFromTuningStringAndApplyScenarioOverrides(char * tileGrid, TGlobalMapCityScoreRecord * cityTable, CString * tuningString)|
 526710|ValidateAllColumnsHaveAssignedRegionClass||53|function|undefined ValidateAllColumnsHaveAssignedRegionClass()|
 526760|TMapMaker::ValidateTerrainClassAdjacencyCoverageMask||106|function|char __thiscall ValidateTerrainClassAdjacencyCoverageMask(void)|
 5267f0|ValidateSeedCandidateExistsForEachTerrainClass||737|function|undefined ValidateSeedCandidateExistsForEachTerrainClass()|

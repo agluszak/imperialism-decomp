@@ -115,11 +115,10 @@ src/game/THighScoresPicture.cpp|3|0|0|0
 src/game/THostGreatPower.cpp|4|0|1|0
 src/game/TIconBar.cpp|2|0|0|0
 src/game/TIconSlider.cpp|3|0|0|0
-src/game/TIndexAndRankList.cpp|0|0|1|0
 src/game/TIndustryCluster.cpp|0|0|1|0
 src/game/TIndustryView.cpp|1|0|0|0
 src/game/TInfoBarPictureText.cpp|1|0|1|0
-src/game/TInfoPanelView.cpp|3|0|1|0
+src/game/TInfoPanelView.cpp|1|0|1|0
 src/game/TInteriorMinister.cpp|8|0|0|0
 src/game/TInteriorMinisterView.cpp|1|0|0|0
 src/game/TInterruptusView.cpp|1|0|1|0
@@ -136,8 +135,8 @@ src/game/TMapDialog.cpp|5|0|0|0
 src/game/TMapEditCluster.cpp|1|0|1|0
 src/game/TMapEditView.cpp|6|0|1|0
 src/game/TMapKey.cpp|1|0|1|0
-src/game/TMapMaker.cpp|14|0|0|0
-src/game/TMapMgr.cpp|2|0|2|0
+src/game/TMapMaker.cpp|12|0|0|0
+src/game/TMapMgr.cpp|3|0|2|0
 src/game/TMapUberPicture.cpp|8|0|0|0
 src/game/TMapUberUberPicture.cpp|0|0|1|0
 src/game/TMegaPicture.cpp|2|0|0|0
@@ -175,7 +174,6 @@ src/game/TNewTownView.cpp|1|0|1|0
 src/game/TNewsMgr.cpp|0|0|1|0
 src/game/TNewspaperView.cpp|0|0|1|0
 src/game/TNextMoveCommand.cpp|1|0|0|0
-src/game/TNoHiliteText.cpp|0|0|1|0
 src/game/TNominationView.cpp|2|0|1|0
 src/game/TNumberedIcon.cpp|1|0|0|0
 src/game/TOcean.cpp|3|0|1|0

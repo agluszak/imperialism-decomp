@@ -27,8 +27,7 @@ TGameSetupPicture::TGameSetupPicture() : TNoHilitePicture() {}
 TGameSetupPicture::~TGameSetupPicture() {}
 
 // FUNCTION: IMPERIALISM 0x005758e0
-void TGameSetupPicture::NoOpUiLifecycleHook(int arg) {
-}
+void TGameSetupPicture::NoOpUiLifecycleHook(int arg) {}
 
 // Main-menu button dispatcher. Only commandId 0x14/0x0a/0x22 (button-activation
 // codes) are handled; anything else forwards straight to the base class. The
@@ -97,10 +96,9 @@ void TGameSetupPicture::HandleEvent(int commandId, TEventHandler* sourceHandler,
       g_pSimMgr->RebuildGlobalOrderManagersAndCapabilityState(1);
       g_pGlobalMapState->AllocateAndResetTerrainAndCityScoreTables();
       g_pGlobalMapState->LoadPoliticalMapRegionSubtypeTableFromResourceStream();
-      for (unsigned int tileIndex = 0; tileIndex < 0x1950; ++tileIndex) {
+      for (short tileIndex = 0; tileIndex < 0x1950; ++tileIndex) {
         g_pGlobalMapState->UpdateMapTileAdjacencyMasksAndVariantForTile(tileIndex);
-        g_pGlobalMapState->UpdateTileNeighborBorderInfluenceCounters(
-            static_cast<short>(tileIndex), 0);
+        g_pGlobalMapState->UpdateTileNeighborBorderInfluenceCounters(tileIndex, 0);
       }
       postEventCode = 0x3c0;
     } else {
