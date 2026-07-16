@@ -13,6 +13,8 @@
 #include "game/TCity.h"
 #include "game/TCountry.h"
 #include "game/TGreatPower.h"
+#include "game/TMacViewMgr.h"
+#include "game/TMapMgr.h"
 #include "game/TMilitaryUnit.h"
 #include "game/TShip.h"
 #include "game/TTaskForce.h"
@@ -126,7 +128,7 @@ void TTechMgr::InitializeCityOrderCapabilityStateDefaults(void) {
     nationCapRows1e8[n].slots[9] = 0x1b;
   }
 
-  ruleTablePointer264 = DAT_0066ac88;
+  packedRulePair264 = *reinterpret_cast<unsigned int*>(g_aTechItemPrerequisitePairs[30]);
   RecomputeGlobalCapabilityAverages();
 }
 
@@ -212,7 +214,7 @@ void TTechMgr::ApplyCityOrderCapabilityUnlockByTechId(int nTechId) {
     activeZoneIndex1d4 = 8;
     return;
   case 0xb:
-    ruleTablePointer264 = DAT_0066ac8c;
+    packedRulePair264 = *reinterpret_cast<unsigned int*>(g_aTechItemPrerequisitePairs[31]);
     return;
   case 0x15:
     resourceTypeEnabled19d[9] = 1;
@@ -230,8 +232,184 @@ void TTechMgr::ApplyCityOrderCapabilityUnlockByTechId(int nTechId) {
     techSelectorShort1d2 = 0xd;
     return;
   case 0x16:
-    ruleTablePointer264 = DAT_0066ac90;
+    packedRulePair264 = *reinterpret_cast<unsigned int*>(g_aTechItemPrerequisitePairs[32]);
     break;
+  }
+}
+
+// FUNCTION: IMPERIALISM 0x005afd00
+void TTechMgr::HandleAbilityUnlock(int techId, int nationSlot) {
+  if (orderCapRows277[nationSlot].techStatusByTechId[techId] == 2) {
+    return;
+  }
+  orderCapRows277[nationSlot].techStatusByTechId[techId] = 2;
+
+  // Late-era arms bonus scale: only for AI-eligible nations once the sim level passes 2.
+  short eraOffset = 0;
+  int simLevel = g_pSimMgr->redrawEnabled;
+  if (simLevel >= 3 && g_apNationStates[nationSlot]->diplomacyEligibilityA0 == 0) {
+    eraOffset = static_cast<short>(simLevel - 2);
+  }
+
+  switch (techId) {
+  case 3:
+    capabilityValueByNationAndResource[nationSlot][0] = 1;
+    break;
+  case 2:
+    capabilityValueByNationAndResource[nationSlot][0x11] = 1;
+    break;
+  case 9:
+    UpdateSelectionAndRecalculateScores(7, nationSlot);
+    UpdateSelectionAndRecalculateScores(5, nationSlot);
+    break;
+  case 5:
+    capabilityValueByNationAndResource[nationSlot][3] = 2;
+    capabilityValueByNationAndResource[nationSlot][4] = 2;
+    capabilityValueByNationAndResource[nationSlot][0x16] = 2;
+    capabilityValueByNationAndResource[nationSlot][0x15] = 2;
+    break;
+  case 6:
+    capabilityValueByNationAndResource[nationSlot][2] = 1;
+    capRowsD467[nationSlot].flags[3] = 1;
+    break;
+  case 4:
+    UpdateSelectionAndRecalculateScores(6, nationSlot);
+    break;
+  case 0xa:
+    capabilityValueByNationAndResource[nationSlot][0x12] = 2;
+    capabilityValueByNationAndResource[nationSlot][0x11] = 2;
+    break;
+  case 7:
+    capabilityValueByNationAndResource[nationSlot][0x14] = 1;
+    capabilityValueByNationAndResource[nationSlot][1] = 1;
+    capRowsD467[nationSlot].flags[5] = 1;
+    break;
+  case 8:
+    capabilityValueByNationAndResource[nationSlot][0] = 2;
+    capabilityValueByNationAndResource[nationSlot][1] = 2;
+    break;
+  case 0xf:
+    UpdateSelectionAndRecalculateScores(8, nationSlot);
+    if (g_pSimMgr->GetActiveNationId() == nationSlot) {
+      g_pStrategicMapViewSystem->RefreshCityCapabilityUiHandlesForActiveNation();
+    }
+    break;
+  case 0xc:
+    capabilityValueByNationAndResource[nationSlot][2] = 2;
+    break;
+  case 0x11:
+    capabilityValueByNationAndResource[nationSlot][0x11] = 3;
+    break;
+  case 0x12:
+    capabilityValueByNationAndResource[nationSlot][0x12] = 3;
+    break;
+  case 0x14:
+    capabilityValueByNationAndResource[nationSlot][0x14] = 2;
+    break;
+  case 0xb:
+    ActivateSlotAndUpdateUI(0xc, nationSlot);
+    ActivateSlotAndUpdateUI(9, nationSlot);
+    ActivateSlotAndUpdateUI(0x19, nationSlot);
+    ActivateSlotAndUpdateUI(0x1c, nationSlot);
+    break;
+  case 0x10:
+    capabilityValueByNationAndResource[nationSlot][0] = 3;
+    capabilityValueByNationAndResource[nationSlot][1] = 3;
+    break;
+  case 0x15:
+    UpdateSelectionAndRecalculateScores(9, nationSlot);
+    break;
+  case 0xd:
+    ActivateSlotAndUpdateUI(0xe, nationSlot);
+    ActivateSlotAndUpdateUI(0xf, nationSlot);
+    if (eraOffset != 0) {
+      TCity* city = (g_apNationStates[nationSlot] != 0) ? g_apNationStates[nationSlot]->city : 0;
+      city->cityStockArmsD6 = static_cast<short>(city->cityStockArmsD6 + eraOffset * 10);
+      city->VerifyStocks();
+    }
+    break;
+  case 0x17:
+    capabilityValueByNationAndResource[nationSlot][3] = 3;
+    capabilityValueByNationAndResource[nationSlot][4] = 3;
+    capabilityValueByNationAndResource[nationSlot][0x16] = 3;
+    capabilityValueByNationAndResource[nationSlot][0x15] = 3;
+    capabilityValueByNationAndResource[nationSlot][2] = 3;
+    ActivateSlotAndUpdateUI(0x1a, nationSlot);
+    break;
+  case 0x13:
+    capabilityValueByNationAndResource[nationSlot][6] = 1;
+    capRowsD467[nationSlot].flags[8] = 1;
+    break;
+  case 0xe:
+    ActivateSlotAndUpdateUI(8, nationSlot);
+    ActivateSlotAndUpdateUI(0xd, nationSlot);
+    ActivateSlotAndUpdateUI(0xa, nationSlot);
+    ActivateSlotAndUpdateUI(0xb, nationSlot);
+    if (eraOffset != 0) {
+      TCity* city = (g_apNationStates[nationSlot] != 0) ? g_apNationStates[nationSlot]->city : 0;
+      city->cityStockArmsD6 = static_cast<short>(city->cityStockArmsD6 + eraOffset * 10);
+      city->VerifyStocks();
+    }
+    break;
+  case 0x18:
+    UpdateSelectionAndRecalculateScores(0xb, nationSlot);
+    UpdateSelectionAndRecalculateScores(0xa, nationSlot);
+    if (g_pSimMgr->GetActiveNationId() == nationSlot) {
+      g_pStrategicMapViewSystem->RefreshCityCapabilityUiHandlesForActiveNation();
+    }
+    break;
+  case 0x1a:
+    capabilityValueByNationAndResource[nationSlot][6] = 2;
+    capabilityValueByNationAndResource[nationSlot][0x14] = 3;
+    break;
+  case 0x1b:
+    UpdateSelectionAndRecalculateScores(0xc, nationSlot);
+    UpdateSelectionAndRecalculateScores(0xd, nationSlot);
+    break;
+  case 0x16:
+    ActivateSlotAndUpdateUI(0x16, nationSlot);
+    ActivateSlotAndUpdateUI(0x17, nationSlot);
+    packedRulePair264 = *reinterpret_cast<unsigned int*>(g_aTechItemPrerequisitePairs[32]);
+    if (eraOffset != 0) {
+      TCity* city = (g_apNationStates[nationSlot] != 0) ? g_apNationStates[nationSlot]->city : 0;
+      city->cityStockArmsD6 = static_cast<short>(city->cityStockArmsD6 + eraOffset * 20);
+      city->VerifyStocks();
+    }
+    break;
+  case 0x1c:
+    capabilityValueByNationAndResource[nationSlot][6] = 3;
+    ActivateSlotAndUpdateUI(0x14, nationSlot);
+    ActivateSlotAndUpdateUI(0x15, nationSlot);
+    break;
+  case 0x19:
+    ActivateSlotAndUpdateUI(0x10, nationSlot);
+    ActivateSlotAndUpdateUI(0x11, nationSlot);
+    ActivateSlotAndUpdateUI(0x12, nationSlot);
+    ActivateSlotAndUpdateUI(0x13, nationSlot);
+    ActivateSlotAndUpdateUI(0x1d, nationSlot);
+    if (eraOffset != 0) {
+      TCity* city = (g_apNationStates[nationSlot] != 0) ? g_apNationStates[nationSlot]->city : 0;
+      city->cityStockArmsD6 = static_cast<short>(city->cityStockArmsD6 + eraOffset * 20);
+      city->VerifyStocks();
+    }
+    break;
+  default:
+    break;
+  }
+
+  // Upgrade every owned, developed tile whose capability ceiling rose.
+  short tileIndex;
+  for (tileIndex = 0; tileIndex < 0x1950; ++tileIndex) {
+    TTerrainStateRecordView* record = &g_pGlobalMapState->terrainStateTable[tileIndex];
+    if (record->ownerNationTag04 == nationSlot && (record->activeFlags1c & 1) != 0) {
+      short maxCap = static_cast<char>(
+          g_pGlobalMapState->FindMaxResourceCapabilityValueForTile(tileIndex, 0, nationSlot));
+      if (static_cast<char>(
+              g_pGlobalMapState->GetTileCivilianWorkOrderCostClassNibble(tileIndex, 0)) < maxCap) {
+        g_pGlobalMapState->SetCivilianDevelopmentClassNibble(tileIndex, 0,
+                                                             static_cast<unsigned char>(maxCap), 1);
+      }
+    }
   }
 }
 

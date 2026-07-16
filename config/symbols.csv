@@ -5621,7 +5621,7 @@ address|name|symbol|size|type|prototype|provenance
 5af980|UpdateCityOrderCapabilityUnlockProgress||315|function|undefined UpdateCityOrderCapabilityUnlockProgress()|
 5afb10|ApplyTechUnlockAndQueueNationAbilityNotices||105|function|undefined ApplyTechUnlockAndQueueNationAbilityNotices()|
 5afba0|ApplyCityOrderCapabilityUnlockByTechId||211|function|void __thiscall ApplyCityOrderCapabilityUnlockByTechId(int nTechId)|
-5afd00|HandleAbilityUnlock||1160|function|void __thiscall HandleAbilityUnlock(int menu_state, int action_id)|
+5afd00|TTechMgr::HandleAbilityUnlock||1160|function|void __thiscall HandleAbilityUnlock(int techId, int nationSlot)|
 5b0340|TTechMgr::ActivateSlotAndUpdateUI||344|function|void ActivateSlotAndUpdateUI(int abilityId, int nationSlot)|
 5b0500|TTechMgr::UpdateSelectionAndRecalculateScores||1037|function|void __thiscall UpdateSelectionAndRecalculateScores(int resourceType, int nationSlot)|
 5b0a20|TTechMgr::AreTechItemPrerequisitePairCompleted||71|function|undefined AreTechItemPrerequisitePairCompleted()|

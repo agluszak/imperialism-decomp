@@ -56,11 +56,14 @@ public:
     short slots[10];
   };
   NationCapRow nationCapRows1e8[7];
-  // 0x262 active-tech marker + 0x264 city-order rule-table pointer (the 6-byte gap that sits
-  // between the two per-nation tables). ApplyCityOrderCapabilityUnlockByTechId and the defaults
-  // initializer write these; a stray reader used to reach 0x262 as nationCapRows1e8[6].caps[1].
+  // 0x262 active-tech marker + 0x264 packed prerequisite pair (the 6-byte gap that sits
+  // between the two per-nation tables). ApplyCityOrderCapabilityUnlockByTechId and the
+  // defaults initializer write these. +0x264 is NOT a pointer: the original copies rows
+  // 30..32 of g_aTechItemPrerequisitePairs into it wholesale (one dword each, value
+  // {25,0} = 0x19), advancing as milestone techs 0x0b/0x16 land; the copy is kept as a
+  // single packed dword to match the original's one-mov write.
   short marker262;
-  unsigned int ruleTablePointer264;
+  unsigned int packedRulePair264;
   // Per-nation, per-tech research-status row (byte[techId]: 2 = researched, 1 = in
   // progress, 0 = not started). True base 0x268, stride 0x1d. The defaults initializer
   // sets techs 0..2 to 2 and zeroes the rest; readers index it dynamically by tech id
@@ -132,6 +135,12 @@ public:
   // affected, and redistributes the freed score across the remaining owned nodes.
   // 0x5b0500, __thiscall, RET 0x8.
   void UpdateSelectionAndRecalculateScores(int resourceType, int nationSlot);
+  // Marks `techId` researched for the nation and applies its unlock effects: per-tech
+  // capability-value bumps, navy-order type reselections (UpdateSelectionAndRecalculate-
+  // Scores), unit-ability activations (ActivateSlotAndUpdateUI), the late-era city
+  // arms-stock bonus, and a full map pass upgrading owned tiles' development class.
+  // 0x5afd00, __thiscall, RET 0x8.
+  void HandleAbilityUnlock(int techId, int nationSlot);
 
   ~TTechMgr() override;
 };

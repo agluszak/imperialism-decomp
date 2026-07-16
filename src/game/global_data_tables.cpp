@@ -973,10 +973,6 @@ int g_defaultDropShadowTextColor = 0;
 int g_NetworkDefaultNationId006a5fc0 = 0;
 // GLOBAL: IMPERIALISM 0x006a5fc4
 int g_NetworkBroadcastNationId006a5fc4 = 0;
-undefined4 DAT_0066ac88 = 0;
-undefined4 DAT_0066ac8c = 0;
-undefined4 DAT_0066ac90 = 0;
-
 // 26 (start, end) capability-priority range pairs walked by
 // TTechMgr::GenerateRandomCapabilityPrioritySlots. The reccmp symbol points at pair 0's END
 // value; pair 0's START value (1) lives one short earlier and is read via cursor[-1].

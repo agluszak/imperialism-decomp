@@ -307,14 +307,6 @@ undefined4 ApplyTechUnlockAndQueueNationAbilityNotices(void)
   return 0;
 }
 
-// ghidra_name HandleAbilityUnlock
-// ghidra_proto void __thiscall HandleAbilityUnlock(int menu_state, int action_id)
-// FUNCTION: IMPERIALISM 0x005afd00
-undefined4 HandleAbilityUnlock(void)
-{
-  return 0;
-}
-
 // ghidra_name ApplyTechItemPurchaseCostAndState
 // ghidra_proto undefined ApplyTechItemPurchaseCostAndState()
 // FUNCTION: IMPERIALISM 0x005b0b30
