@@ -869,7 +869,7 @@ TTaskForce* TZone::CreateTaskForceFromNavyOrdersForNationIfEligible(short nation
   if ((field10 & nationBit) != 0) {
     for (TShip* ship = GetNavyPrimaryOrderListHead(); ship != nullptr; ship = ship->nextOlder24) {
       if (ship->field08 == this && ship->ownerNationSlot14 == resolvedNation &&
-          ship->field0c == 0) {
+          ship->ownerOrderEntry0c == 0) {
         // contextAnchor is a dual-purpose opaque int slot (see TTaskForce.h); here it
         // carries this zone. requiredCount seeds from the raw incoming nation arg, which
         // the original keeps distinct from the active-nation-resolved slot used above.
@@ -901,7 +901,7 @@ char TZone::CanDisplayMapOrderEntryInCurrentContext(short nation, char skipField
           continue;
         }
       }
-      if (ship->field0c == 0) {
+      if (ship->ownerOrderEntry0c == 0) {
         return 1;
       }
     }
@@ -1031,7 +1031,7 @@ unsigned int TZone::BuildNationBitmaskForActiveType3Or4OrdersIncludingNation(uns
   unsigned int mask = 0;
   for (TShip* ship = GetNavyPrimaryOrderListHead(); ship != 0; ship = ship->nextOlder24) {
     if (ship->field08 == this) {
-      TTaskForce* entry = reinterpret_cast<TTaskForce*>(ship->field0c);
+      TTaskForce* entry = ship->ownerOrderEntry0c;
       if (entry != 0 && entry->eliminatedFlag26 == 0 &&
           (entry->attachment == 3 || entry->attachment == 4)) {
         mask |= 1u << (ship->ownerNationSlot14 & 0x1f);
@@ -1046,7 +1046,7 @@ unsigned int TZone::BuildNationBitmaskForActiveType3Or4Orders() {
   unsigned int mask = 0;
   for (TShip* ship = GetNavyPrimaryOrderListHead(); ship != 0; ship = ship->nextOlder24) {
     if (ship->field08 == this) {
-      TTaskForce* entry = reinterpret_cast<TTaskForce*>(ship->field0c);
+      TTaskForce* entry = ship->ownerOrderEntry0c;
       if (entry != 0 && entry->eliminatedFlag26 == 0 &&
           (entry->attachment == 3 || entry->attachment == 4)) {
         mask |= 1u << (ship->ownerNationSlot14 & 0x1f);
@@ -1061,7 +1061,7 @@ unsigned int TZone::HasDiplomaticallyRelatedNationInActiveType3Or4OrderMask(int 
   unsigned int mask = 0;
   for (TShip* ship = GetNavyPrimaryOrderListHead(); ship != 0; ship = ship->nextOlder24) {
     if (ship->field08 == this) {
-      TTaskForce* entry = reinterpret_cast<TTaskForce*>(ship->field0c);
+      TTaskForce* entry = ship->ownerOrderEntry0c;
       if (entry != 0 && entry->eliminatedFlag26 == 0 &&
           (entry->attachment == 3 || entry->attachment == 4)) {
         mask |= 1u << (ship->ownerNationSlot14 & 0x1f);

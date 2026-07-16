@@ -4065,7 +4065,7 @@ address|name|symbol|size|type|prototype|provenance
 54fab0|TShip::WriteTo||123|function|undefined SerializeNavyPrimaryOrderNodeToStream()|
 54fb50|TShip::ReadFrom||126|function|undefined DeserializeNavyPrimaryOrderNodeFromStream()|
 54fbf0|RegenerateNavyPrimaryOrderDisplayNameUntilUnique||72|function|undefined RegenerateNavyPrimaryOrderDisplayNameUntilUnique()|
-54fd50|RecomputeGlobalCapabilityAverages||296|function|undefined RecomputeGlobalCapabilityAverages()|
+54fd50|RecomputeGlobalCapabilityAverages||296|function|void __cdecl RecomputeGlobalCapabilityAverages(void)|
 54fee0|GetNavyContextPointerFromGlobalTableByIndex||12|function|undefined GetNavyContextPointerFromGlobalTableByIndex()|
 54ff00|TShip::ComputeNavyOrderPriorityContributionPercentByCategory||297|function|undefined ComputeNavyOrderPriorityContributionPercentByCategory()|
 550090|GetNormalizedIndustryActionResourceCostPercent||207|function|undefined GetNormalizedIndustryActionResourceCostPercent()|
@@ -5623,7 +5623,7 @@ address|name|symbol|size|type|prototype|provenance
 5afba0|ApplyCityOrderCapabilityUnlockByTechId||211|function|void __thiscall ApplyCityOrderCapabilityUnlockByTechId(int nTechId)|
 5afd00|HandleAbilityUnlock||1160|function|void __thiscall HandleAbilityUnlock(int menu_state, int action_id)|
 5b0340|TTechMgr::ActivateSlotAndUpdateUI||344|function|void ActivateSlotAndUpdateUI(int abilityId, int nationSlot)|
-5b0500|UpdateSelectionAndRecalculateScores||1037|function|void __stdcall UpdateSelectionAndRecalculateScores(int slot_idx, int player_idx)|
+5b0500|TTechMgr::UpdateSelectionAndRecalculateScores||1037|function|void __thiscall UpdateSelectionAndRecalculateScores(int resourceType, int nationSlot)|
 5b0a20|TTechMgr::AreTechItemPrerequisitePairCompleted||71|function|undefined AreTechItemPrerequisitePairCompleted()|
 5b0a90|TTechMgr::SelectMissingTechItemPrerequisitesFromPair||113|function|undefined SelectMissingTechItemPrerequisitesFromPair()|
 5b0b30|ApplyTechItemPurchaseCostAndState||90|function|undefined ApplyTechItemPurchaseCostAndState()|
@@ -8523,10 +8523,7 @@ address|name|symbol|size|type|prototype|provenance
 697a58|TDefendProvinceMission::classTDefendProvinceMission|||global||
 698010|s_GameName_00698010|||global||
 69801c|s_PlayerName_0069801c|||global||
-698108|g_Resolve_Map_Order_LookupTable_00698108|||global||
-69810c|g_Calculate_Mission_Order_LookupTable_0069810C|||global||
-698110|g_Task_Force_Order_LookupTable_00698110|||global||
-698118|g_Navy_Order_Priority_LookupTable_00698118|||global||
+698108|g_NavyOrderResourceDescriptorTable|||global||
 698ab0|g_nRandomMapSelectedNationSlot00698AB0|||global||
 698ae0|g_szCountryNameProfileKey00698AE0|||global||
 698b10|g_nTurnCooldownSideFlag00698B10|||global||

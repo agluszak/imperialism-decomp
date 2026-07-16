@@ -776,7 +776,21 @@ short g_awTileSpriteVariantOffsetTable3b[4][2] = {{0, 0}, {0, 0}, {0, 0}, {0, 0}
 // Navy/order composite score table (0x550b60 /
 // ComputeNavyOrderPriorityContributionPercentByCategory family); see TNavyOrderResourceDescriptor
 // in global_data_tables.h.
-TNavyOrderResourceDescriptor g_NavyOrderResourceDescriptorTable[64] = {{0}};
+TNavyOrderResourceDescriptor g_NavyOrderResourceDescriptorTable[14] = {
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1, 0, 0, 0, 0},
+    {0, 0, 0, 0, 100, 0, 600, 0, 0, 2, 0, -1, 1, 0, 0, 0},
+    {0, 0, 0, 0, 95, 0, 1000, 0, 0, 4, 0, -1, 1, 0, 0, 0},
+    {300, 0, 5, 0, 90, 0, 900, 0, 4, 0, 0, 1, 3, 0, 1, 0},
+    {600, 0, 6, 0, 80, 0, 1700, 0, 3, 0, 0, 0, 2, 0, 1, 0},
+    {0, 0, 0, 0, 95, 0, 900, 0, 0, 8, 0, -1, 1, 0, 0, 0},
+    {0, 0, 0, 0, 100, 0, 600, 0, 0, 4, 0, -1, 1, 0, 0, 0},
+    {300, 0, 7, 0, 80, 0, 700, 0, 7, 0, 0, 2, 5, 0, 2, 0},
+    {500, 0, 8, 0, 45, 0, 1200, 0, 5, 0, 0, 3, 3, 0, 2, 0},
+    {1000, 0, 10, 0, 40, 0, 1800, 0, 6, 0, 0, 0, 4, 0, 3, 0},
+    {0, 0, 0, 0, 75, 0, 1200, 0, 0, 16, 0, -1, 1, 0, 0, 0},
+    {600, 0, 9, 0, 50, 0, 1000, 0, 8, 0, 0, 1, 6, 0, 3, 0},
+    {2000, 0, 13, 0, 30, 0, 2800, 0, 7, 0, 0, 3, 5, 0, 4, 0},
+    {1800, 0, 13, 0, 45, 0, 2200, 0, 9, 0, 0, 2, 6, 0, 4, 0}};
 
 // Per-category (0..3) capability metric baseline averages, recomputed at runtime by
 // RecomputeGlobalCapabilityAverages (0x54fd50) and read back as the normalization divisor
@@ -1269,6 +1283,8 @@ CString g_cstrArmyOrderMessageStore;
 CString g_cstrNationComparisonMessageStore;
 // GLOBAL: IMPERIALISM 0x006a3d08
 CString g_cstrNationAwolMessageStore;
+// GLOBAL: IMPERIALISM 0x006a57c8
+CString g_cstrTechCapabilityMessageStore;
 // Message-store slot the TViewMgr prompt helpers (0x5de990/0x5deb40) pass to the
 // localized-message dispatch.
 // GLOBAL: IMPERIALISM 0x006a5be0

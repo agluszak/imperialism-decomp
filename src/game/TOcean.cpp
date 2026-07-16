@@ -116,7 +116,7 @@ void TZone::HandleKeyDown(int key_id) {
   if ((field10 & (1U << ((unsigned char)sVarActiveSlot & 0x1f))) != 0) {
     for (pvNode = GetNavyPrimaryOrderListHead(); pvNode != 0; pvNode = pvNode->nextOlder24) {
       if (((pvNode->field08 == this) && (pvNode->ownerNationSlot14 == sVarActiveSlot)) &&
-          (pvNode->field0c == 0)) {
+          (pvNode->ownerOrderEntry0c == 0)) {
         SetMapOrderUiFlag(1);
         return;
       }

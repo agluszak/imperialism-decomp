@@ -128,10 +128,10 @@ TMapOrderChildLinkNode* PruneMapOrderConflictHeadAndTail(TMapOrderChildLinkNode*
   if (child->required_count < 1) {
     child->SetMapOrderActiveChildEntry(nullptr);
     child->Free();
-    head = TTaskForce::DeleteMapOrderChildLinkAndReturnNext(head);
-    head = TTaskForce::PruneDefeatedMapOrderChildrenAndReturnHead(head);
+    head = head->DeleteMapOrderChildLinkAndReturnNext();
+    head = head->PruneDefeatedMapOrderChildrenAndReturnHead();
   } else {
-    TTaskForce::PruneDefeatedMapOrderChildrenAndReturnHead(head->next);
+    head->next->PruneDefeatedMapOrderChildrenAndReturnHead();
   }
   return head;
 }
@@ -481,7 +481,7 @@ void TNavyMgr::DeserializeNavyOrderListsByNation(TStream* stream, short nationFi
 // FUNCTION: IMPERIALISM 0x00556fd0
 void TNavyMgr::ResetPrimaryOrderActiveFlagsAndClearManagerState() {
   for (TShip* ship = g_pNavyPrimaryOrderListHead; ship != nullptr; ship = ship->nextOlder24) {
-    ship->field0c = 0;
+    ship->ownerOrderEntry0c = 0;
   }
   if (orderListHead04 != nullptr) {
     orderListHead04->DestroyNavyOrderAndChildren();

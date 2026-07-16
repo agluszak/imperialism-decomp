@@ -3268,6 +3268,7 @@ address|target_cpp|ownership|note
 54fab0|src/game/TShip.cpp|manual|marker_sync
 54fb50|src/game/TShip.cpp|manual|marker_sync
 54fbf0|src/game/TShip.cpp|manual|marker_sync
+54fd50|src/game/TShip.cpp|manual|marker_sync
 54fee0|src/game/TShip.cpp|manual|marker_sync
 54ff00|src/game/TShip.cpp|manual|marker_sync
 550090|src/game/TShip.cpp|manual|marker_sync
@@ -3283,6 +3284,7 @@ address|target_cpp|ownership|note
 550820|src/game/TTaskForce.cpp|manual|marker_sync
 550840|src/game/TTaskForce.cpp|manual|marker_sync
 550970|src/game/TShip.cpp|manual|marker_sync
+5509c0|src/game/TShip.cpp|manual|marker_sync
 550aa0|src/game/TTaskForce.cpp|manual|marker_sync
 550b60|src/game/TShip.cpp|manual|marker_sync
 550c20|src/game/TNavyMgr.cpp|manual|marker_sync
@@ -3307,6 +3309,7 @@ address|target_cpp|ownership|note
 5515d0|src/game/TAdmiral.cpp|manual|marker_sync
 551670|src/game/TAdmiral.cpp|manual|marker_sync
 551700|src/game/TAdmiral.cpp|manual|marker_sync
+551850|src/game/TAdmiral.cpp|manual|marker_sync
 5519d0|src/game/TShip.cpp|manual|marker_sync
 552250|src/game/TAdmiral.cpp|manual|marker_sync
 552450|src/game/TAdmiral.cpp|manual|marker_sync
@@ -4600,6 +4603,7 @@ address|target_cpp|ownership|note
 5af710|src/game/TTechMgr.cpp|manual|marker_sync
 5afba0|src/game/TTechMgr.cpp|manual|marker_sync
 5b0340|src/game/TTechMgr.cpp|manual|marker_sync
+5b0500|src/game/TTechMgr.cpp|manual|marker_sync
 5b0a20|src/game/TTechMgr.cpp|manual|marker_sync
 5b0a90|src/game/TTechMgr.cpp|manual|marker_sync
 5b0ca0|src/game/TTechMgr.cpp|manual|marker_sync

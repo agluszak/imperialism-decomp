@@ -2,6 +2,8 @@
 
 #include "game/TAdmiral.h"
 #include "game/TGreatPower.h"
+#include "game/TTaskForce.h"
+#include "game/TTechMgr.h"
 #include "game/TZone.h"
 #include "game/TStream.h"
 #include "game/GameAssert.h"
@@ -54,10 +56,10 @@ IMPLEMENT_DYNCREATE(TShip, TObject)
 
 // FUNCTION: IMPERIALISM 0x0054f500
 TShip::TShip()
-    : TObject(), displayName18(), resourceType04(0), pad06(0), field08(0), field0c(0),
+    : TObject(), displayName18(), resourceType04(0), pad06(0), field08(0), ownerOrderEntry0c(0),
       quantityFlag10(1), ownerNationSlot14(static_cast<short>(-1)), stockLevel1c(0), pad1e(0),
-      field20(0), nextOlder24(g_pNavyPrimaryOrderListHead), prevNewer28(0), field2c(0), field30(0),
-      field34(0) {
+      admiralBacklink20(0), nextOlder24(g_pNavyPrimaryOrderListHead), prevNewer28(0), field2c(0),
+      field30(0), field34(0) {
   g_pNavyPrimaryOrderListHead = this;
   if (nextOlder24 != 0) {
     nextOlder24->prevNewer28 = this;
@@ -133,6 +135,70 @@ void __fastcall RegenerateNavyPrimaryOrderDisplayNameUntilUnique(TShip* shipNode
     return;
   retry:;
   } while (1);
+}
+
+// FUNCTION: IMPERIALISM 0x0054fd50
+void RecomputeGlobalCapabilityAverages(void) {
+  if (g_pCityOrderCapabilityState == 0) {
+    return;
+  }
+  g_aCategoryMetricBaselineAverage[0] = 0;
+  g_aCategoryMetricBaselineAverage[1] = 0;
+  g_aCategoryMetricBaselineAverage[2] = 0;
+  g_aCategoryMetricBaselineAverage[3] = 0;
+
+  int enabledCount = 0;
+  // Dual induction, matching the original: an int index (strength-reduced by the
+  // compiler into a marching record pointer with a signed bound) carries the enabled
+  // gate, while the separate short counter indexes the flag array and the per-case
+  // table reads (its short-ness is what keeps those accesses movsx-indexed instead
+  // of strength-reduced pointers).
+  short type = 1;
+  int i;
+  for (i = 1; i < 14; ++i) {
+    // The enabled gate tests the record's first DWORD (resolveWeight together with
+    // pad02) for > 0, while the case-0 blend reads resolveWeight as a word -- the
+    // usual dual-width read (heuristic 118), kept as a one-spot wide-read cast.
+    if (0 < *reinterpret_cast<int*>(&g_NavyOrderResourceDescriptorTable[i].resolveWeight) &&
+        g_pCityOrderCapabilityState->resourceTypeEnabled19d[type] != 0) {
+      ++enabledCount;
+      int category;
+      for (category = 0; category < 4; ++category) {
+        int contribution;
+        switch (category) {
+        case 0: {
+          short calc = g_NavyOrderResourceDescriptorTable[type].calculateWeight;
+          contribution = g_NavyOrderResourceDescriptorTable[type].resolveWeight * calc * calc;
+          break;
+        }
+        case 1:
+          contribution = (g_NavyOrderResourceDescriptorTable[type].calculateWeight *
+                          g_NavyOrderResourceDescriptorTable[type].stockCap * 100) /
+                         g_NavyOrderResourceDescriptorTable[type].taskForceWeight;
+          break;
+        case 2:
+          contribution =
+              static_cast<short>(g_NavyOrderResourceDescriptorTable[type].navyPriorityWeight);
+          break;
+        case 3:
+          contribution = g_industryActionCostWeightResCode10[type];
+          break;
+        default:
+          contribution = 0;
+          break;
+        }
+        g_aCategoryMetricBaselineAverage[category] += contribution;
+      }
+    }
+    ++type;
+  }
+
+  int half = enabledCount / 2;
+  int category;
+  for (category = 0; category < 4; ++category) {
+    g_aCategoryMetricBaselineAverage[category] =
+        (g_aCategoryMetricBaselineAverage[category] + half) / enabledCount;
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x0054fee0
@@ -251,6 +317,52 @@ TShip* GetNavyPrimaryOrderNodeByIndex(short index) {
 // FUNCTION: IMPERIALISM 0x00550970
 short GetIndustryActionCostWeightByResourceType(short resourceType) {
   return g_industryActionCostWeightResCode10[resourceType];
+}
+
+// FUNCTION: IMPERIALISM 0x005509c0
+void TShip::PruneOrPromoteOrderNodeWhenChildCostDepleted() {
+  TTaskForce* ownerEntry = this->ownerOrderEntry0c;
+  this->stockLevel1c = -666;
+  if (ownerEntry != 0) {
+    // Same prune-head-then-recompute body TTaskForce::PruneInactiveTaskForceOrderHead
+    // (0x553fe0) runs on itself, minus the return flag.
+    TMapOrderChildLinkNode* head = ownerEntry->childOrderList;
+    if (head != 0) {
+      TTaskForce* headChild = head->object_ptr;
+      unsigned char headDefeated = (headChild->required_count <= 0);
+      if (headDefeated != 0) {
+        headChild->owner = 0;
+        head->object_ptr->Free();
+
+        TMapOrderChildLinkNode* next = head->next;
+        if (next != 0) {
+          next->prev_link = head->prev_link;
+        }
+        if (head->prev_link != 0) {
+          head->prev_link->next = head->next;
+        }
+        delete head;
+
+        head = next->PruneDefeatedMapOrderChildrenAndReturnHead();
+      } else {
+        head->next->PruneDefeatedMapOrderChildrenAndReturnHead();
+      }
+    }
+
+    ownerEntry->childOrderList = head;
+    ownerEntry->activeChildEntry = 0;
+    TMapOrderChildLinkNode* node;
+    for (node = head; node != 0; node = node->next) {
+      ownerEntry->activeChildEntry = node->object_ptr->SelectPreferredMapOrderEntryByPriorityRules(
+          ownerEntry->activeChildEntry, 0);
+    }
+
+    if (ownerEntry->childOrderList == 0) {
+      ownerEntry->eliminatedFlag26 = 1;
+    }
+  } else {
+    this->Free();
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x00550b60

@@ -20,6 +20,29 @@ struct TMapOrderChildLinkNode {
   unsigned char pad_0e;
   unsigned char pad_0f;
 
+  // Trivial default ctor for the POD link node: FindOrCreateChildOrderLink's raw `new`
+  // (0x553bc0) does no field writes before the caller's own stores. It exists only
+  // because the chain-insert ctor below suppresses the implicit one; no original
+  // function address corresponds to it (never emitted out of line).
+  TMapOrderChildLinkNode() {}
+  // Inline head-insert constructor: chains the new node in front of `nextNode`
+  // (which may be null). CreateLinkedOrderNode's 0x552650 body is exactly the
+  // `new`-site expansion of this ctor under /Ob1 (in-class definition, heuristic
+  // 116): alloc null-guard, these assignments in this order, then the two relinks.
+  // The pad bytes stay uninitialized, matching the original stores.
+  TMapOrderChildLinkNode(TTaskForce* childNode, TMapOrderChildLinkNode* nextNode) {
+    next = nextNode;
+    object_ptr = childNode;
+    prev_link = 0;
+    active_flag = 1;
+    if (nextNode != 0) {
+      nextNode->prev_link = this;
+    }
+    if (prev_link != 0) {
+      prev_link->next = this;
+    }
+  }
+
   // Real __thiscall method (0x552510, ECX=this node, one stack arg, RET 4) --
   // was mis-modeled as a "static" TTaskForce member taking (node, child_node) as
   // two ordinary params, which mismatched the callee-cleans-1-arg convention Ghidra
@@ -32,6 +55,25 @@ struct TMapOrderChildLinkNode {
   // of bug FindNodeMatching had (bd 1uj.16.3 fix). Null-safe on `this`; sets active_flag
   // on `this` and every following node in the `next` chain.
   void SetChainActiveFlag(unsigned char flag); // 0x536f70
+
+  // The four link-list helpers below are likewise real __thiscall methods on the node
+  // (ECX = node in every original call site) -- they were mis-modeled as "static"
+  // TTaskForce members taking the node as a stack parameter, which emitted a
+  // push+cdecl call shape the original never uses (same bug family as FindNodeMatching).
+
+  // Unlinks `this` from its siblings, frees it, and returns the old `next`. 0x552590.
+  TMapOrderChildLinkNode* DeleteMapOrderChildLinkAndReturnNext();
+  // Null-safe on `this`; unlinks and frees the first node in the chain whose
+  // object_ptr == child_node (recursing down `next`). Returns the node now standing
+  // where `this` stood (0 on null, the old `next` when `this` itself was removed,
+  // otherwise `this`); every current caller ignores it. 0x5525d0, RET 4.
+  TMapOrderChildLinkNode* RemoveLinkedOrderNodeByValueRecursive(TTaskForce* child_node);
+  // Receiver is the NEW node's `next` (may be null): allocates a fresh link node for
+  // child_node, chained in front of `this`, and returns it. 0x552650, RET 4.
+  TMapOrderChildLinkNode* CreateLinkedOrderNode(TTaskForce* child_node);
+  // Null-safe on `this`; frees leading defeated children (required_count <= 0) off the
+  // chain, recursively prunes the survivors' tail, and returns the new head. 0x5526e0.
+  TMapOrderChildLinkNode* PruneDefeatedMapOrderChildrenAndReturnHead();
 };
 
 ASSERT_SIZE(TMapOrderChildLinkNode, 0x10);
@@ -131,15 +173,6 @@ public:
   // varies by caller -- see the contextAnchor field comment); `requiredCountArg` seeds
   // required_count.
   TTaskForce(int contextAnchorArg, short requiredCountArg);
-
-  static TMapOrderChildLinkNode*
-  DeleteMapOrderChildLinkAndReturnNext(TMapOrderChildLinkNode* child_link_node);
-  static void RemoveLinkedOrderNodeByValueRecursive(TMapOrderChildLinkNode* node,
-                                                    TTaskForce* child_node);
-  static TMapOrderChildLinkNode* CreateLinkedOrderNode(TMapOrderChildLinkNode* next_node,
-                                                       TTaskForce* child_node);
-  static TMapOrderChildLinkNode*
-  PruneDefeatedMapOrderChildrenAndReturnHead(TMapOrderChildLinkNode* child_link_head);
 
   void RelinkMapOrderQueueNodeBetween(TTaskForce* prev_node, TTaskForce* next_node);
 

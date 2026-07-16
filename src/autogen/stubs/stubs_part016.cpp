@@ -675,14 +675,6 @@ undefined4 DestructTShip(void)
   return 0;
 }
 
-// ghidra_name RecomputeGlobalCapabilityAverages
-// ghidra_proto undefined RecomputeGlobalCapabilityAverages()
-// FUNCTION: IMPERIALISM 0x0054fd50
-undefined4 RecomputeGlobalCapabilityAverages(void)
-{
-  return 0;
-}
-
 // ghidra_name TScatteredShipsMission::GetOrCreateMissionOrderEntryForNode
 // ghidra_proto void * __thiscall GetOrCreateMissionOrderEntryForNode(void)
 // FUNCTION: IMPERIALISM 0x005503a0
@@ -691,26 +683,10 @@ undefined4 GetOrCreateMissionOrderEntryForNode(void)
   return 0;
 }
 
-// ghidra_name PruneOrPromoteOrderNodeWhenChildCostDepleted
-// ghidra_proto undefined PruneOrPromoteOrderNodeWhenChildCostDepleted()
-// FUNCTION: IMPERIALISM 0x005509c0
-undefined4 PruneOrPromoteOrderNodeWhenChildCostDepleted(void)
-{
-  return 0;
-}
-
 // ghidra_name InvokeOrderNodeOwnerVfunc38
 // ghidra_proto undefined InvokeOrderNodeOwnerVfunc38()
 // FUNCTION: IMPERIALISM 0x00550f60
 undefined4 InvokeOrderNodeOwnerVfunc38(void)
-{
-  return 0;
-}
-
-// ghidra_name SelectNavyPrimaryOrderByNationAndRecomputePreferredChild
-// ghidra_proto undefined SelectNavyPrimaryOrderByNationAndRecomputePreferredChild()
-// FUNCTION: IMPERIALISM 0x00551850
-undefined4 SelectNavyPrimaryOrderByNationAndRecomputePreferredChild(void)
 {
   return 0;
 }

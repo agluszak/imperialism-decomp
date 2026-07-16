@@ -104,12 +104,15 @@ struct TNavyOrderResourceDescriptor {
 };
 ASSERT_SIZE(TNavyOrderResourceDescriptor, 0x24);
 
-extern "C" TNavyOrderResourceDescriptor g_NavyOrderResourceDescriptorTable[64];
+extern "C" TNavyOrderResourceDescriptor g_NavyOrderResourceDescriptorTable[14];
 
 // Per-category (0..3) capability metric baseline averages (0x006a3ec8): recomputed at
 // runtime by RecomputeGlobalCapabilityAverages and read back as the normalization divisor
 // by the navy/map-order per-category scoring helpers.
 extern "C" int g_aCategoryMetricBaselineAverage[4];
+// 0x54fd50: rebuilds g_aCategoryMetricBaselineAverage from the enabled resource types'
+// descriptor blends (rounded average across enabled types 1..13).
+void RecomputeGlobalCapabilityAverages(void);
 extern "C" float g_fMissionScoreNormalizationDivisor;
 
 short GetResourceTypeRandomDrawBlockFlag(short resourceType);
@@ -646,6 +649,7 @@ extern CString g_cstrGreatPowerPressureMessage; // @ 0x6a2df0
 extern CString g_cstrArmyOrderMessageStore;        // @ 0x6a2318
 extern CString g_cstrNationComparisonMessageStore; // @ 0x6a3180
 extern CString g_cstrNationAwolMessageStore;       // @ 0x6a3d08
+extern CString g_cstrTechCapabilityMessageStore;   // @ 0x6a57c8
 extern CString g_cstrUiPromptMessageStore;         // @ 0x6a5be0
 extern char g_szImpSaveExtension_00698708[];
 extern char g_szMultiplayerSavePrefix_00698710[];

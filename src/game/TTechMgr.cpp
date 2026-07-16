@@ -8,17 +8,22 @@
 #include <string.h>
 
 #include "game/CIterator.h"
+#include "game/CString.h"
+#include "game/TAdmiral.h"
 #include "game/TCity.h"
 #include "game/TCountry.h"
 #include "game/TGreatPower.h"
 #include "game/TMilitaryUnit.h"
+#include "game/TShip.h"
+#include "game/TTaskForce.h"
 #include "game/TUnitOrder.h"
+#include "game/TViewMgr.h"
+#include "game/localization_text_helpers.h"
 
 #include "game/TMultiplayerMgr.h"
 #include "game/TSimMgr.h"
 #include "game/global_data_tables.h"
 
-undefined4 RecomputeGlobalCapabilityAverages(void);
 undefined4 GetCurrentLocalEpochSecondsWithTimezoneCache(void);
 
 TTechMgr* g_pCityOrderCapabilityState = 0;
@@ -42,98 +47,85 @@ void TTechMgr::ConstructCityOrderCapabilityStateVtable(void) {}
 
 // FUNCTION: IMPERIALISM 0x005aeff0
 void TTechMgr::InitializeCityOrderCapabilityStateDefaults(void) {
-  // Scalar capability defaults (0x180..0x1d6).
+  // Scalar capability defaults (0x180..0x262).
   perTechUnlockFlag180[0] = 1;
   perTechUnlockFlag180[1] = 1;
   perTechUnlockFlag180[2] = 1;
-  memset(&perTechUnlockFlag180[3], 0, sizeof(perTechUnlockFlag180) - 3);
-  hasProductionOrder193 = 0;
-  memset(pad194, 0, sizeof(pad194));
-  initFlags19d[0] = 1;
-  initFlags19d[1] = 1;
-  initFlags19d[2] = 1;
-  initFlags19d[3] = 1;
-  initFlag1a1 = 1;
-  capabilityFlag1a2 = 0;
-  capabilityFlag1a3 = 0;
-  capabilityFlag1a4 = 0;
-  shipCapabilityFlag1a5 = 0;
-  capabilityFlag1a6 = 0;
-  capabilityFlag1a7 = 0;
-  shipCapabilityFlag1a8 = 0;
-  capabilityFlag1a9 = 0;
-  capabilityFlag1aa = 0;
-  initFlags1ab[0] = 1;
-  initFlags1ab[1] = 1;
-  initFlags1ab[2] = 1;
-  initFlags1ab[3] = 1;
-  initFlags1af[0] = 1;
-  initFlags1af[1] = 1;
-  initFlags1af[2] = 1;
-  initFlags1af[3] = 1;
-  flag1c3 = 1;
+  // One flat 0x1a-byte clear covering perTechUnlockFlag180[3..], hasProductionOrder193
+  // and pad194 (0x183..0x19c) -- the original clears the whole span in one memset.
+  memset(&perTechUnlockFlag180[3], 0, 0x1a);
+  memset(resourceTypeEnabled19d, 1, 4);
+  resourceTypeEnabled19d[4] = 1;
+  memset(&resourceTypeEnabled19d[5], 0, 8);
+  resourceTypeEnabled19d[0xd] = 0;
+  techSelectorShort1d2 = 3;
+  activeZoneIndex1d4 = 4;
   memset(initFlags1c9, 0, sizeof(initFlags1c9));
   initFlags1c9[0] = 1;
   initFlags1c9[1] = 1;
-  initFlags1c9[2] = 1;
   initFlags1c9[4] = 1;
+  initFlags1c9[2] = 1;
   initFlags1c9[7] = 1;
-  techSelectorShort1d2 = 3;
-  activeZoneIndex1d4 = 4;
+  memset(initFlags1ab, 1, sizeof(initFlags1ab));
+  memset(initFlags1af, 1, sizeof(initFlags1af));
+  flag1c3 = 1;
+  marker262 = 2;
 
-  // Per-nation capability tables (7 nations each).
-  int j;
-  for (int n = 0; n < 7; ++n) {
+  // Per-nation capability tables, in the original's two separate 7-nation passes.
+  int n;
+  for (n = 0; n < 7; ++n) {
+    // orderCapRows: first three tech statuses = 2, rest cleared.
+    orderCapRows277[n].techStatusByTechId[0] = 2;
+    orderCapRows277[n].techStatusByTechId[1] = 2;
+    orderCapRows277[n].techStatusByTechId[2] = 2;
+    memset(&orderCapRows277[n].techStatusByTechId[3], 0, 0x1a);
+    memset(&capRowsE4a6[n], 0, sizeof(CapRowE));
+    memset(&capRowsB333[n], 0, sizeof(CapRowB));
+    memset(&abilityActiveRows395[n], 0, sizeof(MilitaryCapRow));
+    memset(&capRowsD467[n], 0, sizeof(CapRowD));
+    capRowsD467[n].flags[0] = 1;
+    capRowsD467[n].flags[1] = 1;
+    capRowsD467[n].flags[4] = 1;
+    capRowsD467[n].flags[2] = 1;
+    capRowsD467[n].flags[7] = 1;
+  }
+  for (n = 0; n < 7; ++n) {
     // capabilityValueByNationAndResource: clear the row, set the default-unlocked columns.
     memset(capabilityValueByNationAndResource[n], 0, sizeof(capabilityValueByNationAndResource[n]));
-    capabilityValueByNationAndResource[n][3] = 1;
-    capabilityValueByNationAndResource[n][4] = 1;
-    capabilityValueByNationAndResource[n][0x11] = 1;
     capabilityValueByNationAndResource[n][0x12] = 1;
+    capabilityValueByNationAndResource[n][0x11] = 1;
     capabilityValueByNationAndResource[n][0x15] = 1;
+    capabilityValueByNationAndResource[n][4] = 1;
+    capabilityValueByNationAndResource[n][3] = 1;
     capabilityValueByNationAndResource[n][0x16] = 1;
 
+    // capRowsD is re-cleared and re-filled a second time here, matching the original.
+    memset(&capRowsD467[n], 0, sizeof(CapRowD));
+    capRowsD467[n].flags[0] = 1;
+    capRowsD467[n].flags[1] = 1;
+    capRowsD467[n].flags[4] = 1;
+    capRowsD467[n].flags[2] = 1;
+    capRowsD467[n].flags[7] = 1;
+
+    // Ability rows: ids 0..7 active by default plus 0x18/0x1b; the recruit/elite gate
+    // ids (8/0x10) stay cleared.
+    memset(abilityActiveRows395[n].abilityActiveById, 1, 8);
+    abilityActiveRows395[n].abilityActiveById[0x18] = 1;
+    abilityActiveRows395[n].abilityActiveById[0x1b] = 1;
+
+    // capRowsB: first five resource types selected by default, rest cleared.
+    memset(capRowsB333[n].selectedByResourceType, 1, 5);
+    memset(&capRowsB333[n].selectedByResourceType[5], 0, 9);
+
     // nationCapRows: slots[0..7] = 0..7, slots[8] = 0x18, slots[9] = 0x1b.
+    int j;
     for (j = 0; j < 8; ++j) {
       nationCapRows1e8[n].slots[j] = static_cast<short>(j);
     }
     nationCapRows1e8[n].slots[8] = 0x18;
     nationCapRows1e8[n].slots[9] = 0x1b;
-
-    // orderCapRows: first three bytes = 2, rest cleared.
-    memset(&orderCapRows277[n], 0, sizeof(OrderCapRow));
-    orderCapRows277[n].techStatusByTechId[0] = 2;
-    orderCapRows277[n].techStatusByTechId[1] = 2;
-    orderCapRows277[n].techStatusByTechId[2] = 2;
-
-    // capRowsB: first five bytes = 1, rest cleared.
-    memset(&capRowsB333[n], 0, sizeof(CapRowB));
-    for (j = 0; j < 5; ++j) {
-      capRowsB333[n].flags[j] = 1;
-    }
-
-    // Ability rows: ids 0..7 active by default plus 0x18/0x1b; the recruit/elite gate
-    // ids (8/0x10) stay cleared.
-    memset(&abilityActiveRows395[n], 0, sizeof(MilitaryCapRow));
-    for (j = 0; j < 8; ++j) {
-      abilityActiveRows395[n].abilityActiveById[j] = 1;
-    }
-    abilityActiveRows395[n].abilityActiveById[0x18] = 1;
-    abilityActiveRows395[n].abilityActiveById[0x1b] = 1;
-
-    // capRowsD: flags {0,1,2,4,7} = 1.
-    memset(&capRowsD467[n], 0, sizeof(CapRowD));
-    capRowsD467[n].flags[0] = 1;
-    capRowsD467[n].flags[1] = 1;
-    capRowsD467[n].flags[2] = 1;
-    capRowsD467[n].flags[4] = 1;
-    capRowsD467[n].flags[7] = 1;
-
-    // capRowsE: cleared.
-    memset(&capRowsE4a6[n], 0, sizeof(CapRowE));
   }
 
-  marker262 = 2;
   ruleTablePointer264 = DAT_0066ac88;
   RecomputeGlobalCapabilityAverages();
 }
@@ -208,33 +200,33 @@ void TTechMgr::ApplyCityOrderCapabilityUnlockByTechId(int nTechId) {
   perTechUnlockFlag180[nTechId] = 1;
   switch (nTechId) {
   case 9:
-    capabilityFlag1a4 = 1;
+    resourceTypeEnabled19d[7] = 1;
     techSelectorShort1d2 = 7;
-    capabilityFlag1a2 = 1;
+    resourceTypeEnabled19d[5] = 1;
     return;
   case 4:
-    capabilityFlag1a3 = 1;
+    resourceTypeEnabled19d[6] = 1;
     return;
   case 0xf:
-    shipCapabilityFlag1a5 = 1;
+    resourceTypeEnabled19d[8] = 1;
     activeZoneIndex1d4 = 8;
     return;
   case 0xb:
     ruleTablePointer264 = DAT_0066ac8c;
     return;
   case 0x15:
-    capabilityFlag1a6 = 1;
+    resourceTypeEnabled19d[9] = 1;
     activeZoneIndex1d4 = 9;
     return;
   case 0x18:
-    shipCapabilityFlag1a8 = 1;
+    resourceTypeEnabled19d[0xb] = 1;
     techSelectorShort1d2 = 0xb;
-    capabilityFlag1a7 = 1;
+    resourceTypeEnabled19d[0xa] = 1;
     return;
   case 0x1b:
-    capabilityFlag1a9 = 1;
+    resourceTypeEnabled19d[0xc] = 1;
     activeZoneIndex1d4 = 0xc;
-    capabilityFlag1aa = 1;
+    resourceTypeEnabled19d[0xd] = 1;
     techSelectorShort1d2 = 0xd;
     return;
   case 0x16:
@@ -279,6 +271,119 @@ void TTechMgr::ActivateSlotAndUpdateUI(int abilityId, int nationSlot) {
       }
     }
   }
+}
+
+// FUNCTION: IMPERIALISM 0x005b0500
+void TTechMgr::UpdateSelectionAndRecalculateScores(int resourceType, int nationSlot) {
+  int slotMap[14];
+  slotMap[0] = 0;
+  slotMap[1] = 0;
+  slotMap[2] = 1;
+  slotMap[3] = 4;
+  slotMap[4] = 5;
+  slotMap[5] = 2;
+  slotMap[6] = 3;
+  slotMap[7] = 6;
+  slotMap[8] = 7;
+  slotMap[9] = 7;
+  slotMap[10] = 2;
+  slotMap[11] = 6;
+  slotMap[12] = 7;
+  slotMap[13] = 6;
+  int mapped = slotMap[resourceType];
+
+  int selectedGroup = GetResourceDescriptorWord20ByType(static_cast<short>(resourceType));
+  int i;
+  for (i = 0; i < 0xe; ++i) {
+    if (GetResourceDescriptorWord20ByType(static_cast<short>(i)) == selectedGroup &&
+        i != resourceType) {
+      capRowsB333[nationSlot].selectedByResourceType[i] = 0;
+    }
+  }
+  capRowsB333[nationSlot].selectedByResourceType[resourceType] = 1;
+
+  int scoreSum = 0;
+  int matchedCount = 0;
+  int remainingOwned = 0;
+  if (g_apTerrainTypeDescriptorTable[nationSlot] == 0) {
+    return;
+  }
+  if (((g_apNationStates[nationSlot] != 0) ? g_apNationStates[nationSlot]->city : 0) == 0) {
+    return;
+  }
+
+  TCity* city = (g_apNationStates[nationSlot] != 0) ? g_apNationStates[nationSlot]->city : 0;
+  TUnitOrder* order =
+      static_cast<TUnitOrder*>(city->orderSlotsE4[static_cast<short>(mapped + 0x2b)]);
+  if ((mapped == 6 || mapped == 7) && order->resourceTypeIndex48 != 0) {
+    city = (g_apNationStates[nationSlot] != 0) ? g_apNationStates[nationSlot]->city : 0;
+    TUnitOrder* olderOrder =
+        static_cast<TUnitOrder*>(city->orderSlotsE4[static_cast<short>(mapped + 0x29)]);
+    capRowsB333[nationSlot].selectedByResourceType[olderOrder->resourceTypeIndex48] = 0;
+    olderOrder->resourceTypeIndex48 = order->resourceTypeIndex48;
+  } else if (resourceType == 10) {
+    city = (g_apNationStates[nationSlot] != 0) ? g_apNationStates[nationSlot]->city : 0;
+    static_cast<TUnitOrder*>(city->orderSlotsE4[0x2b])->resourceTypeIndex48 = 5;
+    city = (g_apNationStates[nationSlot] != 0) ? g_apNationStates[nationSlot]->city : 0;
+    static_cast<TUnitOrder*>(city->orderSlotsE4[0x2c])->resourceTypeIndex48 = 6;
+    city = (g_apNationStates[nationSlot] != 0) ? g_apNationStates[nationSlot]->city : 0;
+    static_cast<TUnitOrder*>(city->orderSlotsE4[0x2e])->resourceTypeIndex48 = 0;
+  }
+  order->resourceTypeIndex48 = static_cast<short>(resourceType);
+
+  TShip* node = GetNavyPrimaryOrderListHead();
+  while (node != 0) {
+    if (node->ownerNationSlot14 == nationSlot &&
+        capRowsB333[nationSlot].selectedByResourceType[node->resourceType04] == 0) {
+      scoreSum += static_cast<short>(node->field30 / 100);
+      ++matchedCount;
+      TAdmiral* admiral = node->admiralBacklink20;
+      TShip* next = node->nextOlder24;
+      if (admiral != 0) {
+        admiral->SetTaskForcePrimaryOrderLinkAndRefreshChildBacklinks(0);
+      }
+      node->PruneOrPromoteOrderNodeWhenChildCostDepleted();
+      if (admiral != 0) {
+        admiral->SelectNavyPrimaryOrderByNationAndRecomputePreferredChild();
+      }
+      node = next;
+    } else {
+      if (node->ownerNationSlot14 == nationSlot) {
+        ++remainingOwned;
+      }
+      node = node->nextOlder24;
+    }
+  }
+
+  if (nationSlot == g_pSimMgr->GetActiveNationId() && matchedCount > 0) {
+    CString countString;
+    CString templateText;
+    CString formattedMessage;
+    countString.Format(g_szDecimalFormat, matchedCount);
+    if (remainingOwned > 0) {
+      g_pSimMgr->GetString(0x2739, 2, &templateText);
+      scanBracketExpressions(g_pSimMgr, &formattedMessage, static_cast<LPCSTR>(templateText),
+                             static_cast<LPCSTR>(countString));
+    } else {
+      g_pSimMgr->GetString(0x2739, 3, &templateText);
+      scanBracketExpressions(g_pSimMgr, &formattedMessage, static_cast<LPCSTR>(templateText),
+                             static_cast<LPCSTR>(countString));
+    }
+    g_pUiRuntimeContext->DispatchLocalizedUiMessageWithTemplateA13A0(
+        formattedMessage, &g_cstrTechCapabilityMessageStore, 2, 0);
+  }
+
+  for (node = GetNavyPrimaryOrderListHead(); node != 0; node = node->nextOlder24) {
+    if (node->ownerNationSlot14 == nationSlot) {
+      // The original dispatches TTaskForce's 0x550370 __thiscall on the TShip-shaped
+      // primary-order node (shared +0x30 strength slot -- the documented TShip/TTaskForce
+      // node-prefix pun, see TShip.h).
+      reinterpret_cast<TTaskForce*>(node)->AdjustMapOrderNodeStatCapped499(
+          static_cast<short>(scoreSum / remainingOwned));
+    }
+  }
+
+  RecomputeGlobalCapabilityAverages();
 }
 
 // FUNCTION: IMPERIALISM 0x005b0a20

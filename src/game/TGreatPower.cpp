@@ -3548,9 +3548,9 @@ float TGreatPower::GetScoreFactorSlot23C(void) {
 float TGreatPower::GetScoreFactorSlot240(void) {
   TTechMgr* capabilityState = g_pCityOrderCapabilityState;
   int shipProduction;
-  if (capabilityState->shipCapabilityFlag1a8 != 0) {
+  if (capabilityState->resourceTypeEnabled19d[0xb] != 0) {
     shipProduction = this->GetCityBuildingProductionSlot8D(2);
-  } else if (capabilityState->shipCapabilityFlag1a5 != 0) {
+  } else if (capabilityState->resourceTypeEnabled19d[8] != 0) {
     shipProduction =
         (this->GetCityBuildingProductionSlot8D(4) + this->GetCityBuildingProductionSlot8D(2)) / 2;
   } else {

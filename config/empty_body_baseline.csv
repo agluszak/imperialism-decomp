@@ -9,6 +9,7 @@ include/game/TIdleMeAnimation.h|0|0|1|0
 include/game/TList.h|0|0|1|0
 include/game/TTacticalPlayer.h|0|0|1|0
 include/game/TTacticalUnit.h|0|0|1|0
+include/game/TTaskForce.h|0|0|1|0
 include/game/TTechItemView.h|0|0|1|0
 src/game/CMainFrame.cpp|0|0|1|0
 src/game/T2PictToggleButton.cpp|0|0|1|0
@@ -170,7 +171,7 @@ src/game/TNetMgr.cpp|0|1|0|0
 src/game/TNetSelectPicture.cpp|1|0|0|0
 src/game/TNewGameCommand.cpp|0|1|0|0
 src/game/TNewTownView.cpp|1|0|1|0
-src/game/TNewsMgr.cpp|1|2|1|0
+src/game/TNewsMgr.cpp|0|0|1|0
 src/game/TNewspaperView.cpp|0|0|1|0
 src/game/TNextMoveCommand.cpp|1|0|0|0
 src/game/TNoHiliteText.cpp|0|0|1|0

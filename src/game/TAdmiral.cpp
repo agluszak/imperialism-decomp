@@ -1,6 +1,7 @@
 #include "game/TAdmiral.h"
 
 #include "game/mapped_flavor_text.h"
+#include "game/TShip.h"
 #include "game/TTaskForce.h"
 #include "game/global_data_tables.h"
 #include "game/TMinor.h"
@@ -24,7 +25,7 @@ IMPLEMENT_DYNCREATE(TAdmiral, TObject)
 
 // FUNCTION: IMPERIALISM 0x00551430
 TAdmiral::TAdmiral(short terrainTypeIndex)
-    : terrainType(terrainTypeIndex), field_8(0), displayName(), field_10(0),
+    : terrainType(terrainTypeIndex), primaryOrderNode08(0), displayName(), field_10(0),
       next(g_pNavySecondaryOrderListHead), prev(0) {
   g_pNavySecondaryOrderListHead = this;
   if (next != 0) {
@@ -49,7 +50,12 @@ TAdmiral::TAdmiral(short terrainTypeIndex)
 // SYNTHETIC: IMPERIALISM 0x00551550
 // TAdmiral::`scalar deleting destructor'
 
-static void RecomputeMapOrderOwnerActiveSelection(TTaskForce* ownerContext) {
+// Inline-expanded into every caller in the original (0x552250 and 0x551850 carry the
+// body verbatim, and 0x5b0500 in another TU still CALLs 0x552250 itself), so it must be
+// `inline` for MSVC500 /Ob1 to reproduce that. Callers spell the clear-backlink steps
+// out on `this->primaryOrderNode08` directly (the original re-reads the member after
+// the +0x20 store), so there is no ClearPrimaryOrderBacklink helper.
+static inline void RecomputeMapOrderOwnerActiveSelection(TTaskForce* ownerContext) {
   if (ownerContext == 0) {
     return;
   }
@@ -59,19 +65,6 @@ static void RecomputeMapOrderOwnerActiveSelection(TTaskForce* ownerContext) {
     ownerContext->activeChildEntry =
         link->object_ptr->SelectPreferredMapOrderEntryByPriorityRules(activeEntry, 0);
   }
-}
-
-static void ClearPrimaryOrderBacklink(void* primaryOrderNode) {
-  if (primaryOrderNode == 0) {
-    return;
-  }
-  *reinterpret_cast<void**>(reinterpret_cast<char*>(primaryOrderNode) + 0x20) = 0;
-  // The owner pointer at +0xc follows the same node-prefix convention
-  // TTaskForce::owner/RemoveNode use (bd 1uj.16.1 merge); primaryOrderNode itself is a
-  // TShip-shaped node here, not a TTaskForce, so it stays raw/opaque (void*).
-  TTaskForce* ownerContext =
-      *reinterpret_cast<TTaskForce**>(reinterpret_cast<char*>(primaryOrderNode) + 0xc);
-  RecomputeMapOrderOwnerActiveSelection(ownerContext);
 }
 
 // FUNCTION: IMPERIALISM 0x00551580
@@ -100,17 +93,50 @@ void TAdmiral::ReadFrom(TStream* stream) {
   (void)stream;
 }
 
-// FUNCTION: IMPERIALISM 0x00552250
-void TAdmiral::SetTaskForcePrimaryOrderLinkAndRefreshChildBacklinks(void* primaryOrderNode) {
-  if (this->field_8 != 0) {
-    ClearPrimaryOrderBacklink(reinterpret_cast<void*>(this->field_8));
+// FUNCTION: IMPERIALISM 0x00551850
+void TAdmiral::SelectNavyPrimaryOrderByNationAndRecomputePreferredChild() {
+  if (this->primaryOrderNode08 != 0) {
+    this->primaryOrderNode08->admiralBacklink20 = 0;
+    RecomputeMapOrderOwnerActiveSelection(this->primaryOrderNode08->ownerOrderEntry0c);
   }
-  this->field_8 = reinterpret_cast<int>(primaryOrderNode);
+  this->primaryOrderNode08 = 0;
+
+  TShip* best = 0;
+  for (TShip* node = g_pNavyPrimaryOrderListHead; node != 0; node = node->nextOlder24) {
+    if (node->ownerNationSlot14 == this->terrainType) {
+      // The original dispatches TTaskForce's 0x550670 __thiscall on the TShip-shaped
+      // primary-order node (shared +0x04/+0x1c/+0x30 prefix -- same receiver pun the
+      // GetNavyOrderNormalizationBaseByResourceType comment documents).
+      best = reinterpret_cast<TShip*>(
+          reinterpret_cast<TTaskForce*>(node)->SelectPreferredMapOrderEntryByPriorityRules(
+              reinterpret_cast<TTaskForce*>(best), 1));
+    }
+  }
+
+  if (this->primaryOrderNode08 != 0) {
+    this->primaryOrderNode08->admiralBacklink20 = 0;
+    RecomputeMapOrderOwnerActiveSelection(this->primaryOrderNode08->ownerOrderEntry0c);
+  }
+  this->primaryOrderNode08 = best;
+  if (best != 0) {
+    best->admiralBacklink20 = this;
+    RecomputeMapOrderOwnerActiveSelection(this->primaryOrderNode08->ownerOrderEntry0c);
+  }
+  if (best == 0) {
+    this->Free();
+  }
+}
+
+// FUNCTION: IMPERIALISM 0x00552250
+void TAdmiral::SetTaskForcePrimaryOrderLinkAndRefreshChildBacklinks(TShip* primaryOrderNode) {
+  if (this->primaryOrderNode08 != 0) {
+    this->primaryOrderNode08->admiralBacklink20 = 0;
+    RecomputeMapOrderOwnerActiveSelection(this->primaryOrderNode08->ownerOrderEntry0c);
+  }
+  this->primaryOrderNode08 = primaryOrderNode;
   if (primaryOrderNode != 0) {
-    *reinterpret_cast<void**>(reinterpret_cast<char*>(primaryOrderNode) + 0x20) = this;
-    TTaskForce* ownerContext =
-        *reinterpret_cast<TTaskForce**>(reinterpret_cast<char*>(primaryOrderNode) + 0xc);
-    RecomputeMapOrderOwnerActiveSelection(ownerContext);
+    primaryOrderNode->admiralBacklink20 = this;
+    RecomputeMapOrderOwnerActiveSelection(this->primaryOrderNode08->ownerOrderEntry0c);
   }
 }
 

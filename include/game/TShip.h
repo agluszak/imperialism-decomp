@@ -3,8 +3,10 @@
 #include "game/CString.h"
 #include "game/TObject.h"
 
+class TAdmiral;
 class TGreatPower;
 class TStream;
+class TTaskForce;
 class TZone;
 struct CRuntimeClass;
 
@@ -17,13 +19,18 @@ public:
   short resourceType04;
   short pad06;
   TZone* field08;
-  int field0c; // single dword (ctor writes it as one `mov dword ptr [this+0xc], 0`)
+  // Parent map-order entry this primary-order node is queued under (same +0xc "owner"
+  // slot TTaskForce::owner models; TShip::PruneOrPromoteOrderNodeWhenChildCostDepleted
+  // walks its childOrderList/activeChildEntry, and TAdmiral's backlink helpers read it).
+  TTaskForce* ownerOrderEntry0c;
   int quantityFlag10;
   short ownerNationSlot14;
   CString displayName18;
   short stockLevel1c;
   short pad1e;
-  void* field20;
+  // Backlink to the TAdmiral whose primaryOrderNode08 is this node (TAdmiral::
+  // SetTaskForcePrimaryOrderLinkAndRefreshChildBacklinks writes `this` here).
+  TAdmiral* admiralBacklink20;
   TShip* nextOlder24;
   TShip* prevNewer28;
   void* field2c;
@@ -58,6 +65,10 @@ public:
   // `otherZone`, blended against this resource type's descriptorWeight column
   // (g_NavyOrderResourceDescriptorTable[resourceType04].descriptorWeight).
   short ComputeOrderNodeDistanceQuotientByDescriptorWord24(TZone* otherZone);
+  // 0x005509c0 -- marks this node depleted (stockLevel1c = -666) and re-prunes the
+  // owning order entry's child list (same body TTaskForce::PruneInactiveTaskForceOrderHead
+  // runs on itself, minus the return flag); with no owner it just Free()s this node.
+  void PruneOrPromoteOrderNodeWhenChildCostDepleted();
 };
 
 ASSERT_SIZE(TShip, 0x38);

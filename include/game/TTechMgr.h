@@ -29,18 +29,16 @@ public:
   unsigned char perTechUnlockFlag180[0x13];
   unsigned char hasProductionOrder193;
   unsigned char pad194[0x19d - 0x194];
-  unsigned char initFlags19d[4]; // defaults initializer sets all four to 1
-  unsigned char initFlag1a1;     // set to 1
-  // City-order capability flags toggled as milestone techs are applied (each set to 1).
-  unsigned char capabilityFlag1a2;
-  unsigned char capabilityFlag1a3;
-  unsigned char capabilityFlag1a4;
-  unsigned char shipCapabilityFlag1a5;
-  unsigned char capabilityFlag1a6;
-  unsigned char capabilityFlag1a7;
-  unsigned char shipCapabilityFlag1a8;
-  unsigned char capabilityFlag1a9;
-  unsigned char capabilityFlag1aa;
+  // Per-resource-type capability-enabled bytes (index = navy-order resource type,
+  // 0..0xd -- the same 0xe domain as CapRowB below). RecomputeGlobalCapabilityAverages
+  // (0x54fd50) indexes this dynamically ([0x19d + type]) to gate each type's
+  // contribution to the g_aCategoryMetricBaselineAverage recompute, which is what
+  // proves the region is one array. Defaults: types 0..4 = 1, rest 0; milestone techs
+  // enable the higher types (ApplyCityOrderCapabilityUnlockByTechId). Former per-flag
+  // names mapped to specific types:
+  //   [0x5]=1a2  [0x6]=1a3  [0x7]=1a4  [0x8]=1a5 (ship)  [0x9]=1a6
+  //   [0xa]=1a7  [0xb]=1a8 (ship)  [0xc]=1a9  [0xd]=1aa
+  unsigned char resourceTypeEnabled19d[0xe];
   unsigned char initFlags1ab[4]; // defaults initializer sets all four to 1
   unsigned char initFlags1af[4]; // set to 1
   unsigned char pad1b3[0x1c3 - 0x1b3];
@@ -78,10 +76,12 @@ public:
     unsigned char techStatusByTechId[0x1d];
   };
   OrderCapRow orderCapRows277[7];
-  // Per-nation table B (true base 0x333, stride 0xe); init-only, no gameplay readers yet.
+  // Per-nation selected-order-type row (true base 0x333, stride 0xe): one byte per
+  // navy-order resource type (0..13), 1 = this type currently selected for the nation.
+  // Init sets types [0..4] = 1; UpdateSelectionAndRecalculateScores (0x5b0500) clears
+  // the same-group siblings (via GetResourceDescriptorWord20ByType) and sets the new one.
   struct CapRowB {
-    unsigned char flags[5]; // init sets [0..4] = 1
-    unsigned char pad05[9];
+    unsigned char selectedByResourceType[0xe];
   };
   CapRowB capRowsB333[7];
   // Per-nation ability-activation row (byte[abilityId], ids 0..0x1d; true base 0x395,
@@ -125,6 +125,13 @@ public:
   // city's TUnitOrder cost profile; for other groups upgrades matching military units.
   // 0x5b0340, __thiscall, RET 0x8.
   void ActivateSlotAndUpdateUI(int abilityId, int nationSlot);
+  // Reselects a nation's navy-order resource type: flips the capRowsB333 selection
+  // bytes (clearing same-group types), retargets the city's unit-order slot for the
+  // type's group, then reprocesses every matching primary navy-order node (prune +
+  // admiral relink), posts the "orders changed" message when the active nation is
+  // affected, and redistributes the freed score across the remaining owned nodes.
+  // 0x5b0500, __thiscall, RET 0x8.
+  void UpdateSelectionAndRecalculateScores(int resourceType, int nationSlot);
 
   ~TTechMgr() override;
 };

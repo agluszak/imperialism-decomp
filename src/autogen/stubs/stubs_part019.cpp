@@ -315,14 +315,6 @@ undefined4 HandleAbilityUnlock(void)
   return 0;
 }
 
-// ghidra_name UpdateSelectionAndRecalculateScores
-// ghidra_proto void __stdcall UpdateSelectionAndRecalculateScores(int slot_idx, int player_idx)
-// FUNCTION: IMPERIALISM 0x005b0500
-undefined4 UpdateSelectionAndRecalculateScores(void)
-{
-  return 0;
-}
-
 // ghidra_name ApplyTechItemPurchaseCostAndState
 // ghidra_proto undefined ApplyTechItemPurchaseCostAndState()
 // FUNCTION: IMPERIALISM 0x005b0b30
