@@ -57,6 +57,14 @@ public:
   void AccumulateMissionUnitPriorityVectorWithOptionalFilter(float* vector, short targetTile,
                                                              short bypassTileFilter);
 
+  // Adds one unit's contribution directly into `vector` (no accumulation loop): weight-
+  // table lookup by clamped IsNotStationedInProvince distance from GetMissionTarget-
+  // ContextIdFromField14, scaled by GetProvinceUnitOrderWeight, with an explicit sign
+  // (true adds, false subtracts) instead of the fixed +1.0 the loop-based accumulators use.
+  // 0x53cb50, __thiscall, RET 0xC.
+  void AccumulateMissionUnitPriorityContributionWithScaleMode(TMilitaryUnit* unit, float* vector,
+                                                              bool scaleMode);
+
   // Order-vector score including one extra candidate unit contribution
   // (0x53d200 negates the candidate's scale: the "without unit" variant).
   float ComputeArmyMissionScoreDeltaWithCandidateUnit(TMilitaryUnit* candidateUnit); // 0x53d020

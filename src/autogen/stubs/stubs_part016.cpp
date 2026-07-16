@@ -163,14 +163,6 @@ undefined4 ComputeMissionPrioritySimilarityScoreForFilter(void)
   return 0;
 }
 
-// ghidra_name AccumulateMissionUnitPriorityContributionWithScaleMode
-// ghidra_proto undefined AccumulateMissionUnitPriorityContributionWithScaleMode()
-// FUNCTION: IMPERIALISM 0x0053cb50
-undefined4 AccumulateMissionUnitPriorityContributionWithScaleMode(void)
-{
-  return 0;
-}
-
 // ghidra_name AccumulateMissionUnitPriorityVector
 // ghidra_proto undefined AccumulateMissionUnitPriorityVector()
 // FUNCTION: IMPERIALISM 0x0053cda0

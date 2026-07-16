@@ -3065,6 +3065,7 @@ address|target_cpp|ownership|note
 53c620|src/game/TArmyMission.cpp|manual|marker_sync
 53c950|src/game/TDefendProvinceMission.cpp|manual|marker_sync
 53c9d0|src/game/TArmyMission.cpp|manual|marker_sync
+53cb50|src/game/TArmyMission.cpp|manual|marker_sync
 53cc10|src/game/TArmyMission.cpp|manual|marker_sync
 53ceb0|src/game/TArmyMission.cpp|manual|marker_sync
 53d020|src/game/TArmyMission.cpp|manual|marker_sync

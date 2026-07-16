@@ -273,6 +273,22 @@ void TArmyMission::AccumulateMissionUnitPriorityVectorWithOptionalFilter(float* 
   }
 }
 
+// FUNCTION: IMPERIALISM 0x0053cb50
+void TArmyMission::AccumulateMissionUnitPriorityContributionWithScaleMode(TMilitaryUnit* unit,
+                                                                          float* vector,
+                                                                          bool scaleMode) {
+  short weightIndex = unit->IsNotStationedInProvince(GetMissionTargetContextIdFromField14());
+  if (weightIndex > 5) {
+    weightIndex = 5;
+  }
+  float sign = scaleMode ? static_cast<float>(g_Recompute_Nation_Order_LookupTable_0065AA08)
+                         : static_cast<float>(g_Recompute_Nation_Order_LookupTable_0065A9E0);
+  float scale = g_NavyOrderDistanceDecayWeightTable_006978c8[weightIndex] * sign;
+  float weight =
+      static_cast<float>(GetProvinceUnitOrderWeight(GetMissionTargetContextIdFromField14()));
+  AccumulateUnitOrderPriorityVectorContribution(unit, vector, scale, weight);
+}
+
 // FUNCTION: IMPERIALISM 0x0053cc10
 void AccumulateUnitOrderPriorityVectorContribution(TMilitaryUnit* unit, float* vector, float scale,
                                                    float weight) {
