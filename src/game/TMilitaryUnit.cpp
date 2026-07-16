@@ -3,6 +3,8 @@
 #include "game/CIterator.h"
 #include "game/TAdmiral.h"
 #include "game/TCountry.h"
+#include "game/TGreatPower.h"
+#include "game/TTechMgr.h"
 #include "game/TStream.h"
 #include "game/global_data_tables.h"
 
@@ -133,16 +135,16 @@ short TMilitaryUnit::GetUnitTypeCostPoints() {
   if (unitType == 0x1b || unitType == 0x1c || unitType == 0x1d) {
     return 1;
   }
-  if (g_UnitTypeMilitaryStatTable_00695CD2[unitType][0] == 0x10) {
-    return g_UnitTypeMilitaryStatTable_00695CD2[unitType][1];
+  if (g_aUnitOrderCostProfileByAbilityId[unitType][1] == 0x10) {
+    return g_aUnitOrderCostProfileByAbilityId[unitType][2];
   }
   return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x005c3450
 short GetCityActionGateValueBySlot(int slot) {
-  if (g_UnitTypeMilitaryStatTable_00695CD2[slot][0] == 0x10) {
-    return g_UnitTypeMilitaryStatTable_00695CD2[slot][1];
+  if (g_aUnitOrderCostProfileByAbilityId[slot][1] == 0x10) {
+    return g_aUnitOrderCostProfileByAbilityId[slot][2];
   }
   return 0;
 }
@@ -180,6 +182,61 @@ short TMilitaryUnit::GetUnitTypeStatPercent(short statIndex) {
 short GetNormalizedCityActionResourceCostPercent(short unitType, short statIndex) {
   return static_cast<short>((g_UnitTypeStatTable_0066EB88[unitType][statIndex] * 100) /
                             g_UnitTypeStatDivisorTable_0066ED30[statIndex]);
+}
+
+// FUNCTION: IMPERIALISM 0x005c35c0
+short TMilitaryUnit::ResolveEraCapabilityFallbackSlot() {
+  short unitType = orderType;
+  short candidate;
+  if (unitType < 0x10) {
+    candidate = static_cast<short>(unitType + 8);
+  } else if (unitType == 0x18 || unitType == 0x19 || unitType == 0x1b || unitType == 0x1c) {
+    candidate = static_cast<short>(unitType + 1);
+  } else {
+    return -1;
+  }
+  if (g_pCityOrderCapabilityState->abilityActiveRows395[field_18].abilityActiveById[candidate] ==
+          0 &&
+      g_pCityOrderCapabilityState->abilityActiveRows395[field_18].abilityActiveById[unitType] !=
+          0) {
+    return -1;
+  }
+  return candidate;
+}
+
+// FUNCTION: IMPERIALISM 0x005c3670
+bool TMilitaryUnit::ApplyEraCapabilityCostAndSetSelection() {
+  if (ResolveEraCapabilityFallbackSlot() == -1) {
+    return false;
+  }
+  short candidate = ResolveEraCapabilityFallbackSlot();
+  short primaryCost = g_aUnitOrderCostProfileByAbilityId[candidate][2];
+  short cashCost = g_aUnitOrderCostProfileByAbilityId[candidate][5];
+  short secondaryCost;
+  if (g_aUnitOrderCostProfileByAbilityId[candidate][3] == 0xc) {
+    secondaryCost = g_aUnitOrderCostProfileByAbilityId[candidate][4];
+  } else {
+    secondaryCost = 0;
+  }
+  if (primaryCost > g_apNationStates[field_18]->GetDiplomacyExternalStateByTarget(0x10)) {
+    return false;
+  }
+  if (secondaryCost > g_apNationStates[field_18]->GetDiplomacyExternalStateByTarget(0xc)) {
+    return false;
+  }
+  TGreatPower* nation = g_apNationStates[field_18];
+  if (nation->diplomacyEligibilityA0 != 0 &&
+      static_cast<int>(cashCost) > nation->ComputeAvailableDiplomacyBudget()) {
+    return false;
+  }
+  nation->SetCityStockCounterAndRefresh(
+      0x10, static_cast<short>(nation->GetDiplomacyExternalStateByTarget(0x10) - primaryCost));
+  g_apNationStates[field_18]->SetCityStockCounterAndRefresh(
+      0xc, static_cast<short>(g_apNationStates[field_18]->GetDiplomacyExternalStateByTarget(0xc) -
+                              secondaryCost));
+  g_apNationStates[field_18]->treasuryValue10 -= cashCost;
+  orderType = candidate;
+  return true;
 }
 
 // FUNCTION: IMPERIALISM 0x005c38e0

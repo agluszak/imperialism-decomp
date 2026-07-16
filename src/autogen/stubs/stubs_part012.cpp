@@ -587,14 +587,6 @@ undefined4 DestructTUnitOrderAndMaybeFree(void)
   return 0;
 }
 
-// ghidra_name UIState_ActivateSlotAndUpdateUI_Impl
-// ghidra_proto undefined UIState_ActivateSlotAndUpdateUI_Impl()
-// FUNCTION: IMPERIALISM 0x004b77e0
-undefined4 UIState_ActivateSlotAndUpdateUI_Impl(void)
-{
-  return 0;
-}
-
 // ghidra_name TPowerPlantOrder::DestructTPowerPlantOrderAndMaybeFree
 // ghidra_proto undefined DestructTPowerPlantOrderAndMaybeFree()
 // FUNCTION: IMPERIALISM 0x004b7a90

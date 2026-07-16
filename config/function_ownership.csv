@@ -1412,6 +1412,7 @@ address|target_cpp|ownership|note
 4b7210|src/game/TUnitOrder.cpp|manual|marker_sync
 4b7320|src/game/TUnitOrder.cpp|manual|marker_sync
 4b73b0|src/game/TUnitOrder.cpp|manual|marker_sync
+4b77e0|src/game/TUnitOrder.cpp|manual|marker_sync
 4b7850|src/game/TUnitOrder.cpp|manual|marker_sync
 4b7920|src/game/TUnitOrder.cpp|manual|marker_sync
 4b79f0|src/game/TPowerPlantOrder.cpp|manual|marker_sync
@@ -4598,6 +4599,7 @@ address|target_cpp|ownership|note
 5af460|src/game/TTechMgr.cpp|manual|marker_sync
 5af710|src/game/TTechMgr.cpp|manual|marker_sync
 5afba0|src/game/TTechMgr.cpp|manual|marker_sync
+5b0340|src/game/TTechMgr.cpp|manual|marker_sync
 5b0a20|src/game/TTechMgr.cpp|manual|marker_sync
 5b0a90|src/game/TTechMgr.cpp|manual|marker_sync
 5b0ca0|src/game/TTechMgr.cpp|manual|marker_sync
@@ -4888,6 +4890,8 @@ address|target_cpp|ownership|note
 5c3500|src/game/TMilitaryUnit.cpp|manual|marker_sync
 5c3530|src/game/TMilitaryUnit.cpp|manual|marker_sync
 5c3580|src/game/TMilitaryUnit.cpp|manual|marker_sync
+5c35c0|src/game/TMilitaryUnit.cpp|manual|marker_sync
+5c3670|src/game/TMilitaryUnit.cpp|manual|marker_sync
 5c38e0|src/game/TMilitaryUnit.cpp|manual|marker_sync
 5c3b70|src/game/bitmap_descriptor_helpers.cpp|manual|marker_sync
 5c3d20|src/game/quickdraw_rendering.cpp|manual|marker_sync

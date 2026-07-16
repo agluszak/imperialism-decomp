@@ -651,7 +651,6 @@ float g_ApplyIndexedResourceDeltaScale_00653728 = -1.0f / 255.0f;
 // from the earlier 0x695CD4 model: TMilitaryUnit::GetUnitTypeCostPoints (0x5c3400)
 // reads the category flag at record offset +0 (0x695cd2; 0x10 = counted) and the
 // power/cost points at +2 (0x695cd4, the short the slot 0x8e-0x9c score family sums).
-short g_UnitTypeMilitaryStatTable_00695CD2[64][7] = {0};
 
 // Per-unit-type stat table (7 shorts per type; rows for unit types 0x00-0x1d) and
 // per-stat divisor baseline used by TMilitaryUnit::GetUnitTypeStatPercent (0x5c3530).
@@ -895,6 +894,22 @@ int g_anTechItemResearchCostByTechId[29] = {
     0,     0,     1000,  1000,  1500,  1500,   1500,   1500,   3000,  3000,
     3000,  6000,  7000,  10000, 12000, 12000,  12000,  12000,  12000, 25000,
     20000, 40000, 40000, 40000, 40000, 100000, 120000, 150000, 150000};
+// Per-ability unit-order cost profile, one row per ability id, columns matching
+// TUnitOrder::SetOrderCostProfile's parameters: {resourceTypeIndex,
+// primaryInputResourceId, primaryInputPerUnit, secondaryInputResourceId,
+// secondaryInputPerUnit, cashCostPerUnit, workforceMode}.
+// GLOBAL: IMPERIALISM 0x00695cd0
+short g_aUnitOrderCostProfileByAbilityId[0x1e][7] = {
+    {0, -1, 0, -1, 0, 0, 1},      {1, 16, 1, -1, 0, 200, 1},   {2, 16, 1, -1, 0, 500, 1},
+    {3, 16, 1, -1, 0, 1000, 2},   {4, 16, 1, 5, 1, 100, 1},    {5, 16, 1, 5, 1, 500, 2},
+    {6, 16, 2, 5, 1, 1000, 2},    {7, 16, 2, -1, 0, 1000, 2},  {8, -1, 0, -1, 0, 0, 1},
+    {9, 16, 2, -1, 0, 3000, 1},   {10, 16, 2, -1, 0, 3000, 1}, {11, 16, 2, -1, 0, 4000, 2},
+    {12, 16, 2, 5, 1, 2000, 1},   {13, 16, 2, 5, 1, 3500, 2},  {14, 16, 4, 5, 1, 5000, 2},
+    {15, 16, 4, -1, 0, 5000, 2},  {16, -1, 0, -1, 0, 0, 1},    {17, 16, 4, -1, 0, 5000, 2},
+    {18, 16, 4, -1, 0, 5000, 2},  {19, 16, 4, -1, 0, 7000, 2}, {20, 16, 4, 12, 4, 5000, 2},
+    {21, 16, 10, 12, 4, 9000, 2}, {22, 16, 6, 12, 4, 5000, 2}, {23, 16, 8, -1, 0, 9000, 2},
+    {24, 16, 2, -1, 0, 5000, 4},  {25, 16, 2, -1, 0, 7000, 4}, {26, 16, 3, -1, 0, 9000, 4},
+    {27, -1, 0, -1, 0, 0, 4},     {28, -1, 0, -1, 0, 0, 4},    {29, -1, 0, -1, 0, 0, 4}};
 // GLOBAL: IMPERIALISM 0x0066ac10
 short g_aTechItemPrerequisitePairs[34][2] = {
     {0, 0},  {0, 0},  {0, 0}, {0, 0},  {0, 0},  {1, 0},  {1, 0},  {0, 0},  {7, 3},

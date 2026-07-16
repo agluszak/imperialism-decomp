@@ -77,7 +77,7 @@ public:
   // Fill out with this nation's overlay label (its shared credential/name text), or the
   // empty string when the descriptor slot is null. 0x004d7860.
   void FormatOverlayTerrainLabelText(CString* out);
-  // 0x4d8430 — sums g_UnitTypeMilitaryStatTable_00695CD2[type][1] over militaryUnitList44.
+  // 0x4d8430 — sums g_aUnitOrderCostProfileByAbilityId[type][2] over militaryUnitList44.
   int ComputeSelectedMilitaryPowerScore();
   // 0x4d7930 - copy the nation's shared name text (TSimMgr::sharedTextSlots[nationSlot])
   // into out; a null descriptor yields the default (empty) name. Callable through a null
@@ -107,7 +107,7 @@ public:
   short needLevelByNation[0x17];
   short field42;
   // 0x44 — military unit list; entries carry a unit-type short at +4 indexing
-  // g_UnitTypeMilitaryStatTable_00695CD2 power weights (column 1).
+  // g_aUnitOrderCostProfileByAbilityId primary-per-unit column.
   TSortedList* militaryUnitList44;
   // 0x48 — per-unit-type counter of names already issued (slot 0x0f increments the
   // type's entry after assigning "<ordinal> <type name>").

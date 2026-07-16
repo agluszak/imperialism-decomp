@@ -19,11 +19,11 @@ void TCountry::CreateMilitaryRecruitOrderForNode(int nodeContext) {
   int capabilityBonus = 0;
   if (static_cast<unsigned short>(this->nationSlot) < 7) {
     const TTechMgr::MilitaryCapRow& capabilityRow =
-        g_pCityOrderCapabilityState->militaryCapRows39d[this->nationSlot];
-    if (capabilityRow.eliteRecruitFlag != 0) {
+        g_pCityOrderCapabilityState->abilityActiveRows395[this->nationSlot];
+    if (capabilityRow.abilityActiveById[0x10] != 0) {
       capabilityBonus = 0x10;
     } else {
-      char capabilityFlag = static_cast<char>(capabilityRow.recruitTierFlag);
+      char capabilityFlag = static_cast<char>(capabilityRow.abilityActiveById[8]);
       capabilityBonus = (static_cast<int>(-capabilityFlag) >> 0x1f) & 8;
     }
   }

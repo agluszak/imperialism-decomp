@@ -124,7 +124,6 @@ short GetResourceDescriptorWord08ByTypeOffset(short resourceType, short subslot)
 // Per-unit-type military stat records (7 shorts per type, record base 0x695cd2):
 // column 0 = category flag (0x10 = counted toward power/cost), column 1 = power/cost
 // points. See TMilitaryUnit::GetUnitTypeCostPoints (0x5c3400).
-extern "C" short g_UnitTypeMilitaryStatTable_00695CD2[64][7];
 
 // Per-unit-type stat table (7 shorts per type; unit types 0x00-0x1d) and per-stat
 // divisor baseline used by TMilitaryUnit::GetUnitTypeStatPercent (0x5c3530).
@@ -706,6 +705,9 @@ extern int g_nOceanDialogSeedViewportOffsetY; // 0x6a3ff4
 // Map-dialog viewport width in tiles (0x51ac40 centers on a tile by column - span/2).
 // int, not short: 0x51adf0 reads the full dword; word readers use static_cast<short>.
 extern int g_wMapDialogViewportTileSpan; // 0x6a33b0
+
+// Per-ability unit-order cost profile rows (see TUnitOrder::SetOrderCostProfile). 0x695cd0.
+extern short g_aUnitOrderCostProfileByAbilityId[0x1e][7];
 
 // Per-tech prerequisite pair (tech ids; 0 = none), indexed by tech id. 0x66ac10.
 extern short g_aTechItemPrerequisitePairs[34][2];

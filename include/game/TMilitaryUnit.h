@@ -82,6 +82,14 @@ public:
   bool MatchesTargetTileOrBypass(short bypassTileFilter, short targetTile); // 0x5c3500
   // Sets or clears the bits of `mask` in field_3A. 0x004a3b30, __thiscall, 2 args.
   void SetOrClearWordMaskBits3a(short mask, bool setFlag);
+  // Era-upgrade candidate for this unit's type (types 0..0xf upgrade to type+8; naval
+  // types 0x18/0x19/0x1b/0x1c to type+1), gated on the owner nation's ability rows;
+  // -1 when no upgrade applies. 0x5c35c0.
+  short ResolveEraCapabilityFallbackSlot();
+  // Pays the upgrade's resource/cash costs from the owner nation's stock counters and
+  // treasury (fails without changing anything if any cost is unaffordable), then sets
+  // the unit's type to the upgraded id. 0x5c3670.
+  bool ApplyEraCapabilityCostAndSetSelection();
 };
 
 ASSERT_SIZE(TMilitaryUnit, 0x44);

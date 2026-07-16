@@ -7,6 +7,13 @@
 
 #include <string.h>
 
+#include "game/CIterator.h"
+#include "game/TCity.h"
+#include "game/TCountry.h"
+#include "game/TGreatPower.h"
+#include "game/TMilitaryUnit.h"
+#include "game/TUnitOrder.h"
+
 #include "game/TMultiplayerMgr.h"
 #include "game/TSimMgr.h"
 #include "game/global_data_tables.h"
@@ -105,14 +112,14 @@ void TTechMgr::InitializeCityOrderCapabilityStateDefaults(void) {
       capRowsB333[n].flags[j] = 1;
     }
 
-    // militaryCapRows: initFlags[0..7] = 1 plus the two tail flags; readers' recruit/elite
-    // flags stay cleared.
-    memset(&militaryCapRows39d[n], 0, sizeof(MilitaryCapRow));
+    // Ability rows: ids 0..7 active by default plus 0x18/0x1b; the recruit/elite gate
+    // ids (8/0x10) stay cleared.
+    memset(&abilityActiveRows395[n], 0, sizeof(MilitaryCapRow));
     for (j = 0; j < 8; ++j) {
-      militaryCapRows39d[n].initFlags[j] = 1;
+      abilityActiveRows395[n].abilityActiveById[j] = 1;
     }
-    militaryCapRows39d[n].initFlag18 = 1;
-    militaryCapRows39d[n].initFlag1b = 1;
+    abilityActiveRows395[n].abilityActiveById[0x18] = 1;
+    abilityActiveRows395[n].abilityActiveById[0x1b] = 1;
 
     // capRowsD: flags {0,1,2,4,7} = 1.
     memset(&capRowsD467[n], 0, sizeof(CapRowD));
@@ -233,6 +240,44 @@ void TTechMgr::ApplyCityOrderCapabilityUnlockByTechId(int nTechId) {
   case 0x16:
     ruleTablePointer264 = DAT_0066ac90;
     break;
+  }
+}
+
+// Activates an ability in its slot group for a nation: marks the ability row, records
+// the ability in the group slot, and for unit-order groups (1..8) reloads the city's
+// TUnitOrder cost profile from g_aUnitOrderCostProfileByAbilityId (clearing the replaced
+// ability); other groups upgrade the nation's matching military units.
+// FUNCTION: IMPERIALISM 0x005b0340
+void TTechMgr::ActivateSlotAndUpdateUI(int abilityId, int nationSlot) {
+  short group = g_awTacticalUnitCategoryCodeBySlot[abilityId];
+  abilityActiveRows395[nationSlot].abilityActiveById[abilityId] = 1;
+  nationCapRows1e8[nationSlot].slots[group] = static_cast<short>(abilityId);
+  if (group > 0 && group < 9) {
+    TGreatPower* nation = g_apNationStates[nationSlot];
+    if (nation != 0 && nation->city != 0) {
+      TUnitOrder* order =
+          static_cast<TUnitOrder*>(nation->city->orderSlotsE4[static_cast<short>(group + 0x18)]);
+      order->AssertValid();
+      abilityActiveRows395[nationSlot].abilityActiveById[order->resourceTypeIndex48] = 0;
+      order->SetOrderCostProfile(g_aUnitOrderCostProfileByAbilityId[abilityId][0],
+                                 g_aUnitOrderCostProfileByAbilityId[abilityId][1],
+                                 g_aUnitOrderCostProfileByAbilityId[abilityId][2],
+                                 g_aUnitOrderCostProfileByAbilityId[abilityId][3],
+                                 g_aUnitOrderCostProfileByAbilityId[abilityId][4],
+                                 g_aUnitOrderCostProfileByAbilityId[abilityId][5],
+                                 g_aUnitOrderCostProfileByAbilityId[abilityId][6]);
+    }
+  } else {
+    if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(static_cast<short>(nationSlot)) != 0) {
+      CIterator cursor(g_apTerrainTypeDescriptorTable[nationSlot]->militaryUnitList44);
+      TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(cursor.Reset());
+      while (cursor.More()) {
+        if (unit->GetUnitMovementClassId() == group) {
+          unit->ApplyEraCapabilityCostAndSetSelection();
+        }
+        unit = static_cast<TMilitaryUnit*>(cursor.Advance());
+      }
+    }
   }
 }
 

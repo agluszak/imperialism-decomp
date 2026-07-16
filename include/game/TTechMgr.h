@@ -84,20 +84,16 @@ public:
     unsigned char pad05[9];
   };
   CapRowB capRowsB333[7];
+  // Per-nation ability-activation row (byte[abilityId], ids 0..0x1d; true base 0x395,
+  // tiling exactly between capRowsB333 and capRowsD467). ActivateSlotAndUpdateUI
+  // (0x5b0340) sets [abilityId] on activation and clears the replaced slot's ability;
+  // ResolveEraCapabilityFallbackSlot (0x5c35c0) probes candidate upgrades dynamically.
+  // Defaults: ids 0..7 = 1 plus 0x18/0x1b = 1. Former per-flag names were specific ids:
+  // [0x08] = recruit tier (0x39d gate), [0x10] = elite recruit (0x3a5 gate).
   struct MilitaryCapRow {
-    // True per-nation military record base 0x395, stride 0x1e. recruitTierFlag/eliteRecruitFlag
-    // keep their absolute addresses (0x39d/0x3a5) at these in-record offsets.
-    unsigned char initFlags[8];    // +0x00 (init sets [0..7] = 1)
-    unsigned char recruitTierFlag; // +0x08 (0x39d)
-    unsigned char pad09[7];
-    unsigned char eliteRecruitFlag; // +0x10 (0x3a5)
-    unsigned char pad11[7];
-    unsigned char initFlag18; // +0x18 (init = 1)
-    unsigned char pad19[2];
-    unsigned char initFlag1b; // +0x1b (init = 1)
-    unsigned char pad1c[2];
+    unsigned char abilityActiveById[0x1e];
   };
-  MilitaryCapRow militaryCapRows39d[7];
+  MilitaryCapRow abilityActiveRows395[7];
   // Per-nation table D (true base 0x467, stride 9); init-only.
   struct CapRowD {
     unsigned char flags[9]; // init: [0,1,2,4,7] = 1, rest 0
@@ -124,6 +120,11 @@ public:
   // first and missing2 = the second if it is also unresearched. 0x5b0a90.
   void SelectMissingTechItemPrerequisitesFromPair(int techId, int nationSlot, int* missing1,
                                                   int* missing2);
+  // Activates an ability in its slot group for a nation: marks it active, records it in
+  // nationCapRows1e8[nation].slots[group], and for unit-order groups (1..8) reloads the
+  // city's TUnitOrder cost profile; for other groups upgrades matching military units.
+  // 0x5b0340, __thiscall, RET 0x8.
+  void ActivateSlotAndUpdateUI(int abilityId, int nationSlot);
 
   ~TTechMgr() override;
 };

@@ -682,7 +682,7 @@ int TCountry::ComputeSelectedMilitaryPowerScore() {
   CIterator unitIter(this->militaryUnitList44);
   for (TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(unitIter.Reset()); unitIter.More();
        unit = static_cast<TMilitaryUnit*>(unitIter.Advance())) {
-    powerSum += g_UnitTypeMilitaryStatTable_00695CD2[unit->orderType][1];
+    powerSum += g_aUnitOrderCostProfileByAbilityId[unit->orderType][2];
   }
   return powerSum;
 }

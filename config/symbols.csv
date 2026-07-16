@@ -1831,7 +1831,7 @@ address|name|symbol|size|type|prototype|provenance
 4b72a4|deduct_city_cash_for_order_delta|||global||
 4b7320|TUnitOrder::FillOrderSheet||102|function|undefined AccumulateCityEntryCostsByAmount()|
 4b73b0|TUnitOrder::CommitIfPending||839|function|void __thiscall CommitIfPending(void)|
-4b77e0|UIState_ActivateSlotAndUpdateUI_Impl||66|function|undefined UIState_ActivateSlotAndUpdateUI_Impl()|
+4b77e0|TUnitOrder::SetOrderCostProfile||66|function|void SetOrderCostProfile(short, short, short, short, short, short, short)|
 4b7850|TUnitOrder::WriteTo||155|function|undefined WrapperFor_HandleCityDialogNoOpSlot14_At004b7850(int * param_1)|
 4b7920|TUnitOrder::ReadFrom||155|function|void __thiscall SyncCityEntryOrderStateWithArchive(int * pArchive)|
 4b79f0|TPowerPlantOrder::CreateObject|?CreateObject@TPowerPlantOrder@@SGPAVCObject@@XZ|24|function|undefined CreateObject()|rtti
@@ -5622,7 +5622,7 @@ address|name|symbol|size|type|prototype|provenance
 5afb10|ApplyTechUnlockAndQueueNationAbilityNotices||105|function|undefined ApplyTechUnlockAndQueueNationAbilityNotices()|
 5afba0|ApplyCityOrderCapabilityUnlockByTechId||211|function|void __thiscall ApplyCityOrderCapabilityUnlockByTechId(int nTechId)|
 5afd00|HandleAbilityUnlock||1160|function|void __thiscall HandleAbilityUnlock(int menu_state, int action_id)|
-5b0340|ActivateSlotAndUpdateUI||344|function|void __thiscall ActivateSlotAndUpdateUI(int base_ptr, int slot_idx)|
+5b0340|TTechMgr::ActivateSlotAndUpdateUI||344|function|void ActivateSlotAndUpdateUI(int abilityId, int nationSlot)|
 5b0500|UpdateSelectionAndRecalculateScores||1037|function|void __stdcall UpdateSelectionAndRecalculateScores(int slot_idx, int player_idx)|
 5b0a20|TTechMgr::AreTechItemPrerequisitePairCompleted||71|function|undefined AreTechItemPrerequisitePairCompleted()|
 5b0a90|TTechMgr::SelectMissingTechItemPrerequisitesFromPair||113|function|undefined SelectMissingTechItemPrerequisitesFromPair()|
@@ -5948,9 +5948,9 @@ address|name|symbol|size|type|prototype|provenance
 5c3500|AccumulateMissionUnitPriorityVectorWithOptionalFilter_Impl||30|function|undefined AccumulateMissionUnitPriorityVectorWithOptionalFilter_Impl()|
 5c3530|GetUnitTypeStatPercent||49|function|undefined GetUnitTypeStatPercent()|
 5c3580|GetNormalizedCityActionResourceCostPercent||48|function|undefined GetNormalizedCityActionResourceCostPercent()|
-5c35c0|ResolveEraCapabilityFallbackSlot||103|function|undefined ResolveEraCapabilityFallbackSlot()|
+5c35c0|TMilitaryUnit::ResolveEraCapabilityFallbackSlot||103|function|short ResolveEraCapabilityFallbackSlot()|
 5c3650|WrapperFor_ResolveEraCapabilityFallbackSlot_At005c3650||13|function|undefined WrapperFor_ResolveEraCapabilityFallbackSlot_At005c3650()|
-5c3670|ApplyEraCapabilityCostAndSetSelection||357|function|undefined ApplyEraCapabilityCostAndSetSelection()|
+5c3670|TMilitaryUnit::ApplyEraCapabilityCostAndSetSelection||357|function|bool ApplyEraCapabilityCostAndSetSelection()|
 5c3840|WrapperFor_ResolveEraCapabilityFallbackSlot_At005c3840||113|function|undefined WrapperFor_ResolveEraCapabilityFallbackSlot_At005c3840()|
 5c38e0|FindMilitaryUnitByIdAcrossTerrainDescriptors||133|function|undefined InitializeBattleSetupArmyStacksAndPopulateSelectionState_Impl()|
 5c3ad0|WrapperFor_ftol_At005c3ad0||30|function|undefined WrapperFor_ftol_At005c3ad0()|
@@ -8489,7 +8489,7 @@ address|name|symbol|size|type|prototype|provenance
 695bb0|g_industryActionCostWeightResCode0B|||global||
 695bd0|g_industryActionCostWeightResCode03|||global||
 695bf0|g_industryActionCostWeightResCode0C|||global||
-695cd2|g_UnitTypeMilitaryStatTable_00695CD2|||global||
+695cd0|g_aUnitOrderCostProfileByAbilityId|||global||
 696108|g_pTradeSummarySelectionMap|||global||
 696178|g_anCityBuildingSlotOrder|||global||
 696196|g_nCityBuildingSlotOrderLast|||global||

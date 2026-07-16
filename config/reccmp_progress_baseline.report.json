@@ -9700,8 +9700,8 @@
     },
     {
       "address": "0x4b77e0",
-      "matching": 0.0,
-      "name": "UIState_ActivateSlotAndUpdateUI_Impl",
+      "matching": 1.0,
+      "name": "TUnitOrder::SetOrderCostProfile",
       "type": 1
     },
     {
@@ -12617,7 +12617,7 @@
     },
     {
       "address": "0x4dd430",
-      "matching": 0.5142857142857142,
+      "matching": 0.5714285714285714,
       "name": "TGreatPower::ComputeRemainingDiplomacyAidBudget",
       "type": 1
     },
@@ -13074,8 +13074,7 @@
     },
     {
       "address": "0x4e0690",
-      "effective": true,
-      "matching": 0.42857142857142855,
+      "matching": 1.0,
       "name": "TGreatPower::ReturnFalseNationStateCapabilityFlag90",
       "type": 1
     },
@@ -13105,13 +13104,13 @@
     },
     {
       "address": "0x4e0890",
-      "matching": 0.2222222222222222,
+      "matching": 0.24242424242424243,
       "name": "TGreatPower::IterateLinkedListCursorAndAccumulateRoundedMetric_004e0890",
       "type": 1
     },
     {
       "address": "0x4e09a0",
-      "matching": 0.5301204819277109,
+      "matching": 0.5542168674698795,
       "name": "TGreatPower::ComputeCityOrderCapabilityAggregateScore",
       "type": 1
     },
@@ -16628,7 +16627,7 @@
     },
     {
       "address": "0x50bea0",
-      "matching": 0.21172194457064972,
+      "matching": 0.2080872330758746,
       "name": "TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets",
       "type": 1
     },
@@ -17002,7 +17001,7 @@
     },
     {
       "address": "0x512930",
-      "matching": 0.25622775800711745,
+      "matching": 0.26334519572953735,
       "name": "BuildHexAreaTileIndexList",
       "type": 1
     },
@@ -20449,7 +20448,7 @@
     },
     {
       "address": "0x53d020",
-      "matching": 0.38247011952191234,
+      "matching": 0.38095238095238093,
       "name": "ComputeArmyMissionScoreDeltaWithCandidateUnit",
       "type": 1
     },
@@ -29751,7 +29750,7 @@
     },
     {
       "address": "0x5a1520",
-      "matching": 0.48148148148148145,
+      "matching": 0.5259259259259259,
       "name": "TTacticalBattle::MoveTacticalUnitTowardTile",
       "type": 1
     },
@@ -29901,7 +29900,7 @@
     },
     {
       "address": "0x5a3d30",
-      "matching": 0.8104956268221575,
+      "matching": 0.8163265306122449,
       "name": "IsTacticalTargetTileReachableForAction",
       "type": 1
     },
@@ -30957,8 +30956,8 @@
     },
     {
       "address": "0x5b0340",
-      "matching": 0.019417475728155338,
-      "name": "ActivateSlotAndUpdateUI",
+      "matching": 0.9393939393939394,
+      "name": "TTechMgr::ActivateSlotAndUpdateUI",
       "type": 1
     },
     {
@@ -32716,13 +32715,13 @@
     },
     {
       "address": "0x5c3400",
-      "matching": 0.4,
+      "matching": 0.8,
       "name": "GetUnitTypeCostPoints",
       "type": 1
     },
     {
       "address": "0x5c3450",
-      "matching": 0.2727272727272727,
+      "matching": 1.0,
       "name": "GetCityActionGateValueBySlot",
       "type": 1
     },
@@ -32764,14 +32763,14 @@
     },
     {
       "address": "0x5c35c0",
-      "matching": 0.05128205128205128,
-      "name": "ResolveEraCapabilityFallbackSlot",
+      "matching": 0.7027027027027027,
+      "name": "TMilitaryUnit::ResolveEraCapabilityFallbackSlot",
       "type": 1
     },
     {
       "address": "0x5c3670",
-      "matching": 0.015748031496062992,
-      "name": "ApplyEraCapabilityCostAndSetSelection",
+      "matching": 0.7063492063492064,
+      "name": "TMilitaryUnit::ApplyEraCapabilityCostAndSetSelection",
       "type": 1
     },
     {

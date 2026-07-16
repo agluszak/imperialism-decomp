@@ -17,7 +17,6 @@ g_Render_Nation_Header_Value_006961E0|0x6961e0|WARN|24
 g_Render_Nation_Header_Value_006961F8|0x6961f8|WARN|24
 g_Render_Nation_Header_Value_00696210|0x696210|WARN|24
 g_Render_Nation_Header_Value_00696228|0x696228|WARN|24
-g_UnitTypeMilitaryStatTable_00695CD2|0x695cd2|WARN|896
 g_abResourceTypeUsesHighNibbleFlag|0x696df8|WARN|1
 g_adwEngineerRailBuildCostByTerrainType|0x6531d8|WARN|64
 g_anResourceTypeRequiredOrderType|0x696ed8|WARN|8
