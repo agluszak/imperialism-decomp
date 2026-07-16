@@ -155,7 +155,7 @@ struct TurnEvent15Packet : NetMessage {
 #include "game/TControl.h"
 #include "game/TDeluxeText.h"
 #include "game/TDropShadowText.h"
-#include "game/TInterNationEventQueueManager.h"
+#include "game/TNewsMgr.h"
 #include "game/TLanguageMgr.h"
 #include "game/TLoungeDialog.h"
 #include "game/TNextTradeCommand.h"
@@ -1008,9 +1008,9 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
           }
           okayButton->SetState(canStart, 0);
           okayButton->SetEnabled(canStart, 1);
-          okayButton->field9A = 0x2b6c;
-          okayButton->field9C = 0x2b6b;
-          okayButton->field98 = 0xc;
+          okayButton->themeCode9A = 0x2b6c;
+          okayButton->themeCode9C = 0x2b6b;
+          okayButton->pointSize98 = 0xc;
           TView* messControl = lounge->ResolveControlByTag(0x6d657373 /* 'mess' */);
           messControl->AssertValid();
           messControl->SetEnabled(canStart == 0, 1);
@@ -1908,7 +1908,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
     city24->lastTurnTick = cityRecord->record.field06;
     {
       // 10-short copy 0x82..0x95 (explicit word loop in the original, not rep movs).
-      short* cityWordCursor = &city24->linkedRegionIds[0x20];
+      short* cityWordCursor = &city24->resourceDevelopmentCounts82[0];
       short* recordWordCursor = cityRecord->record.block82;
       int wordCountdown = 10;
       do {
@@ -2545,7 +2545,7 @@ void TMultiplayerMgr::DispatchCityRedrawInvalidateEvent(short cityId) {
 
   const TGlobalMapCityScoreRecord* src = &g_pGlobalMapState->cityScoreTable[cityId];
   packet.cityHeader00[0] = src->ownerNationCode00;
-  packet.cityHeader00[1] = src->byte01;
+  packet.cityHeader00[1] = src->formerOwnerNationCode01;
   packet.cityHeader00[2] = src->developmentStage;
   packet.cityHeader00[3] = src->fortLevel03;
   packet.cityWord04 = src->cityTileIndex04;
@@ -2566,16 +2566,16 @@ void TMultiplayerMgr::DispatchCityRedrawInvalidateEvent(short cityId) {
   for (int linkedIndex = 0; linkedIndex < 32; ++linkedIndex) {
     packet.linkedRegionIds42[linkedIndex] = src->linkedRegionIds[linkedIndex];
   }
-  packet.linkedRegionIds82[0] = src->linkedRegionIds[32];
-  packet.linkedRegionIds82[1] = src->stage1CounterA;
-  packet.linkedRegionIds82[2] = src->stage1CounterB;
-  packet.linkedRegionIds82[3] = src->pad88;
-  packet.linkedRegionIds82[4] = src->stage1CounterC;
-  packet.linkedRegionIds82[5] = src->stage1CounterD;
-  packet.linkedRegionIds82[6] = src->stage2CounterA;
-  packet.linkedRegionIds82[7] = src->stage2CounterB;
-  packet.linkedRegionIds82[8] = src->stage2CounterC;
-  packet.linkedRegionIds82[9] = src->field94;
+  packet.linkedRegionIds82[0] = src->resourceDevelopmentCounts82[0];
+  packet.linkedRegionIds82[1] = src->resourceDevelopmentCounts82[1];
+  packet.linkedRegionIds82[2] = src->resourceDevelopmentCounts82[2];
+  packet.linkedRegionIds82[3] = src->resourceDevelopmentCounts82[3];
+  packet.linkedRegionIds82[4] = src->resourceDevelopmentCounts82[4];
+  packet.linkedRegionIds82[5] = src->resourceDevelopmentCounts82[5];
+  packet.linkedRegionIds82[6] = src->resourceDevelopmentCounts82[6];
+  packet.linkedRegionIds82[7] = src->resourceDevelopmentCounts82[7];
+  packet.linkedRegionIds82[8] = src->resourceDevelopmentCounts82[8];
+  packet.linkedRegionIds82[9] = src->resourceDevelopmentCounts82[9];
 
   packet.stationedUnitChain98 = src->stationedUnitChain98;
   packet.cityScoreValue9C = src->cityScoreValue;

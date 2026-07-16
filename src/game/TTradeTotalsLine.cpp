@@ -15,6 +15,7 @@ TTradeTotalsLine::TTradeTotalsLine() : TLineData() {}
 TTradeTotalsLine::~TTradeTotalsLine() {}
 
 // FUNCTION: IMPERIALISM 0x005c19c0
-undefined TTradeTotalsLine::OrphanRetStub_0056f460() {
-  return 0;
+void TTradeTotalsLine::CreateLineItemView(TView* panel, int* offsetLayout) {
+  (void)panel;
+  (void)offsetLayout;
 }

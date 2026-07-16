@@ -128,4 +128,12 @@ public:
   // slot 0x75 RenderControlStateTextBySelectionCode inherited unchanged (0x4900a0)
   // === END GENERATED DECLS (TTEView) ===
   int MeasureCurrentTextWidthInLayoutRect();
+  // Mac-style second-phase init (not the ctor — no vtable store): runs the TStaticText
+  // base init, copies the 0x68-0x74 inset rect and the packed text-style descriptor,
+  // and seeds field90. Args 1, 10 and 11 are never read (TDeluxeText passes 0, 0, 1).
+  // 0x486050, __thiscall, RET 0x2c.
+  void ConstructTTEViewBaseState(int unusedA, TView* panel, int* offsetLayout, int* sizeLayout,
+                                 int layoutParam5, int layoutParam6, RECT* insetRect,
+                                 TControlPictureRectState* style, short styleWord90, int unusedB,
+                                 int unusedC);
 };

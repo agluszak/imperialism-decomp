@@ -33,7 +33,7 @@ public:
                                                                  unsigned short* outCol,
                                                                  short* outBand) override;
   virtual void UpdateMapDialogTileRowColumnMarkerAndInvalidate(int arg1) override;
-  virtual void OrphanRetStub_00596680(int arg1, int arg2) override;
+  virtual void SetMapViewCellCoordinates(int arg1, int arg2) override;
   virtual void OrphanRetStub_005966c0(short arg1) override;
   virtual undefined OrphanLeaf_NoCall_Ins02_005966e0(short arg1) override;
   // Wraps (scrollRowOffset7c+0xe, scrollColOffset7e+0x10) onto the 108x60 hex map via
@@ -44,7 +44,7 @@ public:
 
   // Nudges scrollRowOffset7c/scrollColOffset7e by +-4 per set bit in directionFlags
   // (bit0/1 adjust the row offset, bit2/3 the column offset), forwards the new (col, row)
-  // pair to OrphanRetStub_00596680, then refreshes the active dialog surface via
+  // pair to SetMapViewCellCoordinates, then refreshes the active dialog surface via
   // g_pDisplayMgr->activeDialog->InvokeSlot13C(). 0x00568a40.
   void ApplyDirectionalNudgeAndRefreshDisplay(unsigned char directionFlags);
 

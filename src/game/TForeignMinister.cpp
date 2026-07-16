@@ -8,7 +8,7 @@
 #include "game/global_data_tables.h"
 #include "game/TMapMgr.h"
 #include "game/TSimMgr.h"
-#include "game/TInterNationEventQueueManager.h"
+#include "game/TNewsMgr.h"
 #include "game/mfc.h"
 #include "game/TStream.h"
 
@@ -211,7 +211,7 @@ void TForeignMinister::Call94() {
   short nationSlot = owner->nationSlot;
   static const short kOrderKinds[] = {0, 1, 2, 3, 4, 5, 6};
   int loopCount =
-      (g_pCityOrderCapabilityState->orderCapRows277[nationSlot].recruitTierFlag27b == 2) + 5;
+      (g_pCityOrderCapabilityState->orderCapRows277[nationSlot].techStatusByTechId[0x13] == 2) + 5;
   if (loopCount != 0) {
     const short* orderKindCursor = kOrderKinds;
     do {

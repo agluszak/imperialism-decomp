@@ -18,22 +18,34 @@ TCitySiteView::~TCitySiteView() {}
 void TCitySiteView::NoOpUiLifecycleHook(int arg) {}
 
 // FUNCTION: IMPERIALISM 0x0051c2a0
-void TCitySiteView::OrphanRetStub_005966a0(int arg1) {
+void TCitySiteView::SetMapViewTileIndex(int arg1) {
   (void)arg1;
 }
 
 // FUNCTION: IMPERIALISM 0x0051c2f0
-void TCitySiteView::OrphanRetStub_00596680(int arg1, int arg2) {
-  ReleaseRuntimeSelectionOwnerAndDestroyObject(arg1, arg2, 0);
+void TCitySiteView::SetMapViewCellCoordinates(int arg1, int arg2) {
+  SetMapDialogCellCoordinatesAndRefresh(arg1, arg2, 0);
 }
 
+// The original keeps col/row as word registers throughout (the clamp writes replace only
+// the low word), hence the short locals seeded from the int slot params.
 // FUNCTION: IMPERIALISM 0x0051c320
-undefined TCitySiteView::ReleaseRuntimeSelectionOwnerAndDestroyObject(int param_1, int param_2,
-                                                                      int param_3) {
-  (void)param_1;
-  (void)param_2;
-  (void)param_3;
-  return 0;
+void TCitySiteView::SetMapDialogCellCoordinatesAndRefresh(int col, int row, int mode) {
+  short c = static_cast<short>(col);
+  short r = static_cast<short>(row);
+  if (c < minColBound368) {
+    c = static_cast<short>(minColBound368);
+  }
+  if (r < minRowBound370) {
+    r = static_cast<short>(minRowBound370);
+  }
+  if (c > maxColBound36c) {
+    c = static_cast<short>(maxColBound36c);
+  }
+  if (r > maxRowBound374) {
+    r = static_cast<short>(maxRowBound374);
+  }
+  TMapDialog::SetMapDialogCellCoordinatesAndRefresh(c, r, mode);
 }
 
 // FUNCTION: IMPERIALISM 0x0051c3b0

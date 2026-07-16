@@ -173,7 +173,7 @@ unsigned int MapEdgePoint::Equals(const MapEdgePoint* other) const {
 int __stdcall GetMapContextActionCode(short nTileIndex, int dwInputFlags) {
   (void)dwInputFlags;
   TTerrainStateRecordView& tile = g_pGlobalMapState->terrainStateTable[nTileIndex];
-  short actionClass = static_cast<signed char>(tile.pad16);
+  short actionClass = tile.tileActionClass16;
   if (actionClass == -1) {
     return 0;
   }

@@ -22,7 +22,7 @@ public:
 
   void CopyViewStateFromSource(TView* source);
 
-  void InitializeTextEntryBaseAndOptionalStringResource(TControl* panel, int* offsetLayout,
+  void InitializeTextEntryBaseAndOptionalStringResource(TView* panel, int* offsetLayout,
                                                         int* sizeLayout, int layoutParam6,
                                                         int layoutParam7, short stringResourceGroup,
                                                         short stringResourceIndex);

@@ -71,6 +71,11 @@ int TAssetMgr::ReadResourceStreamIntoBufferAndAdvance(CFile_Virtuals* stream, vo
   return 0;
 }
 
+// FUNCTION: IMPERIALISM 0x005df760
+int TAssetMgr::GetResourceStreamSize(CFile_Virtuals* stream) {
+  return stream->GetLengthSlot38();
+}
+
 // FUNCTION: IMPERIALISM 0x005df780
 void TAssetMgr::NoOpRuntimeUiCallback_005df780(int arg) {
   (void)arg;

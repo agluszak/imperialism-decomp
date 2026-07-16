@@ -187,14 +187,6 @@ undefined4 WrapperFor_ftol_At00519970(void)
   return 0;
 }
 
-// ghidra_name PopulateMapContextInfoPanelStringsByTileSelection
-// ghidra_proto undefined PopulateMapContextInfoPanelStringsByTileSelection()
-// FUNCTION: IMPERIALISM 0x0051b1c0
-undefined4 PopulateMapContextInfoPanelStringsByTileSelection(void)
-{
-  return 0;
-}
-
 // ghidra_name MarkHexTileAndNeighborsDirtyAndNotify
 // ghidra_proto undefined MarkHexTileAndNeighborsDirtyAndNotify()
 // FUNCTION: IMPERIALISM 0x0051d380

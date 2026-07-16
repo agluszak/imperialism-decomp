@@ -14,7 +14,7 @@
 #include "game/TSoundPlayer.h"
 #include "game/TGreatPower.h"
 #include "game/TCivToolbar.h"
-#include "game/TInterNationEventQueueManager.h"
+#include "game/TNewsMgr.h"
 #include "game/TMapUberPicture.h"
 #include "game/TViewMgr.h"
 #include "game/localization_text_helpers.h"

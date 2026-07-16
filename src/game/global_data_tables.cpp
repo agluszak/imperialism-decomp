@@ -26,7 +26,7 @@ class TInfoBarText;
 #include "game/TDiplomacyMgr.h"
 #include "game/TDisplayMgr.h"
 #include "game/TGreatPower.h"
-#include "game/TInterNationEventQueueManager.h"
+#include "game/TNewsMgr.h"
 #include "game/TNavyMgr.h"
 #include "game/TSimMgr.h"
 #include "game/TAssetMgr.h"
@@ -94,7 +94,7 @@ TSimMgr* g_pSimMgr = 0;
 // GLOBAL: IMPERIALISM 0x006a21b8
 THelpMgr* g_pHelpMgr = 0;
 // GLOBAL: IMPERIALISM 0x006a43e8
-TInterNationEventQueueManager* g_pInterNationEventQueueManager = 0;
+TNewsMgr* g_pInterNationEventQueueManager = 0;
 // GLOBAL: IMPERIALISM 0x006a1344
 TApplication* g_pGlobalUiRootController = 0;
 // GLOBAL: IMPERIALISM 0x006a43c8
@@ -111,6 +111,10 @@ extern const unsigned char g_MapContextStaticTable_00695428[0x20] = {
     0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0};
 // GLOBAL: IMPERIALISM 0x0064dc30
 char* g_pBattleReportSharedText_0064dc30 = g_szEmptyString;
+// Shared text pointer the mini-civ row view (0x4ab970) seeds its control text and
+// assembled-string accumulator from; only the empty-string default is observed so far.
+// GLOBAL: IMPERIALISM 0x0064cb18
+char* g_pMiniCivSharedText_0064cb18 = g_szEmptyString;
 // GLOBAL: IMPERIALISM 0x00695448
 extern const unsigned char g_MapContextStaticTable_00695448[0x20] = {
     1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0};
@@ -707,7 +711,6 @@ float g_ApplyIndexedResourceDeltaScale_00653728 = -1.0f / 255.0f;
 // from the earlier 0x695CD4 model: TMilitaryUnit::GetUnitTypeCostPoints (0x5c3400)
 // reads the category flag at record offset +0 (0x695cd2; 0x10 = counted) and the
 // power/cost points at +2 (0x695cd4, the short the slot 0x8e-0x9c score family sums).
-short g_UnitTypeMilitaryStatTable_00695CD2[64][7] = {0};
 
 // Per-unit-type stat table (7 shorts per type; rows for unit types 0x00-0x1d) and
 // per-stat divisor baseline used by TMilitaryUnit::GetUnitTypeStatPercent (0x5c3530).
@@ -793,6 +796,12 @@ unsigned char g_abResourceTypeUsesHighNibbleFlag[24] = {0, 0, 0, 1, 1, 0, 1, 0, 
 // (0x513720).
 unsigned char g_abResourceTypeCapabilityCategory[24] = {0, 0, 0, 1, 1, 0, 1, 0, 0, 0, 0, 0,
                                                         0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0};
+// Third binary copy of the same per-resourceType flag pattern (the linker kept three);
+// this one gates whether the mini-civ row (0x4ab970) and civ report name a tile edge's
+// resource type in their "improvable resources" text.
+// GLOBAL: IMPERIALISM 0x006963e8
+unsigned char g_abResourceTypeMiniCivMentionFlag[24] = {0, 0, 0, 1, 1, 0, 1, 0, 0, 0, 0, 0,
+                                                        0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0};
 // Per-resourceType required-order-type code. Read by
 // SeedRecruitSearchVisitedStateByCapabilityThresholdAlt (0x515890).
 short g_anResourceTypeRequiredOrderType[24] = {2,  5,  3,  -1, -1, -1, -1, -1, -1, -1, -1, -1,
@@ -833,7 +842,21 @@ short g_awTileSpriteVariantOffsetTable3b[4][2] = {{0, 0}, {0, 0}, {0, 0}, {0, 0}
 // Navy/order composite score table (0x550b60 /
 // ComputeNavyOrderPriorityContributionPercentByCategory family); see TNavyOrderResourceDescriptor
 // in global_data_tables.h.
-TNavyOrderResourceDescriptor g_NavyOrderResourceDescriptorTable[64] = {{0}};
+TNavyOrderResourceDescriptor g_NavyOrderResourceDescriptorTable[14] = {
+    {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -1, 0, 0, 0, 0},
+    {0, 0, 0, 0, 100, 0, 600, 0, 0, 2, 0, -1, 1, 0, 0, 0},
+    {0, 0, 0, 0, 95, 0, 1000, 0, 0, 4, 0, -1, 1, 0, 0, 0},
+    {300, 0, 5, 0, 90, 0, 900, 0, 4, 0, 0, 1, 3, 0, 1, 0},
+    {600, 0, 6, 0, 80, 0, 1700, 0, 3, 0, 0, 0, 2, 0, 1, 0},
+    {0, 0, 0, 0, 95, 0, 900, 0, 0, 8, 0, -1, 1, 0, 0, 0},
+    {0, 0, 0, 0, 100, 0, 600, 0, 0, 4, 0, -1, 1, 0, 0, 0},
+    {300, 0, 7, 0, 80, 0, 700, 0, 7, 0, 0, 2, 5, 0, 2, 0},
+    {500, 0, 8, 0, 45, 0, 1200, 0, 5, 0, 0, 3, 3, 0, 2, 0},
+    {1000, 0, 10, 0, 40, 0, 1800, 0, 6, 0, 0, 0, 4, 0, 3, 0},
+    {0, 0, 0, 0, 75, 0, 1200, 0, 0, 16, 0, -1, 1, 0, 0, 0},
+    {600, 0, 9, 0, 50, 0, 1000, 0, 8, 0, 0, 1, 6, 0, 3, 0},
+    {2000, 0, 13, 0, 30, 0, 2800, 0, 7, 0, 0, 3, 5, 0, 4, 0},
+    {1800, 0, 13, 0, 45, 0, 2200, 0, 9, 0, 0, 2, 6, 0, 4, 0}};
 
 // Per-category (0..3) capability metric baseline averages, recomputed at runtime by
 // RecomputeGlobalCapabilityAverages (0x54fd50) and read back as the normalization divisor
@@ -953,6 +976,13 @@ double DAT_0066fad0 = 0.092;
 // Named global pointers read with a direct absolute load in the original (vs the
 // ReadGlobalPointer(imm) shortcut, which emits an extra indirection that cannot pair).
 // Defined outside extern "C" so they keep C++ linkage and match typed header declarations.
+// Tactical unit sprite facing-offset table: [unit type 0..28][orientation 0..6][side 0..1]
+// pixel deltas OffsetRect-applied to the sprite rect for units on a fresh trench-deploy
+// tile (reader: TTacticalBattleView::ComputeTacticalUnitSpriteDrawRectAndApplyFacingOffset,
+// filler: InitializeTacticalUnitFacingOffsetTable, a CRT static initializer in the original).
+// GLOBAL: IMPERIALISM 0x006a4780
+POINT g_aTacticalUnitFacingOffsetTable[29][7][2];
+
 TZone* g_pMapActionContextListHead = 0;
 // GLOBAL: IMPERIALISM 0x006a3fbc
 TOcean* g_pActiveMapOrderContext = 0;
@@ -965,10 +995,48 @@ TCivMgr* g_pSelectedCivilianOrderState = 0;
 int g_nOceanDialogSeedViewportOffsetX = 0;
 // GLOBAL: IMPERIALISM 0x006a3ff4
 int g_nOceanDialogSeedViewportOffsetY = 0;
+// Map-dialog viewport width in tiles; UpdateMapDialogTileRowColumnMarkerAndInvalidate
+// (0x51ac40) centers the view by backing the column up half this span. Dual-width slot:
+// 0x51adf0 loads it as a full dword while 0x51ac40 reads only the low word (movsx), so
+// it stays int and word readers cast with static_cast<short>.
+// GLOBAL: IMPERIALISM 0x006a33b0
+int g_wMapDialogViewportTileSpan;
 // GLOBAL: IMPERIALISM 0x0065c2f0
 short g_awMapContextActionLabelTokenByCommand[17] = {0,     0x3f0, 0x3f2, 0x3f2, 0x3f2, 0x3f2,
                                                      0x3f2, 0x3f2, 0x3f2, 0x3f1, 0x3f3, 0x3f3,
                                                      0x3f6, 0x3f8, 0x3f4, 0x3f5, 0x3f7};
+// Per-tech prerequisite pair (tech ids; 0 = none). Indexed by tech id in
+// TTechMgr::AreTechItemPrerequisitePairCompleted / SelectMissingTechItemPrerequisitesFromPair
+// (0x5b0a20/0x5b0a90). 34 entries; ends where the CRuntimeClass at 0x66ac98 begins.
+// Per-tech research cost in gold, indexed by tech id (readers: 0x5b12e0 buy-button label,
+// TTechItemView::HandleEvent 0x5b1e20).
+// GLOBAL: IMPERIALISM 0x0066ad58
+int g_anTechItemResearchCostByTechId[29] = {
+    0,     0,     1000,  1000,  1500,  1500,   1500,   1500,   3000,  3000,
+    3000,  6000,  7000,  10000, 12000, 12000,  12000,  12000,  12000, 25000,
+    20000, 40000, 40000, 40000, 40000, 100000, 120000, 150000, 150000};
+// Per-ability unit-order cost profile, one row per ability id, columns matching
+// TUnitOrder::SetOrderCostProfile's parameters: {resourceTypeIndex,
+// primaryInputResourceId, primaryInputPerUnit, secondaryInputResourceId,
+// secondaryInputPerUnit, cashCostPerUnit, workforceMode}.
+// GLOBAL: IMPERIALISM 0x00695cd0
+short g_aUnitOrderCostProfileByAbilityId[0x1e][7] = {
+    {0, -1, 0, -1, 0, 0, 1},      {1, 16, 1, -1, 0, 200, 1},   {2, 16, 1, -1, 0, 500, 1},
+    {3, 16, 1, -1, 0, 1000, 2},   {4, 16, 1, 5, 1, 100, 1},    {5, 16, 1, 5, 1, 500, 2},
+    {6, 16, 2, 5, 1, 1000, 2},    {7, 16, 2, -1, 0, 1000, 2},  {8, -1, 0, -1, 0, 0, 1},
+    {9, 16, 2, -1, 0, 3000, 1},   {10, 16, 2, -1, 0, 3000, 1}, {11, 16, 2, -1, 0, 4000, 2},
+    {12, 16, 2, 5, 1, 2000, 1},   {13, 16, 2, 5, 1, 3500, 2},  {14, 16, 4, 5, 1, 5000, 2},
+    {15, 16, 4, -1, 0, 5000, 2},  {16, -1, 0, -1, 0, 0, 1},    {17, 16, 4, -1, 0, 5000, 2},
+    {18, 16, 4, -1, 0, 5000, 2},  {19, 16, 4, -1, 0, 7000, 2}, {20, 16, 4, 12, 4, 5000, 2},
+    {21, 16, 10, 12, 4, 9000, 2}, {22, 16, 6, 12, 4, 5000, 2}, {23, 16, 8, -1, 0, 9000, 2},
+    {24, 16, 2, -1, 0, 5000, 4},  {25, 16, 2, -1, 0, 7000, 4}, {26, 16, 3, -1, 0, 9000, 4},
+    {27, -1, 0, -1, 0, 0, 4},     {28, -1, 0, -1, 0, 0, 4},    {29, -1, 0, -1, 0, 0, 4}};
+// GLOBAL: IMPERIALISM 0x0066ac10
+short g_aTechItemPrerequisitePairs[34][2] = {
+    {0, 0},  {0, 0},  {0, 0}, {0, 0},  {0, 0},  {1, 0},  {1, 0},  {0, 0},  {7, 3},
+    {0, 0},  {2, 0},  {0, 0}, {6, 0},  {0, 0},  {11, 0}, {0, 0},  {8, 0},  {10, 0},
+    {10, 0}, {0, 0},  {7, 0}, {15, 0}, {13, 0}, {5, 12}, {9, 10}, {14, 0}, {19, 0},
+    {24, 0}, {26, 0}, {0, 0}, {25, 0}, {25, 0}, {25, 0}, {0, 0}};
 // GLOBAL: IMPERIALISM 0x006a3ed8
 TTaskForce* g_pCachedMapActionContext = 0;
 TSoundPlayer* g_pSfxPlaybackSystem = 0;
@@ -1012,10 +1080,6 @@ int g_defaultDropShadowTextColor = 0;
 int g_NetworkDefaultNationId006a5fc0 = 0;
 // GLOBAL: IMPERIALISM 0x006a5fc4
 int g_NetworkBroadcastNationId006a5fc4 = 0;
-undefined4 DAT_0066ac88 = 0;
-undefined4 DAT_0066ac8c = 0;
-undefined4 DAT_0066ac90 = 0;
-
 // 26 (start, end) capability-priority range pairs walked by
 // TTechMgr::GenerateRandomCapabilityPrioritySlots. The reccmp symbol points at pair 0's END
 // value; pair 0's START value (1) lives one short earlier and is read via cursor[-1].
@@ -1056,6 +1120,10 @@ extern "C" const char s_BmpResourceNameFormat_006951C4[] = "%d.BMP";
 extern "C" const char s_TurnEventCursorNameFormat_0069B6B4[] = "~C%d";
 // GLOBAL: IMPERIALISM 0x0069b6bc
 extern "C" const char s_SourcePathUViewMgr_0069B6BC[] = "D:\\Ambit\\Cross\\UViewMgr.cpp";
+// GLOBAL: IMPERIALISM 0x006973d0
+extern "C" const char s_SourcePathUMapDlog_006973D0[] = "D:\\Ambit\\Cross\\UMapDlog.cpp";
+// GLOBAL: IMPERIALISM 0x00698470
+extern "C" const char s_SourcePathUNewspaper_00698470[] = "D:\\Ambit\\Cross\\UNewspaper.cpp";
 // GLOBAL: IMPERIALISM 0x00698040
 extern "C" const char s_SourcePathUMultiplayerMgr_00698040[] =
     "D:\\Ambit\\Cross\\UMultiplayerMgr.cpp";
@@ -1318,6 +1386,8 @@ CString g_cstrArmyOrderMessageStore;
 CString g_cstrNationComparisonMessageStore;
 // GLOBAL: IMPERIALISM 0x006a3d08
 CString g_cstrNationAwolMessageStore;
+// GLOBAL: IMPERIALISM 0x006a57c8
+CString g_cstrTechCapabilityMessageStore;
 // Message-store slot the TViewMgr prompt helpers (0x5de990/0x5deb40) pass to the
 // localized-message dispatch.
 // GLOBAL: IMPERIALISM 0x006a5be0
@@ -1596,15 +1666,6 @@ const int g_anTechItemPurchaseCostBySlot_0066aae8[34] = {
     7000,  10000,  12000,  12000,  12000,  12000, 12000, 25000, 20000, 40000, 40000, 40000,
     40000, 100000, 120000, 150000, 150000, 0,     -1,    -1,    -1,    0};
 
-// Per tech-prerequisite-pair index, the two in-record byte offsets (into a TTechMgr
-// OrderCapRow, stride 0x1d) of the capability flags that must both be "completed"
-// (== 2). Consumed by TTechMgr::AreTechItemPrerequisitePairCompleted (0x5b0a20) and
-// SelectMissingTechItemPrerequisitesFromPair (0x5b0a90).
-const short g_awTechPrereqCapabilityFieldOffsetPairs_0066ac10[34][2] = {
-    {0, 0},  {0, 0},  {0, 0}, {0, 0},  {0, 0},  {1, 0},  {1, 0},  {0, 0},  {7, 3},
-    {0, 0},  {2, 0},  {0, 0}, {6, 0},  {0, 0},  {11, 0}, {0, 0},  {8, 0},  {10, 0},
-    {10, 0}, {0, 0},  {7, 0}, {15, 0}, {13, 0}, {5, 12}, {9, 10}, {14, 0}, {19, 0},
-    {24, 0}, {26, 0}, {0, 0}, {25, 0}, {25, 0}, {25, 0}, {0, 0}};
 
 // Hex-neighbour offset tables (direction 0..5) for the 108-wide offset-coordinate grid.
 const int g_hexColOffsetEvenRow_00697450[6] = {0, 1, 0, -1, -1, -1};

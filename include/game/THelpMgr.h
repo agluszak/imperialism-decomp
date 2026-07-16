@@ -51,6 +51,10 @@ public:
   void HandlePostPendingEventActivationNoOp(short eventCode);
   void ActivatePendingEventAndRefreshView(HelpSetRecord* pendingEntry);
 
+  // 2-byte packed (like TControl's Mac-heritage records): the field suffixes are the real
+  // offsets only under pack(2) — field1a is an int AT 0x1a, and helpIndexReady sits at
+  // 0x2e (ctor 0x5005f3 writes word [this+0x2e]; read at 0x5bfae6 as the help detail level).
+#pragma pack(push, 2)
   TSortedPtrList* indexList;
   TView* pendingDialogView8;
   TView* pendingDialogViewC;
@@ -62,8 +66,11 @@ public:
   int field22;
   int field26;
   short field2a;
-  int field2c;
+  short field2c;
+  // Help/advisor detail level for info texts: 0 minimal, 1 concise verdict, >= 2 detailed
+  // numbers ("indexReady" name is historic; hedged).
   short helpIndexReady;
+#pragma pack(pop)
 
   THelpMgr();
 };

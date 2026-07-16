@@ -1787,6 +1787,195 @@ would require reverse-engineering the exact optimized instruction schedule, rare
 Also: a slot the disassembly calls virtually but that isn't a modeled callable (CObject-style
 `AssertValid`, vtable slot 3) is fine to omit with a note — one missing no-op CALL.
 
+## Note 111 — Missing assert file/line args are a cheap, systematic score win
+
+`TemporarilyClearAndRestoreUiInvalidationFlag(...)` (0x0049d620) is variadic: called bare `()`
+it's a flag toggler, but the retail asserts push the Mac source path + line before it (via the
+ILT thunk 0x004057a4). MANY ported nil-pointer failure paths call it with NO args, so the
+original's `MessageBox` + `assert(sourcePath, line)` sequence never gets emitted — a fixed
+block of missing instructions that caps the function below 100%. Fix: pass the real path/line,
+e.g. `TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\UCountry.cpp", 0xa0e)`.
+Find the exact string+line from the callee's decompile (`func_0x004057a4(s_D__Ambit_..._cpp, N)`);
+reccmp pairs the string literal by content, so a plain literal is enough (no kAddr needed). The
+grep that finds candidates:
+`for f in $(grep -rl 'TemporarilyClearAndRestoreUiInvalidationFlag();' src/game); do awk '/GAME_FAIL_NIL_POINTER\(\);/{p=NR} /...Flag\(\);/&&NR==p+1{print FILENAME":"NR}' $f; done`
+Took UpdateOrderEntryAvailabilityByConnectedRegionMask 98%->100% and (with a counter-reread
+tweak) TUnit::RegisterUnitOrderWithOwnerManager 91%->100% in one line each. There are ~12 more
+bare no-arg calls across src/game (TButton/TCity/TDlgWindow/TEventHandler/TMacViewMgr/TNetMgr…)
+— sweep them when hunting cheap wins. NOTE the file often differs per function
+(UCountry.cpp / UCountryAuto.cpp / UUnit.cpp / UNavy.cpp) — always read the callee, don't assume.
+
+## Note 112 — Full-diff forensics beats decompile-reading on hard functions
+
+When a big function stalls below ~80%, capture the ENTIRE reccmp diff to a file
+(`just compare 0xADDR > f.txt` after stripping color codes) and read it as a frame-layout
+map, not line noise. Track every `[esp+N]` operand back to an E0-relative slot (E0 = ESP at
+entry before the prologue; account for pushes at each site). Three payoffs seen on
+TGreatPower::WriteTo: (1) a 288-line "mismatch" reduced to ONE slot-assignment difference
+(identical instructions, shifted offsets — the frame size delta hides in the encodings);
+(2) helper-vs-inline structure diffs are visible as cached-pointer registers + spills where
+the original re-reads a member per use — write list/collection loops with repeated
+`this->member->...` access, not a hoisted local, when the original does; (3) real bugs
+surface (a slot-0x14 call where the original calls slot 5 = the port called the WRONG
+METHOD — TransferTransportRequests vs WriteTo).
+
+## Note 113 — The dead-arg-slot assignment is one global, source-immune allocator choice
+
+MSVC500 reuses a dead argument's stack slot for one address-taken local. WHICH local gets
+it is a whole-function allocation decision that (in 8 tested configurations) could not be
+flipped from source: scratch-pointer helpers, by-value inline params, fn-scope vs
+block-scope vs union temps, and declaration reordering all left the same winner (the swap
+temp), while the original gave the slot to a later list-count. Worse, the choice is
+chaotic: bracing ONE late count block reshuffled the entire frame and cost 9pp elsewhere.
+Practical protocol: (a) find the config that matches the MOST slots and freeze it;
+(b) A/B one change at a time — a probe build after each single edit, never batch two frame
+knobs; (c) when only the slot-winner differs, stop — that's the ceiling; document it at the
+function. Related fact: locals allocate by FIRST USE (argument evaluation is right-to-left,
+so `f(&a,&b)` allocates b first); declaration position does not matter.
+
+## Note 114 — A "broken" Ghidra decompile (phantom register args) still has a clean listing
+
+Phantom `unaff_BX`/`unaff_SI` parameters + a bogus switch usually mean Ghidra lost stack
+tracking across a __cdecl call whose `ADD ESP,N` cleanup was scheduled late — the function
+itself is fine. Recover from the raw listing: real stack args are the `MOVSX/MOV reg,
+[esp+4/8/0xc...]` reads at entry (count them; `RET 0x14` = 5 args), jump tables read as
+`JMP [reg*4 + table]` with dense case blocks after, and consecutive-slot virtual calls
+(`CALL [reg + 0x214/0x218/...]`) are just unqualified member calls on `this` that C++
+regenerates verbatim from a plain switch. 527B of "undecompilable" render dispatch ported
+to 86% in one pass this way (residual: one EDI/EBX assignment swap).
+
+## Note 115 — Big-stub triage workflow: portprep dossier + const-stores extraction
+
+Two purpose-built tools make the biggest stubs tractable in one pass each:
+- `just ghidra-portprep 0xADDR` — the whole investigation in one query: current owner,
+  callers (with owners), every direct call with ILT thunks chased AND the target's
+  ownership (so the callee-porting cascade is visible up front), vtable-slot calls with
+  slot indices, IAT imports, referenced globals with consecutive runs collapsed, jump
+  tables, and the decompile. Read the "direct calls" owners column FIRST: a big stub whose
+  callees are all owned (manual files) is pure logic and portable now; one with 5+ STUB
+  callees is a cascade — either port the leaves first or defer.
+- `just const-stores 0xADDR` — capstone over the ORIGINAL binary (no Ghidra): ordered
+  address->constant store map with register constant tracking. A function whose body is
+  ~all tracked stores and no untracked (indexed) stores is an unrolled TABLE INITIALIZER:
+  model the target table as a typed global, then GENERATE the initializer as assignments
+  in original store order (the compiler re-derives the value-grouped register caching).
+  The 5KB facing-offset initializer (largest stub in the project) went 0->92.8% this way;
+  batch-probing all 300B+ stubs found the complete set of such functions in one run.
+Known hard case: a CRT static initializer that CALLS out-of-line ctors (e.g. 31x
+CRect::CRect for file-scope CRect globals, 0x4b98b0) cannot be expressed as a plain marked
+function — the ctor-on-global calls only arise from real file-scope declarations whose
+compiler-generated initializer cannot carry a FUNCTION marker. Needs a dedicated
+static-init modeling decision; defer rather than fake with placement-new.
+
+## Note 116 — Trivial-ctor factories: define the empty ctor inline in the header
+
+When a small factory (`new T()` + second-phase init call) scores badly and its diff shows
+`CALL <base ctor thunk>` + `MOV [reg], offset vftable` where the recompile has one `CALL
+T::T`, the original defined `T::T()` inline in the class (MSVC500 /Ob1 expands it at every
+`new` site as: out-of-line BASE ctor call + own vptr store). Fix: move the empty ctor
+definition into the header (`T() {}` in-class) and delete the .cpp definition (it carries
+no FUNCTION marker when no standalone copy exists in the binary). This took the
+TTechItemLine::CreateLineItemView factory (0x5b1160) from 41.6% to 100% in one edit. The
+same applies transitively: a ctor whose INLINE expansion at call sites shows the
+grandparent ctor call means the parent's ctor is header-inline too. Caveat: if a
+standalone copy of the ctor DOES exist at an address (it has a FUNCTION marker), making it
+header-inline changes where the out-of-line copy is emitted — check `just compare` on the
+marked address after the move.
+
+## Note 117 — Mac-style two-phase construction: `Construct*BaseState` are methods, not ctors
+
+In this binary the `Construct<Class>BaseState` functions (TTEView 0x486050, TDeluxeText
+0x5b5ff0, TTechItemView 0x5b12e0) are NOT constructors: none stores a vptr; each is called
+explicitly after `new T()` (the MacApp IViewClass second-phase-init idiom). Port them as
+plain member methods with the real arg lists (dead filler args included — `RET 0x2c` = 11
+args even if three are never read), and port the callers as `T* p = new T(); p->Construct...
+(args)`. Do not fold them into the C++ ctor: the original ctor is the separate trivial
+inline (note 116), and merging them mismatches both.
+
+## Note 118 — Dual-width global reads: type by the widest reader, cast at the narrow ones
+
+When one function loads a global as a full dword (`MOV reg, dword [g]` then uses both the
+sign-extended low word AND the raw dword) while another reads it `MOVSX reg, word [g]`,
+model the global as `int` and have word readers write `static_cast<short>(g)` — MSVC500
+emits `MOVSX reg, word ptr [g]` for a (short) cast of an int lvalue in memory, so both
+codegen shapes fall out (g_wMapDialogViewportTileSpan 0x6a33b0: 0x51adf0 dword reader,
+0x51ac40 movsx-word reader). A `short` global can never reproduce the dword load.
+
+## Note 119 — Never model overlapping views with a union: pick one model, migrate all accessors
+
+When a byte/word region has both a dynamic-index reader (array walk) and named per-offset
+readers, the union "both views" answer is wrong modeling — always. Determine the single
+true model and migrate every accessor to it: the named flags usually turn out to be
+specific indices of the array (TTechMgr::OrderCapRow's fort/recruit "flags" were
+techStatusByTechId[0x0b/0x16/0x13...]; TGlobalMapCityScoreRecord's stage1/stage2
+"counters" were resourceDevelopmentCounts82[1..8]). Before merging, verify every access
+site's RECEIVER is the same class/table (same global, same stride, same base offset) —
+distinct classes sharing a layout region are not the same object (TCommand ≠ TEvent).
+Keep the semantic map (index → meaning) in the struct comment, and land the migration as
+one pass over all users (grep the old field names to zero before building). Renamed
+accesses are codegen-neutral; confirm with the affected functions' baseline scores.
+
+## Note 120 — nmake U1054 "cannot create inline file" = stale nn?00192 temps
+
+A crashed docker build leaves nmake inline-file temps (nn[a-z]00192, nm?00192, a00820*)
+in build-msvc500/; once the namespace is exhausted every subsequent build fails with
+U1054 while `just stats`/`just compare` silently measure the STALE binary — which
+presents as a phantom mass drop (dozens of functions, off-by-one-function diffs from
+shifted PDB lines). If stats suddenly shows ~100 regressions in untouched code, first
+verify the build actually relinked ("Built target Imperialism"), then `rm -f
+build-msvc500/nn?00192 build-msvc500/nm?00192 build-msvc500/a00820*` and rebuild.
+
+## Note 121 — Switch case bodies are emitted in source order: reorder cases to the binary layout
+
+MSVC500 lays out `switch` case BODIES in the order they appear in source (the jump table
+maps values to those blocks; the blocks themselves follow source order). For a big
+dispatch (TTechMgr::HandleAbilityUnlock 0x5afd00, 27 cases), writing cases in ascending
+numeric order scored 47%; reordering the case blocks to the addresses in the original's
+body (read the jump table, sort targets, emit `case` labels in that order) took it to
+95%+ with no other change. Dump the jump table (dword array right after the dispatch),
+map each target back to its case value, and write the C++ cases in target-address order.
+
+## Note 122 — "Static member taking a node parameter" is usually a __thiscall method on the node
+
+If a helper is modeled as a static/free function whose first parameter is a struct
+pointer, but every original call site loads that pointer into ECX with no stack push,
+it is a real __thiscall method ON THAT STRUCT — including plain non-polymorphic PODs
+(TMapOrderChildLinkNode: FindNodeMatching, SetChainActiveFlag, and later
+Delete/Remove/Create/PruneDefeated 0x552590/0x5525d0/0x552650/0x5526e0, four scores
+41-51% -> three 100%). Null receivers are fine: the original calls with ECX=0 and the
+body starts `if (this == 0)`. Two follow-on tells from the same family:
+- If the recomp turns a recursive helper into a loop but the original keeps a real
+  recursive CALL, the original function RETURNS A VALUE (the return in tail position
+  blocks MSVC5's tail-recursion elimination) — find the per-path return values
+  (0/next/this) and add the return type (0x5525d0: void->node* was the whole 20->100%).
+- An alloc + guarded field-store block at a `new` site (call new; test eax; je; stores;
+  result=eax / xor result) is an INLINE CONSTRUCTOR with arguments, not caller code:
+  declare `T(args)` in-class and write `new T(args)` (0x552650, 47->100%), with the
+  FailNilPointerWithAssert idiom for the null branch.
+
+## Note 123 — Helpers the original inlines everywhere must be `static inline`; spell member re-reads at the caller
+
+When the same multi-line sequence (null-check + loop) appears verbatim inside several
+original functions but is also a standalone function nowhere, it was an inline helper:
+define it `static inline` in the .cpp (MSVC500 /Ob1 expands it, including loops) —
+TAdmiral.cpp's RecomputeMapOrderOwnerActiveSelection took 0x552250 from 14% to 85%.
+Watch the argument expression: if the original reloads `this->field` after an
+intervening store (e.g. `[node+0x20]=0` then re-reads `[this+8]`), the caller passed
+`this->field->member` (re-evaluated), not a saved local — write the member expression
+at each call site instead of hoisting it.
+
+## Note 124 — Small memsets: value-fills become 0x01010101 dwords; clears may span several named fields
+
+`memset(p, 1, 4)` emits `mov dword [p], 0x1010101`; `memset(p, 0, 8)` two zero dword
+stores; sizes >= ~26 use `rep stosd (+stosw/stosb)`. When an init function's original
+shows merged dword stores of 0x01010101 or a rep-clear whose byte count crosses several
+named fields (0x5aeff0: one 0x1a-byte clear covering perTechUnlockFlag180[3..] +
+hasProductionOrder193 + pad194), the source was a memset over the flat span — write
+exactly that memset (with a comment naming the fields it crosses) instead of per-field
+stores. Also from the same function: seven-nation table inits ran as TWO separate
+`for (n = 0; n < 7; ++n)` passes (different table subsets each), not one merged loop —
+match the pass structure before chasing store order (24.9% -> 69.3%).
+
 99. **Resolve a method's real address through the vtable's ILT thunks before trusting a
     header slot comment — a body can be mis-attached across two markers even when
     `just vtable` reads 100%.** `just vtable` scores the slot-pointer *correspondence*, not

@@ -241,7 +241,7 @@ void TTaskForce::RemoveNode(TTaskForce* self) {
       list_head = owner_ctx->childOrderList;
       if (list_head != 0) {
         if (this == list_head->object_ptr) {
-          list_head = DeleteMapOrderChildLinkAndReturnNext(list_head);
+          list_head = list_head->DeleteMapOrderChildLinkAndReturnNext();
         } else {
           list_head->next->RemoveLinkedOrderNodeByValueRecursive(this);
         }
@@ -292,7 +292,7 @@ void TTaskForce::ReassignOrderNodeNationAndRebindParentCounters(short nation) {
       TMapOrderChildLinkNode* head = parent->childOrderList;
       if (head != 0) {
         if (this == head->object_ptr) {
-          head = DeleteMapOrderChildLinkAndReturnNext(head);
+          head = head->DeleteMapOrderChildLinkAndReturnNext();
         } else {
           head->next->RemoveLinkedOrderNodeByValueRecursive(this);
         }
@@ -368,17 +368,16 @@ TMapOrderChildLinkNode* TMapOrderChildLinkNode::FindNodeMatching(TTaskForce* chi
 }
 
 // FUNCTION: IMPERIALISM 0x00552590
-TMapOrderChildLinkNode*
-TTaskForce::DeleteMapOrderChildLinkAndReturnNext(TMapOrderChildLinkNode* child_link_node) {
-  TMapOrderChildLinkNode* next_node = child_link_node->next;
+TMapOrderChildLinkNode* TMapOrderChildLinkNode::DeleteMapOrderChildLinkAndReturnNext() {
+  TMapOrderChildLinkNode* next_node = this->next;
   if (next_node != 0) {
-    next_node->prev_link = child_link_node->prev_link;
+    next_node->prev_link = this->prev_link;
   }
-  if (child_link_node->prev_link != 0) {
-    child_link_node->prev_link->next = child_link_node->next;
+  if (this->prev_link != 0) {
+    this->prev_link->next = this->next;
   }
 
-  delete child_link_node;
+  delete this;
   return next_node;
 }
 
@@ -389,16 +388,16 @@ TMapOrderChildLinkNode::RemoveLinkedOrderNodeByValueRecursive(TTaskForce* child_
     return 0;
   }
 
-  if (this->object_ptr == child_node) {
-    TMapOrderChildLinkNode* next = this->next;
-    if (next != 0) {
-      next->prev_link = this->prev_link;
+  if (child_node == this->object_ptr) {
+    TMapOrderChildLinkNode* next_node = this->next;
+    if (next_node != 0) {
+      next_node->prev_link = this->prev_link;
     }
     if (this->prev_link != 0) {
       this->prev_link->next = this->next;
     }
     delete this;
-    return next;
+    return next_node;
   }
 
   this->next->RemoveLinkedOrderNodeByValueRecursive(child_node);
@@ -407,59 +406,42 @@ TMapOrderChildLinkNode::RemoveLinkedOrderNodeByValueRecursive(TTaskForce* child_
 
 // FUNCTION: IMPERIALISM 0x00552650
 TMapOrderChildLinkNode* TMapOrderChildLinkNode::CreateLinkedOrderNode(TTaskForce* child_node) {
-  // `this` is the next node to prepend before (ECX); a raw non-value-initializing `new`
-  // matches the original's field-by-field write of exactly these four members.
-  // `raw` (the operator-new result) is only live during construction and stays in a
-  // scratch register; `result` is the phi materialized at the merge into the callee-saved
-  // return register, which the original reuses for `this` before construction (their live
-  // ranges do not overlap), so only one callee-saved register is needed.
-  TMapOrderChildLinkNode* raw = new TMapOrderChildLinkNode;
-  TMapOrderChildLinkNode* result;
-  if (raw != 0) {
-    raw->next = this;
-    raw->object_ptr = child_node;
-    raw->prev_link = 0;
-    raw->active_flag = 1;
-    if (this != 0) {
-      this->prev_link = raw;
-    }
-    if (raw->prev_link != 0) {
-      raw->prev_link->next = raw;
-    }
-    result = raw;
-  } else {
-    result = 0;
+  TMapOrderChildLinkNode* new_node = new TMapOrderChildLinkNode(child_node, this);
+  if (new_node == 0) {
+    FailNilPointerWithAssert(s_SourcePathUNavy_006983C8, 0x64e);
   }
-  if (result == 0) {
-    // Original passes the (nil) node pointer as the HWND -- the compiler reuses that
-    // register for the return value, so keep the variable here rather than a literal 0.
-    MessageBoxA(reinterpret_cast<HWND>(result), g_szUiNilPointerMessage, g_szUiFailureMessage,
-                0x30);
-    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUNavy_006983C8, 0x64e);
-  }
-  return result;
+  return new_node;
 }
 
 // FUNCTION: IMPERIALISM 0x005526e0
-TMapOrderChildLinkNode*
-TTaskForce::PruneDefeatedMapOrderChildrenAndReturnHead(TMapOrderChildLinkNode* child_link_head) {
-  while (true) {
-    if (child_link_head == 0) {
-      return 0;
-    }
+TMapOrderChildLinkNode* TMapOrderChildLinkNode::PruneDefeatedMapOrderChildrenAndReturnHead() {
+  TMapOrderChildLinkNode* head = this;
+  while (head != 0) {
+    TTaskForce* child_node = head->object_ptr;
+    unsigned char headDefeated = (child_node->required_count <= 0);
+    if (headDefeated != 0) {
+      child_node->owner = 0;
+      head->object_ptr->Free();
 
-    TTaskForce* child_node = child_link_head->object_ptr;
-    if (0 < child_node->required_count) {
-      break;
+      // Manual unlink (the original inlines the DeleteMapOrderChildLinkAndReturnNext
+      // steps here rather than calling 0x552590).
+      TMapOrderChildLinkNode* next_node = head->next;
+      if (next_node != 0) {
+        next_node->prev_link = head->prev_link;
+      }
+      if (head->prev_link != 0) {
+        head->prev_link->next = head->next;
+      }
+      delete head;
+      head = next_node;
+    } else {
+      // Surviving head: recursively prune the tail (nodes unlink themselves, so
+      // the head stays valid) and return it.
+      head->next->PruneDefeatedMapOrderChildrenAndReturnHead();
+      return head;
     }
-
-    child_node->owner = 0;
-    child_node->Free();
-    child_link_head = DeleteMapOrderChildLinkAndReturnNext(child_link_head);
   }
-
-  PruneDefeatedMapOrderChildrenAndReturnHead(child_link_head->next);
-  return child_link_head;
+  return 0;
 }
 
 // SYNTHETIC: IMPERIALISM 0x00552770
@@ -797,7 +779,7 @@ void TTaskForce::PromoteMapOrderChainAndQueue(TZone* pContextAnchor) {
     if (pruneNode == childOrderList) {
       childOrderList = pruneNode->next;
     }
-    pruneNode = DeleteMapOrderChildLinkAndReturnNext(pruneNode);
+    pruneNode = pruneNode->DeleteMapOrderChildLinkAndReturnNext();
   }
 
   RecomputeMapOrderChildAggregateMetric();
@@ -989,7 +971,7 @@ void TTaskForce::ApplyTaskForceSelectionModeForCurrentNationOrders(char reserveE
 
   for (TShip* ship = g_pNavyPrimaryOrderListHead; ship != nullptr; ship = ship->nextOlder24) {
     if (reinterpret_cast<int>(ship->field08) == contextAnchor &&
-        ship->ownerNationSlot14 == required_count && ship->field0c == 0) {
+        ship->ownerNationSlot14 == required_count && ship->ownerOrderEntry0c == 0) {
       // The node argument here is a TShip* (the primary navy order list's own element
       // type), not a genuine TTaskForce -- FindOrCreateChildOrderLink's body only
       // touches the shared node-prefix fields (owner/+0x10 raw dword/+0x34 overrun)
@@ -1180,9 +1162,9 @@ char TTaskForce::PruneInactiveTaskForceOrderHead() {
       }
       delete head;
 
-      head = PruneDefeatedMapOrderChildrenAndReturnHead(next);
+      head = next->PruneDefeatedMapOrderChildrenAndReturnHead();
     } else {
-      PruneDefeatedMapOrderChildrenAndReturnHead(head->next);
+      head->next->PruneDefeatedMapOrderChildrenAndReturnHead();
     }
   }
 

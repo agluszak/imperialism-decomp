@@ -27,26 +27,10 @@ undefined4 TickCivWorkOrderCountdownAndComplete(void)
   return 0;
 }
 
-// ghidra_name ResolveEraCapabilityFallbackSlot
-// ghidra_proto undefined ResolveEraCapabilityFallbackSlot()
-// FUNCTION: IMPERIALISM 0x005c35c0
-undefined4 ResolveEraCapabilityFallbackSlot(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_ResolveEraCapabilityFallbackSlot_At005c3650
 // ghidra_proto undefined WrapperFor_ResolveEraCapabilityFallbackSlot_At005c3650()
 // FUNCTION: IMPERIALISM 0x005c3650
 undefined4 WrapperFor_ResolveEraCapabilityFallbackSlot_At005c3650(void)
-{
-  return 0;
-}
-
-// ghidra_name ApplyEraCapabilityCostAndSetSelection
-// ghidra_proto undefined ApplyEraCapabilityCostAndSetSelection()
-// FUNCTION: IMPERIALISM 0x005c3670
-undefined4 ApplyEraCapabilityCostAndSetSelection(void)
 {
   return 0;
 }
@@ -335,14 +319,6 @@ undefined4 WrapperFor_ReleaseSharedStringRefIfNotEmpty_At005df660(void)
 // ghidra_proto undefined InvokeVtableSlot30OnTargetObject()
 // FUNCTION: IMPERIALISM 0x005df730
 undefined4 InvokeVtableSlot30OnTargetObject(void)
-{
-  return 0;
-}
-
-// ghidra_name GetResourceStreamSize
-// ghidra_proto undefined GetResourceStreamSize()
-// FUNCTION: IMPERIALISM 0x005df760
-undefined4 GetResourceStreamSize(void)
 {
   return 0;
 }

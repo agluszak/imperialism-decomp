@@ -28,7 +28,7 @@
 #include "game/TGreatPower.h"
 #include "game/TGreatPower_internal.h"
 #include "game/THelpMgr.h"
-#include "game/TInterNationEventQueueManager.h"
+#include "game/TNewsMgr.h"
 #include "game/TMinister.h"
 #include "game/TMinor.h"
 #include "game/TMission.h"
@@ -623,7 +623,7 @@ void TGreatPower::WriteTo(TStream* stream) {
   WriteIntArrayElems(stream, this->aidAllocationMatrix, 0x170);
 
   stream->WriteBytesSlot78(&this->serializedStatusFlags[0], 0xd);
-  WriteShortArrayElems(stream, this->field8d6, 0xd);
+  WriteShortArrayElemsRev(stream, this->field8d6, 0xd);
 
   this->turnEventQueue->WriteTo(stream);
   this->proposalQueue->WriteTo(stream);
@@ -655,11 +655,30 @@ void TGreatPower::WriteTo(TStream* stream) {
     this->defenseMinister->WriteTo(stream);
   }
   if (this->city != 0) {
-    this->city->TransferTransportRequests(stream);
+    this->city->WriteTo(stream);
   }
 
-  WriteTrackedListToStream(stream, this->townMarkerList);
-  WriteTrackedListToStream(stream, this->trackedObjectList);
+  // Written out per-list (not via WriteTrackedListToStream): the original re-reads the
+  // member field for every list operation instead of caching the pointer in a register,
+  // and its entry count lives in the dead `stream` argument stack slot.
+  this->townMarkerList->WriteTo(stream);
+  {
+    int entryCount = this->townMarkerList->GetCount();
+    stream->WriteBytesSlot78(&entryCount, 4);
+    for (int ordinal = 1; ordinal <= entryCount; ++ordinal) {
+      TUnit* entry = reinterpret_cast<TUnit*>(this->townMarkerList->GetEntryByOrdinal(ordinal));
+      entry->WriteTo(stream);
+    }
+  }
+  this->trackedObjectList->WriteTo(stream);
+  {
+    int entryCount = this->trackedObjectList->GetCount();
+    stream->WriteBytesSlot78(&entryCount, 4);
+    for (int ordinal = 1; ordinal <= entryCount; ++ordinal) {
+      TUnit* entry = reinterpret_cast<TUnit*>(this->trackedObjectList->GetEntryByOrdinal(ordinal));
+      entry->WriteTo(stream);
+    }
+  }
 
   stream->WriteBytesSlot78(this->candidateNationFlags, 0x17);
   stream->WriteBytesSlot78(&this->diplomacyBudgetBase, 4);
@@ -722,7 +741,9 @@ void TGreatPower::NoOpNationPendingActionHook(void) {}
 void TGreatPower::DispatchPendingStatusPrompts(void) {
   unsigned char* flags = this->serializedStatusFlags;
   char flag5Handled = static_cast<signed char>(flags[5]) >= 0x33;
-  if (!flag5Handled && g_pCityOrderCapabilityState->orderCapRows277[this->nationSlot].flag == 2) {
+  if (!flag5Handled &&
+      g_pCityOrderCapabilityState->orderCapRows277[this->nationSlot].techStatusByTechId[0x0f] ==
+          2) {
     g_pUiRuntimeContext->QueueTurnStatusPromptSlot3C(5, this->field8d6[5]);
   }
   if (flags[6] == 0x32) {
@@ -776,7 +797,8 @@ void TGreatPower::DispatchPendingStatusPrompts(void) {
 
 // FUNCTION: IMPERIALISM 0x004da860
 void TGreatPower::MarkStatusFlag5HandledIfCapabilityActive(void) {
-  if (g_pCityOrderCapabilityState->orderCapRows277[this->nationSlot].flag == 2) {
+  if (g_pCityOrderCapabilityState->orderCapRows277[this->nationSlot].techStatusByTechId[0x0f] ==
+      2) {
     this->serializedStatusFlags[5] = 0x33;
   }
 }
@@ -785,7 +807,9 @@ void TGreatPower::MarkStatusFlag5HandledIfCapabilityActive(void) {
 void TGreatPower::MarkAllPendingStatusFlagsHandled(void) {
   unsigned char* flags = this->serializedStatusFlags;
   char flag5Handled = static_cast<signed char>(flags[5]) >= 0x33;
-  if (!flag5Handled && g_pCityOrderCapabilityState->orderCapRows277[this->nationSlot].flag == 2) {
+  if (!flag5Handled &&
+      g_pCityOrderCapabilityState->orderCapRows277[this->nationSlot].techStatusByTechId[0x0f] ==
+          2) {
     flags[5] = 0x33;
   }
   if (flags[6] == 0x32) {
@@ -1193,10 +1217,8 @@ void TGreatPower::RebuildNationResourceYieldCountersAndDevelopmentTargets(void) 
           TGlobalMapCityScoreRecord* cityRecord = &cityTable[cityIndex];
           if (cityRecord->cityTileIndex04 == static_cast<short>(regionIndex)) {
             for (int devIdx = 0; devIdx < 10; ++devIdx) {
-              // 0x82..0x94 — the 10-short development-accumulator run overlaying
-              // the tail of linkedRegionIds and the stage counters.
               developmentByType[devIdx] = static_cast<short>(
-                  developmentByType[devIdx] + cityRecord->linkedRegionIds[0x20 + devIdx]);
+                  developmentByType[devIdx] + cityRecord->resourceDevelopmentCounts82[devIdx]);
             }
           }
         }
@@ -1267,13 +1289,13 @@ void TGreatPower::AdvanceOwnedRegionDevelopmentCountersAndDispatchEvents(void) {
             ++linkedIndex;
           }
 
-          short* stage1CounterA = &cityRecord->stage1CounterA;
-          short* stage1CounterB = &cityRecord->stage1CounterB;
-          short* stage1CounterC = &cityRecord->stage1CounterC;
-          short* stage1CounterD = &cityRecord->stage1CounterD;
-          short* stage2CounterA = &cityRecord->stage2CounterA;
-          short* stage2CounterB = &cityRecord->stage2CounterB;
-          short* stage2CounterC = &cityRecord->stage2CounterC;
+          short* stage1CounterA = &cityRecord->resourceDevelopmentCounts82[1];
+          short* stage1CounterB = &cityRecord->resourceDevelopmentCounts82[2];
+          short* stage1CounterC = &cityRecord->resourceDevelopmentCounts82[4];
+          short* stage1CounterD = &cityRecord->resourceDevelopmentCounts82[5];
+          short* stage2CounterA = &cityRecord->resourceDevelopmentCounts82[6];
+          short* stage2CounterB = &cityRecord->resourceDevelopmentCounts82[7];
+          short* stage2CounterC = &cityRecord->resourceDevelopmentCounts82[8];
 
           if ((turnDelta & 1U) == 0) {
             int sum01 = resourceSums[0] + resourceSums[1];
@@ -2116,7 +2138,7 @@ int TGreatPower::SumDiplomacyState1c6AndRelationDeltaSnapshot(short nationSlot) 
 
 // FUNCTION: IMPERIALISM 0x004dda90
 void TGreatPower::AssignNeedSlotFromSourceSlot19C(short targetNationSlot, short sourceNationSlot) {
-  TInterNationEventQueueManager* queueManager = g_pInterNationEventQueueManager;
+  TNewsMgr* queueManager = g_pInterNationEventQueueManager;
   if (queueManager != 0) {
     queueManager->QueueInterNationEventType0FWithBitmaskMerge(this->nationSlot, sourceNationSlot,
                                                               targetNationSlot, '\0');
@@ -3526,9 +3548,9 @@ float TGreatPower::GetScoreFactorSlot23C(void) {
 float TGreatPower::GetScoreFactorSlot240(void) {
   TTechMgr* capabilityState = g_pCityOrderCapabilityState;
   int shipProduction;
-  if (capabilityState->shipCapabilityFlag1a8 != 0) {
+  if (capabilityState->resourceTypeEnabled19d[0xb] != 0) {
     shipProduction = this->GetCityBuildingProductionSlot8D(2);
-  } else if (capabilityState->shipCapabilityFlag1a5 != 0) {
+  } else if (capabilityState->resourceTypeEnabled19d[8] != 0) {
     shipProduction =
         (this->GetCityBuildingProductionSlot8D(4) + this->GetCityBuildingProductionSlot8D(2)) / 2;
   } else {
@@ -4273,7 +4295,7 @@ void TGreatPower::BuildGreatPowerTurnMessageSummaryAndDispatch(void) {
     return;
   }
 
-  TInterNationEventQueueManager* queueManager = g_pInterNationEventQueueManager;
+  TNewsMgr* queueManager = g_pInterNationEventQueueManager;
   if (queueManager != 0) {
     queueManager->QueueInterNationEventIntoNationBucket(0x13A0, mergedNationMask, '\0');
   }
@@ -4366,7 +4388,7 @@ void TGreatPower::QueueMapActionMissionFromCandidateAndMarkState(eMissionType ar
       this->nationSlot, missionKind, arg2, reinterpret_cast<int>(portZoneContext), arg4);
   if (missionObj == 0) {
     GAME_FAIL_NIL_POINTER();
-    TemporarilyClearAndRestoreUiInvalidationFlag();
+    TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\UCountryAuto.cpp", 0x5ed);
   }
 
   TSortedList* missionQueue = this->missionQueue;
@@ -4520,7 +4542,7 @@ float TGreatPower::ComputeAdvisoryMapNodeScoreFactorByCaseMetric(int metricCase,
                        static_cast<float>(globalMapState->cityScoreTotal);
 
     signed char primaryNation = cityRecord->ownerNationCode00;
-    signed char controllingNation = static_cast<signed char>(cityRecord->byte01);
+    signed char controllingNation = cityRecord->formerOwnerNationCode01;
     if (controllingNation == this->nationSlot && primaryNation != this->nationSlot) {
       TDiplomacyMgr* diplomacyManager = g_pDiplomacyTurnStateManager;
       if (diplomacyManager != 0 && g_pDiplomacyTurnStateManager->HasPolicyWithNationSlot44(

@@ -114,5 +114,19 @@ public:
   // slot 0x67 CtrlSlot103_SubtractPosAndDispatchSlot19C_Impl_eb inherited unchanged (0x48bac0)
   // === END GENERATED DECLS (TTechItemView) ===
 
-  TTechItemView();
+  int nationSlot60; // +0x60 — TTechMgr capability-matrix row (hedged name)
+  int techId64;     // +0x64 — read as short for string offsets, as int for the cost table
+
+  // Inline in the original: the TTechItemLine factory (0x5b1160) expands it as the
+  // TView base ctor call plus the vptr store.
+  TTechItemView() {}
+
+  // Second-phase init (single caller: the TTechItemLine factory at 0x5b1160): builds the
+  // tech-item row UI — 'desc' picture button, title (name + newline + year) and
+  // description TDeluxeText children, and one of three status variants (completion date /
+  // 'purc' buy button / missing-prerequisites line). 0x5b12e0, __thiscall, RET 0x14.
+  void ConstructTTechItemViewBaseState(TView* panel, int* offsetLayout, int* sizeLayout,
+                                       int nationSlot, int techId);
 };
+
+ASSERT_SIZE(TTechItemView, 0x68);

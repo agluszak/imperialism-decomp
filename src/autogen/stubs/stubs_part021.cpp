@@ -227,38 +227,6 @@ undefined4 MapFpControlLowByteToRuntimeBits(void)
   return 0;
 }
 
-// ghidra_name ConvertParsedDecimalStateWithProfileA
-// ghidra_proto undefined ConvertParsedDecimalStateWithProfileA()
-// FUNCTION: IMPERIALISM 0x005f47d0
-undefined4 ConvertParsedDecimalStateWithProfileA(void)
-{
-  return 0;
-}
-
-// ghidra_name ConvertParsedDecimalStateWithProfileB
-// ghidra_proto undefined ConvertParsedDecimalStateWithProfileB()
-// FUNCTION: IMPERIALISM 0x005f47f0
-undefined4 ConvertParsedDecimalStateWithProfileB(void)
-{
-  return 0;
-}
-
-// ghidra_name ParseDecimalTextAndConvertWithProfileA
-// ghidra_proto undefined ParseDecimalTextAndConvertWithProfileA()
-// FUNCTION: IMPERIALISM 0x005f4890
-undefined4 ParseDecimalTextAndConvertWithProfileA(void)
-{
-  return 0;
-}
-
-// ghidra_name ParseDecimalTextAndConvertWithProfileB
-// ghidra_proto undefined ParseDecimalTextAndConvertWithProfileB()
-// FUNCTION: IMPERIALISM 0x005f4910
-undefined4 ParseDecimalTextAndConvertWithProfileB(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_amsg_exit_At005f4b40
 // ghidra_proto undefined WrapperFor_amsg_exit_At005f4b40()
 // FUNCTION: IMPERIALISM 0x005f4b40
@@ -391,14 +359,6 @@ undefined4 ConsoleCtrlHandlerDispatchRuntimeSignalCallbacks(void)
 // ghidra_proto undefined RaiseRuntimeSignalAndInvokeHandler()
 // FUNCTION: IMPERIALISM 0x005f75c0
 undefined4 RaiseRuntimeSignalAndInvokeHandler(void)
-{
-  return 0;
-}
-
-// ghidra_name ParseFloatingPointTextToInternalState
-// ghidra_proto undefined ParseFloatingPointTextToInternalState()
-// FUNCTION: IMPERIALISM 0x005f7a30
-undefined4 ParseFloatingPointTextToInternalState(void)
 {
   return 0;
 }

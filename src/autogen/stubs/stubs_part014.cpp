@@ -515,14 +515,6 @@ undefined4 ConstructPictureResourceEntryType57080(void)
   return 0;
 }
 
-// ghidra_name BuildMapTileActionContextMenu
-// ghidra_proto void __thiscall BuildMapTileActionContextMenu(void * pMenuDialogState, short nTileIndex)
-// FUNCTION: IMPERIALISM 0x00504e90
-undefined4 BuildMapTileActionContextMenu(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_ftol_At00505f20
 // ghidra_proto undefined WrapperFor_ftol_At00505f20()
 // FUNCTION: IMPERIALISM 0x00505f20

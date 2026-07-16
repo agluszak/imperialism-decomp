@@ -73,6 +73,11 @@ public:
   // Walks the registry for the animation whose registryTag18 matches `tag`;
   // null if the animator is null, the list is empty, or nothing matches. 0x4a0d30.
   TAnimation* FindRegisteredAnimationByTag(int tag);
+  // Offsets every registered animation's screenRect1C by (dx, dy), then removes and
+  // frees any entry whose translated rect no longer intersects clipRect (RECT passed
+  // by value: 4 stack dwords). Null-receiver-safe like FindRegisteredAnimationByTag.
+  // Called on viewport scrolls (0x51adf0). 0x4a0e90.
+  void TranslateListRectsAndDropNonIntersectingEntries(int dx, int dy, RECT clipRect);
 
   // Object size 0x30 (base TEventHandler ends at 0x20). +0x20 is the offscreen
   // surface the focus animations blit into (read as `*(g_pUiAnimator) + 0x20` at

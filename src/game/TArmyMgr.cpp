@@ -755,7 +755,8 @@ undefined TArmyMgr::WrapperFor_IsNationSlotEligibleForEventProcessing_At004a3bc0
     }
 
     signed char primaryOwner = g_pGlobalMapState->cityScoreTable[tileIndex].ownerNationCode00;
-    signed char secondaryOwner = g_pGlobalMapState->cityScoreTable[tileIndex].byte01;
+    signed char secondaryOwner =
+        g_pGlobalMapState->cityScoreTable[tileIndex].formerOwnerNationCode01;
     if (g_apTerrainTypeDescriptorTable[primaryOwner]->GetHomeRegionCityRecordIndex() == tileIndex) {
       g_apTerrainTypeDescriptorTable[primaryOwner]->ApplyJoinEmpireModeForTargetNation(cachedOwner,
                                                                                        0);

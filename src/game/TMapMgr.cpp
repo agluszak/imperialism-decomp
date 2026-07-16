@@ -180,7 +180,7 @@ void TMapMgr::AllocateAndResetTerrainAndCityScoreTables() {
     tile->terrainType00 = -1;
     tile->spriteVariantIndex01 = 0;
     tile->roadFlag = 0;
-    tile->pad03 = 0xff;
+    tile->formerOwnerNationTag03 = -1;
     tile->ownerNationTag04 = -1;
     tile->regionSubtypeTag05 = -1;
     tile->adjacencyBits06 = 0;
@@ -196,7 +196,7 @@ void TMapMgr::AllocateAndResetTerrainAndCityScoreTables() {
     tile->resourceTypeByEdge[1] = -1;
     tile->gateFlag = -1;
     tile->cityRecordIndex = -1;
-    tile->pad16 = 0xff;
+    tile->tileActionClass16 = -1;
     tile->railFlags17 = 0;
     tile->secondaryOwnerNationTag18 = -1;
     tile->tileActionOrdinal1a = -1;
@@ -216,7 +216,7 @@ void TMapMgr::AllocateAndResetTerrainAndCityScoreTables() {
   for (i = 0; i < 0x180; ++i) {
     TGlobalMapCityScoreRecord* record = &cityScoreTable[i];
     record->ownerNationCode00 = -1;
-    record->byte01 = 0xff;
+    record->formerOwnerNationCode01 = -1;
     record->developmentStage = 0;
     record->fortLevel03 = 0;
     record->cityTileIndex04 = -1;
@@ -233,16 +233,16 @@ void TMapMgr::AllocateAndResetTerrainAndCityScoreTables() {
     for (j = 0; j < 0x20; ++j) {
       record->linkedRegionIds[j] = -1;
     }
-    record->linkedRegionIds[0x20] = 0;
-    record->stage1CounterA = 0;
-    record->stage1CounterB = 0;
-    record->pad88 = 0;
-    record->stage1CounterC = 0;
-    record->stage1CounterD = 0;
-    record->stage2CounterA = 0;
-    record->stage2CounterB = 0;
-    record->stage2CounterC = 0;
-    record->field94 = 0;
+    record->resourceDevelopmentCounts82[0] = 0;
+    record->resourceDevelopmentCounts82[1] = 0;
+    record->resourceDevelopmentCounts82[2] = 0;
+    record->resourceDevelopmentCounts82[3] = 0;
+    record->resourceDevelopmentCounts82[4] = 0;
+    record->resourceDevelopmentCounts82[5] = 0;
+    record->resourceDevelopmentCounts82[6] = 0;
+    record->resourceDevelopmentCounts82[7] = 0;
+    record->resourceDevelopmentCounts82[8] = 0;
+    record->resourceDevelopmentCounts82[9] = 0;
     record->stationedUnitChain98 = 0;
     record->padA2 = 0;
     record->regionClassA3 = -1;
@@ -2137,7 +2137,7 @@ void TMapMgr::WrapperFor_LookupOrderCompatibilityMatrixValue_At00515330(
   unsigned char eligibleGateFlags[24] = {0};
   eligibleGateFlags[8] = 1;
   eligibleGateFlags[9] = 1;
-  if (g_pCityOrderCapabilityState->orderCapRows277[nationTag].recruitTierFlag27b == 2) {
+  if (g_pCityOrderCapabilityState->orderCapRows277[nationTag].techStatusByTechId[0x13] == 2) {
     eligibleGateFlags[10] = 1;
     eligibleGateFlags[11] = 1;
     eligibleGateFlags[12] = 1;
@@ -2173,7 +2173,7 @@ void TMapMgr::WrapperFor_LookupOrderCompatibilityMatrixValue_At00515460(
     TCivUnit* pCivilianOrderEntry) {
   short nationTag = pCivilianOrderEntry->field_18;
   bool recruitTierFlagIsTwo =
-      (g_pCityOrderCapabilityState->orderCapRows277[nationTag].recruitTierFlag27b == 2);
+      (g_pCityOrderCapabilityState->orderCapRows277[nationTag].techStatusByTechId[0x13] == 2);
   field9 = 1;
   unsigned char nationBit = 1 << nationTag;
   for (int tileIndex = 0; tileIndex < 0x1950; ++tileIndex) {
@@ -2356,13 +2356,13 @@ void TMapMgr::MarkSeedNeighborTilesUnavailableByCapabilityMaskProfileA(
 
   // These flags sit at the head of orderCapRows277[nationTag]'s record (offsets 6/0xc); they
   // used to be reached via the previous row at the old +0xf phase, now corrected.
-  if (g_pCityOrderCapabilityState->orderCapRows277[nationTag].unknownFlag28b == 2) {
+  if (g_pCityOrderCapabilityState->orderCapRows277[nationTag].techStatusByTechId[0x06] == 2) {
     g_bSeedGateNotifyFlag_00696f0c = 1;
   }
-  if (g_pCityOrderCapabilityState->orderCapRows277[nationTag].unknownFlag291 == 2) {
+  if (g_pCityOrderCapabilityState->orderCapRows277[nationTag].techStatusByTechId[0x0c] == 2) {
     g_bSeedGateNotifyFlag_00696f0a = 1;
   }
-  if (g_pCityOrderCapabilityState->orderCapRows277[nationTag].unknownFlag27f == 2) {
+  if (g_pCityOrderCapabilityState->orderCapRows277[nationTag].techStatusByTechId[0x17] == 2) {
     g_bSeedGateNotifyFlag_00696f0b = 1;
   }
 
@@ -2389,19 +2389,19 @@ void TMapMgr::MarkSeedNeighborTilesUnavailableByCapabilityMaskProfileB(
   short nationTag = pCivilianOrderEntry->field_18;
 
   unsigned char terrainTypeGate[8] = {1, 1, 0, 0, 0, 0, 1, 1};
-  if (g_pCityOrderCapabilityState->orderCapRows277[nationTag].unknownFlag28b == 2) {
+  if (g_pCityOrderCapabilityState->orderCapRows277[nationTag].techStatusByTechId[0x06] == 2) {
     terrainTypeGate[4] = 1;
     terrainTypeGate[5] = 0;
     terrainTypeGate[6] = 1;
     terrainTypeGate[7] = 1;
   }
-  if (g_pCityOrderCapabilityState->orderCapRows277[nationTag].unknownFlag291 == 2) {
+  if (g_pCityOrderCapabilityState->orderCapRows277[nationTag].techStatusByTechId[0x0c] == 2) {
     terrainTypeGate[0] = 1;
     terrainTypeGate[1] = 1;
     terrainTypeGate[2] = 1;
     terrainTypeGate[3] = 0;
   }
-  if (g_pCityOrderCapabilityState->orderCapRows277[nationTag].unknownFlag27f == 2) {
+  if (g_pCityOrderCapabilityState->orderCapRows277[nationTag].techStatusByTechId[0x17] == 2) {
     terrainTypeGate[3] = 1;
   }
 

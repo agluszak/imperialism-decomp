@@ -656,7 +656,7 @@ short TZone::FindNearestActiveSeaContextTileFromOffset216() {
   short stepMagnitude = 1;
   for (;;) {
     TTerrainStateRecordView& tileRecord = g_pGlobalMapState->terrainStateTable[tileIndex];
-    if (static_cast<signed char>(tileRecord.pad16) == static_cast<signed char>(-1)) {
+    if (static_cast<signed char>(tileRecord.tileActionClass16) == static_cast<signed char>(-1)) {
       short nationId = static_cast<short>(tileRecord.ownerNationTag04);
       TZone* contextZone = 0;
       if (nationId >= 0x17 && g_pActiveMapOrderContext != 0) {
@@ -680,7 +680,7 @@ short TZone::GetActiveNationSlotTile() {
   short stepMagnitude = 1;
   for (;;) {
     TTerrainStateRecordView& tileRecord = g_pGlobalMapState->terrainStateTable[tileIndex];
-    if (static_cast<signed char>(tileRecord.pad16) == static_cast<signed char>(-1)) {
+    if (static_cast<signed char>(tileRecord.tileActionClass16) == static_cast<signed char>(-1)) {
       short nationId = static_cast<short>(tileRecord.ownerNationTag04);
       TZone* contextZone = 0;
       if (nationId >= 0x17 && g_pActiveMapOrderContext != 0) {
@@ -705,7 +705,7 @@ int TZone::ScoreCoastalTileForContextAndCityStateAffinity(int tileIndex, TZone* 
   if (tileRecord.terrainType00 != 5) {
     return 0;
   }
-  if (static_cast<signed char>(tileRecord.pad16) != static_cast<signed char>(-1)) {
+  if (static_cast<signed char>(tileRecord.tileActionClass16) != static_cast<signed char>(-1)) {
     return 0;
   }
   TZone* zoneForTile = 0;
@@ -724,7 +724,7 @@ int TZone::ScoreCoastalTileForContextAndCityStateAffinity(int tileIndex, TZone* 
     if (neighborTile != -1) {
       TTerrainStateRecordView& neighborRecord = g_pGlobalMapState->terrainStateTable[neighborTile];
       if (neighborRecord.terrainType00 == 5) {
-        signed char neighborSubtype = static_cast<signed char>(neighborRecord.pad16);
+        signed char neighborSubtype = static_cast<signed char>(neighborRecord.tileActionClass16);
         if ((neighborSubtype == 3) || (neighborSubtype == 0x0e)) {
           TZone* portZone = TZone::FindPortZoneByTile(neighborTile);
           if (portZone != contextZone) {
@@ -856,7 +856,7 @@ short TZone::FindBestCoastalTileForContextAndCityStateByHeuristic(int contextCit
 
 // FUNCTION: IMPERIALISM 0x00560580
 void TZone::SetMapOrderUiFlag(int flag) {
-  unsigned char tileStateByte = g_pGlobalMapState->terrainStateTable[field20].pad16;
+  unsigned char tileStateByte = g_pGlobalMapState->terrainStateTable[field20].tileActionClass16;
   if (((static_cast<unsigned char>(flag != 0) !=
         static_cast<unsigned char>(static_cast<signed char>(tileStateByte) < 0 ? 1 : 0)) &&
        (g_pUiRuntimeContext != 0)) &&
@@ -889,7 +889,7 @@ TTaskForce* TZone::CreateTaskForceFromNavyOrdersForNationIfEligible(short nation
   if ((field10 & nationBit) != 0) {
     for (TShip* ship = GetNavyPrimaryOrderListHead(); ship != nullptr; ship = ship->nextOlder24) {
       if (ship->field08 == this && ship->ownerNationSlot14 == resolvedNation &&
-          ship->field0c == 0) {
+          ship->ownerOrderEntry0c == 0) {
         // contextAnchor is a dual-purpose opaque int slot (see TTaskForce.h); here it
         // carries this zone. requiredCount seeds from the raw incoming nation arg, which
         // the original keeps distinct from the active-nation-resolved slot used above.
@@ -921,7 +921,7 @@ char TZone::CanDisplayMapOrderEntryInCurrentContext(short nation, char skipField
           continue;
         }
       }
-      if (ship->field0c == 0) {
+      if (ship->ownerOrderEntry0c == 0) {
         return 1;
       }
     }
@@ -1051,7 +1051,7 @@ unsigned int TZone::BuildNationBitmaskForActiveType3Or4OrdersIncludingNation(uns
   unsigned int mask = 0;
   for (TShip* ship = GetNavyPrimaryOrderListHead(); ship != 0; ship = ship->nextOlder24) {
     if (ship->field08 == this) {
-      TTaskForce* entry = reinterpret_cast<TTaskForce*>(ship->field0c);
+      TTaskForce* entry = ship->ownerOrderEntry0c;
       if (entry != 0 && entry->eliminatedFlag26 == 0 &&
           (entry->attachment == 3 || entry->attachment == 4)) {
         mask |= 1u << (ship->ownerNationSlot14 & 0x1f);
@@ -1066,7 +1066,7 @@ unsigned int TZone::BuildNationBitmaskForActiveType3Or4Orders() {
   unsigned int mask = 0;
   for (TShip* ship = GetNavyPrimaryOrderListHead(); ship != 0; ship = ship->nextOlder24) {
     if (ship->field08 == this) {
-      TTaskForce* entry = reinterpret_cast<TTaskForce*>(ship->field0c);
+      TTaskForce* entry = ship->ownerOrderEntry0c;
       if (entry != 0 && entry->eliminatedFlag26 == 0 &&
           (entry->attachment == 3 || entry->attachment == 4)) {
         mask |= 1u << (ship->ownerNationSlot14 & 0x1f);
@@ -1081,7 +1081,7 @@ unsigned int TZone::HasDiplomaticallyRelatedNationInActiveType3Or4OrderMask(int 
   unsigned int mask = 0;
   for (TShip* ship = GetNavyPrimaryOrderListHead(); ship != 0; ship = ship->nextOlder24) {
     if (ship->field08 == this) {
-      TTaskForce* entry = reinterpret_cast<TTaskForce*>(ship->field0c);
+      TTaskForce* entry = ship->ownerOrderEntry0c;
       if (entry != 0 && entry->eliminatedFlag26 == 0 &&
           (entry->attachment == 3 || entry->attachment == 4)) {
         mask |= 1u << (ship->ownerNationSlot14 & 0x1f);

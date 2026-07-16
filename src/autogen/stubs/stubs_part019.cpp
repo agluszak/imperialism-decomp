@@ -171,14 +171,6 @@ undefined4 WrapperFor_ftol_At005a67e0(void)
   return 0;
 }
 
-// ghidra_name OrphanLeaf_NoCall_Ins838_005a6a20
-// ghidra_proto undefined OrphanLeaf_NoCall_Ins838_005a6a20()
-// FUNCTION: IMPERIALISM 0x005a6a20
-undefined4 OrphanLeaf_NoCall_Ins838_005a6a20(void)
-{
-  return 0;
-}
-
 // ghidra_name HandleTurnEventVtableSlotA0SyncStatusPanel_Impl
 // ghidra_proto undefined HandleTurnEventVtableSlotA0SyncStatusPanel_Impl()
 // FUNCTION: IMPERIALISM 0x005a8790
@@ -307,30 +299,6 @@ undefined4 ApplyTechUnlockAndQueueNationAbilityNotices(void)
   return 0;
 }
 
-// ghidra_name HandleAbilityUnlock
-// ghidra_proto void __thiscall HandleAbilityUnlock(int menu_state, int action_id)
-// FUNCTION: IMPERIALISM 0x005afd00
-undefined4 HandleAbilityUnlock(void)
-{
-  return 0;
-}
-
-// ghidra_name ActivateSlotAndUpdateUI
-// ghidra_proto void __thiscall ActivateSlotAndUpdateUI(int base_ptr, int slot_idx)
-// FUNCTION: IMPERIALISM 0x005b0340
-undefined4 ActivateSlotAndUpdateUI(void)
-{
-  return 0;
-}
-
-// ghidra_name UpdateSelectionAndRecalculateScores
-// ghidra_proto void __stdcall UpdateSelectionAndRecalculateScores(int slot_idx, int player_idx)
-// FUNCTION: IMPERIALISM 0x005b0500
-undefined4 UpdateSelectionAndRecalculateScores(void)
-{
-  return 0;
-}
-
 // ghidra_name ConsumeFirstPendingAbilityUnlock
 // ghidra_proto undefined ConsumeFirstPendingAbilityUnlock()
 // FUNCTION: IMPERIALISM 0x005b0c20
@@ -359,14 +327,6 @@ undefined4 ConstructTTechStorePageBaseState(void)
 // ghidra_proto undefined DestructTTechStorePageAndMaybeFree_Impl()
 // FUNCTION: IMPERIALISM 0x005b1070
 undefined4 DestructTTechStorePageAndMaybeFree_Impl(void)
-{
-  return 0;
-}
-
-// ghidra_name TTechItemView::ConstructTTechItemViewBaseState
-// ghidra_proto undefined ConstructTTechItemViewBaseState()
-// FUNCTION: IMPERIALISM 0x005b12e0
-undefined4 ConstructTTechItemViewBaseState(void)
 {
   return 0;
 }
@@ -415,14 +375,6 @@ undefined4 WrapperFor_ftol_At005b4ee0(void)
 // ghidra_proto undefined DestructTInfoBarPictureTextAndMaybeFree()
 // FUNCTION: IMPERIALISM 0x005b5c90
 undefined4 DestructTInfoBarPictureTextAndMaybeFree(void)
-{
-  return 0;
-}
-
-// ghidra_name TDeluxeText::ConstructTDeluxeTextBaseState
-// ghidra_proto undefined ConstructTDeluxeTextBaseState()
-// FUNCTION: IMPERIALISM 0x005b5ff0
-undefined4 ConstructTDeluxeTextBaseState(void)
 {
   return 0;
 }
@@ -527,14 +479,6 @@ undefined4 UpdateSelectionRect(void)
 // ghidra_proto undefined UpdatePagerButtonStatesAndRefreshPanels()
 // FUNCTION: IMPERIALISM 0x005be3e0
 undefined4 UpdatePagerButtonStatesAndRefreshPanels(void)
-{
-  return 0;
-}
-
-// ghidra_name RefreshSelectedNationOrderCompatibilityInfo
-// ghidra_proto undefined RefreshSelectedNationOrderCompatibilityInfo()
-// FUNCTION: IMPERIALISM 0x005bf930
-undefined4 RefreshSelectedNationOrderCompatibilityInfo(void)
 {
   return 0;
 }

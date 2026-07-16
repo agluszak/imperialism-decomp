@@ -51,14 +51,6 @@ undefined4 DestructTAnimatorAndMaybeFree_Impl(void)
   return 0;
 }
 
-// ghidra_name TranslateListRectsAndDropNonIntersectingEntries
-// ghidra_proto undefined TranslateListRectsAndDropNonIntersectingEntries()
-// FUNCTION: IMPERIALISM 0x004a0e90
-undefined4 TranslateListRectsAndDropNonIntersectingEntries(void)
-{
-  return 0;
-}
-
 // ghidra_name CallObjectOffset24Vslot54IfPresent
 // ghidra_proto undefined CallObjectOffset24Vslot54IfPresent()
 // FUNCTION: IMPERIALISM 0x004a0f80
@@ -331,14 +323,6 @@ undefined4 DestructTMiniCivLineAndMaybeFree_Impl(void)
   return 0;
 }
 
-// ghidra_name TMiniCivView::ConstructTMiniCivViewBaseState
-// ghidra_proto undefined ConstructTMiniCivViewBaseState()
-// FUNCTION: IMPERIALISM 0x004ab970
-undefined4 ConstructTMiniCivViewBaseState(void)
-{
-  return 0;
-}
-
 // ghidra_name AssignSharedStringFromMidSubstring
 // ghidra_proto undefined AssignSharedStringFromMidSubstring()
 // FUNCTION: IMPERIALISM 0x004ac3a0
@@ -583,14 +567,6 @@ undefined4 DestructTTrainingOrderAndMaybeFree(void)
 // ghidra_proto undefined DestructTUnitOrderAndMaybeFree()
 // FUNCTION: IMPERIALISM 0x004b6fc0
 undefined4 DestructTUnitOrderAndMaybeFree(void)
-{
-  return 0;
-}
-
-// ghidra_name UIState_ActivateSlotAndUpdateUI_Impl
-// ghidra_proto undefined UIState_ActivateSlotAndUpdateUI_Impl()
-// FUNCTION: IMPERIALISM 0x004b77e0
-undefined4 UIState_ActivateSlotAndUpdateUI_Impl(void)
 {
   return 0;
 }

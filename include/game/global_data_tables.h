@@ -37,7 +37,7 @@ class TDiplomacyMgr;
 class TNavyMgr;
 class TSimMgr;
 class TAssetMgr;
-class TInterNationEventQueueManager;
+class TNewsMgr;
 
 class TLanguageMgr;
 class THelpMgr;
@@ -104,12 +104,15 @@ struct TNavyOrderResourceDescriptor {
 };
 ASSERT_SIZE(TNavyOrderResourceDescriptor, 0x24);
 
-extern "C" TNavyOrderResourceDescriptor g_NavyOrderResourceDescriptorTable[64];
+extern "C" TNavyOrderResourceDescriptor g_NavyOrderResourceDescriptorTable[14];
 
 // Per-category (0..3) capability metric baseline averages (0x006a3ec8): recomputed at
 // runtime by RecomputeGlobalCapabilityAverages and read back as the normalization divisor
 // by the navy/map-order per-category scoring helpers.
 extern "C" int g_aCategoryMetricBaselineAverage[4];
+// 0x54fd50: rebuilds g_aCategoryMetricBaselineAverage from the enabled resource types'
+// descriptor blends (rounded average across enabled types 1..13).
+void RecomputeGlobalCapabilityAverages(void);
 extern "C" float g_fMissionScoreNormalizationDivisor;
 
 // Per-nation (0..6) output caches written by RecomputeNationOrderPriorityMetrics
@@ -149,7 +152,6 @@ short GetResourceDescriptorWord08ByTypeOffset(short resourceType, short subslot)
 // Per-unit-type military stat records (7 shorts per type, record base 0x695cd2):
 // column 0 = category flag (0x10 = counted toward power/cost), column 1 = power/cost
 // points. See TMilitaryUnit::GetUnitTypeCostPoints (0x5c3400).
-extern "C" short g_UnitTypeMilitaryStatTable_00695CD2[64][7];
 
 // Per-unit-type stat table (7 shorts per type; unit types 0x00-0x1d) and per-stat
 // divisor baseline used by TMilitaryUnit::GetUnitTypeStatPercent (0x5c3530).
@@ -320,7 +322,7 @@ extern TGreatPower* g_apNationStates[7];
 extern void* g_apNationStates_End;
 extern TSimMgr* g_pSimMgr;
 extern THelpMgr* g_pHelpMgr;
-extern TInterNationEventQueueManager* g_pInterNationEventQueueManager;
+extern TNewsMgr* g_pInterNationEventQueueManager;
 extern TApplication* g_pGlobalUiRootController;
 
 // The live tactical battle (turn-event 0x29/0x2a receive dispatch target).
@@ -375,9 +377,6 @@ extern int g_NetworkBroadcastNationId006a5fc4;
 extern int DAT_006a601c;
 // City-order capability rule-table pointer slots written into TTechMgr+0x264 as tech
 // unlocks are applied (default at construction, alternates for tech ids 0x0b/0x16).
-extern undefined4 DAT_0066ac88;
-extern undefined4 DAT_0066ac8c;
-extern undefined4 DAT_0066ac90;
 // 26 (start, end) capability-priority range pairs (see the .cpp note).
 extern short g_anCapabilityPriorityRangePairs[53];
 extern const char s_DataDirectoryPath_006942A8[];
@@ -396,6 +395,7 @@ extern const unsigned char g_MapContextStaticTable_00695428[0x20];
 // something retargets it); both 0x4acb60 and 0x4af0b0 wrap it in a CString for
 // ApplySharedStringToControlState.
 extern char* g_pBattleReportSharedText_0064dc30;
+extern char* g_pMiniCivSharedText_0064cb18;
 extern int g_lastEdgeAutoScrollTick16;
 extern int g_nSaveFormatVersion;
 extern char g_szCmdSwitchLang_00694250[];
@@ -480,6 +480,8 @@ extern undefined4 (*g_timerSlotCallbacks[10])(); // 0x006a5cf8
 extern UINT g_timerSlotIds[10];                  // 0x006a5c98
 extern int g_timerDispatchSuppressAssert;        // 0x006a5d24
 extern TCountry* g_apTerrainTypeDescriptorTable[kTerrainTypeDescriptorTableCount];
+// Tactical unit facing-offset table (0x006a4780); see global_data_tables.cpp.
+extern POINT g_aTacticalUnitFacingOffsetTable[29][7][2];
 extern TDisplayMgr* g_pDisplayMgr;
 extern int g_nUiAnimatorSurfaceBoundsWidth;   // 0x006a2228
 extern int g_nUiAnimatorSurfaceBoundsHeight;  // 0x006a222c
@@ -681,6 +683,7 @@ extern CString g_cstrGreatPowerPressureMessage; // @ 0x6a2df0
 extern CString g_cstrArmyOrderMessageStore;        // @ 0x6a2318
 extern CString g_cstrNationComparisonMessageStore; // @ 0x6a3180
 extern CString g_cstrNationAwolMessageStore;       // @ 0x6a3d08
+extern CString g_cstrTechCapabilityMessageStore;   // @ 0x6a57c8
 extern CString g_cstrUiPromptMessageStore;         // @ 0x6a5be0
 extern char g_szImpSaveExtension_00698708[];
 extern char g_szMultiplayerSavePrefix_00698710[];
@@ -737,8 +740,22 @@ extern TCivMgr* g_pSelectedCivilianOrderState; // 0x6a43dc — the TCivMgr insta
 extern int g_nOceanDialogSeedViewportOffsetX; // 0x6a3ff0
 extern int g_nOceanDialogSeedViewportOffsetY; // 0x6a3ff4
 
+// Map-dialog viewport width in tiles (0x51ac40 centers on a tile by column - span/2).
+// int, not short: 0x51adf0 reads the full dword; word readers use static_cast<short>.
+extern int g_wMapDialogViewportTileSpan; // 0x6a33b0
+
+// Per-ability unit-order cost profile rows (see TUnitOrder::SetOrderCostProfile). 0x695cd0.
+extern short g_aUnitOrderCostProfileByAbilityId[0x1e][7];
+
+// Per-tech prerequisite pair (tech ids; 0 = none), indexed by tech id. 0x66ac10.
+extern short g_aTechItemPrerequisitePairs[34][2];
+// Per-tech research cost in gold, indexed by tech id. 0x66ad58.
+extern int g_anTechItemResearchCostByTechId[29];
+
 // Assert source-path strings for the UViewMgr TU family.
 extern "C" const char s_SourcePathUViewMgr_0069B6BC[];
+extern "C" const char s_SourcePathUMapDlog_006973D0[];
+extern "C" const char s_SourcePathUNewspaper_00698470[];
 extern "C" const char s_SourcePathUMultiplayerMgr_00698040[];
 extern "C" const char s_SourcePathUNavy_006983C8[];
 extern "C" const char s_SourcePathUTacViews_00699FF4[];
@@ -836,6 +853,7 @@ extern unsigned char g_abResourceTypeUsesHighNibbleFlag[24];
 // TMapMgr.cpp — per-resourceType capability-category code, compared for equality against
 // a caller-supplied category code by FindMaxResourceCapabilityValueForTile (0x513720).
 extern unsigned char g_abResourceTypeCapabilityCategory[24];
+extern unsigned char g_abResourceTypeMiniCivMentionFlag[24];
 // TMapMgr.cpp — per-resourceType required-order-type code (short), compared against
 // pCivilianOrderEntry->orderType by SeedRecruitSearchVisitedStateByCapabilityThresholdAlt
 // (0x515890).
@@ -968,7 +986,6 @@ extern SeaSegmentStretch g_regionBorderLinkTable_006a3900;
 // Hex-neighbour offset tables (offset-coordinate grid; even/odd rows shift columns
 // differently), indexed by direction 0..5. Read by the city-region border/merge passes.
 extern const int g_anTechItemPurchaseCostBySlot_0066aae8[34];
-extern const short g_awTechPrereqCapabilityFieldOffsetPairs_0066ac10[34][2];
 extern const int g_hexColOffsetEvenRow_00697450[6];
 extern const int g_hexRowOffset_00697468[6];
 extern const int g_hexColOffsetOddRow_00697480[6];

@@ -327,3 +327,13 @@ CString TLanguageMgr::NormalizeRuntimeCredentialNameToken(CString* name) {
   }
   return token;
 }
+
+// FUNCTION: IMPERIALISM 0x0055ba10
+CString& TLanguageMgr::GetNewsTexPath() {
+  return newsTexPath;
+}
+
+// FUNCTION: IMPERIALISM 0x0055bbf0
+CString& TLanguageMgr::GetNewsTabPath() {
+  return newsTabPath;
+}

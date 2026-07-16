@@ -83,14 +83,6 @@ undefined4 Helper_Uses_thunk_CopyCityDialogStateFromSourceAndCloneChildLinks_At0
   return 0;
 }
 
-// ghidra_name InitializePictureEntryBaseAndRefresh
-// ghidra_proto undefined InitializePictureEntryBaseAndRefresh()
-// FUNCTION: IMPERIALISM 0x0048f330
-undefined4 InitializePictureEntryBaseAndRefresh(void)
-{
-  return 0;
-}
-
 // ghidra_name SetPictureResourceIdAndRefresh_Impl
 // ghidra_proto undefined SetPictureResourceIdAndRefresh_Impl()
 // FUNCTION: IMPERIALISM 0x0048f610

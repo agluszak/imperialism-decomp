@@ -9,7 +9,7 @@
 #include "game/TTradeMgr.h"
 #include "game/TGlobalMapState.h"
 #include "game/TGreatPower.h"
-#include "game/TInterNationEventQueueManager.h"
+#include "game/TNewsMgr.h"
 #include "game/TMilitaryUnit.h"
 #include "game/TStream.h"
 #include "game/TTown.h"

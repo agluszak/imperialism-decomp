@@ -103,6 +103,22 @@ undefined TUnitOrder::CommitIfPending() {
   return 0;
 }
 
+// The store order (0x48, 0x4c, 0x50, 0x4e, 0x52, 0x54, 0x56) follows the original's
+// interleaved word moves.
+// FUNCTION: IMPERIALISM 0x004b77e0
+void TUnitOrder::SetOrderCostProfile(short resourceTypeIndex, short nPrimaryInputResourceId,
+                                     short nPrimaryInputPerUnit, short nSecondaryInputResourceId,
+                                     short nSecondaryInputPerUnit, short nCashCostPerUnit,
+                                     short nWorkforceMode) {
+  this->resourceTypeIndex48 = resourceTypeIndex;
+  this->primaryInputResourceId = nPrimaryInputResourceId;
+  this->primaryInputPerUnit = nPrimaryInputPerUnit;
+  this->secondaryInputResourceId = nSecondaryInputResourceId;
+  this->secondaryInputPerUnit = nSecondaryInputPerUnit;
+  this->cashCostPerUnit = nCashCostPerUnit;
+  this->workforceMode = nWorkforceMode;
+}
+
 // FUNCTION: IMPERIALISM 0x004b7850
 void TUnitOrder::WriteTo(TStream* stream) {}
 

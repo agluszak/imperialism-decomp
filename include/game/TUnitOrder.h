@@ -23,7 +23,14 @@ public:
   // slot 0x0a InitializeBasicCityOrderContext inherited unchanged (0x4b4f70)
   virtual bool SetQuantity(short param_1) override; // slot 0x0b 0x4b7210
   virtual short MaxOrder() override;                // slot 0x0c 0x4b7080
-  virtual undefined CommitIfPending() override;     // slot 0x0d 0x4b73b0
+
+  // Loads one g_aUnitOrderCostProfileByAbilityId row into the order's cost fields
+  // (called by TTechMgr::ActivateSlotAndUpdateUI when an ability activates a slot).
+  // 0x4b77e0, __thiscall, RET 0x1c.
+  void SetOrderCostProfile(short resourceTypeIndex, short primaryInputResourceId,
+                           short primaryInputPerUnit, short secondaryInputResourceId,
+                           short secondaryInputPerUnit, short cashCostPerUnit, short workforceMode);
+  virtual undefined CommitIfPending() override; // slot 0x0d 0x4b73b0
   // slot 0x0e ResetCityOrderItemDerivedStateNoop inherited unchanged (0x4b5140)
   // slot 0x0f Produce inherited unchanged (0x4b5180)
   virtual void FillOrderSheet(OrderSheet* orderSheet,

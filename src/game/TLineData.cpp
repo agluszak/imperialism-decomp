@@ -22,8 +22,9 @@ void TLineData::SetLineDataRowAndBounds(short rowArg, short colArg, int* bounds)
   field06 = rowArg;
 }
 
-undefined TLineData::OrphanRetStub_0056f460() {
-  return 0;
+void TLineData::CreateLineItemView(TView* panel, int* offsetLayout) {
+  (void)panel;
+  (void)offsetLayout;
 }
 
 undefined TLineData::OrphanRetStub_0056f480() {

@@ -371,13 +371,13 @@ void TWorldView::HandleMapClickByInteractionMode(short nTileIndex, int nInputFla
 }
 
 // FUNCTION: IMPERIALISM 0x00596680
-void TWorldView::OrphanRetStub_00596680(int arg1, int arg2) {
+void TWorldView::SetMapViewCellCoordinates(int arg1, int arg2) {
   (void)arg1;
   (void)arg2;
 }
 
 // FUNCTION: IMPERIALISM 0x005966a0
-void TWorldView::OrphanRetStub_005966a0(int arg1) {
+void TWorldView::SetMapViewTileIndex(int arg1) {
   (void)arg1;
 }
 

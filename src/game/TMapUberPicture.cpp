@@ -357,11 +357,10 @@ undefined TMapUberPicture::CreateToolWindow_00599CF0() {
 }
 
 // FUNCTION: IMPERIALISM 0x00599fa0
-void TMapUberPicture::InvokeViewSlotE4IfContextPresent() {
-  if (this == nullptr) {
-    return;
-  }
-  if (field_0xc0 != nullptr) {
+void TMapUberPicture::RefreshMiniMapIfPresent() {
+  // The original null-checks the receiver: call sites invoke this on a possibly-null
+  // ownerContext without guarding it.
+  if (this != 0 && field_0xc0 != 0) {
     field_0xc0->RefreshControl();
   }
 }

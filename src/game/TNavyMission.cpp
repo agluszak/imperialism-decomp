@@ -136,7 +136,7 @@ void TNavyMission::Free() {
 
   while (orderList24 != nullptr) {
     orderList24->object_ptr = nullptr;
-    orderList24 = TTaskForce::DeleteMapOrderChildLinkAndReturnNext(orderList24);
+    orderList24 = orderList24->DeleteMapOrderChildLinkAndReturnNext();
   }
 
   if (this != nullptr) {
@@ -213,7 +213,7 @@ void TNavyMission::ReadFrom(TStream* stream) {
 char TNavyMission::ReturnFalseSlot98() {
   while (orderList24 != nullptr) {
     orderList24->object_ptr = nullptr;
-    orderList24 = TTaskForce::DeleteMapOrderChildLinkAndReturnNext(orderList24);
+    orderList24 = orderList24->DeleteMapOrderChildLinkAndReturnNext();
   }
   return 1;
 }
@@ -239,7 +239,7 @@ void TNavyMission::NoOpSlot8C(int a, int b) {
   TTaskForce* item = reinterpret_cast<TTaskForce*>(a);
   if (orderList24 != nullptr) {
     if (orderList24->object_ptr == item) {
-      orderList24 = TTaskForce::DeleteMapOrderChildLinkAndReturnNext(orderList24);
+      orderList24 = orderList24->DeleteMapOrderChildLinkAndReturnNext();
     } else {
       orderList24->next->RemoveLinkedOrderNodeByValueRecursive(item);
     }

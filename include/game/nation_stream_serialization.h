@@ -51,6 +51,21 @@ static __inline void WriteShortArrayElems(TStream* stream, const short* values, 
   }
 }
 
+// Variant for sites where the original swapped via the high byte temp first (reads b[1]
+// then b[0] — e.g. TGreatPower::WriteTo's 0x8d6 loop).
+static __inline void WriteShortArrayElemsRev(TStream* stream, const short* values, int count) {
+  for (int remaining = count; remaining != 0; --remaining) {
+    short element = *values;
+    unsigned char* elementBytes = reinterpret_cast<unsigned char*>(&element);
+    unsigned char high = elementBytes[1];
+    unsigned char low = elementBytes[0];
+    elementBytes[0] = high;
+    elementBytes[1] = low;
+    stream->WriteBytesSlot78(&element, 2);
+    ++values;
+  }
+}
+
 static __inline void WriteIntArrayElems(TStream* stream, const int* values, int count) {
   for (int remaining = count; remaining != 0; --remaining) {
     int element = *values;

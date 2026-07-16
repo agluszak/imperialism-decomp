@@ -14,6 +14,7 @@ IMPLEMENT_DYNCREATE(TMiniArmyLine, TLineData)
 TMiniArmyLine::TMiniArmyLine() {}
 
 // FUNCTION: IMPERIALISM 0x004aa960
-undefined TMiniArmyLine::OrphanRetStub_0056f460() {
-  return 0;
+void TMiniArmyLine::CreateLineItemView(TView* panel, int* offsetLayout) {
+  (void)panel;
+  (void)offsetLayout;
 }

@@ -4,17 +4,43 @@
 
 struct TQuickDrawSurfaceContext;
 
+// Genuine __cdecl free function (0x00512440, owned by TMapDialog.cpp): projects a tile
+// index to a wrapped screen offset at the given scale. Note the vertical output comes
+// third, the horizontal fourth.
+void ProjectTileIndexToWrappedScreenOffsetByScale(short tileIndex, short* originXY, short* outY,
+                                                  short* outX, short scale);
+
+// One transient tile-marker slot (8 bytes): a flag byte plus three sentinel-initialized
+// coordinate/state shorts. The map dialog keeps an array of 90 (0x5a) of these.
+struct TMapDialogTileMarker {
+  char flag;  // +0x00
+  char pad01; // +0x01
+  short a;    // +0x02 (init 0xffff)
+  short b;    // +0x04 (init 0xffff)
+  short c;    // +0x06 (init 0xffff)
+};
+
 // VTABLE: IMPERIALISM 0x658a58
 class TMapDialog : public TWorldView {
 public:
   // CreateObject (0x00519c0e) allocates 0x364 bytes for the concrete object.
-  unsigned char pad7c[0x350 - 0x7c];
+  TMapDialogTileMarker tileMarkers7c[90]; // +0x7c .. +0x34c
+  // Suppress-tile-marker-rerender gate: ApplyRectSlot110 (0x51e260) only blits the marker
+  // overlay into quickDrawSurface350 while this is 0. Zeroed by the ctor.
+  unsigned char field34c; // +0x34c
+  unsigned char pad34d[3];
   // Released (set to null) by Free(); read by RenderMapDialogTerrainOverlayFrameByTileOwner as
   // the source surface for tile-owner/terrain-frame blits.
   TQuickDrawSurfaceContext* quickDrawSurface350;
-  unsigned char pad354[0x35c - 0x354];
+  short field354;         // +0x354 zeroed by the ctor; no confirmed reader yet
+  short field356;         // +0x356 ctor-init 0xffff (tile-index "none" sentinel idiom)
+  unsigned char field358; // +0x358 zeroed by the ctor; no confirmed reader yet
+  unsigned char pad359[3];
   void* field35c; // released (set to null) by Free(); no other confirmed reader.
-  unsigned char pad360[0x364 - 0x360];
+  // Per-tile debug/text-overlay gate read by RenderStrategicMapTileCell (0x51eb40). Zeroed
+  // by the ctor.
+  unsigned char field360; // +0x360
+  unsigned char pad361[3];
 
   DECLARE_DYNCREATE(TMapDialog)
   TMapDialog();
@@ -24,8 +50,6 @@ public:
 
   void ApplyRectSlot110(RECT* rectBuffer) override;
 
-  void ForwardMapDialogTileCoordUpdateToDerivedHandler(int tileX, int tileY);
-
   virtual void RenderMapOrderEntryTilePreview(TCivUnit* orderEntry, int arg2, int arg3) override;
   virtual void RenderTacticalStackCountIndicatorAndUnitBadge(short tileIndex, int arg2,
                                                              int arg3) override;
@@ -34,27 +58,39 @@ public:
   virtual void RenderStrategicTileSelectionAndNeighborHighlights() override;
   virtual void ForwardProjectTileIndexToWrappedScreenOffsetByScale(int arg1, int arg2, int arg3,
                                                                    int arg4, int arg5) override;
-  void ProjectTileIndexToWrappedScreenOffsetByScale(short tileIndex, short* originXY, short* outX,
-                                                    short* outY, short scale);
   virtual void ComputeWrappedMapCellAndRegionBandFromScreenCoord(int overlayRecord, short* outRow,
                                                                  unsigned short* outCol,
                                                                  short* outBand) override;
   virtual void UpdateMapDialogTileRowColumnMarkerAndInvalidate(int arg1) override;
 
+  // Fills the map-context info panel's 'titl' / 'info' / 'loca' text controls for the
+  // selected tile (terrain title, city resource counters + edge-resource requirement
+  // levels, and the "city, owner" location line). Attributed to TMapDialog by TU/address
+  // locality — the asserts cite D:\Ambit\Cross\UMapDlog.cpp and no live caller references
+  // the thunk. The second argument is never read. 0x51b1c0, __thiscall, RET 0x8.
+  void PopulateMapContextInfoPanelStringsByTileSelection(short tileIndex, int unusedArg);
+
   virtual void NoOpUiLifecycleHook(int arg) override;
 
   void OrphanRetStub_005966c0(short arg1) override;
   undefined OrphanLeaf_NoCall_Ins02_005966e0(short arg1) override;
-  void OrphanRetStub_005966a0(int arg1) override;
-  void OrphanRetStub_00596680(int arg1, int arg2) override;
+  void SetMapViewTileIndex(int arg1) override;
+  void SetMapViewCellCoordinates(int arg1, int arg2) override;
   virtual void DrawHexNeighborOutlineFromTileArray(short* neighborTiles);
-  virtual undefined OrphanCallChain_C1_I20_0051e1a0();
-  virtual undefined OrphanLeaf_NoCall_Ins21_0051e1f0();
+  // Resets the map-tile sprite variants and all 90 transient tile-marker slots to sentinels.
+  virtual void ResetAllTileMarkersToSentinel(); // 0x0051e1a0
+  // Releases the transient tile-marker slot the given tile occupies (marks the tile's
+  // terrain record slot 0xff and re-sentinels that marker). 0x0051e1f0
+  virtual void ReleaseTileMarkerForTile(short tileIndex);
   virtual undefined UpdateMapDialogProjectedTileMarkerAndInvalidate();
   virtual undefined RenderStrategicMapTileCell();
   virtual undefined EmitHexAdjacencyTransitionEventsByBitmask();
   virtual undefined DrawHexEdgeConnectionGlyphsByMask();
-  virtual undefined RenderMapDialogBilateralRelationMarkers();
+  // Draws a two-toned bilateral-relation marker: the guide pattern selected by
+  // relationLevel (0-9) is drawn twice at (originX, originY) — variant 1 tinted for
+  // nationA, variant 2 for nationB (0x35 = minor-nation fallback color).
+  virtual void RenderMapDialogBilateralRelationMarkers(short relationLevel, int originX,
+                                                       int originY, int nationA, int nationB);
   virtual void DrawMapDialogGuidePatternSetA_00520970(int originX, int originY, short variant);
   virtual void DrawMapDialogGuidePatternSetB_00520a90(int originX, int originY, short variant);
   virtual void DrawMapDialogGuidePatternSetC_00520c10(int originX, int originY, short variant);
@@ -89,8 +125,7 @@ public:
   virtual void Copy64x64TileBlockWithStrideAdjustment(int* src, int* dest, short srcStride,
                                                       short destStride);
   virtual undefined HasRenderableParentAndContentSlotA2();
-  virtual undefined ReleaseRuntimeSelectionOwnerAndDestroyObject(int param_1, int param_2,
-                                                                 int param_3);
+  virtual void SetMapDialogCellCoordinatesAndRefresh(int col, int row, int mode);
   virtual undefined UpdateMapInteractionPreviewParityAndRenderTransientSprites();
 };
 

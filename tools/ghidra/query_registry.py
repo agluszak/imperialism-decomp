@@ -17,6 +17,7 @@ from collections.abc import Callable
 
 from tools.ghidra import (
     decompile_one,
+    portprep,
     field_xrefs,
     func_sig,
     function_slice,
@@ -33,6 +34,7 @@ from tools.ghidra import (
 
 COMMANDS: dict[str, Callable] = {
     "listing": listing_one.run,
+    "portprep": portprep.run,
     "xrefs": xrefs_to.run,
     "search": search_whole_binary.run,
     "linear-disasm": linear_disasm.run,
