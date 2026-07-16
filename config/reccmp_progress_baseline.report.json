@@ -12617,7 +12617,7 @@
     },
     {
       "address": "0x4dd430",
-      "matching": 0.5714285714285714,
+      "matching": 0.5142857142857142,
       "name": "TGreatPower::ComputeRemainingDiplomacyAidBudget",
       "type": 1
     },
@@ -13049,7 +13049,8 @@
     },
     {
       "address": "0x4e0590",
-      "matching": 1.0,
+      "effective": true,
+      "matching": 0.42857142857142855,
       "name": "TGreatPower::OrphanRetStub_004d7fa0_88",
       "type": 1
     },
@@ -19913,7 +19914,7 @@
     },
     {
       "address": "0x537eb0",
-      "matching": 0.0,
+      "matching": 0.56,
       "name": "ComputeMissionQueuedOrderSimilarityForTargetNation",
       "type": 1
     },

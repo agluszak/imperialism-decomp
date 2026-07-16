@@ -729,6 +729,23 @@ void __cdecl AccumulateNavyOrderCategoryVectorWithScale(TShip* orderNode, float*
       vector[3];
 }
 
+// Same shape as ComputeNavyOrderCategorySimilarityRatio above, but always scores against
+// targetZone14 (near) / targetZone18 (far) instead of navyField20, with an explicit
+// caller-supplied distance threshold instead of a fixed 0/1.
+// FUNCTION: IMPERIALISM 0x00537eb0
+float TNavyMission::ComputeMissionQueuedOrderSimilarityForTargetNation(short distanceThreshold) {
+  float vector[4];
+  BuildNavyOrderCategoryVectorForNationWithExclusion(vector, targetZone14, distanceThreshold,
+                                                     targetZone18);
+  float numerator = 0.0f;
+  float denominator = 0.0f;
+  for (int i = 0; i < 4; ++i) {
+    numerator += sqrtf(resourceWeights2c[i] * vector[i]);
+    denominator += resourceWeights2c[i];
+  }
+  return numerator / denominator;
+}
+
 // FUNCTION: IMPERIALISM 0x00537f40
 float TNavyMission::ReturnZeroFloatSlot68() {
   return 0.0f;

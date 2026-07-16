@@ -99,14 +99,6 @@ undefined4 BuildMissionQueuedOrderCategoryVector(void)
   return 0;
 }
 
-// ghidra_name ComputeMissionQueuedOrderSimilarityForTargetNation
-// ghidra_proto undefined ComputeMissionQueuedOrderSimilarityForTargetNation()
-// FUNCTION: IMPERIALISM 0x00537eb0
-undefined4 ComputeMissionQueuedOrderSimilarityForTargetNation(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_AFX_CLASSINIT_At005387a0
 // ghidra_proto undefined WrapperFor_AFX_CLASSINIT_At005387a0()
 // FUNCTION: IMPERIALISM 0x005387a0

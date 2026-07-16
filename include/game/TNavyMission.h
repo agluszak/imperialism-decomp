@@ -123,6 +123,11 @@ public:
   void BuildNavyOrderCategoryVectorForNationWithExclusion(float* vector, TZone* nearZone,
                                                           short distanceThreshold,
                                                           TObject* farZone);
+  // Same shape as ComputeNavyOrderCategorySimilarityRatio (BuildNavyOrderCategoryVectorFor-
+  // NationWithExclusion + a sqrt-coefficient tail), but always uses targetZone14 as the near
+  // zone and targetZone18 as the far zone (instead of navyField20), with an explicit caller-
+  // supplied distance threshold instead of a fixed 0/1. 0x537eb0.
+  float ComputeMissionQueuedOrderSimilarityForTargetNation(short distanceThreshold);
 
 private:
   // Shared by RefreshSlot40's mode-transition checks (0x536b30).
