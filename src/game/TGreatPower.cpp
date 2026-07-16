@@ -1488,107 +1488,87 @@ char TGreatPower::CompareMissionScoreVariantsByMode(int mode) {
 }
 
 // FUNCTION: IMPERIALISM 0x004dc660
-void TGreatPower::BuildGreatPowerMapContextTriggeredNationEventMessages(void) {
-  TDiplomacyMgr* diplomacyManager = g_pDiplomacyTurnStateManager;
-  if (diplomacyManager == 0) {
-    return;
-  }
-
-  bool hasEligibleForeignNation = false;
-  for (int nationSlot = 0; nationSlot < 7; ++nationSlot) {
-    if (nationSlot == this->nationSlot) {
-      continue;
-    }
+char TGreatPower::BuildGreatPowerMapContextTriggeredNationEventMessages(CString* outMessageText) {
+  char anyMessage = 0;
+  char found = 0;
+  int nationSlot;
+  for (nationSlot = 0; nationSlot < 7; ++nationSlot) {
     if (g_pDiplomacyTurnStateManager->HasPolicyWithNationSlot44(nationSlot, this->nationSlot) !=
             0 &&
         g_pSimMgr->IsNationSlotEligibleForEventProcessing(nationSlot) != 0) {
-      hasEligibleForeignNation = true;
+      found = 1;
+    }
+    if (found != 0) {
       break;
     }
   }
-  if (!hasEligibleForeignNation) {
-    return;
-  }
-
-  TZone* contextEntry = g_pMapActionContextListHead;
-  while (contextEntry != 0) {
-    contextEntry->GetContextOrdinalOrInvalid();
-    // The original dispatches this on the context node (ecx = contextEntry at
-    // 0x004dc6e2), not on the nation object.
-    if (contextEntry->HasSecondaryNeighborWithNationTag(this->nationSlot) != 0) {
-      bool emittedMessage = false;
-      for (int nationSlotCandidate = 0; nationSlotCandidate < kMajorNationCount;
-           ++nationSlotCandidate) {
-        if (nationSlotCandidate == this->nationSlot) {
-          continue;
-        }
-        if (g_pDiplomacyTurnStateManager->HasPolicyWithNationSlot44(this->nationSlot,
-                                                                    nationSlotCandidate) == 0) {
-          continue;
-        }
-
-        unsigned int nationMask = 1u << (nationSlotCandidate & 0x1f);
-        unsigned int selfMask = 1u << (this->nationSlot & 0x1f);
-        unsigned int contextMask = contextEntry->field10;
-        if ((contextMask & nationMask) != 0 && (contextMask & selfMask) == 0) {
-          CString contextRef;
-          CString messageRef;
-          contextEntry->AssignZoneDisplayNameToOutputRef(&contextRef);
-          emittedMessage = true;
-          break;
+  if (found != 0) {
+    TZone* contextEntry = g_pMapActionContextListHead;
+    while (contextEntry != 0) {
+      contextEntry->GetContextOrdinalOrInvalid();
+      found = 0;
+      // The original dispatches this on the context node (ecx = contextEntry at
+      // 0x004dc6e2), not on the nation object.
+      if (contextEntry->HasSecondaryNeighborWithNationTag(this->nationSlot) != 0) {
+        short candidate;
+        for (candidate = 0; candidate < 7; ++candidate) {
+          if (candidate != this->nationSlot &&
+              g_pDiplomacyTurnStateManager->HasPolicyWithNationSlot44(this->nationSlot,
+                                                                      candidate) != 0) {
+            unsigned char candidateMask = static_cast<unsigned char>(1 << candidate);
+            if ((contextEntry->field10 & candidateMask) != 0) {
+              unsigned char selfMask = static_cast<unsigned char>(1 << this->nationSlot);
+              if ((contextEntry->field10 & selfMask) == 0) {
+                CString zoneName;
+                contextEntry->AssignZoneDisplayNameToOutputRef(&zoneName);
+                *outMessageText += "\n     " + zoneName;
+                anyMessage = 1;
+                found = 1;
+              }
+            }
+          }
+          if (found != 0) {
+            break;
+          }
         }
       }
-      if (emittedMessage) {
-        contextEntry = contextEntry->prev18;
-        continue;
-      }
+      contextEntry = contextEntry->prev18;
     }
-    contextEntry = contextEntry->prev18;
   }
+  return anyMessage;
 }
 
 // FUNCTION: IMPERIALISM 0x004dc840
-void TGreatPower::BuildGreatPowerEligibleNationEventMessagesFromLinkedList(void) {
-  TDiplomacyMgr* diplomacyManager = g_pDiplomacyTurnStateManager;
-  if (diplomacyManager == 0) {
-    return;
-  }
-
-  bool hasEligibleForeignNation = false;
-  for (int nationSlot = 0; nationSlot < kMajorNationCount; ++nationSlot) {
-    if (nationSlot == this->nationSlot) {
-      continue;
-    }
+char TGreatPower::BuildGreatPowerEligibleNationEventMessagesFromLinkedList(
+    CString* outMessageText) {
+  char found = 0;
+  char anyMessage = 0;
+  int nationSlot;
+  for (nationSlot = 0; nationSlot < 7; ++nationSlot) {
     if (g_pDiplomacyTurnStateManager->HasPolicyWithNationSlot44(nationSlot, this->nationSlot) !=
             0 &&
         g_pSimMgr->IsNationSlotEligibleForEventProcessing(nationSlot) != 0) {
-      hasEligibleForeignNation = true;
+      found = 1;
+    }
+    if (found != 0) {
       break;
     }
   }
-  if (!hasEligibleForeignNation) {
-    return;
-  }
-
-  TSortedList* townMarkerList = this->townMarkerList;
-  if (townMarkerList == 0) {
-    return;
-  }
-
-  CIterator cursor(townMarkerList);
-  cursor.Reset();
-  while (cursor.More()) {
-    TTown* marker = static_cast<TTown*>(cursor.current);
-    if (marker != 0 && marker->enabledFlag4d != 0 && marker->transportLinkedFlag4c == 0) {
-      CString messageRef;
-      CString scratchRef;
-      g_pGlobalMapState->AssignCityRecordDisplayName(
-          g_pGlobalMapState->terrainStateTable[marker->regionId14].cityRecordIndex, &messageRef);
-      scratchRef = CString("\n") + messageRef;
-      scratchRef += messageRef;
+  if (found != 0) {
+    CIterator cursor(townMarkerList);
+    TTown* town = static_cast<TTown*>(cursor.Reset());
+    while (cursor.More()) {
+      if (town->enabledFlag4d != 0 && town->transportLinkedFlag4c == 0) {
+        anyMessage = 1;
+        CString townName;
+        g_pGlobalMapState->AssignCityRecordDisplayName(
+            g_pGlobalMapState->terrainStateTable[town->regionId14].cityRecordIndex, &townName);
+        *outMessageText += "\n     " + townName;
+      }
+      town = static_cast<TTown*>(cursor.Advance());
     }
-    cursor.Advance();
   }
+  return anyMessage;
 }
 
 // FUNCTION: IMPERIALISM 0x004dc9f0

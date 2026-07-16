@@ -37,7 +37,7 @@ public:
   virtual void RebuildDiplomacyStandingAndInfluenceMatrices();                  // 14 (0x38)
   virtual void InitializeDiplomacyStandingBaselineRandom();                     // 15 (0x3c)
   virtual void BuildMajorNationDiplomacyStandingRanking();                      // 16 (0x40)
-  virtual char IsNationPairAtWar(int sourceNation, int targetNation);           // 17 (0x44)
+  virtual char IsNationPairAtWar(short sourceNation, short targetNation);       // 17 (0x44)
   virtual char IsNationPairRelationTurnStampOutOfDate(int sourceNation,
                                                       int targetNation);       // 18 (0x48)
   virtual char HasAnyWarRelationForNation(int sourceNation);                   // 19 (0x4c)
@@ -53,8 +53,8 @@ public:
                                                      int targetNation); // 26 (0x68)
   virtual void ShowRelationCodeNoticeForNationPairIfRelevant(int sourceNation,
                                                              int targetNation); // 27 (0x6c)
-  virtual short GetNationPairDiplomacyRelationCode(int sourceNation,
-                                                   int targetNation); // 28 (0x70)
+  virtual short GetNationPairDiplomacyRelationCode(short sourceNation,
+                                                   short targetNation); // 28 (0x70)
   virtual void SetNationPairDiplomacyRelationCode(int sourceNation, int targetNation,
                                                   int relationCode, int updateMode); // 29 (0x74)
   virtual void SetNationPairDiplomacyRelationCodeFinal(int sourceNation, int targetNation,
@@ -77,7 +77,7 @@ public:
   WrapperFor_IsNationSlotEligibleForEventProcessingAt413250(int nationSlot); // 39 (0x9c)
 
   // Slot-name aliases retained for recovered call sites.
-  char HasPolicyWithNationSlot44(int sourceNation, int targetNation) {
+  char HasPolicyWithNationSlot44(short sourceNation, short targetNation) {
     return IsNationPairAtWar(sourceNation, targetNation);
   }
   char HasOutdatedWarRelationSlot48(int sourceNation, int targetNation) {
@@ -90,7 +90,7 @@ public:
   int GetRelationTypeSlot68(int sourceNation, int targetNation) {
     return GetNationPairDiplomacyStandingTierCode(sourceNation, targetNation);
   }
-  short GetRelationTierSlot70(int sourceNation, int targetNation) {
+  short GetRelationTierSlot70(short sourceNation, short targetNation) {
     return GetNationPairDiplomacyRelationCode(sourceNation, targetNation);
   }
   void SetRelationCodeSlot74WithMode(int sourceNation, int targetNation, int relationCode,

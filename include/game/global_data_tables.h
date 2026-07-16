@@ -804,6 +804,7 @@ extern const char* const g_pRegistryLanguageKey_0063E04C;
 // Shared empty-string literal (ImperialismApp/TCountry/TIncludeView/
 // TLowDiskWarningDialog/TModuleLibraryCacheTableStateB/TSimMgr).
 extern char g_szEmptyString[];
+extern const char* const g_pszEmptyTextPointer_00656f60; // = g_szEmptyString @ 0x656f60
 
 // TArmyMission.cpp / TNavyMission.cpp — army-mission order-priority tables.
 extern float g_ArmyMissionOrderWeightTable_006978c8[6];

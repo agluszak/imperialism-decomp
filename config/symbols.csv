@@ -2368,8 +2368,8 @@ address|name|symbol|size|type|prototype|provenance
 4dc440|TGreatPower::OrphanLeaf_NoCall_Ins02_004d7ee0_50||83|function|undefined OrphanLeaf_NoCall_Ins02_004d7ee0(void)|
 4dc4c0|TGreatPower::OrphanLeaf_NoCall_Ins02_004d7f00_51||82|function|undefined OrphanLeaf_NoCall_Ins02_004d7f00(void)|
 4dc540|TGreatPower::CompareMissionScoreVariantsByMode||218|function|undefined CompareMissionScoreVariantsByMode()|
-4dc660|TGreatPower::BuildGreatPowerMapContextTriggeredNationEventMessages||376|function|undefined BuildGreatPowerMapContextTriggeredNationEventMessages()|
-4dc840|TGreatPower::BuildGreatPowerEligibleNationEventMessagesFromLinkedList||325|function|undefined BuildGreatPowerEligibleNationEventMessagesFromLinkedList()|
+4dc660|TGreatPower::BuildGreatPowerMapContextTriggeredNationEventMessages||376|function|char __thiscall BuildGreatPowerMapContextTriggeredNationEventMessages(CString * outMessageText)|
+4dc840|TGreatPower::BuildGreatPowerEligibleNationEventMessagesFromLinkedList||325|function|char __thiscall BuildGreatPowerEligibleNationEventMessagesFromLinkedList(CString * outMessageText)|
 4dc9f0|TGreatPower::RefreshGreatPowerRelationPanelsAndDispatchDeltaSummary||67|function|undefined RefreshGreatPowerRelationPanelsAndDispatchDeltaSummary()|
 4dca60|TGreatPower::OrphanRetStub_0059add0||16|function|undefined OrphanRetStub_0059add0(void)|
 4dca80|TGreatPower::SelectCandidateTilesWithLowGroundUnitCount_3f||3|function|undefined SelectCandidateTilesWithLowGroundUnitCount(void)|
@@ -2711,7 +2711,7 @@ address|name|symbol|size|type|prototype|provenance
 4ef040|DiplomacyMgrVtableSlot1C_ReleaseQueuedCommandAndDestroy||43|function|undefined DiplomacyMgrVtableSlot1C_ReleaseQueuedCommandAndDestroy()|
 4ef080|TDiplomacyMgr::ReadFrom||418|function|undefined DeserializeRelationshipSortedListBuffersFromStreamSwapBytes()|
 4ef2a0|SerializeThreeWordPlanesToOutputCallback||515|function|undefined SerializeThreeWordPlanesToOutputCallback()|
-4ef540|IsNationPairAtWar||64|function|undefined IsNationPairAtWar()|
+4ef540|TDiplomacyMgr::IsNationPairAtWar||64|function|char __thiscall IsNationPairAtWar(short sourceNation, short targetNation)|
 4ef590|TDiplomacyMgr::IsNationPairRelationTurnStampOutOfDate||76|function|undefined HasWarRelationTurnStampOutOfDate()|
 4ef600|HasAnyWarRelationForNation||49|function|undefined HasAnyWarRelationForNation()|
 4ef650|TDiplomacyMgr::HasAnyWarRelationTurnStampOutOfDateForNation||49|function|undefined HasAnyWarRelationTurnStampOutOfDateForNation()|
@@ -2738,7 +2738,7 @@ address|name|symbol|size|type|prototype|provenance
 4f1970|HasState300LinkBetweenNationPair||56|function|undefined HasState300LinkBetweenNationPair()|
 4f19c0|TDiplomacyMgr::GetNationPairDiplomacyStandingTierCode||140|function|undefined GetNationPairDiplomacyStandingTierCode()|
 4f1a80|TDiplomacyMgr::ShowRelationCodeNoticeForNationPairIfRelevant||73|function|undefined ShowRelationCodeNoticeForNationPairIfRelevant()|
-4f1b10|TDiplomacyMgr::GetNationPairDiplomacyRelationCode||32|function|undefined GetNationPairDiplomacyRelationCode()|
+4f1b10|TDiplomacyMgr::GetNationPairDiplomacyRelationCode||30|function|short __thiscall GetNationPairDiplomacyRelationCode(short sourceNation, short targetNation)|
 4f1b40|TDiplomacyMgr::SetNationPairDiplomacyRelationCodeFinal||25|function|undefined SetNationPairDiplomacyRelationWithFinalFlag()|
 4f1b70|TDiplomacyMgr::SetNationPairDiplomacyRelationCode||718|function|undefined SetNationPairDiplomacyRelationAndApplySideEffects()|
 4f1f20|TControl::LookupOrderCompatibilityMatrixValue||30|function|short __thiscall LookupOrderCompatibilityMatrixValue(short nSourceClass, short nTargetClass)|
@@ -2975,9 +2975,9 @@ address|name|symbol|size|type|prototype|provenance
 501070|THelpMgr::Free||37|function|undefined OrphanCallChain_C2_I16_00501070(void)|
 5010b0|SelectAndActivatePendingEventForCurrentView||177|function|undefined SelectAndActivatePendingEventForCurrentView()|
 5011a0|HandlePostDispatchTurnStateEventUpdates||154|function|undefined HandlePostDispatchTurnStateEventUpdates()|
-501270|DispatchTurnStateSpecialAdvisoriesAndReturnCount||1564|function|undefined DispatchTurnStateSpecialAdvisoriesAndReturnCount()|
-501a20|ShowPeriodicCapabilityReminderIfNeeded||342|function|undefined ShowPeriodicCapabilityReminderIfNeeded()|
-501be0|ShowPeriodicNationComparisonAdvisoryIfNeeded||3118|function|undefined ShowPeriodicNationComparisonAdvisoryIfNeeded()|
+501270|THelpMgr::DispatchTurnStateSpecialAdvisoriesAndReturnCount||1564|function|short __thiscall DispatchTurnStateSpecialAdvisoriesAndReturnCount(void)|
+501a20|THelpMgr::ShowPeriodicCapabilityReminderIfNeeded||342|function|void __thiscall ShowPeriodicCapabilityReminderIfNeeded(void)|
+501be0|THelpMgr::ShowPeriodicNationComparisonAdvisoryIfNeeded||3118|function|char __thiscall ShowPeriodicNationComparisonAdvisoryIfNeeded(void)|
 502b60|ShowTurnAlertsForActiveNation||1285|function|undefined ShowTurnAlertsForActiveNation()|
 5031c0|HandlePendingEventActivationByCode||258|function|undefined HandlePendingEventActivationByCode()|
 503320|SelectAndActivatePendingEventType1A0A||64|function|undefined SelectAndActivatePendingEventType1A0A()|

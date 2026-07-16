@@ -443,22 +443,6 @@ undefined4 SelectAndActivatePendingEventForCurrentView(void)
   return 0;
 }
 
-// ghidra_name DispatchTurnStateSpecialAdvisoriesAndReturnCount
-// ghidra_proto undefined DispatchTurnStateSpecialAdvisoriesAndReturnCount()
-// FUNCTION: IMPERIALISM 0x00501270
-undefined4 DispatchTurnStateSpecialAdvisoriesAndReturnCount(void)
-{
-  return 0;
-}
-
-// ghidra_name ShowPeriodicCapabilityReminderIfNeeded
-// ghidra_proto undefined ShowPeriodicCapabilityReminderIfNeeded()
-// FUNCTION: IMPERIALISM 0x00501a20
-undefined4 ShowPeriodicCapabilityReminderIfNeeded(void)
-{
-  return 0;
-}
-
 // ghidra_name ShowTurnAlertsForActiveNation
 // ghidra_proto undefined ShowTurnAlertsForActiveNation()
 // FUNCTION: IMPERIALISM 0x00502b60

@@ -47,6 +47,21 @@ public:
                                            int acceptedFlag); // 0x5033e0
 
   void HandlePostDispatchTurnStateEventUpdates();
+
+  // Walks the active nation's turnEventQueue and poses one localized advisory per
+  // qualifying event (codes 0x131/0x13a/0x13b), then the map-context / town-list
+  // message summaries and the city production reminder; returns how many advisories
+  // were posed. 0x501270, __thiscall (`this` unused).
+  short DispatchTurnStateSpecialAdvisoriesAndReturnCount();
+
+  // On turn ticks ending in 0/5, poses the "research a capability" reminder when the
+  // active nation has no progress on the current marker tech. 0x501a20, __thiscall
+  // (`this` unused).
+  void ShowPeriodicCapabilityReminderIfNeeded();
+
+  // Periodic "another great power is beating you" advisory (turn-tick-indexed metric
+  // comparison, string group 0x2753). 0x501be0, __thiscall (`this` unused).
+  char ShowPeriodicNationComparisonAdvisoryIfNeeded();
   char HandlePendingEventActivationByCode(short eventCode);
   void HandlePostPendingEventActivationNoOp(short eventCode);
   void ActivatePendingEventAndRefreshView(HelpSetRecord* pendingEntry);

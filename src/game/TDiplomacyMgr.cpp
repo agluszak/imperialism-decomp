@@ -192,11 +192,9 @@ void TDiplomacyMgr::WriteTo(TStream* stream) {
 }
 
 // FUNCTION: IMPERIALISM 0x004ef540
-char TDiplomacyMgr::IsNationPairAtWar(int sourceNationSlot, int targetNationSlot) {
-  short source = static_cast<short>(sourceNationSlot);
-  short target = static_cast<short>(targetNationSlot);
-  if ((g_apTerrainTypeDescriptorTable[source] != 0) &&
-      (g_apTerrainTypeDescriptorTable[target] != 0)) {
+char TDiplomacyMgr::IsNationPairAtWar(short sourceNationSlot, short targetNationSlot) {
+  if ((g_apTerrainTypeDescriptorTable[sourceNationSlot] != 0) &&
+      (g_apTerrainTypeDescriptorTable[targetNationSlot] != 0)) {
     return GetRelationTierSlot70(sourceNationSlot, targetNationSlot) == 6;
   }
   return 0;
@@ -841,11 +839,9 @@ void TDiplomacyMgr::ShowRelationCodeNoticeForNationPairIfRelevant(int sourceNati
 }
 
 // FUNCTION: IMPERIALISM 0x004f1b10
-short TDiplomacyMgr::GetNationPairDiplomacyRelationCode(int sourceNationSlot,
-                                                        int targetNationSlot) {
-  int source = static_cast<short>(sourceNationSlot);
-  int target = static_cast<short>(targetNationSlot);
-  return relationPropagationMatrixBbe[source * kNationSlotCount + target];
+short TDiplomacyMgr::GetNationPairDiplomacyRelationCode(short sourceNationSlot,
+                                                        short targetNationSlot) {
+  return (&relationPropagationMatrixBbe[sourceNationSlot * kNationSlotCount])[targetNationSlot];
 }
 
 // FUNCTION: IMPERIALISM 0x004f1b40

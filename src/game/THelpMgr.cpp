@@ -3,6 +3,9 @@
 #include "game/TSimMgr.h"
 #include "game/TGreatPower.h"
 #include "game/TSortedPtrList.h"
+#include "game/TCity.h"
+#include "game/TDiplomacyMgr.h"
+#include "game/TSortedByRelationshipList.h"
 #include "game/TWindow.h"
 #include "game/TViewMgr.h"
 #include "game/TDisplayMgr.h"
@@ -12,8 +15,6 @@
 #include "game/TTechMgr.h"
 #include "game/mapped_flavor_text.h"
 #include "game/nation_slot_eligibility.h"
-
-char ShowPeriodicNationComparisonAdvisoryIfNeeded();
 
 namespace {
 
@@ -118,12 +119,6 @@ undefined THelpMgr::InitializeHelpManagerIndexArrayAndState() {
 
 namespace {
 
-short DispatchTurnStateSpecialAdvisoriesAndReturnCount() {
-  return 0;
-}
-
-void ShowPeriodicCapabilityReminderIfNeeded() {}
-
 void ReleasePendingHelpDialogView(TView** dialogView) {
   if (*dialogView != 0) {
     static_cast<TWindow*>(*dialogView)->CloseAndFree();
@@ -136,15 +131,15 @@ int GetSortedPtrListEntryCount(TSortedPtrList* list) {
   return list->GetSize();
 }
 
-short ReadLocalizationFlowMode() {
-  return static_cast<short>(g_pSimMgr->mode);
+__inline int ReadLocalizationFlowMode() {
+  return g_pSimMgr->mode;
 }
 
-short ReadLocalizationTurnGateFlag58() {
+__inline short ReadLocalizationTurnGateFlag58() {
   return g_pSimMgr->preferenceValues[8];
 }
 
-short ReadLocalizationPendingEventGate5c() {
+__inline short ReadLocalizationPendingEventGate5c() {
   return g_pSimMgr->preferenceValues[10];
 }
 
@@ -154,23 +149,146 @@ short ReadLocalizationPendingEventGate5c() {
 void THelpMgr::HandlePostDispatchTurnStateEventUpdates() {
   const short nationId = g_pSimMgr->GetActiveNationId();
   const int flowMode = ReadLocalizationFlowMode();
-  if (flowMode == 0xf) {
-    TGreatPower* nation = g_apNationStates[nationId];
-    if (nation != 0) {
-      nation->DispatchPendingStatusPrompts();
-      nation->BuildGreatPowerTurnMessageSummaryAndDispatch();
-    }
-    if (ReadLocalizationTurnGateFlag58() != 0) {
-      if (DispatchTurnStateSpecialAdvisoriesAndReturnCount() < 2) {
-        ShowPeriodicCapabilityReminderIfNeeded();
+  if (flowMode != 0xf) {
+    if (flowMode == 0x6a && ReadLocalizationTurnGateFlag58() != 0) {
+      if (g_nTurnFlowNationComparisonAdvisoryTick < g_pSimMgr->GetTurnTickSlot3C()) {
+        if (ShowPeriodicNationComparisonAdvisoryIfNeeded() != 0) {
+          g_nTurnFlowNationComparisonAdvisoryTick = g_pSimMgr->GetTurnTickSlot3C();
+        }
       }
     }
-  } else if (flowMode == 0x6a && ReadLocalizationTurnGateFlag58() != 0) {
-    const short currentTurn = g_pSimMgr->GetTurnTickSlot3C();
-    if (g_nTurnFlowNationComparisonAdvisoryTick < currentTurn) {
-      if (ShowPeriodicNationComparisonAdvisoryIfNeeded() != 0) {
-        g_nTurnFlowNationComparisonAdvisoryTick = currentTurn;
+    return;
+  }
+  // No null check in the original: the 0xf flow mode guarantees the active nation slot.
+  g_apNationStates[nationId]->DispatchPendingStatusPrompts();
+  g_apNationStates[nationId]->BuildGreatPowerTurnMessageSummaryAndDispatch();
+  if (ReadLocalizationTurnGateFlag58() != 0) {
+    if (DispatchTurnStateSpecialAdvisoriesAndReturnCount() < 2) {
+      ShowPeriodicCapabilityReminderIfNeeded();
+    }
+  }
+}
+
+// FUNCTION: IMPERIALISM 0x00501270
+short THelpMgr::DispatchTurnStateSpecialAdvisoriesAndReturnCount() {
+  g_pSimMgr->GetTurnTickSlot3C();
+  short activeNation = g_pSimMgr->GetActiveNationId();
+  CString titleText;
+  CString templateText;
+  CString nationNameText;
+  CString formattedText;
+  int activeNationIndex = activeNation;
+  TCity* activeCity;
+  if (g_apNationStates[activeNationIndex] != 0) {
+    activeCity = g_apNationStates[activeNationIndex]->city;
+  } else {
+    activeCity = 0;
+  }
+  CString minorNameText;
+  short advisoryCount = 0;
+  TSortedByRelationshipList* queue = g_apNationStates[activeNationIndex]->turnEventQueue;
+  int i;
+  for (i = 1; i <= queue->GetSize(); ++i) {
+    short* eventRecord = static_cast<short*>(queue->GetPtrListEntryByOneBasedIndex(i));
+    switch (eventRecord[0]) {
+    case 0x13b: {
+      short standingNation = static_cast<short>(
+          g_pDiplomacyTurnStateManager->WrapperFor_IsNationSlotEligibleForEventProcessingAt413250(
+              eventRecord[1]));
+      if (standingNation != activeNation) {
+        g_apNationStates[standingNation]->FormatOverlayTerrainLabelText(&nationNameText);
+        g_apSecondaryNationStateSlots[eventRecord[1]]->FormatOverlayTerrainLabelText(
+            &minorNameText);
+        g_pSimMgr->GetString(0x2753, 0x1e, &titleText);
+        g_pSimMgr->GetString(0x2753, 0x1f, &templateText);
+        scanBracketExpressions(g_pSimMgr, &formattedText, static_cast<LPCSTR>(templateText),
+                               static_cast<LPCSTR>(nationNameText),
+                               static_cast<LPCSTR>(minorNameText));
+        g_pUiRuntimeContext->DispatchLocalizedUiMessageWithTemplate(
+            3, titleText, formattedText, &g_cstrNationComparisonMessageStore, 0, 0);
+        ++advisoryCount;
       }
+      break;
+    }
+    case 0x13a: {
+      short standingNation = static_cast<short>(
+          g_pDiplomacyTurnStateManager->SelectNationSlotFromCollectedStandingEntriesSlot98(
+              eventRecord[1], 1));
+      if (standingNation != activeNation) {
+        g_apNationStates[standingNation]->FormatOverlayTerrainLabelText(&nationNameText);
+        g_apSecondaryNationStateSlots[eventRecord[1]]->FormatOverlayTerrainLabelText(
+            &minorNameText);
+        g_pSimMgr->GetString(0x2753, 0x1a, &titleText);
+        g_pSimMgr->GetString(0x2753, 0x1b, &templateText);
+        scanBracketExpressions(g_pSimMgr, &formattedText, static_cast<LPCSTR>(templateText),
+                               static_cast<LPCSTR>(minorNameText),
+                               static_cast<LPCSTR>(nationNameText));
+        g_pUiRuntimeContext->DispatchLocalizedUiMessageWithTemplate(
+            3, titleText, formattedText, &g_cstrNationComparisonMessageStore, 0, 0);
+        ++advisoryCount;
+      }
+      break;
+    }
+    case 0x131: {
+      g_apNationStates[eventRecord[1]]->FormatOverlayTerrainLabelText(&nationNameText);
+      g_pSimMgr->GetString(0x2753, 0x1c, &titleText);
+      g_pSimMgr->GetString(0x2753, 0x1d, &templateText);
+      scanBracketExpressions(g_pSimMgr, &formattedText, static_cast<LPCSTR>(templateText),
+                             static_cast<LPCSTR>(nationNameText));
+      g_pUiRuntimeContext->DispatchLocalizedUiMessageWithTemplate(
+          3, titleText, formattedText, &g_cstrNationComparisonMessageStore, 0, 0);
+      ++advisoryCount;
+      break;
+    }
+    }
+  }
+
+  CString contextMessageText(g_pszEmptyTextPointer_00656f60);
+  if (g_apNationStates[activeNationIndex]->BuildGreatPowerMapContextTriggeredNationEventMessages(
+          &contextMessageText) != 0) {
+    g_pSimMgr->GetString(0x2753, 0x3c, &titleText);
+    g_pSimMgr->GetString(0x2753, 0x3d, &templateText);
+    CString combinedText = templateText + contextMessageText;
+    formattedText = combinedText;
+    g_pUiRuntimeContext->DispatchLocalizedUiMessageWithTemplate(
+        3, titleText, formattedText, &g_cstrNationComparisonMessageStore, 1, 0);
+  }
+
+  contextMessageText = CString(g_pszEmptyTextPointer_00656f60);
+  if (g_apNationStates[activeNationIndex]->BuildGreatPowerEligibleNationEventMessagesFromLinkedList(
+          &contextMessageText) != 0) {
+    g_pSimMgr->GetString(0x2753, 0x42, &titleText);
+    g_pSimMgr->GetString(0x2753, 0x43, &templateText);
+    templateText += contextMessageText;
+    g_pUiRuntimeContext->DispatchLocalizedUiMessageWithTemplate(
+        3, titleText, templateText, &g_cstrNationComparisonMessageStore, 1, 0);
+  }
+
+  if (activeCity != 0 && activeCity->field06 != 0 && activeCity->field08 == 0) {
+    g_pSimMgr->GetString(0x2753, 0x16, &titleText);
+    g_pSimMgr->GetString(0x2753, 0x17, &templateText);
+    g_pUiRuntimeContext->DispatchLocalizedUiMessageWithTemplate(
+        5, titleText, templateText, &g_cstrNationComparisonMessageStore, 2, 0);
+    ++advisoryCount;
+  }
+  return advisoryCount;
+}
+
+// FUNCTION: IMPERIALISM 0x00501a20
+void THelpMgr::ShowPeriodicCapabilityReminderIfNeeded() {
+  short tickMod = static_cast<short>(g_pSimMgr->GetTurnTickSlot3C() % 10);
+  short activeNation = g_pSimMgr->GetActiveNationId();
+  CString titleText;
+  CString messageText;
+  // Constructed and destroyed unused in the original (EH state 2).
+  CString unusedText;
+  if (tickMod == 0 || tickMod == 5) {
+    if (g_pCityOrderCapabilityState->orderCapRows277[activeNation]
+            .techStatusByTechId[g_pCityOrderCapabilityState->marker262] == 0) {
+      g_pSimMgr->GetString(0x2753, 0x18, &titleText);
+      g_pSimMgr->GetString(0x2753, 0x19, &messageText);
+      g_pUiRuntimeContext->DispatchLocalizedUiMessageWithTemplate(
+          5, titleText, messageText, &g_cstrNationComparisonMessageStore, 2, 0);
     }
   }
 }
@@ -179,7 +297,7 @@ void THelpMgr::HandlePostDispatchTurnStateEventUpdates() {
 // ten comparison metrics; when some eligible nation's metric exceeds twice the active
 // nation's, a localized advisory (string group 0x2753) is formatted and dispatched.
 // FUNCTION: IMPERIALISM 0x00501be0
-char ShowPeriodicNationComparisonAdvisoryIfNeeded() {
+char THelpMgr::ShowPeriodicNationComparisonAdvisoryIfNeeded() {
   short activeNation = g_pSimMgr->GetActiveNationId();
   CString formatText;
   CString templateText;

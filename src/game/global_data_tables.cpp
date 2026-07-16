@@ -983,6 +983,11 @@ double DAT_0066fad0 = 0.092;
 // GLOBAL: IMPERIALISM 0x006a4780
 POINT g_aTacticalUnitFacingOffsetTable[29][7][2];
 
+// Const pointer to the shared empty-string byte (seeds the advisory message
+// accumulators in THelpMgr::DispatchTurnStateSpecialAdvisoriesAndReturnCount).
+// GLOBAL: IMPERIALISM 0x00656f60
+extern const char* const g_pszEmptyTextPointer_00656f60 = g_szEmptyString;
+
 TZone* g_pMapActionContextListHead = 0;
 // GLOBAL: IMPERIALISM 0x006a3fbc
 TOcean* g_pActiveMapOrderContext = 0;

@@ -163,8 +163,11 @@ public:
   virtual short ComputeTreasuryStatusPromptCode(void);
   // slot 0x52 — 0x004e1c20 dispatches it on the target nation with mode 0/1.
   virtual char CompareMissionScoreVariantsByMode(int mode);
-  virtual void BuildGreatPowerMapContextTriggeredNationEventMessages(void);
-  virtual void BuildGreatPowerEligibleNationEventMessagesFromLinkedList(void);
+  // slots 0x53/0x54 — both take the advisory message accumulator by pointer and
+  // append "\n     <name>" lines for each qualifying zone/town, returning nonzero
+  // when anything was appended (RET 4 + AL read at the 0x501270 call sites).
+  virtual char BuildGreatPowerMapContextTriggeredNationEventMessages(CString* outMessageText);
+  virtual char BuildGreatPowerEligibleNationEventMessagesFromLinkedList(CString* outMessageText);
   // slot 0x55 — body 0x004e0290: selection-sorts trackedObjectList ascending by the
   // per-order-type priority table at 0x6966d0.
   virtual void SortTrackedOrdersByTypePriority(void);
