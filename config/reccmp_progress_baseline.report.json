@@ -19719,7 +19719,7 @@
     },
     {
       "address": "0x535940",
-      "matching": 0.03571428571428571,
+      "matching": 1.0,
       "name": "FindFirstTrackedHandlerMatchingModeAndShortKey",
       "type": 1
     },
@@ -19743,7 +19743,7 @@
     },
     {
       "address": "0x536090",
-      "matching": 0.6268656716417911,
+      "matching": 0.6567164179104478,
       "name": "CompareMissionOrderEntriesByPriorityScore",
       "type": 1
     },
@@ -19857,7 +19857,7 @@
     },
     {
       "address": "0x537090",
-      "matching": 0.37410071942446044,
+      "matching": 0.4148148148148148,
       "name": "TScatteredShipsMission::QueueMissionOrdersByPriorityForContext",
       "type": 1
     },

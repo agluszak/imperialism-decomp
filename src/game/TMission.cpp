@@ -4,6 +4,7 @@
 
 #include "decomp_types.h"
 #include "game/mfc.h"
+#include "game/CIterator.h"
 #include "game/TAttackProvinceMission.h"
 #include "game/TBlockadePortMission.h"
 #include "game/TControlSeaZoneMission.h"
@@ -250,15 +251,32 @@ void TMission::ReadFrom(TStream* stream) {
   stream->ReadBytes(&marker11, 1);
 }
 
+// Walks `list` (a TSortedList) calling AssertValid() then MatchesMissionKeySlot4C(kind,
+// key, mode) on each TMission-derived entry, returning the first one that matches (or
+// nullptr).
+// FUNCTION: IMPERIALISM 0x00535940
+TMission* __cdecl FindFirstTrackedHandlerMatchingModeAndShortKey(TSortedList* list, int kind,
+                                                                 short key, int mode) {
+  CIterator iter(list);
+  for (TMission* entry = static_cast<TMission*>(iter.Reset()); iter.More();
+       entry = static_cast<TMission*>(iter.Advance())) {
+    entry->AssertValid();
+    if (entry->MatchesMissionKeySlot4C(kind, key, mode)) {
+      return entry;
+    }
+  }
+  return nullptr;
+}
+
 // qsort-style comparator: descending order by a "remaining priority" score --
 // (1.0 - ReturnZeroFloatSlot68()) scaled by value0c (multiplied when that difference is
-// >= 0, divided when negative). Call30() is invoked on both sides first (a no-op in the
-// base TMission; concrete missions override it), matching the ground truth's double-
-// dispatch shape before the scores are read.
+// >= 0, divided when negative). AssertValid() is invoked on both sides first (the
+// inherited CObject/MFC debug-assert virtual, a no-op in release builds), matching the
+// ground truth's double-dispatch shape before the scores are read.
 // FUNCTION: IMPERIALISM 0x00536090
 short __cdecl CompareMissionOrderEntriesByPriorityScore(TMission* a, TMission* b) {
-  a->Call30();
-  b->Call30();
+  a->AssertValid();
+  b->AssertValid();
 
   float diffA = static_cast<float>(g_MissionScoreOneConstant_0065a470) - a->ReturnZeroFloatSlot68();
   float weightedA = (diffA >= g_MissionDefaultScore_0065a468)

@@ -11,14 +11,6 @@ undefined4 ResetTScatteredShipsMissionToSentinelVtable(void)
   return 0;
 }
 
-// ghidra_name FindFirstTrackedHandlerMatchingModeAndShortKey
-// ghidra_proto undefined FindFirstTrackedHandlerMatchingModeAndShortKey()
-// FUNCTION: IMPERIALISM 0x00535940
-undefined4 FindFirstTrackedHandlerMatchingModeAndShortKey(void)
-{
-  return 0;
-}
-
 // ghidra_name SelectBestCityDevelopmentFromResourcePools
 // ghidra_proto undefined SelectBestCityDevelopmentFromResourcePools()
 // FUNCTION: IMPERIALISM 0x00535b00

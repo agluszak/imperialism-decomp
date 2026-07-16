@@ -2963,6 +2963,7 @@ address|target_cpp|ownership|note
 535800|src/game/TDefendProvinceMission.cpp|manual|marker_sync
 535820|src/game/TMission.cpp|manual|marker_sync
 5358a0|src/game/TMission.cpp|manual|marker_sync
+535940|src/game/TMission.cpp|manual|marker_sync
 5359e0|src/game/TDefendProvinceMission.cpp|manual|marker_sync
 536090|src/game/TMission.cpp|manual|marker_sync
 5362c0|src/game/TArmyPlayer.cpp|manual|marker_sync

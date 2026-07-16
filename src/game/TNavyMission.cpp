@@ -17,7 +17,6 @@ IMPLEMENT_SERIAL(TNavyMission, TMission, 1)
 // signature per the autogen stub definition; real signature applied via a
 // typed cast at each call site so the linker resolves the correct symbol).
 extern undefined4 GetNavyPrimaryOrderNodeByIndex(void);
-extern undefined4 FindFirstTrackedHandlerMatchingModeAndShortKey(void);
 extern undefined4 GetOrCreateMissionOrderEntryForNode(void);
 
 // Swaps float byte order (Big-Endian <-> Little-Endian)
@@ -346,14 +345,12 @@ TZone* TNavyMission::GetActiveTargetZoneByState28() {
 // FUNCTION: IMPERIALISM 0x00537090
 void TNavyMission::QueueMissionOrdersByPriorityForContext(int pContextAnchor,
                                                           int* ppSelectedChildNode) {
-  typedef void*(__cdecl * FindFirstTrackedHandlerMatchingModeAndShortKey_t)(void*, int);
-  FindFirstTrackedHandlerMatchingModeAndShortKey_t
-      FindFirstTrackedHandlerMatchingModeAndShortKey_fn =
-          reinterpret_cast<FindFirstTrackedHandlerMatchingModeAndShortKey_t>(
-              (void*)&FindFirstTrackedHandlerMatchingModeAndShortKey);
-
-  if ((*ppSelectedChildNode != 0) && (FindFirstTrackedHandlerMatchingModeAndShortKey_fn(
-                                          orderList24, *ppSelectedChildNode) == nullptr)) {
+  // Was bridged through a mis-targeted "FindFirstTrackedHandlerMatchingModeAndShortKey"
+  // cdecl stub cast (a name collision with the unrelated real function at 0x535940); the
+  // actual callee here (verified via the 0x40635c ILT thunk row) is the already-ported
+  // TMapOrderChildLinkNode::FindNodeMatching (0x552510).
+  if (*ppSelectedChildNode != 0 && orderList24->FindNodeMatching(reinterpret_cast<TTaskForce*>(
+                                       *ppSelectedChildNode)) == nullptr) {
     *ppSelectedChildNode = 0;
   }
 
@@ -413,9 +410,9 @@ LAB_0053711a:
     if (i == 1 && orderObj == startOrder)
       continue;
 
-    void* nodePtr = FindFirstTrackedHandlerMatchingModeAndShortKey_fn(
-        orderList24, reinterpret_cast<int>(orderObj));
-    *reinterpret_cast<char*>(reinterpret_cast<char*>(nodePtr) + 0xc) = 1;
+    TMapOrderChildLinkNode* node =
+        orderList24->FindNodeMatching(static_cast<TTaskForce*>(orderObj));
+    node->active_flag = 1;
     // GetOrCreateMissionOrderEntryForNode (0x5503a0) creates/returns a TTaskForce
     // entry -- see the contextAnchor field comment in TTaskForce.h.
     TTaskForce* entry =
