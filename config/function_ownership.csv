@@ -4887,6 +4887,7 @@ address|target_cpp|ownership|note
 5baf70|src/game/TDealBookPicture.cpp|manual|marker_sync
 5bb2e0|src/game/TDealBookPicture.cpp|manual|marker_sync
 5bbc30|src/game/TDealBookPicture.cpp|manual|marker_sync
+5bc0d0|src/game/TDealBookPicture.cpp|manual|marker_sync
 5bc690|src/game/TDealTabControl.cpp|manual|marker_sync
 5bc760|src/game/TDealTabControl.cpp|manual|marker_sync
 5bc780|src/game/TDealTabControl.cpp|manual|marker_sync

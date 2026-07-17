@@ -427,14 +427,6 @@ undefined4 WrapperFor_ftol_At005ba600(void)
   return 0;
 }
 
-// ghidra_name RefreshTradeSelectionHeaderAndNationOfferBidLines
-// ghidra_proto undefined RefreshTradeSelectionHeaderAndNationOfferBidLines()
-// FUNCTION: IMPERIALISM 0x005bc0d0
-undefined4 RefreshTradeSelectionHeaderAndNationOfferBidLines(void)
-{
-  return 0;
-}
-
 // ghidra_name TTradePageSellView::DestructTTradePageSellViewAndMaybeFree_Impl
 // ghidra_proto undefined DestructTTradePageSellViewAndMaybeFree_Impl()
 // FUNCTION: IMPERIALISM 0x005bcfa0
