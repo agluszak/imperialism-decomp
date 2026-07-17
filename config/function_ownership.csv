@@ -2577,6 +2577,7 @@ address|target_cpp|ownership|note
 5136a0|src/game/TMapMgr.cpp|manual|marker_sync
 513720|src/game/TMapMgr.cpp|manual|marker_sync
 513980|src/game/TMapMgr.cpp|manual|marker_sync
+513ca0|src/game/TMapMgr.cpp|manual|marker_sync
 513ed0|src/game/TMapMgr.cpp|manual|marker_sync
 513f60|src/game/TMapMgr.cpp|manual|marker_sync
 513ff0|src/game/TMapMgr.cpp|manual|marker_sync
@@ -3408,6 +3409,7 @@ address|target_cpp|ownership|note
 553e30|src/game/TTaskForce.cpp|manual|marker_sync
 553f10|src/game/TTaskForce.cpp|manual|marker_sync
 553fe0|src/game/TTaskForce.cpp|manual|marker_sync
+554660|src/game/TTaskForce.cpp|manual|marker_sync
 5548e0|src/game/TTaskForce.cpp|manual|marker_sync
 554930|src/game/TTaskForce.cpp|manual|marker_sync
 5549a0|src/game/TTaskForce.cpp|manual|marker_sync
@@ -3444,6 +3446,7 @@ address|target_cpp|ownership|note
 557170|src/game/TNavyMgr.cpp|manual|marker_sync
 557210|src/game/TNavyMgr.cpp|manual|marker_sync
 5572d0|src/game/TTechMgr.cpp|manual|marker_sync
+557560|src/game/TNavyMgr.cpp|manual|marker_sync
 5577b0|src/game/TNavyMgr.cpp|manual|marker_sync
 557870|src/game/TTaskForce.cpp|manual|marker_sync
 5578a0|src/game/TNavyMgr.cpp|manual|marker_sync
@@ -5400,6 +5403,8 @@ address|target_cpp|ownership|note
 5e8bb0|src/game/library_msvc500_fid.cpp|library|marker_sync
 5e8c50|src/game/compiler_runtime.cpp|manual|compiler_helper_do_not_stub
 5e8cc8|src/game/compiler_runtime.cpp|manual|compiler_helper_do_not_stub
+5e8cf0|src/game/mfc_heap_library.cpp|library|marker_sync
+5e8ee0|src/game/mfc_heap_library.cpp|library|marker_sync
 5e9010|src/game/buffered_stream.cpp|library|marker_sync
 5e9050|src/game/buffered_stream.cpp|library|marker_sync
 5e90c0|src/game/buffered_stream.cpp|library|marker_sync

@@ -206,6 +206,11 @@ public:
   void ResetOrderTypeAndStrengthDword(int packedValue); // 0x552f60
   TTaskForce* SelectPreferredMapOrderEntryByPriorityRules(TTaskForce* candidate,
                                                           int compareAttachedFlag);
+  // 0x554660 -- drops inactive children (owner cleared, bucket counter decremented,
+  // node unlinked+freed), refolds activeChildEntry, then moves this entry to the head
+  // of g_pNavyOrderManager's queue (or Free()s it when no children survive) and
+  // finalizes through g_pActiveMapOrderContext.
+  void RequeueMapOrderEntry();
   // If `owner` already exists and it has exactly one child (this node itself), reuses
   // `owner` directly as this node's own order entry. Otherwise detaches `this` from a
   // shared owner (if any -- same unlink/rebind sequence as RemoveNode, just expressed

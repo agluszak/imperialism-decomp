@@ -1,6 +1,8 @@
 // TCityProductionView temporary QuickDraw render-context slice.
 
 #include "game/TCityProductionView.h"
+
+#include <time.h>
 #include "game/TSimMgr.h"
 #include "game/global_data_tables.h"
 #include "game/TGreatPower.h"
@@ -20,14 +22,6 @@ extern "C" short g_Render_Nation_Header_Value_006961F8[12] = {0};
 extern "C" short g_Render_Nation_Header_Value_00696210[12] = {0};
 extern "C" short g_Render_Nation_Header_Value_00696228[12] = {0};
 
-struct RuntimeLocalTime {
-  int tm_sec;
-  int tm_min;
-  short tm_hour;
-};
-
-undefined4 GetCurrentLocalEpochSecondsWithTimezoneCache(void);
-undefined4 ConvertEpochSecondsToLocalTmWithDstAdjust(void);
 // SYNTHETIC: IMPERIALISM 0x004ba240
 // TCityProductionView::CreateObject
 
@@ -82,17 +76,15 @@ void TCityProductionView::RenderNationHeaderDateLabelWithPeriodicRefresh() {
   short sVar2 = (mask2 & 0x14) + 0x6b;
 
   if (currentMonthAtA8 < 0) {
-    int epochSeconds;
-    reinterpret_cast<void(__cdecl*)(int*)>(GetCurrentLocalEpochSecondsWithTimezoneCache)(
-        &epochSeconds);
-    RuntimeLocalTime* tm = reinterpret_cast<RuntimeLocalTime*(__cdecl*)(const int*)>(
-        ConvertEpochSecondsToLocalTmWithDstAdjust)(&epochSeconds);
+    time_t epochSeconds;
+    time(&epochSeconds);
+    struct tm* tm = localtime(&epochSeconds);
 
     int iVar4 = tm->tm_min;
     short sVar6 = static_cast<short>(iVar4 / 5);
     currentWeekAtAa = sVar6;
 
-    short sVar1 = tm->tm_hour;
+    short sVar1 = static_cast<short>(tm->tm_hour);
     currentMonthAtA8 = sVar1;
     if (6 < sVar6) {
       currentMonthAtA8 = sVar1 + 1;

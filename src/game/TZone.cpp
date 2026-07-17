@@ -1,3 +1,5 @@
+#include <time.h>
+
 #include "game/TZone.h"
 #include "game/global_data_tables.h"
 
@@ -15,8 +17,6 @@
 #include "game/TSimMgr.h"
 #include "game/TTaskForce.h"
 #include "game/UiRuntimeContext.h"
-
-undefined4 GetCurrentLocalEpochSecondsWithTimezoneCache(void);
 
 namespace {
 
@@ -1200,8 +1200,7 @@ void RegenerateAllMapActionContextStatusCodes(void) {
   }
   g_zoneStatusCodePrngSeed_006a5aec = seed;
   if (seed == 0) {
-    g_zoneStatusCodePrngSeed_006a5aec =
-        reinterpret_cast<int(__cdecl*)(void*)>(GetCurrentLocalEpochSecondsWithTimezoneCache)(0);
+    g_zoneStatusCodePrngSeed_006a5aec = time(0);
   }
   g_mapActionContextDisplayNameCacheId_006984b8 = -1;
 
@@ -1216,8 +1215,7 @@ void RegenerateAllMapActionContextStatusCodes(void) {
   }
 
   g_zoneStatusCodePrngSeed_006a5aec = 0;
-  g_zoneStatusCodePrngSeed_006a5aec =
-      reinterpret_cast<int(__cdecl*)(void*)>(GetCurrentLocalEpochSecondsWithTimezoneCache)(0);
+  g_zoneStatusCodePrngSeed_006a5aec = time(0);
 }
 
 // Walks every map tile; for each coastal/port tile (terrain marker 3 or 0xe) or land tile

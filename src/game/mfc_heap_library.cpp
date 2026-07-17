@@ -54,3 +54,10 @@
 
 // LIBRARY: IMPERIALISM 0x00413380
 // CObject::operator delete
+
+// LIBRARY: IMPERIALISM 0x005e8ee0
+// _time (CRT time(); "GetCurrentLocalEpochSecondsWithTimezoneCache" was the same class
+// of Ghidra guess as _free/_realloc above -- call the real `time()` at call sites)
+
+// LIBRARY: IMPERIALISM 0x005e8cf0
+// _localtime (CRT localtime(); was "ConvertEpochSecondsToLocalTmWithDstAdjust")

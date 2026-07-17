@@ -725,6 +725,10 @@ public:
   // 0x513ed0. True if either of the tile's two edge resources is a prospecting-discovery
   // candidate (codes 3/4/0x15/0x16, or 6 when the active nation has a production order).
   byte CheckTileProspectingDiscoveryCandidate(short nTileIndex);
+  // 0x513ca0 -- whether tileIndex reaches a sea tile (hex neighbour or terrain-flow
+  // chain) owned outside the active type-3/4 diplomatic mask; receiver is
+  // g_pGlobalMapState at every callsite.
+  char HasReachableSeaTileOutsideActiveType3Or4DiplomaticMask(short tileIndex);
 
   // 0x514110. Resolves a tile's border/subtype icon code from terrainType00, keyed off
   // resourceTypeByEdge[0]/gateFlag/activeFlags1c depending on terrain class; falls back to

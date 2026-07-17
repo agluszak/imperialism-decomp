@@ -1,3 +1,5 @@
+#include <time.h>
+
 #include "game/TMapMgr.h"
 
 #include "game/TMapMaker.h"
@@ -37,7 +39,6 @@
 short TraceTerrainFlowToNearestSeaTile(short tileIndex);
 char __stdcall EvaluateTerrainFlowCrossNationBoundaryToSea(short tileIndex);
 void NormalizeWrappedMapCoord217x60(short* xCoord, short* yCoord);
-undefined4 GetCurrentLocalEpochSecondsWithTimezoneCache(void);
 undefined4 SetSharedStringFromRotatingFlavorTextBySlot(void);
 
 // FUNCTION: IMPERIALISM 0x004a4190
@@ -471,8 +472,7 @@ char TMapMgr::BuildOrLoadGlobalMapStateForSession(const char* mapStreamName, cha
   mapMaker->RebuildUMapperRouteRecordsAndActiveMapRects();
   g_pSimMgr->ReseedThreadLocalRandom();
   g_zoneStatusCodePrngSeed_006a5aec = 0;
-  g_zoneStatusCodePrngSeed_006a5aec = reinterpret_cast<unsigned int(__cdecl*)(int)>(
-      GetCurrentLocalEpochSecondsWithTimezoneCache)(0);
+  g_zoneStatusCodePrngSeed_006a5aec = time(0);
   if (g_pActiveRandomMapSetupPicture006A4268 != 0) {
     g_pActiveRandomMapSetupPicture006A4268->SpinYourGlobe();
   }
@@ -520,8 +520,7 @@ void TMapMgr::RefreshMapContextRotatingStatusStrings() {
   }
   g_zoneStatusCodePrngSeed_006a5aec = seed;
   if (seed == 0) {
-    g_zoneStatusCodePrngSeed_006a5aec =
-        reinterpret_cast<int(__cdecl*)(void*)>(GetCurrentLocalEpochSecondsWithTimezoneCache)(0);
+    g_zoneStatusCodePrngSeed_006a5aec = time(0);
   }
 
   // Reset the rotating-flavor-text slot counters (slot = -1), then assign a
@@ -542,8 +541,7 @@ void TMapMgr::RefreshMapContextRotatingStatusStrings() {
   // Reseed the PRNG from the system clock so later status-code generation is
   // non-deterministic.
   g_zoneStatusCodePrngSeed_006a5aec = 0;
-  g_zoneStatusCodePrngSeed_006a5aec =
-      reinterpret_cast<int(__cdecl*)(void*)>(GetCurrentLocalEpochSecondsWithTimezoneCache)(0);
+  g_zoneStatusCodePrngSeed_006a5aec = time(0);
 }
 
 // FUNCTION: IMPERIALISM 0x0050f860
@@ -2165,6 +2163,74 @@ bool TMapMgr::IsValidSecondaryNationHomeTileCandidate(short tileIndex) {
     isValid = true;
   }
   return isValid;
+}
+
+// Whether `tileIndex` can reach a sea tile — directly via one of its six hex
+// neighbours, or (when no sea neighbour exists) via its terrain-flow chain —
+// whose owning nation is NOT diplomatically related to the tile's own nation
+// through the active type-3/4 order mask. Every original callsite loads ECX
+// from g_pGlobalMapState (0x6a43d4): a real TMapMgr method, not the free
+// __cdecl(short) the old TTown typedef-cast pretended (it dropped `this`).
+// The hex wrap/clamp arithmetic is open-coded here because the original body
+// inlines it (no calls to the 0x5128f0/0x512850 helpers at this site).
+// FUNCTION: IMPERIALISM 0x00513ca0
+char TMapMgr::HasReachableSeaTileOutsideActiveType3Or4DiplomaticMask(short tileIndex) {
+  int originNation = static_cast<signed char>(terrainStateTable[tileIndex].ownerNationTag04);
+  char result = 0;
+  short row = static_cast<short>(tileIndex / 0x6c);
+  int colX2 = row % 2 + (tileIndex % 0x6c) * 2;
+
+  for (short direction = 0; direction <= 5; ++direction) {
+    short colDir = direction;
+    if (colDir < 0) {
+      colDir = static_cast<short>(colDir + 6);
+    } else if (colDir > 5) {
+      colDir = static_cast<short>(colDir - 6);
+    }
+    short candColX2 = static_cast<short>(colX2 + g_Build_Hex_Area_LookupTable_00696E70[colDir]);
+    short rowDir = direction;
+    if (rowDir < 0) {
+      rowDir = static_cast<short>(rowDir + 6);
+    } else if (rowDir > 5) {
+      rowDir = static_cast<short>(rowDir - 6);
+    }
+    short candRow = static_cast<short>(row + g_Build_Hex_Area_LookupTable_00696E80[rowDir]);
+
+    if (candColX2 > 0xd7) {
+      candColX2 = static_cast<short>(candColX2 - 0xd9);
+    } else if (candColX2 < 0) {
+      candColX2 = static_cast<short>(candColX2 + 0xd8);
+    }
+    if (candRow < 0) {
+      candRow = 0;
+    } else if (candRow > 0x3b) {
+      candRow = 0x3b;
+    }
+
+    short neighborTile = static_cast<short>(candColX2 / 2 + candRow * 0x6c);
+    if (neighborTile < 0 || neighborTile >= 0x1950) {
+      neighborTile = -1;
+    }
+    if (neighborTile != -1 && terrainStateTable[neighborTile].terrainType00 == 5) {
+      short neighborNation = terrainStateTable[neighborTile].ownerNationTag04;
+      if (g_pActiveMapOrderContext->GetMapActionContextEntryByNationCodeOffset17(neighborNation)
+              ->HasDiplomaticallyRelatedNationInActiveType3Or4OrderMask(originNation) == 0) {
+        result = 1;
+      }
+      break;
+    }
+  }
+
+  if (result == 0 && g_pGlobalMapState->terrainStateTable[tileIndex].roadFlag != 0 &&
+      EvaluateTerrainFlowCrossNationBoundaryToSea(tileIndex) == 0) {
+    short seaTile = TraceTerrainFlowToNearestSeaTile(tileIndex);
+    short seaNation = terrainStateTable[seaTile].ownerNationTag04;
+    if (g_pActiveMapOrderContext->GetMapActionContextEntryByNationCodeOffset17(seaNation)
+            ->HasDiplomaticallyRelatedNationInActiveType3Or4OrderMask(originNation) == 0) {
+      result = 1;
+    }
+  }
+  return result;
 }
 
 // FUNCTION: IMPERIALISM 0x00513ed0

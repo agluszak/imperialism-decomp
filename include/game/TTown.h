@@ -28,7 +28,7 @@ public:
   TTown();
   void InitializeTownMarker(const char* markerName, short regionId, char enabledFlag,
                             short ownerNation);
-  char IsTransportLinkedAndEnabled(void);
+  int IsTransportLinkedAndEnabled(void); // 0x5b7830: full-EAX 0/1 return (mov eax,1 / xor eax,eax)
 
   ~TTown() override;
 };

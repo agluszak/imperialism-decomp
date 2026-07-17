@@ -75,14 +75,6 @@ undefined4 CanBuildPortAtTile(void)
   return 0;
 }
 
-// ghidra_name HasReachableSeaTileOutsideActiveType3Or4DiplomaticMask
-// ghidra_proto undefined HasReachableSeaTileOutsideActiveType3Or4DiplomaticMask()
-// FUNCTION: IMPERIALISM 0x00513ca0
-undefined4 HasReachableSeaTileOutsideActiveType3Or4DiplomaticMask(void)
-{
-  return 0;
-}
-
 // ghidra_name FindReachableRecruitSpawnTileRecursive
 // ghidra_proto undefined FindReachableRecruitSpawnTileRecursive()
 // FUNCTION: IMPERIALISM 0x00514cd0

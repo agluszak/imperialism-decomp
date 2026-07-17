@@ -11,22 +11,6 @@ undefined4 ProbeStackPagesForLargeFrameAllocation(void)
   return 0;
 }
 
-// ghidra_name ConvertEpochSecondsToLocalTmWithDstAdjust
-// ghidra_proto undefined ConvertEpochSecondsToLocalTmWithDstAdjust()
-// FUNCTION: IMPERIALISM 0x005e8cf0
-undefined4 ConvertEpochSecondsToLocalTmWithDstAdjust(void)
-{
-  return 0;
-}
-
-// ghidra_name GetCurrentLocalEpochSecondsWithTimezoneCache
-// ghidra_proto undefined GetCurrentLocalEpochSecondsWithTimezoneCache()
-// FUNCTION: IMPERIALISM 0x005e8ee0
-undefined4 GetCurrentLocalEpochSecondsWithTimezoneCache(void)
-{
-  return 0;
-}
-
 // ghidra_name amsg_exit
 // ghidra_proto void __cdecl amsg_exit(int param_1)
 // FUNCTION: IMPERIALISM 0x005e9a60

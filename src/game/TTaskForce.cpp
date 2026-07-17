@@ -631,8 +631,7 @@ void TTaskForce::SetMapOrderType9AndQueue() {
 
     short bucketIndex = static_cast<short>(
         g_NavyOrderResourceDescriptorTable[child->order_type].enabledFlagOrBucketOffset);
-    short* bucketCounter =
-        reinterpret_cast<short*>(reinterpret_cast<char*>(this) + 0x1e + bucketIndex * 2);
+    short* bucketCounter = reinterpret_cast<short*>(pad_1e) + bucketIndex;
     --*bucketCounter;
 
     if (node == childOrderList) {
@@ -710,8 +709,7 @@ void TTaskForce::SetMapOrderType3Or4AndQueue(char fUseType4) {
 
     short bucketIndex = static_cast<short>(
         g_NavyOrderResourceDescriptorTable[child->order_type].enabledFlagOrBucketOffset);
-    short* bucketCounter =
-        reinterpret_cast<short*>(reinterpret_cast<char*>(this) + 0x1e + bucketIndex * 2);
+    short* bucketCounter = reinterpret_cast<short*>(pad_1e) + bucketIndex;
     --*bucketCounter;
 
     if (node == childOrderList) {
@@ -835,8 +833,7 @@ void TTaskForce::PromoteMapOrderChainAndQueue(TZone* pContextAnchor) {
 
     short bucketIndex = static_cast<short>(
         g_NavyOrderResourceDescriptorTable[child->order_type].enabledFlagOrBucketOffset);
-    short* bucketCounter =
-        reinterpret_cast<short*>(reinterpret_cast<char*>(this) + 0x1e + bucketIndex * 2);
+    short* bucketCounter = reinterpret_cast<short*>(pad_1e) + bucketIndex;
     --*bucketCounter;
 
     if (pruneNode == childOrderList) {
@@ -872,8 +869,7 @@ void TTaskForce::SetMapOrderType6AndQueue(int nOrderTarget) {
 
     short bucketIndex = static_cast<short>(
         g_NavyOrderResourceDescriptorTable[child->order_type].enabledFlagOrBucketOffset);
-    short* bucketCounter =
-        reinterpret_cast<short*>(reinterpret_cast<char*>(this) + 0x1e + bucketIndex * 2);
+    short* bucketCounter = reinterpret_cast<short*>(pad_1e) + bucketIndex;
     --*bucketCounter;
 
     if (node == childOrderList) {
@@ -952,8 +948,7 @@ void TTaskForce::SetMapOrderType5AndQueue(int nOrderTarget) {
 
     short bucketIndex = static_cast<short>(
         g_NavyOrderResourceDescriptorTable[child->order_type].enabledFlagOrBucketOffset);
-    short* bucketCounter =
-        reinterpret_cast<short*>(reinterpret_cast<char*>(this) + 0x1e + bucketIndex * 2);
+    short* bucketCounter = reinterpret_cast<short*>(pad_1e) + bucketIndex;
     --*bucketCounter;
 
     if (node == childOrderList) {
@@ -1133,7 +1128,7 @@ void TTaskForce::FindOrCreateChildOrderLink(TTaskForce* node) {
 
   short bucketIndex = static_cast<short>(
       g_NavyOrderResourceDescriptorTable[node->order_type].enabledFlagOrBucketOffset);
-  ++*reinterpret_cast<short*>(reinterpret_cast<char*>(this) + 0x1e + bucketIndex * 2);
+  ++*(reinterpret_cast<short*>(pad_1e) + bucketIndex);
 
   node->owner = this;
 
@@ -1176,8 +1171,7 @@ void TTaskForce::RebuildMapOrderEntryChildren() {
 
       short bucketIndex = static_cast<short>(
           g_NavyOrderResourceDescriptorTable[entry->order_type].enabledFlagOrBucketOffset);
-      short* bucketCounter =
-          reinterpret_cast<short*>(reinterpret_cast<char*>(this) + 0x1e + bucketIndex * 2);
+      short* bucketCounter = reinterpret_cast<short*>(pad_1e) + bucketIndex;
       --*bucketCounter;
 
       if (node == childOrderList) {
@@ -1244,6 +1238,89 @@ char TTaskForce::PruneInactiveTaskForceOrderHead() {
     return 1;
   }
   return 0;
+}
+
+// Drop every inactive child (returning it to a free agent), recompute the
+// preferred active child, then re-insert this entry at the head of the global
+// TNavyMgr order queue (freeing it instead when no children survive), and
+// finalize it through the active map-order context.
+// FUNCTION: IMPERIALISM 0x00554660
+void TTaskForce::RequeueMapOrderEntry() {
+  activeChildEntry = 0;
+  TMapOrderChildLinkNode* node = childOrderList;
+  while (node != 0) {
+    if (node->active_flag != 0) {
+      node = node->next;
+    } else {
+      node->object_ptr->owner = 0;
+      short bucketIndex =
+          static_cast<short>(g_NavyOrderResourceDescriptorTable[node->object_ptr->order_type]
+                                 .enabledFlagOrBucketOffset);
+      short* bucketCounter = reinterpret_cast<short*>(pad_1e) + bucketIndex;
+      --*bucketCounter;
+      if (node == childOrderList) {
+        childOrderList = node->next;
+      }
+      // The original open-codes DeleteMapOrderChildLinkAndReturnNext's unlink+free
+      // here instead of calling 0x552590.
+      TMapOrderChildLinkNode* following = node->next;
+      if (following != 0) {
+        following->prev_link = node->prev_link;
+      }
+      if (node->prev_link != 0) {
+        node->prev_link->next = node->next;
+      }
+      delete node;
+      node = following;
+    }
+  }
+
+  activeChildEntry = 0;
+  for (node = childOrderList; node != 0; node = node->next) {
+    activeChildEntry =
+        node->object_ptr->SelectPreferredMapOrderEntryByPriorityRules(activeChildEntry, 0);
+  }
+  AssertValid();
+
+  TNavyMgr* manager = g_pNavyOrderManager;
+  TTaskForce* oldHead = manager->orderListHead04;
+  TTaskForce* cursor = oldHead;
+  while (cursor != 0) {
+    if (cursor == this) {
+      g_pActiveMapOrderContext->FinalizeQueuedMapOrderEntry(this);
+      return;
+    }
+    cursor = cursor->queue_next;
+  }
+
+  short childCount;
+  if (this == 0) {
+    childCount = 0;
+  } else {
+    childCount = 0;
+    for (TMapOrderChildLinkNode* countNode = childOrderList; countNode != 0;
+         countNode = countNode->next) {
+      ++childCount;
+    }
+  }
+  if (childCount <= 0) {
+    Free();
+    return;
+  }
+
+  if (queue_prev != 0) {
+    queue_prev->queue_next = queue_next;
+  }
+  if (queue_next != 0) {
+    queue_next->queue_prev = queue_prev;
+  }
+  queue_prev = 0;
+  queue_next = oldHead;
+  if (oldHead != 0) {
+    oldHead->queue_prev = this;
+  }
+  manager->orderListHead04 = this;
+  g_pActiveMapOrderContext->FinalizeQueuedMapOrderEntry(this);
 }
 
 // FUNCTION: IMPERIALISM 0x005548e0
