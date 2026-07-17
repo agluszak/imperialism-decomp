@@ -33,6 +33,7 @@ import sys
 from collections import defaultdict
 from pathlib import Path
 
+from tools.common import ghidra_env
 from tools.common.file_scan import is_excluded_scan_path
 from tools.common.repo import repo_root_from_file
 from tools.common.symbols import functions_by_name
@@ -148,6 +149,11 @@ def main() -> int:
     parser.add_argument("--root", default="src/game")
     parser.add_argument("--strict", action="store_true", help="Exit 1 on STRONG findings")
     args = parser.parse_args()
+
+    if ghidra_env.install_dir() is None:
+        print("GHIDRA_INSTALL_DIR is not set; skipping (this audit needs the Ghidra DB, "
+              "source-only CI environments don't have it)")
+        return 0
 
     by_name, files_of = collect_typedefs(repo_root / args.root)
     addresses = resolve_addresses(repo_root, set(by_name))

@@ -125,6 +125,8 @@ char g_vtblTSortedByRelationshipList = 0;
 int g_lastEdgeAutoScrollTick16 = 0;
 // GLOBAL: IMPERIALISM 0x00695278
 int g_nSaveFormatVersion = -1;
+// GLOBAL: IMPERIALISM 0x006a3ee0
+int g_UnknownMapOrderExecutionGuard_006a3ee0 = 0;
 // Upper-cased command-line switch literals matched by
 // ImperialismCommandLineInfo::ParseParam (0x4133d0).
 // GLOBAL: IMPERIALISM 0x00694250
@@ -1171,6 +1173,8 @@ extern "C" const char s_SourcePathUViewMgrMore_0069B740[] = "D:\\Ambit\\Cross\\U
 extern "C" const char s_SourcePathUArmyMgr_0069573C[] = "D:\\Ambit\\Cross\\UArmyMgr.cpp";
 // GLOBAL: IMPERIALISM 0x0069943c
 extern "C" const char s_SourcePathUSuperMap_0069943C[] = "D:\\Ambit\\Cross\\USuperMap.cpp";
+// GLOBAL: IMPERIALISM 0x0069aa94
+extern "C" const char s_SourcePathUTradeViews_0069AA94[] = "D:\\Ambit\\Cross\\UTradeViews.cpp";
 // GLOBAL: IMPERIALISM 0x006a460c
 short g_defaultMarkerBoxWidth_006a460c = 0;
 
@@ -1353,6 +1357,12 @@ int g_bCityDialogLegendSelectionInitialized = 0;
 
 // GLOBAL: IMPERIALISM 0x006a590c
 TInfoBarText* g_pCursorControlPanel = nullptr;
+
+// Shared scratch destination for TDisplayMgr::DispatchDisplayManagerControlStringMessage's
+// messageStoreRef out-parameter (TOfferDeskPicture::CreateNextTradeCommandAndFormatPrompt's
+// out-of-range-quantity error path is the first confirmed writer).
+// GLOBAL: IMPERIALISM 0x006a59e0
+CString g_cstrControlStringMessageStore;
 
 // GLOBAL: IMPERIALISM 0x006a1ab0
 int g_turnEventDialogAnchorPoint[2] = {0, 0};

@@ -1,5 +1,6 @@
 #pragma once
 
+#include "compat.h"
 #include "game/TLineData.h"
 #include "game/mfc.h"
 
@@ -21,5 +22,13 @@ public:
   // slot 0x0b OrphanRetStub_0056f480 inherited unchanged (0x56f480)
   // === END GENERATED DECLS (TTradeOfferNationLine) ===
 
+  // Set directly (not via a method) by TTradePageSellView::RebuildNationOfferRowsForCategory
+  // right after construction: categorySlot10 is the row-building category argument (constant
+  // across every row built in one rebuild pass), nationSlot12 is the per-row nation index.
+  short categorySlot10; // 0x10
+  short nationSlot12;   // 0x12
+
   TTradeOfferNationLine();
 };
+
+ASSERT_SIZE(TTradeOfferNationLine, 0x14);

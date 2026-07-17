@@ -8628,6 +8628,7 @@ address|name|symbol|size|type|prototype|provenance
 6a3ebc|g_pNavySecondaryOrderListHead|||global||
 6a3ed8|g_pCachedMapActionContext|||global||
 6a3edc|g_pNavyPrimaryOrderListHead|||global||
+6a3ee0|g_UnknownMapOrderExecutionGuard_006a3ee0|||global||
 6a3fbc|g_pActiveMapOrderContext|||global||
 6a3fc0|g_nMapActionContextCount|||global||
 6a3fc4|g_pMapActionContextDistanceCache|||global||

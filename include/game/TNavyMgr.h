@@ -39,8 +39,11 @@ public:
   // ctor initializes to -1; real purpose not yet identified from any confirmed reader.
   short field08;
   char pad0a[2];
-  // ctor initializes to 0; real purpose not yet identified from any confirmed reader.
-  int field0c;
+  // Transient dialog/context task-force reference: ResolveMapOrderChainsForTurnPhase's
+  // prologue (0x5578ad) is field0c's only confirmed reader/writer -- it Free()s the
+  // pointee (vtable slot 0x1c) if non-null, then clears field0c, at the start of every
+  // turn-phase order resolution pass.
+  TTaskForce* field0c;
 
   void RemoveOrdersByNationFromPrimarySecondaryAndTaskForceLists(short nationSlot);
 
@@ -125,6 +128,17 @@ public:
                                                        short offerAmount);
 
   void ProcessNationMapOrderInteractionsAndApplyOutcomes(short mode); // 0x558960
+
+  // 0x5578a0 (1102 bytes). Per-turn-phase map-order conflict resolver: clears any
+  // pending field0c context reference, then runs 6 filter/inner-loop passes over
+  // orderListHead04 pairing competing order entries (3/4-vs-6, 6-vs-1, direct
+  // type-1 apply, 3/4-vs-non-6, 1-vs-5 with an inlined threshold roll, direct
+  // type-5/8 apply), returning immediately if any pairwise resolution reports a
+  // result. Finishes by running the two-pass nation nation-interaction sweep,
+  // rebuilding orderListHead04 via PruneNavyOrderIfUnserviceableOrNoChildren,
+  // clearing the primary TShip list's transient field34 flag, and refreshing the
+  // active map-order context's overlays.
+  void ResolveMapOrderChainsForTurnPhase(); // 0x5578a0
 
   TNavyMgr();
 };

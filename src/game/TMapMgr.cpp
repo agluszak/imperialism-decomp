@@ -35,6 +35,7 @@
 #include "game/ui_invalidation_guard.h"
 
 short TraceTerrainFlowToNearestSeaTile(short tileIndex);
+char __stdcall EvaluateTerrainFlowCrossNationBoundaryToSea(short tileIndex);
 void NormalizeWrappedMapCoord217x60(short* xCoord, short* yCoord);
 undefined4 GetCurrentLocalEpochSecondsWithTimezoneCache(void);
 undefined4 SetSharedStringFromRotatingFlavorTextBySlot(void);
@@ -68,6 +69,110 @@ unsigned short __stdcall ResolveCivilianTileSelectionOrReportActionCode(short nT
     return 0x3f9;
   }
   return (actionKind != 10) - 1 & 0x3f3;
+}
+
+// Applies the world-state mutation for a completed civilian work order (order->field_8, an
+// int inherited-but-repurposed slot distinct from TUnit's own `orderType` short, holds this
+// specific completion kind: 5=rail section, 6=depot, 7=port, 8=discovery/prospecting,
+// 10=development-tier advance, 12=city/building completion, 13=tile activity byte), then
+// dispatches redraw invalidation for the affected tiles/cities when the localized map UI
+// is active (g_pSimMgr->field44 != 0).
+// FUNCTION: IMPERIALISM 0x004d4390
+void __cdecl ApplyCompletedCivWorkOrderToMapState(TCivUnit* order) {
+  // Case bodies are written in the original's physical block layout (5, 8, 3, 1, 2, 0, 7 --
+  // not ascending case-value order) so MSVC500's jump-table codegen lays them out the same
+  // way; the jump table itself (built from the case labels) is unaffected by text order.
+  switch (order->field_8 - 5) {
+  case 5: { // development-tier advance
+    bool selectHighNibble = (order->orderType == 0 || order->orderType == 8);
+    byte result = g_pGlobalMapState->GetTileCivilianWorkOrderCostClassNibble(order->tileIndex06,
+                                                                             selectHighNibble);
+    g_pGlobalMapState->SetCivilianDevelopmentClassNibble(order->tileIndex06, selectHighNibble,
+                                                         static_cast<byte>(result + 1), 1);
+    break;
+  }
+  case 8: // tile activity byte
+    g_pGlobalMapState->terrainStateTable[order->tileIndex06].secondaryOwnerNationTag18 =
+        static_cast<signed char>(order->field_18);
+    break;
+  case 3: { // discovery/prospecting
+    TTerrainStateRecordView& tile = g_pGlobalMapState->terrainStateTable[order->tileIndex06];
+    // Dual-purpose with pendingDevelopmentFlag0d's documented sentinel-flag use elsewhere:
+    // here it's a per-nation owner-visibility bitmask (bit N = nation N has discovered).
+    tile.pendingDevelopmentFlag0d |= static_cast<unsigned char>(1 << order->field_18);
+    if (g_apNationStates[order->field_18]->diplomacyEligibilityA0 != 0 &&
+        g_pGlobalMapState->CheckTileProspectingDiscoveryCandidate(order->tileIndex06) != 0) {
+      order->completionMarker26 = 0x232f;
+    }
+    break;
+  }
+  case 1: // depot
+    g_pGlobalMapState->QueueDepotConstructionOrder(order->tileIndex06, order->field_18);
+    g_apNationStates[order->field_18]->BuildTransportLinkedInfluenceMap(nullptr);
+    order->completionMarker26 = 0x232a;
+    break;
+  case 2: // port
+    g_pGlobalMapState->QueuePortConstructionOrder(order->tileIndex06, order->field_18);
+    g_apNationStates[order->field_18]->BuildTransportLinkedInfluenceMap(nullptr);
+    order->completionMarker26 = 0x232b;
+    break;
+  case 0: // rail section
+    g_pGlobalMapState->SetHexAdjacencyDirectionFlagsForTilePair(order->field_C, order->tileIndex06,
+                                                                order->field_18);
+    order->completionMarker26 = 0x2329;
+    break;
+  case 7: // city/building completion
+    g_pGlobalMapState->SetProvinceCapitalTileFlagBit08(
+        g_pGlobalMapState->terrainStateTable[order->tileIndex06].cityRecordIndex);
+    break;
+  default:
+    break;
+  }
+
+  if (g_pSimMgr->field44 == 0) {
+    return;
+  }
+
+  // Physical block layout again: case 0 falls through into the shared case-3/5/8 tail
+  // (not written as separate blocks), then case 1/2, then case 7, then default.
+  switch (order->field_8 - 5) {
+  case 0: // rail section
+    DispatchTileRedrawInvalidateEvent(order->field_C);
+    // fall through
+  case 3: // discovery/prospecting
+  case 5: // development-tier advance
+  case 8: // tile activity byte
+    DispatchTileRedrawInvalidateEvent(order->tileIndex06);
+    return;
+  case 1:   // depot
+  case 2: { // port
+    short neighborBuf[7];
+    TMapMgr::ComputeHexNeighborTileIndices(order->tileIndex06, neighborBuf,
+                                           g_pGlobalMapState->hexNeighborWrapHorizontally20);
+    neighborBuf[6] = order->tileIndex06;
+    TTerrainStateRecordView& centerTile = g_pGlobalMapState->terrainStateTable[order->tileIndex06];
+    for (int i = 0; i < 7; ++i) {
+      short t = neighborBuf[i];
+      if (t == -1) {
+        continue;
+      }
+      DispatchTileRedrawInvalidateEvent(t);
+      short cityIdx = g_pGlobalMapState->terrainStateTable[t].cityRecordIndex;
+      if ((centerTile.activeFlags1c & 3) != 0 && centerTile.gateFlag != 0 && cityIdx != -1) {
+        g_pGameFlowState->DispatchCityRedrawInvalidateEvent(cityIdx);
+      }
+    }
+    return;
+  }
+  case 7: { // city/building completion
+    short cityIdx = g_pGlobalMapState->terrainStateTable[order->tileIndex06].cityRecordIndex;
+    g_pGameFlowState->DispatchCityRedrawInvalidateEvent(cityIdx);
+    DispatchTileRedrawInvalidateEvent(g_pGlobalMapState->cityScoreTable[cityIdx].cityTileIndex04);
+    return;
+  }
+  default:
+    return;
+  }
 }
 
 // Hex direction (0-6) from sourceTile to destTile on the 0x6c(108)-wide map, via each tile's
@@ -1981,6 +2086,86 @@ short TMapMgr::FindMaxResourceCapabilityValueForTile(short tileIndex, char categ
   }
   return maxValue;
 }
+// sea tile reachable without crossing into another nation's territory. Not (region class
+// 2 or 3): scans the 6 hex neighbors for an unclaimed (tileActionClass16 == -1) sea tile
+// (terrainType00 == 5) none of whose own 6 neighbors belong to a different, non-unclaimed
+// nation (ownerNationTag04 < 0x17 and != this tile's own owner). Falls back to
+// EvaluateTerrainFlowCrossNationBoundaryToSea when no such neighbor exists but this tile
+// has a road/feature flow code.
+// FUNCTION: IMPERIALISM 0x00513980
+bool TMapMgr::IsValidSecondaryNationHomeTileCandidate(short tileIndex) {
+  TTerrainStateRecordView* tile = &terrainStateTable[tileIndex];
+  signed char terrainType = tile->terrainType00;
+  short homeNation = tile->ownerNationTag04;
+  bool isValid = false;
+
+  if (terrainType != 3 && terrainType != 2) {
+    short row = static_cast<short>(tileIndex / 0x6c);
+    short colX2 = static_cast<short>(row % 2 + (tileIndex % 0x6c) * 2);
+
+    for (short direction = 0; direction < 6; ++direction) {
+      short wrappedDir = direction;
+      if (wrappedDir < 0) {
+        wrappedDir = static_cast<short>(wrappedDir + 6);
+      } else if (wrappedDir > 5) {
+        wrappedDir = static_cast<short>(wrappedDir - 6);
+      }
+      short candColX2 =
+          static_cast<short>(colX2 + g_Build_Hex_Area_LookupTable_00696E70[wrappedDir]);
+      short candRow = static_cast<short>(row + LookupHexNeighborRowDeltaByDirection(direction));
+      NormalizeWrappedMapCoord217x60(&candColX2, &candRow);
+      short candidateTile =
+          static_cast<short>(ComputeTileIndexFromHexColumnX2AndRow(candColX2, candRow));
+      if (candidateTile < 0 || candidateTile >= 0x1950) {
+        candidateTile = -1;
+      }
+
+      if (candidateTile != -1 && terrainStateTable[candidateTile].terrainType00 == 5) {
+        isValid = true;
+        short seaRow = static_cast<short>(candidateTile / 0x6c);
+        short seaColX2 = static_cast<short>(seaRow % 2 + (candidateTile % 0x6c) * 2);
+
+        for (short innerDir = 0; innerDir < 6; ++innerDir) {
+          short innerWrappedDir = innerDir;
+          if (innerWrappedDir < 0) {
+            innerWrappedDir = static_cast<short>(innerWrappedDir + 6);
+          } else if (innerWrappedDir > 5) {
+            innerWrappedDir = static_cast<short>(innerWrappedDir - 6);
+          }
+          short nColX2 =
+              static_cast<short>(seaColX2 + g_Build_Hex_Area_LookupTable_00696E70[innerWrappedDir]);
+          short nRow = static_cast<short>(seaRow + LookupHexNeighborRowDeltaByDirection(innerDir));
+          NormalizeWrappedMapCoord217x60(&nColX2, &nRow);
+          short neighborTile =
+              static_cast<short>(ComputeTileIndexFromHexColumnX2AndRow(nColX2, nRow));
+          if (neighborTile < 0 || neighborTile >= 0x1950) {
+            neighborTile = -1;
+          }
+          if (neighborTile != -1) {
+            short neighborNation = terrainStateTable[neighborTile].ownerNationTag04;
+            if (neighborNation < 0x17 && neighborNation != homeNation) {
+              isValid = false;
+              break;
+            }
+          }
+        }
+
+        if (terrainStateTable[candidateTile].tileActionClass16 != -1) {
+          isValid = false;
+        }
+        if (isValid) {
+          break;
+        }
+      }
+    }
+  }
+
+  if (!isValid && tile->roadFlag != 0 &&
+      EvaluateTerrainFlowCrossNationBoundaryToSea(tileIndex) == 0) {
+    isValid = true;
+  }
+  return isValid;
+}
 
 // FUNCTION: IMPERIALISM 0x00513ed0
 byte TMapMgr::CheckTileProspectingDiscoveryCandidate(short nTileIndex) {
@@ -2098,11 +2283,7 @@ TCivUnit* TMapMgr::GetTileUnitEntryByOwner(short tileIndex, short nationId) {
   return entry;
 }
 
-bool TMapMgr::IsValidSecondaryNationHomeTileCandidate(short tileIndex) {
-  // TODO: port body @ 0x513980 (632 bytes; not yet ported).
-  (void)tileIndex;
-  return false;
-}
+// Whether `tileIndex` (a candidate home tile for a secondary/minor nation) has a nearby
 
 // FUNCTION: IMPERIALISM 0x00514290
 short TMapMgr::ResolveTileOwnerNationCodeNormalized(int tileIndex) {
@@ -4075,6 +4256,82 @@ short TraceTerrainFlowToNearestSeaTile(short tileIndex) {
     }
   }
   return -1;
+}
+
+// Sibling of TraceTerrainFlowToNearestSeaTile: walks the same roadFlag-driven flow chain
+// (same type-remap/direction tables, same terrainType00==5 sea-reached terminal), but from
+// `tileIndex`'s own starting owner nation, tracking whether the flow crosses into a
+// differently-owned tile before reaching the sea. Tries flow variant 0 first (setting
+// crossedBoundary and continuing to walk on a first crossing), then variant 1 (returning 1
+// immediately on any crossing); 0xff means no evaluable flow (no road/feature code, or an
+// excluded feature range) or 100 steps exhausted on both variants without reaching the sea.
+// FUNCTION: IMPERIALISM 0x00563b70
+char __stdcall EvaluateTerrainFlowCrossNationBoundaryToSea(short tileIndex) {
+  TTerrainStateRecordView* terrainTable = g_pGlobalMapState->terrainStateTable;
+  signed char startOwnerNation = terrainTable[tileIndex].ownerNationTag04;
+
+  for (int attempt = 0; attempt < 2; ++attempt) {
+    short flowType = static_cast<short>(terrainTable[tileIndex].roadFlag);
+    char crossedBoundary = 0;
+    if (flowType == 0) {
+      return static_cast<char>(0xff);
+    }
+    if (flowType > 0x1a && flowType < 0x2b) {
+      flowType = static_cast<short>(flowType - 0x10);
+    }
+    if (flowType >= 0xb && flowType <= 0x1a) {
+      flowType = *reinterpret_cast<const short*>(kAddrTerrainFlowTypeRemapTable + flowType * 2);
+    } else if (flowType >= 0x2b && flowType <= 0x3a) {
+      return static_cast<char>(0xff);
+    }
+
+    short stepDirection = *reinterpret_cast<const short*>(kAddrTerrainFlowDirectionTable +
+                                                          (attempt + flowType * 2) * 2);
+    short walkTile = tileIndex;
+    for (int stepCount = 0; stepCount < 100; ++stepCount) {
+      walkTile = TMapMgr::StepHexTileIndexByDirectionWithWrapRules(walkTile, stepDirection);
+      if (walkTile == -1) {
+        return crossedBoundary;
+      }
+      TTerrainStateRecordView& walkRecord = terrainTable[walkTile];
+      if (walkRecord.terrainType00 == 5) {
+        return crossedBoundary;
+      }
+
+      short nextFlowType = static_cast<short>(walkRecord.roadFlag);
+      if (nextFlowType == 0) {
+        break;
+      }
+      if (nextFlowType > 0x1a && nextFlowType < 0x2b) {
+        nextFlowType = static_cast<short>(nextFlowType - 0x10);
+      }
+      if (nextFlowType >= 0xb && nextFlowType <= 0x1a) {
+        nextFlowType =
+            *reinterpret_cast<const short*>(kAddrTerrainFlowTypeRemapTable + nextFlowType * 2);
+      } else if (nextFlowType >= 0x2b && nextFlowType <= 0x3a) {
+        break;
+      }
+
+      if (startOwnerNation != walkRecord.ownerNationTag04) {
+        if (attempt > 0) {
+          return 1;
+        }
+        crossedBoundary = 1;
+      }
+
+      short preferredDirection = static_cast<short>((static_cast<int>(stepDirection) + 3) % 6);
+      const short* directionPair =
+          reinterpret_cast<const short*>(kAddrTerrainFlowDirectionTable + nextFlowType * 4);
+      if (directionPair[0] == preferredDirection) {
+        stepDirection = directionPair[1];
+      } else if (directionPair[1] != preferredDirection) {
+        break;
+      } else {
+        stepDirection = directionPair[0];
+      }
+    }
+  }
+  return static_cast<char>(0xff);
 }
 
 char TMapMgr::CallMetricSlotC4(int regionIndex, int edgeIndex) {

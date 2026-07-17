@@ -435,26 +435,10 @@ undefined4 RefreshTradeSelectionHeaderAndNationOfferBidLines(void)
   return 0;
 }
 
-// ghidra_name TTradePageSellView::ConstructTTradePageSellViewBaseState
-// ghidra_proto undefined ConstructTTradePageSellViewBaseState()
-// FUNCTION: IMPERIALISM 0x005bcc30
-undefined4 ConstructTTradePageSellViewBaseState(void)
-{
-  return 0;
-}
-
 // ghidra_name TTradePageSellView::DestructTTradePageSellViewAndMaybeFree_Impl
 // ghidra_proto undefined DestructTTradePageSellViewAndMaybeFree_Impl()
 // FUNCTION: IMPERIALISM 0x005bcfa0
 undefined4 DestructTTradePageSellViewAndMaybeFree_Impl(void)
-{
-  return 0;
-}
-
-// ghidra_name TTradePageBuyView::ConstructTTradePageBuyViewBaseState
-// ghidra_proto undefined ConstructTTradePageBuyViewBaseState()
-// FUNCTION: IMPERIALISM 0x005bd690
-undefined4 ConstructTTradePageBuyViewBaseState(void)
 {
   return 0;
 }
@@ -479,14 +463,6 @@ undefined4 UpdateSelectionRect(void)
 // ghidra_proto undefined UpdatePagerButtonStatesAndRefreshPanels()
 // FUNCTION: IMPERIALISM 0x005be3e0
 undefined4 UpdatePagerButtonStatesAndRefreshPanels(void)
-{
-  return 0;
-}
-
-// ghidra_name TNextTradeCommand::CreateNextTradeCommandAndFormatPrompt
-// ghidra_proto undefined CreateNextTradeCommandAndFormatPrompt()
-// FUNCTION: IMPERIALISM 0x005c04f0
-undefined4 CreateNextTradeCommandAndFormatPrompt(void)
 {
   return 0;
 }

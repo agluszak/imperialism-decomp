@@ -119,5 +119,14 @@ public:
   // slot 0x6d OrphanCallChain_C4_I18_0056ff90 inherited unchanged (0x56ff90)
   // === END GENERATED DECLS (TTradePageBuyView) ===
 
+  // Cache of the last-built category slot; RebuildNationBidRowsForCategory no-ops if
+  // asked to rebuild for the same category again.
+  short lastBuiltCategorySlot84; // 0x84
+
   TTradePageBuyView();
+  // 0x5bd690 -- mirrors TTradePageSellView::RebuildNationOfferRowsForCategory but with
+  // an ascending nation loop (0..0x16), a single header-row style variant, and no
+  // fallback row: on categorySlot == -1 or no qualifying nation, the row list is simply
+  // left cleared.
+  void RebuildNationBidRowsForCategory(short categorySlot);
 };

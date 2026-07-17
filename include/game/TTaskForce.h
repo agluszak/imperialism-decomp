@@ -248,6 +248,14 @@ public:
   // Used by BuildMapOrderBattleSideSnapshot for its overlay label field.
   void BuildTaskForceSelectionOverlayLabelText(CString* out); // 0x554c90
 
+  // Null-safe tail-recursive queue_next walk used by ResolveMapOrderChainsForTurnPhase
+  // to rebuild the order queue head: prunes (Free()s) any entry with no active children,
+  // or a live entry whose order_type is 0/1/4/7/8, or (order_type == 5) whose target
+  // city's diplomacy relation stamp with this entry's nation is out of date; every
+  // other live entry survives. Always recurses into queue_next first regardless of
+  // outcome. 0x555090.
+  TTaskForce* PruneNavyOrderIfUnserviceableOrNoChildren();
+
   // Per-entry candidate score blending this order's tiebreak_strength bucket against
   // its resource-type's navy-priority/resolve/calculate/task-force weight columns
   // (g_NavyOrderResourceDescriptorTable[order_type]) plus required_count. Used by the
@@ -291,12 +299,30 @@ public:
   // entry's own order_type/tiebreak_strength/required_count, not this entry's own).
   int ComputeTaskForceOrderAggregateScore(); // 0x556010
 
+  // Immediate/deferred execution effects for a resolved queue entry
+  // (ResolveMapOrderChainsForTurnPhase's tail passes): no-op once already eliminated.
+  // Type 1 propagates `owner` (reused as a raw assignment-target value) into every
+  // active child's own attachment field. Type 5 sets the target city's owner-flag bit
+  // for this entry's nation and, in single-player mode, invalidates that city's redraw.
+  // Type 8 advances every active child's required_count by a quarter-step toward its
+  // resource-type's stockCap. Any other type asserts once, then (except type 1) marks
+  // this entry processed.
+  void ApplyMapOrderTypeExecutionEffects(); // 0x556100
+
   // Compares this entry's best (lowest descriptorWeight) active child against `other`'s
   // average active-child rating; rolls against the gap to decide a tie-break winner.
   // On a loss, marks `this` (not `other`) eliminated (eliminatedFlag26 = 1) and returns
   // 1; else returns 0. Only the low byte of the original's return value is ever
   // consulted by callers, so this is modeled returning char rather than int.
   char ComputeTaskForceOrderTieBreakScore(TTaskForce* other); // 0x555c20
+
+  // Sub-step of ResolveMapOrderChainsForTurnPhase's pairwise resolution pass (called
+  // after the caller's own ShouldAttemptMapOrderPairResolution gate): bails (0) if
+  // either side has no active children; if the active nation preference is set and
+  // owns either side, returns 1 without resolving; otherwise hands off to
+  // g_pNavyOrderManager->ResolveMapOrderPairConflictStep(this, other), clears
+  // *pResolvedFlag to signal the caller a resolution happened, and returns 0.
+  char TryResolveMapOrderEntryPairExecution(TTaskForce* other, int* pResolvedFlag); // 0x555d10
 
   // this->ComputeTaskForceOrderAggregateScore()*100 < kOrderTypePriorityWeight[order_type] *
   // other->ComputeTaskForceOrderAggregateScore(). Same per-order-type {200,100,50}
@@ -312,6 +338,12 @@ public:
   // either side is the active nation (when g_pSimMgr->preferenceValues[3] is set), else
   // hands off to TNavyMgr::ResolveMapOrderPairConflictStep and returns false.
   char ResolveTaskForceOrderConflictAndPickCandidate(TTaskForce* other); // 0x555420
+
+  // Standalone sibling of the identical inline "shouldAttempt" computation in
+  // ResolveTaskForceOrderConflictAndPickCandidate: bails if either side has no active
+  // children; force-attempts for type-5/6 attachments; else rolls against a priority-gap
+  // threshold (childRating average delta + child-count overflow past 10).
+  char ShouldAttemptMapOrderPairResolution(TTaskForce* other); // 0x555720
 
   // Direct sibling of ResolveTaskForceOrderConflictAndPickCandidate/ComputeTaskForceOrder-
   // TieBreakScore -- same per-order-type {200,100,50} weighted-heuristic-sum comparison,

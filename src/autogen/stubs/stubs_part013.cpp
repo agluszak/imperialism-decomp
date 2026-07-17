@@ -379,14 +379,6 @@ undefined4 QueueProspectingOrderAndPlayFeedback(void)
   return 0;
 }
 
-// ghidra_name ApplyCompletedCivWorkOrderToMapState
-// ghidra_proto void __cdecl ApplyCompletedCivWorkOrderToMapState(int * pCivUnitOrderState)
-// FUNCTION: IMPERIALISM 0x004d4390
-undefined4 ApplyCompletedCivWorkOrderToMapState(void)
-{
-  return 0;
-}
-
 // ghidra_name ResolveCompetingDeveloperTilePurchaseOrders
 // ghidra_proto undefined ResolveCompetingDeveloperTilePurchaseOrders()
 // FUNCTION: IMPERIALISM 0x004d4740

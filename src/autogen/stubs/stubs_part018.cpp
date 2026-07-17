@@ -163,14 +163,6 @@ undefined4 WrapperFor_ConfigureTurnResumeStateAndNationMask_At0057f570(void)
   return 0;
 }
 
-// ghidra_name FormatFloatToLocalizedSharedString
-// ghidra_proto undefined FormatFloatToLocalizedSharedString()
-// FUNCTION: IMPERIALISM 0x0057fa30
-undefined4 FormatFloatToLocalizedSharedString(void)
-{
-  return 0;
-}
-
 // ghidra_name ExpandBracketMappedStringToSinkCallback
 // ghidra_proto undefined ExpandBracketMappedStringToSinkCallback()
 // FUNCTION: IMPERIALISM 0x005804f0

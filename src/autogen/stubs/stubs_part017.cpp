@@ -27,42 +27,10 @@ undefined4 BuildNavyOrderStatusLineText(void)
   return 0;
 }
 
-// ghidra_name PruneNavyOrderIfUnserviceableOrNoChildren
-// ghidra_proto undefined PruneNavyOrderIfUnserviceableOrNoChildren()
-// FUNCTION: IMPERIALISM 0x00555090
-undefined4 PruneNavyOrderIfUnserviceableOrNoChildren(void)
-{
-  return 0;
-}
-
 // ghidra_name BuildTaskForcePrimaryObjectiveDescriptionText
 // ghidra_proto undefined BuildTaskForcePrimaryObjectiveDescriptionText()
 // FUNCTION: IMPERIALISM 0x005551d0
 undefined4 BuildTaskForcePrimaryObjectiveDescriptionText(void)
-{
-  return 0;
-}
-
-// ghidra_name ShouldAttemptMapOrderPairResolution
-// ghidra_proto undefined ShouldAttemptMapOrderPairResolution()
-// FUNCTION: IMPERIALISM 0x00555720
-undefined4 ShouldAttemptMapOrderPairResolution(void)
-{
-  return 0;
-}
-
-// ghidra_name TryResolveMapOrderEntryPairExecution
-// ghidra_proto undefined TryResolveMapOrderEntryPairExecution()
-// FUNCTION: IMPERIALISM 0x00555d10
-undefined4 TryResolveMapOrderEntryPairExecution(void)
-{
-  return 0;
-}
-
-// ghidra_name ApplyMapOrderTypeExecutionEffects
-// ghidra_proto void __fastcall ApplyMapOrderTypeExecutionEffects(void * pMapOrderEntry)
-// FUNCTION: IMPERIALISM 0x00556100
-undefined4 ApplyMapOrderTypeExecutionEffects(void)
 {
   return 0;
 }
@@ -119,14 +87,6 @@ undefined4 CreateNavySecondaryOrderEntryAndDeduplicateDisplayName(void)
 // ghidra_proto void RevalidateAndRequeueMapOrdersForTurn(void)
 // FUNCTION: IMPERIALISM 0x00557560
 undefined4 RevalidateAndRequeueMapOrdersForTurn(void)
-{
-  return 0;
-}
-
-// ghidra_name ResolveMapOrderChainsForTurnPhase
-// ghidra_proto void __fastcall ResolveMapOrderChainsForTurnPhase(int * pOrderManager)
-// FUNCTION: IMPERIALISM 0x005578a0
-undefined4 ResolveMapOrderChainsForTurnPhase(void)
 {
   return 0;
 }
@@ -231,14 +191,6 @@ undefined4 ResetTPortZoneManagerToSentinelVtable(void)
 // ghidra_proto undefined SelectBestSeedTileForNationFromCostField()
 // FUNCTION: IMPERIALISM 0x00562c00
 undefined4 SelectBestSeedTileForNationFromCostField(void)
-{
-  return 0;
-}
-
-// ghidra_name EvaluateTerrainFlowCrossNationBoundaryToSea
-// ghidra_proto undefined EvaluateTerrainFlowCrossNationBoundaryToSea()
-// FUNCTION: IMPERIALISM 0x00563b70
-undefined4 EvaluateTerrainFlowCrossNationBoundaryToSea(void)
 {
   return 0;
 }
@@ -459,34 +411,10 @@ undefined4 WrapperFor_ReleaseSharedStringRefIfNotEmpty_At00570340(void)
   return 0;
 }
 
-// ghidra_name WrapperFor_thunk_BuildUiTextStyleDescriptor_At00570390
-// ghidra_proto undefined WrapperFor_thunk_BuildUiTextStyleDescriptor_At00570390()
-// FUNCTION: IMPERIALISM 0x00570390
-undefined4 WrapperFor_thunk_BuildUiTextStyleDescriptor_At00570390(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_StringShared_AssignFromPtr_At00570420
 // ghidra_proto undefined WrapperFor_StringShared_AssignFromPtr_At00570420()
 // FUNCTION: IMPERIALISM 0x00570420
 undefined4 WrapperFor_StringShared_AssignFromPtr_At00570420(void)
-{
-  return 0;
-}
-
-// ghidra_name CopyTwoDwordsAndWordToObjectOffset14
-// ghidra_proto undefined CopyTwoDwordsAndWordToObjectOffset14()
-// FUNCTION: IMPERIALISM 0x00570440
-undefined4 CopyTwoDwordsAndWordToObjectOffset14(void)
-{
-  return 0;
-}
-
-// ghidra_name SetObjectField1EWord
-// ghidra_proto undefined SetObjectField1EWord()
-// FUNCTION: IMPERIALISM 0x005704e0
-undefined4 SetObjectField1EWord(void)
 {
   return 0;
 }

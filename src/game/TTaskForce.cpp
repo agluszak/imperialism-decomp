@@ -4,7 +4,10 @@
 #include "game/TMission.h"
 
 #include "game/CString.h"
+#include "game/TDiplomacyMgr.h"
+#include "game/TMapMgr.h"
 #include "game/TModuleLibraryCacheTableStateB.h"
+#include "game/TMultiplayerMgr.h"
 #include "game/TNavyMgr.h"
 #include "game/TOcean.h"
 #include "game/TShip.h"
@@ -1390,6 +1393,64 @@ void TTaskForce::BuildTaskForceSelectionOverlayLabelText(CString* out) {
                          static_cast<LPCSTR>(childCountText), static_cast<LPCSTR>(orderKindLabel));
 }
 
+// Tail-recursive queue_next walk (ResolveMapOrderChainsForTurnPhase's rebuild-head
+// pass): null-safe on `this`. An entry with no active children is always pruned
+// (Free()'d) regardless of order_type. A live entry survives unless order_type is
+// 0/1/4/7/8, or (order_type == 5) its target city's owner nation's diplomacy relation
+// stamp with this entry's own nation is out of date -- in both prune cases the walk
+// still recurses into queue_next first, then Free()s `this` and returns the recursive
+// result (the new chain head with `this` spliced out); the survive case recurses but
+// discards that result and returns `this` unchanged.
+// FUNCTION: IMPERIALISM 0x00555090
+TTaskForce* TTaskForce::PruneNavyOrderIfUnserviceableOrNoChildren() {
+  if (this == nullptr) {
+    return nullptr;
+  }
+
+  int childCount = 0;
+  for (TMapOrderChildLinkNode* node = childOrderList; node != nullptr; node = node->next) {
+    ++childCount;
+  }
+
+  bool keepAlive;
+  if (childCount < 1) {
+    keepAlive = false;
+  } else {
+    switch (order_type) {
+    case 0:
+    case 1:
+    case 4:
+    case 7:
+    case 8:
+      keepAlive = false;
+      break;
+    case 5: {
+      int cityIndex = GetCityIndexFromCityStatePointer(
+          reinterpret_cast<TGlobalMapCityScoreRecord*>(attachment));
+      // Byte at cityScoreTable[cityIndex]+0x10 -- not yet a named field on
+      // TGlobalMapCityScoreRecord (same raw-offset read TInvadeMission::Call30 uses).
+      const char* recordBytes =
+          reinterpret_cast<const char*>(&g_pGlobalMapState->cityScoreTable[cityIndex]);
+      char ownerByte = recordBytes[0x10];
+      keepAlive = g_pDiplomacyTurnStateManager->IsNationPairRelationTurnStampOutOfDate(
+                      required_count, ownerByte) != 0;
+      break;
+    }
+    default:
+      keepAlive = true;
+      break;
+    }
+  }
+
+  if (keepAlive) {
+    queue_next->PruneNavyOrderIfUnserviceableOrNoChildren();
+    return this;
+  }
+  TTaskForce* result = queue_next->PruneNavyOrderIfUnserviceableOrNoChildren();
+  Free();
+  return result;
+}
+
 // FUNCTION: IMPERIALISM 0x00555420
 char TTaskForce::ResolveTaskForceOrderConflictAndPickCandidate(TTaskForce* other) {
   if (GetMapOrderEntryChildCount() == 0) {
@@ -1459,6 +1520,41 @@ char TTaskForce::ResolveTaskForceOrderConflictAndPickCandidate(TTaskForce* other
   }
   g_pNavyOrderManager->ResolveMapOrderPairConflictStep(this, other);
   return 0;
+}
+
+// Standalone sibling of the identical inline "shouldAttempt" computation in
+// ResolveTaskForceOrderConflictAndPickCandidate: bails if either side has no active
+// children; force-attempts for type-5/6 attachments; else rolls against a priority-gap
+// threshold (childRating average delta + child-count overflow past 10).
+// FUNCTION: IMPERIALISM 0x00555720
+char TTaskForce::ShouldAttemptMapOrderPairResolution(TTaskForce* other) {
+  if (GetMapOrderEntryChildCount() == 0) {
+    return 0;
+  }
+  if (other->GetMapOrderEntryChildCount() == 0) {
+    return 0;
+  }
+  if (attachment == 6 || other->attachment == 6 || other->attachment == 5) {
+    return 1;
+  }
+
+  int sum = 0;
+  int count = 0;
+  for (TMapOrderChildLinkNode* node = childOrderList; node != nullptr; node = node->next) {
+    if (node->active_flag != 0) {
+      sum += g_NavyOrderResourceDescriptorTable[node->object_ptr->order_type].descriptorWeight;
+      ++count;
+    }
+  }
+  short thisAverage = (count == 0) ? 0 : static_cast<short>((sum * 10) / count);
+  short otherAverage = static_cast<short>(other->CalculateMapOrderEntryAverageChildRatingX10());
+  short threshold = static_cast<short>(thisAverage - otherAverage + 0x32);
+  int totalChildren = other->GetMapOrderEntryChildCount() + GetMapOrderEntryChildCount();
+  if (totalChildren > 10) {
+    threshold = static_cast<short>(threshold + (totalChildren - 10));
+  }
+  int roll = rand();
+  return (roll % 100) < threshold;
 }
 
 // FUNCTION: IMPERIALISM 0x00555920
@@ -1537,6 +1633,25 @@ char TTaskForce::ComputeTaskForceOrderTieBreakScore(TTaskForce* other) {
   return 1;
 }
 
+// FUNCTION: IMPERIALISM 0x00555d10
+char TTaskForce::TryResolveMapOrderEntryPairExecution(TTaskForce* other, int* pResolvedFlag) {
+  if (GetMapOrderEntryChildCount() == 0) {
+    return 0;
+  }
+  if (other->GetMapOrderEntryChildCount() == 0) {
+    return 0;
+  }
+  if (g_pSimMgr->preferenceValues[3] != 0) {
+    if (g_pSimMgr->GetActiveNationId() == required_count ||
+        g_pSimMgr->GetActiveNationId() == other->required_count) {
+      return 1;
+    }
+  }
+  g_pNavyOrderManager->ResolveMapOrderPairConflictStep(this, other);
+  *pResolvedFlag = 0;
+  return 0;
+}
+
 // FUNCTION: IMPERIALISM 0x00555de0
 char TTaskForce::IsTaskForceOrderMixWithinPriorityThresholds(TTaskForce* other) {
   int thisSum = ComputeTaskForceOrderAggregateScore();
@@ -1551,6 +1666,60 @@ int TTaskForce::ComputeTaskForceOrderAggregateScore() {
     total += node->object_ptr->ComputeMapOrderEntryHeuristicScore();
   }
   return total;
+}
+
+// Immediate/deferred execution effects for a resolved queue entry (ResolveMapOrderChains-
+// ForTurnPhase's tail passes): no-op once already eliminated. Type 1 (target-assignment)
+// propagates `owner` -- reused here as a raw assignment-target value, not the real
+// parent-chain pointer -- into every active child's own attachment field. Type 5
+// (province-target) sets the target city's owner-flag bit for this entry's nation
+// (required_count) and, in single-player mode, invalidates that city's redraw. Type 8
+// (progression) advances every active child's required_count by a quarter-step toward
+// its resource-type's stockCap, clamping at the cap. Any other type asserts (once) that
+// g_UnknownMapOrderExecutionGuard_006a3ee0 is set, then falls through like the others to
+// mark this entry processed -- except type 1, which returns before that (the original
+// never sets eliminatedFlag26 on that path).
+// FUNCTION: IMPERIALISM 0x00556100
+void TTaskForce::ApplyMapOrderTypeExecutionEffects() {
+  if (eliminatedFlag26 != 0) {
+    return;
+  }
+  switch (attachment) {
+  case 1: {
+    for (TMapOrderChildLinkNode* node = childOrderList; node != nullptr; node = node->next) {
+      node->object_ptr->attachment = reinterpret_cast<int>(owner);
+    }
+    return;
+  }
+  case 5: {
+    TGlobalMapCityScoreRecord* cityRecord = reinterpret_cast<TGlobalMapCityScoreRecord*>(owner);
+    reinterpret_cast<unsigned char*>(cityRecord)[0xa1] |=
+        static_cast<unsigned char>(1 << required_count);
+    if (g_pSimMgr->field44 == 1) {
+      int cityIndex = GetCityIndexFromCityStatePointer(cityRecord);
+      g_pGameFlowState->DispatchCityRedrawInvalidateEvent(static_cast<short>(cityIndex));
+    }
+    break;
+  }
+  case 8: {
+    for (TMapOrderChildLinkNode* node = childOrderList; node != nullptr; node = node->next) {
+      TTaskForce* child = node->object_ptr;
+      short cap =
+          static_cast<short>(g_NavyOrderResourceDescriptorTable[child->order_type].stockCap);
+      child->required_count = static_cast<s16>(child->required_count + cap / 4);
+      if (cap < child->required_count) {
+        child->required_count = cap;
+      }
+    }
+    break;
+  }
+  default:
+    if (g_UnknownMapOrderExecutionGuard_006a3ee0 == 0) {
+      TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\UNavy.cpp", 0xb78);
+    }
+    break;
+  }
+  eliminatedFlag26 = 1;
 }
 
 // FUNCTION: IMPERIALISM 0x005562c0

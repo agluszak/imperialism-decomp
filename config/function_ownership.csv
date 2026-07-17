@@ -1746,6 +1746,7 @@ address|target_cpp|ownership|note
 4d3070|src/game/TCivMgr.cpp|manual|marker_sync
 4d3a60|src/game/TCivMgr.cpp|manual|marker_sync
 4d4310|src/game/TCivMgr.cpp|manual|marker_sync
+4d4390|src/game/TMapMgr.cpp|manual|marker_sync
 4d49a0|src/game/TLandSaleEvent.cpp|manual|marker_sync
 4d4b90|src/game/TMacViewMgr.cpp|manual|marker_sync
 4d4e40|src/game/TMacViewMgr.cpp|manual|marker_sync
@@ -2573,6 +2574,7 @@ address|target_cpp|ownership|note
 513660|src/game/TMapMgr.cpp|manual|marker_sync
 5136a0|src/game/TMapMgr.cpp|manual|marker_sync
 513720|src/game/TMapMgr.cpp|manual|marker_sync
+513980|src/game/TMapMgr.cpp|manual|marker_sync
 513ed0|src/game/TMapMgr.cpp|manual|marker_sync
 513f60|src/game/TMapMgr.cpp|manual|marker_sync
 513ff0|src/game/TMapMgr.cpp|manual|marker_sync
@@ -3411,11 +3413,15 @@ address|target_cpp|ownership|note
 554a80|src/game/TTaskForce.cpp|manual|marker_sync
 554ad0|src/game/TTaskForce.cpp|manual|marker_sync
 554c90|src/game/TTaskForce.cpp|manual|marker_sync
+555090|src/game/TTaskForce.cpp|manual|marker_sync
 555420|src/game/TTaskForce.cpp|manual|marker_sync
+555720|src/game/TTaskForce.cpp|manual|marker_sync
 555920|src/game/TTaskForce.cpp|manual|marker_sync
 555c20|src/game/TTaskForce.cpp|manual|marker_sync
+555d10|src/game/TTaskForce.cpp|manual|marker_sync
 555de0|src/game/TTaskForce.cpp|manual|marker_sync
 556010|src/game/TTaskForce.cpp|manual|marker_sync
+556100|src/game/TTaskForce.cpp|manual|marker_sync
 5562c0|src/game/TTaskForce.cpp|manual|marker_sync
 5563d0|src/game/TTaskForce.cpp|manual|marker_sync
 5564f0|src/game/TTaskForce.cpp|manual|marker_sync
@@ -3438,6 +3444,7 @@ address|target_cpp|ownership|note
 5572d0|src/game/TTechMgr.cpp|manual|marker_sync
 5577b0|src/game/TNavyMgr.cpp|manual|marker_sync
 557870|src/game/TTaskForce.cpp|manual|marker_sync
+5578a0|src/game/TNavyMgr.cpp|manual|marker_sync
 557e10|src/game/TNavyMgr.cpp|manual|marker_sync
 557f10|src/game/TNavyMgr.cpp|manual|marker_sync
 558860|src/game/TZone.cpp|manual|marker_sync
@@ -3559,6 +3566,7 @@ address|target_cpp|ownership|note
 563540|src/game/TOcean.cpp|manual|marker_sync
 5635e0|src/game/TOcean.cpp|manual|marker_sync
 563990|src/game/TMapMgr.cpp|manual|marker_sync
+563b70|src/game/TMapMgr.cpp|manual|marker_sync
 563da0|src/game/TZone.cpp|manual|marker_sync
 564240|src/game/TOcean.cpp|manual|marker_sync
 564530|src/game/TOcean.cpp|manual|marker_sync
@@ -3715,6 +3723,9 @@ address|target_cpp|ownership|note
 570270|src/game/TTextLine.cpp|manual|marker_sync
 570290|src/game/TTextLine.cpp|manual|marker_sync
 570310|src/game/TTextLine.cpp|manual|marker_sync
+570390|src/game/TTextLine.cpp|manual|marker_sync
+570440|src/game/TTextLine.cpp|manual|marker_sync
+5704e0|src/game/TTextLine.cpp|manual|marker_sync
 570500|src/game/TTextLine.cpp|manual|marker_sync
 570750|src/game/TPictureButton.cpp|manual|marker_sync
 5707d0|src/game/TPictureButton.cpp|manual|marker_sync
@@ -3994,6 +4005,7 @@ address|target_cpp|ownership|note
 57f530|src/game/TSimMgr.cpp|manual|marker_sync
 57f5b0|src/game/TSimMgr.cpp|manual|marker_sync
 57f8f0|src/game/TSimMgr.cpp|manual|marker_sync
+57fa30|src/game/CString.cpp|manual|marker_sync
 57fe90|src/game/TSimMgr.cpp|manual|marker_sync
 57fec0|src/game/TSimMgr.cpp|manual|marker_sync
 57fef0|src/game/mapped_flavor_text.cpp|manual|marker_sync
@@ -4882,6 +4894,7 @@ address|target_cpp|ownership|note
 5bcb20|src/game/TDealTabControl.cpp|manual|marker_sync
 5bcb90|src/game/TTradePageSellView.cpp|manual|marker_sync
 5bcc10|src/game/TTradePageSellView.cpp|manual|marker_sync
+5bcc30|src/game/TTradePageSellView.cpp|manual|marker_sync
 5bcf70|src/game/TTradeOfferNationLine.cpp|manual|marker_sync
 5bcfc0|src/game/TTradeOfferNationLine.cpp|manual|marker_sync
 5bd030|src/game/TTradeOfferNationLine.cpp|manual|marker_sync
@@ -4892,6 +4905,7 @@ address|target_cpp|ownership|note
 5bd2d0|src/game/TTradeOfferNationView.cpp|manual|marker_sync
 5bd5f0|src/game/TTradePageBuyView.cpp|manual|marker_sync
 5bd670|src/game/TTradePageBuyView.cpp|manual|marker_sync
+5bd690|src/game/TTradePageBuyView.cpp|manual|marker_sync
 5bd900|src/game/TTradeBidNationLine.cpp|manual|marker_sync
 5bd950|src/game/TTradeBidNationLine.cpp|manual|marker_sync
 5bd9c0|src/game/TTradeBidNationLine.cpp|manual|marker_sync
@@ -4913,6 +4927,7 @@ address|target_cpp|ownership|note
 5bf740|src/game/TOfferDeskPicture.cpp|manual|marker_sync
 5bf860|src/game/TOfferDeskPicture.cpp|manual|marker_sync
 5bf930|src/game/TOfferDeskPicture.cpp|manual|marker_sync
+5c04f0|src/game/TOfferDeskPicture.cpp|manual|marker_sync
 5c0930|src/game/TOfferDeskPicture.cpp|manual|marker_sync
 5c0cf0|src/game/TDealLine.cpp|manual|marker_sync
 5c0d60|src/game/TDealLine.cpp|manual|marker_sync
