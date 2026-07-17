@@ -3556,6 +3556,7 @@ address|target_cpp|ownership|note
 563540|src/game/TOcean.cpp|manual|marker_sync
 5635e0|src/game/TOcean.cpp|manual|marker_sync
 563990|src/game/TMapMgr.cpp|manual|marker_sync
+563b70|src/game/TMapMgr.cpp|manual|marker_sync
 563da0|src/game/TZone.cpp|manual|marker_sync
 564240|src/game/TOcean.cpp|manual|marker_sync
 564530|src/game/TOcean.cpp|manual|marker_sync

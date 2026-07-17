@@ -35,6 +35,7 @@
 #include "game/ui_invalidation_guard.h"
 
 short TraceTerrainFlowToNearestSeaTile(short tileIndex);
+char __stdcall EvaluateTerrainFlowCrossNationBoundaryToSea(short tileIndex);
 void NormalizeWrappedMapCoord217x60(short* xCoord, short* yCoord);
 undefined4 GetCurrentLocalEpochSecondsWithTimezoneCache(void);
 undefined4 SetSharedStringFromRotatingFlavorTextBySlot(void);
@@ -4075,6 +4076,82 @@ short TraceTerrainFlowToNearestSeaTile(short tileIndex) {
     }
   }
   return -1;
+}
+
+// Sibling of TraceTerrainFlowToNearestSeaTile: walks the same roadFlag-driven flow chain
+// (same type-remap/direction tables, same terrainType00==5 sea-reached terminal), but from
+// `tileIndex`'s own starting owner nation, tracking whether the flow crosses into a
+// differently-owned tile before reaching the sea. Tries flow variant 0 first (setting
+// crossedBoundary and continuing to walk on a first crossing), then variant 1 (returning 1
+// immediately on any crossing); 0xff means no evaluable flow (no road/feature code, or an
+// excluded feature range) or 100 steps exhausted on both variants without reaching the sea.
+// FUNCTION: IMPERIALISM 0x00563b70
+char __stdcall EvaluateTerrainFlowCrossNationBoundaryToSea(short tileIndex) {
+  TTerrainStateRecordView* terrainTable = g_pGlobalMapState->terrainStateTable;
+  signed char startOwnerNation = terrainTable[tileIndex].ownerNationTag04;
+
+  for (int attempt = 0; attempt < 2; ++attempt) {
+    short flowType = static_cast<short>(terrainTable[tileIndex].roadFlag);
+    char crossedBoundary = 0;
+    if (flowType == 0) {
+      return static_cast<char>(0xff);
+    }
+    if (flowType > 0x1a && flowType < 0x2b) {
+      flowType = static_cast<short>(flowType - 0x10);
+    }
+    if (flowType >= 0xb && flowType <= 0x1a) {
+      flowType = *reinterpret_cast<const short*>(kAddrTerrainFlowTypeRemapTable + flowType * 2);
+    } else if (flowType >= 0x2b && flowType <= 0x3a) {
+      return static_cast<char>(0xff);
+    }
+
+    short stepDirection = *reinterpret_cast<const short*>(kAddrTerrainFlowDirectionTable +
+                                                          (attempt + flowType * 2) * 2);
+    short walkTile = tileIndex;
+    for (int stepCount = 0; stepCount < 100; ++stepCount) {
+      walkTile = TMapMgr::StepHexTileIndexByDirectionWithWrapRules(walkTile, stepDirection);
+      if (walkTile == -1) {
+        return crossedBoundary;
+      }
+      TTerrainStateRecordView& walkRecord = terrainTable[walkTile];
+      if (walkRecord.terrainType00 == 5) {
+        return crossedBoundary;
+      }
+
+      short nextFlowType = static_cast<short>(walkRecord.roadFlag);
+      if (nextFlowType == 0) {
+        break;
+      }
+      if (nextFlowType > 0x1a && nextFlowType < 0x2b) {
+        nextFlowType = static_cast<short>(nextFlowType - 0x10);
+      }
+      if (nextFlowType >= 0xb && nextFlowType <= 0x1a) {
+        nextFlowType =
+            *reinterpret_cast<const short*>(kAddrTerrainFlowTypeRemapTable + nextFlowType * 2);
+      } else if (nextFlowType >= 0x2b && nextFlowType <= 0x3a) {
+        break;
+      }
+
+      if (startOwnerNation != walkRecord.ownerNationTag04) {
+        if (attempt > 0) {
+          return 1;
+        }
+        crossedBoundary = 1;
+      }
+
+      short preferredDirection = static_cast<short>((static_cast<int>(stepDirection) + 3) % 6);
+      const short* directionPair =
+          reinterpret_cast<const short*>(kAddrTerrainFlowDirectionTable + nextFlowType * 4);
+      if (directionPair[0] == preferredDirection) {
+        stepDirection = directionPair[1];
+      } else if (directionPair[1] != preferredDirection) {
+        break;
+      } else {
+        stepDirection = directionPair[0];
+      }
+    }
+  }
+  return static_cast<char>(0xff);
 }
 
 char TMapMgr::CallMetricSlotC4(int regionIndex, int edgeIndex) {

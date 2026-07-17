@@ -235,14 +235,6 @@ undefined4 SelectBestSeedTileForNationFromCostField(void)
   return 0;
 }
 
-// ghidra_name EvaluateTerrainFlowCrossNationBoundaryToSea
-// ghidra_proto undefined EvaluateTerrainFlowCrossNationBoundaryToSea()
-// FUNCTION: IMPERIALISM 0x00563b70
-undefined4 EvaluateTerrainFlowCrossNationBoundaryToSea(void)
-{
-  return 0;
-}
-
 // ghidra_name RefreshPortZoneNeighborContextLinksAndFallbacks
 // ghidra_proto undefined RefreshPortZoneNeighborContextLinksAndFallbacks()
 // FUNCTION: IMPERIALISM 0x00563f50
