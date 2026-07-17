@@ -483,14 +483,6 @@ undefined4 UpdatePagerButtonStatesAndRefreshPanels(void)
   return 0;
 }
 
-// ghidra_name TNextTradeCommand::CreateNextTradeCommandAndFormatPrompt
-// ghidra_proto undefined CreateNextTradeCommandAndFormatPrompt()
-// FUNCTION: IMPERIALISM 0x005c04f0
-undefined4 CreateNextTradeCommandAndFormatPrompt(void)
-{
-  return 0;
-}
-
 // ghidra_name TToolBarCluster::UpdateTradeSelectionStateAndRefreshUiIfChanged
 // ghidra_proto undefined UpdateTradeSelectionStateAndRefreshUiIfChanged()
 // FUNCTION: IMPERIALISM 0x005c09d0

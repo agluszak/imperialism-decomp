@@ -1,15 +1,22 @@
 #include "game/TOfferDeskPicture.h"
 
 #include "game/CString.h"
+#include "game/TAmtBarCluster.h"
+#include "game/TApplication.h"
 #include "game/TCity.h"
 #include "game/TCountry.h"
 #include "game/TDiplomacyMgr.h"
+#include "game/TDisplayMgr.h"
 #include "game/TGreatPower.h"
 #include "game/THelpMgr.h"
+#include "game/TNextTradeCommand.h"
+#include "game/TNumberText.h"
 #include "game/TSimMgr.h"
 #include "game/TStaticText.h"
+#include "game/TTradeMgr.h"
 #include "game/global_data_tables.h"
 #include "game/mapped_flavor_text.h"
+#include "game/ui_invalidation_guard.h"
 // SYNTHETIC: IMPERIALISM 0x005be4b0
 // TOfferDeskPicture::CreateObject
 
@@ -206,6 +213,86 @@ void TOfferDeskPicture::RefreshSelectedNationOrderCompatibilityInfo() {
   ::CopyRect(&inval, &grown);
   info->ownerContext->InvalidateCityDialogRectRegion(&inval, 1);
   info->AssignTextSharedRefIfChangedAndMaybeInvalidate(&strFinal, 1);
+}
+
+// Reads the 'clus'->'nomo' checkbox state and the 'purc' quantity field, validates the
+// quantity against the 'purc' control's own max, and on success dispatches the trade
+// proposal (TTradeMgr), resets the accept/reject buttons, notifies the toolbar, and queues
+// a new TNextTradeCommand. On an out-of-range quantity, shows an error and re-selects the
+// 'purc' field's text instead. `actionCode` is the triggering button's FourCC tag; 'reje'
+// forces the proposed quantity to 0 (skipping validation entirely).
+// FUNCTION: IMPERIALISM 0x005c04f0
+void TOfferDeskPicture::CreateNextTradeCommandAndFormatPrompt(int actionCode) {
+  TView* clusterControl = ResolveControlByTag('clus');
+  if (clusterControl == nullptr) {
+    MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUTradeViews_0069AA94, 0x83b);
+  }
+
+  TAmtBarCluster* noMoreControl =
+      static_cast<TAmtBarCluster*>(clusterControl->ResolveControlByTag('nomo'));
+  if (noMoreControl == nullptr) {
+    MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUTradeViews_0069AA94, 0x83d);
+  }
+  suppressEventFlag9a = noMoreControl->IsTradeControlAtMinimum();
+
+  TNumberText* purchaseControl = static_cast<TNumberText*>(ResolveControlByTag('purc'));
+  if (purchaseControl == nullptr) {
+    MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUTradeViews_0069AA94, 0x842);
+  }
+  proposedAmount98 = static_cast<short>(purchaseControl->UpdateControlCachedIntFromWindowText());
+
+  bool quantityValid = true;
+  if (actionCode == 'reje') {
+    proposedAmount98 = 0;
+  } else if (proposedAmount98 > purchaseControl->field_a8 || proposedAmount98 < 0) {
+    quantityValid = false;
+  }
+
+  if (quantityValid) {
+    g_pNationInteractionStateManager->DispatchProposalAmountSlot60(
+        nationSlot90, targetNationSlot92, proposedAmount98, maxAmount94, commodityType96,
+        static_cast<char>(suppressEventFlag9a), 0);
+
+    TView* acceptButton = ResolveControlByTag('acce');
+    acceptButton->AssertValid();
+    TView* rejectButton = ResolveControlByTag('reje');
+    rejectButton->AssertValid();
+    acceptButton->SetState(0, 0);
+    rejectButton->SetState(0, 0);
+
+    if (proposedAmount98 != 0) {
+      TView* toolbar = g_pDisplayMgr->activeDialog->ResolveControlByTag('tool');
+      if (toolbar != nullptr) {
+        static_cast<TAmtBarCluster*>(toolbar)->ApplyMoveValue(nationSlot90);
+      }
+    }
+
+    if (g_pSimMgr->field44 != 2) {
+      TNextTradeCommand* command = new TNextTradeCommand();
+      command->InitializeRangePairFromDiplomacyConstants();
+      g_pGlobalUiRootController->DispatchUiSelectionToHandler(command);
+    }
+  } else {
+    CString errorMessage;
+    CString localizedMessage;
+    if (detailedErrorFlag9d != 0) {
+      g_pSimMgr->GetString(0x2740, 0x10, &localizedMessage);
+    } else {
+      CString maxValueTemplate;
+      errorMessage.Format(g_szDecimalFormat, purchaseControl->field_a8);
+      g_pSimMgr->GetString(0x2740, 0x11, &maxValueTemplate);
+      scanBracketExpressions(g_pSimMgr, &localizedMessage, static_cast<LPCSTR>(maxValueTemplate),
+                             static_cast<LPCSTR>(errorMessage));
+    }
+    g_pDisplayMgr->DispatchDisplayManagerControlStringMessage(localizedMessage,
+                                                              &g_cstrControlStringMessageStore);
+    purchaseControl->GetCurrentText(&errorMessage);
+    purchaseControl->SetEditSelectionAndScrollCaret(0, static_cast<short>(errorMessage.GetLength()),
+                                                    1);
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x005c0930

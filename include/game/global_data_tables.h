@@ -453,6 +453,7 @@ extern char g_szCountryNameProfileKey00698AE0[];
 
 // Typed C++ linkage — see typed-recovered-globals.mdc (not inside extern "C").
 extern TInfoBarText* g_pCursorControlPanel;
+extern CString g_cstrControlStringMessageStore;
 extern TTradeMgr* g_pNationInteractionStateManager;
 extern CString g_cstrCountryNameSettingValue006A4220;
 extern TSetupRandomMapPicture* g_pActiveRandomMapSetupPicture006A4268;
@@ -770,6 +771,8 @@ extern "C" const char s_SourcePathUViewMgrMore_0069B740[];
 extern "C" const char s_SourcePathUArmyMgr_0069573C[];
 // Assert source-path string for the USuperMap TU (TMapUberPicture family).
 extern "C" const char s_SourcePathUSuperMap_0069943C[];
+// Assert source-path string for the UTradeViews TU (TOfferDeskPicture family).
+extern "C" const char s_SourcePathUTradeViews_0069AA94[];
 // Default viewport-marker-box width, shared by TMiniMapView/TacticalBattleView's own
 // marker-box construction (assigned once via ftol() elsewhere; role beyond that isn't
 // further recovered).
