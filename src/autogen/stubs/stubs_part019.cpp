@@ -443,14 +443,6 @@ undefined4 DestructTTradePageSellViewAndMaybeFree_Impl(void)
   return 0;
 }
 
-// ghidra_name TTradePageBuyView::ConstructTTradePageBuyViewBaseState
-// ghidra_proto undefined ConstructTTradePageBuyViewBaseState()
-// FUNCTION: IMPERIALISM 0x005bd690
-undefined4 ConstructTTradePageBuyViewBaseState(void)
-{
-  return 0;
-}
-
 // ghidra_name TTradePageBuyView::DestructTTradePageBuyViewAndMaybeFree_Impl
 // ghidra_proto undefined DestructTTradePageBuyViewAndMaybeFree_Impl()
 // FUNCTION: IMPERIALISM 0x005bd930

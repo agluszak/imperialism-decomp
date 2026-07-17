@@ -4894,6 +4894,7 @@ address|target_cpp|ownership|note
 5bd2d0|src/game/TTradeOfferNationView.cpp|manual|marker_sync
 5bd5f0|src/game/TTradePageBuyView.cpp|manual|marker_sync
 5bd670|src/game/TTradePageBuyView.cpp|manual|marker_sync
+5bd690|src/game/TTradePageBuyView.cpp|manual|marker_sync
 5bd900|src/game/TTradeBidNationLine.cpp|manual|marker_sync
 5bd950|src/game/TTradeBidNationLine.cpp|manual|marker_sync
 5bd9c0|src/game/TTradeBidNationLine.cpp|manual|marker_sync
