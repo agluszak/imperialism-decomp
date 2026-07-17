@@ -3715,6 +3715,9 @@ address|target_cpp|ownership|note
 570270|src/game/TTextLine.cpp|manual|marker_sync
 570290|src/game/TTextLine.cpp|manual|marker_sync
 570310|src/game/TTextLine.cpp|manual|marker_sync
+570390|src/game/TTextLine.cpp|manual|marker_sync
+570440|src/game/TTextLine.cpp|manual|marker_sync
+5704e0|src/game/TTextLine.cpp|manual|marker_sync
 570500|src/game/TTextLine.cpp|manual|marker_sync
 570750|src/game/TPictureButton.cpp|manual|marker_sync
 5707d0|src/game/TPictureButton.cpp|manual|marker_sync

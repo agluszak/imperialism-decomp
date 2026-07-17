@@ -451,34 +451,10 @@ undefined4 WrapperFor_ReleaseSharedStringRefIfNotEmpty_At00570340(void)
   return 0;
 }
 
-// ghidra_name WrapperFor_thunk_BuildUiTextStyleDescriptor_At00570390
-// ghidra_proto undefined WrapperFor_thunk_BuildUiTextStyleDescriptor_At00570390()
-// FUNCTION: IMPERIALISM 0x00570390
-undefined4 WrapperFor_thunk_BuildUiTextStyleDescriptor_At00570390(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_StringShared_AssignFromPtr_At00570420
 // ghidra_proto undefined WrapperFor_StringShared_AssignFromPtr_At00570420()
 // FUNCTION: IMPERIALISM 0x00570420
 undefined4 WrapperFor_StringShared_AssignFromPtr_At00570420(void)
-{
-  return 0;
-}
-
-// ghidra_name CopyTwoDwordsAndWordToObjectOffset14
-// ghidra_proto undefined CopyTwoDwordsAndWordToObjectOffset14()
-// FUNCTION: IMPERIALISM 0x00570440
-undefined4 CopyTwoDwordsAndWordToObjectOffset14(void)
-{
-  return 0;
-}
-
-// ghidra_name SetObjectField1EWord
-// ghidra_proto undefined SetObjectField1EWord()
-// FUNCTION: IMPERIALISM 0x005704e0
-undefined4 SetObjectField1EWord(void)
 {
   return 0;
 }

@@ -24677,7 +24677,7 @@
     },
     {
       "address": "0x5701d0",
-      "matching": 0.46875,
+      "matching": 0.5,
       "name": "TTextLine::CreateObject",
       "type": 1
     },
@@ -24689,7 +24689,7 @@
     },
     {
       "address": "0x570290",
-      "matching": 0.35294117647058826,
+      "matching": 0.6382978723404256,
       "name": "TTextLine::ConstructTTextLineBaseState",
       "type": 1
     },
@@ -24701,13 +24701,13 @@
     },
     {
       "address": "0x570440",
-      "matching": 0.0,
+      "matching": 1.0,
       "name": "CopyTwoDwordsAndWordToObjectOffset14",
       "type": 1
     },
     {
       "address": "0x5704e0",
-      "matching": 0.0,
+      "matching": 1.0,
       "name": "SetObjectField1EWord",
       "type": 1
     },
