@@ -13362,7 +13362,7 @@
     },
     {
       "address": "0x4e3830",
-      "matching": 0.9942363112391931,
+      "matching": 0.9971181556195965,
       "name": "TMinor::InitializeSecondaryNationStateAndSelectHomeTile",
       "type": 1
     },
@@ -17091,8 +17091,8 @@
     },
     {
       "address": "0x513980",
-      "matching": 0.0,
-      "name": "TMapMgr::IsValidSecondaryNationHomeTileCandidate(void)",
+      "matching": 0.5513784461152882,
+      "name": "TMapMgr::IsValidSecondaryNationHomeTileCandidate",
       "type": 1
     },
     {
@@ -17199,7 +17199,7 @@
     },
     {
       "address": "0x514dc0",
-      "matching": 0.64,
+      "matching": 0.6666666666666666,
       "name": "TMapMgr::WrapperFor_IsValidSecondaryNationHomeTileCandidate_At00514dc0",
       "type": 1
     },
@@ -17271,7 +17271,7 @@
     },
     {
       "address": "0x515b10",
-      "matching": 0.3378995433789954,
+      "matching": 0.3167420814479638,
       "name": "TMapMgr::MarkSeedNeighborTilesUnavailableByCapabilityMaskProfileB",
       "type": 1
     },
@@ -17445,7 +17445,7 @@
     },
     {
       "address": "0x5178f0",
-      "matching": 0.3446601941747573,
+      "matching": 0.3260340632603406,
       "name": "ComputeRepresentativeTileIndexForTerrainTypeWithWrapBias",
       "type": 1
     },

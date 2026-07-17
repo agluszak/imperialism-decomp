@@ -75,14 +75,6 @@ undefined4 CanBuildPortAtTile(void)
   return 0;
 }
 
-// ghidra_name TMapMgr::IsValidSecondaryNationHomeTileCandidate
-// ghidra_proto bool __thiscall IsValidSecondaryNationHomeTileCandidate(short tileIndex)
-// FUNCTION: IMPERIALISM 0x00513980
-undefined4 IsValidSecondaryNationHomeTileCandidate(void)
-{
-  return 0;
-}
-
 // ghidra_name HasReachableSeaTileOutsideActiveType3Or4DiplomaticMask
 // ghidra_proto undefined HasReachableSeaTileOutsideActiveType3Or4DiplomaticMask()
 // FUNCTION: IMPERIALISM 0x00513ca0

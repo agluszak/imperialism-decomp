@@ -2570,6 +2570,7 @@ address|target_cpp|ownership|note
 513660|src/game/TMapMgr.cpp|manual|marker_sync
 5136a0|src/game/TMapMgr.cpp|manual|marker_sync
 513720|src/game/TMapMgr.cpp|manual|marker_sync
+513980|src/game/TMapMgr.cpp|manual|marker_sync
 513ed0|src/game/TMapMgr.cpp|manual|marker_sync
 513f60|src/game/TMapMgr.cpp|manual|marker_sync
 513ff0|src/game/TMapMgr.cpp|manual|marker_sync

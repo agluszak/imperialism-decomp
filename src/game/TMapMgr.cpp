@@ -1982,6 +1982,86 @@ short TMapMgr::FindMaxResourceCapabilityValueForTile(short tileIndex, char categ
   }
   return maxValue;
 }
+// sea tile reachable without crossing into another nation's territory. Not (region class
+// 2 or 3): scans the 6 hex neighbors for an unclaimed (tileActionClass16 == -1) sea tile
+// (terrainType00 == 5) none of whose own 6 neighbors belong to a different, non-unclaimed
+// nation (ownerNationTag04 < 0x17 and != this tile's own owner). Falls back to
+// EvaluateTerrainFlowCrossNationBoundaryToSea when no such neighbor exists but this tile
+// has a road/feature flow code.
+// FUNCTION: IMPERIALISM 0x00513980
+bool TMapMgr::IsValidSecondaryNationHomeTileCandidate(short tileIndex) {
+  TTerrainStateRecordView* tile = &terrainStateTable[tileIndex];
+  signed char terrainType = tile->terrainType00;
+  short homeNation = tile->ownerNationTag04;
+  bool isValid = false;
+
+  if (terrainType != 3 && terrainType != 2) {
+    short row = static_cast<short>(tileIndex / 0x6c);
+    short colX2 = static_cast<short>(row % 2 + (tileIndex % 0x6c) * 2);
+
+    for (short direction = 0; direction < 6; ++direction) {
+      short wrappedDir = direction;
+      if (wrappedDir < 0) {
+        wrappedDir = static_cast<short>(wrappedDir + 6);
+      } else if (wrappedDir > 5) {
+        wrappedDir = static_cast<short>(wrappedDir - 6);
+      }
+      short candColX2 =
+          static_cast<short>(colX2 + g_Build_Hex_Area_LookupTable_00696E70[wrappedDir]);
+      short candRow = static_cast<short>(row + LookupHexNeighborRowDeltaByDirection(direction));
+      NormalizeWrappedMapCoord217x60(&candColX2, &candRow);
+      short candidateTile =
+          static_cast<short>(ComputeTileIndexFromHexColumnX2AndRow(candColX2, candRow));
+      if (candidateTile < 0 || candidateTile >= 0x1950) {
+        candidateTile = -1;
+      }
+
+      if (candidateTile != -1 && terrainStateTable[candidateTile].terrainType00 == 5) {
+        isValid = true;
+        short seaRow = static_cast<short>(candidateTile / 0x6c);
+        short seaColX2 = static_cast<short>(seaRow % 2 + (candidateTile % 0x6c) * 2);
+
+        for (short innerDir = 0; innerDir < 6; ++innerDir) {
+          short innerWrappedDir = innerDir;
+          if (innerWrappedDir < 0) {
+            innerWrappedDir = static_cast<short>(innerWrappedDir + 6);
+          } else if (innerWrappedDir > 5) {
+            innerWrappedDir = static_cast<short>(innerWrappedDir - 6);
+          }
+          short nColX2 =
+              static_cast<short>(seaColX2 + g_Build_Hex_Area_LookupTable_00696E70[innerWrappedDir]);
+          short nRow = static_cast<short>(seaRow + LookupHexNeighborRowDeltaByDirection(innerDir));
+          NormalizeWrappedMapCoord217x60(&nColX2, &nRow);
+          short neighborTile =
+              static_cast<short>(ComputeTileIndexFromHexColumnX2AndRow(nColX2, nRow));
+          if (neighborTile < 0 || neighborTile >= 0x1950) {
+            neighborTile = -1;
+          }
+          if (neighborTile != -1) {
+            short neighborNation = terrainStateTable[neighborTile].ownerNationTag04;
+            if (neighborNation < 0x17 && neighborNation != homeNation) {
+              isValid = false;
+              break;
+            }
+          }
+        }
+
+        if (terrainStateTable[candidateTile].tileActionClass16 != -1) {
+          isValid = false;
+        }
+        if (isValid) {
+          break;
+        }
+      }
+    }
+  }
+
+  if (!isValid && tile->roadFlag != 0 &&
+      EvaluateTerrainFlowCrossNationBoundaryToSea(tileIndex) == 0) {
+    isValid = true;
+  }
+  return isValid;
+}
 
 // FUNCTION: IMPERIALISM 0x00513ed0
 byte TMapMgr::CheckTileProspectingDiscoveryCandidate(short nTileIndex) {
@@ -2099,11 +2179,7 @@ TCivUnit* TMapMgr::GetTileUnitEntryByOwner(short tileIndex, short nationId) {
   return entry;
 }
 
-bool TMapMgr::IsValidSecondaryNationHomeTileCandidate(short tileIndex) {
-  // TODO: port body @ 0x513980 (632 bytes; not yet ported).
-  (void)tileIndex;
-  return false;
-}
+// Whether `tileIndex` (a candidate home tile for a secondary/minor nation) has a nearby
 
 // FUNCTION: IMPERIALISM 0x00514290
 short TMapMgr::ResolveTileOwnerNationCodeNormalized(int tileIndex) {
