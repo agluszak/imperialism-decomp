@@ -1782,7 +1782,7 @@ address|target_cpp|ownership|note
 4d7860|src/game/TCountry.cpp|manual|marker_sync
 4d7930|src/game/TCountry.cpp|manual|marker_sync
 4d7a00|src/game/TCountry.cpp|manual|marker_sync
-4d7a40|src/game/TGreatPower.cpp|manual|marker_sync
+4d7a40|src/game/TCountry.cpp|manual|marker_sync
 4d7ae0|src/game/TCountry.cpp|manual|marker_sync
 4d7b00|src/game/TCountry.cpp|manual|marker_sync
 4d7b20|src/game/TCountry.cpp|manual|marker_sync
@@ -3843,8 +3843,10 @@ address|target_cpp|ownership|note
 573aa0|src/game/TSliderPicture.cpp|manual|marker_sync
 573c20|src/game/TScrollView.cpp|manual|marker_sync
 573c90|src/game/TScrollView.cpp|manual|marker_sync
+573cb0|src/game/TScrollView.cpp|manual|marker_sync
 573ce0|src/game/TScrollView.cpp|manual|marker_sync
 573df0|src/game/TScrollBarView.cpp|manual|marker_sync
+5741e0|src/game/TScrollView.cpp|manual|marker_sync
 5742b0|src/game/TScrollView.cpp|manual|marker_sync
 5743f0|src/game/TScrollBarView.cpp|manual|marker_sync
 574490|src/game/TScrollBarView.cpp|manual|marker_sync
@@ -5042,6 +5044,8 @@ address|target_cpp|ownership|note
 5d5a70|src/game/TViewMgr.cpp|manual|marker_sync
 5d5b00|src/game/TViewMgr.cpp|manual|marker_sync
 5d5c40|src/game/TViewMgr.cpp|manual|marker_sync
+5d5d10|src/game/mfc_heap_library.cpp|library|marker_sync
+5d5d30|src/game/TViewMgr.cpp|manual|marker_sync
 5d6480|src/game/TViewMgr.cpp|manual|marker_sync
 5d69b0|src/game/TViewMgr.cpp|manual|marker_sync
 5d6b70|src/game/TViewMgr.cpp|manual|marker_sync
@@ -5069,6 +5073,7 @@ address|target_cpp|ownership|note
 5da040|src/game/TViewMgr.cpp|manual|marker_sync
 5da180|src/game/TViewMgr.cpp|manual|marker_sync
 5da360|src/game/TViewMgr.cpp|manual|marker_sync
+5db2f0|src/game/mfc_heap_library.cpp|library|marker_sync
 5db3b0|src/game/TViewMgr.cpp|manual|marker_sync
 5db620|src/game/TViewMgr.cpp|manual|marker_sync
 5db780|src/game/TViewMgr.cpp|manual|marker_sync

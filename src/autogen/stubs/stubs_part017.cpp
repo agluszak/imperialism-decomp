@@ -571,11 +571,3 @@ undefined4 WrapperFor_ftol_At00573bf0(void)
   return 0;
 }
 
-// ghidra_name TScrollView::ConstructTScrollViewBaseState
-// ghidra_proto undefined ConstructTScrollViewBaseState()
-// FUNCTION: IMPERIALISM 0x00573cb0
-undefined4 ConstructTScrollViewBaseState(void)
-{
-  return 0;
-}
-

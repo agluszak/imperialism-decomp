@@ -30,8 +30,6 @@ extern undefined4 Helper_Uses_ForwardMciCommand808ToDevice_At00593210(void);
 
 void __fastcall DestructTSoundPlayerBaseState(TSoundPlayer* player);
 
-static int DAT_006a60f8 = 0;
-
 // SYNTHETIC: IMPERIALISM 0x005932b0
 // TSoundPlayer::CreateObject
 
@@ -337,14 +335,14 @@ void TSoundPlayer::NoOpAudioTickCallback_005e50a0() {}
 // Slot 0x07 override — release the two channel peers, then run the base teardown.
 
 // FUNCTION: IMPERIALISM 0x005e50c0
-int TSoundPlayer::UpdateLocalizationAudioSlotAndMaybeRefreshVoiceState(int sfxToken, int param_2,
+int TSoundPlayer::UpdateLocalizationAudioSlotAndMaybeRefreshVoiceState(short sfxToken, int param_2,
                                                                        int param_3, int param_4) {
   if (g_pSimMgr->preferenceValues[2] == 0) {
     return 0;
   }
-  int slot = DAT_006a60f8++;
-  if (DAT_006a60f8 > 5) {
-    DAT_006a60f8 = 0;
+  short slot = static_cast<short>(g_localizationAudioSlotCursor_006a60f8);
+  if (++g_localizationAudioSlotCursor_006a60f8 >= 6) {
+    g_localizationAudioSlotCursor_006a60f8 = 0;
   }
   if (g_soundResourceManager.LoadWaveResourceByNumericIdAndBuildBuffer(sfxToken, slot) != 0) {
     g_soundResourceManager.UpdateLocalizationAudioSlot(slot);
@@ -353,7 +351,7 @@ int TSoundPlayer::UpdateLocalizationAudioSlotAndMaybeRefreshVoiceState(int sfxTo
 }
 
 // FUNCTION: IMPERIALISM 0x005e5140
-int TSoundPlayer::PlaySoundEffect(int sfxToken, int param_2, int param_3) {
+int TSoundPlayer::PlaySoundEffect(short sfxToken, int param_2, int param_3) {
   this->UpdateLocalizationAudioSlotAndMaybeRefreshVoiceState(sfxToken, param_2, param_3, 1);
   return 0;
 }

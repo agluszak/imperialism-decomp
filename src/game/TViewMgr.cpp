@@ -42,7 +42,9 @@
 #include "game/TModalMessageCommand.h"
 #include "game/TApplication.h"
 #include "game/TSuperCivRoster.h"
+#include "game/TScrollView.h" // nation-info modal overflow scroll wrapper
 #include "game/TStaticText.h"
+#include "game/mapped_flavor_text.h" // BuildUiMessageTextFromBracketTemplate / scanBracketExpressions
 #include "game/TEditText.h"
 #include "game/TRadioText.h"
 #include "game/TRadioTextCluster.h"
@@ -69,12 +71,11 @@ undefined4 HandleTurnEvent8FC_RebuildPageTabsAndTitles(void);
 #include "game/startup_helpers.h"
 #include "game/CIncludeView.h"
 
-// Free-function thunks reached through the ILT jump table; declared in the generic
-// repo form and invoked through typed __cdecl casts at the callsites.
-// ILT thunk (generic form per repo policy; typed cast applied at the callsite).
-undefined4 RunNationInfoModalAndReturnNonCancel(void);
-undefined4 NoOpUiRuntimeCallback_005db2f0(void);
-undefined4 NoOpRuntimeCallback_005d5d10(void);
+// The former RunNationInfoModalAndReturnNonCancel / NoOpUiRuntimeCallback_005db2f0 /
+// NoOpRuntimeCallback_005d5d10 extern bridges are gone: the modal is a real TViewMgr
+// method now, and the two "NoOp" callbacks were mis-named out-of-line COMDAT copies of
+// CString::GetLength / CString::GetPchData that the tail call sites use via the real
+// CString API.
 
 // Provisional dispatch interfaces for the runtime-resolved turn-event dialog node and
 // its 'GOLD' child control now live in one shared header so the TViewMgr and
@@ -432,6 +433,179 @@ undefined1 TViewMgr::DispatchLocalizedUiMessageWithTemplate(int templateKind, CS
   return 0;
 }
 
+// FUNCTION: IMPERIALISM 0x005d5d30
+bool TViewMgr::RunNationInfoModalAndReturnNonCancel(int overlayMode, CString messageText,
+                                                    const char* infoChars, int infoLength,
+                                                    int* eventPayload, int contextTag,
+                                                    char showCancel) {
+  CString titleText;
+  TControlPictureRectState styleDescriptor;
+  RECT bounds;             // function-scope like the original (0x38): not overlapped with the
+  short overlaySfxIds[13]; // sfx table (0x48), so the frame keeps both live regions
+  // The payload is a {-1000 sentinel, resource word} pair; the word is only read
+  // through a short lvalue over the pre-zeroed int (word stores/compares, dword pass).
+  int payloadResource;
+  // The original zeroes the four styleRef6 bytes individually (0x5d5d69..0x5d5d85).
+  char* styleRefBytes = reinterpret_cast<char*>(&styleDescriptor.styleRef6);
+  styleRefBytes[0] = 0;
+  styleRefBytes[1] = 0;
+  styleRefBytes[2] = 0;
+  styleRefBytes[3] = 0;
+  payloadResource = 0;
+  if (*eventPayload == -1000) {
+    *reinterpret_cast<short*>(&payloadResource) = *reinterpret_cast<short*>(eventPayload + 1);
+  }
+  BuildUiTextStyleDescriptor(&styleDescriptor, 0, 0xc, 0x2b67);
+
+  TurnEventDialogNode* dialog;
+  if (static_cast<short>(payloadResource) == 0) {
+    dialog = static_cast<TurnEventDialogNode*>(
+        g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(0x7e4));
+  } else {
+    g_pUiViewManager->NoOpRuntimeUiCallback_005df3f0(0xb);
+    dialog = static_cast<TurnEventDialogNode*>(
+        g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(0x2508));
+  }
+  if (dialog == 0) {
+    MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgr_0069B6BC, 0x2e9);
+  }
+  dialog->ShowTurnEventDialog(1);
+  void* content = dialog->QueryTurnEventContentObject();
+  if (content != 0) {
+    *reinterpret_cast<int*>(reinterpret_cast<char*>(content) + 0x14) = 0x6f6b6179; // 'okay'
+  }
+
+  POINT placement;
+  this->ComputeTurnEventDialogPlacementByCode(dialog, &placement);
+  dialog->CaptureLayoutF0(reinterpret_cast<int*>(&placement), 0);
+
+  GoldDialogControl* gold =
+      static_cast<GoldDialogControl*>(dialog->ResolveControlByTag(0x444c4f47)); // 'GOLD'
+  gold->AssertValid();
+  if (gold == 0) {
+    MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgr_0069B6BC, 0x2fa);
+  }
+  int contextTagSx = static_cast<short>(contextTag);
+  int goldResource = contextTagSx * 2 + 0x24cd;
+  if (static_cast<short>(contextTag) == 2 && g_nationInfoGoldResourceOverride_006a5bac != 0) {
+    goldResource = g_nationInfoGoldResourceOverride_006a5bac;
+  }
+  gold->SetGoldControlStateByResource(goldResource, 0);
+
+  GoldDialogControl* coat =
+      static_cast<GoldDialogControl*>(dialog->ResolveControlByTag(0x636f6174)); // 'coat'
+  coat->AssertValid();
+  if (coat == 0) {
+    MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+    TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgr_0069B6BC, 0x301);
+  }
+  if (g_pSimMgr->GetActiveNationId() >= 0 && g_pSimMgr->GetActiveNationId() < 7) {
+    coat->SetGoldControlStateByResource(g_pSimMgr->GetActiveNationId() + 0x251c, 0);
+  } else {
+    coat->SetEnabled(0, 0);
+  }
+
+  if (static_cast<short>(payloadResource) != 0) {
+    GoldDialogControl* goldValue =
+        static_cast<GoldDialogControl*>(dialog->ResolveControlByTag(0x444c4f47)); // 'GOLD'
+    goldValue->AssertValid();
+    goldValue->SetGoldControlStateByResource(contextTag + 0x252a, 0);
+    GoldDialogControl* award =
+        static_cast<GoldDialogControl*>(dialog->ResolveControlByTag(0x72657761)); // 'awer'
+    award->AssertValid();
+    award->SetGoldControlStateByResource(payloadResource, 0);
+  } else {
+    TStaticText* title =
+        static_cast<TStaticText*>(dialog->ResolveControlByTag(0x7469746c)); // 'titl'
+    title->AssertValid();
+    if (title == 0) {
+      MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+      TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgr_0069B6BC, 0x31a);
+    }
+    title->SetCityProductionDialogPictureRectAndMaybeRefresh(&styleDescriptor, 0);
+    title->SetTextThemeCodeAndMaybeRefresh(1, 0);
+    BuildUiMessageTextFromBracketTemplate(g_pSimMgr, &titleText, 0x2749, overlayMode, 0x2749,
+                                          contextTagSx);
+    titleText += '\r';
+    titleText += '\r';
+    titleText += messageText;
+    title->AssignTextSharedRefIfChangedAndMaybeInvalidate(&titleText, 0);
+  }
+
+  TDeluxeText* info = static_cast<TDeluxeText*>(dialog->ResolveControlByTag(0x696e666f)); // 'info'
+  info->AssertValid();
+  info->SetTextEntryFromChars(infoChars, infoLength);
+  info->ApplyTextStyleDescriptorAndMaybeRefresh(&styleDescriptor, 0);
+  int measuredHeight = static_cast<short>(info->MeasureCurrentTextWidthInLayoutRect());
+  if (measuredHeight > info->frameHeight38) {
+    info->QueryBounds(&bounds);
+    bounds.right = bounds.top - 10;
+    info->ApplyBounds(&bounds, 0);
+    if (measuredHeight > info->frameHeight38) {
+      TScrollView* scrollView = new TScrollView();
+      scrollView->ConstructTScrollViewBaseState(gold, &info->ownerLocalX, &info->frameWidth34);
+      scrollView->NoOpUiLifecycleHook(0);
+      gold->DetachChildFromOwnerList(info);
+      scrollView->AttachChildControl(info, 0);
+      bounds.top = 0;
+      bounds.left = 0;
+      bounds.bottom = measuredHeight;
+      bounds.right = info->frameWidth34 - 0x1c;
+      info->ApplyBounds(&bounds, 0);
+      scrollView->contentView60 = info;
+      scrollView->SyncBoundedValueAndToggleControlStates();
+    }
+  }
+
+  if (showCancel != 0) {
+    TView* cancel = dialog->ResolveControlByTag(0x636e636c); // 'cncl'
+    cancel->AssertValid();
+    cancel->SetEnabled(1, 1);
+    cancel->SetState(1, 0);
+  }
+
+  unsigned char savedProcessFlag;
+  bool simSuppressed = g_pSimMgr->field44 != 0;
+  if (simSuppressed) {
+    unsigned char currentFlag = g_pGameFlowState->processPrimaryEventQueue;
+    g_pGameFlowState->processPrimaryEventQueue = 0;
+    savedProcessFlag = currentFlag;
+  } else {
+    savedProcessFlag = showCancel;
+  }
+
+  if (static_cast<short>(payloadResource) != 0) {
+    overlaySfxIds[0] = 0xbcc;
+    overlaySfxIds[1] = 0xbcd;
+    overlaySfxIds[2] = 0xbce;
+    overlaySfxIds[3] = 0xbcf;
+    overlaySfxIds[4] = 0xbd0;
+    overlaySfxIds[5] = static_cast<short>(g_overlaySfxSeasonWord_0066f0a6 + 0xbb8);
+    overlaySfxIds[6] = 0xbd2;
+    overlaySfxIds[7] = 0xbd3;
+    overlaySfxIds[8] = 0xbd5;
+    overlaySfxIds[9] = 0xbd6;
+    overlaySfxIds[10] = 0xbd7;
+    overlaySfxIds[11] = 0xbd7;
+    overlaySfxIds[12] = 0xbd9;
+    g_pSfxPlaybackSystem->PlaySoundEffect(overlaySfxIds[overlayMode], 0, 1);
+  }
+
+  int modalResult = dialog->RefreshTurnEventDialog();
+  dialog->CallVoidSlotA0();
+  dialog->Free();
+  simSuppressed = g_pSimMgr->field44 != 0;
+  if (simSuppressed) {
+    g_pGameFlowState->processPrimaryEventQueue = savedProcessFlag;
+  }
+  if (modalResult == 0x636e636c) { // 'cncl'
+    return false;
+  }
+  return true;
+}
+
 static void CopyHotKeyDialogTemplateToBuffer(int buffer) {
   const unsigned short* src = reinterpret_cast<const unsigned short*>(kAddrHotKeyDialogTemplate);
   const unsigned short* srcEnd =
@@ -447,98 +621,110 @@ static void CopyHotKeyDialogTemplateToBuffer(int buffer) {
   }
 }
 
+// Per-mode overlay message/dialog builder: each case composes messageText (and picks
+// the modal's resource word + dialog context) before the tail hands everything to
+// RunNationInfoModalAndReturnNonCancel with the {-1000, resourceId} payload pair.
 // FUNCTION: IMPERIALISM 0x005d6480
 void TViewMgr::BuildAndShowTurnOverlayByMode(int overlayMode, int contextArg) {
-  CString formattedText;
-  CString templateText;
-  CString scratchA;
-  CString scratchB;
-  short resourceId = static_cast<short>(overlayMode);
+  CString messageText;    // composed modal body (chars/length are passed to the modal)
+  CString nationNameText; // cases 6/0xa: the nation/terrain overlay label
+  CString cityNameText;   // cases 3/4: the city display name
+  CString templateText;   // bracket-template source for the scanBracket cases
+  short resourceId;
+  int dialogContext = 0;
 
   switch (overlayMode) {
-  case 0:
-    g_pSimMgr->GetString(0, 0, &scratchA);
-    g_pSimMgr->GetString(0x2716, 0, &templateText);
-    scanBracketExpressions(g_pSimMgr, &formattedText, static_cast<LPCSTR>(templateText));
+  case 0: {
+    CString seasonText;
+    g_pSimMgr->GetString(0x273a, 0, &templateText);
+    g_pSimMgr->GetString(0x2716, contextArg, &seasonText);
+    scanBracketExpressions(g_pSimMgr, &messageText, static_cast<LPCSTR>(templateText),
+                           static_cast<LPCSTR>(seasonText));
+    dialogContext = 1;
     if (contextArg == 8) {
       resourceId = 0x2515;
     } else if (contextArg == 9) {
       resourceId = 0x2516;
     } else {
-      resourceId = static_cast<short>((-static_cast<int>(contextArg != 0xc) & 0xfff1) + 0x2517);
+      resourceId = (contextArg != 0xc) ? 0x2508 : 0x2517;
     }
     break;
+  }
   case 1: {
-    g_pSimMgr->GetString(0, 0, &templateText);
+    g_pSimMgr->GetString(0x273a, 1, &messageText);
+    dialogContext = 1;
     short nationId = g_pSimMgr->GetActiveNationId();
-    short cap = g_pCityOrderCapabilityState->nationCapRows1e8[nationId].slots[9];
+    int cap = g_pCityOrderCapabilityState->nationCapRows1e8[nationId].slots[9];
     if (cap == 0x1c) {
       resourceId = 0x2518;
     } else {
-      resourceId = static_cast<short>((-static_cast<int>(cap != 0x1d) & 0xfff0) + 0x2519);
+      resourceId = (cap != 0x1d) ? 0x2509 : 0x2519;
     }
     break;
   }
-  case 2:
-    g_pSimMgr->GetString(0, 0, &templateText);
-    resourceId = 0x250a;
-    break;
-  case 3:
-  case 4:
-    g_pGlobalMapState->AssignCityRecordDisplayName(contextArg, &formattedText);
-    g_pSimMgr->GetString(0, 0, &templateText);
-    scanBracketExpressions(g_pSimMgr, &formattedText, static_cast<LPCSTR>(templateText));
-    resourceId = static_cast<short>(overlayMode + 0x2508);
-    break;
   case 5:
   case 0xc:
-    g_pSimMgr->GetString(0, 0, &templateText);
+    g_pSimMgr->GetString(0x273a, overlayMode, &messageText);
+    dialogContext = 1;
     resourceId = static_cast<short>(overlayMode + 0x2508);
     break;
-  case 6: {
-    TGreatPower* nation = g_apNationStates[g_pSimMgr->GetActiveNationId()];
-    if (nation != nullptr) {
-      nation->LoadNationDisplayNameSharedRefFromField8(&formattedText);
-    }
-    g_pSimMgr->GetString(0, 0, &templateText);
-    scanBracketExpressions(g_pSimMgr, &formattedText, static_cast<LPCSTR>(templateText));
+  case 6:
+    g_apTerrainTypeDescriptorTable[contextArg]->LoadNationDisplayNameSharedRefFromField8(
+        &nationNameText);
+    g_pSimMgr->GetString(0x273a, 6, &templateText);
+    scanBracketExpressions(g_pSimMgr, &messageText, static_cast<LPCSTR>(templateText),
+                           static_cast<LPCSTR>(nationNameText));
+    dialogContext = 1;
     resourceId = 0x250e;
     break;
-  }
-  case 7:
-    g_pSimMgr->GetString(0, 0, &templateText);
-    resourceId = static_cast<short>((-static_cast<int>(contextArg != -1) & 0xfff5) + 0x251a);
+  case 0xa:
+    g_apTerrainTypeDescriptorTable[contextArg]->FormatOverlayTerrainLabelText(&nationNameText);
+    g_pSimMgr->GetString(0x273a, 0xa, &templateText);
+    scanBracketExpressions(g_pSimMgr, &messageText, static_cast<LPCSTR>(templateText),
+                           static_cast<LPCSTR>(nationNameText));
+    dialogContext = 1;
+    resourceId = 0x2512;
     break;
-  case 8:
-    g_pSimMgr->GetString(0, 0, &templateText);
-    resourceId = 0x2510;
+  case 2:
+    g_pSimMgr->GetString(0x273a, 2, &messageText);
+    resourceId = 0x250a;
     break;
   case 9:
   case 0xb:
-    g_pSimMgr->GetString(0, 0, &templateText);
+    g_pSimMgr->GetString(0x273a, overlayMode, &messageText);
     resourceId = static_cast<short>(overlayMode + 0x2508);
     break;
-  case 0xa:
-    g_apTerrainTypeDescriptorTable[contextArg]->FormatOverlayTerrainLabelText(&formattedText);
-    g_pSimMgr->GetString(0, 0, &templateText);
-    scanBracketExpressions(g_pSimMgr, &formattedText, static_cast<LPCSTR>(templateText));
-    resourceId = 0x2512;
+  case 3:
+  case 4:
+    g_pGlobalMapState->AssignCityRecordDisplayName(contextArg, &cityNameText);
+    g_pSimMgr->GetString(0x273a, overlayMode, &templateText);
+    scanBracketExpressions(g_pSimMgr, &messageText, static_cast<LPCSTR>(templateText),
+                           static_cast<LPCSTR>(cityNameText));
+    dialogContext = 2;
+    resourceId = static_cast<short>(overlayMode + 0x2508);
+    break;
+  case 7:
+    g_pSimMgr->GetString(0x273a, 7, &messageText);
+    dialogContext = 2;
+    resourceId = (contextArg != -1) ? 0x250f : 0x251a;
+    break;
+  case 8:
+    g_pSimMgr->GetString(0x273a, 8, &messageText);
+    dialogContext = 2;
+    resourceId = 0x2510;
     break;
   default:
+    dialogContext = contextArg;
     resourceId = static_cast<short>(contextArg);
     break;
   }
 
-  int resourceIdSlot = resourceId;
-  int modalContext = -1000;
-  (void)modalContext;
-  reinterpret_cast<void(__cdecl*)(void)>(NoOpUiRuntimeCallback_005db2f0)();
-  reinterpret_cast<void(__cdecl*)(void)>(NoOpRuntimeCallback_005d5d10)();
-  CString emptyLabel(g_szEmptyString);
-  (void)emptyLabel;
-  volatile int* resourcePtr = &resourceIdSlot;
-  (void)resourcePtr;
-  reinterpret_cast<void(__cdecl*)(void)>(RunNationInfoModalAndReturnNonCancel)();
+  int modalPayload[2];
+  modalPayload[1] = resourceId;
+  modalPayload[0] = -1000;
+  RunNationInfoModalAndReturnNonCancel(overlayMode, CString(g_pNationInfoEmptyText_0066f050),
+                                       static_cast<LPCSTR>(messageText), messageText.GetLength(),
+                                       modalPayload, dialogContext, 0);
 }
 
 // FUNCTION: IMPERIALISM 0x005d69b0

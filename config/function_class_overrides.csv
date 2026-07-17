@@ -3,3 +3,7 @@ address|class_name|method_name|note
 0x00485990|CMainFrame|SetFieldC0AndInvalidateWindowIfChanged|ECX is the SDI main frame; body reads field_C0 and invalidates m_hWnd.
 0x00593c10|TSoundPlayer|HandleBlinkStateAndScheduleTimerTick|ECX is g_pSfxPlaybackSystem; body uses TSoundPlayer channel fields at +0x6c/+0x70/+0x78.
 0x0060a60a|TView|RunModalLoop|Shared MFC-style modal message pump (PumpMessage/IsIdleMessage/WM_KICKIDLE/WM_ENTERIDLE + ContinueModal slot 0x1e check); used generically by TControl/TMovieView/TModalTemplateDialog dialogs via inheritance, previously mis-owned by TMovieView with reinterpret_cast callers.
+0x005d5d30|TViewMgr|RunNationInfoModalAndReturnNonCancel|Ghidra said TCivToolbar, but the body dispatches TViewMgr's own virtual slot 0x11 (ComputeTurnEventDialogPlacementByCode) on ECX and the only caller (BuildAndShowTurnOverlayByMode 0x5d6480) passes its spilled TViewMgr this.
+0x005741e0|TScrollView|SyncBoundedValueAndToggleControlStates|ECX reads the TScrollView layout (+0x60 content view, +0x64 scrollbar, +0x38 frame height); called on the freshly built TScrollView in 0x5d5d30.
+0x00573cb0|TScrollView|ConstructTScrollViewBaseState|Thiscall forwarding to TView::InitializeUiResourceEntryFrameAndParent with fixed (5,5) margins; receiver is the new TScrollView.
+0x004d7a40|TCountry|LoadNationDisplayNameSharedRefFromField8|Reads identitySharedString1 (a TCountry field at +0x8); TViewMgr overlay case 6 calls it on g_apTerrainTypeDescriptorTable entries (TCountry*), so it lives on TCountry, not TGreatPower.

@@ -7,7 +7,6 @@ each with the evidence needed to start (address, size, current score if any, blo
 
 ## Big stubs (never ported)
 
-- `0x5d5d30` (1485B) — TCivToolbar modal interaction body.
 - `0x55d200` (1415B)
 - `0x502b60` (1285B)
 - `0x4eb8b0` (1212B)
@@ -16,6 +15,18 @@ each with the evidence needed to start (address, size, current score if any, blo
   partial class recovery already on main.
 
 ## Known-bad re-ports (score far below structure)
+
+- `0x573ce0` (195B) — currently claimed as an EMPTY `TScrollView::NoOpUiLifecycleHook`
+  body, but the original resolves the 'scro' content view, `new TScrollBarView()`s the
+  bar (vtable 0x6614c8, size 0x94), calls ConstructTScrollBarViewBaseState, and stores
+  contentView60/scrollBar64. Porting it requires 0x5744b0 first (next line).
+- `0x5744b0` (437B, 4%) — misattributed: the marker claims it as
+  `TScrollBarView::TScrollBarView() {}` but it is really
+  TScrollBarView::ConstructTScrollBarViewBaseState (the real inline ctor is
+  TControl-base + vtable + `field90 = 0`, per the 0x573d37 expansion). Also audit
+  `TScrollBarView::Free` 0x5746e0 / `NoOpUiLifecycleHook` 0x574720 empty bodies.
+- `0x5e50c0` at 77.8% — residual is an ecx/eax naming permutation in the slot-cursor
+  idiom; structure verified.
 
 - `EnsurePortZoneForTile` / `RemovePortZoneByTile` (13% / 24%) — TOcean methods,
   bodies likely mismodeled.

@@ -8,6 +8,7 @@
 #include "game/TGreatPower.h"
 
 #include "game/TArmyMgr.h"
+#include "game/TLanguageMgr.h" // NormalizeRuntimeCredentialNameToken (display-name load)
 #include "game/TNewsMgr.h"
 #include "game/TCity.h"
 #include "game/TGlobalMapState.h"
@@ -387,6 +388,11 @@ void TCountry::SetNationDisplayNameAndLocalizationSlotRef(const CString& name) {
   if (g_pSimMgr != 0) {
     g_pSimMgr->sharedTextSlots[this->nationSlot] = name;
   }
+}
+
+// FUNCTION: IMPERIALISM 0x004d7a40
+void TCountry::LoadNationDisplayNameSharedRefFromField8(CString* destString) {
+  *destString = g_pLanguageMgr->NormalizeRuntimeCredentialNameToken(&identitySharedString1);
 }
 
 // FUNCTION: IMPERIALISM 0x004d7ae0

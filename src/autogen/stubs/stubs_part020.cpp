@@ -123,22 +123,6 @@ undefined4 UpdateTurnEventPaletteByCode(void)
   return 0;
 }
 
-// ghidra_name NoOpRuntimeCallback_005d5d10
-// ghidra_proto undefined NoOpRuntimeCallback_005d5d10()
-// FUNCTION: IMPERIALISM 0x005d5d10
-undefined4 NoOpRuntimeCallback_005d5d10(void)
-{
-  return 0;
-}
-
-// ghidra_name TCivToolbar::RunNationInfoModalAndReturnNonCancel
-// ghidra_proto undefined RunNationInfoModalAndReturnNonCancel()
-// FUNCTION: IMPERIALISM 0x005d5d30
-undefined4 RunNationInfoModalAndReturnNonCancel(void)
-{
-  return 0;
-}
-
 // ghidra_name TViewMgr::InvokeMainWidgetMethod1CCWithArgs
 // ghidra_proto undefined InvokeMainWidgetMethod1CCWithArgs()
 // FUNCTION: IMPERIALISM 0x005d71b0
@@ -175,14 +159,6 @@ undefined4 HandleTurnEvent2103_RunNationStatusReportUpdate(void)
 // ghidra_proto undefined HandleTurnEventVtableSlotA0SyncStatusPanel()
 // FUNCTION: IMPERIALISM 0x005d8cc0
 undefined4 HandleTurnEventVtableSlotA0SyncStatusPanel(void)
-{
-  return 0;
-}
-
-// ghidra_name NoOpUiRuntimeCallback_005db2f0
-// ghidra_proto undefined NoOpUiRuntimeCallback_005db2f0()
-// FUNCTION: IMPERIALISM 0x005db2f0
-undefined4 NoOpUiRuntimeCallback_005db2f0(void)
 {
   return 0;
 }

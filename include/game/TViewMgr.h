@@ -193,6 +193,18 @@ public:
   // "confirm, no changes" default so callers don't act on unverified dialog state.
   bool ShowCivilianReportDialogAndReturnConfirm(class TCivUnit* pCivilianOrderEntry);
 
+  // 0x5d5d30 (ret 0x1c). The nation-info turn-overlay modal driven by
+  // BuildAndShowTurnOverlayByMode: resolves the turn-event dialog (message context
+  // 0x7e4, or 0x2508 after the TAssetMgr slot-0xc notify when eventPayload carries a
+  // resource word after a -1000 sentinel), fills the 'GOLD'/'coat'/'awer'/'titl'/'info'
+  // children, wraps the info text in a fresh TScrollView when it overflows, plays the
+  // per-mode sfx, runs the modal loop, and returns false only for a 'cncl' close.
+  // (Ghidra's TCivToolbar attribution was wrong: the placement dispatch is this class's
+  // own virtual slot 0x11 and the only caller passes TViewMgr's `this`.)
+  bool RunNationInfoModalAndReturnNonCancel(int overlayMode, CString messageText,
+                                            const char* infoChars, int infoLength,
+                                            int* eventPayload, int contextTag, char showCancel);
+
   // 0x5de5d0 (ret 0x8). Resolves the turn-event dialog node for message context 0xc1c,
   // marks it via TWindow::SetField84(1) (same idiom as MakePlanetSeedDialog),
   // resolves its 'DLOG'-tagged child control, and forwards cityRecordIndex/

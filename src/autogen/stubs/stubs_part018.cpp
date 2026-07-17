@@ -83,14 +83,6 @@ undefined4 RefreshCityDialogScrollableViewportWithQuickDrawContext(void)
   return 0;
 }
 
-// ghidra_name SyncBoundedValueAndToggleControlStates
-// ghidra_proto undefined SyncBoundedValueAndToggleControlStates()
-// FUNCTION: IMPERIALISM 0x005741e0
-undefined4 SyncBoundedValueAndToggleControlStates(void)
-{
-  return 0;
-}
-
 // ghidra_name RenderStrategicMapViewportBandsAndBlit_Impl
 // ghidra_proto undefined RenderStrategicMapViewportBandsAndBlit_Impl()
 // FUNCTION: IMPERIALISM 0x00575080

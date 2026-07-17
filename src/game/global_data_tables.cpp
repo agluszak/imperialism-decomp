@@ -971,6 +971,16 @@ double g_Compute_Advisory_OnePointFive_00654008 = 1.5;
 // the relation manager's city stock block by TGreatPower slot 0x39 (0x004df810).
 short g_Rebuild_Primary_Nation_Value_00653570[6][0x17] = {0};
 
+// Shared empty-text pointer passed by value as the modal's byval CString message seed
+// (TViewMgr::BuildAndShowTurnOverlayByMode tail, 0x5d67fc).
+// GLOBAL: IMPERIALISM 0x0066f050
+char* g_pNationInfoEmptyText_0066f050 = g_szEmptyString;
+
+// Season-dependent sfx offset word: the nation-info modal plays sfx 0xbb8 + this value
+// for overlay mode 5 (0x5d61f0).
+// GLOBAL: IMPERIALISM 0x0066f0a6
+short g_overlaySfxSeasonWord_0066f0a6 = 10;
+
 // GLOBAL: IMPERIALISM 0x0066fad0
 double DAT_0066fad0 = 0.092;
 
@@ -1408,6 +1418,16 @@ CString g_cstrTechCapabilityMessageStore;
 // localized-message dispatch.
 // GLOBAL: IMPERIALISM 0x006a5be0
 CString g_cstrUiPromptMessageStore;
+
+// When set (and the modal's context tag is 2), overrides the computed 'GOLD' resource
+// id in the nation-info modal (0x5d5ea6). Never observed written yet; zero-initialized.
+// GLOBAL: IMPERIALISM 0x006a5bac
+int g_nationInfoGoldResourceOverride_006a5bac = 0;
+
+// Round-robin localization-audio slot cursor (0..5) advanced by
+// TSoundPlayer::UpdateLocalizationAudioSlotAndMaybeRefreshVoiceState (0x5e50c0).
+// GLOBAL: IMPERIALISM 0x006a60f8
+int g_localizationAudioSlotCursor_006a60f8 = 0;
 
 // The live tactical battle: assigned when a battle object is created/loaded, read by
 // the turn-event 0x29/0x2a receive dispatchers.

@@ -432,6 +432,8 @@ extern CRect g_aCityBuildingActionRects[31];
 extern HRGN g_hOpenRgnAccumulator;
 extern char g_Sanitize_City_Counter_Value_006A24D4;
 extern double DAT_0066fad0;
+extern char* g_pNationInfoEmptyText_0066f050;
+extern short g_overlaySfxSeasonWord_0066f0a6;
 extern TModuleLibraryCacheTableStateB* g_pModuleLibraryCacheState;
 // Cached CCommandLineInfo::m_bShowSplash (cmdInfo+0x04), not m_nShellCommand.
 extern BOOL g_cachedShowSplashFlag;
@@ -688,6 +690,8 @@ extern CString g_cstrNationComparisonMessageStore; // @ 0x6a3180
 extern CString g_cstrNationAwolMessageStore;       // @ 0x6a3d08
 extern CString g_cstrTechCapabilityMessageStore;   // @ 0x6a57c8
 extern CString g_cstrUiPromptMessageStore;         // @ 0x6a5be0
+extern int g_nationInfoGoldResourceOverride_006a5bac;
+extern int g_localizationAudioSlotCursor_006a60f8;
 extern char g_szImpSaveExtension_00698708[];
 extern char g_szMultiplayerSavePrefix_00698710[];
 extern char g_szSingleSlotSavePrefix_00698718[];

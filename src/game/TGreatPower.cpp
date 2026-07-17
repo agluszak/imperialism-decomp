@@ -114,11 +114,6 @@ TG_LAYOUT_ASSERT(TGreatPower_Offset_missionQueue_0xB60,
                  offsetof(TGreatPower, missionQueue) == 0xB60);
 #undef TG_LAYOUT_ASSERT
 
-// FUNCTION: IMPERIALISM 0x004d7a40
-void TGreatPower::LoadNationDisplayNameSharedRefFromField8(CString* destString) {
-  *destString = identitySharedString1;
-}
-
 // SYNTHETIC: IMPERIALISM 0x004d8950
 // TGreatPower::CreateObject
 

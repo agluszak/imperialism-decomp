@@ -126,5 +126,17 @@ public:
   // slot 0x70 SetControlStateFlagAndMaybeRefresh inherited unchanged (0x48e810)
   // === END GENERATED DECLS (TScrollBarView) ===
 
+  // Layout past TControl (0x84): allocation size 0x94 (`new` at 0x573d15). The three
+  // words at 0x88..0x8c are the bounded-value triple clamped by
+  // TScrollView::SyncBoundedValueAndToggleControlStates (word8c = min(word88, word8a));
+  // 0x84/0x8e are allocation padding/unobserved so far. field90 is zeroed by the
+  // inline ctor expansion at 0x573d44.
+  int field84;  // 0x84
+  short word88; // 0x88 — bounded-value component A (hedged; see Sync clamp)
+  short word8a; // 0x8a — bounded-value component B
+  short word8c; // 0x8c — clamped current value
+  short word8e; // 0x8e
+  int field90;  // 0x90 — zeroed on construction
+
   TScrollBarView();
 };
