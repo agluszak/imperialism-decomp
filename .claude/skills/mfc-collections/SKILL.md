@@ -100,3 +100,9 @@ After changing a collection model:
 
 Good evidence should explain both the type choice and why alternatives were
 rejected, especially `CPtrList` vs `CList<void*, void*>`.
+
+## Field notes
+
+Accumulated collection/MFC matching lessons live in `heuristics.md` next to this
+file — template facades (TLongintList), CMap embedded tables, dialog families,
+GDI OnPaint, stretch<T> vs CArray discrimination, inline-wrapper COMDAT traps.

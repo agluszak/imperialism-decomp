@@ -118,7 +118,7 @@ Rules of thumb:
   just scan-cdecl-thiscall 0x004dc540
   ```
   Background: `__cdecl` in `symbols.csv` is mostly Ghidra's default-unknown label;
-  ~33% of *defined* `__cdecl` functions are really `__thiscall` (heuristics.md #5).
+  ~33% of *defined* `__cdecl` functions are really `__thiscall` (see the `calling-conventions` skill).
 - **Signature facts per function** — Ghidra's cc/param count (hypothesis) next to
   the `RET imm` purge bytes (binary ground truth: 4 bytes per stack dword for a
   callee-cleaned convention):

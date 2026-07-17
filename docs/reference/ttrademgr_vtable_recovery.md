@@ -202,7 +202,7 @@ vtables — TDealList @ +0xa8, TNextTradeCommand @ +0x100 — not TTradeMgr.)
    scaling the result ×0x14 (plus fixed +10000 for type 0x15, +4000 for 0x16). This
    method is itself mis-attributed to `TCivToolbar` — its `this->field0c` is
    `TMapMgr::terrainStateTable`, so reattribute it to **TMapMgr** first (see
-   decomp-loop/heuristics.md #49).
+   the `calling-conventions` skill's mis-attribution notes).
 
 ## Why this wasn't force-completed in one session
 

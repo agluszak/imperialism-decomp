@@ -7,8 +7,9 @@ description: Reconstruct C++ classes and vtables for the Imperialism decomp — 
 
 Treat C++ recovery as **staged MSVC reconstruction**, not a single Ghidra result.
 Hard Rules and the MSVC calling-convention guardrail are in `AGENTS.md`; matching
-tactics for specific class families are in `decomp-loop/heuristics.md` (see its
-thematic index; e.g. #25–36, #45–46, #49–54).
+tactics for specific class families are in `heuristics.md` next to this file;
+convention/receiver questions load `calling-conventions`, collection-shaped fields
+load `mfc-collections`.
 
 ## Source-only class recovery workflow
 
@@ -120,5 +121,6 @@ layouts (dumped via `just ghidra-vtable-dump`): `CObject` (`0x66fec4`, 5 slots),
 (`CObject` base → `TIndexAndRankList : CObject` → `CPtrList` → `TSortedPtrList :
 TIndexAndRankList` → `CDocument`), unify each manual ctor's vtable write onto the same
 DATA symbol the C++ vtable resolves to, and re-verify the whole family +
-`just stats` (it touches ~20 already-100% functions). See heuristics.md #7–8
+`just stats` (it touches ~20 already-100% functions). See decomp-loop/heuristics.md
+(vtable pairing infrastructure) and `ctors-dtors-eh` (scalar deleting destructors)
 for the ctor vtable-pairing and scalar-deleting-destructor recipes.

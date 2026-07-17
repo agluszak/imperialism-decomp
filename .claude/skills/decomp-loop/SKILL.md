@@ -7,8 +7,14 @@ description: Core function-porting loop for the Imperialism decomp — promote a
 
 The continuous loop for porting Ghidra functions into real, compile-safe C++ — one
 function (or tightly-coupled cluster) at a time. Obey the Hard Rules and Command
-Policy in `AGENTS.md`. Detailed matching tactics live in `heuristics.md` next to this
-file — read it before tuning a body.
+Policy in `AGENTS.md`. Matching tactics are split into **topical skills** — load the
+one matching the target's dominant trait BEFORE tuning a body: `calling-conventions`
+(any callee/receiver question), `ctors-dtors-eh` (EH frames, ctors/dtors),
+`string-handling` (CString/text), `fp-matching` (float math), `codegen-shapes`
+(loops/branches/switches/bools), `data-modeling` (globals/structs/field types),
+`big-functions` (anything ≥ ~500B or "too complex"), plus `vtable-matching`,
+`class-recovery`, and `mfc-collections` for their domains. `heuristics.md` next to
+this file keeps only loop-process notes and the legacy note-number resolution table.
 
 ## Current objective: breadth + real shapes, NOT 100% similarity
 
@@ -98,9 +104,12 @@ Two config-file readers replace the by-hand grep-across-CSVs dance:
 8. **Keep and move on:** if it pairs and the shape is faithful, keep it and go to the
    next function — even at 30–60%. If it won't pair, fix the marker/ownership; if a
    receiver class genuinely can't be modeled yet, record what you learned and move on.
-9. **Record the lesson**: append transferable tactics to `heuristics.md` (this skill)
-   and put change-specific details, commands, score deltas, and residual risks in the
-   commit message.
+9. **Record the lesson**: append transferable tactics to the matching TOPICAL
+   skill's field notes (`calling-conventions`, `ctors-dtors-eh`, `string-handling`,
+   `fp-matching`, `codegen-shapes`, `data-modeling`, `big-functions`,
+   `vtable-matching`, `class-recovery`, `mfc-collections`); only loop-process
+   lessons go to `heuristics.md` here. Change-specific details, commands, score
+   deltas, and residual risks go in the commit message.
 10. **Repeat** with the next highest-impact mismatch.
 
 ## Marker hygiene (must hold every iteration)
@@ -141,7 +150,7 @@ The correct fix when the original does `CALL <ilt-thunk>` → real target:
    convention: MFC `PASCAL`/`WINAPI` helpers (e.g. `CDC::FromHandle`) are `__stdcall`
    (callee cleans) — a `__cdecl` cast adds a spurious `add esp,4`.
 
-See heuristic **12c** in `heuristics.md` for the worked example (the QuickDraw DC family).
+See the declaration-order-drift note in `vtable-matching/heuristics.md` for the worked example (the QuickDraw DC family).
 
 ## When a compare fails to pair
 

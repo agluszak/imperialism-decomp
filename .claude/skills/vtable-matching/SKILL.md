@@ -9,7 +9,7 @@ Getting `just vtable <Class>` to 100% means every **slot points at the function 
 pairs with the original's slot**. This is distinct from *recovering* the layout (that's
 `class-recovery`) and from the raw-vtable source gate (`just vtable-gate`, in
 `quality-control`). Hard Rules + the calling-convention guardrail are in `AGENTS.md`;
-deep tactics in `decomp-loop/heuristics.md` (#4, #7, #8).
+deep tactics in `heuristics.md` next to this file, decomp-loop/heuristics.md (pairing infrastructure), and `ctors-dtors-eh` (scalar deleting destructors).
 
 **Start by building and comparing the class.** Run `just build` followed by `just vtable <Class>` to see the current status of the vtable slot-by-slot. The diff output highlights mismatching slots, missing functions, or extra slots.
 
@@ -57,7 +57,7 @@ the derived class.
 
 | Symptom | Fix |
 |---|---|
-| **Scalar deleting dtor** (often slot 0x04): recomp `` `scalar deleting destructor' `` shows `no orig` | Pair via SYNTHETIC: set the orig addr's `config/symbols.csv` name to ``Class::`scalar deleting destructor'``, replace any hand-written `*AndMaybeFree` bridge with a `// SYNTHETIC: …` marker. Needs a polymorphic class. See `decomp-loop/heuristics.md` #8 and [[synthetic-scalar-deleting-dtor]]. |
+| **Scalar deleting dtor** (often slot 0x04): recomp `` `scalar deleting destructor' `` shows `no orig` | Pair via SYNTHETIC: set the orig addr's `config/symbols.csv` name to ``Class::`scalar deleting destructor'``, replace any hand-written `*AndMaybeFree` bridge with a `// SYNTHETIC: …` marker. Needs a polymorphic class. See `ctors-dtors-eh` (scalar deleting destructors) and [[synthetic-scalar-deleting-dtor]]. |
 | **Missing override**: orig slot → a class-specific addr, recomp → the inherited base function | Declare an `override` with the base's exact signature/name, give it the real body + `// FUNCTION:` marker at the orig addr. |
 | **Stub-in-slot**: recomp slot → an empty provisional virtual, while a real function exists as a stub at the orig addr | Promote: make the virtual method own the stub's address (move the `// FUNCTION:` marker onto the method, write an honest body), then `just regen-stubs` to drop the stub. |
 | **Imported thunk**: orig slot → an ILT `jmp` thunk addr (`0x40xxxx`), recomp → the direct target | reccmp auto-resolves jmp thunks *unless the thunk is annotated as a function*. Un-import it. See below + [[imported-thunks-block-vtable-resolution]]. |

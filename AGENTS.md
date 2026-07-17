@@ -5,15 +5,18 @@ binary into matching C++, rebuild it with the original MSVC500 toolchain in
 Docker/Wine, and track per-function similarity with `reccmp`. The goal is a
 byte-faithful, reproducible-in-git rebuild.
 
-This file is the contract: the invariants below hold for all work. Per-workflow
-detail lives in **skills** (`.claude/skills/`); read the relevant skill before
-starting that kind of task.
+This file is the contract: the invariants below hold for all work. Per-workflow and
+per-topic detail lives in **skills** (`.claude/skills/`). **Loading the matching
+skill is part of the job, not optional**: before porting a function, load the
+topical skills matching its dominant traits (see the table below); before any
+workflow task, load its workflow skill. The old monolithic heuristics file is gone —
+its notes live inside these skills, so skipping the skill means working blind.
 
-## Skills (how to do each workflow)
+## Workflow skills (how to do each kind of task)
 
 - **`decomp-loop`** — the core function-porting loop (promote → shape pass → data
-  pass → build → compare). Its `heuristics.md` is the running matching playbook
-  (numbered notes + appended lessons).
+  pass → build → compare). Its `heuristics.md` keeps only loop-process notes and the
+  legacy note-number resolution table.
 - **`ghidra`** — inspect `Imperialism.exe` via pyghidra (listing, decompile, vtable
   dump, cdecl/thiscall scan) and the interactive function-documentation methodology.
 - **`quality-control`** — build, reccmp detect/compare/stats, gates,
@@ -29,9 +32,36 @@ starting that kind of task.
   reconstructs an unknown layout/inheritance in the first place.
 - **`run-debug`** — run the recomp under Wine, scripted winedbg sessions, and the
   capture-by-window-ID screenshot recipe for visual verification.
-- **`mfc-collections`** — recover/model MFC collection classes and subobjects
-  (`CPtrList`/`CObList`/`CObArray`/`CTypedPtrList`…). Use when a vtable, ctor/dtor, or
-  field region looks like an MFC collection, or ported code walks protected internals.
+
+## Topical skills (load by what the target function contains)
+
+Match a function's traits to skills and load EVERY one that applies **before**
+porting or diagnosing it:
+
+| The function/target has… | Load |
+| --- | --- |
+| any callee to declare, an ECX load before a CALL, a Ghidra `__cdecl` label, a `ret N` question, a suspect receiver/attribution | **`calling-conventions`** |
+| CString/text/format/assert strings, string-pool literals, `CDumpContext` | **`string-handling`** |
+| an EH prologue (`push -1`/`__ehhandler`), non-POD locals, `new`-expressions, ctor/dtor work, scalar deleting dtors | **`ctors-dtors-eh`** |
+| float/double math, FPU diff lines, unexplained +8 frame bytes | **`fp-matching`** |
+| loop/branch/switch shape mismatches, flag bytes, `sete`, magic-number division, sign-extension noise | **`codegen-shapes`** |
+| unlabeled `.data`/`.rdata` reads, new globals/structs, field-width questions | **`data-modeling`** |
+| size ≥ ~500B, a giant switch, or any "this is too complex" feeling | **`big-functions`** |
+| MFC collection-shaped vtables/fields/internals | **`mfc-collections`** |
+| unknown class layout/inheritance to reconstruct | **`class-recovery`** |
+| a below-100% vtable or wrong-slot diff | **`vtable-matching`** |
+
+Two standing behavioral rules the topical skills exist to enforce:
+
+1. **No function is "too complex" to port.** Strings, EH scaffolding, size, and FP
+   density are never reasons to postpone, stub, approximate, or hand back a target —
+   each has a skill that turns it into mechanical transcription. Deferred/TODO bodies
+   are not an outcome; a structurally-faithful port at 40–60% is.
+2. **Ground truth comes from the Ghidra tooling, not from memory or the decompile.**
+   Before porting: `just ghidra-listing 0xADDR` for the real instructions, resolve
+   every ILT thunk to its target, verify conventions per `calling-conventions`, and
+   read constants/strings from the binary (`just string-oracle`, datacmp). If you
+   have not run the listing, you do not know what the function does.
 
 ## IMPORTANT
 - Game is compiled with MSVC500 (Visual C++ 5.0), which is an old compiler. DO NOT USE modern C++ features or syntax.
@@ -336,15 +366,18 @@ flip commutative-FP operand order (100%→43% on untouched FP leaves), cause sub
 register-allocation wobble in neighbouring functions, and re-pair nearby LIBRARY
 functions — all in code you never touched. These phantom drops are not regressions:
 never revert real structure, relocate globals, or contort the design to defend the old
-score. Accept the delta and `just stats-baseline-update` (full pattern: heuristics
-notes 18 and 47).
+score. Accept the delta and `just stats-baseline-update` (full pattern: the
+`fp-matching` and `data-modeling` skills' wobble notes).
 
 - Do not add routine execution entries to `docs/worklog.md`; keep `docs/worklog.md`
   as historical context only.
 - Write clear commit messages that explain what changed, how it was verified, and
   any relevant score deltas or accepted residual risks.
 - Don't duplicate the same long status across multiple files.
-- Persist transferable matching lessons as numbered notes in
+- Persist transferable matching lessons in the matching **topical skill's** field
+  notes (`calling-conventions`, `ctors-dtors-eh`, `string-handling`, `fp-matching`,
+  `codegen-shapes`, `data-modeling`, `big-functions`, `vtable-matching`,
+  `class-recovery`, `mfc-collections`); loop-process lessons go to
   `.claude/skills/decomp-loop/heuristics.md`.
 
 ## Cursor Cloud specific instructions
