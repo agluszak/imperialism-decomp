@@ -7791,7 +7791,7 @@
     },
     {
       "address": "0x4a2900",
-      "matching": 0.13374805598755832,
+      "matching": 0.13063763608087092,
       "name": "BuildArmyContextActionRecordsAndDispatchLabel",
       "type": 1
     },
@@ -9226,7 +9226,7 @@
     },
     {
       "address": "0x4b4310",
-      "matching": 0.8842105263157894,
+      "matching": 1.0,
       "name": "ComputeAverageWeightWord0TimesTenFromResourceCounts",
       "type": 1
     },
@@ -12040,7 +12040,7 @@
     },
     {
       "address": "0x4d7860",
-      "matching": 0.3888888888888889,
+      "matching": 1.0,
       "name": "TCountry::FormatOverlayTerrainLabelText",
       "type": 1
     },
@@ -13049,8 +13049,7 @@
     },
     {
       "address": "0x4e0590",
-      "effective": true,
-      "matching": 0.42857142857142855,
+      "matching": 1.0,
       "name": "TGreatPower::OrphanRetStub_004d7fa0_88",
       "type": 1
     },
@@ -15407,7 +15406,7 @@
     },
     {
       "address": "0x4fd000",
-      "matching": 0.816,
+      "matching": 0.832,
       "name": "TMapKey::RenderMapHintOverlayMode0",
       "type": 1
     },
@@ -16127,7 +16126,7 @@
     },
     {
       "address": "0x504e90",
-      "matching": 0.6490196078431373,
+      "matching": 0.6692836113837095,
       "name": "TTerrainHelpPicture::BuildMapTileActionContextMenu",
       "type": 1
     },
@@ -16453,7 +16452,7 @@
     },
     {
       "address": "0x5083f0",
-      "matching": 0.4037854889589905,
+      "matching": 0.39747634069400634,
       "name": "TLanguageMgr::Localize",
       "type": 1
     },
@@ -22677,7 +22676,7 @@
     },
     {
       "address": "0x555420",
-      "matching": 0.5546666666666666,
+      "matching": 0.5653333333333334,
       "name": "ResolveTaskForceOrderConflictAndPickCandidate",
       "type": 1
     },
@@ -23087,13 +23086,13 @@
     {
       "address": "0x55d200",
       "matching": 0.0,
-      "name": "BuildInterNationEventSummaryRowsForAdvisorDialog",
+      "name": "TNewspaperView::BuildInterNationEventSummaryRowsForAdvisorDialog",
       "type": 1
     },
     {
       "address": "0x55d910",
       "matching": 0.0,
-      "name": "FormatInterNationEventRowTokensToSharedStrings",
+      "name": "TNewspaperView::FormatInterNationEventRowTokensToSharedStrings",
       "type": 1
     },
     {
@@ -23117,7 +23116,7 @@
     {
       "address": "0x55df50",
       "matching": 0.0,
-      "name": "AppendInterNationEventSummaryTextEntry",
+      "name": "TNewspaperView::AppendInterNationEventSummaryTextEntry",
       "type": 1
     },
     {
@@ -26536,7 +26535,7 @@
     },
     {
       "address": "0x581b20",
-      "matching": 0.24390243902439024,
+      "matching": 1.0,
       "name": "TSimMgr::LoadNormalizedCredentialName",
       "type": 1
     },
@@ -30403,7 +30402,7 @@
     },
     {
       "address": "0x5a9240",
-      "matching": 0.5397590361445783,
+      "matching": 0.563855421686747,
       "name": "TTacticalBattleView::AnimateTacticalUnitMoveBetweenTiles",
       "type": 1
     },
@@ -31914,7 +31913,7 @@
     },
     {
       "address": "0x5ba0e0",
-      "matching": 1.0,
+      "matching": 0.8181818181818182,
       "name": "BuildInterNationEventSummaryRowsForAdvisorDialog_Impl",
       "type": 1
     },
@@ -32324,7 +32323,7 @@
     },
     {
       "address": "0x5bf930",
-      "matching": 0.7436108821104699,
+      "matching": 0.7758478081058726,
       "name": "RefreshSelectedNationOrderCompatibilityInfo",
       "type": 1
     },

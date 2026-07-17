@@ -363,13 +363,12 @@ void TCountry::SeedInitialMilitaryAndNavyOrdersForOwnedRegions(void) {
 
 // FUNCTION: IMPERIALISM 0x004d7860
 void TCountry::FormatOverlayTerrainLabelText(CString* out) {
-  CString label;
-  if (this == nullptr) {
-    label = g_szEmptyString;
+  if (this == 0) {
+    CString defaultName(g_pszDescriptorDefaultName_00653300);
+    *out = defaultName;
   } else {
-    g_pSimMgr->LoadNormalizedCredentialName(&label, nationSlot);
+    *out = g_pSimMgr->LoadNormalizedCredentialName(nationSlot);
   }
-  *out = label;
 }
 
 // FUNCTION: IMPERIALISM 0x004d7930

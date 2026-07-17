@@ -184,9 +184,8 @@ void TTerrainHelpPicture::BuildMapTileActionContextMenu(short nTileIndex) {
     if (g_pGlobalMapState->cityScoreTable[cityIndex].formerOwnerNationCode01 != ownerNation) {
       CString strFormerLine;
       {
-        CString normalizedName;
-        strOwnerLabel = *g_pSimMgr->LoadNormalizedCredentialName(
-            &normalizedName, g_pGlobalMapState->cityScoreTable[cityIndex].formerOwnerNationCode01);
+        strOwnerLabel = g_pSimMgr->LoadNormalizedCredentialName(
+            g_pGlobalMapState->cityScoreTable[cityIndex].formerOwnerNationCode01);
       }
       g_pSimMgr->GetString(0x2755, 0x1f, &strTemplate);
       scanBracketExpressions(g_pSimMgr, &strFormerLine, static_cast<LPCSTR>(strTemplate),
