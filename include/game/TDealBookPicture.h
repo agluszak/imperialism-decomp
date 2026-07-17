@@ -4,6 +4,9 @@
 #include "game/TPicture.h"
 #include "game/mfc.h"
 
+class TTradePageBuyView;
+class TTradePageSellView;
+
 // VTABLE: IMPERIALISM 0x0066dfc0
 class TDealBookPicture : public TPicture {
 public:
@@ -129,13 +132,44 @@ public:
   // === END GENERATED DECLS (TDealBookPicture) ===
   // TPicture's slice ends at 0x90; RTTI oracle confirms sizeof(TDealBookPicture) == 0xb4.
   // The ctor (0x5babc0) writes field90 (= 8) and fieldB2 (= 0); the intervening region and
-  // the 0xb3 byte are unconfirmed padding.
-  short field90;             // +0x90 initialized to 8
-  unsigned char pad92[0x20]; // +0x92
-  unsigned char fieldB2;     // +0xb2 initialized to 0
-  unsigned char padB3;       // +0xb3
+  // the 0xb3 byte are unconfirmed padding. Fields 0x92-0xb1 (formerly a pad92[0x20] blob)
+  // recovered from RefreshTradeSelectionHeaderAndNationOfferBidLines (0x5bc0d0).
+  short field90; // +0x90 initialized to 8
+  // +0x92 -- computed as max(sellView->field_0x60, buyView->field_0x60) - 1 at the end of
+  // RefreshTradeSelectionHeaderAndNationOfferBidLines; purpose beyond that not yet confirmed.
+  short field92;
+  unsigned char pad94[4]; // +0x94..0x97 -- no confirmed writer yet
+  // +0x98 -- picture resource id, reapplied via this->SetPictureResourceIdAndRefresh(field98,
+  // 1) at the end of RefreshTradeSelectionHeaderAndNationOfferBidLines (only when the byte at
+  // +0xb1 was already set on entry).
+  int field98;
+  // +0x9c -- a TView-family pointer, target of one of the 4 CaptureLayoutF0 calls at the end
+  // of RefreshTradeSelectionHeaderAndNationOfferBidLines; not yet confirmed which subview.
+  TView* field9c;
+  TTradePageBuyView* buyView;   // +0xa0
+  TTradePageSellView* sellView; // +0xa4
+  // +0xa8/+0xac -- re-cached copies of sellView/buyView, set at the end of
+  // RefreshTradeSelectionHeaderAndNationOfferBidLines right after their CaptureLayoutF0
+  // calls; field92 (the wider-page selection default) is then computed from these, not
+  // directly from sellView/buyView.
+  TTradePageSellView* fieldA8;
+  TTradePageBuyView* fieldAC;
+  unsigned char padB0; // +0xb0 -- no confirmed writer yet
+  // +0xb1 -- "already initialized" flag; flipped (via `!=0`) at the end of
+  // RefreshTradeSelectionHeaderAndNationOfferBidLines each time it runs.
+  unsigned char initializedFlagB1;
+  unsigned char fieldB2; // +0xb2 initialized to 0
+  unsigned char padB3;   // +0xb3
 
   TDealBookPicture();
+  // 0x5bc0d0 -- on first call (initializedFlagB1 == 0), sets the 'mark' state, builds the
+  // "<season> <year>" header text for 'rtil' and loads the tab-strip's shared message.
+  // On subsequent calls, resets both trade pages to their unselected state (-1), refreshes
+  // 'titL'/'rtil"'s labels from the string table, resets 'mark', and reloads the tab strip.
+  // Either way, ends by capturing 4 subviews' layouts, re-caching the sell view pointer,
+  // recomputing field92 from the wider of the two trade pages' field_0x60, reapplying the
+  // dialog's own picture resource, and flipping the "already initialized" flag.
+  void RefreshTradeSelectionHeaderAndNationOfferBidLines();
 };
 
 ASSERT_SIZE(TDealBookPicture, 0xb4);

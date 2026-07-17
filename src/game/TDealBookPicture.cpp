@@ -1,4 +1,14 @@
 #include "game/TDealBookPicture.h"
+
+#include "game/TSimMgr.h"
+#include "game/TStaticText.h"
+#include "game/TTradePageBuyView.h"
+#include "game/TTradePageSellView.h"
+#include "game/global_data_tables.h"
+#include "game/ui_invalidation_guard.h"
+
+void LoadUiStringAndDispatchSharedMessageCommand(short group, short index, TView* control);
+
 // SYNTHETIC: IMPERIALISM 0x005bab00
 // TDealBookPicture::CreateObject
 
@@ -26,3 +36,84 @@ undefined TDealBookPicture::BuildSelectedNationOrderCapabilityRows() {
 
 // FUNCTION: IMPERIALISM 0x005bbc30
 void TDealBookPicture::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {}
+
+// FUNCTION: IMPERIALISM 0x005bc0d0
+void TDealBookPicture::RefreshTradeSelectionHeaderAndNationOfferBidLines() {
+  if (initializedFlagB1 == 0) {
+    TView* markControl = ResolveControlByTag(0x6d61726b /* 'mark' */);
+    markControl->AssertValid();
+    markControl->SetState(1, 0);
+
+    TStaticText* rtilControl =
+        static_cast<TStaticText*>(ResolveControlByTag(0x7274696c /* 'rtil' */));
+    rtilControl->AssertValid();
+
+    CString seasonName;
+    CString yearText;
+    yearText.Format(g_szDecimalFormat, 0x717 + g_pSimMgr->quarterGateTick2c / 4);
+    g_pSimMgr->FormatSeasonName(&seasonName);
+    CString headerText = seasonName + s_szSpaceSeparator_00695794 + yearText;
+    rtilControl->AssignTextSharedRefIfChangedAndMaybeInvalidate(&headerText, 0);
+
+    RECT titleBounds;
+    rtilControl->QueryBounds(&titleBounds);
+    InvalidateCityDialogRectRegion(&titleBounds, 1);
+
+    TView* tabsControl = ResolveControlByTag(0x74616273 /* 'tabs' */);
+    LoadUiStringAndDispatchSharedMessageCommand(0x2740, 4, tabsControl);
+  } else {
+    sellView->RebuildNationOfferRowsForCategory(-1);
+    buyView->RebuildNationBidRowsForCategory(-1);
+
+    TView* tabsControl = ResolveControlByTag(0x74616273 /* 'tabs' */);
+    if (tabsControl == nullptr) {
+      MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+      TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUTradeViews_0069AA94, 0x2a2);
+    }
+
+    TStaticText* titLControl =
+        static_cast<TStaticText*>(ResolveControlByTag(0x7469744c /* 'titL' */));
+    titLControl->AssertValid();
+    titLControl->LoadUiStringAndDispatchViaVslot1C8(0x2740, 0x19, 0);
+    RECT titLBounds;
+    titLControl->QueryBounds(&titLBounds);
+    InvalidateCityDialogRectRegion(&titLBounds, 1);
+
+    TStaticText* rtilControl =
+        static_cast<TStaticText*>(ResolveControlByTag(0x7274696c /* 'rtil' */));
+    rtilControl->AssertValid();
+    rtilControl->LoadUiStringAndDispatchViaVslot1C8(0x2740, 0x1a, 0);
+    RECT rtilBounds;
+    rtilControl->QueryBounds(&rtilBounds);
+    InvalidateCityDialogRectRegion(&rtilBounds, 1);
+
+    TView* markControl = ResolveControlByTag(0x6d61726b /* 'mark' */);
+    markControl->AssertValid();
+    markControl->SetState(0, 0);
+
+    TView* tabsControl2 = ResolveControlByTag(0x74616273 /* 'tabs' */);
+    LoadUiStringAndDispatchSharedMessageCommand(0x2740, 4, tabsControl2);
+  }
+
+  // NOTE: the receiver for the first CaptureLayoutF0 call below is not yet confirmed
+  // (field9c reuse is a placeholder pending compare/triage evidence).
+  int captureBuffer1[2] = {1000, 1000};
+  field9c->CaptureLayoutF0(captureBuffer1, 1);
+  int captureBuffer2[2] = {1000, 1000};
+  buyView->CaptureLayoutF0(captureBuffer2, 1);
+  int captureBuffer3[2] = {0x41, 0x59};
+  sellView->CaptureLayoutF0(captureBuffer3, 1);
+  int captureBuffer4[2] = {0x13a, 0x59};
+  buyView->CaptureLayoutF0(captureBuffer4, 1);
+
+  fieldA8 = sellView;
+  fieldAC = buyView;
+  if (fieldAC->field_0x60 < fieldA8->field_0x60) {
+    field92 = fieldAC->field_0x60 - 1;
+  } else {
+    field92 = fieldA8->field_0x60 - 1;
+  }
+
+  SetPictureResourceIdAndRefresh(field98, 1);
+  initializedFlagB1 = initializedFlagB1 == 0;
+}

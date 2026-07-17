@@ -9,12 +9,23 @@ each with the evidence needed to start (address, size, current score if any, blo
 
 - `0x502b60` (1285B)
 - `0x4eb8b0` (1212B)
-- `0x5bc0d0` (1168B)
 - TMapMaker phase bodies: `0x526c20` (747B), `0x527730` (1175B), `0x528e50` (940B) —
   partial class recovery already on main.
 
 ## Known-bad re-ports (score far below structure)
 
+- `0x5bc0d0` TDealBookPicture::RefreshTradeSelectionHeaderAndNationOfferBidLines (landed
+  2026-07-17, 47.86%, structure verified — all real call targets pair correctly:
+  TTradePageSellView/BuyView delegation, TStaticText label/bounds methods, CaptureLayoutF0,
+  SetPictureResourceIdAndRefresh, MessageBoxA/TemporarilyClearAndRestoreUiInvalidationFlag).
+  Two open residuals: (1) `field9c`'s type/identity (used as the first of 4 CaptureLayoutF0
+  receivers at the tail) is an unconfirmed placeholder — TDealBookPicture.h flags it; (2) the
+  header-text CString build (`seasonName + " " + yearText`) doesn't reproduce the original's
+  extra copy-ctor/operator=/dtor sequence (CStack_74) — likely a clang-cl vs the real MSVC500
+  copy-elision difference for a byval-returning operator+ chain, matching the TNewspaperView
+  cluster's `0x55d200`-style residual below. A CopyRect-based two-local RECT copy was tried for
+  the three QueryBounds+Invalidate blocks and empirically regressed the score (47.86% ->
+  45.00%) — reverted; don't retry without new evidence.
 - TNewspaperView advisor cluster (landed 2026-07-17, structure verified; residuals
   documented in docs/case-studies/tnewspaperview-advisor-rows-dossier.md):
   `0x55d200` 62% (uniform +4 frame-slot shift from the original's extra concat/byval
