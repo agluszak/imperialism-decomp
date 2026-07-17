@@ -12,6 +12,29 @@ topical skills matching its dominant traits (see the table below); before any
 workflow task, load its workflow skill. The old monolithic heuristics file is gone —
 its notes live inside these skills, so skipping the skill means working blind.
 
+## The workflow entrypoints (use these, not memory)
+
+Every porting/fixing task goes through three stateful commands — they execute the
+correct process so you never have to reconstruct it:
+
+```sh
+just agent-start port 0xADDR   # investigation front door: refuses stale bases and
+                               # already-implemented targets; runs tooling-check,
+                               # func-status, ghidra-portprep, the initial compare,
+                               # library-identify; writes build-msvc500/agent-task.json
+just agent-check               # diff-aware verification: regen-stubs iff markers
+                               # changed (hard error on hand-edited generated files),
+                               # format-check on touched paths, build, detect,
+                               # compare+triage of every touched address, gates, tests
+just agent-finish              # machine-derived summary / PR body from the receipt
+```
+
+The receipt is guidance, not proof — CI recomputes the checks. Policy-baseline
+updates (`antipattern-gate-update`, `stub-count-gate-update`, and friends) are
+exceptions to architecture rules and refuse to run without
+`ALLOW_POLICY_BASELINE_UPDATE=1`, which requires an explicit human approval —
+never set it to make a red gate go away (see the gate-chasing guardrail).
+
 ## Workflow skills (how to do each kind of task)
 
 - **`decomp-loop`** — the core function-porting loop (promote → shape pass → data

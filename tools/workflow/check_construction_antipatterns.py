@@ -32,6 +32,18 @@ PATTERNS: tuple[tuple[str, re.Pattern[str]], ...] = (
     ("manual_vptr_write", re.compile(r"\*\s*\(\s*void\s*\*\*\s*\)\s*this\s*=|\bvptr\s*=\s*g_vtbl")),
     # Heuristic note: never reinterpret_cast to a __thiscall function pointer.
     ("thiscall_cast", re.compile(r"reinterpret_cast<[^>]*__thiscall[^>]*>")),
+    # Faking a thiscall as __fastcall with a dummy edx second arg (the most-repeated
+    # correction in this repo): any function-pointer cast that spells __fastcall, and
+    # any fastcall signature whose second parameter is a dummy/edx placeholder.
+    ("fastcall_dummy_edx", re.compile(
+        r"reinterpret_cast<[^>]*__fastcall[^>]*>"
+        r"|__fastcall\s*\*?\s*\w*\s*\)?\s*\([^)]*,\s*(?:int|unsigned int|void\s*\*)\s*"
+        r"(?:/\*\s*edx\s*\*/|\bedx\w*|\bunused\w*|\bdummy\w*)")),
+    # Function-pointer casts of known symbols in ANY spelling (typedef'd or inline
+    # cast to a fn-ptr type): the durable fix is a real method/prototype, not a cast.
+    # Baseline-tracked so the legacy bridge inventory can only ratchet down.
+    ("fnptr_cast", re.compile(
+        r"reinterpret_cast<\s*\w[^>]*\(\s*(?:__cdecl|__stdcall|__fastcall|__thiscall)?\s*\*")),
     # Construction rules 8/16: temporary construction-bridge helper names.
     ("bridge_name", re.compile(r"\b(?:Construct\w*AtThis|VCall_\w*Runtime|\w*AndMaybeFree)\b")),
     # Banned porting approach: class operator new/delete used as a construction factory.

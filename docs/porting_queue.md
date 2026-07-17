@@ -35,3 +35,27 @@ each with the evidence needed to start (address, size, current score if any, blo
   rooted at the entry block. Do not re-litigate without a new allocator insight.
 - `0x4e8750` (89%), `0x4e8c50` (87%), `0x4e9a50` (86%) — residuals are dead-arg-slot
   permutations and FP scheduling; acceptable per the wobble policy.
+
+## Workflow-enforcement follow-ups (infrastructure, not ports)
+
+Phase 1 landed (agent-start/check/finish, portprep-first loop, policy-baseline
+guard, typedef/redeclaration gates, session-loop just-only output, session memory
+untracked). Remaining phases, in order:
+
+- **Knowledge-base restructure**: convert topical-skill field notes into structured
+  rule entries (id / status / triggers / required_action / forbidden / tools /
+  supersedes / examples); expose `just advice 0xADDR` and `just advice --diff`
+  (select ~5-10 active rules from portprep output, ownership, triage buckets,
+  touched files); move long anecdotes to `docs/case-studies/`; add a KB linter
+  (duplicate/out-of-order ids, dangling refs, superseded-active conflicts, raw
+  commands where a just target exists, contradictory required/forbidden).
+- **Address claiming + PR automation**: a real claims registry (machine-readable
+  `address | owner-session | branch | expires`), refusing claimed addresses and
+  bodies changed on main after the branch base (agent-start already refuses
+  already-implemented targets and warns on ownership drift); generated PR titles
+  (targets + outcome, never model names) and bodies from the agent-finish receipt;
+  branch protection against force-pushes.
+- **Semantic gates v2 (Clang AST)**: function-pointer casts of known symbols in any
+  spelling, new raw `this+offset` where the offset already has a named field, fake
+  factory/helper families detected by structure, and CI-side enforcement of the
+  no-hand-edits-under-generated-dirs rule that agent-check applies locally.

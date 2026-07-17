@@ -84,6 +84,8 @@ module|tools.ghidra.query_registry|dependency:tools.ghidra.query|Shared command 
 module|tools.runtime.screenshot|script:screenshot|Game-window screenshot by auto-discovered X11 window ID
 module|tools.workflow.vendor_directx_headers|just:vendor-directx-headers|Mirror the DirectX 5 SDK inc/lib from the build image for reference
 module|tools.workflow.func_status|just:func-status|One-stop function status from config CSVs + reccmp baseline
+module|tools.workflow.agent_task|just:agent-start|Stateful agent workflow entrypoints (start/check/finish)
+module|tools.workflow.check_global_redeclarations|just:global-redeclaration-gate|No local externs shadowing global_data_tables.h
 module|tools.workflow.port_candidates|just:port-candidates|Rank porting candidates by size and match gap
 module|tools.binary.decode_builder|just:decode-builder|Widget-block pseudo-source decoder for screen builders (bd 1uj.51)
 module|tools.binary.const_stores|just:const-stores|Const-store map extractor for unrolled table initializers (capstone, no Ghidra)

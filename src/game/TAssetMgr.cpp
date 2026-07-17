@@ -127,7 +127,6 @@ void __stdcall AssignScoresDatPathToSharedString(CString* out) {
   *out = CString(s_Data_scores_dat_0069b7fc);
 }
 
-extern "C" const char s_PictWvGobPathFormat_00698BF4[];
 extern "C" const char s_MissingFilePrefix_0069B820[];
 extern "C" const char s_MissingFileSuffix_0069B810[];
 

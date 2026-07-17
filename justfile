@@ -38,6 +38,33 @@ alias full-sync-build := db-resync
 default:
   @just --list
 
+# ---------------------------------------------------------------------------
+# agent workflow — the only documented entrypoint for porting tasks.
+# ---------------------------------------------------------------------------
+
+# Investigate + claim-check target(s) and write build-msvc500/agent-task.json:
+# verifies worktree/base freshness, refuses already-implemented targets, then runs
+# tooling-check, func-status, ghidra-portprep, the initial compare, and
+# library-identify for library-shaped addresses. `just agent-start port 0xADDR...`.
+[doc('Start a porting task: investigate, claim-check, write the task receipt')]
+[group('agent')]
+agent-start mode +addrs:
+  uv run python -m tools.workflow.agent_task start {{mode}} {{addrs}}
+
+# Diff-aware verification: derives the right steps from the actual git diff
+# (markers changed -> regen-stubs; generated files hand-edited -> hard error),
+# then format-check on touched C++, build, detect, batch compare + triage of every
+# touched address, gates, tests, stats. Reruns are cheap — fix forward and rerun.
+[doc('Verify the current diff: regen/format/build/compare/triage/gates/tests/stats')]
+[group('agent')]
+agent-check *args:
+  uv run python -m tools.workflow.agent_task check {{args}}
+
+[doc('Render the task receipt + diff into a PR-ready summary (CI still recomputes)')]
+[group('agent')]
+agent-finish *args:
+  uv run python -m tools.workflow.agent_task finish {{args}}
+
 # Private: fail fast (with a clear message) if the machine-specific Ghidra install
 # path is missing. Ghidra recipes depend on this instead of repeating the guard.
 _require-ghidra-install:
@@ -499,6 +526,12 @@ inventory:
 session-loop pick='8' top='50' min_size='1' *args:
   uv run python -m tools.reccmp.session_loop --target "{{target}}" --pick "{{pick}}" --top "{{top}}" --min-size "{{min_size}}" {{args}}
 
+# Core-impact candidate ranking (the third session-loop artifact) as a first-class
+# target. `just core-impact [--top N] [--min-size N]`.
+[group('compare')]
+core-impact *args:
+  uv run python -m tools.reccmp.core_impact_ranking --target "{{target}}" --top 50 --min-size 1 {{args}}
+
 # ---------------------------------------------------------------------------
 # ghidra-inspect — read-only evidence from the vendored Ghidra project.
 # ---------------------------------------------------------------------------
@@ -843,6 +876,9 @@ gates:
   just stub-count-gate
   just class-size-gate
   just noop-gate
+  just typedef-cast-gate
+  just typedef-args-gate
+  just global-redeclaration-gate
   just lint
 
 [group('gates')]
@@ -947,6 +983,7 @@ library-identity-gate:
 [doc('MUTATES config/library_identity_gate_baseline.json: record current applied-override count')]
 [group('baseline-update')]
 library-identity-gate-update:
+  @test "${ALLOW_POLICY_BASELINE_UPDATE:-}" = "1" || { echo "REFUSED: this rewrites an architecture-policy baseline (blessing new debt)."; echo "If a human approved the exception, rerun with ALLOW_POLICY_BASELINE_UPDATE=1."; exit 2; }
   uv run python -m tools.workflow.check_library_identity --write-baseline
 
 # Sanity-check a few reccmp-critical symbols.csv rows after Ghidra export.
@@ -983,6 +1020,21 @@ decomplint:
 [group('gates')]
 typedef-cast-audit *args:
   uv run python -m tools.workflow.check_typedef_cast_drift {{args}}
+
+# Strict forms of the two typedef audits, run as part of `just gates`: signature
+# drift across files and dropped-args/convention bugs vs binary evidence both fail.
+[group('gates')]
+typedef-cast-gate:
+  uv run python -m tools.workflow.check_typedef_cast_drift
+
+[group('gates')]
+typedef-args-gate:
+  uv run python -m tools.workflow.check_typedef_ghidra_args --strict
+
+# No local `extern` redeclarations of globals already in global_data_tables.h.
+[group('gates')]
+global-redeclaration-gate:
+  uv run python -m tools.workflow.check_global_redeclarations
 
 [doc('Mine reccmp asm diffs for orig-address<->recomp-symbol global pairs (read-only report)')]
 [group('compare')]
@@ -1026,21 +1078,25 @@ tooling-surface-update:
 # MUTATES: config/vtable_gate_baseline.csv.
 [group('baseline-update')]
 vtable-gate-update:
+  @test "${ALLOW_POLICY_BASELINE_UPDATE:-}" = "1" || { echo "REFUSED: this rewrites an architecture-policy baseline (blessing new debt)."; echo "If a human approved the exception, rerun with ALLOW_POLICY_BASELINE_UPDATE=1."; exit 2; }
   uv run python -m tools.workflow.check_no_raw_vtable_calls --baseline "{{vtable_gate_baseline}}" --write-baseline
 
 # MUTATES: config/construction_gate_baseline.csv.
 [group('baseline-update')]
 antipattern-gate-update:
+  @test "${ALLOW_POLICY_BASELINE_UPDATE:-}" = "1" || { echo "REFUSED: this rewrites an architecture-policy baseline (blessing new debt)."; echo "If a human approved the exception, rerun with ALLOW_POLICY_BASELINE_UPDATE=1."; exit 2; }
   uv run python -m tools.workflow.check_construction_antipatterns --baseline "{{construction_gate_baseline}}" --write-baseline
 
 # MUTATES: config/tgreatpower_gate_baseline.csv.
 [group('baseline-update')]
 tgreatpower-gate-update:
+  @test "${ALLOW_POLICY_BASELINE_UPDATE:-}" = "1" || { echo "REFUSED: this rewrites an architecture-policy baseline (blessing new debt)."; echo "If a human approved the exception, rerun with ALLOW_POLICY_BASELINE_UPDATE=1."; exit 2; }
   uv run python -m tools.workflow.check_tgreatpower_hygiene --baseline "{{tgreatpower_gate_baseline}}" --write-baseline
 
 # MUTATES: config/stub_count_baseline.json.
 [group('baseline-update')]
 stub-count-gate-update:
+  @test "${ALLOW_POLICY_BASELINE_UPDATE:-}" = "1" || { echo "REFUSED: this rewrites an architecture-policy baseline (blessing new debt)."; echo "If a human approved the exception, rerun with ALLOW_POLICY_BASELINE_UPDATE=1."; exit 2; }
   uv run python -m tools.workflow.check_stub_count --write-baseline
 
 # MUTATES: config/datacmp_baseline.csv.
@@ -1051,6 +1107,7 @@ datacmp-gate-update:
 # MUTATES: config/empty_body_baseline.csv.
 [group('baseline-update')]
 noop-gate-update:
+  @test "${ALLOW_POLICY_BASELINE_UPDATE:-}" = "1" || { echo "REFUSED: this rewrites an architecture-policy baseline (blessing new debt)."; echo "If a human approved the exception, rerun with ALLOW_POLICY_BASELINE_UPDATE=1."; exit 2; }
   uv run python -m tools.workflow.check_empty_bodies --write-baseline config/empty_body_baseline.csv
 
 # MUTATES: reccmp-project.yml ignore lists (Hard Rule 14).

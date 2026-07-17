@@ -279,15 +279,11 @@ def main() -> int:
     md_lines.append("")
     md_lines.append("## Commands")
     md_lines.append("")
-    md_lines.append(
-        "1. `uv run python -m tools.reccmp.session_loop --target IMPERIALISM --pick 8 --top 50 --min-size 1`"
-    )
-    md_lines.append(
-        "2. `uv run python -m tools.reccmp.progress_stats --target IMPERIALISM --build-dir build-msvc500 --no-run`"
-    )
-    md_lines.append(
-        "3. `uv run python -m tools.reccmp.core_impact_ranking --target IMPERIALISM --top 50 --min-size 1`"
-    )
+    # Hard Rule 2: tool output must teach the `just` targets, never raw module runs.
+    md_lines.append("1. `just session-loop`")
+    md_lines.append("2. `just stats`")
+    md_lines.append("3. `just core-impact`")
+    md_lines.append("4. `just agent-start port 0xADDR` (before touching any target)")
     out_md.write_text("\n".join(md_lines) + "\n", encoding="utf-8")
 
     payload = {

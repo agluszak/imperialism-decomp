@@ -1,6 +1,7 @@
 #include "game/TAnimation.h"
 
 #include "game/TModuleLibraryCacheTableStateB.h"
+#include "game/global_data_tables.h"
 #include "game/TView.h"
 #include "game/ui_invalidation_guard.h"
 

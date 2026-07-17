@@ -80,4 +80,5 @@ public:
   HMODULE m_primaryModule;                                 // 0x4c
 };
 
-extern "C" TModuleLibraryCacheTableStateB* g_pModuleLibraryCacheState;
+// g_pModuleLibraryCacheState is declared in game/global_data_tables.h (single
+// authoritative declaration; the extern "C" copy here had drifted in linkage).

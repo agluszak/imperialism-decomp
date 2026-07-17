@@ -55,7 +55,17 @@ automatically; re-warm with `just ghidra-daemon` (details in the `ghidra` skill)
 just ghidra-daemon      # once; ghidra-daemon-stop / ghidra-daemon-status to manage
 ```
 
-Edit manual source (shape/data passes on already-owned functions), then:
+Start every task through the stateful entrypoint — it runs the investigation
+(`tooling-check`, `func-status`, **`ghidra-portprep`**: owner, callers,
+thunk-resolved callees + owners, virtual slots, globals, jump tables, decompile),
+refuses stale bases and already-claimed/implemented targets, and writes the task
+receipt to `build-msvc500/agent-task.json`:
+
+```sh
+just agent-start port 0xADDR    # mandatory front door — never start blind
+```
+
+Edit manual source (shape/data passes on already-owned functions), iterating with:
 
 ```sh
 just build              # Docker MSVC500 build (runs vtable-gate first)
@@ -63,12 +73,16 @@ just compare 0xADDR     # or: just compare --file src/game/Foo.cpp
 just triage 0xADDR      # below 100%? classify the diff into actionable buckets first
 ```
 
-Pre-commit (always):
+Verify + pre-commit (always):
 
 ```sh
-just precommit                # build + gates + tooling tests + stats in one command
+just agent-check              # diff-aware: regen (iff markers changed), format-check,
+                              # build, detect, compare+triage touched, gates, tests, stats
 just stats-baseline-update    # if the stats deltas are accepted; commit the baseline with the change
+just agent-finish             # machine-derived summary / PR body from the receipt
 ```
+
+(`just precommit` remains the underlying build+gates+test+stats bundle.)
 
 ## 2. After editing markers / ownership
 

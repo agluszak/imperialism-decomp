@@ -48,10 +48,19 @@ Two config-file readers replace the by-hand grep-across-CSVs dance:
 
 ## The loop
 
+0. **`just agent-start port 0xADDR`** — the mandatory front door. It refuses stale
+   bases and already-implemented targets, then runs `tooling-check`, `func-status`,
+   **`ghidra-portprep`** (owner, callers, thunk-resolved callees + their owners,
+   virtual slots, globals, jump tables, signature hints, decompile), the initial
+   compare, and `library-identify` for library-shaped addresses, writing everything
+   to `build-msvc500/agent-task.json`. Do NOT assemble this investigation by hand,
+   and do NOT skip it: an agent that hasn't seen the portprep dossier does not know
+   the function's owner, convention, or dependencies. (`just ghidra-portprep 0xADDR`
+   directly is fine for extra addresses mid-task.)
 1. **Pick one target** function (or a tightly-coupled neighbor pair). Prefer
    high-impact non-trivial bodies over tiny thunks (`just port-candidates`).
-   `just compare 0xADDR` (or `just func-status 0xADDR`) once first to confirm it is a
-   real body, not a `jmp` trampoline.
+   The `agent-start` receipt already confirms it is a real body, not a `jmp`
+   trampoline.
 2. **Promote** the Ghidra text. Promotion copies the decompiled body out of
    `src/ghidra_autogen/<Class>.cpp` into your manual file with the `// FUNCTION:` marker
    attached, and removes the address from stub ownership so there's one owned impl.
@@ -98,9 +107,11 @@ Two config-file readers replace the by-hand grep-across-CSVs dance:
 6. **Data pass — optional, and only the cheap real-shape wins.** Align obvious
    `short`/`int` widths, hidden stack args, struct-return-via-hidden-pointer, and return
    contracts when they reflect the real shape. **Stop there.**
-7. **Verify**: run `just gates` for the mechanical source-policy gates (raw-vtable,
-   construction anti-patterns, marker hygiene, vtable correctness). Run `just stats` when
-   the edit's blast radius could change aggregate progress.
+7. **Verify: `just agent-check`.** It derives the right steps from your actual git
+   diff — regen-stubs only when markers changed (hard error if generated files were
+   hand-edited), format-check on the touched paths, build, detect, batch compare +
+   triage of every touched address, gates, tests, stats — and records everything in
+   the task receipt. Targeted `just gates` / `just stats` runs are fine mid-loop.
 8. **Keep and move on:** if it pairs and the shape is faithful, keep it and go to the
    next function — even at 30–60%. If it won't pair, fix the marker/ownership; if a
    receiver class genuinely can't be modeled yet, record what you learned and move on.

@@ -13,9 +13,11 @@ mechanically.
 
 The workflow that scales:
 
-1. **Dossier first**: dump the full listing to a scratch file
-   (`just ghidra-listing 0xADDR` or the raw-PE/capstone fallback), resolve every ILT
-   thunk target and vcall slot, and identify every stack local before writing C++.
+1. **Dossier first**: `just agent-start port 0xADDR` (which runs
+   `just ghidra-portprep` — owner, callers, thunk-resolved callees + their owners,
+   virtual slots, globals, jump tables, decompile), then dump the full listing to a
+   scratch file (`just ghidra-listing 0xADDR` or the raw-PE/capstone fallback) and
+   identify every stack local before writing C++.
 2. **Transcribe in binary order** — cases, branches, stores, in the order the binary
    lays them out.
 3. Port callees you meet on the way (or verify their existing models — conventions

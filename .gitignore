@@ -77,3 +77,6 @@ detect.log
 .ghidra-query.log
 .ghidra-daemon.log
 compile_commands.json
+
+# Session-specific agent memory — never commit (stale conclusions poison future agents)
+.claude/projects/
