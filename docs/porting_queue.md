@@ -7,12 +7,26 @@ each with the evidence needed to start (address, size, current score if any, blo
 
 ## Big stubs (never ported)
 
-- `0x4eb8b0` (1212B)
 - TMapMaker phase bodies: `0x526c20` (747B), `0x527730` (1175B), `0x528e50` (940B) —
   partial class recovery already on main.
 
 ## Known-bad re-ports (score far below structure)
 
+- `0x4eb8b0` TGreatPower::AssignTrackedEntryActionsByProfileToOrdersOrUnits (landed
+  2026-07-17, 65.50%, own TU `TGreatPower_AssignTrackedEntryActions.cpp`, structure
+  verified — all real call targets pair correctly: CIterator Reset/More/Advance,
+  GetNavyPrimaryOrderListHead/nextOlder24 manual walk, every vtable slot dispatch
+  (0x2c/0x58/0x5c/0x68/0x6c/0x78/0x7c/0x80/0x84/0x98) against the correct TMission
+  slot). Residual is a `this`-pinning register-allocation choice (original keeps
+  `this` live in EDI across the whole function; recomp spills it to a stack slot),
+  which cascades into a uniformly-shifted 12-byte-larger frame (0x84 vs 0x78) and the
+  matching stack-offset/codegen diff buckets — the class of residual the
+  `big-functions` skill documents as not source-steerable. Added 4 new address-pinned
+  globals (`g_MissionDefaultScore_006545d0`, `g_UnreferencedConstant_006545d4`,
+  `g_MissionScoreOneConstant_006545d8`, `g_MissionScoreZeroThreshold_006545f0`) for
+  the inline weighted-score computation (mirrors the already-landed
+  `CompareMissionOrderEntriesByPriorityScore` idiom, TMission.cpp:276, at a different
+  address instance). Don't retry without new evidence on the frame-size residual.
 - `0x5bc0d0` TDealBookPicture::RefreshTradeSelectionHeaderAndNationOfferBidLines (landed
   2026-07-17, 47.86%, structure verified — all real call targets pair correctly:
   TTradePageSellView/BuyView delegation, TStaticText label/bounds methods, CaptureLayoutF0,

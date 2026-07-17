@@ -2085,6 +2085,7 @@ address|target_cpp|ownership|note
 4eae70|src/game/TAutoGreatPower.cpp|manual|marker_sync
 4eafa0|src/game/TGreatPower.cpp|manual|marker_sync
 4eb0d0|src/game/TAutoGreatPower.cpp|manual|marker_sync
+4eb8b0|src/game/TGreatPower_AssignTrackedEntryActions.cpp|manual|marker_sync
 4ec020|src/game/TDefenseMinister.cpp|manual|marker_sync
 4ec0a0|src/game/TDefenseMinister.cpp|manual|marker_sync
 4ec0c0|src/game/TDefenseMinister.cpp|manual|marker_sync

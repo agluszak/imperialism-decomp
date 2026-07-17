@@ -91,14 +91,6 @@ undefined4 UpdateTrackedEntryEligibilityByClassMaskAndRatio(void)
   return 0;
 }
 
-// ghidra_name AssignTrackedEntryActionsByProfileToOrdersOrUnits
-// ghidra_proto undefined AssignTrackedEntryActionsByProfileToOrdersOrUnits()
-// FUNCTION: IMPERIALISM 0x004eb8b0
-undefined4 AssignTrackedEntryActionsByProfileToOrdersOrUnits(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_ftol_At004ebff0
 // ghidra_proto undefined WrapperFor_ftol_At004ebff0()
 // FUNCTION: IMPERIALISM 0x004ebff0

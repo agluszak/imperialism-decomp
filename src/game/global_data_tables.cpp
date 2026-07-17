@@ -626,6 +626,20 @@ extern const float g_MissionDefaultScore_0065a468 = 0.0f;
 // GLOBAL: IMPERIALISM 0x0065a470
 extern const double g_MissionScoreOneConstant_0065a470 = 1.0;
 
+// Same conceptual pair as above (0.0f mul/div selector, 1.0 "remaining priority" base),
+// read by AssignTrackedEntryActionsByProfileToOrdersOrUnits' (0x4eb8b0) inline scoring.
+// GLOBAL: IMPERIALISM 0x006545d0
+extern const float g_MissionDefaultScore_006545d0 = 0.0f;
+// Orphaned neighbor constant (no known reader yet) sitting between the two named
+// constants above; declared to keep the surrounding data bytes byte-faithful.
+// GLOBAL: IMPERIALISM 0x006545d4
+extern const float g_UnreferencedConstant_006545d4 = -1.0f;
+// GLOBAL: IMPERIALISM 0x006545d8
+extern const double g_MissionScoreOneConstant_006545d8 = 1.0;
+// 0.0 (double) threshold used by the same function's score-positivity checks.
+// GLOBAL: IMPERIALISM 0x006545f0
+extern const double g_MissionScoreZeroThreshold_006545f0 = 0.0;
+
 // Weighting factor (0.2) applied to each adjacent region's score when diffusing the
 // strategic heatmap (RecomputeTileStrategicScoreHeatmap 0x518130).
 // GLOBAL: IMPERIALISM 0x00658780

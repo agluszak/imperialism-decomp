@@ -458,6 +458,19 @@ public:
   // == 0) unit in militaryUnitList44, finds the queued mission (kind 3, keyed by the
   // unit's own tileIndex06) in missionQueue and adopts the unit into it. 0x4eafa0.
   void SeedTrackedEntryAssignmentsFromEligibleUnits();
+  // 0x4eb8b0 — repeatedly assigns the highest-priority tracked mission's action to a
+  // matching order/unit. Resets every missionQueue entry (ReturnFalseSlot98), then loops:
+  // (1) pick the best-scoring TNavyMission (ReturnZeroSlot5C identity filter — army
+  // entries return null there); if found, build its 9-category weight profile
+  // (ReturnZeroSlot2C) and pair it with the best same-nation, unassigned
+  // (field2c == nullptr) TShip primary-order node (ReturnZeroFloatSlot7C), dispatching
+  // via NoOpSlot84 and restarting. (2) Otherwise pick the best-scoring TArmyMission
+  // (ReturnZeroSlot58 identity filter, with a state08/marker11 tie-break against a
+  // runner-up candidate), build its weight profile, and pair it with the best unassigned
+  // (ownerMission40 == nullptr) militaryUnitList44 unit (ReturnZeroFloatSlot78),
+  // dispatching via AdoptUnitSlot80 and restarting. Stops when neither pass finds a
+  // candidate to act on.
+  void AssignTrackedEntryActionsByProfileToOrdersOrUnits();
   // 0x004e8750 — one metric factor for the advisory map-node scoring family.
   // metricCase 1/2: eligible-nation army/navy strength share for selectedNationSlot;
   // 3: owned-region-weighted neighbor-link ratio (cityIndex node, selectedNationSlot
