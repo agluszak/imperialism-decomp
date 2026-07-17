@@ -4883,6 +4883,7 @@ address|target_cpp|ownership|note
 5bcb20|src/game/TDealTabControl.cpp|manual|marker_sync
 5bcb90|src/game/TTradePageSellView.cpp|manual|marker_sync
 5bcc10|src/game/TTradePageSellView.cpp|manual|marker_sync
+5bcc30|src/game/TTradePageSellView.cpp|manual|marker_sync
 5bcf70|src/game/TTradeOfferNationLine.cpp|manual|marker_sync
 5bcfc0|src/game/TTradeOfferNationLine.cpp|manual|marker_sync
 5bd030|src/game/TTradeOfferNationLine.cpp|manual|marker_sync

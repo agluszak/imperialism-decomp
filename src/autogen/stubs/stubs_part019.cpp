@@ -435,14 +435,6 @@ undefined4 RefreshTradeSelectionHeaderAndNationOfferBidLines(void)
   return 0;
 }
 
-// ghidra_name TTradePageSellView::ConstructTTradePageSellViewBaseState
-// ghidra_proto undefined ConstructTTradePageSellViewBaseState()
-// FUNCTION: IMPERIALISM 0x005bcc30
-undefined4 ConstructTTradePageSellViewBaseState(void)
-{
-  return 0;
-}
-
 // ghidra_name TTradePageSellView::DestructTTradePageSellViewAndMaybeFree_Impl
 // ghidra_proto undefined DestructTTradePageSellViewAndMaybeFree_Impl()
 // FUNCTION: IMPERIALISM 0x005bcfa0

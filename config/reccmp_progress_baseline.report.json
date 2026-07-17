@@ -24689,7 +24689,7 @@
     },
     {
       "address": "0x570290",
-      "matching": 0.6382978723404256,
+      "matching": 0.625,
       "name": "TTextLine::ConstructTTextLineBaseState",
       "type": 1
     },
@@ -32105,7 +32105,7 @@
     },
     {
       "address": "0x5bcb90",
-      "matching": 0.44,
+      "matching": 0.48,
       "name": "TTradePageSellView::CreateObject",
       "type": 1
     },
@@ -32117,7 +32117,7 @@
     },
     {
       "address": "0x5bcc30",
-      "matching": 0.0,
+      "matching": 0.5775401069518716,
       "name": "TTradePageSellView::ConstructTTradePageSellViewBaseState",
       "type": 1
     },
@@ -32129,7 +32129,7 @@
     },
     {
       "address": "0x5bcfc0",
-      "matching": 0.4489795918367347,
+      "matching": 0.4897959183673469,
       "name": "TTradeOfferNationLine::CreateObject",
       "type": 1
     },

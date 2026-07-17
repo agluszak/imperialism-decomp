@@ -12,7 +12,11 @@
 IMPLEMENT_DYNCREATE(TTextLine, TLineData)
 
 // FUNCTION: IMPERIALISM 0x00570290
-TTextLine::TTextLine() {}
+TTextLine::TTextLine() : TLineData() {
+  // Only styleRef6 is zero-initialized here; mode/flag2/pointSize stay garbage until
+  // SetTextLineRowBoundsAndStyle's BuildUiTextStyleDescriptor call fills them in.
+  styleDescriptor14.styleRef6 = 0;
+}
 
 // SYNTHETIC: IMPERIALISM 0x00570310
 // TTextLine::`scalar deleting destructor'
