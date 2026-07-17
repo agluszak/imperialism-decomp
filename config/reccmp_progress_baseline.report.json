@@ -11788,7 +11788,7 @@
     },
     {
       "address": "0x4d4390",
-      "matching": 0.0,
+      "matching": 0.3222748815165877,
       "name": "ApplyCompletedCivWorkOrderToMapState",
       "type": 1
     },
@@ -16982,7 +16982,7 @@
     },
     {
       "address": "0x512850",
-      "matching": 0.3157894736842105,
+      "matching": 0.5555555555555556,
       "name": "NoOpMapTilePredicateStub",
       "type": 1
     },
@@ -17271,7 +17271,7 @@
     },
     {
       "address": "0x515b10",
-      "matching": 0.3167420814479638,
+      "matching": 0.3378995433789954,
       "name": "TMapMgr::MarkSeedNeighborTilesUnavailableByCapabilityMaskProfileB",
       "type": 1
     },
@@ -17445,7 +17445,7 @@
     },
     {
       "address": "0x5178f0",
-      "matching": 0.3260340632603406,
+      "matching": 0.3446601941747573,
       "name": "ComputeRepresentativeTileIndexForTerrainTypeWithWrapBias",
       "type": 1
     },

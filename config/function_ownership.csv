@@ -1746,6 +1746,7 @@ address|target_cpp|ownership|note
 4d3070|src/game/TCivMgr.cpp|manual|marker_sync
 4d3a60|src/game/TCivMgr.cpp|manual|marker_sync
 4d4310|src/game/TCivMgr.cpp|manual|marker_sync
+4d4390|src/game/TMapMgr.cpp|manual|marker_sync
 4d49a0|src/game/TLandSaleEvent.cpp|manual|marker_sync
 4d4b90|src/game/TMacViewMgr.cpp|manual|marker_sync
 4d4e40|src/game/TMacViewMgr.cpp|manual|marker_sync
