@@ -925,6 +925,14 @@ extern float g_ApplyIndexedResourceDeltaScale_00653728;
 // TMission.cpp — default mission score constant.
 extern const float g_MissionDefaultScore_0065a468;
 extern const double g_MissionScoreOneConstant_0065a470;
+// TGreatPower_AssignTrackedEntryActions.cpp — same conceptual constants as the
+// 0x65a468/0x65a470 pair above (0.0f mul/div selector, 1.0 "remaining priority" base)
+// but distinct address instances read by 0x4eb8b0's inline scoring, plus a third 0.0
+// (double) threshold used for the score-positivity checks there.
+extern const float g_MissionDefaultScore_006545d0;
+extern const float g_UnreferencedConstant_006545d4;
+extern const double g_MissionScoreOneConstant_006545d8;
+extern const double g_MissionScoreZeroThreshold_006545f0;
 extern const float g_HexHighlightScreenScale_00658640;
 extern float g_TileHeatmapNeighborDiffusionFactor;
 extern double g_MapPreviewScaleX6A3410;
