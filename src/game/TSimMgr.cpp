@@ -143,7 +143,7 @@ void TSimMgr::InitializeTurnFlowStateDefaults() {
   activeNationSlot = -1;
   field14 = 0;
   turnStateCode = 1;
-  runtimeSubsystemIndex = 0;
+  turnFlowStatusFlags = 0;
   field_64 = 0;
   field6e = 0;
   // Ten bytes 0x6f..0x78 (phaseFlags[9] + field78) are filled with 1 in one pass
@@ -250,10 +250,10 @@ void TSimMgr::ReadFrom(TStream* stream) {
   stream->ReadBytes(&field14, 1);
   stream->ReadBytes(&field30, 4);
   stream->ReadBytes(&field34, 4);
-  stream->ReadBytes(&turnFlowStatusFlags, 4);
+  stream->ReadBytes(&alertsPendingFlag38, 4);
 
   if (g_nSaveFormatVersion >= 0x20) {
-    runtimeSubsystemIndex = stream->ReadInteger() & 0xff;
+    turnFlowStatusFlags = stream->ReadInteger() & 0xff;
   }
 
   if (g_nSaveFormatVersion < 0x2d) {
@@ -338,8 +338,8 @@ void TSimMgr::WriteTo(TStream* stream) {
   stream->WriteBytesSlot78(&field14, 1);
   stream->WriteBytesSlot78(&field30, 4);
   stream->WriteBytesSlot78(&field34, 4);
-  stream->WriteBytesSlot78(&turnFlowStatusFlags, 4);
-  stream->streamSlot7c(static_cast<unsigned char>(runtimeSubsystemIndex));
+  stream->WriteBytesSlot78(&alertsPendingFlag38, 4);
+  stream->streamSlot7c(static_cast<unsigned char>(turnFlowStatusFlags));
   stream->WriteBytesSlot78(&fieldd8, 0x3e);
   stream->WriteBytesSlot78(&field_64, 4);
   stream->WriteBytesSlot78(&field15, 0x17);
@@ -828,6 +828,18 @@ void TSimMgr::MergeTurnFlowStatusFlags(unsigned int flags) {
   turnFlowStatusFlags |= flags;
 }
 
+// Out-of-line in the original: every callsite (ShowTurnAlertsForActiveNation x3,
+// HandleTurnEvent7DD x8) calls this copy instead of inlining the mask test.
+// FUNCTION: IMPERIALISM 0x0057f4d0
+unsigned char TSimMgr::TestTurnFlowStatusFlagMask(unsigned int mask) {
+  // test+setne needs the branchy if/return-1/return-0 shape (VC5 folds it to a byte
+  // set); every value-form spelling (`!= 0`, bool, ternary) emits neg/sbb/neg instead.
+  if (mask & turnFlowStatusFlags) {
+    return 1;
+  }
+  return 0;
+}
+
 // TODO: port the "all active nations ready" scan over g_apNationStates.
 
 // FUNCTION: IMPERIALISM 0x0057f4f0
@@ -974,7 +986,7 @@ void ReinitializeGameFlowAndPostTurnEventCode(int eventCode) {
     simMgr->activeNationSlot = -1;
     simMgr->field14 = 0;
     simMgr->turnStateCode = 1;
-    simMgr->runtimeSubsystemIndex = 0;
+    simMgr->turnFlowStatusFlags = 0;
     simMgr->field_64 = 0;
     simMgr->field6e = 0;
     memset(simMgr->phaseFlags, 0x01, sizeof(simMgr->phaseFlags) + 1);

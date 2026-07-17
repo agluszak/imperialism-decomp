@@ -89,3 +89,10 @@ public:
 
   THelpMgr();
 };
+
+// 0x00502b60 (free function in the THelpMgr TU): once per turn tick, show the
+// active nation's turn alerts (mission-score comparisons, treasury prompt, commodity
+// shortfalls, need overruns, population storms) through
+// TViewMgr::DispatchLocalizedUiMessageWithTemplate; returns nonzero when any alert
+// was dispatched.
+char ShowTurnAlertsForActiveNation();

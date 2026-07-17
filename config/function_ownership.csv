@@ -2390,6 +2390,7 @@ address|target_cpp|ownership|note
 501270|src/game/THelpMgr.cpp|manual|marker_sync
 501a20|src/game/THelpMgr.cpp|manual|marker_sync
 501be0|src/game/THelpMgr.cpp|manual|marker_sync
+502b60|src/game/THelpMgr.cpp|manual|marker_sync
 5031c0|src/game/THelpMgr.cpp|manual|marker_sync
 5033e0|src/game/THelpMgr.cpp|manual|marker_sync
 503400|src/game/THelpMgr.cpp|manual|marker_sync
@@ -4000,7 +4001,7 @@ address|target_cpp|ownership|note
 57f3c0|src/game/TSimMgr.cpp|manual|marker_sync
 57f490|src/game/TSimMgr.cpp|manual|marker_sync
 57f4b0|src/game/TSimMgr.cpp|manual|marker_sync
-57f4d0|src/game/TSimMgr.cpp|manual|name_paired_no_marker
+57f4d0|src/game/TSimMgr.cpp|manual|marker_sync
 57f4f0|src/game/TSimMgr.cpp|manual|marker_sync
 57f530|src/game/TSimMgr.cpp|manual|marker_sync
 57f5b0|src/game/TSimMgr.cpp|manual|marker_sync

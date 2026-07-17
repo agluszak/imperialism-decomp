@@ -698,6 +698,7 @@ extern CString g_cstrNationAwolMessageStore;       // @ 0x6a3d08
 extern CString g_cstrTechCapabilityMessageStore;   // @ 0x6a57c8
 extern CString g_cstrUiPromptMessageStore;         // @ 0x6a5be0
 extern int g_nationInfoGoldResourceOverride_006a5bac;
+extern int g_lastTurnAlertTick_006a31c0;
 extern int g_localizationAudioSlotCursor_006a60f8;
 extern char g_szImpSaveExtension_00698708[];
 extern char g_szMultiplayerSavePrefix_00698710[];
