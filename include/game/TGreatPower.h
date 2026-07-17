@@ -438,6 +438,10 @@ public:
   void RevokeDiplomacyGrantForTargetAndAdjustInfluence(int arg1);
   int GetMultiplierSlot21C(void);
   float ComputeMapActionContextCompositeScoreForNation(int nodeType);
+  // For every unassigned (ownerMission40 == nullptr) non-naval (GetUnitMovementClassId()
+  // == 0) unit in militaryUnitList44, finds the queued mission (kind 3, keyed by the
+  // unit's own tileIndex06) in missionQueue and adopts the unit into it. 0x4eafa0.
+  void SeedTrackedEntryAssignmentsFromEligibleUnits();
   unsigned int ComputeMapActionContextNodeValueAverage(void);
   float ComputeAdvisoryMapNodeScoreFactorByCaseMetric(int metricCase, int cityIndex,
                                                       int relationTargetNation,

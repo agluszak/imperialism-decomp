@@ -40,7 +40,7 @@ void TMission::SetStateByte8To2() {
 }
 // FUNCTION: IMPERIALISM 0x00534c80
 void TMission::ResetValue0CToZero() {
-  value0c = 0;
+  value0c = 0.0f;
 }
 // FUNCTION: IMPERIALISM 0x00534ca0
 void TMission::NoOpSlot3C() {}
@@ -118,7 +118,7 @@ float TMission::ReturnZeroFloatSlot78(TMilitaryUnit* candidateUnit, float* refer
   return g_MissionDefaultScore_0065a468;
 }
 // FUNCTION: IMPERIALISM 0x00534ed0
-void TMission::NoOpSlot84(int a, int b) {
+void TMission::NoOpSlot84(void* a, int b) {
   (void)a;
   (void)b;
 }
@@ -128,7 +128,7 @@ void TMission::NoOpSlot80(TMilitaryUnit* unit, int notify) {
   (void)notify;
 }
 // FUNCTION: IMPERIALISM 0x00534f10
-void TMission::NoOpSlot8C(int a, int b) {
+void TMission::NoOpSlot8C(void* a, int b) {
   (void)a;
   (void)b;
 }
@@ -138,7 +138,7 @@ void TMission::NoOpSlot88(TMilitaryUnit* unit, int unused) {
   (void)unused;
 }
 // FUNCTION: IMPERIALISM 0x00534f50
-void TMission::NoOpSlot90(int a) {
+void TMission::NoOpSlot90(void* a) {
   (void)a;
 }
 // FUNCTION: IMPERIALISM 0x00534f70
@@ -156,7 +156,7 @@ char TMission::ReturnFalseSlot98() {
 // FUNCTION: IMPERIALISM 0x00535020
 TMission::TMission() {
   state08 = 2;
-  value0c = 0;
+  value0c = 0.0f;
   marker11 = 0xff;
 }
 
@@ -223,13 +223,12 @@ TMission* CreateMissionObjectByKindAndNodeContext(int sourceNation, eMissionType
 // FUNCTION: IMPERIALISM 0x00535820
 void TMission::WriteTo(TStream* stream) {
   TObject::WriteTo(stream);
-  char* raw = reinterpret_cast<char*>(this);
-  stream->WriteBytesSlot78(raw + 0x04, 2);
-  stream->WriteBytesSlot78(raw + 0x08, 1);
-  stream->WriteBytesSlot78(raw + 0x0c, 4);
-  stream->WriteBytesSlot78(raw + 0x10, 1);
-  stream->WriteBytesSlot78(raw + 0x06, 2);
-  stream->WriteBytesSlot78(raw + 0x11, 1);
+  stream->WriteBytesSlot78(&nationId04, 2);
+  stream->WriteBytesSlot78(&state08, 1);
+  stream->WriteBytesSlot78(&value0c, 4);
+  stream->WriteBytesSlot78(&flag10, 1);
+  stream->WriteBytesSlot78(&pathMarker06, 2);
+  stream->WriteBytesSlot78(&marker11, 1);
 }
 
 // FUNCTION: IMPERIALISM 0x005358a0
@@ -279,14 +278,12 @@ short __cdecl CompareMissionOrderEntriesByPriorityScore(TMission* a, TMission* b
   b->AssertValid();
 
   float diffA = static_cast<float>(g_MissionScoreOneConstant_0065a470) - a->ReturnZeroFloatSlot68();
-  float weightedA = (diffA >= g_MissionDefaultScore_0065a468)
-                        ? diffA * *reinterpret_cast<float*>(&a->value0c)
-                        : diffA / *reinterpret_cast<float*>(&a->value0c);
+  float weightedA =
+      (diffA >= g_MissionDefaultScore_0065a468) ? diffA * a->value0c : diffA / a->value0c;
 
   float diffB = static_cast<float>(g_MissionScoreOneConstant_0065a470) - b->ReturnZeroFloatSlot68();
-  float weightedB = (diffB >= g_MissionDefaultScore_0065a468)
-                        ? diffB * *reinterpret_cast<float*>(&b->value0c)
-                        : diffB / *reinterpret_cast<float*>(&b->value0c);
+  float weightedB =
+      (diffB >= g_MissionDefaultScore_0065a468) ? diffB * b->value0c : diffB / b->value0c;
 
   if (weightedB < weightedA) {
     return -1;

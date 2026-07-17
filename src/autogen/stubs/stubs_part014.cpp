@@ -75,14 +75,6 @@ undefined4 GetCachedAiCityActionContextBias(void)
   return 0;
 }
 
-// ghidra_name SeedTrackedEntryAssignmentsFromEligibleUnits
-// ghidra_proto undefined SeedTrackedEntryAssignmentsFromEligibleUnits()
-// FUNCTION: IMPERIALISM 0x004eafa0
-undefined4 SeedTrackedEntryAssignmentsFromEligibleUnits(void)
-{
-  return 0;
-}
-
 // ghidra_name IterateLinkedListCursorEntries_004eb040
 // ghidra_proto undefined IterateLinkedListCursorEntries_004eb040()
 // FUNCTION: IMPERIALISM 0x004eb040

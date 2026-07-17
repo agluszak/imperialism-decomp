@@ -48,12 +48,12 @@ public:
       void* candidate,
       void* targetProfile) override; // slot 0x7c 0x537610 -- order penalty vs target profile
   virtual void
-  NoOpSlot84(int a,
+  NoOpSlot84(void* a,
              int b) override; // slot 0x84 0x536780 -- attach order child as queued and notify
   virtual void
-  NoOpSlot8C(int a,
+  NoOpSlot8C(void* a,
              int b) override; // slot 0x8c 0x5367d0 -- detach order child, clear primary if match
-  virtual void NoOpSlot90(int a) override; // slot 0x90 0x536810 -- clear secondary order if match
+  virtual void NoOpSlot90(void* a) override; // slot 0x90 0x536810 -- clear secondary order if match
   virtual char ReturnFalseSlot98()
       override; // slot 0x98 0x536740 -- clears queued order links/owner pointers, returns true
 

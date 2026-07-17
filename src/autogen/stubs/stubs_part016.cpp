@@ -547,14 +547,6 @@ undefined4 DestructTShip(void)
   return 0;
 }
 
-// ghidra_name TScatteredShipsMission::GetOrCreateMissionOrderEntryForNode
-// ghidra_proto void * __thiscall GetOrCreateMissionOrderEntryForNode(void)
-// FUNCTION: IMPERIALISM 0x005503a0
-undefined4 GetOrCreateMissionOrderEntryForNode(void)
-{
-  return 0;
-}
-
 // ghidra_name InvokeOrderNodeOwnerVfunc38
 // ghidra_proto undefined InvokeOrderNodeOwnerVfunc38()
 // FUNCTION: IMPERIALISM 0x00550f60
