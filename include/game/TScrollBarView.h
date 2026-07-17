@@ -127,16 +127,27 @@ public:
   // === END GENERATED DECLS (TScrollBarView) ===
 
   // Layout past TControl (0x84): allocation size 0x94 (`new` at 0x573d15). The three
-  // words at 0x88..0x8c are the bounded-value triple clamped by
-  // TScrollView::SyncBoundedValueAndToggleControlStates (word8c = min(word88, word8a));
-  // 0x84/0x8e are allocation padding/unobserved so far. field90 is zeroed by the
-  // inline ctor expansion at 0x573d44.
-  int field84;  // 0x84
-  short word88; // 0x88 — bounded-value component A (hedged; see Sync clamp)
-  short word8a; // 0x8a — bounded-value component B
-  short word8c; // 0x8c — clamped current value
-  short word8e; // 0x8e
-  int field90;  // 0x90 — zeroed on construction
+  // words at 0x88..0x8c are the bounded-value triple seeded by
+  // ConstructTScrollBarViewBaseState / the slot-0x37 hook (18 / height-36 / 18) and
+  // clamped by TScrollView::SyncBoundedValueAndToggleControlStates
+  // (word8c = min(word88, word8a)).
+  TView* ownerView84; // 0x84 — cached ownerContext (both builders store it + AssertValid)
+  short word88;       // 0x88 — bounded-value component A (button span, seeded 0x12)
+  short word8a;       // 0x8a — bounded-value component B (frameHeight38 - 0x24)
+  short word8c;       // 0x8c — clamped current value (seeded 0x12)
+  short word8e;       // 0x8e — allocation padding/unobserved so far
+  // 0x90 — 8-bit offscreen surface from
+  // TDisplayMgr::InitializeBitmapSurfaceContextWithRetry; released in Free().
+  struct TQuickDrawSurfaceContext* surfaceContext90;
 
-  TScrollBarView();
+  // Inline in the original: the only construction site (0x573d37) expands to the
+  // TControl base ctor + vptr store + this one field init.
+  // NOOP: verified empty in original 0x00573d44
+  TScrollBarView() : surfaceContext90(0) {}
+
+  // 0x005744b0 — frame into `panel` with (4,4) margins, cache+assert the owner, seed
+  // the bounded-value words, allocate the 8-bit surface for the full frame rect, and
+  // build the 'scup'/'scdn' TPictureButton pair (18x18, bitmaps 0xbbb/0xbbc),
+  // disabled+pressed by default.
+  void ConstructTScrollBarViewBaseState(TView* panel, int* offsetLayout, int* sizeLayout);
 };

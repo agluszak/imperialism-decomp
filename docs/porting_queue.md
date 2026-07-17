@@ -16,15 +16,13 @@ each with the evidence needed to start (address, size, current score if any, blo
 
 ## Known-bad re-ports (score far below structure)
 
-- `0x573ce0` (195B) — currently claimed as an EMPTY `TScrollView::NoOpUiLifecycleHook`
-  body, but the original resolves the 'scro' content view, `new TScrollBarView()`s the
-  bar (vtable 0x6614c8, size 0x94), calls ConstructTScrollBarViewBaseState, and stores
-  contentView60/scrollBar64. Porting it requires 0x5744b0 first (next line).
-- `0x5744b0` (437B, 4%) — misattributed: the marker claims it as
-  `TScrollBarView::TScrollBarView() {}` but it is really
-  TScrollBarView::ConstructTScrollBarViewBaseState (the real inline ctor is
-  TControl-base + vtable + `field90 = 0`, per the 0x573d37 expansion). Also audit
-  `TScrollBarView::Free` 0x5746e0 / `NoOpUiLifecycleHook` 0x574720 empty bodies.
+- TScrollBarView.cpp fabricated empty bodies still remaining (the 0x5744b0/0x5746e0/
+  0x573ce0/0x574720 batch is fixed): `HandleEvent` 0x5747c0 (~112B),
+  `BeginMouseCaptureAndStartRepeatTimer` 0x574830 (~320B), `ApplyRectSlot110`
+  0x574970 (~928B), `DispatchPictureResourceCommand` 0x574d10 — all currently `{}` in
+  manual source; read the listings before trusting any of them.
+- `0x574720` TScrollBarView::NoOpUiLifecycleHook at 73.5% — residual is pure
+  instruction-scheduling wobble inside the surface-rect block; structure verified.
 - `0x5e50c0` at 77.8% — residual is an ecx/eax naming permutation in the slot-cursor
   idiom; structure verified.
 

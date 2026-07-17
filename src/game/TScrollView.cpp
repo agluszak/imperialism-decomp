@@ -19,8 +19,23 @@ void TScrollView::ConstructTScrollViewBaseState(TView* panel, int* offsetLayout,
   InitializeUiResourceEntryFrameAndParent(0, panel, offsetLayout, sizeLayout, 5, 5, 0);
 }
 
+// Not a no-op despite the inherited slot name: resolve the 'scro'-tagged content
+// view, then build the companion scrollbar docked to the right edge (width 0x19,
+// full height).
 // FUNCTION: IMPERIALISM 0x00573ce0
-void TScrollView::NoOpUiLifecycleHook(int arg) {}
+void TScrollView::NoOpUiLifecycleHook(int arg) {
+  TView::NoOpUiLifecycleHook(arg);
+  contentView60 = ResolveControlByTag(0x7363726f); // 'scro'
+  TScrollBarView* bar = new TScrollBarView();
+  int barOffset[2];
+  int barSize[2];
+  barSize[1] = frameHeight38;
+  barOffset[0] = frameWidth34 - 0x19;
+  barSize[0] = 0x19;
+  barOffset[1] = 0;
+  bar->ConstructTScrollBarViewBaseState(this, barOffset, barSize);
+  scrollBar64 = bar;
+}
 
 // FUNCTION: IMPERIALISM 0x005741e0
 void TScrollView::SyncBoundedValueAndToggleControlStates() {

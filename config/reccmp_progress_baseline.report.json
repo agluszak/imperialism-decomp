@@ -25525,7 +25525,8 @@
     },
     {
       "address": "0x573ce0",
-      "matching": 0.037037037037037035,
+      "effective": true,
+      "matching": 0.9811320754716981,
       "name": "TScrollView::NoOpUiLifecycleHook",
       "type": 1
     },
@@ -25561,7 +25562,8 @@
     },
     {
       "address": "0x5743f0",
-      "matching": 0.5818181818181818,
+      "effective": true,
+      "matching": 0.967741935483871,
       "name": "TScrollBarView::CreateObject",
       "type": 1
     },
@@ -25573,19 +25575,20 @@
     },
     {
       "address": "0x5744b0",
-      "matching": 0.04316546762589928,
+      "effective": true,
+      "matching": 0.9848484848484849,
       "name": "TScrollBarView::ConstructTScrollBarViewBaseState",
       "type": 1
     },
     {
       "address": "0x5746e0",
-      "matching": 0.14285714285714285,
+      "matching": 1.0,
       "name": "TScrollBarView::Free",
       "type": 1
     },
     {
       "address": "0x574720",
-      "matching": 0.05714285714285714,
+      "matching": 0.7352941176470589,
       "name": "TScrollBarView::NoOpUiLifecycleHook",
       "type": 1
     },
