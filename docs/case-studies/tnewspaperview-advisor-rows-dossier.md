@@ -56,3 +56,25 @@ building the 0x2103 report dialog / 'main' tag construction sites); globals 0x6a
 0x21c per arg-index, entries 0x3c), 0x6a4370 (per-nation ptr table), strings 0x69430c
 (fmt), 0x695760, 0x698494; TSimMgr slot 0xd decl; then port 0x55d910 + 0x55df50 first
 (they're the leaf callees), then 0x55d200.
+
+## 0x55d910 FormatInterNationEventRowTokensToSharedStrings — decode
+
+thiscall(this=TNewspaperView; entry, CString* tokens4). Computes delta = entry -
+tokens, then walks k=0..3 with ESI over tokens[k] (advances +4) and [delta+ESI] over
+the entry: values at entry+0x00..0x0c, token TYPES at entry+0x10..0x1c.
+switch (type - 1):
+- type 1: BuildLocalizedTokenListFromBitmaskWithConjunction(&tokens[k], value)
+  (thiscall on this, stub 0x55da80, 462B);
+- type 2: BuildLocalizedNationListFromBitmaskWithConjunction(&tokens[k], value)
+  (thiscall on this, stub 0x55dcd0, 347B);
+- type 3: CString tmp; g_pGlobalMapState->AssignCityRecordDisplayName(value, &tmp);
+  tokens[k] = tmp;
+- type 4: obj = FindMapActionContextByNodeId(value) (cdecl 0x55f100, 47B);
+  obj->vslot0xb [0x2c](&tokens[k]);
+- default: tokens[k] = CString(g_szEmptyString) via temp.
+
+Port order therefore: 0x55da80, 0x55dcd0, 0x55f100 (leaves) -> 0x55d910 -> 0x55df50
+-> 0x55d200. Entry struct so far (stride 0x3c, three per column, base
+[0x6a43e8] + arg*0x21c + 0xc): +0x00..0x0c token values, +0x10..0x1c token types,
++0x24/+0x28 title text/style ids, +0x2c/+0x30 body text ids (0 = row absent),
++0x38 byte = style flag selecting descC vs descB for the title row.
