@@ -1981,6 +1981,8 @@ address|target_cpp|ownership|note
 4e2880|src/game/TGreatPower.cpp|manual|marker_sync
 4e2b00|src/game/TGreatPower.cpp|manual|marker_sync
 4e2b70|src/game/TGreatPower.cpp|manual|marker_sync
+4e3060|src/game/TGreatPower.cpp|manual|marker_sync
+4e3220|src/game/TGreatPower.cpp|manual|marker_sync
 4e3660|src/game/TMinor.cpp|manual|marker_sync
 4e36f0|src/game/TMinor.cpp|manual|marker_sync
 4e3710|src/game/TMinor.cpp|manual|marker_sync
@@ -2167,6 +2169,7 @@ address|target_cpp|ownership|note
 4f0e20|src/game/TDiplomacyMgr.cpp|manual|marker_sync
 4f1570|src/game/TDiplomacyMgr.cpp|manual|marker_sync
 4f1630|src/game/TDiplomacyMgr.cpp|manual|marker_sync
+4f1760|src/game/TDiplomacyMgr.cpp|manual|marker_sync
 4f1970|src/game/TDiplomacyMgr.cpp|manual|marker_sync
 4f19c0|src/game/TDiplomacyMgr.cpp|manual|marker_sync
 4f1a80|src/game/TDiplomacyMgr.cpp|manual|marker_sync
@@ -3470,6 +3473,7 @@ address|target_cpp|ownership|note
 55cda0|src/game/TInterNationEventQueueManager.cpp|manual|marker_sync
 55d160|src/game/TNewspaperView.cpp|manual|marker_sync
 55d1e0|src/game/TNewspaperView.cpp|manual|marker_sync
+55d200|src/game/TNewspaperView.cpp|manual|marker_sync
 55d910|src/game/TNewspaperView.cpp|manual|marker_sync
 55da80|src/game/TNewspaperView.cpp|manual|marker_sync
 55dcd0|src/game/TNewspaperView.cpp|manual|marker_sync

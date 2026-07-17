@@ -123,14 +123,6 @@ undefined4 ResetTNewsMgrToSentinelVtable(void)
   return 0;
 }
 
-// ghidra_name TNewspaperView::BuildInterNationEventSummaryRowsForAdvisorDialog
-// ghidra_proto undefined BuildInterNationEventSummaryRowsForAdvisorDialog()
-// FUNCTION: IMPERIALISM 0x0055d200
-undefined4 BuildInterNationEventSummaryRowsForAdvisorDialog(void)
-{
-  return 0;
-}
-
 // ghidra_name AssignLocalizedIndexedNameFromA8Entry
 // ghidra_proto undefined AssignLocalizedIndexedNameFromA8Entry()
 // FUNCTION: IMPERIALISM 0x0055de90

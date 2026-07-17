@@ -10,6 +10,9 @@
 #include "game/TSortedPtrList.h"
 #include "game/CString.h"
 #include "game/TGreatPower.h"
+#include "game/TCity.h"
+#include "game/TPopulationMgr.h"
+#include "game/TLongintList.h"
 #include "game/TMinor.h"
 #include "game/TNextTradeCommand.h"
 #include "game/TNewsMgr.h"
@@ -793,6 +796,69 @@ void TDiplomacyMgr::InitializeDiplomacyStandingBaselineRandom() {}
 
 // FUNCTION: IMPERIALISM 0x004f1630
 void TDiplomacyMgr::BuildMajorNationDiplomacyStandingRanking() {}
+
+// Rebuild the per-nation comparative-power rows (+0x1824): army, average bilateral
+// relation standing, territory+tech combined, and commodity value, each normalized
+// against the strongest eligible nation (0..100; territory/tech halves 0..50).
+// FUNCTION: IMPERIALISM 0x004f1760
+void TDiplomacyMgr::RecomputeNationComparativePowerMetrics() {
+  int maxCommodity = 1;
+  int maxTerritory = 1;
+  int maxTech = 1;
+  int maxRelation = 1;
+  int maxArmy = 1;
+  int territoryScore[7];
+  int techScore[7];
+  int i;
+  for (i = 0; i < 7; i++) {
+    if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(i) == 0) {
+      continue;
+    }
+    int army = g_apNationStates[i]->ComputeNationNavyOrderWeightedMovementScore() + 0x1f4;
+    comparativePowerRows1824[i][0] = army;
+    if (army > maxArmy) {
+      maxArmy = army;
+    }
+    int relation = g_apNationStates[i]->RecomputeNationComparativePowerMetrics_Impl();
+    comparativePowerRows1824[i][1] = relation;
+    if (relation > maxRelation) {
+      maxRelation = relation;
+    }
+    int commodity = g_apNationStates[i]->SumCommodityRecordAccumulatedValues();
+    comparativePowerRows1824[i][3] = commodity;
+    if (commodity > maxCommodity) {
+      maxCommodity = commodity;
+    }
+    int territory = g_apNationStates[i]->ownedRegionList->GetSize();
+    territoryScore[i] = territory;
+    if (territory > maxTerritory) {
+      maxTerritory = territory;
+    }
+    TGreatPower* nation = g_apNationStates[i];
+    int tech = (nation != 0 ? nation->city : 0)->productionSummary1d8->fieldAt8;
+    techScore[i] = tech;
+    if (tech > maxTech) {
+      maxTech = tech;
+    }
+  }
+  for (i = 0; i < 7; i++) {
+    if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(i) != 0) {
+      comparativePowerRows1824[i][0] = comparativePowerRows1824[i][0] * 100 / maxArmy;
+      comparativePowerRows1824[i][1] = comparativePowerRows1824[i][1] * 100 / maxRelation;
+      comparativePowerRows1824[i][3] = comparativePowerRows1824[i][3] * 100 / maxCommodity;
+      int territory = territoryScore[i] * 50 / maxTerritory;
+      territoryScore[i] = territory;
+      int tech = techScore[i] * 50 / maxTech;
+      techScore[i] = tech;
+      comparativePowerRows1824[i][2] = territory + tech;
+    } else {
+      comparativePowerRows1824[i][0] = 0;
+      comparativePowerRows1824[i][1] = 0;
+      comparativePowerRows1824[i][2] = 0;
+      comparativePowerRows1824[i][3] = 0;
+    }
+  }
+}
 
 // FUNCTION: IMPERIALISM 0x004f1970
 char TDiplomacyMgr::HasState300LinkBetweenNationPair(int sourceNation, int targetNation) {

@@ -1,5 +1,6 @@
 #pragma once
 
+#include "game/TNewsMgr.h" // newsStory rows rendered by the advisor summary
 #include "game/TPicture.h"
 #include "game/mfc.h"
 
@@ -134,8 +135,8 @@ public:
   // 0x55d200: populate the nation-status advisor page — 'date'/'spec' children plus
   // the 3x3 inter-nation event row grid from g_pInterNationEventQueueManager.
   void BuildInterNationEventSummaryRowsForAdvisorDialog(int pageIndex);
-  // 0x55d910: fill tokens[0..3] from the row entry's {values[4], types[4]} pairs.
-  void FormatInterNationEventRowTokensToSharedStrings(int* entry, CString* tokens);
+  // 0x55d910: fill tokens[0..3] from the story's {parmValue, parmKind} pairs.
+  void FormatInterNationEventRowTokensToSharedStrings(newsStory* story, CString* tokens);
   // 0x55da80: comma/"and" list of commodity names for the set bits (bit 0..0x16).
   void BuildLocalizedTokenListFromBitmaskWithConjunction(CString* out, int bitmask);
   // 0x55dcd0: same shape over nation names (string group 0x2711).
