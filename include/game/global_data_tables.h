@@ -401,6 +401,9 @@ extern char* g_pBattleReportSharedText_0064dc30;
 extern char* g_pMiniCivSharedText_0064cb18;
 extern int g_lastEdgeAutoScrollTick16;
 extern int g_nSaveFormatVersion;
+// Gates the assert-messagebox in TTaskForce::ApplyMapOrderTypeExecutionEffects's default
+// (unhandled attachment/kind) case; not yet recovered beyond that one read site.
+extern int g_UnknownMapOrderExecutionGuard_006a3ee0;
 extern char g_szCmdSwitchLang_00694250[];
 extern char g_szCmdSwitchLangQuit_00694254[];
 extern ImperialismApp* g_pImperialismApp;

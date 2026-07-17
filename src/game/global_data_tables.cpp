@@ -125,6 +125,8 @@ char g_vtblTSortedByRelationshipList = 0;
 int g_lastEdgeAutoScrollTick16 = 0;
 // GLOBAL: IMPERIALISM 0x00695278
 int g_nSaveFormatVersion = -1;
+// GLOBAL: IMPERIALISM 0x006a3ee0
+int g_UnknownMapOrderExecutionGuard_006a3ee0 = 0;
 // Upper-cased command-line switch literals matched by
 // ImperialismCommandLineInfo::ParseParam (0x4133d0).
 // GLOBAL: IMPERIALISM 0x00694250

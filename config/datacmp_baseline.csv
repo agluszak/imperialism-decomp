@@ -36,7 +36,7 @@ g_pRegistryProfileAppName_0063E050|0x63e050|WARN|3
 g_pRegistrySettingsSectionAlt_0063E044|0x63e044|WARN|3
 g_pRegistrySettingsSection_0063E040|0x63e040|WARN|3
 g_pszClientSavePrefix_0065BF5C|0x65bf5c|WARN|6
-g_pszEmptyTextPointer_00656f60|0x656f60|WARN|2
+g_pszEmptyTextPointer_00656f60|0x656f60|WARN|3
 g_pszImpSaveExtension_0065DDD8|0x65ddd8|WARN|3
 g_pszMultiplayerSavePrefix_0065DDD4|0x65ddd4|WARN|3
 g_pszSingleSlotSavePrefix_0065DDD0|0x65ddd0|WARN|3

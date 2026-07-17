@@ -27,42 +27,10 @@ undefined4 BuildNavyOrderStatusLineText(void)
   return 0;
 }
 
-// ghidra_name PruneNavyOrderIfUnserviceableOrNoChildren
-// ghidra_proto undefined PruneNavyOrderIfUnserviceableOrNoChildren()
-// FUNCTION: IMPERIALISM 0x00555090
-undefined4 PruneNavyOrderIfUnserviceableOrNoChildren(void)
-{
-  return 0;
-}
-
 // ghidra_name BuildTaskForcePrimaryObjectiveDescriptionText
 // ghidra_proto undefined BuildTaskForcePrimaryObjectiveDescriptionText()
 // FUNCTION: IMPERIALISM 0x005551d0
 undefined4 BuildTaskForcePrimaryObjectiveDescriptionText(void)
-{
-  return 0;
-}
-
-// ghidra_name ShouldAttemptMapOrderPairResolution
-// ghidra_proto undefined ShouldAttemptMapOrderPairResolution()
-// FUNCTION: IMPERIALISM 0x00555720
-undefined4 ShouldAttemptMapOrderPairResolution(void)
-{
-  return 0;
-}
-
-// ghidra_name TryResolveMapOrderEntryPairExecution
-// ghidra_proto undefined TryResolveMapOrderEntryPairExecution()
-// FUNCTION: IMPERIALISM 0x00555d10
-undefined4 TryResolveMapOrderEntryPairExecution(void)
-{
-  return 0;
-}
-
-// ghidra_name ApplyMapOrderTypeExecutionEffects
-// ghidra_proto void __fastcall ApplyMapOrderTypeExecutionEffects(void * pMapOrderEntry)
-// FUNCTION: IMPERIALISM 0x00556100
-undefined4 ApplyMapOrderTypeExecutionEffects(void)
 {
   return 0;
 }

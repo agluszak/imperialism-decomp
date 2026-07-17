@@ -3408,11 +3408,15 @@ address|target_cpp|ownership|note
 554a80|src/game/TTaskForce.cpp|manual|marker_sync
 554ad0|src/game/TTaskForce.cpp|manual|marker_sync
 554c90|src/game/TTaskForce.cpp|manual|marker_sync
+555090|src/game/TTaskForce.cpp|manual|marker_sync
 555420|src/game/TTaskForce.cpp|manual|marker_sync
+555720|src/game/TTaskForce.cpp|manual|marker_sync
 555920|src/game/TTaskForce.cpp|manual|marker_sync
 555c20|src/game/TTaskForce.cpp|manual|marker_sync
+555d10|src/game/TTaskForce.cpp|manual|marker_sync
 555de0|src/game/TTaskForce.cpp|manual|marker_sync
 556010|src/game/TTaskForce.cpp|manual|marker_sync
+556100|src/game/TTaskForce.cpp|manual|marker_sync
 5562c0|src/game/TTaskForce.cpp|manual|marker_sync
 5563d0|src/game/TTaskForce.cpp|manual|marker_sync
 5564f0|src/game/TTaskForce.cpp|manual|marker_sync
