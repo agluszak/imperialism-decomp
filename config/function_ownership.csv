@@ -3992,6 +3992,7 @@ address|target_cpp|ownership|note
 57f530|src/game/TSimMgr.cpp|manual|marker_sync
 57f5b0|src/game/TSimMgr.cpp|manual|marker_sync
 57f8f0|src/game/TSimMgr.cpp|manual|marker_sync
+57fa30|src/game/CString.cpp|manual|marker_sync
 57fe90|src/game/TSimMgr.cpp|manual|marker_sync
 57fec0|src/game/TSimMgr.cpp|manual|marker_sync
 57fef0|src/game/mapped_flavor_text.cpp|manual|marker_sync

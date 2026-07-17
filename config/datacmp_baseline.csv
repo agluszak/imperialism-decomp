@@ -27,7 +27,7 @@ g_apszQuickDrawFontFaceNames|0x695108|WARN|15
 g_awEngineerFortBuildCostByLevel|0x65318a|WARN|16
 g_awTileSpriteVariantOffsetTable3b|0x697000|WARN|16
 g_nationMetricSlotDispatchOrder006d810|0x66d810|WARN|36
-g_pActiveQuickDrawSurfaceContextHead|0x6950f8|WARN|4
+g_pActiveQuickDrawSurfaceContextHead|0x6950f8|WARN|5
 g_pRegistryAppKey_0063E03C|0x63e03c|WARN|3
 g_pRegistryAutoResKey_0063E048|0x63e048|WARN|3
 g_pRegistryCompanyKey_0063E038|0x63e038|WARN|3

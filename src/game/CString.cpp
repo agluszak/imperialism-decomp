@@ -1,5 +1,8 @@
 #include "game/CString.h"
 
+#include "game/global_data_tables.h"
+
+#include <stdlib.h>
 #include <string.h>
 
 extern "C" unsigned char g_MbcsCharTypeTable_006A8018[512] = {0};
@@ -82,3 +85,49 @@ extern "C" int g_fMbcsEnabledForStringCompare_006A811C = 0;
 
 // LIBRARY: IMPERIALISM 0x005ff15e
 // CString::Format (LPCTSTR, ...) — AFX_CDECL member; va_start + FormatV
+
+// Formats a float into *outResult as a comma-grouped integer part (thousands, then millions --
+// applied in that order using the string length computed before either insertion, matching the
+// original's exact split points even though the first insertion already changes the string's
+// length by the time the second one runs) plus, when the value has a fractional remainder, a
+// "." and a 1-or-2-digit decimal part (a trailing-zero digit is stripped before formatting).
+// FUNCTION: IMPERIALISM 0x0057fa30
+void __stdcall FormatFloatToLocalizedSharedString(float value, CString* outResult) {
+  CString thousandsSep(",");
+  CString decimalPoint(".");
+
+  int intPart = static_cast<int>(value);
+  bool isNegative = intPart < 0;
+  if (isNegative) {
+    intPart = -intPart;
+  }
+
+  char* buf = outResult->GetBuffer(0x11);
+  _itoa(intPart, buf, 10);
+  outResult->ReleaseBuffer(-1);
+
+  int len = outResult->GetLength();
+  if (len > 6) {
+    CString last6 = outResult->Right(6);
+    CString firstRest = outResult->Left(len - 6);
+    *outResult = firstRest + thousandsSep + last6;
+  }
+  if (len > 3) {
+    CString last3 = outResult->Right(3);
+    CString firstRest = outResult->Left(len - 3);
+    *outResult = firstRest + thousandsSep + last3;
+  }
+  if (isNegative) {
+    *outResult = '-' + *outResult;
+  }
+
+  int fracPart = static_cast<int>((value - static_cast<float>(intPart)) * 100.0f);
+  if (fracPart > 0) {
+    CString fracStr;
+    if (fracPart % 10 == 0) {
+      fracPart /= 10;
+    }
+    fracStr.Format(g_szDecimalFormat, fracPart);
+    *outResult = *outResult + decimalPoint + fracStr;
+  }
+}
