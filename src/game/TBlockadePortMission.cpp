@@ -71,7 +71,7 @@ void TBlockadePortMission::Call30() {
   }
 
   marker11 = 0;
-  *reinterpret_cast<float*>(&value0c) = score / g_fMissionScoreNormalizationDivisor;
+  value0c = score / g_fMissionScoreNormalizationDivisor;
 }
 
 // Same overall shape as TControlSeaZoneMission::GetReplacementSlot48, but the coverage

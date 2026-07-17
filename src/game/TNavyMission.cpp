@@ -17,8 +17,6 @@ IMPLEMENT_SERIAL(TNavyMission, TMission, 1)
 // signature per the autogen stub definition; real signature applied via a
 // typed cast at each call site so the linker resolves the correct symbol).
 extern undefined4 GetNavyPrimaryOrderNodeByIndex(void);
-extern undefined4 FindFirstTrackedHandlerMatchingModeAndShortKey(void);
-extern undefined4 GetOrCreateMissionOrderEntryForNode(void);
 
 // Swaps float byte order (Big-Endian <-> Little-Endian)
 static inline float SwapFloat(float val) {
@@ -196,7 +194,7 @@ void TNavyMission::ReadFrom(TStream* stream) {
   if (nodeIdx > -1) {
     do {
       TShip* orderNode = GetNavyPrimaryOrderNodeByIndex(nodeIdx);
-      NoOpSlot84(reinterpret_cast<int>(orderNode), 0);
+      NoOpSlot84(orderNode, 0);
       nodeIdx = stream->ReadShort();
     } while (nodeIdx >= 0);
   }
@@ -219,8 +217,8 @@ char TNavyMission::ReturnFalseSlot98() {
 }
 
 // FUNCTION: IMPERIALISM 0x00536780
-void TNavyMission::NoOpSlot84(int a, int b) {
-  TTaskForce* item = reinterpret_cast<TTaskForce*>(a);
+void TNavyMission::NoOpSlot84(void* a, int b) {
+  TTaskForce* item = static_cast<TTaskForce*>(a);
   TMission*& owner = *reinterpret_cast<TMission**>(reinterpret_cast<char*>(item) + 0x2c);
   if (owner != nullptr) {
     owner->NoOpSlot8C(a, b);
@@ -234,9 +232,9 @@ void TNavyMission::NoOpSlot84(int a, int b) {
 }
 
 // FUNCTION: IMPERIALISM 0x005367d0
-void TNavyMission::NoOpSlot8C(int a, int b) {
+void TNavyMission::NoOpSlot8C(void* a, int b) {
   (void)b;
-  TTaskForce* item = reinterpret_cast<TTaskForce*>(a);
+  TTaskForce* item = static_cast<TTaskForce*>(a);
   if (orderList24 != nullptr) {
     if (orderList24->object_ptr == item) {
       orderList24 = orderList24->DeleteMapOrderChildLinkAndReturnNext();
@@ -245,14 +243,14 @@ void TNavyMission::NoOpSlot8C(int a, int b) {
     }
   }
   *reinterpret_cast<int*>(reinterpret_cast<char*>(item) + 0x2c) = 0;
-  if (navyField1c == a) {
+  if (navyField1c == reinterpret_cast<int>(a)) {
     navyField1c = 0;
   }
 }
 
 // FUNCTION: IMPERIALISM 0x00536810
-void TNavyMission::NoOpSlot90(int a) {
-  if (reinterpret_cast<int>(navyField20) == a) {
+void TNavyMission::NoOpSlot90(void* a) {
+  if (navyField20 == a) {
     navyField20 = nullptr;
   }
 }
@@ -346,14 +344,12 @@ TZone* TNavyMission::GetActiveTargetZoneByState28() {
 // FUNCTION: IMPERIALISM 0x00537090
 void TNavyMission::QueueMissionOrdersByPriorityForContext(int pContextAnchor,
                                                           int* ppSelectedChildNode) {
-  typedef void*(__cdecl * FindFirstTrackedHandlerMatchingModeAndShortKey_t)(void*, int);
-  FindFirstTrackedHandlerMatchingModeAndShortKey_t
-      FindFirstTrackedHandlerMatchingModeAndShortKey_fn =
-          reinterpret_cast<FindFirstTrackedHandlerMatchingModeAndShortKey_t>(
-              (void*)&FindFirstTrackedHandlerMatchingModeAndShortKey);
-
-  if ((*ppSelectedChildNode != 0) && (FindFirstTrackedHandlerMatchingModeAndShortKey_fn(
-                                          orderList24, *ppSelectedChildNode) == nullptr)) {
+  // Was bridged through a mis-targeted "FindFirstTrackedHandlerMatchingModeAndShortKey"
+  // cdecl stub cast (a name collision with the unrelated real function at 0x535940); the
+  // actual callee here (verified via the 0x40635c ILT thunk row) is the already-ported
+  // TMapOrderChildLinkNode::FindNodeMatching (0x552510).
+  if (*ppSelectedChildNode != 0 && orderList24->FindNodeMatching(reinterpret_cast<TTaskForce*>(
+                                       *ppSelectedChildNode)) == nullptr) {
     *ppSelectedChildNode = 0;
   }
 
@@ -401,11 +397,6 @@ LAB_0053711a:
   void* startOrder = reinterpret_cast<void*>(*ppSelectedChildNode);
   void* orders[2] = {startOrder, topOrder};
 
-  typedef void*(__fastcall * GetOrCreateMissionOrderEntryForNode_t)(void* self, int dummyEdx);
-  GetOrCreateMissionOrderEntryForNode_t GetOrCreateMissionOrderEntryForNode_fn =
-      reinterpret_cast<GetOrCreateMissionOrderEntryForNode_t>(
-          (void*)&GetOrCreateMissionOrderEntryForNode);
-
   for (int i = 0; i < 2; ++i) {
     void* orderObj = orders[i];
     if (orderObj == nullptr)
@@ -413,15 +404,12 @@ LAB_0053711a:
     if (i == 1 && orderObj == startOrder)
       continue;
 
-    void* nodePtr = FindFirstTrackedHandlerMatchingModeAndShortKey_fn(
-        orderList24, reinterpret_cast<int>(orderObj));
-    *reinterpret_cast<char*>(reinterpret_cast<char*>(nodePtr) + 0xc) = 1;
-    // GetOrCreateMissionOrderEntryForNode (0x5503a0) creates/returns a TTaskForce
-    // entry -- see the contextAnchor field comment in TTaskForce.h.
-    TTaskForce* entry =
-        static_cast<TTaskForce*>(GetOrCreateMissionOrderEntryForNode_fn(orderObj, 0));
+    TMapOrderChildLinkNode* node =
+        orderList24->FindNodeMatching(static_cast<TTaskForce*>(orderObj));
+    node->active_flag = 1;
+    TTaskForce* entry = static_cast<TTaskForce*>(orderObj)->GetOrCreateMissionOrderEntryForNode();
 
-    if (*reinterpret_cast<int*>(reinterpret_cast<char*>(orderObj) + 8) == pContextAnchor) {
+    if (static_cast<TTaskForce*>(orderObj)->attachment == pContextAnchor) {
       entry->SetMapOrderType9AndQueue();
     } else {
       entry->PromoteMapOrderChainAndQueue(reinterpret_cast<TZone*>(pContextAnchor));
@@ -431,18 +419,10 @@ LAB_0053711a:
 
 // FUNCTION: IMPERIALISM 0x005371d0
 void TNavyMission::ConsolidateMissionOrderEntriesByTargetAndQueue(int* pContextAnchor) {
-  typedef void*(__fastcall * GetOrCreateMissionOrderEntryForNode_t)(void* self, int dummyEdx);
-  GetOrCreateMissionOrderEntryForNode_t GetOrCreateMissionOrderEntryForNode_fn =
-      reinterpret_cast<GetOrCreateMissionOrderEntryForNode_t>(
-          (void*)&GetOrCreateMissionOrderEntryForNode);
-
   for (TMapOrderChildLinkNode* node = orderList24; node != nullptr; node = node->next) {
     if (node->active_flag == 0) {
       node->active_flag = 1;
-      // GetOrCreateMissionOrderEntryForNode (0x5503a0) creates/returns a TTaskForce
-      // entry -- see the contextAnchor field comment in TTaskForce.h.
-      TTaskForce* entry =
-          static_cast<TTaskForce*>(GetOrCreateMissionOrderEntryForNode_fn(node->object_ptr, 0));
+      TTaskForce* entry = node->object_ptr->GetOrCreateMissionOrderEntryForNode();
       for (TMapOrderChildLinkNode* other = orderList24; other != nullptr; other = other->next) {
         if (other->active_flag == 0 && other->object_ptr->attachment == entry->contextAnchor) {
           other->object_ptr->RemoveNode(entry);

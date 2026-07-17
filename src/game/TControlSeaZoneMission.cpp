@@ -62,7 +62,7 @@ void TControlSeaZoneMission::Call30() {
   }
 
   marker11 = 0;
-  *reinterpret_cast<float*>(&value0c) = score / g_fMissionScoreNormalizationDivisor;
+  value0c = score / g_fMissionScoreNormalizationDivisor;
 }
 
 // Inherited unchanged by TBeachheadMission (real base class relationship).
@@ -122,7 +122,7 @@ void TControlSeaZoneMission::ResetValue0CToZero() {
     (void)zone;
   }
 
-  *reinterpret_cast<float*>(&value0c) = score / g_fMissionScoreNormalizationDivisor;
+  value0c = score / g_fMissionScoreNormalizationDivisor;
 }
 
 // FUNCTION: IMPERIALISM 0x005393a0

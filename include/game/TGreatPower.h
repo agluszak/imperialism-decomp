@@ -448,6 +448,10 @@ public:
   // map-action context the caller resolved for the scored node; it flows unchanged
   // into metric 4 (navy-order zone match) and metric 7 (zone value average).
   float ComputeMapActionContextCompositeScoreForNation(TZone* zone);
+  // For every unassigned (ownerMission40 == nullptr) non-naval (GetUnitMovementClassId()
+  // == 0) unit in militaryUnitList44, finds the queued mission (kind 3, keyed by the
+  // unit's own tileIndex06) in missionQueue and adopts the unit into it. 0x4eafa0.
+  void SeedTrackedEntryAssignmentsFromEligibleUnits();
   // 0x004e8750 — one metric factor for the advisory map-node scoring family.
   // metricCase 1/2: eligible-nation army/navy strength share for selectedNationSlot;
   // 3: owned-region-weighted neighbor-link ratio (cityIndex node, selectedNationSlot

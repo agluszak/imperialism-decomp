@@ -46,11 +46,11 @@ public:
   virtual float ReturnZeroFloatSlot74(
       void* candidate) override; // slot 0x1d 0x53fb60 -- beachhead score if enabled
 
-  virtual void NoOpSlot84(int a,
+  virtual void NoOpSlot84(void* a,
                           int b) override; // slot 0x21 0x53f190 -- forward to beachhead slot 0x84
-  virtual void NoOpSlot8C(int a,
-                          int b) override; // slot 0x23 0x53f1c0 -- forward to beachhead slot 0x8c
-  virtual void NoOpSlot90(int a) override; // slot 0x24 0x53f160 -- forward to beachhead slot 0x90
+  virtual void NoOpSlot8C(void* a,
+                          int b) override;   // slot 0x23 0x53f1c0 -- forward to beachhead slot 0x8c
+  virtual void NoOpSlot90(void* a) override; // slot 0x24 0x53f160 -- forward to beachhead slot 0x90
   virtual void SetFlag10FromArgSlot94(unsigned char value) override; // slot 0x25 0x53fb90
 
   virtual char

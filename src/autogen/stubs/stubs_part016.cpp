@@ -11,14 +11,6 @@ undefined4 ResetTScatteredShipsMissionToSentinelVtable(void)
   return 0;
 }
 
-// ghidra_name FindFirstTrackedHandlerMatchingModeAndShortKey
-// ghidra_proto undefined FindFirstTrackedHandlerMatchingModeAndShortKey()
-// FUNCTION: IMPERIALISM 0x00535940
-undefined4 FindFirstTrackedHandlerMatchingModeAndShortKey(void)
-{
-  return 0;
-}
-
 // ghidra_name SelectBestCityDevelopmentFromResourcePools
 // ghidra_proto undefined SelectBestCityDevelopmentFromResourcePools()
 // FUNCTION: IMPERIALISM 0x00535b00
@@ -551,14 +543,6 @@ undefined4 WrapperFor_ftol_At0054efb0(void)
 // ghidra_proto undefined DestructTShip()
 // FUNCTION: IMPERIALISM 0x0054f5f0
 undefined4 DestructTShip(void)
-{
-  return 0;
-}
-
-// ghidra_name TScatteredShipsMission::GetOrCreateMissionOrderEntryForNode
-// ghidra_proto void * __thiscall GetOrCreateMissionOrderEntryForNode(void)
-// FUNCTION: IMPERIALISM 0x005503a0
-undefined4 GetOrCreateMissionOrderEntryForNode(void)
 {
   return 0;
 }

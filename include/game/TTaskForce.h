@@ -206,6 +206,14 @@ public:
   void ResetOrderTypeAndStrengthDword(int packedValue); // 0x552f60
   TTaskForce* SelectPreferredMapOrderEntryByPriorityRules(TTaskForce* candidate,
                                                           int compareAttachedFlag);
+  // If `owner` already exists and it has exactly one child (this node itself), reuses
+  // `owner` directly as this node's own order entry. Otherwise detaches `this` from a
+  // shared owner (if any -- same unlink/rebind sequence as RemoveNode, just expressed
+  // without RemoveNode's head-vs-mid-chain branch since RemoveLinkedOrderNodeByValueRecursive
+  // already self-checks its receiver) and builds a fresh dedicated TTaskForce entry
+  // wrapping just `this`, seeded from this node's own +0x08/+0x14 fields (attachment /
+  // the TShip-shaped required_count slot -- bd 1uj.16).
+  TTaskForce* GetOrCreateMissionOrderEntryForNode(); // 0x5503a0
   // `self` is the caller's own order entry, re-attached as `this` child's new owner
   // (see the RemoveNode body for the exact unlink/rebind sequence).
   void RemoveNode(TTaskForce* self);
@@ -304,6 +312,17 @@ public:
   // either side is the active nation (when g_pSimMgr->preferenceValues[3] is set), else
   // hands off to TNavyMgr::ResolveMapOrderPairConflictStep and returns false.
   char ResolveTaskForceOrderConflictAndPickCandidate(TTaskForce* other); // 0x555420
+
+  // Direct sibling of ResolveTaskForceOrderConflictAndPickCandidate/ComputeTaskForceOrder-
+  // TieBreakScore -- same per-order-type {200,100,50} weighted-heuristic-sum comparison,
+  // checked both ways, but with its own inline elimination roll (not a call to either
+  // sibling): whichever side's ComputeMapOrderEntryHeuristicScore-summed heuristic total
+  // is priority-weighted weaker gets one shot at elimination (gap between the OTHER
+  // side's best active child and this side's average active-child rating), and only when
+  // the reciprocal aggregate-score check doesn't already favor it and it isn't already
+  // eliminated. Returns 0 when `this` or `other` gets eliminatedFlag26 set (or the
+  // reciprocal check bails early), 1 when no elimination happens.
+  char TryMarkLosingMapOrderEntryFromForceBalance(TTaskForce* other); // 0x555920
 
   // Low word of this order's resource-type enabledFlagOrBucketOffset column (same field
   // RemoveNode reads as a bucket_offset).

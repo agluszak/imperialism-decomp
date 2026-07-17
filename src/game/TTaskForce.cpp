@@ -117,6 +117,67 @@ void TTaskForce::AdjustMapOrderNodeStatCapped499(short delta) {
   }
 }
 
+// FUNCTION: IMPERIALISM 0x005503a0
+TTaskForce* TTaskForce::GetOrCreateMissionOrderEntryForNode() {
+  TTaskForce* owner_ctx = owner;
+  if (owner_ctx != nullptr) {
+    owner_ctx->AssertValid();
+
+    short childCount = 0;
+    TMapOrderChildLinkNode* head = owner_ctx->childOrderList;
+    for (TMapOrderChildLinkNode* node = head; node != nullptr; node = node->next) {
+      ++childCount;
+    }
+
+    if (childCount > 1) {
+      TMapOrderChildLinkNode* found;
+      if (head == nullptr) {
+        found = nullptr;
+      } else if (head->object_ptr == this) {
+        found = head;
+      } else {
+        found = head->next->FindNodeMatching(this);
+      }
+      if (found != nullptr) {
+        owner_ctx->childOrderList = head->RemoveLinkedOrderNodeByValueRecursive(this);
+
+        short bucketIndex = static_cast<short>(
+            g_NavyOrderResourceDescriptorTable[order_type].enabledFlagOrBucketOffset);
+        short* bucketCounter =
+            reinterpret_cast<short*>(reinterpret_cast<char*>(owner_ctx) + 0x1e + bucketIndex * 2);
+        --*bucketCounter;
+      }
+      if (this == owner_ctx->activeChildEntry) {
+        owner_ctx->RecomputeMapOrderChildAggregateMetric();
+      }
+      SetMapOrderActiveChildEntry(nullptr);
+      owner_ctx = nullptr;
+    }
+
+    if (owner_ctx != nullptr) {
+      return owner_ctx;
+    }
+  }
+
+  // Same node+0x14 short slot ReassignOrderNodeNationAndRebindParentCounters writes
+  // (TShip-shaped node evidence, bd 1uj.16).
+  short requiredCountArg = *reinterpret_cast<short*>(reinterpret_cast<char*>(this) + 0x14);
+  // Real construction (TTaskForce::TTaskForce(int, short), 0x552800). The original
+  // compiles this one call site's construction as inlined field stores rather than a
+  // call to that ctor (likely a disabled-ICF duplicate, matching TArmyMission-style
+  // per-callsite reproduction elsewhere in this codebase); that inlining is not
+  // reproducible from C++ source without a manual vtable write, which construction
+  // Hard Rule 2 forbids outside quarantined runtime files. `new T()` is the correct
+  // model here even though it costs some match percentage at this address.
+  TTaskForce* entry = new TTaskForce(attachment, requiredCountArg);
+  if (entry == nullptr) {
+    MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
+    TemporarilyClearAndRestoreUiInvalidationFlag("D:\\Ambit\\Cross\\UNavy.cpp", 0x306);
+  }
+  entry->FindOrCreateChildOrderLink(this);
+  return entry;
+}
+
 // FUNCTION: IMPERIALISM 0x00550510
 short TTaskForce::GetOrderNodeDescriptorWord20ByResourceType() {
   return static_cast<short>(
@@ -323,7 +384,7 @@ void TTaskForce::ReassignOrderNodeNationAndRebindParentCounters(short nation) {
   // model has other fields -- TShip-shaped node evidence, bd 1uj.16).
   TMission* missionBackref = *reinterpret_cast<TMission**>(reinterpret_cast<char*>(this) + 0x2c);
   if (missionBackref != 0 && missionBackref->nationId04 != nation) {
-    missionBackref->NoOpSlot8C(reinterpret_cast<int>(this), 1);
+    missionBackref->NoOpSlot8C(this, 1);
   }
 
   // Same node+0x14 nation-word slot the TShip reading calls ownerNationSlot14.
@@ -1399,6 +1460,48 @@ char TTaskForce::ResolveTaskForceOrderConflictAndPickCandidate(TTaskForce* other
   }
   g_pNavyOrderManager->ResolveMapOrderPairConflictStep(this, other);
   return 0;
+}
+
+// FUNCTION: IMPERIALISM 0x00555920
+char TTaskForce::TryMarkLosingMapOrderEntryFromForceBalance(TTaskForce* other) {
+  int thisTotal = 0;
+  for (TMapOrderChildLinkNode* node = childOrderList; node != nullptr; node = node->next) {
+    thisTotal += node->object_ptr->ComputeMapOrderEntryHeuristicScore();
+  }
+  int otherTotal = 0;
+  for (TMapOrderChildLinkNode* otherNode = other->childOrderList; otherNode != nullptr;
+       otherNode = otherNode->next) {
+    otherTotal += otherNode->object_ptr->ComputeMapOrderEntryHeuristicScore();
+  }
+
+  if (thisTotal * 100 < kOrderTypePriorityWeight[order_type] * otherTotal) {
+    int thisAggregateScore = ComputeTaskForceOrderAggregateScore();
+    if (otherTotal * 100 < kOrderTypePriorityWeight[other->order_type] * thisAggregateScore ||
+        other->eliminatedFlag26 != 0) {
+      return 0;
+    }
+
+    unsigned int minWeight = GetMinActionThresholdFromEntryChildren();
+    int threshold =
+        static_cast<int>(minWeight + 5) * 10 - other->CalculateMapOrderEntryAverageChildRatingX10();
+    if (rand() % 100 < threshold) {
+      eliminatedFlag26 = 1;
+      return 0;
+    }
+    return 1;
+  }
+
+  if (otherTotal * 100 < kOrderTypePriorityWeight[other->order_type] * thisTotal) {
+    unsigned int minWeight = other->GetMinActionThresholdFromEntryChildren();
+    int threshold =
+        static_cast<int>(minWeight + 5) * 10 - CalculateMapOrderEntryAverageChildRatingX10();
+    if (rand() % 100 < threshold) {
+      other->eliminatedFlag26 = 1;
+      return 0;
+    }
+    return 1;
+  }
+  return 1;
 }
 
 // FUNCTION: IMPERIALISM 0x00555c20

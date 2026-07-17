@@ -30,6 +30,7 @@
 #include "game/THelpMgr.h"
 #include "game/TNewsMgr.h"
 #include "game/TMinister.h"
+#include "game/TMilitaryUnit.h"
 #include "game/TProvinceDesirabilityList.h"
 #include "game/TMinor.h"
 #include "game/TMission.h"
@@ -65,6 +66,10 @@ undefined4 ReallocateHeapBlockWithAllocatorTracking(void);
 // Real body ported at 0x005b7f50 (file end, ascending-address order). Genuine __stdcall
 // predicate: returns 1 when the resource index is in [13,16].
 char __stdcall IsSpecialNationInteractionResource(short resourceIndex);
+
+// Real body ported in TMission.cpp (0x00535940).
+TMission* __cdecl FindFirstTrackedHandlerMatchingModeAndShortKey(TSortedList* list, int kind,
+                                                                 short key, int mode);
 
 static const int kMapNodeCount = 0x180;
 static const int kAidAllocationRowCount = 0x10;
@@ -4845,6 +4850,22 @@ void TGreatPower::PopulateCase16AdvisoryMapNodeCandidateState() {
       if (candidates != 0) {
         candidates->ReleasePtrList();
       }
+    }
+  }
+}
+
+// For every unassigned (ownerMission40 == nullptr) non-naval (GetUnitMovementClassId() ==
+// 0) unit in militaryUnitList44, finds the queued mission (kind 3, keyed by the unit's own
+// tileIndex06) in missionQueue and adopts the unit into it (AdoptUnitSlot80).
+// FUNCTION: IMPERIALISM 0x004eafa0
+void TGreatPower::SeedTrackedEntryAssignmentsFromEligibleUnits() {
+  CIterator iter(militaryUnitList44);
+  for (TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(iter.Reset()); iter.More();
+       unit = static_cast<TMilitaryUnit*>(iter.Advance())) {
+    if (unit->ownerMission40 == nullptr && unit->GetUnitMovementClassId() == 0) {
+      TMission* handler =
+          FindFirstTrackedHandlerMatchingModeAndShortKey(missionQueue, 3, unit->tileIndex06, 0);
+      handler->AdoptUnitSlot80(unit, 1);
     }
   }
 }

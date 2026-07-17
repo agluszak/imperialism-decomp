@@ -2080,6 +2080,7 @@ address|target_cpp|ownership|note
 4ea990|src/game/TAutoGreatPower.cpp|manual|marker_sync
 4eaa20|src/game/TAutoGreatPower.cpp|manual|marker_sync
 4eae70|src/game/TAutoGreatPower.cpp|manual|marker_sync
+4eafa0|src/game/TGreatPower.cpp|manual|marker_sync
 4eb0d0|src/game/TAutoGreatPower.cpp|manual|marker_sync
 4ec020|src/game/TDefenseMinister.cpp|manual|marker_sync
 4ec0a0|src/game/TDefenseMinister.cpp|manual|marker_sync
@@ -2978,6 +2979,7 @@ address|target_cpp|ownership|note
 535800|src/game/TDefendProvinceMission.cpp|manual|marker_sync
 535820|src/game/TMission.cpp|manual|marker_sync
 5358a0|src/game/TMission.cpp|manual|marker_sync
+535940|src/game/TMission.cpp|manual|marker_sync
 5359e0|src/game/TDefendProvinceMission.cpp|manual|marker_sync
 536090|src/game/TMission.cpp|manual|marker_sync
 5362c0|src/game/TArmyPlayer.cpp|manual|marker_sync
@@ -3329,6 +3331,7 @@ address|target_cpp|ownership|note
 550090|src/game/TShip.cpp|manual|marker_sync
 5501b0|src/game/TTaskForce.cpp|manual|marker_sync
 550370|src/game/TTaskForce.cpp|manual|marker_sync
+5503a0|src/game/TTaskForce.cpp|manual|marker_sync
 550510|src/game/TTaskForce.cpp|manual|marker_sync
 550550|src/game/TShip.cpp|manual|marker_sync
 5505a0|src/game/TShip.cpp|manual|marker_sync
@@ -3406,6 +3409,7 @@ address|target_cpp|ownership|note
 554ad0|src/game/TTaskForce.cpp|manual|marker_sync
 554c90|src/game/TTaskForce.cpp|manual|marker_sync
 555420|src/game/TTaskForce.cpp|manual|marker_sync
+555920|src/game/TTaskForce.cpp|manual|marker_sync
 555c20|src/game/TTaskForce.cpp|manual|marker_sync
 555de0|src/game/TTaskForce.cpp|manual|marker_sync
 556010|src/game/TTaskForce.cpp|manual|marker_sync
