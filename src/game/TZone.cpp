@@ -16,7 +16,6 @@
 #include "game/TTaskForce.h"
 #include "game/UiRuntimeContext.h"
 
-undefined4 ReallocateHeapBlockWithAllocatorTracking(void);
 undefined4 GetCurrentLocalEpochSecondsWithTimezoneCache(void);
 
 namespace {
@@ -78,11 +77,9 @@ TZone** TZonePrimaryNeighborStretch::EnsureSlotAllocatedAndReturnPointer(unsigne
     if (doubledCapacity > 0x7fffffffU) {
       doubledCapacity = 0x7fffffffU;
     }
-    void* grownBuffer = reinterpret_cast<void*(__cdecl*)(void*, int)>(
-        ReallocateHeapBlockWithAllocatorTracking)(Data(), wanted * 8);
+    void* grownBuffer = realloc(Data(), wanted * 8);
     if (grownBuffer == 0) {
-      Data() = static_cast<TZone**>(reinterpret_cast<void*(__cdecl*)(void*, int)>(
-          ReallocateHeapBlockWithAllocatorTracking)(Data(), wanted * 4));
+      Data() = static_cast<TZone**>(realloc(Data(), wanted * 4));
       Capacity() = wanted;
     } else {
       Data() = static_cast<TZone**>(grownBuffer);
@@ -165,11 +162,9 @@ TZone** TZonePrimaryNeighborStretch::GetOrAppendUnique(TZone* zone) {
     if (doubledCapacity > 0x7fffffffU) {
       doubledCapacity = 0x7fffffffU;
     }
-    void* grownBuffer = reinterpret_cast<void*(__cdecl*)(void*, int)>(
-        ReallocateHeapBlockWithAllocatorTracking)(Data(), (count + 1) * 8);
+    void* grownBuffer = realloc(Data(), (count + 1) * 8);
     if (grownBuffer == 0) {
-      Data() = static_cast<TZone**>(reinterpret_cast<void*(__cdecl*)(void*, int)>(
-          ReallocateHeapBlockWithAllocatorTracking)(Data(), (count + 1) * 4));
+      Data() = static_cast<TZone**>(realloc(Data(), (count + 1) * 4));
       Capacity() = count + 1;
     } else {
       Data() = static_cast<TZone**>(grownBuffer);
@@ -196,11 +191,9 @@ TZone** TZoneSecondaryNeighborStretch::GetOrAppendUnique(TZone* zone) {
     if (doubledCapacity > 0x7fffffffU) {
       doubledCapacity = 0x7fffffffU;
     }
-    void* grownBuffer = reinterpret_cast<void*(__cdecl*)(void*, int)>(
-        ReallocateHeapBlockWithAllocatorTracking)(Data(), (count + 1) * 8);
+    void* grownBuffer = realloc(Data(), (count + 1) * 8);
     if (grownBuffer == 0) {
-      Data() = static_cast<TZone**>(reinterpret_cast<void*(__cdecl*)(void*, int)>(
-          ReallocateHeapBlockWithAllocatorTracking)(Data(), (count + 1) * 4));
+      Data() = static_cast<TZone**>(realloc(Data(), (count + 1) * 4));
       Capacity() = count + 1;
     } else {
       Data() = static_cast<TZone**>(grownBuffer);
@@ -222,11 +215,9 @@ void TZonePrimaryNeighborStretch::Add(TZone* zone) {
     if (doubledCapacity > 0x7fffffffU) {
       doubledCapacity = 0x7fffffffU;
     }
-    void* grownBuffer = reinterpret_cast<void*(__cdecl*)(void*, int)>(
-        ReallocateHeapBlockWithAllocatorTracking)(Data(), (index + 1) * 8);
+    void* grownBuffer = realloc(Data(), (index + 1) * 8);
     if (grownBuffer == 0) {
-      Data() = static_cast<TZone**>(reinterpret_cast<void*(__cdecl*)(void*, int)>(
-          ReallocateHeapBlockWithAllocatorTracking)(Data(), (index + 1) * 4));
+      Data() = static_cast<TZone**>(realloc(Data(), (index + 1) * 4));
       Capacity() = index + 1;
     } else {
       Data() = static_cast<TZone**>(grownBuffer);
@@ -247,11 +238,9 @@ void TZoneSecondaryNeighborStretch::Add(TZone* zone) {
     if (doubledCapacity > 0x7fffffffU) {
       doubledCapacity = 0x7fffffffU;
     }
-    void* grownBuffer = reinterpret_cast<void*(__cdecl*)(void*, int)>(
-        ReallocateHeapBlockWithAllocatorTracking)(Data(), (index + 1) * 8);
+    void* grownBuffer = realloc(Data(), (index + 1) * 8);
     if (grownBuffer == 0) {
-      Data() = static_cast<TZone**>(reinterpret_cast<void*(__cdecl*)(void*, int)>(
-          ReallocateHeapBlockWithAllocatorTracking)(Data(), (index + 1) * 4));
+      Data() = static_cast<TZone**>(realloc(Data(), (index + 1) * 4));
       Capacity() = index + 1;
     } else {
       Data() = static_cast<TZone**>(grownBuffer);
@@ -500,12 +489,9 @@ void TZone::GenerateZoneStatusCodeIfUnset() {
       // its raw block (realloc-to-double, fall back to exact) exactly as the original.
       // The original calls the cdecl allocator directly, so cast at the callsite.
       if (static_cast<unsigned int>(primaryNeighbors.Capacity()) < 2) {
-        void* grown = reinterpret_cast<void*(__cdecl*)(void*, int)>(
-            ReallocateHeapBlockWithAllocatorTracking)(primaryNeighbors.Data(), 0x10);
+        void* grown = realloc(primaryNeighbors.Data(), 0x10);
         if (grown == 0) {
-          primaryNeighbors.Data() =
-              static_cast<TZone**>(reinterpret_cast<void*(__cdecl*)(void*, int)>(
-                  ReallocateHeapBlockWithAllocatorTracking)(primaryNeighbors.Data(), 8));
+          primaryNeighbors.Data() = static_cast<TZone**>(realloc(primaryNeighbors.Data(), 8));
           primaryNeighbors.Capacity() = 2;
         } else {
           primaryNeighbors.Data() = static_cast<TZone**>(grown);
@@ -516,12 +502,9 @@ void TZone::GenerateZoneStatusCodeIfUnset() {
         primaryNeighbors.Count() = 2;
       }
       if (primaryNeighbors.Capacity() == 0) {
-        void* grown = reinterpret_cast<void*(__cdecl*)(void*, int)>(
-            ReallocateHeapBlockWithAllocatorTracking)(primaryNeighbors.Data(), 8);
+        void* grown = realloc(primaryNeighbors.Data(), 8);
         if (grown == 0) {
-          primaryNeighbors.Data() =
-              static_cast<TZone**>(reinterpret_cast<void*(__cdecl*)(void*, int)>(
-                  ReallocateHeapBlockWithAllocatorTracking)(primaryNeighbors.Data(), 4));
+          primaryNeighbors.Data() = static_cast<TZone**>(realloc(primaryNeighbors.Data(), 4));
           primaryNeighbors.Capacity() = 1;
         } else {
           primaryNeighbors.Data() = static_cast<TZone**>(grown);
@@ -639,11 +622,9 @@ void TZoneSecondaryNeighborStretch::ResizePointerArrayCapacityByRequestedCount(i
   if (doubled > 0x7fffffff) {
     doubled = 0x7fffffff;
   }
-  void* grown = reinterpret_cast<void*(__cdecl*)(void*, int)>(
-      ReallocateHeapBlockWithAllocatorTracking)(Data(), count * 8);
+  void* grown = realloc(Data(), count * 8);
   if (grown == 0) {
-    Data() = static_cast<TZone**>(reinterpret_cast<void*(__cdecl*)(void*, int)>(
-        ReallocateHeapBlockWithAllocatorTracking)(Data(), count * 4));
+    Data() = static_cast<TZone**>(realloc(Data(), count * 4));
     Capacity() = count;
     return;
   }
@@ -1058,11 +1039,9 @@ void TZonePrimaryNeighborStretch::EnsureCapacityAtLeast(int count) {
   if (doubledCapacity > 0x7fffffffU) {
     doubledCapacity = 0x7fffffffU;
   }
-  void* grownBuffer = reinterpret_cast<void*(__cdecl*)(void*, int)>(
-      ReallocateHeapBlockWithAllocatorTracking)(Data(), count * 8);
+  void* grownBuffer = realloc(Data(), count * 8);
   if (grownBuffer == 0) {
-    Data() = static_cast<TZone**>(reinterpret_cast<void*(__cdecl*)(void*, int)>(
-        ReallocateHeapBlockWithAllocatorTracking)(Data(), count * 4));
+    Data() = static_cast<TZone**>(realloc(Data(), count * 4));
     Capacity() = count;
   } else {
     Data() = static_cast<TZone**>(grownBuffer);

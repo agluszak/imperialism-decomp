@@ -123,34 +123,10 @@ undefined4 ResetTNewsMgrToSentinelVtable(void)
   return 0;
 }
 
-// ghidra_name BuildInterNationEventSummaryRowsForAdvisorDialog
+// ghidra_name TNewspaperView::BuildInterNationEventSummaryRowsForAdvisorDialog
 // ghidra_proto undefined BuildInterNationEventSummaryRowsForAdvisorDialog()
 // FUNCTION: IMPERIALISM 0x0055d200
 undefined4 BuildInterNationEventSummaryRowsForAdvisorDialog(void)
-{
-  return 0;
-}
-
-// ghidra_name FormatInterNationEventRowTokensToSharedStrings
-// ghidra_proto undefined FormatInterNationEventRowTokensToSharedStrings()
-// FUNCTION: IMPERIALISM 0x0055d910
-undefined4 FormatInterNationEventRowTokensToSharedStrings(void)
-{
-  return 0;
-}
-
-// ghidra_name BuildLocalizedTokenListFromBitmaskWithConjunction
-// ghidra_proto undefined BuildLocalizedTokenListFromBitmaskWithConjunction()
-// FUNCTION: IMPERIALISM 0x0055da80
-undefined4 BuildLocalizedTokenListFromBitmaskWithConjunction(void)
-{
-  return 0;
-}
-
-// ghidra_name BuildLocalizedNationListFromBitmaskWithConjunction
-// ghidra_proto undefined BuildLocalizedNationListFromBitmaskWithConjunction()
-// FUNCTION: IMPERIALISM 0x0055dcd0
-undefined4 BuildLocalizedNationListFromBitmaskWithConjunction(void)
 {
   return 0;
 }
@@ -159,14 +135,6 @@ undefined4 BuildLocalizedNationListFromBitmaskWithConjunction(void)
 // ghidra_proto undefined AssignLocalizedIndexedNameFromA8Entry()
 // FUNCTION: IMPERIALISM 0x0055de90
 undefined4 AssignLocalizedIndexedNameFromA8Entry(void)
-{
-  return 0;
-}
-
-// ghidra_name AppendInterNationEventSummaryTextEntry
-// ghidra_proto undefined AppendInterNationEventSummaryTextEntry()
-// FUNCTION: IMPERIALISM 0x0055df50
-undefined4 AppendInterNationEventSummaryTextEntry(void)
 {
   return 0;
 }
@@ -495,14 +463,6 @@ undefined4 WrapperFor_ftol_At00572a50(void)
 // ghidra_proto undefined WrapperFor_ftol_At00573bf0()
 // FUNCTION: IMPERIALISM 0x00573bf0
 undefined4 WrapperFor_ftol_At00573bf0(void)
-{
-  return 0;
-}
-
-// ghidra_name TScrollView::ConstructTScrollViewBaseState
-// ghidra_proto undefined ConstructTScrollViewBaseState()
-// FUNCTION: IMPERIALISM 0x00573cb0
-undefined4 ConstructTScrollViewBaseState(void)
 {
   return 0;
 }

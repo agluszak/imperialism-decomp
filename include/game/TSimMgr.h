@@ -68,7 +68,9 @@ public:
   virtual void GetString(short codeGroup, short offset, CString* destString); // 0x84 0x00580760
   // Copy the per-slot shared credential/name text (sharedTextSlots[slot]) into out and
   // return out. 0x00581b20.
-  CString* LoadNormalizedCredentialName(CString* out, short slot);
+  // Byval return (0x581b20): normalizes sharedTextSlots[slot] through
+  // TLanguageMgr::NormalizeRuntimeCredentialNameToken.
+  CString LoadNormalizedCredentialName(short slot);
   // Return a by-value copy of sharedTextSlots[slot] (the copy-constructed hidden-return
   // sibling of LoadNormalizedCredentialName). 0x00581bc0.
   CString AssignSharedStringFromIndexedSlot7C(short slot);

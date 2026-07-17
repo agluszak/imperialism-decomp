@@ -86,8 +86,7 @@ void TOfferDeskPicture::RefreshSelectedNationOrderCompatibilityInfo() {
   info->SetTextThemeCodeAndMaybeRefresh(-2, 0);
 
   {
-    CString tmp;
-    strTargetNation = *g_pSimMgr->LoadNormalizedCredentialName(&tmp, targetNationSlot92);
+    strTargetNation = g_pSimMgr->LoadNormalizedCredentialName(targetNationSlot92);
   }
   g_pSimMgr->GetStringPrelude(commodityType96, &strCommodity);
 
@@ -169,8 +168,7 @@ void TOfferDeskPicture::RefreshSelectedNationOrderCompatibilityInfo() {
           g_pDiplomacyTurnStateManager->WrapperFor_IsNationSlotEligibleForEventProcessingAt413250(
               targetNationSlot92));
       {
-        CString tmp;
-        strDominantName = *g_pSimMgr->LoadNormalizedCredentialName(&tmp, dominant);
+        strDominantName = g_pSimMgr->LoadNormalizedCredentialName(dominant);
       }
       if (dominant == nationSlot90) {
         g_pSimMgr->GetString(0x2764, 0xe, &strTemplate);

@@ -51,8 +51,11 @@ struct TurnEventDialogNode : public TView {
 };
 
 struct GoldDialogControl : public TControl {
-  virtual void gold71();                                    // slot 0x71 byte 0x1c4
-  virtual void SetGoldControlStateByResource(int a, int b); // slot 0x72 byte 0x1c8
+  virtual void gold71(); // slot 0x71 byte 0x1c4
+  // The resource parameter is short-typed: 0x5d5f19..0x5d5f34 passes
+  // GetActiveNationId()+0x251c with no movsx (garbage upper word), which only
+  // compiles when the receiving parameter is a short.
+  virtual void SetGoldControlStateByResource(short resourceId, int b); // slot 0x72 byte 0x1c8
   virtual void InvokeSlot1CC(int a, int b, int c);
   virtual void InvokeSlot1D0FourParam(int a, int b, int c, int slot);
   virtual void InvokeSlot1D0OneParam(void* content);

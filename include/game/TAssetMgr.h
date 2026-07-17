@@ -45,6 +45,8 @@ public:
   int ReadResourceStreamIntoBufferAndAdvance(class CFile_Virtuals* stream, void* buffer,
                                              int* countInOut);
   void ReleaseResourceStreamIfNotNull(class CFile_Virtuals* stream); // 0x5df6d0
+  // Reseek the stream from the start (SeekSlot30(offset, 0)); this unused. 0x5df730.
+  void InvokeVtableSlot30OnTargetObject(class CFile_Virtuals* stream, int offset);
   // Thiscall member that ignores `this` and returns the stream's length (slot 0x38).
   int GetResourceStreamSize(class CFile_Virtuals* stream); // 0x5df760
 

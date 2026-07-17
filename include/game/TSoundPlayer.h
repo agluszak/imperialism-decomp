@@ -46,9 +46,13 @@ public:
   // [-9999, 0] millibels) and applies it when DirectSound init succeeded.
   virtual void SetMasterVolumeFromPercent(short percent); // 0x2b -> 0x5e5020
   virtual void NoOpAudioTickCallback_005e50a0();          // 0x2c -> 0x5e50a0
+  // sfxToken is short-typed: the body reads it via `movsx ecx, word ptr [esp+8]`
+  // (0x5e50f0) and PlaySoundEffect forwards its own short token without extension.
   virtual int UpdateLocalizationAudioSlotAndMaybeRefreshVoiceState(
-      int sfxToken, int param_2 = 0, int param_3 = 1, int param_4 = 1);        // 0x2d -> 0x5e50c0
-  virtual int PlaySoundEffect(int sfxToken, int param_2 = 0, int param_3 = 1); // 0x2e -> 0x5e5140
+      short sfxToken, int param_2 = 0, int param_3 = 1, int param_4 = 1); // 0x2d -> 0x5e50c0
+  // sfxToken is short-typed: 0x5d6260 passes a word table load with no extension
+  // (garbage upper bits), which only compiles against a short parameter.
+  virtual int PlaySoundEffect(short sfxToken, int param_2 = 0, int param_3 = 1); // 0x2e -> 0x5e5140
 
   void HandleBlinkStateAndScheduleTimerTick(char enabled); // 0x593c10
 

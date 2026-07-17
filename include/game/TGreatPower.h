@@ -330,7 +330,7 @@ public:
   virtual void DispatchTurnOrderActionSlotB0(short orderKind, short payload, short flags);
   virtual void BuildGreatPowerTurnMessageSummaryAndDispatch(void);
 
-  void LoadNationDisplayNameSharedRefFromField8(CString* destString);
+  // LoadNationDisplayNameSharedRefFromField8 moved to TCountry (its field's owner).
 
   // 0x004ddcf0. Adds `delta` to relationDeltaSnapshot[index] (the +0x198 per-nation
   // short counter array). Called from

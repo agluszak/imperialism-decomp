@@ -160,3 +160,5 @@ address|name|prototype
 0x00491a70|CSubViewIterator::NextSubView|TView* __thiscall NextSubView()
 0x00491ab0|CSubViewIterator::MoreSubViews|int __thiscall MoreSubViews()
 0x0059d400|TArmyPlayer::SetAllUnitAiStateCodesTo13|void __thiscall SetAllUnitAiStateCodesTo13()
+0x005db2f0|CString::GetLength|int __thiscall GetLength()
+0x005d5d10|CString::operator char const *|char const * __thiscall operator char const *()

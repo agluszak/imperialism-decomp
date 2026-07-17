@@ -5,6 +5,8 @@
 #include "game/TLanguageMgr.h"
 #include "game/TSimMgr.h"
 
+#include <stdlib.h>
+
 // FUNCTION: IMPERIALISM 0x0056d5c0
 CString BuildSharedStringFromMappedFlavorTextIndex(short variantIndex) {
   CString result;
@@ -110,6 +112,98 @@ void __cdecl BuildUiMessageTextFromBracketTemplate(TSimMgr* sim, CString* out, i
       *out += ch;
     }
   }
+}
+
+// FUNCTION: IMPERIALISM 0x00580280
+char* __cdecl AppendInterNationEventSummaryTextEntry_Impl(TSimMgr* sim, const char* templateText,
+                                                          const char* token1, const char* token2,
+                                                          const char* token3, const char* token4) {
+  (void)sim;
+  (void)token1;
+  (void)token2;
+  (void)token3;
+  (void)token4;
+  TResizableByteSink sink;
+  TResizableByteSink* out = &sink;
+  // Tokens are 1-indexed relative to the template parameter (bracket digit '1' selects
+  // token1), matching scanBracketExpressions' variadic idiom.
+  const char* const* args = &templateText;
+  int idx = 0;
+  char ch;
+  if (*templateText != 0) {
+    do {
+      ch = templateText[idx];
+      if (ch == '[') {
+        while (ch != 0) {
+          ch = templateText[idx + 1];
+          idx++;
+          if (ch >= '0' && ch <= '9') {
+            char letter = templateText[idx + 1];
+            if (letter < 'a' || letter > 'z') {
+              const char* token = args[templateText[idx] - '0'];
+              while (*token != 0) {
+                out->AppendByteToResizableBuffer(*token);
+                token++;
+              }
+            } else {
+              CString localized = g_pLanguageMgr->Localize(args[templateText[idx] - '0'], letter);
+              const char* p = localized;
+              while (*p != 0) {
+                out->AppendByteToResizableBuffer(*p);
+                p++;
+              }
+            }
+            break;
+          }
+          if (ch == ']') {
+            break;
+          }
+        }
+        while (true) {
+          ch = templateText[idx];
+          if (ch == ']' || ch == 0) {
+            break;
+          }
+          ch = templateText[idx + 1];
+          idx++;
+          if (ch == ']') {
+            break;
+          }
+        }
+      } else {
+        out->AppendByteToResizableBuffer(ch);
+      }
+      ch = templateText[idx + 1];
+      idx++;
+    } while (ch != 0);
+  }
+  out->AppendByteToResizableBuffer(0);
+  return sink.buffer4;
+}
+
+// FUNCTION: IMPERIALISM 0x00580460
+void TResizableByteSink::AppendByteToResizableBuffer(char byteValue) {
+  unsigned int pos = lengthC;
+  if (pos >= static_cast<unsigned int>(capacity8)) {
+    int grownLength = pos + 1;
+    unsigned int doubled = grownLength * 2;
+    int clampedCapacity = doubled;
+    if (doubled > 0x7fffffff) {
+      clampedCapacity = 0x7fffffff;
+    }
+    char* grown = static_cast<char*>(realloc(buffer4, doubled));
+    if (grown == 0) {
+      buffer4 = static_cast<char*>(realloc(buffer4, grownLength));
+      capacity8 = grownLength;
+    } else {
+      buffer4 = grown;
+      capacity8 = clampedCapacity;
+    }
+  }
+  if (pos >= static_cast<unsigned int>(lengthC)) {
+    lengthC = pos + 1;
+  }
+  buffer4[pos] = byteValue;
 }
 
 // The generated flavor text is rejected (regenerate) if it contains any character from

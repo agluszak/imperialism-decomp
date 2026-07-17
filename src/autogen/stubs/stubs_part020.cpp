@@ -123,22 +123,6 @@ undefined4 UpdateTurnEventPaletteByCode(void)
   return 0;
 }
 
-// ghidra_name NoOpRuntimeCallback_005d5d10
-// ghidra_proto undefined NoOpRuntimeCallback_005d5d10()
-// FUNCTION: IMPERIALISM 0x005d5d10
-undefined4 NoOpRuntimeCallback_005d5d10(void)
-{
-  return 0;
-}
-
-// ghidra_name TCivToolbar::RunNationInfoModalAndReturnNonCancel
-// ghidra_proto undefined RunNationInfoModalAndReturnNonCancel()
-// FUNCTION: IMPERIALISM 0x005d5d30
-undefined4 RunNationInfoModalAndReturnNonCancel(void)
-{
-  return 0;
-}
-
 // ghidra_name TViewMgr::InvokeMainWidgetMethod1CCWithArgs
 // ghidra_proto undefined InvokeMainWidgetMethod1CCWithArgs()
 // FUNCTION: IMPERIALISM 0x005d71b0
@@ -175,14 +159,6 @@ undefined4 HandleTurnEvent2103_RunNationStatusReportUpdate(void)
 // ghidra_proto undefined HandleTurnEventVtableSlotA0SyncStatusPanel()
 // FUNCTION: IMPERIALISM 0x005d8cc0
 undefined4 HandleTurnEventVtableSlotA0SyncStatusPanel(void)
-{
-  return 0;
-}
-
-// ghidra_name NoOpUiRuntimeCallback_005db2f0
-// ghidra_proto undefined NoOpUiRuntimeCallback_005db2f0()
-// FUNCTION: IMPERIALISM 0x005db2f0
-undefined4 NoOpUiRuntimeCallback_005db2f0(void)
 {
   return 0;
 }
@@ -311,14 +287,6 @@ undefined4 WrapperFor_FreeHeapBufferIfNotNull_At005df630(void)
 // ghidra_proto undefined WrapperFor_ReleaseSharedStringRefIfNotEmpty_At005df660()
 // FUNCTION: IMPERIALISM 0x005df660
 undefined4 WrapperFor_ReleaseSharedStringRefIfNotEmpty_At005df660(void)
-{
-  return 0;
-}
-
-// ghidra_name InvokeVtableSlot30OnTargetObject
-// ghidra_proto undefined InvokeVtableSlot30OnTargetObject()
-// FUNCTION: IMPERIALISM 0x005df730
-undefined4 InvokeVtableSlot30OnTargetObject(void)
 {
   return 0;
 }
@@ -1007,14 +975,6 @@ undefined4 ftol(void)
 // ghidra_proto undefined AppendPointerToGlobalVectorAsStatus()
 // FUNCTION: IMPERIALISM 0x005e7920
 undefined4 AppendPointerToGlobalVectorAsStatus(void)
-{
-  return 0;
-}
-
-// ghidra_name ReallocateHeapBlockWithAllocatorTracking
-// ghidra_proto undefined ReallocateHeapBlockWithAllocatorTracking()
-// FUNCTION: IMPERIALISM 0x005e7fc0
-undefined4 ReallocateHeapBlockWithAllocatorTracking(void)
 {
   return 0;
 }

@@ -100,6 +100,10 @@ public:
   // Fill out with this nation's overlay label (its shared credential/name text), or the
   // empty string when the descriptor slot is null. 0x004d7860.
   void FormatOverlayTerrainLabelText(CString* out);
+  // 0x004d7a40 — copy identitySharedString1 (the +0x8 shared display-name ref) into
+  // destString. Lives on TCountry (the field's owner): TViewMgr's overlay case 6 calls
+  // it on g_apTerrainTypeDescriptorTable entries, which are TCountry*, not TGreatPower*.
+  void LoadNationDisplayNameSharedRefFromField8(CString* destString);
   // 0x4d8430 — sums g_aUnitOrderCostProfileByAbilityId[type][2] over militaryUnitList44.
   int ComputeSelectedMilitaryPowerScore();
   // 0x4d7930 - copy the nation's shared name text (TSimMgr::sharedTextSlots[nationSlot])

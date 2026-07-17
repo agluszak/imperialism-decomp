@@ -32,6 +32,7 @@
 #include "game/THostGreatPower.h"
 #include "game/TRemoteMinor.h"
 #include "game/TAnimator.h"
+#include "game/TLanguageMgr.h"
 #include "game/global_data_tables.h"
 #include "game/mapped_flavor_text.h"
 
@@ -1005,9 +1006,9 @@ void TSimMgr::SetSelectedIndex6AAndTriggerRefresh(short index) {
 }
 
 // FUNCTION: IMPERIALISM 0x00581b20
-CString* TSimMgr::LoadNormalizedCredentialName(CString* out, short slot) {
-  *out = sharedTextSlots[slot];
-  return out;
+CString TSimMgr::LoadNormalizedCredentialName(short slot) {
+  CString name = g_pLanguageMgr->NormalizeRuntimeCredentialNameToken(&sharedTextSlots[slot]);
+  return name;
 }
 
 // FUNCTION: IMPERIALISM 0x00581bc0

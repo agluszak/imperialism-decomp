@@ -7,6 +7,8 @@
 #include <string.h>
 
 #include "decomp_types.h"
+#include <stdlib.h>
+
 #include "game/CIterator.h"
 #include "game/CString.h"
 #include "game/GameAssert.h"
@@ -61,7 +63,6 @@
 undefined4 BuildCityInfluenceLevelMap(void); // 0x004dbbb0
 undefined4 RebuildMinorNationDispositionLookupTables(void);
 extern "C" int __cdecl rand(void);
-undefined4 ReallocateHeapBlockWithAllocatorTracking(void);
 
 // Real body ported at 0x005b7f50 (file end, ascending-address order). Genuine __stdcall
 // predicate: returns 1 when the resource index is in [13,16].
@@ -113,11 +114,6 @@ TG_LAYOUT_ASSERT(TGreatPower_Offset_portZoneStateFlags_0xAF0,
 TG_LAYOUT_ASSERT(TGreatPower_Offset_missionQueue_0xB60,
                  offsetof(TGreatPower, missionQueue) == 0xB60);
 #undef TG_LAYOUT_ASSERT
-
-// FUNCTION: IMPERIALISM 0x004d7a40
-void TGreatPower::LoadNationDisplayNameSharedRefFromField8(CString* destString) {
-  *destString = identitySharedString1;
-}
 
 // SYNTHETIC: IMPERIALISM 0x004d8950
 // TGreatPower::CreateObject
@@ -1462,11 +1458,9 @@ char TGreatPower::CompareMissionScoreVariantsByMode(int mode) {
         g_pActiveMapOrderContext->FindFirstPortZoneContextByNation(this->nationSlot);
 
     if (portZoneContext->PrimaryZoneHeapCapacity() <= 0) {
-      void* resizedEntries = reinterpret_cast<void*(__cdecl*)(void*, int)>(
-          ReallocateHeapBlockWithAllocatorTracking)(portZoneContext->PrimaryZoneHeapData(), 8);
+      void* resizedEntries = realloc(portZoneContext->PrimaryZoneHeapData(), 8);
       if (resizedEntries == 0) {
-        resizedEntries = reinterpret_cast<void*(__cdecl*)(void*, int)>(
-            ReallocateHeapBlockWithAllocatorTracking)(portZoneContext->PrimaryZoneHeapData(), 4);
+        resizedEntries = realloc(portZoneContext->PrimaryZoneHeapData(), 4);
         portZoneContext->PrimaryZoneHeapData() = static_cast<TZone**>(resizedEntries);
         portZoneContext->PrimaryZoneHeapCapacity() = 1;
       } else {
@@ -4341,11 +4335,9 @@ void TGreatPower::QueueMapActionMissionsForPortZoneCandidates() {
   TZone* portZone = g_pActiveMapOrderContext->FindFirstPortZoneContextByNation(this->nationSlot);
 
   if (portZone->PrimaryZoneHeapCapacity() == 0) {
-    void* resized = reinterpret_cast<void*(__cdecl*)(void*, int)>(
-        ReallocateHeapBlockWithAllocatorTracking)(portZone->PrimaryZoneHeapData(), 8);
+    void* resized = realloc(portZone->PrimaryZoneHeapData(), 8);
     if (resized == 0) {
-      resized = reinterpret_cast<void*(__cdecl*)(void*, int)>(
-          ReallocateHeapBlockWithAllocatorTracking)(portZone->PrimaryZoneHeapData(), 4);
+      resized = realloc(portZone->PrimaryZoneHeapData(), 4);
       portZone->PrimaryZoneHeapData() = static_cast<TZone**>(resized);
       portZone->PrimaryZoneHeapCapacity() = 1;
     } else {

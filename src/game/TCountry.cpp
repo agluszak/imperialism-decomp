@@ -1,3 +1,5 @@
+#include <stdlib.h>
+
 #include "game/TCountry.h"
 
 #include "game/TMapMgr.h"
@@ -8,6 +10,7 @@
 #include "game/TGreatPower.h"
 
 #include "game/TArmyMgr.h"
+#include "game/TLanguageMgr.h" // NormalizeRuntimeCredentialNameToken (display-name load)
 #include "game/TNewsMgr.h"
 #include "game/TCity.h"
 #include "game/TGlobalMapState.h"
@@ -29,8 +32,6 @@
 #include "game/TNewsMgr.h"
 
 #include <new>
-
-undefined4 ReallocateHeapBlockWithAllocatorTracking(void);
 
 static const unsigned int kAddrClassDescTCountry = 0x00653670;
 
@@ -318,13 +319,10 @@ void TCountry::SeedInitialMilitaryAndNavyOrdersForOwnedRegions(void) {
             TCity* cityForPort = (nation != 0) ? nation->city : 0;
             TZone* portZone = g_pActiveMapOrderContext->FindPortZoneBySelectedTile(cityForPort);
             if (portZone->PrimaryZoneHeapCapacity() == 0) {
-              void* grownArray = reinterpret_cast<void*(__cdecl*)(void*, int)>(
-                  ReallocateHeapBlockWithAllocatorTracking)(portZone->PrimaryZoneHeapData(), 8);
+              void* grownArray = realloc(portZone->PrimaryZoneHeapData(), 8);
               if (grownArray == 0) {
                 portZone->PrimaryZoneHeapData() =
-                    static_cast<TZone**>(reinterpret_cast<void*(__cdecl*)(void*, int)>(
-                        ReallocateHeapBlockWithAllocatorTracking)(portZone->PrimaryZoneHeapData(),
-                                                                  4));
+                    static_cast<TZone**>(realloc(portZone->PrimaryZoneHeapData(), 4));
                 portZone->PrimaryZoneHeapCapacity() = 1;
               } else {
                 portZone->PrimaryZoneHeapData() = static_cast<TZone**>(grownArray);
@@ -362,13 +360,12 @@ void TCountry::SeedInitialMilitaryAndNavyOrdersForOwnedRegions(void) {
 
 // FUNCTION: IMPERIALISM 0x004d7860
 void TCountry::FormatOverlayTerrainLabelText(CString* out) {
-  CString label;
-  if (this == nullptr) {
-    label = g_szEmptyString;
+  if (this == 0) {
+    CString defaultName(g_pszDescriptorDefaultName_00653300);
+    *out = defaultName;
   } else {
-    g_pSimMgr->LoadNormalizedCredentialName(&label, nationSlot);
+    *out = g_pSimMgr->LoadNormalizedCredentialName(nationSlot);
   }
-  *out = label;
 }
 
 // FUNCTION: IMPERIALISM 0x004d7930
@@ -387,6 +384,11 @@ void TCountry::SetNationDisplayNameAndLocalizationSlotRef(const CString& name) {
   if (g_pSimMgr != 0) {
     g_pSimMgr->sharedTextSlots[this->nationSlot] = name;
   }
+}
+
+// FUNCTION: IMPERIALISM 0x004d7a40
+void TCountry::LoadNationDisplayNameSharedRefFromField8(CString* destString) {
+  *destString = g_pLanguageMgr->NormalizeRuntimeCredentialNameToken(&identitySharedString1);
 }
 
 // FUNCTION: IMPERIALISM 0x004d7ae0

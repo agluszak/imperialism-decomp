@@ -4,6 +4,10 @@
 // _free (CRT free(), per symbols.csv -- not a game-specific tracking helper despite the
 // Ghidra-guessed name; call the real `free()` at call sites, e.g. TZone.cpp)
 
+// LIBRARY: IMPERIALISM 0x005e7fc0
+// _realloc (CRT realloc(); the "ReallocateHeapBlockWithAllocatorTracking" name is the
+// same class of Ghidra guess as _free above -- call the real `realloc()` at call sites)
+
 // LIBRARY: IMPERIALISM 0x005e8310
 // AllocateWithGlobalNewMode
 
@@ -38,6 +42,15 @@
 // CString::CString(void)
 // LIBRARY: IMPERIALISM 0x004ac370
 // CString::CString(char const *)
+
+// Same pattern: afx inline CString accessors spilled as COMDATs into the TViewMgr TU
+// range (mis-named NoOp* callbacks by Ghidra: 0x5db2f0 is `mov eax,[ecx]; mov
+// eax,[eax-8]` = GetData()->nDataLength, 0x5d5d10 is `mov eax,[ecx]` = m_pchData).
+// Call sites use the real CString API (GetLength / operator LPCTSTR).
+// LIBRARY: IMPERIALISM 0x005db2f0
+// CString::GetLength
+// LIBRARY: IMPERIALISM 0x005d5d10
+// CString::operator char const *
 
 // LIBRARY: IMPERIALISM 0x00413380
 // CObject::operator delete

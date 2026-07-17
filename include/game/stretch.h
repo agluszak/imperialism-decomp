@@ -6,7 +6,7 @@
 
 // 0x005e7fc0 — realloc-family growth used by every stretch mutator (legacy bridge
 // form shared with the out-of-line Add bodies in TZone.cpp; retire together).
-undefined4 ReallocateHeapBlockWithAllocatorTracking(void);
+#include <stdlib.h>
 
 // Project-local growable array template. Mac CodeWarrior symbols expose this family as
 // stretch<T> with Add/operator[]/OverStretch members; the Windows TZone evidence shows
@@ -58,11 +58,9 @@ public:
       if (doubledCapacity > 0x7fffffffU) {
         doubledCapacity = 0x7fffffffU;
       }
-      void* grownBuffer = reinterpret_cast<void*(__cdecl*)(void*, int)>(
-          ReallocateHeapBlockWithAllocatorTracking)(data, (index + 1) * 8);
+      void* grownBuffer = realloc(data, (index + 1) * 8);
       if (grownBuffer == 0) {
-        data = static_cast<T*>(reinterpret_cast<void*(__cdecl*)(void*, int)>(
-            ReallocateHeapBlockWithAllocatorTracking)(data, (index + 1) * 4));
+        data = static_cast<T*>(realloc(data, (index + 1) * 4));
         capacity = index + 1;
       } else {
         data = static_cast<T*>(grownBuffer);

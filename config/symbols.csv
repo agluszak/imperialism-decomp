@@ -2302,7 +2302,7 @@ address|name|symbol|size|type|prototype|provenance
 4d7860|TCountry::FormatOverlayTerrainLabelText||150|function|undefined FormatOverlayTerrainLabelText()|
 4d7930|AssignSharedStringFromDescriptorNameOrDefault||150|function|undefined AssignSharedStringFromDescriptorNameOrDefault()|
 4d7a00|SetNationDisplayNameAndLocalizationSlotRef||45|function|undefined SetNationDisplayNameAndLocalizationSlotRef()|
-4d7a40|LoadNationDisplayNameSharedRefFromField8||94|function|undefined LoadNationDisplayNameSharedRefFromField8()|
+4d7a40|TCountry::LoadNationDisplayNameSharedRefFromField8||94|function|void LoadNationDisplayNameSharedRefFromField8(CString * destString)|
 4d7ae0|TCountry::AddToNationMetricAtField10||15|function|undefined AddToNationMetricAtField10()|
 4d7b00|TCountry::ReturnFalseNationStateActionStub||5|function|undefined ReturnFalseNationStateActionStub()|
 4d7b20|TCountry::ApplyJoinEmpireModeForTargetNation||161|function|void __thiscall ApplyJoinEmpireModeForTargetNation(int targetNationSlot,int mode)|
@@ -4244,12 +4244,12 @@ address|name|symbol|size|type|prototype|provenance
 55cda0|AddOrUpdateBilateralActionRelationEntry||292|function|undefined AddOrUpdateBilateralActionRelationEntry()|
 55d160|TNewspaperView::CreateObject|?CreateObject@TNewspaperView@@SGPAVCObject@@XZ|83|function|undefined CreateObject()|rtti
 55d1e0|TNewspaperView::GetRuntimeClass||6|function|undefined GetTNewspaperViewClassNamePointer()|rtti
-55d200|BuildInterNationEventSummaryRowsForAdvisorDialog||1415|function|undefined BuildInterNationEventSummaryRowsForAdvisorDialog()|
-55d910|FormatInterNationEventRowTokensToSharedStrings||272|function|undefined FormatInterNationEventRowTokensToSharedStrings()|
-55da80|BuildLocalizedTokenListFromBitmaskWithConjunction||462|function|undefined BuildLocalizedTokenListFromBitmaskWithConjunction()|
-55dcd0|BuildLocalizedNationListFromBitmaskWithConjunction||347|function|undefined BuildLocalizedNationListFromBitmaskWithConjunction()|
+55d200|TNewspaperView::BuildInterNationEventSummaryRowsForAdvisorDialog||1415|function|undefined BuildInterNationEventSummaryRowsForAdvisorDialog()|
+55d910|TNewspaperView::FormatInterNationEventRowTokensToSharedStrings||272|function|undefined FormatInterNationEventRowTokensToSharedStrings()|
+55da80|TNewspaperView::BuildLocalizedTokenListFromBitmaskWithConjunction||462|function|undefined BuildLocalizedTokenListFromBitmaskWithConjunction()|
+55dcd0|TNewspaperView::BuildLocalizedNationListFromBitmaskWithConjunction||347|function|undefined BuildLocalizedNationListFromBitmaskWithConjunction()|
 55de90|AssignLocalizedIndexedNameFromA8Entry||108|function|undefined AssignLocalizedIndexedNameFromA8Entry()|
-55df50|AppendInterNationEventSummaryTextEntry||532|function|undefined AppendInterNationEventSummaryTextEntry()|
+55df50|TNewspaperView::AppendInterNationEventSummaryTextEntry||532|function|undefined AppendInterNationEventSummaryTextEntry()|
 55e330|WrapperFor_ftol_At0055e330||30|function|undefined WrapperFor_ftol_At0055e330()|
 55e360|StepHexTileIndexByDirectionWithWrapRules||199|function|undefined StepHexTileIndexByDirectionWithWrapRules()|
 55e550|StepHexRowColByDirectionWithWrapRules||168|function|undefined StepHexRowColByDirectionWithWrapRules()|
@@ -4688,7 +4688,7 @@ address|name|symbol|size|type|prototype|provenance
 573f16|WrapperFor_AdjustCityDialogScrollRangeByDeltaAndClamp_At00573f16||16|function|undefined WrapperFor_AdjustCityDialogScrollRangeByDeltaAndClamp_At00573f16()|
 573f60|AdjustCityDialogScrollRangeByDeltaAndClamp||251|function|undefined AdjustCityDialogScrollRangeByDeltaAndClamp()|
 5740a0|RefreshCityDialogScrollableViewportWithQuickDrawContext||143|function|undefined RefreshCityDialogScrollableViewportWithQuickDrawContext()|
-5741e0|SyncBoundedValueAndToggleControlStates||153|function|undefined SyncBoundedValueAndToggleControlStates()|
+5741e0|TScrollView::SyncBoundedValueAndToggleControlStates||153|function|void SyncBoundedValueAndToggleControlStates()|
 5742b0|TScrollView::PaintVisibleChildrenIntersectingClipRect||252|function|undefined PaintVisibleChildrenWithTemporaryRectClipRegion()|
 5743f0|TScrollBarView::CreateObject|?CreateObject@TScrollBarView@@SGPAVCObject@@XZ|113|function|undefined CreateObject()|rtti
 574490|TScrollBarView::GetRuntimeClass||6|function|undefined GetTScrollBarViewClassNamePointer()|rtti
@@ -6026,8 +6026,8 @@ address|name|symbol|size|type|prototype|provenance
 5d5a70|TViewMgr::RunControlStringProviderAndDispatchLocalizedMessage||104|function|undefined RunControlStringProviderAndDispatchLocalizedMessage()|
 5d5b00|DispatchLocalizedUiMessageWithTemplateA13A0||138|function|undefined DispatchLocalizedUiMessageWithTemplateA13A0()|
 5d5c40|DispatchLocalizedUiMessageWithTemplate||151|function|undefined DispatchLocalizedUiMessageWithTemplate()|
-5d5d10|NoOpRuntimeCallback_005d5d10||3|function|undefined NoOpRuntimeCallback_005d5d10()|
-5d5d30|TCivToolbar::RunNationInfoModalAndReturnNonCancel||1485|function|undefined RunNationInfoModalAndReturnNonCancel()|
+5d5d10|CString::operator char const *||3|function|char const * operator char const *()|
+5d5d30|TViewMgr::RunNationInfoModalAndReturnNonCancel||1485|function|bool RunNationInfoModalAndReturnNonCancel(int overlayMode, CString messageText, char const * infoChars, int infoLength, int * eventPayload, int contextTag, char showCancel)|
 5d6480|TViewMgr::BuildAndShowTurnOverlayByMode||999|function|undefined BuildAndShowTurnOverlayByMode()|
 5d69b0|TViewMgr::ComputeTurnEventDialogPlacementByCode||339|function|undefined ComputeTurnEventDialogPlacementByCode()|
 5d6b70|TViewMgr::RefreshMainViewNationIndicatorForCurrentTurnEvent||84|function|undefined RefreshMainViewNationIndicatorForCurrentTurnEvent()|
@@ -6060,7 +6060,7 @@ address|name|symbol|size|type|prototype|provenance
 5da040|HandleTurnEventVtableSlot60ActivateMainDialog||243|function|undefined HandleTurnEventVtableSlot60ActivateMainDialog()|
 5da180|HandleTurnEvent2260_RefreshMainHudTitles||370|function|undefined HandleTurnEvent2260_RefreshMainHudTitles()|
 5da360|HandleTurnEvent7DD_RefreshOrderStatusPanelsAndIcons||3184|function|undefined HandleTurnEvent7DD_RefreshOrderStatusPanelsAndIcons()|
-5db2f0|NoOpUiRuntimeCallback_005db2f0||6|function|undefined NoOpUiRuntimeCallback_005db2f0()|
+5db2f0|CString::GetLength||6|function|int GetLength()|
 5db3b0|HandleTurnEventDialogFactorySlotF4||439|function|undefined HandleTurnEventDialogFactorySlotF4()|
 5db620|TViewMgr::HandleTurnStateExitAndPostFollowupEventCode||219|function|undefined HandleTurnStateExitAndPostFollowupEventCode()|
 5db780|HandleTurnEventDialogFactorySlotF8||1130|function|undefined HandleTurnEventDialogFactorySlotF8()|
@@ -6126,7 +6126,7 @@ address|name|symbol|size|type|prototype|provenance
 5df660|WrapperFor_ReleaseSharedStringRefIfNotEmpty_At005df660||68|function|undefined WrapperFor_ReleaseSharedStringRefIfNotEmpty_At005df660()|
 5df6d0|TAssetMgr::ReleaseResourceStreamIfNotNull||18|function|undefined ReleaseResourceStreamIfNotNull()|
 5df700|TAssetMgr::ReadResourceStreamIntoBufferAndAdvance||30|function|undefined ReadResourceStreamIntoBufferAndAdvance()|
-5df730|InvokeVtableSlot30OnTargetObject||19|function|undefined InvokeVtableSlot30OnTargetObject()|
+5df730|TAssetMgr::InvokeVtableSlot30OnTargetObject||19|function|undefined InvokeVtableSlot30OnTargetObject()|
 5df760|TAssetMgr::GetResourceStreamSize||12|function|int GetResourceStreamSize(CFile_Virtuals* stream)|
 5df780|TAssetMgr::NoOpRuntimeUiCallback_005df780||3|function|undefined NoOpRuntimeUiCallback_005df780(void)|
 5df7a0|QueryVolumeInformationForDriveIndex||178|function|undefined QueryVolumeInformationForDriveIndex()|
@@ -6440,7 +6440,7 @@ address|name|symbol|size|type|prototype|provenance
 5e7e89|$L12052|$L12052|23|function|undefined SehCleanup_InvokeCallbackNTimes()|
 5e7ec0|__ArrayUnwind|?__ArrayUnwind@@YGXPAXIHP6EX0@Z@Z|90|function|void __stdcall CallCallbackNTimes(undefined4 unused_arg0, undefined4 unused_arg1, int repeat_count, undefined * callback)|
 5e7f50|FreeHeapBlockWithAllocatorTracking|_free|104|function|undefined FreeHeapBlockWithAllocatorTracking()|
-5e7fc0|ReallocateHeapBlockWithAllocatorTracking||432|function|undefined ReallocateHeapBlockWithAllocatorTracking()|
+5e7fc0|_realloc|_realloc|432|function|undefined ReallocateHeapBlockWithAllocatorTracking()|msvc500_library_oracle
 5e8170|type_info::~type_info|??1type_info@@UAE@XZ|47|function|public: virtual __thiscall type_info::~type_info(void)|msvc500_library_oracle
 5e81a0|type_info::`scalar deleting dtor'|??_Gtype_info@@UAEPAXI@Z|30|function|public: virtual void * __thiscall type_info::`scalar deleting dtor'(unsigned int)|msvc500_library_oracle
 5e8310|AllocateWithGlobalNewMode|_malloc|20|function|undefined AllocateWithGlobalNewMode()|

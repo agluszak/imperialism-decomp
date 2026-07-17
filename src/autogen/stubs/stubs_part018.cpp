@@ -83,14 +83,6 @@ undefined4 RefreshCityDialogScrollableViewportWithQuickDrawContext(void)
   return 0;
 }
 
-// ghidra_name SyncBoundedValueAndToggleControlStates
-// ghidra_proto undefined SyncBoundedValueAndToggleControlStates()
-// FUNCTION: IMPERIALISM 0x005741e0
-undefined4 SyncBoundedValueAndToggleControlStates(void)
-{
-  return 0;
-}
-
 // ghidra_name RenderStrategicMapViewportBandsAndBlit_Impl
 // ghidra_proto undefined RenderStrategicMapViewportBandsAndBlit_Impl()
 // FUNCTION: IMPERIALISM 0x00575080
@@ -171,10 +163,10 @@ undefined4 WrapperFor_ConfigureTurnResumeStateAndNationMask_At0057f570(void)
   return 0;
 }
 
-// ghidra_name AppendInterNationEventSummaryTextEntry_Impl
-// ghidra_proto undefined AppendInterNationEventSummaryTextEntry_Impl()
-// FUNCTION: IMPERIALISM 0x00580280
-undefined4 AppendInterNationEventSummaryTextEntry_Impl(void)
+// ghidra_name FormatFloatToLocalizedSharedString
+// ghidra_proto undefined FormatFloatToLocalizedSharedString()
+// FUNCTION: IMPERIALISM 0x0057fa30
+undefined4 FormatFloatToLocalizedSharedString(void)
 {
   return 0;
 }
