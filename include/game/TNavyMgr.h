@@ -144,3 +144,8 @@ public:
 };
 
 ASSERT_SIZE(TNavyMgr, 0x10);
+
+// 0x557560 -- free __cdecl per-turn map-order revalidation sweep over every
+// map-action context zone x great-power slot (body in TNavyMgr.cpp; called by
+// TNavyMgr::PrepareMapOrdersForExecutionPhase).
+void RevalidateAndRequeueMapOrdersForTurn();

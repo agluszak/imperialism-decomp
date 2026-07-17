@@ -162,3 +162,7 @@ address|name|prototype
 0x0059d400|TArmyPlayer::SetAllUnitAiStateCodesTo13|void __thiscall SetAllUnitAiStateCodesTo13()
 0x005db2f0|CString::GetLength|int __thiscall GetLength()
 0x005d5d10|CString::operator char const *|char const * __thiscall operator char const *()
+0x005642e0|TOcean::FinalizeQueuedMapOrderEntry|void __thiscall FinalizeQueuedMapOrderEntry(TTaskForce* entry)
+0x00557080|TNavyMgr::MoveMapOrderEntryToQueueHeadIfValid|unsigned char __thiscall MoveMapOrderEntryToQueueHeadIfValid(TTaskForce* entry)
+0x00554660|TTaskForce::RequeueMapOrderEntry|void __thiscall RequeueMapOrderEntry()
+0x00564600|TOcean::EnsureSelectedTaskForceForOrderOwnerAndRefresh|TTaskForce* __thiscall EnsureSelectedTaskForceForOrderOwnerAndRefresh(TZone* zone)

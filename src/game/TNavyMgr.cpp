@@ -27,11 +27,6 @@ extern "C" int __cdecl rand(void);
 extern "C" TShip* g_pNavyPrimaryOrderListHead;
 extern "C" TAdmiral* g_pNavySecondaryOrderListHead;
 
-// Not-yet-recovered free function this file calls into (generic stub signature
-// per the autogen stub definition; real receiver/signature applied via a typed
-// cast at the one call site so the linker resolves the correct symbol).
-extern undefined4 RevalidateAndRequeueMapOrdersForTurn(void);
-
 // Resolves a raw TGlobalMapCityScoreRecord* back into its index in
 // g_pGlobalMapState's cityScoreTable. Real __fastcall: the single arg arrives in ecx
 // and no original callsite pushes anything.
@@ -581,6 +576,94 @@ void TNavyMgr::RemoveOrdersByNationFromPrimarySecondaryAndTaskForceLists(short n
   RemoveMatchingTaskForceOrders(this, nationSlot);
 }
 
+// Per-turn map-order revalidation sweep: for every map-action context zone and
+// great-power slot, rebuild the nation's candidate order entry from its navy
+// orders, gate each child on the shared per-order-type stock cap when the zone
+// still has port capability, and requeue/rebuild+finalize the surviving entry.
+// FUNCTION: IMPERIALISM 0x00557560
+void RevalidateAndRequeueMapOrdersForTurn() {
+  g_pActiveMapOrderContext->EnsureSelectedTaskForceForOrderOwnerAndRefresh(0);
+  TZone* zone = g_pMapActionContextListHead;
+  if (zone == 0) {
+    return;
+  }
+  do {
+    for (short nation = 0; nation < 7; ++nation) {
+      if (g_apTerrainTypeDescriptorTable[nation] == 0) {
+        continue;
+      }
+      TTaskForce* entry = zone->CreateTaskForceFromNavyOrdersForNationIfEligible(nation);
+      if (entry == 0) {
+        continue;
+      }
+      if (zone->QueryPortZoneCapability()) {
+        TMapOrderChildLinkNode* node = entry->childOrderList;
+        if (node != 0) {
+          do {
+            node->active_flag =
+                node->object_ptr->required_count <
+                g_NavyOrderResourceDescriptorTable[node->object_ptr->order_type].stockCap;
+            node = node->next;
+          } while (node != 0);
+        }
+        entry->attachment = 8;
+        entry->RequeueMapOrderEntry();
+        entry = zone->CreateTaskForceFromNavyOrdersForNationIfEligible(nation);
+      }
+      if (entry == 0) {
+        continue;
+      }
+      TMapOrderChildLinkNode* node = entry->childOrderList;
+      if (node != 0) {
+        do {
+          node->active_flag = 1;
+          node = node->next;
+        } while (node != 0);
+      }
+      // contextAnchor is the entry's owning map-order context here (the same
+      // dual-purpose +0x18 slot TControlSeaZoneMission reinterprets as TZone*).
+      if (reinterpret_cast<TZone*>(entry->contextAnchor)->QueryPortZoneCapability()) {
+        entry->attachment = 7;
+        entry->RebuildMapOrderEntryChildren();
+        entry->AssertValid();
+        if (g_pNavyOrderManager->MoveMapOrderEntryToQueueHeadIfValid(entry)) {
+          g_pActiveMapOrderContext->FinalizeQueuedMapOrderEntry(entry);
+        }
+      } else {
+        node = entry->childOrderList;
+        entry->attachment = 4;
+        entry->activeChildEntry = 0;
+        while (node != 0) {
+          if (node->active_flag != 0) {
+            node = node->next;
+          } else {
+            node->object_ptr->SetMapOrderActiveChildEntry(0);
+            short bucketIndex =
+                static_cast<short>(g_NavyOrderResourceDescriptorTable[node->object_ptr->order_type]
+                                       .enabledFlagOrBucketOffset);
+            short* bucketCounter = reinterpret_cast<short*>(entry->pad_1e) + bucketIndex;
+            --*bucketCounter;
+            if (node == entry->childOrderList) {
+              entry->childOrderList = node->next;
+            }
+            node = node->DeleteMapOrderChildLinkAndReturnNext();
+          }
+        }
+        entry->activeChildEntry = 0;
+        for (node = entry->childOrderList; node != 0; node = node->next) {
+          entry->activeChildEntry = node->object_ptr->SelectPreferredMapOrderEntryByPriorityRules(
+              entry->activeChildEntry, 0);
+        }
+        entry->AssertValid();
+        if (g_pNavyOrderManager->MoveMapOrderEntryToQueueHeadIfValid(entry)) {
+          g_pActiveMapOrderContext->FinalizeQueuedMapOrderEntry(entry);
+        }
+      }
+    }
+    zone = zone->prev18;
+  } while (zone != 0);
+}
+
 // FUNCTION: IMPERIALISM 0x005577b0
 void TNavyMgr::PrepareMapOrdersForExecutionPhase(short phaseId) {
   for (int provinceIndex = 0; provinceIndex < 0x180; ++provinceIndex) {
@@ -595,11 +678,7 @@ void TNavyMgr::PrepareMapOrdersForExecutionPhase(short phaseId) {
 
   field08 = phaseId;
 
-  typedef void*(__fastcall * RevalidateAndRequeueMapOrdersForTurn_t)(void* self, int dummyEdx);
-  RevalidateAndRequeueMapOrdersForTurn_t RevalidateAndRequeueMapOrdersForTurn_fn =
-      reinterpret_cast<RevalidateAndRequeueMapOrdersForTurn_t>(
-          (void*)&RevalidateAndRequeueMapOrdersForTurn);
-  RevalidateAndRequeueMapOrdersForTurn_fn(this, 0);
+  RevalidateAndRequeueMapOrdersForTurn();
 
   if (orderListHead04 != nullptr) {
     orderListHead04->eliminatedFlag26 = 0;

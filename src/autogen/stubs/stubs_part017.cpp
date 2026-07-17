@@ -83,14 +83,6 @@ undefined4 CreateNavySecondaryOrderEntryAndDeduplicateDisplayName(void)
   return 0;
 }
 
-// ghidra_name RevalidateAndRequeueMapOrdersForTurn
-// ghidra_proto void RevalidateAndRequeueMapOrdersForTurn(void)
-// FUNCTION: IMPERIALISM 0x00557560
-undefined4 RevalidateAndRequeueMapOrdersForTurn(void)
-{
-  return 0;
-}
-
 // ghidra_name GetMapContextActionLabelToken
 // ghidra_proto ushort __cdecl GetMapContextActionLabelToken(short nTileIndex, int dwInputFlags)
 // FUNCTION: IMPERIALISM 0x00559e00
@@ -203,8 +195,8 @@ undefined4 RefreshPortZoneNeighborContextLinksAndFallbacks(void)
   return 0;
 }
 
-// ghidra_name FinalizeQueuedMapOrderEntry
-// ghidra_proto undefined __stdcall FinalizeQueuedMapOrderEntry(int * pMapOrderEntry)
+// ghidra_name TOcean::FinalizeQueuedMapOrderEntry
+// ghidra_proto void __thiscall FinalizeQueuedMapOrderEntry(TTaskForce* entry)
 // FUNCTION: IMPERIALISM 0x005642e0
 undefined4 FinalizeQueuedMapOrderEntry(void)
 {

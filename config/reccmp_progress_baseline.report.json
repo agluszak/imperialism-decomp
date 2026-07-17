@@ -7791,7 +7791,7 @@
     },
     {
       "address": "0x4a2900",
-      "matching": 0.13063763608087092,
+      "matching": 0.12752721617418353,
       "name": "BuildArmyContextActionRecordsAndDispatchLabel",
       "type": 1
     },
@@ -12400,7 +12400,7 @@
     },
     {
       "address": "0x4db7d0",
-      "matching": 1.0,
+      "matching": 0.7043010752688172,
       "name": "TGreatPower::UpdateOrderEntryAvailabilityByConnectedRegionMask",
       "type": 1
     },
@@ -12617,7 +12617,7 @@
     },
     {
       "address": "0x4dd430",
-      "matching": 0.5142857142857142,
+      "matching": 0.5714285714285714,
       "name": "TGreatPower::ComputeRemainingDiplomacyAidBudget",
       "type": 1
     },
@@ -13055,8 +13055,7 @@
     },
     {
       "address": "0x4e05d0",
-      "effective": true,
-      "matching": 0.42857142857142855,
+      "matching": 1.0,
       "name": "TGreatPower::OrphanLeaf_NoCall_Ins02_004d7fc0_89",
       "type": 1
     },
@@ -13068,14 +13067,14 @@
     },
     {
       "address": "0x4e0650",
-      "matching": 1.0,
+      "effective": true,
+      "matching": 0.42857142857142855,
       "name": "TGreatPower::OrphanRetStub_004d7fe0_8b",
       "type": 1
     },
     {
       "address": "0x4e0690",
-      "effective": true,
-      "matching": 0.42857142857142855,
+      "matching": 1.0,
       "name": "TGreatPower::ReturnFalseNationStateCapabilityFlag90",
       "type": 1
     },
@@ -13111,7 +13110,7 @@
     },
     {
       "address": "0x4e09a0",
-      "matching": 0.5180722891566265,
+      "matching": 0.5421686746987951,
       "name": "TGreatPower::ComputeCityOrderCapabilityAggregateScore",
       "type": 1
     },
@@ -16628,7 +16627,7 @@
     },
     {
       "address": "0x50bea0",
-      "matching": 0.20172648796001819,
+      "matching": 0.2080872330758746,
       "name": "TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets",
       "type": 1
     },
@@ -16983,7 +16982,7 @@
     },
     {
       "address": "0x512850",
-      "matching": 0.3157894736842105,
+      "matching": 0.5555555555555556,
       "name": "NoOpMapTilePredicateStub",
       "type": 1
     },
@@ -17074,7 +17073,7 @@
     },
     {
       "address": "0x5136a0",
-      "matching": 1.0,
+      "matching": 0.8888888888888888,
       "name": "TMapMgr::OrphanLeaf_NoCall_Ins35_005136a0",
       "type": 1
     },
@@ -17098,7 +17097,7 @@
     },
     {
       "address": "0x513ca0",
-      "matching": 0.0,
+      "matching": 0.6305084745762712,
       "name": "HasReachableSeaTileOutsideActiveType3Or4DiplomaticMask",
       "type": 1
     },
@@ -17272,7 +17271,7 @@
     },
     {
       "address": "0x515b10",
-      "matching": 0.3378995433789954,
+      "matching": 0.3167420814479638,
       "name": "TMapMgr::MarkSeedNeighborTilesUnavailableByCapabilityMaskProfileB",
       "type": 1
     },
@@ -17446,7 +17445,7 @@
     },
     {
       "address": "0x5178f0",
-      "matching": 0.3446601941747573,
+      "matching": 0.3260340632603406,
       "name": "ComputeRepresentativeTileIndexForTerrainTypeWithWrapBias",
       "type": 1
     },
@@ -18467,7 +18466,7 @@
     },
     {
       "address": "0x52c0a0",
-      "matching": 0.9122807017543859,
+      "matching": 0.9391304347826087,
       "name": "SeapointStretch::GetOrAppendUnique",
       "type": 1
     },
@@ -18503,7 +18502,7 @@
     },
     {
       "address": "0x52d030",
-      "matching": 1.0,
+      "matching": 0.7766990291262136,
       "name": "ComputeWrappedOverlayCoordDeltaMetric",
       "type": 1
     },
@@ -18539,7 +18538,7 @@
     },
     {
       "address": "0x52d750",
-      "matching": 0.22380952380952382,
+      "matching": 0.2222222222222222,
       "name": "MergeSmallCityRegionsAndCompactIds",
       "type": 1
     },
@@ -20449,7 +20448,7 @@
     },
     {
       "address": "0x53d200",
-      "matching": 0.3686274509803922,
+      "matching": 0.3700787401574803,
       "name": "ComputeArmyMissionScoreDeltaWithScaledCandidateUnit",
       "type": 1
     },
@@ -22600,7 +22599,7 @@
     },
     {
       "address": "0x554660",
-      "matching": 0.017391304347826087,
+      "matching": 0.8938053097345132,
       "name": "RequeueMapOrderEntry",
       "type": 1
     },
@@ -22678,7 +22677,7 @@
     },
     {
       "address": "0x555420",
-      "matching": 0.5546666666666666,
+      "matching": 0.5653333333333334,
       "name": "ResolveTaskForceOrderConflictAndPickCandidate",
       "type": 1
     },
@@ -22883,13 +22882,13 @@
     },
     {
       "address": "0x557560",
-      "matching": 0.013157894736842105,
+      "matching": 0.9733333333333334,
       "name": "RevalidateAndRequeueMapOrdersForTurn",
       "type": 1
     },
     {
       "address": "0x5577b0",
-      "matching": 0.6206896551724138,
+      "matching": 0.7333333333333333,
       "name": "PrepareMapOrdersForExecutionPhase",
       "type": 1
     },
@@ -29750,7 +29749,7 @@
     },
     {
       "address": "0x5a1520",
-      "matching": 0.5259259259259259,
+      "matching": 0.48148148148148145,
       "name": "TTacticalBattle::MoveTacticalUnitTowardTile",
       "type": 1
     },
@@ -29882,7 +29881,7 @@
     },
     {
       "address": "0x5a39a0",
-      "matching": 0.7286821705426356,
+      "matching": 0.7131782945736435,
       "name": "ComputeHexTileDistanceFromIndices",
       "type": 1
     },
@@ -31718,7 +31717,7 @@
     },
     {
       "address": "0x5b7830",
-      "matching": 0.56,
+      "matching": 1.0,
       "name": "IsOrderEntryTransportLinkedAndEnabled",
       "type": 1
     },
@@ -35241,14 +35240,14 @@
     },
     {
       "address": "0x5e8cf0",
-      "matching": 0.023529411764705882,
-      "name": "ConvertEpochSecondsToLocalTmWithDstAdjust",
+      "matching": 0.9421965317919075,
+      "name": "_localtime",
       "type": 1
     },
     {
       "address": "0x5e8ee0",
-      "matching": 0.05063291139240506,
-      "name": "GetCurrentLocalEpochSecondsWithTimezoneCache",
+      "matching": 0.9746835443037974,
+      "name": "_time",
       "type": 1
     },
     {
@@ -36939,7 +36938,7 @@
     },
     {
       "address": "0x600196",
-      "matching": 0.9166666666666666,
+      "matching": 1.0,
       "name": "CTime::GetLocalTm",
       "type": 1
     },

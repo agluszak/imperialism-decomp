@@ -1,3 +1,5 @@
+#include <time.h>
+
 #include "game/TMapMaker.h"
 #include "game/CString.h"
 #include "game/TObject.h"
@@ -18,8 +20,6 @@ TMapMaker::TMapMaker() : TObject() {}
 
 // FUNCTION: IMPERIALISM 0x005259c0
 TMapMaker::~TMapMaker() {}
-
-undefined4 GetCurrentLocalEpochSecondsWithTimezoneCache(void);
 
 // Inline-expanded at every keyword test in 0x525a30 (the original emits the compare
 // loop at each site): true when `text` begins with `keyword` followed by NUL or ' '.
@@ -150,17 +150,14 @@ void TMapMaker::GenerateMapFromTuningStringAndApplyScenarioOverrides(
   }
   g_mapGenLcgState_006a38e8 = seed;
   if (seed == 0) {
-    // Genuine __cdecl free function declared (void); the guardrail-sanctioned
-    // arg-adjust cast pushes the ignored argument the original passes.
-    seed = reinterpret_cast<unsigned int(__cdecl*)(int)>(
-        GetCurrentLocalEpochSecondsWithTimezoneCache)(seed);
+    // CRT time(); seed is 0 on this path, so the original's pushed arg is NULL.
+    seed = time(0);
   }
   seed = seed * 0x15a4e35 + 1;
   g_mapGenLcgState_006a38e8 = seed;
   g_zoneStatusCodePrngSeed_006a5aec = (static_cast<unsigned int>(seed) >> 12) & 0x7fff;
   if (g_zoneStatusCodePrngSeed_006a5aec == 0) {
-    g_zoneStatusCodePrngSeed_006a5aec = reinterpret_cast<unsigned int(__cdecl*)(int)>(
-        GetCurrentLocalEpochSecondsWithTimezoneCache)(0);
+    g_zoneStatusCodePrngSeed_006a5aec = time(0);
   }
 
   for (;;) {

@@ -1099,7 +1099,7 @@ void TGreatPower::BuildTransportLinkedInfluenceMap(char** outInfluenceMap) {
          static_cast<int>(marker->regionId14) != this->homeRegionIndex) {
     marker = static_cast<TTown*>(markerCursor.Advance());
   }
-  char homeLinked = marker->IsTransportLinkedAndEnabled();
+  int homeLinked = marker->IsTransportLinkedAndEnabled();
   if (homeLinked == 0) {
     this->MarkConnectedOwnedRegionsFrom(reinterpret_cast<unsigned char*>(influenceMap),
                                         marker->regionId14);

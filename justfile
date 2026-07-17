@@ -1031,6 +1031,20 @@ typedef-args-gate:
 global-redeclaration-gate:
   uv run python -m tools.workflow.check_global_redeclarations
 
+# Manual/autogen boundary report: every autogen stub referenced from manual
+# sources, with call/address-take split, caller counts, original size, and
+# (when Ghidra is available) cc/params/RET-imm facts + a porting classification.
+[doc('Report every manual-source reference to an autogen stub, classified for porting')]
+[group('analysis')]
+boundary-audit *args:
+  uv run python -m tools.workflow.boundary_audit {{args}}
+
+# Ratchet gate over the boundary report: no new manual->stub call/cast references
+# and no new function-pointer casts of named symbols (both counts must not rise).
+[group('gates')]
+boundary-gate:
+  uv run python -m tools.workflow.check_boundary_ratchet
+
 # Lint the structured agent rule KB (config/agent_rules.yml): ids, supersedes,
 # required/forbidden contradictions, just-only tools, derivable triggers.
 [group('gates')]
@@ -1069,6 +1083,7 @@ source-gates:
   just typedef-cast-gate
   just typedef-args-gate
   just global-redeclaration-gate
+  just boundary-gate
   just agent-rules-gate
 
 [doc('Mine reccmp asm diffs for orig-address<->recomp-symbol global pairs (read-only report)')]
@@ -1133,6 +1148,12 @@ tgreatpower-gate-update:
 stub-count-gate-update:
   @test "${ALLOW_POLICY_BASELINE_UPDATE:-}" = "1" || { echo "REFUSED: this rewrites an architecture-policy baseline (blessing new debt)."; echo "If a human approved the exception, rerun with ALLOW_POLICY_BASELINE_UPDATE=1."; exit 2; }
   uv run python -m tools.workflow.check_stub_count --write-baseline
+
+# MUTATES: config/boundary_baseline.json.
+[group('baseline-update')]
+boundary-gate-update:
+  @test "${ALLOW_POLICY_BASELINE_UPDATE:-}" = "1" || { echo "REFUSED: this rewrites an architecture-policy baseline (blessing new debt)."; echo "If a human approved the exception, rerun with ALLOW_POLICY_BASELINE_UPDATE=1."; exit 2; }
+  uv run python -m tools.workflow.check_boundary_ratchet --write-baseline
 
 # MUTATES: config/datacmp_baseline.csv.
 [group('baseline-update')]

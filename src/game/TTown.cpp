@@ -1,5 +1,6 @@
 #include "game/TTown.h"
 
+#include "game/TMapMgr.h"
 #include "game/TSimMgr.h"
 #include "game/TStream.h"
 #include <string.h>
@@ -82,19 +83,15 @@ void TTown::WriteTo(TStream* stream) {
 
 TTown::~TTown() {}
 
-extern undefined4 HasReachableSeaTileOutsideActiveType3Or4DiplomaticMask(void);
-
 // FUNCTION: IMPERIALISM 0x005b7830
-char TTown::IsTransportLinkedAndEnabled(void) {
-  if (this->enabledFlag4d == 0) {
-    return 0;
+int TTown::IsTransportLinkedAndEnabled(void) {
+  if (this->enabledFlag4d != 0) {
+    if (g_pGlobalMapState->HasReachableSeaTileOutsideActiveType3Or4DiplomaticMask(
+            this->regionId14) != 0) {
+      return 1;
+    }
   }
-  char(__cdecl * hasReachableSeaTile)(short) = reinterpret_cast<char(__cdecl*)(short)>(
-      HasReachableSeaTileOutsideActiveType3Or4DiplomaticMask);
-  if (hasReachableSeaTile(this->regionId14) == 0) {
-    return 0;
-  }
-  return 1;
+  return 0;
 }
 
 // SYNTHETIC: IMPERIALISM 0x005b6c80

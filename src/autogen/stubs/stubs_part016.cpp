@@ -635,11 +635,3 @@ undefined4 CanQueueMapOrderForProvinceContext(void)
   return 0;
 }
 
-// ghidra_name RequeueMapOrderEntry
-// ghidra_proto void __fastcall RequeueMapOrderEntry(int * pMapOrderEntry)
-// FUNCTION: IMPERIALISM 0x00554660
-undefined4 RequeueMapOrderEntry(void)
-{
-  return 0;
-}
-

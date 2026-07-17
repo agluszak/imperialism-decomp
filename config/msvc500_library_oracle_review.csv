@@ -10,8 +10,6 @@ address|current_name|current_ownership|oracle_symbol|oracle_name|member|match_ki
 0x005e69e7|Create|unowned|?Create@CImageList@@QAEHHHIHH@Z|CImageList::Create|winctrl2.obj|unique|1|invented_name_referenced_in_source
 0x005e73d0|ftol|unowned|__ftol|_ftol|ftol.obj|unique|1|invented_name_referenced_in_source
 0x005e7920|AppendPointerToGlobalVectorAsStatus|unowned|_atexit|atexit|onexit.obj|unique|1|invented_name_referenced_in_source
-0x005e8cf0|ConvertEpochSecondsToLocalTmWithDstAdjust|unowned|_localtime|localtime|localtim.obj|unique|1|invented_name_referenced_in_source
-0x005e8ee0|GetCurrentLocalEpochSecondsWithTimezoneCache|unowned|_time|time|time.obj|unique|1|invented_name_referenced_in_source
 0x005e9a90|memset|unowned|_memset|memset|memset.obj|unique|1|invented_name_referenced_in_source
 0x005e9bb0|exit|unowned|__exit|_exit|crt0dat.obj|unique|1|invented_name_referenced_in_source
 0x005ead10|WrapperFor_amsg_exit_At005ead10|unowned|__purecall|_purecall|purevirt.obj|unique|1|below_min_convert_size

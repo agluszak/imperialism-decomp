@@ -6457,8 +6457,8 @@ address|name|symbol|size|type|prototype|provenance
 5e8c20|ProbeStackPagesForLargeFrameAllocation||47|function|undefined ProbeStackPagesForLargeFrameAllocation()|
 5e8c50|CallCallbackRepeatedly||111|function|void __stdcall CallCallbackRepeatedly(undefined4 param_1, undefined4 param_2, int iteration_count, undefined * callback)|
 5e8cc8|SehCleanup_CallCallbackRepeatedly||20|function|undefined SehCleanup_CallCallbackRepeatedly()|
-5e8cf0|ConvertEpochSecondsToLocalTmWithDstAdjust||486|function|undefined ConvertEpochSecondsToLocalTmWithDstAdjust()|
-5e8ee0|GetCurrentLocalEpochSecondsWithTimezoneCache||300|function|undefined GetCurrentLocalEpochSecondsWithTimezoneCache()|
+5e8cf0|ConvertEpochSecondsToLocalTmWithDstAdjust|_localtime|486|function|undefined ConvertEpochSecondsToLocalTmWithDstAdjust()|msvc500_library_oracle
+5e8ee0|GetCurrentLocalEpochSecondsWithTimezoneCache|_time|300|function|undefined GetCurrentLocalEpochSecondsWithTimezoneCache()|msvc500_library_oracle
 5e9010|_fclose|_fclose|61|function|undefined CloseBufferedStreamAndReleaseResources()|
 5e9050|flush/close/reset CRT FILE state|__fclose_lk|101|function|undefined FlushCloseAndResetBufferedStream()|
 5e90c0|fopen-style stream open with mode|__fsopen|55|function|undefined OpenBufferedStreamDescriptorWithModeAndLock()|

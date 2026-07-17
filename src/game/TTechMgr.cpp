@@ -1,3 +1,5 @@
+#include <time.h>
+
 #include "game/TTechMgr.h"
 
 #include "decomp_types.h"
@@ -26,8 +28,6 @@
 #include "game/TMultiplayerMgr.h"
 #include "game/TSimMgr.h"
 #include "game/global_data_tables.h"
-
-undefined4 GetCurrentLocalEpochSecondsWithTimezoneCache(void);
 
 TTechMgr* g_pCityOrderCapabilityState = 0;
 
@@ -163,8 +163,7 @@ void TTechMgr::GenerateRandomCapabilityPrioritySlots() {
       (seed = static_cast<unsigned int>(g_pGameFlowState->queueSyncDword)) == 0) {
     // Genuine __cdecl free function declared (void); the guardrail-sanctioned arg-adjust cast
     // pushes the ignored 0 argument the original passes.
-    seed = reinterpret_cast<unsigned int(__cdecl*)(int)>(
-        GetCurrentLocalEpochSecondsWithTimezoneCache)(0);
+    seed = time(0);
   }
 
   short* pnOutputSlotCursor = &prioritySlots04[3];
@@ -605,7 +604,6 @@ void TTechMgr::SelectMissingTechItemPrerequisitesFromPair(int techId, int nation
     *missing2 = (orderCapRows277[nationSlot].techStatusByTechId[p2] != 2) ? p2 : 0;
   }
 }
-
 
 // Purchases a tech-item slot for a nation: spends the slot's cost from the nation's
 // field-0x10 metric (AddToNationMetricAtField10 with the negated cost), marks the slot

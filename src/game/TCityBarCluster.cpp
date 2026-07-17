@@ -18,10 +18,6 @@ const int kAssertLineTradeSummaryRtnu = 0x67d;
 const int kAssertLineTradeSummaryIart = 0x682;
 const int kAssertLineTradeSummaryProf = 0x687;
 
-undefined4 thunk_DestructTShipAndFreeIfOwned(void);
-
-undefined4 thunk_DestructEngineerDialogBaseState(void);
-
 // SYNTHETIC: IMPERIALISM 0x00586590
 // TCityBarCluster::CreateObject
 // SYNTHETIC: IMPERIALISM 0x00586610
