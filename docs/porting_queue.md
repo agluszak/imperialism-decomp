@@ -7,7 +7,15 @@ each with the evidence needed to start (address, size, current score if any, blo
 
 ## Big stubs (never ported)
 
-- `0x55d200` (1415B)
+- `0x55d200` (1415B) — TNewspaperView::BuildInterNationEventSummaryRowsForAdvisorDialog
+  (attribution recorded in function_class_overrides.csv; receiver is the 'main' panel
+  of the 0x2103 nation-status-report dialog, fields +0x90 cached arg / +0x94 news .tex
+  stream). Port as a cluster with its leaf methods 0x55d910 (272B, per-row token
+  formatter) and 0x55df50 (532B, row text appender, returns consumed height), plus the
+  token-list builders 0x55da80/0x55dcd0/0x55de90 they may call. Full decoded dossier
+  (body outline, style descriptors, per-case switch on field2c%4, row-loop geometry)
+  was produced 2026-07-17; regenerate with `just agent-start port 0x55d200` +
+  `just ghidra-listing` if lost.
 - `0x502b60` (1285B)
 - `0x4eb8b0` (1212B)
 - `0x5bc0d0` (1168B)
