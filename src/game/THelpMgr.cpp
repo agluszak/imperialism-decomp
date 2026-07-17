@@ -4,12 +4,14 @@
 #include "game/TGreatPower.h"
 #include "game/TSortedPtrList.h"
 #include "game/TCity.h"
+#include "game/TPopulationMgr.h"
 #include "game/TDiplomacyMgr.h"
 #include "game/TSortedByRelationshipList.h"
 #include "game/TWindow.h"
 #include "game/TViewMgr.h"
 #include "game/TDisplayMgr.h"
 #include "game/global_data_tables.h"
+#include "game/turn_flow_cooldown.h"
 #include "game/ui_invalidation_guard.h"
 #include "game/TMilitaryUnit.h"
 #include "game/TTechMgr.h"
@@ -564,6 +566,92 @@ char THelpMgr::ShowPeriodicNationComparisonAdvisoryIfNeeded() {
   }
 
   return advisoryShown;
+}
+
+// Once per turn tick, show the active nation's turn alerts through the localized
+// message dispatcher. The first two (mission-score comparison) alerts suppress every
+// later block; the remaining blocks are individually gated on turn-flow flags.
+// FUNCTION: IMPERIALISM 0x00502b60
+char ShowTurnAlertsForActiveNation() {
+  short nationId = g_pSimMgr->GetActiveNationId();
+  CString titleText;
+  CString bodyText;
+  CString scratchC;
+  CString scratchD;
+  char anyAlertShown = 0;
+  int stormOutA;
+  TCity* city = (g_apNationStates[nationId] != 0) ? g_apNationStates[nationId]->city : 0;
+  int stormOutB;
+  stormOutA = stormOutB = 0;
+  short currentTick = g_pSimMgr->GetTurnTickSlot3C();
+  if (g_pSimMgr->preferenceValues[8] == 0) {
+    return 0;
+  }
+  if (IsTurnCooldownCounterActiveOrResetFlag() != 0) {
+    return 0;
+  }
+  if (g_lastTurnAlertTick_006a31c0 == currentTick) {
+    return 0;
+  }
+  if (currentTick == 1) {
+    return 0;
+  }
+
+  if (g_apNationStates[nationId]->CompareMissionScoreVariantsByMode(0) != 0) {
+    g_pSimMgr->GetString(0x2753, 0x28, &titleText);
+    g_pSimMgr->GetString(0x2753, 0x29, &bodyText);
+    g_pUiRuntimeContext->DispatchLocalizedUiMessageWithTemplate(
+        3, CString(titleText), CString(bodyText), &g_cstrNationComparisonMessageStore, 1, 0);
+    anyAlertShown = 1;
+  }
+  if (g_apNationStates[nationId]->CompareMissionScoreVariantsByMode(1) != 0) {
+    g_pSimMgr->GetString(0x2753, 0x2a, &titleText);
+    g_pSimMgr->GetString(0x2753, 0x2b, &bodyText);
+    g_pUiRuntimeContext->DispatchLocalizedUiMessageWithTemplate(
+        3, CString(titleText), CString(bodyText), &g_cstrNationComparisonMessageStore, 1, 0);
+    anyAlertShown = 1;
+  }
+  if (anyAlertShown == 0) {
+    if (g_pSimMgr->TestTurnFlowStatusFlagMask(1) == 0) {
+      short promptCode = g_apNationStates[nationId]->ComputeTreasuryStatusPromptCode();
+      if (promptCode != 0) {
+        g_pSimMgr->GetString(0x2753, promptCode - 1, &titleText);
+        g_pSimMgr->GetString(0x2753, promptCode, &bodyText);
+        g_pUiRuntimeContext->DispatchLocalizedUiMessageWithTemplate(
+            5, CString(titleText), CString(bodyText), &g_cstrNationComparisonMessageStore, 0, 0);
+        anyAlertShown = 1;
+      }
+    }
+    if (g_pSimMgr->TestTurnFlowStatusFlagMask(0x10) == 0) {
+      if (g_apNationStates[nationId]->HasAnyCommodityRecordBelowStepValue() != 0) {
+        g_pSimMgr->GetString(0x2753, 0x46, &titleText);
+        g_pSimMgr->GetString(0x2753, 0x47, &bodyText);
+        g_pUiRuntimeContext->DispatchLocalizedUiMessageWithTemplate(
+            5, CString(titleText), CString(bodyText), &g_cstrNationComparisonMessageStore, 2, 0);
+        anyAlertShown = 1;
+      }
+    }
+    if (g_pSimMgr->TestTurnFlowStatusFlagMask(0x1000) == 0) {
+      if (g_apNationStates[nationId]->AnyNeedCurrentExceedsTargetWhenCapMismatch() != 0) {
+        g_pSimMgr->GetString(0x2753, 0x22, &titleText);
+        g_pSimMgr->GetString(0x2753, 0x23, &bodyText);
+        g_pUiRuntimeContext->DispatchLocalizedUiMessageWithTemplate(
+            5, CString(titleText), CString(bodyText), &g_cstrNationComparisonMessageStore, 2, 0);
+        anyAlertShown = 1;
+      }
+    }
+    city->productionSummary1d8->OrphanLeaf_NoCall_Ins111_004b6260(
+        reinterpret_cast<short*>(&stormOutB), reinterpret_cast<unsigned short*>(&stormOutA));
+    if (*reinterpret_cast<short*>(&stormOutA) != 0) {
+      g_pSimMgr->GetString(0x2753, 0x20, &titleText);
+      g_pSimMgr->GetString(0x2753, 0x21, &bodyText);
+      g_pUiRuntimeContext->DispatchLocalizedUiMessageWithTemplate(
+          5, CString(titleText), CString(bodyText), &g_cstrNationComparisonMessageStore, 2, 0);
+      anyAlertShown = 1;
+    }
+  }
+  g_lastTurnAlertTick_006a31c0 = currentTick;
+  return anyAlertShown;
 }
 
 // FUNCTION: IMPERIALISM 0x005031c0

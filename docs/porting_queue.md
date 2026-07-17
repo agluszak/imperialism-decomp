@@ -7,7 +7,6 @@ each with the evidence needed to start (address, size, current score if any, blo
 
 ## Big stubs (never ported)
 
-- `0x502b60` (1285B)
 - `0x4eb8b0` (1212B)
 - `0x5bc0d0` (1168B)
 - TMapMaker phase bodies: `0x526c20` (747B), `0x527730` (1175B), `0x528e50` (940B) —

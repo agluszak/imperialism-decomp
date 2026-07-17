@@ -403,14 +403,6 @@ undefined4 SelectAndActivatePendingEventForCurrentView(void)
   return 0;
 }
 
-// ghidra_name ShowTurnAlertsForActiveNation
-// ghidra_proto undefined ShowTurnAlertsForActiveNation()
-// FUNCTION: IMPERIALISM 0x00502b60
-undefined4 ShowTurnAlertsForActiveNation(void)
-{
-  return 0;
-}
-
 // ghidra_name SelectAndActivatePendingEventType1A0A
 // ghidra_proto undefined SelectAndActivatePendingEventType1A0A()
 // FUNCTION: IMPERIALISM 0x00503320

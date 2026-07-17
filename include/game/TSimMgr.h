@@ -77,9 +77,9 @@ public:
   virtual void FormatDiplomacyNoticeTextByPolicyOrGrantCode(CString* dest,
                                                             short* codes); // 0x88 0x00580790
 
-  char TestTurnFlowStatusFlagMask(unsigned int mask) {
-    return (turnFlowStatusFlags & mask) != 0;
-  }
+  // 0x57f4d0 — out-of-line in the original build; do not define in-class or MSVC
+  // inlines it at every callsite and mismatches all 11 original call instructions.
+  unsigned char TestTurnFlowStatusFlagMask(unsigned int mask);
 
   // --- non-virtual helpers ---
   int GetField30();
@@ -150,11 +150,14 @@ public:
   short activeNationSlot;
   int field30;
   int field34;
-  unsigned int turnFlowStatusFlags;
+  // +0x38 — sign-extended char result of ShowTurnAlertsForActiveNation stored by
+  // AdvanceGlobalTurnStateMachine (0x57dcd5); serialized whole (4 bytes).
+  unsigned int alertsPendingFlag38;
   // +0x3c — session/turn-flow flag word: zeroed by the ctor, OR'd with 0x40 by
-  // AdvanceGlobalTurnStateMachine, and serialized as a byte. NOT the mode index below —
-  // reader code that compares a value to 0/1/2/4 wants redrawEnabled (+0x40), not this.
-  int runtimeSubsystemIndex;
+  // AdvanceGlobalTurnStateMachine, masked by Merge/TestTurnFlowStatusFlagMask
+  // (0x57f4b0/0x57f4d0 both use [ecx+0x3c]), and serialized as a byte. NOT the mode
+  // index below — reader code comparing to 0/1/2/4 wants redrawEnabled (+0x40).
+  unsigned int turnFlowStatusFlags;
   // +0x40 — mode/scenario/localization index (0/1/2/4); read all over TCountry/TGreatPower/
   // TDiplomacyMgr/etc. (the "redrawEnabled" name is a misnomer kept for churn reasons).
   int redrawEnabled;

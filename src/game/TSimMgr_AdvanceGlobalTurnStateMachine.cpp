@@ -7,6 +7,7 @@
 
 #include "game/TLoadSavePicture.h"
 #include "game/TNewsMgr.h"
+#include "game/THelpMgr.h"
 #include "game/TSimMgr.h"
 
 #include "decomp_types.h"
@@ -28,7 +29,6 @@
 
 extern undefined4 RefreshNationAdvisorLabelStrings(void);
 extern undefined4 ProcessTurnInstructionStreamAndFinalizePhase(void);
-extern undefined4 ShowTurnAlertsForActiveNation(void);
 extern undefined4 UpdatePersistentTopTenNationScores(void);
 extern undefined4 UpdateCityOrderCapabilityUnlockProgress(void);
 extern undefined4 ConsumeFirstPendingAbilityUnlock(void);
@@ -228,7 +228,7 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
 
   case 5: {
     const char alertsPending = ShowTurnAlertsForActiveNation();
-    turnFlowStatusFlags = alertsPending;
+    alertsPendingFlag38 = alertsPending;
     if (alertsPending != 0) {
       break;
     }
@@ -429,8 +429,8 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
 
   case 0x10: {
     turnStateCode = 0x11;
+    alertsPendingFlag38 = 0;
     turnFlowStatusFlags = 0;
-    runtimeSubsystemIndex = 0;
     SetGlobalTurnStateCodeIfAllowed(0);
     PostMainWindowCommand100ForTurnFlow();
     break;
@@ -442,7 +442,7 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
     const short capabilityBefore = ReadCityOrderCapabilityField262();
     UpdateCityOrderCapabilityUnlockProgress();
     if (capabilityBefore == ReadCityOrderCapabilityField262()) {
-      runtimeSubsystemIndex |= 0x40;
+      turnFlowStatusFlags |= 0x40;
     }
     for (int nationSlot = 0; nationSlot < 7; ++nationSlot) {
       if (g_pSimMgr != nullptr && g_pSimMgr->activeNationSlot == nationSlot &&

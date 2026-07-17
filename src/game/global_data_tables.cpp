@@ -1437,6 +1437,11 @@ CString g_cstrTechCapabilityMessageStore;
 // GLOBAL: IMPERIALISM 0x006a5be0
 CString g_cstrUiPromptMessageStore;
 
+// Last turn tick for which ShowTurnAlertsForActiveNation (0x502b60) ran; the alert
+// pass is skipped until the tick advances.
+// GLOBAL: IMPERIALISM 0x006a31c0
+int g_lastTurnAlertTick_006a31c0 = 0;
+
 // When set (and the modal's context tag is 2), overrides the computed 'GOLD' resource
 // id in the nation-info modal (0x5d5ea6). Never observed written yet; zero-initialized.
 // GLOBAL: IMPERIALISM 0x006a5bac
