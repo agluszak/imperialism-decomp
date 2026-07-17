@@ -291,14 +291,6 @@ undefined4 WrapperFor_ReleaseSharedStringRefIfNotEmpty_At005df660(void)
   return 0;
 }
 
-// ghidra_name InvokeVtableSlot30OnTargetObject
-// ghidra_proto undefined InvokeVtableSlot30OnTargetObject()
-// FUNCTION: IMPERIALISM 0x005df730
-undefined4 InvokeVtableSlot30OnTargetObject(void)
-{
-  return 0;
-}
-
 // ghidra_name LoadSettingValueByKeyIntoOut
 // ghidra_proto undefined LoadSettingValueByKeyIntoOut()
 // FUNCTION: IMPERIALISM 0x005e0290
@@ -983,14 +975,6 @@ undefined4 ftol(void)
 // ghidra_proto undefined AppendPointerToGlobalVectorAsStatus()
 // FUNCTION: IMPERIALISM 0x005e7920
 undefined4 AppendPointerToGlobalVectorAsStatus(void)
-{
-  return 0;
-}
-
-// ghidra_name ReallocateHeapBlockWithAllocatorTracking
-// ghidra_proto undefined ReallocateHeapBlockWithAllocatorTracking()
-// FUNCTION: IMPERIALISM 0x005e7fc0
-undefined4 ReallocateHeapBlockWithAllocatorTracking(void)
 {
   return 0;
 }

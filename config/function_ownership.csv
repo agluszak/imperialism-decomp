@@ -3463,6 +3463,10 @@ address|target_cpp|ownership|note
 55cda0|src/game/TInterNationEventQueueManager.cpp|manual|marker_sync
 55d160|src/game/TNewspaperView.cpp|manual|marker_sync
 55d1e0|src/game/TNewspaperView.cpp|manual|marker_sync
+55d910|src/game/TNewspaperView.cpp|manual|marker_sync
+55da80|src/game/TNewspaperView.cpp|manual|marker_sync
+55dcd0|src/game/TNewspaperView.cpp|manual|marker_sync
+55df50|src/game/TNewspaperView.cpp|manual|marker_sync
 55e360|src/game/TMapMgr.cpp|manual|marker_sync
 55e550|src/game/TMapMgr.cpp|manual|marker_sync
 55e660|src/game/TZone.cpp|manual|marker_sync
@@ -3990,7 +3994,8 @@ address|target_cpp|ownership|note
 57fec0|src/game/TSimMgr.cpp|manual|marker_sync
 57fef0|src/game/mapped_flavor_text.cpp|manual|marker_sync
 580060|src/game/mapped_flavor_text.cpp|manual|marker_sync
-580460|src/game/TSimMgr.cpp|manual|name_paired_no_marker
+580280|src/game/mapped_flavor_text.cpp|manual|marker_sync
+580460|src/game/mapped_flavor_text.cpp|manual|marker_sync
 580760|src/game/TSimMgr.cpp|manual|marker_sync
 580790|src/game/TSimMgr.cpp|manual|marker_sync
 5811e0|src/game/TSimMgr.cpp|manual|marker_sync
@@ -5129,6 +5134,7 @@ address|target_cpp|ownership|note
 5df430|src/game/TAssetMgr.cpp|manual|marker_sync
 5df6d0|src/game/TAssetMgr.cpp|manual|marker_sync
 5df700|src/game/TAssetMgr.cpp|manual|marker_sync
+5df730|src/game/TAssetMgr.cpp|manual|marker_sync
 5df760|src/game/TAssetMgr.cpp|manual|marker_sync
 5df780|src/game/TAssetMgr.cpp|manual|marker_sync
 5df7a0|src/game/ImperialismApp.cpp|manual|marker_sync
@@ -5356,6 +5362,7 @@ address|target_cpp|ownership|note
 5e7e89|src/game/library_msvc500_fid.cpp|library|marker_sync
 5e7ec0|src/game/library_msvc500_fid.cpp|library|marker_sync
 5e7f50|src/game/mfc_heap_library.cpp|library|marker_sync
+5e7fc0|src/game/mfc_heap_library.cpp|library|marker_sync
 5e8170|src/game/library_msvc500_fid.cpp|library|marker_sync
 5e81a0|src/game/library_msvc500_fid.cpp|library|marker_sync
 5e8310|src/game/mfc_heap_library.cpp|library|marker_sync

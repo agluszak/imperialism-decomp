@@ -12,6 +12,8 @@
 //    connects (uint16 at +0x10/+0x12), which is how this pass reinterprets the segment slot;
 //  - per-region tile-count / merged-flag scratch arrays (function locals).
 
+#include <stdlib.h>
+
 #include "game/TMapMaker.h"
 
 #include <math.h>
@@ -24,7 +26,6 @@
 #include "game/ui_invalidation_guard.h"
 
 // Allocator-tracked realloc (generic stub form; typed cast at the call site).
-extern undefined4 ReallocateHeapBlockWithAllocatorTracking(void);
 
 // One 0x18-byte region-border-link record (the overlay-span record this pass stores).
 struct RegionBorderLink {
@@ -224,9 +225,7 @@ void TMapMaker::MergeSmallCityRegionsAndCompactIds() {
             if (newCap > 0x7fffffff) {
               newCap = 0x7fffffff;
             }
-            SeaSegment* grown =
-                reinterpret_cast<SeaSegment*>(reinterpret_cast<void*(__cdecl*)(void*, int)>(
-                    ReallocateHeapBlockWithAllocatorTracking)(t.Data(), want * 0x30));
+            SeaSegment* grown = reinterpret_cast<SeaSegment*>(realloc(t.Data(), want * 0x30));
             if (grown == nullptr) {
               t.ReallocExact(want);
             } else {

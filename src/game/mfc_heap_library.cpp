@@ -4,6 +4,10 @@
 // _free (CRT free(), per symbols.csv -- not a game-specific tracking helper despite the
 // Ghidra-guessed name; call the real `free()` at call sites, e.g. TZone.cpp)
 
+// LIBRARY: IMPERIALISM 0x005e7fc0
+// _realloc (CRT realloc(); the "ReallocateHeapBlockWithAllocatorTracking" name is the
+// same class of Ghidra guess as _free above -- call the real `realloc()` at call sites)
+
 // LIBRARY: IMPERIALISM 0x005e8310
 // AllocateWithGlobalNewMode
 

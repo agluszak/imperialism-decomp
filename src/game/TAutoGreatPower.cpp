@@ -1,4 +1,6 @@
 #include "decomp_types.h"
+#include <stdlib.h>
+
 #include "game/TAutoGreatPower.h"
 
 #include "game/TOcean.h"
@@ -39,7 +41,6 @@ undefined4 PopulateCase16AdvisoryMapNodeCandidateState(void);
 // FUNCTION: IMPERIALISM 0x004e6b10
 void TAutoGreatPower::UpdateGreatPowerPressureStateAndDispatchEscalationMessage(void) {}
 
-undefined4 ReallocateHeapBlockWithAllocatorTracking(void);
 // SYNTHETIC: IMPERIALISM 0x004e6a70
 // TAutoGreatPower::CreateObject
 
@@ -865,12 +866,10 @@ void TAutoGreatPower::ResetNationDiplomacySlotsAndMarkRelatedNations(int targetN
   TZone* portZone =
       g_pActiveMapOrderContext->FindFirstPortZoneContextByNation(static_cast<short>(targetNation));
   if (portZone->PrimaryZoneHeapCapacity() == 0) {
-    void* grownArray = reinterpret_cast<void*(__cdecl*)(void*, int)>(
-        ReallocateHeapBlockWithAllocatorTracking)(portZone->PrimaryZoneHeapData(), 8);
+    void* grownArray = realloc(portZone->PrimaryZoneHeapData(), 8);
     if (grownArray == 0) {
       portZone->PrimaryZoneHeapData() =
-          static_cast<TZone**>(reinterpret_cast<void*(__cdecl*)(void*, int)>(
-              ReallocateHeapBlockWithAllocatorTracking)(portZone->PrimaryZoneHeapData(), 4));
+          static_cast<TZone**>(realloc(portZone->PrimaryZoneHeapData(), 4));
       portZone->PrimaryZoneHeapCapacity() = 1;
     } else {
       portZone->PrimaryZoneHeapData() = static_cast<TZone**>(grownArray);

@@ -433,6 +433,9 @@ extern HRGN g_hOpenRgnAccumulator;
 extern char g_Sanitize_City_Counter_Value_006A24D4;
 extern double DAT_0066fad0;
 extern char* g_pNationInfoEmptyText_0066f050;
+extern char g_szListSeparator_00695760[];
+extern char g_szPlusPrefix_00698494[];
+extern char g_szListConjunction_00698498[];
 extern short g_overlaySfxSeasonWord_0066f0a6;
 extern TModuleLibraryCacheTableStateB* g_pModuleLibraryCacheState;
 // Cached CCommandLineInfo::m_bShowSplash (cmdInfo+0x04), not m_nShellCommand.

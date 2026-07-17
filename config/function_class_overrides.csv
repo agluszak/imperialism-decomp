@@ -10,3 +10,7 @@ address|class_name|method_name|note
 0x0055d200|TNewspaperView|BuildInterNationEventSummaryRowsForAdvisorDialog|Receiver is the 'main' panel resolved by HandleTurnEvent2103 (0x5d8c40); TU-adjacent to TNewspaperView::CreateObject/GetRuntimeClass (0x55d160/0x55d1e0); uses own fields +0x90 (cached arg) / +0x94 (news .tex resource stream) past TPicture.
 0x0055d910|TNewspaperView|FormatInterNationEventRowTokensToSharedStrings|Same receiver (EBP this) passed through from 0x55d200; thiscall(entry, CString* tokens4).
 0x0055df50|TNewspaperView|AppendInterNationEventSummaryTextEntry|Same receiver; thiscall 7-arg row appender returning the consumed height.
+0x0055da80|TNewspaperView|BuildLocalizedTokenListFromBitmaskWithConjunction|Called with ECX=the same TNewspaperView this from 0x55d910 (this unused in body); RET 0x8.
+0x0055dcd0|TNewspaperView|BuildLocalizedNationListFromBitmaskWithConjunction|Same receiver chain as 0x55da80; nation-name list via GetString group 0x2711.
+0x005df730|TAssetMgr|InvokeVtableSlot30OnTargetObject|Every callsite loads ECX=g_pUiViewManager (this unused); body reseeks the stream via CFile_Virtuals slot 0x30.
+0x00580460|TResizableByteSink|AppendByteToResizableBuffer|Sole slot of vtable 0x662b00; receiver is the stack-local realloc-backed sink in the 0x580280-family formatters.

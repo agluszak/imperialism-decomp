@@ -1,3 +1,5 @@
+#include <stdlib.h>
+
 #include "game/TTaskForce.h"
 #include "game/TMission.h"
 
@@ -13,7 +15,6 @@
 #include "game/ui_invalidation_guard.h"
 
 extern "C" int __cdecl rand(void);
-extern undefined4 ReallocateHeapBlockWithAllocatorTracking(void);
 
 namespace {
 
@@ -33,11 +34,9 @@ inline TZone** EnsurePrimaryNeighborSlot(TZonePrimaryNeighborStretch& neighbors,
     if (doubledCapacity > 0x7fffffffU) {
       doubledCapacity = 0x7fffffffU;
     }
-    void* grownBuffer = reinterpret_cast<void*(__cdecl*)(void*, int)>(
-        ReallocateHeapBlockWithAllocatorTracking)(neighbors.Data(), wanted * 8);
+    void* grownBuffer = realloc(neighbors.Data(), wanted * 8);
     if (grownBuffer == 0) {
-      neighbors.Data() = static_cast<TZone**>(reinterpret_cast<void*(__cdecl*)(void*, int)>(
-          ReallocateHeapBlockWithAllocatorTracking)(neighbors.Data(), wanted * 4));
+      neighbors.Data() = static_cast<TZone**>(realloc(neighbors.Data(), wanted * 4));
       neighbors.Capacity() = wanted;
     } else {
       neighbors.Data() = static_cast<TZone**>(grownBuffer);

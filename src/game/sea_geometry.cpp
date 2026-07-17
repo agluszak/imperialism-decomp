@@ -5,6 +5,8 @@
 // previously mis-attributed to TMapMaker (SetEnabled/SetState) because Ghidra merged the
 // two adjacent single-slot vtables into TMapMaker's. See sea_geometry.h.
 
+#include <stdlib.h>
+
 #include "game/sea_geometry.h"
 
 #include <math.h>
@@ -14,13 +16,11 @@
 #include "game/global_data_tables.h"
 
 // Allocator-tracked realloc (generic stub form; typed cast at the call sites).
-extern undefined4 ReallocateHeapBlockWithAllocatorTracking(void);
 
 namespace {
 
 template <typename T> inline T* ReallocElems(T* buffer, int bytes) {
-  return reinterpret_cast<T*>(reinterpret_cast<void*(__cdecl*)(void*, int)>(
-      ReallocateHeapBlockWithAllocatorTracking)(buffer, bytes));
+  return reinterpret_cast<T*>(realloc(buffer, bytes));
 }
 
 // Segment heading angle scale (original double at 0x006598d8): atan2(dy,dx) is scaled into

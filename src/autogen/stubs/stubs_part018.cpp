@@ -171,14 +171,6 @@ undefined4 FormatFloatToLocalizedSharedString(void)
   return 0;
 }
 
-// ghidra_name AppendInterNationEventSummaryTextEntry_Impl
-// ghidra_proto undefined AppendInterNationEventSummaryTextEntry_Impl()
-// FUNCTION: IMPERIALISM 0x00580280
-undefined4 AppendInterNationEventSummaryTextEntry_Impl(void)
-{
-  return 0;
-}
-
 // ghidra_name ExpandBracketMappedStringToSinkCallback
 // ghidra_proto undefined ExpandBracketMappedStringToSinkCallback()
 // FUNCTION: IMPERIALISM 0x005804f0

@@ -1,3 +1,5 @@
+#include <stdlib.h>
+
 #include "game/TCountry.h"
 
 #include "game/TMapMgr.h"
@@ -30,8 +32,6 @@
 #include "game/TNewsMgr.h"
 
 #include <new>
-
-undefined4 ReallocateHeapBlockWithAllocatorTracking(void);
 
 static const unsigned int kAddrClassDescTCountry = 0x00653670;
 
@@ -319,13 +319,10 @@ void TCountry::SeedInitialMilitaryAndNavyOrdersForOwnedRegions(void) {
             TCity* cityForPort = (nation != 0) ? nation->city : 0;
             TZone* portZone = g_pActiveMapOrderContext->FindPortZoneBySelectedTile(cityForPort);
             if (portZone->PrimaryZoneHeapCapacity() == 0) {
-              void* grownArray = reinterpret_cast<void*(__cdecl*)(void*, int)>(
-                  ReallocateHeapBlockWithAllocatorTracking)(portZone->PrimaryZoneHeapData(), 8);
+              void* grownArray = realloc(portZone->PrimaryZoneHeapData(), 8);
               if (grownArray == 0) {
                 portZone->PrimaryZoneHeapData() =
-                    static_cast<TZone**>(reinterpret_cast<void*(__cdecl*)(void*, int)>(
-                        ReallocateHeapBlockWithAllocatorTracking)(portZone->PrimaryZoneHeapData(),
-                                                                  4));
+                    static_cast<TZone**>(realloc(portZone->PrimaryZoneHeapData(), 4));
                 portZone->PrimaryZoneHeapCapacity() = 1;
               } else {
                 portZone->PrimaryZoneHeapData() = static_cast<TZone**>(grownArray);

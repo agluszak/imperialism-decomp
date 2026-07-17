@@ -981,6 +981,14 @@ char* g_pNationInfoEmptyText_0066f050 = g_szEmptyString;
 // GLOBAL: IMPERIALISM 0x0066f0a6
 short g_overlaySfxSeasonWord_0066f0a6 = 10;
 
+// Advisor-newspaper list-building literals (TNewspaperView cluster).
+// GLOBAL: IMPERIALISM 0x00695760
+char g_szListSeparator_00695760[] = ", ";
+// GLOBAL: IMPERIALISM 0x00698494
+char g_szPlusPrefix_00698494[] = "+";
+// GLOBAL: IMPERIALISM 0x00698498
+char g_szListConjunction_00698498[] = " and ";
+
 // GLOBAL: IMPERIALISM 0x0066fad0
 double DAT_0066fad0 = 0.092;
 

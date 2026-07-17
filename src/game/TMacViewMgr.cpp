@@ -1,3 +1,5 @@
+#include <stdlib.h>
+
 #include "game/TMacViewMgr.h"
 #include "game/map_overlay_geometry.h"
 
@@ -38,7 +40,6 @@ undefined4 RebuildSurfaceRowsWithTemporaryRowBuffer(void);
 undefined4 CallObjectOffset24Vslot54IfPresent(void);
 // Genuine __cdecl(void*, int) heap-block reallocator; cast at call sites (same pattern
 // as TAutoGreatPower.cpp/TCountry.cpp). Returns the new block, or 0 on failure.
-undefined4 ReallocateHeapBlockWithAllocatorTracking(void);
 
 namespace {
 
@@ -226,11 +227,9 @@ StrategicMapCallbackRecord* StrategicMapCallbackRecord::AppendOpcodeByte(int val
     if (0x7fffffff < grownCapacity) {
       clampedCapacity = 0x7fffffff;
     }
-    char* grown = reinterpret_cast<char*(__cdecl*)(char*, int)>(
-        ReallocateHeapBlockWithAllocatorTracking)(ownedBuffer04, grownCapacity);
+    char* grown = static_cast<char*>(realloc(ownedBuffer04, grownCapacity));
     if (grown == 0) {
-      ownedBuffer04 = reinterpret_cast<char*(__cdecl*)(char*, int)>(
-          ReallocateHeapBlockWithAllocatorTracking)(ownedBuffer04, newCount);
+      ownedBuffer04 = static_cast<char*>(realloc(ownedBuffer04, newCount));
       field08 = newCount;
     } else {
       ownedBuffer04 = grown;

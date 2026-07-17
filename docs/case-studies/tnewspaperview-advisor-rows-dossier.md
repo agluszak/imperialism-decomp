@@ -105,3 +105,36 @@ fix that went 21%->100%). Callsites (TCountry.cpp:370, TOfferDeskPicture.cpp:83/
 TTerrainHelpPicture.cpp:188) pass &tmp exactly where the hidden return slot goes, so
 converting them to `dst = g_pSimMgr->LoadNormalizedCredentialName(slot)` is
 stack-layout-identical at the call.
+
+## Status after the first porting batch (this commit)
+
+Landed: 0x55da80 (94.6%), 0x55dcd0 (93.8%), 0x55d910 (75%), 0x55df50 (50.9%),
+0x580280 Impl (48.7%), 0x580460 sink append (78.7%), 0x5df730 TAssetMgr seek (100%),
+plus the TResizableByteSink recovery (vtable 0x662b00) and the 0x5e7fc0 = _realloc
+LIBRARY identification (all ~35 legacy ReallocateHeapBlockWithAllocatorTracking
+typedef-cast bridges converted to real realloc()).
+
+0x55df50's residual is dominated by the inlined TDeluxeText ctor chain: the original
+inlines TTEView()/TDeluxeText() (TStaticText ctor + vtbl + ClearColorRgbaBytes x2 on
+the +0x98/+0x9c color fields + SetColorRgbAndClearAlphaByte(0,0,0)); our ctors are
+out-of-line and the color fields are modeled as ints (cursorThemeCode98 doubles as
+styleRef6 storage). Proper fix = recover the 4-byte color struct (ctors 0x45b080 /
+0x45b0a0, high-byte-of-short channels) and retype styleRef6/cursorThemeCode98 across
+TControl/TDeluxeText/TInfoBarText — queued as a class-recovery task.
+
+Remaining for 0x55d200 itself: port TDiplomacyMgr::RecomputeNationComparativePowerMetrics
+(0x4f1760, decoded below) and its two TGreatPower leaves 0x4e3060 (339B) / 0x4e3220 (88B),
+plus TGreatPower slot 0xac + field90-object slot 0xa + field894->field1d8 tech chain.
+
+## 0x4f1760 TDiplomacyMgr::RecomputeNationComparativePowerMetrics — decode
+
+thiscall, no args. Metric rows at this+0x1824, stride 0x10 per nation slot i=0..6:
+{+0x1824 armyScore, +0x1828 implScore, +0x182c combined(d+e), +0x1830 slotC}.
+Pass 1 (skip slots failing g_pSimMgr->IsNationSlotEligibleForEventProcessing(i)):
+  a = g_apNationStates[i]->0x4e3060() + 0x1f4 -> row.a; maxA
+  b = g_apNationStates[i]->0x4e3220()          -> row.b; maxB
+  c = g_apNationStates[i]->vslot 0xac ()       -> row.+0x1830; maxC
+  d = g_apNationStates[i]->field90->vslot 0xa () -> local d[i]; maxD
+  e = (short)((i ? g_apNationStates[i]->field894 : 0)->field1d8)[+8] -> local e[i]; maxE
+Pass 2: eligible: row.a=a*100/maxA; row.b=b*100/maxB; row.+0x1830=c*100/maxC;
+  d=d*50/maxD; e=e*50/maxE; row.+0x182c=d+e. else: zero all four row dwords.

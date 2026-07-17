@@ -57,6 +57,8 @@ CFile_Virtuals* TAssetMgr::LoadTableResourceStreamByName(CString name) {
   return 0;
 }
 
+// `this` (g_pUiViewManager at every callsite) is unused; the method just reseeks the
+
 // FUNCTION: IMPERIALISM 0x005df6d0
 void TAssetMgr::ReleaseResourceStreamIfNotNull(CFile_Virtuals* stream) {
   if (stream != 0) {
@@ -69,6 +71,11 @@ int TAssetMgr::ReadResourceStreamIntoBufferAndAdvance(CFile_Virtuals* stream, vo
                                                       int* countInOut) {
   *countInOut = stream->ReadBytesSlot3C(buffer, *countInOut);
   return 0;
+}
+// stream. Curated name kept from symbols.csv.
+// FUNCTION: IMPERIALISM 0x005df730
+void TAssetMgr::InvokeVtableSlot30OnTargetObject(CFile_Virtuals* stream, int offset) {
+  stream->SeekSlot30(offset, 0);
 }
 
 // FUNCTION: IMPERIALISM 0x005df760
