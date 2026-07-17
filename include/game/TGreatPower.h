@@ -332,6 +332,12 @@ public:
 
   // LoadNationDisplayNameSharedRefFromField8 moved to TCountry (its field's owner).
 
+  // 0x004e3060 — army units weighted by g_anWeightedNeighborUnitScoreByType and quality
+  // percent, plus this nation's navy primary orders against a local per-type table.
+  int ComputeNationNavyOrderWeightedMovementScore();
+  // 0x004e3220 — average bilateral relation-standing score vs every other live slot.
+  int RecomputeNationComparativePowerMetrics_Impl();
+
   // 0x004ddcf0. Adds `delta` to relationDeltaSnapshot[index] (the +0x198 per-nation
   // short counter array). Called from
   // TNavyMgr::ProcessNationMapOrderInteractionsAndApplyOutcomes.

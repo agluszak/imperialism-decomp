@@ -134,7 +134,14 @@ public:
   short relationPropagationMatrixBbe[kNationPairMatrixEntries];
   short relationTurnStampMatrixFe0[kNationPairMatrixEntries];
   short relationSideEffectMatrix1402[kNationPairMatrixEntries];
-  unsigned char pad1824[0x18d4 - 0x1824];
+  // 0x004f1760 — see comparativePowerRows1824 below.
+  void RecomputeNationComparativePowerMetrics();
+
+  // 0x1824 — per-nation comparative-power rows rebuilt each turn by
+  // RecomputeNationComparativePowerMetrics (0x4f1760): {army, avgRelation,
+  // territory+tech combined, commodity} normalized to 0..100 (0..50+50 for combined).
+  int comparativePowerRows1824[7][4];
+  unsigned char pad1894[0x18d4 - 0x1894];
   TSortedPtrList* pendingWarTransitionQueue18d4;
   short proposalArrayMode18d8;
   unsigned char pad18da[2];

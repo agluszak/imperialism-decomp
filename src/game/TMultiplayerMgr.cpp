@@ -1982,7 +1982,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
     *reinterpret_cast<int*>(&g_pDiplomacyTurnStateManager->selectionFlagsA788) =
         *reinterpret_cast<int*>(&matrix->selectionFlagsA);
     g_pDiplomacyTurnStateManager->selectionFlagsC78c = matrix->selectionFlagsC;
-    memcpy(g_pDiplomacyTurnStateManager->pad1824, matrix->relationTailBlock,
+    memcpy(g_pDiplomacyTurnStateManager->comparativePowerRows1824, matrix->relationTailBlock,
            sizeof(matrix->relationTailBlock));
     break;
   }

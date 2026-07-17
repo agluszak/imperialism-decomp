@@ -6380,7 +6380,7 @@
     },
     {
       "address": "0x496d40",
-      "matching": 0.09090909090909091,
+      "matching": 0.09071274298056156,
       "name": "BlitRectWithOptionalTransparency",
       "type": 1
     },
@@ -7791,7 +7791,7 @@
     },
     {
       "address": "0x4a2900",
-      "matching": 0.13063763608087092,
+      "matching": 0.13374805598755832,
       "name": "BuildArmyContextActionRecordsAndDispatchLabel",
       "type": 1
     },
@@ -13049,7 +13049,8 @@
     },
     {
       "address": "0x4e0590",
-      "matching": 1.0,
+      "effective": true,
+      "matching": 0.42857142857142855,
       "name": "TGreatPower::OrphanRetStub_004d7fa0_88",
       "type": 1
     },
@@ -13080,7 +13081,7 @@
     },
     {
       "address": "0x4e06d0",
-      "matching": 0.8095238095238095,
+      "matching": 0.8571428571428571,
       "name": "TGreatPower::SumNationRuntimeFiveBucketValue44",
       "type": 1
     },
@@ -13110,7 +13111,7 @@
     },
     {
       "address": "0x4e09a0",
-      "matching": 0.5180722891566265,
+      "matching": 0.5421686746987951,
       "name": "TGreatPower::ComputeCityOrderCapabilityAggregateScore",
       "type": 1
     },
@@ -13308,13 +13309,13 @@
     },
     {
       "address": "0x4e3060",
-      "matching": 0.019417475728155338,
+      "matching": 0.9900990099009901,
       "name": "ComputeNationNavyOrderWeightedMovementScore",
       "type": 1
     },
     {
       "address": "0x4e3220",
-      "matching": 0.10256410256410256,
+      "matching": 0.972972972972973,
       "name": "RecomputeNationComparativePowerMetrics_Impl",
       "type": 1
     },
@@ -14481,7 +14482,7 @@
     },
     {
       "address": "0x4eff40",
-      "matching": 0.27988338192419826,
+      "matching": 0.2857142857142857,
       "name": "TDiplomacyMgr::PropagateRelationSideEffectSlot80",
       "type": 1
     },
@@ -14547,7 +14548,7 @@
     },
     {
       "address": "0x4f1760",
-      "matching": 0.02962962962962963,
+      "matching": 0.7320754716981132,
       "name": "RecomputeNationComparativePowerMetrics",
       "type": 1
     },
@@ -15413,7 +15414,7 @@
     },
     {
       "address": "0x4fd220",
-      "matching": 0.2849604221635884,
+      "matching": 0.2955145118733509,
       "name": "TMapKey::RenderMapHintOverlayMode4",
       "type": 1
     },
@@ -16627,7 +16628,7 @@
     },
     {
       "address": "0x50bea0",
-      "matching": 0.2044525215810995,
+      "matching": 0.21172194457064972,
       "name": "TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets",
       "type": 1
     },
@@ -17445,7 +17446,7 @@
     },
     {
       "address": "0x5178f0",
-      "matching": 0.3446601941747573,
+      "matching": 0.3260340632603406,
       "name": "ComputeRepresentativeTileIndexForTerrainTypeWithWrapBias",
       "type": 1
     },
@@ -18046,8 +18047,7 @@
     },
     {
       "address": "0x522c10",
-      "effective": true,
-      "matching": 0.9848484848484849,
+      "matching": 1.0,
       "name": "TMapDialog::DrawMapDialogWrappedTileConnectionMarker_00522c10",
       "type": 1
     },
@@ -18497,13 +18497,13 @@
     },
     {
       "address": "0x52cae0",
-      "matching": 0.2976,
+      "matching": 0.3054662379421222,
       "name": "BuildOverlaySpanRecordsFromQuadBorderLinks",
       "type": 1
     },
     {
       "address": "0x52d030",
-      "matching": 0.7766990291262136,
+      "matching": 1.0,
       "name": "ComputeWrappedOverlayCoordDeltaMetric",
       "type": 1
     },
@@ -20449,7 +20449,7 @@
     },
     {
       "address": "0x53d200",
-      "matching": 0.3700787401574803,
+      "matching": 0.3686274509803922,
       "name": "ComputeArmyMissionScoreDeltaWithScaledCandidateUnit",
       "type": 1
     },
@@ -21541,7 +21541,7 @@
     },
     {
       "address": "0x545940",
-      "matching": 0.4316639741518578,
+      "matching": 0.4206785137318255,
       "name": "TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine",
       "type": 1
     },
@@ -22533,13 +22533,13 @@
     },
     {
       "address": "0x553b10",
-      "matching": 0.41379310344827586,
+      "matching": 0.4827586206896552,
       "name": "HasNoMapOrderEntryChildrenQueued",
       "type": 1
     },
     {
       "address": "0x553b50",
-      "matching": 0.5454545454545454,
+      "matching": 0.5818181818181818,
       "name": "HasActiveMapOrderEntryChildren",
       "type": 1
     },
@@ -22678,7 +22678,7 @@
     },
     {
       "address": "0x555420",
-      "matching": 0.5546666666666666,
+      "matching": 0.5653333333333334,
       "name": "ResolveTaskForceOrderConflictAndPickCandidate",
       "type": 1
     },
@@ -23087,7 +23087,7 @@
     },
     {
       "address": "0x55d200",
-      "matching": 0.0,
+      "matching": 0.6226650062266501,
       "name": "TNewspaperView::BuildInterNationEventSummaryRowsForAdvisorDialog",
       "type": 1
     },
@@ -29407,7 +29407,7 @@
     },
     {
       "address": "0x59e0d0",
-      "matching": 1.0,
+      "matching": 0.6,
       "name": "TArmyPlayer::ScoreTacticalTileEnemyEdgeColumnZoneBonus",
       "type": 1
     },
@@ -29744,7 +29744,7 @@
     },
     {
       "address": "0x5a1520",
-      "matching": 0.48148148148148145,
+      "matching": 0.5259259259259259,
       "name": "TTacticalBattle::MoveTacticalUnitTowardTile",
       "type": 1
     },
@@ -29786,7 +29786,7 @@
     },
     {
       "address": "0x5a1ee0",
-      "matching": 0.6631299734748011,
+      "matching": 0.6657824933687002,
       "name": "TTacticalBattle::EvaluateAndResolveTacticalActionAgainstTileOccupant",
       "type": 1
     },
@@ -30398,7 +30398,7 @@
     },
     {
       "address": "0x5a9090",
-      "matching": 0.8805970149253731,
+      "matching": 0.8208955223880597,
       "name": "TTacticalBattleView::PlayTacticalTileEffect",
       "type": 1
     },
@@ -30410,7 +30410,7 @@
     },
     {
       "address": "0x5a9240",
-      "matching": 0.5397590361445783,
+      "matching": 0.5533980582524272,
       "name": "TTacticalBattleView::AnimateTacticalUnitMoveBetweenTiles",
       "type": 1
     },
@@ -31921,7 +31921,7 @@
     },
     {
       "address": "0x5ba0e0",
-      "matching": 1.0,
+      "matching": 0.8181818181818182,
       "name": "BuildInterNationEventSummaryRowsForAdvisorDialog_Impl",
       "type": 1
     },
@@ -32331,7 +32331,7 @@
     },
     {
       "address": "0x5bf930",
-      "matching": 0.7890818858560794,
+      "matching": 0.7907361455748553,
       "name": "RefreshSelectedNationOrderCompatibilityInfo",
       "type": 1
     },

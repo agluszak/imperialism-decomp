@@ -595,22 +595,6 @@ undefined4 GetCityProductionValueTimesTwoCallbackG(void)
   return 0;
 }
 
-// ghidra_name ComputeNationNavyOrderWeightedMovementScore
-// ghidra_proto undefined ComputeNationNavyOrderWeightedMovementScore()
-// FUNCTION: IMPERIALISM 0x004e3060
-undefined4 ComputeNationNavyOrderWeightedMovementScore(void)
-{
-  return 0;
-}
-
-// ghidra_name RecomputeNationComparativePowerMetrics_Impl
-// ghidra_proto undefined RecomputeNationComparativePowerMetrics_Impl()
-// FUNCTION: IMPERIALISM 0x004e3220
-undefined4 RecomputeNationComparativePowerMetrics_Impl(void)
-{
-  return 0;
-}
-
 // ghidra_name RecomputeNationEconomyAndDiplomacySummaryMetrics
 // ghidra_proto undefined RecomputeNationEconomyAndDiplomacySummaryMetrics()
 // FUNCTION: IMPERIALISM 0x004e32a0

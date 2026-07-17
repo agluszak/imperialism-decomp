@@ -4307,6 +4307,64 @@ void TGreatPower::BuildGreatPowerTurnMessageSummaryAndDispatch(void) {
   }
 }
 
+// Army-plus-navy power score: land units weighted by the per-type table scaled by
+// quality percent, plus the same shape over this nation's navy primary orders with a
+// local per-type weight table.
+// FUNCTION: IMPERIALISM 0x004e3060
+int TGreatPower::ComputeNationNavyOrderWeightedMovementScore() {
+  int navyWeightByType[14];
+  navyWeightByType[0] = 0;
+  navyWeightByType[1] = 0;
+  navyWeightByType[2] = 0;
+  navyWeightByType[3] = 0x96;
+  navyWeightByType[4] = 0x12c;
+  navyWeightByType[5] = 0;
+  navyWeightByType[6] = 0;
+  navyWeightByType[7] = 0xc8;
+  navyWeightByType[8] = 0x190;
+  navyWeightByType[9] = 0x28a;
+  navyWeightByType[10] = 0;
+  navyWeightByType[11] = 0x1c2;
+  navyWeightByType[12] = 0x5dc;
+  navyWeightByType[13] = 0x4b0;
+  int score = 0;
+  CIterator iter(militaryUnitList44);
+  for (void* item = iter.Reset(); iter.More(); item = iter.Advance()) {
+    TMilitaryUnit* unit = static_cast<TMilitaryUnit*>(item);
+    if (unit->GetUnitMovementClassId() > 0) {
+      score += g_anWeightedNeighborUnitScoreByType_006955F0[unit->orderType] *
+               (static_cast<short>(unit->field_38 / 100) + 10) / 10;
+    }
+  }
+  for (TShip* node = GetNavyPrimaryOrderListHead(); node != 0; node = node->nextOlder24) {
+    if (node->ownerNationSlot14 != nationSlot) {
+      continue;
+    }
+    score += navyWeightByType[node->resourceType04] *
+             (static_cast<short>(node->field30 / 100) + 10) / 10;
+  }
+  return score;
+}
+
+// Average bilateral relation-standing score against every other live descriptor slot.
+// FUNCTION: IMPERIALISM 0x004e3220
+int TGreatPower::RecomputeNationComparativePowerMetrics_Impl() {
+  TDiplomacyMgr* diplomacy = g_pDiplomacyTurnStateManager;
+  int sum = 0;
+  int count = 0;
+  for (int i = 0; i < kTerrainTypeDescriptorTableCount; i++) {
+    if (g_apTerrainTypeDescriptorTable[i] == 0) {
+      continue;
+    }
+    if (i == nationSlot) {
+      continue;
+    }
+    sum += diplomacy->relationStandingScoreMatrix79c[nationSlot * 0x17 + static_cast<short>(i)];
+    count++;
+  }
+  return sum / count;
+}
+
 // FUNCTION: IMPERIALISM 0x004e6c20
 void TGreatPower::InitializeNationMinisterSubsystemsByPolicyIds(int arg1, int arg2, short arg3,
                                                                 short arg4, short arg5) {

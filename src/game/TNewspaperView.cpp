@@ -3,6 +3,10 @@
 #include "game/CFile_Virtuals.h"
 #include "game/TAssetMgr.h"
 #include "game/TDeluxeText.h"
+#include "game/TDiplomacyMgr.h"
+#include "game/TGreatPower.h"
+#include "game/TStaticText.h"
+#include "game/TTradeMgr.h"
 #include "game/TLanguageMgr.h"
 #include "game/TMapMgr.h"
 #include "game/TSimMgr.h"
@@ -26,25 +30,140 @@ IMPLEMENT_DYNCREATE(TNewspaperView, TPicture)
 
 TNewspaperView::TNewspaperView() {}
 
+// Populate the nation-status advisor page: date + special-metric headline children,
+// then the 3x3 inter-nation newspaper story grid from the queue manager's pages.
+// FUNCTION: IMPERIALISM 0x0055d200
+void TNewspaperView::BuildInterNationEventSummaryRowsForAdvisorDialog(int pageNation) {
+  CString tokens[4];
+  summaryPageIndex90 = pageNation;
+  CString formatText;
+  CString panelText;
+  CString dateText;
+  newsTexStream94 =
+      g_pUiViewManager->LoadTableResourceStreamByName(g_pLanguageMgr->GetNewsTexPath());
+
+  TControlPictureRectState titleStyle;   // (face 0, 12pt)
+  TControlPictureRectState featureStyle; // (face 1, 14pt)
+  TControlPictureRectState plainStyle;   // (face 0, 14pt)
+  char* styleRefBytes = reinterpret_cast<char*>(&titleStyle.styleRef6);
+  styleRefBytes[0] = 0;
+  styleRefBytes[1] = 0;
+  styleRefBytes[2] = 0;
+  styleRefBytes[3] = 0;
+  char* featureRefBytes = reinterpret_cast<char*>(&featureStyle.styleRef6);
+  featureRefBytes[0] = 0;
+  featureRefBytes[1] = 0;
+  featureRefBytes[2] = 0;
+  featureRefBytes[3] = 0;
+  char* plainRefBytes = reinterpret_cast<char*>(&plainStyle.styleRef6);
+  plainRefBytes[0] = 0;
+  plainRefBytes[1] = 0;
+  plainRefBytes[2] = 0;
+  plainRefBytes[3] = 0;
+  InitializeUiTextStyleDescriptor(&titleStyle, 0, 0xc, 0x2b67, 2);
+  InitializeUiTextStyleDescriptor(&featureStyle, 1, 0xe, 0x2b67, 2);
+  InitializeUiTextStyleDescriptor(&plainStyle, 0, 0xe, 0x2b67, 2);
+
+  TStaticText* dateControl = static_cast<TStaticText*>(ResolveControlByTag(0x64617465)); // 'date'
+  dateControl->AssertValid();
+  g_pSimMgr->FormatSeasonName(&dateText);
+  formatText.Format(g_szDecimalFormat,
+                    static_cast<short>(g_pSimMgr->quarterGateTick2c / 4) + 0x717);
+  panelText = dateText + g_szListSeparator_00695760 + formatText;
+  dateControl->AssignTextSharedRefIfChangedAndMaybeInvalidate(&panelText, 1);
+  dateControl->SetCityProductionDialogPictureRectAndMaybeRefresh(&titleStyle, 1);
+
+  TStaticText* specialControl =
+      static_cast<TStaticText*>(ResolveControlByTag(0x73706563)); // 'spec'
+  specialControl->AssertValid();
+  if (g_apNationStates[g_pSimMgr->GetActiveNationId()] == 0) {
+    panelText = CString(g_szEmptyString);
+  } else {
+    switch (static_cast<short>(g_pSimMgr->quarterGateTick2c % 4)) {
+    case 0:
+      dateText.Format(g_szDecimalFormat,
+                      g_apNationStates[g_pSimMgr->GetActiveNationId()]->escalationCounter);
+      g_pSimMgr->GetString(0x275e, 0, &formatText);
+      scanBracketExpressions(g_pSimMgr, &panelText, static_cast<LPCSTR>(formatText),
+                             static_cast<LPCSTR>(dateText));
+      break;
+    case 1: {
+      int tradeDelta =
+          g_pNationInteractionStateManager->ComputeAverageProposalWeightDeltaAcrossCategoryRows();
+      dateText.Format(g_szDecimalFormat, tradeDelta);
+      if (tradeDelta > 0) {
+        dateText = g_szPlusPrefix_00698494 + dateText;
+      }
+      g_pSimMgr->GetString(0x275e, 1, &formatText);
+      scanBracketExpressions(g_pSimMgr, &panelText, static_cast<LPCSTR>(formatText),
+                             static_cast<LPCSTR>(dateText));
+      break;
+    }
+    case 2:
+      g_pDiplomacyTurnStateManager->RecomputeNationComparativePowerMetrics();
+      dateText.Format(g_szDecimalFormat,
+                      g_pDiplomacyTurnStateManager
+                          ->comparativePowerRows1824[g_pSimMgr->GetActiveNationId()][3]);
+      g_pSimMgr->GetString(0x275e, 2, &formatText);
+      scanBracketExpressions(g_pSimMgr, &panelText, static_cast<LPCSTR>(formatText),
+                             static_cast<LPCSTR>(dateText));
+      break;
+    case 3:
+      g_pDiplomacyTurnStateManager->RecomputeNationComparativePowerMetrics();
+      dateText.Format(g_szDecimalFormat,
+                      g_pDiplomacyTurnStateManager
+                          ->comparativePowerRows1824[g_pSimMgr->GetActiveNationId()][0]);
+      g_pSimMgr->GetString(0x275e, 3, &formatText);
+      scanBracketExpressions(g_pSimMgr, &panelText, static_cast<LPCSTR>(formatText),
+                             static_cast<LPCSTR>(dateText));
+      break;
+    }
+  }
+  specialControl->AssignTextSharedRefIfChangedAndMaybeInvalidate(&panelText, 1);
+  specialControl->SetCityProductionDialogPictureRectAndMaybeRefresh(&titleStyle, 1);
+
+  for (int col = 0; col < 3; col++) {
+    int y = 0x50;
+    for (int i = 0; i < 3; i++) {
+      newsStory* story = &g_pInterNationEventQueueManager->stories[pageNation][col][i];
+      if (story->entry.storyId == 0) {
+        continue;
+      }
+      FormatInterNationEventRowTokensToSharedStrings(story, tokens);
+      if (story->feature38 != 0) {
+        y += AppendInterNationEventSummaryTextEntry(col, y, story->entry.textArgA0,
+                                                    story->entry.textArgA1, &plainStyle, 1, tokens);
+      } else {
+        y += AppendInterNationEventSummaryTextEntry(
+            col, y, story->entry.textArgA0, story->entry.textArgA1, &featureStyle, 1, tokens);
+      }
+      y += AppendInterNationEventSummaryTextEntry(col, y, story->entry.textArgB0,
+                                                  story->entry.textArgB1, &titleStyle, -2, tokens);
+    }
+  }
+  g_pUiViewManager->ReleaseResourceStreamIfNotNull(newsTexStream94);
+}
+
 // FUNCTION: IMPERIALISM 0x0055d910
-void TNewspaperView::FormatInterNationEventRowTokensToSharedStrings(int* entry, CString* tokens) {
+void TNewspaperView::FormatInterNationEventRowTokensToSharedStrings(newsStory* story,
+                                                                    CString* tokens) {
   for (int k = 0; k < 4; k++) {
-    int type = entry[k + 4];
-    switch (type) {
+    int kind = story->parmKind[k];
+    switch (kind) {
     case 1:
-      BuildLocalizedTokenListFromBitmaskWithConjunction(&tokens[k], entry[k]);
+      BuildLocalizedTokenListFromBitmaskWithConjunction(&tokens[k], story->parmValue[k]);
       break;
     case 2:
-      BuildLocalizedNationListFromBitmaskWithConjunction(&tokens[k], entry[k]);
+      BuildLocalizedNationListFromBitmaskWithConjunction(&tokens[k], story->parmValue[k]);
       break;
     case 3: {
       CString cityName;
-      g_pGlobalMapState->AssignCityRecordDisplayName(entry[k], &cityName);
+      g_pGlobalMapState->AssignCityRecordDisplayName(story->parmValue[k], &cityName);
       tokens[k] = cityName;
       break;
     }
     case 4: {
-      TZone* actionContext = FindMapActionContextByNodeId(static_cast<short>(entry[k]));
+      TZone* actionContext = FindMapActionContextByNodeId(static_cast<short>(story->parmValue[k]));
       actionContext->AssignZoneDisplayNameToOutputRef(&tokens[k]);
       break;
     }

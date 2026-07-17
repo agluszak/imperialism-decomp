@@ -7,15 +7,6 @@ each with the evidence needed to start (address, size, current score if any, blo
 
 ## Big stubs (never ported)
 
-- `0x55d200` (1415B) — TNewspaperView::BuildInterNationEventSummaryRowsForAdvisorDialog
-  (attribution recorded in function_class_overrides.csv; receiver is the 'main' panel
-  of the 0x2103 nation-status-report dialog, fields +0x90 cached arg / +0x94 news .tex
-  stream). Port as a cluster with its leaf methods 0x55d910 (272B, per-row token
-  formatter) and 0x55df50 (532B, row text appender, returns consumed height), plus the
-  token-list builders 0x55da80/0x55dcd0/0x55de90 they may call. Full decoded dossier
-  (body outline, style descriptors, per-case switch on field2c%4, row-loop geometry)
-  was produced 2026-07-17; regenerate with `just agent-start port 0x55d200` +
-  `just ghidra-listing` if lost.
 - `0x502b60` (1285B)
 - `0x4eb8b0` (1212B)
 - `0x5bc0d0` (1168B)
@@ -23,6 +14,20 @@ each with the evidence needed to start (address, size, current score if any, blo
   partial class recovery already on main.
 
 ## Known-bad re-ports (score far below structure)
+
+- TNewspaperView advisor cluster (landed 2026-07-17, structure verified; residuals
+  documented in docs/case-studies/tnewspaperview-advisor-rows-dossier.md):
+  `0x55d200` 62% (uniform +4 frame-slot shift from the original's extra concat/byval
+  temp), `0x55df50` 51% (blocked on the TTEView/TDeluxeText inline-ctor color-struct
+  recovery: ctors 0x45b080/0x45b0a0 as a 4-byte color type also unifying styleRef6),
+  `0x580280` 49% (bracket-scanner branch-shape wobble), `0x4f1760` 73% and
+  `0x574720` 73% (scheduling), `0x55d910` 75%, `0x580460` 79%, `0x4e3220` 97%
+  (one-past-end table-bound annotation), `0x55da80` 95%, `0x55dcd0` 94%,
+  `0x4e3060` 99%.
+- TDiplomacyMgr.cpp fabricated empty bodies noticed nearby: `0x4f1570`
+  InitializeDiplomacyStandingBaselineRandom and `0x4f1630`
+  BuildMajorNationDiplomacyStandingRanking — both `{}` in manual source; read the
+  listings before trusting them.
 
 - TScrollBarView.cpp fabricated empty bodies still remaining (the 0x5744b0/0x5746e0/
   0x573ce0/0x574720 batch is fixed): `HandleEvent` 0x5747c0 (~112B),
