@@ -37,14 +37,22 @@ from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 TASK_JSON = REPO_ROOT / "build-msvc500" / "agent-task.json"
+PR_BODY_MD = REPO_ROOT / "build-msvc500" / "pr-body.md"
+
+# Claims registry: one lightweight commit ref per claimed address on the shared
+# remote. `refs/agent-claims/0x00XXXXXX` points at a parentless empty-tree commit
+# whose message is the claim JSON (owner branch, expiry). Push is atomic per ref,
+# so two agents racing for the same address cannot both win. Remotes that refuse
+# custom refs degrade to a warning — the registry is best-effort coordination,
+# not a lock the workflow depends on.
+CLAIM_REF_PREFIX = "refs/agent-claims/"
+EMPTY_TREE = "4b825dc642cb6eb9a060e54bf8d69288fbee4904"
+CLAIM_TTL_HOURS = 24
 
 GENERATED_PREFIXES = (
     "src/autogen/",
     "src/ghidra_autogen/",
     "include/ghidra_autogen/",
-)
-GENERATED_VIA_TOOLS = GENERATED_PREFIXES + (
-    "config/function_ownership.csv",
 )
 MANUAL_CPP_PREFIXES = ("src/", "include/")
 MARKER_RE = re.compile(
@@ -124,6 +132,84 @@ def _ownership_row(addr: str, source: str = "") -> dict:
     return {}
 
 
+# ---------------------------------------------------------------------------
+# claims registry (refs/agent-claims/<addr> on origin)
+# ---------------------------------------------------------------------------
+
+def _fetch_claims() -> dict[str, str]:
+    """Map addr -> remote commit sha for every claim ref on origin.
+
+    Returns {} (with a note) when the remote is unreachable or refuses the
+    namespace — the registry is best-effort.
+    """
+    proc = _run(["git", "ls-remote", "origin", CLAIM_REF_PREFIX + "*"])
+    if proc.returncode != 0:
+        print("[claims] note: remote unreachable — continuing without the claims registry")
+        return {}
+    claims: dict[str, str] = {}
+    for line in proc.stdout.splitlines():
+        parts = line.split()
+        if len(parts) == 2 and parts[1].startswith(CLAIM_REF_PREFIX):
+            claims[parts[1][len(CLAIM_REF_PREFIX):]] = parts[0]
+    return claims
+
+
+def _read_claim(addr: str, sha: str) -> dict:
+    """Fetch + parse the claim JSON stored in the claim commit's message."""
+    ref = CLAIM_REF_PREFIX + addr
+    if _run(["git", "cat-file", "-e", sha]).returncode != 0:
+        if _run(["git", "fetch", "origin", f"+{ref}:{ref}", "--quiet"]).returncode != 0:
+            return {}
+    body = _run(["git", "log", "-1", "--format=%B", sha]).stdout.strip()
+    try:
+        return json.loads(body)
+    except (json.JSONDecodeError, ValueError):
+        return {"raw": body}
+
+
+def _claim_expired(claim: dict) -> bool:
+    expires = claim.get("expires_utc", "")
+    try:
+        return datetime.datetime.strptime(expires, "%Y-%m-%dT%H:%M:%SZ").replace(
+            tzinfo=datetime.timezone.utc) < datetime.datetime.now(datetime.timezone.utc)
+    except ValueError:
+        return True  # unparsable claims don't block anyone forever
+
+
+def _push_claim(addr: str, branch: str) -> bool:
+    expires = (datetime.datetime.now(datetime.timezone.utc)
+               + datetime.timedelta(hours=CLAIM_TTL_HOURS)).strftime("%Y-%m-%dT%H:%M:%SZ")
+    payload = json.dumps({
+        "address": addr,
+        "branch": branch,
+        "created_utc": _now(),
+        "expires_utc": expires,
+    }, indent=2)
+    commit = _run(["git", "commit-tree", EMPTY_TREE, "-m", payload])
+    if commit.returncode != 0:
+        return False
+    sha = commit.stdout.strip()
+    # Non-forced push: if someone claimed between our ls-remote and now, this
+    # fails and the loser sees the refusal on rerun.
+    push = _run(["git", "push", "origin", f"{sha}:{CLAIM_REF_PREFIX}{addr}"])
+    if push.returncode != 0:
+        print(f"[claims] note: could not push claim for {addr} "
+              "(remote refused or raced) — continuing unclaimed")
+        return False
+    print(f"[claims] claimed {addr} for branch {branch!r} (expires {expires})")
+    return True
+
+
+def _drop_claim(addr: str) -> bool:
+    proc = _run(["git", "push", "origin", "--delete", CLAIM_REF_PREFIX + addr])
+    if proc.returncode == 0:
+        print(f"[claims] released {addr}")
+        return True
+    print(f"[claims] note: could not delete claim for {addr}: "
+          + (proc.stderr.strip().splitlines() or ["unknown error"])[-1])
+    return False
+
+
 def _step(name: str, cmd: list[str], results: dict, *, tolerate: bool = False) -> subprocess.CompletedProcess:
     print(f"[agent-task] {name}: {' '.join(cmd)}")
     proc = _run(cmd)
@@ -198,11 +284,36 @@ def cmd_start(args: argparse.Namespace) -> int:
             print(f"[agent-start] WARNING: {entry['ownership_drift']}")
         targets[addr] = entry
 
+    # 3b. Claims registry: refuse addresses claimed by another live branch.
+    remote_claims = _fetch_claims()
+    for addr in addrs:
+        sha = remote_claims.get(addr)
+        if not sha:
+            continue
+        claim = _read_claim(addr, sha)
+        holder = claim.get("branch", "<unknown>")
+        if holder == branch:
+            print(f"[claims] {addr} already claimed by this branch — refreshing")
+        elif _claim_expired(claim):
+            print(f"[claims] {addr} has an EXPIRED claim from {holder!r} — taking over")
+        elif args.steal_claim:
+            print(f"[agent-start] WARNING (steal-claim): {addr} is claimed by "
+                  f"{holder!r} until {claim.get('expires_utc', '?')}")
+        else:
+            problems.append(
+                f"{addr} is claimed by branch {holder!r} until "
+                f"{claim.get('expires_utc', '?')} — pick another target from "
+                "docs/porting_queue.md, or override with --steal-claim only if "
+                "that branch is known dead"
+            )
+
     if problems:
         print("[agent-start] REFUSED:")
         for p in problems:
             print(f"  - {p}")
         return 2
+
+    claimed = [a for a in addrs if not args.no_claim and _push_claim(a, branch)]
 
     results: dict = {}
 
@@ -262,6 +373,7 @@ def cmd_start(args: argparse.Namespace) -> int:
         "mode": args.mode,
         "branch": branch,
         "base_commit": base,
+        "claimed": claimed,
         "targets": targets,
         "func_status": func_status_text,
         "steps": results,
@@ -306,16 +418,17 @@ def cmd_check(args: argparse.Namespace) -> int:
     # Marker-aware stub regeneration.
     diff_text = _git("diff", base, "--", "src", "include") + "\n" + _git("diff", "--", "src", "include")
     markers_changed = any(MARKER_RE.match(l) for l in diff_text.splitlines())
-    generated_touched = [p for p in paths if p.startswith(GENERATED_VIA_TOOLS)]
+    from tools.workflow.check_generated_integrity import generated_violations
+    violations = generated_violations(base)
+    if violations:
+        print("[agent-check] FAILED: generated paths changed without any marker "
+              "change — never hand-edit these; revert and use the owning tool:")
+        for p in violations[:10]:
+            print(f"  - {p}")
+        return 2
     if markers_changed:
         if _step("regen-stubs", ["just", "regen-stubs"], results).returncode != 0:
             failures.append("regen-stubs")
-    elif generated_touched:
-        print("[agent-check] FAILED: generated paths changed without any marker "
-              "change — never hand-edit these; revert and use the owning tool:")
-        for p in generated_touched[:10]:
-            print(f"  - {p}")
-        return 2
     else:
         print("[agent-check] no marker changes — skipping stub regeneration "
               "(running it anyway would only churn generated files)")
@@ -387,6 +500,26 @@ def cmd_check(args: argparse.Namespace) -> int:
 # finish
 # ---------------------------------------------------------------------------
 
+def _score_label(value) -> str:
+    return f"{value:.2f}%" if isinstance(value, (int, float)) else "stub"
+
+
+def _pr_title(task: dict) -> str:
+    """Generated PR title: mode + targets + score outcome. Never model names."""
+    mode = task.get("mode", "port")
+    check = task.get("check", {})
+    parts = []
+    for addr, t in task.get("targets", {}).items():
+        before = _score_label(t.get("baseline_score"))
+        after = check.get("scores", {}).get(addr)
+        outcome = f"{before} -> {_score_label(after)}" if after is not None else before
+        parts.append(f"{addr} ({outcome})")
+    if not parts:
+        return f"{mode.capitalize()}: workflow/infrastructure change"
+    return f"{mode.capitalize()} {', '.join(parts[:3])}" + (
+        f" +{len(parts) - 3} more" if len(parts) > 3 else "")
+
+
 def cmd_finish(args: argparse.Namespace) -> int:
     task = _load_task()
     if not task:
@@ -426,8 +559,50 @@ def cmd_finish(args: argparse.Namespace) -> int:
     lines += ["", "## Diffstat", "", "```", diffstat or "(no diff)", "```", "",
               "_Receipt: build-msvc500/agent-task.json — guidance only; CI recomputes",
               "all checks itself._"]
-    print("\n".join(lines))
+    body = "\n".join(lines)
+    PR_BODY_MD.parent.mkdir(parents=True, exist_ok=True)
+    PR_BODY_MD.write_text(body + "\n", encoding="utf-8")
+    print(f"PR title: {_pr_title(task)}")
+    print(f"PR body written to {PR_BODY_MD.relative_to(REPO_ROOT)}")
+    print()
+    print(body)
+    if task.get("claimed"):
+        print("\n[agent-finish] claims still held: "
+              + ", ".join(task["claimed"])
+              + " — run `just agent-release` after the work lands (or expires in "
+              f"{CLAIM_TTL_HOURS}h)")
     return 0
+
+
+# ---------------------------------------------------------------------------
+# release
+# ---------------------------------------------------------------------------
+
+def cmd_release(args: argparse.Namespace) -> int:
+    task = _load_task()
+    addrs = [_norm_addr(a) for a in args.addresses] or sorted(
+        set(task.get("claimed", [])) | set(task.get("targets", {})))
+    if not addrs:
+        print("[agent-release] nothing to release — no receipt targets and no "
+              "addresses given")
+        return 0
+    branch = _git("rev-parse", "--abbrev-ref", "HEAD")
+    remote_claims = _fetch_claims()
+    rc = 0
+    for addr in addrs:
+        sha = remote_claims.get(addr)
+        if not sha:
+            print(f"[agent-release] {addr}: no claim on origin — nothing to do")
+            continue
+        holder = _read_claim(addr, sha).get("branch", "<unknown>")
+        if holder != branch and not args.force:
+            print(f"[agent-release] {addr}: claimed by {holder!r}, not this branch "
+                  "— skipping (use --force to release anyway)")
+            rc = 1
+            continue
+        if not _drop_claim(addr):
+            rc = 1
+    return rc
 
 
 def main() -> int:
@@ -441,6 +616,11 @@ def main() -> int:
     p_start.add_argument("--allow-stale-base", action="store_true")
     p_start.add_argument("--takeover", action="store_true",
                          help="explicitly take over an already-implemented target")
+    p_start.add_argument("--steal-claim", action="store_true",
+                         help="override another branch's unexpired claim (only when "
+                              "that branch is known dead)")
+    p_start.add_argument("--no-claim", action="store_true",
+                         help="skip pushing claim refs (offline / read-only remote)")
     p_start.add_argument("--no-portprep", action="store_true",
                          help="skip ghidra-portprep (explicitly accept working blind)")
     p_start.add_argument("--no-compare", action="store_true",
@@ -453,6 +633,14 @@ def main() -> int:
 
     p_finish = sub.add_parser("finish", help="machine-derived summary / PR body")
     p_finish.set_defaults(func=cmd_finish)
+
+    p_release = sub.add_parser("release", help="delete claim refs for the receipt "
+                               "targets (or explicit addresses)")
+    p_release.add_argument("addresses", nargs="*", help="addresses to release "
+                           "(default: receipt targets)")
+    p_release.add_argument("--force", action="store_true",
+                           help="release claims held by a different branch")
+    p_release.set_defaults(func=cmd_release)
 
     args = parser.parse_args()
     return args.func(args)

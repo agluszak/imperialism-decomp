@@ -86,6 +86,8 @@ module|tools.workflow.vendor_directx_headers|just:vendor-directx-headers|Mirror 
 module|tools.workflow.func_status|just:func-status|One-stop function status from config CSVs + reccmp baseline
 module|tools.workflow.agent_task|just:agent-start|Stateful agent workflow entrypoints (start/check/finish)
 module|tools.workflow.check_global_redeclarations|just:global-redeclaration-gate|No local externs shadowing global_data_tables.h
+module|tools.workflow.advice|just:advice|Relevant active rules for a target or diff
+module|tools.workflow.check_agent_rules|just:agent-rules-gate|Structured agent-rule KB linter
 module|tools.workflow.port_candidates|just:port-candidates|Rank porting candidates by size and match gap
 module|tools.binary.decode_builder|just:decode-builder|Widget-block pseudo-source decoder for screen builders (bd 1uj.51)
 module|tools.binary.const_stores|just:const-stores|Const-store map extractor for unrolled table initializers (capstone, no Ghidra)
@@ -109,3 +111,4 @@ module|tools.mfc.library_identify|just:library-identify|Per-address library-iden
 module|tools.workflow.check_library_identity|just:library-identity-gate|Semantic gate: reviewed library overrides applied + ownership=library + ratchet
 module|tools.mfc.apply_library_oracle|just:apply-library-oracle|Project confident oracle matches into symbols.csv + LIBRARY markers (upgrade/convert)
 module|tools.mfc.build_library_oracle|just:build-library-oracle|Relocation-masked object matcher: match exe functions to libcmt/nafxcw COFF members
+module|tools.workflow.check_generated_integrity|just:generated-integrity-gate|No hand-edits under generated dirs (shared with agent-check + CI)

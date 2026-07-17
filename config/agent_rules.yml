@@ -1,0 +1,332 @@
+# Structured agent rule knowledge base — the fast, machine-selectable layer over
+# AGENTS.md (invariants) and the topical skills (depth + field notes).
+#
+#   just advice 0xADDR    # select relevant active rules for a target
+#   just advice --diff    # select rules for the current working diff
+#
+# Schema per rule:
+#   id:         stable identifier, <AREA>-<NAME>-<NNN>; never renumber or reuse
+#   status:     active | superseded (superseded rules must name a successor)
+#   title:      one-line claim
+#   triggers:   tags the advice engine matches (see tools/workflow/advice.py TAGS)
+#   required:   what to do (imperative, short)
+#   forbidden:  what must not be done
+#   tools:      `just` commands that produce the evidence (never raw module runs)
+#   skill:      topical skill holding the depth/field notes
+#   supersedes: legacy heuristics-note ids this rule replaces (documentation only)
+#   examples:   addresses proving the rule (optional)
+#
+# Linted by `just agent-rules-gate` (tools/workflow/check_agent_rules.py):
+# duplicate ids, dangling supersedes/successor refs, active-superseded conflicts,
+# required/forbidden contradictions, non-just tool commands.
+
+rules:
+  - id: ABI-THIS-001
+    status: active
+    title: A callee that reads ECX-relative memory is a real __thiscall method
+    triggers: [callee_reads_ecx, caller_loads_ecx, ghidra_cdecl_label]
+    required:
+      - model_as_real_member_method_on_owning_class
+      - verify_ret_n_matches_stack_args
+    forbidden:
+      - thiscall_function_pointer_cast
+      - fastcall_dummy_edx_bridge
+    tools: ["just ghidra-portprep 0xADDR", "just func-sig 0xADDR", "just scan-cdecl-thiscall"]
+    skill: calling-conventions
+    supersedes: [legacy-note-5, legacy-note-26, legacy-note-112L]
+    examples: [0x4e0460, 0x550b60, 0x4d8390]
+
+  - id: ABI-SINGLETON-002
+    status: active
+    title: Callers loading ECX from a global before CALL = thiscall method on that global's class, even with unused this
+    triggers: [caller_loads_ecx_global]
+    required: [model_as_method_on_global_owner_class]
+    forbidden: [stdcall_free_function_model_when_callers_set_ecx]
+    tools: ["just ghidra-portprep 0xADDR"]
+    skill: calling-conventions
+    supersedes: [legacy-note-57]
+    examples: [0x564570, 0x4a5aa0]
+
+  - id: ABI-PARAMWIDTH-003
+    status: active
+    title: Param width comes from the callee's read width and the caller's push form
+    triggers: [movsx_word_read, partial_register_push]
+    required: [type_short_params_from_movsx_evidence]
+    forbidden: [guessing_int_for_word_read_params]
+    tools: ["just ghidra-listing 0xADDR"]
+    skill: calling-conventions
+    supersedes: [legacy-note-106L, legacy-note-79]
+
+  - id: ILT-THUNK-004
+    status: active
+    title: ILT jmp thunks are linker artifacts — resolve to the real target, never model the thunk
+    triggers: [ilt_thunk_call, callee_to_declare]
+    required: [resolve_thunk_target_and_call_real_symbol]
+    forbidden: [wrapper_for_ilt_thunk, thunk_address_in_symbols_rows]
+    tools: ["just ghidra-portprep 0xADDR"]
+    skill: decomp-loop
+    supersedes: [legacy-note-1]
+
+  - id: EH-SCAFFOLD-005
+    status: active
+    title: EH prologues/states are compiler output — fix the object model, not the frame
+    triggers: [eh_prologue, cstring_calls, new_expression]
+    required:
+      - declare_real_nonpod_locals_and_real_new
+      - match_scope_structure_not_state_stores
+    forbidden:
+      - hand_written_eh_scaffolding
+      - postponing_target_for_eh_complexity
+    tools: ["just ghidra-listing 0xADDR"]
+    skill: ctors-dtors-eh
+    supersedes: [legacy-note-33, legacy-note-41]
+
+  - id: EH-SDD-006
+    status: active
+    title: Scalar deleting destructors are SYNTHETIC, never hand-written
+    triggers: [scalar_deleting_dtor, dtor_work]
+    required: [claim_with_synthetic_marker_and_mangled_name]
+    forbidden: [hand_written_destruct_and_maybe_free_bridge]
+    tools: ["just vtable"]
+    skill: ctors-dtors-eh
+    supersedes: [legacy-note-8]
+
+  - id: STR-NOPOSTPONE-007
+    status: active
+    title: String-heavy functions are ported now — the CString shapes are mechanical
+    triggers: [cstring_calls, string_literals, dump_context]
+    required: [identify_cstring_shape_and_transcribe]
+    forbidden: [postponing_target_for_string_complexity, duplicate_string_literals_for_pooled_globals]
+    tools: ["just string-oracle", "just ghidra-listing 0xADDR"]
+    skill: string-handling
+    supersedes: [legacy-note-107L, legacy-note-111]
+
+  - id: BIG-NOPOSTPONE-008
+    status: active
+    title: No function is too big — decode the dossier, then transcribe in binary order
+    triggers: [big_function, switch_dispatch, jump_table]
+    required:
+      - run_portprep_and_full_listing_first
+      - transcribe_cases_in_binary_body_order
+    forbidden:
+      - todo_or_deferred_bodies
+      - splitting_monolith_into_separate_tu_helpers
+    tools: ["just agent-start port 0xADDR", "just ghidra-listing 0xADDR"]
+    skill: big-functions
+    supersedes: [legacy-note-19, legacy-note-60, legacy-note-115]
+
+  - id: FP-SHAPE-009
+    status: active
+    title: Match FP homing (float vs double, store-vs-stack) before touching math
+    triggers: [fp_ops, frame_size_mismatch]
+    required:
+      - use_float_locals_unless_qword_spill_proven
+      - order_multiply_factors_to_fmul_sequence
+    forbidden: [double_temps_without_evidence]
+    tools: ["just compare 0xADDR", "just triage 0xADDR"]
+    skill: fp-matching
+    supersedes: [legacy-note-48, legacy-note-113]
+
+  - id: FP-WOBBLE-010
+    status: active
+    title: Score drops in untouched FP/register-wobble functions are not regressions
+    triggers: [stats_drop_untouched, fp_ops]
+    required: [accept_delta_and_update_stats_baseline]
+    forbidden: [reverting_real_structure_to_defend_scores]
+    tools: ["just stats", "just stats-baseline-update"]
+    skill: fp-matching
+    supersedes: [legacy-note-47]
+
+  - id: DATA-GLOBALS-011
+    status: active
+    title: Every referenced global is a named symbol in global_data_tables
+    triggers: [unlabeled_globals, raw_address_cast, new_extern_decl]
+    required:
+      - declare_in_global_data_tables_pair_with_symbols_row
+      - read_actual_bytes_from_binary_for_initializers
+    forbidden:
+      - reinterpret_cast_of_raw_addresses
+      - local_extern_redeclarations
+    tools: ["just datacmp", "just ghidra-read-data"]
+    skill: data-modeling
+    supersedes: [legacy-note-47, legacy-note-105L]
+    examples: [0x6955f0]
+
+  - id: DATA-WIDTH-012
+    status: active
+    title: Field width/signedness comes from the original load/store width
+    triggers: [movsx_word_read, dtor_work]
+    required: [type_by_widest_reader_cast_at_narrow_sites]
+    forbidden: [int_defaults_for_short_evidence]
+    tools: ["just ghidra-listing 0xADDR", "just field-xrefs"]
+    skill: data-modeling
+    supersedes: [legacy-note-118]
+    examples: [0x55f157]
+
+  - id: DATA-NOUNION-013
+    status: active
+    title: Never model overlapping views with a union — pick one model, migrate all accessors
+    triggers: [union_added]
+    required: [pick_single_true_model_and_migrate_accessors]
+    forbidden: [union_of_view_structs]
+    skill: data-modeling
+    supersedes: [legacy-note-119]
+
+  - id: VT-REALVIRTUAL-014
+    status: active
+    title: Vtable dispatch is a real virtual on the recovered class
+    triggers: [vtable_slot_calls]
+    required: [declare_virtual_at_verified_slot_and_call_directly]
+    forbidden: [raw_vftable_indexing, vcall_facade_wrappers, typedef_fn_cast_for_slots]
+    tools: ["just vtable", "just ghidra-vtable-dump"]
+    skill: vtable-matching
+    supersedes: [legacy-note-4]
+
+  - id: VT-OPAQUE-015
+    status: active
+    title: An opaque/polymorphic slot argument is void* — interpret inside each override
+    triggers: [vtable_slot_calls]
+    required: [type_slot_param_void_star_cast_in_body]
+    forbidden: [forcing_one_callers_type_on_all_callsites]
+    skill: vtable-matching
+    supersedes: [legacy-note-17]
+
+  - id: CON-INHERIT-016
+    status: active
+    title: Base construction is real inheritance, never bridges or placement-new
+    triggers: [new_expression, ctor_work, base_ctor_call]
+    required: [real_base_class_and_init_list_in_declaration_order]
+    forbidden:
+      - construct_at_this_bridges
+      - placement_new_for_base_construction
+      - manual_vptr_writes
+      - operator_new_factory_helpers
+    tools: ["just antipattern-gate"]
+    skill: ctors-dtors-eh
+    supersedes: [legacy-note-3, legacy-note-71]
+
+  - id: GATE-FORWARD-017
+    status: active
+    title: A failing gate after promoting real C++ shape is fixed forward, never backward
+    triggers: [gate_failure, markers_changed]
+    required: [fix_forward_per_gate_chasing_guardrail_or_stop_and_report]
+    forbidden:
+      - reverting_promoted_methods_to_stubs
+      - policy_baseline_update_to_silence_gate
+    tools: ["just agent-check"]
+    skill: decomp-loop
+
+  - id: GEN-NOHAND-018
+    status: active
+    title: Generated trees change only through their owning tools
+    triggers: [generated_touched, markers_changed]
+    required: [run_regen_stubs_after_marker_or_ownership_edits]
+    forbidden: [hand_edits_under_autogen_or_ghidra_autogen]
+    tools: ["just regen-stubs", "just agent-check"]
+    skill: sync-pipeline
+
+  - id: MFC-LIBRARY-019
+    status: active
+    title: MFC/CRT bodies are LIBRARY, and MFC-shaped fields are real MFC types
+    triggers: [library_range, mfc_collection_shape, crt_idiom]
+    required:
+      - annotate_library_and_link_real_mfc
+      - declare_fields_as_real_mfc_types
+    forbidden: [porting_library_bodies, walking_protected_mfc_internals]
+    tools: ["just library-identify 0xADDR", "just vendor-msvc500-headers"]
+    skill: mfc-collections
+    supersedes: [legacy-note-15, legacy-note-111L]
+    examples: [0x4c65d0]
+
+  - id: SHAPE-LOOPS-020
+    status: active
+    title: Loop/branch/switch shapes are source-shape choices — read the tells before writing
+    triggers: [branch_shape_mismatch, loop_bound_signedness, switch_dispatch, bool_materialization]
+    required:
+      - match_indexed_vs_cursor_loop_to_jl_vs_jb
+      - match_case_bodies_to_binary_order
+      - use_byte_locals_for_al_loaded_flags
+    forbidden: [semantic_equivalents_that_ignore_the_shape]
+    tools: ["just triage 0xADDR", "just compare 0xADDR"]
+    skill: codegen-shapes
+    supersedes: [legacy-note-51, legacy-note-113L, legacy-note-114L, legacy-note-121]
+
+  - id: SHAPE-DIV-021
+    status: active
+    title: Write plain constant division — the compiler emits the magic multiply
+    triggers: [magic_number_division]
+    required: [plain_division_by_constant]
+    forbidden: [hand_rolled_int64_bit_twiddles]
+    skill: codegen-shapes
+    supersedes: [legacy-note-116L]
+    examples: [0x550b60]
+
+  - id: PROC-GROUNDTRUTH-022
+    status: active
+    title: The listing is ground truth — decompile and Ghidra names are hypotheses
+    triggers: [callee_to_declare, broken_decompile, ghidra_cdecl_label]
+    required: [run_listing_before_any_claim_about_the_function]
+    forbidden: [porting_from_decompile_alone, trusting_ghidra_names]
+    tools: ["just agent-start port 0xADDR", "just ghidra-listing 0xADDR"]
+    skill: ghidra
+    supersedes: [legacy-note-114]
+
+  - id: PROC-ENTRYPOINT-023
+    status: active
+    title: Tasks start with agent-start and are verified with agent-check
+    triggers: [task_start, markers_changed, gate_failure]
+    required: [use_agent_entrypoints]
+    forbidden: [hand_assembled_investigation, skipping_diff_aware_verification]
+    tools: ["just agent-start port 0xADDR", "just agent-check", "just agent-finish"]
+    skill: decomp-loop
+
+  - id: PROC-CLAIMS-024
+    status: active
+    title: Parallel-agent safety — respect claims, bases, and other agents' worktree state
+    triggers: [task_start, ownership_drift, dirty_worktree]
+    required:
+      - honor_agent_start_refusals
+      - merge_origin_main_when_stale
+    forbidden:
+      - force_pushes_to_shared_branches
+      - reverting_unrelated_dirty_paths
+      - takeover_without_explicit_flag
+    tools: ["just agent-start port 0xADDR"]
+    skill: decomp-loop
+
+  - id: TYPE-NOBORROW-025
+    status: active
+    title: Never borrow a type from a neighbouring signature — confirm the real class first
+    triggers: [callee_to_declare, cast_at_callsite]
+    required: [confirm_receiver_class_from_ctor_vtable_or_oracle]
+    forbidden: [typing_by_adjacent_usage, cross_type_puns_outside_one_spot]
+    tools: ["just ghidra-portprep 0xADDR", "just func-status 0xADDR"]
+    skill: class-recovery
+    supersedes: [legacy-note-17]
+
+  - id: MAC-ORACLE-026
+    status: active
+    title: Mac CodeWarrior evidence is a name/signature oracle only
+    triggers: [mac_oracle_lookup, class_recovery, vtable_slot_calls]
+    required: [use_for_names_and_signatures_only]
+    forbidden: [assigning_windows_addresses_or_layout_from_mac_evidence]
+    skill: class-recovery
+
+  - id: PROC-WOBBLE-027
+    status: active
+    title: Confirm the build actually relinked before trusting any score delta
+    triggers: [stats_drop_untouched, mass_unpairing]
+    required: [confirm_built_target_then_detect_before_compare]
+    forbidden: [diagnosing_scores_from_stale_binaries]
+    tools: ["just build", "just detect"]
+    skill: quality-control
+    supersedes: [legacy-note-52, legacy-note-92]
+
+  - id: SHAPE-RAWOFFSET-028
+    status: active
+    title: Repeated this+offset access into a stable region becomes a typed field
+    triggers: [raw_this_offset]
+    required: [promote_to_named_typed_field]
+    forbidden: [reinterpret_cast_this_plus_offset_when_field_exists]
+    tools: ["just field-xrefs"]
+    skill: data-modeling

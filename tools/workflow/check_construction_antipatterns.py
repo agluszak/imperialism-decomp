@@ -49,6 +49,11 @@ PATTERNS: tuple[tuple[str, re.Pattern[str]], ...] = (
     # Banned porting approach: class operator new/delete used as a construction factory.
     # Port real methods + real inheritance instead. (Baseline-tracked: ratchet down.)
     ("operator_new_delete", re.compile(r"\boperator\s+(?:new|delete)\s*\(")),
+    # Hard Rule 8: raw byte-offset access through `this` instead of a typed field.
+    # Baseline-tracked: the existing inventory may only shrink as fields get promoted.
+    ("raw_this_offset", re.compile(
+        r"reinterpret_cast<\s*(?:unsigned\s+)?char\s*\*\s*>\s*\(\s*this\s*\)\s*\+"
+        r"|\(\s*(?:unsigned\s+)?(?:char|BYTE)\s*\*\s*\)\s*this\s*\+")),
 )
 
 KEYS = [key for key, _ in PATTERNS]

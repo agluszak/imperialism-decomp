@@ -18,15 +18,21 @@ Every porting/fixing task goes through three stateful commands — they execute 
 correct process so you never have to reconstruct it:
 
 ```sh
-just agent-start port 0xADDR   # investigation front door: refuses stale bases and
-                               # already-implemented targets; runs tooling-check,
-                               # func-status, ghidra-portprep, the initial compare,
-                               # library-identify; writes build-msvc500/agent-task.json
+just agent-start port 0xADDR   # investigation front door: refuses stale bases,
+                               # already-implemented targets, and addresses claimed
+                               # by another live branch (refs/agent-claims/*); runs
+                               # tooling-check, func-status, ghidra-portprep, the
+                               # initial compare, library-identify; writes
+                               # build-msvc500/agent-task.json
+just advice 0xADDR             # the 5-10 most relevant active rules for this target
+                               # (from config/agent_rules.yml); `just advice --diff`
+                               # selects by the current working diff instead
 just agent-check               # diff-aware verification: regen-stubs iff markers
                                # changed (hard error on hand-edited generated files),
                                # format-check on touched paths, build, detect,
                                # compare+triage of every touched address, gates, tests
-just agent-finish              # machine-derived summary / PR body from the receipt
+just agent-finish              # PR title + body from the receipt (build-msvc500/pr-body.md)
+just agent-release             # after the work lands: free the claim refs (24h TTL otherwise)
 ```
 
 The receipt is guidance, not proof — CI recomputes the checks. Policy-baseline

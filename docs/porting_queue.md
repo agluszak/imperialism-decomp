@@ -38,24 +38,25 @@ each with the evidence needed to start (address, size, current score if any, blo
 
 ## Workflow-enforcement follow-ups (infrastructure, not ports)
 
-Phase 1 landed (agent-start/check/finish, portprep-first loop, policy-baseline
-guard, typedef/redeclaration gates, session-loop just-only output, session memory
-untracked). Remaining phases, in order:
+Landed: agent-start/check/finish + portprep-first loop; policy-baseline guard
+(local `ALLOW_POLICY_BASELINE_UPDATE=1` + CI `policy-baseline-approved` label);
+typedef/redeclaration gates; session-loop just-only output; session memory
+untracked; structured rule KB (`config/agent_rules.yml` + `just advice` +
+`just agent-rules-gate` + `docs/case-studies/`); claims registry
+(`refs/agent-claims/<addr>` refs — agent-start claims with a 24h TTL,
+`just agent-release` frees them, degrades to a warning on remotes that refuse
+custom refs); generated PR title/body from the receipt (`just agent-finish` →
+`build-msvc500/pr-body.md`); CI (`.github/workflows/ci.yml`: tooling tests +
+`just source-gates` + generated-integrity vs merge base); `raw_this_offset`
+antipattern ratchet.
 
-- **Knowledge-base restructure**: convert topical-skill field notes into structured
-  rule entries (id / status / triggers / required_action / forbidden / tools /
-  supersedes / examples); expose `just advice 0xADDR` and `just advice --diff`
-  (select ~5-10 active rules from portprep output, ownership, triage buckets,
-  touched files); move long anecdotes to `docs/case-studies/`; add a KB linter
-  (duplicate/out-of-order ids, dangling refs, superseded-active conflicts, raw
-  commands where a just target exists, contradictory required/forbidden).
-- **Address claiming + PR automation**: a real claims registry (machine-readable
-  `address | owner-session | branch | expires`), refusing claimed addresses and
-  bodies changed on main after the branch base (agent-start already refuses
-  already-implemented targets and warns on ownership drift); generated PR titles
-  (targets + outcome, never model names) and bodies from the agent-finish receipt;
-  branch protection against force-pushes.
-- **Semantic gates v2 (Clang AST)**: function-pointer casts of known symbols in any
-  spelling, new raw `this+offset` where the offset already has a named field, fake
-  factory/helper families detected by structure, and CI-side enforcement of the
-  no-hand-edits-under-generated-dirs rule that agent-check applies locally.
+Still open:
+
+- **Branch protection** (GitHub admin action, not repo code): protect `main`
+  against force-pushes and require the CI checks + the `policy-baseline-approved`
+  label rule.
+- **Semantic gates v3 (true Clang AST)**: today's regex ratchets catch known
+  spellings; an AST pass could catch function-pointer casts of known symbols in
+  any spelling, raw `this+offset` where a named field already covers the offset,
+  and fake factory/helper families by structure. Needs the clang-mingw image in
+  CI or a libclang-based tool.

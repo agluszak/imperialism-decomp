@@ -1,0 +1,71 @@
+name: CI
+
+# Source-only enforcement: everything here runs without the original binary,
+# docker, wine, or Ghidra. The binary-dependent checks (build, vtable, datacmp,
+# decomplint, compare/stats) remain local-loop + reviewer responsibilities —
+# the agent-task receipt documents them, and CI never trusts a receipt.
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  source-gates:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: astral-sh/setup-uv@v5
+
+      - uses: extractions/setup-just@v2
+
+      - name: Sync Python tooling
+        run: uv sync
+
+      - name: Tooling unit tests
+        run: just test
+
+      - name: Source-only policy gates
+        run: just source-gates
+
+      - name: Generated-artifact integrity vs merge base
+        if: github.event_name == 'pull_request'
+        run: |
+          git fetch origin "${{ github.base_ref }}" --quiet
+          base="$(git merge-base HEAD "origin/${{ github.base_ref }}")"
+          just generated-integrity-gate --no-worktree --base "$base"
+
+  # Policy baselines (ratchet files that bless architectural debt) may only
+  # change on PRs a human has explicitly labeled `policy-baseline-approved`.
+  # This is the CI half of the local ALLOW_POLICY_BASELINE_UPDATE=1 guard.
+  policy-baseline-guard:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Require approval label for policy-baseline changes
+        env:
+          LABELS: ${{ join(github.event.pull_request.labels.*.name, ' ') }}
+        run: |
+          git fetch origin "${{ github.base_ref }}" --quiet
+          base="$(git merge-base HEAD "origin/${{ github.base_ref }}")"
+          changed="$(git diff --name-only "$base" -- \
+            config/vtable_gate_baseline.csv \
+            config/construction_gate_baseline.csv \
+            config/tgreatpower_gate_baseline.csv \
+            config/empty_body_baseline.csv \
+            config/stub_count_baseline.json \
+            config/library_identity_gate_baseline.json)"
+          if [ -n "$changed" ] && ! printf '%s\n' $LABELS | grep -qx 'policy-baseline-approved'; then
+            echo "Policy-baseline files changed without the 'policy-baseline-approved' label:"
+            echo "$changed"
+            echo "A human must approve ratchet-baseline rewrites (AGENTS.md: ALLOW_POLICY_BASELINE_UPDATE)."
+            exit 1
+          fi
+          echo "Policy-baseline guard OK."

@@ -65,6 +65,18 @@ agent-check *args:
 agent-finish *args:
   uv run python -m tools.workflow.agent_task finish {{args}}
 
+# Select the 5-10 most relevant active rules from config/agent_rules.yml for a
+# target (uses the agent-task receipt's portprep dossier) or the current diff.
+[doc('Relevant active rules for a target or the current diff')]
+[group('agent')]
+advice *args:
+  uv run python -m tools.workflow.advice {{args}}
+
+[doc('Release this task: delete the claim refs for the receipt targets')]
+[group('agent')]
+agent-release *args:
+  uv run python -m tools.workflow.agent_task release {{args}}
+
 # Private: fail fast (with a clear message) if the machine-specific Ghidra install
 # path is missing. Ghidra recipes depend on this instead of repeating the guard.
 _require-ghidra-install:
@@ -857,28 +869,11 @@ precommit:
 [doc('Run all mechanical source-policy gates (the pre-commit check)')]
 [group('gates')]
 gates:
-  just tooling-check
+  just source-gates
+  just generated-integrity-gate
   just vtable
   just datacmp-gate
-  just vtable-gate
-  just antipattern-gate
-  just tgreatpower-gate
-  just marker-gate
-  just vtable-annotation-gate
-  just vtable-collision-gate
-  just synthetic-gate
-  just symbols-integrity-gate
-  just ownership-integrity-gate
-  just library-identity-gate
-  just global-location-gate
-  just manual-cruntimeclass-gate
   just decomplint
-  just stub-count-gate
-  just class-size-gate
-  just noop-gate
-  just typedef-cast-gate
-  just typedef-args-gate
-  just global-redeclaration-gate
   just lint
 
 [group('gates')]
@@ -1035,6 +1030,46 @@ typedef-args-gate:
 [group('gates')]
 global-redeclaration-gate:
   uv run python -m tools.workflow.check_global_redeclarations
+
+# Lint the structured agent rule KB (config/agent_rules.yml): ids, supersedes,
+# required/forbidden contradictions, just-only tools, derivable triggers.
+[group('gates')]
+agent-rules-gate:
+  uv run python -m tools.workflow.check_agent_rules
+
+# Generated dirs (src/autogen, src/ghidra_autogen, include/ghidra_autogen) and
+# function_ownership.csv may only change alongside marker/curated-input changes
+# that justify regeneration — never by hand (Hard Rule 7). agent-check applies
+# the same rule locally; CI runs it with --no-worktree against the merge base.
+[group('gates')]
+generated-integrity-gate *args:
+  uv run python -m tools.workflow.check_generated_integrity {{args}}
+
+# The binary-free gate subset CI runs on every PR (no docker/wine/original exe:
+# excludes vtable, datacmp-gate, decomplint, lint). Keep in sync with `gates`.
+[doc('Source-only gate subset (what CI enforces; no built binary needed)')]
+[group('gates')]
+source-gates:
+  just tooling-check
+  just vtable-gate
+  just antipattern-gate
+  just tgreatpower-gate
+  just marker-gate
+  just vtable-annotation-gate
+  just vtable-collision-gate
+  just synthetic-gate
+  just symbols-integrity-gate
+  just ownership-integrity-gate
+  just library-identity-gate
+  just global-location-gate
+  just manual-cruntimeclass-gate
+  just stub-count-gate
+  just class-size-gate
+  just noop-gate
+  just typedef-cast-gate
+  just typedef-args-gate
+  just global-redeclaration-gate
+  just agent-rules-gate
 
 [doc('Mine reccmp asm diffs for orig-address<->recomp-symbol global pairs (read-only report)')]
 [group('compare')]
