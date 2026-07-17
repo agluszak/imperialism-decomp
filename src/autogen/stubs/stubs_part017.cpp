@@ -91,14 +91,6 @@ undefined4 RevalidateAndRequeueMapOrdersForTurn(void)
   return 0;
 }
 
-// ghidra_name ResolveMapOrderChainsForTurnPhase
-// ghidra_proto void __fastcall ResolveMapOrderChainsForTurnPhase(int * pOrderManager)
-// FUNCTION: IMPERIALISM 0x005578a0
-undefined4 ResolveMapOrderChainsForTurnPhase(void)
-{
-  return 0;
-}
-
 // ghidra_name GetMapContextActionLabelToken
 // ghidra_proto ushort __cdecl GetMapContextActionLabelToken(short nTileIndex, int dwInputFlags)
 // FUNCTION: IMPERIALISM 0x00559e00

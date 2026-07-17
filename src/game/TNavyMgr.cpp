@@ -239,7 +239,7 @@ void FormatLocalizedCommodityCountLabelByIndex(CString* out, unsigned int commod
 IMPLEMENT_DYNCREATE(TNavyMgr, TObject)
 
 // FUNCTION: IMPERIALISM 0x00556590
-TNavyMgr::TNavyMgr() : orderListHead04(0), field08(-1), field0c(0) {}
+TNavyMgr::TNavyMgr() : orderListHead04(0), field08(-1), field0c(nullptr) {}
 
 // SYNTHETIC: IMPERIALISM 0x005565c0
 // TNavyMgr::`scalar deleting destructor'
@@ -605,6 +605,201 @@ void TNavyMgr::PrepareMapOrdersForExecutionPhase(short phaseId) {
     orderListHead04->eliminatedFlag26 = 0;
     orderListHead04->queue_next->ClearMapOrderProcessedFlagsChain();
   }
+}
+
+// Per-turn-phase map-order conflict resolver. Six filter/inner-loop passes over
+// orderListHead04, each pairing an outer "kind" filter against an inner-loop match,
+// then attempting a resolution chain (ShouldAttemptMapOrderPairResolution ->
+// TryMarkLosingMapOrderEntryFromForceBalance -> TryResolveMapOrderEntryPairExecution);
+// any pairwise resolution that reports a nonzero result ends the whole function
+// immediately. Passes A/B/D share that 3-method chain shape; Pass E's "should attempt"
+// gate is a separate inline computation (not a call to ShouldAttemptMapOrderPairResolution
+// -- both sides go through CalculateMapOrderEntryAverageChildRatingX10 here, unlike that
+// method's own manual self-side sum) feeding directly into the 2-method
+// TryMarkLosing/TryResolve chain. Passes C/F apply execution effects directly with no
+// pairing. Finishes with the two-pass nation-interaction sweep, a queue-head rebuild via
+// PruneNavyOrderIfUnserviceableOrNoChildren, a primary TShip list flag-clear pass, and an
+// overlay refresh.
+// FUNCTION: IMPERIALISM 0x005578a0
+void TNavyMgr::ResolveMapOrderChainsForTurnPhase() {
+  if (field0c != nullptr) {
+    field0c->Free();
+    field0c = nullptr;
+  }
+
+  // Pass A: 3/4-kind entries vs a matching-context 6-kind entry.
+  {
+    for (TTaskForce* entry = orderListHead04; entry != nullptr; entry = entry->queue_next) {
+      if (!(entry->attachment == 3 || entry->attachment == 4))
+        continue;
+      if (entry->eliminatedFlag26 != 0)
+        continue;
+      for (TTaskForce* other = orderListHead04; other != nullptr; other = other->queue_next) {
+        if (other->contextAnchor != entry->contextAnchor)
+          continue;
+        if (!g_pDiplomacyTurnStateManager->IsNationPairRelationTurnStampOutOfDate(
+                other->required_count, entry->required_count)) {
+          continue;
+        }
+        if (other->attachment != 6)
+          continue;
+        char result = 0;
+        if (entry->ShouldAttemptMapOrderPairResolution(other) &&
+            entry->TryMarkLosingMapOrderEntryFromForceBalance(other)) {
+          int resolvedFlag;
+          result = entry->TryResolveMapOrderEntryPairExecution(other, &resolvedFlag);
+        }
+        if (result != 0)
+          return;
+        if (entry->eliminatedFlag26 != 0)
+          break;
+      }
+    }
+  }
+
+  // Pass B: 6-kind entries vs a 1-kind entry sharing owner (via contextAnchor or owner).
+  {
+    for (TTaskForce* entry = orderListHead04; entry != nullptr; entry = entry->queue_next) {
+      if (entry->attachment != 6)
+        continue;
+      if (entry->eliminatedFlag26 != 0)
+        continue;
+      for (TTaskForce* other = orderListHead04; other != nullptr; other = other->queue_next) {
+        if (!g_pDiplomacyTurnStateManager->IsNationPairRelationTurnStampOutOfDate(
+                other->required_count, entry->required_count)) {
+          continue;
+        }
+        bool ownerMatch = (other->attachment == 1) &&
+                          (other->contextAnchor == reinterpret_cast<int>(entry->owner) ||
+                           other->owner == entry->owner);
+        if (!ownerMatch)
+          continue;
+        char result = 0;
+        if (entry->ShouldAttemptMapOrderPairResolution(other) &&
+            entry->TryMarkLosingMapOrderEntryFromForceBalance(other)) {
+          int resolvedFlag;
+          result = entry->TryResolveMapOrderEntryPairExecution(other, &resolvedFlag);
+        }
+        if (result != 0)
+          return;
+        if (entry->eliminatedFlag26 != 0)
+          break;
+      }
+    }
+  }
+
+  // Pass C: apply type-1 execution effects directly.
+  {
+    for (TTaskForce* entry = orderListHead04; entry != nullptr; entry = entry->queue_next) {
+      if (entry->attachment == 1 && entry->eliminatedFlag26 == 0) {
+        entry->ApplyMapOrderTypeExecutionEffects();
+      }
+    }
+  }
+
+  // Pass D: 3/4-kind entries vs a matching-context NON-6-kind entry. Same outer filter
+  // as Pass A; the diplomacy/contextAnchor check order is swapped and the inner
+  // attachment check is inverted, matching the disassembly's distinct compiled shape.
+  {
+    for (TTaskForce* entry = orderListHead04; entry != nullptr; entry = entry->queue_next) {
+      if (!(entry->attachment == 3 || entry->attachment == 4))
+        continue;
+      if (entry->eliminatedFlag26 != 0)
+        continue;
+      for (TTaskForce* other = orderListHead04; other != nullptr; other = other->queue_next) {
+        if (!g_pDiplomacyTurnStateManager->IsNationPairRelationTurnStampOutOfDate(
+                other->required_count, entry->required_count)) {
+          continue;
+        }
+        if (other->contextAnchor != entry->contextAnchor)
+          continue;
+        if (other->attachment == 6)
+          continue;
+        char result = 0;
+        if (entry->ShouldAttemptMapOrderPairResolution(other) &&
+            entry->TryMarkLosingMapOrderEntryFromForceBalance(other)) {
+          int resolvedFlag;
+          result = entry->TryResolveMapOrderEntryPairExecution(other, &resolvedFlag);
+        }
+        if (result != 0)
+          return;
+        if (entry->eliminatedFlag26 != 0)
+          break;
+      }
+    }
+  }
+
+  // Pass E: 1-kind entries vs a matching-context 5-kind entry. The "should attempt" gate
+  // is an inline duplicate of ShouldAttemptMapOrderPairResolution's shape (not a call to
+  // it), feeding straight into TryMarkLosingMapOrderEntryFromForceBalance (no
+  // ShouldAttempt call in this pass's chain).
+  {
+    for (TTaskForce* entry = orderListHead04; entry != nullptr; entry = entry->queue_next) {
+      if (entry->attachment != 1)
+        continue;
+      if (entry->eliminatedFlag26 != 0)
+        continue;
+      for (TTaskForce* other = orderListHead04; other != nullptr; other = other->queue_next) {
+        if (!g_pDiplomacyTurnStateManager->IsNationPairRelationTurnStampOutOfDate(
+                other->required_count, entry->required_count)) {
+          continue;
+        }
+        if (other->contextAnchor != entry->contextAnchor)
+          continue;
+        if (other->attachment != 5)
+          continue;
+
+        char proceed;
+        if (entry->GetMapOrderEntryChildCount() == 0) {
+          proceed = 0;
+        } else if (other->GetMapOrderEntryChildCount() == 0) {
+          proceed = 0;
+        } else if (entry->attachment == 6 || other->attachment == 6 || other->attachment == 5) {
+          proceed = 1;
+        } else {
+          short threshold =
+              static_cast<short>(entry->CalculateMapOrderEntryAverageChildRatingX10() + 0x32 -
+                                 other->CalculateMapOrderEntryAverageChildRatingX10());
+          int totalChildren =
+              other->GetMapOrderEntryChildCount() + entry->GetMapOrderEntryChildCount();
+          if (totalChildren > 10)
+            threshold = static_cast<short>(threshold + (totalChildren - 10));
+          proceed = (rand() % 100) < threshold;
+        }
+
+        char result = 0;
+        if (proceed && entry->TryMarkLosingMapOrderEntryFromForceBalance(other)) {
+          int resolvedFlag;
+          result = entry->TryResolveMapOrderEntryPairExecution(other, &resolvedFlag);
+        }
+        if (result != 0)
+          return;
+        if (entry->eliminatedFlag26 != 0)
+          break;
+      }
+    }
+  }
+
+  // Pass F: apply type-5/8 execution effects directly.
+  {
+    for (TTaskForce* entry = orderListHead04; entry != nullptr; entry = entry->queue_next) {
+      if ((entry->attachment == 5 || entry->attachment == 8) && entry->eliminatedFlag26 == 0) {
+        entry->ApplyMapOrderTypeExecutionEffects();
+      }
+    }
+  }
+
+  ProcessNationMapOrderInteractionsAndApplyOutcomes(1);
+  ProcessNationMapOrderInteractionsAndApplyOutcomes(2);
+  orderListHead04 = orderListHead04->PruneNavyOrderIfUnserviceableOrNoChildren();
+
+  for (TShip* ship = g_pNavyPrimaryOrderListHead; ship != nullptr; ship = ship->nextOlder24) {
+    if (ship->field34 == 1) {
+      ship->field34 = 0;
+    }
+  }
+
+  g_pActiveMapOrderContext->RefreshMapActionContextNationOverlaysAndOrderRanks();
 }
 
 // FUNCTION: IMPERIALISM 0x00557e10
