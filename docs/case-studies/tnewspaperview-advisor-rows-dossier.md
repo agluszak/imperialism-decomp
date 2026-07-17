@@ -78,3 +78,30 @@ Port order therefore: 0x55da80, 0x55dcd0, 0x55f100 (leaves) -> 0x55d910 -> 0x55d
 [0x6a43e8] + arg*0x21c + 0xc): +0x00..0x0c token values, +0x10..0x1c token types,
 +0x24/+0x28 title text/style ids, +0x2c/+0x30 body text ids (0 = row absent),
 +0x38 byte = style flag selecting descC vs descB for the title row.
+
+## 0x55da80 BuildLocalizedTokenListFromBitmaskWithConjunction — decode
+
+thiscall on TNewspaperView (this unused), RET 0x8: (CString* out, int bitmask).
+- *out = CString(g_szEmptyString);
+- char flags[0x17]; int setCount=0; for (c=0;c<0x17;c++) flags[c] = (bitmask>>c)&1, counting set bits.
+- int emitted=0; for (i=0;i<0x17;i++) if (flags[i]):
+  - CString itemText = (emitted==0) ? g_pSimMgr->AssignSharedStringFromIndexedSlot7C(i)
+                                    : g_pSimMgr->LoadNormalizedCredentialName(i);
+  - if (emitted == setCount-2) { CString conj; g_pSimMgr->GetString(0x275e,4,&conj); *out += itemText + conj; }
+    else if (emitted == setCount-1) *out += itemText;
+    else *out += itemText + g_szListSeparator_00695760;   // ", "
+  - emitted++.
+
+New string globals: 0x695760 = ", " (list separator), 0x698494 = "+" (positive-number
+prefix used by 0x55d200 case 1). 0x69430c already exists as g_szDecimalFormat ("%d").
+
+## LoadNormalizedCredentialName (0x581b20, TSimMgr) — wrong ABI + body in repo
+
+Currently `CString* (CString* out, short slot)` with body `*out = sharedTextSlots[slot]`
+at 24%. Ground truth: byval-return `CString LoadNormalizedCredentialName(short slot)`
+whose body is `return g_pLanguageMgr->NormalizeRuntimeCredentialNameToken(&sharedTextSlots[slot]);`
+(same normalize-step omission as the TCountry::LoadNationDisplayNameSharedRefFromField8
+fix that went 21%->100%). Callsites (TCountry.cpp:370, TOfferDeskPicture.cpp:83/166,
+TTerrainHelpPicture.cpp:188) pass &tmp exactly where the hidden return slot goes, so
+converting them to `dst = g_pSimMgr->LoadNormalizedCredentialName(slot)` is
+stack-layout-identical at the call.
