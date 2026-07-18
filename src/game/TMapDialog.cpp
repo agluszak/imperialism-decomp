@@ -202,7 +202,7 @@ void TMapDialog::DrawHexNeighborOutlineFromTileArray(short* neighborTiles) {
 }
 
 // FUNCTION: IMPERIALISM 0x0051A900
-undefined TMapDialog::UpdateMapDialogProjectedTileMarkerAndInvalidate() {
+undefined TMapDialog::UpdateMapDialogProjectedTileMarkerAndInvalidate(short) {
   return 0;
 }
 
@@ -353,7 +353,7 @@ void TMapDialog::SetMapDialogCellCoordinatesAndRefresh(int col, int row, int mod
 }
 
 // FUNCTION: IMPERIALISM 0x0051AF60
-undefined TMapDialog::UpdateMapInteractionPreviewParityAndRenderTransientSprites() {
+undefined TMapDialog::UpdateMapInteractionPreviewParityAndRenderTransientSprites(int) {
   return 0;
 }
 
@@ -501,7 +501,7 @@ void TMapDialog::ApplyRectSlot110(RECT* rectBuffer) {
 }
 
 // FUNCTION: IMPERIALISM 0x0051EB40
-undefined TMapDialog::RenderStrategicMapTileCell() {
+undefined TMapDialog::RenderStrategicMapTileCell(short, short, short) {
   return 0;
 }
 
@@ -853,12 +853,12 @@ void TMapDialog::DrawMapDialogGuidePatternSetI_00521540(int originX, int originY
 }
 
 // FUNCTION: IMPERIALISM 0x00521680
-undefined TMapDialog::DrawHexEdgeConnectionGlyphsByMask() {
+undefined TMapDialog::DrawHexEdgeConnectionGlyphsByMask(unsigned char, int, int, short) {
   return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x00521A40
-undefined TMapDialog::EmitHexAdjacencyTransitionEventsByBitmask() {
+undefined TMapDialog::EmitHexAdjacencyTransitionEventsByBitmask(unsigned char, int, int, short) {
   return 0;
 }
 
@@ -884,7 +884,7 @@ void TMapDialog::DrawMapDialogOwnershipMarkerForNation_00522000(unsigned char ed
 }
 
 // FUNCTION: IMPERIALISM 0x005220F0
-undefined TMapDialog::RenderMapDialogDiplomacyNeighborRelationHints() {
+undefined TMapDialog::RenderMapDialogDiplomacyNeighborRelationHints(int, int, short) {
   return 0;
 }
 
@@ -994,7 +994,7 @@ undefined TMapDialog::WrapperFor_SetQuickDrawFillColor_At00523060() {
 }
 
 // FUNCTION: IMPERIALISM 0x00523170
-undefined TMapDialog::UpdateMapOrderEntryTilePreviewSlot() {
+undefined TMapDialog::UpdateMapOrderEntryTilePreviewSlot(int, short, short) {
   return 0;
 }
 
@@ -1080,62 +1080,62 @@ void TMapDialog::RenderMapDialogTerrainOverlayFrameByTileOwner(short tileIndex, 
 }
 
 // FUNCTION: IMPERIALISM 0x005241B0
-undefined TMapDialog::OrphanLeaf_NoCall_Ins100_005241b0() {
+undefined TMapDialog::OrphanLeaf_NoCall_Ins100_005241b0(int, int, short, short) {
   return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x005242F0
-undefined TMapDialog::GetTEventHandlerClassNamePointer() {
+undefined TMapDialog::GetTEventHandlerClassNamePointer(int, int, short, short) {
   return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x00524540
-undefined TMapDialog::VTableSlot97() {
+undefined TMapDialog::VTableSlot97(int, int, short, short) {
   return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x00524670
-undefined TMapDialog::InitializeForeignMinisterStateFlags() {
+undefined TMapDialog::InitializeForeignMinisterStateFlags(int, int, short, short) {
   return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x005247A0
-undefined TMapDialog::AddToForeignMinisterCounterAtIndex() {
+undefined TMapDialog::AddToForeignMinisterCounterAtIndex(int*, int*, short, short) {
   return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x005249F0
-undefined TMapDialog::SetForeignMinisterReadyFlag14() {
+undefined TMapDialog::SetForeignMinisterReadyFlag14(int*, int*, short, short) {
   return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x00524B30
-undefined TMapDialog::SelectCandidateTilesWithLowGroundUnitCount() {
+undefined TMapDialog::SelectCandidateTilesWithLowGroundUnitCount(unsigned int, int, short, short) {
   return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x00524C60
-undefined TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920_9c() {
+undefined TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920_9c(int, int, short, short) {
   return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x00524E70
-undefined TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920_9d() {
+undefined TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920_9d(int, int, short, short) {
   return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x005250A0
-undefined TMapDialog::CopyDiamondMaskBlockKernel() {
+undefined TMapDialog::CopyDiamondMaskBlockKernel(int*, int*, short, short) {
   return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x005252D0
-undefined TMapDialog::CopyDiagonalMaskNarrowingBlockKernel() {
+undefined TMapDialog::CopyDiagonalMaskNarrowingBlockKernel(int*, int*, short, short) {
   return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x005254A0
-undefined TMapDialog::CopyDiagonalMaskWideningBlockKernel() {
+undefined TMapDialog::CopyDiagonalMaskWideningBlockKernel(int*, int*, short, short) {
   return 0;
 }
 

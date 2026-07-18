@@ -83,10 +83,13 @@ public:
   // Releases the transient tile-marker slot the given tile occupies (marks the tile's
   // terrain record slot 0xff and re-sentinels that marker). 0x0051e1f0
   virtual void ReleaseTileMarkerForTile(short tileIndex);
-  virtual undefined UpdateMapDialogProjectedTileMarkerAndInvalidate();
-  virtual undefined RenderStrategicMapTileCell();
-  virtual undefined EmitHexAdjacencyTransitionEventsByBitmask();
-  virtual undefined DrawHexEdgeConnectionGlyphsByMask();
+  virtual undefined UpdateMapDialogProjectedTileMarkerAndInvalidate(short tileIndex);
+  virtual undefined RenderStrategicMapTileCell(short tileIndex, short arg2, short arg3);
+  virtual undefined EmitHexAdjacencyTransitionEventsByBitmask(unsigned char connectionMask,
+                                                              int screenX, int screenY,
+                                                              short tileIndex);
+  virtual undefined DrawHexEdgeConnectionGlyphsByMask(unsigned char connectionMask, int screenX,
+                                                      int screenY, short tileIndex);
   // Draws a two-toned bilateral-relation marker: the guide pattern selected by
   // relationLevel (0-9) is drawn twice at (originX, originY) — variant 1 tinted for
   // nationA, variant 2 for nationB (0x35 = minor-nation fallback color).
@@ -104,30 +107,35 @@ public:
   virtual void DrawMapDialogGuidePatternSetI_00521540(int originX, int originY, short variant);
   virtual void DrawMapDialogOwnershipMarkerForNation_00522000(unsigned char edgeMask, int screenX,
                                                               int screenY, short tileIndex);
-  virtual undefined RenderMapDialogDiplomacyNeighborRelationHints();
+  virtual undefined RenderMapDialogDiplomacyNeighborRelationHints(int arg1, int arg2, short arg3);
   virtual void DrawMapDialogWrappedTileConnectionMarker_00522c10(short col1, int row1, short col2,
                                                                  int row2);
   virtual void DrawHexNeighborConnectionMask(unsigned char connectionMask, int screenX, int screenY,
                                              short tileIndex);
   virtual undefined WrapperFor_SetQuickDrawFillColor_At00523060();
-  virtual undefined UpdateMapOrderEntryTilePreviewSlot();
-  virtual undefined OrphanLeaf_NoCall_Ins100_005241b0();
-  virtual undefined GetTEventHandlerClassNamePointer();
-  virtual undefined VTableSlot97();
-  virtual undefined InitializeForeignMinisterStateFlags();
-  virtual undefined AddToForeignMinisterCounterAtIndex();
-  virtual undefined SetForeignMinisterReadyFlag14();
-  virtual undefined SelectCandidateTilesWithLowGroundUnitCount();
-  virtual undefined OrphanLeaf_NoCall_Ins07_004d8920_9c();
-  virtual undefined OrphanLeaf_NoCall_Ins07_004d8920_9d();
-  virtual undefined CopyDiamondMaskBlockKernel();
-  virtual undefined CopyDiagonalMaskNarrowingBlockKernel();
-  virtual undefined CopyDiagonalMaskWideningBlockKernel();
+  virtual undefined UpdateMapOrderEntryTilePreviewSlot(int arg1, short arg2, short arg3);
+  virtual undefined OrphanLeaf_NoCall_Ins100_005241b0(int arg1, int arg2, short arg3, short arg4);
+  virtual undefined GetTEventHandlerClassNamePointer(int arg1, int arg2, short arg3, short arg4);
+  virtual undefined VTableSlot97(int arg1, int arg2, short arg3, short arg4);
+  virtual undefined InitializeForeignMinisterStateFlags(int arg1, int arg2, short arg3, short arg4);
+  virtual undefined AddToForeignMinisterCounterAtIndex(int* arg1, int* arg2, short arg3,
+                                                       short arg4);
+  virtual undefined SetForeignMinisterReadyFlag14(int* arg1, int* arg2, short arg3, short arg4);
+  virtual undefined SelectCandidateTilesWithLowGroundUnitCount(unsigned int arg1, int arg2,
+                                                               short arg3, short arg4);
+  virtual undefined OrphanLeaf_NoCall_Ins07_004d8920_9c(int arg1, int arg2, short arg3, short arg4);
+  virtual undefined OrphanLeaf_NoCall_Ins07_004d8920_9d(int arg1, int arg2, short arg3, short arg4);
+  virtual undefined CopyDiamondMaskBlockKernel(int* src, int* dest, short srcStride,
+                                               short destStride);
+  virtual undefined CopyDiagonalMaskNarrowingBlockKernel(int* src, int* dest, short srcStride,
+                                                         short destStride);
+  virtual undefined CopyDiagonalMaskWideningBlockKernel(int* src, int* dest, short srcStride,
+                                                        short destStride);
   virtual void Copy64x64TileBlockWithStrideAdjustment(int* src, int* dest, short srcStride,
                                                       short destStride);
   virtual undefined HasRenderableParentAndContentSlotA2();
   virtual void SetMapDialogCellCoordinatesAndRefresh(int col, int row, int mode);
-  virtual undefined UpdateMapInteractionPreviewParityAndRenderTransientSprites();
+  virtual undefined UpdateMapInteractionPreviewParityAndRenderTransientSprites(int unusedArg);
 };
 
 ASSERT_SIZE(TMapDialog, 0x364);
