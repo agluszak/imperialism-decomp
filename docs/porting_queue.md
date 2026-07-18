@@ -107,6 +107,31 @@ each with the evidence needed to start (address, size, current score if any, blo
   `BeginMouseCaptureAndStartRepeatTimer` 0x574830 (~320B), `ApplyRectSlot110`
   0x574970 (~928B), `DispatchPictureResourceCommand` 0x574d10 — all currently `{}` in
   manual source; read the listings before trusting any of them.
+  - `HandleEvent` (0x5747c0) itself is straightforward and fully decoded (2026-07-18,
+    not yet landed): `if (commandId == 0xa) { if (sourceHandler->controlTag ==
+    'scup') ownerView84->AdjustCityDialogScrollRangeByDeltaAndClamp(0, 0xc); else if
+    (sourceHandler->controlTag == 'scdn') ownerView84->
+    AdjustCityDialogScrollRangeByDeltaAndClamp(0, -0xc); } TControl::HandleEvent(
+    commandId, sourceHandler, event);` — but the ONE callee blocks landing: **the real
+    class of `ownerView84` (TScrollBarView's cached `ownerContext`) is not
+    TModalTemplateDialogBase/TControl.** `AdjustCityDialogScrollRangeByDeltaAndClamp`
+    (0x573f60, still a STUB) reads `this+0x60` and `this+0x64` as TWO OBJECT
+    POINTERS (a content-view with TView-shaped x/y/width/height fields at +0x24/
+    +0x28/+0x34/+0x38, and a TScrollBarView with word88/8a/8c matching exactly) —
+    but the EXISTING `TModalTemplateDialogBase` model (include/game/TControl.h:23-36,
+    which owns TView's 0x60-0x73 region) declares +0x60 as `int
+    hasCommandTagResource` and +0x64 as `unsigned char commandTagResourceByte`, a
+    flat flag+byte, not two pointers. Since TView's own layout genuinely ends at
+    0x60 (`field5c` is TView's last field), this is a real fork: either
+    `ownerView84`'s dynamic class is a DIFFERENT TView-direct subclass (sibling to
+    TModalTemplateDialogBase, its own "scrollable container" class with a
+    content-view ptr + scrollbar ptr at that same 0x60/0x64 slot pair) that hasn't
+    been discovered yet, or `TModalTemplateDialogBase`'s existing field labels are
+    wrong/incomplete for this call path. Needs a dedicated class-recovery pass
+    (who else constructs/casts a TView into this "scroll container" shape, and
+    whether `hasCommandTagResource`/`commandTagResourceByte`'s existing callers are
+    genuinely a different class) before landing `HandleEvent` — do NOT force
+    `ownerView84` to `TModalTemplateDialogBase*` or invent a new class without that.
 - `0x574720` TScrollBarView::NoOpUiLifecycleHook at 73.5% — residual is pure
   instruction-scheduling wobble inside the surface-rect block; structure verified.
 - `0x5e50c0` at 77.8% — residual is an ecx/eax naming permutation in the slot-cursor
