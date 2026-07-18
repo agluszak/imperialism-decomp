@@ -76,15 +76,17 @@ int TTaskForce::CalculateMissionOrderPriorityScore(int nScoreProfileId) {
     short contribution;
     switch (category) {
     case 0: {
-      int quantityTerm = static_cast<short>(tiebreak_strength / 100) + 5 + desc.resolveWeight * 10;
+      int quantityTerm = static_cast<short>(tiebreak_strength / 100) + 5 +
+                         *reinterpret_cast<const int*>(&desc.resolveWeight) * 10;
       int weight = desc.calculateWeight;
       contribution = static_cast<short>(
           (static_cast<short>(quantityTerm / 10) * weight * weight * 100) / divisor);
       break;
     }
     case 1: {
+      int requiredCountValue = required_count;
       int weight = desc.calculateWeight;
-      contribution = static_cast<short>((weight * static_cast<int>(required_count) * 10000) /
+      contribution = static_cast<short>((weight * requiredCountValue * 10000) /
                                         (desc.taskForceWeight * divisor));
       break;
     }
