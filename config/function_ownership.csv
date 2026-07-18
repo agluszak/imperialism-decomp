@@ -3877,6 +3877,8 @@ address|target_cpp|ownership|note
 573cb0|src/game/TScrollView.cpp|manual|marker_sync
 573ce0|src/game/TScrollView.cpp|manual|marker_sync
 573df0|src/game/TScrollBarView.cpp|manual|marker_sync
+573f60|src/game/TScrollView.cpp|manual|marker_sync
+5740a0|src/game/TScrollBarView.cpp|manual|marker_sync
 5741e0|src/game/TScrollView.cpp|manual|marker_sync
 5742b0|src/game/TScrollView.cpp|manual|marker_sync
 5743f0|src/game/TScrollBarView.cpp|manual|marker_sync

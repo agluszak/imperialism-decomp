@@ -154,11 +154,39 @@ each with the evidence needed to start (address, size, current score if any, blo
   (one-past-end table-bound annotation), `0x55da80` 95%, `0x55dcd0` 94%,
   `0x4e3060` 99%.
 
-- TScrollBarView.cpp fabricated empty bodies still remaining (the 0x5744b0/0x5746e0/
-  0x573ce0/0x574720 batch is fixed): `HandleEvent` 0x5747c0 (~112B),
-  `BeginMouseCaptureAndStartRepeatTimer` 0x574830 (~320B), `ApplyRectSlot110`
-  0x574970 (~928B), `DispatchPictureResourceCommand` 0x574d10 — all currently `{}` in
-  manual source; read the listings before trusting any of them.
+- TScrollBarView.cpp fabricated empty bodies: `HandleEvent` 0x5747c0,
+  `RefreshCityDialogScrollableViewportWithQuickDrawContext` 0x5740a0, and
+  `TScrollView::AdjustCityDialogScrollRangeByDeltaAndClamp` 0x573f60 landed
+  2026-07-18 (0% -> 84.75% / 100% / 56.79%). The key discovery: `ownerView84`
+  (TScrollBarView's cached `ownerContext`) is genuinely a **`TScrollView*`**, not a
+  plain `TView*` — confirmed because `TScrollView`'s OWN header already declares
+  `TView* contentView60; // 0x60` and `TScrollBarView* scrollBar64; // 0x64`
+  (`TScrollView::NoOpUiLifecycleHook` is the only `new TScrollBarView()` call site
+  and passes `this` as the `panel`/ownerContext argument) — an exact match for the
+  two object-pointer fields `AdjustCityDialogScrollRangeByDeltaAndClamp` reads at
+  those offsets. Retyped `ownerView84` and `ConstructTScrollBarViewBaseState`'s
+  `panel` parameter to `TScrollView*` (was `TView*`), added a `static_cast` at the
+  two `ownerView84 = ownerContext;` assignment sites.
+  `AdjustCityDialogScrollRangeByDeltaAndClamp`'s real params are `short` (not
+  `int` — confirmed by `movsx word` reads of the stack args), which alone improved
+  it 53.42% -> 55.56%. Residual on that one (56.79%) is a branchless
+  `max(x,0)`-via-`setl/dec/and` idiom the clean `if(x<0)x=0;` doesn't reproduce,
+  plus general register scheduling — tried restructuring the tail clamp to match
+  the original's two-early-return/two-epilogue shape exactly and it **regressed
+  56.79% -> 35.22%, reverted twice** (with both `int` and `short` param types); the
+  clean single-epilogue if/else-if form is empirically better despite looking less
+  "structurally faithful" — don't retry that specific restructure without new
+  evidence. `HandleEvent`'s residual (84.75%) is a receiver-vs-args
+  evaluation-order register choice (tried caching `ownerView84` in a local first,
+  no effect, reverted) — not source-steerable.
+  Remaining un-landed in this file: `BeginMouseCaptureAndStartRepeatTimer` 0x574830
+  (~320B, also calls `AdjustCityDialogScrollRangeByDeltaAndClamp` — should be
+  tractable now that its receiver type is resolved), `ApplyRectSlot110` 0x574970
+  (~928B, calls a still-stubbed `RenderStrategicMapViewportBandsAndBlit_Impl`),
+  `DispatchPictureResourceCommand` 0x574d10 (calls
+  `RefreshCityDialogScrollableViewportWithQuickDrawContext` directly plus a vtable
+  slot 0x3c `CaptureLayoutF0` dispatch on an unidentified receiver — check whether
+  that's `contentView60` too before assuming).
 - `0x574720` TScrollBarView::NoOpUiLifecycleHook at 73.5% — residual is pure
   instruction-scheduling wobble inside the surface-rect block; structure verified.
 - `0x5e50c0` at 77.8% — residual is an ecx/eax naming permutation in the slot-cursor

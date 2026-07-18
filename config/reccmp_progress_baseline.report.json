@@ -25541,13 +25541,13 @@
     },
     {
       "address": "0x573f60",
-      "matching": 0.0,
+      "matching": 0.5679012345679012,
       "name": "AdjustCityDialogScrollRangeByDeltaAndClamp",
       "type": 1
     },
     {
       "address": "0x5740a0",
-      "matching": 0.05128205128205128,
+      "matching": 1.0,
       "name": "RefreshCityDialogScrollableViewportWithQuickDrawContext",
       "type": 1
     },
@@ -25597,7 +25597,7 @@
     },
     {
       "address": "0x5747c0",
-      "matching": 0.06451612903225806,
+      "matching": 0.847457627118644,
       "name": "TScrollBarView::HandleEvent",
       "type": 1
     },
@@ -38429,7 +38429,7 @@
     },
     {
       "address": "0x6091d9",
-      "matching": 0.9787234042553191,
+      "matching": 1.0,
       "name": "CWnd::OnNotify",
       "type": 1
     },

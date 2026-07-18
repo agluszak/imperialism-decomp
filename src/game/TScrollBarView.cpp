@@ -1,12 +1,22 @@
 #include "game/TScrollBarView.h"
 
+#include "game/ScopedMapQuickDrawContext.h"
 #include "game/TDisplayMgr.h"
 #include "game/TPictureButton.h"
+#include "game/TScrollView.h"
 #include "game/global_data_tables.h"
 
 // SYNTHETIC: IMPERIALISM 0x00573df0
 // TScrollBarView::`scalar deleting destructor'
 TScrollBarView::~TScrollBarView() {}
+
+// FUNCTION: IMPERIALISM 0x005740a0
+void TScrollBarView::RefreshCityDialogScrollableViewportWithQuickDrawContext() {
+  ScopedMapQuickDrawContext quickDrawContext(this);
+  Refresh();
+  RECT rect = {0, word88, frameWidth34, static_cast<int>(word8a) + 0x12};
+  ApplyRectSlot110(&rect);
+}
 // SYNTHETIC: IMPERIALISM 0x005743f0
 // TScrollBarView::CreateObject
 
@@ -18,10 +28,10 @@ IMPLEMENT_DYNCREATE(TScrollBarView, TControl)
 // This address was previously claimed by a fabricated empty `TScrollBarView()` body;
 // the real ctor is inline (see the header) and 0x5744b0 is the 3-arg builder below.
 // FUNCTION: IMPERIALISM 0x005744b0
-void TScrollBarView::ConstructTScrollBarViewBaseState(TView* panel, int* offsetLayout,
+void TScrollBarView::ConstructTScrollBarViewBaseState(TScrollView* panel, int* offsetLayout,
                                                       int* sizeLayout) {
   InitializeUiResourceEntryFrameAndParent(0, panel, offsetLayout, sizeLayout, 4, 4, 0);
-  ownerView84 = ownerContext;
+  ownerView84 = static_cast<TScrollView*>(ownerContext);
   ownerView84->AssertValid();
   word88 = 0x12;
   word8a = static_cast<short>(frameHeight38) - 0x24;
@@ -78,7 +88,7 @@ void TScrollBarView::Free() {
 // FUNCTION: IMPERIALISM 0x00574720
 void TScrollBarView::NoOpUiLifecycleHook(int arg) {
   TView::NoOpUiLifecycleHook(arg);
-  ownerView84 = ownerContext;
+  ownerView84 = static_cast<TScrollView*>(ownerContext);
   ownerView84->AssertValid();
   word88 = 0x12;
   word8c = 0x12;
@@ -93,7 +103,16 @@ void TScrollBarView::NoOpUiLifecycleHook(int arg) {
 }
 
 // FUNCTION: IMPERIALISM 0x005747c0
-void TScrollBarView::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {}
+void TScrollBarView::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
+  if (commandId == 0xa) {
+    if (sourceHandler->controlTag == 0x73637570) { // 'scup'
+      ownerView84->AdjustCityDialogScrollRangeByDeltaAndClamp(0, 0xc);
+    } else if (sourceHandler->controlTag == 0x7363646e) { // 'scdn'
+      ownerView84->AdjustCityDialogScrollRangeByDeltaAndClamp(0, -0xc);
+    }
+  }
+  TControl::HandleEvent(commandId, sourceHandler, event);
+}
 
 // FUNCTION: IMPERIALISM 0x00574830
 void TScrollBarView::BeginMouseCaptureAndStartRepeatTimer(CPoint* point, int arg2, int arg3,

@@ -37,6 +37,52 @@ void TScrollView::NoOpUiLifecycleHook(int arg) {
   scrollBar64 = bar;
 }
 
+// Clip painting to this scroll view's own frame: select a rect region covering the
+// slot-0x57 bounds into the paint DC, run the base TView child-paint recursion, then
+// clear the DC's clip region again. (The CRgn is deleted right after SelectClipRgn —
+// the DC keeps its own copy of the region.)
+// FUNCTION: IMPERIALISM 0x00573f60
+void TScrollView::AdjustCityDialogScrollRangeByDeltaAndClamp(short mode, short delta) {
+  if (contentView60 == nullptr) {
+    return;
+  }
+  short heightDiff =
+      static_cast<short>(contentView60->frameHeight38) - static_cast<short>(frameHeight38);
+  if (heightDiff <= 0) {
+    return;
+  }
+
+  POINT origin;
+  int baseX = contentView60->ownerLocalX;
+  int baseY = contentView60->ownerLocalY;
+  origin.x = baseX + mode;
+  origin.y = baseY + delta;
+  if (contentView60->frameWidth34 < origin.x) {
+    origin.x = contentView60->frameWidth34;
+  }
+  if (origin.x < 0) {
+    origin.x = 0;
+  }
+  if (origin.y < -heightDiff) {
+    origin.y = -heightDiff;
+  } else if (origin.y > 0) {
+    origin.y = 0;
+  }
+
+  contentView60->CaptureLayoutF0(reinterpret_cast<int*>(&origin), 1);
+
+  short trackRange = scrollBar64->word8a - scrollBar64->word88;
+  short newValue =
+      static_cast<short>(scrollBar64->word88 - origin.y * 1024 / heightDiff * trackRange / 1024);
+  if (newValue < scrollBar64->word88) {
+    newValue = scrollBar64->word88;
+  } else if (newValue > scrollBar64->word8a) {
+    newValue = scrollBar64->word8a;
+  }
+  scrollBar64->word8c = newValue;
+  scrollBar64->RefreshCityDialogScrollableViewportWithQuickDrawContext();
+}
+
 // FUNCTION: IMPERIALISM 0x005741e0
 void TScrollView::SyncBoundedValueAndToggleControlStates() {
   POINT contentOrigin;
@@ -59,10 +105,6 @@ void TScrollView::SyncBoundedValueAndToggleControlStates() {
   }
 }
 
-// Clip painting to this scroll view's own frame: select a rect region covering the
-// slot-0x57 bounds into the paint DC, run the base TView child-paint recursion, then
-// clear the DC's clip region again. (The CRgn is deleted right after SelectClipRgn —
-// the DC keeps its own copy of the region.)
 // FUNCTION: IMPERIALISM 0x005742b0
 void TScrollView::PaintVisibleChildrenIntersectingClipRect(RECT* clipRect, CDC* paintDc) {
   if (GetMcAppUiActiveFlag() == 0 || IsActionable() == 0 || Refresh() == 0) {

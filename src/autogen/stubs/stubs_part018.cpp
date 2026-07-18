@@ -67,22 +67,6 @@ undefined4 WrapperFor_AdjustCityDialogScrollRangeByDeltaAndClamp_At00573f16(void
   return 0;
 }
 
-// ghidra_name AdjustCityDialogScrollRangeByDeltaAndClamp
-// ghidra_proto undefined AdjustCityDialogScrollRangeByDeltaAndClamp()
-// FUNCTION: IMPERIALISM 0x00573f60
-undefined4 AdjustCityDialogScrollRangeByDeltaAndClamp(void)
-{
-  return 0;
-}
-
-// ghidra_name RefreshCityDialogScrollableViewportWithQuickDrawContext
-// ghidra_proto undefined RefreshCityDialogScrollableViewportWithQuickDrawContext()
-// FUNCTION: IMPERIALISM 0x005740a0
-undefined4 RefreshCityDialogScrollableViewportWithQuickDrawContext(void)
-{
-  return 0;
-}
-
 // ghidra_name RenderStrategicMapViewportBandsAndBlit_Impl
 // ghidra_proto undefined RenderStrategicMapViewportBandsAndBlit_Impl()
 // FUNCTION: IMPERIALISM 0x00575080
