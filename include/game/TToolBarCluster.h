@@ -152,4 +152,10 @@ public:
   // return. Not virtual -- called directly (via an ILT thunk) from TWorldView::
   // HandleMapClickByInteractionMode and from TryQueueMapOrderFromTileAction. 0x0055a020.
   bool TryHandleMapContextAction(short nTileIndex, int nInputFlags);
+  // 0x0055a160 -- when a click is not consumed by immediate context handling, resolves a
+  // map-order command from the active entry's tile-action/province context and runs the
+  // set-type + rebuild/queue/finalize pipeline. Receiver at every call site is the
+  // navy/map-order manager (g_pNavyOrderManager); Ghidra's TToolBarCluster:: prefix is a
+  // mis-attribution kept here alongside TryHandleMapContextAction.
+  int TryQueueMapOrderFromTileAction(short nTileIndex, int nInputFlags);
 };

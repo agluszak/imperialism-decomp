@@ -611,27 +611,3 @@ undefined4 ApplyMapOrderTypeAndQueue(void)
   return 0;
 }
 
-// ghidra_name ResolveMapOrderCommandFromActionContext
-// ghidra_proto undefined ResolveMapOrderCommandFromActionContext()
-// FUNCTION: IMPERIALISM 0x00554300
-undefined4 ResolveMapOrderCommandFromActionContext(void)
-{
-  return 0;
-}
-
-// ghidra_name ResolveMapOrderCommandFromProvinceContext
-// ghidra_proto undefined ResolveMapOrderCommandFromProvinceContext()
-// FUNCTION: IMPERIALISM 0x00554460
-undefined4 ResolveMapOrderCommandFromProvinceContext(void)
-{
-  return 0;
-}
-
-// ghidra_name CanQueueMapOrderForProvinceContext
-// ghidra_proto undefined CanQueueMapOrderForProvinceContext()
-// FUNCTION: IMPERIALISM 0x00554590
-undefined4 CanQueueMapOrderForProvinceContext(void)
-{
-  return 0;
-}
-
