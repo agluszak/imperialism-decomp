@@ -121,6 +121,7 @@ db-resync:
   just tooling-check
   just sync-ghidra
   just regen-stubs
+  just push-source-names --apply --quiet
   just build
   just detect
   just gates
@@ -791,6 +792,15 @@ push-names *args: _require-ghidra-install
 [group('ghidra-db')]
 push-library-override-names *args: _require-ghidra-install
   uv run python -m tools.ghidra.push_library_override_names {{args}}
+
+# MUTATES: Ghidra DB (with --apply).
+# Mirror ALL curated config/symbols.csv names into the DB (source is authoritative):
+# game class methods, RTTI/global descriptors, etc. that push-names (overrides-only)
+# never pushes. Run after regen-stubs (symbols.csv final). Dry-run by default.
+[doc('MUTATES: Ghidra DB (--apply). Mirror curated symbols.csv names into the DB')]
+[group('ghidra-db')]
+push-source-names *args: _require-ghidra-install
+  uv run python -m tools.ghidra.push_source_names_to_ghidra {{args}}
 
 # MUTATES: Ghidra DB (with --apply).
 # Define real functions Ghidra never created (vtable slot targets, ILT jmp

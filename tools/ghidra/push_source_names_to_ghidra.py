@@ -1,0 +1,149 @@
+#!/usr/bin/env python3
+"""Push ALL curated names from config/symbols.csv into the live Ghidra DB.
+
+Source is authoritative: `push-names` deliberately pushes only
+function_name_overrides.csv (never the bulk of symbols.csv) "so a push can never
+revert a newer Ghidra DB name", which left ~700 curated names -- game class
+methods (`ImperialismApp::GetMessageMap`), RTTI/global descriptors
+(`TScroller::classTScroller`), etc. -- present in source/symbols.csv but stale in
+the DB / exported .gzf (the DB kept Ghidra placeholders like
+`NoOpThunkTargetHandler`, `OrphanCallChain_*`, `DAT_*`, `classRuntimeClass`, or
+older descriptive names).
+
+This tool makes the DB mirror symbols.csv: for every named row it sets a Function
+entity's name (namespace-aware, e.g. `A::B` -> namespace A + name B) or, for a
+data/label address, creates a primary user label (it does NOT functionize data).
+Names Ghidra cannot store as symbols (spaces/backticks -- e.g. `scalar deleting
+destructor' spellings) are reported and skipped. Idempotent: rows whose name
+already matches the DB are left untouched.
+
+Run it after `regen-stubs` (so symbols.csv is final) and before `export-project`.
+Read-only by default; --apply writes and saves the DB.
+"""
+
+from __future__ import annotations
+
+import argparse
+from pathlib import Path
+
+import pyghidra
+
+from tools.common import ghidra_env
+from tools.common.pipe_csv import read_pipe_table
+from tools.common.repo import repo_root_from_file
+
+REPO_ROOT = repo_root_from_file(__file__, levels_up=2)
+SYMBOLS = REPO_ROOT / "config" / "symbols.csv"
+
+
+def split_qualified(qualified: str) -> tuple[list[str], str]:
+    parts = qualified.split("::")
+    return parts[:-1], parts[-1]
+
+
+def parse_args() -> argparse.Namespace:
+    parser = argparse.ArgumentParser(
+        description="Mirror curated config/symbols.csv names into the Ghidra DB."
+    )
+    parser.add_argument("--apply", action="store_true", help="Write and save the DB (default: dry-run).")
+    parser.add_argument("--quiet", action="store_true", help="Only print the summary line.")
+    parser.add_argument("--limit", type=int, default=0, help="Stop after N changes (0 = no limit).")
+    return parser.parse_args()
+
+
+def main() -> int:
+    args = parse_args()
+    _fieldnames, rows = read_pipe_table(SYMBOLS)
+    project = ghidra_env.open_project()
+    consumer = None
+    program = None
+    txid = None
+    try:
+        consumer, program = ghidra_env.open_program(project, writable=bool(args.apply))
+        from ghidra.program.model.symbol import SourceType
+        from ghidra.util.exception import DuplicateNameException, InvalidInputException
+
+        af = program.getAddressFactory().getDefaultAddressSpace()
+        st = program.getSymbolTable()
+        fm = program.getFunctionManager()
+        global_ns = program.getGlobalNamespace()
+
+        def get_namespace(path: list[str]):
+            parent = None
+            for part in path:
+                existing = st.getNamespace(part, parent)
+                parent = existing if existing is not None else st.createClass(
+                    parent, part, SourceType.USER_DEFINED
+                )
+            return parent
+
+        if args.apply:
+            txid = program.startTransaction("push source names")
+
+        stats = {"already": 0, "fn": 0, "label": 0, "skipped_illegal": 0, "failed": 0}
+        for row in rows:
+            name = (row.get("name") or "").strip()
+            addr_text = (row.get("address") or "").strip()
+            if not name or not addr_text:
+                continue
+            try:
+                addr = int(addr_text, 16)
+            except ValueError:
+                continue
+            a = af.getAddress(addr)
+            syms = st.getSymbols(a)
+            if any(name in (s.getName(), s.getName(True)) for s in syms):
+                stats["already"] += 1
+                continue
+            if any(ch in name for ch in "` "):
+                stats["skipped_illegal"] += 1
+                if not args.quiet:
+                    print(f"  skip (illegal chars) 0x{addr:08x} {name}")
+                continue
+            ns_path, simple = split_qualified(name)
+            fn = fm.getFunctionAt(a)
+            if not args.apply:
+                if not args.quiet:
+                    print(f"  would set 0x{addr:08x} -> {name} ({'fn' if fn else 'label'})")
+                stats["fn" if fn else "label"] += 1
+                if args.limit and (stats["fn"] + stats["label"]) >= args.limit:
+                    break
+                continue
+            try:
+                ns = get_namespace(ns_path) if ns_path else global_ns
+                if fn is not None:
+                    if ns is not None:
+                        fn.setParentNamespace(ns)
+                    fn.setName(simple, SourceType.USER_DEFINED)
+                    stats["fn"] += 1
+                else:
+                    st.createLabel(a, simple, ns, SourceType.USER_DEFINED).setPrimary()
+                    stats["label"] += 1
+            except (DuplicateNameException, InvalidInputException) as exc:
+                stats["failed"] += 1
+                print(f"  !! 0x{addr:08x} -> {name} failed: {exc}")
+            else:
+                if args.limit and (stats["fn"] + stats["label"]) >= args.limit:
+                    break
+
+        if args.apply:
+            program.endTransaction(txid, True)
+            txid = None
+            program.save("push source names", pyghidra.task_monitor())
+
+        mode = "APPLIED" if args.apply else "DRY RUN"
+        print(
+            f"[{mode}] already={stats['already']} set_fn={stats['fn']} set_label={stats['label']} "
+            f"skipped_illegal={stats['skipped_illegal']} failed={stats['failed']}"
+        )
+        return 0
+    finally:
+        if txid is not None:
+            program.endTransaction(txid, False)
+        if program is not None:
+            program.release(consumer)
+        project.close()
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

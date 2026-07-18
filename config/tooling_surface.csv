@@ -67,6 +67,7 @@ module|tools.workflow.impk_compat|dependency:tools.workflow.class_discovery|In-r
 file|tools/ghidra/SyncExports_Ghidra.py|dependency:tools.ghidra.sync_exports|PyGhidra script used by sync wrapper
 module|tools.ghidra.push_names_to_ghidra|just:push-names|Stage 3: push source-owned curated names into the Ghidra DB so sync-ghidra converges names
 module|tools.ghidra.push_library_override_names|just:push-library-override-names|Push reviewed library override names into the Ghidra DB (label-only + out-of-range addresses push-names skips)
+module|tools.ghidra.push_source_names_to_ghidra|just:push-source-names|Mirror all curated symbols.csv names into the Ghidra DB (source-authoritative; game methods/globals push-names never pushes)
 module|tools.workflow.vtable_autofix|just:vtable-autofix|Dry-run-first planner/applicator for deterministic vtable pairing fixes
 module|tools.ghidra.raw_disasm|query:raw-disasm|Capstone raw-byte disassembly bypassing the Ghidra instruction DB
 module|tools.ghidra.rtti_class_oracle|just:rtti-oracle|Walk MFC CRuntimeClass descriptors: names, sizes, bases, CreateObject
