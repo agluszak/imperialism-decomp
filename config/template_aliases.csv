@@ -1,0 +1,19 @@
+# Duplicate original MFC-template COMDAT bodies recorded as aliases of one
+# canonical body (mfc-collections skill, rule MFC-TWIN-030). VC5 emits one copy
+# of an instantiation's out-of-line members per referencing TU; the copies differ
+# only by relocations (call targets to twin helper copies, EH refs, data
+# addresses). An alias is comparison metadata -- never a reason to invent a
+# source class, duplicate an instantiation, or re-model the embedded member.
+#
+# Every row is re-verified by `just template-alias-check`:
+#   - both addresses are sized functions in config/symbols.csv;
+#   - curated names agree (same instantiation, not merely same shape);
+#   - normalized instruction structure identical modulo relocations, with
+#     paired call targets recursively equivalent (tools.binary.body_hash).
+# Discover candidates with `just mfc-collection-audit <Class|0xCTOR>`.
+#
+# original_address|canonical_address|decorated_name|classification
+0x004847a0|0x004829f0|??_G?$CList@UIncludeViewOverlayRectRecord@@AAU1@@@UAEPAXI@Z|per_tu_duplicate
+0x004847d0|0x00482a20|??1?$CList@UIncludeViewOverlayRectRecord@@AAU1@@@UAE@XZ|per_tu_duplicate
+0x005e4a30|0x00486f60|??_G?$CList@PAXPAX@@UAEPAXI@Z|per_tu_duplicate
+0x005e4610|0x00486df0|?Serialize@?$CList@PAXPAX@@UAEXAAVCArchive@@@Z|per_tu_duplicate

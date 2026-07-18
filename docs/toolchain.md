@@ -109,7 +109,30 @@ Interpretation:
   fix for the duplicate original-side CList instantiations.
 - Practical conclusion: do not adopt `/OPT:REF` to chase duplicate CList rows. Keep the
   real `CList<...>` source model and treat leftover duplicate original template bodies
-  as a reccmp pairing/classification problem.
+  as a reccmp pairing/classification problem. Verified per-TU duplicates are recorded in
+  `config/template_aliases.csv` (validated by `just template-alias-check`; discover
+  candidates with `just mfc-collection-audit <Class|0xCTOR>`).
+
+## Planned experiment: template-emission compiler matrix (not yet run)
+
+The container uses VC5 RTM (compiler 11.00.7022) with MFC 4.21. The original exe dates
+from late 1997, so a serviced VS97 toolchain (SP compiler/linker component versions)
+is plausible but unproven. This deserves a controlled standalone experiment — not a
+global toolchain switch on speculation. Harness sketch:
+
+- Standalone TU pair embedding `CList<void*, void*>` and `CList<Record, Record&>`
+  between scalar fields (`before`/`after`), mirroring the CIncludeView shape.
+- Axes: VC5 RTM vs available VS97 SP compiler+linker versions; `/Ob0`/`/Ob1`/`/Ob2`;
+  explicit `list()` mem-init vs implicit default construction; empty vs non-empty
+  owner dtor; owner ctor and template users in same vs separate TUs; direct
+  `AddTail` vs non-inline wrapper; source/object link ordering.
+- Record: assembly, object COMDAT inventory, final decorated symbols, vtable count,
+  ctor/dtor ordering, and aggregate reccmp effect on representative real functions.
+- `#pragma auto_inline(off)` may be probed here in isolation; it affects functions
+  defined inside the pragma region, so wrapping only an owner ctor does not stop
+  template bodies defined in `afxtempl.h` from inlining — it is not a production fix.
+- Per-TU flags or call-shape wrappers go to production only where this experiment
+  demonstrates a meaningful net improvement (log results in the template below).
 
 ## Python/Ghidra Environment Notes
 

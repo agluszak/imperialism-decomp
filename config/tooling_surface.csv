@@ -114,3 +114,5 @@ module|tools.workflow.check_library_identity|just:library-identity-gate|Semantic
 module|tools.mfc.apply_library_oracle|just:apply-library-oracle|Project confident oracle matches into symbols.csv + LIBRARY markers (upgrade/convert)
 module|tools.mfc.build_library_oracle|just:build-library-oracle|Relocation-masked object matcher: match exe functions to libcmt/nafxcw COFF members
 module|tools.workflow.check_generated_integrity|just:generated-integrity-gate|No hand-edits under generated dirs (shared with agent-check + CI)
+module|tools.workflow.mfc_collection_audit|just:mfc-collection-audit|Embedded-MFC-collection audit: identity, offsets, block size, duplicate-COMDAT twins
+module|tools.workflow.template_alias_check|just:template-alias-check|Re-verify template_aliases.csv rows: same name + normalized-body equivalence
