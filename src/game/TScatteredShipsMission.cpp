@@ -2,7 +2,9 @@
 
 #include "game/TScatteredShipsMission.h"
 #include "game/TGreatPower.h"
+#include "game/TSimMgr.h"
 #include "game/TStream.h"
+#include "game/TTaskForce.h"
 #include "game/TZone.h"
 #include "game/global_data_tables.h"
 
@@ -87,18 +89,86 @@ char TScatteredShipsMission::MatchesMissionKeySlot4C(int kind, int key, int mode
   return kind == 5;
 }
 
+// Deactivates the whole existing childOrderList chain, then hunts for a port-zone context
+// eligible for this mission's nation (!QueryPortZoneCapability() &&
+// HasSecondaryNeighborWithNationTag(nationId04), same eligibility pair the whole
+// TControlSeaZoneMission family's NoOpSlot3C/NoOpSlot9C use elsewhere) -- first to confirm
+// at least one exists at all (walking g_pMapActionContextListHead via prev18), then re-walks
+// from the head, stepped forward g_pSimMgr->GetTurnTickSlot3C() % 50 times (wrapping to the
+// head on a null prev18), as the starting point for an unbounded sweep: for every eligible
+// zone visited (wrapping forever via prev18), picks the first still-inactive orderList24
+// node, then scans the remaining inactive nodes for the one whose (TZone*) reading of
+// TTaskForce::attachment is nearest that zone (TZone::GetCachedMapActionContextDistanceOrRecompute),
+// marks it active, and -- unless it's already anchored on that same zone -- promotes/queues
+// it there. Returns as soon as no inactive node remains (childOrderList is finite, so the
+// sweep is bounded even though the zone ring never explicitly stops).
 // FUNCTION: IMPERIALISM 0x0053bdd0
 void TScatteredShipsMission::MissionSlot44() {
-  // TODO: promote the rest of the body (bd 1uj.16.4) -- 339 bytes, several unresolved
-  // sub-calls (g_pSimMgr vtable slot 0x1c for a random roll mod 50, TZone::field_0x18
-  // ring-list traversal via g_pMapActionContextListHead, ApplyJoinEmpireModeForTargetNation
-  // + 0x40408e eligibility gate matching NoOpSlot9C's pattern elsewhere in this family, then
-  // a childOrderList scan/promotion whose exact receiver for the two func_0x0040954d calls
-  // is unclear -- one result is discarded, one stored, suggesting a hidden-arg mismatch).
-  // Left as a documented TODO pending dedicated follow-up rather than guessing.
   if (orderList24 != nullptr) {
     orderList24->active_flag = 0;
     orderList24->next->SetChainActiveFlag(0);
+  }
+
+  short stepCount = static_cast<short>(g_pSimMgr->GetTurnTickSlot3C() % 50);
+
+  TZone* zone = g_pMapActionContextListHead;
+  while (zone != nullptr) {
+    if (!zone->QueryPortZoneCapability() && zone->HasSecondaryNeighborWithNationTag(nationId04)) {
+      break;
+    }
+    zone = zone->prev18;
+  }
+  if (zone == nullptr) {
+    return;
+  }
+
+  TZone* current = g_pMapActionContextListHead;
+  for (; stepCount != 0; --stepCount) {
+    TZone* nextZone = current->prev18;
+    current = (nextZone != nullptr) ? nextZone : g_pMapActionContextListHead;
+  }
+
+  while (true) {
+    if (!current->QueryPortZoneCapability() &&
+        current->HasSecondaryNeighborWithNationTag(nationId04)) {
+      TMapOrderChildLinkNode* best = orderList24;
+      while (best != nullptr && best->active_flag != 0) {
+        best = best->next;
+      }
+      if (best == nullptr) {
+        return;
+      }
+
+      for (TMapOrderChildLinkNode* candidate = best->next; candidate != nullptr;
+           candidate = candidate->next) {
+        if (candidate->active_flag == 0) {
+          // Both reads are the same genuine cross-type pun of TTaskForce::attachment (the
+          // "order/entry kind tag") as a TZone* -- the same dual-purpose pattern already
+          // documented on the adjacent `owner` field (PromoteMapOrderChainAndQueue reads
+          // it as TZone* too).
+          TZone* candidateZone = reinterpret_cast<TZone*>(candidate->object_ptr->attachment);
+          TZone* bestZone = reinterpret_cast<TZone*>(best->object_ptr->attachment);
+          short candidateDistance =
+              candidateZone->GetCachedMapActionContextDistanceOrRecompute(current);
+          short bestDistance = bestZone->GetCachedMapActionContextDistanceOrRecompute(current);
+          if (candidateDistance < bestDistance) {
+            best = candidate;
+          }
+        }
+      }
+
+      best->active_flag = 1;
+      TTaskForce* target = best->object_ptr;
+      if (target == nullptr) {
+        return;
+      }
+      if (reinterpret_cast<TZone*>(target->attachment) != current) {
+        target->GetOrCreateMissionOrderEntryForNode()->PromoteMapOrderChainAndQueue(current);
+      }
+    }
+
+    TZone* nextZone = current->prev18;
+    current = (nextZone != nullptr) ? nextZone : g_pMapActionContextListHead;
   }
 }
 
