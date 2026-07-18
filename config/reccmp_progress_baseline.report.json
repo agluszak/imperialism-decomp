@@ -17051,7 +17051,7 @@
     },
     {
       "address": "0x512850",
-      "matching": 0.3157894736842105,
+      "matching": 0.5555555555555556,
       "name": "NoOpMapTilePredicateStub",
       "type": 1
     },
@@ -17166,7 +17166,7 @@
     },
     {
       "address": "0x513ca0",
-      "matching": 0.6305084745762712,
+      "matching": 0.47297297297297297,
       "name": "HasReachableSeaTileOutsideActiveType3Or4DiplomaticMask",
       "type": 1
     },
@@ -18295,7 +18295,7 @@
     },
     {
       "address": "0x526ba0",
-      "matching": 0.0,
+      "matching": 0.08333333333333333,
       "name": "TMapMaker::GetBoolSlot28",
       "type": 1
     },
@@ -18307,7 +18307,7 @@
     },
     {
       "address": "0x527040",
-      "matching": 0.2814070351758794,
+      "matching": 0.3037974683544304,
       "name": "TMapMaker::QueryStepValue",
       "type": 1
     },
@@ -18367,13 +18367,13 @@
     },
     {
       "address": "0x528780",
-      "matching": 0.022727272727272728,
+      "matching": 0.045454545454545456,
       "name": "TMapMaker::GetCityDialogValueDword10",
       "type": 1
     },
     {
       "address": "0x5288a0",
-      "matching": 0.0,
+      "matching": 0.017316017316017316,
       "name": "TMapMaker::SetCityDialogValueDword10",
       "type": 1
     },
@@ -18409,13 +18409,13 @@
     },
     {
       "address": "0x5296a0",
-      "matching": 0.0,
+      "matching": 0.028985507246376812,
       "name": "TMapMaker::ActivateCityProductionViewIfAllowed",
       "type": 1
     },
     {
       "address": "0x5297e0",
-      "matching": 0.0,
+      "matching": 0.0425531914893617,
       "name": "TMapMaker::FindUiChildControlByWindowHandleRecursive_25",
       "type": 1
     },
@@ -18607,7 +18607,7 @@
     },
     {
       "address": "0x52d750",
-      "matching": 0.22380952380952382,
+      "matching": 0.2253968253968254,
       "name": "MergeSmallCityRegionsAndCompactIds",
       "type": 1
     },
@@ -18637,7 +18637,7 @@
     },
     {
       "address": "0x52e890",
-      "matching": 0.0,
+      "matching": 0.05714285714285714,
       "name": "TMapMaker::GetCityDialogFlagByte4",
       "type": 1
     },
