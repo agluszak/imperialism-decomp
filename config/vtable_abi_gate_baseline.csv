@@ -68,12 +68,6 @@ address|class|slot|summary
 0x005065b0|TIconSlider|0x1dc|declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
 0x00506b00|TOrderView|0x1a0|declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x8
 0x005076d0|TNumberedIcon|0x1d8|declared 1 stack dword(s) -> expected RET 0x4, binary shows RET 0x8
-0x0050be30|TMacViewMgr|0x48|declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
-0x0050d310|TMacViewMgr|0x4c|declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x8
-0x0050d360|TMacViewMgr|0x54|declared 3 stack dword(s) -> expected RET 0xc, binary shows RET 0x14
-0x0050d470|TMacViewMgr|0x50|declared 2 stack dword(s) -> expected RET 0x8, binary shows RET 0x1c
-0x0050d5b0|TMacViewMgr|0x58|declared 1 stack dword(s) -> expected RET 0x4, binary shows RET 0xc
-0x0050d6c0|TMacViewMgr|0x90|declared 1 stack dword(s) -> expected RET 0x4, binary shows RET 0x8
 0x00514e80|TMapMgr|0x78|declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
 0x00564dc0|TNavyRoster|0x1b8|declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
 0x005698e0|TSuperNavyRoster|0x1b8|declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0xc

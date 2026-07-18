@@ -1013,7 +1013,7 @@ undefined TMacViewMgr::SyncSellTaggedChildControlWithNationState(TView* view, sh
 }
 
 // FUNCTION: IMPERIALISM 0x0050be30
-undefined TMacViewMgr::ResolveTurnEventDialogOrFailAndInvokeSlot9C() {
+undefined TMacViewMgr::ResolveTurnEventDialogOrFailAndInvokeSlot9C(int unusedArg) {
   TurnEventDialogNode* dialog = reinterpret_cast<TurnEventDialogNode*>(
       g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(0));
   if (dialog == 0) {
@@ -1397,7 +1397,7 @@ undefined TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word nati
 }
 
 // FUNCTION: IMPERIALISM 0x0050d310
-void TMacViewMgr::DispatchTurnEvent3B8AndWaitForCompletionFlag() {
+void TMacViewMgr::DispatchTurnEvent3B8AndWaitForCompletionFlag(int unusedArg1, int unusedArg2) {
   TView* dialog = field04;
   g_pUiRuntimeContext->DispatchTurnEventSlot4C(0x3b8, 0);
   short completionFlag = static_cast<short>(dialog->field14);
@@ -1409,7 +1409,7 @@ void TMacViewMgr::DispatchTurnEvent3B8AndWaitForCompletionFlag() {
 
 // FUNCTION: IMPERIALISM 0x0050d360
 undefined TMacViewMgr::CreateCityBuildingDialogBySlot(int param_1, undefined4 param_2,
-                                                      undefined4 param_3) {
+                                                      undefined4 param_3, int arg4, int arg5) {
   TurnEventDialogNode* dialog = reinterpret_cast<TurnEventDialogNode*>(
       g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(param_1 + 0x23f0));
   GoldDialogControl* goldControl =
@@ -1425,7 +1425,8 @@ undefined TMacViewMgr::CreateCityBuildingDialogBySlot(int param_1, undefined4 pa
 }
 
 // FUNCTION: IMPERIALISM 0x0050d470
-undefined TMacViewMgr::OrphanCallChain_C10_I80_0050d470(undefined4 param_1, undefined4 param_2) {
+undefined TMacViewMgr::OrphanCallChain_C10_I80_0050d470(int param_1, undefined4 param_2, int arg3,
+                                                        int arg4, int arg5, int arg6, int arg7) {
   TurnEventDialogNode* dialog = reinterpret_cast<TurnEventDialogNode*>(
       g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(param_1 + 0x23f0));
   GoldDialogControl* goldControl =
@@ -1443,7 +1444,7 @@ undefined TMacViewMgr::OrphanCallChain_C10_I80_0050d470(undefined4 param_1, unde
 }
 
 // FUNCTION: IMPERIALISM 0x0050d5b0
-undefined TMacViewMgr::OrphanCallChain_C9_I49_0050d5b0(undefined4 param_1) {
+undefined TMacViewMgr::OrphanCallChain_C9_I49_0050d5b0(int param_1, int arg2, int arg3) {
   TurnEventDialogNode* dialog = reinterpret_cast<TurnEventDialogNode*>(
       g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(0x2404));
   GoldDialogControl* goldControl =
@@ -1471,9 +1472,10 @@ void TMacViewMgr::EnsureClipRegionWrapperAtSlotAndMergeSourceRegion(undefined4 p
 }
 
 // FUNCTION: IMPERIALISM 0x0050d6c0
-undefined TMacViewMgr::WrapperFor_IsPointInsideHitRegion_At0050d6c0(short tileIndex) {
-  if (regionSlots[tileIndex] != 0) {
-    return QueryPointInsideHitRegion(0, 0, regionSlots[tileIndex]);
+undefined TMacViewMgr::WrapperFor_IsPointInsideHitRegion_At0050d6c0(CPoint* point,
+                                                                    short regionIndex) {
+  if (regionSlots[regionIndex] != 0) {
+    return QueryPointInsideHitRegion(point->x, point->y, regionSlots[regionIndex]);
   }
   return 0;
 }
