@@ -170,7 +170,7 @@
     },
     {
       "address": "0x412dc0",
-      "matching": 0.4784688995215311,
+      "matching": 0.48165869218500795,
       "name": "InitializeImperialismApplicationInstance",
       "type": 1
     },
@@ -7792,7 +7792,7 @@
     },
     {
       "address": "0x4a2900",
-      "matching": 0.13374805598755832,
+      "matching": 0.13063763608087092,
       "name": "BuildArmyContextActionRecordsAndDispatchLabel",
       "type": 1
     },
@@ -28419,19 +28419,19 @@
     },
     {
       "address": "0x593370",
-      "matching": 0.45454545454545453,
+      "matching": 0.9285714285714286,
       "name": "TSoundPlayer::?ConstructTSoundPlayerBaseState@@YIPAUSoundPlayerState@?%Z:imperialismsrcgameTSoundPlayer.cpp14012305@@PAU12@@Z",
       "type": 1
     },
     {
       "address": "0x5933b0",
-      "matching": 0.9090909090909091,
+      "matching": 1.0,
       "name": "TSoundPlayer::`scalar deleting destructor'",
       "type": 1
     },
     {
       "address": "0x5933e0",
-      "matching": 0.5,
+      "matching": 0.0,
       "name": "TSoundPlayer::?DestructTSoundPlayerBaseState@@YIXPAUSoundPlayerState@?%Z:imperialismsrcgameTSoundPlayer.cpp14012305@@@Z",
       "type": 1
     },
