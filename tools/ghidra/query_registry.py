@@ -28,6 +28,7 @@ from tools.ghidra import (
     read_data,
     search_whole_binary,
     string_refs_oracle,
+    vtable_abi_evidence,
     vtable_dump,
     xrefs_to,
 )
@@ -41,6 +42,7 @@ COMMANDS: dict[str, Callable] = {
     "raw-disasm": raw_disasm.run,
     "jumptable": jumptable.run,
     "decompile": decompile_one.run,
+    "vtable-abi-evidence": vtable_abi_evidence.run,
     "vtable-dump": vtable_dump.run,
     "read-data": read_data.run,
     "function-slice": function_slice.run,

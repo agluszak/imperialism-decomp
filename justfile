@@ -695,6 +695,22 @@ ghidra-raw-disasm *args: _require-ghidra-install
 ghidra-vtable-dump class vtable *args: _require-ghidra-install
   uv run python -m tools.ghidra.query vtable-dump "{{class}}" "{{vtable}}" {{args}}
 
+# Extract the immutable per-slot ABI evidence snapshot the vtable ABI audit
+# consumes. Default: every `// VTABLE:`-annotated class in the tree, written to
+# config/vtable_abi_evidence.json (slow; one-time — the binary never changes).
+#   just vtable-abi-extract                       -> full refresh
+#   just vtable-abi-extract TMapMaker=0x6598f8    -> one class, to stdout
+[doc('Extract per-slot vtable ABI evidence (RET imm, ECX use, caller pushes/cleanup/ret-use)')]
+[group('ghidra-inspect')]
+vtable-abi-extract *args: _require-ghidra-install
+  #!/usr/bin/env bash
+  set -euo pipefail
+  if [ -z "{{args}}" ]; then
+    uv run python -m tools.ghidra.query vtable-abi-evidence --from-source --out config/vtable_abi_evidence.json
+  else
+    uv run python -m tools.ghidra.query vtable-abi-evidence {{args}}
+  fi
+
 [group('ghidra-inspect')]
 ghidra-vtable-struct-check *args: _require-ghidra-install
   uv run python -m tools.ghidra.vtable_struct_check {{args}}
@@ -926,6 +942,29 @@ test:
 vtable-gate:
   uv run python -m tools.workflow.check_no_raw_vtable_calls --baseline "{{vtable_gate_baseline}}"
 
+# Vtable ABI audit: current source declarations vs the binary's immutable
+# calling-convention evidence (config/vtable_abi_evidence.json). Catches wrong
+# signatures that `just vtable` (slot->address matching) cannot see.
+#   just vtable-abi-audit                 -> ranked report, conflict classes only
+#   just vtable-abi-audit TMapMaker -v    -> one class, all slots
+[doc('Audit vtable slot declarations against binary ABI evidence (RET imm, pushes, ret-use)')]
+[group('gates')]
+vtable-abi-audit *args:
+  uv run python -m tools.workflow.vtable_abi_audit {{args}}
+
+# Ratchet gate over the ABI audit: fails on NEW proven declaration conflicts
+# (address+class not in config/vtable_abi_gate_baseline.csv and not covered by a
+# reviewed config/vtable_signature_overrides.csv row). Pure source + static
+# evidence; no Ghidra needed.
+[group('gates')]
+vtable-abi-gate:
+  uv run python -m tools.workflow.vtable_abi_audit --gate
+
+# MUTATES: config/vtable_abi_gate_baseline.csv. Refresh after fixing conflicts.
+[group('gates')]
+vtable-abi-gate-update:
+  uv run python -m tools.workflow.vtable_abi_audit --write-baseline
+
 [group('gates')]
 marker-gate:
   uv run python -m tools.workflow.check_marker_hygiene --paths src include
@@ -1109,6 +1148,7 @@ source-gates:
   just global-redeclaration-gate
   just boundary-gate
   just agent-rules-gate
+  just vtable-abi-gate
 
 [doc('Mine reccmp asm diffs for orig-address<->recomp-symbol global pairs (read-only report)')]
 [group('compare')]

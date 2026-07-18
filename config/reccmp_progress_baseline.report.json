@@ -17064,7 +17064,7 @@
     },
     {
       "address": "0x512930",
-      "matching": 0.26334519572953735,
+      "matching": 0.25622775800711745,
       "name": "BuildHexAreaTileIndexList",
       "type": 1
     },
@@ -17142,7 +17142,7 @@
     },
     {
       "address": "0x5136a0",
-      "matching": 1.0,
+      "matching": 0.8888888888888888,
       "name": "TMapMgr::OrphanLeaf_NoCall_Ins35_005136a0",
       "type": 1
     },
@@ -17514,7 +17514,7 @@
     },
     {
       "address": "0x5178f0",
-      "matching": 0.3446601941747573,
+      "matching": 0.3260340632603406,
       "name": "ComputeRepresentativeTileIndexForTerrainTypeWithWrapBias",
       "type": 1
     },
@@ -18301,25 +18301,25 @@
     },
     {
       "address": "0x526c20",
-      "matching": 0.008298755186721992,
+      "matching": 0.3181818181818182,
       "name": "TMapMaker::RunMapGenerationAttempt",
       "type": 1
     },
     {
       "address": "0x527040",
-      "matching": 0.010869565217391304,
+      "matching": 0.2814070351758794,
       "name": "TMapMaker::QueryStepValue",
       "type": 1
     },
     {
       "address": "0x527300",
-      "matching": 0.0,
+      "matching": 0.3805309734513274,
       "name": "TMapMaker::DispatchQueuedUiCommandAndRelease",
       "type": 1
     },
     {
       "address": "0x5274d0",
-      "matching": 0.0,
+      "matching": 0.37593984962406013,
       "name": "TMapMaker::DispatchEvent",
       "type": 1
     },
@@ -18331,7 +18331,7 @@
     },
     {
       "address": "0x527730",
-      "matching": 0.0055248618784530384,
+      "matching": 0.29577464788732394,
       "name": "TMapMaker::MapGenPassSlot0F",
       "type": 1
     },
@@ -18349,19 +18349,19 @@
     },
     {
       "address": "0x528140",
-      "matching": 0.011695906432748537,
+      "matching": 0.32954545454545453,
       "name": "TMapMaker::OwnerPanel",
       "type": 1
     },
     {
       "address": "0x5283c0",
-      "matching": 0.0,
+      "matching": 0.296875,
       "name": "TMapMaker::ForwardParam",
       "type": 1
     },
     {
       "address": "0x528670",
-      "matching": 0.0,
+      "matching": 0.025,
       "name": "TMapMaker::DoIdle",
       "type": 1
     },
@@ -18391,7 +18391,7 @@
     },
     {
       "address": "0x528e50",
-      "matching": 0.0,
+      "matching": 0.1515650741350906,
       "name": "TMapMaker::vmethod_0017",
       "type": 1
     },
@@ -20138,7 +20138,7 @@
     },
     {
       "address": "0x539e70",
-      "matching": 0.008368200836820083,
+      "matching": 0.35714285714285715,
       "name": "TEscortMission::PopulateEscortMissionResourceWeightsFromEligibleNationNavyPressure",
       "type": 1
     },
@@ -20198,7 +20198,7 @@
     },
     {
       "address": "0x53a500",
-      "matching": 0.011627906976744186,
+      "matching": 0.3771043771043771,
       "name": "TBeachheadMission::PopulateBeachheadMissionResourceWeightsFromNavyContext",
       "type": 1
     },
@@ -20210,7 +20210,7 @@
     },
     {
       "address": "0x53a800",
-      "matching": 0.02702702702702703,
+      "matching": 0.3779527559055118,
       "name": "TryQueueProvinceOrderFromContextMessage",
       "type": 1
     },
@@ -20300,7 +20300,7 @@
     },
     {
       "address": "0x53aeb0",
-      "matching": 0.013605442176870748,
+      "matching": 0.5800711743772242,
       "name": "TBlockadePortMission::PopulateBlockadePortMissionResourceWeightsFromNavyContext",
       "type": 1
     },
@@ -20379,7 +20379,7 @@
     },
     {
       "address": "0x53bdd0",
-      "matching": 0.058823529411764705,
+      "matching": 0.46774193548387094,
       "name": "TScatteredShipsMission::SelectMapActionContextAndPromoteMissionOrderChain",
       "type": 1
     },
@@ -38513,7 +38513,7 @@
     },
     {
       "address": "0x6091d9",
-      "matching": 1.0,
+      "matching": 0.9787234042553191,
       "name": "CWnd::OnNotify",
       "type": 1
     },

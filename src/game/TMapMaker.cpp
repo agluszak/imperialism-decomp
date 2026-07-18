@@ -1,3 +1,4 @@
+#include <string.h>
 #include <time.h>
 
 #include "game/TMapMaker.h"
@@ -7,6 +8,11 @@
 #include "game/TMapMgr.h"
 #include "game/TSetupRandomMapPicture.h"
 #include "game/global_data_tables.h"
+
+// Same hex-neighbor math as TMapMgr::ComputeHexNeighborTileIndices, but over
+// TMapMaker's own full-resolution generation grid (mapTileGrid08, 108x60, stride
+// 0x24) rather than the coarse 15x27 region grid.
+static __inline int ComputeHexAdjacentFullGridTileIndex(int tileIndex, int direction);
 
 // SYNTHETIC: IMPERIALISM 0x00525950
 // TMapMaker::GetRuntimeClass
@@ -579,29 +585,351 @@ char TMapMaker::GetBoolSlot28() {
   return 0;
 }
 
+// Resets the per-attempt scratch state (region-class grid, union-find group tables),
+// then seeds each of the 7 major nations with an 8-cell region at a random unclaimed
+// cell, followed by each of the 16 minor nations with a 4-cell region at a random cell
+// biased to sit adjacent to an already-claimed region (tried up to 4 times).
 // FUNCTION: IMPERIALISM 0x00526c20
-void TMapMaker::RunMapGenerationAttempt() {}
+void TMapMaker::RunMapGenerationAttempt() {
+  memset(regionClassGrid10, -1, sizeof(regionClassGrid10));
+  memset(groupMemberLists1a8, -1, sizeof(groupMemberLists1a8));
+  cityRegionNextId1fc = -1;
+  memset(cityRegionIds200, -1, sizeof(cityRegionIds200));
+  lastMinorSeedCandidate29c = -1;
 
-// FUNCTION: IMPERIALISM 0x00527040
-TEventHandler* TMapMaker::QueryStepValue() {
-  return 0;
+  signed char* regionClassGridFlat = reinterpret_cast<signed char*>(regionClassGrid10);
+
+  for (int classIndex = 0; classIndex < 7; ++classIndex) {
+    int assigned;
+    do {
+      cityRegionIds200[classIndex] = -1;
+      for (int cell = 0; cell < 15 * 27; ++cell) {
+        if (regionClassGridFlat[cell] == classIndex) {
+          regionClassGridFlat[cell] = -1;
+        }
+      }
+      for (int group = 0; group < 7; ++group) {
+        for (int member = 0; member < 3; ++member) {
+          if (groupMemberLists1a8[group][member] == classIndex) {
+            groupMemberLists1a8[group][member] = -1;
+          }
+        }
+      }
+
+      int cellIndex;
+      do {
+        g_mapGenLcgState_006a38e8 = g_mapGenLcgState_006a38e8 * 0x15a4e35 + 1;
+        cellIndex = static_cast<int>((g_mapGenLcgState_006a38e8 >> 0xc & 0x7fff) % 0x195);
+      } while (regionClassGridFlat[cellIndex] != -1);
+      assigned = AssignRegionClassToCellAndNeighbors(cellIndex, 8, classIndex, 5);
+    } while (assigned != 8);
+  }
+
+  for (int minorClassIndex = 7; minorClassIndex < 0x17; ++minorClassIndex) {
+    int parity = (minorClassIndex - 7) >> 2;
+    int assigned;
+    do {
+      cityRegionIds200[minorClassIndex] = -1;
+      for (int minorCell = 0; minorCell < 15 * 27; ++minorCell) {
+        if (regionClassGridFlat[minorCell] == minorClassIndex) {
+          regionClassGridFlat[minorCell] = -1;
+        }
+      }
+      for (int minorGroup = 0; minorGroup < 7; ++minorGroup) {
+        for (int minorMember = 0; minorMember < 3; ++minorMember) {
+          if (groupMemberLists1a8[minorGroup][minorMember] == minorClassIndex) {
+            groupMemberLists1a8[minorGroup][minorMember] = -1;
+          }
+        }
+      }
+
+      int cellIndex = 0;
+      bool hasAssignedNeighbor = false;
+      for (int attempt = 0; attempt < 4 && !hasAssignedNeighbor; ++attempt) {
+        unsigned int rngTemp = g_mapGenLcgState_006a38e8 * 0x15a4e35 + 1;
+        g_mapGenLcgState_006a38e8 = rngTemp * 0x15a4e35 + 1;
+        int roll1 = static_cast<int>((rngTemp >> 0xc & 0x7fff) % 0x1b);
+        int roll2 = static_cast<int>((g_mapGenLcgState_006a38e8 >> 0xc & 0x7fff) % 0xf);
+        cellIndex =
+            roll1 / 2 + ((parity & 1) ? 0xd : 0) + (roll2 / 2 + ((parity < 2) ? 0 : 7)) * 0x1b;
+        for (int dir = 0; dir < 6; ++dir) {
+          int neighborCell = GetAdjacentRegionGridCell(cellIndex, dir);
+          if (neighborCell != -1 && regionClassGridFlat[neighborCell] != -1) {
+            hasAssignedNeighbor = true;
+          }
+        }
+      }
+      assigned = AssignRegionClassToCellAndNeighbors(cellIndex, 4, minorClassIndex, 5);
+    } while (assigned != 4);
+  }
 }
 
-// FUNCTION: IMPERIALISM 0x00527300
-void TMapMaker::DispatchQueuedUiCommandAndRelease(void* payload) {}
+// Recursively claims `cellIndex` for `classIndex`, then spreads to its hex neighbors by
+// weighted-random selection (each neighbor's weight boosted +10 per further neighbor
+// already owned by `classIndex`), retrying until `retryBudget` assignments succeed or no
+// neighbor remains eligible. Returns the number of successful assignments.
+// FUNCTION: IMPERIALISM 0x00527040
+int TMapMaker::AssignRegionClassToCellAndNeighbors(int cellIndex, int mode, int classIndex,
+                                                   int retryBudget) {
+  if (mode == 0 || cellIndex / 27 <= 0 || cellIndex / 27 >= 14 ||
+      regionClassGrid10[cellIndex / 27][cellIndex % 27] != -1) {
+    return 0;
+  }
+  if (classIndex < 7) {
+    if (!TryMergeRegionGroupWithNeighborsRestrictedToMajors(cellIndex, classIndex)) {
+      return 0;
+    }
+  } else if (!TryMergeRegionGroupWithNeighbors(cellIndex, classIndex)) {
+    return 0;
+  }
 
+  int remaining = mode - 1;
+  regionClassGrid10[cellIndex / 27][cellIndex % 27] = static_cast<signed char>(classIndex);
+
+  bool excluded[6];
+  int availableCount = 6;
+  for (int dir = 0; dir < 6; ++dir) {
+    int neighborCell = GetAdjacentRegionGridCell(cellIndex, dir);
+    if (neighborCell == -1 || dir == retryBudget) {
+      excluded[dir] = true;
+      --availableCount;
+    } else {
+      excluded[dir] = false;
+    }
+  }
+
+  int lastCell = cellIndex;
+  while (remaining != 0 && availableCount != 0) {
+    int weights[6];
+    int totalWeight = 0;
+    for (int dir = 0; dir < 6; ++dir) {
+      if (excluded[dir]) {
+        weights[dir] = 0;
+      } else {
+        int neighborCell = GetAdjacentRegionGridCell(lastCell, dir);
+        int weight = (dir != retryBudget) ? 10 : 2;
+        for (int dir2 = 0; dir2 < 6; ++dir2) {
+          int neighborOfNeighbor = GetAdjacentRegionGridCell(neighborCell, dir2);
+          if (neighborOfNeighbor != -1 &&
+              regionClassGrid10[neighborOfNeighbor / 27][neighborOfNeighbor % 27] == classIndex) {
+            weight += 10;
+          }
+        }
+        weights[dir] = weight;
+      }
+      totalWeight += weights[dir];
+    }
+
+    g_mapGenLcgState_006a38e8 = g_mapGenLcgState_006a38e8 * 0x15a4e35 + 1;
+    int roll = static_cast<int>((g_mapGenLcgState_006a38e8 >> 0xc & 0x7fff) % totalWeight);
+    int selectedDir = 0;
+    if (weights[0] < roll) {
+      int cumulative = weights[0];
+      do {
+        int nextWeight = weights[selectedDir + 1];
+        weights[selectedDir + 1] = nextWeight + cumulative;
+        cumulative = nextWeight + cumulative;
+        ++selectedDir;
+      } while (cumulative < roll);
+    }
+
+    int neighborCell = GetAdjacentRegionGridCell(lastCell, selectedDir);
+    int assigned =
+        AssignRegionClassToCellAndNeighbors(neighborCell, remaining, classIndex, selectedDir);
+    remaining -= assigned;
+    excluded[selectedDir] = true;
+    --availableCount;
+    lastCell = neighborCell;
+  }
+  return mode - remaining;
+}
+
+// Union-find merge of classIndex's region group against each coarse-grid hex
+// neighbor's assigned class: if a neighbor has a different already-assigned class,
+// join the two classes into one group (allocating a new group id, adopting the
+// neighbor's group, or absorbing the neighbor into this class's group -- in any
+// direction, tracking up to 3 member classes per group in groupMemberLists1a8).
+// Returns false the moment two neighbors' classes already belong to two DIFFERENT
+// established groups (a genuine conflict) or a group's member list is full.
+// FUNCTION: IMPERIALISM 0x00527300
+char TMapMaker::TryMergeRegionGroupWithNeighborsRestrictedToMajors(int cellIndex, int classIndex) {
+  for (int dir = 0; dir < 6; ++dir) {
+    int neighborCell = GetAdjacentRegionGridCell(cellIndex, dir);
+    int neighborClass =
+        (neighborCell != -1) ? regionClassGrid10[neighborCell / 27][neighborCell % 27] : -1;
+    if (neighborClass == -1 || neighborClass == classIndex) {
+      continue;
+    }
+    int myGroupId = cityRegionIds200[classIndex];
+    int neighborGroupId = cityRegionIds200[neighborClass];
+    if (myGroupId == -1) {
+      if (neighborGroupId == -1) {
+        int newGroupId = ++cityRegionNextId1fc;
+        groupMemberLists1a8[newGroupId][0] = classIndex;
+        groupMemberLists1a8[newGroupId][1] = neighborClass;
+        cityRegionIds200[classIndex] = newGroupId;
+        cityRegionIds200[neighborClass] = newGroupId;
+      } else {
+        int slot = 0;
+        while (slot < 3 && groupMemberLists1a8[neighborGroupId][slot] != -1) {
+          ++slot;
+        }
+        if (slot == 3) {
+          return 0;
+        }
+        groupMemberLists1a8[neighborGroupId][slot] = classIndex;
+        cityRegionIds200[classIndex] = neighborGroupId;
+      }
+    } else if (neighborGroupId == -1) {
+      int slot = 0;
+      while (slot < 3 && groupMemberLists1a8[myGroupId][slot] != -1) {
+        ++slot;
+      }
+      if (slot == 3) {
+        return 0;
+      }
+      groupMemberLists1a8[myGroupId][slot] = neighborClass;
+      cityRegionIds200[neighborClass] = myGroupId;
+    } else if (myGroupId != neighborGroupId) {
+      return 0;
+    }
+  }
+  return 1;
+}
+
+// Same union-find neighbor-merge as TryMergeRegionGroupWithNeighborsRestrictedToMajors
+// above, but without the groupMemberLists1a8 bookkeeping: a class with an existing
+// group can only merge by adopting a neighbor's group (or forming a new one when
+// neither has one yet) -- if this class already has a group and the neighbor doesn't,
+// that's treated as a conflict rather than expanding this class's group.
 // FUNCTION: IMPERIALISM 0x005274d0
-void TMapMaker::DispatchEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
-  (void)commandId;
-  (void)sourceHandler;
-  (void)event;
+char TMapMaker::TryMergeRegionGroupWithNeighbors(int cellIndex, int classIndex) {
+  for (int dir = 0; dir < 6; ++dir) {
+    int neighborCell = GetAdjacentRegionGridCell(cellIndex, dir);
+    int neighborClass =
+        (neighborCell != -1) ? regionClassGrid10[neighborCell / 27][neighborCell % 27] : -1;
+    if (neighborClass == -1 || neighborClass == classIndex) {
+      continue;
+    }
+    int myGroupId = cityRegionIds200[classIndex];
+    int neighborGroupId = cityRegionIds200[neighborClass];
+    if (myGroupId == -1) {
+      if (neighborGroupId == -1) {
+        int newGroupId = ++cityRegionNextId1fc;
+        cityRegionIds200[classIndex] = newGroupId;
+        cityRegionIds200[neighborClass] = newGroupId;
+      } else {
+        cityRegionIds200[classIndex] = neighborGroupId;
+      }
+    } else if (myGroupId != neighborGroupId) {
+      return 0;
+    }
+  }
+  return 1;
 }
 
 // FUNCTION: IMPERIALISM 0x005275a0
 void TMapMaker::MapGenPassSlot0E() {}
 
+// Lays mountain-range-shaped features (ForwardParam) up to g_mapGenMountainQuota_
+// 006a3470 tiles, then spreads hills (terrain 2) around each laid tile with a 40%
+// per-neighbor chance (up to g_mapGenHillsQuota_006a38c0 tiles, falling back to
+// direct random placement once the spread pass can't find more room), places
+// city-marker features (PlaceCityMarkerAndSpreadNeighbors) up to
+// g_mapGenForestQuota_006a38f8 times, and finally fills the remaining swamp quota
+// (g_mapGenSwampQuota_006a38e0) with random tiles (terrain 7) or -- once that quota
+// is exhausted -- random-walks mountain-range extensions (terrain 4, via slot 0x58)
+// from tiles adjacent to exactly one already-placed marker tile.
 // FUNCTION: IMPERIALISM 0x00527730
-void TMapMaker::MapGenPassSlot0F() {}
+void TMapMaker::MapGenPassSlot0F() {
+  int forestQuota = g_mapGenForestQuota_006a38f8;
+  int swampQuota = g_mapGenSwampQuota_006a38e0;
+  int hillsQuota = g_mapGenHillsQuota_006a38c0;
+
+  for (int remaining = g_mapGenMountainQuota_006a3470; remaining > 0;) {
+    g_mapGenLcgState_006a38e8 = g_mapGenLcgState_006a38e8 * 0x15a4e35 + 1;
+    unsigned int seedHigh = g_mapGenLcgState_006a38e8 >> 0xc;
+    int tileIndex;
+    do {
+      g_mapGenLcgState_006a38e8 = g_mapGenLcgState_006a38e8 * 0x15a4e35 + 1;
+      tileIndex = static_cast<int>((g_mapGenLcgState_006a38e8 >> 0xc & 0x7fff) % 0x1950);
+    } while (mapTileGrid08[tileIndex * 0x24] != 0);
+    g_mapGenLcgState_006a38e8 = g_mapGenLcgState_006a38e8 * 0x15a4e35 + 1;
+    int retryBudget = static_cast<int>((seedHigh & 0x7fff) % 0xc) + 3;
+    int featureType = static_cast<int>((g_mapGenLcgState_006a38e8 >> 0xc & 0x7fff) % 6);
+    remaining -= ForwardParam(tileIndex, retryBudget, featureType);
+  }
+
+  for (int hillsSrcTile = 0; hillsSrcTile < 0x1950; ++hillsSrcTile) {
+    if (mapTileGrid08[hillsSrcTile * 0x24] != 3) {
+      continue;
+    }
+    for (int hillsDir = 0; hillsDir < 6; ++hillsDir) {
+      int neighborTile = ComputeHexAdjacentFullGridTileIndex(hillsSrcTile, hillsDir);
+      if (neighborTile != -1 && mapTileGrid08[neighborTile * 0x24] == 0) {
+        g_mapGenLcgState_006a38e8 = g_mapGenLcgState_006a38e8 * 0x15a4e35 + 1;
+        if (static_cast<int>((g_mapGenLcgState_006a38e8 >> 0xc & 0x7fff) % 100) < 0x28) {
+          mapTileGrid08[neighborTile * 0x24] = 2;
+          --hillsQuota;
+        }
+      }
+    }
+  }
+
+  while (hillsQuota > 0) {
+    g_mapGenLcgState_006a38e8 = g_mapGenLcgState_006a38e8 * 0x15a4e35 + 1;
+    int hillsFallbackTile = static_cast<int>((g_mapGenLcgState_006a38e8 >> 0xc & 0x7fff) % 0x1950);
+    if (mapTileGrid08[hillsFallbackTile * 0x24] == 0) {
+      mapTileGrid08[hillsFallbackTile * 0x24] = 2;
+      --hillsQuota;
+    }
+  }
+
+  DoIdle();
+
+  bool urgentFlag = false;
+  while (forestQuota > 0) {
+    g_mapGenLcgState_006a38e8 = g_mapGenLcgState_006a38e8 * 0x15a4e35 + 1;
+    int forestTile = static_cast<int>((g_mapGenLcgState_006a38e8 >> 0xc & 0x7fff) % 0x1950);
+    forestQuota -= PlaceCityMarkerAndSpreadNeighbors(forestTile, 7, static_cast<char>(urgentFlag));
+    if (forestQuota < g_mapGenForestQuota_006a38f8 * 2 / 3) {
+      urgentFlag = true;
+    }
+  }
+
+  for (;;) {
+    if (swampQuota < 1) {
+      for (int fillTile = 0; fillTile < 0x1950; ++fillTile) {
+        if (mapTileGrid08[fillTile * 0x24] == 0) {
+          g_mapGenLcgState_006a38e8 = g_mapGenLcgState_006a38e8 * 0x15a4e35 + 1;
+          if (static_cast<int>((g_mapGenLcgState_006a38e8 >> 0xc & 0x7fff) % 100) < 0x2d) {
+            mapTileGrid08[fillTile * 0x24] = 7;
+          }
+        }
+      }
+      vmethod_0023();
+      return;
+    }
+
+    int swampTile;
+    do {
+      g_mapGenLcgState_006a38e8 = g_mapGenLcgState_006a38e8 * 0x15a4e35 + 1;
+      swampTile = static_cast<int>((g_mapGenLcgState_006a38e8 >> 0xc & 0x7fff) % 0x1950);
+    } while (mapTileGrid08[swampTile * 0x24] != 0);
+
+    bool allNeighborsClear = true;
+    for (int swampDir = 0; swampDir < 6; ++swampDir) {
+      int neighborTile = ComputeHexAdjacentFullGridTileIndex(swampTile, swampDir);
+      if (neighborTile != -1 && mapTileGrid08[neighborTile * 0x24] == 6) {
+        allNeighborsClear = false;
+      }
+    }
+    if (allNeighborsClear) {
+      --swampQuota;
+      mapTileGrid08[swampTile * 0x24] = 4;
+    }
+  }
+}
 
 // FUNCTION: IMPERIALISM 0x00527d00
 char TMapMaker::vmethod_0023() {
@@ -613,16 +941,127 @@ char TMapMaker::GetDeactivateVetoCode() {
   return 0;
 }
 
-// FUNCTION: IMPERIALISM 0x00528140
-class TView* TMapMaker::OwnerPanel() {
-  return 0;
+// Same hex-neighbor math as TMapMgr::ComputeHexNeighborTileIndices, but over
+// TMapMaker's own full-resolution generation grid (mapTileGrid08, 108x60, stride
+// 0x24) rather than the coarse 15x27 region grid.
+static __inline int ComputeHexAdjacentFullGridTileIndex(int tileIndex, int direction) {
+  int parity = tileIndex / 0x6c;
+  int colOffset = (parity & 1) == 0 ? g_hexColOffsetEvenRow_00697450[direction]
+                                    : g_hexColOffsetOddRow_00697480[direction];
+  int col = tileIndex % 0x6c + colOffset;
+  int row = parity + g_hexRowOffset_00697468[direction];
+  if (g_pGlobalMapState->hexNeighborWrapHorizontally20 == 0) {
+    if (col < 0) {
+      col += 0x6c;
+    } else if (col > 0x6b) {
+      col -= 0x6c;
+    }
+    if (row < 0 || row > 0x3b) {
+      return -1;
+    }
+    return col + row * 0x6c;
+  }
+  if (col >= 0 && col < 0x6c) {
+    return col + row * 0x6c;
+  }
+  return -1;
 }
 
+// Recursively claims `tileIndex` (marking it 1, plus a variant byte at +0x13 chosen by
+// `markerVariant`), refuses if any hex neighbor is already a marker (byte 6), then
+// spreads to hex neighbors with a 46% chance each until `retryBudget` spreads succeed.
+// Returns the number of successful spreads.
+// FUNCTION: IMPERIALISM 0x00528140
+int TMapMaker::PlaceCityMarkerAndSpreadNeighbors(int tileIndex, int retryBudget,
+                                                 char markerVariant) {
+  if (mapTileGrid08[tileIndex * 0x24] != 0) {
+    return 0;
+  }
+  for (int dir = 0; dir < 6; ++dir) {
+    int neighborTile = ComputeHexAdjacentFullGridTileIndex(tileIndex, dir);
+    if (neighborTile != -1 && mapTileGrid08[neighborTile * 0x24] == 6) {
+      return 0;
+    }
+  }
+
+  mapTileGrid08[tileIndex * 0x24] = 1;
+  mapTileGrid08[tileIndex * 0x24 + 0x13] = (markerVariant == 0) ? 0xd : 0xf;
+
+  int remaining = retryBudget - 1;
+  for (int spreadDir = 0; spreadDir < 6; ++spreadDir) {
+    int neighborTile = ComputeHexAdjacentFullGridTileIndex(tileIndex, spreadDir);
+    g_mapGenLcgState_006a38e8 = g_mapGenLcgState_006a38e8 * 0x15a4e35 + 1;
+    if (static_cast<int>((g_mapGenLcgState_006a38e8 >> 0xc & 0x7fff) % 100) < 0x46 &&
+        remaining != 0) {
+      remaining -= PlaceCityMarkerAndSpreadNeighbors(neighborTile, 1, markerVariant);
+    }
+  }
+  return retryBudget - remaining;
+}
+
+// Recursively lays a linear terrain feature (river/road-shaped) across the
+// full-resolution generation grid: claims `tileIndex` (marking it 3), refuses if any
+// hex neighbor is water (terrain type 5), then randomly perturbs `featureType`
+// (0..5, the hex direction to continue in -- more volatile when featureType is 1 or
+// 4) and recurses into that neighbor with `retryBudget` decremented. Returns the
+// number of tiles successfully placed.
 // FUNCTION: IMPERIALISM 0x005283c0
-void TMapMaker::ForwardParam(int param) {}
+int TMapMaker::ForwardParam(int tileIndex, int retryBudget, int featureType) {
+  if (tileIndex < 0 || tileIndex > 0x1950) {
+    return 0;
+  }
+  if (mapTileGrid08[tileIndex * 0x24] != 0) {
+    return 0;
+  }
+  for (int dir = 0; dir < 6; ++dir) {
+    int neighborTile = ComputeHexAdjacentFullGridTileIndex(tileIndex, dir);
+    if (neighborTile != -1 && mapTileGrid08[neighborTile * 0x24] == 5) {
+      return 0;
+    }
+  }
+
+  mapTileGrid08[tileIndex * 0x24] = 3;
+
+  int nextFeatureType = featureType;
+  if (featureType == 1 || featureType == 4) {
+    g_mapGenLcgState_006a38e8 = g_mapGenLcgState_006a38e8 * 0x15a4e35 + 1;
+    int roll = static_cast<int>((g_mapGenLcgState_006a38e8 >> 0xc & 0x7fff) % 100);
+    if (roll > 0x27) {
+      if (roll < 0x46) {
+        nextFeatureType = (featureType == 0) ? 5 : featureType - 1;
+      } else if (featureType == 5) {
+        nextFeatureType = 0;
+      } else {
+        nextFeatureType = featureType + 1;
+      }
+    }
+  } else {
+    g_mapGenLcgState_006a38e8 = g_mapGenLcgState_006a38e8 * 0x15a4e35 + 1;
+    int roll = static_cast<int>((g_mapGenLcgState_006a38e8 >> 0xc & 0x7fff) % 100);
+    if (roll > 0x3b) {
+      if (roll < 0x50) {
+        nextFeatureType = (featureType == 0) ? 5 : featureType - 1;
+      } else if (featureType == 5) {
+        nextFeatureType = 0;
+      } else {
+        nextFeatureType = featureType + 1;
+      }
+    }
+  }
+
+  int nextTile = ComputeHexAdjacentFullGridTileIndex(tileIndex, nextFeatureType);
+  int placed = 1;
+  if (retryBudget != 1 && nextTile != -1) {
+    // Note: the original recurses with the un-adjusted featureType, not
+    // nextFeatureType -- the random perturbation above only picks which neighbor
+    // to step into this call, not the direction future steps inherit.
+    placed += ForwardParam(nextTile, retryBudget - 1, featureType);
+  }
+  return placed;
+}
 
 // FUNCTION: IMPERIALISM 0x00528670
-char TMapMaker::DoIdle(int action) {
+char TMapMaker::DoIdle() {
   return 0;
 }
 
@@ -641,8 +1080,59 @@ int TMapMaker::GetAdjacentRegionGridCell(int cell, int direction) {
   return 0;
 }
 
+// Two-pass ownership smoothing over the full-resolution generation grid (rows 1..58
+// only, skipping the border rows). Pass 1: for each tile with 0, 1 (50% chance), or 2
+// (75% chance) same-owner hex neighbors, if a differing-owner neighbor exists, copy
+// that neighbor's whole 0x24-byte record onto this tile. Pass 2: for each tile with NO
+// same-owner neighbor at all, copy a uniformly-random neighbor's record onto it.
 // FUNCTION: IMPERIALISM 0x00528e50
-void TMapMaker::vmethod_0017(int param) {}
+void TMapMaker::SmoothCityRegionOwnershipByNeighborSampling() {
+  for (int tileIndex = 0x6c; tileIndex < 0x1950 - 0x6c; ++tileIndex) {
+    int sameOwnerCount = 0;
+    int differingNeighborDir = -1;
+    for (int dir = 0; dir < 6; ++dir) {
+      int neighborTile = ComputeHexAdjacentFullGridTileIndex(tileIndex, dir);
+      char neighborOwner = (neighborTile != -1) ? mapTileGrid08[neighborTile * 0x24 + 4] : -1;
+      if (neighborOwner == mapTileGrid08[tileIndex * 0x24 + 4]) {
+        ++sameOwnerCount;
+      } else if (neighborOwner != -1) {
+        differingNeighborDir = dir;
+      }
+    }
+
+    bool erode = false;
+    if (sameOwnerCount == 0) {
+      erode = true;
+    } else if (sameOwnerCount == 1) {
+      g_mapGenLcgState_006a38e8 = g_mapGenLcgState_006a38e8 * 0x15a4e35 + 1;
+      erode = (g_mapGenLcgState_006a38e8 >> 0xc & 1) != 0;
+    } else if (sameOwnerCount == 2) {
+      g_mapGenLcgState_006a38e8 = g_mapGenLcgState_006a38e8 * 0x15a4e35 + 1;
+      erode = (g_mapGenLcgState_006a38e8 >> 0xc & 4) == 0;
+    }
+    if (erode && differingNeighborDir != -1) {
+      int neighborTile = ComputeHexAdjacentFullGridTileIndex(tileIndex, differingNeighborDir);
+      memcpy(&mapTileGrid08[tileIndex * 0x24], &mapTileGrid08[neighborTile * 0x24], 0x24);
+    }
+  }
+
+  for (int isolatedTile = 0x6c; isolatedTile < 0x1950 - 0x6c; ++isolatedTile) {
+    bool hasSameOwnerNeighbor = false;
+    for (int isoDir = 0; isoDir < 6; ++isoDir) {
+      int neighborTile = ComputeHexAdjacentFullGridTileIndex(isolatedTile, isoDir);
+      char neighborOwner = (neighborTile != -1) ? mapTileGrid08[neighborTile * 0x24 + 4] : -1;
+      if (neighborOwner == mapTileGrid08[isolatedTile * 0x24 + 4]) {
+        hasSameOwnerNeighbor = true;
+      }
+    }
+    if (!hasSameOwnerNeighbor) {
+      g_mapGenLcgState_006a38e8 = g_mapGenLcgState_006a38e8 * 0x15a4e35 + 1;
+      int randomDir = static_cast<int>((g_mapGenLcgState_006a38e8 >> 0xc & 0x7fff) % 6);
+      int neighborTile = ComputeHexAdjacentFullGridTileIndex(isolatedTile, randomDir);
+      memcpy(&mapTileGrid08[isolatedTile * 0x24], &mapTileGrid08[neighborTile * 0x24], 0x24);
+    }
+  }
+}
 
 // FUNCTION: IMPERIALISM 0x005292f0
 void TMapMaker::MapGenPassSlot1E() {}

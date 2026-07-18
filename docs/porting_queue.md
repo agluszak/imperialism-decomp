@@ -7,44 +7,93 @@ each with the evidence needed to start (address, size, current score if any, blo
 
 ## Big stubs (never ported)
 
-- TMapMaker phase bodies: `0x526c20` (747B), `0x527730` (1175B), `0x528e50` (940B) —
-  **NOT a quick port; needs a dedicated class-recovery pass first** (investigated
-  2026-07-17, no code changed). `TMapMaker.h`'s vtable slot signatures were seemingly
-  templated off TEventHandler/TView/TWindow's real virtuals (same slot NAMES:
-  QueryStepValue/DispatchEvent/DispatchQueuedUiCommandAndRelease/OwnerPanel/DoIdle/
-  ForwardParam/etc.) without verifying TMapMaker actually shares that inheritance
-  (header declares `class TMapMaker : public TObject`, not TEventHandler) — this
-  looks like a systemic mismodeling, not isolated stub gaps:
-  - `0x526c20` (RunMapGenerationAttempt) calls vtable slot 0x30 (`byte offset`,
-    ordinal 0xc) twice with **4 int args**, return compared against 8 then 4 —
-    completely incompatible with the header's declared `QueryStepValue()` (0-arg,
-    returns `TEventHandler*`). symbols.csv already carries a leftover proto hint
-    `ExpandCoarseRegionNodeWithNeighborChecks()` for slot 0x30's real implementation
-    at `0x527040` (currently faked as `TMapMaker::QueryStepValue() { return 0; }`,
-    RET 0x10 in the binary = real 4-word args, confirming the header signature is
-    wrong there too).
-  - `0x527040` itself calls slot 0x30 AGAIN internally, but with what disassembles
-    as a **1-arg** call (`PUSH EAX; CALL [EAX+0x30]`) right after a 5-arg call to
-    slot 0xa — inconsistent arg counts for what should be one signature. Slots 0xd
-    (`DispatchQueuedUiCommandAndRelease`, header: 1 void* arg) and 0x10
-    (`DispatchEvent`, header: 3 args) are ALSO called with only 2 int args and a
-    bool return in the raw listing — contradicting their current declarations too.
-  - New unmodeled data fields discovered while tracing `0x526c20`: an 84-byte
-    `int[7][3]`-shaped table at `TMapMaker+0x1a8` (currently absorbed into
-    `pad_1a5`) and a lone `int` at `+0x29c` (currently inside `pad_25c`), both
-    initialized to -1 by `RunMapGenerationAttempt`.
-  - `0x528e50` (vmethod_0017 / SmoothCityRegionOwnershipByNeighborSampling) is a
-    hex-grid neighbor-sampling pass over 6 unnamed lookup-table globals
-    (`0x697450/0x697454/0x697468/0x69747c/0x697480/0x697484`, all shown `?` —
-    likely per-parity dx/dy hex-direction offset tables) that need naming in
-    `global_data_tables` before this one can be ported either.
-  - Recommended next step: `class-recovery` skill session dedicated to re-deriving
-    TMapMaker's real vtable slot signatures from the raw listings of ALL its
-    concrete slot bodies (not just the 3 targets above), since the header's
-    existing declarations for at least slots 0xc/0xd/0x10/0x30 (0x30/0x34/0x40 and
-    ordinal 0xa) can't be trusted. Don't port these 3 individually without that —
-    the shared vtable-slot-0x30 callee needs one correct signature that satisfies
-    every call site, or the class model will silently corrupt with each new attempt.
+- **TMapMaker phase bodies bucket is now fully landed** (all 6 originally-flagged/
+  discovered functions ported: `0x526c20`/`0x527040`/`0x527730`/`0x528140`/
+  `0x5283c0`/`0x528e50`) — see the class-recovery writeup below. The union-find stub
+  pair `0x527300`/`0x5274d0` is now also fully ported (38.05%/37.59%, `just vtable
+  TMapMaker` still 100%) — the whole TMapMaker "Big stubs" bucket is closed out.
+- **TMapMaker class recovery (landed 2026-07-18, `0x526c20` 0.83% -> 31.82%,
+  `0x527040` 1.09% -> 28.14%, `0x527730` ~0% -> 29.58%, `0x528140` ~0% -> 32.95%,
+  `0x5283c0` ~0% -> 29.69%, `0x528e50` ~0% -> 15.16%)**: confirmed the systemic
+  mismodeling this bucket
+  flagged — several vtable slot signatures were templated off TEventHandler/TView's
+  real virtuals of the same slot POSITION, not verified against TMapMaker's own call
+  sites (`just vtable TMapMaker` was, and still is, 100% the whole time: the
+  slot->address ASSIGNMENT was always correct, only the C++ SIGNATURES were wrong).
+  Fixed 3 slots by raw-listing evidence (arg count from actual pushes + RET n, not
+  the decompile's signature guess, which itself undercounted args here):
+  - Slot 12/0x30 (`QueryStepValue() -> TEventHandler*`, 0-arg) was really
+    `int AssignRegionClassToCellAndNeighbors(int cellIndex, int mode, int classIndex,
+    int retryBudget)` (verified RET 0x10 = 4 stack args, from both the caller's 4
+    explicit pushes and the callee's own frame reads at [esp+0x48.. +0x54]).
+    Recursively claims a coarse-grid cell and spreads to hex neighbors by
+    weighted-random selection (weight +10 per further neighbor already owned by the
+    same class), retrying until `retryBudget` assignments land or neighbors run out.
+    Renamed and fully ported (0x527040).
+  - Slot 13/0x34 (`DispatchQueuedUiCommandAndRelease(void*)`) and slot 16/0x40
+    (`DispatchEvent(int,TEventHandler*,TEvent*)`) were really BOTH
+    `char Method(int cellIndex, int classIndex)` (verified 2 pushed int args + AL
+    return from slot 0x30's own call sites — same 2 args passed to both, slot 0x34
+    tried first but ONLY for majors (classIndex<7), slot 0x40 tried as a fallback/for
+    everyone). Renamed to `TryMergeRegionGroupWithNeighborsRestrictedToMajors`
+    (0x527300) and `TryMergeRegionGroupWithNeighbors` (0x5274d0) — their real bodies
+    are a union-find merge of `classIndex`'s region-group id against each hex
+    neighbor's assigned group, using a previously-undiscovered
+    `int groupMemberLists1a8[7][3]` field (-1 terminated, up to 3 member class
+    indices per group id), used alongside the already-known `cityRegionNextId1fc`/
+    `cityRegionIds200`. **Both bodies now fully ported** (0x527300 38.05%, 0x5274d0
+    37.59%; `just vtable TMapMaker` still 100%): 0x527300 (majors-only) tracks
+    membership in `groupMemberLists1a8` and fails only on a genuine two-established-
+    groups conflict or a full member list; 0x5274d0 (everyone) skips the member-list
+    bookkeeping and treats "this class already has a group, neighbor doesn't" as a
+    conflict too — a real asymmetry between the two, not a bug.
+  - Slot 29/0x74 (`GetAdjacentRegionGridCell`) was re-verified CORRECT as-is
+    (2-arg, matches every call site) — Ghidra's own "VTableSlot1D" fallback name for
+    it in decompiles of OTHER functions is just an unresolved-symbol artifact, not
+    evidence of a problem.
+  - Also promoted the previously-undocumented `+0x29c` lone int (queue's old
+    "TMapMaker never-ported" note flagged it) to `lastMinorSeedCandidate29c`;
+    not yet observed read anywhere, so semantics beyond "reset per attempt" unconfirmed.
+  - Slot 18/0x44 (`ForwardParam(int param)`, 1-arg) was really
+    `int ForwardParam(int tileIndex, int retryBudget, int featureType)` (verified 3
+    stack args from both the caller and Ghidra's own correct 3-param recovery on the
+    callee). Recursively lays a linear terrain feature (river/road-shaped): claims
+    `tileIndex`, refuses if any hex neighbor is water, randomly perturbs
+    `featureType` (0..5, the hex direction), and recurses into that neighbor with
+    the ORIGINAL (not perturbed) `featureType` — a real quirk, not a bug, confirmed
+    from the raw listing. Renamed conceptually kept as `ForwardParam` (already a
+    reasonable name) and fully ported (0x5283c0).
+  - Slot 19/0x4c (`DoIdle(int action)`, 1-arg) was really 0-arg (verified: 0 pushes
+    at its only call site). Renamed `DoIdle()`.
+  - Slot 22/0x58 (`OwnerPanel() -> TView*`, 0-arg) was really
+    `int PlaceCityMarkerAndSpreadNeighbors(int tileIndex, int retryBudget, char
+    markerVariant)` (verified RET 0xc = 3 stack args, from both Ghidra's own correct
+    signature recovery and the self-recursive call inside the callee). Claims
+    `tileIndex` (byte 1 + a variant byte at +0x13), refuses if any hex neighbor is
+    already a marker (byte 6), spreads to neighbors at 46% each. Renamed and fully
+    ported (0x528140).
+  - `0x527730` (`MapGenPassSlot0F`) fully ported using the corrected ForwardParam/
+    DoIdle/PlaceCityMarkerAndSpreadNeighbors/vmethod_0023 calls: lays mountain-range
+    features, spreads hills around them, places city markers, then fills the swamp
+    quota (falling back to random-walk placement once the direct-random pass can't
+    find room). A shared `ComputeHexAdjacentFullGridTileIndex` static `__inline`
+    helper (same hex math as `TMapMgr::ComputeHexNeighborTileIndices` but over
+    TMapMaker's own full-resolution 108x60 grid) is used by all of ForwardParam/
+    PlaceCityMarkerAndSpreadNeighbors/AssignRegionClassToCellAndNeighbors/
+    MapGenPassSlot0F — must stay `__inline` (not plain `static`) or it shows up as
+    an unpaired recomp-only symbol under `/Ob1` AND costs ~10pp on every caller
+    (confirmed empirically: adding `__inline` raised MapGenPassSlot0F 18.60% ->
+    29.58%, OwnerPanel 21.88% -> 32.95%, ForwardParam 27.12% -> 29.69%, with no
+    other source change).
+  - Slot 17/0x44 (`vmethod_0017(int param)`, 1-arg) was really 0-arg (verified: bare
+    `RET` with no operand). Renamed to `SmoothCityRegionOwnershipByNeighborSampling`
+    and fully ported (0x528e50, ~0% -> 15.16%): a two-pass ownership-smoothing sweep
+    over rows 1..58 of the full-resolution grid — pass 1 erodes tiles with 0-2
+    (50%/75% chance) same-owner hex neighbors into a differing neighbor's full
+    0x24-byte record when one exists; pass 2 replaces any tile with NO same-owner
+    neighbor at all into a uniformly-random neighbor's record. With the union-find
+    pair (0x527300/0x5274d0, see above) also landed, the entire "Big stubs" TMapMaker
+    bucket is now fully closed out.
 
 ## Known-bad re-ports (score far below structure)
 
