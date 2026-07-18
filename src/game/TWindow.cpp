@@ -64,7 +64,7 @@ void TWindow::SetField88And8c(int param_1, int param_2) {
 }
 
 // FUNCTION: IMPERIALISM 0x0048d8d0
-void TWindow::AssertMcAppUILine2358() {
+void TWindow::AssertMcAppUILine2358(int) {
   if (g_McAppUiFlag_006A1B04 == 0) {
     AssertMcAppUiInvalidation(g_szMcAppUiSourcePath_006950B0, 0x936);
   }
@@ -281,7 +281,8 @@ void TWindow::CloseAndFree() {
 
 // FUNCTION: IMPERIALISM 0x0048e150
 undefined TWindow::WrapperFor_CenterWindowWithinOwnerOrWorkArea_At0048e150(char param_1,
-                                                                           char param_2) {
+                                                                           char param_2,
+                                                                           int unusedArg3) {
   if (nativeWindow50 != 0) {
     nativeWindow50->CenterWindow(0);
     return 0;

@@ -45,7 +45,7 @@ int TStream::streamSlot30() {
 }
 
 // FUNCTION: IMPERIALISM 0x00488b10
-void TStream::AssertMcAppStreamLine304() {}
+void TStream::AssertMcAppStreamLine304(int) {}
 
 // FUNCTION: IMPERIALISM 0x00488b40
 void TStream::ReadBytes(void*, int) {} // slot 0x3c primitive; subclasses keep this default
@@ -155,7 +155,7 @@ void TStream::streamSlot74() {
 }
 
 // FUNCTION: IMPERIALISM 0x00488e00
-void TStream::AssertMcAppStreamLine596() {}
+void TStream::AssertMcAppStreamLine596(int, int) {}
 
 // FUNCTION: IMPERIALISM 0x00488e30
 void TStream::streamSlot2c(int) {}

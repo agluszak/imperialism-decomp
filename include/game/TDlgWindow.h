@@ -123,7 +123,7 @@ public:
   // slot 0x70 SetWindowTarget inherited unchanged (0x48ddc0)
   // slot 0x71 WrapperFor_CenterWindowWithinOwnerOrWorkArea_At0048e150 inherited unchanged
   // (0x48e150)
-  virtual void AssertMcAppUILine2358() override; // slot 0x72 0x5003a0
+  virtual void AssertMcAppUILine2358(int unusedArg) override; // slot 0x72 0x5003a0
   // slot 0x73 OrphanCallChain_C2_I39_0048d900 inherited unchanged (0x48d900)
   // slot 0x74 CloseAndFree inherited unchanged (0x48e120)
   // slot 0x75 WrapperFor_SetWindowTextOrDelegateToOwner_At0048d9c0 inherited unchanged (0x48d9c0)

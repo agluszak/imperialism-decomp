@@ -1,27 +1,6 @@
 address|class|slot|summary
 0x00487470|TDialogBehavior|0x3c|declared 2 stack dword(s) -> expected RET 0x8, binary shows RET 0xc
-0x00488b10|TCountingStream|0xbc|declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
-0x00488b10|TFileStream|0xbc|declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
-0x00488b10|THandleStream|0xbc|declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
-0x00488b10|TStream|0xbc|declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
-0x00488e00|TCountingStream|0xc0|declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x8
-0x00488e00|TFileStream|0xc0|declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x8
-0x00488e00|THandleStream|0xc0|declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x8
-0x00488e00|TStream|0xc0|declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x8
 0x00489720|THandleStream|0xc4|declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
-0x0048d8d0|TFloatWindow|0x1c8|declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
-0x0048d8d0|TGameWindow|0x1c8|declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
-0x0048d8d0|THelpWindow|0x1c8|declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
-0x0048d8d0|TRearFloatWindow|0x1c8|declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
-0x0048d8d0|TTerrainHelpWindow|0x1c8|declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
-0x0048d8d0|TWindow|0x1c8|declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
-0x0048e150|TDlgWindow|0x1c4|declared 2 stack dword(s) -> expected RET 0x8, binary shows RET 0xc
-0x0048e150|TFloatWindow|0x1c4|declared 2 stack dword(s) -> expected RET 0x8, binary shows RET 0xc
-0x0048e150|TGameWindow|0x1c4|declared 2 stack dword(s) -> expected RET 0x8, binary shows RET 0xc
-0x0048e150|THelpWindow|0x1c4|declared 2 stack dword(s) -> expected RET 0x8, binary shows RET 0xc
-0x0048e150|TRearFloatWindow|0x1c4|declared 2 stack dword(s) -> expected RET 0x8, binary shows RET 0xc
-0x0048e150|TTerrainHelpWindow|0x1c4|declared 2 stack dword(s) -> expected RET 0x8, binary shows RET 0xc
-0x0048e150|TWindow|0x1c4|declared 2 stack dword(s) -> expected RET 0x8, binary shows RET 0xc
 0x004907a0|TDropShadowNumberText|0x9c|declared void but 2 caller site(s) consume the return register ({'eax': 2})
 0x004907a0|TEditText|0x9c|declared void but 2 caller site(s) consume the return register ({'eax': 2})
 0x004907a0|TMyNumberText|0x9c|declared void but 2 caller site(s) consume the return register ({'eax': 2})
@@ -97,7 +76,6 @@ address|class|slot|summary
 0x004fec50|TDisplayMgr|0x48|declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
 0x004fed00|TDisplayMgr|0x38|declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
 0x004ff1c0|TColorFill|0x30|declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x8
-0x005003a0|TDlgWindow|0x1c8|declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
 0x00504220|THelpPicture|0x1d8|declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
 0x00506110|TIconBar|0x1d0|declared 1 stack dword(s) -> expected RET 0x4, binary shows RET 0x8
 0x00506110|TIconSlider|0x1d0|declared 1 stack dword(s) -> expected RET 0x4, binary shows RET 0x8
