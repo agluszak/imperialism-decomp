@@ -61,10 +61,62 @@ each with the evidence needed to start (address, size, current score if any, blo
   statement-order-driven store scheduling around a null check) — tried and
   reverted two alternate phrasings that scored worse (65.87%/70.00%); don't
   retry without new evidence. Found nearby but NOT landed: `0x4f0e20`
-  RebuildDiplomacyStandingAndInfluenceMatrices (1485B, still fabricated `{}`,
-  real signature per func-sig is 2-arg/RET 4 not the header's 0-arg — needs a
-  dedicated raw-listing pass, decompile shows lost `unaff_EBX`/`unaff_EBP`
-  register tracking).
+  RebuildDiplomacyStandingAndInfluenceMatrices (1485B, still fabricated `{}`).
+  **Partial raw-listing decode done 2026-07-18 (no code changed — too large/risky
+  to freehand the rest without an interactive disasm/debug loop):**
+  - Real signature is **`(char forceOrMode)`, RET 4** — ONE stack byte arg, not
+    the previously-guessed 2-arg/RET 4 (that guess was wrong; RET 4 = exactly one
+    stack dword slot, and the entry reads a single byte at `[esp+0x100]`).
+    `forceOrMode == 2` means "do a full clear": skip on other values.
+  - Opening shape (confirmed, verified against symbols.csv slot numbers):
+    if `relationCodeMatrix04[0] == 0`, call `this->InitializeDiplomacyStandingBaselineRandom()`
+    (slot 0xf/0x3c). If `forceOrMode == 2`, `memset(relationCodeMatrix04, 0,
+    sizeof(relationCodeMatrix04))` (0xc0 dwords = exactly `sizeof(short[384])`).
+    Then call `this->BuildMajorNationDiplomacyStandingRanking(&topNationSlot,
+    &secondNationSlot)` (slot 0x10/0x40, already-correct signature), store the two
+    outputs into `selectedSourceNationSlot784`/`selectedTargetNationSlot786`, and
+    cache `comparativePowerRows1824[topNationSlot][1]` /
+    `comparativePowerRows1824[secondNationSlot][1]` (the "avgRelation" column).
+  - First major loop: `for (nationSlot = 0; nationSlot < kNationSlotCount; ++nationSlot)`
+    over two stack-local `int[23]` arrays (esp+0x48 and esp+0xa4 — confirmed
+    23-entry by the second array ending exactly at esp+0x100, where the byte arg
+    starts). Per slot: if `g_apTerrainTypeDescriptorTable[nationSlot] == nullptr`,
+    both arrays get `rand() % 50 + 50`. Otherwise branches on the descriptor's
+    `short` field at `+0xe` vs 100/200 into (at least) two sub-cases; the
+    `bandValue < 100` sub-case is **fully decoded and clean**:
+    `arrayA[nationSlot] = (relationStandingScoreMatrix79c[topNationSlot * kNationSlotCount +
+    nationSlot] * 100 / 255 + topPower) / 2;` and the mirror for
+    `secondNationSlot`/`secondPower` into arrayB — write the plain `/255`, `/2`
+    and let MSVC regenerate the `0x80808081` magic-multiply, do NOT hand-roll it.
+    The `100 <= bandValue < 200` sub-case reads the descriptor's `+0x88` short as
+    a **tile index** into `g_pGlobalMapState`'s terrainStateTable (`+0xc` field,
+    36-byte stride confirmed) and compares `.ownerNationTag04` against
+    top/secondNationSlot — decode stalled here (index arithmetic got tangled
+    between this sub-case and the *outer* per-tile cursor loop reused at
+    `[esp+0x24]`; needs a fresh pass with `just ghidra-decompile` cross-checked
+    line-by-line against the listing, ideally with the pyghidra decompiler's own
+    variable splitting rather than hand-tracking every register).
+  - Second major loop (0x4f0f28-0x4f118d, confirmed present but NOT decoded): walks
+    a per-tile cursor `[esp+0x24]` in steps of 0xa8 (168 bytes — a DIFFERENT,
+    not-yet-identified stride than terrainStateTable's 36; possibly a City or
+    Province record) up to 0xfc00 (=384*0xa8), nested inside the `nationSlot`
+    loop, writing into `pendingPolicyCodeMatrix304`/`pendingPolicyTierMatrix484`.
+  - Third loop (0x4f1193-0x4f11cf): a flat 0x180 (384) -entry short-array walk
+    over `pendingPolicyTierMatrix484` doing `rand() % 15`-based fallback fills.
+  - Tail (0x4f11cf-end): computes `selectionFlagsA788/B78a/C78c` from
+    accumulated counters, conditionally calls two more diplomacy-standing-tier
+    vtable slots (0x17/0x2e — `ValidateDiplomacyActionTypeAgainstTargetAndSetRejectCode`
+    and `PropagateRelationSideEffectSlot80`, confirmed against the header's slot
+    table), sets `lastProcessedNationSlot78e`, and finally — only if
+    `g_pSimMgr->field44 == 1` — calls `EmitTurnEvent26DiplomacyMatrixSnapshot()`
+    (still a STUB, `src/autogen/stubs/stubs_part016.cpp:472`).
+  - **Recommendation for the next attempt**: this needs an interactive
+    Ghidra-decompile cross-check (not pure hand-disassembly-reading) to safely
+    resolve the two stalled loops' index arithmetic — the raw listing alone left
+    real ambiguity about which stack slot a given register reload refers to
+    across the ~1000-byte middle section. Budget a dedicated session; the
+    opening ~200 bytes and the `bandValue<100` sub-case above are solid and can
+    be reused verbatim.
 - `0x4eb8b0` TGreatPower::AssignTrackedEntryActionsByProfileToOrdersOrUnits (landed
   2026-07-17, 65.50%, own TU `TGreatPower_AssignTrackedEntryActions.cpp`, structure
   verified — all real call targets pair correctly: CIterator Reset/More/Advance,
