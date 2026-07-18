@@ -6,7 +6,6 @@
 // VTABLE: IMPERIALISM 0x00642268
 class TStatusPicture : public TPicture {
 public:
-  // === BEGIN GENERATED DECLS (TStatusPicture) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TStatusPicture)
   virtual ~TStatusPicture() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -123,7 +122,6 @@ public:
   // slot 0x70 SetControlStateFlagAndMaybeRefresh inherited unchanged (0x48e810)
   // slot 0x71 ResetPictureResourceEntry inherited unchanged (0x48f520)
   // slot 0x72 SetPictureResourceIdAndRefresh inherited unchanged (0x48f570)
-  // === END GENERATED DECLS (TStatusPicture) ===
   int comparisonMode90;    // +0x90 -- selects which per-nation metric fills values94
   int values94[7];         // +0x94 per-entry sort key (score)
   short pictureIds_b0[7];  // +0xb0 per-entry picture id (-1 = empty slot)

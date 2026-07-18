@@ -6,7 +6,6 @@
 // VTABLE: IMPERIALISM 0x0065db68
 class TMiniShipView : public TControl {
 public:
-  // === BEGIN GENERATED DECLS (TMiniShipView) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TMiniShipView)
   virtual ~TMiniShipView() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -122,7 +121,6 @@ public:
   // slot 0x6f LogUnhandledDialogMethodAndReturnFalse inherited unchanged (0x4294a0)
   // slot 0x70 SetControlStateFlagAndMaybeRefresh inherited unchanged (0x48e810)
   virtual undefined OrphanRetStub_00569d50(); // slot 0x71 0x569d50
-                                              // === END GENERATED DECLS (TMiniShipView) ===
 
   TMiniShipView();
 };

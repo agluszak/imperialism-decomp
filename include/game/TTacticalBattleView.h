@@ -11,7 +11,6 @@ class TTacticalUnit;
 // VTABLE: IMPERIALISM 0x0066a380
 class TTacticalBattleView : public TView {
 public:
-  // === BEGIN GENERATED DECLS (TTacticalBattleView) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TTacticalBattleView)
   virtual ~TTacticalBattleView() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -142,7 +141,6 @@ public:
                                                         int toTileIndex); // slot 0x6f 0x5a9240
   // Takes no args (bare ret; the old astruct_13* param was a Ghidra artifact).
   virtual void DrawUiTilesAndOverlay(); // slot 0x70 0x5a9550
-  // === END GENERATED DECLS (TTacticalBattleView) ===
   // View-local slice (+0x60..; TView ends at +0x5c). Offsets verified in the tile-rect
   // and move-animation bodies; gaps unobserved.
   TTacticalBattle* tacticalBattle60; // +0x60 the battle this view renders

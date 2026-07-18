@@ -6,7 +6,6 @@
 // VTABLE: IMPERIALISM 0x006621e0
 class TSetupRandomMapPicture : public TNoHilitePicture {
 public:
-  // === BEGIN GENERATED DECLS (TSetupRandomMapPicture) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TSetupRandomMapPicture)
   virtual ~TSetupRandomMapPicture() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -126,7 +125,6 @@ public:
   // slot 0x73 UniversityDialogMethod_00405623 inherited unchanged (0x572bb0)
   virtual void StartGame();  // slot 0x74 0x577e40
   virtual void ExitScreen(); // slot 0x75 0x5781f0
-  // === END GENERATED DECLS (TSetupRandomMapPicture) ===
 
   TSetupRandomMapPicture();
 

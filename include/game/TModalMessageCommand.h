@@ -6,8 +6,6 @@
 // VTABLE: IMPERIALISM 0x0066f2f0
 class TModalMessageCommand : public TCommand {
 public:
-  // === BEGIN GENERATED DECLS (TModalMessageCommand) — refreshed by recover-class; do not hand-edit
-  // ===
   DECLARE_DYNCREATE(TModalMessageCommand)
   virtual ~TModalMessageCommand() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -20,7 +18,6 @@ public:
   // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
   // slot 0x0a NextDiplomacyCommandVtableSlotE8_NotifyOwnerSlot94 inherited unchanged (0x487900)
   virtual void DoIt() override; // slot 0x0b 0x5dcd10
-  // === END GENERATED DECLS (TModalMessageCommand) ===
 
   // Object slice from the inline-expanded ctor at 0x5dea93 (inside
   // TViewMgr::CreateModalMessageCommandAndQueue 0x5dea60): TCommand base is 0x18

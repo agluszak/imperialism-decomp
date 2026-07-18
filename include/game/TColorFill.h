@@ -6,7 +6,6 @@
 // VTABLE: IMPERIALISM 0x006566f0
 class TColorFill : public TAdorner {
 public:
-  // === BEGIN GENERATED DECLS (TColorFill) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TColorFill)
   virtual ~TColorFill() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -25,7 +24,6 @@ public:
   // slot 0x0e WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049da20 inherited unchanged (0x49da20)
   // slot 0x0f WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049da50 inherited unchanged (0x49da50)
   // slot 0x10 WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049da80 inherited unchanged (0x49da80)
-  // === END GENERATED DECLS (TColorFill) ===
 
   TColorFill();
 };

@@ -6,7 +6,6 @@
 // VTABLE: IMPERIALISM 0x006406d8
 class TDeluxeText : public TTEView {
 public:
-  // === BEGIN GENERATED DECLS (TDeluxeText) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TDeluxeText)
   virtual ~TDeluxeText() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -152,7 +151,6 @@ public:
   // `undefined` rather than guessing a real return type.
   virtual int
   RecenterTextFromMeasuredWidthAndMaybeInvalidate(char refreshNow); // slot 0x7e 0x5b63e0
-  // === END GENERATED DECLS (TDeluxeText) ===
   unsigned char field94;      // +0x94
   unsigned char field95;      // +0x95
   unsigned char padding96[2]; // +0x96

@@ -6,7 +6,6 @@
 // VTABLE: IMPERIALISM 0x006561b0
 class TFrameRadioView : public TControl {
 public:
-  // === BEGIN GENERATED DECLS (TFrameRadioView) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TFrameRadioView)
   virtual ~TFrameRadioView() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -122,7 +121,6 @@ public:
   // slot 0x6f LogUnhandledDialogMethodAndReturnFalse inherited unchanged (0x4294a0)
   virtual void SetControlStateFlagAndMaybeRefresh(bool fEnabledState,
                                                   bool fRefreshNow) override; // slot 0x70 0x4fe190
-  // === END GENERATED DECLS (TFrameRadioView) ===
 
   TFrameRadioView();
 };

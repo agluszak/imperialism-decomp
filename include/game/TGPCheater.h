@@ -6,7 +6,6 @@
 // VTABLE: IMPERIALISM 0x0064f050
 class TGPCheater : public TCheater {
 public:
-  // === BEGIN GENERATED DECLS (TGPCheater) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TGPCheater)
   virtual ~TGPCheater() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -112,7 +111,6 @@ public:
   // slot 0x66 AssertMcAppUILine1922 inherited unchanged (0x48c7d0)
   // slot 0x67 CtrlSlot103_SubtractPosAndDispatchSlot19C_Impl inherited unchanged (0x48bac0)
   // slot 0x68 OrphanRetStub_004b1410 inherited unchanged (0x4b1410)
-  // === END GENERATED DECLS (TGPCheater) ===
 
   TGPCheater();
 };

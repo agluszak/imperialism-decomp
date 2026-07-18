@@ -16,7 +16,6 @@ class TCity;
 // VTABLE: IMPERIALISM 0x0064fa18
 class TProductionOrder : public TObject {
 public:
-  // === BEGIN GENERATED DECLS (TProductionOrder) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TProductionOrder)
   virtual ~TProductionOrder() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -36,7 +35,6 @@ public:
   virtual undefined
   InitializeCityOrderItemWorkingBuffers(OrderSheet* orderSheet);       // slot 0x0f 0x4b5180
   virtual void FillOrderSheet(OrderSheet* orderSheet, short quantity); // slot 0x10 0x4b51b0
-  // === END GENERATED DECLS (TProductionOrder) ===
   // Field layout recovered from the RTTI object-size match: TProductionOrder
   // and several direct children (TShipOrder, TTrainingOrder,
   // TFoodProcessingOrder, TPopGrowthOrder) are ALL exactly 0x4c bytes per

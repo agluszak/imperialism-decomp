@@ -6,7 +6,6 @@
 // VTABLE: IMPERIALISM 0x0065d910
 class TSuperNavyRoster : public TPageView {
 public:
-  // === BEGIN GENERATED DECLS (TSuperNavyRoster) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TSuperNavyRoster)
   virtual ~TSuperNavyRoster() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -118,7 +117,6 @@ public:
   // slot 0x6c OrphanCallChain_C8_I118_0056fdb0 inherited unchanged (0x56fdb0)
   // slot 0x6d OrphanCallChain_C4_I18_0056ff90 inherited unchanged (0x56ff90)
   virtual undefined PopulateNavyOrderPageEntriesByMapContext(); // slot 0x6e 0x5698e0
-  // === END GENERATED DECLS (TSuperNavyRoster) ===
 
   TSuperNavyRoster();
 };

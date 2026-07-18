@@ -9,7 +9,6 @@ class TStream;
 // VTABLE: IMPERIALISM 0x0066a9a8
 class TCityTask : public TTask {
 public:
-// === BEGIN GENERATED DECLS (TCityTask) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TCityTask)
   virtual ~TCityTask() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -26,7 +25,6 @@ public:
   virtual void QueueCityRecruitmentSupportCommandsIfDeficit(void* pCommandQueue); // slot 0x0d 0x5ae0e0
   virtual void DeserializeCityProductionQueueCommand(void* pCommandQueue); // slot 0x0e 0x5ae240
   virtual void OrphanRetStub_0059add0(void* pCommandQueue); // slot 0x0f 0x5ae4b0
-// === END GENERATED DECLS (TCityTask) ===
 
   TCityTask();
 };

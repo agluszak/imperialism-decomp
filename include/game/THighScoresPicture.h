@@ -6,7 +6,6 @@
 // VTABLE: IMPERIALISM 0x00643ea8
 class THighScoresPicture : public TNoHilitePicture {
 public:
-  // === BEGIN GENERATED DECLS (THighScoresPicture) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(THighScoresPicture)
   virtual ~THighScoresPicture() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -124,7 +123,6 @@ public:
   // slot 0x71 ResetPictureResourceEntry inherited unchanged (0x48f520)
   // slot 0x72 SetPictureResourceIdAndRefresh inherited unchanged (0x48f570)
   virtual undefined UniversityDialogMethod_00405623() override; // slot 0x73 0x45ada0
-  // === END GENERATED DECLS (THighScoresPicture) ===
 
   // NOOP: verified empty in original 0x00455a91 (trivial inline ctor: the builder
   // expansion site emits only the base ctor call + vtbl install)

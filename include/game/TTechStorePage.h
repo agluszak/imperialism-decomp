@@ -9,7 +9,6 @@ class CityDialogController;
 // VTABLE: IMPERIALISM 0x00645ca8
 class TTechStorePage : public TPageView {
 public:
-  // === BEGIN GENERATED DECLS (TTechStorePage) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TTechStorePage)
   virtual ~TTechStorePage() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -128,7 +127,6 @@ public:
   // virtuals (GetRuntimeClass/Serialize/WriteTo/ReadFrom/ShallowFree/HandleEvent/...)
   // as TTechStorePage slots 0x84-0x9d. Those declarations were removed; the bodies at
   // 0x479440/0x4796xx etc. belong to TScroller, not TTechStorePage.
-  // === END GENERATED DECLS (TTechStorePage) ===
 
   TTechStorePage();
 };

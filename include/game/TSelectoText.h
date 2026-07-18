@@ -6,7 +6,6 @@
 // VTABLE: IMPERIALISM 0x00662640
 class TSelectoText : public TStaticText {
 public:
-  // === BEGIN GENERATED DECLS (TSelectoText) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TSelectoText)
   virtual ~TSelectoText() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -127,7 +126,6 @@ public:
   // slot 0x75 RenderControlStateTextBySelectionCode inherited unchanged (0x4900a0)
   virtual void
   OrphanRetStub_0057b760(); // slot 0x76 0x57b760 — genuinely a 1-byte no-op (bare `ret`)
-  // === END GENERATED DECLS (TSelectoText) ===
 
   TSelectoText();
 };

@@ -6,7 +6,6 @@
 // VTABLE: IMPERIALISM 0x0064f6d8
 class TExpansionOrder : public TItemOrder {
 public:
-  // === BEGIN GENERATED DECLS (TExpansionOrder) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TExpansionOrder)
   virtual ~TExpansionOrder() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -30,7 +29,6 @@ public:
   InitializeCityProductionState_Impl_At004b9010(int param_1, undefined2 param_2, undefined2 param_3,
                                                 undefined2 param_4,
                                                 undefined2 param_5); // slot 0x12 0x4b9010
-  // === END GENERATED DECLS (TExpansionOrder) ===
 
   TExpansionOrder();
 };

@@ -38,7 +38,6 @@ public:
 // VTABLE: IMPERIALISM 0x64a098
 class TControl : public TModalTemplateDialogBase {
 public:
-  // === BEGIN GENERATED DECLS (TControl) — refreshed by recover-class; do not hand-edit ===
   virtual ~TControl() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
   // slot 0x03 AssertValid inherited unchanged (0x412bf0)
@@ -161,7 +160,6 @@ public:
   virtual char LogUnhandledDialogMethodAndReturnFalse();               // slot 0x6f 0x4294a0
   virtual void SetControlStateFlagAndMaybeRefresh(bool enabledState,
                                                   bool refreshNow); // slot 0x70 0x48e810
-  // === END GENERATED DECLS (TControl) ===
   void SetDiplomacyNationSelectionFilterAndRefreshRows(short selectedNation);
 
   int field74;

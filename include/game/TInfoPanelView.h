@@ -6,7 +6,6 @@
 // VTABLE: IMPERIALISM 0x0063fe60
 class TInfoPanelView : public TPanelView {
 public:
-  // === BEGIN GENERATED DECLS (TInfoPanelView) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TInfoPanelView)
   virtual ~TInfoPanelView() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -114,7 +113,6 @@ public:
   // slot 0x67 CtrlSlot103_SubtractPosAndDispatchSlot19C_Impl inherited unchanged (0x48bac0)
   virtual undefined OrphanRetStub_00430550() override;               // slot 0x68 0x4facc0
   virtual undefined OrphanLeaf_NoCall_Ins97_004fae00(short param_1); // slot 0x69 0x4fae00
-  // === END GENERATED DECLS (TInfoPanelView) ===
   short field_0x64[4];  // 0x64
   int m_selectedNation; // 0x6c
 

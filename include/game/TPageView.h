@@ -9,7 +9,6 @@ class TLongintList;
 // VTABLE: IMPERIALISM 0x0065e270
 class TPageView : public TView {
 public:
-  // === BEGIN GENERATED DECLS (TPageView) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TPageView)
   virtual ~TPageView() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -120,7 +119,6 @@ public:
   virtual undefined OrphanCallChain_C8_I82_0056fc80();               // slot 0x6b 0x56fc80
   virtual undefined OrphanCallChain_C8_I118_0056fdb0(short param_1); // slot 0x6c 0x56fdb0
   virtual void OrphanCallChain_C4_I18_0056ff90();                    // slot 0x6d 0x56ff90
-  // === END GENERATED DECLS (TPageView) ===
 
   // TPageView slice (+0x60..+0x83, size 0x24). Field names are hedged until the
   // page UI flow is fully recovered; offsets and init values are from the ctor.

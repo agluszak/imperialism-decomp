@@ -10,7 +10,6 @@ class TTradePageSellView;
 // VTABLE: IMPERIALISM 0x0066dfc0
 class TDealBookPicture : public TPicture {
 public:
-  // === BEGIN GENERATED DECLS (TDealBookPicture) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TDealBookPicture)
   virtual ~TDealBookPicture() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -129,7 +128,6 @@ public:
   // slot 0x72 SetPictureResourceIdAndRefresh inherited unchanged (0x48f570)
   virtual undefined UpdateDealBookResourceSelectionAndToggleControls(); // slot 0x73 0x5baf70
   virtual undefined BuildSelectedNationOrderCapabilityRows();           // slot 0x74 0x5bb2e0
-  // === END GENERATED DECLS (TDealBookPicture) ===
   // TPicture's slice ends at 0x90; RTTI oracle confirms sizeof(TDealBookPicture) == 0xb4.
   // The ctor (0x5babc0) writes field90 (= 8) and fieldB2 (= 0); the intervening region and
   // the 0xb3 byte are unconfirmed padding. Fields 0x92-0xb1 (formerly a pad92[0x20] blob)

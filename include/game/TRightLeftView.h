@@ -6,7 +6,6 @@
 // VTABLE: IMPERIALISM 0x00663990
 class TRightLeftView : public TControl {
 public:
-  // === BEGIN GENERATED DECLS (TRightLeftView) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TRightLeftView)
   virtual ~TRightLeftView() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -122,7 +121,6 @@ public:
   // slot 0x6e SetControlPictureEntryAndMaybeRefresh inherited unchanged (0x48e7a0)
   // slot 0x6f LogUnhandledDialogMethodAndReturnFalse inherited unchanged (0x4294a0)
   // slot 0x70 SetControlStateFlagAndMaybeRefresh inherited unchanged (0x48e810)
-  // === END GENERATED DECLS (TRightLeftView) ===
 
   int timingDword84;
 

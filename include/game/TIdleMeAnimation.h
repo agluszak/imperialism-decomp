@@ -7,7 +7,6 @@
 // VTABLE: IMPERIALISM 0x0064dfb8
 class TIdleMeAnimation : public TAnimation {
 public:
-  // === BEGIN GENERATED DECLS (TIdleMeAnimation) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TIdleMeAnimation)
   virtual ~TIdleMeAnimation() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -21,7 +20,6 @@ public:
   virtual undefined AdvanceAnimationTickAndInvalidateOnFrameFlip() override; // slot 0x0a 0x4aca60
   // slot 0x0b RenderBattleReportInsetWithPaletteShift inherited unchanged (0x49f190)
   // slot 0x0c RenderBattleReportViewSurfaceSpriteWithResourceHandle inherited unchanged (0x49f2d0)
-  // === END GENERATED DECLS (TIdleMeAnimation) ===
   // RTTI oracle: sizeof(TIdleMeAnimation) == 0x2c, identical to TAnimation -- no own
   // fields.
 

@@ -6,7 +6,6 @@
 // VTABLE: IMPERIALISM 0x0064d2f8
 class TSuperArmyRoster : public TPageView {
 public:
-  // === BEGIN GENERATED DECLS (TSuperArmyRoster) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TSuperArmyRoster)
   virtual ~TSuperArmyRoster() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -118,7 +117,6 @@ public:
   // slot 0x6c OrphanCallChain_C8_I118_0056fdb0 inherited unchanged (0x56fdb0)
   // slot 0x6d OrphanCallChain_C4_I18_0056ff90 inherited unchanged (0x56ff90)
   virtual undefined ConstructTSuperArmyRosterBaseState(); // slot 0x6e 0x4aa540
-  // === END GENERATED DECLS (TSuperArmyRoster) ===
 
   TSuperArmyRoster();
 };

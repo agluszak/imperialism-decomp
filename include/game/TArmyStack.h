@@ -16,7 +16,6 @@ struct TArmyStackUnitNode {
 // VTABLE: IMPERIALISM 0x0064ca38
 class TArmyStack : public TObject {
 public:
-  // === BEGIN GENERATED DECLS (TArmyStack) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TArmyStack)
   virtual ~TArmyStack() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -27,7 +26,6 @@ public:
   virtual void Free() override;                    // slot 0x07 0x4a7c20
   // slot 0x08 ShallowClone inherited unchanged (0x4798d0)
   // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
-  // === END GENERATED DECLS (TArmyStack) ===
   // Field layout from ProcessTileUnitListsAndApplyRandomStatusUpdates's construction site
   // (0x4a1f80, `new TArmyStack()` + scatter-init) and OrphanCallChain_C12_I108_004a2390's
   // (0x4a2390) reads. TObject's own vptr occupies the first 4 bytes.

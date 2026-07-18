@@ -6,7 +6,6 @@
 // VTABLE: IMPERIALISM 0x00651fc0
 class TUniversityView : public TBuildingView {
 public:
-  // === BEGIN GENERATED DECLS (TUniversityView) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TUniversityView)
   virtual ~TUniversityView() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -130,7 +129,6 @@ public:
   // slot 0x77 SetUniversityDialogLocalizedTextAndRefresh inherited unchanged (0x4c70e0)
   // slot 0x78 SetUniversityDialogTextAndRefresh inherited unchanged (0x4c6ff0)
   virtual void SelectUniversityRecruitmentEntry(short nRecruitmentEntryIndex); // slot 0x79 0x4cb320
-  // === END GENERATED DECLS (TUniversityView) ===
 
   TUniversityView();
 };

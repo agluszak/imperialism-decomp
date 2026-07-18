@@ -6,7 +6,6 @@
 // VTABLE: IMPERIALISM 0x00655100
 class TMinisterView : public TView {
 public:
-  // === BEGIN GENERATED DECLS (TMinisterView) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TMinisterView)
   virtual ~TMinisterView() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -117,7 +116,6 @@ public:
   virtual undefined OrphanCallChain_C1_I09_004f2ef0();                   // slot 0x69 0x4f2ef0
   virtual undefined OrphanCallChain_C2_I08_004f2ec0(undefined4 param_1); // slot 0x6a 0x4f2ec0
   virtual undefined OrphanLeaf_NoCall_Ins03_004f2ea0();                  // slot 0x6b 0x4f2ea0
-  // === END GENERATED DECLS (TMinisterView) ===
   // TView's own fields end exactly at 0x60 (see TWorldView's identically-placed
   // viewportOffsetX); zeroed by the ctor, no other reader/writer found yet.
   int field60; // +0x60

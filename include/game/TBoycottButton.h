@@ -7,7 +7,6 @@ struct CRuntimeClass;
 // VTABLE: IMPERIALISM 0x664238
 class TBoycottButton : public TToggleButton {
 public:
-  // === BEGIN GENERATED DECLS (TBoycottButton) — refreshed by recover-class; do not hand-edit ===
   virtual ~TBoycottButton() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
   // slot 0x03 AssertValid inherited unchanged (0x412bf0)
@@ -124,7 +123,6 @@ public:
   // slot 0x72 SetPictureResourceIdAndRefresh inherited unchanged (0x48f570)
   // slot 0x73 IsSelected inherited unchanged (0x571330)
   // slot 0x74 Select — declared in hand section (0x584800)
-  // === END GENERATED DECLS (TBoycottButton) ===
   TBoycottButton();
   DECLARE_DYNCREATE(TBoycottButton)
 

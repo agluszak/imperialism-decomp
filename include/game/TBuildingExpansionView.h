@@ -6,7 +6,6 @@
 // VTABLE: IMPERIALISM 0x006528d8
 class TBuildingExpansionView : public TPicture {
 public:
-  // === BEGIN GENERATED DECLS (TBuildingExpansionView) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TBuildingExpansionView)
   virtual ~TBuildingExpansionView() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -125,7 +124,6 @@ public:
   virtual void OpenCityViewProductionDialog(int nBuildingSlotId, int* pCityStateData,
                                             int nDialogFlags);         // slot 0x73 0x4ce5a0
   virtual void ApplyCityProductionDialogChanges(int nDialogActionTag); // slot 0x74 0x4cebb0
-  // === END GENERATED DECLS (TBuildingExpansionView) ===
 
   TBuildingExpansionView();
 };

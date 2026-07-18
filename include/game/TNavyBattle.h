@@ -8,7 +8,6 @@ class TTacticalUnit;
 // VTABLE: IMPERIALISM 0x0066a140
 class TNavyBattle : public TTacticalBattle {
 public:
-  // === BEGIN GENERATED DECLS (TNavyBattle) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TNavyBattle)
   virtual ~TNavyBattle() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -39,7 +38,6 @@ public:
   // slot 0x16 ComputeRallyStrengthAndQueueTacticalRallyCommand inherited unchanged (0x5a3810)
   // slot 0x17 ExecuteTacticalMineActionAndQueuePacket inherited unchanged (0x5a34d0)
   // slot 0x18 ExecuteTacticalDigActionAndConsumeUnitActionPoints inherited unchanged (0x5a3640)
-  // === END GENERATED DECLS (TNavyBattle) ===
 
   TNavyBattle();
 };

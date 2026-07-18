@@ -12,7 +12,6 @@ class TMilitaryUnit;
 // VTABLE: IMPERIALISM 0x00669660
 class TArmyTacUnit : public TTacticalUnit {
 public:
-  // === BEGIN GENERATED DECLS (TArmyTacUnit) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TArmyTacUnit)
   virtual ~TArmyTacUnit() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -29,7 +28,6 @@ public:
   virtual undefined OrphanLeaf_NoCall_Ins02_005a5da0() override;       // slot 0x0d 0x5a61a0
   virtual void ApplyTacticalDamage(int damageA, int damageB) override; // slot 0x0e 0x5a61c0
   // slot 0x0f FlipUnitSideAffiliation inherited unchanged (0x5a5eb0)
-  // === END GENERATED DECLS (TArmyTacUnit) ===
 
   // Army slice (+0x34..+0x54), from the duplicated init in TArmyBattle::ReadFrom
   // (0x5a4990), the base-state ctor 0x5a5f20, and the float writers at 0x5a5fe0.

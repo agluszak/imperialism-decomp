@@ -6,7 +6,6 @@
 // VTABLE: IMPERIALISM 0x0064fe78
 class TRailheadDialog : public TDialogView {
 public:
-  // === BEGIN GENERATED DECLS (TRailheadDialog) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TRailheadDialog)
   virtual ~TRailheadDialog() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -113,7 +112,6 @@ public:
   // slot 0x67 CtrlSlot103_SubtractPosAndDispatchSlot19C_Impl inherited unchanged (0x48bac0)
   virtual undefined ConstructTRailheadDialogBaseState(); // slot 0x68 0x4bd040
   virtual undefined VTableSlot69();                      // slot 0x69 0x4bd260
-  // === END GENERATED DECLS (TRailheadDialog) ===
 
   TRailheadDialog();
 };

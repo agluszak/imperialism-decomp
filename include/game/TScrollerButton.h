@@ -6,7 +6,6 @@
 // VTABLE: IMPERIALISM 0x006616e8
 class TScrollerButton : public TPictureButton {
 public:
-  // === BEGIN GENERATED DECLS (TScrollerButton) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TScrollerButton)
   virtual ~TScrollerButton() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -125,7 +124,6 @@ public:
   // slot 0x71 ResetPictureResourceEntry inherited unchanged (0x48f520)
   // slot 0x72 SetPictureResourceIdAndRefresh inherited unchanged (0x48f570)
   // slot 0x73 IsSelected inherited unchanged (0x5708c0)
-  // === END GENERATED DECLS (TScrollerButton) ===
 
   TScrollerButton();
 };

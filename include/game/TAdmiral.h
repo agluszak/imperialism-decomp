@@ -12,13 +12,11 @@ class TShip;
 // VTABLE: IMPERIALISM 0x0065c498
 class TAdmiral : public TObject {
 public:
-  // === BEGIN GENERATED DECLS (TAdmiral) — refreshed by recover-class; do not hand-edit ===
   // slot 0x02 Serialize inherited unchanged (0x485e90)
   // slot 0x03 AssertValid inherited unchanged (0x412bf0)
   // slot 0x04 Dump inherited unchanged (0x412c10)
   // slot 0x08 ShallowClone inherited unchanged (0x4798d0)
   // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
-  // === END GENERATED DECLS (TAdmiral) ===
   DECLARE_DYNCREATE(TAdmiral)                      // GetRuntimeClass slot 0x00 0x551410
   virtual void WriteTo(TStream* stream) override;  // 0x14 0x551670
   virtual void ReadFrom(TStream* stream) override; // 0x18 0x551700

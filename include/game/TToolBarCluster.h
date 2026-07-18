@@ -6,7 +6,6 @@
 // VTABLE: IMPERIALISM 0x00664b00
 class TToolBarCluster : public TCluster {
 public:
-  // === BEGIN GENERATED DECLS (TToolBarCluster) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TToolBarCluster)
   virtual ~TToolBarCluster() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -129,7 +128,6 @@ public:
   virtual void
   UpdateControlTagTreaTextFromNationAndMapContext(short nationId);       // slot 0x74 0x585ba0
   virtual void SehCleanup_ReleaseTwoTempSharedStringRefs(int unusedArg); // slot 0x75 0x585ee0
-  // === END GENERATED DECLS (TToolBarCluster) ===
   //
   // SetMapInteractionMode/RefreshMapOrderEntryPanel/SetActiveMapOrderEntry (previously
   // declared here per symbols.csv's curated class attribution) moved to TMapUberPicture:

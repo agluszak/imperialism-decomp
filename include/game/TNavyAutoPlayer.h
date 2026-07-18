@@ -6,7 +6,6 @@
 // VTABLE: IMPERIALISM 0x006697c0
 class TNavyAutoPlayer : public TNavyPlayer {
 public:
-  // === BEGIN GENERATED DECLS (TNavyAutoPlayer) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TNavyAutoPlayer)
   virtual ~TNavyAutoPlayer() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -25,7 +24,6 @@ public:
   // slot 0x0f AddTacticalUnitToUnitListHead inherited unchanged (0x59eea0)
   // slot 0x10 AlwaysTrueTacticalPredicate10 inherited unchanged (0x59adf0)
   // slot 0x11 ProceedAfterBattleIntroAccepted inherited unchanged (0x59ae10)
-  // === END GENERATED DECLS (TNavyAutoPlayer) ===
 
   TNavyAutoPlayer();
 };

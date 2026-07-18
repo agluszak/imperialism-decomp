@@ -9,7 +9,6 @@ class TTacticalUnit;
 // VTABLE: IMPERIALISM 0x006695f0
 class TArmyPlayer : public TTacticalPlayer {
 public:
-  // === BEGIN GENERATED DECLS (TArmyPlayer) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TArmyPlayer)
   virtual ~TArmyPlayer() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -32,7 +31,6 @@ public:
   virtual undefined TArmyTacUnit_VtblSlot07();               // slot 0x13 0x59c3c0
   virtual void RunTacticalAutoTurnControllerForActiveUnit(); // slot 0x14 0x59e4f0
   virtual undefined TArmyTacUnit_VtblSlot09();               // slot 0x15 0x59ea60
-  // === END GENERATED DECLS (TArmyPlayer) ===
 
   // Partial slice (object is 0x54): only the side's combatant stack is recovered so
   // far; stored by InitializeTacticalSideFromArmyUnitList and read back by

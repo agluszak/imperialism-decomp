@@ -6,7 +6,6 @@
 // VTABLE: IMPERIALISM 0x0063eb00
 class TInfoBarText : public TDeluxeText {
 public:
-  // === BEGIN GENERATED DECLS (TInfoBarText) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TInfoBarText)
   virtual ~TInfoBarText() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -139,7 +138,6 @@ public:
   virtual void InitializeMapHintTextStyleAndThemeFlags(int stylePrimary,
                                                        int styleSecondary); // slot 0x81 0x5b6840
   virtual void OrphanCallChain_C1_I05_005b6810();                           // slot 0x82 0x5b6810
-  // === END GENERATED DECLS (TInfoBarText) ===
 
   RECT layoutRectA4; // +0xa4
 

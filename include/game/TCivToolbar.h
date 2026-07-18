@@ -6,7 +6,6 @@ struct CRuntimeClass;
 // VTABLE: IMPERIALISM 0x667f00
 class TCivToolbar : public TCluster {
 public:
-  // === BEGIN GENERATED DECLS (TCivToolbar) — refreshed by recover-class; do not hand-edit ===
   virtual ~TCivToolbar() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
   // slot 0x03 AssertValid inherited unchanged (0x412bf0)
@@ -122,7 +121,6 @@ public:
   // slot 0x70 SetControlStateFlagAndMaybeRefresh inherited unchanged (0x48e810)
   // slot 0x71 OrphanTiny_GetDwordEcxOffset_84_00491770 inherited unchanged (0x491770)
   // slot 0x72 OrphanCallChain_C2_I51_00491790 inherited unchanged (0x491790)
-  // === END GENERATED DECLS (TCivToolbar) ===
   short civilianClassId; // 0x88
   short pad_8a;
 

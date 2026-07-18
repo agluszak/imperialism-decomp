@@ -8,7 +8,6 @@ class ArchiveStreamAdapter;
 // VTABLE: IMPERIALISM 0x00648a60
 class TDocument : public TObject {
 public:
-  // === BEGIN GENERATED DECLS (TDocument) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TDocument)
   virtual ~TDocument() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -26,7 +25,6 @@ public:
                                            int flag); // slot 0x0a 0x486530
   virtual undefined OrphanRetStub_00486550(ArchiveStreamAdapter* stream,
                                            int flag); // slot 0x0b 0x486550
-  // === END GENERATED DECLS (TDocument) ===
 
   TDocument();
 };

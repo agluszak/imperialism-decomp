@@ -10,7 +10,6 @@
 // VTABLE: IMPERIALISM 0x0066ee60
 class TCivUnit : public TUnit {
 public:
-  // === BEGIN GENERATED DECLS (TCivUnit) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TCivUnit)
   virtual ~TCivUnit() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -26,7 +25,6 @@ public:
   virtual void DetachUnitOrderFromOwnerAndReset() override;        // slot 0x0c 0x5c2c40
   virtual void SetOrderModeSlot34(int mode, int payload) override; // slot 0x0d 0x5c29f0
   virtual void ResetCivWorkOrderAndRefreshCounters();              // slot 0x0e 0x5c2c60
-  // === END GENERATED DECLS (TCivUnit) ===
   short remainingTurns24;   // 0x24
   short completionMarker26; // 0x26
 

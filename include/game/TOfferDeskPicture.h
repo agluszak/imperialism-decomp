@@ -7,7 +7,6 @@
 // VTABLE: IMPERIALISM 0x0066e728
 class TOfferDeskPicture : public TPicture {
 public:
-  // === BEGIN GENERATED DECLS (TOfferDeskPicture) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TOfferDeskPicture)
   virtual ~TOfferDeskPicture() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -126,7 +125,6 @@ public:
   // slot 0x71 ResetPictureResourceEntry inherited unchanged (0x48f520)
   // slot 0x72 SetPictureResourceIdAndRefresh inherited unchanged (0x48f570)
   virtual undefined InitializeTradeScreenControlsLabelsAndNationContext(); // slot 0x73 0x5bea00
-  // === END GENERATED DECLS (TOfferDeskPicture) ===
   // TPicture's own slice ends at 0x90 (ASSERT_SIZE); RTTI oracle confirms
   // sizeof(TOfferDeskPicture) == 0xa8. The ctor only touches field9e/fieldA0/fieldA4.
   // 0x90/0x92/0x96 identified from RefreshSelectedNationOrderCompatibilityInfo (hedged

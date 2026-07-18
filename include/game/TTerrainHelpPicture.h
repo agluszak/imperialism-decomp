@@ -8,7 +8,6 @@ class TDeluxeText;
 // VTABLE: IMPERIALISM 0x00642038
 class TTerrainHelpPicture : public TPicture {
 public:
-  // === BEGIN GENERATED DECLS (TTerrainHelpPicture) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TTerrainHelpPicture)
   virtual ~TTerrainHelpPicture() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -129,7 +128,6 @@ public:
   // to the rest) and fills the 'item' caption + 'info' description panes from
   // menuItemIds94[selectedIndex]. Slot 0x73, 0x5057a0.
   virtual void HighlightSelectedMenuItemAndRefreshDetailText(int selectedIndex);
-  // === END GENERATED DECLS (TTerrainHelpPicture) ===
 
   // 'info' pane resolved and styled by BuildMapTileActionContextMenu; also read by the
   // slot-0x73 rebuild.

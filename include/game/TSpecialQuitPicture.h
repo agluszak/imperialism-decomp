@@ -6,7 +6,6 @@
 // VTABLE: IMPERIALISM 0x00643c78
 class TSpecialQuitPicture : public TPicture {
 public:
-  // === BEGIN GENERATED DECLS (TSpecialQuitPicture) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TSpecialQuitPicture)
   virtual ~TSpecialQuitPicture() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -124,7 +123,6 @@ public:
   // slot 0x71 ResetPictureResourceEntry inherited unchanged (0x48f520)
   // slot 0x72 SetPictureResourceIdAndRefresh inherited unchanged (0x48f570)
   virtual undefined OrphanRetStub_0045acb0(); // slot 0x73 0x45acb0
-                                              // === END GENERATED DECLS (TSpecialQuitPicture) ===
 
   // NOOP: verified empty in original 0x00458dcb (trivial inline ctor: the builder
   // expansion site emits only the base ctor call + vtbl install)

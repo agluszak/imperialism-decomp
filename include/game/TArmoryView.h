@@ -6,7 +6,6 @@
 // VTABLE: IMPERIALISM 0x00652b10
 class TArmoryView : public TBuildingView {
 public:
-  // === BEGIN GENERATED DECLS (TArmoryView) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TArmoryView)
   virtual ~TArmoryView() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -130,7 +129,6 @@ public:
   // slot 0x77 SetUniversityDialogLocalizedTextAndRefresh inherited unchanged (0x4c70e0)
   // slot 0x78 SetUniversityDialogTextAndRefresh inherited unchanged (0x4c6ff0)
   virtual void RefreshCityViewProductionDetails(short nBuildingSlotId); // slot 0x79 0x4cfbd0
-  // === END GENERATED DECLS (TArmoryView) ===
 
   TArmoryView();
 };

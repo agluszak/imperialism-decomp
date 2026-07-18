@@ -6,7 +6,6 @@
 // VTABLE: IMPERIALISM 0x00653248
 class TCivMgr : public TObject {
 public:
-  // === BEGIN GENERATED DECLS (TCivMgr) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TCivMgr)
   virtual ~TCivMgr() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -25,7 +24,6 @@ public:
       short nNewTileIndex, class TCivUnit* pCivOrderEntry); // slot 0x0c 0x4d4310
   virtual void DispatchSelectedUnitToGlobalMapStateHandler(
       class TCivUnit* pUnitOrderEntry); // slot 0x0d 0x4d2270
-  // === END GENERATED DECLS (TCivMgr) ===
   // Non-virtual order-action helper (0x4d3a60); dispatched from the slot 0x0b virtual
   // HandleCivilianTileOrderAction via thunk_HandleEngineerConstructionAction (0x406ccb).
   bool HandleEngineerConstructionAction(short nTileIndex);

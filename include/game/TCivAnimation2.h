@@ -17,7 +17,6 @@
 // VTABLE: IMPERIALISM 0x0064c390
 class TCivAnimation2 : public TAnimation {
 public:
-  // === BEGIN GENERATED DECLS (TCivAnimation2) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TCivAnimation2)
   virtual ~TCivAnimation2() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -31,7 +30,6 @@ public:
   virtual undefined AdvanceAnimationTickAndInvalidateOnFrameFlip() override; // slot 0x0a 0x49f7c0
   virtual undefined RenderBattleReportInsetWithPaletteShift() override;      // slot 0x0b 0x49f8e0
   // slot 0x0c RenderBattleReportViewSurfaceSpriteWithResourceHandle inherited unchanged (0x49f2d0)
-  // === END GENERATED DECLS (TCivAnimation2) ===
   // TAnimation's own slice ends at 0x2c (ASSERT_SIZE); RTTI oracle confirms
   // sizeof(TCivAnimation2) == 0x30. Caches the ctor's `kind` selector (see the ctor
   // below) for later reference; real reader not yet identified.
