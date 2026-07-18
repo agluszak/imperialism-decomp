@@ -16985,7 +16985,7 @@
     },
     {
       "address": "0x512850",
-      "matching": 0.5555555555555556,
+      "matching": 0.3157894736842105,
       "name": "NoOpMapTilePredicateStub",
       "type": 1
     },
@@ -17448,7 +17448,7 @@
     },
     {
       "address": "0x5178f0",
-      "matching": 0.3446601941747573,
+      "matching": 0.3260340632603406,
       "name": "ComputeRepresentativeTileIndexForTerrainTypeWithWrapBias",
       "type": 1
     },
@@ -18235,25 +18235,25 @@
     },
     {
       "address": "0x526c20",
-      "matching": 0.008298755186721992,
+      "matching": 0.3181818181818182,
       "name": "TMapMaker::RunMapGenerationAttempt",
       "type": 1
     },
     {
       "address": "0x527040",
-      "matching": 0.010869565217391304,
+      "matching": 0.2814070351758794,
       "name": "TMapMaker::QueryStepValue",
       "type": 1
     },
     {
       "address": "0x527300",
-      "matching": 0.0,
+      "matching": 0.017543859649122806,
       "name": "TMapMaker::DispatchQueuedUiCommandAndRelease",
       "type": 1
     },
     {
       "address": "0x5274d0",
-      "matching": 0.0,
+      "matching": 0.03225806451612903,
       "name": "TMapMaker::DispatchEvent",
       "type": 1
     },
@@ -18541,7 +18541,7 @@
     },
     {
       "address": "0x52d750",
-      "matching": 0.22380952380952382,
+      "matching": 0.2222222222222222,
       "name": "MergeSmallCityRegionsAndCompactIds",
       "type": 1
     },
