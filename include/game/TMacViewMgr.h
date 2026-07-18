@@ -37,14 +37,25 @@ public:
   SyncSellTaggedChildControlWithNationState(TView* view, short orderSlot,
                                             short nationIndex); // slot 0x10 0x50bc50
   virtual undefined
-  RefreshCityProductionDetailPanelAndArrowWidgets(word param_1);   // slot 0x11 0x50bea0
-  virtual undefined ResolveTurnEventDialogOrFailAndInvokeSlot9C(); // slot 0x12 0x50be30
-  virtual void DispatchTurnEvent3B8AndWaitForCompletionFlag();     // slot 0x13 0x50d310
-  virtual undefined OrphanCallChain_C10_I80_0050d470(undefined4 param_1,
-                                                     undefined4 param_2); // slot 0x14 0x50d470
+  RefreshCityProductionDetailPanelAndArrowWidgets(word param_1); // slot 0x11 0x50bea0
+  // Arity corrected against RET-imm evidence (the imported Ghidra prototypes undercounted
+  // the callee-cleaned stack args): RET 0x4 = 1 dword. Body ignores the arg (vestigial).
+  virtual undefined
+  ResolveTurnEventDialogOrFailAndInvokeSlot9C(int unusedArg); // slot 0x12 0x50be30
+  // RET 0x8 = 2 dwords; body waits on this->field04, args vestigial.
+  virtual void DispatchTurnEvent3B8AndWaitForCompletionFlag(int unusedArg1,
+                                                            int unusedArg2); // slot 0x13 0x50d310
+  // RET 0x1c = 7 dwords (Ghidra recovered only 2); trailing args RET-derived, body partial.
+  virtual undefined OrphanCallChain_C10_I80_0050d470(int param_1, undefined4 param_2, int arg3,
+                                                     int arg4, int arg5, int arg6,
+                                                     int arg7); // slot 0x14 0x50d470
+  // RET 0x14 = 5 dwords (Ghidra recovered only 3); trailing args RET-derived.
   virtual undefined CreateCityBuildingDialogBySlot(int param_1, undefined4 param_2,
-                                                   undefined4 param_3);    // slot 0x15 0x50d360
-  virtual undefined OrphanCallChain_C9_I49_0050d5b0(undefined4 param_1);   // slot 0x16 0x50d5b0
+                                                   undefined4 param_3, int arg4,
+                                                   int arg5); // slot 0x15 0x50d360
+  // RET 0xc = 3 dwords (Ghidra recovered only 1); trailing args RET-derived.
+  virtual undefined OrphanCallChain_C9_I49_0050d5b0(int param_1, int arg2,
+                                                    int arg3);             // slot 0x16 0x50d5b0
   virtual void OrphanLeaf_NoCall_Ins06_0050d8d0();                         // slot 0x17 0x50d8d0
   virtual void OrphanLeaf_NoCall_Ins06_0050d8f0(short param_1);            // slot 0x18 0x50d8f0
   virtual void OrphanCallChain_C1_I10_0050d920();                          // slot 0x19 0x50d920
@@ -68,8 +79,12 @@ public:
                                                     short param_3); // slot 0x22 0x50d9e0
   virtual undefined
   RenderOffscreenBitmapTileSpanAndRestoreContext(int param_1); // slot 0x23 0x50d700
+  // RET 0x8 = 2 dwords. arg1 is the (transformed) hit-test point, arg2 the region-slot
+  // index — the previous 1-arg `(short)` form mis-attributed the region index to arg1 and
+  // dropped the point (caller 0x4f5e00 dispatches slot 0x90 with (&localPoint, index)).
   virtual undefined
-  WrapperFor_IsPointInsideHitRegion_At0050d6c0(short param_1); // slot 0x24 0x50d6c0
+  WrapperFor_IsPointInsideHitRegion_At0050d6c0(CPoint* point,
+                                               short regionIndex); // slot 0x24 0x50d6c0
   virtual void
   EnsureClipRegionWrapperAtSlotAndMergeSourceRegion(undefined4 param_1,
                                                     short param_2); // slot 0x25 0x50d680

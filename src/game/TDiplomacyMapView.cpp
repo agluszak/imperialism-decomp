@@ -79,7 +79,7 @@ void StrategicMapCallbackRecord::AppendPackedColorDword(int surface, int packedC
   // standard C++ calling convention; this is an unavoidable low-level bridge (executing a
   // JIT'd opcode buffer, not a normal-function convention fake).
   unsigned char* entry = EnsureOpcodeBufferByteAtIndex(field14);
-  reinterpret_cast<void(*)(int)>(entry)(surface);
+  reinterpret_cast<void (*)(int)>(entry)(surface);
 }
 
 // FUNCTION: IMPERIALISM 0x004d5cf0
@@ -468,7 +468,7 @@ int TDiplomacyMapView::ResolveDiplomacyActionFromClickAndUpdateTarget(CPoint* cl
   do {
     if (*terrainDescriptors != 0) {
       char hit = g_pStrategicMapViewSystem->WrapperFor_IsPointInsideHitRegion_At0050d6c0(
-          static_cast<short>(terrainIndex));
+          &localPoint, static_cast<short>(terrainIndex));
       if (hit != 0) {
         break;
       }
@@ -528,7 +528,7 @@ void TDiplomacyMapView::HandleCursorHoverSelectionByChildHitTestAndFallback(CPoi
   do {
     if (terrainDescriptors[static_cast<short>(hitIndex)] != 0) {
       char regionHit = g_pStrategicMapViewSystem->WrapperFor_IsPointInsideHitRegion_At0050d6c0(
-          static_cast<short>(hitIndex));
+          &localPoint, static_cast<short>(hitIndex));
       if (regionHit != 0) {
         hit = true;
         break;

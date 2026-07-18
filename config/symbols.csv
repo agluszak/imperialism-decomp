@@ -3130,10 +3130,10 @@ address|name|symbol|size|type|prototype|provenance
 50bea0|TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets||4080|function|undefined RefreshCityProductionDetailPanelAndArrowWidgets()|
 50d310|TMacViewMgr::DispatchTurnEvent3B8AndWaitForCompletionFlag||57|function|undefined DispatchTurnEvent3B8AndWaitForCompletionFlag()|
 50d360|TMacViewMgr::CreateCityBuildingDialogBySlot||200|function|undefined CreateCityBuildingDialogBySlot()|
-50d470|TMacViewMgr::OrphanCallChain_C10_I80_0050d470||243|function|undefined OrphanCallChain_C10_I80_0050d470(undefined4 param_1, undefined4 param_2)|
-50d5b0|TMacViewMgr::OrphanCallChain_C9_I49_0050d5b0||160|function|undefined OrphanCallChain_C9_I49_0050d5b0(undefined4 param_1)|
+50d470|TMacViewMgr::OrphanCallChain_C10_I80_0050d470||243|function|undefined OrphanCallChain_C10_I80_0050d470(int param_1, undefined4 param_2, int arg3, int arg4, int arg5, int arg6, int arg7)|
+50d5b0|TMacViewMgr::OrphanCallChain_C9_I49_0050d5b0||160|function|undefined OrphanCallChain_C9_I49_0050d5b0(int param_1, int arg2, int arg3)|
 50d680|TMacViewMgr::EnsureClipRegionWrapperAtSlotAndMergeSourceRegion||45|function|undefined EnsureClipRegionWrapperAtSlotAndMergeSourceRegion()|
-50d6c0|TMacViewMgr::WrapperFor_IsPointInsideHitRegion_At0050d6c0||35|function|undefined WrapperFor_IsPointInsideHitRegion_At0050d6c0(short param_1)|
+50d6c0|TMacViewMgr::WrapperFor_IsPointInsideHitRegion_At0050d6c0||35|function|undefined WrapperFor_IsPointInsideHitRegion_At0050d6c0(CPoint* point, short regionIndex)|
 50d700|TMacViewMgr::RenderOffscreenBitmapTileSpanAndRestoreContext||364|function|undefined RenderOffscreenBitmapTileSpanAndRestoreContext()|
 50d8d0|TMacViewMgr::OrphanLeaf_NoCall_Ins06_0050d8d0||16|function|undefined OrphanLeaf_NoCall_Ins06_0050d8d0(void)|
 50d8f0|TMacViewMgr::OrphanLeaf_NoCall_Ins06_0050d8f0||26|function|undefined OrphanLeaf_NoCall_Ins06_0050d8f0(short param_1)|
