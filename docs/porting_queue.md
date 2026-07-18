@@ -7,18 +7,15 @@ each with the evidence needed to start (address, size, current score if any, blo
 
 ## Big stubs (never ported)
 
-- TMapMaker phase bodies: `0x528e50` (940B, `vmethod_0017`/slot 17/0x44) — still a
-  fabricated `{}` stub; not yet attempted. Do the same raw-listing signature audit
-  before porting (check its actual vtable calls against real arg counts — every
-  other TMapMaker slot audited so far this pass had a wrong templated signature).
-  This is the hex-grid neighbor-sampling pass over the 6 `0x697450`-band globals —
-  those are now named (`g_hexColOffsetEvenRow_00697450`/`g_hexRowOffset_00697468`/
-  `g_hexColOffsetOddRow_00697480`, confirmed by 5 different callers this pass), so
-  that blocker is resolved. `0x526c20`/`0x527040`/`0x527730` (previously flagged in
-  this same bucket) are now landed — see below.
+- **TMapMaker phase bodies bucket is now fully landed** (all 6 originally-flagged/
+  discovered functions ported: `0x526c20`/`0x527040`/`0x527730`/`0x528140`/
+  `0x5283c0`/`0x528e50`) — see the class-recovery writeup below. Remaining follow-up
+  in this class: the union-find stub pair `0x527300`/`0x5274d0` (signatures already
+  fixed, decompiles already captured, bodies not yet ported — see below).
 - **TMapMaker class recovery (landed 2026-07-18, `0x526c20` 0.83% -> 31.82%,
   `0x527040` 1.09% -> 28.14%, `0x527730` ~0% -> 29.58%, `0x528140` ~0% -> 32.95%,
-  `0x5283c0` ~0% -> 29.69%)**: confirmed the systemic mismodeling this bucket
+  `0x5283c0` ~0% -> 29.69%, `0x528e50` ~0% -> 15.16%)**: confirmed the systemic
+  mismodeling this bucket
   flagged — several vtable slot signatures were templated off TEventHandler/TView's
   real virtuals of the same slot POSITION, not verified against TMapMaker's own call
   sites (`just vtable TMapMaker` was, and still is, 100% the whole time: the
@@ -87,8 +84,15 @@ each with the evidence needed to start (address, size, current score if any, blo
     (confirmed empirically: adding `__inline` raised MapGenPassSlot0F 18.60% ->
     29.58%, OwnerPanel 21.88% -> 32.95%, ForwardParam 27.12% -> 29.69%, with no
     other source change).
-  - `0x528e50` (`vmethod_0017`, slot 17/0x44) is the one remaining unaudited/
-    unported slot in this bucket — see the "Big stubs" entry above.
+  - Slot 17/0x44 (`vmethod_0017(int param)`, 1-arg) was really 0-arg (verified: bare
+    `RET` with no operand). Renamed to `SmoothCityRegionOwnershipByNeighborSampling`
+    and fully ported (0x528e50, ~0% -> 15.16%): a two-pass ownership-smoothing sweep
+    over rows 1..58 of the full-resolution grid — pass 1 erodes tiles with 0-2
+    (50%/75% chance) same-owner hex neighbors into a differing neighbor's full
+    0x24-byte record when one exists; pass 2 replaces any tile with NO same-owner
+    neighbor at all into a uniformly-random neighbor's record. This was the last
+    remaining function in the "Big stubs" TMapMaker bucket — it is now fully closed
+    out except for the union-find pair noted above.
 
 ## Known-bad re-ports (score far below structure)
 
