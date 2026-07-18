@@ -1,4 +1,4 @@
 {
-  "stub_call_refs": 34,
-  "fn_ptr_casts": 50
+  "stub_call_refs": 32,
+  "fn_ptr_casts": 48
 }

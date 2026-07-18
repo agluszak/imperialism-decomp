@@ -13063,7 +13063,8 @@
     },
     {
       "address": "0x4e0610",
-      "matching": 1.0,
+      "effective": true,
+      "matching": 0.42857142857142855,
       "name": "TGreatPower::ReturnFalseNationStateActionStub_8a",
       "type": 1
     },
@@ -13082,7 +13083,7 @@
     },
     {
       "address": "0x4e06d0",
-      "matching": 1.0,
+      "matching": 0.8095238095238095,
       "name": "TGreatPower::SumNationRuntimeFiveBucketValue44",
       "type": 1
     },
@@ -13112,7 +13113,7 @@
     },
     {
       "address": "0x4e09a0",
-      "matching": 0.5421686746987951,
+      "matching": 0.5180722891566265,
       "name": "TGreatPower::ComputeCityOrderCapabilityAggregateScore",
       "type": 1
     },
@@ -16629,7 +16630,7 @@
     },
     {
       "address": "0x50bea0",
-      "matching": 0.21081326669695594,
+      "matching": 0.21172194457064972,
       "name": "TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets",
       "type": 1
     },
@@ -17447,7 +17448,7 @@
     },
     {
       "address": "0x5178f0",
-      "matching": 0.3446601941747573,
+      "matching": 0.3260340632603406,
       "name": "ComputeRepresentativeTileIndexForTerrainTypeWithWrapBias",
       "type": 1
     },
@@ -22094,7 +22095,7 @@
     },
     {
       "address": "0x54ff00",
-      "matching": 0.4745762711864407,
+      "matching": 0.4661016949152542,
       "name": "TShip::ComputeNavyOrderPriorityContributionPercentByCategory",
       "type": 1
     },
@@ -26346,7 +26347,7 @@
     },
     {
       "address": "0x57da70",
-      "matching": 0.14991624790619765,
+      "matching": 0.1740216486261449,
       "name": "TSimMgr::AdvanceGlobalTurnStateMachine",
       "type": 1
     },
@@ -30945,8 +30946,8 @@
     },
     {
       "address": "0x5afd00",
-      "matching": 0.962059620596206,
-      "name": "TTechMgr::HandleAbilityUnlock",
+      "matching": 0.021108179419525065,
+      "name": "TTechMgr::HandleAbilityUnlock(short)",
       "type": 1
     },
     {
@@ -30974,20 +30975,14 @@
       "type": 1
     },
     {
-      "address": "0x5b0b30",
-      "matching": 1.0,
-      "name": "ApplyTechItemPurchaseCostAndState",
-      "type": 1
-    },
-    {
       "address": "0x5b0bb0",
-      "matching": 1.0,
+      "matching": 0.6296296296296297,
       "name": "RefundTechItemPurchaseCostAndClearState",
       "type": 1
     },
     {
       "address": "0x5b0c20",
-      "matching": 0.0,
+      "matching": 0.16666666666666666,
       "name": "ConsumeFirstPendingAbilityUnlock",
       "type": 1
     },

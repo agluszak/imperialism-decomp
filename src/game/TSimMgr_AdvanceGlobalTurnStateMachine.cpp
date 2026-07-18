@@ -31,7 +31,6 @@ extern undefined4 RefreshNationAdvisorLabelStrings(void);
 extern undefined4 ProcessTurnInstructionStreamAndFinalizePhase(void);
 extern undefined4 UpdatePersistentTopTenNationScores(void);
 extern undefined4 UpdateCityOrderCapabilityUnlockProgress(void);
-extern undefined4 ConsumeFirstPendingAbilityUnlock(void);
 extern undefined4 RefreshNavyOrderCycleAndClearReadyFlags(void);
 extern undefined4 RemoveNationSlotAndNotifyPeers(void);
 extern undefined4 SetOutputDevice(void);
@@ -466,7 +465,8 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
         g_nTurnCooldownDeferCounter006A43C4 = 0;
         g_nTurnCooldownSideFlag00698B10 = 1;
         if (!IsNationTerrainEligible(activeNationSlot)) {
-          short unlockSlot = ConsumeFirstPendingAbilityUnlock();
+          short unlockSlot = g_pCityOrderCapabilityState->ConsumeFirstPendingAbilityUnlock(
+              static_cast<short>(nationSlot));
           if (unlockSlot != -1) {
             DispatchUiSlot4C();
             actionNeeded = 0;
@@ -474,9 +474,11 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
           continue;
         }
       }
-      short unlockSlot = ConsumeFirstPendingAbilityUnlock();
+      short unlockSlot = g_pCityOrderCapabilityState->ConsumeFirstPendingAbilityUnlock(
+          static_cast<short>(nationSlot));
       while (unlockSlot != -1) {
-        unlockSlot = ConsumeFirstPendingAbilityUnlock();
+        unlockSlot = g_pCityOrderCapabilityState->ConsumeFirstPendingAbilityUnlock(
+            static_cast<short>(nationSlot));
       }
     }
     if (actionNeeded != 0) {
