@@ -21,7 +21,7 @@ char TProxyGreatPower::ShouldDispatchImmediatelySlot28(void) {
 void TProxyGreatPower::ProcessPendingDiplomacyProposalQueue() {}
 
 // FUNCTION: IMPERIALISM 0x00540920
-void TProxyGreatPower::UpdateGreatPowerPressureStateAndDispatchEscalationMessage() {}
+char TProxyGreatPower::UpdateGreatPowerPressureStateAndDispatchEscalationMessage() { return 0; }
 
 // SYNTHETIC: IMPERIALISM 0x00540940
 // TProxyGreatPower::`scalar deleting destructor'

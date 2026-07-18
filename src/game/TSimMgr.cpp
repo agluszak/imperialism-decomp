@@ -922,6 +922,37 @@ char TSimMgr::IsNationSlotEligibleForEventProcessing(short nationSlot) {
   return 1;
 }
 
+// FUNCTION: IMPERIALISM 0x00581300
+void TSimMgr::RemoveNationSlotAndNotifyPeers(short nationSlot) {
+  // Neutralize the removed nation's diplomacy percent field on every other live slot. For
+  // the seven great-power slots a nation whose terrain profile is in the reserved band
+  // [100,200) is left alone; minor slots (i >= 7) and unreserved great powers are reset.
+  TGreatPower** nationCursor = g_apNationStates;
+  short i = 0;
+  do {
+    if (i != nationSlot && i != -1) {
+      TCountry* terrainDescriptor = g_apTerrainTypeDescriptorTable[i];
+      if (terrainDescriptor != 0) {
+        if (i >= 7 || terrainDescriptor->encodedNationSlot < 100 ||
+            terrainDescriptor->encodedNationSlot >= 200) {
+          (*nationCursor)->SetNationPercentFieldByModeAndDescriptorLinks(nationSlot, 500);
+        }
+      }
+    }
+    ++nationCursor;
+    ++i;
+  } while (nationCursor < &g_apNationStates[7]);
+
+  if (g_apNationStates[nationSlot] != 0) {
+    g_apNationStates[nationSlot]->Free();
+  }
+  g_apNationStates[nationSlot] = 0;
+  g_apTerrainTypeDescriptorTable[nationSlot] = 0;
+  field15[nationSlot] = 0;
+  --field30;
+  g_pDiplomacyTurnStateManager->RemoveNationSlotAndNotifyPeers_Impl(nationSlot);
+}
+
 // FUNCTION: IMPERIALISM 0x00581400
 void TSimMgr::InitializeOrLoadEntryArray14AndClampLimits(bool writeBack) {
   if (writeBack) {

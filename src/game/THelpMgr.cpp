@@ -147,6 +147,42 @@ __inline short ReadLocalizationPendingEventGate5c() {
 
 } // namespace
 
+// FUNCTION: IMPERIALISM 0x005010b0
+void THelpMgr::SelectAndActivatePendingEventForCurrentView() {
+  HelpSetRecord* best = nullptr;             // lowest-rank unflagged match
+  HelpSetRecord* flaggedCandidate = nullptr; // context match with flagByte set
+  HelpSetRecord* zeroIdCandidate = nullptr;  // context match, rank>=threshold, helpSetIdB==0
+  short threshold = g_pSimMgr->GetTurnTickSlot3C();
+  short contextId = g_pUiRuntimeContext->currentTurnEventCode;
+  for (int index = 1; index <= GetSortedPtrListEntryCount(indexList); ++index) {
+    HelpSetRecord* record =
+        static_cast<HelpSetRecord*>(indexList->GetPtrListEntryByOneBasedIndex(index));
+    if (record->contextId == contextId) {
+      if (record->flagByte != 0) {
+        flaggedCandidate = record;
+      } else if (record->rank >= threshold) {
+        if (record->helpSetIdB == 0) {
+          zeroIdCandidate = record;
+        }
+      } else {
+        best = record;
+        threshold = record->rank;
+      }
+    }
+  }
+  if (best != nullptr) {
+    ActivatePendingEventAndRefreshView(best);
+    return;
+  }
+  HelpSetRecord* fallback = flaggedCandidate;
+  if (fallback == nullptr) {
+    fallback = zeroIdCandidate;
+  }
+  if (fallback != nullptr) {
+    ActivatePendingEventAndRefreshView(fallback);
+  }
+}
+
 // FUNCTION: IMPERIALISM 0x005011a0
 void THelpMgr::HandlePostDispatchTurnStateEventUpdates() {
   const short nationId = g_pSimMgr->GetActiveNationId();

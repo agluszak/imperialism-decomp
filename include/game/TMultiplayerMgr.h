@@ -123,6 +123,11 @@ public:
   // g_pNetMgr006a6014 global.
   void EmitTurnEvent3Mode18WithActiveNation(); // 0x5446a0
   void EmitTurnEvent10ForFlaggedNationSlots(); // 0x544720
+  // 0x54c480 — builds a turn-event-26 packet snapshotting g_pDiplomacyTurnStateManager's
+  // relation/pending-policy/selection/comparative-power matrices and hands it to
+  // TNetMgr::Send. Body not yet ported (separate packet-struct modeling task); called
+  // from RebuildDiplomacyStandingAndInfluenceMatrices only when g_pSimMgr->field44 == 1.
+  void EmitTurnEvent26DiplomacyMatrixSnapshot();
   // Appends a queue node (next pointer at node+0x10) to the tail of
   // primaryTurnEventQueueHead. 0x549280.
   void AppendNodeToTurnEventLinkedListAt6C(int node);

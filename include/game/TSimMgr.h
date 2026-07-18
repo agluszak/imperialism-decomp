@@ -92,6 +92,11 @@ public:
   // g_pSimMgr into ecx); `this` is unused by the body. Slot is eligible when its
   // terrain descriptor exists and (for great powers) isn't a 100..199 profile.
   char IsNationSlotEligibleForEventProcessing(short nationSlot);
+  // 0x581300 -- removes a nation slot at end of turn: neutralizes the removed nation's
+  // percent field on every still-active great power, calls the removed nation's Free(),
+  // clears its state/descriptor slots and the per-slot flag byte, decrements the active
+  // count, then resets its diplomacy relation matrices via g_pDiplomacyTurnStateManager.
+  void RemoveNationSlotAndNotifyPeers(short nationSlot);
   // Store a state code into +0x40 and set the +0x5c short flag to 1 only when the
   // code is exactly zero (codes 1..4 and out-of-range codes clear it). 0x57d870.
   void SetStateCodeAndUpdateZeroOrOutOfRangeFlag(int stateCode);

@@ -35,7 +35,7 @@ public:
   virtual char ReturnFalseSlot50() override; // slot 0x14 0x53faa0
   virtual char ReturnFalseSlot54() override; // slot 0x15 0x53f140
 
-  virtual int ReturnZeroSlot5C() override; // slot 0x17 0x53f120 -- returns beachhead34
+  virtual TMission* ReturnZeroSlot5C() override; // slot 0x17 0x53f120 -- returns beachhead34
 
   virtual char ReturnFalseSlot64() override; // slot 0x19 0x53f240
 

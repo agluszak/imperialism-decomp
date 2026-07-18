@@ -147,6 +147,10 @@ public:
   // arms-stock bonus, and a full map pass upgrading owned tiles' development class.
   // 0x5afd00, __thiscall, RET 0x8.
   void HandleAbilityUnlock(int techId, int nationSlot);
+  // 0x5b0c20 -- scans this nation's orderCapRows277 row for the first tech whose status
+  // is 1 (in-progress/pending), applies its unlock (HandleAbilityUnlock) and returns the
+  // tech index, or -1 when none pends. __thiscall (receiver g_pCityOrderCapabilityState).
+  short ConsumeFirstPendingAbilityUnlock(short nationSlot);
 
   ~TTechMgr() override;
 };

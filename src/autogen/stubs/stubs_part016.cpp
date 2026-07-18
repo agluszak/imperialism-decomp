@@ -467,14 +467,6 @@ undefined4 SetNationStatusCodeForSlotOrActiveAndEmitEvent25(void)
   return 0;
 }
 
-// ghidra_name EmitTurnEvent26DiplomacyMatrixSnapshot
-// ghidra_proto undefined EmitTurnEvent26DiplomacyMatrixSnapshot()
-// FUNCTION: IMPERIALISM 0x0054c480
-undefined4 EmitTurnEvent26DiplomacyMatrixSnapshot(void)
-{
-  return 0;
-}
-
 // ghidra_name HandleActiveNationAwolTransitionOrRecovery
 // ghidra_proto undefined HandleActiveNationAwolTransitionOrRecovery()
 // FUNCTION: IMPERIALISM 0x0054c800
@@ -607,30 +599,6 @@ undefined4 RemoveTaskForceOrderNodeById(void)
 // ghidra_proto void __thiscall ApplyMapOrderTypeAndQueue(int nOrderType, int nOrderArg)
 // FUNCTION: IMPERIALISM 0x005540b0
 undefined4 ApplyMapOrderTypeAndQueue(void)
-{
-  return 0;
-}
-
-// ghidra_name ResolveMapOrderCommandFromActionContext
-// ghidra_proto undefined ResolveMapOrderCommandFromActionContext()
-// FUNCTION: IMPERIALISM 0x00554300
-undefined4 ResolveMapOrderCommandFromActionContext(void)
-{
-  return 0;
-}
-
-// ghidra_name ResolveMapOrderCommandFromProvinceContext
-// ghidra_proto undefined ResolveMapOrderCommandFromProvinceContext()
-// FUNCTION: IMPERIALISM 0x00554460
-undefined4 ResolveMapOrderCommandFromProvinceContext(void)
-{
-  return 0;
-}
-
-// ghidra_name CanQueueMapOrderForProvinceContext
-// ghidra_proto undefined CanQueueMapOrderForProvinceContext()
-// FUNCTION: IMPERIALISM 0x00554590
-undefined4 CanQueueMapOrderForProvinceContext(void)
 {
   return 0;
 }

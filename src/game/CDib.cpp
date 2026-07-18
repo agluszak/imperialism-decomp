@@ -779,3 +779,12 @@ LAB_0047c603:
     scan_ptr = scan_ptr + row_stride;
   } while (true);
 }
+
+// FUNCTION: IMPERIALISM 0x00575080
+int CDib::GetAbsoluteHeight() {
+  int height = m_pInfoHeader->bmiHeader.biHeight;
+  if (height <= 0) {
+    height = -height;
+  }
+  return height;
+}

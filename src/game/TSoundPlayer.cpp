@@ -15,7 +15,6 @@
 #include <new>
 #include <math.h>
 
-extern char PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
 // Random-cue rotation counter at 0x006a4520 (raw audio-state global, not yet in
 // symbols.csv). Provisional definition until the owning data block is recovered.
 short DAT_006a4520 = 0;
@@ -28,8 +27,6 @@ extern "C" int __cdecl rand(void);
 // as a real function pointer (its return keeps/clears the slot).
 extern undefined4 Helper_Uses_ForwardMciCommand808ToDevice_At00593210(void);
 
-void __fastcall DestructTSoundPlayerBaseState(TSoundPlayer* player);
-
 // SYNTHETIC: IMPERIALISM 0x005932b0
 // TSoundPlayer::CreateObject
 
@@ -38,28 +35,16 @@ void __fastcall DestructTSoundPlayerBaseState(TSoundPlayer* player);
 
 IMPLEMENT_DYNCREATE(TSoundPlayer, TEventHandler)
 
+// FUNCTION: IMPERIALISM 0x00593370
 TSoundPlayer::TSoundPlayer()
     : TEventHandler(), runtimePeerAt6c(0), runtimePeerAt70(0), stateByte78(0), stateByte79(0),
       stateByte7a(0), stateDword7c(0) {}
 
-// FUNCTION: IMPERIALISM 0x00593370
-TSoundPlayer* TSoundPlayer::ConstructTSoundPlayerBaseState() {
-  ::new (static_cast<void*>(this)) TSoundPlayer();
-  return this;
-}
-
 // SYNTHETIC: IMPERIALISM 0x005933b0
 // TSoundPlayer::`scalar deleting destructor'
 
-// Partial teardown writes the runtime-object base vptr, symmetric with TEventHandler
-// construction via the normal base ctor chain.
-
-extern char PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
-
 // FUNCTION: IMPERIALISM 0x005933e0
-void __fastcall DestructTSoundPlayerBaseState(TSoundPlayer* player) {
-  *reinterpret_cast<void**>(player) = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
-}
+TSoundPlayer::~TSoundPlayer() {}
 
 void TSoundPlayer::EnsureCdAudioDeviceHandleInitialized() {
   g_cdAudioDevice.EnsureCdAudioDeviceHandleInitialized();

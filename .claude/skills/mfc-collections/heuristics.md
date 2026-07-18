@@ -243,3 +243,19 @@ raw handles. Recipe that matched well:
      backward `jb`) only falls out of the indexed for-form, not a do-while.
 
   *(ex decomp-loop list-note 117)*
+
+- **`just mfc-collection-audit <Class|0xCTOR>` classifies a collection mismatch before
+     source is touched; run it FIRST.** Reads the original binary directly (capstone),
+     reports member offset, slot-0 identity, CList block-size store (+0x18), a ctor/dtor
+     copy census per vtable, and a normalized-body twin scan whose CALL targets compare
+     recursively — that recursion is what separates true per-TU twins (calling twin
+     helper copies) from merely same-shaped bodies (every scalar deleting dtor has the
+     same shape but calls a different class dtor). Alias rows additionally require the
+     SAME curated/decorated name: distinct instantiations over trivially-destructible
+     elements (`CList<void*>` vs `CList<TView*>`) genuinely compile to identical bodies
+     and must not be aliased. Verified census (2026-07): CIncludeView +0x4c and
+     TApplication +0x2c -> TWIN_TEMPLATE_COMDAT (4 rows in config/template_aliases.csv,
+     re-verified by `just template-alias-check`); TTurnEventDialogFactoryRegistry +0x04
+     (block 10) and both TModuleLibraryCacheTableStateB CMap<>s (+0x04/+0x20) ->
+     EMBEDDED_MEMBER_OK. No initializer-order or template-identity errors in the known
+     set — the residual gaps are all recorded twins, per rules MFC-EMBED-029/MFC-TWIN-030.

@@ -3,26 +3,10 @@
 
 #include "decomp_types.h"
 
-// ghidra_name GetMfcThreadStateFlagDword30
-// ghidra_proto undefined GetMfcThreadStateFlagDword30()
-// FUNCTION: IMPERIALISM 0x0061f46b
-undefined4 GetMfcThreadStateFlagDword30(void)
-{
-  return 0;
-}
-
 // ghidra_name InitializeThreadObjectVtableProxy
 // ghidra_proto undefined InitializeThreadObjectVtableProxy()
 // FUNCTION: IMPERIALISM 0x00622448
 undefined4 InitializeThreadObjectVtableProxy(void)
-{
-  return 0;
-}
-
-// ghidra_name ExitInstance
-// ghidra_proto undefined ExitInstance()
-// FUNCTION: IMPERIALISM 0x00622a4f
-undefined4 ExitInstance(void)
 {
   return 0;
 }
@@ -63,30 +47,6 @@ undefined4 thunk_thunk_CProcessLocalObject_At00622aa2(void)
 // ghidra_proto undefined GetCCmdTargetRuntimeClass()
 // FUNCTION: IMPERIALISM 0x00622cad
 undefined4 GetCCmdTargetRuntimeClass(void)
-{
-  return 0;
-}
-
-// ghidra_name ProcessShellCommand
-// ghidra_proto undefined ProcessShellCommand()
-// FUNCTION: IMPERIALISM 0x00622cb3
-undefined4 ProcessShellCommand(void)
-{
-  return 0;
-}
-
-// ghidra_name RunFileAssociationShellCommandCleanup
-// ghidra_proto undefined RunFileAssociationShellCommandCleanup()
-// FUNCTION: IMPERIALISM 0x00623050
-undefined4 RunFileAssociationShellCommandCleanup(void)
-{
-  return 0;
-}
-
-// ghidra_name SetRegistryKey
-// ghidra_proto undefined SetRegistryKey()
-// FUNCTION: IMPERIALISM 0x00623061
-undefined4 SetRegistryKey(void)
 {
   return 0;
 }
@@ -279,14 +239,6 @@ undefined4 WrapperFor_AppendPointerToGlobalVectorAsStatus_At006244b8(void)
 // ghidra_proto undefined thunk_thunk_CProcessLocalObject_at_006244ce_At006244c4()
 // FUNCTION: IMPERIALISM 0x006244c4
 undefined4 thunk_thunk_CProcessLocalObject_at_006244ce_At006244c4(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_AfxDeleteObject_At00626c02
-// ghidra_proto undefined WrapperFor_AfxDeleteObject_At00626c02()
-// FUNCTION: IMPERIALISM 0x00626c02
-undefined4 WrapperFor_AfxDeleteObject_At00626c02(void)
 {
   return 0;
 }

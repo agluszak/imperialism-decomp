@@ -978,7 +978,7 @@ void TGreatPower::CompileGreatPowerRelationshipDeltaLinesAndDispatchMessage(void
 }
 
 // FUNCTION: IMPERIALISM 0x004db380
-void TGreatPower::UpdateGreatPowerPressureStateAndDispatchEscalationMessage(void) {
+char TGreatPower::UpdateGreatPowerPressureStateAndDispatchEscalationMessage(void) {
   TSimMgr* localizationRuntime = g_pSimMgr;
   int localeIndex = 0;
   if (localizationRuntime != 0) {
@@ -1040,7 +1040,7 @@ void TGreatPower::UpdateGreatPowerPressureStateAndDispatchEscalationMessage(void
         g_pSimMgr->GetString(0x274b, 4, &sharedMessageRef);
         g_pUiRuntimeContext->DispatchLocalizedUiMessageWithTemplateA13A0(
             sharedMessageRef, &g_cstrGreatPowerPressureMessage, 2, 0);
-        return;
+        return 1;
       }
 
       if (pressureTier >= compileThreshold) {
@@ -1073,12 +1073,13 @@ void TGreatPower::UpdateGreatPowerPressureStateAndDispatchEscalationMessage(void
   treasuryValue10 = this->treasuryValue10;
   if (treasuryValue10 >= 0) {
     this->field900 = 0;
-    return;
+    return 0;
   }
 
   int drainAmount = (0xC7 - static_cast<int>(this->escalationCounter) * treasuryValue10) / 200;
   this->field900 = drainAmount;
   this->treasuryValue10 = treasuryValue10 - drainAmount;
+  return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004db7d0

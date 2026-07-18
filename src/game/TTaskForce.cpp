@@ -76,15 +76,17 @@ int TTaskForce::CalculateMissionOrderPriorityScore(int nScoreProfileId) {
     short contribution;
     switch (category) {
     case 0: {
-      int quantityTerm = static_cast<short>(tiebreak_strength / 100) + 5 + desc.resolveWeight * 10;
+      int quantityTerm = static_cast<short>(tiebreak_strength / 100) + 5 +
+                         *reinterpret_cast<const int*>(&desc.resolveWeight) * 10;
       int weight = desc.calculateWeight;
       contribution = static_cast<short>(
           (static_cast<short>(quantityTerm / 10) * weight * weight * 100) / divisor);
       break;
     }
     case 1: {
+      int requiredCountValue = required_count;
       int weight = desc.calculateWeight;
-      contribution = static_cast<short>((weight * static_cast<int>(required_count) * 10000) /
+      contribution = static_cast<short>((weight * requiredCountValue * 10000) /
                                         (desc.taskForceWeight * divisor));
       break;
     }
@@ -1236,6 +1238,78 @@ char TTaskForce::PruneInactiveTaskForceOrderHead() {
   if (childOrderList == 0) {
     eliminatedFlag26 = 1;
     return 1;
+  }
+  return 0;
+}
+
+// Resolves the action-context map-order command id from the entry's active order context
+// (contextAnchor, a TZone) and a candidate context zone. Returned ids map (in
+// TryQueueMapOrderFromTileAction) to entry order types: 0x0C->type3, 0x0D->type1,
+// 0x0E->type6, 0x0F->type1 (special queue path); 1 is the fallback.
+// FUNCTION: IMPERIALISM 0x00554300
+int TTaskForce::ResolveMapOrderCommandFromActionContext(TZone* candidate) {
+  TZone* activeContext = reinterpret_cast<TZone*>(contextAnchor);
+  if (candidate == nullptr || activeContext == candidate) {
+    return activeContext->QueryPortZoneCapability() ? 0x0c : 1;
+  }
+  if (!candidate->QueryPortZoneCapability()) {
+    return candidate->QueryZoneCapabilityFlagA() ? 0x0f : 1;
+  }
+  if (candidate->QueryZoneCapabilityFlagD(g_pSimMgr->GetActiveNationId())) {
+    return 0x0d;
+  }
+  if (candidate->QueryZoneCapabilityFlagE(g_pSimMgr->GetActiveNationId())) {
+    // Ensure the candidate's primaryNeighbors stretch has one allocated slot (double-or-
+    // fallback grow, matching the original's inline realloc), then bump count to 1.
+    if (candidate->primaryNeighbors.Capacity() == 0) {
+      void* grown = realloc(candidate->primaryNeighbors.Data(), 8);
+      if (grown == 0) {
+        candidate->primaryNeighbors.Data() =
+            static_cast<TZone**>(realloc(candidate->primaryNeighbors.Data(), 4));
+        candidate->primaryNeighbors.Capacity() = 1;
+      } else {
+        candidate->primaryNeighbors.Data() = static_cast<TZone**>(grown);
+        candidate->primaryNeighbors.Capacity() = 2;
+      }
+    }
+    if (candidate->primaryNeighbors.Count() == 0) {
+      candidate->primaryNeighbors.Count() = 1;
+    }
+    if (*reinterpret_cast<int*>(candidate->primaryNeighbors.Data()) ==
+        reinterpret_cast<int>(activeContext)) {
+      return 0x0e;
+    }
+  }
+  return 1;
+}
+
+// Resolves the province-context map-order command id: TryQueueMapOrderFromTileAction
+// maps 0x10 -> order type 5, and 1 is the "no command" fallback. Asks the diplomacy
+// manager whether this entry's required_count nation and the province's owner-nation
+// (byte 0) have a stale pair-relation turn stamp.
+// FUNCTION: IMPERIALISM 0x00554460
+char TTaskForce::ResolveMapOrderCommandFromProvinceContext(void* province) {
+  char stale = g_pDiplomacyTurnStateManager->IsNationPairRelationTurnStampOutOfDate(
+      required_count, *reinterpret_cast<signed char*>(province));
+  return stale ? 0x10 : 1;
+}
+
+// True (returns the province's +0xa0 eligibility byte) only when this entry has a
+// queued-children region AND an active child link; otherwise 0. Guards a province-context
+// command before TryQueueMapOrderFromTileAction commits it.
+// FUNCTION: IMPERIALISM 0x00554590
+unsigned int TTaskForce::CanQueueMapOrderForProvinceContext(void* province) {
+  if (province == nullptr) {
+    return 0;
+  }
+  const short* words = reinterpret_cast<const short*>(reinterpret_cast<const char*>(this) + 0x1e);
+  bool noneQueued = (this == nullptr) || (words[0] + words[1] + words[2] + words[3]) == 0;
+  if (!noneQueued) {
+    for (TMapOrderChildLinkNode* node = childOrderList; node != nullptr; node = node->next) {
+      if (node->active_flag != 0) {
+        return *(reinterpret_cast<unsigned char*>(province) + 0xa0);
+      }
+    }
   }
   return 0;
 }

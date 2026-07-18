@@ -16,7 +16,10 @@ public:
   unsigned short field6a;
   unsigned short field6c;
   unsigned short field6e;
-  unsigned char pad70[4];
+  unsigned char pad70[2];
+  // 0x72 — click-cycle counter bumped once per HandleMapClickByInteractionMode call,
+  // wrapping 1..4 (reset to 1 when it exceeds 4).
+  short clickCycleCounter72;
   // Written by SetFlagByteAndInvokeVslot1A4 (this+0x74=flagByte), read as a byte gate by
   // TMapDialog::RenderMapDialogTerrainOverlayFrameByTileOwner.
   unsigned char field74;
@@ -62,5 +65,5 @@ public:
   virtual void SetMapViewCellCoordinates(int arg1, int arg2);
   virtual void OrphanRetStub_005966c0(short arg1);
   virtual undefined OrphanLeaf_NoCall_Ins02_005966e0(short arg1);
-  virtual void OrphanCallChain_C6_I29_00596700();
+  virtual void OrphanCallChain_C6_I29_00596700(int arg1);
 };

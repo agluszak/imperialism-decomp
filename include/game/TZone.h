@@ -35,15 +35,22 @@ public:
   TZone** EnsureSlotAllocatedAndReturnPointer(unsigned int index);
 };
 
+// The secondary-neighbor array stores a GENUINELY heterogeneous pointer payload: real
+// TZone* port-context links (TMapMgr's port/context linking via
+// AppendZonePointerToSecondaryArray) in some contexts, and TGlobalMapCityScoreRecord*
+// city-score entries (TZone/TOcean city-scoring paths) in others. Because the two
+// element types are unrelated, the payload is modeled as an opaque `void*` (per the
+// type-modeling guardrail's "several unrelated object types -> opaque payload" rule);
+// each reader static_casts to the type its own path stored.
 // VTABLE: IMPERIALISM 0x0065c748
-class TZoneSecondaryNeighborStretch : public stretch<TZone*, TZoneSecondaryNeighborTag> {
+class TZoneSecondaryNeighborStretch : public stretch<void*, TZoneSecondaryNeighborTag> {
 public:
   // Linear scan for `value`; returns the matching slot or null. Always inlined
   // (ground truth: TOcean::FindMapActionContextContainingNodeByIndex, 0x00564570,
   // where the index/count comparisons are unsigned and the hit materializes as a
   // slot pointer). Lives here rather than on stretch<> because MSVC500 eagerly
   // instantiates template members for element types without operator==.
-  TZone** FindEntry(TZone* value) {
+  void** FindEntry(void* value) {
     unsigned int count = Count();
     for (unsigned int index = 0; index < count; ++index) {
       if (Data()[index] == value) {
@@ -52,15 +59,15 @@ public:
     }
     return 0;
   }
-  bool ContainsEntry(TZone* value) {
+  bool ContainsEntry(void* value) {
     return FindEntry(value) != 0;
   }
 
 public:
-  TZone** GetOrAppendUnique(TZone* zone) override; // 0x55e9c0
+  void** GetOrAppendUnique(void* entry) override; // 0x55e9c0
   // Not a vtable slot (see stretch.h); called only on the concrete type. The orig
   // vtable at 0x0065c748 is confirmed exactly 1 slot long (GetOrAppendUnique only).
-  void Add(TZone* zone); // 0x55eba0
+  void Add(void* entry); // 0x55eba0
   // Unconditionally reallocate `data` to hold `count` entries (double-or-exact grow),
   // updating capacity. 0x55fae0.
   void ResizePointerArrayCapacityByRequestedCount(int count);

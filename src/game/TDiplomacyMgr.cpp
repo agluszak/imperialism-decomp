@@ -6,6 +6,7 @@
 #include "game/TMultiplayerMgr.h"
 #include <string.h>
 #include "game/TIndexAndRankList.h"
+#include "game/TMapMgr.h"
 #include "game/TSortedByRelationshipList.h"
 #include "game/TSortedPtrList.h"
 #include "game/CString.h"
@@ -139,6 +140,32 @@ void TDiplomacyMgr::InitializeTDiplomacyTurnStateManagerDefaults() {
     ++rowStart;
     --rowCount;
   } while (rowCount != 0);
+}
+
+// FUNCTION: IMPERIALISM 0x004eee60
+void TDiplomacyMgr::RemoveNationSlotAndNotifyPeers_Impl(short nationSlot) {
+  const int row = nationSlot;
+  // Great-power slots 0..6: clear the propagation-matrix entry (both [row][i] and [i][row])
+  // unless it already holds the "6" sentinel and the nation still has a terrain descriptor.
+  // When the descriptor is gone, also reset the standing score to 0x5a in both directions.
+  for (int i = 0; i < 7; ++i) {
+    if (relationPropagationMatrixBbe[row * kNationSlotCount + i] != 6 ||
+        g_apTerrainTypeDescriptorTable[row] == 0) {
+      relationPropagationMatrixBbe[row * kNationSlotCount + i] = 4;
+      relationPropagationMatrixBbe[i * kNationSlotCount + row] = 4;
+      if (g_apTerrainTypeDescriptorTable[row] == 0) {
+        relationStandingScoreMatrix79c[row * kNationSlotCount + i] = 0x5a;
+        relationStandingScoreMatrix79c[i * kNationSlotCount + row] = 0x5a;
+      }
+    }
+  }
+  // Minor slots 7..22: unconditionally reset both matrices in both directions.
+  for (int j = 7; j < kNationSlotCount; ++j) {
+    relationPropagationMatrixBbe[row * kNationSlotCount + j] = 4;
+    relationPropagationMatrixBbe[j * kNationSlotCount + row] = 4;
+    relationStandingScoreMatrix79c[row * kNationSlotCount + j] = 0x5a;
+    relationStandingScoreMatrix79c[j * kNationSlotCount + row] = 0x5a;
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x004eef50
@@ -789,13 +816,245 @@ void TDiplomacyMgr::ProcessQueuedWarTransitions() {
 }
 
 // FUNCTION: IMPERIALISM 0x004f0e20
-void TDiplomacyMgr::RebuildDiplomacyStandingAndInfluenceMatrices() {}
+void TDiplomacyMgr::RebuildDiplomacyStandingAndInfluenceMatrices(char forceOrMode) {
+  bool forceFullClear = (forceOrMode == 2);
+  if (relationCodeMatrix04[0] == 0) {
+    InitializeDiplomacyStandingBaselineRandom();
+  }
+  if (forceFullClear) {
+    memset(relationCodeMatrix04, 0, sizeof(relationCodeMatrix04));
+  }
 
+  int topNationSlot;
+  int secondNationSlot;
+  BuildMajorNationDiplomacyStandingRanking(&topNationSlot, &secondNationSlot);
+  selectedTargetNationSlot786 = static_cast<short>(secondNationSlot);
+  selectedSourceNationSlot784 = static_cast<short>(topNationSlot);
+  int topPower = comparativePowerRows1824[topNationSlot][1];
+  int secondPower = comparativePowerRows1824[secondNationSlot][1];
+
+  int topSideScore[kNationSlotCount];
+  int secondSideScore[kNationSlotCount];
+  for (int nationSlot = 0; nationSlot < kNationSlotCount; ++nationSlot) {
+    TCountry* descriptor = g_apTerrainTypeDescriptorTable[nationSlot];
+    if (descriptor == nullptr) {
+      topSideScore[nationSlot] = rand() % 50 + 50;
+      secondSideScore[nationSlot] = rand() % 50 + 50;
+      continue;
+    }
+    short encodedSlot = descriptor->encodedNationSlot;
+    if (encodedSlot < 100 || encodedSlot > 199) {
+      topSideScore[nationSlot] =
+          (relationStandingScoreMatrix79c[topNationSlot * kNationSlotCount + nationSlot] * 100 /
+               255 +
+           topPower) /
+          2;
+      secondSideScore[nationSlot] =
+          (relationStandingScoreMatrix79c[secondNationSlot * kNationSlotCount + nationSlot] * 100 /
+               255 +
+           secondPower) /
+          2;
+    } else {
+      short homeTile = static_cast<short>(descriptor->homeRegionIndex);
+      int ownerNation = g_pGlobalMapState->terrainStateTable[homeTile].ownerNationTag04;
+      topSideScore[nationSlot] = (ownerNation == topNationSlot) ? 1 : rand() % 50 + 50;
+      secondSideScore[nationSlot] = (ownerNation == secondNationSlot) ? 1 : rand() % 50 + 50;
+    }
+  }
+  topSideScore[topNationSlot] = 100;
+  secondSideScore[secondNationSlot] = 100;
+
+  int topSideCount = 0;
+  int secondSideCount = 0;
+  int totalOwnedCount = 0;
+  int maxResidual = 0;
+  for (int tileIndex = 0; tileIndex < kDiplomacyPairMatrixEntries; ++tileIndex) {
+    pendingPolicyTierMatrix484[tileIndex] = -1;
+    TGlobalMapCityScoreRecord* cityRecord = reinterpret_cast<TGlobalMapCityScoreRecord*>(
+        reinterpret_cast<char*>(g_pGlobalMapState->cityScoreTable) + tileIndex * 0xa8);
+    int ownerNationCode = cityRecord->ownerNationCode00;
+    if (ownerNationCode == -1) {
+      continue;
+    }
+
+    int topScore;
+    int secondScore;
+    if (cityRecord->formerOwnerNationCode01 < 7) {
+      topScore = (comparativePowerRows1824[topNationSlot][0] +
+                  comparativePowerRows1824[topNationSlot][3]) /
+                 2;
+      secondScore = (comparativePowerRows1824[secondNationSlot][0] +
+                     comparativePowerRows1824[secondNationSlot][3]) /
+                    2;
+    } else {
+      topScore = topSideScore[ownerNationCode];
+      secondScore = secondSideScore[ownerNationCode];
+      if (ownerNationCode > 6 && cityRecord->linkedRegionCount > 0) {
+        for (int i = 0; i < cityRecord->linkedRegionCount; ++i) {
+          short linkedTile = cityRecord->linkedRegionIds[i];
+          int secondaryOwner =
+              g_pGlobalMapState->terrainStateTable[linkedTile].secondaryOwnerNationTag18;
+          if (secondaryOwner == topNationSlot) {
+            topScore += 2;
+          } else if (secondaryOwner == secondNationSlot) {
+            secondScore += 2;
+          }
+        }
+      }
+    }
+
+    ++totalOwnedCount;
+    pendingPolicyCodeMatrix304[tileIndex] = 0xff;
+    bool topSideWins =
+        (ownerNationCode == topNationSlot) ||
+        g_apTerrainTypeDescriptorTable[ownerNationCode]->IsEncodedNationSlotMinus200Equal(
+            topNationSlot);
+    bool secondSideWins =
+        !topSideWins &&
+        ((ownerNationCode == secondNationSlot) ||
+         g_apTerrainTypeDescriptorTable[ownerNationCode]->IsEncodedNationSlotMinus200Equal(
+             secondNationSlot));
+    if (topSideWins) {
+      ++topSideCount;
+      pendingPolicyCodeMatrix304[tileIndex] = static_cast<unsigned char>(topNationSlot);
+      pendingPolicyTierMatrix484[tileIndex] = 0;
+    } else if (secondSideWins) {
+      ++secondSideCount;
+      pendingPolicyCodeMatrix304[tileIndex] = static_cast<unsigned char>(secondNationSlot);
+      pendingPolicyTierMatrix484[tileIndex] = 0;
+    } else {
+      short threshold = relationCodeMatrix04[tileIndex];
+      short delta;
+      if (topScore < secondScore) {
+        if (threshold <= secondScore - topScore) {
+          ++secondSideCount;
+          pendingPolicyCodeMatrix304[tileIndex] = static_cast<unsigned char>(secondNationSlot);
+          delta = static_cast<short>((secondScore - topScore) - threshold);
+          pendingPolicyTierMatrix484[tileIndex] = delta;
+          if (maxResidual < delta) {
+            maxResidual = delta;
+          }
+        }
+      } else if (topScore - secondScore >= threshold) {
+        ++topSideCount;
+        pendingPolicyCodeMatrix304[tileIndex] = static_cast<unsigned char>(topNationSlot);
+        delta = static_cast<short>((topScore - secondScore) - threshold);
+        pendingPolicyTierMatrix484[tileIndex] = delta;
+        if (maxResidual < delta) {
+          maxResidual = delta;
+        }
+      }
+    }
+  }
+
+  for (int fillIndex = 0; fillIndex < kDiplomacyPairMatrixEntries; ++fillIndex) {
+    short value = pendingPolicyTierMatrix484[fillIndex];
+    if (value == 0) {
+      pendingPolicyTierMatrix484[fillIndex] = static_cast<short>(rand() % 15 + 1);
+    } else if (value > 0) {
+      pendingPolicyTierMatrix484[fillIndex] = static_cast<short>(maxResidual - value + 15);
+    }
+  }
+
+  int neutralCount = totalOwnedCount - topSideCount - secondSideCount;
+  selectionFlagsA788 = static_cast<short>(topSideCount);
+  selectionFlagsB78a = static_cast<short>(secondSideCount);
+  selectionFlagsC78c = static_cast<short>(neutralCount);
+
+  int winnerNationSlot = -1;
+  if (secondSideCount < topSideCount) {
+    if (forceFullClear || topSideCount >= totalOwnedCount * 2 / 3) {
+      winnerNationSlot = topNationSlot;
+    } else if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(
+                   static_cast<short>(topNationSlot)) &&
+               g_apNationStates[topNationSlot]->field8d3 < '3') {
+      g_apNationStates[topNationSlot]->SetNationPendingActionStateAndPayload(0xb, -1);
+    }
+  } else if (topSideCount < secondSideCount) {
+    if (forceFullClear || secondSideCount >= totalOwnedCount * 2 / 3) {
+      winnerNationSlot = secondNationSlot;
+    } else if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(
+                   static_cast<short>(secondNationSlot)) &&
+               g_apNationStates[secondNationSlot]->field8d3 < '3') {
+      g_apNationStates[secondNationSlot]->SetNationPendingActionStateAndPayload(0xb, -1);
+    }
+  } else if (forceFullClear) {
+    winnerNationSlot = topNationSlot;
+  }
+
+  if (winnerNationSlot != -1) {
+    lastProcessedNationSlot78e = static_cast<short>(winnerNationSlot);
+  }
+  if (g_pSimMgr->field44 == 1) {
+    g_pGameFlowState->EmitTurnEvent26DiplomacyMatrixSnapshot();
+  }
+}
+
+// Seeds relationCodeMatrix04 with a per-city baseline value (indexed parallel to
+// g_pGlobalMapState->cityScoreTable, not by nation pair): unowned cities (-1) are
+// skipped; cities formerly held by a major power (formerOwnerNationCode01 < 7) get
+// 14 + 3d6; everyone else gets 8 + 3x(rand() mod 4).
 // FUNCTION: IMPERIALISM 0x004f1570
-void TDiplomacyMgr::InitializeDiplomacyStandingBaselineRandom() {}
+void TDiplomacyMgr::InitializeDiplomacyStandingBaselineRandom() {
+  for (int cityIndex = 0; cityIndex < kDiplomacyPairMatrixEntries; ++cityIndex) {
+    signed char formerOwner = g_pGlobalMapState->cityScoreTable[cityIndex].formerOwnerNationCode01;
+    if (formerOwner == -1) {
+      continue;
+    }
+    short baseline;
+    if (formerOwner < 7) {
+      baseline = 14;
+      for (int i = 0; i < 3; ++i) {
+        baseline = static_cast<short>(baseline + rand() % 6);
+      }
+    } else {
+      baseline = 8;
+      for (int i = 0; i < 3; ++i) {
+        baseline = static_cast<short>(baseline + rand() % 4);
+      }
+    }
+    relationCodeMatrix04[cityIndex] = baseline;
+  }
+}
 
 // FUNCTION: IMPERIALISM 0x004f1630
-void TDiplomacyMgr::BuildMajorNationDiplomacyStandingRanking() {}
+void TDiplomacyMgr::BuildMajorNationDiplomacyStandingRanking(int* topNationSlot,
+                                                             int* secondNationSlot) {
+  RecomputeNationComparativePowerMetrics();
+
+  int nationSlotOrder[7];
+  int powerScore[7];
+  for (int nationSlot = 0; nationSlot < 7; ++nationSlot) {
+    nationSlotOrder[nationSlot] = nationSlot;
+    int sum = 0;
+    if (g_apTerrainTypeDescriptorTable[nationSlot] != nullptr) {
+      for (int metric = 0; metric < 4; ++metric) {
+        sum += comparativePowerRows1824[nationSlot][metric];
+      }
+    }
+    powerScore[nationSlot] = sum;
+  }
+
+  for (int i = 0; i < 6; ++i) {
+    for (int j = i + 1; j < 7; ++j) {
+      bool swap = false;
+      if (powerScore[j] > powerScore[i] || (powerScore[j] == powerScore[i] && (rand() & 1) != 0)) {
+        swap = true;
+      }
+      if (swap) {
+        int scoreTmp = powerScore[i];
+        powerScore[i] = powerScore[j];
+        powerScore[j] = scoreTmp;
+        int slotTmp = nationSlotOrder[i];
+        nationSlotOrder[i] = nationSlotOrder[j];
+        nationSlotOrder[j] = slotTmp;
+      }
+    }
+  }
+
+  *topNationSlot = nationSlotOrder[0];
+  *secondNationSlot = nationSlotOrder[1];
+}
 
 // Rebuild the per-nation comparative-power rows (+0x1824): army, average bilateral
 // relation standing, territory+tech combined, and commodity value, each normalized

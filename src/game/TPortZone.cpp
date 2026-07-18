@@ -7,10 +7,6 @@
 // SYNTHETIC: IMPERIALISM 0x005615e0
 // TPortZone::CreateObject
 
-TPortZone::TPortZone() : TZone() {
-  field48 = -1;
-}
-
 // slot 0x0d — TZone::QueryZoneCapabilityFlagA override.
 // FUNCTION: IMPERIALISM 0x00561660
 bool TPortZone::QueryZoneCapabilityFlagA() {

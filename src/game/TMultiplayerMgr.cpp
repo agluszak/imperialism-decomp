@@ -2754,6 +2754,34 @@ void NationStatusEvent25Packet::InitializeNationStatusEvent25PayloadDefaults() {
   }
 }
 
+// Builds a turn-event-26 packet snapshotting g_pDiplomacyTurnStateManager's
+// relationCodeMatrix04/pendingPolicyCodeMatrix304/pendingPolicyTierMatrix484/
+// selectedSourceNationSlot784../comparativePowerRows1824 and sends it via TNetMgr::Send.
+// FUNCTION: IMPERIALISM 0x0054c480
+void TMultiplayerMgr::EmitTurnEvent26DiplomacyMatrixSnapshot() {
+  TurnEvent26DiplomacyMatrixPacket packet;
+  packet.messageTag = 0x74696d65; // 'time'
+  packet.activeNationId = static_cast<unsigned char>(g_pSimMgr->GetActiveNationId());
+  packet.fromNetworkId = 0;
+  packet.toNetworkId = 0;
+  packet.eventCode = 0x26;
+  packet.messageLength = 0x814;
+  memcpy(packet.relationCodeMatrix, g_pDiplomacyTurnStateManager->relationCodeMatrix04,
+         sizeof(packet.relationCodeMatrix));
+  memcpy(packet.pendingPolicyCodeMatrix, g_pDiplomacyTurnStateManager->pendingPolicyCodeMatrix304,
+         sizeof(packet.pendingPolicyCodeMatrix));
+  memcpy(packet.pendingPolicyTierMatrix, g_pDiplomacyTurnStateManager->pendingPolicyTierMatrix484,
+         sizeof(packet.pendingPolicyTierMatrix));
+  packet.selectedSourceNationSlot = g_pDiplomacyTurnStateManager->selectedSourceNationSlot784;
+  packet.selectedTargetNationSlot = g_pDiplomacyTurnStateManager->selectedTargetNationSlot786;
+  packet.selectionFlagsA = g_pDiplomacyTurnStateManager->selectionFlagsA788;
+  packet.selectionFlagsB = g_pDiplomacyTurnStateManager->selectionFlagsB78a;
+  packet.selectionFlagsC = g_pDiplomacyTurnStateManager->selectionFlagsC78c;
+  memcpy(packet.relationTailBlock, g_pDiplomacyTurnStateManager->comparativePowerRows1824,
+         sizeof(packet.relationTailBlock));
+  g_pNetMgr006a6014->Send(&packet, 0);
+}
+
 // FUNCTION: IMPERIALISM 0x0054c5a0
 void TMultiplayerMgr::DispatchJoinEmpireModeEventPacket24_27(int sourceNation, int targetNation,
                                                              int mode) {

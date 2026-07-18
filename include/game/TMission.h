@@ -70,7 +70,7 @@ public:
   virtual char ReturnFalseSlot50();                                  // 0x14 0x534d50
   virtual char ReturnFalseSlot54();                                  // 0x15 0x534d70
   virtual int ReturnZeroSlot58();                                    // 0x16 0x534d90
-  virtual int ReturnZeroSlot5C();                                    // 0x17 0x534db0
+  virtual TMission* ReturnZeroSlot5C();                              // 0x17 0x534db0
   virtual char ReturnFalseSlot60();                                  // 0x18 0x534dd0
   virtual char ReturnFalseSlot64();                                  // 0x19 0x534df0
   virtual float ReturnZeroFloatSlot68();                             // 0x1a 0x534e10

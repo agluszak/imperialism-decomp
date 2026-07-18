@@ -9,10 +9,22 @@ class TTaskForce;
 class TStream;
 class CString;
 class TZone;
+class TShip;
 
 // Child-link node for map-order mission trees (NOT TOcean / TZone).
 struct TMapOrderChildLinkNode {
+  // The payload is a "map order node": either a TTaskForce map-order entry (the
+  // dominant case -- order_type/required_count/tiebreak_strength accessed directly) or a
+  // TShip primary-order node. Both share the +0x04/+0x1c/+0x30 order-node read offsets,
+  // and the original dispatches __thiscall on both receiver types (see the receiver-pun
+  // notes on TShip). Typed TTaskForce* for the common case; use ShipPayload() at the
+  // documented TShip sites instead of an open-coded reinterpret_cast.
   TTaskForce* object_ptr;
+  // The same payload reinterpreted as its TShip primary-order-node form (genuine,
+  // documented heterogeneity -- the two classes share the order-node layout region).
+  TShip* ShipPayload() const {
+    return reinterpret_cast<TShip*>(object_ptr);
+  }
   TMapOrderChildLinkNode* next;
   TMapOrderChildLinkNode* prev_link;
   unsigned char active_flag;
@@ -233,6 +245,15 @@ public:
   // itself (mask is a no-op for an aligned allocation) rather than a clean bool --
   // preserved raw since no confirmed caller needs more than a non-zero test.
   unsigned int HasActiveMapOrderEntryChildren(); // 0x553b50
+  // 0x00554460 -- province-context command resolver (returns 0x10 or 1); asks the
+  // diplomacy manager about this entry's required_count nation vs the province's owner.
+  char ResolveMapOrderCommandFromProvinceContext(void* province);
+  // 0x00554590 -- returns the province's +0xa0 eligibility byte when this entry has an
+  // active queued child, else 0.
+  unsigned int CanQueueMapOrderForProvinceContext(void* province);
+  // 0x00554300 -- action-context command resolver (0x0C/0x0D/0x0E/0x0F, fallback 1) from
+  // this entry's contextAnchor zone and a candidate context zone's capability slots.
+  int ResolveMapOrderCommandFromActionContext(TZone* candidate);
   // This entry's 0-based rank among g_pNavyOrderManager->orderListHead04 entries
   // sharing the same required_count value; -1 if `this` is null or not found in the
   // queue.

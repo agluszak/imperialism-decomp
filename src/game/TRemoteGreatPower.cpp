@@ -6,7 +6,8 @@ char TRemoteGreatPower::ShouldDispatchImmediatelySlot28(void) {
 }
 
 // FUNCTION: IMPERIALISM 0x00541860
-void TRemoteGreatPower::UpdateGreatPowerPressureStateAndDispatchEscalationMessage(void) {
+char TRemoteGreatPower::UpdateGreatPowerPressureStateAndDispatchEscalationMessage(void) {
+  return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x00541880

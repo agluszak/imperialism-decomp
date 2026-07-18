@@ -628,6 +628,17 @@ void TTechMgr::RefundTechItemPurchaseCostAndClearState(int slot, int nationIndex
   capRowsE4a6[nationIndex].completionYearOffsetByTechId[slot] = 0;
 }
 
+// FUNCTION: IMPERIALISM 0x005b0c20
+short TTechMgr::ConsumeFirstPendingAbilityUnlock(short nationSlot) {
+  for (int techId = 0; techId < 0x1d; ++techId) {
+    if (orderCapRows277[nationSlot].techStatusByTechId[techId] == 1) {
+      HandleAbilityUnlock(techId, nationSlot);
+      return static_cast<short>(techId);
+    }
+  }
+  return -1;
+}
+
 // FUNCTION: IMPERIALISM 0x005b0c70
 void TTechMgr::SetCityOrderCapabilityTierScaledValueByIndex(int index, int value) {
   prioritySlots04[index] = static_cast<short>(value * 4);

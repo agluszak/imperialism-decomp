@@ -68,8 +68,8 @@ int TNavyMission::ReturnZeroSlot58() {
 }
 
 // FUNCTION: IMPERIALISM 0x00535540
-int TNavyMission::ReturnZeroSlot5C() {
-  return reinterpret_cast<int>(this);
+TMission* TNavyMission::ReturnZeroSlot5C() {
+  return this;
 }
 
 // SYNTHETIC: IMPERIALISM 0x00535560
@@ -167,7 +167,7 @@ void TNavyMission::WriteTo(TStream* stream) {
   // TMapOrderChildLinkNode::object_ptr is typed TTaskForce* for the (more common)
   // army-mission usage of this shared node type.
   for (TMapOrderChildLinkNode* node = orderList24; node != nullptr; node = node->next) {
-    int idx = reinterpret_cast<TShip*>(node->object_ptr)->GetIndexInPrimaryOrderList();
+    int idx = node->ShipPayload()->GetIndexInPrimaryOrderList();
     stream->WriteCountSlot88(idx);
   }
   stream->WriteCountSlot88(-1);
@@ -452,7 +452,7 @@ float TNavyMission::ReturnZeroFloatSlot74(void* candidate) {
     profile[2] = 0.0f;
     profile[3] = 0.0f;
     for (TMapOrderChildLinkNode* node = orderList24; node != 0; node = node->next) {
-      TShip* entry = reinterpret_cast<TShip*>(node->object_ptr);
+      TShip* entry = node->ShipPayload();
       short bucket;
       if (GetActiveTargetZoneByState28() != 0) {
         bucket = entry->ComputeOrderNodeDistanceQuotientByDescriptorWord24(
@@ -511,7 +511,7 @@ float TNavyMission::ReturnZeroFloatSlot74(void* candidate) {
   profile[2] = 0.0f;
   profile[3] = 0.0f;
   for (TMapOrderChildLinkNode* node = orderList24; node != 0; node = node->next) {
-    TShip* entry = reinterpret_cast<TShip*>(node->object_ptr);
+    TShip* entry = node->ShipPayload();
     short bucket;
     if (GetActiveTargetZoneByState28() != 0) {
       bucket =
@@ -644,7 +644,7 @@ void TNavyMission::BuildNavyOrderCategoryVectorForNationWithExclusion(float* vec
     farZone = nullptr;
   }
   for (TMapOrderChildLinkNode* node = orderList24; node != nullptr; node = node->next) {
-    TShip* ship = reinterpret_cast<TShip*>(node->object_ptr);
+    TShip* ship = node->ShipPayload();
     bool inRange = true;
     if (nearZone != nullptr &&
         ship->ComputeOrderNodeDistanceQuotientByDescriptorWord24(nearZone) > distanceThreshold) {
@@ -720,7 +720,7 @@ void TNavyMission::BuildMissionQueuedOrderCategoryVector(float* vector) {
   vector[2] = 0.0f;
   vector[3] = 0.0f;
   for (TMapOrderChildLinkNode* node = orderList24; node != nullptr; node = node->next) {
-    TShip* ship = reinterpret_cast<TShip*>(node->object_ptr);
+    TShip* ship = node->ShipPayload();
     TZone* targetZone = GetActiveTargetZoneByState28();
     short distanceIndex = 0;
     if (targetZone != nullptr) {
@@ -780,7 +780,7 @@ float TNavyMission::ComputeMissionOrderMatchScoreWithCandidateNavyOrder(TShip* c
       g_Recompute_Nation_Order_LookupTable_0065A9E8, g_Recompute_Nation_Order_LookupTable_0065A9E8,
       g_Recompute_Nation_Order_LookupTable_0065A9E8, g_Recompute_Nation_Order_LookupTable_0065A9E8};
   for (TMapOrderChildLinkNode* node = orderList24; node != nullptr; node = node->next) {
-    TShip* ship = reinterpret_cast<TShip*>(node->object_ptr);
+    TShip* ship = node->ShipPayload();
     TZone* targetZone = GetActiveTargetZoneByState28();
     short distanceIndex = 0;
     if (targetZone != nullptr) {
@@ -841,7 +841,7 @@ float TNavyMission::ComputeMissionOrderMatchScoreWithScaledCandidateNavyOrder(
       g_Recompute_Nation_Order_LookupTable_0065A9E8, g_Recompute_Nation_Order_LookupTable_0065A9E8,
       g_Recompute_Nation_Order_LookupTable_0065A9E8, g_Recompute_Nation_Order_LookupTable_0065A9E8};
   for (TMapOrderChildLinkNode* node = orderList24; node != nullptr; node = node->next) {
-    TShip* ship = reinterpret_cast<TShip*>(node->object_ptr);
+    TShip* ship = node->ShipPayload();
     TZone* targetZone = GetActiveTargetZoneByState28();
     short distanceIndex = 0;
     if (targetZone != nullptr) {

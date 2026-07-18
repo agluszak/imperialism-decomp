@@ -34,9 +34,18 @@ public:
                                                              int sourceNation); // 11 (0x2c)
   virtual void ApplyDiplomacyInterNationStatesForTurn();                        // 12 (0x30)
   virtual void SelectPriorityNationIndicesForMinorCapabilityRows();             // 13 (0x34)
-  virtual void RebuildDiplomacyStandingAndInfluenceMatrices();                  // 14 (0x38)
-  virtual void InitializeDiplomacyStandingBaselineRandom();                     // 15 (0x3c)
-  virtual void BuildMajorNationDiplomacyStandingRanking();                      // 16 (0x40)
+  // Verified RET 4 (one stack byte arg): forceOrMode==2 means "do a full clear" of
+  // relationCodeMatrix04 before rebuilding. Recomputes the two top-ranked nations' scoring
+  // arrays against every terrain-descriptor slot, then walks every nation-pair-matrix tile
+  // to assign it to the top or second nation's influence side (or neutral), and finally
+  // may prod the losing nation's AI via TGreatPower::SetNationPendingActionStateAndPayload.
+  virtual void RebuildDiplomacyStandingAndInfluenceMatrices(char forceOrMode); // 14 (0x38)
+  virtual void InitializeDiplomacyStandingBaselineRandom();                    // 15 (0x3c)
+  // Sums each major power's comparativePowerRows1824 metrics into a power score,
+  // ranks the 7 major powers descending by that score (random coin-flip tiebreak),
+  // and writes the top two nation slots out. Verified RET 8 (2 stack args).
+  virtual void BuildMajorNationDiplomacyStandingRanking(int* topNationSlot,
+                                                        int* secondNationSlot); // 16 (0x40)
   virtual char IsNationPairAtWar(short sourceNation, short targetNation);       // 17 (0x44)
   virtual char IsNationPairRelationTurnStampOutOfDate(int sourceNation,
                                                       int targetNation);       // 18 (0x48)
@@ -152,6 +161,11 @@ public:
   short LookupOrderCompatibilityMatrixValue(int sourceNationSlot, int targetNationSlot);
   void ProcessQueuedWarTransitions();
   void ResetTerrainAdjacencyMatrixRowAndSymmetricLink(short nationSlot);
+  // 0x4eee60 -- resets the removed nation's relation rows/columns (standing-score and
+  // propagation matrices). Great-power slots 0..6 clear the propagation entry unless it is
+  // already the "6" sentinel (or the nation lost its terrain descriptor); the standing
+  // score resets to 0x5a only when the descriptor is gone. Minor slots 7..22 always reset.
+  void RemoveNationSlotAndNotifyPeers_Impl(short nationSlot);
   // Mirrors g_pSimMgr's current turn tick into proposalDispatchCounter790. 0x4f0590.
   void SyncNationField790FromLocalizationStateId();
 

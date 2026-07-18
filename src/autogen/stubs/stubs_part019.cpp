@@ -299,14 +299,6 @@ undefined4 ApplyTechUnlockAndQueueNationAbilityNotices(void)
   return 0;
 }
 
-// ghidra_name ConsumeFirstPendingAbilityUnlock
-// ghidra_proto undefined ConsumeFirstPendingAbilityUnlock()
-// FUNCTION: IMPERIALISM 0x005b0c20
-undefined4 ConsumeFirstPendingAbilityUnlock(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_ftol_At005b0e40
 // ghidra_proto undefined WrapperFor_ftol_At005b0e40()
 // FUNCTION: IMPERIALISM 0x005b0e40

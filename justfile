@@ -1039,6 +1039,30 @@ global-redeclaration-gate:
 boundary-audit *args:
   uv run python -m tools.workflow.boundary_audit {{args}}
 
+# Embedded-MFC-collection audit for an owner ctor (0xADDR or class name): member
+# offset, vtable family/slot-0 identity, block size, ctor/dtor copy census, and a
+# normalized-body twin scan for per-TU duplicate template COMDATs. See the
+# mfc-collections skill's three-problem taxonomy (rules MFC-EMBED-029/MFC-TWIN-030).
+[doc('Audit an embedded MFC collection member: identity, offsets, duplicate-COMDAT twins')]
+[group('analysis')]
+mfc-collection-audit *args:
+  uv run python -m tools.workflow.mfc_collection_audit {{args}}
+
+# Template-emission compiler matrix (docs/toolchain.md): compile the probe TUs in
+# the msvc500 container per cell (/Ob levels, TU splits, wrapper/init/dtor axes)
+# and inventory the CList COMDATs each TU emits (host-side COFF parse).
+[doc('Run the template-emission matrix and report per-TU CList COMDAT inventories')]
+[group('analysis')]
+template-emission-matrix *args:
+  uv run python -m tools.workflow.template_emission_matrix {{args}}
+
+# Re-verify every row of config/template_aliases.csv: alias and canonical bodies
+# must be identical modulo relocations (tools.binary.body_hash).
+[doc('Validate template-COMDAT alias rows in config/template_aliases.csv')]
+[group('analysis')]
+template-alias-check:
+  uv run python -m tools.workflow.template_alias_check
+
 # Ratchet gate over the boundary report: no new manual->stub call/cast references
 # and no new function-pointer casts of named symbols (both counts must not rise).
 [group('gates')]

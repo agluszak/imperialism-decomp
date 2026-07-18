@@ -179,10 +179,10 @@ TZone** TZonePrimaryNeighborStretch::GetOrAppendUnique(TZone* zone) {
 }
 
 // FUNCTION: IMPERIALISM 0x0055e9c0
-TZone** TZoneSecondaryNeighborStretch::GetOrAppendUnique(TZone* zone) {
+void** TZoneSecondaryNeighborStretch::GetOrAppendUnique(void* entry) {
   int count = Count();
   for (int index = 0; index < count; ++index) {
-    if (Data()[index] == zone) {
+    if (Data()[index] == entry) {
       return &Data()[index];
     }
   }
@@ -193,17 +193,17 @@ TZone** TZoneSecondaryNeighborStretch::GetOrAppendUnique(TZone* zone) {
     }
     void* grownBuffer = realloc(Data(), (count + 1) * 8);
     if (grownBuffer == 0) {
-      Data() = static_cast<TZone**>(realloc(Data(), (count + 1) * 4));
+      Data() = static_cast<void**>(realloc(Data(), (count + 1) * 4));
       Capacity() = count + 1;
     } else {
-      Data() = static_cast<TZone**>(grownBuffer);
+      Data() = static_cast<void**>(grownBuffer);
       Capacity() = static_cast<int>(doubledCapacity);
     }
   }
   if (Count() <= count) {
     Count() = count + 1;
   }
-  Data()[count] = zone;
+  Data()[count] = entry;
   return &Data()[count];
 }
 
@@ -231,7 +231,7 @@ void TZonePrimaryNeighborStretch::Add(TZone* zone) {
 }
 
 // FUNCTION: IMPERIALISM 0x0055eba0
-void TZoneSecondaryNeighborStretch::Add(TZone* zone) {
+void TZoneSecondaryNeighborStretch::Add(void* entry) {
   int index = Count();
   if (index >= Capacity()) {
     unsigned int doubledCapacity = static_cast<unsigned int>((index + 1) * 2);
@@ -240,17 +240,17 @@ void TZoneSecondaryNeighborStretch::Add(TZone* zone) {
     }
     void* grownBuffer = realloc(Data(), (index + 1) * 8);
     if (grownBuffer == 0) {
-      Data() = static_cast<TZone**>(realloc(Data(), (index + 1) * 4));
+      Data() = static_cast<void**>(realloc(Data(), (index + 1) * 4));
       Capacity() = index + 1;
     } else {
-      Data() = static_cast<TZone**>(grownBuffer);
+      Data() = static_cast<void**>(grownBuffer);
       Capacity() = static_cast<int>(doubledCapacity);
     }
   }
   if (Count() <= index) {
     Count() = index + 1;
   }
-  Data()[index] = zone;
+  Data()[index] = entry;
 }
 
 // FUNCTION: IMPERIALISM 0x0055ec60
@@ -395,7 +395,7 @@ int TZone::ComputeMapActionContextNodeValueAverage() {
     for (unsigned int i = 0; i < static_cast<unsigned int>(secondaryNeighbors.Count()); ++i) {
       sum += g_pGlobalMapState
                  ->cityScoreTable[static_cast<short>(GetCityIndexFromCityStatePointer(
-                     reinterpret_cast<TGlobalMapCityScoreRecord*>(secondaryNeighbors[i])))]
+                     static_cast<TGlobalMapCityScoreRecord*>(secondaryNeighbors[i])))]
                  .cityScoreValue;
     }
     return sum / secondaryNeighbors.Count();
@@ -418,7 +418,7 @@ char TZone::ContainsCityStatePointerInZoneArrayByCityIndex(short cityIndex) {
   for (unsigned int entryIndex = 0; entryIndex < entryCount; ++entryIndex) {
     // Inlined bounds-guarded stretch element access, as in the original (mirrors
     // HasSecondaryNeighborWithNationTag / IsZoneMaskOrArrayEntryPresentForKey).
-    TZone* const* entrySlot =
+    void* const* entrySlot =
         (entryIndex < entryCount) ? this->secondaryNeighbors.Data() + entryIndex : 0;
     if (*entrySlot == target) {
       return 1;
@@ -435,7 +435,7 @@ char TZone::HasSecondaryNeighborWithNationTag(short nationTag) {
   }
   for (unsigned int entryIndex = 0; entryIndex < entryCount; ++entryIndex) {
     // Inlined bounds-guarded stretch element access, as in the original.
-    TZone* const* entrySlot =
+    void* const* entrySlot =
         (entryIndex < entryCount) ? this->secondaryNeighbors.Data() + entryIndex : 0;
     // secondaryNeighbors entries are TGlobalMapCityScoreRecord* under the documented
     // stretch pun (see FindMapActionContextContainingNodeByIndex); byte 0 of the
@@ -463,7 +463,7 @@ char TZone::IsZoneMaskOrArrayEntryPresentForKey(short key) {
     // Inlined bounds-guarded stretch element access, as in the original (mirrors
     // HasSecondaryNeighborWithNationTag). Entries are TGlobalMapCityScoreRecord* under
     // the documented stretch pun; byte 0 of the record is its ownerNationCode00.
-    TZone* const* entrySlot =
+    void* const* entrySlot =
         (entryIndex < entryCount) ? this->secondaryNeighbors.Data() + entryIndex : 0;
     const void* record = *entrySlot;
     short entryKey = *static_cast<const signed char*>(record);
@@ -624,11 +624,11 @@ void TZoneSecondaryNeighborStretch::ResizePointerArrayCapacityByRequestedCount(i
   }
   void* grown = realloc(Data(), count * 8);
   if (grown == 0) {
-    Data() = static_cast<TZone**>(realloc(Data(), count * 4));
+    Data() = static_cast<void**>(realloc(Data(), count * 4));
     Capacity() = count;
     return;
   }
-  Data() = static_cast<TZone**>(grown);
+  Data() = static_cast<void**>(grown);
   Capacity() = static_cast<int>(doubled);
 }
 
@@ -1283,7 +1283,7 @@ void PopulatePortZoneAdjacencyToNearbyCityContexts(void) {
               } while (j < static_cast<unsigned int>(context->secondaryNeighbors.Count()));
             }
             if (match == 0) {
-              context->secondaryNeighbors.GetOrAppendUnique(reinterpret_cast<TZone*>(cityRecord));
+              context->secondaryNeighbors.GetOrAppendUnique(reinterpret_cast<void*>(cityRecord));
             }
           }
         }

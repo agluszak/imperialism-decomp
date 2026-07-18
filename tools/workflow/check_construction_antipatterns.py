@@ -28,8 +28,19 @@ PATTERNS: tuple[tuple[str, re.Pattern[str]], ...] = (
     ("inline_asm", re.compile(r"\b(?:__asm|_asm)\b|\basm\s*\(")),
     # Construction rule 7: placement-new on this is not base construction.
     ("placement_new_this", re.compile(r"\bnew\s*\(\s*this\s*\)")),
-    # Construction rule 2: no manual vtable-pointer writes.
-    ("manual_vptr_write", re.compile(r"\*\s*\(\s*void\s*\*\*\s*\)\s*this\s*=|\bvptr\s*=\s*g_vtbl")),
+    # Construction rule 2: no manual vtable-pointer writes. Catches the write through
+    # `this` (C-style or reinterpret_cast), the same write through ANY object variable,
+    # and explicit `obj->vtable = ...` / `obj.vptr = ...` member assignments. To avoid
+    # flagging legitimate offset-0 out-param writes (e.g. TFileStream::ReadByte stores a
+    # deserialized object pointer), the raw-pointer form requires a vtable-looking RHS:
+    # `& <symbol>` or `reinterpret_cast<void*>(0x<const>)`.
+    ("manual_vptr_write", re.compile(
+        r"\*\s*\(\s*void\s*\*\*\s*\)\s*this\s*="
+        r"|\bvptr\s*=\s*g_vtbl"
+        r"|\*\s*(?:reinterpret_cast<\s*void\s*\*\*\s*>\s*\(\s*\w+\s*\)|\(\s*void\s*\*\*\s*\)\s*\w+)"
+        r"\s*=\s*(?:&|reinterpret_cast<\s*void\s*\*\s*>\s*\(\s*0x)"
+        r"|->\s*v(?:f?table|ptr)\s*=\s*(?:reinterpret_cast<\s*void\s*\*\s*>|&)"
+        r"|\.\s*v(?:f?table|ptr)\s*=\s*(?:reinterpret_cast<\s*void\s*\*\s*>|&)")),
     # Heuristic note: never reinterpret_cast to a __thiscall function pointer.
     ("thiscall_cast", re.compile(r"reinterpret_cast<[^>]*__thiscall[^>]*>")),
     # Faking a thiscall as __fastcall with a dummy edx second arg (the most-repeated

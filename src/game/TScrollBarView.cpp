@@ -1,12 +1,26 @@
 #include "game/TScrollBarView.h"
 
+#include "game/CDib.h"
+#include "game/ScopedMapQuickDrawContext.h"
 #include "game/TDisplayMgr.h"
 #include "game/TPictureButton.h"
+#include "game/TQuickDrawSurfaceContext.h"
+#include "game/TScrollView.h"
+#include "game/TSoundPlayer.h"
 #include "game/global_data_tables.h"
+#include "game/quickdraw_rendering.h"
 
 // SYNTHETIC: IMPERIALISM 0x00573df0
 // TScrollBarView::`scalar deleting destructor'
 TScrollBarView::~TScrollBarView() {}
+
+// FUNCTION: IMPERIALISM 0x005740a0
+void TScrollBarView::RefreshCityDialogScrollableViewportWithQuickDrawContext() {
+  ScopedMapQuickDrawContext quickDrawContext(this);
+  Refresh();
+  RECT rect = {0, word88, frameWidth34, static_cast<int>(word8a) + 0x12};
+  ApplyRectSlot110(&rect);
+}
 // SYNTHETIC: IMPERIALISM 0x005743f0
 // TScrollBarView::CreateObject
 
@@ -18,10 +32,10 @@ IMPLEMENT_DYNCREATE(TScrollBarView, TControl)
 // This address was previously claimed by a fabricated empty `TScrollBarView()` body;
 // the real ctor is inline (see the header) and 0x5744b0 is the 3-arg builder below.
 // FUNCTION: IMPERIALISM 0x005744b0
-void TScrollBarView::ConstructTScrollBarViewBaseState(TView* panel, int* offsetLayout,
+void TScrollBarView::ConstructTScrollBarViewBaseState(TScrollView* panel, int* offsetLayout,
                                                       int* sizeLayout) {
   InitializeUiResourceEntryFrameAndParent(0, panel, offsetLayout, sizeLayout, 4, 4, 0);
-  ownerView84 = ownerContext;
+  ownerView84 = static_cast<TScrollView*>(ownerContext);
   ownerView84->AssertValid();
   word88 = 0x12;
   word8a = static_cast<short>(frameHeight38) - 0x24;
@@ -78,7 +92,7 @@ void TScrollBarView::Free() {
 // FUNCTION: IMPERIALISM 0x00574720
 void TScrollBarView::NoOpUiLifecycleHook(int arg) {
   TView::NoOpUiLifecycleHook(arg);
-  ownerView84 = ownerContext;
+  ownerView84 = static_cast<TScrollView*>(ownerContext);
   ownerView84->AssertValid();
   word88 = 0x12;
   word8c = 0x12;
@@ -93,18 +107,154 @@ void TScrollBarView::NoOpUiLifecycleHook(int arg) {
 }
 
 // FUNCTION: IMPERIALISM 0x005747c0
-void TScrollBarView::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {}
+void TScrollBarView::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
+  if (commandId == 0xa) {
+    if (sourceHandler->controlTag == 0x73637570) { // 'scup'
+      ownerView84->AdjustCityDialogScrollRangeByDeltaAndClamp(0, 0xc);
+    } else if (sourceHandler->controlTag == 0x7363646e) { // 'scdn'
+      ownerView84->AdjustCityDialogScrollRangeByDeltaAndClamp(0, -0xc);
+    }
+  }
+  TControl::HandleEvent(commandId, sourceHandler, event);
+}
 
 // FUNCTION: IMPERIALISM 0x00574830
 void TScrollBarView::BeginMouseCaptureAndStartRepeatTimer(CPoint* point, int arg2, int arg3,
-                                                          int arg4) {}
+                                                          int arg4) {
+  RECT thumbRect = {0, word8c, frameWidth34, static_cast<int>(word8c) + 0x12};
+  if (PtInRect(&thumbRect, *point)) {
+    TControl::BeginMouseCaptureAndStartRepeatTimer(point, 0, 0, 0);
+    return;
+  }
+
+  int y = point->y;
+  if (y >= word88 && y < word8c) {
+    g_pSfxPlaybackSystem->PlaySoundEffect(0x1b58);
+    ownerView84->AdjustCityDialogScrollRangeByDeltaAndClamp(
+        0, static_cast<short>(ownerView84->frameHeight38));
+    return;
+  }
+
+  if (y > word8a + 0x12 || y <= word8c + 0x12) {
+    return;
+  }
+  g_pSfxPlaybackSystem->PlaySoundEffect(0x1b58);
+  ownerView84->AdjustCityDialogScrollRangeByDeltaAndClamp(
+      0, -static_cast<short>(ownerView84->frameHeight38));
+}
 
 // FUNCTION: IMPERIALISM 0x00574970
-void TScrollBarView::ApplyRectSlot110(RECT* rectBuffer) {}
+void TScrollBarView::ApplyRectSlot110(RECT* rectBuffer) {
+  ResetQuickDrawStrokeState();
+  SetQuickDrawFillColor(0);
+  SetQuickDrawStrokeColor(0xffffff);
+
+  RECT srcRect;
+  RECT dstRect;
+  srcRect.bottom = word8c;
+  srcRect.right = frameWidth34;
+  srcRect.left = 0;
+  dstRect.left = 0;
+  srcRect.top = 0;
+  dstRect.top = 0;
+  dstRect.right = srcRect.right;
+  dstRect.bottom = srcRect.bottom;
+  if (g_pStrategicMapViewSystem->atlas694[5]->surfaceDib != nullptr) {
+    int h = g_pStrategicMapViewSystem->atlas694[5]->surfaceDib->GetAbsoluteHeight();
+    OffsetRect(&srcRect, 0, (h - srcRect.top) - srcRect.bottom);
+  }
+  if (surfaceContext90->surfaceDib != nullptr) {
+    int h = surfaceContext90->surfaceDib->GetAbsoluteHeight();
+    OffsetRect(&dstRect, 0, (h - dstRect.top) - dstRect.bottom);
+  }
+  BlitRectWithOptionalTransparency(g_pStrategicMapViewSystem->atlas694[5]->GetBlitSurface(),
+                                   surfaceContext90->GetBlitSurface(), &srcRect, &dstRect, 0,
+                                   nullptr);
+
+  srcRect.right = frameWidth34;
+  srcRect.left = 0;
+  dstRect.top = word8c;
+  srcRect.top = 0x12c;
+  srcRect.bottom = 0x13e;
+  dstRect.left = 0;
+  dstRect.bottom = dstRect.top + 0x12;
+  dstRect.right = srcRect.right;
+  if (g_pStrategicMapViewSystem->atlas694[5]->surfaceDib != nullptr) {
+    int h = g_pStrategicMapViewSystem->atlas694[5]->surfaceDib->GetAbsoluteHeight();
+    OffsetRect(&srcRect, 0, h - 0x26a);
+  }
+  if (surfaceContext90->surfaceDib != nullptr) {
+    int h = surfaceContext90->surfaceDib->GetAbsoluteHeight();
+    OffsetRect(&dstRect, 0, (h - dstRect.top) - dstRect.bottom);
+  }
+  BlitRectWithOptionalTransparency(g_pStrategicMapViewSystem->atlas694[5]->GetBlitSurface(),
+                                   surfaceContext90->GetBlitSurface(), &srcRect, &dstRect, 0,
+                                   nullptr);
+
+  dstRect.top = word8c + 0x12;
+  srcRect.top = 299 - static_cast<short>(static_cast<short>(frameHeight38) - word8c - 0x12);
+  srcRect.right = frameWidth34;
+  srcRect.bottom = 300;
+  dstRect.bottom = frameHeight38;
+  srcRect.left = 0;
+  dstRect.left = 0;
+  dstRect.right = srcRect.right;
+  if (g_pStrategicMapViewSystem->atlas694[5]->surfaceDib != nullptr) {
+    int h = g_pStrategicMapViewSystem->atlas694[5]->surfaceDib->GetAbsoluteHeight();
+    OffsetRect(&srcRect, 0, (h - srcRect.top) - 300);
+  }
+  if (surfaceContext90->surfaceDib != nullptr) {
+    int h = surfaceContext90->surfaceDib->GetAbsoluteHeight();
+    OffsetRect(&dstRect, 0, (h - dstRect.top) - dstRect.bottom);
+  }
+  BlitRectWithOptionalTransparency(g_pStrategicMapViewSystem->atlas694[5]->GetBlitSurface(),
+                                   surfaceContext90->GetBlitSurface(), &srcRect, &dstRect, 0,
+                                   nullptr);
+
+  srcRect = *rectBuffer;
+  BlitRectWithOptionalTransparency(surfaceContext90->GetBlitSurface(),
+                                   g_pActiveQuickDrawSurfaceContext->GetBlitSurface(), &srcRect,
+                                   &srcRect, 0, nullptr);
+}
 
 // FUNCTION: IMPERIALISM 0x00574d10
 void TScrollBarView::DispatchPictureResourceCommand(int nEventType, void* pEventSender,
                                                     void* pEventDataA, void* pEventDataB,
                                                     int nCommandFlag) {
+  (void)pEventSender;
+  (void)pEventDataA;
   (void)nCommandFlag;
+  short target = *reinterpret_cast<short*>(static_cast<char*>(pEventDataB) + 4) - 9;
+  if (nEventType <= 0 || nEventType > 2) {
+    return;
+  }
+
+  if (target > word8a) {
+    target = word8a;
+  } else if (target < word88) {
+    target = word88;
+  }
+  if (target != word8c) {
+    word8c = target;
+    RefreshCityDialogScrollableViewportWithQuickDrawContext();
+  }
+
+  if (nEventType != 2) {
+    return;
+  }
+
+  int ratio = (word8c - word88) * 1024 / (word8a - word88);
+  TView* content = ownerView84->contentView60;
+  if (content == nullptr) {
+    return;
+  }
+  short heightDiff =
+      static_cast<short>(content->frameHeight38) - static_cast<short>(ownerView84->frameHeight38);
+  if (heightDiff <= 0) {
+    return;
+  }
+  POINT origin;
+  origin.y = -(ratio * heightDiff / 1024);
+  origin.x = content->ownerLocalX;
+  content->CaptureLayoutF0(reinterpret_cast<int*>(&origin), 1);
 }

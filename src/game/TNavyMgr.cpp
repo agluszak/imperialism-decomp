@@ -169,7 +169,7 @@ void BuildMapOrderBattleSideSnapshot(MapOrderBattleSnapshot* snapshot, int side,
     // These children are TShip primary-order nodes (not nested TTaskForce entries --
     // confirmed via the CString read at +0x18, which only lines up with
     // TShip::displayName18; TTaskForce's own +0x18 is contextAnchor, an int).
-    TShip* child = reinterpret_cast<TShip*>(node->object_ptr);
+    TShip* child = node->ShipPayload();
     MapOrderBattleSideChildRecord& rec = records[idx];
     rec.resourceType = child->resourceType04;
     rec.stockOrRequired = child->stockLevel1c;

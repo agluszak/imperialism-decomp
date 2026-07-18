@@ -9,6 +9,7 @@
 #include "game/mfc.h"
 #include "game/mfc.h"
 #include "game/GameAssert.h"
+#include "game/ui_invalidation_guard.h"
 #include "game/mfc.h"
 #include "game/TCity.h"
 #include "game/TGlobalMapState.h"
@@ -447,36 +448,119 @@ void TOcean::EnsurePortZoneForTile(short nTileIndex) {
     return;
   }
   signed char nationSeed = terrainTable[tileIndex].ownerNationTag04;
-  if (TZone::FindPortZoneByTile(nTileIndex) != 0) {
+
+  TZone* existingZone = TZone::GetFirstPortZone();
+  while (existingZone != 0 && static_cast<short>(existingZone->field0c) != nTileIndex &&
+         existingZone->field20 != nTileIndex &&
+         static_cast<TPortZone*>(existingZone)->field48 != nTileIndex) {
+    existingZone = existingZone->GetNextPortZone();
+  }
+  if (existingZone != 0) {
     return;
   }
 
-  TPortZone* portZone = static_cast<TPortZone*>(TPortZone::CreateObject());
-  if (portZone == 0) {
-    return;
+  TPortZone* portZone = new TPortZone();
+  if (portZone != 0) {
+    portZone->field48 = nTileIndex;
   }
-  portZone->field48 = nTileIndex;
+  if (portZone == 0) {
+    FailNilPointerWithAssert(s_SourcePathUOcean_006984CC, 0x96a);
+  }
+
   portZone->SetMapActionContextTargetTileAndRefreshMarkers(static_cast<int>(nationSeed), -1);
   portZone->field0c = tileIndex;
   portZone->GenerateZoneStatusCodeIfUnset();
   portZone->GenerateMapActionContextDisplayNameAndHeadline(0, 0);
 
-  short seaTileIndex = FindSeaTileForPortZoneCreation(nTileIndex, nationSeed);
-  TZone* linkedContext = g_pActiveMapOrderContext->GetLinkedZoneForSeaTile(seaTileIndex);
-  LinkPortZoneToContextIfMissing(portZone, linkedContext);
+  short bestSeaTile = -1;
+  for (int i = 0; i < 6; ++i) {
+    short direction = static_cast<short>((tileIndex + i) % 6);
+    short candidateTile = TMapMgr::StepHexTileIndexByDirectionWithWrapRules(nTileIndex, direction);
+    if (candidateTile == -1) {
+      continue;
+    }
+    if (terrainTable[candidateTile].terrainType00 != 5) {
+      continue;
+    }
+    bool allNeighborsQualify = true;
+    for (int j = 0; j < 6; ++j) {
+      short neighborTile =
+          TMapMgr::GetWrappedHexNeighborTileIndexByDirection(candidateTile, static_cast<short>(j));
+      if (neighborTile == -1) {
+        continue;
+      }
+      signed char neighborNation = terrainTable[neighborTile].ownerNationTag04;
+      if (neighborNation < 0x17 && neighborNation != nationSeed) {
+        allNeighborsQualify = false;
+        break;
+      }
+    }
+    if (allNeighborsQualify) {
+      bestSeaTile = candidateTile;
+      break;
+    }
+  }
+  if (bestSeaTile == -1) {
+    bestSeaTile = TraceTerrainFlowToNearestSeaTile(nTileIndex);
+  }
 
-  SetMapTileStateByteAndNotifyObserver(static_cast<int>(seaTileIndex), 3);
-  portZone->field0c = static_cast<int>(seaTileIndex);
-  portZone->field20 = portZone->GetActiveNationSlotTile();
+  TZone* linkedContext;
+  signed char seaTileClass = terrainTable[bestSeaTile].tileActionClass16;
+  if (seaTileClass == 3 || seaTileClass == 0xe) {
+    linkedContext = TZone::GetFirstPortZone();
+    while (linkedContext != 0 && static_cast<short>(linkedContext->field0c) != bestSeaTile &&
+           linkedContext->field20 != bestSeaTile &&
+           static_cast<TPortZone*>(linkedContext)->field48 != bestSeaTile) {
+      linkedContext = linkedContext->GetNextPortZone();
+    }
+  } else {
+    signed char seaTileOwner = terrainTable[bestSeaTile].ownerNationTag04;
+    if (seaTileOwner < 0x17) {
+      linkedContext = 0;
+    } else {
+      linkedContext =
+          g_pActiveMapOrderContext->GetMapActionContextEntryByNationCodeOffset17(seaTileOwner);
+    }
+  }
+
+  if (linkedContext != 0) {
+    int entryIndex = 0;
+    int primarySize = portZone->primaryNeighbors.GetSize();
+    bool alreadyLinked = false;
+    if (primarySize != 0) {
+      for (; entryIndex < primarySize; ++entryIndex) {
+        if (portZone->primaryNeighbors.GetAt(entryIndex) == linkedContext) {
+          alreadyLinked = true;
+          break;
+        }
+      }
+    }
+    if (!alreadyLinked) {
+      portZone->AppendZonePointerToPrimaryArray(linkedContext);
+      linkedContext->AppendZonePointerToSecondaryArray(portZone);
+    }
+  }
+
+  SetMapTileStateByteAndNotifyObserver(static_cast<int>(bestSeaTile), 3);
+  portZone->field0c = static_cast<int>(bestSeaTile);
+  portZone->field20 = portZone->FindNearestActiveSeaContextTileFromOffset216();
 }
 
 // FUNCTION: IMPERIALISM 0x00564240
 void TOcean::RemovePortZoneByTile(short nTileIndex) {
-  for (TZone* zone = TZone::GetFirstPortZone(); zone != 0; zone = zone->GetNextPortZone()) {
+  TZone* zone = g_pMapActionContextListHead;
+  while (zone != 0 && zone->IsKindOf(RUNTIME_CLASS(TPortZone)) == 0) {
+    zone = zone->prev18;
+  }
+  while (zone != 0) {
     if (static_cast<short>(zone->field0c) == nTileIndex || zone->field20 == nTileIndex ||
         static_cast<TPortZone*>(zone)->field48 == nTileIndex) {
       zone->Free();
       return;
+    }
+    zone = zone->prev18;
+    while (zone != 0 && zone->IsKindOf(RUNTIME_CLASS(TPortZone)) == 0) {
+      zone = zone->prev18;
     }
   }
 }
@@ -498,7 +582,7 @@ int TOcean::ComputeGlobalMapActionContextNodeValueAverage() {
 TZone* TOcean::FindMapActionContextContainingNodeByIndex(int cityRecordIndex) {
   TGlobalMapCityScoreRecord* target = &g_pGlobalMapState->cityScoreTable[cityRecordIndex];
   for (TZone* zone = g_pMapActionContextListHead; zone != 0; zone = zone->prev18) {
-    if (zone->secondaryNeighbors.ContainsEntry(reinterpret_cast<TZone*>(target))) {
+    if (zone->secondaryNeighbors.ContainsEntry(target)) {
       return zone;
     }
   }

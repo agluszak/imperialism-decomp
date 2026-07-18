@@ -188,7 +188,7 @@ public:
   // slot 0xac SumNationRuntimeFiveBucketValue44 inherited unchanged (0x4e06d0)
   // slot 0xad SelectCandidateTilesWithLowGroundUnitCount_ad inherited unchanged (0x4d8bc0)
   // slot 0xae OrphanLeaf_NoCall_Ins07_004d8920 inherited unchanged (0x4d8be0)
-  virtual void
+  virtual char
   UpdateGreatPowerPressureStateAndDispatchEscalationMessage() override; // slot 0xaf 0x540920
   // slot 0xb0 SetNationTransferTargetCodeAndNotifyEligiblePeers_b0 inherited unchanged (0x4e2b00)
   // slot 0xb1 BuildGreatPowerTurnMessageSummaryAndDispatch inherited unchanged (0x4e2b70)

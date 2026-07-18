@@ -1,10 +1,14 @@
 #include "game/TGameWindow.h"
 
 #include "game/TSimMgr.h"
+#include "game/THelpMgr.h"
+#include "game/TTechMgr.h"
 #include "game/TControl.h"
 #include "game/TSimMgr.h"
 #include "game/TUiEvent.h"
 #include "game/TView.h"
+#include "game/TViewMgr.h"
+#include "game/TSoundPlayer.h"
 #include "game/TMovieView.h"
 #include "game/UiRuntimeContext.h"
 #include "game/global_data_tables.h"
@@ -13,13 +17,9 @@
 #include "game/startup_helpers.h"
 #include "game/ui_control_tags.h"
 
-undefined4 ConsumeFirstPendingAbilityUnlock(void);
-undefined4 DispatchUiRuntimeMessage101AAndRefreshActiveView(void);
-undefined4 SelectAndActivatePendingEventForCurrentView(void);
 
 namespace {
 
-const unsigned int kAddrSfxPlaybackSystem = 0x006a43ec;
 const short kUiCommandHandledMarker = 0x29a;
 
 static short QueryUiRuntimeEventCode() {
@@ -39,36 +39,29 @@ static TMovieView* QueryUiRuntimeActiveMovieView() {
 namespace GameWindowInvoke {
 
 static short ConsumeFirstPendingAbilityUnlockForNation(short nationId) {
-  return static_cast<short>(reinterpret_cast<unsigned int(__cdecl*)(short)>(
-      reinterpret_cast<void (*)()>(::ConsumeFirstPendingAbilityUnlock))(nationId));
+  return g_pCityOrderCapabilityState->ConsumeFirstPendingAbilityUnlock(nationId);
 }
 
 static void DispatchUiRuntimeMessage101AAndRefreshActiveViewGate() {
-  reinterpret_cast<void(__cdecl*)(void)>(
-      reinterpret_cast<void (*)()>(::DispatchUiRuntimeMessage101AAndRefreshActiveView))();
+  g_pUiRuntimeContext->DispatchUiRuntimeMessage101AAndRefreshActiveView();
 }
 
 static void SelectAndActivatePendingEventForCurrentViewGate() {
-  reinterpret_cast<void(__cdecl*)(void)>(
-      reinterpret_cast<void (*)()>(::SelectAndActivatePendingEventForCurrentView))();
+  g_pHelpMgr->SelectAndActivatePendingEventForCurrentView();
 }
 
 static void DispatchUiRuntimeAbilityUnlockSlot88Gate(int abilityIndex) {
-  void* uiRuntime = g_pUiRuntimeContext;
-  if (uiRuntime == 0) {
+  if (g_pUiRuntimeContext == nullptr) {
     return;
   }
-  reinterpret_cast<void(__cdecl*)(int)>(*reinterpret_cast<void**>(
-      reinterpret_cast<char*>(*reinterpret_cast<void**>(uiRuntime)) + 0x88))(abilityIndex);
+  g_pUiRuntimeContext->UiRuntimeSlot88(abilityIndex);
 }
 
 static void PlayClickSfx7000() {
-  void* sfxPlayer = *reinterpret_cast<void**>(kAddrSfxPlaybackSystem);
-  if (sfxPlayer == 0) {
+  if (g_pSfxPlaybackSystem == nullptr) {
     return;
   }
-  reinterpret_cast<void(__cdecl*)(int, int, int)>(*reinterpret_cast<void**>(
-      reinterpret_cast<char*>(*reinterpret_cast<void**>(sfxPlayer)) + 0xb8))(7000, 0, 1);
+  g_pSfxPlaybackSystem->PlaySoundEffect(7000, 0, 1);
 }
 
 } // namespace GameWindowInvoke

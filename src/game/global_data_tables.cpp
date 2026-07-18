@@ -1189,6 +1189,8 @@ extern "C" const char s_SourcePathUArmyMgr_0069573C[] = "D:\\Ambit\\Cross\\UArmy
 extern "C" const char s_SourcePathUSuperMap_0069943C[] = "D:\\Ambit\\Cross\\USuperMap.cpp";
 // GLOBAL: IMPERIALISM 0x0069aa94
 extern "C" const char s_SourcePathUTradeViews_0069AA94[] = "D:\\Ambit\\Cross\\UTradeViews.cpp";
+// GLOBAL: IMPERIALISM 0x006984cc
+extern "C" const char s_SourcePathUOcean_006984CC[] = "D:\\Ambit\\Cross\\UOcean.cpp";
 // GLOBAL: IMPERIALISM 0x006a460c
 short g_defaultMarkerBoxWidth_006a460c = 0;
 
@@ -1455,6 +1457,11 @@ CString g_cstrUiPromptMessageStore;
 // pass is skipped until the tick advances.
 // GLOBAL: IMPERIALISM 0x006a31c0
 int g_lastTurnAlertTick_006a31c0 = 0;
+
+// Last map tile index the player clicked, stored by
+// TWorldView::HandleMapTileClickSetOrderContextAndDispatchEvent79 (0x5962a0).
+// GLOBAL: IMPERIALISM 0x006a4608
+int g_lastClickedMapTileIndex_006a4608 = 0;
 
 // When set (and the modal's context tag is 2), overrides the computed 'GOLD' resource
 // id in the nation-info modal (0x5d5ea6). Never observed written yet; zero-initialized.

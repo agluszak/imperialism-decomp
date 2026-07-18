@@ -67,30 +67,6 @@ undefined4 WrapperFor_AdjustCityDialogScrollRangeByDeltaAndClamp_At00573f16(void
   return 0;
 }
 
-// ghidra_name AdjustCityDialogScrollRangeByDeltaAndClamp
-// ghidra_proto undefined AdjustCityDialogScrollRangeByDeltaAndClamp()
-// FUNCTION: IMPERIALISM 0x00573f60
-undefined4 AdjustCityDialogScrollRangeByDeltaAndClamp(void)
-{
-  return 0;
-}
-
-// ghidra_name RefreshCityDialogScrollableViewportWithQuickDrawContext
-// ghidra_proto undefined RefreshCityDialogScrollableViewportWithQuickDrawContext()
-// FUNCTION: IMPERIALISM 0x005740a0
-undefined4 RefreshCityDialogScrollableViewportWithQuickDrawContext(void)
-{
-  return 0;
-}
-
-// ghidra_name RenderStrategicMapViewportBandsAndBlit_Impl
-// ghidra_proto undefined RenderStrategicMapViewportBandsAndBlit_Impl()
-// FUNCTION: IMPERIALISM 0x00575080
-undefined4 RenderStrategicMapViewportBandsAndBlit_Impl(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_ftol_At00575130
 // ghidra_proto undefined WrapperFor_ftol_At00575130()
 // FUNCTION: IMPERIALISM 0x00575130
@@ -175,14 +151,6 @@ undefined4 ExpandBracketMappedStringToSinkCallback(void)
 // ghidra_proto undefined GetSumField34PlusField30()
 // FUNCTION: IMPERIALISM 0x00581240
 undefined4 GetSumField34PlusField30(void)
-{
-  return 0;
-}
-
-// ghidra_name RemoveNationSlotAndNotifyPeers
-// ghidra_proto undefined RemoveNationSlotAndNotifyPeers()
-// FUNCTION: IMPERIALISM 0x00581300
-undefined4 RemoveNationSlotAndNotifyPeers(void)
 {
   return 0;
 }

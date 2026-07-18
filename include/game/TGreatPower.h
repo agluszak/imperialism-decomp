@@ -326,7 +326,9 @@ public:
   virtual int SumCommodityRecordAccumulatedValues(void);
   virtual void NoOpTailStateHookSlot2B4(void);
   virtual void NoOpTailStateHookSlot2B8(int arg);
-  virtual void UpdateGreatPowerPressureStateAndDispatchEscalationMessage(void);
+  // slot 0xaf — body 0x004db380 returns a char (1 on the hard-alert dispatch path,
+  // 0 otherwise); the case-0xb join-empire loop tests that result.
+  virtual char UpdateGreatPowerPressureStateAndDispatchEscalationMessage(void);
   virtual void DispatchTurnOrderActionSlotB0(short orderKind, short payload, short flags);
   virtual void BuildGreatPowerTurnMessageSummaryAndDispatch(void);
 

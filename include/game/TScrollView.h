@@ -134,4 +134,8 @@ public:
   // 0x005741e0 — re-capture the content view's layout, clamp the scrollbar's word8c
   // to min(word88, word8a), and enable/disable the bar by content overflow.
   void SyncBoundedValueAndToggleControlStates();
+  // 0x00573f60 — shift the content view's origin by (mode, delta), clamp to the
+  // scrollable range, re-layout the content, and re-derive scrollBar64's word8c
+  // track position from the new offset.
+  void AdjustCityDialogScrollRangeByDeltaAndClamp(short mode, short delta);
 };

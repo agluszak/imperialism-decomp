@@ -31,23 +31,8 @@ extern undefined4 RefreshNationAdvisorLabelStrings(void);
 extern undefined4 ProcessTurnInstructionStreamAndFinalizePhase(void);
 extern undefined4 UpdatePersistentTopTenNationScores(void);
 extern undefined4 UpdateCityOrderCapabilityUnlockProgress(void);
-extern undefined4 ConsumeFirstPendingAbilityUnlock(void);
 extern undefined4 RefreshNavyOrderCycleAndClearReadyFlags(void);
-extern undefined4 RemoveNationSlotAndNotifyPeers(void);
 extern undefined4 SetOutputDevice(void);
-
-// QueryNationAdvisorSlot90Predicate28 / QueryJoinEmpireModePendingForNationAf are placeholder
-// per-nation checks that still need to be ported (cases 0x19 / 0xb); constant returns make those
-// branches no-ops for now.
-static int QueryNationAdvisorSlot90Predicate28(TGreatPower* nation) {
-  (void)nation;
-  return 1;
-}
-
-static int QueryJoinEmpireModePendingForNationAf(TGreatPower* nation) {
-  (void)nation;
-  return 0;
-}
 
 static inline bool IsNationTerrainEligible(short nationSlot) {
   if (nationSlot == -1) {
@@ -333,20 +318,23 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
   }
 
   case 0xb: {
+    turnStateCode = 0xc;
     char actionNeeded = 0;
+    // For each live nation slot 6..0, slot 0xaf (the pressure-state update, byte 0x2bc)
+    // returns a char: when set, fire the active nation's no-payload turn-event dispatch
+    // (slot 0xab, byte 0x2ac). The original derefs the active nation's vtable with no
+    // null guard here, so this stays a direct virtual call.
     for (int nationSlot = 6; nationSlot >= 0; --nationSlot) {
       TGreatPower* nation = g_apNationStates[nationSlot];
       if (nation == nullptr) {
         continue;
       }
-      if (QueryJoinEmpireModePendingForNationAf(nation) == 0) {
+      if (nation->UpdateGreatPowerPressureStateAndDispatchEscalationMessage() == 0) {
         continue;
       }
       TGreatPower* activeNation = g_apNationStates[activeNationSlot];
-      if (activeNation != nullptr) {
-        activeNation->ApplyJoinEmpireMode1TargetTransition(nationSlot);
-        actionNeeded = 1;
-      }
+      activeNation->DispatchTurnEvent11F8NoPayloadSlot2AC();
+      actionNeeded = 1;
     }
     if (actionNeeded == 0) {
       PostMainWindowCommand100ForTurnFlow();
@@ -450,7 +438,8 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
         g_nTurnCooldownDeferCounter006A43C4 = 0;
         g_nTurnCooldownSideFlag00698B10 = 1;
         if (!IsNationTerrainEligible(activeNationSlot)) {
-          short unlockSlot = ConsumeFirstPendingAbilityUnlock();
+          short unlockSlot = g_pCityOrderCapabilityState->ConsumeFirstPendingAbilityUnlock(
+              static_cast<short>(nationSlot));
           if (unlockSlot != -1) {
             DispatchUiSlot4C();
             actionNeeded = 0;
@@ -458,9 +447,11 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
           continue;
         }
       }
-      short unlockSlot = ConsumeFirstPendingAbilityUnlock();
+      short unlockSlot = g_pCityOrderCapabilityState->ConsumeFirstPendingAbilityUnlock(
+          static_cast<short>(nationSlot));
       while (unlockSlot != -1) {
-        unlockSlot = ConsumeFirstPendingAbilityUnlock();
+        unlockSlot = g_pCityOrderCapabilityState->ConsumeFirstPendingAbilityUnlock(
+            static_cast<short>(nationSlot));
       }
     }
     if (actionNeeded != 0) {
@@ -580,17 +571,19 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
   case 0x19: {
     turnStateCode = 8;
     char actionNeeded = 0;
-    if (g_pSimMgr != nullptr) {
+    // Verified against 0x0057e1be: the original reads g_pSimMgr->activeNationSlot with no
+    // null guard, and when the localization nation's encoded slot is in [100,200) it fires
+    // the active nation's no-payload turn-event dispatch (slot 0xab, byte 0x2ac) with no
+    // arg and no null check on the active nation.
+    {
       const short localizationNation = g_pSimMgr->activeNationSlot;
       TGreatPower* localizationNationState = g_apNationStates[localizationNation];
       if (localizationNationState != nullptr) {
         const short encoded = localizationNationState->encodedNationSlot;
         if (encoded > 99 && encoded < 200) {
           TGreatPower* activeNation = g_apNationStates[activeNationSlot];
-          if (activeNation != nullptr) {
-            activeNation->ApplyJoinEmpireMode1TargetTransition(localizationNation);
-            actionNeeded = 1;
-          }
+          activeNation->DispatchTurnEvent11F8NoPayloadSlot2AC();
+          actionNeeded = 1;
         }
       }
     }
@@ -599,14 +592,13 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
           g_apNationStates[removeNationSlot] == nullptr) {
         continue;
       }
-      if (QueryNationAdvisorSlot90Predicate28(g_apNationStates[removeNationSlot]) == 0) {
-        RemoveNationSlotAndNotifyPeers();
+      if (g_apNationStates[removeNationSlot]->ownedRegionList->GetSize() == 0) {
+        RemoveNationSlotAndNotifyPeers(static_cast<short>(removeNationSlot));
       }
     }
     for (int secondaryIndex = 7; secondaryIndex < 36; ++secondaryIndex) {
       TMinor* secondaryNation = g_apSecondaryNationStateSlots[secondaryIndex];
-      if (secondaryNation != nullptr && QueryNationAdvisorSlot90Predicate28(
-                                            reinterpret_cast<TGreatPower*>(secondaryNation)) == 0) {
+      if (secondaryNation != nullptr && secondaryNation->ownedRegionList->GetSize() == 0) {
         for (short percentNationSlot = 0; percentNationSlot < 7; ++percentNationSlot) {
           if (!IsNationTerrainEligible(percentNationSlot)) {
             continue;

@@ -235,14 +235,6 @@ undefined4 OpenSuperArmyRosterPageAndActivateProvinceSelection(void)
   return 0;
 }
 
-// ghidra_name DispatchUiRuntimeMessage101AAndRefreshActiveView
-// ghidra_proto undefined DispatchUiRuntimeMessage101AAndRefreshActiveView()
-// FUNCTION: IMPERIALISM 0x005de8f0
-undefined4 DispatchUiRuntimeMessage101AAndRefreshActiveView(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_ftol_At005dee20
 // ghidra_proto undefined WrapperFor_ftol_At005dee20()
 // FUNCTION: IMPERIALISM 0x005dee20
@@ -659,162 +651,10 @@ undefined4 InitStub_ResetAndOpenCdAudioDeviceHandle_At005e4de0(void)
   return 0;
 }
 
-// ghidra_name AfxGetMainWnd
-// ghidra_proto undefined AfxGetMainWnd()
-// FUNCTION: IMPERIALISM 0x005e539c
-undefined4 AfxGetMainWnd(void)
-{
-  return 0;
-}
-
-// ghidra_name CreateObject
-// ghidra_proto undefined CreateObject()
-// FUNCTION: IMPERIALISM 0x005e53d8
-undefined4 CreateObject_005E53D8(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_Ordinal13_FromField1C_At005e5561
-// ghidra_proto undefined WrapperFor_Ordinal13_FromField1C_At005e5561()
-// FUNCTION: IMPERIALISM 0x005e5561
-undefined4 WrapperFor_Ordinal13_FromField1C_At005e5561(void)
-{
-  return 0;
-}
-
 // ghidra_name MoveListBoxEntryPreserveItemData
 // ghidra_proto undefined MoveListBoxEntryPreserveItemData()
 // FUNCTION: IMPERIALISM 0x005e5661
 undefined4 MoveListBoxEntryPreserveItemData(void)
-{
-  return 0;
-}
-
-// ghidra_name Create
-// ghidra_proto undefined ?Create@CHotKeyCtrl@@QAEHKABUtagRECT@@PAVCWnd@@I@Z()
-// FUNCTION: IMPERIALISM 0x005e58ab
-undefined4 Z(void)
-{
-  return 0;
-}
-
-// ghidra_name OnCreate
-// ghidra_proto undefined ?OnCreate@CToolBarCtrl@@IAEHPAUtagCREATESTRUCTA@@@Z@005e5a0d()
-// FUNCTION: IMPERIALISM 0x005e5a0d
-undefined4 OnCreate(void)
-{
-  return 0;
-}
-
-// ghidra_name Create
-// ghidra_proto undefined ?Create@CHotKeyCtrl@@QAEHKABUtagRECT@@PAVCWnd@@I@Z()
-// FUNCTION: IMPERIALISM 0x005e5a36
-undefined4 Z_005E5A36(void)
-{
-  return 0;
-}
-
-// ghidra_name Create
-// ghidra_proto undefined ?Create@CHotKeyCtrl@@QAEHKABUtagRECT@@PAVCWnd@@I@Z()
-// FUNCTION: IMPERIALISM 0x005e5c0b
-undefined4 Z_005E5C0B(void)
-{
-  return 0;
-}
-
-// ghidra_name Create
-// ghidra_proto undefined ?Create@CHotKeyCtrl@@QAEHKABUtagRECT@@PAVCWnd@@I@Z()
-// FUNCTION: IMPERIALISM 0x005e5fe5
-undefined4 Z_005E5FE5(void)
-{
-  return 0;
-}
-
-// ghidra_name Create
-// ghidra_proto undefined ?Create@CHotKeyCtrl@@QAEHKABUtagRECT@@PAVCWnd@@I@Z()
-// FUNCTION: IMPERIALISM 0x005e6379
-undefined4 Z_005E6379(void)
-{
-  return 0;
-}
-
-// ghidra_name Create
-// ghidra_proto undefined ?Create@CHotKeyCtrl@@QAEHKABUtagRECT@@PAVCWnd@@I@Z()
-// FUNCTION: IMPERIALISM 0x005e6416
-undefined4 Z_005E6416(void)
-{
-  return 0;
-}
-
-// ghidra_name Create
-// ghidra_proto undefined ?Create@CHotKeyCtrl@@QAEHKABUtagRECT@@PAVCWnd@@I@Z()
-// FUNCTION: IMPERIALISM 0x005e6557
-undefined4 Z_005E6557(void)
-{
-  return 0;
-}
-
-// ghidra_name Create
-// ghidra_proto undefined ?Create@CHotKeyCtrl@@QAEHKABUtagRECT@@PAVCWnd@@I@Z()
-// FUNCTION: IMPERIALISM 0x005e65c8
-undefined4 Z_005E65C8(void)
-{
-  return 0;
-}
-
-// ghidra_name Create
-// ghidra_proto undefined ?Create@CHotKeyCtrl@@QAEHKABUtagRECT@@PAVCWnd@@I@Z()
-// FUNCTION: IMPERIALISM 0x005e666a
-undefined4 Z_005E666A(void)
-{
-  return 0;
-}
-
-// ghidra_name Create
-// ghidra_proto undefined ?Create@CHotKeyCtrl@@QAEHKABUtagRECT@@PAVCWnd@@I@Z()
-// FUNCTION: IMPERIALISM 0x005e6710
-undefined4 Z_005E6710(void)
-{
-  return 0;
-}
-
-// ghidra_name Create
-// ghidra_proto undefined ?Create@CHotKeyCtrl@@QAEHKABUtagRECT@@PAVCWnd@@I@Z()
-// FUNCTION: IMPERIALISM 0x005e67ec
-undefined4 Z_005E67EC(void)
-{
-  return 0;
-}
-
-// ghidra_name FromHandlePermanent
-// ghidra_proto undefined FromHandlePermanent()
-// FUNCTION: IMPERIALISM 0x005e69cb
-undefined4 FromHandlePermanent(void)
-{
-  return 0;
-}
-
-// ghidra_name Create
-// ghidra_proto int __thiscall ?Create@CImageList@@QAEHHHIHH@Z(int param_1, int param_2, uint param_3, int param_4, int param_5)
-// FUNCTION: IMPERIALISM 0x005e69e7
-undefined4 Z_005E69E7(void)
-{
-  return 0;
-}
-
-// ghidra_name Create
-// ghidra_proto undefined ?Create@CImageList@@QAEHIHHK@Z()
-// FUNCTION: IMPERIALISM 0x005e6a0f
-undefined4 Z_005E6A0F(void)
-{
-  return 0;
-}
-
-// ghidra_name Create
-// ghidra_proto undefined ?Create@CImageList@@QAEHIHHK@Z()
-// FUNCTION: IMPERIALISM 0x005e6a41
-undefined4 Z_005E6A41(void)
 {
   return 0;
 }
@@ -959,22 +799,6 @@ undefined4 NoOpRuntimeCallback_005e717b(void)
 // ghidra_proto undefined NoOpCrtThreadLifecycleHook()
 // FUNCTION: IMPERIALISM 0x005e7370
 undefined4 NoOpCrtThreadLifecycleHook(void)
-{
-  return 0;
-}
-
-// ghidra_name ftol
-// ghidra_proto undefined ftol()
-// FUNCTION: IMPERIALISM 0x005e73d0
-undefined4 ftol(void)
-{
-  return 0;
-}
-
-// ghidra_name AppendPointerToGlobalVectorAsStatus
-// ghidra_proto undefined AppendPointerToGlobalVectorAsStatus()
-// FUNCTION: IMPERIALISM 0x005e7920
-undefined4 AppendPointerToGlobalVectorAsStatus(void)
 {
   return 0;
 }

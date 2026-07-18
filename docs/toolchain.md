@@ -109,7 +109,54 @@ Interpretation:
   fix for the duplicate original-side CList instantiations.
 - Practical conclusion: do not adopt `/OPT:REF` to chase duplicate CList rows. Keep the
   real `CList<...>` source model and treat leftover duplicate original template bodies
-  as a reccmp pairing/classification problem.
+  as a reccmp pairing/classification problem. Verified per-TU duplicates are recorded in
+  `config/template_aliases.csv` (validated by `just template-alias-check`; discover
+  candidates with `just mfc-collection-audit <Class|0xCTOR>`).
+
+## Experiment: template-emission compiler matrix
+
+Harness: `just template-emission-matrix` (tools/workflow/template_emission_matrix.py
+compiling `experiments/template_emission/{owner,user}.cpp` in the msvc500 container,
+host-side COFF COMDAT inventory per TU). Probe: two owners embedding
+`CList<void*, void*>` and `CList<ProbeRecord, ProbeRecord&>` between scalar fields,
+mirroring the CIncludeView/TApplication shapes.
+
+Results (VC5 RTM 11.00.7022, MFC 4.21, `/O2 /Oy /GX`; 2026-07 run):
+
+- **`/Ob0`**: every collection call goes out-of-line — owner.obj emits 16 CList
+  COMDATs (adds ctor, `AddTail`, `NewNode`, `RemoveAll`), user.obj emits 12
+  (`AddTail`, `FreeNode`, `IsEmpty`, `NewNode`, `RemoveAll`, `RemoveTail`). This is
+  the only mode producing direct calls to out-of-line template COMDATs at call sites.
+- **`/Ob1` == `/Ob2`** (identical inventories): owner.obj emits exactly the
+  per-instantiation VIRTUAL set — vtable `??_7`, `~CList` `??1`, scalar deleting
+  dtor `??_G`, `Serialize` (×2 instantiations = 8) — and user.obj emits ZERO CList
+  COMDATs: `AddTail`/`RemoveTail`/`IsEmpty`, including the nested `NewNode`/CPlex
+  allocation, inline fully in a simple TU.
+- **Same-TU users, explicit vs implicit mem-init, empty vs non-empty owner dtor:
+  no change** to the emission inventory. Source-model choices at the owner cannot
+  reduce or reshape the duplicate emission.
+- **Non-inline `AddTail` wrapper**: adds only the wrapper's own COMDATs; the CList
+  bodies stay inlined inside it.
+
+Conclusions:
+
+1. Any TU that constructs or destroys an embedded `CList` emits the full 4-body
+   virtual set for that instantiation. The original's per-TU duplicate
+   `??_G`/`??1`/`Serialize`/vtable copies are the unavoidable product of multiple
+   original TUs owning objects of the same instantiation — exactly the twin families
+   recorded in `config/template_aliases.csv`. Alias metadata (not source contortion)
+   is confirmed as the correct fix.
+2. Original TUs showing direct out-of-line `AddTail`/`RemoveTail` calls were compiled
+   with inlining rejected in that context (`/Ob1` permits but does not force); in a
+   simple TU the same calls inline completely. This matches the earlier wrapper
+   experiments on the giant UI builders: neither wrapper form reproduces a rejected
+   inline exactly, so treat those as site-local call-shape mismatches.
+3. Still open (needs alternate toolchain binaries, not vendored): the VS97
+   service-pack compiler/linker axis. When such binaries are available, add cells
+   with a different image tag to `tools/workflow/template_emission_matrix.py`.
+   `#pragma auto_inline(off)` remains probe-only: it affects functions defined
+   inside the pragma region, so wrapping an owner ctor does not stop template bodies
+   defined in `afxtempl.h` from inlining — not a production fix.
 
 ## Python/Ghidra Environment Notes
 

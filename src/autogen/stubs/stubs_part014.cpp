@@ -203,14 +203,6 @@ undefined4 WrapperFor_FreeHeapBufferIfNotNull_At004ee730(void)
   return 0;
 }
 
-// ghidra_name RemoveNationSlotAndNotifyPeers_Impl
-// ghidra_proto undefined RemoveNationSlotAndNotifyPeers_Impl()
-// FUNCTION: IMPERIALISM 0x004eee60
-undefined4 RemoveNationSlotAndNotifyPeers_Impl(void)
-{
-  return 0;
-}
-
 // ghidra_name RebuildMinorNationDispositionLookupTables
 // ghidra_proto undefined RebuildMinorNationDispositionLookupTables()
 // FUNCTION: IMPERIALISM 0x004f24a0
@@ -255,14 +247,6 @@ undefined4 WrapperFor_ftol_At004f2b10(void)
 // ghidra_proto undefined InitializeDiplomacyMinisterActionControlsAndLabels()
 // FUNCTION: IMPERIALISM 0x004f4620
 undefined4 InitializeDiplomacyMinisterActionControlsAndLabels(void)
-{
-  return 0;
-}
-
-// ghidra_name RenderTerrainAndMinorNationLegendLabels
-// ghidra_proto undefined RenderTerrainAndMinorNationLegendLabels()
-// FUNCTION: IMPERIALISM 0x004f4a30
-undefined4 RenderTerrainAndMinorNationLegendLabels(void)
 {
   return 0;
 }
@@ -383,14 +367,6 @@ undefined4 WrapperFor_ftol_At00500520(void)
 // ghidra_proto undefined DestructTHelpMgrAndMaybeFree_Impl()
 // FUNCTION: IMPERIALISM 0x00500660
 undefined4 DestructTHelpMgrAndMaybeFree_Impl(void)
-{
-  return 0;
-}
-
-// ghidra_name SelectAndActivatePendingEventForCurrentView
-// ghidra_proto undefined SelectAndActivatePendingEventForCurrentView()
-// FUNCTION: IMPERIALISM 0x005010b0
-undefined4 SelectAndActivatePendingEventForCurrentView(void)
 {
   return 0;
 }

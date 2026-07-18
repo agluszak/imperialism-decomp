@@ -699,6 +699,7 @@ extern CString g_cstrTechCapabilityMessageStore;   // @ 0x6a57c8
 extern CString g_cstrUiPromptMessageStore;         // @ 0x6a5be0
 extern int g_nationInfoGoldResourceOverride_006a5bac;
 extern int g_lastTurnAlertTick_006a31c0;
+extern int g_lastClickedMapTileIndex_006a4608;
 extern int g_localizationAudioSlotCursor_006a60f8;
 extern char g_szImpSaveExtension_00698708[];
 extern char g_szMultiplayerSavePrefix_00698710[];
@@ -781,6 +782,7 @@ extern "C" const char s_SourcePathUArmyMgr_0069573C[];
 extern "C" const char s_SourcePathUSuperMap_0069943C[];
 // Assert source-path string for the UTradeViews TU (TOfferDeskPicture family).
 extern "C" const char s_SourcePathUTradeViews_0069AA94[];
+extern "C" const char s_SourcePathUOcean_006984CC[];
 // Default viewport-marker-box width, shared by TMiniMapView/TacticalBattleView's own
 // marker-box construction (assigned once via ftol() elsewhere; role beyond that isn't
 // further recovered).

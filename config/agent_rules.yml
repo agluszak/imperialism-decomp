@@ -330,3 +330,35 @@ rules:
     forbidden: [reinterpret_cast_this_plus_offset_when_field_exists]
     tools: ["just field-xrefs"]
     skill: data-modeling
+
+  - id: MFC-EMBED-029
+    status: active
+    title: An embedded MFC collection is a real member with declaration-order lifetime
+    triggers: [mfc_collection_shape, ctor_work, dtor_work]
+    required:
+      - verify_collection_family_and_exact_template_arguments
+      - declare_member_at_proven_offset
+      - initialize_surrounding_fields_in_declaration_order
+      - verify_owner_ctor_and_dtor
+    forbidden:
+      - raw_collection_storage
+      - manual_collection_vptr
+      - placement_new_collection_bridge
+      - explicit_member_destructor_call
+    tools: ["just mfc-collection-audit 0xCTOR", "just ghidra-listing 0xCTOR", "just compare 0xCTOR 0xDTOR"]
+    skill: mfc-collections
+    examples: [0x482950]
+
+  - id: MFC-TWIN-030
+    status: active
+    title: Duplicate original template bodies are aliases, not additional game classes
+    triggers: [mfc_collection_shape, scalar_deleting_dtor]
+    required:
+      - compare_normalized_template_bodies
+      - record_canonical_and_alias_addresses
+    forbidden:
+      - fake_class_per_vtable_address
+      - duplicate_source_instantiation_for_pairing
+      - changing_correct_member_model_to_pair_an_alias
+    tools: ["just mfc-collection-audit 0xCTOR", "just template-alias-check"]
+    skill: mfc-collections
