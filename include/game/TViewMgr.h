@@ -69,7 +69,7 @@ public:
   virtual void HandleTurnEventDialogFactorySlot7C(int eventCode); // 0x7c 0x5d6f10
   virtual void HandleTurnEventDialogFactorySlot80(int eventCode); // 0x80 0x5d6fd0
   virtual void UiRuntimeSlot84();                                 // 0x84
-  virtual void UiRuntimeSlot88();                                 // 0x88
+  virtual void UiRuntimeSlot88(int abilityIndex);                 // 0x88 body 0x5d8980 (ret 4)
   virtual void UiRuntimeSlot8C(int arg);                          // 0x8c
   virtual char RequestDiplomacyDecisionSlot90(int sourceNation, int targetNation,
                                               int proposalCode); // 0x90

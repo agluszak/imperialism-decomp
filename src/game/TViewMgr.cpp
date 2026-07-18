@@ -1405,7 +1405,7 @@ void TViewMgr::UiRuntimeSlot84() {
   }
 }
 
-void TViewMgr::UiRuntimeSlot88() {}
+void TViewMgr::UiRuntimeSlot88(int abilityIndex) { (void)abilityIndex; }
 
 char TViewMgr::RequestDiplomacyDecisionSlot90(int sourceNation, int targetNation,
                                               int proposalCode) {

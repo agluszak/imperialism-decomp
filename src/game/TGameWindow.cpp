@@ -8,6 +8,7 @@
 #include "game/TUiEvent.h"
 #include "game/TView.h"
 #include "game/TViewMgr.h"
+#include "game/TSoundPlayer.h"
 #include "game/TMovieView.h"
 #include "game/UiRuntimeContext.h"
 #include "game/global_data_tables.h"
@@ -19,7 +20,6 @@
 
 namespace {
 
-const unsigned int kAddrSfxPlaybackSystem = 0x006a43ec;
 const short kUiCommandHandledMarker = 0x29a;
 
 static short QueryUiRuntimeEventCode() {
@@ -51,21 +51,17 @@ static void SelectAndActivatePendingEventForCurrentViewGate() {
 }
 
 static void DispatchUiRuntimeAbilityUnlockSlot88Gate(int abilityIndex) {
-  void* uiRuntime = g_pUiRuntimeContext;
-  if (uiRuntime == 0) {
+  if (g_pUiRuntimeContext == nullptr) {
     return;
   }
-  reinterpret_cast<void(__cdecl*)(int)>(*reinterpret_cast<void**>(
-      reinterpret_cast<char*>(*reinterpret_cast<void**>(uiRuntime)) + 0x88))(abilityIndex);
+  g_pUiRuntimeContext->UiRuntimeSlot88(abilityIndex);
 }
 
 static void PlayClickSfx7000() {
-  void* sfxPlayer = *reinterpret_cast<void**>(kAddrSfxPlaybackSystem);
-  if (sfxPlayer == 0) {
+  if (g_pSfxPlaybackSystem == nullptr) {
     return;
   }
-  reinterpret_cast<void(__cdecl*)(int, int, int)>(*reinterpret_cast<void**>(
-      reinterpret_cast<char*>(*reinterpret_cast<void**>(sfxPlayer)) + 0xb8))(7000, 0, 1);
+  g_pSfxPlaybackSystem->PlaySoundEffect(7000, 0, 1);
 }
 
 } // namespace GameWindowInvoke
