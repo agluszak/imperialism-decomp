@@ -4,6 +4,7 @@
 #include "game/TDisplayMgr.h"
 #include "game/TPictureButton.h"
 #include "game/TScrollView.h"
+#include "game/TSoundPlayer.h"
 #include "game/global_data_tables.h"
 
 // SYNTHETIC: IMPERIALISM 0x00573df0
@@ -116,7 +117,28 @@ void TScrollBarView::HandleEvent(int commandId, TEventHandler* sourceHandler, TE
 
 // FUNCTION: IMPERIALISM 0x00574830
 void TScrollBarView::BeginMouseCaptureAndStartRepeatTimer(CPoint* point, int arg2, int arg3,
-                                                          int arg4) {}
+                                                          int arg4) {
+  RECT thumbRect = {0, word8c, frameWidth34, static_cast<int>(word8c) + 0x12};
+  if (PtInRect(&thumbRect, *point)) {
+    TControl::BeginMouseCaptureAndStartRepeatTimer(point, 0, 0, 0);
+    return;
+  }
+
+  int y = point->y;
+  if (y >= word88 && y < word8c) {
+    g_pSfxPlaybackSystem->PlaySoundEffect(0x1b58);
+    ownerView84->AdjustCityDialogScrollRangeByDeltaAndClamp(
+        0, static_cast<short>(ownerView84->frameHeight38));
+    return;
+  }
+
+  if (y > word8a + 0x12 || y <= word8c + 0x12) {
+    return;
+  }
+  g_pSfxPlaybackSystem->PlaySoundEffect(0x1b58);
+  ownerView84->AdjustCityDialogScrollRangeByDeltaAndClamp(
+      0, -static_cast<short>(ownerView84->frameHeight38));
+}
 
 // FUNCTION: IMPERIALISM 0x00574970
 void TScrollBarView::ApplyRectSlot110(RECT* rectBuffer) {}

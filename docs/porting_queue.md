@@ -179,10 +179,17 @@ each with the evidence needed to start (address, size, current score if any, blo
   evidence. `HandleEvent`'s residual (84.75%) is a receiver-vs-args
   evaluation-order register choice (tried caching `ownerView84` in a local first,
   no effect, reverted) — not source-steerable.
-  Remaining un-landed in this file: `BeginMouseCaptureAndStartRepeatTimer` 0x574830
-  (~320B, also calls `AdjustCityDialogScrollRangeByDeltaAndClamp` — should be
-  tractable now that its receiver type is resolved), `ApplyRectSlot110` 0x574970
-  (~928B, calls a still-stubbed `RenderStrategicMapViewportBandsAndBlit_Impl`),
+  `BeginMouseCaptureAndStartRepeatTimer` (0x574830) also landed 2026-07-18 (0% ->
+  67.95%): thumb-click passes through to the base `TControl` handler
+  (`PtInRect` against `RECT{0, word8c, frameWidth34, word8c+0x12}`); a click above
+  or below the thumb plays sound 0x1b58 (`g_pSfxPlaybackSystem->PlaySoundEffect`)
+  and pages the content by `±ownerView84->frameHeight38` via
+  `AdjustCityDialogScrollRangeByDeltaAndClamp`. Residual is pure register/field-read
+  scheduling (tried caching `point->y` in a local to match the original's
+  single-read-reused-three-times shape — no measurable effect, compiler already
+  CSEs it; kept the cleaner form).
+  Remaining un-landed in this file: `ApplyRectSlot110` 0x574970 (~928B, calls a
+  still-stubbed `RenderStrategicMapViewportBandsAndBlit_Impl`),
   `DispatchPictureResourceCommand` 0x574d10 (calls
   `RefreshCityDialogScrollableViewportWithQuickDrawContext` directly plus a vtable
   slot 0x3c `CaptureLayoutF0` dispatch on an unidentified receiver — check whether
