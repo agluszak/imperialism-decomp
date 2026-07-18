@@ -81,6 +81,13 @@ void TWorldView::SetFlagByteAndInvokeVslot1A4(unsigned char flagByte) {
   RenderMapContextOverlayWithScopedClipAndSurface();
 }
 
+// The original's overlay dispatches all go through THIS view's own vtable
+// (`MOV EDI,[ESI]` then `MOV ECX,ESI; CALL [EDI+0x128/0x1a8/0x1ac/0x1b0]` in the
+// raw listing) -- plain self-virtual calls on the TWorldView, not calls through
+// `ownerContext`'s table as a previous port assumed (that version faked the
+// dispatches with __fastcall casts through the wrong object's vtable and dead-
+// gated the mode-0 branch on a variable that was always -1 there). ownerContext
+// is read only for its mode/context fields.
 // FUNCTION: IMPERIALISM 0x00595c70
 void TWorldView::RenderMapContextOverlayWithScopedClipAndSurface() {
   CTemporaryRegion reusableSurfaceA;
@@ -88,20 +95,18 @@ void TWorldView::RenderMapContextOverlayWithScopedClipAndSurface() {
 
   TMapUberPicture* mapUberPicture = static_cast<TMapUberPicture*>(ownerContext);
   short interactionMode = mapUberPicture->activeUnitCategoryIndex96;
-  int previewTileIndex = -1;
-  short previewBand = -1;
+  TCivUnit* selectedOrder = 0;
+  short previewTile = -1;
 
   if (interactionMode == 0) {
-    TCivUnit* selectedOrder = g_pSelectedCivilianOrderState->selectedEntry;
+    selectedOrder = g_pSelectedCivilianOrderState->selectedEntry;
     if (selectedOrder != 0) {
-      previewTileIndex = -1;
-      previewBand = selectedOrder->tileIndex06;
+      previewTile = selectedOrder->tileIndex06;
     }
   } else if (interactionMode == 1) {
     short actionIndex = g_pMapContextActionManager->pendingMapActionIndex;
     if (actionIndex != -1) {
-      previewBand = -1;
-      previewTileIndex = g_pGlobalMapState->cityScoreTable[actionIndex].cityTileIndex04;
+      previewTile = g_pGlobalMapState->cityScoreTable[actionIndex].cityTileIndex04;
     }
   } else if (interactionMode == 2) {
     int attachedEntity = 0;
@@ -109,85 +114,67 @@ void TWorldView::RenderMapContextOverlayWithScopedClipAndSurface() {
       attachedEntity = reinterpret_cast<int>(mapUberPicture->orderEntryContext98);
     }
     if (attachedEntity != 0) {
-      previewBand = -1;
-      previewTileIndex = *reinterpret_cast<short*>(attachedEntity + 0x20);
+      previewTile = *reinterpret_cast<short*>(attachedEntity + 0x20);
     }
   }
 
-  if (static_cast<short>(previewTileIndex) == -1) {
+  if (previewTile == -1) {
     return;
   }
 
-  short outX = 0;
   short outY = 0;
-  short outExtra = 0;
-  short packedBand = previewBand;
+  short outX = 0;
   ForwardProjectTileIndexToWrappedScreenOffsetByScale(
-      previewTileIndex, reinterpret_cast<int>(&viewportOffsetX), reinterpret_cast<int>(&outX),
-      reinterpret_cast<int>(&outY), packedBand);
+      previewTile, reinterpret_cast<int>(&viewportOffsetX), reinterpret_cast<int>(&outX),
+      reinterpret_cast<int>(&outY), field76);
 
   GetClip(reusableSurfaceA.tempRgn);
   SetGlobalQuickDrawOrigin(static_cast<short>(absoluteX), static_cast<short>(absoluteY));
 
-  short rectWidth = field76;
-  short rectHeight = field78;
-  short originX = outX;
-  short originY = outY;
-  short rectRight = originX + rectWidth;
-  short rectBottom = originY + rectHeight;
-
+  // Preview square: the projected origin grown by field78 on both axes
+  // (Mac Rect field order {top, left, bottom, right}; top/left = outY/outX).
   struct MapOverlayRect {
-    long left;
     long top;
-    long right;
+    long left;
     long bottom;
-  } clipRect;
-  // Slot 0x128 is TView::QueryContentBounds (0x4a); call it as the real virtual.
-  mapUberPicture->QueryContentBounds(reinterpret_cast<RECT*>(&clipRect.bottom));
+    long right;
+  } previewRect, contentBounds;
+  previewRect.top = outY;
+  previewRect.left = outX;
+  previewRect.bottom = outY + field78;
+  previewRect.right = outX + field78;
 
-  // Slots 0x1ac/0x1b0 are polymorphic tile-preview renderers introduced by the concrete
-  // map-view subclass that actually owns `ownerContext`: the caller passes 3 stack args,
-  // but this branch's shared base slots (TControl's NoOpUiViewSlotHandler / OrphanRetStub
-  // at bytes 0x1ac/0x1b0) are 2-arg/1-arg no-op placeholders, so no virtual declarable on
-  // the TMapUberPicture static type has the right arity. Left as a documented raw dispatch
-  // until that receiver subclass is recovered (raw-vtable-gate baselined).
-  int childVtable = *reinterpret_cast<int*>(mapUberPicture);
+  QueryContentBounds(reinterpret_cast<RECT*>(&contentBounds));
+  SectRect(reinterpret_cast<RECT*>(&previewRect), reinterpret_cast<RECT*>(&contentBounds),
+           reinterpret_cast<RECT*>(&previewRect));
 
-  char intersectScratch[16];
-  char intersectPair[16];
-  SectRect(reinterpret_cast<RECT*>(&clipRect.left), reinterpret_cast<RECT*>(intersectScratch),
-           reinterpret_cast<RECT*>(intersectPair));
+  MapOverlayRect clipRect = previewRect;
   OffsetRect(reinterpret_cast<RECT*>(&clipRect), absoluteX, absoluteY);
 
   ScopedMapQuickDrawContext scopedContext(this, reinterpret_cast<RECT*>(&clipRect));
-  RectRgn(reusableSurfaceB.tempRgn, reinterpret_cast<RECT*>(&clipRect.left));
+  RectRgn(reusableSurfaceB.tempRgn, reinterpret_cast<RECT*>(&previewRect));
   SetClip(reusableSurfaceB.tempRgn);
 
   char regionPresent = EmptyRgn(reusableSurfaceB.tempRgn);
   if (regionPresent == 0) {
+    // The mode-1/2 branches rebuild the projected square into one shared local
+    // (the original recomputes it from outX/outY rather than reusing previewRect,
+    // whose value SectRect clipped above).
+    MapOverlayRect badgeRect;
     if (interactionMode == 0) {
-      RenderMapOrderEntryTilePreview(g_pSelectedCivilianOrderState->selectedEntry, originX,
-                                     outExtra);
+      RenderMapOrderEntryTilePreview(selectedOrder, outX, outY, 1, previewTile);
     } else if (interactionMode == 1) {
-      int previewArgs[4];
-      previewArgs[0] = outExtra;
-      previewArgs[1] = rectHeight;
-      previewArgs[2] = originX;
-      previewArgs[3] = rectRight;
-      typedef void(__fastcall * ChildSlot1acFn)(void* self, int unusedEdx, int tile, void* rectArgs,
-                                                int flag);
-      reinterpret_cast<ChildSlot1acFn>(*reinterpret_cast<int*>(childVtable + 0x1ac))(
-          mapUberPicture, 0, previewTileIndex, previewArgs, 1);
+      badgeRect.top = outY;
+      badgeRect.left = outX;
+      badgeRect.bottom = outY + field78;
+      badgeRect.right = outX + field78;
+      RenderTacticalStackCountIndicatorAndUnitBadge(previewTile, &badgeRect, 1);
     } else if (interactionMode == 2) {
-      int previewArgs[4];
-      previewArgs[0] = outExtra;
-      previewArgs[1] = rectHeight;
-      previewArgs[2] = originX;
-      previewArgs[3] = rectBottom;
-      typedef void(__fastcall * ChildSlot1b0Fn)(void* self, int unusedEdx, int tile, void* rectArgs,
-                                                int flag);
-      reinterpret_cast<ChildSlot1b0Fn>(*reinterpret_cast<int*>(childVtable + 0x1b0))(
-          mapUberPicture, 0, previewTileIndex, previewArgs, 1);
+      badgeRect.top = outY;
+      badgeRect.left = outX;
+      badgeRect.bottom = outY + field78;
+      badgeRect.right = outX + field78;
+      RenderMapDialogTerrainOverlayFrameByTileOwner(previewTile, &badgeRect, 1);
     }
   }
 
@@ -195,18 +182,21 @@ void TWorldView::RenderMapContextOverlayWithScopedClipAndSurface() {
 }
 
 // FUNCTION: IMPERIALISM 0x00596020
-void TWorldView::RenderMapOrderEntryTilePreview(TCivUnit* orderEntry, int arg2, int arg3) {
+void TWorldView::RenderMapOrderEntryTilePreview(TCivUnit* orderEntry, int projectedX,
+                                                int projectedY, int flag, short tileIndex) {
   (void)orderEntry;
-  (void)arg2;
-  (void)arg3;
+  (void)projectedX;
+  (void)projectedY;
+  (void)flag;
+  (void)tileIndex;
 }
 
 // FUNCTION: IMPERIALISM 0x00596040
-void TWorldView::RenderTacticalStackCountIndicatorAndUnitBadge(short tileIndex, int arg2,
-                                                               int arg3) {
+void TWorldView::RenderTacticalStackCountIndicatorAndUnitBadge(short tileIndex, void* dstRect,
+                                                               int flag) {
   (void)tileIndex;
-  (void)arg2;
-  (void)arg3;
+  (void)dstRect;
+  (void)flag;
 }
 
 // FUNCTION: IMPERIALISM 0x00596060
@@ -221,7 +211,8 @@ void TWorldView::RenderMapDialogTerrainOverlayFrameByTileOwner(short tileIndex, 
 void TWorldView::RenderStrategicTileSelectionAndNeighborHighlights() {}
 
 // FUNCTION: IMPERIALISM 0x005960a0
-short TWorldView::QueryMinusOneWordSlot1BC() {
+short TWorldView::QueryMinusOneWordSlot1BC(int unusedArg) {
+  (void)unusedArg;
   return -1;
 }
 

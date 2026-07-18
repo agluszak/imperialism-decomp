@@ -183,7 +183,9 @@ public:
   virtual void ReturnFromUiSlot62(int arg);
   virtual void ReturnFromUiSlot63(int arg1, int arg2);
   virtual void DrawRectangleInCurrentUiContext(int* rect);
-  virtual void AssertMcAppUiLine1914();
+  // One ignored stack arg (body ends `RET 0x4`; sibling Line1922 is a bare RET)
+  // -- present only for stack-cleanup fidelity.
+  virtual void AssertMcAppUiLine1914(int unusedArg);
   virtual void AssertMcAppUiLine1922();
   virtual void SubtractPosAndDispatchToOwnerSlot19C(CPoint* point);
   // TView's real vtable is 104 slots (0x00-0x19c). Slots 0x1A0+ belong to the sibling
