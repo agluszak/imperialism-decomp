@@ -36,7 +36,11 @@ public:
   virtual void SelectPriorityNationIndicesForMinorCapabilityRows();             // 13 (0x34)
   virtual void RebuildDiplomacyStandingAndInfluenceMatrices();                  // 14 (0x38)
   virtual void InitializeDiplomacyStandingBaselineRandom();                     // 15 (0x3c)
-  virtual void BuildMajorNationDiplomacyStandingRanking();                      // 16 (0x40)
+  // Sums each major power's comparativePowerRows1824 metrics into a power score,
+  // ranks the 7 major powers descending by that score (random coin-flip tiebreak),
+  // and writes the top two nation slots out. Verified RET 8 (2 stack args).
+  virtual void BuildMajorNationDiplomacyStandingRanking(int* topNationSlot,
+                                                        int* secondNationSlot); // 16 (0x40)
   virtual char IsNationPairAtWar(short sourceNation, short targetNation);       // 17 (0x44)
   virtual char IsNationPairRelationTurnStampOutOfDate(int sourceNation,
                                                       int targetNation);       // 18 (0x48)
