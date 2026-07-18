@@ -35,35 +35,6 @@ extern undefined4 RefreshNavyOrderCycleAndClearReadyFlags(void);
 extern undefined4 RemoveNationSlotAndNotifyPeers(void);
 extern undefined4 SetOutputDevice(void);
 
-// Two per-nation predicates in the case-0xb branch that are still constant-return
-// placeholders. Their constant results currently pin control flow (the return-1 form
-// keeps RemoveNationSlotAndNotifyPeers from ever firing; the return-0 form makes the
-// join-empire loop always `continue`), so porting them changes state-machine behavior --
-// they are behavioral stubs, not cosmetic ones. Ground truth from the 0x57da70
-// disassembly (both are virtual dispatches, no args, char/int result):
-//
-//   QueryNationAdvisorSlot90Predicate28(nation):
-//     nation->field90 is a pointer to an advisor-ish sub-object; the original calls that
-//     object's vtable byte-0x28 slot (slot 0xa) and tests the int result. Porting needs
-//     that sub-object's class recovered (its +0x90 pointee and its slot-0xa virtual).
-//   QueryJoinEmpireModePendingForNationAf(nation):
-//     nation->vtable slot 0xaf (byte 0x2bc; TGreatPower base body 0x4e2b70) returns the
-//     char tested here; the follow-up transition uses slot 0xab (byte 0x2ac, base body
-//     0x4d8bc0). Porting needs TGreatPower's vtable declared out to slots 0xab/0xaf
-//     (currently modeled only through ~slot 0x94), then real virtual calls here.
-//
-// Both are deferred as documented class-recovery queue items rather than faked; the
-// constant returns preserve today's (no-op) behavior until the receivers are modeled.
-static int QueryNationAdvisorSlot90Predicate28(TGreatPower* nation) {
-  (void)nation;
-  return 1;
-}
-
-static int QueryJoinEmpireModePendingForNationAf(TGreatPower* nation) {
-  (void)nation;
-  return 0;
-}
-
 static inline bool IsNationTerrainEligible(short nationSlot) {
   if (nationSlot == -1) {
     return false;
@@ -348,20 +319,23 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
   }
 
   case 0xb: {
+    turnStateCode = 0xc;
     char actionNeeded = 0;
+    // For each live nation slot 6..0, slot 0xaf (the pressure-state update, byte 0x2bc)
+    // returns a char: when set, fire the active nation's no-payload turn-event dispatch
+    // (slot 0xab, byte 0x2ac). The original derefs the active nation's vtable with no
+    // null guard here, so this stays a direct virtual call.
     for (int nationSlot = 6; nationSlot >= 0; --nationSlot) {
       TGreatPower* nation = g_apNationStates[nationSlot];
       if (nation == nullptr) {
         continue;
       }
-      if (QueryJoinEmpireModePendingForNationAf(nation) == 0) {
+      if (nation->UpdateGreatPowerPressureStateAndDispatchEscalationMessage() == 0) {
         continue;
       }
       TGreatPower* activeNation = g_apNationStates[activeNationSlot];
-      if (activeNation != nullptr) {
-        activeNation->ApplyJoinEmpireMode1TargetTransition(nationSlot);
-        actionNeeded = 1;
-      }
+      activeNation->DispatchTurnEvent11F8NoPayloadSlot2AC();
+      actionNeeded = 1;
     }
     if (actionNeeded == 0) {
       PostMainWindowCommand100ForTurnFlow();
@@ -598,17 +572,19 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
   case 0x19: {
     turnStateCode = 8;
     char actionNeeded = 0;
-    if (g_pSimMgr != nullptr) {
+    // Verified against 0x0057e1be: the original reads g_pSimMgr->activeNationSlot with no
+    // null guard, and when the localization nation's encoded slot is in [100,200) it fires
+    // the active nation's no-payload turn-event dispatch (slot 0xab, byte 0x2ac) with no
+    // arg and no null check on the active nation.
+    {
       const short localizationNation = g_pSimMgr->activeNationSlot;
       TGreatPower* localizationNationState = g_apNationStates[localizationNation];
       if (localizationNationState != nullptr) {
         const short encoded = localizationNationState->encodedNationSlot;
         if (encoded > 99 && encoded < 200) {
           TGreatPower* activeNation = g_apNationStates[activeNationSlot];
-          if (activeNation != nullptr) {
-            activeNation->ApplyJoinEmpireMode1TargetTransition(localizationNation);
-            actionNeeded = 1;
-          }
+          activeNation->DispatchTurnEvent11F8NoPayloadSlot2AC();
+          actionNeeded = 1;
         }
       }
     }
@@ -617,14 +593,13 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
           g_apNationStates[removeNationSlot] == nullptr) {
         continue;
       }
-      if (QueryNationAdvisorSlot90Predicate28(g_apNationStates[removeNationSlot]) == 0) {
+      if (g_apNationStates[removeNationSlot]->ownedRegionList->GetSize() == 0) {
         RemoveNationSlotAndNotifyPeers();
       }
     }
     for (int secondaryIndex = 7; secondaryIndex < 36; ++secondaryIndex) {
       TMinor* secondaryNation = g_apSecondaryNationStateSlots[secondaryIndex];
-      if (secondaryNation != nullptr && QueryNationAdvisorSlot90Predicate28(
-                                            reinterpret_cast<TGreatPower*>(secondaryNation)) == 0) {
+      if (secondaryNation != nullptr && secondaryNation->ownedRegionList->GetSize() == 0) {
         for (short percentNationSlot = 0; percentNationSlot < 7; ++percentNationSlot) {
           if (!IsNationTerrainEligible(percentNationSlot)) {
             continue;

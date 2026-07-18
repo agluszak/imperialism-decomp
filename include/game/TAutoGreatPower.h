@@ -83,7 +83,7 @@ public:
   // slot 0xa0 — 0x004e7ec0: war-transition propagation for a nation pair.
   int PropagateWarTransitionSlot280(int targetNation, int sourceNation, int mode) override;
   // slot 0xaf — 0x004e6b10: pressure update stubbed out for AI nations.
-  void UpdateGreatPowerPressureStateAndDispatchEscalationMessage(void) override;
+  char UpdateGreatPowerPressureStateAndDispatchEscalationMessage(void) override;
   // slot 0x9d — 0x004e8040: alliance-aware strength evaluation against the strongest
   // peer; true when minister skill (slot 0x8a) clears the combined score.
   char ReturnZeroSlot9D(int targetNation) override;

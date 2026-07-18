@@ -12395,7 +12395,7 @@
     },
     {
       "address": "0x4db380",
-      "matching": 0.5564853556485355,
+      "matching": 0.5696465696465697,
       "name": "TGreatPower::UpdateGreatPowerPressureStateAndDispatchEscalationMessage",
       "type": 1
     },
@@ -12618,7 +12618,7 @@
     },
     {
       "address": "0x4dd430",
-      "matching": 0.5714285714285714,
+      "matching": 0.5142857142857142,
       "name": "TGreatPower::ComputeRemainingDiplomacyAidBudget",
       "type": 1
     },
@@ -13599,7 +13599,7 @@
     },
     {
       "address": "0x4e6b10",
-      "matching": 0.6666666666666666,
+      "matching": 1.0,
       "name": "TAutoGreatPower::UpdateGreatPowerPressureStateAndDispatchEscalationMessage",
       "type": 1
     },
@@ -20876,7 +20876,7 @@
     },
     {
       "address": "0x540920",
-      "matching": 0.6666666666666666,
+      "matching": 1.0,
       "name": "TProxyGreatPower::UpdateGreatPowerPressureStateAndDispatchEscalationMessage",
       "type": 1
     },
@@ -21104,7 +21104,7 @@
     },
     {
       "address": "0x541860",
-      "matching": 0.6666666666666666,
+      "matching": 1.0,
       "name": "TRemoteGreatPower::UpdateGreatPowerPressureStateAndDispatchEscalationMessage",
       "type": 1
     },
@@ -26347,7 +26347,7 @@
     },
     {
       "address": "0x57da70",
-      "matching": 0.1765195670274771,
+      "matching": 0.19325281132861308,
       "name": "TSimMgr::AdvanceGlobalTurnStateMachine",
       "type": 1
     },

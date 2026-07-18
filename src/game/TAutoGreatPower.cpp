@@ -39,7 +39,7 @@ static const int kPortZoneCount = 0x70;
 undefined4 PopulateCase16AdvisoryMapNodeCandidateState(void);
 
 // FUNCTION: IMPERIALISM 0x004e6b10
-void TAutoGreatPower::UpdateGreatPowerPressureStateAndDispatchEscalationMessage(void) {}
+char TAutoGreatPower::UpdateGreatPowerPressureStateAndDispatchEscalationMessage(void) { return 0; }
 
 // SYNTHETIC: IMPERIALISM 0x004e6a70
 // TAutoGreatPower::CreateObject
