@@ -7,12 +7,15 @@
 // which owns their `// FUNCTION:` markers. Call30 here is a genuinely distinct
 // own override (RecomputeAndClearMissionScoreUsingPortZoneContextAverageVariantB).
 
+#include "game/TArmyPlayer.h"
 #include "game/TBlockadePortMission.h"
 #include "game/TDiplomacyMgr.h"
 #include "game/TGreatPower.h"
+#include "game/TShip.h"
 #include "game/TStream.h"
 #include "game/TTaskForce.h"
 #include "game/TZone.h"
+#include "game/global_data_tables.h"
 
 IMPLEMENT_SERIAL(TBlockadePortMission, TControlSeaZoneMission, 1)
 
@@ -104,22 +107,127 @@ void TBlockadePortMission::SetStateByte8To2() {
   state08 = 3;
 }
 
-// TODO: promote body (bd 1uj.16.5) -- 935 bytes, the largest unported function in this
-// family; several sub-calls not yet identified (func_0x0040793c order-list iteration,
-// func_0x00407c75/0x4063e3/0x405272/0x4027e3, and the vtable slot 8 index 0x04 diplomacy
-// dispatch also seen in TEscortMission's own unported NoOpSlot3C). Shape: computes a
-// 4-category weighted base score the same way TControlSeaZoneMission::NoOpSlot3C /
-// TEscortMission::ResetValue0CToZero do (accumulate per-order contributions, normalize
-// against the g_Populate_Beachhead_Mission_LookupTable_00697958 profile, spread across
-// resourceWeights2c[4]), then computes a second "threat" score -- either from a single
-// target nation (targetZone18's owner-nation-code, if < 7) or maxed over every nation
-// g_apNationStates -- and uses max(threat*0.5, 10.0) to raise (never lower) each
-// resourceWeights2c[i] via a second DAT_00697960 lookup table. Left unported pending a
-// dedicated follow-up; see bd 1uj.16.5 notes.
+// First reproduces the base TControlSeaZoneMission::NoOpSlot3C's targetZone14-tagged base
+// score (duplicated inline -- see the in-body comment), then computes a second "threat"
+// score: either from a single target nation (this blockade's portZoneContext3c owner-
+// nation-code, if < 7) or maxed over every nation in g_apNationStates whose diplomacy
+// relation with this mission's nation is outdated (TDiplomacyMgr::HasPolicyWithNationSlot44).
+// Either way the threat score itself is portZoneContext3c's owner-nation-code's navy-order
+// distribution score -- the same per-ship walk/accumulate/normalize shape as
+// TShip::ComputeNavyOrderDistributionScoreForNation, inlined here rather than calling that
+// function (no CALL to 0x53b800 in the raw listing). Finally uses max(threat*0.5, 10.0) to
+// raise (never lower) each resourceWeights2c[i] via the
+// g_Populate_Beachhead_Mission_LookupTable_00697958[4..7] profile (same slice TEscortMission's
+// own NoOpSlot3C uses).
 // FUNCTION: IMPERIALISM 0x0053aeb0
 void TBlockadePortMission::NoOpSlot3C() {
+  // Reproduces the base TControlSeaZoneMission::NoOpSlot3C's targetZone14-tagged base score
+  // inline -- the two classes are separate translation units with no LTO, so a qualified
+  // `TControlSeaZoneMission::NoOpSlot3C()` call would emit a real cross-TU CALL rather than
+  // reproducing the original's fully-duplicated inlined body, so the body is duplicated here
+  // instead (see TBeachheadMission::NoOpSlot3C's identical duplication and its longer
+  // rationale comment).
+  float baseVector[4] = {0.0f, 0.0f, 0.0f, 0.0f};
+  for (TShip* node = GetNavyPrimaryOrderListHead(); node != nullptr; node = node->nextOlder24) {
+    if (node->field08 != targetZone14) {
+      continue;
+    }
+    if (!g_pDiplomacyTurnStateManager->HasPolicyWithNationSlot44(nationId04,
+                                                                 node->ownerNationSlot14)) {
+      continue;
+    }
+    short normalizationBase = node->GetNavyOrderNormalizationBaseByNationType();
+    float scale = static_cast<float>(node->stockLevel1c / normalizationBase);
+    baseVector[0] +=
+        static_cast<float>(node->ComputeNavyOrderPriorityContributionPercentByCategory(0)) * scale;
+    baseVector[1] +=
+        static_cast<float>(node->ComputeNavyOrderPriorityContributionPercentByCategory(1)) * scale;
+    baseVector[2] +=
+        static_cast<float>(node->ComputeNavyOrderPriorityContributionPercentByCategory(2)) * scale;
+    baseVector[3] +=
+        static_cast<float>(node->ComputeNavyOrderPriorityContributionPercentByCategory(3));
+  }
+
+  {
+    const unsigned short* lookupTable = g_Populate_Beachhead_Mission_LookupTable_00697958;
+    float sum = baseVector[0] + baseVector[1] + baseVector[2] + baseVector[3];
+    float total = 0.0f;
+    if (sum != 0.0f) {
+      float delta = 0.0f;
+      for (int i = 0; i < 4; ++i) {
+        float diff =
+            baseVector[i] / sum - static_cast<float>(static_cast<short>(lookupTable[i])) * 0.01f;
+        if (diff <= 0.0f) {
+          diff = -diff;
+        }
+        delta += diff;
+      }
+      total = sum * (1.0f - delta * 0.5f);
+    }
+    total *= 1.1f;
+    if (total == 0.0f) {
+      total = 100.0f;
+    }
+    for (int i = 0; i < 4; ++i) {
+      resourceWeights2c[i] = static_cast<float>(static_cast<short>(lookupTable[i])) * total * 0.01f;
+    }
+  }
+
+  // Same signed-short storage as the sibling per-category weight table (see the
+  // g_NavyOrderDistributionCategoryWeights_00697978 declaration comment); reinterpreted
+  // as unsigned short* only to match ComputeDistributionSimilarityScoreFromVectorAndReferenceProfile's
+  // parameter type -- the callee immediately re-casts each element back to short.
+  unsigned short* navyDistributionWeights = reinterpret_cast<unsigned short*>(
+      const_cast<short*>(g_NavyOrderDistributionCategoryWeights_00697978));
+
+  float threatScore = 0.0f;
+  if (portZoneContext3c->GetPortZoneOwnerNationCodeFromMissionField48() < 7) {
+    short targetNationCode = portZoneContext3c->GetPortZoneOwnerNationCodeFromMissionField48();
+    float vector[4] = {0.0f, 0.0f, 0.0f, 0.0f};
+    for (TShip* node = GetNavyPrimaryOrderListHead(); node != nullptr; node = node->nextOlder24) {
+      if (node->ownerNationSlot14 == targetNationCode && node->field08->QueryPortZoneCapability() &&
+          node->GetNavyOrderNormalizationBaseByNationType() <= node->stockLevel1c) {
+        AccumulateNavyOrderCategoryVectorWithScale(node, vector, 1.0f);
+      }
+    }
+    threatScore = ComputeDistributionSimilarityScoreFromVectorAndReferenceProfile(
+        vector, navyDistributionWeights, 4);
+  } else {
+    for (int nation = 0; nation < 7; ++nation) {
+      if (g_apNationStates[nation] == nullptr) {
+        continue;
+      }
+      if (!g_pDiplomacyTurnStateManager->HasPolicyWithNationSlot44(nationId04, nation)) {
+        continue;
+      }
+      short targetNationCode = portZoneContext3c->GetPortZoneOwnerNationCodeFromMissionField48();
+      float vector[4] = {0.0f, 0.0f, 0.0f, 0.0f};
+      for (TShip* node = GetNavyPrimaryOrderListHead(); node != nullptr; node = node->nextOlder24) {
+        if (node->ownerNationSlot14 == targetNationCode &&
+            node->field08->QueryPortZoneCapability() &&
+            node->GetNavyOrderNormalizationBaseByNationType() <= node->stockLevel1c) {
+          AccumulateNavyOrderCategoryVectorWithScale(node, vector, 1.0f);
+        }
+      }
+      float score = ComputeDistributionSimilarityScoreFromVectorAndReferenceProfile(
+          vector, navyDistributionWeights, 4);
+      if (threatScore < score) {
+        threatScore = score;
+      }
+    }
+  }
+
+  float threatFloor = threatScore * 0.5f;
+  if (threatFloor <= 10.0f) {
+    threatFloor = 10.0f;
+  }
+
+  const unsigned short* weights = &g_Populate_Beachhead_Mission_LookupTable_00697958[4];
   for (int i = 0; i < 4; ++i) {
-    resourceWeights2c[i] = 0.0f;
+    float raised = static_cast<float>(static_cast<short>(weights[i])) * threatFloor * 0.01f;
+    if (resourceWeights2c[i] < raised) {
+      resourceWeights2c[i] = raised;
+    }
   }
 }
 
