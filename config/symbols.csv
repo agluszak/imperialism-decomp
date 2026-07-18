@@ -2804,7 +2804,7 @@ address|name|symbol|size|type|prototype|provenance
 4f3ea0|TDiplomacyMapView::BuildDiplomacyNationOverlayGeometryAndHitMasks||1534|function|undefined BuildDiplomacyNationOverlayGeometryAndHitMasks()|
 4f4620|TToolBarCluster::InitializeDiplomacyMinisterActionControlsAndLabels||525|function|undefined InitializeDiplomacyMinisterActionControlsAndLabels()|
 4f48c0|TDiplomacyMapView::RenderDiplomacyMatrixRowWithStatusIconsAndFill||275|function|undefined RenderDiplomacyMatrixRowWithStatusIconsAndFill()|
-4f4a30|RenderTerrainAndMinorNationLegendLabels||920|function|undefined RenderTerrainAndMinorNationLegendLabels()|
+4f4a30|TDiplomacyMapView::RenderTerrainAndMinorNationLegendLabels||920|function|undefined RenderTerrainAndMinorNationLegendLabels()|
 4f4ec0|RenderDiplomacyMatrixRowStatusIcons||1084|function|undefined RenderDiplomacyMatrixRowStatusIcons()|
 4f5410|TDiplomacyMapView::HandleDiplomacySelectedNationActionCommand||1971|function|undefined HandleDiplomacySelectedNationActionCommand()|
 4f5e00|TCountry::ResolveDiplomacyActionFromClickAndUpdateTarget||281|function|undefined ResolveDiplomacyActionFromClickAndUpdateTarget()|

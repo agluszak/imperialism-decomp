@@ -66,6 +66,10 @@ public:
   void BuildTurnEventMonochromeMaskBuffers(int maskIndex, int eventCode);
   void InvalidateAndRunChildWaitSheet(void* arg1, void* arg2, void* arg3, void* arg4);
   void RenderDiplomacyPendingPolicyIconsAndFrames();
+  // 0x4f4a30 -- draws the per-nation legend labels over nationLabelRects234: great
+  // powers 0..6 (text only), then minors 7..22 (text + palette-selected flag icons).
+  // presentRect is an ignored stack arg the original threads through.
+  void RenderTerrainAndMinorNationLegendLabels(RECT* presentRect);
 
 protected:
   // 0x90 — compared against a terrain-descriptor index in

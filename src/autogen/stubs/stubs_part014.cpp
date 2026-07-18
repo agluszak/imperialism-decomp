@@ -251,14 +251,6 @@ undefined4 InitializeDiplomacyMinisterActionControlsAndLabels(void)
   return 0;
 }
 
-// ghidra_name RenderTerrainAndMinorNationLegendLabels
-// ghidra_proto undefined RenderTerrainAndMinorNationLegendLabels()
-// FUNCTION: IMPERIALISM 0x004f4a30
-undefined4 RenderTerrainAndMinorNationLegendLabels(void)
-{
-  return 0;
-}
-
 // ghidra_name RenderDiplomacyMatrixRowStatusIcons
 // ghidra_proto undefined RenderDiplomacyMatrixRowStatusIcons()
 // FUNCTION: IMPERIALISM 0x004f4ec0

@@ -20,6 +20,7 @@
 #include "game/TModuleLibraryCacheTableStateB.h"
 #include "game/TInfoBarText.h"
 #include "game/ui_control_tags.h"
+#include "game/TCountry.h"
 #include "game/TMilitaryUnit.h"
 #include "game/TViewMgr.h"
 #include "game/TSimMgr.h"
@@ -29,7 +30,6 @@ void __cdecl BuildDiplomacyOverlayHitMaskOpcodeStream(DiplomacyMaskBufferRun* ru
                                                       void* surfacePixels, int flag,
                                                       int surfaceHeight);
 
-undefined4 RenderTerrainAndMinorNationLegendLabels(void);
 undefined4 FrameRegionOnHdcAndReleaseBrushState(void);
 undefined4 MapTurnEventCodeToPaletteIndex(void);
 undefined4 BlitMonochromeMaskBytePatternToSurface(void);
@@ -309,6 +309,97 @@ void TDiplomacyMapView::ApplyRectSlot110(RECT* rectBuffer) {
   TPicture::ApplyRectSlot110(rectBuffer);
 }
 
+// FUNCTION: IMPERIALISM 0x004f4a30
+void TDiplomacyMapView::RenderTerrainAndMinorNationLegendLabels(RECT* presentRect) {
+  (void)presentRect; // ignored stack arg threaded through by the caller
+  int styleForeground = 0;
+  int styleShadow = 0;
+  InitializeUiTextStyleDescriptorAndApplyQuickDraw(0, 10, 0x2b68, 1);
+  MapUiThemeCodeToStyleFlags(0x2b68, &styleForeground);
+  MapUiThemeCodeToStyleFlags(0x2b6b, &styleShadow);
+
+  // Great powers (slots 0..6): text-only legend labels, drawn as a 1px drop shadow
+  // (shadow color at +1,+1) plus the foreground color at the label origin.
+  for (int gp = 0; gp < 7; ++gp) {
+    TCountry* terrain = g_apTerrainTypeDescriptorTable[gp];
+    if (terrain == nullptr) {
+      continue;
+    }
+    RECT* labelRect = &nationLabelRects234[gp];
+    if (ProbeRectEmptyAfterCopyToLocal(labelRect) != 0) {
+      continue;
+    }
+    CString label;
+    short code = terrain->encodedNationSlot;
+    if (code < 100 || code > 199) {
+      terrain->LoadNationDisplayNameSharedRefFromField8(&label);
+      MapUiThemeCodeToStyleFlags(0x2b68, &styleForeground);
+      MapUiThemeCodeToStyleFlags(0x2b6b, &styleShadow);
+    } else {
+      terrain->FormatOverlayTerrainLabelText(&label);
+      MapUiThemeCodeToStyleFlags(0x2b67, &styleForeground);
+      MapUiThemeCodeToStyleFlags(0x2b6f, &styleShadow);
+    }
+    short x = static_cast<short>(labelRect->left);
+    short y = static_cast<short>(labelRect->bottom);
+    SetQuickDrawColorAndSyncGlobals(styleShadow);
+    SetQuickDrawTextOriginWithContextOffset(x + 1, y + 1);
+    DrawTextWithCachedQuickDrawStyleState(&label);
+    SetQuickDrawColorAndSyncGlobals(styleForeground);
+    SetQuickDrawTextOriginWithContextOffset(x, y);
+    DrawTextWithCachedQuickDrawStyleState(&label);
+  }
+
+  // Minors (slots 7..22): same drop-shadow labels, classified via a theme jump-table.
+  static const short kMinorThemeByBand[7] = {0x2b6e, 0x2b69, 0x2b70, 0x2b71,
+                                             0x2b72, 0x2b73, 0x2b74};
+  for (int mn = 7; mn < 23; ++mn) {
+    TCountry* terrain = g_apTerrainTypeDescriptorTable[mn];
+    if (terrain == nullptr) {
+      continue;
+    }
+    RECT* labelRect = &nationLabelRects234[mn];
+    if (ProbeRectEmptyAfterCopyToLocal(labelRect) != 0) {
+      continue;
+    }
+    CString label;
+    short code = terrain->encodedNationSlot;
+    if (code == -1) {
+      terrain->LoadNationDisplayNameSharedRefFromField8(&label);
+      MapUiThemeCodeToStyleFlags(0x2b6b, &styleForeground);
+      MapUiThemeCodeToStyleFlags(0x2b68, &styleShadow);
+    } else if (code >= 100 && code < 200) {
+      terrain->FormatOverlayTerrainLabelText(&label);
+      MapUiThemeCodeToStyleFlags(0x2b67, &styleForeground);
+      MapUiThemeCodeToStyleFlags(0x2b6f, &styleShadow);
+    } else {
+      int band;
+      if (code >= 200) {
+        band = code - 200;
+      } else if (code >= 100) {
+        band = code - 100; // unreachable given the branch above; kept to match codegen
+      } else {
+        band = terrain->nationSlot;
+      }
+      MapUiThemeCodeToStyleFlags(kMinorThemeByBand[band], &styleForeground);
+      MapUiThemeCodeToStyleFlags(0x2b68, &styleShadow);
+      terrain->LoadNationDisplayNameSharedRefFromField8(&label);
+    }
+    short x = static_cast<short>(labelRect->left);
+    short y = static_cast<short>(labelRect->bottom);
+    SetQuickDrawColorAndSyncGlobals(styleShadow);
+    SetQuickDrawTextOriginWithContextOffset(x + 1, y + 1);
+    DrawTextWithCachedQuickDrawStyleState(&label);
+    SetQuickDrawColorAndSyncGlobals(styleForeground);
+    SetQuickDrawTextOriginWithContextOffset(x, y);
+    DrawTextWithCachedQuickDrawStyleState(&label);
+    // The original also brackets each minor label with a bitmap-palette resolve
+    // (WrapperFor_thunk_ResolveBmpResourceHandleWithDefault3B6, 0x498e00) and a
+    // CDC::SelectPalette over a local rendering-context struct that is not yet recovered;
+    // the label text matches, the flag-palette bracket is left for that recovery.
+  }
+}
+
 // FUNCTION: IMPERIALISM 0x004f5410
 void TDiplomacyMapView::BeginMouseCaptureAndStartRepeatTimer(CPoint* point, int arg2, int arg3,
                                                              int arg4) {
@@ -498,13 +589,7 @@ void TDiplomacyMapView::RenderDiplomacyLegendSurfaceAndPresent(const RECT* prese
     } while (terrainIndex < 0x17);
 
     SetQuickDrawFillColor(0);
-    // 0x4f4a30 is really `__thiscall TDiplomacyMapView::RenderTerrainAndMinorNation-
-    // LegendLabels(RECT* presentRect)` (ecx=this, one stack arg). Porting the 920-byte
-    // body is tracked in Beads issue imperialism-decomp-1uj.2; until then the target
-    // is a no-arg stub, so the bridge stays zero-stack-arg to keep the rebuilt stack
-    // balanced.
-    reinterpret_cast<void(__fastcall*)(void*, int)>(RenderTerrainAndMinorNationLegendLabels)(this,
-                                                                                             0);
+    RenderTerrainAndMinorNationLegendLabels(const_cast<RECT*>(presentRect));
 
     if (previousSurface != g_pPrimaryRenderSurfaceContext) {
       NoOpQuickDrawLifecycleHookB(GetSurfaceNodeSlot(g_pPrimaryRenderSurfaceContext));
@@ -601,9 +686,7 @@ void TDiplomacyMapView::RebuildDiplomacyLegendPaletteMode4AndBlit(int activeNati
       nationIndex = static_cast<short>(nationIndex + 1);
     } while (nationIndex < 0x17);
 
-    // See the note at 0x4f6170: 0x4f4a30 is a __thiscall member pending a real port.
-    reinterpret_cast<void(__fastcall*)(void*, int)>(RenderTerrainAndMinorNationLegendLabels)(this,
-                                                                                             0);
+    RenderTerrainAndMinorNationLegendLabels(const_cast<RECT*>(presentRect));
     legendSurfaceModeAt524 = 4;
     NoOpQuickDrawLifecycleHookB(GetSurfaceNodeSlot(g_pPrimaryRenderSurfaceContext));
     SetActiveQuickDrawSurfaceContext(previousSurface, contextFlags);
@@ -732,9 +815,7 @@ void TDiplomacyMapView::RebuildDiplomacyLegendPaletteMode1AndBlit(int activeNati
       terrainDescriptors++;
     } while (terrainIndex < 0x17);
 
-    // See the note at 0x4f6170: 0x4f4a30 is a __thiscall member pending a real port.
-    reinterpret_cast<void(__fastcall*)(void*, int)>(RenderTerrainAndMinorNationLegendLabels)(this,
-                                                                                             0);
+    RenderTerrainAndMinorNationLegendLabels(const_cast<RECT*>(presentRect));
     legendSurfaceModeAt524 = 1;
     NoOpQuickDrawLifecycleHookB(GetSurfaceNodeSlot(g_pPrimaryRenderSurfaceContext));
     SetActiveQuickDrawSurfaceContext(previousSurface, contextFlags);
