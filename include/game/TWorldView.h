@@ -65,5 +65,5 @@ public:
   virtual void SetMapViewCellCoordinates(int arg1, int arg2);
   virtual void OrphanRetStub_005966c0(short arg1);
   virtual undefined OrphanLeaf_NoCall_Ins02_005966e0(short arg1);
-  virtual void OrphanCallChain_C6_I29_00596700();
+  virtual void OrphanCallChain_C6_I29_00596700(int arg1);
 };
