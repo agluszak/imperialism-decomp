@@ -13,6 +13,7 @@ from pathlib import Path
 from ruamel.yaml import YAML
 
 from tools.common.repo import repo_root_from_file
+from tools.common.template_aliases import load_aliases
 from tools.reccmp.symbol_buckets import classify_name, parse_function_symbols, parse_reccmp_report
 
 
@@ -153,17 +154,26 @@ def main() -> int:
     ignore_names = load_ignore_names(Path(args.project_yml), args.target)
     roadmap_rows = load_roadmap_rows(Path(args.roadmap_csv))
 
+    # Per-TU duplicate template COMDATs (config/template_aliases.csv, rule
+    # MFC-TWIN-030) are never independent porting targets: the canonical body is
+    # the work item, the alias is comparison metadata.
+    template_aliases, _alias_errors = load_aliases()
+
     ranked: list[RankedFunction] = []
     scope_total = 0
     skipped_by_bucket = 0
     skipped_by_name_ignore = 0
     skipped_by_missing_score = 0
     skipped_by_size = 0
+    skipped_by_template_alias = 0
 
     wrapper_candidates: list[RankedFunction] = []
 
     for row in roadmap_rows:
         addr = parse_int_field(str(row["orig_addr"]))
+        if addr in template_aliases:
+            skipped_by_template_alias += 1
+            continue
         row_name = (row.get("name") or "").strip()
         module = (row.get("module") or "").strip()
 
@@ -238,14 +248,16 @@ def main() -> int:
     print(f"Target: {args.target}")
     print(f"Core scope buckets excluded: {', '.join(sorted(excluded_buckets))}")
     print(
-        "Rows considered: {} | core candidates: {} | skipped(size/bucket/ignored/missing_score): "
-        "{}/{}/{}/{}".format(
+        "Rows considered: {} | core candidates: {} | "
+        "skipped(size/bucket/ignored/missing_score/template_alias): "
+        "{}/{}/{}/{}/{}".format(
             len(roadmap_rows),
             scope_total,
             skipped_by_size,
             skipped_by_bucket,
             skipped_by_name_ignore,
             skipped_by_missing_score,
+            skipped_by_template_alias,
         )
     )
     print("")
@@ -326,6 +338,7 @@ def main() -> int:
                 "bucket": skipped_by_bucket,
                 "name_ignore": skipped_by_name_ignore,
                 "missing_score": skipped_by_missing_score,
+                "template_alias": skipped_by_template_alias,
             },
             "ranked": [asdict(x) for x in ranked],
             "wrapper_relabel_candidates": [asdict(x) for x in wrapper_candidates],

@@ -14,6 +14,7 @@ from typing import Any
 
 from tools.common.repo import repo_root_from_file
 from tools.common.report_score import effective_matching
+from tools.common.template_aliases import load_aliases
 
 FUNCTION_ROW_TYPE = "fun"
 GLOBAL_ROW_TYPES = ("dat", "lab", "str", "flo", "wid")
@@ -32,6 +33,8 @@ METRICS: tuple[tuple[str, str, str, str], ...] = (
     ("aligned_fun_count", "aligned functions (100%)", "int", "higher"),
     ("paired_fun_count", "paired functions", "int", "higher"),
     ("orig_only_count", "original-only functions", "int", "lower"),
+    ("template_alias_recognized_count", "recognized duplicate template bodies", "int", "higher"),
+    ("template_canonical_paired_count", "template canonical bodies paired", "int", "higher"),
     ("recomp_only_count", "recomp-only functions", "int", "lower"),
     ("not_aligned_vs_original_count", "not aligned vs original", "int", "lower"),
     ("coverage_pct", "function coverage", "pct", "higher"),
@@ -157,12 +160,29 @@ def parse_roadmap_counts(path: Path) -> dict[str, int]:
                 if orig_addr is not None and recomp_addr is not None:
                     entry["paired"].add(orig_addr)
 
+    # Per-TU duplicate template COMDATs (config/template_aliases.csv, rule
+    # MFC-TWIN-030): an unpaired alias original whose canonical IS paired is a
+    # recognized duplicate body, not unported work -- the recomp legitimately
+    # emits one copy of the instantiation. Aliases whose canonical is still
+    # unpaired keep counting as original-only (the canonical is the work item).
+    aliases, alias_errors = load_aliases()
+    for err in alias_errors:
+        print(f"WARNING template_aliases.csv: {err}")
+    recognized = {
+        alias
+        for alias, canonical in aliases.items()
+        if alias in fun_orig and alias not in fun_paired and canonical in fun_paired
+    }
+    canonical_paired = {c for c in aliases.values() if c in fun_paired}
+
     stats = {
         "original_fun_count": len(fun_orig),
         "recompiled_fun_count": len(fun_recomp),
         "paired_fun_count": len(fun_paired),
-        "orig_only_count": max(len(fun_orig) - len(fun_paired), 0),
+        "orig_only_count": max(len(fun_orig) - len(fun_paired) - len(recognized), 0),
         "recomp_only_count": max(len(fun_recomp) - len(fun_paired), 0),
+        "template_alias_recognized_count": len(recognized),
+        "template_canonical_paired_count": len(canonical_paired),
     }
 
     global_orig: set[int] = set()
@@ -510,6 +530,10 @@ def print_summary(entry: dict[str, Any], baseline: dict[str, Any] | None, baseli
     print_count_line("aligned functions (100%)", entry, baseline, "aligned_fun_count")
     print_count_line("not aligned vs original", entry, baseline, "not_aligned_vs_original_count")
     print_count_line("original-only functions", entry, baseline, "orig_only_count")
+    print_count_line("recognized duplicate template bodies", entry, baseline,
+                     "template_alias_recognized_count")
+    print_count_line("template canonical bodies paired", entry, baseline,
+                     "template_canonical_paired_count")
     print_count_line("recomp-only functions", entry, baseline, "recomp_only_count")
     print("")
 
