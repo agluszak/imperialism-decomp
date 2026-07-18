@@ -1474,7 +1474,7 @@
     },
     {
       "address": "0x4797d0",
-      "matching": 0.819047619047619,
+      "matching": 0.9629629629629629,
       "name": "CAmbitDocument::Serialize",
       "type": 1
     },
@@ -3049,13 +3049,13 @@
     },
     {
       "address": "0x486530",
-      "matching": 0.0,
+      "matching": 0.6666666666666666,
       "name": "TDocument::OrphanRetStub_00486530",
       "type": 1
     },
     {
       "address": "0x486550",
-      "matching": 0.0,
+      "matching": 0.6666666666666666,
       "name": "TDocument::OrphanRetStub_00486550",
       "type": 1
     },
@@ -7330,13 +7330,13 @@
     },
     {
       "address": "0x49e660",
-      "matching": 0.0,
+      "matching": 0.6666666666666666,
       "name": "TAmbitFileBasedDocument::OrphanRetStub_0049e660",
       "type": 1
     },
     {
       "address": "0x49e680",
-      "matching": 0.0,
+      "matching": 0.6666666666666666,
       "name": "TAmbitFileBasedDocument::OrphanRetStub_0049e680",
       "type": 1
     },
@@ -7348,13 +7348,13 @@
     },
     {
       "address": "0x49eb30",
-      "matching": 0.0,
+      "matching": 0.009433962264150943,
       "name": "TAmbitFileBasedDocument::OrphanRetStub_00486550",
       "type": 1
     },
     {
       "address": "0x49ee70",
-      "matching": 0.0,
+      "matching": 0.2,
       "name": "TAmbitFileBasedDocument::AssertUAmbitLine1335",
       "type": 1
     },

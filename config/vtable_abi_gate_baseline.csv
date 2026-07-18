@@ -6,11 +6,6 @@ address|class|slot|summary
 0x004907a0|TMyNumberText|0x9c|declared void but 2 caller site(s) consume the return register ({'eax': 2})
 0x004907a0|TNumberText|0x9c|declared void but 2 caller site(s) consume the return register ({'eax': 2})
 0x004907a0|TPictureNumberText|0x9c|declared void but 2 caller site(s) consume the return register ({'eax': 2})
-0x0049e660|TAmbitFileBasedDocument|0x30|declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x8
-0x0049e680|TAmbitFileBasedDocument|0x34|declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
-0x0049e6a0|TAmbitFileBasedDocument|0x28|declared 1 stack dword(s) -> expected RET 0x4, binary shows RET 0x8
-0x0049eb30|TAmbitFileBasedDocument|0x2c|declared 1 stack dword(s) -> expected RET 0x4, binary shows RET 0x8
-0x0049ee70|TAmbitFileBasedDocument|0x38|declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
 0x0049f190|TAnimation|0x2c|declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
 0x0049f190|TCivAnimation|0x2c|declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
 0x0049f190|TCouncilTickerAnimation|0x2c|declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4

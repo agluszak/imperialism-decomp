@@ -67,9 +67,9 @@ void CAmbitDocument::Serialize(CArchive& ar) {
   CWaitCursor wait;
   ArchiveStreamAdapter* adapter = new ArchiveStreamAdapter(&ar);
   if (ar.IsStoring()) {
-    fileBasedDocument50->OrphanRetStub_00486530(adapter);
+    fileBasedDocument50->OrphanRetStub_00486530(adapter, 0);
   } else {
-    fileBasedDocument50->OrphanRetStub_00486550(adapter);
+    fileBasedDocument50->OrphanRetStub_00486550(adapter, 0);
   }
   adapter->Free();
   SetModifiedFlag(TRUE);
