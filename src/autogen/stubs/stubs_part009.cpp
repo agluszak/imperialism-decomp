@@ -19,14 +19,6 @@ undefined4 thunk_InitializeCityInteriorMinister(void)
   return 0;
 }
 
-// ghidra_name thunk_InitializeUiTextStyleDescriptor
-// ghidra_proto undefined thunk_InitializeUiTextStyleDescriptor()
-// ILT thunk 0x00402a7c - unannotated on purpose (see ILT_THUNK_RANGE)
-undefined4 thunk_InitializeUiTextStyleDescriptor(void)
-{
-  return 0;
-}
-
 // ghidra_name thunk_WrapperFor_InvalidateCityDialogRectRegion_At004f6d90
 // ghidra_proto undefined thunk_WrapperFor_InvalidateCityDialogRectRegion_At004f6d90()
 // ILT thunk 0x00403f71 - unannotated on purpose (see ILT_THUNK_RANGE)

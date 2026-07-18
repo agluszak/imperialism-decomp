@@ -13,12 +13,6 @@
       "type": 1
     },
     {
-      "address": "0x402a7c",
-      "matching": 0.0,
-      "name": "thunk_InitializeUiTextStyleDescriptor",
-      "type": 1
-    },
-    {
       "address": "0x4042c8",
       "matching": 0.0,
       "name": "thunk_ConstructUiResourceEntryType4B0C0",
@@ -7846,7 +7840,7 @@
     },
     {
       "address": "0x4a2900",
-      "matching": 0.13374805598755832,
+      "matching": 0.13063763608087092,
       "name": "BuildArmyContextActionRecordsAndDispatchLabel",
       "type": 1
     },
@@ -8050,7 +8044,7 @@
     },
     {
       "address": "0x4a6680",
-      "matching": 0.16810344827586207,
+      "matching": 0.15948275862068967,
       "name": "BuildMapHintOverlayTextAndDispatchUiMessages",
       "type": 1
     },
@@ -16184,13 +16178,13 @@
     },
     {
       "address": "0x504e90",
-      "matching": 0.6712463199214916,
+      "matching": 0.677134445534838,
       "name": "TTerrainHelpPicture::BuildMapTileActionContextMenu",
       "type": 1
     },
     {
       "address": "0x5057a0",
-      "matching": 0.3333333333333333,
+      "matching": 0.35658914728682173,
       "name": "TTerrainHelpPicture::HighlightSelectedMenuItemAndRefreshDetailText",
       "type": 1
     },
@@ -23155,7 +23149,7 @@
     },
     {
       "address": "0x55d200",
-      "matching": 0.6151930261519303,
+      "matching": 0.6226650062266501,
       "name": "TNewspaperView::BuildInterNationEventSummaryRowsForAdvisorDialog",
       "type": 1
     },
@@ -32892,7 +32886,7 @@
     },
     {
       "address": "0x5c4500",
-      "matching": 0.8529411764705882,
+      "matching": 0.8823529411764706,
       "name": "InitializeUiTextStyleDescriptorAndApplyQuickDraw",
       "type": 1
     },

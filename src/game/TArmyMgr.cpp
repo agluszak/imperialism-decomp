@@ -28,7 +28,6 @@
 #include "game/nation_slot_eligibility.h" // IsNationSlotEligibleForEventProcessing
 #include "game/quickdraw_rendering.h"     // BuildUiTextStyleDescriptor
 #include "game/ui_invalidation_guard.h"
-#include "game/ui_widget_thunks.h" // thunk_InitializeUiTextStyleDescriptor
 
 // SYNTHETIC: IMPERIALISM 0x004a1810
 // TArmyMgr::CreateObject
@@ -1350,19 +1349,16 @@ bool TArmyMgr::BuildMapOrderContextSummaryStringForNation(short cityRecordIndex,
 // FUNCTION: IMPERIALISM 0x004a6680
 void TArmyMgr::BuildMapHintOverlayTextAndDispatchUiMessages(short cityRecordIndex) {
   TControlPictureRectState styleA;
-  reinterpret_cast<void(__cdecl*)(int, void*, int, int, int)>(
-      thunk_InitializeUiTextStyleDescriptor)(0, &styleA, 0xe, 0x2b67, 1);
+  InitializeUiTextStyleDescriptor(&styleA, 0, 0xe, 0x2b67, 1);
 
   TControlPictureRectState styleB;
   BuildUiTextStyleDescriptor(&styleB, 0, 0xc, 0x2b67);
 
   TControlPictureRectState styleC;
-  reinterpret_cast<void(__cdecl*)(int, void*, int, int, int)>(
-      thunk_InitializeUiTextStyleDescriptor)(0, &styleC, 0xa, 0x2b67, 3);
+  InitializeUiTextStyleDescriptor(&styleC, 0, 0xa, 0x2b67, 3);
 
   TControlPictureRectState styleD;
-  reinterpret_cast<void(__cdecl*)(int, void*, int, int, int)>(
-      thunk_InitializeUiTextStyleDescriptor)(0, &styleD, 0xa, 0x2b67, 3);
+  InitializeUiTextStyleDescriptor(&styleD, 0, 0xa, 0x2b67, 3);
 
   if (!this->BuildMapOrderContextSummaryStringForNation(cityRecordIndex, &styleC, &styleD)) {
     CString noSummaryMessage;
