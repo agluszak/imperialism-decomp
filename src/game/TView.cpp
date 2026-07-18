@@ -892,7 +892,8 @@ void TView::DrawRectangleInCurrentUiContext(int* rect) {
   Rectangle(context->m_hDC, rect[0], rect[1], rect[2], rect[3]);
 }
 // FUNCTION: IMPERIALISM 0x0048c7a0
-void TView::AssertMcAppUiLine1914() {
+void TView::AssertMcAppUiLine1914(int unusedArg) {
+  (void)unusedArg;
   if (g_McAppUiFlag_006A1AFC == 0) {
     TemporarilyClearAndRestoreUiInvalidationFlag(g_szMcAppUiSourcePath_006950B0, 0x77a);
   }

@@ -21,9 +21,10 @@ public:
   virtual void NoOpUiLifecycleHook(int arg) override;
   virtual void ApplyRectSlot110(RECT* rectBuffer) override;
 
-  virtual void RenderMapOrderEntryTilePreview(TCivUnit* orderEntry, int arg2, int arg3) override;
-  virtual void RenderTacticalStackCountIndicatorAndUnitBadge(short tileIndex, int arg2,
-                                                             int arg3) override;
+  virtual void RenderMapOrderEntryTilePreview(TCivUnit* orderEntry, int projectedX, int projectedY,
+                                              int flag, short tileIndex) override;
+  virtual void RenderTacticalStackCountIndicatorAndUnitBadge(short tileIndex, void* dstRect,
+                                                             int flag) override;
   virtual void RenderMapDialogTerrainOverlayFrameByTileOwner(short tileIndex, void* dstRect,
                                                              unsigned char altOverlay) override;
   virtual void RenderStrategicTileSelectionAndNeighborHighlights() override;

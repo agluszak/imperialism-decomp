@@ -999,18 +999,21 @@ undefined TMapDialog::UpdateMapOrderEntryTilePreviewSlot() {
 }
 
 // FUNCTION: IMPERIALISM 0x00523640
-void TMapDialog::RenderMapOrderEntryTilePreview(TCivUnit* orderEntry, int arg2, int arg3) {
+void TMapDialog::RenderMapOrderEntryTilePreview(TCivUnit* orderEntry, int projectedX,
+                                                int projectedY, int flag, short tileIndex) {
   (void)orderEntry;
-  (void)arg2;
-  (void)arg3;
+  (void)projectedX;
+  (void)projectedY;
+  (void)flag;
+  (void)tileIndex;
 }
 
 // FUNCTION: IMPERIALISM 0x00523b70
-void TMapDialog::RenderTacticalStackCountIndicatorAndUnitBadge(short tileIndex, int arg2,
-                                                               int arg3) {
+void TMapDialog::RenderTacticalStackCountIndicatorAndUnitBadge(short tileIndex, void* dstRect,
+                                                               int flag) {
   (void)tileIndex;
-  (void)arg2;
-  (void)arg3;
+  (void)dstRect;
+  (void)flag;
 }
 
 // FUNCTION: IMPERIALISM 0x00523ff0

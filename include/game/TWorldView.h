@@ -42,14 +42,23 @@ public:
 
   virtual void SetFlagByteAndInvokeVslot1A4(unsigned char flagByte);
   virtual void RenderMapContextOverlayWithScopedClipAndSurface();
-  virtual void RenderMapOrderEntryTilePreview(TCivUnit* orderEntry, int arg2, int arg3);
-  virtual void RenderTacticalStackCountIndicatorAndUnitBadge(short tileIndex, int arg2, int arg3);
+  // Five stack args, proven by the body's bare `RET 0x14` (a 5-arg no-op in this
+  // class) and the 0x595c70 self-virtual call site's five pushes -- the previous
+  // 3-arg declaration was a poison-pill arity mismatch. Args mirror the call
+  // site: the selected civilian order entry, the projected screen X/Y, a flag
+  // (always 1 there), and the entry's tile index.
+  virtual void RenderMapOrderEntryTilePreview(TCivUnit* orderEntry, int projectedX, int projectedY,
+                                              int flag, short tileIndex);
+  virtual void RenderTacticalStackCountIndicatorAndUnitBadge(short tileIndex, void* dstRect,
+                                                             int flag);
   virtual void RenderMapDialogTerrainOverlayFrameByTileOwner(short tileIndex, void* dstRect,
                                                              unsigned char altOverlay);
   virtual void RenderStrategicTileSelectionAndNeighborHighlights();
   virtual void ForwardProjectTileIndexToWrappedScreenOffsetByScale(int arg1, int arg2, int arg3,
                                                                    int arg4, int arg5);
-  virtual short QueryMinusOneWordSlot1BC();
+  // One ignored stack arg (body is `OR AX,0xffff; RET 0x4`) -- present only for
+  // stack-cleanup fidelity; the previous 0-arg declaration purged 4 bytes short.
+  virtual short QueryMinusOneWordSlot1BC(int unusedArg);
   virtual void ComputeWrappedMapCellAndRegionBandFromScreenCoord(int overlayRecord, short* outRow,
                                                                  unsigned short* outCol,
                                                                  short* outBand);
