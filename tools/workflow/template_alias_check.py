@@ -23,50 +23,20 @@ usage: just template-alias-check
 from __future__ import annotations
 
 import sys
-from pathlib import Path
-
 from tools.binary.body_hash import bodies_equivalent
 from tools.binary.pe import OriginalImage, load_symbol_names, load_symbol_sizes
-
-REPO_ROOT = Path(__file__).resolve().parents[2]
-ALIASES_CSV = REPO_ROOT / "config" / "template_aliases.csv"
+from tools.common.template_aliases import ALIASES_CSV, load_alias_rows
 
 
 def main() -> int:
     if not ALIASES_CSV.is_file():
-        print(f"no {ALIASES_CSV.relative_to(REPO_ROOT)} yet -- nothing to check.")
+        print(f"no {ALIASES_CSV.name} yet -- nothing to check.")
         return 0
     img = OriginalImage()
     names = load_symbol_names()
     sizes = load_symbol_sizes()
 
-    rows: list[tuple[int, int, str, str]] = []
-    errors: list[str] = []
-    seen_alias: set[int] = set()
-    for lineno, line in enumerate(ALIASES_CSV.read_text().splitlines(), 1):
-        line = line.strip()
-        if not line or line.startswith("#"):
-            continue
-        # The file carries '#' comment lines, which csv.DictReader (pipe_csv)
-        # cannot skip; the 4-field schema is validated immediately below.
-        parts = [p.strip() for p in line.split("|")]  # pipe-split-ok: commented table
-        if len(parts) != 4:
-            errors.append(f"line {lineno}: expected 4 pipe-separated fields")
-            continue
-        try:
-            alias = int(parts[0], 16)
-            canonical = int(parts[1], 16)
-        except ValueError:
-            errors.append(f"line {lineno}: unparsable address")
-            continue
-        if alias == canonical:
-            errors.append(f"line {lineno}: alias equals canonical ({alias:#x})")
-            continue
-        if alias in seen_alias:
-            errors.append(f"line {lineno}: duplicate alias row for {alias:#x}")
-            continue
-        seen_alias.add(alias)
-        rows.append((alias, canonical, parts[2], parts[3]))
+    rows, errors = load_alias_rows()
 
     ok = 0
     for alias, canonical, decorated, cls in rows:
