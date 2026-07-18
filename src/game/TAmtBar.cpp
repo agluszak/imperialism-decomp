@@ -12,7 +12,8 @@
 #include "game/ui_widget_thunks.h"
 #include "game/mfc.h"
 
-undefined4 ftol(void);
+// 0x5e73d0 is the CRT _ftol (libcmt ftol.obj, oracle-confirmed); same pattern as TMapDialog.
+extern "C" long _ftol(void);
 // FUNCTION: IMPERIALISM 0x00586e50
 int TAmtBar::ApplyMoveClamp(int baseValue, int requestedValue) {
   (void)requestedValue;
@@ -141,7 +142,7 @@ void TAmtBar::ClampAndApplyTradeMoveValue(int* requestedValuePtr) {
     ratio = ratio - *reinterpret_cast<double*>(0x006631a0);
     volatile double ftolOperand = ratio;
     (void)ftolOperand;
-    baseValue = reinterpret_cast<int(__cdecl*)(void)>(::ftol)();
+    baseValue = static_cast<int>(_ftol());
   } else {
     baseValue = 0;
   }

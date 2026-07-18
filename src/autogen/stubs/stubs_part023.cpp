@@ -19,14 +19,6 @@ undefined4 InitializeThreadObjectVtableProxy(void)
   return 0;
 }
 
-// ghidra_name ExitInstance
-// ghidra_proto undefined ExitInstance()
-// FUNCTION: IMPERIALISM 0x00622a4f
-undefined4 ExitInstance(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_NoOpThreadInitializationStub_At00622a8b
 // ghidra_proto undefined WrapperFor_NoOpThreadInitializationStub_At00622a8b()
 // FUNCTION: IMPERIALISM 0x00622a8b
@@ -67,26 +59,10 @@ undefined4 GetCCmdTargetRuntimeClass(void)
   return 0;
 }
 
-// ghidra_name ProcessShellCommand
-// ghidra_proto undefined ProcessShellCommand()
-// FUNCTION: IMPERIALISM 0x00622cb3
-undefined4 ProcessShellCommand(void)
-{
-  return 0;
-}
-
 // ghidra_name RunFileAssociationShellCommandCleanup
 // ghidra_proto undefined RunFileAssociationShellCommandCleanup()
 // FUNCTION: IMPERIALISM 0x00623050
 undefined4 RunFileAssociationShellCommandCleanup(void)
-{
-  return 0;
-}
-
-// ghidra_name SetRegistryKey
-// ghidra_proto undefined SetRegistryKey()
-// FUNCTION: IMPERIALISM 0x00623061
-undefined4 SetRegistryKey(void)
 {
   return 0;
 }

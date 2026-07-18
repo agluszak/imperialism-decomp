@@ -33,7 +33,6 @@ void __cdecl BuildDiplomacyOverlayHitMaskOpcodeStream(DiplomacyMaskBufferRun* ru
 undefined4 FrameRegionOnHdcAndReleaseBrushState(void);
 undefined4 MapTurnEventCodeToPaletteIndex(void);
 undefined4 BlitMonochromeMaskBytePatternToSurface(void);
-undefined4 AppendPointerToGlobalVectorAsStatus(void);
 undefined4 thunk_WrapperFor_InvalidateCityDialogRectRegion_At004f6d90(void);
 undefined4 RunDiplomacyWaitSheetPopupAndAwaitResponse(void);
 
@@ -449,8 +448,9 @@ int TDiplomacyMapView::ResolveDiplomacyActionFromClickAndUpdateTarget(CPoint* cl
     initRect.right = 0x24d;
     initRect.bottom = 0x159;
     CopyRect(reinterpret_cast<RECT*>(kAddrDiplomacyHitBounds), &initRect);
-    reinterpret_cast<int(__cdecl*)(void*)>(AppendPointerToGlobalVectorAsStatus)(
-        reinterpret_cast<void*>(kAddrResolveDiplomacyActionValue));
+    // 0x5e7920 is the CRT atexit (libcmt onexit.obj, oracle-confirmed): the original
+    // registers the static hit-rect cleanup at 0x4f5f70 as an exit handler.
+    atexit(reinterpret_cast<void(__cdecl*)(void)>(kAddrResolveDiplomacyActionValue));
   }
 
   if (PtInRect(reinterpret_cast<const RECT*>(kAddrDiplomacyHitBounds),

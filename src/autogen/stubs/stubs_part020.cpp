@@ -651,22 +651,6 @@ undefined4 InitStub_ResetAndOpenCdAudioDeviceHandle_At005e4de0(void)
   return 0;
 }
 
-// ghidra_name AfxGetMainWnd
-// ghidra_proto undefined AfxGetMainWnd()
-// FUNCTION: IMPERIALISM 0x005e539c
-undefined4 AfxGetMainWnd(void)
-{
-  return 0;
-}
-
-// ghidra_name CreateObject
-// ghidra_proto undefined CreateObject()
-// FUNCTION: IMPERIALISM 0x005e53d8
-undefined4 CreateObject_005E53D8(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_Ordinal13_FromField1C_At005e5561
 // ghidra_proto undefined WrapperFor_Ordinal13_FromField1C_At005e5561()
 // FUNCTION: IMPERIALISM 0x005e5561
@@ -687,14 +671,6 @@ undefined4 MoveListBoxEntryPreserveItemData(void)
 // ghidra_proto undefined ?Create@CHotKeyCtrl@@QAEHKABUtagRECT@@PAVCWnd@@I@Z()
 // FUNCTION: IMPERIALISM 0x005e58ab
 undefined4 Z(void)
-{
-  return 0;
-}
-
-// ghidra_name OnCreate
-// ghidra_proto undefined ?OnCreate@CToolBarCtrl@@IAEHPAUtagCREATESTRUCTA@@@Z@005e5a0d()
-// FUNCTION: IMPERIALISM 0x005e5a0d
-undefined4 OnCreate(void)
 {
   return 0;
 }
@@ -783,14 +759,6 @@ undefined4 Z_005E67EC(void)
 // ghidra_proto undefined FromHandlePermanent()
 // FUNCTION: IMPERIALISM 0x005e69cb
 undefined4 FromHandlePermanent(void)
-{
-  return 0;
-}
-
-// ghidra_name Create
-// ghidra_proto int __thiscall ?Create@CImageList@@QAEHHHIHH@Z(int param_1, int param_2, uint param_3, int param_4, int param_5)
-// FUNCTION: IMPERIALISM 0x005e69e7
-undefined4 Z_005E69E7(void)
 {
   return 0;
 }
@@ -951,22 +919,6 @@ undefined4 NoOpRuntimeCallback_005e717b(void)
 // ghidra_proto undefined NoOpCrtThreadLifecycleHook()
 // FUNCTION: IMPERIALISM 0x005e7370
 undefined4 NoOpCrtThreadLifecycleHook(void)
-{
-  return 0;
-}
-
-// ghidra_name ftol
-// ghidra_proto undefined ftol()
-// FUNCTION: IMPERIALISM 0x005e73d0
-undefined4 ftol(void)
-{
-  return 0;
-}
-
-// ghidra_name AppendPointerToGlobalVectorAsStatus
-// ghidra_proto undefined AppendPointerToGlobalVectorAsStatus()
-// FUNCTION: IMPERIALISM 0x005e7920
-undefined4 AppendPointerToGlobalVectorAsStatus(void)
 {
   return 0;
 }
