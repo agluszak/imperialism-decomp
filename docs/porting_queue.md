@@ -48,6 +48,23 @@ each with the evidence needed to start (address, size, current score if any, blo
 
 ## Known-bad re-ports (score far below structure)
 
+- `0x4f1570` TDiplomacyMgr::InitializeDiplomacyStandingBaselineRandom (landed
+  2026-07-17, 75.79%) and `0x4f1630` BuildMajorNationDiplomacyStandingRanking
+  (landed 2026-07-17, 71.08%, header signature corrected from a bogus 0-arg void
+  to `(int* topNationSlot, int* secondNationSlot)` — verified RET 8, no other
+  callers/overrides existed to break). Both structure-verified: real `rand()`
+  LIBRARY calls, `g_pGlobalMapState->cityScoreTable`/`comparativePowerRows1824`
+  fields, `RecomputeNationComparativePowerMetrics()` call recovered from a
+  Ghidra-obscured `func_0x004075ea()` in the decompile (always read the raw
+  listing for these, not just the decompile). Residuals in both are pure
+  register/induction-variable scheduling (array-index vs pointer-walk choice,
+  statement-order-driven store scheduling around a null check) — tried and
+  reverted two alternate phrasings that scored worse (65.87%/70.00%); don't
+  retry without new evidence. Found nearby but NOT landed: `0x4f0e20`
+  RebuildDiplomacyStandingAndInfluenceMatrices (1485B, still fabricated `{}`,
+  real signature per func-sig is 2-arg/RET 4 not the header's 0-arg — needs a
+  dedicated raw-listing pass, decompile shows lost `unaff_EBX`/`unaff_EBP`
+  register tracking).
 - `0x4eb8b0` TGreatPower::AssignTrackedEntryActionsByProfileToOrdersOrUnits (landed
   2026-07-17, 65.50%, own TU `TGreatPower_AssignTrackedEntryActions.cpp`, structure
   verified — all real call targets pair correctly: CIterator Reset/More/Advance,
@@ -84,10 +101,6 @@ each with the evidence needed to start (address, size, current score if any, blo
   `0x574720` 73% (scheduling), `0x55d910` 75%, `0x580460` 79%, `0x4e3220` 97%
   (one-past-end table-bound annotation), `0x55da80` 95%, `0x55dcd0` 94%,
   `0x4e3060` 99%.
-- TDiplomacyMgr.cpp fabricated empty bodies noticed nearby: `0x4f1570`
-  InitializeDiplomacyStandingBaselineRandom and `0x4f1630`
-  BuildMajorNationDiplomacyStandingRanking — both `{}` in manual source; read the
-  listings before trusting them.
 
 - TScrollBarView.cpp fabricated empty bodies still remaining (the 0x5744b0/0x5746e0/
   0x573ce0/0x574720 batch is fixed): `HandleEvent` 0x5747c0 (~112B),

@@ -6,6 +6,7 @@
 #include "game/TMultiplayerMgr.h"
 #include <string.h>
 #include "game/TIndexAndRankList.h"
+#include "game/TMapMgr.h"
 #include "game/TSortedByRelationshipList.h"
 #include "game/TSortedPtrList.h"
 #include "game/CString.h"
@@ -791,11 +792,71 @@ void TDiplomacyMgr::ProcessQueuedWarTransitions() {
 // FUNCTION: IMPERIALISM 0x004f0e20
 void TDiplomacyMgr::RebuildDiplomacyStandingAndInfluenceMatrices() {}
 
+// Seeds relationCodeMatrix04 with a per-city baseline value (indexed parallel to
+// g_pGlobalMapState->cityScoreTable, not by nation pair): unowned cities (-1) are
+// skipped; cities formerly held by a major power (formerOwnerNationCode01 < 7) get
+// 14 + 3d6; everyone else gets 8 + 3x(rand() mod 4).
 // FUNCTION: IMPERIALISM 0x004f1570
-void TDiplomacyMgr::InitializeDiplomacyStandingBaselineRandom() {}
+void TDiplomacyMgr::InitializeDiplomacyStandingBaselineRandom() {
+  for (int cityIndex = 0; cityIndex < kDiplomacyPairMatrixEntries; ++cityIndex) {
+    signed char formerOwner = g_pGlobalMapState->cityScoreTable[cityIndex].formerOwnerNationCode01;
+    if (formerOwner == -1) {
+      continue;
+    }
+    short baseline;
+    if (formerOwner < 7) {
+      baseline = 14;
+      for (int i = 0; i < 3; ++i) {
+        baseline = static_cast<short>(baseline + rand() % 6);
+      }
+    } else {
+      baseline = 8;
+      for (int i = 0; i < 3; ++i) {
+        baseline = static_cast<short>(baseline + rand() % 4);
+      }
+    }
+    relationCodeMatrix04[cityIndex] = baseline;
+  }
+}
 
 // FUNCTION: IMPERIALISM 0x004f1630
-void TDiplomacyMgr::BuildMajorNationDiplomacyStandingRanking() {}
+void TDiplomacyMgr::BuildMajorNationDiplomacyStandingRanking(int* topNationSlot,
+                                                             int* secondNationSlot) {
+  RecomputeNationComparativePowerMetrics();
+
+  int nationSlotOrder[7];
+  int powerScore[7];
+  for (int nationSlot = 0; nationSlot < 7; ++nationSlot) {
+    nationSlotOrder[nationSlot] = nationSlot;
+    int sum = 0;
+    if (g_apTerrainTypeDescriptorTable[nationSlot] != nullptr) {
+      for (int metric = 0; metric < 4; ++metric) {
+        sum += comparativePowerRows1824[nationSlot][metric];
+      }
+    }
+    powerScore[nationSlot] = sum;
+  }
+
+  for (int i = 0; i < 6; ++i) {
+    for (int j = i + 1; j < 7; ++j) {
+      bool swap = false;
+      if (powerScore[j] > powerScore[i] || (powerScore[j] == powerScore[i] && (rand() & 1) != 0)) {
+        swap = true;
+      }
+      if (swap) {
+        int scoreTmp = powerScore[i];
+        powerScore[i] = powerScore[j];
+        powerScore[j] = scoreTmp;
+        int slotTmp = nationSlotOrder[i];
+        nationSlotOrder[i] = nationSlotOrder[j];
+        nationSlotOrder[j] = slotTmp;
+      }
+    }
+  }
+
+  *topNationSlot = nationSlotOrder[0];
+  *secondNationSlot = nationSlotOrder[1];
+}
 
 // Rebuild the per-nation comparative-power rows (+0x1824): army, average bilateral
 // relation standing, territory+tech combined, and commodity value, each normalized

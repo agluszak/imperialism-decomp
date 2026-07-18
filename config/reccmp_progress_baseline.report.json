@@ -12618,7 +12618,7 @@
     },
     {
       "address": "0x4dd430",
-      "matching": 0.5142857142857142,
+      "matching": 0.5714285714285714,
       "name": "TGreatPower::ComputeRemainingDiplomacyAidBudget",
       "type": 1
     },
@@ -13056,8 +13056,7 @@
     },
     {
       "address": "0x4e05d0",
-      "effective": true,
-      "matching": 0.42857142857142855,
+      "matching": 1.0,
       "name": "TGreatPower::OrphanLeaf_NoCall_Ins02_004d7fc0_89",
       "type": 1
     },
@@ -13076,8 +13075,7 @@
     },
     {
       "address": "0x4e0690",
-      "effective": true,
-      "matching": 0.42857142857142855,
+      "matching": 1.0,
       "name": "TGreatPower::ReturnFalseNationStateCapabilityFlag90",
       "type": 1
     },
@@ -14538,13 +14536,13 @@
     },
     {
       "address": "0x4f1570",
-      "matching": 0.0392156862745098,
+      "matching": 0.7578947368421053,
       "name": "TDiplomacyMgr::InitializeDiplomacyStandingBaselineRandom",
       "type": 1
     },
     {
       "address": "0x4f1630",
-      "matching": 0.0,
+      "matching": 0.7108433734939759,
       "name": "TDiplomacyMgr::BuildMajorNationDiplomacyStandingRanking",
       "type": 1
     },
@@ -17448,7 +17446,7 @@
     },
     {
       "address": "0x5178f0",
-      "matching": 0.3260340632603406,
+      "matching": 0.3446601941747573,
       "name": "ComputeRepresentativeTileIndexForTerrainTypeWithWrapBias",
       "type": 1
     },
@@ -21543,7 +21541,7 @@
     },
     {
       "address": "0x545940",
-      "matching": 0.38481421647819064,
+      "matching": 0.43023255813953487,
       "name": "TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine",
       "type": 1
     },
@@ -22535,13 +22533,13 @@
     },
     {
       "address": "0x553b10",
-      "matching": 0.6206896551724138,
+      "matching": 0.4827586206896552,
       "name": "HasNoMapOrderEntryChildrenQueued",
       "type": 1
     },
     {
       "address": "0x553b50",
-      "matching": 0.5454545454545454,
+      "matching": 0.5818181818181818,
       "name": "HasActiveMapOrderEntryChildren",
       "type": 1
     },
@@ -26347,7 +26345,7 @@
     },
     {
       "address": "0x57da70",
-      "matching": 0.1740216486261449,
+      "matching": 0.1765195670274771,
       "name": "TSimMgr::AdvanceGlobalTurnStateMachine",
       "type": 1
     },
@@ -30946,8 +30944,8 @@
     },
     {
       "address": "0x5afd00",
-      "matching": 0.021108179419525065,
-      "name": "TTechMgr::HandleAbilityUnlock(short)",
+      "matching": 0.962059620596206,
+      "name": "TTechMgr::HandleAbilityUnlock",
       "type": 1
     },
     {
@@ -30975,14 +30973,20 @@
       "type": 1
     },
     {
+      "address": "0x5b0b30",
+      "matching": 1.0,
+      "name": "ApplyTechItemPurchaseCostAndState",
+      "type": 1
+    },
+    {
       "address": "0x5b0bb0",
-      "matching": 0.6296296296296297,
+      "matching": 1.0,
       "name": "RefundTechItemPurchaseCostAndClearState",
       "type": 1
     },
     {
       "address": "0x5b0c20",
-      "matching": 0.16666666666666666,
+      "matching": 1.0,
       "name": "ConsumeFirstPendingAbilityUnlock",
       "type": 1
     },
@@ -32333,7 +32337,7 @@
     },
     {
       "address": "0x5bf930",
-      "matching": 0.7907361455748553,
+      "matching": 0.7477253928866832,
       "name": "RefreshSelectedNationOrderCompatibilityInfo",
       "type": 1
     },
