@@ -87,7 +87,7 @@ void TAmtBarCluster::NoOpUiLifecycleHook()
   local_4 = local_4 & 0xffff0000;
   uVar3 = (*p_Var1)(0x6d6f7665);
   if ((int *)CONCAT31(extraout_var,uVar3) != (int *)0x0) {
-    BuildUiTextStyleDescriptor(&stack0xfffffff0,0,10,0x2b67);
+    func_0x00406afa(&stack0xfffffff0,0,10,0x2b67);
     iVar2 = *(int *)CONCAT31(extraout_var,uVar3);
     (**(code **)(iVar2 + 0x1b4))(&stack0xfffffff0,0);
     (**(code **)(iVar2 + 0x1c4))(0xfffffffe,0);

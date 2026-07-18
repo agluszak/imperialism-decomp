@@ -175,7 +175,7 @@ TSelectedCivilianOrderState::ShowDisbandCivilianConfirmationDialog
     iStack_30 = 0x274d;
     local_4 = CONCAT31(local_4._1_3_,1);
     ppCStack_34 = (CString **)0x4d2d90;
-    (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+    (*g_pSimMgr->vftable[0x10].slot_0x04)();
     ppCStack_34 = &pCStack_28;
     if (*(short *)(*(int *)(this + 4) + 4) == 7) {
       uStack_38 = 5;
@@ -185,7 +185,7 @@ TSelectedCivilianOrderState::ShowDisbandCivilianConfirmationDialog
     }
     uStack_3c = 0x274d;
     uStack_40 = 0x4d2db8;
-    (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+    (*g_pSimMgr->vftable[0x10].slot_0x04)();
     uStack_40 = 1;
     uStack_44 = 2;
     puStack_48 = &DAT_006a2d40;

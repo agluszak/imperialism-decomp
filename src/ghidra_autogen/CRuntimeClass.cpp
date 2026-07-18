@@ -16,7 +16,7 @@ undefined4 CRuntimeClass::CreateObject(void)
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
   
-  EstablishSehFrameProlog();
+  _EH_prolog();
   uVar2 = 0;
   iVar1 = *(int *)(extraout_ECX + 0xc);
   *(undefined1 **)(unaff_EBP + -0x10) = &stack0xffffffe8;

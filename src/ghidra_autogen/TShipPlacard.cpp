@@ -92,13 +92,13 @@ void TShipPlacard::ApplyRectSlot110()
   if (0 < sVar1) {
     CString::CString((CString *)&stack0x00000000);
     puStack_8 = (undefined1 *)0x0;
-    _Format_CString__QAAXPBDZZ(&stack0x00000000,&g_szDecimalFormat,(int)sVar1);
+    CString__Format(&stack0x00000000,&g_szDecimalFormat,(int)sVar1);
     func_0x0040448f(0,10,0x2b67);
-    sVar1 = MeasureTextExtentWithCachedQuickDrawStyle(&stack0x00000000);
-    SetQuickDrawTextOriginWithContextOffset(0x51 - (int)sVar1 / 2,0x2f);
+    sVar1 = func_0x00405b7d(&stack0x00000000);
+    func_0x00408d6e(0x51 - (int)sVar1 / 2,0x2f);
     func_0x004029aa(&stack0x00000000);
     func_0x0040448f(0,10,0x2b6c);
-    SetQuickDrawTextOriginWithContextOffset(0x50 - (int)sVar1 / 2,0x2e);
+    func_0x00408d6e(0x50 - (int)sVar1 / 2,0x2e);
     func_0x004029aa(&stack0x00000000);
     puStack_8 = (undefined1 *)0xffffffff;
     CString::~CString((CString *)&stack0x00000000);

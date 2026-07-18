@@ -11,7 +11,7 @@ CArchive * __thiscall CArchive::CArchive__operator<<(CArchive *this,byte param_1
 
 {
   if (this->m_lpBufMax < this->m_lpBufCur + 1) {
-    Flush();
+    CArchive__Flush();
   }
   *this->m_lpBufCur = param_1;
   this->m_lpBufCur = this->m_lpBufCur + 1;
@@ -26,7 +26,7 @@ CArchive * __thiscall CArchive::CArchive__operator<<(CArchive *this,undefined2 p
 
 {
   if (this->m_lpBufMax < this->m_lpBufCur + 2) {
-    Flush();
+    CArchive__Flush();
   }
   *(undefined2 *)this->m_lpBufCur = param_1;
   this->m_lpBufCur = this->m_lpBufCur + 2;
@@ -42,7 +42,7 @@ CArchive::CArchive__operator<<(CArchive *this,TNetMgr_GetTNetMgrClassNamePointer
 
 {
   if (this->m_lpBufMax < this->m_lpBufCur + 4) {
-    Flush();
+    CArchive__Flush();
   }
   *(TNetMgr_GetTNetMgrClassNamePointer_0x00 **)this->m_lpBufCur = param_1;
   this->m_lpBufCur = this->m_lpBufCur + 4;
@@ -116,7 +116,7 @@ void CArchive::~CArchive(void)
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
   
-  EstablishSehFrameProlog();
+  _EH_prolog();
   *(CArchive **)(unaff_EBP + -0x10) = this;
   *(undefined4 *)(unaff_EBP + -4) = 0;
   if ((this->m_pFile != (void *)0x0) && ((this->m_nMode & 2) == 0)) {
@@ -160,7 +160,7 @@ void __fastcall CArchive::Abort(int param_1)
 void CArchive::Close()
 
 {
-  Flush();
+  CArchive__Flush();
   this->m_pFile = (void *)0x0;
   return;
 }
@@ -263,7 +263,7 @@ void CArchive::Write(int param_1, uint param_2)
     this->m_lpBufCur = this->m_lpBufCur + uVar2;
     uVar1 = param_2 - uVar2;
     if (uVar1 != 0) {
-      Flush();
+      CArchive__Flush();
       iVar3 = uVar1 - uVar1 % (uint)this->m_nBufSize;
       (**(code **)(*(int *)this->m_pFile + 0x40))(param_1 + uVar2,iVar3);
       if (this->m_bDirectBuffer != 0) {
@@ -299,7 +299,7 @@ void CArchive::FillBuffer(uint param_1)
     pbVar5 = this->m_lpBufStart;
     if (pbVar5 < pbVar1) {
       if (0 < (int)local_8) {
-        _memmove(pbVar5,pbVar1,local_8);
+        memmove(pbVar5,pbVar1,local_8);
         pbVar5 = this->m_lpBufStart;
         this->m_lpBufCur = pbVar5;
         this->m_lpBufMax = pbVar5 + local_8;
@@ -422,7 +422,7 @@ int CArchive::ReadString(void)
   int iVar5;
   undefined4 *unaff_FS_OFFSET;
   
-  EstablishSehFrameProlog();
+  _EH_prolog();
   iVar4 = *(int *)(unaff_EBP + 0xc);
   iVar5 = 0;
   *(undefined1 **)(unaff_EBP + -0x10) = &stack0xffffffe0;
@@ -609,7 +609,7 @@ void CArchive::MapObject(void)
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
   
-  EstablishSehFrameProlog();
+  _EH_prolog();
   if ((~(byte)*(undefined4 *)(extraout_ECX + 0x14) & 1) == 0) {
     if (*(int *)(extraout_ECX + 0x34) == 0) {
       this = (CPtrArray *)operator_new(0x14);
@@ -722,7 +722,7 @@ CRuntimeClass * CArchive::ReadClass(void)
   uint uVar6;
   undefined4 *unaff_FS_OFFSET;
   
-  EstablishSehFrameProlog();
+  _EH_prolog();
   if ((*(int *)(unaff_EBP + 8) != 0) && (*(int *)(*(int *)(unaff_EBP + 8) + 8) == 0xffff)) {
     AfxThrowNotSupportedException();
   }

@@ -133,9 +133,9 @@ void TMapUberPicture::NoOpUiLifecycleHook()
   func_0x0040696a(uVar6);
   *(TMapUberPicture **)&g_pUiRuntimeContext->field_0xf0 = this;
   *(TMapUberPicture **)&g_pUiAnimator->field_0x2c = this;
-  EnsureSelectedTaskForceForOrderOwnerAndRefresh(0);
+  func_0x0040928c(0);
   func_0x00402284();
-  if (*(int *)&g_pLocalizationTable->field_0x44 != 0) {
+  if (*(int *)&g_pSimMgr->field_0x44 != 0) {
     uVar4 = (*p_Var2)(0x73656e64);
     iVar3 = *(int *)CONCAT31(extraout_var_04,uVar4);
     (**(code **)(iVar3 + 0xc))();
@@ -176,8 +176,7 @@ void TMapUberPicture::HandleEvent(int param_1, int param_2)
   ushort uVar2;
   undefined4 unaff_ESI;
   undefined4 *unaff_FS_OFFSET;
-  undefined1 *puVar3;
-  char acStack_30 [4];
+  undefined1 auStack_30 [4];
   undefined *puStack_2c;
   undefined4 uStack_28;
   undefined4 uStack_24;
@@ -185,10 +184,10 @@ void TMapUberPicture::HandleEvent(int param_1, int param_2)
   int iStack_1c;
   undefined4 uStack_c;
   undefined1 *puStack_8;
-  CString CStack_4;
+  undefined1 *puStack_4;
   
   uStack_c = *unaff_FS_OFFSET;
-  CStack_4.m_pchData = (char *)0xffffffff;
+  puStack_4 = (undefined1 *)0xffffffff;
   puStack_8 = &LAB_006383e8;
   *unaff_FS_OFFSET = &uStack_c;
   if (param_1 == 10) {
@@ -217,23 +216,22 @@ void TMapUberPicture::HandleEvent(int param_1, int param_2)
     }
     else {
       if (uVar1 == 0x63616e63) {
-        if (*(int *)&g_pLocalizationTable->field_0x44 != 0) {
+        if (*(int *)&g_pSimMgr->field_0x44 != 0) {
           CString::CString((CString *)&stack0x0000000c);
           iStack_1c = 0x25;
           iStack_20 = 0x2742;
-          CStack_4.m_pchData = (char *)0x0;
+          puStack_4 = (undefined1 *)0x0;
           uStack_24 = 0x5974a2;
-          (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+          (*g_pSimMgr->vftable[0x10].slot_0x04)();
           uStack_24 = 0;
           uStack_28 = 0;
           puStack_2c = &DAT_006a45c0;
-          CStack_4.m_pchData = acStack_30;
-          puVar3 = (undefined1 *)register0x00000010;
+          puStack_4 = auStack_30;
           func_0x004076b7(&stack0x00000000);
-          DispatchLocalizedUiMessageWithTemplateA13A0(puVar3);
-          uStack_28 = 0x5974d8;
-          CString::~CString(&CStack_4);
-          *unaff_FS_OFFSET = iStack_1c;
+          func_0x004096b0();
+          uStack_24 = 0xffffffff;
+          CString::~CString((CString *)&stack0xffffffec);
+          *unaff_FS_OFFSET = puStack_2c;
           return;
         }
         iStack_1c = 0x5974f5;
@@ -252,7 +250,7 @@ void TMapUberPicture::HandleEvent(int param_1, int param_2)
         }
         if (*(char *)((int)g_pGameFlowState + 0xf4) != '\0') {
           iStack_1c = 0x597430;
-          (*g_pLocalizationTable->vftable[9].GetTSimMgrClassNamePointer)();
+          (*g_pSimMgr->vftable[9].GetTSimMgrClassNamePointer)();
           *unaff_FS_OFFSET = unaff_ESI;
           return;
         }

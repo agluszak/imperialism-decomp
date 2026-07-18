@@ -260,6 +260,10 @@ public:
   int GetNavyOrderRankWithinNationBucket(); // 0x5563d0
   // Clears this order's map marker tile if one is set (tiebreak_strength != -1).
   void ClearNavyOrderMapMarker(); // 0x5564f0
+  // Recomputes and repaints this order's map-tile marker from its `attachment` kind,
+  // dispatching through the order's zone (owner/contextAnchor as TZone) tile-search
+  // virtuals; called on a TTaskForce entry by FinalizeQueuedMapOrderEntry and ReadFrom.
+  void UpdateNavyOrderMapMarkerByOrderType(); // 0x556410
   // Walks the queue_next chain starting at `this`, clearing eliminatedFlag26 on each
   // node.
   void ClearMapOrderProcessedFlagsChain(); // 0x557870

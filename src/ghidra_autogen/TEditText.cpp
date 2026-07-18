@@ -344,8 +344,8 @@ int TEditText::DispatchSlot9CToLinkedChildren(astruct_10 *ui_ctx)
        (iface = **(int **)&this->field_0x84, *(int *)(iface + -8) != 0)) {
       CMcWindow::SetWindowTextOrDelegateToOwner(iface);
     }
-    ModifyStyleEx(0,0x20,0);
-    ModifyStyle(0x2000000,0,0);
+    CWnd__ModifyStyleEx(0,0x20,0);
+    CWnd__ModifyStyle(0x2000000,0,0);
     dlg_hwnd = (HWND)0x0;
     if (*(int *)&this->field_0x94 != 0) {
       dlg_hwnd = *(HWND *)(*(int *)&this->field_0x94 + 0x1c);
@@ -562,8 +562,7 @@ void TEditText::InitDialogWindowAndSyncTitleIfChanged(CString param_1, char para
   }
   iVar2 = func_0x0040799b();
   if (iVar2 == 0) {
-    iVar2 = CompareAnsiStringsWithMbcsAwareness
-                      (param_1.m_pchData,**(undefined4 **)&this->field_0x84);
+    iVar2 = _mbscmp(param_1.m_pchData,**(undefined4 **)&this->field_0x84);
     if (iVar2 != 0) {
       CString::operator=(*(CString **)&this->field_0x84,&param_1);
       if (param_2 != '\0') {
@@ -593,7 +592,7 @@ void TEditText::VTableSlot59()
   if (*(int *)&this->field_0x94 != 0) {
     GetClientRect(*(HWND *)(*(int *)&this->field_0x94 + 0x1c),&local_10);
     if ((local_10.left != this->field2c) || (local_10.top != this->field30)) {
-      SetWindowPos(0,this->field2c,this->field30,0,0,0x215);
+      CWnd__SetWindowPos(0,this->field2c,this->field30,0,0,0x215);
     }
   }
   return;

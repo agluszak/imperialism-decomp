@@ -83,7 +83,7 @@ void TGameInfoPicture::NoOpUiLifecycleHook(CString param_1)
   puStack_8 = (undefined1 *)0x0;
   iVar3 = 0;
   do {
-    (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2757,iVar3 + 0xf,&stack0x00000000);
+    (*g_pSimMgr->vftable[0x10].slot_0x04)(0x2757,iVar3 + 0xf,&stack0x00000000);
     func_0x00409075(iVar3 + 0x68647230,0,0xc,0x2b67,1,uStack_c);
     iVar3 = iVar3 + 1;
   } while (iVar3 < 5);
@@ -92,7 +92,7 @@ void TGameInfoPicture::NoOpUiLifecycleHook(CString param_1)
   do {
     uVar2 = (*p_Var1)(iVar3 + 0x74787461);
     (**(code **)(*(int *)CONCAT31(extraout_var,uVar2) + 0xc))();
-    (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2757,iVar3,&uStack_4);
+    (*g_pSimMgr->vftable[0x10].slot_0x04)(0x2757,iVar3,&uStack_4);
     func_0x00409075(iVar3 + 0x74787461,0,10,0x2b67,1,unaff_EBX);
     iVar3 = iVar3 + 1;
   } while (iVar3 < 0xe);
@@ -142,23 +142,23 @@ void TGameInfoPicture::HandleEvent(int param_1, int param_2)
     if (uVar1 < 0x6f6b617a) {
       if (uVar1 == 0x6f6b6179) {
         pCStack_18 = (CString *)0x56bb19;
-        (*g_pLocalizationTable->vftable[8].slot_0x04)();
+        (*g_pSimMgr->vftable[8].slot_0x04)();
         goto LAB_0056bb37;
       }
       if (uVar1 == 0x6275746c) {
         pCStack_18 = (CString *)0x56babe;
-        uVar3 = (*g_pLocalizationTable->vftable[7].slot_0x04)();
+        uVar3 = (*g_pSimMgr->vftable[7].slot_0x04)();
         if ((short)CONCAT31(extraout_var,uVar3) != 1) {
           pCStack_18 = (CString *)0x64;
           puStack_1c = (undefined1 *)0x56bb0c;
-          (*g_pLocalizationTable->vftable[9].GetTSimMgrClassNamePointer)();
+          (*g_pSimMgr->vftable[9].GetTSimMgrClassNamePointer)();
           goto LAB_0056bb37;
         }
         pCStack_18 = &local_10;
         puStack_1c = (undefined1 *)0x9;
         iStack_20 = 0x2741;
         uStack_24 = 0x56bade;
-        (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+        (*g_pSimMgr->vftable[0x10].slot_0x04)();
         uStack_2c = 0;
       }
       else {
@@ -175,7 +175,7 @@ void TGameInfoPicture::HandleEvent(int param_1, int param_2)
             else {
               pCStack_18 = (CString *)0x66;
               puStack_1c = (undefined1 *)0x56ba38;
-              (*g_pLocalizationTable->vftable[9].GetTSimMgrClassNamePointer)();
+              (*g_pSimMgr->vftable[9].GetTSimMgrClassNamePointer)();
             }
             goto LAB_0056bb37;
           }
@@ -189,22 +189,21 @@ void TGameInfoPicture::HandleEvent(int param_1, int param_2)
         if (cVar2 != '\0') {
           puStack_1c = (undefined1 *)0x65;
           iStack_20 = 0x56baae;
-          (*g_pLocalizationTable->vftable[9].GetTSimMgrClassNamePointer)();
+          (*g_pSimMgr->vftable[9].GetTSimMgrClassNamePointer)();
           goto LAB_0056bb37;
         }
         puStack_1c = &stack0xffffffec;
         iStack_20 = 0x12;
         uStack_24 = 0x273d;
         uStack_28 = 0x56ba90;
-        (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+        (*g_pSimMgr->vftable[0x10].slot_0x04)();
         uStack_2c = 1;
       }
       local_4 = auStack_34;
       uStack_28 = 0;
       puStack_30 = &DAT_006a4048;
       func_0x004076b7(&iStack_20);
-      uStack_2c = 0x56bb03;
-      DispatchLocalizedUiMessageWithTemplateA13A0();
+      func_0x004096b0();
       goto LAB_0056bb37;
     }
 LAB_0056bb1b:

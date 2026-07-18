@@ -148,12 +148,12 @@ void TCivReport::IsSelected(int param_1)
   pCStack_70 = (CString *)0x2724;
   local_4._0_1_ = 5;
   pcStack_74 = (char *)0x590d4f;
-  (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+  (*g_pSimMgr->vftable[0x10].slot_0x04)();
   pcStack_74 = &stack0xffffffa0;
   uStack_78 = CONCAT22((short)((uint)pcStack_74 >> 0x10),*(undefined2 *)(param_1 + 4));
   CStack_7c.m_pchData = (char *)0x2718;
   CStack_80.m_pchData = (char *)0x590d6c;
-  (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+  (*g_pSimMgr->vftable[0x10].slot_0x04)();
   CStack_80.m_pchData = (char *)&local_54;
   iVar7 = sVar8 * 0x24;
   iStack_84 = (int)*(short *)(*(int *)&g_pGlobalMapState->field_0xc + 0x14 + iVar7);
@@ -162,7 +162,7 @@ void TCivReport::IsSelected(int param_1)
   CStack_8c.m_pchData = pcStack_74;
   CStack_94.m_pchData = (char *)&pTStack_6c;
   CStack_90.m_pchData = (char *)pCStack_70;
-  CStack_98.m_pchData = (char *)g_pLocalizationTable;
+  CStack_98.m_pchData = (char *)g_pSimMgr;
   func_0x0040988b();
   ppCStack_88 = (CString **)0xa;
   CStack_8c.m_pchData = (char *)0x590dbc;
@@ -173,7 +173,7 @@ void TCivReport::IsSelected(int param_1)
     CStack_8c.m_pchData = &DAT_00000008;
     CStack_90.m_pchData = (char *)0x2724;
     CStack_94.m_pchData = (char *)0x591168;
-    (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+    (*g_pSimMgr->vftable[0x10].slot_0x04)();
     ppCStack_88 = (CString **)&pcStack_74;
     CStack_8c.m_pchData = (char *)0x591176;
     CString::operator+=();
@@ -184,7 +184,7 @@ void TCivReport::IsSelected(int param_1)
     CStack_8c.m_pchData = (char *)0x1;
     CStack_90.m_pchData = (char *)0x2724;
     CStack_94.m_pchData = (char *)0x590dea;
-    (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+    (*g_pSimMgr->vftable[0x10].slot_0x04)();
     CStack_8c.m_pchData = (char *)&pcStack_74;
     ppCStack_88 = (CString **)&DAT_00695880;
     CStack_90.m_pchData = (char *)&local_54;
@@ -202,7 +202,7 @@ void TCivReport::IsSelected(int param_1)
     CStack_8c.m_pchData = (char *)0x2;
     CStack_90.m_pchData = (char *)0x2724;
     CStack_94.m_pchData = (char *)0x590e3a;
-    (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+    (*g_pSimMgr->vftable[0x10].slot_0x04)();
     CStack_8c.m_pchData = (char *)&pcStack_74;
     ppCStack_88 = (CString **)&DAT_00695880;
     CStack_90.m_pchData = (char *)&local_50;
@@ -220,7 +220,7 @@ void TCivReport::IsSelected(int param_1)
     CStack_8c.m_pchData = (char *)0x3;
     CStack_90.m_pchData = (char *)0x2724;
     CStack_94.m_pchData = (char *)0x590e8a;
-    (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+    (*g_pSimMgr->vftable[0x10].slot_0x04)();
     CStack_8c.m_pchData = (char *)&pcStack_74;
     ppCStack_88 = (CString **)&DAT_00695880;
     CStack_90.m_pchData = (char *)&local_4c;
@@ -238,7 +238,7 @@ void TCivReport::IsSelected(int param_1)
     CStack_8c.m_pchData = (char *)0x4;
     CStack_90.m_pchData = (char *)0x2724;
     CStack_94.m_pchData = (char *)0x590eda;
-    (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+    (*g_pSimMgr->vftable[0x10].slot_0x04)();
     CStack_8c.m_pchData = (char *)&pcStack_74;
     ppCStack_88 = (CString **)&DAT_00695880;
     CStack_90.m_pchData = (char *)&local_48;
@@ -271,7 +271,7 @@ void TCivReport::IsSelected(int param_1)
             }
             CStack_90.m_pchData = (char *)0x2711;
             CStack_94.m_pchData = (char *)0x590f83;
-            (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+            (*g_pSimMgr->vftable[0x10].slot_0x04)();
             pcVar10 = pcVar10 + 1;
           }
           sVar8 = sVar8 + 1;
@@ -281,20 +281,20 @@ void TCivReport::IsSelected(int param_1)
           CStack_8c.m_pchData = (char *)0xa;
           CStack_90.m_pchData = (char *)0x2724;
           CStack_94.m_pchData = (char *)0x590fe9;
-          (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+          (*g_pSimMgr->vftable[0x10].slot_0x04)();
           CStack_94.m_pchData = CStack_80.m_pchData;
           CStack_98.m_pchData = CStack_7c.m_pchData;
-          func_0x0040988b(g_pLocalizationTable,&pcStack_74);
+          func_0x0040988b(g_pSimMgr,&pcStack_74);
         }
         else {
           ppCStack_88 = &pCStack_70;
           CStack_8c.m_pchData = (char *)0x6;
           CStack_90.m_pchData = (char *)0x2724;
           CStack_94.m_pchData = (char *)0x590fb0;
-          (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+          (*g_pSimMgr->vftable[0x10].slot_0x04)();
           CStack_98.m_pchData = CStack_80.m_pchData;
           CStack_94.m_pchData = pcVar10;
-          func_0x0040988b(g_pLocalizationTable,&pcStack_74,CStack_7c.m_pchData);
+          func_0x0040988b(g_pSimMgr,&pcStack_74,CStack_7c.m_pchData);
         }
         CStack_8c.m_pchData = (char *)&pCStack_68;
         ppCStack_88 = (CString **)&DAT_00695880;
@@ -316,13 +316,13 @@ void TCivReport::IsSelected(int param_1)
       CStack_8c.m_pchData = (char *)0x5;
       CStack_90.m_pchData = (char *)0x2724;
       CStack_94.m_pchData = (char *)0x591062;
-      (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+      (*g_pSimMgr->vftable[0x10].slot_0x04)();
       CStack_94.m_pchData = (char *)&CStack_80;
       CStack_98.m_pchData =
            (char *)CONCAT22((short)((uint)CStack_94.m_pchData >> 0x10),*(undefined2 *)(param_1 + 4))
       ;
-      (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2725);
-      func_0x0040988b(g_pLocalizationTable,&CStack_80,ppCStack_88,CStack_8c.m_pchData);
+      (*g_pSimMgr->vftable[0x10].slot_0x04)(0x2725);
+      func_0x0040988b(g_pSimMgr,&CStack_80,ppCStack_88,CStack_8c.m_pchData);
       CStack_8c.m_pchData = (char *)&pCStack_68;
       CStack_90.m_pchData = (char *)&local_40;
       ppCStack_88 = (CString **)&DAT_00695880;
@@ -339,13 +339,13 @@ void TCivReport::IsSelected(int param_1)
       CStack_8c.m_pchData = (char *)0x7;
       CStack_90.m_pchData = (char *)0x2724;
       CStack_94.m_pchData = (char *)0x5910e0;
-      (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+      (*g_pSimMgr->vftable[0x10].slot_0x04)();
       CStack_94.m_pchData = (char *)&CStack_80;
       CStack_98.m_pchData =
            (char *)CONCAT22((short)((uint)CStack_94.m_pchData >> 0x10),*(undefined2 *)(param_1 + 4))
       ;
-      (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2725);
-      func_0x0040988b(g_pLocalizationTable,&CStack_80,ppCStack_88,CStack_8c.m_pchData);
+      (*g_pSimMgr->vftable[0x10].slot_0x04)(0x2725);
+      func_0x0040988b(g_pSimMgr,&CStack_80,ppCStack_88,CStack_8c.m_pchData);
       CStack_8c.m_pchData = (char *)&pCStack_68;
       CStack_90.m_pchData = (char *)&local_3c;
       ppCStack_88 = (CString **)&DAT_00695880;
@@ -364,13 +364,13 @@ void TCivReport::IsSelected(int param_1)
     CStack_8c.m_pchData = (char *)0x9;
     CStack_90.m_pchData = (char *)0x2724;
     CStack_94.m_pchData = (char *)0x591196;
-    (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+    (*g_pSimMgr->vftable[0x10].slot_0x04)();
     CStack_94.m_pchData = (char *)(*(short *)(param_1 + 0x24) * 3);
     CStack_98.m_pchData = &g_szDecimalFormat;
-    _Format_CString__QAAXPBDZZ(&CStack_80);
+    CString__Format(&CStack_80);
     CStack_94.m_pchData = CStack_80.m_pchData;
     CStack_98.m_pchData = CStack_7c.m_pchData;
-    func_0x0040988b(g_pLocalizationTable,&pcStack_74);
+    func_0x0040988b(g_pSimMgr,&pcStack_74);
     ppCStack_88 = &pCStack_68;
     CStack_8c.m_pchData = (char *)0x5911db;
     CString::operator+=();
@@ -401,7 +401,7 @@ void TCivReport::IsSelected(int param_1)
     else {
       uVar9 = 0xc;
     }
-    BuildUiTextStyleDescriptor(&stack0xffffffa4,0,uVar9,0x2b6a);
+    func_0x00406afa(&stack0xffffffa4,0,uVar9,0x2b6a);
     piVar5 = (int *)(*pcVar1)(iVar7 + 0x74746c30);
     iVar4 = *piVar5;
     (**(code **)(iVar4 + 0xc))();

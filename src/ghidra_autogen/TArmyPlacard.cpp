@@ -72,10 +72,10 @@ TArmyPlacard * TArmyPlacard::_scalar_deleting_destructor_(byte param_1)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058BF50
-// GHIDRA_NAME TArmyPlacard::IsSelected
-// GHIDRA_PROTO undefined __thiscall IsSelected(short param_1)
+// GHIDRA_NAME TArmyPlacard::SetValue
+// GHIDRA_PROTO undefined __thiscall SetValue(short param_1)
 
-void TArmyPlacard::IsSelected(short param_1)
+void TArmyPlacard::SetValue(short param_1)
 
 {
   TArmyPlacardVtbl *pTVar1;
@@ -127,15 +127,13 @@ void TArmyPlacard::ApplyRectSlot110()
   func_0x00404fe8(in_stack_00000004);
   if (*(short *)&this->field_0x90 != 0) {
     func_0x0040448f(0,10,0x2b67);
-    _Format_CString__QAAXPBDZZ(&stack0xffffffec,&g_szDecimalFormat,(int)*(short *)&this->field_0x90)
-    ;
-    sVar1 = MeasureTextExtentWithCachedQuickDrawStyle(&stack0xffffffec);
-    SetQuickDrawTextOriginWithContextOffset
-              ((short)this->field34 - sVar1,(short)this->field38 + -2);
+    CString__Format(&stack0xffffffec,&g_szDecimalFormat,(int)*(short *)&this->field_0x90);
+    sVar1 = func_0x00405b7d(&stack0xffffffec);
+    func_0x00408d6e((short)this->field34 - sVar1,(short)this->field38 + -2);
     func_0x004029aa(&stack0xffffffec);
     func_0x0040448f(0,10,0x2b6c);
-    SetQuickDrawTextOriginWithContextOffset
-              (CONCAT22(extraout_var,(short)this->field34 - sVar1) + -1,(short)this->field38 + -3);
+    func_0x00408d6e(CONCAT22(extraout_var,(short)this->field34 - sVar1) + -1,
+                    (short)this->field38 + -3);
     func_0x004029aa(&stack0xffffffec);
   }
   puStack_8 = (undefined1 *)0xffffffff;

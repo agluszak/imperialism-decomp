@@ -15,7 +15,7 @@ void CCmdTarget::~CCmdTarget(void)
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
   
-  EstablishSehFrameProlog();
+  _EH_prolog();
   *(undefined4 **)(unaff_EBP + -0x10) = extraout_ECX;
   *extraout_ECX = &PTR_GetCCmdTargetRuntimeClass_0067066c;
   *(undefined4 *)(unaff_EBP + -4) = 0;
@@ -135,20 +135,20 @@ void CCmdTarget::OnFinalRelease()
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00606CF0
-// GHIDRA_NAME CCmdTarget::OrphanCallChain_C7_I57_004be5b0
-// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C7_I57_004be5b0(void)
+// GHIDRA_NAME CCmdTarget::CCmdTarget::OnCreateAggregates
+// GHIDRA_PROTO undefined __thiscall CCmdTarget::OnCreateAggregates(void)
 
-undefined4 CCmdTarget::OrphanCallChain_C7_I57_004be5b0()
+undefined4 CCmdTarget::CCmdTarget__OnCreateAggregates()
 
 {
   return 1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00606CF4
-// GHIDRA_NAME CCmdTarget::SetForeignMinisterReadyFlag14
-// GHIDRA_PROTO undefined __thiscall SetForeignMinisterReadyFlag14(void)
+// GHIDRA_NAME CCmdTarget::CCmdTarget::GetInterfaceHook
+// GHIDRA_PROTO undefined __thiscall CCmdTarget::GetInterfaceHook(void)
 
-undefined4 CCmdTarget::SetForeignMinisterReadyFlag14()
+undefined4 CCmdTarget::CCmdTarget__GetInterfaceHook()
 
 {
   return 0;

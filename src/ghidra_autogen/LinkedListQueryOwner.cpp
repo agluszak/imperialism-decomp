@@ -46,7 +46,7 @@ LinkedListQueryOwner::DispatchGlobalTurnEventCode
   func_0x00402bdf();
   sVar9 = (short)param_1;
   if (sVar9 == *(short *)(this + 4)) goto switchD_005d72b4_default;
-  switch(*(undefined2 *)&g_pLocalizationTable->field_0x8) {
+  switch(*(undefined2 *)&g_pSimMgr->field_0x8) {
   case 0x67:
     uVar10 = 0x1b5b;
     pTVar4 = g_pSfxPlaybackSystem->vftable;
@@ -67,7 +67,7 @@ switchD_005d72b4_default:
   iVar5 = (int)*(short *)(this + 4);
   if (iVar5 < 0x2135) {
     if (iVar5 == 0x2134) {
-      ModifyStyle(0,0x2000000);
+      CWnd__ModifyStyle(0,0x2000000);
     }
     else {
       switch(iVar5) {
@@ -131,7 +131,7 @@ switchD_005d72b4_default:
       else {
         switch(iVar5) {
         case 0x7d8:
-          if (*(short *)&g_pLocalizationTable->field_0x8 == 0x68) {
+          if (*(short *)&g_pSimMgr->field_0x8 == 0x68) {
             (**(code **)(*piVar8 + 0xe4))();
             (**(code **)(*(int *)this + 0x6c))();
           }

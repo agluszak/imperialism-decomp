@@ -100,7 +100,7 @@ void TTreatiesView::NoOpUiLifecycleHook(CString param_1)
     puStack_34 = (undefined1 *)(iVar3 + 0x37);
     uStack_38 = 0x2733;
     uStack_3c = 0x4f7b31;
-    (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+    (*g_pSimMgr->vftable[0x10].slot_0x04)();
     puStack_10 = auStack_40;
     uStack_3c = CONCAT31(extraout_var,uVar2);
     func_0x004076b7(&pcStack_28);
@@ -206,47 +206,47 @@ void TTreatiesView::ApplyRectSlot110()
   pCStack_54 = (CString *)&local_38;
   uStack_58 = 0x2b6b;
   uStack_5c = 0x4f7ce3;
-  MapUiThemeCodeToStyleFlags();
+  func_0x004093cc();
   pCStack_54 = (CString *)&local_3c;
   uStack_58 = 0x2b68;
   uStack_5c = 0x4f7cf5;
-  MapUiThemeCodeToStyleFlags();
+  func_0x004093cc();
   pCStack_54 = &local_40;
   uStack_58 = 0x20;
   uStack_5c = 0x2733;
   puStack_60 = (undefined1 *)0x4f7d12;
-  (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+  (*g_pSimMgr->vftable[0x10].slot_0x04)();
   puVar3 = (undefined1 *)
            CONCAT22((short)((uint)unaff_ESI >> 0x10),0x16f - (short)this->ownerOffsetY);
   iVar4 = CONCAT22((short)((uint)unaff_EDI >> 0x10),0x48 - (short)this->ownerOffsetX);
   func_0x00409444();
   puStack_60 = puVar3 + 1;
-  SetQuickDrawTextOriginWithContextOffset(iVar4 + 1);
+  func_0x00408d6e(iVar4 + 1);
   puStack_60 = &stack0xffffffb4;
   func_0x004029aa();
   func_0x00409444();
   puStack_60 = puVar3;
-  SetQuickDrawTextOriginWithContextOffset(iVar4);
+  func_0x00408d6e(iVar4);
   puStack_60 = &stack0xffffffb4;
   func_0x004029aa();
   puStack_60 = (undefined1 *)0x1;
   func_0x00401bf9(0,10,0x2b68);
   do {
     puStack_60 = &stack0xffffffb4;
-    (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2733,iVar2 + 6);
+    (*g_pSimMgr->vftable[0x10].slot_0x04)(0x2733,iVar2 + 6);
     iVar4 = CONCAT22((short)((uint)iVar4 >> 0x10),
                      *(short *)((int)&local_34[-4].m_pchData + iVar2 * 2) -
                      (short)this->ownerOffsetY);
-    sVar1 = MeasureTextExtentWithCachedQuickDrawStyle(&uStack_58);
+    sVar1 = func_0x00405b7d(&uStack_58);
     puVar3 = (undefined1 *)
              CONCAT22((short)((uint)puVar3 >> 0x10),
                       (*(short *)((int)&local_34[0].m_pchData + iVar2 * 2) - sVar1 / 2) -
                       (short)this->ownerOffsetX);
     func_0x00409444(pCStack_54);
-    SetQuickDrawTextOriginWithContextOffset(puVar3 + 1,iVar4 + 1);
+    func_0x00408d6e(puVar3 + 1,iVar4 + 1);
     func_0x004029aa(&uStack_58);
     func_0x00409444(unaff_EDI);
-    SetQuickDrawTextOriginWithContextOffset(puVar3,iVar4);
+    func_0x00408d6e(puVar3,iVar4);
     func_0x004029aa(&uStack_58);
     iVar2 = iVar2 + 1;
   } while (iVar2 < 7);

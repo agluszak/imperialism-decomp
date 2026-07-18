@@ -107,8 +107,8 @@ uint TSoundPlayer::CanHandleCityDialogActionFalse()
   uint uVar1;
   TSimMgr *pTVar2;
   
-  if (*(short *)&g_pLocalizationTable->field_0x4e == 0) {
-    pTVar2 = g_pLocalizationTable;
+  if (*(short *)&g_pSimMgr->field_0x4e == 0) {
+    pTVar2 = g_pSimMgr;
     if (this->field_0x78 != '\0') {
       pTVar2 = (TSimMgr *)func_0x004078a1();
       if ((char)pTVar2 != '\0') {
@@ -152,6 +152,38 @@ uint TSoundPlayer::CanHandleCityDialogActionFalse()
     }
   }
   return (uint)pTVar2 & 0xffffff00;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00593C10
+// GHIDRA_NAME TSoundPlayer::HandleBlinkStateAndScheduleTimerTick
+// GHIDRA_PROTO undefined __thiscall HandleBlinkStateAndScheduleTimerTick(char param_1)
+
+void TSoundPlayer::HandleBlinkStateAndScheduleTimerTick(char param_1)
+
+{
+  int iVar1;
+  undefined4 uVar2;
+  
+  iVar1 = (**(code **)(**(int **)&this->field_0x6c + 0x28))();
+  if (0 < iVar1) {
+    (**(code **)(**(int **)&this->field_0x6c + 0x30))();
+    (**(code **)(**(int **)&this->field_0x70 + 0x30))();
+  }
+  if (this->field_0x78 != '\0') {
+    if (param_1 != '\0') {
+      if (*(int *)&this->field_0x7c == 0) {
+        uVar2 = func_0x004092d7();
+        *(undefined4 *)&this->field_0x7c = uVar2;
+        func_0x00407815(&LAB_00406dd4,6,0);
+      }
+      this->field_0x80 = 1;
+      return;
+    }
+    func_0x00403d96();
+    this->field_0x78 = 0;
+    *(undefined2 *)&this->field_0x74 = 0;
+  }
+  return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005E4E70
@@ -290,7 +322,7 @@ void TSoundPlayer::WrapperFor_ftol_At005e5020(short param_1)
     fVar2 = ROUND(fVar3);
     fVar3 = (float10)f2xm1(fVar3 - fVar2);
     fscale((float10)1 + fVar3,fVar2);
-    iVar1 = ftol();
+    iVar1 = _ftol();
     if (0 < iVar1) {
       iVar1 = 0;
     }
@@ -323,7 +355,7 @@ undefined4 TSoundPlayer::UpdateLocalizationAudioSlotAndMaybeRefreshVoiceState(sh
   int iVar2;
   
   iVar1 = DAT_006a60f8;
-  if (*(short *)&g_pLocalizationTable->field_0x4c == 0) {
+  if (*(short *)&g_pSimMgr->field_0x4c == 0) {
     return 0;
   }
   DAT_006a60f8 = DAT_006a60f8 + 1;

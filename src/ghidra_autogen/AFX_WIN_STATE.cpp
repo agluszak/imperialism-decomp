@@ -29,7 +29,7 @@ void _AFX_WIN_STATE::~_AFX_WIN_STATE(void)
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
   
-  EstablishSehFrameProlog();
+  _EH_prolog();
   *(undefined4 **)(unaff_EBP + -0x10) = extraout_ECX;
   *extraout_ECX = &PTR__scalar_deleting_destructor__0066fdec;
   *(undefined4 *)(unaff_EBP + -4) = 0;

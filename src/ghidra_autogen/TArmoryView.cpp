@@ -136,7 +136,7 @@ void TArmoryView::OrphanRetStub_004c6fd0(int *pCityViewDialog)
   
   iStack_34 = 0x2b6b;
   *(undefined4 *)&this->field_0x98 = *(undefined4 *)(g_pStrategicMapViewSystem + 4);
-  BuildUiTextStyleDescriptor();
+  func_0x00406afa();
   sVar3 = 0;
   p_Var1 = this->vftable->OrphanLeaf_NoCall_Ins07_004d8920;
   dwCountControlTag = 0x6e756d30;
@@ -173,7 +173,7 @@ void TArmoryView::OrphanRetStub_004c6fd0(int *pCityViewDialog)
     dwCountControlTag = dwCountControlTag + 1;
   } while (sVar3 < 8);
   iStack_34 = 0x2b6b;
-  BuildUiTextStyleDescriptor();
+  func_0x00406afa();
   iStack_34 = 0x7469746c;
   uVar2 = (*p_Var1)();
   iVar8 = *(int *)CONCAT31(extraout_var_01,uVar2);
@@ -182,7 +182,7 @@ void TArmoryView::OrphanRetStub_004c6fd0(int *pCityViewDialog)
   (**(code **)(iVar8 + 0x1cc))();
   puStack_58 = &stack0xffffffdc;
   iStack_5c = 0x4cf034;
-  BuildUiTextStyleDescriptor();
+  func_0x00406afa();
   uVar2 = (*p_Var1)();
   iVar8 = *(int *)CONCAT31(extraout_var_02,uVar2);
   (**(code **)(iVar8 + 0xc))();
@@ -193,7 +193,7 @@ void TArmoryView::OrphanRetStub_004c6fd0(int *pCityViewDialog)
   puStack_64 = &stack0xffffffd0;
   piStack_60 = (int *)0x0;
   uStack_68 = 0x4cf06b;
-  BuildUiTextStyleDescriptor();
+  func_0x00406afa();
   puStack_58 = (undefined1 *)0x636f7374;
   iStack_5c = 0x4cf077;
   uVar2 = (*p_Var1)();
@@ -253,7 +253,7 @@ void TArmoryView::OrphanRetStub_004c6fd0(int *pCityViewDialog)
                     /* Loop bound for four advanced availability rows. */
   } while ((short)uStack_68 < 4);
   iStack_88 = 0x2b6b;
-  BuildUiTextStyleDescriptor(&piStack_60,0,10);
+  func_0x00406afa(&piStack_60,0,10);
   iStack_88 = 0x64657363;
   uVar2 = (*p_Var1)();
   iVar8 = *(int *)CONCAT31(extraout_var_09,uVar2);
@@ -438,9 +438,9 @@ void TArmoryView::OrphanRetStub_004c6fb0(int *pCityViewDialog)
   uVar3 = (*p_Var1)();
   (**(code **)(*(int *)CONCAT31(extraout_var,uVar3) + 0xc))();
   LStack_70 = 0x4cf660;
-  MapUiThemeCodeToStyleFlags();
+  func_0x004093cc();
   LStack_70 = 0x4cf672;
-  MapUiThemeCodeToStyleFlags();
+  func_0x004093cc();
                     /* No selected specialist entry: skip refresh and exit. */
   if (*(int *)&this->field_0xa8 == 0) goto LAB_004cfa43;
   sVar5 = *(short *)(*(int *)&this->field_0xa8 + 0x4c);
@@ -482,7 +482,7 @@ void TArmoryView::OrphanRetStub_004c6fb0(int *pCityViewDialog)
   local_48.top = (LONG)CONCAT31(extraout_var,uVar3);
   CopyRect(&RStack_38,&local_48);
   func_0x00408a03();
-  (*g_pLocalizationTable->vftable[0xe].slot_0x04)();
+  (*g_pSimMgr->vftable[0xe].slot_0x04)();
   piVar6 = (int *)(*pcVar11)();
   if (piVar6 == (int *)0x0) {
     puStack_ac = (undefined1 *)0x4cf885;
@@ -667,7 +667,7 @@ void TArmoryView::RefreshCityViewProductionDetails(short nBuildingSlotId)
   CStack_8c.m_pchData = "hk+";
   (**(code **)(*(int *)CONCAT31(extraout_var,uVar2) + 0x1c8))();
   CStack_8c.m_pchData = (char *)0x2b6b;
-  BuildUiTextStyleDescriptor();
+  func_0x00406afa();
   CStack_8c.m_pchData = (char *)0x756e6974;
   uVar2 = (*p_Var1)();
   piVar3 = (int *)CONCAT31(extraout_var_00,uVar2);
@@ -688,11 +688,11 @@ void TArmoryView::RefreshCityViewProductionDetails(short nBuildingSlotId)
   piStack_a8 = (int *)0x4cfd96;
   func_0x00408a03();
   piStack_a8 = (int *)&stack0xffffff70;
-  (*g_pLocalizationTable->vftable[0xf].slot_0x04)();
+  (*g_pSimMgr->vftable[0xf].slot_0x04)();
   tStack_c0.right = (LONG)&stack0xffffff64;
   tStack_c0.bottom = (LONG)&g_szDecimalFormat;
   tStack_c0.top = 0x4cfdbf;
-  _Format_CString__QAAXPBDZZ();
+  CString__Format();
   tStack_c0.bottom = (LONG)&stack0xffffff64;
   tStack_c0.right = (LONG)&stack0xffffff6c;
   tStack_c0.top = 0x4cfdd6;
@@ -786,7 +786,7 @@ void TArmoryView::RefreshCityViewProductionDetails(short nBuildingSlotId)
   auStack_f4._8_4_ = auStack_d8;
   auStack_f4._4_4_ = SEXT24(*(short *)(*(int *)&this->field_0xa8 + 0x54));
   auStack_f4._0_4_ = 0x4cff7a;
-  (*g_pLocalizationTable->vftable[0xe].slot_0x04)();
+  (*g_pSimMgr->vftable[0xe].slot_0x04)();
   RStack_104.bottom = (LONG)&LStack_e0;
   auStack_f4._0_4_ = 1;
   RStack_104.right = 0x4cff8d;
@@ -799,7 +799,7 @@ void TArmoryView::RefreshCityViewProductionDetails(short nBuildingSlotId)
   (**(code **)(auStack_d8._4_4_ + 0xc))();
   RStack_104.top = 1;
   RStack_104.left = 0x4cffc0;
-  RStack_104.left = ftol();
+  RStack_104.left = _ftol();
   (**(code **)(auStack_d8._4_4_ + 0x1e4))();
   (**(code **)(iStack_dc + 300))();
   tStack_c0.bottom = iStack_c4;

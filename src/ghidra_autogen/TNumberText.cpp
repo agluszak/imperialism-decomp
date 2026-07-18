@@ -159,7 +159,7 @@ void TNumberText::SetControlValue(CString param_1, undefined4 param_2)
   local_10.m_pchData = (char *)this;
   CString::CString(&param_1);
   local_4.m_pchData = (char *)0x0;
-  _Format_CString__QAAXPBDZZ(&param_1,&g_szDecimalFormat,CVar1.m_pchData);
+  CString__Format(&param_1,&g_szDecimalFormat,CVar1.m_pchData);
   CString::CString(&local_10,&param_1);
   local_4.m_pchData._0_1_ = 1;
   (*this->vftable[0x3c].GetTEventHandlerClassNamePointer)(&local_10,param_2);

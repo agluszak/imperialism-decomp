@@ -121,34 +121,33 @@ void TOcean::Free()
 void TOcean::ReadFrom(int *param_1)
 
 {
-  word *pwVar1;
-  code *pcVar2;
-  short sVar3;
+  code *pcVar1;
+  short sVar2;
   TZone *this_00;
+  word *pwVar3;
   TZone *pTVar4;
   int *piVar5;
   int *piVar6;
   dword dVar7;
   int iVar8;
-  TOcean *unaff_EBX;
-  int unaff_ESI;
+  short *unaff_EBX;
+  TOcean *unaff_EBP;
   int iVar9;
+  int iVar10;
   int unaff_EDI;
-  TOcean *pTVar10;
   int *unaff_FS_OFFSET;
   int iVar11;
   undefined1 *puVar12;
   word *pwVar13;
   int *piVar14;
-  TOcean *local_18;
-  int iStack_c;
-  short *psStack_8;
-  undefined4 uStack_4;
+  short *psStack_c;
+  undefined1 *puStack_8;
+  word *pwStack_4;
   
-  uStack_4 = 0xffffffff;
-  psStack_8 = (short *)&LAB_00635855;
-  iStack_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = (int)&iStack_c;
+  pwStack_4 = (word *)0xffffffff;
+  puStack_8 = &LAB_00635855;
+  psStack_c = (short *)*unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = (int)&psStack_c;
   if (g_pMapActionContextDistanceCache != (void *)0x0) {
     operator_delete(g_pMapActionContextDistanceCache);
     g_pMapActionContextDistanceCache = (void *)0x0;
@@ -156,14 +155,13 @@ void TOcean::ReadFrom(int *param_1)
   }
   piVar14 = param_1;
   func_0x00403517();
-  EnsureSelectedTaskForceForOrderOwnerAndRefresh(0);
-  pwVar1 = &this->nationCount;
+  func_0x0040928c();
+  pwStack_4 = &this->nationCount;
   iVar8 = 0;
-  pTVar10 = this;
-  if (0 < (short)*pwVar1) {
+  if (0 < (short)*pwStack_4) {
     iVar9 = 0;
     do {
-      pTVar4 = (TZone *)(iVar9 + (int)pTVar10->contextArray);
+      pTVar4 = (TZone *)(iVar9 + (int)this->contextArray);
       if (g_pMapActionContextListHead == pTVar4) {
         g_pMapActionContextListHead = *(TZone **)&pTVar4->field_0x18;
       }
@@ -177,11 +175,11 @@ void TOcean::ReadFrom(int *param_1)
       *(undefined4 *)&pTVar4->field_0x18 = 0;
       iVar8 = iVar8 + 1;
       iVar9 = iVar9 + 0x48;
-      pTVar10 = unaff_EBX;
-    } while (iVar8 < (short)*pwVar1);
+      this = unaff_EBP;
+    } while (iVar8 < (short)*pwStack_4);
   }
-  if (pTVar10->contextArray != (dword *)0x0) {
-    (**(code **)(*pTVar10->contextArray + 4))(3);
+  if (this->contextArray != (dword *)0x0) {
+    (**(code **)(*this->contextArray + 4))(3);
   }
   while (pTVar4 = g_pMapActionContextListHead, g_pMapActionContextListHead != (TZone *)0x0) {
     do {
@@ -197,10 +195,11 @@ void TOcean::ReadFrom(int *param_1)
     }
     (*this_00->vftable->GetTCountryClassNamePointer)();
   }
-  pcVar2 = *(code **)(*param_1 + 0x3c);
-  pwVar13 = pwVar1;
-  (*pcVar2)(pwVar1,2);
-  iVar8 = (int)(short)*pwVar1;
+  pwVar3 = pwStack_4;
+  pcVar1 = *(code **)(*param_1 + 0x3c);
+  pwVar13 = pwStack_4;
+  (*pcVar1)(pwStack_4,2);
+  iVar8 = (int)(short)*pwVar3;
   piVar5 = (int *)operator_new(iVar8 * 0x48 + 4);
   if (piVar5 == (int *)0x0) {
     piVar6 = (int *)0x0;
@@ -211,23 +210,23 @@ void TOcean::ReadFrom(int *param_1)
     ___L_YGXPAXIHP6EX0_Z1_Z(piVar6,0x48,iVar8,&SUB_0040405c);
   }
   iVar8 = 0;
-  *(int **)(unaff_ESI + 8) = piVar6;
+  *(int **)(unaff_EDI + 8) = piVar6;
   if (piVar6 == (int *)0x0) {
     MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
     func_0x004057a4(s_D__Ambit_Cross_UOcean_cpp_006984cc,0x7ac);
   }
   iVar9 = 0;
-  if (0 < *psStack_8) {
+  if (0 < *psStack_c) {
     do {
-      (**(code **)(*(int *)(*(int *)(unaff_ESI + 8) + iVar8) + 0x18))(param_1);
+      (**(code **)(*(int *)(*(int *)(unaff_EDI + 8) + iVar8) + 0x18))(param_1);
       iVar9 = iVar9 + 1;
       iVar8 = iVar8 + 0x48;
-    } while (iVar9 < *psStack_8);
+    } while (iVar9 < *psStack_c);
   }
-  puVar12 = &stack0xffffffe0;
-  (*pcVar2)(puVar12,2);
-  sVar3 = (short)unaff_EDI;
-  while (unaff_EDI = unaff_EDI + -1, sVar3 != 0) {
+  puVar12 = &stack0xffffffdc;
+  (*pcVar1)(puVar12,2);
+  sVar2 = (short)piVar14;
+  while (piVar14 = (int *)((int)piVar14 + -1), sVar2 != 0) {
     piVar5 = (int *)operator_new(0x4c);
     if (piVar5 == (int *)0x0) {
       piVar5 = (int *)0x0;
@@ -237,16 +236,14 @@ void TOcean::ReadFrom(int *param_1)
       *(undefined2 *)(piVar5 + 0x12) = 0xffff;
       *piVar5 = (int)&TPortZone::_vftable_;
     }
-    local_18 = (TOcean *)0xffffffff;
+    unaff_EBX = (short *)0xffffffff;
     (**(code **)(*piVar5 + 0x18))(param_1);
-    this = local_18;
-    sVar3 = (short)unaff_EDI;
+    sVar2 = (short)piVar14;
   }
-  piVar5 = piVar14 + 3;
-  piVar6 = piVar5;
-  (*pcVar2)(piVar5,2);
-  operator_delete(piVar14[4]);
-  dVar7 = operator_new((int)(short)*piVar5 << 4);
+  iVar8 = 0xc;
+  (*pcVar1)(0xc,2);
+  operator_delete(uRam00000010);
+  dVar7 = operator_new((int)sRam0000000c << 4);
   if (dVar7 == 0) {
     dVar7 = 0;
   }
@@ -255,18 +252,18 @@ void TOcean::ReadFrom(int *param_1)
     MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
     func_0x004057a4(s_D__Ambit_Cross_UOcean_cpp_006984cc,0x7c3);
   }
-  iVar8 = 0;
-  if (0 < (short)*piVar5) {
-    iVar9 = 0;
+  iVar9 = 0;
+  if (0 < sRam0000000c) {
+    iVar10 = 0;
     do {
-      iVar11 = iVar9 + 4 + *(dword *)(pwVar13 + 8);
-      (*pcVar2)(iVar11,4);
-      (*pcVar2)(iVar9 + *(int *)(puVar12 + 0x10),4);
-      (*pcVar2)(iVar9 + 0xc + piVar6[4],4);
-      (*pcVar2)(iVar9 + 8 + *(int *)(iVar11 + 0x10),4);
-      iVar8 = iVar8 + 1;
-      iVar9 = iVar9 + 0x10;
-    } while (iVar8 < *(short *)&this->vftable);
+      iVar11 = iVar10 + 4 + *(dword *)(pwVar13 + 8);
+      (*pcVar1)(iVar11,4);
+      (*pcVar1)(iVar10 + *(int *)(puVar12 + 0x10),4);
+      (*pcVar1)(iVar10 + 0xc + *(int *)(iVar8 + 0x10),4);
+      (*pcVar1)(iVar10 + 8 + *(int *)(iVar11 + 0x10),4);
+      iVar9 = iVar9 + 1;
+      iVar10 = iVar10 + 0x10;
+    } while (iVar9 < *unaff_EBX);
   }
   pTVar4 = g_pMapActionContextListHead;
   if (g_nSaveFormatVersion < 0xd) {
@@ -288,7 +285,7 @@ void TOcean::ReadFrom(int *param_1)
     }
   }
   func_0x00402efa();
-  *unaff_FS_OFFSET = unaff_EDI;
+  *unaff_FS_OFFSET = (int)piVar14;
   return;
 }
 
@@ -392,5 +389,40 @@ LAB_00562a16:
     pTVar5 = *(TZone **)&pTVar5->field_0x1c;
   } while (pTVar5 != (TZone *)0x0);
   goto joined_r0x005629ea;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00564600
+// GHIDRA_NAME TOcean::EnsureSelectedTaskForceForOrderOwnerAndRefresh
+// GHIDRA_PROTO undefined EnsureSelectedTaskForceForOrderOwnerAndRefresh()
+
+undefined4 __thiscall
+TOcean::EnsureSelectedTaskForceForOrderOwnerAndRefresh(int param_1,int param_2)
+
+{
+  int *piVar1;
+  short sVar2;
+  undefined4 uVar3;
+  
+  if ((*(int *)(param_1 + 0x14) != 0) && (*(int *)(*(int *)(param_1 + 0x14) + 0x18) != param_2)) {
+    sVar2 = func_0x00403b16(param_2);
+    func_0x00409435((int)sVar2);
+    if (param_2 == 0) {
+      piVar1 = *(int **)(param_1 + 0x14);
+      *(undefined4 *)(param_1 + 0x14) = 0;
+      (**(code **)(*piVar1 + 0x1c))();
+    }
+  }
+  if (*(int *)(param_1 + 0x14) == 0) {
+    if (param_2 != 0) {
+      uVar3 = func_0x00403b16();
+      uVar3 = func_0x004072c0(uVar3);
+      *(undefined4 *)(param_1 + 0x14) = uVar3;
+      return uVar3;
+    }
+  }
+  else if (param_2 != 0) {
+    func_0x0040894f(0);
+  }
+  return *(undefined4 *)(param_1 + 0x14);
 }
 

@@ -275,9 +275,9 @@ void TArmyMgr::OrphanCallChain_C4_I26_004a1e40()
 {
   TArmyMgrVtbl *pTVar1;
   
-  if (*(int *)&g_pLocalizationTable->field_0x44 == 2) {
+  if (*(int *)&g_pSimMgr->field_0x44 == 2) {
     (*this->vftable->IterateLinkedListCursorAndClearPerTileByte0F)();
-    (*g_pLocalizationTable->vftable[8].slot_0x04)();
+    (*g_pSimMgr->vftable[8].slot_0x04)();
     return;
   }
   pTVar1 = this->vftable;
@@ -448,7 +448,7 @@ LAB_004a223f:
       }
     }
     *(short *)(iVar8 + 4) = (short)*(char *)(sVar11 + 0x6953c0 + sVar12 * 4);
-    uVar6 = GenerateThreadLocalRandom15();
+    uVar6 = rand();
     *(ushort *)(iVar8 + 6) = (uVar6 & 0xff) + *(short *)(iVar8 + 4) * 0x100;
     iVar8 = func_0x00406d20();
     iVar10 = func_0x00403620();
@@ -843,7 +843,7 @@ LAB_004a3735:
       piVar7 = (int *)*puVar2;
     } while( true );
   }
-  iVar4 = GenerateThreadLocalRandom15();
+  iVar4 = rand();
   puVar2 = *(undefined4 **)(param_1 + 0x14);
   *(undefined4 **)(param_1 + 0x18) = puVar2;
   sVar1 = local_18[iVar4 % iVar8];
@@ -1258,12 +1258,12 @@ uint TArmyMgr::CommitCityActionGateCostIfAffordable()
     puStack_8._0_1_ = 2;
     CString::CString((CString *)&stack0x00000000);
     puStack_8._0_1_ = 3;
-    (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
-    _Format_CString__QAAXPBDZZ();
-    _Format_CString__QAAXPBDZZ();
-    func_0x0040988b(g_pLocalizationTable);
+    (*g_pSimMgr->vftable[0x10].slot_0x04)();
+    CString__Format();
+    CString__Format();
+    func_0x0040988b(g_pSimMgr);
     func_0x004076b7(&stack0xffffffdc);
-    DispatchLocalizedUiMessageWithTemplateA13A0();
+    func_0x004096b0();
     puStack_8._0_1_ = 2;
     CString::~CString((CString *)&stack0x00000000);
     puStack_8._0_1_ = 1;
@@ -1301,6 +1301,93 @@ void TArmyMgr::OrphanCallChain_C1_I34_004a4260()
     }
   }
   return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004A43F0
+// GHIDRA_NAME TArmyMgr::ActivateFirstIdleTacticalUnitByCategoryAtTile
+// GHIDRA_PROTO undefined ActivateFirstIdleTacticalUnitByCategoryAtTile()
+
+undefined4 TArmyMgr::ActivateFirstIdleTacticalUnitByCategoryAtTile(short param_1,short param_2)
+
+{
+  bool bVar1;
+  undefined4 in_EAX;
+  uint uVar2;
+  undefined4 uVar3;
+  short sVar5;
+  int *piVar6;
+  undefined2 uVar4;
+  
+  uVar2 = CONCAT22((short)((uint)in_EAX >> 0x10),param_2);
+  if ((param_2 < 0) || (0x17f < param_2)) {
+    piVar6 = (int *)0x0;
+  }
+  else {
+    uVar2 = param_2 * 0x15;
+    piVar6 = *(int **)(*(int *)&g_pGlobalMapState->field_0x10 + 0x98 + param_2 * 0xa8);
+  }
+  uVar2 = uVar2 & 0xffffff00;
+  uVar4 = (undefined2)(uVar2 >> 0x10);
+  bVar1 = false;
+  sVar5 = 0;
+  for (; piVar6 != (int *)0x0; piVar6 = (int *)piVar6[5]) {
+    if ((*(short *)(&DAT_00695528 + (short)piVar6[1] * 2) == param_1) && (piVar6[2] == 0)) {
+      if (bVar1) {
+        sVar5 = sVar5 + 1;
+      }
+      else {
+        uVar3 = (**(code **)(*piVar6 + 0x34))(4,0xffffffff);
+        uVar2 = CONCAT31((int3)((uint)uVar3 >> 8),1);
+        bVar1 = true;
+      }
+    }
+    uVar4 = (undefined2)(uVar2 >> 0x10);
+  }
+  return CONCAT22(uVar4,sVar5);
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004A4490
+// GHIDRA_NAME TArmyMgr::ActivateFirstActiveTacticalUnitByCategoryAtTile
+// GHIDRA_PROTO undefined ActivateFirstActiveTacticalUnitByCategoryAtTile()
+
+undefined4 TArmyMgr::ActivateFirstActiveTacticalUnitByCategoryAtTile(short param_1,short param_2)
+
+{
+  bool bVar1;
+  undefined4 in_EAX;
+  undefined2 uVar3;
+  int iVar2;
+  int *piVar4;
+  short sVar5;
+  
+  uVar3 = (undefined2)((uint)in_EAX >> 0x10);
+  if ((param_2 < 0) || (0x17f < param_2)) {
+    piVar4 = (int *)0x0;
+  }
+  else {
+    uVar3 = (undefined2)((uint)(param_2 * 0x15) >> 0x10);
+    piVar4 = *(int **)(*(int *)&g_pGlobalMapState->field_0x10 + 0x98 + param_2 * 0xa8);
+  }
+  bVar1 = false;
+  sVar5 = 0;
+  do {
+    if (piVar4 == (int *)0x0) {
+      return CONCAT22(uVar3,sVar5);
+    }
+    iVar2 = (int)(short)piVar4[1];
+    if (*(short *)(&DAT_00695528 + iVar2 * 2) == param_1) {
+      iVar2 = piVar4[2];
+      if (iVar2 != 0) {
+        if ((((iVar2 != 2) && (iVar2 != 4)) && (iVar2 != 3)) || (bVar1)) goto LAB_004a4507;
+        iVar2 = (**(code **)(*piVar4 + 0x34))(0,0xffffffff);
+        bVar1 = true;
+      }
+      sVar5 = sVar5 + 1;
+    }
+LAB_004a4507:
+    uVar3 = (undefined2)((uint)iVar2 >> 0x10);
+    piVar4 = (int *)piVar4[5];
+  } while( true );
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004A4870

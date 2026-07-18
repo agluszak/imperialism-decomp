@@ -104,7 +104,7 @@ void TCreditsPicture::NoOpUiLifecycleHook()
   iVar1 = *piVar3;
   (**(code **)(iVar1 + 0xc))();
   InitializeUiTextStyleDescriptor(&stack0xffffffe8,0,0xc,0x2b68,3);
-  MapUiThemeCodeToStyleFlags(0x2b6b,&uStack_8);
+  func_0x004093cc(0x2b6b,&uStack_8);
   (**(code **)(iVar1 + 0x1dc))(0xfb0);
   (**(code **)(iVar1 + 0x1e4))(&stack0xffffffe4,1);
   piVar3[0x27] = unaff_EBX;
@@ -150,7 +150,7 @@ void TCreditsPicture::HandleEvent(int param_1, TCreditsPicture *param_2)
       uStack_5 = 0;
       uStack_4 = 0;
       uStack_3 = 0;
-      MapUiThemeCodeToStyleFlags(0x2b6b);
+      func_0x004093cc(0x2b6b);
       piStack_24 = (int *)0x3;
       InitializeUiTextStyleDescriptor(auStack_c,0,0xc,0x2b68);
       p_Var1 = this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25;
@@ -174,7 +174,7 @@ void TCreditsPicture::HandleEvent(int param_1, TCreditsPicture *param_2)
     }
     else {
       piStack_24 = (int *)0x56eff6;
-      (*g_pLocalizationTable->vftable[8].slot_0x04)();
+      (*g_pSimMgr->vftable[8].slot_0x04)();
       DAT_006a4084 = 0;
       piStack_24 = (int *)0x56f008;
       func_0x004092af();

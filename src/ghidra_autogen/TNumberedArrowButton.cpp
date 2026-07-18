@@ -73,15 +73,36 @@ TNumberedArrowButton * TNumberedArrowButton::_scalar_deleting_destructor_(byte p
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058C330
-// GHIDRA_NAME TNumberedArrowButton::VTableSlot71
-// GHIDRA_PROTO undefined __thiscall VTableSlot71(undefined2 param_1, char param_2)
+// GHIDRA_NAME TNumberedArrowButton::SetValue
+// GHIDRA_PROTO undefined __thiscall SetValue(undefined2 param_1, char param_2)
 
-void TNumberedArrowButton::VTableSlot71(undefined2 param_1, char param_2)
+void TNumberedArrowButton::SetValue(undefined2 param_1, char param_2)
 
 {
   *(undefined2 *)&this->field_0x84 = param_1;
   if (param_2 != '\0') {
     (*this->vftable->VTableSlot39)();
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0058C360
+// GHIDRA_NAME TNumberedArrowButton::SetState
+// GHIDRA_PROTO undefined SetState()
+
+void __thiscall TNumberedArrowButton::SetState(int *param_1,short param_2,char param_3)
+
+{
+  int iVar1;
+  undefined1 auStack_10 [16];
+  
+  if (*(short *)((int)param_1 + 0x86) != param_2) {
+    if (param_3 != '\0') {
+      iVar1 = *param_1;
+      (**(code **)(iVar1 + 0xe4))();
+      (**(code **)(iVar1 + 300))(auStack_10);
+    }
+    *(short *)((int)param_1 + 0x86) = param_2;
   }
   return;
 }
@@ -147,17 +168,17 @@ void TNumberedArrowButton::ApplyRectSlot110()
   local_44 = (CString *)0x2b67;
   func_0x0040448f(0,10);
   local_44 = (CString *)(int)*(short *)&this->field_0x84;
-  _Format_CString__QAAXPBDZZ(&local_34,&g_szDecimalFormat);
+  CString__Format(&local_34,&g_szDecimalFormat);
   local_44 = &local_34;
-  sVar1 = MeasureTextExtentWithCachedQuickDrawStyle();
+  sVar1 = func_0x00405b7d();
   local_44 = (CString *)0x18;
-  SetQuickDrawTextOriginWithContextOffset(7 - (int)sVar1 / 2);
+  func_0x00408d6e(7 - (int)sVar1 / 2);
   local_44 = &local_34;
   func_0x004029aa();
   local_44 = (CString *)0x2b6c;
   func_0x0040448f(0,10);
   local_44 = (CString *)0x17;
-  SetQuickDrawTextOriginWithContextOffset(6 - (int)sVar1 / 2);
+  func_0x00408d6e(6 - (int)sVar1 / 2);
   local_44 = &local_34;
   func_0x004029aa();
   local_4 = 0xffffffff;

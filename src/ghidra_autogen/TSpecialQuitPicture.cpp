@@ -148,7 +148,7 @@ void TSpecialQuitPicture::NoOpUiLifecycleHook()
   uStack_60 = 0x18;
   uStack_64 = 0x274c;
   puStack_68 = (undefined4 *)0x5b48e3;
-  (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+  (*g_pSimMgr->vftable[0x10].slot_0x04)();
   puStack_68 = puStack_54;
   puStack_6c = (undefined4 *)0x1;
   uStack_70 = 0x2b6c;
@@ -165,7 +165,7 @@ void TSpecialQuitPicture::NoOpUiLifecycleHook()
   uStack_70 = 9;
   uStack_74 = 0x2737;
   uStack_78 = 0x5b4928;
-  (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+  (*g_pSimMgr->vftable[0x10].slot_0x04)();
   uStack_78 = uStack_64;
   CStack_7c.m_pchData = (char *)0x1;
   func_0x00401186((int *)CONCAT31(extraout_var_01,uVar3),0,0xc,0x2b6c);
@@ -334,7 +334,7 @@ void TSpecialQuitPicture::HandleEvent(int nMessage, int pUiEvent)
       (*pTVar2->SetPictureResourceIdAndRefresh)(0x3e9,1);
       CString::CString(&CStack_58);
       uStack_60 = 0;
-      (*g_pLocalizationTable->vftable[0x10].slot_0x04)(6000,0,&CStack_58);
+      (*g_pSimMgr->vftable[0x10].slot_0x04)(6000,0,&CStack_58);
       (**(code **)(iVar4 + 0x1f0))(&uStack_64);
       CStack_4.m_pchData = (char *)0xffffffff;
       uStack_20 = 0x5b4b6e;
@@ -363,7 +363,7 @@ void TSpecialQuitPicture::HandleEvent(int nMessage, int pUiEvent)
           uStack_30 = CONCAT22((short)((uint)ppuStack_2c >> 0x10),*(short *)&this->field_0x90 + -1);
           uStack_34 = 6000;
           puStack_38 = (undefined1 *)0x5b4bec;
-          (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+          (*g_pSimMgr->vftable[0x10].slot_0x04)();
           puStack_38 = &stack0xffffffec;
           uStack_3c = 0x5b4bf9;
           (**(code **)(iVar4 + 0x1f0))();

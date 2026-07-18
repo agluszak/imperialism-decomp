@@ -51,8 +51,8 @@ void TGreatPower::DeserializeRecruitScenarioAndInstantiateOrders(int *param_1)
   iVar5 = *param_1;
   (**(code **)(iVar5 + 0x70))();
   puStack_38 = (undefined1 *)0x4d6c3d;
-  CString::operator=((CString *)(&g_pLocalizationTable->field_0x7c + *(short *)&this->field_0xc * 4)
-                     ,(CString *)&this->field_0x4);
+  CString::operator=((CString *)(&g_pSimMgr->field_0x7c + *(short *)&this->field_0xc * 4),
+                     (CString *)&this->field_0x4);
   puStack_38 = &this->field_0x8;
   uStack_3c = 0x4d6c4b;
   (**(code **)(iVar5 + 0x70))();
@@ -231,7 +231,7 @@ TGreatPower * TGreatPower::TGreatPower()
   *(undefined4 *)&this->field_0x910 = 0;
   puVar6 = (undefined4 *)&this->field_0x280;
   iVar5 = 0x17;
-  iVar4 = *(int *)&g_pLocalizationTable->field_0x40;
+  iVar4 = *(int *)&g_pSimMgr->field_0x40;
   *(int *)&this->field_0x8f0 = *(int *)(&DAT_00653498 + iVar4 * 4) * 100;
   this->field_0x8f4 = (&DAT_006534c8)[iVar4 * 4];
   *(undefined4 *)&this->field_0x8f8 = 0;
@@ -367,7 +367,7 @@ void __thiscall TGreatPower::InitializeNationStateRuntimeSubsystems(int param_1,
   *unaff_FS_OFFSET = &local_c;
   func_0x0040678a(param_2);
   *(undefined4 *)(param_1 + 0x10) =
-       *(undefined4 *)(&DAT_00653558 + *(int *)&g_pLocalizationTable->field_0x40 * 4);
+       *(undefined4 *)(&DAT_00653558 + *(int *)&g_pSimMgr->field_0x40 * 4);
   if ((short)param_2 == 1) {
     *(undefined1 *)(param_1 + 0xa0) = 1;
   }
@@ -2017,8 +2017,8 @@ void TGreatPower::CompileGreatPowerRelationshipDeltaLinesAndDispatchMessage()
   local_cc.m_pchData = (char *)this;
   cVar5 = (*local_c0->ReturnFalseNationStateCapabilityFlagA0)();
   if ((cVar5 == '\0') &&
-     (*(int *)(&DAT_00653528 + *(int *)&g_pLocalizationTable->field_0x40 * 4) <=
-      (int)(char)this->field_0x8fc)) {
+     (*(int *)(&DAT_00653528 + *(int *)&g_pSimMgr->field_0x40 * 4) <= (int)(char)this->field_0x8fc))
+  {
     piVar10 = aiStack_68;
     for (iVar7 = 0x17; iVar7 != 0; iVar7 = iVar7 + -1) {
       *piVar10 = 0;
@@ -2083,11 +2083,11 @@ void TGreatPower::CompileGreatPowerRelationshipDeltaLinesAndDispatchMessage()
         pCStack_e4 = pCVar9;
         uVar6 = (*g_pNationInteractionStateManager->vftable[9].slot_0x04)();
         CStack_c8.m_pchData = (char *)((short)CONCAT31(extraout_var,uVar6) * iVar7);
-        pCVar8 = (CString *)ftol();
+        pCVar8 = (CString *)_ftol();
         pTStack_ec = (TGreatPower *)local_cc.m_pchData;
         pCStack_f0 = (CString *)0x4db0ca;
         CStack_c8.m_pchData = (char *)pCVar8;
-        iVar7 = CompareAnsiStringsWithMbcsAwareness();
+        iVar7 = _mbscmp();
         if (iVar7 != 0) {
           pTStack_ec = (TGreatPower *)0x4db0e5;
           CString::operator+=(&local_cc,&DAT_00695760);
@@ -2097,7 +2097,7 @@ void TGreatPower::CompileGreatPowerRelationshipDeltaLinesAndDispatchMessage()
         pTStack_ec = (TGreatPower *)&g_szDecimalFormat;
         puStack_8._0_1_ = 1;
         pCStack_f4 = (CString *)0x4db106;
-        _Format_CString__QAAXPBDZZ();
+        CString__Format();
         pTStack_ec = (TGreatPower *)&stack0xffffff2c;
         pCStack_f0 = aCStack_bc;
         pCStack_f4 = (CString *)0x4db11d;
@@ -2109,7 +2109,7 @@ void TGreatPower::CompileGreatPowerRelationshipDeltaLinesAndDispatchMessage()
         CString::~CString(aCStack_bc);
         pCStack_f0 = (CString *)0x4db151;
         pTStack_ec = (TGreatPower *)pCVar9;
-        (*g_pLocalizationTable->vftable[0xf].slot_0x04)();
+        (*g_pSimMgr->vftable[0xf].slot_0x04)();
         pCStack_e4 = &CStack_d0;
         CString::operator+=();
         uStack_4 = uStack_4 & 0xffffff00;
@@ -2132,11 +2132,11 @@ void TGreatPower::CompileGreatPowerRelationshipDeltaLinesAndDispatchMessage()
       pTStack_ec = (TGreatPower *)0x274b;
       uStack_4._0_1_ = 4;
       pCStack_f0 = (CString *)0x4db1d7;
-      (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+      (*g_pSimMgr->vftable[0x10].slot_0x04)();
       pCStack_f0 = (CString *)&stack0xffffff28;
       puStack_f8 = (undefined *)0x4db1e8;
       pCStack_f4 = pCVar8;
-      (*g_pLocalizationTable->vftable[0xe].slot_0x04)();
+      (*g_pSimMgr->vftable[0xe].slot_0x04)();
       puStack_fc = &stack0xffffff20;
       puStack_f8 = &DAT_00696724;
       puStack_100 = &stack0xffffff2c;
@@ -2156,8 +2156,7 @@ void TGreatPower::CompileGreatPowerRelationshipDeltaLinesAndDispatchMessage()
       puStack_100 = &DAT_006a2df0;
       local_cc.m_pchData = (char *)&pTStack_104;
       func_0x004076b7(&pCStack_e4);
-      pCStack_f4 = (CString *)0x4db251;
-      DispatchLocalizedUiMessageWithTemplateA13A0();
+      func_0x004096b0();
       uStack_4._0_1_ = 3;
       pCStack_e4 = (CString *)0x4db262;
       CString::~CString(&CStack_d0);
@@ -2187,14 +2186,11 @@ undefined4 TGreatPower::UpdateGreatPowerPressureStateAndDispatchEscalationMessag
   undefined3 extraout_var;
   int iVar5;
   undefined4 *unaff_FS_OFFSET;
-  undefined1 *puVar6;
-  undefined1 auStack_3c [4];
-  undefined *puStack_38;
-  undefined4 uStack_34;
+  CString CStack_34;
   undefined4 uStack_30;
   undefined4 uStack_2c;
   undefined4 uStack_28;
-  CString CStack_24;
+  CString *pCStack_24;
   CString aCStack_14 [2];
   undefined4 uStack_c;
   undefined1 *puStack_8;
@@ -2204,8 +2200,8 @@ undefined4 TGreatPower::UpdateGreatPowerPressureStateAndDispatchEscalationMessag
   uStack_4 = 0xffffffff;
   puStack_8 = &LAB_006321f8;
   *unaff_FS_OFFSET = &uStack_c;
-  iVar1 = *(int *)&g_pLocalizationTable->field_0x40;
-  CStack_24.m_pchData = (char *)0x4db3ad;
+  iVar1 = *(int *)&g_pSimMgr->field_0x40;
+  pCStack_24 = (CString *)0x4db3ad;
   uVar3 = (*this->vftable->PromoteNationPendingActionSlot5IfCapabilityActive_5f)();
   iVar5 = CONCAT31(extraout_var,uVar3) + (short)this->needTargetByType[0x16] * 200 +
           (short)this->needTargetByType[0x15] * 500 + *(int *)&this->field_0x840;
@@ -2231,7 +2227,7 @@ undefined4 TGreatPower::UpdateGreatPowerPressureStateAndDispatchEscalationMessag
       this->field_0x8fc = 2;
     }
     else {
-      CStack_24.m_pchData = (char *)0x4db4e3;
+      pCStack_24 = (CString *)0x4db4e3;
       CString::CString(aCStack_14);
       cVar4 = this->field_0x8f4 + (&DAT_00653510)[iVar1 * 4];
       uStack_4 = 0;
@@ -2247,62 +2243,54 @@ undefined4 TGreatPower::UpdateGreatPowerPressureStateAndDispatchEscalationMessag
       }
       iVar5 = (int)(char)this->field_0x8fc;
       if (*(int *)(&DAT_00653540 + iVar1 * 4) <= iVar5) {
-        CStack_24.m_pchData = (char *)aCStack_14;
+        pCStack_24 = aCStack_14;
         uStack_28 = 4;
         uStack_2c = 0x274b;
         uStack_30 = 0x4db560;
-        (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+        (*g_pSimMgr->vftable[0x10].slot_0x04)();
         uStack_30 = 0;
-        uStack_34 = 2;
-        puStack_38 = &DAT_006a2df0;
-        puVar6 = &stack0xffffffe0;
-        func_0x004076b7(puVar6);
-        DispatchLocalizedUiMessageWithTemplateA13A0(puVar6);
-        aCStack_14[0].m_pchData = (char *)0xffffffff;
-        uStack_34 = 0x4db596;
-        CString::~CString(&CStack_24);
-        *unaff_FS_OFFSET = auStack_3c;
+        CStack_34.m_pchData = (char *)0x2;
+        func_0x004076b7(&stack0xffffffe0);
+        func_0x004096b0();
+        pCStack_24 = (CString *)0xffffffff;
+        CString::~CString(&CStack_34);
+        *unaff_FS_OFFSET = uStack_2c;
         return 1;
       }
       if (iVar5 < *(int *)(&DAT_00653528 + iVar1 * 4)) {
         if (iVar5 == *(int *)(&DAT_00653528 + iVar1 * 4) + -1) {
-          CStack_24.m_pchData = (char *)aCStack_14;
+          pCStack_24 = aCStack_14;
           uStack_28 = 3;
           uStack_2c = 0x274b;
           uStack_30 = 0x4db61c;
-          (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+          (*g_pSimMgr->vftable[0x10].slot_0x04)();
         }
         else {
-          CStack_24.m_pchData = (char *)aCStack_14;
+          pCStack_24 = aCStack_14;
           uStack_28 = 2;
           uStack_2c = 0x274b;
           uStack_30 = 0x4db647;
-          (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+          (*g_pSimMgr->vftable[0x10].slot_0x04)();
         }
         uStack_30 = 0;
-        uStack_34 = 2;
-        puStack_38 = &DAT_006a2df0;
+        CStack_34.m_pchData = (char *)0x2;
         func_0x004076b7(&stack0xffffffe0);
-        uStack_34 = 0x4db66c;
-        DispatchLocalizedUiMessageWithTemplateA13A0();
+        func_0x004096b0();
       }
       else {
-        CStack_24.m_pchData = (char *)aCStack_14;
+        pCStack_24 = aCStack_14;
         uStack_28 = 1;
         uStack_2c = 0x274b;
         uStack_30 = 0x4db5cf;
-        (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+        (*g_pSimMgr->vftable[0x10].slot_0x04)();
         uStack_30 = 0;
-        uStack_34 = 2;
-        puStack_38 = &DAT_006a2df0;
-        puVar6 = &stack0xffffffe0;
-        func_0x004076b7(puVar6);
-        DispatchLocalizedUiMessageWithTemplateA13A0(puVar6);
-        uStack_34 = 0x4db5fb;
+        CStack_34.m_pchData = (char *)0x2;
+        func_0x004076b7(&stack0xffffffe0);
+        func_0x004096b0();
         func_0x00406ca3();
       }
       uStack_4 = 0xffffffff;
-      CStack_24.m_pchData = (char *)0x4db67d;
+      pCStack_24 = (CString *)0x4db67d;
       CString::~CString(aCStack_14);
     }
   }
@@ -2581,7 +2569,7 @@ void TGreatPower::AdvanceOwnedRegionDevelopmentCountersAndDispatchEvents()
   int iVar13;
   int *piVar14;
   uint uStack_84;
-  int *piStack_80;
+  TCity *pTStack_80;
   ushort *puStack_7c;
   int iStack_78;
   int iStack_74;
@@ -2599,7 +2587,7 @@ void TGreatPower::AdvanceOwnedRegionDevelopmentCountersAndDispatchEvents()
       iVar13 = (**(code **)(**(int **)&this->field_0x90 + 0x24))(iVar13);
       iVar9 = *(int *)&g_pGlobalMapState->field_0x10 + iVar13 * 0xa8;
       if ((int)*(short *)(iVar9 + 4) != *(int *)&this->field_0x88) {
-        uVar6 = (*g_pLocalizationTable->vftable[7].slot_0x04)();
+        uVar6 = (*g_pSimMgr->vftable[7].slot_0x04)();
         uVar10 = (int)(short)CONCAT31(extraout_var,uVar6) - (int)*(short *)(iVar9 + 6);
         uVar4 = uStack_84 >> 8;
         uStack_84 = uVar5 & 0xffff00;
@@ -2633,7 +2621,7 @@ void TGreatPower::AdvanceOwnedRegionDevelopmentCountersAndDispatchEvents()
           if ((uVar10 & 1) == 0) {
             sVar8 = (short)aiStack_60[0] + (short)aiStack_60[1];
             if (sVar8 != 0) {
-              iVar12 = GetCityBuildingProductionValueBySlot(piStack_80,1);
+              iVar12 = TCity::GetBuildingType(pTStack_80,1);
               sVar2 = *(short *)(iVar9 + 0x84);
               if ((sVar2 < (short)((int)((int)(short)iVar12 + ((int)(short)iVar12 >> 0x1f & 3U)) >>
                                   2)) && ((int)sVar2 < (int)sVar8 / 2)) {
@@ -2644,7 +2632,7 @@ void TGreatPower::AdvanceOwnedRegionDevelopmentCountersAndDispatchEvents()
             }
             iVar12 = aiStack_60[2];
             if (aiStack_60[2] != 0) {
-              iVar11 = GetCityBuildingProductionValueBySlot(piStack_80,5);
+              iVar11 = TCity::GetBuildingType(pTStack_80,5);
               sVar8 = *(short *)(iVar9 + 0x86);
               if ((sVar8 < (short)((int)((int)(short)iVar11 + ((int)(short)iVar11 >> 0x1f & 3U)) >>
                                   2)) && ((int)sVar8 < iVar12 / 2)) {
@@ -2658,7 +2646,7 @@ void TGreatPower::AdvanceOwnedRegionDevelopmentCountersAndDispatchEvents()
               if (iStack_50 <= aiStack_60[3]) {
                 iVar12 = iStack_50;
               }
-              iVar11 = GetCityBuildingProductionValueBySlot(piStack_80,3);
+              iVar11 = TCity::GetBuildingType(pTStack_80,3);
               sVar8 = *(short *)(iVar9 + 0x8a);
               if ((sVar8 < (short)((int)((int)(short)iVar11 + ((int)(short)iVar11 >> 0x1f & 3U)) >>
                                   2)) && ((int)sVar8 < (int)(short)iVar12 / 2)) {
@@ -2675,7 +2663,7 @@ void TGreatPower::AdvanceOwnedRegionDevelopmentCountersAndDispatchEvents()
             }
           }
           if ((9 < (int)uVar10 & (byte)uVar10) != 0) {
-            (**(code **)(*piStack_80 + 0x74))();
+            (*pTStack_80->vftable->GetCitySummaryRecordSlot74)();
             if ((*(short *)(iVar9 + 0x84) != 0) &&
                ((int)*(short *)(iVar9 + 0x8e) < (int)*(short *)(iVar9 + 0x84) / 2)) {
               uStack_84 = CONCAT31(uStack_84._1_3_,2);
@@ -2710,8 +2698,7 @@ void TGreatPower::AdvanceOwnedRegionDevelopmentCountersAndDispatchEvents()
             }
           }
         }
-        if ((*(int *)&g_pLocalizationTable->field_0x44 != 0) &&
-           ((char)((uint)unaff_EBP >> 0x18) != '\0')) {
+        if ((*(int *)&g_pSimMgr->field_0x44 != 0) && ((char)((uint)unaff_EBP >> 0x18) != '\0')) {
           func_0x00403b34(iVar13);
         }
       }
@@ -2790,7 +2777,7 @@ undefined4 TGreatPower::OrphanLeaf_NoCall_Ins02_004d7f00_51()
   
   sVar1 = *(short *)&g_pDiplomacyTurnStateManager->field_0x790;
   uVar4 = 0;
-  uVar2 = (*g_pLocalizationTable->vftable[7].slot_0x04)();
+  uVar2 = (*g_pSimMgr->vftable[7].slot_0x04)();
   sVar3 = (short)CONCAT31(extraout_var,uVar2);
   if ((sVar1 == 0) && (sVar3 == 3)) {
     return CONCAT22(sVar3 >> 0xf,0x25);
@@ -2838,9 +2825,9 @@ undefined4 TGreatPower::CompareMissionScoreVariantsByMode(int param_1)
     iVar2 = func_0x004076a8(*(undefined2 *)&this->field_0xc);
     uVar5 = extraout_var_02;
     if (*(int *)(iVar2 + 0x2c) == 0) {
-      iVar3 = ReallocateHeapBlockWithAllocatorTracking(*(undefined4 *)(iVar2 + 0x28),8);
+      iVar3 = _realloc(*(undefined4 *)(iVar2 + 0x28),8);
       if (iVar3 == 0) {
-        uVar4 = ReallocateHeapBlockWithAllocatorTracking(*(undefined4 *)(iVar2 + 0x28),4);
+        uVar4 = _realloc(*(undefined4 *)(iVar2 + 0x28),4);
         *(undefined4 *)(iVar2 + 0x28) = uVar4;
         *(undefined4 *)(iVar2 + 0x2c) = 1;
         uVar5 = extraout_var_04;
@@ -3717,8 +3704,7 @@ void TGreatPower::ResetDiplomacyNeedSlots7012AndRefreshIfModeGateMatches()
   TGreatPowerVtbl *pTVar1;
   _vslot_fn *p_Var2;
   
-  if ((*(int *)&g_pLocalizationTable->field_0x40 == 0) &&
-     (*(int *)&g_pLocalizationTable->field_0x8 == 2)) {
+  if ((*(int *)&g_pSimMgr->field_0x40 == 0) && (*(int *)&g_pSimMgr->field_0x8 == 2)) {
     pTVar1 = this->vftable;
     p_Var2 = pTVar1->VTableSlot69;
     (*p_Var2)(7,0xffffffff);
@@ -3820,7 +3806,7 @@ LAB_004dd5f5:
     if ((short)uVar5 == -1) {
       bVar1 = false;
       while (!bVar1) {
-        iVar8 = GenerateThreadLocalRandom15();
+        iVar8 = rand();
         iStack_14 = iVar8 % 7;
         uVar5 = func_0x004044b7(iStack_14);
         if ((char)uVar5 != '\0') {
@@ -3910,14 +3896,14 @@ uint TGreatPower::OrphanCallChain_C1_I42_004dd7f0()
   switch(uStack00000004) {
   case 0:
   case 1:
-    iVar5 = GetCityBuildingProductionValueBySlot(this->city,0);
+    iVar5 = TCity::GetBuildingType(this->city,0);
     return iVar5 * 2;
   case 2:
-    iVar5 = GetCityBuildingProductionValueBySlot(this->city,4);
+    iVar5 = TCity::GetBuildingType(this->city,4);
     return iVar5 * 2;
   case 3:
   case 4:
-    uVar4 = GetCityBuildingProductionValueBySlot(this->city,2);
+    uVar4 = TCity::GetBuildingType(this->city,2);
     return uVar4;
   case 5:
   case 0xd:
@@ -3926,7 +3912,7 @@ uint TGreatPower::OrphanCallChain_C1_I42_004dd7f0()
   case 0x10:
     goto switchD_004dd801_caseD_5;
   case 6:
-    iVar5 = GetCityBuildingProductionValueBySlot(this->city,6);
+    iVar5 = TCity::GetBuildingType(this->city,6);
     return iVar5 * 2;
   case 7:
     uVar2 = (*this->city->vftable->GetCitySummaryRecordSlot74)();
@@ -3941,17 +3927,17 @@ uint TGreatPower::OrphanCallChain_C1_I42_004dd7f0()
 switchD_004dd801_caseD_5:
     return 0;
   case 8:
-    iVar5 = GetCityBuildingProductionValueBySlot(this->city,1);
+    iVar5 = TCity::GetBuildingType(this->city,1);
     return iVar5 * 2;
   case 9:
   case 10:
-    iVar5 = GetCityBuildingProductionValueBySlot(this->city,5);
+    iVar5 = TCity::GetBuildingType(this->city,5);
     return iVar5 * 2;
   case 0xb:
-    iVar5 = GetCityBuildingProductionValueBySlot(this->city,3);
+    iVar5 = TCity::GetBuildingType(this->city,3);
     return iVar5 * 2;
   case 0xc:
-    iVar5 = GetCityBuildingProductionValueBySlot(this->city,0xb);
+    iVar5 = TCity::GetBuildingType(this->city,0xb);
     return iVar5 * 2;
   default:
     return _uStack00000004;
@@ -4383,7 +4369,7 @@ LAB_004de051:
   case 3:
     cVar10 = '\x01';
     local_4 = 1;
-    if (*(int *)&g_pLocalizationTable->field_0x8 == 6) {
+    if (*(int *)&g_pSimMgr->field_0x8 == 6) {
       (*this->vftable->HandleCityDialogHintClusterUpdate_a1)((int)sVar11,4,0xffffffff);
       iVar6 = (uint)extraout_var_05 << 8;
     }
@@ -4622,12 +4608,12 @@ LAB_004de3ef:
         pcStack_34 = (char *)0x2753;
         iStack_4._0_1_ = 1;
         ppuStack_38 = (undefined1 **)0x4de4bb;
-        (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+        (*g_pSimMgr->vftable[0x10].slot_0x04)();
         ppuStack_38 = &puStack_8;
         uStack_3c = 0x45;
         uStack_40 = 0x2753;
         uStack_44 = 0x4de4d5;
-        (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+        (*g_pSimMgr->vftable[0x10].slot_0x04)();
         uStack_44 = 0;
         uStack_48 = 0;
         puStack_4c = &DAT_006a2df0;
@@ -4802,24 +4788,22 @@ void TGreatPower::SetNationTransferTargetCodeAndNotifyEligiblePeers(int param_1)
   uint extraout_EDX;
   int iVar8;
   TGreatPower **ppTVar9;
+  int unaff_ESI;
   TCountry **ppTVar10;
   undefined4 *puVar11;
   code *pcVar12;
   longlong lVar13;
-  int unaff_retaddr;
   code *pcVar14;
   code *pcVar15;
   
-  TInterNationEventQueueManager::QueueInterNationEventRecordDeduped
-            ((TCountry *)g_pInterNationEventQueueManager,0x1d,(int)*(short *)&this->field_0xc,7,'\0'
-            );
+  func_0x00406758(0x1d,(int)*(short *)&this->field_0xc,7,0);
   func_0x004079aa((int)*(short *)&this->field_0xc);
   ppTVar10 = g_apTerrainTypeDescriptorTable;
   iVar8 = 0;
-  *(short *)&this->field_0xe = (short)unaff_retaddr + 100;
+  *(short *)&this->field_0xe = (short)unaff_ESI + 100;
   do {
     cVar2 = func_0x004044b7(iVar8);
-    if (((cVar2 != '\0') && (iVar8 != *(short *)&this->field_0xc)) && (iVar8 != unaff_retaddr)) {
+    if (((cVar2 != '\0') && (iVar8 != *(short *)&this->field_0xc)) && (iVar8 != unaff_ESI)) {
       (*(*ppTVar10)->vftable->SetNationPercentFieldByModeAndDescriptorLinks)
                 ((int)*(short *)&this->field_0xc,100);
     }
@@ -4961,7 +4945,7 @@ LAB_004deb0d:
     if (0x3f < iVar8) {
       func_0x004059f7(*(undefined2 *)&this->field_0xc);
       func_0x00405286((int)*(short *)&this->field_0xc);
-      if (*(int *)&g_pLocalizationTable->field_0x44 != 0) {
+      if (*(int *)&g_pSimMgr->field_0x44 != 0) {
         func_0x00406efb(0x6e616d65,(int)*(short *)&this->field_0xc,0xfffffffd);
       }
       return;
@@ -5107,8 +5091,8 @@ void TGreatPower::ApplyAcceptedDiplomacyProposalCode(short param_1)
   undefined2 extraout_var_07;
   undefined2 extraout_var_08;
   undefined2 extraout_var_09;
-  int *unaff_FS_OFFSET;
   int iVar9;
+  int *unaff_FS_OFFSET;
   CString local_18;
   CString local_14;
   CString local_10;
@@ -5138,9 +5122,7 @@ void TGreatPower::ApplyAcceptedDiplomacyProposalCode(short param_1)
   case 1:
     (*g_pDiplomacyTurnStateManager->vftable[0xf].GetTDiplomacyMgrClassNamePointer)
               (CONCAT22(uVar7,*(undefined2 *)&this->field_0xc),CONCAT22(uVar7,psVar5[1]),2);
-    TInterNationEventQueueManager::QueueInterNationEventRecordDeduped
-              ((TCountry *)g_pInterNationEventQueueManager,4,(int)*(short *)&this->field_0xc,
-               (int)psVar5[1],'\0');
+    func_0x00406758(4,(int)*(short *)&this->field_0xc,(int)psVar5[1],0);
     iVar9 = 0;
     uVar6 = extraout_EDX;
     do {
@@ -5164,15 +5146,13 @@ void TGreatPower::ApplyAcceptedDiplomacyProposalCode(short param_1)
               (CONCAT22(uVar7,*(undefined2 *)&this->field_0xc),CONCAT22(uVar7,psVar5[1]),3);
     sVar1 = psVar5[1];
     sVar2 = *(short *)&this->field_0xc;
-    iVar9 = 5;
+    uVar6 = 5;
     goto LAB_004df210;
   case 3:
     (*g_pDiplomacyTurnStateManager->vftable[0xf].GetTDiplomacyMgrClassNamePointer)
               (CONCAT22(extraout_var_03,*(undefined2 *)&this->field_0xc),
                CONCAT22(extraout_var_03,psVar5[1]),4);
-    TInterNationEventQueueManager::QueueInterNationEventRecordDeduped
-              ((TCountry *)g_pInterNationEventQueueManager,2,(int)*(short *)&this->field_0xc,
-               (int)psVar5[1],'\0');
+    func_0x00406758(2,(int)*(short *)&this->field_0xc,(int)psVar5[1],0);
     cVar4 = (*g_pDiplomacyTurnStateManager->vftable[0x10].slot_0x04)
                       (CONCAT22(extraout_var_00,psVar5[1]));
     uVar8 = extraout_var_04;
@@ -5203,10 +5183,9 @@ void TGreatPower::ApplyAcceptedDiplomacyProposalCode(short param_1)
     sVar1 = *(short *)&this->field_0xc;
     sVar2 = psVar5[1];
 LAB_004df20e:
-    iVar9 = 3;
+    uVar6 = 3;
 LAB_004df210:
-    TInterNationEventQueueManager::QueueInterNationEventRecordDeduped
-              ((TCountry *)g_pInterNationEventQueueManager,iVar9,(int)sVar2,(int)sVar1,'\0');
+    func_0x00406758(uVar6,(int)sVar2,(int)sVar1,0);
     uVar8 = extraout_var_09;
   }
   cVar4 = (*g_pDiplomacyTurnStateManager->vftable[0x10].slot_0x04)(CONCAT22(uVar8,psVar5[1]));
@@ -5251,24 +5230,16 @@ void TGreatPower::QueueInterNationEventForProposalCode12D_130(short param_1)
     }
     switch(*psVar2) {
     case 0x12d:
-      TInterNationEventQueueManager::QueueInterNationEventRecordDeduped
-                ((TCountry *)g_pInterNationEventQueueManager,9,(int)psVar2[1],
-                 (int)*(short *)&this->field_0xc,'\0');
+      func_0x00406758(9,(int)psVar2[1],(int)*(short *)&this->field_0xc,0);
       return;
     case 0x12e:
-      TInterNationEventQueueManager::QueueInterNationEventRecordDeduped
-                ((TCountry *)g_pInterNationEventQueueManager,0xb,(int)psVar2[1],
-                 (int)*(short *)&this->field_0xc,'\0');
+      func_0x00406758(0xb,(int)psVar2[1],(int)*(short *)&this->field_0xc,0);
       return;
     case 0x12f:
-      TInterNationEventQueueManager::QueueInterNationEventRecordDeduped
-                ((TCountry *)g_pInterNationEventQueueManager,0xd,(int)psVar2[1],
-                 (int)*(short *)&this->field_0xc,'\0');
+      func_0x00406758(0xd,(int)psVar2[1],(int)*(short *)&this->field_0xc,0);
       return;
     case 0x130:
-      TInterNationEventQueueManager::QueueInterNationEventRecordDeduped
-                ((TCountry *)g_pInterNationEventQueueManager,7,(int)psVar2[1],
-                 (int)*(short *)&this->field_0xc,'\0');
+      func_0x00406758(7,(int)psVar2[1],(int)*(short *)&this->field_0xc,0);
     }
   }
   return;
@@ -5478,7 +5449,7 @@ void TGreatPower::RebuildPrimaryNationStateForSlot_Impl(int *param_1)
     param_1 = (int *)0x2;
   }
   else {
-    param_1 = *(int **)&g_pLocalizationTable->field_0x40;
+    param_1 = *(int **)&g_pSimMgr->field_0x40;
   }
   pcVar2 = *(code **)(*piVar3 + 0x80);
   iVar6 = 0;
@@ -5510,11 +5481,11 @@ void TGreatPower::RebuildPrimaryNationStateForSlot_Impl(int *param_1)
   else {
     (**(code **)(*piVar1 + 0x2c))(4,2,1);
   }
-  if ((((char)unaff_EBP[0x28] == '\0') || (*(int *)&g_pLocalizationTable->field_0x40 < 2)) ||
-     (*(short *)&g_pLocalizationTable->field_0x114 != 0)) {
+  if ((((char)unaff_EBP[0x28] == '\0') || (*(int *)&g_pSimMgr->field_0x40 < 2)) ||
+     (*(short *)&g_pSimMgr->field_0x114 != 0)) {
     iVar6 = *unaff_EBP;
     cVar4 = (**(code **)(iVar6 + 0xa0))();
-    if ((cVar4 == '\0') || (*(short *)&g_pLocalizationTable->field_0x114 != 0)) {
+    if ((cVar4 == '\0') || (*(short *)&g_pSimMgr->field_0x114 != 0)) {
       (**(code **)(iVar6 + 0xec))(piVar3);
       return;
     }
@@ -5584,7 +5555,7 @@ void TGreatPower::CreateAndQueueFrogCityMarkerForNationTile(int *param_1)
   int iStack_4;
   undefined2 uVar5;
   
-  pTVar1 = g_pLocalizationTable;
+  pTVar1 = g_pSimMgr;
   piStack_c = (int *)*unaff_FS_OFFSET;
   iStack_4 = 0xffffffff;
   puStack_8 = &LAB_0063232a;
@@ -5668,15 +5639,15 @@ void TGreatPower::DispatchGreatPowerQuarterlyStatusMessageLevel2(undefined4 para
   undefined4 uStack_8;
   undefined1 *local_4;
   
-  if ((short)((int)((int)*(short *)&g_pLocalizationTable->field_0x2c +
-                   ((int)*(short *)&g_pLocalizationTable->field_0x2c >> 0x1f & 3U)) >> 2) != 0) {
+  if ((short)((int)((int)*(short *)&g_pSimMgr->field_0x2c +
+                   ((int)*(short *)&g_pSimMgr->field_0x2c >> 0x1f & 3U)) >> 2) != 0) {
     uStack_8 = 0;
     uStack_c = 2;
     puStack_10 = &DAT_006a2df0;
     local_4 = (undefined1 *)&pTStack_14;
     pTStack_14 = this;
     func_0x004076b7(param_1);
-    DispatchLocalizedUiMessageWithTemplateA13A0(param_1);
+    func_0x004096b0();
   }
   return;
 }
@@ -5694,15 +5665,15 @@ void TGreatPower::DispatchGreatPowerQuarterlyStatusMessageLevel1(undefined4 para
   undefined4 uStack_8;
   undefined1 *local_4;
   
-  if ((short)((int)((int)*(short *)&g_pLocalizationTable->field_0x2c +
-                   ((int)*(short *)&g_pLocalizationTable->field_0x2c >> 0x1f & 3U)) >> 2) != 0) {
+  if ((short)((int)((int)*(short *)&g_pSimMgr->field_0x2c +
+                   ((int)*(short *)&g_pSimMgr->field_0x2c >> 0x1f & 3U)) >> 2) != 0) {
     uStack_8 = 0;
     uStack_c = 1;
     puStack_10 = &DAT_006a2df0;
     local_4 = (undefined1 *)&pTStack_14;
     pTStack_14 = this;
     func_0x004076b7(param_1);
-    DispatchLocalizedUiMessageWithTemplateA13A0(param_1);
+    func_0x004096b0();
   }
   return;
 }
@@ -5720,15 +5691,15 @@ void TGreatPower::DispatchGreatPowerQuarterlyStatusMessageLevel0(undefined4 para
   undefined4 uStack_8;
   undefined1 *local_4;
   
-  if ((short)((int)((int)*(short *)&g_pLocalizationTable->field_0x2c +
-                   ((int)*(short *)&g_pLocalizationTable->field_0x2c >> 0x1f & 3U)) >> 2) != 0) {
+  if ((short)((int)((int)*(short *)&g_pSimMgr->field_0x2c +
+                   ((int)*(short *)&g_pSimMgr->field_0x2c >> 0x1f & 3U)) >> 2) != 0) {
     uStack_8 = 0;
     uStack_c = 0;
     puStack_10 = &DAT_006a2df0;
     local_4 = (undefined1 *)&pTStack_14;
     pTStack_14 = this;
     func_0x004076b7(param_1);
-    DispatchLocalizedUiMessageWithTemplateA13A0(param_1);
+    func_0x004096b0();
   }
   return;
 }
@@ -5997,7 +5968,7 @@ int TGreatPower::GetNationRuntimeCityBuildingProductionValueBySlot(short param_1
   int iVar1;
   
   if (this->city != (TCity *)0x0) {
-    iVar1 = GetCityBuildingProductionValueBySlot(this->city,param_1);
+    iVar1 = TCity::GetBuildingType(this->city,param_1);
     return (int)(short)iVar1;
   }
   return 0;
@@ -6072,8 +6043,8 @@ float10 TGreatPower::IterateLinkedListCursorAndAccumulateRoundedMetric_004e0890(
   pTVar1 = this->vftable;
   uVar2 = (*pTVar1->ReturnFalseNationStateCapabilityFlag98_8e)();
   (*pTVar1->OrphanRetStub_004d7f80_8d)(3);
-  iVar3 = ftol();
-  local_18 = ftol();
+  iVar3 = _ftol();
+  local_18 = _ftol();
   if (iVar3 <= local_18) {
     local_18 = iVar3;
   }
@@ -6113,8 +6084,8 @@ float10 TGreatPower::ComputeCityOrderCapabilityAggregateScore()
     (*pTVar7->OrphanRetStub_004d7f80_8d)(2);
   }
   uVar2 = (*pTVar7->OrphanLeaf_NoCall_Ins02_004d7f20_86)();
-  iVar3 = ftol();
-  iVar4 = ftol();
+  iVar3 = _ftol();
+  iVar4 = _ftol();
   if (iVar3 <= iVar4) {
     iVar4 = iVar3;
   }
@@ -6127,7 +6098,7 @@ float10 TGreatPower::ComputeCityOrderCapabilityAggregateScore()
     iVar5 = func_0x00406d20();
     iVar6 = func_0x00403620();
   }
-  iStack_14 = ftol();
+  iStack_14 = _ftol();
   if (iVar3 <= iStack_14) {
     iStack_14 = iVar3;
   }
@@ -6210,8 +6181,8 @@ float10 TGreatPower::ComputeAdvisoryHandlerCase00Metric(int param_1)
       uVar1 = (*g_pDiplomacyTurnStateManager->vftable[0x11].slot_0x04)(param_1);
     } while (iVar2 < CONCAT31(extraout_var_01,uVar1));
   }
-  iVar2 = (int)(short)((int)((int)*(short *)&g_pLocalizationTable->field_0x2c +
-                            ((int)*(short *)&g_pLocalizationTable->field_0x2c >> 0x1f & 3U)) >> 2);
+  iVar2 = (int)(short)((int)((int)*(short *)&g_pSimMgr->field_0x2c +
+                            ((int)*(short *)&g_pSimMgr->field_0x2c >> 0x1f & 3U)) >> 2);
   if (0x3b < iVar2) {
     iVar2 = 0x3c;
   }
@@ -6303,8 +6274,8 @@ float10 TGreatPower::ComputeAdvisoryHandlerCase02Metric(int param_1)
       uVar1 = (*g_pDiplomacyTurnStateManager->vftable[0x11].slot_0x04)(param_1);
     } while (iVar2 < CONCAT31(extraout_var_01,uVar1));
   }
-  iVar2 = (int)(short)((int)((int)*(short *)&g_pLocalizationTable->field_0x2c +
-                            ((int)*(short *)&g_pLocalizationTable->field_0x2c >> 0x1f & 3U)) >> 2);
+  iVar2 = (int)(short)((int)((int)*(short *)&g_pSimMgr->field_0x2c +
+                            ((int)*(short *)&g_pSimMgr->field_0x2c >> 0x1f & 3U)) >> 2);
   if (0x3b < iVar2) {
     iVar2 = 0x3c;
   }
@@ -6845,9 +6816,7 @@ char TGreatPower::EvaluateJoinWarAgainstNationAndQueueEvent(int param_1)
   cVar2 = '\0';
 LAB_004e1ce4:
   if (cVar2 != '\0') {
-    TInterNationEventQueueManager::QueueInterNationEventRecordDeduped
-              ((TCountry *)g_pInterNationEventQueueManager,0x1c,param_1,
-               (int)*(short *)&this->field_0xc,'\0');
+    func_0x00406758(0x1c,param_1,(int)*(short *)&this->field_0xc,0);
   }
   return cVar2;
 }
@@ -6979,9 +6948,9 @@ float10 TGreatPower::ComputeWarThresholdSlotA3(int param_1)
   local_14 = 0.0;
   local_c = 0.0;
   (*pTVar1->ReturnFalseNationStateCapabilityFlag9C_8f)();
-  ftol();
+  _ftol();
   (*pTVar1->ReturnFalseNationStateCapabilityFlagA0_90)();
-  uVar6 = ftol();
+  uVar6 = _ftol();
   uVar3 = (undefined4)((ulonglong)uVar6 >> 0x20);
   iVar5 = 0;
   ppTVar4 = g_apNationStates;
@@ -7426,7 +7395,7 @@ undefined4 TGreatPower::ClassifyNationProductionTotalAgainstGlobalDistribution()
             else {
               pTVar6 = (*ppTVar7)->city;
             }
-            iVar5 = GetCityBuildingProductionValueBySlot(pTVar6,(short)iVar9);
+            iVar5 = TCity::GetBuildingType(pTVar6,(short)iVar9);
             iVar10 = iVar10 + (short)iVar5;
             iVar9 = iVar9 + 1;
           } while (iVar9 < 7);
@@ -7447,7 +7416,7 @@ undefined4 TGreatPower::ClassifyNationProductionTotalAgainstGlobalDistribution()
     fVar3 = SQRT(((fVar2 * fVar2 * local_10 - (fVar2 * local_c + fVar2 * local_c)) + local_8) /
                  (local_10 - g_Classify_Nation_Military_Value_0065370C));
     do {
-      iVar10 = GetCityBuildingProductionValueBySlot(this->city,(short)iVar8);
+      iVar10 = TCity::GetBuildingType(this->city,(short)iVar8);
       iVar9 = iVar9 + (short)iVar10;
       iVar8 = iVar8 + 1;
     } while (iVar8 < 7);
@@ -7479,7 +7448,7 @@ void TGreatPower::SetNationTransferTargetCodeAndNotifyEligiblePeers_b0()
   undefined3 extraout_var;
   undefined2 auStack_8 [4];
   
-  uVar1 = (*g_pLocalizationTable->vftable[7].slot_0x04)();
+  uVar1 = (*g_pSimMgr->vftable[7].slot_0x04)();
   auStack_8[0] = (undefined2)CONCAT31(extraout_var,uVar1);
   (**(code **)(**(int **)&this->field_0x908 + 0x38))(auStack_8);
   return;
@@ -7534,13 +7503,13 @@ void TGreatPower::BuildGreatPowerTurnMessageSummaryAndDispatch()
   local_4 = CONCAT31(local_4._1_3_,2);
   local_24.m_pchData = (char *)0x0;
   uStack_30 = (CString *)(uint)(uint3)uStack_30;
-  uVar2 = (*g_pLocalizationTable->vftable[7].slot_0x04)();
+  uVar2 = (*g_pSimMgr->vftable[7].slot_0x04)();
   CStack_1c.m_pchData = (char *)(CONCAT31(extraout_var,uVar2) + -1);
   if (0 < *(int *)(*(int *)&this->field_0x908 + 8)) {
     pCStack_48 = (CString *)0x9;
     pCStack_4c = (CString *)0x2749;
     pcStack_50 = (char *)0x4e2bff;
-    (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+    (*g_pSimMgr->vftable[0x10].slot_0x04)();
     piVar5 = *(int **)&this->field_0x908;
     iVar7 = 1;
     if (0 < piVar5[2]) {
@@ -7556,10 +7525,10 @@ void TGreatPower::BuildGreatPowerTurnMessageSummaryAndDispatch()
         pCStack_4c = &local_18;
         pCStack_48 = (CString *)&g_szDecimalFormat;
         pcStack_50 = (char *)0x4e2c5d;
-        _Format_CString__QAAXPBDZZ();
+        CString__Format();
         switch(psVar3[1]) {
         case 0:
-          pTVar6 = g_pLocalizationTable->vftable;
+          pTVar6 = g_pSimMgr->vftable;
           pCStack_48 = (CString *)CONCAT22((short)((uint)&local_2c >> 0x10),psVar3[2]);
           if (psVar3[3] < 2) {
 LAB_004e2cd5:
@@ -7576,12 +7545,12 @@ LAB_004e2cd5:
           local_24.m_pchData =
                local_24.m_pchData + iVar4 * CONCAT22((short)((uint)this >> 0x10),sVar1);
           pCStack_48 = (CString *)CONCAT22((short)((uint)&local_2c >> 0x10),psVar3[2]);
-          pTVar6 = g_pLocalizationTable->vftable;
+          pTVar6 = g_pSimMgr->vftable;
           if (sVar1 < 2) goto LAB_004e2cd5;
           pCStack_4c = (CString *)0x271a;
           break;
         case 2:
-          pTVar6 = g_pLocalizationTable->vftable;
+          pTVar6 = g_pSimMgr->vftable;
           pCStack_48 = (CString *)CONCAT22((short)((uint)&local_2c >> 0x10),psVar3[2]);
           if (psVar3[3] < 2) {
             pCStack_4c = (CString *)0x2718;
@@ -7595,7 +7564,7 @@ LAB_004e2cd5:
             sVar1 = psVar3[2];
             if (sVar1 == 0x2508) {
               pCStack_48 = (CString *)0x2;
-              pTVar6 = g_pLocalizationTable->vftable;
+              pTVar6 = g_pSimMgr->vftable;
             }
             else {
               if (((sVar1 != 0x1b) && (sVar1 != 0x1c)) && (sVar1 != 0x1d)) {
@@ -7603,7 +7572,7 @@ LAB_004e2cd5:
                 goto LAB_004e2d54;
               }
               pCStack_48 = (CString *)0x0;
-              pTVar6 = g_pLocalizationTable->vftable;
+              pTVar6 = g_pSimMgr->vftable;
             }
             pCStack_4c = (CString *)0x2744;
             break;
@@ -7613,7 +7582,7 @@ LAB_004e2d54:
           pCStack_48 = (CString *)0x2717;
           pCStack_54 = &local_2c;
           pcStack_50 = (char *)0x2747;
-          pTStack_58 = g_pLocalizationTable;
+          pTStack_58 = g_pSimMgr;
           pTStack_5c = (TSimMgr *)0x4e2d69;
           func_0x0040619f();
         default:
@@ -7653,15 +7622,15 @@ LAB_004e2de0:
       pCStack_48 = (CString *)&g_szDecimalFormat;
       local_4._0_1_ = 7;
       pcStack_50 = (char *)0x4e2e3e;
-      _Format_CString__QAAXPBDZZ();
+      CString__Format();
       pCStack_48 = (CString *)0x1;
       pCStack_4c = (CString *)0x2739;
       pcStack_50 = (char *)0x4e2e5a;
-      (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+      (*g_pSimMgr->vftable[0x10].slot_0x04)();
       pcStack_50 = local_2c.m_pchData;
       pTStack_58 = (TSimMgr *)&local_28;
       pCStack_54 = uStack_30;
-      pTStack_5c = g_pLocalizationTable;
+      pTStack_5c = g_pSimMgr;
       func_0x0040988b();
       pCStack_48 = (CString *)0x4e2e83;
       CString::operator+=();
@@ -7687,8 +7656,7 @@ LAB_004e2de0:
       CStack_1c.m_pchData = (char *)&pTStack_5c;
       pTStack_5c = extraout_ECX;
       func_0x004076b7(&stack0xffffffcc);
-      pCStack_54 = (CString *)0x4e2f08;
-      DispatchLocalizedUiMessageWithTemplateA13A0();
+      func_0x004096b0();
     }
   }
   local_4._0_1_ = 1;
@@ -8592,11 +8560,9 @@ uint TGreatPower::ComputeMapActionContextNodeValueAverage()
             if (0x7fffffff < uVar7) {
               uStack_4 = 0x7fffffff;
             }
-            iVar8 = ReallocateHeapBlockWithAllocatorTracking
-                              (*(undefined4 *)&this->field_0x38,iStack_8);
+            iVar8 = _realloc(*(undefined4 *)&this->field_0x38,iStack_8);
             if (iVar8 == 0) {
-              uVar5 = ReallocateHeapBlockWithAllocatorTracking
-                                (*(undefined4 *)&this->field_0x38,uVar9 * 4 + 4);
+              uVar5 = _realloc(*(undefined4 *)&this->field_0x38,uVar9 * 4 + 4);
               *(undefined4 *)&this->field_0x38 = uVar5;
               *(uint *)&this->field_0x3c = uVar9 + 1;
             }

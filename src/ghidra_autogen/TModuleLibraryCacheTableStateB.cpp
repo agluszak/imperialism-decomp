@@ -222,7 +222,7 @@ TModuleLibraryCacheTableStateB::LoadModuleLibrarySlotWithErrorDialog
   if (pHVar3 == (HMODULE)0x0) {
     CString::CString(&param_2);
     local_4 = 0;
-    _Format_CString__QAAXPBDZZ(&param_2,s_MissingRequiredFileFormat_00695188,param_1);
+    CString__Format(&param_2,s_MissingRequiredFileFormat_00695188,param_1);
     _AfxMessageBox__YGHPBDII_Z(param_2.m_pchData,0,0);
     local_4 = 0xffffffff;
     CString::~CString(&param_2);
@@ -258,7 +258,7 @@ TModuleLibraryCacheTableStateB::LoadPrimaryDataLibraryWithErrorDialog(int param_
   if (pHVar3 == (HMODULE)0x0) {
     CString::CString(&param_2);
     local_4 = 0;
-    _Format_CString__QAAXPBDZZ(&param_2,s_MissingRequiredFileFormat_00695188,CVar2.m_pchData);
+    CString__Format(&param_2,s_MissingRequiredFileFormat_00695188,CVar2.m_pchData);
     _AfxMessageBox__YGHPBDII_Z(param_2.m_pchData,0,0);
     local_4 = 0xffffffff;
     CString::~CString(&param_2);
@@ -314,7 +314,7 @@ LAB_0049983c:
     local_14 = param_1;
     CString::CString(&local_1c);
     local_4 = 0;
-    _Format_CString__QAAXPBDZZ(&local_1c,s_BmpResourceNameFormat_006951C4,(int)sVar8);
+    CString__Format(&local_1c,s_BmpResourceNameFormat_006951C4,(int)sVar8);
     local_10 = operator_new(0x38);
     local_4._0_1_ = 1;
     if (local_10 != 0) {

@@ -85,3 +85,17 @@ void TGWorldPartView::ApplyRectSlot110()
   return;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x00577DF0
+// GHIDRA_NAME TGWorldPartView::SetSourceRectFromGridCell
+// GHIDRA_PROTO undefined SetSourceRectFromGridCell()
+
+void __thiscall TGWorldPartView::SetSourceRectFromGridCell(int param_1,int param_2,int param_3)
+
+{
+  *(int *)(param_1 + 100) = param_2 * *(int *)(param_1 + 0x34);
+  *(int *)(param_1 + 0x68) = param_3 * *(int *)(param_1 + 0x38);
+  *(int *)(param_1 + 0x6c) = (param_2 + 1) * *(int *)(param_1 + 0x34);
+  *(int *)(param_1 + 0x70) = (param_3 + 1) * *(int *)(param_1 + 0x38);
+  return;
+}
+

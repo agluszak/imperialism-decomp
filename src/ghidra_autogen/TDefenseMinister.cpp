@@ -199,14 +199,14 @@ int TDefenseMinister::MinisterSlot12()
   int iVar2;
   int iVar3;
   
-  uVar1 = (*g_pLocalizationTable->vftable[7].slot_0x04)();
+  uVar1 = (*g_pSimMgr->vftable[7].slot_0x04)();
   iVar3 = CONCAT31(extraout_var,uVar1);
   if (6 < (short)iVar3) {
-    iVar2 = GenerateThreadLocalRandom15();
+    iVar2 = rand();
     iVar3 = iVar2 / 100;
     if (iVar2 % 100 < 0x21) {
       iVar3 = **(int **)(*(int *)&this->field_0x4 + 0x98);
-      iVar2 = GenerateThreadLocalRandom15();
+      iVar2 = rand();
       iVar3 = (**(code **)(iVar3 + 0x70))(iVar2 % 7 + 1);
     }
   }

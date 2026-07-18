@@ -101,12 +101,12 @@ void TInterruptusView::ApplyRectSlot110()
        (char *)CONCAT22((short)((uint)*(undefined2 **)&this->field_0x60 >> 0x10),
                         **(undefined2 **)&this->field_0x60);
   CStack_30.m_pchData = (char *)0x4afe0d;
-  (*g_pLocalizationTable->vftable[0xf].slot_0x04)();
+  (*g_pSimMgr->vftable[0xf].slot_0x04)();
   CStack_38.m_pchData = (char *)&iStack_20;
   CStack_30.m_pchData = (char *)(int)*(short *)(*(int *)&this->field_0x60 + 2);
   CStack_34.m_pchData = &g_szDecimalFormat;
   CStack_3c.m_pchData = (char *)0x4afe24;
-  _Format_CString__QAAXPBDZZ();
+  CString__Format();
   CStack_30.m_pchData = (char *)0x4afe30;
   CString::CString(&CStack_28);
   CStack_30.m_pchData = (char *)&CStack_28;
@@ -114,11 +114,11 @@ void TInterruptusView::ApplyRectSlot110()
   CStack_38.m_pchData = (char *)0x273c;
   iStack_c = CONCAT31(iStack_c._1_3_,4);
   CStack_3c.m_pchData = (char *)0x4afe4f;
-  (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+  (*g_pSimMgr->vftable[0x10].slot_0x04)();
   CStack_3c.m_pchData = (char *)&CStack_30;
   func_0x00405245();
-  func_0x0040988b(g_pLocalizationTable,&CStack_28,CStack_38.m_pchData,CStack_30.m_pchData,
-                  CStack_2c.m_pchData,CStack_34.m_pchData);
+  func_0x0040988b(g_pSimMgr,&CStack_28,CStack_38.m_pchData,CStack_30.m_pchData,CStack_2c.m_pchData,
+                  CStack_34.m_pchData);
   func_0x004031e3(&CStack_28);
   iStack_20._0_1_ = 3;
   CString::~CString(&CStack_3c);

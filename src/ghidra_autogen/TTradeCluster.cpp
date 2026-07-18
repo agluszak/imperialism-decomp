@@ -44,10 +44,10 @@ CRuntimeClass * TTradeCluster::GetRuntimeClass()
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005870B0
-// GHIDRA_NAME TTradeCluster::ConstructTradeSellControlPanel
-// GHIDRA_PROTO undefined __thiscall ConstructTradeSellControlPanel(void)
+// GHIDRA_NAME TTradeCluster::TTradeCluster
+// GHIDRA_PROTO undefined __thiscall TTradeCluster(void)
 
-TTradeCluster * TTradeCluster::ConstructTradeSellControlPanel()
+TTradeCluster * TTradeCluster::TTradeCluster()
 
 {
   func_0x00405835();
@@ -754,7 +754,7 @@ void TTradeCluster::OrphanRetStub_00586ff0()
     func_0x004057a4(s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x9e7);
   }
   if (unaff_DI != 0) {
-    uVar5 = ftol();
+    uVar5 = _ftol();
     (**(code **)(*piVar4 + 0x1a4))(uVar5,CONCAT22(extraout_var_02,(short)piVar4[0xd]));
     return;
   }

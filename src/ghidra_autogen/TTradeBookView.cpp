@@ -138,12 +138,11 @@ void TTradeBookView::NoOpUiLifecycleHook(uint this_obj)
   CStack_4c.m_pchData = (char *)0x5bdfbd;
   CString::CString(&temp_tag);
   CStack_4c.m_pchData =
-       (char *)((short)((int)((int)*(short *)&g_pLocalizationTable->field_0x2c +
-                             ((int)*(short *)&g_pLocalizationTable->field_0x2c >> 0x1f & 3U)) >> 2)
-               + 0x717);
-  _Format_CString__QAAXPBDZZ(&temp_tag,&g_szDecimalFormat);
+       (char *)((short)((int)((int)*(short *)&g_pSimMgr->field_0x2c +
+                             ((int)*(short *)&g_pSimMgr->field_0x2c >> 0x1f & 3U)) >> 2) + 0x717);
+  CString__Format(&temp_tag,&g_szDecimalFormat);
   CStack_4c.m_pchData = (char *)tmp_buf4;
-  (*g_pLocalizationTable->vftable[6].slot_0x04)();
+  (*g_pSimMgr->vftable[6].slot_0x04)();
   text_handle = AssignSharedStringConcatRefAndCStr
                           (&color_or_tag,&CStack_1c,g_Build_Map_Order_LookupTable_00695794);
   src_ref = (CString *)AssignSharedStringConcatRefAndRef(&tag_or_handle,text_handle,&uStack_3c);

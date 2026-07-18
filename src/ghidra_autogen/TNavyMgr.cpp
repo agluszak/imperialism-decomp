@@ -98,3 +98,59 @@ void TNavyMgr::ReadFrom(undefined4 param_1)
   return;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x00557080
+// GHIDRA_NAME TNavyMgr::MoveMapOrderEntryToQueueHeadIfValid
+// GHIDRA_PROTO undefined MoveMapOrderEntryToQueueHeadIfValid()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Ensures a map-order entry is queued in the global order list (manager+0x04).
+// GHIDRA_COMMENT If the entry has no children, it is discarded via vfunc +0x1C.
+// GHIDRA_COMMENT Otherwise, the entry is detached from its previous queue position and moved to queue head.
+// GHIDRA_COMMENT_END
+
+/* Ensures a map-order entry is queued in the global order list (manager+0x04).
+   If the entry has no children, it is discarded via vfunc +0x1C.
+   Otherwise, the entry is detached from its previous queue position and moved to queue head. */
+
+uint __thiscall TNavyMgr::MoveMapOrderEntryToQueueHeadIfValid(int param_1,int *param_2)
+
+{
+  int *piVar1;
+  int iVar2;
+  uint uVar3;
+  int *piVar4;
+  short sVar5;
+  
+  piVar1 = *(int **)(param_1 + 4);
+  for (piVar4 = piVar1; piVar4 != (int *)0x0; piVar4 = (int *)piVar4[0xb]) {
+    if (piVar4 == param_2) goto LAB_005570f4;
+  }
+  if (param_2 == (int *)0x0) {
+    sVar5 = 0;
+  }
+  else {
+    sVar5 = 0;
+    for (iVar2 = param_2[4]; iVar2 != 0; iVar2 = *(int *)(iVar2 + 4)) {
+      sVar5 = sVar5 + 1;
+    }
+  }
+  if (sVar5 < 1) {
+    uVar3 = (**(code **)(*param_2 + 0x1c))();
+    return uVar3 & 0xffffff00;
+  }
+  if (param_2[10] != 0) {
+    *(int *)(param_2[10] + 0x2c) = param_2[0xb];
+  }
+  piVar4 = (int *)param_2[0xb];
+  if (piVar4 != (int *)0x0) {
+    piVar4[10] = param_2[10];
+  }
+  param_2[10] = 0;
+  param_2[0xb] = (int)piVar1;
+  if (piVar1 != (int *)0x0) {
+    piVar1[10] = (int)param_2;
+  }
+  *(int **)(param_1 + 4) = param_2;
+LAB_005570f4:
+  return CONCAT31((int3)((uint)piVar4 >> 8),1);
+}
+

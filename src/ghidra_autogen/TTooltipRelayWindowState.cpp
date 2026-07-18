@@ -19,7 +19,7 @@ TTooltipRelayWindowState::CListCtrl__OnChildNotify
     uVar1 = 1;
   }
   else {
-    uVar1 = DispatchReflectedControlMessageOrFallback(param_2,param_3,param_4,param_5);
+    uVar1 = CWnd__OnChildNotify(param_2,param_3,param_4,param_5);
   }
   return uVar1;
 }
@@ -40,7 +40,7 @@ TTooltipRelayWindowState::CListCtrl__OnChildNotify
     uVar1 = 1;
   }
   else {
-    uVar1 = DispatchReflectedControlMessageOrFallback(param_2,param_3,param_4,param_5);
+    uVar1 = CWnd__OnChildNotify(param_2,param_3,param_4,param_5);
   }
   return uVar1;
 }
@@ -61,7 +61,7 @@ TTooltipRelayWindowState::CListCtrl__OnChildNotify
     uVar1 = 1;
   }
   else {
-    uVar1 = DispatchReflectedControlMessageOrFallback(param_2,param_3,param_4,param_5);
+    uVar1 = CWnd__OnChildNotify(param_2,param_3,param_4,param_5);
   }
   return uVar1;
 }
@@ -81,11 +81,11 @@ TTooltipRelayWindowState * TTooltipRelayWindowState::___GCMonikerFile__UAEPAXI_Z
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00604BA8
-// GHIDRA_NAME TTooltipRelayWindowState::PreTranslateMessageForDialogAndDispatchHotkey
-// GHIDRA_PROTO undefined __thiscall PreTranslateMessageForDialogAndDispatchHotkey(undefined4 * param_1)
+// GHIDRA_NAME TTooltipRelayWindowState::CDialog::PreTranslateMessage
+// GHIDRA_PROTO undefined __thiscall CDialog::PreTranslateMessage(undefined4 * param_1)
 
 undefined4 __thiscall
-TTooltipRelayWindowState::PreTranslateMessageForDialogAndDispatchHotkey
+TTooltipRelayWindowState::CDialog__PreTranslateMessage
           (TTooltipRelayWindowState *this,undefined4 *param_1)
 
 {
@@ -131,7 +131,7 @@ TTooltipRelayWindowState::CListCtrl__OnChildNotify
     uVar1 = 1;
   }
   else {
-    uVar1 = DispatchReflectedControlMessageOrFallback(param_2,param_3,param_4,param_5);
+    uVar1 = CWnd__OnChildNotify(param_2,param_3,param_4,param_5);
   }
   return uVar1;
 }

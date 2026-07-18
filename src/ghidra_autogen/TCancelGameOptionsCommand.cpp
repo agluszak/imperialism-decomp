@@ -34,10 +34,10 @@ undefined4 * TCancelGameOptionsCommand::CreateObject(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00542520
-// GHIDRA_NAME TCancelGameOptionsCommand::OrphanRetStub_00487a00
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_00487a00(void)
+// GHIDRA_NAME TCancelGameOptionsCommand::DoIt
+// GHIDRA_PROTO undefined __thiscall DoIt(void)
 
-void TCancelGameOptionsCommand::OrphanRetStub_00487a00()
+void TCancelGameOptionsCommand::DoIt()
 
 {
   void *pvVar1;

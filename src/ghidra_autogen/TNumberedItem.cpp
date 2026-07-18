@@ -125,8 +125,8 @@ void TNumberedItem::ApplyRectSlot110()
     sVar2 = (short)this->field38 + -5;
     sVar1 = (short)this->field34 + -0x18;
   }
-  SetQuickDrawTextOriginWithContextOffset(sVar1,sVar2);
-  _Format_CString__QAAXPBDZZ(&local_30,&g_szDecimalFormat,(int)*(short *)&this->field_0xae);
+  func_0x00408d6e(sVar1,sVar2);
+  CString__Format(&local_30,&g_szDecimalFormat,(int)*(short *)&this->field_0xae);
   func_0x004029aa(&local_30);
   local_4 = 0xffffffff;
   CString::~CString(&local_30);
@@ -175,11 +175,11 @@ void TNumberedItem::LoadPictureResourceRegionAndRefresh(undefined4 param_1)
     *(LONG *)&this->field_0xa4 = tStack_10.right;
     LStack_14 = tStack_10.bottom;
     *(LONG *)&this->field_0xa8 = tStack_10.bottom;
-    GetActiveQuickDrawSurfaceContextAndFlags(auStack_24,auStack_28);
+    func_0x00408d64(auStack_24,auStack_28);
     (**(code **)(*g_pDisplayMgr + 0x2c))(puVar1,8,&LStack_20);
-    SetActiveQuickDrawSurfaceContext(*(undefined4 *)puVar1,unaff_ESI);
-    uVar5 = GetSurfaceObjectAtContextOffset24(*(undefined4 *)puVar1);
-    ReturnConstantTrueQuickDrawFlag(uVar5);
+    func_0x00406f5f(*(undefined4 *)puVar1,unaff_ESI);
+    uVar5 = func_0x0040520e(*(undefined4 *)puVar1);
+    func_0x0040761c(uVar5);
     func_0x004062d5(*(undefined4 *)&this->field_0x88);
     puVar2 = (undefined4 *)**(int **)&this->field_0x88;
     if (puVar2 != (undefined4 *)0x0) {
@@ -198,9 +198,9 @@ void TNumberedItem::LoadPictureResourceRegionAndRefresh(undefined4 param_1)
         operator_delete(puVar2);
       }
       operator_delete(piVar3);
-      uVar5 = GetSurfaceObjectAtContextOffset24(*(undefined4 *)puVar1);
-      NoOpQuickDrawLifecycleHookB(uVar5);
-      SetActiveQuickDrawSurfaceContext(unaff_EBP,unaff_ESI);
+      uVar5 = func_0x0040520e(*(undefined4 *)puVar1);
+      func_0x004024fa(uVar5);
+      func_0x00406f5f(unaff_EBP,unaff_ESI);
       func_0x00408454(tStack_10.right,tStack_10.bottom);
     }
   }

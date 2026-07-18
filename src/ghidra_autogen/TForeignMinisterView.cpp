@@ -143,7 +143,7 @@ void TForeignMinisterView::OrphanCallChain_C3_I22_004f31d0()
   TForeignMinisterViewVtbl *pTVar1;
   undefined uVar2;
   
-  if (g_pLocalizationTable->field_0x14 == '\0') {
+  if (g_pSimMgr->field_0x14 == '\0') {
     pTVar1 = this->vftable;
     uVar2 = (*pTVar1->SetForeignMinisterReadyFlag14)();
     (*pTVar1->OrphanLeaf_NoCall_Ins03_004f2ea0)();

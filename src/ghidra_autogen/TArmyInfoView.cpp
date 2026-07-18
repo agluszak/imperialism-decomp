@@ -165,7 +165,7 @@ void TArmyInfoView::IsSelected()
   local_f = 0;
   puStack_94 = (undefined1 *)0x5916e6;
   InitializeUiTextStyleDescriptor();
-  BuildUiTextStyleDescriptor();
+  func_0x00406afa();
   puStack_94 = (undefined1 *)0x591712;
   InitializeUiTextStyleDescriptor();
   puStack_94 = (undefined1 *)0x59172a;
@@ -179,7 +179,7 @@ void TArmyInfoView::IsSelected()
   }
   puVar11 = &stack0xffffff90;
   pcVar9 = (code *)0xb;
-  (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+  (*g_pSimMgr->vftable[0x10].slot_0x04)();
   iVar6 = *(int *)CONCAT31(extraout_var,uVar1);
   puStack_94 = &stack0xffffff84;
   uStack_98 = 0x591799;
@@ -195,7 +195,7 @@ void TArmyInfoView::IsSelected()
     func_0x004057a4();
   }
   CVar8.m_pchData = (char *)0xc;
-  (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+  (*g_pSimMgr->vftable[0x10].slot_0x04)();
   iVar6 = *piVar4;
   (**(code **)(iVar6 + 0x1c8))();
   pp_Stack_bc = &local_68;
@@ -206,7 +206,7 @@ void TArmyInfoView::IsSelected()
     func_0x004057a4();
   }
   pcVar9 = (code *)0xd;
-  (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+  (*g_pSimMgr->vftable[0x10].slot_0x04)();
   iVar6 = *piVar4;
   (**(code **)(iVar6 + 0x1c8))();
   (**(code **)(iVar6 + 0x1b4))();
@@ -219,8 +219,8 @@ void TArmyInfoView::IsSelected()
   CVar8.m_pchData = local_58.m_pchData;
   do {
     if (*(int *)CVar8.m_pchData != 0) {
-      _Format_CString__QAAXPBDZZ();
-      (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+      CString__Format();
+      (*g_pSimMgr->vftable[0x10].slot_0x04)();
       if (pp_Stack_bc == (_vslot_fn **)0x0) {
         AssignSharedStringConcatRefAndCStr();
         local_64.m_pchData._0_1_ = 6;
@@ -287,13 +287,13 @@ void TArmyInfoView::IsSelected()
   iStack_110 = (-(uint)(sVar2 != sVar3) & 4) + 10;
   CStack_114.m_pchData = (char *)0x2744;
   CStack_118.m_pchData = (char *)0x591b21;
-  (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+  (*g_pSimMgr->vftable[0x10].slot_0x04)();
   CStack_118.m_pchData = &stack0xffffff10;
   CStack_120.m_pchData = (char *)0x591b32;
   pcStack_11c = (code *)(int)sVar10;
   func_0x0040918d();
   CStack_120.m_pchData = pcVar7;
-  func_0x0040988b(g_pLocalizationTable,&CStack_10c,0x67656e65);
+  func_0x0040988b(g_pSimMgr,&CStack_10c,0x67656e65);
   CStack_120.m_pchData = (char *)0x6f726473;
   piVar4 = (int *)(*(code *)CStack_108.m_pchData)();
   if (piVar4 == (int *)0x0) {

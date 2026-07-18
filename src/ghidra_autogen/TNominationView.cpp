@@ -139,7 +139,7 @@ void TNominationView::NoOpUiLifecycleHook()
   puStack_4c = &stack0xffffffd8;
   uStack_48 = 0;
   uStack_50 = 0x4fb802;
-  BuildUiTextStyleDescriptor();
+  func_0x00406afa();
   puStack_44 = &stack0xffffffd8;
   uStack_40 = 1;
   uStack_48 = 0x4fb814;
@@ -163,7 +163,7 @@ void TNominationView::NoOpUiLifecycleHook()
   acStack_68[1] = -0x48;
   acStack_68[2] = 'O';
   acStack_68[3] = '\0';
-  BuildUiTextStyleDescriptor();
+  func_0x00406afa();
   puStack_5c = &uStack_40;
   uStack_58 = 1;
   uStack_60 = 0x4fb85d;

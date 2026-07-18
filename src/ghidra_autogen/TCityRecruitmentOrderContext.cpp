@@ -75,7 +75,7 @@ void TCityRecruitmentOrderContext::CommitCityRecruitmentOrderDelta()
     CString::CString((CString *)adwTempAlloc);
     dwSehState = CONCAT31(dwSehState._1_3_,1);
     if (this[0x58] == (TCityRecruitmentOrderContext)0x0) {
-      (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2718);
+      (*g_pSimMgr->vftable[0x10].slot_0x04)(0x2718);
                     /* Civilian mode: commit pending count into city queue slot and instantiate
                        per-unit civilian order objects. */
       pnCityRecruitQueueCount = (short *)(*(int *)(this + 8) + 0x4a + *(short *)(this + 0x48) * 2);
@@ -108,7 +108,7 @@ void TCityRecruitmentOrderContext::CommitCityRecruitmentOrderDelta()
       }
     }
     else {
-      (*g_pLocalizationTable->vftable[0x10].slot_0x04)
+      (*g_pSimMgr->vftable[0x10].slot_0x04)
                 (0x2717,CONCAT22((short)((uint)adwTempAlloc >> 0x10),*(undefined2 *)(this + 0x48)),
                  adwTempAlloc);
       iVar4 = 0;

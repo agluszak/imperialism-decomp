@@ -272,8 +272,7 @@ TStaticText::AssignTextSharedRefIfChangedAndMaybeInvalidate
 {
   int iVar1;
   
-  iVar1 = CompareAnsiStringsWithMbcsAwareness(param_1->m_pchData,**(undefined4 **)&this->field_0x84)
-  ;
+  iVar1 = _mbscmp(param_1->m_pchData,**(undefined4 **)&this->field_0x84);
   if (iVar1 != 0) {
     CString::operator=(*(CString **)&this->field_0x84,param_1);
     if (param_2 != '\0') {
@@ -353,7 +352,7 @@ void TStaticText::ApplyRectSlot110()
   piVar4 = (int *)func_0x004021c6();
   CDC::SetMapperFlags(1);
   (*this->vftable->GetTEventHandlerClassNamePointer_58)(local_10);
-  TTEView::DeflateRect((TTEView *)&stack0xffffffec,(int *)&this->field_0x68);
+  TTEView::CRect__DeflateRect((TTEView *)&stack0xffffffec,(int *)&this->field_0x68);
   uVar5 = func_0x004019ce(&this->field_0x78);
   iVar2 = *piVar4;
   pcVar3 = *(code **)(iVar2 + 0x30);

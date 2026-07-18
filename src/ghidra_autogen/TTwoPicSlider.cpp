@@ -166,18 +166,18 @@ void TTwoPicSlider::ApplyRectSlot110()
     if (*(short *)&this->field_0x90 < 0xc) {
       CString::CString(&local_20);
       local_4 = 0;
-      (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2743,0x3b,&local_20);
+      (*g_pSimMgr->vftable[0x10].slot_0x04)(0x2743,0x3b,&local_20);
       func_0x0040448f(0,0xe,0x2b6c);
-      MapUiThemeCodeToStyleFlags(0x2b6c,&stack0xffffffd0);
-      MapUiThemeCodeToStyleFlags(0x2b67,&stack0xffffffcc);
+      func_0x004093cc(0x2b6c,&stack0xffffffd0);
+      func_0x004093cc(0x2b67,&stack0xffffffcc);
       iVar3 = this->field38 / 2;
-      sVar1 = MeasureTextExtentWithCachedQuickDrawStyle(&stack0xffffffd4);
+      sVar1 = func_0x00405b7d(&stack0xffffffd4);
       iVar2 = this->field34 / 2 - (int)sVar1 / 2;
       func_0x00409444(0);
-      SetQuickDrawTextOriginWithContextOffset(iVar2 + 1,iVar3 + 5);
+      func_0x00408d6e(iVar2 + 1,iVar3 + 5);
       func_0x004029aa(&stack0xffffffd4);
       func_0x00409444(0);
-      SetQuickDrawTextOriginWithContextOffset(iVar2,iVar3 + 4);
+      func_0x00408d6e(iVar2,iVar3 + 4);
       func_0x004029aa(&stack0xffffffd4);
       local_4 = 0xffffffff;
       CString::~CString(&local_20);
@@ -230,10 +230,10 @@ void TTwoPicSlider::DispatchPictureResourceCommand(int param_1, int param_2)
         }
         iVar3 = (sVar2 * 0xff) / (int)(short)((short)this->field38 + -0xc);
         func_0x00406785(iVar3);
-        *(short *)&g_pLocalizationTable->field_0x4e = (short)iVar3;
+        *(short *)&g_pSimMgr->field_0x4e = (short)iVar3;
       }
-      uStack_4 = 0xffffffff;
-      DestroyScopedMapQuickDrawContext();
+      uStack_c = 0xffffffff;
+      func_0x00408035();
     }
   }
   if ((param_1 == 2) && (*(int *)&this->field_0x94 == 2)) {

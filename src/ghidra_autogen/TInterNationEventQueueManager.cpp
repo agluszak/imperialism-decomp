@@ -12,8 +12,8 @@ TInterNationEventQueueManager::QueueInterNationEventIntoNationBucket
           (int param_1,int param_2,undefined4 param_3,char param_4)
 
 {
-  if (g_pLocalizationTable->field_0x7a == '\0') {
-    if ((param_4 == '\0') && (*(int *)&g_pLocalizationTable->field_0x44 != 0)) {
+  if (g_pSimMgr->field_0x7a == '\0') {
+    if ((param_4 == '\0') && (*(int *)&g_pSimMgr->field_0x44 != 0)) {
       func_0x004048d6(param_2,param_3);
       return;
     }
@@ -38,9 +38,9 @@ TInterNationEventQueueManager::QueueInterNationEventRecordDeduped
   int local_c;
   int local_8;
   
-  if (g_pLocalizationTable->field_0x7a == '\0') {
-    if ((param_4 == '\0') && (*(int *)&g_pLocalizationTable->field_0x44 != 0)) {
-      if (*(int *)&g_pLocalizationTable->field_0x44 == 1) {
+  if (g_pSimMgr->field_0x7a == '\0') {
+    if ((param_4 == '\0') && (*(int *)&g_pSimMgr->field_0x44 != 0)) {
+      if (*(int *)&g_pSimMgr->field_0x44 == 1) {
         func_0x00405bd7(param_1,param_2,param_3);
         return;
       }
@@ -104,8 +104,8 @@ TInterNationEventQueueManager::QueueInterNationEventType0FWithBitmaskMerge
   int local_8;
   int local_4;
   
-  if (g_pLocalizationTable->field_0x7a == '\0') {
-    if ((param_4 == '\0') && (*(int *)&g_pLocalizationTable->field_0x44 != 0)) {
+  if (g_pSimMgr->field_0x7a == '\0') {
+    if ((param_4 == '\0') && (*(int *)&g_pSimMgr->field_0x44 != 0)) {
       func_0x004072ac(param_1,param_2,param_3);
       return;
     }

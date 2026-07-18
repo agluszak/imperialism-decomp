@@ -150,7 +150,7 @@ void TDeluxeText::BuildCityViewProductionControls(short nBuildingSlotId)
     func_0x004057a4();
   }
   piStack_104 = (int *)0x4d09af;
-  BuildUiTextStyleDescriptor();
+  func_0x00406afa();
   local_bc = this->vftable;
   iVar7 = 0x7469746c;
   uVar2 = (*local_bc->OrphanLeaf_NoCall_Ins07_004d8920_25)();
@@ -895,7 +895,7 @@ void TDeluxeText::WrapperFor_thunk_BuildUiTextStyleDescriptor_At005b62e0()
   undefined4 local_6;
   
   local_6 = 0;
-  BuildUiTextStyleDescriptor(local_c);
+  func_0x00406afa(local_c);
   *(undefined4 *)&this->field_0x98 = local_6;
   uVar1 = func_0x0040350d(0xf,local_c,1);
   func_0x004093a4(0,uVar1);
@@ -1029,7 +1029,7 @@ void TDeluxeText::BuildCityViewProductionControls_Impl(char *param_1, int param_
   iStack_1c = param_2 + -1;
   CStack_20.m_pchData = param_1;
   local_4 = 0;
-  (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+  (*g_pSimMgr->vftable[0x10].slot_0x04)();
   func_0x00405d7b(&iStack_1c);
   (*this->vftable->VTableSlot39)();
   CString::~CString(&CStack_20);

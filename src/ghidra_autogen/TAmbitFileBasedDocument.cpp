@@ -133,29 +133,29 @@ void TAmbitFileBasedDocument::OrphanRetStub_00486530(void *pLoadContext)
     if (0x22 < g_nSaveFormatVersion) goto LAB_0049e7e4;
     CString::CString((CString *)&pLoadContext);
     local_8._0_1_ = 3;
-    (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+    (*g_pSimMgr->vftable[0x10].slot_0x04)();
     func_0x004076b7(&pLoadContext);
-    DispatchLocalizedUiMessageWithTemplateA13A0();
+    func_0x004096b0();
   }
   else {
     CString::CString((CString *)&pLoadContext);
     local_8._0_1_ = 2;
-    (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+    (*g_pSimMgr->vftable[0x10].slot_0x04)();
     func_0x004076b7(&pLoadContext);
-    DispatchLocalizedUiMessageWithTemplateA13A0();
+    func_0x004096b0();
   }
   local_8._0_1_ = 0;
   bVar2 = true;
   CString::~CString((CString *)&pLoadContext);
 LAB_0049e7e4:
   if (!bVar2) {
-    if ((*(int *)&g_pLocalizationTable->field_0x44 == 2) &&
-       (local_1c != *(int *)((int)g_pGameFlowState + 100))) {
+    if ((*(int *)&g_pSimMgr->field_0x44 == 2) && (local_1c != *(int *)((int)g_pGameFlowState + 100))
+       ) {
       CString::CString((CString *)&pLoadContext);
       local_8._0_1_ = 4;
-      (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+      (*g_pSimMgr->vftable[0x10].slot_0x04)();
       func_0x004076b7(&pLoadContext);
-      DispatchLocalizedUiMessageWithTemplateA13A0();
+      func_0x004096b0();
       bVar2 = true;
       local_8._0_1_ = 0;
       CString::~CString((CString *)&pLoadContext);
@@ -170,7 +170,7 @@ LAB_0049e7e4:
       (*pcVar1)();
       operator_delete();
       (*g_pGlobalUiRootController->vftable->ReadFrom)();
-      (*g_pLocalizationTable->vftable[3].GetTSimMgrClassNamePointer)();
+      (*g_pSimMgr->vftable[3].GetTSimMgrClassNamePointer)();
       (*g_pUiAnimator->vftable->GetTEventHandlerClassNamePointer_06)();
       (*g_pNationInteractionStateManager->vftable[3].GetTTradeMgrClassNamePointer)(piVar5);
       (*g_pDiplomacyTurnStateManager->vftable[3].GetTDiplomacyMgrClassNamePointer)(piVar5);
@@ -310,14 +310,13 @@ void TAmbitFileBasedDocument::OrphanRetStub_00486550(void *pSaveContext)
   } while (iVar2 != 0);
   (*pcVar1)();
   operator_delete();
-  iStack_40 = (int)((int)*(short *)&g_pLocalizationTable->field_0x2c +
-                   ((int)*(short *)&g_pLocalizationTable->field_0x2c >> 0x1f & 3U)) >> 2;
+  iStack_40 = (int)((int)*(short *)&g_pSimMgr->field_0x2c +
+                   ((int)*(short *)&g_pSimMgr->field_0x2c >> 0x1f & 3U)) >> 2;
   uStack_68 = 0x49ec51;
   (*pcVar1)();
   uStack_68 = 1;
   uStack_54 = (undefined4 *)
-              CONCAT13((char)*(undefined4 *)&g_pLocalizationTable->field_0x40,(undefined3)uStack_54)
-  ;
+              CONCAT13((char)*(undefined4 *)&g_pSimMgr->field_0x40,(undefined3)uStack_54);
   CStack_6c.m_pchData = (char *)((int)&uStack_54 + 3);
   (*pcVar1)();
   func_0x00403b16();
@@ -334,7 +333,7 @@ void TAmbitFileBasedDocument::OrphanRetStub_00486550(void *pSaveContext)
   (*g_pGlobalUiRootController->vftable->WriteTo)();
   piStack_8c = (int *)0x49ecdf;
   piStack_88 = piVar3;
-  (*g_pLocalizationTable->vftable[2].slot_0x04)();
+  (*g_pSimMgr->vftable[2].slot_0x04)();
   piStack_90 = (int *)0x49eceb;
   piStack_8c = piVar3;
   (*g_pUiAnimator->vftable->VTableSlot05)();

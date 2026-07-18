@@ -184,7 +184,7 @@ void TCombatReportView::IsSelected(char *param_1)
   }
   pCStack_3c = &local_24;
   CStack_44.m_pchData = (char *)0x271d;
-  (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+  (*g_pSimMgr->vftable[0x10].slot_0x04)();
   CString::operator+=((CString *)&stack0xffffffd0,s_Report_00699334);
   p_Stack_1c = this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25;
   uVar3 = (*p_Stack_1c)();
@@ -200,9 +200,9 @@ void TCombatReportView::IsSelected(char *param_1)
   CString::operator+=(&CStack_40,&DAT_00699330);
   sVar4 = func_0x00403b16();
   cVar1 = *param_1;
-  pTVar2 = g_pLocalizationTable->vftable;
+  pTVar2 = g_pSimMgr->vftable;
   iStack_5c = 0x58cb51;
-  iStack_5c = GenerateThreadLocalRandom15();
+  iStack_5c = rand();
   iStack_5c = iStack_5c % 6;
   pcStack_64 = (code *)0x58cb6b;
   CStack_60.m_pchData = (char *)((cVar1 != sVar4) + 0x2721);
@@ -217,9 +217,9 @@ void TCombatReportView::IsSelected(char *param_1)
   pcStack_64 = (code *)0x58cb9c;
   CString::~CString(&CStack_44);
   pcStack_64 = (code *)&stack0xffffffb0;
-  pTVar2 = g_pLocalizationTable->vftable;
+  pTVar2 = g_pSimMgr->vftable;
   puStack_68 = (undefined1 *)0x58cbae;
-  iVar6 = GenerateThreadLocalRandom15();
+  iVar6 = rand();
   puStack_68 = (undefined1 *)(iVar6 % 6);
   CStack_6c.m_pchData = (char *)0x2720;
   piStack_70 = (int *)0x58cbc8;
@@ -236,7 +236,7 @@ void TCombatReportView::IsSelected(char *param_1)
   }
   if (_DAT_006631b0 <= (double)unaff_EBP / (double)(int)ppCVar11) {
     piStack_70 = (int *)0x58cc0e;
-    uStack_74 = ftol();
+    uStack_74 = _ftol();
     if (6 < (short)uStack_74) {
       uStack_74 = 6;
     }
@@ -247,7 +247,7 @@ void TCombatReportView::IsSelected(char *param_1)
   piStack_70 = &iStack_5c;
   iStack_78 = 0x271e;
   ppuStack_7c = (undefined1 **)0x58cc32;
-  (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+  (*g_pSimMgr->vftable[0x10].slot_0x04)();
   ppuStack_7c = &puStack_68;
   pCStack_80 = (CString *)0x58cc40;
   CString::operator+=();
@@ -269,10 +269,10 @@ void TCombatReportView::IsSelected(char *param_1)
   pCStack_80 = (CString *)0x58cc9c;
   sVar4 = func_0x00403b16();
   pCStack_80 = &CStack_6c;
-  pTVar2 = g_pLocalizationTable->vftable;
+  pTVar2 = g_pSimMgr->vftable;
   CStack_60.m_pchData = (char *)((param_1[1] != sVar4) + 0x2721);
   CStack_84.m_pchData = (char *)0x58ccc5;
-  iVar6 = GenerateThreadLocalRandom15();
+  iVar6 = rand();
   CStack_84.m_pchData = (char *)(iVar6 % 6);
   CStack_88.m_pchData = CStack_60.m_pchData;
   CStack_8c.m_pchData = (char *)0x58ccdf;
@@ -286,9 +286,9 @@ void TCombatReportView::IsSelected(char *param_1)
   CStack_8c.m_pchData = (char *)0x58cd10;
   CString::~CString(&CStack_6c);
   CStack_8c.m_pchData = (char *)&iStack_78;
-  pTVar2 = g_pLocalizationTable->vftable;
+  pTVar2 = g_pSimMgr->vftable;
   CStack_90.m_pchData = (char *)0x58cd22;
-  iVar6 = GenerateThreadLocalRandom15();
+  iVar6 = rand();
   CStack_90.m_pchData = (char *)(iVar6 % 6);
   CStack_94.m_pchData = (char *)0x2720;
   (*pTVar2[0x10].slot_0x04)();
@@ -324,7 +324,7 @@ void TCombatReportView::IsSelected(char *param_1)
   }
   CStack_b0.m_pchData = (char *)0x271f;
   puStack_b4 = (undefined *)0x58ce47;
-  (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+  (*g_pSimMgr->vftable[0x10].slot_0x04)();
   CStack_b8.m_pchData = &stack0xffffff60;
   puStack_b4 = &DAT_00695880;
   CStack_bc.m_pchData = (char *)&CStack_90;
@@ -357,7 +357,7 @@ void TCombatReportView::IsSelected(char *param_1)
   }
   CStack_b8.m_pchData = &stack0xffffff5c;
   CStack_c0.m_pchData = (char *)0x271f;
-  (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+  (*g_pSimMgr->vftable[0x10].slot_0x04)();
   uVar8 = AssignSharedStringConcatRefAndCStr(&CStack_84,&CStack_b0,&DAT_00695880);
   CStack_8c.m_pchData._0_1_ = 9;
   CString::operator+=(uVar8);
@@ -374,7 +374,7 @@ void TCombatReportView::IsSelected(char *param_1)
   if (piVar7 != (int *)0x0) {
     CString::CString(&CStack_b8);
     CString::CString(&CStack_94);
-    _Format_CString__QAAXPBDZZ(&CStack_94,&g_szDecimalFormat,*(short *)&this->field_0x94 + 1);
+    CString__Format(&CStack_94,&g_szDecimalFormat,*(short *)&this->field_0x94 + 1);
     uVar8 = AssignSharedStringConcatCStrAndRef(&CStack_b0,s_Page_00699318,&CStack_94);
     src_ref = (CString *)AssignSharedStringConcatRefAndCStr(&CStack_ac,uVar8,&DAT_00698448);
     CString::CString((CString *)&stack0xffffff58,src_ref);
@@ -382,7 +382,7 @@ void TCombatReportView::IsSelected(char *param_1)
     CString::~CString((CString *)&stack0xffffff58);
     CString::~CString(&CStack_ac);
     CString::~CString(&CStack_b0);
-    _Format_CString__QAAXPBDZZ(&CStack_94,&g_szDecimalFormat,*(short *)&this->field_0x96 + 1);
+    CString__Format(&CStack_94,&g_szDecimalFormat,*(short *)&this->field_0x96 + 1);
     CString::operator+=(&CStack_94);
     (**(code **)(*piVar7 + 0x1c8))(&CStack_b8,1);
     CString::~CString(&CStack_94);
@@ -459,7 +459,7 @@ void TCombatReportView::ApplyRectSlot110()
                2);
     }
     local_4 = puVar7;
-    SetQuickDrawTextOriginWithContextOffset(6,0xb0);
+    func_0x00408d6e(6,0xb0);
     func_0x004029aa(&stack0xffffffa8);
     func_0x00404ee9(9);
     func_0x004065a0(0);
@@ -470,7 +470,7 @@ void TCombatReportView::ApplyRectSlot110()
       CVar2.m_pchData = local_50.m_pchData;
       sVar6 = (short)puVar7;
       if ((short)local_48 <= sVar6) break;
-      SetQuickDrawTextOriginWithContextOffset(6);
+      func_0x00408d6e(6);
       CString::CString(&local_4c);
       puStack_8._0_1_ = 1;
       if (*(short *)&this->field_0x94 < *(short *)&this->field_0x9c) {
@@ -484,7 +484,7 @@ void TCombatReportView::ApplyRectSlot110()
       CString::operator=((CString *)&stack0xffffffac,&local_44);
       puStack_8 = (undefined1 *)CONCAT31(puStack_8._1_3_,1);
       CString::~CString(&local_44);
-      (*g_pLocalizationTable->vftable[0x10].slot_0x04)
+      (*g_pSimMgr->vftable[0x10].slot_0x04)
                 (0x2717,CONCAT22((short)((uint)&local_4c >> 0x10),(short)pcVar8[0x14]));
       uVar3 = AssignSharedStringConcatCStrAndRef(&local_40,&DAT_00699340,&stack0xffffffa8);
       uStack_14 = 3;
@@ -509,13 +509,13 @@ void TCombatReportView::ApplyRectSlot110()
       func_0x00405493(*(int *)(g_pStrategicMapViewSystem + 0x684) + 4,
                       &g_pActiveQuickDrawSurfaceContext->field_0x4,&uStack_2c,&local_3c,0,0);
       pcVar4 = CVar2.m_pchData + 3;
-      SetQuickDrawTextOriginWithContextOffset(7,pcVar4);
+      func_0x00408d6e(7,pcVar4);
       func_0x00402e73(1,4);
       (**(code **)(g_pUiRuntimeContext->vftable + 0x34))(0x34);
       iVar1 = (*(int *)(pcVar8 + 0x18) * 3) / 7 + 7;
-      DrawCenteredGuideLineOnMapDc(iVar1,pcVar4);
+      func_0x00403bb6(iVar1,pcVar4);
       (**(code **)(g_pUiRuntimeContext->vftable + 0x34))(0x33);
-      DrawCenteredGuideLineOnMapDc(iVar1 - (*(int *)(pcVar8 + 0x1c) * 3) / 7,pcVar4);
+      func_0x00403bb6(iVar1 - (*(int *)(pcVar8 + 0x1c) * 3) / 7,pcVar4);
       (**(code **)(g_pUiRuntimeContext->vftable + 0x34))(0);
       local_38 = (TCombatReportView *)0x0;
       uStack_34 = 6;
@@ -692,7 +692,7 @@ LAB_0058dbdf:
     iStack_4 = 0;
     CString::CString(&CStack_40);
     iStack_4._0_1_ = 1;
-    _Format_CString__QAAXPBDZZ(&CStack_40,&g_szDecimalFormat,*(short *)&this->field_0x94 + 1);
+    CString__Format(&CStack_40,&g_szDecimalFormat,*(short *)&this->field_0x94 + 1);
     uVar4 = AssignSharedStringConcatCStrAndRef(&CStack_30,s_Page_00699318,&CStack_40);
     iStack_4._0_1_ = 2;
     src_ref = (CString *)AssignSharedStringConcatRefAndCStr(&CStack_34,uVar4,&DAT_00698448);
@@ -706,7 +706,7 @@ LAB_0058dbdf:
     CString::~CString(&CStack_34);
     iStack_4._0_1_ = 1;
     CString::~CString(&CStack_30);
-    _Format_CString__QAAXPBDZZ(&CStack_40,&g_szDecimalFormat,*(short *)&this->field_0x96 + 1);
+    CString__Format(&CStack_40,&g_szDecimalFormat,*(short *)&this->field_0x96 + 1);
     CString::operator+=(&CStack_40);
     (**(code **)(*(int *)CONCAT31(extraout_var_05,uVar3) + 0x1c8))(&CStack_3c,1);
     iStack_4 = (uint)iStack_4._1_3_ << 8;

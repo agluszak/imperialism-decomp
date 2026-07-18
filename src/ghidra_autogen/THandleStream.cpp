@@ -194,7 +194,7 @@ void THandleStream::ReadBytes(undefined4 param_1, int param_2)
   }
   if (0 < param_2) {
     pvVar2 = GlobalLock(*(HGLOBAL *)&this->field_0x4);
-    _memmove(param_1,(int)pvVar2 + *(int *)&this->field_0x8,param_2);
+    memmove(param_1,(int)pvVar2 + *(int *)&this->field_0x8,param_2);
     GlobalUnlock(*(HGLOBAL *)&this->field_0x4);
     *(int *)&this->field_0x8 = *(int *)&this->field_0x8 + param_2;
   }
@@ -221,7 +221,7 @@ void THandleStream::OrphanRetStub_00488e70(undefined4 param_1, int param_2)
     (*pTVar1->OrphanRetStub_00488e50)(CONCAT31(extraout_var,uVar2) + *(int *)&this->field_0xc);
   }
   pvVar4 = GlobalLock(*(HGLOBAL *)&this->field_0x4);
-  _memmove((int)pvVar4 + *(int *)&this->field_0x8,param_1,param_2);
+  memmove((int)pvVar4 + *(int *)&this->field_0x8,param_1,param_2);
   GlobalUnlock(*(HGLOBAL *)&this->field_0x4);
   iVar3 = *(int *)&this->field_0x8 + param_2;
   *(int *)&this->field_0x8 = iVar3;

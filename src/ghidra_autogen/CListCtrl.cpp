@@ -19,7 +19,7 @@ CListCtrl::OnChildNotify
     uVar1 = 1;
   }
   else {
-    uVar1 = DispatchReflectedControlMessageOrFallback(param_2,param_3,param_4,param_5);
+    uVar1 = CWnd__OnChildNotify(param_2,param_3,param_4,param_5);
   }
   return uVar1;
 }
@@ -116,7 +116,7 @@ undefined4 CListCtrl::GetItemText(void)
   int new_length;
   undefined4 *unaff_FS_OFFSET;
   
-  EstablishSehFrameProlog();
+  _EH_prolog();
   *(undefined4 *)(unaff_EBP + -0x14) = 0;
   memset((void *)(unaff_EBP + -0x3c),0,0x28);
   *(undefined4 *)(unaff_EBP + -0x34) = *(undefined4 *)(unaff_EBP + 0x10);
@@ -206,7 +206,7 @@ void __thiscall CListCtrl::RemoveImageList(int param_1,WPARAM param_2)
   int iVar2;
   
   LVar1 = SendMessageA(*(HWND *)(param_1 + 0x1c),0x1002,param_2,0);
-  iVar2 = FromHandlePermanent(LVar1);
+  iVar2 = CMenu__FromHandlePermanent(LVar1);
   if (iVar2 != 0) {
     SendMessageA(*(HWND *)(param_1 + 0x1c),0x1003,param_2,0);
   }

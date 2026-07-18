@@ -12,7 +12,7 @@ TCViewOwnedBufferRegistryState_00648560::ConstructCViewOwnedBufferRegistryState
           (TCViewOwnedBufferRegistryState_00648560 *this)
 
 {
-  CView();
+  CView__CView();
   *(undefined4 *)(this + 0x40) = 0;
   *(undefined4 *)(this + 0x44) = 0;
   *(undefined4 *)(this + 0x48) = 0;

@@ -20,13 +20,13 @@ void __thiscall CCmdUI::Enable(int param_1,int param_2)
       pHVar1 = GetFocus();
       if (pHVar1 == pHVar2) {
         pHVar2 = GetParent(pHVar2);
-        iVar3 = FromHandle(pHVar2);
+        iVar3 = CWnd__FromHandle(pHVar2);
         pHVar2 = (HWND)0x0;
         if (*(int *)(param_1 + 0x14) != 0) {
           pHVar2 = *(HWND *)(*(int *)(param_1 + 0x14) + 0x1c);
         }
         pHVar2 = GetNextDlgTabItem(*(HWND *)(iVar3 + 0x1c),pHVar2,0);
-        FromHandle(pHVar2);
+        CWnd__FromHandle(pHVar2);
         CWnd::SetFocus();
       }
     }

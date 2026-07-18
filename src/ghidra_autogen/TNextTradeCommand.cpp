@@ -82,10 +82,10 @@ void TNextTradeCommand::DestructTNextTradeCommandAndMaybeFree_Impl()
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005BA4B0
-// GHIDRA_NAME TNextTradeCommand::OrphanRetStub_00487a00
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_00487a00(void)
+// GHIDRA_NAME TNextTradeCommand::DoIt
+// GHIDRA_PROTO undefined __thiscall DoIt(void)
 
-void TNextTradeCommand::OrphanRetStub_00487a00()
+void TNextTradeCommand::DoIt()
 
 {
   func_0x00401ae1();
@@ -167,17 +167,17 @@ void TNextTradeCommand::CreateNextTradeCommandAndFormatPrompt()
       CString::CString((CString *)&stack0xffffffdc);
       if (this[6].field_0xd == '\0') {
         CString::CString((CString *)&stack0xffffffe0);
-        _Format_CString__QAAXPBDZZ();
-        (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+        CString__Format();
+        (*g_pSimMgr->vftable[0x10].slot_0x04)();
         puStack_4c = &stack0xffffffd0;
         pcStack_48 = CStack_2c.m_pchData;
-        pTStack_50 = g_pLocalizationTable;
+        pTStack_50 = g_pSimMgr;
         uStack_54 = 0x5c07bd;
         func_0x0040988b();
         CString::~CString(&CStack_2c);
       }
       else {
-        (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+        (*g_pSimMgr->vftable[0x10].slot_0x04)();
       }
       puStack_4c = &stack0xffffffd0;
       pTStack_50 = (TSimMgr *)0x5c07e4;
@@ -219,7 +219,7 @@ void TNextTradeCommand::CreateNextTradeCommandAndFormatPrompt()
       (**(code **)(*piVar6 + 0x1d0))(CONCAT22(extraout_var_03,*(undefined2 *)&this[6].vftable));
     }
   }
-  if (*(int *)&g_pLocalizationTable->field_0x44 != 2) {
+  if (*(int *)&g_pSimMgr->field_0x44 != 2) {
     iVar10 = operator_new(0x18);
     if (iVar10 == 0) {
       uVar7 = 0;

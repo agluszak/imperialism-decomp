@@ -44,10 +44,10 @@ CRuntimeClass * TSliderPicture::GetRuntimeClass()
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00573A20
-// GHIDRA_NAME TSliderPicture::ConstructTSliderPictureBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTSliderPictureBaseState(void)
+// GHIDRA_NAME TSliderPicture::TSliderPicture
+// GHIDRA_PROTO undefined __thiscall TSliderPicture(void)
 
-TSliderPicture * TSliderPicture::ConstructTSliderPictureBaseState()
+TSliderPicture * TSliderPicture::TSliderPicture()
 
 {
   func_0x00401122();

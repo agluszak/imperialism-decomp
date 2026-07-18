@@ -88,8 +88,7 @@ TDefenseMinisterView::HandleEvent
   undefined3 extraout_var_00;
   undefined4 unaff_ESI;
   undefined4 *unaff_FS_OFFSET;
-  undefined1 *puVar6;
-  char acStack_30 [4];
+  undefined1 auStack_30 [4];
   undefined *puStack_2c;
   undefined4 uStack_28;
   undefined4 uStack_24;
@@ -98,10 +97,10 @@ TDefenseMinisterView::HandleEvent
   CString *pCStack_18;
   undefined4 local_c;
   undefined1 *puStack_8;
-  CString local_4;
+  undefined1 *local_4;
   
   local_c = *unaff_FS_OFFSET;
-  local_4.m_pchData = (char *)0xffffffff;
+  local_4 = (undefined1 *)0xffffffff;
   puStack_8 = &LAB_00632a68;
   *unaff_FS_OFFSET = &local_c;
   iVar1 = *(int *)(param_2 + 0x1c);
@@ -118,22 +117,21 @@ TDefenseMinisterView::HandleEvent
         pCStack_18 = &param_3;
         iStack_1c = 0x12;
         iStack_20 = 0x273d;
-        local_4.m_pchData = (char *)0x0;
+        local_4 = (undefined1 *)0x0;
         uStack_24 = 0x4f34c6;
-        (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+        (*g_pSimMgr->vftable[0x10].slot_0x04)();
         uStack_24 = 0;
         uStack_28 = 1;
         puStack_2c = &DAT_006a2fc0;
-        local_4.m_pchData = acStack_30;
-        puVar6 = (undefined1 *)register0x00000010;
+        local_4 = auStack_30;
         func_0x004076b7(&stack0x00000000);
-        DispatchLocalizedUiMessageWithTemplateA13A0(puVar6);
-        uStack_28 = 0x4f34fc;
-        CString::~CString(&local_4);
-        *unaff_FS_OFFSET = iStack_1c;
+        func_0x004096b0();
+        uStack_24 = 0xffffffff;
+        CString::~CString((CString *)&stack0xffffffec);
+        *unaff_FS_OFFSET = puStack_2c;
         return;
       }
-      if (g_pLocalizationTable->field_0x14 == '\0') {
+      if (g_pSimMgr->field_0x14 == '\0') {
         pCStack_18 = (CString *)0x4f3522;
         uVar3 = (*this->vftable->SetForeignMinisterReadyFlag14)();
         pCStack_18 = (CString *)CONCAT31(extraout_var_00,uVar3);
@@ -141,7 +139,7 @@ TDefenseMinisterView::HandleEvent
         (**(code **)&g_pGlobalUiRootController->vftable->field_0xb4)();
         iStack_1c = 0x65;
         iStack_20 = 0x4f353e;
-        (*g_pLocalizationTable->vftable[9].GetTSimMgrClassNamePointer)();
+        (*g_pSimMgr->vftable[9].GetTSimMgrClassNamePointer)();
       }
     }
     else if (iVar1 == 0x72656363) {

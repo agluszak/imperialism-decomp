@@ -3,641 +3,6 @@
 // Program: Imperialism.exe
 // Bucket: global_part002.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x0047D1A0
-// GHIDRA_NAME OrphanVtableAssignStub_0047d1a0
-// GHIDRA_PROTO undefined OrphanVtableAssignStub_0047d1a0()
-
-undefined ** OrphanVtableAssignStub_0047d1a0(void)
-
-{
-  return &PTR_PTR_00646030;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0047D1C0
-// GHIDRA_NAME InitializeDialogTemplateD2WithTextState
-// GHIDRA_PROTO undefined InitializeDialogTemplateD2WithTextState()
-
-TControl * __thiscall InitializeDialogTemplateD2WithTextState(TControl *param_1,undefined4 param_2)
-
-{
-  undefined4 *unaff_FS_OFFSET;
-  undefined4 local_c;
-  undefined1 *puStack_8;
-  undefined4 local_4;
-  
-  local_4 = 0xffffffff;
-  puStack_8 = &LAB_0062e1b8;
-  local_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &local_c;
-  TControl::InitializeDialogTemplateFromId(param_1,0xd2,param_2);
-  param_1->vftable = (TControlVtbl *)&PTR_LAB_0063e5a0;
-  *(undefined4 *)&param_1->field_0x5c = 0;
-  param_1->hasCommandTagResource = 0;
-  param_1->commandTagResourceByte = 0;
-  param_1->padding_65_to_67[0] = 0;
-  param_1->padding_65_to_67[1] = 0;
-  param_1->padding_65_to_67[2] = 0;
-  local_4 = 0;
-  CWnd::CWnd();
-  param_1->field74 = (int)&PTR_LAB_00671d1c;
-  param_1->vftable = (TControlVtbl *)&PTR_LAB_00646300;
-  *unaff_FS_OFFSET = local_c;
-  return param_1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0047D250
-// GHIDRA_NAME WrapperFor_FreeHeapBufferIfNotNull_At0047d250
-// GHIDRA_PROTO undefined WrapperFor_FreeHeapBufferIfNotNull_At0047d250()
-
-undefined4 __thiscall WrapperFor_FreeHeapBufferIfNotNull_At0047d250(undefined4 param_1,byte param_2)
-
-{
-  func_0x004065b4();
-  if ((param_2 & 1) != 0) {
-    operator_delete(param_1);
-  }
-  return param_1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0047D280
-// GHIDRA_NAME WrapperFor_FreeHeapBufferIfNotNull_At0047d250_Impl
-// GHIDRA_PROTO undefined WrapperFor_FreeHeapBufferIfNotNull_At0047d250_Impl()
-
-void __fastcall WrapperFor_FreeHeapBufferIfNotNull_At0047d250_Impl(CDialog *param_1)
-
-{
-  undefined4 *unaff_FS_OFFSET;
-  undefined4 local_c;
-  undefined1 *puStack_8;
-  undefined4 local_4;
-  
-  puStack_8 = &LAB_0062e1e0;
-  local_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &local_c;
-  local_4 = 0;
-  Dtor_CListBox_FID_61e8cb();
-  *(undefined ***)param_1 = &PTR_LAB_0063e5a0;
-  local_4 = 1;
-  if (*(int *)(param_1 + 100) != 0) {
-    func_0x00402ca7();
-  }
-  local_4 = 0xffffffff;
-  CDialog::~CDialog(param_1);
-  *unaff_FS_OFFSET = local_c;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0047D310
-// GHIDRA_NAME WrapperFor_EnsureWindowSubclassAndParentConsistency_At0047d310
-// GHIDRA_PROTO undefined WrapperFor_EnsureWindowSubclassAndParentConsistency_At0047d310()
-
-void __thiscall
-WrapperFor_EnsureWindowSubclassAndParentConsistency_At0047d310(int param_1,undefined4 param_2)
-
-{
-  DDX_Control(param_2,0x41e,param_1 + 0x74);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0047D340
-// GHIDRA_NAME OrphanVtableAssignStub_0047d340
-// GHIDRA_PROTO undefined OrphanVtableAssignStub_0047d340()
-
-undefined ** OrphanVtableAssignStub_0047d340(void)
-
-{
-  return &PTR_PTR_00646050;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0047D360
-// GHIDRA_NAME InitializeDialogTemplateDBWithTextState
-// GHIDRA_PROTO undefined InitializeDialogTemplateDBWithTextState()
-
-TControl * __thiscall InitializeDialogTemplateDBWithTextState(TControl *param_1,undefined4 param_2)
-
-{
-  undefined4 *unaff_FS_OFFSET;
-  undefined4 local_c;
-  undefined1 *puStack_8;
-  undefined4 local_4;
-  
-  local_4 = 0xffffffff;
-  puStack_8 = &LAB_0062e1f8;
-  local_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &local_c;
-  TControl::InitializeDialogTemplateFromId(param_1,0xdb,param_2);
-  param_1->vftable = (TControlVtbl *)&PTR_LAB_0063e5a0;
-  *(undefined4 *)&param_1->field_0x5c = 0;
-  param_1->hasCommandTagResource = 0;
-  param_1->commandTagResourceByte = 0;
-  param_1->padding_65_to_67[0] = 0;
-  param_1->padding_65_to_67[1] = 0;
-  param_1->padding_65_to_67[2] = 0;
-  local_4 = 0;
-  CWnd::CWnd();
-  param_1->field74 = (int)&PTR_LAB_006714cc;
-  param_1->vftable = (TControlVtbl *)&PTR_LAB_00646410;
-  *unaff_FS_OFFSET = local_c;
-  return param_1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0047D3F0
-// GHIDRA_NAME WrapperFor_FreeHeapBufferIfNotNull_At0047d3f0
-// GHIDRA_PROTO undefined WrapperFor_FreeHeapBufferIfNotNull_At0047d3f0()
-
-undefined4 __thiscall WrapperFor_FreeHeapBufferIfNotNull_At0047d3f0(undefined4 param_1,byte param_2)
-
-{
-  func_0x0040613b();
-  if ((param_2 & 1) != 0) {
-    operator_delete(param_1);
-  }
-  return param_1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0047D420
-// GHIDRA_NAME WrapperFor_EnsureWindowSubclassAndParentConsistency_At0047d420
-// GHIDRA_PROTO undefined WrapperFor_EnsureWindowSubclassAndParentConsistency_At0047d420()
-
-void __thiscall
-WrapperFor_EnsureWindowSubclassAndParentConsistency_At0047d420(int param_1,undefined4 param_2)
-
-{
-  DDX_Control(param_2,0x3f8,param_1 + 0x74);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0047D450
-// GHIDRA_NAME OrphanVtableAssignStub_0047d450
-// GHIDRA_PROTO undefined OrphanVtableAssignStub_0047d450()
-
-undefined ** OrphanVtableAssignStub_0047d450(void)
-
-{
-  return &PTR_PTR_00646070;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0047D470
-// GHIDRA_NAME InitializeDialogTemplateDCBaseState
-// GHIDRA_PROTO undefined InitializeDialogTemplateDCBaseState()
-
-TControl * __thiscall InitializeDialogTemplateDCBaseState(TControl *param_1,undefined4 param_2)
-
-{
-  TControl::InitializeDialogTemplateFromId(param_1,0xdc,param_2);
-  param_1->vftable = (TControlVtbl *)&PTR_LAB_00646520;
-  *(undefined4 *)&param_1->field_0x5c = 0;
-  param_1->hasCommandTagResource = 0;
-  param_1->commandTagResourceByte = 0;
-  param_1->padding_65_to_67[0] = 0;
-  param_1->padding_65_to_67[1] = 0;
-  param_1->padding_65_to_67[2] = 0;
-  param_1->field74 = 0;
-  return param_1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0047D4B0
-// GHIDRA_NAME WrapperFor_FreeHeapBufferIfNotNull_At0047d4b0
-// GHIDRA_PROTO undefined WrapperFor_FreeHeapBufferIfNotNull_At0047d4b0()
-
-undefined4 __thiscall WrapperFor_FreeHeapBufferIfNotNull_At0047d4b0(undefined4 param_1,byte param_2)
-
-{
-  func_0x0040304e();
-  if ((param_2 & 1) != 0) {
-    operator_delete(param_1);
-  }
-  return param_1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0047D4E0
-// GHIDRA_NAME WrapperFor_DDX_Text_At0047d4e0
-// GHIDRA_PROTO undefined WrapperFor_DDX_Text_At0047d4e0()
-
-void __thiscall WrapperFor_DDX_Text_At0047d4e0(int param_1,undefined4 param_2)
-
-{
-  DDX_Text(param_2,0x421,(undefined4 *)(param_1 + 0x74));
-  DDV_MinMaxUInt(param_2,*(undefined4 *)(param_1 + 0x74),0,999);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0047D520
-// GHIDRA_NAME OrphanVtableAssignStub_0047d520
-// GHIDRA_PROTO undefined OrphanVtableAssignStub_0047d520()
-
-undefined ** OrphanVtableAssignStub_0047d520(void)
-
-{
-  return &PTR_PTR_00646090;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0047D540
-// GHIDRA_NAME InitializeDialogTemplateDDPictureState
-// GHIDRA_PROTO undefined InitializeDialogTemplateDDPictureState()
-
-TControl * __thiscall InitializeDialogTemplateDDPictureState(TControl *param_1,undefined4 param_2)
-
-{
-  TControl::InitializeDialogTemplateFromId(param_1,0xdd,param_2);
-  param_1->vftable = (TControlVtbl *)&PTR_LAB_0063e6b0;
-  *(undefined4 *)&param_1->field_0x5c = 0;
-  param_1->hasCommandTagResource = 0;
-  param_1->commandTagResourceByte = 0;
-  param_1->padding_65_to_67[0] = 0;
-  param_1->padding_65_to_67[1] = 0;
-  param_1->padding_65_to_67[2] = 0;
-  param_1->commandTagDefaultParam0 = 0;
-  *(undefined4 *)&param_1[1].field_0x8 = 0;
-  param_1->commandTagDefaultParam1 = 0;
-  *(undefined4 *)&param_1->commandTagDefaultParam2 = 0;
-  param_1[1].vftable = (TControlVtbl *)0x0;
-  return param_1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0047D5B0
-// GHIDRA_NAME OrphanRetStub_0047d5b0
-// GHIDRA_PROTO undefined OrphanRetStub_0047d5b0()
-
-void OrphanRetStub_0047d5b0(void)
-
-{
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0047D5D0
-// GHIDRA_NAME OrphanVtableAssignStub_0047d5d0
-// GHIDRA_PROTO undefined OrphanVtableAssignStub_0047d5d0()
-
-undefined ** OrphanVtableAssignStub_0047d5d0(void)
-
-{
-  return &PTR_PTR_006460b0;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0047D5F0
-// GHIDRA_NAME RenderMapTileDibSurfaceWithClipRegionAndGdiPrimitives
-// GHIDRA_PROTO undefined RenderMapTileDibSurfaceWithClipRegionAndGdiPrimitives()
-
-void __fastcall RenderMapTileDibSurfaceWithClipRegionAndGdiPrimitives(int param_1)
-
-{
-  undefined **h;
-  undefined4 uVar1;
-  HDC hdc;
-  HGDIOBJ h_00;
-  int iVar2;
-  HRGN pHVar3;
-  undefined4 *unaff_FS_OFFSET;
-  undefined4 uVar4;
-  undefined4 uVar5;
-  undefined4 uVar6;
-  undefined **ppuStack_a0;
-  uint uStack_9c;
-  undefined **ppuStack_98;
-  uint uStack_94;
-  char *pcStack_90;
-  HDC__ *pHStack_8c;
-  undefined1 *puStack_88;
-  undefined1 *puStack_84;
-  HDC__ local_70;
-  undefined4 local_6c;
-  char local_68 [4];
-  uint local_64;
-  undefined1 local_60 [36];
-  undefined4 uStack_3c;
-  undefined4 uStack_34;
-  undefined4 local_c;
-  undefined1 *puStack_8;
-  undefined4 local_4;
-  
-  local_4 = 0xffffffff;
-  puStack_8 = &LAB_0062e248;
-  local_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &local_c;
-  puStack_88 = (undefined1 *)0x47d618;
-  puStack_84 = (undefined1 *)param_1;
-  CPaintDC::CPaintDC();
-  local_4 = 0;
-  h = *(undefined ***)(*(int *)(param_1 + 0x74) + 8);
-  if (h == (undefined **)0x0) {
-    puStack_84 = local_60;
-    puStack_88 = (undefined1 *)0x47d636;
-    local_70.unused = (int)h;
-    h = (undefined **)func_0x0040760d();
-  }
-  local_70.unused = (int)h;
-  if (*(int *)(param_1 + 0x80) == 0) {
-    puStack_84 = (undefined1 *)0x0;
-    if (DAT_00694c50 == 0) {
-      puStack_88 = local_60;
-      pHStack_8c = (HDC__ *)0x47d743;
-      func_0x00406f69();
-      pHStack_8c = &local_70;
-      pcStack_90 = local_68;
-      local_70.unused = 0;
-      local_6c = 0;
-      uStack_94 = 0x47d75d;
-      func_0x00408cbf();
-    }
-    else {
-      puStack_88 = local_60;
-      pHStack_8c = (HDC__ *)0x47d6bf;
-      func_0x0040492b();
-      pHStack_8c = (HDC__ *)0x47d6c6;
-      func_0x00405498();
-      hdc = CreateCompatibleDC((HDC)(-(uint)(&stack0x00000000 != (undefined1 *)0x90) &
-                                    (uint)pHStack_8c));
-      h_00 = SelectObject(hdc,h);
-      iVar2 = *(int *)(*(int *)(*(int *)(param_1 + 0x74) + 0x10) + 8);
-      if (iVar2 < 1) {
-        iVar2 = -iVar2;
-      }
-      BitBlt((HDC)(-(uint)(&stack0x00000000 != (undefined1 *)0x90) & (uint)pHStack_8c),0,0,
-             *(int *)(*(int *)(*(int *)(param_1 + 0x74) + 0x10) + 4),iVar2,hdc,0,0,0xcc0020);
-      SelectObject(hdc,h_00);
-      DeleteDC(hdc);
-      h = ppuStack_a0;
-    }
-  }
-  else {
-    puStack_88 = local_60;
-    puStack_84 = (undefined1 *)0x0;
-    pHStack_8c = (HDC__ *)0x47d652;
-    func_0x00406f69();
-    iVar2 = *(int *)(param_1 + 0x74);
-    pHStack_8c = *(HDC__ **)(*(int *)(iVar2 + 0x10) + 8);
-    if ((int)pHStack_8c < 1) {
-      pHStack_8c = (HDC__ *)-(int)pHStack_8c;
-    }
-    uStack_9c = *(uint *)(*(int *)(iVar2 + 0x10) + 8);
-    ppuStack_a0 = *(undefined ***)(*(int *)(iVar2 + 0x10) + 4);
-    if ((int)uStack_9c < 1) {
-      uStack_9c = -uStack_9c;
-    }
-    uStack_94 = 0;
-    ppuStack_98 = (undefined **)0x0;
-    uVar6 = 0;
-    uVar5 = 0;
-    uVar4 = 0x10;
-    pcStack_90 = (char *)ppuStack_a0;
-    uVar1 = FromHandle_612736(-(uint)(&stack0x00000000 != (undefined1 *)0x68) & local_64);
-    func_0x00402c8e(uVar1,uVar4,uVar5,uVar6);
-  }
-  if (*(int *)(*(int *)(param_1 + 0x74) + 8) == 0) {
-    DeleteObject(h);
-  }
-  if (*(int *)(param_1 + 0x78) != 0) {
-    CPen::CPen(0,1,0xff);
-    uStack_34._0_1_ = 1;
-    uVar1 = SelectObject(&ppuStack_98);
-    Polyline(pHStack_8c,(POINT *)(*(int **)(param_1 + 0x8c) + 2),**(int **)(param_1 + 0x8c));
-    SelectObject(uVar1);
-    ppuStack_98 = &PTR_LAB_00671054;
-    uStack_34 = CONCAT31(uStack_34._1_3_,2);
-    DeleteObject();
-  }
-  if (*(int *)(param_1 + 0x7c) != 0) {
-    uStack_9c = 0;
-    ppuStack_a0 = &CBrush::_vftable_;
-    uStack_34._0_1_ = 3;
-    pHVar3 = CreatePolygonRgn((POINT *)(*(int **)(param_1 + 0x8c) + 2),**(int **)(param_1 + 0x8c),2)
-    ;
-    CBrush::AttachRegionHandleToClipStateAndRegister((CBrush *)&ppuStack_a0,(int)pHVar3);
-    CBrush::CBrush(0xff);
-    uStack_34._0_1_ = 4;
-    FillRgn(pHStack_8c,(HRGN)(-(uint)(&stack0x00000000 != (undefined1 *)0xa0) & uStack_9c),
-            (HBRUSH)(-(uint)(&stack0x00000000 != (undefined1 *)0x98) & uStack_94));
-    DeleteObject();
-    ppuStack_98 = &PTR_LAB_00671054;
-    uStack_34._0_1_ = 5;
-    DeleteObject();
-    ppuStack_a0 = &PTR_LAB_00671054;
-    ppuStack_98 = (undefined **)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
-    uStack_34 = CONCAT31(uStack_34._1_3_,6);
-    DeleteObject();
-    ppuStack_a0 = (undefined **)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
-  }
-  uStack_34 = 0xffffffff;
-  CPaintDC::~CPaintDC((CPaintDC *)&pcStack_90);
-  *unaff_FS_OFFSET = uStack_3c;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0047D9D0
-// GHIDRA_NAME WrapperFor_DeleteRegionHandleFromClipState_At0047d9d0
-// GHIDRA_PROTO undefined WrapperFor_DeleteRegionHandleFromClipState_At0047d9d0()
-
-void __fastcall WrapperFor_DeleteRegionHandleFromClipState_At0047d9d0(undefined4 *param_1)
-
-{
-  undefined4 *unaff_FS_OFFSET;
-  undefined4 local_c;
-  undefined1 *puStack_8;
-  undefined4 local_4;
-  
-  puStack_8 = &LAB_0062e298;
-  local_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &local_c;
-  *param_1 = &PTR_LAB_00671054;
-  local_4 = 0;
-  DeleteObject();
-  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
-  *unaff_FS_OFFSET = local_c;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0047DA70
-// GHIDRA_NAME WrapperFor_DeleteRegionHandleFromClipState_At0047da70
-// GHIDRA_PROTO undefined WrapperFor_DeleteRegionHandleFromClipState_At0047da70()
-
-void __fastcall WrapperFor_DeleteRegionHandleFromClipState_At0047da70(undefined4 *param_1)
-
-{
-  undefined4 *unaff_FS_OFFSET;
-  undefined4 local_c;
-  undefined1 *puStack_8;
-  undefined4 local_4;
-  
-  puStack_8 = &LAB_0062e2b8;
-  local_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &local_c;
-  *param_1 = &PTR_LAB_00671054;
-  local_4 = 0;
-  DeleteObject();
-  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
-  *unaff_FS_OFFSET = local_c;
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0047DAE0
-// GHIDRA_NAME UpdateCursorHelperWindowLayoutAndMask
-// GHIDRA_PROTO undefined UpdateCursorHelperWindowLayoutAndMask()
-
-undefined4 __fastcall UpdateCursorHelperWindowLayoutAndMask(int param_1)
-
-{
-  int *piVar1;
-  undefined4 uVar2;
-  undefined1 local_8 [8];
-  
-  CDialog::OnInitDialog();
-  piVar1 = (int *)func_0x004080b2(local_8);
-  CWnd::MoveWindow(0,0,*piVar1 + 0x1e,piVar1[1] + 0x32,1);
-  CWnd::CenterWindow(0);
-  CMcWindow::SetWindowTextOrDelegateToOwner(*(undefined4 *)(param_1 + 0x90));
-  *(uint *)(param_1 + 0x84) = *(uint *)(param_1 + 0x88) & 1;
-  if ((*(int *)(param_1 + 0x78) != 0) || (*(int *)(param_1 + 0x7c) != 0)) {
-    uVar2 = func_0x00402e19(0xffffffff);
-    *(undefined4 *)(param_1 + 0x8c) = uVar2;
-  }
-  return 1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0047DBA0
-// GHIDRA_NAME InitializeDialogTemplateDEWithTextState
-// GHIDRA_PROTO undefined InitializeDialogTemplateDEWithTextState()
-
-TControl * __thiscall InitializeDialogTemplateDEWithTextState(TControl *param_1,undefined4 param_2)
-
-{
-  undefined4 *unaff_FS_OFFSET;
-  undefined4 local_c;
-  undefined1 *puStack_8;
-  undefined4 local_4;
-  
-  local_4 = 0xffffffff;
-  puStack_8 = &LAB_0062e2d8;
-  local_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &local_c;
-  TControl::InitializeDialogTemplateFromId(param_1,0xde,param_2);
-  param_1->vftable = (TControlVtbl *)&PTR_LAB_0063e5a0;
-  *(undefined4 *)&param_1->field_0x5c = 0;
-  param_1->hasCommandTagResource = 0;
-  param_1->commandTagResourceByte = 0;
-  param_1->padding_65_to_67[0] = 0;
-  param_1->padding_65_to_67[1] = 0;
-  param_1->padding_65_to_67[2] = 0;
-  local_4 = 0;
-  CWnd::CWnd();
-  param_1->field74 = (int)&PTR_LAB_006714cc;
-  param_1->vftable = (TControlVtbl *)&PTR_LAB_00646630;
-  *(undefined4 *)&param_1[1].field_0x2c = 0;
-  *(undefined4 *)&param_1[1].field_0x30 = 0;
-  *unaff_FS_OFFSET = local_c;
-  return param_1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0047DC40
-// GHIDRA_NAME WrapperFor_FreeHeapBufferIfNotNull_At0047dc40
-// GHIDRA_PROTO undefined WrapperFor_FreeHeapBufferIfNotNull_At0047dc40()
-
-undefined4 __thiscall WrapperFor_FreeHeapBufferIfNotNull_At0047dc40(undefined4 param_1,byte param_2)
-
-{
-  func_0x00402eb4();
-  if ((param_2 & 1) != 0) {
-    operator_delete(param_1);
-  }
-  return param_1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0047DC70
-// GHIDRA_NAME Helper_Uses_DDX_Text_At0047dc70
-// GHIDRA_PROTO undefined Helper_Uses_DDX_Text_At0047dc70()
-
-void __thiscall Helper_Uses_DDX_Text_At0047dc70(int param_1,undefined4 param_2)
-
-{
-  DDX_Control(param_2,0x3f8,param_1 + 0x74);
-  DDX_Text(param_2,0x422,param_1 + 0xb0);
-  DDX_Text(param_2,0x421,param_1 + 0xb4);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0047DCC0
-// GHIDRA_NAME OrphanVtableAssignStub_0047dcc0
-// GHIDRA_PROTO undefined OrphanVtableAssignStub_0047dcc0()
-
-undefined ** OrphanVtableAssignStub_0047dcc0(void)
-
-{
-  return &PTR_PTR_00646100;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0047DCE0
-// GHIDRA_NAME InitializeDialogTemplateDFBaseState
-// GHIDRA_PROTO undefined InitializeDialogTemplateDFBaseState()
-
-TControl * __thiscall InitializeDialogTemplateDFBaseState(TControl *param_1,undefined4 param_2)
-
-{
-  TControl::InitializeDialogTemplateFromId(param_1,0xdf,param_2);
-  param_1->vftable = (TControlVtbl *)&PTR_LAB_00646740;
-  *(undefined4 *)&param_1->field_0x5c = 0;
-  param_1->hasCommandTagResource = 0;
-  param_1->commandTagResourceByte = 0;
-  param_1->padding_65_to_67[0] = 0;
-  param_1->padding_65_to_67[1] = 0;
-  param_1->padding_65_to_67[2] = 0;
-  param_1->field68 = 0;
-  param_1->field6C = 0;
-  param_1->field70 = 0;
-  return param_1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0047DD60
-// GHIDRA_NAME Helper_Uses_DDX_Text_618c5f_At0047dd60
-// GHIDRA_PROTO undefined Helper_Uses_DDX_Text_618c5f_At0047dd60()
-
-void __thiscall Helper_Uses_DDX_Text_618c5f_At0047dd60(int param_1,undefined4 param_2)
-
-{
-  DDX_Text(param_2,0x421,param_1 + 0x5c);
-  DDX_Check(param_2,0x3f5,param_1 + 0x60);
-  DDX_Check(param_2,0x422,param_1 + 100);
-  DDX_Check(param_2,0x423,param_1 + 0x68);
-  DDX_Check(param_2,0x424,param_1 + 0x6c);
-  DDX_Check(param_2,0x427,param_1 + 0x70);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0047DDF0
-// GHIDRA_NAME OrphanVtableAssignStub_0047ddf0
-// GHIDRA_PROTO undefined OrphanVtableAssignStub_0047ddf0()
-
-undefined ** OrphanVtableAssignStub_0047ddf0(void)
-
-{
-  return &PTR_PTR_00646120;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0047DE10
-// GHIDRA_NAME OrphanCallChain_C2_I09_0047de10
-// GHIDRA_PROTO undefined OrphanCallChain_C2_I09_0047de10()
-
-undefined4 OrphanCallChain_C2_I09_0047de10(void)
-
-{
-  CDialog::OnInitDialog();
-  UpdateData(0);
-  return 1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x0047DED0
-// GHIDRA_NAME WrapperFor_FreeHeapBufferIfNotNull_At0047ded0
-// GHIDRA_PROTO undefined WrapperFor_FreeHeapBufferIfNotNull_At0047ded0()
-
-undefined4 __thiscall WrapperFor_FreeHeapBufferIfNotNull_At0047ded0(undefined4 param_1,byte param_2)
-
-{
-  func_0x00404aca();
-  if ((param_2 & 1) != 0) {
-    operator_delete(param_1);
-  }
-  return param_1;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x0047DF00
 // GHIDRA_NAME WrapperFor_FreeHeapBufferIfNotNull_At0047ded0_Impl
 // GHIDRA_PROTO undefined WrapperFor_FreeHeapBufferIfNotNull_At0047ded0_Impl()
@@ -703,7 +68,7 @@ InitializeDialogTemplateFBWithDualTextState(TControl *param_1,undefined4 param_2
   puStack_8 = &LAB_0062e343;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  TControl::InitializeDialogTemplateFromId(param_1,0xfb,param_2);
+  TControl::CDialog__CDialog(param_1,0xfb,param_2);
   param_1->vftable = (TControlVtbl *)&PTR_LAB_0063e5a0;
   *(undefined4 *)&param_1->field_0x5c = 0;
   param_1->hasCommandTagResource = 0;
@@ -839,7 +204,7 @@ DrawPalettePreviewGridRectanglesToViewDc
   local_28 = 0;
   iVar2 = GetObjectA(*(HANDLE *)(param_1 + 4),4,&local_28);
   local_28 = -(uint)(iVar2 != 0) & local_28;
-  uStack_20 = thunk_DispatchHandleMapLookupWithReadPtrProbe(param_1,param_4);
+  uStack_20 = CDC__SelectPalette(param_1,param_4);
   RealizePalette(*(HDC *)(param_2 + 4));
   iStack_4 = 0;
   iVar2 = 0;
@@ -863,7 +228,7 @@ DrawPalettePreviewGridRectanglesToViewDc
       appuStack_1c[0] = &PTR_LAB_00671054;
       unaff_EBP = unaff_EBP + -1;
       uStack_c = 1;
-      DeleteObject();
+      CGdiObject__DeleteObject();
       uStack_c = 0xffffffff;
       appuStack_1c[0] = (undefined **)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
       iVar3 = iVar1;
@@ -872,7 +237,7 @@ DrawPalettePreviewGridRectanglesToViewDc
     iStack_4 = iStack_24;
     iVar2 = bottom;
   } while (iStack_24 < 0x10);
-  thunk_DispatchHandleMapLookupWithReadPtrProbe(uStack_20,0);
+  CDC__SelectPalette(uStack_20,0);
   *unaff_FS_OFFSET = appuStack_1c[0];
   return;
 }
@@ -1104,7 +469,7 @@ LoadPaletteChunkFromMmioAndRegisterPaletteHandle(CBrush *param_1,HMMIO param_2)
     return 0;
   }
   pHVar3 = CreatePalette(plpal);
-  uVar4 = CBrush::AttachRegionHandleToClipStateAndRegister(param_1,(int)pHVar3);
+  uVar4 = CBrush::CGdiObject__Attach(param_1,(int)pHVar3);
   return uVar4;
 }
 
@@ -1223,7 +588,7 @@ undefined4 __thiscall WritePaletteChunkToMmioFromPaletteHandle(int param_1,HMMIO
 void WrapperFor_ftol_At0047f250(void)
 
 {
-  _DAT_006a15c8 = ftol();
+  _DAT_006a15c8 = _ftol();
   return;
 }
 
@@ -1373,7 +738,7 @@ void InitializeRuntimeSelectionRecordArrayStateAndRegisterAtExit(void)
 
 {
   func_0x004055bf();
-  AppendPointerToGlobalVectorAsStatus(DestroyRuntimeSelectionRecordArrayStateAtExit);
+  atexit(DestroyRuntimeSelectionRecordArrayStateAtExit);
   return;
 }
 
@@ -1850,7 +1215,7 @@ undefined4 __fastcall OpenRuntimeSelectionSourceWithUserChoice(int *param_1)
   iStack_34 = 0x480195;
   AfxGetModuleState();
   iStack_34 = 0x48019d;
-  _BeginWaitCursor_CCmdTarget__QAEXXZ();
+  CCmdTarget__BeginWaitCursor();
   iStack_34 = 1;
   puVar6 = &LAB_0040561e;
   iVar3 = *(int *)param_1[1];
@@ -1861,7 +1226,7 @@ undefined4 __fastcall OpenRuntimeSelectionSourceWithUserChoice(int *param_1)
                     (param_1[1],piVar1,(-(uint)((uVar2 & 0x8000) != 0) & 4000) + 1000,puVar6);
   param_1[3] = iVar3;
   AfxGetModuleState();
-  EndWaitCursor();
+  CCmdTarget__EndWaitCursor();
   if (param_1[3] < 0) {
     iVar4 = 0;
     if (0 < DAT_006a15e8) {
@@ -2140,7 +1505,7 @@ TControl * __thiscall
 InitializeDialogTemplateBaseState(TControl *param_1,uint param_2,undefined4 param_3)
 
 {
-  TControl::InitializeDialogTemplateFromId(param_1,param_2,param_3);
+  TControl::CDialog__CDialog(param_1,param_2,param_3);
   param_1->vftable = (TControlVtbl *)&PTR_LAB_0063e5a0;
   *(undefined4 *)&param_1->field_0x5c = 0;
   param_1->hasCommandTagResource = 0;
@@ -2584,7 +1949,7 @@ void __thiscall ResizeDynamicPointerArrayWithGrowthStep(int param_1,uint param_2
 void WrapperFor_ftol_At004810c0(void)
 
 {
-  _DAT_006a1680 = ftol();
+  _DAT_006a1680 = _ftol();
   return;
 }
 
@@ -2668,7 +2033,7 @@ undefined4 WrapperFor_UpdateCursorHelperWindowVisibilityFromControllerState_At00
 void WrapperFor_ftol_At00481370(void)
 
 {
-  _DAT_006a16d8 = ftol();
+  _DAT_006a16d8 = _ftol();
   return;
 }
 
@@ -2696,7 +2061,7 @@ InitializeHotKeyDialogTemplateA1WithTripleTextState(TControl *param_1,undefined4
   puStack_8 = &LAB_0062e5c1;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  TControl::InitializeDialogTemplateFromId(param_1,0xa1,param_2);
+  TControl::CDialog__CDialog(param_1,0xa1,param_2);
   local_4 = 0;
   CWnd::CWnd();
   *(undefined ***)&param_1->field_0x5c = &PTR_LAB_006714cc;
@@ -3254,7 +2619,7 @@ undefined ** OrphanVtableAssignStub_00482440(void)
 void WrapperFor_ftol_At00482730(void)
 
 {
-  _DAT_006a177c = ftol();
+  _DAT_006a177c = _ftol();
   return;
 }
 
@@ -3276,7 +2641,7 @@ void InitializeChildWindowSurfaceAndTickTimer_Impl(HWND param_1)
   ScreenToClient(param_1,&local_8);
   if (g_pGlobalUiRootController != (TApplication *)0x0) {
     pHVar2 = GetForegroundWindow();
-    iVar3 = FromHandle(pHVar2);
+    iVar3 = CWnd__FromHandle(pHVar2);
     pCVar4 = AfxGetThread();
     if (pCVar4 == (CWinThread *)0x0) {
       iVar5 = 0;
@@ -3597,7 +2962,7 @@ void WrapperFor_SetFocusViaSiteOrHandle_At00483720
                (undefined4 param_1,undefined4 param_2,undefined4 param_3)
 
 {
-  OnActivateView(param_1,param_2,param_3);
+  CView__OnActivateView(param_1,param_2,param_3);
   return;
 }
 
@@ -3645,13 +3010,13 @@ void __fastcall InitializeChildWindowSurfaceAndTickTimer(int param_1)
     pCVar5 = AfxGetThread();
     (**(code **)(*(int *)pCVar5 + 0x7c))();
   }
-  SetWindowPos(0,0,0,0,0,7);
-  SetWindowPos(0,0,0,0x280,0x1e0,0x16);
+  CWnd__SetWindowPos(0,0,0,0,0,7);
+  CWnd__SetWindowPos(0,0,0,0x280,0x1e0,0x16);
   if (*(int *)(param_1 + 0x6c) == 0) {
     UVar6 = SetTimer(*(HWND *)(param_1 + 0x1c),0xd00d,0x11,(TIMERPROC)&LAB_00405d94);
     *(UINT_PTR *)(param_1 + 0x6c) = UVar6;
   }
-  InvokeVslotF4WithZeroArgs();
+  CView__OnInitialUpdate();
   *unaff_FS_OFFSET = iVar1;
   return;
 }
@@ -4132,7 +3497,7 @@ void ForwardBlitSurfaceRectSkippingTransparentColor
 void WrapperFor_ftol_At00484ac0(void)
 
 {
-  _DAT_006a1830 = ftol();
+  _DAT_006a1830 = _ftol();
   return;
 }
 
@@ -4178,27 +3543,27 @@ void __thiscall ConfigureTopLevelWindowStyleAndPlacement(int param_1,int param_2
   undefined4 local_14;
   
   *(undefined4 *)(param_1 + 0xcc) = 0;
-  ModifyStyle(0xc00000,0,0);
-  ModifyStyleEx(0x200,0,0);
+  CWnd__ModifyStyle(0xc00000,0,0);
+  CWnd__ModifyStyleEx(0x200,0,0);
   iVar1 = GetObjectValueAtOffset98();
   if (iVar1 != 0) {
     uVar4 = 0;
     uVar3 = 0;
     uVar2 = 0x200;
     GetObjectValueAtOffset98(0x200,0,0);
-    ModifyStyleEx(uVar2,uVar3,uVar4);
+    CWnd__ModifyStyleEx(uVar2,uVar3,uVar4);
     uVar4 = 0;
     uVar3 = 0;
     uVar2 = 0x300;
     GetObjectValueAtOffset98(0x300,0,0);
-    ModifyStyleEx(uVar2,uVar3,uVar4);
+    CWnd__ModifyStyleEx(uVar2,uVar3,uVar4);
   }
   local_3c.left = 0;
   local_3c.top = 0;
   local_3c.right = param_2;
   local_3c.bottom = param_3;
   AdjustWindowRectEx(&local_3c,0x14cf0000,1,0x100);
-  SetWindowPos(0,0,0,local_3c.right - local_3c.left,local_3c.bottom - local_3c.top,0x16);
+  CWnd__SetWindowPos(0,0,0,local_3c.right - local_3c.left,local_3c.bottom - local_3c.top,0x16);
   local_2c[0] = 0x2c;
   GetWindowPlacementFromThisHwnd(local_2c);
   if (local_24 != 3) {
@@ -4269,11 +3634,10 @@ undefined4 __fastcall TryRealizeViewPaletteAndInvalidateWindow(int param_1)
   }
   CClientDC::CClientDC(param_1);
   local_4 = 0;
-  iVar1 = GetCurrentMessage();
-  uVar2 = thunk_DispatchHandleMapLookupWithReadPtrProbe
-                    (*(undefined4 *)(param_1 + 0xbc),*(int *)(iVar1 + 4) == 0x311);
+  iVar1 = CWnd__GetCurrentMessage();
+  uVar2 = CDC__SelectPalette(*(undefined4 *)(param_1 + 0xbc),*(int *)(iVar1 + 4) == 0x311);
   UVar3 = RealizePalette(unaff_EBX);
-  thunk_DispatchHandleMapLookupWithReadPtrProbe(uVar2,1);
+  CDC__SelectPalette(uVar2,1);
   if (UVar3 == 0) {
     CClientDC::~CClientDC();
     *unaff_FS_OFFSET = uStack_1c;
@@ -4401,6 +3765,8 @@ void SetUiRuntimeContextValue64ToZero(void)
 // GHIDRA_NAME TMacViewMgr_OnCommand_ID_8013_ShowTerrainOverlayDialog
 // GHIDRA_PROTO undefined TMacViewMgr_OnCommand_ID_8013_ShowTerrainOverlayDialog()
 
+/* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
+
 void TMacViewMgr_OnCommand_ID_8013_ShowTerrainOverlayDialog(void)
 
 {
@@ -4436,8 +3802,7 @@ void TMacViewMgr_OnCommand_ID_8013_ShowTerrainOverlayDialog(void)
       CString::CString(&CStack_cc);
       puStack_8._0_1_ = 2;
       func_0x00405245(&CStack_cc);
-      _Format_CString__QAAXPBDZZ
-                (aCStack_c4,s_Great_Power__2d___s_00694e70,wParam,CStack_cc.m_pchData);
+      CString__Format(aCStack_c4,s_Great_Power__2d___s_00694e70,wParam,CStack_cc.m_pchData);
       SendMessageA(pHStack_30,0x180,0,(LPARAM)aCStack_c4[0].m_pchData);
       SendMessageA(pHStack_30,0x19a,wParam,wParam);
       puStack_8._0_1_ = 1;
@@ -4455,7 +3820,7 @@ void TMacViewMgr_OnCommand_ID_8013_ShowTerrainOverlayDialog(void)
         CString::CString((CString *)&stack0xffffff30);
         puStack_8._0_1_ = 4;
         func_0x00405245(&stack0xffffff30);
-        _Format_CString__QAAXPBDZZ(&CStack_c8,s_Minor_Nation__2d___s_00694e54,wParam,unaff_EBX);
+        CString__Format(&CStack_c8,s_Minor_Nation__2d___s_00694e54,wParam,unaff_EBX);
         SendMessageA(pHStack_30,0x180,0,(LPARAM)CStack_c8.m_pchData);
         SendMessageA(pHStack_30,0x19a,wParam,wParam);
         puStack_8._0_1_ = 3;
@@ -4471,7 +3836,7 @@ void TMacViewMgr_OnCommand_ID_8013_ShowTerrainOverlayDialog(void)
     SendMessageA(pHStack_30,0x186,0,0);
     iVar2 = func_0x004055f6();
     if (iVar2 != 1) break;
-    if (iRam006a1838 == 0) {
+    if (_DAT_006a1838 == 0) {
       func_0x004057a4(s_d__Ambit_MainFrm_cpp_00694e38,0x26e);
     }
     uStack_4 = 7;
@@ -4747,7 +4112,7 @@ bool InvokeAfxThreadAndCallSecondaryRefresh(void)
 void WrapperFor_ftol_At00487150(void)
 
 {
-  _DAT_006a1938 = ftol();
+  _DAT_006a1938 = _ftol();
   return;
 }
 
@@ -4904,7 +4269,7 @@ void __thiscall Helper_Uses_FindIndex_At00487cc0(void *this,int param_1,int para
   
   iVar2 = param_1;
   if (param_1 != param_2) {
-    iVar3 = GenerateThreadLocalRandom15();
+    iVar3 = rand();
     uVar6 = param_2 - param_1 >> 0x1f;
     param_1 = iVar3 % (int)((param_2 - param_1 ^ uVar6) - uVar6) + param_1;
   }
@@ -5325,7 +4690,7 @@ void CPtrArray::~CPtrArray(void)
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
   
-  EstablishSehFrameProlog();
+  _EH_prolog();
   *(undefined4 **)(unaff_EBP + -0x10) = extraout_ECX;
   *extraout_ECX = &TIndexAndRankList::_vftable_;
   uVar1 = extraout_ECX[1];
@@ -5434,7 +4799,7 @@ AttachGlobalMemoryHandleAndResetPosition(int param_1,HGLOBAL param_2,undefined4 
 void WrapperFor_ftol_At00489a20(void)
 
 {
-  _DAT_006a1ab8 = ftol();
+  _DAT_006a1ab8 = _ftol();
   return;
 }
 
@@ -5484,7 +4849,7 @@ void WrapperFor_AppendPointerToGlobalVectorAsStatus_At00489ab0(void)
 
 {
   g_McAppUiMouseCaptureControl_006A1A80 = 0;
-  AppendPointerToGlobalVectorAsStatus(&LAB_00489ae0);
+  atexit(&LAB_00489ae0);
   return;
 }
 
@@ -5527,7 +4892,7 @@ WrapperFor_GetOrCreateCWndFromHandle_At00489bf0
   
   param_1[6] = param_3;
   pHVar2 = SetCapture(*(HWND *)(param_3[0x14] + 0x1c));
-  FromHandle(pHVar2);
+  CWnd__FromHandle(pHVar2);
   uVar1 = param_2[1];
   *param_1 = *param_2;
   param_1[1] = uVar1;
@@ -5716,6 +5081,860 @@ void __thiscall InitializePacketHeaderFields_Tag20202020(int param_1,undefined4 
   *(undefined4 *)(param_1 + 4) = 1;
   *(undefined4 *)(param_1 + 8) = 1;
   *(undefined4 *)(param_1 + 0xc) = param_2;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0048A410
+// GHIDRA_NAME WrapperFor_thunk_GetTickCountDiv16_At0048a410
+// GHIDRA_PROTO undefined WrapperFor_thunk_GetTickCountDiv16_At0048a410()
+
+void __thiscall WrapperFor_thunk_GetTickCountDiv16_At0048a410(int *param_1,int param_2)
+
+{
+  char cVar1;
+  int iVar2;
+  int iVar3;
+  
+  if (param_1[4] != 0x7fffffff) {
+    iVar3 = *param_1;
+    cVar1 = (**(code **)(iVar3 + 0x28))();
+    if (cVar1 != '\0') {
+      if ((param_2 == 1) && (iVar2 = func_0x004092d7(), iVar2 - param_1[5] < param_1[4])) {
+        return;
+      }
+      cVar1 = (**(code **)(iVar3 + 0x4c))(param_2);
+      if ((cVar1 == '\0') && (param_2 == 1)) {
+        iVar3 = func_0x004092d7();
+        param_1[5] = iVar3;
+      }
+    }
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0048AA60
+// GHIDRA_NAME InitializeUiResourceEntryFrameAndParent
+// GHIDRA_PROTO undefined InitializeUiResourceEntryFrameAndParent()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Initializes a UI resource entry frame and parent linkage.
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Algorithm:
+// GHIDRA_COMMENT 1. Stores parent pointer and inherited frame references.
+// GHIDRA_COMMENT 2. Copies incoming geometry bounds.
+// GHIDRA_COMMENT 3. If parent exists, invokes parent virtual attach callback.
+// GHIDRA_COMMENT 4. Stores the context slot/type selector.
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Used heavily by BuildTurnEventDialogUiByCode during entry registration.
+// GHIDRA_COMMENT_END
+
+/* Initializes a UI resource entry frame and parent linkage.
+   
+   Algorithm:
+   1. Stores parent pointer and inherited frame references.
+   2. Copies incoming geometry bounds.
+   3. If parent exists, invokes parent virtual attach callback.
+   4. Stores the context slot/type selector.
+   
+   Used heavily by BuildTurnEventDialogUiByCode during entry registration. */
+
+void __thiscall
+InitializeUiResourceEntryFrameAndParent
+          (int param_1,undefined4 param_2,int *param_3,undefined4 *param_4,undefined4 *param_5,
+          undefined4 param_6,undefined4 param_7,undefined4 param_8)
+
+{
+  if (param_3 != (int *)0x0) {
+    *(int *)(param_1 + 0x50) = param_3[0x14];
+  }
+  *(undefined4 *)(param_1 + 0x1c) = 0x20202020;
+  *(undefined4 *)(param_1 + 4) = 1;
+  *(undefined4 *)(param_1 + 8) = 1;
+  *(int **)(param_1 + 0xc) = param_3;
+  *(undefined4 *)(param_1 + 0x24) = *param_4;
+  *(undefined4 *)(param_1 + 0x28) = param_4[1];
+  *(undefined4 *)(param_1 + 0x34) = *param_5;
+  *(undefined4 *)(param_1 + 0x38) = param_5[1];
+  if (param_3 != (int *)0x0) {
+    (**(code **)(*param_3 + 0x170))(param_1,param_8);
+  }
+  *(undefined4 *)(param_1 + 0x40) = param_2;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0048B5F0
+// GHIDRA_NAME InvalidateCityDialogRectRegion
+// GHIDRA_PROTO undefined InvalidateCityDialogRectRegion()
+
+/* WARNING: Removing unreachable block (ram,0x0048b5ff) */
+
+void __thiscall InvalidateCityDialogRectRegion(int *param_1,RECT *param_2)
+
+{
+  tagRECT local_10;
+  
+  if ((param_1[0x14] != 0) && (*(int *)(param_1[0x14] + 0x1c) != 0)) {
+    if (param_2 == (RECT *)0x0) {
+      (**(code **)(*param_1 + 0x15c))(&local_10);
+    }
+    else {
+      CopyRect(&local_10,param_2);
+      (**(code **)(*param_1 + 0x130))(&local_10);
+    }
+    if (g_McAppUiActiveFlag_006950AC != 0) {
+      InvalidateRect(*(HWND *)(param_1[0x14] + 0x1c),(RECT *)&stack0xffffffec,0);
+    }
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0048C900
+// GHIDRA_NAME PropagateUiResourceContextRecursive
+// GHIDRA_PROTO undefined PropagateUiResourceContextRecursive()
+
+void __thiscall PropagateUiResourceContextRecursive(int param_1,undefined4 param_2)
+
+{
+  int iVar1;
+  undefined4 *puVar2;
+  
+  *(undefined4 *)(param_1 + 0x50) = param_2;
+  if (*(int *)(param_1 + 0x44) == 0) {
+    puVar2 = (undefined4 *)0x0;
+  }
+  else {
+    puVar2 = *(undefined4 **)(*(int *)(param_1 + 0x44) + 4);
+  }
+  if (puVar2 == (undefined4 *)0x0) {
+    iVar1 = 0;
+    puVar2 = (undefined4 *)0x0;
+  }
+  else {
+    iVar1 = puVar2[2];
+    puVar2 = (undefined4 *)*puVar2;
+  }
+  while (iVar1 != 0) {
+    func_0x004074d2(param_2);
+    if (puVar2 == (undefined4 *)0x0) {
+      iVar1 = 0;
+      puVar2 = (undefined4 *)0x0;
+    }
+    else {
+      iVar1 = puVar2[2];
+      puVar2 = (undefined4 *)*puVar2;
+    }
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0048CE70
+// GHIDRA_NAME DestructTIncludeViewAndMaybeFree_Impl
+// GHIDRA_PROTO undefined __thiscall DestructTIncludeViewAndMaybeFree_Impl(void)
+
+void __thiscall DestructTIncludeViewAndMaybeFree_Impl(void *this)
+
+{
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 uStack_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  puStack_8 = &LAB_0062ed8b;
+  uStack_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &uStack_c;
+  local_4 = 0;
+  CString::~CString((CString *)((int)this + 0x6c));
+  *(TViewVtbl **)this = &TView::_vftable_;
+  local_4 = 2;
+  if (*(int **)((int)this + 0x44) != (int *)0x0) {
+    (**(code **)(**(int **)((int)this + 0x44) + 4))(1);
+  }
+  operator_delete(*(undefined4 *)((int)this + 0x48));
+  local_4 = CONCAT31(local_4._1_3_,1);
+  CString::~CString((CString *)((int)this + 0x58));
+  *(char **)this = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  *unaff_FS_OFFSET = uStack_c;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0048D240
+// GHIDRA_NAME InitializeViewModalStateNodeBlockChainHeadAndRegisterAtExit
+// GHIDRA_PROTO undefined InitializeViewModalStateNodeBlockChainHeadAndRegisterAtExit()
+
+void InitializeViewModalStateNodeBlockChainHeadAndRegisterAtExit(void)
+
+{
+  func_0x00404cb4(10);
+  atexit(DestroyViewModalStateNodeBlockChainAtExit);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0048D270
+// GHIDRA_NAME DestroyViewModalStateNodeBlockChainAtExit
+// GHIDRA_PROTO undefined DestroyViewModalStateNodeBlockChainAtExit()
+
+void DestroyViewModalStateNodeBlockChainAtExit(void)
+
+{
+  func_0x004069e7();
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0048D4A0
+// GHIDRA_NAME InitializeTWindowUnlinkDestructState_006A1A40_AndRegisterAtExit
+// GHIDRA_PROTO undefined InitializeTWindowUnlinkDestructState_006A1A40_AndRegisterAtExit()
+
+void InitializeTWindowUnlinkDestructState_006A1A40_AndRegisterAtExit(void)
+
+{
+  func_0x00404cb4(10);
+  atexit(DestroyTWindowUnlinkDestructState_006A1A40_AtExitOnce);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0048D4D0
+// GHIDRA_NAME DestroyTWindowUnlinkDestructState_006A1A40_AtExitOnce
+// GHIDRA_PROTO undefined DestroyTWindowUnlinkDestructState_006A1A40_AtExitOnce()
+
+void DestroyTWindowUnlinkDestructState_006A1A40_AtExitOnce(void)
+
+{
+  if ((DAT_006a1a28 & 1) == 0) {
+    DAT_006a1a28 = DAT_006a1a28 | 1;
+    func_0x004069e7();
+    return;
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0048D4E9
+// GHIDRA_NAME DestructViewModalStateNodeBlockChainAndRestoreBaseRuntimeClass
+// GHIDRA_PROTO undefined DestructViewModalStateNodeBlockChainAndRestoreBaseRuntimeClass()
+
+void DestructViewModalStateNodeBlockChainAndRestoreBaseRuntimeClass(void)
+
+{
+  func_0x004069e7();
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0048D670
+// GHIDRA_NAME DestructTWindowViewAndUnlinkGlobalLists
+// GHIDRA_PROTO undefined __thiscall DestructTWindowViewAndUnlinkGlobalLists(void)
+
+void __thiscall DestructTWindowViewAndUnlinkGlobalLists(void *this)
+
+{
+  int *piVar1;
+  undefined4 *puVar2;
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 uStack_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  puStack_8 = &LAB_0062ee26;
+  uStack_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &uStack_c;
+  *(TWindowVtbl **)this = &TWindowVtbl_00649e58;
+  local_4 = 1;
+  for (piVar1 = DAT_006a1a44; piVar1 != (int *)0x0; piVar1 = (int *)*piVar1) {
+    if ((void *)piVar1[2] == this) goto LAB_0048d6b8;
+  }
+  piVar1 = (int *)0x0;
+LAB_0048d6b8:
+  if (piVar1 == DAT_006a1a44) {
+    DAT_006a1a44 = (int *)*piVar1;
+  }
+  else {
+    *(int *)piVar1[1] = *piVar1;
+  }
+  if (piVar1 == DAT_006a1a48) {
+    DAT_006a1a48 = (int *)piVar1[1];
+  }
+  else {
+    *(int *)(*piVar1 + 4) = piVar1[1];
+  }
+  *piVar1 = (int)DAT_006a1a50;
+  DAT_006a1a4c = DAT_006a1a4c + -1;
+  puVar2 = DAT_006a1ac4;
+  DAT_006a1a50 = piVar1;
+  if (DAT_006a1a4c == 0) {
+    for (; DAT_006a1a44 != (int *)0x0; DAT_006a1a44 = (int *)*DAT_006a1a44) {
+    }
+    DAT_006a1a4c = 0;
+    DAT_006a1a50 = (int *)0x0;
+    DAT_006a1a48 = (int *)0x0;
+    DAT_006a1a44 = (int *)0x0;
+    CPlex::FreeDataChain();
+    DAT_006a1a54 = 0;
+    puVar2 = DAT_006a1ac4;
+  }
+  for (; puVar2 != (undefined4 *)0x0; puVar2 = (undefined4 *)*puVar2) {
+    if ((void *)puVar2[2] == this) goto LAB_0048d750;
+  }
+  puVar2 = (undefined4 *)0x0;
+LAB_0048d750:
+  if (((puVar2 != (undefined4 *)0x0) && (func_0x00405c95(puVar2), DAT_006a1ac4 != (undefined4 *)0x0)
+      ) && (piVar1 = (int *)DAT_006a1ac4[2], (**(code **)(*piVar1 + 0xc))(), piVar1[0x14] != 0)) {
+    CMcWindow::EnableWindowOrDelegateToOwner(1);
+  }
+  *(char **)((int)this + 0x74) = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  *(TViewVtbl **)this = &TView::_vftable_;
+  local_4 = 3;
+  if (*(int **)((int)this + 0x44) != (int *)0x0) {
+    (**(code **)(**(int **)((int)this + 0x44) + 4))(1);
+  }
+  operator_delete(*(undefined4 *)((int)this + 0x48));
+  local_4 = CONCAT31(local_4._1_3_,2);
+  CString::~CString((CString *)((int)this + 0x58));
+  *(char **)this = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  *unaff_FS_OFFSET = uStack_c;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0048F330
+// GHIDRA_NAME InitializePictureEntryBaseAndRefresh
+// GHIDRA_PROTO undefined InitializePictureEntryBaseAndRefresh()
+
+void __thiscall
+InitializePictureEntryBaseAndRefresh
+          (int *param_1,int *param_2,int *param_3,int *param_4,undefined4 param_5,undefined4 param_6
+          ,undefined4 param_7)
+
+{
+  if (param_2 != (int *)0x0) {
+    param_1[0x14] = param_2[0x14];
+  }
+  param_1[7] = 0x20202020;
+  param_1[1] = 1;
+  param_1[2] = 1;
+  param_1[3] = (int)param_2;
+  param_1[9] = *param_3;
+  param_1[10] = param_3[1];
+  param_1[0xd] = *param_4;
+  param_1[0xe] = param_4[1];
+  if (param_2 != (int *)0x0) {
+    (**(code **)(*param_2 + 0x170))(param_1,0);
+  }
+  param_1[0x10] = 0;
+  (**(code **)(*param_1 + 0x1c8))(param_7,0);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0048F610
+// GHIDRA_NAME SetPictureResourceIdAndRefresh_Impl
+// GHIDRA_PROTO undefined SetPictureResourceIdAndRefresh_Impl()
+
+void __thiscall
+SetPictureResourceIdAndRefresh_Impl(undefined4 *param_1,undefined4 param_2,undefined4 param_3)
+
+{
+  *param_1 = param_2;
+  param_1[1] = param_3;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0048F640
+// GHIDRA_NAME CloneCityDialogExtendedStateToNewInstance
+// GHIDRA_PROTO CityDialogController * __thiscall CloneCityDialogExtendedStateToNewInstance(CityDialogController * pSource)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Setting prototype: CityDialogController * CloneCityDialogExtendedStateToNewInstance(CityDialogController *pSource)
+// GHIDRA_COMMENT_END
+
+/* Setting prototype: CityDialogController *
+   CloneCityDialogExtendedStateToNewInstance(CityDialogController *pSource) */
+
+CityDialogController * __thiscall
+CloneCityDialogExtendedStateToNewInstance(void *this,CityDialogController *pSource)
+
+{
+  short sVar1;
+  int iVar2;
+  CityDialogController *pCVar3;
+  
+  pCVar3 = (CityDialogController *)(**(code **)(*(int *)this + 0x24))();
+  func_0x004040e8(this);
+  pCVar3->extendedField60 = *(int *)((int)this + 0x60);
+  pCVar3->extendedFlag64 = *(byte *)((int)this + 100);
+  pCVar3->extendedField68 = *(int *)((int)this + 0x68);
+  pCVar3->extendedField6C = *(int *)((int)this + 0x6c);
+  pCVar3->extendedField70 = *(int *)((int)this + 0x70);
+  pCVar3->extendedField74 = *(int *)((int)this + 0x74);
+  pCVar3->extendedField78 = *(int *)((int)this + 0x78);
+  pCVar3->extendedField7C = *(int *)((int)this + 0x7c);
+  pCVar3->extendedShort80 = *(short *)((int)this + 0x80);
+  sVar1 = *(short *)((int)this + 0x84);
+  pCVar3->extendedResourceShort84 = sVar1;
+  iVar2 = *(int *)((int)this + 0x88);
+  pCVar3->extendedResourceHandle88 = iVar2;
+  pCVar3->extendedField8C = *(int *)((int)this + 0x8c);
+  if (sVar1 != -1) {
+    func_0x00402c98(CONCAT22((short)((uint)iVar2 >> 0x10),sVar1));
+  }
+  return pCVar3;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x0048FD00
+// GHIDRA_NAME InitializeTextEntryBaseAndOptionalStringResource
+// GHIDRA_PROTO undefined InitializeTextEntryBaseAndOptionalStringResource()
+
+void __thiscall
+InitializeTextEntryBaseAndOptionalStringResource
+          (int *param_1,int *param_2,int *param_3,int *param_4,short param_5,short param_6)
+
+{
+  int iVar1;
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 uVar2;
+  undefined4 uStack_c;
+  undefined1 *puStack_8;
+  undefined4 uStack_4;
+  
+  uStack_c = *unaff_FS_OFFSET;
+  uStack_4 = 0xffffffff;
+  puStack_8 = &LAB_0062f0c8;
+  *unaff_FS_OFFSET = &uStack_c;
+  if (param_2 != (int *)0x0) {
+    param_1[0x14] = param_2[0x14];
+  }
+  param_1[7] = 0x20202020;
+  param_1[1] = 1;
+  param_1[2] = 1;
+  param_1[3] = (int)param_2;
+  param_1[9] = *param_3;
+  param_1[10] = param_3[1];
+  param_1[0xd] = *param_4;
+  param_1[0xe] = param_4[1];
+  if (param_2 != (int *)0x0) {
+    (**(code **)(*param_2 + 0x170))(param_1,0);
+  }
+  iVar1 = *param_1;
+  uVar2 = 0;
+  param_1[0x10] = 0;
+  (**(code **)(iVar1 + 0x1b4))(&g_nUiResourceEntryDefaultParam0);
+  param_1[0x22] = (int)param_5;
+  param_1[0x23] = (int)param_6;
+  if (param_5 != -1) {
+    CString::CString((CString *)&param_5);
+    uStack_c = 0;
+    func_0x00401e7e(&param_5,param_1[0x22],param_1[0x23]);
+    (**(code **)(iVar1 + 0x1c8))(&param_2,0);
+    uStack_c = 0xffffffff;
+    CString::~CString((CString *)&param_5);
+  }
+  (**(code **)(iVar1 + 0x2c))(0);
+  *unaff_FS_OFFSET = uVar2;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004905E0
+// GHIDRA_NAME WrapperFor_thunk_InitializeTextEntryBaseAndOptionalStringResource_At004905e0
+// GHIDRA_PROTO undefined WrapperFor_thunk_InitializeTextEntryBaseAndOptionalStringResource_At004905e0()
+
+void __thiscall
+WrapperFor_thunk_InitializeTextEntryBaseAndOptionalStringResource_At004905e0
+          (int *param_1,undefined4 param_2,undefined4 param_3,undefined4 param_4)
+
+{
+  undefined2 uVar1;
+  
+  uVar1 = 0xffff;
+  func_0x00401fd2(param_2,param_3,param_4,5,5,0xffffffff,0);
+  *(undefined2 *)(param_1 + 0x27) = uVar1;
+  (**(code **)(*param_1 + 0x2c))(1);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004914B0
+// GHIDRA_NAME DestructTClusterAndMaybeFree_Impl
+// GHIDRA_PROTO undefined __thiscall DestructTClusterAndMaybeFree_Impl(void)
+
+void __thiscall DestructTClusterAndMaybeFree_Impl(void *this)
+
+{
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 uStack_c;
+  undefined1 *puStack_8;
+  uint local_4;
+  
+  puStack_8 = &LAB_0062f2b3;
+  uStack_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &uStack_c;
+  *(TViewVtbl **)this = &TView::_vftable_;
+  local_4 = 1;
+  if (*(int **)((int)this + 0x44) != (int *)0x0) {
+    (**(code **)(**(int **)((int)this + 0x44) + 4))(1);
+  }
+  operator_delete(*(undefined4 *)((int)this + 0x48));
+  local_4 = local_4 & 0xffffff00;
+  CString::~CString((CString *)((int)this + 0x58));
+  *(char **)this = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  *unaff_FS_OFFSET = uStack_c;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004915D0
+// GHIDRA_NAME OrphanCallChain_C1_I31_004915d0
+// GHIDRA_PROTO undefined OrphanCallChain_C1_I31_004915d0()
+
+void __thiscall
+OrphanCallChain_C1_I31_004915d0(int param_1,int *param_2,undefined4 *param_3,undefined4 *param_4)
+
+{
+  if (param_2 != (int *)0x0) {
+    *(int *)(param_1 + 0x50) = param_2[0x14];
+  }
+  *(undefined4 *)(param_1 + 0x1c) = 0x20202020;
+  *(undefined4 *)(param_1 + 4) = 1;
+  *(undefined4 *)(param_1 + 8) = 1;
+  *(int **)(param_1 + 0xc) = param_2;
+  *(undefined4 *)(param_1 + 0x24) = *param_3;
+  *(undefined4 *)(param_1 + 0x28) = param_3[1];
+  *(undefined4 *)(param_1 + 0x34) = *param_4;
+  *(undefined4 *)(param_1 + 0x38) = param_4[1];
+  if (param_2 != (int *)0x0) {
+    (**(code **)(*param_2 + 0x170))(param_1,0);
+  }
+  *(undefined4 *)(param_1 + 0x40) = 0;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00491BE0
+// GHIDRA_NAME RegisterDialogFactoryCallback
+// GHIDRA_PROTO void __thiscall RegisterDialogFactoryCallback(int pFactoryFn)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Registers one callback function pointer into factory manager linked list / freelist-backed node pool.
+// GHIDRA_COMMENT_END
+
+/* Registers one callback function pointer into factory manager linked list / freelist-backed node
+   pool. */
+
+void __thiscall RegisterDialogFactoryCallback(void *this,int pFactoryFn)
+
+{
+  undefined4 uVar1;
+  int iVar2;
+  undefined4 *puVar3;
+  int iVar4;
+  
+  uVar1 = *(undefined4 *)((int)this + 0xc);
+  if (*(int *)((int)this + 0x14) == 0) {
+    iVar2 = CPlex::Create((int)this + 0x18,*(undefined4 *)((int)this + 0x1c),0xc);
+    iVar4 = *(int *)((int)this + 0x1c);
+    puVar3 = (undefined4 *)(iVar2 + -8 + iVar4 * 0xc);
+    if (-1 < iVar4 + -1) {
+      do {
+        *puVar3 = *(undefined4 *)((int)this + 0x14);
+        *(undefined4 **)((int)this + 0x14) = puVar3;
+        puVar3 = puVar3 + -3;
+        iVar4 = iVar4 + -1;
+      } while (iVar4 != 0);
+    }
+  }
+  puVar3 = *(undefined4 **)((int)this + 0x14);
+  *(undefined4 *)((int)this + 0x14) = *puVar3;
+  puVar3[1] = uVar1;
+  *puVar3 = 0;
+  *(int *)((int)this + 0x10) = *(int *)((int)this + 0x10) + 1;
+  puVar3[2] = 0;
+  puVar3[2] = pFactoryFn;
+  if (*(undefined4 **)((int)this + 0xc) == (undefined4 *)0x0) {
+    *(undefined4 **)((int)this + 8) = puVar3;
+    *(undefined4 **)((int)this + 0xc) = puVar3;
+    return;
+  }
+  **(undefined4 **)((int)this + 0xc) = puVar3;
+  *(undefined4 **)((int)this + 0xc) = puVar3;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00492140
+// GHIDRA_NAME DestructTWindowAndUnlinkGlobalWindowNode
+// GHIDRA_PROTO undefined __thiscall DestructTWindowAndUnlinkGlobalWindowNode(void)
+
+void __thiscall DestructTWindowAndUnlinkGlobalWindowNode(void *this)
+
+{
+  int *piVar1;
+  undefined4 *puVar2;
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 uStack_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  puStack_8 = &LAB_0062f376;
+  uStack_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &uStack_c;
+  *(TWindowVtbl **)this = &TWindowVtbl_00649e58;
+  local_4 = 1;
+  for (piVar1 = DAT_006a1a44; piVar1 != (int *)0x0; piVar1 = (int *)*piVar1) {
+    if ((void *)piVar1[2] == this) goto LAB_00492185;
+  }
+  piVar1 = (int *)0x0;
+LAB_00492185:
+  if (piVar1 == DAT_006a1a44) {
+    DAT_006a1a44 = (int *)*piVar1;
+  }
+  else {
+    *(int *)piVar1[1] = *piVar1;
+  }
+  if (piVar1 == DAT_006a1a48) {
+    DAT_006a1a48 = (int *)piVar1[1];
+  }
+  else {
+    *(int *)(*piVar1 + 4) = piVar1[1];
+  }
+  *piVar1 = (int)DAT_006a1a50;
+  DAT_006a1a4c = DAT_006a1a4c + -1;
+  puVar2 = DAT_006a1ac4;
+  DAT_006a1a50 = piVar1;
+  if (DAT_006a1a4c == 0) {
+    func_0x004010af();
+    puVar2 = DAT_006a1ac4;
+  }
+  for (; puVar2 != (undefined4 *)0x0; puVar2 = (undefined4 *)*puVar2) {
+    if ((void *)puVar2[2] == this) goto LAB_004921ef;
+  }
+  puVar2 = (undefined4 *)0x0;
+LAB_004921ef:
+  if (((puVar2 != (undefined4 *)0x0) && (func_0x00405c95(puVar2), DAT_006a1ac4 != (undefined4 *)0x0)
+      ) && (piVar1 = (int *)DAT_006a1ac4[2], (**(code **)(*piVar1 + 0xc))(), piVar1[0x14] != 0)) {
+    CMcWindow::EnableWindowOrDelegateToOwner(1);
+  }
+  *(char **)((int)this + 0x74) = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  *(TViewVtbl **)this = &TView::_vftable_;
+  local_4 = 3;
+  if (*(int **)((int)this + 0x44) != (int *)0x0) {
+    (**(code **)(**(int **)((int)this + 0x44) + 4))(1);
+  }
+  operator_delete(*(undefined4 *)((int)this + 0x48));
+  local_4 = CONCAT31(local_4._1_3_,2);
+  CString::~CString((CString *)((int)this + 0x58));
+  *(char **)this = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  *unaff_FS_OFFSET = uStack_c;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004924C0
+// GHIDRA_NAME PopSinglyLinkedListHeadPointer
+// GHIDRA_PROTO undefined PopSinglyLinkedListHeadPointer()
+
+int PopSinglyLinkedListHeadPointer(int *param_1)
+
+{
+  int *piVar1;
+  
+  piVar1 = (int *)*param_1;
+  *param_1 = *piVar1;
+  return (int)(piVar1 + 2);
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004924E0
+// GHIDRA_NAME EnsureChildResourceWindowAndNotify_Impl
+// GHIDRA_PROTO undefined EnsureChildResourceWindowAndNotify_Impl()
+
+int EnsureChildResourceWindowAndNotify_Impl(int *param_1)
+
+{
+  int iVar1;
+  
+  iVar1 = *param_1;
+  *param_1 = *(int *)(iVar1 + 4);
+  return iVar1 + 8;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00492510
+// GHIDRA_NAME InitializeViewModalStateNodeBlockChainRuntimeClassFields
+// GHIDRA_PROTO undefined InitializeViewModalStateNodeBlockChainRuntimeClassFields()
+
+void __thiscall
+InitializeViewModalStateNodeBlockChainRuntimeClassFields(undefined4 *param_1,undefined4 param_2)
+
+{
+  param_1[3] = 0;
+  param_1[4] = 0;
+  param_1[2] = 0;
+  param_1[1] = 0;
+  param_1[5] = 0;
+  *param_1 = &DAT_0064b580;
+  param_1[6] = param_2;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00492550
+// GHIDRA_NAME UnlinkNodeFromDoublyLinkedListAndRecycle
+// GHIDRA_PROTO undefined UnlinkNodeFromDoublyLinkedListAndRecycle()
+
+void __thiscall UnlinkNodeFromDoublyLinkedListAndRecycle(int param_1,int *param_2)
+
+{
+  undefined4 *puVar1;
+  int iVar2;
+  
+  if (param_2 == *(int **)(param_1 + 4)) {
+    *(int *)(param_1 + 4) = *param_2;
+  }
+  else {
+    *(int *)param_2[1] = *param_2;
+  }
+  if (param_2 == *(int **)(param_1 + 8)) {
+    *(int *)(param_1 + 8) = param_2[1];
+  }
+  else {
+    *(int *)(*param_2 + 4) = param_2[1];
+  }
+  *param_2 = *(int *)(param_1 + 0x10);
+  *(int **)(param_1 + 0x10) = param_2;
+  iVar2 = *(int *)(param_1 + 0xc) + -1;
+  *(int *)(param_1 + 0xc) = iVar2;
+  if (iVar2 == 0) {
+    for (puVar1 = *(undefined4 **)(param_1 + 4); puVar1 != (undefined4 *)0x0;
+        puVar1 = (undefined4 *)*puVar1) {
+    }
+    *(undefined4 *)(param_1 + 0xc) = 0;
+    *(undefined4 *)(param_1 + 0x10) = 0;
+    *(undefined4 *)(param_1 + 8) = 0;
+    *(undefined4 *)(param_1 + 4) = 0;
+    CPlex::FreeDataChain();
+    *(undefined4 *)(param_1 + 0x14) = 0;
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004925E0
+// GHIDRA_NAME DestructViewModalStateNodeBlockChainAndRestoreBaseRuntimeClass
+// GHIDRA_PROTO undefined DestructViewModalStateNodeBlockChainAndRestoreBaseRuntimeClass()
+
+void __fastcall DestructViewModalStateNodeBlockChainAndRestoreBaseRuntimeClass(undefined4 *param_1)
+
+{
+  undefined4 *puVar1;
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 local_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  puStack_8 = &LAB_0062f398;
+  local_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &local_c;
+  *param_1 = &DAT_0064b580;
+  puVar1 = (undefined4 *)param_1[1];
+  local_4 = 0;
+  for (; puVar1 != (undefined4 *)0x0; puVar1 = (undefined4 *)*puVar1) {
+  }
+  param_1[3] = 0;
+  param_1[4] = 0;
+  param_1[2] = 0;
+  param_1[1] = 0;
+  CPlex::FreeDataChain();
+  param_1[5] = 0;
+  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
+  *unaff_FS_OFFSET = local_c;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00492A40
+// GHIDRA_NAME WrapperFor_AllocateAndLinkBlockHead_At00492a40
+// GHIDRA_PROTO undefined WrapperFor_AllocateAndLinkBlockHead_At00492a40()
+
+void __thiscall
+WrapperFor_AllocateAndLinkBlockHead_At00492a40(int param_1,undefined4 param_2,undefined4 param_3)
+
+{
+  int iVar1;
+  undefined4 *puVar2;
+  int iVar3;
+  
+  if (*(int *)(param_1 + 0x10) == 0) {
+    iVar1 = CPlex::Create(param_1 + 0x14,*(undefined4 *)(param_1 + 0x18),0xc);
+    iVar3 = *(int *)(param_1 + 0x18);
+    puVar2 = (undefined4 *)(iVar1 + -8 + iVar3 * 0xc);
+    if (-1 < iVar3 + -1) {
+      do {
+        *puVar2 = *(undefined4 *)(param_1 + 0x10);
+        *(undefined4 **)(param_1 + 0x10) = puVar2;
+        puVar2 = puVar2 + -3;
+        iVar3 = iVar3 + -1;
+      } while (iVar3 != 0);
+    }
+  }
+  puVar2 = *(undefined4 **)(param_1 + 0x10);
+  *(undefined4 *)(param_1 + 0x10) = *puVar2;
+  puVar2[1] = param_2;
+  *puVar2 = param_3;
+  *(int *)(param_1 + 0xc) = *(int *)(param_1 + 0xc) + 1;
+  puVar2[2] = 0;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00492AC0
+// GHIDRA_NAME WrapperFor_FreeLinkedBlockChain_At00492ac0
+// GHIDRA_PROTO undefined WrapperFor_FreeLinkedBlockChain_At00492ac0()
+
+void __fastcall WrapperFor_FreeLinkedBlockChain_At00492ac0(int param_1)
+
+{
+  undefined4 *puVar1;
+  
+  for (puVar1 = *(undefined4 **)(param_1 + 4); puVar1 != (undefined4 *)0x0;
+      puVar1 = (undefined4 *)*puVar1) {
+  }
+  *(undefined4 *)(param_1 + 0xc) = 0;
+  *(undefined4 *)(param_1 + 0x10) = 0;
+  *(undefined4 *)(param_1 + 8) = 0;
+  *(undefined4 *)(param_1 + 4) = 0;
+  CPlex::FreeDataChain();
+  *(undefined4 *)(param_1 + 0x14) = 0;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00492B00
+// GHIDRA_NAME WrapperFor_FreeLinkedBlockChain_At00492b00
+// GHIDRA_PROTO undefined WrapperFor_FreeLinkedBlockChain_At00492b00()
+
+void __thiscall WrapperFor_FreeLinkedBlockChain_At00492b00(int param_1,undefined4 *param_2)
+
+{
+  undefined4 *puVar1;
+  int iVar2;
+  
+  *param_2 = *(undefined4 *)(param_1 + 0x10);
+  *(undefined4 **)(param_1 + 0x10) = param_2;
+  iVar2 = *(int *)(param_1 + 0xc) + -1;
+  *(int *)(param_1 + 0xc) = iVar2;
+  if (iVar2 == 0) {
+    for (puVar1 = *(undefined4 **)(param_1 + 4); puVar1 != (undefined4 *)0x0;
+        puVar1 = (undefined4 *)*puVar1) {
+    }
+    *(undefined4 *)(param_1 + 0xc) = 0;
+    *(undefined4 *)(param_1 + 0x10) = 0;
+    *(undefined4 *)(param_1 + 8) = 0;
+    *(undefined4 *)(param_1 + 4) = 0;
+    CPlex::FreeDataChain();
+    *(undefined4 *)(param_1 + 0x14) = 0;
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00492B70
+// GHIDRA_NAME WrapperFor_StringSharedRef_AssignFromPtr_At00492b70
+// GHIDRA_PROTO undefined WrapperFor_StringSharedRef_AssignFromPtr_At00492b70()
+
+CString * __thiscall
+WrapperFor_StringSharedRef_AssignFromPtr_At00492b70(CString *param_1,CString *param_2)
+
+{
+  CString::CString(param_1,param_2);
+  return param_1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00492CA0
+// GHIDRA_NAME WrapperFor_FreeHeapBufferIfNotNull_At00492c70_Impl
+// GHIDRA_PROTO undefined WrapperFor_FreeHeapBufferIfNotNull_At00492c70_Impl()
+
+void __fastcall WrapperFor_FreeHeapBufferIfNotNull_At00492c70_Impl(undefined4 *param_1)
+
+{
+  *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   return;
 }
 

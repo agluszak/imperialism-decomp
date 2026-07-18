@@ -412,10 +412,10 @@ void TWindow::HandleEvent(int param_1)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048DDC0
-// GHIDRA_NAME TWindow::OrphanCallChain_C2_I19_0048ddc0
-// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C2_I19_0048ddc0(TWindow * param_1)
+// GHIDRA_NAME TWindow::SetWindowTarget
+// GHIDRA_PROTO undefined __thiscall SetWindowTarget(TWindow * param_1)
 
-void TWindow::OrphanCallChain_C2_I19_0048ddc0(TWindow *param_1)
+void TWindow::SetWindowTarget(TWindow *param_1)
 
 {
   TWindowVtbl *pTVar1;

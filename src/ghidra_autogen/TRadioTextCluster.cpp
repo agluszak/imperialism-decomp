@@ -97,6 +97,93 @@ void TRadioTextCluster::HandleEvent(int param_1, void *param_2, int param_3)
   return;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x005798A0
+// GHIDRA_NAME TRadioTextCluster::AddItem
+// GHIDRA_PROTO undefined AddItem()
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Creates and attaches a selectable text option child entry to the current option-list container.
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Behavior notes:
+// GHIDRA_COMMENT - Computes fallback bounds from existing children when width is unspecified.
+// GHIDRA_COMMENT - Allocates a ConstructSelectableTextOptionEntry instance.
+// GHIDRA_COMMENT - Assigns control tag/id fields and text payload, then enables the entry.
+// GHIDRA_COMMENT_END
+
+/* Creates and attaches a selectable text option child entry to the current option-list container.
+   
+   Behavior notes:
+   - Computes fallback bounds from existing children when width is unspecified.
+   - Allocates a ConstructSelectableTextOptionEntry instance.
+   - Assigns control tag/id fields and text payload, then enables the entry. */
+
+int * __thiscall TRadioTextCluster::AddItem(int param_1)
+
+{
+  int *piVar1;
+  int iVar2;
+  undefined4 unaff_EBX;
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 in_stack_00000010;
+  int in_stack_00000014;
+  int iStack_30;
+  undefined4 uStack_2c;
+  int iStack_28;
+  int iStack_24;
+  undefined4 local_20;
+  int iStack_18;
+  int iStack_14;
+  CString CStack_10;
+  undefined4 uStack_c;
+  CString CStack_8;
+  undefined4 uStack_4;
+  
+  uStack_c = *unaff_FS_OFFSET;
+  uStack_4 = 0xffffffff;
+  CStack_8.m_pchData = &LAB_00636b12;
+  *unaff_FS_OFFSET = &uStack_c;
+  if (in_stack_00000014 == -1) {
+    in_stack_00000014 = (int)*(short *)(param_1 + 0x92);
+    func_0x00403bbb(param_1);
+    piVar1 = (int *)func_0x00405754();
+    iVar2 = func_0x00406c4e();
+    while (iVar2 != 0) {
+      (**(code **)(*piVar1 + 0xc))();
+      iVar2 = piVar1[10] + piVar1[0xe] + (int)*(short *)(param_1 + 0x94);
+      if (in_stack_00000014 < iVar2) {
+        in_stack_00000014 = iVar2;
+      }
+      piVar1 = (int *)func_0x00404368();
+      iVar2 = func_0x00406c4e();
+    }
+  }
+  piVar1 = (int *)operator_new(0x9c);
+  uStack_4 = 0;
+  if (piVar1 == (int *)0x0) {
+    piVar1 = (int *)0x0;
+  }
+  else {
+    func_0x00401bea();
+    *piVar1 = (int)&TRadioText::_vftable_;
+  }
+  iStack_28 = (int)*(short *)(param_1 + 0x92);
+  iStack_30 = *(int *)(param_1 + 0x34) + iStack_28 * -2;
+  uStack_4 = 0xffffffff;
+  uStack_2c = in_stack_00000010;
+  iStack_24 = in_stack_00000014;
+  func_0x00401fd2(param_1,&iStack_28,&iStack_30,5,5,0xffffffff,1);
+  piVar1[7] = iStack_18;
+  piVar1[0xf] = iStack_14;
+  CString::CString(&CStack_8,CStack_10.m_pchData);
+  iVar2 = *piVar1;
+  local_20 = 1;
+  (**(code **)(iVar2 + 0x1c8))(&CStack_8,1);
+  iStack_28 = -1;
+  CString::~CString(&CStack_10);
+  (**(code **)(iVar2 + 0x2c))(1);
+  *unaff_FS_OFFSET = unaff_EBX;
+  return piVar1;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x00579A60
 // GHIDRA_NAME TRadioTextCluster::ApplyRectSlot110
 // GHIDRA_PROTO undefined __thiscall ApplyRectSlot110(void)

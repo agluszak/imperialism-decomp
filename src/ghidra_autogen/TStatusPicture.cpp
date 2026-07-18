@@ -285,12 +285,12 @@ void TStatusPicture::ApplyRectSlot110()
   func_0x00404fe8();
   CString::CString((CString *)&stack0x00000000);
   puStack_8 = (undefined1 *)0x0;
-  (*g_pLocalizationTable->vftable[0x10].slot_0x04)
+  (*g_pSimMgr->vftable[0x10].slot_0x04)
             (0x2757,CONCAT22((short)((uint)&stack0x00000000 >> 0x10),*(short *)&this->field_0x90 + 8
                             ),&stack0x00000000);
   func_0x0040448f(0,0xe,0x2b6a);
-  sVar1 = MeasureTextExtentWithCachedQuickDrawStyle(&CStack_c,0x3c);
-  SetQuickDrawTextOriginWithContextOffset(0x140 - (int)sVar1 / 2);
+  sVar1 = func_0x00405b7d(&CStack_c,0x3c);
+  func_0x00408d6e(0x140 - (int)sVar1 / 2);
   func_0x004029aa(&CStack_c);
   iVar2 = 100;
   psVar3 = (short *)&this->field_0xb0;
@@ -300,15 +300,15 @@ void TStatusPicture::ApplyRectSlot110()
       CString::CString((CString *)&stack0xffffffcc);
       func_0x0040448f(0,0xc,0x2b6a);
       func_0x00405245(&stack0xffffffcc);
-      SetQuickDrawTextOriginWithContextOffset(0x9a,iVar2 + -8);
+      func_0x00408d6e(0x9a,iVar2 + -8);
       func_0x004029aa(auStack_38);
       sVar1 = *psVar3;
       iVar4 = 0x98;
       func_0x00406b86(0);
-      FillRectWithQuickDrawBrushAndContextOffset(&stack0xffffffd0);
+      func_0x00406546(&stack0xffffffd0);
       OffsetRect((LPRECT)&stack0xffffffd0,-1,-1);
       (**(code **)(g_pUiRuntimeContext->vftable + 0x34))(sVar1);
-      FillRectWithQuickDrawBrushAndContextOffset(&stack0xffffffd4);
+      func_0x00406546(&stack0xffffffcc);
       iVar2 = iVar2 + 0x37;
       CString::~CString((CString *)&stack0xffffffcc);
     }

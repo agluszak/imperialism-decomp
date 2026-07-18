@@ -101,7 +101,7 @@ void TTradePanelView::NoOpUiLifecycleHook()
     CStack_38.m_pchData = (char *)0x4f87f0;
     (*local_4)();
     CStack_38.m_pchData = &stack0xffffffdc;
-    (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+    (*g_pSimMgr->vftable[0x10].slot_0x04)();
     puStack_4c = &uStack_30;
     func_0x004076b7();
     func_0x00404d22();
@@ -111,7 +111,7 @@ void TTradePanelView::NoOpUiLifecycleHook()
   CStack_38.m_pchData = (char *)0x4f8839;
   (*unaff_EBX)();
   CStack_38.m_pchData = &stack0xffffffdc;
-  (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+  (*g_pSimMgr->vftable[0x10].slot_0x04)();
   local_14 = &stack0xffffffb8;
   puStack_4c = &uStack_30;
   func_0x004076b7();
@@ -218,26 +218,26 @@ void TTradePanelView::ApplyRectSlot110()
   pCStack_60 = &local_44;
   uStack_64 = 0x2b6b;
   uStack_68 = 0x4f8a4c;
-  MapUiThemeCodeToStyleFlags();
+  func_0x004093cc();
   pCStack_60 = (CString *)&local_48;
   uStack_64 = 0x2b68;
   uStack_68 = 0x4f8a5e;
-  MapUiThemeCodeToStyleFlags();
+  func_0x004093cc();
   pCStack_60 = &local_4c;
   uStack_64 = 0x2a;
   uStack_68 = 0x2733;
   puStack_6c = (undefined1 *)0x4f8a7b;
-  (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+  (*g_pSimMgr->vftable[0x10].slot_0x04)();
   puVar4 = (undefined1 *)(-(int)puVar5 + 0x16f);
   iVar3 = -iVar2;
   func_0x00409444();
   puStack_6c = (undefined1 *)(-(int)puVar5 + 0x170);
-  SetQuickDrawTextOriginWithContextOffset(iVar3 + 0x49);
+  func_0x00408d6e(iVar3 + 0x49);
   puStack_6c = &stack0xffffffa8;
   func_0x004029aa();
   func_0x00409444();
   puStack_6c = puVar4;
-  SetQuickDrawTextOriginWithContextOffset(iVar3 + 0x48);
+  func_0x00408d6e(iVar3 + 0x48);
   puStack_6c = &stack0xffffffa8;
   func_0x004029aa();
   puStack_6c = (undefined1 *)0x2b68;
@@ -245,17 +245,17 @@ void TTradePanelView::ApplyRectSlot110()
   iVar3 = 0;
   do {
     puStack_6c = &stack0xffffffa8;
-    (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2733,iVar3 + 0x2b);
+    (*g_pSimMgr->vftable[0x10].slot_0x04)(0x2733,iVar3 + 0x2b);
     puVar4 = (undefined1 *)
              CONCAT22((short)((uint)puVar4 >> 0x10),
                       *(short *)((int)&local_4c.m_pchData + iVar3 * 2) - (short)puVar5);
     iVar6 = CONCAT22((short)((uint)puVar5 >> 0x10),
                      *(short *)((int)&local_38.m_pchData + iVar3 * 2) - sVar1);
     func_0x00409444(pCStack_60);
-    SetQuickDrawTextOriginWithContextOffset(iVar6 + 1,puVar4 + 1);
+    func_0x00408d6e(iVar6 + 1,puVar4 + 1);
     func_0x004029aa(&uStack_64);
     func_0x00409444(unaff_EDI);
-    SetQuickDrawTextOriginWithContextOffset(iVar6,puVar4);
+    func_0x00408d6e(iVar6,puVar4);
     func_0x004029aa(&uStack_64);
     iVar3 = iVar3 + 1;
     puVar5 = local_48;
@@ -264,17 +264,17 @@ void TTradePanelView::ApplyRectSlot110()
   iVar3 = 0;
   do {
     puStack_6c = &stack0xffffffa8;
-    (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2733,local_4c.m_pchData + 0x2b);
+    (*g_pSimMgr->vftable[0x10].slot_0x04)(0x2733,local_4c.m_pchData + 0x2b);
     iVar6 = CONCAT22((short)((uint)iVar6 >> 0x10),*(short *)((int)asStack_40 + iVar3) - unaff_BP);
-    sVar1 = MeasureTextExtentWithCachedQuickDrawStyle(&uStack_64);
+    sVar1 = func_0x00405b7d(&uStack_64);
     puVar4 = (undefined1 *)
              (CONCAT22((short)((uint)puVar4 >> 0x10),*(short *)((int)local_2c + iVar3) - sVar1 / 2)
              - iVar2);
     func_0x00409444(pCStack_60);
-    SetQuickDrawTextOriginWithContextOffset(puVar4 + 1,iVar6 + 1);
+    func_0x00408d6e(puVar4 + 1,iVar6 + 1);
     func_0x004029aa(&uStack_64);
     func_0x00409444(unaff_EDI);
-    SetQuickDrawTextOriginWithContextOffset(puVar4,iVar6);
+    func_0x00408d6e(puVar4,iVar6);
     func_0x004029aa(&uStack_64);
     iVar3 = iVar3 + 2;
     local_4c.m_pchData = local_4c.m_pchData + 1;

@@ -183,7 +183,7 @@ void TDealLine::OrphanRetStub_0056f460(int *param_1)
   pCStack_88 = local_34;
   CStack_84.m_pchData = (char *)0x0;
   iStack_8c = 0x5c0f53;
-  BuildUiTextStyleDescriptor();
+  func_0x00406afa();
   iVar1 = *piVar3;
   pCStack_80 = local_34;
   iStack_7c = 0;
@@ -211,15 +211,15 @@ void TDealLine::OrphanRetStub_0056f460(int *param_1)
   CStack_a8.m_pchData =
        (char *)CONCAT22((short)((uint)CVar7.m_pchData >> 0x10),*(undefined2 *)&this->field_0x10);
   CStack_ac.m_pchData = (char *)0x5c0fde;
-  (*g_pLocalizationTable->vftable[0xf].slot_0x04)();
+  (*g_pSimMgr->vftable[0xf].slot_0x04)();
   if (CStack_98.m_pchData._2_2_ == 0) {
     if ((((iStack_7c == -0x1e240) || (iStack_7c == -0x1e241)) || (iStack_7c == -0x1e242)) ||
        (iStack_7c == -0x1e243)) {
       CStack_ac.m_pchData = (char *)&iStack_94;
       CStack_b0.m_pchData = (char *)0x1f;
       CStack_b4.m_pchData = (char *)0x2740;
-      (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
-      func_0x0040988b(g_pLocalizationTable,&uStack_9c,CStack_a0.m_pchData,CStack_98.m_pchData);
+      (*g_pSimMgr->vftable[0x10].slot_0x04)();
+      func_0x0040988b(g_pSimMgr,&uStack_9c,CStack_a0.m_pchData,CStack_98.m_pchData);
       iVar4 = 0;
       if (iStack_94 == -0x1e240) {
         iVar4 = 0x22;
@@ -231,7 +231,7 @@ void TDealLine::OrphanRetStub_0056f460(int *param_1)
         iVar4 = 0x24;
       }
       if (iVar4 != 0) {
-        (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2740,iVar4 + -1,&CStack_ac);
+        (*g_pSimMgr->vftable[0x10].slot_0x04)(0x2740,iVar4 + -1,&CStack_ac);
         uVar5 = AssignSharedStringConcatCStrAndRef
                           (&stack0xffffffa4,g_Build_Map_Order_LookupTable_00695794,&CStack_ac);
         uStack_68._0_1_ = 8;
@@ -244,16 +244,15 @@ void TDealLine::OrphanRetStub_0056f460(int *param_1)
       CStack_ac.m_pchData = (char *)&iStack_94;
       CStack_b0.m_pchData = (char *)0x16;
       CStack_b4.m_pchData = (char *)0x2740;
-      (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
-      func_0x0040988b(g_pLocalizationTable,&uStack_9c,CStack_a0.m_pchData,CStack_98.m_pchData,
-                      iStack_94);
+      (*g_pSimMgr->vftable[0x10].slot_0x04)();
+      func_0x0040988b(g_pSimMgr,&uStack_9c,CStack_a0.m_pchData,CStack_98.m_pchData,iStack_94);
     }
   }
   else {
     CStack_ac.m_pchData = (char *)(int)CStack_98.m_pchData._2_2_;
     CStack_b4.m_pchData = (char *)&CStack_84;
     CStack_b0.m_pchData = &g_szDecimalFormat;
-    _Format_CString__QAAXPBDZZ();
+    CString__Format();
     CStack_ac.m_pchData = (char *)CONCAT22(extraout_var_00,*(undefined2 *)&this->field_0x10);
     CStack_b0.m_pchData = (char *)0x5c1012;
     uVar2 = (*g_pNationInteractionStateManager->vftable[9].slot_0x04)();
@@ -261,30 +260,30 @@ void TDealLine::OrphanRetStub_0056f460(int *param_1)
       CStack_b0.m_pchData = (char *)&CStack_98;
       if ((short)uStack_9c == 1) {
         CStack_b4.m_pchData = (char *)0x14;
-        (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2740);
-        func_0x0040988b(g_pLocalizationTable,&CStack_a0,CVar7.m_pchData,iStack_94,
-                        CStack_98.m_pchData,uStack_9c);
+        (*g_pSimMgr->vftable[0x10].slot_0x04)(0x2740);
+        func_0x0040988b(g_pSimMgr,&CStack_a0,CVar7.m_pchData,iStack_94,CStack_98.m_pchData,uStack_9c
+                       );
       }
       else {
         CStack_b4.m_pchData = (char *)0x15;
-        (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2740);
-        func_0x0040988b(g_pLocalizationTable,&CStack_a0,CVar7.m_pchData,iStack_94,
-                        CStack_98.m_pchData,uStack_9c);
+        (*g_pSimMgr->vftable[0x10].slot_0x04)(0x2740);
+        func_0x0040988b(g_pSimMgr,&CStack_a0,CVar7.m_pchData,iStack_94,CStack_98.m_pchData,uStack_9c
+                       );
       }
     }
     else {
       CStack_b0.m_pchData = (char *)&CStack_84;
       CStack_b4.m_pchData = (char *)pCStack_80;
-      (*g_pLocalizationTable->vftable[0xe].slot_0x04)();
+      (*g_pSimMgr->vftable[0xe].slot_0x04)();
       if ((short)CVar7.m_pchData == 1) {
-        (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2740,0x12,&CStack_a0);
-        func_0x0040988b(g_pLocalizationTable,&CStack_a8,CStack_ac.m_pchData,uStack_9c,
-                        CStack_a0.m_pchData,CVar7.m_pchData,CStack_98.m_pchData);
+        (*g_pSimMgr->vftable[0x10].slot_0x04)(0x2740,0x12,&CStack_a0);
+        func_0x0040988b(g_pSimMgr,&CStack_a8,CStack_ac.m_pchData,uStack_9c,CStack_a0.m_pchData,
+                        CVar7.m_pchData,CStack_98.m_pchData);
       }
       else {
-        (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2740,0x13,&CStack_a0);
-        func_0x0040988b(g_pLocalizationTable,&CStack_a8,CStack_ac.m_pchData,uStack_9c,
-                        CStack_a0.m_pchData,CVar7.m_pchData,CStack_98.m_pchData);
+        (*g_pSimMgr->vftable[0x10].slot_0x04)(0x2740,0x13,&CStack_a0);
+        func_0x0040988b(g_pSimMgr,&CStack_a8,CStack_ac.m_pchData,uStack_9c,CStack_a0.m_pchData,
+                        CVar7.m_pchData,CStack_98.m_pchData);
       }
     }
   }

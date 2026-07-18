@@ -132,11 +132,11 @@ void TGameScorePicture::NoOpUiLifecycleHook()
   CStack_54.m_pchData = (char *)0x2b68;
   puStack_58 = (undefined1 *)0xe;
   CStack_5c.m_pchData = (char *)0x0;
-  BuildUiTextStyleDescriptor();
+  func_0x00406afa();
   CStack_54.m_pchData = &stack0xffffffc0;
   puStack_58 = (undefined1 *)0x2b6a;
   CStack_5c.m_pchData = (char *)0x57b166;
-  MapUiThemeCodeToStyleFlags();
+  func_0x004093cc();
   CStack_54.m_pchData = (char *)0x57b174;
   func_0x00403b16();
   CStack_54.m_pchData = (char *)0x57b183;
@@ -152,23 +152,23 @@ void TGameScorePicture::NoOpUiLifecycleHook()
     if (iVar4 == 0xb) {
       puStack_58 = (undefined1 *)0x2b68;
       CStack_5c.m_pchData = (char *)0x12;
-      BuildUiTextStyleDescriptor();
+      func_0x00406afa();
     }
     CStack_5c.m_pchData = acStack_24;
     puStack_58 = (undefined1 *)0x1;
     (**(code **)(iVar5 + 0x1b4))();
     piVar3[0x25] = iStack_4c;
-    (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+    (*g_pSimMgr->vftable[0x10].slot_0x04)();
     if (iVar4 == 10) {
       pCStack_70 = (CString *)0x57b208;
       CString::operator=(&CStack_50,&local_1c);
-      pCStack_70 = (CString *)(*(int *)&g_pLocalizationTable->field_0x40 + 0xd);
+      pCStack_70 = (CString *)(*(int *)&g_pSimMgr->field_0x40 + 0xd);
       pTStack_74 = (TSimMgr *)0x2737;
       puStack_78 = (undefined1 *)0x57b227;
-      (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+      (*g_pSimMgr->vftable[0x10].slot_0x04)();
       CStack_7c.m_pchData = CStack_5c.m_pchData;
       puStack_78 = local_10;
-      func_0x0040988b(g_pLocalizationTable);
+      func_0x0040988b(g_pSimMgr);
     }
     pCStack_70 = &local_1c;
     iVar6 = 1;
@@ -188,7 +188,7 @@ void TGameScorePicture::NoOpUiLifecycleHook()
       sVar2 = func_0x00403b16();
       puStack_58 = *(undefined1 **)&g_apNationStates[sVar2]->field_0x958;
       if ((int)puStack_58 % 10 < 1) {
-        _Format_CString__QAAXPBDZZ(&local_30,&g_szDecimalFormat);
+        CString__Format(&local_30,&g_szDecimalFormat);
       }
       else {
         puStack_58 = (undefined1 *)((float)(int)puStack_58 * _DAT_00661ab8);
@@ -206,7 +206,7 @@ void TGameScorePicture::NoOpUiLifecycleHook()
     }
     else {
       func_0x00403b16();
-      _Format_CString__QAAXPBDZZ(&local_30,&g_szDecimalFormat);
+      CString__Format(&local_30,&g_szDecimalFormat);
     }
     (**(code **)(iVar5 + 0x1c8))(&local_30);
     CVar1.m_pchData = local_34.m_pchData;
@@ -220,11 +220,11 @@ void TGameScorePicture::NoOpUiLifecycleHook()
   (**(code **)(iVar4 + 0xc))();
   puStack_58 = &stack0xffffffc4;
   CStack_5c.m_pchData = (char *)0x0;
-  (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+  (*g_pSimMgr->vftable[0x10].slot_0x04)();
   func_0x00403b16();
   func_0x00405245();
   pCStack_70 = (CString *)local_18;
-  pTStack_74 = g_pLocalizationTable;
+  pTStack_74 = g_pSimMgr;
   puStack_78 = (undefined1 *)0x57b405;
   func_0x0040988b();
   pCStack_70 = (CString *)0x57b417;
@@ -247,9 +247,9 @@ void TGameScorePicture::NoOpUiLifecycleHook()
   (**(code **)(iVar4 + 0xc))();
   CStack_7c.m_pchData = local_2c;
   iVar5 = 0x2761;
-  (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+  (*g_pSimMgr->vftable[0x10].slot_0x04)();
   (**(code **)(iVar4 + 0x1c8))(&local_38,1);
-  BuildUiTextStyleDescriptor(&CStack_5c,0,0xe,0x2b68);
+  func_0x00406afa(&CStack_5c,0,0xe,0x2b68);
   (**(code **)(iVar4 + 0x1b4))(&CStack_5c,1);
   CStack_50.m_pchData._0_1_ = 1;
   piVar3[0x25] = iVar5;

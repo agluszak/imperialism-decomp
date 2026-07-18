@@ -17,7 +17,7 @@ CDC * CClientDC::CClientDC(void)
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
   
-  EstablishSehFrameProlog();
+  _EH_prolog();
   *(CDC **)(unaff_EBP + -0x10) = this;
   CDC::CDC(this);
   iVar2 = *(int *)(unaff_EBP + 8);
@@ -49,7 +49,7 @@ void CClientDC::~CClientDC(void)
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
   
-  EstablishSehFrameProlog();
+  _EH_prolog();
   *(undefined4 **)(unaff_EBP + -0x10) = extraout_ECX;
   *extraout_ECX = &_vftable_;
   *(undefined4 *)(unaff_EBP + -4) = 0;

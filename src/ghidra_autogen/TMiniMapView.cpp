@@ -173,7 +173,7 @@ void TMiniMapView::ApplyRectSlot110()
                      );
     }
     else {
-      FillRectWithQuickDrawBrushAndContextOffset(&local_30);
+      func_0x00406546(&local_30);
     }
     local_2c = local_1c;
     local_24 = local_14;
@@ -184,7 +184,7 @@ void TMiniMapView::ApplyRectSlot110()
     uVar8 = (undefined2)((uint)iVar2 >> 0x10);
     local_8 = iVar11;
     if ((g_pGlobalMapState->field_0x20 != '\0') && (local_18 - local_30 <= this->field34 / 2)) {
-      FillRectWithQuickDrawBrushAndContextOffset(&local_30);
+      func_0x00406546(&local_30);
       goto LAB_0059a792;
     }
     piVar5 = &local_30;
@@ -198,15 +198,12 @@ LAB_0059a792:
   }
   iVar11 = CONCAT22((short)((uint)iVar10 >> 0x10),*(short *)&this->field_0x94 + local_34);
   func_0x00406b86(0xffffff);
-  SetQuickDrawTextOriginWithContextOffset(iVar7,iVar11);
-  DrawCenteredGuideLineOnMapDc
-            (CONCAT22(extraout_var_01,*(short *)&this->field_0x98 << 1) + iVar7,iVar11);
-  DrawCenteredGuideLineOnMapDc
-            (CONCAT22(extraout_var_00,*(short *)&this->field_0x98 << 1) + iVar7,
-             CONCAT22(extraout_var,*(short *)&this->field_0x9c << 1) + iVar11);
-  DrawCenteredGuideLineOnMapDc
-            (iVar7,CONCAT22(extraout_var_02,*(short *)&this->field_0x9c << 1) + iVar11);
-  DrawCenteredGuideLineOnMapDc(iVar7,iVar11);
+  func_0x00408d6e(iVar7,iVar11);
+  func_0x00403bb6(CONCAT22(extraout_var_01,*(short *)&this->field_0x98 << 1) + iVar7,iVar11);
+  func_0x00403bb6(CONCAT22(extraout_var_00,*(short *)&this->field_0x98 << 1) + iVar7,
+                  CONCAT22(extraout_var,*(short *)&this->field_0x9c << 1) + iVar11);
+  func_0x00403bb6(iVar7,CONCAT22(extraout_var_02,*(short *)&this->field_0x9c << 1) + iVar11);
+  func_0x00403bb6(iVar7,iVar11);
   func_0x00406b86(0);
   func_0x00402bdf(0xffffff);
   return;

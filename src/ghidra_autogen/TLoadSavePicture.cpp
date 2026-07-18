@@ -142,13 +142,13 @@ void TLoadSavePicture::NoOpUiLifecycleHook()
   CStack_8c.m_pchData = &this->field_0x94;
   CStack_88.m_pchData = (char *)0x1;
   CStack_90.m_pchData = (char *)0x56bd1c;
-  BuildUiTextStyleDescriptor();
+  func_0x00406afa();
   CStack_8c.m_pchData = &this->field_0x9e;
   iStack_80 = 0x2b6c;
   CStack_84.m_pchData = (char *)0xc;
   CStack_88.m_pchData = (char *)0x0;
   CStack_90.m_pchData = (char *)0x56bd35;
-  BuildUiTextStyleDescriptor();
+  func_0x00406afa();
   p_Var1 = this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25;
   iStack_80 = 0x63757273;
   CStack_84.m_pchData = (char *)0x56bd49;
@@ -186,7 +186,7 @@ void TLoadSavePicture::NoOpUiLifecycleHook()
     else {
       pcStack_9c = &g_szDecimalFormat;
       CStack_a4.m_pchData = (char *)0x56be38;
-      _Format_CString__QAAXPBDZZ();
+      CString__Format();
     }
     pcStack_9c = (char *)0x56be49;
     func_0x00401b40();
@@ -224,7 +224,7 @@ void TLoadSavePicture::NoOpUiLifecycleHook()
     else {
       CStack_a4.m_pchData = CStack_20.m_pchData;
       CStack_a8.m_pchData = (char *)0x56bece;
-      __wfopen();
+      _fopen();
       pCStack_ac = (CString *)&stack0xffffff90;
       CStack_a4.m_pchData = (char *)0x2c;
       CStack_a8.m_pchData = (char *)0x1;
@@ -240,7 +240,7 @@ void TLoadSavePicture::NoOpUiLifecycleHook()
       CString::operator=(&CStack_88,(CString *)&stack0xffffff8c);
       uStack_28 = 1;
       CString::~CString((CString *)&stack0xffffff8c);
-      if (((*(int *)&g_pLocalizationTable->field_0x44 == 1) &&
+      if (((*(int *)&g_pSimMgr->field_0x44 == 1) &&
           (unaff_EDI.m_pchData == *(char **)((int)g_pGameFlowState + 100))) &&
          (this->field_0x90 == '\0')) {
         uVar7 = 0xffffffff;
@@ -299,17 +299,16 @@ LAB_0056c0cb:
     func_0x00405245();
     pCStack_b8 = &CStack_90;
     CStack_b0.m_pchData =
-         (char *)((short)((int)((int)*(short *)&g_pLocalizationTable->field_0x2c +
-                               ((int)*(short *)&g_pLocalizationTable->field_0x2c >> 0x1f & 3U)) >> 2
-                         ) + 0x717);
+         (char *)((short)((int)((int)*(short *)&g_pSimMgr->field_0x2c +
+                               ((int)*(short *)&g_pSimMgr->field_0x2c >> 0x1f & 3U)) >> 2) + 0x717);
     pCStack_b4 = (CString *)&g_szDecimalFormat;
     CStack_bc.m_pchData = (char *)0x56c1a6;
-    _Format_CString__QAAXPBDZZ();
+    CString__Format();
     CStack_b0.m_pchData = (char *)&pcStack_9c;
-    pCStack_b4 = (CString *)(*(int *)&g_pLocalizationTable->field_0x40 + 0xd);
+    pCStack_b4 = (CString *)(*(int *)&g_pSimMgr->field_0x40 + 0xd);
     pCStack_b8 = (CString *)0x2737;
     CStack_bc.m_pchData = (char *)0x56c1c8;
-    (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+    (*g_pSimMgr->vftable[0x10].slot_0x04)();
     CStack_bc.m_pchData = (char *)&CStack_a8;
     uVar6 = AssignSharedStringConcatCStrAndRef(&stack0xffffff68,&DAT_00695880);
     CStack_bc.m_pchData = &DAT_00695760;
@@ -340,7 +339,7 @@ LAB_0056c0cb:
   }
   else {
     pcVar10 = PTR_DAT_0065ddd4;
-    if (*(int *)&g_pLocalizationTable->field_0x44 == 0) {
+    if (*(int *)&g_pSimMgr->field_0x44 == 0) {
       pcVar10 = PTR_DAT_0065ddd0;
     }
     CString::CString((CString *)&stack0xffffff88);
@@ -464,7 +463,7 @@ code_r0x0056c450:
     func_0x00401e7e();
     pCStack_b8 = (CString *)&DAT_006a2178;
     CStack_bc.m_pchData = pcStack_9c;
-    func_0x0040988b(g_pLocalizationTable,&CStack_a4);
+    func_0x0040988b(g_pSimMgr,&CStack_a4);
     CStack_bc.m_pchData = (char *)&CStack_a4;
     pCStack_b8 = (CString *)0x2;
     func_0x00402e0f();
@@ -476,7 +475,7 @@ code_r0x0056c450:
     CString::~CString((CString *)&stack0xffffff68);
   }
   pCStack_ac = (CString *)0x56c513;
-  (*g_pLocalizationTable->vftable[8].slot_0x04)();
+  (*g_pSimMgr->vftable[8].slot_0x04)();
   goto LAB_0056c411;
 }
 
@@ -523,7 +522,7 @@ void TLoadSavePicture::DestructTLoadSavePictureAndMaybeFree(int param_1)
   CString::CString(&local_98);
   local_4 = 0;
   text = PTR_DAT_0065ddd4;
-  if (*(int *)&g_pLocalizationTable->field_0x44 == 0) {
+  if (*(int *)&g_pSimMgr->field_0x44 == 0) {
     text = PTR_DAT_0065ddd0;
   }
   uStack_b4 = (char *)0x56c79e;
@@ -543,7 +542,7 @@ void TLoadSavePicture::DestructTLoadSavePictureAndMaybeFree(int param_1)
   else {
     uStack_b4 = (char *)param_1;
     pCStack_b8 = (CString *)&g_szDecimalFormat;
-    _Format_CString__QAAXPBDZZ();
+    CString__Format();
   }
   uStack_b4 = s_Save__00698724;
   pCStack_b8 = (CString *)0x56c80c;
@@ -566,7 +565,7 @@ void TLoadSavePicture::DestructTLoadSavePictureAndMaybeFree(int param_1)
       MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
       func_0x004057a4();
     }
-    __wfopen();
+    _fopen();
     CStack_cc.m_pchData = (char *)0x56c8d7;
     _fread();
     CStack_cc.m_pchData = (char *)0x56c8e9;
@@ -605,9 +604,8 @@ void TLoadSavePicture::DestructTLoadSavePictureAndMaybeFree(int param_1)
     uStack_24 = 5;
     CString::CString((CString *)&stack0xffffff54);
     uStack_24 = 6;
-    _Format_CString__QAAXPBDZZ
-              (&stack0xffffff44,&g_szDecimalFormat,(short)((uint)unaff_EBP >> 0x10) + 0x717);
-    (*g_pLocalizationTable->vftable[0x10].slot_0x04)
+    CString__Format(&stack0xffffff44,&g_szDecimalFormat,(short)((uint)unaff_EBP >> 0x10) + 0x717);
+    (*g_pSimMgr->vftable[0x10].slot_0x04)
               (0x2737,CONCAT22((short)((uint)&stack0xffffff54 >> 0x10),(short)uStack_b4._2_1_) + 0xd
                ,&stack0xffffff54);
     CString::CString((CString *)&stack0xffffff44,acStack_78);
@@ -773,13 +771,13 @@ void TLoadSavePicture::HandleEvent(int param_1, CString param_2)
 void TLoadSavePicture::HandleTurnFlowStateTickOrPostTurnEvent5DC()
 
 {
-  if (*(int *)&g_pLocalizationTable->field_0x8 != 1) {
+  if (*(int *)&g_pSimMgr->field_0x8 != 1) {
                     /* WARNING: Could not recover jumptable at 0x0056d1c8. Too many branches */
                     /* WARNING: Treating indirect jump as call */
-    (*g_pLocalizationTable->vftable[8].slot_0x04)();
+    (*g_pSimMgr->vftable[8].slot_0x04)();
     return;
   }
-  if (*(int *)&g_pLocalizationTable->field_0x44 != 0) {
+  if (*(int *)&g_pSimMgr->field_0x44 != 0) {
     func_0x0040346d();
     return;
   }
@@ -870,7 +868,7 @@ void TLoadSavePicture::HandleSaveGameSlotSelectionAndPromptFlow()
     iVar2 = *(int *)CONCAT31(extraout_var_00,uVar4);
     (**(code **)(iVar2 + 0xc))();
     (**(code **)(iVar2 + 0x1dc))(&stack0xffffffe8);
-    iVar5 = CompareAnsiStringsWithMbcsAwareness(unaff_EBP,PTR_g_szEmptyString_0065ddc8);
+    iVar5 = _mbscmp(unaff_EBP,PTR_g_szEmptyString_0065ddc8);
     if (iVar5 == 0) {
       src_ref = (CString *)func_0x0040709a(&stack0xffffffe8,0xd);
       uStack_c._0_1_ = 2;
@@ -902,23 +900,23 @@ void TLoadSavePicture::HandleSaveGameSlotSelectionAndPromptFlow()
       pcVar8 = pcVar8 + 1;
       pcVar10 = pcVar10 + 1;
     }
-    if (*(int *)&g_pLocalizationTable->field_0x44 == 0) {
+    if (*(int *)&g_pSimMgr->field_0x44 == 0) {
       func_0x00407559((int)*(short *)&this->field_0x92,PTR_DAT_0065ddd0);
     }
     else {
       func_0x00409476((int)*(short *)&this->field_0x92,PTR_DAT_0065ddd4,1);
     }
-    (*g_pLocalizationTable->vftable[8].slot_0x04)();
+    (*g_pSimMgr->vftable[8].slot_0x04)();
 LAB_0056d4d7:
     uStack_4 = 0xffffffff;
     CString::~CString(aCStack_14);
   }
-  else if ((*(int *)&g_pLocalizationTable->field_0x8 == 1) ||
+  else if ((*(int *)&g_pSimMgr->field_0x8 == 1) ||
           (cVar3 = func_0x0040426e(0x6c6f6164), cVar3 != '\0')) {
     uVar4 = (*this->vftable->SetForeignMinisterReadyFlag14)();
     (**(code **)(*(int *)CONCAT31(extraout_var,uVar4) + 0x13c))();
     puVar9 = PTR_DAT_0065ddd4;
-    if (*(int *)&g_pLocalizationTable->field_0x44 == 0) {
+    if (*(int *)&g_pSimMgr->field_0x44 == 0) {
       puVar9 = PTR_DAT_0065ddd0;
     }
     sVar1 = *(short *)&this->field_0x92;
@@ -938,305 +936,5 @@ LAB_0056d4d7:
 LAB_0056d50c:
   *unaff_FS_OFFSET = uStack_c;
   return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00578C10
-// GHIDRA_NAME TLoadSavePicture::RasterizeHexNeighborTerrainPaletteMap
-// GHIDRA_PROTO undefined __thiscall RasterizeHexNeighborTerrainPaletteMap(int param_1)
-
-void TLoadSavePicture::RasterizeHexNeighborTerrainPaletteMap(int param_1)
-
-{
-  uint uVar1;
-  uint uVar2;
-  uint uVar3;
-  undefined1 uVar4;
-  undefined4 uVar5;
-  int *piVar6;
-  short *psVar7;
-  short sVar8;
-  int iVar9;
-  uint uVar10;
-  int iVar11;
-  int iVar12;
-  int local_20;
-  uint local_1c;
-  int local_18;
-  int local_14;
-  short local_10 [4];
-  short local_8;
-  short local_6;
-  short local_4;
-  
-  uVar5 = GetSurfaceObjectAtContextOffset24(*(undefined4 *)&this->field_0x60);
-  local_18 = func_0x00405e39(uVar5);
-  piVar6 = (int *)GetSurfaceObjectAtContextOffset24(*(undefined4 *)&this->field_0x60);
-  uVar10 = *(ushort *)(*piVar6 + 4) & 0x3fff;
-  local_14 = 0;
-  do {
-    iVar9 = local_14;
-    func_0x00407225(local_14,&local_20,&local_1c);
-    uVar1 = local_1c & 1;
-    uVar2 = local_1c & 1;
-    uVar3 = local_1c & 1;
-    local_20 = ((short)local_20 * 3) / 2;
-    local_1c = local_1c * 3;
-    func_0x00405baf(iVar9,local_10,1);
-    local_4 = (short)iVar9;
-    if (param_1 == 0) {
-      psVar7 = local_10;
-      iVar9 = 7;
-      do {
-        if (*psVar7 == -1) {
-          sVar8 = -1;
-        }
-        else {
-          sVar8 = (short)*(char *)(*(int *)&g_pGlobalMapState->field_0xc + 4 + *psVar7 * 0x24);
-        }
-        *psVar7 = sVar8;
-        psVar7 = psVar7 + 1;
-        iVar9 = iVar9 + -1;
-      } while (iVar9 != 0);
-    }
-    else {
-      psVar7 = local_10;
-      iVar9 = 7;
-      do {
-        if (*psVar7 == -1) {
-          sVar8 = -1;
-        }
-        else {
-          sVar8 = (short)*(char *)(param_1 + *psVar7);
-        }
-        *psVar7 = sVar8;
-        psVar7 = psVar7 + 1;
-        iVar9 = iVar9 + -1;
-      } while (iVar9 != 0);
-    }
-    psVar7 = local_10;
-    iVar9 = 7;
-    do {
-      sVar8 = *psVar7;
-      if (0x16 < sVar8) {
-        sVar8 = -1;
-      }
-      *psVar7 = sVar8;
-      psVar7 = psVar7 + 1;
-      iVar9 = iVar9 + -1;
-    } while (iVar9 != 0);
-    if (local_4 == local_6) {
-      iVar9 = (int)local_4;
-    }
-    else if (((uVar1 == 0) || (local_6 != local_8)) &&
-            ((uVar2 != 0 || ((local_6 != local_10[0] || (local_8 != local_10[0])))))) {
-      iVar9 = -2;
-    }
-    else {
-      iVar9 = (int)local_6;
-    }
-    iVar12 = (int)(short)local_20;
-    iVar11 = (int)(short)local_1c;
-    if ((6 < iVar9) && (iVar9 < 0x17)) {
-      iVar9 = 0xb;
-    }
-    if (iVar9 == -1) {
-      uVar4 = 0x10;
-    }
-    else if (iVar9 == -2) {
-      uVar4 = 0;
-    }
-    else {
-      uVar4 = func_0x00409205(iVar9);
-    }
-    *(undefined1 *)(iVar11 * uVar10 + iVar12 + local_18) = uVar4;
-    if (uVar3 == 0) {
-      if ((local_4 == local_10[0]) || (local_4 == local_6)) {
-        iVar9 = (int)local_4;
-      }
-      else {
-        iVar9 = -2;
-      }
-      iVar12 = (int)(short)local_20;
-      iVar11 = (int)(short)local_1c;
-      if ((6 < iVar9) && (iVar9 < 0x17)) {
-        iVar9 = 0xb;
-      }
-      if (iVar9 == -1) {
-        uVar4 = 0x10;
-      }
-      else if (iVar9 == -2) {
-        uVar4 = 0;
-      }
-      else {
-        uVar4 = func_0x00409205(iVar9);
-      }
-      *(undefined1 *)(iVar11 * uVar10 + iVar12 + 1 + local_18) = uVar4;
-      iVar9 = (int)local_4;
-      if (local_4 != local_10[0]) {
-        iVar9 = -2;
-      }
-      iVar11 = (int)(short)local_1c;
-      iVar12 = (short)local_20 + 2;
-      if ((6 < iVar9) && (iVar9 < 0x17)) {
-        iVar9 = 0xb;
-      }
-      if (iVar9 == -1) {
-        uVar4 = 0x10;
-      }
-      else {
-        if (iVar9 != -2) goto LAB_00578f07;
-        uVar4 = 0;
-      }
-    }
-    else {
-      iVar9 = (int)local_4;
-      if (local_4 != local_6) {
-        iVar9 = -2;
-      }
-      iVar12 = (int)(short)local_20;
-      iVar11 = (int)(short)local_1c;
-      if ((6 < iVar9) && (iVar9 < 0x17)) {
-        iVar9 = 0xb;
-      }
-      if (iVar9 == -1) {
-        uVar4 = 0x10;
-      }
-      else if (iVar9 == -2) {
-        uVar4 = 0;
-      }
-      else {
-        uVar4 = func_0x00409205(iVar9);
-      }
-      *(undefined1 *)(iVar11 * uVar10 + iVar12 + 1 + local_18) = uVar4;
-      if ((local_4 == local_10[0]) || ((local_4 == local_10[1] && (local_4 == local_6)))) {
-        iVar9 = (int)local_4;
-      }
-      else {
-        iVar9 = -2;
-      }
-      iVar11 = (int)(short)local_1c;
-      iVar12 = (short)local_20 + 2;
-      if ((6 < iVar9) && (iVar9 < 0x17)) {
-        iVar9 = 0xb;
-      }
-      if (iVar9 == -1) {
-        uVar4 = 0x10;
-      }
-      else if (iVar9 == -2) {
-        uVar4 = 0;
-      }
-      else {
-LAB_00578f07:
-        uVar4 = func_0x00409205(iVar9);
-      }
-    }
-    *(undefined1 *)(iVar11 * uVar10 + iVar12 + local_18) = uVar4;
-    iVar9 = (int)local_4;
-    if (local_4 != local_8) {
-      iVar9 = -2;
-    }
-    iVar11 = (int)(short)local_1c;
-    iVar12 = (int)(short)local_20;
-    if ((6 < iVar9) && (iVar9 < 0x17)) {
-      iVar9 = 0xb;
-    }
-    if (iVar9 == -1) {
-      uVar4 = 0x10;
-    }
-    else if (iVar9 == -2) {
-      uVar4 = 0;
-    }
-    else {
-      uVar4 = func_0x00409205(iVar9);
-    }
-    *(undefined1 *)((iVar11 + 1) * uVar10 + iVar12 + local_18) = uVar4;
-    iVar9 = (int)local_4;
-    if (local_4 != local_8) {
-      iVar9 = -2;
-    }
-    iVar11 = (int)(short)local_1c;
-    iVar12 = (int)(short)local_20;
-    if ((6 < iVar9) && (iVar9 < 0x17)) {
-      iVar9 = 0xb;
-    }
-    if (iVar9 == -1) {
-      uVar4 = 0x10;
-    }
-    else if (iVar9 == -2) {
-      uVar4 = 0;
-    }
-    else {
-      uVar4 = func_0x00409205(iVar9);
-    }
-    *(undefined1 *)((iVar11 + 2) * uVar10 + iVar12 + local_18) = uVar4;
-    iVar12 = (int)(short)local_20;
-    iVar11 = (int)(short)local_1c;
-    iVar9 = (int)local_4;
-    if ((6 < iVar9) && (iVar9 < 0x17)) {
-      iVar9 = 0xb;
-    }
-    if (iVar9 == -1) {
-      uVar4 = 0x10;
-    }
-    else if (iVar9 == -2) {
-      uVar4 = 0;
-    }
-    else {
-      uVar4 = func_0x00409205(iVar9);
-    }
-    *(undefined1 *)((iVar11 + 1) * uVar10 + iVar12 + 1 + local_18) = uVar4;
-    iVar12 = (int)(short)local_20;
-    iVar11 = (int)(short)local_1c;
-    iVar9 = (int)local_4;
-    if ((6 < iVar9) && (iVar9 < 0x17)) {
-      iVar9 = 0xb;
-    }
-    if (iVar9 == -1) {
-      uVar4 = 0x10;
-    }
-    else if (iVar9 == -2) {
-      uVar4 = 0;
-    }
-    else {
-      uVar4 = func_0x00409205(iVar9);
-    }
-    *(undefined1 *)((iVar11 + 2) * uVar10 + iVar12 + 1 + local_18) = uVar4;
-    iVar12 = (int)(short)local_20;
-    iVar11 = (int)(short)local_1c;
-    iVar9 = (int)local_4;
-    if ((6 < iVar9) && (iVar9 < 0x17)) {
-      iVar9 = 0xb;
-    }
-    if (iVar9 == -1) {
-      uVar4 = 0x10;
-    }
-    else if (iVar9 == -2) {
-      uVar4 = 0;
-    }
-    else {
-      uVar4 = func_0x00409205(iVar9);
-    }
-    *(undefined1 *)((iVar11 + 1) * uVar10 + iVar12 + 2 + local_18) = uVar4;
-    iVar12 = (int)(short)local_20;
-    iVar11 = (int)(short)local_1c;
-    iVar9 = (int)local_4;
-    if ((6 < iVar9) && (iVar9 < 0x17)) {
-      iVar9 = 0xb;
-    }
-    if (iVar9 == -1) {
-      uVar4 = 0x10;
-    }
-    else if (iVar9 == -2) {
-      uVar4 = 0;
-    }
-    else {
-      uVar4 = func_0x00409205(iVar9);
-    }
-    *(undefined1 *)((iVar11 + 2) * uVar10 + iVar12 + 2 + local_18) = uVar4;
-    local_14 = local_14 + 1;
-    if (0x194f < local_14) {
-      return;
-    }
-  } while( true );
 }
 

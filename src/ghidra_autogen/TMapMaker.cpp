@@ -1902,9 +1902,9 @@ void TMapMaker::SetEnabled()
     if (0x7fffffff < uVar4) {
       uVar4 = 0x7fffffff;
     }
-    iVar2 = ReallocateHeapBlockWithAllocatorTracking(this->field04,iVar3 * 0x30);
+    iVar2 = _realloc(this->field04,iVar3 * 0x30);
     if (iVar2 == 0) {
-      iVar2 = ReallocateHeapBlockWithAllocatorTracking(this->field04,iVar3 * 0x18);
+      iVar2 = _realloc(this->field04,iVar3 * 0x18);
       this->field04 = iVar2;
       this->padding_08_to_0b = iVar3;
     }
@@ -1945,9 +1945,9 @@ void TMapMaker::SetState(undefined4 param_1, undefined4 param_2, undefined4 para
     if (0x7fffffff < uVar4) {
       uVar4 = 0x7fffffff;
     }
-    iVar3 = ReallocateHeapBlockWithAllocatorTracking(this->field04,iVar1 * 0x20);
+    iVar3 = _realloc(this->field04,iVar1 * 0x20);
     if (iVar3 == 0) {
-      iVar3 = ReallocateHeapBlockWithAllocatorTracking(this->field04,iVar1 * 0x10);
+      iVar3 = _realloc(this->field04,iVar1 * 0x10);
       this->field04 = iVar3;
       this->padding_08_to_0b = iVar1;
     }

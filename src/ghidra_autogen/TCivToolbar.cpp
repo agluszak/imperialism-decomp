@@ -575,11 +575,11 @@ bool TCivToolbar::PromptAndQueueDeveloperTilePurchaseOrder(short nTileIndex)
   pcStack_50 = (char *)0x0;
   uStack_54 = 0x274d;
   puStack_58 = (undefined1 *)0x4d3701;
-  (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+  (*g_pSimMgr->vftable[0x10].slot_0x04)();
   puStack_58 = &stack0xffffffcc;
   ppuStack_60 = (uint **)0x4d3712;
   iStack_5c = nRailBuildCost;
-  (*g_pLocalizationTable->vftable[0xe].slot_0x04)();
+  (*g_pSimMgr->vftable[0xe].slot_0x04)();
   ppuStack_60 = &szTemplateString;
                     /* Affordability gate for prompted rail construction. */
   if ((int)(((int)dwAvailableNationCash < 1) - 1 & dwAvailableNationCash) < nRailBuildCost) {
@@ -587,12 +587,12 @@ bool TCivToolbar::PromptAndQueueDeveloperTilePurchaseOrder(short nTileIndex)
     CStack_68.m_pchData = (char *)0x274d;
                     /* Insufficient-funds warning branch; no order is queued. */
     CStack_6c.m_pchData = (char *)0x4d383e;
-    (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+    (*g_pSimMgr->vftable[0x10].slot_0x04)();
     CStack_6c.m_pchData = (char *)dwLocalizationToken;
     CStack_70.m_pchData = (char *)puStack_4c;
     uStack_78 = &uStack_54;
     CStack_74.m_pchData = pcStack_50;
-    pTStack_7c = g_pLocalizationTable;
+    pTStack_7c = g_pSimMgr;
     uStack_80 = 0x4d385e;
     func_0x0040988b();
     pTStack_7c = (TSimMgr *)&uStack_54;
@@ -613,12 +613,12 @@ bool TCivToolbar::PromptAndQueueDeveloperTilePurchaseOrder(short nTileIndex)
     CStack_68.m_pchData = (char *)0x274d;
                     /* Confirmation-dialog branch (sufficient funds). */
     CStack_6c.m_pchData = (char *)0x4d3734;
-    (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+    (*g_pSimMgr->vftable[0x10].slot_0x04)();
     CStack_6c.m_pchData = (char *)dwLocalizationToken;
     CStack_70.m_pchData = (char *)puStack_4c;
     uStack_78 = &uStack_54;
     CStack_74.m_pchData = pcStack_50;
-    pTStack_7c = g_pLocalizationTable;
+    pTStack_7c = g_pSimMgr;
     uStack_80 = 0x4d3754;
     func_0x0040988b();
     pTStack_7c = (TSimMgr *)&uStack_54;
@@ -1299,7 +1299,7 @@ void TCivToolbar::CycleMapInteractionSelectionAfterHandledClick()
       break;
     case 2:
       iVar2 = this[1].field0c;
-      EnsureSelectedTaskForceForOrderOwnerAndRefresh(0);
+      func_0x0040928c(0);
       uVar7 = (undefined2)unaff_EBX;
       pTVar3 = g_pMapActionContextListHead;
       if ((iVar2 != 0) && (pTVar6 = *(TZone **)(iVar2 + 0x18), pTVar6 != (TZone *)0x0))
@@ -1310,7 +1310,7 @@ LAB_00597c66:
         if (cVar4 != '\0') {
           func_0x004032a1(2);
           if (*(char *)&this[1].padding_08_to_0b == '\0') {
-            InvalidateMapRegionForOrderEntry(this[1].field0c);
+            func_0x004019ba(this[1].field0c);
           }
           this[1].field0c = (int)pTVar6;
           func_0x00409458(pTVar6);
@@ -1319,7 +1319,7 @@ LAB_00597c66:
             unaff_EBX = CONCAT13(cVar5,CONCAT12(1,uVar7));
           }
           else {
-            pSelectedOrderContext = EnsureSelectedTaskForceForOrderOwnerAndRefresh(pTVar6);
+            pSelectedOrderContext = func_0x0040928c(pTVar6);
             func_0x00408995(pSelectedOrderContext);
             unaff_EBX = CONCAT13(cVar5,CONCAT12(1,uVar7));
           }
@@ -1339,7 +1339,7 @@ switchD_00597ade_default:
   }
   if (cVar4 == '\0') {
     iVar2 = this[1].field0c;
-    EnsureSelectedTaskForceForOrderOwnerAndRefresh(0);
+    func_0x0040928c(0);
     pTVar3 = g_pMapActionContextListHead;
     if ((iVar2 != 0) && (pTVar6 = *(TZone **)(iVar2 + 0x18), pTVar6 != (TZone *)0x0))
     goto LAB_00597d3c;
@@ -1349,7 +1349,7 @@ LAB_00597d3c:
       if (cVar5 != '\0') {
         func_0x004032a1(2);
         if (*(char *)&this[1].padding_08_to_0b == '\0') {
-          InvalidateMapRegionForOrderEntry(this[1].field0c);
+          func_0x004019ba(this[1].field0c);
         }
         this[1].field0c = (int)pTVar6;
         func_0x00409458(pTVar6);
@@ -1358,7 +1358,7 @@ LAB_00597d3c:
           cVar4 = '\x01';
         }
         else {
-          pSelectedOrderContext = EnsureSelectedTaskForceForOrderOwnerAndRefresh(pTVar6);
+          pSelectedOrderContext = func_0x0040928c(pTVar6);
           func_0x00408995(pSelectedOrderContext);
           cVar4 = '\x01';
         }
@@ -1385,11 +1385,11 @@ LAB_00597dbc:
       if (sVar1 == 2) {
         func_0x004032a1(2);
         if (*(char *)&this[1].padding_08_to_0b == '\0') {
-          InvalidateMapRegionForOrderEntry(this[1].field0c);
+          func_0x004019ba(this[1].field0c);
         }
         this[1].field0c = 0;
         if (*(char *)&this[1].padding_08_to_0b == '\0') {
-          InvalidateMapRegionForOrderEntry(0);
+          func_0x004019ba(0);
         }
         func_0x00408995(0);
         func_0x004032a1(3);
@@ -1456,7 +1456,7 @@ bool TCivToolbar::RunNationInfoModalAndReturnNonCancel(int *param_1)
   if (*in_stack_00000014 == -1000) {
     local_5c = (uint)*(ushort *)(in_stack_00000014 + 1);
   }
-  BuildUiTextStyleDescriptor();
+  func_0x00406afa();
   if ((short)local_5c == 0) {
     pTVar9 = g_pUiViewManager->vftable;
   }
@@ -1558,7 +1558,7 @@ bool TCivToolbar::RunNationInfoModalAndReturnNonCancel(int *param_1)
     (**(code **)(iVar1 + 0xa4))(1,1);
     (**(code **)(iVar1 + 0xa8))(1,0);
   }
-  if (*(int *)&g_pLocalizationTable->field_0x44 == 0) {
+  if (*(int *)&g_pSimMgr->field_0x44 == 0) {
     uVar10 = (char)uStack_40;
   }
   else {
@@ -1573,7 +1573,7 @@ bool TCivToolbar::RunNationInfoModalAndReturnNonCancel(int *param_1)
   iVar6 = (**(code **)(iVar1 + 0x1ac))();
   (**(code **)(iVar1 + 0xa0))();
   (**(code **)(iVar1 + 0x1c))();
-  if (*(int *)&g_pLocalizationTable->field_0x44 != 0) {
+  if (*(int *)&g_pSimMgr->field_0x44 != 0) {
     *(undefined1 *)((int)g_pGameFlowState + 0x68) = uVar10;
   }
   local_60.m_pchData = local_60.m_pchData & 0xffffff00;

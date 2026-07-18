@@ -32,7 +32,7 @@ void CWinApp::Run()
   int iVar1;
   
   if (*(int *)(this + 0x1c) == 0) {
-    iVar1 = GetMfcThreadStateFlagDword30();
+    iVar1 = AfxOleGetUserCtrl();
     if (iVar1 != 0) {
       AfxPostQuitMessage(0);
     }
@@ -195,7 +195,7 @@ void __fastcall CWinApp::HideApplication(int param_1)
 {
   CWnd::ShowWindow(*(CWnd **)(param_1 + 0x1c),0);
   ShowOwnedPopups(*(HWND *)(*(int *)(param_1 + 0x1c) + 0x1c),0);
-  SetWindowPos(&DAT_006a7a10,0,0,0,0,0x13);
+  CWnd__SetWindowPos(&DAT_006a7a10,0,0,0,0,0x13);
   return;
 }
 
@@ -279,10 +279,10 @@ int CWinApp::DoMessageBox(LPCSTR param_1, uint param_2, int param_3)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00618704
-// GHIDRA_NAME CWinApp::CWinApp::CloseAllDocuments_618704
-// GHIDRA_PROTO undefined __thiscall CWinApp::CloseAllDocuments_618704(void)
+// GHIDRA_NAME CWinApp::CWinApp::CloseAllDocuments
+// GHIDRA_PROTO undefined __thiscall CWinApp::CloseAllDocuments(void)
 
-void CWinApp::CWinApp__CloseAllDocuments_618704()
+void CWinApp::CWinApp__CloseAllDocuments()
 
 {
   if (*(int **)(this + 0x80) != (int *)0x0) {
@@ -547,9 +547,9 @@ void CWinApp::~CWinApp(void)
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
   
-  EstablishSehFrameProlog();
+  _EH_prolog();
   *(CWinThread **)(unaff_EBP + -0x10) = this;
-  *(undefined ***)this = &PTR_FUN_0066fdfc;
+  *(undefined ***)this = &PTR_CWinApp__GetRuntimeClass_0066fdfc;
   piVar1 = *(int **)(this + 0x80);
   *(undefined4 *)(unaff_EBP + -4) = 0;
   if (piVar1 != (int *)0x0) {
@@ -638,7 +638,7 @@ undefined4 CWinApp::Unregister(void)
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
   
-  EstablishSehFrameProlog();
+  _EH_prolog();
   *(undefined4 *)(unaff_EBP + -0x14) = 0;
   iVar2 = GetFirstDocTemplatePosition();
   *(int *)(unaff_EBP + -0x1c) = iVar2;
@@ -704,7 +704,7 @@ LSTATUS CWinApp::DelRegTree(void)
   undefined4 *unaff_FS_OFFSET;
   HKEY hKey;
   
-  EstablishSehFrameProlog();
+  _EH_prolog();
   *(undefined4 *)(unaff_EBP + -0x1c) = extraout_ECX;
   LVar1 = RegOpenKeyA(*(HKEY *)(unaff_EBP + 8),(LPCSTR)**(undefined4 **)(unaff_EBP + 0xc),
                       (PHKEY)(unaff_EBP + -0x14));
@@ -741,7 +741,7 @@ void __thiscall CWinApp::SetRegistryKey(void *param_1,undefined4 param_2)
   undefined1 local_104 [256];
   
   AfxLoadString(param_2,local_104,0x100);
-  ::SetRegistryKey(param_1,local_104);
+  CWinApp__SetRegistryKey(param_1,local_104);
   return;
 }
 
@@ -862,7 +862,7 @@ undefined4 CWinApp::GetProfileStringA(void)
   LPDWORD lpcbData;
   char *text_or_resource_id;
   
-  EstablishSehFrameProlog();
+  _EH_prolog();
   ProbeStackPagesForLargeFrameAllocation();
   iVar2 = *(int *)(extraout_ECX + 0x7c);
   *(undefined4 *)(unaff_EBP + -0x18) = 0;
@@ -946,7 +946,7 @@ undefined4 CWinApp::GetProfileBinary(void)
   int iVar8;
   undefined4 *unaff_FS_OFFSET;
   
-  EstablishSehFrameProlog();
+  _EH_prolog();
   piVar1 = *(int **)(unaff_EBP + 0x14);
   piVar2 = *(int **)(unaff_EBP + 0x10);
   iVar8 = 0;

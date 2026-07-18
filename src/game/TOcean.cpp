@@ -565,6 +565,52 @@ void TOcean::RemovePortZoneByTile(short nTileIndex) {
   }
 }
 
+// bd 1uj.16: TTaskForce::SetMapOrderType9AndQueue / PromoteMapOrderChainAndQueue's
+// final notification step (0x5642e0). Only runs when the entry belongs to the active
+// nation. It re-marks the entry's map tile (TTaskForce::UpdateNavyOrderMapMarkerByOrder-
+// Type), lights the entry's TZone map-order UI flag iff the active nation still has a
+// pending navy-order node targeting that zone, notifies the map picture's subview of the
+// tile, and clears this manager's cached selected task force if it pointed at the entry.
+// FUNCTION: IMPERIALISM 0x005642e0
+void TOcean::FinalizeQueuedMapOrderEntry(TTaskForce* entry) {
+  // entry->required_count (+0x1c) holds this entry's owner-nation slot here.
+  if (g_pSimMgr->GetActiveNationId() != entry->required_count) {
+    return;
+  }
+  entry->UpdateNavyOrderMapMarkerByOrderType();
+
+  // contextAnchor (+0x18) is the entry's owning map-order zone (see the TZone casts in
+  // TNavyMgr/TToolBarCluster); slot 0x58 is TZone::SetMapOrderUiFlag.
+  TZone* zone = reinterpret_cast<TZone*>(entry->contextAnchor);
+  short nation = g_pSimMgr->GetActiveNationId();
+  if (nation == -1) {
+    nation = g_pSimMgr->GetActiveNationId();
+  }
+  int hasPendingNode = 0;
+  if ((zone->field10 & static_cast<unsigned char>(1 << (nation & 0x1f))) != 0) {
+    for (TShip* node = GetNavyPrimaryOrderListHead(); node != nullptr;
+         node = node->nextOlder24) {
+      if (node->field08 == zone && node->ownerNationSlot14 == nation &&
+          node->ownerOrderEntry0c == nullptr) {
+        hasPendingNode = 1;
+        break;
+      }
+    }
+  }
+  zone->SetMapOrderUiFlag(hasPendingNode);
+
+  // tiebreak_strength (+0x30) doubles as the entry's active map-tile notify index; 0xffff
+  // means "no tile". mapUberPictureF0 slot 0x1e8 is NotifySubviewOfSelectedTile.
+  short tileNotifyIndex = entry->tiebreak_strength;
+  if (tileNotifyIndex != -1 && g_pUiRuntimeContext->mapUberPictureF0 != nullptr) {
+    g_pUiRuntimeContext->mapUberPictureF0->NotifySubviewOfSelectedTile(tileNotifyIndex);
+  }
+
+  if (selectedTaskForce14 == entry) {
+    selectedTaskForce14 = nullptr;
+  }
+}
+
 // FUNCTION: IMPERIALISM 0x00564530
 int TOcean::ComputeGlobalMapActionContextNodeValueAverage() {
   int sum = 0;
@@ -613,17 +659,6 @@ TTaskForce* TOcean::EnsureSelectedTaskForceForOrderOwnerAndRefresh(TZone* pMapOr
     selectedTaskForce14->RefreshTaskForceSelectionFlagsForCurrentNationOrders(0);
   }
   return selectedTaskForce14;
-}
-
-// bd 1uj.16: TTaskForce::SetMapOrderType9AndQueue / PromoteMapOrderChainAndQueue's
-// final notification step (0x5642e0). Genuinely large (per-nation IsKindOf-gated
-// view/menu refresh over g_apNationStates[entry->required_count] and a TZone
-// SetMapOrderUiFlag dispatch) and several hops away from those two targets'
-// core receiver-recovery ask; left as a documented placeholder rather than a
-// guessed body. NOT claimed with a // FUNCTION: marker -- see bd 1uj.16
-// follow-up notes.
-void TOcean::FinalizeQueuedMapOrderEntry(TTaskForce* entry) {
-  (void)entry;
 }
 
 // FUNCTION: IMPERIALISM 0x005979f0

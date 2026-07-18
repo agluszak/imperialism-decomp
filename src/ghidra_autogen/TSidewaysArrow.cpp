@@ -44,10 +44,10 @@ CRuntimeClass * TSidewaysArrow::GetRuntimeClass()
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00583B50
-// GHIDRA_NAME TSidewaysArrow::ConstructTSidewaysArrowBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTSidewaysArrowBaseState(void)
+// GHIDRA_NAME TSidewaysArrow::TSidewaysArrow
+// GHIDRA_PROTO undefined __thiscall TSidewaysArrow(void)
 
-TSidewaysArrow * TSidewaysArrow::ConstructTSidewaysArrowBaseState()
+TSidewaysArrow * TSidewaysArrow::TSidewaysArrow()
 
 {
   func_0x00403512();

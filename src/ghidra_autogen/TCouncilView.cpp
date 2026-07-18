@@ -112,15 +112,14 @@ void TCouncilView::RefreshDiplomacyNationOverlayGeometryAndLabels()
   uStack_38 = 0xfffffffe;
   CStack_3c.m_pchData = (char *)0x4fbb3b;
   (**(code **)(iVar3 + 0x1c4))();
-  if ((*(short *)&g_pLocalizationTable->field_0x8 == 0x17) ||
-     (*(short *)&g_pLocalizationTable->field_0x8 == 0x16)) {
+  if ((*(short *)&g_pSimMgr->field_0x8 == 0x17) || (*(short *)&g_pSimMgr->field_0x8 == 0x16)) {
     CStack_3c.m_pchData = &stack0xffffffe0;
     CStack_40.m_pchData = (char *)0x4fbbdc;
     func_0x00405245();
     CStack_40.m_pchData = &stack0xffffffd8;
     CStack_44.m_pchData = (char *)0x3;
-    (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x275d);
-    func_0x0040988b(g_pLocalizationTable,&uStack_38,uStack_34,iStack_30);
+    (*g_pSimMgr->vftable[0x10].slot_0x04)(0x275d);
+    func_0x0040988b(g_pSimMgr,&uStack_38,uStack_34,iStack_30);
     (**(code **)(iVar3 + 0x1c8))(&uStack_38,0);
     func_0x004014f6();
     sVar1 = *(short *)&g_pDiplomacyTurnStateManager->field_0x78e;
@@ -136,7 +135,7 @@ void TCouncilView::RefreshDiplomacyNationOverlayGeometryAndLabels()
     CStack_3c.m_pchData = &stack0xffffffd8;
     CStack_40.m_pchData = (char *)0x5e;
     CStack_44.m_pchData = (char *)0x2733;
-    (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+    (*g_pSimMgr->vftable[0x10].slot_0x04)();
     (**(code **)(iVar3 + 0x1c8))(&uStack_34,0);
     func_0x00401875(PTR_g_szEmptyString_00654ec8,0x6d61696e);
     uVar4 = (*pTVar2)(0x656e6420);

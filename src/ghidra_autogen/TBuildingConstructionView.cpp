@@ -229,11 +229,11 @@ TBuildingConstructionView::OpenCityViewBuildingOrderDialog
     (**(code **)(iVar8 + 0x60))();
   }
   else {
-    iVar13 = GetCityBuildingProductionValueBySlot(pCityState,nBuildingSlotId);
+    iVar13 = TCity::GetBuildingType((TCity *)pCityState,nBuildingSlotId);
     pcVar14 = *(code **)(iVar8 + 0x80);
     *(short *)(pCityState + 0x32) = (short)pCityState[0x32] + (short)iVar13;
     (*pcVar14)();
-    iVar8 = GetCityBuildingProductionValueBySlot(pCityState,nBuildingSlotId);
+    iVar8 = TCity::GetBuildingType((TCity *)pCityState,nBuildingSlotId);
     *(short *)(pCityState + 0x33) = (short)pCityState[0x33] + (short)iVar8;
     uVar16 = 0x4c9f95;
     (*pcVar14)();
@@ -250,7 +250,7 @@ TBuildingConstructionView::OpenCityViewBuildingOrderDialog
   case 5:
     *(undefined2 *)&this->field_0x96 = 1;
   }
-  BuildUiTextStyleDescriptor();
+  func_0x00406afa();
   ppuVar11 = (undefined1 **)this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25;
   uVar5 = (*(code *)ppuVar11)();
   if ((int *)CONCAT31(extraout_var,uVar5) == (int *)0x0) {
@@ -283,7 +283,7 @@ TBuildingConstructionView::OpenCityViewBuildingOrderDialog
     (**(code **)(iVar8 + 0x168))();
   }
   puStack_a4 = (undefined1 *)0x2b67;
-  BuildUiTextStyleDescriptor();
+  func_0x00406afa();
   puStack_a4 = (undefined1 *)0x6e616d65;
   uVar5 = (*(code *)ppuVar11)();
   if ((int *)CONCAT31(extraout_var_01,uVar5) == (int *)0x0) {
@@ -299,7 +299,7 @@ TBuildingConstructionView::OpenCityViewBuildingOrderDialog
   ppuStack_b8 = &puStack_a4;
   uStack_c0 = 0x2719;
   uStack_c4 = 0x4ca16d;
-  (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+  (*g_pSimMgr->vftable[0x10].slot_0x04)();
   puStack_c8 = &stack0xffffff50;
   uStack_c4 = 0;
   CStack_cc.m_pchData = (char *)0x4ca17c;
@@ -321,7 +321,7 @@ TBuildingConstructionView::OpenCityViewBuildingOrderDialog
   uStack_e4 = 0x14;
   uStack_e8 = 0x2738;
   uStack_ec = 0x4ca1e7;
-  (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+  (*g_pSimMgr->vftable[0x10].slot_0x04)();
   puStack_f0 = &stack0xffffff28;
   uStack_ec = 0;
   uStack_f4 = 0x4ca1f6;
@@ -340,7 +340,7 @@ TBuildingConstructionView::OpenCityViewBuildingOrderDialog
       puStack_fc = (undefined *)0x15;
       ppCStack_100 = (CString **)0x2738;
       p_Stack_104 = (_vslot_fn *)0x4ca23f;
-      (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+      (*g_pSimMgr->vftable[0x10].slot_0x04)();
       goto LAB_004ca263;
     }
     CStack_f8.m_pchData = (char *)0x1;
@@ -348,17 +348,17 @@ TBuildingConstructionView::OpenCityViewBuildingOrderDialog
   ppCStack_100 = &pCStack_e0;
   puStack_fc = &g_szDecimalFormat;
   p_Stack_104 = (_vslot_fn *)0x4ca260;
-  _Format_CString__QAAXPBDZZ();
+  CString__Format();
 LAB_004ca263:
   CStack_f8.m_pchData = &stack0xffffff28;
   puStack_fc = (undefined *)0x10;
   ppCStack_100 = (CString **)0x2738;
   p_Stack_104 = (_vslot_fn *)0x4ca27d;
-  (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+  (*g_pSimMgr->vftable[0x10].slot_0x04)();
   p_Stack_104 = (_vslot_fn *)uStack_ec;
   ppuStack_10c = &puStack_f0;
   pcStack_108 = (code *)uStack_e4;
-  pTStack_110 = g_pLocalizationTable;
+  pTStack_110 = g_pSimMgr;
   func_0x0040988b();
   iVar8 = *(int *)CONCAT31(extraout_var_03,uVar5);
   pcStack_108 = (code *)&stack0xffffff28;
@@ -377,7 +377,7 @@ LAB_004ca263:
   }
   sVar2 = *(short *)&this->field_0x94;
   if (((sVar2 == 0) || (sVar2 == 4)) || (sVar2 == 3)) {
-    (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+    (*g_pSimMgr->vftable[0x10].slot_0x04)();
     iVar8 = *piVar7;
     (**(code **)(iVar8 + 0x1b4))();
     pppuStack_13c = (undefined1 ***)0x4ca35c;
@@ -434,7 +434,7 @@ LAB_004ca263:
             *(int *)(*(int *)(iVar13 + 0xac) + 0x8f0) / 100;
     cVar6 = 4999 < (int)(uVar1 & ((int)uVar1 < 1) - 1);
     pppuStack_13c = (undefined1 ***)0x4ca495;
-    BuildUiTextStyleDescriptor();
+    func_0x00406afa();
     piVar7 = (int *)(*(code *)pTStack_110)();
     iVar8 = *piVar7;
     (**(code **)(iVar8 + 0xc))();
@@ -450,7 +450,7 @@ LAB_004ca263:
     puStack_148 = &uStack_e8;
     ppTStack_14c = (TSimMgr **)0x1388;
     uStack_150 = 0x4ca4e8;
-    (*g_pLocalizationTable->vftable[0xe].slot_0x04)();
+    (*g_pSimMgr->vftable[0xe].slot_0x04)();
     ppuStack_154 = &puStack_f0;
     uStack_150 = 1;
     uStack_158 = 0x4ca4f7;
@@ -470,7 +470,7 @@ LAB_004ca263:
     this_00 = this->pCity;
     pcStack_108 = (code *)CONCAT22(pcStack_108._2_2_,(short)piVar9[1]);
     CStack_cc.m_pchData = *(char **)(*piVar9 + 0x2c);
-    iVar8 = GetCityBuildingProductionValueBySlot(this_00,(short)ppuVar12);
+    iVar8 = TCity::GetBuildingType(this_00,(short)ppuVar12);
     pcVar14 = (code *)CONCAT22(uVar15,(short)iVar8);
     (*this_00->vftable->GetCityBuildingDisplayCapacityBySlot)();
     cVar6 = (*pcVar14)();
@@ -488,7 +488,7 @@ LAB_004ca263:
     puStack_168 = &stack0xfffffed0;
     uStack_164 = 0;
     puStack_16c = (undefined4 *)0x4ca5d4;
-    BuildUiTextStyleDescriptor();
+    func_0x00406afa();
     iVar8 = *piVar7;
     puStack_160 = &stack0xfffffed0;
     uStack_15c = 0;
@@ -502,7 +502,7 @@ LAB_004ca263:
     CStack_170.m_pchData = (char *)0x17;
     uStack_174 = 0x2738;
     CStack_178.m_pchData = (char *)0x4ca61b;
-    (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+    (*g_pSimMgr->vftable[0x10].slot_0x04)();
     puStack_17c = &uStack_164;
     CStack_178.m_pchData = (char *)0x0;
     CStack_180.m_pchData = "j";
@@ -604,7 +604,8 @@ TBuildingConstructionView::ApplyCityViewBuildingOrderDialogResult
                        (+0x2C). */
       this_00 = this->pCity;
       iVar4 = *piVar1;
-      iVar3 = GetCityBuildingProductionValueBySlot(this_00,*(short *)&this->field_0x94);
+      iVar3 = TCity::GetBuildingType(this_00,*(short *)&this->field_0x94)
+      ;
       uVar2 = (*this_00->vftable->GetCityBuildingDisplayCapacityBySlot)
                         (CONCAT22(extraout_var_00,*(undefined2 *)&this->field_0x94));
       (**(code **)(unaff_retaddr + 0x2c))
@@ -618,7 +619,8 @@ TBuildingConstructionView::ApplyCityViewBuildingOrderDialogResult
       }
     }
   }
-  iVar4 = GetCityBuildingProductionValueBySlot(this->pCity,*(short *)&this->field_0x94);
+  iVar4 = TCity::GetBuildingType(this->pCity,*(short *)&this->field_0x94)
+  ;
   (**(code **)(**(int **)&this->field_0x98 + 0x1e8))(*(undefined2 *)&this->field_0x94,iVar4);
   (**(code **)(**(int **)&this->field_0x98 + 0x1e0))();
   (**(code **)(**(int **)&this->field_0x98 + 0xe4))();
@@ -662,12 +664,13 @@ TBuildingConstructionView::SelectNextValidMapOrderEntryFromCursor
   char cVar1;
   undefined4 uVar2;
   TZone *pTVar3;
+  char unaff_retaddr;
   
   if (*(short *)&this->field_0x96 == 2) {
     pTVar3 = *(TZone **)&this->field_0x98;
-    EnsureSelectedTaskForceForOrderOwnerAndRefresh(0);
+    func_0x0040928c(0);
     if (pTVar3 != (TZone *)0x0) {
-      if ((char)pMapInteractionState == '\0') {
+      if (unaff_retaddr == '\0') {
         pTVar3 = *(TZone **)&pTVar3->field_0x18;
       }
       if (pTVar3 != (TZone *)0x0) goto LAB_005997b8;
@@ -686,17 +689,17 @@ LAB_005997b8:
       }
       func_0x004032a1(2);
       if (this->field_0x94 == '\0') {
-        InvalidateMapRegionForOrderEntry(*(undefined4 *)&this->field_0x98);
+        func_0x004019ba(*(undefined4 *)&this->field_0x98);
       }
       *(TZone **)&this->field_0x98 = pTVar3;
       if (this->field_0x94 == '\0') {
-        InvalidateMapRegionForOrderEntry(pTVar3);
+        func_0x004019ba(pTVar3);
       }
       if (pTVar3 == (TZone *)0x0) {
         func_0x00408995(0);
         return;
       }
-      uVar2 = EnsureSelectedTaskForceForOrderOwnerAndRefresh(pTVar3);
+      uVar2 = func_0x0040928c(pTVar3);
       func_0x00408995(uVar2);
       return;
     }

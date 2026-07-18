@@ -98,9 +98,9 @@ void TMapPreviewView::NoOpUiLifecycleHook()
   puVar6 = &this->field_0x60;
   uStack_20 = unaff_ESI;
   (**(code **)(*g_pDisplayMgr + 0x2c))(puVar6,8,auStack_24);
-  uVar1 = GetSurfaceObjectAtContextOffset24(*(undefined4 *)puVar6);
+  uVar1 = func_0x0040520e(*(undefined4 *)puVar6);
   puVar2 = (undefined4 *)func_0x00405e39(uVar1);
-  piVar3 = (int *)GetSurfaceObjectAtContextOffset24(*(undefined4 *)puVar6);
+  piVar3 = (int *)func_0x0040520e(*(undefined4 *)puVar6);
   uVar4 = (unaff_EDI - (int)&stack0xffffffd0) * (*(ushort *)(*piVar3 + 4) & 0x3fff);
   if (0 < (int)uVar4) {
     for (uVar5 = uVar4 >> 2; uVar5 != 0; uVar5 = uVar5 - 1) {
@@ -144,9 +144,9 @@ void TMapPreviewView::BeginMouseCaptureAndStartRepeatTimer(int *param_1)
   int *piVar6;
   int iVar7;
   
-  uVar4 = GetSurfaceObjectAtContextOffset24(*(undefined4 *)&this->field_0x60);
+  uVar4 = func_0x0040520e(*(undefined4 *)&this->field_0x60);
   iVar5 = func_0x00405e39(uVar4);
-  piVar6 = (int *)GetSurfaceObjectAtContextOffset24(*(undefined4 *)&this->field_0x60);
+  piVar6 = (int *)func_0x0040520e(*(undefined4 *)&this->field_0x60);
   iVar7 = 0;
   bVar1 = *(byte *)((*(ushort *)(*piVar6 + 4) & 0x3fff) * param_1[1] + iVar5 + *param_1);
   do {
@@ -211,5 +211,389 @@ void TMapPreviewView::ApplyRectSlot110()
   }
   func_0x00402bdf(0xffffff);
   return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00578C10
+// GHIDRA_NAME TMapPreviewView::TakeSatellitePhoto
+// GHIDRA_PROTO undefined __thiscall TakeSatellitePhoto(int param_1)
+
+void TMapPreviewView::TakeSatellitePhoto(int param_1)
+
+{
+  uint uVar1;
+  uint uVar2;
+  uint uVar3;
+  undefined1 uVar4;
+  undefined4 uVar5;
+  int *piVar6;
+  short *psVar7;
+  short sVar8;
+  int iVar9;
+  uint uVar10;
+  int iVar11;
+  int iVar12;
+  int local_20;
+  uint local_1c;
+  int local_18;
+  int local_14;
+  short local_10 [4];
+  short local_8;
+  short local_6;
+  short local_4;
+  
+  uVar5 = func_0x0040520e(*(undefined4 *)&this->field_0x60);
+  local_18 = func_0x00405e39(uVar5);
+  piVar6 = (int *)func_0x0040520e(*(undefined4 *)&this->field_0x60);
+  uVar10 = *(ushort *)(*piVar6 + 4) & 0x3fff;
+  local_14 = 0;
+  do {
+    iVar9 = local_14;
+    func_0x00407225(local_14,&local_20,&local_1c);
+    uVar1 = local_1c & 1;
+    uVar2 = local_1c & 1;
+    uVar3 = local_1c & 1;
+    local_20 = ((short)local_20 * 3) / 2;
+    local_1c = local_1c * 3;
+    func_0x00405baf(iVar9,local_10,1);
+    local_4 = (short)iVar9;
+    if (param_1 == 0) {
+      psVar7 = local_10;
+      iVar9 = 7;
+      do {
+        if (*psVar7 == -1) {
+          sVar8 = -1;
+        }
+        else {
+          sVar8 = (short)*(char *)(*(int *)&g_pGlobalMapState->field_0xc + 4 + *psVar7 * 0x24);
+        }
+        *psVar7 = sVar8;
+        psVar7 = psVar7 + 1;
+        iVar9 = iVar9 + -1;
+      } while (iVar9 != 0);
+    }
+    else {
+      psVar7 = local_10;
+      iVar9 = 7;
+      do {
+        if (*psVar7 == -1) {
+          sVar8 = -1;
+        }
+        else {
+          sVar8 = (short)*(char *)(param_1 + *psVar7);
+        }
+        *psVar7 = sVar8;
+        psVar7 = psVar7 + 1;
+        iVar9 = iVar9 + -1;
+      } while (iVar9 != 0);
+    }
+    psVar7 = local_10;
+    iVar9 = 7;
+    do {
+      sVar8 = *psVar7;
+      if (0x16 < sVar8) {
+        sVar8 = -1;
+      }
+      *psVar7 = sVar8;
+      psVar7 = psVar7 + 1;
+      iVar9 = iVar9 + -1;
+    } while (iVar9 != 0);
+    if (local_4 == local_6) {
+      iVar9 = (int)local_4;
+    }
+    else if (((uVar1 == 0) || (local_6 != local_8)) &&
+            ((uVar2 != 0 || ((local_6 != local_10[0] || (local_8 != local_10[0])))))) {
+      iVar9 = -2;
+    }
+    else {
+      iVar9 = (int)local_6;
+    }
+    iVar12 = (int)(short)local_20;
+    iVar11 = (int)(short)local_1c;
+    if ((6 < iVar9) && (iVar9 < 0x17)) {
+      iVar9 = 0xb;
+    }
+    if (iVar9 == -1) {
+      uVar4 = 0x10;
+    }
+    else if (iVar9 == -2) {
+      uVar4 = 0;
+    }
+    else {
+      uVar4 = func_0x00409205(iVar9);
+    }
+    *(undefined1 *)(iVar11 * uVar10 + iVar12 + local_18) = uVar4;
+    if (uVar3 == 0) {
+      if ((local_4 == local_10[0]) || (local_4 == local_6)) {
+        iVar9 = (int)local_4;
+      }
+      else {
+        iVar9 = -2;
+      }
+      iVar12 = (int)(short)local_20;
+      iVar11 = (int)(short)local_1c;
+      if ((6 < iVar9) && (iVar9 < 0x17)) {
+        iVar9 = 0xb;
+      }
+      if (iVar9 == -1) {
+        uVar4 = 0x10;
+      }
+      else if (iVar9 == -2) {
+        uVar4 = 0;
+      }
+      else {
+        uVar4 = func_0x00409205(iVar9);
+      }
+      *(undefined1 *)(iVar11 * uVar10 + iVar12 + 1 + local_18) = uVar4;
+      iVar9 = (int)local_4;
+      if (local_4 != local_10[0]) {
+        iVar9 = -2;
+      }
+      iVar11 = (int)(short)local_1c;
+      iVar12 = (short)local_20 + 2;
+      if ((6 < iVar9) && (iVar9 < 0x17)) {
+        iVar9 = 0xb;
+      }
+      if (iVar9 == -1) {
+        uVar4 = 0x10;
+      }
+      else {
+        if (iVar9 != -2) goto LAB_00578f07;
+        uVar4 = 0;
+      }
+    }
+    else {
+      iVar9 = (int)local_4;
+      if (local_4 != local_6) {
+        iVar9 = -2;
+      }
+      iVar12 = (int)(short)local_20;
+      iVar11 = (int)(short)local_1c;
+      if ((6 < iVar9) && (iVar9 < 0x17)) {
+        iVar9 = 0xb;
+      }
+      if (iVar9 == -1) {
+        uVar4 = 0x10;
+      }
+      else if (iVar9 == -2) {
+        uVar4 = 0;
+      }
+      else {
+        uVar4 = func_0x00409205(iVar9);
+      }
+      *(undefined1 *)(iVar11 * uVar10 + iVar12 + 1 + local_18) = uVar4;
+      if ((local_4 == local_10[0]) || ((local_4 == local_10[1] && (local_4 == local_6)))) {
+        iVar9 = (int)local_4;
+      }
+      else {
+        iVar9 = -2;
+      }
+      iVar11 = (int)(short)local_1c;
+      iVar12 = (short)local_20 + 2;
+      if ((6 < iVar9) && (iVar9 < 0x17)) {
+        iVar9 = 0xb;
+      }
+      if (iVar9 == -1) {
+        uVar4 = 0x10;
+      }
+      else if (iVar9 == -2) {
+        uVar4 = 0;
+      }
+      else {
+LAB_00578f07:
+        uVar4 = func_0x00409205(iVar9);
+      }
+    }
+    *(undefined1 *)(iVar11 * uVar10 + iVar12 + local_18) = uVar4;
+    iVar9 = (int)local_4;
+    if (local_4 != local_8) {
+      iVar9 = -2;
+    }
+    iVar11 = (int)(short)local_1c;
+    iVar12 = (int)(short)local_20;
+    if ((6 < iVar9) && (iVar9 < 0x17)) {
+      iVar9 = 0xb;
+    }
+    if (iVar9 == -1) {
+      uVar4 = 0x10;
+    }
+    else if (iVar9 == -2) {
+      uVar4 = 0;
+    }
+    else {
+      uVar4 = func_0x00409205(iVar9);
+    }
+    *(undefined1 *)((iVar11 + 1) * uVar10 + iVar12 + local_18) = uVar4;
+    iVar9 = (int)local_4;
+    if (local_4 != local_8) {
+      iVar9 = -2;
+    }
+    iVar11 = (int)(short)local_1c;
+    iVar12 = (int)(short)local_20;
+    if ((6 < iVar9) && (iVar9 < 0x17)) {
+      iVar9 = 0xb;
+    }
+    if (iVar9 == -1) {
+      uVar4 = 0x10;
+    }
+    else if (iVar9 == -2) {
+      uVar4 = 0;
+    }
+    else {
+      uVar4 = func_0x00409205(iVar9);
+    }
+    *(undefined1 *)((iVar11 + 2) * uVar10 + iVar12 + local_18) = uVar4;
+    iVar12 = (int)(short)local_20;
+    iVar11 = (int)(short)local_1c;
+    iVar9 = (int)local_4;
+    if ((6 < iVar9) && (iVar9 < 0x17)) {
+      iVar9 = 0xb;
+    }
+    if (iVar9 == -1) {
+      uVar4 = 0x10;
+    }
+    else if (iVar9 == -2) {
+      uVar4 = 0;
+    }
+    else {
+      uVar4 = func_0x00409205(iVar9);
+    }
+    *(undefined1 *)((iVar11 + 1) * uVar10 + iVar12 + 1 + local_18) = uVar4;
+    iVar12 = (int)(short)local_20;
+    iVar11 = (int)(short)local_1c;
+    iVar9 = (int)local_4;
+    if ((6 < iVar9) && (iVar9 < 0x17)) {
+      iVar9 = 0xb;
+    }
+    if (iVar9 == -1) {
+      uVar4 = 0x10;
+    }
+    else if (iVar9 == -2) {
+      uVar4 = 0;
+    }
+    else {
+      uVar4 = func_0x00409205(iVar9);
+    }
+    *(undefined1 *)((iVar11 + 2) * uVar10 + iVar12 + 1 + local_18) = uVar4;
+    iVar12 = (int)(short)local_20;
+    iVar11 = (int)(short)local_1c;
+    iVar9 = (int)local_4;
+    if ((6 < iVar9) && (iVar9 < 0x17)) {
+      iVar9 = 0xb;
+    }
+    if (iVar9 == -1) {
+      uVar4 = 0x10;
+    }
+    else if (iVar9 == -2) {
+      uVar4 = 0;
+    }
+    else {
+      uVar4 = func_0x00409205(iVar9);
+    }
+    *(undefined1 *)((iVar11 + 1) * uVar10 + iVar12 + 2 + local_18) = uVar4;
+    iVar12 = (int)(short)local_20;
+    iVar11 = (int)(short)local_1c;
+    iVar9 = (int)local_4;
+    if ((6 < iVar9) && (iVar9 < 0x17)) {
+      iVar9 = 0xb;
+    }
+    if (iVar9 == -1) {
+      uVar4 = 0x10;
+    }
+    else if (iVar9 == -2) {
+      uVar4 = 0;
+    }
+    else {
+      uVar4 = func_0x00409205(iVar9);
+    }
+    *(undefined1 *)((iVar11 + 2) * uVar10 + iVar12 + 2 + local_18) = uVar4;
+    local_14 = local_14 + 1;
+    if (0x194f < local_14) {
+      return;
+    }
+  } while( true );
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00579270
+// GHIDRA_NAME TMapPreviewView::EnhancePhoto
+// GHIDRA_PROTO undefined EnhancePhoto()
+
+void __fastcall TMapPreviewView::EnhancePhoto(int param_1)
+
+{
+  char cVar1;
+  bool bVar2;
+  undefined4 uVar3;
+  int iVar4;
+  int *piVar5;
+  char *pcVar6;
+  uint uVar7;
+  char *pcVar8;
+  char *pcVar9;
+  bool bVar10;
+  char local_16;
+  int local_14;
+  int local_10;
+  char local_8 [8];
+  
+  local_8[0] = '\x02';
+  local_8[2] = 2;
+  bVar10 = *(int *)(param_1 + 0x68) == -1;
+  local_8[1] = 0xf;
+  local_8[3] = 6;
+  local_8[4] = 0x20;
+  local_8[5] = 5;
+  local_8[6] = 0xca;
+  if (bVar10) {
+    local_16 = '\0';
+  }
+  else {
+    local_16 = func_0x00409205(*(undefined2 *)(param_1 + 0x68));
+  }
+  uVar3 = func_0x0040520e(*(undefined4 *)(param_1 + 0x60));
+  iVar4 = func_0x00405e39(uVar3);
+  piVar5 = (int *)func_0x0040520e(*(undefined4 *)(param_1 + 0x60));
+  local_10 = 0xb2;
+  uVar7 = *(ushort *)(*piVar5 + 4) & 0x3fff;
+  pcVar8 = (char *)(iVar4 + 1 + uVar7);
+  do {
+    pcVar6 = pcVar8 + uVar7;
+    local_14 = 0x142;
+    pcVar9 = pcVar6;
+    do {
+      cVar1 = *pcVar8;
+      if ((cVar1 == '\0') || (cVar1 == '\x13')) {
+        bVar2 = true;
+      }
+      else {
+        bVar2 = false;
+        iVar4 = 0;
+        do {
+          if (6 < iVar4) break;
+          if (cVar1 == local_8[iVar4]) {
+            bVar2 = true;
+          }
+          iVar4 = iVar4 + 1;
+        } while (!bVar2);
+      }
+      if (bVar2) {
+        if ((bVar10) ||
+           ((((pcVar8[-1] != local_16 && (pcVar9[1 - uVar7] != local_16)) &&
+             (pcVar8[-uVar7] != local_16)) && (*pcVar9 != local_16)))) {
+          *pcVar8 = '\0';
+        }
+        else {
+          *pcVar8 = '\x13';
+        }
+      }
+      pcVar8 = pcVar8 + 1;
+      pcVar9 = pcVar9 + 1;
+      local_14 = local_14 + -1;
+    } while (local_14 != 0);
+    local_10 = local_10 + -1;
+    pcVar8 = pcVar6;
+    if (local_10 == 0) {
+      return;
+    }
+  } while( true );
 }
 

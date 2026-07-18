@@ -16,7 +16,7 @@ void CProcessLocal[_AFX_WIN_STATE]::_AFX_WIN_STATE>__CreateObject(void)
   undefined4 *unaff_FS_OFFSET;
   undefined4 uVar2;
   
-  EstablishSehFrameProlog();
+  _EH_prolog();
   uVar2 = extraout_ECX;
   iVar1 = CNoTrackObject::new(0x10);
   *(int *)(unaff_EBP + -0x10) = iVar1;

@@ -176,7 +176,7 @@ void TTradeSchoolView::OrphanRetStub_004c6fd0(int *pCityViewDialog)
   puStack_4c = (undefined4 *)auStack_20;
   puStack_48 = (undefined1 *)0x0;
   CStack_50.m_pchData = (char *)0x4cd942;
-  BuildUiTextStyleDescriptor();
+  func_0x00406afa();
   p_Var2 = pTVar1->OrphanLeaf_NoCall_Ins07_004d8920_25;
   puStack_40 = (undefined1 *)0x6e616d65;
   uVar4 = (*p_Var2)();
@@ -185,7 +185,7 @@ void TTradeSchoolView::OrphanRetStub_004c6fd0(int *pCityViewDialog)
                  CONCAT22((short)((uint)&stack0xffffffd0 >> 0x10),*(undefined2 *)&this->field_0x9e);
     puStack_4c = (undefined4 *)0x2719;
     CStack_50.m_pchData = (char *)0x4cd97a;
-    (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+    (*g_pSimMgr->vftable[0x10].slot_0x04)();
                     /* Load slot-specific title token and apply to summary header. */
     iVar3 = *(int *)CONCAT31(extraout_var,uVar4);
     ppuStack_54 = (undefined1 **)&stack0xffffffd0;
@@ -217,7 +217,7 @@ void TTradeSchoolView::OrphanRetStub_004c6fd0(int *pCityViewDialog)
     CStack_50.m_pchData = (char *)0x18;
     ppuStack_54 = (undefined1 **)0x2738;
     CStack_58.m_pchData = (char *)0x4cda19;
-    (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+    (*g_pSimMgr->vftable[0x10].slot_0x04)();
     puStack_40 = (undefined1 *)&iStack_5c;
     iStack_5c = extraout_ECX;
     CStack_58.m_pchData = (char *)CONCAT31(extraout_var_00,uVar4);
@@ -233,7 +233,7 @@ void TTradeSchoolView::OrphanRetStub_004c6fd0(int *pCityViewDialog)
     ppuStack_54 = (undefined1 **)0x19;
     CStack_58.m_pchData = (char *)0x2738;
     iStack_5c = 0x4cda5c;
-    (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+    (*g_pSimMgr->vftable[0x10].slot_0x04)();
     iStack_5c = CONCAT31(extraout_var_01,uVar4);
     func_0x004076b7();
     func_0x00404d22();
@@ -245,7 +245,7 @@ void TTradeSchoolView::OrphanRetStub_004c6fd0(int *pCityViewDialog)
     ppuStack_54 = &puStack_40;
     CStack_58.m_pchData = (char *)0x1a;
     iStack_5c = 0x2738;
-    (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+    (*g_pSimMgr->vftable[0x10].slot_0x04)();
     puStack_48 = &stack0xffffff9c;
     func_0x004076b7();
     func_0x00404d22();
@@ -262,7 +262,7 @@ void TTradeSchoolView::OrphanRetStub_004c6fd0(int *pCityViewDialog)
   iStack_5c = CONCAT31(extraout_var_04,uVar4);
   func_0x0040807b();
   iStack_5c = 0x2b69;
-  BuildUiTextStyleDescriptor();
+  func_0x00406afa();
   iStack_5c = 0x70617031;
   uVar4 = (*p_Var2)();
   if ((int *)CONCAT31(extraout_var_05,uVar4) == (int *)0x0) {
@@ -332,7 +332,7 @@ void TTradeSchoolView::OrphanRetStub_004c6fd0(int *pCityViewDialog)
   uStack_d4 = 0x4cddc5;
   CString::~CString((CString *)&stack0xffffff44);
   uStack_d4 = 0x2b67;
-  BuildUiTextStyleDescriptor();
+  func_0x00406afa();
   uStack_d4 = 0x636f7331;
   uVar4 = (*p_Var2)();
   if ((int *)CONCAT31(extraout_var_11,uVar4) == (int *)0x0) {
@@ -340,7 +340,7 @@ void TTradeSchoolView::OrphanRetStub_004c6fd0(int *pCityViewDialog)
     MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
     func_0x004057a4();
   }
-  (*g_pLocalizationTable->vftable[0xe].slot_0x04)();
+  (*g_pSimMgr->vftable[0xe].slot_0x04)();
   iVar3 = *(int *)CONCAT31(extraout_var_11,uVar4);
   uVar5 = 0;
   uStack_e8 = 0x4cde33;
@@ -355,7 +355,7 @@ void TTradeSchoolView::OrphanRetStub_004c6fd0(int *pCityViewDialog)
     MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
     func_0x004057a4();
   }
-  (*g_pLocalizationTable->vftable[0xe].slot_0x04)();
+  (*g_pSimMgr->vftable[0xe].slot_0x04)();
   iVar3 = *(int *)CONCAT31(extraout_var_12,uVar4);
   (**(code **)(iVar3 + 0x1b4))(&stack0xffffff24,0);
   (**(code **)(iVar3 + 0x1c8))(&CStack_f0,0);

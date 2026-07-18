@@ -84,7 +84,7 @@ void CFont::CreatePointFontIndirect(LONG *param_1,int param_2)
     ReleaseDC((HWND)0x0,hdc);
   }
   pHVar1 = CreateFontIndirectA(&local_54);
-  CBrush::AttachRegionHandleToClipStateAndRegister(local_8,(int)pHVar1);
+  CBrush::CGdiObject__Attach(local_8,(int)pHVar1);
   return;
 }
 

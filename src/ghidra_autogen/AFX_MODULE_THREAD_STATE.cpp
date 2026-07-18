@@ -15,7 +15,7 @@ undefined4 * AFX_MODULE_THREAD_STATE::AFX_MODULE_THREAD_STATE(void)
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
   
-  EstablishSehFrameProlog();
+  _EH_prolog();
   *(undefined4 **)(unaff_EBP + -0x10) = extraout_ECX;
   *extraout_ECX = &PTR____GCNoTrackObject__UAEPAXI_Z_0066fdf4;
   *(undefined4 *)(unaff_EBP + -4) = 0;
@@ -73,7 +73,7 @@ void AFX_MODULE_THREAD_STATE::~AFX_MODULE_THREAD_STATE(void)
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
   
-  EstablishSehFrameProlog();
+  _EH_prolog();
   *(undefined4 **)(unaff_EBP + -0x10) = extraout_ECX;
   *extraout_ECX = &PTR__scalar_deleting_destructor__00670c5c;
   iVar1 = extraout_ECX[5];

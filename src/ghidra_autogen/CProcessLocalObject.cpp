@@ -26,7 +26,7 @@ int CProcessLocalObject::GetData(void)
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
   
-  EstablishSehFrameProlog();
+  _EH_prolog();
   *(undefined1 **)(unaff_EBP + -0x10) = &stack0xffffffe8;
   *(int **)(unaff_EBP + -0x14) = extraout_ECX;
   if (*extraout_ECX == 0) {

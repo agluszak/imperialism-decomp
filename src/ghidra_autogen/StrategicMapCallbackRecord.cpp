@@ -23,9 +23,9 @@ int __thiscall StrategicMapCallbackRecord::EnsureOpcodeBufferByteAtIndex(int par
     if (0x7fffffff < uVar2) {
       uVar5 = 0x7fffffff;
     }
-    iVar3 = ReallocateHeapBlockWithAllocatorTracking(*(undefined4 *)(param_1 + 4),uVar2);
+    iVar3 = _realloc(*(undefined4 *)(param_1 + 4),uVar2);
     if (iVar3 == 0) {
-      uVar4 = ReallocateHeapBlockWithAllocatorTracking(*(undefined4 *)(param_1 + 4),iVar1);
+      uVar4 = _realloc(*(undefined4 *)(param_1 + 4),iVar1);
       *(undefined4 *)(param_1 + 4) = uVar4;
       *(int *)(param_1 + 8) = iVar1;
     }
@@ -223,9 +223,9 @@ int __thiscall StrategicMapCallbackRecord::AppendOpcodeByte(int param_1,undefine
     if (0x7fffffff < uVar3) {
       uVar6 = 0x7fffffff;
     }
-    iVar4 = ReallocateHeapBlockWithAllocatorTracking(*(undefined4 *)(param_1 + 4),uVar3);
+    iVar4 = _realloc(*(undefined4 *)(param_1 + 4),uVar3);
     if (iVar4 == 0) {
-      uVar5 = ReallocateHeapBlockWithAllocatorTracking(*(undefined4 *)(param_1 + 4),iVar1);
+      uVar5 = _realloc(*(undefined4 *)(param_1 + 4),iVar1);
       *(undefined4 *)(param_1 + 4) = uVar5;
       *(int *)(param_1 + 8) = iVar1;
     }
@@ -264,9 +264,9 @@ int __thiscall StrategicMapCallbackRecord::AppendOpcodeBytePair(int param_1,unde
     if (0x7fffffff < uVar3) {
       uVar6 = 0x7fffffff;
     }
-    iVar4 = ReallocateHeapBlockWithAllocatorTracking(*(undefined4 *)(param_1 + 4),uVar3);
+    iVar4 = _realloc(*(undefined4 *)(param_1 + 4),uVar3);
     if (iVar4 == 0) {
-      uVar5 = ReallocateHeapBlockWithAllocatorTracking(*(undefined4 *)(param_1 + 4),iVar1);
+      uVar5 = _realloc(*(undefined4 *)(param_1 + 4),iVar1);
       *(undefined4 *)(param_1 + 4) = uVar5;
       *(int *)(param_1 + 8) = iVar1;
     }
@@ -288,9 +288,9 @@ int __thiscall StrategicMapCallbackRecord::AppendOpcodeBytePair(int param_1,unde
     if (0x7fffffff < uVar3) {
       uVar6 = 0x7fffffff;
     }
-    iVar4 = ReallocateHeapBlockWithAllocatorTracking(*(undefined4 *)(param_1 + 4),uVar3);
+    iVar4 = _realloc(*(undefined4 *)(param_1 + 4),uVar3);
     if (iVar4 == 0) {
-      uVar5 = ReallocateHeapBlockWithAllocatorTracking(*(undefined4 *)(param_1 + 4),iVar1);
+      uVar5 = _realloc(*(undefined4 *)(param_1 + 4),iVar1);
       *(undefined4 *)(param_1 + 4) = uVar5;
       *(int *)(param_1 + 8) = iVar1;
     }
@@ -339,7 +339,7 @@ void __fastcall StrategicMapCallbackRecord::FinalizeOpcodeBufferAlignment(undefi
     (*pcVar1)(0);
     uVar6 = param_1[3];
     if (uVar6 < (uint)param_1[2]) {
-      uVar2 = ReallocateHeapBlockWithAllocatorTracking(param_1[1],uVar6);
+      uVar2 = _realloc(param_1[1],uVar6);
       param_1[1] = uVar2;
       param_1[2] = uVar6;
     }
@@ -350,7 +350,7 @@ void __fastcall StrategicMapCallbackRecord::FinalizeOpcodeBufferAlignment(undefi
       if (0x7fffffff < uVar7) {
         uVar5 = 0x7fffffff;
       }
-      iVar3 = ReallocateHeapBlockWithAllocatorTracking(param_1[1],uVar7);
+      iVar3 = _realloc(param_1[1],uVar7);
       if (iVar3 == 0) {
         func_0x00408b9d(uVar6 + 1);
       }
@@ -374,10 +374,10 @@ void __fastcall StrategicMapCallbackRecord::FinalizeOpcodeBufferAlignment(undefi
           if (0x7fffffff < local_8) {
             uVar7 = 0x7fffffff;
           }
-          iVar3 = ReallocateHeapBlockWithAllocatorTracking(param_1[1],local_8);
+          iVar3 = _realloc(param_1[1],local_8);
           if (iVar3 == 0) {
             uVar7 = uVar6 + 1;
-            iVar3 = ReallocateHeapBlockWithAllocatorTracking(param_1[1],uVar7);
+            iVar3 = _realloc(param_1[1],uVar7);
           }
           param_1[1] = iVar3;
           param_1[2] = uVar7;
@@ -393,9 +393,9 @@ void __fastcall StrategicMapCallbackRecord::FinalizeOpcodeBufferAlignment(undefi
           if (0x7fffffff < uVar5) {
             uStack_4 = 0x7fffffff;
           }
-          iVar4 = ReallocateHeapBlockWithAllocatorTracking(param_1[1],uVar5);
+          iVar4 = _realloc(param_1[1],uVar5);
           if (iVar4 == 0) {
-            uVar2 = ReallocateHeapBlockWithAllocatorTracking(param_1[1],iVar3);
+            uVar2 = _realloc(param_1[1],iVar3);
             param_1[1] = uVar2;
             param_1[2] = iVar3;
           }

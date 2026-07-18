@@ -179,7 +179,7 @@ void TAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache()
       uStack_40 = uStack_30;
       uStack_38 = uStack_28;
       uStack_34 = uStack_24;
-      ApplyRectClipRegionToGlobalClipState();
+      func_0x004030e9();
       (*pTVar2->OrphanRetStub_0059add0_4b)();
       iVar4 = g_nOverlayClipCacheParamX;
       iStack_54 = uStack_24;
@@ -197,14 +197,14 @@ void TAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache()
         iVar4 = 0;
       }
       else {
-        SetQuickDrawTextOriginWithContextOffset(0);
+        func_0x00408d6e(0);
         (**(code **)(g_pUiRuntimeContext->vftable + 0x34))();
         func_0x00402e73(1,7);
         iVar4 = CONCAT22((short)((uint)unaff_EBX >> 0x10),sVar1);
         if (this->stepOrCurrentValue < sVar1) {
           iVar4 = CONCAT22(extraout_var,this->stepOrCurrentValue);
         }
-        DrawCenteredGuideLineOnMapDc(iVar4 + -1,1);
+        func_0x00403bb6(iVar4 + -1,1);
         func_0x004088aa();
       }
       if ((short)iVar4 < 1) {
@@ -213,15 +213,13 @@ void TAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache()
       else {
         iVar4 = iVar4 + 1;
       }
-      SetQuickDrawTextOriginWithContextOffset(iVar4);
+      func_0x00408d6e(iVar4);
       func_0x00406b86();
       func_0x00402e73(1);
-      DrawCenteredGuideLineOnMapDc(CONCAT22(extraout_var_01,*(undefined2 *)&this->field_0x34))
-      ;
-      SetQuickDrawTextOriginWithContextOffset
-                (CONCAT22(extraout_var_00,this->stepOrCurrentValue));
+      func_0x00403bb6(CONCAT22(extraout_var_01,*(undefined2 *)&this->field_0x34));
+      func_0x00408d6e(CONCAT22(extraout_var_00,this->stepOrCurrentValue));
       func_0x004088aa();
-      DrawCenteredGuideLineOnMapDc(this->stepOrCurrentValue + -1);
+      func_0x00403bb6(this->stepOrCurrentValue + -1);
       func_0x00405be1();
     }
   }
@@ -249,7 +247,7 @@ void TAmtBar::BeginMouseCaptureAndStartRepeatTimer(int *param_1)
   uVar5 = (undefined2)((uint)this >> 0x10);
   if ((this->auxValueA < 1) || (*(int *)&this->field_0x34 / ((int)this->auxValueA << 1) <= *param_1)
      ) {
-    uVar3 = ftol();
+    uVar3 = _ftol();
     uVar5 = extraout_var_00;
   }
   else {

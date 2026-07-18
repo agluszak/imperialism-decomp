@@ -26,7 +26,7 @@ void CView::~CView(void)
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
   
-  EstablishSehFrameProlog();
+  _EH_prolog();
   *(CWnd **)(unaff_EBP + -0x10) = this;
   (this->ccmdTarget).vftable = (CCmdTargetVtbl *)&PTR_LAB_00672c54;
   pCVar1 = this[1].ccmdTarget.vftable;
@@ -120,7 +120,7 @@ void __fastcall CView::OnDestroy(int param_1)
   if (this != (void *)0x0) {
     iVar1 = GetObjectValueAtOffset98();
     if (iVar1 == param_1) {
-      SetActiveView(this,(CView *)0x0,1);
+      CFrameWnd__SetActiveView(this,(CView *)0x0,1);
     }
   }
   CWnd::OnDestroy();
@@ -150,7 +150,7 @@ void CView::OnPaint(void)
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
   
-  EstablishSehFrameProlog();
+  _EH_prolog();
   CPaintDC::CPaintDC(extraout_ECX);
   iVar1 = *extraout_ECX;
   *(undefined4 *)(unaff_EBP + -4) = 0;
@@ -185,7 +185,7 @@ int __fastcall CView::OnMouseActivate(CWnd *param_1)
       (*(param_1->ccmdTarget).vftable[0x13].slot_0x08)(1,param_1,param_1);
       return iVar1;
     }
-    SetActiveView(this,(CView *)param_1,1);
+    CFrameWnd__SetActiveView(this,(CView *)param_1,1);
   }
   return iVar1;
 }
@@ -214,7 +214,7 @@ CObject * CView::GetParentSplitter(int param_1,int param_2)
   BOOL BVar3;
   
   pHVar1 = GetParent(*(HWND *)(param_1 + 0x1c));
-  this = (CObject *)FromHandle(pHVar1);
+  this = (CObject *)CWnd__FromHandle(pHVar1);
   iVar2 = CObject::IsKindOf(this);
   if (iVar2 != 0) {
     if (param_2 != 0) {
@@ -222,7 +222,7 @@ CObject * CView::GetParentSplitter(int param_1,int param_2)
     }
     do {
       pHVar1 = GetParent(*(HWND *)(param_1 + 0x1c));
-      param_1 = FromHandle(pHVar1);
+      param_1 = CWnd__FromHandle(pHVar1);
       if (param_1 == 0) {
         return this;
       }

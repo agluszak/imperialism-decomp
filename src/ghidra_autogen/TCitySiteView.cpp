@@ -384,7 +384,7 @@ void TCitySiteView::HandleMapClickByInteractionMode()
         pTVar1 = g_pGlobalMapState->vftable;
         uVar5 = func_0x00403b16();
         (*pTVar1->SetTileTransportFlagsTo0x37AndRefreshNeighbors)(_sStack00000004,uVar5);
-        (*g_pLocalizationTable->vftable[8].slot_0x04)();
+        (*g_pSimMgr->vftable[8].slot_0x04)();
       }
     }
     else {
@@ -393,14 +393,14 @@ void TCitySiteView::HandleMapClickByInteractionMode()
          (cVar3 = func_0x00402b30(), cVar3 != '\0')) {
         CString::CString((CString *)&stack0x00000004);
         local_4 = 2;
-        (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+        (*g_pSimMgr->vftable[0x10].slot_0x04)();
         func_0x004076b7(&puStack_8);
         (**(code **)(*g_pDisplayMgr + 0x4c))();
       }
       else {
         CString::CString((CString *)&stack0x00000004);
         local_4 = 1;
-        (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+        (*g_pSimMgr->vftable[0x10].slot_0x04)();
         func_0x004076b7(&puStack_8);
         (**(code **)(*g_pDisplayMgr + 0x4c))();
       }
@@ -410,7 +410,7 @@ void TCitySiteView::HandleMapClickByInteractionMode()
     func_0x00408deb();
     CString::CString((CString *)&stack0x00000004);
     local_4 = 0;
-    (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+    (*g_pSimMgr->vftable[0x10].slot_0x04)();
     func_0x004076b7(&puStack_8);
     (**(code **)(*g_pDisplayMgr + 0x4c))();
   }

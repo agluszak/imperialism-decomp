@@ -15,7 +15,7 @@ undefined4 * CToolTipCtrl::CToolTipCtrl(void)
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
   
-  EstablishSehFrameProlog();
+  _EH_prolog();
   *(undefined4 **)(unaff_EBP + -0x10) = extraout_ECX;
   CWnd::CWnd();
   *(undefined4 *)(unaff_EBP + -4) = 0;
@@ -66,11 +66,11 @@ void CToolTipCtrl::~CToolTipCtrl(void)
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
   
-  EstablishSehFrameProlog();
+  _EH_prolog();
   *(CWnd **)(unaff_EBP + -0x10) = this;
   (this->ccmdTarget).vftable = (CCmdTargetVtbl *)&PTR_LAB_006744fc;
   *(undefined4 *)(unaff_EBP + -4) = 1;
-  OrphanCallChain_C1_I09_0048ff70();
+  CWnd__DestroyWindow();
   *(undefined1 *)(unaff_EBP + -4) = 0;
   CMapStringToPtr::~CMapStringToPtr();
   *(undefined4 *)(unaff_EBP + -4) = 0xffffffff;
@@ -400,10 +400,10 @@ void CToolTipCtrl::UpdateTipText(void)
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
   
-  EstablishSehFrameProlog();
+  _EH_prolog();
   CString::CString((CString *)(unaff_EBP + -0x10));
   *(undefined4 *)(unaff_EBP + -4) = 0;
-  LoadStringA(*(undefined4 *)(unaff_EBP + 8));
+  CString__LoadStringA(*(undefined4 *)(unaff_EBP + 8));
   UpdateTipText(*(undefined4 *)(unaff_EBP + -0x10),*(undefined4 *)(unaff_EBP + 0xc),
                 *(undefined4 *)(unaff_EBP + 0x10));
   *(undefined4 *)(unaff_EBP + -4) = 0xffffffff;

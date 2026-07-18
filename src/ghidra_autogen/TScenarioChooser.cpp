@@ -140,8 +140,7 @@ void TScenarioChooser::NoOpUiLifecycleHook()
     pCStack_8c = (CString *)0x579bf9;
     CString::CString(&CStack_4);
     iStack_c._0_1_ = 1;
-    if ((((int)p_Var10 < 9) || (0xf < (int)p_Var10)) ||
-       (*(int *)&g_pLocalizationTable->field_0x44 == 0)) {
+    if ((((int)p_Var10 < 9) || (0xf < (int)p_Var10)) || (*(int *)&g_pSimMgr->field_0x44 == 0)) {
       pCStack_8c = &CStack_4;
       pp_Stack_90 = (_vslot_fn **)0x0;
       puStack_98 = (undefined1 *)0x579c32;
@@ -154,7 +153,7 @@ void TScenarioChooser::NoOpUiLifecycleHook()
         pCStack_8c = (CString *)&DAT_00696d10;
         pp_Stack_90 = (_vslot_fn **)CStack_4.m_pchData;
         p_Stack_94 = (_vslot_fn *)0x579c5c;
-        pCVar4 = (CString *)__wfopen();
+        pCVar4 = (CString *)_fopen();
         p_Stack_94 = (_vslot_fn *)&uStack_54;
         pp_Stack_90 = (_vslot_fn **)0x40;
         puStack_98 = (undefined1 *)0x579c6e;
@@ -200,14 +199,14 @@ void TScenarioChooser::NoOpUiLifecycleHook()
   uStack_58 = 0;
   uStack_57 = 0;
   pcStack_9c = (code *)0x579d42;
-  BuildUiTextStyleDescriptor();
+  func_0x00406afa();
   pCStack_8c = (CString *)0x579d5e;
   CString::CString(&local_6c);
   pCStack_8c = (CString *)&stack0xffffff88;
   iStack_c = 2;
   pp_Stack_90 = (_vslot_fn **)0x2b6c;
   p_Stack_94 = (_vslot_fn *)0x579d75;
-  MapUiThemeCodeToStyleFlags();
+  func_0x004093cc();
   pCStack_8c = (CString *)0x6d6f7265;
   pp_Stack_90 = (_vslot_fn **)0x579d83;
   piVar6 = (int *)(*unaff_EBX)();
@@ -218,7 +217,7 @@ void TScenarioChooser::NoOpUiLifecycleHook()
   p_Stack_94 = (_vslot_fn *)0x20;
   puStack_98 = (undefined1 *)0x2758;
   pcStack_9c = (code *)0x579da6;
-  (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+  (*g_pSimMgr->vftable[0x10].slot_0x04)();
   puStack_a0 = &stack0xffffff84;
   pcStack_9c = (code *)0x0;
   uStack_a4 = 0x579db4;
@@ -237,7 +236,7 @@ void TScenarioChooser::NoOpUiLifecycleHook()
   puStack_c0 = auStack_88;
   ppCStack_bc = (CString **)0x0;
   uStack_c4 = 0x579dea;
-  BuildUiTextStyleDescriptor();
+  func_0x00406afa();
   pcStack_b4 = (code *)0x73646573;
   uStack_b8 = 0x579df8;
   piVar6 = (int *)(*pcStack_9c)();
@@ -379,7 +378,7 @@ void TScenarioChooser::HandleEvent(int param_1, int param_2)
 void TScenarioChooser::PostTurnEvent5DCOrResetScenarioSelectionState()
 
 {
-  if (*(int *)&g_pLocalizationTable->field_0x44 != 0) {
+  if (*(int *)&g_pSimMgr->field_0x44 != 0) {
     func_0x0040346d();
     return;
   }
@@ -488,7 +487,7 @@ void TScenarioChooser::ApplyScenarioSelectionAndPostTurnEvent5E4()
     func_0x004082ba((int)*(short *)&this->field_0x142);
     uVar4 = *(undefined4 *)(&this->field_0x144 + *(int *)(unaff_EBX + 0x68) * 4);
     func_0x00401668(uVar4);
-    if (*(int *)&g_pLocalizationTable->field_0x44 != 0) {
+    if (*(int *)&g_pSimMgr->field_0x44 != 0) {
       do {
         src_ref = (CString *)func_0x00402a2c(&stack0xffffffa0,(int)g_pGameFlowState + 0xb0);
         local_4c[0xc] = 0;
@@ -501,7 +500,7 @@ void TScenarioChooser::ApplyScenarioSelectionAndPostTurnEvent5E4()
         func_0x00407ce3(uVar4,&DAT_006a4220,0,0,0,0);
         local_4c[0xe] = 0xffffffff;
         CString::~CString((CString *)&stack0xffffff98);
-        iVar3 = CompareAnsiStringsWithMbcsAwareness(DAT_006a4220,&g_szEmptyString);
+        iVar3 = _mbscmp(DAT_006a4220,&g_szEmptyString);
       } while (iVar3 == 0);
       CString::CString((CString *)&stack0xffffff94);
       local_4c[0xe] = 2;
@@ -523,11 +522,11 @@ void TScenarioChooser::ApplyScenarioSelectionAndPostTurnEvent5E4()
     iVar3 = 0xda;
     do {
       iVar5 = iVar3 + 2;
-      *(undefined2 *)((int)&g_pLocalizationTable->vftable + iVar3) = 2;
+      *(undefined2 *)((int)&g_pSimMgr->vftable + iVar3) = 2;
       iVar3 = iVar5;
     } while (iVar5 < 0xe8);
-    *(undefined2 *)(&g_pLocalizationTable->field_0xda + *(int *)(unaff_EBP + 0x68) * 2) = 1;
-    (*g_pLocalizationTable->vftable[8].slot_0x04)();
+    *(undefined2 *)(&g_pSimMgr->field_0xda + *(int *)(unaff_EBP + 0x68) * 2) = 1;
+    (*g_pSimMgr->vftable[8].slot_0x04)();
   }
   *unaff_FS_OFFSET = local_4c[0x10];
   return;

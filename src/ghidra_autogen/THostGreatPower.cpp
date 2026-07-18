@@ -153,7 +153,7 @@ void THostGreatPower::DispatchTurnEvent11F8NoPayloadSlot2AC()
     func_0x0040389b();
     return;
   }
-  (*g_pLocalizationTable->vftable[8].slot_0x04)();
+  (*g_pSimMgr->vftable[8].slot_0x04)();
   return;
 }
 

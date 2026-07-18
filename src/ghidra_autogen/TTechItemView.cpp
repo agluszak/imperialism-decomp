@@ -212,17 +212,17 @@ TTechItemView::ConstructTTechItemViewBaseState
   aiStack_8c[0] = 0;
   aiStack_8c[1] = 0;
   pTStack_ac = (TView *)0x5b1437;
-  MapUiThemeCodeToStyleFlags();
+  func_0x004093cc();
   piStack_a4 = aiStack_8c + 1;
   iStack_a8 = 0x2b68;
   pTStack_ac = (TView *)0x5b1449;
-  MapUiThemeCodeToStyleFlags();
+  func_0x004093cc();
   puStack_b0 = &stack0xffffff9c;
   piStack_a4 = (int *)0x2b6a;
   iStack_a8 = 0xc;
   pTStack_ac = (TView *)0x0;
   piStack_b4 = (int *)0x5b145e;
-  BuildUiTextStyleDescriptor();
+  func_0x00406afa();
   piStack_a4 = (int *)0xa4;
   iStack_a8 = 0x5b146b;
   piVar3 = (int *)operator_new();
@@ -278,11 +278,11 @@ TTechItemView::ConstructTTechItemViewBaseState
   pTStack_cc = (TTechItemViewVtbl *)&piStack_a0;
   TStack_d4.slot_0x04 = (TSimMgr_slot_0x04_0x04 *)pTVar8;
   TStack_d4.GetTSimMgrClassNamePointer = (TSimMgr_GetTSimMgrClassNamePointer_0x00 *)0x2712;
-  (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+  (*g_pSimMgr->vftable[0x10].slot_0x04)();
   pCStack_e0 = (CString *)&puStack_b0;
   pTStack_dc = (TTechItemViewVtbl *)&g_szDecimalFormat;
   ppiStack_e4 = (int **)0x5b1572;
-  _Format_CString__QAAXPBDZZ();
+  CString__Format();
   pTStack_dc = (TTechItemViewVtbl *)&pTStack_ac;
   pCStack_e0 = &CStack_6c;
   ppiStack_e4 = (int **)0x5b1589;
@@ -359,7 +359,7 @@ TTechItemView::ConstructTTechItemViewBaseState
   puStack_fc = (undefined1 *)((int)&pTVar8[-1].OrphanRetStub_0059add0_67 + 3);
   piStack_100 = (int *)0x274e;
   ppTStack_104 = (TTechItemViewVtbl **)0x5b16f8;
-  (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+  (*g_pSimMgr->vftable[0x10].slot_0x04)();
   pCStack_90 = (CString *)*piVar3;
   ppTStack_104 = &pTStack_f0;
   pTStack_108 = (TTechItemView *)0x5b170b;
@@ -424,7 +424,7 @@ TTechItemView::ConstructTTechItemViewBaseState
     CStack_128.m_pchData = (char *)0x0;
     ppTStack_12c = (TTechItemView **)0x274f;
     pTStack_130 = (TTechItemView *)0x5b1b0e;
-    (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+    (*g_pSimMgr->vftable[0x10].slot_0x04)();
     pTStack_138 = (TTechItemView *)&pTStack_108;
     pTStack_130 = (TTechItemView *)
                   (*(short *)(&g_pCityOrderCapabilityState->field_0x4a6 +
@@ -432,11 +432,11 @@ TTechItemView::ConstructTTechItemViewBaseState
                              * 2) + 0x717);
     CStack_134.m_pchData = &g_szDecimalFormat;
     pTStack_13c = (TSimMgr *)0x5b1b37;
-    _Format_CString__QAAXPBDZZ();
+    CString__Format();
     pTStack_138 = (TTechItemView *)&pTStack_110;
     pTStack_130 = pTStack_108;
     CStack_134.m_pchData = (char *)pTStack_10c;
-    pTStack_13c = g_pLocalizationTable;
+    pTStack_13c = g_pSimMgr;
     uStack_140 = 0x5b1b55;
     func_0x0040988b();
     iVar7 = *piVar3;
@@ -455,13 +455,13 @@ TTechItemView::ConstructTTechItemViewBaseState
         CStack_11c.m_pchData = (char *)0x274f;
         uVar6 = 10;
         CStack_120.m_pchData = (char *)0x5b1955;
-        (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+        (*g_pSimMgr->vftable[0x10].slot_0x04)();
       }
       else {
         ppiStack_114 = &piStack_100;
         pTStack_118 = *(TSimMgrVtbl **)(&DAT_0066ad58 + (int)pTVar8 * 4);
         CStack_11c.m_pchData = (char *)0x5b196f;
-        (*g_pLocalizationTable->vftable[0xe].slot_0x04)();
+        (*g_pSimMgr->vftable[0xe].slot_0x04)();
         uVar6 = 9;
       }
       CStack_120.m_pchData = (char *)0xa0;
@@ -551,19 +551,19 @@ TTechItemView::ConstructTTechItemViewBaseState
     if (pTStack_c8 == (TTechItemView *)0x0) {
       pTStack_13c = (TSimMgr *)&pTStack_118;
       uStack_140 = 2;
-      (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x274f);
-      (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2712,TStack_d4.slot_0x04,&CStack_134);
-      func_0x0040988b(g_pLocalizationTable,&CStack_134,pTStack_130,uStack_140);
+      (*g_pSimMgr->vftable[0x10].slot_0x04)(0x274f);
+      (*g_pSimMgr->vftable[0x10].slot_0x04)(0x2712,TStack_d4.slot_0x04,&CStack_134);
+      func_0x0040988b(g_pSimMgr,&CStack_134,pTStack_130,uStack_140);
       iVar7 = *piVar3;
     }
     else {
       pTStack_13c = (TSimMgr *)&pTStack_118;
       uStack_140 = 1;
-      (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x274f);
+      (*g_pSimMgr->vftable[0x10].slot_0x04)(0x274f);
       pTVar8 = (TTechItemViewVtbl *)TStack_d4.slot_0x04;
-      (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2712,TStack_d4.slot_0x04,&CStack_134);
-      (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2712,pCStack_e0,&CStack_128);
-      func_0x0040988b(g_pLocalizationTable,&uStack_140,pTStack_13c,pTVar8,CStack_134.m_pchData);
+      (*g_pSimMgr->vftable[0x10].slot_0x04)(0x2712,TStack_d4.slot_0x04,&CStack_134);
+      (*g_pSimMgr->vftable[0x10].slot_0x04)(0x2712,pCStack_e0,&CStack_128);
+      func_0x0040988b(g_pSimMgr,&uStack_140,pTStack_13c,pTVar8,CStack_134.m_pchData);
       iVar7 = *piVar3;
     }
   }
@@ -598,15 +598,12 @@ void TTechItemView::HandleEvent(CString param_1, CString param_2, CString param_
   short sVar4;
   undefined3 extraout_var;
   int *piVar5;
+  undefined4 uVar6;
   undefined3 extraout_var_00;
-  int iVar6;
-  uint uVar7;
+  int iVar7;
+  uint uVar8;
   undefined4 *unaff_FS_OFFSET;
-  undefined1 *puVar8;
-  CString CStack_30;
-  CString *pCStack_2c;
-  CString CStack_18;
-  CString CStack_14;
+  CString aCStack_18 [2];
   undefined1 auStack_10 [4];
   CString CStack_c;
   CString CStack_8;
@@ -618,17 +615,12 @@ void TTechItemView::HandleEvent(CString param_1, CString param_2, CString param_
   CStack_8.m_pchData = &LAB_00638b00;
   *unaff_FS_OFFSET = &CStack_c;
   if (param_1.m_pchData != (char *)0xa) {
-    pCStack_2c = (CString *)param_3.m_pchData;
-    CStack_30.m_pchData = param_2.m_pchData;
     func_0x00408657();
     goto LAB_005b2141;
   }
   if (*(int *)(param_2.m_pchData + 0x1c) != 0x70757263) {
     if (*(int *)(param_2.m_pchData + 0x1c) == 0x64657363) {
-      pCStack_2c = (CString *)0x942;
-      CStack_30.m_pchData = (char *)0x5b20b4;
       uVar3 = (*g_pUiViewManager->vftable->ResolveTurnEventDialogNodeByMessageContext)();
-      CStack_30.m_pchData = (char *)0x444c4f47;
       iVar1 = *(int *)CONCAT31(extraout_var_00,uVar3);
       piVar5 = (int *)(**(code **)(iVar1 + 0x94))();
       (**(code **)(*piVar5 + 0xc))();
@@ -636,9 +628,9 @@ void TTechItemView::HandleEvent(CString param_1, CString param_2, CString param_
       (**(code **)(g_pUiRuntimeContext->vftable + 0x44))();
       (**(code **)(iVar1 + 0xf0))();
       (**(code **)(iVar1 + 0x1a0))();
-      iVar6 = (**(code **)(iVar1 + 0x1b8))();
-      if (iVar6 != 0) {
-        *(undefined4 *)(iVar6 + 0x14) = 0x6f6b6179;
+      iVar7 = (**(code **)(iVar1 + 0x1b8))();
+      if (iVar7 != 0) {
+        *(undefined4 *)(iVar7 + 0x14) = 0x6f6b6179;
       }
       (**(code **)(iVar1 + 0x1ac))();
       (**(code **)(iVar1 + 0xa0))();
@@ -646,64 +638,51 @@ void TTechItemView::HandleEvent(CString param_1, CString param_2, CString param_
     }
     goto LAB_005b2141;
   }
-  pCStack_2c = (CString *)0x5b1e66;
   CString::CString(&param_2);
-  pCStack_2c = *(CString **)&this->field_0x60;
   uStack_4 = 0;
   if ((&g_pCityOrderCapabilityState->field_0x268)
-      [(int)*(short *)&this->field_0x64 + (int)pCStack_2c * 0x1d] == '\0') {
-    pCStack_2c = (CString *)0x5b1ea3;
+      [(int)*(short *)&this->field_0x64 + *(int *)&this->field_0x60 * 0x1d] == '\0') {
     sVar4 = func_0x00403b16();
-    uVar7 = *(int *)&g_apNationStates[sVar4]->field_0x8f0 / 100 +
+    uVar8 = *(int *)&g_apNationStates[sVar4]->field_0x8f0 / 100 +
             *(int *)&g_apNationStates[sVar4]->field_0x10;
     if (*(int *)(&DAT_0066ad58 + *(int *)&this->field_0x64 * 4) <=
-        (int)(((int)uVar7 < 1) - 1 & uVar7)) {
-      pCStack_2c = &param_2;
-      CStack_30.m_pchData = (char *)0x3;
-      (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+        (int)(((int)uVar8 < 1) - 1 & uVar8)) {
+      (*g_pSimMgr->vftable[0x10].slot_0x04)();
       func_0x004023e7();
       CString::operator=((CString *)(CVar2.m_pchData + 0x94),&CStack_c);
       (**(code **)(*(int *)CVar2.m_pchData + 0xe4))();
       goto LAB_005b2043;
     }
-    pCStack_2c = (CString *)0x5b1eec;
-    CString::CString(&CStack_18);
+    CString::CString(aCStack_18);
     uStack_4._0_1_ = 1;
-    pCStack_2c = (CString *)0x5b1efa;
     CString::CString(&param_3);
     uStack_4._0_1_ = 2;
-    pCStack_2c = (CString *)0x5b1f0c;
     CString::CString(&param_1);
-    pCStack_2c = &CStack_18;
     uStack_4 = CONCAT31(uStack_4._1_3_,3);
-    CStack_30.m_pchData = *(char **)(&DAT_0066ad58 + *(int *)&this->field_0x64 * 4);
-    (*g_pLocalizationTable->vftable[0xe].slot_0x04)();
-    (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+    (*g_pSimMgr->vftable[0xe].slot_0x04)();
+    (*g_pSimMgr->vftable[0x10].slot_0x04)();
     func_0x0040988b();
-    puVar8 = auStack_10;
-    func_0x004076b7(puVar8);
-    DispatchLocalizedUiMessageWithTemplateA13A0(puVar8);
-    CString::~CString(&CStack_14);
-    CString::~CString(&CStack_c);
-    CString::~CString(&CStack_30);
+    func_0x004076b7(auStack_10);
+    func_0x004096b0();
+    CString::~CString((CString *)&stack0xffffffdc);
+    CString::~CString((CString *)&stack0xffffffe4);
+    CString::~CString((CString *)&stack0xffffffc0);
   }
   else {
-    CStack_30.m_pchData = *(char **)&this->field_0x64;
     func_0x004039cc();
-    (*g_pLocalizationTable->vftable[0xe].slot_0x04)();
+    (*g_pSimMgr->vftable[0xe].slot_0x04)();
     CString::operator=((CString *)(CVar2.m_pchData + 0x94),&CStack_8);
     (**(code **)(*(int *)CVar2.m_pchData + 0xe4))();
 LAB_005b2043:
     func_0x00407ce8();
   }
   uVar3 = (*this->vftable->SetForeignMinisterReadyFlag14)();
-  piVar5 = (int *)(**(code **)(*(int *)CONCAT31(extraout_var,uVar3) + 0x94))();
+  piVar5 = (int *)(**(code **)(*(int *)CONCAT31(extraout_var,uVar3) + 0x94))(0x746f6f6c);
   iVar1 = *piVar5;
   (**(code **)(iVar1 + 0xc))();
-  func_0x00403b16();
-  (**(code **)(iVar1 + 0x1d0))();
+  uVar6 = func_0x00403b16();
+  (**(code **)(iVar1 + 0x1d0))(uVar6);
   uStack_4 = 0xffffffff;
-  pCStack_2c = (CString *)0x5b2094;
   CString::~CString(&param_2);
 LAB_005b2141:
   *unaff_FS_OFFSET = CStack_c.m_pchData;

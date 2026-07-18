@@ -971,7 +971,7 @@ void TView::InvalidateOffsetRegionUsingChildClipRect_b4(int *param_1)
     local_1c = &CBrush::_vftable_;
     local_4 = 0;
     pHVar1 = CreateRectRgn(0,0,0,0);
-    CBrush::AttachRegionHandleToClipStateAndRegister((CBrush *)&local_1c,(int)pHVar1);
+    CBrush::CGdiObject__Attach((CBrush *)&local_1c,(int)pHVar1);
     if (*param_1 == -0x14) {
       pHVar1 = (HRGN)0x0;
     }
@@ -985,10 +985,10 @@ void TView::InvalidateOffsetRegionUsingChildClipRect_b4(int *param_1)
       InvalidateRgn(*(HWND *)(this->field50 + 0x1c),
                     (HRGN)(-(uint)(&stack0x00000000 != (undefined1 *)0x1c) & (uint)local_18),0);
     }
-    DeleteObject();
+    CGdiObject__DeleteObject();
     local_1c = &PTR_LAB_00671054;
     local_4 = 1;
-    DeleteObject();
+    CGdiObject__DeleteObject();
   }
   *unaff_FS_OFFSET = local_c;
   return;

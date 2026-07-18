@@ -160,7 +160,7 @@ void TBattleReportView::NoOpUiLifecycleHook()
   uStack0000001c = 0;
   uStack0000001d = 0;
   iStack_28 = 0x4acbab;
-  BuildUiTextStyleDescriptor();
+  func_0x00406afa();
   iStack_18 = 0x2b67;
   iStack_1c = 0xe;
   puStack_24 = &stack0x00000014;
@@ -171,7 +171,7 @@ void TBattleReportView::NoOpUiLifecycleHook()
     puVar6 = puVar6 + 1;
   }
   iStack_28 = 0x4acbcd;
-  BuildUiTextStyleDescriptor();
+  func_0x00406afa();
   pcVar1 = *(code **)(*extraout_ECX + 0x94);
   iStack_18 = 0x72657375;
   iStack_1c = 0x4acbe1;
@@ -188,7 +188,7 @@ void TBattleReportView::NoOpUiLifecycleHook()
   puStack_30 = &stack0x00000008;
   puStack_2c = (undefined1 *)0x2;
   uStack_34 = 0x4acc0c;
-  BuildUiTextStyleDescriptor();
+  func_0x00406afa();
   puStack_24 = (undefined1 *)0x6c6f6361;
   iStack_28 = 0x4acc18;
   piVar3 = (int *)(*pcVar1)();
@@ -204,7 +204,7 @@ void TBattleReportView::NoOpUiLifecycleHook()
   puStack_3c = &stack0xfffffffc;
   puStack_38 = (undefined1 *)0x0;
   iStack_40 = 0x4acc43;
-  BuildUiTextStyleDescriptor();
+  func_0x00406afa();
   puStack_30 = (undefined1 *)0x6661646d;
   uStack_34 = 0x4acc4f;
   piVar3 = (int *)(*pcVar1)();
@@ -230,7 +230,7 @@ void TBattleReportView::NoOpUiLifecycleHook()
   piStack_54 = &iStack_1c;
   ppuStack_50 = (undefined1 **)0x0;
   uStack_58 = 0x4acc9b;
-  BuildUiTextStyleDescriptor();
+  func_0x00406afa();
   iStack_48 = 0x66736870;
   iStack_4c = 0x4acca7;
   piVar3 = (int *)(*pcVar1)();
@@ -257,7 +257,7 @@ void TBattleReportView::NoOpUiLifecycleHook()
     if (iVar8 < 1) {
       if (puStack_60 == (undefined1 *)0xffffffff) {
         puStack_60 = (undefined1 *)0x4ad0d9;
-        (*g_pLocalizationTable->vftable[8].slot_0x04)();
+        (*g_pSimMgr->vftable[8].slot_0x04)();
         iStack_14 = 1;
         puStack_60 = (undefined1 *)0x1;
       }
@@ -584,8 +584,8 @@ uint TBattleReportView::CanHandleCityDialogActionFalse(uint param_1)
       DAT_006a23b8 = 0;
       DAT_006a23b4 = DAT_006a23b4 == '\0';
       (*pTVar1[0x1f].slot_0x04)();
-      uStack_4 = 0xffffffff;
-      param_1 = DestroyScopedMapQuickDrawContext();
+      uStack_c = 0xffffffff;
+      param_1 = func_0x00408035();
     }
   }
   *unaff_FS_OFFSET = uStack_c;
@@ -795,7 +795,7 @@ void TBattleReportView::HandleEvent(int param_1, int param_2)
     }
     else {
       if (uVar1 == 0x6f6b6179) {
-        (*g_pLocalizationTable->vftable[8].slot_0x04)();
+        (*g_pSimMgr->vftable[8].slot_0x04)();
         goto LAB_004adb34;
       }
       if (uVar1 == 0x70726576) {
@@ -1016,10 +1016,10 @@ TBattleReportView::RefreshMapContextSelectionPanelAndInfoLabels
     puStack_60 = &stack0xffffffbc;
     iStack_64 = 7;
     uStack_14 = CONCAT31(uStack_14._1_3_,3);
-    (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+    (*g_pSimMgr->vftable[0x10].slot_0x04)();
     puStack_78 = &uStack_54;
     puStack_74 = puStack_50;
-    CStack_7c.m_pchData = (char *)g_pLocalizationTable;
+    CStack_7c.m_pchData = (char *)g_pSimMgr;
     uStack_80 = 0x4ae1ea;
     func_0x0040988b();
     puStack_70 = (undefined4 *)0x4ae1fb;
@@ -1126,7 +1126,7 @@ LAB_004ae3ee:
   puStack_70 = puStack_50;
   iStack_1c = 5;
   puStack_74 = (undefined4 *)0x4ae4da;
-  (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+  (*g_pSimMgr->vftable[0x10].slot_0x04)();
   puStack_74 = (undefined4 *)0x72657375;
   puStack_78 = (undefined4 *)0x4ae4e3;
   uVar3 = (*pTVar1)();

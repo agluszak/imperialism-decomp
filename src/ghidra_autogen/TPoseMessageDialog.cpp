@@ -92,12 +92,13 @@ TPoseMessageDialog::ProcessDiplomacyTurnStateEventStateMachine
   undefined4 local_128;
   char local_124 [4];
   undefined4 local_120;
-  char local_11c [248];
+  char local_11c [240];
+  undefined1 uStack_2c;
   char cStack_24;
   undefined1 uStack_23;
+  undefined1 uStack_20;
   undefined4 uStack_1c;
   undefined1 uStack_18;
-  undefined1 uStack_14;
   undefined1 local_10;
   undefined1 local_f;
   undefined4 local_c;
@@ -168,7 +169,7 @@ LAB_00546c48:
       local_1b8[2] = 0;
       (&local_1a0)[iVar35] = 0x62757379;
       func_0x00405a5b();
-      (*g_pLocalizationTable->vftable[8].slot_0x04)();
+      (*g_pSimMgr->vftable[8].slot_0x04)();
       uVar16 = 1;
     }
     break;
@@ -506,10 +507,10 @@ LAB_00546c48:
             (**(code **)(iVar34 + 0x1c8))();
           }
           (**(code **)(iVar34 + 0xa4))();
-          local_4 = CONCAT31(local_4._1_3_,6);
-          DestroyScopedMapQuickDrawContext();
+          uStack_20 = 6;
+          func_0x00408035();
         }
-        if (*(int *)&g_pLocalizationTable->field_0x44 == 1) {
+        if (*(int *)&g_pSimMgr->field_0x44 == 1) {
           bVar10 = false;
           local_1c8.m_pchData = (char *)0x0;
           pcVar32 = (code *)(CVar42.m_pchData + 0x48);
@@ -566,7 +567,7 @@ LAB_00546c48:
       uVar16 = 1;
       break;
     }
-    if (*(int *)&g_pLocalizationTable->field_0x44 == 1) {
+    if (*(int *)&g_pSimMgr->field_0x44 == 1) {
       pcVar25 = *(char **)(param_1 + 0xb4);
       pcVar17 = *(char **)(param_1 + 0xb0);
       uVar16 = func_0x00405a3d();
@@ -628,12 +629,12 @@ LAB_00546c48:
     }
     goto LAB_005485d8;
   case 10:
-    if (*(short *)&g_pLocalizationTable->field_0x114 == 0) {
+    if (*(short *)&g_pSimMgr->field_0x114 == 0) {
       (*g_pGlobalMapState->vftable->SetTileTransportFlagsTo0x37AndRefreshNeighbors)();
       func_0x0040108c();
     }
     *(uint *)(param_1 + 0xe8) = *(uint *)(param_1 + 0xe8) & ~(1 << (*(byte *)(param_2 + 7) & 0x1f));
-    if (*(int *)&g_pLocalizationTable->field_0x44 == 1) {
+    if (*(int *)&g_pSimMgr->field_0x44 == 1) {
       func_0x00402a45();
       local_1a0 = *(uint *)(param_1 + 0xe8);
 LAB_00545aa0:
@@ -670,7 +671,7 @@ LAB_00545aa0:
         CString::operator=((CString *)&(*ppTVar37)->field_0x8,&CStack_148);
         local_4 = 0xffffffff;
         CString::~CString(&CStack_148);
-        if (*(short *)&g_pLocalizationTable->field_0x114 == 0) {
+        if (*(short *)&g_pSimMgr->field_0x114 == 0) {
           (*g_pGlobalMapState->vftable->SetTileTransportFlagsTo0x37AndRefreshNeighbors)();
         }
       }
@@ -719,14 +720,14 @@ LAB_005464fd:
       func_0x0040619f();
     }
     else {
-      (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+      (*g_pSimMgr->vftable[0x10].slot_0x04)();
       func_0x0040988b();
     }
     CStack_148.m_pchData._2_1_ = 0;
     CStack_148.m_pchData._3_1_ = 0;
     local_144[0].m_pchData._0_1_ = 0;
     local_144[0].m_pchData._1_1_ = 0;
-    BuildUiTextStyleDescriptor();
+    func_0x00406afa();
     uVar11 = (*g_pUiViewManager->vftable->ResolveTurnEventDialogNodeByMessageContext)();
     piVar24 = (int *)CONCAT31(extraout_var_00,uVar11);
     if (piVar24 == (int *)0x0) {
@@ -817,7 +818,7 @@ LAB_005464fd:
     break;
   case 0xe:
     func_0x00401668();
-    g_pLocalizationTable->field_0x68 = *(undefined1 *)((int)param_2 + 0x65);
+    g_pSimMgr->field_0x68 = *(undefined1 *)((int)param_2 + 0x65);
     CString::CString(local_144,(char *)((int)param_2 + 0x3a));
     local_4 = 0xd;
     CString::operator=((CString *)(param_1 + 0x74),local_144);
@@ -835,15 +836,14 @@ LAB_005464fd:
         func_0x00401e7e();
         local_1d0.m_pchData = &stack0xfffffe00;
         func_0x004076b7();
-        DispatchLocalizedUiMessageWithTemplateA13A0();
-        pcVar25 = (char *)operator_new();
-        uStack_14 = 0xf;
-        local_1d4.m_pchData = pcVar25;
-        if (pcVar25 != (char *)0x0) {
+        func_0x004096b0();
+        puVar22 = (undefined4 *)operator_new();
+        cStack_24 = 0xf;
+        if (puVar22 != (undefined4 *)0x0) {
           func_0x00403d5f();
-          *(TCancelGameOptionsCommandVtbl **)pcVar25 = &TCancelGameOptionsCommand::_vftable_;
+          *puVar22 = &TCancelGameOptionsCommand::_vftable_;
         }
-        uStack_14 = 0xe;
+        cStack_24 = 0xe;
         func_0x00405ee3();
         (*g_pGlobalUiRootController->vftable->OrphanCallChain_C11_I88_004874b0)();
         local_4 = 0xffffffff;
@@ -871,16 +871,19 @@ LAB_005464fd:
         local_c = 0x10;
         func_0x00401e7e();
         func_0x004076b7();
-        DispatchLocalizedUiMessageWithTemplateA13A0();
+        func_0x004096b0();
         puVar22 = (undefined4 *)operator_new();
-        uStack_1c._0_1_ = 0x11;
-        if (puVar22 != (undefined4 *)0x0) {
+        uStack_2c = 0x11;
+        if (puVar22 == (undefined4 *)0x0) {
+          puVar22 = (undefined4 *)0x0;
+        }
+        else {
           func_0x00403d5f();
           *puVar22 = &TCancelGameOptionsCommand::_vftable_;
         }
-        uStack_1c = CONCAT31(uStack_1c._1_3_,0x10);
+        uStack_2c = 0x10;
         func_0x00405ee3();
-        (*g_pGlobalUiRootController->vftable->OrphanCallChain_C11_I88_004874b0)();
+        (*g_pGlobalUiRootController->vftable->OrphanCallChain_C11_I88_004874b0)(puVar22);
         local_4 = 0xffffffff;
         CString::~CString(&local_1d4);
         uVar16 = 1;
@@ -899,14 +902,14 @@ LAB_005464fd:
     break;
   case 0xf:
     *(uint *)(param_1 + 0xe8) = *(uint *)(param_1 + 0xe8) & ~(1 << (*(byte *)(param_2 + 7) & 0x1f));
-    if (*(int *)&g_pLocalizationTable->field_0x44 == 1) {
+    if (*(int *)&g_pSimMgr->field_0x44 == 1) {
       func_0x00402a45();
       local_1a0 = *(uint *)(param_1 + 0xe8);
       goto LAB_00545aa0;
     }
     goto LAB_005485d8;
   case 0x10:
-    (*g_pLocalizationTable->vftable[8].slot_0x04)();
+    (*g_pSimMgr->vftable[8].slot_0x04)();
     uVar16 = 1;
     break;
   case 0x11:
@@ -947,7 +950,7 @@ LAB_005464fd:
            (int)(short)(*(ushort *)(param_2 + 9) & *(ushort *)((int)param_2 + 0x26)) |
            *(uint *)(param_2[8] + iVar35) & ~(int)(short)*(ushort *)((int)param_2 + 0x26);
     }
-    if (*(int *)&g_pLocalizationTable->field_0x44 == 1) {
+    if (*(int *)&g_pSimMgr->field_0x44 == 1) {
       puVar22 = local_1b8;
       for (iVar35 = 10; iVar35 != 0; iVar35 = iVar35 + -1) {
         *puVar22 = *param_2;
@@ -1098,7 +1101,7 @@ LAB_005464fd:
     }
     goto LAB_005485d8;
   case 0x1a:
-    if (*(int *)&g_pLocalizationTable->field_0x44 == 2) {
+    if (*(int *)&g_pSimMgr->field_0x44 == 2) {
       ppTVar19 = g_apNationStates;
       puVar27 = (undefined2 *)((int)param_2 + 0x26);
       do {
@@ -1116,7 +1119,7 @@ LAB_005464fd:
       uVar16 = 1;
       break;
     }
-    if (*(int *)&g_pLocalizationTable->field_0x44 == 2) {
+    if (*(int *)&g_pSimMgr->field_0x44 == 2) {
       (**(code **)(g_pUiRuntimeContext->vftable + 0x98))();
       uVar16 = 1;
       break;
@@ -1128,7 +1131,7 @@ LAB_005464fd:
     break;
   case 0x1c:
     (*g_pNationInteractionStateManager->vftable[0xc].GetTTradeMgrClassNamePointer)();
-    if (*(int *)&g_pLocalizationTable->field_0x44 == 1) {
+    if (*(int *)&g_pSimMgr->field_0x44 == 1) {
       local_1c4.m_pchData = (char *)operator_new();
       local_4 = 0x14;
       if (local_1c4.m_pchData != (char *)0x0) {
@@ -1241,7 +1244,7 @@ LAB_005464fd:
         func_0x00405245();
         func_0x0040988b();
         func_0x00402e0f();
-        if (*(int *)&g_pLocalizationTable->field_0x44 == 1) {
+        if (*(int *)&g_pSimMgr->field_0x44 == 1) {
           func_0x0040510f();
         }
         local_4._0_1_ = 0x1d;
@@ -1327,7 +1330,7 @@ LAB_005464fd:
         func_0x00405245();
         func_0x0040988b();
         func_0x00402e0f();
-        if ((uStack_1cc._3_1_ != '\0') && (*(int *)&g_pLocalizationTable->field_0x44 == 2)) {
+        if ((uStack_1cc._3_1_ != '\0') && (*(int *)&g_pSimMgr->field_0x44 == 2)) {
           func_0x00407518();
         }
         local_4._0_1_ = 0x23;
@@ -1342,7 +1345,7 @@ LAB_005464fd:
     }
     else if (uVar36 < 0x71756975) {
       if ((uVar36 == 0x71756974) || (uVar36 == 0x6e657767)) {
-        if (*(int *)&g_pLocalizationTable->field_0x44 == 2) {
+        if (*(int *)&g_pSimMgr->field_0x44 == 2) {
           CString::CString(&local_1d0);
           local_4 = 0x16;
           func_0x00401e7e();
@@ -1350,7 +1353,7 @@ LAB_005464fd:
           local_4 = 0xffffffff;
           CString::~CString(&local_1d0);
         }
-        if ((*(int *)&g_pLocalizationTable->field_0x44 == 2) || (param_2[6] == 0x6e657767)) {
+        if ((*(int *)&g_pSimMgr->field_0x44 == 2) || (param_2[6] == 0x6e657767)) {
           func_0x00407518();
           uVar16 = 1;
         }
@@ -1366,7 +1369,7 @@ LAB_005464fd:
         uVar36 = param_2[7] & 7;
         if (((g_apNationStates[uVar36] == (TGreatPower *)0x0) &&
             (iVar35 = func_0x00405a3d(), param_2[1] == iVar35)) &&
-           (*(int *)&g_pLocalizationTable->field_0x44 == 1)) {
+           (*(int *)&g_pSimMgr->field_0x44 == 1)) {
           bVar10 = true;
         }
         else {
@@ -1503,7 +1506,7 @@ LAB_005464fd:
         }
         break;
       }
-      if ((uVar36 == 0x72656765) && (*(int *)&g_pLocalizationTable->field_0x44 == 2)) {
+      if ((uVar36 == 0x72656765) && (*(int *)&g_pSimMgr->field_0x44 == 2)) {
         (**(code **)(*g_pStrategicMapViewSystem + 0x78))();
         uVar16 = 1;
         break;
@@ -1531,9 +1534,7 @@ LAB_005464fd:
     }
     goto LAB_005485d8;
   case 0x20:
-    TInterNationEventQueueManager::QueueInterNationEventRecordDeduped
-              ((TCountry *)g_pInterNationEventQueueManager,(int)*(short *)(param_2 + 6),
-               (int)*(char *)((int)param_2 + 0x1a),(int)*(char *)((int)param_2 + 0x1b),'\x01');
+    func_0x00406758();
     uVar16 = 1;
     break;
   case 0x21:
@@ -1670,7 +1671,7 @@ LAB_0054833b:
     g_nSaveFormatVersion = 0x6e657458;
     hMem = GlobalAlloc(2,param_2[3]);
     GlobalLock(hMem);
-    _memmove();
+    memmove();
     GlobalUnlock(hMem);
     local_1c4.m_pchData = (char *)operator_new();
     local_4 = 0x15;
@@ -1890,10 +1891,10 @@ LAB_005485d8:
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0054AFF0
-// GHIDRA_NAME TPoseMessageDialog::OrphanRetStub_00487a00
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_00487a00(void)
+// GHIDRA_NAME TPoseMessageDialog::DoIt
+// GHIDRA_PROTO undefined __thiscall DoIt(void)
 
-void TPoseMessageDialog::OrphanRetStub_00487a00()
+void TPoseMessageDialog::DoIt()
 
 {
   func_0x00407eeb(*(undefined4 *)&this->field_0x18);

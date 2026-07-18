@@ -168,7 +168,7 @@ undefined4 TCityInteriorMinister::DispatchNationStateEventCode10(short param_1)
   if (this_00 != (TCity *)0x0) {
     sVar4 = 0;
     do {
-      iVar2 = GetCityBuildingProductionValueBySlot(this_00,sVar4);
+      iVar2 = TCity::GetBuildingType(this_00,sVar4);
       iVar5 = iVar5 + iVar2;
       sVar4 = sVar4 + 1;
     } while (sVar4 < 7);
@@ -863,7 +863,7 @@ void TCityInteriorMinister::VTableSlot21(int param_1)
   
   if ((*(short *)&this->field_0x40 != 0) || (*(short *)&this->field_0x42 != 0)) {
     iVar2 = **(int **)(*(int *)&this->field_0x4 + 0x94);
-    iVar1 = GenerateThreadLocalRandom15(*(short *)&this->field_0x40);
+    iVar1 = rand(*(short *)&this->field_0x40);
     (**(code **)(iVar2 + 0x4c))(0x4a < iVar1 % 100);
   }
   iVar2 = 2;
@@ -940,7 +940,7 @@ TCityInteriorMinister::QueueCityProductionRebalanceCommandsByThresholds
   if ((0xe < (short)param_1->fieldB6[0]) || (0xe < (short)param_1->fieldB6[1])) {
     sVar1 = *(short *)(*(int *)&this->field_0x4 + 0x110);
     sVar2 = *(short *)(*(int *)&this->field_0x4 + 0x10e);
-    iVar5 = GetCityBuildingProductionValueBySlot(param_1,0);
+    iVar5 = TCity::GetBuildingType(param_1,0);
     iVar5 = (int)(short)(sVar1 + sVar2) / 2 - CONCAT22(extraout_var,(short)iVar5);
     if ((0 < (short)iVar5) && (cVar4 = (**(code **)(*param_2 + 0x7c))(0x35), cVar4 == '\0')) {
       iVar6 = operator_new(0x14);
@@ -956,7 +956,7 @@ TCityInteriorMinister::QueueCityProductionRebalanceCommandsByThresholds
   }
   if ((0xe < (short)param_1->fieldB6[3]) && (0xe < (short)param_1->fieldB6[4])) {
     uVar3 = *(ushort *)(*(int *)&this->field_0x4 + 0x114);
-    iVar5 = GetCityBuildingProductionValueBySlot(param_1,2);
+    iVar5 = TCity::GetBuildingType(param_1,2);
     iVar5 = (uint)uVar3 - iVar5;
     if ((0 < (short)iVar5) && (cVar4 = (**(code **)(*param_2 + 0x7c))(0x37), cVar4 == '\0')) {
       iVar6 = operator_new(0x14);
@@ -974,7 +974,7 @@ TCityInteriorMinister::QueueCityProductionRebalanceCommandsByThresholds
   }
   if (0xe < (short)param_1->fieldB6[2]) {
     sVar1 = *(short *)(*(int *)&this->field_0x4 + 0x112);
-    iVar5 = GetCityBuildingProductionValueBySlot(param_1,4);
+    iVar5 = TCity::GetBuildingType(param_1,4);
     iVar5 = (int)sVar1 / 2 - iVar5;
     if ((0 < (short)iVar5) && (cVar4 = (**(code **)(*param_2 + 0x7c))(0x39), cVar4 == '\0')) {
       iVar6 = operator_new(0x14);
@@ -991,8 +991,8 @@ TCityInteriorMinister::QueueCityProductionRebalanceCommandsByThresholds
     }
   }
   if (0xe < (short)param_1->fieldB6[8]) {
-    iVar5 = GetCityBuildingProductionValueBySlot(param_1,0);
-    iVar6 = GetCityBuildingProductionValueBySlot(param_1,1);
+    iVar5 = TCity::GetBuildingType(param_1,0);
+    iVar6 = TCity::GetBuildingType(param_1,1);
     iVar6 = (int)(short)iVar5 / 2 - iVar6;
     if ((0 < (short)iVar6) && (cVar4 = (**(code **)(*param_2 + 0x7c))(0x36), cVar4 == '\0')) {
       iVar5 = operator_new(0x14);
@@ -1009,8 +1009,8 @@ TCityInteriorMinister::QueueCityProductionRebalanceCommandsByThresholds
     }
   }
   if (0xe < (short)param_1->fieldB6[0xb]) {
-    iVar5 = GetCityBuildingProductionValueBySlot(param_1,2);
-    iVar6 = GetCityBuildingProductionValueBySlot(param_1,3);
+    iVar5 = TCity::GetBuildingType(param_1,2);
+    iVar6 = TCity::GetBuildingType(param_1,3);
     iVar6 = (int)(short)iVar5 / 2 - iVar6;
     if ((0 < (short)iVar6) && (cVar4 = (**(code **)(*param_2 + 0x7c))(0x38), cVar4 == '\0')) {
       iVar5 = operator_new(0x14);
@@ -1027,8 +1027,8 @@ TCityInteriorMinister::QueueCityProductionRebalanceCommandsByThresholds
     }
   }
   if (0xe < (short)param_1->fieldB6[9]) {
-    iVar5 = GetCityBuildingProductionValueBySlot(param_1,4);
-    iVar6 = GetCityBuildingProductionValueBySlot(param_1,5);
+    iVar5 = TCity::GetBuildingType(param_1,4);
+    iVar6 = TCity::GetBuildingType(param_1,5);
     iVar6 = (int)(short)iVar5 / 2 - iVar6;
     if ((0 < (short)iVar6) && (cVar4 = (**(code **)(*param_2 + 0x7c))(0x3a), cVar4 == '\0')) {
       iVar5 = operator_new(0x14);
@@ -1159,7 +1159,7 @@ TCityInteriorMinister::DistributeCityProductionCommandBudgetAndQueueOrders
   local_24 = 0;
   local_20 = 0;
   do {
-    iVar3 = GetCityBuildingProductionValueBySlot(param_1,sVar2);
+    iVar3 = TCity::GetBuildingType(param_1,sVar2);
     iVar4 = iVar4 + iVar3;
     sVar2 = sVar2 + 1;
   } while (sVar2 < 7);
@@ -1208,8 +1208,8 @@ switchD_004c0143_caseD_0:
     case 1:
     case 3:
     case 5:
-      iVar4 = GetCityBuildingProductionValueBySlot(param_1,nBuildingSlotId + -1);
-      iVar3 = GetCityBuildingProductionValueBySlot(param_1,nBuildingSlotId);
+      iVar4 = TCity::GetBuildingType(param_1,nBuildingSlotId + -1);
+      iVar3 = TCity::GetBuildingType(param_1,nBuildingSlotId);
       if ((int)(short)iVar3 < (int)(short)iVar4 / 2) goto switchD_004c0143_caseD_0;
     }
     if ((char)uVar5 != '\0') {
@@ -1346,7 +1346,7 @@ TCityInteriorMinister::QueueRandomCityProductionCommand19To1C
   puStack_8 = &LAB_0063130a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  uVar1 = GenerateThreadLocalRandom15();
+  uVar1 = rand();
   uVar3 = (int)uVar1 >> 0x1f;
   iVar2 = operator_new(0x14);
   uVar4 = 0;
@@ -1553,7 +1553,8 @@ TCityInteriorMinister::DistributeCityProductionAcrossOrderTemplatesAndBackfillDe
     iVar6 = (*pcStack_8c)();
     this = (TCityInteriorMinister *)param_1->vftable->AllocateNeedFromOwnerSlot4C;
     unaff_EBX = (code *)CONCAT22((short)((uint)unaff_EBX >> 0x10),(short)piVar17[0x12]);
-    iVar7 = GetCityBuildingProductionValueBySlot(param_1,*(short *)((int)piVar17 + 0x52));
+    iVar7 = TCity::GetBuildingType
+                      (param_1,*(short *)((int)piVar17 + 0x52));
     (*(code *)this)(unaff_EBX,iVar7);
     if ((short)piVar17[0x10] == 0) {
       iVar7 = CONCAT22(*(short *)((int)piVar17 + 0x52) >> 0xf,
@@ -1561,7 +1562,7 @@ TCityInteriorMinister::DistributeCityProductionAcrossOrderTemplatesAndBackfillDe
                         ((int)param_1->orderSlotsE4 + *(short *)((int)piVar17 + 0x52) * 2 + 0x118));
       if ((short)piVar17[0x12] == 8) {
         unaff_ESI = (code *)((iVar7 - iVar6) * 2);
-        iVar6 = GenerateThreadLocalRandom15();
+        iVar6 = rand();
         bVar2 = 0x31 < iVar6 % 100;
         uVar13 = (uint)bVar2;
         iVar6 = (*unaff_EBX)(uVar13,unaff_ESI);
@@ -1685,7 +1686,7 @@ TCityInteriorMinister::DistributeCityProductionAcrossOrderTemplatesAndBackfillDe
           piVar17 = param_1->orderSlotsE4[sVar5];
           iVar16 = *piVar17;
           (**(code **)(iVar16 + 0xc))();
-          iVar12 = GetCityBuildingProductionValueBySlot
+          iVar12 = TCity::GetBuildingType
                              (param_1,*(short *)((int)piVar17 + 0x52));
           (**(code **)(iVar16 + 0x40))(auStack_84,iVar12);
           iVar16 = 0;
@@ -1954,7 +1955,6 @@ undefined4 TCityInteriorMinister::SelectBestSecondaryHomeTileByFrogCityScore()
   int *piVar14;
   int iVar15;
   undefined4 *unaff_FS_OFFSET;
-  CString *pCVar16;
   int local_24;
   int local_20;
   CString local_1c;
@@ -2074,10 +2074,9 @@ undefined4 TCityInteriorMinister::SelectBestSecondaryHomeTileByFrogCityScore()
   if ((short)local_20 == -1) {
     CString::CString(&local_1c);
     local_8._0_1_ = 2;
-    (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
-    pCVar16 = &local_1c;
-    func_0x004076b7(pCVar16);
-    DispatchLocalizedUiMessageWithTemplateA13A0(pCVar16);
+    (*g_pSimMgr->vftable[0x10].slot_0x04)();
+    func_0x004076b7(&local_1c);
+    func_0x004096b0();
     local_8 = CONCAT31(local_8._1_3_,1);
     CString::~CString(&local_1c);
     uVar10 = extraout_var_00;
@@ -2143,7 +2142,7 @@ TCityInteriorMinister::BuildNationTileDevelopmentScoreListForTerrainClass
   iStack_14 = 0;
   uStack_10 = 0;
   uStack_4 = 0;
-  uStack_18 = ReallocateHeapBlockWithAllocatorTracking(0,iVar11 * 2);
+  uStack_18 = _realloc(0,iVar11 * 2);
   iVar7 = 0;
   iStack_14 = iVar11;
   do {
@@ -2531,7 +2530,7 @@ void TCityInteriorMinister::AutoAssignProspectingOrdersByTileHeuristics()
   float afStack_5c [7];
   float afStack_40 [16];
   
-  uVar5 = (*g_pLocalizationTable->vftable[7].slot_0x04)();
+  uVar5 = (*g_pSimMgr->vftable[7].slot_0x04)();
   if ((short)CONCAT31(extraout_var,uVar5) < 4) {
     return;
   }
@@ -3716,8 +3715,8 @@ TCityInteriorMinister::ProcessCityOrderStateTickAndApplyCapabilitySelection
   local_14[2] = 0xffff15a0;
   local_14[3] = 0xfffec780;
   local_14[4] = 0xfffe7960;
-  if (*(short *)&g_pLocalizationTable->field_0x114 == 0) {
-    iVar8 = local_14[*(int *)&g_pLocalizationTable->field_0x40];
+  if (*(short *)&g_pSimMgr->field_0x114 == 0) {
+    iVar8 = local_14[*(int *)&g_pSimMgr->field_0x40];
   }
   if (iVar8 <= *(int *)(iVar5 + 0x10)) {
     sVar10 = *(short *)&this->field_0x36;
@@ -3728,7 +3727,7 @@ TCityInteriorMinister::ProcessCityOrderStateTickAndApplyCapabilitySelection
                 (CONCAT22(sVar10 >> 0xf,*(short *)&this->field_0x36 + 0x22));
       *(undefined2 *)&this->field_0x36 = 0xffff;
     }
-    uVar2 = (*g_pLocalizationTable->vftable[7].slot_0x04)();
+    uVar2 = (*g_pSimMgr->vftable[7].slot_0x04)();
     if ((short)CONCAT31(extraout_var,uVar2) == 0) {
       *(undefined2 *)&this->field_0x32 = 2;
     }
@@ -3753,8 +3752,8 @@ TCityInteriorMinister::ProcessCityOrderStateTickAndApplyCapabilitySelection
     *(undefined2 *)&this->field_0x186 = 0;
     iVar5 = (**(code **)(**(int **)&this->field_0x190 + 0x28))();
     if ((0 < iVar5) &&
-       (3 < (short)((int)((int)*(short *)&g_pLocalizationTable->field_0x2c +
-                         ((int)*(short *)&g_pLocalizationTable->field_0x2c >> 0x1f & 3U)) >> 2))) {
+       (3 < (short)((int)((int)*(short *)&g_pSimMgr->field_0x2c +
+                         ((int)*(short *)&g_pSimMgr->field_0x2c >> 0x1f & 3U)) >> 2))) {
       iVar8 = 1;
       iVar5 = (**(code **)(**(int **)&this->field_0x190 + 0x28))();
       if (0 < iVar5) {
@@ -3836,7 +3835,7 @@ void TCityInteriorMinister::RebalanceCitySupportAndLaborAllocations()
   short sVar4;
   short sVar5;
   short *psVar6;
-  void *this_00;
+  TCity *this_00;
   int iVar7;
   int iVar8;
   short sVar9;
@@ -3870,12 +3869,12 @@ void TCityInteriorMinister::RebalanceCitySupportAndLaborAllocations()
   *(undefined2 *)&this->field_0x6e = 0;
   *(undefined2 *)&this->field_0x70 = 0;
   if (iVar8 == 0) {
-    this_00 = (void *)0x0;
+    this_00 = (TCity *)0x0;
   }
   else {
-    this_00 = *(void **)(iVar8 + 0x894);
+    this_00 = *(TCity **)(iVar8 + 0x894);
   }
-  iVar8 = GetCityBuildingProductionValueBySlot(this_00,0xf);
+  iVar8 = TCity::GetBuildingType(this_00,0xf);
   sVar4 = (short)iVar8;
   if (*(short *)&this->field_0xda == 0) {
     if (sVar10 < sVar5) {
@@ -3980,16 +3979,16 @@ void TCityInteriorMinister::ChooseAndMarkNextCityProductionCommand()
   short *psVar10;
   short sVar11;
   bool bVar12;
-  int *local_20;
+  TCity *local_20;
   int iStack_1c;
   uint auStack_10 [4];
   
   iVar4 = *(int *)&this->field_0x4;
   if (iVar4 == 0) {
-    local_20 = (int *)0x0;
+    local_20 = (TCity *)0x0;
   }
   else {
-    local_20 = *(int **)(iVar4 + 0x894);
+    local_20 = *(TCity **)(iVar4 + 0x894);
   }
   bVar12 = (&g_pCityOrderCapabilityState->field_0x27b)[*(short *)(iVar4 + 0xc) * 0x1d] == '\x02';
   if (*(short *)&this->field_0xa6 != 0) {
@@ -3997,8 +3996,8 @@ void TCityInteriorMinister::ChooseAndMarkNextCityProductionCommand()
     *(undefined2 *)&this->field_0xa6 = 0;
   }
   if ((bVar12) &&
-     (iVar4 = GetCityBuildingProductionValueBySlot(local_20,0xb), (short)iVar4 == 0)) {
-    (**(code **)(*local_20 + 0x60))(1);
+     (iVar4 = TCity::GetBuildingType(local_20,0xb), (short)iVar4 == 0)) {
+    (*local_20->vftable->ToggleCityPowerPlantUpgradeOrder)(1);
   }
   sVar11 = 0;
   puVar9 = auStack_10;
@@ -4022,8 +4021,8 @@ void TCityInteriorMinister::ChooseAndMarkNextCityProductionCommand()
         if ((*(short *)(&this->field_0xdc + (short)uVar6 * 2) <
              *(short *)(&this->field_0xdc + sVar1 * 2)) ||
            ((*(short *)(&this->field_0xdc + sVar1 * 2) ==
-             *(short *)(&this->field_0xdc + (short)uVar6 * 2) &&
-            (uVar5 = GenerateThreadLocalRandom15(), (uVar5 & 1) != 0)))) {
+             *(short *)(&this->field_0xdc + (short)uVar6 * 2) && (uVar5 = rand(), (uVar5 & 1) != 0))
+           )) {
           *(short *)puVar9 = sVar1;
           *psVar10 = (short)uVar6;
         }
@@ -4036,14 +4035,14 @@ void TCityInteriorMinister::ChooseAndMarkNextCityProductionCommand()
     sVar11 = sVar11 + 1;
   } while (bVar2);
   if ((*(short *)(&this->field_0xdc + (short)auStack_10[0] * 2) == 0) &&
-     (bVar3 = (*g_pLocalizationTable->vftable[7].slot_0x04)(), (bVar3 & 1) != 0)) {
+     (bVar3 = (*g_pSimMgr->vftable[7].slot_0x04)(), (bVar3 & 1) != 0)) {
     if (bVar12) {
-      uVar6 = GenerateThreadLocalRandom15();
+      uVar6 = rand();
       uVar5 = (int)uVar6 >> 0x1f;
       iVar4 = ((uVar6 ^ uVar5) - uVar5 & 3 ^ uVar5) - uVar5;
     }
     else {
-      iVar4 = GenerateThreadLocalRandom15();
+      iVar4 = rand();
       iVar4 = iVar4 % 3;
     }
     if (iVar4 == 3) {
@@ -4051,8 +4050,8 @@ void TCityInteriorMinister::ChooseAndMarkNextCityProductionCommand()
     }
     else {
       sVar11 = (short)iVar4;
-      iVar7 = GetCityBuildingProductionValueBySlot(local_20,sVar11);
-      iVar8 = GetCityBuildingProductionValueBySlot(local_20,sVar11 + 1);
+      iVar7 = TCity::GetBuildingType(local_20,sVar11);
+      iVar8 = TCity::GetBuildingType(local_20,sVar11 + 1);
       if ((float)(int)(short)iVar7 / (float)(int)(short)iVar8 <=
           *(float *)(&DAT_00696450 + iVar4 * 4)) {
         sVar11 = sVar11 + 0x35;
@@ -4061,15 +4060,15 @@ void TCityInteriorMinister::ChooseAndMarkNextCityProductionCommand()
         sVar11 = sVar11 + 0x36;
       }
     }
-    iVar4 = GetCityBuildingProductionValueBySlot(local_20,sVar11 + -0x35);
+    iVar4 = TCity::GetBuildingType(local_20,sVar11 + -0x35);
     if (*(short *)(&this->field_0xba + (short)(sVar11 + -0x35) * 2) + 2 < (int)(short)iVar4) {
       sVar11 = 0;
     }
   }
   else {
     if ((auStack_10[0] & 1) != 0) {
-      iVar4 = GetCityBuildingProductionValueBySlot(local_20,(short)auStack_10[0]);
-      iVar7 = GetCityBuildingProductionValueBySlot(local_20,(short)auStack_10[0] + -1);
+      iVar4 = TCity::GetBuildingType(local_20,(short)auStack_10[0]);
+      iVar7 = TCity::GetBuildingType(local_20,(short)auStack_10[0] + -1);
       if ((short)iVar7 <= (short)iVar4) {
         auStack_10[0]._0_2_ = (short)auStack_10[0] + -1;
       }
@@ -4109,46 +4108,46 @@ TCityInteriorMinister::ComputeCityProductionCommandLimitsFromBuildingOutputs
   short *psVar5;
   short sVar6;
   short sVar7;
-  void *this_00;
+  TCity *this_00;
   
   if (*(int *)&this->field_0x4 == 0) {
-    this_00 = (void *)0x0;
+    this_00 = (TCity *)0x0;
   }
   else {
-    this_00 = *(void **)(*(int *)&this->field_0x4 + 0x894);
+    this_00 = *(TCity **)(*(int *)&this->field_0x4 + 0x894);
   }
-  iVar3 = GetCityBuildingProductionValueBySlot(this_00,4);
+  iVar3 = TCity::GetBuildingType(this_00,4);
   *(short *)&this->field_0x52 = (short)iVar3 + 1;
-  iVar3 = GetCityBuildingProductionValueBySlot(this_00,0);
+  iVar3 = TCity::GetBuildingType(this_00,0);
   *(short *)&this->field_0x50 = (short)iVar3 + 1;
-  iVar3 = GetCityBuildingProductionValueBySlot(this_00,2);
+  iVar3 = TCity::GetBuildingType(this_00,2);
   *(short *)&this->field_0x56 = (short)iVar3 + 1;
-  if ((*(short *)((int)this_00 + 0xca) < 3) && (*(short *)&this->field_0x54 == 0)) {
+  if (((short)this_00->fieldB6[10] < 3) && (*(short *)&this->field_0x54 == 0)) {
     *(undefined2 *)&this->field_0x54 = 1;
   }
-  uVar2 = (*g_pLocalizationTable->vftable[7].slot_0x04)();
+  uVar2 = (*g_pSimMgr->vftable[7].slot_0x04)();
   if (2 < (short)CONCAT31(extraout_var,uVar2)) {
     iVar3 = func_0x004053cb((float)*(int *)(*(int *)&this->field_0x4 + 0x10));
     iVar3 = (int)*(short *)(&DAT_00696400 + iVar3 * 2);
-    sVar7 = (short)((*(short *)((int)this_00 + 200) - iVar3) / 2);
+    sVar7 = (short)(((short)this_00->fieldB6[9] - iVar3) / 2);
     if (0 < sVar7) {
-      iVar4 = GetCityBuildingProductionValueBySlot(this_00,5);
+      iVar4 = TCity::GetBuildingType(this_00,5);
       if ((short)iVar4 < sVar7) {
         sVar7 = (short)iVar4 + 1;
       }
       *(short *)&this->field_0x5c = sVar7;
     }
-    sVar7 = (short)((*(short *)((int)this_00 + 0xc6) - iVar3) / 2);
+    sVar7 = (short)(((short)this_00->fieldB6[8] - iVar3) / 2);
     if (0 < sVar7) {
-      iVar4 = GetCityBuildingProductionValueBySlot(this_00,1);
+      iVar4 = TCity::GetBuildingType(this_00,1);
       if ((short)iVar4 < sVar7) {
         sVar7 = (short)iVar4 + 1;
       }
       *(short *)&this->field_0x5a = sVar7;
     }
-    sVar7 = (short)((*(short *)((int)this_00 + 0xcc) - iVar3) / 2);
+    sVar7 = (short)(((short)this_00->fieldB6[0xb] - iVar3) / 2);
     if (0 < sVar7) {
-      iVar3 = GetCityBuildingProductionValueBySlot(this_00,3);
+      iVar3 = TCity::GetBuildingType(this_00,3);
       if ((short)iVar3 < sVar7) {
         sVar7 = (short)iVar3 + 1;
       }
@@ -4197,7 +4196,7 @@ TCityInteriorMinister::RebuildCityOrderCommandAvailabilityAndPriorityCycle
   }
   *(short *)(piVar4 + 0x32) = (short)piVar4[0x32] + *(short *)&this->field_0x1c2;
   (**(code **)(*piVar4 + 0x80))();
-  uVar2 = (*g_pLocalizationTable->vftable[7].slot_0x04)();
+  uVar2 = (*g_pSimMgr->vftable[7].slot_0x04)();
   iVar3 = (int)(short)CONCAT31(extraout_var,uVar2) % 3;
   if (iVar3 == 0) {
     pTVar5 = this->vftable[1].GetTMinisterClassNamePointer;

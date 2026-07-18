@@ -549,20 +549,20 @@ LAB_005b8b48:
     if (_DAT_0066d8d0 <=
         (double)(int)*(short *)(&this->field_0xc + iVar4) - *(double *)(&this->field_0x10 + iVar4))
     {
-      iVar2 = ftol();
-      iVar3 = ftol();
+      iVar2 = _ftol();
+      iVar3 = _ftol();
       if (iVar3 <= iVar2) goto LAB_005b8c49;
     }
     else {
-      iVar2 = ftol();
-      iVar3 = ftol();
+      iVar2 = _ftol();
+      iVar3 = _ftol();
       if (iVar2 <= iVar3) {
 LAB_005b8c49:
         iVar3 = iVar2;
       }
     }
     if ((double)iVar3 < (double)(int)*(short *)(&this->field_0x1a + iVar4) * _DAT_0066d8e8) {
-      iVar3 = ftol();
+      iVar3 = _ftol();
     }
     break;
   case 0x10:
@@ -886,8 +886,8 @@ void TTradeMgr::BuildEligibleNationMetricBucketsAndWeightedTrendScores()
   undefined4 local_10;
   undefined4 local_c;
   
-  sVar3 = (short)((int)((int)*(short *)&g_pLocalizationTable->field_0x2c +
-                       ((int)*(short *)&g_pLocalizationTable->field_0x2c >> 0x1f & 3U)) >> 2);
+  sVar3 = (short)((int)((int)*(short *)&g_pSimMgr->field_0x2c +
+                       ((int)*(short *)&g_pSimMgr->field_0x2c >> 0x1f & 3U)) >> 2);
   if (sVar3 < 0xb) {
     local_10 = 0x9999999a;
     local_c = 0x3ff19999;
@@ -1009,8 +1009,8 @@ void TTradeMgr::BuildSecondaryNationMetricBucketsAndWeightedTrendScores()
   undefined4 local_10;
   undefined4 local_c;
   
-  sVar3 = (short)((int)((int)*(short *)&g_pLocalizationTable->field_0x2c +
-                       ((int)*(short *)&g_pLocalizationTable->field_0x2c >> 0x1f & 3U)) >> 2);
+  sVar3 = (short)((int)((int)*(short *)&g_pSimMgr->field_0x2c +
+                       ((int)*(short *)&g_pSimMgr->field_0x2c >> 0x1f & 3U)) >> 2);
   if (sVar3 < 0xb) {
     local_10 = 0x9999999a;
     local_c = 0x3ff19999;

@@ -187,7 +187,7 @@ void TIndustryView::OrphanRetStub_004c6fd0()
   CStack_54.m_pchData = (char *)0x2b67;
   CStack_58.m_pchData = (char *)0xc;
   CStack_60.m_pchData = (char *)&local_2c;
-  BuildUiTextStyleDescriptor();
+  func_0x00406afa();
   p_Var1 = this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25;
   CStack_54.m_pchData = (char *)0x6e616d65;
   CStack_58.m_pchData = (char *)0x4cc912;
@@ -195,7 +195,7 @@ void TIndustryView::OrphanRetStub_004c6fd0()
   if ((int *)CONCAT31(extraout_var,uVar3) != (int *)0x0) {
     CStack_58.m_pchData = &stack0xffffffbc;
     CStack_60.m_pchData = (char *)0x2719;
-    (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+    (*g_pSimMgr->vftable[0x10].slot_0x04)();
     iVar6 = *(int *)CONCAT31(extraout_var,uVar3);
     CStack_68.m_pchData = (char *)&local_3c;
     pCStack_6c = (CString *)0x4cc949;
@@ -212,14 +212,14 @@ void TIndustryView::OrphanRetStub_004c6fd0()
   uVar3 = (*p_Var1)();
   if ((int *)CONCAT31(extraout_var_00,uVar3) != (int *)0x0) {
     CStack_60.m_pchData = (char *)0x4cc98a;
-    GetCityBuildingProductionValueBySlot(this->pCity,*(short *)&this->field_0x9e);
+    TCity::GetBuildingType(this->pCity,*(short *)&this->field_0x9e);
     CStack_60.m_pchData = &g_szDecimalFormat;
     CStack_68.m_pchData = (char *)0x4cc99d;
-    _Format_CString__QAAXPBDZZ();
+    CString__Format();
     CStack_60.m_pchData = (char *)0x10;
     CStack_68.m_pchData = (char *)0x4cc9ba;
-    (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
-    pTStack_74 = g_pLocalizationTable;
+    (*g_pSimMgr->vftable[0x10].slot_0x04)();
+    pTStack_74 = g_pSimMgr;
     pTStack_78 = (TSimMgr *)0x4cc9d4;
     func_0x0040988b();
     iVar6 = *(int *)CONCAT31(extraout_var_00,uVar3);
@@ -241,13 +241,13 @@ void TIndustryView::OrphanRetStub_004c6fd0()
          (char *)(**(code **)(**(int **)(*(int *)&this->pCity->field_0xac + 0x90) + 0x28))();
     CStack_68.m_pchData = &stack0xffffffbc;
     pCStack_6c = (CString *)0x4cca3d;
-    _Format_CString__QAAXPBDZZ();
+    CString__Format();
     CStack_60.m_pchData = &stack0xffffffb8;
     CStack_68.m_pchData = (char *)0x2738;
     pCStack_6c = (CString *)0x4cca5a;
-    (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+    (*g_pSimMgr->vftable[0x10].slot_0x04)();
     pTStack_74 = (TSimMgr *)&CStack_58;
-    pTStack_78 = g_pLocalizationTable;
+    pTStack_78 = g_pSimMgr;
     puStack_7c = (undefined1 *)0x4cca75;
     func_0x0040988b();
     iVar6 = *(int *)CONCAT31(extraout_var_01,uVar3);
@@ -266,7 +266,7 @@ void TIndustryView::OrphanRetStub_004c6fd0()
   if ((int *)CONCAT31(extraout_var_02,uVar3) != (int *)0x0) {
     CStack_68.m_pchData = (char *)0x11;
     pCStack_6c = (CString *)0x2738;
-    (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+    (*g_pSimMgr->vftable[0x10].slot_0x04)();
     iVar6 = *(int *)CONCAT31(extraout_var_02,uVar3);
     pTStack_74 = (TSimMgr *)&stack0xffffffb8;
     pTStack_78 = (TSimMgr *)0x4ccade;
@@ -294,7 +294,7 @@ void TIndustryView::OrphanRetStub_004c6fd0()
     pCStack_6c = &CStack_58;
     pTStack_74 = (TSimMgr *)0x2738;
     pTStack_78 = (TSimMgr *)0x4ccb6b;
-    (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+    (*g_pSimMgr->vftable[0x10].slot_0x04)();
     CStack_54.m_pchData = (char *)&puStack_7c;
     puStack_7c = extraout_ECX;
     pTStack_78 = (TSimMgr *)CONCAT31(extraout_var_03,uVar3);
@@ -318,7 +318,7 @@ void TIndustryView::OrphanRetStub_004c6fd0()
       pTStack_74 = (TSimMgr *)0x13;
       pTStack_78 = (TSimMgr *)0x2738;
       puStack_7c = (undefined1 *)0x4ccbbc;
-      (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+      (*g_pSimMgr->vftable[0x10].slot_0x04)();
     }
     pTStack_78 = (TSimMgr *)&stack0xffffffa4;
     puStack_7c = (undefined1 *)0x4ccbff;
@@ -333,14 +333,14 @@ void TIndustryView::OrphanRetStub_004c6fd0()
     pTStack_78 = (TSimMgr *)
                  CONCAT22((short)((uint)pTStack_74 >> 0x10),*(undefined2 *)&this->field_0x9e);
     puStack_7c = (undefined1 *)0x2738;
-    (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+    (*g_pSimMgr->vftable[0x10].slot_0x04)();
     func_0x004076b7(&pCStack_6c);
     func_0x00404d22();
   }
   pTStack_74 = (TSimMgr *)0x2b69;
   pTStack_78 = (TSimMgr *)0x9;
   puStack_7c = (undefined1 *)0x0;
-  BuildUiTextStyleDescriptor();
+  func_0x00406afa();
   pTStack_74 = (TSimMgr *)0x6c616256;
   pTStack_78 = (TSimMgr *)0x4ccc6f;
   uVar3 = (*p_Var1)();
@@ -779,7 +779,7 @@ LAB_004cd50b:
     }
     else {
       uStack_60 = 0x13;
-      (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2738);
+      (*g_pSimMgr->vftable[0x10].slot_0x04)(0x2738);
       uStack_60 = extraout_ECX;
     }
     local_3c = (undefined1 *)&uStack_60;

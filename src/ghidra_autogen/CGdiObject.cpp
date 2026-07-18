@@ -20,7 +20,7 @@ void CGdiObject::~CGdiObject()
   *unaff_FS_OFFSET = &local_c;
   *(undefined ***)this = &PTR_LAB_00671054;
   local_4 = 0;
-  DeleteObject();
+  CGdiObject__DeleteObject();
   *(char **)this = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = local_c;
   return;
@@ -47,7 +47,7 @@ undefined4 __thiscall CGdiObject::_scalar_deleting_destructor_(undefined4 param_
 void CGdiObject::FromHandle(undefined4 param_1)
 
 {
-  afxMapHIMAGELIST_6139c6(1);
+  afxMapHGDIOBJ(1);
   CHandleMap::FromHandle(param_1);
   return;
 }

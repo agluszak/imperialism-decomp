@@ -194,7 +194,7 @@ void TShipLine::OrphanRetStub_0056f460(int param_1)
   uStack_9c = 4;
   uStack_a0 = 0x2746;
   iStack_a4 = 0x5652d7;
-  (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+  (*g_pSimMgr->vftable[0x10].slot_0x04)();
   puStack_64 = (undefined1 *)&uStack_a8;
   iStack_a4 = iVar4;
   func_0x004076b7(&puStack_90);

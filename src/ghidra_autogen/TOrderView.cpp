@@ -123,8 +123,8 @@ TOrderView::PopulateDialogControlsFromSelectedProductionEntry
     func_0x004057a4(s_D__Ambit_Cross_UIcon_cpp_00696cc8,0x213);
   }
   iVar4 = *piVar8;
-  iVar5 = GetCityBuildingProductionValueBySlot
-                    (*(void **)&this->field_0x60,*(short *)(*(int *)&this->field_0x64 + 0x52));
+  iVar5 = TCity::GetBuildingType
+                    (*(TCity **)&this->field_0x60,*(short *)(*(int *)&this->field_0x64 + 0x52));
   (**(code **)(iVar4 + 0x1d4))(iVar5);
   (**(code **)(iVar4 + 0x1c8))(unaff_retaddr + 700,1);
   *(undefined2 *)(piVar8 + 0x27) = *(undefined2 *)(*(int *)&this->field_0x64 + 4);

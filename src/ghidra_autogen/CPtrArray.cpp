@@ -54,7 +54,7 @@ void CPtrArray::~CPtrArray(void)
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
   
-  EstablishSehFrameProlog();
+  _EH_prolog();
   *(undefined4 **)(unaff_EBP + -0x10) = extraout_ECX;
   *extraout_ECX = &TIndexAndRankList::_vftable_;
   uVar1 = extraout_ECX[1];
@@ -159,8 +159,8 @@ void __thiscall CPtrArray::InsertAt(int param_1,int param_2,undefined4 param_3,i
   iVar1 = *(int *)(param_1 + 8);
   if (param_2 < iVar1) {
     SetSize(iVar1 + param_4,0xffffffff);
-    _memmove(*(int *)(param_1 + 4) + (param_4 + param_2) * 4,*(int *)(param_1 + 4) + param_2 * 4,
-             (param_2 * 0x3fffffff + iVar1) * 4);
+    memmove(*(int *)(param_1 + 4) + (param_4 + param_2) * 4,*(int *)(param_1 + 4) + param_2 * 4,
+            (param_2 * 0x3fffffff + iVar1) * 4);
     memset((void *)(*(int *)(param_1 + 4) + param_2 * 4),0,param_4 << 2);
   }
   else {

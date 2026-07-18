@@ -489,7 +489,7 @@ void THelpPicture::BuildHelpSubjectListControlsWithPrevNext()
   uStack_d0 = 0xd;
   uStack_d4 = 0x2749;
   pcStack_d8 = (code *)0x5043e4;
-  (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+  (*g_pSimMgr->vftable[0x10].slot_0x04)();
   iVar5 = *(int *)CONCAT31(extraout_var_02,uVar3);
   ppuStack_dc = &puStack_c4;
   pcStack_d8 = (code *)0x1;
@@ -518,7 +518,7 @@ void THelpPicture::BuildHelpSubjectListControlsWithPrevNext()
   aiStack_10c[1] = 0xe;
   aiStack_10c[0] = 0x2749;
   uStack_110 = 0x50444d;
-  (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+  (*g_pSimMgr->vftable[0x10].slot_0x04)();
   iVar5 = *(int *)CONCAT31(extraout_var_03,uVar3);
   ppuStack_114 = &puStack_fc;
   uStack_110 = 1;
@@ -814,7 +814,7 @@ void THelpPicture::RefreshHelpSubjectListControlsWithPrevNext()
   iStack_b0 = 0xd;
   uStack_b4 = 0x2749;
   uStack_b8 = 0x504920;
-  (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+  (*g_pSimMgr->vftable[0x10].slot_0x04)();
   iVar3 = *(int *)CONCAT31(extraout_var_03,uVar2);
   piStack_bc = aiStack_a8 + 2;
   uStack_b8 = 1;
@@ -847,7 +847,7 @@ void THelpPicture::RefreshHelpSubjectListControlsWithPrevNext()
   acStack_e8[3] = '\0';
   uStack_ec = 0x2749;
   uStack_f0 = 0x5049a1;
-  (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+  (*g_pSimMgr->vftable[0x10].slot_0x04)();
   iVar3 = *(int *)CONCAT31(extraout_var_04,uVar2);
   puStack_f4 = &uStack_d8;
   uStack_f0 = 1;

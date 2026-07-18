@@ -163,9 +163,9 @@ TMission::ConstructBlockadePortMissionForContext(undefined4 *param_1,int *param_
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
   if (param_2[0xb] == 0) {
-    iVar2 = ReallocateHeapBlockWithAllocatorTracking(param_2[10],8);
+    iVar2 = _realloc(param_2[10],8);
     if (iVar2 == 0) {
-      iVar2 = ReallocateHeapBlockWithAllocatorTracking(param_2[10],4);
+      iVar2 = _realloc(param_2[10],4);
       param_2[10] = iVar2;
       param_2[0xb] = 1;
     }

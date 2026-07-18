@@ -375,7 +375,7 @@ TInvadeMission::BuildInvadeMissionUnitPriorityVectorAndScore
   local_28 = 5;
   puVar6 = param_1;
   do {
-    uVar5 = ftol();
+    uVar5 = _ftol();
     *puVar6 = uVar5;
     puVar6 = puVar6 + 1;
     local_28 = local_28 + -1;

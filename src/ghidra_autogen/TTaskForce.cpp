@@ -349,3 +349,93 @@ void TTaskForce::ReadFrom(int *param_1)
   return;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x00554660
+// GHIDRA_NAME TTaskForce::RequeueMapOrderEntry
+// GHIDRA_PROTO void __thiscall RequeueMapOrderEntry(int * pMapOrderEntry)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Setting prototype: void RequeueMapOrderEntry(int* pMapOrderEntry)
+// GHIDRA_COMMENT_END
+
+/* Setting prototype: void RequeueMapOrderEntry(int* pMapOrderEntry) */
+
+void TTaskForce::RequeueMapOrderEntry(int *pMapOrderEntry)
+
+{
+  int *piVar1;
+  int iVar2;
+  TTaskForceVtbl *pTVar3;
+  TTaskForce *pTVar4;
+  TTaskForce *pTVar5;
+  int *piVar6;
+  TNavyMgr *pTVar7;
+  undefined4 uVar8;
+  short sVar9;
+  
+  *(undefined4 *)&this->field_0x14 = 0;
+  piVar6 = *(int **)&this->field_0x10;
+  while (piVar6 != (int *)0x0) {
+    if ((char)piVar6[3] == '\0') {
+      *(undefined4 *)(*piVar6 + 0xc) = 0;
+      *(short *)(&this->field_0x1e + *(short *)(&DAT_00698120 + *(short *)(*piVar6 + 4) * 0x24) * 2)
+           = *(short *)(&this->field_0x1e +
+                       *(short *)(&DAT_00698120 + *(short *)(*piVar6 + 4) * 0x24) * 2) + -1;
+      if (piVar6 == *(int **)&this->field_0x10) {
+        *(int *)&this->field_0x10 = piVar6[1];
+      }
+      piVar1 = (int *)piVar6[1];
+      if (piVar1 != (int *)0x0) {
+        piVar1[2] = piVar6[2];
+      }
+      if (piVar6[2] != 0) {
+        *(int *)(piVar6[2] + 4) = piVar6[1];
+      }
+      operator_delete(piVar6);
+      piVar6 = piVar1;
+    }
+    else {
+      piVar6 = (int *)piVar6[1];
+    }
+  }
+  iVar2 = *(int *)&this->field_0x10;
+  *(undefined4 *)&this->field_0x14 = 0;
+  for (; iVar2 != 0; iVar2 = *(int *)(iVar2 + 4)) {
+    uVar8 = func_0x004076fd(*(undefined4 *)&this->field_0x14,0);
+    *(undefined4 *)&this->field_0x14 = uVar8;
+  }
+  pTVar3 = this->vftable;
+  (*pTVar3->AssertValid)();
+  pTVar7 = g_pNavyOrderManager;
+  pTVar4 = *(TTaskForce **)&g_pNavyOrderManager->field_0x4;
+  for (pTVar5 = pTVar4; pTVar5 != (TTaskForce *)0x0; pTVar5 = *(TTaskForce **)&pTVar5->field_0x2c) {
+    if (pTVar5 == this) goto LAB_00554762;
+  }
+  if (this == (TTaskForce *)0x0) {
+    sVar9 = 0;
+  }
+  else {
+    sVar9 = 0;
+    for (iVar2 = *(int *)&this->field_0x10; iVar2 != 0; iVar2 = *(int *)(iVar2 + 4)) {
+      sVar9 = sVar9 + 1;
+    }
+  }
+  if (sVar9 < 1) {
+    (*pTVar3->Free)();
+    return;
+  }
+  if (*(int *)&this->field_0x28 != 0) {
+    *(undefined4 *)(*(int *)&this->field_0x28 + 0x2c) = *(undefined4 *)&this->field_0x2c;
+  }
+  if (*(int *)&this->field_0x2c != 0) {
+    *(undefined4 *)(*(int *)&this->field_0x2c + 0x28) = *(undefined4 *)&this->field_0x28;
+  }
+  *(undefined4 *)&this->field_0x28 = 0;
+  *(TTaskForce **)&this->field_0x2c = pTVar4;
+  if (pTVar4 != (TTaskForce *)0x0) {
+    *(TTaskForce **)&pTVar4->field_0x28 = this;
+  }
+  *(TTaskForce **)&pTVar7->field_0x4 = this;
+LAB_00554762:
+  func_0x00407833(this);
+  return;
+}
+

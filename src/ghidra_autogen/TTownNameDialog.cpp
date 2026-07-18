@@ -105,7 +105,7 @@ void TTownNameDialog::NoOpUiLifecycleHook()
     func_0x004057a4();
   }
   iVar1 = *(int *)CONCAT31(extraout_var,uVar2);
-  uVar3 = GenerateThreadLocalRandom15();
+  uVar3 = rand();
   uVar5 = (int)uVar3 >> 0x1f;
   iVar4 = (((uVar3 ^ uVar5) - uVar5 & 7 ^ uVar5) - uVar5) + 1;
   (**(code **)(iVar1 + 0x1cc))();
@@ -132,17 +132,25 @@ void TTownNameDialog::ApplyRectSlot110()
   undefined uVar1;
   undefined3 extraout_var;
   undefined4 in_stack_00000004;
+  undefined4 *puVar2;
+  undefined4 uVar3;
   undefined4 uStack_28;
-  undefined4 auStack_18 [6];
+  undefined4 *puStack_20;
+  undefined4 uStack_1c;
+  undefined4 uStack_18;
   
   uStack_28 = in_stack_00000004;
   func_0x00404fe8();
+  uVar3 = 0x6e616d65;
   uVar1 = (*this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25)(0x6e616d65);
   if ((int *)CONCAT31(extraout_var,uVar1) != (int *)0x0) {
-    (**(code **)(*(int *)CONCAT31(extraout_var,uVar1) + 300))(&uStack_28);
+    puVar2 = &uStack_28;
+    (**(code **)(*(int *)CONCAT31(extraout_var,uVar1) + 300))(puVar2);
     (**(code **)(g_pUiRuntimeContext->vftable + 0x34))(0xf);
-    auStack_18[0] = uStack_28;
-    FillRectWithQuickDrawBrushAndContextOffset(auStack_18);
+    uStack_18 = uStack_28;
+    puStack_20 = puVar2;
+    uStack_1c = uVar3;
+    func_0x00406546(&puStack_20);
   }
   func_0x004010be(0x50);
   return;

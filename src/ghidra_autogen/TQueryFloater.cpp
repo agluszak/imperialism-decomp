@@ -100,7 +100,7 @@ void TQueryFloater::NoOpUiLifecycleHook()
   pp_Stack_38 = (_vslot_fn **)0xc;
   pp_Stack_40 = &p_Stack_20;
   uStack_3c = 0;
-  BuildUiTextStyleDescriptor();
+  func_0x00406afa();
   pp_Stack_38 = &p_Stack_20;
   uStack_34 = 0;
   uStack_3c = 0x56e95b;
@@ -108,7 +108,7 @@ void TQueryFloater::NoOpUiLifecycleHook()
   uStack_3c = 0;
   pp_Stack_40 = (_vslot_fn **)0x1;
   (**(code **)(iVar3 + 0x1c4))();
-  BuildUiTextStyleDescriptor(&uStack_30,0,0xc,0x2b6c);
+  func_0x00406afa(&uStack_30,0,0xc,0x2b6c);
   iVar3 = 0;
   do {
     uVar2 = (*p_Var4)(iVar3 + 0x74657830);
@@ -191,13 +191,13 @@ void TQueryFloater::HandleEvent(int param_1, int param_2)
     cVar3 = func_0x0040596b();
     if (cVar3 == '\0') {
       puStack_1c = (undefined1 *)0x56eac7;
-      uVar2 = (*g_pLocalizationTable->vftable[7].slot_0x04)();
+      uVar2 = (*g_pSimMgr->vftable[7].slot_0x04)();
       if ((short)CONCAT31(extraout_var_00,uVar2) == 1) {
         puStack_1c = &stack0xffffffec;
         uStack_20 = 0x1e;
         uStack_24 = 0x273d;
         uStack_28 = 0x56eae7;
-        (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+        (*g_pSimMgr->vftable[0x10].slot_0x04)();
         uStack_2c = 1;
       }
       else {
@@ -205,7 +205,7 @@ void TQueryFloater::HandleEvent(int param_1, int param_2)
         uStack_20 = 0x12;
         uStack_24 = 0x273d;
         uStack_28 = 0x56eb15;
-        (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+        (*g_pSimMgr->vftable[0x10].slot_0x04)();
         uStack_2c = 1;
       }
 LAB_0056ec87:
@@ -213,8 +213,7 @@ LAB_0056ec87:
       uStack_28 = 0;
       puStack_30 = &DAT_006a4048;
       func_0x004076b7(&uStack_20);
-      uStack_28 = 0x56ec97;
-      DispatchLocalizedUiMessageWithTemplateA13A0();
+      func_0x004096b0();
       goto LAB_0056ecbe;
     }
     puStack_1c = (undefined1 *)0x56eb31;
@@ -224,7 +223,7 @@ LAB_0056ec87:
     uStack_24 = 0x56eb42;
     (**(code **)(*(int *)CONCAT31(extraout_var_01,uVar2) + 0x1b4))();
     uStack_24 = 0x65;
-    pTVar5 = g_pLocalizationTable->vftable;
+    pTVar5 = g_pSimMgr->vftable;
   }
   else if (uVar1 < 0x636e636d) {
     if (uVar1 == 0x636e636c) {
@@ -244,7 +243,7 @@ LAB_0056ec87:
     uStack_20 = 0x56eb7d;
     (**(code **)(*(int *)CONCAT31(extraout_var_02,uVar2) + 0x1b4))();
     uStack_24 = 0x6e;
-    pTVar5 = g_pLocalizationTable->vftable;
+    pTVar5 = g_pSimMgr->vftable;
   }
   else {
     if (uVar1 != 0x6465616c) {
@@ -266,7 +265,7 @@ LAB_0056ec87:
         else {
           uStack_20 = 0x66;
           uStack_24 = 0x56ec2a;
-          (*g_pLocalizationTable->vftable[9].GetTSimMgrClassNamePointer)();
+          (*g_pSimMgr->vftable[9].GetTSimMgrClassNamePointer)();
         }
       }
       else if (uVar1 == 0x6f726566) {
@@ -282,13 +281,13 @@ LAB_0056ec87:
       goto LAB_0056ecbe;
     }
     pCStack_18 = (CString *)0x56ec52;
-    uVar2 = (*g_pLocalizationTable->vftable[7].slot_0x04)();
+    uVar2 = (*g_pSimMgr->vftable[7].slot_0x04)();
     if ((short)CONCAT31(extraout_var_06,uVar2) == 1) {
       pCStack_18 = &local_10;
       puStack_1c = (undefined1 *)0x9;
       uStack_20 = 0x2741;
       uStack_24 = 0x56ec72;
-      (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+      (*g_pSimMgr->vftable[0x10].slot_0x04)();
       uStack_2c = 0;
       goto LAB_0056ec87;
     }
@@ -299,7 +298,7 @@ LAB_0056ec87:
     uStack_20 = 0x56ecb1;
     (**(code **)(*(int *)CONCAT31(extraout_var_07,uVar2) + 0x1b4))();
     uStack_24 = 100;
-    pTVar5 = g_pLocalizationTable->vftable;
+    pTVar5 = g_pSimMgr->vftable;
   }
   uStack_28 = 0x56ecbe;
   (*pTVar5[9].GetTSimMgrClassNamePointer)();

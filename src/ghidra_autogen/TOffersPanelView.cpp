@@ -135,7 +135,7 @@ void TOffersPanelView::NoOpUiLifecycleHook()
   local_1f = 0;
   local_1e = 0;
   local_1d = 0;
-  MapUiThemeCodeToStyleFlags();
+  func_0x004093cc();
   puStack_38 = (undefined1 *)in_stack_00000004;
   puStack_3c = (undefined1 *)0x4f905b;
   func_0x00406ba9();
@@ -158,7 +158,7 @@ void TOffersPanelView::NoOpUiLifecycleHook()
   *(undefined2 *)(*(int *)&this->field_0x68 + 0x92) = 5000;
   *(undefined2 *)(*(int *)&this->field_0x6c + 0x92) = 5000;
   aiStack_58[1] = 0x4f9100;
-  BuildUiTextStyleDescriptor();
+  func_0x00406afa();
   uVar3 = (*p_Var1)();
   piVar4 = (int *)CONCAT31(extraout_var_01,uVar3);
   iVar2 = *piVar4;
@@ -193,14 +193,14 @@ void TOffersPanelView::NoOpUiLifecycleHook()
   puStack_70 = (undefined1 *)0x6;
   uStack_74 = 0x274a;
   CStack_78.m_pchData = (char *)0x4f9197;
-  (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+  (*g_pSimMgr->vftable[0x10].slot_0x04)();
   CStack_7c.m_pchData = *(char **)&this->field_0x68;
   puStack_3c = (undefined1 *)&CStack_7c;
   CStack_78.m_pchData = CStack_7c.m_pchData;
   func_0x004076b7();
   func_0x00404d22();
   CStack_7c.m_pchData = acStack_68;
-  (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+  (*g_pSimMgr->vftable[0x10].slot_0x04)();
   puStack_90 = &uStack_74;
   func_0x004076b7();
   func_0x00404d22();
@@ -375,7 +375,7 @@ TOffersPanelView::RunDiplomacyNegotiationPopupAndAwaitResponse
       CStack_4c.m_pchData = (char *)0x0;
       uStack_50 = 0x2742;
       CStack_54.m_pchData = (char *)0x4f977a;
-      (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+      (*g_pSimMgr->vftable[0x10].slot_0x04)();
     }
     else {
       switch(iVar8) {
@@ -384,11 +384,11 @@ TOffersPanelView::RunDiplomacyNegotiationPopupAndAwaitResponse
         CStack_4c.m_pchData = (char *)0x0;
         uStack_50 = 0x274a;
         CStack_54.m_pchData = (char *)0x4f9547;
-        (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+        (*g_pSimMgr->vftable[0x10].slot_0x04)();
         CStack_5c.m_pchData = (char *)&CStack_3c;
         CStack_58.m_pchData = (char *)pCStack_40;
         CStack_54.m_pchData = (char *)unaff_EDI;
-        func_0x0040988b(g_pLocalizationTable);
+        func_0x0040988b(g_pSimMgr);
         break;
       case 0x12e:
         pcVar11 = (char *)0x0;
@@ -416,11 +416,11 @@ TOffersPanelView::RunDiplomacyNegotiationPopupAndAwaitResponse
           CStack_4c.m_pchData = &DAT_00000008;
           uStack_50 = 0x274a;
           CStack_54.m_pchData = (char *)0x4f9603;
-          (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+          (*g_pSimMgr->vftable[0x10].slot_0x04)();
           CStack_5c.m_pchData = (char *)&CStack_3c;
           CStack_58.m_pchData = (char *)pCStack_40;
           CStack_54.m_pchData = (char *)unaff_EDI;
-          func_0x0040988b(g_pLocalizationTable);
+          func_0x0040988b(g_pSimMgr);
           CVar12.m_pchData = CStack_28.m_pchData;
         }
         else {
@@ -428,11 +428,11 @@ TOffersPanelView::RunDiplomacyNegotiationPopupAndAwaitResponse
           CStack_4c.m_pchData = (char *)0x1;
           uStack_50 = 0x274a;
           CStack_54.m_pchData = (char *)0x4f95c9;
-          (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+          (*g_pSimMgr->vftable[0x10].slot_0x04)();
           CStack_5c.m_pchData = (char *)&CStack_3c;
           CStack_58.m_pchData = (char *)pCStack_40;
           CStack_54.m_pchData = (char *)unaff_EDI;
-          func_0x0040988b(g_pLocalizationTable);
+          func_0x0040988b(g_pSimMgr);
           CVar12.m_pchData = CStack_28.m_pchData;
         }
         break;
@@ -441,11 +441,11 @@ TOffersPanelView::RunDiplomacyNegotiationPopupAndAwaitResponse
         CStack_4c.m_pchData = (char *)0x2;
         uStack_50 = 0x274a;
         CStack_54.m_pchData = (char *)0x4f9644;
-        (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+        (*g_pSimMgr->vftable[0x10].slot_0x04)();
         CStack_5c.m_pchData = (char *)&CStack_3c;
         CStack_58.m_pchData = (char *)pCStack_40;
         CStack_54.m_pchData = (char *)unaff_EDI;
-        func_0x0040988b(g_pLocalizationTable);
+        func_0x0040988b(g_pSimMgr);
         break;
       case 0x130:
         pcVar11 = (char *)0x0;
@@ -474,11 +474,11 @@ TOffersPanelView::RunDiplomacyNegotiationPopupAndAwaitResponse
           CStack_4c.m_pchData = (char *)0x9;
           uStack_50 = 0x274a;
           CStack_54.m_pchData = (char *)0x4f9702;
-          (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+          (*g_pSimMgr->vftable[0x10].slot_0x04)();
           CStack_5c.m_pchData = (char *)&CStack_3c;
           CStack_58.m_pchData = (char *)pCStack_40;
           CStack_54.m_pchData = (char *)unaff_EDI;
-          func_0x0040988b(g_pLocalizationTable);
+          func_0x0040988b(g_pSimMgr);
           CVar12.m_pchData = CStack_28.m_pchData;
         }
         else {
@@ -486,11 +486,11 @@ TOffersPanelView::RunDiplomacyNegotiationPopupAndAwaitResponse
           CStack_4c.m_pchData = (char *)0x3;
           uStack_50 = 0x274a;
           CStack_54.m_pchData = (char *)0x4f96c8;
-          (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+          (*g_pSimMgr->vftable[0x10].slot_0x04)();
           CStack_5c.m_pchData = (char *)&CStack_3c;
           CStack_58.m_pchData = (char *)pCStack_40;
           CStack_54.m_pchData = (char *)unaff_EDI;
-          func_0x0040988b(g_pLocalizationTable);
+          func_0x0040988b(g_pSimMgr);
           CVar12.m_pchData = CStack_28.m_pchData;
         }
         break;
@@ -499,11 +499,11 @@ TOffersPanelView::RunDiplomacyNegotiationPopupAndAwaitResponse
         CStack_4c.m_pchData = (char *)0x4;
         uStack_50 = 0x274a;
         CStack_54.m_pchData = (char *)0x4f9740;
-        (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+        (*g_pSimMgr->vftable[0x10].slot_0x04)();
         CStack_5c.m_pchData = (char *)pCStack_40;
         CStack_58.m_pchData = (char *)unaff_EDI;
         CStack_54.m_pchData = (char *)unaff_EDI;
-        func_0x0040988b(g_pLocalizationTable,&CStack_3c);
+        func_0x0040988b(g_pSimMgr,&CStack_3c);
       }
     }
   }

@@ -3,40 +3,6 @@
 // Program: Imperialism.exe
 // Bucket: TUnit.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00402EEB
-// GHIDRA_NAME TUnit::RegisterUnitOrderWithOwnerManager
-// GHIDRA_PROTO undefined __thiscall TUnit::RegisterUnitOrderWithOwnerManager(undefined2 param_1, short param_2)
-
-void TUnit::RegisterUnitOrderWithOwnerManager(undefined2 param_1, short param_2)
-
-{
-  int iVar1;
-  int *piVar2;
-  undefined2 in_stack_0000000a;
-  
-  *(undefined2 *)&this->field_0x4 = param_1;
-  *(undefined4 *)&this->field_0x8 = 0;
-  (*this->vftable[5].GetTUnitClassNamePointer)(_param_2);
-  if (this->field_0x1c == '\0') {
-    piVar2 = *(int **)&g_apNationStates[param_2]->field_0x89c;
-  }
-  else {
-    piVar2 = *(int **)&g_apTerrainTypeDescriptorTable[param_2]->field_0x44;
-  }
-  if (piVar2 == (int *)0x0) {
-    MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
-    func_0x004057a4(s_D__Ambit_Cross_UUnit_cpp_0069aae0,0x11f);
-  }
-  (**(code **)(*piVar2 + 0x30))(this);
-  *(short *)&this->field_0x18 = param_2;
-  *(short *)&this->field_0x1a = param_2;
-  *(undefined2 *)&this->field_0xc = 0xffff;
-  iVar1 = *(int *)&g_pLocalizationTable->field_0x64 + 1;
-  *(int *)&g_pLocalizationTable->field_0x64 = iVar1;
-  *(int *)&this->field_0x20 = iVar1;
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x005C2430
 // GHIDRA_NAME TUnit::CreateObject
 // GHIDRA_PROTO undefined CreateObject()
@@ -160,8 +126,8 @@ void TUnit::RegisterUnitOrderWithOwnerManager(undefined2 param_1, short param_2)
   *(short *)&this->field_0x18 = param_2;
   *(short *)&this->field_0x1a = param_2;
   *(undefined2 *)&this->field_0xc = 0xffff;
-  iVar1 = *(int *)&g_pLocalizationTable->field_0x64 + 1;
-  *(int *)&g_pLocalizationTable->field_0x64 = iVar1;
+  iVar1 = *(int *)&g_pSimMgr->field_0x64 + 1;
+  *(int *)&g_pSimMgr->field_0x64 = iVar1;
   *(int *)&this->field_0x20 = iVar1;
   return;
 }

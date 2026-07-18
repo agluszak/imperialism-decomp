@@ -523,7 +523,7 @@ void TForeignMinister::DispatchForeignMinisterPrimaryAndFallbackNationActions()
     iVar8 = 1;
     do {
       if (bVar2) goto LAB_0052f8bf;
-      iVar6 = GenerateThreadLocalRandom15();
+      iVar6 = rand();
       local_10 = (TForeignMinister *)(iVar6 % 7);
       cVar3 = func_0x004044b7(local_10);
       if (cVar3 != '\0') {
@@ -619,7 +619,7 @@ void TForeignMinister::RunForeignMinisterVtableSlot94Shared()
   if (local_1c != 0) {
     puVar4 = &local_18;
     do {
-      iVar3 = GenerateThreadLocalRandom15();
+      iVar3 = rand();
       iVar5 = CONCAT22((short)((uint)iVar5 >> 0x10),*(undefined2 *)puVar4);
       uVar1 = (*g_pNationInteractionStateManager->vftable[9].slot_0x04)(iVar5);
       if (iVar3 % 100 + 200 < (int)(short)CONCAT31(extraout_var,uVar1)) {
@@ -640,7 +640,7 @@ void TForeignMinister::RunForeignMinisterVtableSlot94Shared()
       local_1c = local_1c + -1;
     } while (local_1c != 0);
   }
-  iVar3 = GenerateThreadLocalRandom15();
+  iVar3 = rand();
   uVar1 = (*g_pNationInteractionStateManager->vftable[9].slot_0x04)(5);
   if (iVar3 % 100 + 200 < (int)(short)CONCAT31(extraout_var_00,uVar1)) {
     sVar2 = (**(code **)(**(int **)&this->field_0x4 + 0x78))(5);
@@ -755,11 +755,11 @@ void TForeignMinister::RefreshForeignMinisterStateByLocalizationMode()
   undefined3 extraout_var;
   undefined3 extraout_var_00;
   
-  uVar2 = (*g_pLocalizationTable->vftable[7].slot_0x04)();
+  uVar2 = (*g_pSimMgr->vftable[7].slot_0x04)();
   if ((short)CONCAT31(extraout_var,uVar2) == 1) {
     (*this->vftable[0xc].GetTMinisterClassNamePointer)();
   }
-  uVar2 = (*g_pLocalizationTable->vftable[7].slot_0x04)();
+  uVar2 = (*g_pSimMgr->vftable[7].slot_0x04)();
   if ((short)CONCAT31(extraout_var_00,uVar2) == 2) {
     (*this->vftable[0xc].DeletingDestructTMinister)();
   }
@@ -865,7 +865,7 @@ void TForeignMinister::AllocateDiplomacyAidBudgetAcrossTargets()
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
   local_14 = *(int *)(*(int *)&this->field_0x4 + 0x10) + -10000;
-  iVar3 = ftol();
+  iVar3 = _ftol();
   if (1000 < iVar3) {
     iVar4 = operator_new(0x18);
     local_4 = 0;
@@ -1041,17 +1041,17 @@ void TForeignMinister::QueueTurnEventHintActionsByNationMetricsAndCompatibility(
   if (cVar6 == '\0') {
     (*this->vftable[0xe].DeletingDestructTMinister)();
   }
-  uVar2 = (short)*(ushort *)&g_pLocalizationTable->field_0x2c >> 0xf;
-  if ((ushort)(((*(ushort *)&g_pLocalizationTable->field_0x2c ^ uVar2) - uVar2 & 3 ^ uVar2) - uVar2)
-      == *(short *)(&DAT_00697818 + (short)(*(int **)&this->field_0x4)[3] * 2)) {
+  uVar2 = (short)*(ushort *)&g_pSimMgr->field_0x2c >> 0xf;
+  if ((ushort)(((*(ushort *)&g_pSimMgr->field_0x2c ^ uVar2) - uVar2 & 3 ^ uVar2) - uVar2) ==
+      *(short *)(&DAT_00697818 + (short)(*(int **)&this->field_0x4)[3] * 2)) {
     (**(code **)(**(int **)&this->field_0x4 + 0x23c))();
-    ppTStack_38 = (TGreatPower **)ftol();
+    ppTStack_38 = (TGreatPower **)_ftol();
     if ((int)ppTStack_38 < 2) {
       ppTStack_38 = (TGreatPower **)0x1;
     }
     fVar3 = (float)(int)ppTStack_38;
     (**(code **)(**(int **)&this->field_0x4 + 0x240))();
-    ppTStack_38 = (TGreatPower **)ftol();
+    ppTStack_38 = (TGreatPower **)_ftol();
     if ((int)ppTStack_38 < 2) {
       ppTStack_38 = (TGreatPower **)0x1;
     }
@@ -1146,9 +1146,8 @@ LAB_0053054c:
         (**(code **)(**(int **)&this->field_0x4 + 0x28c))(iVar13);
         fVar16 = (float10)(**(code **)(**(int **)&this->field_0x4 + 0x22c))();
         if ((float10)fStack_2c <= fVar16) {
-          if (((short)((int)((int)*(short *)&g_pLocalizationTable->field_0x2c +
-                            ((int)*(short *)&g_pLocalizationTable->field_0x2c >> 0x1f & 3U)) >> 2) <
-               0x46) &&
+          if (((short)((int)((int)*(short *)&g_pSimMgr->field_0x2c +
+                            ((int)*(short *)&g_pSimMgr->field_0x2c >> 0x1f & 3U)) >> 2) < 0x46) &&
              (cVar6 = (*this->vftable[0xe].GetTMinisterClassNamePointer)(iVar13), cVar6 == '\0')) {
             bVar5 = true;
             iVar14 = 1;
@@ -1165,9 +1164,9 @@ LAB_0053054c:
             if (bVar5) {
               iVar10 = 0;
               iVar15 = 1;
-              fStack_2c = (float)(((short)((int)((int)*(short *)&g_pLocalizationTable->field_0x2c +
-                                                ((int)*(short *)&g_pLocalizationTable->field_0x2c >>
-                                                 0x1f & 3U)) >> 2) + 10) / 10);
+              fStack_2c = (float)(((short)((int)((int)*(short *)&g_pSimMgr->field_0x2c +
+                                                ((int)*(short *)&g_pSimMgr->field_0x2c >> 0x1f & 3U)
+                                                ) >> 2) + 10) / 10);
               iVar14 = (**(code **)(**(int **)(*(int *)&this->field_0x4 + 0x90) + 0x28))();
               if (1 < iVar14) {
                 do {
@@ -1224,21 +1223,21 @@ TForeignMinister::EvaluateLocalizedScoreThresholdPredicateForNationValue
   local_28[2] = 0xf;
   local_28[3] = 0xd;
   local_28[4] = 0xb;
-  iVar3 = local_28[*(int *)&g_pLocalizationTable->field_0x40];
+  iVar3 = local_28[*(int *)&g_pSimMgr->field_0x40];
   local_28[5] = 0x1b;
   local_28[6] = 0x17;
   local_c = 2.66247e-44;
   local_8 = 0x10;
   local_4 = 1.96182e-44;
-  iVar2 = local_28[*(int *)&g_pLocalizationTable->field_0x40 + 5];
+  iVar2 = local_28[*(int *)&g_pSimMgr->field_0x40 + 5];
   cVar1 = func_0x004090c5((int)*(short *)(*(int *)&this->field_0x4 + 0xc),param_1);
   if (cVar1 == '\0') {
     iVar3 = (**(code **)(**(int **)&this->field_0x4 + 0x218))();
     if (iVar2 < iVar3) {
       (**(code **)(**(int **)&this->field_0x4 + 0x24c))(param_1);
-      iVar3 = ftol();
+      iVar3 = _ftol();
       (**(code **)(**(int **)&this->field_0x4 + 0x250))(param_1);
-      iVar2 = ftol();
+      iVar2 = _ftol();
       local_c = (float)((iVar2 + iVar3) / 2);
       fVar4 = (float10)(**(code **)(**(int **)&this->field_0x4 + 0x220))();
       if (fVar4 <= (float10)local_4) {
@@ -1250,16 +1249,16 @@ TForeignMinister::EvaluateLocalizedScoreThresholdPredicateForNationValue
     iVar2 = func_0x00402e32();
     if (iVar3 < iVar2) {
       (**(code **)(**(int **)&this->field_0x4 + 0x244))(param_1);
-      iVar3 = ftol();
+      iVar3 = _ftol();
       (**(code **)(**(int **)&this->field_0x4 + 0x248))(param_1);
-      iVar2 = ftol();
+      iVar2 = _ftol();
       local_28[5] = 0;
-      local_28[1] = (int)*(short *)&g_pLocalizationTable->field_0x6c;
+      local_28[1] = (int)*(short *)&g_pSimMgr->field_0x6c;
       local_28[2] = local_28[1] / 2;
       local_28[3] = local_28[1] / 3;
       local_28[4] = local_28[1] / 5;
       local_c = (float)((iVar2 + iVar3) / 2);
-      iVar3 = ftol();
+      iVar3 = _ftol();
       local_c = (float)iVar3;
       fVar4 = (float10)(**(code **)(**(int **)&this->field_0x4 + 0x220))();
       if (fVar4 <= (float10)local_4) {
@@ -1331,8 +1330,8 @@ TForeignMinister::QueueForeignMinisterActionCodesByNationStateAndCompatibility
   puStack_8 = &LAB_00634164;
   uStack_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &uStack_c;
-  uVar3 = (short)*(ushort *)&g_pLocalizationTable->field_0x2c >> 0xf;
-  if ((((*(ushort *)&g_pLocalizationTable->field_0x2c ^ uVar3) - uVar3 & 3 ^ uVar3) == uVar3) &&
+  uVar3 = (short)*(ushort *)&g_pSimMgr->field_0x2c >> 0xf;
+  if ((((*(ushort *)&g_pSimMgr->field_0x2c ^ uVar3) - uVar3 & 3 ^ uVar3) == uVar3) &&
      (cVar5 = (**(code **)(**(int **)&this->field_0x4 + 0x1a0))(), cVar5 == '\0')) {
     bVar4 = true;
     iVar8 = operator_new(0x18);
@@ -1499,9 +1498,7 @@ switchD_00530fea_caseD_12d:
     case 0x130:
       cVar4 = (**(code **)(*piVar2 + 0x278))((int)sVar1);
       if (cVar4 == '\0') goto LAB_00531084;
-      TInterNationEventQueueManager::QueueInterNationEventRecordDeduped
-                ((TCountry *)g_pInterNationEventQueueManager,0x1c,
-                 (int)*(short *)(*(int *)&this->field_0x4 + 0xc),(int)psVar5[1],'\0');
+      func_0x00406758(0x1c,(int)*(short *)(*(int *)&this->field_0x4 + 0xc),(int)psVar5[1],0);
       break;
     case 0x132:
       cVar4 = (*g_pDiplomacyTurnStateManager->vftable[0xc].GetTDiplomacyMgrClassNamePointer)

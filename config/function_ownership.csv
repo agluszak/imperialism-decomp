@@ -3436,6 +3436,7 @@ address|target_cpp|ownership|note
 556100|src/game/TTaskForce.cpp|manual|marker_sync
 5562c0|src/game/TTaskForce.cpp|manual|marker_sync
 5563d0|src/game/TTaskForce.cpp|manual|marker_sync
+556410|src/game/TTaskForce.cpp|manual|marker_sync
 5564f0|src/game/TTaskForce.cpp|manual|marker_sync
 556530|src/game/TNavyMgr.cpp|manual|marker_sync
 556570|src/game/TNavyMgr.cpp|manual|marker_sync
@@ -3583,6 +3584,7 @@ address|target_cpp|ownership|note
 563b70|src/game/TMapMgr.cpp|manual|marker_sync
 563da0|src/game/TZone.cpp|manual|marker_sync
 564240|src/game/TOcean.cpp|manual|marker_sync
+5642e0|src/game/TOcean.cpp|manual|marker_sync
 564530|src/game/TOcean.cpp|manual|marker_sync
 564570|src/game/TOcean.cpp|manual|marker_sync
 564600|src/game/TOcean.cpp|manual|marker_sync

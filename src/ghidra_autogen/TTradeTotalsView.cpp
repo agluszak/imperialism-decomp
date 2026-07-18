@@ -151,7 +151,7 @@ void TTradeTotalsView::ApplyRectSlot110()
   uStack_3c = 0x2740;
   local_4 = CONCAT31(local_4._1_3_,2);
   puStack_40 = (undefined1 *)0x5c1c53;
-  (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+  (*g_pSimMgr->vftable[0x10].slot_0x04)();
   puStack_40 = (undefined1 *)0x2b6b;
   uStack_44 = 0xe;
   uStack_48 = 0;
@@ -160,17 +160,17 @@ void TTradeTotalsView::ApplyRectSlot110()
   puStack_40 = &stack0xffffffdc;
   uStack_44 = 0x2b6b;
   uStack_48 = 0x5c1c72;
-  MapUiThemeCodeToStyleFlags();
+  func_0x004093cc();
   puStack_40 = &stack0xffffffd8;
   uStack_44 = 0x2b6c;
   uStack_48 = 0x5c1c84;
-  MapUiThemeCodeToStyleFlags();
+  func_0x004093cc();
   uStack_44 = 0x5c1c91;
   func_0x00409444();
   puStack_40 = (undefined1 *)0x12;
   uStack_44 = 10;
   uStack_48 = 0x5c1c9d;
-  SetQuickDrawTextOriginWithContextOffset();
+  func_0x00408d6e();
   puStack_40 = &stack0xffffffd4;
   uStack_44 = 0x5c1caa;
   func_0x004029aa();
@@ -179,7 +179,7 @@ void TTradeTotalsView::ApplyRectSlot110()
   puStack_40 = (undefined1 *)0x11;
   uStack_44 = 9;
   uStack_48 = 0x5c1cc3;
-  SetQuickDrawTextOriginWithContextOffset();
+  func_0x00408d6e();
   puStack_40 = &stack0xffffffd4;
   uStack_44 = 0x5c1cd0;
   func_0x004029aa();
@@ -192,22 +192,22 @@ void TTradeTotalsView::ApplyRectSlot110()
   uStack_44 = 0x18;
   uStack_48 = 0x2740;
   puStack_4c = (undefined4 *)0x5c1cfd;
-  (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+  (*g_pSimMgr->vftable[0x10].slot_0x04)();
   puStack_4c = (undefined4 *)0x1e;
   uStack_50 = 8;
   ppuStack_54 = (undefined1 **)0x5c1d06;
-  SetQuickDrawTextOriginWithContextOffset();
+  func_0x00408d6e();
   puStack_4c = &uStack_38;
   uStack_50 = 0x5c1d13;
   func_0x004029aa();
   puStack_4c = &uStack_38;
   uStack_50 = *(undefined4 *)&g_apNationStates[*(short *)&this->field_0x60]->field_0x840;
   ppuStack_54 = (undefined1 **)0x5c1d38;
-  (*g_pLocalizationTable->vftable[0xe].slot_0x04)();
+  (*g_pSimMgr->vftable[0xe].slot_0x04)();
   ppuStack_54 = (undefined1 **)0x1e;
   uStack_58 = 0x80;
   uStack_5c = 0x5c1d44;
-  SetQuickDrawTextOriginWithContextOffset();
+  func_0x00408d6e();
   ppuStack_54 = &puStack_40;
   uStack_58 = 0x5c1d51;
   func_0x004029aa();
@@ -215,18 +215,18 @@ void TTradeTotalsView::ApplyRectSlot110()
   uStack_58 = 0x19;
   uStack_5c = 0x2740;
   ppuStack_60 = (undefined4 **)0x5c1d6e;
-  (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+  (*g_pSimMgr->vftable[0x10].slot_0x04)();
   ppuStack_60 = (undefined4 **)0x2a;
   uStack_64 = 8;
   pppuStack_68 = (undefined1 ***)0x5c1d77;
-  SetQuickDrawTextOriginWithContextOffset();
+  func_0x00408d6e();
   ppuStack_60 = &puStack_4c;
   uStack_64 = 0x5c1d84;
   func_0x004029aa();
   ppuStack_60 = &puStack_4c;
   uStack_64 = *(undefined4 *)&g_apNationStates[*(short *)&this->field_0x60]->field_0x844;
   pppuStack_68 = (undefined1 ***)0x5c1da9;
-  (*g_pLocalizationTable->vftable[0xe].slot_0x04)();
+  (*g_pSimMgr->vftable[0xe].slot_0x04)();
   pppuStack_68 = (undefined1 ***)0x2a;
   if (*(int *)&g_apNationStates[*(short *)&this->field_0x60]->field_0x844 < 0) {
     ppuStack_6c = (undefined4 **)0x7c;
@@ -235,7 +235,7 @@ void TTradeTotalsView::ApplyRectSlot110()
     ppuStack_6c = (undefined4 **)0x80;
   }
   uStack_70 = 0x5c1dcc;
-  SetQuickDrawTextOriginWithContextOffset();
+  func_0x00408d6e();
   pppuStack_68 = &ppuStack_54;
   ppuStack_6c = (undefined4 **)0x5c1dd9;
   func_0x004029aa();
@@ -243,18 +243,18 @@ void TTradeTotalsView::ApplyRectSlot110()
   ppuStack_6c = (undefined4 **)0x1d;
   uStack_70 = 0x2740;
   pppuStack_74 = (undefined4 ***)0x5c1df6;
-  (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+  (*g_pSimMgr->vftable[0x10].slot_0x04)();
   pppuStack_74 = (undefined4 ***)0x36;
   iStack_78 = 8;
   ppppuStack_7c = (undefined1 ****)0x5c1dff;
-  SetQuickDrawTextOriginWithContextOffset();
+  func_0x00408d6e();
   pppuStack_74 = &ppuStack_60;
   iStack_78 = 0x5c1e0c;
   func_0x004029aa();
   pppuStack_74 = &ppuStack_60;
   iStack_78 = -*(int *)&g_apNationStates[*(short *)&this->field_0x60]->field_0x960;
   ppppuStack_7c = (undefined1 ****)0x5c1e33;
-  (*g_pLocalizationTable->vftable[0xe].slot_0x04)();
+  (*g_pSimMgr->vftable[0xe].slot_0x04)();
   ppppuStack_7c = (undefined1 ****)0x36;
   if (*(int *)&g_apNationStates[*(short *)&this->field_0x60]->field_0x960 < 1) {
     uStack_80 = 0x80;
@@ -263,7 +263,7 @@ void TTradeTotalsView::ApplyRectSlot110()
     uStack_80 = 0x7c;
   }
   uStack_84 = 0x5c1e56;
-  SetQuickDrawTextOriginWithContextOffset();
+  func_0x00408d6e();
   ppppuStack_7c = &pppuStack_68;
   uStack_80 = 0x5c1e63;
   func_0x004029aa();
@@ -271,17 +271,17 @@ void TTradeTotalsView::ApplyRectSlot110()
   uStack_80 = 0x1a;
   uStack_84 = 0x2740;
   CStack_88.m_pchData = (char *)0x5c1e80;
-  (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+  (*g_pSimMgr->vftable[0x10].slot_0x04)();
   iVar3 = 0x42;
   CStack_88.m_pchData = (char *)0x42;
   CStack_8c.m_pchData = &DAT_00000008;
   ppppuStack_90 = (undefined4 ****)0x5c1e8d;
-  SetQuickDrawTextOriginWithContextOffset();
+  func_0x00408d6e();
   CStack_88.m_pchData = (char *)&pppuStack_74;
   CStack_8c.m_pchData = (char *)0x5c1e9a;
   func_0x004029aa();
   CStack_88.m_pchData = (char *)&pppuStack_74;
-  pTVar1 = g_pLocalizationTable->vftable;
+  pTVar1 = g_pSimMgr->vftable;
   CStack_8c.m_pchData = (char *)0x5c1ebc;
   uVar2 = (*g_apNationStates[*(short *)&this->field_0x60]->vftable->
             PromoteNationPendingActionSlot5IfCapabilityActive_5f)();
@@ -291,7 +291,7 @@ void TTradeTotalsView::ApplyRectSlot110()
   ppppuStack_90 = (undefined4 ****)0x42;
   uStack_94 = 0x80;
   CStack_98.m_pchData = (char *)0x5c1ed1;
-  SetQuickDrawTextOriginWithContextOffset();
+  func_0x00408d6e();
   ppppuStack_90 = &ppppuStack_7c;
   uStack_94 = 0x5c1ede;
   func_0x004029aa();
@@ -299,15 +299,14 @@ void TTradeTotalsView::ApplyRectSlot110()
     ppppuStack_90 = (undefined4 ****)&ppuStack_6c;
     uStack_94 = 0x1c;
     CStack_98.m_pchData = (char *)0x2740;
-    (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
-    _Format_CString__QAAXPBDZZ
-              (&ppppuStack_7c,&g_szDecimalFormat,
-               (int)(char)g_apNationStates[*(short *)&this->field_0x60]->field_0x8f4);
-    func_0x0040988b(g_pLocalizationTable,&CStack_88,iStack_78,ppppuStack_7c);
+    (*g_pSimMgr->vftable[0x10].slot_0x04)();
+    CString__Format(&ppppuStack_7c,&g_szDecimalFormat,
+                    (int)(char)g_apNationStates[*(short *)&this->field_0x60]->field_0x8f4);
+    func_0x0040988b(g_pSimMgr,&CStack_88,iStack_78,ppppuStack_7c);
     iVar3 = 0x4e;
-    SetQuickDrawTextOriginWithContextOffset(8,0x4e);
+    func_0x00408d6e(8,0x4e);
     func_0x004029aa(&CStack_88);
-    (*g_pLocalizationTable->vftable[0xe].slot_0x04)
+    (*g_pSimMgr->vftable[0xe].slot_0x04)
               (-*(int *)&g_apNationStates[*(short *)&this->field_0x60]->field_0x8f8,&CStack_88);
     if (*(int *)&g_apNationStates[*(short *)&this->field_0x60]->field_0x8f8 < 1) {
       uVar4 = 0x80;
@@ -315,19 +314,19 @@ void TTradeTotalsView::ApplyRectSlot110()
     else {
       uVar4 = 0x7c;
     }
-    SetQuickDrawTextOriginWithContextOffset(uVar4,0x4e);
+    func_0x00408d6e(uVar4,0x4e);
     func_0x004029aa(&ppppuStack_90);
   }
   uStack_94 = 8;
   CStack_98.m_pchData = (char *)0x5c1fda;
   ppppuStack_90 = (undefined4 ****)(iVar3 + 2);
-  SetQuickDrawTextOriginWithContextOffset();
+  func_0x00408d6e();
   uStack_94 = CONCAT22(extraout_var_02,(short)this->field34 + -8);
   CStack_98.m_pchData = (char *)0x5c1fec;
   ppppuStack_90 = (undefined4 ****)(iVar3 + 2);
-  DrawCenteredGuideLineOnMapDc();
+  func_0x00403bb6();
   ppppuStack_90 = &ppppuStack_7c;
-  pTVar1 = g_pLocalizationTable->vftable;
+  pTVar1 = g_pSimMgr->vftable;
   uStack_94 = 0x5c200e;
   uVar2 = (*g_apNationStates[*(short *)&this->field_0x60]->vftable->
             AdvanceNationPendingActionStateMachine_60)();
@@ -346,19 +345,19 @@ void TTradeTotalsView::ApplyRectSlot110()
     uVar4 = 0x80;
   }
   CStack_98.m_pchData = (char *)(iVar3 + 0xe);
-  SetQuickDrawTextOriginWithContextOffset(uVar4);
+  func_0x00408d6e(uVar4);
   CStack_98.m_pchData = (char *)&uStack_84;
   func_0x004029aa();
   CStack_98.m_pchData = (char *)0x2b6a;
   func_0x0040448f(0,0xc);
   CStack_98.m_pchData = (char *)&pppuStack_74;
-  (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2740,0x1b);
-  (*g_pLocalizationTable->vftable[0xe].slot_0x04)
+  (*g_pSimMgr->vftable[0x10].slot_0x04)(0x2740,0x1b);
+  (*g_pSimMgr->vftable[0xe].slot_0x04)
             (*(int *)&g_apNationStates[*(short *)&this->field_0x60]->field_0x8f0 / 100,&uStack_84);
-  func_0x0040988b(g_pLocalizationTable,&CStack_98,CStack_88.m_pchData,PTR_g_szEmptyString_0066db50);
-  SetQuickDrawTextOriginWithContextOffset(8,iVar3 + 0x1a);
+  func_0x0040988b(g_pSimMgr,&CStack_98,CStack_88.m_pchData,PTR_g_szEmptyString_0066db50);
+  func_0x00408d6e(8,iVar3 + 0x1a);
   func_0x004029aa(&CStack_98);
-  SetQuickDrawTextOriginWithContextOffset(0x80,iVar3 + 0x1a);
+  func_0x00408d6e(0x80,iVar3 + 0x1a);
   func_0x004029aa(&CStack_8c);
   func_0x0040330f(0);
   ppppuStack_7c._0_1_ = 1;

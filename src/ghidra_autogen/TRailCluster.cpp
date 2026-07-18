@@ -99,7 +99,7 @@ void TRailCluster::NoOpUiLifecycleHook(short param_1)
   if (uVar1 < 0x706f7076) {
     if (uVar1 == 0x706f7075) {
       *(undefined2 *)&this->field_0x8e = 1;
-      iVar3 = GetCityBuildingProductionValueBySlot(this_00,0xf);
+      iVar3 = TCity::GetBuildingType(this_00,0xf);
       *(short *)&this->field_0x8c = (short)iVar3;
       sVar2 = 0x3c;
     }
@@ -222,11 +222,11 @@ void TRailCluster::UpdateTradeMoveControlsFromScaledDrag(short param_1, char par
     }
     piVar2 = *(int **)&this->field_0x88;
     atStack_20[0].right = (LONG)(short)piVar2[1];
-    LVar7 = ftol();
+    LVar7 = _ftol();
     iVar10 = *piVar6;
     sVar4 = (**(code **)(*piVar2 + 0x30))();
     atStack_20[0].right = (LONG)sVar4;
-    uVar8 = ftol();
+    uVar8 = _ftol();
     (**(code **)(iVar10 + 0x1a4))(LVar7,uVar8);
     (**(code **)(*piVar5 + 0xf0))(&stack0xffffffa4,1);
     (*pcVar9)(&stack0xffffffa4);

@@ -171,7 +171,7 @@ bool CWinThread::OnIdle(int param_1)
     iVar3 = AfxGetModuleState();
     iVar3 = CThreadLocalObject::GetData((CThreadLocalObject *)(iVar3 + 0x1070),::CreateObject);
     if (*(int *)(iVar3 + 0x10) == 0) {
-      IncrementAfxModuleThreadStateTempMapLockDepth();
+      AfxLockTempMaps();
       AfxUnlockTempMaps(1);
     }
   }
@@ -270,7 +270,7 @@ undefined4 CWinThread::PreTranslateMessage(int *param_1)
     iVar2 = CWnd::WalkPreTranslateTree(iVar2,param_1);
     if (iVar2 == 0) {
       if (piVar3 != (int *)0x0) {
-        FromHandle(*param_1);
+        CWnd__FromHandle(*param_1);
         piVar4 = (int *)CWnd::GetTopLevelParent();
         if (piVar4 != piVar3) {
           uVar5 = (**(code **)(*piVar3 + 0x98))(param_1);
@@ -299,10 +299,10 @@ undefined4 * CWinThread::CWinThread__CWinApp(void)
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
   
-  EstablishSehFrameProlog();
+  _EH_prolog();
   *(undefined4 **)(unaff_EBP + -0x10) = extraout_ECX;
   CWinThread();
-  *extraout_ECX = &PTR_FUN_0066fdfc;
+  *extraout_ECX = &PTR_CWinApp__GetRuntimeClass_0066fdfc;
   *(undefined4 *)(unaff_EBP + -4) = 0;
   if (*(int *)(unaff_EBP + 8) == 0) {
     extraout_ECX[0x1e] = 0;
@@ -379,9 +379,9 @@ undefined4 * CWinThread::CWinThread(void)
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
   
-  EstablishSehFrameProlog();
+  _EH_prolog();
   *(undefined4 **)(unaff_EBP + -0x10) = extraout_ECX;
-  CCmdTarget();
+  CCmdTarget__CCmdTarget();
   *(undefined4 *)(unaff_EBP + -4) = 0;
   *extraout_ECX = &PTR_LAB_006704cc;
   extraout_ECX[0x13] = 0;
@@ -446,7 +446,7 @@ void CWinThread::~CWinThread()
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
   
-  EstablishSehFrameProlog();
+  _EH_prolog();
   *(undefined4 **)(unaff_EBP + -0x10) = extraout_ECX;
   *extraout_ECX = &PTR_LAB_006704cc;
   hObject = (HANDLE)extraout_ECX[10];

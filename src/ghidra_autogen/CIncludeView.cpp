@@ -23,7 +23,7 @@ undefined4 * CIncludeView::CreateObject(void)
   puVar1 = (undefined4 *)operator_new(0x94);
   local_4 = 0;
   if (puVar1 != (undefined4 *)0x0) {
-    CView();
+    CView__CView();
     puVar1[0x10] = 0;
     puVar1[0x11] = 0;
     puVar1[0x12] = 0;

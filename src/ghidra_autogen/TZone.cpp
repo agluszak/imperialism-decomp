@@ -188,9 +188,9 @@ LAB_0055e90c:
       if (0x7fffffff < uVar3) {
         uVar3 = 0x7fffffff;
       }
-      iVar5 = ReallocateHeapBlockWithAllocatorTracking(*(undefined4 *)&this->field_0x4,iVar1 * 8);
+      iVar5 = _realloc(*(undefined4 *)&this->field_0x4,iVar1 * 8);
       if (iVar5 == 0) {
-        uVar6 = ReallocateHeapBlockWithAllocatorTracking(*(undefined4 *)&this->field_0x4,iVar1 * 4);
+        uVar6 = _realloc(*(undefined4 *)&this->field_0x4,iVar1 * 4);
         *(undefined4 *)&this->field_0x4 = uVar6;
         *(int *)&this->field_0x8 = iVar1;
       }
@@ -245,9 +245,9 @@ LAB_0055e9ec:
       if (0x7fffffff < uVar3) {
         uVar3 = 0x7fffffff;
       }
-      iVar5 = ReallocateHeapBlockWithAllocatorTracking(*(undefined4 *)&this->field_0x4,iVar1 * 8);
+      iVar5 = _realloc(*(undefined4 *)&this->field_0x4,iVar1 * 8);
       if (iVar5 == 0) {
-        uVar6 = ReallocateHeapBlockWithAllocatorTracking(*(undefined4 *)&this->field_0x4,iVar1 * 4);
+        uVar6 = _realloc(*(undefined4 *)&this->field_0x4,iVar1 * 4);
         *(undefined4 *)&this->field_0x4 = uVar6;
         *(int *)&this->field_0x8 = iVar1;
       }
@@ -286,9 +286,9 @@ void TZone::AppendZonePointerToPrimaryArray(undefined4 param_1)
     if (0x7fffffff < uVar5) {
       uVar5 = 0x7fffffff;
     }
-    iVar3 = ReallocateHeapBlockWithAllocatorTracking(*(undefined4 *)&this->field_0x4,iVar1 * 8);
+    iVar3 = _realloc(*(undefined4 *)&this->field_0x4,iVar1 * 8);
     if (iVar3 == 0) {
-      uVar4 = ReallocateHeapBlockWithAllocatorTracking(*(undefined4 *)&this->field_0x4,iVar1 * 4);
+      uVar4 = _realloc(*(undefined4 *)&this->field_0x4,iVar1 * 4);
       *(undefined4 *)&this->field_0x4 = uVar4;
       *(int *)&this->field_0x8 = iVar1;
     }
@@ -324,9 +324,9 @@ void TZone::AppendZonePointerToSecondaryArray(undefined4 param_1)
     if (0x7fffffff < uVar5) {
       uVar5 = 0x7fffffff;
     }
-    iVar3 = ReallocateHeapBlockWithAllocatorTracking(*(undefined4 *)&this->field_0x4,iVar1 * 8);
+    iVar3 = _realloc(*(undefined4 *)&this->field_0x4,iVar1 * 8);
     if (iVar3 == 0) {
-      uVar4 = ReallocateHeapBlockWithAllocatorTracking(*(undefined4 *)&this->field_0x4,iVar1 * 4);
+      uVar4 = _realloc(*(undefined4 *)&this->field_0x4,iVar1 * 4);
       *(undefined4 *)&this->field_0x4 = uVar4;
       *(int *)&this->field_0x8 = iVar1;
     }
@@ -450,11 +450,9 @@ void TZone::ReadFrom(int *param_1)
           if (0x7fffffff < uStack_3c) {
             uStack_3c = 0x7fffffff;
           }
-          iVar1 = ReallocateHeapBlockWithAllocatorTracking
-                            (*(undefined4 *)&this->field_0x28,iVar8 * 8);
+          iVar1 = _realloc(*(undefined4 *)&this->field_0x28,iVar8 * 8);
           if (iVar1 == 0) {
-            uVar2 = ReallocateHeapBlockWithAllocatorTracking
-                              (*(undefined4 *)&this->field_0x28,iVar8 * 4);
+            uVar2 = _realloc(*(undefined4 *)&this->field_0x28,iVar8 * 4);
             *(undefined4 *)&this->field_0x28 = uVar2;
             *(int *)&this->field_0x2c = iVar8;
           }
@@ -484,11 +482,9 @@ void TZone::ReadFrom(int *param_1)
           if (0x7fffffff < uVar4) {
             uVar4 = 0x7fffffff;
           }
-          iVar3 = ReallocateHeapBlockWithAllocatorTracking
-                            (*(undefined4 *)&this->field_0x38,iVar8 * 8);
+          iVar3 = _realloc(*(undefined4 *)&this->field_0x38,iVar8 * 8);
           if (iVar3 == 0) {
-            uVar2 = ReallocateHeapBlockWithAllocatorTracking
-                              (*(undefined4 *)&this->field_0x38,iVar8 * 4);
+            uVar2 = _realloc(*(undefined4 *)&this->field_0x38,iVar8 * 4);
             *(undefined4 *)&this->field_0x38 = uVar2;
             *(int *)&this->field_0x3c = iVar8;
           }
@@ -597,7 +593,7 @@ void TZone::GenerateMapActionContextDisplayNameAndHeadline(int param_1, CString 
       }
     }
     if (iVar1 == -1) {
-      if (g_pLocalizationTable->field_0x68 == '\0') {
+      if (g_pSimMgr->field_0x68 == '\0') {
         func_0x00403a76(&this->field_0x8);
       }
       else {
@@ -613,7 +609,7 @@ void TZone::GenerateMapActionContextDisplayNameAndHeadline(int param_1, CString 
         }
         CString::CString(&param_2);
         uStack_4 = 1;
-        (*g_pLocalizationTable->vftable[0x10].slot_0x04)
+        (*g_pSimMgr->vftable[0x10].slot_0x04)
                   (0x275b,CONCAT22((short)((uint)&param_2 >> 0x10),(undefined2)DAT_006984b8),
                    &param_2);
         CString::operator=((CString *)&this->field_0x8,&param_2);
@@ -638,12 +634,12 @@ void TZone::GenerateMapActionContextDisplayNameAndHeadline(int param_1, CString 
   }
   CString::CString(&CStack_20);
   uStack_4 = 2;
-  (*g_pLocalizationTable->vftable[0x10].slot_0x04)
+  (*g_pSimMgr->vftable[0x10].slot_0x04)
             (0x275a,CONCAT22((short)((uint)&CStack_20 >> 0x10),*(undefined2 *)&this->field_0x4),
              &CStack_20);
   CString::CString(&CStack_8);
   uStack_10._0_1_ = 3;
-  func_0x0040988b(g_pLocalizationTable,&CStack_8,unaff_ESI,*(undefined4 *)&this->field_0x8);
+  func_0x0040988b(g_pSimMgr,&CStack_8,unaff_ESI,*(undefined4 *)&this->field_0x8);
   CString::operator=((CString *)&this->field_0x8,&CStack_8);
   uStack_10 = CONCAT31(uStack_10._1_3_,2);
   CString::~CString(&CStack_8);
@@ -1091,10 +1087,10 @@ void TZone::RefreshTPortZoneDisplayNameFromLocalization()
   CString::CString(&local_14);
   CStack_20.m_pchData = (char *)&local_10;
   local_4 = CONCAT31(local_4._1_3_,1);
-  (*g_pLocalizationTable->vftable[0x10].slot_0x04)
+  (*g_pSimMgr->vftable[0x10].slot_0x04)
             (0x275a,CONCAT22((short)((uint)CStack_20.m_pchData >> 0x10),
                              *(undefined2 *)&this->field_0x4));
-  func_0x0040988b(g_pLocalizationTable,&CStack_20,unaff_EDI,*(undefined4 *)(iVar2 + 0xa4));
+  func_0x0040988b(g_pSimMgr,&CStack_20,unaff_EDI,*(undefined4 *)(iVar2 + 0xa4));
   CString::operator=((CString *)&this->field_0x8,&CStack_20);
   local_10.m_pchData = local_10.m_pchData & 0xffffff00;
   CString::~CString(&CStack_20);
@@ -1258,7 +1254,7 @@ short __fastcall TZone::FindNearestValidPortZoneOrCityContextTile(int param_1)
       }
 LAB_00561f55:
       if (*(int *)(param_1 + 0x2c) == 0) {
-        iVar6 = ReallocateHeapBlockWithAllocatorTracking(*(undefined4 *)(param_1 + 0x28),8);
+        iVar6 = _realloc(*(undefined4 *)(param_1 + 0x28),8);
         if (iVar6 == 0) {
           func_0x004041c9(1);
         }

@@ -389,10 +389,10 @@ void TDisplayMgr::LoadMainViewClipSnapshotIntoQuickDrawState(undefined2 param_1)
     func_0x004021c1();
     uStack_4 = 0;
     func_0x0040232e(uStack_34);
-    GetActiveQuickDrawSurfaceContextAndFlags(&uStack_30,&uStack_38);
-    SetActiveQuickDrawSurfaceContext(g_pPrimaryRenderSurfaceContext,uStack_38);
-    uVar2 = GetSurfaceObjectAtContextOffset24(g_pPrimaryRenderSurfaceContext);
-    ReturnConstantTrueQuickDrawFlag(uVar2);
+    func_0x00408d64(&uStack_30,&uStack_38);
+    func_0x00406f5f(g_pPrimaryRenderSurfaceContext,uStack_38);
+    uVar2 = func_0x0040520e(g_pPrimaryRenderSurfaceContext);
+    func_0x0040761c(uVar2);
     piVar3 = (int *)(**(code **)(**(int **)&this->field_0x4 + 0x94))(0x6d61696e);
     if (piVar3 == (int *)0x0) {
       MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
@@ -405,11 +405,11 @@ void TDisplayMgr::LoadMainViewClipSnapshotIntoQuickDrawState(undefined2 param_1)
     uStack_1c = uStack_2c;
     uStack_18 = uStack_28;
     func_0x00409a11((short)piVar3[0xb],(short)piVar3[0xc]);
-    ApplyRectClipRegionToGlobalClipState(&uStack_24);
+    func_0x004030e9(&uStack_24);
     (**(code **)(iVar1 + 0x110))(&uStack_34);
-    uVar2 = GetSurfaceObjectAtContextOffset24(g_pPrimaryRenderSurfaceContext);
-    NoOpQuickDrawLifecycleHookB(uVar2);
-    SetActiveQuickDrawSurfaceContext(unaff_EBX,unaff_ESI);
+    uVar2 = func_0x0040520e(g_pPrimaryRenderSurfaceContext);
+    func_0x004024fa(uVar2);
+    func_0x00406f5f(unaff_EBX,unaff_ESI);
     func_0x00405be1(unaff_EDI);
     *(undefined2 *)&this->field_0x1c = puStack_8._0_2_;
     uStack_10 = 0xffffffff;

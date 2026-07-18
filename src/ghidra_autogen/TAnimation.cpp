@@ -167,13 +167,13 @@ void TAnimation::RenderBattleReportViewSurfaceSpriteWithResourceHandle()
   
   local_28 = 0;
   uVar5 = *(undefined4 *)&g_pUiAnimator->field_0x20;
-  GetActiveQuickDrawSurfaceContextAndFlags(&local_24,&local_28);
+  func_0x00408d64(&local_24,&local_28);
   piVar3 = (int *)func_0x004047a0(*(short *)&this->field_0x8 + *(short *)&this->field_0xc);
   func_0x004062d5(piVar3);
   if (*piVar3 != 0) {
-    SetActiveQuickDrawSurfaceContext(uVar5,local_28);
-    uVar4 = GetSurfaceObjectAtContextOffset24(uVar5);
-    ReturnConstantTrueQuickDrawFlag(uVar4);
+    func_0x00406f5f(uVar5,local_28);
+    uVar4 = func_0x0040520e(uVar5);
+    func_0x0040761c(uVar4);
     puVar1 = (undefined4 *)*piVar3;
     (**(code **)*puVar1)();
     *(byte *)(puVar1 + 1) = *(byte *)(puVar1 + 1) | 1;
@@ -194,9 +194,9 @@ void TAnimation::RenderBattleReportViewSurfaceSpriteWithResourceHandle()
       operator_delete(puVar1);
     }
     operator_delete(piVar3);
-    uVar5 = GetSurfaceObjectAtContextOffset24(uVar5);
-    NoOpQuickDrawLifecycleHookB(uVar5);
-    SetActiveQuickDrawSurfaceContext(local_24,local_28);
+    uVar5 = func_0x0040520e(uVar5);
+    func_0x004024fa(uVar5);
+    func_0x00406f5f(local_24,local_28);
   }
   return;
 }

@@ -112,16 +112,16 @@ void TTradeOfferNationView::ApplyRectSlot110()
   uStack_c = CONCAT31(uStack_c._1_3_,3);
   CString::~CString(&local_38);
   if (sVar3 == 1) {
-    (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
-    func_0x0040988b(g_pLocalizationTable);
+    (*g_pSimMgr->vftable[0x10].slot_0x04)();
+    func_0x0040988b(g_pSimMgr);
   }
   else {
-    _Format_CString__QAAXPBDZZ();
-    (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
-    func_0x0040988b(g_pLocalizationTable,&stack0xffffffb4);
+    CString__Format();
+    (*g_pSimMgr->vftable[0x10].slot_0x04)();
+    func_0x0040988b(g_pSimMgr,&stack0xffffffb4);
   }
   func_0x0040448f();
-  SetQuickDrawTextOriginWithContextOffset();
+  func_0x00408d6e();
   func_0x004029aa();
   uVar2 = (*g_pNationInteractionStateManager->vftable[0x10].GetTTradeMgrClassNamePointer)();
   func_0x004010be();

@@ -136,17 +136,15 @@ void TCityProductionView::RenderNationHeaderDateLabelWithPeriodicRefresh()
   }
   func_0x004088aa();
   (**(code **)(g_pUiRuntimeContext->vftable + 0x34))(1);
-  SetQuickDrawTextOriginWithContextOffset(iVar4,sVar3);
+  func_0x00408d6e(iVar4,sVar3);
   iVar6 = *(short *)&this->field_0xa8 * 2;
-  DrawCenteredGuideLineOnMapDc
-            (*(short *)(&g_Render_Nation_Header_Value_006961E0 + iVar6) + (short)iVar4,
-             *(short *)(&g_Render_Nation_Header_Value_006961F8 + iVar6) + sVar3);
+  func_0x00403bb6(*(short *)(&g_Render_Nation_Header_Value_006961E0 + iVar6) + (short)iVar4,
+                  *(short *)(&g_Render_Nation_Header_Value_006961F8 + iVar6) + sVar3);
   func_0x00406b86(0);
-  SetQuickDrawTextOriginWithContextOffset(iVar4,sVar3);
+  func_0x00408d6e(iVar4,sVar3);
   iVar6 = *(short *)&this->field_0xaa * 2;
-  DrawCenteredGuideLineOnMapDc
-            (*(short *)(&g_Render_Nation_Header_Value_00696210 + iVar6) + (short)iVar4,
-             *(short *)(&g_Render_Nation_Header_Value_00696228 + iVar6) + sVar3);
+  func_0x00403bb6(*(short *)(&g_Render_Nation_Header_Value_00696210 + iVar6) + (short)iVar4,
+                  *(short *)(&g_Render_Nation_Header_Value_00696228 + iVar6) + sVar3);
   return;
 }
 
@@ -200,7 +198,7 @@ LAB_004bc6b8:
     }
   }
   else if (*(int *)(&this->field_0xac + (int)puVar8 * 4) == 0) {
-    iVar7 = GetCityBuildingProductionValueBySlot(this->pCity,(short)puVar8);
+    iVar7 = TCity::GetBuildingType(this->pCity,(short)puVar8);
     uVar6 = extraout_var;
     if (((short)iVar7 == 0) &&
        (cVar2 = (*this->pCity->vftable->IsBasicResourceSlot78)(puVar8), uVar6 = extraout_var_00,
@@ -265,12 +263,12 @@ void TCityProductionView::RenderViewIntoPrimaryRenderContextWithTemporaryClip()
   uStack_18 = uStack_28;
   uStack_14 = uStack_24;
   func_0x0040232e(0);
-  GetActiveQuickDrawSurfaceContextAndFlags(local_34,&stack0xffffffc4);
-  SetActiveQuickDrawSurfaceContext(g_pPrimaryRenderSurfaceContext,unaff_ESI);
-  ApplyRectClipRegionToGlobalClipState(&uStack_20);
+  func_0x00408d64(local_34,&stack0xffffffc4);
+  func_0x00406f5f(g_pPrimaryRenderSurfaceContext,unaff_ESI);
+  func_0x004030e9(&uStack_20);
   this->field_0xa6 = 1;
   (*pTVar1[0x22].GetTEventHandlerClassNamePointer)(&uStack_30);
-  SetActiveQuickDrawSurfaceContext(0,unaff_EDI);
+  func_0x00406f5f(0,unaff_EDI);
   func_0x00405be1(unaff_ESI);
   uStack_c = 0xffffffff;
   func_0x00409aac();

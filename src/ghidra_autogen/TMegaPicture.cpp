@@ -112,7 +112,7 @@ void TMegaPicture::ApplyRectSlot110(LONG *param_1)
     else {
       if ((*(ushort *)&this->field_0x98 & 1) == 0) {
         func_0x00406b86(0xffffff);
-        FillRectWithQuickDrawBrushAndContextOffset(auStack_18);
+        func_0x00406546(auStack_18);
       }
       local_28 = *(LONG *)&this->field_0x9c;
       local_24 = *(LONG *)&this->field_0xa0;

@@ -166,3 +166,4 @@ address|name|prototype
 0x00557080|TNavyMgr::MoveMapOrderEntryToQueueHeadIfValid|unsigned char __thiscall MoveMapOrderEntryToQueueHeadIfValid(TTaskForce* entry)
 0x00554660|TTaskForce::RequeueMapOrderEntry|void __thiscall RequeueMapOrderEntry()
 0x00564600|TOcean::EnsureSelectedTaskForceForOrderOwnerAndRefresh|TTaskForce* __thiscall EnsureSelectedTaskForceForOrderOwnerAndRefresh(TZone* zone)
+0x00556410|TTaskForce::UpdateNavyOrderMapMarkerByOrderType|void __thiscall UpdateNavyOrderMapMarkerByOrderType()

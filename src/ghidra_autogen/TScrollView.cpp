@@ -148,11 +148,11 @@ TScrollView::PaintVisibleChildrenIntersectingClipRect
         (*pTVar1->VTableSlot57)(&RStack_20.top);
         puStack_8 = (undefined1 *)0x0;
         pHVar4 = CreateRectRgnIndirect(&RStack_20);
-        CBrush::AttachRegionHandleToClipStateAndRegister((CBrush *)&stack0xffffffd8,(int)pHVar4);
+        CBrush::CGdiObject__Attach((CBrush *)&stack0xffffffd8,(int)pHVar4);
         CDC::SelectClipRgn(param_1,(int)&stack0xffffffd8);
-        DeleteObject();
+        CGdiObject__DeleteObject();
         puStack_8 = (undefined1 *)0x1;
-        DeleteObject();
+        CGdiObject__DeleteObject();
         puStack_8 = (undefined1 *)0x2;
         func_0x00406ef1(unaff_retaddr,param_1);
         uStack_4 = 0xffffffff;

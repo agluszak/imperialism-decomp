@@ -10,7 +10,7 @@
 undefined4 * __fastcall CTestCmdUI::CTestCmdUI(undefined4 *param_1)
 
 {
-  CCmdUI(param_1);
+  CCmdUI__CCmdUI(param_1);
   *param_1 = &PTR_LAB_00670c34;
   param_1[10] = 1;
   return param_1;

@@ -41,7 +41,7 @@ void TDiplomacyMapView::FrameRegionOnHdcAndReleaseBrushState(int *param_1)
              (HBRUSH)(-(uint)(&stack0x00000000 != (undefined1 *)0x14) & local_10),1,1);
   }
   local_4 = 1;
-  DeleteObject();
+  CGdiObject__DeleteObject();
   *unaff_FS_OFFSET = local_c;
   return;
 }
@@ -168,9 +168,9 @@ void TDiplomacyMapView::AppendPackedColorDwordToMaskBuffers(uint param_1)
     if (0x7fffffff < uVar4) {
       in_stack_00000008 = 0x7fffffff;
     }
-    iVar7 = ReallocateHeapBlockWithAllocatorTracking(this->field04,uVar4);
+    iVar7 = _realloc(this->field04,uVar4);
     if (iVar7 == 0) {
-      iVar7 = ReallocateHeapBlockWithAllocatorTracking(this->field04,iVar1);
+      iVar7 = _realloc(this->field04,iVar1);
       this->field04 = iVar7;
       this->padding_08_to_0b = iVar1;
     }
@@ -327,7 +327,7 @@ void TDiplomacyMapView::NoOpUiLifecycleHook()
   func_0x004040ac();
   func_0x00401b40(PTR_g_szEmptyString_00654ec8);
   func_0x00404d22();
-  if (*(short *)&g_pLocalizationTable->field_0x8 == 6) {
+  if (*(short *)&g_pSimMgr->field_0x8 == 6) {
     pTVar1 = this->vftable;
     pTVar2 = pTVar1[3].slot_0x1c;
     uVar3 = (*pTVar2)(0x656e6420);
@@ -516,7 +516,7 @@ void TDiplomacyMapView::BuildDiplomacyNationOverlayGeometryAndHitMasks()
         iStack_b8 = iVar18;
         iStack_b0 = iVar12;
         func_0x00404b97(&CStack_c0);
-        sVar5 = MeasureTextExtentWithCachedQuickDrawStyle(&ppTStack_c4);
+        sVar5 = func_0x00405b7d(&ppTStack_c4);
         piVar19 = piStack_b4;
         pLVar16 = pLStack_d0;
         iVar18 = iVar18 + -6;
@@ -1117,12 +1117,15 @@ void TDiplomacyMapView::RenderDiplomacyLegendSurfaceAndPresent()
 
 {
   TDiplomacyMapViewVtbl *pTVar1;
+  undefined4 uVar2;
   undefined2 extraout_var;
   undefined4 *unaff_EBX;
-  TCountry **ppTVar2;
-  undefined4 *unaff_ESI;
-  undefined4 *puVar3;
-  int iVar4;
+  TCountry **ppTVar3;
+  undefined4 unaff_EBP;
+  undefined4 unaff_ESI;
+  undefined4 *puVar4;
+  int iVar5;
+  undefined4 *unaff_EDI;
   undefined4 *unaff_FS_OFFSET;
   undefined4 *unaff_retaddr;
   undefined4 *puStack_64;
@@ -1150,7 +1153,7 @@ void TDiplomacyMapView::RenderDiplomacyLegendSurfaceAndPresent()
   func_0x004021c1();
   pTVar1 = this->vftable;
   puStack_58 = local_1c;
-  puVar3 = (undefined4 *)0x0;
+  puVar4 = (undefined4 *)0x0;
   local_4 = (undefined1 *)0x0;
   puStack_5c = (undefined4 *)0x4f61ac;
   (*pTVar1[7].SelectCandidateTilesWithLowGroundUnitCount)();
@@ -1160,60 +1163,56 @@ void TDiplomacyMapView::RenderDiplomacyLegendSurfaceAndPresent()
     puStack_5c = &uStack_44;
     puStack_60 = (undefined4 *)&stack0xffffffb8;
     puStack_64 = (undefined4 *)0x4f61da;
-    GetActiveQuickDrawSurfaceContextAndFlags();
+    func_0x00408d64();
     puStack_5c = (undefined4 *)uStack_44;
     puStack_60 = g_pPrimaryRenderSurfaceContext;
     puStack_64 = (undefined4 *)0x4f61ed;
-    SetActiveQuickDrawSurfaceContext();
+    func_0x00406f5f();
     if (unaff_EBX != g_pPrimaryRenderSurfaceContext) {
       puStack_5c = g_pPrimaryRenderSurfaceContext;
       puStack_60 = (undefined4 *)0x4f6203;
-      puStack_5c = (undefined4 *)GetSurfaceObjectAtContextOffset24();
+      puStack_5c = (undefined4 *)func_0x0040520e();
       puStack_60 = (undefined4 *)0x4f620c;
-      ReturnConstantTrueQuickDrawFlag();
+      func_0x0040761c();
     }
     puStack_60 = (undefined4 *)0x4f621b;
     func_0x00404fe8();
-    ppTVar2 = g_apTerrainTypeDescriptorTable;
+    ppTVar3 = g_apTerrainTypeDescriptorTable;
     do {
-      if (*ppTVar2 != (TCountry *)0x0) {
-        puStack_60 = puVar3 + 0x96;
-        puStack_64 = puVar3;
+      if (*ppTVar3 != (TCountry *)0x0) {
+        puStack_60 = puVar4 + 0x96;
+        puStack_64 = puVar4;
         (*pTVar1[0xc].GetTEventHandlerClassNamePointer)();
       }
-      puVar3 = (undefined4 *)((int)puVar3 + 1);
-      ppTVar2 = ppTVar2 + 1;
-    } while ((short)puVar3 < 7);
+      puVar4 = (undefined4 *)((int)puVar4 + 1);
+      ppTVar3 = ppTVar3 + 1;
+    } while ((short)puVar4 < 7);
     puStack_60 = (undefined4 *)0x3f;
     puStack_64 = (undefined4 *)0x4f624c;
     (**(code **)(g_pUiRuntimeContext->vftable + 0x34))();
-    iVar4 = 7;
-    ppTVar2 = g_apTerrainTypeDescriptorTable + 7;
+    iVar5 = 7;
+    ppTVar3 = g_apTerrainTypeDescriptorTable + 7;
     do {
-      if (*ppTVar2 != (TCountry *)0x0) {
+      if (*ppTVar3 != (TCountry *)0x0) {
         puStack_64 = (undefined4 *)0x2bb;
-        (*pTVar1[0xc].GetTEventHandlerClassNamePointer)(iVar4);
+        (*pTVar1[0xc].GetTEventHandlerClassNamePointer)(iVar5);
       }
-      iVar4 = iVar4 + 1;
-      ppTVar2 = ppTVar2 + 1;
-    } while ((short)iVar4 < 0x17);
+      iVar5 = iVar5 + 1;
+      ppTVar3 = ppTVar3 + 1;
+    } while ((short)iVar5 < 0x17);
     puStack_3c = (undefined1 *)&puStack_64;
     puStack_64 = (undefined4 *)0x0;
     func_0x00406b86();
     unaff_retaddr = puStack_8;
     puStack_64 = puStack_8;
-    RenderTerrainAndMinorNationLegendLabels();
-    if (unaff_ESI != g_pPrimaryRenderSurfaceContext) {
-      puStack_64 = g_pPrimaryRenderSurfaceContext;
-      puStack_64 = (undefined4 *)GetSurfaceObjectAtContextOffset24();
-      NoOpQuickDrawLifecycleHookB();
+    func_0x00405e16();
+    if (unaff_EDI != g_pPrimaryRenderSurfaceContext) {
+      uVar2 = func_0x0040520e(g_pPrimaryRenderSurfaceContext);
+      func_0x004024fa(uVar2);
     }
-    SetActiveQuickDrawSurfaceContext(unaff_ESI);
-    puStack_64 = unaff_EBX;
-    func_0x00409444();
-    puStack_5c = (undefined4 *)puStack_3c;
-    puStack_60 = (undefined4 *)0x4f62dc;
-    SetGlobalBlitTransparentColorRaw();
+    func_0x00406f5f(unaff_EDI,unaff_ESI);
+    func_0x00409444(unaff_EBP);
+    func_0x004069e2(unaff_EBX);
     *(undefined4 *)&this->field_0x524 = 0;
   }
   if (g_pPrimaryRenderSurfaceContext + 1 !=
@@ -1262,10 +1261,11 @@ TDiplomacyMapView::RebuildDiplomacyLegendPaletteMode4AndBlit
   undefined4 uVar4;
   undefined3 extraout_var;
   undefined4 extraout_ECX;
+  undefined4 unaff_EBP;
   int iVar5;
   undefined4 local_24;
   TDiplomacyMapView *local_20;
-  undefined4 local_1c;
+  undefined1 local_1c [4];
   undefined4 local_18;
   undefined4 local_14;
   LONG local_10;
@@ -1279,10 +1279,10 @@ TDiplomacyMapView::RebuildDiplomacyLegendPaletteMode4AndBlit
   local_4 = param_2[3];
   local_20 = this;
   if (*(int *)&this->field_0x524 != 4) {
-    GetActiveQuickDrawSurfaceContextAndFlags(&local_1c,&local_24);
-    SetActiveQuickDrawSurfaceContext(g_pPrimaryRenderSurfaceContext,local_24);
-    uVar4 = GetSurfaceObjectAtContextOffset24(g_pPrimaryRenderSurfaceContext);
-    ReturnConstantTrueQuickDrawFlag(uVar4);
+    func_0x00408d64(local_1c,&local_24);
+    func_0x00406f5f(g_pPrimaryRenderSurfaceContext,local_24);
+    uVar4 = func_0x0040520e(g_pPrimaryRenderSurfaceContext);
+    func_0x0040761c(uVar4);
     iVar5 = 0;
     do {
       if ((short)iVar5 == (short)param_1) {
@@ -1297,18 +1297,17 @@ TDiplomacyMapView::RebuildDiplomacyLegendPaletteMode4AndBlit
       local_18 = 0;
       local_14 = 0;
       sVar3 = func_0x00409205(uVar4,&local_18,1);
-      uVar4 = extraout_ECX;
-      SetUiResourceContextTagWord((int)sVar3);
-      func_0x00409561(&g_pActiveQuickDrawSurfaceContext->field_0x4,uVar4);
+      func_0x00402aa4((int)sVar3,extraout_ECX);
+      func_0x00409561(&g_pActiveQuickDrawSurfaceContext->field_0x4);
       uVar4 = func_0x00409205(0x3f);
       func_0x00404a25(*(undefined4 *)&g_pActiveQuickDrawSurfaceContext->field_0x4,uVar4);
       pTVar1 = local_20;
       iVar5 = iVar5 + 1;
     } while ((short)iVar5 < 0x17);
-    RenderTerrainAndMinorNationLegendLabels(param_2);
-    uVar4 = GetSurfaceObjectAtContextOffset24(g_pPrimaryRenderSurfaceContext);
-    NoOpQuickDrawLifecycleHookB(uVar4);
-    SetActiveQuickDrawSurfaceContext(local_1c,local_24);
+    func_0x00405e16(param_2);
+    uVar4 = func_0x0040520e(g_pPrimaryRenderSurfaceContext);
+    func_0x004024fa(uVar4);
+    func_0x00406f5f(local_20,unaff_EBP);
     *(undefined4 *)&pTVar1->field_0x524 = 4;
   }
   func_0x00405493(g_pPrimaryRenderSurfaceContext + 4,&g_pActiveQuickDrawSurfaceContext->field_0x4,
@@ -1414,7 +1413,7 @@ void TDiplomacyMapView::RebuildDiplomacyLegendPaletteMode1AndBlit(LONG *param_1)
   TCountry **local_44;
   undefined4 local_40;
   TDiplomacyMapView *local_3c;
-  undefined4 local_38 [2];
+  undefined1 local_38 [8];
   CString local_30;
   CString local_2c;
   CString local_28 [3];
@@ -1445,10 +1444,10 @@ void TDiplomacyMapView::RebuildDiplomacyLegendPaletteMode1AndBlit(LONG *param_1)
   local_14 = in_stack_00000008[2];
   local_10 = in_stack_00000008[3];
   if (*(int *)&this->field_0x524 != 1) {
-    GetActiveQuickDrawSurfaceContextAndFlags(local_38,&local_40);
-    SetActiveQuickDrawSurfaceContext(g_pPrimaryRenderSurfaceContext,local_40);
-    uVar4 = GetSurfaceObjectAtContextOffset24(g_pPrimaryRenderSurfaceContext);
-    ReturnConstantTrueQuickDrawFlag(uVar4);
+    func_0x00408d64(local_38,&local_40);
+    func_0x00406f5f(g_pPrimaryRenderSurfaceContext,local_40);
+    uVar4 = func_0x0040520e(g_pPrimaryRenderSurfaceContext);
+    func_0x0040761c(uVar4);
     iVar5 = 0;
     local_44 = g_apTerrainTypeDescriptorTable;
     do {
@@ -1458,9 +1457,8 @@ void TDiplomacyMapView::RebuildDiplomacyLegendPaletteMode1AndBlit(LONG *param_1)
         local_2c.m_pchData = (char *)0x0;
         local_28[0].m_pchData = (char *)0x0;
         sVar3 = func_0x00409205(CONCAT31(extraout_var,uVar2) + 200,&local_2c,1);
-        uVar4 = extraout_ECX;
-        SetUiResourceContextTagWord((int)sVar3);
-        func_0x00409561(&g_pActiveQuickDrawSurfaceContext->field_0x4,uVar4);
+        func_0x00402aa4((int)sVar3,extraout_ECX);
+        func_0x00409561(&g_pActiveQuickDrawSurfaceContext->field_0x4);
         uVar4 = func_0x00409205(0x3f);
         func_0x00404a25(*(undefined4 *)&g_pActiveQuickDrawSurfaceContext->field_0x4,uVar4);
       }
@@ -1468,11 +1466,11 @@ void TDiplomacyMapView::RebuildDiplomacyLegendPaletteMode1AndBlit(LONG *param_1)
       iVar5 = iVar5 + 1;
       local_44 = local_44 + 1;
     } while ((short)iVar5 < 0x17);
-    RenderTerrainAndMinorNationLegendLabels(in_stack_00000008);
+    func_0x00405e16(in_stack_00000008);
     *(undefined4 *)&pTVar1->field_0x524 = 1;
-    uVar4 = GetSurfaceObjectAtContextOffset24(g_pPrimaryRenderSurfaceContext);
-    NoOpQuickDrawLifecycleHookB(uVar4);
-    SetActiveQuickDrawSurfaceContext(local_38[0],local_40);
+    uVar4 = func_0x0040520e(g_pPrimaryRenderSurfaceContext);
+    func_0x004024fa(uVar4);
+    func_0x00406f5f(local_3c,local_44);
   }
   func_0x00405493(g_pPrimaryRenderSurfaceContext + 4,&g_pActiveQuickDrawSurfaceContext->field_0x4,
                   &local_1c,&local_1c,0,0);
@@ -1506,9 +1504,8 @@ TDiplomacyMapView::BuildTurnEventMonochromeMaskBuffers
   local_8 = 0;
   local_4 = 0;
   sVar1 = func_0x00409205(param_2,&local_8,1);
-  uVar2 = extraout_ECX;
-  SetUiResourceContextTagWord((int)sVar1);
-  func_0x00409561(&g_pActiveQuickDrawSurfaceContext->field_0x4,uVar2);
+  func_0x00402aa4((int)sVar1,extraout_ECX);
+  func_0x00409561(&g_pActiveQuickDrawSurfaceContext->field_0x4);
   uVar2 = func_0x00409205(0x3f);
   func_0x00404a25(*(undefined4 *)&g_pActiveQuickDrawSurfaceContext->field_0x4,uVar2);
   return;
@@ -1714,9 +1711,9 @@ void TDiplomacyMapView::RenderDiplomacyPendingPolicyIconsAndFrames()
       }
       func_0x00405c27(&local_28);
       func_0x00406b86(0);
-      SetQuickDrawTextOriginWithContextOffset(local_24.bottom,local_24.right);
-      DrawCenteredGuideLineOnMapDc(local_24.bottom,aiStack_14[0]);
-      DrawCenteredGuideLineOnMapDc(local_24.top,aiStack_14[0]);
+      func_0x00408d6e(local_24.top,local_24.left);
+      func_0x00403bb6(local_24.top,local_24.right);
+      func_0x00403bb6(local_28,local_24.right);
       pTVar4 = g_pDiplomacyTurnStateManager;
     }
     local_24.left = local_24.left + 2;

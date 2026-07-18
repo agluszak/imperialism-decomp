@@ -86,7 +86,7 @@ TControl * TControl::InitializeDialogTemplateFAWithTextState()
   puStack_8 = &LAB_0062e2f8;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  InitializeDialogTemplateFromId(this,0xfa,in_stack_00000004);
+  CDialog__CDialog(this,0xfa,in_stack_00000004);
   this->vftable = (TControlVtbl *)&PTR_LAB_0063e5a0;
   *(undefined4 *)&this->field_0x5c = 0;
   this->hasCommandTagResource = 0;
@@ -119,7 +119,7 @@ TControl * TControl::InitializeDialogTemplateADWithTextState()
   puStack_8 = &LAB_0062e448;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  InitializeDialogTemplateFromId(this,0xad,in_stack_00000004);
+  CDialog__CDialog(this,0xad,in_stack_00000004);
   this->vftable = (TControlVtbl *)&PTR_LAB_0063e5a0;
   *(undefined4 *)&this->field_0x5c = 0;
   this->hasCommandTagResource = 0;
@@ -152,7 +152,7 @@ TControl * TControl::InitializeDialogTemplate104WithRegionState()
   puStack_8 = &LAB_0062e548;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  InitializeDialogTemplateFromId(this,0x104,in_stack_00000004);
+  CDialog__CDialog(this,0x104,in_stack_00000004);
   this->vftable = (TControlVtbl *)&PTR_LAB_0063e5a0;
   *(undefined4 *)&this->field_0x5c = 0;
   this->hasCommandTagResource = 0;
@@ -185,7 +185,7 @@ TControl * TControl::InitializeDialogTemplateA7WithSharedText()
   puStack_8 = &LAB_0062e633;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  InitializeDialogTemplateFromId(this,0xa7,in_stack_00000004);
+  CDialog__CDialog(this,0xa7,in_stack_00000004);
   local_4 = 0;
   CString::CString((CString *)&this->field_0x5c);
   local_4 = CONCAT31(local_4._1_3_,1);
@@ -212,7 +212,7 @@ TControl::InitializeDialogTemplateABWithDualTextState(TControl *param_1,undefine
   puStack_8 = &LAB_0062e68e;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  InitializeDialogTemplateFromId(param_1,0xab,param_2);
+  CDialog__CDialog(param_1,0xab,param_2);
   local_4 = 0;
   CString::CString((CString *)&param_1->field_0x5c);
   local_4._0_1_ = 1;
@@ -242,7 +242,7 @@ TControl::InitializeDialogTemplateAEWithDualTextState(TControl *param_1,undefine
   puStack_8 = &LAB_0062e6fe;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  InitializeDialogTemplateFromId(param_1,0xae,param_2);
+  CDialog__CDialog(param_1,0xae,param_2);
   local_4 = 0;
   CString::CString((CString *)&param_1->field_0x5c);
   local_4._0_1_ = 1;
@@ -272,7 +272,7 @@ TControl * TControl::InitializeDialogTemplateB1WithSharedText()
   puStack_8 = &LAB_0062e763;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  InitializeDialogTemplateFromId(this,0xb1,in_stack_00000004);
+  CDialog__CDialog(this,0xb1,in_stack_00000004);
   local_4 = 0;
   CString::CString((CString *)&this->field_0x5c);
   local_4 = CONCAT31(local_4._1_3_,1);
@@ -481,7 +481,7 @@ void TControl::BeginMouseCaptureAndStartRepeatTimer(undefined4 *param_1)
   uVar2 = param_1[1];
   g_McAppUiMouseCaptureControl_006A1A80 = this;
   pHVar3 = SetCapture(*(HWND *)(*(int *)&this->field_0x50 + 0x1c));
-  FromHandle(pHVar3);
+  CWnd__FromHandle(pHVar3);
   _g_McAppUiMouseCaptureStartPoint_006A1A68 = uVar1;
   _DAT_006a1a6c = uVar2;
   _g_McAppUiMouseCaptureLastPoint_006A1A70 = uVar1;
@@ -679,7 +679,7 @@ void TControl::DeserializeCityProductionQueueCommand(TTEView *param_1)
 
 {
   (*this->vftable->OrphanCallChain_C11_I88_004874b0_4a)(param_1);
-  TTEView::DeflateRect(param_1,&this->field68);
+  TTEView::CRect__DeflateRect(param_1,&this->field68);
   return;
 }
 
@@ -749,13 +749,13 @@ undefined4 TControl::FinalizeModalDialogAndRestoreOwnerFocus()
   if (this->hasCommandTagResource != 0) {
     if ((this->field_0x24 & 0x10) != 0) {
       bVar4 = 4;
-      uVar2 = GetStyle();
+      uVar2 = CWnd__GetStyle();
       if ((uVar2 & 0x100) != 0) {
         bVar4 = 5;
       }
-      TMovieView::RunModalLoop((TMovieView *)this,bVar4);
+      TMovieView::TView__RunModalLoop((TMovieView *)this,bVar4);
     }
-    SetWindowPos(0,0,0,0,0,0x97);
+    CWnd__SetWindowPos(0,0,0,0,0,0x97);
   }
   if (this->field68 != 0) {
     EnableWindow((HWND)this->field6C,1);
@@ -885,7 +885,7 @@ void TControl::QueueDiplomatTwoRandomAvailableTerrainActionsCode133()
       return;
     }
     sVar4 = sVar4 + 1;
-    uVar2 = GenerateThreadLocalRandom15();
+    uVar2 = rand();
     uVar3 = (int)uVar2 >> 0x1f;
     iVar6 = (((uVar2 ^ uVar3) - uVar3 & 0xf ^ uVar3) - uVar3) + 7;
     sVar5 = (short)iVar6;
@@ -941,7 +941,7 @@ void TControl::QueueDiplomatWeightedTerrainActionRunCode133()
   int iVar2;
   int iVar3;
   
-  iVar2 = GenerateThreadLocalRandom15();
+  iVar2 = rand();
   iVar2 = iVar2 % 100;
   if (iVar2 < 0x19) {
     iVar2 = 7;
@@ -1060,7 +1060,7 @@ void TControl::QueueTraderFourRandomTerrainActionsCode133()
       return;
     }
     sVar6 = sVar6 + 1;
-    uVar3 = GenerateThreadLocalRandom15();
+    uVar3 = rand();
     uVar5 = (int)uVar3 >> 0x1f;
     iVar4 = (((uVar3 ^ uVar5) - uVar5 & 0xf ^ uVar5) - uVar5) + 7;
     sVar2 = (short)iVar4;
@@ -1226,9 +1226,9 @@ void TControl::UpdateSelectionRect(astruct_4 *this_obj)
     CString::CString(&state_flags);
     pCStack_64 = &state_flags;
     uStack_68 = 3;
-    (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2741);
-    (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2711,this_obj,&stack0xffffffa4);
-    func_0x0040988b(g_pLocalizationTable,&pCStack_64,uStack_68,uStack_20);
+    (*g_pSimMgr->vftable[0x10].slot_0x04)(0x2741);
+    (*g_pSimMgr->vftable[0x10].slot_0x04)(0x2711,this_obj,&stack0xffffffa4);
+    func_0x0040988b(g_pSimMgr,&pCStack_64,uStack_68,uStack_20);
     (*(code *)gfx_ifc_vtbl->field450_0x1c8)(&pCStack_64,0);
     (*(code *)gfx_ifc_vtbl->field297_0x12c)(&uStack_68);
     CStack_50.m_pchData = (char *)draw_flags;
@@ -1251,8 +1251,8 @@ void TControl::UpdateSelectionRect(astruct_4 *this_obj)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x006050D0
-// GHIDRA_NAME TControl::InitializeDialogTemplateFromId
-// GHIDRA_PROTO undefined __thiscall InitializeDialogTemplateFromId(uint param_1, undefined4 param_2)
+// GHIDRA_NAME TControl::CDialog::CDialog
+// GHIDRA_PROTO undefined __thiscall CDialog::CDialog(uint param_1, undefined4 param_2)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Initializes base dialog object state from template ID and init parameter.
 // GHIDRA_COMMENT
@@ -1264,7 +1264,7 @@ void TControl::UpdateSelectionRect(astruct_4 *this_obj)
    Sets template/resource identifiers and clears per-dialog scratch fields used before
    modal/modeless creation. */
 
-TControl * TControl::InitializeDialogTemplateFromId(uint param_1, undefined4 param_2)
+TControl * TControl::CDialog__CDialog(uint param_1, undefined4 param_2)
 
 {
   CWnd::CWnd();

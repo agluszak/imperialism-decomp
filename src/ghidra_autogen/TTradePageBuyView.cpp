@@ -114,7 +114,7 @@ LAB_005bd73a:
       local_c = 0xffffffff;
       func_0x004059b6(0,0,&stack0xffffffd0,0x2741,3);
       func_0x00408bf2(1);
-      BuildUiTextStyleDescriptor(&stack0xffffffc8,4,0xc,0x2b6a);
+      func_0x00406afa(&stack0xffffffc8,4,0xc,0x2b6a);
       func_0x00408521(&stack0xffffffc8);
       (**(code **)(**(int **)&this->field_0x7c + 0x30))(uVar4);
       do {

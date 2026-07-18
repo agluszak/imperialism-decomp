@@ -275,20 +275,20 @@ void TTransportPicture::IsSelected()
   puVar14 = (undefined1 *)(int)sVar7;
   pcStack_5c = (char *)0x5922d4;
   local_3c = puVar14;
-  uVar9 = ftol();
+  uVar9 = _ftol();
   local_18 = 0xd;
   pcStack_5c = (char *)&local_1c;
   local_14 = puVar14 + 0x71;
   local_10 = 0x11;
   CStack_60.m_pchData = (char *)0x5922fd;
   local_1c = uVar9;
-  ApplyRectClipRegionToGlobalClipState();
+  func_0x004030e9();
   pcStack_5c = (char *)0x3b;
   CStack_60.m_pchData = (char *)0x59230d;
   (**(code **)(g_pUiRuntimeContext->vftable + 0x34))();
   CStack_60.m_pchData = (char *)&uStack_20;
   ppuStack_64 = (undefined1 **)0x592317;
-  FillRectWithQuickDrawBrushAndContextOffset();
+  func_0x00406546();
   puStack_2c = (undefined1 *)0xd;
   uStack_24 = 0x11;
   puStack_30 = puVar14;
@@ -312,9 +312,9 @@ LAB_00592373:
     (**(code **)(puVar12 + 0x34))();
   }
   ppuStack_64 = &puStack_34;
-  ApplyRectClipRegionToGlobalClipState();
+  func_0x004030e9();
   ppuStack_64 = &puStack_34;
-  FillRectWithQuickDrawBrushAndContextOffset();
+  func_0x00406546();
   func_0x00405be1();
   ppuStack_64 = (undefined1 **)0x0;
   local_38 = (TTransportPictureVtbl *)&ppuStack_64;
@@ -332,8 +332,8 @@ LAB_00592373:
       ppuStack_64 = (undefined1 **)0x34;
       (**(code **)(g_pUiRuntimeContext->vftable + 0x34))();
     }
-    ApplyRectClipRegionToGlobalClipState();
-    FillRectWithQuickDrawBrushAndContextOffset();
+    func_0x004030e9();
+    func_0x00406546();
     func_0x00405be1();
     local_3c = &stack0xffffff98;
     func_0x00406b86();
@@ -346,8 +346,8 @@ LAB_00592373:
     MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
     func_0x004057a4();
   }
-  _Format_CString__QAAXPBDZZ(&local_4c);
-  _Format_CString__QAAXPBDZZ(&stack0xffffffb0);
+  CString__Format(&local_4c);
+  CString__Format(&stack0xffffffb0);
   AssignSharedStringConcatRefAndCStr(&local_40);
   local_10._0_1_ = 4;
   src_ref = (CString *)AssignSharedStringConcatRefAndRef(&local_48);
@@ -369,7 +369,7 @@ LAB_00592373:
       MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
       func_0x004057a4(s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x1a63);
     }
-    pTVar13 = g_pLocalizationTable->vftable;
+    pTVar13 = g_pSimMgr->vftable;
     iVar11 = *(short *)&this->field_0x94 * 200;
   }
   else {
@@ -380,7 +380,7 @@ LAB_00592373:
       MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
       func_0x004057a4(s_D__Ambit_Cross_USmallViews_cpp_006992f0,0x1a6a);
     }
-    pTVar13 = g_pLocalizationTable->vftable;
+    pTVar13 = g_pSimMgr->vftable;
     iVar11 = *(short *)&this->field_0x94 * 500;
   }
   (*pTVar13[0xe].slot_0x04)(iVar11,&ppuStack_64);

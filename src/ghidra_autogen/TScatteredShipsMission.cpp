@@ -245,7 +245,7 @@ TScatteredShipsMission::SelectMapActionContextAndPromoteMissionOrderChain
     *(undefined1 *)(*(int *)(this + 0x24) + 0xc) = 0;
     func_0x004012f3(0);
   }
-  uVar3 = (*g_pLocalizationTable->vftable[7].slot_0x04)();
+  uVar3 = (*g_pSimMgr->vftable[7].slot_0x04)();
   iVar7 = (int)(short)CONCAT31(extraout_var,uVar3) % 0x32;
   pTVar8 = g_pMapActionContextListHead;
   if (g_pMapActionContextListHead != (TZone *)0x0) {
@@ -580,10 +580,9 @@ TScatteredShipsMission::PropagateMapActionContextDistanceLevelsRecursive
           if (0x7fffffff < uVar6) {
             local_8 = 0x7fffffff;
           }
-          iVar3 = ReallocateHeapBlockWithAllocatorTracking(*(undefined4 *)(this + 0x28),_param_1);
+          iVar3 = _realloc(*(undefined4 *)(this + 0x28),_param_1);
           if (iVar3 == 0) {
-            uVar4 = ReallocateHeapBlockWithAllocatorTracking
-                              (*(undefined4 *)(this + 0x28),uVar7 * 4 + 4);
+            uVar4 = _realloc(*(undefined4 *)(this + 0x28),uVar7 * 4 + 4);
             *(undefined4 *)(this + 0x28) = uVar4;
             *(int *)(this + 0x2c) = iVar5;
           }

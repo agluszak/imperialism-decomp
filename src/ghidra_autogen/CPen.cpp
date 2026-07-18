@@ -28,14 +28,14 @@ CBrush * CPen::CPen(void)
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
   
-  EstablishSehFrameProlog();
+  _EH_prolog();
   *(CBrush **)(unaff_EBP + -0x10) = this;
   *(undefined4 *)(this + 4) = 0;
   color = *(COLORREF *)(unaff_EBP + 0x10);
   *(undefined4 *)(unaff_EBP + -4) = 0;
   *(undefined ***)this = &PTR_LAB_0067261c;
   pHVar1 = CreatePen(*(int *)(unaff_EBP + 8),*(int *)(unaff_EBP + 0xc),color);
-  iVar2 = CBrush::AttachRegionHandleToClipStateAndRegister(this,(int)pHVar1);
+  iVar2 = CBrush::CGdiObject__Attach(this,(int)pHVar1);
   if (iVar2 == 0) {
     AfxThrowResourceException();
   }
@@ -57,7 +57,7 @@ CBrush * CPen::CPen(void)
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
   
-  EstablishSehFrameProlog();
+  _EH_prolog();
   *(CBrush **)(unaff_EBP + -0x10) = this;
   *(undefined4 *)(this + 4) = 0;
   pstyle = *(DWORD **)(unaff_EBP + 0x18);
@@ -65,7 +65,7 @@ CBrush * CPen::CPen(void)
   *(undefined ***)this = &PTR_LAB_0067261c;
   pHVar1 = ExtCreatePen(*(DWORD *)(unaff_EBP + 8),*(DWORD *)(unaff_EBP + 0xc),
                         *(LOGBRUSH **)(unaff_EBP + 0x10),*(DWORD *)(unaff_EBP + 0x14),pstyle);
-  iVar2 = CBrush::AttachRegionHandleToClipStateAndRegister(this,(int)pHVar1);
+  iVar2 = CBrush::CGdiObject__Attach(this,(int)pHVar1);
   if (iVar2 == 0) {
     AfxThrowResourceException();
   }

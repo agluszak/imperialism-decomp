@@ -70,10 +70,10 @@ TNextMoveCommand * TNextMoveCommand::_scalar_deleting_destructor_(byte param_1)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005A6620
-// GHIDRA_NAME TNextMoveCommand::OrphanRetStub_00487a00
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_00487a00(void)
+// GHIDRA_NAME TNextMoveCommand::DoIt
+// GHIDRA_PROTO undefined __thiscall DoIt(void)
 
-void TNextMoveCommand::OrphanRetStub_00487a00()
+void TNextMoveCommand::DoIt()
 
 {
   int *piVar1;

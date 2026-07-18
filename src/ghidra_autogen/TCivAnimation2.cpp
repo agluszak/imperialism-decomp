@@ -163,7 +163,7 @@ uint TCivAnimation2::WrapperFor_InvalidateCityDialogRectRegion_At0049f140()
       if (uVar1 != 1) {
         return uVar3;
       }
-      iVar2 = GenerateThreadLocalRandom15();
+      iVar2 = rand();
       if (0x31 < iVar2 % 100) {
         return iVar2 / 100;
       }

@@ -48,9 +48,9 @@ undefined4 * CDocTemplate::CDocTemplate(void)
   undefined4 *unaff_FS_OFFSET;
   bool bVar3;
   
-  EstablishSehFrameProlog();
+  _EH_prolog();
   *(undefined4 **)(unaff_EBP + -0x10) = this_00;
-  CCmdTarget();
+  CCmdTarget__CCmdTarget();
   *(undefined4 *)(unaff_EBP + -4) = 0;
   CString::CString((CString *)(this_00 + 0x18));
   uVar1 = *(undefined4 *)(unaff_EBP + 8);
@@ -76,7 +76,7 @@ undefined4 * CDocTemplate::CDocTemplate(void)
   *(undefined1 *)(unaff_EBP + -4) = 1;
   if (bVar3) {
     this_00[7] = 1;
-    ReleaseRuntimeSelectionOwnerAndDestroyObject(this_00);
+    CDocTemplate__LoadTemplate(this_00);
   }
   else {
     this_00[7] = 0;
@@ -122,7 +122,7 @@ void CDocTemplate::~CDocTemplate(void)
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
   
-  EstablishSehFrameProlog();
+  _EH_prolog();
   *(undefined4 **)(unaff_EBP + -0x10) = extraout_ECX;
   *extraout_ECX = &PTR_LAB_006733e4;
   hMenu = (HMENU)extraout_ECX[9];
@@ -160,7 +160,7 @@ undefined4 CDocTemplate::MatchDocType()
   undefined4 *unaff_FS_OFFSET;
   undefined4 uVar4;
   
-  EstablishSehFrameProlog();
+  _EH_prolog();
   **(undefined4 **)(unaff_EBP + 0xc) = 0;
   iVar3 = *extraout_ECX;
   iVar1 = (**(code **)(iVar3 + 0x5c))();
