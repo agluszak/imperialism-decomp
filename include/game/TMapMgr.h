@@ -184,6 +184,8 @@ void SplitTileIndexToHexRasterColumnX2AndRow(short tileIndex, short* outColX2,
 void SplitTileIndexToRowAndColumn(short tileIndex, short* outRow, short* outCol);
 // 0x5123e0: recordBase + recordIndex * 0x6c (strided record address). __cdecl free function.
 int ComputeStridedRecordAddress6C(int recordBase, int recordIndex);
+// 0x563990 — walks the terrain-flow chain from tileIndex to the nearest sea tile.
+short TraceTerrainFlowToNearestSeaTile(short tileIndex);
 
 struct HexSpiralSearchState {
   int row;
