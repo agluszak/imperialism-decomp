@@ -1,4 +1,5 @@
 #include "game/TDefenseMinisterPersonalities.h"
+#include "game/global_data_tables.h"
 
 #include "game/mfc.h"
 
@@ -9,7 +10,9 @@
 
 // Slot 24 (0x60) override — factory hook on this minister variant.
 // FUNCTION: IMPERIALISM 0x004ed490
-undefined TNapoleonMinister::CreateTDefenseMinisterInstance() { return 0; }
+double TNapoleonMinister::GetPersonalityWeightByFlag(char flag) {
+  return flag ? g_MinisterWeightHalf_006548E8 : g_MinisterWeightOne_006548F0;
+}
 // SYNTHETIC: IMPERIALISM 0x004ed400
 // TNapoleonMinister::CreateObject
 
@@ -30,9 +33,8 @@ void TNapoleonMinister::NoOpForeignMinisterUtilityStub(void* receiver) {
 }
 
 // FUNCTION: IMPERIALISM 0x004ed7c0
-undefined TBismarckMinister::CreateTDefenseMinisterInstance() {
-  // Partial port: original returns a float aggressiveness multiplier.
-  return 0;
+double TBismarckMinister::GetPersonalityWeightByFlag(char flag) {
+  return flag ? g_BismarckWeightHigh_006548F8 : g_BismarckWeightLow_00654900;
 }
 // SYNTHETIC: IMPERIALISM 0x004ed740
 // TBismarckMinister::CreateObject
@@ -54,9 +56,8 @@ void TBismarckMinister::NoOpForeignMinisterUtilityStub(void* receiver) {
 }
 
 // FUNCTION: IMPERIALISM 0x004edab0
-undefined TPirateMinister::CreateTDefenseMinisterInstance() {
-  // Partial port: original returns a float aggressiveness multiplier.
-  return 0;
+double TPirateMinister::GetPersonalityWeightByFlag(char flag) {
+  return flag ? g_MinisterWeightHalf_006548E8 : g_MinisterWeightOne_006548F0;
 }
 // SYNTHETIC: IMPERIALISM 0x004eda30
 // TPirateMinister::CreateObject
@@ -78,9 +79,8 @@ void TPirateMinister::NoOpForeignMinisterUtilityStub(void* receiver) {
 }
 
 // FUNCTION: IMPERIALISM 0x004edda0
-undefined TDefenderMinister::CreateTDefenseMinisterInstance() {
-  // Partial port: original returns a float aggressiveness multiplier.
-  return 0;
+double TDefenderMinister::GetPersonalityWeightByFlag(char) {
+  return g_DefenderMinisterWeight_00654908;
 }
 // SYNTHETIC: IMPERIALISM 0x004edd20
 // TDefenderMinister::CreateObject
@@ -102,9 +102,8 @@ void TDefenderMinister::NoOpForeignMinisterUtilityStub(void* receiver) {
 }
 
 // FUNCTION: IMPERIALISM 0x004ee080
-undefined TBullyMinister::CreateTDefenseMinisterInstance() {
-  // Partial port: original returns a float aggressiveness multiplier.
-  return 0;
+double TBullyMinister::GetPersonalityWeightByFlag(char flag) {
+  return flag ? g_BullyWeightLow_00654910 : g_BullyWeightHigh_00654918;
 }
 // SYNTHETIC: IMPERIALISM 0x004ee000
 // TBullyMinister::CreateObject
@@ -124,4 +123,3 @@ TBullyMinister::TBullyMinister() : TDefenseMinister() {}
 void TBullyMinister::NoOpForeignMinisterUtilityStub(void* receiver) {
   (void)receiver;
 }
-

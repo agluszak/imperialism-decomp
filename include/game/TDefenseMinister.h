@@ -25,13 +25,17 @@ public:
   short DispatchNationStateEventCode10(short nationSlot) override; // 0x0a (0x4ec3d0)
 
   // New virtuals introduced by TDefenseMinister (vtable 0x6549b0, bytes 0x48-0x60).
-  virtual void MinisterSlot12();                                    // 0x48 (0x4ec450)
-  virtual void Call4C();                                            // 0x4c (0x4ec4c0)
-  virtual void MinisterSlot14();                                    // 0x50 (0x4ec540)
-  virtual undefined BuildTileRingPriorityMapForNationTileList();    // 0x54 (0x4ecbb0)
-  virtual undefined BuildStrategicTilePriorityHeatmap();            // 0x58 (0x4ecf20)
-  virtual undefined BuildHexAreaTileIndexListIntoAllocatedBuffer(); // 0x5c (0x4ed050)
-  virtual undefined CreateTDefenseMinisterInstance();               // 0x60 (0x4ec0a0)
+  virtual void MinisterSlot12();                                            // 0x48 (0x4ec450)
+  virtual void Call4C();                                                    // 0x4c (0x4ec4c0)
+  virtual void MinisterSlot14();                                            // 0x50 (0x4ec540)
+  virtual undefined BuildTileRingPriorityMapForNationTileList(int* arg);    // 0x54 (0x4ecbb0)
+  virtual undefined BuildStrategicTilePriorityHeatmap();                    // 0x58 (0x4ecf20)
+  virtual undefined BuildHexAreaTileIndexListIntoAllocatedBuffer(char arg); // 0x5c (0x4ed050)
+  // One stack arg (RET 0x4 across the base and all five personality overrides).
+  // Not a factory despite the old Ghidra 'Create*Instance' names: every body
+  // FLDs a per-personality FP weight constant (base 0.0f; the flag selects
+  // between a pair on the conditional personalities). slot 0x60 (0x4ec0a0)
+  virtual double GetPersonalityWeightByFlag(char flag);
 
   // Derived state 0x48..0x94 (sizeof = 0x94, from `new TDefenseMinister()` @ 0x4d976f
   // pushing 0x94 to operator new). Fields unrecovered; raw storage keeps the object the

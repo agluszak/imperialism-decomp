@@ -7846,7 +7846,7 @@
     },
     {
       "address": "0x4a2900",
-      "matching": 0.12752721617418353,
+      "matching": 0.13063763608087092,
       "name": "BuildArmyContextActionRecordsAndDispatchLabel",
       "type": 1
     },
@@ -10367,25 +10367,25 @@
     },
     {
       "address": "0x4be3f0",
-      "matching": 0.0,
+      "matching": 1.0,
       "name": "TInteriorMinister::SetForeignMinisterReadyFlag14_1a",
       "type": 1
     },
     {
       "address": "0x4be410",
-      "matching": 0.0,
+      "matching": 1.0,
       "name": "TInteriorMinister::VTableSlot1B",
       "type": 1
     },
     {
       "address": "0x4be430",
-      "matching": 0.0,
+      "matching": 1.0,
       "name": "TInteriorMinister::GetTEventHandlerClassNamePointer_1c",
       "type": 1
     },
     {
       "address": "0x4be450",
-      "matching": 0.0,
+      "matching": 1.0,
       "name": "TInteriorMinister::OrphanCallChain_C11_I88_004874b0_12",
       "type": 1
     },
@@ -10517,25 +10517,25 @@
     },
     {
       "address": "0x4beeb0",
-      "matching": 0.0,
+      "matching": 0.2222222222222222,
       "name": "TCityInteriorMinister::SetForeignMinisterReadyFlag14",
       "type": 1
     },
     {
       "address": "0x4beee0",
-      "matching": 0.0,
+      "matching": 0.25,
       "name": "TCityInteriorMinister::VTableSlot1B",
       "type": 1
     },
     {
       "address": "0x4bef10",
-      "matching": 0.0,
+      "matching": 0.4,
       "name": "TCityInteriorMinister::VTableSlot2D",
       "type": 1
     },
     {
       "address": "0x4bef30",
-      "matching": 0.0,
+      "matching": 0.2857142857142857,
       "name": "TCityInteriorMinister::GetTEventHandlerClassNamePointer",
       "type": 1
     },
@@ -10559,73 +10559,73 @@
     },
     {
       "address": "0x4bf8a0",
-      "matching": 0.0,
+      "matching": 0.018867924528301886,
       "name": "TCityInteriorMinister::VTableSlot21",
       "type": 1
     },
     {
       "address": "0x4bfa50",
-      "matching": 0.0,
+      "matching": 0.029850746268656716,
       "name": "TCityInteriorMinister::GetTEventHandlerClassNamePointer_22",
       "type": 1
     },
     {
       "address": "0x4bfb20",
-      "matching": 0.0,
+      "matching": 0.007017543859649123,
       "name": "TCityInteriorMinister::QueueCityProductionRebalanceCommandsByThresholds",
       "type": 1
     },
     {
       "address": "0x4bff60",
-      "matching": 0.0,
+      "matching": 0.6666666666666666,
       "name": "TCityInteriorMinister::GetTEventHandlerClassNamePointer_24",
       "type": 1
     },
     {
       "address": "0x4bff80",
-      "matching": 0.0,
+      "matching": 0.02702702702702703,
       "name": "TCityInteriorMinister::QueueCityProductionCommand33FromAccumulatedDeficit",
       "type": 1
     },
     {
       "address": "0x4c0090",
-      "matching": 0.0,
+      "matching": 0.014492753623188406,
       "name": "TCityInteriorMinister::DistributeCityProductionCommandBudgetAndQueueOrders",
       "type": 1
     },
     {
       "address": "0x4c02c0",
-      "matching": 0.0,
+      "matching": 0.014084507042253521,
       "name": "TCityInteriorMinister::QueueCityProductionCommand17Or18FromSupportRatio",
       "type": 1
     },
     {
       "address": "0x4c04e0",
-      "matching": 0.0,
+      "matching": 0.043478260869565216,
       "name": "TCityInteriorMinister::QueueRandomCityProductionCommand19To1C",
       "type": 1
     },
     {
       "address": "0x4c05a0",
-      "matching": 0.0,
+      "matching": 0.02857142857142857,
       "name": "TCityInteriorMinister::QueueCityProductionCommand2BIfMissingAndResetValue",
       "type": 1
     },
     {
       "address": "0x4c0690",
-      "matching": 0.0,
+      "matching": 0.046511627906976744,
       "name": "TCityInteriorMinister::QueueSingleCityProductionCommandFromField36",
       "type": 1
     },
     {
       "address": "0x4c0730",
-      "matching": 0.0,
+      "matching": 0.046511627906976744,
       "name": "TCityInteriorMinister::QueueSingleCityProductionCommandFromField38",
       "type": 1
     },
     {
       "address": "0x4c07d0",
-      "matching": 0.0,
+      "matching": 0.00558659217877095,
       "name": "TCityInteriorMinister::DistributeCityProductionAcrossOrderTemplatesAndBackfillDeficits",
       "type": 1
     },
@@ -10637,13 +10637,13 @@
     },
     {
       "address": "0x4c0de0",
-      "matching": 0.0,
+      "matching": 0.07407407407407407,
       "name": "TCityInteriorMinister::SetForeignMinisterReadyFlag14_2e",
       "type": 1
     },
     {
       "address": "0x4c0e50",
-      "matching": 0.0,
+      "matching": 0.008583690987124463,
       "name": "TCityInteriorMinister::ReconcileCityProductionQueueAgainstTargetsAndAdjustOrders",
       "type": 1
     },
@@ -10691,13 +10691,13 @@
     },
     {
       "address": "0x4c2d50",
-      "matching": 0.0,
+      "matching": 0.038461538461538464,
       "name": "TCityInteriorMinister::IterateLinkedListCursorEntries_004c2d50",
       "type": 1
     },
     {
       "address": "0x4c2e10",
-      "matching": 0.0,
+      "matching": 0.01098901098901099,
       "name": "TCityInteriorMinister::HandleFrogCityTileSelectionAndDispatchOrders",
       "type": 1
     },
@@ -10709,37 +10709,37 @@
     },
     {
       "address": "0x4c3170",
-      "matching": 0.0,
+      "matching": 0.01,
       "name": "TCityInteriorMinister::SelectBestFrogCityTileFromCandidateSet",
       "type": 1
     },
     {
       "address": "0x4c3490",
-      "matching": 0.0,
+      "matching": 0.019230769230769232,
       "name": "TCityInteriorMinister::ComputeFrogCityCandidateScoreFromNationNeeds",
       "type": 1
     },
     {
       "address": "0x4c3620",
-      "matching": 0.0,
+      "matching": 0.3333333333333333,
       "name": "TCityInteriorMinister::GetTEventHandlerClassNamePointer_3a",
       "type": 1
     },
     {
       "address": "0x4c3640",
-      "matching": 0.0,
+      "matching": 0.011049723756906077,
       "name": "TCityInteriorMinister::BuildFrogCityDistanceMapFromPrimarySeedSet",
       "type": 1
     },
     {
       "address": "0x4c3910",
-      "matching": 0.0,
+      "matching": 0.0106951871657754,
       "name": "TCityInteriorMinister::BuildFrogCityDistanceMapFromReachableSeaCandidates",
       "type": 1
     },
     {
       "address": "0x4c3c00",
-      "matching": 0.0,
+      "matching": 0.01694915254237288,
       "name": "TCityInteriorMinister::RebalanceCityOrderAllocationTargets",
       "type": 1
     },
@@ -13130,7 +13130,8 @@
     },
     {
       "address": "0x4e0690",
-      "matching": 1.0,
+      "effective": true,
+      "matching": 0.42857142857142855,
       "name": "TGreatPower::ReturnFalseNationStateCapabilityFlag90",
       "type": 1
     },
@@ -13166,7 +13167,7 @@
     },
     {
       "address": "0x4e09a0",
-      "matching": 0.5542168674698795,
+      "matching": 0.5662650602409639,
       "name": "TGreatPower::ComputeCityOrderCapabilityAggregateScore",
       "type": 1
     },
@@ -14075,7 +14076,7 @@
     },
     {
       "address": "0x4ec0a0",
-      "matching": 0.0,
+      "matching": 1.0,
       "name": "TDefenseMinister::CreateTDefenseMinisterInstance",
       "type": 1
     },
@@ -14141,7 +14142,7 @@
     },
     {
       "address": "0x4ecbb0",
-      "matching": 0.0,
+      "matching": 0.008438818565400843,
       "name": "TDefenseMinister::BuildTileRingPriorityMapForNationTileList",
       "type": 1
     },
@@ -14153,7 +14154,7 @@
     },
     {
       "address": "0x4ed050",
-      "matching": 0.0,
+      "matching": 0.00847457627118644,
       "name": "TDefenseMinister::BuildHexAreaTileIndexListIntoAllocatedBuffer",
       "type": 1
     },
@@ -14165,7 +14166,7 @@
     },
     {
       "address": "0x4ed490",
-      "matching": 0.0,
+      "matching": 1.0,
       "name": "TNapoleonMinister::CreateTNapoleonMinisterInstance",
       "type": 1
     },
@@ -14207,7 +14208,7 @@
     },
     {
       "address": "0x4ed7c0",
-      "matching": 0.0,
+      "matching": 1.0,
       "name": "TBismarckMinister::CreateTBismarckMinisterInstance",
       "type": 1
     },
@@ -14249,7 +14250,7 @@
     },
     {
       "address": "0x4edab0",
-      "matching": 0.0,
+      "matching": 1.0,
       "name": "TPirateMinister::CreateTPirateMinisterInstance",
       "type": 1
     },
@@ -14291,7 +14292,7 @@
     },
     {
       "address": "0x4edda0",
-      "matching": 0.0,
+      "matching": 1.0,
       "name": "TDefenderMinister::CreateTDefenderMinisterInstance",
       "type": 1
     },
@@ -14333,7 +14334,7 @@
     },
     {
       "address": "0x4ee080",
-      "matching": 0.0,
+      "matching": 1.0,
       "name": "TBullyMinister::CreateTBullyMinisterInstance",
       "type": 1
     },
@@ -16509,7 +16510,7 @@
     },
     {
       "address": "0x5083f0",
-      "matching": 0.4037854889589905,
+      "matching": 0.39747634069400634,
       "name": "TLanguageMgr::Localize",
       "type": 1
     },
@@ -16683,7 +16684,7 @@
     },
     {
       "address": "0x50bea0",
-      "matching": 0.20990458882326216,
+      "matching": 0.2044525215810995,
       "name": "TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets",
       "type": 1
     },
@@ -17141,7 +17142,7 @@
     },
     {
       "address": "0x5136a0",
-      "matching": 0.8888888888888888,
+      "matching": 1.0,
       "name": "TMapMgr::OrphanLeaf_NoCall_Ins35_005136a0",
       "type": 1
     },
@@ -18534,7 +18535,7 @@
     },
     {
       "address": "0x52c0a0",
-      "matching": 0.9391304347826087,
+      "matching": 0.9122807017543859,
       "name": "SeapointStretch::GetOrAppendUnique",
       "type": 1
     },
@@ -18564,7 +18565,7 @@
     },
     {
       "address": "0x52cae0",
-      "matching": 0.3054662379421222,
+      "matching": 0.2976,
       "name": "BuildOverlaySpanRecordsFromQuadBorderLinks",
       "type": 1
     },
@@ -18588,7 +18589,7 @@
     },
     {
       "address": "0x52d1f0",
-      "matching": 0.2621082621082621,
+      "matching": 0.2784090909090909,
       "name": "ReindexContiguousCityRegionIds",
       "type": 1
     },
@@ -20516,7 +20517,7 @@
     },
     {
       "address": "0x53d200",
-      "matching": 0.3686274509803922,
+      "matching": 0.3700787401574803,
       "name": "ComputeArmyMissionScoreDeltaWithScaledCandidateUnit",
       "type": 1
     },
@@ -21608,7 +21609,7 @@
     },
     {
       "address": "0x545940",
-      "matching": 0.38170652876535227,
+      "matching": 0.4176356589147287,
       "name": "TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine",
       "type": 1
     },
@@ -22172,7 +22173,7 @@
     },
     {
       "address": "0x5501b0",
-      "matching": 0.5327102803738317,
+      "matching": 0.5420560747663551,
       "name": "CalculateMissionOrderPriorityScore",
       "type": 1
     },
@@ -23099,7 +23100,7 @@
     },
     {
       "address": "0x55bc10",
-      "matching": 0.6735537190082644,
+      "matching": 0.5643153526970954,
       "name": "TNewsMgr::CreateNewspaper",
       "type": 1
     },
@@ -29855,7 +29856,7 @@
     },
     {
       "address": "0x5a1ee0",
-      "matching": 0.6763925729442971,
+      "matching": 0.6737400530503979,
       "name": "TTacticalBattle::EvaluateAndResolveTacticalActionAgainstTileOccupant",
       "type": 1
     },
@@ -29945,7 +29946,7 @@
     },
     {
       "address": "0x5a39a0",
-      "matching": 0.7131782945736435,
+      "matching": 0.7286821705426356,
       "name": "ComputeHexTileDistanceFromIndices",
       "type": 1
     },
@@ -29963,7 +29964,7 @@
     },
     {
       "address": "0x5a3d30",
-      "matching": 0.8163265306122449,
+      "matching": 0.8104956268221575,
       "name": "IsTacticalTargetTileReachableForAction",
       "type": 1
     },
@@ -32398,7 +32399,7 @@
     },
     {
       "address": "0x5bf930",
-      "matching": 0.7411083540115798,
+      "matching": 0.7477253928866832,
       "name": "RefreshSelectedNationOrderCompatibilityInfo",
       "type": 1
     },
