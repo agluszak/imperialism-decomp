@@ -3,14 +3,3 @@ address|current_name|current_ownership|oracle_symbol|oracle_name|member|match_ki
 0x00489410|TCountingStream::ConstructTCountingStreamBaseState|manual:src/game/TCountingStream.cpp|??0exception@@QAE@XZ|exception::exception|stdexcpt.obj|unique|1|match_owned_by_game_code
 0x004995a0|TMacViewMgr::WrapperFor_thunk_ResolveBmpResourceHandleWithDefault3B6_At004995a0|unowned|?AfxDaoGetEngine@@YGPAU_DAODBEngine@@XZ|AfxDaoGetEngine|daocore.obj|unique|1|outside_library_range
 0x00534c80|ResetMissionField0CToZero|manual:src/game/TMission.cpp|?EnableAggregation@CCmdTarget@@QAEXXZ|CCmdTarget::EnableAggregation|oleunk.obj|unique|1|match_owned_by_game_code
-0x005e5561|WrapperFor_Ordinal13_FromField1C_At005e5561|unowned|?PreSubclassWindow@CDragListBox@@UAEXXZ|CDragListBox::PreSubclassWindow|winctrl2.obj|unique|1|below_min_convert_size
-0x005ead10|WrapperFor_amsg_exit_At005ead10|unowned|__purecall|_purecall|purevirt.obj|unique|1|below_min_convert_size
-0x005eadb0|WrapperFor_GetOrCreateCrtThreadDataFromTls_At005eadb0|unowned|___doserrno|__doserrno|dosmap.obj|unique|1|below_min_convert_size
-0x005f4b40|WrapperFor_amsg_exit_At005f4b40|unowned|__fptrap|_fptrap|crt0fp.obj|unique|1|below_min_convert_size
-0x005fa80b|WrapperFor_AfxTermLocalData_At005fa80b|unowned|??1_AFX_TERM_APP_STATE@@QAE@XZ|_AFX_TERM_APP_STATE::~_AFX_TERM_APP_STATE|appmodul.obj|unique|1|below_min_convert_size
-0x0060d16d|IncrementAfxModuleThreadStateTempMapLockDepth|unowned|?AfxLockTempMaps@@YGXXZ|AfxLockTempMaps|winhand.obj|unique|1|below_min_convert_size
-0x00614a19|SetObjectField24Value|unowned|?AddDocument@CDocTemplate@@UAEXPAVCDocument@@@Z|CDocTemplate::AddDocument|doctempl.obj|unique|1|below_min_convert_size
-0x00614a23|ClearObjectField24Value|unowned|?RemoveDocument@CDocTemplate@@UAEXPAVCDocument@@@Z|CDocTemplate::RemoveDocument|doctempl.obj|unique|1|below_min_convert_size
-0x0061f46b|GetMfcThreadStateFlagDword30|unowned|?AfxOleGetUserCtrl@@YGHXZ|AfxOleGetUserCtrl|olelock.obj|unique|1|below_min_convert_size
-0x00623050|RunFileAssociationShellCommandCleanup|unowned|?UnregisterShellFileTypes@CWinApp@@IAEXXZ|CWinApp::UnregisterShellFileTypes|appui2.obj|unique|1|below_min_convert_size
-0x00626c02|WrapperFor_AfxDeleteObject_At00626c02|unowned|??1AUX_DATA@@QAE@XZ|AUX_DATA::~AUX_DATA|auxdata.obj|unique|1|below_min_convert_size

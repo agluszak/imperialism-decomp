@@ -43,22 +43,6 @@ undefined4 ComputeAbsoluteIntValue(void)
   return 0;
 }
 
-// ghidra_name WrapperFor_amsg_exit_At005ead10
-// ghidra_proto undefined WrapperFor_amsg_exit_At005ead10()
-// FUNCTION: IMPERIALISM 0x005ead10
-undefined4 WrapperFor_amsg_exit_At005ead10(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_GetOrCreateCrtThreadDataFromTls_At005eadb0
-// ghidra_proto undefined WrapperFor_GetOrCreateCrtThreadDataFromTls_At005eadb0()
-// FUNCTION: IMPERIALISM 0x005eadb0
-undefined4 WrapperFor_GetOrCreateCrtThreadDataFromTls_At005eadb0(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_EnterIndexedCriticalSectionWithLazyInit_At005eadc0
 // ghidra_proto undefined WrapperFor_EnterIndexedCriticalSectionWithLazyInit_At005eadc0()
 // FUNCTION: IMPERIALISM 0x005eadc0
@@ -195,14 +179,6 @@ undefined4 MapFpControlLowByteToRuntimeBits(void)
   return 0;
 }
 
-// ghidra_name WrapperFor_amsg_exit_At005f4b40
-// ghidra_proto undefined WrapperFor_amsg_exit_At005f4b40()
-// FUNCTION: IMPERIALISM 0x005f4b40
-undefined4 WrapperFor_amsg_exit_At005f4b40(void)
-{
-  return 0;
-}
-
 // ghidra_name ExecuteCallbackUnderStreamCriticalSection
 // ghidra_proto undefined ExecuteCallbackUnderStreamCriticalSection()
 // FUNCTION: IMPERIALISM 0x005f5d00
@@ -327,14 +303,6 @@ undefined4 ConsoleCtrlHandlerDispatchRuntimeSignalCallbacks(void)
 // ghidra_proto undefined RaiseRuntimeSignalAndInvokeHandler()
 // FUNCTION: IMPERIALISM 0x005f75c0
 undefined4 RaiseRuntimeSignalAndInvokeHandler(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_AfxTermLocalData_At005fa80b
-// ghidra_proto undefined WrapperFor_AfxTermLocalData_At005fa80b()
-// FUNCTION: IMPERIALISM 0x005fa80b
-undefined4 WrapperFor_AfxTermLocalData_At005fa80b(void)
 {
   return 0;
 }

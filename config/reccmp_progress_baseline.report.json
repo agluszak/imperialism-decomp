@@ -34468,6 +34468,12 @@
       "type": 1
     },
     {
+      "address": "0x5e5561",
+      "matching": 1.0,
+      "name": "CDragListBox::PreSubclassWindow",
+      "type": 1
+    },
+    {
       "address": "0x5e556b",
       "matching": 1.0,
       "name": "CDragListBox::BeginDrag",
@@ -35494,8 +35500,14 @@
       "type": 1
     },
     {
+      "address": "0x5ead10",
+      "matching": 0.46153846153846156,
+      "name": "__purecall",
+      "type": 1
+    },
+    {
       "address": "0x5ead20",
-      "matching": 0.7586206896551724,
+      "matching": 0.7816091954022989,
       "name": "__dosmaperr",
       "type": 1
     },
@@ -35503,6 +35515,12 @@
       "address": "0x5eada0",
       "matching": 0.46153846153846156,
       "name": "__errno",
+      "type": 1
+    },
+    {
+      "address": "0x5eadb0",
+      "matching": 0.46153846153846156,
+      "name": "___doserrno",
       "type": 1
     },
     {
@@ -35795,7 +35813,7 @@
     },
     {
       "address": "0x5eeb10",
-      "matching": 0.8425357873210634,
+      "matching": 0.8466257668711656,
       "name": "__output",
       "type": 1
     },
@@ -35813,7 +35831,7 @@
     },
     {
       "address": "0x5efd50",
-      "matching": 0.825,
+      "matching": 0.85,
       "name": "__close",
       "type": 1
     },
@@ -35873,13 +35891,13 @@
     },
     {
       "address": "0x5f03e0",
-      "matching": 0.7872340425531915,
+      "matching": 0.8085106382978723,
       "name": "__write",
       "type": 1
     },
     {
       "address": "0x5f0460",
-      "matching": 0.9637883008356546,
+      "matching": 0.9749303621169917,
       "name": "__write_lk",
       "type": 1
     },
@@ -35891,13 +35909,13 @@
     },
     {
       "address": "0x5f1580",
-      "matching": 0.7872340425531915,
+      "matching": 0.8085106382978723,
       "name": "__read",
       "type": 1
     },
     {
       "address": "0x5f1600",
-      "matching": 0.9598108747044918,
+      "matching": 0.9645390070921985,
       "name": "__read_lk",
       "type": 1
     },
@@ -36196,6 +36214,12 @@
       "type": 1
     },
     {
+      "address": "0x5f4b40",
+      "matching": 0.46153846153846156,
+      "name": "__fptrap",
+      "type": 1
+    },
+    {
       "address": "0x5f4b50",
       "matching": 1.0,
       "name": "?_ValidateRead@@YAHPBXI@Z",
@@ -36221,7 +36245,7 @@
     },
     {
       "address": "0x5f4cb0",
-      "matching": 0.7872340425531915,
+      "matching": 0.8085106382978723,
       "name": "__lseek",
       "type": 1
     },
@@ -36281,19 +36305,19 @@
     },
     {
       "address": "0x5f5410",
-      "matching": 0.8435374149659864,
+      "matching": 0.8571428571428571,
       "name": "__set_osfhnd",
       "type": 1
     },
     {
       "address": "0x5f54c0",
-      "matching": 0.8292682926829268,
+      "matching": 0.8455284552845529,
       "name": "__free_osfhnd",
       "type": 1
     },
     {
       "address": "0x5f5560",
-      "matching": 0.7346938775510204,
+      "matching": 0.7755102040816326,
       "name": "__get_osfhandle",
       "type": 1
     },
@@ -36311,13 +36335,13 @@
     },
     {
       "address": "0x5f5700",
-      "matching": 0.9298245614035088,
+      "matching": 0.9473684210526315,
       "name": "__commit",
       "type": 1
     },
     {
       "address": "0x5f57c0",
-      "matching": 0.8707037643207856,
+      "matching": 0.8805237315875614,
       "name": "__sopen",
       "type": 1
     },
@@ -36395,7 +36419,7 @@
     },
     {
       "address": "0x5f7300",
-      "matching": 0.7935656836461126,
+      "matching": 0.7989276139410187,
       "name": "_signal",
       "type": 1
     },
@@ -36467,7 +36491,7 @@
     },
     {
       "address": "0x5f8770",
-      "matching": 0.9669421487603306,
+      "matching": 0.9834710743801653,
       "name": "__chsize_lk",
       "type": 1
     },
@@ -36553,6 +36577,12 @@
       "address": "0x5fa7f8",
       "matching": 1.0,
       "name": "_AFX_TERM_APP_STATE::_AFX_TERM_APP_STATE",
+      "type": 1
+    },
+    {
+      "address": "0x5fa80b",
+      "matching": 1.0,
+      "name": "_AFX_TERM_APP_STATE::~_AFX_TERM_APP_STATE",
       "type": 1
     },
     {
@@ -37373,7 +37403,7 @@
     },
     {
       "address": "0x6055ae",
-      "matching": 0.9230769230769231,
+      "matching": 1.0,
       "name": "CWinApp::Run",
       "type": 1
     },
@@ -37673,7 +37703,7 @@
     },
     {
       "address": "0x6064b0",
-      "matching": 0.9895833333333334,
+      "matching": 1.0,
       "name": "CWinThread::OnIdle",
       "type": 1
     },
@@ -39179,8 +39209,8 @@
     },
     {
       "address": "0x60d16d",
-      "matching": 0.4,
-      "name": "IncrementAfxModuleThreadStateTempMapLockDepth",
+      "matching": 1.0,
+      "name": "AfxLockTempMaps",
       "type": 1
     },
     {
@@ -39215,13 +39245,13 @@
     },
     {
       "address": "0x610728",
-      "matching": 0.9,
+      "matching": 1.0,
       "name": "CSingleDocTemplate::AddDocument",
       "type": 1
     },
     {
       "address": "0x61073e",
-      "matching": 0.8571428571428571,
+      "matching": 1.0,
       "name": "CSingleDocTemplate::RemoveDocument",
       "type": 1
     },
@@ -40181,14 +40211,14 @@
     },
     {
       "address": "0x614a19",
-      "matching": 0.0,
-      "name": "SetObjectField24Value",
+      "matching": 1.0,
+      "name": "CDocTemplate::AddDocument",
       "type": 1
     },
     {
       "address": "0x614a23",
-      "matching": 0.0,
-      "name": "ClearObjectField24Value",
+      "matching": 1.0,
+      "name": "CDocTemplate::RemoveDocument",
       "type": 1
     },
     {
@@ -40805,7 +40835,7 @@
     },
     {
       "address": "0x61a2ef",
-      "matching": 0.9958592132505176,
+      "matching": 1.0,
       "name": "CDocManager::OnDDECommand",
       "type": 1
     },
@@ -41386,6 +41416,12 @@
       "type": 1
     },
     {
+      "address": "0x61f46b",
+      "matching": 1.0,
+      "name": "AfxOleGetUserCtrl",
+      "type": 1
+    },
+    {
       "address": "0x62103a",
       "matching": 1.0,
       "name": "CDumpContext::OutputString",
@@ -41597,7 +41633,7 @@
     },
     {
       "address": "0x622cb3",
-      "matching": 0.9905660377358491,
+      "matching": 1.0,
       "name": "CWinApp::ProcessShellCommand",
       "type": 1
     },
@@ -41621,8 +41657,8 @@
     },
     {
       "address": "0x623050",
-      "matching": 0.0,
-      "name": "RunFileAssociationShellCommandCleanup",
+      "matching": 1.0,
+      "name": "CWinApp::UnregisterShellFileTypes",
       "type": 1
     },
     {
@@ -41995,6 +42031,12 @@
       "address": "0x626bb3",
       "matching": 0.96,
       "name": "CWinThread::~CWinThread",
+      "type": 1
+    },
+    {
+      "address": "0x626c02",
+      "matching": 1.0,
+      "name": "AUX_DATA::~AUX_DATA",
       "type": 1
     },
     {

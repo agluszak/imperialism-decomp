@@ -651,14 +651,6 @@ undefined4 InitStub_ResetAndOpenCdAudioDeviceHandle_At005e4de0(void)
   return 0;
 }
 
-// ghidra_name WrapperFor_Ordinal13_FromField1C_At005e5561
-// ghidra_proto undefined WrapperFor_Ordinal13_FromField1C_At005e5561()
-// FUNCTION: IMPERIALISM 0x005e5561
-undefined4 WrapperFor_Ordinal13_FromField1C_At005e5561(void)
-{
-  return 0;
-}
-
 // ghidra_name MoveListBoxEntryPreserveItemData
 // ghidra_proto undefined MoveListBoxEntryPreserveItemData()
 // FUNCTION: IMPERIALISM 0x005e5661

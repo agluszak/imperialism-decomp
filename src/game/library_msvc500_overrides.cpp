@@ -19,6 +19,9 @@
 // LIBRARY: IMPERIALISM 0x005e53d8
 // ?CreateObject@?$CThreadLocal@VAFX_MODULE_THREAD_STATE@@@@SGPAVCNoTrackObject@@XZ
 
+// LIBRARY: IMPERIALISM 0x005e5561
+// ?PreSubclassWindow@CDragListBox@@UAEXXZ
+
 // LIBRARY: IMPERIALISM 0x005e5a0d
 // ?OnCreate@CToolBarCtrl@@IAEHPAUtagCREATESTRUCTA@@@Z
 
@@ -40,6 +43,12 @@
 // LIBRARY: IMPERIALISM 0x005e9bb0
 // __exit
 
+// LIBRARY: IMPERIALISM 0x005ead10
+// __purecall
+
+// LIBRARY: IMPERIALISM 0x005eadb0
+// ___doserrno
+
 // LIBRARY: IMPERIALISM 0x005f47d0
 // ___ld12tod
 
@@ -52,8 +61,14 @@
 // LIBRARY: IMPERIALISM 0x005f4910
 // __atoflt
 
+// LIBRARY: IMPERIALISM 0x005f4b40
+// __fptrap
+
 // LIBRARY: IMPERIALISM 0x005f7a30
 // ___strgtold12
+
+// LIBRARY: IMPERIALISM 0x005fa80b
+// ??1_AFX_TERM_APP_STATE@@QAE@XZ
 
 // LIBRARY: IMPERIALISM 0x00604ba2
 // ?GetMessageMap@CDialog@@MBEPBUAFX_MSGMAP@@XZ
@@ -232,6 +247,9 @@
 // LIBRARY: IMPERIALISM 0x0060ce85
 // ?LoadStringA@CString@@QAEHI@Z
 
+// LIBRARY: IMPERIALISM 0x0060d16d
+// ?AfxLockTempMaps@@YGXXZ
+
 // LIBRARY: IMPERIALISM 0x006106bd
 // ??0CSingleDocTemplate@@QAE@IPAUCRuntimeClass@@00@Z
 
@@ -325,6 +343,12 @@
 // LIBRARY: IMPERIALISM 0x00614a04
 // ?GetDocString@CDocTemplate@@UBEHAAVCString@@W4DocStringIndex@1@@Z
 
+// LIBRARY: IMPERIALISM 0x00614a19
+// ?AddDocument@CDocTemplate@@UAEXPAVCDocument@@@Z
+
+// LIBRARY: IMPERIALISM 0x00614a23
+// ?RemoveDocument@CDocTemplate@@UAEXPAVCDocument@@@Z
+
 // LIBRARY: IMPERIALISM 0x00614aeb
 // ?CreateNewDocument@CDocTemplate@@UAEPAVCDocument@@XZ
 
@@ -379,6 +403,9 @@
 // LIBRARY: IMPERIALISM 0x0061e49c
 // ?GetActiveFrame@CFrameWnd@@UAEPAV1@XZ
 
+// LIBRARY: IMPERIALISM 0x0061f46b
+// ?AfxOleGetUserCtrl@@YGHXZ
+
 // LIBRARY: IMPERIALISM 0x00622442
 // ?GetRuntimeClass@CDialog@@UBEPAUCRuntimeClass@@XZ
 
@@ -391,7 +418,13 @@
 // LIBRARY: IMPERIALISM 0x00622cb3
 // ?ProcessShellCommand@CWinApp@@QAEHAAVCCommandLineInfo@@@Z
 
+// LIBRARY: IMPERIALISM 0x00623050
+// ?UnregisterShellFileTypes@CWinApp@@IAEXXZ
+
 // LIBRARY: IMPERIALISM 0x00623061
 // ?SetRegistryKey@CWinApp@@IAEXPBD@Z
+
+// LIBRARY: IMPERIALISM 0x00626c02
+// ??1AUX_DATA@@QAE@XZ
 
 #endif

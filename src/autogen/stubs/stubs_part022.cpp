@@ -123,14 +123,6 @@ undefined4 XZ(void)
   return 0;
 }
 
-// ghidra_name IncrementAfxModuleThreadStateTempMapLockDepth
-// ghidra_proto undefined IncrementAfxModuleThreadStateTempMapLockDepth()
-// FUNCTION: IMPERIALISM 0x0060d16d
-undefined4 IncrementAfxModuleThreadStateTempMapLockDepth(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_FreeHeapBufferIfNotNull_At006106e5
 // ghidra_proto undefined WrapperFor_FreeHeapBufferIfNotNull_At006106e5()
 // FUNCTION: IMPERIALISM 0x006106e5
@@ -287,22 +279,6 @@ undefined4 ReturnOneStub_006145f5(void)
 // ghidra_proto undefined WrapperFor_ThrowMfcResourceException_At006145fa()
 // FUNCTION: IMPERIALISM 0x006145fa
 undefined4 WrapperFor_ThrowMfcResourceException_At006145fa(void)
-{
-  return 0;
-}
-
-// ghidra_name SetObjectField24Value
-// ghidra_proto undefined SetObjectField24Value()
-// FUNCTION: IMPERIALISM 0x00614a19
-undefined4 SetObjectField24Value(void)
-{
-  return 0;
-}
-
-// ghidra_name ClearObjectField24Value
-// ghidra_proto undefined ClearObjectField24Value()
-// FUNCTION: IMPERIALISM 0x00614a23
-undefined4 ClearObjectField24Value(void)
 {
   return 0;
 }
