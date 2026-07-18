@@ -6,7 +6,6 @@
 // VTABLE: IMPERIALISM 0x0065fae0
 class TCzechBox : public TUpDownPictureButton {
 public:
-  // === BEGIN GENERATED DECLS (TCzechBox) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TCzechBox)
   virtual ~TCzechBox() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -131,7 +130,6 @@ public:
   virtual undefined OrphanCallChain_C2_I16_00571e40();             // slot 0x77 0x571e40
   virtual undefined OrphanCallChain_C3_I23_00571e80(char param_1,
                                                     undefined4 param_2); // slot 0x78 0x571e80
-  // === END GENERATED DECLS (TCzechBox) ===
 
   TCzechBox();
 };

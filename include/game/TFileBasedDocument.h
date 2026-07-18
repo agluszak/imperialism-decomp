@@ -6,7 +6,6 @@
 // VTABLE: IMPERIALISM 0x00648aa0
 class TFileBasedDocument : public TDocument {
 public:
-// === BEGIN GENERATED DECLS (TFileBasedDocument) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TFileBasedDocument)
   virtual ~TFileBasedDocument() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -19,7 +18,6 @@ public:
   // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
   // slot 0x0a OrphanRetStub_00486530 inherited unchanged (0x486530)
   // slot 0x0b OrphanRetStub_00486550 inherited unchanged (0x486550)
-// === END GENERATED DECLS (TFileBasedDocument) ===
 
   TFileBasedDocument();
 };

@@ -6,7 +6,6 @@
 // VTABLE: IMPERIALISM 0x006585a8
 class TLanguageMgr : public TObject {
 public:
-  // === BEGIN GENERATED DECLS (TLanguageMgr) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TLanguageMgr)
   virtual ~TLanguageMgr() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -17,7 +16,6 @@ public:
   virtual void Free() override; // slot 0x07 0x507e20
   // slot 0x08 ShallowClone inherited unchanged (0x4798d0)
   // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
-  // === END GENERATED DECLS (TLanguageMgr) ===
   unsigned char firstColumn;
   unsigned char padding05[3];
   int columnCount;

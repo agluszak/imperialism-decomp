@@ -11,7 +11,6 @@ class TTEView;
 class TNumberedItem : public TMegaPicture {
 public:
   DECLARE_DYNCREATE(TNumberedItem)
-  // === BEGIN GENERATED DECLS (TNumberedItem) — refreshed by recover-class; do not hand-edit ===
   // slot 0x00 GetRuntimeClass owned by DECLARE_DYNCREATE (0x5077a0)
   virtual ~TNumberedItem() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -130,7 +129,6 @@ public:
   // slot 0x73 UniversityDialogMethod_00405623 inherited unchanged (0x572bb0)
   // slot 0x74 OrphanCallChain_C1_I14_005736c0 inherited unchanged (0x5736c0)
   // slot 0x75 OrphanCallChain_C1_I08_00573690 inherited unchanged (0x573690)
-  // === END GENERATED DECLS (TNumberedItem) ===
   unsigned char pad0[0xac];
   short iconRowIndexAc; // +0xac icon-strip row (badge background variant)
   short badgeCountAe;   // +0xae the number drawn on the badge

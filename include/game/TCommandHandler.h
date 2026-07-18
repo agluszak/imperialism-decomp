@@ -8,7 +8,6 @@ class TCommand;
 // VTABLE: IMPERIALISM 0x00648b20
 class TCommandHandler : public TEventHandler {
 public:
-  // === BEGIN GENERATED DECLS (TCommandHandler) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TCommandHandler)
   virtual ~TCommandHandler() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -47,7 +46,6 @@ public:
   // slot 0x23 DetachUiResourceOwnerIfMatches inherited unchanged (0x48a4a0)
   // slot 0x24 SetUiResourceOwner inherited unchanged (0x48a4d0)
   virtual void ConstructTCommandHandlerBaseState(TCommand* command); // slot 0x25 0x486650
-  // === END GENERATED DECLS (TCommandHandler) ===
 
   TCommandHandler();
 };

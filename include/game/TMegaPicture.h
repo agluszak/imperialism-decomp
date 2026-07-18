@@ -6,7 +6,6 @@
 // VTABLE: IMPERIALISM 0x00660d78
 class TMegaPicture : public TNoHilitePicture {
 public:
-  // === BEGIN GENERATED DECLS (TMegaPicture) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TMegaPicture)
   virtual ~TMegaPicture() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -128,7 +127,6 @@ public:
                                                     char param_3); // slot 0x74 0x5736c0
   virtual undefined OrphanCallChain_C1_I08_00573690(undefined2 param_1,
                                                     char param_2); // slot 0x75 0x573690
-  // === END GENERATED DECLS (TMegaPicture) ===
   // TNoHilitePicture adds a 1-byte field90 at +0x90 and tail-pads to a 4-byte boundary
   // as a base subobject (MSVC does not reuse base tail padding for derived members), so
   // these fields (read by ApplyRectSlot110) start immediately at +0x94, with no gap.

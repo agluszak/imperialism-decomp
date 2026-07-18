@@ -18,7 +18,6 @@ struct TMapOrderInteractionSelection {
 // VTABLE: IMPERIALISM 0x0065c4c8
 class TNavyMgr : public TObject {
 public:
-  // === BEGIN GENERATED DECLS (TNavyMgr) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TNavyMgr)
   virtual ~TNavyMgr() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -29,7 +28,6 @@ public:
   virtual void Free() override;                    // slot 0x07 0x5567a0
   // slot 0x08 ShallowClone inherited unchanged (0x4798d0)
   // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
-  // === END GENERATED DECLS (TNavyMgr) ===
   // Head of the global task-force order queue (was `void*`; retyped once
   // TTaskForce -- née TMapOrderEntry -- was RTTI-confirmed as the real
   // element class, see bd 1uj.16). TTaskForce::Free/SetMapOrderType9AndQueue/

@@ -7,7 +7,6 @@ struct CRuntimeClass;
 // VTABLE: IMPERIALISM 0x65efd8
 class TToggleButton : public TPicture {
 public:
-  // === BEGIN GENERATED DECLS (TToggleButton) — refreshed by recover-class; do not hand-edit ===
   virtual ~TToggleButton() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
   // slot 0x03 AssertValid inherited unchanged (0x412bf0)
@@ -126,7 +125,6 @@ public:
   // slot 0x72 SetPictureResourceIdAndRefresh inherited unchanged (0x48f570)
   virtual bool IsSelected(); // slot 0x73 0x571330 (0-arg forwarder to IsActionable)
   virtual void Select(bool isPressed, bool notifyParent); // slot 0x74 0x571350
-  // === END GENERATED DECLS (TToggleButton) ===
   TToggleButton();
   DECLARE_DYNCREATE(TToggleButton)
 };

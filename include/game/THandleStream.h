@@ -8,7 +8,6 @@
 class THandleStream : public TStream {
 public:
   // clang-format off
-  // === BEGIN GENERATED DECLS (THandleStream) — refreshed by recover-class; do not hand-edit ===
   virtual ~THandleStream() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
   // slot 0x03 AssertValid inherited unchanged (0x412bf0)
@@ -57,7 +56,6 @@ public:
   // slot 0x2f AssertMcAppStreamLine304 inherited unchanged (0x488b10)
   // slot 0x30 AssertMcAppStreamLine596 inherited unchanged (0x488e00)
   virtual undefined OrphanLeaf_NoCall_Ins06_00489720(); // slot 0x31 0x489720
-  // === END GENERATED DECLS (THandleStream) ===
   // clang-format on
   // Field semantics evidenced by AttachGlobalMemoryHandleAndResetPosition (0x489660):
   // +0x04 receives the HGLOBAL, +0x08 is zeroed (position), +0x0c receives

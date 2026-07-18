@@ -6,7 +6,6 @@
 // VTABLE: IMPERIALISM 0x00660b48
 class TColorKeyPicture : public TNoHilitePicture {
 public:
-  // === BEGIN GENERATED DECLS (TColorKeyPicture) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TColorKeyPicture)
   virtual ~TColorKeyPicture() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -124,7 +123,6 @@ public:
   virtual void SetPictureResourceIdAndRefresh(short nPictureId,
                                               bool fRefreshNow) override; // slot 0x72 0x573040
   // slot 0x73 UniversityDialogMethod_00405623 inherited unchanged (0x572bb0)
-  // === END GENERATED DECLS (TColorKeyPicture) ===
 
   TColorKeyPicture();
 };

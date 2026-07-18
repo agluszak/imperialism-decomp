@@ -7,7 +7,6 @@
 // VTABLE: IMPERIALISM 0x00641390
 class TNewspaperView : public TPicture {
 public:
-  // === BEGIN GENERATED DECLS (TNewspaperView) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TNewspaperView)
   virtual ~TNewspaperView() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -123,7 +122,6 @@ public:
   // slot 0x70 SetControlStateFlagAndMaybeRefresh inherited unchanged (0x48e810)
   // slot 0x71 ResetPictureResourceEntry inherited unchanged (0x48f520)
   // slot 0x72 SetPictureResourceIdAndRefresh inherited unchanged (0x48f570)
-  // === END GENERATED DECLS (TNewspaperView) ===
 
   // Layout past TPicture (0x90): the advisor-summary builder caches its page argument
   // and holds the news .tex resource stream open across the row loop.

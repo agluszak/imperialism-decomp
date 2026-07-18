@@ -6,7 +6,6 @@
 // VTABLE: IMPERIALISM 0x00655308
 class TForeignMinisterView : public TMinisterView {
 public:
-  // === BEGIN GENERATED DECLS (TForeignMinisterView) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TForeignMinisterView)
   virtual ~TForeignMinisterView() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -118,7 +117,6 @@ public:
   // slot 0x6b OrphanLeaf_NoCall_Ins03_004f2ea0 inherited unchanged (0x4f2ea0)
   virtual undefined OrphanCallChain_C3_I22_004f31d0(); // slot 0x6c 0x4f31d0
   virtual undefined OrphanRetStub_004f3220();          // slot 0x6d 0x4f3220
-  // === END GENERATED DECLS (TForeignMinisterView) ===
 
   TForeignMinisterView();
 };

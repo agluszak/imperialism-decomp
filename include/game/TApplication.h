@@ -16,7 +16,6 @@
 // VTABLE: IMPERIALISM 0x00648bd8
 class TApplication : public TCommandHandler {
 public:
-  // === BEGIN GENERATED DECLS (TApplication) — refreshed by recover-class; do not hand-edit ===
   // slot 0x02 Serialize inherited unchanged (0x485e90)
   // slot 0x03 AssertValid inherited unchanged (0x412bf0)
   // slot 0x04 Dump inherited unchanged (0x412c10)
@@ -64,7 +63,6 @@ public:
                                 unsigned char install); // slot 0x29 0x4869b0
   // MacApp TApplication::Idle(IdlePhase): HandleIdle every installed cohandler.
   virtual void Idle(int idlePhase); // slot 0x2a 0x486b10
-  // === END GENERATED DECLS (TApplication) ===
   TApplication();
 
   // 0x49e500: build + queue the 'gwen' (game-window-end) turn-event packet through the

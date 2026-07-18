@@ -6,7 +6,6 @@
 // VTABLE: IMPERIALISM 0x00644fd0
 class TTacArmyView : public TTacticalBattleView {
 public:
-  // === BEGIN GENERATED DECLS (TTacArmyView) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TTacArmyView)
   virtual ~TTacArmyView() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -121,7 +120,6 @@ public:
   // slot 0x6e OrphanCallChain_C2_I66_005a9090 inherited unchanged (0x5a9090)
   // slot 0x6f WrapperFor_InvalidateCityDialogRectRegion_At005a9240 inherited unchanged (0x5a9240)
   // slot 0x70 DrawUiTilesAndOverlay inherited unchanged (0x5a9550)
-  // === END GENERATED DECLS (TTacArmyView) ===
   // Army-view slice (base TTacticalBattleView ends at +0xd0). Written by the
   // live-battle initializer 0x5a9d90; battlefieldOriginOffsetXD4 is re-derived as the
   // backdrop source-x origin in the rect applier 0x5aa2e0.

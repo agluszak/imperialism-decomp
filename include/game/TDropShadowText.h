@@ -6,7 +6,6 @@
 // VTABLE: IMPERIALISM 0x0066ce00
 class TDropShadowText : public TPictureText {
 public:
-  // === BEGIN GENERATED DECLS (TDropShadowText) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TDropShadowText)
   virtual ~TDropShadowText() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -125,7 +124,6 @@ public:
   // slot 0x73 LoadUiStringAndDispatchViaVslot1C8 inherited unchanged (0x48fed0)
   // slot 0x74 AssignSharedStringFromField84 inherited unchanged (0x4294d0)
   // slot 0x75 RenderControlStateTextBySelectionCode inherited unchanged (0x4900a0)
-  // === END GENERATED DECLS (TDropShadowText) ===
 
   TDropShadowText();
 

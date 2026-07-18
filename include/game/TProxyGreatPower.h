@@ -6,7 +6,6 @@
 // VTABLE: IMPERIALISM 0x0065b078
 class TProxyGreatPower : public TGreatPower {
 public:
-  // === BEGIN GENERATED DECLS (TProxyGreatPower) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TProxyGreatPower)
   virtual ~TProxyGreatPower() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -192,7 +191,6 @@ public:
   UpdateGreatPowerPressureStateAndDispatchEscalationMessage() override; // slot 0xaf 0x540920
   // slot 0xb0 SetNationTransferTargetCodeAndNotifyEligiblePeers_b0 inherited unchanged (0x4e2b00)
   // slot 0xb1 BuildGreatPowerTurnMessageSummaryAndDispatch inherited unchanged (0x4e2b70)
-  // === END GENERATED DECLS (TProxyGreatPower) ===
 
   TProxyGreatPower();
 };

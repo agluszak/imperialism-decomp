@@ -8,7 +8,6 @@ class TTacticalUnit;
 // VTABLE: IMPERIALISM 0x0066a5a0
 class TTacNavyToolbar : public TTacticalToolbar {
 public:
-  // === BEGIN GENERATED DECLS (TTacNavyToolbar) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TTacNavyToolbar)
   virtual ~TTacNavyToolbar() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -129,7 +128,6 @@ public:
       TTacticalUnit* unit) override; // slot 0x73 0x5ad0d0
   virtual undefined
   WrapperFor_InvalidateCityDialogRectRegion_At005acc90(int param_1) override; // slot 0x74 0x5ad0f0
-  // === END GENERATED DECLS (TTacNavyToolbar) ===
 
   TTacNavyToolbar();
 };

@@ -6,7 +6,6 @@
 // VTABLE: IMPERIALISM 0x0064f7f0
 class TFoodProcessingOrder : public TProductionOrder {
 public:
-  // === BEGIN GENERATED DECLS (TFoodProcessingOrder) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TFoodProcessingOrder)
   virtual ~TFoodProcessingOrder() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -28,7 +27,6 @@ public:
                               short quantity) override; // slot 0x10 0x4b80c0
   virtual undefined
   InitializeCityProductionState_Impl_At004b7e80(int param_1); // slot 0x11 0x4b7e80
-  // === END GENERATED DECLS (TFoodProcessingOrder) ===
 
   TFoodProcessingOrder();
 };

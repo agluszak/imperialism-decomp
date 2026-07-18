@@ -6,7 +6,6 @@
 // VTABLE: IMPERIALISM 0x0064c170
 class TAmbitFileBasedDocument : public TFileBasedDocument {
 public:
-  // === BEGIN GENERATED DECLS (TAmbitFileBasedDocument) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TAmbitFileBasedDocument)
   virtual ~TAmbitFileBasedDocument() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -29,7 +28,6 @@ public:
   virtual undefined OrphanRetStub_0049e680(int arg);
   // RET 0x4 = 1 dword (asserts D:\Ambit\Cross\UAmbit.cpp:1335; arg vestigial). slot 0x0e 0x49ee70
   virtual undefined AssertUAmbitLine1335(int arg);
-  // === END GENERATED DECLS (TAmbitFileBasedDocument) ===
 
   TAmbitFileBasedDocument();
 };

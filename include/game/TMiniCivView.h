@@ -11,7 +11,6 @@ class TCivUnit;
 // VTABLE: IMPERIALISM 0x0064d9d0
 class TMiniCivView : public TControl {
 public:
-  // === BEGIN GENERATED DECLS (TMiniCivView) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TMiniCivView)
   virtual ~TMiniCivView() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -127,7 +126,6 @@ public:
   // slot 0x6f LogUnhandledDialogMethodAndReturnFalse inherited unchanged (0x4294a0)
   // slot 0x70 SetControlStateFlagAndMaybeRefresh inherited unchanged (0x48e810)
   virtual undefined OrphanRetStub_004ab800(); // slot 0x71 0x4ab800
-                                              // === END GENERATED DECLS (TMiniCivView) ===
 
   // The civilian unit this row describes (stored by the second-phase init).
   TCivUnit* civUnit84;

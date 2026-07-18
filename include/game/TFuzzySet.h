@@ -10,7 +10,6 @@
 // VTABLE: IMPERIALISM 0x006569c8
 class TFuzzySet : public TObject {
 public:
-  // === BEGIN GENERATED DECLS (TFuzzySet) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TFuzzySet)
   virtual ~TFuzzySet() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -21,7 +20,6 @@ public:
   virtual void Free() override; // slot 0x07 0x4ff780
   // slot 0x08 ShallowClone inherited unchanged (0x4798d0)
   // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
-  // === END GENERATED DECLS (TFuzzySet) ===
 
   TFuzzySet();
 

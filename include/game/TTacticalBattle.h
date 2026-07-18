@@ -30,7 +30,6 @@ struct TacticalTileRecord {
 // VTABLE: IMPERIALISM 0x0066a088
 class TTacticalBattle : public TObject {
 public:
-  // === BEGIN GENERATED DECLS (TTacticalBattle) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TTacticalBattle)
   virtual ~TTacticalBattle() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -74,7 +73,6 @@ public:
   virtual void
   ExecuteTacticalDigActionAndConsumeUnitActionPoints(TTacticalUnit* unit,
                                                      int tileIndex); // slot 0x18 0x5a3640
-  // === END GENERATED DECLS (TTacticalBattle) ===
 
   // Offset-faithful layout (object is 0x78 per RTTI; TArmyBattle adds no bytes).
   // The ctor (0x59f770) zeroes +4, +8, +0x24, +0x1c, +0x34, +0x74, +0x20 -- in that

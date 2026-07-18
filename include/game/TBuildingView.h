@@ -7,7 +7,6 @@
 // VTABLE: IMPERIALISM 0x00651458
 class TBuildingView : public TNoHilitePicture {
 public:
-  // === BEGIN GENERATED DECLS (TBuildingView) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TBuildingView)
   virtual ~TBuildingView() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -133,7 +132,6 @@ public:
                                                                int arg3); // slot 0x77 0x4c70e0
   virtual undefined SetUniversityDialogTextAndRefresh(int* view,
                                                       CString text); // slot 0x78 0x4c6ff0
-  // === END GENERATED DECLS (TBuildingView) ===
   // TNoHilitePicture's own slice ends at 0x94 (its ctor writes field90); RTTI oracle
   // confirms sizeof(TBuildingView) == 0xa0. The ctor (0x4c6eb0) only writes field94;
   // field98 is a base-declared slot that some derived ctors init (e.g. TShipyardView)

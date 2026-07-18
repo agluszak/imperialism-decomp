@@ -8,7 +8,6 @@ struct MciMovieWindowState;
 // VTABLE: IMPERIALISM 0x0066f708
 class TMovieView : public TPicture {
 public:
-  // === BEGIN GENERATED DECLS (TMovieView) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TMovieView)
   virtual ~TMovieView() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -125,7 +124,6 @@ public:
   // slot 0x70 SetControlStateFlagAndMaybeRefresh inherited unchanged (0x48e810)
   // slot 0x71 ResetPictureResourceEntry inherited unchanged (0x48f520)
   // slot 0x72 SetPictureResourceIdAndRefresh inherited unchanged (0x48f570)
-  // === END GENERATED DECLS (TMovieView) ===
   MciMovieWindowState* movieWindowState; // +0x90
 
   TMovieView();

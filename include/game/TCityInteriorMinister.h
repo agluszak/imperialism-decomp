@@ -11,7 +11,6 @@ undefined4 thunk_InitializeCityInteriorMinister(void);
 // VTABLE: IMPERIALISM 0x006508a8
 class TCityInteriorMinister : public TInteriorMinister {
 public:
-  // === BEGIN GENERATED DECLS (TCityInteriorMinister) — refreshed by recover-class; do not hand-edit ===
   virtual ~TCityInteriorMinister() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
   // slot 0x03 AssertValid inherited unchanged (0x412bf0)
@@ -101,7 +100,6 @@ public:
   virtual undefined CityMinisterSlot45();                                    // slot 0x45 0x4c4e60
   virtual undefined CityMinisterSlot46();                                    // slot 0x46 0x4c4fe0
   virtual undefined BuildFrogCityTerrainCountsAndOverlayStats();             // slot 0x47 0x4c5240
-  // === END GENERATED DECLS (TCityInteriorMinister) ===
   TCityInteriorMinister();
   void InitializeCityInteriorState();
 

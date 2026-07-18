@@ -6,7 +6,6 @@
 // VTABLE: IMPERIALISM 0x0066aa48
 class TTaskList : public TList {
 public:
-  // === BEGIN GENERATED DECLS (TTaskList) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TTaskList)
   virtual ~TTaskList() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -39,7 +38,6 @@ public:
   // slot 0x1d QueueCityRecruitmentSupportCommandsIfDeficit inherited unchanged (0x487bd0)
   // slot 0x1e GetTTaskClassNamePointer inherited unchanged (0x487cc0)
   virtual int CreateTTechMgrInstance(); // slot 0x1f byte 0x7c 0x5aed50 (new virtual)
-                                        // === END GENERATED DECLS (TTaskList) ===
 
   TTaskList();
 };

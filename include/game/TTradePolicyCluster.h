@@ -6,7 +6,6 @@
 // VTABLE: IMPERIALISM 0x00663de0
 class TTradePolicyCluster : public TUberCluster {
 public:
-  // === BEGIN GENERATED DECLS (TTradePolicyCluster) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TTradePolicyCluster)
   virtual ~TTradePolicyCluster() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -124,7 +123,6 @@ public:
   // slot 0x71 OrphanTiny_GetDwordEcxOffset_84_00491770 inherited unchanged (0x491770)
   // slot 0x72 OrphanCallChain_C2_I51_00491790 inherited unchanged (0x491790)
   // slot 0x73 IsTradeControlAtMinimum inherited unchanged (0x5714e0)
-  // === END GENERATED DECLS (TTradePolicyCluster) ===
 
   TTradePolicyCluster();
 };

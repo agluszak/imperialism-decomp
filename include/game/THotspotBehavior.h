@@ -6,7 +6,6 @@
 // VTABLE: IMPERIALISM 0x0064eac8
 class THotspotBehavior : public TBehavior {
 public:
-// === BEGIN GENERATED DECLS (THotspotBehavior) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(THotspotBehavior)
   virtual ~THotspotBehavior() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -22,7 +21,6 @@ public:
   // slot 0x0c CreateTDialogBehaviorInstance inherited unchanged (0x4872c0)
   // slot 0x0d OrphanRetStub_004872e0 inherited unchanged (0x4872e0)
   virtual undefined WrapperFor_AllocateWithFallbackHandler_At004b0c00(); // slot 0x0e 0x4b0c00
-// === END GENERATED DECLS (THotspotBehavior) ===
 
   THotspotBehavior();
 };

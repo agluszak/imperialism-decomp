@@ -17,7 +17,6 @@ public:
 // VTABLE: IMPERIALISM 0x0064f9b0
 class TPopulationMgr : public TObject {
 public:
-  // === BEGIN GENERATED DECLS (TPopulationMgr) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TPopulationMgr)
   virtual ~TPopulationMgr() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -45,7 +44,6 @@ public:
   virtual undefined OrphanLeaf_NoCall_Ins26_004b67e0(short param_1,
                                                      short param_2); // slot 0x13 0x4b67e0
   virtual undefined OrphanLeaf_NoCall_Ins63_004b64c0();              // slot 0x14 0x4b64c0
-  // === END GENERATED DECLS (TPopulationMgr) ===
 
   void NotifyProductionPresetSlot2C(int a, int b, int c) {
     OrphanLeaf_NoCall_Ins47_004b5dc0(static_cast<short>(a), static_cast<short>(b),

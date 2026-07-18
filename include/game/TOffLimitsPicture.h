@@ -7,7 +7,6 @@
 // VTABLE: IMPERIALISM 0x00660fb0
 class TOffLimitsPicture : public TPicture {
 public:
-  // === BEGIN GENERATED DECLS (TOffLimitsPicture) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TOffLimitsPicture)
   virtual ~TOffLimitsPicture() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -126,7 +125,6 @@ public:
   // Ground truth (RET 0x4) proves the previous 0-arg declaration was a poison-pill
   // arity mismatch: merges srcRegion into this object's own ownClipRegion90.
   virtual undefined ForwardCopyRgn(RgnHandle srcRegion); // slot 0x73 0x573940
-  // === END GENERATED DECLS (TOffLimitsPicture) ===
   // TPicture ends at 0x90; this object's own 4-byte slice is a lazily-created clip
   // region wrapper (destroyed by Free(), merged into by
   // ForwardCopyRgn, and read/written by

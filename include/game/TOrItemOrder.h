@@ -6,7 +6,6 @@
 // VTABLE: IMPERIALISM 0x0064f8f8
 class TOrItemOrder : public TItemOrder {
 public:
-// === BEGIN GENERATED DECLS (TOrItemOrder) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TOrItemOrder)
   virtual ~TOrItemOrder() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -26,7 +25,6 @@ public:
   // slot 0x10 FillOrderSheet inherited unchanged (0x4b5510)
   // slot 0x11 InitializeCityProductionState_Impl_At004b5290 inherited unchanged (0x4b5290)
   virtual undefined InitializeCityProductionState_Impl_At004b5870(int param_1, undefined2 param_2, undefined2 param_3, undefined2 param_4, undefined2 param_5); // slot 0x12 0x4b5870
-// === END GENERATED DECLS (TOrItemOrder) ===
 
   TOrItemOrder();
 };

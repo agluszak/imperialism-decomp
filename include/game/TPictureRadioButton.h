@@ -6,7 +6,6 @@
 // VTABLE: IMPERIALISM 0x0065ed98
 class TPictureRadioButton : public TToggleButton {
 public:
-  // === BEGIN GENERATED DECLS (TPictureRadioButton) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TPictureRadioButton)
   virtual ~TPictureRadioButton() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -128,7 +127,6 @@ public:
   virtual undefined WrapperFor_thunk_SetUiControlVisibleFlagAndMaybeRefreshWindow_At00570de0(
       char param_1);                                                          // slot 0x75 0x570de0
   virtual undefined WrapperFor_CopyOffset10PointPairToOutOrZero_At00570ea0(); // slot 0x76 0x570ea0
-  // === END GENERATED DECLS (TPictureRadioButton) ===
 
   TPictureRadioButton();
 };

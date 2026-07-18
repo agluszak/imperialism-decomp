@@ -11,7 +11,6 @@ class TEventHandler;
 // VTABLE: IMPERIALISM 0x6653c8
 class TProductionCluster : public TUberCluster {
 public:
-  // === BEGIN GENERATED DECLS (TProductionCluster) — refreshed by recover-class; do not hand-edit ===
   virtual ~TProductionCluster() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
   // slot 0x03 AssertValid inherited unchanged (0x412bf0)
@@ -131,7 +130,6 @@ public:
   virtual void ApplyMoveValue(int value);                                   // slot 0x74 0x586a60
   virtual int NotifyControlSelectionChange(void* boundEntry, int arg2 = 0); // slot 0x75 0x586ab0
   virtual int GetControlFlag(int value90 = 0, int value94 = 0);             // slot 0x76 0x586a80
-  // === END GENERATED DECLS (TProductionCluster) ===
   int field88;
   short field8c;
   short field8e;

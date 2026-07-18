@@ -209,7 +209,6 @@ extern "C" short* __cdecl BuildHexAreaTileIndexList(short centerTileIndex, short
 // VTABLE: IMPERIALISM 0x006587e0
 class TMapMgr : public TObject {
 public:
-  // === BEGIN GENERATED DECLS (TMapMgr) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TMapMgr)
   virtual ~TMapMgr() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -598,7 +597,6 @@ public:
   virtual void
   SetTileTransportFlagsTo0x37AndRefreshNeighbors(short nTileIndex,
                                                  short nOwnerNationId); // slot 0x4d 0x514a20
-  // === END GENERATED DECLS (TMapMgr) ===
 
   // Recomputes the per-region strategic-score heatmap (cityScoreTable[*].cityScoreValue)
   // used by turn-AI order planning, then updates cityScoreTotal with the mean. 0x00518130.

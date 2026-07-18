@@ -6,7 +6,6 @@ struct CRuntimeClass;
 // VTABLE: IMPERIALISM 0x65f210
 class TUberCluster : public TCluster {
 public:
-  // === BEGIN GENERATED DECLS (TUberCluster) — refreshed by recover-class; do not hand-edit ===
   virtual ~TUberCluster() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
   // slot 0x03 AssertValid inherited unchanged (0x412bf0)
@@ -122,7 +121,6 @@ public:
   // slot 0x71 OrphanTiny_GetDwordEcxOffset_84_00491770 inherited unchanged (0x491770)
   // slot 0x72 OrphanCallChain_C2_I51_00491790 inherited unchanged (0x491790)
   virtual int IsTradeControlAtMinimum(); // slot 0x73 0x5714e0
-                                         // === END GENERATED DECLS (TUberCluster) ===
   void HandleTradeMoveControlAdjustment(int commandId, void* eventArg, int eventExtra);
   void DispatchRuntimeApplyMoveValue(int value);
   TUberCluster();

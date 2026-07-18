@@ -6,7 +6,6 @@
 // VTABLE: IMPERIALISM 0x0064f798
 class TTrainingOrder : public TProductionOrder {
 public:
-  // === BEGIN GENERATED DECLS (TTrainingOrder) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TTrainingOrder)
   virtual ~TTrainingOrder() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -29,7 +28,6 @@ public:
   virtual undefined
   InitializeCityProductionState_Impl_At004b6b20(int param_1,
                                                 undefined2 param_2); // slot 0x11 0x4b6b20
-  // === END GENERATED DECLS (TTrainingOrder) ===
 
   TTrainingOrder();
 };

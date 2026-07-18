@@ -12,7 +12,6 @@ class TMapUberPicture;
 // VTABLE: IMPERIALISM 0x00669170
 class TMiniMapView : public TControl {
 public:
-  // === BEGIN GENERATED DECLS (TMiniMapView) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TMiniMapView)
   virtual ~TMiniMapView() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -128,7 +127,6 @@ public:
   // slot 0x6e SetControlPictureEntryAndMaybeRefresh inherited unchanged (0x48e7a0)
   // slot 0x6f LogUnhandledDialogMethodAndReturnFalse inherited unchanged (0x4294a0)
   // slot 0x70 SetControlStateFlagAndMaybeRefresh inherited unchanged (0x48e810)
-  // === END GENERATED DECLS (TMiniMapView) ===
   // TControl ends at 0x84; this object's own slice runs 0x84-0x9f (object size 0xa0).
   // Owning TMapUberPicture backref -- set by CreateToolWindow_00599CF0 right after
   // construction (not by the ctor itself; ctor leaves it untouched).

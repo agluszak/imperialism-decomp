@@ -6,7 +6,6 @@
 // VTABLE: IMPERIALISM 0x006614c8
 class TScrollBarView : public TControl {
 public:
-  // === BEGIN GENERATED DECLS (TScrollBarView) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TScrollBarView)
   virtual ~TScrollBarView() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -124,7 +123,6 @@ public:
   // slot 0x6e SetControlPictureEntryAndMaybeRefresh inherited unchanged (0x48e7a0)
   // slot 0x6f LogUnhandledDialogMethodAndReturnFalse inherited unchanged (0x4294a0)
   // slot 0x70 SetControlStateFlagAndMaybeRefresh inherited unchanged (0x48e810)
-  // === END GENERATED DECLS (TScrollBarView) ===
 
   // Layout past TControl (0x84): allocation size 0x94 (`new` at 0x573d15). The three
   // words at 0x88..0x8c are the bounded-value triple seeded by

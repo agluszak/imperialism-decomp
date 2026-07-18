@@ -9,7 +9,6 @@ class TStream;
 // VTABLE: IMPERIALISM 0x0064bdd0
 class TAdorner : public TObject {
 public:
-  // === BEGIN GENERATED DECLS (TAdorner) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TAdorner)
   virtual ~TAdorner() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -34,7 +33,6 @@ public:
       int unusedArg1, int unusedArg2, int unusedArg3, int unusedArg4); // slot 0x0f 0x49da50
   virtual undefined WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049da80(
       int unusedArg); // slot 0x10 0x49da80
-                      // === END GENERATED DECLS (TAdorner) ===
 
   TAdorner();
 };

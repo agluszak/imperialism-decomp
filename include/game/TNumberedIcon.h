@@ -6,7 +6,6 @@
 // VTABLE: IMPERIALISM 0x006580b0
 class TNumberedIcon : public TMegaPicture {
 public:
-  // === BEGIN GENERATED DECLS (TNumberedIcon) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TNumberedIcon)
   virtual ~TNumberedIcon() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -127,7 +126,6 @@ public:
   // slot 0x75 OrphanCallChain_C1_I08_00573690 inherited unchanged (0x573690)
   virtual undefined OrphanCallChain_C1_I10_005076d0(short param_1);           // slot 0x76 0x5076d0
   virtual undefined Helper_Uses_ConstructTMyNumberTextBaseState_At00507570(); // slot 0x77 0x507570
-  // === END GENERATED DECLS (TNumberedIcon) ===
   // TMegaPicture ends exactly at 0xac (ASSERT_SIZE); zeroed by the ctor, no other
   // reader/writer found yet.
   int fieldAc; // +0xac

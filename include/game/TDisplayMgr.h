@@ -11,7 +11,6 @@ struct TQuickDrawSurfaceContext;
 // VTABLE: IMPERIALISM 0x00656680
 class TDisplayMgr : public TObject {
 public:
-  // === BEGIN GENERATED DECLS (TDisplayMgr) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TDisplayMgr)
   virtual ~TDisplayMgr() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -41,7 +40,6 @@ public:
   LoadMainViewClipSnapshotIntoQuickDrawState(undefined2 param_1);  // slot 0x14 0x4fedc0
   virtual void SetMapTileIconVariantTriplet(undefined1* param_1);  // slot 0x15 0x4fefc0
   virtual undefined DispatchUiWindowStatusTickForClass99Windows(); // slot 0x16 0x4ff000
-  // === END GENERATED DECLS (TDisplayMgr) ===
 
   // Frees the TQuickDrawSurfaceContext record held in `slot` and clears the slot.
   // Real __thiscall on the display manager (every callsite loads ecx = g_pDisplayMgr)

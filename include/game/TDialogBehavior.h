@@ -6,7 +6,6 @@
 // VTABLE: IMPERIALISM 0x00648da8
 class TDialogBehavior : public TBehavior {
 public:
-  // === BEGIN GENERATED DECLS (TDialogBehavior) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TDialogBehavior)
   virtual ~TDialogBehavior() override;                              // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -27,7 +26,6 @@ public:
   virtual undefined OrphanCallChain_C11_I88_004874b0(int param_1);             // slot 0x10 0x4874b0
   virtual undefined OrphanCallChain_C6_I49_004875d0(int param_1);              // slot 0x11 0x4875d0
   virtual undefined CreateTCommandInstance();                                  // slot 0x12 0x487660
-  // === END GENERATED DECLS (TDialogBehavior) ===
 
   void SetUiColorDescriptorGoldTriplet(unsigned char flag, int colorA, int colorB);
 

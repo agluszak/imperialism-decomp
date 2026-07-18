@@ -8,7 +8,6 @@ class TTacticalUnit;
 // VTABLE: IMPERIALISM 0x006696b0
 class TNavyPlayer : public TTacticalPlayer {
 public:
-  // === BEGIN GENERATED DECLS (TNavyPlayer) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TNavyPlayer)
   virtual ~TNavyPlayer() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -27,7 +26,6 @@ public:
   virtual void AddTacticalUnitToUnitListHead(TTacticalUnit* unit) override;  // slot 0x0f 0x59eea0
   // slot 0x10 AlwaysTrueTacticalPredicate10 inherited unchanged (0x59adf0)
   // slot 0x11 ProceedAfterBattleIntroAccepted inherited unchanged (0x59ae10)
-  // === END GENERATED DECLS (TNavyPlayer) ===
   // Navy slice (base TTacticalPlayer ends at +0x28).
   class TTaskForce* taskForce28; // +0x28 the side's fleet order node (0x59edd0 marks it
                                  // eliminated and prunes its order head after commit)

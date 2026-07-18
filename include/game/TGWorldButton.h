@@ -6,7 +6,6 @@
 // VTABLE: IMPERIALISM 0x0065ff60
 class TGWorldButton : public TControl {
 public:
-  // === BEGIN GENERATED DECLS (TGWorldButton) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TGWorldButton)
   virtual ~TGWorldButton() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -121,7 +120,6 @@ public:
   // slot 0x6f LogUnhandledDialogMethodAndReturnFalse inherited unchanged (0x4294a0)
   virtual void SetControlStateFlagAndMaybeRefresh(bool fEnabledState,
                                                   bool fRefreshNow) override; // slot 0x70 0x572200
-  // === END GENERATED DECLS (TGWorldButton) ===
 
   TGWorldButton();
 };

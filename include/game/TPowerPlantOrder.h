@@ -9,7 +9,6 @@ class TStream;
 // VTABLE: IMPERIALISM 0x0064f848
 class TPowerPlantOrder : public TProductionOrder {
 public:
-  // === BEGIN GENERATED DECLS (TPowerPlantOrder) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TPowerPlantOrder)
   virtual ~TPowerPlantOrder() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -30,7 +29,6 @@ public:
   virtual void FillOrderSheet(OrderSheet* orderSheet,
                               short quantity) override;   // slot 0x10 0x4b7c90
   virtual undefined InitializeCityProductionState_Impl(); // slot 0x11 0x4b7ab0
-  // === END GENERATED DECLS (TPowerPlantOrder) ===
 
   TPowerPlantOrder();
 };

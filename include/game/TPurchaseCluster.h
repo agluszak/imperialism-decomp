@@ -7,7 +7,6 @@
 // VTABLE: IMPERIALISM 0x00652210
 class TPurchaseCluster : public TCluster {
 public:
-  // === BEGIN GENERATED DECLS (TPurchaseCluster) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TPurchaseCluster)
   virtual ~TPurchaseCluster() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -129,7 +128,6 @@ public:
   virtual void __fastcall SetCityViewValueControlAmount(int* pCityViewDialog,
                                                         short nValue); // slot 0x74 0x4cc550
   virtual undefined UpdateCityViewValueControl();                      // slot 0x75 0x4cc640
-  // === END GENERATED DECLS (TPurchaseCluster) ===
   // TCluster's slice ends at 0x88; RTTI oracle confirms sizeof(TPurchaseCluster) == 0x8c.
   // The ctor (0x4cc3c0) zeroes the one own field.
   int field88; // +0x88

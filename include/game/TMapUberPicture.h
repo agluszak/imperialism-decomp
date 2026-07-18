@@ -11,7 +11,6 @@ class TMiniMapView;
 // VTABLE: IMPERIALISM 0x00668f08
 class TMapUberPicture : public TMapUberUberPicture {
 public:
-  // === BEGIN GENERATED DECLS (TMapUberPicture) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TMapUberPicture)
   virtual ~TMapUberPicture() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -162,7 +161,6 @@ public:
   // trade-tool subcontrols.
   virtual undefined
   SetTradeToolSubcontrolEnabledStateByFlag(bool enabledState); // slot 0x7f 0x59a180
-  // === END GENERATED DECLS (TMapUberPicture) ===
 
   // Own slice (TMapUberUberPicture ends at 0x94; this object is 0xc4). Layout/roles from
   // ConstructTMapUberPictureBaseState (0x5969e0) and NoOpUiLifecycleHook (0x596a80).

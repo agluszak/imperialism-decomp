@@ -6,7 +6,6 @@
 // VTABLE: IMPERIALISM 0x00652f58
 class TPlaceCityDialog : public TPicture {
 public:
-  // === BEGIN GENERATED DECLS (TPlaceCityDialog) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TPlaceCityDialog)
   virtual ~TPlaceCityDialog() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -123,7 +122,6 @@ public:
   // slot 0x71 ResetPictureResourceEntry inherited unchanged (0x48f520)
   // slot 0x72 SetPictureResourceIdAndRefresh inherited unchanged (0x48f570)
   virtual undefined BuildCityViewResourceRows(); // slot 0x73 0x4d1880
-                                                 // === END GENERATED DECLS (TPlaceCityDialog) ===
 
   TPlaceCityDialog();
 };

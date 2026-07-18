@@ -6,7 +6,6 @@
 // VTABLE: IMPERIALISM 0x00640f58
 class TTradePageSellView : public TPageView {
 public:
-  // === BEGIN GENERATED DECLS (TTradePageSellView) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TTradePageSellView)
   virtual ~TTradePageSellView() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -117,7 +116,6 @@ public:
   // slot 0x6b OrphanCallChain_C8_I82_0056fc80 inherited unchanged (0x56fc80)
   // slot 0x6c OrphanCallChain_C8_I118_0056fdb0 inherited unchanged (0x56fdb0)
   // slot 0x6d OrphanCallChain_C4_I18_0056ff90 inherited unchanged (0x56ff90)
-  // === END GENERATED DECLS (TTradePageSellView) ===
 
   // Cache of the last-built category slot; RebuildNationOfferRowsForCategory no-ops if
   // asked to rebuild for the same category again.

@@ -7,7 +7,6 @@
 // VTABLE: IMPERIALISM 0x0064cec0
 class TArmyCheckBox : public TControl {
 public:
-  // === BEGIN GENERATED DECLS (TArmyCheckBox) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TArmyCheckBox)
   virtual ~TArmyCheckBox() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -130,7 +129,6 @@ public:
   virtual undefined OrphanCallChain_C3_I23_004aa3e0(char param_1,
                                                     undefined4 param_2); // slot 0x75 0x4aa3e0
   virtual undefined OrphanCallChain_C1_I05_004aa430();                   // slot 0x76 0x4aa430
-  // === END GENERATED DECLS (TArmyCheckBox) ===
   // TControl's own slice ends at 0x84 (RTTI oracle: sizeof(TControl) == 0x84);
   // sizeof(TArmyCheckBox) == 0x94, adding one 0x10-byte region. The real ctor
   // (0x4a9fe0) only ever writes field88/field90 (its 6th/7th real stack params --

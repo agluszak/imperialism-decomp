@@ -25,7 +25,6 @@ ASSERT_SIZE(HelpSetRecord, 0xe);
 // VTABLE: IMPERIALISM 0x00657040
 class THelpMgr : public TObject {
 public:
-  // === BEGIN GENERATED DECLS (THelpMgr) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(THelpMgr)
   virtual ~THelpMgr() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -38,7 +37,6 @@ public:
   // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
   virtual undefined InitializeHelpManagerIndexArrayAndState(); // slot 0x0a 0x500680
   virtual undefined OrphanCallChain_C1_I22_00500f10();         // slot 0x0b 0x500f10
-  // === END GENERATED DECLS (THelpMgr) ===
 
   // Empty release-build hook invoked (this = g_pHelpMgr) after diplomacy policy/grant
   // state changes (callers 0x4dd040/0x4ddfc0/0x4de340 push three args and load ECX from

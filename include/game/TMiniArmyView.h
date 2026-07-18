@@ -6,7 +6,6 @@
 // VTABLE: IMPERIALISM 0x0064d550
 class TMiniArmyView : public TControl {
 public:
-  // === BEGIN GENERATED DECLS (TMiniArmyView) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TMiniArmyView)
   virtual ~TMiniArmyView() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -122,7 +121,6 @@ public:
   // slot 0x6f LogUnhandledDialogMethodAndReturnFalse inherited unchanged (0x4294a0)
   // slot 0x70 SetControlStateFlagAndMaybeRefresh inherited unchanged (0x48e810)
   virtual undefined OrphanRetStub_004aad20(); // slot 0x71 0x4aad20
-                                              // === END GENERATED DECLS (TMiniArmyView) ===
   // Unrecovered context object read by ApplyRectSlot110: +0x24 name (CString), +0x34
   // veterancy level (short). Raw storage until the real pointee class is identified.
   void* field84; // +0x84

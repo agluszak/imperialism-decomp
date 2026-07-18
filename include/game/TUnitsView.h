@@ -7,7 +7,6 @@
 // VTABLE: IMPERIALISM 0x006518e8
 class TUnitsView : public TBuildingView {
 public:
-  // === BEGIN GENERATED DECLS (TUnitsView) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TUnitsView)
   virtual ~TUnitsView() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -129,7 +128,6 @@ public:
   // slot 0x76 OrphanRetStub_004c6fb0 inherited unchanged (0x4c6fb0)
   // slot 0x77 SetUniversityDialogLocalizedTextAndRefresh inherited unchanged (0x4c70e0)
   // slot 0x78 SetUniversityDialogTextAndRefresh inherited unchanged (0x4c6ff0)
-  // === END GENERATED DECLS (TUnitsView) ===
   // RTTI oracle: sizeof(TUnitsView) == 0xa0, identical to TBuildingView -- this class
   // adds no data members of its own; its ctor (0x4c7fd0) only installs its own vtable
   // over the inlined TBuildingView base construction.

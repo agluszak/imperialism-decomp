@@ -44,7 +44,6 @@ ASSERT_SIZE(TBitmapResourceLoader, 0x20);
 // VTABLE: IMPERIALISM 0x0064c300
 class TAnimation : public TObject {
 public:
-  // === BEGIN GENERATED DECLS (TAnimation) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TAnimation)
   virtual ~TAnimation() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -58,7 +57,6 @@ public:
   virtual undefined AdvanceAnimationTickAndInvalidateOnFrameFlip();          // slot 0x0a 0x49f140
   virtual undefined RenderBattleReportInsetWithPaletteShift();               // slot 0x0b 0x49f190
   virtual undefined RenderBattleReportViewSurfaceSpriteWithResourceHandle(); // slot 0x0c 0x49f2d0
-  // === END GENERATED DECLS (TAnimation) ===
   // Object slice verified in 0x49f0c0 (init) and 0x49f140 (per-tick frame flip).
   class TView* ownerView04; // +0x04 view whose rect is invalidated on each frame flip
   short frameIndex08;       // +0x08 current frame index; wraps at frameCount0A

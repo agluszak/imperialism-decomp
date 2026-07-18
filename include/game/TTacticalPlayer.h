@@ -7,7 +7,6 @@
 // VTABLE: IMPERIALISM 0x00669598
 class TTacticalPlayer : public TObject {
 public:
-  // === BEGIN GENERATED DECLS (TTacticalPlayer) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TTacticalPlayer)
   virtual ~TTacticalPlayer() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -27,7 +26,6 @@ public:
   virtual unsigned char
   AlwaysTrueTacticalPredicate10(class TTacticalUnit* unit); // slot 0x10 0x59adf0
   virtual void ProceedAfterBattleIntroAccepted();           // slot 0x11 0x59ae10
-  // === END GENERATED DECLS (TTacticalPlayer) ===
 
   // Base slice (+0x04..+0x27; TArmyPlayer appends at +0x28 up to 0x54). Evidence:
   // battle setup 0x59f890 (unitList4/battle14 on both players), army side init 0x59b1b0

@@ -6,7 +6,6 @@
 // VTABLE: IMPERIALISM 0x006648d8
 class TCloseParentButton : public TButton {
 public:
-  // === BEGIN GENERATED DECLS (TCloseParentButton) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TCloseParentButton)
   virtual ~TCloseParentButton() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -122,7 +121,6 @@ public:
   // slot 0x6f LogUnhandledDialogMethodAndReturnFalse inherited unchanged (0x4294a0)
   // slot 0x70 SetControlStateFlagAndMaybeRefresh inherited unchanged (0x48e810)
   // slot 0x71 WrapperFor_thunk_TemporarilyClearAndRestoreUiInvalidationFlag_At00492db0 inherited unchanged (0x492db0)
-  // === END GENERATED DECLS (TCloseParentButton) ===
 
   TCloseParentButton();
 };

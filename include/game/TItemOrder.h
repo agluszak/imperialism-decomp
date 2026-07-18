@@ -9,7 +9,6 @@ class TStream;
 // VTABLE: IMPERIALISM 0x0064f958
 class TItemOrder : public TProductionOrder {
 public:
-  // === BEGIN GENERATED DECLS (TItemOrder) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TItemOrder)
   virtual ~TItemOrder() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -33,7 +32,6 @@ public:
   InitializeCityProductionState_Impl_At004b5290(int param_1, undefined2 param_2, undefined2 param_3,
                                                 undefined2 param_4,
                                                 undefined2 param_5); // slot 0x11 0x4b5290
-  // === END GENERATED DECLS (TItemOrder) ===
   // TItemOrder is 0x54 bytes vs. TProductionOrder's 0x4c (RTTI), adding four shorts
   // (0x4c..0x54), all written by the slot-0x11 init
   // InitializeCityProductionState_Impl (0x004b5290). Unlike TUnitOrder (whose 0x4c is

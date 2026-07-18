@@ -8,7 +8,6 @@ struct CRuntimeClass;
 // VTABLE: IMPERIALISM 0x666fe0
 class THQButton : public TPicture {
 public:
-  // === BEGIN GENERATED DECLS (THQButton) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(THQButton)
   virtual ~THQButton() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -128,7 +127,6 @@ public:
   // slot 0x72 SetPictureResourceIdAndRefresh inherited unchanged (0x48f570)
   virtual bool IsSelected(short value = -1, bool refreshNow = true);    // slot 0x73 0x58b890
   virtual void SetSelectionStateAndRefreshBitmap(short selectionState); // slot 0x74 0x58b8d0
-  // === END GENERATED DECLS (THQButton) ===
   short glyph90;
   short timingWord92;
   short glyph94;

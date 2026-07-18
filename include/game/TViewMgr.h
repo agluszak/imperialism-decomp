@@ -19,7 +19,6 @@ public:
   // Base Windows cursor resource ID for cursorTable's indexing scheme (see below).
   enum { kCursorResourceIdBase = 1000 };
 
-  // === BEGIN GENERATED DECLS (TViewMgr) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TViewMgr)
   virtual ~TViewMgr() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -40,7 +39,6 @@ public:
   virtual void ComputeTurnEventDialogPlacementByCode(TView* dialogView,
                                                      POINT* outPlacement); // slot 0x11 0x5d69b0
   virtual void RefreshMainViewNationIndicatorForCurrentTurnEvent();        // slot 0x12 0x5d6b70
-  // === END GENERATED DECLS (TViewMgr) ===
 
   // Extended UI-runtime virtuals (same object as g_pUiRuntimeContext @ 0x006A21BC).
   virtual void DispatchTurnEventSlot4C(short eventCode, int payload); // 0x4c

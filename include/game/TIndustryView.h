@@ -7,7 +7,6 @@
 // VTABLE: IMPERIALISM 0x00652448
 class TIndustryView : public TBuildingView {
 public:
-  // === BEGIN GENERATED DECLS (TIndustryView) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TIndustryView)
   virtual ~TIndustryView() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -130,7 +129,6 @@ public:
   virtual undefined OrphanRetStub_004c6fb0() override; // slot 0x76 0x4cd040
   // slot 0x77 SetUniversityDialogLocalizedTextAndRefresh inherited unchanged (0x4c70e0)
   // slot 0x78 SetUniversityDialogTextAndRefresh inherited unchanged (0x4c6ff0)
-  // === END GENERATED DECLS (TIndustryView) ===
   // TBuildingView's slice ends at 0xa0; RTTI oracle confirms sizeof(TIndustryView) == 0xa8.
   // The ctor (0x4cc790) zeroes fieldA0 and sets fieldA4 to -1; padA6 rounds to 0xa8.
   int fieldA0;   // +0xa0

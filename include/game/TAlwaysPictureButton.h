@@ -7,7 +7,6 @@ struct CRuntimeClass;
 // VTABLE: IMPERIALISM 0x65e928
 class TAlwaysPictureButton : public TPictureButton {
 public:
-  // === BEGIN GENERATED DECLS (TAlwaysPictureButton) — refreshed by recover-class; do not hand-edit ===
   virtual ~TAlwaysPictureButton() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
   // slot 0x03 AssertValid inherited unchanged (0x412bf0)
@@ -122,7 +121,6 @@ public:
   // slot 0x71 ResetPictureResourceEntry inherited unchanged (0x48f520)
   // slot 0x72 SetPictureResourceIdAndRefresh inherited unchanged (0x48f570)
   // slot 0x73 IsSelected inherited unchanged (0x5708c0)
-  // === END GENERATED DECLS (TAlwaysPictureButton) ===
   TAlwaysPictureButton();
   DECLARE_DYNCREATE(TAlwaysPictureButton)
   void SetControlStateFlagAndMaybeRefresh(bool enabledState, bool refreshNow) override;

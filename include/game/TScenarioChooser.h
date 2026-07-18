@@ -6,7 +6,6 @@
 // VTABLE: IMPERIALISM 0x00644540
 class TScenarioChooser : public TNoHilitePicture {
 public:
-  // === BEGIN GENERATED DECLS (TScenarioChooser) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TScenarioChooser)
   virtual ~TScenarioChooser() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -126,7 +125,6 @@ public:
   // slot 0x73 UniversityDialogMethod_00405623 inherited unchanged (0x572bb0)
   virtual undefined ApplyScenarioSelectionAndPostTurnEvent5E4();     // slot 0x74 0x57a350
   virtual undefined PostTurnEvent5DCOrResetScenarioSelectionState(); // slot 0x75 0x57a2d0
-  // === END GENERATED DECLS (TScenarioChooser) ===
 
   TScenarioChooser();
 };
