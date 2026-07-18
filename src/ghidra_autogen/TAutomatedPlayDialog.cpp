@@ -77,9 +77,9 @@ void TAutomatedPlayDialog::CallVoidSlotA0()
   }
   g_nTurnCooldownDeferCounter006A43C4 =
        (**(code **)(*(int *)CONCAT31(extraout_var,uVar1) + 0x1e8))();
-  g_nTurnCooldownSideFlag00698B10 = *(short *)&g_pLocalizationTable->field_0x8;
+  g_nTurnCooldownSideFlag00698B10 = *(short *)&g_pSimMgr->field_0x8;
   if (0 < g_nTurnCooldownDeferCounter006A43C4) {
-    (*g_pLocalizationTable->vftable[8].slot_0x04)();
+    (*g_pSimMgr->vftable[8].slot_0x04)();
   }
   func_0x00409a8e();
   return;

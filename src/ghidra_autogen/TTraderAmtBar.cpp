@@ -47,10 +47,10 @@ CRuntimeClass * TTraderAmtBar::GetRuntimeClass()
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0058AEF0
-// GHIDRA_NAME TTraderAmtBar::ConstructBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructBaseState(void)
+// GHIDRA_NAME TTraderAmtBar::TTraderAmtBar
+// GHIDRA_PROTO undefined __thiscall TTraderAmtBar(void)
 
-TTraderAmtBar * TTraderAmtBar::ConstructBaseState()
+TTraderAmtBar * TTraderAmtBar::TTraderAmtBar()
 
 {
   func_0x004064e2();
@@ -213,12 +213,12 @@ void TTraderAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache()
       uStack_c._0_1_ = 1;
       this_00 = (CDC *)func_0x004021c6();
       pHVar4 = CreateRectRgnIndirect(&RStack_44);
-      CBrush::AttachRegionHandleToClipStateAndRegister((CBrush *)&local_54,(int)pHVar4);
+      CBrush::CGdiObject__Attach((CBrush *)&local_54,(int)pHVar4);
       CDC::SelectClipRgn(this_00,(int)&local_54);
-      DeleteObject();
+      CGdiObject__DeleteObject();
       local_54 = &PTR_LAB_00671054;
       uStack_c._0_1_ = 2;
-      DeleteObject();
+      CGdiObject__DeleteObject();
       local_54 = (undefined **)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
       uStack_c = CONCAT31(uStack_c._1_3_,3);
       (*pTVar1->OrphanRetStub_0059add0_4b)(auStack_24);
@@ -226,11 +226,11 @@ void TTraderAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache()
       iStack_4c = g_nOverlayClipCacheParamY;
       (*pTVar1->OrphanTiny_ReturnZero_0048a730_4e)(&iStack_50);
       if (0 < *(short *)&this->field_0x60) {
-        SetQuickDrawTextOriginWithContextOffset(0,0);
+        func_0x00408d6e(0,0);
         (**(code **)(g_pUiRuntimeContext->vftable + 0x34))
                   (CONCAT22(extraout_var_00,*(undefined2 *)&this->field_0x66));
         func_0x00402e73(1,5);
-        DrawCenteredGuideLineOnMapDc(*(short *)&this->field_0x60 + -1,0);
+        func_0x00403bb6(*(short *)&this->field_0x60 + -1,0);
         func_0x004088aa();
       }
       func_0x00405be1(pLVar5);

@@ -106,10 +106,10 @@ void TCommand::NextDiplomacyCommandVtableSlotE8_NotifyOwnerSlot94()
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00487A00
-// GHIDRA_NAME TCommand::OrphanRetStub_00487a00
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_00487a00(void)
+// GHIDRA_NAME TCommand::DoIt
+// GHIDRA_PROTO undefined __thiscall DoIt(void)
 
-void TCommand::OrphanRetStub_00487a00()
+void TCommand::DoIt()
 
 {
   return;

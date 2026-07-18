@@ -95,20 +95,19 @@ void TItemBoyView::ApplyRectSlot110()
        (char *)CONCAT22((short)((uint)*(undefined2 **)&this->field_0x60 >> 0x10),
                         **(undefined2 **)&this->field_0x60);
   CStack_2c.m_pchData = (char *)0x4afa4f;
-  (*g_pLocalizationTable->vftable[0xf].slot_0x04)();
+  (*g_pSimMgr->vftable[0xf].slot_0x04)();
   CStack_34.m_pchData = &stack0xffffffe0;
   CStack_2c.m_pchData = (char *)(int)*(short *)(*(int *)&this->field_0x60 + 2);
   CStack_30.m_pchData = &g_szDecimalFormat;
-  _Format_CString__QAAXPBDZZ();
+  CString__Format();
   CStack_2c.m_pchData = (char *)0x4afa72;
   CString::CString(&CStack_24);
   CStack_2c.m_pchData = (char *)&CStack_24;
   CStack_30.m_pchData = (char *)0x1d;
   CStack_34.m_pchData = (char *)0x273c;
   iStack_c = CONCAT31(iStack_c._1_3_,3);
-  (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
-  func_0x0040988b(g_pLocalizationTable,&CStack_24,CStack_30.m_pchData,CStack_2c.m_pchData,
-                  CStack_28.m_pchData);
+  (*g_pSimMgr->vftable[0x10].slot_0x04)();
+  func_0x0040988b(g_pSimMgr,&CStack_24,CStack_30.m_pchData,CStack_2c.m_pchData,CStack_28.m_pchData);
   func_0x004031e3(&CStack_24);
   CString::~CString(&CStack_34);
   CString::~CString(&CStack_30);
@@ -135,7 +134,7 @@ void TItemBoyView::DestructTItemBoyViewAndMaybeFree(undefined4 param_1)
   undefined4 local_4;
   
   func_0x0040448f(0,10,0x2b6a);
-  SetQuickDrawTextOriginWithContextOffset(0x1a,0x14);
+  func_0x00408d6e(0x1a,0x14);
   func_0x004029aa(param_1);
   psVar2 = *(short **)&this->field_0x60;
   iVar1 = (this->field34 + -0x3a) / (int)psVar2[1];

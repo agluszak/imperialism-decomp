@@ -59,8 +59,7 @@ undefined4 * TAdmiral::CreateObject(void)
     func_0x0040231a(this);
     for (puVar1 = g_pNavySecondaryOrderListHead; puVar1 != (undefined4 *)0x0;
         puVar1 = (undefined4 *)puVar1[5]) {
-      if ((puVar1 != puVar2) &&
-         (iVar3 = CompareAnsiStringsWithMbcsAwareness(puVar1[3],this->m_pchData), iVar3 == 0)) {
+      if ((puVar1 != puVar2) && (iVar3 = _mbscmp(puVar1[3],this->m_pchData), iVar3 == 0)) {
         func_0x004058f3();
       }
     }
@@ -117,9 +116,7 @@ TAdmiral * TAdmiral::TAdmiral(undefined2 param_1)
     for (pTVar1 = g_pNavySecondaryOrderListHead; pTVar1 != (TAdmiral *)0x0;
         pTVar1 = *(TAdmiral **)&pTVar1->field_0x14) {
       if ((pTVar1 != this) &&
-         (iVar2 = CompareAnsiStringsWithMbcsAwareness
-                            (*(undefined4 *)&pTVar1->field_0xc,*(undefined4 *)this_00), iVar2 == 0))
-      {
+         (iVar2 = _mbscmp(*(undefined4 *)&pTVar1->field_0xc,*(undefined4 *)this_00), iVar2 == 0)) {
         func_0x004058f3();
       }
     }

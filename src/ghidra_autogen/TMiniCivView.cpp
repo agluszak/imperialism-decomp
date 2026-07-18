@@ -148,13 +148,13 @@ TMiniCivView::ConstructTMiniCivViewBaseState
   switch(*(undefined4 *)(puVar2 + 8)) {
   case 1:
     pCStack_68 = (CString *)0x8;
-    (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2724);
+    (*g_pSimMgr->vftable[0x10].slot_0x04)(0x2724);
     pCStack_68 = (CString *)0x4abe1a;
     CString::operator+=();
     break;
   case 5:
     pCStack_68 = (CString *)0x1;
-    (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2724);
+    (*g_pSimMgr->vftable[0x10].slot_0x04)(0x2724);
     pCStack_68 = &CStack_14;
     AssignSharedStringConcatRefAndCStr(&CStack_48);
     iStack_24._0_1_ = 6;
@@ -165,7 +165,7 @@ TMiniCivView::ConstructTMiniCivViewBaseState
     break;
   case 6:
     pCStack_68 = (CString *)0x2;
-    (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2724);
+    (*g_pSimMgr->vftable[0x10].slot_0x04)(0x2724);
     pCStack_68 = &CStack_14;
     AssignSharedStringConcatRefAndCStr(&CStack_44);
     iStack_24._0_1_ = 7;
@@ -176,7 +176,7 @@ TMiniCivView::ConstructTMiniCivViewBaseState
     break;
   case 7:
     pCStack_68 = (CString *)0x3;
-    (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2724);
+    (*g_pSimMgr->vftable[0x10].slot_0x04)(0x2724);
     pCStack_68 = &CStack_14;
     AssignSharedStringConcatRefAndCStr(&stack0xffffffc0);
     iStack_24._0_1_ = 8;
@@ -187,7 +187,7 @@ TMiniCivView::ConstructTMiniCivViewBaseState
     break;
   case 8:
     pCStack_68 = (CString *)0x4;
-    (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2724);
+    (*g_pSimMgr->vftable[0x10].slot_0x04)(0x2724);
     pCStack_68 = &CStack_14;
     AssignSharedStringConcatRefAndCStr(&stack0xffffffc4);
     iStack_24._0_1_ = 9;
@@ -208,20 +208,20 @@ TMiniCivView::ConstructTMiniCivViewBaseState
         sVar4 = (short)*(char *)(iVar5 + 0x11 + sVar1 * 0x24);
         pCStack_68 = (CString *)CONCAT22((short)((uint)iVar5 >> 0x10),sVar4);
         if ((sVar4 != -1) && ((&DAT_006963e8)[sVar4] != '\0')) {
-          (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2711);
+          (*g_pSimMgr->vftable[0x10].slot_0x04)(0x2711);
           CStack_10.m_pchData = CStack_10.m_pchData + 1;
         }
         sVar6 = sVar6 + 1;
       } while (sVar6 < 2);
       if ((short)CStack_10.m_pchData < 2) {
         pCStack_68 = (CString *)0xa;
-        (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2724);
-        func_0x0040988b(g_pLocalizationTable,&uStack_5c,uStack_28,uStack_20);
+        (*g_pSimMgr->vftable[0x10].slot_0x04)(0x2724);
+        func_0x0040988b(g_pSimMgr,&uStack_5c,uStack_28,uStack_20);
       }
       else {
         pCStack_68 = (CString *)0x6;
-        (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2724);
-        func_0x0040988b(g_pLocalizationTable,&uStack_5c,uStack_28,uStack_20,uStack_58);
+        (*g_pSimMgr->vftable[0x10].slot_0x04)(0x2724);
+        func_0x0040988b(g_pSimMgr,&uStack_5c,uStack_28,uStack_20,uStack_58);
       }
       pCStack_68 = &CStack_50;
       AssignSharedStringConcatRefAndCStr(&stack0xffffffc8);
@@ -233,11 +233,11 @@ TMiniCivView::ConstructTMiniCivViewBaseState
     }
     else if (*(short *)(puVar2 + 4) == 7) {
       pCStack_68 = (CString *)0x5;
-      (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2724);
-      (*g_pLocalizationTable->vftable[0x10].slot_0x04)
+      (*g_pSimMgr->vftable[0x10].slot_0x04)(0x2724);
+      (*g_pSimMgr->vftable[0x10].slot_0x04)
                 (0x2725,CONCAT22((short)((uint)&uStack_20 >> 0x10),*(undefined2 *)(puVar2 + 4)),
                  &uStack_20);
-      func_0x0040988b(g_pLocalizationTable,&pCStack_68,unaff_EBX,local_2c);
+      func_0x0040988b(g_pSimMgr,&pCStack_68,unaff_EBX,local_2c);
       pCStack_68 = &CStack_50;
       AssignSharedStringConcatRefAndCStr(&stack0xffffffcc);
       iStack_24._0_1_ = 0xb;
@@ -248,11 +248,11 @@ TMiniCivView::ConstructTMiniCivViewBaseState
     }
     else {
       pCStack_68 = (CString *)0x7;
-      (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2724);
-      (*g_pLocalizationTable->vftable[0x10].slot_0x04)
+      (*g_pSimMgr->vftable[0x10].slot_0x04)(0x2724);
+      (*g_pSimMgr->vftable[0x10].slot_0x04)
                 (0x2725,CONCAT22((short)((uint)&uStack_20 >> 0x10),*(undefined2 *)(puVar2 + 4)),
                  &uStack_20);
-      func_0x0040988b(g_pLocalizationTable,&pCStack_68,unaff_EBX,local_2c);
+      func_0x0040988b(g_pSimMgr,&pCStack_68,unaff_EBX,local_2c);
       pCStack_68 = &CStack_50;
       AssignSharedStringConcatRefAndCStr(&local_30);
       iStack_24._0_1_ = 0xc;
@@ -329,10 +329,10 @@ void TMiniCivView::ApplyRectSlot110()
                        *(undefined2 *)(*(int *)&this->field_0x84 + 4));
   CStack_5c.m_pchData = (char *)0x2718;
   CStack_60.m_pchData = (char *)0x4ac06e;
-  (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+  (*g_pSimMgr->vftable[0x10].slot_0x04)();
   CStack_60.m_pchData = (char *)0x18;
   CStack_64.m_pchData = (char *)0x40;
-  SetQuickDrawTextOriginWithContextOffset();
+  func_0x00408d6e();
   CStack_60.m_pchData = (char *)&CStack_54;
   CStack_64.m_pchData = (char *)0x4ac084;
   func_0x004029aa();
@@ -358,9 +358,9 @@ void TMiniCivView::ApplyRectSlot110()
   uStack_1c = 2;
   CString::~CString((CString *)&stack0xffffffb4);
   func_0x00401bf9(0,0xc);
-  SetQuickDrawTextOriginWithContextOffset();
+  func_0x00408d6e();
   func_0x004029aa();
-  SetQuickDrawTextOriginWithContextOffset();
+  func_0x00408d6e();
   func_0x004029aa();
   uVar1 = (*g_pGlobalMapState->vftable->ApplyMapImprovementSelectionState)();
   aiStack_38[0] = (int)(short)CONCAT31(extraout_var,uVar1);

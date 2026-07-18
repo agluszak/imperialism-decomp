@@ -381,7 +381,7 @@ TTacticalBattleView::HandleCursorHoverSelectionByChildHitTestAndFallback
       (**(code **)(**(int **)&this->field_0xd0 + 0x1d0))();
     }
     func_0x00409aac();
-    DestroyScopedMapQuickDrawContext();
+    func_0x00408035();
   }
   *unaff_FS_OFFSET = uStack_1c;
   return;
@@ -484,7 +484,7 @@ TTacticalBattleView::WrapperFor_InvalidateCityDialogRectRegion_At005a9240
   int iStack_1c;
   int iStack_c;
   
-  if (*(short *)&g_pLocalizationTable->field_0x52 != 0) {
+  if (*(short *)&g_pSimMgr->field_0x52 != 0) {
     uVar1 = param_2 / *(int *)&this->field_0x80;
     iVar5 = (param_2 % *(int *)&this->field_0x80) * *(int *)&this->field_0x88 -
             (int)*(short *)&this->field_0x78;

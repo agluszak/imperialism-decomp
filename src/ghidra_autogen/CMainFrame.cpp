@@ -30,7 +30,7 @@ CMainFrame * __cdecl CMainFrame::CreateObject(void)
   pCVar1 = (CMainFrame *)operator_new(0xd0);
   local_4 = 0;
   if (pCVar1 != (CMainFrame *)0x0) {
-    CFrameWnd();
+    CFrameWnd__CFrameWnd();
     *(undefined4 *)&pCVar1->field_0xbc = 0;
     *(undefined4 *)&pCVar1->field_0xcc = 1;
     pCVar1->vftable = (CMainFrameVtbl *)&PTR_LAB_006488d8;
@@ -51,5 +51,22 @@ CRuntimeClass * CMainFrame::GetRuntimeClass(void)
 
 {
   return &classCMainFrame;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00485990
+// GHIDRA_NAME CMainFrame::SetFieldC0AndInvalidateWindowIfChanged
+// GHIDRA_PROTO undefined __thiscall SetFieldC0AndInvalidateWindowIfChanged(int param_1)
+
+int CMainFrame::SetFieldC0AndInvalidateWindowIfChanged(int param_1)
+
+{
+  int iVar1;
+  
+  iVar1 = *(int *)&this->field_0xc0;
+  if (iVar1 != param_1) {
+    *(int *)&this->field_0xc0 = param_1;
+    InvalidateRect(this->m_hWnd,(RECT *)0x0,1);
+  }
+  return iVar1;
 }
 

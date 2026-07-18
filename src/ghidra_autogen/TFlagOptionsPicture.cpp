@@ -124,7 +124,7 @@ void TFlagOptionsPicture::HandleEvent(CString param_1, undefined1 *param_2)
       (**(code **)(*(int *)CONCAT31(extraout_var,uVar1) + 0x1b4))();
       uStack_20 = 0x71;
       uStack_24 = 0x56b327;
-      (*g_pLocalizationTable->vftable[9].GetTSimMgrClassNamePointer)();
+      (*g_pSimMgr->vftable[9].GetTSimMgrClassNamePointer)();
       goto LAB_0056b529;
     }
   }
@@ -140,7 +140,7 @@ LAB_0056b474:
         uStack_24 = 0;
         uStack_2c = 0x56b49f;
         (**(code **)(*(int *)CONCAT31(extraout_var_03,uVar1) + 0x1b4))();
-        if (*(int *)&g_pLocalizationTable->field_0x44 == 1) {
+        if (*(int *)&g_pSimMgr->field_0x44 == 1) {
           iStack_30 = 0;
           if (*(char *)((int)g_pGameFlowState + 0xf4) != '\0') {
             uStack_2c = 0;
@@ -167,7 +167,7 @@ LAB_0056b474:
       goto LAB_0056b529;
     }
     if (puStack_18 == (undefined1 *)0x6c6f6164) {
-      if (*(int *)&g_pLocalizationTable->field_0x44 != 0) {
+      if (*(int *)&g_pSimMgr->field_0x44 != 0) {
         puStack_18 = (undefined1 *)0x0;
         pcStack_1c = (undefined1 *)0x0;
         uStack_20 = 0x34;
@@ -183,7 +183,7 @@ LAB_0056b474:
       uStack_20 = 0x56b3a1;
       (**(code **)(*(int *)CONCAT31(extraout_var_01,uVar1) + 0x1b4))();
       uStack_20 = 0x70;
-      pTVar3 = g_pLocalizationTable->vftable;
+      pTVar3 = g_pSimMgr->vftable;
       goto LAB_0056b526;
     }
   }
@@ -196,7 +196,7 @@ LAB_0056b474:
       uStack_20 = 0x56b51c;
       (**(code **)(*(int *)CONCAT31(extraout_var_04,uVar1) + 0x1b4))();
       uStack_20 = 0x6b;
-      pTVar3 = g_pLocalizationTable->vftable;
+      pTVar3 = g_pSimMgr->vftable;
 LAB_0056b526:
       uStack_24 = 0x56b529;
       (*pTVar3[9].GetTSimMgrClassNamePointer)();
@@ -210,7 +210,7 @@ LAB_0056b526:
       puStack_18 = (undefined1 *)0x0;
       uStack_20 = 0x56b3f8;
       (**(code **)(*(int *)CONCAT31(extraout_var_02,uVar1) + 0x1b4))();
-      if (*(int *)&g_pLocalizationTable->field_0x44 == 2) {
+      if (*(int *)&g_pSimMgr->field_0x44 == 2) {
         uStack_20 = 0x56b414;
         CString::CString(&param_1);
         uStack_20 = 0x13;
@@ -225,15 +225,14 @@ LAB_0056b526:
         local_c = (undefined1 *)&uStack_38;
         uStack_38 = extraout_ECX;
         func_0x004076b7(&CStack_8);
-        puStack_34 = (undefined *)0x56b455;
-        DispatchLocalizedUiMessageWithTemplateA13A0();
+        func_0x004096b0();
         uStack_24 = 0x56b463;
         CString::~CString((CString *)&stack0x00000000);
       }
       else {
         uStack_20 = 0x6f;
         uStack_24 = 0x56b46f;
-        (*g_pLocalizationTable->vftable[9].GetTSimMgrClassNamePointer)();
+        (*g_pSimMgr->vftable[9].GetTSimMgrClassNamePointer)();
       }
       goto LAB_0056b529;
     }
@@ -278,7 +277,7 @@ void TFlagOptionsPicture::NoOpUiLifecycleHook()
   iVar3 = 0;
   puStack_8 = (undefined1 *)0x0;
   do {
-    (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2743,iVar3,&stack0x00000000);
+    (*g_pSimMgr->vftable[0x10].slot_0x04)(0x2743,iVar3,&stack0x00000000);
     piVar2 = (int *)(*unaff_EDI)(iVar3 + 0x74787430);
     iVar1 = *piVar2;
     (**(code **)(iVar1 + 0xc))();

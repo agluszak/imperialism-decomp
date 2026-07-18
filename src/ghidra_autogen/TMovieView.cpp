@@ -3,55 +3,6 @@
 // Program: Imperialism.exe
 // Bucket: TMovieView.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00485990
-// GHIDRA_NAME TMovieView::SetFieldC0AndInvalidateWindowIfChanged
-// GHIDRA_PROTO undefined __thiscall SetFieldC0AndInvalidateWindowIfChanged(int param_1)
-
-int TMovieView::SetFieldC0AndInvalidateWindowIfChanged(int param_1)
-
-{
-  int iVar1;
-  
-  iVar1 = this[1].field2c;
-  if (iVar1 != param_1) {
-    this[1].field2c = param_1;
-    InvalidateRect((HWND)this->controlTag,(RECT *)0x0,1);
-  }
-  return iVar1;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00593C10
-// GHIDRA_NAME TMovieView::HandleBlinkStateAndScheduleTimerTick
-// GHIDRA_PROTO undefined __thiscall HandleBlinkStateAndScheduleTimerTick(char param_1)
-
-void TMovieView::HandleBlinkStateAndScheduleTimerTick(char param_1)
-
-{
-  int iVar1;
-  undefined4 uVar2;
-  
-  iVar1 = (**(code **)(**(int **)&this->field_0x6c + 0x28))();
-  if (0 < iVar1) {
-    (**(code **)(**(int **)&this->field_0x6c + 0x30))();
-    (**(code **)(**(int **)&this->field_0x70 + 0x30))();
-  }
-  if (this->field_0x78 != '\0') {
-    if (param_1 != '\0') {
-      if (*(int *)&this->field_0x7c == 0) {
-        uVar2 = func_0x004092d7();
-        *(undefined4 *)&this->field_0x7c = uVar2;
-        func_0x00407815(&LAB_00406dd4,6,0);
-      }
-      this->field_0x80 = 1;
-      return;
-    }
-    func_0x00403d96();
-    this->field_0x78 = 0;
-    *(undefined2 *)&this->field_0x74 = 0;
-  }
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x005E2100
 // GHIDRA_NAME TMovieView::CreateTMovieViewInstance
 // GHIDRA_PROTO undefined CreateTMovieViewInstance()
@@ -205,6 +156,51 @@ void TMovieView::ApplyRectSlot110()
   return;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x005E24B0
+// GHIDRA_NAME TMovieView::OpenMoviePathAndDetachOnSuccess
+// GHIDRA_PROTO undefined OpenMoviePathAndDetachOnSuccess()
+
+uint __thiscall TMovieView::OpenMoviePathAndDetachOnSuccess(int param_1,undefined4 param_2)
+
+{
+  uint in_EAX;
+  uint uVar1;
+  
+  if (*(int *)(param_1 + 0x90) != 0) {
+    uVar1 = func_0x00405de9(param_2);
+    return uVar1;
+  }
+  return in_EAX & 0xffffff00;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005E24E0
+// GHIDRA_NAME TMovieView::SendMessage806IfSelectionStateActive
+// GHIDRA_PROTO undefined SendMessage806IfSelectionStateActive()
+
+void __fastcall TMovieView::SendMessage806IfSelectionStateActive(int param_1)
+
+{
+  if (*(int *)(param_1 + 0x90) != 0) {
+    func_0x004021d5();
+    return;
+  }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005E2500
+// GHIDRA_NAME TMovieView::SendMessage808IfSelectionStateActive
+// GHIDRA_PROTO undefined SendMessage808IfSelectionStateActive()
+
+void __fastcall TMovieView::SendMessage808IfSelectionStateActive(int param_1)
+
+{
+  if (*(int *)(param_1 + 0x90) != 0) {
+    func_0x00403f76();
+    return;
+  }
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x005E2520
 // GHIDRA_NAME TMovieView::DispatchUiMouseMoveToChildren
 // GHIDRA_PROTO undefined __thiscall DispatchUiMouseMoveToChildren(undefined4 * param_1, undefined4 param_2, undefined4 param_3, undefined4 param_4)
@@ -223,8 +219,8 @@ TMovieView::DispatchUiMouseMoveToChildren
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0060A60A
-// GHIDRA_NAME TMovieView::RunModalLoop
-// GHIDRA_PROTO undefined __thiscall RunModalLoop(byte param_1)
+// GHIDRA_NAME TMovieView::TView::RunModalLoop
+// GHIDRA_PROTO undefined __thiscall TView::RunModalLoop(byte param_1)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Runs modal loop with idle/message pumping.
 // GHIDRA_COMMENT Handles idle/show-on-first-input behavior, dispatches queued messages, sends WM_ENTERIDLE/0x36A notifications, and exits on modal completion.
@@ -234,7 +230,7 @@ TMovieView::DispatchUiMouseMoveToChildren
    Handles idle/show-on-first-input behavior, dispatches queued messages, sends WM_ENTERIDLE/0x36A
    notifications, and exits on modal completion. */
 
-int TMovieView::RunModalLoop(byte param_1)
+int TMovieView::TView__RunModalLoop(byte param_1)
 
 {
   bool bVar1;
@@ -254,7 +250,7 @@ int TMovieView::RunModalLoop(byte param_1)
   bVar1 = true;
   local_c = 0;
   if ((param_1 & 4) != 0) {
-    uVar4 = GetStyle();
+    uVar4 = CWnd__GetStyle();
     bVar2 = true;
     if ((uVar4 & 0x10000000) == 0) goto LAB_0060a63b;
   }

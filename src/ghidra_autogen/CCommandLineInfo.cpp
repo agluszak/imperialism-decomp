@@ -40,7 +40,7 @@ void CCommandLineInfo::~CCommandLineInfo(void)
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
   
-  EstablishSehFrameProlog();
+  _EH_prolog();
   *(undefined4 **)(unaff_EBP + -0x10) = extraout_ECX;
   *extraout_ECX = &CObjectVtbl_0066fea4;
   *(undefined4 *)(unaff_EBP + -4) = 3;

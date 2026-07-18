@@ -20,7 +20,7 @@ undefined4 CMirrorFile::Open(void)
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
   
-  EstablishSehFrameProlog();
+  _EH_prolog();
   this = (CString *)(extraout_ECX + 0x10);
   CString::Empty();
   if ((*(byte *)(unaff_EBP + 0xd) & 0x10) != 0) {
@@ -110,7 +110,7 @@ void CMirrorFile::Close(void)
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
   
-  EstablishSehFrameProlog();
+  _EH_prolog();
   CString::CString((CString *)(unaff_EBP + -0x10),(CString *)(extraout_ECX + 0xc));
   *(undefined4 *)(unaff_EBP + -4) = 0;
   CFile::Close();
@@ -135,7 +135,7 @@ void CMirrorFile::~CMirrorFile(void)
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
   
-  EstablishSehFrameProlog();
+  _EH_prolog();
   *(undefined4 *)(unaff_EBP + -4) = 0;
   CString::~CString((CString *)(extraout_ECX + 0x10));
   *(undefined4 *)(unaff_EBP + -4) = 0xffffffff;

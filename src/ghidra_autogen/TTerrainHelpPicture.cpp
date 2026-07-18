@@ -203,7 +203,7 @@ void TTerrainHelpPicture::VTableSlot73()
   uStack_80 = CONCAT22((short)((uint)pCStack_7c >> 0x10),
                        *(short *)(&this->field_0x94 + iVar4 * 2) + -1);
   CStack_84.m_pchData = (char *)0x2756;
-  (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+  (*g_pSimMgr->vftable[0x10].slot_0x04)();
   (**(code **)(**(int **)&this->field_0x90 + 0x1ec))(&uStack_74,1);
   (**(code **)(**(int **)&this->field_0x90 + 0xa4))(1,1);
   uStack_50 = 0xffffffff;

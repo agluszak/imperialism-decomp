@@ -3,71 +3,6 @@
 // Program: Imperialism.exe
 // Bucket: TCountry.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00406758
-// GHIDRA_NAME TInterNationEventQueueManager::QueueInterNationEventRecordDeduped
-// GHIDRA_PROTO undefined __thiscall TInterNationEventQueueManager::QueueInterNationEventRecordDeduped(int param_1, int param_2, int param_3, char param_4)
-
-void __thiscall
-TInterNationEventQueueManager::QueueInterNationEventRecordDeduped
-          (TCountry *this,int param_1,int param_2,int param_3,char param_4)
-
-{
-  bool bVar1;
-  int *piVar2;
-  int iVar3;
-  int iStack_10;
-  int iStack_c;
-  int iStack_8;
-  
-  if (g_pLocalizationTable->field_0x7a == '\0') {
-    if ((param_4 == '\0') && (*(int *)&g_pLocalizationTable->field_0x44 != 0)) {
-      if (*(int *)&g_pLocalizationTable->field_0x44 == 1) {
-        func_0x00405bd7(param_1,param_2,param_3);
-        return;
-      }
-    }
-    else {
-      if ((param_1 < 5) || (0x15 < param_1)) {
-        bVar1 = false;
-      }
-      else {
-        bVar1 = true;
-      }
-      if (bVar1) {
-        func_0x00406bf9(param_1,param_2,param_3);
-        return;
-      }
-      piVar2 = (int *)func_0x00407919();
-      iVar3 = func_0x00409679();
-      while (iVar3 != 0) {
-        if (*piVar2 == param_1) {
-          if ((piVar2[1] == param_2) && ((piVar2[2] & 1 << ((byte)param_3 & 0x1f)) != 0)) {
-            return;
-          }
-          if ((piVar2[1] == param_3) && ((piVar2[2] & 1 << ((byte)param_2 & 0x1f)) != 0)) {
-            return;
-          }
-        }
-        piVar2 = (int *)func_0x004097dc();
-        iVar3 = func_0x00409679();
-      }
-      if (param_2 < 7) {
-        iStack_10 = param_1;
-        iStack_8 = 1 << ((byte)param_3 & 0x1f);
-        iStack_c = param_2;
-        (**(code **)(**(int **)&this[0x19].field_0x7c + 0x38))(&iStack_10);
-      }
-      if (((param_3 < 7) && (1 < param_1)) && (param_1 < 0x19)) {
-        iStack_10 = param_1;
-        iStack_8 = 1 << ((byte)param_2 & 0x1f);
-        iStack_c = param_3;
-        (**(code **)(**(int **)&this[0x19].field_0x7c + 0x38))(&iStack_10);
-      }
-    }
-  }
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x004D66A0
 // GHIDRA_NAME TCountry::CreateObject
 // GHIDRA_PROTO undefined CreateObject()
@@ -428,7 +363,7 @@ void TCountry::SeedRecruitAndNavyOrdersForEligibleCoastalCities()
   undefined1 *puStack_8;
   undefined4 uStack_4;
   
-  pTVar2 = g_pLocalizationTable;
+  pTVar2 = g_pSimMgr;
   uStack_c = *unaff_FS_OFFSET;
   uStack_4 = 0xffffffff;
   puStack_8 = &LAB_00631e86;
@@ -456,7 +391,7 @@ void TCountry::SeedRecruitAndNavyOrdersForEligibleCoastalCities()
           }
           puStack_8 = (undefined1 *)0xffffffff;
           func_0x00407a72(2,iVar4,CONCAT22(uVar10,*(undefined2 *)&this->field_0xc),0);
-          if (*(int *)&g_pLocalizationTable->field_0x40 < 2) {
+          if (*(int *)&g_pSimMgr->field_0x40 < 2) {
             (**(code **)(*piVar5 + 0x34))(2,0xffffffff);
           }
           unaff_EDI = operator_new(0x44);
@@ -469,7 +404,7 @@ void TCountry::SeedRecruitAndNavyOrdersForEligibleCoastalCities()
             uVar10 = extraout_var_07;
           }
           func_0x00407a72(2,iVar4,CONCAT22(uVar10,*(undefined2 *)&this->field_0xc),0);
-          if (*(int *)&g_pLocalizationTable->field_0x40 < 2) {
+          if (*(int *)&g_pSimMgr->field_0x40 < 2) {
             (**(code **)(*piVar5 + 0x34))(2,0xffffffff);
           }
           iVar6 = operator_new(0x44);
@@ -483,13 +418,13 @@ void TCountry::SeedRecruitAndNavyOrdersForEligibleCoastalCities()
           }
           unaff_EBP = (_vslot_fn *)0xffffffff;
           func_0x00407a72(7,iVar4,CONCAT22(uVar10,*(undefined2 *)&this->field_0xc),0);
-          if (*(int *)&g_pLocalizationTable->field_0x40 < 2) {
+          if (*(int *)&g_pSimMgr->field_0x40 < 2) {
             (**(code **)(*piVar5 + 0x34))(2,0xffffffff);
           }
           (*g_pGlobalMapState->vftable->SetProvinceCapitalTileFlagBit08)(iVar4);
           if (((*(short *)&this->field_0xc < 7) &&
               (g_apNationStates[*(short *)&this->field_0xc]->field_0xa0 == '\0')) &&
-             (*(int *)&g_pLocalizationTable->field_0x40 == 4)) {
+             (*(int *)&g_pSimMgr->field_0x40 == 4)) {
             local_14 = operator_new(0x44);
             puStack_8 = (undefined1 *)0x3;
             if (local_14 == 0) {
@@ -500,7 +435,7 @@ void TCountry::SeedRecruitAndNavyOrdersForEligibleCoastalCities()
             }
             puStack_8 = (undefined1 *)0xffffffff;
             func_0x00407a72(6,iVar4,*(undefined2 *)&this->field_0xc,0);
-            if (*(int *)&g_pLocalizationTable->field_0x40 < 2) {
+            if (*(int *)&g_pSimMgr->field_0x40 < 2) {
               (**(code **)(*piVar5 + 0x34))(2,0xffffffff);
             }
             unaff_EDI = operator_new(0x44);
@@ -512,7 +447,7 @@ void TCountry::SeedRecruitAndNavyOrdersForEligibleCoastalCities()
             }
             func_0x00407a72(5,iVar4,*(undefined2 *)&this->field_0xc,0);
             uVar10 = extraout_var_02;
-            if (*(int *)&g_pLocalizationTable->field_0x40 < 2) {
+            if (*(int *)&g_pSimMgr->field_0x40 < 2) {
               (**(code **)(*piVar5 + 0x34))(2,0xffffffff);
               uVar10 = extraout_var_03;
             }
@@ -528,7 +463,7 @@ void TCountry::SeedRecruitAndNavyOrdersForEligibleCoastalCities()
           p_Var11 = unaff_EBX;
           if (((*(short *)&this->field_0xc < 7) &&
               (pTVar1 = g_apNationStates[*(short *)&this->field_0xc], pTVar1->field_0xa0 != '\0'))
-             && (*(int *)&g_pLocalizationTable->field_0x40 == 0)) {
+             && (*(int *)&g_pSimMgr->field_0x40 == 0)) {
             if (pTVar1 == (TGreatPower *)0x0) {
               pTVar8 = (TCity *)0x0;
             }
@@ -538,9 +473,9 @@ void TCountry::SeedRecruitAndNavyOrdersForEligibleCoastalCities()
             iVar6 = func_0x00406456(pTVar8);
             uVar10 = extraout_var_10;
             if (*(int *)(iVar6 + 0x2c) == 0) {
-              iVar9 = ReallocateHeapBlockWithAllocatorTracking(*(undefined4 *)(iVar6 + 0x28),8);
+              iVar9 = _realloc(*(undefined4 *)(iVar6 + 0x28),8);
               if (iVar9 == 0) {
-                uVar7 = ReallocateHeapBlockWithAllocatorTracking(*(undefined4 *)(iVar6 + 0x28),4);
+                uVar7 = _realloc(*(undefined4 *)(iVar6 + 0x28),4);
                 *(undefined4 *)(iVar6 + 0x28) = uVar7;
                 *(undefined4 *)(iVar6 + 0x2c) = 1;
                 uVar10 = extraout_var_12;
@@ -561,7 +496,7 @@ void TCountry::SeedRecruitAndNavyOrdersForEligibleCoastalCities()
         (*p_Var11)(iVar4);
         (*p_Var11)(iVar4);
         (*p_Var11)(iVar4);
-        if ((2 < *(int *)&g_pLocalizationTable->field_0x40) &&
+        if ((2 < *(int *)&g_pSimMgr->field_0x40) &&
            ((*p_Var11)(iVar4), 6 < *(short *)&this->field_0xc)) {
           iVar6 = operator_new(0x44);
           uVar10 = extraout_var_13;
@@ -641,7 +576,7 @@ void TCountry::ApplyJoinEmpireModeForTargetNation(undefined4 param_1, int param_
   undefined2 extraout_var_00;
   
   uVar1 = (undefined2)((uint)in_EDX >> 0x10);
-  if (*(int *)&g_pLocalizationTable->field_0x44 == 1) {
+  if (*(int *)&g_pSimMgr->field_0x44 == 1) {
     func_0x00403b07((int)*(short *)&this->field_0xc,param_1,param_2);
     uVar1 = extraout_var;
   }
@@ -951,8 +886,8 @@ void TCountry::PopulateSelectableEntryFlavorTextAndOrdinals()
           unaff_EBX = CONCAT22((short)((uint)unaff_EBX >> 0x10),*(short *)(iVar2 + 4));
           puStack_8._0_1_ = 2;
           psVar1 = (short *)(&this->field_0x48 + *(short *)(iVar2 + 4) * 2);
-          (*g_pLocalizationTable->vftable[0xf].GetTSimMgrClassNamePointer)((int)*psVar1,&CStack_30);
-          (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2717,unaff_EBX,&CStack_3c);
+          (*g_pSimMgr->vftable[0xf].GetTSimMgrClassNamePointer)((int)*psVar1,&CStack_30);
+          (*g_pSimMgr->vftable[0x10].slot_0x04)(0x2717,unaff_EBX,&CStack_3c);
           uVar3 = AssignSharedStringConcatRefAndCStr
                             (&CStack_1c,&CStack_30,g_Build_Map_Order_LookupTable_00695794);
           puStack_8._0_1_ = 3;
@@ -982,7 +917,7 @@ void TCountry::PopulateSelectableEntryFlavorTextAndOrdinals()
           puStack_8 = (undefined1 *)0x6;
           CString::CString((CString *)&stack0xffffffc0);
           puStack_8 = (undefined1 *)CONCAT31(puStack_8._1_3_,7);
-          (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2744,0,&CStack_3c);
+          (*g_pSimMgr->vftable[0x10].slot_0x04)(0x2744,0,&CStack_3c);
           do {
             func_0x00405312(&stack0xffffffc0,*(undefined2 *)&this->field_0xc);
           } while (0xf - *(int *)(CStack_3c.m_pchData + -8) < *(int *)(unaff_ESI + -8));
@@ -1049,7 +984,7 @@ void TCountry::SelectCandidateTilesWithLowGroundUnitCount_11()
   short sVar7;
   int iStack_8;
   
-  uVar1 = *(ushort *)&g_pLocalizationTable->field_0x2c;
+  uVar1 = *(ushort *)&g_pSimMgr->field_0x2c;
   if ((((int)((int)(short)uVar1 + ((int)(short)uVar1 >> 0x1f & 3U)) >> 2 & 1U) != 0) &&
      (uVar2 = (short)uVar1 >> 0xf, (ushort)(((uVar1 ^ uVar2) - uVar2 & 3 ^ uVar2) - uVar2) == 2)) {
     iVar5 = 1;
@@ -1117,7 +1052,7 @@ int TCountry::ResolveDiplomacyActionFromClickAndUpdateTarget(POINT *param_1)
     local_10.right = 0x24d;
     local_10.bottom = 0x159;
     CopyRect((LPRECT)&DAT_006a3008,&local_10);
-    AppendPointerToGlobalVectorAsStatus(&DAT_004f5f70);
+    atexit(&DAT_004f5f70);
   }
   iVar3 = 0;
   BVar2 = PtInRect((RECT *)&DAT_006a3008,*param_1);

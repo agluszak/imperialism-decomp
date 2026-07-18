@@ -114,7 +114,7 @@ int TTEView::DestructTTEViewAndMaybeFree()
   pvVar2 = (HGDIOBJ)CDC::SelectObject((CDC *)local_2c,pvVar2);
   (*this->vftable->GetTEventHandlerClassNamePointer_58)();
   CStack_40.vftable = (CObjectVtbl *)0x486153;
-  DeflateRect((TTEView *)(local_2c + 0xc),(int *)&this->field_0x68);
+  CRect__DeflateRect((TTEView *)(local_2c + 0xc),(int *)&this->field_0x68);
   CStack_40.vftable = (CObjectVtbl *)(local_2c + 0xc);
   (**(code **)(unaff_ESI + 0x70))
             (**(int **)&this->field_0x84,*(undefined4 *)(**(int **)&this->field_0x84 + -8));
@@ -126,10 +126,10 @@ int TTEView::DestructTTEViewAndMaybeFree()
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0061F342
-// GHIDRA_NAME TTEView::DeflateRect
-// GHIDRA_PROTO undefined __thiscall DeflateRect(int * param_1)
+// GHIDRA_NAME TTEView::CRect::DeflateRect
+// GHIDRA_PROTO undefined __thiscall CRect::DeflateRect(int * param_1)
 
-void TTEView::DeflateRect(int *param_1)
+void TTEView::CRect__DeflateRect(int *param_1)
 
 {
   this->vftable = (TTEViewVtbl *)((int)&this->vftable->GetTEventHandlerClassNamePointer + *param_1);

@@ -306,7 +306,7 @@ TArmyStack::HandleTacticalCommandTag_raly
           (TArmyStack *this,int param_1,int param_2,undefined4 param_3,char param_4)
 
 {
-  if ((param_4 == '\0') && (*(int *)&g_pLocalizationTable->field_0x44 != 0)) {
+  if ((param_4 == '\0') && (*(int *)&g_pSimMgr->field_0x44 != 0)) {
     func_0x00408855(0x72616c79,param_1,param_2,param_3);
   }
   *(undefined4 *)(param_1 + 0x1c) = param_3;

@@ -15,7 +15,7 @@ undefined4 * CProcessLocal[_AFX_BASE_MODULE_STATE]::_AFX_BASE_MODULE_STATE>__Cre
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
   
-  EstablishSehFrameProlog();
+  _EH_prolog();
   puVar1 = (undefined4 *)CNoTrackObject::new(0x1074);
   *(undefined4 **)(unaff_EBP + -0x10) = puVar1;
   *(undefined4 *)(unaff_EBP + -4) = 0;

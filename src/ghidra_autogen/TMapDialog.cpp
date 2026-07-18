@@ -392,88 +392,88 @@ void TMapDialog::DrawHexNeighborOutlineFromTileArray()
   if (*unaff_retaddr != -1) {
     func_0x004056a5(CONCAT22(extraout_var,*unaff_retaddr),&this->field_0x60,&stack0xfffffff4,
                     aiStack_8,1);
-    SetQuickDrawTextOriginWithContextOffset(aiStack_8[0],unaff_EBX);
-    DrawCenteredGuideLineOnMapDc(aiStack_8[0] + 0x3f,unaff_EBX);
-    DrawCenteredGuideLineOnMapDc(aiStack_8[0] + 0x3f,unaff_EBX + 0x3f);
+    func_0x00408d6e(aiStack_8[0],unaff_EBX);
+    func_0x00403bb6(aiStack_8[0] + 0x3f,unaff_EBX);
+    func_0x00403bb6(aiStack_8[0] + 0x3f,unaff_EBX + 0x3f);
     if (unaff_retaddr[5] == -1) {
-      SetQuickDrawTextOriginWithContextOffset(aiStack_8[0],unaff_EBX);
-      DrawCenteredGuideLineOnMapDc(aiStack_8[0],unaff_EBX + 0x3f);
+      func_0x00408d6e(aiStack_8[0],unaff_EBX);
+      func_0x00403bb6(aiStack_8[0],unaff_EBX + 0x3f);
     }
     if (unaff_retaddr[1] == -1) {
-      SetQuickDrawTextOriginWithContextOffset(aiStack_8[0] + 0x20,unaff_EBX);
-      DrawCenteredGuideLineOnMapDc(aiStack_8[0] + 0x20,unaff_EBX + 0x3f);
+      func_0x00408d6e(aiStack_8[0] + 0x20,unaff_EBX);
+      func_0x00403bb6(aiStack_8[0] + 0x20,unaff_EBX + 0x3f);
     }
   }
   if (unaff_retaddr[1] != -1) {
     func_0x004056a5(unaff_retaddr[1],&this->field_0x60,&stack0xfffffff4,aiStack_8,1);
-    SetQuickDrawTextOriginWithContextOffset(aiStack_8[0] + 0x20,unaff_EBX);
-    DrawCenteredGuideLineOnMapDc(aiStack_8[0] + 0x3f,unaff_EBX);
-    DrawCenteredGuideLineOnMapDc(aiStack_8[0] + 0x3f,unaff_EBX + 0x3f);
-    DrawCenteredGuideLineOnMapDc(aiStack_8[0] + 0x20,unaff_EBX + 0x3f);
+    func_0x00408d6e(aiStack_8[0] + 0x20,unaff_EBX);
+    func_0x00403bb6(aiStack_8[0] + 0x3f,unaff_EBX);
+    func_0x00403bb6(aiStack_8[0] + 0x3f,unaff_EBX + 0x3f);
+    func_0x00403bb6(aiStack_8[0] + 0x20,unaff_EBX + 0x3f);
     if (*unaff_retaddr == -1) {
-      SetQuickDrawTextOriginWithContextOffset(aiStack_8[0],unaff_EBX);
-      DrawCenteredGuideLineOnMapDc(aiStack_8[0] + 0x20,unaff_EBX);
+      func_0x00408d6e(aiStack_8[0],unaff_EBX);
+      func_0x00403bb6(aiStack_8[0] + 0x20,unaff_EBX);
     }
     if (unaff_retaddr[2] == -1) {
-      SetQuickDrawTextOriginWithContextOffset(aiStack_8[0],unaff_EBX + 0x3f);
-      DrawCenteredGuideLineOnMapDc(aiStack_8[0] + 0x20,unaff_EBX + 0x3f);
+      func_0x00408d6e(aiStack_8[0],unaff_EBX + 0x3f);
+      func_0x00403bb6(aiStack_8[0] + 0x20,unaff_EBX + 0x3f);
     }
   }
   if (unaff_retaddr[2] != -1) {
     func_0x004056a5(unaff_retaddr[2],&this->field_0x60,&stack0xfffffff4,aiStack_8,1);
-    SetQuickDrawTextOriginWithContextOffset(aiStack_8[0],unaff_EBX + 0x3f);
-    DrawCenteredGuideLineOnMapDc(aiStack_8[0] + 0x3f,unaff_EBX + 0x3f);
-    DrawCenteredGuideLineOnMapDc(aiStack_8[0] + 0x3f,unaff_EBX);
+    func_0x00408d6e(aiStack_8[0],unaff_EBX + 0x3f);
+    func_0x00403bb6(aiStack_8[0] + 0x3f,unaff_EBX + 0x3f);
+    func_0x00403bb6(aiStack_8[0] + 0x3f,unaff_EBX);
     if (unaff_retaddr[3] == -1) {
-      SetQuickDrawTextOriginWithContextOffset(aiStack_8[0],unaff_EBX);
-      DrawCenteredGuideLineOnMapDc(aiStack_8[0],unaff_EBX + 0x3f);
+      func_0x00408d6e(aiStack_8[0],unaff_EBX);
+      func_0x00403bb6(aiStack_8[0],unaff_EBX + 0x3f);
     }
     if (unaff_retaddr[1] == -1) {
-      SetQuickDrawTextOriginWithContextOffset(aiStack_8[0] + 0x20,unaff_EBX);
-      DrawCenteredGuideLineOnMapDc(aiStack_8[0] + 0x3f,unaff_EBX);
+      func_0x00408d6e(aiStack_8[0] + 0x20,unaff_EBX);
+      func_0x00403bb6(aiStack_8[0] + 0x3f,unaff_EBX);
     }
   }
   if (unaff_retaddr[3] != -1) {
     func_0x004056a5(unaff_retaddr[3],&this->field_0x60,&stack0xfffffff4,aiStack_8,1);
-    SetQuickDrawTextOriginWithContextOffset(aiStack_8[0] + 0x3f,unaff_EBX + 0x3f);
-    DrawCenteredGuideLineOnMapDc(aiStack_8[0],unaff_EBX + 0x3f);
-    DrawCenteredGuideLineOnMapDc(aiStack_8[0],unaff_EBX);
+    func_0x00408d6e(aiStack_8[0] + 0x3f,unaff_EBX + 0x3f);
+    func_0x00403bb6(aiStack_8[0],unaff_EBX + 0x3f);
+    func_0x00403bb6(aiStack_8[0],unaff_EBX);
     if (unaff_retaddr[2] == -1) {
-      SetQuickDrawTextOriginWithContextOffset(aiStack_8[0] + 0x3f,unaff_EBX);
-      DrawCenteredGuideLineOnMapDc(aiStack_8[0] + 0x3f,unaff_EBX + 0x3f);
+      func_0x00408d6e(aiStack_8[0] + 0x3f,unaff_EBX);
+      func_0x00403bb6(aiStack_8[0] + 0x3f,unaff_EBX + 0x3f);
     }
     if (unaff_retaddr[4] == -1) {
-      SetQuickDrawTextOriginWithContextOffset(aiStack_8[0],unaff_EBX);
-      DrawCenteredGuideLineOnMapDc(aiStack_8[0] + 0x20,unaff_EBX);
+      func_0x00408d6e(aiStack_8[0],unaff_EBX);
+      func_0x00403bb6(aiStack_8[0] + 0x20,unaff_EBX);
     }
   }
   if (unaff_retaddr[4] != -1) {
     func_0x004056a5(unaff_retaddr[4],&this->field_0x60,&stack0xfffffff4,aiStack_8,1);
-    SetQuickDrawTextOriginWithContextOffset(aiStack_8[0] + 0x20,unaff_EBX);
-    DrawCenteredGuideLineOnMapDc(aiStack_8[0],unaff_EBX);
-    DrawCenteredGuideLineOnMapDc(aiStack_8[0],unaff_EBX + 0x3f);
-    DrawCenteredGuideLineOnMapDc(aiStack_8[0] + 0x20,unaff_EBX + 0x3f);
+    func_0x00408d6e(aiStack_8[0] + 0x20,unaff_EBX);
+    func_0x00403bb6(aiStack_8[0],unaff_EBX);
+    func_0x00403bb6(aiStack_8[0],unaff_EBX + 0x3f);
+    func_0x00403bb6(aiStack_8[0] + 0x20,unaff_EBX + 0x3f);
     if (unaff_retaddr[5] == -1) {
-      SetQuickDrawTextOriginWithContextOffset(aiStack_8[0] + 0x20,unaff_EBX);
-      DrawCenteredGuideLineOnMapDc(aiStack_8[0] + 0x3f,unaff_EBX);
+      func_0x00408d6e(aiStack_8[0] + 0x20,unaff_EBX);
+      func_0x00403bb6(aiStack_8[0] + 0x3f,unaff_EBX);
     }
     if (unaff_retaddr[3] == -1) {
-      SetQuickDrawTextOriginWithContextOffset(aiStack_8[0] + 0x20,unaff_EBX + 0x3f);
-      DrawCenteredGuideLineOnMapDc(aiStack_8[0] + 0x3f,unaff_EBX + 0x3f);
+      func_0x00408d6e(aiStack_8[0] + 0x20,unaff_EBX + 0x3f);
+      func_0x00403bb6(aiStack_8[0] + 0x3f,unaff_EBX + 0x3f);
     }
   }
   if (unaff_retaddr[5] != -1) {
     func_0x004056a5(unaff_retaddr[5],&this->field_0x60,&stack0xfffffff4,aiStack_8,1);
-    SetQuickDrawTextOriginWithContextOffset(aiStack_8[0],unaff_EBX + 0x3f);
-    DrawCenteredGuideLineOnMapDc(aiStack_8[0],unaff_EBX);
-    DrawCenteredGuideLineOnMapDc(aiStack_8[0] + 0x3f,unaff_EBX);
+    func_0x00408d6e(aiStack_8[0],unaff_EBX + 0x3f);
+    func_0x00403bb6(aiStack_8[0],unaff_EBX);
+    func_0x00403bb6(aiStack_8[0] + 0x3f,unaff_EBX);
     if (*unaff_retaddr == -1) {
-      SetQuickDrawTextOriginWithContextOffset(aiStack_8[0] + 0x3f,unaff_EBX);
-      DrawCenteredGuideLineOnMapDc(aiStack_8[0] + 0x3f,unaff_EBX + 0x3f);
+      func_0x00408d6e(aiStack_8[0] + 0x3f,unaff_EBX);
+      func_0x00403bb6(aiStack_8[0] + 0x3f,unaff_EBX + 0x3f);
     }
     if (unaff_retaddr[4] == -1) {
-      SetQuickDrawTextOriginWithContextOffset(aiStack_8[0],unaff_EBX + 0x3f);
-      DrawCenteredGuideLineOnMapDc(aiStack_8[0] + 0x20,unaff_EBX + 0x3f);
+      func_0x00408d6e(aiStack_8[0],unaff_EBX + 0x3f);
+      func_0x00403bb6(aiStack_8[0] + 0x20,unaff_EBX + 0x3f);
     }
   }
   func_0x00406b86(0);
@@ -521,17 +521,17 @@ TMapDialog::OrphanRetStub_005960c0
   short sVar3;
   int iVar4;
   
-  uVar1 = ftol();
+  uVar1 = _ftol();
   *param_3 = uVar1;
   if ((uVar1 & 1) == 0) {
-    sVar2 = ftol();
+    sVar2 = _ftol();
   }
   else {
-    sVar2 = ftol();
+    sVar2 = _ftol();
     sVar2 = sVar2 + -1;
   }
   *param_2 = sVar2;
-  NormalizeWrappedMapCoord108x60(param_2,param_3);
+  func_0x00408328(param_2,param_3);
   iVar4 = *(int *)&this->field_0x64 + param_1[1];
   uVar1 = (ushort)(iVar4 >> 0x1f);
   sVar2 = (((ushort)iVar4 ^ uVar1) - uVar1 & 0x3f ^ uVar1) - uVar1;
@@ -640,7 +640,7 @@ int TMapDialog::HasRenderableParentAndContent()
             (int)(short)DAT_006a33b0 / 2;
   local_8 = ((int)(*(int *)&this->field_0x64 + (*(int *)&this->field_0x64 >> 0x1f & 0x3fU)) >> 6) +
             4;
-  NormalizeWrappedMapCoord108x60(&local_4,&local_8);
+  func_0x00408328(&local_4,&local_8);
   return local_4 + local_8 * 0x6c;
 }
 
@@ -751,7 +751,7 @@ void TMapDialog::UpdateMapInteractionPreviewParityAndRenderTransientSprites()
     }
   }
   uVar3 = (uint)(short)unaff_SI;
-  bVar4 = *(short *)&g_pLocalizationTable->field_0x60 == 0;
+  bVar4 = *(short *)&g_pSimMgr->field_0x60 == 0;
   if (bVar4) {
     uVar2 = (uint)unaff_DI;
   }
@@ -906,7 +906,7 @@ void TMapDialog::ApplyRectSlot110(int *param_1)
       DAT_006a344c = DAT_006a344c | 1;
       DAT_006a3418 = 0x40;
       DAT_006a341c = 0x40;
-      AppendPointerToGlobalVectorAsStatus(&DAT_0051eb20);
+      atexit(&DAT_0051eb20);
     }
     local_78.left = local_64;
     local_78.top = local_60;
@@ -919,15 +919,15 @@ void TMapDialog::ApplyRectSlot110(int *param_1)
     local_4c.bottom = local_78.bottom;
     if (this->field_0x34c == '\0') {
       func_0x0040232e(local_8c);
-      GetActiveQuickDrawSurfaceContextAndFlags(local_54,&local_9c);
+      func_0x00408d64(local_54,&local_9c);
       func_0x004088aa();
-      SetActiveQuickDrawSurfaceContext(*(undefined4 *)&this->field_0x350,local_9c);
-      uVar5 = GetSurfaceObjectAtContextOffset24(DAT_006a3450);
-      ReturnConstantTrueQuickDrawFlag(uVar5);
-      uVar5 = GetSurfaceObjectAtContextOffset24(*(undefined4 *)&this->field_0x350);
-      ReturnConstantTrueQuickDrawFlag(uVar5);
-      sVar3 = ftol();
-      sVar4 = ftol();
+      func_0x00406f5f(*(undefined4 *)&this->field_0x350,local_9c);
+      uVar5 = func_0x0040520e(DAT_006a3450);
+      func_0x0040761c(uVar5);
+      uVar5 = func_0x0040520e(*(undefined4 *)&this->field_0x350);
+      func_0x0040761c(uVar5);
+      sVar3 = _ftol();
+      sVar4 = _ftol();
       local_a0 = 0x5a;
       local_88._0_2_ = (short)DAT_006a3448 + sVar4;
       psVar12 = (short *)&this->field_0x80;
@@ -953,12 +953,11 @@ void TMapDialog::ApplyRectSlot110(int *param_1)
       iVar13 = ((int)(iVar7 + (iVar7 >> 0x1f & 0x3fU)) >> 6) + 1 + iVar6;
       local_88 = iVar13;
       local_7c = iVar6;
-      uVar5 = GetSurfaceObjectAtContextOffset24(*(undefined4 *)&this->field_0x350);
+      uVar5 = func_0x0040520e(*(undefined4 *)&this->field_0x350);
       func_0x00405e39(uVar5);
-      uVar5 = GetSurfaceObjectAtContextOffset24(DAT_006a3450);
+      uVar5 = func_0x0040520e(DAT_006a3450);
       func_0x00405e39(uVar5);
-      uVar5 = GetSurfaceObjectAtContextOffset24
-                        (*(undefined4 *)(g_pStrategicMapViewSystem + 0x668));
+      uVar5 = func_0x0040520e(*(undefined4 *)(g_pStrategicMapViewSystem + 0x668));
       func_0x00405e39(uVar5);
       if ((short)iVar14 < (short)local_68) {
         do {
@@ -1037,17 +1036,16 @@ void TMapDialog::ApplyRectSlot110(int *param_1)
                 iVar13 = *(int *)(*(int *)&g_pGlobalMapState->field_0xc + 0x20 + iVar13);
                 if ((iVar13 != 0) &&
                    (piVar11 = (int *)func_0x004055ec(iVar13), piVar11 != (int *)0x0)) {
-                  SetActiveQuickDrawSurfaceContext(DAT_006a3450,local_9c);
+                  func_0x00406f5f(DAT_006a3450,local_9c);
                   iStack_18 = piVar11[8] + 0x40;
                   iStack_10 = piVar11[10] + 0x40;
                   iStack_1c = piVar11[7] + 0x40;
                   iStack_14 = piVar11[9] + 0x40;
-                  ApplyRectClipRegionToGlobalClipState(&iStack_1c);
+                  func_0x004030e9(&iStack_1c);
                   local_78.left = 0x40;
                   local_78.top = 0x40;
                   (**(code **)(*piVar11 + 0x2c))(&local_78);
-                  SetActiveQuickDrawSurfaceContext(*(undefined4 *)&this->field_0x350,local_9c)
-                  ;
+                  func_0x00406f5f(*(undefined4 *)&this->field_0x350,iVar14);
                   iVar6 = local_98;
                 }
               }
@@ -1060,23 +1058,23 @@ void TMapDialog::ApplyRectSlot110(int *param_1)
           iVar6 = local_7c;
         } while ((short)iVar14 < (short)local_68);
       }
-      SetActiveQuickDrawSurfaceContext(DAT_006a3450,local_9c);
+      func_0x00406f5f(DAT_006a3450,local_9c);
       CopyRect(&tStack_3c,(RECT *)*local_8c);
       tStack_3c.bottom = tStack_3c.bottom + 0x80;
       tStack_3c.right = tStack_3c.right + 0x80;
-      ApplyRectClipRegionToGlobalClipState(&tStack_3c);
+      func_0x004030e9(&tStack_3c);
       (*this->vftable[1].DispatchControlEventToChildrenAndSelf)();
       func_0x004088aa();
-      SetActiveQuickDrawSurfaceContext(local_54[0],local_9c);
+      func_0x00406f5f(local_54[0],local_9c);
       func_0x00405be1(local_8c);
     }
     OffsetRect(&local_4c,DAT_006a33b8 << 5,DAT_006a33b4 << 5);
     func_0x00405493(DAT_006a3450 + 4,&g_pActiveQuickDrawSurfaceContext->field_0x4,&local_4c,
                     &local_64,0,0);
-    uVar5 = GetSurfaceObjectAtContextOffset24(DAT_006a3450);
-    NoOpQuickDrawLifecycleHookB(uVar5);
-    uVar5 = GetSurfaceObjectAtContextOffset24(*(undefined4 *)&this->field_0x350);
-    NoOpQuickDrawLifecycleHookB(uVar5);
+    uVar5 = func_0x0040520e(DAT_006a3450);
+    func_0x004024fa(uVar5);
+    uVar5 = func_0x0040520e(*(undefined4 *)&this->field_0x350);
+    func_0x004024fa(uVar5);
     local_4 = 0xffffffff;
     func_0x00409aac();
   }
@@ -1199,10 +1197,10 @@ void TMapDialog::RenderStrategicMapTileCell(short param_1)
   int local_44;
   RECT local_40;
   undefined4 uStack_30;
+  int iStack_20;
   int iStack_1c;
   int iStack_18;
   int iStack_14;
-  int iStack_10;
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined1 *local_4;
@@ -1219,16 +1217,16 @@ void TMapDialog::RenderStrategicMapTileCell(short param_1)
     _DAT_006a33e4 = 0;
     _DAT_006a33e8 = 0x200;
     _DAT_006a33ec = 0x1c0;
-    AppendPointerToGlobalVectorAsStatus();
+    atexit();
   }
   local_60 = *(undefined ***)&this->field_0x350;
-  local_5c = GetSurfaceObjectAtContextOffset24();
+  local_5c = func_0x0040520e();
   func_0x00405e39();
   RStack_54.right = (LONG)_cStack0000000c;
   RStack_54.bottom = (LONG)_bStack00000008;
   local_44 = RStack_54.right + 0x40;
   local_40.left = RStack_54.bottom + 0x40;
-  GetSurfaceObjectAtContextOffset24();
+  func_0x0040520e();
   iVar7 = func_0x00405e39();
   iVar14 = param_1 * 0x24;
   bVar20 = *(char *)(*(int *)&g_pGlobalMapState->field_0xc + iVar14) == '\x05';
@@ -1685,13 +1683,13 @@ LAB_0051eddf:
         pLStack_94 = (LONG *)0x51fae7;
         pHVar10 = CreateRectRgnIndirect(&RStack_54);
         pLStack_94 = (LONG *)0x51faf1;
-        CBrush::AttachRegionHandleToClipStateAndRegister((CBrush *)&local_60,(int)pHVar10);
+        CBrush::CGdiObject__Attach((CBrush *)&local_60,(int)pHVar10);
         pLStack_94 = (LONG *)0x51fafd;
         CDC::SelectClipRgn(pCVar9,(int)&local_60);
-        DeleteObject();
+        CGdiObject__DeleteObject();
         local_60 = &PTR_LAB_00671054;
         uStack_c._0_1_ = 3;
-        DeleteObject();
+        CGdiObject__DeleteObject();
         local_60 = (undefined **)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
         uStack_c = CONCAT31(uStack_c._1_3_,4);
         pLStack_94 = (LONG *)0x51fb36;
@@ -1701,21 +1699,21 @@ LAB_0051eddf:
         pLStack_94 = (LONG *)0x51fb4a;
         func_0x004065a0();
         pLStack_94 = (LONG *)0x51fb5a;
-        sVar6 = MeasureTextExtentWithCachedQuickDrawStyle();
+        sVar6 = func_0x00405b7d();
         iVar7 = RStack_54.left - (int)sVar6 / 2;
         if ((*(byte *)(*(int *)&g_pGlobalMapState->field_0xc + 0x1c + sVar13 * 0x24) & 1) == 0) {
           iVar7 = iVar7 + -10;
         }
         pLStack_94 = (LONG *)(iVar7 + 1);
         uStack_98 = (RECT *)0x51fb90;
-        SetQuickDrawTextOriginWithContextOffset();
+        func_0x00408d6e();
         pLStack_94 = (LONG *)0x51fb9a;
         func_0x0040330f();
         pLStack_94 = (LONG *)0x51fbaa;
         func_0x004029aa();
         uStack_98 = (RECT *)0x51fbbb;
         pLStack_94 = (LONG *)iVar7;
-        SetQuickDrawTextOriginWithContextOffset();
+        func_0x00408d6e();
         pLStack_94 = (LONG *)0x51fbc5;
         func_0x0040330f();
         pLStack_94 = (LONG *)0x51fbd5;
@@ -1742,13 +1740,13 @@ LAB_0051eddf:
         pLStack_94 = (LONG *)0x51fcad;
         pHVar10 = CreateRectRgnIndirect(&RStack_54);
         pLStack_94 = (LONG *)0x51fcb7;
-        CBrush::AttachRegionHandleToClipStateAndRegister((CBrush *)&local_60,(int)pHVar10);
+        CBrush::CGdiObject__Attach((CBrush *)&local_60,(int)pHVar10);
         pLStack_94 = (LONG *)0x51fcc3;
         CDC::SelectClipRgn(pCVar9,(int)&local_60);
-        DeleteObject();
+        CGdiObject__DeleteObject();
         local_60 = &PTR_LAB_00671054;
         uStack_c._0_1_ = 7;
-        DeleteObject();
+        CGdiObject__DeleteObject();
         local_60 = (undefined **)&PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
         uStack_c = CONCAT31(uStack_c._1_3_,8);
         pLStack_94 = (LONG *)0x51fcfc;
@@ -1758,21 +1756,21 @@ LAB_0051eddf:
         pLStack_94 = (LONG *)0x51fd10;
         func_0x004065a0();
         pLStack_94 = (LONG *)0x51fd20;
-        sVar6 = MeasureTextExtentWithCachedQuickDrawStyle();
+        sVar6 = func_0x00405b7d();
         iVar7 = RStack_54.right - (int)sVar6 / 2;
         if ((*(byte *)(*(int *)&g_pGlobalMapState->field_0xc + 0x1c + sVar13 * 0x24) & 1) == 0) {
           iVar7 = iVar7 + -10;
         }
         pLStack_94 = (LONG *)(iVar7 + 1);
         uStack_98 = (RECT *)0x51fd56;
-        SetQuickDrawTextOriginWithContextOffset();
+        func_0x00408d6e();
         pLStack_94 = (LONG *)0x51fd60;
         func_0x0040330f();
         pLStack_94 = (LONG *)0x51fd70;
         func_0x004029aa();
         uStack_98 = (RECT *)0x51fd81;
         pLStack_94 = (LONG *)iVar7;
-        SetQuickDrawTextOriginWithContextOffset();
+        func_0x00408d6e();
         pLStack_94 = (LONG *)0x51fd8b;
         func_0x0040330f();
         pLStack_94 = (LONG *)0x51fd9b;
@@ -1791,11 +1789,11 @@ LAB_0051eddf:
     if (param_1 != *(short *)&g_pGlobalMapState->field_0x22) goto LAB_0051fe9c;
     if (bVar20) {
       (**(code **)(g_pUiRuntimeContext->vftable + 0x34))();
+      iStack_20 = RStack_54.top + 0x20;
+      iStack_18 = RStack_54.top + 0x21;
       iStack_1c = RStack_54.right + 0x20;
       iStack_14 = RStack_54.right + 0x21;
-      iStack_18 = RStack_54.bottom + 0x20;
-      iStack_10 = RStack_54.bottom + 0x21;
-      FillRectWithQuickDrawBrushAndContextOffset();
+      func_0x00406546();
       goto LAB_0051fe9c;
     }
   }
@@ -1847,9 +1845,9 @@ LAB_0051fe9c:
     CString::CString((CString *)&stack0x0000000c);
     local_4._0_1_ = 9;
     func_0x00406b86();
-    SetQuickDrawTextOriginWithContextOffset();
+    func_0x00408d6e();
     pLStack_94 = (LONG *)0x51ff98;
-    _Format_CString__QAAXPBDZZ();
+    CString__Format();
     func_0x004029aa();
     local_4 = (undefined1 *)((uint)local_4._1_3_ << 8);
     CString::~CString((CString *)&stack0x0000000c);
@@ -1969,29 +1967,29 @@ TMapDialog::DrawMapDialogGuidePatternSetA_00520970
   int iVar2;
   
   if (param_3 == 0) {
-    SetQuickDrawTextOriginWithContextOffset(param_1 + 0x18,param_2);
-    DrawCenteredGuideLineOnMapDc(param_1 + 0x20,param_2 + 9);
-    DrawCenteredGuideLineOnMapDc(param_1 + 0x26,param_2 + 6);
-    DrawCenteredGuideLineOnMapDc(param_1 + 0x2c,param_2 + 8);
+    func_0x00408d6e(param_1 + 0x18,param_2);
+    func_0x00403bb6(param_1 + 0x20,param_2 + 9);
+    func_0x00403bb6(param_1 + 0x26,param_2 + 6);
+    func_0x00403bb6(param_1 + 0x2c,param_2 + 8);
     return;
   }
   if (param_3 == 1) {
-    SetQuickDrawTextOriginWithContextOffset(param_1 + 0x16,param_2);
+    func_0x00408d6e(param_1 + 0x16,param_2);
     iVar1 = param_2 + 10;
-    DrawCenteredGuideLineOnMapDc(param_1 + 0x1e,iVar1);
+    func_0x00403bb6(param_1 + 0x1e,iVar1);
     iVar2 = param_2 + 8;
   }
   else {
     if (param_3 != 2) {
       return;
     }
-    SetQuickDrawTextOriginWithContextOffset(param_1 + 0x1a,param_2);
+    func_0x00408d6e(param_1 + 0x1a,param_2);
     iVar1 = param_2 + 6;
-    DrawCenteredGuideLineOnMapDc(param_1 + 0x22,iVar1);
+    func_0x00403bb6(param_1 + 0x22,iVar1);
     iVar2 = param_2 + 4;
   }
-  DrawCenteredGuideLineOnMapDc(param_1 + 0x26,iVar2);
-  DrawCenteredGuideLineOnMapDc(param_1 + 0x2c,iVar1);
+  func_0x00403bb6(param_1 + 0x26,iVar2);
+  func_0x00403bb6(param_1 + 0x2c,iVar1);
   return;
 }
 
@@ -2005,27 +2003,27 @@ TMapDialog::DrawMapDialogGuidePatternSetB_00520a90
 
 {
   if (param_3 == 0) {
-    SetQuickDrawTextOriginWithContextOffset(param_1 + 0x2c,param_2 + 8);
-    DrawCenteredGuideLineOnMapDc(param_1 + 0x36,param_2 + 0xd);
-    DrawCenteredGuideLineOnMapDc(param_1 + 0x34,param_2 + 0x14);
-    DrawCenteredGuideLineOnMapDc(param_1 + 0x3a,param_2 + 0x19);
-    DrawCenteredGuideLineOnMapDc(param_1 + 0x38,param_2 + 0x20);
+    func_0x00408d6e(param_1 + 0x2c,param_2 + 8);
+    func_0x00403bb6(param_1 + 0x36,param_2 + 0xd);
+    func_0x00403bb6(param_1 + 0x34,param_2 + 0x14);
+    func_0x00403bb6(param_1 + 0x3a,param_2 + 0x19);
+    func_0x00403bb6(param_1 + 0x38,param_2 + 0x20);
     return;
   }
   if (param_3 == 1) {
-    SetQuickDrawTextOriginWithContextOffset(param_1 + 0x2c,param_2 + 10);
-    DrawCenteredGuideLineOnMapDc(param_1 + 0x34,param_2 + 0xf);
-    DrawCenteredGuideLineOnMapDc(param_1 + 0x31,param_2 + 0x14);
-    DrawCenteredGuideLineOnMapDc(param_1 + 0x38,param_2 + 0x19);
-    DrawCenteredGuideLineOnMapDc(param_1 + 0x36,param_2 + 0x20);
+    func_0x00408d6e(param_1 + 0x2c,param_2 + 10);
+    func_0x00403bb6(param_1 + 0x34,param_2 + 0xf);
+    func_0x00403bb6(param_1 + 0x31,param_2 + 0x14);
+    func_0x00403bb6(param_1 + 0x38,param_2 + 0x19);
+    func_0x00403bb6(param_1 + 0x36,param_2 + 0x20);
     return;
   }
   if (param_3 == 2) {
-    SetQuickDrawTextOriginWithContextOffset(param_1 + 0x2c,param_2 + 6);
-    DrawCenteredGuideLineOnMapDc(param_1 + 0x37,param_2 + 0xb);
-    DrawCenteredGuideLineOnMapDc(param_1 + 0x36,param_2 + 0x13);
-    DrawCenteredGuideLineOnMapDc(param_1 + 0x3c,param_2 + 0x19);
-    DrawCenteredGuideLineOnMapDc(param_1 + 0x3a,param_2 + 0x20);
+    func_0x00408d6e(param_1 + 0x2c,param_2 + 6);
+    func_0x00403bb6(param_1 + 0x37,param_2 + 0xb);
+    func_0x00403bb6(param_1 + 0x36,param_2 + 0x13);
+    func_0x00403bb6(param_1 + 0x3c,param_2 + 0x19);
+    func_0x00403bb6(param_1 + 0x3a,param_2 + 0x20);
   }
   return;
 }
@@ -2045,28 +2043,28 @@ TMapDialog::DrawMapDialogGuidePatternSetC_00520c10
   
   if (param_3 == 1) {
     iVar1 = param_1 + 0x36;
-    SetQuickDrawTextOriginWithContextOffset(iVar1,param_2);
+    func_0x00408d6e(iVar1,param_2);
     iVar2 = param_1 + 0x34;
-    DrawCenteredGuideLineOnMapDc(iVar2,param_2 + 9);
+    func_0x00403bb6(iVar2,param_2 + 9);
     iVar3 = param_1 + 0x38;
   }
   else if (param_3 == 2) {
     iVar1 = param_1 + 0x3a;
-    SetQuickDrawTextOriginWithContextOffset(iVar1,param_2);
+    func_0x00408d6e(iVar1,param_2);
     iVar2 = param_1 + 0x38;
-    DrawCenteredGuideLineOnMapDc(iVar2,param_2 + 9);
+    func_0x00403bb6(iVar2,param_2 + 9);
     iVar3 = param_1 + 0x3c;
   }
   else {
     iVar1 = param_1 + 0x38;
-    SetQuickDrawTextOriginWithContextOffset(iVar1,param_2);
+    func_0x00408d6e(iVar1,param_2);
     iVar2 = param_1 + 0x36;
-    DrawCenteredGuideLineOnMapDc(iVar2,param_2 + 9);
+    func_0x00403bb6(iVar2,param_2 + 9);
     iVar3 = param_1 + 0x3a;
   }
-  DrawCenteredGuideLineOnMapDc(iVar3,param_2 + 0x12);
-  DrawCenteredGuideLineOnMapDc(iVar2,param_2 + 0x19);
-  DrawCenteredGuideLineOnMapDc(iVar1,param_2 + 0x20);
+  func_0x00403bb6(iVar3,param_2 + 0x12);
+  func_0x00403bb6(iVar2,param_2 + 0x19);
+  func_0x00403bb6(iVar1,param_2 + 0x20);
   return;
 }
 
@@ -2080,17 +2078,17 @@ TMapDialog::DrawMapDialogGuidePatternSetD_00520d20
 
 {
   if (param_3 == 1) {
-    SetQuickDrawTextOriginWithContextOffset(param_1 + 0x2c,param_2 + 10);
-    DrawCenteredGuideLineOnMapDc(param_1 + 0x39,param_2);
+    func_0x00408d6e(param_1 + 0x2c,param_2 + 10);
+    func_0x00403bb6(param_1 + 0x39,param_2);
     return;
   }
   if (param_3 == 2) {
-    SetQuickDrawTextOriginWithContextOffset(param_1 + 0x2c,param_2 + 5);
-    DrawCenteredGuideLineOnMapDc(param_1 + 0x37,param_2 + -3);
+    func_0x00408d6e(param_1 + 0x2c,param_2 + 5);
+    func_0x00403bb6(param_1 + 0x37,param_2 + -3);
     return;
   }
-  SetQuickDrawTextOriginWithContextOffset(param_1 + 0x2c,param_2 + 8);
-  DrawCenteredGuideLineOnMapDc(param_1 + 0x38,param_2);
+  func_0x00408d6e(param_1 + 0x2c,param_2 + 8);
+  func_0x00403bb6(param_1 + 0x38,param_2);
   return;
 }
 
@@ -2104,33 +2102,33 @@ TMapDialog::DrawMapDialogTileGuidePatternByVariant
 
 {
   if (param_3 == 0) {
-    SetQuickDrawTextOriginWithContextOffset(param_1 + 0x2c,param_2 + 8);
-    DrawCenteredGuideLineOnMapDc(param_1 + 0x36,param_2 + 0xd);
-    DrawCenteredGuideLineOnMapDc(param_1 + 0x34,param_2 + 0x14);
-    DrawCenteredGuideLineOnMapDc(param_1 + 0x3a,param_2 + 0x19);
-    DrawCenteredGuideLineOnMapDc(param_1 + 0x38,param_2 + 0x20);
-    SetQuickDrawTextOriginWithContextOffset(param_1 + 0x2c,param_2 + 8);
-    DrawCenteredGuideLineOnMapDc(param_1 + 0x38,param_2);
+    func_0x00408d6e(param_1 + 0x2c,param_2 + 8);
+    func_0x00403bb6(param_1 + 0x36,param_2 + 0xd);
+    func_0x00403bb6(param_1 + 0x34,param_2 + 0x14);
+    func_0x00403bb6(param_1 + 0x3a,param_2 + 0x19);
+    func_0x00403bb6(param_1 + 0x38,param_2 + 0x20);
+    func_0x00408d6e(param_1 + 0x2c,param_2 + 8);
+    func_0x00403bb6(param_1 + 0x38,param_2);
     return;
   }
   if (param_3 == 1) {
-    SetQuickDrawTextOriginWithContextOffset(param_1 + 0x2c,param_2 + 10);
-    DrawCenteredGuideLineOnMapDc(param_1 + 0x34,param_2 + 0xf);
-    DrawCenteredGuideLineOnMapDc(param_1 + 0x31,param_2 + 0x14);
-    DrawCenteredGuideLineOnMapDc(param_1 + 0x38,param_2 + 0x19);
-    DrawCenteredGuideLineOnMapDc(param_1 + 0x36,param_2 + 0x20);
-    SetQuickDrawTextOriginWithContextOffset(param_1 + 0x2c,param_2 + 10);
-    DrawCenteredGuideLineOnMapDc(param_1 + 0x39,param_2);
+    func_0x00408d6e(param_1 + 0x2c,param_2 + 10);
+    func_0x00403bb6(param_1 + 0x34,param_2 + 0xf);
+    func_0x00403bb6(param_1 + 0x31,param_2 + 0x14);
+    func_0x00403bb6(param_1 + 0x38,param_2 + 0x19);
+    func_0x00403bb6(param_1 + 0x36,param_2 + 0x20);
+    func_0x00408d6e(param_1 + 0x2c,param_2 + 10);
+    func_0x00403bb6(param_1 + 0x39,param_2);
     return;
   }
   if (param_3 == 2) {
-    SetQuickDrawTextOriginWithContextOffset(param_1 + 0x2c,param_2 + 6);
-    DrawCenteredGuideLineOnMapDc(param_1 + 0x37,param_2 + 0xb);
-    DrawCenteredGuideLineOnMapDc(param_1 + 0x36,param_2 + 0x13);
-    DrawCenteredGuideLineOnMapDc(param_1 + 0x3c,param_2 + 0x19);
-    DrawCenteredGuideLineOnMapDc(param_1 + 0x3a,param_2 + 0x20);
-    SetQuickDrawTextOriginWithContextOffset(param_1 + 0x2c,param_2 + 5);
-    DrawCenteredGuideLineOnMapDc(param_1 + 0x37,param_2 + -3);
+    func_0x00408d6e(param_1 + 0x2c,param_2 + 6);
+    func_0x00403bb6(param_1 + 0x37,param_2 + 0xb);
+    func_0x00403bb6(param_1 + 0x36,param_2 + 0x13);
+    func_0x00403bb6(param_1 + 0x3c,param_2 + 0x19);
+    func_0x00403bb6(param_1 + 0x3a,param_2 + 0x20);
+    func_0x00408d6e(param_1 + 0x2c,param_2 + 5);
+    func_0x00403bb6(param_1 + 0x37,param_2 + -3);
   }
   return;
 }
@@ -2145,17 +2143,17 @@ TMapDialog::DrawMapDialogGuidePatternSetE_00520fc0
 
 {
   if (param_3 == 1) {
-    SetQuickDrawTextOriginWithContextOffset(param_1 + 0x2c,param_2 + 0x36);
-    DrawCenteredGuideLineOnMapDc(param_1 + 0x39,param_2 + 0x3e);
+    func_0x00408d6e(param_1 + 0x2c,param_2 + 0x36);
+    func_0x00403bb6(param_1 + 0x39,param_2 + 0x3e);
     return;
   }
   if (param_3 == 2) {
-    SetQuickDrawTextOriginWithContextOffset(param_1 + 0x2c,param_2 + 0x3a);
-    DrawCenteredGuideLineOnMapDc(param_1 + 0x3a,param_2 + 0x42);
+    func_0x00408d6e(param_1 + 0x2c,param_2 + 0x3a);
+    func_0x00403bb6(param_1 + 0x3a,param_2 + 0x42);
     return;
   }
-  SetQuickDrawTextOriginWithContextOffset(param_1 + 0x2c,param_2 + 0x38);
-  DrawCenteredGuideLineOnMapDc(param_1 + 0x39,param_2 + 0x40);
+  func_0x00408d6e(param_1 + 0x2c,param_2 + 0x38);
+  func_0x00403bb6(param_1 + 0x39,param_2 + 0x40);
   return;
 }
 
@@ -2173,27 +2171,27 @@ TMapDialog::DrawMapDialogGuidePatternSetF_00521090
   
   if (param_3 == 1) {
     iVar1 = param_1 + 0x36;
-    SetQuickDrawTextOriginWithContextOffset(iVar1,param_2 + 0x20);
+    func_0x00408d6e(iVar1,param_2 + 0x20);
     iVar2 = param_1 + 0x34;
-    DrawCenteredGuideLineOnMapDc(iVar2,param_2 + 0x29);
-    DrawCenteredGuideLineOnMapDc(param_1 + 0x38,param_2 + 0x32);
+    func_0x00403bb6(iVar2,param_2 + 0x29);
+    func_0x00403bb6(param_1 + 0x38,param_2 + 0x32);
   }
   else if (param_3 == 2) {
     iVar1 = param_1 + 0x3a;
-    SetQuickDrawTextOriginWithContextOffset(iVar1,param_2 + 0x20);
+    func_0x00408d6e(iVar1,param_2 + 0x20);
     iVar2 = param_1 + 0x38;
-    DrawCenteredGuideLineOnMapDc(iVar2,param_2 + 0x29);
-    DrawCenteredGuideLineOnMapDc(param_1 + 0x3c,param_2 + 0x32);
+    func_0x00403bb6(iVar2,param_2 + 0x29);
+    func_0x00403bb6(param_1 + 0x3c,param_2 + 0x32);
   }
   else {
     iVar1 = param_1 + 0x38;
-    SetQuickDrawTextOriginWithContextOffset(iVar1,param_2 + 0x20);
+    func_0x00408d6e(iVar1,param_2 + 0x20);
     iVar2 = param_1 + 0x36;
-    DrawCenteredGuideLineOnMapDc(iVar2,param_2 + 0x29);
-    DrawCenteredGuideLineOnMapDc(param_1 + 0x3a,param_2 + 0x32);
+    func_0x00403bb6(iVar2,param_2 + 0x29);
+    func_0x00403bb6(param_1 + 0x3a,param_2 + 0x32);
   }
-  DrawCenteredGuideLineOnMapDc(iVar2,param_2 + 0x39);
-  DrawCenteredGuideLineOnMapDc(iVar1,param_2 + 0x40);
+  func_0x00403bb6(iVar2,param_2 + 0x39);
+  func_0x00403bb6(iVar1,param_2 + 0x40);
   return;
 }
 
@@ -2207,27 +2205,27 @@ TMapDialog::DrawMapDialogGuidePatternSetG_005211c0
 
 {
   if (param_3 == 0) {
-    SetQuickDrawTextOriginWithContextOffset(param_1 + 0x2c,param_2 + 0x38);
-    DrawCenteredGuideLineOnMapDc(param_1 + 0x36,param_2 + 0x33);
-    DrawCenteredGuideLineOnMapDc(param_1 + 0x34,param_2 + 0x2c);
-    DrawCenteredGuideLineOnMapDc(param_1 + 0x3a,param_2 + 0x27);
-    DrawCenteredGuideLineOnMapDc(param_1 + 0x38,param_2 + 0x20);
+    func_0x00408d6e(param_1 + 0x2c,param_2 + 0x38);
+    func_0x00403bb6(param_1 + 0x36,param_2 + 0x33);
+    func_0x00403bb6(param_1 + 0x34,param_2 + 0x2c);
+    func_0x00403bb6(param_1 + 0x3a,param_2 + 0x27);
+    func_0x00403bb6(param_1 + 0x38,param_2 + 0x20);
     return;
   }
   if (param_3 == 1) {
-    SetQuickDrawTextOriginWithContextOffset(param_1 + 0x2c,param_2 + 0x36);
-    DrawCenteredGuideLineOnMapDc(param_1 + 0x34,param_2 + 0x31);
-    DrawCenteredGuideLineOnMapDc(param_1 + 0x30,param_2 + 0x2c);
-    DrawCenteredGuideLineOnMapDc(param_1 + 0x37,param_2 + 0x27);
-    DrawCenteredGuideLineOnMapDc(param_1 + 0x36,param_2 + 0x20);
+    func_0x00408d6e(param_1 + 0x2c,param_2 + 0x36);
+    func_0x00403bb6(param_1 + 0x34,param_2 + 0x31);
+    func_0x00403bb6(param_1 + 0x30,param_2 + 0x2c);
+    func_0x00403bb6(param_1 + 0x37,param_2 + 0x27);
+    func_0x00403bb6(param_1 + 0x36,param_2 + 0x20);
     return;
   }
   if (param_3 == 2) {
-    SetQuickDrawTextOriginWithContextOffset(param_1 + 0x2c,param_2 + 0x3a);
-    DrawCenteredGuideLineOnMapDc(param_1 + 0x37,param_2 + 0x35);
-    DrawCenteredGuideLineOnMapDc(param_1 + 0x36,param_2 + 0x2d);
-    DrawCenteredGuideLineOnMapDc(param_1 + 0x3c,param_2 + 0x27);
-    DrawCenteredGuideLineOnMapDc(param_1 + 0x3a,param_2 + 0x20);
+    func_0x00408d6e(param_1 + 0x2c,param_2 + 0x3a);
+    func_0x00403bb6(param_1 + 0x37,param_2 + 0x35);
+    func_0x00403bb6(param_1 + 0x36,param_2 + 0x2d);
+    func_0x00403bb6(param_1 + 0x3c,param_2 + 0x27);
+    func_0x00403bb6(param_1 + 0x3a,param_2 + 0x20);
   }
   return;
 }
@@ -2242,33 +2240,33 @@ TMapDialog::DrawMapDialogGuidePatternSetH_00521340
 
 {
   if (param_3 == 0) {
-    SetQuickDrawTextOriginWithContextOffset(param_1 + 0x2c,param_2 + 0x38);
-    DrawCenteredGuideLineOnMapDc(param_1 + 0x36,param_2 + 0x33);
-    DrawCenteredGuideLineOnMapDc(param_1 + 0x34,param_2 + 0x2c);
-    DrawCenteredGuideLineOnMapDc(param_1 + 0x3a,param_2 + 0x27);
-    DrawCenteredGuideLineOnMapDc(param_1 + 0x38,param_2 + 0x20);
-    SetQuickDrawTextOriginWithContextOffset(param_1 + 0x2c,param_2 + 0x38);
-    DrawCenteredGuideLineOnMapDc(param_1 + 0x39,param_2 + 0x40);
+    func_0x00408d6e(param_1 + 0x2c,param_2 + 0x38);
+    func_0x00403bb6(param_1 + 0x36,param_2 + 0x33);
+    func_0x00403bb6(param_1 + 0x34,param_2 + 0x2c);
+    func_0x00403bb6(param_1 + 0x3a,param_2 + 0x27);
+    func_0x00403bb6(param_1 + 0x38,param_2 + 0x20);
+    func_0x00408d6e(param_1 + 0x2c,param_2 + 0x38);
+    func_0x00403bb6(param_1 + 0x39,param_2 + 0x40);
     return;
   }
   if (param_3 == 1) {
-    SetQuickDrawTextOriginWithContextOffset(param_1 + 0x2c,param_2 + 0x36);
-    DrawCenteredGuideLineOnMapDc(param_1 + 0x34,param_2 + 0x31);
-    DrawCenteredGuideLineOnMapDc(param_1 + 0x30,param_2 + 0x2c);
-    DrawCenteredGuideLineOnMapDc(param_1 + 0x37,param_2 + 0x27);
-    DrawCenteredGuideLineOnMapDc(param_1 + 0x36,param_2 + 0x20);
-    SetQuickDrawTextOriginWithContextOffset(param_1 + 0x2c,param_2 + 0x36);
-    DrawCenteredGuideLineOnMapDc(param_1 + 0x39,param_2 + 0x3e);
+    func_0x00408d6e(param_1 + 0x2c,param_2 + 0x36);
+    func_0x00403bb6(param_1 + 0x34,param_2 + 0x31);
+    func_0x00403bb6(param_1 + 0x30,param_2 + 0x2c);
+    func_0x00403bb6(param_1 + 0x37,param_2 + 0x27);
+    func_0x00403bb6(param_1 + 0x36,param_2 + 0x20);
+    func_0x00408d6e(param_1 + 0x2c,param_2 + 0x36);
+    func_0x00403bb6(param_1 + 0x39,param_2 + 0x3e);
     return;
   }
   if (param_3 == 2) {
-    SetQuickDrawTextOriginWithContextOffset(param_1 + 0x2c,param_2 + 0x3a);
-    DrawCenteredGuideLineOnMapDc(param_1 + 0x37,param_2 + 0x35);
-    DrawCenteredGuideLineOnMapDc(param_1 + 0x36,param_2 + 0x2d);
-    DrawCenteredGuideLineOnMapDc(param_1 + 0x3c,param_2 + 0x27);
-    DrawCenteredGuideLineOnMapDc(param_1 + 0x3a,param_2 + 0x20);
-    SetQuickDrawTextOriginWithContextOffset(param_1 + 0x2c,param_2 + 0x3a);
-    DrawCenteredGuideLineOnMapDc(param_1 + 0x3a,param_2 + 0x42);
+    func_0x00408d6e(param_1 + 0x2c,param_2 + 0x3a);
+    func_0x00403bb6(param_1 + 0x37,param_2 + 0x35);
+    func_0x00403bb6(param_1 + 0x36,param_2 + 0x2d);
+    func_0x00403bb6(param_1 + 0x3c,param_2 + 0x27);
+    func_0x00403bb6(param_1 + 0x3a,param_2 + 0x20);
+    func_0x00408d6e(param_1 + 0x2c,param_2 + 0x3a);
+    func_0x00403bb6(param_1 + 0x3a,param_2 + 0x42);
   }
   return;
 }
@@ -2285,28 +2283,28 @@ TMapDialog::DrawMapDialogGuidePatternSetI_00521540
   int iVar1;
   
   if (param_3 == 0) {
-    SetQuickDrawTextOriginWithContextOffset(param_1 + 0x18,param_2 + 0x40);
-    DrawCenteredGuideLineOnMapDc(param_1 + 0x1a,param_2 + 0x3b);
-    DrawCenteredGuideLineOnMapDc(param_1 + 0x24,param_2 + 0x36);
+    func_0x00408d6e(param_1 + 0x18,param_2 + 0x40);
+    func_0x00403bb6(param_1 + 0x1a,param_2 + 0x3b);
+    func_0x00403bb6(param_1 + 0x24,param_2 + 0x36);
     iVar1 = param_2 + 0x38;
   }
   else if (param_3 == 1) {
-    SetQuickDrawTextOriginWithContextOffset(param_1 + 0x16,param_2 + 0x3f);
-    DrawCenteredGuideLineOnMapDc(param_1 + 0x18,param_2 + 0x39);
-    DrawCenteredGuideLineOnMapDc(param_1 + 0x24,param_2 + 0x33);
+    func_0x00408d6e(param_1 + 0x16,param_2 + 0x3f);
+    func_0x00403bb6(param_1 + 0x18,param_2 + 0x39);
+    func_0x00403bb6(param_1 + 0x24,param_2 + 0x33);
     iVar1 = param_2 + 0x36;
   }
   else {
     if (param_3 != 2) {
       return;
     }
-    SetQuickDrawTextOriginWithContextOffset(param_1 + 0x1a,param_2 + 0x40);
-    DrawCenteredGuideLineOnMapDc(param_1 + 0x1c,param_2 + 0x3b);
-    DrawCenteredGuideLineOnMapDc(param_1 + 0x24,param_2 + 0x38);
+    func_0x00408d6e(param_1 + 0x1a,param_2 + 0x40);
+    func_0x00403bb6(param_1 + 0x1c,param_2 + 0x3b);
+    func_0x00403bb6(param_1 + 0x24,param_2 + 0x38);
     iVar1 = param_2 + 0x3a;
   }
-  DrawCenteredGuideLineOnMapDc(param_1 + 0x2a,iVar1);
-  DrawCenteredGuideLineOnMapDc(param_1 + 0x2c,iVar1);
+  func_0x00403bb6(param_1 + 0x2a,iVar1);
+  func_0x00403bb6(param_1 + 0x2c,iVar1);
   return;
 }
 
@@ -2547,18 +2545,18 @@ TMapDialog::DrawMapDialogOwnershipMarkerForNation_00522000
                       (short)*(char *)(*(int *)&g_pGlobalMapState->field_0xc + 4 +
                                       in_stack_00000010 * 0x24)));
   if ((unaff_retaddr & 0x20) != 0) {
-    SetQuickDrawTextOriginWithContextOffset(param_1 + 8,param_2 + 8);
-    DrawCenteredGuideLineOnMapDc(param_1 + 0xc,param_2 + 8);
+    func_0x00408d6e(param_1 + 8,param_2 + 8);
+    func_0x00403bb6(param_1 + 0xc,param_2 + 8);
     return;
   }
   if ((unaff_retaddr & 8) != 0) {
-    SetQuickDrawTextOriginWithContextOffset(param_1 + 8,param_2 + 0x38);
-    DrawCenteredGuideLineOnMapDc(param_1 + 0xc,param_2 + 0x38);
+    func_0x00408d6e(param_1 + 8,param_2 + 0x38);
+    func_0x00403bb6(param_1 + 0xc,param_2 + 0x38);
     return;
   }
   if ((unaff_retaddr & 2) != 0) {
-    SetQuickDrawTextOriginWithContextOffset(param_1 + 0x2c,param_2 + 0x2e);
-    DrawCenteredGuideLineOnMapDc(param_1 + 0x30,param_2 + 0x2e);
+    func_0x00408d6e(param_1 + 0x2c,param_2 + 0x2e);
+    func_0x00403bb6(param_1 + 0x30,param_2 + 0x2e);
   }
   return;
 }
@@ -2622,10 +2620,10 @@ LAB_0052228e:
             (**(code **)(puVar5 + 0x34))(sVar4);
             func_0x00402e73(2,2);
             iVar2 = param_2 + 0x40;
-            SetQuickDrawTextOriginWithContextOffset(param_1 + 0x36,iVar2);
+            func_0x00408d6e(param_1 + 0x36,iVar2);
             iVar6 = param_2 + 0x36;
-            DrawCenteredGuideLineOnMapDc(param_1 + 0x36,iVar6);
-            DrawCenteredGuideLineOnMapDc(param_1 + 0x31,param_2 + 0x2e);
+            func_0x00403bb6(param_1 + 0x36,iVar6);
+            func_0x00403bb6(param_1 + 0x31,param_2 + 0x2e);
             cVar3 = (*g_pDiplomacyTurnStateManager->vftable[0x10].slot_0x04)
                               (CONCAT22((short)((uint)g_pGlobalMapState >> 0x10),
                                         (short)*(char *)(*(int *)&g_pGlobalMapState->field_0xc + 4 +
@@ -2639,14 +2637,14 @@ LAB_0052228e:
               puVar5 = g_pUiRuntimeContext->vftable;
             }
             (**(code **)(puVar5 + 0x34))(sVar4);
-            SetQuickDrawTextOriginWithContextOffset(param_1 + 0x39,iVar2);
-            DrawCenteredGuideLineOnMapDc(param_1 + 0x39,iVar6);
-            DrawCenteredGuideLineOnMapDc(param_1 + 0x34,param_2 + 0x2a);
+            func_0x00408d6e(param_1 + 0x39,iVar2);
+            func_0x00403bb6(param_1 + 0x39,iVar6);
+            func_0x00403bb6(param_1 + 0x34,param_2 + 0x2a);
             func_0x00406b86(0xffffff);
             func_0x00402e73(1,1);
-            SetQuickDrawTextOriginWithContextOffset(param_1 + 0x38,iVar2);
-            DrawCenteredGuideLineOnMapDc(param_1 + 0x38,iVar6);
-            DrawCenteredGuideLineOnMapDc(param_1 + 0x33,param_2 + 0x2c);
+            func_0x00408d6e(param_1 + 0x38,iVar2);
+            func_0x00403bb6(param_1 + 0x38,iVar6);
+            func_0x00403bb6(param_1 + 0x33,param_2 + 0x2c);
             uVar8 = extraout_EDX;
           }
         }
@@ -2673,9 +2671,9 @@ LAB_0052228e:
           (**(code **)(puVar5 + 0x34))(sVar4);
           func_0x00402e73(2,2);
           iVar2 = param_2 + 0x40;
-          SetQuickDrawTextOriginWithContextOffset(param_1 + 0x16,iVar2);
+          func_0x00408d6e(param_1 + 0x16,iVar2);
           iVar6 = param_2 + 0x38;
-          DrawCenteredGuideLineOnMapDc(param_1 + 0x16,iVar6);
+          func_0x00403bb6(param_1 + 0x16,iVar6);
           cVar3 = (*g_pDiplomacyTurnStateManager->vftable[0x10].slot_0x04)
                             (CONCAT22((short)((uint)param_1 >> 0x10),
                                       (short)*(char *)(*(int *)&g_pGlobalMapState->field_0xc + 4 +
@@ -2689,12 +2687,12 @@ LAB_0052228e:
             puVar5 = g_pUiRuntimeContext->vftable;
           }
           (**(code **)(puVar5 + 0x34))(sVar4);
-          SetQuickDrawTextOriginWithContextOffset(param_1 + 0x1a,iVar2);
-          DrawCenteredGuideLineOnMapDc(param_1 + 0x1a,iVar6);
+          func_0x00408d6e(param_1 + 0x1a,iVar2);
+          func_0x00403bb6(param_1 + 0x1a,iVar6);
           func_0x00406b86(0xffffff);
           func_0x00402e73(1,1);
-          SetQuickDrawTextOriginWithContextOffset(param_1 + 0x18,iVar2);
-          DrawCenteredGuideLineOnMapDc(param_1 + 0x18,iVar6);
+          func_0x00408d6e(param_1 + 0x18,iVar2);
+          func_0x00403bb6(param_1 + 0x18,iVar6);
           uVar8 = CONCAT22(extraout_var_03,local_8);
         }
       }
@@ -2723,9 +2721,9 @@ LAB_0052228e:
             (**(code **)(puVar5 + 0x34))(uVar8);
             func_0x00402e73(2,2);
             iVar2 = param_2 + 0x40;
-            SetQuickDrawTextOriginWithContextOffset(param_1 + 0x16,iVar2);
+            func_0x00408d6e(param_1 + 0x16,iVar2);
             iVar6 = param_2 + 0x38;
-            DrawCenteredGuideLineOnMapDc(param_1 + 0x16,iVar6);
+            func_0x00403bb6(param_1 + 0x16,iVar6);
             cVar3 = (*g_pDiplomacyTurnStateManager->vftable[0x10].slot_0x04)
                               (CONCAT22((short)((uint)g_pGlobalMapState >> 0x10),
                                         (short)*(char *)(*(int *)&g_pGlobalMapState->field_0xc + 4 +
@@ -2739,12 +2737,12 @@ LAB_0052228e:
               puVar5 = g_pUiRuntimeContext->vftable;
             }
             (**(code **)(puVar5 + 0x34))(sVar4);
-            SetQuickDrawTextOriginWithContextOffset(param_1 + 0x19,iVar2);
-            DrawCenteredGuideLineOnMapDc(param_1 + 0x19,iVar6);
+            func_0x00408d6e(param_1 + 0x19,iVar2);
+            func_0x00403bb6(param_1 + 0x19,iVar6);
             func_0x00406b86(0xffffff);
             func_0x00402e73(1,1);
-            SetQuickDrawTextOriginWithContextOffset(param_1 + 0x18,iVar2);
-            DrawCenteredGuideLineOnMapDc(param_1 + 0x18,iVar6);
+            func_0x00408d6e(param_1 + 0x18,iVar2);
+            func_0x00403bb6(param_1 + 0x18,iVar6);
           }
         }
       }
@@ -2771,9 +2769,9 @@ LAB_0052228e:
           }
           (**(code **)(puVar5 + 0x34))(sVar4);
           func_0x00402e73(2,2);
-          SetQuickDrawTextOriginWithContextOffset(param_1 + 0x16,param_2);
+          func_0x00408d6e(param_1 + 0x16,param_2);
           iVar2 = param_2 + 8;
-          DrawCenteredGuideLineOnMapDc(param_1 + 0x16,iVar2);
+          func_0x00403bb6(param_1 + 0x16,iVar2);
           cVar3 = (*g_pDiplomacyTurnStateManager->vftable[0x10].slot_0x04)
                             (CONCAT22(extraout_var,
                                       (short)*(char *)(*(int *)&g_pGlobalMapState->field_0xc + 4 +
@@ -2787,12 +2785,12 @@ LAB_0052228e:
             puVar5 = g_pUiRuntimeContext->vftable;
           }
           (**(code **)(puVar5 + 0x34))(sVar4);
-          SetQuickDrawTextOriginWithContextOffset(param_1 + 0x1a,param_2);
-          DrawCenteredGuideLineOnMapDc(param_1 + 0x1a,iVar2);
+          func_0x00408d6e(param_1 + 0x1a,param_2);
+          func_0x00403bb6(param_1 + 0x1a,iVar2);
           func_0x00406b86(0xffffff);
           func_0x00402e73(1,1);
-          SetQuickDrawTextOriginWithContextOffset(param_1 + 0x18,param_2);
-          DrawCenteredGuideLineOnMapDc(param_1 + 0x18,iVar2);
+          func_0x00408d6e(param_1 + 0x18,param_2);
+          func_0x00403bb6(param_1 + 0x18,iVar2);
         }
       }
     }
@@ -2817,9 +2815,9 @@ LAB_0052228e:
           }
           (**(code **)(puVar5 + 0x34))(sVar4);
           func_0x00402e73(2,2);
-          SetQuickDrawTextOriginWithContextOffset(param_1 + 0x36,param_2);
+          func_0x00408d6e(param_1 + 0x36,param_2);
           iVar2 = param_2 + 8;
-          DrawCenteredGuideLineOnMapDc(param_1 + 0x36,iVar2);
+          func_0x00403bb6(param_1 + 0x36,iVar2);
           cVar3 = (*g_pDiplomacyTurnStateManager->vftable[0x10].slot_0x04)
                             (CONCAT22(extraout_var_00,
                                       (short)*(char *)(*(int *)&g_pGlobalMapState->field_0xc + 4 +
@@ -2833,12 +2831,12 @@ LAB_0052228e:
             puVar5 = g_pUiRuntimeContext->vftable;
           }
           (**(code **)(puVar5 + 0x34))(sVar4);
-          SetQuickDrawTextOriginWithContextOffset(param_1 + 0x3a,param_2);
-          DrawCenteredGuideLineOnMapDc(param_1 + 0x3a,iVar2);
+          func_0x00408d6e(param_1 + 0x3a,param_2);
+          func_0x00403bb6(param_1 + 0x3a,iVar2);
           func_0x00406b86(0xffffff);
           func_0x00402e73(1,1);
-          SetQuickDrawTextOriginWithContextOffset(param_1 + 0x38,param_2);
-          DrawCenteredGuideLineOnMapDc(param_1 + 0x38,iVar2);
+          func_0x00408d6e(param_1 + 0x38,param_2);
+          func_0x00403bb6(param_1 + 0x38,iVar2);
         }
       }
     }
@@ -2862,9 +2860,9 @@ LAB_00522851:
                       ((short)*(char *)(*(int *)&g_pGlobalMapState->field_0xc + 4 + iVar6));
           }
           func_0x00402e73(2,2);
-          SetQuickDrawTextOriginWithContextOffset(param_1 + 0x16,param_2);
+          func_0x00408d6e(param_1 + 0x16,param_2);
           iVar2 = param_2 + 8;
-          DrawCenteredGuideLineOnMapDc(param_1 + 0x16,iVar2);
+          func_0x00403bb6(param_1 + 0x16,iVar2);
           cVar3 = (*g_pDiplomacyTurnStateManager->vftable[0x10].slot_0x04)
                             (CONCAT22(extraout_var_01,
                                       (short)*(char *)(*(int *)&g_pGlobalMapState->field_0xc + 4 +
@@ -2878,12 +2876,12 @@ LAB_00522851:
             puVar5 = g_pUiRuntimeContext->vftable;
           }
           (**(code **)(puVar5 + 0x34))(sVar4);
-          SetQuickDrawTextOriginWithContextOffset(param_1 + 0x1a,param_2);
-          DrawCenteredGuideLineOnMapDc(param_1 + 0x1a,iVar2);
+          func_0x00408d6e(param_1 + 0x1a,param_2);
+          func_0x00403bb6(param_1 + 0x1a,iVar2);
           func_0x00406b86(0xffffff);
           func_0x00402e73(1,1);
-          SetQuickDrawTextOriginWithContextOffset(param_1 + 0x18,param_2);
-          DrawCenteredGuideLineOnMapDc(param_1 + 0x18,iVar2);
+          func_0x00408d6e(param_1 + 0x18,param_2);
+          func_0x00403bb6(param_1 + 0x18,iVar2);
         }
       }
     }
@@ -2930,8 +2928,8 @@ TMapDialog::DrawMapDialogWrappedTileConnectionMarker_00522c10
   else if ((8 < (short)param_2) && (8 < (short)param_4)) {
     return;
   }
-  SetQuickDrawTextOriginWithContextOffset((param_1 * 0x40) / 2 + 0x40,(param_2 + 1) * 0x40);
-  DrawCenteredGuideLineOnMapDc((param_3 * 0x40) / 2 + 0x40,(param_4 + 1) * 0x40);
+  func_0x00408d6e((param_1 * 0x40) / 2 + 0x40,(param_2 + 1) * 0x40);
+  func_0x00403bb6((param_3 * 0x40) / 2 + 0x40,(param_4 + 1) * 0x40);
   return;
 }
 
@@ -2956,21 +2954,21 @@ void TMapDialog::DrawHexNeighborConnectionMask(byte param_1, int param_2, int pa
   goto LAB_00522e7a;
   if (((param_1 & 1) == 0) ||
      (*(char *)(*(int *)&g_pGlobalMapState->field_0xc + local_c * 0x24) != '\x05')) {
-    SetQuickDrawTextOriginWithContextOffset(param_2 + 0x38,param_3);
-    DrawCenteredGuideLineOnMapDc(param_2 + 0x30,param_3 + 8);
-    DrawCenteredGuideLineOnMapDc(param_2 + 0x30,param_3 + 0x14);
+    func_0x00408d6e(param_2 + 0x38,param_3);
+    func_0x00403bb6(param_2 + 0x30,param_3 + 8);
+    func_0x00403bb6(param_2 + 0x30,param_3 + 0x14);
     iVar1 = param_3 + 0x20;
 LAB_00522ddc:
-    DrawCenteredGuideLineOnMapDc(param_2 + 0x38,iVar1);
+    func_0x00403bb6(param_2 + 0x38,iVar1);
   }
   else {
-    SetQuickDrawTextOriginWithContextOffset(param_2 + 0x2c,param_3 + 8);
+    func_0x00408d6e(param_2 + 0x2c,param_3 + 8);
     iVar1 = param_2 + 0x38;
-    DrawCenteredGuideLineOnMapDc(iVar1,param_3 + 0x14);
-    DrawCenteredGuideLineOnMapDc(iVar1,param_3 + 0x20);
+    func_0x00403bb6(iVar1,param_3 + 0x14);
+    func_0x00403bb6(iVar1,param_3 + 0x20);
     if ((param_1 & 0x40) != 0) {
-      SetQuickDrawTextOriginWithContextOffset(iVar1,param_3 + 0x14);
-      DrawCenteredGuideLineOnMapDc(param_2 + 0x3c,param_3 + 8);
+      func_0x00408d6e(iVar1,param_3 + 0x14);
+      func_0x00403bb6(param_2 + 0x3c,param_3 + 8);
       iVar1 = param_3;
       goto LAB_00522ddc;
     }
@@ -2978,45 +2976,45 @@ LAB_00522ddc:
   iVar1 = param_2 + 0x38;
   if (((param_1 & 4) == 0) ||
      (*(char *)(*(int *)&g_pGlobalMapState->field_0xc + local_8 * 0x24) != '\x05')) {
-    SetQuickDrawTextOriginWithContextOffset(iVar1,param_3 + 0x20);
-    DrawCenteredGuideLineOnMapDc(param_2 + 0x3c,param_3 + 0x28);
+    func_0x00408d6e(iVar1,param_3 + 0x20);
+    func_0x00403bb6(param_2 + 0x3c,param_3 + 0x28);
     iVar2 = param_3 + 0x34;
   }
   else {
-    SetQuickDrawTextOriginWithContextOffset(iVar1,param_3 + 0x20);
-    DrawCenteredGuideLineOnMapDc(iVar1,param_3 + 0x28);
-    DrawCenteredGuideLineOnMapDc(param_2 + 0x2c,param_3 + 0x38);
+    func_0x00408d6e(iVar1,param_3 + 0x20);
+    func_0x00403bb6(iVar1,param_3 + 0x28);
+    func_0x00403bb6(param_2 + 0x2c,param_3 + 0x38);
     if ((param_1 & 0x80) == 0) goto LAB_00522e7a;
-    SetQuickDrawTextOriginWithContextOffset(iVar1,param_3 + 0x28);
+    func_0x00408d6e(iVar1,param_3 + 0x28);
     iVar2 = param_3 + 0x38;
   }
-  DrawCenteredGuideLineOnMapDc(param_2 + 0x3c,iVar2);
-  DrawCenteredGuideLineOnMapDc(iVar1,param_3 + 0x40);
+  func_0x00403bb6(param_2 + 0x3c,iVar2);
+  func_0x00403bb6(iVar1,param_3 + 0x40);
 LAB_00522e7a:
   if (((param_1 & 1) != 0) &&
      (*(char *)(*(int *)&g_pGlobalMapState->field_0xc + local_c * 0x24) == '\x05')) {
-    SetQuickDrawTextOriginWithContextOffset(param_2 + 0x18,param_3);
+    func_0x00408d6e(param_2 + 0x18,param_3);
     iVar1 = param_3 + 8;
-    DrawCenteredGuideLineOnMapDc(param_2 + 0x20,iVar1);
-    DrawCenteredGuideLineOnMapDc(param_2 + 0x2c,iVar1);
+    func_0x00403bb6(param_2 + 0x20,iVar1);
+    func_0x00403bb6(param_2 + 0x2c,iVar1);
     if ((bStack00000010 == 0) &&
        (*(char *)(*(int *)&g_pGlobalMapState->field_0xc + local_a * 0x24) == '\x05')) {
-      SetQuickDrawTextOriginWithContextOffset(param_2 + 0x38,param_3);
-      DrawCenteredGuideLineOnMapDc(param_2 + 0x30,iVar1);
-      DrawCenteredGuideLineOnMapDc(param_2 + 0x2c,iVar1);
+      func_0x00408d6e(param_2 + 0x38,param_3);
+      func_0x00403bb6(param_2 + 0x30,iVar1);
+      func_0x00403bb6(param_2 + 0x2c,iVar1);
     }
   }
   if (((param_1 & 4) != 0) &&
      (*(char *)(*(int *)&g_pGlobalMapState->field_0xc + local_8 * 0x24) == '\x05')) {
-    SetQuickDrawTextOriginWithContextOffset(param_2 + 0x18,param_3 + 0x40);
+    func_0x00408d6e(param_2 + 0x18,param_3 + 0x40);
     iVar1 = param_3 + 0x38;
-    DrawCenteredGuideLineOnMapDc(param_2 + 0x20,iVar1);
-    DrawCenteredGuideLineOnMapDc(param_2 + 0x2c,iVar1);
+    func_0x00403bb6(param_2 + 0x20,iVar1);
+    func_0x00403bb6(param_2 + 0x2c,iVar1);
     if ((bStack00000010 == 0) &&
        (*(char *)(*(int *)&g_pGlobalMapState->field_0xc + local_a * 0x24) == '\x05')) {
-      SetQuickDrawTextOriginWithContextOffset(param_2 + 0x2c,iVar1);
-      DrawCenteredGuideLineOnMapDc(param_2 + 0x30,iVar1);
-      DrawCenteredGuideLineOnMapDc(param_2 + 0x38,param_3 + 0x40);
+      func_0x00408d6e(param_2 + 0x2c,iVar1);
+      func_0x00403bb6(param_2 + 0x30,iVar1);
+      func_0x00403bb6(param_2 + 0x38,param_3 + 0x40);
     }
   }
   return;
@@ -3134,24 +3132,23 @@ TMapDialog::UpdateMapOrderEntryTilePreviewSlot
   local_24 = local_2c + 0x40;
   iVar6 = 0;
   local_58 = 0;
-  GetActiveQuickDrawSurfaceContextAndFlags(&local_34,&local_58);
+  func_0x00408d64(&local_34,&local_58);
   func_0x004088aa();
-  SetActiveQuickDrawSurfaceContext(*(undefined4 *)&this->field_0x350,local_58);
-  uVar3 = GetSurfaceObjectAtContextOffset24(DAT_006a3450);
-  ReturnConstantTrueQuickDrawFlag(uVar3);
-  uVar3 = GetSurfaceObjectAtContextOffset24(*(undefined4 *)&this->field_0x350);
-  ReturnConstantTrueQuickDrawFlag(uVar3);
-  piVar4 = (int *)GetSurfaceObjectAtContextOffset24(*(undefined4 *)&this->field_0x350);
+  func_0x00406f5f(*(undefined4 *)&this->field_0x350,local_58);
+  uVar3 = func_0x0040520e(DAT_006a3450);
+  func_0x0040761c(uVar3);
+  uVar3 = func_0x0040520e(*(undefined4 *)&this->field_0x350);
+  func_0x0040761c(uVar3);
+  piVar4 = (int *)func_0x0040520e(*(undefined4 *)&this->field_0x350);
   local_4c = *(ushort *)(*piVar4 + 4) & 0x3fff;
   local_44 = func_0x00405e39(piVar4);
-  piVar4 = (int *)GetSurfaceObjectAtContextOffset24(DAT_006a3450);
+  piVar4 = (int *)func_0x0040520e(DAT_006a3450);
   uVar8 = *(ushort *)(*piVar4 + 4) & 0x3fff;
   local_50 = uVar8;
   local_48 = func_0x00405e39(piVar4);
   iVar7 = (int)(short)uVar8;
   local_48 = local_48 + (iVar7 + 1) * 0x40;
-  uVar3 = GetSurfaceObjectAtContextOffset24
-                    (*(undefined4 *)(g_pStrategicMapViewSystem + 0x668));
+  uVar3 = func_0x0040520e(*(undefined4 *)(g_pStrategicMapViewSystem + 0x668));
   func_0x00405e39(uVar3);
   do {
     sVar5 = (short)param_1;
@@ -3193,24 +3190,24 @@ TMapDialog::UpdateMapOrderEntryTilePreviewSlot
   if (iVar6 != 0) {
     piVar4 = (int *)func_0x004055ec(iVar6);
     if (piVar4 != (int *)0x0) {
-      SetActiveQuickDrawSurfaceContext(DAT_006a3450,uVar3);
+      func_0x00406f5f(DAT_006a3450,uVar3);
       iStack_3c = piVar4[7] + 0x40;
       iStack_38 = piVar4[8] + 0x40;
       local_34 = piVar4[9] + 0x40;
       local_30 = piVar4[10] + 0x40;
-      ApplyRectClipRegionToGlobalClipState(&iStack_3c);
+      func_0x004030e9(&iStack_3c);
       local_5c = 0x40;
       (**(code **)(*piVar4 + 0x2c))(&stack0xffffffa0);
-      SetActiveQuickDrawSurfaceContext(*(undefined4 *)&this->field_0x350,uVar3);
+      func_0x00406f5f(*(undefined4 *)&this->field_0x350,param_1);
     }
   }
   func_0x004088aa();
-  SetActiveQuickDrawSurfaceContext(local_50,uVar3);
+  func_0x00406f5f(local_50,uVar3);
   if ((DAT_006a33f8 & 1) == 0) {
     DAT_006a33f8 = DAT_006a33f8 | 1;
     DAT_006a3440 = 0x40;
     DAT_006a3444 = 0x40;
-    AppendPointerToGlobalVectorAsStatus(&DAT_00523620);
+    atexit(&DAT_00523620);
   }
   uVar8 = local_4c;
   local_5c = local_48;
@@ -3223,10 +3220,10 @@ TMapDialog::UpdateMapOrderEntryTilePreviewSlot
   local_24 = local_58;
   func_0x00405493(DAT_006a3450 + 4,&g_pActiveQuickDrawSurfaceContext->field_0x4,&local_2c,&local_4c,
                   0,0);
-  uVar3 = GetSurfaceObjectAtContextOffset24(DAT_006a3450);
-  NoOpQuickDrawLifecycleHookB(uVar3);
-  uVar3 = GetSurfaceObjectAtContextOffset24(*(undefined4 *)&this->field_0x350);
-  NoOpQuickDrawLifecycleHookB(uVar3);
+  uVar3 = func_0x0040520e(DAT_006a3450);
+  func_0x004024fa(uVar3);
+  uVar3 = func_0x0040520e(*(undefined4 *)&this->field_0x350);
+  func_0x004024fa(uVar3);
   return;
 }
 

@@ -24,7 +24,7 @@ CBrush * CBrush::InitializeGlobalClipRegionHandleState()
   }
   g_pGlobalClipRegionHandleObject = (int)this_00;
   pHVar1 = CreateRectRgn(0,0,0,0);
-  AttachRegionHandleToClipStateAndRegister(this_00,(int)pHVar1);
+  CGdiObject__Attach(this_00,(int)pHVar1);
   return this;
 }
 
@@ -39,10 +39,10 @@ void CBrush::Helper_Uses_AttachRegionHandleToClipStateAndRegister_At004955b0(REC
   undefined4 uVar2;
   
   if (*(int *)(this + 0x10) != 0) {
-    DeleteObject();
+    CGdiObject__DeleteObject();
   }
   pHVar1 = CreateRectRgnIndirect(param_1);
-  uVar2 = AttachRegionHandleToClipStateAndRegister(this + 0x14,(int)pHVar1);
+  uVar2 = CGdiObject__Attach(this + 0x14,(int)pHVar1);
   *(undefined4 *)(this + 0x10) = uVar2;
   return;
 }
@@ -59,7 +59,7 @@ void CBrush::~CBrush(void)
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
   
-  EstablishSehFrameProlog();
+  _EH_prolog();
   *(undefined4 **)(unaff_EBP + -0x10) = extraout_ECX;
   *extraout_ECX = &PTR_LAB_00671a8c;
   *(undefined4 *)(unaff_EBP + -4) = 0;
@@ -85,17 +85,17 @@ CBrush * CBrush::_scalar_deleting_destructor_(byte param_1)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00613A4C
-// GHIDRA_NAME CBrush::AttachRegionHandleToClipStateAndRegister
-// GHIDRA_PROTO undefined __thiscall AttachRegionHandleToClipStateAndRegister(int param_1)
+// GHIDRA_NAME CBrush::CGdiObject::Attach
+// GHIDRA_PROTO undefined __thiscall CGdiObject::Attach(int param_1)
 
-bool CBrush::AttachRegionHandleToClipStateAndRegister(int param_1)
+bool CBrush::CGdiObject__Attach(int param_1)
 
 {
   CMapPtrToPtr *this_00;
   undefined4 *puVar1;
   
   if (param_1 != 0) {
-    this_00 = (CMapPtrToPtr *)afxMapHIMAGELIST_6139c6(1);
+    this_00 = (CMapPtrToPtr *)afxMapHGDIOBJ(1);
     *(int *)(this + 4) = param_1;
     puVar1 = (undefined4 *)CMapPtrToPtr::operator[](this_00,param_1);
     *puVar1 = this;
@@ -128,14 +128,14 @@ CBrush * CBrush::CBrush(void)
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
   
-  EstablishSehFrameProlog();
+  _EH_prolog();
   *(CBrush **)(unaff_EBP + -0x10) = this;
   *(undefined4 *)(this + 4) = 0;
   color = *(COLORREF *)(unaff_EBP + 8);
   *(undefined4 *)(unaff_EBP + -4) = 0;
   *(undefined ***)this = &PTR_LAB_00672634;
   pHVar1 = CreateSolidBrush(color);
-  iVar2 = AttachRegionHandleToClipStateAndRegister(this,(int)pHVar1);
+  iVar2 = CGdiObject__Attach(this,(int)pHVar1);
   if (iVar2 == 0) {
     AfxThrowResourceException();
   }
@@ -157,14 +157,14 @@ CBrush * CBrush::CBrush(void)
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
   
-  EstablishSehFrameProlog();
+  _EH_prolog();
   *(CBrush **)(unaff_EBP + -0x10) = this;
   *(undefined4 *)(this + 4) = 0;
   color = *(COLORREF *)(unaff_EBP + 0xc);
   *(undefined4 *)(unaff_EBP + -4) = 0;
   *(undefined ***)this = &PTR_LAB_00672634;
   pHVar1 = CreateHatchBrush(*(int *)(unaff_EBP + 8),color);
-  iVar2 = AttachRegionHandleToClipStateAndRegister(this,(int)pHVar1);
+  iVar2 = CGdiObject__Attach(this,(int)pHVar1);
   if (iVar2 == 0) {
     AfxThrowResourceException();
   }
@@ -185,14 +185,14 @@ CBrush * CBrush::CBrush(void)
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
   
-  EstablishSehFrameProlog();
+  _EH_prolog();
   *(CBrush **)(unaff_EBP + -0x10) = this;
   *(undefined4 *)(this + 4) = 0;
   iVar2 = *(int *)(unaff_EBP + 8);
   *(undefined4 *)(unaff_EBP + -4) = 0;
   *(undefined ***)this = &PTR_LAB_00672634;
   pHVar1 = CreatePatternBrush(*(HBITMAP *)(iVar2 + 4));
-  iVar2 = AttachRegionHandleToClipStateAndRegister(this,(int)pHVar1);
+  iVar2 = CGdiObject__Attach(this,(int)pHVar1);
   if (iVar2 == 0) {
     AfxThrowResourceException();
   }
@@ -224,7 +224,7 @@ int CBrush::CreateDIBPatternBrush(void *param_1, uint param_2)
   
   lpPackedDIB = GlobalLock(param_1);
   pHVar1 = CreateDIBPatternBrushPt(lpPackedDIB,param_2);
-  iVar2 = AttachRegionHandleToClipStateAndRegister(this,(int)pHVar1);
+  iVar2 = CGdiObject__Attach(this,(int)pHVar1);
   GlobalUnlock(param_1);
   return iVar2;
 }

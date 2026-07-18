@@ -143,7 +143,7 @@ void TPlacard::ApplyRectSlot110()
   local_14.m_pchData._3_1_ = 0;
   func_0x00404fe8();
   func_0x0040448f(0,10);
-  _Format_CString__QAAXPBDZZ(&local_14,&g_szDecimalFormat);
+  CString__Format(&local_14,&g_szDecimalFormat);
   if (*(short *)&this->field_0x90 < 10) {
     iVar1 = this->field34 / 2 + -2;
   }
@@ -153,13 +153,13 @@ void TPlacard::ApplyRectSlot110()
   else {
     iVar1 = this->field34 / 2 + -10;
   }
-  MapUiThemeCodeToStyleFlags(0x2b6c);
-  MapUiThemeCodeToStyleFlags(0x2b67);
+  func_0x004093cc(0x2b6c);
+  func_0x004093cc(0x2b67);
   func_0x00409444();
-  SetQuickDrawTextOriginWithContextOffset(iVar1 + 1);
+  func_0x00408d6e(iVar1 + 1);
   func_0x004029aa();
   func_0x00409444();
-  SetQuickDrawTextOriginWithContextOffset(iVar1);
+  func_0x00408d6e(iVar1);
   func_0x004029aa();
   func_0x00406b86();
   puStack_8 = (undefined1 *)0xffffffff;

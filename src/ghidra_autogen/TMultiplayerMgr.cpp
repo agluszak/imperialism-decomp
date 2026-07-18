@@ -7,11 +7,11 @@
 // GHIDRA_NAME TMultiplayerMgr::CreateObject
 // GHIDRA_PROTO undefined CreateObject()
 
-undefined4 * __fastcall TMultiplayerMgr::CreateObject(undefined4 param_1)
+undefined4 __fastcall TMultiplayerMgr::CreateObject(undefined4 param_1)
 
 {
-  Config *this;
-  undefined4 *puVar1;
+  int iVar1;
+  undefined4 uVar2;
   undefined4 *unaff_FS_OFFSET;
   undefined4 local_c;
   undefined1 *puStack_8;
@@ -21,15 +21,15 @@ undefined4 * __fastcall TMultiplayerMgr::CreateObject(undefined4 param_1)
   puStack_8 = &LAB_0063470a;
   local_c = *unaff_FS_OFFSET;
   *unaff_FS_OFFSET = &local_c;
-  this = (Config *)operator_new(0xf8,param_1);
+  iVar1 = operator_new(0xf8,param_1);
   local_4 = 0;
-  if (this != (Config *)0x0) {
-    puVar1 = Config::InitDefaults(this,(astruct_11 *)this);
+  if (iVar1 != 0) {
+    uVar2 = func_0x00405529(iVar1);
     *unaff_FS_OFFSET = local_c;
-    return puVar1;
+    return uVar2;
   }
   *unaff_FS_OFFSET = local_c;
-  return (undefined4 *)0x0;
+  return 0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00542650
@@ -285,7 +285,7 @@ void TMultiplayerMgr::ReadFrom(int *param_1)
   CStack_8c.m_pchData = (char *)0x542d2b;
   sVar7 = func_0x00403b16();
   CStack_8c.m_pchData = (char *)0x542d39;
-  uVar5 = (*g_pLocalizationTable->vftable[7].slot_0x04)();
+  uVar5 = (*g_pSimMgr->vftable[7].slot_0x04)();
   CStack_8c.m_pchData = (char *)0x542d53;
   func_0x00403b16();
   CStack_8c.m_pchData = (char *)0xffffffff;
@@ -293,7 +293,7 @@ void TMultiplayerMgr::ReadFrom(int *param_1)
   uStack_68 = 0x1f;
   func_0x004098f9();
   func_0x00405a5b(&piStack_6c,0);
-  if (*(int *)&g_pLocalizationTable->field_0x44 == 1) {
+  if (*(int *)&g_pSimMgr->field_0x44 == 1) {
     *(undefined4 *)(iStack_48 + 0xd8) = 0x696e6974;
     func_0x00407f77(1);
   }

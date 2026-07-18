@@ -66,7 +66,7 @@ void AFX_MODULE_STATE::~AFX_MODULE_STATE(void)
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
   
-  EstablishSehFrameProlog();
+  _EH_prolog();
   *(undefined4 **)(unaff_EBP + -0x18) = extraout_ECX;
   *extraout_ECX = &PTR__scalar_deleting_destructor__00670c54;
   puVar1 = (undefined4 *)extraout_ECX[0x411];

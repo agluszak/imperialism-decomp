@@ -360,12 +360,12 @@ void TTown::IncrementProductionDerivedCountersWithTurnParityRules()
   else {
     this_00 = g_apNationStates[*(short *)&this->field_0x1c]->city;
   }
-  uVar2 = (*g_pLocalizationTable->vftable[7].slot_0x04)();
+  uVar2 = (*g_pSimMgr->vftable[7].slot_0x04)();
   uVar4 = (short)CONCAT31(extraout_var,uVar2) - *(short *)&this->field_0x1a;
   if ((4 < (short)uVar4) && ((uVar4 & 1) == 0)) {
     sVar5 = *(short *)&this->field_0x20 + *(short *)&this->field_0x1e;
     if (sVar5 != 0) {
-      iVar3 = GetCityBuildingProductionValueBySlot(this_00,1);
+      iVar3 = TCity::GetBuildingType(this_00,1);
       sVar1 = *(short *)&this->field_0x2e;
       if ((sVar1 < (short)((int)((int)(short)iVar3 + ((int)(short)iVar3 >> 0x1f & 3U)) >> 2)) &&
          ((int)sVar1 < (int)sVar5 / 2)) {
@@ -373,7 +373,7 @@ void TTown::IncrementProductionDerivedCountersWithTurnParityRules()
       }
     }
     if (*(short *)&this->field_0x22 != 0) {
-      iVar3 = GetCityBuildingProductionValueBySlot(this_00,5);
+      iVar3 = TCity::GetBuildingType(this_00,5);
       sVar5 = *(short *)&this->field_0x30;
       if ((sVar5 < (short)((int)((int)(short)iVar3 + ((int)(short)iVar3 >> 0x1f & 3U)) >> 2)) &&
          ((int)sVar5 < (int)*(short *)&this->field_0x22 / 2)) {
@@ -385,7 +385,7 @@ void TTown::IncrementProductionDerivedCountersWithTurnParityRules()
       if (sVar1 <= sVar5) {
         sVar5 = sVar1;
       }
-      iVar3 = GetCityBuildingProductionValueBySlot(this_00,3);
+      iVar3 = TCity::GetBuildingType(this_00,3);
       sVar1 = *(short *)&this->field_0x34;
       if ((sVar1 < (short)((int)((int)(short)iVar3 + ((int)(short)iVar3 >> 0x1f & 3U)) >> 2)) &&
          ((int)sVar1 < (int)sVar5 / 2)) {

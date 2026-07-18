@@ -52,7 +52,7 @@ void __fastcall CDibPal::~CDibPal(undefined4 *param_1)
   }
   *param_1 = &PTR_LAB_00671054;
   local_4 = 0;
-  DeleteObject();
+  CGdiObject__DeleteObject();
   *param_1 = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *unaff_FS_OFFSET = local_c;
   return;
@@ -102,7 +102,7 @@ undefined4 __thiscall CDibPal::BuildPaletteFromBitmapColorTable(CBrush *param_1,
     } while (param_2 != 0);
   }
   pHVar5 = CreatePalette(*(LOGPALETTE **)(param_1 + 8));
-  uVar6 = CBrush::AttachRegionHandleToClipStateAndRegister(param_1,(int)pHVar5);
+  uVar6 = CBrush::CGdiObject__Attach(param_1,(int)pHVar5);
   return uVar6;
 }
 

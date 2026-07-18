@@ -31,7 +31,7 @@ void _AFX_CTL3D_STATE::~_AFX_CTL3D_STATE(void)
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
   
-  EstablishSehFrameProlog();
+  _EH_prolog();
   *(undefined4 **)(unaff_EBP + -0x10) = extraout_ECX;
   *extraout_ECX = &PTR__scalar_deleting_destructor__00670554;
   pcVar1 = (code *)extraout_ECX[4];

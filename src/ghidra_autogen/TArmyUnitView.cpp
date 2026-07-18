@@ -105,13 +105,13 @@ void TArmyUnitView::ApplyRectSlot110()
   local_38 = 0x1c474b;
   func_0x00409444();
   CString::operator=(&local_30,(CString *)(*(int *)&this->field_0x60 + 0x24));
-  SetQuickDrawTextOriginWithContextOffset();
+  func_0x00408d6e();
   func_0x004029aa();
   func_0x0040448f();
   local_38 = 0x1c474b;
   func_0x00409444();
-  (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
-  SetQuickDrawTextOriginWithContextOffset(0x40);
+  (*g_pSimMgr->vftable[0x10].slot_0x04)();
+  func_0x00408d6e(0x40);
   func_0x004029aa();
   func_0x00406b86();
   sVar1 = *(short *)(*(int *)&this->field_0x60 + 0x34) / 0x19 + 1;
@@ -136,10 +136,10 @@ void TArmyUnitView::ApplyRectSlot110()
   func_0x00405493(*(int *)(g_pStrategicMapViewSystem + 0x694) + 4,
                   &g_pActiveQuickDrawSurfaceContext->field_0x4,&uStack_28,&local_38,0x24);
   func_0x00402bdf();
-  SetQuickDrawTextOriginWithContextOffset(0x41);
-  DrawCenteredGuideLineOnMapDc(0x41);
-  DrawCenteredGuideLineOnMapDc(0x93);
-  DrawCenteredGuideLineOnMapDc(0x93);
+  func_0x00408d6e(0x41);
+  func_0x00403bb6(0x41);
+  func_0x00403bb6(0x93);
+  func_0x00403bb6(0x93);
   sVar1 = *(short *)(*(int *)&this->field_0x60 + 0x38);
   sVar2 = (sVar1 / 100) * 0xb;
   if (0x31 < (int)sVar1 % 100) {
@@ -243,9 +243,9 @@ TArmyUnitView::HandleEvent
     if (cVar3 == '\0') {
       CString::CString(&param_2);
       local_4 = 0;
-      (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+      (*g_pSimMgr->vftable[0x10].slot_0x04)();
       func_0x004076b7(&local_4);
-      DispatchLocalizedUiMessageWithTemplateA13A0();
+      func_0x004096b0();
       local_4 = 0xffffffff;
       CString::~CString(&param_2);
     }

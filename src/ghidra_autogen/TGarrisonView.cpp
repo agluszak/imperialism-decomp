@@ -115,7 +115,7 @@ void TGarrisonView::CallVoidSlotA0()
     }
     if (cVar3 != '\0') {
 LAB_004a8aa3:
-      if (*(short *)&g_pLocalizationTable->field_0x58 != 0) {
+      if (*(short *)&g_pSimMgr->field_0x58 != 0) {
         cVar3 = func_0x004075a9(0x2746,9,1,1);
       }
       if (cVar3 != '\0') {
@@ -132,13 +132,13 @@ LAB_004a8aa3:
             CString::CString(&local_14);
             local_4 = 0;
             CString::operator=(&local_14,(CString *)(piVar2 + 9));
-            iVar6 = CompareAnsiStringsWithMbcsAwareness(local_14.m_pchData,s_Snidely_0069584c);
+            iVar6 = _mbscmp(local_14.m_pchData,s_Snidely_0069584c);
             if (iVar6 == 0) {
               CString::CString(&local_18);
               local_4 = CONCAT31(local_4._1_3_,1);
               func_0x00403b16(&local_18);
               func_0x00405245();
-              iVar6 = CompareAnsiStringsWithMbcsAwareness(local_18.m_pchData,&DAT_00695844);
+              iVar6 = _mbscmp(local_18.m_pchData,&DAT_00695844);
               if (iVar6 == 0) {
                 sVar5 = func_0x00403b16();
                 uVar4 = (*g_apTerrainTypeDescriptorTable[sVar5]->vftable->

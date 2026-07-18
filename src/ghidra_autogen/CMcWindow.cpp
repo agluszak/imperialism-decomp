@@ -159,7 +159,7 @@ switchD_004934ce_caseD_2:
   }
   CWnd::CreateEx(dwExStyle,0,0,dwStyle,local_58.left,local_58.top,local_58.right - local_58.left,
                  local_58.bottom - local_58.top,uVar5,0,0);
-  SetWindowPos(&DAT_006a7990,0,0,0,0,3);
+  CWnd__SetWindowPos(&DAT_006a7990,0,0,0,0,3);
   BringWindowToTop((HWND)param_1[7]);
   *unaff_FS_OFFSET = uStack_c;
   return param_1;
@@ -288,24 +288,6 @@ void __fastcall CMcWindow::OnKeyUp(CWnd *param_1)
 
 {
   CWnd::Default(param_1);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x00493CA0
-// GHIDRA_NAME CMcWindow::OnQueryNewPalette
-// GHIDRA_PROTO undefined OnQueryNewPalette()
-
-void __fastcall CMcWindow::OnQueryNewPalette(int *param_1)
-
-{
-  int iVar1;
-  
-  iVar1 = CThreadLocalObject::GetData
-                    ((CThreadLocalObject *)&DAT_006a7a50,
-                     CThreadLocal[_AFX_THREAD_STATE]::_AFX_THREAD_STATE>__CreateObject);
-  (**(code **)(*param_1 + 0xa8))
-            (*(undefined4 *)(iVar1 + 0x38),*(undefined4 *)(iVar1 + 0x3c),
-             *(undefined4 *)(iVar1 + 0x40));
   return;
 }
 

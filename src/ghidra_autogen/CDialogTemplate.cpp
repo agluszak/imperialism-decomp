@@ -475,10 +475,10 @@ CDialogTemplate::SetFont(undefined4 *param_1,LPCSTR param_2,undefined2 param_3)
       cVar7 = (char)puVar3[4];
     }
     if ((iVar4 != iVar6) && (cVar7 != '\0')) {
-      _memmove(uVar9,local_10,(int)puVar3 + (local_c[1] - local_10));
+      memmove(uVar9,local_10,(int)puVar3 + (local_c[1] - local_10));
     }
     *local_14 = param_3;
-    _memmove(local_14 + iVar8,local_54,iVar4 + iVar8 * -2);
+    memmove(local_14 + iVar8,local_54,iVar4 + iVar8 * -2);
     puVar1 = local_c;
     local_c[1] = local_c[1] + (uVar9 - local_10);
     GlobalUnlock((HGLOBAL)*local_c);
@@ -601,7 +601,7 @@ void CDialogTemplate::GetSizeInPixels(void)
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
   
-  EstablishSehFrameProlog();
+  _EH_prolog();
   if (*(int *)(extraout_ECX + 8) == 0) {
     CString::CString((CString *)(unaff_EBP + -0x10));
     *(undefined4 *)(unaff_EBP + -4) = 0;

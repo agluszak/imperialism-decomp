@@ -101,9 +101,7 @@ void TOneTimeAnimation::DestructTOneTimeAnimationAndMaybeFree()
     else {
       this->field_0x2c = 1;
     }
-    uStack_4 = 0xffffffff;
-    LStack_40 = 0x49fe94;
-    DestroyScopedMapQuickDrawContext();
+    func_0x00408035();
   }
   *unaff_FS_OFFSET = uStack_c;
   return;

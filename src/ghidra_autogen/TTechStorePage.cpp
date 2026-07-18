@@ -62,7 +62,7 @@ TTechStorePage::InsertTempObjectNodeAndMarkWindowDirtyWithMfcTempMapLock
   puStack_8 = &LAB_0062dfc8;
   *unaff_FS_OFFSET = &uStack_c;
   AfxGetModuleState();
-  _BeginWaitCursor_CCmdTarget__QAEXXZ();
+  CCmdTarget__BeginWaitCursor();
   uStack_4 = 0;
   piVar1 = (int *)operator_new(8);
   if (piVar1 == (int *)0x0) {
@@ -83,7 +83,7 @@ TTechStorePage::InsertTempObjectNodeAndMarkWindowDirtyWithMfcTempMapLock
   (**(code **)(*piVar1 + 0x1c))();
   (*this->vftable->VTableSlot19)(1);
   AfxGetModuleState();
-  EndWaitCursor();
+  CCmdTarget__EndWaitCursor();
   *unaff_FS_OFFSET = uVar2;
   return;
 }

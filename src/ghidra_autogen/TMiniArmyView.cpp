@@ -81,7 +81,7 @@ void TMiniArmyView::ApplyRectSlot110()
   CString local_40;
   CString local_3c;
   CString local_38;
-  CString local_34;
+  undefined1 local_34 [4];
   undefined1 *local_30;
   undefined4 local_2c;
   undefined4 local_28;
@@ -106,25 +106,25 @@ void TMiniArmyView::ApplyRectSlot110()
   CString::operator=(&local_38,(CString *)(*(int *)&this->field_0x84 + 0x24));
   CString::operator=(&local_40,&local_38);
   func_0x00401bf9(0,0xc,0x2b6a);
-  sVar1 = MeasureTextExtentWithCachedQuickDrawStyle();
+  sVar1 = func_0x00405b7d();
   if (100 < sVar1) {
     CString::CString(&local_3c);
     local_4._0_1_ = 2;
     do {
-      src_ref = (CString *)func_0x00404ed5(&local_34,1);
-      local_4._0_1_ = 3;
-      CString::operator=(&local_3c,src_ref);
-      local_4._0_1_ = 2;
-      CString::~CString(&local_34);
-      CString::operator=(&local_40,&local_3c);
-      CString::operator+=(&local_3c,&DAT_0069587c);
-      sVar1 = MeasureTextExtentWithCachedQuickDrawStyle();
+      src_ref = (CString *)func_0x00404ed5(local_34,1);
+      local_10._0_1_ = 3;
+      CString::operator=((CString *)&stack0xffffffb8,src_ref);
+      local_10 = CONCAT31(local_10._1_3_,2);
+      CString::~CString(&local_40);
+      CString::operator=((CString *)&stack0xffffffb4,(CString *)&stack0xffffffb8);
+      CString::operator+=((CString *)&stack0xffffffb8,&DAT_0069587c);
+      sVar1 = func_0x00405b7d(&stack0xffffffb8);
     } while (100 < sVar1);
     CString::operator=(&local_40,&local_3c);
     local_4._0_1_ = 1;
     CString::~CString(&local_3c);
   }
-  SetQuickDrawTextOriginWithContextOffset(10);
+  func_0x00408d6e(10);
   func_0x004029aa();
   sVar1 = *(short *)(*(int *)&this->field_0x84 + 0x34) / 0x19 + 1;
   if (0x14 < sVar1) {
@@ -149,10 +149,10 @@ void TMiniArmyView::ApplyRectSlot110()
                   &g_pActiveQuickDrawSurfaceContext->field_0x4,&local_1c,&local_2c,0x24);
   local_30 = &stack0xffffffb4;
   func_0x00402bdf();
-  SetQuickDrawTextOriginWithContextOffset(0x8a);
-  DrawCenteredGuideLineOnMapDc(0x8a);
-  DrawCenteredGuideLineOnMapDc(0xdc);
-  DrawCenteredGuideLineOnMapDc(0xdc);
+  func_0x00408d6e(0x8a);
+  func_0x00403bb6(0x8a);
+  func_0x00403bb6(0xdc);
+  func_0x00403bb6(0xdc);
   local_4 = (uint)local_4._1_3_ << 8;
   CString::~CString(&local_38);
   local_4 = 0xffffffff;
@@ -189,9 +189,9 @@ void TMiniArmyView::HandleEvent(int param_1, CString param_2)
     if (cVar4 == '\0') {
       CString::CString(&param_2);
       local_4 = 0;
-      (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+      (*g_pSimMgr->vftable[0x10].slot_0x04)();
       func_0x004076b7(&local_4);
-      DispatchLocalizedUiMessageWithTemplateA13A0();
+      func_0x004096b0();
       local_4 = 0xffffffff;
       CString::~CString(&param_2);
     }

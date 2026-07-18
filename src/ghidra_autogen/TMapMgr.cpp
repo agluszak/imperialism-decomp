@@ -109,23 +109,23 @@ bool TMapMgr::QueueCivilianWorkOrderWithCostCheck(short nTileIndex, undefined2 p
     uStack_c = CONCAT31(uStack_c._1_3_,2);
     puStack_50 = (undefined1 *)0x4d34d0;
     iStack_4c = iVar2;
-    (*g_pLocalizationTable->vftable[0xe].slot_0x04)();
+    (*g_pSimMgr->vftable[0xe].slot_0x04)();
     puStack_50 = &stack0xffffffc4;
     uStack_54 = 8;
     iStack_58 = 0x2745;
     pcStack_5c = (char *)0x4d34ea;
-    (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+    (*g_pSimMgr->vftable[0x10].slot_0x04)();
     pcStack_5c = CStack_44.m_pchData;
     pCStack_64 = &awOrderQueuedSfxByClass;
     pcStack_60 = CStack_48.m_pchData;
-    pTStack_68 = g_pLocalizationTable;
+    pTStack_68 = g_pSimMgr;
     func_0x0040988b();
     pcStack_5c = (char *)0x0;
     pcStack_60 = (char *)0x2;
     pCStack_64 = (CString *)&DAT_006a2d40;
     puStack_40 = (undefined1 *)&pTStack_68;
     func_0x004076b7(&awOrderQueuedSfxByClass);
-    DispatchLocalizedUiMessageWithTemplateA13A0();
+    func_0x004096b0();
     pcStack_5c = (char *)0x4d3539;
     CString::~CString(&awOrderQueuedSfxByClass);
     pcStack_5c = (char *)0x4d3546;
@@ -555,14 +555,13 @@ undefined4 TMapMgr::BuildOrLoadGlobalMapStateForSession(CString param_1, char *p
     piStack_14 = (int *)func_0x00402f77();
   }
   uStack_4 = 0xffffffff;
-  if ((g_pLocalizationTable->field_0x112 != '\0') ||
-     (bVar4 = false, *(short *)&g_pLocalizationTable->field_0x114 != 0)) {
+  if ((g_pSimMgr->field_0x112 != '\0') || (bVar4 = false, *(short *)&g_pSimMgr->field_0x114 != 0)) {
     bVar4 = true;
   }
   *(undefined1 *)((int)piStack_14 + 0x2a1) = this->field_0x20;
   if (bVar4) {
-    if (g_pLocalizationTable->field_0x112 == '\0') {
-      cVar5 = func_0x00404fb6(*(short *)&g_pLocalizationTable->field_0x114 + -1);
+    if (g_pSimMgr->field_0x112 == '\0') {
+      cVar5 = func_0x00404fb6(*(short *)&g_pSimMgr->field_0x114 + -1);
       unaff_EBX = piStack_14;
       if (cVar5 == '\0') {
         if (piStack_14 != (int *)0x0) {
@@ -662,7 +661,7 @@ undefined4 TMapMgr::BuildOrLoadGlobalMapStateForSession(CString param_1, char *p
     func_0x00401c2b();
   }
   func_0x0040356c();
-  (*g_pLocalizationTable->vftable[0x10].GetTSimMgrClassNamePointer)();
+  (*g_pSimMgr->vftable[0x10].GetTSimMgrClassNamePointer)();
   DAT_006a5aec = 0;
   DAT_006a5aec = GetCurrentLocalEpochSecondsWithTimezoneCache(0);
   if (DAT_006a4268 != 0) {
@@ -1870,10 +1869,10 @@ TMapMgr::DispatchFormationEntryActionsAndMaybeCreateTurnEvent12
   (*g_apTerrainTypeDescriptorTable[sVar6]->vftable->AddRegionIdToNationOwnedRegionList)(unaff_EBX);
   *(short *)((int)g_pMapContextActionManager + unaff_EBX * 2 + 0x1c) = sVar6;
   cVar4 = (*g_pDiplomacyTurnStateManager->vftable[0x10].slot_0x04)(param_2);
-  if ((cVar4 != '\0') && (*(int *)&g_pLocalizationTable->field_0x44 != 2)) {
+  if ((cVar4 != '\0') && (*(int *)&g_pSimMgr->field_0x44 != 2)) {
     (*g_apNationStates[sVar6]->vftable->OrphanRetStub_004d7f80)(unaff_EBP,0x135);
   }
-  if (*(int *)&g_pLocalizationTable->field_0x44 == 1) {
+  if (*(int *)&g_pSimMgr->field_0x44 == 1) {
     func_0x00407f72((int)cVar2,param_2);
   }
   return;
@@ -2232,7 +2231,7 @@ void TMapMgr::FloodFillTileRegionMarker(short nTileIndex, short nOwnerNationId)
   if ((*(byte *)(iVar3 + 0x1c) & 2) != 0) {
     iVar3 = *(short *)(iVar3 + 0x14) * 0xa8;
     if (*(short *)(iVar3 + 6 + *(int *)&this->field_0x10) == 999) {
-      uVar2 = (*g_pLocalizationTable->vftable[7].slot_0x04)();
+      uVar2 = (*g_pSimMgr->vftable[7].slot_0x04)();
       *(short *)(iVar3 + 6 + *(int *)&this->field_0x10) = (short)CONCAT31(extraout_var,uVar2);
     }
   }
@@ -2252,15 +2251,15 @@ void TMapMgr::FloodFillTileRegionMarker(short nTileIndex, short nOwnerNationId)
         uVar6 = CONCAT22((short)((uint)uVar6 >> 0x10),sVar1);
         iVar3 = sVar1 * 0xa8;
         if (*(short *)(iVar3 + 6 + *(int *)&this->field_0x10) == 999) {
-          uVar2 = (*g_pLocalizationTable->vftable[7].slot_0x04)();
+          uVar2 = (*g_pSimMgr->vftable[7].slot_0x04)();
           *(short *)(iVar3 + 6 + *(int *)&this->field_0x10) = (short)CONCAT31(extraout_var_00,uVar2)
           ;
           if (g_nSaveFormatVersion == -3) goto LAB_00514527;
-          if (*(int *)&g_pLocalizationTable->field_0x44 == 1) {
+          if (*(int *)&g_pSimMgr->field_0x44 == 1) {
             func_0x00403b34(uVar6);
           }
         }
-        if ((g_nSaveFormatVersion != -3) && (*(int *)&g_pLocalizationTable->field_0x44 == 1)) {
+        if ((g_nSaveFormatVersion != -3) && (*(int *)&g_pSimMgr->field_0x44 == 1)) {
           func_0x00405619(*psVar5);
         }
       }
@@ -2362,7 +2361,7 @@ TMapMgr::QueueDepotConstructionOrder
                     /* Persist pending-order marker in tile flags (bit 0x10). */
   pbVar2 = (byte *)(iVar7 + 0x1c + *(int *)&this->field_0xc);
   *pbVar2 = *pbVar2 | 0x10;
-  if ((g_nSaveFormatVersion != -3) && (*(int *)&g_pLocalizationTable->field_0x44 != 0)) {
+  if ((g_nSaveFormatVersion != -3) && (*(int *)&g_pSimMgr->field_0x44 != 0)) {
     func_0x00404598(0x746f776e,local_14.m_pchData,0xfffffffe);
     func_0x00403b34(CONCAT22(extraout_var_00,
                              *(undefined2 *)(iVar7 + 0x14 + *(int *)&this->field_0xc)));
@@ -2462,7 +2461,7 @@ TMapMgr::QueuePortConstructionOrder
   pbVar2 = (byte *)(*(int *)&this->field_0xc + 0x1c + iVar7);
   *pbVar2 = *pbVar2 | 4;
   func_0x00402419(piVar4);
-  if ((g_nSaveFormatVersion != -3) && (*(int *)&g_pLocalizationTable->field_0x44 != 0)) {
+  if ((g_nSaveFormatVersion != -3) && (*(int *)&g_pSimMgr->field_0x44 != 0)) {
     func_0x00404598(0x746f776e,iVar6,0xfffffffe);
     func_0x00403b34(CONCAT22(extraout_var_00,
                              *(undefined2 *)(*(int *)&this->field_0xc + 0x14 + iVar7)));
@@ -4365,6 +4364,141 @@ void TMapMgr::OrphanLeaf_NoCall_Ins08_005178c0()
     puVar1 = puVar1 + 0x24;
     iVar2 = iVar2 + -1;
   } while (iVar2 != 0);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00519610
+// GHIDRA_NAME TMapMgr::ChooseNationSetupProfilesForOpenSlots
+// GHIDRA_PROTO undefined ChooseNationSetupProfilesForOpenSlots()
+
+void __thiscall TMapMgr::ChooseNationSetupProfilesForOpenSlots(int param_1,short *param_2)
+
+{
+  bool bVar1;
+  char *pcVar2;
+  int iVar3;
+  short *psVar4;
+  short *psVar5;
+  int iVar6;
+  short sVar7;
+  short asStack_3006c [98280];
+  short *local_8c;
+  int local_88;
+  int local_84;
+  int local_80;
+  short local_7c [8];
+  short local_6c [22];
+  short local_40 [8];
+  short local_30 [7];
+  short local_22 [17];
+  
+  local_7c[4] = 2;
+  local_7c[5] = 3;
+  local_7c[6] = 3;
+  local_6c[2] = 2;
+  local_6c[3] = 2;
+  local_6c[8] = 2;
+  local_6c[0xb] = 2;
+  local_6c[0xd] = 2;
+  local_6c[0x10] = 2;
+  local_6c[0x14] = 2;
+  pcVar2 = *(char **)(param_1 + 0x10);
+  local_7c[0] = 1;
+  local_7c[1] = 5;
+  local_7c[2] = 4;
+  local_7c[3] = 6;
+  local_6c[0] = 0;
+  local_6c[1] = 1;
+  local_6c[4] = 1;
+  local_6c[5] = 0;
+  local_6c[6] = 0;
+  local_6c[7] = 1;
+  local_6c[9] = 0;
+  local_6c[10] = 1;
+  local_6c[0xc] = 1;
+  local_6c[0xe] = 0;
+  local_6c[0xf] = 1;
+  local_6c[0x11] = 0;
+  local_6c[0x12] = 0;
+  local_6c[0x13] = 1;
+  sVar7 = 0;
+  iVar6 = 0x180;
+  do {
+    if (*pcVar2 != -1) {
+      local_30[*pcVar2] = (short)pcVar2[0xa3];
+    }
+    pcVar2 = pcVar2 + 0xa8;
+    iVar6 = iVar6 + -1;
+  } while (iVar6 != 0);
+  iVar6 = 0;
+  do {
+    psVar5 = local_40 + iVar6;
+    iVar3 = 0;
+    psVar4 = local_30;
+    *psVar5 = 2;
+    do {
+      if ((iVar3 != iVar6) && (*psVar4 == local_30[iVar6])) {
+        *psVar5 = 0;
+      }
+      iVar3 = iVar3 + 1;
+      psVar4 = psVar4 + 1;
+    } while (iVar3 < 7);
+    if (*psVar5 == 2) {
+      iVar3 = 7;
+      psVar4 = local_22;
+      do {
+        if ((iVar3 != iVar6) && (*psVar4 == local_30[iVar6])) {
+          *psVar5 = 1;
+        }
+        iVar3 = iVar3 + 1;
+        psVar4 = psVar4 + 1;
+      } while (iVar3 < 0x17);
+    }
+    if (*(short *)(&g_pSimMgr->field_0xda + iVar6 * 2) == 2) {
+      sVar7 = sVar7 + 1;
+    }
+    iVar3 = iVar6 + 1;
+    param_2[iVar6] = -1;
+    iVar6 = iVar3;
+  } while (iVar3 < 7);
+  local_80 = (int)sVar7;
+  if (0 < local_80) {
+    local_8c = local_7c;
+    do {
+      bVar1 = false;
+      local_88 = 0;
+      do {
+        if (2 < local_88) break;
+        local_84 = 0;
+        if (!bVar1) {
+          psVar5 = param_2;
+          do {
+            if (6 < local_84) break;
+            psVar4 = (short *)(((int)local_40 - (int)param_2) + (int)psVar5);
+            if (((*(short *)((int)g_pSimMgr + (int)psVar4 + (0xda - (int)local_40)) == 2) &&
+                (*psVar4 == local_6c[local_88 + *local_8c * 3])) && (*psVar5 == -1)) {
+              bVar1 = true;
+              *psVar5 = *local_8c;
+            }
+            psVar5 = psVar5 + 1;
+            local_84 = local_84 + 1;
+          } while (!bVar1);
+        }
+        local_88 = local_88 + 1;
+      } while (!bVar1);
+      local_8c = local_8c + 1;
+      local_80 = local_80 + -1;
+    } while (local_80 != 0);
+  }
+  iVar6 = 0xda - (int)param_2;
+  iVar3 = 7;
+  do {
+    if (*(short *)((int)g_pSimMgr + iVar6 + (int)param_2) != 2) {
+      *param_2 = 3;
+    }
+    param_2 = param_2 + 1;
+    iVar3 = iVar3 + -1;
+  } while (iVar3 != 0);
   return;
 }
 

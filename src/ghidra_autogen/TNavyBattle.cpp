@@ -184,7 +184,7 @@ TNavyBattle::EvaluateAndResolveTacticalActionAgainstTileOccupant
     (**(code **)(**(int **)&this->field_0x8 + 0x1b8))
               (pAttackerUnit->tileIndex,pAttackerUnit->unitKindId + 0xf5a,1);
   }
-  iVar4 = GenerateThreadLocalRandom15();
+  iVar4 = rand();
   targetDoubleColumn = iVar4 % 100;
   if (fVar3 + fVar2 <= (float)targetDoubleColumn) {
     if (*(int **)&this->field_0x8 == (int *)0x0) goto LAB_005a58fd;

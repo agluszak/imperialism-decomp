@@ -98,9 +98,9 @@ void TEscortMission::ComputeNationScaledMissionScoreUsingPrimaryPortContextAvera
   
   iVar3 = func_0x004076a8(*(undefined2 *)(this + 4));
   if (*(int *)(iVar3 + 0x2c) == 0) {
-    iVar4 = ReallocateHeapBlockWithAllocatorTracking(*(undefined4 *)(iVar3 + 0x28),8);
+    iVar4 = _realloc(*(undefined4 *)(iVar3 + 0x28),8);
     if (iVar4 == 0) {
-      uVar5 = ReallocateHeapBlockWithAllocatorTracking(*(undefined4 *)(iVar3 + 0x28),4);
+      uVar5 = _realloc(*(undefined4 *)(iVar3 + 0x28),4);
       *(undefined4 *)(iVar3 + 0x28) = uVar5;
       *(undefined4 *)(iVar3 + 0x2c) = 1;
     }
@@ -118,9 +118,9 @@ void TEscortMission::ComputeNationScaledMissionScoreUsingPrimaryPortContextAvera
   iVar4 = func_0x00402955();
   while (iVar4 != 0) {
     if (*(int *)(iVar4 + 0x2c) == 0) {
-      iVar6 = ReallocateHeapBlockWithAllocatorTracking(*(undefined4 *)(iVar4 + 0x28),8);
+      iVar6 = _realloc(*(undefined4 *)(iVar4 + 0x28),8);
       if (iVar6 == 0) {
-        uVar5 = ReallocateHeapBlockWithAllocatorTracking(*(undefined4 *)(iVar4 + 0x28),4);
+        uVar5 = _realloc(*(undefined4 *)(iVar4 + 0x28),4);
         *(undefined4 *)(iVar4 + 0x28) = uVar5;
         *(undefined4 *)(iVar4 + 0x2c) = 1;
       }
@@ -186,9 +186,9 @@ TEscortMission::PopulateEscortMissionResourceWeightsFromEligibleNationNavyPressu
   local_20 = DAT_0065a9b8;
   iVar15 = 7;
   local_1c = g_apSecondaryNationStateSlots + 7;
-  local_18 = (float)(int)(short)((int)((int)*(short *)&g_pLocalizationTable->field_0x2c +
-                                      ((int)*(short *)&g_pLocalizationTable->field_0x2c >> 0x1f & 3U
-                                      )) >> 2) - (float)_DAT_0065aa28;
+  local_18 = (float)(int)(short)((int)((int)*(short *)&g_pSimMgr->field_0x2c +
+                                      ((int)*(short *)&g_pSimMgr->field_0x2c >> 0x1f & 3U)) >> 2) -
+             (float)_DAT_0065aa28;
   do {
     pTVar1 = *local_1c;
     if (pTVar1 != (TMinor *)0x0) {
@@ -219,9 +219,9 @@ TEscortMission::PopulateEscortMissionResourceWeightsFromEligibleNationNavyPressu
       if (bVar16) {
         iVar7 = func_0x004076a8(iVar15);
         if (*(int *)(iVar7 + 0x2c) == 0) {
-          iVar8 = ReallocateHeapBlockWithAllocatorTracking(*(undefined4 *)(iVar7 + 0x28),8);
+          iVar8 = _realloc(*(undefined4 *)(iVar7 + 0x28),8);
           if (iVar8 == 0) {
-            uVar9 = ReallocateHeapBlockWithAllocatorTracking(*(undefined4 *)(iVar7 + 0x28),4);
+            uVar9 = _realloc(*(undefined4 *)(iVar7 + 0x28),4);
             *(undefined4 *)(iVar7 + 0x28) = uVar9;
             *(undefined4 *)(iVar7 + 0x2c) = 1;
           }

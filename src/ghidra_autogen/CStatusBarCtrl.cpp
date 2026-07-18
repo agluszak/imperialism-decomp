@@ -23,7 +23,7 @@ undefined4 CStatusBarCtrl::GetText(void)
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
   
-  EstablishSehFrameProlog();
+  _EH_prolog();
   *(undefined4 *)(unaff_EBP + -0x14) = 0;
   uVar2 = SendMessageA(*(HWND *)(extraout_ECX + 0x1c),0x403,*(WPARAM *)(unaff_EBP + 0xc),0);
   CString::CString((CString *)(unaff_EBP + -0x10));

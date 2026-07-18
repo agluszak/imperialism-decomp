@@ -105,23 +105,23 @@ void TCouncilPanelView::ApplyRectSlot110()
   puStack_38 = (undefined1 *)0x4fb0ae;
   func_0x0040448f();
   CStack_34.m_pchData = (char *)0x4fb0c0;
-  MapUiThemeCodeToStyleFlags();
+  func_0x004093cc();
   CStack_34.m_pchData = (char *)0x4fb0d2;
-  MapUiThemeCodeToStyleFlags();
+  func_0x004093cc();
   if (*(short *)&g_pDiplomacyTurnStateManager->field_0x784 == -1) {
     CStack_34.m_pchData = (char *)0x2733;
     puStack_38 = (undefined1 *)0x4fb103;
-    (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+    (*g_pSimMgr->vftable[0x10].slot_0x04)();
     puStack_38 = &stack0xffffffd4;
     iStack_3c = 0x4fb10d;
-    sVar1 = MeasureTextExtentWithCachedQuickDrawStyle();
+    sVar1 = func_0x00405b7d();
     iVar3 = iVar3 - (int)sVar1 / 2;
     iStack_3c = 0x4fb124;
     func_0x00409444();
     iStack_3c = iVar3 + 1;
     puStack_38 = (undefined1 *)0x25;
     pCStack_40 = (CString *)0x4fb132;
-    SetQuickDrawTextOriginWithContextOffset();
+    func_0x00408d6e();
     puStack_38 = &stack0xffffffd4;
     iStack_3c = 0x4fb13f;
     func_0x004029aa();
@@ -130,7 +130,7 @@ void TCouncilPanelView::ApplyRectSlot110()
     puStack_38 = (undefined1 *)0x24;
     pCStack_40 = (CString *)0x4fb157;
     iStack_3c = iVar3;
-    SetQuickDrawTextOriginWithContextOffset();
+    func_0x00408d6e();
     puStack_38 = &stack0xffffffd4;
     iStack_3c = 0x4fb164;
     func_0x004029aa();
@@ -140,25 +140,25 @@ void TCouncilPanelView::ApplyRectSlot110()
     puStack_38 = (undefined1 *)0x35;
     iStack_3c = 0x2733;
     pCStack_40 = (CString *)0x4fb188;
-    (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+    (*g_pSimMgr->vftable[0x10].slot_0x04)();
     pCStack_40 = (CString *)
-                 (((int)(short)((int)((int)*(short *)&g_pLocalizationTable->field_0x2c +
-                                     ((int)*(short *)&g_pLocalizationTable->field_0x2c >> 0x1f & 3U)
-                                     ) >> 2) / 10) * 10 + 0x717);
-    _Format_CString__QAAXPBDZZ(&local_20,&g_szDecimalFormat);
+                 (((int)(short)((int)((int)*(short *)&g_pSimMgr->field_0x2c +
+                                     ((int)*(short *)&g_pSimMgr->field_0x2c >> 0x1f & 3U)) >> 2) /
+                  10) * 10 + 0x717);
+    CString__Format(&local_20,&g_szDecimalFormat);
     pCStack_40 = (CString *)local_20.m_pchData;
-    func_0x0040988b(g_pLocalizationTable,&local_1c,unaff_EDI);
+    func_0x0040988b(g_pSimMgr,&local_1c,unaff_EDI);
     pCStack_40 = (CString *)&stack0xffffffd4;
-    sVar1 = MeasureTextExtentWithCachedQuickDrawStyle();
+    sVar1 = func_0x00405b7d();
     iVar4 = iVar3 - (int)sVar1 / 2;
     func_0x00409444();
     pCStack_40 = (CString *)0x25;
-    SetQuickDrawTextOriginWithContextOffset(iVar4 + 1);
+    func_0x00408d6e(iVar4 + 1);
     pCStack_40 = &local_1c;
     func_0x004029aa();
     func_0x00409444();
     pCStack_40 = (CString *)0x24;
-    SetQuickDrawTextOriginWithContextOffset(iVar4);
+    func_0x00408d6e(iVar4);
     pCStack_40 = &local_1c;
     func_0x004029aa();
     pCStack_40 = (CString *)0x2b68;
@@ -166,57 +166,54 @@ void TCouncilPanelView::ApplyRectSlot110()
     pCStack_40 = (CString *)&stack0xffffffd4;
     func_0x00405245();
     CString::operator+=((CString *)&stack0xffffffd0,&DAT_00696b10);
-    iVar4 = MeasureTextExtentWithCachedQuickDrawStyle(&stack0xffffffd0);
+    iVar4 = func_0x00405b7d(&stack0xffffffd0);
     func_0x00409444(unaff_EDI);
-    SetQuickDrawTextOriginWithContextOffset((iVar3 - iVar4) + 1,0x3d);
+    func_0x00408d6e((iVar3 - iVar4) + 1,0x3d);
     func_0x004029aa(&stack0xffffffd0);
     func_0x00409444(unaff_ESI);
-    SetQuickDrawTextOriginWithContextOffset(iVar3 - iVar4,0x3c);
+    func_0x00408d6e(iVar3 - iVar4,0x3c);
     func_0x004029aa(&stack0xffffffd0);
-    _Format_CString__QAAXPBDZZ
-              (&stack0xffffffdc,&g_szDecimalFormat,
-               (int)*(short *)&g_pDiplomacyTurnStateManager->field_0x788);
+    CString__Format(&stack0xffffffdc,&g_szDecimalFormat,
+                    (int)*(short *)&g_pDiplomacyTurnStateManager->field_0x788);
     iVar4 = iVar3 + 4;
     func_0x00409444(unaff_EDI);
-    SetQuickDrawTextOriginWithContextOffset(iVar3 + 5,0x3d);
+    func_0x00408d6e(iVar3 + 5,0x3d);
     func_0x004029aa(&stack0xffffffdc);
     func_0x00409444(unaff_ESI);
-    SetQuickDrawTextOriginWithContextOffset(iVar4,0x3c);
+    func_0x00408d6e(iVar4,0x3c);
     func_0x004029aa(&stack0xffffffdc);
     func_0x00405245(&stack0xffffffd0);
     CString::operator+=(&CStack_34,&DAT_00696b10);
-    iVar2 = MeasureTextExtentWithCachedQuickDrawStyle(&CStack_34);
+    iVar2 = func_0x00405b7d(&CStack_34);
     func_0x00409444(unaff_EBP);
-    SetQuickDrawTextOriginWithContextOffset((iVar3 - iVar2) + 1,0x4d);
+    func_0x00408d6e((iVar3 - iVar2) + 1,0x4d);
     func_0x004029aa(&CStack_34);
     func_0x00409444(unaff_EDI);
-    SetQuickDrawTextOriginWithContextOffset(iVar3 - iVar2,0x4c);
+    func_0x00408d6e(iVar3 - iVar2,0x4c);
     func_0x004029aa(&CStack_34);
-    _Format_CString__QAAXPBDZZ
-              (&stack0xffffffd8,&g_szDecimalFormat,
-               (int)*(short *)&g_pDiplomacyTurnStateManager->field_0x78a);
+    CString__Format(&stack0xffffffd8,&g_szDecimalFormat,
+                    (int)*(short *)&g_pDiplomacyTurnStateManager->field_0x78a);
     func_0x00409444(unaff_EBP);
-    SetQuickDrawTextOriginWithContextOffset(iVar3 + 5,0x4d);
+    func_0x00408d6e(iVar3 + 5,0x4d);
     func_0x004029aa(&stack0xffffffd8);
     func_0x00409444(unaff_EDI);
-    SetQuickDrawTextOriginWithContextOffset(iVar4,0x4c);
+    func_0x00408d6e(iVar4,0x4c);
     func_0x004029aa(&stack0xffffffd8);
-    (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2733,0x36,&CStack_34);
-    iVar2 = MeasureTextExtentWithCachedQuickDrawStyle(&pCStack_40);
+    (*g_pSimMgr->vftable[0x10].slot_0x04)(0x2733,0x36,&CStack_34);
+    iVar2 = func_0x00405b7d(&pCStack_40);
     func_0x00409444(iStack_3c);
-    SetQuickDrawTextOriginWithContextOffset((iVar3 - iVar2) + 1,0x5d);
+    func_0x00408d6e((iVar3 - iVar2) + 1,0x5d);
     func_0x004029aa(&pCStack_40);
     func_0x00409444(puStack_38);
-    SetQuickDrawTextOriginWithContextOffset(iVar3 - iVar2,0x5c);
+    func_0x00408d6e(iVar3 - iVar2,0x5c);
     func_0x004029aa(&pCStack_40);
-    _Format_CString__QAAXPBDZZ
-              (&CStack_34,&g_szDecimalFormat,
-               (int)*(short *)&g_pDiplomacyTurnStateManager->field_0x78c);
+    CString__Format(&CStack_34,&g_szDecimalFormat,
+                    (int)*(short *)&g_pDiplomacyTurnStateManager->field_0x78c);
     func_0x00409444(iStack_3c);
-    SetQuickDrawTextOriginWithContextOffset(iVar3 + 5,0x5d);
+    func_0x00408d6e(iVar3 + 5,0x5d);
     func_0x004029aa(&CStack_34);
     func_0x00409444(puStack_38);
-    SetQuickDrawTextOriginWithContextOffset(iVar4,0x5c);
+    func_0x00408d6e(iVar4,0x5c);
     func_0x004029aa(&CStack_34);
   }
   local_10.m_pchData._0_1_ = 1;

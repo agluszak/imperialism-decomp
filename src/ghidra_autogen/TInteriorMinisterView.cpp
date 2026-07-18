@@ -89,7 +89,7 @@ TInteriorMinisterView::HandleEvent
       (*this->vftable->OrphanCallChain_C2_I08_004f2ec0)(0x25ee);
     }
     else if (iVar1 == 0x7472616e) {
-      if (g_pLocalizationTable->field_0x14 == '\0') {
+      if (g_pSimMgr->field_0x14 == '\0') {
         uVar3 = (*this->vftable->SetForeignMinisterReadyFlag14)();
         (**(code **)&g_pGlobalUiRootController->vftable->field_0xb4)(uVar3);
         return;

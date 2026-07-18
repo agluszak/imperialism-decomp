@@ -115,16 +115,16 @@ void TTacArmyView::ConstructTTacArmyViewBaseState()
   if (*(int *)&this->field_0x74 != 0) {
     func_0x004010e6(&this->field_0x74);
   }
-  GetActiveQuickDrawSurfaceContextAndFlags(local_34,&local_38);
+  func_0x00408d64(local_34,&local_38);
   local_34[2] = 0;
   local_34[3] = DAT_006a5448;
   local_34[1] = 0;
   local_34[4] = DAT_006a544c;
   (**(code **)(*g_pDisplayMgr + 0x2c))(puVar1,8,local_34 + 1);
   piVar7 = (int *)func_0x004047a0(iStack_8 + 0xf0a);
-  SetActiveQuickDrawSurfaceContext(*(undefined4 *)puVar1,unaff_ESI);
-  uVar8 = GetSurfaceObjectAtContextOffset24(*(undefined4 *)puVar1);
-  ReturnConstantTrueQuickDrawFlag(uVar8);
+  func_0x00406f5f(*(undefined4 *)puVar1,unaff_ESI);
+  uVar8 = func_0x0040520e(*(undefined4 *)puVar1);
+  func_0x0040761c(uVar8);
   func_0x004062d5(piVar7);
   puVar2 = (undefined4 *)*piVar7;
   if (puVar2 != (undefined4 *)0x0) {
@@ -142,9 +142,9 @@ void TTacArmyView::ConstructTTacArmyViewBaseState()
       operator_delete(puVar2);
     }
     operator_delete(piVar7);
-    uVar8 = GetSurfaceObjectAtContextOffset24(*(undefined4 *)puVar1);
-    NoOpQuickDrawLifecycleHookB(uVar8);
-    SetActiveQuickDrawSurfaceContext(unaff_EBP,unaff_ESI);
+    uVar8 = func_0x0040520e(*(undefined4 *)puVar1);
+    func_0x004024fa(uVar8);
+    func_0x00406f5f(unaff_EBP,unaff_ESI);
     if (*(char *)(iStack_4 + 0x49) != '\0') {
       iStack_8 = func_0x00401fe1(0xf0e);
       local_34[2] = DAT_006a5448 + -0x11e;
@@ -249,12 +249,12 @@ void TTacArmyView::ApplyRectSlot110(int *param_1)
   local_48 = param_1[1];
   local_44 = param_1[2];
   local_40 = param_1[3];
-  GetActiveQuickDrawSurfaceContextAndFlags(&local_54);
-  SetActiveQuickDrawSurfaceContext(g_pPrimaryRenderSurfaceContext);
-  GetSurfaceObjectAtContextOffset24();
-  ReturnConstantTrueQuickDrawFlag();
-  GetSurfaceObjectAtContextOffset24();
-  ReturnConstantTrueQuickDrawFlag();
+  func_0x00408d64(&local_54);
+  func_0x00406f5f(g_pPrimaryRenderSurfaceContext);
+  func_0x0040520e();
+  func_0x0040761c();
+  func_0x0040520e();
+  func_0x0040761c();
   sVar2 = (0x1d - (short)*(undefined4 *)(*(int *)&this->field_0x60 + 0x34)) *
           *(short *)&this->field_0x88;
   *(short *)&this->field_0xd4 = sVar2;
@@ -305,17 +305,17 @@ void TTacArmyView::ApplyRectSlot110(int *param_1)
     local_4 = 0xffffffff;
     func_0x00409aac();
   }
-  SetActiveQuickDrawSurfaceContext(local_54);
+  func_0x00406f5f(local_54);
   func_0x004088aa();
   puStack_50 = &stack0xffffff94;
   func_0x00402bdf();
   func_0x00405493(g_pPrimaryRenderSurfaceContext + 4,&g_pActiveQuickDrawSurfaceContext->field_0x4,
                   &local_4c,&local_2c,0);
   (*this->vftable->DrawUiTilesAndOverlay)();
-  GetSurfaceObjectAtContextOffset24();
-  NoOpQuickDrawLifecycleHookB();
-  GetSurfaceObjectAtContextOffset24();
-  NoOpQuickDrawLifecycleHookB();
+  func_0x0040520e();
+  func_0x004024fa();
+  func_0x0040520e();
+  func_0x004024fa();
   *unaff_FS_OFFSET = uStack_c;
   return;
 }
@@ -471,17 +471,17 @@ LAB_005aaa96:
       local_108 = &stack0xfffffea0;
       iVar16 = *(int *)&this->field_0x8c / 2;
       func_0x00406b86();
-      SetQuickDrawTextOriginWithContextOffset();
-      DrawCenteredGuideLineOnMapDc();
+      func_0x00408d6e();
+      func_0x00403bb6();
       local_108 = puVar10 + iVar16 + 1;
-      SetQuickDrawTextOriginWithContextOffset();
-      DrawCenteredGuideLineOnMapDc();
+      func_0x00408d6e();
+      func_0x00403bb6();
       (**(code **)(g_pUiRuntimeContext->vftable + 0x34))();
-      local_108 = puVar10 + iVar16 + -1;
-      SetQuickDrawTextOriginWithContextOffset();
-      DrawCenteredGuideLineOnMapDc();
-      SetQuickDrawTextOriginWithContextOffset();
-      DrawCenteredGuideLineOnMapDc();
+      uStack_10c = puVar10 + iVar16 + -1;
+      func_0x00408d6e();
+      func_0x00403bb6();
+      func_0x00408d6e();
+      func_0x00403bb6();
       sVar6 = (short)local_124;
     }
   }
@@ -965,19 +965,19 @@ LAB_005abc46:
     tStack_f8.top = (LONG)(local_118 + -1);
     uStack_10c = &stack0xfffffe98;
     func_0x00406b86();
-    FillRectWithQuickDrawBrushAndContextOffset();
+    func_0x00406546();
     (**(code **)(g_pUiRuntimeContext->vftable + 0x34))();
     local_fc = local_fc + -1;
     puStack_104 = puStack_104 + -1;
     iStack_100 = iStack_100 + -1;
     tStack_f8.left = tStack_f8.left + -1;
-    FillRectWithQuickDrawBrushAndContextOffset();
+    func_0x00406546();
     (**(code **)(g_pUiRuntimeContext->vftable + 0x34))();
     iStack_100 = (*(int *)(iVar16 + 4) + 0x18) / 0x19 + (int)local_108;
-    FillRectWithQuickDrawBrushAndContextOffset();
+    func_0x00406546();
     (**(code **)(g_pUiRuntimeContext->vftable + 0x34))();
     puStack_104 = uStack_10c + (*(int *)(iVar16 + 0x34) + 0x18) / 0x19;
-    FillRectWithQuickDrawBrushAndContextOffset();
+    func_0x00406546();
     uVar3 = (*g_pGlobalMapState->vftable->GetMapImprovementTierBucketOffset)();
     puVar10 = puStack_104;
     uStack_14c = (undefined1 *)(int)(short)CONCAT31(extraout_var,uVar3);
@@ -1016,7 +1016,7 @@ LAB_005abc46:
     if (DAT_006a4758 != '\0') {
       uStack_10c = &stack0xfffffe98;
       func_0x00406b86();
-      SetQuickDrawTextOriginWithContextOffset();
+      func_0x00408d6e();
       func_0x00404fc5();
     }
     sVar6 = (short)puStack_12c;
@@ -1131,11 +1131,11 @@ LAB_005abc78:
     uStack_10c = &stack0xfffffe98;
     iVar16 = *(int *)&this->field_0x88 / 2 + local_124;
     func_0x00406b86();
-    SetQuickDrawTextOriginWithContextOffset();
-    DrawCenteredGuideLineOnMapDc();
+    func_0x00408d6e();
+    func_0x00403bb6();
     tStack_f8.right = iVar16 + -1;
-    SetQuickDrawTextOriginWithContextOffset();
-    DrawCenteredGuideLineOnMapDc();
+    func_0x00408d6e();
+    func_0x00403bb6();
     if (((tStack_f8.bottom < 2) && (*(int *)(*(int *)&this->field_0x60 + 0xc) == 0)) ||
        ((iVar16 = *(int *)&this->field_0x60, tStack_f8.bottom / 2 == *(int *)(iVar16 + 0x34) + -1 &&
         (*(int *)(iVar16 + 0xc) == 1)))) {
@@ -1147,10 +1147,10 @@ LAB_005abc78:
     else {
       (**(code **)(g_pUiRuntimeContext->vftable + 0x34))();
     }
-    SetQuickDrawTextOriginWithContextOffset();
-    DrawCenteredGuideLineOnMapDc();
-    SetQuickDrawTextOriginWithContextOffset();
-    DrawCenteredGuideLineOnMapDc();
+    func_0x00408d6e();
+    func_0x00403bb6();
+    func_0x00408d6e();
+    func_0x00403bb6();
   }
   return;
 }

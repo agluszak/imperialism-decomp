@@ -235,7 +235,7 @@ void TWorldView::ForwardParam(int *pKeyEvent)
     uStack_38 = 0x2758;
     local_4 = CONCAT31(local_4._1_3_,8);
     puStack_3c = (undefined1 *)0x595359;
-    (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+    (*g_pSimMgr->vftable[0x10].slot_0x04)();
     puStack_3c = (undefined1 *)0x0;
     uStack_40 = 0;
     pCStack_44 = (CString *)0x0;
@@ -251,7 +251,7 @@ void TWorldView::ForwardParam(int *pKeyEvent)
       (*pTVar1->vftable->GetTEventHandlerClassNamePointer_0b)();
       piStack_34 = pKeyEvent;
       uStack_38 = 0x5953b7;
-      nDialogResult = CompareAnsiStringsWithMbcsAwareness();
+      nDialogResult = _mbscmp();
       if (nDialogResult == 0) {
         piStack_34 = (int *)0x5953e8;
         (*this->vftable[1].vmethod_0025)();
@@ -263,25 +263,24 @@ void TWorldView::ForwardParam(int *pKeyEvent)
     }
     uStack_38 = 0x595404;
     piStack_34 = pKeyEvent;
-    nDialogResult = CompareAnsiStringsWithMbcsAwareness();
+    nDialogResult = _mbscmp();
     if (nDialogResult != 0) {
       CString::CString(&local_14);
       piStack_34 = (int *)0xe;
       uStack_38 = 0x2758;
       local_4._0_1_ = 10;
       puStack_3c = (undefined1 *)0x595439;
-      (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+      (*g_pSimMgr->vftable[0x10].slot_0x04)();
       puStack_3c = puStack_8;
       pCStack_44 = &local_20;
-      pTStack_48 = g_pLocalizationTable;
+      pTStack_48 = g_pSimMgr;
       func_0x0040988b();
       puStack_3c = (undefined1 *)0x0;
       uStack_40 = 0;
       pCStack_44 = (CString *)&DAT_006a45c0;
       pTStack_48 = extraout_ECX_00;
       func_0x004076b7(&local_20);
-      uStack_40 = 0x59547c;
-      DispatchLocalizedUiMessageWithTemplateA13A0();
+      func_0x004096b0();
       this_00 = &local_14;
 LAB_00595484:
       local_4 = CONCAT31(local_4._1_3_,8);
@@ -306,7 +305,7 @@ LAB_00595484:
     uStack_38 = 0x2758;
     local_4._0_1_ = 3;
     puStack_3c = (undefined1 *)0x5951cb;
-    (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+    (*g_pSimMgr->vftable[0x10].slot_0x04)();
     puStack_3c = (undefined1 *)0x0;
     uStack_40 = 0;
     pCStack_44 = (CString *)0x0;
@@ -323,7 +322,7 @@ LAB_00595484:
       func_0x0040918d();
       piStack_34 = pKeyEvent;
       uStack_38 = 0x595226;
-      nLoopResult = CompareAnsiStringsWithMbcsAwareness();
+      nLoopResult = _mbscmp();
       if (nLoopResult == 0) {
         piStack_34 = (int *)0x5955f3;
         (*this->vftable[1].vmethod_0025)();
@@ -335,17 +334,17 @@ LAB_00595484:
     } while (nDialogResult < 0x180);
     piStack_34 = pKeyEvent;
     uStack_38 = 0x59525b;
-    nDialogResult = CompareAnsiStringsWithMbcsAwareness();
+    nDialogResult = _mbscmp();
     if (nDialogResult != 0) {
       CString::CString(&local_1c);
       piStack_34 = (int *)0xd;
       uStack_38 = 0x2758;
       local_4._0_1_ = 5;
       puStack_3c = (undefined1 *)0x595290;
-      (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+      (*g_pSimMgr->vftable[0x10].slot_0x04)();
       puStack_3c = puStack_8;
       pCStack_44 = (CString *)&stack0xffffffd8;
-      pTStack_48 = g_pLocalizationTable;
+      pTStack_48 = g_pSimMgr;
       func_0x0040988b();
       puStack_3c = (undefined1 *)0x0;
       uStack_40 = 0;
@@ -353,8 +352,7 @@ LAB_00595484:
       pTStack_48 = extraout_ECX;
       local_1c.m_pchData = (char *)&pTStack_48;
       func_0x004076b7(&stack0xffffffd8);
-      uStack_40 = 0x5952d3;
-      DispatchLocalizedUiMessageWithTemplateA13A0();
+      func_0x004096b0();
 LAB_005952db:
       local_4._0_1_ = 3;
       CString::~CString(&local_1c);
@@ -548,7 +546,7 @@ void TWorldView::HandleCursorHoverSelectionByChildHitTestAndFallback()
     if (*(short *)&this->field_0x6c != *(short *)&this->field_0x6e) {
       (*pTVar2[1].DispatchEvent)();
     }
-    DestroyScopedMapQuickDrawContext();
+    func_0x00408035();
     *(undefined2 *)&this->field_0x6e = *(undefined2 *)&this->field_0x6c;
     *(undefined2 *)&this->field_0x6a = *(undefined2 *)&this->field_0x68;
     *(undefined2 *)&this->field_0x72 = *(undefined2 *)puVar1;
@@ -701,8 +699,8 @@ void TWorldView::RenderMapContextOverlayWithScopedClipAndSurface()
       }
     }
     func_0x00405be1(uVar6);
-    local_4._0_1_ = 1;
-    DestroyScopedMapQuickDrawContext();
+    uStack_24 = 1;
+    func_0x00408035();
   }
   local_4 = (uint)local_4._1_3_ << 8;
   func_0x00409aac();
@@ -809,9 +807,10 @@ void TWorldView::HandleMapTileClickSetOrderContextAndDispatchEvent79(short param
   TView *pTVar1;
   TWorldViewVtbl *pTVar2;
   undefined4 *puVar3;
-  void *pvVar4;
+  int iVar4;
   undefined4 uVar5;
   undefined4 *puVar6;
+  undefined2 in_stack_00000006;
   
   puVar3 = (undefined4 *)operator_new(0x14);
   puVar6 = (undefined4 *)0x0;
@@ -824,21 +823,21 @@ void TWorldView::HandleMapTileClickSetOrderContextAndDispatchEvent79(short param
     puVar6 = puVar3;
   }
   if (*(char *)(*(int *)&g_pGlobalMapState->field_0xc + param_1 * 0x24) == '\x05') {
-    pvVar4 = GetMapActionContextByTileIndex(param_1);
+    iVar4 = func_0x0040318e(_param_1);
     pTVar1 = this->ownerContext;
     func_0x004032a1(2);
     if ((char)pTVar1[1].field34 == '\0') {
-      InvalidateMapRegionForOrderEntry(pTVar1[1].field38);
+      func_0x004019ba(pTVar1[1].field38);
     }
-    pTVar1[1].field38 = (int)pvVar4;
+    pTVar1[1].field38 = iVar4;
     if ((char)pTVar1[1].field34 == '\0') {
-      InvalidateMapRegionForOrderEntry(pvVar4);
+      func_0x004019ba(iVar4);
     }
-    if (pvVar4 == (void *)0x0) {
+    if (iVar4 == 0) {
       uVar5 = 0;
     }
     else {
-      uVar5 = EnsureSelectedTaskForceForOrderOwnerAndRefresh(pvVar4);
+      uVar5 = func_0x0040928c(iVar4);
     }
     func_0x00408995(uVar5);
   }

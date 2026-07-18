@@ -204,7 +204,7 @@ void THQButton::RenderCityBuildingIcons(tagRECT *pTargetRect)
   }
   *(undefined1 *)((int)&this[1].padding_08_to_0b + 2) = 0;
   func_0x00404fe8(pTargetRect);
-  GetActiveQuickDrawSurfaceContextAndFlags(local_20,&stack0xffffffdc);
+  func_0x00408d64(local_20,&stack0xffffffdc);
   piVar7 = (int *)func_0x004047a0(7000);
   CopyRect(&local_14,(RECT *)(*piVar7 + 8));
   (**(code **)(*g_pDisplayMgr + 0x2c))(&stack0x00000000,8,&local_14);
@@ -218,12 +218,12 @@ void THQButton::RenderCityBuildingIcons(tagRECT *pTargetRect)
     operator_delete(puVar11);
   }
   operator_delete(piVar7);
-  SetActiveQuickDrawSurfaceContext(local_14.right,unaff_EDI);
-  uVar8 = GetSurfaceObjectAtContextOffset24(local_14.right);
-  ReturnConstantTrueQuickDrawFlag(uVar8);
+  func_0x00406f5f(local_14.right,unaff_EDI);
+  uVar8 = func_0x0040520e(local_14.right);
+  func_0x0040761c(uVar8);
   piVar16 = (int *)&g_anCityBuildingSlotOrder;
   do {
-    SetActiveQuickDrawSurfaceContext(local_14.right,unaff_EDI);
+    func_0x00406f5f(local_14.right,unaff_EDI);
     sVar6 = func_0x00403b16();
     if (g_apNationStates[sVar6] == (TGreatPower *)0x0) {
       pTVar12 = (TCity *)0x0;
@@ -266,7 +266,7 @@ LAB_004ba985:
                 (&g_anCityBuildingSlotCoords)[(int)g_nCityBuildingDrawYOffsetIndex + sVar6 * 2],
                 puVar9,unaff_ESI,unaff_EDI);
       if ((sVar6 == 0xf) && ('2' < *(char *)(*(int *)&pTVar12->field_0xac + 0x8d2))) {
-        SetActiveQuickDrawSurfaceContext(local_14.right,unaff_EDI);
+        func_0x00406f5f(local_14.right,unaff_EDI);
         uVar15 = 0x1b9e;
         uVar14 = 0x3c;
         uVar8 = 0xa6;
@@ -274,7 +274,7 @@ LAB_004ba985:
       else {
         if ((sVar6 != 0xe) || (*(char *)(*(int *)&pTVar12->field_0xac + 0x8d3) < '3'))
         goto LAB_004baac3;
-        SetActiveQuickDrawSurfaceContext(local_14.right,unaff_EDI);
+        func_0x00406f5f(local_14.right,unaff_EDI);
         uVar15 = 0x1b9f;
         uVar14 = 0x143;
         uVar8 = 0x6d;
@@ -297,9 +297,9 @@ LAB_004baac3:
         } while (iVar13 != 0);
         iVar10 = iVar10 + -1;
       } while (iVar10 != 0);
-      SetActiveQuickDrawSurfaceContext(unaff_ESI,unaff_EDI);
-      uVar8 = GetSurfaceObjectAtContextOffset24(local_14.right);
-      NoOpQuickDrawLifecycleHookB(uVar8);
+      func_0x00406f5f(unaff_ESI,unaff_EDI);
+      uVar8 = func_0x0040520e(local_14.right);
+      func_0x004024fa(uVar8);
       func_0x004010e6(&local_14.right);
       (**(code **)(*piVar16 + 0x1d4))();
       return;

@@ -101,7 +101,7 @@ void TIndustryCluster::NoOpUiLifecycleHook()
   }
   pvVar2 = this_00->orderSlotsE4[sVar5];
   *(void **)&this->field_0x88 = pvVar2;
-  iVar4 = GetCityBuildingProductionValueBySlot(this_00,*(short *)((int)pvVar2 + 0x52));
+  iVar4 = TCity::GetBuildingType(this_00,*(short *)((int)pvVar2 + 0x52));
   *(short *)&this->field_0x8c = (short)iVar4;
   func_0x004080c6(in_stack_00000004);
   (*this->vftable->UpdateTradeMoveControlsFromDrag)
@@ -188,11 +188,11 @@ void TIndustryCluster::UpdateTradeMoveControlsFromDrag(char param_1)
     }
     piVar2 = *(int **)&this->field_0x88;
     atStack_20[0].right = (LONG)(short)piVar2[1];
-    LVar7 = ftol();
+    LVar7 = _ftol();
     iVar10 = *piVar6;
     sVar4 = (**(code **)(*piVar2 + 0x30))();
     atStack_20[0].right = (LONG)sVar4;
-    uVar8 = ftol();
+    uVar8 = _ftol();
     (**(code **)(iVar10 + 0x1a4))(LVar7,uVar8);
     (**(code **)(*piVar5 + 0xf0))(&stack0xffffffa4,1);
     (*pcVar9)(&stack0xffffffa4);

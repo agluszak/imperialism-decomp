@@ -35,14 +35,6 @@ undefined4 BuildTaskForcePrimaryObjectiveDescriptionText(void)
   return 0;
 }
 
-// ghidra_name UpdateNavyOrderMapMarkerByOrderType
-// ghidra_proto undefined UpdateNavyOrderMapMarkerByOrderType()
-// FUNCTION: IMPERIALISM 0x00556410
-undefined4 UpdateNavyOrderMapMarkerByOrderType(void)
-{
-  return 0;
-}
-
 // ghidra_name ResetNavyOrderListsAndManagerOwner
 // ghidra_proto undefined ResetNavyOrderListsAndManagerOwner()
 // FUNCTION: IMPERIALISM 0x00556850
@@ -183,14 +175,6 @@ undefined4 SelectBestSeedTileForNationFromCostField(void)
 // ghidra_proto undefined RefreshPortZoneNeighborContextLinksAndFallbacks()
 // FUNCTION: IMPERIALISM 0x00563f50
 undefined4 RefreshPortZoneNeighborContextLinksAndFallbacks(void)
-{
-  return 0;
-}
-
-// ghidra_name TOcean::FinalizeQueuedMapOrderEntry
-// ghidra_proto void __thiscall FinalizeQueuedMapOrderEntry(TTaskForce* entry)
-// FUNCTION: IMPERIALISM 0x005642e0
-undefined4 FinalizeQueuedMapOrderEntry(void)
 {
   return 0;
 }

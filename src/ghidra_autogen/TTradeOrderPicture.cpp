@@ -44,10 +44,10 @@ CRuntimeClass * TTradeOrderPicture::GetRuntimeClass()
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00584480
-// GHIDRA_NAME TTradeOrderPicture::ConstructTTradeOrderPictureBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTTradeOrderPictureBaseState(void)
+// GHIDRA_NAME TTradeOrderPicture::TTradeOrderPicture
+// GHIDRA_PROTO undefined __thiscall TTradeOrderPicture(void)
 
-TTradeOrderPicture * TTradeOrderPicture::ConstructTTradeOrderPictureBaseState()
+TTradeOrderPicture * TTradeOrderPicture::TTradeOrderPicture()
 
 {
   func_0x00401122();

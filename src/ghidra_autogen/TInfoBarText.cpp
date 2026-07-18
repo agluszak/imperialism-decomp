@@ -162,7 +162,7 @@ void TInfoBarText::AssertValid()
   local_5 = 0;
   local_4 = 0;
   local_3 = 0;
-  BuildUiTextStyleDescriptor(&local_c,0,0xc);
+  func_0x00406afa(&local_c,0,0xc);
   pTVar1 = this->vftable;
   (*pTVar1->ConstructTMapKeyBaseState_Impl)(&local_c,0);
   (*pTVar1->OrphanCallChain_C1_I09_0048ff70)(0xffffffff,0);
@@ -170,9 +170,9 @@ void TInfoBarText::AssertValid()
   *(undefined4 *)&this->field_0xa8 = 0;
   *(undefined4 *)&this->field_0xac = 0;
   *(undefined4 *)&this->field_0xb0 = 0;
-  MapUiThemeCodeToStyleFlags(local_c,&stack0xffffffe0);
+  func_0x004093cc(local_c,&stack0xffffffe0);
   *(undefined4 *)&this->field_0x98 = unaff_EDI;
-  MapUiThemeCodeToStyleFlags();
+  func_0x004093cc();
   *(undefined4 *)&this->field_0x9c = unaff_EDI;
   this->field_0xa0 = 1;
   return;

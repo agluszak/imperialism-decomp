@@ -116,3 +116,214 @@ void TLanguageMgr::Free()
   return;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x005083F0
+// GHIDRA_NAME TLanguageMgr::Localize
+// GHIDRA_PROTO undefined __thiscall Localize(CString * param_1, byte * param_2)
+
+CString * TLanguageMgr::Localize(CString *param_1, byte *param_2)
+
+{
+  char *pcVar1;
+  byte bVar2;
+  byte bVar3;
+  byte bVar4;
+  char cVar5;
+  char *pcVar6;
+  undefined4 *unaff_FS_OFFSET;
+  byte bStack0000000c;
+  undefined3 uStack0000000d;
+  CString local_14;
+  undefined4 local_10;
+  undefined4 local_c;
+  undefined1 *puStack_8;
+  uint local_4;
+  
+  local_4 = 0xffffffff;
+  puStack_8 = &LAB_0063398f;
+  local_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &local_c;
+  local_10 = 0;
+  if (bStack0000000c == '\0') {
+    CString::CString(param_1,(char *)param_2);
+    *unaff_FS_OFFSET = local_c;
+    return param_1;
+  }
+  bVar2 = *param_2;
+  CString::CString(&local_14);
+  bVar4 = this->field_0x4;
+  local_4 = 1;
+  if (((bStack0000000c < bVar4) ||
+      (*(int *)&this->field_0x8 <= (int)(((uint)_bStack0000000c & 0xff) - (uint)bVar4))) ||
+     (((bVar3 = this->field_0xc, bVar2 < bVar3 ||
+       (*(int *)&this->field_0x10 <= (int)((uint)bVar2 - (uint)bVar3))) &&
+      ((bVar2 < (byte)this->field_0x14 ||
+       (*(int *)&this->field_0x18 <= (int)((uint)bVar2 - (uint)(byte)this->field_0x14))))))) {
+    if (*param_2 == 0x20) {
+      CString::CString((CString *)&stack0x0000000c,(char *)(param_2 + 1));
+      local_4._0_1_ = 2;
+      CString::operator=(&local_14,(CString *)&stack0x0000000c);
+    }
+    else {
+      CString::CString((CString *)&stack0x0000000c,(char *)param_2);
+      local_4._0_1_ = 3;
+      CString::operator=(&local_14,(CString *)&stack0x0000000c);
+    }
+    local_4 = CONCAT31(local_4._1_3_,1);
+    CString::~CString((CString *)&stack0x0000000c);
+  }
+  else {
+    bVar4 = bStack0000000c - bVar4;
+    bStack0000000c = bVar4;
+    if ((bVar2 < bVar3) || ((int)(*(int *)&this->field_0x10 + (uint)bVar3) <= (int)(uint)bVar2)) {
+      cVar5 = this->field_0x10 - this->field_0x14;
+    }
+    else {
+      cVar5 = -bVar3;
+    }
+    pcVar6 = *(char **)(*(int *)(*(int *)&this->field_0x1c + (uint)(byte)(bVar2 + cVar5) * 4) +
+                       (uint)bVar4 * 4);
+    cVar5 = *pcVar6;
+    while (cVar5 != '\0') {
+      if (cVar5 == '*') {
+        CString::operator+=(&local_14,(char *)(param_2 + 1));
+      }
+      else {
+        CString::operator+=(cVar5);
+      }
+      pcVar1 = pcVar6 + 1;
+      pcVar6 = pcVar6 + 1;
+      cVar5 = *pcVar1;
+    }
+  }
+  CString::CString(param_1,&local_14);
+  local_10 = 1;
+  local_4 = local_4 & 0xffffff00;
+  CString::~CString(&local_14);
+  *unaff_FS_OFFSET = local_c;
+  return param_1;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00508910
+// GHIDRA_NAME TLanguageMgr::PickGender
+// GHIDRA_PROTO undefined PickGender()
+
+char __fastcall TLanguageMgr::PickGender(int param_1)
+
+{
+  code *pcVar1;
+  undefined uVar2;
+  char cVar3;
+  undefined3 extraout_var;
+  undefined4 uVar4;
+  CString CVar5;
+  int iVar6;
+  int *piVar7;
+  byte bVar8;
+  undefined4 unaff_EBX;
+  int iVar9;
+  int unaff_EBP;
+  undefined4 unaff_ESI;
+  undefined4 *unaff_FS_OFFSET;
+  CString CStack_4c;
+  undefined4 uStack_48;
+  CString CStack_44;
+  undefined4 uStack_40;
+  uint uVar10;
+  char acStack_2c [4];
+  CString local_28 [2];
+  byte bStack_20;
+  undefined3 uStack_1f;
+  undefined1 uStack_1c;
+  int *piStack_18;
+  char *pcStack_14;
+  undefined4 local_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  local_4 = 0xffffffff;
+  puStack_8 = &LAB_006339e8;
+  local_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &local_c;
+  CString::CString(local_28);
+  iVar9 = 0;
+  local_4 = 0;
+  if (*(char *)(param_1 + 0x24) == '\0') {
+    cVar3 = *(char *)(param_1 + 0x25);
+    local_4 = 0xffffffff;
+    CString::~CString(local_28);
+    *unaff_FS_OFFSET = local_c;
+    return cVar3;
+  }
+  uStack_40 = 0x3c6;
+  CStack_44.m_pchData = (char *)0x50897d;
+  uVar2 = (*g_pUiViewManager->vftable->ResolveTurnEventDialogNodeByMessageContext)();
+  CStack_44.m_pchData = acStack_2c;
+  uStack_48 = 0x34;
+  CStack_4c.m_pchData = (char *)0x2737;
+  piStack_18 = (int *)CONCAT31(extraout_var,uVar2);
+  (*g_pSimMgr->vftable[0x10].slot_0x04)();
+  local_28[0].m_pchData = *(char **)CONCAT31(extraout_var,uVar2);
+  pcVar1 = *(code **)(local_28[0].m_pchData + 0x94);
+  uVar4 = (*pcVar1)(0x71756573,0,0xc,0x2b6b,1,unaff_ESI);
+  func_0x00401186(uVar4);
+  uVar10 = 0;
+  CVar5.m_pchData = (char *)(*pcVar1)(0x666f726d);
+  local_28[0].m_pchData = CVar5.m_pchData;
+  (**(code **)(*(int *)CVar5.m_pchData + 0xc))();
+  *(undefined2 *)((int)CVar5.m_pchData + 0x90) = 0x2b6b;
+  *(undefined2 *)((int)CVar5.m_pchData + 0x92) = 2;
+  iVar6 = *(int *)(param_1 + 0x10);
+  if (0 < iVar6 + *(int *)(param_1 + 0x18)) {
+    do {
+      if ((*(uint *)(param_1 + 0x20) & 1 << ((byte)iVar9 & 0x1f)) != 0) {
+        if (iVar9 < iVar6) {
+          uVar10 = (uint)*(byte *)(param_1 + 0xc);
+        }
+        else {
+          uVar10 = (uint)*(byte *)(param_1 + 0x14) - iVar6;
+        }
+        CString::CString(&CStack_44);
+        uStack_1c = 1;
+        CString::operator+=((byte)iVar9 + (char)uVar10);
+        CString::operator+=(&CStack_44,pcStack_14);
+        func_0x004013f2(&stack0xffffffcc,CStack_44.m_pchData,*(undefined1 *)(param_1 + 0x24));
+        local_28[0].m_pchData._0_1_ = 2;
+        piVar7 = (int *)func_0x0040382d(iVar9 + 0x66726d30,iVar9,uStack_40,0xf,0xffffffff);
+        func_0x0040263a(piVar7,0,0xc,0x2b6b,0x2b6c);
+        (**(code **)(*piVar7 + 0x1c4))(1,0);
+        if (unaff_EBP == 0) {
+          unaff_EBP = iVar9 + 0x66726d30;
+        }
+        uStack_1c = 1;
+        CString::~CString((CString *)&stack0xffffffcc);
+        uStack_1c = 0;
+        CString::~CString(&CStack_44);
+        CVar5.m_pchData = local_28[0].m_pchData;
+      }
+      iVar6 = *(int *)(param_1 + 0x10);
+      iVar9 = iVar9 + 1;
+    } while (iVar9 < iVar6 + *(int *)(param_1 + 0x18));
+  }
+  func_0x00407c07(unaff_EBP,0);
+  (**(code **)(uVar10 + 0x1a0))(1);
+  iVar9 = (**(code **)(uVar10 + 0x1b8))();
+  if (iVar9 != 0) {
+    *(undefined4 *)(iVar9 + 0x14) = 0x6f6b6179;
+  }
+  (**(code **)(uVar10 + 0x1ac))();
+  bVar8 = (char)*(int *)((int)CVar5.m_pchData + 0x88) - 0x30;
+  _bStack_20 = CONCAT31(uStack_1f,bVar8);
+  if ((int)(uint)bVar8 < *(int *)(param_1 + 0x10)) {
+    cVar3 = *(char *)(param_1 + 0xc);
+  }
+  else {
+    cVar3 = *(char *)(param_1 + 0x14);
+  }
+  (**(code **)(unaff_EBP + 0xa0))();
+  (**(code **)(unaff_EBP + 0x1c))();
+  local_28[0].m_pchData = (char *)0xffffffff;
+  CString::~CString(&CStack_4c);
+  *unaff_FS_OFFSET = unaff_EBX;
+  return bVar8 + cVar3;
+}
+

@@ -32,7 +32,7 @@ void _AFX_CTL3D_THREAD::~_AFX_CTL3D_THREAD(void)
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
   
-  EstablishSehFrameProlog();
+  _EH_prolog();
   *(undefined4 **)(unaff_EBP + -0x10) = extraout_ECX;
   *extraout_ECX = &PTR__scalar_deleting_destructor__0067055c;
   iVar3 = DAT_006a7d6c;

@@ -118,7 +118,7 @@ TOceanDialog::OrphanRetStub_005960c0
   }
   *param_2 = (short)((int)(iVar4 + (iVar4 >> 0x1f & 0xfU)) >> 4);
   *param_2 = *param_2 + *(short *)&this->field_0x7e;
-  NormalizeWrappedMapCoord108x60(param_2,param_3);
+  func_0x00408328(param_2,param_3);
   *param_4 = 2;
   if (*(short *)((int)&this->ownerContext[1].field34 + 2) == 0) {
     sVar3 = func_0x00401aeb(CONCAT22(extraout_var,*param_2),CONCAT22(extraout_var_00,*param_3));
@@ -379,10 +379,10 @@ LAB_005668ba:
                   (short)this->field30);
   func_0x0040232e(local_90.left);
   local_7c = g_pPrimaryRenderSurfaceContext;
-  GetActiveQuickDrawSurfaceContextAndFlags(local_5c,&local_74);
-  SetActiveQuickDrawSurfaceContext(g_pPrimaryRenderSurfaceContext,local_74);
-  uVar11 = GetSurfaceObjectAtContextOffset24(g_pPrimaryRenderSurfaceContext);
-  ReturnConstantTrueQuickDrawFlag(uVar11);
+  func_0x00408d64(local_5c,&local_74);
+  func_0x00406f5f(g_pPrimaryRenderSurfaceContext,local_74);
+  uVar11 = func_0x0040520e(g_pPrimaryRenderSurfaceContext);
+  func_0x0040761c(uVar11);
   iVar20 = *(int *)(**(int **)(g_pPrimaryRenderSurfaceContext + 0x24) + 0x1c);
   iVar24 = *(int *)(iVar20 + 0x10);
   iVar12 = *(int *)(iVar24 + 8);
@@ -398,7 +398,7 @@ LAB_005668ba:
   local_90.top = unaff_retaddr[1];
   local_90.right = unaff_retaddr[2];
   local_90.bottom = unaff_retaddr[3];
-  FillRectWithQuickDrawBrushAndContextOffset(&local_90);
+  func_0x00406546(&local_90);
   local_7c = 0;
   do {
     iStack_e8 = 0;
@@ -419,7 +419,7 @@ LAB_005668ba:
       if (iVar12 < 0x6c) {
         if ((cStack_10d == '\0') || (iVar12 < 0x3d)) goto LAB_00566ad9;
         (**(code **)(g_pUiRuntimeContext->vftable + 0x34))(0);
-        FillRectWithQuickDrawBrushAndContextOffset(&local_90);
+        func_0x00406546(abStack_b4 + 0x20);
       }
       else {
         CStack_118.m_pchData = CStack_118.m_pchData + -0x6c;
@@ -437,7 +437,7 @@ LAB_00566ad9:
           uStack_11c = CONCAT13(*pcVar13 == '\x05',(undefined3)uStack_11c);
           if (*pcVar13 != '\x05') {
             func_0x0040330f(CONCAT22((short)((uint)pcVar13 >> 0x10),(ushort)local_100[0x6985b8]));
-            FillRectWithQuickDrawBrushAndContextOffset(&local_90);
+            func_0x00406546(&local_90);
           }
           CVar7.m_pchData = CStack_118.m_pchData;
           if (-1 < iVar20) {
@@ -816,7 +816,7 @@ LAB_00566ad9:
         }
         else {
           (**(code **)(g_pUiRuntimeContext->vftable + 0x34))(0);
-          FillRectWithQuickDrawBrushAndContextOffset(&local_90);
+          func_0x00406546(abStack_b4 + 0x20);
         }
       }
       iStack_e8 = iStack_e8 + 1;
@@ -849,10 +849,9 @@ LAB_00566ad9:
             sVar17 = sVar17 + -0xd8;
           }
         }
-        SetQuickDrawTextOriginWithContextOffset
-                  ((sVar17 * 0x10) / 2,(uint)(ushort)((short)piVar1[1] - sVar10) << 4);
+        func_0x00408d6e((sVar17 * 0x10) / 2,(uint)(ushort)((short)piVar1[1] - sVar10) << 4);
         iVar24 = CONCAT22((short)((uint)iVar24 >> 0x10),(short)iVar12 - sVar10) << 4;
-        DrawCenteredGuideLineOnMapDc((sVar19 * 0x10) / 2,iVar24);
+        func_0x00403bb6((sVar19 * 0x10) / 2,iVar24);
         iStack_e8 = iStack_e8 + 1;
         iVar20 = iVar20 + 0x10;
       } while (iStack_e8 < (short)g_pActiveMapOrderContext->field0c);
@@ -879,7 +878,7 @@ LAB_00566ad9:
           puStack_8._0_1_ = 3;
           (*pTVar5->GetTEventHandlerClassNamePointer_0b)(&CStack_118);
           sVar10 = func_0x00405c68(uStack_11c,0,*(undefined4 *)(uStack_11c + -8),iVar24 + 0x18);
-          SetQuickDrawTextOriginWithContextOffset(iVar20 - (int)sVar10 / 2);
+          func_0x00408d6e(iVar20 - (int)sVar10 / 2);
           func_0x004029aa(&uStack_11c);
           puStack_8 = (undefined1 *)CONCAT31(puStack_8._1_3_,2);
           CString::~CString(&CStack_118);
@@ -905,13 +904,13 @@ LAB_00566ad9:
           CString::CString(&CStack_118);
           puStack_8._0_1_ = 4;
           func_0x00405245(&CStack_118);
-          sVar10 = MeasureTextExtentWithCachedQuickDrawStyle(&uStack_11c);
+          sVar10 = func_0x00405b7d(&uStack_11c);
           iVar20 = iVar20 - (int)sVar10 / 2;
           func_0x0040330f(0x13);
-          SetQuickDrawTextOriginWithContextOffset(iVar20 + 1,iVar24 + 9);
+          func_0x00408d6e(iVar20 + 1,iVar24 + 9);
           func_0x004029aa(&uStack_11c);
           func_0x0040330f(0);
-          SetQuickDrawTextOriginWithContextOffset(iVar20,iVar12);
+          func_0x00408d6e(iVar20,iVar12);
           func_0x004029aa(&uStack_11c);
           puStack_8 = (undefined1 *)CONCAT31(puStack_8._1_3_,2);
           CString::~CString(&CStack_118);
@@ -921,11 +920,11 @@ LAB_00566ad9:
     } while ((int)uStack_104 < 0x6a436c);
   }
   if (DAT_006985ac != '\0') {
-    SetActiveQuickDrawSurfaceContext(local_60,uStack_78);
+    func_0x00406f5f(local_60,uStack_78);
     func_0x00405493(g_pPrimaryRenderSurfaceContext + 4,&g_pActiveQuickDrawSurfaceContext->field_0x4,
                     &local_20,auStack_30,0,0);
-    uVar11 = GetSurfaceObjectAtContextOffset24(g_pPrimaryRenderSurfaceContext);
-    NoOpQuickDrawLifecycleHookB(uVar11);
+    uVar11 = func_0x0040520e(g_pPrimaryRenderSurfaceContext);
+    func_0x004024fa(uVar11);
   }
   puStack_8._0_1_ = 1;
   func_0x00409aac();
@@ -978,9 +977,9 @@ TOceanDialog::OrphanTiny_ReturnZero_0048a730
     func_0x00405119();
     local_4 = 0;
     func_0x0040330f((&DAT_006985b8)[iVar1]);
-    FillRectWithQuickDrawBrushAndContextOffset(&local_2c);
+    func_0x00406546(&local_2c);
     local_4 = 0xffffffff;
-    thunk_DispatchHandleMapLookupWithReadPtrProbe(local_30,0);
+    CDC__SelectPalette(local_30,0);
   }
   else {
     sVar2 = 0xf0;
@@ -1039,9 +1038,9 @@ void TOceanDialog::VTableSlot6B(short param_1, RECT *param_2)
       func_0x00405119();
       puStack_8 = (undefined1 *)0x0;
       func_0x0040330f((&DAT_006985b8)[iVar2]);
-      FillRectWithQuickDrawBrushAndContextOffset(_param_1);
+      func_0x00406546(_param_1);
       puStack_8 = (undefined1 *)0xffffffff;
-      thunk_DispatchHandleMapLookupWithReadPtrProbe(uStack_24,0);
+      CDC__SelectPalette(uStack_24,0);
     }
     else {
       sVar3 = sVar3 + 0x10;
@@ -1094,9 +1093,9 @@ void TOceanDialog::OrphanRetStub_00596060(short param_1, RECT *param_2)
       func_0x00405119();
       local_4 = 0;
       (**(code **)(g_pUiRuntimeContext->vftable + 0x34))(0x32);
-      FillRectWithQuickDrawBrushAndContextOffset(param_2);
+      func_0x00406546(param_2);
       puStack_8 = (undefined1 *)0xffffffff;
-      thunk_DispatchHandleMapLookupWithReadPtrProbe(local_34,0);
+      CDC__SelectPalette(local_34,0);
     }
     else {
       sVar3 = sVar3 + 0x10;
@@ -1114,14 +1113,14 @@ void TOceanDialog::OrphanRetStub_00596060(short param_1, RECT *param_2)
       iStack_18 = iStack_10 + -0x10;
       iStack_1c = param_2->left + -8;
       iStack_14 = param_2->left + 8;
-      ApplyRectClipRegionToGlobalClipState(&iStack_1c);
+      func_0x004030e9(&iStack_1c);
       if (this->field_0x74 == '\0') {
         func_0x00405119();
         local_4 = 1;
         (**(code **)(g_pUiRuntimeContext->vftable + 0x34))(0x32);
-        FillRectWithQuickDrawBrushAndContextOffset(&local_20);
+        func_0x00406546(&local_20);
         puStack_8 = (undefined1 *)0xffffffff;
-        thunk_DispatchHandleMapLookupWithReadPtrProbe(local_34,0);
+        CDC__SelectPalette(local_34,0);
       }
       local_2c[0] = (int)(short)(sVar3 + 0x20);
       local_2c[2] = local_2c[0] + 0x10;
@@ -1135,14 +1134,14 @@ void TOceanDialog::OrphanRetStub_00596060(short param_1, RECT *param_2)
       iStack_18 = iStack_10 + -0x10;
       iStack_1c = param_2->left + 8;
       iStack_14 = param_2->left + 0x18;
-      ApplyRectClipRegionToGlobalClipState(&iStack_1c);
+      func_0x004030e9(&iStack_1c);
       if (this->field_0x74 == '\0') {
         func_0x00405119();
         local_4 = 2;
         (**(code **)(g_pUiRuntimeContext->vftable + 0x34))(0x32);
-        FillRectWithQuickDrawBrushAndContextOffset(&local_20);
+        func_0x00406546(&local_20);
         puStack_8 = (undefined1 *)0xffffffff;
-        thunk_DispatchHandleMapLookupWithReadPtrProbe(local_34,0);
+        CDC__SelectPalette(local_34,0);
       }
       local_2c[0] = (int)(short)(sVar3 + 0x40);
       local_2c[2] = local_2c[0] + 0x10;
@@ -1318,7 +1317,7 @@ int TOceanDialog::ComputeWrappedTileIndexFromObjectOffset7C7E()
   
   local_8 = CONCAT22((short)((uint)in_EAX >> 0x10),*(short *)&this->field_0x7c + 0xe);
   local_4 = CONCAT22((short)((uint)this >> 0x10),*(short *)&this->field_0x7e + 0x10);
-  NormalizeWrappedMapCoord108x60(&local_4,&local_8);
+  func_0x00408328(&local_4,&local_8);
   return local_4 + local_8 * 0x6c;
 }
 
@@ -1333,12 +1332,12 @@ void TOceanDialog::RequestAudioPresetChangeWithDeferredApply(int param_1, char p
   short sVar2;
   undefined4 uVar3;
   
-  if (*(short *)&g_pLocalizationTable->field_0x4e != 0) {
+  if (*(short *)&g_pSimMgr->field_0x4e != 0) {
     cVar1 = func_0x00403c2e();
     if (cVar1 == '\0') {
       cVar1 = func_0x00408594();
       if (cVar1 == '\0') {
-        *(undefined2 *)&g_pLocalizationTable->field_0x4e = 0;
+        *(undefined2 *)&g_pSimMgr->field_0x4e = 0;
         return;
       }
       if (param_1 != *(short *)&this->field_0x74) {
@@ -1346,7 +1345,7 @@ void TOceanDialog::RequestAudioPresetChangeWithDeferredApply(int param_1, char p
         if ((param_2 == '\0') || (*(short *)&this->field_0x74 < 1)) {
           *(short *)&this->field_0x74 = sVar2;
           func_0x00403373((int)sVar2);
-          func_0x00402a81((int)*(short *)&g_pLocalizationTable->field_0x4e << 8);
+          func_0x00402a81((int)*(short *)&g_pSimMgr->field_0x4e << 8);
           this->field_0x78 = 1;
         }
         else {

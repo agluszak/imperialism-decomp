@@ -704,10 +704,10 @@ void TCity::Free()
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B3B20
-// GHIDRA_NAME TCity::OrphanTiny_SetDwordEcxOffset_b0_004b3b20
-// GHIDRA_PROTO undefined __thiscall OrphanTiny_SetDwordEcxOffset_b0_004b3b20(undefined4 param_1)
+// GHIDRA_NAME TCity::SetSelectedTownMarker
+// GHIDRA_PROTO undefined __thiscall SetSelectedTownMarker(undefined4 param_1)
 
-void TCity::OrphanTiny_SetDwordEcxOffset_b0_004b3b20(undefined4 param_1)
+void TCity::SetSelectedTownMarker(undefined4 param_1)
 
 {
   *(undefined4 *)&this->field_0xb0 = param_1;
@@ -715,10 +715,10 @@ void TCity::OrphanTiny_SetDwordEcxOffset_b0_004b3b20(undefined4 param_1)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B3B40
-// GHIDRA_NAME TCity::OrphanCallChain_C13_I161_004b3b40
-// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C13_I161_004b3b40(void)
+// GHIDRA_NAME TCity::EndCityPhase
+// GHIDRA_PROTO undefined __thiscall EndCityPhase(void)
 
-void TCity::OrphanCallChain_C13_I161_004b3b40()
+void TCity::EndCityPhase()
 
 {
   _vslot_fn *p_Var1;
@@ -831,10 +831,10 @@ LAB_004b3d28:
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B3DE0
-// GHIDRA_NAME TCity::Call2C
-// GHIDRA_PROTO undefined __thiscall Call2C(void)
+// GHIDRA_NAME TCity::PredictedNeeds
+// GHIDRA_PROTO undefined __thiscall PredictedNeeds(void)
 
-void TCity::Call2C()
+void TCity::PredictedNeeds()
 
 {
   short sVar1;
@@ -866,10 +866,10 @@ void TCity::Call2C()
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B3E70
-// GHIDRA_NAME TCity::RefreshOrderStateSlot0C
-// GHIDRA_PROTO undefined __thiscall RefreshOrderStateSlot0C(void)
+// GHIDRA_NAME TCity::ProduceUnits
+// GHIDRA_PROTO undefined __thiscall ProduceUnits(void)
 
-void TCity::RefreshOrderStateSlot0C()
+void TCity::ProduceUnits()
 
 {
   short sVar1;
@@ -899,7 +899,7 @@ void TCity::RefreshOrderStateSlot0C()
       sVar1 = *(short *)((int)*ppvVar4 + 4);
       uVar2 = *(undefined2 *)((int)*ppvVar4 + 0x48);
       if (sVar1 != 0) {
-        sVar3 = GetResourceTypeRandomDrawBlockFlag(uVar2);
+        sVar3 = func_0x00408ed6(uVar2);
         if (sVar3 == 0) {
           (**(code **)(**(int **)&this->field_0xac + 0x2c0))(1,uVar2,sVar1);
         }
@@ -936,10 +936,10 @@ void TCity::RefreshOrderStateSlot0C()
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B3FB0
-// GHIDRA_NAME TCity::AddNeedVectorSplitSlot34
-// GHIDRA_PROTO undefined __thiscall AddNeedVectorSplitSlot34(short * param_1)
+// GHIDRA_NAME TCity::AddPurchasedItems
+// GHIDRA_PROTO undefined __thiscall AddPurchasedItems(short * param_1)
 
-void TCity::AddNeedVectorSplitSlot34(short *param_1)
+void TCity::AddPurchasedItems(short *param_1)
 
 {
   short sVar1;
@@ -981,10 +981,10 @@ void TCity::AddNeedVectorSplitSlot34(short *param_1)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B4040
-// GHIDRA_NAME TCity::AddNeedVectorSlot3C
-// GHIDRA_PROTO undefined __thiscall AddNeedVectorSlot3C(short * param_1)
+// GHIDRA_NAME TCity::AddTransportedItems
+// GHIDRA_PROTO undefined __thiscall AddTransportedItems(short * param_1)
 
-void TCity::AddNeedVectorSlot3C(short *param_1)
+void TCity::AddTransportedItems(short *param_1)
 
 {
   short sVar1;
@@ -1006,10 +1006,10 @@ void TCity::AddNeedVectorSlot3C(short *param_1)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B4090
-// GHIDRA_NAME TCity::AddOwnerNeedTargetsSlot38
-// GHIDRA_PROTO undefined __thiscall AddOwnerNeedTargetsSlot38(void)
+// GHIDRA_NAME TCity::AddTransportedItems
+// GHIDRA_PROTO undefined __thiscall AddTransportedItems(void)
 
-void TCity::AddOwnerNeedTargetsSlot38()
+void TCity::AddTransportedItems()
 
 {
   word *pwVar1;
@@ -1029,10 +1029,10 @@ void TCity::AddOwnerNeedTargetsSlot38()
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B40E0
-// GHIDRA_NAME TCity::AllocateNeedFromOwnerSlot4C
-// GHIDRA_PROTO undefined __thiscall AllocateNeedFromOwnerSlot4C(short param_1, short param_2)
+// GHIDRA_NAME TCity::DirectTransport
+// GHIDRA_PROTO undefined __thiscall DirectTransport(short param_1, short param_2)
 
-short TCity::AllocateNeedFromOwnerSlot4C(short param_1, short param_2)
+short TCity::DirectTransport(short param_1, short param_2)
 
 {
   int iVar1;
@@ -1058,12 +1058,12 @@ short TCity::AllocateNeedFromOwnerSlot4C(short param_1, short param_2)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B4180
-// GHIDRA_NAME TCity::Refresh80
-// GHIDRA_PROTO undefined __thiscall Refresh80(void)
+// GHIDRA_NAME TCity::VerifyStocks
+// GHIDRA_PROTO undefined __thiscall VerifyStocks(void)
 
 /* WARNING: Globals starting with '_' overlap smaller symbols at the same address */
 
-void TCity::Refresh80()
+void TCity::VerifyStocks()
 
 {
   char cVar1;
@@ -1075,7 +1075,7 @@ void TCity::Refresh80()
   do {
     if ((short)*pwVar3 < 0) {
       cVar1 = (**(code **)(**(int **)&this->field_0xac + 0xa0))();
-      if (((cVar1 == '\0') || (*(int *)&g_pLocalizationTable->field_0x44 != 2)) &&
+      if (((cVar1 == '\0') || (*(int *)&g_pSimMgr->field_0x44 != 2)) &&
          (_g_Sanitize_City_Counter_Value_006A24D4 == 0)) {
         func_0x004057a4(s_D__Ambit_Cross_UCity_cpp_00695f18,0x47f);
       }
@@ -1088,10 +1088,10 @@ void TCity::Refresh80()
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B4210
-// GHIDRA_NAME TCity::OrphanRetStub_004b4210
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_004b4210(void)
+// GHIDRA_NAME TCity::MouseTrap
+// GHIDRA_PROTO undefined __thiscall MouseTrap(void)
 
-void TCity::OrphanRetStub_004b4210()
+void TCity::MouseTrap()
 
 {
   return;
@@ -1154,10 +1154,10 @@ void TCity::GetCitySummaryRecordSlot74()
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B4540
-// GHIDRA_NAME TCity::WriteQueuePairSlot48
-// GHIDRA_PROTO undefined __thiscall WriteQueuePairSlot48(void)
+// GHIDRA_NAME TCity::AddTransportRequest
+// GHIDRA_PROTO undefined __thiscall AddTransportRequest(void)
 
-void TCity::WriteQueuePairSlot48()
+void TCity::AddTransportRequest()
 
 {
   (**(code **)(**(int **)&this->field_0x274 + 0x38))(&stack0x00000004);
@@ -1165,10 +1165,10 @@ void TCity::WriteQueuePairSlot48()
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B4580
-// GHIDRA_NAME TCity::CreateAltownCityObject
-// GHIDRA_PROTO undefined __thiscall CreateAltownCityObject(void)
+// GHIDRA_NAME TCity::MakeTown
+// GHIDRA_PROTO undefined __thiscall MakeTown(void)
 
-void TCity::CreateAltownCityObject()
+void TCity::MakeTown()
 
 {
   int iVar1;
@@ -1218,10 +1218,10 @@ void TCity::CreateAltownCityObject()
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B46C0
-// GHIDRA_NAME TCity::OrphanLeaf_NoCall_Ins03_004b46c0
-// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins03_004b46c0(void)
+// GHIDRA_NAME TCity::TransferTransportRequests
+// GHIDRA_PROTO undefined __thiscall TransferTransportRequests(void)
 
-void TCity::OrphanLeaf_NoCall_Ins03_004b46c0()
+void TCity::TransferTransportRequests()
 
 {
                     /* WARNING: Could not recover jumptable at 0x004b46c8. Too many branches */
@@ -1231,10 +1231,10 @@ void TCity::OrphanLeaf_NoCall_Ins03_004b46c0()
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B46E0
-// GHIDRA_NAME TCity::GetCityBuildingDisplayCapacityBySlot
-// GHIDRA_PROTO undefined __thiscall GetCityBuildingDisplayCapacityBySlot(short param_1)
+// GHIDRA_NAME TCity::GetMaxBuildingCapacity
+// GHIDRA_PROTO undefined __thiscall GetMaxBuildingCapacity(short param_1)
 
-int TCity::GetCityBuildingDisplayCapacityBySlot(short param_1)
+int TCity::GetMaxBuildingCapacity(short param_1)
 
 {
   short sVar1;
@@ -1300,10 +1300,10 @@ LAB_004b4795:
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B48A0
-// GHIDRA_NAME TCity::GetBuildingCapacityTierSlot58
-// GHIDRA_PROTO undefined __thiscall GetBuildingCapacityTierSlot58(short param_1)
+// GHIDRA_NAME TCity::GetNextBuildingLevel
+// GHIDRA_PROTO undefined __thiscall GetNextBuildingLevel(short param_1)
 
-char TCity::GetBuildingCapacityTierSlot58(short param_1)
+char TCity::GetNextBuildingLevel(short param_1)
 
 {
   undefined uVar1;
@@ -1422,11 +1422,11 @@ switchD_004b4a00_default:
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B4C80
-// GHIDRA_NAME TCity::OrphanLeaf_NoCall_Ins08_004b4c80
-// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins08_004b4c80(short param_1, undefined1 param_2, undefined2 param_3, undefined2 param_4)
+// GHIDRA_NAME TCity::SetBuildingWindowState
+// GHIDRA_PROTO undefined __thiscall SetBuildingWindowState(short param_1, undefined1 param_2, undefined2 param_3, undefined2 param_4)
 
 void __thiscall
-TCity::OrphanLeaf_NoCall_Ins08_004b4c80
+TCity::SetBuildingWindowState
           (TCity *this,short param_1,undefined1 param_2,undefined2 param_3,undefined2 param_4)
 
 {
@@ -1440,12 +1440,10 @@ TCity::OrphanLeaf_NoCall_Ins08_004b4c80
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B4CC0
-// GHIDRA_NAME TCity::OrphanLeaf_NoCall_Ins11_004b4cc0
-// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins11_004b4cc0(short param_1, undefined2 * param_2, undefined2 * param_3)
+// GHIDRA_NAME TCity::GetBuildingWindowState
+// GHIDRA_PROTO undefined __thiscall GetBuildingWindowState(short param_1, undefined2 * param_2, undefined2 * param_3)
 
-undefined4 __thiscall
-TCity::OrphanLeaf_NoCall_Ins11_004b4cc0
-          (TCity *this,short param_1,undefined2 *param_2,undefined2 *param_3)
+undefined4 TCity::GetBuildingWindowState(short param_1, undefined2 *param_2, undefined2 *param_3)
 
 {
   int iVar1;
@@ -1458,10 +1456,10 @@ TCity::OrphanLeaf_NoCall_Ins11_004b4cc0
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B4D00
-// GHIDRA_NAME TCity::IsBasicResourceSlot78
-// GHIDRA_PROTO undefined __thiscall IsBasicResourceSlot78(short param_1)
+// GHIDRA_NAME TCity::IsCapacityCenter
+// GHIDRA_PROTO undefined __thiscall IsCapacityCenter(short param_1)
 
-undefined2 TCity::IsBasicResourceSlot78(short param_1)
+undefined2 TCity::IsCapacityCenter(short param_1)
 
 {
   if (((((param_1 != 0) && (param_1 != 1)) && (param_1 != 2)) && ((param_1 != 3 && (param_1 != 4))))
@@ -1472,8 +1470,8 @@ undefined2 TCity::IsBasicResourceSlot78(short param_1)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x004B4D50
-// GHIDRA_NAME TCity::ToggleCityPowerPlantUpgradeOrder
-// GHIDRA_PROTO void __thiscall ToggleCityPowerPlantUpgradeOrder(char fEnableUpgrade)
+// GHIDRA_NAME TCity::BuildPowerPlant
+// GHIDRA_PROTO void __thiscall BuildPowerPlant(char fEnableUpgrade)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Toggles the city power-plant upgrade order state.
 // GHIDRA_COMMENT Algorithm:
@@ -1498,7 +1496,7 @@ undefined2 TCity::IsBasicResourceSlot78(short param_1)
    Returns:
    - void. */
 
-void TCity::ToggleCityPowerPlantUpgradeOrder(char fEnableUpgrade)
+void TCity::BuildPowerPlant(char fEnableUpgrade)
 
 {
   if (fEnableUpgrade == '\0') {
@@ -1519,5 +1517,52 @@ void TCity::ToggleCityPowerPlantUpgradeOrder(char fEnableUpgrade)
     this->field_0x4 = 0;
   }
   return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x004B4DC0
+// GHIDRA_NAME TCity::GetBuildingType
+// GHIDRA_PROTO int __thiscall GetBuildingType(short nBuildingSlotId)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Reads the city production order for a building slot.
+// GHIDRA_COMMENT Algorithm:
+// GHIDRA_COMMENT 1. For slots != 15, return persisted short at cityState + 0x1DC + slot*2.
+// GHIDRA_COMMENT 2. For slot 15, compute a derived value from city workforce/population context.
+// GHIDRA_COMMENT Storage Note:
+// GHIDRA_COMMENT - Offset +0x1DC is a 23-entry per-city production table used by city UI and turn-processing logic.
+// GHIDRA_COMMENT_END
+
+/* Reads the city production order for a building slot.
+   Algorithm:
+   1. For slots != 15, return persisted short at cityState + 0x1DC + slot*2.
+   2. For slot 15, compute a derived value from city workforce/population context.
+   Storage Note:
+   - Offset +0x1DC is a 23-entry per-city production table used by city UI and turn-processing
+   logic. */
+
+int TCity::GetBuildingType(short nBuildingSlotId)
+
+{
+  int iVar1;
+  
+  if (nBuildingSlotId != 0xf) {
+    return CONCAT22(nBuildingSlotId >> 0xf,
+                    *(undefined2 *)((int)this->orderSlotsE4 + nBuildingSlotId * 2 + 0xf8));
+  }
+  iVar1 = *(int *)&this->field_0xac;
+  if (*(char *)(iVar1 + 0x8d1) < '3') {
+    iVar1 = (**(code **)(**(int **)(iVar1 + 0x90) + 0x28))();
+    if (1 < (int)(iVar1 + (iVar1 >> 0x1f & 3U)) >> 2) {
+      iVar1 = (**(code **)(**(int **)(*(int *)&this->field_0xac + 0x90) + 0x28))();
+      return (int)(iVar1 + (iVar1 >> 0x1f & 3U)) >> 2;
+    }
+  }
+  else {
+    iVar1 = (**(code **)(**(int **)(iVar1 + 0x90) + 0x28))();
+    if (1 < iVar1 / 3) {
+      iVar1 = (**(code **)(**(int **)(*(int *)&this->field_0xac + 0x90) + 0x28))();
+      return iVar1 / 3;
+    }
+  }
+  return 1;
 }
 

@@ -30,7 +30,7 @@ undefined4 * CRecentFileList::CRecentFileList(void)
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
   
-  EstablishSehFrameProlog();
+  _EH_prolog();
   *(undefined4 **)(unaff_EBP + -0x10) = extraout_ECX;
   CString::CString((CString *)(extraout_ECX + 3));
   *(undefined4 *)(unaff_EBP + -4) = 0;
@@ -89,7 +89,7 @@ void CRecentFileList::~CRecentFileList(void)
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
   
-  EstablishSehFrameProlog();
+  _EH_prolog();
   *(undefined4 **)(unaff_EBP + -0x10) = extraout_ECX;
   *extraout_ECX = &PTR_Remove_00673044;
   iVar1 = extraout_ECX[2];
@@ -262,7 +262,7 @@ void CRecentFileList::UpdateMenu(void)
   int iVar7;
   UINT UVar8;
   
-  EstablishSehFrameProlog();
+  _EH_prolog();
   piVar2 = *(int **)(unaff_EBP + 8);
   iVar7 = *(int *)(extraout_ECX + 0x1c);
   iVar6 = piVar2[3];
@@ -431,7 +431,7 @@ void CRecentFileList::ReadList(void)
   int iVar4;
   undefined4 *unaff_FS_OFFSET;
   
-  EstablishSehFrameProlog();
+  _EH_prolog();
   uVar2 = operator_new(*(int *)(*(int *)(extraout_ECX + 0x10) + -8) + 5);
   *(undefined4 *)(unaff_EBP + -0x10) = uVar2;
   iVar3 = AfxGetModuleState();

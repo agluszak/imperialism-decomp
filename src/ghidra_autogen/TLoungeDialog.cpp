@@ -120,7 +120,7 @@ void TLoungeDialog::NoOpUiLifecycleHook()
   if (cVar3 == '\0') {
     func_0x00406bc7(0x2742,9,0x636e636c);
     func_0x00403378(this);
-    if (*(int *)&g_pLocalizationTable->field_0x44 == 1) {
+    if (*(int *)&g_pSimMgr->field_0x44 == 1) {
       func_0x00407ff9();
       func_0x00401587();
       func_0x00402117(0xfffffff3,0,PTR_g_szEmptyString_0065c160,PTR_g_szEmptyString_0065c160);
@@ -155,7 +155,7 @@ void TLoungeDialog::NoOpUiLifecycleHook()
   (*pTVar1->VTableSlot13)(1);
   cVar3 = func_0x00408481();
   if (cVar3 == '\0') {
-    iVar6 = (-(uint)(*(int *)&g_pLocalizationTable->field_0x44 == 1) & 0xfffffff8) + 0x18;
+    iVar6 = (-(uint)(*(int *)&g_pSimMgr->field_0x44 == 1) & 0xfffffff8) + 0x18;
   }
   else {
     iVar6 = func_0x00403b6b(0xffffffff);
@@ -271,7 +271,7 @@ uint TLoungeDialog::CanHandleCityDialogActionFalse()
     CString::operator=(&CStack_28,src_ref);
     uStack_4 = CONCAT31(uStack_4._1_3_,1);
     CString::~CString(&CStack_10);
-    iVar7 = CompareAnsiStringsWithMbcsAwareness(CStack_20.m_pchData,CStack_28.m_pchData);
+    iVar7 = _mbscmp(CStack_20.m_pchData,CStack_28.m_pchData);
     if (iVar7 != 0) {
       (**(code **)(iVar1 + 0x1c8))(&CStack_28,1);
       if (iVar8 == 4) {
@@ -297,7 +297,7 @@ uint TLoungeDialog::CanHandleCityDialogActionFalse()
   } while ((int)local_24 < 100);
   cVar4 = func_0x00408481();
   if (cVar4 == '\0') {
-    if ((*(int *)&g_pLocalizationTable->field_0x44 == 1) || (CStack_30.m_pchData._3_1_ != '\0')) {
+    if ((*(int *)&g_pSimMgr->field_0x44 == 1) || (CStack_30.m_pchData._3_1_ != '\0')) {
       cVar4 = '\x10';
     }
     else {
@@ -376,9 +376,9 @@ void TLoungeDialog::HandleEvent(int param_1, int *param_2)
           }
           iVar6 = iVar6 + 4;
         } while (iVar6 < 100);
-        if (((*(int *)&g_pLocalizationTable->field_0x44 != 1) || (!bVar3)) ||
+        if (((*(int *)&g_pSimMgr->field_0x44 != 1) || (!bVar3)) ||
            (cVar5 = func_0x0040426e(0x6367616d), cVar5 != '\0')) {
-          if (*(int *)&g_pLocalizationTable->field_0x44 == 1) {
+          if (*(int *)&g_pSimMgr->field_0x44 == 1) {
             func_0x00406efb(0x6367616d,0xffffffff,0xfffffffe);
           }
           func_0x0040346d();
@@ -387,7 +387,7 @@ void TLoungeDialog::HandleEvent(int param_1, int *param_2)
       else {
         iVar6 = func_0x00403b6b(0xffffffff);
         if (iVar6 == 0x62757379) {
-          (*g_pLocalizationTable->vftable[8].slot_0x04)();
+          (*g_pSimMgr->vftable[8].slot_0x04)();
         }
         else {
           cVar5 = func_0x0040426e(0x6e657767);

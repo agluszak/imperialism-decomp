@@ -94,7 +94,7 @@ void TArmyBoyView::ApplyRectSlot110()
   func_0x0040448f(0,0xc);
   local_38.m_pchData = (char *)0x1c474b;
   func_0x00409444();
-  SetQuickDrawTextOriginWithContextOffset(0x40);
+  func_0x00408d6e(0x40);
   CString::CString(&local_38,(char *)(*(int *)&this->field_0x60 + 4));
   local_4._0_1_ = 2;
   func_0x004029aa();
@@ -130,9 +130,9 @@ void TArmyBoyView::ApplyRectSlot110()
     else {
       uVar3 = 0x1f;
     }
-    (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x273c,uVar3);
-    sVar1 = MeasureTextExtentWithCachedQuickDrawStyle(&stack0xffffffbc);
-    SetQuickDrawTextOriginWithContextOffset(0x6a - (int)sVar1 / 2,0x26);
+    (*g_pSimMgr->vftable[0x10].slot_0x04)(0x273c,uVar3);
+    sVar1 = func_0x00405b7d(&stack0xffffffbc);
+    func_0x00408d6e(0x6a - (int)sVar1 / 2,0x26);
     func_0x004029aa(&stack0xffffffbc);
     local_4._0_1_ = 1;
     CString::~CString(&local_38);
@@ -146,10 +146,10 @@ void TArmyBoyView::ApplyRectSlot110()
   func_0x00406b86();
   local_38.m_pchData = &stack0xffffffb8;
   func_0x00402bdf();
-  SetQuickDrawTextOriginWithContextOffset(0x41);
-  DrawCenteredGuideLineOnMapDc(0x41);
-  DrawCenteredGuideLineOnMapDc(0x93);
-  DrawCenteredGuideLineOnMapDc(0x93);
+  func_0x00408d6e(0x41);
+  func_0x00403bb6(0x41);
+  func_0x00403bb6(0x93);
+  func_0x00403bb6(0x93);
   sVar1 = *(short *)(*(int *)&this->field_0x60 + 0x24);
   sVar2 = sVar1 * 0xb;
   if (0x31 < (int)sVar1 % 100) {

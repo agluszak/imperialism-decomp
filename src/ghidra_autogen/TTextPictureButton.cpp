@@ -83,24 +83,20 @@ void TTextPictureButton::ApplyRectSlot110()
   uVar4 = (uint)(this->field_0x64 != '\0');
   func_0x0040448f(0,*(undefined2 *)&this->field_0x98,
                   CONCAT22(extraout_var_01,*(undefined2 *)&this->field_0x9c));
-  MapUiThemeCodeToStyleFlags
-            (CONCAT22(extraout_var,*(undefined2 *)&this->field_0x9c),&stack0x00000000);
+  func_0x004093cc(CONCAT22(extraout_var,*(undefined2 *)&this->field_0x9c),&stack0x00000000);
   func_0x00409444(0);
   puVar1 = &this->field_0x94;
-  sVar2 = MeasureTextExtentWithCachedQuickDrawStyle(puVar1);
+  sVar2 = func_0x00405b7d(puVar1);
   iVar3 = func_0x004021c6();
   GetTextExtentPointA(*(HDC *)(iVar3 + 8),*(LPCSTR *)puVar1,*(int *)(*(LPCSTR *)puVar1 + -8),
                       (LPSIZE)&stack0xfffffff4);
   iVar3 = (int)(local_8 + (local_8 >> 0x1f & 3U)) >> 2;
-  SetQuickDrawTextOriginWithContextOffset
-            ((this->field34 / 2 - (int)sVar2 / 2) + 1 + uVar4,this->field38 / 2 + iVar3 + 1 + uVar4)
-  ;
+  func_0x00408d6e((this->field34 / 2 - (int)sVar2 / 2) + 1 + uVar4,
+                  this->field38 / 2 + iVar3 + 1 + uVar4);
   func_0x004029aa(puVar1);
-  MapUiThemeCodeToStyleFlags
-            (CONCAT22(extraout_var_00,*(undefined2 *)&this->field_0x9a),&stack0x00000000);
+  func_0x004093cc(CONCAT22(extraout_var_00,*(undefined2 *)&this->field_0x9a),&stack0x00000000);
   func_0x00409444(0);
-  SetQuickDrawTextOriginWithContextOffset
-            ((this->field34 / 2 - (int)sVar2 / 2) + uVar4,this->field38 / 2 + iVar3 + uVar4);
+  func_0x00408d6e((this->field34 / 2 - (int)sVar2 / 2) + uVar4,this->field38 / 2 + iVar3 + uVar4);
   func_0x004029aa(puVar1);
   return;
 }

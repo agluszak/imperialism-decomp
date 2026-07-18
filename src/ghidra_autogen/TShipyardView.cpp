@@ -216,7 +216,7 @@ void TShipyardView::OrphanRetStub_004c6fd0()
     local_28 = local_28 + 1;
     local_1c = (undefined *)((int)local_1c + -1);
   } while (local_1c != (undefined *)0x0);
-  BuildUiTextStyleDescriptor();
+  func_0x00406afa();
   puStack_20 = &this->field_0xa4;
   local_28 = 0;
   local_24 = (undefined1 *)0x636c7530;
@@ -274,14 +274,14 @@ void TShipyardView::OrphanRetStub_004c6fd0()
     local_1c = local_1c + 2;
     local_24 = local_24 + 1;
   } while ((short)local_28 < 8);
-  BuildUiTextStyleDescriptor();
+  func_0x00406afa();
   uVar4 = (*p_Var8)();
   iVar7 = *(int *)CONCAT31(extraout_var_03,uVar4);
   (**(code **)(iVar7 + 0xc))();
   (**(code **)(iVar7 + 0x1b4))();
   iVar9 = 0xe;
   (**(code **)(iVar7 + 0x1cc))();
-  BuildUiTextStyleDescriptor(&local_24,0);
+  func_0x00406afa(&local_24,0);
   iVar7 = 0;
   do {
     uVar4 = (*p_Var8)();
@@ -291,12 +291,12 @@ void TShipyardView::OrphanRetStub_004c6fd0()
     (**(code **)(iVar2 + 0x1cc))(0x2736,iVar9 + 0xf,1);
     iVar7 = iVar7 + 1;
   } while ((short)iVar7 < 2);
-  BuildUiTextStyleDescriptor(&local_24,0);
+  func_0x00406afa(&local_24,0);
   uVar4 = (*p_Var8)();
   iVar7 = *(int *)CONCAT31(extraout_var_05,uVar4);
   (**(code **)(iVar7 + 0xc))();
   (**(code **)(iVar7 + 0x1b4))(&local_28);
-  BuildUiTextStyleDescriptor(&stack0xffffffd0,0,10,0x2b6b);
+  func_0x00406afa(&stack0xffffffd0,0,10,0x2b6b);
   uVar4 = (*p_Var8)(0x64657363);
   iVar7 = *(int *)CONCAT31(extraout_var_06,uVar4);
   (**(code **)(iVar7 + 0xc))();
@@ -306,7 +306,7 @@ void TShipyardView::OrphanRetStub_004c6fd0()
   *(undefined2 *)&this->field_0xa0 = 0;
   (*pTVar3->InitializeCityViewActionButtons)
             (CONCAT22(extraout_var_08,*(undefined2 *)&this->field_0xa4));
-  BuildUiTextStyleDescriptor(&stack0xffffffc0,0,10,0x2b6b);
+  func_0x00406afa(&stack0xffffffc0,0,10,0x2b6b);
   uVar4 = (*p_Var8)(0x73656c65);
   iVar7 = *(int *)CONCAT31(extraout_var_07,uVar4);
   (**(code **)(iVar7 + 0xc))();
@@ -588,7 +588,7 @@ void TShipyardView::InitializeCityViewActionButtons()
   LStack_6c = 0xc4;
   LStack_68 = 0xe6;
   func_0x00408a03(&LStack_74,1);
-  SetGlobalBlitTransparentColorRaw(uVar9);
+  func_0x004069e2(uVar9);
   CString::~CString(&CStack_98);
   CString::~CString(&CStack_94);
   CString::~CString(&CStack_90);
@@ -720,22 +720,22 @@ void TShipyardView::ApplyRectSlot110(int pDialogState, int *pRenderRectData)
         local_6c[3] = 0xe4;
         func_0x00405493(*(int *)(g_pStrategicMapViewSystem + 0x674) + 4,
                         &g_pActiveQuickDrawSurfaceContext->field_0x4,local_6c + 4,local_6c,0x24,0);
-        SetQuickDrawTextOriginWithContextOffset(local_6c[2],0xb2);
-        _Format_CString__QAAXPBDZZ(&stack0xffffff78,&g_szDecimalFormat,(int)pnCommoditySlotInfo[4]);
+        func_0x00408d6e(local_6c[2],0xb2);
+        CString__Format(&stack0xffffff78,&g_szDecimalFormat,(int)pnCommoditySlotInfo[4]);
         func_0x004029aa(&stack0xffffff78);
-        _Format_CString__QAAXPBDZZ
-                  (&stack0xffffff78,&g_szDecimalFormat,
-                   (int)*(short *)(*(int *)&this->field_0x94 + 0xb6 + *pnCommoditySlotInfo * 2));
+        CString__Format(&stack0xffffff78,&g_szDecimalFormat,
+                        (int)*(short *)(*(int *)&this->field_0x94 + 0xb6 + *pnCommoditySlotInfo * 2)
+                       );
         if (*(short *)(*(int *)&this->field_0x94 + 0xb6 + *pnCommoditySlotInfo * 2) <
             pnCommoditySlotInfo[4]) {
           func_0x0040448f(0,10,0x2b69);
-          SetQuickDrawTextOriginWithContextOffset(local_6c[2],0xe6);
+          func_0x00408d6e(local_6c[2],0xe6);
           func_0x004029aa(&stack0xffffff78);
           func_0x0040448f(0,10,0x2b6b);
         }
         else {
           func_0x0040448f(0,10,0x2b6b);
-          SetQuickDrawTextOriginWithContextOffset(local_6c[2],0xe6);
+          func_0x00408d6e(local_6c[2],0xe6);
           func_0x004029aa(&stack0xffffff78);
         }
       }
@@ -753,16 +753,15 @@ void TShipyardView::ApplyRectSlot110(int pDialogState, int *pRenderRectData)
     func_0x0040448f(0,10,0x2b6b);
     nMetricColumnX = 0;
     do {
-      (*g_pLocalizationTable->vftable[0x10].slot_0x04)
-                (0x2736,nMetricColumnX + 0x10,&stack0xffffff78);
+      (*g_pSimMgr->vftable[0x10].slot_0x04)(0x2736,nMetricColumnX + 0x10,&stack0xffffff78);
       uVar1 = *(undefined2 *)(&stack0xffffff70 + nMetricColumnX * 2);
       nValueTextY = CONCAT22((short)((uint)unaff_EBP >> 0x10),
                              *(undefined2 *)((int)&local_84.m_pchData + nMetricColumnX * 2));
-      SetQuickDrawTextOriginWithContextOffset(nValueTextY,uVar1);
+      func_0x00408d6e(nValueTextY,uVar1);
       func_0x004029aa(&stack0xffffff6c);
       switch(nMetricColumnX) {
       case 0:
-        nMetricRawValue = GetResourceTypeRandomDrawBlockFlag(nCommoditySpriteId);
+        nMetricRawValue = func_0x00408ed6(nCommoditySpriteId);
         nMetricValue = (int)nMetricRawValue / 100;
         break;
       case 1:
@@ -787,10 +786,10 @@ void TShipyardView::ApplyRectSlot110(int pDialogState, int *pRenderRectData)
       default:
         goto switchD_004c9540_default;
       }
-      _Format_CString__QAAXPBDZZ(&stack0xffffff6c,&g_szDecimalFormat,nMetricValue);
+      CString__Format(&stack0xffffff6c,&g_szDecimalFormat,nMetricValue);
 switchD_004c9540_default:
       unaff_EBP = nValueTextY + 0x3c;
-      SetQuickDrawTextOriginWithContextOffset(unaff_EBP,uVar1);
+      func_0x00408d6e(unaff_EBP,uVar1);
       func_0x004029aa(&stack0xffffff6c);
       nMetricColumnX = nMetricColumnX + 1;
     } while (nMetricColumnX < 6);
@@ -841,37 +840,34 @@ TShipyardView::BuildIndustryActionCostSummaryTextByActionIndex
   CString::~CString(&local_10);
   iVar1 = param_2 * 2;
   if (*(short *)(&g_industryActionCostWeightResCode09 + iVar1) != 0) {
-    _Format_CString__QAAXPBDZZ
-              (&local_14,&g_szDecimalFormat,
-               (int)*(short *)(&g_industryActionCostWeightResCode09 + iVar1));
+    CString__Format(&local_14,&g_szDecimalFormat,
+                    (int)*(short *)(&g_industryActionCostWeightResCode09 + iVar1));
     pCVar4 = &local_18;
     uVar3 = 9;
-    (*g_pLocalizationTable->vftable[0xf].slot_0x04)(9,pCVar4);
+    (*g_pSimMgr->vftable[0xf].slot_0x04)(9,pCVar4);
     puVar2 = &stack0xffffffdc;
-    (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2738,0x1c,puVar2);
-    func_0x0040988b(g_pLocalizationTable,param_1,puVar2,pCVar4,uVar3);
+    (*g_pSimMgr->vftable[0x10].slot_0x04)(0x2738,0x1c,puVar2);
+    func_0x0040988b(g_pSimMgr,param_1,puVar2,pCVar4,uVar3);
   }
   if (*(short *)(&g_industryActionCostWeightResCode08 + iVar1) != 0) {
-    _Format_CString__QAAXPBDZZ
-              (&local_14,&g_szDecimalFormat,
-               (int)*(short *)(&g_industryActionCostWeightResCode08 + iVar1));
+    CString__Format(&local_14,&g_szDecimalFormat,
+                    (int)*(short *)(&g_industryActionCostWeightResCode08 + iVar1));
     pCVar4 = &local_18;
     uVar3 = 8;
-    (*g_pLocalizationTable->vftable[0xf].slot_0x04)(8,pCVar4);
+    (*g_pSimMgr->vftable[0xf].slot_0x04)(8,pCVar4);
     puVar2 = &stack0xffffffdc;
-    (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2738,0x1c,puVar2);
-    func_0x0040988b(g_pLocalizationTable,param_1,puVar2,pCVar4,uVar3);
+    (*g_pSimMgr->vftable[0x10].slot_0x04)(0x2738,0x1c,puVar2);
+    func_0x0040988b(g_pSimMgr,param_1,puVar2,pCVar4,uVar3);
   }
   if (*(short *)(&g_industryActionCostWeightResCode10 + iVar1) != 0) {
-    _Format_CString__QAAXPBDZZ
-              (&local_14,&g_szDecimalFormat,
-               (int)*(short *)(&g_industryActionCostWeightResCode10 + iVar1));
+    CString__Format(&local_14,&g_szDecimalFormat,
+                    (int)*(short *)(&g_industryActionCostWeightResCode10 + iVar1));
     pCVar4 = &local_18;
     uVar3 = 0x10;
-    (*g_pLocalizationTable->vftable[0xf].slot_0x04)(0x10,pCVar4);
+    (*g_pSimMgr->vftable[0xf].slot_0x04)(0x10,pCVar4);
     puVar2 = &stack0xffffffdc;
-    (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2738,0x1c,puVar2);
-    func_0x0040988b(g_pLocalizationTable,param_1,puVar2,pCVar4,uVar3);
+    (*g_pSimMgr->vftable[0x10].slot_0x04)(0x2738,0x1c,puVar2);
+    func_0x0040988b(g_pSimMgr,param_1,puVar2,pCVar4,uVar3);
   }
   local_4._0_1_ = 1;
   CString::~CString(&local_1c);
@@ -954,7 +950,7 @@ void TShipyardView::RefreshCityViewStatusPanel(int *pCityViewDialog)
     MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
     func_0x004057a4();
   }
-  (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+  (*g_pSimMgr->vftable[0x10].slot_0x04)();
   puVar8 = &stack0xffffffc4;
   iStack_60 = 0x4c9afc;
   (**(code **)(*(int *)CONCAT31(extraout_var,uVar2) + 300))();

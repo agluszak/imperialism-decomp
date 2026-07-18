@@ -12,7 +12,7 @@ TIconSlider::WrapperFor_thunk_DispatchHandleMapLookupWithReadPtrProbe_At0047e930
           (undefined4 param_1,int param_2,undefined4 param_3)
 
 {
-  thunk_DispatchHandleMapLookupWithReadPtrProbe(param_1,param_3);
+  CDC__SelectPalette(param_1,param_3);
   RealizePalette(*(HDC *)(param_2 + 4));
   return;
 }
@@ -304,7 +304,7 @@ TIconSlider::DispatchPictureResourceCommand
   }
   uVar2 = func_0x00401127();
   func_0x0040232e(uVar2);
-  ApplyRectClipRegionToGlobalClipState(&iStack_24);
+  func_0x004030e9(&iStack_24);
   (*this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_55)(&iStack_24,auStack_14);
   func_0x00405f56(auStack_1c);
   func_0x00405be1(uVar2);

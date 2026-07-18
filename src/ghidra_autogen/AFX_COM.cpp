@@ -86,7 +86,7 @@ int AFX_COM::GetClassObject(void)
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
   
-  EstablishSehFrameProlog();
+  _EH_prolog();
   uVar1 = *(undefined4 *)(unaff_EBP + 8);
   puVar2 = *(undefined4 **)(unaff_EBP + 0x10);
   *puVar2 = 0;

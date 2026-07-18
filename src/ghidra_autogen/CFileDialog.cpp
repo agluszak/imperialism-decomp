@@ -35,9 +35,9 @@ TControl * CFileDialog::CFileDialog(void)
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
   
-  EstablishSehFrameProlog();
+  _EH_prolog();
   *(TControl **)(unaff_EBP + -0x10) = this;
-  TControl::InitializeDialogTemplateFromId(this,0,*(undefined4 *)(unaff_EBP + 0x1c));
+  TControl::CDialog__CDialog(this,0,*(undefined4 *)(unaff_EBP + 0x1c));
   this->vftable = (TControlVtbl *)&PTR_LAB_006729c4;
   *(undefined4 *)(unaff_EBP + -4) = 0;
   CString::CString((CString *)&this[1].field_0x28);
@@ -164,7 +164,7 @@ undefined4 CFileDialog::GetPathName(void)
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
   
-  EstablishSehFrameProlog();
+  _EH_prolog();
   bVar1 = *(byte *)(extraout_ECX + 0x92);
   *(undefined4 *)(unaff_EBP + -0x14) = 0;
   if (((bVar1 & 8) != 0) && (*(int *)(extraout_ECX + 0x1c) != 0)) {
@@ -172,7 +172,7 @@ undefined4 CFileDialog::GetPathName(void)
     pHVar2 = *(HWND *)(extraout_ECX + 0x1c);
     *(undefined4 *)(unaff_EBP + -4) = 0;
     pHVar2 = GetParent(pHVar2);
-    uVar3 = FromHandle(pHVar2);
+    uVar3 = CWnd__FromHandle(pHVar2);
     *(undefined4 *)(unaff_EBP + -0x14) = uVar3;
     iVar4 = CString::GetBuffer((CString *)(unaff_EBP + -0x10),0x104);
     LVar5 = SendMessageA(*(HWND *)(*(int *)(unaff_EBP + -0x14) + 0x1c),0x464,0x104,iVar4);
@@ -184,7 +184,7 @@ undefined4 CFileDialog::GetPathName(void)
     }
     if (*(int *)(*(int *)(unaff_EBP + -0x10) + -8) != 0) {
       pHVar2 = GetParent(*(HWND *)(extraout_ECX + 0x1c));
-      iVar4 = FromHandle(pHVar2);
+      iVar4 = CWnd__FromHandle(pHVar2);
       lParam = CString::GetBuffer((CString *)(unaff_EBP + -0x10),0x104);
       LVar5 = SendMessageA(*(HWND *)(iVar4 + 0x1c),0x465,0x104,lParam);
       if (-1 < LVar5) {
@@ -223,7 +223,7 @@ undefined4 CFileDialog::GetFileName(void)
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
   
-  EstablishSehFrameProlog();
+  _EH_prolog();
   bVar1 = *(byte *)(extraout_ECX + 0x92);
   *(undefined4 *)(unaff_EBP + -0x10) = 0;
   if (((bVar1 & 8) != 0) && (*(int *)(extraout_ECX + 0x1c) != 0)) {
@@ -231,7 +231,7 @@ undefined4 CFileDialog::GetFileName(void)
     pHVar3 = *(HWND *)(extraout_ECX + 0x1c);
     *(undefined4 *)(unaff_EBP + -4) = 0;
     pHVar3 = GetParent(pHVar3);
-    iVar4 = FromHandle(pHVar3);
+    iVar4 = CWnd__FromHandle(pHVar3);
     lParam = CString::GetBuffer((CString *)(unaff_EBP + -0x10),0x104);
     LVar5 = SendMessageA(*(HWND *)(iVar4 + 0x1c),0x464,0x104,lParam);
     if (-1 < LVar5) {
@@ -275,7 +275,7 @@ undefined4 CFileDialog::GetFileTitle(void)
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
   
-  EstablishSehFrameProlog();
+  _EH_prolog();
   *(undefined4 *)(unaff_EBP + -0x14) = 0;
   GetFileName(unaff_EBP + -0x10);
   *(undefined4 *)(unaff_EBP + -4) = 1;
@@ -325,7 +325,7 @@ undefined4 CFileDialog::GetNextPathName(void)
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
   
-  EstablishSehFrameProlog();
+  _EH_prolog();
   *(undefined4 *)(unaff_EBP + -0x1c) = 0;
   uVar1 = *(uint *)(extraout_ECX + 0x90);
   pcVar3 = (char *)**(undefined4 **)(unaff_EBP + 0xc);
@@ -433,13 +433,13 @@ undefined4 CFileDialog::GetFolderPath(void)
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
   
-  EstablishSehFrameProlog();
+  _EH_prolog();
   *(undefined4 *)(unaff_EBP + -0x14) = 0;
   CString::CString((CString *)(unaff_EBP + -0x10));
   pHVar2 = *(HWND *)(extraout_ECX + 0x1c);
   *(undefined4 *)(unaff_EBP + -4) = 1;
   pHVar2 = GetParent(pHVar2);
-  iVar3 = FromHandle(pHVar2);
+  iVar3 = CWnd__FromHandle(pHVar2);
   lParam = CString::GetBuffer((CString *)(unaff_EBP + -0x10),0x104);
   LVar4 = SendMessageA(*(HWND *)(iVar3 + 0x1c),0x466,0x104,lParam);
   if (LVar4 < 0) {
@@ -467,7 +467,7 @@ void __fastcall CFileDialog::OnInitDone(int param_1)
   HWND pHVar1;
   
   pHVar1 = GetParent(*(HWND *)(param_1 + 0x1c));
-  FromHandle(pHVar1);
+  CWnd__FromHandle(pHVar1);
   CWnd::CenterWindow(0);
   return;
 }
@@ -483,7 +483,7 @@ undefined4 CFileDialog::OnNotify(undefined4 param_1, int param_2, undefined4 *pa
   undefined4 uVar2;
   LRESULT LVar3;
   
-  iVar1 = UpdateControlCachedIntFromWindowText(param_1,param_2,param_3);
+  iVar1 = CWnd__OnNotify(param_1,param_2,param_3);
   if (iVar1 == 0) {
     iVar1 = *(int *)(param_2 + 8);
     if (iVar1 == -0x25f) {

@@ -278,6 +278,26 @@ void TArmyPlayer::TArmyTacUnit_VtblSlot07(undefined4 param_1)
   return;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x0059D400
+// GHIDRA_NAME TArmyPlayer::SetAllUnitAiStateCodesTo13
+// GHIDRA_PROTO undefined SetAllUnitAiStateCodesTo13()
+
+void TArmyPlayer::SetAllUnitAiStateCodesTo13(void)
+
+{
+  int iVar1;
+  int iVar2;
+  
+  iVar1 = func_0x00401118();
+  iVar2 = func_0x00403620();
+  while (iVar2 != 0) {
+    *(undefined4 *)(iVar1 + 0x2c) = 0x13;
+    iVar1 = func_0x00406d20();
+    iVar2 = func_0x00403620();
+  }
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x0059E3E0
 // GHIDRA_NAME TArmyPlayer::OrphanRetStub_0059ad90
 // GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059ad90(void)
@@ -468,12 +488,11 @@ undefined1 TArmyPlayer::TArmyTacUnit_VtblSlot09()
 {
   undefined1 uVar1;
   undefined4 *unaff_FS_OFFSET;
-  undefined4 *puVar2;
-  undefined1 auStack_34 [4];
+  CString CStack_34;
   undefined *puStack_30;
   undefined4 uStack_2c;
   undefined4 uStack_28;
-  CString CStack_24;
+  undefined4 uStack_24;
   undefined4 uStack_20;
   CString *pCStack_1c;
   CString aCStack_14 [2];
@@ -490,21 +509,19 @@ undefined1 TArmyPlayer::TArmyTacUnit_VtblSlot09()
     CString::CString(aCStack_14);
     pCStack_1c = aCStack_14;
     uStack_20 = 0;
-    CStack_24.m_pchData = (char *)0x273d;
+    uStack_24 = 0x273d;
     uStack_4 = 0;
     uStack_28 = 0x59eaab;
-    (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+    (*g_pSimMgr->vftable[0x10].slot_0x04)();
     uStack_28 = 1;
     uStack_2c = 1;
     puStack_30 = &DAT_006a4650;
-    pCStack_1c = (CString *)auStack_34;
-    puVar2 = &uStack_20;
-    func_0x004076b7(puVar2);
-    uVar1 = DispatchLocalizedUiMessageWithTemplateA13A0(puVar2);
-    aCStack_14[0].m_pchData = (char *)0xffffffff;
-    uStack_2c = 0x59eae3;
-    CString::~CString(&CStack_24);
-    *unaff_FS_OFFSET = pCStack_1c;
+    pCStack_1c = &CStack_34;
+    func_0x004076b7(&uStack_20);
+    uVar1 = func_0x004096b0();
+    uStack_24 = 0xffffffff;
+    CString::~CString(&CStack_34);
+    *unaff_FS_OFFSET = uStack_2c;
     return uVar1;
   }
   *unaff_FS_OFFSET = uStack_c;

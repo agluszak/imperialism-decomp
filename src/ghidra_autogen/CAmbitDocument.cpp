@@ -67,7 +67,7 @@ undefined4 CAmbitDocument::CWinApp__ProcessMessageFilter(int param_1, undefined4
     if (param_1 != 2) {
       return 0;
     }
-    iVar3 = FromHandle(*param_2);
+    iVar3 = CWnd__FromHandle(*param_2);
     if (((((iVar3 != 0) && (iVar3 = CWnd::GetTopLevelFrame(), iVar3 != 0)) &&
          (iVar4 = CFrameWnd::IsTracking(), iVar4 != 0)) &&
         ((*(int *)(iVar3 + 0x50) != 0 &&
@@ -94,7 +94,7 @@ undefined4 CAmbitDocument::CWinApp__ProcessMessageFilter(int param_1, undefined4
       param_2 = param_2 + 1;
       puVar5 = puVar5 + 1;
     }
-    iVar4 = IsWindowEnabled();
+    iVar4 = CWnd__IsWindowEnabled();
     if ((iVar4 != 0) &&
        (uVar2 = (*pCVar1->vftable[3].ConstructTTaskBaseState)(local_24),
        CONCAT31(extraout_var,uVar2) != 0)) {
@@ -111,10 +111,10 @@ LAB_0060685d:
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0061873C
-// GHIDRA_NAME CAmbitDocument::CWinApp::CallField80VirtualSlot38OrReturnFalse_0061873c
-// GHIDRA_PROTO undefined __thiscall CWinApp::CallField80VirtualSlot38OrReturnFalse_0061873c(void)
+// GHIDRA_NAME CAmbitDocument::CWinApp::OnDDECommand
+// GHIDRA_PROTO undefined __thiscall CWinApp::OnDDECommand(void)
 
-undefined4 CAmbitDocument::CWinApp__CallField80VirtualSlot38OrReturnFalse_0061873c()
+undefined4 CAmbitDocument::CWinApp__OnDDECommand()
 
 {
   undefined4 uVar1;

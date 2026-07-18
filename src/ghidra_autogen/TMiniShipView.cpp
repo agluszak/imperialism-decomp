@@ -106,14 +106,14 @@ void TMiniShipView::ApplyRectSlot110()
   CString::CString(&local_58);
   local_4 = CONCAT31(local_4._1_3_,1);
   CString::operator=(&local_58,(CString *)(*(int *)&this->field_0x84 + 0x18));
-  (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+  (*g_pSimMgr->vftable[0x10].slot_0x04)();
   AssignSharedStringConcatCStrAndRef(&stack0xffffffa0,g_Build_Map_Order_LookupTable_00695794);
   uStack_10._0_1_ = 2;
   CString::operator+=();
   uStack_10 = CONCAT31(uStack_10._1_3_,1);
   CString::~CString((CString *)&stack0xffffffa0);
   func_0x00409241(&stack0xffffff98);
-  SetQuickDrawTextOriginWithContextOffset(10);
+  func_0x00408d6e(10);
   func_0x004029aa();
   sVar3 = *(short *)(*(int *)&this->field_0x84 + 0x1c);
   sVar2 = func_0x004063e3();
@@ -139,10 +139,10 @@ void TMiniShipView::ApplyRectSlot110()
   func_0x00405493(*(int *)(g_pStrategicMapViewSystem + 0x694) + 4,
                   &g_pActiveQuickDrawSurfaceContext->field_0x4,&uStack_4c,&local_5c,0x24);
   func_0x00402bdf();
-  SetQuickDrawTextOriginWithContextOffset(0x8b);
-  DrawCenteredGuideLineOnMapDc(0x8b);
-  DrawCenteredGuideLineOnMapDc(0xdd);
-  DrawCenteredGuideLineOnMapDc(0xdd);
+  func_0x00408d6e(0x8b);
+  func_0x00403bb6(0x8b);
+  func_0x00403bb6(0xdd);
+  func_0x00403bb6(0xdd);
   if (*(int *)(*(int *)&this->field_0x84 + 0x20) != 0) {
     sVar3 = func_0x00403b16();
     aiStack_2c[0] = (int)(short)((sVar3 + 7) * 0x10);

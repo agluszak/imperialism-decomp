@@ -109,6 +109,22 @@ void TSetupRandomMapPicture::DestructTSetupRandomMapPictureBaseState()
   return;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x00576FE0
+// GHIDRA_NAME TSetupRandomMapPicture::RecheckCountryName
+// GHIDRA_PROTO undefined RecheckCountryName()
+
+void __fastcall TSetupRandomMapPicture::RecheckCountryName(int *param_1)
+
+{
+  int *piVar1;
+  
+  if (((char)param_1[0x29] == '\0') && (*(int *)&g_pSimMgr->field_0x44 == 0)) {
+    piVar1 = (int *)(**(code **)(*param_1 + 0x94))(0x636f756e);
+    (**(code **)(*piVar1 + 0xc))();
+  }
+  return;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x00577030
 // GHIDRA_NAME TSetupRandomMapPicture::NoOpUiLifecycleHook
 // GHIDRA_PROTO undefined __thiscall NoOpUiLifecycleHook(void)
@@ -197,9 +213,9 @@ void TSetupRandomMapPicture::NoOpUiLifecycleHook()
   *unaff_FS_OFFSET = (int)&iStack_c;
   func_0x00406ba9();
   func_0x004068bb();
-  *(undefined2 *)&g_pLocalizationTable->field_0x114 = 0;
+  *(undefined2 *)&g_pSimMgr->field_0x114 = 0;
   if (g_pGlobalMapState == (TMapMgr *)0x0) {
-    iVar4 = GenerateThreadLocalRandom15();
+    iVar4 = rand();
     *(short *)&this->field_0x9a = (short)(iVar4 % 7);
     uStack_3c = 0x57709d;
     func_0x00403a76();
@@ -212,7 +228,7 @@ void TSetupRandomMapPicture::NoOpUiLifecycleHook()
     bVar10 = DAT_00698ab0 == -1;
     *(short *)&this->field_0x9a = DAT_00698ab0;
     if (bVar10) {
-      iVar4 = GenerateThreadLocalRandom15();
+      iVar4 = rand();
       *(short *)&this->field_0x9a = (short)(iVar4 % 7);
     }
     uStack_3c = 0x5770fd;
@@ -280,7 +296,7 @@ void TSetupRandomMapPicture::NoOpUiLifecycleHook()
   uStack_6c = 0x577219;
   func_0x00406bc7();
   uStack_60 = 0x63616e63;
-  if (*(int *)&g_pLocalizationTable->field_0x44 == 0) {
+  if (*(int *)&g_pSimMgr->field_0x44 == 0) {
     puStack_64 = (undefined4 *)0x14;
     uStack_68 = 0x2737;
     uStack_6c = 0x577259;
@@ -392,8 +408,8 @@ void TSetupRandomMapPicture::NoOpUiLifecycleHook()
   piVar8[0x1a] = 0;
   piVar8[0x1b] = (sVar1 + 1) * piVar8[0xd];
   piVar8[0x1c] = piVar8[0xe];
-  if (*(int *)&g_pLocalizationTable->field_0x44 == 0) {
-    g_pLocalizationTable->field_0x68 = (char)*(undefined2 *)&g_pLocalizationTable->field_0x62;
+  if (*(int *)&g_pSimMgr->field_0x44 == 0) {
+    g_pSimMgr->field_0x68 = (char)*(undefined2 *)&g_pSimMgr->field_0x62;
     CString::CString(&CStack_84);
     uStack_6c = 2;
     func_0x00403a76();
@@ -431,7 +447,7 @@ void TSetupRandomMapPicture::NoOpUiLifecycleHook()
   piStack_a4 = (int *)0x577502;
   (**(code **)(*piVar8 + 0xc))();
   piStack_a4 = (int *)0x0;
-  pCStack_a8 = (CString *)(*(short *)&g_pLocalizationTable->field_0x5e + 0x64696630);
+  pCStack_a8 = (CString *)(*(short *)&g_pSimMgr->field_0x5e + 0x64696630);
   iStack_ac = 0x57751b;
   func_0x00407c07();
   iStack_ac = 0x64696674;
@@ -489,7 +505,7 @@ void TSetupRandomMapPicture::NoOpUiLifecycleHook()
   uStack_e0 = 0x5775f7;
   (**(code **)(iVar4 + 0xc))();
   uStack_e0 = 0;
-  iStack_e4 = (-(uint)(*(short *)&g_pLocalizationTable->field_0x62 != 0) & 0xf6080510) + 0x72616e64;
+  iStack_e4 = (-(uint)(*(short *)&g_pSimMgr->field_0x62 != 0) & 0xf6080510) + 0x72616e64;
   uStack_e8 = 0x57761b;
   func_0x00407c07();
   pcStack_cc = *(code **)(iVar4 + 0x94);
@@ -546,7 +562,7 @@ void TSetupRandomMapPicture::NoOpUiLifecycleHook()
     piVar8[0xf] = iVar9;
     iVar9 = iVar9 + 1;
   } while (iVar9 < 5);
-  if ((this->field_0xa4 == '\0') && (*(int *)&g_pLocalizationTable->field_0x44 == 0)) {
+  if ((this->field_0xa4 == '\0') && (*(int *)&g_pSimMgr->field_0x44 == 0)) {
     piVar8 = (int *)(*pcStack_108)(0x636f756e);
     (**(code **)(*piVar8 + 0xc))();
   }
@@ -579,7 +595,8 @@ void TSetupRandomMapPicture::HandleEvent(int param_1, CString param_2)
   char *pcStack_58;
   CString CStack_40;
   CString CStack_3c;
-  CString aCStack_38 [2];
+  CString CStack_38;
+  undefined4 uStack_34;
   undefined4 uStack_30;
   undefined1 auStack_1c [4];
   undefined4 uStack_18;
@@ -621,8 +638,8 @@ void TSetupRandomMapPicture::HandleEvent(int param_1, CString param_2)
     func_0x00401d70(CVar2.m_pchData);
     uStack_30 = 0;
     (**(code **)(iVar6 + 0x110))(&uStack_60);
-    uStack_4 = 0xffffffff;
-    DestroyScopedMapQuickDrawContext();
+    uStack_34 = 0xffffffff;
+    func_0x00408035();
   }
   uVar7 = *(uint *)(CVar2.m_pchData + 0x1c);
   if (uVar7 == 0x676c6f62) {
@@ -663,7 +680,7 @@ void TSetupRandomMapPicture::HandleEvent(int param_1, CString param_2)
   uStack_4 = 1;
   CString::CString(&CStack_40);
   uStack_4._0_1_ = 2;
-  CString::CString(aCStack_38);
+  CString::CString(&CStack_38);
   uStack_4._0_1_ = 3;
   CString::CString(&CStack_3c);
   pCStack_5c = &CStack_40;
@@ -679,7 +696,7 @@ void TSetupRandomMapPicture::HandleEvent(int param_1, CString param_2)
   pcStack_58 = param_2.m_pchData;
   this->field_0x98 = iVar6 == 0x6f6e6531;
   pCStack_5c = (CString *)0x577c4d;
-  iVar6 = CompareAnsiStringsWithMbcsAwareness();
+  iVar6 = _mbscmp();
   if (iVar6 == 0) {
 LAB_00577c8c:
     g_pGlobalMapState->field_0x20 = this->field_0x98;
@@ -687,7 +704,7 @@ LAB_00577c8c:
   else {
     pcStack_58 = param_2.m_pchData;
     pCStack_5c = (CString *)0x577c68;
-    iVar6 = CompareAnsiStringsWithMbcsAwareness();
+    iVar6 = _mbscmp();
     if (iVar6 == 0) goto LAB_00577c8c;
     pcStack_58 = (char *)0x577c81;
     CString::operator=((CString *)&this->field_0x94,&param_2);
@@ -697,7 +714,7 @@ LAB_00577c8c:
   uStack_4._0_1_ = 3;
   CString::~CString(&CStack_3c);
   uStack_4._0_1_ = 2;
-  CString::~CString(aCStack_38);
+  CString::~CString(&CStack_38);
   uStack_4 = CONCAT31(uStack_4._1_3_,1);
   CString::~CString(&CStack_40);
   uStack_4 = 0xffffffff;
@@ -712,8 +729,8 @@ LAB_00577ce4:
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00577E40
-// GHIDRA_NAME TSetupRandomMapPicture::ApplyNationSelectionAndMaybePostTurnEvent5E4
-// GHIDRA_PROTO undefined __thiscall ApplyNationSelectionAndMaybePostTurnEvent5E4(void)
+// GHIDRA_NAME TSetupRandomMapPicture::StartGame
+// GHIDRA_PROTO undefined __thiscall StartGame(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Applies selected nation/country setup, updates localization/gameflow fields, and conditionally posts event 5E4.
 // GHIDRA_COMMENT_END
@@ -722,7 +739,7 @@ LAB_00577ce4:
 /* Applies selected nation/country setup, updates localization/gameflow fields, and conditionally
    posts event 5E4. */
 
-void TSetupRandomMapPicture::ApplyNationSelectionAndMaybePostTurnEvent5E4()
+void TSetupRandomMapPicture::StartGame()
 
 {
   _vslot_fn *p_Var1;
@@ -757,7 +774,7 @@ void TSetupRandomMapPicture::ApplyNationSelectionAndMaybePostTurnEvent5E4()
   CString::CString((CString *)&stack0xffffffe8);
   puStack_8 = (undefined1 *)0x0;
   (**(code **)(iVar4 + 0x1dc))();
-  if (g_pLocalizationTable->field_0x68 != '\0') {
+  if (g_pSimMgr->field_0x68 != '\0') {
     bVar2 = false;
     CString::CString((CString *)&stack0xffffffe8);
     uStack_c = CONCAT31(uStack_c._1_3_,1);
@@ -768,10 +785,10 @@ void TSetupRandomMapPicture::ApplyNationSelectionAndMaybePostTurnEvent5E4()
         CStack_38.m_pchData = (char *)0x2715;
         CStack_3c.m_pchData = (char *)0x577ee0;
         CStack_34.m_pchData = pcVar7;
-        (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+        (*g_pSimMgr->vftable[0x10].slot_0x04)();
         CStack_38.m_pchData = (char *)0x577eef;
         CStack_34.m_pchData = unaff_EBX;
-        iVar4 = CompareAnsiStringsWithMbcsAwareness();
+        iVar4 = _mbscmp();
         if (iVar4 == 0) {
           bVar2 = true;
         }
@@ -784,7 +801,7 @@ void TSetupRandomMapPicture::ApplyNationSelectionAndMaybePostTurnEvent5E4()
                            );
       CStack_38.m_pchData = (char *)0x2715;
       CStack_3c.m_pchData = (char *)0x577f26;
-      (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+      (*g_pSimMgr->vftable[0x10].slot_0x04)();
     }
     uStack_c = uStack_c & 0xffffff00;
     CString::~CString((CString *)&stack0xffffffe8);
@@ -816,14 +833,14 @@ void TSetupRandomMapPicture::ApplyNationSelectionAndMaybePostTurnEvent5E4()
   (**(code **)(*piVar5 + 0xc))();
   CStack_3c.m_pchData = (char *)piVar5[0xf];
   func_0x00401668();
-  *(short *)&g_pLocalizationTable->field_0x5e = (short)piVar5[0xf];
+  *(short *)&g_pSimMgr->field_0x5e = (short)piVar5[0xf];
   uVar3 = (*p_Var1)(0x6e616d65);
   (**(code **)(*(int *)CONCAT31(extraout_var_02,uVar3) + 0xc))();
-  g_pLocalizationTable->field_0x68 = ((int *)CONCAT31(extraout_var_02,uVar3))[0x22] != 0x72616e64;
-  *(short *)&g_pLocalizationTable->field_0x62 = (short)(char)g_pLocalizationTable->field_0x68;
+  g_pSimMgr->field_0x68 = ((int *)CONCAT31(extraout_var_02,uVar3))[0x22] != 0x72616e64;
+  *(short *)&g_pSimMgr->field_0x62 = (short)(char)g_pSimMgr->field_0x68;
   func_0x00408d0a(1);
   _DAT_00698ab0 = (int)*(short *)&this->field_0x9a;
-  if (*(int *)&g_pLocalizationTable->field_0x44 == 0) {
+  if (*(int *)&g_pSimMgr->field_0x44 == 0) {
     func_0x00401302(CONCAT22(*(short *)&this->field_0x9a >> 0xf,*(undefined2 *)&this->field_0x9a));
     CString::CString(&CStack_34,(CString *)&DAT_006a4220);
     func_0x0040451b(&CStack_34,s_CountryName_00698ae0);
@@ -832,11 +849,11 @@ void TSetupRandomMapPicture::ApplyNationSelectionAndMaybePostTurnEvent5E4()
     iVar4 = 0xda;
     do {
       iVar6 = iVar4 + 2;
-      *(undefined2 *)((int)&g_pLocalizationTable->vftable + iVar4) = 2;
+      *(undefined2 *)((int)&g_pSimMgr->vftable + iVar4) = 2;
       iVar4 = iVar6;
     } while (iVar6 < 0xe8);
-    *(undefined2 *)(&g_pLocalizationTable->field_0xda + *(short *)&this->field_0x9a * 2) = 1;
-    (*g_pLocalizationTable->vftable[8].slot_0x04)();
+    *(undefined2 *)(&g_pSimMgr->field_0xda + *(short *)&this->field_0x9a * 2) = 1;
+    (*g_pSimMgr->vftable[8].slot_0x04)();
   }
   else {
     func_0x00408715(0x5e4);
@@ -850,8 +867,8 @@ void TSetupRandomMapPicture::ApplyNationSelectionAndMaybePostTurnEvent5E4()
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005781F0
-// GHIDRA_NAME TSetupRandomMapPicture::PostTurnEvent5DCOrResetLocalUiState
-// GHIDRA_PROTO undefined __thiscall PostTurnEvent5DCOrResetLocalUiState(void)
+// GHIDRA_NAME TSetupRandomMapPicture::ExitScreen
+// GHIDRA_PROTO undefined __thiscall ExitScreen(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Scheduler helper: if g_pLocalizationTable +0x44 is non-zero, runs ResetLocalUiStateAndPostTurnEvent5E5; otherwise posts turn-event code 0x5DC.
 // GHIDRA_COMMENT_END
@@ -859,14 +876,55 @@ void TSetupRandomMapPicture::ApplyNationSelectionAndMaybePostTurnEvent5E4()
 /* Scheduler helper: if g_pLocalizationTable +0x44 is non-zero, runs
    ResetLocalUiStateAndPostTurnEvent5E5; otherwise posts turn-event code 0x5DC. */
 
-void TSetupRandomMapPicture::PostTurnEvent5DCOrResetLocalUiState()
+void TSetupRandomMapPicture::ExitScreen()
 
 {
-  if (*(int *)&g_pLocalizationTable->field_0x44 != 0) {
+  if (*(int *)&g_pSimMgr->field_0x44 != 0) {
     func_0x0040346d();
     return;
   }
   func_0x00408715(0x5dc);
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00578230
+// GHIDRA_NAME TSetupRandomMapPicture::GroundControlToMajorTom
+// GHIDRA_PROTO undefined __thiscall GroundControlToMajorTom(undefined1 param_1)
+
+void TSetupRandomMapPicture::GroundControlToMajorTom(undefined1 param_1)
+
+{
+  undefined4 *puVar1;
+  undefined4 *puVar2;
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 uVar3;
+  undefined1 local_10;
+  undefined4 uStack_c;
+  undefined1 *puStack_8;
+  undefined4 local_4;
+  
+  local_4 = 0xffffffff;
+  puStack_8 = &LAB_00636a2a;
+  uStack_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &uStack_c;
+  puVar1 = (undefined4 *)operator_new(0x20);
+  local_4 = 0;
+  if (puVar1 == (undefined4 *)0x0) {
+    puVar2 = (undefined4 *)0x0;
+  }
+  else {
+    func_0x00403d5f();
+    *puVar1 = &TSpaceCommand::_vftable_;
+    puVar2 = puVar1;
+  }
+  uVar3 = 0;
+  local_4 = 0xffffffff;
+  func_0x00405ee3(0x4e415341,g_pGlobalUiRootController,0,0,0);
+  local_10 = SUB41(puVar1,0);
+  puVar2[6] = this;
+  *(undefined1 *)(puVar2 + 7) = local_10;
+  (*g_pGlobalUiRootController->vftable->OrphanCallChain_C11_I88_004874b0)(puVar2);
+  *unaff_FS_OFFSET = uVar3;
   return;
 }
 
@@ -887,6 +945,236 @@ void TSetupRandomMapPicture::ForwardParam(int param_1)
     (*this->vftable->PostTurnEvent5DCOrResetLocalUiState)();
     return;
   }
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00578330
+// GHIDRA_NAME TSetupRandomMapPicture::MajorTomToGroundControl
+// GHIDRA_PROTO undefined __thiscall MajorTomToGroundControl(void)
+
+void TSetupRandomMapPicture::MajorTomToGroundControl()
+
+{
+  _vslot_fn *p_Var1;
+  int iVar2;
+  undefined uVar3;
+  undefined3 extraout_var;
+  undefined3 extraout_var_00;
+  undefined3 extraout_var_01;
+  undefined3 extraout_var_02;
+  undefined3 extraout_var_03;
+  undefined4 uVar4;
+  undefined3 extraout_var_04;
+  undefined3 extraout_var_05;
+  undefined4 *unaff_FS_OFFSET;
+  CString CStack_c0;
+  undefined4 uStack_bc;
+  CString CStack_b8;
+  undefined4 uStack_b4;
+  undefined4 uStack_b0;
+  undefined4 uStack_ac;
+  undefined4 uStack_a8;
+  code *pcStack_a4;
+  undefined4 uStack_a0;
+  code *pcStack_9c;
+  undefined4 uStack_98;
+  undefined4 uStack_94;
+  code *pcStack_90;
+  code *pcStack_8c;
+  code *pcStack_88;
+  undefined4 uStack_84;
+  undefined1 *puStack_80;
+  undefined4 uStack_7c;
+  CString CStack_78;
+  int *piStack_74;
+  code *pcStack_70;
+  undefined4 uStack_6c;
+  undefined4 uStack_68;
+  int *piStack_64;
+  int iStack_60;
+  undefined1 *puStack_5c;
+  _vslot_fn *p_Stack_58;
+  code *pcStack_54;
+  undefined4 uStack_50;
+  undefined4 uStack_c;
+  undefined1 *puStack_8;
+  undefined4 uStack_4;
+  
+  uStack_4 = 0xffffffff;
+  puStack_8 = &LAB_00636a50;
+  uStack_c = *unaff_FS_OFFSET;
+  *unaff_FS_OFFSET = &uStack_c;
+  uStack_50 = 0x686f7421;
+  p_Var1 = this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25;
+  pcStack_54 = (code *)0x57835d;
+  uVar3 = (*p_Var1)();
+  iVar2 = *(int *)CONCAT31(extraout_var,uVar3);
+  pcStack_54 = (code *)0x578367;
+  (**(code **)(iVar2 + 0xc))();
+  pcStack_54 = (code *)0x578370;
+  CString::CString((CString *)&stack0xffffffc0);
+  pcStack_54 = (code *)0x7;
+  puStack_5c = &stack0xffffffc0;
+  p_Stack_58 = (_vslot_fn *)0x2758;
+  puStack_8 = (undefined1 *)0x0;
+  iStack_60 = 0x57838f;
+  func_0x00401e7e();
+  piStack_64 = (int *)&stack0xffffffb4;
+  iStack_60 = 1;
+  uStack_68 = 0x5783a4;
+  (**(code **)(iVar2 + 0x1ec))();
+  uStack_68 = 1;
+  uStack_6c = 0x5783ae;
+  (**(code **)(iVar2 + 0x1f8))();
+  uStack_6c = 0x636f756e;
+  pcStack_70 = (code *)0x5783b7;
+  uVar3 = (*p_Var1)();
+  pcStack_70 = (code *)0x5783c0;
+  (**(code **)(*(int *)CONCAT31(extraout_var_00,uVar3) + 0xc))();
+  pcStack_70 = (code *)0x0;
+  piStack_74 = (int *)0x0;
+  CStack_78.m_pchData = (char *)0x5783d4;
+  (**(code **)(*(int *)CONCAT31(extraout_var_00,uVar3) + 0xa4))();
+  CStack_78.m_pchData = (char *)0x73747566;
+  uStack_7c = 0x5783dd;
+  uVar3 = (*p_Var1)();
+  piStack_64 = (int *)CONCAT31(extraout_var_01,uVar3);
+  iStack_60 = *piStack_64;
+  uStack_7c = 0x5783ec;
+  (**(code **)(iStack_60 + 0xc))();
+  puStack_80 = &stack0xffffffb8;
+  uStack_7c = 0;
+  pcStack_54 = *(code **)(iStack_60 + 0xf0);
+  uStack_84 = 0x578427;
+  (*pcStack_54)();
+  uStack_84 = 1;
+  pcStack_88 = (code *)0x1195;
+  p_Stack_58 = this->vftable->SetPictureResourceIdAndRefresh;
+  pcStack_8c = (code *)0x57843e;
+  (*p_Stack_58)();
+  pcStack_8c = (code *)0x636f6174;
+  pcStack_90 = (code *)0x578447;
+  uVar3 = (*p_Var1)();
+  piStack_74 = (int *)CONCAT31(extraout_var_02,uVar3);
+  pcStack_70 = (code *)*piStack_74;
+  pcStack_90 = (code *)0x578456;
+  (**(code **)((int)pcStack_70 + 0xc))();
+  pcStack_90 = (code *)0x1;
+  uStack_94 = 0x11cd;
+  pcStack_70 = *(code **)((int)pcStack_70 + 0x1c8);
+  uStack_98 = 0x578471;
+  (*pcStack_70)();
+  uStack_98 = 0x578480;
+  uVar3 = (*this->vftable->SetForeignMinisterReadyFlag14)();
+  uStack_98 = 0x57848a;
+  (**(code **)(*(int *)CONCAT31(extraout_var_03,uVar3) + 0x13c))();
+  uStack_98 = 0x578495;
+  DAT_006a4268 = this;
+  uVar4 = func_0x004092d7();
+  *(undefined4 *)&this->field_0x9c = uVar4;
+  *(undefined4 *)&this->field_0xa0 = 0;
+  uStack_98 = 0x5784ac;
+  uVar4 = func_0x00401c2b();
+  uStack_98 = CONCAT31((int3)((uint)uVar4 >> 8),this->field_0x98);
+  pcStack_9c = *(code **)&this->field_0x94;
+  uStack_a0 = 1;
+  pcStack_a4 = (code *)0x5784c7;
+  func_0x00405704();
+  DAT_006a4268 = (TSetupRandomMapPicture *)0x0;
+  pcStack_a4 = (code *)0x5784d8;
+  func_0x00401c2b();
+  pcStack_a4 = (code *)0x6d617020;
+  uStack_a8 = 0x5784e1;
+  uVar3 = (*p_Var1)();
+  pcStack_54 = (code *)CONCAT31(extraout_var_04,uVar3);
+  uStack_a8 = 0x5784ec;
+  (**(code **)(*(int *)pcStack_54 + 0xc))();
+  uStack_a8 = 0;
+  uStack_ac = 0x5784f7;
+  func_0x004099d0();
+  uStack_ac = 0x578500;
+  func_0x0040686b();
+  uStack_ac = 0;
+  uStack_b0 = 1;
+  uStack_b4 = 0x57850a;
+  (*pcStack_88)();
+  CStack_b8.m_pchData = (char *)&CStack_78;
+  uStack_b4 = 0;
+  uStack_bc = 0x578519;
+  (*pcStack_8c)();
+  uStack_bc = 1;
+  CStack_c0.m_pchData = (char *)0x11bc;
+  (*pcStack_90)();
+  (*pcStack_a4)(*(short *)&this->field_0x9a + 0x11c6,1);
+  CString::CString(&CStack_78,(char *)&g_szEmptyString);
+  puStack_80._0_1_ = 1;
+  CString::operator=(&CStack_b8,&CStack_78);
+  puStack_80 = (undefined1 *)((uint)puStack_80._1_3_ << 8);
+  CString::~CString(&CStack_78);
+  (*pcStack_9c)(&CStack_b8,1);
+  if ((this->field_0xa4 == '\0') && (*(int *)&g_pSimMgr->field_0x44 == 0)) {
+    uVar3 = (*p_Var1)(0x636f756e);
+    (**(code **)(*(int *)CONCAT31(extraout_var_05,uVar3) + 0xc))();
+  }
+  pcStack_88 = (code *)0xffffffff;
+  CString::~CString(&CStack_c0);
+  *unaff_FS_OFFSET = pcStack_90;
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x00578680
+// GHIDRA_NAME TSetupRandomMapPicture::SpinYourGlobe
+// GHIDRA_PROTO undefined __thiscall SpinYourGlobe(void)
+
+void TSetupRandomMapPicture::SpinYourGlobe()
+
+{
+  undefined uVar1;
+  uint uVar2;
+  undefined4 uVar3;
+  undefined3 extraout_var;
+  int iVar4;
+  undefined4 *unaff_FS_OFFSET;
+  undefined4 uStack_48;
+  undefined4 uStack_44;
+  undefined4 uStack_24;
+  undefined4 uStack_c;
+  undefined1 *puStack_8;
+  undefined4 uStack_4;
+  
+  uStack_c = *unaff_FS_OFFSET;
+  uStack_4 = 0xffffffff;
+  puStack_8 = &LAB_00636a68;
+  *unaff_FS_OFFSET = &uStack_c;
+  uStack_44 = 0x5786a2;
+  uVar2 = func_0x004092d7();
+  if (*(uint *)&this->field_0x9c < uVar2) {
+    uStack_44 = 0x5786af;
+    uVar3 = func_0x004092d7();
+    *(undefined4 *)&this->field_0x9c = uVar3;
+    iVar4 = *(int *)&this->field_0xa0 + 1;
+    *(int *)&this->field_0xa0 = iVar4;
+    if (0x17 < iVar4) {
+      *(undefined4 *)&this->field_0xa0 = 0;
+    }
+  }
+  if (DAT_006a4268 == 0) {
+    *(undefined4 *)&this->field_0xa0 = 0;
+  }
+  uStack_44 = 0x676c6f62;
+  uStack_48 = 0x5786f5;
+  uVar1 = (*this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25)();
+  iVar4 = *(int *)CONCAT31(extraout_var,uVar1);
+  uStack_48 = 0x5786fe;
+  (**(code **)(iVar4 + 0xc))();
+  uStack_48 = 0;
+  (**(code **)(iVar4 + 0x1c8))(*(short *)&this->field_0xa0 + 0x11d0);
+  func_0x00401d70((int *)CONCAT31(extraout_var,uVar1));
+  (**(code **)(iVar4 + 0xf8))();
+  (**(code **)(iVar4 + 300))(&uStack_44);
+  (**(code **)(iVar4 + 0x110))(&uStack_48);
+  func_0x00408035();
+  *unaff_FS_OFFSET = uStack_24;
   return;
 }
 

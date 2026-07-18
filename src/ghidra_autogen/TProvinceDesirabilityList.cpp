@@ -77,7 +77,7 @@ TProvinceDesirabilityList::OrphanRetStub_0059add0
   if (*(short *)(param_1 + 2) < *(short *)(param_2 + 2)) {
     return 0xffff;
   }
-  uVar1 = GenerateThreadLocalRandom15();
+  uVar1 = rand();
   uVar2 = (int)uVar1 >> 0x1f;
   return (-(uint)(((uVar1 ^ uVar2) - uVar2 & 1 ^ uVar2) != uVar2) & 2) - 1;
 }

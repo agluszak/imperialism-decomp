@@ -102,7 +102,7 @@ void TShipView::ApplyRectSlot110()
   ___L_YGXPAXIHP6EX0_Z1_Z(local_2c,4,8,&SUB_00404642);
   local_4._0_1_ = 2;
   do {
-    (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2760,iVar3);
+    (*g_pSimMgr->vftable[0x10].slot_0x04)(0x2760,iVar3);
     iVar3 = iVar3 + 1;
   } while (iVar3 < 8);
   CString::operator=(&local_5c,
@@ -114,7 +114,7 @@ void TShipView::ApplyRectSlot110()
   CString::operator+=();
   local_4._0_1_ = 2;
   CString::~CString(&CStack_58);
-  SetQuickDrawTextOriginWithContextOffset(0x50);
+  func_0x00408d6e(0x50);
   CStack_54.m_pchData = &stack0xffffff90;
   func_0x00406b86();
   CStack_54.m_pchData = &stack0xffffff90;
@@ -131,7 +131,7 @@ void TShipView::ApplyRectSlot110()
     CString::~CString(&CStack_58);
     local_4._0_1_ = 2;
     CString::~CString(&CStack_54);
-    SetQuickDrawTextOriginWithContextOffset(0x50);
+    func_0x00408d6e(0x50);
     func_0x004029aa();
   }
   sVar2 = *(short *)(*(int *)&this->field_0x60 + 0x1c);
@@ -159,10 +159,10 @@ void TShipView::ApplyRectSlot110()
                   &g_pActiveQuickDrawSurfaceContext->field_0x4,&uStack_3c,&uStack_4c,0x24);
   puStack_50 = &stack0xffffff90;
   func_0x00402bdf();
-  SetQuickDrawTextOriginWithContextOffset(0x50);
-  DrawCenteredGuideLineOnMapDc(0x50);
-  DrawCenteredGuideLineOnMapDc(0xa2);
-  DrawCenteredGuideLineOnMapDc(0xa2);
+  func_0x00408d6e(0x50);
+  func_0x00403bb6(0x50);
+  func_0x00403bb6(0xa2);
+  func_0x00403bb6(0xa2);
   local_4._0_1_ = 1;
   ___M_YGXPAXIHP6EX0_Z_Z(local_2c,4,8);
   local_4 = (uint)local_4._1_3_ << 8;

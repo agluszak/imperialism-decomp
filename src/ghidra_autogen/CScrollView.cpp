@@ -10,7 +10,7 @@
 undefined4 * __fastcall CScrollView::CScrollView(undefined4 *param_1)
 
 {
-  CView();
+  CView__CView();
   *param_1 = &PTR_LAB_0067358c;
   memset(param_1 + 0x10,0,0x2c);
   param_1[0x10] = 0;
@@ -75,7 +75,7 @@ void CScrollView::SetScaleToFitSize(undefined4 param_1, undefined4 param_2)
   *(undefined4 *)(this + 0x44) = param_1;
   *(undefined4 *)(this + 0x48) = param_2;
   if (*(int *)(this + 0x1c) != 0) {
-    uVar1 = GetStyle();
+    uVar1 = CWnd__GetStyle();
     if ((uVar1 & 0x300000) != 0) {
       CWnd::SetScrollPos(0,0,1);
       CWnd::SetScrollPos(1,0,1);
@@ -107,7 +107,7 @@ void CScrollView::SetScrollSizes(void)
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
   
-  EstablishSehFrameProlog();
+  _EH_prolog();
   *(undefined4 *)(unaff_EBP + -0x10) = *(undefined4 *)(this + 0x40);
   *(undefined4 *)(this + 0x40) = *(undefined4 *)(unaff_EBP + 8);
   *(undefined4 *)(this + 0x44) = *(undefined4 *)(unaff_EBP + 0xc);
@@ -177,7 +177,7 @@ void CScrollView::GetScrollPosition(void)
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
   
-  EstablishSehFrameProlog();
+  _EH_prolog();
   if (*(int *)(this + 0x40) == -1) {
     puVar1 = *(undefined4 **)(unaff_EBP + 8);
     *puVar1 = 0;
@@ -216,7 +216,7 @@ void CScrollView::ScrollToPosition(void)
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
   
-  EstablishSehFrameProlog();
+  _EH_prolog();
   if (*(int *)(this + 0x40) != 1) {
     CWindowDC::CWindowDC(0);
     uVar1 = *(undefined4 *)(this + 0x40);
@@ -378,8 +378,8 @@ void CScrollView::ResizeParentToFit(int param_1)
   }
   iVar2 = CWnd::GetParentFrame();
   GetWindowRect(*(HWND *)(iVar2 + 0x1c),&local_44);
-  SetWindowPos(0,0,0,((local_44.right - local_14.right) - local_44.left) + local_24.right,
-               ((local_44.bottom - local_14.bottom) - local_44.top) + local_24.bottom,0x16);
+  CWnd__SetWindowPos(0,0,0,((local_44.right - local_14.right) - local_44.left) + local_24.right,
+                     ((local_44.bottom - local_14.bottom) - local_44.top) + local_24.bottom,0x16);
   return;
 }
 
@@ -397,7 +397,7 @@ void __thiscall CScrollView::CenterOnPoint(int param_1,int param_2,int param_3)
   GetClientRect(*(HWND *)(param_1 + 0x1c),&local_14);
   param_2 = param_2 - (local_14.right - local_14.left) / 2;
   param_3 = param_3 - (local_14.bottom - local_14.top) / 2;
-  uVar1 = GetStyle();
+  uVar1 = CWnd__GetStyle();
   if (((uVar1 & 0x100000) == 0) || (param_2 < 0)) {
     param_2 = 0;
   }
@@ -436,7 +436,7 @@ void CScrollView::GetScrollBarSizes(int *param_1)
   
   param_1[1] = 0;
   *param_1 = 0;
-  uVar2 = GetStyle();
+  uVar2 = CWnd__GetStyle();
   pcVar1 = *(code **)(*(int *)this + 0x70);
   iVar3 = (*pcVar1)(1);
   if ((iVar3 == 0) && (*param_1 = DAT_006a7d00, (uVar2 & 0x800000) != 0)) {
@@ -463,7 +463,7 @@ undefined4 CScrollView::GetTrueClientSize(int *param_1, int *param_2)
   GetClientRect(*(HWND *)(this + 0x1c),&local_14);
   *param_1 = local_14.right;
   param_1[1] = local_14.bottom;
-  uVar1 = GetStyle();
+  uVar1 = CWnd__GetStyle();
   GetScrollBarSizes(this,param_2);
   if ((*param_2 != 0) && ((uVar1 & 0x200000) != 0)) {
     *param_1 = *param_1 + *param_2;
@@ -577,7 +577,7 @@ void CScrollView::UpdateBars()
   *(undefined4 *)(this + 0x68) = 1;
   local_8 = 1;
   pHVar1 = GetParent(*(HWND *)(this + 0x1c));
-  iVar2 = FromHandle(pHVar1);
+  iVar2 = CWnd__FromHandle(pHVar1);
   if ((iVar2 != 0) &&
      (LVar3 = SendMessageA(*(HWND *)(iVar2 + 0x1c),0x368,0,(LPARAM)&local_40), LVar3 != 0)) {
     local_8 = 0;
@@ -696,11 +696,12 @@ int CScrollView::DoMouseWheel(short param_1)
   int iVar8;
   short in_stack_00000008;
   
-  uVar5 = GetStyle();
+  uVar5 = CWnd__GetStyle();
   iVar1 = *(int *)this;
   pcVar2 = *(code **)(iVar1 + 0x70);
   iVar6 = (*pcVar2)(1);
-  if (((iVar6 == 0) || (iVar6 = IsWindowEnabled(), iVar6 == 0)) && ((uVar5 & 0x200000) == 0)) {
+  if (((iVar6 == 0) || (iVar6 = CWnd__IsWindowEnabled(), iVar6 == 0)) && ((uVar5 & 0x200000) == 0))
+  {
     bVar3 = false;
   }
   else {
@@ -708,7 +709,7 @@ int CScrollView::DoMouseWheel(short param_1)
   }
   iVar6 = (*pcVar2)(0);
   iVar8 = 0;
-  if (((iVar6 != 0) && (iVar6 = IsWindowEnabled(), iVar6 != 0)) ||
+  if (((iVar6 != 0) && (iVar6 = CWnd__IsWindowEnabled(), iVar6 != 0)) ||
      (bVar4 = false, (uVar5 & 0x100000) != 0)) {
     bVar4 = true;
   }
@@ -848,7 +849,7 @@ undefined4 __thiscall CScrollView::OnScrollBy(CWnd *param_1,int param_2,int para
   int iVar5;
   undefined4 uVar6;
   
-  uVar2 = GetStyle();
+  uVar2 = CWnd__GetStyle();
   pCVar1 = (param_1->ccmdTarget).vftable[9].slot_0x04;
   iVar3 = (*pCVar1)(1);
   if (iVar3 == 0) {
@@ -859,7 +860,7 @@ LAB_00615c60:
     }
   }
   else {
-    iVar4 = IsWindowEnabled();
+    iVar4 = CWnd__IsWindowEnabled();
     if (iVar4 == 0) goto LAB_00615c60;
     if (iVar3 == 0) goto LAB_00615c5a;
   }
@@ -869,7 +870,7 @@ LAB_00615c7f:
     if ((uVar2 & 0x100000) != 0) goto LAB_00615c89;
   }
   else {
-    iVar4 = IsWindowEnabled();
+    iVar4 = CWnd__IsWindowEnabled();
     if (iVar4 != 0) {
       if (iVar3 != 0) goto LAB_00615c89;
       goto LAB_00615c7f;

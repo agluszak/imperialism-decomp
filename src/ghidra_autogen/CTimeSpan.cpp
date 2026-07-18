@@ -99,11 +99,11 @@ undefined4 CTimeSpan::Format(void)
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
   
-  EstablishSehFrameProlog();
+  _EH_prolog();
   *(undefined4 *)(unaff_EBP + -0x14) = 0;
   CString::CString((CString *)(unaff_EBP + -0x10));
   *(undefined4 *)(unaff_EBP + -4) = 1;
-  LoadStringA(*(undefined4 *)(unaff_EBP + 0xc));
+  CString__LoadStringA(*(undefined4 *)(unaff_EBP + 0xc));
   Format(*(undefined4 *)(unaff_EBP + 8),*(undefined4 *)(unaff_EBP + -0x10));
   *(undefined4 *)(unaff_EBP + -0x14) = 1;
   *(undefined1 *)(unaff_EBP + -4) = 0;

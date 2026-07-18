@@ -124,9 +124,9 @@ TBlockadePortMission::RecomputeAndClearMissionScoreUsingPortZoneContextAverageVa
   iVar4 = func_0x00402955();
   while (iVar4 != 0) {
     if (*(int *)(iVar4 + 0x2c) == 0) {
-      iVar5 = ReallocateHeapBlockWithAllocatorTracking(*(undefined4 *)(iVar4 + 0x28),8);
+      iVar5 = _realloc(*(undefined4 *)(iVar4 + 0x28),8);
       if (iVar5 == 0) {
-        uVar6 = ReallocateHeapBlockWithAllocatorTracking(*(undefined4 *)(iVar4 + 0x28),4);
+        uVar6 = _realloc(*(undefined4 *)(iVar4 + 0x28),4);
         *(undefined4 *)(iVar4 + 0x28) = uVar6;
         *(undefined4 *)(iVar4 + 0x2c) = 1;
       }

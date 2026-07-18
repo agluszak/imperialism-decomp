@@ -10,7 +10,7 @@
 TMacViewMgr * TMacViewMgr::ConstructTMacViewMgrInPlace()
 
 {
-  CFrameWnd();
+  CFrameWnd__CFrameWnd();
   *(undefined4 *)&this->field_0xcc = 1;
   *(undefined4 *)&this->field_0xbc = 0;
   *(undefined4 *)&this->field_0xc4 = 0;
@@ -577,12 +577,12 @@ void TMacViewMgr::BuildStrategicMapCommodityIconAtlasFrom700To722()
   local_10[3] = 0x18;
   local_18 = puVar1;
   (**(code **)(*g_pDisplayMgr + 0x2c))(puVar1,8,local_10);
-  GetActiveQuickDrawSurfaceContextAndFlags(&local_20,&stack0xffffffd4);
-  SetActiveQuickDrawSurfaceContext(*(undefined4 *)puVar1,unaff_EBP);
-  uVar5 = GetSurfaceObjectAtContextOffset24(*(undefined4 *)puVar1);
-  ReturnConstantTrueQuickDrawFlag(uVar5);
+  func_0x00408d64(&local_20,&stack0xffffffd4);
+  func_0x00406f5f(*(undefined4 *)puVar1,unaff_EBP);
+  uVar5 = func_0x0040520e(*(undefined4 *)puVar1);
+  func_0x0040761c(uVar5);
   func_0x004088aa();
-  piVar6 = (int *)GetSurfaceObjectAtContextOffset24(*(undefined4 *)puVar1);
+  piVar6 = (int *)func_0x0040520e(*(undefined4 *)puVar1);
   puVar7 = (undefined4 *)func_0x00405e39(piVar6);
   uVar8 = (iStack_14 - iStack_1c) * (local_10[0] - (int)local_18);
   puVar10 = puVar7;
@@ -619,9 +619,9 @@ void TMacViewMgr::BuildStrategicMapCommodityIconAtlasFrom700To722()
     operator_delete(piVar6);
     iVar11 = iVar11 + 1;
   } while ((short)iVar11 < 0x17);
-  uVar5 = GetSurfaceObjectAtContextOffset24(*puStack_24);
-  NoOpQuickDrawLifecycleHookB(uVar5);
-  SetActiveQuickDrawSurfaceContext(local_20,unaff_EBP);
+  uVar5 = func_0x0040520e(*puStack_24);
+  func_0x004024fa(uVar5);
+  func_0x00406f5f(local_20,unaff_EBP);
   return;
 }
 
@@ -751,10 +751,10 @@ void __fastcall TMacViewMgr::BuildStrategicMapGaugeAtlasFrom1422And1423(int para
   local_4 = 0x10;
   local_8 = 0x500;
   (**(code **)(*g_pDisplayMgr + 0x2c))(puVar1,8,&local_10);
-  GetActiveQuickDrawSurfaceContextAndFlags(&stack0xffffffd0,&stack0xffffffcc);
-  SetActiveQuickDrawSurfaceContext(*puVar1,unaff_ESI);
-  uVar4 = GetSurfaceObjectAtContextOffset24(*puVar1);
-  ReturnConstantTrueQuickDrawFlag(uVar4);
+  func_0x00408d64(&stack0xffffffd0,&stack0xffffffcc);
+  func_0x00406f5f(*puVar1,unaff_ESI);
+  uVar4 = func_0x0040520e(*puVar1);
+  func_0x0040761c(uVar4);
   func_0x004088aa();
   piVar5 = (int *)func_0x004047a0(0x58e);
   puVar2 = (undefined4 *)*piVar5;
@@ -792,9 +792,9 @@ void __fastcall TMacViewMgr::BuildStrategicMapGaugeAtlasFrom1422And1423(int para
     operator_delete(puVar2);
   }
   operator_delete(piVar5);
-  uVar4 = GetSurfaceObjectAtContextOffset24(*puVar1);
-  NoOpQuickDrawLifecycleHookB(uVar4);
-  SetActiveQuickDrawSurfaceContext(unaff_EBP,unaff_ESI);
+  uVar4 = func_0x0040520e(*puVar1);
+  func_0x004024fa(uVar4);
+  func_0x00406f5f(unaff_EBP,unaff_ESI);
   return;
 }
 
@@ -875,7 +875,7 @@ void TMacViewMgr::BuildStrategicMapTileOverlayStripSurfaces800To807(void)
   
   iVar6 = 0;
   local_2c = 0;
-  GetActiveQuickDrawSurfaceContextAndFlags(&local_24,&local_2c);
+  func_0x00408d64(&local_24,&local_2c);
   do {
     piVar4 = (int *)func_0x004047a0(iVar6 + 800);
     if (*piVar4 == 0) {
@@ -888,16 +888,16 @@ void TMacViewMgr::BuildStrategicMapTileOverlayStripSurfaces800To807(void)
     local_14 = local_10.bottom;
     puVar1 = (undefined4 *)(local_28 + 0x694 + iVar6 * 4);
     (**(code **)(*g_pDisplayMgr + 0x2c))(puVar1,8,&local_20);
-    SetActiveQuickDrawSurfaceContext(*puVar1,unaff_ESI);
-    uVar5 = GetSurfaceObjectAtContextOffset24(*puVar1);
-    ReturnConstantTrueQuickDrawFlag(uVar5);
+    func_0x00406f5f(*puVar1,unaff_ESI);
+    uVar5 = func_0x0040520e(*puVar1);
+    func_0x0040761c(uVar5);
     func_0x004062d5(piVar4);
     puVar2 = (undefined4 *)*piVar4;
     if (puVar2 != (undefined4 *)0x0) {
       (**(code **)*puVar2)();
       *(byte *)(puVar2 + 1) = *(byte *)(puVar2 + 1) | 1;
       func_0x004088aa();
-      func_0x00404db8(piVar4,&local_20);
+      func_0x00404db8(piVar4,&local_2c);
       if (iVar6 == 0) {
         func_0x00403288();
       }
@@ -912,11 +912,11 @@ void TMacViewMgr::BuildStrategicMapTileOverlayStripSurfaces800To807(void)
       }
       operator_delete(piVar4);
     }
-    uVar5 = GetSurfaceObjectAtContextOffset24(*puVar1);
-    NoOpQuickDrawLifecycleHookB(uVar5);
+    uVar5 = func_0x0040520e(*puVar1);
+    func_0x004024fa(uVar5);
     iVar6 = iVar6 + 1;
   } while (iVar6 < 8);
-  SetActiveQuickDrawSurfaceContext(local_24,local_2c);
+  func_0x00406f5f(local_24,local_2c);
   return;
 }
 
@@ -980,15 +980,15 @@ void TMacViewMgr::RenderOffscreenBitmapGridStripAndRestoreContext()
   piStack_4c = (int *)&stack0xffffffc8;
   piStack_50 = (int *)&stack0xffffffcc;
   puStack_54 = (undefined4 *)0x50aa42;
-  GetActiveQuickDrawSurfaceContextAndFlags();
+  func_0x00408d64();
   piStack_50 = *(int **)puVar1;
   puStack_54 = (undefined4 *)0x50aa52;
-  SetActiveQuickDrawSurfaceContext();
+  func_0x00406f5f();
   piStack_4c = *(int **)puVar1;
   piStack_50 = (int *)0x50aa5d;
-  piStack_4c = (int *)GetSurfaceObjectAtContextOffset24();
+  piStack_4c = (int *)func_0x0040520e();
   piStack_50 = (int *)0x50aa66;
-  ReturnConstantTrueQuickDrawFlag();
+  func_0x0040761c();
   piStack_4c = (int *)0x50aa6e;
   func_0x004088aa();
   local_2c[0] = 0;
@@ -1135,11 +1135,11 @@ void TMacViewMgr::RenderOffscreenBitmapGridStripAndRestoreContext()
   piStack_4c = *(int **)puVar1;
   piStack_50 = (int *)0x50aca1;
   local_2c[0] = local_2c[0] + 0x40;
-  piStack_4c = (int *)GetSurfaceObjectAtContextOffset24();
+  piStack_4c = (int *)func_0x0040520e();
   piStack_50 = (int *)0x50acaa;
-  NoOpQuickDrawLifecycleHookB();
+  func_0x004024fa();
   puStack_54 = (undefined4 *)0x50acbc;
-  SetActiveQuickDrawSurfaceContext();
+  func_0x00406f5f();
   piStack_4c = aiStack_1c;
   puVar11 = (undefined4 *)(unaff_EBX + 0x66c);
   piStack_50 = (int *)0x8;
@@ -1153,16 +1153,16 @@ void TMacViewMgr::RenderOffscreenBitmapGridStripAndRestoreContext()
   ppppiStack_58 = &pppiStack_44;
   ppppiStack_5c = (int ****)&ppppuStack_40;
   iStack_60 = 0x50ad03;
-  GetActiveQuickDrawSurfaceContextAndFlags();
+  func_0x00408d64();
   ppppiStack_5c = (int ****)*puVar11;
   ppppiStack_58 = (int ****)pppiStack_44;
   iStack_60 = 0x50ad13;
-  SetActiveQuickDrawSurfaceContext();
+  func_0x00406f5f();
   ppppiStack_58 = (int ****)*puVar11;
   ppppiStack_5c = (undefined4 ****)0x50ad1e;
-  ppppiStack_58 = (int ****)GetSurfaceObjectAtContextOffset24();
+  ppppiStack_58 = (int ****)func_0x0040520e();
   ppppiStack_5c = (undefined4 ****)0x50ad27;
-  ReturnConstantTrueQuickDrawFlag();
+  func_0x0040761c();
   ppppiStack_58 = (int ****)0x50ad2f;
   func_0x004088aa();
   local_2c[0] = 0x40;
@@ -1336,13 +1336,13 @@ void TMacViewMgr::RenderOffscreenBitmapGridStripAndRestoreContext()
   } while ((short)iVar13 < 2);
   ppppiStack_58 = *(int *****)(unaff_EBX + 0x66c);
   ppppiStack_5c = (undefined4 ****)0x50b00a;
-  ppppiStack_58 = (int ****)GetSurfaceObjectAtContextOffset24();
+  ppppiStack_58 = (int ****)func_0x0040520e();
   ppppiStack_5c = (undefined4 ****)0x50b013;
-  NoOpQuickDrawLifecycleHookB();
+  func_0x004024fa();
   ppppiStack_58 = (int ****)pppiStack_44;
   ppppiStack_5c = ppppuStack_40;
   iStack_60 = 0x50b025;
-  SetActiveQuickDrawSurfaceContext();
+  func_0x00406f5f();
   ppppiStack_58 = (int ****)(local_2c + 1);
   iStack_60 = unaff_EBX + 0x670;
   ppppiStack_5c = (undefined4 ****)0x8;
@@ -1358,10 +1358,10 @@ void TMacViewMgr::RenderOffscreenBitmapGridStripAndRestoreContext()
   local_2c[0] = 0x90;
   local_2c[1] = 0x26;
   (**(code **)(*g_pDisplayMgr + 0x2c))(puVar11);
-  GetActiveQuickDrawSurfaceContextAndFlags(&ppppiStack_58,&ppppiStack_5c);
-  SetActiveQuickDrawSurfaceContext(*puVar11,ppppiStack_5c);
-  uVar9 = GetSurfaceObjectAtContextOffset24(*puVar11);
-  ReturnConstantTrueQuickDrawFlag(uVar9);
+  func_0x00408d64(&ppppiStack_58,&ppppiStack_5c);
+  func_0x00406f5f(*puVar11,ppppiStack_5c);
+  uVar9 = func_0x0040520e(*puVar11);
+  func_0x0040761c(uVar9);
   func_0x004088aa();
   piStack_50 = (int *)0x0;
   piStack_4c = (int *)0x0;
@@ -1391,19 +1391,19 @@ void TMacViewMgr::RenderOffscreenBitmapGridStripAndRestoreContext()
     iVar13 = iVar13 + 1;
     piStack_50 = piVar6;
   } while ((short)iVar13 < 0x242);
-  uVar9 = GetSurfaceObjectAtContextOffset24(*puVar11);
-  NoOpQuickDrawLifecycleHookB(uVar9);
-  SetActiveQuickDrawSurfaceContext(ppppiStack_58,ppppiStack_5c);
+  uVar9 = func_0x0040520e(*puVar11);
+  func_0x004024fa(uVar9);
+  func_0x00406f5f(ppppiStack_58,ppppiStack_5c);
   piVar6 = puStack_54 + 0x1ae;
   ppppuStack_40 = (undefined4 ****)0x0;
   if (*piVar6 != 0) {
     func_0x004010e6(piVar6);
   }
   (**(code **)(*g_pDisplayMgr + 0x2c))(piVar6,8,&ppppuStack_40);
-  GetActiveQuickDrawSurfaceContextAndFlags(&puStack_64,&uStack_68);
-  SetActiveQuickDrawSurfaceContext(*piVar6,uStack_68);
-  uVar9 = GetSurfaceObjectAtContextOffset24(*piVar6);
-  ReturnConstantTrueQuickDrawFlag(uVar9);
+  func_0x00408d64(&puStack_64,&uStack_68);
+  func_0x00406f5f(*piVar6,uStack_68);
+  uVar9 = func_0x0040520e(*piVar6);
+  func_0x0040761c(uVar9);
   func_0x004088aa();
   piVar10 = (int *)func_0x004047a0(0x244);
   puVar11 = (undefined4 *)*piVar10;
@@ -1422,9 +1422,9 @@ void TMacViewMgr::RenderOffscreenBitmapGridStripAndRestoreContext()
     operator_delete(puVar11);
   }
   operator_delete(piVar10);
-  uVar9 = GetSurfaceObjectAtContextOffset24(*piVar6);
-  NoOpQuickDrawLifecycleHookB(uVar9);
-  SetActiveQuickDrawSurfaceContext(puStack_64,uStack_68);
+  uVar9 = func_0x0040520e(*piVar6);
+  func_0x004024fa(uVar9);
+  func_0x00406f5f(puStack_64,uStack_68);
   iVar13 = 0;
   do {
     func_0x00402ab3(iVar13 + 0x2740,0x40,0x40,0x1680,0x10);
@@ -1510,17 +1510,17 @@ void TMacViewMgr::RenderTurnEventPalettePreviewSurfaceAndProgress()
   local_8 = 0xd7;
   local_4 = 0x78;
   local_18 = this;
-  GetActiveQuickDrawSurfaceContextAndFlags(local_14,&local_24);
-  SetActiveQuickDrawSurfaceContext(*(undefined4 *)&this->field_0x670,local_24);
-  piVar4 = (int *)GetSurfaceObjectAtContextOffset24(*(undefined4 *)&this->field_0x670);
+  func_0x00408d64(local_14,&local_24);
+  func_0x00406f5f(*(undefined4 *)&this->field_0x670,local_24);
+  piVar4 = (int *)func_0x0040520e(*(undefined4 *)&this->field_0x670);
   local_1c = piVar4;
-  ReturnConstantTrueQuickDrawFlag(piVar4);
+  func_0x0040761c(piVar4);
   func_0x004088aa();
   iVar5 = func_0x00405e39(piVar4);
   uVar13 = *(ushort *)(*piVar4 + 4) & 0x3fff;
   func_0x00402bdf(0xffffff);
   (**(code **)(g_pUiRuntimeContext->vftable + 0x34))(0x32);
-  FillRectWithQuickDrawBrushAndContextOffset(local_14);
+  func_0x00406546(local_14);
   iVar14 = 0;
   local_24 = 0;
   do {
@@ -1611,9 +1611,9 @@ void TMacViewMgr::RenderTurnEventPalettePreviewSurfaceAndProgress()
   } while (iVar5 != 0);
   operator_delete(puVar6);
   func_0x00406b86(0);
-  uVar11 = GetSurfaceObjectAtContextOffset24(local_1c[0x19c]);
-  NoOpQuickDrawLifecycleHookB(uVar11);
-  SetActiveQuickDrawSurfaceContext(local_18,uStack_28);
+  uVar11 = func_0x0040520e(local_1c[0x19c]);
+  func_0x004024fa(uVar11);
+  func_0x00406f5f(local_18,uStack_28);
   if (DAT_006a4268 != 0) {
     func_0x00401c2b();
   }
@@ -1680,7 +1680,7 @@ void TMacViewMgr::RebuildNationClipRegionsAndDispatchMapEvent()
   int iVar3;
   undefined4 *puVar4;
   
-  if (*(int *)&g_pLocalizationTable->field_0x44 == 1) {
+  if (*(int *)&g_pSimMgr->field_0x44 == 1) {
     func_0x00406efb(0x72656765,0,0xfffffffd);
   }
   if (*(int *)&this->field_0x64 != 0) {
@@ -1900,7 +1900,7 @@ void TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word param_1)
       MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
       func_0x004057a4();
     }
-    (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+    (*g_pSimMgr->vftable[0x10].slot_0x04)();
     puStack_8 = &stack0xffffff90;
     func_0x004076b7();
     func_0x00404d22();
@@ -1921,7 +1921,7 @@ void TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word param_1)
     func_0x00401fd2();
     pTStack_98 = (TSimMgr *)&local_48;
     piStack_9c = (int *)0x50bfe8;
-    BuildUiTextStyleDescriptor();
+    func_0x00406afa();
     iVar3 = *piVar7;
     (**(code **)(iVar3 + 0x1b4))();
     pTStack_98 = (TSimMgr *)0xffffffff;
@@ -1932,7 +1932,7 @@ void TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word param_1)
     uStack_a0 = 1;
     uStack_a4 = 0x2735;
     piStack_a8 = (int *)0x50c029;
-    (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+    (*g_pSimMgr->vftable[0x10].slot_0x04)();
     local_44.m_pchData = (char *)&puStack_ac;
     ppCStack_b0 = &pCStack_84;
     puStack_b4 = (undefined1 *)0x50c03b;
@@ -2002,13 +2002,13 @@ void TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word param_1)
          (char *)CONCAT22(uVar9,pTVar2->needTargetByType[0] + pTVar2->needTargetByType[1]);
     wVar10 = pTVar2->needCurrentByType[1] + pTVar2->needCurrentByType[0];
     pCVar13 = (CString *)0x2;
-    (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
-    iVar6 = GetCityBuildingProductionValueBySlot(this_00,0);
+    (*g_pSimMgr->vftable[0x10].slot_0x04)();
+    iVar6 = TCity::GetBuildingType(this_00,0);
     wVar11 = (word)iVar6;
     wVar12 = (wVar11 * 2 - this_00->fieldB6[0]) - this_00->fieldB6[1];
-    _Format_CString__QAAXPBDZZ();
-    _Format_CString__QAAXPBDZZ();
-    (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+    CString__Format();
+    CString__Format();
+    (*g_pSimMgr->vftable[0x10].slot_0x04)();
     goto LAB_0050c77d;
   default:
     wVar11 = param_1;
@@ -2017,100 +2017,100 @@ void TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word param_1)
   case 2:
     wVar10 = pTVar2->needCurrentByType[2];
     wStack00000008 = pTVar2->needTargetByType[2];
-    (*g_pLocalizationTable->vftable[0xf].slot_0x04)();
-    iVar6 = GetCityBuildingProductionValueBySlot(this_00,4);
+    (*g_pSimMgr->vftable[0xf].slot_0x04)();
+    iVar6 = TCity::GetBuildingType(this_00,4);
     wVar11 = (word)iVar6;
     wVar12 = wVar11 * 2 - this_00->fieldB6[2];
-    _Format_CString__QAAXPBDZZ();
-    _Format_CString__QAAXPBDZZ();
-    (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+    CString__Format();
+    CString__Format();
+    (*g_pSimMgr->vftable[0x10].slot_0x04)();
     break;
   case 3:
   case 4:
     wVar10 = pTVar2->needCurrentByType[iVar6];
     wStack00000008 = pTVar2->needTargetByType[iVar6];
-    (*g_pLocalizationTable->vftable[0xf].slot_0x04)();
-    iVar6 = GetCityBuildingProductionValueBySlot(this_00,2);
+    (*g_pSimMgr->vftable[0xf].slot_0x04)();
+    iVar6 = TCity::GetBuildingType(this_00,2);
     wVar11 = (word)iVar6;
     wVar12 = wVar11 - this_00->fieldB6[(int)local_3c.m_pchData];
-    _Format_CString__QAAXPBDZZ();
-    _Format_CString__QAAXPBDZZ();
-    (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+    CString__Format();
+    CString__Format();
+    (*g_pSimMgr->vftable[0x10].slot_0x04)();
     break;
   case 5:
     wVar10 = pTVar2->needCurrentByType[5];
     wStack00000008 = pTVar2->needTargetByType[5];
-    (*g_pLocalizationTable->vftable[0xf].slot_0x04)();
-    _Format_CString__QAAXPBDZZ();
-    _Format_CString__QAAXPBDZZ();
-    (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+    (*g_pSimMgr->vftable[0xf].slot_0x04)();
+    CString__Format();
+    CString__Format();
+    (*g_pSimMgr->vftable[0x10].slot_0x04)();
     pCStack_84 = &CStack_5c;
     func_0x0040988b();
     goto LAB_0050ca20;
   case 6:
     wVar10 = pTVar2->needCurrentByType[6];
     wStack00000008 = pTVar2->needTargetByType[6];
-    (*g_pLocalizationTable->vftable[0xf].slot_0x04)();
-    iVar6 = GetCityBuildingProductionValueBySlot(this_00,6);
+    (*g_pSimMgr->vftable[0xf].slot_0x04)();
+    iVar6 = TCity::GetBuildingType(this_00,6);
     wVar11 = (word)iVar6;
     wVar12 = wVar11 * 2 - this_00->fieldB6[6];
-    _Format_CString__QAAXPBDZZ();
-    _Format_CString__QAAXPBDZZ();
-    (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+    CString__Format();
+    CString__Format();
+    (*g_pSimMgr->vftable[0x10].slot_0x04)();
     break;
   case 8:
     wVar10 = pTVar2->needCurrentByType[8];
     wStack00000008 = pTVar2->needTargetByType[8];
-    (*g_pLocalizationTable->vftable[0xf].slot_0x04)();
-    iVar6 = GetCityBuildingProductionValueBySlot(this_00,1);
+    (*g_pSimMgr->vftable[0xf].slot_0x04)();
+    iVar6 = TCity::GetBuildingType(this_00,1);
     wVar11 = (word)iVar6;
     wVar12 = wVar11 * 2 - this_00->fieldB6[8];
-    _Format_CString__QAAXPBDZZ();
-    _Format_CString__QAAXPBDZZ();
-    (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+    CString__Format();
+    CString__Format();
+    (*g_pSimMgr->vftable[0x10].slot_0x04)();
     break;
   case 9:
     wVar10 = pTVar2->needCurrentByType[9];
     wStack00000008 = pTVar2->needTargetByType[9];
-    (*g_pLocalizationTable->vftable[0xf].slot_0x04)();
-    iVar6 = GetCityBuildingProductionValueBySlot(this_00,5);
+    (*g_pSimMgr->vftable[0xf].slot_0x04)();
+    iVar6 = TCity::GetBuildingType(this_00,5);
     wVar11 = (word)iVar6;
     wVar12 = wVar11 * 2 - this_00->fieldB6[9];
-    _Format_CString__QAAXPBDZZ();
-    _Format_CString__QAAXPBDZZ();
-    (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+    CString__Format();
+    CString__Format();
+    (*g_pSimMgr->vftable[0x10].slot_0x04)();
     break;
   case 0xb:
     wVar10 = pTVar2->needCurrentByType[0xb];
     wStack00000008 = pTVar2->needTargetByType[0xb];
-    (*g_pLocalizationTable->vftable[0xf].slot_0x04)();
-    iVar6 = GetCityBuildingProductionValueBySlot(this_00,3);
+    (*g_pSimMgr->vftable[0xf].slot_0x04)();
+    iVar6 = TCity::GetBuildingType(this_00,3);
     wVar11 = (word)iVar6;
     wVar12 = wVar11 * 2 - this_00->fieldB6[0xb];
-    _Format_CString__QAAXPBDZZ();
-    _Format_CString__QAAXPBDZZ();
-    (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+    CString__Format();
+    CString__Format();
+    (*g_pSimMgr->vftable[0x10].slot_0x04)();
     break;
   case 0xc:
     wVar10 = pTVar2->needCurrentByType[0xc];
     wStack00000008 = pTVar2->needTargetByType[0xc];
-    (*g_pLocalizationTable->vftable[0xf].slot_0x04)();
-    iVar6 = GetCityBuildingProductionValueBySlot(this_00,0xb);
+    (*g_pSimMgr->vftable[0xf].slot_0x04)();
+    iVar6 = TCity::GetBuildingType(this_00,0xb);
     wVar11 = (word)iVar6;
     wVar12 = wVar11 * 2 - this_00->fieldB6[0xc];
-    _Format_CString__QAAXPBDZZ();
-    _Format_CString__QAAXPBDZZ();
-    (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+    CString__Format();
+    CString__Format();
+    (*g_pSimMgr->vftable[0x10].slot_0x04)();
     break;
   case 0xd:
   case 0xe:
   case 0xf:
     wVar10 = pTVar2->needCurrentByType[iVar6];
     wStack00000008 = pTVar2->needTargetByType[iVar6];
-    (*g_pLocalizationTable->vftable[0xf].slot_0x04)();
-    _Format_CString__QAAXPBDZZ();
-    _Format_CString__QAAXPBDZZ();
-    (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+    (*g_pSimMgr->vftable[0xf].slot_0x04)();
+    CString__Format();
+    CString__Format();
+    (*g_pSimMgr->vftable[0x10].slot_0x04)();
     pCStack_84 = &CStack_5c;
     func_0x0040988b();
     goto LAB_0050ca20;
@@ -2118,14 +2118,14 @@ void TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word param_1)
   case 0x12:
     wVar10 = pTVar2->needCurrentByType[iVar6];
     wStack00000008 = pTVar2->needTargetByType[iVar6];
-    (*g_pLocalizationTable->vftable[0xf].slot_0x04)();
+    (*g_pSimMgr->vftable[0xf].slot_0x04)();
     wVar11 = 1;
     uVar5 = (*this_00->vftable->GetCitySummaryRecordSlot74)();
     sVar1 = *(short *)(CONCAT31(extraout_var_00,uVar5) + (int)local_3c.m_pchData * 2);
-    _Format_CString__QAAXPBDZZ();
+    CString__Format();
     wVar12 = sVar1 - this_00->fieldB6[(int)local_3c.m_pchData];
-    _Format_CString__QAAXPBDZZ();
-    (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+    CString__Format();
+    (*g_pSimMgr->vftable[0x10].slot_0x04)();
     pCStack_84 = &CStack_5c;
     func_0x0040988b();
     CString::operator=(&local_3c,&local_48);
@@ -2135,32 +2135,32 @@ void TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word param_1)
          (char *)CONCAT22(uVar9,pTVar2->needTargetByType[0x13] + pTVar2->needTargetByType[0x14]);
     wVar10 = pTVar2->needCurrentByType[0x13] + pTVar2->needCurrentByType[0x14];
     pCVar13 = (CString *)0x3;
-    (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+    (*g_pSimMgr->vftable[0x10].slot_0x04)();
     wVar11 = 1;
     uVar5 = (*this_00->vftable->GetCitySummaryRecordSlot74)();
     sVar1 = *(short *)(CONCAT31(extraout_var,uVar5) + 0x28);
     pCStack_84 = (CString *)0x50c28b;
-    _Format_CString__QAAXPBDZZ();
+    CString__Format();
     wVar12 = sVar1 - (this_00->fieldB6[0x14] + this_00->fieldB6[0x13]);
     break;
   case 0x15:
     wVar10 = pTVar2->needCurrentByType[0x15];
     wStack00000008 = pTVar2->needTargetByType[0x15];
-    (*g_pLocalizationTable->vftable[0xf].slot_0x04)();
+    (*g_pSimMgr->vftable[0xf].slot_0x04)();
     pCVar13 = &local_4;
-    (*g_pLocalizationTable->vftable[0xe].slot_0x04)();
+    (*g_pSimMgr->vftable[0xe].slot_0x04)();
     pCStack_84 = pCVar13;
-    (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+    (*g_pSimMgr->vftable[0x10].slot_0x04)();
     func_0x0040988b();
     goto LAB_0050ca20;
   case 0x16:
     wVar10 = pTVar2->needCurrentByType[0x16];
     wStack00000008 = pTVar2->needTargetByType[0x16];
-    (*g_pLocalizationTable->vftable[0xf].slot_0x04)();
+    (*g_pSimMgr->vftable[0xf].slot_0x04)();
     pCVar13 = &local_4;
-    (*g_pLocalizationTable->vftable[0xe].slot_0x04)();
+    (*g_pSimMgr->vftable[0xe].slot_0x04)();
     pCStack_84 = pCVar13;
-    (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+    (*g_pSimMgr->vftable[0x10].slot_0x04)();
     func_0x0040988b();
 LAB_0050ca20:
     wVar11 = 0;
@@ -2168,12 +2168,12 @@ LAB_0050ca20:
     goto LAB_0050ca3b;
   }
   pCStack_84 = (CString *)0x50c77a;
-  _Format_CString__QAAXPBDZZ();
+  CString__Format();
 LAB_0050c77d:
   pCStack_84 = (CString *)0x50c797;
-  (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+  (*g_pSimMgr->vftable[0x10].slot_0x04)();
   pCStack_84 = pCVar13;
-  pTStack_98 = g_pLocalizationTable;
+  pTStack_98 = g_pSimMgr;
   piStack_9c = (int *)0x50c7bc;
   func_0x0040988b();
   CString::operator=(&local_3c,&local_48);
@@ -2281,7 +2281,7 @@ LAB_0050ca3b:
     puStack_cc = &stack0xffffff84;
     uStack_c8 = 0;
     ppuStack_d0 = (undefined1 **)0x50ccfb;
-    BuildUiTextStyleDescriptor();
+    func_0x00406afa();
     iVar6 = *piVar8;
     puStack_c4 = &stack0xffffff84;
     uStack_c0 = 0;
@@ -2296,7 +2296,7 @@ LAB_0050ca3b:
     uStack_d4 = 4;
     uStack_d8 = 0x2735;
     piStack_dc = (int *)0x50cd3c;
-    (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+    (*g_pSimMgr->vftable[0x10].slot_0x04)();
     puStack_ac = auStack_e0;
     piStack_dc = piVar8;
     func_0x004076b7(&puStack_b8);
@@ -2547,14 +2547,14 @@ void TMacViewMgr::RenderOffscreenBitmapTileSpanAndRestoreContext(int param_1)
   puVar1 = (undefined4 *)(&this->field_0x8 + (short)param_1 * 4);
   uVar3 = func_0x00401127();
   *puVar1 = uVar3;
-  GetActiveQuickDrawSurfaceContextAndFlags(local_14,local_18);
+  func_0x00408d64(local_14,local_18);
   piVar4 = (int *)func_0x004047a0(iVar6 + 4000);
   CopyRect(&local_10,(RECT *)(*piVar4 + 8));
   ptVar7 = &local_10;
   (**(code **)(*g_pDisplayMgr + 0x2c))(&param_1,1,ptVar7);
-  SetActiveQuickDrawSurfaceContext(local_10.right,unaff_EDI);
-  uVar3 = GetSurfaceObjectAtContextOffset24(local_10.right);
-  ReturnConstantTrueQuickDrawFlag(uVar3);
+  func_0x00406f5f(local_10.right,unaff_EDI);
+  uVar3 = func_0x0040520e(local_10.right);
+  func_0x0040761c(uVar3);
   func_0x004062d5(piVar4);
   puVar5 = (undefined4 *)*piVar4;
   if (puVar5 != (undefined4 *)0x0) {
@@ -2573,16 +2573,16 @@ void TMacViewMgr::RenderOffscreenBitmapTileSpanAndRestoreContext(int param_1)
     operator_delete(puVar5);
   }
   operator_delete(piVar4);
-  puVar5 = (undefined4 *)GetSurfaceObjectAtContextOffset24(local_10.right);
+  puVar5 = (undefined4 *)func_0x0040520e(local_10.right);
   iVar6 = func_0x00408689(*puVar1,*puVar5);
   if (iVar6 != 0) {
     func_0x00408689(*puVar1,*puVar5);
     func_0x00408689(*puVar1,*puVar5);
   }
   func_0x004010e6(&local_10.right);
-  uVar3 = GetSurfaceObjectAtContextOffset24(local_10.top);
-  NoOpQuickDrawLifecycleHookB(uVar3);
-  SetActiveQuickDrawSurfaceContext(unaff_EDI,ptVar7);
+  uVar3 = func_0x0040520e(local_10.top);
+  func_0x004024fa(uVar3);
+  func_0x00406f5f(unaff_EDI,ptVar7);
   return;
 }
 
@@ -2729,15 +2729,15 @@ TMacViewMgr::BlitMapOverlayGlyphStrip32x24SkipMask10
   char *pcVar9;
   
   if (param_2 < 100) {
-    piVar3 = (int *)GetSurfaceObjectAtContextOffset24(*(undefined4 *)&this->field_0x674);
+    piVar3 = (int *)func_0x0040520e(*(undefined4 *)&this->field_0x674);
     sVar7 = param_2 << 5;
   }
   else {
-    piVar3 = (int *)GetSurfaceObjectAtContextOffset24(*(undefined4 *)&this->field_0x680);
+    piVar3 = (int *)func_0x0040520e(*(undefined4 *)&this->field_0x680);
     sVar7 = (param_2 + -100) * 0x20;
   }
   uVar1 = *(ushort *)(*param_1 + 4);
-  ReturnConstantTrueQuickDrawFlag(piVar3);
+  func_0x0040761c(piVar3);
   iVar4 = func_0x00405e39(piVar3);
   uVar2 = *(ushort *)(*piVar3 + 4);
   iVar5 = func_0x00405e39(param_1);
@@ -2846,7 +2846,7 @@ TMacViewMgr::BlitMapOverlayGlyphStrip32x24SkipMask10
     pcVar6 = pcVar6 + iVar8;
     pcVar9 = pcVar9 + (short)(uVar2 & 0x3fff);
   } while (iVar4 != 0);
-  NoOpQuickDrawLifecycleHookB(piVar3);
+  func_0x004024fa(piVar3);
   return;
 }
 
@@ -2902,10 +2902,9 @@ TMacViewMgr::DrawStrategicMapUnitIcon
   ushort wDstStrideRaw;
   ushort wSrcStrideRaw;
   
-  pUnitIconAtlasSurface =
-       (int *)GetSurfaceObjectAtContextOffset24(*(undefined4 *)&this->field_0x678);
+  pUnitIconAtlasSurface = (int *)func_0x0040520e(*(undefined4 *)&this->field_0x678);
   wDstStrideRaw = *(ushort *)(*pDstSurface + 4);
-  ReturnConstantTrueQuickDrawFlag(pUnitIconAtlasSurface);
+  func_0x0040761c(pUnitIconAtlasSurface);
   nRemainingRows = func_0x00405e39(pUnitIconAtlasSurface);
   wSrcStrideRaw = *(ushort *)(*pUnitIconAtlasSurface + 4);
   pDstSurfacePixels = func_0x00405e39(pDstSurface);
@@ -2978,7 +2977,7 @@ TMacViewMgr::DrawStrategicMapUnitIcon
     pbDstRow = pbDstRow + nDstStrideBytes;
     pbSrcRow = pbSrcRow + (short)(wSrcStrideRaw & 0x3fff);
   } while (nRemainingRows != 0);
-  NoOpQuickDrawLifecycleHookB(pUnitIconAtlasSurface);
+  func_0x004024fa(pUnitIconAtlasSurface);
   return;
 }
 
@@ -3039,14 +3038,13 @@ TMacViewMgr::DrawStrategicMapUnitIconOverlay
   short nOverlaySourceRow;
   ushort wDstStrideRaw;
   
-  pOverlayAtlasSurface =
-       (int *)GetSurfaceObjectAtContextOffset24(*(undefined4 *)&this->field_0x67c);
+  pOverlayAtlasSurface = (int *)func_0x0040520e(*(undefined4 *)&this->field_0x67c);
   if ((0 < nVariantRow) &&
      (nOverlaySourceRow =
            *(short *)(&g_anStrategicMapOverlaySourceRowByIconId + (short)wOverlayIconId * 2),
      -1 < nOverlaySourceRow)) {
     wDstStrideRaw = *(ushort *)(*pDstSurface + 4);
-    ReturnConstantTrueQuickDrawFlag(pOverlayAtlasSurface);
+    func_0x0040761c(pOverlayAtlasSurface);
     nRemainingRows = func_0x00405e39(pOverlayAtlasSurface);
     wOverlayIconId = *(ushort *)(*pOverlayAtlasSurface + 4) & 0x3fff;
     nRemainingCols = func_0x00405e39(pDstSurface);
@@ -3071,26 +3069,26 @@ TMacViewMgr::DrawStrategicMapUnitIconOverlay
       pbDstCursor = pbDstPixel + nDstStrideBytes + -0x25;
       pbSrcCursor = pbSrcPixel + (short)wOverlayIconId + -0x25;
     } while (nRemainingRows != 0);
-    NoOpQuickDrawLifecycleHookB(pOverlayAtlasSurface);
+    func_0x004024fa(pOverlayAtlasSurface);
   }
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0060A912
-// GHIDRA_NAME TMacViewMgr::TMacViewMgr_VtblSlot046
-// GHIDRA_PROTO undefined TMacViewMgr_VtblSlot046()
+// GHIDRA_NAME TMacViewMgr::CFrameWnd::IsFrameWnd
+// GHIDRA_PROTO undefined CFrameWnd::IsFrameWnd()
 
-undefined4 TMacViewMgr::TMacViewMgr_VtblSlot046(void)
+undefined4 TMacViewMgr::CFrameWnd__IsFrameWnd(void)
 
 {
   return 1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0061C82E
-// GHIDRA_NAME TMacViewMgr::TMacViewMgr_VtblSlot043
-// GHIDRA_PROTO undefined __thiscall TMacViewMgr_VtblSlot043(void)
+// GHIDRA_NAME TMacViewMgr::CFrameWnd::PostNcDestroy
+// GHIDRA_PROTO undefined __thiscall CFrameWnd::PostNcDestroy(void)
 
-void TMacViewMgr::TMacViewMgr_VtblSlot043()
+void TMacViewMgr::CFrameWnd__PostNcDestroy()
 
 {
   if (this != (TMacViewMgr *)0x0) {
@@ -3100,10 +3098,10 @@ void TMacViewMgr::TMacViewMgr_VtblSlot043()
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0061D917
-// GHIDRA_NAME TMacViewMgr::WrapperFor_GetObjectValueAtOffset98_At0061d917
-// GHIDRA_PROTO undefined WrapperFor_GetObjectValueAtOffset98_At0061d917()
+// GHIDRA_NAME TMacViewMgr::CFrameWnd::GetActiveDocument
+// GHIDRA_PROTO undefined CFrameWnd::GetActiveDocument()
 
-undefined4 TMacViewMgr::WrapperFor_GetObjectValueAtOffset98_At0061d917(void)
+undefined4 TMacViewMgr::CFrameWnd__GetActiveDocument(void)
 
 {
   int iVar1;
@@ -3116,10 +3114,10 @@ undefined4 TMacViewMgr::WrapperFor_GetObjectValueAtOffset98_At0061d917(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0061E49C
-// GHIDRA_NAME TMacViewMgr::TMacViewMgr_VtblSlot050
-// GHIDRA_PROTO undefined __thiscall TMacViewMgr_VtblSlot050(void)
+// GHIDRA_NAME TMacViewMgr::CFrameWnd::GetActiveFrame
+// GHIDRA_PROTO undefined __thiscall CFrameWnd::GetActiveFrame(void)
 
-TMacViewMgr * TMacViewMgr::TMacViewMgr_VtblSlot050()
+TMacViewMgr * TMacViewMgr::CFrameWnd__GetActiveFrame()
 
 {
   return this;

@@ -78,14 +78,14 @@ void TTask::CreateTTaskInstance()
     pcStack_4c = (char *)0xd;
     uStack_50 = 0x273d;
     piStack_54 = (int *)0x5ad855;
-    (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+    (*g_pSimMgr->vftable[0x10].slot_0x04)();
   }
   else {
     pCStack_48 = &CStack_30;
     pcStack_4c = (char *)0xc;
     uStack_50 = 0x273d;
     piStack_54 = (int *)0x5ad82f;
-    (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+    (*g_pSimMgr->vftable[0x10].slot_0x04)();
   }
   piStack_54 = aiStack_40;
   piStack_58 = (int *)0x5ad86a;
@@ -98,7 +98,7 @@ void TTask::CreateTTaskInstance()
   CStack_64.m_pchData = pcStack_44;
   CStack_6c.m_pchData = (char *)aiStack_40;
   CStack_68.m_pchData = (char *)pCStack_48;
-  func_0x0040988b(g_pLocalizationTable);
+  func_0x0040988b(g_pSimMgr);
   CStack_60.m_pchData = (char *)0x696e666f;
   CStack_64.m_pchData = (char *)0x5ad8aa;
   uVar3 = (*p_Var1)();

@@ -84,10 +84,10 @@ void TLineData::RenderUiBitmapOnRuntimeSurfaceContext(undefined4 param_1)
   piVar6 = (int *)func_0x004047a0(param_1);
   uStack_10 = 0;
   uStack_c = 0;
-  GetActiveQuickDrawSurfaceContextAndFlags(&uStack_14,&uStack_18);
-  SetActiveQuickDrawSurfaceContext(*(undefined4 *)&this[8].field_0x4,uStack_18);
-  uVar7 = GetSurfaceObjectAtContextOffset24(*(undefined4 *)&this[8].field_0x4);
-  ReturnConstantTrueQuickDrawFlag(uVar7);
+  func_0x00408d64(&uStack_14,&uStack_18);
+  func_0x00406f5f(*(undefined4 *)&this[8].field_0x4,uStack_18);
+  uVar7 = func_0x0040520e(*(undefined4 *)&this[8].field_0x4);
+  func_0x0040761c(uVar7);
   func_0x004062d5(piVar6);
   if (*piVar6 != 0) {
     uVar5 = func_0x004078b0(piVar6);
@@ -109,7 +109,7 @@ void TLineData::RenderUiBitmapOnRuntimeSurfaceContext(undefined4 param_1)
     operator_delete(puVar3);
   }
   operator_delete(piVar6);
-  SetActiveQuickDrawSurfaceContext(uStack_14,uStack_18);
+  func_0x00406f5f(uStack_14,uStack_18);
   return;
 }
 

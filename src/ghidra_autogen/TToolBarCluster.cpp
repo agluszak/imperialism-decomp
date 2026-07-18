@@ -267,28 +267,28 @@ TToolBarCluster::HandleCityBuildingHoverSelection
 LAB_004bb114:
           pTStack_68 = (TToolBarCluster *)&local_54;
           pTStack_6c = unaff_EDI;
-          (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+          (*g_pSimMgr->vftable[0x10].slot_0x04)();
           if ((char)pCursorPoint != '\0') {
             if (sVar1 == 0xb) {
               if ((short)local_48.m_pchData == 0) {
                 if (this_00->field_0x4 == '\0') {
                   puStack_78 = (undefined *)0x1a;
-                  (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2734);
-                  func_0x0040988b(g_pLocalizationTable,&pTStack_68,uStack_10,pTStack_6c);
+                  (*g_pSimMgr->vftable[0x10].slot_0x04)(0x2734);
+                  func_0x0040988b(g_pSimMgr,&pTStack_68,uStack_10,pTStack_6c);
                 }
                 else {
                   puStack_78 = (undefined *)0x19;
-                  (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2734);
-                  func_0x0040988b(g_pLocalizationTable,&pTStack_68,uStack_10,pTStack_6c);
+                  (*g_pSimMgr->vftable[0x10].slot_0x04)(0x2734);
+                  func_0x0040988b(g_pSimMgr,&pTStack_68,uStack_10,pTStack_6c);
                 }
               }
               else {
                 puStack_78 = &g_szDecimalFormat;
-                _Format_CString__QAAXPBDZZ(&stack0xffffffa8);
+                CString__Format(&stack0xffffffa8);
                 puStack_78 = (undefined *)0x18;
-                (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2734);
-                (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2734,0x1d,&uStack_10);
-                func_0x0040988b(g_pLocalizationTable,&stack0xffffff8c,uStack_1c,puStack_78,0x2719);
+                (*g_pSimMgr->vftable[0x10].slot_0x04)(0x2734);
+                (*g_pSimMgr->vftable[0x10].slot_0x04)(0x2734,0x1d,&uStack_10);
+                func_0x0040988b(g_pSimMgr,&stack0xffffff8c,uStack_1c,puStack_78,0x2719);
               }
               puStack_78 = (undefined *)0x4bb23a;
               CString::operator=((CString *)&stack0xffffffa0,(CString *)&stack0xffffffa4);
@@ -296,15 +296,15 @@ LAB_004bb114:
             else if ((short)local_48.m_pchData == 0) {
               if (*(short *)((int)this_00->orderSlotsE4[(short)(sVar1 + 0x35)] + 4) < 1) {
                 puStack_78 = (undefined *)0x1a;
-                (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2734);
-                func_0x0040988b(g_pLocalizationTable,&pTStack_68,uStack_10,pTStack_6c);
+                (*g_pSimMgr->vftable[0x10].slot_0x04)(0x2734);
+                func_0x0040988b(g_pSimMgr,&pTStack_68,uStack_10,pTStack_6c);
                 puStack_78 = (undefined *)0x4bb2e9;
                 CString::operator=((CString *)&stack0xffffffa0,(CString *)&stack0xffffffa4);
               }
               else {
                 puStack_78 = (undefined *)0x19;
-                (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2734);
-                func_0x0040988b(g_pLocalizationTable,&pTStack_68,uStack_10,pTStack_6c);
+                (*g_pSimMgr->vftable[0x10].slot_0x04)(0x2734);
+                func_0x0040988b(g_pSimMgr,&pTStack_68,uStack_10,pTStack_6c);
                 puStack_78 = (undefined *)0x4bb2a5;
                 CString::operator=((CString *)&stack0xffffffa0,(CString *)&stack0xffffffa4);
               }
@@ -312,22 +312,21 @@ LAB_004bb114:
             else {
               pvVar3 = this_00->orderSlotsE4[(short)(sVar1 + 0x35)];
               puStack_78 = (undefined *)0x4bb303;
-              GetCityBuildingProductionValueBySlot(this_00,sVar1);
+              TCity::GetBuildingType(this_00,sVar1);
               puStack_78 = &g_szDecimalFormat;
-              _Format_CString__QAAXPBDZZ(&stack0xffffffa8);
+              CString__Format(&stack0xffffffa8);
               puStack_78 = &g_szDecimalFormat;
-              _Format_CString__QAAXPBDZZ(&local_50);
+              CString__Format(&local_50);
               puStack_78 = (undefined *)0x18;
-              (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2734);
+              (*g_pSimMgr->vftable[0x10].slot_0x04)(0x2734);
               if (*(short *)((int)pvVar3 + 4) < 1) {
                 uVar11 = 0x1b;
               }
               else {
                 uVar11 = 0x1c;
               }
-              (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2734,uVar11,&uStack_10);
-              func_0x0040988b(g_pLocalizationTable,&stack0xffffff8c,uStack_1c,puStack_78,0x2719,
-                              pTStack_68);
+              (*g_pSimMgr->vftable[0x10].slot_0x04)(0x2734,uVar11,&uStack_10);
+              func_0x0040988b(g_pSimMgr,&stack0xffffff8c,uStack_1c,puStack_78,0x2719,pTStack_68);
               puStack_78 = (undefined *)0x4bb3af;
               CString::operator=((CString *)&stack0xffffffa0,(CString *)&stack0xffffffa4);
               this = local_40;
@@ -366,7 +365,7 @@ LAB_004bb114:
             pTStack_68 = this;
             func_0x00401d70();
             pTStack_6c = (TToolBarCluster *)CONCAT22(extraout_var_01,(short)this->field30);
-            puStack_8 = (undefined1 *)CONCAT31(puStack_8._1_3_,7);
+            puStack_8._0_1_ = 7;
             func_0x00409a11();
             pTStack_6c = (TToolBarCluster *)local_44.m_pchData;
             func_0x0040232e();
@@ -378,9 +377,9 @@ LAB_004bb114:
             func_0x004047fa();
             pTStack_6c = (TToolBarCluster *)local_44.m_pchData;
             func_0x00405be1();
-            local_4 = CONCAT31(local_4._1_3_,6);
-            pTStack_68 = (TToolBarCluster *)0x4bb501;
-            DestroyScopedMapQuickDrawContext();
+            puStack_8 = (undefined1 *)CONCAT31(puStack_8._1_3_,6);
+            pTStack_6c = (TToolBarCluster *)0x4bb501;
+            func_0x00408035();
           }
           *(short *)&this[1].controlTag = sVar1;
         }
@@ -505,13 +504,13 @@ void TToolBarCluster::InitializeCityProductionDialog(int param_1, int *param_2)
     MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
     func_0x004057a4();
   }
-  (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
-  (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
-  _Format_CString__QAAXPBDZZ();
+  (*g_pSimMgr->vftable[0x10].slot_0x04)();
+  (*g_pSimMgr->vftable[0x10].slot_0x04)();
+  CString__Format();
   p_Var4 = pTVar1->vftable->ApplyJoinEmpireModeForTargetNation_47;
   (*p_Var4)();
   (*p_Var4)();
-  _Format_CString__QAAXPBDZZ();
+  CString__Format();
   func_0x0040988b();
   func_0x004076b7();
   func_0x00404d22();
@@ -520,10 +519,10 @@ void TToolBarCluster::InitializeCityProductionDialog(int param_1, int *param_2)
     MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
     func_0x004057a4();
   }
-  _Format_CString__QAAXPBDZZ();
+  CString__Format();
   (*p_Var4)();
-  _Format_CString__QAAXPBDZZ();
-  (*g_pLocalizationTable->vftable[0xf].slot_0x04)();
+  CString__Format();
+  (*g_pSimMgr->vftable[0xf].slot_0x04)();
   func_0x0040988b();
   func_0x004076b7();
   func_0x00404d22();
@@ -532,10 +531,10 @@ void TToolBarCluster::InitializeCityProductionDialog(int param_1, int *param_2)
     MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
     func_0x004057a4();
   }
-  _Format_CString__QAAXPBDZZ();
+  CString__Format();
   (*p_Var4)();
-  _Format_CString__QAAXPBDZZ();
-  (*g_pLocalizationTable->vftable[0xf].slot_0x04)();
+  CString__Format();
+  (*g_pSimMgr->vftable[0xf].slot_0x04)();
   func_0x0040988b();
   func_0x004076b7();
   func_0x00404d22();
@@ -545,7 +544,7 @@ void TToolBarCluster::InitializeCityProductionDialog(int param_1, int *param_2)
     func_0x004057a4();
   }
   (**(code **)(*piVar8 + 0xec))();
-  (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+  (*g_pSimMgr->vftable[0x10].slot_0x04)();
   func_0x004076b7();
   func_0x00404d22();
   piVar8 = (int *)(*pcVar3)();
@@ -554,7 +553,7 @@ void TToolBarCluster::InitializeCityProductionDialog(int param_1, int *param_2)
     func_0x004057a4();
   }
   (**(code **)(*piVar8 + 0xec))();
-  (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+  (*g_pSimMgr->vftable[0x10].slot_0x04)();
   func_0x004076b7();
   func_0x00404d22();
   piVar8 = (int *)(*pcVar3)();
@@ -563,7 +562,7 @@ void TToolBarCluster::InitializeCityProductionDialog(int param_1, int *param_2)
     func_0x004057a4();
   }
   (**(code **)(*piVar8 + 0xec))();
-  (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+  (*g_pSimMgr->vftable[0x10].slot_0x04)();
   func_0x004076b7();
   func_0x00404d22();
   piVar8 = (int *)(*pcVar3)();
@@ -572,7 +571,7 @@ void TToolBarCluster::InitializeCityProductionDialog(int param_1, int *param_2)
     func_0x004057a4();
   }
   (**(code **)(*piVar8 + 0xec))();
-  (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+  (*g_pSimMgr->vftable[0x10].slot_0x04)();
   func_0x004076b7();
   func_0x00404d22();
   piVar8 = (int *)(*pcVar3)();
@@ -582,7 +581,7 @@ void TToolBarCluster::InitializeCityProductionDialog(int param_1, int *param_2)
   }
   (**(code **)(*piVar8 + 0x1cc))();
   puVar10 = &stack0xffffff1c;
-  (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+  (*g_pSimMgr->vftable[0x10].slot_0x04)();
   func_0x004076b7();
   func_0x00404d22();
   piVar8 = (int *)(*pcVar3)();
@@ -594,7 +593,7 @@ void TToolBarCluster::InitializeCityProductionDialog(int param_1, int *param_2)
   (**(code **)(*piVar8 + 0x1cc))();
   CStack_11c.m_pchData = (char *)0x2734;
   CStack_120.m_pchData = (char *)0x4bbdfb;
-  (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+  (*g_pSimMgr->vftable[0x10].slot_0x04)();
   CStack_120.m_pchData = (char *)piVar8;
   func_0x004076b7();
   func_0x00404d22();
@@ -604,7 +603,7 @@ void TToolBarCluster::InitializeCityProductionDialog(int param_1, int *param_2)
     MessageBoxA((HWND)0x0,g_szUiNilPointerMessage,g_szUiFailureMessage,0x30);
     func_0x004057a4();
   }
-  (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+  (*g_pSimMgr->vftable[0x10].slot_0x04)();
   func_0x004076b7(&CStack_120);
   func_0x00404d22();
   CString::~CString(&CStack_120);
@@ -673,7 +672,7 @@ void __fastcall TToolBarCluster::InitializeDiplomacyMinisterActionControlsAndLab
     pcVar2 = (char *)(*CVar5.m_pchData)();
     puStack_3c = (undefined *)0x2733;
     CStack_40.m_pchData = (char *)0x4f4707;
-    (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+    (*g_pSimMgr->vftable[0x10].slot_0x04)();
     puStack_48 = &stack0xffffffd4;
     uStack_4c = 0x4f4719;
     uStack_44 = extraout_ECX;
@@ -684,11 +683,11 @@ void __fastcall TToolBarCluster::InitializeDiplomacyMinisterActionControlsAndLab
     CVar5.m_pchData = local_18.m_pchData;
     sVar6 = sVar6 + 1;
   } while (sVar6 < 6);
-  if (*(short *)&g_pLocalizationTable->field_0x8 == 6) {
+  if (*(short *)&g_pSimMgr->field_0x8 == 6) {
     pcVar2 = (char *)(*local_18.m_pchData)();
     puStack_3c = (undefined *)0x274a;
     CStack_40.m_pchData = (char *)0x4f4766;
-    (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+    (*g_pSimMgr->vftable[0x10].slot_0x04)();
     puStack_48 = &stack0xffffffd4;
     uStack_4c = 0x4f4778;
     CStack_40.m_pchData = pcVar2;
@@ -791,10 +790,10 @@ undefined1 TToolBarCluster::ValidateDiplomacyProposalTargetAndShowBlockedDetails
     ppuStack_54 = (undefined1 **)0x4f7594;
     func_0x00405245();
     ppuStack_54 = &puStack_8;
-    (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+    (*g_pSimMgr->vftable[0x10].slot_0x04)();
     CStack_68.m_pchData = (char *)&CStack_40;
     pCStack_64 = (CString *)CStack_14.m_pchData;
-    CStack_6c.m_pchData = (char *)g_pLocalizationTable;
+    CStack_6c.m_pchData = (char *)g_pSimMgr;
     CStack_70.m_pchData = (char *)0x4f75d5;
     func_0x0040988b();
     pCStack_64 = (CString *)0x4f75e8;
@@ -858,7 +857,7 @@ undefined1 TToolBarCluster::ValidateDiplomacyProposalTargetAndShowBlockedDetails
     pCStack_64 = (CString *)0x5;
     CStack_68.m_pchData = (char *)0x275d;
     CStack_6c.m_pchData = "j";
-    (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+    (*g_pSimMgr->vftable[0x10].slot_0x04)();
     CStack_6c.m_pchData = (char *)0x0;
     CStack_70.m_pchData = (char *)0x0;
     CStack_74.m_pchData = &DAT_006a2fc0;
@@ -978,11 +977,11 @@ TToolBarCluster::RunDiplomacyWaitSheetPopupAndAwaitResponse
     puVar8 = &stack0xffffffc8;
     uStack_54 = 0x2729;
     pCStack_58 = (CString *)0x4f9b9b;
-    (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+    (*g_pSimMgr->vftable[0x10].slot_0x04)();
     CStack_68.m_pchData = &stack0xffffffc8;
     pCStack_58 = (CString *)CStack_60.m_pchData;
     CVar11.m_pchData = CStack_64.m_pchData;
-    func_0x0040988b(g_pLocalizationTable);
+    func_0x0040988b(g_pSimMgr);
   }
   else {
     CStack_60.m_pchData = (char *)unaff_EDI;
@@ -1009,7 +1008,7 @@ TToolBarCluster::RunDiplomacyWaitSheetPopupAndAwaitResponse
       puVar8 = &stack0xffffffc8;
       uStack_54 = 0x2729;
       pCStack_58 = (CString *)0x4f9c24;
-      (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+      (*g_pSimMgr->vftable[0x10].slot_0x04)();
       pCStack_58 = (CString *)CStack_64.m_pchData;
     }
     else if (param_1 == 0xb) {
@@ -1036,7 +1035,7 @@ TToolBarCluster::RunDiplomacyWaitSheetPopupAndAwaitResponse
       puVar8 = &stack0xffffffc8;
       uStack_54 = 0x2729;
       pCStack_58 = (CString *)0x4f9ca8;
-      (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+      (*g_pSimMgr->vftable[0x10].slot_0x04)();
       CStack_64.m_pchData = (char *)unaff_EDI;
       pCStack_58 = unaff_EDI;
     }
@@ -1062,12 +1061,12 @@ TToolBarCluster::RunDiplomacyWaitSheetPopupAndAwaitResponse
       puVar8 = &stack0xffffffc8;
       uStack_54 = 0x2729;
       pCStack_58 = (CString *)0x4f9d17;
-      (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+      (*g_pSimMgr->vftable[0x10].slot_0x04)();
       CStack_5c.m_pchData = CStack_64.m_pchData;
       pCStack_58 = unaff_EDI;
     }
     CVar11.m_pchData = CStack_68.m_pchData;
-    func_0x0040988b(g_pLocalizationTable,&stack0xffffffc8);
+    func_0x0040988b(g_pSimMgr,&stack0xffffffc8);
   }
   pCStack_58 = (CString *)0x73686565;
   CStack_5c.m_pchData = (char *)0x4f9d4c;
@@ -1105,96 +1104,6 @@ TToolBarCluster::RunDiplomacyWaitSheetPopupAndAwaitResponse
   }
   *unaff_FS_OFFSET = (int)puVar9;
   return iVar7 == 0x61636365;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x005083F0
-// GHIDRA_NAME TToolBarCluster::BuildMappedSharedStringFromByteStateTable
-// GHIDRA_PROTO undefined __thiscall BuildMappedSharedStringFromByteStateTable(CString * param_1, byte * param_2)
-
-CString * __thiscall
-TToolBarCluster::BuildMappedSharedStringFromByteStateTable
-          (TToolBarCluster *this,CString *param_1,byte *param_2)
-
-{
-  char *pcVar1;
-  byte bVar2;
-  byte bVar3;
-  byte bVar4;
-  byte bVar5;
-  char cVar6;
-  char *pcVar7;
-  undefined4 *unaff_FS_OFFSET;
-  byte bStack0000000c;
-  undefined3 uStack0000000d;
-  CString local_14;
-  undefined4 local_10;
-  undefined4 local_c;
-  undefined1 *puStack_8;
-  uint local_4;
-  
-  local_4 = 0xffffffff;
-  puStack_8 = &LAB_0063398f;
-  local_c = *unaff_FS_OFFSET;
-  *unaff_FS_OFFSET = &local_c;
-  local_10 = 0;
-  if (bStack0000000c == '\0') {
-    CString::CString(param_1,(char *)param_2);
-    *unaff_FS_OFFSET = local_c;
-    return param_1;
-  }
-  bVar2 = *param_2;
-  CString::CString(&local_14);
-  bVar5 = (byte)this->field04;
-  local_4 = 1;
-  if (((bStack0000000c < bVar5) ||
-      ((int)this->padding_08_to_0b <= (int)(((uint)_bStack0000000c & 0xff) - (uint)bVar5))) ||
-     (((bVar3 = (byte)this->field0c, bVar2 < bVar3 ||
-       (this->field10 <= (int)((uint)bVar2 - (uint)bVar3))) &&
-      ((bVar4 = (byte)this->field14, bVar2 < bVar4 ||
-       (this->field18 <= (int)((uint)bVar2 - (uint)bVar4))))))) {
-    if (*param_2 == 0x20) {
-      CString::CString((CString *)&stack0x0000000c,(char *)(param_2 + 1));
-      local_4._0_1_ = 2;
-      CString::operator=(&local_14,(CString *)&stack0x0000000c);
-    }
-    else {
-      CString::CString((CString *)&stack0x0000000c,(char *)param_2);
-      local_4._0_1_ = 3;
-      CString::operator=(&local_14,(CString *)&stack0x0000000c);
-    }
-    local_4 = CONCAT31(local_4._1_3_,1);
-    CString::~CString((CString *)&stack0x0000000c);
-  }
-  else {
-    bVar5 = bStack0000000c - bVar5;
-    bStack0000000c = bVar5;
-    if ((bVar2 < bVar3) || ((int)(this->field10 + (uint)bVar3) <= (int)(uint)bVar2)) {
-      cVar6 = (char)this->field10 - (char)this->field14;
-    }
-    else {
-      cVar6 = -bVar3;
-    }
-    pcVar7 = *(char **)(*(int *)(this->controlTag + (uint)(byte)(bVar2 + cVar6) * 4) +
-                       (uint)bVar5 * 4);
-    cVar6 = *pcVar7;
-    while (cVar6 != '\0') {
-      if (cVar6 == '*') {
-        CString::operator+=(&local_14,(char *)(param_2 + 1));
-      }
-      else {
-        CString::operator+=(cVar6);
-      }
-      pcVar1 = pcVar7 + 1;
-      pcVar7 = pcVar7 + 1;
-      cVar6 = *pcVar1;
-    }
-  }
-  CString::CString(param_1,&local_14);
-  local_10 = 1;
-  local_4 = local_4 & 0xffffff00;
-  CString::~CString(&local_14);
-  *unaff_FS_OFFSET = local_c;
-  return param_1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0054CC00
@@ -1311,7 +1220,7 @@ void TToolBarCluster::BuildNavyOrderStatusLineText(CString param_1)
   for (iVar1 = this->field10; iVar1 != 0; iVar1 = *(int *)(iVar1 + 4)) {
     iVar3 = iVar3 + 1;
   }
-  _Format_CString__QAAXPBDZZ(&local_14,&g_szDecimalFormat,iVar3);
+  CString__Format(&local_14,&g_szDecimalFormat,iVar3);
   uVar2 = AssignSharedStringConcatRefAndCStr
                     (&param_1,&local_14,g_Build_Map_Order_LookupTable_00695794);
   local_4._0_1_ = 2;
@@ -1404,15 +1313,14 @@ LAB_00554fd0:
 int TToolBarCluster::TryHandleMapContextAction(short nTileIndex, int nInputFlags)
 
 {
-  undefined *puVar1;
-  uint uVar2;
-  void *pvVar3;
-  int iVar4;
-  undefined4 uVar5;
+  int iVar1;
+  undefined *puVar2;
+  uint uVar3;
+  undefined4 uVar4;
   undefined2 in_stack_00000006;
   
-  uVar2 = func_0x00407ee1(_nTileIndex,nInputFlags);
-  switch(uVar2) {
+  uVar3 = func_0x00407ee1(_nTileIndex,nInputFlags);
+  switch(uVar3) {
   case 2:
   case 3:
   case 4:
@@ -1421,35 +1329,33 @@ int TToolBarCluster::TryHandleMapContextAction(short nTileIndex, int nInputFlags
   case 7:
   case 8:
                     /* g_pCachedMapActionContext is forwarded to preserve dialog continuity. */
-    iVar4 = uVar2 - 2;
-    uVar5 = g_pCachedMapActionContext;
-    pvVar3 = GetMapActionContextByTileIndex(nTileIndex);
-    uVar5 = func_0x004016a9(pvVar3,iVar4,uVar5);
-    return CONCAT31((int3)((uint)uVar5 >> 8),1);
+    uVar4 = func_0x0040318e(_nTileIndex,uVar3 - 2,g_pCachedMapActionContext);
+    uVar4 = func_0x004016a9(uVar4);
+    return CONCAT31((int3)((uint)uVar4 >> 8),1);
   case 9:
                     /* Action codes 2..8 open context dialogs with action type (code - 2). */
-    pvVar3 = GetMapActionContextByTileIndex(nTileIndex);
-    uVar5 = func_0x004027d9(pvVar3);
-    return CONCAT31((int3)((uint)uVar5 >> 8),1);
+    uVar4 = func_0x0040318e(_nTileIndex);
+    uVar4 = func_0x004027d9(uVar4);
+    return CONCAT31((int3)((uint)uVar4 >> 8),1);
   case 10:
                     /* Action code 10 routes through UI runtime vfunc +0xF0 for active order
                        execution. */
-    puVar1 = g_pUiRuntimeContext->vftable;
-    uVar5 = func_0x0040397c();
-    uVar5 = (**(code **)(puVar1 + 0xf0))(uVar5);
-    return CONCAT31((int3)((uint)uVar5 >> 8),1);
+    puVar2 = g_pUiRuntimeContext->vftable;
+    uVar4 = func_0x0040397c();
+    uVar4 = (**(code **)(puVar2 + 0xf0))(uVar4);
+    return CONCAT31((int3)((uint)uVar4 >> 8),1);
   case 0xb:
                     /* Action code 11 maps tile -> linked entry list node before opening entry-order
                        dialog. */
     break;
   default:
-    return uVar2 & 0xffffff00;
+    return uVar3 & 0xffffff00;
   }
-  for (iVar4 = this->field04; (iVar4 != 0 && (*(short *)(iVar4 + 0x30) != nTileIndex));
-      iVar4 = *(int *)(iVar4 + 0x2c)) {
+  for (iVar1 = this->field04; (iVar1 != 0 && (*(short *)(iVar1 + 0x30) != nTileIndex));
+      iVar1 = *(int *)(iVar1 + 0x2c)) {
   }
-  uVar5 = func_0x00408247(iVar4);
-  return CONCAT31((int3)((uint)uVar5 >> 8),1);
+  uVar4 = func_0x00408247(iVar1);
+  return CONCAT31((int3)((uint)uVar4 >> 8),1);
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00568F90
@@ -1580,10 +1486,10 @@ CRuntimeClass * TToolBarCluster::GetRuntimeClass()
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00584E20
-// GHIDRA_NAME TToolBarCluster::ConstructTToolBarClusterBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTToolBarClusterBaseState(void)
+// GHIDRA_NAME TToolBarCluster::TToolBarCluster
+// GHIDRA_PROTO undefined __thiscall TToolBarCluster(void)
 
-TToolBarCluster * TToolBarCluster::ConstructTToolBarClusterBaseState()
+TToolBarCluster * TToolBarCluster::TToolBarCluster()
 
 {
   TCluster::ConstructUiResourceEntryType4B0C0((TCluster *)this);
@@ -1629,7 +1535,7 @@ void TToolBarCluster::HandleEvent(int param_1, void *param_2, int param_3)
         return;
       }
       if (uVar1 == 0x444f4e45) {
-        (*g_pLocalizationTable->vftable[8].slot_0x04)();
+        (*g_pSimMgr->vftable[8].slot_0x04)();
         return;
       }
     }
@@ -1646,14 +1552,14 @@ void TToolBarCluster::HandleEvent(int param_1, void *param_2, int param_3)
     else if (uVar1 < 0x64656666) {
       if (uVar1 == 0x64656665) goto LAB_00585059;
       if (uVar1 == 0x63697479) {
-        (*g_pLocalizationTable->vftable[9].GetTSimMgrClassNamePointer)(0x6a);
+        (*g_pSimMgr->vftable[9].GetTSimMgrClassNamePointer)(0x6a);
         return;
       }
     }
     else if (uVar1 < 0x656e6421) {
       if (uVar1 == 0x656e6420) {
-        if (*(int *)&g_pLocalizationTable->field_0x8 != 0x11) {
-          (*g_pLocalizationTable->vftable[8].slot_0x04)();
+        if (*(int *)&g_pSimMgr->field_0x8 != 0x11) {
+          (*g_pSimMgr->vftable[8].slot_0x04)();
           return;
         }
         uVar4 = func_0x00403b16();
@@ -1662,11 +1568,11 @@ void TToolBarCluster::HandleEvent(int param_1, void *param_2, int param_3)
           (**(code **)(g_pUiRuntimeContext->vftable + 0x88))(uVar4);
           return;
         }
-        (*g_pLocalizationTable->vftable[8].slot_0x04)();
+        (*g_pSimMgr->vftable[8].slot_0x04)();
         return;
       }
       if (uVar1 == 0x6469706c) {
-        (*g_pLocalizationTable->vftable[9].GetTSimMgrClassNamePointer)(0x68);
+        (*g_pSimMgr->vftable[9].GetTSimMgrClassNamePointer)(0x68);
         return;
       }
     }
@@ -1682,13 +1588,13 @@ LAB_00585059:
         return;
       }
       if (uVar1 == 0x6d6d6170) {
-        (*g_pLocalizationTable->vftable[9].GetTSimMgrClassNamePointer)(0x6d);
+        (*g_pSimMgr->vftable[9].GetTSimMgrClassNamePointer)(0x6d);
         return;
       }
     }
     else if (uVar1 < 0x71756573) {
       if (uVar1 == 0x71756572) {
-        iVar3 = *(int *)&g_pLocalizationTable->field_0x8;
+        iVar3 = *(int *)&g_pSimMgr->field_0x8;
         if (((iVar3 != 4) && (iVar3 != 0x12)) && (iVar3 != 5)) {
           func_0x00407018();
           return;
@@ -1699,10 +1605,10 @@ LAB_00585059:
       if ((0x6f707430 < uVar1) && (uVar1 < 0x6f707433)) goto LAB_00585059;
     }
     else if (uVar1 == 0x74726164) {
-      (*g_pLocalizationTable->vftable[9].GetTSimMgrClassNamePointer)(0x67);
+      (*g_pSimMgr->vftable[9].GetTSimMgrClassNamePointer)(0x67);
     }
     else if (uVar1 == 0x7472616e) {
-      (*g_pLocalizationTable->vftable[9].GetTSimMgrClassNamePointer)(0x69);
+      (*g_pSimMgr->vftable[9].GetTSimMgrClassNamePointer)(0x69);
       return;
     }
   }
@@ -1741,14 +1647,14 @@ void TToolBarCluster::HandleCrossUSmallViewsCommandTagDispatch(void)
   else if (in_EAX < 0x64656666) {
     if (in_EAX == 0x64656665) goto LAB_00585059;
     if (in_EAX == 0x63697479) {
-      (*g_pLocalizationTable->vftable[9].GetTSimMgrClassNamePointer)(0x6a);
+      (*g_pSimMgr->vftable[9].GetTSimMgrClassNamePointer)(0x6a);
       return;
     }
   }
   else if (in_EAX < 0x656e6421) {
     if (in_EAX == 0x656e6420) {
-      if (*(int *)&g_pLocalizationTable->field_0x8 != 0x11) {
-        (*g_pLocalizationTable->vftable[8].slot_0x04)();
+      if (*(int *)&g_pSimMgr->field_0x8 != 0x11) {
+        (*g_pSimMgr->vftable[8].slot_0x04)();
         return;
       }
       uVar2 = func_0x00403b16();
@@ -1757,11 +1663,11 @@ void TToolBarCluster::HandleCrossUSmallViewsCommandTagDispatch(void)
         (**(code **)(g_pUiRuntimeContext->vftable + 0x88))(uVar2);
         return;
       }
-      (*g_pLocalizationTable->vftable[8].slot_0x04)();
+      (*g_pSimMgr->vftable[8].slot_0x04)();
       return;
     }
     if (in_EAX == 0x6469706c) {
-      (*g_pLocalizationTable->vftable[9].GetTSimMgrClassNamePointer)(0x68);
+      (*g_pSimMgr->vftable[9].GetTSimMgrClassNamePointer)(0x68);
       return;
     }
   }
@@ -1777,13 +1683,13 @@ LAB_00585059:
       return;
     }
     if (in_EAX == 0x6d6d6170) {
-      (*g_pLocalizationTable->vftable[9].GetTSimMgrClassNamePointer)(0x6d);
+      (*g_pSimMgr->vftable[9].GetTSimMgrClassNamePointer)(0x6d);
       return;
     }
   }
   else if (in_EAX < 0x71756573) {
     if (in_EAX == 0x71756572) {
-      iVar1 = *(int *)&g_pLocalizationTable->field_0x8;
+      iVar1 = *(int *)&g_pSimMgr->field_0x8;
       if (((iVar1 != 4) && (iVar1 != 0x12)) && (iVar1 != 5)) {
         func_0x00407018();
         return;
@@ -1794,10 +1700,10 @@ LAB_00585059:
     if ((0x6f707430 < in_EAX) && (in_EAX < 0x6f707433)) goto LAB_00585059;
   }
   else if (in_EAX == 0x74726164) {
-    (*g_pLocalizationTable->vftable[9].GetTSimMgrClassNamePointer)(0x67);
+    (*g_pSimMgr->vftable[9].GetTSimMgrClassNamePointer)(0x67);
   }
   else if (in_EAX == 0x7472616e) {
-    (*g_pLocalizationTable->vftable[9].GetTSimMgrClassNamePointer)(0x69);
+    (*g_pSimMgr->vftable[9].GetTSimMgrClassNamePointer)(0x69);
     return;
   }
   return;
@@ -1859,7 +1765,7 @@ TToolBarCluster::HandleCursorHoverSelectionByChildHitTestAndFallback
         uVar6 = (0x3e < iVar2) + 2;
       }
       if ((-1 < (short)uVar6) && ((short)uVar6 < 6)) {
-        (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x272d,0xb,&stack0xffffffe4);
+        (*g_pSimMgr->vftable[0x10].slot_0x04)(0x272d,0xb,&stack0xffffffe4);
       }
     }
     piVar4 = (int *)(*pcVar1)(0x63757273);
@@ -1988,7 +1894,7 @@ void TToolBarCluster::RefreshTurnOrderStatusPanelTextsAndControls()
     ppuStack_44 = (undefined1 **)0x0;
     puStack_48 = (undefined1 *)0x2730;
     CStack_4c.m_pchData = (char *)0x5854b4;
-    (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+    (*g_pSimMgr->vftable[0x10].slot_0x04)();
     CStack_54.m_pchData = (char *)&puStack_3c;
     CStack_58.m_pchData = (char *)0x5854c6;
     ppuStack_50 = extraout_ECX;
@@ -2005,7 +1911,7 @@ void TToolBarCluster::RefreshTurnOrderStatusPanelTextsAndControls()
     puStack_48 = (undefined1 *)0x2;
     CStack_4c.m_pchData = (char *)0x2730;
     ppuStack_50 = (undefined1 **)0x5854f7;
-    (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+    (*g_pSimMgr->vftable[0x10].slot_0x04)();
     CStack_58.m_pchData = (char *)&puStack_40;
     CStack_5c.m_pchData = (char *)0x585509;
     CStack_54.m_pchData = (char *)extraout_ECX_00;
@@ -2026,7 +1932,7 @@ void TToolBarCluster::RefreshTurnOrderStatusPanelTextsAndControls()
       CStack_4c.m_pchData = (char *)0x13;
       ppuStack_50 = (undefined1 **)0x2730;
       CStack_54.m_pchData = (char *)0x585545;
-      (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+      (*g_pSimMgr->vftable[0x10].slot_0x04)();
       puStack_34 = (undefined1 *)&CStack_58;
       CStack_5c.m_pchData = (char *)&ppuStack_44;
       CStack_60.m_pchData = (char *)0x585557;
@@ -2049,7 +1955,7 @@ void TToolBarCluster::RefreshTurnOrderStatusPanelTextsAndControls()
       ppuStack_50 = (undefined1 **)0x15;
       CStack_54.m_pchData = (char *)0x2730;
       CStack_58.m_pchData = (char *)0x585593;
-      (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+      (*g_pSimMgr->vftable[0x10].slot_0x04)();
       CStack_60.m_pchData = (char *)&puStack_48;
       pCStack_64 = (CString *)0x5855a5;
       CStack_5c.m_pchData = (char *)extraout_ECX_02;
@@ -2071,7 +1977,7 @@ void TToolBarCluster::RefreshTurnOrderStatusPanelTextsAndControls()
       CStack_54.m_pchData = (char *)0x16;
       CStack_58.m_pchData = (char *)0x2730;
       CStack_5c.m_pchData = (char *)0x5855e1;
-      (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+      (*g_pSimMgr->vftable[0x10].slot_0x04)();
       puStack_3c = (undefined1 *)&CStack_60;
       pCStack_64 = &CStack_4c;
       CStack_68.m_pchData = (char *)0x5855f3;
@@ -2094,7 +2000,7 @@ void TToolBarCluster::RefreshTurnOrderStatusPanelTextsAndControls()
       CStack_58.m_pchData = (char *)0x14;
       CStack_5c.m_pchData = (char *)0x2730;
       CStack_60.m_pchData = (char *)0x58562f;
-      (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+      (*g_pSimMgr->vftable[0x10].slot_0x04)();
       puStack_40 = (undefined1 *)&pCStack_64;
       CStack_68.m_pchData = (char *)&ppuStack_50;
       pCStack_6c = (CString *)0x585641;
@@ -2124,40 +2030,40 @@ void TToolBarCluster::RefreshTurnOrderStatusPanelTextsAndControls()
   if (0x8fc < iVar9) {
     if (iVar9 == 0x2260) {
       CStack_5c.m_pchData = (char *)0xd;
-      pTVar11 = g_pLocalizationTable->vftable;
+      pTVar11 = g_pSimMgr->vftable;
     }
     else {
 switchD_005856a1_caseD_7dc:
       CStack_5c.m_pchData = (char *)0x7;
-      pTVar11 = g_pLocalizationTable->vftable;
+      pTVar11 = g_pSimMgr->vftable;
     }
     goto LAB_00585724;
   }
   if (iVar9 == 0x8fc) {
 switchD_005856a1_caseD_7de:
     CStack_5c.m_pchData = (char *)0xc;
-    pTVar11 = g_pLocalizationTable->vftable;
+    pTVar11 = g_pSimMgr->vftable;
   }
   else {
     switch(iVar9) {
     case 0x7d8:
       CStack_5c.m_pchData = (char *)0xf;
-      pTVar11 = g_pLocalizationTable->vftable;
+      pTVar11 = g_pSimMgr->vftable;
       break;
     case 0x7d9:
     case 0x7da:
       CStack_5c.m_pchData = (char *)0x10;
-      pTVar11 = g_pLocalizationTable->vftable;
+      pTVar11 = g_pSimMgr->vftable;
       break;
     case 0x7db:
       CStack_5c.m_pchData = (char *)0xe;
-      pTVar11 = g_pLocalizationTable->vftable;
+      pTVar11 = g_pSimMgr->vftable;
       break;
     default:
       goto switchD_005856a1_caseD_7dc;
     case 0x7dd:
       CStack_5c.m_pchData = (char *)0x11;
-      pTVar11 = g_pLocalizationTable->vftable;
+      pTVar11 = g_pSimMgr->vftable;
       break;
     case 0x7de:
       goto switchD_005856a1_caseD_7de;
@@ -2183,7 +2089,7 @@ LAB_00585749:
   if ((char *)CONCAT31(extraout_var_08,uVar3) != (char *)0x0) {
     CStack_5c.m_pchData = (char *)&CStack_4c;
     CStack_60.m_pchData = (char *)0x585768;
-    (*g_pLocalizationTable->vftable[6].slot_0x04)();
+    (*g_pSimMgr->vftable[6].slot_0x04)();
     puStack_40 = (undefined1 *)&pCStack_64;
     CStack_68.m_pchData = (char *)&ppuStack_50;
     pCStack_6c = (CString *)0x58577a;
@@ -2207,7 +2113,7 @@ LAB_00585749:
       puStack_88 = (undefined1 *)0x8;
       piStack_8c = (int *)0x2730;
       piStack_90 = (int *)0x5858c4;
-      (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+      (*g_pSimMgr->vftable[0x10].slot_0x04)();
       pCStack_6c = &CStack_94;
       ppCStack_98 = &pCStack_80;
       piStack_90 = piVar5;
@@ -2228,11 +2134,11 @@ LAB_00585749:
     pCStack_64 = (CString *)0x12;
     CStack_68.m_pchData = (char *)0x2730;
     pCStack_6c = (CString *)0x5857bd;
-    (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+    (*g_pSimMgr->vftable[0x10].slot_0x04)();
     pCStack_6c = &CStack_5c;
     CStack_70.m_pchData = &DAT_00000008;
     uStack_74 = 0x2730;
-    (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+    (*g_pSimMgr->vftable[0x10].slot_0x04)();
     CStack_7c.m_pchData = (char *)&pCStack_64;
     pCStack_80 = &CStack_58;
     puStack_84 = (undefined4 *)0x5857eb;
@@ -2283,7 +2189,7 @@ LAB_00585749:
     piStack_8c = (int *)0x9;
     piStack_90 = (int *)0x2730;
     CStack_94.m_pchData = (char *)0x58592c;
-    (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+    (*g_pSimMgr->vftable[0x10].slot_0x04)();
     CStack_70.m_pchData = (char *)&ppCStack_98;
     CStack_94.m_pchData = (char *)ppuVar10;
     func_0x004076b7(&puStack_84);
@@ -2310,7 +2216,7 @@ LAB_00585749:
     (**(code **)(iVar9 + 0x1c4))();
     CStack_94.m_pchData = (char *)&puStack_84;
     ppCStack_98 = (CString **)0x9;
-    (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2730);
+    (*g_pSimMgr->vftable[0x10].slot_0x04)(0x2730);
     (**(code **)(iVar9 + 0x1c8))(&piStack_90,0);
   }
   CStack_5c.m_pchData = (char *)0xffffffff;
@@ -2367,7 +2273,7 @@ TToolBarCluster::UpdateControlTagTreaTextFromNationAndMapContext
   if (cVar3 != '\0') {
     CStack_30.m_pchData = &stack0xffffffe0;
     CStack_34.m_pchData = *(char **)&g_apNationStates[param_1]->field_0x10;
-    (*g_pLocalizationTable->vftable[0xe].slot_0x04)();
+    (*g_pSimMgr->vftable[0xe].slot_0x04)();
   }
   CStack_30.m_pchData = (char *)0x74726561;
   p_Var1 = this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25;
@@ -2396,10 +2302,10 @@ TToolBarCluster::UpdateControlTagTreaTextFromNationAndMapContext
     }
     else {
       uVar5 = func_0x00401a41();
-      _Format_CString__QAAXPBDZZ(&CStack_14,&g_szDecimalFormat,uVar5);
+      CString__Format(&CStack_14,&g_szDecimalFormat,uVar5);
     }
-    (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2732,0x10,&CStack_30);
-    func_0x0040988b(g_pLocalizationTable,&pCStack_40,uVar6,unaff_EBP);
+    (*g_pSimMgr->vftable[0x10].slot_0x04)(0x2732,0x10,&CStack_30);
+    func_0x0040988b(g_pSimMgr,&pCStack_40,uVar6,unaff_EBP);
     (**(code **)(*(int *)CONCAT31(extraout_var_01,uVar4) + 0x1c8))(&pCStack_40,1);
     local_1c[0].m_pchData._0_1_ = 5;
     CString::~CString(&CStack_30);
@@ -2408,9 +2314,9 @@ TToolBarCluster::UpdateControlTagTreaTextFromNationAndMapContext
   else {
     CString::CString(&CStack_8);
     uStack_10 = 1;
-    (*g_pLocalizationTable->vftable[6].slot_0x04)();
+    (*g_pSimMgr->vftable[6].slot_0x04)();
     pCStack_40 = (CString *)&g_szDecimalFormat;
-    _Format_CString__QAAXPBDZZ(&CStack_2c);
+    CString__Format(&CStack_2c);
     pCStack_40 = &CStack_c;
     pCStack_40 = (CString *)AssignSharedStringConcatRefAndCStr(&stack0xffffffe0);
     CStack_14.m_pchData._0_1_ = 2;
@@ -2568,10 +2474,10 @@ void TToolBarCluster::SetMapInteractionMode(short nMode)
         uStack_40 = 0x2730;
         puStack_8 = (undefined1 *)CONCAT31(puStack_8._1_3_,1);
         piStack_44 = (int *)0x596d93;
-        (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+        (*g_pSimMgr->vftable[0x10].slot_0x04)();
         piStack_44 = (int *)&stack0xffffffd0;
         uStack_48 = 8;
-        (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+        (*g_pSimMgr->vftable[0x10].slot_0x04)();
         AssignSharedStringConcatRefAndCStr(&stack0xffffffd4);
         CStack_20.m_pchData._0_1_ = 2;
         src_ref = (CString *)AssignSharedStringConcatRefAndRef(&stack0xffffffd0);
@@ -2606,7 +2512,7 @@ void TToolBarCluster::SetMapInteractionMode(short nMode)
         CStack_3c.m_pchData = (char *)0x11;
         uStack_40 = 0x2732;
         piStack_44 = (int *)0x596eb2;
-        (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+        (*g_pSimMgr->vftable[0x10].slot_0x04)();
         CStack_20.m_pchData = (char *)&uStack_48;
         uStack_48 = extraout_ECX;
         piStack_44 = pModeCaptionControl;
@@ -2743,17 +2649,17 @@ void TToolBarCluster::SetActiveMapOrderEntry(void *pMapOrderEntry)
   
   func_0x004032a1(2);
   if ((char)this[1].field0c == '\0') {
-    InvalidateMapRegionForOrderEntry(this[1].field10);
+    func_0x004019ba(this[1].field10);
   }
   this[1].field10 = unaff_retaddr;
   if ((char)this[1].field0c == '\0') {
-    InvalidateMapRegionForOrderEntry(unaff_retaddr);
+    func_0x004019ba(unaff_retaddr);
   }
   if (unaff_retaddr == 0) {
     func_0x00408995(0);
     return;
   }
-  uVar1 = EnsureSelectedTaskForceForOrderOwnerAndRefresh(unaff_retaddr);
+  uVar1 = func_0x0040928c(unaff_retaddr);
   func_0x00408995(uVar1);
   return;
 }
@@ -2779,7 +2685,7 @@ void TToolBarCluster::InvalidateMapRegionForEntryIfUiPassive(undefined4 param_1)
 
 {
   if ((char)this[1].field0c == '\0') {
-    InvalidateMapRegionForOrderEntry(param_1);
+    func_0x004019ba(param_1);
   }
   return;
 }
@@ -2806,11 +2712,12 @@ TToolBarCluster::TrySelectNextValidMapOrderEntry
   char cVar1;
   undefined4 uVar2;
   TZone *pTVar3;
+  char unaff_retaddr;
   
   pTVar3 = (TZone *)this[1].field10;
-  EnsureSelectedTaskForceForOrderOwnerAndRefresh(0);
+  func_0x0040928c(0);
   if (pTVar3 != (TZone *)0x0) {
-    if ((char)pMapInteractionState == '\0') {
+    if (unaff_retaddr == '\0') {
       pTVar3 = *(TZone **)&pTVar3->field_0x18;
     }
     if (pTVar3 != (TZone *)0x0) goto LAB_005998d8;
@@ -2832,17 +2739,17 @@ LAB_005998d8:
   }
   func_0x004032a1(2);
   if ((char)this[1].field0c == '\0') {
-    InvalidateMapRegionForOrderEntry(this[1].field10);
+    func_0x004019ba(this[1].field10);
   }
   this[1].field10 = (int)pTVar3;
   if ((char)this[1].field0c == '\0') {
-    InvalidateMapRegionForOrderEntry(pTVar3);
+    func_0x004019ba(pTVar3);
   }
   if (pTVar3 == (TZone *)0x0) {
     func_0x00408995(0);
     return 1;
   }
-  uVar2 = EnsureSelectedTaskForceForOrderOwnerAndRefresh(pTVar3);
+  uVar2 = func_0x0040928c(pTVar3);
   func_0x00408995(uVar2);
   return 1;
 }

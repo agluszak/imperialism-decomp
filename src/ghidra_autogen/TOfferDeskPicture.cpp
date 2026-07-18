@@ -299,7 +299,7 @@ void TOfferDeskPicture::NoOpUiLifecycleHook()
   uVar3 = (uint3)uStack_7c;
   uStack_7c = (uint)(uVar3 & 0xffff);
   uStack_78 = (undefined4 *)((uint)uStack_78._2_2_ << 0x10);
-  BuildUiTextStyleDescriptor(&puStack_80,0,0xe,0x2b67);
+  func_0x00406afa(&puStack_80,0,0xe,0x2b67);
   (**(code **)(iVar2 + 0x1b4))(&puStack_80,0);
   (**(code **)(iVar2 + 0x1c4))(1,0);
   uVar4 = (*p_Var1)(0x61636365);
@@ -547,7 +547,7 @@ LAB_005bea42:
   *(undefined2 *)&this->field_0x9a = 0;
   puVar10 = &stack0xffffff84;
   iVar9 = iStack_4;
-  (*g_pLocalizationTable->vftable[0xf].slot_0x04)();
+  (*g_pSimMgr->vftable[0xf].slot_0x04)();
   pCVar5 = (CString *)func_0x00405b14();
   uStack_2c._0_1_ = 7;
   CString::operator=((CString *)&stack0xffffff88,pCVar5);
@@ -561,12 +561,12 @@ LAB_005bea42:
   CString::~CString(&CStack_20);
   CStack_b8.m_pchData = (char *)(int)sVar4;
   CStack_bc.m_pchData = (char *)0x5becc0;
-  (*g_pLocalizationTable->vftable[0xe].slot_0x04)();
+  (*g_pSimMgr->vftable[0xe].slot_0x04)();
   CStack_bc.m_pchData = (char *)(int)(short)uStack_2c;
   CStack_c4.m_pchData = &stack0xffffff60;
   CStack_c0.m_pchData = &g_szDecimalFormat;
   uStack_c8 = 0x5becd8;
-  _Format_CString__QAAXPBDZZ();
+  CString__Format();
   cStack_a5 = (char)((uint)&iStack_10 >> 0x18);
   if (cStack_a5 == '\0') {
     CStack_bc.m_pchData = (char *)0x0;
@@ -610,7 +610,7 @@ LAB_005bea42:
     uStack_f0 = 1;
     pCStack_f4 = (CString *)0x5bef7b;
     (**(code **)(iVar9 + 0xa8))();
-    if (*(int *)&g_pLocalizationTable->field_0x44 != 0) {
+    if (*(int *)&g_pSimMgr->field_0x44 != 0) {
       pCStack_f4 = (CString *)0x1;
       uStack_f8 = 0;
       uStack_fc = 0x13f2;
@@ -623,14 +623,14 @@ LAB_005bea42:
     uStack_f8 = 0xc;
     uStack_fc = 0x2740;
     pcStack_100 = (char *)0x5befd1;
-    (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+    (*g_pSimMgr->vftable[0x10].slot_0x04)();
     pcStack_100 = CStack_d0.m_pchData;
     pCStack_104 = pCStack_e0;
     pCStack_108 = pCStack_e4;
     piStack_10c = (int *)CStack_cc.m_pchData;
     ppTStack_114 = &pTStack_e8;
     pCStack_110 = (CString *)pcStack_dc;
-    pTStack_118 = g_pLocalizationTable;
+    pTStack_118 = g_pSimMgr;
     uStack_11c = 0x5beffa;
     func_0x0040988b();
     pcStack_100 = (char *)0x6f666665;
@@ -644,7 +644,7 @@ LAB_005bea42:
     pCStack_110 = &CStack_b8;
     piStack_10c = (int *)0x0;
     ppTStack_114 = (TSimMgr **)0x5bf022;
-    BuildUiTextStyleDescriptor();
+    func_0x00406afa();
     pCStack_108 = &CStack_b8;
     pCStack_104 = (CString *)0x0;
     piStack_10c = (int *)0x5bf034;
@@ -699,11 +699,11 @@ LAB_005bea42:
     uStack_160 = 0xf;
     uStack_164 = 0x2740;
     uStack_168 = 0x5bf0e5;
-    (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+    (*g_pSimMgr->vftable[0x10].slot_0x04)();
     uStack_168 = uStack_148;
     puStack_170 = &uStack_150;
     ppCStack_16c = ppCStack_144;
-    pTStack_174 = g_pLocalizationTable;
+    pTStack_174 = g_pSimMgr;
     uStack_178 = 0x5bf0ff;
     func_0x0040988b();
     uStack_168 = 0x6e6f6f66;
@@ -733,7 +733,7 @@ LAB_005bea42:
     iStack_184 = (int)(short)uStack_f0;
     puStack_188 = &g_szDecimalFormat;
     uStack_190 = 0x5bf172;
-    _Format_CString__QAAXPBDZZ();
+    CString__Format();
     iStack_184 = 0x6d436170;
     puStack_188 = (undefined *)0x5bf17e;
     uVar3 = (*p_Var1)();
@@ -745,7 +745,7 @@ LAB_005bea42:
     puStack_194 = &uStack_13c;
     uStack_190 = 0;
     uStack_198 = 0x5bf19a;
-    BuildUiTextStyleDescriptor();
+    func_0x00406afa();
     puStack_18c = &uStack_13c;
     puStack_188 = (undefined *)0x0;
     uStack_190 = 0x5bf1ac;
@@ -787,7 +787,7 @@ LAB_005bea42:
     uStack_1b0 = 0;
     piVar7[0x2a] = (int)ppTStack_114;
     uStack_1b8 = 0x5bf24a;
-    BuildUiTextStyleDescriptor();
+    func_0x00406afa();
     ppuStack_1ac = &puStack_15c;
     aiStack_1a8[0] = 0;
     uStack_1b0 = 0x5bf25c;
@@ -805,7 +805,7 @@ LAB_005bea42:
     piStack_1c0 = aiStack_1a8 + 1;
     (**(code **)(iVar9 + 0x1dc))();
     (**(code **)(iVar9 + 0x1d8))(0,*(undefined4 *)(aiStack_1a8[0] + -8),1);
-    SetGlobalBlitTransparentColorRaw(*(undefined4 *)piVar7[0x12]);
+    func_0x004069e2(*(undefined4 *)piVar7[0x12]);
     (**(code **)(*g_pDisplayMgr + 0x54))(aiStack_1a8);
     uVar3 = (*p_Var1)(0x69636f6e);
     iVar9 = *(int *)CONCAT31(extraout_var_14,uVar3);
@@ -870,7 +870,7 @@ LAB_005bea42:
       uStack_c8 = 0xb;
       CStack_cc.m_pchData = (char *)0x2740;
       CStack_d0.m_pchData = (char *)0x5bed72;
-      (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+      (*g_pSimMgr->vftable[0x10].slot_0x04)();
       CStack_d0.m_pchData = (char *)0x1;
       CStack_d4.m_pchData = (char *)0x0;
       CStack_d8.m_pchData = (char *)0x5bed85;
@@ -887,7 +887,7 @@ LAB_005bea42:
       uStack_c8 = 10;
       CStack_cc.m_pchData = (char *)0x2740;
       CStack_d0.m_pchData = (char *)0x5bedb3;
-      (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+      (*g_pSimMgr->vftable[0x10].slot_0x04)();
       CStack_d4.m_pchData = (char *)(uStack_38 + 700);
       CStack_d0.m_pchData = (char *)0x1;
       CStack_d8.m_pchData = (char *)0x5bedd1;
@@ -900,7 +900,7 @@ LAB_005bea42:
     pcStack_dc = CStack_bc.m_pchData;
     pCStack_e4 = &CStack_54;
     pCStack_e0 = (CString *)puStack_48;
-    pTStack_e8 = g_pLocalizationTable;
+    pTStack_e8 = g_pSimMgr;
     uStack_ec = 0x5bee05;
     func_0x0040988b();
     pCStack_e0 = &CStack_54;

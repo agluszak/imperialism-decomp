@@ -110,11 +110,11 @@ void __fastcall TBackdropWindow::ResetTopLevelWindowStateAndReleaseTempMapBuffer
     pCVar2 = AfxGetThread();
     (**(code **)(*(int *)pCVar2 + 0x7c))();
   }
-  SetWindowPos(0,0,0,0,0,5);
+  CWnd__SetWindowPos(0,0,0,0,0,5);
   pvVar1 = DAT_006a2054;
   if (DAT_006a2054 != (void *)0x0) {
     AfxGetModuleState();
-    EndWaitCursor();
+    CCmdTarget__EndWaitCursor();
     operator_delete(pvVar1);
   }
   DAT_006a2054 = (void *)0x0;

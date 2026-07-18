@@ -3,17 +3,6 @@
 // Program: Imperialism.exe
 // Bucket: TCivDescription.cpp
 
-// GHIDRA_FUNCTION IMPERIALISM 0x00407F4A
-// GHIDRA_NAME TCivDescription::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
-
-void TCivDescription::_scalar_deleting_destructor_(byte param_1)
-
-{
-  _scalar_deleting_destructor_(this,param_1);
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x0044A770
 // GHIDRA_NAME TCivDescription::ConstructTCivDescriptionBaseState
 // GHIDRA_PROTO undefined __thiscall ConstructTCivDescriptionBaseState(void)
@@ -366,18 +355,18 @@ void TCivDescription::ApplyRectSlot110(undefined4 param_1)
     local_14 = (TCivDescription *)0x0;
     param_1 = 0;
     func_0x0040448f(0,0xc,0x2b68);
-    MapUiThemeCodeToStyleFlags(0x2b6c,&local_14);
-    MapUiThemeCodeToStyleFlags(0x2b67,&param_1);
-    (*g_pLocalizationTable->vftable[0x10].slot_0x04)
+    func_0x004093cc(0x2b6c,&local_14);
+    func_0x004093cc(0x2b67,&param_1);
+    (*g_pSimMgr->vftable[0x10].slot_0x04)
               (0x2718,CONCAT22((short)((uint)&local_10 >> 0x10),*(undefined2 *)&this->field_0x60),
                &local_10);
-    sVar1 = MeasureTextExtentWithCachedQuickDrawStyle(&stack0xffffffe4);
+    sVar1 = func_0x00405b7d(&stack0xffffffe4);
     iVar5 = this->field34 / 2 - (int)sVar1 / 2;
     func_0x00409444(puStack_8);
-    SetQuickDrawTextOriginWithContextOffset(iVar5 + 1,0x47);
+    func_0x00408d6e(iVar5 + 1,0x47);
     func_0x004029aa(&stack0xffffffe4);
     func_0x00409444(unaff_ESI);
-    SetQuickDrawTextOriginWithContextOffset(iVar5,0x46);
+    func_0x00408d6e(iVar5,0x46);
     func_0x004029aa(&stack0xffffffe4);
   }
   local_4 = 0xffffffff;
@@ -469,11 +458,11 @@ void TCivDescription::RenderCivilianTargetLegendVariantA()
   uStack_68 = 6;
   puStack_6c = (undefined1 *)0x272d;
   puStack_70 = (undefined1 *)0x58f8f0;
-  (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+  (*g_pSimMgr->vftable[0x10].slot_0x04)();
   puStack_70 = (undefined1 *)0x60;
   aiStack_78[1] = 0xc;
   aiStack_78[0] = 0x58f8f9;
-  SetQuickDrawTextOriginWithContextOffset();
+  func_0x00408d6e();
   puStack_70 = &stack0xffffffa4;
   aiStack_78[1] = 0x58f906;
   func_0x004029aa();
@@ -481,22 +470,22 @@ void TCivDescription::RenderCivilianTargetLegendVariantA()
   aiStack_78[1] = 7;
   aiStack_78[0] = 0x272d;
   ppCStack_7c = (CString **)0x58f923;
-  (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+  (*g_pSimMgr->vftable[0x10].slot_0x04)();
   ppCStack_7c = (CString **)0x78;
   puStack_80 = (undefined4 *)0x28;
   ppuStack_84 = (undefined1 **)0x58f92c;
-  SetQuickDrawTextOriginWithContextOffset();
+  func_0x00408d6e();
   ppCStack_7c = (CString **)&uStack_68;
   puStack_80 = (undefined4 *)0x58f939;
   func_0x004029aa();
   ppCStack_7c = &pCStack_64;
   puStack_80 = (undefined4 *)0x7d0;
   ppuStack_84 = (undefined1 **)0x58f951;
-  (*g_pLocalizationTable->vftable[0xe].slot_0x04)();
+  (*g_pSimMgr->vftable[0xe].slot_0x04)();
   ppuStack_84 = (undefined1 **)0x78;
   piStack_88 = (int *)0x54;
   iStack_8c = 0x58f95a;
-  SetQuickDrawTextOriginWithContextOffset();
+  func_0x00408d6e();
   ppuStack_84 = &puStack_6c;
   piStack_88 = (int *)0x58f967;
   func_0x004029aa();
@@ -504,18 +493,18 @@ void TCivDescription::RenderCivilianTargetLegendVariantA()
   piStack_88 = (int *)0x8;
   iStack_8c = 0x272d;
   piStack_90 = (int *)0x58f984;
-  (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+  (*g_pSimMgr->vftable[0x10].slot_0x04)();
   piStack_90 = aiStack_78;
   puStack_94 = (undefined1 *)0xbb8;
   pppuStack_98 = (undefined1 ***)0x58f999;
-  (*g_pLocalizationTable->vftable[0xe].slot_0x04)();
+  (*g_pSimMgr->vftable[0xe].slot_0x04)();
   pppuStack_98 = (undefined1 ***)0x90;
   acStack_9c[0] = '(';
   acStack_9c[1] = '\0';
   acStack_9c[2] = '\0';
   acStack_9c[3] = '\0';
   CStack_a0.m_pchData = (char *)0x58f9a5;
-  SetQuickDrawTextOriginWithContextOffset();
+  func_0x00408d6e();
   pppuStack_98 = &ppuStack_84;
   acStack_9c[0] = -0x4e;
   acStack_9c[1] = -7;
@@ -528,7 +517,7 @@ void TCivDescription::RenderCivilianTargetLegendVariantA()
   acStack_9c[2] = '\0';
   acStack_9c[3] = '\0';
   CStack_a0.m_pchData = (char *)0x58f9c1;
-  SetQuickDrawTextOriginWithContextOffset();
+  func_0x00408d6e();
   pppuStack_98 = (undefined1 ***)&puStack_80;
   acStack_9c[0] = -0x32;
   acStack_9c[1] = -7;
@@ -542,22 +531,22 @@ void TCivDescription::RenderCivilianTargetLegendVariantA()
   acStack_9c[3] = '\0';
   CStack_a0.m_pchData = (char *)0x272d;
   CStack_a4.m_pchData = (char *)0x58f9eb;
-  (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+  (*g_pSimMgr->vftable[0x10].slot_0x04)();
   CStack_a4.m_pchData = (char *)&iStack_8c;
   iStack_a8 = (int)DAT_00662b52;
   pppuStack_ac = (undefined4 ***)0x58fa03;
-  (*g_pLocalizationTable->vftable[0xe].slot_0x04)();
+  (*g_pSimMgr->vftable[0xe].slot_0x04)();
   pppuStack_ac = (undefined4 ***)0xa8;
   uStack_b0 = 0x28;
   uStack_b4 = 0x58fa0f;
-  SetQuickDrawTextOriginWithContextOffset();
+  func_0x00408d6e();
   pppuStack_ac = &pppuStack_98;
   uStack_b0 = 0x58fa1c;
   func_0x004029aa();
   pppuStack_ac = (undefined4 ***)0xa8;
   uStack_b0 = 0x54;
   uStack_b4 = 0x58fa2b;
-  SetQuickDrawTextOriginWithContextOffset();
+  func_0x00408d6e();
   pppuStack_ac = (undefined4 ***)&puStack_94;
   uStack_b0 = 0x58fa38;
   func_0x004029aa();
@@ -565,10 +554,10 @@ void TCivDescription::RenderCivilianTargetLegendVariantA()
   uStack_b0 = 10;
   uStack_b4 = 0x272d;
   pCStack_b8 = (CString *)0x58fa55;
-  (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+  (*g_pSimMgr->vftable[0x10].slot_0x04)();
   pCStack_b8 = (CString *)0xd4;
-  sVar1 = MeasureTextExtentWithCachedQuickDrawStyle(&CStack_a4);
-  SetQuickDrawTextOriginWithContextOffset(this->field34 / 2 - (int)sVar1 / 2);
+  sVar1 = func_0x00405b7d(&CStack_a4);
+  func_0x00408d6e(this->field34 / 2 - (int)sVar1 / 2);
   pCStack_b8 = &CStack_a4;
   func_0x004029aa();
   pCStack_b8 = (CString *)0x10;
@@ -732,10 +721,10 @@ void TCivDescription::RenderCivilianTargetLegendVariantB()
   local_18 = 0xffffffff;
   local_12 = 0xffff;
   local_10 = 0xffffffff;
-  MapUiThemeCodeToStyleFlags();
+  func_0x004093cc();
   func_0x00401bf9();
-  (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
-  SetQuickDrawTextOriginWithContextOffset();
+  (*g_pSimMgr->vftable[0x10].slot_0x04)();
+  func_0x00408d6e();
   func_0x004029aa();
   iVar4 = (-(uint)(cVar1 == '\x02') & 3) + 2;
   iStack_64 = iVar4;
@@ -774,8 +763,8 @@ void TCivDescription::RenderCivilianTargetLegendVariantB()
         local_68.m_pchData[7] = '\0';
       }
       func_0x00409444();
-      SetQuickDrawTextOriginWithContextOffset(iStack_58 + 2);
-      _Format_CString__QAAXPBDZZ(&stack0xffffff8c,&g_szDecimalFormat);
+      func_0x00408d6e(iStack_58 + 2);
+      CString__Format(&stack0xffffff8c,&g_szDecimalFormat);
       func_0x004029aa();
       func_0x004010be();
       func_0x00406b86();
@@ -944,9 +933,9 @@ void TCivDescription::RenderCivilianTargetProfilePanel(int *pPanelContext)
     func_0x0040448f();
     puStack_98 = &stack0xffffff7c;
     puStack_9c = (undefined *)0x1;
-    (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
-    sVar3 = MeasureTextExtentWithCachedQuickDrawStyle(&stack0xffffff70);
-    SetQuickDrawTextOriginWithContextOffset(this->field34 / 2 - (int)sVar3 / 2);
+    (*g_pSimMgr->vftable[0x10].slot_0x04)();
+    sVar3 = func_0x00405b7d(&stack0xffffff70);
+    func_0x00408d6e(this->field34 / 2 - (int)sVar3 / 2);
     func_0x004029aa();
     sVar5 = 0;
     sVar3 = *(short *)(&DAT_00698fe0 + *(short *)&this->field_0x60 * 2);
@@ -978,9 +967,9 @@ void TCivDescription::RenderCivilianTargetProfilePanel(int *pPanelContext)
                     &g_pActiveQuickDrawSurfaceContext->field_0x4,&iStack_58,&local_68,0x24);
     func_0x00402bdf();
     func_0x0040448f(0,10);
-    (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x272d,2);
-    sVar3 = MeasureTextExtentWithCachedQuickDrawStyle(&puStack_9c,0xa2);
-    SetQuickDrawTextOriginWithContextOffset(this->field34 / 2 - (int)sVar3 / 2);
+    (*g_pSimMgr->vftable[0x10].slot_0x04)(0x272d,2);
+    sVar3 = func_0x00405b7d(&puStack_9c,0xa2);
+    func_0x00408d6e(this->field34 / 2 - (int)sVar3 / 2);
     func_0x004029aa(&puStack_9c);
     func_0x0040448f(0,10,0x2b6c);
     iStack_80 = 0;
@@ -1013,7 +1002,7 @@ void TCivDescription::RenderCivilianTargetProfilePanel(int *pPanelContext)
         func_0x00402bdf();
         puStack_98 = (undefined1 *)(iStack_50 + -4);
         puStack_9c = (undefined *)(iStack_54 + 4);
-        SetQuickDrawTextOriginWithContextOffset();
+        func_0x00408d6e();
         puStack_98 = (undefined1 *)0x5907aa;
         sVar3 = func_0x00403b16();
         puStack_98 = (undefined1 *)
@@ -1022,7 +1011,7 @@ void TCivDescription::RenderCivilianTargetProfilePanel(int *pPanelContext)
                                  (int)*(short *)(&g_pCityOrderCapabilityState->field_0x3e +
                                                 (sVar3 * 0x17 + iVar6) * 2)];
         puStack_9c = &g_szDecimalFormat;
-        _Format_CString__QAAXPBDZZ();
+        CString__Format();
         puStack_98 = &stack0xffffff7c;
         puStack_9c = (undefined *)0x5907e7;
         func_0x004029aa();
@@ -1081,10 +1070,10 @@ void TCivDescription::RenderCivilianTargetProfilePanel(int *pPanelContext)
           func_0x0040448f();
           puStack_9c = (undefined *)(local_64 + 0x18 + (uint)uVar1);
           puStack_98 = (undefined1 *)0x100;
-          SetQuickDrawTextOriginWithContextOffset();
+          func_0x00408d6e();
           puStack_98 = (undefined1 *)(int)*psStack_7c;
           puStack_9c = &g_szDecimalFormat;
-          _Format_CString__QAAXPBDZZ();
+          CString__Format();
           puStack_98 = &stack0xffffff7c;
           puStack_9c = (undefined *)0x5909ad;
           func_0x004029aa();

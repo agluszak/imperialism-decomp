@@ -867,14 +867,6 @@ undefined4 UpdateGlobalWord6A2008FromScaled6A1FC0(void)
   return 0;
 }
 
-// ghidra_name thunk_InitializeDirectSoundDeviceAndChannels
-// ghidra_proto undefined thunk_InitializeDirectSoundDeviceAndChannels()
-// FUNCTION: IMPERIALISM 0x0049c950
-undefined4 thunk_InitializeDirectSoundDeviceAndChannels(void)
-{
-  return 0;
-}
-
 // ghidra_name ReleaseRuntimeSelectionPeersAndResetOwner_Impl
 // ghidra_proto undefined ReleaseRuntimeSelectionPeersAndResetOwner_Impl()
 // FUNCTION: IMPERIALISM 0x0049ca50

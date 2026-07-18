@@ -459,8 +459,8 @@ void TEventHandler::DispatchUiCommand19ToParent()
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0048A6F0
-// GHIDRA_NAME TEventHandler::DispatchCityProductionAction1B
-// GHIDRA_PROTO undefined __thiscall DispatchCityProductionAction1B(void)
+// GHIDRA_NAME TEventHandler::ContinueModal
+// GHIDRA_PROTO undefined __thiscall ContinueModal(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Dispatches city-production action code 0x1B through object vtable slot +0x40.
 // GHIDRA_COMMENT Used as a tiny action wrapper from city/production method table.
@@ -469,7 +469,7 @@ void TEventHandler::DispatchUiCommand19ToParent()
 /* Dispatches city-production action code 0x1B through object vtable slot +0x40.
    Used as a tiny action wrapper from city/production method table. */
 
-void TEventHandler::DispatchCityProductionAction1B()
+void TEventHandler::ContinueModal()
 
 {
   (*this->vftable->DispatchEvent)(0x1b,this,0);

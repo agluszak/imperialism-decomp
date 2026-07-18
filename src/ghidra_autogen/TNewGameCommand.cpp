@@ -34,8 +34,8 @@ undefined4 * TNewGameCommand::CreateObject(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x0049DDB0
-// GHIDRA_NAME TNewGameCommand::OrphanRetStub_00487a00
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_00487a00(void)
+// GHIDRA_NAME TNewGameCommand::DoIt
+// GHIDRA_PROTO undefined __thiscall DoIt(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Thin wrapper that reinitializes game flow without posting any follow-up turn-event code (param=0).
 // GHIDRA_COMMENT_END
@@ -43,7 +43,7 @@ undefined4 * TNewGameCommand::CreateObject(void)
 /* Thin wrapper that reinitializes game flow without posting any follow-up turn-event code
    (param=0). */
 
-void TNewGameCommand::OrphanRetStub_00487a00()
+void TNewGameCommand::DoIt()
 
 {
   func_0x00403553(0);

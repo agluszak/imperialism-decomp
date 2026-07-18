@@ -48,7 +48,7 @@ void CMapStringToPtr::~CMapStringToPtr(void)
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
   
-  EstablishSehFrameProlog();
+  _EH_prolog();
   *(undefined4 **)(unaff_EBP + -0x10) = extraout_ECX;
   *extraout_ECX = &PTR_LAB_006745fc;
   *(undefined4 *)(unaff_EBP + -4) = 0;

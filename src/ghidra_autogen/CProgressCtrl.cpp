@@ -33,11 +33,11 @@ void CProgressCtrl::~CProgressCtrl(void)
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
   
-  EstablishSehFrameProlog();
+  _EH_prolog();
   *(CWnd **)(unaff_EBP + -0x10) = this;
   (this->ccmdTarget).vftable = (CCmdTargetVtbl *)&PTR_LAB_00671094;
   *(undefined4 *)(unaff_EBP + -4) = 0;
-  OrphanCallChain_C1_I09_0048ff70();
+  CWnd__DestroyWindow();
   *(undefined4 *)(unaff_EBP + -4) = 0xffffffff;
   CWnd::~CWnd(this);
   *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);

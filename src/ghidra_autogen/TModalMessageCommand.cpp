@@ -4,14 +4,13 @@
 // Bucket: TModalMessageCommand.cpp
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005DCD10
-// GHIDRA_NAME TModalMessageCommand::OrphanRetStub_00487a00
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_00487a00(void)
+// GHIDRA_NAME TModalMessageCommand::DoIt
+// GHIDRA_PROTO undefined __thiscall DoIt(void)
 
-void TModalMessageCommand::OrphanRetStub_00487a00()
+void TModalMessageCommand::DoIt()
 
 {
   undefined4 in_EAX;
-  undefined1 *puVar1;
   TModalMessageCommand *pTStack_14;
   undefined *puStack_10;
   undefined4 uStack_c;
@@ -22,10 +21,9 @@ void TModalMessageCommand::OrphanRetStub_00487a00()
   uStack_8 = 0;
   puStack_10 = &DAT_006a5be0;
   puStack_4 = (undefined1 *)&pTStack_14;
-  puVar1 = &this->field_0x18;
   pTStack_14 = this;
-  func_0x004076b7(puVar1);
-  DispatchLocalizedUiMessageWithTemplateA13A0(puVar1);
+  func_0x004076b7(&this->field_0x18);
+  func_0x004096b0();
   return;
 }
 

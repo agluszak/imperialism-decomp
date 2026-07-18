@@ -25,11 +25,11 @@ void CDragListBox::~CDragListBox(void)
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
   
-  EstablishSehFrameProlog();
+  _EH_prolog();
   *(undefined4 **)(unaff_EBP + -0x10) = extraout_ECX;
   *extraout_ECX = &PTR_LAB_00670f64;
   *(undefined4 *)(unaff_EBP + -4) = 0;
-  OrphanCallChain_C1_I09_0048ff70();
+  CWnd__DestroyWindow();
   *(undefined4 *)(unaff_EBP + -4) = 0xffffffff;
   Dtor_CListBox_FID_61e8cb();
   *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
@@ -111,7 +111,7 @@ void CDragListBox::DrawSingle(void)
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
   
-  EstablishSehFrameProlog();
+  _EH_prolog();
   if (*(int *)(unaff_EBP + 8) != -1) {
     uVar2 = CDC::GetHalftoneBrush();
     GetClientRect(*(HWND *)(extraout_ECX + 0x1c),(LPRECT)(unaff_EBP + -0x24));
@@ -119,7 +119,7 @@ void CDragListBox::DrawSingle(void)
     *(undefined ***)(unaff_EBP + -0x14) = &CBrush::_vftable_;
     *(undefined4 *)(unaff_EBP + -4) = 0;
     pHVar3 = CreateRectRgnIndirect((RECT *)(unaff_EBP + -0x24));
-    CBrush::AttachRegionHandleToClipStateAndRegister((CBrush *)(unaff_EBP + -0x14),(int)pHVar3);
+    CBrush::CGdiObject__Attach((CBrush *)(unaff_EBP + -0x14),(int)pHVar3);
     pHVar4 = GetDC(*(HWND *)(extraout_ECX + 0x1c));
     this = (CDC *)FromHandle_612736(pHVar4);
     CDC::SelectClipRgn(this,unaff_EBP + -0x14);
@@ -135,7 +135,7 @@ void CDragListBox::DrawSingle(void)
     ReleaseDC(*(HWND *)(extraout_ECX + 0x1c),this->m_hDC);
     *(undefined ***)(unaff_EBP + -0x14) = &PTR_LAB_00671054;
     *(undefined4 *)(unaff_EBP + -4) = 1;
-    DeleteObject();
+    CGdiObject__DeleteObject();
   }
   *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
   return;

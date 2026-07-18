@@ -96,22 +96,22 @@ void TMerchantBoyView::ApplyRectSlot110()
   func_0x004062ee();
   CStack_20.m_pchData = (char *)0x18;
   CStack_24.m_pchData = (char *)0x50;
-  SetQuickDrawTextOriginWithContextOffset();
+  func_0x00408d6e();
   CStack_20.m_pchData = (char *)&local_18;
   CStack_24.m_pchData = (char *)0x4af80a;
   func_0x004029aa();
   CStack_20.m_pchData = (char *)&local_18;
   if (*(short *)(*(int *)&this->field_0x60 + 2) == 0) {
     CStack_24.m_pchData = (char *)0x1b;
-    (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+    (*g_pSimMgr->vftable[0x10].slot_0x04)();
   }
   else {
     CStack_24.m_pchData = (char *)0x1c;
-    (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+    (*g_pSimMgr->vftable[0x10].slot_0x04)();
   }
   func_0x0040448f(1,0xc);
-  MeasureTextExtentWithCachedQuickDrawStyle();
-  SetQuickDrawTextOriginWithContextOffset(0x50);
+  func_0x00405b7d();
+  func_0x00408d6e(0x50);
   func_0x004029aa();
   func_0x00402bdf();
   uStack_10 = uStack_10 & 0xffffff00;

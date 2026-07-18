@@ -221,12 +221,12 @@ bool CDocManager::DoPromptFileName(void)
   undefined4 *puVar4;
   undefined4 *unaff_FS_OFFSET;
   
-  EstablishSehFrameProlog();
+  _EH_prolog();
   CFileDialog::CFileDialog(*(undefined4 *)(unaff_EBP + 0x14),0,0,6,0,0);
   *(undefined4 *)(unaff_EBP + -4) = 0;
   CString::CString((CString *)(unaff_EBP + -0x14));
   *(undefined1 *)(unaff_EBP + -4) = 1;
-  LoadStringA(*(undefined4 *)(unaff_EBP + 0xc));
+  CString__LoadStringA(*(undefined4 *)(unaff_EBP + 0xc));
   *(uint *)(unaff_EBP + -0x180) = *(uint *)(unaff_EBP + -0x180) | *(uint *)(unaff_EBP + 0x10);
   CString::CString((CString *)(unaff_EBP + 0x14));
   *(undefined1 *)(unaff_EBP + -4) = 2;
@@ -249,7 +249,7 @@ bool CDocManager::DoPromptFileName(void)
   }
   CString::CString((CString *)(unaff_EBP + -0x18));
   *(undefined1 *)(unaff_EBP + -4) = 4;
-  LoadStringA(0xf002);
+  CString__LoadStringA(0xf002);
   CString::operator+=(unaff_EBP + -0x18);
   CString::operator+=(0);
   CString::operator+=((CString *)(unaff_EBP + 0x14),"*.*");
@@ -304,14 +304,14 @@ undefined4 CDocManager::OnDDECommand(void)
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
   
-  EstablishSehFrameProlog();
+  _EH_prolog();
   CString::CString((CString *)(unaff_EBP + 8),*(char **)(unaff_EBP + 8));
   *(undefined4 *)(unaff_EBP + -4) = 0;
   CCommandLineInfo();
   *(undefined1 *)(unaff_EBP + -4) = 1;
   *(undefined4 *)(unaff_EBP + -0x2c) = 4;
   puVar1 = (undefined4 *)CString::Left(unaff_EBP + -0x14,7);
-  iVar2 = CompareAnsiStringsWithMbcsAwareness(*puVar1,"[open(\"");
+  iVar2 = _mbscmp(*puVar1,"[open(\"");
   CString::~CString((CString *)(unaff_EBP + -0x14));
   if (iVar2 == 0) {
     *(undefined4 *)(unaff_EBP + -0x2c) = 1;
@@ -366,7 +366,7 @@ LAB_0061a456:
         }
         iVar2 = AfxGetModuleState();
         (**(code **)(**(int **)(iVar2 + 4) + 0x84))(*(undefined4 *)(unaff_EBP + -0x28));
-        iVar2 = GetMfcThreadStateFlagDword30();
+        iVar2 = AfxOleGetUserCtrl();
         if (iVar2 == 0) {
           AfxOleSetUserCtrl(1);
         }
@@ -375,7 +375,7 @@ LAB_0061a456:
       }
       else if (*(int *)(unaff_EBP + -0x2c) == 3) {
         puVar1 = (undefined4 *)CString::Left(unaff_EBP + -0x18,3);
-        iVar2 = CompareAnsiStringsWithMbcsAwareness(*puVar1,&DAT_006732b4);
+        iVar2 = _mbscmp(*puVar1,&DAT_006732b4);
         CString::~CString((CString *)(unaff_EBP + -0x18));
         if (iVar2 == 0) {
           pCVar3 = (CString *)
@@ -399,7 +399,7 @@ LAB_0061a456:
             *(undefined1 *)(unaff_EBP + -4) = 1;
             CString::~CString((CString *)(unaff_EBP + -0x18));
             puVar1 = (undefined4 *)CString::Left(unaff_EBP + -0x18,3);
-            iVar2 = CompareAnsiStringsWithMbcsAwareness(*puVar1,&DAT_006732b4);
+            iVar2 = _mbscmp(*puVar1,&DAT_006732b4);
             CString::~CString((CString *)(unaff_EBP + -0x18));
             if (iVar2 == 0) {
               pCVar3 = (CString *)
@@ -424,7 +424,7 @@ LAB_0061a456:
                 *(undefined1 *)(unaff_EBP + -4) = 1;
                 CString::~CString((CString *)(unaff_EBP + -0x18));
                 puVar1 = (undefined4 *)CString::Left(unaff_EBP + -0x18,3);
-                iVar2 = CompareAnsiStringsWithMbcsAwareness(*puVar1,&DAT_006732b4);
+                iVar2 = _mbscmp(*puVar1,&DAT_006732b4);
                 CString::~CString((CString *)(unaff_EBP + -0x18));
                 if (iVar2 == 0) {
                   pCVar3 = (CString *)
@@ -469,7 +469,7 @@ LAB_0061a804:
         iVar2 = AfxGetModuleState();
         *(undefined4 *)(*(int *)(iVar2 + 4) + 0xac) = 0;
         (**(code **)(*piVar6 + 0x84))();
-        iVar2 = GetMfcThreadStateFlagDword30();
+        iVar2 = AfxOleGetUserCtrl();
         if (iVar2 == 0) {
           iVar2 = AfxGetModuleState();
           PostMessageA(*(HWND *)(*(int *)(*(int *)(iVar2 + 4) + 0x1c) + 0x1c),0x10,0,0);
@@ -488,7 +488,7 @@ LAB_0061a804:
   }
   else {
     puVar1 = (undefined4 *)CString::Left(unaff_EBP + -0x14,8);
-    iVar2 = CompareAnsiStringsWithMbcsAwareness(*puVar1,"[print(\"");
+    iVar2 = _mbscmp(*puVar1,"[print(\"");
     CString::~CString((CString *)(unaff_EBP + -0x14));
     if (iVar2 == 0) {
       *(undefined4 *)(unaff_EBP + -0x2c) = 2;
@@ -500,7 +500,7 @@ LAB_0061a804:
       goto LAB_0061a3e4;
     }
     puVar1 = (undefined4 *)CString::Left(unaff_EBP + -0x14,10);
-    iVar2 = CompareAnsiStringsWithMbcsAwareness(*puVar1,"[printto(\"");
+    iVar2 = _mbscmp(*puVar1,"[printto(\"");
     CString::~CString((CString *)(unaff_EBP + -0x14));
     if (iVar2 == 0) {
       *(undefined4 *)(unaff_EBP + -0x2c) = 3;
@@ -536,19 +536,19 @@ void CDocManager::OnFileNew(void)
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
   
-  EstablishSehFrameProlog();
+  _EH_prolog();
   if (*(int *)(extraout_ECX + 0x10) == 0) {
     AfxMessageBox(0xf104,0,0xffffffff);
   }
   else {
     piVar2 = *(int **)(*(int *)(extraout_ECX + 8) + 8);
     if (1 < *(int *)(extraout_ECX + 0x10)) {
-      TControl::InitializeDialogTemplateFromId((TControl *)(unaff_EBP + -0x70),0x7801,0);
+      TControl::CDialog__CDialog((TControl *)(unaff_EBP + -0x70),0x7801,0);
       *(undefined4 *)(unaff_EBP + -0x10) = 0;
       *(undefined ***)(unaff_EBP + -0x70) = &PTR_LAB_006732dc;
       *(int *)(unaff_EBP + -0x14) = extraout_ECX + 4;
       *(undefined4 *)(unaff_EBP + -4) = 0;
-      iVar1 = DoModal_6051b9();
+      iVar1 = CDialog__DoModal();
       if (iVar1 != 1) {
         *(undefined4 *)(unaff_EBP + -4) = 0xffffffff;
         *(undefined ***)(unaff_EBP + -0x70) = &PTR_LAB_006732dc;
@@ -590,7 +590,7 @@ void CDocManager::OnFileOpen(void)
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
   
-  EstablishSehFrameProlog();
+  _EH_prolog();
   CString::CString((CString *)(unaff_EBP + -0x10));
   iVar1 = *extraout_ECX;
   *(undefined4 *)(unaff_EBP + -4) = 0;
@@ -623,7 +623,7 @@ undefined4 * CDocManager::CDocManager(void)
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
   
-  EstablishSehFrameProlog();
+  _EH_prolog();
   *(undefined4 **)(unaff_EBP + -0x10) = extraout_ECX;
   *extraout_ECX = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *(undefined4 *)(unaff_EBP + -4) = 0;
@@ -677,7 +677,7 @@ void CDocManager::UnregisterShellFileTypes(void)
   undefined4 *unaff_FS_OFFSET;
   PLONG lpcbData;
   
-  EstablishSehFrameProlog();
+  _EH_prolog();
   CString::CString((CString *)(unaff_EBP + -0x24));
   *(undefined4 *)(unaff_EBP + -4) = 0;
   CString::CString((CString *)(unaff_EBP + -0x10));
@@ -702,35 +702,28 @@ void CDocManager::UnregisterShellFileTypes(void)
       if (iVar5 == 0) {
         CString::operator=((CString *)(unaff_EBP + -0x20),(CString *)(unaff_EBP + -0x14));
       }
-      _Format_CString__QAAXPBDZZ
-                (unaff_EBP + -0x10,"%s\\DefaultIcon",*(undefined4 *)(unaff_EBP + -0x14));
+      CString__Format(unaff_EBP + -0x10,"%s\\DefaultIcon",*(undefined4 *)(unaff_EBP + -0x14));
       _AfxDeleteRegKey(*(undefined4 *)(unaff_EBP + -0x10));
       iVar5 = (**(code **)(unaff_EBP + -0x1c))(unaff_EBP + -0x10,0);
       if ((iVar5 == 0) || (*(int *)(*(int *)(unaff_EBP + -0x10) + -8) == 0)) {
-        _Format_CString__QAAXPBDZZ
-                  (unaff_EBP + -0x10,"%s\\shell\\open\\%s",*(undefined4 *)(unaff_EBP + -0x14),
-                   "ddeexec");
+        CString__Format(unaff_EBP + -0x10,"%s\\shell\\open\\%s",*(undefined4 *)(unaff_EBP + -0x14),
+                        "ddeexec");
         _AfxDeleteRegKey(*(undefined4 *)(unaff_EBP + -0x10));
-        _Format_CString__QAAXPBDZZ
-                  (unaff_EBP + -0x10,"%s\\shell\\print\\%s",*(undefined4 *)(unaff_EBP + -0x14),
-                   "ddeexec");
+        CString__Format(unaff_EBP + -0x10,"%s\\shell\\print\\%s",*(undefined4 *)(unaff_EBP + -0x14),
+                        "ddeexec");
         _AfxDeleteRegKey(*(undefined4 *)(unaff_EBP + -0x10));
-        _Format_CString__QAAXPBDZZ
-                  (unaff_EBP + -0x10,"%s\\shell\\printto\\%s",*(undefined4 *)(unaff_EBP + -0x14),
-                   "ddeexec");
+        CString__Format(unaff_EBP + -0x10,"%s\\shell\\printto\\%s",
+                        *(undefined4 *)(unaff_EBP + -0x14),"ddeexec");
         _AfxDeleteRegKey(*(undefined4 *)(unaff_EBP + -0x10));
       }
-      _Format_CString__QAAXPBDZZ
-                (unaff_EBP + -0x10,"%s\\shell\\open\\%s",*(undefined4 *)(unaff_EBP + -0x14),
-                 "command");
+      CString__Format(unaff_EBP + -0x10,"%s\\shell\\open\\%s",*(undefined4 *)(unaff_EBP + -0x14),
+                      "command");
       _AfxDeleteRegKey(*(undefined4 *)(unaff_EBP + -0x10));
-      _Format_CString__QAAXPBDZZ
-                (unaff_EBP + -0x10,"%s\\shell\\print\\%s",*(undefined4 *)(unaff_EBP + -0x14),
-                 "command");
+      CString__Format(unaff_EBP + -0x10,"%s\\shell\\print\\%s",*(undefined4 *)(unaff_EBP + -0x14),
+                      "command");
       _AfxDeleteRegKey(*(undefined4 *)(unaff_EBP + -0x10));
-      _Format_CString__QAAXPBDZZ
-                (unaff_EBP + -0x10,"%s\\shell\\printto\\%s",*(undefined4 *)(unaff_EBP + -0x14),
-                 "command");
+      CString__Format(unaff_EBP + -0x10,"%s\\shell\\printto\\%s",*(undefined4 *)(unaff_EBP + -0x14),
+                      "command");
       _AfxDeleteRegKey(*(undefined4 *)(unaff_EBP + -0x10));
       (**(code **)(unaff_EBP + -0x1c))(unaff_EBP + -0x18,4);
       lpSubKey = *(LPCSTR *)(unaff_EBP + -0x18);
@@ -741,11 +734,9 @@ void CDocManager::UnregisterShellFileTypes(void)
         LVar6 = RegQueryValueA((HKEY)0x80000000,lpSubKey,lpData,lpcbData);
         CString::ReleaseBuffer((CString *)(unaff_EBP + -0x10),-1);
         if (((LVar6 != 0) || (*(int *)(*(int *)(unaff_EBP + -0x10) + -8) == 0)) ||
-           (iVar5 = CompareAnsiStringsWithMbcsAwareness
-                              (*(int *)(unaff_EBP + -0x10),*(undefined4 *)(unaff_EBP + -0x14)),
+           (iVar5 = _mbscmp(*(int *)(unaff_EBP + -0x10),*(undefined4 *)(unaff_EBP + -0x14)),
            iVar5 == 0)) {
-          _Format_CString__QAAXPBDZZ
-                    (unaff_EBP + -0x10,"%s\\ShellNew",*(undefined4 *)(unaff_EBP + -0x18));
+          CString__Format(unaff_EBP + -0x10,"%s\\ShellNew",*(undefined4 *)(unaff_EBP + -0x18));
           _AfxDeleteRegKey(*(undefined4 *)(unaff_EBP + -0x10));
           _AfxDeleteRegKey(*(undefined4 *)(unaff_EBP + -0x18));
         }
@@ -800,7 +791,7 @@ void CDocManager::RegisterShellFileTypes(void)
   char *text;
   PLONG lpcbData;
   
-  EstablishSehFrameProlog();
+  _EH_prolog();
   CString::CString((CString *)(unaff_EBP + -0x30));
   *(undefined4 *)(unaff_EBP + -4) = 0;
   CString::CString((CString *)(unaff_EBP + -0x14));
@@ -836,11 +827,10 @@ LAB_00624db3:
       hIcon = ExtractIconA(*(HINSTANCE *)(iVar3 + 8),*(LPCSTR *)(unaff_EBP + -0x30),
                            *(UINT *)(unaff_EBP + -0x38));
       if (hIcon == (HICON)0x0) {
-        _Format_CString__QAAXPBDZZ(unaff_EBP + -0x34,&DAT_00673164,0);
+        CString__Format(unaff_EBP + -0x34,&DAT_00673164,0);
       }
       else {
-        _Format_CString__QAAXPBDZZ
-                  (unaff_EBP + -0x34,&DAT_00673164,*(undefined4 *)(unaff_EBP + -0x38));
+        CString__Format(unaff_EBP + -0x34,&DAT_00673164,*(undefined4 *)(unaff_EBP + -0x38));
         DestroyIcon(hIcon);
       }
       CString::operator+=(unaff_EBP + -0x34);
@@ -864,17 +854,15 @@ LAB_00624db3:
       iVar3 = SetRegKey(*(undefined4 *)(unaff_EBP + -0x10),*(undefined4 *)(unaff_EBP + -0x20),0);
       if (iVar3 != 0) {
         if (*(int *)(unaff_EBP + 8) != 0) {
-          _Format_CString__QAAXPBDZZ
-                    (unaff_EBP + -0x14,"%s\\DefaultIcon",*(undefined4 *)(unaff_EBP + -0x10));
+          CString__Format(unaff_EBP + -0x14,"%s\\DefaultIcon",*(undefined4 *)(unaff_EBP + -0x10));
           iVar3 = SetRegKey(*(undefined4 *)(unaff_EBP + -0x14),*(undefined4 *)(unaff_EBP + -0x2c),0)
           ;
           if (iVar3 == 0) goto LAB_00624d52;
         }
         iVar3 = (*pcVar2)(unaff_EBP + -0x14,0);
         if ((iVar3 == 0) || (*(int *)(*(int *)(unaff_EBP + -0x14) + -8) == 0)) {
-          _Format_CString__QAAXPBDZZ
-                    (unaff_EBP + -0x14,"%s\\shell\\open\\%s",*(undefined4 *)(unaff_EBP + -0x10),
-                     "ddeexec");
+          CString__Format(unaff_EBP + -0x14,"%s\\shell\\open\\%s",*(undefined4 *)(unaff_EBP + -0x10)
+                          ,"ddeexec");
           iVar3 = SetRegKey(*(undefined4 *)(unaff_EBP + -0x14),"[open(\"%1\")]",0);
           if (iVar3 != 0) {
             if (*(int *)(unaff_EBP + 8) == 0) {
@@ -882,14 +870,12 @@ LAB_00624db3:
               this = (CString *)(unaff_EBP + -0x1c);
               goto LAB_00624c20;
             }
-            _Format_CString__QAAXPBDZZ
-                      (unaff_EBP + -0x14,"%s\\shell\\print\\%s",*(undefined4 *)(unaff_EBP + -0x10),
-                       "ddeexec");
+            CString__Format(unaff_EBP + -0x14,"%s\\shell\\print\\%s",
+                            *(undefined4 *)(unaff_EBP + -0x10),"ddeexec");
             iVar3 = SetRegKey(*(undefined4 *)(unaff_EBP + -0x14),"[print(\"%1\")]",0);
             if (iVar3 != 0) {
-              _Format_CString__QAAXPBDZZ
-                        (unaff_EBP + -0x14,"%s\\shell\\printto\\%s",
-                         *(undefined4 *)(unaff_EBP + -0x10),"ddeexec");
+              CString__Format(unaff_EBP + -0x14,"%s\\shell\\printto\\%s",
+                              *(undefined4 *)(unaff_EBP + -0x10),"ddeexec");
               iVar3 = SetRegKey(*(undefined4 *)(unaff_EBP + -0x14),
                                 "[printto(\"%1\",\"%2\",\"%3\",\"%4\")]",0);
               if (iVar3 != 0) {
@@ -911,9 +897,8 @@ LAB_00624c13:
 LAB_00624c20:
             CString::operator+=(this,text);
           }
-          _Format_CString__QAAXPBDZZ
-                    (unaff_EBP + -0x14,"%s\\shell\\open\\%s",*(undefined4 *)(unaff_EBP + -0x10),
-                     "command");
+          CString__Format(unaff_EBP + -0x14,"%s\\shell\\open\\%s",*(undefined4 *)(unaff_EBP + -0x10)
+                          ,"command");
           iVar3 = SetRegKey(*(undefined4 *)(unaff_EBP + -0x14),*(undefined4 *)(unaff_EBP + -0x1c),0)
           ;
           if (iVar3 != 0) {
@@ -928,28 +913,25 @@ LAB_00624cb1:
                 LVar5 = RegQueryValueA((HKEY)0x80000000,lpSubKey,lpData,lpcbData);
                 CString::ReleaseBuffer((CString *)(unaff_EBP + -0x14),-1);
                 if ((((LVar5 != 0) || (*(int *)(*(int *)(unaff_EBP + -0x14) + -8) == 0)) ||
-                    (iVar3 = CompareAnsiStringsWithMbcsAwareness
-                                       (*(int *)(unaff_EBP + -0x14),
-                                        *(undefined4 *)(unaff_EBP + -0x10)), iVar3 == 0)) &&
+                    (iVar3 = _mbscmp(*(int *)(unaff_EBP + -0x14),*(undefined4 *)(unaff_EBP + -0x10))
+                    , iVar3 == 0)) &&
                    ((iVar3 = SetRegKey(*(undefined4 *)(unaff_EBP + -0x18),
                                        *(undefined4 *)(unaff_EBP + -0x10),0), iVar3 != 0 &&
                     (*(int *)(unaff_EBP + 8) != 0)))) {
-                  _Format_CString__QAAXPBDZZ
-                            (unaff_EBP + -0x14,"%s\\ShellNew",*(undefined4 *)(unaff_EBP + -0x18));
+                  CString__Format(unaff_EBP + -0x14,"%s\\ShellNew",
+                                  *(undefined4 *)(unaff_EBP + -0x18));
                   SetRegKey(*(undefined4 *)(unaff_EBP + -0x14),&DAT_00673204,"NullFile");
                 }
               }
             }
             else {
-              _Format_CString__QAAXPBDZZ
-                        (unaff_EBP + -0x14,"%s\\shell\\print\\%s",*(undefined4 *)(unaff_EBP + -0x10)
-                         ,"command");
+              CString__Format(unaff_EBP + -0x14,"%s\\shell\\print\\%s",
+                              *(undefined4 *)(unaff_EBP + -0x10),"command");
               iVar3 = SetRegKey(*(undefined4 *)(unaff_EBP + -0x14),
                                 *(undefined4 *)(unaff_EBP + -0x28),0);
               if (iVar3 != 0) {
-                _Format_CString__QAAXPBDZZ
-                          (unaff_EBP + -0x14,"%s\\shell\\printto\\%s",
-                           *(undefined4 *)(unaff_EBP + -0x10),"command");
+                CString__Format(unaff_EBP + -0x14,"%s\\shell\\printto\\%s",
+                                *(undefined4 *)(unaff_EBP + -0x10),"command");
                 iVar3 = SetRegKey(*(undefined4 *)(unaff_EBP + -0x14),
                                   *(undefined4 *)(unaff_EBP + -0x24),0);
                 if (iVar3 != 0) goto LAB_00624cb1;
@@ -1006,7 +988,7 @@ void CDocManager::~CDocManager(void)
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
   
-  EstablishSehFrameProlog();
+  _EH_prolog();
   *(undefined4 **)(unaff_EBP + -0x10) = extraout_ECX;
   *extraout_ECX = &PTR_LAB_0067326c;
   piVar1 = (int *)extraout_ECX[2];

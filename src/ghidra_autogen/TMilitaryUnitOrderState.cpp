@@ -82,45 +82,6 @@ void __fastcall TMilitaryUnitOrderState::~TMilitaryUnitOrderState(undefined4 *pa
   return;
 }
 
-// GHIDRA_FUNCTION IMPERIALISM 0x005C2F50
-// GHIDRA_NAME TMilitaryUnitOrderState::InitializeRecruitOrderState
-// GHIDRA_PROTO undefined __thiscall InitializeRecruitOrderState(short param_1, short param_2, short param_3)
-// GHIDRA_COMMENT_BEGIN
-// GHIDRA_COMMENT Initializes military recruit order object state after allocation.
-// GHIDRA_COMMENT
-// GHIDRA_COMMENT Behavior:
-// GHIDRA_COMMENT - Calls base registration/owner insertion path.
-// GHIDRA_COMMENT - Sets group/index-derived fields (+0x36) and initialization defaults.
-// GHIDRA_COMMENT - Triggers object vfunc +0x38 post-init hook.
-// GHIDRA_COMMENT
-// GHIDRA_COMMENT Used by recruitment commit path for non-civilian branch.
-// GHIDRA_COMMENT_END
-
-/* Initializes military recruit order object state after allocation.
-   
-   Behavior:
-   - Calls base registration/owner insertion path.
-   - Sets group/index-derived fields (+0x36) and initialization defaults.
-   - Triggers object vfunc +0x38 post-init hook.
-   
-   Used by recruitment commit path for non-civilian branch. */
-
-void __thiscall
-TMilitaryUnitOrderState::InitializeRecruitOrderState
-          (TMilitaryUnitOrderState *this,short param_1,short param_2,short param_3)
-
-{
-  this[0x1c] = (TMilitaryUnitOrderState)0x1;
-  *(undefined2 *)(this + 6) = 0xffff;
-  TUnit::RegisterUnitOrderWithOwnerManager((TUnit *)this,param_1,param_2);
-  *(short *)(this + 0x36) = (short)((int)((int)param_1 + ((int)param_1 >> 0x1f & 7U)) >> 3);
-  if (0x1a < param_1) {
-    func_0x0040231a(this + 0x24);
-  }
-  (**(code **)(*(int *)this + 0x38))();
-  return;
-}
-
 // GHIDRA_FUNCTION IMPERIALISM 0x005C2FD0
 // GHIDRA_NAME TMilitaryUnitOrderState::ReadFrom
 // GHIDRA_PROTO undefined __thiscall ReadFrom(int * param_1)
@@ -218,27 +179,6 @@ void TMilitaryUnitOrderState::WriteTo(int *param_1)
   (*pcVar1)(unaff_EBP + 0x36,2);
   (*pcVar1)(unaff_EBP + 0x38,2);
   (*pcVar1)(unaff_EBP + 0x3a,2);
-  return;
-}
-
-// GHIDRA_FUNCTION IMPERIALISM 0x005C3190
-// GHIDRA_NAME TMilitaryUnitOrderState::CopyUnitCurrentTileIntoOrderTargets
-// GHIDRA_PROTO undefined __thiscall CopyUnitCurrentTileIntoOrderTargets(void)
-
-void TMilitaryUnitOrderState::CopyUnitCurrentTileIntoOrderTargets()
-
-{
-  TMilitaryUnitOrderState *pTVar1;
-  int iVar2;
-  
-  pTVar1 = this + 0x2e;
-  iVar2 = 3;
-  do {
-    *(undefined2 *)(pTVar1 + -6) = *(undefined2 *)(this + 6);
-    *(undefined2 *)pTVar1 = *(undefined2 *)(this + 6);
-    pTVar1 = pTVar1 + 2;
-    iVar2 = iVar2 + -1;
-  } while (iVar2 != 0);
   return;
 }
 

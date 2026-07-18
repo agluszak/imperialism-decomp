@@ -48,8 +48,8 @@ CRuntimeClass * TDropShadowText::GetRuntimeClass()
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005B5590
-// GHIDRA_NAME TDropShadowText::ConstructSelectableTextOptionEntryBase
-// GHIDRA_PROTO undefined __thiscall ConstructSelectableTextOptionEntryBase(void)
+// GHIDRA_NAME TDropShadowText::TDropShadowText
+// GHIDRA_PROTO undefined __thiscall TDropShadowText(void)
 // GHIDRA_COMMENT_BEGIN
 // GHIDRA_COMMENT Base constructor for selectable text option entries.
 // GHIDRA_COMMENT
@@ -66,7 +66,7 @@ CRuntimeClass * TDropShadowText::GetRuntimeClass()
    2. Clears option-state bytes used by selection logic.
    3. Installs selectable-option base vtable PTR_LAB_0066ce00. */
 
-TDropShadowText * TDropShadowText::ConstructSelectableTextOptionEntryBase()
+TDropShadowText * TDropShadowText::TDropShadowText()
 
 {
   func_0x0040541b();
@@ -132,9 +132,9 @@ void TDropShadowText::ApplyRectSlot110()
   puStack_8 = (undefined1 *)0x0;
   this_00 = (CDC *)func_0x004021c6();
   pHVar2 = CreateRectRgnIndirect(&RStack_20);
-  CBrush::AttachRegionHandleToClipStateAndRegister((CBrush *)&ppuStack_38,(int)pHVar2);
+  CBrush::CGdiObject__Attach((CBrush *)&ppuStack_38,(int)pHVar2);
   CDC::SelectClipRgn(this_00,(int)&ppuStack_38);
-  DeleteObject();
+  CGdiObject__DeleteObject();
   puStack_8 = (undefined1 *)0xffffffff;
   ppuStack_38 = &CBrush::_vftable_;
   func_0x00408a21();

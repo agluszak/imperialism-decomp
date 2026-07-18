@@ -38,12 +38,12 @@ void CDialog::~CDialog()
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
   
-  EstablishSehFrameProlog();
+  _EH_prolog();
   *(CWnd **)(unaff_EBP + -0x10) = this_00;
   (this_00->ccmdTarget).vftable = (CCmdTargetVtbl *)&PTR_LAB_0066fc2c;
   *(undefined4 *)(unaff_EBP + -4) = 0;
   if (this_00->m_hWnd != (void *)0x0) {
-    OrphanCallChain_C1_I09_0048ff70();
+    CWnd__DestroyWindow();
   }
   *(undefined4 *)(unaff_EBP + -4) = 0xffffffff;
   CWnd::~CWnd(this_00);
@@ -246,7 +246,7 @@ int __fastcall CDialog::HandleInitDialog(CWnd *param_1)
   iVar3 = CWnd::Default(param_1);
   if ((iVar3 != 0) && ((param_1->m_nFlags & 0x100) != 0)) {
     pHVar4 = GetNextDlgTabItem(param_1->m_hWnd,(HWND)0x0,0);
-    iVar5 = FromHandle(pHVar4);
+    iVar5 = CWnd__FromHandle(pHVar4);
     if (iVar5 != 0) {
       CWnd::SetFocus();
       iVar3 = 0;

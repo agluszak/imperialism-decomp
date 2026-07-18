@@ -511,7 +511,7 @@ LAB_005a1f86:
     if (((iVar4 != 0) && (1 < *(int *)(iVar4 * 0x14 + 8 + iVar8))) &&
        (0 < *(int *)(&this->field_0x54 + (iVar4 / 0x3a) * 4))) {
       if (*(float *)(&DAT_00669830 + *(short *)(&DAT_00695528 + iVar5 * 2) * 4) == _DAT_00669ec0) {
-        uVar6 = ftol();
+        uVar6 = _ftol();
         func_0x004028c4(iVar4,uVar6);
       }
       iVar8 = *(int *)&this->field_0x4;
@@ -568,13 +568,13 @@ LAB_005a1f86:
       piStack_c = (int *)CONCAT31(piStack_c._1_3_,1);
     }
     (**(code **)(*param_1 + 0xc))();
-    uVar6 = ftol(piStack_c,0);
-    uVar6 = ftol(uVar6);
+    uVar6 = _ftol(piStack_c,0);
+    uVar6 = _ftol(uVar6);
     func_0x00402770(param_1,unaff_ESI,param_2,uVar6);
     *(undefined1 *)(*(int *)(&this->field_0x14 + *(int *)(unaff_ESI + 0x20) * 4) + 0x20) = 0;
   }
   else {
-    uVar6 = ftol();
+    uVar6 = _ftol();
     func_0x004028c4(iVar4,uVar6);
     if (*(int *)&this->field_0x8 != 0) {
       func_0x004077f7(param_2);
@@ -723,9 +723,9 @@ TTacticalBattle::ExecuteTacticalMineActionAndQueuePacket
   int iVar2;
   
   iVar1 = *(int *)(param_1 + 0xc);
-  iVar2 = GenerateThreadLocalRandom15();
+  iVar2 = rand();
   iVar1 = iVar2 % 400 + -0x15e0 + iVar1 * 0xfa;
-  if (*(int *)&g_pLocalizationTable->field_0x44 != 0) {
+  if (*(int *)&g_pSimMgr->field_0x44 != 0) {
     func_0x00408855(0x6d696e65,0,param_2,iVar1);
   }
   func_0x004028c4(param_2,iVar1);
@@ -772,7 +772,7 @@ void TTacticalBattle::ComputeRallyStrengthAndQueueTacticalRallyCommand(int param
   int in_stack_00000008;
   
   if ((*(int *)(in_stack_00000008 + 0x1c) != 0) && (*(int *)(in_stack_00000008 + 0x1c) == 1)) {
-    GenerateThreadLocalRandom15();
+    rand();
   }
   func_0x004065af();
   func_0x0040400c();

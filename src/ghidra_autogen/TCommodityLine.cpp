@@ -131,15 +131,15 @@ void TCommodityLine::OrphanRetStub_0056f460()
   local_12 = 0;
   local_11 = 0;
   local_10 = (uint)local_10._2_2_ << 0x10;
-  BuildUiTextStyleDescriptor();
+  func_0x00406afa();
   CStack_54.m_pchData = (char *)local_38;
   uStack_58 = CONCAT22((short)((uint)CStack_54.m_pchData >> 0x10),*(undefined2 *)&this->field_0x10);
   puStack_5c = (undefined1 *)0x5c1603;
-  (*g_pLocalizationTable->vftable[0xf].slot_0x04)();
+  (*g_pSimMgr->vftable[0xf].slot_0x04)();
   puStack_5c = &stack0xffffffbc;
   puStack_60 = (undefined1 *)
                CONCAT22((short)((uint)puStack_5c >> 0x10),*(undefined2 *)&this->field_0x10);
-  pTVar1 = g_pLocalizationTable->vftable;
+  pTVar1 = g_pSimMgr->vftable;
   (*g_pNationInteractionStateManager->vftable[9].slot_0x04)();
   (*pTVar1[0xe].slot_0x04)();
   puStack_6c = &stack0xffffffb4;

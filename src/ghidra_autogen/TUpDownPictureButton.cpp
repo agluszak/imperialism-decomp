@@ -45,10 +45,10 @@ CRuntimeClass * TUpDownPictureButton::GetRuntimeClass()
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x005715A0
-// GHIDRA_NAME TUpDownPictureButton::ConstructPictureScreenResourceEntry
-// GHIDRA_PROTO undefined __thiscall ConstructPictureScreenResourceEntry(void)
+// GHIDRA_NAME TUpDownPictureButton::TUpDownPictureButton
+// GHIDRA_PROTO undefined __thiscall TUpDownPictureButton(void)
 
-TUpDownPictureButton * TUpDownPictureButton::ConstructPictureScreenResourceEntry()
+TUpDownPictureButton * TUpDownPictureButton::TUpDownPictureButton()
 
 {
   func_0x00401122();

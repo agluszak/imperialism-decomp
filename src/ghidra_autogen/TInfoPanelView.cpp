@@ -95,7 +95,7 @@ void TInfoPanelView::NoOpUiLifecycleHook()
     puStack_38 = (undefined1 *)0x4fa08a;
     (*p_Var1)();
     puStack_38 = &stack0xffffffdc;
-    (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+    (*g_pSimMgr->vftable[0x10].slot_0x04)();
     func_0x004076b7(&uStack_30);
     func_0x00404d22();
     iVar2 = iVar2 + 1;
@@ -200,16 +200,16 @@ void TInfoPanelView::ApplyRectSlot110()
   pCStack_4c = &local_30;
   CStack_50.m_pchData = (char *)0x2b6b;
   CStack_54.m_pchData = (char *)0x4fa250;
-  MapUiThemeCodeToStyleFlags();
+  func_0x004093cc();
   pCStack_4c = &local_34;
   CStack_50.m_pchData = (char *)0x2b68;
   CStack_54.m_pchData = (char *)0x4fa262;
-  MapUiThemeCodeToStyleFlags();
+  func_0x004093cc();
   pCStack_4c = &local_38;
   CStack_50.m_pchData = (char *)0x0;
   CStack_54.m_pchData = (char *)0x2733;
   puStack_58 = (undefined1 *)0x4fa27f;
-  (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+  (*g_pSimMgr->vftable[0x10].slot_0x04)();
   puVar9 = (undefined1 *)(-(int)CVar14.m_pchData + 0x16f);
   iStack_5c = 0x4fa29b;
   puStack_20 = puVar9;
@@ -217,7 +217,7 @@ void TInfoPanelView::ApplyRectSlot110()
   puStack_58 = (undefined1 *)(-(int)CVar14.m_pchData + 0x170);
   iStack_5c = -iVar8 + 0x49;
   uStack_60 = 0x4fa2ab;
-  SetQuickDrawTextOriginWithContextOffset();
+  func_0x00408d6e();
   puStack_58 = &stack0xffffffbc;
   iStack_5c = 0x4fa2b8;
   func_0x004029aa();
@@ -226,7 +226,7 @@ void TInfoPanelView::ApplyRectSlot110()
   uStack_60 = 0x4fa2cf;
   iStack_5c = -iVar8 + 0x48;
   puStack_58 = puVar9;
-  SetQuickDrawTextOriginWithContextOffset();
+  func_0x00408d6e();
   puStack_58 = &stack0xffffffbc;
   iStack_5c = 0x4fa2dc;
   func_0x004029aa();
@@ -239,7 +239,7 @@ void TInfoPanelView::ApplyRectSlot110()
   iStack_5c = 1;
   uStack_60 = 0x2733;
   pCStack_64 = (CString *)0x4fa30a;
-  (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+  (*g_pSimMgr->vftable[0x10].slot_0x04)();
   pCStack_64 = pCStack_4c;
   pCVar13 = (CString *)(DAT_006969c0 - (int)CVar14.m_pchData);
   pCVar10 = (CString *)(DAT_006969b0 - iVar8);
@@ -247,7 +247,7 @@ void TInfoPanelView::ApplyRectSlot110()
   func_0x00409444();
   pCStack_64 = (CString *)((int)&pCVar13->m_pchData + 1);
   pCStack_68 = (CString *)((int)&pCVar10->m_pchData + 1);
-  SetQuickDrawTextOriginWithContextOffset();
+  func_0x00408d6e();
   pCStack_64 = &CStack_50;
   pCStack_68 = (CString *)0x4fa341;
   func_0x004029aa();
@@ -255,7 +255,7 @@ void TInfoPanelView::ApplyRectSlot110()
   func_0x00409444();
   pCStack_68 = pCVar10;
   pCStack_64 = pCVar13;
-  SetQuickDrawTextOriginWithContextOffset();
+  func_0x00408d6e();
   pCStack_64 = &CStack_50;
   pCStack_68 = (CString *)0x4fa365;
   func_0x004029aa();
@@ -265,18 +265,17 @@ void TInfoPanelView::ApplyRectSlot110()
     do {
       pCStack_64 = &CStack_50;
       pCStack_68 = (CString *)(local_38.m_pchData + 1);
-      (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2733);
+      (*g_pSimMgr->vftable[0x10].slot_0x04)(0x2733);
       pCVar13 = (CString *)
                 CONCAT22((short)((uint)pCVar13 >> 0x10),
                          *(short *)((int)&DAT_006969c0 + iVar11 + 2) - (short)CVar14.m_pchData);
       iVar7 = CONCAT22((short)((uint)CVar14.m_pchData >> 0x10),
                        *(short *)((int)&DAT_006969b0 + iVar11 + 2) - sVar1);
       func_0x00409444(puStack_58);
-      SetQuickDrawTextOriginWithContextOffset
-                (iVar7 + 1,(undefined1 *)((int)&pCVar13->m_pchData + 1));
+      func_0x00408d6e(iVar7 + 1,(undefined1 *)((int)&pCVar13->m_pchData + 1));
       func_0x004029aa(&iStack_5c);
       func_0x00409444(CStack_54.m_pchData);
-      SetQuickDrawTextOriginWithContextOffset(iVar7,pCVar13);
+      func_0x00408d6e(iVar7,pCVar13);
       func_0x004029aa(&iStack_5c);
       iVar11 = iVar11 + 2;
       local_38.m_pchData = local_38.m_pchData + 1;
@@ -290,23 +289,23 @@ void TInfoPanelView::ApplyRectSlot110()
            sVar2 < 100)) || (199 < sVar2)) {
     pCStack_64 = &CStack_50;
     pCStack_68 = (CString *)0x61;
-    (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2733);
+    (*g_pSimMgr->vftable[0x10].slot_0x04)(0x2733);
     iVar7 = CONCAT22((short)((uint)pCVar13 >> 0x10),DAT_006969c0._2_2_ - sVar3);
     iVar11 = CONCAT22((short)((uint)pCVar10 >> 0x10),DAT_006969b0._2_2_ - sVar1);
     func_0x00409444(puStack_58);
-    SetQuickDrawTextOriginWithContextOffset(iVar11 + 1,iVar7 + 1);
+    func_0x00408d6e(iVar11 + 1,iVar7 + 1);
     func_0x004029aa(&iStack_5c);
     func_0x00409444(CStack_54.m_pchData);
-    SetQuickDrawTextOriginWithContextOffset(iVar11,iVar7);
+    func_0x00408d6e(iVar11,iVar7);
     func_0x004029aa(&iStack_5c);
-    (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2733,0x62,&iStack_5c);
+    (*g_pSimMgr->vftable[0x10].slot_0x04)(0x2733,0x62,&iStack_5c);
     iVar7 = DAT_006969c4 - (int)CVar14.m_pchData;
     iVar11 = DAT_006969b4 - iVar8;
     func_0x00409444(pCStack_64);
-    SetQuickDrawTextOriginWithContextOffset(iVar11 + 1,iVar7 + 1);
+    func_0x00408d6e(iVar11 + 1,iVar7 + 1);
     func_0x004029aa(&pCStack_68);
     func_0x00409444(uStack_60);
-    SetQuickDrawTextOriginWithContextOffset(iVar11,iVar7);
+    func_0x00408d6e(iVar11,iVar7);
     func_0x004029aa(&pCStack_68);
   }
   pCStack_64 = (CString *)0x2b68;
@@ -322,13 +321,13 @@ void TInfoPanelView::ApplyRectSlot110()
   iVar11 = iVar8 + 0xa7;
   func_0x00409444();
   pCStack_68 = (CString *)(local_30.m_pchData + 1);
-  SetQuickDrawTextOriginWithContextOffset(iVar8 + 0xa8);
+  func_0x00408d6e(iVar8 + 0xa8);
   pCStack_68 = &CStack_54;
   func_0x004029aa();
   pCStack_68 = pCStack_4c;
   func_0x00409444();
   pCStack_68 = (CString *)local_30.m_pchData;
-  SetQuickDrawTextOriginWithContextOffset(iVar11);
+  func_0x00408d6e(iVar11);
   pCStack_68 = &CStack_54;
   func_0x004029aa();
   pCStack_68 = (CString *)0x2b68;
@@ -339,27 +338,27 @@ void TInfoPanelView::ApplyRectSlot110()
        (*(short *)&pTVar4->field_0xe < 200)) {
       pCStack_68 = (CString *)&stack0xffffffbc;
       func_0x00405245();
-      (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2733,0x17,&pCStack_4c);
-      func_0x0040988b(g_pLocalizationTable,&pCStack_64,puStack_58,CStack_54.m_pchData);
+      (*g_pSimMgr->vftable[0x10].slot_0x04)(0x2733,0x17,&pCStack_4c);
+      func_0x0040988b(g_pSimMgr,&pCStack_64,puStack_58,CStack_54.m_pchData);
       func_0x00409444(uStack_60);
-      SetQuickDrawTextOriginWithContextOffset(0x79,0x25);
+      func_0x00408d6e(0x79,0x25);
       func_0x004029aa(&pCStack_64);
       func_0x00409444(iStack_5c);
-      SetQuickDrawTextOriginWithContextOffset(0x78,0x24);
+      func_0x00408d6e(0x78,0x24);
       func_0x004029aa(&pCStack_64);
     }
   }
   else {
     pCStack_68 = (CString *)&stack0xffffffbc;
     func_0x00405245();
-    (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2733,0x16,&pCStack_4c);
-    func_0x0040988b(g_pLocalizationTable,&pCStack_64,puStack_58,CStack_54.m_pchData);
+    (*g_pSimMgr->vftable[0x10].slot_0x04)(0x2733,0x16,&pCStack_4c);
+    func_0x0040988b(g_pSimMgr,&pCStack_64,puStack_58,CStack_54.m_pchData);
     iVar7 = CONCAT22((short)unaff_EBX >> 0xf,DAT_006969b0._2_2_ - sVar1);
     func_0x00409444(uStack_60);
-    SetQuickDrawTextOriginWithContextOffset(iVar7 + 1,0x25);
+    func_0x00408d6e(iVar7 + 1,0x25);
     func_0x004029aa(&pCStack_64);
     func_0x00409444(iStack_5c);
-    SetQuickDrawTextOriginWithContextOffset(iVar7,0x24);
+    func_0x00408d6e(iVar7,0x24);
     func_0x004029aa(&pCStack_64);
     CVar12.m_pchData = local_34.m_pchData;
   }
@@ -367,44 +366,44 @@ void TInfoPanelView::ApplyRectSlot110()
   uVar6 = (*g_apTerrainTypeDescriptorTable[(int)CVar12.m_pchData]->ownedRegionList->vftable[5].
             GetTEventHandlerClassNamePointer)();
   pCStack_68 = (CString *)CONCAT31(extraout_var,uVar6);
-  _Format_CString__QAAXPBDZZ(&CStack_54,&g_szDecimalFormat);
+  CString__Format(&CStack_54,&g_szDecimalFormat);
   pCStack_68 = (CString *)CStack_50.m_pchData;
   func_0x00409444();
   pCStack_68 = (CString *)(-(int)CVar14.m_pchData + 0x199);
-  SetQuickDrawTextOriginWithContextOffset(iVar8 + 0xa8);
+  func_0x00408d6e(iVar8 + 0xa8);
   pCStack_68 = &CStack_54;
   func_0x004029aa();
   pCStack_68 = pCStack_4c;
   func_0x00409444();
   pCStack_68 = (CString *)(-(int)CVar14.m_pchData + 0x198);
-  SetQuickDrawTextOriginWithContextOffset(iVar11);
+  func_0x00408d6e(iVar11);
   pCStack_68 = &CStack_54;
   func_0x004029aa();
   if (unaff_BP < 7) {
     pCStack_68 = &CStack_54;
-    pTVar5 = g_pLocalizationTable->vftable;
+    pTVar5 = g_pSimMgr->vftable;
     iVar7 = func_0x0040132f();
     (*pTVar5[0x10].slot_0x04)(0x2733,iVar7 + 0x19);
     func_0x00409444(iStack_5c);
-    SetQuickDrawTextOriginWithContextOffset(iVar8 + 0xa8,-(int)CVar14.m_pchData + 0x1aa);
+    func_0x00408d6e(iVar8 + 0xa8,-(int)CVar14.m_pchData + 0x1aa);
     func_0x004029aa(&uStack_60);
     func_0x00409444(puStack_58);
-    SetQuickDrawTextOriginWithContextOffset(iVar11,-(int)CVar14.m_pchData + 0x1a9);
+    func_0x00408d6e(iVar11,-(int)CVar14.m_pchData + 0x1a9);
     func_0x004029aa(&uStack_60);
     if (unaff_BP < 7) {
       if (((g_apTerrainTypeDescriptorTable[(int)CVar12.m_pchData] == (TCountry *)0x0) ||
           (sVar3 = *(short *)&g_apTerrainTypeDescriptorTable[(int)CVar12.m_pchData]->field_0xe,
           sVar3 < 100)) || (199 < sVar3)) {
         pCStack_68 = &CStack_54;
-        pTVar5 = g_pLocalizationTable->vftable;
+        pTVar5 = g_pSimMgr->vftable;
         uVar6 = (*g_apNationStates[(int)CVar12.m_pchData]->vftable->
                   SetNationPercentFieldByModeAndDescriptorLinks_82)();
         (*pTVar5[0x10].slot_0x04)(0x2733,CONCAT31(extraout_var_00,uVar6) + 0x19);
         func_0x00409444(iStack_5c);
-        SetQuickDrawTextOriginWithContextOffset(iVar8 + 0xa8,-(int)CVar14.m_pchData + 0x1bb);
+        func_0x00408d6e(iVar8 + 0xa8,-(int)CVar14.m_pchData + 0x1bb);
         func_0x004029aa(&uStack_60);
         func_0x00409444(puStack_58);
-        SetQuickDrawTextOriginWithContextOffset(iVar11,-(int)CVar14.m_pchData + 0x1ba);
+        func_0x00408d6e(iVar11,-(int)CVar14.m_pchData + 0x1ba);
         func_0x004029aa(&uStack_60);
       }
       if (unaff_BP < 7) goto LAB_004faa26;
@@ -418,16 +417,16 @@ void TInfoPanelView::ApplyRectSlot110()
     pCStack_68 = (CString *)CVar12.m_pchData;
     uVar6 = (*g_pDiplomacyTurnStateManager->vftable[0x13].slot_0x04)();
     if ((short)CONCAT31(extraout_var_01,uVar6) == -1) {
-      (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2733,0x18,&puStack_58);
+      (*g_pSimMgr->vftable[0x10].slot_0x04)(0x2733,0x18,&puStack_58);
     }
     else {
       func_0x00405245(&puStack_58);
     }
     func_0x00409444(puStack_58);
-    SetQuickDrawTextOriginWithContextOffset(iVar8 + 0xa8,-(int)CVar14.m_pchData + 0x1bb);
+    func_0x00408d6e(iVar8 + 0xa8,-(int)CVar14.m_pchData + 0x1bb);
     func_0x004029aa(&iStack_5c);
     func_0x00409444(CStack_54.m_pchData);
-    SetQuickDrawTextOriginWithContextOffset(iVar11,-(int)CVar14.m_pchData + 0x1ba);
+    func_0x00408d6e(iVar11,-(int)CVar14.m_pchData + 0x1ba);
     func_0x004029aa(&iStack_5c);
   }
 LAB_004faa26:

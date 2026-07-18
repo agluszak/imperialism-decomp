@@ -77,10 +77,9 @@ void TTextList::ApplyRectSlot110()
   CString local_28;
   int local_24;
   char *local_20;
-  undefined4 uStack_1c;
+  int iStack_1c;
   int iStack_18;
   int iStack_14;
-  int iStack_10;
   undefined4 local_c;
   undefined1 *puStack_8;
   undefined4 local_4;
@@ -94,8 +93,8 @@ void TTextList::ApplyRectSlot110()
   local_2c = 0;
   local_30 = 0;
   local_24 = iVar3;
-  MapUiThemeCodeToStyleFlags(0x2b6c,&local_2c);
-  MapUiThemeCodeToStyleFlags(0x2b6a,&local_30);
+  func_0x004093cc(0x2b6c,&local_2c);
+  func_0x004093cc(0x2b6a,&local_30);
   func_0x0040448f(0,0xe,0x2b6c);
   if ((int)*(short *)&this->field_0x106c < this->field38) {
     local_20 = &this->field_0x60 + iVar3 * 0x40;
@@ -105,19 +104,19 @@ void TTextList::ApplyRectSlot110()
       local_4 = 0;
       if (iVar3 == *(int *)&this->field_0x1068) {
         (**(code **)(g_pUiRuntimeContext->vftable + 0x34))(5);
-        iStack_18 = (int)(short)iVar2;
-        iStack_10 = *(short *)&this->field_0x106c + iStack_18;
-        iStack_14 = this->field34;
-        uStack_1c = 0;
-        FillRectWithQuickDrawBrushAndContextOffset(&uStack_1c);
+        iStack_1c = (int)(short)iVar2;
+        iStack_14 = *(short *)&this->field_0x106c + iStack_1c;
+        iStack_18 = this->field34;
+        local_20 = (char *)0x0;
+        func_0x00406546(&local_20);
       }
-      sVar1 = MeasureTextExtentWithCachedQuickDrawStyle(&local_28);
+      sVar1 = func_0x00405b7d(&local_28);
       iVar3 = this->field34 / 2 - (int)sVar1 / 2;
       func_0x00409444(local_30);
-      SetQuickDrawTextOriginWithContextOffset(iVar3 + 1,iVar2 + 0xc);
+      func_0x00408d6e(iVar3 + 1,iVar2 + 0xc);
       func_0x004029aa(&local_28);
       func_0x00409444(local_2c);
-      SetQuickDrawTextOriginWithContextOffset(iVar3,iVar2 + 0xb);
+      func_0x00408d6e(iVar3,iVar2 + 0xb);
       func_0x004029aa(&local_28);
       iVar2 = iVar2 + CONCAT22(extraout_var,*(undefined2 *)&this->field_0x106c);
       local_24 = local_24 + 1;

@@ -207,20 +207,20 @@ void TMiniArmyLine::OrphanRetStub_0056f460(undefined4 param_1, undefined4 param_
     pCStack_94 = &CStack_70;
     puStack_90 = &g_szDecimalFormat;
     puStack_98 = (undefined *)0x4aab05;
-    _Format_CString__QAAXPBDZZ();
+    CString__Format();
     puStack_8c = &uStack_74;
     puStack_90 = (undefined *)(int)(short)CStack_7c.m_pchData;
     pCStack_94 = (CString *)0x4aab1e;
-    (*g_pLocalizationTable->vftable[0xe].slot_0x04)();
+    (*g_pSimMgr->vftable[0xe].slot_0x04)();
     if ((short)CStack_48.m_pchData == 0) {
       pCStack_94 = (CString *)&puStack_80;
       puStack_98 = (undefined *)0x2;
       pCStack_9c = (CString *)0x2746;
       piStack_a0 = (int *)0x4aab40;
-      (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+      (*g_pSimMgr->vftable[0x10].slot_0x04)();
       piStack_a0 = (int *)iStack_88;
       pcStack_a4 = pcStack_84;
-      func_0x0040988b(g_pLocalizationTable,&puStack_80,puStack_8c);
+      func_0x0040988b(g_pSimMgr,&puStack_80,puStack_8c);
     }
     else {
       pCStack_94 = (CString *)0x4aab6e;
@@ -230,15 +230,15 @@ void TMiniArmyLine::OrphanRetStub_0056f460(undefined4 param_1, undefined4 param_
       puStack_98 = &g_szDecimalFormat;
       uStack_54 = CONCAT31(uStack_54._1_3_,7);
       piStack_a0 = (int *)0x4aab88;
-      _Format_CString__QAAXPBDZZ();
+      CString__Format();
       pCStack_94 = (CString *)&puStack_80;
       puStack_98 = (undefined *)0x6;
       pCStack_9c = (CString *)0x2746;
       piStack_a0 = (int *)0x4aaba5;
-      (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+      (*g_pSimMgr->vftable[0x10].slot_0x04)();
       piStack_a0 = (int *)iStack_88;
       pcStack_a4 = CStack_7c.m_pchData;
-      func_0x0040988b(g_pLocalizationTable,&puStack_80,puStack_8c,pcStack_84);
+      func_0x0040988b(g_pSimMgr,&puStack_80,puStack_8c,pcStack_84);
       CStack_60.m_pchData._0_1_ = 6;
       piStack_a0 = (int *)0x4aabda;
       CString::~CString(&CStack_7c);

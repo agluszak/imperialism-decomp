@@ -43,6 +43,18 @@ CRuntimeClass * TTradeScreenPicture::GetRuntimeClass()
   return &classTTradeScreenPicture;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x005BA720
+// GHIDRA_NAME TTradeScreenPicture::TTradeScreenPicture
+// GHIDRA_PROTO undefined __thiscall TTradeScreenPicture(void)
+
+TTradeScreenPicture * TTradeScreenPicture::TTradeScreenPicture()
+
+{
+  func_0x00401122();
+  this->vftable = &_vftable_;
+  return this;
+}
+
 // GHIDRA_FUNCTION IMPERIALISM 0x005BA750
 // GHIDRA_NAME TTradeScreenPicture::'scalar_deleting_destructor'
 // GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(byte param_1)
@@ -133,15 +145,14 @@ void TTradeScreenPicture::ApplyRectSlot110(CString param_1)
         else {
           sVar3 = func_0x00403b16();
           uVar2 = (*g_apNationStates[sVar3]->vftable->OrphanLeaf_NoCall_Ins02_004d7f20)(iVar6);
-          _Format_CString__QAAXPBDZZ
-                    (&local_4,&g_szDecimalFormat,(int)(short)CONCAT31(extraout_var_00,uVar2));
+          CString__Format(&local_4,&g_szDecimalFormat,(int)(short)CONCAT31(extraout_var_00,uVar2));
         }
         local_30 = local_30 + -5;
         iStack_28 = iStack_28 + -5;
         func_0x004053c1(&local_4,&local_34,0xffffffff,0);
         local_30 = *(int *)(iVar4 + 0x28) + 3;
         iStack_28 = *(int *)(iVar4 + 0x28) + 0x11;
-        pTVar1 = g_pLocalizationTable->vftable;
+        pTVar1 = g_pSimMgr->vftable;
         local_34 = (TTradeScreenPicture *)(*(int *)(iVar4 + 0x24) + 200);
         iStack_2c = *(int *)(iVar4 + 0x24) + 0xee;
         uVar2 = (*g_pNationInteractionStateManager->vftable[9].slot_0x04)(iVar6,&local_4);

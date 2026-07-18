@@ -26,7 +26,7 @@ undefined4 * CFile::CFile(void)
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
   
-  EstablishSehFrameProlog();
+  _EH_prolog();
   *(undefined4 **)(unaff_EBP + -0x10) = extraout_ECX;
   *extraout_ECX = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *(undefined4 *)(unaff_EBP + -4) = 0;
@@ -63,7 +63,7 @@ undefined4 * CFile::CFile(void)
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
   
-  EstablishSehFrameProlog();
+  _EH_prolog();
   *(undefined4 **)(unaff_EBP + -0x10) = extraout_ECX;
   *extraout_ECX = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *(undefined4 *)(unaff_EBP + -4) = 0;
@@ -89,7 +89,7 @@ undefined4 * CFile::CFile(void)
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
   
-  EstablishSehFrameProlog();
+  _EH_prolog();
   *(undefined4 **)(unaff_EBP + -0x10) = extraout_ECX;
   *extraout_ECX = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *(undefined4 *)(unaff_EBP + -4) = 0;
@@ -131,7 +131,7 @@ void CFile::~CFile(void)
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
   
-  EstablishSehFrameProlog();
+  _EH_prolog();
   *(undefined4 **)(unaff_EBP + -0x10) = extraout_ECX;
   *extraout_ECX = &PTR_LAB_006727e4;
   iVar1 = extraout_ECX[1];
@@ -507,7 +507,7 @@ undefined4 CFile::GetFileName(void)
   undefined4 *unaff_FS_OFFSET;
   undefined4 uVar2;
   
-  EstablishSehFrameProlog();
+  _EH_prolog();
   *(undefined4 *)(unaff_EBP + -0x14) = 0;
   GetStatus(this,(int *)(unaff_EBP + -300));
   CString::CString((CString *)(unaff_EBP + -0x10));
@@ -538,7 +538,7 @@ undefined4 CFile::GetFileTitle(void)
   undefined4 *unaff_FS_OFFSET;
   undefined4 uVar2;
   
-  EstablishSehFrameProlog();
+  _EH_prolog();
   *(undefined4 *)(unaff_EBP + -0x14) = 0;
   GetStatus(this,(int *)(unaff_EBP + -300));
   CString::CString((CString *)(unaff_EBP + -0x10));

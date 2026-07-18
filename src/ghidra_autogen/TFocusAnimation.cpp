@@ -101,8 +101,8 @@ void TFocusAnimation::VTableSlot0D()
     (**(code **)(**(int **)&this->field_0x4 + 0xf8))();
     (**(code **)&this->vftable->field_0x2c)(&stack0xffffffd0);
     (**(code **)(**(int **)&this->field_0x4 + 0xfc))();
-    uStack_4 = 0xffffffff;
-    DestroyScopedMapQuickDrawContext();
+    uStack_c = 0xffffffff;
+    func_0x00408035();
   }
   *unaff_FS_OFFSET = uStack_c;
   return;

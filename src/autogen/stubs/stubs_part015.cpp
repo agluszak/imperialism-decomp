@@ -43,6 +43,14 @@ undefined4 InitializeUMapAuxEntryDefaultsAndSharedNameFields(void)
   return 0;
 }
 
+// ghidra_name RebuildGlobalMapStateAndMaybeDispatchTurnEvent3C0
+// ghidra_proto undefined RebuildGlobalMapStateAndMaybeDispatchTurnEvent3C0()
+// FUNCTION: IMPERIALISM 0x0050ed4d
+undefined4 RebuildGlobalMapStateAndMaybeDispatchTurnEvent3C0(void)
+{
+  return 0;
+}
+
 // ghidra_name VerifyMapDataAndWriteReport
 // ghidra_proto void __fastcall VerifyMapDataAndWriteReport(int pMapDataContext)
 // FUNCTION: IMPERIALISM 0x0050f3c0
@@ -63,6 +71,14 @@ undefined4 WrapperFor_thunk_SetMapRecordFlagA3AndPropagateToChildren_At0050f5f0(
 // ghidra_proto undefined CheckTilePatternMaskAllowedByModeFlag()
 // FUNCTION: IMPERIALISM 0x005114b0
 undefined4 CheckTilePatternMaskAllowedByModeFlag(void)
+{
+  return 0;
+}
+
+// ghidra_name UpdateStrategicMapTileIconVariantState
+// ghidra_proto undefined UpdateStrategicMapTileIconVariantState()
+// FUNCTION: IMPERIALISM 0x00511614
+undefined4 UpdateStrategicMapTileIconVariantState(void)
 {
   return 0;
 }

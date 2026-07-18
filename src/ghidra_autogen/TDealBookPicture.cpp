@@ -165,7 +165,7 @@ TDealBookPicture::UpdateDealBookResourceSelectionAndToggleControls
     uStack_58 = 0xb;
     puStack_5c = (undefined1 *)0x2730;
     CStack_60.m_pchData = (char *)0x5bb12f;
-    (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+    (*g_pSimMgr->vftable[0x10].slot_0x04)();
   }
   CStack_28.m_pchData = (char *)&uStack_58;
   puStack_5c = &stack0xffffffc0;
@@ -196,7 +196,7 @@ TDealBookPicture::UpdateDealBookResourceSelectionAndToggleControls
     CStack_60.m_pchData = (char *)0x1;
     CStack_64.m_pchData = (char *)0x1;
     (**(code **)(iVar1 + 0xa8))();
-    (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+    (*g_pSimMgr->vftable[0x10].slot_0x04)();
   }
   func_0x004076b7(&CStack_60);
   func_0x00404d54();
@@ -430,9 +430,9 @@ LAB_005bb355:
     puStack_30 = (undefined4 *)0xc8;
     uStack_2c = 0x1e;
     func_0x004059b6(0,0x3c);
-    (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x2741,7,&CStack_5c);
+    (*g_pSimMgr->vftable[0x10].slot_0x04)(0x2741,7,&CStack_5c);
     func_0x00402e87(&local_68);
-    BuildUiTextStyleDescriptor(&uStack_3c,0,0xe,0x2b67);
+    func_0x00406afa(&uStack_3c,0,0xe,0x2b67);
     func_0x00408521(&uStack_3c);
     func_0x00408bf2(1);
     (**(code **)(**(int **)&this->field_0x9c + 0x1a0))(uVar5);
@@ -507,7 +507,7 @@ LAB_005bb355:
             CString::operator=(&CStack_80,src_ref);
             puStack_20 = (undefined4 *)CONCAT31(puStack_20._1_3_,8);
             CString::~CString(&CStack_5c);
-            (*g_pLocalizationTable->vftable[0xe].slot_0x04)(iVar2,&stack0xffffff84);
+            (*g_pSimMgr->vftable[0xe].slot_0x04)(iVar2,&stack0xffffff84);
             uVar6 = AssignSharedStringConcatCStrAndRef(&CStack_5c,&DAT_00699320,&uStack_84);
             uStack_28._0_1_ = 0xb;
             CString::operator+=(uVar6);
@@ -681,15 +681,15 @@ void TDealBookPicture::HandleEvent(int param_1, int param_2)
     CStack_84.m_pchData = (char *)0x2741;
     uStack_10 = CONCAT31(uStack_10._1_3_,2);
     CStack_88.m_pchData = (char *)0x5bbd1b;
-    (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+    (*g_pSimMgr->vftable[0x10].slot_0x04)();
     CStack_88.m_pchData = &stack0xffffff98;
     uStack_90 = 0x2711;
     CStack_94.m_pchData = (char *)0x5bbd38;
-    (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+    (*g_pSimMgr->vftable[0x10].slot_0x04)();
     CStack_94.m_pchData = pcStack_78;
     CStack_9c.m_pchData = (char *)&pcStack_70;
     CStack_98.m_pchData = pcStack_74;
-    func_0x0040988b(g_pLocalizationTable);
+    func_0x0040988b(g_pSimMgr);
     CStack_98.m_pchData = (char *)&pcStack_70;
     CStack_94.m_pchData = (char *)0x0;
     CStack_9c.m_pchData = (char *)0x5bbd65;
@@ -708,12 +708,11 @@ void TDealBookPicture::HandleEvent(int param_1, int param_2)
       atStack_4c[0].bottom._0_1_ = 3;
       CString::CString(&CStack_94);
       atStack_4c[0].bottom._0_1_ = 4;
-      _Format_CString__QAAXPBDZZ
-                (&CStack_94,&g_szDecimalFormat,
-                 (short)((int)((int)*(short *)&g_pLocalizationTable->field_0x2c +
-                              ((int)*(short *)&g_pLocalizationTable->field_0x2c >> 0x1f & 3U)) >> 2)
-                 + 0x717);
-      (*g_pLocalizationTable->vftable[6].slot_0x04)(&CStack_98);
+      CString__Format(&CStack_94,&g_szDecimalFormat,
+                      (short)((int)((int)*(short *)&g_pSimMgr->field_0x2c +
+                                   ((int)*(short *)&g_pSimMgr->field_0x2c >> 0x1f & 3U)) >> 2) +
+                      0x717);
+      (*g_pSimMgr->vftable[6].slot_0x04)(&CStack_98);
       uVar4 = AssignSharedStringConcatRefAndCStr
                         (&CStack_80,&CStack_9c,g_Build_Map_Order_LookupTable_00695794);
       atStack_4c[0].right._0_1_ = 5;

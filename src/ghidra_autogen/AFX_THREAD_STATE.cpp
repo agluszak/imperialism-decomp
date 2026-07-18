@@ -55,7 +55,7 @@ void _AFX_THREAD_STATE::~_AFX_THREAD_STATE(void)
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
   
-  EstablishSehFrameProlog();
+  _EH_prolog();
   *(undefined4 **)(unaff_EBP + -0x10) = extraout_ECX;
   *extraout_ECX = &PTR__scalar_deleting_destructor__00670c4c;
   piVar1 = (int *)extraout_ECX[0x33];

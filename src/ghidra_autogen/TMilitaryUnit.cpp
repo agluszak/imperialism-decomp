@@ -64,3 +64,67 @@ CRuntimeClass * TMilitaryUnit::GetRuntimeClass()
   return &classRuntimeClass;
 }
 
+// GHIDRA_FUNCTION IMPERIALISM 0x005C2F50
+// GHIDRA_NAME TMilitaryUnit::InitializeRecruitOrderState
+// GHIDRA_PROTO undefined __thiscall InitializeRecruitOrderState(short param_1, short param_2, short param_3)
+// GHIDRA_COMMENT_BEGIN
+// GHIDRA_COMMENT Initializes military recruit order object state after allocation.
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Behavior:
+// GHIDRA_COMMENT - Calls base registration/owner insertion path.
+// GHIDRA_COMMENT - Sets group/index-derived fields (+0x36) and initialization defaults.
+// GHIDRA_COMMENT - Triggers object vfunc +0x38 post-init hook.
+// GHIDRA_COMMENT
+// GHIDRA_COMMENT Used by recruitment commit path for non-civilian branch.
+// GHIDRA_COMMENT_END
+
+/* Initializes military recruit order object state after allocation.
+   
+   Behavior:
+   - Calls base registration/owner insertion path.
+   - Sets group/index-derived fields (+0x36) and initialization defaults.
+   - Triggers object vfunc +0x38 post-init hook.
+   
+   Used by recruitment commit path for non-civilian branch. */
+
+void __thiscall
+TMilitaryUnit::InitializeRecruitOrderState
+          (TMilitaryUnit *this,short param_1,short param_2,short param_3)
+
+{
+  undefined2 in_stack_00000006;
+  undefined2 in_stack_0000000a;
+  undefined2 in_stack_0000000e;
+  
+  this->field_0x1c = 1;
+  *(undefined2 *)&this->field_0x6 = 0xffff;
+  func_0x00402eeb(_param_1,_param_2,_param_3);
+  *(short *)&this->field_0x36 = (short)((int)((int)param_1 + ((int)param_1 >> 0x1f & 7U)) >> 3);
+  if (0x1a < param_1) {
+    func_0x0040231a(&this->field_0x24);
+  }
+  (*this->vftable[7].GetTMilitaryUnitClassNamePointer)();
+  return;
+}
+
+// GHIDRA_FUNCTION IMPERIALISM 0x005C3190
+// GHIDRA_NAME TMilitaryUnit::CopyUnitCurrentTileIntoOrderTargets
+// GHIDRA_PROTO undefined __thiscall CopyUnitCurrentTileIntoOrderTargets(void)
+
+void TMilitaryUnit::CopyUnitCurrentTileIntoOrderTargets()
+
+{
+  undefined2 *puVar1;
+  int iVar2;
+  
+  puVar1 = (undefined2 *)&this->field_0x2e;
+  iVar2 = 3;
+  do {
+    puVar1[-3] = *(undefined2 *)&this->field_0x6;
+    *puVar1 = *(undefined2 *)&this->field_0x6;
+    puVar1 = puVar1 + 1;
+    iVar2 = iVar2 + -1;
+  } while (iVar2 != 0);
+  return;
+}
+

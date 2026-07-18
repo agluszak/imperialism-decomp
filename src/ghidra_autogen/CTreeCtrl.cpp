@@ -23,7 +23,7 @@ undefined4 CTreeCtrl::GetItemText(void)
   int new_length;
   undefined4 *unaff_FS_OFFSET;
   
-  EstablishSehFrameProlog();
+  _EH_prolog();
   *(undefined4 *)(unaff_EBP + -0x10) = 0;
   *(undefined4 *)(unaff_EBP + -0x34) = *(undefined4 *)(unaff_EBP + 0xc);
   *(undefined4 *)(unaff_EBP + -0x38) = 1;
@@ -243,7 +243,7 @@ void __thiscall CTreeCtrl::RemoveImageList(int param_1,WPARAM param_2)
   int iVar2;
   
   LVar1 = SendMessageA(*(HWND *)(param_1 + 0x1c),0x1108,param_2,0);
-  iVar2 = FromHandlePermanent(LVar1);
+  iVar2 = CMenu__FromHandlePermanent(LVar1);
   if (iVar2 != 0) {
     SendMessageA(*(HWND *)(param_1 + 0x1c),0x1109,param_2,0);
   }

@@ -1903,6 +1903,51 @@ int TTaskForce::GetNavyOrderRankWithinNationBucket() {
   return -1;
 }
 
+// FUNCTION: IMPERIALISM 0x00556410
+void TTaskForce::UpdateNavyOrderMapMarkerByOrderType() {
+  int markerType = -1;
+  // Clear the tile this entry previously marked (same body as ClearNavyOrderMapMarker,
+  // inlined by the original rather than called).
+  if (tiebreak_strength != -1) {
+    SetMapTileStateByteAndNotifyObserver(tiebreak_strength, -1);
+    tiebreak_strength = -1;
+  }
+  // `attachment` (+0x08) is the order kind; each kind marks a different tile with a
+  // different state byte. In these map-order contexts `owner`/`contextAnchor` are the
+  // order's zone -- the disassembly dispatches through TZone's tile-search virtuals
+  // (FindNearestActiveSeaContextTileFromOffset216 slot 0x4c,
+  // FindBestCoastalTileForContextAndCityStateByHeuristic slot 0x54).
+  switch (attachment) {
+    case 1:
+      markerType = 4;
+      tiebreak_strength =
+          reinterpret_cast<TZone*>(owner)->FindNearestActiveSeaContextTileFromOffset216();
+      break;
+    case 3:
+      markerType = 5;
+      tiebreak_strength = reinterpret_cast<TZone*>(contextAnchor)
+                              ->FindNearestActiveSeaContextTileFromOffset216();
+      break;
+    case 5:
+      markerType = 6;
+      tiebreak_strength = static_cast<short>(
+          reinterpret_cast<TZone*>(contextAnchor)
+              ->FindBestCoastalTileForContextAndCityStateByHeuristic(
+                  reinterpret_cast<int>(owner)));
+      break;
+    case 6:
+      markerType = 2;
+      tiebreak_strength =
+          reinterpret_cast<TZone*>(owner)->FindNearestActiveSeaContextTileFromOffset216();
+      break;
+    default:
+      break;
+  }
+  if (markerType != -1) {
+    SetMapTileStateByteAndNotifyObserver(tiebreak_strength, markerType);
+  }
+}
+
 // FUNCTION: IMPERIALISM 0x005564f0
 void TTaskForce::ClearNavyOrderMapMarker() {
   if (tiebreak_strength != -1) {

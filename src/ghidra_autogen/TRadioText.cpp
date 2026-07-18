@@ -98,7 +98,7 @@ void TRadioText::ApplyRectSlot110()
       uVar3 = CONCAT22(extraout_var_00,(short)pTVar1[1].field2c);
     }
     func_0x00407ae5(uVar3,1);
-    FillRectWithQuickDrawBrushAndContextOffset(&stack0xffffffe8);
+    func_0x00406546(&stack0xffffffe8);
     func_0x00409444(uVar2);
   }
   func_0x0040991c(in_stack_00000004);

@@ -62,7 +62,7 @@ undefined4 TSimMgr::ValidateAndPrepareGameFlowNameForDispatch()
   cVar1 = func_0x00407dbf(pcVar3);
   if (cVar1 != '\0') {
     *(undefined4 *)&this->field_0x40 = 0;
-    *(undefined4 *)&g_pLocalizationTable->field_0x44 = 1;
+    *(undefined4 *)&g_pSimMgr->field_0x44 = 1;
     CString::~CString(&CStack_24);
     *unaff_FS_OFFSET = puStack_20;
     return 1;
@@ -165,7 +165,7 @@ void TSimMgr::EmitTurnEventEAnd9SessionContextPackets(int param_1)
     uVar7 = ~uVar7;
     pcVar11 = pcVar12 + -uVar7;
     pcVar12 = local_50;
-    for (uVar8 = uVar7 >> 2; pTVar3 = g_pLocalizationTable, uVar8 != 0; uVar8 = uVar8 - 1) {
+    for (uVar8 = uVar7 >> 2; pTVar3 = g_pSimMgr, uVar8 != 0; uVar8 = uVar8 - 1) {
       *(undefined4 *)pcVar12 = *(undefined4 *)pcVar11;
       pcVar11 = pcVar11 + 4;
       pcVar12 = pcVar12 + 4;
@@ -261,8 +261,8 @@ TSimMgr::QueueInterNationEventType11(int param_1,undefined4 param_2,undefined4 p
   undefined4 local_c;
   undefined4 local_8;
   
-  if (g_pLocalizationTable->field_0x7a == '\0') {
-    if ((param_4 == '\0') && (*(int *)&g_pLocalizationTable->field_0x44 != 0)) {
+  if (g_pSimMgr->field_0x7a == '\0') {
+    if ((param_4 == '\0') && (*(int *)&g_pSimMgr->field_0x44 != 0)) {
       func_0x004070f4(param_2,param_3);
       return;
     }
@@ -1448,7 +1448,7 @@ void TSimMgr::AdvanceGlobalTurnStateMachine(astruct_24 *ctx)
     }
     if (DAT_006a43f0 != '\0') break;
     func_0x00404bba();
-    if ((*(int *)&g_pLocalizationTable->field_0x40 < 2) || (*(short *)&this->field_0x114 != 0))
+    if ((*(int *)&g_pSimMgr->field_0x40 < 2) || (*(short *)&this->field_0x114 != 0))
     goto LAB_0057e8c5;
     puVar6 = g_pUiRuntimeContext->vftable;
     goto LAB_0057eb1c;
@@ -1470,7 +1470,7 @@ void TSimMgr::AdvanceGlobalTurnStateMachine(astruct_24 *ctx)
       seh_state._0_1_ = 1;
       func_0x00401e7e();
       func_0x004076b7(&stack0xffffffdc);
-      ok = DispatchLocalizedUiMessageWithTemplateA13A0();
+      ok = func_0x004096b0();
       seh_state = (uint)seh_state._1_3_ << 8;
       if (ok == '\0') {
         CString::~CString(&ctx_stack);
@@ -1587,7 +1587,7 @@ LAB_0057de7e:
     goto LAB_0057e36c;
   case 10:
     *(undefined4 *)&this->field_0x4 = 0x14;
-    (*g_pLocalizationTable->vftable[0xb].slot_0x04)();
+    (*g_pSimMgr->vftable[0xb].slot_0x04)();
     (*this->vftable[8].slot_0x04)();
     break;
   case 0xb:
@@ -1704,8 +1704,7 @@ LAB_0057e5b5:
     }
     obj = 0;
     do {
-      if ((*(short *)&g_pLocalizationTable->field_0x2e == obj) &&
-         (g_nTurnCooldownDeferCounter006A43C4 < 1)) {
+      if ((*(short *)&g_pSimMgr->field_0x2e == obj) && (g_nTurnCooldownDeferCounter006A43C4 < 1)) {
         g_nTurnCooldownDeferCounter006A43C4 = 0;
         g_nTurnCooldownSideFlag00698B10 = 1;
         sVar5 = *(short *)(paVar1.m_pchData + 0x2e);
@@ -1835,9 +1834,9 @@ LAB_0057e8c5:
     *(undefined4 *)&this->field_0x4 = 8;
     action_needed = false;
     tmp_obj_ptr = (undefined4 *)0x0;
-    if (((g_apNationStates[*(short *)&g_pLocalizationTable->field_0x2e] != (TGreatPower *)0x0) &&
-        (sVar5 = *(short *)&g_apNationStates[*(short *)&g_pLocalizationTable->field_0x2e]->field_0xe
-        , 99 < sVar5)) && (sVar5 < 200)) {
+    if (((g_apNationStates[*(short *)&g_pSimMgr->field_0x2e] != (TGreatPower *)0x0) &&
+        (sVar5 = *(short *)&g_apNationStates[*(short *)&g_pSimMgr->field_0x2e]->field_0xe,
+        99 < sVar5)) && (sVar5 < 200)) {
       (*g_apNationStates[*(short *)&this->field_0x2e]->vftable->
         ApplyJoinEmpireMode1TargetTransition_ab)();
       action_needed = true;
@@ -2370,7 +2369,7 @@ void TSimMgr::FormatSharedStringFromBracketExpression(int param_1)
   CString::CString(&local_14);
   CStack_20.m_pchData = (char *)param_1;
   local_4 = CONCAT31(local_4._1_3_,1);
-  _Format_CString__QAAXPBDZZ(&local_14,&g_szDecimalFormat);
+  CString__Format(&local_14,&g_szDecimalFormat);
   iVar1 = param_1 % 10;
   if (iVar1 == 1) {
     uVar2 = -(uint)(param_1 != 0xb) & 0xfffffffd;
@@ -2390,7 +2389,7 @@ void TSimMgr::FormatSharedStringFromBracketExpression(int param_1)
   iVar1 = uVar2 + 3;
 LAB_0057f984:
   CStack_20.m_pchData = (char *)&local_10;
-  (*g_pLocalizationTable->vftable[0x10].slot_0x04)(0x275f,iVar1);
+  (*g_pSimMgr->vftable[0x10].slot_0x04)(0x275f,iVar1);
   func_0x0040988b(this,local_4,unaff_EDI,CStack_20.m_pchData);
   local_10.m_pchData = local_10.m_pchData & 0xffffff00;
   CString::~CString(&CStack_20);
@@ -2421,7 +2420,7 @@ void TSimMgr::OrphanCallChain_C2_I07_0057fec0()
   undefined4 uVar1;
   
   uVar1 = GetCurrentLocalEpochSecondsWithTimezoneCache(0);
-  _srand(uVar1);
+  srand(uVar1);
   return;
 }
 
@@ -2447,9 +2446,9 @@ void TSimMgr::AppendByteToResizableBuffer(undefined1 param_1)
     if (0x7fffffff < uVar3) {
       uVar6 = 0x7fffffff;
     }
-    iVar4 = ReallocateHeapBlockWithAllocatorTracking(*(undefined4 *)&this->field_0x4,uVar3);
+    iVar4 = _realloc(*(undefined4 *)&this->field_0x4,uVar3);
     if (iVar4 == 0) {
-      uVar5 = ReallocateHeapBlockWithAllocatorTracking(*(undefined4 *)&this->field_0x4,iVar1);
+      uVar5 = _realloc(*(undefined4 *)&this->field_0x4,iVar1);
       *(undefined4 *)&this->field_0x4 = uVar5;
       *(int *)&this->field_0x8 = iVar1;
     }
@@ -2599,7 +2598,7 @@ CString * TSimMgr::FormatDiplomacyNoticeTextByPolicyOrGrantCode(CString *param_1
     if ((iVar3 == 5) || ((6 < iVar3 && (iVar3 < 0xd)))) {
       CString::CString(&local_a4);
       puStack_8._0_1_ = 0x1c;
-      (*g_pLocalizationTable->vftable[0xf].slot_0x04)(iVar4,&local_a4);
+      (*g_pSimMgr->vftable[0xf].slot_0x04)(iVar4,&local_a4);
       uVar1 = AssignSharedStringConcatCStrAndRef(&local_58,s_Shortage_of_00698e5c,&local_a4);
       puStack_8._0_1_ = 0x1d;
       uVar1 = AssignSharedStringConcatRefAndCStr(&local_38,uVar1,&DAT_00698e54);
@@ -2627,7 +2626,7 @@ CString * TSimMgr::FormatDiplomacyNoticeTextByPolicyOrGrantCode(CString *param_1
 switchD_00580a7a_default:
     CString::CString(&local_a0);
     puStack_8._0_1_ = 0x22;
-    _Format_CString__QAAXPBDZZ(&local_a0,&g_szDecimalFormat,iVar3);
+    CString__Format(&local_a0,&g_szDecimalFormat,iVar3);
     uVar1 = AssignSharedStringConcatCStrAndRef
                       (&CStack_34,s_TViewMgr__ShowDiplomacyNotices__00698c3c,&local_a8);
     puStack_8._0_1_ = 0x23;
@@ -2754,7 +2753,7 @@ switchD_00580a7a_default:
     }
     else if (((iVar3 != 3000) && (iVar3 != 5000)) && (iVar3 != 10000))
     goto switchD_00580a7a_default;
-    (*g_pLocalizationTable->vftable[0xe].slot_0x04)(iVar3,&local_9c);
+    (*g_pSimMgr->vftable[0xe].slot_0x04)(iVar3,&local_9c);
     uVar1 = AssignSharedStringConcatRefAndCStr(&local_1c,&local_a8,s_grants_us_00698c18);
     puStack_8._0_1_ = 4;
     uVar1 = AssignSharedStringConcatRefAndRef(&local_24,uVar1,&local_9c);
@@ -2833,12 +2832,12 @@ void TSimMgr::SetOutputDevice(int this_ptr)
     (**(code **)(**(int **)&this->field_0x70 + 0x30))();
     (**(code **)(**(int **)&this->field_0x6c + 0x14))(this_ptr);
     (**(code **)(**(int **)&this->field_0x70 + 0x14))(this_ptr);
-    if (*(short *)&g_pLocalizationTable->field_0x4e != 0) {
+    if (*(short *)&g_pSimMgr->field_0x4e != 0) {
       ok = func_0x00403c2e();
       if (ok == '\0') {
         ok = func_0x00408594();
         if (ok == '\0') {
-          *(undefined2 *)&g_pLocalizationTable->field_0x4e = 0;
+          *(undefined2 *)&g_pSimMgr->field_0x4e = 0;
           return;
         }
         if (this_ptr != *(short *)&this->field_0x74) {
@@ -2846,7 +2845,7 @@ void TSimMgr::SetOutputDevice(int this_ptr)
           if ((skip_queue == '\0') || (*(short *)&this->field_0x74 < 1)) {
             *(short *)&this->field_0x74 = requested_id;
             func_0x00403373((int)requested_id);
-            func_0x00402a81((int)*(short *)&g_pLocalizationTable->field_0x4e << 8);
+            func_0x00402a81((int)*(short *)&g_pSimMgr->field_0x4e << 8);
             this->field_0x78 = 1;
           }
           else {

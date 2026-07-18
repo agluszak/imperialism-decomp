@@ -212,7 +212,7 @@ TBuildingExpansionView::OpenCityViewProductionDialog
   (*pTVar2->SetPictureResourceIdAndRefresh)();
                     /* Load localized title text for selected slot (base id 0x2719 + slot). */
   dwNameControlTag = 0x2b67;
-  BuildUiTextStyleDescriptor();
+  func_0x00406afa();
   pfnGetControlByTag = pTVar2->OrphanLeaf_NoCall_Ins07_004d8920_25;
   dwNameControlTag = 0x6e616d65;
   pNameTextControl = (int *)(*pfnGetControlByTag)();
@@ -231,7 +231,7 @@ TBuildingExpansionView::OpenCityViewProductionDialog
   iStack_68 = nBuildingSlotId;
   iStack_6c = 0x2719;
   dwLocalizedNameTag = 0x4ce6dd;
-  (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+  (*g_pSimMgr->vftable[0x10].slot_0x04)();
   puStack_74 = &stack0xffffffa4;
   dwLocalizedNameTag = 0;
   dwCostControlTag = 0x4ce6f0;
@@ -252,7 +252,7 @@ TBuildingExpansionView::OpenCityViewProductionDialog
                     /* Load localized cost label text (resource table 0x2738, text id 0x14). */
   pUpgradeStateDeltaLeft = (void *)0x2738;
   lpszResolvedCapacityTemplate = (char *)0x4ce763;
-  (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+  (*g_pSimMgr->vftable[0x10].slot_0x04)();
   lpszFormattedCapacityValue = &stack0xffffff7c;
   lpszResolvedCapacityTemplate = (char *)0x0;
   dwCapacityControlTag = 0x4ce776;
@@ -264,12 +264,12 @@ TBuildingExpansionView::OpenCityViewProductionDialog
   ppuStack_a4 = (uint **)(int)nBuildingCostValue;
   puStack_a8 = &g_szDecimalFormat;
   pUpgradeStateDeltaRight = (void *)0x4ce796;
-  _Format_CString__QAAXPBDZZ();
+  CString__Format();
   ppuStack_a4 = &puStack_8c;
   puStack_a8 = (undefined *)0x10;
   puStack_ac = (undefined1 *)0x2738;
   pUpgradeStateDeltaRight = (void *)0x4ce7b3;
-  (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+  (*g_pSimMgr->vftable[0x10].slot_0x04)();
   pUpgradeStateDeltaRight = pUpgradeStateDeltaLeft;
                     /* Resolve bracket expressions in formatted capacity/cost string before
                        assigning to UI control. */
@@ -298,7 +298,8 @@ TBuildingExpansionView::OpenCityViewProductionDialog
   pSelectedCityStateData = *(int **)&this->field_0x94;
   puStack_a8 = (undefined *)CONCAT22(puStack_a8._2_2_,(short)piVar3[1]);
   puStack_ac = *(undefined1 **)(*pSelectedBuildingOrderEntry + 0x2c);
-  GetCityBuildingProductionValueBySlot(pSelectedCityStateData,*(short *)&this->field_0x90);
+  TCity::GetBuildingType
+            ((TCity *)pSelectedCityStateData,*(short *)&this->field_0x90);
                     /* Read current production value for the selected slot. */
   (**(code **)(*pSelectedCityStateData + 0x54))();
   pfnCompareUpgradeStateDelta = pUpgradeStateDeltaRight;
@@ -316,7 +317,7 @@ TBuildingExpansionView::OpenCityViewProductionDialog
     ppvStack_e4 = &pUpgradeStateDeltaRight;
     dwUiPromptTextId = 0;
     puStack_e8 = (undefined1 *)0x4ce909;
-    BuildUiTextStyleDescriptor();
+    func_0x00406afa();
     ppvStack_dc = &pUpgradeStateDeltaRight;
     iVar1 = *piStack_90;
     dwUiPromptTextId = 0x4ce91f;
@@ -337,7 +338,7 @@ TBuildingExpansionView::OpenCityViewProductionDialog
     }
     uStack_f0 = 0x2738;
     uStack_f4 = 0x4ce951;
-    (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+    (*g_pSimMgr->vftable[0x10].slot_0x04)();
     puStack_f8 = &dwUiPromptTextId;
     uStack_f4 = 0;
     uStack_fc = 0x4ce964;
@@ -425,11 +426,12 @@ TBuildingExpansionView::ApplyCityProductionDialogChanges
           (TBuildingExpansionView *this,int nDialogActionTag)
 
 {
+  TCity *this_00;
+  undefined uVar1;
   int nSelectedEntryBaseValue;
-  int nCurrentSlotProductionValue;
+  undefined3 extraout_var;
   int nEntryVtableOrUpdatedValue;
   int *pCityEntryVtable;
-  int *pCityState;
   int *pSelectedCityEntry;
   
   pSelectedCityEntry =
@@ -440,18 +442,19 @@ TBuildingExpansionView::ApplyCityProductionDialogChanges
     func_0x004057a4(s_D__Ambit_Cross_UCityViews_cpp_00696650,0xac6);
   }
   if (nDialogActionTag == 0x6f6b6179) {
-    pCityState = *(int **)&this->field_0x94;
+    this_00 = *(TCity **)&this->field_0x94;
     nEntryVtableOrUpdatedValue = *pSelectedCityEntry;
     nSelectedEntryBaseValue =
-         GetCityBuildingProductionValueBySlot(pCityState,*(short *)&this->field_0x90);
-    nCurrentSlotProductionValue =
-         (**(code **)(*pCityState + 0x54))(*(undefined2 *)&this->field_0x90);
+         TCity::GetBuildingType(this_00,*(short *)&this->field_0x90);
+    uVar1 = (*this_00->vftable->GetCityBuildingDisplayCapacityBySlot)
+                      (CONCAT22((short)((uint)nSelectedEntryBaseValue >> 0x10),
+                                *(undefined2 *)&this->field_0x90));
                     /* Delta passed to entry handler: currentSlotProduction -
                        selectedEntryBaseValue. */
                     /* Entry vfunc +0x2C resolves to ApplyCityEntryOrderDeltaAndCosts for standard
                        city entry objects. */
     (*(code *)pCityEntryVtable[0xb])
-              (nCurrentSlotProductionValue -
+              (CONCAT31(extraout_var,uVar1) -
                CONCAT22((short)((uint)nEntryVtableOrUpdatedValue >> 0x10),
                         (short)nSelectedEntryBaseValue));
   }
@@ -460,8 +463,8 @@ TBuildingExpansionView::ApplyCityProductionDialogChanges
     (**(code **)(*pSelectedCityEntry + 0x2c))(0);
   }
   nEntryVtableOrUpdatedValue =
-       GetCityBuildingProductionValueBySlot
-                 (*(void **)&this->field_0x94,*(short *)&this->field_0x90);
+       TCity::GetBuildingType
+                 (*(TCity **)&this->field_0x94,*(short *)&this->field_0x90);
   (**(code **)(**(int **)&this->field_0x98 + 0x1e8))
             (*(undefined2 *)&this->field_0x90,nEntryVtableOrUpdatedValue);
   (**(code **)(**(int **)&this->field_0x98 + 0x1e0))();

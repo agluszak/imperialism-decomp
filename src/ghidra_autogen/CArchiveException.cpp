@@ -14,7 +14,7 @@ undefined4 CArchiveException::GetErrorMessage(void)
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
   
-  EstablishSehFrameProlog();
+  _EH_prolog();
   if (*(int **)(unaff_EBP + 0x10) != (int *)0x0) {
     **(int **)(unaff_EBP + 0x10) = *(int *)(extraout_ECX + 8) + 0xf1a0;
   }
@@ -23,7 +23,7 @@ undefined4 CArchiveException::GetErrorMessage(void)
   CString::CString((CString *)(unaff_EBP + 0x10),(CString *)(extraout_ECX + 0x10));
   *(undefined1 *)(unaff_EBP + -4) = 1;
   if (*(int *)(*(int *)(unaff_EBP + 0x10) + -8) == 0) {
-    LoadStringA(0xf006);
+    CString__LoadStringA(0xf006);
   }
   AfxFormatString1(unaff_EBP + -0x10,*(int *)(extraout_ECX + 8) + 0xf1a0,
                    *(undefined4 *)(unaff_EBP + 0x10));

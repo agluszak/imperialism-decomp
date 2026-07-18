@@ -137,7 +137,7 @@ void CDC::~CDC(void)
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
   
-  EstablishSehFrameProlog();
+  _EH_prolog();
   *(undefined4 **)(unaff_EBP + -0x10) = extraout_ECX;
   *extraout_ECX = &_vftable_;
   *(undefined4 *)(unaff_EBP + -4) = 0;
@@ -1177,7 +1177,7 @@ void CDC::DrawDragRect(void)
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
   
-  EstablishSehFrameProlog();
+  _EH_prolog();
   func_0x00403d87();
   *(undefined ***)(unaff_EBP + -0x34) = &CBrush::_vftable_;
   *(undefined4 *)(unaff_EBP + -4) = 0;
@@ -1188,14 +1188,14 @@ void CDC::DrawDragRect(void)
   *(undefined ***)(unaff_EBP + -0x14) = &CBrush::_vftable_;
   *(undefined1 *)(unaff_EBP + -4) = 2;
   pHVar1 = CreateRectRgnIndirect(*(RECT **)(unaff_EBP + 8));
-  CBrush::AttachRegionHandleToClipStateAndRegister((CBrush *)(unaff_EBP + -0x1c),(int)pHVar1);
+  CBrush::CGdiObject__Attach((CBrush *)(unaff_EBP + -0x1c),(int)pHVar1);
   CopyRect((LPRECT)(unaff_EBP + -0x44),*(RECT **)(unaff_EBP + 8));
   InflateRect((LPRECT)(unaff_EBP + -0x44),-*(int *)(unaff_EBP + 0xc),-*(int *)(unaff_EBP + 0x10));
   IntersectRect((LPRECT)(unaff_EBP + -0x44),(RECT *)(unaff_EBP + -0x44),*(RECT **)(unaff_EBP + 8));
   pHVar1 = CreateRectRgnIndirect((RECT *)(unaff_EBP + -0x44));
-  CBrush::AttachRegionHandleToClipStateAndRegister((CBrush *)(unaff_EBP + -0x14),(int)pHVar1);
+  CBrush::CGdiObject__Attach((CBrush *)(unaff_EBP + -0x14),(int)pHVar1);
   pHVar1 = CreateRectRgn(0,0,0,0);
-  CBrush::AttachRegionHandleToClipStateAndRegister((CBrush *)(unaff_EBP + -0x34),(int)pHVar1);
+  CBrush::CGdiObject__Attach((CBrush *)(unaff_EBP + -0x34),(int)pHVar1);
   CombineRgn(*(HRGN *)(unaff_EBP + -0x30),
              (HRGN)(-(uint)(unaff_EBP != 0x1c) & *(uint *)(unaff_EBP + -0x18)),
              (HRGN)(-(uint)(unaff_EBP != 0x14) & *(uint *)(unaff_EBP + -0x10)),3);
@@ -1215,7 +1215,7 @@ void CDC::DrawDragRect(void)
   *(undefined1 *)(unaff_EBP + -4) = 4;
   if (lprcSrc != (RECT *)0x0) {
     pHVar1 = CreateRectRgn(0,0,0,0);
-    CBrush::AttachRegionHandleToClipStateAndRegister((CBrush *)(unaff_EBP + -0x24),(int)pHVar1);
+    CBrush::CGdiObject__Attach((CBrush *)(unaff_EBP + -0x24),(int)pHVar1);
     SetRectRgn(*(HRGN *)(unaff_EBP + -0x18),lprcSrc->left,lprcSrc->top,lprcSrc->right,
                lprcSrc->bottom);
     CopyRect((LPRECT)(unaff_EBP + -0x44),lprcSrc);
@@ -1229,7 +1229,7 @@ void CDC::DrawDragRect(void)
                (HRGN)(-(uint)(unaff_EBP != 0x14) & *(uint *)(unaff_EBP + -0x10)),3);
     if (*(int *)(*(int *)(unaff_EBP + 0x20) + 4) == *(int *)(*(int *)(unaff_EBP + 0x24) + 4)) {
       pHVar1 = CreateRectRgn(0,0,0,0);
-      CBrush::AttachRegionHandleToClipStateAndRegister((CBrush *)(unaff_EBP + -0x2c),(int)pHVar1);
+      CBrush::CGdiObject__Attach((CBrush *)(unaff_EBP + -0x2c),(int)pHVar1);
       CombineRgn(*(HRGN *)(unaff_EBP + -0x28),
                  (HRGN)(-(uint)(unaff_EBP != 0x24) & *(uint *)(unaff_EBP + -0x20)),
                  (HRGN)(-(uint)(unaff_EBP != 0x34) & *(uint *)(unaff_EBP + -0x30)),3);
@@ -1261,23 +1261,23 @@ void CDC::DrawDragRect(void)
   SelectClipRgn(this,0);
   *(undefined ***)(unaff_EBP + -0x2c) = &PTR_LAB_00671054;
   *(undefined1 *)(unaff_EBP + -4) = 5;
-  DeleteObject();
+  CGdiObject__DeleteObject();
   *(undefined ***)(unaff_EBP + -0x24) = &PTR_LAB_00671054;
   *(char **)(unaff_EBP + -0x2c) = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *(undefined1 *)(unaff_EBP + -4) = 6;
-  DeleteObject();
+  CGdiObject__DeleteObject();
   *(char **)(unaff_EBP + -0x24) = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *(undefined ***)(unaff_EBP + -0x14) = &PTR_LAB_00671054;
   *(undefined1 *)(unaff_EBP + -4) = 7;
-  DeleteObject();
+  CGdiObject__DeleteObject();
   *(char **)(unaff_EBP + -0x14) = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *(undefined ***)(unaff_EBP + -0x1c) = &PTR_LAB_00671054;
   *(undefined1 *)(unaff_EBP + -4) = 8;
-  DeleteObject();
+  CGdiObject__DeleteObject();
   *(char **)(unaff_EBP + -0x1c) = &PTR_GetCObjectRuntimeClass_RuntimeObjectBaseState_0066FEC4;
   *(undefined ***)(unaff_EBP + -0x34) = &PTR_LAB_00671054;
   *(undefined4 *)(unaff_EBP + -4) = 9;
-  DeleteObject();
+  CGdiObject__DeleteObject();
   *unaff_FS_OFFSET = *(undefined4 *)(unaff_EBP + -0xc);
   return;
 }

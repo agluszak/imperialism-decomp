@@ -149,16 +149,15 @@ void TShipAmtBar::RenderPrimarySurfaceOverlayPanelWithClipCache()
       uStack_2c = uStack_3c;
       uStack_28 = uStack_38;
       uStack_24 = uStack_34;
-      ApplyRectClipRegionToGlobalClipState(auStack_30);
+      func_0x004030e9(auStack_30);
       (*pTVar1->OrphanRetStub_0059add0_4b)(auStack_20);
       (*pTVar1->OrphanTiny_ReturnZero_0048a730_4e)(&stack0xffffffb4);
       if (0 < *(short *)&this->field_0x60) {
-        SetQuickDrawTextOriginWithContextOffset(0,1);
+        func_0x00408d6e(0,1);
         (**(code **)(g_pUiRuntimeContext->vftable + 0x34))
                   (CONCAT22(extraout_var_00,*(undefined2 *)&this->field_0x66));
         func_0x00402e73(1,4);
-        DrawCenteredGuideLineOnMapDc
-                  (CONCAT22(extraout_var_01,*(undefined2 *)&this->field_0x60),1);
+        func_0x00403bb6(CONCAT22(extraout_var_01,*(undefined2 *)&this->field_0x60),1);
         func_0x004088aa();
       }
       func_0x00405be1(puVar4);

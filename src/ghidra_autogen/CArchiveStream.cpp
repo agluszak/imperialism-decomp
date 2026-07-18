@@ -38,7 +38,7 @@ undefined4 CArchiveStream::Read(void)
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
   
-  EstablishSehFrameProlog();
+  _EH_prolog();
   this = *(CArchive **)(*(int *)(unaff_EBP + 8) + 4);
   *(undefined4 *)(unaff_EBP + -4) = 0;
   *(undefined1 **)(unaff_EBP + -0x10) = &stack0xffffffec;
@@ -62,7 +62,7 @@ undefined4 CArchiveStream::Write(void)
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
   
-  EstablishSehFrameProlog();
+  _EH_prolog();
   uVar1 = *(uint *)(unaff_EBP + 0x10);
   this = *(CArchive **)(*(int *)(unaff_EBP + 8) + 4);
   *(undefined4 *)(unaff_EBP + -4) = 0;
@@ -89,12 +89,12 @@ undefined4 CArchiveStream::Seek(void)
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
   
-  EstablishSehFrameProlog();
+  _EH_prolog();
   *(undefined1 **)(unaff_EBP + -0x10) = &stack0xfffffff0;
   if (((*(int *)(unaff_EBP + 0x10) == 0) ||
       ((*(int *)(unaff_EBP + 0x10) == -1 && (*(int *)(unaff_EBP + 0xc) < 0)))) &&
      (piVar1 = *(int **)(*(int *)(*(int *)(unaff_EBP + 8) + 4) + 0x20), piVar1 != (int *)0x0)) {
-    Flush();
+    CArchive__Flush();
     iVar2 = *piVar1;
     *(undefined4 *)(unaff_EBP + -4) = 0;
     uVar4 = (**(code **)(iVar2 + 0x30))

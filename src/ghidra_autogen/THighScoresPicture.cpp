@@ -96,7 +96,7 @@ void THighScoresPicture::NoOpUiLifecycleHook(CString param_1)
   func_0x00401483(0xb);
   func_0x00409138();
   func_0x00401a4b(&local_4);
-  iVar1 = __wfopen(CStack_8.m_pchData,&DAT_00698720);
+  iVar1 = _fopen(CStack_8.m_pchData,&DAT_00698720);
   if (iVar1 == 0) {
     puVar4 = (undefined4 *)&this->field_0x94;
     for (iVar1 = 10; iVar1 != 0; iVar1 = iVar1 + -1) {
@@ -159,8 +159,8 @@ void THighScoresPicture::ApplyRectSlot110()
   puStack_8 = (undefined1 *)0x0;
   CString::CString(&local_14);
   puStack_8 = (undefined1 *)CONCAT31(puStack_8._1_3_,1);
-  MapUiThemeCodeToStyleFlags(0x2b68,&local_20);
-  MapUiThemeCodeToStyleFlags(0x2b67,&stack0xffffffdc);
+  func_0x004093cc(0x2b68,&local_20);
+  func_0x004093cc(0x2b67,&stack0xffffffdc);
   func_0x0040448f(0,0x18,0x2b68);
   piVar2 = (int *)&this->field_0x94;
   local_1c = &this->field_0xbc;
@@ -168,14 +168,14 @@ void THighScoresPicture::ApplyRectSlot110()
   do {
     if (*piVar2 < 1) break;
     iVar3 = iVar3 + 1;
-    _Format_CString__QAAXPBDZZ(&stack0x00000000,&g_szDecimalFormat,iVar3);
+    CString__Format(&stack0x00000000,&g_szDecimalFormat,iVar3);
     CString::operator+=((CString *)&stack0x00000000,&DAT_00698ab4);
     func_0x00409444(0);
     iVar1 = iVar4 + 1;
-    SetQuickDrawTextOriginWithContextOffset(0x97,iVar1);
+    func_0x00408d6e(0x97,iVar1);
     func_0x004029aa(&stack0x00000000);
     func_0x00409444(local_20);
-    SetQuickDrawTextOriginWithContextOffset(0x96,iVar4);
+    func_0x00408d6e(0x96,iVar4);
     func_0x004029aa(&stack0x00000000);
     CString::CString(&local_18,local_1c);
     puStack_8._0_1_ = 2;
@@ -183,17 +183,17 @@ void THighScoresPicture::ApplyRectSlot110()
     puStack_8 = (undefined1 *)CONCAT31(puStack_8._1_3_,1);
     CString::~CString(&local_18);
     func_0x00409444(0);
-    SetQuickDrawTextOriginWithContextOffset(0xbf,iVar1);
+    func_0x00408d6e(0xbf,iVar1);
     func_0x004029aa(&stack0x00000000);
     func_0x00409444(local_20);
-    SetQuickDrawTextOriginWithContextOffset(0xbe,iVar4);
+    func_0x00408d6e(0xbe,iVar4);
     func_0x004029aa(&stack0x00000000);
-    _Format_CString__QAAXPBDZZ(&stack0x00000000,&g_szDecimalFormat,*piVar2);
+    CString__Format(&stack0x00000000,&g_szDecimalFormat,*piVar2);
     func_0x00409444(0);
-    SetQuickDrawTextOriginWithContextOffset(0x1af,iVar1);
+    func_0x00408d6e(0x1af,iVar1);
     func_0x004029aa(&stack0x00000000);
     func_0x00409444(local_20);
-    SetQuickDrawTextOriginWithContextOffset(0x1ae,iVar4);
+    func_0x00408d6e(0x1ae,iVar4);
     func_0x004029aa(&stack0x00000000);
     iVar4 = iVar4 + 0x20;
     piVar2 = piVar2 + 1;

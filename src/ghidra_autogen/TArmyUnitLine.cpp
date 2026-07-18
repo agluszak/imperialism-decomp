@@ -218,7 +218,7 @@ LAB_004a8f66:
   CStack_90.m_pchData = (char *)0x4a8f6f;
   CString::CString(&CStack_74);
   CStack_90.m_pchData = (char *)&CStack_74;
-  pTVar2 = g_pLocalizationTable->vftable;
+  pTVar2 = g_pSimMgr->vftable;
   CStack_94.m_pchData = (char *)0x4a8f8c;
   CStack_94.m_pchData = (char *)func_0x00407e64();
   CStack_98.m_pchData = (char *)0x2726;
@@ -285,20 +285,20 @@ LAB_004a8f66:
     pCStack_d0 = &CStack_a4;
     puStack_cc = &g_szDecimalFormat;
     puStack_d4 = (undefined *)0x4a90ba;
-    _Format_CString__QAAXPBDZZ();
+    CString__Format();
     ppiStack_c8 = &piStack_a8;
     puStack_cc = (undefined *)(int)(short)piStack_b4;
     pCStack_d0 = (CString *)0x4a90d3;
-    (*g_pLocalizationTable->vftable[0xe].slot_0x04)();
+    (*g_pSimMgr->vftable[0xe].slot_0x04)();
     if ((short)CStack_7c.m_pchData == 0) {
       pCStack_d0 = (CString *)&piStack_b8;
       puStack_d4 = (undefined *)0x2;
       pCStack_d8 = (CString *)0x2746;
       pCStack_dc = (CString *)0x4a90f5;
-      (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+      (*g_pSimMgr->vftable[0x10].slot_0x04)();
       pCStack_dc = pCStack_bc;
       piStack_e0 = piStack_b8;
-      func_0x0040988b(g_pLocalizationTable,&piStack_b4,puStack_c4);
+      func_0x0040988b(g_pSimMgr,&piStack_b4,puStack_c4);
     }
     else {
       pCStack_d0 = (CString *)0x4a9123;
@@ -308,15 +308,15 @@ LAB_004a8f66:
       puStack_d4 = &g_szDecimalFormat;
       CStack_84.m_pchData._0_1_ = 9;
       pCStack_dc = (CString *)0x4a913d;
-      _Format_CString__QAAXPBDZZ();
+      CString__Format();
       pCStack_d0 = (CString *)&piStack_b8;
       puStack_d4 = (undefined *)0x6;
       pCStack_d8 = (CString *)0x2746;
       pCStack_dc = (CString *)0x4a915a;
-      (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+      (*g_pSimMgr->vftable[0x10].slot_0x04)();
       pCStack_dc = pCStack_bc;
       piStack_e0 = (int *)CStack_b0.m_pchData;
-      func_0x0040988b(g_pLocalizationTable,&piStack_b4,puStack_c4,piStack_b8);
+      func_0x0040988b(g_pSimMgr,&piStack_b4,puStack_c4,piStack_b8);
       CStack_90.m_pchData._0_1_ = 8;
       pCStack_dc = (CString *)0x4a918e;
       CString::~CString(&CStack_b0);
@@ -371,7 +371,7 @@ LAB_004a8f66:
   puStack_c0 = (undefined4 *)0x1;
   puStack_c4 = (undefined1 *)0x2746;
   ppiStack_c8 = (int **)0x4a9275;
-  (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+  (*g_pSimMgr->vftable[0x10].slot_0x04)();
   CStack_74.m_pchData = (char *)&puStack_cc;
   pCStack_d0 = (CString *)&piStack_ac;
   puStack_d4 = (undefined *)0x4a9287;

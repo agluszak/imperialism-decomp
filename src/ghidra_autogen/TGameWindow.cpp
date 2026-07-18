@@ -186,8 +186,8 @@ void TGameWindow::ForwardParam()
     if ((*(short *)&g_pUiRuntimeContext->field_0x4 != 0x7dd) &&
        (iVar4 = (**(code **)(*piVar3 + 0x94))(0x656e6420), iVar4 != 0)) {
       (**(code **)&g_pSfxPlaybackSystem->vftable[1].field_0x10)(7000,0,1);
-      if (*(int *)&g_pLocalizationTable->field_0x8 != 0x11) {
-        (*g_pLocalizationTable->vftable[8].slot_0x04)();
+      if (*(int *)&g_pSimMgr->field_0x8 != 0x11) {
+        (*g_pSimMgr->vftable[8].slot_0x04)();
         return;
       }
       uVar5 = func_0x00403b16();
@@ -196,7 +196,7 @@ void TGameWindow::ForwardParam()
         (**(code **)(g_pUiRuntimeContext->vftable + 0x88))(uVar5);
         return;
       }
-      (*g_pLocalizationTable->vftable[8].slot_0x04)();
+      (*g_pSimMgr->vftable[8].slot_0x04)();
       return;
     }
     if (*(short *)&g_pUiRuntimeContext->field_0xf8 != 0) {
@@ -210,8 +210,8 @@ switchD_004ffe93_default:
     (**(code **)(*piVar3 + 0x48))(unaff_retaddr);
   }
   else {
-    if ((g_pLocalizationTable == (TSimMgr *)0x0) ||
-       ((((iVar4 = *(int *)&g_pLocalizationTable->field_0x8, iVar4 != 0x69 && (iVar4 != 0x68)) &&
+    if ((g_pSimMgr == (TSimMgr *)0x0) ||
+       ((((iVar4 = *(int *)&g_pSimMgr->field_0x8, iVar4 != 0x69 && (iVar4 != 0x68)) &&
          (iVar4 != 0x67)) &&
         (((iVar4 != 0x6a && (iVar4 != 0x6d)) && (*(short *)&g_pUiRuntimeContext->field_0x4 != 0x7dd)
          ))))) {
@@ -222,14 +222,14 @@ switchD_004ffe93_default:
     case 0x31:
       if (*(short *)&g_pUiRuntimeContext->field_0x4 != 0x7de) {
         (**(code **)&g_pSfxPlaybackSystem->vftable[1].field_0x10)(7000,0,1);
-        (*g_pLocalizationTable->vftable[9].GetTSimMgrClassNamePointer)(0x69);
+        (*g_pSimMgr->vftable[9].GetTSimMgrClassNamePointer)(0x69);
         return;
       }
       break;
     case 0x32:
       if (*(short *)&g_pUiRuntimeContext->field_0x4 != 0x7db) {
         (**(code **)&g_pSfxPlaybackSystem->vftable[1].field_0x10)(7000,0,1);
-        (*g_pLocalizationTable->vftable[9].GetTSimMgrClassNamePointer)(0x6a);
+        (*g_pSimMgr->vftable[9].GetTSimMgrClassNamePointer)(0x6a);
         return;
       }
       break;
@@ -237,21 +237,21 @@ switchD_004ffe93_default:
       if ((*(short *)&g_pUiRuntimeContext->field_0x4 != 0x7d9) &&
          (*(short *)&g_pUiRuntimeContext->field_0x4 != 0x7da)) {
         (**(code **)&g_pSfxPlaybackSystem->vftable[1].field_0x10)(7000,0,1);
-        (*g_pLocalizationTable->vftable[9].GetTSimMgrClassNamePointer)(0x67);
+        (*g_pSimMgr->vftable[9].GetTSimMgrClassNamePointer)(0x67);
         return;
       }
       break;
     case 0x34:
       if (*(short *)&g_pUiRuntimeContext->field_0x4 != 0x7d8) {
         (**(code **)&g_pSfxPlaybackSystem->vftable[1].field_0x10)(7000,0,1);
-        (*g_pLocalizationTable->vftable[9].GetTSimMgrClassNamePointer)(0x68);
+        (*g_pSimMgr->vftable[9].GetTSimMgrClassNamePointer)(0x68);
         return;
       }
       break;
     case 0x35:
       if (*(short *)&g_pUiRuntimeContext->field_0x4 != 0x8fc) {
         (**(code **)&g_pSfxPlaybackSystem->vftable[1].field_0x10)(7000,0,1);
-        (*g_pLocalizationTable->vftable[9].GetTSimMgrClassNamePointer)(0x6d);
+        (*g_pSimMgr->vftable[9].GetTSimMgrClassNamePointer)(0x6d);
         return;
       }
       break;

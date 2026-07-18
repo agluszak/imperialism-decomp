@@ -204,7 +204,7 @@ void TacticalBattleView::HandleTacticalCommandTag_targ()
       }
       else {
         uVar7 = (**(code **)(*piVar9 + 0x2c))();
-        uVar7 = ftol(uVar7);
+        uVar7 = _ftol(uVar7);
         cVar5 = func_0x00406b09(iVar6,iVar8,uVar7);
       }
       if (cVar5 != '\0') {
@@ -233,7 +233,7 @@ void TacticalBattleView::HandleTacticalCommandTag_targ()
         }
         else {
           uVar7 = (**(code **)(*piVar4 + 0x2c))();
-          uVar7 = ftol(uVar7);
+          uVar7 = _ftol(uVar7);
           cVar5 = func_0x00406b09(iVar6,iVar8,uVar7);
         }
         if ((cVar5 != '\0') && (piVar1 = piVar9, local_18 == (int *)0x0)) {

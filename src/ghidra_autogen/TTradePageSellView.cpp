@@ -109,7 +109,7 @@ LAB_005bcdec:
     func_0x004059b6(0,0,auStack_28,0x2741);
     func_0x00408bf2(1);
     auStack_28[0] = auStack_28[0] & 0xffff0000;
-    BuildUiTextStyleDescriptor(&stack0xffffffd0,0,0xe,0x2b6a);
+    func_0x00406afa(&stack0xffffffd0,0,0xe,0x2b6a);
     func_0x00408521(&stack0xffffffd0);
     (**(code **)(**(int **)&this->field_0x7c + 0x30))(uVar5);
   }
@@ -145,7 +145,7 @@ LAB_005bcdec:
     func_0x004059b6(0,0,auStack_28,0x2741);
     func_0x00408bf2(1);
     auStack_28[0] = auStack_28[0] & 0xffff0000;
-    BuildUiTextStyleDescriptor(&stack0xffffffd0,4,0xc,0x2b6a);
+    func_0x00406afa(&stack0xffffffd0,4,0xc,0x2b6a);
     func_0x00408521(&stack0xffffffd0);
     (**(code **)(**(int **)&this->field_0x7c + 0x30))(uVar5);
     iVar7 = 0x16;

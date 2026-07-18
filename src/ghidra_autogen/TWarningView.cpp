@@ -86,24 +86,24 @@ void TWarningView::HandleEvent(int param_1, int param_2)
   if (param_1 == 0x22) {
     switch(*(undefined4 *)(param_2 + 0x1c)) {
     case 0x70696331:
-      (*g_pLocalizationTable->vftable[9].GetTSimMgrClassNamePointer)(0x68);
+      (*g_pSimMgr->vftable[9].GetTSimMgrClassNamePointer)(0x68);
       func_0x00404566(0x22,param_2,param_2);
       return;
     case 0x70696332:
-      (*g_pLocalizationTable->vftable[9].GetTSimMgrClassNamePointer)(0x67);
+      (*g_pSimMgr->vftable[9].GetTSimMgrClassNamePointer)(0x67);
       func_0x00404566(0x22,param_2,param_2);
       return;
     case 0x70696333:
       uVar2 = 0x6a;
-      pTVar1 = g_pLocalizationTable->vftable;
+      pTVar1 = g_pSimMgr->vftable;
       break;
     case 0x70696334:
       uVar2 = 0x69;
-      pTVar1 = g_pLocalizationTable->vftable;
+      pTVar1 = g_pSimMgr->vftable;
       break;
     case 0x70696335:
       uVar2 = 5;
-      pTVar1 = g_pLocalizationTable->vftable;
+      pTVar1 = g_pSimMgr->vftable;
       break;
     default:
       goto switchD_0059299f_default;
@@ -149,7 +149,7 @@ void TWarningView::NoOpUiLifecycleHook()
   CStack_34.m_pchData = "hg+";
   uVar4 = (*this->vftable->SetForeignMinisterReadyFlag14)();
   CStack_34.m_pchData = (char *)0x2b67;
-  BuildUiTextStyleDescriptor();
+  func_0x00406afa();
   pcVar1 = *(code **)(*(int *)CONCAT31(extraout_var,uVar4) + 0x94);
   CStack_34.m_pchData = (char *)0x7469746c;
   piVar5 = (int *)(*pcVar1)();
@@ -203,7 +203,7 @@ void TWarningView::NoOpUiLifecycleHook()
   }
   (**(code **)(iVar2 + 0xa8))();
   (**(code **)(iVar2 + 0xa4))();
-  uVar3 = *(uint *)&g_pLocalizationTable->field_0x38;
+  uVar3 = *(uint *)&g_pSimMgr->field_0x38;
   if ((uVar3 & 1) != 0) {
     piVar5 = (int *)(*pcVar1)(0x6d736731);
     iVar2 = *piVar5;

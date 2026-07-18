@@ -171,7 +171,7 @@ TCouncilTickerAnimation::InitializeDiplomacyCouncilViewControlsAndTicker
   uStack_38 = 0;
   puStack_3c = local_18;
   uStack_40 = 0x4fc336;
-  BuildUiTextStyleDescriptor();
+  func_0x00406afa();
   p_Var2 = this->vftable[1].WrapperFor_thunk_TemporarilyClearAndRestoreUiInvalidationFlag_At004a1100
   ;
   uStack_30 = 0x63616e30;
@@ -230,8 +230,7 @@ TCouncilTickerAnimation::InitializeDiplomacyCouncilViewControlsAndTicker
                       );
   uStack_78 = 0x4fc438;
   (**(code **)(iVar6 + 0x1c8))();
-  if ((*(short *)&g_pLocalizationTable->field_0x8 == 0x17) ||
-     (*(short *)&g_pLocalizationTable->field_0x8 == 0x16)) {
+  if ((*(short *)&g_pSimMgr->field_0x8 == 0x17) || (*(short *)&g_pSimMgr->field_0x8 == 0x16)) {
     iVar7 = 0;
     iVar6 = 0;
     do {
@@ -248,7 +247,7 @@ TCouncilTickerAnimation::InitializeDiplomacyCouncilViewControlsAndTicker
     piVar5 = (int *)CONCAT31(extraout_var_04,uVar3);
     CStack_7c.m_pchData = (char *)0x4fc531;
     (**(code **)(*piVar5 + 0xc))();
-    if (*(short *)&g_pLocalizationTable->field_0x8 == 0x17) {
+    if (*(short *)&g_pSimMgr->field_0x8 == 0x17) {
       piVar5[7] = 0x52655374;
     }
     else {

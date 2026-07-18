@@ -208,7 +208,7 @@ void TGamePreferencesPicture::NoOpUiLifecycleHook()
       piStack_80 = (int *)((int)piVar6 * 2 + 0x174e);
       uStack_84 = 0x2743;
       CStack_88.m_pchData = "j8j\fj";
-      (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+      (*g_pSimMgr->vftable[0x10].slot_0x04)();
       CStack_88.m_pchData = (char *)0x38;
       piStack_8c = (int *)0xc;
       piStack_90 = (int *)0x0;
@@ -228,7 +228,7 @@ LAB_0056a843:
     }
     else {
       iStack_18 = CONCAT31(iStack_18._1_3_,iVar5 != -1);
-      if (((g_pGameFlowState != (void *)0x0) && (*(int *)&g_pLocalizationTable->field_0x44 != 0)) &&
+      if (((g_pGameFlowState != (void *)0x0) && (*(int *)&g_pSimMgr->field_0x44 != 0)) &&
          (iVar5 == 0)) {
         iStack_18 = (uint)iStack_18._1_3_ << 8;
       }
@@ -265,7 +265,7 @@ LAB_0056a843:
         piStack_6c = (int *)0x0;
         pCStack_70 = (CString *)
                      CONCAT22(sStack_40 >> 0xf,
-                              *(undefined2 *)(&g_pLocalizationTable->field_0x48 + sStack_40 * 2));
+                              *(undefined2 *)(&g_pSimMgr->field_0x48 + sStack_40 * 2));
         puStack_74 = (undefined4 *)0x56a7d7;
         (**(code **)(iVar1 + 0x1d4))();
         puStack_74 = (undefined4 *)0x56a7df;
@@ -274,7 +274,7 @@ LAB_0056a843:
         piStack_78 = (int *)((-0xe8b1 - (uint)(cVar3 != '\0')) + (int)piVar6 * 2);
         piStack_7c = (int *)0x2743;
         piStack_80 = (int *)0x56a804;
-        (*g_pLocalizationTable->vftable[0x10].slot_0x04)();
+        (*g_pSimMgr->vftable[0x10].slot_0x04)();
         uStack_84 = 0x56a80b;
         piStack_80 = piVar6;
         piVar4 = (int *)(*pcStack_68)();
@@ -303,7 +303,7 @@ LAB_0056a843:
     piVar6 = (int *)((int)piVar6 + 1);
     if (4 < (int)piVar4) {
       piStack_6c = (int *)0x6d757369;
-      *(undefined2 *)&this->field_0x90 = *(undefined2 *)&g_pLocalizationTable->field_0x4e;
+      *(undefined2 *)&this->field_0x90 = *(undefined2 *)&g_pSimMgr->field_0x4e;
       pCStack_70 = (CString *)0x56a886;
       uVar2 = (*p_Stack_54)();
       piVar9 = (int *)CONCAT31(extraout_var_05,uVar2);
@@ -331,8 +331,7 @@ LAB_0056a843:
       (**(code **)(*g_pDisplayMgr + 0x2c))();
       uStack_2c = uStack_2c & 0xffffff00;
       g_nDibOrientationFlag_006A1890 = g_nDibOrientationFlag_006A1890 + -1;
-      iVar5 = (int)*(short *)&g_pLocalizationTable->field_0x4e *
-              (int)(short)((short)piVar9[0xe] + -0xc);
+      iVar5 = (int)*(short *)&g_pSimMgr->field_0x4e * (int)(short)((short)piVar9[0xe] + -0xc);
       sVar7 = ((short)(iVar5 / 0xff) + (short)(iVar5 >> 0x1f)) -
               (short)((longlong)iVar5 * 0x80808081 >> 0x3f);
       if (sVar7 == 0) {
@@ -371,8 +370,7 @@ LAB_0056a843:
       piStack_8c = (int *)0x56a9eb;
       (**(code **)(*g_pDisplayMgr + 0x2c))();
       g_nDibOrientationFlag_006A1890 = g_nDibOrientationFlag_006A1890 + -1;
-      iVar5 = (int)*(short *)&g_pLocalizationTable->field_0x4c *
-              (int)(short)((short)piVar9[0xe] + -0xc);
+      iVar5 = (int)*(short *)&g_pSimMgr->field_0x4c * (int)(short)((short)piVar9[0xe] + -0xc);
       sVar7 = ((short)(iVar5 / 100) + (short)(iVar5 >> 0x1f)) -
               (short)((longlong)iVar5 * 0x51eb851f >> 0x3f);
       if (sVar7 == 0) {
@@ -546,13 +544,13 @@ TGamePreferencesPicture::HandleEvent
     if (*(int *)(param_2.m_pchData + 0x1c) == 0x63616e63) {
       (*g_pSfxPlaybackSystem->vftable[1].~TEventHandler)
                 (CONCAT22(0x6361,*(undefined2 *)&this->field_0x90));
-      *(undefined2 *)&g_pLocalizationTable->field_0x4e = *(undefined2 *)&this->field_0x90;
-      func_0x00406785(*(undefined2 *)&g_pLocalizationTable->field_0x4e);
-      if (*(int *)&g_pLocalizationTable->field_0x8 == 1) {
+      *(undefined2 *)&g_pSimMgr->field_0x4e = *(undefined2 *)&this->field_0x90;
+      func_0x00406785(*(undefined2 *)&g_pSimMgr->field_0x4e);
+      if (*(int *)&g_pSimMgr->field_0x8 == 1) {
         func_0x00408715(0x5dc);
       }
       else {
-        (*g_pLocalizationTable->vftable[8].slot_0x04)();
+        (*g_pSimMgr->vftable[8].slot_0x04)();
       }
     }
     else if (*(int *)(param_2.m_pchData + 0x1c) == 0x6f6b6179) {
@@ -569,7 +567,7 @@ TGamePreferencesPicture::HandleEvent
           iVar1 = *(int *)CONCAT31(extraout_var_00,uVar3);
           (**(code **)(iVar1 + 0xc))();
           cVar2 = (**(code **)(iVar1 + 0x1d0))();
-          *(short *)(&g_pLocalizationTable->field_0x48 + (short)iStack_14 * 2) = (short)cVar2;
+          *(short *)(&g_pSimMgr->field_0x48 + (short)iStack_14 * 2) = (short)cVar2;
           p_Var7 = p_Stack_10;
         }
         param_3 = param_3 + 1;
@@ -585,7 +583,7 @@ TGamePreferencesPicture::HandleEvent
       else {
         sVar4 = (short)piVar5[0x24] + -0xc;
       }
-      *(short *)&g_pLocalizationTable->field_0x4e =
+      *(short *)&g_pSimMgr->field_0x4e =
            (short)((sVar4 * 0xff) / (int)(short)((short)piVar5[0xe] + -0xc));
       uVar3 = (*p_Var7)(0x736f756e);
       piVar5 = (int *)CONCAT31(extraout_var_02,uVar3);
@@ -596,15 +594,14 @@ TGamePreferencesPicture::HandleEvent
       else {
         sVar4 = (short)piVar5[0x24] + -0xc;
       }
-      *(short *)&g_pLocalizationTable->field_0x4c =
+      *(short *)&g_pSimMgr->field_0x4c =
            (short)((sVar4 * 100) / (int)(short)((short)piVar5[0xe] + -0xc));
       func_0x00408d0a(1);
-      if ((*(int *)&g_pLocalizationTable->field_0x8 == 1) ||
-         (*(int *)&g_pLocalizationTable->field_0x8 == 3)) {
+      if ((*(int *)&g_pSimMgr->field_0x8 == 1) || (*(int *)&g_pSimMgr->field_0x8 == 3)) {
         func_0x00408715(0x5dc);
       }
       else {
-        (*g_pLocalizationTable->vftable[8].slot_0x04)();
+        (*g_pSimMgr->vftable[8].slot_0x04)();
       }
       uVar3 = (*p_Var7)(0x6f706361);
       (**(code **)(*(int *)CONCAT31(extraout_var_03,uVar3) + 0xc))();
@@ -631,7 +628,7 @@ TGamePreferencesPicture::HandleEvent
     p_Stack_10 = (_vslot_fn *)0x0;
     (**(code **)(iVar1 + 0xc))();
     cVar2 = (**(code **)(iVar1 + 0x1d0))();
-    (*g_pLocalizationTable->vftable[0x10].slot_0x04)
+    (*g_pSimMgr->vftable[0x10].slot_0x04)
               (0x2743,(0x11 - (uint)(cVar2 != '\0')) + (iVar6 + -0x6f707461) * 2,&CStack_4);
     uVar3 = (*this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25)(iVar6 + 0x5080000);
     iVar6 = *(int *)CONCAT31(extraout_var_04,uVar3);

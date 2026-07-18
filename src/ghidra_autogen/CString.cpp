@@ -109,7 +109,7 @@ undefined4 CString::Mid(void)
   int iVar4;
   undefined4 *unaff_FS_OFFSET;
   
-  EstablishSehFrameProlog();
+  _EH_prolog();
   *(undefined4 *)(unaff_EBP + -0x14) = 0;
   iVar3 = *(int *)(unaff_EBP + 0xc);
   *(int **)(unaff_EBP + -0x10) = extraout_ECX;
@@ -164,7 +164,7 @@ undefined4 CString::Right(void)
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
   
-  EstablishSehFrameProlog();
+  _EH_prolog();
   *(undefined4 *)(unaff_EBP + -0x10) = 0;
   iVar3 = *(int *)(unaff_EBP + 0xc);
   if (iVar3 < 0) {
@@ -210,7 +210,7 @@ undefined4 CString::Left(void)
   int iVar2;
   undefined4 *unaff_FS_OFFSET;
   
-  EstablishSehFrameProlog();
+  _EH_prolog();
   *(undefined4 *)(unaff_EBP + -0x10) = 0;
   iVar2 = *(int *)(unaff_EBP + 0xc);
   if (iVar2 < 0) {
@@ -504,7 +504,7 @@ LAB_005ff0d5:
     }
     else {
 LAB_005ff0df:
-      iVar8 = ClassifyDigitCharPlusOne(pcVar3);
+      iVar8 = _mbclen(pcVar3);
       local_10 = local_10 + iVar8;
     }
     pcVar3 = (char *)__mbsinc(pcVar3);
@@ -555,10 +555,10 @@ void CString::FormatMessageA(void)
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
   
-  EstablishSehFrameProlog();
+  _EH_prolog();
   CString((CString *)(unaff_EBP + -0x14));
   *(undefined4 *)(unaff_EBP + -4) = 0;
-  LoadStringA(*(undefined4 *)(unaff_EBP + 0xc));
+  CString__LoadStringA(*(undefined4 *)(unaff_EBP + 0xc));
   *(int *)(unaff_EBP + -0x18) = unaff_EBP + 0x10;
   DVar1 = ::FormatMessageA(0x500,*(LPCVOID *)(unaff_EBP + -0x14),0,0,(LPSTR)(unaff_EBP + -0x10),0,
                            (va_list *)(unaff_EBP + -0x18));
@@ -645,7 +645,7 @@ void __fastcall CString::TrimLeft(CString *param_1)
   }
   pcVar1 = param_1->m_pchData;
   iVar2 = *(int *)(pcVar1 + -8);
-  _memmove(pcVar1,pcVar3,pcVar1 + (iVar2 - (int)pcVar3) + 1);
+  memmove(pcVar1,pcVar3,pcVar1 + (iVar2 - (int)pcVar3) + 1);
   *(char **)(param_1->m_pchData + -8) = pcVar1 + (iVar2 - (int)pcVar3);
   return;
 }
@@ -865,7 +865,7 @@ void CString::CString(char *text_or_resource_id)
   this->m_pchData = (char *)*puVar1;
   if (text_or_resource_id != (char *)0x0) {
     if ((short)((uint)text_or_resource_id >> 0x10) == 0) {
-      LoadStringA((uint)text_or_resource_id & 0xffff);
+      CString__LoadStringA((uint)text_or_resource_id & 0xffff);
       return;
     }
     if (text_or_resource_id != (char *)0x0) {
@@ -1183,10 +1183,10 @@ int CString::Find(undefined1 param_1)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00605E52
-// GHIDRA_NAME CString::MakeReverse
-// GHIDRA_PROTO undefined MakeReverse()
+// GHIDRA_NAME CString::CString::MakeUpper
+// GHIDRA_PROTO undefined CString::MakeUpper()
 
-void __fastcall CString::MakeReverse(CString *param_1)
+void __fastcall CString::CString__MakeUpper(CString *param_1)
 
 {
   CopyBeforeWrite(param_1);

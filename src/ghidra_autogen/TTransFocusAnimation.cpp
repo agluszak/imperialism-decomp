@@ -390,7 +390,7 @@ void TTransFocusAnimation::BlitTransientSurfaceToPrimaryRenderContextWithClip()
   local_2c.right = local_1c.right - local_1c.left;
   local_1c.bottom = *(LONG *)&this->field_0x28;
   local_2c.bottom = local_1c.bottom - local_1c.top;
-  ApplyRectClipRegionToGlobalClipState(&local_2c);
+  func_0x004030e9(&local_2c);
   func_0x004088aa();
   func_0x004010be(0x13);
   func_0x0040330f(0);
@@ -440,7 +440,7 @@ void TTransFocusAnimation::VTableSlot0D()
   (**(code **)(**(int **)&this->field_0x4 + 0xf8))();
   (**(code **)&this->vftable->field_0x2c)(&stack0xffffffd0);
   uStack_c = 0xffffffff;
-  DestroyScopedMapQuickDrawContext();
+  func_0x00408035();
   *unaff_FS_OFFSET = uStack_14;
   return;
 }
@@ -501,10 +501,10 @@ void TTransFocusAnimation::RenderBattleReportInsetWithPaletteShift()
   pcVar1 = *(code **)&this->vftable->field_0x38;
   (*pcVar1)();
   uStack_3c = 0;
-  GetActiveQuickDrawSurfaceContextAndFlags(&uStack_34,&uStack_3c);
-  SetActiveQuickDrawSurfaceContext(g_pPrimaryRenderSurfaceContext,uStack_3c);
+  func_0x00408d64(&uStack_34,&uStack_3c);
+  func_0x00406f5f(g_pPrimaryRenderSurfaceContext,uStack_3c);
   (*pcVar1)();
-  SetActiveQuickDrawSurfaceContext(uStack_34,uStack_3c);
+  func_0x00406f5f(uStack_34,uStack_3c);
   return;
 }
 
@@ -616,10 +616,10 @@ TTransFocusAnimation::InitializeCityBuildingControlRegions
     uVar2 = (*pTVar10->vftable->WrapperFor_GetActiveNationId_At004b4940)(iVar13);
     func_0x00403224(CONCAT31(extraout_var,uVar2) * 0x10 + 0x1bbc + iVar13);
     piVar5 = (int *)func_0x00402e19(0xffffffff);
-    DeleteObject();
+    CGdiObject__DeleteObject();
     iVar7 = *(int *)*puVar12;
     pHVar6 = CreatePolygonRgn((POINT *)(piVar5 + 2),*piVar5,2);
-    CBrush::AttachRegionHandleToClipStateAndRegister((CBrush *)(iVar7 + 0x14),(int)pHVar6);
+    CBrush::CGdiObject__Attach((CBrush *)(iVar7 + 0x14),(int)pHVar6);
     operator_delete(piVar5);
     func_0x004020fe(this);
     func_0x0040275c(*puVar12,(int)(short)(&g_anCityBuildingSlotCoords)
@@ -630,7 +630,7 @@ TTransFocusAnimation::InitializeCityBuildingControlRegions
     puVar12 = puVar12 + 1;
   } while (iVar13 < 0x10);
   (**(code **)(*unaff_EBX + 0x58))();
-  ModifyStyle(0,0x2000000,0);
+  CWnd__ModifyStyle(0,0x2000000,0);
   iStack_20 = 0;
   iStack_28 = 0;
   do {

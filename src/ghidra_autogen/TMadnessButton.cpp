@@ -81,7 +81,8 @@ void TMadnessButton::OrphanCallChain_C4_I45_00571d40(char param_1)
   char cVar2;
   int iVar3;
   undefined4 *unaff_FS_OFFSET;
-  undefined1 auStack_34 [40];
+  undefined1 auStack_34 [36];
+  undefined4 uStack_10;
   undefined4 uStack_c;
   undefined1 *puStack_8;
   undefined4 uStack_4;
@@ -112,8 +113,8 @@ void TMadnessButton::OrphanCallChain_C4_I45_00571d40(char param_1)
       func_0x00401d70(this);
       uStack_c = 0;
       (*pTVar1->OrphanTiny_ReturnZero_0048a730_44)(&stack0xffffffc4);
-      uStack_4 = 0xffffffff;
-      DestroyScopedMapQuickDrawContext();
+      uStack_10 = 0xffffffff;
+      func_0x00408035();
     }
   }
   *unaff_FS_OFFSET = uStack_c;

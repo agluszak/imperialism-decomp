@@ -25,7 +25,7 @@ void CHandleMap::~CHandleMap(void)
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
   
-  EstablishSehFrameProlog();
+  _EH_prolog();
   *(undefined4 *)(unaff_EBP + -0x10) = extraout_ECX;
   *(undefined4 *)(unaff_EBP + -4) = 1;
   DeleteTemp();
@@ -49,7 +49,7 @@ CMapPtrToPtr * CHandleMap::CHandleMap(void)
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
   
-  EstablishSehFrameProlog();
+  _EH_prolog();
   *(CMapPtrToPtr **)(unaff_EBP + -0x10) = this;
   CMapPtrToPtr::CMapPtrToPtr(this,(TNetMgrVtbl *)0xa);
   *(undefined4 *)(unaff_EBP + -4) = 0;
@@ -81,7 +81,7 @@ int CHandleMap::FromHandle(void)
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
   
-  EstablishSehFrameProlog();
+  _EH_prolog();
   uVar1 = *(uint *)(unaff_EBP + 8);
   *(undefined1 **)(unaff_EBP + -0x10) = &stack0xffffffe0;
   *(CMapPtrToPtr **)(unaff_EBP + -0x1c) = this;

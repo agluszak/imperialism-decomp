@@ -141,7 +141,7 @@ void TAutoGreatPower::Free()
 void TAutoGreatPower::DispatchTurnEvent11F8NoPayloadSlot2AC()
 
 {
-  if (*(int *)&g_pLocalizationTable->field_0x44 != 0) {
+  if (*(int *)&g_pSimMgr->field_0x44 != 0) {
     func_0x00406efb(0x6c6f7374,(int)*(short *)&this->field_0xc,0xfffffffd);
   }
   return;
@@ -250,7 +250,7 @@ void TAutoGreatPower::AssignNeedSlotFromSourceSlot19C(int *param_1, short param_
     dVar3 = (double)(int)*(short *)(&g_pDiplomacyTurnStateManager->field_0x79c +
                                    (*(short *)&this->field_0xc * 0x17 + (int)param_2) * 2) *
             g_DAT_00653fc0_Value_00653FC0;
-    iVar5 = GenerateThreadLocalRandom15();
+    iVar5 = rand();
     if ((double)iVar5 <= dVar3 * g_DAT_00653fc8_Value_00653FC8) {
       return;
     }
@@ -736,13 +736,13 @@ uint TAutoGreatPower::VTableSlot9D()
                           ((int)*(short *)&this->field_0xc);
       } while (iVar12 < CONCAT31(extraout_var_02,uVar8));
     }
-    iVar10 = ftol();
-    iVar12 = ftol();
+    iVar10 = _ftol();
+    iVar12 = _ftol();
     if (iVar12 <= iVar10) {
       iVar12 = iVar10;
     }
-    iVar11 = ftol();
-    iVar10 = ftol();
+    iVar11 = _ftol();
+    iVar10 = _ftol();
     if (iVar10 <= iVar11) {
       iVar10 = iVar11;
     }
@@ -765,9 +765,8 @@ uint TAutoGreatPower::VTableSlot9D()
       iVar11 = iVar11 + 1;
     } while ((int)ppTVar13 < 0x6a438c);
     fVar4 = (float)iVar12 + (float)((int)(iVar10 + (iVar10 >> 0x1f & 3U)) >> 2);
-    iVar10 = (int)(short)((int)((int)*(short *)&g_pLocalizationTable->field_0x2c +
-                               ((int)*(short *)&g_pLocalizationTable->field_0x2c >> 0x1f & 3U)) >> 2
-                         );
+    iVar10 = (int)(short)((int)((int)*(short *)&g_pSimMgr->field_0x2c +
+                               ((int)*(short *)&g_pSimMgr->field_0x2c >> 0x1f & 3U)) >> 2);
     if (0x3b < iVar10) {
       iVar10 = 0x3c;
     }
@@ -1030,9 +1029,9 @@ void TAutoGreatPower::ResetNationDiplomacySlotsAndMarkRelatedNations(int param_1
   }
   iVar8 = func_0x004076a8(unaff_retaddr);
   if (*(int *)(iVar8 + 0x2c) == 0) {
-    iVar6 = ReallocateHeapBlockWithAllocatorTracking(*(undefined4 *)(iVar8 + 0x28),8);
+    iVar6 = _realloc(*(undefined4 *)(iVar8 + 0x28),8);
     if (iVar6 == 0) {
-      uVar7 = ReallocateHeapBlockWithAllocatorTracking(*(undefined4 *)(iVar8 + 0x28),4);
+      uVar7 = _realloc(*(undefined4 *)(iVar8 + 0x28),4);
       *(undefined4 *)(iVar8 + 0x28) = uVar7;
       *(undefined4 *)(iVar8 + 0x2c) = 1;
     }

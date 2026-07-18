@@ -215,7 +215,7 @@ void TDialogBehavior::CreateTCommandInstance()
   this->field_0x20 = 0;
   *(undefined4 *)&this->field_0x1c = 0x20202020;
   CMcWindow::EnableWindowOrDelegateToOwner(1);
-  TMovieView::RunModalLoop(this_00,0);
+  TMovieView::TView__RunModalLoop(this_00,0);
   if (iVar1 != 0) {
     func_0x00405db2(1);
     func_0x004012c1();

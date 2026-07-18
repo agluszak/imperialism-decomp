@@ -114,7 +114,7 @@ void TGameSetupMultiplayerPicture::NoOpUiLifecycleHook()
     uVar2 = (*p_Var1)(0x63757273);
     g_pCursorControlPanel = (TControl *)CONCAT31(extraout_var_00,uVar2);
     (*g_pCursorControlPanel->vftable->ConstructTTaskBaseState)();
-    BuildUiTextStyleDescriptor(auStack_34,0,0xe,0x2b6c);
+    func_0x00406afa(auStack_34,0,0xe,0x2b6c);
     (*g_pCursorControlPanel->vftable[1].OrphanCallChain_C11_I88_004874b0_08)(auStack_34,1);
     (*g_pCursorControlPanel->vftable[1].OrphanTiny_ReturnZero_0048a730)(0x2b6b,0x2b6c);
     (*g_pCursorControlPanel->vftable[1].GetTEventHandlerClassNamePointer)(1,0);
@@ -154,27 +154,31 @@ TGameSetupMultiplayerPicture::HandleEvent
 {
   uint uVar1;
   _vslot_fn *p_Var2;
-  char cVar3;
-  undefined uVar4;
-  int iVar5;
+  char *pcVar3;
+  char cVar4;
+  undefined uVar5;
+  int iVar6;
   undefined3 extraout_var;
-  int *piVar6;
-  undefined4 uVar7;
+  int *piVar7;
+  undefined4 uVar8;
   undefined3 extraout_var_01;
   TSimMgr *extraout_ECX;
   TSimMgr *extraout_ECX_00;
-  CString *pCVar8;
+  TSimMgr *extraout_ECX_01;
+  CString *this_00;
   undefined4 unaff_ESI;
   undefined4 *unaff_FS_OFFSET;
   int unaff_retaddr;
+  undefined4 uStack_60;
+  CString *pCStack_5c;
   undefined4 uStack_58;
   undefined4 *puStack_54;
   undefined4 uStack_50;
-  int *piStack_4c;
+  undefined1 *puStack_4c;
   TSimMgr *pTStack_48;
   undefined4 *puStack_44;
   char *pcStack_40;
-  int iStack_3c;
+  undefined1 *puStack_3c;
   CString *pCStack_38;
   char *pcStack_34;
   CString local_1c;
@@ -197,72 +201,74 @@ TGameSetupMultiplayerPicture::HandleEvent
 LAB_005763d6:
       p_Var2 = this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25;
       pcStack_34 = (char *)0x5763e8;
-      uVar4 = (*p_Var2)();
+      uVar5 = (*p_Var2)();
       pcStack_34 = (char *)0x5763f1;
-      (**(code **)(*(int *)CONCAT31(extraout_var,uVar4) + 0xc))();
-      pcStack_34 = (char *)((int *)CONCAT31(extraout_var,uVar4))[0x22];
+      (**(code **)(*(int *)CONCAT31(extraout_var,uVar5) + 0xc))();
+      pcStack_34 = (char *)((int *)CONCAT31(extraout_var,uVar5))[0x22];
       pCStack_38 = (CString *)0x5763fc;
-      uVar4 = (*p_Var2)();
-      piVar6 = (int *)CONCAT31(extraout_var_00,uVar4);
+      uVar5 = (*p_Var2)();
+      piVar7 = (int *)CONCAT31(extraout_var_00,uVar5);
       pCStack_38 = (CString *)0x576405;
-      (**(code **)(*piVar6 + 0xc))();
-      iStack_3c = piVar6[0xf];
+      (**(code **)(*piVar7 + 0xc))();
+      puStack_3c = (undefined1 *)piVar7[0xf];
       pCStack_38 = (CString *)(uint)(*(int *)(unaff_retaddr + 0x1c) != 0x6a6f696e);
       pcStack_40 = (char *)0x576427;
-      cVar3 = func_0x004030cb();
-      if (cVar3 == '\0') {
+      cVar4 = func_0x004030cb();
+      if (cVar4 == '\0') {
         pcStack_40 = (char *)0x576434;
         CString::CString(&CStack_8);
         pcStack_40 = (char *)0x28;
         pTStack_48 = (TSimMgr *)&CStack_8;
         puStack_44 = (undefined4 *)0x2737;
         local_14[0].m_pchData = (char *)0x3;
-        piStack_4c = (int *)0x576453;
+        puStack_4c = (undefined1 *)0x576453;
         func_0x00401e7e();
-        piStack_4c = (int *)0x0;
+        puStack_4c = (undefined1 *)0x0;
         uStack_50 = 0;
         puStack_54 = &DAT_006a4218;
         local_18.m_pchData = (char *)&uStack_58;
-        pCVar8 = local_14;
-        func_0x004076b7(pCVar8);
-        DispatchLocalizedUiMessageWithTemplateA13A0(pCVar8);
-        uStack_50 = 0x576483;
+        pCStack_5c = local_14;
+        uStack_60 = 0x57646d;
+        func_0x004076b7();
+        uStack_60 = 0x576478;
+        func_0x004096b0();
+        uStack_60 = 0x576483;
         func_0x00401d75();
-        pCVar8 = &param_2;
+        this_00 = &param_2;
 LAB_00576781:
         local_4 = (undefined1 *)0xffffffff;
-        CString::~CString(pCVar8);
+        CString::~CString(this_00);
         goto LAB_00576786;
       }
-      puStack_44 = (undefined4 *)piVar6[7];
+      puStack_44 = (undefined4 *)piVar7[7];
       pcStack_40 = s_DefaultProtocol_0069802c;
       pTStack_48 = (TSimMgr *)0x5764a8;
       func_0x00403d23();
     }
     else if ((uVar1 == 0x72616e64) || (uVar1 == 0x7363656e)) {
 LAB_005762a1:
-      cVar3 = func_0x00408594();
-      while (cVar3 == '\0') {
+      cVar4 = func_0x00408594();
+      while (cVar4 == '\0') {
         CString::CString(&local_18);
         pCStack_38 = &local_18;
         pcStack_34 = (char *)0x2745;
         local_4 = (undefined1 *)0x0;
-        iStack_3c = 0x5762d8;
+        puStack_3c = (undefined1 *)0x5762d8;
         func_0x00401e7e();
-        iStack_3c = 1;
+        puStack_3c = (undefined1 *)0x1;
         pcStack_40 = (char *)0x1;
         puStack_44 = &DAT_006a4218;
-        piStack_4c = (int *)&stack0xffffffdc;
+        puStack_4c = &stack0xffffffdc;
         uStack_50 = 0x5762f0;
         pTStack_48 = extraout_ECX;
         func_0x004076b7();
-        pcStack_40 = (char *)0x5762fb;
-        cVar3 = DispatchLocalizedUiMessageWithTemplateA13A0();
+        uStack_50 = 0x5762fb;
+        cVar4 = func_0x004096b0();
         local_4 = (undefined1 *)0xffffffff;
-        pCVar8 = &local_18;
-        if (cVar3 == '\0') goto LAB_00576781;
-        CString::~CString(pCVar8);
-        cVar3 = func_0x00408594();
+        this_00 = &local_18;
+        if (cVar4 == '\0') goto LAB_00576781;
+        CString::~CString(this_00);
+        cVar4 = func_0x00408594();
       }
       pcStack_34 = (char *)0x576335;
       CString::CString(&local_18,*(char **)((int)g_pGameFlowState + 0x74));
@@ -271,21 +277,21 @@ LAB_005762a1:
       pCStack_38 = &local_1c;
       pcStack_34 = (char *)0x2737;
       local_4 = (undefined1 *)CONCAT31(local_4._1_3_,2);
-      iStack_3c = 0x57635e;
+      puStack_3c = (undefined1 *)0x57635e;
       func_0x00401e7e();
-      iStack_3c = 1;
+      puStack_3c = (undefined1 *)0x1;
       pcStack_40 = (char *)0x0;
       puStack_44 = (undefined4 *)0x0;
-      piStack_4c = (int *)&stack0xffffffdc;
+      puStack_4c = &stack0xffffffdc;
       pTStack_48 = (TSimMgr *)0x0;
       puStack_54 = (undefined4 *)0x57637a;
       uStack_50 = unaff_ESI;
-      iVar5 = func_0x00407ce3();
-      if (iVar5 != 0x63616e63) {
+      iVar6 = func_0x00407ce3();
+      if (iVar6 != 0x63616e63) {
         pcStack_34 = local_18.m_pchData;
         pCStack_38 = (CString *)0x576394;
-        iVar5 = CompareAnsiStringsWithMbcsAwareness();
-        if (iVar5 != 0) {
+        iVar6 = _mbscmp();
+        if (iVar6 != 0) {
           pcStack_34 = (char *)0x5763b8;
           CString::operator=((CString *)((int)g_pGameFlowState + 0x74),&local_18);
           local_4 = (undefined1 *)CONCAT31(local_4._1_3_,1);
@@ -296,22 +302,22 @@ LAB_005762a1:
         }
         pCStack_38 = &local_1c;
         pcStack_34 = (char *)0x2737;
-        iStack_3c = 0x576743;
+        puStack_3c = (undefined1 *)0x576743;
         func_0x00401e7e();
-        iStack_3c = 0;
+        puStack_3c = (undefined1 *)0x0;
         pcStack_40 = (char *)0x0;
         puStack_44 = &DAT_006a4218;
         local_4 = (undefined1 *)&pTStack_48;
-        piStack_4c = (int *)&stack0xffffffd8;
+        puStack_4c = &stack0xffffffd8;
         uStack_50 = 0x57675d;
-        pTStack_48 = extraout_ECX_00;
+        pTStack_48 = extraout_ECX_01;
         func_0x004076b7();
-        pcStack_40 = (char *)0x576768;
-        DispatchLocalizedUiMessageWithTemplateA13A0();
+        uStack_50 = 0x576768;
+        func_0x004096b0();
       }
       local_4 = (undefined1 *)CONCAT31(local_4._1_3_,1);
       CString::~CString(&local_1c);
-      pCVar8 = &local_18;
+      this_00 = &local_18;
       goto LAB_00576781;
     }
 LAB_005764ac:
@@ -319,16 +325,16 @@ LAB_005764ac:
     if (uVar1 < 0x6c6f6165) {
       if (uVar1 == 0x6c6f6164) {
         *(undefined4 *)((int)g_pGameFlowState + 0xe0) = 0x6c6f6164;
-        cVar3 = func_0x00407482();
-        if (cVar3 != '\0') {
-          *(undefined4 *)&g_pLocalizationTable->field_0x44 = 1;
+        cVar4 = func_0x00407482();
+        if (cVar4 != '\0') {
+          *(undefined4 *)&g_pSimMgr->field_0x44 = 1;
           g_nSaveFormatVersion = -2;
           goto LAB_0057670d;
         }
       }
       else if (uVar1 == 0x6a6f696e) {
         DAT_006a43f0 = '\0';
-        *(undefined4 *)&g_pLocalizationTable->field_0x44 = 2;
+        *(undefined4 *)&g_pSimMgr->field_0x44 = 2;
         pcStack_34 = (char *)0x5764e7;
         func_0x00402397();
       }
@@ -336,9 +342,9 @@ LAB_005764ac:
     else if (uVar1 < 0x72616e65) {
       if (uVar1 == 0x72616e64) {
         *(undefined4 *)((int)g_pGameFlowState + 0xe0) = 0x72616e64;
-        cVar3 = func_0x00407482();
-        if (cVar3 != '\0') {
-          *(undefined4 *)&g_pLocalizationTable->field_0x44 = 1;
+        cVar4 = func_0x00407482();
+        if (cVar4 != '\0') {
+          *(undefined4 *)&g_pSimMgr->field_0x44 = 1;
 LAB_0057670d:
           pcStack_34 = (char *)0x576718;
           func_0x00408715();
@@ -350,20 +356,20 @@ LAB_0057670d:
     }
     else if (uVar1 == 0x7363656e) {
       *(undefined4 *)((int)g_pGameFlowState + 0xe0) = 0x73636e30;
-      cVar3 = func_0x00407482();
-      if (cVar3 != '\0') {
-        *(undefined4 *)&g_pLocalizationTable->field_0x44 = 1;
+      cVar4 = func_0x00407482();
+      if (cVar4 != '\0') {
+        *(undefined4 *)&g_pSimMgr->field_0x44 = 1;
         goto LAB_0057670d;
       }
     }
-    else if ((uVar1 == 0x73706974) && (cVar3 = func_0x00405dd5(), cVar3 != '\0')) {
+    else if ((uVar1 == 0x73706974) && (cVar4 = func_0x00405dd5(), cVar4 != '\0')) {
       pcStack_34 = (char *)0x0;
       pCStack_38 = (CString *)0x8;
-      iStack_3c = 0x2759;
+      puStack_3c = (undefined1 *)0x2759;
       pcStack_40 = (char *)0x5765c1;
-      cVar3 = func_0x004075a9();
-      if (cVar3 != '\0') {
-        uVar7 = func_0x00409953();
+      cVar4 = func_0x004075a9();
+      if (cVar4 != '\0') {
+        uVar8 = func_0x00409953();
         CString::CString(local_14);
         local_4 = (undefined1 *)0x4;
         CString::CString(&local_1c);
@@ -372,41 +378,40 @@ LAB_0057670d:
         pCStack_38 = &local_1c;
         pcStack_34 = (char *)0x2759;
         local_4._0_1_ = 6;
-        iStack_3c = 0x57661b;
+        puStack_3c = (undefined1 *)0x57661b;
         func_0x00401e7e();
         puStack_44 = (undefined4 *)&stack0xffffffdc;
         pcStack_40 = &g_szDecimalFormat;
         pTStack_48 = (TSimMgr *)0x57662b;
-        iStack_3c = uVar7;
-        _Format_CString__QAAXPBDZZ();
+        puStack_3c = (undefined1 *)uVar8;
+        CString__Format();
         puStack_44 = (undefined4 *)&stack0xffffffe0;
-        pTStack_48 = g_pLocalizationTable;
-        piStack_4c = (int *)0x576648;
+        pTStack_48 = g_pSimMgr;
+        puStack_4c = (undefined1 *)0x576648;
         func_0x0040988b();
-        piStack_4c = (int *)&stack0xffffffe0;
-        iStack_3c = 0;
+        puStack_4c = &stack0xffffffe0;
+        puStack_3c = (undefined1 *)0x0;
         pcStack_40 = (char *)0x0;
         puStack_44 = &DAT_006a4218;
         uStack_50 = 0x576665;
+        pTStack_48 = extraout_ECX_00;
         local_1c.m_pchData = (char *)&pTStack_48;
         func_0x004076b7();
         uStack_50 = 0x576670;
-        DispatchLocalizedUiMessageWithTemplateA13A0();
-        pcStack_40 = (char *)0x73706974;
-        puStack_44 = (undefined4 *)0x576680;
-        uVar4 = (*this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25)();
-        iVar5 = *(int *)CONCAT31(extraout_var_01,uVar4);
-        puStack_44 = (undefined4 *)0x576689;
-        (**(code **)(iVar5 + 0xc))();
-        puStack_44 = (undefined4 *)0x0;
-        pTStack_48 = (TSimMgr *)0x0;
-        piStack_4c = (int *)0x576695;
-        (**(code **)(iVar5 + 0xa8))();
-        puStack_54 = &g_szEmptyString;
-        uStack_58 = 0x5766a7;
-        piStack_4c = (int *)CONCAT31(extraout_var_01,uVar4);
-        func_0x00401b40();
-        uStack_58 = 0x5766ac;
+        func_0x004096b0();
+        uStack_50 = 0x73706974;
+        puStack_54 = (undefined4 *)0x576680;
+        uVar5 = (*this->vftable->OrphanLeaf_NoCall_Ins07_004d8920_25)();
+        pcVar3 = ((CString *)CONCAT31(extraout_var_01,uVar5))->m_pchData;
+        puStack_54 = (undefined4 *)0x576689;
+        (**(code **)(pcVar3 + 0xc))();
+        puStack_54 = (undefined4 *)0x0;
+        uStack_58 = 0;
+        pCStack_5c = (CString *)0x576695;
+        (**(code **)(pcVar3 + 0xa8))();
+        puStack_3c = (undefined1 *)&uStack_60;
+        pCStack_5c = (CString *)CONCAT31(extraout_var_01,uVar5);
+        func_0x00401b40(&g_szEmptyString);
         func_0x00404d22();
         local_4._0_1_ = 5;
         CString::~CString(&local_18);
@@ -419,7 +424,7 @@ LAB_0057670d:
   }
   pcStack_34 = param_2.m_pchData;
   pCStack_38 = (CString *)param_1;
-  iStack_3c = 0x57672a;
+  puStack_3c = (undefined1 *)0x57672a;
   func_0x00404566();
 LAB_00576786:
   *unaff_FS_OFFSET = local_c;

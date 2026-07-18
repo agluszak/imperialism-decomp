@@ -77,7 +77,7 @@ void TCivAnimation::WrapperFor_InvalidateCityDialogRectRegion_At0049f140()
     if (*(short *)&this->field_0x8 != *(short *)&this->field_0x2c) {
       return;
     }
-    uVar1 = GenerateThreadLocalRandom15();
+    uVar1 = rand();
     if (*(short *)&this->field_0x2e <= (short)(uVar1 & 0xf)) {
       return;
     }

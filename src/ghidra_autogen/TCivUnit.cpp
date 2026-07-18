@@ -118,8 +118,7 @@ TCivUnit::InitializeCivWorkOrderState
           (TCivUnit *this,int nOrderType,int pOwnerContext,int nOrderOwnerNationId)
 
 {
-  TUnit::RegisterUnitOrderWithOwnerManager
-            ((TUnit *)this,(short)nOrderType,(short)pOwnerContext);
+  func_0x00402eeb(nOrderType,pOwnerContext,nOrderOwnerNationId,0);
   *(undefined2 *)&this->field_0x24 = 0;
   *(undefined2 *)&this->field_0x26 = 0xffff;
   return;

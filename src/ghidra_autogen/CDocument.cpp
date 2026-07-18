@@ -25,120 +25,120 @@ void CDocument::SerializeTMinisterBaseOrderArrayHeader(undefined4 param_1)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00606C4E
-// GHIDRA_NAME CDocument::'scalar_deleting_destructor'
-// GHIDRA_PROTO undefined __thiscall 'scalar_deleting_destructor'(void)
+// GHIDRA_NAME CDocument::CCmdTarget::IsInvokeAllowed
+// GHIDRA_PROTO undefined __thiscall CCmdTarget::IsInvokeAllowed(void)
 
-undefined4 CDocument::_scalar_deleting_destructor_()
+undefined4 CDocument::CCmdTarget__IsInvokeAllowed()
 
 {
   return 1;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00606C54
-// GHIDRA_NAME CDocument::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_NAME CDocument::CCmdTarget::GetDispatchIID
+// GHIDRA_PROTO undefined __thiscall CCmdTarget::GetDispatchIID(void)
 
-undefined4 CDocument::GetTEventHandlerClassNamePointer()
+undefined4 CDocument::CCmdTarget__GetDispatchIID()
 
 {
   return 0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00606C59
-// GHIDRA_NAME CDocument::OrphanRetStub_004be6d0
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_004be6d0(void)
+// GHIDRA_NAME CDocument::CCmdTarget::GetTypeInfoCount
+// GHIDRA_PROTO undefined __thiscall CCmdTarget::GetTypeInfoCount(void)
 
-undefined4 CDocument::OrphanRetStub_004be6d0()
+undefined4 CDocument::CCmdTarget__GetTypeInfoCount()
 
 {
   return 0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00606C5C
-// GHIDRA_NAME CDocument::OrphanCallChain_C11_I88_004874b0
-// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C11_I88_004874b0(void)
+// GHIDRA_NAME CDocument::CCmdTarget::GetTypeLibCache
+// GHIDRA_PROTO undefined __thiscall CCmdTarget::GetTypeLibCache(void)
 
-undefined4 CDocument::OrphanCallChain_C11_I88_004874b0()
+undefined4 CDocument::CCmdTarget__GetTypeLibCache()
 
 {
   return 0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00606C5F
-// GHIDRA_NAME CDocument::OrphanLeaf_NoCall_Ins07_004d8920
-// GHIDRA_PROTO undefined __thiscall OrphanLeaf_NoCall_Ins07_004d8920(void)
+// GHIDRA_NAME CDocument::CCmdTarget::GetTypeLib
+// GHIDRA_PROTO undefined __thiscall CCmdTarget::GetTypeLib(void)
 
-undefined4 CDocument::OrphanLeaf_NoCall_Ins07_004d8920()
+undefined4 CDocument::CCmdTarget__GetTypeLib()
 
 {
   return 0x80029c4a;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00606CAC
-// GHIDRA_NAME CDocument::SetForeignMinisterReadyFlag14
-// GHIDRA_PROTO undefined __thiscall SetForeignMinisterReadyFlag14(void)
+// GHIDRA_NAME CDocument::CCmdTarget::GetDispatchMap
+// GHIDRA_PROTO undefined __thiscall CCmdTarget::GetDispatchMap(void)
 
-undefined * CDocument::SetForeignMinisterReadyFlag14()
+undefined * CDocument::CCmdTarget__GetDispatchMap()
 
 {
   return &DAT_00670580;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00606CB2
-// GHIDRA_NAME CDocument::ReleaseRuntimeSelectionOwnerAndDestroyObject
-// GHIDRA_PROTO undefined __thiscall ReleaseRuntimeSelectionOwnerAndDestroyObject(void)
+// GHIDRA_NAME CDocument::CCmdTarget::GetEventSinkMap
+// GHIDRA_PROTO undefined __thiscall CCmdTarget::GetEventSinkMap(void)
 
-undefined * CDocument::ReleaseRuntimeSelectionOwnerAndDestroyObject()
+undefined * CDocument::CCmdTarget__GetEventSinkMap()
 
 {
   return &DAT_006705b0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00606CB8
-// GHIDRA_NAME CDocument::OrphanRetStub_0059add0
-// GHIDRA_PROTO undefined __thiscall OrphanRetStub_0059add0(void)
+// GHIDRA_NAME CDocument::CCmdTarget::GetInterfaceMap
+// GHIDRA_PROTO undefined __thiscall CCmdTarget::GetInterfaceMap(void)
 
-undefined * CDocument::OrphanRetStub_0059add0()
+undefined * CDocument::CCmdTarget__GetInterfaceMap()
 
 {
   return &DAT_006705e8;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00606CF9
-// GHIDRA_NAME CDocument::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_NAME CDocument::CCmdTarget::GetConnectionMap
+// GHIDRA_PROTO undefined __thiscall CCmdTarget::GetConnectionMap(void)
 
-undefined * CDocument::GetTEventHandlerClassNamePointer()
+undefined * CDocument::CCmdTarget__GetConnectionMap()
 
 {
   return &DAT_00670610;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00606CFF
-// GHIDRA_NAME CDocument::ConstructTTaskBaseState
-// GHIDRA_PROTO undefined __thiscall ConstructTTaskBaseState(void)
+// GHIDRA_NAME CDocument::CCmdTarget::GetConnectionHook
+// GHIDRA_PROTO undefined __thiscall CCmdTarget::GetConnectionHook(void)
 
-undefined4 CDocument::ConstructTTaskBaseState()
+undefined4 CDocument::CCmdTarget__GetConnectionHook()
 
 {
   return 0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00606D04
-// GHIDRA_NAME CDocument::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_NAME CDocument::CCmdTarget::GetExtraConnectionPoints
+// GHIDRA_PROTO undefined __thiscall CCmdTarget::GetExtraConnectionPoints(void)
 
-undefined4 CDocument::GetTEventHandlerClassNamePointer()
+undefined4 CDocument::CCmdTarget__GetExtraConnectionPoints()
 
 {
   return 0;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00606D09
-// GHIDRA_NAME CDocument::OrphanCallChain_C7_I57_004be5b0
-// GHIDRA_PROTO undefined __thiscall OrphanCallChain_C7_I57_004be5b0(void)
+// GHIDRA_NAME CDocument::CCmdTarget::GetCommandMap
+// GHIDRA_PROTO undefined __thiscall CCmdTarget::GetCommandMap(void)
 
-undefined * CDocument::OrphanCallChain_C7_I57_004be5b0()
+undefined * CDocument::CCmdTarget__GetCommandMap()
 
 {
   return &DAT_00670620;
@@ -169,7 +169,7 @@ void CDocument::CDocument__DestructCDocumentBaseState(void)
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
   
-  EstablishSehFrameProlog();
+  _EH_prolog();
   *(CDocument **)(unaff_EBP + -0x10) = this;
   this->vftable = &CDocumentVtbl_0067210c;
   *(undefined4 *)(unaff_EBP + -4) = 3;
@@ -190,10 +190,10 @@ void CDocument::CDocument__DestructCDocumentBaseState(void)
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00610A57
-// GHIDRA_NAME CDocument::GetTEventHandlerClassNamePointer
-// GHIDRA_PROTO undefined __thiscall GetTEventHandlerClassNamePointer(void)
+// GHIDRA_NAME CDocument::CDocument::OnFinalRelease
+// GHIDRA_PROTO undefined __thiscall CDocument::OnFinalRelease(void)
 
-void CDocument::GetTEventHandlerClassNamePointer()
+void CDocument::CDocument__OnFinalRelease()
 
 {
                     /* WARNING: Could not recover jumptable at 0x00610a59. Too many branches */
@@ -423,7 +423,7 @@ undefined4 CDocument::DoSave()
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
   
-  EstablishSehFrameProlog();
+  _EH_prolog();
   *(undefined1 **)(unaff_EBP + -0x10) = &stack0xffffffe8;
   CString::CString((CString *)(unaff_EBP + -0x14),*(char **)(unaff_EBP + 8));
   *(undefined4 *)(unaff_EBP + -4) = 0;
@@ -456,7 +456,7 @@ undefined4 CDocument::DoSave()
   else {
 LAB_00610dc4:
     AfxGetModuleState();
-    _BeginWaitCursor_CCmdTarget__QAEXXZ();
+    CCmdTarget__BeginWaitCursor();
     iVar2 = *extraout_ECX;
     *(undefined1 *)(unaff_EBP + -4) = 2;
     iVar3 = (**(code **)(iVar2 + 0x80))(*(undefined4 *)(unaff_EBP + -0x14));
@@ -466,7 +466,7 @@ LAB_00610dc4:
       }
       *(undefined1 *)(unaff_EBP + -4) = 0;
       AfxGetModuleState();
-      EndWaitCursor();
+      CCmdTarget__EndWaitCursor();
       *(undefined4 *)(unaff_EBP + -4) = 0xffffffff;
       CString::~CString((CString *)(unaff_EBP + -0x14));
       uVar4 = 1;
@@ -479,7 +479,7 @@ LAB_00610dc4:
     }
     *(undefined1 *)(unaff_EBP + -4) = 0;
     AfxGetModuleState();
-    EndWaitCursor();
+    CCmdTarget__EndWaitCursor();
   }
   *(undefined4 *)(unaff_EBP + -4) = 0xffffffff;
   CString::~CString((CString *)(unaff_EBP + -0x14));
@@ -503,7 +503,7 @@ undefined4 CDocument::SaveModified()
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
   
-  EstablishSehFrameProlog();
+  _EH_prolog();
   iVar2 = *extraout_ECX;
   *(int *)(unaff_EBP + -0x18) = iVar2;
   iVar2 = (**(code **)(iVar2 + 0x60))();
@@ -514,7 +514,7 @@ undefined4 CDocument::SaveModified()
     if (iVar2 == 0) {
       CString::operator=((CString *)(unaff_EBP + -0x10),(CString *)(extraout_ECX + 7));
       if (*(int *)(*(int *)(unaff_EBP + -0x10) + -8) == 0) {
-        LoadStringA(0xf003);
+        CString__LoadStringA(0xf003);
       }
     }
     else {
@@ -571,7 +571,7 @@ void CDocument::ReportSaveLoadException()
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
   
-  EstablishSehFrameProlog();
+  _EH_prolog();
   iVar4 = *(int *)(unaff_EBP + 0x14);
   *(int *)(unaff_EBP + -0x10) = iVar4;
   CString::CString((CString *)(unaff_EBP + 0x14));
@@ -667,7 +667,7 @@ undefined4 CDocument::OnOpenDocument(void)
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
   
-  EstablishSehFrameProlog();
+  _EH_prolog();
   *(undefined1 **)(unaff_EBP + -0x10) = &stack0xffffff88;
   *(int **)(unaff_EBP + -0x1c) = extraout_ECX;
   iVar1 = *extraout_ECX;
@@ -695,12 +695,12 @@ undefined4 CDocument::OnOpenDocument(void)
     pcVar2 = *(code **)(iVar1 + 100);
     *(code **)(unaff_EBP + -0x18) = pcVar2;
     (*pcVar2)(1);
-    CArchive(*(undefined4 *)(unaff_EBP + -0x14),3,0x1000,0);
+    CArchive__CArchive(*(undefined4 *)(unaff_EBP + -0x14),3,0x1000,0);
     *(undefined4 *)(unaff_EBP + -0x74) = 0;
     *(int **)(unaff_EBP + -0x78) = extraout_ECX;
     *(undefined1 *)(unaff_EBP + -4) = 5;
     AfxGetModuleState();
-    _BeginWaitCursor_CCmdTarget__QAEXXZ();
+    CCmdTarget__BeginWaitCursor();
     *(undefined1 *)(unaff_EBP + -4) = 6;
     iVar3 = (**(code **)(**(int **)(unaff_EBP + -0x14) + 0x38))();
     if (iVar3 != 0) {
@@ -710,7 +710,7 @@ undefined4 CDocument::OnOpenDocument(void)
     (**(code **)(iVar1 + 0x90))(*(undefined4 *)(unaff_EBP + -0x14),0);
     *(undefined1 *)(unaff_EBP + -4) = 5;
     AfxGetModuleState();
-    EndWaitCursor();
+    CCmdTarget__EndWaitCursor();
     *(undefined4 *)(unaff_EBP + -4) = 4;
     (**(code **)(unaff_EBP + -0x18))(0);
     *(undefined1 *)(unaff_EBP + -4) = 2;
@@ -737,7 +737,7 @@ bool CDocument::OnSaveDocument(void)
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
   
-  EstablishSehFrameProlog();
+  _EH_prolog();
   *(undefined1 **)(unaff_EBP + -0x10) = &stack0xffffff8c;
   *(int **)(unaff_EBP + -0x18) = extraout_ECX;
   CException::CException();
@@ -753,19 +753,19 @@ bool CDocument::OnSaveDocument(void)
   iVar2 = (**(code **)(iVar1 + 0x8c))(*(undefined4 *)(unaff_EBP + 8),0x1012,unaff_EBP + -0x30);
   *(int *)(unaff_EBP + -0x14) = iVar2;
   if (iVar2 != 0) {
-    CArchive(iVar2,2,0x1000,0);
+    CArchive__CArchive(iVar2,2,0x1000,0);
     *(undefined4 *)(unaff_EBP + -0x70) = 0;
     *(int **)(unaff_EBP + -0x74) = extraout_ECX;
     *(undefined1 *)(unaff_EBP + -4) = 5;
     AfxGetModuleState();
-    _BeginWaitCursor_CCmdTarget__QAEXXZ();
+    CCmdTarget__BeginWaitCursor();
     *(undefined1 *)(unaff_EBP + -4) = 6;
     (**(code **)(iVar1 + 8))(unaff_EBP + -0x74);
     CArchive::Close((CArchive *)(unaff_EBP + -0x74));
     (**(code **)(iVar1 + 0x90))(*(undefined4 *)(unaff_EBP + -0x14),0);
     *(undefined1 *)(unaff_EBP + -4) = 5;
     AfxGetModuleState();
-    EndWaitCursor();
+    CCmdTarget__EndWaitCursor();
     *(undefined4 *)(unaff_EBP + -4) = 4;
     (**(code **)(iVar1 + 100))(0);
     *(undefined1 *)(unaff_EBP + -4) = 2;

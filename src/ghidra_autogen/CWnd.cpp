@@ -28,7 +28,7 @@ CWnd * CWnd::GetOwner()
   if (pHVar1 == (HWND)0x0) {
     pHVar1 = GetParent(this->m_hWnd);
   }
-  pCVar2 = (CWnd *)FromHandle(pHVar1);
+  pCVar2 = (CWnd *)CWnd__FromHandle(pHVar1);
   return pCVar2;
 }
 
@@ -128,7 +128,7 @@ void CWnd::FilterToolTipMessage(void)
   undefined4 *puVar13;
   undefined4 *unaff_FS_OFFSET;
   
-  EstablishSehFrameProlog();
+  _EH_prolog();
   puVar11 = *(undefined4 **)(unaff_EBP + 8);
   iVar4 = puVar11[1];
   bVar1 = *(byte *)(extraout_ECX + 0x24);
@@ -144,7 +144,7 @@ void CWnd::FilterToolTipMessage(void)
   if (SVar3 < 0) goto LAB_005fb0c4;
   pHVar5 = (HWND)*puVar11;
   while( true ) {
-    iVar4 = FromHandle(pHVar5);
+    iVar4 = CWnd__FromHandle(pHVar5);
     if (iVar4 == 0) break;
     if (iVar4 == extraout_ECX) goto LAB_005fae7d;
     if ((*(byte *)(iVar4 + 0x24) & 1) != 0) break;
@@ -342,7 +342,7 @@ bool CWnd::CreateDlgIndirect(void)
   undefined4 *unaff_FS_OFFSET;
   bool bVar6;
   
-  EstablishSehFrameProlog();
+  _EH_prolog();
   *(undefined1 **)(unaff_EBP + -0x10) = &stack0xffffffc0;
   *(int **)(unaff_EBP + -0x24) = extraout_ECX;
   if (*(int *)(unaff_EBP + 0x10) == 0) {
@@ -381,11 +381,9 @@ LAB_00604f65:
         iVar2 = GetSystemMetrics(0x2a);
         bVar6 = false;
         if (iVar2 != 0) {
-          iVar2 = CompareAnsiStringsWithMbcsAwareness
-                            (*(undefined4 *)(unaff_EBP + -0x1c),"MS Sans Serif");
+          iVar2 = _mbscmp(*(undefined4 *)(unaff_EBP + -0x1c),"MS Sans Serif");
           if (iVar2 != 0) {
-            iVar2 = CompareAnsiStringsWithMbcsAwareness
-                              (*(undefined4 *)(unaff_EBP + -0x1c),&DAT_0066fd04);
+            iVar2 = _mbscmp(*(undefined4 *)(unaff_EBP + -0x1c),&DAT_0066fd04);
             if (iVar2 != 0) {
               bVar6 = false;
               goto LAB_00604f61;
@@ -494,7 +492,7 @@ void __thiscall CWnd::GetDlgItem(int param_1,int param_2)
   
   if (*(int **)(param_1 + 0x34) == (int *)0x0) {
     pHVar1 = ::GetDlgItem(*(HWND *)(param_1 + 0x1c),param_2);
-    FromHandle(pHVar1);
+    CWnd__FromHandle(pHVar1);
   }
   else {
     (**(code **)(**(int **)(param_1 + 0x34) + 0x78))(param_2);
@@ -758,7 +756,7 @@ void __fastcall CWnd::SetFocus(int param_1)
   
   if (*(int **)(param_1 + 0x38) == (int *)0x0) {
     pHVar1 = ::SetFocus(*(HWND *)(param_1 + 0x1c));
-    FromHandle(pHVar1);
+    CWnd__FromHandle(pHVar1);
     return;
   }
                     /* WARNING: Could not recover jumptable at 0x0060757d. Too many branches */
@@ -820,17 +818,17 @@ void CWnd::AttachControlSite(CHandleMap *param_1)
     pHVar1 = GetParent(this->m_hWnd);
     iVar2 = CMapPtrToPtr::GetValueAt((CMapPtrToPtr *)param_1,(uint)pHVar1);
     if (iVar2 != 0) {
-      CWnd__AttachControlSite_607673(this,iVar2);
+      CWnd__AttachControlSite(this,iVar2);
     }
   }
   return;
 }
 
 // GHIDRA_FUNCTION IMPERIALISM 0x00607673
-// GHIDRA_NAME CWnd::CWnd::AttachControlSite_607673
-// GHIDRA_PROTO undefined __thiscall CWnd::AttachControlSite_607673(int param_1)
+// GHIDRA_NAME CWnd::CWnd::AttachControlSite
+// GHIDRA_PROTO undefined __thiscall CWnd::AttachControlSite(int param_1)
 
-void CWnd::CWnd__AttachControlSite_607673(int param_1)
+void CWnd::CWnd__AttachControlSite(int param_1)
 
 {
   int iVar1;
@@ -904,7 +902,7 @@ void CWnd::CWnd_006077C0()
 undefined4 * __fastcall CWnd::CWnd(undefined4 *param_1)
 
 {
-  CCmdTarget();
+  CCmdTarget__CCmdTarget();
   *param_1 = &PTR_LAB_00670b4c;
   memset(param_1 + 7,0,0x20);
   param_1[0xe] = 0;
@@ -944,7 +942,7 @@ void * CWnd::_scalar_deleting_destructor_(uint param_1)
 CWnd * CWnd::CWnd(void *param_1)
 
 {
-  CCmdTarget();
+  CCmdTarget__CCmdTarget();
   (this->ccmdTarget).vftable = (CCmdTargetVtbl *)&PTR_LAB_00670b4c;
   memset(&this->m_hWnd,0,0x20);
   this->m_pCtrlSite = (void *)0x0;
@@ -1170,7 +1168,7 @@ void CWnd::~CWnd()
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
   
-  EstablishSehFrameProlog();
+  _EH_prolog();
   *(undefined4 **)(unaff_EBP + -0x10) = extraout_ECX;
   *extraout_ECX = &PTR_LAB_00670b4c;
   *(undefined4 *)(unaff_EBP + -4) = 0;
@@ -1178,7 +1176,7 @@ void CWnd::~CWnd()
       (extraout_ECX != (undefined4 *)&DAT_006a7a10)) &&
      ((extraout_ECX != (undefined4 *)&DAT_006a7990 && (extraout_ECX != (undefined4 *)&DAT_006a79d0))
      )) {
-    OrphanCallChain_C1_I09_0048ff70();
+    CWnd__DestroyWindow();
   }
   if ((int *)extraout_ECX[0xd] != (int *)0x0) {
     (**(code **)(*(int *)extraout_ECX[0xd] + 4))(1);
@@ -1450,7 +1448,7 @@ undefined4 CWnd::OnWndMsg(void)
   undefined4 *unaff_FS_OFFSET;
   undefined4 uVar15;
   
-  EstablishSehFrameProlog();
+  _EH_prolog();
   *(undefined4 *)(unaff_EBP + -0x10) = 0;
   uVar5 = *(uint *)(unaff_EBP + 8);
   if (uVar5 == 0x111) {
@@ -1477,7 +1475,7 @@ LAB_00609020:
   }
   puVar10 = *(undefined4 **)(unaff_EBP + 0x10);
   if (uVar5 == 6) {
-    uVar15 = FromHandle(puVar10);
+    uVar15 = CWnd__FromHandle(puVar10);
     _AfxHandleActivate(extraout_ECX,*(undefined4 *)(unaff_EBP + 0xc),uVar15);
   }
   sVar14 = (short)puVar10;
@@ -1566,7 +1564,7 @@ LAB_00608d4a:
   case 8:
     uVar5 = (uint)puVar10 >> 0x10;
     uVar11 = (uint)sVar14;
-    uVar9 = FromHandle(*(undefined4 *)(unaff_EBP + 0xc));
+    uVar9 = CWnd__FromHandle(*(undefined4 *)(unaff_EBP + 0xc));
     goto LAB_00608e9b;
   case 4:
     CDC::CDC((CDC *)(unaff_EBP + -0x24));
@@ -1610,7 +1608,7 @@ LAB_00608e42:
     goto switchD_00608d75_caseD_26;
   case 6:
     uVar5 = *(uint *)(unaff_EBP + 0xc) >> 0x10;
-    uVar11 = FromHandle(puVar10);
+    uVar11 = CWnd__FromHandle(puVar10);
     goto LAB_00608e96;
   case 7:
     puVar10 = (undefined4 *)(*(uint *)(unaff_EBP + 0xc) >> 0x10);
@@ -1654,8 +1652,8 @@ LAB_00608e9b:
     uVar5 = (uint)puVar10 & 0xffff;
     goto LAB_00608fea;
   case 0x13:
-    puVar12 = (undefined4 *)FromHandle(*(undefined4 *)(unaff_EBP + 0xc));
-    uVar5 = FromHandle(puVar10);
+    puVar12 = (undefined4 *)CWnd__FromHandle(*(undefined4 *)(unaff_EBP + 0xc));
+    uVar5 = CWnd__FromHandle(puVar10);
     uVar11 = (uint)((undefined4 *)extraout_ECX[7] == puVar10);
     goto LAB_00608fee;
   case 0x14:
@@ -1680,21 +1678,21 @@ LAB_00608e9b:
     uVar5 = (uint)sVar14;
     puVar12 = (undefined4 *)(int)sVar3;
 LAB_00608f43:
-    uVar11 = FromHandle(*(undefined4 *)(unaff_EBP + 0xc));
+    uVar11 = CWnd__FromHandle(*(undefined4 *)(unaff_EBP + 0xc));
     goto LAB_00608fee;
   case 0x1a:
-    iVar13 = FromHandle(*(undefined4 *)(unaff_EBP + 0xc));
+    iVar13 = CWnd__FromHandle(*(undefined4 *)(unaff_EBP + 0xc));
     puVar12 = puVar10;
     goto LAB_00608fc4;
   case 0x1b:
-    puVar10 = (undefined4 *)FromHandle(puVar10);
+    puVar10 = (undefined4 *)CWnd__FromHandle(puVar10);
 LAB_00608fc1:
     iVar13 = *(int *)(unaff_EBP + 0xc);
     puVar12 = puVar10;
     goto LAB_00608fc4;
   case 0x1c:
     puVar12 = (undefined4 *)(*(uint *)(unaff_EBP + 0xc) >> 0x10);
-    uVar5 = FromHandle(puVar10);
+    uVar5 = CWnd__FromHandle(puVar10);
     goto LAB_00608fd8;
   case 0x1d:
   case 0x1e:
@@ -1704,7 +1702,7 @@ LAB_00608fc1:
     puVar12 = (undefined4 *)(int)(short)((uint)*(undefined4 *)(unaff_EBP + 0xc) >> 0x10);
     *(undefined4 **)(unaff_EBP + 0xc) = puVar12;
     if (iVar4 == 0x1d) {
-      puVar12 = (undefined4 *)FromHandle(puVar10);
+      puVar12 = (undefined4 *)CWnd__FromHandle(puVar10);
       uVar5 = *(uint *)(unaff_EBP + 0xc);
       uVar11 = *(uint *)(unaff_EBP + 8);
       goto LAB_00608fee;
@@ -1730,10 +1728,10 @@ LAB_00608fc4:
     goto switchD_00608d75_caseD_26;
   case 0x2c:
 LAB_00608f23:
-    puVar10 = (undefined4 *)FromHandle(puVar10);
+    puVar10 = (undefined4 *)CWnd__FromHandle(puVar10);
     break;
   case 0x2d:
-    uVar5 = FromHandle(puVar10);
+    uVar5 = CWnd__FromHandle(puVar10);
 LAB_00608fb1:
     uVar15 = (*pcVar1)(uVar5,puVar10);
 LAB_0060903f:
@@ -1836,7 +1834,7 @@ int * __fastcall CWnd::GetParentFrame(int param_1)
     pHVar2 = *(HWND *)(param_1 + 0x1c);
     while( true ) {
       pHVar2 = GetParent(pHVar2);
-      piVar3 = (int *)FromHandle(pHVar2);
+      piVar3 = (int *)CWnd__FromHandle(pHVar2);
       if (piVar3 == (int *)0x0) break;
       iVar1 = (**(code **)(*piVar3 + 0xb8))();
       if (iVar1 != 0) {
@@ -1871,7 +1869,7 @@ void __fastcall CWnd::GetTopLevelParent(int param_1)
       pHVar3 = pHVar2;
       pHVar2 = AfxGetParentOwner(pHVar3);
     } while (pHVar2 != (HWND__ *)0x0);
-    FromHandle(pHVar3);
+    CWnd__FromHandle(pHVar3);
     return;
   }
   return;
@@ -1904,7 +1902,7 @@ void __fastcall CWnd::GetParentOwner(int param_1)
       uVar2 = GetWindowLongA(hWnd,-0x10);
       hWnd_00 = hWnd;
     }
-    FromHandle(hWnd_00);
+    CWnd__FromHandle(hWnd_00);
   }
   return;
 }
@@ -1932,10 +1930,10 @@ bool CWnd::IsTopParentActive(void)
   int iVar3;
   
   pHVar1 = GetForegroundWindow();
-  iVar2 = FromHandle(pHVar1);
+  iVar2 = CWnd__FromHandle(pHVar1);
   iVar3 = GetTopLevelParent();
   pHVar1 = GetLastActivePopup(*(HWND *)(iVar3 + 0x1c));
-  iVar3 = FromHandle(pHVar1);
+  iVar3 = CWnd__FromHandle(pHVar1);
   return iVar2 == iVar3;
 }
 
@@ -1964,7 +1962,7 @@ void CWnd::ActivateTopParent()
   
   iVar1 = GetTopLevelParent();
   pHVar2 = GetForegroundWindow();
-  iVar3 = FromHandle(pHVar2);
+  iVar3 = CWnd__FromHandle(pHVar2);
   if (iVar3 != 0) {
     if (*(HWND *)(iVar3 + 0x1c) == this->m_hWnd) {
       return;
@@ -2087,7 +2085,7 @@ void CWnd::GetSafeOwner(int param_1,undefined4 *param_2)
       EnableWindow(hWnd_01,0);
     }
   }
-  FromHandle(hWnd_00);
+  CWnd__FromHandle(hWnd_00);
   return;
 }
 
@@ -2110,7 +2108,7 @@ int CWnd::GetDescendantWindow(HWND param_1,int param_2,int param_3)
       return iVar3;
     }
     if (param_3 == 0) {
-      iVar3 = FromHandle(pHVar1);
+      iVar3 = CWnd__FromHandle(pHVar1);
       return iVar3;
     }
     iVar3 = FromHandlePermanent(pHVar1);
@@ -2471,7 +2469,7 @@ CWnd::RepositionBars
   }
   else {
     if ((param_3 != 0) && (local_8 != (HWND)0x0)) {
-      piVar4 = (int *)FromHandle(local_8);
+      piVar4 = (int *)CWnd__FromHandle(local_8);
       if (param_4 == 2) {
         local_24.left = local_24.left + param_5->left;
         local_24.top = local_24.top + param_5->top;
@@ -2504,7 +2502,7 @@ void CWnd::CalcWindowRect(LPRECT param_1,int param_2)
     dwExStyle = dwExStyle & 0xfffffdff;
   }
   bMenu = 0;
-  dwStyle = GetStyle();
+  dwStyle = CWnd__GetStyle();
   AdjustWindowRectEx(param_1,dwStyle,bMenu,dwExStyle);
   return;
 }
@@ -2542,7 +2540,7 @@ undefined4 __thiscall CWnd::HandleFloatingSysCommand(int param_1,uint param_2,in
       hWnd = *(HWND *)(param_1 + 0x1c);
       hWnd_00 = GetFocus();
       pHVar2 = SetActiveWindow(*(HWND *)(iVar1 + 0x1c));
-      FromHandle(pHVar2);
+      CWnd__FromHandle(pHVar2);
       SendMessageA(*(HWND *)(iVar1 + 0x1c),0x112,param_2,param_3);
       BVar3 = IsWindow(hWnd);
       if (BVar3 != 0) {
@@ -2617,7 +2615,7 @@ undefined4 CWnd::ReflectLastMsg(void)
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
   
-  EstablishSehFrameProlog();
+  _EH_prolog();
   this = (CMapPtrToPtr *)afxMapHWND(0);
   if (this != (CMapPtrToPtr *)0x0) {
     hWnd = *(HWND *)(unaff_EBP + 8);
@@ -2771,7 +2769,7 @@ void __fastcall CWnd::OnSysColorChange(CWnd *param_1)
       }
     }
   }
-  uVar3 = GetStyle();
+  uVar3 = CWnd__GetStyle();
   if ((uVar3 & 0x40000000) == 0) {
     SendMessageToDescendants(param_1->m_hWnd,0x15,0,0,1,1);
   }
@@ -2884,9 +2882,9 @@ void __thiscall CWnd::OnDevModeChange(int param_1,undefined4 param_2)
       CWinApp::DevModeChange(param_2);
     }
   }
-  uVar2 = GetStyle();
+  uVar2 = CWnd__GetStyle();
   if ((uVar2 & 0x40000000) == 0) {
-    iVar3 = GetCurrentMessage();
+    iVar3 = CWnd__GetCurrentMessage();
     SendMessageToDescendants
               (*(undefined4 *)(param_1 + 0x1c),*(undefined4 *)(iVar3 + 4),*(undefined4 *)(iVar3 + 8)
                ,*(undefined4 *)(iVar3 + 0xc),1,1);
@@ -2912,7 +2910,7 @@ undefined4 __fastcall CWnd::OnHelpInfo(CWnd *param_1)
   int iVar3;
   undefined4 uVar4;
   
-  uVar2 = GetStyle();
+  uVar2 = CWnd__GetStyle();
   if (((((uVar2 & 0x40000000) == 0) && (iVar3 = AfxGetMainWnd(), iVar3 != 0)) &&
       (SVar1 = GetKeyState(0x10), -1 < SVar1)) &&
      ((SVar1 = GetKeyState(0x11), -1 < SVar1 && (SVar1 = GetKeyState(0x12), -1 < SVar1)))) {
@@ -2949,9 +2947,9 @@ long CWnd::OnDisplayChange(uint param_1, long param_2)
   if (*(CWnd **)(*(int *)(iVar1 + 4) + 0x1c) == this) {
     AUX_DATA::UpdateSysMetrics();
   }
-  uVar2 = GetStyle();
+  uVar2 = CWnd__GetStyle();
   if ((uVar2 & 0x40000000) == 0) {
-    iVar1 = GetCurrentMessage();
+    iVar1 = CWnd__GetCurrentMessage();
     SendMessageToDescendants
               (this->m_hWnd,*(undefined4 *)(iVar1 + 4),*(undefined4 *)(iVar1 + 8),
                *(undefined4 *)(iVar1 + 0xc),1,1);
@@ -3118,7 +3116,7 @@ void __thiscall CWnd::CenterWindow(int param_1,int param_2)
   uint local_8;
   
   local_c = param_1;
-  local_8 = GetStyle();
+  local_8 = CWnd__GetStyle();
   if (param_2 == 0) {
     if ((local_8 & 0x40000000) == 0) {
       hWnd = GetWindow(*(HWND *)(param_1 + 0x1c),4);
@@ -3167,7 +3165,7 @@ void __thiscall CWnd::CenterWindow(int param_1,int param_2)
      (local_1c.top = iVar4, local_1c.bottom < (local_3c.bottom - local_3c.top) + iVar4)) {
     local_1c.top = (local_3c.top - local_3c.bottom) + local_1c.bottom;
   }
-  SetWindowPos(0,local_1c.left,local_1c.top,0xffffffff,0xffffffff,0x15);
+  CWnd__SetWindowPos(0,local_1c.left,local_1c.top,0xffffffff,0xffffffff,0x15);
   return;
 }
 
@@ -3256,9 +3254,9 @@ void CWnd::UpdateDialogControls(void)
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
   
-  EstablishSehFrameProlog();
+  _EH_prolog();
   *(int *)(unaff_EBP + -0x10) = extraout_ECX;
-  CCmdUI((void *)(unaff_EBP + -0x38));
+  CCmdUI__CCmdUI((void *)(unaff_EBP + -0x38));
   CWnd::~CWnd();
   pHVar1 = *(HWND *)(extraout_ECX + 0x1c);
   *(undefined4 *)(unaff_EBP + -4) = 0;
@@ -3285,7 +3283,7 @@ void CWnd::UpdateDialogControls(void)
       if (iVar3 != 0) {
         uVar2 = SendMessageA(*(HWND *)(unaff_EBP + -0x58),0x87,0,0);
         if ((uVar2 & 0x2000) != 0) {
-          uVar2 = GetStyle();
+          uVar2 = CWnd__GetStyle();
           uVar2 = uVar2 & 0xf;
           if (((uVar2 != 3) && (uVar2 != 6)) && ((uVar2 != 7 && (uVar2 != 9)))) goto LAB_0060a59b;
         }
@@ -3455,7 +3453,7 @@ void CWnd::CreateObject(void)
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
   
-  EstablishSehFrameProlog();
+  _EH_prolog();
   iVar1 = operator_new(0x3c,extraout_ECX);
   *(int *)(unaff_EBP + -0x10) = iVar1;
   *(undefined4 *)(unaff_EBP + -4) = 0;

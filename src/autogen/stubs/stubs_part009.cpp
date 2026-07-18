@@ -3,22 +3,6 @@
 
 #include "decomp_types.h"
 
-// ghidra_name thunk_InvalidateMapRegionForOrderEntry
-// ghidra_proto undefined thunk_InvalidateMapRegionForOrderEntry()
-// ILT thunk 0x004019ba - unannotated on purpose (see ILT_THUNK_RANGE)
-undefined4 thunk_InvalidateMapRegionForOrderEntry(void)
-{
-  return 0;
-}
-
-// ghidra_name TAdmiral::thunk_GenerateMappedFlavorTextByNationSlotField0C
-// ghidra_proto undefined thunk_GenerateMappedFlavorTextByNationSlotField0C()
-// ILT thunk 0x0040231a - unannotated on purpose (see ILT_THUNK_RANGE)
-undefined4 thunk_GenerateMappedFlavorTextByNationSlotField0C(void)
-{
-  return 0;
-}
-
 // ghidra_name thunk_GetCityBuildingProductionValueBySlot
 // ghidra_proto int __thiscall thunk_GetCityBuildingProductionValueBySlot(short nBuildingSlotId)
 // ILT thunk 0x0040257c - unannotated on purpose (see ILT_THUNK_RANGE)
@@ -43,22 +27,6 @@ undefined4 thunk_InitializeUiTextStyleDescriptor(void)
   return 0;
 }
 
-// ghidra_name TUnit::thunk_RegisterUnitOrderWithOwnerManager
-// ghidra_proto undefined thunk_RegisterUnitOrderWithOwnerManager()
-// ILT thunk 0x00402eeb - unannotated on purpose (see ILT_THUNK_RANGE)
-undefined4 thunk_RegisterUnitOrderWithOwnerManager(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_GetMapActionContextByTileIndex
-// ghidra_proto void * __cdecl thunk_GetMapActionContextByTileIndex(short nTileIndex)
-// ILT thunk 0x0040318e - unannotated on purpose (see ILT_THUNK_RANGE)
-undefined4 thunk_GetMapActionContextByTileIndex(void)
-{
-  return 0;
-}
-
 // ghidra_name thunk_WrapperFor_InvalidateCityDialogRectRegion_At004f6d90
 // ghidra_proto undefined thunk_WrapperFor_InvalidateCityDialogRectRegion_At004f6d90()
 // ILT thunk 0x00403f71 - unannotated on purpose (see ILT_THUNK_RANGE)
@@ -71,22 +39,6 @@ undefined4 thunk_WrapperFor_InvalidateCityDialogRectRegion_At004f6d90(void)
 // ghidra_proto undefined thunk_ConstructUiResourceEntryType4B0C0()
 // ILT thunk 0x004042c8 - unannotated on purpose (see ILT_THUNK_RANGE)
 undefined4 thunk_ConstructUiResourceEntryType4B0C0(void)
-{
-  return 0;
-}
-
-// ghidra_name TDiplomacyMapView::thunk_AppendPackedColorDwordToMaskBuffers
-// ghidra_proto undefined thunk_AppendPackedColorDwordToMaskBuffers()
-// ILT thunk 0x00404a25 - unannotated on purpose (see ILT_THUNK_RANGE)
-undefined4 thunk_AppendPackedColorDwordToMaskBuffers(void)
-{
-  return 0;
-}
-
-// ghidra_name TMapDialog::thunk_ProjectTileIndexToWrappedScreenOffsetByScale
-// ghidra_proto undefined thunk_ProjectTileIndexToWrappedScreenOffsetByScale()
-// ILT thunk 0x004056a5 - unannotated on purpose (see ILT_THUNK_RANGE)
-undefined4 thunk_ProjectTileIndexToWrappedScreenOffsetByScale(void)
 {
   return 0;
 }
@@ -107,42 +59,10 @@ undefined4 thunk_DestructCityDialogSharedBaseState(void)
   return 0;
 }
 
-// ghidra_name TMapDialog::thunk_SplitTileIndexToRowAndColumn
-// ghidra_proto undefined thunk_SplitTileIndexToRowAndColumn()
-// ILT thunk 0x00406c1c - unannotated on purpose (see ILT_THUNK_RANGE)
-undefined4 thunk_SplitTileIndexToRowAndColumn(void)
-{
-  return 0;
-}
-
 // ghidra_name thunk_HandleEngineerConstructionAction
 // ghidra_proto bool __thiscall thunk_HandleEngineerConstructionAction(short nTileIndex, undefined2 param_2)
 // ILT thunk 0x00406ccb - unannotated on purpose (see ILT_THUNK_RANGE)
 undefined4 thunk_HandleEngineerConstructionAction(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_NormalizeWrappedMapCoord108x60
-// ghidra_proto undefined thunk_NormalizeWrappedMapCoord108x60()
-// ILT thunk 0x00408328 - unannotated on purpose (see ILT_THUNK_RANGE)
-undefined4 thunk_NormalizeWrappedMapCoord108x60(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_GetResourceTypeRandomDrawBlockFlag
-// ghidra_proto undefined thunk_GetResourceTypeRandomDrawBlockFlag()
-// ILT thunk 0x00408ed6 - unannotated on purpose (see ILT_THUNK_RANGE)
-undefined4 thunk_GetResourceTypeRandomDrawBlockFlag(void)
-{
-  return 0;
-}
-
-// ghidra_name thunk_EnsureSelectedTaskForceForOrderOwnerAndRefresh
-// ghidra_proto undefined thunk_EnsureSelectedTaskForceForOrderOwnerAndRefresh()
-// ILT thunk 0x0040928c - unannotated on purpose (see ILT_THUNK_RANGE)
-undefined4 thunk_EnsureSelectedTaskForceForOrderOwnerAndRefresh(void)
 {
   return 0;
 }
@@ -579,6 +499,22 @@ undefined4 ConstructTurnEventMainPictureEntry_104F(void)
   return 0;
 }
 
+// ghidra_name InitializeTNavyRosterBitmapAndControlResources
+// ghidra_proto undefined InitializeTNavyRosterBitmapAndControlResources(undefined4 param_1)
+// FUNCTION: IMPERIALISM 0x004472bb
+undefined4 InitializeTNavyRosterBitmapAndControlResources(void)
+{
+  return 0;
+}
+
+// ghidra_name TNavyRoster::BuildNavyRosterDialogUiResourceTree
+// ghidra_proto undefined BuildNavyRosterDialogUiResourceTree(undefined4 param_1)
+// FUNCTION: IMPERIALISM 0x00447353
+undefined4 BuildNavyRosterDialogUiResourceTree(void)
+{
+  return 0;
+}
+
 // ghidra_name WrapperFor_thunk_RegisterDialogFactoryCallback_At0044a7f0
 // ghidra_proto undefined WrapperFor_thunk_RegisterDialogFactoryCallback_At0044a7f0()
 // FUNCTION: IMPERIALISM 0x0044a7f0
@@ -599,6 +535,62 @@ undefined4 WrapperFor_thunk_ConstructPictureResourceEntryBase_At0044fa80(void)
 // ghidra_proto undefined WrapperFor_thunk_RegisterDialogFactoryCallback_At0044fba0()
 // FUNCTION: IMPERIALISM 0x0044fba0
 undefined4 WrapperFor_thunk_RegisterDialogFactoryCallback_At0044fba0(void)
+{
+  return 0;
+}
+
+// ghidra_name BuildDifficultyAndNamesSetupUiResources
+// ghidra_proto undefined BuildDifficultyAndNamesSetupUiResources(undefined4 param_1)
+// FUNCTION: IMPERIALISM 0x00456ba3
+undefined4 BuildDifficultyAndNamesSetupUiResources(void)
+{
+  return 0;
+}
+
+// ghidra_name BuildUiResourceTreeWithPlanetListAndCursorEntries_0045762e
+// ghidra_proto undefined BuildUiResourceTreeWithPlanetListAndCursorEntries_0045762e(undefined4 param_1)
+// FUNCTION: IMPERIALISM 0x0045762e
+undefined4 BuildUiResourceTreeWithPlanetListAndCursorEntries_0045762e(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_BuildMainStatsScoreboardAndDoneUiResourceTree
+// ghidra_proto undefined thunk_BuildMainStatsScoreboardAndDoneUiResourceTree(undefined4 param_1)
+// FUNCTION: IMPERIALISM 0x00457aee
+undefined4 thunk_BuildMainStatsScoreboardAndDoneUiResourceTree(void)
+{
+  return 0;
+}
+
+// ghidra_name BuildMainStatsScoreboardAndDoneUiResourceTree
+// ghidra_proto undefined BuildMainStatsScoreboardAndDoneUiResourceTree(undefined4 param_1)
+// FUNCTION: IMPERIALISM 0x00457af2
+undefined4 BuildMainStatsScoreboardAndDoneUiResourceTree(void)
+{
+  return 0;
+}
+
+// ghidra_name AllocateAndConstructTViewDerivedState_00458ced
+// ghidra_proto undefined AllocateAndConstructTViewDerivedState_00458ced()
+// FUNCTION: IMPERIALISM 0x00458ced
+undefined4 AllocateAndConstructTViewDerivedState_00458ced(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_InitializeOrderStateUiResourceTreeAndControlEntries
+// ghidra_proto undefined thunk_InitializeOrderStateUiResourceTreeAndControlEntries()
+// FUNCTION: IMPERIALISM 0x00458d10
+undefined4 thunk_InitializeOrderStateUiResourceTreeAndControlEntries(void)
+{
+  return 0;
+}
+
+// ghidra_name InitializeOrderStateUiResourceTreeAndControlEntries
+// ghidra_proto undefined InitializeOrderStateUiResourceTreeAndControlEntries()
+// FUNCTION: IMPERIALISM 0x00458d14
+undefined4 InitializeOrderStateUiResourceTreeAndControlEntries(void)
 {
   return 0;
 }
@@ -631,6 +623,46 @@ undefined4 WrapperFor_ConstructTOffLimitsPictureBaseState_At0045d270(void)
 // ghidra_proto undefined WrapperFor_thunk_ConstructPictureResourceEntryBase_At0045d480()
 // FUNCTION: IMPERIALISM 0x0045d480
 undefined4 WrapperFor_thunk_ConstructPictureResourceEntryBase_At0045d480(void)
+{
+  return 0;
+}
+
+// ghidra_name BuildTradeBoardDialogUiLayoutVariantB
+// ghidra_proto undefined BuildTradeBoardDialogUiLayoutVariantB()
+// FUNCTION: IMPERIALISM 0x0046baa7
+undefined4 BuildTradeBoardDialogUiLayoutVariantB(void)
+{
+  return 0;
+}
+
+// ghidra_name BuildUniversityDialogControls
+// ghidra_proto undefined BuildUniversityDialogControls()
+// FUNCTION: IMPERIALISM 0x00474ac5
+undefined4 BuildUniversityDialogControls(void)
+{
+  return 0;
+}
+
+// ghidra_name thunk_BuildUniversityRecruitmentRows
+// ghidra_proto undefined thunk_BuildUniversityRecruitmentRows()
+// FUNCTION: IMPERIALISM 0x00475f80
+undefined4 thunk_BuildUniversityRecruitmentRows(void)
+{
+  return 0;
+}
+
+// ghidra_name BuildUniversityRecruitControls
+// ghidra_proto undefined BuildUniversityRecruitControls()
+// FUNCTION: IMPERIALISM 0x00475f82
+undefined4 BuildUniversityRecruitControls(void)
+{
+  return 0;
+}
+
+// ghidra_name BuildUniversityRecruitmentRows
+// ghidra_proto undefined BuildUniversityRecruitmentRows()
+// FUNCTION: IMPERIALISM 0x00475f84
+undefined4 BuildUniversityRecruitmentRows(void)
 {
   return 0;
 }

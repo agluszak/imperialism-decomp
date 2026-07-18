@@ -1,6 +1,6 @@
 {
-  "failed_count": 1,
-  "function_count": 9206,
+  "failed_count": 6,
+  "function_count": 9165,
   "generated_cpp_files": [
     "AFX_BASE_MODULE_STATE.cpp",
     "AFX_CLASSINIT.cpp",
@@ -81,6 +81,7 @@
     "CSliderCtrl.cpp",
     "CStatusBarCtrl.cpp",
     "CString.cpp",
+    "CSubViewIterator.cpp",
     "CTestCmdUI.cpp",
     "CThreadLocalObject.cpp",
     "CThreadLocal_AFX_CTL3D_THREAD.cpp",
@@ -99,10 +100,11 @@
     "CWindowDC.cpp",
     "CWnd.cpp",
     "CivilianMapInteractionManager.cpp",
-    "Config.cpp",
+    "ImperialismApp.cpp",
     "InputState.cpp",
     "LinkedListQueryOwner.cpp",
     "ObjectPool.cpp",
+    "ScopedMapQuickDrawContext.cpp",
     "StrategicMapCallbackRecord.cpp",
     "T2PictToggleButton.cpp",
     "T2PictureButton.cpp",
@@ -534,7 +536,6 @@
     "TZone.cpp",
     "TacticalBattleView.cpp",
     "TaskList.cpp",
-    "TradeScreenPicture.cpp",
     "global_part001.cpp",
     "global_part002.cpp",
     "global_part003.cpp",
@@ -552,8 +553,7 @@
     "global_part015.cpp",
     "global_part016.cpp",
     "global_part017.cpp",
-    "global_part018.cpp",
-    "global_part019.cpp"
+    "global_part018.cpp"
   ],
   "module": "IMPERIALISM",
   "program": "Imperialism.exe"

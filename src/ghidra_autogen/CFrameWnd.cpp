@@ -93,7 +93,7 @@ void CFrameWnd::~CFrameWnd(void)
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
   
-  EstablishSehFrameProlog();
+  _EH_prolog();
   *(CWnd **)(unaff_EBP + -0x10) = this;
   (this->ccmdTarget).vftable = (CCmdTargetVtbl *)&PTR_LAB_0067039c;
   *(undefined4 *)(unaff_EBP + -4) = 2;
@@ -500,7 +500,7 @@ void CFrameWnd::OnEnable(int param_1)
   
   if ((param_1 == 0) || ((this->m_nFlags & 4) == 0)) {
     pHVar1 = GetParent(this->m_hWnd);
-    iVar2 = FromHandle(pHVar1);
+    iVar2 = CWnd__FromHandle(pHVar1);
     if (iVar2 == 0) {
       if ((param_1 == 0) && (*(int *)&this->field_0xa0 == 0)) {
         *(byte *)&this->m_nFlags = (byte)this->m_nFlags | 0x80;
@@ -541,13 +541,13 @@ void __thiscall CFrameWnd::NotifyFloatingWindows(int param_1,uint param_2)
   HWND hWnd;
   UINT uCmd;
   
-  uVar1 = GetStyle();
+  uVar1 = CWnd__GetStyle();
   iVar2 = param_1;
   if ((uVar1 & 0x40000000) == 0) {
     iVar2 = CWnd::GetTopLevelFrame();
   }
   if ((param_2 & 0xc) != 0) {
-    iVar3 = IsWindowEnabled();
+    iVar3 = CWnd__IsWindowEnabled();
     if ((((~param_2 & 8) == 0) || (iVar3 == 0)) || (iVar2 == param_1)) {
       SendMessageA(*(HWND *)(iVar2 + 0x1c),0x86,0,0);
     }
@@ -672,7 +672,7 @@ int * CFrameWnd::CreateView(undefined4 param_1,undefined4 param_2)
       if ((uVar3 & 0x200) == 0) {
         return piVar1;
       }
-      ModifyStyleEx(0x200,0,0x20);
+      CWnd__ModifyStyleEx(0x200,0,0x20);
       return piVar1;
     }
   }
@@ -741,12 +741,12 @@ undefined4 CFrameWnd::LoadFrame(void)
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
   
-  EstablishSehFrameProlog();
+  _EH_prolog();
   uVar1 = *(uint *)(unaff_EBP + 8);
   *(uint *)&this->field_0x8c = uVar1;
   CString::CString((CString *)(unaff_EBP + 8));
   *(undefined4 *)(unaff_EBP + -4) = 0;
-  iVar2 = LoadStringA(uVar1);
+  iVar2 = CString__LoadStringA(uVar1);
   if (iVar2 != 0) {
     AfxExtractSubString(&this->field_0xac,*(undefined4 *)(unaff_EBP + 8),0,10);
   }
@@ -836,7 +836,7 @@ void __thiscall CFrameWnd::InitialUpdateFrame(int *param_1,int *param_2,int para
     if (this != (CView *)0x0) {
       iVar1 = CObject::IsKindOf((CObject *)this);
       if (iVar1 != 0) {
-        SetActiveView(param_1,this,0);
+        CFrameWnd__SetActiveView(param_1,this,0);
         pCVar3 = this;
       }
     }
@@ -902,7 +902,7 @@ void __fastcall CFrameWnd::OnClose(int *param_1)
           return;
         }
         CWinApp::HideApplication();
-        CWinApp::CWinApp__CloseAllDocuments_618704(this);
+        CWinApp::CWinApp__CloseAllDocuments(this);
         iVar4 = AfxOleCanExitApp();
         if (iVar4 == 0) {
           AfxOleSetUserCtrl(0);
@@ -1004,7 +1004,7 @@ void __thiscall CFrameWnd::OnActivate(CWnd *param_1,int param_2,CWnd *param_3,in
   int *piVar6;
   
   CWnd::Default(param_1);
-  uVar2 = GetStyle();
+  uVar2 = CWnd__GetStyle();
   pCVar3 = param_1;
   if ((uVar2 & 0x40000000) == 0) {
     pCVar3 = (CWnd *)CWnd::GetTopLevelFrame();
@@ -1052,7 +1052,7 @@ void __thiscall CFrameWnd::OnNcActivate(int *param_1,undefined4 param_2)
   if ((*(byte *)(param_1 + 9) & 0x20) != 0) {
     param_2 = 1;
   }
-  iVar1 = IsWindowEnabled();
+  iVar1 = CWnd__IsWindowEnabled();
   if (iVar1 == 0) {
     param_2 = 0;
   }
@@ -1126,7 +1126,7 @@ void __thiscall CFrameWnd::OnDropFiles(int param_1,HDROP param_2)
   UINT local_8;
   
   pHVar1 = SetActiveWindow(*(HWND *)(param_1 + 0x1c));
-  FromHandle(pHVar1);
+  CWnd__FromHandle(pHVar1);
   iFile = 0;
   local_8 = DragQueryFileA(param_2,0xffffffff,(LPSTR)0x0,0);
   iVar2 = AfxGetModuleState();
@@ -1185,7 +1185,7 @@ void __thiscall CFrameWnd::OnEndSession(int param_1,int param_2)
   this = *(CWinApp **)(iVar1 + 4);
   if ((param_2 != 0) && (*(int *)(this + 0x1c) == param_1)) {
     AfxOleSetUserCtrl(1);
-    CWinApp::CWinApp__CloseAllDocuments_618704(this);
+    CWinApp::CWinApp__CloseAllDocuments(this);
     (**(code **)(*(int *)this + 0x70))();
   }
   return;
@@ -1248,7 +1248,7 @@ undefined4 __thiscall CFrameWnd::OnDDEExecute(int param_1,HWND param_2,LPARAM pa
   GlobalUnlock(local_8);
   lParam = USER32.DLL::ReuseDDElParam(param_3,1000,0x3e4,0x8000,(UINT_PTR)local_8);
   PostMessageA(param_2,0x3e4,*(WPARAM *)(param_1 + 0x1c),lParam);
-  iVar1 = IsWindowEnabled();
+  iVar1 = CWnd__IsWindowEnabled();
   if (iVar1 != 0) {
     iVar1 = AfxGetModuleState();
     (**(code **)(**(int **)(iVar1 + 4) + 0x9c))(local_214);
@@ -1281,7 +1281,7 @@ void CFrameWnd::ShowControlBar(int *param_1,int param_2,int param_3)
   
   this = (CWnd *)CControlBar::GetDockingFrame();
   if (param_3 == 0) {
-    SetWindowPos(0,0,0,0,0,(-(uint)(param_2 != 0) & 0xffffffc0) + 0x80 | 0x17);
+    CWnd__SetWindowPos(0,0,0,0,0,(-(uint)(param_2 != 0) & 0xffffffc0) + 0x80 | 0x17);
     (**(code **)(*param_1 + 0xcc))(param_2);
     if ((param_2 != 0) || (iVar2 = CControlBar::IsFloating(), iVar2 == 0)) {
       (*(this->ccmdTarget).vftable[0x11].slot_0x04)(0);
@@ -1367,7 +1367,7 @@ void __thiscall CFrameWnd::OnInitMenuPopup(int param_1,int param_2,undefined4 pa
   local_8 = param_1;
   AfxCancelModes(*(undefined4 *)(param_1 + 0x1c));
   if (param_4 == 0) {
-    CCmdUI(local_30);
+    CCmdUI__CCmdUI(local_30);
     local_24 = param_2;
     iVar1 = AfxGetThreadState();
     if (*(int *)(iVar1 + 0x54) == *(int *)(param_2 + 4)) {
@@ -1487,7 +1487,7 @@ LAB_0061dc3b:
 LAB_0061dc3f:
   if (param_1[0x24] != param_1[0x25]) {
     pHVar2 = GetParent((HWND)param_1[7]);
-    iVar1 = FromHandle(pHVar2);
+    iVar1 = CWnd__FromHandle(pHVar2);
     if (iVar1 != 0) {
       PostMessageA((HWND)param_1[7],0x36a,0,0);
     }
@@ -1544,7 +1544,7 @@ undefined4 CFrameWnd::OnSetMessageString(void)
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
   
-  EstablishSehFrameProlog();
+  _EH_prolog();
   iVar4 = *extraout_ECX;
   extraout_ECX[9] = extraout_ECX[9] & 0xffffffbf;
   *(int *)(unaff_EBP + -0x1c) = extraout_ECX[0x25];
@@ -1655,7 +1655,7 @@ void CFrameWnd::DestroyDockBars(void)
   undefined4 *puVar4;
   undefined4 *unaff_FS_OFFSET;
   
-  EstablishSehFrameProlog();
+  _EH_prolog();
   CPtrList::CPtrList((CPtrList *)(unaff_EBP + -0x28),10);
   *(undefined4 *)(unaff_EBP + -4) = 0;
   puVar4 = *(undefined4 **)(extraout_ECX + 0x70);
@@ -1710,8 +1710,8 @@ undefined4 CFrameWnd::OnToolTipText(void)
   int unaff_EBP;
   undefined4 *unaff_FS_OFFSET;
   
-  EstablishSehFrameProlog();
-  iVar2 = WrapperFor_EnsureMfcModuleThreadStateCreated_At00606d1b();
+  _EH_prolog();
+  iVar2 = CCmdTarget__GetRoutingFrame();
   if (iVar2 == 0) {
     CString::CString((CString *)(unaff_EBP + -0x10));
     puVar1 = *(undefined4 **)(unaff_EBP + 0xc);
@@ -1800,7 +1800,7 @@ void CFrameWnd::OnUpdateFrameTitle(int param_1)
   undefined3 extraout_var;
   undefined4 uVar4;
   
-  uVar2 = GetStyle();
+  uVar2 = CWnd__GetStyle();
   if ((uVar2 & 0x8000) != 0) {
     if ((*(int **)&this->field_0x68 != (int *)0x0) &&
        (iVar3 = (**(code **)(**(int **)&this->field_0x68 + 0x70))(), iVar3 != 0)) {
@@ -1842,7 +1842,7 @@ void __thiscall CFrameWnd::UpdateFrameTitleForDocument(int param_1,LPCSTR param_
   int iVar4;
   CHAR local_208 [516];
   
-  uVar1 = GetStyle();
+  uVar1 = CWnd__GetStyle();
   if ((uVar1 & 0x4000) == 0) {
     lstrcpyA(local_208,*(LPCSTR *)(param_1 + 0xac));
     if (param_2 != (LPCSTR)0x0) {
@@ -2033,7 +2033,7 @@ void __thiscall CFrameWnd::RecalcLayout(CWnd *param_1,int param_2)
     if ((param_2 != 0) && ((int *)param_1[1].m_nModalResult != (int *)0x0)) {
       (**(code **)(*(int *)param_1[1].m_nModalResult + 0x58))();
     }
-    uVar1 = GetStyle();
+    uVar1 = CWnd__GetStyle();
     if ((uVar1 & 0x2000) == 0) {
       CWnd::RepositionBars(param_1,0,0xffff,0xe900,2,(LPRECT)&param_1[1].m_hWnd,(int *)0x0,1);
     }
@@ -2045,7 +2045,7 @@ void __thiscall CFrameWnd::RecalcLayout(CWnd *param_1,int param_2)
       CWnd::RepositionBars(param_1,0,0xffff,0xe900,1,&local_14,&local_14.left,0);
       CWnd::RepositionBars(param_1,0,0xffff,0xe900,2,(LPRECT)&param_1[1].m_hWnd,&local_14.left,1);
       (*(param_1->ccmdTarget).vftable[8].slot_0x08)(&local_14,0);
-      SetWindowPos(0,0,0,local_14.right - local_14.left,local_14.bottom - local_14.top,0x16);
+      CWnd__SetWindowPos(0,0,0,local_14.right - local_14.left,local_14.bottom - local_14.top,0x16);
     }
     param_1[2].m_pCtrlSite = (void *)0x0;
   }
