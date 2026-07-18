@@ -622,8 +622,8 @@ address|name|symbol|size|type|prototype|provenance
 4863f0|TFileBasedDocument::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 486420|TFileBasedDocument::CreateTFileBasedDocumentInstance||7|function|undefined CreateTFileBasedDocumentInstance()|
 486440|TFileBasedDocument::GetRuntimeClass||6|function|undefined GetTFileBasedDocumentClassNamePointer()|rtti
-486530|TDocument::OrphanRetStub_00486530||3|function|undefined OrphanRetStub_00486530(void)|
-486550|TDocument::OrphanRetStub_00486550||3|function|undefined OrphanRetStub_00486550(void)|
+486530|TDocument::OrphanRetStub_00486530||3|function|undefined OrphanRetStub_00486530(ArchiveStreamAdapter* stream, int flag)|
+486550|TDocument::OrphanRetStub_00486550||3|function|undefined OrphanRetStub_00486550(ArchiveStreamAdapter* stream, int flag)|
 486570|TCommandHandler::CreateObject|?CreateObject@TCommandHandler@@SGPAVCObject@@XZ|80|function|undefined CreateObject()|rtti
 4865e0|TCommandHandler::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 486610|TCommandHandler::CreateTCommandHandlerInstance||7|function|undefined CreateTCommandHandlerInstance()|
@@ -1401,12 +1401,12 @@ address|name|symbol|size|type|prototype|provenance
 49e5f0|TAmbitFileBasedDocument::ConstructTAmbitFileBasedDocumentBaseState||9|function|undefined ConstructTAmbitFileBasedDocumentBaseState()|
 49e610|TAmbitFileBasedDocument::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 49e640|DestructTAmbitFileBasedDocumentAndMaybeFree_Impl||7|function|undefined DestructTAmbitFileBasedDocumentAndMaybeFree_Impl()|
-49e660|TAmbitFileBasedDocument::OrphanRetStub_0049e660||3|function|undefined OrphanRetStub_0049e660(void)|
-49e680|TAmbitFileBasedDocument::OrphanRetStub_0049e680||3|function|undefined OrphanRetStub_0049e680(void)|
-49e6a0|TAmbitFileBasedDocument::OrphanRetStub_00486530||845|function|void OrphanRetStub_00486530(void * pLoadContext)|
+49e660|TAmbitFileBasedDocument::OrphanRetStub_0049e660||3|function|undefined OrphanRetStub_0049e660(int arg1, int arg2)|
+49e680|TAmbitFileBasedDocument::OrphanRetStub_0049e680||3|function|undefined OrphanRetStub_0049e680(int arg)|
+49e6a0|TAmbitFileBasedDocument::OrphanRetStub_00486530||845|function|undefined OrphanRetStub_00486530(ArchiveStreamAdapter* stream, int flag)|
 49eb00|CString::CString(class CString const &)||19|function|undefined CString(CString const &)|
-49eb30|TAmbitFileBasedDocument::OrphanRetStub_00486550||650|function|void OrphanRetStub_00486550(void * pSaveContext)|
-49ee70|TAmbitFileBasedDocument::AssertUAmbitLine1335||30|function|undefined AssertUAmbitLine1335()|
+49eb30|TAmbitFileBasedDocument::OrphanRetStub_00486550||650|function|undefined OrphanRetStub_00486550(ArchiveStreamAdapter* stream, int flag)|
+49ee70|TAmbitFileBasedDocument::AssertUAmbitLine1335||30|function|undefined AssertUAmbitLine1335(int arg)|
 49efd0|WrapperFor_ftol_At0049efd0||30|function|undefined WrapperFor_ftol_At0049efd0()|
 49f020|TAnimation::CreateObject|?CreateObject@TAnimation@@SGPAVCObject@@XZ|24|function|undefined CreateObject()|rtti
 49f050|TAnimation::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
@@ -3130,10 +3130,10 @@ address|name|symbol|size|type|prototype|provenance
 50bea0|TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets||4080|function|undefined RefreshCityProductionDetailPanelAndArrowWidgets()|
 50d310|TMacViewMgr::DispatchTurnEvent3B8AndWaitForCompletionFlag||57|function|undefined DispatchTurnEvent3B8AndWaitForCompletionFlag()|
 50d360|TMacViewMgr::CreateCityBuildingDialogBySlot||200|function|undefined CreateCityBuildingDialogBySlot()|
-50d470|TMacViewMgr::OrphanCallChain_C10_I80_0050d470||243|function|undefined OrphanCallChain_C10_I80_0050d470(undefined4 param_1, undefined4 param_2)|
-50d5b0|TMacViewMgr::OrphanCallChain_C9_I49_0050d5b0||160|function|undefined OrphanCallChain_C9_I49_0050d5b0(undefined4 param_1)|
+50d470|TMacViewMgr::OrphanCallChain_C10_I80_0050d470||243|function|undefined OrphanCallChain_C10_I80_0050d470(int param_1, undefined4 param_2, int arg3, int arg4, int arg5, int arg6, int arg7)|
+50d5b0|TMacViewMgr::OrphanCallChain_C9_I49_0050d5b0||160|function|undefined OrphanCallChain_C9_I49_0050d5b0(int param_1, int arg2, int arg3)|
 50d680|TMacViewMgr::EnsureClipRegionWrapperAtSlotAndMergeSourceRegion||45|function|undefined EnsureClipRegionWrapperAtSlotAndMergeSourceRegion()|
-50d6c0|TMacViewMgr::WrapperFor_IsPointInsideHitRegion_At0050d6c0||35|function|undefined WrapperFor_IsPointInsideHitRegion_At0050d6c0(short param_1)|
+50d6c0|TMacViewMgr::WrapperFor_IsPointInsideHitRegion_At0050d6c0||35|function|undefined WrapperFor_IsPointInsideHitRegion_At0050d6c0(CPoint* point, short regionIndex)|
 50d700|TMacViewMgr::RenderOffscreenBitmapTileSpanAndRestoreContext||364|function|undefined RenderOffscreenBitmapTileSpanAndRestoreContext()|
 50d8d0|TMacViewMgr::OrphanLeaf_NoCall_Ins06_0050d8d0||16|function|undefined OrphanLeaf_NoCall_Ins06_0050d8d0(void)|
 50d8f0|TMacViewMgr::OrphanLeaf_NoCall_Ins06_0050d8f0||26|function|undefined OrphanLeaf_NoCall_Ins06_0050d8f0(short param_1)|
