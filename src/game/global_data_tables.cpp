@@ -1456,6 +1456,11 @@ CString g_cstrUiPromptMessageStore;
 // GLOBAL: IMPERIALISM 0x006a31c0
 int g_lastTurnAlertTick_006a31c0 = 0;
 
+// Last map tile index the player clicked, stored by
+// TWorldView::HandleMapTileClickSetOrderContextAndDispatchEvent79 (0x5962a0).
+// GLOBAL: IMPERIALISM 0x006a4608
+int g_lastClickedMapTileIndex_006a4608 = 0;
+
 // When set (and the modal's context tag is 2), overrides the computed 'GOLD' resource
 // id in the nation-info modal (0x5d5ea6). Never observed written yet; zero-initialized.
 // GLOBAL: IMPERIALISM 0x006a5bac

@@ -498,7 +498,7 @@ int TOcean::ComputeGlobalMapActionContextNodeValueAverage() {
 TZone* TOcean::FindMapActionContextContainingNodeByIndex(int cityRecordIndex) {
   TGlobalMapCityScoreRecord* target = &g_pGlobalMapState->cityScoreTable[cityRecordIndex];
   for (TZone* zone = g_pMapActionContextListHead; zone != 0; zone = zone->prev18) {
-    if (zone->secondaryNeighbors.ContainsEntry(reinterpret_cast<TZone*>(target))) {
+    if (zone->secondaryNeighbors.ContainsEntry(target)) {
       return zone;
     }
   }

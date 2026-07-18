@@ -38,7 +38,7 @@ public:
   virtual TMission* GetReplacementSlot48() override; // slot 0x48 0x536fc0
   virtual char ReturnFalseSlot54() override;         // slot 0x54 0x5354e0
   virtual int ReturnZeroSlot58() override;           // slot 0x58 0x535520
-  virtual int ReturnZeroSlot5C() override;           // slot 0x5c 0x535540 -- returns this
+  virtual TMission* ReturnZeroSlot5C() override;     // slot 0x5c 0x535540 -- returns this
   virtual float ReturnZeroFloatSlot68() override;    // slot 0x68 0x537f40
   virtual float
   ReturnZeroFloatSlot6C() override; // slot 0x6c 0x5378c0 -- dot product with baseline profile

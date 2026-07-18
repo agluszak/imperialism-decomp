@@ -31,14 +31,29 @@ extern undefined4 RefreshNationAdvisorLabelStrings(void);
 extern undefined4 ProcessTurnInstructionStreamAndFinalizePhase(void);
 extern undefined4 UpdatePersistentTopTenNationScores(void);
 extern undefined4 UpdateCityOrderCapabilityUnlockProgress(void);
-extern undefined4 ConsumeFirstPendingAbilityUnlock(void);
 extern undefined4 RefreshNavyOrderCycleAndClearReadyFlags(void);
 extern undefined4 RemoveNationSlotAndNotifyPeers(void);
 extern undefined4 SetOutputDevice(void);
 
-// QueryNationAdvisorSlot90Predicate28 / QueryJoinEmpireModePendingForNationAf are placeholder
-// per-nation checks that still need to be ported (cases 0x19 / 0xb); constant returns make those
-// branches no-ops for now.
+// Two per-nation predicates in the case-0xb branch that are still constant-return
+// placeholders. Their constant results currently pin control flow (the return-1 form
+// keeps RemoveNationSlotAndNotifyPeers from ever firing; the return-0 form makes the
+// join-empire loop always `continue`), so porting them changes state-machine behavior --
+// they are behavioral stubs, not cosmetic ones. Ground truth from the 0x57da70
+// disassembly (both are virtual dispatches, no args, char/int result):
+//
+//   QueryNationAdvisorSlot90Predicate28(nation):
+//     nation->field90 is a pointer to an advisor-ish sub-object; the original calls that
+//     object's vtable byte-0x28 slot (slot 0xa) and tests the int result. Porting needs
+//     that sub-object's class recovered (its +0x90 pointee and its slot-0xa virtual).
+//   QueryJoinEmpireModePendingForNationAf(nation):
+//     nation->vtable slot 0xaf (byte 0x2bc; TGreatPower base body 0x4e2b70) returns the
+//     char tested here; the follow-up transition uses slot 0xab (byte 0x2ac, base body
+//     0x4d8bc0). Porting needs TGreatPower's vtable declared out to slots 0xab/0xaf
+//     (currently modeled only through ~slot 0x94), then real virtual calls here.
+//
+// Both are deferred as documented class-recovery queue items rather than faked; the
+// constant returns preserve today's (no-op) behavior until the receivers are modeled.
 static int QueryNationAdvisorSlot90Predicate28(TGreatPower* nation) {
   (void)nation;
   return 1;
@@ -450,7 +465,8 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
         g_nTurnCooldownDeferCounter006A43C4 = 0;
         g_nTurnCooldownSideFlag00698B10 = 1;
         if (!IsNationTerrainEligible(activeNationSlot)) {
-          short unlockSlot = ConsumeFirstPendingAbilityUnlock();
+          short unlockSlot = g_pCityOrderCapabilityState->ConsumeFirstPendingAbilityUnlock(
+              static_cast<short>(nationSlot));
           if (unlockSlot != -1) {
             DispatchUiSlot4C();
             actionNeeded = 0;
@@ -458,9 +474,11 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
           continue;
         }
       }
-      short unlockSlot = ConsumeFirstPendingAbilityUnlock();
+      short unlockSlot = g_pCityOrderCapabilityState->ConsumeFirstPendingAbilityUnlock(
+          static_cast<short>(nationSlot));
       while (unlockSlot != -1) {
-        unlockSlot = ConsumeFirstPendingAbilityUnlock();
+        unlockSlot = g_pCityOrderCapabilityState->ConsumeFirstPendingAbilityUnlock(
+            static_cast<short>(nationSlot));
       }
     }
     if (actionNeeded != 0) {

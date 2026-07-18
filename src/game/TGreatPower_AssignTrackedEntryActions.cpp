@@ -39,7 +39,7 @@ void TGreatPower::AssignTrackedEntryActionsByProfileToOrdersOrUnits() {
       CIterator navyIter(missionQueue);
       for (TMission* entry = static_cast<TMission*>(navyIter.Reset()); navyIter.More();
            entry = static_cast<TMission*>(navyIter.Advance())) {
-        TMission* candidate = reinterpret_cast<TMission*>(entry->ReturnZeroSlot5C());
+        TMission* candidate = entry->ReturnZeroSlot5C();
         if (candidate == nullptr || candidate->flag10 != 0) {
           continue;
         }

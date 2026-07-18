@@ -26,7 +26,7 @@ public:
   char pad81[0x03];
 
   TSoundPlayer();
-  TSoundPlayer* ConstructTSoundPlayerBaseState();
+  ~TSoundPlayer() override; // 0x5933e0 (slot 0x01 scalar deleting dtor 0x5933b0)
   DECLARE_DYNCREATE(TSoundPlayer)
   void EnsureCdAudioDeviceHandleInitialized();
   void ForwardMciCommand808ToDevice();

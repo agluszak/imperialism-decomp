@@ -1,6 +1,7 @@
 #include "game/TGameWindow.h"
 
 #include "game/TSimMgr.h"
+#include "game/TTechMgr.h"
 #include "game/TControl.h"
 #include "game/TSimMgr.h"
 #include "game/TUiEvent.h"
@@ -13,7 +14,6 @@
 #include "game/startup_helpers.h"
 #include "game/ui_control_tags.h"
 
-undefined4 ConsumeFirstPendingAbilityUnlock(void);
 undefined4 DispatchUiRuntimeMessage101AAndRefreshActiveView(void);
 undefined4 SelectAndActivatePendingEventForCurrentView(void);
 
@@ -39,8 +39,7 @@ static TMovieView* QueryUiRuntimeActiveMovieView() {
 namespace GameWindowInvoke {
 
 static short ConsumeFirstPendingAbilityUnlockForNation(short nationId) {
-  return static_cast<short>(reinterpret_cast<unsigned int(__cdecl*)(short)>(
-      reinterpret_cast<void (*)()>(::ConsumeFirstPendingAbilityUnlock))(nationId));
+  return g_pCityOrderCapabilityState->ConsumeFirstPendingAbilityUnlock(nationId);
 }
 
 static void DispatchUiRuntimeMessage101AAndRefreshActiveViewGate() {

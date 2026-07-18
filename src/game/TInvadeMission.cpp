@@ -15,8 +15,8 @@ IMPLEMENT_SERIAL(TInvadeMission, TAttackProvinceMission, 1)
 // TInvadeMission::CreateObject
 
 // FUNCTION: IMPERIALISM 0x0053f120
-int TInvadeMission::ReturnZeroSlot5C() {
-  return reinterpret_cast<int>(beachhead34);
+TMission* TInvadeMission::ReturnZeroSlot5C() {
+  return beachhead34;
 }
 
 // FUNCTION: IMPERIALISM 0x0053f140

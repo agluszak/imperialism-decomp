@@ -6,6 +6,7 @@
 #include "game/TCivUnit.h"
 #include "game/mfc.h"
 #include "game/CTemporaryRegion.h"
+#include "game/TEvent.h"
 #include "game/TGlobalMapState.h"
 #include "game/TMapMgr.h"
 #include "game/TMapUberPicture.h"
@@ -18,41 +19,6 @@
 
 undefined4 thunk_GetMapActionContextByTileIndex(void);
 void NormalizeWrappedMapCoord108x60(short* xCoord, short* yCoord);
-
-namespace {
-
-#define kAddrTEventClassVtable 0x00649770
-#define kAddrActiveMapTileIndexStorage 0x006a45ec
-
-struct TOverlayDispatchEventBlock {
-  void* vtable;
-  int commandA;
-  int commandB;
-  TWorldView* view;
-  TWorldView* viewCopy;
-};
-
-void DispatchOverlayEvent78Common(TWorldView* self, int stridedRecord) {
-  TOverlayDispatchEventBlock* eventBlock = new TOverlayDispatchEventBlock();
-  if (eventBlock == 0) {
-    return;
-  }
-  eventBlock->commandA = 0;
-  eventBlock->commandB = 0;
-  eventBlock->view = 0;
-  eventBlock->viewCopy = 0;
-  eventBlock->vtable = reinterpret_cast<void*>(kAddrTEventClassVtable);
-  eventBlock->commandB = 0x78;
-  eventBlock->commandA = 0x78;
-  eventBlock->view = self;
-  eventBlock->viewCopy = self;
-  *reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(self) + 0x7a) =
-      static_cast<unsigned short>(stridedRecord);
-  self->DispatchEvent(reinterpret_cast<int>(eventBlock),
-                      reinterpret_cast<TEventHandler*>(eventBlock), 0);
-}
-
-} // namespace
 
 // FUNCTION: IMPERIALISM 0x00519af0
 short TWorldView::QueryMinusOneWordSlot77() {
@@ -171,10 +137,16 @@ void TWorldView::RenderMapContextOverlayWithScopedClipAndSurface() {
     long right;
     long bottom;
   } clipRect;
+  // Slot 0x128 is TView::QueryContentBounds (0x4a); call it as the real virtual.
+  mapUberPicture->QueryContentBounds(reinterpret_cast<RECT*>(&clipRect.bottom));
+
+  // Slots 0x1ac/0x1b0 are polymorphic tile-preview renderers introduced by the concrete
+  // map-view subclass that actually owns `ownerContext`: the caller passes 3 stack args,
+  // but this branch's shared base slots (TControl's NoOpUiViewSlotHandler / OrphanRetStub
+  // at bytes 0x1ac/0x1b0) are 2-arg/1-arg no-op placeholders, so no virtual declarable on
+  // the TMapUberPicture static type has the right arity. Left as a documented raw dispatch
+  // until that receiver subclass is recovered (raw-vtable-gate baselined).
   int childVtable = *reinterpret_cast<int*>(mapUberPicture);
-  typedef void(__fastcall * ChildSlot128Fn)(void* self, int unusedEdx, long* bottomOut);
-  reinterpret_cast<ChildSlot128Fn>(*reinterpret_cast<int*>(childVtable + 0x128))(mapUberPicture, 0,
-                                                                                 &clipRect.bottom);
 
   char intersectScratch[16];
   char intersectPair[16];
@@ -318,50 +290,57 @@ void TWorldView::InvokeDialogHooks1D8ThenE4(int stridedRecord, int dispatchConte
 
 // FUNCTION: IMPERIALISM 0x005962a0
 void TWorldView::HandleMapTileClickSetOrderContextAndDispatchEvent79(int arg1, int arg2) {
-  TOverlayDispatchEventBlock* eventBlock = new TOverlayDispatchEventBlock();
-  TOverlayDispatchEventBlock* eventPtr = 0;
-  if (eventBlock != 0) {
-    eventBlock->commandA = 0;
-    eventBlock->commandB = 0;
-    eventBlock->view = 0;
-    eventBlock->viewCopy = 0;
-    eventBlock->vtable = reinterpret_cast<void*>(kAddrTEventClassVtable);
-    eventPtr = eventBlock;
-  }
+  (void)arg2;
+  TEvent* event = new TEvent();
 
-  short tileIndex = static_cast<short>(arg1);
+  int tileIndex = static_cast<short>(arg1);
   char* terrainTable = reinterpret_cast<char*>(g_pGlobalMapState->terrainStateTable);
   if (terrainTable[tileIndex * 0x24] == '\x05') {
-    TZone* orderContext = static_cast<TZone*>(
-        reinterpret_cast<void*(__cdecl*)(short)>(thunk_GetMapActionContextByTileIndex)(tileIndex));
+    TZone* orderContext = static_cast<TZone*>(reinterpret_cast<void*(__cdecl*)(short)>(
+        thunk_GetMapActionContextByTileIndex)(static_cast<short>(tileIndex)));
     // ownerContext is really a TMapUberPicture* (see the class-attribution note on
     // TMapUberPicture::SetMapInteractionMode); SetActiveMapOrderEntry already reproduces
     // this exact invalidate-old/set/invalidate-new/refresh sequence.
     static_cast<TMapUberPicture*>(ownerContext)->SetActiveMapOrderEntry(orderContext);
   }
 
-  *reinterpret_cast<int*>(kAddrActiveMapTileIndexStorage + 0x28) = tileIndex;
-  if (eventPtr == 0) {
-    return;
-  }
-  eventPtr->commandB = 0x79;
-  eventPtr->commandA = 0x79;
-  eventPtr->view = this;
-  eventPtr->viewCopy = this;
-  DispatchEvent(reinterpret_cast<int>(eventPtr), reinterpret_cast<TEventHandler*>(eventPtr), 0);
+  g_lastClickedMapTileIndex_006a4608 = tileIndex;
+  // No null guard in the original: the field writes run through the raw allocation
+  // pointer whether or not `new` succeeded.
+  event->dispatchMessage = 0x79;
+  event->commandNumber = 0x79;
+  event->sourceHandler = this;
+  event->targetHandler = this;
+  DispatchQueuedUiCommandAndRelease(event);
 }
 
+// Build a TEvent carrying command/dispatch code 0x78, source/target = this view,
+// stash the strided cell record in field7a, and hand it to the slot-0xd dispatcher.
+// The field writes intentionally run even when `new` returns null (the original
+// writes through the raw allocation pointer unconditionally).
 // FUNCTION: IMPERIALISM 0x005963d0
 void TWorldView::DispatchOverlayEvent78FromStridedRecord(int stridedRecord, int dispatchContext) {
   (void)dispatchContext;
-  DispatchOverlayEvent78Common(this, stridedRecord);
+  TEvent* event = new TEvent();
+  event->dispatchMessage = 0x78;
+  event->commandNumber = 0x78;
+  event->sourceHandler = this;
+  event->targetHandler = this;
+  field7a = static_cast<unsigned short>(stridedRecord);
+  DispatchQueuedUiCommandAndRelease(event);
 }
 
 // FUNCTION: IMPERIALISM 0x00596440
 void TWorldView::DispatchOverlayEvent78RootHighFromStridedRecord(int stridedRecord,
                                                                  int dispatchContext) {
   (void)dispatchContext;
-  DispatchOverlayEvent78Common(this, stridedRecord);
+  TEvent* event = new TEvent();
+  event->dispatchMessage = 0x78;
+  event->commandNumber = 0x78;
+  event->sourceHandler = this;
+  event->targetHandler = this;
+  field7a = static_cast<unsigned short>(stridedRecord);
+  DispatchQueuedUiCommandAndRelease(event);
 }
 
 // FUNCTION: IMPERIALISM 0x005964b0
