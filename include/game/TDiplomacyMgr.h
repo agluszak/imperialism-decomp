@@ -34,8 +34,13 @@ public:
                                                              int sourceNation); // 11 (0x2c)
   virtual void ApplyDiplomacyInterNationStatesForTurn();                        // 12 (0x30)
   virtual void SelectPriorityNationIndicesForMinorCapabilityRows();             // 13 (0x34)
-  virtual void RebuildDiplomacyStandingAndInfluenceMatrices();                  // 14 (0x38)
-  virtual void InitializeDiplomacyStandingBaselineRandom();                     // 15 (0x3c)
+  // Verified RET 4 (one stack byte arg): forceOrMode==2 means "do a full clear" of
+  // relationCodeMatrix04 before rebuilding. Recomputes the two top-ranked nations' scoring
+  // arrays against every terrain-descriptor slot, then walks every nation-pair-matrix tile
+  // to assign it to the top or second nation's influence side (or neutral), and finally
+  // may prod the losing nation's AI via TGreatPower::SetNationPendingActionStateAndPayload.
+  virtual void RebuildDiplomacyStandingAndInfluenceMatrices(char forceOrMode); // 14 (0x38)
+  virtual void InitializeDiplomacyStandingBaselineRandom();                    // 15 (0x3c)
   // Sums each major power's comparativePowerRows1824 metrics into a power score,
   // ranks the 7 major powers descending by that score (random coin-flip tiebreak),
   // and writes the top two nation slots out. Verified RET 8 (2 stack args).

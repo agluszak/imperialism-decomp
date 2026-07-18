@@ -12618,7 +12618,7 @@
     },
     {
       "address": "0x4dd430",
-      "matching": 0.5714285714285714,
+      "matching": 0.5142857142857142,
       "name": "TGreatPower::ComputeRemainingDiplomacyAidBudget",
       "type": 1
     },
@@ -13063,7 +13063,8 @@
     },
     {
       "address": "0x4e0610",
-      "matching": 1.0,
+      "effective": true,
+      "matching": 0.42857142857142855,
       "name": "TGreatPower::ReturnFalseNationStateActionStub_8a",
       "type": 1
     },
@@ -13112,7 +13113,7 @@
     },
     {
       "address": "0x4e09a0",
-      "matching": 0.5783132530120482,
+      "matching": 0.5542168674698795,
       "name": "TGreatPower::ComputeCityOrderCapabilityAggregateScore",
       "type": 1
     },
@@ -14531,7 +14532,7 @@
     },
     {
       "address": "0x4f0e20",
-      "matching": 0.0,
+      "matching": 0.1889400921658986,
       "name": "TDiplomacyMgr::RebuildDiplomacyStandingAndInfluenceMatrices",
       "type": 1
     },
@@ -21542,7 +21543,7 @@
     },
     {
       "address": "0x545940",
-      "matching": 0.4316639741518578,
+      "matching": 0.3849385908209438,
       "name": "TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine",
       "type": 1
     },
@@ -21794,7 +21795,7 @@
     },
     {
       "address": "0x54c480",
-      "matching": 0.08,
+      "matching": 0.6041666666666666,
       "name": "EmitTurnEvent26DiplomacyMatrixSnapshot",
       "type": 1
     },
@@ -22534,13 +22535,13 @@
     },
     {
       "address": "0x553b10",
-      "matching": 0.4827586206896552,
+      "matching": 0.41379310344827586,
       "name": "HasNoMapOrderEntryChildrenQueued",
       "type": 1
     },
     {
       "address": "0x553b50",
-      "matching": 0.5818181818181818,
+      "matching": 0.5454545454545454,
       "name": "HasActiveMapOrderEntryChildren",
       "type": 1
     },
@@ -22595,7 +22596,7 @@
     },
     {
       "address": "0x554590",
-      "matching": 0.5569620253164557,
+      "matching": 0.5822784810126582,
       "name": "CanQueueMapOrderForProvinceContext",
       "type": 1
     },
@@ -22679,7 +22680,7 @@
     },
     {
       "address": "0x555420",
-      "matching": 0.5653333333333334,
+      "matching": 0.5546666666666666,
       "name": "ResolveTaskForceOrderConflictAndPickCandidate",
       "type": 1
     },
@@ -22902,7 +22903,7 @@
     },
     {
       "address": "0x5578a0",
-      "matching": 0.44324324324324327,
+      "matching": 0.44594594594594594,
       "name": "ResolveMapOrderChainsForTurnPhase",
       "type": 1
     },
@@ -29794,7 +29795,7 @@
     },
     {
       "address": "0x5a1ee0",
-      "matching": 0.6737400530503979,
+      "matching": 0.6763925729442971,
       "name": "TTacticalBattle::EvaluateAndResolveTacticalActionAgainstTileOccupant",
       "type": 1
     },
@@ -32339,7 +32340,7 @@
     },
     {
       "address": "0x5bf930",
-      "matching": 0.7841191066997518,
+      "matching": 0.7890818858560794,
       "name": "RefreshSelectedNationOrderCompatibilityInfo",
       "type": 1
     },
