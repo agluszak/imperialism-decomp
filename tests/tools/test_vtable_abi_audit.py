@@ -258,6 +258,24 @@ class TestExtentRules(unittest.TestCase):
         self.assertTrue(decision.stop)
         self.assertEqual(decision.reason, "unresolved")
 
+    def test_known_vtable_address_is_a_precise_boundary(self):
+        decision = extent_decision(
+            30, False, "SomeMethod", null_run_seen=False, at_known_vtable=True
+        )
+        self.assertTrue(decision.stop)
+        self.assertEqual(decision.reason, "known_vtable")
+
+    def test_midtable_classname_virtual_is_not_a_boundary_with_known_set(self):
+        # TView slot 26 resolves to TEventHandler's class-name getter — a REAL
+        # inherited virtual, not the next table. With the known-vtable address
+        # set available the name heuristic must be disabled (it truncated 245
+        # view-family extractions at 26 slots).
+        decision = extent_decision(
+            26, False, "GetTEventHandlerClassNamePointer", null_run_seen=False,
+            at_known_vtable=False, use_getter_heuristic=False,
+        )
+        self.assertFalse(decision.stop)
+
 
 class TestDeclarationParsing(unittest.TestCase):
     def test_member_definition(self):

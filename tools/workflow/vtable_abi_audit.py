@@ -254,8 +254,17 @@ def arg_stack_dwords(args: str) -> int | None:
     return total
 
 
+_RET_DWORD_TYPES = _KNOWN_ONE_DWORD | {"long", "int"}
+
+
 def ret_width_class(ret: str | None) -> str:
-    """'void' | 'byte' | 'word' | 'dword' | 'fp' | 'unknown' for a declared return."""
+    """'void'|'byte'|'word'|'dword'|'fp'|'sret'|'unknown' for a declared return.
+
+    'sret': a by-value aggregate return (CPoint, RECT, CString, ...). MSVC
+    passes these via a hidden return-slot pointer pushed as an extra stack
+    argument, so a __thiscall member returning one purges 4 MORE bytes than its
+    visible argument list implies.
+    """
     if ret is None:
         return "unknown"  # ctor/dtor
     text = " ".join(ret.replace("const", "").split())
@@ -271,6 +280,14 @@ def ret_width_class(ret: str | None) -> str:
         return "word"
     if text in ("undefined",):
         return "unknown"
+    tokens = text.split()
+    if tokens and tokens[-1] not in _RET_DWORD_TYPES and not (
+        len(tokens) > 1 and tokens[0] in ("unsigned", "signed")
+    ):
+        # Unknown bare identifier: a by-value class/struct return (hidden sret
+        # pointer). Enums would land here too — rare, and misclassifying an
+        # enum as sret only relaxes the arity check by one optional dword.
+        return "sret"
     return "dword"
 
 
@@ -349,6 +366,10 @@ def classify_slot(decl: Decl | None, facts: dict | None, override_proto: str | N
     ret_kind = facts.get("ret_kind")
     ret_imm = int(facts.get("ret_imm") or 0)
     callers = facts.get("callers") or {}
+    ret_class = ret_width_class(decl.ret)
+    # A by-value aggregate return adds a hidden sret-pointer stack arg.
+    if dwords is not None and ret_class == "sret":
+        dwords += 1
 
     # --- Rule 1: callee-cleaned stack bytes vs declared stack args ---------- #
     callee_cleaned_expected: int | None = None
@@ -392,7 +413,6 @@ def classify_slot(decl: Decl | None, facts: dict | None, override_proto: str | N
             supports.append(f"{push_total} caller site(s) push exactly {dwords} dword(s)")
 
     # --- Rule 3: declared void but return register consumed ----------------- #
-    ret_class = ret_width_class(decl.ret)
     ret_use = callers.get("ret_use") or {}
     consumed = _hist_total(ret_use, ("al", "ax", "eax"))
     if ret_class == "void" and consumed >= 2:
