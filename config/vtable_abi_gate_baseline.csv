@@ -110,13 +110,4 @@ address|class|slot|summary
 0x005baf70|TDealBookPicture|0x1cc|declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x8
 0x005bc780|TDealTabControl|0x1c4|declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x8
 0x005bea00|TOfferDeskPicture|0x1cc|declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x14
-0x005d7cb0|TViewMgr|0xa8|declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
-0x005d8040|TViewMgr|0x6c|declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
-0x005d83b0|TViewMgr|0x84|declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
-0x005d8dd0|TViewMgr|0x5c|declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
-0x005da040|TViewMgr|0x60|declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
-0x005da180|TViewMgr|0x64|declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
-0x005da360|TViewMgr|0xbc|declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
-0x005dc1e0|TViewMgr|0xd0|declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
-0x005dcf20|TViewMgr|0xd8|declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
 0x005e50a0|TSoundPlayer|0xb0|declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x8

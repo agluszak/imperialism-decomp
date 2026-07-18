@@ -2845,7 +2845,7 @@
     },
     {
       "address": "0x485590",
-      "matching": 0.5,
+      "matching": 1.0,
       "name": "CMainFrame::OnCommand800D",
       "type": 1
     },
@@ -7846,7 +7846,7 @@
     },
     {
       "address": "0x4a2900",
-      "matching": 0.13374805598755832,
+      "matching": 0.13063763608087092,
       "name": "BuildArmyContextActionRecordsAndDispatchLabel",
       "type": 1
     },
@@ -13104,20 +13104,21 @@
     },
     {
       "address": "0x4e0590",
-      "matching": 1.0,
+      "effective": true,
+      "matching": 0.42857142857142855,
       "name": "TGreatPower::OrphanRetStub_004d7fa0_88",
       "type": 1
     },
     {
       "address": "0x4e05d0",
-      "matching": 1.0,
+      "effective": true,
+      "matching": 0.42857142857142855,
       "name": "TGreatPower::OrphanLeaf_NoCall_Ins02_004d7fc0_89",
       "type": 1
     },
     {
       "address": "0x4e0610",
-      "effective": true,
-      "matching": 0.42857142857142855,
+      "matching": 1.0,
       "name": "TGreatPower::ReturnFalseNationStateActionStub_8a",
       "type": 1
     },
@@ -13129,13 +13130,14 @@
     },
     {
       "address": "0x4e0690",
-      "matching": 1.0,
+      "effective": true,
+      "matching": 0.42857142857142855,
       "name": "TGreatPower::ReturnFalseNationStateCapabilityFlag90",
       "type": 1
     },
     {
       "address": "0x4e06d0",
-      "matching": 0.7619047619047619,
+      "matching": 1.0,
       "name": "TGreatPower::SumNationRuntimeFiveBucketValue44",
       "type": 1
     },
@@ -16682,7 +16684,7 @@
     },
     {
       "address": "0x50bea0",
-      "matching": 0.2044525215810995,
+      "matching": 0.20990458882326216,
       "name": "TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets",
       "type": 1
     },
@@ -17140,7 +17142,7 @@
     },
     {
       "address": "0x5136a0",
-      "matching": 0.8888888888888888,
+      "matching": 1.0,
       "name": "TMapMgr::OrphanLeaf_NoCall_Ins35_005136a0",
       "type": 1
     },
@@ -17338,7 +17340,7 @@
     },
     {
       "address": "0x515b10",
-      "matching": 0.3167420814479638,
+      "matching": 0.3378995433789954,
       "name": "TMapMgr::MarkSeedNeighborTilesUnavailableByCapabilityMaskProfileB",
       "type": 1
     },
@@ -18113,8 +18115,7 @@
     },
     {
       "address": "0x522c10",
-      "effective": true,
-      "matching": 0.9848484848484849,
+      "matching": 1.0,
       "name": "TMapDialog::DrawMapDialogWrappedTileConnectionMarker_00522c10",
       "type": 1
     },
@@ -21608,7 +21609,7 @@
     },
     {
       "address": "0x545940",
-      "matching": 0.4166666666666667,
+      "matching": 0.42764857881136953,
       "name": "TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine",
       "type": 1
     },
@@ -26127,7 +26128,7 @@
     },
     {
       "address": "0x5798a0",
-      "matching": 0.5673076923076923,
+      "matching": 0.5865384615384616,
       "name": "TRadioTextCluster::AddItem",
       "type": 1
     },
@@ -27751,7 +27752,7 @@
     },
     {
       "address": "0x58a020",
-      "matching": 0.47715736040609136,
+      "matching": 0.45685279187817257,
       "name": "TRailAmtBar::NoOpUiLifecycleHook",
       "type": 1
     },
@@ -28592,7 +28593,7 @@
     },
     {
       "address": "0x594900",
-      "matching": 0.4086687306501548,
+      "matching": 0.47058823529411764,
       "name": "RecomputeNationComparisonValuesAndNormalizeScale",
       "type": 1
     },
@@ -29813,7 +29814,7 @@
     },
     {
       "address": "0x5a1520",
-      "matching": 0.5259259259259259,
+      "matching": 0.48148148148148145,
       "name": "TTacticalBattle::MoveTacticalUnitTowardTile",
       "type": 1
     },
@@ -29855,7 +29856,7 @@
     },
     {
       "address": "0x5a1ee0",
-      "matching": 0.6737400530503979,
+      "matching": 0.6763925729442971,
       "name": "TTacticalBattle::EvaluateAndResolveTacticalActionAgainstTileOccupant",
       "type": 1
     },
@@ -29933,7 +29934,7 @@
     },
     {
       "address": "0x5a3810",
-      "matching": 0.7107438016528925,
+      "matching": 0.8571428571428571,
       "name": "TTacticalBattle::ComputeRallyStrengthAndQueueTacticalRallyCommand",
       "type": 1
     },
@@ -29945,7 +29946,7 @@
     },
     {
       "address": "0x5a39a0",
-      "matching": 0.7286821705426356,
+      "matching": 0.9545454545454546,
       "name": "ComputeHexTileDistanceFromIndices",
       "type": 1
     },
@@ -29963,7 +29964,7 @@
     },
     {
       "address": "0x5a3d30",
-      "matching": 0.8104956268221575,
+      "matching": 0.8163265306122449,
       "name": "IsTacticalTargetTileReachableForAction",
       "type": 1
     },
@@ -33388,7 +33389,7 @@
     },
     {
       "address": "0x5d7240",
-      "matching": 0.15779092702169625,
+      "matching": 0.15625,
       "name": "LinkedListQueryOwner::DispatchGlobalTurnEventCode",
       "type": 1
     },
@@ -33400,7 +33401,7 @@
     },
     {
       "address": "0x5d7cb0",
-      "matching": 0.13852813852813853,
+      "matching": 0.1471861471861472,
       "name": "HandleTurnEvent7DB_SelectCityAndRefreshView",
       "type": 1
     },
@@ -33424,13 +33425,13 @@
     },
     {
       "address": "0x5d8040",
-      "matching": 0.12605042016806722,
+      "matching": 0.13445378151260504,
       "name": "HandleTurnEvent7D8_ActivateDiplomacyMapView",
       "type": 1
     },
     {
       "address": "0x5d83b0",
-      "matching": 0.12099644128113879,
+      "matching": 0.12811387900355872,
       "name": "HandleTurnEvent7DE_RefreshTradeDiplomacyCityTransportSummary",
       "type": 1
     },
@@ -33460,25 +33461,25 @@
     },
     {
       "address": "0x5d8dd0",
-      "matching": 0.02722177742193755,
+      "matching": 0.028823058446757407,
       "name": "HandleTurnEvent7D9Or7DA_UpdateNationResourceAdvisor",
       "type": 1
     },
     {
       "address": "0x5da040",
-      "matching": 0.532258064516129,
+      "matching": 0.5483870967741935,
       "name": "HandleTurnEventVtableSlot60ActivateMainDialog",
       "type": 1
     },
     {
       "address": "0x5da180",
-      "matching": 0.6183574879227053,
+      "matching": 0.6280193236714976,
       "name": "HandleTurnEvent2260_RefreshMainHudTitles",
       "type": 1
     },
     {
       "address": "0x5da360",
-      "matching": 0.04100652376514446,
+      "matching": 0.04287045666356011,
       "name": "HandleTurnEvent7DD_RefreshOrderStatusPanelsAndIcons",
       "type": 1
     },
@@ -33562,7 +33563,7 @@
     },
     {
       "address": "0x5dc1e0",
-      "matching": 0.09929078014184398,
+      "matching": 0.11347517730496454,
       "name": "TViewMgr::HandleTurnEventDialogFactorySlotD0",
       "type": 1
     },
@@ -33634,7 +33635,7 @@
     },
     {
       "address": "0x5dcf20",
-      "matching": 0.6994535519125683,
+      "matching": 0.7103825136612022,
       "name": "TViewMgr::HandleTurnEventDialogFactorySlotD8",
       "type": 1
     },
