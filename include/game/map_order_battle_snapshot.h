@@ -4,7 +4,7 @@
 
 // Per-child record built by BuildMapOrderBattleSideSnapshot for one side of a task-force
 // order conflict. Populated from a TShip node reached through the owning TTaskForce's
-// childOrderList (TMapOrderChildLinkNode::object_ptr, reinterpreted here since these
+// childOrderList (TMapOrderChildLinkNode::payload, reinterpreted here since these
 // particular children are ships, not nested task-force entries -- see the field-offset
 // evidence in BuildMapOrderBattleSideSnapshot).
 struct MapOrderBattleSideChildRecord {

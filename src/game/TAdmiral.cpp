@@ -63,7 +63,7 @@ static inline void RecomputeMapOrderOwnerActiveSelection(TTaskForce* ownerContex
   for (TMapOrderChildLinkNode* link = ownerContext->childOrderList; link != 0; link = link->next) {
     TTaskForce* activeEntry = ownerContext->activeChildEntry;
     ownerContext->activeChildEntry =
-        link->object_ptr->SelectPreferredMapOrderEntryByPriorityRules(activeEntry, 0);
+        static_cast<TTaskForce*>(link->payload)->SelectPreferredMapOrderEntryByPriorityRules(activeEntry, 0);
   }
 }
 

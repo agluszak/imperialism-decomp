@@ -105,7 +105,7 @@ char TScatteredShipsMission::MatchesMissionKeySlot4C(int kind, int key, int mode
 // FUNCTION: IMPERIALISM 0x0053bdd0
 void TScatteredShipsMission::MissionSlot44() {
   if (orderList24 != nullptr) {
-    orderList24->active_flag = 0;
+    orderList24->active = 0;
     orderList24->next->SetChainActiveFlag(0);
   }
 
@@ -132,7 +132,7 @@ void TScatteredShipsMission::MissionSlot44() {
     if (!current->QueryPortZoneCapability() &&
         current->HasSecondaryNeighborWithNationTag(nationId04)) {
       TMapOrderChildLinkNode* best = orderList24;
-      while (best != nullptr && best->active_flag != 0) {
+      while (best != nullptr && best->active != 0) {
         best = best->next;
       }
       if (best == nullptr) {
@@ -141,13 +141,13 @@ void TScatteredShipsMission::MissionSlot44() {
 
       for (TMapOrderChildLinkNode* candidate = best->next; candidate != nullptr;
            candidate = candidate->next) {
-        if (candidate->active_flag == 0) {
+        if (candidate->active == 0) {
           // Both reads are the same genuine cross-type pun of TTaskForce::attachment (the
           // "order/entry kind tag") as a TZone* -- the same dual-purpose pattern already
           // documented on the adjacent `owner` field (PromoteMapOrderChainAndQueue reads
           // it as TZone* too).
-          TZone* candidateZone = reinterpret_cast<TZone*>(candidate->object_ptr->attachment);
-          TZone* bestZone = reinterpret_cast<TZone*>(best->object_ptr->attachment);
+          TZone* candidateZone = reinterpret_cast<TZone*>(static_cast<TTaskForce*>(candidate->payload)->attachment);
+          TZone* bestZone = reinterpret_cast<TZone*>(static_cast<TTaskForce*>(best->payload)->attachment);
           short candidateDistance =
               candidateZone->GetCachedMapActionContextDistanceOrRecompute(current);
           short bestDistance = bestZone->GetCachedMapActionContextDistanceOrRecompute(current);
@@ -157,8 +157,8 @@ void TScatteredShipsMission::MissionSlot44() {
         }
       }
 
-      best->active_flag = 1;
-      TTaskForce* target = best->object_ptr;
+      best->active = 1;
+      TTaskForce* target = static_cast<TTaskForce*>(best->payload);
       if (target == nullptr) {
         return;
       }

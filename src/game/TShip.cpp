@@ -335,18 +335,18 @@ void TShip::PruneOrPromoteOrderNodeWhenChildCostDepleted() {
     // (0x553fe0) runs on itself, minus the return flag.
     TMapOrderChildLinkNode* head = ownerEntry->childOrderList;
     if (head != 0) {
-      TTaskForce* headChild = head->object_ptr;
+      TTaskForce* headChild = static_cast<TTaskForce*>(head->payload);
       unsigned char headDefeated = (headChild->required_count <= 0);
       if (headDefeated != 0) {
         headChild->owner = 0;
-        head->object_ptr->Free();
+        static_cast<TTaskForce*>(head->payload)->Free();
 
         TMapOrderChildLinkNode* next = head->next;
         if (next != 0) {
-          next->prev_link = head->prev_link;
+          next->prev = head->prev;
         }
-        if (head->prev_link != 0) {
-          head->prev_link->next = head->next;
+        if (head->prev != 0) {
+          head->prev->next = head->next;
         }
         delete head;
 
@@ -360,7 +360,7 @@ void TShip::PruneOrPromoteOrderNodeWhenChildCostDepleted() {
     ownerEntry->activeChildEntry = 0;
     TMapOrderChildLinkNode* node;
     for (node = head; node != 0; node = node->next) {
-      ownerEntry->activeChildEntry = node->object_ptr->SelectPreferredMapOrderEntryByPriorityRules(
+      ownerEntry->activeChildEntry = static_cast<TTaskForce*>(node->payload)->SelectPreferredMapOrderEntryByPriorityRules(
           ownerEntry->activeChildEntry, 0);
     }
 

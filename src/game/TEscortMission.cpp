@@ -192,7 +192,7 @@ char TEscortMission::MatchesMissionKeySlot4C(int kind, int key, int mode) {
 // FUNCTION: IMPERIALISM 0x0053a290
 void TEscortMission::MissionSlot44() {
   if (orderList24 != nullptr) {
-    orderList24->active_flag = 0;
+    orderList24->active = 0;
     orderList24->next->SetChainActiveFlag(0);
   }
   ConsolidateMissionOrderEntriesByTargetAndQueue(reinterpret_cast<int*>(targetZone14));
