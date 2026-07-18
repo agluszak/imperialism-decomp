@@ -118,10 +118,6 @@ void RegenerateAllMapActionContextStatusCodes();      // 0x00563220
 
 void SetMapTileStateByteAndNotifyObserver(int tileIndex, int stateByte);
 
-// Free helpers defined in TMapMgr.cpp (0x563-area port-zone plumbing).
-short FindSeaTileForPortZoneCreation(short portTileIndex, signed char nationSeed);
-void LinkPortZoneToContextIfMissing(TZone* portZone, TZone* contextZone);
-
 // Returns the currently active map-order entry (g_pActiveMapOrderContext->
 // selectedTaskForce14). Ghidra labels this __thiscall, but the real call sites (e.g.
 // TToolBarCluster::TryHandleMapContextAction's case-10 branch) pass an unrelated

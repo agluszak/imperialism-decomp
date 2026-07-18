@@ -112,21 +112,30 @@ each with the evidence needed to start (address, size, current score if any, blo
 - `0x5e50c0` at 77.8% — residual is an ecx/eax naming permutation in the slot-cursor
   idiom; structure verified.
 
-- `0x5635e0` TOcean::EnsurePortZoneForTile (749B, 13.42%) — confirmed mismodeled
-  (investigated 2026-07-17, not landed): the current body calls high-level helper
-  methods (`FindSeaTileForPortZoneCreation`, `LinkPortZoneToContextIfMissing`,
-  `TPortZone::CreateObject`) but the ORIGINAL inlines everything directly and
-  differs structurally: (1) has an EH prologue (`push -1; push __ehhandler`,
-  `mov fs:[0]`) the current body lacks entirely — some non-POD local forces it;
-  (2) constructs the port zone via direct `operator new(0x4c)` +
-  `TZone::ConstructTZoneAndLinkIntoGlobalMapActionContextList`, NOT the generic
-  `TPortZone::CreateObject()` RTTI-dispatch path currently used; (3) the
-  GetFirstPortZone/GetNextPortZone walk to check for an existing port zone is
-  inlined manually (same pattern as `RemovePortZoneByTile` below — see that fix);
-  (4) a `MessageBoxA`/`TemporarilyClearAndRestoreUiInvalidationFlag` null-check
-  block (string `"D:\\Ambit\\Cross\\UOcean.cpp"` line 0x96a) is missing entirely.
-  Needs a full raw-listing-driven re-port (`ctors-dtors-eh` skill for the EH
-  prologue), not incremental tweaks to the current body.
+- `0x5635e0` TOcean::EnsurePortZoneForTile (landed 2026-07-18, 13.42% -> 30.08%) —
+  full re-port from the raw listing (portprep thunk-chase resolved every callee).
+  Fixed: (1) the "already exists" check now inlines the GetFirstPortZone/
+  GetNextPortZone+field0c/field20/field48 match walk directly (same pattern as
+  `RemovePortZoneByTile`), replacing a fictional `TZone::FindPortZoneByTile` call;
+  (2) construction now uses real `new TPortZone()` — the EH prologue the original
+  has is just the compiler's standard `new`-expression scaffolding (per the
+  `ctors-dtors-eh` skill's trivial-ctor-factory note), no special modeling needed
+  once `TPortZone::TPortZone()` was moved header-inline to match the original's
+  inlining-at-call-site (it was previously out-of-line in the .cpp with no marker,
+  forcing a real CALL the original doesn't have); (3) inlined the hex-neighbor
+  sea-tile-finding scan and the port/nation-context linking directly, deleting the
+  two now-unused free-function abstractions (`FindSeaTileForPortZoneCreation`,
+  `LinkPortZoneToContextIfMissing` in TMapMgr.cpp) that had invented a shared
+  helper the original never factored out at this call site; (4) added the missing
+  `FailNilPointerWithAssert` null-check block (new global
+  `s_SourcePathUOcean_006984CC`); (5) fixed a wrong vtable slot at the tail —
+  was calling `GetActiveNationSlotTile` (slot 0x14), original calls
+  `FindNearestActiveSeaContextTileFromOffset216` (slot 0x13). Residual is
+  terrainStateTable-pointer caching strategy (tried removing the local cache
+  entirely — regressed to 26.95%; tried widening nationSeed to short to match a
+  word-sized cached compare — regressed to 27.73%; both reverted) plus general
+  register-allocation noise on a function with 3 nested hex-direction scans.
+  Don't retry those two specific changes without new evidence.
 - `0x564240` TOcean::RemovePortZoneByTile (landed 2026-07-17, 24.24% -> 61.36%) —
   fixed by inlining the `GetFirstPortZone`/`GetNextPortZone` walk+`IsKindOf`
   filter directly (matching the original, which does NOT call those two real

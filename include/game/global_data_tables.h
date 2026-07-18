@@ -782,6 +782,7 @@ extern "C" const char s_SourcePathUArmyMgr_0069573C[];
 extern "C" const char s_SourcePathUSuperMap_0069943C[];
 // Assert source-path string for the UTradeViews TU (TOfferDeskPicture family).
 extern "C" const char s_SourcePathUTradeViews_0069AA94[];
+extern "C" const char s_SourcePathUOcean_006984CC[];
 // Default viewport-marker-box width, shared by TMiniMapView/TacticalBattleView's own
 // marker-box construction (assigned once via ftol() elsewhere; role beyond that isn't
 // further recovered).

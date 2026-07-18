@@ -7,7 +7,12 @@
 // VTABLE: IMPERIALISM 0x0065c758
 class TPortZone : public TZone {
 public:
-  TPortZone();
+  // The original inlines this at every `new TPortZone()` call site instead of emitting
+  // a standalone out-of-line copy (see the ctors-dtors-eh skill's trivial-ctor-factory
+  // note); define it inline here so it inlines the same way, not as a real CALL.
+  TPortZone() : TZone() {
+    field48 = -1;
+  }
   ~TPortZone() override; // slot 0x01 scalar deleting destructor 0x5616c0
 
   // TPortZone overrides TZone vtable slots (table ends at slot 0x16, same as TZone).

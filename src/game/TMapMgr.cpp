@@ -3391,62 +3391,6 @@ short TMapMgr::ComputeRepresentativeTileIndexForTerrainTypeWithWrapBias(short te
 static const unsigned int kAddrTerrainFlowTypeRemapTable = 0x0065c632;
 static const unsigned int kAddrTerrainFlowDirectionTable = 0x0065c668;
 
-short FindSeaTileForPortZoneCreation(short portTileIndex, signed char nationSeed) {
-  short seaTileIndex = -1;
-  short tileWalkIndex = portTileIndex;
-  for (int attempt = 0; attempt < 6; ++attempt) {
-    short candidateTile = TMapMgr::StepHexTileIndexByDirectionWithWrapRules(
-        portTileIndex, static_cast<short>(tileWalkIndex % 6));
-    ++tileWalkIndex;
-    if (candidateTile == -1) {
-      continue;
-    }
-    TTerrainStateRecordView& candidateRecord = g_pGlobalMapState->terrainStateTable[candidateTile];
-    if (candidateRecord.terrainType00 != 5) {
-      continue;
-    }
-    char allNeighborsMatchNation = 1;
-    for (int neighborDirection = 0; neighborDirection < 6; ++neighborDirection) {
-      short neighborTile = g_pGlobalMapState->GetWrappedHexNeighborTileIndexByDirection(
-          candidateTile, static_cast<short>(neighborDirection));
-      if (neighborTile == -1) {
-        continue;
-      }
-      signed char neighborNation =
-          g_pGlobalMapState->terrainStateTable[neighborTile].ownerNationTag04;
-      if (neighborNation < 0x17 && neighborNation != nationSeed) {
-        allNeighborsMatchNation = 0;
-        break;
-      }
-    }
-    if (allNeighborsMatchNation != 0) {
-      seaTileIndex = candidateTile;
-      break;
-    }
-  }
-  if (seaTileIndex == -1) {
-    seaTileIndex = TraceTerrainFlowToNearestSeaTile(portTileIndex);
-  }
-  return seaTileIndex;
-}
-
-void LinkPortZoneToContextIfMissing(TZone* portZone, TZone* contextZone) {
-  if (contextZone == 0 || portZone == 0) {
-    return;
-  }
-  int entryIndex = 0;
-  int primarySize = portZone->primaryNeighbors.GetSize();
-  if (primarySize != 0) {
-    for (; entryIndex < primarySize; ++entryIndex) {
-      if (portZone->primaryNeighbors.GetAt(entryIndex) == contextZone) {
-        return;
-      }
-    }
-  }
-  portZone->AppendZonePointerToPrimaryArray(contextZone);
-  contextZone->AppendZonePointerToSecondaryArray(portZone);
-}
-
 // FUNCTION: IMPERIALISM 0x00517c30
 char TMapMgr::AreNationsBorderLinked(int nationA, int nationB) {
   TLongintList* regionList = g_apTerrainTypeDescriptorTable[nationA]->ownedRegionList;
