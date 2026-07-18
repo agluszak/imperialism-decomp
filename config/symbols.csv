@@ -2,7 +2,6 @@ address|name|symbol|size|type|prototype|provenance
 401122|thunk_TPictureButton::TPictureButton|||global||
 40257c|thunk_GetCityBuildingProductionValueBySlot||5|function|int __thiscall thunk_GetCityBuildingProductionValueBySlot(short nBuildingSlotId)|
 4028d8|thunk_InitializeCityInteriorMinister||5|function|undefined thunk_InitializeCityInteriorMinister()|
-402a7c|thunk_InitializeUiTextStyleDescriptor||5|function|undefined thunk_InitializeUiTextStyleDescriptor()|
 403b16|UiRuntimeContext::GetActiveNationId|||global||
 403f71|thunk_WrapperFor_InvalidateCityDialogRectRegion_At004f6d90||5|function|undefined thunk_WrapperFor_InvalidateCityDialogRectRegion_At004f6d90()|
 4042c8|thunk_ConstructUiResourceEntryType4B0C0||5|function|undefined thunk_ConstructUiResourceEntryType4B0C0()|
