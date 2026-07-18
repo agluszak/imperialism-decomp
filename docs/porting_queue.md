@@ -224,7 +224,33 @@ each with the evidence needed to start (address, size, current score if any, blo
   is a minor eax/esi register-copy scheduling difference at the `Free()` call
   tail; tried introducing a named local there and it scored identically, reverted
   to the simpler form.
-- `0x510210` (28%, 1177B)
+- `0x510210` TMapMgr::UpdateMapTileAdjacencyMasksAndVariantForTile (28.05%, 1177B) —
+  investigated 2026-07-18, no net code change (one experiment tried and reverted).
+  Two distinct residual sources found:
+  1. The three `for (d=0;d<6;++d)` neighbor-scan loops (adjacencyMaskA0a/B0b
+     accumulation) use a SEPARATE down-counting trip register in the original
+     (`edi=6; ...; dec edi; jne`) independent of the ascending offset register used
+     for indexing (`edx`, +2/iter) — our index-based loop collapses both into one
+     register. Tried splitting into an explicit `for (remaining=6;...) {...; ++d;}`
+     trip-counter form — **regressed 28.05% -> 24.35%, reverted**; matches the
+     codegen-shapes skill's caution that this induction-variable split is often not
+     source-steerable. Don't retry that specific rewrite without new evidence.
+  2. The `terrainStateTable[tileIndex].gateFlag == 0xb` "gate ring" tag-assignment
+     block (source ~line 891-922, disasm 0x510343-0x510419) has genuinely tangled
+     control flow with REDUNDANT re-tests of `prevTag`/`nextTag` that are
+     unreachable-but-still-compiled given the branch that reaches them (e.g.
+     `CMP BL,0xb` re-executed at 0x5103b3/0x5103d1 when BL is already provably
+     0xb/not-0xb from the controlling branch) — this looks like the *original 1997
+     source itself* had a duplicated/copy-pasted condition (not a decompiler
+     artifact), so a faithful port needs to reproduce the redundant tests literally,
+     not simplify them away. The current manual source's `goto check_next_run`/
+     `check_next_only` structure is in the right spirit but doesn't match the exact
+     variable re-reads (e.g. one re-test at 0x5103d6-0x5103e1 re-fetches
+     `neighbors[next]` and compares against `BL` (prevTag) rather than the literal
+     constant `0xb`). Needs a dedicated line-by-line pass matching
+     0x510343-0x510419 in the raw listing instruction-for-instruction before
+     touching further — do not attempt a quick simplification here, it costs score
+     (see point 1's experience on this same function).
 - `0x550b60` TShip::ComputeOrderNodeCompositeEconomicScore at 68% — residual is
   scheduling wobble around the inlined /100 and /10 magic divisions; revisit only
   with new evidence.
