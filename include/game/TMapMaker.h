@@ -14,7 +14,13 @@ public:
   TMapMaker();
   virtual ~TMapMaker() override;
 
-  virtual char GetBoolSlot28(); // slot 10 / 0x28
+  // Draws two LCG values into out-pointers: *outColumn = rng % 27, *outRow = rng % 15
+  // (a random cell of regionClassGrid10[15][27]). Verified RET 0x8 (2 stack pointer args,
+  // void return) -- the header's previous 0-arg `char GetBoolSlot28()` was templated off
+  // TView/TEventHandler's real slot-10 virtual of that name and does not describe this
+  // slot (TMapMaker derives from TObject, not TView, so the shared ordinal is a
+  // coincidence). slot 10 / 0x28
+  virtual void PickRandomRegionGridCell(unsigned int* outColumn, unsigned int* outRow);
   // Runs one full terrain-generation attempt over the tile grid (was junk-named
   // SetControlValue; 0-arg __thiscall, verified RET 0). Driver retries it until the
   // validity checks pass. slot 11 / 0x2c
@@ -75,8 +81,17 @@ public:
   // Verified 0 stack args from the caller (0x527730 calls it with no pushes) -- the
   // header's previous 1-arg form was wrong. slot 19 / 0x4c
   virtual char DoIdle();
-  virtual int GetCityDialogValueDword10();           // slot 20 / 0x50
-  virtual void SetCityDialogValueDword10(int value); // slot 21 / 0x54
+  // Walks the city-region tile ring starting at `coarseIndex`, converting empty tiles
+  // ('\0') to '6' with probability `percentChance`/100; returns the number marked.
+  // Verified RET 0x8 (2 stack int args, int return) -- the previous 0-arg
+  // `GetCityDialogValueDword10()` was templated off TView's real slot-20 virtual and
+  // does not describe this slot. slot 20 / 0x50
+  virtual int RandomlyMarkEmptyRegionTilesByChance(int coarseIndex, int percentChance);
+  // Same city-region ring probabilistic marking as slot 0x50 but also marks a hex
+  // neighbour of each converted tile. Verified RET 0x8 (2 stack int args, int return) --
+  // the previous 1-arg `SetCityDialogValueDword10(int)` was templated off TView's real
+  // slot-21 virtual and does not describe this slot. slot 21 / 0x54
+  virtual int RandomlyMarkEmptyRegionTilesAndNeighborsByChance(int coarseIndex, int percentChance);
   // Verified RET 0xc (3 stack args), from both Ghidra's own (correct) signature
   // recovery and the self-recursive call inside the callee itself -- the header's
   // previous 0-arg `TView*`-returning form was templated off TView's real
@@ -86,8 +101,15 @@ public:
   // (46% chance each) until `retryBudget` spreads land. Returns the spread count.
   // slot 22 / 0x58
   virtual int PlaceCityMarkerAndSpreadNeighbors(int tileIndex, int retryBudget, char markerVariant);
-  virtual char vmethod_0023();          // slot 23 / 0x5c
-  virtual char GetDeactivateVetoCode(); // slot 24 / 0x60
+  virtual char vmethod_0023(); // slot 23 / 0x5c
+  // Region-template state transform over the tile record at `coarseIndex` (branches on
+  // terrain-state bytes 2/3/5 and mirrors a 36-byte template block). Verified RET 0x14
+  // (5 stack dwords) -- the previous 0-arg `char GetDeactivateVetoCode()` was templated
+  // off TEventHandler's real slot-24 virtual and does not describe this slot. Arg types
+  // beyond the dword count are Ghidra-inferred and provisional (body still a stub).
+  // slot 24 / 0x60
+  virtual int TransformRegionTileTemplateState(int coarseIndex, int arg2, char arg3, int arg4,
+                                               char arg5);
   // Map-gen finalize pass (was junk-named OnDeactivated; takes one mode arg the
   // driver passes as 0 -- verified RET 4). slot 25 / 0x64
   virtual void MapGenFinalizePassSlot19(int mode);
@@ -95,8 +117,12 @@ public:
   // regenerates (was junk-named OnDeactivateVetoed(int); really a 0-arg __thiscall
   // returning AL). slot 26 / 0x68
   virtual char HasMapGenerationFailed();
-  virtual void HandleCityProductionNoOp();    // slot 27 / 0x6c
-  virtual void DispatchUiCommand19ToParent(); // slot 28 / 0x70
+  virtual void HandleCityProductionNoOp(); // slot 27 / 0x6c
+  // Marks the region record of tile `tileIndex` (byte 0xf7) then visits its six hex
+  // neighbours via slots 0x1d/0x1c. Verified RET 0x4 (1 stack short arg, void return) --
+  // the previous 0-arg `DispatchUiCommand19ToParent()` was templated off TEventHandler's
+  // real slot-28 virtual and does not describe this slot. slot 28 / 0x70
+  virtual void MarkTileRegionAndVisitHexNeighbors(short tileIndex);
   // Resolves the region-grid cell adjacent to `cell` in hex `direction` 0..5 (was
   // junk-named DispatchCityProductionAction1A; verified two-arg __thiscall returning
   // the neighbour cell index). slot 29 / 0x74
@@ -104,8 +130,20 @@ public:
   // Map-gen pass run between MapGenPassSlot0E and MapGenPassSlot0F (was junk-named
   // DispatchCityProductionAction1B; 0-arg __thiscall). slot 30 / 0x78
   virtual void MapGenPassSlot1E();
-  virtual char ActivateCityProductionViewIfAllowed();                     // slot 31 / 0x7c
-  virtual char TryDeactivateActiveView();                                 // slot 32 / 0x80
+  // Copies a 36-byte (9-dword) region-template bank between fine-grid cells (resolved
+  // via slot 0x21), selecting the source variant by LCG randomness. Verified RET 0x14
+  // (5 stack dwords) -- the previous 0-arg `char ActivateCityProductionViewIfAllowed()`
+  // was templated off TView's real slot-31 virtual and does not describe this slot. Arg
+  // types beyond the dword count are Ghidra-inferred and provisional. slot 31 / 0x7c
+  virtual void CopyRegionTemplateBankWithRandomVariant(int coarseIndex, int arg2, int arg3,
+                                                       int arg4, int arg5);
+  // Copies a 36-byte region-template bank to a neighbouring cell (slots 0x1d/0x21) with
+  // an LCG-gated second copy. Verified RET 0x14 (5 stack dwords) -- the previous 0-arg
+  // `char TryDeactivateActiveView()` was templated off TView's real slot-32 virtual and
+  // does not describe this slot. Arg types beyond the dword count are provisional.
+  // slot 32 / 0x80
+  virtual void CopyRegionTemplateBankToNeighborCell(int coarseIndex, int arg2, int arg3, int arg4,
+                                                    int arg5);
   virtual int GetFineGridCellBasePointerFromCoarseIndex(int coarseIndex); // slot 33 / 0x84
 
   // TMapMaker's real vtable (0x006598f8) ends at its last reachable slot (0x21 /
