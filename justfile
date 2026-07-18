@@ -1048,6 +1048,14 @@ boundary-audit *args:
 mfc-collection-audit *args:
   uv run python -m tools.workflow.mfc_collection_audit {{args}}
 
+# Template-emission compiler matrix (docs/toolchain.md): compile the probe TUs in
+# the msvc500 container per cell (/Ob levels, TU splits, wrapper/init/dtor axes)
+# and inventory the CList COMDATs each TU emits (host-side COFF parse).
+[doc('Run the template-emission matrix and report per-TU CList COMDAT inventories')]
+[group('analysis')]
+template-emission-matrix *args:
+  uv run python -m tools.workflow.template_emission_matrix {{args}}
+
 # Re-verify every row of config/template_aliases.csv: alias and canonical bodies
 # must be identical modulo relocations (tools.binary.body_hash).
 [doc('Validate template-COMDAT alias rows in config/template_aliases.csv')]
