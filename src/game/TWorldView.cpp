@@ -11,6 +11,7 @@
 #include "game/TMapMgr.h"
 #include "game/TMapUberPicture.h"
 #include "game/TNavyMgr.h"
+#include "game/TOcean.h"
 #include "game/TToolBarCluster.h"
 #include "game/ScopedMapQuickDrawContext.h"
 #include "game/TTaskForce.h"
@@ -19,7 +20,9 @@
 
 #include <new>
 
-undefined4 thunk_GetMapActionContextByTileIndex(void);
+// 0x005c3b40 -- genuine __cdecl free thunk taking one int (ret 0, caller cleans); the
+// typed cast at the call site only adjusts the void stub's argument type.
+undefined4 WrapperFor_thunk_BusyWaitUntilShiftedTickDeadline_At005c3b40(void);
 void NormalizeWrappedMapCoord108x60(short* xCoord, short* yCoord);
 
 // FUNCTION: IMPERIALISM 0x00519af0
@@ -298,8 +301,10 @@ void TWorldView::HandleMapTileClickSetOrderContextAndDispatchEvent79(int arg1, i
   int tileIndex = static_cast<short>(arg1);
   char* terrainTable = reinterpret_cast<char*>(g_pGlobalMapState->terrainStateTable);
   if (terrainTable[tileIndex * 0x24] == '\x05') {
-    TZone* orderContext = static_cast<TZone*>(reinterpret_cast<void*(__cdecl*)(short)>(
-        thunk_GetMapActionContextByTileIndex)(static_cast<short>(tileIndex)));
+    // ILT thunk 0x40318e resolves to TOcean::GetLinkedZoneForSeaTile on the
+    // g_pActiveMapOrderContext singleton (same call TToolBarCluster uses).
+    TZone* orderContext =
+        g_pActiveMapOrderContext->GetLinkedZoneForSeaTile(static_cast<short>(tileIndex));
     // ownerContext is really a TMapUberPicture* (see the class-attribution note on
     // TMapUberPicture::SetMapInteractionMode); SetActiveMapOrderEntry already reproduces
     // this exact invalidate-old/set/invalidate-new/refresh sequence.
@@ -435,5 +440,20 @@ undefined TWorldView::OrphanLeaf_NoCall_Ins02_005966e0(short arg1) {
   return 0;
 }
 
+// Shared slot-0xc6 (byte 0x1f0) body across the view classes: probe the map-dialog
+// tile marker (slot 0x7b); if it reports nothing pending, refresh this view's marker
+// (slot 0x76), then always refresh the owner view's marker through the same slot, run the
+// owner panel's input-capture reset (slots 0x16 -> 0x4f), and spin the shifted-tick busy
+// wait. ownerContext is typed TView*, but slot 0x76 lives in TView's vtable (null in the
+// base, filled by derived views); the static_cast down to TWorldView selects that slot
+// and compiles to the identical `call [vtable+0x1d8]`.
 // FUNCTION: IMPERIALISM 0x00596700
-void TWorldView::OrphanCallChain_C6_I29_00596700() {}
+void TWorldView::OrphanCallChain_C6_I29_00596700(int arg1) {
+  if (OrphanLeaf_NoCall_Ins02_005966e0(static_cast<short>(arg1)) == 0) {
+    UpdateMapDialogTileRowColumnMarkerAndInvalidate(arg1);
+  }
+  static_cast<TWorldView*>(ownerContext)->UpdateMapDialogTileRowColumnMarkerAndInvalidate(arg1);
+  OwnerPanel()->InvokeSlot13C();
+  reinterpret_cast<void(__cdecl*)(int)>(
+      WrapperFor_thunk_BusyWaitUntilShiftedTickDeadline_At005c3b40)(0x1e);
+}
