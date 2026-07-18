@@ -613,7 +613,9 @@ void TDiplomacyMapView::RenderDiplomacyLegendSurfaceAndPresent(const RECT* prese
   SetQuickDrawFillColor(0xffffff);
   RgnHandle frameRegion = g_pStrategicMapViewSystem->GetClipRegionSlotByIndex(
       static_cast<short>(frameRegionSelectorAt98));
-  reinterpret_cast<void(__fastcall*)(void*, int, void*)>(FrameRegionOnHdcAndReleaseBrushState)(
+  // 0x497860 is a genuine __cdecl free function (ret 0, all args on the stack); only its
+  // stub arg/return types are adjusted here -- the convention is not faked.
+  reinterpret_cast<void(__cdecl*)(void*, int, void*)>(FrameRegionOnHdcAndReleaseBrushState)(
       this, 0, frameRegion);
   SetQuickDrawFillColor(0);
 }

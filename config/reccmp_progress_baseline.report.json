@@ -14982,7 +14982,7 @@
     },
     {
       "address": "0x4f6170",
-      "matching": 0.5722713864306784,
+      "matching": 0.5705882352941176,
       "name": "TDiplomacyMapView::RenderDiplomacyLegendSurfaceAndPresent",
       "type": 1
     },
@@ -38429,7 +38429,7 @@
     },
     {
       "address": "0x6091d9",
-      "matching": 1.0,
+      "matching": 0.9787234042553191,
       "name": "CWnd::OnNotify",
       "type": 1
     },
