@@ -15,6 +15,7 @@ module|tools.workflow.resolve_autogen_thunks|just:normalize-autogen|Resolve Ghid
 module|tools.workflow.reshape_autogen_signatures|just:normalize-autogen|Reshape Ghidra thiscall autogen heads into C++ member definitions
 module|tools.workflow.check_marker_hygiene|just:marker-gate|Marker hygiene gate (Hard Rules 3 and 4)
 module|tools.workflow.check_generated_markers|just:generated-marker-gate|Reject stale recover-class generated-decl markers in manual source
+module|tools.workflow.check_ilt_ossification|just:ilt-ossification-gate|Ratchet gate against ILT/thunk-name ossification in manual source
 module|tools.workflow.check_construction_antipatterns|just:antipattern-gate|Real-C++-construction anti-pattern gate
 module|tools.workflow.check_tgreatpower_hygiene|just:tgreatpower-gate|TGreatPower hygiene policy gate
 module|tools.workflow.check_global_location|just:global-location-gate|Global definition location policy gate
