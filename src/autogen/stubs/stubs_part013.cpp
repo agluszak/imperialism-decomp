@@ -411,14 +411,6 @@ undefined4 DiscardTileTokenArgumentAndReturn(void)
   return 0;
 }
 
-// ghidra_name TDiplomacyMapView::AppendPackedColorDwordToMaskBuffers
-// ghidra_proto undefined AppendPackedColorDwordToMaskBuffers()
-// FUNCTION: IMPERIALISM 0x004d4bf0
-undefined4 AppendPackedColorDwordToMaskBuffers(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_ReallocateHeapBlockWithAllocatorTracking_At004d4dd0
 // ghidra_proto undefined WrapperFor_ReallocateHeapBlockWithAllocatorTracking_At004d4dd0()
 // FUNCTION: IMPERIALISM 0x004d4dd0

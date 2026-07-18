@@ -2256,7 +2256,7 @@ address|name|symbol|size|type|prototype|provenance
 4d49f0|HandleMapHotkeyW_ResetSelectedActionableObjects||146|function|undefined HandleMapHotkeyW_ResetSelectedActionableObjects()|
 4d4b90|OrphanLeaf_NoCall_Ins15_004d4b90||48|function|undefined OrphanLeaf_NoCall_Ins15_004d4b90()|
 4d4bd0|DiscardTileTokenArgumentAndReturn||3|function|undefined DiscardTileTokenArgumentAndReturn()|
-4d4bf0|TDiplomacyMapView::AppendPackedColorDwordToMaskBuffers||382|function|undefined AppendPackedColorDwordToMaskBuffers()|
+4d4bf0|StrategicMapCallbackRecord::AppendPackedColorDword||382|function|undefined AppendPackedColorDwordToMaskBuffers()|
 4d4dd0|WrapperFor_ReallocateHeapBlockWithAllocatorTracking_At004d4dd0||80|function|undefined WrapperFor_ReallocateHeapBlockWithAllocatorTracking_At004d4dd0()|
 4d4e40|StrategicMapCallbackRecord::EnsureOpcodeBufferByteAtIndex||102|function|unsigned char * __thiscall EnsureOpcodeBufferByteAtIndex(int index)|
 4d4ed0|WrapperFor_ReallocateHeapBlockWithAllocatorTracking_At004d4ed0||94|function|undefined WrapperFor_ReallocateHeapBlockWithAllocatorTracking_At004d4ed0()|
