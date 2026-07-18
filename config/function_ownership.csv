@@ -2143,6 +2143,7 @@ address|target_cpp|ownership|note
 4ee700|src/game/TDiplomacyMgr.cpp|manual|marker_sync
 4ee7a0|src/game/TDiplomacyMgr.cpp|manual|marker_sync
 4ee8c0|src/game/TSimMgr.cpp|manual|marker_sync
+4eee60|src/game/TDiplomacyMgr.cpp|manual|marker_sync
 4eef50|src/game/TDiplomacyMgr.cpp|manual|marker_sync
 4ef040|src/game/TDiplomacyMgr.cpp|manual|marker_sync
 4ef080|src/game/TDiplomacyMgr.cpp|manual|marker_sync
@@ -4027,6 +4028,7 @@ address|target_cpp|ownership|note
 581200|src/game/TSimMgr.cpp|manual|marker_sync
 581260|src/game/TSimMgr.cpp|manual|marker_sync
 581280|src/game/TSimMgr.cpp|manual|marker_sync
+581300|src/game/TSimMgr.cpp|manual|marker_sync
 581400|src/game/TSimMgr.cpp|manual|marker_sync
 581870|src/game/TSimMgr.cpp|manual|marker_sync
 581ae0|src/game/TSimMgr.cpp|manual|marker_sync

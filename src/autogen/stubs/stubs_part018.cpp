@@ -179,14 +179,6 @@ undefined4 GetSumField34PlusField30(void)
   return 0;
 }
 
-// ghidra_name RemoveNationSlotAndNotifyPeers
-// ghidra_proto undefined RemoveNationSlotAndNotifyPeers()
-// FUNCTION: IMPERIALISM 0x00581300
-undefined4 RemoveNationSlotAndNotifyPeers(void)
-{
-  return 0;
-}
-
 // ghidra_name UpdatePersistentTopTenNationScores
 // ghidra_proto undefined UpdatePersistentTopTenNationScores()
 // FUNCTION: IMPERIALISM 0x00581510

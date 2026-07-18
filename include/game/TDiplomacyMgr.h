@@ -156,6 +156,11 @@ public:
   short LookupOrderCompatibilityMatrixValue(int sourceNationSlot, int targetNationSlot);
   void ProcessQueuedWarTransitions();
   void ResetTerrainAdjacencyMatrixRowAndSymmetricLink(short nationSlot);
+  // 0x4eee60 -- resets the removed nation's relation rows/columns (standing-score and
+  // propagation matrices). Great-power slots 0..6 clear the propagation entry unless it is
+  // already the "6" sentinel (or the nation lost its terrain descriptor); the standing
+  // score resets to 0x5a only when the descriptor is gone. Minor slots 7..22 always reset.
+  void RemoveNationSlotAndNotifyPeers_Impl(short nationSlot);
   // Mirrors g_pSimMgr's current turn tick into proposalDispatchCounter790. 0x4f0590.
   void SyncNationField790FromLocalizationStateId();
 

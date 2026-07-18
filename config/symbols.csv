@@ -2707,7 +2707,7 @@ address|name|symbol|size|type|prototype|provenance
 4eea57|set_diagonal_relation_forbid_self|||global||
 4eeb26|apply_random_special_minor_pairings|||global||
 4eec95|apply_late_scenario_open_relations|||global||
-4eee60|RemoveNationSlotAndNotifyPeers_Impl||181|function|undefined RemoveNationSlotAndNotifyPeers_Impl()|
+4eee60|TDiplomacyMgr::RemoveNationSlotAndNotifyPeers_Impl||181|function|undefined RemoveNationSlotAndNotifyPeers_Impl()|
 4eef50|ResetTerrainAdjacencyMatrixRowAndSymmetricLink||191|function|undefined ResetTerrainAdjacencyMatrixRowAndSymmetricLink()|
 4ef040|DiplomacyMgrVtableSlot1C_ReleaseQueuedCommandAndDestroy||43|function|undefined DiplomacyMgrVtableSlot1C_ReleaseQueuedCommandAndDestroy()|
 4ef080|TDiplomacyMgr::ReadFrom||418|function|undefined DeserializeRelationshipSortedListBuffersFromStreamSwapBytes()|
@@ -4853,7 +4853,7 @@ address|name|symbol|size|type|prototype|provenance
 581240|GetSumField34PlusField30||9|function|undefined GetSumField34PlusField30()|
 581260|GetActiveNationId||5|function|undefined GetActiveNationId()|
 581280|IsNationSlotEligibleForEventProcessing||81|function|undefined IsNationSlotEligibleForEventProcessing()|
-581300|RemoveNationSlotAndNotifyPeers||159|function|undefined RemoveNationSlotAndNotifyPeers()|
+581300|TSimMgr::RemoveNationSlotAndNotifyPeers||159|function|undefined RemoveNationSlotAndNotifyPeers()|
 581400|InitializeOrLoadEntryArray14AndClampLimits||201|function|undefined InitializeOrLoadEntryArray14AndClampLimits()|
 581510|UpdatePersistentTopTenNationScores||675|function|undefined UpdatePersistentTopTenNationScores()|
 581870|ReinitializeGameFlowAndPostTurnEventCode||494|function|undefined ReinitializeGameFlowAndPostTurnEventCode()|

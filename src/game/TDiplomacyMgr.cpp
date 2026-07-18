@@ -142,6 +142,32 @@ void TDiplomacyMgr::InitializeTDiplomacyTurnStateManagerDefaults() {
   } while (rowCount != 0);
 }
 
+// FUNCTION: IMPERIALISM 0x004eee60
+void TDiplomacyMgr::RemoveNationSlotAndNotifyPeers_Impl(short nationSlot) {
+  const int row = nationSlot;
+  // Great-power slots 0..6: clear the propagation-matrix entry (both [row][i] and [i][row])
+  // unless it already holds the "6" sentinel and the nation still has a terrain descriptor.
+  // When the descriptor is gone, also reset the standing score to 0x5a in both directions.
+  for (int i = 0; i < 7; ++i) {
+    if (relationPropagationMatrixBbe[row * kNationSlotCount + i] != 6 ||
+        g_apTerrainTypeDescriptorTable[row] == 0) {
+      relationPropagationMatrixBbe[row * kNationSlotCount + i] = 4;
+      relationPropagationMatrixBbe[i * kNationSlotCount + row] = 4;
+      if (g_apTerrainTypeDescriptorTable[row] == 0) {
+        relationStandingScoreMatrix79c[row * kNationSlotCount + i] = 0x5a;
+        relationStandingScoreMatrix79c[i * kNationSlotCount + row] = 0x5a;
+      }
+    }
+  }
+  // Minor slots 7..22: unconditionally reset both matrices in both directions.
+  for (int j = 7; j < kNationSlotCount; ++j) {
+    relationPropagationMatrixBbe[row * kNationSlotCount + j] = 4;
+    relationPropagationMatrixBbe[j * kNationSlotCount + row] = 4;
+    relationStandingScoreMatrix79c[row * kNationSlotCount + j] = 0x5a;
+    relationStandingScoreMatrix79c[j * kNationSlotCount + row] = 0x5a;
+  }
+}
+
 // FUNCTION: IMPERIALISM 0x004eef50
 void TDiplomacyMgr::ResetTerrainAdjacencyMatrixRowAndSymmetricLink(short nationSlot) {
   int row = nationSlot;
