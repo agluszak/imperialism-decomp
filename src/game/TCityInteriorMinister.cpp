@@ -56,18 +56,18 @@ short TCityInteriorMinister::DispatchNationStateEventCode10(short nationSlot) {
 }
 
 // FUNCTION: IMPERIALISM 0x004beeb0
-void TCityInteriorMinister::InteriorSlot1A() {}
+void TCityInteriorMinister::InteriorSlot1A(short) {}
 
 // FUNCTION: IMPERIALISM 0x004beee0
-void TCityInteriorMinister::InteriorSlot1B() {}
+void TCityInteriorMinister::InteriorSlot1B(short) {}
 
 // FUNCTION: IMPERIALISM 0x004bef10
-undefined TCityInteriorMinister::VTableSlot2D() {
+undefined TCityInteriorMinister::VTableSlot2D(short) {
   return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004bef30
-void TCityInteriorMinister::InteriorSlot1C() {}
+void TCityInteriorMinister::InteriorSlot1C(short) {}
 
 // FUNCTION: IMPERIALISM 0x004bef60
 void TCityInteriorMinister::WriteTo(TStream* stream) {
@@ -83,62 +83,64 @@ void TCityInteriorMinister::ReadFrom(TStream* stream) {
 void TCityInteriorMinister::Call54() {}
 
 // FUNCTION: IMPERIALISM 0x004bf8a0
-undefined TCityInteriorMinister::VTableSlot21() {
+undefined TCityInteriorMinister::VTableSlot21(int) {
   return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004bfa50
-undefined TCityInteriorMinister::GetTEventHandlerClassNamePointer_22() {
+undefined TCityInteriorMinister::GetTEventHandlerClassNamePointer_22(int, int) {
   return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004bfb20
-undefined TCityInteriorMinister::QueueCityProductionRebalanceCommandsByThresholds() {
+undefined TCityInteriorMinister::QueueCityProductionRebalanceCommandsByThresholds(TCity*, int*) {
   return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004bff60
-undefined TCityInteriorMinister::GetTEventHandlerClassNamePointer_24() {
+undefined TCityInteriorMinister::GetTEventHandlerClassNamePointer_24(int, int) {
   return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004bff80
-undefined TCityInteriorMinister::QueueCityProductionCommand33FromAccumulatedDeficit() {
+undefined TCityInteriorMinister::QueueCityProductionCommand33FromAccumulatedDeficit(int*, int) {
   return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004c0090
-undefined TCityInteriorMinister::DistributeCityProductionCommandBudgetAndQueueOrders() {
+undefined TCityInteriorMinister::DistributeCityProductionCommandBudgetAndQueueOrders(TCity*,
+                                                                                     void*) {
   return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004c02c0
-undefined TCityInteriorMinister::QueueCityProductionCommand17Or18FromSupportRatio() {
+undefined TCityInteriorMinister::QueueCityProductionCommand17Or18FromSupportRatio(void*, int*) {
   return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004c04e0
-undefined TCityInteriorMinister::QueueRandomCityProductionCommand19To1C() {
+undefined TCityInteriorMinister::QueueRandomCityProductionCommand19To1C(void*, void*) {
   return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004c05a0
-undefined TCityInteriorMinister::QueueCityProductionCommand2BIfMissingAndResetValue() {
+undefined TCityInteriorMinister::QueueCityProductionCommand2BIfMissingAndResetValue(int, int*) {
   return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004c0690
-undefined TCityInteriorMinister::QueueSingleCityProductionCommandFromField36() {
+undefined TCityInteriorMinister::QueueSingleCityProductionCommandFromField36(void*, void*) {
   return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004c0730
-undefined TCityInteriorMinister::QueueSingleCityProductionCommandFromField38() {
+undefined TCityInteriorMinister::QueueSingleCityProductionCommandFromField38(void*, void*) {
   return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004c07d0
-undefined TCityInteriorMinister::DistributeCityProductionAcrossOrderTemplatesAndBackfillDeficits() {
+undefined
+TCityInteriorMinister::DistributeCityProductionAcrossOrderTemplatesAndBackfillDeficits(TCity*) {
   return 0;
 }
 
@@ -148,12 +150,13 @@ void TCityInteriorMinister::NoOpForeignMinisterUtilityStub(void* receiver) {
 }
 
 // FUNCTION: IMPERIALISM 0x004c0de0
-undefined TCityInteriorMinister::SetForeignMinisterReadyFlag14_2e() {
+undefined TCityInteriorMinister::SetForeignMinisterReadyFlag14_2e(short, short, short) {
   return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004c0e50
-undefined TCityInteriorMinister::ReconcileCityProductionQueueAgainstTargetsAndAdjustOrders() {
+undefined TCityInteriorMinister::ReconcileCityProductionQueueAgainstTargetsAndAdjustOrders(int*,
+                                                                                           int) {
   return 0;
 }
 
@@ -186,42 +189,42 @@ undefined TCityInteriorMinister::AutoAssignProspectingOrdersFromSeedTileNeighbor
 }
 
 // FUNCTION: IMPERIALISM 0x004c2d50
-undefined TCityInteriorMinister::IterateLinkedListCursorEntries_004c2d50() {
+undefined TCityInteriorMinister::IterateLinkedListCursorEntries_004c2d50(int, int) {
   return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004c2e10
-undefined TCityInteriorMinister::HandleFrogCityTileSelectionAndDispatchOrders() {
+undefined TCityInteriorMinister::HandleFrogCityTileSelectionAndDispatchOrders(int*, int, int) {
   return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004c3170
-undefined TCityInteriorMinister::SelectBestFrogCityTileFromCandidateSet() {
+undefined TCityInteriorMinister::SelectBestFrogCityTileFromCandidateSet(short, int, int, int) {
   return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004c3490
-undefined TCityInteriorMinister::ComputeFrogCityCandidateScoreFromNationNeeds() {
+undefined TCityInteriorMinister::ComputeFrogCityCandidateScoreFromNationNeeds(int) {
   return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004c3620
-undefined TCityInteriorMinister::GetTEventHandlerClassNamePointer_3a() {
+undefined TCityInteriorMinister::GetTEventHandlerClassNamePointer_3a(int, int, int) {
   return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004c3640
-undefined TCityInteriorMinister::BuildFrogCityDistanceMapFromPrimarySeedSet() {
+undefined TCityInteriorMinister::BuildFrogCityDistanceMapFromPrimarySeedSet(int) {
   return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004c3910
-undefined TCityInteriorMinister::BuildFrogCityDistanceMapFromReachableSeaCandidates() {
+undefined TCityInteriorMinister::BuildFrogCityDistanceMapFromReachableSeaCandidates(int) {
   return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004c3c00
-undefined TCityInteriorMinister::RebalanceCityOrderAllocationTargets() {
+undefined TCityInteriorMinister::RebalanceCityOrderAllocationTargets(int*) {
   return 0;
 }
 

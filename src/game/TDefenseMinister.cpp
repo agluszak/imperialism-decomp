@@ -1,5 +1,7 @@
 #include "game/TDefenseMinister.h"
 
+#include "game/global_data_tables.h"
+
 #include "game/CIterator.h"
 #include "game/mfc.h"
 #include "game/TGreatPower.h"
@@ -9,7 +11,9 @@
 // Slot 24 (0x60) — body 0x4ec0a0; placed first because it is the lowest address.
 
 // FUNCTION: IMPERIALISM 0x004ec0a0
-undefined TDefenseMinister::CreateTDefenseMinisterInstance() { return 0; }
+double TDefenseMinister::GetPersonalityWeightByFlag(char) {
+  return g_DefenseMinisterWeightZero_006548E0;
+}
 // SYNTHETIC: IMPERIALISM 0x004ec020
 // TDefenseMinister::CreateObject
 
@@ -150,10 +154,16 @@ void TDefenseMinister::MinisterSlot14() {}
 // Slot 21 override (0x4ecbb0).
 
 // FUNCTION: IMPERIALISM 0x004ecbb0
-undefined TDefenseMinister::BuildTileRingPriorityMapForNationTileList() { return 0; }
+undefined TDefenseMinister::BuildTileRingPriorityMapForNationTileList(int*) {
+  return 0;
+}
 
 // FUNCTION: IMPERIALISM 0x004ecf20
-undefined TDefenseMinister::BuildStrategicTilePriorityHeatmap() { return 0; }
+undefined TDefenseMinister::BuildStrategicTilePriorityHeatmap() {
+  return 0;
+}
 
 // FUNCTION: IMPERIALISM 0x004ed050
-undefined TDefenseMinister::BuildHexAreaTileIndexListIntoAllocatedBuffer() { return 0; }
+undefined TDefenseMinister::BuildHexAreaTileIndexListIntoAllocatedBuffer(char) {
+  return 0;
+}

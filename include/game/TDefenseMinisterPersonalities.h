@@ -10,7 +10,7 @@ public:
   TNapoleonMinister();
   DECLARE_DYNCREATE(TNapoleonMinister)
   void NoOpForeignMinisterUtilityStub(void* receiver) override;
-  undefined CreateTDefenseMinisterInstance() override;
+  double GetPersonalityWeightByFlag(char flag) override;
 };
 
 // VTABLE: IMPERIALISM 0x00654aa0
@@ -19,7 +19,7 @@ public:
   TBismarckMinister();
   DECLARE_DYNCREATE(TBismarckMinister)
   void NoOpForeignMinisterUtilityStub(void* receiver) override;
-  undefined CreateTDefenseMinisterInstance() override;
+  double GetPersonalityWeightByFlag(char flag) override;
 };
 
 // VTABLE: IMPERIALISM 0x00654b18
@@ -28,7 +28,7 @@ public:
   TPirateMinister();
   DECLARE_DYNCREATE(TPirateMinister)
   void NoOpForeignMinisterUtilityStub(void* receiver) override;
-  undefined CreateTDefenseMinisterInstance() override;
+  double GetPersonalityWeightByFlag(char flag) override;
 };
 
 // VTABLE: IMPERIALISM 0x00654b90
@@ -37,7 +37,7 @@ public:
   TDefenderMinister();
   DECLARE_DYNCREATE(TDefenderMinister)
   void NoOpForeignMinisterUtilityStub(void* receiver) override;
-  undefined CreateTDefenseMinisterInstance() override;
+  double GetPersonalityWeightByFlag(char flag) override;
 };
 
 // VTABLE: IMPERIALISM 0x00654c08
@@ -46,5 +46,5 @@ public:
   TBullyMinister();
   DECLARE_DYNCREATE(TBullyMinister)
   void NoOpForeignMinisterUtilityStub(void* receiver) override;
-  undefined CreateTDefenseMinisterInstance() override;
+  double GetPersonalityWeightByFlag(char flag) override;
 };

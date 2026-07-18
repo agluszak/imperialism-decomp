@@ -150,7 +150,9 @@ public:
   virtual void AssertCityProductionGlobalStateInitialized(int arg1,
                                                           int arg2); // slot 0x6a 0x429470
   virtual void NoOpUiViewSlotHandler(int arg1, int arg2);            // slot 0x6b 0x48e9c0
-  virtual undefined ReturnZeroFromUiSlot6C();                        // slot 0x6c 0x48e9e0
+  // One ignored stack arg (bare RET 0x4). Pure base slot inherited by 154
+  // UI classes with no overrides. slot 0x6c 0x48e9e0
+  virtual undefined ReturnZeroFromUiSlot6C(int unusedArg); // slot 0x6c 0x48e9e0
   virtual void
   SetCityProductionDialogPictureRectAndMaybeRefresh(TControlPictureRectState* state,
                                                     char refreshNow); // slot 0x6d 0x48e7d0
