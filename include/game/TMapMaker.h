@@ -19,16 +19,45 @@ public:
   // SetControlValue; 0-arg __thiscall, verified RET 0). Driver retries it until the
   // validity checks pass. slot 11 / 0x2c
   virtual void RunMapGenerationAttempt();
-  virtual TEventHandler* QueryStepValue();                       // slot 12 / 0x30
-  virtual void DispatchQueuedUiCommandAndRelease(void* payload); // slot 13 / 0x34
+  // Verified RET 0x10 (4 stack args) from both the caller (0x526c20, which pushes 4
+  // explicit ints) and the callee's own frame layout -- the header's previous 0-arg
+  // "QueryStepValue() -> TEventHandler*" was templated off TEventHandler's real
+  // virtual of the same name/slot position and does not describe this class's real
+  // slot. Recursively assigns a region class to a coarse grid cell and its
+  // best-scoring hex neighbour, retrying up to `retryBudget` times; returns the
+  // number of successful assignments. slot 12 / 0x30
+  virtual int AssignRegionClassToCellAndNeighbors(int cellIndex, int mode, int classIndex,
+                                                  int retryBudget);
+  // Verified 2 stack int args + char return from the 0x527040 call site (pushes
+  // classIndex then cellIndex, tests AL) -- the header's previous 1-arg void*
+  // signature was templated off TEventHandler::DispatchQueuedUiCommandAndRelease and
+  // does not describe this class's real slot. Only tried for major nations
+  // (classIndex < 7). Body NOT YET PORTED (still `return 0` -- same as before this
+  // signature fix, so no behavior regression): the real body (0x527300) is a
+  // union-find merge over each hex neighbour's assigned class, using THREE fields not
+  // yet modeled in this header -- `int groupMemberLists1a8[7][3]` (+0x1a8, -1
+  // terminated, up to 3 member class-indices per group id; ownership evidence:
+  // `cityRegionNextId1fc`/`cityRegionIds200` at +0x1fc/+0x200 are read/written right
+  // alongside it) plus the two already-modeled fields. Returns false on a genuine
+  // group-id conflict between `classIndex` and a neighbour's already-assigned group;
+  // otherwise merges/allocates group ids as a side effect and returns true. Needs a
+  // dedicated pass to add the +0x1a8 field and port both this and slot 0x40's twin
+  // logic (0x5274d0) together, since they share the same union-find fields. slot 13 / 0x34
+  virtual char TryMergeRegionGroupWithNeighborsRestrictedToMajors(int cellIndex, int classIndex);
   // Map-gen pass dispatched right after city-region ids are assigned (was junk-named
   // DispatchUiSelectionToHandler; 0-arg __thiscall, verified RET 0). slot 14 / 0x38
   virtual void MapGenPassSlot0E();
   // Map-gen pass (was junk-named HandleEvent with 3 phantom args; 0-arg __thiscall).
   // slot 15 / 0x3c
   virtual void MapGenPassSlot0F();
-  virtual void DispatchEvent(int commandId, TEventHandler* sourceHandler,
-                             TEvent* event);         // slot 16 / 0x40
+  // Verified 2 stack int args + char return, same call site/args as slot 0x34 above
+  // (tried for every class, not just majors) -- the header's previous 3-arg
+  // TEventHandler-shaped DispatchEvent signature does not describe this class's real
+  // slot. Body NOT YET PORTED (still `return 0`): the real body (0x5274d0) is the
+  // same union-find neighbor-merge as slot 0x34 above but WITHOUT the +0x1a8
+  // group-membership bookkeeping (allocates/merges `cityRegionIds200` group ids
+  // directly) -- port together with slot 0x34 once +0x1a8 is modeled. slot 16 / 0x40
+  virtual char TryMergeRegionGroupWithNeighbors(int cellIndex, int classIndex);
   virtual void vmethod_0017(int param);              // slot 17 / 0x44
   virtual void ForwardParam(int param);              // slot 18 / 0x48
   virtual char DoIdle(int action);                   // slot 19 / 0x4c
@@ -138,12 +167,22 @@ public:
   TGlobalMapCityScoreRecord* cityScoreTable0c;
   // +0x10 region-class grid: 15 rows x 27 columns of region-class bytes (-1 = unassigned).
   signed char regionClassGrid10[15][27];
-  char pad_1a5[0x1fc - 0x1a5]; // +0x1a5
+  char pad_1a5[0x1a8 - 0x1a5]; // +0x1a5
+  // +0x1a8 per-class-index union-find group-membership lists: up to 3 member class
+  // indices per group id (index 0..6 = major-nation groups), -1 terminated. Read/written
+  // alongside cityRegionNextId1fc/cityRegionIds200 by the region-merge slots
+  // (TryMergeRegionGroupWithNeighborsRestrictedToMajors/TryMergeRegionGroupWithNeighbors,
+  // 0x527300/0x5274d0) and reset here by RunMapGenerationAttempt.
+  int groupMemberLists1a8[7][3];
   // +0x1fc next city-region id + the 0x17-entry id table the driver backfills
   // (-1 slots get ++cityRegionNextId1fc).
   int cityRegionNextId1fc;
   int cityRegionIds200[0x17];
-  char pad_25c[0x2a1 - 0x25c]; // +0x25c
+  char pad_25c[0x29c - 0x25c]; // +0x25c
+  // Reset to -1 by RunMapGenerationAttempt alongside the other per-attempt scratch
+  // state; not yet observed read anywhere. 0x0052712c.
+  int lastMinorSeedCandidate29c;
+  char pad_2a0[0x2a1 - 0x2a0]; // +0x2a0
   // +0x2a1 mode byte copied in by the BuildOrLoadGlobalMapStateForSession caller.
   unsigned char modeByte2a1;
   char pad_2a2[2];

@@ -1,3 +1,4 @@
+#include <string.h>
 #include <time.h>
 
 #include "game/TMapMaker.h"
@@ -579,22 +580,181 @@ char TMapMaker::GetBoolSlot28() {
   return 0;
 }
 
+// Resets the per-attempt scratch state (region-class grid, union-find group tables),
+// then seeds each of the 7 major nations with an 8-cell region at a random unclaimed
+// cell, followed by each of the 16 minor nations with a 4-cell region at a random cell
+// biased to sit adjacent to an already-claimed region (tried up to 4 times).
 // FUNCTION: IMPERIALISM 0x00526c20
-void TMapMaker::RunMapGenerationAttempt() {}
+void TMapMaker::RunMapGenerationAttempt() {
+  memset(regionClassGrid10, -1, sizeof(regionClassGrid10));
+  memset(groupMemberLists1a8, -1, sizeof(groupMemberLists1a8));
+  cityRegionNextId1fc = -1;
+  memset(cityRegionIds200, -1, sizeof(cityRegionIds200));
+  lastMinorSeedCandidate29c = -1;
 
+  signed char* regionClassGridFlat = reinterpret_cast<signed char*>(regionClassGrid10);
+
+  for (int classIndex = 0; classIndex < 7; ++classIndex) {
+    int assigned;
+    do {
+      cityRegionIds200[classIndex] = -1;
+      for (int cell = 0; cell < 15 * 27; ++cell) {
+        if (regionClassGridFlat[cell] == classIndex) {
+          regionClassGridFlat[cell] = -1;
+        }
+      }
+      for (int group = 0; group < 7; ++group) {
+        for (int member = 0; member < 3; ++member) {
+          if (groupMemberLists1a8[group][member] == classIndex) {
+            groupMemberLists1a8[group][member] = -1;
+          }
+        }
+      }
+
+      int cellIndex;
+      do {
+        g_mapGenLcgState_006a38e8 = g_mapGenLcgState_006a38e8 * 0x15a4e35 + 1;
+        cellIndex = static_cast<int>((g_mapGenLcgState_006a38e8 >> 0xc & 0x7fff) % 0x195);
+      } while (regionClassGridFlat[cellIndex] != -1);
+      assigned = AssignRegionClassToCellAndNeighbors(cellIndex, 8, classIndex, 5);
+    } while (assigned != 8);
+  }
+
+  for (int minorClassIndex = 7; minorClassIndex < 0x17; ++minorClassIndex) {
+    int parity = (minorClassIndex - 7) >> 2;
+    int assigned;
+    do {
+      cityRegionIds200[minorClassIndex] = -1;
+      for (int minorCell = 0; minorCell < 15 * 27; ++minorCell) {
+        if (regionClassGridFlat[minorCell] == minorClassIndex) {
+          regionClassGridFlat[minorCell] = -1;
+        }
+      }
+      for (int minorGroup = 0; minorGroup < 7; ++minorGroup) {
+        for (int minorMember = 0; minorMember < 3; ++minorMember) {
+          if (groupMemberLists1a8[minorGroup][minorMember] == minorClassIndex) {
+            groupMemberLists1a8[minorGroup][minorMember] = -1;
+          }
+        }
+      }
+
+      int cellIndex = 0;
+      bool hasAssignedNeighbor = false;
+      for (int attempt = 0; attempt < 4 && !hasAssignedNeighbor; ++attempt) {
+        unsigned int rngTemp = g_mapGenLcgState_006a38e8 * 0x15a4e35 + 1;
+        g_mapGenLcgState_006a38e8 = rngTemp * 0x15a4e35 + 1;
+        int roll1 = static_cast<int>((rngTemp >> 0xc & 0x7fff) % 0x1b);
+        int roll2 = static_cast<int>((g_mapGenLcgState_006a38e8 >> 0xc & 0x7fff) % 0xf);
+        cellIndex =
+            roll1 / 2 + ((parity & 1) ? 0xd : 0) + (roll2 / 2 + ((parity < 2) ? 0 : 7)) * 0x1b;
+        for (int dir = 0; dir < 6; ++dir) {
+          int neighborCell = GetAdjacentRegionGridCell(cellIndex, dir);
+          if (neighborCell != -1 && regionClassGridFlat[neighborCell] != -1) {
+            hasAssignedNeighbor = true;
+          }
+        }
+      }
+      assigned = AssignRegionClassToCellAndNeighbors(cellIndex, 4, minorClassIndex, 5);
+    } while (assigned != 4);
+  }
+}
+
+// Recursively claims `cellIndex` for `classIndex`, then spreads to its hex neighbors by
+// weighted-random selection (each neighbor's weight boosted +10 per further neighbor
+// already owned by `classIndex`), retrying until `retryBudget` assignments succeed or no
+// neighbor remains eligible. Returns the number of successful assignments.
 // FUNCTION: IMPERIALISM 0x00527040
-TEventHandler* TMapMaker::QueryStepValue() {
+int TMapMaker::AssignRegionClassToCellAndNeighbors(int cellIndex, int mode, int classIndex,
+                                                   int retryBudget) {
+  if (mode == 0 || cellIndex / 27 <= 0 || cellIndex / 27 >= 14 ||
+      regionClassGrid10[cellIndex / 27][cellIndex % 27] != -1) {
+    return 0;
+  }
+  if (classIndex < 7) {
+    if (!TryMergeRegionGroupWithNeighborsRestrictedToMajors(cellIndex, classIndex)) {
+      return 0;
+    }
+  } else if (!TryMergeRegionGroupWithNeighbors(cellIndex, classIndex)) {
+    return 0;
+  }
+
+  int remaining = mode - 1;
+  regionClassGrid10[cellIndex / 27][cellIndex % 27] = static_cast<signed char>(classIndex);
+
+  bool excluded[6];
+  int availableCount = 6;
+  for (int dir = 0; dir < 6; ++dir) {
+    int neighborCell = GetAdjacentRegionGridCell(cellIndex, dir);
+    if (neighborCell == -1 || dir == retryBudget) {
+      excluded[dir] = true;
+      --availableCount;
+    } else {
+      excluded[dir] = false;
+    }
+  }
+
+  int lastCell = cellIndex;
+  while (remaining != 0 && availableCount != 0) {
+    int weights[6];
+    int totalWeight = 0;
+    for (int dir = 0; dir < 6; ++dir) {
+      if (excluded[dir]) {
+        weights[dir] = 0;
+      } else {
+        int neighborCell = GetAdjacentRegionGridCell(lastCell, dir);
+        int weight = (dir != retryBudget) ? 10 : 2;
+        for (int dir2 = 0; dir2 < 6; ++dir2) {
+          int neighborOfNeighbor = GetAdjacentRegionGridCell(neighborCell, dir2);
+          if (neighborOfNeighbor != -1 &&
+              regionClassGrid10[neighborOfNeighbor / 27][neighborOfNeighbor % 27] == classIndex) {
+            weight += 10;
+          }
+        }
+        weights[dir] = weight;
+      }
+      totalWeight += weights[dir];
+    }
+
+    g_mapGenLcgState_006a38e8 = g_mapGenLcgState_006a38e8 * 0x15a4e35 + 1;
+    int roll = static_cast<int>((g_mapGenLcgState_006a38e8 >> 0xc & 0x7fff) % totalWeight);
+    int selectedDir = 0;
+    if (weights[0] < roll) {
+      int cumulative = weights[0];
+      do {
+        int nextWeight = weights[selectedDir + 1];
+        weights[selectedDir + 1] = nextWeight + cumulative;
+        cumulative = nextWeight + cumulative;
+        ++selectedDir;
+      } while (cumulative < roll);
+    }
+
+    int neighborCell = GetAdjacentRegionGridCell(lastCell, selectedDir);
+    int assigned =
+        AssignRegionClassToCellAndNeighbors(neighborCell, remaining, classIndex, selectedDir);
+    remaining -= assigned;
+    excluded[selectedDir] = true;
+    --availableCount;
+    lastCell = neighborCell;
+  }
+  return mode - remaining;
+}
+
+// Body not yet ported -- see the header doc comment (needs the +0x1a8
+// groupMemberLists1a8[7][3] field modeled first). Same `return 0` as before the
+// signature fix, so no behavior regression.
+// FUNCTION: IMPERIALISM 0x00527300
+char TMapMaker::TryMergeRegionGroupWithNeighborsRestrictedToMajors(int cellIndex, int classIndex) {
+  (void)cellIndex;
+  (void)classIndex;
   return 0;
 }
 
-// FUNCTION: IMPERIALISM 0x00527300
-void TMapMaker::DispatchQueuedUiCommandAndRelease(void* payload) {}
-
+// Body not yet ported -- see the header doc comment.
 // FUNCTION: IMPERIALISM 0x005274d0
-void TMapMaker::DispatchEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
-  (void)commandId;
-  (void)sourceHandler;
-  (void)event;
+char TMapMaker::TryMergeRegionGroupWithNeighbors(int cellIndex, int classIndex) {
+  (void)cellIndex;
+  (void)classIndex;
+  return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x005275a0
