@@ -9,9 +9,9 @@ each with the evidence needed to start (address, size, current score if any, blo
 
 - **TMapMaker phase bodies bucket is now fully landed** (all 6 originally-flagged/
   discovered functions ported: `0x526c20`/`0x527040`/`0x527730`/`0x528140`/
-  `0x5283c0`/`0x528e50`) — see the class-recovery writeup below. Remaining follow-up
-  in this class: the union-find stub pair `0x527300`/`0x5274d0` (signatures already
-  fixed, decompiles already captured, bodies not yet ported — see below).
+  `0x5283c0`/`0x528e50`) — see the class-recovery writeup below. The union-find stub
+  pair `0x527300`/`0x5274d0` is now also fully ported (38.05%/37.59%, `just vtable
+  TMapMaker` still 100%) — the whole TMapMaker "Big stubs" bucket is closed out.
 - **TMapMaker class recovery (landed 2026-07-18, `0x526c20` 0.83% -> 31.82%,
   `0x527040` 1.09% -> 28.14%, `0x527730` ~0% -> 29.58%, `0x528140` ~0% -> 32.95%,
   `0x5283c0` ~0% -> 29.69%, `0x528e50` ~0% -> 15.16%)**: confirmed the systemic
@@ -38,14 +38,15 @@ each with the evidence needed to start (address, size, current score if any, blo
     everyone). Renamed to `TryMergeRegionGroupWithNeighborsRestrictedToMajors`
     (0x527300) and `TryMergeRegionGroupWithNeighbors` (0x5274d0) — their real bodies
     are a union-find merge of `classIndex`'s region-group id against each hex
-    neighbor's assigned group, discovered via this pass: a previously-undiscovered
+    neighbor's assigned group, using a previously-undiscovered
     `int groupMemberLists1a8[7][3]` field (-1 terminated, up to 3 member class
     indices per group id), used alongside the already-known `cityRegionNextId1fc`/
-    `cityRegionIds200`. **Signatures fixed and now added to the header; BODIES NOT
-    YET PORTED** (still `return 0`, same as before this pass, so no behavior
-    regression) — a dedicated follow-up should port 0x527300 and 0x5274d0 together
-    since they share the union-find fields; decompiles already captured this
-    session show the full logic (both are ~60-70 lines, tractable).
+    `cityRegionIds200`. **Both bodies now fully ported** (0x527300 38.05%, 0x5274d0
+    37.59%; `just vtable TMapMaker` still 100%): 0x527300 (majors-only) tracks
+    membership in `groupMemberLists1a8` and fails only on a genuine two-established-
+    groups conflict or a full member list; 0x5274d0 (everyone) skips the member-list
+    bookkeeping and treats "this class already has a group, neighbor doesn't" as a
+    conflict too — a real asymmetry between the two, not a bug.
   - Slot 29/0x74 (`GetAdjacentRegionGridCell`) was re-verified CORRECT as-is
     (2-arg, matches every call site) — Ghidra's own "VTableSlot1D" fallback name for
     it in decompiles of OTHER functions is just an unresolved-symbol artifact, not
@@ -90,9 +91,9 @@ each with the evidence needed to start (address, size, current score if any, blo
     over rows 1..58 of the full-resolution grid — pass 1 erodes tiles with 0-2
     (50%/75% chance) same-owner hex neighbors into a differing neighbor's full
     0x24-byte record when one exists; pass 2 replaces any tile with NO same-owner
-    neighbor at all into a uniformly-random neighbor's record. This was the last
-    remaining function in the "Big stubs" TMapMaker bucket — it is now fully closed
-    out except for the union-find pair noted above.
+    neighbor at all into a uniformly-random neighbor's record. With the union-find
+    pair (0x527300/0x5274d0, see above) also landed, the entire "Big stubs" TMapMaker
+    bucket is now fully closed out.
 
 ## Known-bad re-ports (score far below structure)
 

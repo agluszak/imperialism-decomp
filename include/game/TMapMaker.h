@@ -32,17 +32,13 @@ public:
   // classIndex then cellIndex, tests AL) -- the header's previous 1-arg void*
   // signature was templated off TEventHandler::DispatchQueuedUiCommandAndRelease and
   // does not describe this class's real slot. Only tried for major nations
-  // (classIndex < 7). Body NOT YET PORTED (still `return 0` -- same as before this
-  // signature fix, so no behavior regression): the real body (0x527300) is a
-  // union-find merge over each hex neighbour's assigned class, using THREE fields not
-  // yet modeled in this header -- `int groupMemberLists1a8[7][3]` (+0x1a8, -1
-  // terminated, up to 3 member class-indices per group id; ownership evidence:
-  // `cityRegionNextId1fc`/`cityRegionIds200` at +0x1fc/+0x200 are read/written right
-  // alongside it) plus the two already-modeled fields. Returns false on a genuine
-  // group-id conflict between `classIndex` and a neighbour's already-assigned group;
-  // otherwise merges/allocates group ids as a side effect and returns true. Needs a
-  // dedicated pass to add the +0x1a8 field and port both this and slot 0x40's twin
-  // logic (0x5274d0) together, since they share the same union-find fields. slot 13 / 0x34
+  // (classIndex < 7). Union-find merge of `classIndex`'s region group against each hex
+  // neighbour's already-assigned class: allocates a new group id, adopts a neighbour's
+  // group, or absorbs a neighbour into this class's group (in whichever direction has
+  // no group yet), tracking up to 3 member class-indices per group id in
+  // `groupMemberLists1a8` (+0x1a8). Returns false the moment two neighbours already
+  // belong to two DIFFERENT established groups, or a group's member list is full;
+  // otherwise merges/allocates group ids as a side effect and returns true. slot 13 / 0x34
   virtual char TryMergeRegionGroupWithNeighborsRestrictedToMajors(int cellIndex, int classIndex);
   // Map-gen pass dispatched right after city-region ids are assigned (was junk-named
   // DispatchUiSelectionToHandler; 0-arg __thiscall, verified RET 0). slot 14 / 0x38
@@ -53,10 +49,11 @@ public:
   // Verified 2 stack int args + char return, same call site/args as slot 0x34 above
   // (tried for every class, not just majors) -- the header's previous 3-arg
   // TEventHandler-shaped DispatchEvent signature does not describe this class's real
-  // slot. Body NOT YET PORTED (still `return 0`): the real body (0x5274d0) is the
-  // same union-find neighbor-merge as slot 0x34 above but WITHOUT the +0x1a8
-  // group-membership bookkeeping (allocates/merges `cityRegionIds200` group ids
-  // directly) -- port together with slot 0x34 once +0x1a8 is modeled. slot 16 / 0x40
+  // slot. Same union-find neighbor-merge as slot 0x34 above but WITHOUT the +0x1a8
+  // group-membership bookkeeping: a class with an existing group can only merge by
+  // adopting a neighbour's group (or forming a new one when neither has one yet) --
+  // if this class already has a group and the neighbour doesn't, that's treated as a
+  // conflict (returns false) rather than expanding this class's group. slot 16 / 0x40
   virtual char TryMergeRegionGroupWithNeighbors(int cellIndex, int classIndex);
   // Verified 0 stack args (bare RET) -- the header's previous 1-arg form was wrong,
   // templated off a neighboring slot's shape rather than checked. Two-pass smoothing
