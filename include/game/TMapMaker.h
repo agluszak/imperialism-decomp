@@ -58,7 +58,14 @@ public:
   // group-membership bookkeeping (allocates/merges `cityRegionIds200` group ids
   // directly) -- port together with slot 0x34 once +0x1a8 is modeled. slot 16 / 0x40
   virtual char TryMergeRegionGroupWithNeighbors(int cellIndex, int classIndex);
-  virtual void vmethod_0017(int param); // slot 17 / 0x44
+  // Verified 0 stack args (bare RET) -- the header's previous 1-arg form was wrong,
+  // templated off a neighboring slot's shape rather than checked. Two-pass smoothing
+  // of the full-resolution generation grid's tile ownership (offset+4 field): pass 1
+  // erodes tiles with 0-2 same-owner hex neighbors (50%/75% chance for 1/2) into a
+  // differing neighbor's full record when one exists; pass 2 replaces any tile with
+  // NO same-owner neighbor at all into a uniformly-random neighbor's record. Only
+  // processes rows 1..58 (skips the border rows). slot 17 / 0x44
+  virtual void SmoothCityRegionOwnershipByNeighborSampling();
   // Verified 3 stack int args from both the caller (0x527730, which pushes 3
   // explicit ints) and Ghidra's own (correct, for once) 3-param signature recovery
   // on the callee itself -- the header's previous 1-arg form was wrong. Recursively
