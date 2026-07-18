@@ -131,11 +131,15 @@ public:
   // ConstructTScrollBarViewBaseState / the slot-0x37 hook (18 / height-36 / 18) and
   // clamped by TScrollView::SyncBoundedValueAndToggleControlStates
   // (word8c = min(word88, word8a)).
-  TView* ownerView84; // 0x84 — cached ownerContext (both builders store it + AssertValid)
-  short word88;       // 0x88 — bounded-value component A (button span, seeded 0x12)
-  short word8a;       // 0x8a — bounded-value component B (frameHeight38 - 0x24)
-  short word8c;       // 0x8c — clamped current value (seeded 0x12)
-  short word8e;       // 0x8e — allocation padding/unobserved so far
+  // 0x84 — cached ownerContext (both builders store it + AssertValid). Always the
+  // owning TScrollView (0x573d37/0x5744b0's `panel` argument is that TScrollView's
+  // `this`) -- confirmed via AdjustCityDialogScrollRangeByDeltaAndClamp (0x573f60),
+  // which reads TScrollView::contentView60/scrollBar64 at +0x60/+0x64 off this pointer.
+  class TScrollView* ownerView84;
+  short word88; // 0x88 — bounded-value component A (button span, seeded 0x12)
+  short word8a; // 0x8a — bounded-value component B (frameHeight38 - 0x24)
+  short word8c; // 0x8c — clamped current value (seeded 0x12)
+  short word8e; // 0x8e — allocation padding/unobserved so far
   // 0x90 — 8-bit offscreen surface from
   // TDisplayMgr::InitializeBitmapSurfaceContextWithRetry; released in Free().
   struct TQuickDrawSurfaceContext* surfaceContext90;
@@ -149,5 +153,10 @@ public:
   // the bounded-value words, allocate the 8-bit surface for the full frame rect, and
   // build the 'scup'/'scdn' TPictureButton pair (18x18, bitmaps 0xbbb/0xbbc),
   // disabled+pressed by default.
-  void ConstructTScrollBarViewBaseState(TView* panel, int* offsetLayout, int* sizeLayout);
+  void ConstructTScrollBarViewBaseState(class TScrollView* panel, int* offsetLayout,
+                                        int* sizeLayout);
+
+  // 0x005740a0 — RAII-scoped map QuickDraw context around a Refresh() + viewport rect
+  // rebuild (ApplyRectSlot110): rect = {0, word88, frameWidth34, word8a + 0x12}.
+  void RefreshCityDialogScrollableViewportWithQuickDrawContext();
 };
