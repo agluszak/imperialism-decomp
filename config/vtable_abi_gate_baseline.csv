@@ -6,19 +6,6 @@ address|class|slot|summary
 0x004907a0|TMyNumberText|0x9c|declared void but 2 caller site(s) consume the return register ({'eax': 2})
 0x004907a0|TNumberText|0x9c|declared void but 2 caller site(s) consume the return register ({'eax': 2})
 0x004907a0|TPictureNumberText|0x9c|declared void but 2 caller site(s) consume the return register ({'eax': 2})
-0x0049d900|TAdorner|0x28|declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
-0x0049d900|TColorFill|0x28|declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
-0x0049d930|TAdorner|0x2c|declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
-0x0049d930|TColorFill|0x2c|declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
-0x0049d9c0|TAdorner|0x30|declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x8
-0x0049d9f0|TAdorner|0x34|declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x10
-0x0049d9f0|TColorFill|0x34|declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x10
-0x0049da20|TAdorner|0x38|declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
-0x0049da20|TColorFill|0x38|declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
-0x0049da50|TAdorner|0x3c|declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x10
-0x0049da50|TColorFill|0x3c|declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x10
-0x0049da80|TAdorner|0x40|declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
-0x0049da80|TColorFill|0x40|declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
 0x0049e660|TAmbitFileBasedDocument|0x30|declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x8
 0x0049e680|TAmbitFileBasedDocument|0x34|declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
 0x0049e6a0|TAmbitFileBasedDocument|0x28|declared 1 stack dword(s) -> expected RET 0x4, binary shows RET 0x8
@@ -75,7 +62,6 @@ address|class|slot|summary
 0x004febd0|TDisplayMgr|0x34|declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
 0x004fec50|TDisplayMgr|0x48|declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
 0x004fed00|TDisplayMgr|0x38|declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
-0x004ff1c0|TColorFill|0x30|declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x8
 0x00504220|THelpPicture|0x1d8|declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
 0x00506110|TIconBar|0x1d0|declared 1 stack dword(s) -> expected RET 0x4, binary shows RET 0x8
 0x00506110|TIconSlider|0x1d0|declared 1 stack dword(s) -> expected RET 0x4, binary shows RET 0x8

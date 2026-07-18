@@ -7174,13 +7174,13 @@
     },
     {
       "address": "0x49d900",
-      "matching": 0.0,
+      "matching": 0.2222222222222222,
       "name": "TAdorner::WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d900",
       "type": 1
     },
     {
       "address": "0x49d930",
-      "matching": 0.0,
+      "matching": 0.2222222222222222,
       "name": "TAdorner::WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d930",
       "type": 1
     },
@@ -7198,31 +7198,31 @@
     },
     {
       "address": "0x49d9c0",
-      "matching": 0.0,
+      "matching": 0.2222222222222222,
       "name": "TAdorner::WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d9c0",
       "type": 1
     },
     {
       "address": "0x49d9f0",
-      "matching": 0.0,
+      "matching": 0.2222222222222222,
       "name": "TAdorner::WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d9f0",
       "type": 1
     },
     {
       "address": "0x49da20",
-      "matching": 0.0,
+      "matching": 0.2222222222222222,
       "name": "TAdorner::WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049da20",
       "type": 1
     },
     {
       "address": "0x49da50",
-      "matching": 0.0,
+      "matching": 0.2222222222222222,
       "name": "TAdorner::WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049da50",
       "type": 1
     },
     {
       "address": "0x49da80",
-      "matching": 0.2,
+      "matching": 0.4,
       "name": "TAdorner::WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049da80",
       "type": 1
     },
@@ -15702,7 +15702,7 @@
     },
     {
       "address": "0x4ff1c0",
-      "matching": 0.0,
+      "matching": 0.2,
       "name": "TColorFill::WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d9c0",
       "type": 1
     },
@@ -17699,7 +17699,7 @@
     },
     {
       "address": "0x51a990",
-      "matching": 0.26436781609195403,
+      "matching": 0.26285714285714284,
       "name": "TMapDialog::OrphanRetStub_005960c0",
       "type": 1
     },
