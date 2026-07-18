@@ -15,14 +15,8 @@
 
 extern "C" TShip* g_pNavyPrimaryOrderListHead = 0;
 
-static __inline short SignedMod100(short value) {
-  return (short)((value / 100 + (value >> 15)) -
-                 (short)(((__int64)(int)value * 0x51eb851f) >> 0x3f));
-}
-
 static __inline short SignedDiv10(int value) {
-  return (short)(((short)(value / 10) + (short)(value >> 0x1f)) -
-                 (short)(((__int64)value * 0x66666667) >> 0x3f));
+  return static_cast<short>(value / 10);
 }
 
 // 0x004e0460 / 0x004e04b0 (SumNavyOrderPriorityForNation[AndNodeType]) are real
@@ -229,8 +223,9 @@ short TShip::ComputeNavyOrderPriorityContributionPercentByCategory(int category)
   case 0: {
     const TNavyOrderResourceDescriptor& descriptor =
         g_NavyOrderResourceDescriptorTable[resourceType04];
-    int quantityTerm = static_cast<int>(SignedMod100(field30)) + 5 + descriptor.resolveWeight * 10;
     int weight = descriptor.calculateWeight;
+    int quantityTerm =
+        field30 / 100 + *reinterpret_cast<const int*>(&descriptor.resolveWeight) * 10 + 5;
     return (SignedDiv10(quantityTerm) * weight * weight * 100) / divisor;
   }
   case 1: {

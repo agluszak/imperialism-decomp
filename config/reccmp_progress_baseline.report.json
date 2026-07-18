@@ -22094,7 +22094,7 @@
     },
     {
       "address": "0x54ff00",
-      "matching": 0.4661016949152542,
+      "matching": 0.6995073891625616,
       "name": "TShip::ComputeNavyOrderPriorityContributionPercentByCategory",
       "type": 1
     },
@@ -22106,7 +22106,7 @@
     },
     {
       "address": "0x5501b0",
-      "matching": 0.4558139534883721,
+      "matching": 0.5420560747663551,
       "name": "CalculateMissionOrderPriorityScore",
       "type": 1
     },
@@ -22534,13 +22534,13 @@
     },
     {
       "address": "0x553b10",
-      "matching": 0.41379310344827586,
+      "matching": 0.4827586206896552,
       "name": "HasNoMapOrderEntryChildrenQueued",
       "type": 1
     },
     {
       "address": "0x553b50",
-      "matching": 0.5454545454545454,
+      "matching": 0.5818181818181818,
       "name": "HasActiveMapOrderEntryChildren",
       "type": 1
     },

@@ -148,10 +148,33 @@ each with the evidence needed to start (address, size, current score if any, blo
 - `0x550b60` TShip::ComputeOrderNodeCompositeEconomicScore at 68% — residual is
   scheduling wobble around the inlined /100 and /10 magic divisions; revisit only
   with new evidence.
-- TShip.cpp `SignedMod100` user at ~line 232
-  (`ComputeNavyOrderPriorityContributionPercentByCategory` family): very likely the
-  same mod-vs-div bug 0x550b60 had (original inlines a plain `/ 100`); verify against
-  the listing before touching.
+- `0x54ff00` TShip::ComputeNavyOrderPriorityContributionPercentByCategory (landed
+  2026-07-18, 46.61% -> 69.95%): the `SignedMod100`/`SignedDiv10` helpers were
+  hand-rolled `__int64` reimplementations of the magic-number division sequences —
+  the original computes both `field30/100` and `quantityTerm/10` as plain **native
+  32-bit** `IMUL`+shift (no `__allmul`/`__allshr` calls); the `__int64` casts forced
+  genuine 64-bit multiply-helper calls that don't exist in the original, cascading
+  into a completely different register allocation for the whole function (divisor
+  landed in EBP/EBX instead of EDI). Fixed by replacing both helpers with plain
+  `value / 100` / `value / 10` and letting the compiler re-derive the magic
+  constants natively. Also fixed `descriptor.resolveWeight * 10`: the original reads
+  that field as a **full raw dword** (`resolveWeight`+`pad02` combined, pad is
+  always 0 in the static table so the value matches, but the codegen needs the wide
+  read) via `*reinterpret_cast<const int*>(&descriptor.resolveWeight)`, the same
+  idiom already used in `TNavyMgr::InitializeNavyOrderPriorityTables` — plain
+  `descriptor.resolveWeight` compiles to a narrower `movsx` load and mismatches.
+  Residual (69.95%) is the *36-stride pointer arithmetic: original computes the
+  table pointer once via `LEA+SHL` in one register reused for both field reads;
+  our compiler folds the `*4` into each load's SIB addressing mode separately —
+  a compiler-internal choice, not source-steerable (tried caching `weight`
+  variable removal and reordering `stockLevel1c` read — no measurable effect,
+  reverted to the cleaner form). Same underlying `resolveWeight`-as-dword bug also
+  found and fixed in the sibling `TTaskForce::CalculateMissionOrderPriorityScore`
+  (0x5501b0, 45.58% -> 54.21%) — that one's residual is a whole-function
+  register-allocation cascade from whether `this` gets cached across the loop;
+  tried moving the per-case `desc` lookup inside each switch case to match the
+  original's per-case re-derivation (matching the raw listing exactly) and it
+  **regressed to 40.37%** — reverted, don't retry without new evidence.
 
 ## Cluster follow-ups (advisory scoring, commits f67c1e06 + 3e56e3b9)
 
