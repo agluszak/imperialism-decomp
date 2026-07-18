@@ -19,22 +19,6 @@ undefined4 amsg_exit(void)
   return 0;
 }
 
-// ghidra_name memset
-// ghidra_proto void * __cdecl memset(void * _Dst, int _Val, size_t _Size)
-// FUNCTION: IMPERIALISM 0x005e9a90
-undefined4 memset(void)
-{
-  return 0;
-}
-
-// ghidra_name exit
-// ghidra_proto void __cdecl exit(int _Code)
-// FUNCTION: IMPERIALISM 0x005e9bb0
-undefined4 exit(void)
-{
-  return 0;
-}
-
 // ghidra_name RunCrtExitHandlersAndTerminate
 // ghidra_proto undefined RunCrtExitHandlersAndTerminate()
 // FUNCTION: IMPERIALISM 0x005e9bf0
@@ -55,22 +39,6 @@ undefined4 CrtThreadExitWithTlsCleanup(void)
 // ghidra_proto undefined ComputeAbsoluteIntValue()
 // FUNCTION: IMPERIALISM 0x005eaa30
 undefined4 ComputeAbsoluteIntValue(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_amsg_exit_At005ead10
-// ghidra_proto undefined WrapperFor_amsg_exit_At005ead10()
-// FUNCTION: IMPERIALISM 0x005ead10
-undefined4 WrapperFor_amsg_exit_At005ead10(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_GetOrCreateCrtThreadDataFromTls_At005eadb0
-// ghidra_proto undefined WrapperFor_GetOrCreateCrtThreadDataFromTls_At005eadb0()
-// FUNCTION: IMPERIALISM 0x005eadb0
-undefined4 WrapperFor_GetOrCreateCrtThreadDataFromTls_At005eadb0(void)
 {
   return 0;
 }
@@ -211,14 +179,6 @@ undefined4 MapFpControlLowByteToRuntimeBits(void)
   return 0;
 }
 
-// ghidra_name WrapperFor_amsg_exit_At005f4b40
-// ghidra_proto undefined WrapperFor_amsg_exit_At005f4b40()
-// FUNCTION: IMPERIALISM 0x005f4b40
-undefined4 WrapperFor_amsg_exit_At005f4b40(void)
-{
-  return 0;
-}
-
 // ghidra_name ExecuteCallbackUnderStreamCriticalSection
 // ghidra_proto undefined ExecuteCallbackUnderStreamCriticalSection()
 // FUNCTION: IMPERIALISM 0x005f5d00
@@ -343,14 +303,6 @@ undefined4 ConsoleCtrlHandlerDispatchRuntimeSignalCallbacks(void)
 // ghidra_proto undefined RaiseRuntimeSignalAndInvokeHandler()
 // FUNCTION: IMPERIALISM 0x005f75c0
 undefined4 RaiseRuntimeSignalAndInvokeHandler(void)
-{
-  return 0;
-}
-
-// ghidra_name WrapperFor_AfxTermLocalData_At005fa80b
-// ghidra_proto undefined WrapperFor_AfxTermLocalData_At005fa80b()
-// FUNCTION: IMPERIALISM 0x005fa80b
-undefined4 WrapperFor_AfxTermLocalData_At005fa80b(void)
 {
   return 0;
 }
@@ -523,30 +475,6 @@ undefined4 DispatchVirtualSlot18OnImplicitObject(void)
   return 0;
 }
 
-// ghidra_name SetAt
-// ghidra_proto void SetAt(int nIndex, char ch)
-// FUNCTION: IMPERIALISM 0x00605e88
-undefined4 SetAt(void)
-{
-  return 0;
-}
-
-// ghidra_name AfxGetThread
-// ghidra_proto CWinThread * __stdcall ?AfxGetThread@@YGPAVCWinThread@@XZ@006060bc(void)
-// FUNCTION: IMPERIALISM 0x006060bc
-undefined4 AfxGetThread(void)
-{
-  return 0;
-}
-
-// ghidra_name CCmdTarget
-// ghidra_proto undefined CCmdTarget()
-// FUNCTION: IMPERIALISM 0x0060698f
-undefined4 CCmdTarget(void)
-{
-  return 0;
-}
-
 // ghidra_name GetCCmdTargetMessageMap
 // ghidra_proto undefined GetCCmdTargetMessageMap()
 // FUNCTION: IMPERIALISM 0x00606ca6
@@ -555,50 +483,10 @@ undefined4 GetCCmdTargetMessageMap(void)
   return 0;
 }
 
-// ghidra_name CCmdUI
-// ghidra_proto undefined __thiscall ??0CCmdUI@@QAE@XZ(void)
-// FUNCTION: IMPERIALISM 0x00606d27
-undefined4 XZ(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_ThrowMfcResourceException_At00606f4e
 // ghidra_proto undefined WrapperFor_ThrowMfcResourceException_At00606f4e()
 // FUNCTION: IMPERIALISM 0x00606f4e
 undefined4 WrapperFor_ThrowMfcResourceException_At00606f4e(void)
-{
-  return 0;
-}
-
-// ghidra_name ModifyStyle
-// ghidra_proto undefined ModifyStyle()
-// FUNCTION: IMPERIALISM 0x0060734c
-undefined4 ModifyStyle(void)
-{
-  return 0;
-}
-
-// ghidra_name ModifyStyleEx
-// ghidra_proto undefined ModifyStyleEx()
-// FUNCTION: IMPERIALISM 0x00607380
-undefined4 ModifyStyleEx(void)
-{
-  return 0;
-}
-
-// ghidra_name SetWindowPos
-// ghidra_proto undefined SetWindowPos()
-// FUNCTION: IMPERIALISM 0x006074aa
-undefined4 SetWindowPos(void)
-{
-  return 0;
-}
-
-// ghidra_name IsWindowEnabled
-// ghidra_proto undefined IsWindowEnabled()
-// FUNCTION: IMPERIALISM 0x00607520
-undefined4 IsWindowEnabled(void)
 {
   return 0;
 }
