@@ -10,443 +10,861 @@ indicators, not proof.
 
 | rank | class | proven conflicts | strong warnings | unmodeled slots | supported |
 |---|---|---|---|---|---|
-| 1 | TViewMgr | 9 | 0 | 3 | 42 |
-| 2 | TAdorner | 7 | 0 | 2 | 5 |
-| 3 | TColorFill | 7 | 0 | 2 | 5 |
-| 4 | TMapMaker | 7 | 0 | 2 | 22 |
-| 5 | TMacViewMgr | 6 | 0 | 2 | 27 |
-| 6 | TAmbitFileBasedDocument | 5 | 0 | 2 | 5 |
-| 7 | TBismarckMinister | 3 | 0 | 2 | 17 |
-| 8 | TBullyMinister | 3 | 0 | 2 | 17 |
-| 9 | TCityInteriorMinister | 3 | 0 | 2 | 20 |
-| 10 | TDefenderMinister | 3 | 0 | 2 | 17 |
-| 11 | TDefenseMinister | 3 | 0 | 2 | 17 |
-| 12 | TDiplomacyMgr | 3 | 0 | 2 | 32 |
-| 13 | TDisplayMgr | 3 | 0 | 2 | 14 |
-| 14 | TEvenCityMinister | 3 | 0 | 2 | 20 |
-| 15 | THandleStream | 3 | 0 | 2 | 42 |
-| 16 | TInteriorMinister | 3 | 0 | 2 | 20 |
-| 17 | TNapoleonMinister | 3 | 0 | 2 | 17 |
-| 18 | TPirateMinister | 3 | 0 | 2 | 17 |
-| 19 | TRailCityMinister | 3 | 0 | 2 | 20 |
-| 20 | TShipBuilderCityMinister | 3 | 0 | 2 | 20 |
-| 21 | TSteelCityMinister | 3 | 0 | 2 | 20 |
-| 22 | TPowerPlantOrder | 2 | 0 | 3 | 10 |
-| 23 | TCountingStream | 2 | 0 | 2 | 42 |
-| 24 | TFileStream | 2 | 0 | 2 | 40 |
-| 25 | TStream | 2 | 0 | 2 | 42 |
-| 26 | TNavyHumanPlayer | 1 | 0 | 7 | 8 |
-| 27 | TFoodProcessingOrder | 1 | 0 | 5 | 9 |
-| 28 | TMapMgr | 1 | 0 | 5 | 66 |
-| 29 | TPopGrowthOrder | 1 | 0 | 5 | 9 |
-| 30 | TTrainingOrder | 1 | 0 | 5 | 9 |
-| 31 | TArmyPlayer | 1 | 0 | 4 | 14 |
-| 32 | TFocusAnimation | 1 | 0 | 4 | 9 |
-| 33 | TCapacityOrder | 1 | 0 | 3 | 12 |
-| 34 | TExpansionOrder | 1 | 0 | 3 | 12 |
-| 35 | TItemOrder | 1 | 0 | 3 | 11 |
-| 36 | TOrItemOrder | 1 | 0 | 3 | 12 |
-| 37 | TTransFocusAnimation | 1 | 0 | 3 | 10 |
-| 38 | TAnimation | 1 | 0 | 2 | 7 |
-| 39 | TArmyBattle | 1 | 0 | 2 | 19 |
-| 40 | TCity | 1 | 0 | 2 | 26 |
-| 41 | TCityTask | 1 | 0 | 2 | 10 |
-| 42 | TCivAnimation | 1 | 0 | 2 | 7 |
-| 43 | TCivAnimation2 | 1 | 0 | 2 | 7 |
-| 44 | TCouncilTickerAnimation | 1 | 0 | 2 | 7 |
-| 45 | TDialogBehavior | 1 | 0 | 2 | 13 |
-| 46 | THotspotBehavior | 1 | 0 | 2 | 9 |
-| 47 | TIdleMeAnimation | 1 | 0 | 2 | 7 |
-| 48 | TInfoBarBehavior | 1 | 0 | 2 | 10 |
-| 49 | TMinorRuntimeStatusEntry | 1 | 0 | 2 | 47 |
-| 50 | TNavyBattle | 1 | 0 | 2 | 19 |
-| 51 | TOneTimeAnimation | 1 | 0 | 2 | 7 |
-| 52 | TRemoteMinor | 1 | 0 | 2 | 47 |
-| 53 | TShipBuildingTask | 1 | 0 | 2 | 10 |
-| 54 | TTaskList | 1 | 0 | 2 | 19 |
-| 55 | TMission | 0 | 2 | 2 | 32 |
-| 56 | TArmyMission | 0 | 1 | 2 | 34 |
-| 57 | TDefendProvinceMission | 0 | 1 | 2 | 34 |
-| 58 | TPopulationMgr | 0 | 0 | 16 | 2 |
-| 59 | TProductionOrder | 0 | 0 | 9 | 5 |
-| 60 | TTacticalPlayer | 0 | 0 | 8 | 7 |
-| 61 | ImperialismApp | 0 | 0 | 7 | 0 |
-| 62 | TNavyPlayer | 0 | 0 | 7 | 8 |
-| 63 | TTown | 0 | 0 | 7 | 5 |
-| 64 | CMainFrame | 0 | 0 | 6 | 0 |
-| 65 | CMcWindow | 0 | 0 | 6 | 0 |
-| 66 | T104TemplateDialog | 0 | 0 | 6 | 0 |
-| 67 | T64TemplateDialog | 0 | 0 | 6 | 0 |
-| 68 | TA1TemplateDialog | 0 | 0 | 6 | 0 |
-| 69 | TA7TemplateDialog | 0 | 0 | 6 | 0 |
-| 70 | TABTemplateDialog | 0 | 0 | 6 | 0 |
-| 71 | TADTemplateDialog | 0 | 0 | 6 | 0 |
-| 72 | TAETemplateDialog | 0 | 0 | 6 | 0 |
-| 73 | TAutoResolutionDialog | 0 | 0 | 6 | 0 |
-| 74 | TB1TemplateDialog | 0 | 0 | 6 | 0 |
-| 75 | TC2TemplateDialog | 0 | 0 | 6 | 0 |
-| 76 | TD0TemplateDialog | 0 | 0 | 6 | 0 |
-| 77 | TD2TemplateDialog | 0 | 0 | 6 | 0 |
-| 78 | TDBTemplateDialog | 0 | 0 | 6 | 0 |
-| 79 | TDCTemplateDialog | 0 | 0 | 6 | 0 |
-| 80 | TDDTemplateDialog | 0 | 0 | 6 | 0 |
-| 81 | TDETemplateDialog | 0 | 0 | 6 | 0 |
-| 82 | TDFTemplateDialog | 0 | 0 | 6 | 0 |
-| 83 | TE0TemplateDialog | 0 | 0 | 6 | 0 |
-| 84 | TFATemplateDialog | 0 | 0 | 6 | 0 |
-| 85 | THelpMgr | 0 | 0 | 6 | 3 |
-| 86 | TLaborPool | 0 | 0 | 6 | 3 |
-| 87 | TLowDiskWarningDialog | 0 | 0 | 6 | 0 |
-| 88 | TModalDialogBase | 0 | 0 | 6 | 0 |
-| 89 | TShipOrder | 0 | 0 | 6 | 11 |
-| 90 | TNavyAutoPlayer | 0 | 0 | 5 | 10 |
-| 91 | TNavyMgr | 0 | 0 | 5 | 2 |
-| 92 | TTask | 0 | 0 | 5 | 3 |
-| 93 | CDibPal | 0 | 0 | 4 | 0 |
-| 94 | ImperialismCommandLineInfo | 0 | 0 | 4 | 0 |
-| 95 | TDocument | 0 | 0 | 4 | 5 |
-| 96 | TFileBasedDocument | 0 | 0 | 4 | 5 |
-| 97 | TLineData | 0 | 0 | 4 | 5 |
-| 98 | TNetMgr | 0 | 0 | 4 | 4 |
-| 99 | TTacticalBattle | 0 | 0 | 4 | 18 |
-| 100 | TTaskForce | 0 | 0 | 4 | 3 |
-| 101 | TUnitOrder | 0 | 0 | 4 | 11 |
-| 102 | CAmbitDocument | 0 | 0 | 3 | 1 |
-| 103 | CIncludeView | 0 | 0 | 3 | 0 |
-| 104 | TArmyUnitLine | 0 | 0 | 3 | 6 |
-| 105 | TBatRepDetLine | 0 | 0 | 3 | 6 |
-| 106 | TCommodityLine | 0 | 0 | 3 | 6 |
-| 107 | TDealLine | 0 | 0 | 3 | 6 |
-| 108 | TDealList | 0 | 0 | 3 | 12 |
-| 109 | TFuzzySet | 0 | 0 | 3 | 5 |
-| 110 | TFuzzyVar | 0 | 0 | 3 | 5 |
-| 111 | TIndexAndRankList | 0 | 0 | 3 | 12 |
-| 112 | TLanguageMgr | 0 | 0 | 3 | 4 |
-| 113 | TLongintList | 0 | 0 | 3 | 11 |
-| 114 | TMiniArmyLine | 0 | 0 | 3 | 6 |
-| 115 | TMiniCivLine | 0 | 0 | 3 | 6 |
-| 116 | TMiniShipLine | 0 | 0 | 3 | 6 |
-| 117 | TMovieView | 0 | 0 | 3 | 22 |
-| 118 | TNavyMission | 0 | 0 | 3 | 38 |
-| 119 | TNewGameCommand | 0 | 0 | 3 | 6 |
-| 120 | TNextMoveCommand | 0 | 0 | 3 | 6 |
-| 121 | TPictureLine | 0 | 0 | 3 | 6 |
-| 122 | TPoseMessageDialog | 0 | 0 | 3 | 6 |
-| 123 | TProvinceDesirabilityList | 0 | 0 | 3 | 12 |
-| 124 | TPtrList | 0 | 0 | 3 | 13 |
-| 125 | TShipLine | 0 | 0 | 3 | 6 |
-| 126 | TSortByPriceList | 0 | 0 | 3 | 12 |
-| 127 | TSortedByRelationshipList | 0 | 0 | 3 | 12 |
-| 128 | TSortedPtrList | 0 | 0 | 3 | 12 |
-| 129 | TStratReportView | 0 | 0 | 3 | 22 |
-| 130 | TTechItemLine | 0 | 0 | 3 | 6 |
-| 131 | TTextLine | 0 | 0 | 3 | 6 |
-| 132 | TTradeBidNationLine | 0 | 0 | 3 | 6 |
-| 133 | TTradeOfferNationLine | 0 | 0 | 3 | 6 |
-| 134 | TTradeTotalsLine | 0 | 0 | 3 | 6 |
-| 135 | TTurnStartEvent | 0 | 0 | 3 | 5 |
-| 136 | ArchiveStreamAdapter | 0 | 0 | 2 | 5 |
-| 137 | CDib | 0 | 0 | 2 | 1 |
-| 138 | T2PictToggleButton | 0 | 0 | 2 | 22 |
-| 139 | T2PictureButton | 0 | 0 | 2 | 22 |
-| 140 | TAdmiral | 0 | 0 | 2 | 5 |
-| 141 | TAlwaysPictureButton | 0 | 0 | 2 | 22 |
-| 142 | TAmbitApplication | 0 | 0 | 2 | 22 |
-| 143 | TAmtBar | 0 | 0 | 2 | 22 |
-| 144 | TAmtBarCluster | 0 | 0 | 2 | 22 |
-| 145 | TAnimator | 0 | 0 | 2 | 22 |
-| 146 | TApplication | 0 | 0 | 2 | 22 |
-| 147 | TArmoryView | 0 | 0 | 2 | 21 |
-| 148 | TArmsForeignMinister | 0 | 0 | 2 | 35 |
-| 149 | TArmyBoyView | 0 | 0 | 2 | 22 |
-| 150 | TArmyCheckBox | 0 | 0 | 2 | 22 |
-| 151 | TArmyInfoView | 0 | 0 | 2 | 22 |
-| 152 | TArmyMgr | 0 | 0 | 2 | 20 |
-| 153 | TArmyPlacard | 0 | 0 | 2 | 22 |
-| 154 | TArmyStack | 0 | 0 | 2 | 5 |
-| 155 | TArmyStackList | 0 | 0 | 2 | 19 |
-| 156 | TArmyTacUnit | 0 | 0 | 2 | 11 |
-| 157 | TArmyToolbar | 0 | 0 | 2 | 22 |
-| 158 | TArmyUnitView | 0 | 0 | 2 | 22 |
-| 159 | TArrowsControl | 0 | 0 | 2 | 22 |
-| 160 | TAssetMgr | 0 | 0 | 2 | 9 |
-| 161 | TAttackProvinceMission | 0 | 0 | 2 | 36 |
-| 162 | TAutoGreatPower | 0 | 0 | 2 | 51 |
-| 163 | TAutomatedPlayDialog | 0 | 0 | 2 | 22 |
-| 164 | TBackgroundPicture | 0 | 0 | 2 | 22 |
-| 165 | TBattleDetailBook | 0 | 0 | 2 | 22 |
-| 166 | TBattleReportView | 0 | 0 | 2 | 22 |
-| 167 | TBattleUnitsView | 0 | 0 | 2 | 22 |
-| 168 | TBeachheadMission | 0 | 0 | 2 | 38 |
-| 169 | TBehavior | 0 | 0 | 2 | 9 |
-| 170 | TBillForeignMinister | 0 | 0 | 2 | 35 |
-| 171 | TBlockadePortMission | 0 | 0 | 2 | 38 |
-| 172 | TBook | 0 | 0 | 2 | 22 |
-| 173 | TBoycottButton | 0 | 0 | 2 | 22 |
-| 174 | TBuildingConstructionView | 0 | 0 | 2 | 22 |
-| 175 | TBuildingExpansionView | 0 | 0 | 2 | 22 |
-| 176 | TBuildingView | 0 | 0 | 2 | 22 |
-| 177 | TButton | 0 | 0 | 2 | 22 |
-| 178 | TCancelGameOptionsCommand | 0 | 0 | 2 | 7 |
-| 179 | TCheater | 0 | 0 | 2 | 22 |
-| 180 | TCityBarCluster | 0 | 0 | 2 | 22 |
-| 181 | TCityProductionView | 0 | 0 | 2 | 22 |
-| 182 | TCitySiteView | 0 | 0 | 2 | 22 |
-| 183 | TCivDescription | 0 | 0 | 2 | 22 |
-| 184 | TCivMgr | 0 | 0 | 2 | 9 |
-| 185 | TCivReport | 0 | 0 | 2 | 22 |
-| 186 | TCivToolbar | 0 | 0 | 2 | 22 |
-| 187 | TCivUnit | 0 | 0 | 2 | 10 |
-| 188 | TCivilianButton | 0 | 0 | 2 | 22 |
-| 189 | TClickZone | 0 | 0 | 2 | 22 |
-| 190 | TClientGreatPower | 0 | 0 | 2 | 51 |
-| 191 | TCloseButton | 0 | 0 | 2 | 22 |
-| 192 | TCloseParentButton | 0 | 0 | 2 | 22 |
-| 193 | TClosePicture | 0 | 0 | 2 | 22 |
-| 194 | TCluster | 0 | 0 | 2 | 22 |
-| 195 | TColorKeyButton | 0 | 0 | 2 | 22 |
-| 196 | TColorKeyPicture | 0 | 0 | 2 | 22 |
-| 197 | TCombatReportView | 0 | 0 | 2 | 22 |
-| 198 | TCommand | 0 | 0 | 2 | 7 |
-| 199 | TCommandHandler | 0 | 0 | 2 | 22 |
-| 200 | TControl | 0 | 0 | 2 | 22 |
-| 201 | TControlSeaZoneMission | 0 | 0 | 2 | 38 |
-| 202 | TCouncilPanelView | 0 | 0 | 2 | 22 |
-| 203 | TCouncilView | 0 | 0 | 2 | 22 |
-| 204 | TCountry | 0 | 0 | 2 | 37 |
-| 205 | TCreditsPicture | 0 | 0 | 2 | 22 |
-| 206 | TCtlMgr | 0 | 0 | 2 | 22 |
-| 207 | TCzechBox | 0 | 0 | 2 | 22 |
-| 208 | TDealBookPicture | 0 | 0 | 2 | 22 |
-| 209 | TDealTabControl | 0 | 0 | 2 | 22 |
-| 210 | TDefenseMinisterView | 0 | 0 | 2 | 22 |
-| 211 | TDeluxeText | 0 | 0 | 2 | 22 |
-| 212 | TDialogView | 0 | 0 | 2 | 22 |
-| 213 | TDipDlgCluster | 0 | 0 | 2 | 22 |
-| 214 | TDiplomacyMapView | 0 | 0 | 2 | 22 |
-| 215 | TDiplomatForeignMinister | 0 | 0 | 2 | 35 |
-| 216 | TDisappearingButton | 0 | 0 | 2 | 22 |
-| 217 | TDlgWindow | 0 | 0 | 2 | 22 |
-| 218 | TDropShadowNumberText | 0 | 0 | 2 | 22 |
-| 219 | TDropShadowText | 0 | 0 | 2 | 22 |
-| 220 | TDropShadowTextBehavior | 0 | 0 | 2 | 9 |
-| 221 | TEditText | 0 | 0 | 2 | 22 |
-| 222 | TEngineerDialog | 0 | 0 | 2 | 22 |
-| 223 | TEscortMission | 0 | 0 | 2 | 38 |
-| 224 | TEvent | 0 | 0 | 2 | 5 |
-| 225 | TEventHandler | 0 | 0 | 2 | 22 |
-| 226 | TFlagOptionsPicture | 0 | 0 | 2 | 22 |
-| 227 | TFloatWindow | 0 | 0 | 2 | 22 |
-| 228 | TForeignMinister | 0 | 0 | 2 | 35 |
-| 229 | TForeignMinisterView | 0 | 0 | 2 | 22 |
-| 230 | TFrameRadioView | 0 | 0 | 2 | 22 |
-| 231 | TGPCheater | 0 | 0 | 2 | 22 |
-| 232 | TGPTreatyDialog | 0 | 0 | 2 | 22 |
-| 233 | TGWorldButton | 0 | 0 | 2 | 22 |
-| 234 | TGWorldPartView | 0 | 0 | 2 | 22 |
-| 235 | TGWorldPeeker | 0 | 0 | 2 | 22 |
-| 236 | TGameInfoPicture | 0 | 0 | 2 | 22 |
-| 237 | TGamePreferencesPicture | 0 | 0 | 2 | 21 |
-| 238 | TGameScorePicture | 0 | 0 | 2 | 22 |
-| 239 | TGameSetupDialog | 0 | 0 | 2 | 22 |
-| 240 | TGameSetupMultiplayerPicture | 0 | 0 | 2 | 22 |
-| 241 | TGameSetupPicture | 0 | 0 | 2 | 22 |
-| 242 | TGameWindow | 0 | 0 | 2 | 22 |
-| 243 | TGarrisonView | 0 | 0 | 2 | 22 |
-| 244 | TGrantsView | 0 | 0 | 2 | 22 |
-| 245 | TGreatPower | 0 | 0 | 2 | 51 |
-| 246 | THQButton | 0 | 0 | 2 | 22 |
-| 247 | THelpPicture | 0 | 0 | 2 | 22 |
-| 248 | THelpWindow | 0 | 0 | 2 | 22 |
-| 249 | THighScoresPicture | 0 | 0 | 2 | 22 |
-| 250 | THostGreatPower | 0 | 0 | 2 | 51 |
-| 251 | TIconBar | 0 | 0 | 2 | 22 |
-| 252 | TIconSlider | 0 | 0 | 2 | 22 |
-| 253 | TIncludeView | 0 | 0 | 2 | 22 |
-| 254 | TIndustryAmtBar | 0 | 0 | 2 | 22 |
-| 255 | TIndustryCluster | 0 | 0 | 2 | 22 |
-| 256 | TIndustryView | 0 | 0 | 2 | 22 |
-| 257 | TInfoBarPictureText | 0 | 0 | 2 | 21 |
-| 258 | TInfoBarText | 0 | 0 | 2 | 21 |
-| 259 | TInfoPanelView | 0 | 0 | 2 | 22 |
-| 260 | TInteriorMinisterView | 0 | 0 | 2 | 22 |
-| 261 | TInterruptusView | 0 | 0 | 2 | 22 |
-| 262 | TInvadeMission | 0 | 0 | 2 | 35 |
-| 263 | TItemBoyView | 0 | 0 | 2 | 22 |
-| 264 | TJoinSelectorDialog | 0 | 0 | 2 | 22 |
-| 265 | TLandSaleEvent | 0 | 0 | 2 | 6 |
-| 266 | TList | 0 | 0 | 2 | 19 |
-| 267 | TLoadSavePicture | 0 | 0 | 2 | 22 |
-| 268 | TLonelyTileView | 0 | 0 | 2 | 22 |
-| 269 | TLoungeDialog | 0 | 0 | 2 | 22 |
-| 270 | TMadnessButton | 0 | 0 | 2 | 22 |
-| 271 | TMapDialog | 0 | 0 | 2 | 22 |
-| 272 | TMapEditCluster | 0 | 0 | 2 | 22 |
-| 273 | TMapEditView | 0 | 0 | 2 | 22 |
-| 274 | TMapKey | 0 | 0 | 2 | 22 |
-| 275 | TMapPreviewView | 0 | 0 | 2 | 22 |
-| 276 | TMapUberPicture | 0 | 0 | 2 | 21 |
-| 277 | TMapUberUberPicture | 0 | 0 | 2 | 21 |
-| 278 | TMegaPicture | 0 | 0 | 2 | 22 |
-| 279 | TMerchantBoyView | 0 | 0 | 2 | 22 |
-| 280 | TMilitaryPageView | 0 | 0 | 2 | 22 |
-| 281 | TMilitaryUnit | 0 | 0 | 2 | 10 |
-| 282 | TMiniArmyView | 0 | 0 | 2 | 22 |
-| 283 | TMiniCivView | 0 | 0 | 2 | 22 |
-| 284 | TMiniMapView | 0 | 0 | 2 | 22 |
-| 285 | TMiniShipView | 0 | 0 | 2 | 22 |
-| 286 | TMinister | 0 | 0 | 2 | 13 |
-| 287 | TMinisterView | 0 | 0 | 2 | 22 |
-| 288 | TMinorRelationshipDialog | 0 | 0 | 2 | 22 |
-| 289 | TMinorTradeBidsDialog | 0 | 0 | 2 | 22 |
-| 290 | TMinorTreatyDialog | 0 | 0 | 2 | 22 |
-| 291 | TModalMessageCommand | 0 | 0 | 2 | 7 |
-| 292 | TMultiMessagePicture | 0 | 0 | 2 | 22 |
-| 293 | TMultiplayerMgr | 0 | 0 | 2 | 22 |
-| 294 | TMyNumberText | 0 | 0 | 2 | 22 |
-| 295 | TMyStaticText | 0 | 0 | 2 | 22 |
-| 296 | TNavyBoyView | 0 | 0 | 2 | 22 |
-| 297 | TNavyRoster | 0 | 0 | 2 | 22 |
-| 298 | TNavyTacUnit | 0 | 0 | 2 | 12 |
-| 299 | TNavyToolbarCluster | 0 | 0 | 2 | 22 |
-| 300 | TNetGameSelectPicture | 0 | 0 | 2 | 22 |
-| 301 | TNetSelectPicture | 0 | 0 | 2 | 22 |
-| 302 | TNewTownView | 0 | 0 | 2 | 22 |
-| 303 | TNewsMgr | 0 | 0 | 2 | 5 |
-| 304 | TNewspaperView | 0 | 0 | 2 | 22 |
-| 305 | TNextDiplomationCommand | 0 | 0 | 2 | 6 |
-| 306 | TNextTradeCommand | 0 | 0 | 2 | 6 |
-| 307 | TNoHilitePicture | 0 | 0 | 2 | 22 |
-| 308 | TNoHiliteText | 0 | 0 | 2 | 22 |
-| 309 | TNominationView | 0 | 0 | 2 | 22 |
-| 310 | TNumberText | 0 | 0 | 2 | 22 |
-| 311 | TNumberedArrowButton | 0 | 0 | 2 | 22 |
-| 312 | TNumberedIcon | 0 | 0 | 2 | 22 |
-| 313 | TNumberedItem | 0 | 0 | 2 | 22 |
-| 314 | TObject | 0 | 0 | 2 | 5 |
-| 315 | TOcean | 0 | 0 | 2 | 5 |
-| 316 | TOceanDialog | 0 | 0 | 2 | 22 |
-| 317 | TOffLimitsPicture | 0 | 0 | 2 | 22 |
-| 318 | TOfferDeskPicture | 0 | 0 | 2 | 22 |
-| 319 | TOffersPanelView | 0 | 0 | 2 | 22 |
-| 320 | TOnOffRadioButton | 0 | 0 | 2 | 22 |
-| 321 | TOrderView | 0 | 0 | 2 | 22 |
-| 322 | TOverlayRadioButton | 0 | 0 | 2 | 22 |
-| 323 | TPageCorner | 0 | 0 | 2 | 22 |
-| 324 | TPageView | 0 | 0 | 2 | 22 |
-| 325 | TPanelView | 0 | 0 | 2 | 22 |
-| 326 | TPicture | 0 | 0 | 2 | 22 |
-| 327 | TPictureButton | 0 | 0 | 2 | 22 |
-| 328 | TPictureNumberText | 0 | 0 | 2 | 22 |
-| 329 | TPictureRadioButton | 0 | 0 | 2 | 22 |
-| 330 | TPictureText | 0 | 0 | 2 | 22 |
-| 331 | TPlacard | 0 | 0 | 2 | 22 |
-| 332 | TPlaceCityDialog | 0 | 0 | 2 | 22 |
-| 333 | TPortZone | 0 | 0 | 2 | 18 |
-| 334 | TProductionCluster | 0 | 0 | 2 | 22 |
-| 335 | TProxyGreatPower | 0 | 0 | 2 | 51 |
-| 336 | TPurchaseCluster | 0 | 0 | 2 | 22 |
-| 337 | TQueryFloater | 0 | 0 | 2 | 22 |
-| 338 | TRadio | 0 | 0 | 2 | 22 |
-| 339 | TRadioPictureButton | 0 | 0 | 2 | 22 |
-| 340 | TRadioText | 0 | 0 | 2 | 22 |
-| 341 | TRadioTextCluster | 0 | 0 | 2 | 22 |
-| 342 | TRailAmtBar | 0 | 0 | 2 | 22 |
-| 343 | TRailCluster | 0 | 0 | 2 | 22 |
-| 344 | TRailheadDialog | 0 | 0 | 2 | 22 |
-| 345 | TRearFloatWindow | 0 | 0 | 2 | 22 |
-| 346 | TRelationshipDialog | 0 | 0 | 2 | 22 |
-| 347 | TRemoteGreatPower | 0 | 0 | 2 | 51 |
-| 348 | TRightLeftView | 0 | 0 | 2 | 22 |
-| 349 | TScatteredShipsMission | 0 | 0 | 2 | 38 |
-| 350 | TScenarioChooser | 0 | 0 | 2 | 22 |
-| 351 | TScoreGraph | 0 | 0 | 2 | 22 |
-| 352 | TScrollBarView | 0 | 0 | 2 | 22 |
-| 353 | TScrollView | 0 | 0 | 2 | 22 |
-| 354 | TScroller | 0 | 0 | 2 | 22 |
-| 355 | TScrollerButton | 0 | 0 | 2 | 22 |
-| 356 | TSelectoText | 0 | 0 | 2 | 22 |
-| 357 | TSetupRandomMapPicture | 0 | 0 | 2 | 22 |
-| 358 | TShip | 0 | 0 | 2 | 5 |
-| 359 | TShipAmtBar | 0 | 0 | 2 | 22 |
-| 360 | TShipFractionCluster | 0 | 0 | 2 | 22 |
-| 361 | TShipPlacard | 0 | 0 | 2 | 22 |
-| 362 | TShipView | 0 | 0 | 2 | 22 |
-| 363 | TShipyardCluster | 0 | 0 | 2 | 22 |
-| 364 | TShipyardView | 0 | 0 | 2 | 21 |
-| 365 | TSidewaysArrow | 0 | 0 | 2 | 22 |
-| 366 | TSimMgr | 0 | 0 | 2 | 29 |
-| 367 | TSliderPicture | 0 | 0 | 2 | 22 |
-| 368 | TSortedList | 0 | 0 | 2 | 19 |
-| 369 | TSoundPlayer | 0 | 0 | 2 | 22 |
-| 370 | TSpaceCommand | 0 | 0 | 2 | 7 |
-| 371 | TSpecialQuitPicture | 0 | 0 | 2 | 21 |
-| 372 | TStaticText | 0 | 0 | 2 | 22 |
-| 373 | TStatusButton | 0 | 0 | 2 | 22 |
-| 374 | TStatusPicture | 0 | 0 | 2 | 22 |
-| 375 | TSuperArmyRoster | 0 | 0 | 2 | 22 |
-| 376 | TSuperCivRoster | 0 | 0 | 2 | 22 |
-| 377 | TSuperNavyRoster | 0 | 0 | 2 | 22 |
-| 378 | TSwapperDaddyView | 0 | 0 | 2 | 22 |
-| 379 | TTEView | 0 | 0 | 2 | 22 |
-| 380 | TTacArmyView | 0 | 0 | 2 | 22 |
-| 381 | TTacMapUberPicture | 0 | 0 | 2 | 21 |
-| 382 | TTacNavyToolbar | 0 | 0 | 2 | 22 |
-| 383 | TTacticalAdiosPicture | 0 | 0 | 2 | 22 |
-| 384 | TTacticalBattleView | 0 | 0 | 2 | 22 |
-| 385 | TTacticalHolaPicture | 0 | 0 | 2 | 22 |
-| 386 | TTacticalToolbar | 0 | 0 | 2 | 22 |
-| 387 | TTacticalUnit | 0 | 0 | 2 | 11 |
-| 388 | TTechCheater | 0 | 0 | 2 | 22 |
-| 389 | TTechHistoryView | 0 | 0 | 2 | 22 |
-| 390 | TTechItemView | 0 | 0 | 2 | 22 |
-| 391 | TTechMgr | 0 | 0 | 2 | 5 |
-| 392 | TTechStorePage | 0 | 0 | 2 | 22 |
-| 393 | TTedForeignMinister | 0 | 0 | 2 | 35 |
-| 394 | TTerrainHelpPicture | 0 | 0 | 2 | 22 |
-| 395 | TTerrainHelpWindow | 0 | 0 | 2 | 22 |
-| 396 | TTerrainInfoDialog | 0 | 0 | 2 | 22 |
-| 397 | TTextList | 0 | 0 | 2 | 22 |
-| 398 | TTextPictureButton | 0 | 0 | 2 | 22 |
-| 399 | TTextileForeignMinister | 0 | 0 | 2 | 35 |
-| 400 | TToggleButton | 0 | 0 | 2 | 22 |
-| 401 | TToolBarCluster | 0 | 0 | 2 | 22 |
-| 402 | TTownNameDialog | 0 | 0 | 2 | 22 |
-| 403 | TTradeBidNationView | 0 | 0 | 2 | 22 |
-| 404 | TTradeBookView | 0 | 0 | 2 | 22 |
-| 405 | TTradeCluster | 0 | 0 | 2 | 22 |
-| 406 | TTradeMgr | 0 | 0 | 2 | 30 |
-| 407 | TTradeOfferNationView | 0 | 0 | 2 | 22 |
-| 408 | TTradeOrderPicture | 0 | 0 | 2 | 22 |
-| 409 | TTradePageBuyView | 0 | 0 | 2 | 22 |
-| 410 | TTradePageSellView | 0 | 0 | 2 | 22 |
-| 411 | TTradePanelView | 0 | 0 | 2 | 22 |
-| 412 | TTradePolicyCluster | 0 | 0 | 2 | 22 |
-| 413 | TTradeSchoolView | 0 | 0 | 2 | 22 |
-| 414 | TTradeScreenPicture | 0 | 0 | 2 | 22 |
-| 415 | TTradeTotalsView | 0 | 0 | 2 | 22 |
-| 416 | TTraderAmtBar | 0 | 0 | 2 | 22 |
-| 417 | TTraderForeignMinister | 0 | 0 | 2 | 35 |
-| 418 | TTransportPicture | 0 | 0 | 2 | 22 |
-| 419 | TTransportView | 0 | 0 | 2 | 22 |
-| 420 | TTreatiesView | 0 | 0 | 2 | 22 |
-| 421 | TTurnEventDialogFactoryRegistry | 0 | 0 | 2 | 8 |
-| 422 | TTwoPicSlider | 0 | 0 | 2 | 22 |
-| 423 | TUberCluster | 0 | 0 | 2 | 22 |
-| 424 | TUnit | 0 | 0 | 2 | 9 |
-| 425 | TUnitToolbarCluster | 0 | 0 | 2 | 22 |
-| 426 | TUnitsView | 0 | 0 | 2 | 22 |
-| 427 | TUniversityView | 0 | 0 | 2 | 21 |
-| 428 | TUpDownPictureButton | 0 | 0 | 2 | 22 |
-| 429 | TUpDownView | 0 | 0 | 2 | 22 |
-| 430 | TView | 0 | 0 | 2 | 22 |
-| 431 | TWarehouseView | 0 | 0 | 2 | 22 |
-| 432 | TWarningView | 0 | 0 | 2 | 22 |
-| 433 | TWindow | 0 | 0 | 2 | 22 |
-| 434 | TWorldView | 0 | 0 | 2 | 22 |
+| 1 | TCityInteriorMinister | 27 | 0 | 2 | 35 |
+| 2 | TEvenCityMinister | 27 | 0 | 2 | 35 |
+| 3 | TRailCityMinister | 27 | 0 | 2 | 35 |
+| 4 | TShipBuilderCityMinister | 27 | 0 | 2 | 35 |
+| 5 | TSteelCityMinister | 27 | 0 | 2 | 35 |
+| 6 | TCitySiteView | 22 | 0 | 2 | 139 |
+| 7 | TMapDialog | 22 | 0 | 2 | 139 |
+| 8 | TMapEditView | 22 | 0 | 2 | 139 |
+| 9 | TViewMgr | 9 | 0 | 3 | 42 |
+| 10 | TAdorner | 7 | 0 | 2 | 5 |
+| 11 | TColorFill | 7 | 0 | 2 | 5 |
+| 12 | TMapMaker | 7 | 0 | 2 | 22 |
+| 13 | TShipyardView | 7 | 0 | 2 | 112 |
+| 14 | TMacViewMgr | 6 | 0 | 2 | 27 |
+| 15 | TAmbitFileBasedDocument | 5 | 0 | 2 | 5 |
+| 16 | TArmoryView | 5 | 0 | 2 | 112 |
+| 17 | TBuildingView | 5 | 0 | 2 | 112 |
+| 18 | TCityProductionView | 5 | 0 | 2 | 115 |
+| 19 | TIndustryView | 5 | 0 | 2 | 112 |
+| 20 | TTradeSchoolView | 5 | 0 | 2 | 111 |
+| 21 | TUnitsView | 5 | 0 | 2 | 112 |
+| 22 | TUniversityView | 5 | 0 | 2 | 112 |
+| 23 | TWarehouseView | 5 | 0 | 2 | 112 |
+| 24 | TArmyCheckBox | 4 | 0 | 2 | 110 |
+| 25 | TCzechBox | 4 | 0 | 2 | 112 |
+| 26 | TIconSlider | 4 | 0 | 2 | 113 |
+| 27 | TInteriorMinister | 4 | 0 | 2 | 23 |
+| 28 | TMadnessButton | 4 | 0 | 2 | 112 |
+| 29 | TPictureRadioButton | 4 | 0 | 2 | 110 |
+| 30 | T2PictureButton | 3 | 0 | 2 | 110 |
+| 31 | TBattleReportView | 3 | 0 | 2 | 114 |
+| 32 | TBismarckMinister | 3 | 0 | 2 | 17 |
+| 33 | TBullyMinister | 3 | 0 | 2 | 17 |
+| 34 | TCivDescription | 3 | 0 | 2 | 100 |
+| 35 | TCouncilView | 3 | 0 | 2 | 114 |
+| 36 | TDealBookPicture | 3 | 0 | 2 | 110 |
+| 37 | TDealTabControl | 3 | 0 | 2 | 107 |
+| 38 | TDefenderMinister | 3 | 0 | 2 | 17 |
+| 39 | TDefenseMinister | 3 | 0 | 2 | 17 |
+| 40 | TDiplomacyMapView | 3 | 0 | 2 | 114 |
+| 41 | TDiplomacyMgr | 3 | 0 | 2 | 32 |
+| 42 | TDisplayMgr | 3 | 0 | 2 | 14 |
+| 43 | TDlgWindow | 3 | 0 | 2 | 112 |
+| 44 | TDropShadowNumberText | 3 | 0 | 2 | 116 |
+| 45 | TEditText | 3 | 0 | 2 | 114 |
+| 46 | TFloatWindow | 3 | 0 | 2 | 113 |
+| 47 | TGameWindow | 3 | 0 | 2 | 115 |
+| 48 | THandleStream | 3 | 0 | 2 | 42 |
+| 49 | THelpPicture | 3 | 0 | 2 | 112 |
+| 50 | THelpWindow | 3 | 0 | 2 | 113 |
+| 51 | TIconBar | 3 | 0 | 2 | 111 |
+| 52 | TIndustryCluster | 3 | 0 | 2 | 112 |
+| 53 | TInfoBarPictureText | 3 | 0 | 2 | 122 |
+| 54 | TInfoBarText | 3 | 0 | 2 | 122 |
+| 55 | TMyNumberText | 3 | 0 | 2 | 116 |
+| 56 | TNapoleonMinister | 3 | 0 | 2 | 17 |
+| 57 | TNumberText | 3 | 0 | 2 | 116 |
+| 58 | TNumberedIcon | 3 | 0 | 2 | 113 |
+| 59 | TOceanDialog | 3 | 0 | 2 | 119 |
+| 60 | TOfferDeskPicture | 3 | 0 | 2 | 109 |
+| 61 | TPictureNumberText | 3 | 0 | 2 | 116 |
+| 62 | TPirateMinister | 3 | 0 | 2 | 17 |
+| 63 | TPlaceCityDialog | 3 | 0 | 2 | 109 |
+| 64 | TProductionCluster | 3 | 0 | 2 | 112 |
+| 65 | TRailCluster | 3 | 0 | 2 | 112 |
+| 66 | TRailheadDialog | 3 | 0 | 2 | 99 |
+| 67 | TRearFloatWindow | 3 | 0 | 2 | 113 |
+| 68 | TTerrainHelpWindow | 3 | 0 | 2 | 113 |
+| 69 | TTradeCluster | 3 | 0 | 2 | 116 |
+| 70 | TTransportPicture | 3 | 0 | 2 | 109 |
+| 71 | TWindow | 3 | 0 | 2 | 112 |
+| 72 | TWorldView | 3 | 0 | 2 | 118 |
+| 73 | TMovieView | 2 | 0 | 3 | 109 |
+| 74 | TPowerPlantOrder | 2 | 0 | 3 | 10 |
+| 75 | T2PictToggleButton | 2 | 0 | 2 | 111 |
+| 76 | TAlwaysPictureButton | 2 | 0 | 2 | 111 |
+| 77 | TAmtBarCluster | 2 | 0 | 2 | 111 |
+| 78 | TArmyInfoView | 2 | 0 | 2 | 110 |
+| 79 | TArmyPlacard | 2 | 0 | 2 | 110 |
+| 80 | TArmyToolbar | 2 | 0 | 2 | 110 |
+| 81 | TArrowsControl | 2 | 0 | 2 | 109 |
+| 82 | TBackgroundPicture | 2 | 0 | 2 | 110 |
+| 83 | TBattleDetailBook | 2 | 0 | 2 | 109 |
+| 84 | TBook | 2 | 0 | 2 | 109 |
+| 85 | TBoycottButton | 2 | 0 | 2 | 110 |
+| 86 | TBuildingConstructionView | 2 | 0 | 2 | 111 |
+| 87 | TBuildingExpansionView | 2 | 0 | 2 | 111 |
+| 88 | TButton | 2 | 0 | 2 | 107 |
+| 89 | TCityBarCluster | 2 | 0 | 2 | 111 |
+| 90 | TCivReport | 2 | 0 | 2 | 110 |
+| 91 | TCivToolbar | 2 | 0 | 2 | 109 |
+| 92 | TCivilianButton | 2 | 0 | 2 | 111 |
+| 93 | TClickZone | 2 | 0 | 2 | 108 |
+| 94 | TCloseButton | 2 | 0 | 2 | 110 |
+| 95 | TCloseParentButton | 2 | 0 | 2 | 107 |
+| 96 | TClosePicture | 2 | 0 | 2 | 110 |
+| 97 | TCluster | 2 | 0 | 2 | 109 |
+| 98 | TColorKeyButton | 2 | 0 | 2 | 110 |
+| 99 | TColorKeyPicture | 2 | 0 | 2 | 110 |
+| 100 | TCombatReportView | 2 | 0 | 2 | 110 |
+| 101 | TControl | 2 | 0 | 2 | 107 |
+| 102 | TCountingStream | 2 | 0 | 2 | 42 |
+| 103 | TCreditsPicture | 2 | 0 | 2 | 110 |
+| 104 | TCtlMgr | 2 | 0 | 2 | 107 |
+| 105 | TDeluxeText | 2 | 0 | 2 | 121 |
+| 106 | TDipDlgCluster | 2 | 0 | 2 | 110 |
+| 107 | TDisappearingButton | 2 | 0 | 2 | 110 |
+| 108 | TDropShadowText | 2 | 0 | 2 | 112 |
+| 109 | TFileStream | 2 | 0 | 2 | 40 |
+| 110 | TFlagOptionsPicture | 2 | 0 | 2 | 109 |
+| 111 | TFrameRadioView | 2 | 0 | 2 | 107 |
+| 112 | TGWorldButton | 2 | 0 | 2 | 107 |
+| 113 | TGameInfoPicture | 2 | 0 | 2 | 109 |
+| 114 | TGamePreferencesPicture | 2 | 0 | 2 | 108 |
+| 115 | TGameScorePicture | 2 | 0 | 2 | 110 |
+| 116 | TGameSetupMultiplayerPicture | 2 | 0 | 2 | 110 |
+| 117 | TGameSetupPicture | 2 | 0 | 2 | 110 |
+| 118 | THQButton | 2 | 0 | 2 | 111 |
+| 119 | THighScoresPicture | 2 | 0 | 2 | 110 |
+| 120 | TJoinSelectorDialog | 2 | 0 | 2 | 110 |
+| 121 | TLoadSavePicture | 2 | 0 | 2 | 111 |
+| 122 | TLoungeDialog | 2 | 0 | 2 | 110 |
+| 123 | TMapEditCluster | 2 | 0 | 2 | 109 |
+| 124 | TMapKey | 2 | 0 | 2 | 109 |
+| 125 | TMapUberPicture | 2 | 0 | 2 | 120 |
+| 126 | TMapUberUberPicture | 2 | 0 | 2 | 110 |
+| 127 | TMegaPicture | 2 | 0 | 2 | 112 |
+| 128 | TMiniArmyView | 2 | 0 | 2 | 108 |
+| 129 | TMiniCivView | 2 | 0 | 2 | 108 |
+| 130 | TMiniMapView | 2 | 0 | 2 | 107 |
+| 131 | TMiniShipView | 2 | 0 | 2 | 108 |
+| 132 | TMultiMessagePicture | 2 | 0 | 2 | 109 |
+| 133 | TMyStaticText | 2 | 0 | 2 | 112 |
+| 134 | TNavyRoster | 2 | 0 | 2 | 105 |
+| 135 | TNavyToolbarCluster | 2 | 0 | 2 | 110 |
+| 136 | TNetGameSelectPicture | 2 | 0 | 2 | 110 |
+| 137 | TNetSelectPicture | 2 | 0 | 2 | 110 |
+| 138 | TNewTownView | 2 | 0 | 2 | 99 |
+| 139 | TNewspaperView | 2 | 0 | 2 | 109 |
+| 140 | TNoHilitePicture | 2 | 0 | 2 | 110 |
+| 141 | TNoHiliteText | 2 | 0 | 2 | 112 |
+| 142 | TNominationView | 2 | 0 | 2 | 110 |
+| 143 | TNumberedArrowButton | 2 | 0 | 2 | 108 |
+| 144 | TNumberedItem | 2 | 0 | 2 | 112 |
+| 145 | TOffLimitsPicture | 2 | 0 | 2 | 110 |
+| 146 | TOffersPanelView | 2 | 0 | 2 | 100 |
+| 147 | TOnOffRadioButton | 2 | 0 | 2 | 111 |
+| 148 | TOrderView | 2 | 0 | 2 | 100 |
+| 149 | TOverlayRadioButton | 2 | 0 | 2 | 110 |
+| 150 | TPageCorner | 2 | 0 | 2 | 110 |
+| 151 | TPicture | 2 | 0 | 2 | 109 |
+| 152 | TPictureButton | 2 | 0 | 2 | 110 |
+| 153 | TPictureText | 2 | 0 | 2 | 112 |
+| 154 | TPlacard | 2 | 0 | 2 | 110 |
+| 155 | TPurchaseCluster | 2 | 0 | 2 | 111 |
+| 156 | TQueryFloater | 2 | 0 | 2 | 109 |
+| 157 | TRadio | 2 | 0 | 2 | 107 |
+| 158 | TRadioPictureButton | 2 | 0 | 2 | 110 |
+| 159 | TRadioText | 2 | 0 | 2 | 113 |
+| 160 | TRadioTextCluster | 2 | 0 | 2 | 109 |
+| 161 | TRightLeftView | 2 | 0 | 2 | 107 |
+| 162 | TScenarioChooser | 2 | 0 | 2 | 112 |
+| 163 | TScrollBarView | 2 | 0 | 2 | 107 |
+| 164 | TScrollerButton | 2 | 0 | 2 | 110 |
+| 165 | TSelectoText | 2 | 0 | 2 | 113 |
+| 166 | TSetupRandomMapPicture | 2 | 0 | 2 | 112 |
+| 167 | TShipFractionCluster | 2 | 0 | 2 | 109 |
+| 168 | TShipPlacard | 2 | 0 | 2 | 110 |
+| 169 | TShipyardCluster | 2 | 0 | 2 | 111 |
+| 170 | TSidewaysArrow | 2 | 0 | 2 | 109 |
+| 171 | TSliderPicture | 2 | 0 | 2 | 110 |
+| 172 | TSpecialQuitPicture | 2 | 0 | 2 | 109 |
+| 173 | TStaticText | 2 | 0 | 2 | 112 |
+| 174 | TStatusButton | 2 | 0 | 2 | 107 |
+| 175 | TStatusPicture | 2 | 0 | 2 | 109 |
+| 176 | TStream | 2 | 0 | 2 | 42 |
+| 177 | TSuperArmyRoster | 2 | 0 | 2 | 105 |
+| 178 | TSuperNavyRoster | 2 | 0 | 2 | 105 |
+| 179 | TTEView | 2 | 0 | 2 | 112 |
+| 180 | TTacMapUberPicture | 2 | 0 | 2 | 110 |
+| 181 | TTacNavyToolbar | 2 | 0 | 2 | 111 |
+| 182 | TTacticalAdiosPicture | 2 | 0 | 2 | 109 |
+| 183 | TTacticalHolaPicture | 2 | 0 | 2 | 109 |
+| 184 | TTacticalToolbar | 2 | 0 | 2 | 111 |
+| 185 | TTerrainHelpPicture | 2 | 0 | 2 | 110 |
+| 186 | TTerrainInfoDialog | 2 | 0 | 2 | 110 |
+| 187 | TTextPictureButton | 2 | 0 | 2 | 109 |
+| 188 | TToggleButton | 2 | 0 | 2 | 110 |
+| 189 | TToolBarCluster | 2 | 0 | 2 | 112 |
+| 190 | TTownNameDialog | 2 | 0 | 2 | 110 |
+| 191 | TTradeOrderPicture | 2 | 0 | 2 | 109 |
+| 192 | TTradePolicyCluster | 2 | 0 | 2 | 110 |
+| 193 | TTradeScreenPicture | 2 | 0 | 2 | 109 |
+| 194 | TTransportView | 2 | 0 | 2 | 99 |
+| 195 | TTwoPicSlider | 2 | 0 | 2 | 107 |
+| 196 | TUberCluster | 2 | 0 | 2 | 110 |
+| 197 | TUnitToolbarCluster | 2 | 0 | 2 | 110 |
+| 198 | TUpDownPictureButton | 2 | 0 | 2 | 109 |
+| 199 | TUpDownView | 2 | 0 | 2 | 107 |
+| 200 | TWarningView | 2 | 0 | 2 | 109 |
+| 201 | TNavyHumanPlayer | 1 | 0 | 7 | 8 |
+| 202 | TFoodProcessingOrder | 1 | 0 | 5 | 9 |
+| 203 | TMapMgr | 1 | 0 | 5 | 66 |
+| 204 | TPopGrowthOrder | 1 | 0 | 5 | 9 |
+| 205 | TSoundPlayer | 1 | 0 | 5 | 41 |
+| 206 | TTrainingOrder | 1 | 0 | 5 | 9 |
+| 207 | TArmyPlayer | 1 | 0 | 4 | 14 |
+| 208 | TFocusAnimation | 1 | 0 | 4 | 9 |
+| 209 | TCapacityOrder | 1 | 0 | 3 | 12 |
+| 210 | TEngineerDialog | 1 | 0 | 3 | 99 |
+| 211 | TExpansionOrder | 1 | 0 | 3 | 12 |
+| 212 | TItemOrder | 1 | 0 | 3 | 11 |
+| 213 | TOrItemOrder | 1 | 0 | 3 | 12 |
+| 214 | TStratReportView | 1 | 0 | 3 | 100 |
+| 215 | TTransFocusAnimation | 1 | 0 | 3 | 10 |
+| 216 | TAmtBar | 1 | 0 | 2 | 102 |
+| 217 | TAnimation | 1 | 0 | 2 | 7 |
+| 218 | TArmyBattle | 1 | 0 | 2 | 19 |
+| 219 | TArmyBoyView | 1 | 0 | 2 | 99 |
+| 220 | TArmyUnitView | 1 | 0 | 2 | 99 |
+| 221 | TAutoGreatPower | 1 | 0 | 2 | 170 |
+| 222 | TAutomatedPlayDialog | 1 | 0 | 2 | 99 |
+| 223 | TBattleUnitsView | 1 | 0 | 2 | 105 |
+| 224 | TCheater | 1 | 0 | 2 | 100 |
+| 225 | TCity | 1 | 0 | 2 | 26 |
+| 226 | TCityTask | 1 | 0 | 2 | 10 |
+| 227 | TCivAnimation | 1 | 0 | 2 | 7 |
+| 228 | TCivAnimation2 | 1 | 0 | 2 | 7 |
+| 229 | TClientGreatPower | 1 | 0 | 2 | 170 |
+| 230 | TCouncilPanelView | 1 | 0 | 2 | 100 |
+| 231 | TCouncilTickerAnimation | 1 | 0 | 2 | 7 |
+| 232 | TDefenseMinisterView | 1 | 0 | 2 | 102 |
+| 233 | TDialogBehavior | 1 | 0 | 2 | 13 |
+| 234 | TDialogView | 1 | 0 | 2 | 99 |
+| 235 | TForeignMinisterView | 1 | 0 | 2 | 104 |
+| 236 | TGPCheater | 1 | 0 | 2 | 100 |
+| 237 | TGPTreatyDialog | 1 | 0 | 2 | 100 |
+| 238 | TGWorldPartView | 1 | 0 | 2 | 99 |
+| 239 | TGWorldPeeker | 1 | 0 | 2 | 99 |
+| 240 | TGameSetupDialog | 1 | 0 | 2 | 100 |
+| 241 | TGarrisonView | 1 | 0 | 2 | 105 |
+| 242 | TGrantsView | 1 | 0 | 2 | 100 |
+| 243 | TGreatPower | 1 | 0 | 2 | 170 |
+| 244 | THostGreatPower | 1 | 0 | 2 | 170 |
+| 245 | THotspotBehavior | 1 | 0 | 2 | 9 |
+| 246 | TIdleMeAnimation | 1 | 0 | 2 | 7 |
+| 247 | TIncludeView | 1 | 0 | 2 | 99 |
+| 248 | TIndustryAmtBar | 1 | 0 | 2 | 103 |
+| 249 | TInfoBarBehavior | 1 | 0 | 2 | 10 |
+| 250 | TInfoPanelView | 1 | 0 | 2 | 101 |
+| 251 | TInteriorMinisterView | 1 | 0 | 2 | 102 |
+| 252 | TInterruptusView | 1 | 0 | 2 | 99 |
+| 253 | TItemBoyView | 1 | 0 | 2 | 99 |
+| 254 | TLonelyTileView | 1 | 0 | 2 | 99 |
+| 255 | TMapPreviewView | 1 | 0 | 2 | 99 |
+| 256 | TMerchantBoyView | 1 | 0 | 2 | 99 |
+| 257 | TMilitaryPageView | 1 | 0 | 2 | 104 |
+| 258 | TMinisterView | 1 | 0 | 2 | 102 |
+| 259 | TMinorRelationshipDialog | 1 | 0 | 2 | 100 |
+| 260 | TMinorRuntimeStatusEntry | 1 | 0 | 2 | 47 |
+| 261 | TMinorTradeBidsDialog | 1 | 0 | 2 | 100 |
+| 262 | TMinorTreatyDialog | 1 | 0 | 2 | 100 |
+| 263 | TNavyBattle | 1 | 0 | 2 | 19 |
+| 264 | TNavyBoyView | 1 | 0 | 2 | 99 |
+| 265 | TOneTimeAnimation | 1 | 0 | 2 | 7 |
+| 266 | TPageView | 1 | 0 | 2 | 105 |
+| 267 | TPanelView | 1 | 0 | 2 | 100 |
+| 268 | TProxyGreatPower | 1 | 0 | 2 | 169 |
+| 269 | TRailAmtBar | 1 | 0 | 2 | 103 |
+| 270 | TRelationshipDialog | 1 | 0 | 2 | 100 |
+| 271 | TRemoteGreatPower | 1 | 0 | 2 | 172 |
+| 272 | TRemoteMinor | 1 | 0 | 2 | 47 |
+| 273 | TScoreGraph | 1 | 0 | 2 | 99 |
+| 274 | TScrollView | 1 | 0 | 2 | 99 |
+| 275 | TScroller | 1 | 0 | 2 | 99 |
+| 276 | TShipAmtBar | 1 | 0 | 2 | 102 |
+| 277 | TShipBuildingTask | 1 | 0 | 2 | 10 |
+| 278 | TShipView | 1 | 0 | 2 | 99 |
+| 279 | TSuperCivRoster | 1 | 0 | 2 | 106 |
+| 280 | TSwapperDaddyView | 1 | 0 | 2 | 99 |
+| 281 | TTacArmyView | 1 | 0 | 2 | 108 |
+| 282 | TTacticalBattleView | 1 | 0 | 2 | 108 |
+| 283 | TTaskList | 1 | 0 | 2 | 19 |
+| 284 | TTechCheater | 1 | 0 | 2 | 100 |
+| 285 | TTechHistoryView | 1 | 0 | 2 | 99 |
+| 286 | TTechItemView | 1 | 0 | 2 | 99 |
+| 287 | TTechStorePage | 1 | 0 | 2 | 105 |
+| 288 | TTextList | 1 | 0 | 2 | 99 |
+| 289 | TTradeBidNationView | 1 | 0 | 2 | 99 |
+| 290 | TTradeBookView | 1 | 0 | 2 | 99 |
+| 291 | TTradeOfferNationView | 1 | 0 | 2 | 99 |
+| 292 | TTradePageBuyView | 1 | 0 | 2 | 105 |
+| 293 | TTradePageSellView | 1 | 0 | 2 | 105 |
+| 294 | TTradePanelView | 1 | 0 | 2 | 100 |
+| 295 | TTradeTotalsView | 1 | 0 | 2 | 99 |
+| 296 | TTraderAmtBar | 1 | 0 | 2 | 102 |
+| 297 | TTreatiesView | 1 | 0 | 2 | 100 |
+| 298 | TView | 1 | 0 | 2 | 99 |
+| 299 | TMission | 0 | 2 | 2 | 32 |
+| 300 | TArmyMission | 0 | 1 | 2 | 34 |
+| 301 | TDefendProvinceMission | 0 | 1 | 2 | 34 |
+| 302 | CMainFrame | 0 | 0 | 56 | 2 |
+| 303 | CIncludeView | 0 | 0 | 40 | 2 |
+| 304 | T104TemplateDialog | 0 | 0 | 39 | 1 |
+| 305 | T64TemplateDialog | 0 | 0 | 39 | 1 |
+| 306 | TA1TemplateDialog | 0 | 0 | 39 | 1 |
+| 307 | TA7TemplateDialog | 0 | 0 | 39 | 1 |
+| 308 | TABTemplateDialog | 0 | 0 | 39 | 1 |
+| 309 | TADTemplateDialog | 0 | 0 | 39 | 1 |
+| 310 | TAETemplateDialog | 0 | 0 | 39 | 1 |
+| 311 | TAutoResolutionDialog | 0 | 0 | 39 | 1 |
+| 312 | TB1TemplateDialog | 0 | 0 | 39 | 1 |
+| 313 | TC2TemplateDialog | 0 | 0 | 39 | 1 |
+| 314 | TD0TemplateDialog | 0 | 0 | 39 | 1 |
+| 315 | TD2TemplateDialog | 0 | 0 | 39 | 1 |
+| 316 | TDBTemplateDialog | 0 | 0 | 39 | 1 |
+| 317 | TDCTemplateDialog | 0 | 0 | 39 | 1 |
+| 318 | TDDTemplateDialog | 0 | 0 | 39 | 1 |
+| 319 | TDETemplateDialog | 0 | 0 | 39 | 1 |
+| 320 | TDFTemplateDialog | 0 | 0 | 39 | 1 |
+| 321 | TFATemplateDialog | 0 | 0 | 39 | 1 |
+| 322 | TLowDiskWarningDialog | 0 | 0 | 39 | 1 |
+| 323 | CMcWindow | 0 | 0 | 38 | 2 |
+| 324 | TE0TemplateDialog | 0 | 0 | 38 | 2 |
+| 325 | ImperialismApp | 0 | 0 | 35 | 4 |
+| 326 | CAmbitDocument | 0 | 0 | 20 | 3 |
+| 327 | TPopulationMgr | 0 | 0 | 16 | 2 |
+| 328 | TModalDialogBase | 0 | 0 | 10 | 0 |
+| 329 | TProductionOrder | 0 | 0 | 9 | 5 |
+| 330 | TTacticalPlayer | 0 | 0 | 8 | 7 |
+| 331 | TNavyPlayer | 0 | 0 | 7 | 8 |
+| 332 | TTown | 0 | 0 | 7 | 5 |
+| 333 | THelpMgr | 0 | 0 | 6 | 3 |
+| 334 | TLaborPool | 0 | 0 | 6 | 3 |
+| 335 | TShipOrder | 0 | 0 | 6 | 11 |
+| 336 | TNavyAutoPlayer | 0 | 0 | 5 | 10 |
+| 337 | TNavyMgr | 0 | 0 | 5 | 2 |
+| 338 | TTask | 0 | 0 | 5 | 3 |
+| 339 | CDibPal | 0 | 0 | 4 | 0 |
+| 340 | ImperialismCommandLineInfo | 0 | 0 | 4 | 0 |
+| 341 | TDocument | 0 | 0 | 4 | 5 |
+| 342 | TFileBasedDocument | 0 | 0 | 4 | 5 |
+| 343 | TLineData | 0 | 0 | 4 | 5 |
+| 344 | TNetMgr | 0 | 0 | 4 | 4 |
+| 345 | TTacticalBattle | 0 | 0 | 4 | 18 |
+| 346 | TTaskForce | 0 | 0 | 4 | 3 |
+| 347 | TUnitOrder | 0 | 0 | 4 | 11 |
+| 348 | TArmyUnitLine | 0 | 0 | 3 | 6 |
+| 349 | TBatRepDetLine | 0 | 0 | 3 | 6 |
+| 350 | TCommodityLine | 0 | 0 | 3 | 6 |
+| 351 | TDealLine | 0 | 0 | 3 | 6 |
+| 352 | TDealList | 0 | 0 | 3 | 12 |
+| 353 | TFuzzySet | 0 | 0 | 3 | 5 |
+| 354 | TFuzzyVar | 0 | 0 | 3 | 5 |
+| 355 | TIndexAndRankList | 0 | 0 | 3 | 12 |
+| 356 | TLanguageMgr | 0 | 0 | 3 | 4 |
+| 357 | TLongintList | 0 | 0 | 3 | 11 |
+| 358 | TMiniArmyLine | 0 | 0 | 3 | 6 |
+| 359 | TMiniCivLine | 0 | 0 | 3 | 6 |
+| 360 | TMiniShipLine | 0 | 0 | 3 | 6 |
+| 361 | TNavyMission | 0 | 0 | 3 | 38 |
+| 362 | TNewGameCommand | 0 | 0 | 3 | 6 |
+| 363 | TNextMoveCommand | 0 | 0 | 3 | 6 |
+| 364 | TPictureLine | 0 | 0 | 3 | 6 |
+| 365 | TPoseMessageDialog | 0 | 0 | 3 | 6 |
+| 366 | TProvinceDesirabilityList | 0 | 0 | 3 | 12 |
+| 367 | TPtrList | 0 | 0 | 3 | 13 |
+| 368 | TShipLine | 0 | 0 | 3 | 6 |
+| 369 | TSortByPriceList | 0 | 0 | 3 | 12 |
+| 370 | TSortedByRelationshipList | 0 | 0 | 3 | 12 |
+| 371 | TSortedPtrList | 0 | 0 | 3 | 12 |
+| 372 | TTechItemLine | 0 | 0 | 3 | 6 |
+| 373 | TTextLine | 0 | 0 | 3 | 6 |
+| 374 | TTradeBidNationLine | 0 | 0 | 3 | 6 |
+| 375 | TTradeOfferNationLine | 0 | 0 | 3 | 6 |
+| 376 | TTradeTotalsLine | 0 | 0 | 3 | 6 |
+| 377 | TTurnStartEvent | 0 | 0 | 3 | 5 |
+| 378 | ArchiveStreamAdapter | 0 | 0 | 2 | 5 |
+| 379 | CDib | 0 | 0 | 2 | 1 |
+| 380 | TAdmiral | 0 | 0 | 2 | 5 |
+| 381 | TAmbitApplication | 0 | 0 | 2 | 42 |
+| 382 | TAnimator | 0 | 0 | 2 | 34 |
+| 383 | TApplication | 0 | 0 | 2 | 39 |
+| 384 | TArmsForeignMinister | 0 | 0 | 2 | 35 |
+| 385 | TArmyMgr | 0 | 0 | 2 | 20 |
+| 386 | TArmyStack | 0 | 0 | 2 | 5 |
+| 387 | TArmyStackList | 0 | 0 | 2 | 19 |
+| 388 | TArmyTacUnit | 0 | 0 | 2 | 11 |
+| 389 | TAssetMgr | 0 | 0 | 2 | 9 |
+| 390 | TAttackProvinceMission | 0 | 0 | 2 | 36 |
+| 391 | TBeachheadMission | 0 | 0 | 2 | 38 |
+| 392 | TBehavior | 0 | 0 | 2 | 9 |
+| 393 | TBillForeignMinister | 0 | 0 | 2 | 35 |
+| 394 | TBlockadePortMission | 0 | 0 | 2 | 38 |
+| 395 | TCancelGameOptionsCommand | 0 | 0 | 2 | 7 |
+| 396 | TCivMgr | 0 | 0 | 2 | 9 |
+| 397 | TCivUnit | 0 | 0 | 2 | 10 |
+| 398 | TCommand | 0 | 0 | 2 | 7 |
+| 399 | TCommandHandler | 0 | 0 | 2 | 34 |
+| 400 | TControlSeaZoneMission | 0 | 0 | 2 | 38 |
+| 401 | TCountry | 0 | 0 | 2 | 37 |
+| 402 | TDiplomatForeignMinister | 0 | 0 | 2 | 35 |
+| 403 | TDropShadowTextBehavior | 0 | 0 | 2 | 9 |
+| 404 | TEscortMission | 0 | 0 | 2 | 38 |
+| 405 | TEvent | 0 | 0 | 2 | 5 |
+| 406 | TEventHandler | 0 | 0 | 2 | 33 |
+| 407 | TForeignMinister | 0 | 0 | 2 | 35 |
+| 408 | TInvadeMission | 0 | 0 | 2 | 35 |
+| 409 | TLandSaleEvent | 0 | 0 | 2 | 6 |
+| 410 | TList | 0 | 0 | 2 | 19 |
+| 411 | TMilitaryUnit | 0 | 0 | 2 | 10 |
+| 412 | TMinister | 0 | 0 | 2 | 13 |
+| 413 | TModalMessageCommand | 0 | 0 | 2 | 7 |
+| 414 | TMultiplayerMgr | 0 | 0 | 2 | 34 |
+| 415 | TNavyTacUnit | 0 | 0 | 2 | 12 |
+| 416 | TNewsMgr | 0 | 0 | 2 | 5 |
+| 417 | TNextDiplomationCommand | 0 | 0 | 2 | 6 |
+| 418 | TNextTradeCommand | 0 | 0 | 2 | 6 |
+| 419 | TObject | 0 | 0 | 2 | 5 |
+| 420 | TOcean | 0 | 0 | 2 | 5 |
+| 421 | TPortZone | 0 | 0 | 2 | 18 |
+| 422 | TScatteredShipsMission | 0 | 0 | 2 | 38 |
+| 423 | TShip | 0 | 0 | 2 | 5 |
+| 424 | TSimMgr | 0 | 0 | 2 | 29 |
+| 425 | TSortedList | 0 | 0 | 2 | 19 |
+| 426 | TSpaceCommand | 0 | 0 | 2 | 7 |
+| 427 | TTacticalUnit | 0 | 0 | 2 | 11 |
+| 428 | TTechMgr | 0 | 0 | 2 | 5 |
+| 429 | TTedForeignMinister | 0 | 0 | 2 | 35 |
+| 430 | TTextileForeignMinister | 0 | 0 | 2 | 35 |
+| 431 | TTradeMgr | 0 | 0 | 2 | 30 |
+| 432 | TTraderForeignMinister | 0 | 0 | 2 | 35 |
+| 433 | TTurnEventDialogFactoryRegistry | 0 | 0 | 2 | 8 |
+| 434 | TUnit | 0 | 0 | 2 | 9 |
 | 435 | TZone | 0 | 0 | 2 | 18 |
 
 ## Proven conflicts
+
+### TCityInteriorMinister (0x006508a8)
+- slot 18 / 0x48 -> 0x004be450: `void TInteriorMinister::MinisterSlot12()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x8
+- slot 26 / 0x68 -> 0x004beeb0: `void TCityInteriorMinister::InteriorSlot1A()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 27 / 0x6c -> 0x004beee0: `void TCityInteriorMinister::InteriorSlot1B()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 28 / 0x70 -> 0x004bef30: `void TCityInteriorMinister::InteriorSlot1C()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 33 / 0x84 -> 0x004bf8a0: `undefined TCityInteriorMinister::VTableSlot21()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 34 / 0x88 -> 0x004bfa50: `undefined TCityInteriorMinister::GetTEventHandlerClassNamePointer_22()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x8
+- slot 35 / 0x8c -> 0x004bfb20: `undefined TCityInteriorMinister::QueueCityProductionRebalanceCommandsByThresholds()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x8
+- slot 36 / 0x90 -> 0x004bff60: `undefined TCityInteriorMinister::GetTEventHandlerClassNamePointer_24()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x8
+- slot 37 / 0x94 -> 0x004c02c0: `undefined TCityInteriorMinister::QueueCityProductionCommand17Or18FromSupportRatio()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x8
+- slot 38 / 0x98 -> 0x004c0090: `undefined TCityInteriorMinister::DistributeCityProductionCommandBudgetAndQueueOrders()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x8
+- slot 39 / 0x9c -> 0x004c04e0: `undefined TCityInteriorMinister::QueueRandomCityProductionCommand19To1C()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x8
+- slot 40 / 0xa0 -> 0x004c05a0: `undefined TCityInteriorMinister::QueueCityProductionCommand2BIfMissingAndResetValue()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x8
+- slot 41 / 0xa4 -> 0x004c0690: `undefined TCityInteriorMinister::QueueSingleCityProductionCommandFromField36()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x8
+- slot 42 / 0xa8 -> 0x004c0730: `undefined TCityInteriorMinister::QueueSingleCityProductionCommandFromField38()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x8
+- slot 43 / 0xac -> 0x004bff80: `undefined TCityInteriorMinister::QueueCityProductionCommand33FromAccumulatedDeficit()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x8
+- slot 44 / 0xb0 -> 0x004c07d0: `undefined TCityInteriorMinister::DistributeCityProductionAcrossOrderTemplatesAndBackfillDeficits()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 45 / 0xb4 -> 0x004bef10: `undefined TCityInteriorMinister::VTableSlot2D()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 46 / 0xb8 -> 0x004c0de0: `undefined TCityInteriorMinister::SetForeignMinisterReadyFlag14_2e()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0xc
+- slot 47 / 0xbc -> 0x004c0e50: `undefined TCityInteriorMinister::ReconcileCityProductionQueueAgainstTargetsAndAdjustOrders()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x8
+- slot 54 / 0xd8 -> 0x004c2d50: `undefined TCityInteriorMinister::IterateLinkedListCursorEntries_004c2d50()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x8
+- slot 55 / 0xdc -> 0x004c2e10: `undefined TCityInteriorMinister::HandleFrogCityTileSelectionAndDispatchOrders()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0xc
+- slot 56 / 0xe0 -> 0x004c3170: `undefined TCityInteriorMinister::SelectBestFrogCityTileFromCandidateSet()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x10
+- slot 57 / 0xe4 -> 0x004c3490: `undefined TCityInteriorMinister::ComputeFrogCityCandidateScoreFromNationNeeds()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 58 / 0xe8 -> 0x004c3620: `undefined TCityInteriorMinister::GetTEventHandlerClassNamePointer_3a()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0xc
+- slot 59 / 0xec -> 0x004c3640: `undefined TCityInteriorMinister::BuildFrogCityDistanceMapFromPrimarySeedSet()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 60 / 0xf0 -> 0x004c3910: `undefined TCityInteriorMinister::BuildFrogCityDistanceMapFromReachableSeaCandidates()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 61 / 0xf4 -> 0x004c3c00: `undefined TCityInteriorMinister::RebalanceCityOrderAllocationTargets()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TEvenCityMinister (0x00650d30)
+- slot 18 / 0x48 -> 0x004be450: `void TInteriorMinister::MinisterSlot12()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x8
+- slot 26 / 0x68 -> 0x004beeb0: `void TCityInteriorMinister::InteriorSlot1A()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 27 / 0x6c -> 0x004beee0: `void TCityInteriorMinister::InteriorSlot1B()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 28 / 0x70 -> 0x004bef30: `void TCityInteriorMinister::InteriorSlot1C()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 33 / 0x84 -> 0x004bf8a0: `undefined TCityInteriorMinister::VTableSlot21()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 34 / 0x88 -> 0x004bfa50: `undefined TCityInteriorMinister::GetTEventHandlerClassNamePointer_22()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x8
+- slot 35 / 0x8c -> 0x004bfb20: `undefined TCityInteriorMinister::QueueCityProductionRebalanceCommandsByThresholds()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x8
+- slot 36 / 0x90 -> 0x004bff60: `undefined TCityInteriorMinister::GetTEventHandlerClassNamePointer_24()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x8
+- slot 37 / 0x94 -> 0x004c02c0: `undefined TCityInteriorMinister::QueueCityProductionCommand17Or18FromSupportRatio()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x8
+- slot 38 / 0x98 -> 0x004c0090: `undefined TCityInteriorMinister::DistributeCityProductionCommandBudgetAndQueueOrders()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x8
+- slot 39 / 0x9c -> 0x004c04e0: `undefined TCityInteriorMinister::QueueRandomCityProductionCommand19To1C()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x8
+- slot 40 / 0xa0 -> 0x004c05a0: `undefined TCityInteriorMinister::QueueCityProductionCommand2BIfMissingAndResetValue()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x8
+- slot 41 / 0xa4 -> 0x004c0690: `undefined TCityInteriorMinister::QueueSingleCityProductionCommandFromField36()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x8
+- slot 42 / 0xa8 -> 0x004c0730: `undefined TCityInteriorMinister::QueueSingleCityProductionCommandFromField38()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x8
+- slot 43 / 0xac -> 0x004bff80: `undefined TCityInteriorMinister::QueueCityProductionCommand33FromAccumulatedDeficit()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x8
+- slot 44 / 0xb0 -> 0x004c07d0: `undefined TCityInteriorMinister::DistributeCityProductionAcrossOrderTemplatesAndBackfillDeficits()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 45 / 0xb4 -> 0x004bef10: `undefined TCityInteriorMinister::VTableSlot2D()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 46 / 0xb8 -> 0x004c0de0: `undefined TCityInteriorMinister::SetForeignMinisterReadyFlag14_2e()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0xc
+- slot 47 / 0xbc -> 0x004c0e50: `undefined TCityInteriorMinister::ReconcileCityProductionQueueAgainstTargetsAndAdjustOrders()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x8
+- slot 54 / 0xd8 -> 0x004c2d50: `undefined TCityInteriorMinister::IterateLinkedListCursorEntries_004c2d50()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x8
+- slot 55 / 0xdc -> 0x004c2e10: `undefined TCityInteriorMinister::HandleFrogCityTileSelectionAndDispatchOrders()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0xc
+- slot 56 / 0xe0 -> 0x004c3170: `undefined TCityInteriorMinister::SelectBestFrogCityTileFromCandidateSet()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x10
+- slot 57 / 0xe4 -> 0x004c3490: `undefined TCityInteriorMinister::ComputeFrogCityCandidateScoreFromNationNeeds()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 58 / 0xe8 -> 0x004c3620: `undefined TCityInteriorMinister::GetTEventHandlerClassNamePointer_3a()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0xc
+- slot 59 / 0xec -> 0x004c3640: `undefined TCityInteriorMinister::BuildFrogCityDistanceMapFromPrimarySeedSet()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 60 / 0xf0 -> 0x004c3910: `undefined TCityInteriorMinister::BuildFrogCityDistanceMapFromReachableSeaCandidates()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 61 / 0xf4 -> 0x004c3c00: `undefined TCityInteriorMinister::RebalanceCityOrderAllocationTargets()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TRailCityMinister (0x00650e90)
+- slot 18 / 0x48 -> 0x004be450: `void TInteriorMinister::MinisterSlot12()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x8
+- slot 26 / 0x68 -> 0x004beeb0: `void TCityInteriorMinister::InteriorSlot1A()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 27 / 0x6c -> 0x004beee0: `void TCityInteriorMinister::InteriorSlot1B()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 28 / 0x70 -> 0x004bef30: `void TCityInteriorMinister::InteriorSlot1C()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 33 / 0x84 -> 0x004bf8a0: `undefined TCityInteriorMinister::VTableSlot21()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 34 / 0x88 -> 0x004bfa50: `undefined TCityInteriorMinister::GetTEventHandlerClassNamePointer_22()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x8
+- slot 35 / 0x8c -> 0x004bfb20: `undefined TCityInteriorMinister::QueueCityProductionRebalanceCommandsByThresholds()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x8
+- slot 36 / 0x90 -> 0x004bff60: `undefined TCityInteriorMinister::GetTEventHandlerClassNamePointer_24()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x8
+- slot 37 / 0x94 -> 0x004c02c0: `undefined TCityInteriorMinister::QueueCityProductionCommand17Or18FromSupportRatio()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x8
+- slot 38 / 0x98 -> 0x004c0090: `undefined TCityInteriorMinister::DistributeCityProductionCommandBudgetAndQueueOrders()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x8
+- slot 39 / 0x9c -> 0x004c04e0: `undefined TCityInteriorMinister::QueueRandomCityProductionCommand19To1C()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x8
+- slot 40 / 0xa0 -> 0x004c05a0: `undefined TCityInteriorMinister::QueueCityProductionCommand2BIfMissingAndResetValue()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x8
+- slot 41 / 0xa4 -> 0x004c0690: `undefined TCityInteriorMinister::QueueSingleCityProductionCommandFromField36()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x8
+- slot 42 / 0xa8 -> 0x004c0730: `undefined TCityInteriorMinister::QueueSingleCityProductionCommandFromField38()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x8
+- slot 43 / 0xac -> 0x004bff80: `undefined TCityInteriorMinister::QueueCityProductionCommand33FromAccumulatedDeficit()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x8
+- slot 44 / 0xb0 -> 0x004c07d0: `undefined TCityInteriorMinister::DistributeCityProductionAcrossOrderTemplatesAndBackfillDeficits()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 45 / 0xb4 -> 0x004bef10: `undefined TCityInteriorMinister::VTableSlot2D()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 46 / 0xb8 -> 0x004c0de0: `undefined TCityInteriorMinister::SetForeignMinisterReadyFlag14_2e()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0xc
+- slot 47 / 0xbc -> 0x004c0e50: `undefined TCityInteriorMinister::ReconcileCityProductionQueueAgainstTargetsAndAdjustOrders()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x8
+- slot 54 / 0xd8 -> 0x004c2d50: `undefined TCityInteriorMinister::IterateLinkedListCursorEntries_004c2d50()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x8
+- slot 55 / 0xdc -> 0x004c2e10: `undefined TCityInteriorMinister::HandleFrogCityTileSelectionAndDispatchOrders()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0xc
+- slot 56 / 0xe0 -> 0x004c3170: `undefined TCityInteriorMinister::SelectBestFrogCityTileFromCandidateSet()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x10
+- slot 57 / 0xe4 -> 0x004c3490: `undefined TCityInteriorMinister::ComputeFrogCityCandidateScoreFromNationNeeds()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 58 / 0xe8 -> 0x004c3620: `undefined TCityInteriorMinister::GetTEventHandlerClassNamePointer_3a()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0xc
+- slot 59 / 0xec -> 0x004c3640: `undefined TCityInteriorMinister::BuildFrogCityDistanceMapFromPrimarySeedSet()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 60 / 0xf0 -> 0x004c3910: `undefined TCityInteriorMinister::BuildFrogCityDistanceMapFromReachableSeaCandidates()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 61 / 0xf4 -> 0x004c3c00: `undefined TCityInteriorMinister::RebalanceCityOrderAllocationTargets()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TShipBuilderCityMinister (0x00650bd0)
+- slot 18 / 0x48 -> 0x004be450: `void TInteriorMinister::MinisterSlot12()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x8
+- slot 26 / 0x68 -> 0x004beeb0: `void TCityInteriorMinister::InteriorSlot1A()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 27 / 0x6c -> 0x004beee0: `void TCityInteriorMinister::InteriorSlot1B()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 28 / 0x70 -> 0x004bef30: `void TCityInteriorMinister::InteriorSlot1C()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 33 / 0x84 -> 0x004bf8a0: `undefined TCityInteriorMinister::VTableSlot21()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 34 / 0x88 -> 0x004bfa50: `undefined TCityInteriorMinister::GetTEventHandlerClassNamePointer_22()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x8
+- slot 35 / 0x8c -> 0x004bfb20: `undefined TCityInteriorMinister::QueueCityProductionRebalanceCommandsByThresholds()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x8
+- slot 36 / 0x90 -> 0x004bff60: `undefined TCityInteriorMinister::GetTEventHandlerClassNamePointer_24()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x8
+- slot 37 / 0x94 -> 0x004c02c0: `undefined TCityInteriorMinister::QueueCityProductionCommand17Or18FromSupportRatio()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x8
+- slot 38 / 0x98 -> 0x004c0090: `undefined TCityInteriorMinister::DistributeCityProductionCommandBudgetAndQueueOrders()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x8
+- slot 39 / 0x9c -> 0x004c04e0: `undefined TCityInteriorMinister::QueueRandomCityProductionCommand19To1C()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x8
+- slot 40 / 0xa0 -> 0x004c05a0: `undefined TCityInteriorMinister::QueueCityProductionCommand2BIfMissingAndResetValue()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x8
+- slot 41 / 0xa4 -> 0x004c0690: `undefined TCityInteriorMinister::QueueSingleCityProductionCommandFromField36()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x8
+- slot 42 / 0xa8 -> 0x004c0730: `undefined TCityInteriorMinister::QueueSingleCityProductionCommandFromField38()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x8
+- slot 43 / 0xac -> 0x004bff80: `undefined TCityInteriorMinister::QueueCityProductionCommand33FromAccumulatedDeficit()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x8
+- slot 44 / 0xb0 -> 0x004c07d0: `undefined TCityInteriorMinister::DistributeCityProductionAcrossOrderTemplatesAndBackfillDeficits()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 45 / 0xb4 -> 0x004bef10: `undefined TCityInteriorMinister::VTableSlot2D()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 46 / 0xb8 -> 0x004c0de0: `undefined TCityInteriorMinister::SetForeignMinisterReadyFlag14_2e()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0xc
+- slot 47 / 0xbc -> 0x004c0e50: `undefined TCityInteriorMinister::ReconcileCityProductionQueueAgainstTargetsAndAdjustOrders()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x8
+- slot 54 / 0xd8 -> 0x004c2d50: `undefined TCityInteriorMinister::IterateLinkedListCursorEntries_004c2d50()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x8
+- slot 55 / 0xdc -> 0x004c2e10: `undefined TCityInteriorMinister::HandleFrogCityTileSelectionAndDispatchOrders()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0xc
+- slot 56 / 0xe0 -> 0x004c3170: `undefined TCityInteriorMinister::SelectBestFrogCityTileFromCandidateSet()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x10
+- slot 57 / 0xe4 -> 0x004c3490: `undefined TCityInteriorMinister::ComputeFrogCityCandidateScoreFromNationNeeds()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 58 / 0xe8 -> 0x004c3620: `undefined TCityInteriorMinister::GetTEventHandlerClassNamePointer_3a()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0xc
+- slot 59 / 0xec -> 0x004c3640: `undefined TCityInteriorMinister::BuildFrogCityDistanceMapFromPrimarySeedSet()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 60 / 0xf0 -> 0x004c3910: `undefined TCityInteriorMinister::BuildFrogCityDistanceMapFromReachableSeaCandidates()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 61 / 0xf4 -> 0x004c3c00: `undefined TCityInteriorMinister::RebalanceCityOrderAllocationTargets()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TSteelCityMinister (0x00650a70)
+- slot 18 / 0x48 -> 0x004be450: `void TInteriorMinister::MinisterSlot12()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x8
+- slot 26 / 0x68 -> 0x004beeb0: `void TCityInteriorMinister::InteriorSlot1A()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 27 / 0x6c -> 0x004beee0: `void TCityInteriorMinister::InteriorSlot1B()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 28 / 0x70 -> 0x004bef30: `void TCityInteriorMinister::InteriorSlot1C()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 33 / 0x84 -> 0x004bf8a0: `undefined TCityInteriorMinister::VTableSlot21()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 34 / 0x88 -> 0x004bfa50: `undefined TCityInteriorMinister::GetTEventHandlerClassNamePointer_22()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x8
+- slot 35 / 0x8c -> 0x004bfb20: `undefined TCityInteriorMinister::QueueCityProductionRebalanceCommandsByThresholds()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x8
+- slot 36 / 0x90 -> 0x004bff60: `undefined TCityInteriorMinister::GetTEventHandlerClassNamePointer_24()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x8
+- slot 37 / 0x94 -> 0x004c02c0: `undefined TCityInteriorMinister::QueueCityProductionCommand17Or18FromSupportRatio()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x8
+- slot 38 / 0x98 -> 0x004c0090: `undefined TCityInteriorMinister::DistributeCityProductionCommandBudgetAndQueueOrders()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x8
+- slot 39 / 0x9c -> 0x004c04e0: `undefined TCityInteriorMinister::QueueRandomCityProductionCommand19To1C()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x8
+- slot 40 / 0xa0 -> 0x004c05a0: `undefined TCityInteriorMinister::QueueCityProductionCommand2BIfMissingAndResetValue()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x8
+- slot 41 / 0xa4 -> 0x004c0690: `undefined TCityInteriorMinister::QueueSingleCityProductionCommandFromField36()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x8
+- slot 42 / 0xa8 -> 0x004c0730: `undefined TCityInteriorMinister::QueueSingleCityProductionCommandFromField38()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x8
+- slot 43 / 0xac -> 0x004bff80: `undefined TCityInteriorMinister::QueueCityProductionCommand33FromAccumulatedDeficit()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x8
+- slot 44 / 0xb0 -> 0x004c07d0: `undefined TCityInteriorMinister::DistributeCityProductionAcrossOrderTemplatesAndBackfillDeficits()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 45 / 0xb4 -> 0x004bef10: `undefined TCityInteriorMinister::VTableSlot2D()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 46 / 0xb8 -> 0x004c0de0: `undefined TCityInteriorMinister::SetForeignMinisterReadyFlag14_2e()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0xc
+- slot 47 / 0xbc -> 0x004c0e50: `undefined TCityInteriorMinister::ReconcileCityProductionQueueAgainstTargetsAndAdjustOrders()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x8
+- slot 54 / 0xd8 -> 0x004c2d50: `undefined TCityInteriorMinister::IterateLinkedListCursorEntries_004c2d50()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x8
+- slot 55 / 0xdc -> 0x004c2e10: `undefined TCityInteriorMinister::HandleFrogCityTileSelectionAndDispatchOrders()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0xc
+- slot 56 / 0xe0 -> 0x004c3170: `undefined TCityInteriorMinister::SelectBestFrogCityTileFromCandidateSet()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x10
+- slot 57 / 0xe4 -> 0x004c3490: `undefined TCityInteriorMinister::ComputeFrogCityCandidateScoreFromNationNeeds()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 58 / 0xe8 -> 0x004c3620: `undefined TCityInteriorMinister::GetTEventHandlerClassNamePointer_3a()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0xc
+- slot 59 / 0xec -> 0x004c3640: `undefined TCityInteriorMinister::BuildFrogCityDistanceMapFromPrimarySeedSet()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 60 / 0xf0 -> 0x004c3910: `undefined TCityInteriorMinister::BuildFrogCityDistanceMapFromReachableSeaCandidates()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 61 / 0xf4 -> 0x004c3c00: `undefined TCityInteriorMinister::RebalanceCityOrderAllocationTargets()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TCitySiteView (0x006591d0)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 106 / 0x1a8 -> 0x00523640: `void TMapDialog::RenderMapOrderEntryTilePreview(TCivUnit* orderEntry, int arg2, int arg3)`
+  - declared 3 stack dword(s) -> expected RET 0xc, binary shows RET 0x14
+- slot 111 / 0x1bc -> 0x005960a0: `short TWorldView::QueryMinusOneWordSlot1BC()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 128 / 0x200 -> 0x0051a900: `undefined TMapDialog::UpdateMapDialogProjectedTileMarkerAndInvalidate()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 129 / 0x204 -> 0x0051eb40: `undefined TMapDialog::RenderStrategicMapTileCell()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0xc
+- slot 130 / 0x208 -> 0x00521a40: `undefined TMapDialog::EmitHexAdjacencyTransitionEventsByBitmask()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x10
+- slot 131 / 0x20c -> 0x00521680: `undefined TMapDialog::DrawHexEdgeConnectionGlyphsByMask()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x10
+- slot 144 / 0x240 -> 0x005220f0: `undefined TMapDialog::RenderMapDialogDiplomacyNeighborRelationHints()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0xc
+- slot 148 / 0x250 -> 0x00523170: `undefined TMapDialog::UpdateMapOrderEntryTilePreviewSlot()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0xc
+- slot 149 / 0x254 -> 0x005241b0: `undefined TMapDialog::OrphanLeaf_NoCall_Ins100_005241b0()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x10
+- slot 150 / 0x258 -> 0x005242f0: `undefined TMapDialog::GetTEventHandlerClassNamePointer()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x10
+- slot 151 / 0x25c -> 0x00524540: `undefined TMapDialog::VTableSlot97()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x10
+- slot 152 / 0x260 -> 0x00524670: `undefined TMapDialog::InitializeForeignMinisterStateFlags()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x10
+- slot 153 / 0x264 -> 0x005247a0: `undefined TMapDialog::AddToForeignMinisterCounterAtIndex()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x10
+- slot 154 / 0x268 -> 0x005249f0: `undefined TMapDialog::SetForeignMinisterReadyFlag14()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x10
+- slot 155 / 0x26c -> 0x00524b30: `undefined TMapDialog::SelectCandidateTilesWithLowGroundUnitCount()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x10
+- slot 156 / 0x270 -> 0x00524c60: `undefined TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920_9c()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x10
+- slot 157 / 0x274 -> 0x00524e70: `undefined TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920_9d()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x10
+- slot 158 / 0x278 -> 0x005250a0: `undefined TMapDialog::CopyDiamondMaskBlockKernel()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x10
+- slot 159 / 0x27c -> 0x005252d0: `undefined TMapDialog::CopyDiagonalMaskNarrowingBlockKernel()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x10
+- slot 160 / 0x280 -> 0x005254a0: `undefined TMapDialog::CopyDiagonalMaskWideningBlockKernel()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x10
+- slot 164 / 0x290 -> 0x0051af60: `undefined TMapDialog::UpdateMapInteractionPreviewParityAndRenderTransientSprites()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TMapDialog (0x00658a58)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 106 / 0x1a8 -> 0x00523640: `void TMapDialog::RenderMapOrderEntryTilePreview(TCivUnit* orderEntry, int arg2, int arg3)`
+  - declared 3 stack dword(s) -> expected RET 0xc, binary shows RET 0x14
+- slot 111 / 0x1bc -> 0x005960a0: `short TWorldView::QueryMinusOneWordSlot1BC()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 128 / 0x200 -> 0x0051a900: `undefined TMapDialog::UpdateMapDialogProjectedTileMarkerAndInvalidate()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 129 / 0x204 -> 0x0051eb40: `undefined TMapDialog::RenderStrategicMapTileCell()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0xc
+- slot 130 / 0x208 -> 0x00521a40: `undefined TMapDialog::EmitHexAdjacencyTransitionEventsByBitmask()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x10
+- slot 131 / 0x20c -> 0x00521680: `undefined TMapDialog::DrawHexEdgeConnectionGlyphsByMask()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x10
+- slot 144 / 0x240 -> 0x005220f0: `undefined TMapDialog::RenderMapDialogDiplomacyNeighborRelationHints()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0xc
+- slot 148 / 0x250 -> 0x00523170: `undefined TMapDialog::UpdateMapOrderEntryTilePreviewSlot()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0xc
+- slot 149 / 0x254 -> 0x005241b0: `undefined TMapDialog::OrphanLeaf_NoCall_Ins100_005241b0()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x10
+- slot 150 / 0x258 -> 0x005242f0: `undefined TMapDialog::GetTEventHandlerClassNamePointer()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x10
+- slot 151 / 0x25c -> 0x00524540: `undefined TMapDialog::VTableSlot97()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x10
+- slot 152 / 0x260 -> 0x00524670: `undefined TMapDialog::InitializeForeignMinisterStateFlags()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x10
+- slot 153 / 0x264 -> 0x005247a0: `undefined TMapDialog::AddToForeignMinisterCounterAtIndex()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x10
+- slot 154 / 0x268 -> 0x005249f0: `undefined TMapDialog::SetForeignMinisterReadyFlag14()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x10
+- slot 155 / 0x26c -> 0x00524b30: `undefined TMapDialog::SelectCandidateTilesWithLowGroundUnitCount()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x10
+- slot 156 / 0x270 -> 0x00524c60: `undefined TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920_9c()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x10
+- slot 157 / 0x274 -> 0x00524e70: `undefined TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920_9d()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x10
+- slot 158 / 0x278 -> 0x005250a0: `undefined TMapDialog::CopyDiamondMaskBlockKernel()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x10
+- slot 159 / 0x27c -> 0x005252d0: `undefined TMapDialog::CopyDiagonalMaskNarrowingBlockKernel()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x10
+- slot 160 / 0x280 -> 0x005254a0: `undefined TMapDialog::CopyDiagonalMaskWideningBlockKernel()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x10
+- slot 164 / 0x290 -> 0x0051af60: `undefined TMapDialog::UpdateMapInteractionPreviewParityAndRenderTransientSprites()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TMapEditView (0x006594e8)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 106 / 0x1a8 -> 0x00523640: `void TMapDialog::RenderMapOrderEntryTilePreview(TCivUnit* orderEntry, int arg2, int arg3)`
+  - declared 3 stack dword(s) -> expected RET 0xc, binary shows RET 0x14
+- slot 111 / 0x1bc -> 0x005960a0: `short TWorldView::QueryMinusOneWordSlot1BC()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 128 / 0x200 -> 0x0051a900: `undefined TMapDialog::UpdateMapDialogProjectedTileMarkerAndInvalidate()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 129 / 0x204 -> 0x0051eb40: `undefined TMapDialog::RenderStrategicMapTileCell()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0xc
+- slot 130 / 0x208 -> 0x00521a40: `undefined TMapDialog::EmitHexAdjacencyTransitionEventsByBitmask()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x10
+- slot 131 / 0x20c -> 0x00521680: `undefined TMapDialog::DrawHexEdgeConnectionGlyphsByMask()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x10
+- slot 144 / 0x240 -> 0x005220f0: `undefined TMapDialog::RenderMapDialogDiplomacyNeighborRelationHints()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0xc
+- slot 148 / 0x250 -> 0x00523170: `undefined TMapDialog::UpdateMapOrderEntryTilePreviewSlot()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0xc
+- slot 149 / 0x254 -> 0x005241b0: `undefined TMapDialog::OrphanLeaf_NoCall_Ins100_005241b0()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x10
+- slot 150 / 0x258 -> 0x005242f0: `undefined TMapDialog::GetTEventHandlerClassNamePointer()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x10
+- slot 151 / 0x25c -> 0x00524540: `undefined TMapDialog::VTableSlot97()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x10
+- slot 152 / 0x260 -> 0x00524670: `undefined TMapDialog::InitializeForeignMinisterStateFlags()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x10
+- slot 153 / 0x264 -> 0x005247a0: `undefined TMapDialog::AddToForeignMinisterCounterAtIndex()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x10
+- slot 154 / 0x268 -> 0x005249f0: `undefined TMapDialog::SetForeignMinisterReadyFlag14()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x10
+- slot 155 / 0x26c -> 0x00524b30: `undefined TMapDialog::SelectCandidateTilesWithLowGroundUnitCount()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x10
+- slot 156 / 0x270 -> 0x00524c60: `undefined TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920_9c()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x10
+- slot 157 / 0x274 -> 0x00524e70: `undefined TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920_9d()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x10
+- slot 158 / 0x278 -> 0x005250a0: `undefined TMapDialog::CopyDiamondMaskBlockKernel()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x10
+- slot 159 / 0x27c -> 0x005252d0: `undefined TMapDialog::CopyDiagonalMaskNarrowingBlockKernel()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x10
+- slot 160 / 0x280 -> 0x005254a0: `undefined TMapDialog::CopyDiagonalMaskWideningBlockKernel()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x10
+- slot 164 / 0x290 -> 0x0051af60: `undefined TMapDialog::UpdateMapInteractionPreviewParityAndRenderTransientSprites()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
 
 ### TViewMgr (0x0066f120)
 - slot 23 / 0x5c -> 0x005d8dd0: `void TViewMgr::UiRuntimeSlot5C()`
@@ -516,6 +934,22 @@ indicators, not proof.
 - slot 32 / 0x80 -> 0x005297e0: `char TMapMaker::TryDeactivateActiveView()`
   - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x14
 
+### TShipyardView (0x00651b30)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 108 / 0x1b0 -> 0x0048e9e0: `undefined TControl::ReturnZeroFromUiSlot6C()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 116 / 0x1d0 -> 0x004c6f30: `undefined TBuildingView::ApplyCityViewSelectionPayloadAndRefreshControls()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x10
+- slot 119 / 0x1dc -> 0x004c70e0: `undefined TBuildingView::SetUniversityDialogLocalizedTextAndRefresh()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0xc
+- slot 120 / 0x1e0 -> 0x004c6ff0: `undefined TBuildingView::SetUniversityDialogTextAndRefresh()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x8
+- slot 123 / 0x1ec -> 0x004c97c0: `undefined TShipyardView::BuildIndustryActionCostSummaryTextByActionIndex()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x8
+- slot 124 / 0x1f0 -> 0x004c8d70: `void TShipyardView::InitializeCityViewActionButtons()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
 ### TMacViewMgr (0x00658660)
 - slot 18 / 0x48 -> 0x0050be30: `undefined TMacViewMgr::ResolveTurnEventDialogOrFailAndInvokeSlot9C()`
   - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
@@ -542,6 +976,179 @@ indicators, not proof.
 - slot 14 / 0x38 -> 0x0049ee70: `undefined TAmbitFileBasedDocument::AssertUAmbitLine1335()`
   - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
 
+### TArmoryView (0x00652b10)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 108 / 0x1b0 -> 0x0048e9e0: `undefined TControl::ReturnZeroFromUiSlot6C()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 116 / 0x1d0 -> 0x004c6f30: `undefined TBuildingView::ApplyCityViewSelectionPayloadAndRefreshControls()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x10
+- slot 119 / 0x1dc -> 0x004c70e0: `undefined TBuildingView::SetUniversityDialogLocalizedTextAndRefresh()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0xc
+- slot 120 / 0x1e0 -> 0x004c6ff0: `undefined TBuildingView::SetUniversityDialogTextAndRefresh()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x8
+
+### TBuildingView (0x00651458)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 108 / 0x1b0 -> 0x0048e9e0: `undefined TControl::ReturnZeroFromUiSlot6C()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 116 / 0x1d0 -> 0x004c6f30: `undefined TBuildingView::ApplyCityViewSelectionPayloadAndRefreshControls()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x10
+- slot 119 / 0x1dc -> 0x004c70e0: `undefined TBuildingView::SetUniversityDialogLocalizedTextAndRefresh()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0xc
+- slot 120 / 0x1e0 -> 0x004c6ff0: `undefined TBuildingView::SetUniversityDialogTextAndRefresh()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x8
+
+### TCityProductionView (0x0064fc20)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 108 / 0x1b0 -> 0x0048e9e0: `undefined TControl::ReturnZeroFromUiSlot6C()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 116 / 0x1d0 -> 0x004bac50: `void TCityProductionView::BlitBitmapResourceRectWithScreenOffsetAndPalette(RECT* sourceRect, int surface, short offsetY, short offsetX, undefined4 context, undefined4 flags)`
+  - declared 6 stack dword(s) -> expected RET 0x18, binary shows RET 0x1c
+- slot 118 / 0x1d8 -> 0x004bb7a0: `void TCityProductionView::InitializeCityProductionDialog()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x8
+- slot 122 / 0x1e8 -> 0x004bc9b0: `void TCityProductionView::RenderViewIntoPrimaryRenderContextWithTemporaryClip()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x8
+
+### TIndustryView (0x00652448)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 108 / 0x1b0 -> 0x0048e9e0: `undefined TControl::ReturnZeroFromUiSlot6C()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 116 / 0x1d0 -> 0x004c6f30: `undefined TBuildingView::ApplyCityViewSelectionPayloadAndRefreshControls()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x10
+- slot 119 / 0x1dc -> 0x004c70e0: `undefined TBuildingView::SetUniversityDialogLocalizedTextAndRefresh()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0xc
+- slot 120 / 0x1e0 -> 0x004c6ff0: `undefined TBuildingView::SetUniversityDialogTextAndRefresh()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x8
+
+### TTradeSchoolView (0x00652690)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 108 / 0x1b0 -> 0x0048e9e0: `undefined TControl::ReturnZeroFromUiSlot6C()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 116 / 0x1d0 -> 0x004c6f30: `undefined TBuildingView::ApplyCityViewSelectionPayloadAndRefreshControls()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x10
+- slot 119 / 0x1dc -> 0x004c70e0: `undefined TBuildingView::SetUniversityDialogLocalizedTextAndRefresh()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0xc
+- slot 120 / 0x1e0 -> 0x004c6ff0: `undefined TBuildingView::SetUniversityDialogTextAndRefresh()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x8
+
+### TUnitsView (0x006518e8)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 108 / 0x1b0 -> 0x0048e9e0: `undefined TControl::ReturnZeroFromUiSlot6C()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 116 / 0x1d0 -> 0x004c6f30: `undefined TBuildingView::ApplyCityViewSelectionPayloadAndRefreshControls()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x10
+- slot 119 / 0x1dc -> 0x004c70e0: `undefined TBuildingView::SetUniversityDialogLocalizedTextAndRefresh()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0xc
+- slot 120 / 0x1e0 -> 0x004c6ff0: `undefined TBuildingView::SetUniversityDialogTextAndRefresh()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x8
+
+### TUniversityView (0x00651fc0)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 108 / 0x1b0 -> 0x0048e9e0: `undefined TControl::ReturnZeroFromUiSlot6C()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 116 / 0x1d0 -> 0x004c6f30: `undefined TBuildingView::ApplyCityViewSelectionPayloadAndRefreshControls()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x10
+- slot 119 / 0x1dc -> 0x004c70e0: `undefined TBuildingView::SetUniversityDialogLocalizedTextAndRefresh()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0xc
+- slot 120 / 0x1e0 -> 0x004c6ff0: `undefined TBuildingView::SetUniversityDialogTextAndRefresh()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x8
+
+### TWarehouseView (0x006516a0)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 108 / 0x1b0 -> 0x0048e9e0: `undefined TControl::ReturnZeroFromUiSlot6C()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 116 / 0x1d0 -> 0x004c6f30: `undefined TBuildingView::ApplyCityViewSelectionPayloadAndRefreshControls()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x10
+- slot 119 / 0x1dc -> 0x004c70e0: `undefined TBuildingView::SetUniversityDialogLocalizedTextAndRefresh()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0xc
+- slot 120 / 0x1e0 -> 0x004c6ff0: `undefined TBuildingView::SetUniversityDialogTextAndRefresh()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x8
+
+### TArmyCheckBox (0x0064cec0)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 108 / 0x1b0 -> 0x0048e9e0: `undefined TControl::ReturnZeroFromUiSlot6C()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 114 / 0x1c8 -> 0x004aa360: `undefined TArmyCheckBox::SetArmyUnitLineActiveFlagAndNotify()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x8
+  - 3 caller site(s) all push 2 dword(s) and RET 0x8 agrees — declaration has 0
+- slot 116 / 0x1d0 -> 0x004aa3a0: `undefined TArmyCheckBox::OrphanCallChain_C2_I16_004aa3a0()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TCzechBox (0x0065fae0)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 108 / 0x1b0 -> 0x0048e9e0: `undefined TControl::ReturnZeroFromUiSlot6C()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 117 / 0x1d4 -> 0x00571e00: `undefined TCzechBox::OrphanCallChain_C1_I10_00571e00(char param_1)`
+  - declared 1 stack dword(s) -> expected RET 0x4, binary shows RET 0x8
+- slot 119 / 0x1dc -> 0x00571e40: `undefined TCzechBox::OrphanCallChain_C2_I16_00571e40()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TIconSlider (0x00657c60)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 108 / 0x1b0 -> 0x0048e9e0: `undefined TControl::ReturnZeroFromUiSlot6C()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 116 / 0x1d0 -> 0x00506110: `undefined TIconBar::OrphanCallChain_C2_I15_00506110(char param_1)`
+  - declared 1 stack dword(s) -> expected RET 0x4, binary shows RET 0x8
+- slot 119 / 0x1dc -> 0x005065b0: `undefined TIconSlider::OrphanCallChain_C2_I15_005065b0()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TInteriorMinister (0x00650808)
+- slot 18 / 0x48 -> 0x004be450: `void TInteriorMinister::MinisterSlot12()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x8
+- slot 26 / 0x68 -> 0x004be3f0: `void TInteriorMinister::InteriorSlot1A()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 27 / 0x6c -> 0x004be410: `void TInteriorMinister::InteriorSlot1B()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 28 / 0x70 -> 0x004be430: `void TInteriorMinister::InteriorSlot1C()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TMadnessButton (0x00641df0)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 108 / 0x1b0 -> 0x0048e9e0: `undefined TControl::ReturnZeroFromUiSlot6C()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 117 / 0x1d4 -> 0x00571e00: `undefined TCzechBox::OrphanCallChain_C1_I10_00571e00(char param_1)`
+  - declared 1 stack dword(s) -> expected RET 0x4, binary shows RET 0x8
+- slot 119 / 0x1dc -> 0x00571e40: `undefined TCzechBox::OrphanCallChain_C2_I16_00571e40()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TPictureRadioButton (0x0065ed98)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 108 / 0x1b0 -> 0x0048e9e0: `undefined TControl::ReturnZeroFromUiSlot6C()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 117 / 0x1d4 -> 0x00570de0: `undefined TPictureRadioButton::WrapperFor_thunk_SetUiControlVisibleFlagAndMaybeRefreshWindow_At00570de0(char param_1)`
+  - declared 1 stack dword(s) -> expected RET 0x4, binary shows RET 0x8
+- slot 118 / 0x1d8 -> 0x00570ea0: `undefined TPictureRadioButton::WrapperFor_CopyOffset10PointPairToOutOrZero_At00570ea0()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### T2PictureButton (0x0065eb60)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 108 / 0x1b0 -> 0x0048e9e0: `undefined TControl::ReturnZeroFromUiSlot6C()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 116 / 0x1d0 -> 0x00570c30: `undefined T2PictureButton::OrphanCallChain_C3_I43_00570c30()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x8
+
+### TBattleReportView (0x0063efa8)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 108 / 0x1b0 -> 0x0048e9e0: `undefined TControl::ReturnZeroFromUiSlot6C()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 118 / 0x1d8 -> 0x004f6820: `void TDiplomacyMapView::OrphanLeaf_NoCall_Ins05_004f6820()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
 ### TBismarckMinister (0x00654aa0)
 - slot 21 / 0x54 -> 0x004ecbb0: `undefined TDefenseMinister::BuildTileRingPriorityMapForNationTileList()`
   - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
@@ -558,13 +1165,37 @@ indicators, not proof.
 - slot 24 / 0x60 -> 0x004ee080: `undefined TBullyMinister::CreateTDefenseMinisterInstance()`
   - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
 
-### TCityInteriorMinister (0x006508a8)
-- slot 18 / 0x48 -> 0x004be450: `void TInteriorMinister::MinisterSlot12()`
+### TCivDescription (0x006431b0)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 104 / 0x1a0 -> 0x0058fec0: `void TCivDescription::DispatchPictureResourceCommand(int eventType, void* eventSender, void* eventDataA, void* eventDataB, int commandFlag)`
+  - declared 5 stack dword(s) -> expected RET 0x14, binary shows RET 0x4
+- slot 106 / 0x1a8 -> 0x005903c0: `void TCivDescription::AssertCityProductionGlobalStateInitialized(int arg1, int arg2)`
+  - declared 2 stack dword(s) -> expected RET 0x8, binary shows RET 0x4
+
+### TCouncilView (0x00640258)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 108 / 0x1b0 -> 0x0048e9e0: `undefined TControl::ReturnZeroFromUiSlot6C()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 118 / 0x1d8 -> 0x004f6820: `void TDiplomacyMapView::OrphanLeaf_NoCall_Ins05_004f6820()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TDealBookPicture (0x0066dfc0)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 108 / 0x1b0 -> 0x0048e9e0: `undefined TControl::ReturnZeroFromUiSlot6C()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 115 / 0x1cc -> 0x005baf70: `undefined TDealBookPicture::UpdateDealBookResourceSelectionAndToggleControls()`
   - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x8
-- slot 26 / 0x68 -> 0x004beeb0: `void TCityInteriorMinister::InteriorSlot1A()`
+
+### TDealTabControl (0x00641168)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
   - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
-- slot 27 / 0x6c -> 0x004beee0: `void TCityInteriorMinister::InteriorSlot1B()`
+- slot 108 / 0x1b0 -> 0x0048e9e0: `undefined TControl::ReturnZeroFromUiSlot6C()`
   - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 113 / 0x1c4 -> 0x005bc780: `undefined TDealTabControl::ConstructTDealTabControlBaseState()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x8
 
 ### TDefenderMinister (0x00654b90)
 - slot 21 / 0x54 -> 0x004ecbb0: `undefined TDefenseMinister::BuildTileRingPriorityMapForNationTileList()`
@@ -580,6 +1211,14 @@ indicators, not proof.
 - slot 23 / 0x5c -> 0x004ed050: `undefined TDefenseMinister::BuildHexAreaTileIndexListIntoAllocatedBuffer()`
   - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
 - slot 24 / 0x60 -> 0x004ec0a0: `undefined TDefenseMinister::CreateTDefenseMinisterInstance()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TDiplomacyMapView (0x00655b68)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 108 / 0x1b0 -> 0x0048e9e0: `undefined TControl::ReturnZeroFromUiSlot6C()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 118 / 0x1d8 -> 0x004f6820: `void TDiplomacyMapView::OrphanLeaf_NoCall_Ins05_004f6820()`
   - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
 
 ### TDiplomacyMgr (0x00654d90)
@@ -598,12 +1237,46 @@ indicators, not proof.
 - slot 18 / 0x48 -> 0x004fec50: `undefined TDisplayMgr::AssertUDisplayMgrLine495()`
   - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
 
-### TEvenCityMinister (0x00650d30)
-- slot 18 / 0x48 -> 0x004be450: `void TInteriorMinister::MinisterSlot12()`
-  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x8
-- slot 26 / 0x68 -> 0x004beeb0: `void TCityInteriorMinister::InteriorSlot1A()`
+### TDlgWindow (0x00656ce8)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
   - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
-- slot 27 / 0x6c -> 0x004beee0: `void TCityInteriorMinister::InteriorSlot1B()`
+- slot 113 / 0x1c4 -> 0x0048e150: `undefined TWindow::WrapperFor_CenterWindowWithinOwnerOrWorkArea_At0048e150(char param_1, char param_2)`
+  - declared 2 stack dword(s) -> expected RET 0x8, binary shows RET 0xc
+- slot 114 / 0x1c8 -> 0x005003a0: `void TDlgWindow::AssertMcAppUILine2358()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TDropShadowNumberText (0x0066d038)
+- slot 39 / 0x9c -> 0x004907a0: `void TEditText::DispatchSlot9CToLinkedChildren()`
+  - declared void but 2 caller site(s) consume the return register ({'eax': 2})
+  - RET evidence matches (plain RET == 0 stack dword(s))
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 108 / 0x1b0 -> 0x0048e9e0: `undefined TControl::ReturnZeroFromUiSlot6C()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TEditText (0x0064ad90)
+- slot 39 / 0x9c -> 0x004907a0: `void TEditText::DispatchSlot9CToLinkedChildren()`
+  - declared void but 2 caller site(s) consume the return register ({'eax': 2})
+  - RET evidence matches (plain RET == 0 stack dword(s))
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 108 / 0x1b0 -> 0x0048e9e0: `undefined TControl::ReturnZeroFromUiSlot6C()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TFloatWindow (0x0064b340)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 113 / 0x1c4 -> 0x0048e150: `undefined TWindow::WrapperFor_CenterWindowWithinOwnerOrWorkArea_At0048e150(char param_1, char param_2)`
+  - declared 2 stack dword(s) -> expected RET 0x8, binary shows RET 0xc
+- slot 114 / 0x1c8 -> 0x0048d8d0: `void TWindow::AssertMcAppUILine2358()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TGameWindow (0x00656a98)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 113 / 0x1c4 -> 0x0048e150: `undefined TWindow::WrapperFor_CenterWindowWithinOwnerOrWorkArea_At0048e150(char param_1, char param_2)`
+  - declared 2 stack dword(s) -> expected RET 0x8, binary shows RET 0xc
+- slot 114 / 0x1c8 -> 0x0048d8d0: `void TWindow::AssertMcAppUILine2358()`
   - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
 
 ### THandleStream (0x00649410)
@@ -614,12 +1287,61 @@ indicators, not proof.
 - slot 49 / 0xc4 -> 0x00489720: `undefined THandleStream::OrphanLeaf_NoCall_Ins06_00489720()`
   - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
 
-### TInteriorMinister (0x00650808)
-- slot 18 / 0x48 -> 0x004be450: `void TInteriorMinister::MinisterSlot12()`
-  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x8
-- slot 26 / 0x68 -> 0x004be3f0: `void TInteriorMinister::InteriorSlot1A()`
+### THelpPicture (0x00657080)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
   - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
-- slot 27 / 0x6c -> 0x004be410: `void TInteriorMinister::InteriorSlot1B()`
+- slot 108 / 0x1b0 -> 0x0048e9e0: `undefined TControl::ReturnZeroFromUiSlot6C()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 118 / 0x1d8 -> 0x00504220: `undefined THelpPicture::BuildHelpSubjectListControlsWithPrevNext()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### THelpWindow (0x006572c0)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 113 / 0x1c4 -> 0x0048e150: `undefined TWindow::WrapperFor_CenterWindowWithinOwnerOrWorkArea_At0048e150(char param_1, char param_2)`
+  - declared 2 stack dword(s) -> expected RET 0x8, binary shows RET 0xc
+- slot 114 / 0x1c8 -> 0x0048d8d0: `void TWindow::AssertMcAppUILine2358()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TIconBar (0x00657a28)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 108 / 0x1b0 -> 0x0048e9e0: `undefined TControl::ReturnZeroFromUiSlot6C()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 116 / 0x1d0 -> 0x00506110: `undefined TIconBar::OrphanCallChain_C2_I15_00506110(char param_1)`
+  - declared 1 stack dword(s) -> expected RET 0x4, binary shows RET 0x8
+
+### TIndustryCluster (0x00665ed0)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 108 / 0x1b0 -> 0x0048e9e0: `undefined TControl::ReturnZeroFromUiSlot6C()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 118 / 0x1d8 -> 0x00588f60: `int TIndustryCluster::GetControlFlag(int arg1, int arg2)`
+  - declared 2 stack dword(s) -> expected RET 0x8, binary shows plain RET
+
+### TInfoBarPictureText (0x0066d288)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 108 / 0x1b0 -> 0x0048e9e0: `undefined TControl::ReturnZeroFromUiSlot6C()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 127 / 0x1fc -> 0x005b5dd0: `void TInfoBarPictureText::ClearTextAndLayoutRect()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TInfoBarText (0x0063eb00)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 108 / 0x1b0 -> 0x0048e9e0: `undefined TControl::ReturnZeroFromUiSlot6C()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 127 / 0x1fc -> 0x005b6770: `void TInfoBarText::ClearTextAndLayoutRect()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TMyNumberText (0x0066c4f0)
+- slot 39 / 0x9c -> 0x004907a0: `void TEditText::DispatchSlot9CToLinkedChildren()`
+  - declared void but 2 caller site(s) consume the return register ({'eax': 2})
+  - RET evidence matches (plain RET == 0 stack dword(s))
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 108 / 0x1b0 -> 0x0048e9e0: `undefined TControl::ReturnZeroFromUiSlot6C()`
   - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
 
 ### TNapoleonMinister (0x00654a28)
@@ -630,6 +1352,48 @@ indicators, not proof.
 - slot 24 / 0x60 -> 0x004ed490: `undefined TNapoleonMinister::CreateTDefenseMinisterInstance()`
   - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
 
+### TNumberText (0x0063e8b0)
+- slot 39 / 0x9c -> 0x004907a0: `void TEditText::DispatchSlot9CToLinkedChildren()`
+  - declared void but 2 caller site(s) consume the return register ({'eax': 2})
+  - RET evidence matches (plain RET == 0 stack dword(s))
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 108 / 0x1b0 -> 0x0048e9e0: `undefined TControl::ReturnZeroFromUiSlot6C()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TNumberedIcon (0x006580b0)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 108 / 0x1b0 -> 0x0048e9e0: `undefined TControl::ReturnZeroFromUiSlot6C()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 118 / 0x1d8 -> 0x005076d0: `undefined TNumberedIcon::OrphanCallChain_C1_I10_005076d0(short param_1)`
+  - declared 1 stack dword(s) -> expected RET 0x4, binary shows RET 0x8
+
+### TOceanDialog (0x0065d020)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 106 / 0x1a8 -> 0x00567fa0: `void TOceanDialog::RenderMapOrderEntryTilePreview(TCivUnit* orderEntry, int arg2, int arg3)`
+  - declared 3 stack dword(s) -> expected RET 0xc, binary shows RET 0x14
+- slot 111 / 0x1bc -> 0x005960a0: `short TWorldView::QueryMinusOneWordSlot1BC()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TOfferDeskPicture (0x0066e728)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 108 / 0x1b0 -> 0x0048e9e0: `undefined TControl::ReturnZeroFromUiSlot6C()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 115 / 0x1cc -> 0x005bea00: `undefined TOfferDeskPicture::InitializeTradeScreenControlsLabelsAndNationContext()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x14
+
+### TPictureNumberText (0x0066c740)
+- slot 39 / 0x9c -> 0x004907a0: `void TEditText::DispatchSlot9CToLinkedChildren()`
+  - declared void but 2 caller site(s) consume the return register ({'eax': 2})
+  - RET evidence matches (plain RET == 0 stack dword(s))
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 108 / 0x1b0 -> 0x0048e9e0: `undefined TControl::ReturnZeroFromUiSlot6C()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
 ### TPirateMinister (0x00654b18)
 - slot 21 / 0x54 -> 0x004ecbb0: `undefined TDefenseMinister::BuildTileRingPriorityMapForNationTileList()`
   - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
@@ -638,28 +1402,90 @@ indicators, not proof.
 - slot 24 / 0x60 -> 0x004edab0: `undefined TPirateMinister::CreateTDefenseMinisterInstance()`
   - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
 
-### TRailCityMinister (0x00650e90)
-- slot 18 / 0x48 -> 0x004be450: `void TInteriorMinister::MinisterSlot12()`
-  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x8
-- slot 26 / 0x68 -> 0x004beeb0: `void TCityInteriorMinister::InteriorSlot1A()`
+### TPlaceCityDialog (0x00652f58)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
   - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
-- slot 27 / 0x6c -> 0x004beee0: `void TCityInteriorMinister::InteriorSlot1B()`
+- slot 108 / 0x1b0 -> 0x0048e9e0: `undefined TControl::ReturnZeroFromUiSlot6C()`
   - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
-
-### TShipBuilderCityMinister (0x00650bd0)
-- slot 18 / 0x48 -> 0x004be450: `void TInteriorMinister::MinisterSlot12()`
-  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x8
-- slot 26 / 0x68 -> 0x004beeb0: `void TCityInteriorMinister::InteriorSlot1A()`
-  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
-- slot 27 / 0x6c -> 0x004beee0: `void TCityInteriorMinister::InteriorSlot1B()`
+- slot 115 / 0x1cc -> 0x004d1880: `undefined TPlaceCityDialog::BuildCityViewResourceRows()`
   - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
 
-### TSteelCityMinister (0x00650a70)
-- slot 18 / 0x48 -> 0x004be450: `void TInteriorMinister::MinisterSlot12()`
-  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x8
-- slot 26 / 0x68 -> 0x004beeb0: `void TCityInteriorMinister::InteriorSlot1A()`
+### TProductionCluster (0x006653c8)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
   - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
-- slot 27 / 0x6c -> 0x004beee0: `void TCityInteriorMinister::InteriorSlot1B()`
+- slot 108 / 0x1b0 -> 0x0048e9e0: `undefined TControl::ReturnZeroFromUiSlot6C()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 117 / 0x1d4 -> 0x00586ab0: `int TProductionCluster::NotifyControlSelectionChange(void* boundEntry, int arg2)`
+  - declared 2 stack dword(s) -> expected RET 0x8, binary shows RET 0x4
+
+### TRailCluster (0x00666318)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 108 / 0x1b0 -> 0x0048e9e0: `undefined TControl::ReturnZeroFromUiSlot6C()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 118 / 0x1d8 -> 0x00589d10: `int TRailCluster::GetControlFlag(int arg1, int arg2)`
+  - declared 2 stack dword(s) -> expected RET 0x8, binary shows plain RET
+
+### TRailheadDialog (0x0064fe78)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 104 / 0x1a0 -> 0x004bd040: `undefined TRailheadDialog::ConstructTRailheadDialogBaseState()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 105 / 0x1a4 -> 0x004bd260: `undefined TRailheadDialog::VTableSlot69()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TRearFloatWindow (0x00655928)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 113 / 0x1c4 -> 0x0048e150: `undefined TWindow::WrapperFor_CenterWindowWithinOwnerOrWorkArea_At0048e150(char param_1, char param_2)`
+  - declared 2 stack dword(s) -> expected RET 0x8, binary shows RET 0xc
+- slot 114 / 0x1c8 -> 0x0048d8d0: `void TWindow::AssertMcAppUILine2358()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TTerrainHelpWindow (0x00657500)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 113 / 0x1c4 -> 0x0048e150: `undefined TWindow::WrapperFor_CenterWindowWithinOwnerOrWorkArea_At0048e150(char param_1, char param_2)`
+  - declared 2 stack dword(s) -> expected RET 0x8, binary shows RET 0xc
+- slot 114 / 0x1c8 -> 0x0048d8d0: `void TWindow::AssertMcAppUILine2358()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TTradeCluster (0x00665a70)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 108 / 0x1b0 -> 0x0048e9e0: `undefined TControl::ReturnZeroFromUiSlot6C()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 118 / 0x1d8 -> 0x00587980: `int TTradeCluster::GetControlFlag(int arg1, int arg2)`
+  - declared 2 stack dword(s) -> expected RET 0x8, binary shows plain RET
+
+### TTransportPicture (0x00668588)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 108 / 0x1b0 -> 0x0048e9e0: `undefined TControl::ReturnZeroFromUiSlot6C()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 115 / 0x1cc -> 0x005921c0: `bool TTransportPicture::IsSelected(short value, bool refreshNow)`
+  - declared 2 stack dword(s) -> expected RET 0x8, binary shows plain RET
+
+### TWindow (0x00649e58)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 113 / 0x1c4 -> 0x0048e150: `undefined TWindow::WrapperFor_CenterWindowWithinOwnerOrWorkArea_At0048e150(char param_1, char param_2)`
+  - declared 2 stack dword(s) -> expected RET 0x8, binary shows RET 0xc
+- slot 114 / 0x1c8 -> 0x0048d8d0: `void TWindow::AssertMcAppUILine2358()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TWorldView (0x00668cb0)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 106 / 0x1a8 -> 0x00596020: `void TWorldView::RenderMapOrderEntryTilePreview(TCivUnit* orderEntry, int arg2, int arg3)`
+  - declared 3 stack dword(s) -> expected RET 0xc, binary shows RET 0x14
+- slot 111 / 0x1bc -> 0x005960a0: `short TWorldView::QueryMinusOneWordSlot1BC()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TMovieView (0x0066f708)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 108 / 0x1b0 -> 0x0048e9e0: `undefined TControl::ReturnZeroFromUiSlot6C()`
   - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
 
 ### TPowerPlantOrder (0x0064f848)
@@ -668,11 +1494,209 @@ indicators, not proof.
 - slot 17 / 0x44 -> 0x004b7ab0: `undefined TPowerPlantOrder::InitializeCityProductionState_Impl()`
   - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
 
+### T2PictToggleButton (0x00664470)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 108 / 0x1b0 -> 0x0048e9e0: `undefined TControl::ReturnZeroFromUiSlot6C()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TAlwaysPictureButton (0x0065e928)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 108 / 0x1b0 -> 0x0048e9e0: `undefined TControl::ReturnZeroFromUiSlot6C()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TAmtBarCluster (0x00665838)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 108 / 0x1b0 -> 0x0048e9e0: `undefined TControl::ReturnZeroFromUiSlot6C()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TArmyInfoView (0x00668358)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 108 / 0x1b0 -> 0x0048e9e0: `undefined TControl::ReturnZeroFromUiSlot6C()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TArmyPlacard (0x00667448)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 108 / 0x1b0 -> 0x0048e9e0: `undefined TControl::ReturnZeroFromUiSlot6C()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TArmyToolbar (0x00667ad0)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 108 / 0x1b0 -> 0x0048e9e0: `undefined TControl::ReturnZeroFromUiSlot6C()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TArrowsControl (0x00663318)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 108 / 0x1b0 -> 0x0048e9e0: `undefined TControl::ReturnZeroFromUiSlot6C()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TBackgroundPicture (0x00660918)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 108 / 0x1b0 -> 0x0048e9e0: `undefined TControl::ReturnZeroFromUiSlot6C()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TBattleDetailBook (0x0063f428)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 108 / 0x1b0 -> 0x0048e9e0: `undefined TControl::ReturnZeroFromUiSlot6C()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TBook (0x0063f650)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 108 / 0x1b0 -> 0x0048e9e0: `undefined TControl::ReturnZeroFromUiSlot6C()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TBoycottButton (0x00664238)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 108 / 0x1b0 -> 0x0048e9e0: `undefined TControl::ReturnZeroFromUiSlot6C()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TBuildingConstructionView (0x00651d88)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 108 / 0x1b0 -> 0x0048e9e0: `undefined TControl::ReturnZeroFromUiSlot6C()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TBuildingExpansionView (0x006528d8)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 108 / 0x1b0 -> 0x0048e9e0: `undefined TControl::ReturnZeroFromUiSlot6C()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TButton (0x0064a4e0)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 108 / 0x1b0 -> 0x0048e9e0: `undefined TControl::ReturnZeroFromUiSlot6C()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TCityBarCluster (0x00665190)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 108 / 0x1b0 -> 0x0048e9e0: `undefined TControl::ReturnZeroFromUiSlot6C()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TCivReport (0x00668128)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 108 / 0x1b0 -> 0x0048e9e0: `undefined TControl::ReturnZeroFromUiSlot6C()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TCivToolbar (0x00667f00)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 108 / 0x1b0 -> 0x0048e9e0: `undefined TControl::ReturnZeroFromUiSlot6C()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TCivilianButton (0x00666da8)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 108 / 0x1b0 -> 0x0048e9e0: `undefined TControl::ReturnZeroFromUiSlot6C()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TClickZone (0x00660180)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 108 / 0x1b0 -> 0x0048e9e0: `undefined TControl::ReturnZeroFromUiSlot6C()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TCloseButton (0x006646a8)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 108 / 0x1b0 -> 0x0048e9e0: `undefined TControl::ReturnZeroFromUiSlot6C()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TCloseParentButton (0x006648d8)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 108 / 0x1b0 -> 0x0048e9e0: `undefined TControl::ReturnZeroFromUiSlot6C()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TClosePicture (0x00665608)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 108 / 0x1b0 -> 0x0048e9e0: `undefined TControl::ReturnZeroFromUiSlot6C()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TCluster (0x0064b0c0)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 108 / 0x1b0 -> 0x0048e9e0: `undefined TControl::ReturnZeroFromUiSlot6C()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TColorKeyButton (0x0065fd28)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 108 / 0x1b0 -> 0x0048e9e0: `undefined TControl::ReturnZeroFromUiSlot6C()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TColorKeyPicture (0x00660b48)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 108 / 0x1b0 -> 0x0048e9e0: `undefined TControl::ReturnZeroFromUiSlot6C()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TCombatReportView (0x006678a0)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 108 / 0x1b0 -> 0x0048e9e0: `undefined TControl::ReturnZeroFromUiSlot6C()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TControl (0x0064a098)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 108 / 0x1b0 -> 0x0048e9e0: `undefined TControl::ReturnZeroFromUiSlot6C()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
 ### TCountingStream (0x00649320)
 - slot 47 / 0xbc -> 0x00488b10: `void TStream::AssertMcAppStreamLine304()`
   - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
 - slot 48 / 0xc0 -> 0x00488e00: `void TStream::AssertMcAppStreamLine596()`
   - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x8
+
+### TCreditsPicture (0x00642d58)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 108 / 0x1b0 -> 0x0048e9e0: `undefined TControl::ReturnZeroFromUiSlot6C()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TCtlMgr (0x0064a2b8)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 108 / 0x1b0 -> 0x0048e9e0: `undefined TControl::ReturnZeroFromUiSlot6C()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TDeluxeText (0x006406d8)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 108 / 0x1b0 -> 0x0048e9e0: `undefined TControl::ReturnZeroFromUiSlot6C()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TDipDlgCluster (0x00663bb0)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 108 / 0x1b0 -> 0x0048e9e0: `undefined TControl::ReturnZeroFromUiSlot6C()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TDisappearingButton (0x0065d280)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 108 / 0x1b0 -> 0x0048e9e0: `undefined TControl::ReturnZeroFromUiSlot6C()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TDropShadowText (0x0066ce00)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 108 / 0x1b0 -> 0x0048e9e0: `undefined TControl::ReturnZeroFromUiSlot6C()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
 
 ### TFileStream (0x00649230)
 - slot 47 / 0xbc -> 0x00488b10: `void TStream::AssertMcAppStreamLine304()`
@@ -680,11 +1704,551 @@ indicators, not proof.
 - slot 48 / 0xc0 -> 0x00488e00: `void TStream::AssertMcAppStreamLine596()`
   - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x8
 
+### TFlagOptionsPicture (0x00642490)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 108 / 0x1b0 -> 0x0048e9e0: `undefined TControl::ReturnZeroFromUiSlot6C()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TFrameRadioView (0x006561b0)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 108 / 0x1b0 -> 0x0048e9e0: `undefined TControl::ReturnZeroFromUiSlot6C()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TGWorldButton (0x0065ff60)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 108 / 0x1b0 -> 0x0048e9e0: `undefined TControl::ReturnZeroFromUiSlot6C()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TGameInfoPicture (0x0065def8)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 108 / 0x1b0 -> 0x0048e9e0: `undefined TControl::ReturnZeroFromUiSlot6C()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TGamePreferencesPicture (0x006428f0)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 108 / 0x1b0 -> 0x0048e9e0: `undefined TControl::ReturnZeroFromUiSlot6C()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TGameScorePicture (0x00644970)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 108 / 0x1b0 -> 0x0048e9e0: `undefined TControl::ReturnZeroFromUiSlot6C()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TGameSetupMultiplayerPicture (0x00661d80)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 108 / 0x1b0 -> 0x0048e9e0: `undefined TControl::ReturnZeroFromUiSlot6C()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TGameSetupPicture (0x00661b50)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 108 / 0x1b0 -> 0x0048e9e0: `undefined TControl::ReturnZeroFromUiSlot6C()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### THQButton (0x00666fe0)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 108 / 0x1b0 -> 0x0048e9e0: `undefined TControl::ReturnZeroFromUiSlot6C()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### THighScoresPicture (0x00643ea8)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 108 / 0x1b0 -> 0x0048e9e0: `undefined TControl::ReturnZeroFromUiSlot6C()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TJoinSelectorDialog (0x006435e8)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 108 / 0x1b0 -> 0x0048e9e0: `undefined TControl::ReturnZeroFromUiSlot6C()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TLoadSavePicture (0x006426b8)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 108 / 0x1b0 -> 0x0048e9e0: `undefined TControl::ReturnZeroFromUiSlot6C()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TLoungeDialog (0x006433b8)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 108 / 0x1b0 -> 0x0048e9e0: `undefined TControl::ReturnZeroFromUiSlot6C()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TMapEditCluster (0x0066b578)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 108 / 0x1b0 -> 0x0048e9e0: `undefined TControl::ReturnZeroFromUiSlot6C()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TMapKey (0x006404b0)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 108 / 0x1b0 -> 0x0048e9e0: `undefined TControl::ReturnZeroFromUiSlot6C()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TMapUberPicture (0x00668f08)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 108 / 0x1b0 -> 0x0048e9e0: `undefined TControl::ReturnZeroFromUiSlot6C()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TMapUberUberPicture (0x00645650)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 108 / 0x1b0 -> 0x0048e9e0: `undefined TControl::ReturnZeroFromUiSlot6C()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TMegaPicture (0x00660d78)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 108 / 0x1b0 -> 0x0048e9e0: `undefined TControl::ReturnZeroFromUiSlot6C()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TMiniArmyView (0x0064d550)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 108 / 0x1b0 -> 0x0048e9e0: `undefined TControl::ReturnZeroFromUiSlot6C()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TMiniCivView (0x0064d9d0)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 108 / 0x1b0 -> 0x0048e9e0: `undefined TControl::ReturnZeroFromUiSlot6C()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TMiniMapView (0x00669170)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 108 / 0x1b0 -> 0x0048e9e0: `undefined TControl::ReturnZeroFromUiSlot6C()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TMiniShipView (0x0065db68)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 108 / 0x1b0 -> 0x0048e9e0: `undefined TControl::ReturnZeroFromUiSlot6C()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TMultiMessagePicture (0x00643818)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 108 / 0x1b0 -> 0x0048e9e0: `undefined TControl::ReturnZeroFromUiSlot6C()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TMyStaticText (0x0066cbc8)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 108 / 0x1b0 -> 0x0048e9e0: `undefined TControl::ReturnZeroFromUiSlot6C()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TNavyRoster (0x0065cbd0)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 110 / 0x1b8 -> 0x00564dc0: `undefined TNavyRoster::InitializePagedListLineDataControlsAndHeaderBitmap()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TNavyToolbarCluster (0x0065d6e0)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 108 / 0x1b0 -> 0x0048e9e0: `undefined TControl::ReturnZeroFromUiSlot6C()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TNetGameSelectPicture (0x00661fb0)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 108 / 0x1b0 -> 0x0048e9e0: `undefined TControl::ReturnZeroFromUiSlot6C()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TNetSelectPicture (0x006440d8)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 108 / 0x1b0 -> 0x0048e9e0: `undefined TControl::ReturnZeroFromUiSlot6C()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TNewTownView (0x00650270)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 104 / 0x1a0 -> 0x004bd880: `undefined TNewTownView::BuildCityDialogMinisterControls()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TNewspaperView (0x00641390)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 108 / 0x1b0 -> 0x0048e9e0: `undefined TControl::ReturnZeroFromUiSlot6C()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TNoHilitePicture (0x006606e8)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 108 / 0x1b0 -> 0x0048e9e0: `undefined TControl::ReturnZeroFromUiSlot6C()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TNoHiliteText (0x0066d500)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 108 / 0x1b0 -> 0x0048e9e0: `undefined TControl::ReturnZeroFromUiSlot6C()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TNominationView (0x0063ed78)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 108 / 0x1b0 -> 0x0048e9e0: `undefined TControl::ReturnZeroFromUiSlot6C()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TNumberedArrowButton (0x00667678)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 108 / 0x1b0 -> 0x0048e9e0: `undefined TControl::ReturnZeroFromUiSlot6C()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TNumberedItem (0x006582f0)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 108 / 0x1b0 -> 0x0048e9e0: `undefined TControl::ReturnZeroFromUiSlot6C()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TOffLimitsPicture (0x00660fb0)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 108 / 0x1b0 -> 0x0048e9e0: `undefined TControl::ReturnZeroFromUiSlot6C()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TOffersPanelView (0x00655fb0)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 105 / 0x1a4 -> 0x004f9450: `undefined TOffersPanelView::RunDiplomacyNegotiationPopupAndAwaitResponse()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0xc
+
+### TOnOffRadioButton (0x0065f8a8)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 108 / 0x1b0 -> 0x0048e9e0: `undefined TControl::ReturnZeroFromUiSlot6C()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TOrderView (0x00657eb0)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 104 / 0x1a0 -> 0x00506b00: `undefined TOrderView::PopulateDialogControlsFromSelectedProductionEntry()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x8
+
+### TOverlayRadioButton (0x00643a40)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 108 / 0x1b0 -> 0x0048e9e0: `undefined TControl::ReturnZeroFromUiSlot6C()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TPageCorner (0x0063f1f8)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 108 / 0x1b0 -> 0x0048e9e0: `undefined TControl::ReturnZeroFromUiSlot6C()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TPicture (0x0064a930)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 108 / 0x1b0 -> 0x0048e9e0: `undefined TControl::ReturnZeroFromUiSlot6C()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TPictureButton (0x0065e6f8)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 108 / 0x1b0 -> 0x0048e9e0: `undefined TControl::ReturnZeroFromUiSlot6C()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TPictureText (0x0066c990)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 108 / 0x1b0 -> 0x0048e9e0: `undefined TControl::ReturnZeroFromUiSlot6C()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TPlacard (0x00667218)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 108 / 0x1b0 -> 0x0048e9e0: `undefined TControl::ReturnZeroFromUiSlot6C()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TPurchaseCluster (0x00652210)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 108 / 0x1b0 -> 0x0048e9e0: `undefined TControl::ReturnZeroFromUiSlot6C()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TQueryFloater (0x006415b8)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 108 / 0x1b0 -> 0x0048e9e0: `undefined TControl::ReturnZeroFromUiSlot6C()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TRadio (0x0064a708)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 108 / 0x1b0 -> 0x0048e9e0: `undefined TControl::ReturnZeroFromUiSlot6C()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TRadioPictureButton (0x0065f670)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 108 / 0x1b0 -> 0x0048e9e0: `undefined TControl::ReturnZeroFromUiSlot6C()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TRadioText (0x00642b18)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 108 / 0x1b0 -> 0x0048e9e0: `undefined TControl::ReturnZeroFromUiSlot6C()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TRadioTextCluster (0x00662418)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 108 / 0x1b0 -> 0x0048e9e0: `undefined TControl::ReturnZeroFromUiSlot6C()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TRightLeftView (0x00663990)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 108 / 0x1b0 -> 0x0048e9e0: `undefined TControl::ReturnZeroFromUiSlot6C()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TScenarioChooser (0x00644540)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 108 / 0x1b0 -> 0x0048e9e0: `undefined TControl::ReturnZeroFromUiSlot6C()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TScrollBarView (0x006614c8)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 108 / 0x1b0 -> 0x0048e9e0: `undefined TControl::ReturnZeroFromUiSlot6C()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TScrollerButton (0x006616e8)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 108 / 0x1b0 -> 0x0048e9e0: `undefined TControl::ReturnZeroFromUiSlot6C()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TSelectoText (0x00662640)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 108 / 0x1b0 -> 0x0048e9e0: `undefined TControl::ReturnZeroFromUiSlot6C()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TSetupRandomMapPicture (0x006621e0)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 108 / 0x1b0 -> 0x0048e9e0: `undefined TControl::ReturnZeroFromUiSlot6C()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TShipFractionCluster (0x00642f88)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 108 / 0x1b0 -> 0x0048e9e0: `undefined TControl::ReturnZeroFromUiSlot6C()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TShipPlacard (0x0065d4b0)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 108 / 0x1b0 -> 0x0048e9e0: `undefined TControl::ReturnZeroFromUiSlot6C()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TShipyardCluster (0x00666760)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 108 / 0x1b0 -> 0x0048e9e0: `undefined TControl::ReturnZeroFromUiSlot6C()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TSidewaysArrow (0x00663540)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 108 / 0x1b0 -> 0x0048e9e0: `undefined TControl::ReturnZeroFromUiSlot6C()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TSliderPicture (0x006611e0)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 108 / 0x1b0 -> 0x0048e9e0: `undefined TControl::ReturnZeroFromUiSlot6C()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TSpecialQuitPicture (0x00643c78)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 108 / 0x1b0 -> 0x0048e9e0: `undefined TControl::ReturnZeroFromUiSlot6C()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TStaticText (0x0064ab58)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 108 / 0x1b0 -> 0x0048e9e0: `undefined TControl::ReturnZeroFromUiSlot6C()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TStatusButton (0x00664f68)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 108 / 0x1b0 -> 0x0048e9e0: `undefined TControl::ReturnZeroFromUiSlot6C()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TStatusPicture (0x00642268)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 108 / 0x1b0 -> 0x0048e9e0: `undefined TControl::ReturnZeroFromUiSlot6C()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
 ### TStream (0x00649140)
 - slot 47 / 0xbc -> 0x00488b10: `void TStream::AssertMcAppStreamLine304()`
   - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
 - slot 48 / 0xc0 -> 0x00488e00: `void TStream::AssertMcAppStreamLine596()`
   - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x8
+
+### TSuperArmyRoster (0x0064d2f8)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 110 / 0x1b8 -> 0x004aa540: `undefined TSuperArmyRoster::ConstructTSuperArmyRosterBaseState()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0xc
+
+### TSuperNavyRoster (0x0065d910)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 110 / 0x1b8 -> 0x005698e0: `undefined TSuperNavyRoster::PopulateNavyOrderPageEntriesByMapContext()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0xc
+
+### TTEView (0x00644308)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 108 / 0x1b0 -> 0x0048e9e0: `undefined TControl::ReturnZeroFromUiSlot6C()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TTacMapUberPicture (0x006451f0)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 108 / 0x1b0 -> 0x0048e9e0: `undefined TControl::ReturnZeroFromUiSlot6C()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TTacNavyToolbar (0x0066a5a0)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 108 / 0x1b0 -> 0x0048e9e0: `undefined TControl::ReturnZeroFromUiSlot6C()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TTacticalAdiosPicture (0x00645428)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 108 / 0x1b0 -> 0x0048e9e0: `undefined TControl::ReturnZeroFromUiSlot6C()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TTacticalHolaPicture (0x00645888)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 108 / 0x1b0 -> 0x0048e9e0: `undefined TControl::ReturnZeroFromUiSlot6C()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TTacticalToolbar (0x00644d98)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 108 / 0x1b0 -> 0x0048e9e0: `undefined TControl::ReturnZeroFromUiSlot6C()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TTerrainHelpPicture (0x00642038)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 108 / 0x1b0 -> 0x0048e9e0: `undefined TControl::ReturnZeroFromUiSlot6C()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TTerrainInfoDialog (0x00658d70)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 108 / 0x1b0 -> 0x0048e9e0: `undefined TControl::ReturnZeroFromUiSlot6C()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TTextPictureButton (0x006603a8)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 108 / 0x1b0 -> 0x0048e9e0: `undefined TControl::ReturnZeroFromUiSlot6C()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TToggleButton (0x0065efd8)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 108 / 0x1b0 -> 0x0048e9e0: `undefined TControl::ReturnZeroFromUiSlot6C()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TToolBarCluster (0x00664b00)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 108 / 0x1b0 -> 0x0048e9e0: `undefined TControl::ReturnZeroFromUiSlot6C()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TTownNameDialog (0x00658fa0)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 108 / 0x1b0 -> 0x0048e9e0: `undefined TControl::ReturnZeroFromUiSlot6C()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TTradeOrderPicture (0x00664010)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 108 / 0x1b0 -> 0x0048e9e0: `undefined TControl::ReturnZeroFromUiSlot6C()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TTradePolicyCluster (0x00663de0)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 108 / 0x1b0 -> 0x0048e9e0: `undefined TControl::ReturnZeroFromUiSlot6C()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TTradeScreenPicture (0x0066dd98)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 108 / 0x1b0 -> 0x0048e9e0: `undefined TControl::ReturnZeroFromUiSlot6C()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TTransportView (0x00650078)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 104 / 0x1a0 -> 0x004bd3e0: `undefined TTransportView::ApplyCityDialogMinisterValues()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TTwoPicSlider (0x00641bd0)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 108 / 0x1b0 -> 0x0048e9e0: `undefined TControl::ReturnZeroFromUiSlot6C()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TUberCluster (0x0065f210)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 108 / 0x1b0 -> 0x0048e9e0: `undefined TControl::ReturnZeroFromUiSlot6C()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TUnitToolbarCluster (0x00664d38)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 108 / 0x1b0 -> 0x0048e9e0: `undefined TControl::ReturnZeroFromUiSlot6C()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TUpDownPictureButton (0x0065f440)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 108 / 0x1b0 -> 0x0048e9e0: `undefined TControl::ReturnZeroFromUiSlot6C()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TUpDownView (0x00663770)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 108 / 0x1b0 -> 0x0048e9e0: `undefined TControl::ReturnZeroFromUiSlot6C()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TWarningView (0x006687b8)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+- slot 108 / 0x1b0 -> 0x0048e9e0: `undefined TControl::ReturnZeroFromUiSlot6C()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
 
 ### TNavyHumanPlayer (0x00669760)
 - slot 18 / 0x48 -> 0x0059efc0: `undefined TNavyHumanPlayer::ConstructTNavyHumanPlayerBaseState()`
@@ -702,6 +2266,10 @@ indicators, not proof.
 - slot 14 / 0x38 -> 0x004b8420: `undefined TPopGrowthOrder::ResetCityOrderItemDerivedStateNoop(const char* name)`
   - declared 1 stack dword(s) -> expected RET 0x4, binary shows plain RET
 
+### TSoundPlayer (0x00668a60)
+- slot 44 / 0xb0 -> 0x005e50a0: `void TSoundPlayer::NoOpAudioTickCallback_005e50a0()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x8
+
 ### TTrainingOrder (0x0064f798)
 - slot 14 / 0x38 -> 0x004b6f00: `undefined TTrainingOrder::ResetCityOrderItemDerivedStateNoop(const char* name)`
   - declared 1 stack dword(s) -> expected RET 0x4, binary shows plain RET
@@ -718,6 +2286,10 @@ indicators, not proof.
 - slot 14 / 0x38 -> 0x004b5620: `undefined TItemOrder::ResetCityOrderItemDerivedStateNoop(const char* name)`
   - declared 1 stack dword(s) -> expected RET 0x4, binary shows plain RET
 
+### TEngineerDialog (0x00652d60)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
 ### TExpansionOrder (0x0064f6d8)
 - slot 14 / 0x38 -> 0x004b5620: `undefined TItemOrder::ResetCityOrderItemDerivedStateNoop(const char* name)`
   - declared 1 stack dword(s) -> expected RET 0x4, binary shows plain RET
@@ -730,8 +2302,16 @@ indicators, not proof.
 - slot 14 / 0x38 -> 0x004b5620: `undefined TItemOrder::ResetCityOrderItemDerivedStateNoop(const char* name)`
   - declared 1 stack dword(s) -> expected RET 0x4, binary shows plain RET
 
+### TStratReportView (0x00667d08)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
 ### TTransFocusAnimation (0x0064c498)
 - slot 11 / 0x2c -> 0x004a0810: `undefined TTransFocusAnimation::RenderBattleReportInsetWithPaletteShift()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TAmtBar (0x00665cc8)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
   - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
 
 ### TAnimation (0x0064c300)
@@ -740,6 +2320,30 @@ indicators, not proof.
 
 ### TArmyBattle (0x0064ca68)
 - slot 18 / 0x48 -> 0x005a5320: `undefined TArmyBattle::CreateTTacticalBattleInstance()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TArmyBoyView (0x0064dff8)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TArmyUnitView (0x0064d100)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TAutoGreatPower (0x00654088)
+- slot 63 / 0xfc -> 0x004dca80: `void TGreatPower::OrphanRetStub_004dca80()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TAutomatedPlayDialog (0x0066c178)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TBattleUnitsView (0x00640940)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TCheater (0x0064ec60)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
   - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
 
 ### TCity (0x0064f580)
@@ -758,13 +2362,69 @@ indicators, not proof.
 - slot 11 / 0x2c -> 0x0049f8e0: `undefined TCivAnimation2::RenderBattleReportInsetWithPaletteShift()`
   - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
 
+### TClientGreatPower (0x0065b728)
+- slot 63 / 0xfc -> 0x004dca80: `void TGreatPower::OrphanRetStub_004dca80()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TCouncilPanelView (0x00640060)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
 ### TCouncilTickerAnimation (0x0064c410)
 - slot 11 / 0x2c -> 0x0049f190: `undefined TAnimation::RenderBattleReportInsetWithPaletteShift()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TDefenseMinisterView (0x00655518)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
   - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
 
 ### TDialogBehavior (0x00648da8)
 - slot 15 / 0x3c -> 0x00487470: `undefined TDialogBehavior::OrphanCallChain_C1_I17_00487470(int param_1, int param_2)`
   - declared 2 stack dword(s) -> expected RET 0x8, binary shows RET 0xc
+
+### TDialogView (0x0064be28)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TForeignMinisterView (0x00655308)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TGPCheater (0x0064f050)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TGPTreatyDialog (0x0066bd88)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TGWorldPartView (0x00644ba0)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TGWorldPeeker (0x00656748)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TGameSetupDialog (0x0066b380)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TGarrisonView (0x0064cc70)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TGrantsView (0x0063fa70)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TGreatPower (0x00653938)
+- slot 63 / 0xfc -> 0x004dca80: `void TGreatPower::OrphanRetStub_004dca80()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### THostGreatPower (0x0065b3d0)
+- slot 63 / 0xfc -> 0x004dca80: `void TGreatPower::OrphanRetStub_004dca80()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
 
 ### THotspotBehavior (0x0064eac8)
 - slot 14 / 0x38 -> 0x004b0c00: `undefined THotspotBehavior::WrapperFor_AllocateWithFallbackHandler_At004b0c00()`
@@ -774,32 +2434,212 @@ indicators, not proof.
 - slot 11 / 0x2c -> 0x0049f190: `undefined TAnimation::RenderBattleReportInsetWithPaletteShift()`
   - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
 
+### TIncludeView (0x00649c60)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TIndustryAmtBar (0x00666110)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
 ### TInfoBarBehavior (0x0064eb10)
 - slot 15 / 0x3c -> 0x004b0f50: `undefined TInfoBarBehavior::RefreshInfoBarCursorPanelRegionClip()`
   - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x8
+
+### TInfoPanelView (0x0063fe60)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TInteriorMinisterView (0x00655720)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TInterruptusView (0x0064e7d8)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TItemBoyView (0x0064e5e0)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TLonelyTileView (0x00657740)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TMapPreviewView (0x006419d8)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TMerchantBoyView (0x0064e3e8)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TMilitaryPageView (0x0065c9c0)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TMinisterView (0x00655100)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TMinorRelationshipDialog (0x0066bb90)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
 
 ### TMinorRuntimeStatusEntry (0x00653c90)
 - slot 46 / 0xb8 -> 0x004e5a40: `void TMinor::SetNationRowDisplayValueByDiplomacyPredicate(short targetNationSlot, short predicateCode)`
   - declared 2 stack dword(s) -> expected RET 0x8, binary shows RET 0x4
 
+### TMinorTradeBidsDialog (0x0066b7a0)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TMinorTreatyDialog (0x0066bf80)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
 ### TNavyBattle (0x0066a140)
 - slot 18 / 0x48 -> 0x005a5b70: `undefined TNavyBattle::CreateTTacticalBattleInstance()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TNavyBoyView (0x0064e1f0)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
   - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
 
 ### TOneTimeAnimation (0x0064c3d0)
 - slot 11 / 0x2c -> 0x0049f190: `undefined TAnimation::RenderBattleReportInsetWithPaletteShift()`
   - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
 
+### TPageView (0x0065e270)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TPanelView (0x00655db8)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TProxyGreatPower (0x0065b078)
+- slot 63 / 0xfc -> 0x004dca80: `void TGreatPower::OrphanRetStub_004dca80()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TRailAmtBar (0x00666558)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TRelationshipDialog (0x0066b998)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TRemoteGreatPower (0x0065ba80)
+- slot 63 / 0xfc -> 0x004dca80: `void TGreatPower::OrphanRetStub_004dca80()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
 ### TRemoteMinor (0x0065bde0)
 - slot 46 / 0xb8 -> 0x004e5a40: `void TMinor::SetNationRowDisplayValueByDiplomacyPredicate(short targetNationSlot, short predicateCode)`
   - declared 2 stack dword(s) -> expected RET 0x8, binary shows RET 0x4
+
+### TScoreGraph (0x006563d0)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TScrollView (0x006417e0)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TScroller (0x00649a68)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TShipAmtBar (0x00666998)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
 
 ### TShipBuildingTask (0x0066a9f8)
 - slot 10 / 0x28 -> 0x005ae780: `undefined TShipBuildingTask::OrphanLeaf_NoCall_Ins04_005adc30()`
   - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
 
+### TShipView (0x0065ce28)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TSuperCivRoster (0x0064d778)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TSwapperDaddyView (0x0064ddc0)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TTacArmyView (0x00644fd0)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TTacticalBattleView (0x0066a380)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
 ### TTaskList (0x0066aa48)
 - slot 31 / 0x7c -> 0x005aed50: `int TTaskList::CreateTTechMgrInstance()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TTechCheater (0x0064ee58)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TTechHistoryView (0x00645ab0)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TTechItemView (0x0066af08)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TTechStorePage (0x00645ca8)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TTextList (0x00644778)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TTradeBidNationView (0x0066e530)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TTradeBookView (0x00640b50)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TTradeOfferNationView (0x0066e2f8)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TTradePageBuyView (0x00640d48)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TTradePageSellView (0x00640f58)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TTradePanelView (0x0063fc68)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TTradeTotalsView (0x0066e958)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TTraderAmtBar (0x00666ba0)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TTreatiesView (0x0063f878)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
+  - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
+
+### TView (0x00649858)
+- slot 101 / 0x194 -> 0x0048c7a0: `void TView::AssertMcAppUiLine1914()`
   - declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
 
 ## Dispatch smells (advisory)
