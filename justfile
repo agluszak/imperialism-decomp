@@ -1007,6 +1007,20 @@ marker-gate:
 generated-marker-gate:
   uv run python -m tools.workflow.check_generated_markers
 
+# Ratchet gate against ILT/thunk-name ossification in manual source: rejects NEW
+# identifiers that start with thunk_/ILT_/WrapperFor_ or end with _At<8hex> (calls
+# via linker thunks; history-encoded body names). Existing debt is grandfathered in
+# config/ilt_ossification_baseline.csv — a finite, shrink-only migration queue.
+[group('gates')]
+ilt-ossification-gate:
+  uv run python -m tools.workflow.check_ilt_ossification
+
+# MUTATES: config/ilt_ossification_baseline.csv. Ratchet down after migrating a thunk
+# or renaming a WrapperFor_/_At body. Never run to silence a new offender.
+[group('gates')]
+ilt-ossification-gate-update:
+  uv run python -m tools.workflow.check_ilt_ossification --write-baseline
+
 # Ensure every `// VTABLE:` annotation is immediately followed by its class/struct
 # (not a forward declaration, comment, or blank line).
 [doc('Every // VTABLE: must be immediately followed by its class/struct')]
@@ -1171,6 +1185,7 @@ source-gates:
   just tgreatpower-gate
   just marker-gate
   just generated-marker-gate
+  just ilt-ossification-gate
   just vtable-annotation-gate
   just vtable-collision-gate
   just synthetic-gate
