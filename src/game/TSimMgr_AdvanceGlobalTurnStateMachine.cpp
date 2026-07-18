@@ -32,7 +32,6 @@ extern undefined4 ProcessTurnInstructionStreamAndFinalizePhase(void);
 extern undefined4 UpdatePersistentTopTenNationScores(void);
 extern undefined4 UpdateCityOrderCapabilityUnlockProgress(void);
 extern undefined4 RefreshNavyOrderCycleAndClearReadyFlags(void);
-extern undefined4 RemoveNationSlotAndNotifyPeers(void);
 extern undefined4 SetOutputDevice(void);
 
 static inline bool IsNationTerrainEligible(short nationSlot) {
@@ -594,7 +593,7 @@ void TSimMgr::AdvanceGlobalTurnStateMachine() {
         continue;
       }
       if (g_apNationStates[removeNationSlot]->ownedRegionList->GetSize() == 0) {
-        RemoveNationSlotAndNotifyPeers();
+        RemoveNationSlotAndNotifyPeers(static_cast<short>(removeNationSlot));
       }
     }
     for (int secondaryIndex = 7; secondaryIndex < 36; ++secondaryIndex) {

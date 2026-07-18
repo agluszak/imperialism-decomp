@@ -203,14 +203,6 @@ undefined4 WrapperFor_FreeHeapBufferIfNotNull_At004ee730(void)
   return 0;
 }
 
-// ghidra_name RemoveNationSlotAndNotifyPeers_Impl
-// ghidra_proto undefined RemoveNationSlotAndNotifyPeers_Impl()
-// FUNCTION: IMPERIALISM 0x004eee60
-undefined4 RemoveNationSlotAndNotifyPeers_Impl(void)
-{
-  return 0;
-}
-
 // ghidra_name RebuildMinorNationDispositionLookupTables
 // ghidra_proto undefined RebuildMinorNationDispositionLookupTables()
 // FUNCTION: IMPERIALISM 0x004f24a0
