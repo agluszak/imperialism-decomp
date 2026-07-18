@@ -65,6 +65,10 @@ public:
   char HandlePendingEventActivationByCode(short eventCode);
   void HandlePostPendingEventActivationNoOp(short eventCode);
   void ActivatePendingEventAndRefreshView(HelpSetRecord* pendingEntry);
+  // 0x5010b0 — scans indexList for the pending event matching the active view's
+  // currentTurnEventCode and activates one: the lowest-rank unflagged match wins;
+  // otherwise a flagged match, else a zero-helpSetIdB match, is activated.
+  void SelectAndActivatePendingEventForCurrentView();
 
   // 2-byte packed (like TControl's Mac-heritage records): the field suffixes are the real
   // offsets only under pack(2) — field1a is an int AT 0x1a, and helpIndexReady sits at

@@ -2974,7 +2974,7 @@ address|name|symbol|size|type|prototype|provenance
 500f50|THelpMgr::ReadFrom||107|function|undefined WrapperFor_HandleCityDialogNoOpSlot18_At00500f50(int * param_1)|
 500fe0|THelpMgr::WriteTo||105|function|undefined WrapperFor_HandleCityDialogNoOpSlot14_At00500fe0(int * param_1)|
 501070|THelpMgr::Free||37|function|undefined OrphanCallChain_C2_I16_00501070(void)|
-5010b0|SelectAndActivatePendingEventForCurrentView||177|function|undefined SelectAndActivatePendingEventForCurrentView()|
+5010b0|THelpMgr::SelectAndActivatePendingEventForCurrentView||177|function|undefined SelectAndActivatePendingEventForCurrentView()|
 5011a0|HandlePostDispatchTurnStateEventUpdates||154|function|undefined HandlePostDispatchTurnStateEventUpdates()|
 501270|THelpMgr::DispatchTurnStateSpecialAdvisoriesAndReturnCount||1564|function|short __thiscall DispatchTurnStateSpecialAdvisoriesAndReturnCount(void)|
 501a20|THelpMgr::ShowPeriodicCapabilityReminderIfNeeded||342|function|void __thiscall ShowPeriodicCapabilityReminderIfNeeded(void)|

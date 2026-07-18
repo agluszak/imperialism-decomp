@@ -1,6 +1,7 @@
 #include "game/TGameWindow.h"
 
 #include "game/TSimMgr.h"
+#include "game/THelpMgr.h"
 #include "game/TTechMgr.h"
 #include "game/TControl.h"
 #include "game/TSimMgr.h"
@@ -15,7 +16,6 @@
 #include "game/startup_helpers.h"
 #include "game/ui_control_tags.h"
 
-undefined4 SelectAndActivatePendingEventForCurrentView(void);
 
 namespace {
 
@@ -47,8 +47,7 @@ static void DispatchUiRuntimeMessage101AAndRefreshActiveViewGate() {
 }
 
 static void SelectAndActivatePendingEventForCurrentViewGate() {
-  reinterpret_cast<void(__cdecl*)(void)>(
-      reinterpret_cast<void (*)()>(::SelectAndActivatePendingEventForCurrentView))();
+  g_pHelpMgr->SelectAndActivatePendingEventForCurrentView();
 }
 
 static void DispatchUiRuntimeAbilityUnlockSlot88Gate(int abilityIndex) {

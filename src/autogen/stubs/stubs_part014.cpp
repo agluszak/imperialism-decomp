@@ -379,14 +379,6 @@ undefined4 DestructTHelpMgrAndMaybeFree_Impl(void)
   return 0;
 }
 
-// ghidra_name SelectAndActivatePendingEventForCurrentView
-// ghidra_proto undefined SelectAndActivatePendingEventForCurrentView()
-// FUNCTION: IMPERIALISM 0x005010b0
-undefined4 SelectAndActivatePendingEventForCurrentView(void)
-{
-  return 0;
-}
-
 // ghidra_name SelectAndActivatePendingEventType1A0A
 // ghidra_proto undefined SelectAndActivatePendingEventType1A0A()
 // FUNCTION: IMPERIALISM 0x00503320

@@ -2388,6 +2388,7 @@ address|target_cpp|ownership|note
 500f50|src/game/THelpMgr.cpp|manual|marker_sync
 500fe0|src/game/THelpMgr.cpp|manual|marker_sync
 501070|src/game/THelpMgr.cpp|manual|marker_sync
+5010b0|src/game/THelpMgr.cpp|manual|marker_sync
 5011a0|src/game/THelpMgr.cpp|manual|marker_sync
 501270|src/game/THelpMgr.cpp|manual|marker_sync
 501a20|src/game/THelpMgr.cpp|manual|marker_sync
