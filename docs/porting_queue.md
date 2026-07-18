@@ -8,7 +8,43 @@ each with the evidence needed to start (address, size, current score if any, blo
 ## Big stubs (never ported)
 
 - TMapMaker phase bodies: `0x526c20` (747B), `0x527730` (1175B), `0x528e50` (940B) —
-  partial class recovery already on main.
+  **NOT a quick port; needs a dedicated class-recovery pass first** (investigated
+  2026-07-17, no code changed). `TMapMaker.h`'s vtable slot signatures were seemingly
+  templated off TEventHandler/TView/TWindow's real virtuals (same slot NAMES:
+  QueryStepValue/DispatchEvent/DispatchQueuedUiCommandAndRelease/OwnerPanel/DoIdle/
+  ForwardParam/etc.) without verifying TMapMaker actually shares that inheritance
+  (header declares `class TMapMaker : public TObject`, not TEventHandler) — this
+  looks like a systemic mismodeling, not isolated stub gaps:
+  - `0x526c20` (RunMapGenerationAttempt) calls vtable slot 0x30 (`byte offset`,
+    ordinal 0xc) twice with **4 int args**, return compared against 8 then 4 —
+    completely incompatible with the header's declared `QueryStepValue()` (0-arg,
+    returns `TEventHandler*`). symbols.csv already carries a leftover proto hint
+    `ExpandCoarseRegionNodeWithNeighborChecks()` for slot 0x30's real implementation
+    at `0x527040` (currently faked as `TMapMaker::QueryStepValue() { return 0; }`,
+    RET 0x10 in the binary = real 4-word args, confirming the header signature is
+    wrong there too).
+  - `0x527040` itself calls slot 0x30 AGAIN internally, but with what disassembles
+    as a **1-arg** call (`PUSH EAX; CALL [EAX+0x30]`) right after a 5-arg call to
+    slot 0xa — inconsistent arg counts for what should be one signature. Slots 0xd
+    (`DispatchQueuedUiCommandAndRelease`, header: 1 void* arg) and 0x10
+    (`DispatchEvent`, header: 3 args) are ALSO called with only 2 int args and a
+    bool return in the raw listing — contradicting their current declarations too.
+  - New unmodeled data fields discovered while tracing `0x526c20`: an 84-byte
+    `int[7][3]`-shaped table at `TMapMaker+0x1a8` (currently absorbed into
+    `pad_1a5`) and a lone `int` at `+0x29c` (currently inside `pad_25c`), both
+    initialized to -1 by `RunMapGenerationAttempt`.
+  - `0x528e50` (vmethod_0017 / SmoothCityRegionOwnershipByNeighborSampling) is a
+    hex-grid neighbor-sampling pass over 6 unnamed lookup-table globals
+    (`0x697450/0x697454/0x697468/0x69747c/0x697480/0x697484`, all shown `?` —
+    likely per-parity dx/dy hex-direction offset tables) that need naming in
+    `global_data_tables` before this one can be ported either.
+  - Recommended next step: `class-recovery` skill session dedicated to re-deriving
+    TMapMaker's real vtable slot signatures from the raw listings of ALL its
+    concrete slot bodies (not just the 3 targets above), since the header's
+    existing declarations for at least slots 0xc/0xd/0x10/0x30 (0x30/0x34/0x40 and
+    ordinal 0xa) can't be trusted. Don't port these 3 individually without that —
+    the shared vtable-slot-0x30 callee needs one correct signature that satisfies
+    every call site, or the class model will silently corrupt with each new attempt.
 
 ## Known-bad re-ports (score far below structure)
 
