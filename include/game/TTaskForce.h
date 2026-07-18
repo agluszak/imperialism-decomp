@@ -9,10 +9,22 @@ class TTaskForce;
 class TStream;
 class CString;
 class TZone;
+class TShip;
 
 // Child-link node for map-order mission trees (NOT TOcean / TZone).
 struct TMapOrderChildLinkNode {
+  // The payload is a "map order node": either a TTaskForce map-order entry (the
+  // dominant case -- order_type/required_count/tiebreak_strength accessed directly) or a
+  // TShip primary-order node. Both share the +0x04/+0x1c/+0x30 order-node read offsets,
+  // and the original dispatches __thiscall on both receiver types (see the receiver-pun
+  // notes on TShip). Typed TTaskForce* for the common case; use ShipPayload() at the
+  // documented TShip sites instead of an open-coded reinterpret_cast.
   TTaskForce* object_ptr;
+  // The same payload reinterpreted as its TShip primary-order-node form (genuine,
+  // documented heterogeneity -- the two classes share the order-node layout region).
+  TShip* ShipPayload() const {
+    return reinterpret_cast<TShip*>(object_ptr);
+  }
   TMapOrderChildLinkNode* next;
   TMapOrderChildLinkNode* prev_link;
   unsigned char active_flag;

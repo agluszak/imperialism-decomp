@@ -31,8 +31,8 @@ public:
   virtual char
   ReturnFalseSlot50() override; // slot 0x50 0x5356f0 -- army mission capability flag (true)
   virtual int ReturnZeroSlot58() override; // slot 0x58 0x535710
-  virtual int
-  ReturnZeroSlot5C() override; // slot 0x5c 0x535730 -- army mission capability flag (false)
+  virtual TMission*
+  ReturnZeroSlot5C() override; // slot 0x5c 0x535730 -- army: no navy-selectable mission (null)
   virtual float
   ReturnZeroFloatSlot68() override; // slot 0x68 0x53ceb0 -- composition alignment score
   virtual float ReturnZeroFloatSlot6C() override; // slot 0x6c 0x53d3e0 -- dot product score

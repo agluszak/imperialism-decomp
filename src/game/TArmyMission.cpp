@@ -25,8 +25,8 @@ int TArmyMission::ReturnZeroSlot58() {
 }
 
 // FUNCTION: IMPERIALISM 0x00535730
-int TArmyMission::ReturnZeroSlot5C() {
-  return 0;
+TMission* TArmyMission::ReturnZeroSlot5C() {
+  return nullptr;
 }
 
 // FUNCTION: IMPERIALISM 0x00535750

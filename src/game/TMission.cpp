@@ -76,8 +76,8 @@ int TMission::ReturnZeroSlot58() {
   return 0;
 }
 // FUNCTION: IMPERIALISM 0x00534db0
-int TMission::ReturnZeroSlot5C() {
-  return 0;
+TMission* TMission::ReturnZeroSlot5C() {
+  return nullptr;
 }
 // FUNCTION: IMPERIALISM 0x00534dd0
 char TMission::ReturnFalseSlot60() {

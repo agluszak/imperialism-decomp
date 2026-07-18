@@ -12618,7 +12618,7 @@
     },
     {
       "address": "0x4dd430",
-      "matching": 0.5714285714285714,
+      "matching": 0.5142857142857142,
       "name": "TGreatPower::ComputeRemainingDiplomacyAidBudget",
       "type": 1
     },
@@ -13050,8 +13050,7 @@
     },
     {
       "address": "0x4e0590",
-      "effective": true,
-      "matching": 0.42857142857142855,
+      "matching": 1.0,
       "name": "TGreatPower::OrphanRetStub_004d7fa0_88",
       "type": 1
     },
@@ -13064,15 +13063,13 @@
     },
     {
       "address": "0x4e0610",
-      "effective": true,
-      "matching": 0.42857142857142855,
+      "matching": 1.0,
       "name": "TGreatPower::ReturnFalseNationStateActionStub_8a",
       "type": 1
     },
     {
       "address": "0x4e0650",
-      "effective": true,
-      "matching": 0.42857142857142855,
+      "matching": 1.0,
       "name": "TGreatPower::OrphanRetStub_004d7fe0_8b",
       "type": 1
     },
@@ -13085,7 +13082,7 @@
     },
     {
       "address": "0x4e06d0",
-      "matching": 0.8095238095238095,
+      "matching": 1.0,
       "name": "TGreatPower::SumNationRuntimeFiveBucketValue44",
       "type": 1
     },
@@ -13115,7 +13112,7 @@
     },
     {
       "address": "0x4e09a0",
-      "matching": 0.5180722891566265,
+      "matching": 0.5421686746987951,
       "name": "TGreatPower::ComputeCityOrderCapabilityAggregateScore",
       "type": 1
     },
@@ -22109,7 +22106,7 @@
     },
     {
       "address": "0x5501b0",
-      "matching": 0.46511627906976744,
+      "matching": 0.4558139534883721,
       "name": "CalculateMissionOrderPriorityScore",
       "type": 1
     },
@@ -22537,7 +22534,7 @@
     },
     {
       "address": "0x553b10",
-      "matching": 0.41379310344827586,
+      "matching": 0.6206896551724138,
       "name": "HasNoMapOrderEntryChildrenQueued",
       "type": 1
     },
@@ -22682,7 +22679,7 @@
     },
     {
       "address": "0x555420",
-      "matching": 0.5653333333333334,
+      "matching": 0.5546666666666666,
       "name": "ResolveTaskForceOrderConflictAndPickCandidate",
       "type": 1
     },
@@ -22905,7 +22902,7 @@
     },
     {
       "address": "0x5578a0",
-      "matching": 0.44324324324324327,
+      "matching": 0.44594594594594594,
       "name": "ResolveMapOrderChainsForTurnPhase",
       "type": 1
     },
