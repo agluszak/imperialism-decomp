@@ -190,7 +190,7 @@ void TControl::NoOpUiViewSlotHandler(int arg1, int arg2) {
 }
 
 // FUNCTION: IMPERIALISM 0x0048e9e0
-undefined TControl::ReturnZeroFromUiSlot6C() {
+undefined TControl::ReturnZeroFromUiSlot6C(int) {
   return 0;
 }
 

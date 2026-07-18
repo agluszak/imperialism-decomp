@@ -17,7 +17,8 @@ TBuildingView::TBuildingView() : TNoHilitePicture() {
 TBuildingView::~TBuildingView() {}
 
 // FUNCTION: IMPERIALISM 0x004c6f30
-undefined TBuildingView::ApplyCityViewSelectionPayloadAndRefreshControls() {
+undefined TBuildingView::ApplyCityViewSelectionPayloadAndRefreshControls(int, unsigned char, int,
+                                                                         short) {
   return 0;
 }
 
@@ -32,12 +33,12 @@ undefined TBuildingView::OrphanRetStub_004c6fd0() {
 }
 
 // FUNCTION: IMPERIALISM 0x004c6ff0
-undefined TBuildingView::SetUniversityDialogTextAndRefresh() {
+undefined TBuildingView::SetUniversityDialogTextAndRefresh(int*, CString) {
   return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004c70e0
-undefined TBuildingView::SetUniversityDialogLocalizedTextAndRefresh() {
+undefined TBuildingView::SetUniversityDialogLocalizedTextAndRefresh(int*, int, int) {
   return 0;
 }
 

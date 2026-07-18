@@ -5259,7 +5259,7 @@
     },
     {
       "address": "0x48e9e0",
-      "matching": 0.0,
+      "matching": 0.6666666666666666,
       "name": "TControl::ReturnZeroFromUiSlot6C",
       "type": 1
     },
@@ -7846,7 +7846,7 @@
     },
     {
       "address": "0x4a2900",
-      "matching": 0.13063763608087092,
+      "matching": 0.13374805598755832,
       "name": "BuildArmyContextActionRecordsAndDispatchLabel",
       "type": 1
     },
@@ -11027,7 +11027,7 @@
     },
     {
       "address": "0x4c6f30",
-      "matching": 0.0,
+      "matching": 0.08333333333333333,
       "name": "TBuildingView::ApplyCityViewSelectionPayloadAndRefreshControls",
       "type": 1
     },
@@ -11045,13 +11045,13 @@
     },
     {
       "address": "0x4c6ff0",
-      "matching": 0.0,
+      "matching": 0.06896551724137931,
       "name": "TBuildingView::SetUniversityDialogTextAndRefresh",
       "type": 1
     },
     {
       "address": "0x4c70e0",
-      "matching": 0.0,
+      "matching": 0.046511627906976744,
       "name": "TBuildingView::SetUniversityDialogLocalizedTextAndRefresh",
       "type": 1
     },
@@ -17064,7 +17064,7 @@
     },
     {
       "address": "0x512930",
-      "matching": 0.26334519572953735,
+      "matching": 0.25622775800711745,
       "name": "BuildHexAreaTileIndexList",
       "type": 1
     },
@@ -17514,7 +17514,7 @@
     },
     {
       "address": "0x5178f0",
-      "matching": 0.3260340632603406,
+      "matching": 0.3446601941747573,
       "name": "ComputeRepresentativeTileIndexForTerrainTypeWithWrapBias",
       "type": 1
     },
@@ -17695,13 +17695,13 @@
     },
     {
       "address": "0x51a900",
-      "matching": 0.0,
+      "matching": 0.05,
       "name": "TMapDialog::UpdateMapDialogProjectedTileMarkerAndInvalidate",
       "type": 1
     },
     {
       "address": "0x51a990",
-      "matching": 0.26285714285714284,
+      "matching": 0.26436781609195403,
       "name": "TMapDialog::OrphanRetStub_005960c0",
       "type": 1
     },
@@ -17749,7 +17749,7 @@
     },
     {
       "address": "0x51af60",
-      "matching": 0.0,
+      "matching": 0.023255813953488372,
       "name": "TMapDialog::UpdateMapInteractionPreviewParityAndRenderTransientSprites",
       "type": 1
     },
@@ -18019,7 +18019,7 @@
     },
     {
       "address": "0x51eb40",
-      "matching": 0.0,
+      "matching": 0.0012795905310300703,
       "name": "TMapDialog::RenderStrategicMapTileCell",
       "type": 1
     },
@@ -18091,13 +18091,13 @@
     },
     {
       "address": "0x521680",
-      "matching": 0.0,
+      "matching": 0.00784313725490196,
       "name": "TMapDialog::DrawHexEdgeConnectionGlyphsByMask",
       "type": 1
     },
     {
       "address": "0x521a40",
-      "matching": 0.0,
+      "matching": 0.005376344086021506,
       "name": "TMapDialog::EmitHexAdjacencyTransitionEventsByBitmask",
       "type": 1
     },
@@ -18109,7 +18109,7 @@
     },
     {
       "address": "0x5220f0",
-      "matching": 0.0,
+      "matching": 0.002894356005788712,
       "name": "TMapDialog::RenderMapDialogDiplomacyNeighborRelationHints",
       "type": 1
     },
@@ -18133,7 +18133,7 @@
     },
     {
       "address": "0x523170",
-      "matching": 0.006944444444444444,
+      "matching": 0.013888888888888888,
       "name": "TMapDialog::UpdateMapOrderEntryTilePreviewSlot",
       "type": 1
     },
@@ -18157,73 +18157,73 @@
     },
     {
       "address": "0x5241b0",
-      "matching": 0.0,
+      "matching": 0.0196078431372549,
       "name": "TMapDialog::OrphanLeaf_NoCall_Ins100_005241b0",
       "type": 1
     },
     {
       "address": "0x5242f0",
-      "matching": 0.0,
+      "matching": 0.011560693641618497,
       "name": "TMapDialog::GetTEventHandlerClassNamePointer",
       "type": 1
     },
     {
       "address": "0x524540",
-      "matching": 0.0,
+      "matching": 0.02040816326530612,
       "name": "TMapDialog::VTableSlot97",
       "type": 1
     },
     {
       "address": "0x524670",
-      "matching": 0.0,
+      "matching": 0.020833333333333332,
       "name": "TMapDialog::InitializeForeignMinisterStateFlags",
       "type": 1
     },
     {
       "address": "0x5247a0",
-      "matching": 0.0,
+      "matching": 0.0111731843575419,
       "name": "TMapDialog::AddToForeignMinisterCounterAtIndex",
       "type": 1
     },
     {
       "address": "0x5249f0",
-      "matching": 0.0,
+      "matching": 0.020618556701030927,
       "name": "TMapDialog::SetForeignMinisterReadyFlag14",
       "type": 1
     },
     {
       "address": "0x524b30",
-      "matching": 0.0,
+      "matching": 0.02040816326530612,
       "name": "TMapDialog::SelectCandidateTilesWithLowGroundUnitCount",
       "type": 1
     },
     {
       "address": "0x524c60",
-      "matching": 0.0,
+      "matching": 0.012578616352201259,
       "name": "TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920_9c",
       "type": 1
     },
     {
       "address": "0x524e70",
-      "matching": 0.0,
+      "matching": 0.0111731843575419,
       "name": "TMapDialog::OrphanLeaf_NoCall_Ins07_004d8920_9d",
       "type": 1
     },
     {
       "address": "0x5250a0",
-      "matching": 0.0,
+      "matching": 0.011049723756906077,
       "name": "TMapDialog::CopyDiamondMaskBlockKernel",
       "type": 1
     },
     {
       "address": "0x5252d0",
-      "matching": 0.0,
+      "matching": 0.012903225806451613,
       "name": "TMapDialog::CopyDiagonalMaskNarrowingBlockKernel",
       "type": 1
     },
     {
       "address": "0x5254a0",
-      "matching": 0.0,
+      "matching": 0.012903225806451613,
       "name": "TMapDialog::CopyDiagonalMaskWideningBlockKernel",
       "type": 1
     },
@@ -30480,7 +30480,7 @@
     },
     {
       "address": "0x5a9240",
-      "matching": 0.5397590361445783,
+      "matching": 0.5304136253041363,
       "name": "TTacticalBattleView::AnimateTacticalUnitMoveBetweenTiles",
       "type": 1
     },
@@ -32399,7 +32399,7 @@
     },
     {
       "address": "0x5bf930",
-      "matching": 0.7477253928866832,
+      "matching": 0.7758478081058726,
       "name": "RefreshSelectedNationOrderCompatibilityInfo",
       "type": 1
     },
