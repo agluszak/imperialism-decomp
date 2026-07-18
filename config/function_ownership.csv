@@ -3896,6 +3896,7 @@ address|target_cpp|ownership|note
 574f40|src/game/TScrollerButton.cpp|manual|marker_sync
 574f70|src/game/TScrollerButton.cpp|manual|marker_sync
 574fc0|src/game/TScrollerButton.cpp|manual|marker_sync
+575080|src/game/CDib.cpp|manual|marker_sync
 575180|src/game/TSpaceCommand.cpp|manual|marker_sync
 5751f0|src/game/TSpaceCommand.cpp|manual|marker_sync
 575210|src/game/TSpaceCommand.cpp|manual|marker_sync

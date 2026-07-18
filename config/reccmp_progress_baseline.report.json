@@ -16629,7 +16629,7 @@
     },
     {
       "address": "0x50bea0",
-      "matching": 0.20899591094956838,
+      "matching": 0.20990458882326216,
       "name": "TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets",
       "type": 1
     },
@@ -21542,7 +21542,7 @@
     },
     {
       "address": "0x545940",
-      "matching": 0.38623141564318036,
+      "matching": 0.4316639741518578,
       "name": "TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine",
       "type": 1
     },
@@ -22595,7 +22595,7 @@
     },
     {
       "address": "0x554590",
-      "matching": 0.6075949367088608,
+      "matching": 0.5569620253164557,
       "name": "CanQueueMapOrderForProvinceContext",
       "type": 1
     },
@@ -22679,7 +22679,7 @@
     },
     {
       "address": "0x555420",
-      "matching": 0.5546666666666666,
+      "matching": 0.5653333333333334,
       "name": "ResolveTaskForceOrderConflictAndPickCandidate",
       "type": 1
     },
@@ -25651,7 +25651,7 @@
     },
     {
       "address": "0x575080",
-      "matching": 0.25,
+      "matching": 1.0,
       "name": "RenderStrategicMapViewportBandsAndBlit_Impl",
       "type": 1
     },
@@ -30418,7 +30418,7 @@
     },
     {
       "address": "0x5a9240",
-      "matching": 0.563855421686747,
+      "matching": 0.5397590361445783,
       "name": "TTacticalBattleView::AnimateTacticalUnitMoveBetweenTiles",
       "type": 1
     },
