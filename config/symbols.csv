@@ -622,8 +622,8 @@ address|name|symbol|size|type|prototype|provenance
 4863f0|TFileBasedDocument::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 486420|TFileBasedDocument::CreateTFileBasedDocumentInstance||7|function|undefined CreateTFileBasedDocumentInstance()|
 486440|TFileBasedDocument::GetRuntimeClass||6|function|undefined GetTFileBasedDocumentClassNamePointer()|rtti
-486530|TDocument::OrphanRetStub_00486530||3|function|undefined OrphanRetStub_00486530(void)|
-486550|TDocument::OrphanRetStub_00486550||3|function|undefined OrphanRetStub_00486550(void)|
+486530|TDocument::OrphanRetStub_00486530||3|function|undefined OrphanRetStub_00486530(ArchiveStreamAdapter* stream, int flag)|
+486550|TDocument::OrphanRetStub_00486550||3|function|undefined OrphanRetStub_00486550(ArchiveStreamAdapter* stream, int flag)|
 486570|TCommandHandler::CreateObject|?CreateObject@TCommandHandler@@SGPAVCObject@@XZ|80|function|undefined CreateObject()|rtti
 4865e0|TCommandHandler::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 486610|TCommandHandler::CreateTCommandHandlerInstance||7|function|undefined CreateTCommandHandlerInstance()|
@@ -1401,12 +1401,12 @@ address|name|symbol|size|type|prototype|provenance
 49e5f0|TAmbitFileBasedDocument::ConstructTAmbitFileBasedDocumentBaseState||9|function|undefined ConstructTAmbitFileBasedDocumentBaseState()|
 49e610|TAmbitFileBasedDocument::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 49e640|DestructTAmbitFileBasedDocumentAndMaybeFree_Impl||7|function|undefined DestructTAmbitFileBasedDocumentAndMaybeFree_Impl()|
-49e660|TAmbitFileBasedDocument::OrphanRetStub_0049e660||3|function|undefined OrphanRetStub_0049e660(void)|
-49e680|TAmbitFileBasedDocument::OrphanRetStub_0049e680||3|function|undefined OrphanRetStub_0049e680(void)|
-49e6a0|TAmbitFileBasedDocument::OrphanRetStub_00486530||845|function|void OrphanRetStub_00486530(void * pLoadContext)|
+49e660|TAmbitFileBasedDocument::OrphanRetStub_0049e660||3|function|undefined OrphanRetStub_0049e660(int arg1, int arg2)|
+49e680|TAmbitFileBasedDocument::OrphanRetStub_0049e680||3|function|undefined OrphanRetStub_0049e680(int arg)|
+49e6a0|TAmbitFileBasedDocument::OrphanRetStub_00486530||845|function|undefined OrphanRetStub_00486530(ArchiveStreamAdapter* stream, int flag)|
 49eb00|CString::CString(class CString const &)||19|function|undefined CString(CString const &)|
-49eb30|TAmbitFileBasedDocument::OrphanRetStub_00486550||650|function|void OrphanRetStub_00486550(void * pSaveContext)|
-49ee70|TAmbitFileBasedDocument::AssertUAmbitLine1335||30|function|undefined AssertUAmbitLine1335()|
+49eb30|TAmbitFileBasedDocument::OrphanRetStub_00486550||650|function|undefined OrphanRetStub_00486550(ArchiveStreamAdapter* stream, int flag)|
+49ee70|TAmbitFileBasedDocument::AssertUAmbitLine1335||30|function|undefined AssertUAmbitLine1335(int arg)|
 49efd0|WrapperFor_ftol_At0049efd0||30|function|undefined WrapperFor_ftol_At0049efd0()|
 49f020|TAnimation::CreateObject|?CreateObject@TAnimation@@SGPAVCObject@@XZ|24|function|undefined CreateObject()|rtti
 49f050|TAnimation::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
