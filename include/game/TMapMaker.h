@@ -58,14 +58,32 @@ public:
   // group-membership bookkeeping (allocates/merges `cityRegionIds200` group ids
   // directly) -- port together with slot 0x34 once +0x1a8 is modeled. slot 16 / 0x40
   virtual char TryMergeRegionGroupWithNeighbors(int cellIndex, int classIndex);
-  virtual void vmethod_0017(int param);              // slot 17 / 0x44
-  virtual void ForwardParam(int param);              // slot 18 / 0x48
-  virtual char DoIdle(int action);                   // slot 19 / 0x4c
+  virtual void vmethod_0017(int param); // slot 17 / 0x44
+  // Verified 3 stack int args from both the caller (0x527730, which pushes 3
+  // explicit ints) and Ghidra's own (correct, for once) 3-param signature recovery
+  // on the callee itself -- the header's previous 1-arg form was wrong. Recursively
+  // walks the hex grid from `tileIndex` in direction `featureType` (0..5, cycled via
+  // random retry on collision) up to `retryBudget` steps, laying a linear terrain
+  // feature (river/road-shaped); returns the number of steps placed. Uses the same
+  // g_hexColOffsetEvenRow_00697450/g_hexRowOffset_00697468/g_hexColOffsetOddRow_00697480
+  // hex-direction tables as ComputeHexNeighborTileIndices. slot 18 / 0x48
+  virtual int ForwardParam(int tileIndex, int retryBudget, int featureType);
+  // Verified 0 stack args from the caller (0x527730 calls it with no pushes) -- the
+  // header's previous 1-arg form was wrong. slot 19 / 0x4c
+  virtual char DoIdle();
   virtual int GetCityDialogValueDword10();           // slot 20 / 0x50
   virtual void SetCityDialogValueDword10(int value); // slot 21 / 0x54
-  virtual TView* OwnerPanel();                       // slot 22 / 0x58
-  virtual char vmethod_0023();                       // slot 23 / 0x5c
-  virtual char GetDeactivateVetoCode();              // slot 24 / 0x60
+  // Verified RET 0xc (3 stack args), from both Ghidra's own (correct) signature
+  // recovery and the self-recursive call inside the callee itself -- the header's
+  // previous 0-arg `TView*`-returning form was templated off TView's real
+  // OwnerPanel and does not describe this slot. Claims `tileIndex` (marking it 1,
+  // plus a variant byte at +0x13 selected by `markerVariant`), refuses if any hex
+  // neighbor is already a marker (byte 6), then recursively spreads to neighbors
+  // (46% chance each) until `retryBudget` spreads land. Returns the spread count.
+  // slot 22 / 0x58
+  virtual int PlaceCityMarkerAndSpreadNeighbors(int tileIndex, int retryBudget, char markerVariant);
+  virtual char vmethod_0023();          // slot 23 / 0x5c
+  virtual char GetDeactivateVetoCode(); // slot 24 / 0x60
   // Map-gen finalize pass (was junk-named OnDeactivated; takes one mode arg the
   // driver passes as 0 -- verified RET 4). slot 25 / 0x64
   virtual void MapGenFinalizePassSlot19(int mode);

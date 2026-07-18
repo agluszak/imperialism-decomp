@@ -9,6 +9,11 @@
 #include "game/TSetupRandomMapPicture.h"
 #include "game/global_data_tables.h"
 
+// Same hex-neighbor math as TMapMgr::ComputeHexNeighborTileIndices, but over
+// TMapMaker's own full-resolution generation grid (mapTileGrid08, 108x60, stride
+// 0x24) rather than the coarse 15x27 region grid.
+static __inline int ComputeHexAdjacentFullGridTileIndex(int tileIndex, int direction);
+
 // SYNTHETIC: IMPERIALISM 0x00525950
 // TMapMaker::GetRuntimeClass
 IMPLEMENT_DYNAMIC(TMapMaker, TObject)
@@ -760,8 +765,105 @@ char TMapMaker::TryMergeRegionGroupWithNeighbors(int cellIndex, int classIndex) 
 // FUNCTION: IMPERIALISM 0x005275a0
 void TMapMaker::MapGenPassSlot0E() {}
 
+// Lays mountain-range-shaped features (ForwardParam) up to g_mapGenMountainQuota_
+// 006a3470 tiles, then spreads hills (terrain 2) around each laid tile with a 40%
+// per-neighbor chance (up to g_mapGenHillsQuota_006a38c0 tiles, falling back to
+// direct random placement once the spread pass can't find more room), places
+// city-marker features (PlaceCityMarkerAndSpreadNeighbors) up to
+// g_mapGenForestQuota_006a38f8 times, and finally fills the remaining swamp quota
+// (g_mapGenSwampQuota_006a38e0) with random tiles (terrain 7) or -- once that quota
+// is exhausted -- random-walks mountain-range extensions (terrain 4, via slot 0x58)
+// from tiles adjacent to exactly one already-placed marker tile.
 // FUNCTION: IMPERIALISM 0x00527730
-void TMapMaker::MapGenPassSlot0F() {}
+void TMapMaker::MapGenPassSlot0F() {
+  int forestQuota = g_mapGenForestQuota_006a38f8;
+  int swampQuota = g_mapGenSwampQuota_006a38e0;
+  int hillsQuota = g_mapGenHillsQuota_006a38c0;
+
+  for (int remaining = g_mapGenMountainQuota_006a3470; remaining > 0;) {
+    g_mapGenLcgState_006a38e8 = g_mapGenLcgState_006a38e8 * 0x15a4e35 + 1;
+    unsigned int seedHigh = g_mapGenLcgState_006a38e8 >> 0xc;
+    int tileIndex;
+    do {
+      g_mapGenLcgState_006a38e8 = g_mapGenLcgState_006a38e8 * 0x15a4e35 + 1;
+      tileIndex = static_cast<int>((g_mapGenLcgState_006a38e8 >> 0xc & 0x7fff) % 0x1950);
+    } while (mapTileGrid08[tileIndex * 0x24] != 0);
+    g_mapGenLcgState_006a38e8 = g_mapGenLcgState_006a38e8 * 0x15a4e35 + 1;
+    int retryBudget = static_cast<int>((seedHigh & 0x7fff) % 0xc) + 3;
+    int featureType = static_cast<int>((g_mapGenLcgState_006a38e8 >> 0xc & 0x7fff) % 6);
+    remaining -= ForwardParam(tileIndex, retryBudget, featureType);
+  }
+
+  for (int hillsSrcTile = 0; hillsSrcTile < 0x1950; ++hillsSrcTile) {
+    if (mapTileGrid08[hillsSrcTile * 0x24] != 3) {
+      continue;
+    }
+    for (int hillsDir = 0; hillsDir < 6; ++hillsDir) {
+      int neighborTile = ComputeHexAdjacentFullGridTileIndex(hillsSrcTile, hillsDir);
+      if (neighborTile != -1 && mapTileGrid08[neighborTile * 0x24] == 0) {
+        g_mapGenLcgState_006a38e8 = g_mapGenLcgState_006a38e8 * 0x15a4e35 + 1;
+        if (static_cast<int>((g_mapGenLcgState_006a38e8 >> 0xc & 0x7fff) % 100) < 0x28) {
+          mapTileGrid08[neighborTile * 0x24] = 2;
+          --hillsQuota;
+        }
+      }
+    }
+  }
+
+  while (hillsQuota > 0) {
+    g_mapGenLcgState_006a38e8 = g_mapGenLcgState_006a38e8 * 0x15a4e35 + 1;
+    int hillsFallbackTile = static_cast<int>((g_mapGenLcgState_006a38e8 >> 0xc & 0x7fff) % 0x1950);
+    if (mapTileGrid08[hillsFallbackTile * 0x24] == 0) {
+      mapTileGrid08[hillsFallbackTile * 0x24] = 2;
+      --hillsQuota;
+    }
+  }
+
+  DoIdle();
+
+  bool urgentFlag = false;
+  while (forestQuota > 0) {
+    g_mapGenLcgState_006a38e8 = g_mapGenLcgState_006a38e8 * 0x15a4e35 + 1;
+    int forestTile = static_cast<int>((g_mapGenLcgState_006a38e8 >> 0xc & 0x7fff) % 0x1950);
+    forestQuota -= PlaceCityMarkerAndSpreadNeighbors(forestTile, 7, static_cast<char>(urgentFlag));
+    if (forestQuota < g_mapGenForestQuota_006a38f8 * 2 / 3) {
+      urgentFlag = true;
+    }
+  }
+
+  for (;;) {
+    if (swampQuota < 1) {
+      for (int fillTile = 0; fillTile < 0x1950; ++fillTile) {
+        if (mapTileGrid08[fillTile * 0x24] == 0) {
+          g_mapGenLcgState_006a38e8 = g_mapGenLcgState_006a38e8 * 0x15a4e35 + 1;
+          if (static_cast<int>((g_mapGenLcgState_006a38e8 >> 0xc & 0x7fff) % 100) < 0x2d) {
+            mapTileGrid08[fillTile * 0x24] = 7;
+          }
+        }
+      }
+      vmethod_0023();
+      return;
+    }
+
+    int swampTile;
+    do {
+      g_mapGenLcgState_006a38e8 = g_mapGenLcgState_006a38e8 * 0x15a4e35 + 1;
+      swampTile = static_cast<int>((g_mapGenLcgState_006a38e8 >> 0xc & 0x7fff) % 0x1950);
+    } while (mapTileGrid08[swampTile * 0x24] != 0);
+
+    bool allNeighborsClear = true;
+    for (int swampDir = 0; swampDir < 6; ++swampDir) {
+      int neighborTile = ComputeHexAdjacentFullGridTileIndex(swampTile, swampDir);
+      if (neighborTile != -1 && mapTileGrid08[neighborTile * 0x24] == 6) {
+        allNeighborsClear = false;
+      }
+    }
+    if (allNeighborsClear) {
+      --swampQuota;
+      mapTileGrid08[swampTile * 0x24] = 4;
+    }
+  }
+}
 
 // FUNCTION: IMPERIALISM 0x00527d00
 char TMapMaker::vmethod_0023() {
@@ -773,16 +875,127 @@ char TMapMaker::GetDeactivateVetoCode() {
   return 0;
 }
 
-// FUNCTION: IMPERIALISM 0x00528140
-class TView* TMapMaker::OwnerPanel() {
-  return 0;
+// Same hex-neighbor math as TMapMgr::ComputeHexNeighborTileIndices, but over
+// TMapMaker's own full-resolution generation grid (mapTileGrid08, 108x60, stride
+// 0x24) rather than the coarse 15x27 region grid.
+static __inline int ComputeHexAdjacentFullGridTileIndex(int tileIndex, int direction) {
+  int parity = tileIndex / 0x6c;
+  int colOffset = (parity & 1) == 0 ? g_hexColOffsetEvenRow_00697450[direction]
+                                    : g_hexColOffsetOddRow_00697480[direction];
+  int col = tileIndex % 0x6c + colOffset;
+  int row = parity + g_hexRowOffset_00697468[direction];
+  if (g_pGlobalMapState->hexNeighborWrapHorizontally20 == 0) {
+    if (col < 0) {
+      col += 0x6c;
+    } else if (col > 0x6b) {
+      col -= 0x6c;
+    }
+    if (row < 0 || row > 0x3b) {
+      return -1;
+    }
+    return col + row * 0x6c;
+  }
+  if (col >= 0 && col < 0x6c) {
+    return col + row * 0x6c;
+  }
+  return -1;
 }
 
+// Recursively claims `tileIndex` (marking it 1, plus a variant byte at +0x13 chosen by
+// `markerVariant`), refuses if any hex neighbor is already a marker (byte 6), then
+// spreads to hex neighbors with a 46% chance each until `retryBudget` spreads succeed.
+// Returns the number of successful spreads.
+// FUNCTION: IMPERIALISM 0x00528140
+int TMapMaker::PlaceCityMarkerAndSpreadNeighbors(int tileIndex, int retryBudget,
+                                                 char markerVariant) {
+  if (mapTileGrid08[tileIndex * 0x24] != 0) {
+    return 0;
+  }
+  for (int dir = 0; dir < 6; ++dir) {
+    int neighborTile = ComputeHexAdjacentFullGridTileIndex(tileIndex, dir);
+    if (neighborTile != -1 && mapTileGrid08[neighborTile * 0x24] == 6) {
+      return 0;
+    }
+  }
+
+  mapTileGrid08[tileIndex * 0x24] = 1;
+  mapTileGrid08[tileIndex * 0x24 + 0x13] = (markerVariant == 0) ? 0xd : 0xf;
+
+  int remaining = retryBudget - 1;
+  for (int spreadDir = 0; spreadDir < 6; ++spreadDir) {
+    int neighborTile = ComputeHexAdjacentFullGridTileIndex(tileIndex, spreadDir);
+    g_mapGenLcgState_006a38e8 = g_mapGenLcgState_006a38e8 * 0x15a4e35 + 1;
+    if (static_cast<int>((g_mapGenLcgState_006a38e8 >> 0xc & 0x7fff) % 100) < 0x46 &&
+        remaining != 0) {
+      remaining -= PlaceCityMarkerAndSpreadNeighbors(neighborTile, 1, markerVariant);
+    }
+  }
+  return retryBudget - remaining;
+}
+
+// Recursively lays a linear terrain feature (river/road-shaped) across the
+// full-resolution generation grid: claims `tileIndex` (marking it 3), refuses if any
+// hex neighbor is water (terrain type 5), then randomly perturbs `featureType`
+// (0..5, the hex direction to continue in -- more volatile when featureType is 1 or
+// 4) and recurses into that neighbor with `retryBudget` decremented. Returns the
+// number of tiles successfully placed.
 // FUNCTION: IMPERIALISM 0x005283c0
-void TMapMaker::ForwardParam(int param) {}
+int TMapMaker::ForwardParam(int tileIndex, int retryBudget, int featureType) {
+  if (tileIndex < 0 || tileIndex > 0x1950) {
+    return 0;
+  }
+  if (mapTileGrid08[tileIndex * 0x24] != 0) {
+    return 0;
+  }
+  for (int dir = 0; dir < 6; ++dir) {
+    int neighborTile = ComputeHexAdjacentFullGridTileIndex(tileIndex, dir);
+    if (neighborTile != -1 && mapTileGrid08[neighborTile * 0x24] == 5) {
+      return 0;
+    }
+  }
+
+  mapTileGrid08[tileIndex * 0x24] = 3;
+
+  int nextFeatureType = featureType;
+  if (featureType == 1 || featureType == 4) {
+    g_mapGenLcgState_006a38e8 = g_mapGenLcgState_006a38e8 * 0x15a4e35 + 1;
+    int roll = static_cast<int>((g_mapGenLcgState_006a38e8 >> 0xc & 0x7fff) % 100);
+    if (roll > 0x27) {
+      if (roll < 0x46) {
+        nextFeatureType = (featureType == 0) ? 5 : featureType - 1;
+      } else if (featureType == 5) {
+        nextFeatureType = 0;
+      } else {
+        nextFeatureType = featureType + 1;
+      }
+    }
+  } else {
+    g_mapGenLcgState_006a38e8 = g_mapGenLcgState_006a38e8 * 0x15a4e35 + 1;
+    int roll = static_cast<int>((g_mapGenLcgState_006a38e8 >> 0xc & 0x7fff) % 100);
+    if (roll > 0x3b) {
+      if (roll < 0x50) {
+        nextFeatureType = (featureType == 0) ? 5 : featureType - 1;
+      } else if (featureType == 5) {
+        nextFeatureType = 0;
+      } else {
+        nextFeatureType = featureType + 1;
+      }
+    }
+  }
+
+  int nextTile = ComputeHexAdjacentFullGridTileIndex(tileIndex, nextFeatureType);
+  int placed = 1;
+  if (retryBudget != 1 && nextTile != -1) {
+    // Note: the original recurses with the un-adjusted featureType, not
+    // nextFeatureType -- the random perturbation above only picks which neighbor
+    // to step into this call, not the direction future steps inherit.
+    placed += ForwardParam(nextTile, retryBudget - 1, featureType);
+  }
+  return placed;
+}
 
 // FUNCTION: IMPERIALISM 0x00528670
-char TMapMaker::DoIdle(int action) {
+char TMapMaker::DoIdle() {
   return 0;
 }
 

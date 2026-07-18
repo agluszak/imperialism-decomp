@@ -7,13 +7,18 @@ each with the evidence needed to start (address, size, current score if any, blo
 
 ## Big stubs (never ported)
 
-- TMapMaker phase bodies: `0x527730` (1175B), `0x528e50` (940B) — still fabricated
-  `{}`/stub bodies; not yet attempted (see the class-recovery writeup below first,
-  since the same wrong-signature pattern likely applies to their vtable slots too).
-  `0x526c20`/`0x527040` (previously flagged in this same bucket) are now landed —
-  see below.
+- TMapMaker phase bodies: `0x528e50` (940B, `vmethod_0017`/slot 17/0x44) — still a
+  fabricated `{}` stub; not yet attempted. Do the same raw-listing signature audit
+  before porting (check its actual vtable calls against real arg counts — every
+  other TMapMaker slot audited so far this pass had a wrong templated signature).
+  This is the hex-grid neighbor-sampling pass over the 6 `0x697450`-band globals —
+  those are now named (`g_hexColOffsetEvenRow_00697450`/`g_hexRowOffset_00697468`/
+  `g_hexColOffsetOddRow_00697480`, confirmed by 5 different callers this pass), so
+  that blocker is resolved. `0x526c20`/`0x527040`/`0x527730` (previously flagged in
+  this same bucket) are now landed — see below.
 - **TMapMaker class recovery (landed 2026-07-18, `0x526c20` 0.83% -> 31.82%,
-  `0x527040` 1.09% -> 28.14%)**: confirmed the systemic mismodeling this bucket
+  `0x527040` 1.09% -> 28.14%, `0x527730` ~0% -> 29.58%, `0x528140` ~0% -> 32.95%,
+  `0x5283c0` ~0% -> 29.69%)**: confirmed the systemic mismodeling this bucket
   flagged — several vtable slot signatures were templated off TEventHandler/TView's
   real virtuals of the same slot POSITION, not verified against TMapMaker's own call
   sites (`just vtable TMapMaker` was, and still is, 100% the whole time: the
@@ -51,11 +56,39 @@ each with the evidence needed to start (address, size, current score if any, blo
   - Also promoted the previously-undocumented `+0x29c` lone int (queue's old
     "TMapMaker never-ported" note flagged it) to `lastMinorSeedCandidate29c`;
     not yet observed read anywhere, so semantics beyond "reset per attempt" unconfirmed.
-  - `0x527730` (`MapGenPassSlot0F`) and `0x528e50` (`vmethod_0017`, the hex-grid
-    neighbor-sampling pass over the 6 unnamed `0x697450`-band globals) are NOT YET
-    ATTEMPTED — do the same raw-listing signature audit before porting either, since
-    both are likely to have the same templated-signature problem on whatever vtable
-    slots they call into.
+  - Slot 18/0x44 (`ForwardParam(int param)`, 1-arg) was really
+    `int ForwardParam(int tileIndex, int retryBudget, int featureType)` (verified 3
+    stack args from both the caller and Ghidra's own correct 3-param recovery on the
+    callee). Recursively lays a linear terrain feature (river/road-shaped): claims
+    `tileIndex`, refuses if any hex neighbor is water, randomly perturbs
+    `featureType` (0..5, the hex direction), and recurses into that neighbor with
+    the ORIGINAL (not perturbed) `featureType` — a real quirk, not a bug, confirmed
+    from the raw listing. Renamed conceptually kept as `ForwardParam` (already a
+    reasonable name) and fully ported (0x5283c0).
+  - Slot 19/0x4c (`DoIdle(int action)`, 1-arg) was really 0-arg (verified: 0 pushes
+    at its only call site). Renamed `DoIdle()`.
+  - Slot 22/0x58 (`OwnerPanel() -> TView*`, 0-arg) was really
+    `int PlaceCityMarkerAndSpreadNeighbors(int tileIndex, int retryBudget, char
+    markerVariant)` (verified RET 0xc = 3 stack args, from both Ghidra's own correct
+    signature recovery and the self-recursive call inside the callee). Claims
+    `tileIndex` (byte 1 + a variant byte at +0x13), refuses if any hex neighbor is
+    already a marker (byte 6), spreads to neighbors at 46% each. Renamed and fully
+    ported (0x528140).
+  - `0x527730` (`MapGenPassSlot0F`) fully ported using the corrected ForwardParam/
+    DoIdle/PlaceCityMarkerAndSpreadNeighbors/vmethod_0023 calls: lays mountain-range
+    features, spreads hills around them, places city markers, then fills the swamp
+    quota (falling back to random-walk placement once the direct-random pass can't
+    find room). A shared `ComputeHexAdjacentFullGridTileIndex` static `__inline`
+    helper (same hex math as `TMapMgr::ComputeHexNeighborTileIndices` but over
+    TMapMaker's own full-resolution 108x60 grid) is used by all of ForwardParam/
+    PlaceCityMarkerAndSpreadNeighbors/AssignRegionClassToCellAndNeighbors/
+    MapGenPassSlot0F — must stay `__inline` (not plain `static`) or it shows up as
+    an unpaired recomp-only symbol under `/Ob1` AND costs ~10pp on every caller
+    (confirmed empirically: adding `__inline` raised MapGenPassSlot0F 18.60% ->
+    29.58%, OwnerPanel 21.88% -> 32.95%, ForwardParam 27.12% -> 29.69%, with no
+    other source change).
+  - `0x528e50` (`vmethod_0017`, slot 17/0x44) is the one remaining unaudited/
+    unported slot in this bucket — see the "Big stubs" entry above.
 
 ## Known-bad re-ports (score far below structure)
 
