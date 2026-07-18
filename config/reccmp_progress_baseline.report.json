@@ -11831,8 +11831,8 @@
     },
     {
       "address": "0x4d4bf0",
-      "matching": 0.0,
-      "name": "TDiplomacyMapView::AppendPackedColorDwordToMaskBuffers",
+      "matching": 0.24644549763033174,
+      "name": "StrategicMapCallbackRecord::AppendPackedColorDword",
       "type": 1
     },
     {
@@ -38429,7 +38429,7 @@
     },
     {
       "address": "0x6091d9",
-      "matching": 0.9787234042553191,
+      "matching": 1.0,
       "name": "CWnd::OnNotify",
       "type": 1
     },

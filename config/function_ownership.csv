@@ -1749,6 +1749,7 @@ address|target_cpp|ownership|note
 4d4390|src/game/TMapMgr.cpp|manual|marker_sync
 4d49a0|src/game/TLandSaleEvent.cpp|manual|marker_sync
 4d4b90|src/game/TMacViewMgr.cpp|manual|marker_sync
+4d4bf0|src/game/TDiplomacyMapView.cpp|manual|marker_sync
 4d4e40|src/game/TMacViewMgr.cpp|manual|marker_sync
 4d5090|src/game/TMacViewMgr.cpp|manual|marker_sync
 4d5580|src/game/TMacViewMgr.cpp|manual|marker_sync

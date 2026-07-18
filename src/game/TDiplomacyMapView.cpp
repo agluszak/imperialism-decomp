@@ -33,7 +33,6 @@ void __cdecl BuildDiplomacyOverlayHitMaskOpcodeStream(DiplomacyMaskBufferRun* ru
 undefined4 FrameRegionOnHdcAndReleaseBrushState(void);
 undefined4 MapTurnEventCodeToPaletteIndex(void);
 undefined4 BlitMonochromeMaskBytePatternToSurface(void);
-undefined4 thunk_AppendPackedColorDwordToMaskBuffers(void);
 undefined4 AppendPointerToGlobalVectorAsStatus(void);
 undefined4 thunk_WrapperFor_InvalidateCityDialogRectRegion_At004f6d90(void);
 undefined4 RunDiplomacyWaitSheetPopupAndAwaitResponse(void);
@@ -50,6 +49,38 @@ const unsigned int kAddrResolveDiplomacyActionValue = 0x004F5F70;
 // FUNCTION: IMPERIALISM 0x00430730
 DiplomacyMaskBufferRun::~DiplomacyMaskBufferRun() {
   delete[] maskBytesAt00;
+}
+
+// Emits a "write this packed color dword" run into the primary JIT opcode buffer at the
+// cursor kept in the secondary buffer's first dword, then executes the assembled blit
+// opcodes against the destination surface. StrategicMapCallbackRecord is a game-specific
+// JIT blit-code builder (not an MFC collection): dispatchTable00/subobjectDispatchTable1c
+// point at game .rdata, the byte buffers are grown through the game's _realloc wrappers,
+// and the tail CALLs into the buffer itself.
+// FUNCTION: IMPERIALISM 0x004d4bf0
+void StrategicMapCallbackRecord::AppendPackedColorDword(int surface, int packedColor) {
+  const unsigned int packed = (packedColor & 0xff) * 0x01010101u;
+
+  // The secondary opcode buffer stores the primary-buffer write cursor in its first dword.
+  if (field24 == 0) {
+    ownedBuffer20 = new char[sizeof(int)];
+    field24 = sizeof(int);
+  }
+  if (field28 == 0) {
+    field28 = 1;
+  }
+  const int cursor = *reinterpret_cast<int*>(ownedBuffer20);
+  *EnsureOpcodeBufferByteAtIndex(cursor) = static_cast<unsigned char>(packed);
+  *EnsureOpcodeBufferByteAtIndex(cursor + 1) = static_cast<unsigned char>(packed >> 8);
+  *EnsureOpcodeBufferByteAtIndex(cursor + 2) = static_cast<unsigned char>(packed >> 16);
+  *EnsureOpcodeBufferByteAtIndex(cursor + 3) = static_cast<unsigned char>(packed >> 24);
+
+  // Grow the primary buffer to span the generated blit entry, then execute the opcodes.
+  // The original hands the destination surface to the generated code in eax, which has no
+  // standard C++ calling convention; this is an unavoidable low-level bridge (executing a
+  // JIT'd opcode buffer, not a normal-function convention fake).
+  unsigned char* entry = EnsureOpcodeBufferByteAtIndex(field14);
+  reinterpret_cast<void(*)(int)>(entry)(surface);
 }
 
 // FUNCTION: IMPERIALISM 0x004d5cf0
@@ -404,11 +435,6 @@ void TDiplomacyMapView::RenderTerrainAndMinorNationLegendLabels(RECT* presentRec
 void TDiplomacyMapView::BeginMouseCaptureAndStartRepeatTimer(CPoint* point, int arg2, int arg3,
                                                              int arg4) {
   TPicture::BeginMouseCaptureAndStartRepeatTimer(point, arg2, arg3, arg4);
-}
-
-void StrategicMapCallbackRecord::AppendPackedColorDword(int surface, int packedColor) {
-  reinterpret_cast<void(__cdecl*)(void*, int, int)>(thunk_AppendPackedColorDwordToMaskBuffers)(
-      this, surface, packedColor);
 }
 
 // FUNCTION: IMPERIALISM 0x004f5e00
