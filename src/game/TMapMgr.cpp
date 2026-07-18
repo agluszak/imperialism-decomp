@@ -890,34 +890,46 @@ unsigned char* TMapMgr::UpdateMapTileAdjacencyMasksAndVariantForTile(short tileI
     }
     if (terrainStateTable[tileIndex].gateFlag == 0xb) {
       for (short d = 0; d < 6; ++d) {
-        if (terrainStateTable[neighbors[d]].gateFlag == 0xb) {
-          short next = (d == 5) ? 0 : (short)(d + 1);
-          short prev = (d != 0) ? (short)(d - 1) : 5;
-          unsigned char prevTag = terrainStateTable[neighbors[prev]].gateFlag;
+        if (terrainStateTable[neighbors[d]].gateFlag != 0xb) {
+          continue;
+        }
+        short next = (d == 5) ? 0 : (short)(d + 1);
+        short prev = (d != 0) ? (short)(d - 1) : 5;
+        unsigned char prevTag = terrainStateTable[neighbors[prev]].gateFlag;
+        if (prevTag == 0xb) {
+          goto check_prevb;
+        }
+        if (terrainStateTable[neighbors[next]].gateFlag == 0xb) {
+          goto check_pb_nb;
+        }
+        terrainStateTable[tileIndex].spriteVariantIndex01 = 0;
+        continue;
+      check_pb_nb:
+        if (prevTag != 0xb) {
+          goto check_next3;
+        }
+      check_prevb:
+        if (terrainStateTable[neighbors[next]].gateFlag != 0xb) {
+          goto check_pb2;
+        }
+        terrainStateTable[tileIndex].spriteVariantIndex01 = 1;
+        continue;
+      check_pb2:
+        if (prevTag != 0xb) {
+          goto check_next3;
+        }
+        if (terrainStateTable[neighbors[next]].gateFlag == prevTag) {
           if (prevTag == 0xb) {
-          check_next_run:
-            if (terrainStateTable[neighbors[next]].gateFlag == 0xb) {
-              terrainStateTable[tileIndex].spriteVariantIndex01 = 1;
-            } else {
-              if (prevTag != 0xb) {
-                goto check_next_only;
-              }
-              if (terrainStateTable[neighbors[next]].gateFlag != 0xb) {
-                terrainStateTable[tileIndex].spriteVariantIndex01 = 2;
-              }
-            }
-          } else if (terrainStateTable[neighbors[next]].gateFlag == 0xb) {
-            if (prevTag == 0xb) {
-              goto check_next_run;
-            }
-          check_next_only:
-            if (terrainStateTable[neighbors[next]].gateFlag == 0xb) {
-              terrainStateTable[tileIndex].spriteVariantIndex01 = 3;
-            }
-          } else {
-            terrainStateTable[tileIndex].spriteVariantIndex01 = 0;
+            continue;
           }
         }
+        terrainStateTable[tileIndex].spriteVariantIndex01 = 2;
+        continue;
+      check_next3:
+        if (terrainStateTable[neighbors[next]].gateFlag != 0xb) {
+          continue;
+        }
+        terrainStateTable[tileIndex].spriteVariantIndex01 = 3;
       }
     }
     unsigned char variant = terrainStateTable[tileIndex].roadFlag;

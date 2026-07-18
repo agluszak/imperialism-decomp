@@ -110,12 +110,34 @@ each with the evidence needed to start (address, size, current score if any, blo
     table), sets `lastProcessedNationSlot78e`, and finally — only if
     `g_pSimMgr->field44 == 1` — calls `EmitTurnEvent26DiplomacyMatrixSnapshot()`
     (still a STUB, `src/autogen/stubs/stubs_part016.cpp:472`).
-  - **Recommendation for the next attempt**: this needs an interactive
-    Ghidra-decompile cross-check (not pure hand-disassembly-reading) to safely
-    resolve the two stalled loops' index arithmetic — the raw listing alone left
-    real ambiguity about which stack slot a given register reload refers to
-    across the ~1000-byte middle section. Budget a dedicated session; the
-    opening ~200 bytes and the `bandValue<100` sub-case above are solid and can
+  - **`just ghidra-decompile` cross-check done 2026-07-18 (no code changed — new,
+    more serious blocker found, not just density):** the decompile shows
+    `topNationSlot`/`secondNationSlot` (Ghidra's `unaff_EBX` and `uStack_f0`) are
+    used **throughout the entire ~1000-byte body with no assignment anywhere in
+    the function** — Ghidra can't find where EBX gets its value, and `uStack_f0`
+    is built via `CONCAT13(param_1 == 2, (undefined3)uStack_f0)`, i.e. it only
+    overwrites the TOP byte of a stack slot whose low 3 bytes are read
+    unconditionally from *whatever was already there* on entry. A companion
+    `undefined4 unaff_EBP` is later reused the same way (`(char)((uint)unaff_EBP
+    >> 0x18)`, a flag byte read out of the frame-pointer register). None of this
+    is standard `__thiscall` (only ECX is implicit); it means either (a) this
+    function is genuinely entered with caller-established EBX/EBP state as a
+    hidden custom convention MSVC5 chose for this specific call site, or (b)
+    Ghidra's function-boundary/register-parameter recovery is wrong here and the
+    real entry point / real signature differs from what's listed. Either way,
+    freehand-porting this as a normal `(char forceOrMode)` method would silently
+    fabricate a calling convention (exactly what the calling-conventions guardrail
+    forbids) — this is not a "too complex, defer" call, it's a "ground truth is
+    still unresolved" call.
+  - **Recommendation for the next attempt**: before writing any C++, resolve the
+    EBX/EBP provenance from the RAW LISTING at the actual call site(s) that reach
+    0x4f0e20 (`just ghidra-xrefs 0x4f0e20` for callers, then read the raw
+    instructions immediately before each `call` to see what sets ebx/ebp and
+    whether it's reloaded from a `this`-relative field right before the call —
+    if so, the real fix is likely just adding those two as real parameters/reads
+    from member fields rather than mystery registers). Budget a dedicated
+    session; the opening ~200 bytes and the `bandValue<100` sub-case above are
+    still solid and can
     be reused verbatim.
 - `0x4eb8b0` TGreatPower::AssignTrackedEntryActionsByProfileToOrdersOrUnits (landed
   2026-07-17, 65.50%, own TU `TGreatPower_AssignTrackedEntryActions.cpp`, structure
@@ -280,21 +302,30 @@ each with the evidence needed to start (address, size, current score if any, blo
      codegen-shapes skill's caution that this induction-variable split is often not
      source-steerable. Don't retry that specific rewrite without new evidence.
   2. The `terrainStateTable[tileIndex].gateFlag == 0xb` "gate ring" tag-assignment
-     block (source ~line 891-922, disasm 0x510343-0x510419) has genuinely tangled
-     control flow with REDUNDANT re-tests of `prevTag`/`nextTag` that are
-     unreachable-but-still-compiled given the branch that reaches them (e.g.
-     `CMP BL,0xb` re-executed at 0x5103b3/0x5103d1 when BL is already provably
-     0xb/not-0xb from the controlling branch) — this looks like the *original 1997
-     source itself* had a duplicated/copy-pasted condition (not a decompiler
-     artifact), so a faithful port needs to reproduce the redundant tests literally,
-     not simplify them away. The current manual source's `goto check_next_run`/
-     `check_next_only` structure is in the right spirit but doesn't match the exact
-     variable re-reads (e.g. one re-test at 0x5103d6-0x5103e1 re-fetches
-     `neighbors[next]` and compares against `BL` (prevTag) rather than the literal
-     constant `0xb`). Needs a dedicated line-by-line pass matching
-     0x510343-0x510419 in the raw listing instruction-for-instruction before
-     touching further — do not attempt a quick simplification here, it costs score
-     (see point 1's experience on this same function).
+     block (source ~line 891-926, disasm 0x510343-0x510419) — **fully instruction-
+     traced 2026-07-18** against the raw listing (every CMP/JZ/JNZ from 0x510346 to
+     0x510419 walked by hand). Confirmed truth table:
+     `prevTag==0xb && nextTag==0xb -> 1`, `prevTag==0xb && nextTag!=0xb -> 2`,
+     `prevTag!=0xb && nextTag==0xb -> 3`, else `0`, reached through a genuinely
+     tangled shared-label CFG with real dead/redundant re-tests (confirmed dead:
+     they can never take the non-fallthrough edge given the branch that reaches
+     them). One concrete, previously-wrong detail fixed: the redundant re-test at
+     disasm 0x5103e1 compares `neighbors[next]'s gateFlag` against **the `prevTag`
+     register (`BL`)**, not the literal constant `0xb` — the old source compared
+     against `0xb`, a real (behaviorally-inert, since `prevTag==0xb` is guaranteed
+     there, but encoding-different) mismatch. Rewrote the block with `goto`
+     labels mirroring the disasm's shared blocks 1:1 (`check_prevb`/`check_pb_nb`/
+     `check_pb2`/`check_next3`) including the corrected register-vs-immediate
+     compare. **Result: 28.05% -> 27.94%, a wash** — build+compare shows the
+     compiler fully reschedules/merges the four `spriteVariantIndex01 = N; continue`
+     stores into one cluster regardless of source block order (goto-label order vs
+     if/else order made no difference in a quick check), so this specific residual
+     really is compiler block-layout scheduling, not source-steerable, confirming
+     the original session's caution. Kept the `goto` rewrite anyway since it's a
+     strictly more accurate model of the real semantics (proven by the disasm
+     trace) at no cost. Don't re-attempt this specific block without new evidence
+     beyond "reorder the same logic" — point 1's trip-counter register split is a
+     more promising unexplored angle for this function if revisited.
 - `0x550b60` TShip::ComputeOrderNodeCompositeEconomicScore at 68% — residual is
   scheduling wobble around the inlined /100 and /10 magic divisions; revisit only
   with new evidence.
