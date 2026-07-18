@@ -19,6 +19,8 @@ module|tools.workflow.check_tgreatpower_hygiene|just:tgreatpower-gate|TGreatPowe
 module|tools.workflow.check_global_location|just:global-location-gate|Global definition location policy gate
 module|tools.workflow.check_manual_cruntimeclass|just:manual-cruntimeclass-gate|Manual CRuntimeClass definition policy gate
 module|tools.workflow.check_vtable_coverage|just:vtable-coverage|Report unpaired vtable annotations
+module|tools.workflow.vtable_abi_audit|just:vtable-abi-audit|Vtable ABI audit: declarations vs binary calling-convention evidence
+module|tools.ghidra.vtable_abi_evidence|query:vtable-abi-evidence|Extract per-slot vtable ABI evidence (RET imm, ECX use, caller facts)
 module|tools.workflow.correct_scalar_dtors|just:correct-scalar-dtors|Canonicalize scalar deleting destructor names
 module|tools.workflow.vendor_msvc500_headers|just:vendor-msvc500-headers|Populate local gitignored MSVC500 header mirror
 module|tools.workflow.vendor_directx_headers|just:vendor-directx-headers|Mirror the DirectX 5 SDK inc/lib reference copy of the build image
