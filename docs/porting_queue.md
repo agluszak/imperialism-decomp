@@ -112,8 +112,29 @@ each with the evidence needed to start (address, size, current score if any, blo
 - `0x5e50c0` at 77.8% — residual is an ecx/eax naming permutation in the slot-cursor
   idiom; structure verified.
 
-- `EnsurePortZoneForTile` / `RemovePortZoneByTile` (13% / 24%) — TOcean methods,
-  bodies likely mismodeled.
+- `0x5635e0` TOcean::EnsurePortZoneForTile (749B, 13.42%) — confirmed mismodeled
+  (investigated 2026-07-17, not landed): the current body calls high-level helper
+  methods (`FindSeaTileForPortZoneCreation`, `LinkPortZoneToContextIfMissing`,
+  `TPortZone::CreateObject`) but the ORIGINAL inlines everything directly and
+  differs structurally: (1) has an EH prologue (`push -1; push __ehhandler`,
+  `mov fs:[0]`) the current body lacks entirely — some non-POD local forces it;
+  (2) constructs the port zone via direct `operator new(0x4c)` +
+  `TZone::ConstructTZoneAndLinkIntoGlobalMapActionContextList`, NOT the generic
+  `TPortZone::CreateObject()` RTTI-dispatch path currently used; (3) the
+  GetFirstPortZone/GetNextPortZone walk to check for an existing port zone is
+  inlined manually (same pattern as `RemovePortZoneByTile` below — see that fix);
+  (4) a `MessageBoxA`/`TemporarilyClearAndRestoreUiInvalidationFlag` null-check
+  block (string `"D:\\Ambit\\Cross\\UOcean.cpp"` line 0x96a) is missing entirely.
+  Needs a full raw-listing-driven re-port (`ctors-dtors-eh` skill for the EH
+  prologue), not incremental tweaks to the current body.
+- `0x564240` TOcean::RemovePortZoneByTile (landed 2026-07-17, 24.24% -> 61.36%) —
+  fixed by inlining the `GetFirstPortZone`/`GetNextPortZone` walk+`IsKindOf`
+  filter directly (matching the original, which does NOT call those two real
+  methods at this call site despite them existing and being used elsewhere) —
+  a same-shape-different-callsite inlining choice, not a modeling error. Residual
+  is a minor eax/esi register-copy scheduling difference at the `Free()` call
+  tail; tried introducing a named local there and it scored identically, reverted
+  to the simpler form.
 - `0x510210` (28%, 1177B)
 - `0x550b60` TShip::ComputeOrderNodeCompositeEconomicScore at 68% — residual is
   scheduling wobble around the inlined /100 and /10 magic divisions; revisit only

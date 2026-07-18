@@ -472,11 +472,19 @@ void TOcean::EnsurePortZoneForTile(short nTileIndex) {
 
 // FUNCTION: IMPERIALISM 0x00564240
 void TOcean::RemovePortZoneByTile(short nTileIndex) {
-  for (TZone* zone = TZone::GetFirstPortZone(); zone != 0; zone = zone->GetNextPortZone()) {
+  TZone* zone = g_pMapActionContextListHead;
+  while (zone != 0 && zone->IsKindOf(RUNTIME_CLASS(TPortZone)) == 0) {
+    zone = zone->prev18;
+  }
+  while (zone != 0) {
     if (static_cast<short>(zone->field0c) == nTileIndex || zone->field20 == nTileIndex ||
         static_cast<TPortZone*>(zone)->field48 == nTileIndex) {
       zone->Free();
       return;
+    }
+    zone = zone->prev18;
+    while (zone != 0 && zone->IsKindOf(RUNTIME_CLASS(TPortZone)) == 0) {
+      zone = zone->prev18;
     }
   }
 }
