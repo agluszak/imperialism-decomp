@@ -3409,6 +3409,9 @@ address|target_cpp|ownership|note
 553e30|src/game/TTaskForce.cpp|manual|marker_sync
 553f10|src/game/TTaskForce.cpp|manual|marker_sync
 553fe0|src/game/TTaskForce.cpp|manual|marker_sync
+554300|src/game/TTaskForce.cpp|manual|marker_sync
+554460|src/game/TTaskForce.cpp|manual|marker_sync
+554590|src/game/TTaskForce.cpp|manual|marker_sync
 554660|src/game/TTaskForce.cpp|manual|marker_sync
 5548e0|src/game/TTaskForce.cpp|manual|marker_sync
 554930|src/game/TTaskForce.cpp|manual|marker_sync
@@ -3457,6 +3460,7 @@ address|target_cpp|ownership|note
 559a70|src/game/map_overlay_geometry.cpp|manual|marker_sync
 559dd0|src/game/map_overlay_geometry.cpp|manual|marker_sync
 55a020|src/game/TToolBarCluster.cpp|manual|marker_sync
+55a160|src/game/TToolBarCluster.cpp|manual|marker_sync
 55a780|src/game/TNavyMgr.cpp|manual|marker_sync
 55b670|src/game/TNewsMgr.cpp|manual|marker_sync
 55b6a0|src/game/TNewsMgr.cpp|manual|marker_sync

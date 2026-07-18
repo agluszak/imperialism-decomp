@@ -1,15 +1,22 @@
 #include "game/TToolBarCluster.h"
 
 #include "game/TArmyMgr.h"
+#include "game/TGlobalMapState.h"
 #include "game/TMapUberPicture.h"
+#include "game/TNavyMgr.h"
 #include "game/TOcean.h"
 #include "game/TSimMgr.h"
 #include "game/TStaticText.h"
 #include "game/TTaskForce.h"
 #include "game/TViewMgr.h"
+#include "game/TZone.h"
 #include "game/global_data_tables.h"
 #include "game/map_overlay_geometry.h"
 #include "game/mapped_flavor_text.h"
+
+struct TGlobalMapCityScoreRecord;
+// 0x00563360 -- __stdcall free resolver (defined in TMapMgr.cpp).
+TGlobalMapCityScoreRecord* __stdcall GetProvinceByTileIndex(short nTileIndex);
 
 // Builds the 16 per-slot hover/hit-test rects consumed by
 // TToolBarCluster::HandleCityBuildingHoverSelection from a table of 17 (x,y) anchor points.
@@ -286,6 +293,122 @@ bool TToolBarCluster::TryHandleMapContextAction(short nTileIndex, int nInputFlag
   default:
     return false;
   }
+}
+
+// Queues a map order for a clicked tile when immediate context handling does not consume
+// the click: resolves a command id (action-context path for sea tiles, province-context
+// path otherwise) off the active map-order entry, then dispatches by command id, setting
+// the entry's order kind + target context and running the rebuild/queue/finalize pipeline.
+// FUNCTION: IMPERIALISM 0x0055a160
+int TToolBarCluster::TryQueueMapOrderFromTileAction(short nTileIndex, int nInputFlags) {
+  // A context-only action consumes the click without any queue mutation.
+  if (TryHandleMapContextAction(nTileIndex, nInputFlags) != 0) {
+    return 0;
+  }
+  TTaskForce* entry = GetActiveMapOrderEntry();
+  int commandId;
+  if (entry == nullptr) {
+    commandId = 0;
+  } else if (g_pGlobalMapState->terrainStateTable[nTileIndex].terrainType00 == 5) {
+    TZone* ctx = g_pActiveMapOrderContext->GetLinkedZoneForSeaTile(nTileIndex);
+    bool queueable;
+    if (ctx == nullptr) {
+      queueable = false;
+    } else if (entry->HasActiveMapOrderEntryChildren() == 0) {
+      short dist = reinterpret_cast<TZone*>(entry->contextAnchor)
+                       ->GetCachedMapActionContextDistanceOrRecompute(ctx);
+      queueable = dist <= static_cast<short>(entry->GetMinActionThresholdFromEntryChildren());
+    } else {
+      queueable = false;
+    }
+    commandId = queueable ? entry->ResolveMapOrderCommandFromActionContext(ctx) : 1;
+  } else {
+    void* province = GetProvinceByTileIndex(nTileIndex);
+    commandId = (entry->CanQueueMapOrderForProvinceContext(province) == 0)
+                    ? 1
+                    : entry->ResolveMapOrderCommandFromProvinceContext(province);
+  }
+  if (commandId == 0) {
+    return 0;
+  }
+  entry = GetActiveMapOrderEntry();
+  switch (commandId) {
+  case 0x0a:
+    g_pUiRuntimeContext->HandleTurnEventDialogFactorySlotF0(entry);
+    break;
+  case 0x0c:
+    entry->attachment = 3;
+    entry->RebuildMapOrderEntryChildren();
+    if (g_pNavyOrderManager->MoveMapOrderEntryToQueueHeadIfValid(entry)) {
+      g_pActiveMapOrderContext->FinalizeQueuedMapOrderEntry(entry);
+      return 1;
+    }
+    break;
+  case 0x0d: {
+    TZone* ctx = g_pActiveMapOrderContext->GetLinkedZoneForSeaTile(nTileIndex);
+    entry->attachment = 1;
+    entry->owner = reinterpret_cast<TTaskForce*>(ctx);
+    entry->RebuildMapOrderEntryChildren();
+    if (g_pNavyOrderManager->MoveMapOrderEntryToQueueHeadIfValid(entry)) {
+      g_pActiveMapOrderContext->FinalizeQueuedMapOrderEntry(entry);
+      return 1;
+    }
+    break;
+  }
+  case 0x0e: {
+    TZone* ctx = g_pActiveMapOrderContext->GetLinkedZoneForSeaTile(nTileIndex);
+    entry->attachment = 6;
+    entry->owner = reinterpret_cast<TTaskForce*>(ctx);
+    entry->RebuildMapOrderEntryChildren();
+    if (g_pNavyOrderManager->MoveMapOrderEntryToQueueHeadIfValid(entry)) {
+      g_pActiveMapOrderContext->FinalizeQueuedMapOrderEntry(entry);
+      return 1;
+    }
+    break;
+  }
+  case 0x0f: {
+    TZone* ctx = g_pActiveMapOrderContext->GetLinkedZoneForSeaTile(nTileIndex);
+    entry->attachment = 1;
+    entry->owner = reinterpret_cast<TTaskForce*>(ctx);
+    entry->RebuildMapOrderEntryChildren();
+    bool alreadyQueued = false;
+    for (TTaskForce* node = g_pNavyOrderManager->orderListHead04; node != nullptr;
+         node = node->queue_next) {
+      if (node == entry) {
+        alreadyQueued = true;
+        break;
+      }
+    }
+    bool committed;
+    if (alreadyQueued) {
+      committed = true;
+    } else if (entry->GetMapOrderEntryChildCount() < 1) {
+      entry->Free();
+      committed = false;
+    } else {
+      entry->RelinkMapOrderQueueNodeBetween(nullptr, g_pNavyOrderManager->orderListHead04);
+      g_pNavyOrderManager->orderListHead04 = entry;
+      committed = true;
+    }
+    if (committed) {
+      g_pActiveMapOrderContext->FinalizeQueuedMapOrderEntry(entry);
+      return 1;
+    }
+    break;
+  }
+  case 0x10:
+    entry->attachment = 5;
+    entry->owner = reinterpret_cast<TTaskForce*>(GetProvinceByTileIndex(nTileIndex));
+    entry->RebuildMapOrderEntryChildren();
+    if (g_pNavyOrderManager->MoveMapOrderEntryToQueueHeadIfValid(entry)) {
+      g_pActiveMapOrderContext->FinalizeQueuedMapOrderEntry(entry);
+      return 1;
+    }
+    break;
+  default:
+    return 0;
+  }
+  return 1;
 }
 
 // SYNTHETIC: IMPERIALISM 0x00584d80

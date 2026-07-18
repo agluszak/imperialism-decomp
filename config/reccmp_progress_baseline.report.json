@@ -12618,7 +12618,7 @@
     },
     {
       "address": "0x4dd430",
-      "matching": 0.5714285714285714,
+      "matching": 0.5142857142857142,
       "name": "TGreatPower::ComputeRemainingDiplomacyAidBudget",
       "type": 1
     },
@@ -13050,7 +13050,8 @@
     },
     {
       "address": "0x4e0590",
-      "matching": 1.0,
+      "effective": true,
+      "matching": 0.42857142857142855,
       "name": "TGreatPower::OrphanRetStub_004d7fa0_88",
       "type": 1
     },
@@ -13069,7 +13070,8 @@
     },
     {
       "address": "0x4e0650",
-      "matching": 1.0,
+      "effective": true,
+      "matching": 0.42857142857142855,
       "name": "TGreatPower::OrphanRetStub_004d7fe0_8b",
       "type": 1
     },
@@ -22533,13 +22535,13 @@
     },
     {
       "address": "0x553b10",
-      "matching": 0.4827586206896552,
+      "matching": 0.6206896551724138,
       "name": "HasNoMapOrderEntryChildrenQueued",
       "type": 1
     },
     {
       "address": "0x553b50",
-      "matching": 0.5818181818181818,
+      "matching": 0.5454545454545454,
       "name": "HasActiveMapOrderEntryChildren",
       "type": 1
     },
@@ -22582,19 +22584,19 @@
     },
     {
       "address": "0x554300",
-      "matching": 0.0,
+      "matching": 0.5416666666666666,
       "name": "ResolveMapOrderCommandFromActionContext",
       "type": 1
     },
     {
       "address": "0x554460",
-      "matching": 0.0,
+      "matching": 0.8125,
       "name": "ResolveMapOrderCommandFromProvinceContext",
       "type": 1
     },
     {
       "address": "0x554590",
-      "matching": 0.045454545454545456,
+      "matching": 0.5822784810126582,
       "name": "CanQueueMapOrderForProvinceContext",
       "type": 1
     },
@@ -22955,7 +22957,7 @@
     },
     {
       "address": "0x55a160",
-      "matching": 0.00904977375565611,
+      "matching": 0.40601503759398494,
       "name": "TryQueueMapOrderFromTileAction",
       "type": 1
     },
@@ -23387,7 +23389,7 @@
     },
     {
       "address": "0x560e70",
-      "matching": 0.4027777777777778,
+      "matching": 0.4583333333333333,
       "name": "TZone::SelectBestPrimaryNeighborForNationDiplomacyMask",
       "type": 1
     },
@@ -28685,7 +28687,7 @@
     },
     {
       "address": "0x5964b0",
-      "matching": 0.016666666666666666,
+      "matching": 0.8451882845188284,
       "name": "TWorldView::HandleMapClickByInteractionMode",
       "type": 1
     },
@@ -29882,7 +29884,7 @@
     },
     {
       "address": "0x5a39a0",
-      "matching": 0.7286821705426356,
+      "matching": 0.7131782945736435,
       "name": "ComputeHexTileDistanceFromIndices",
       "type": 1
     },
@@ -38427,7 +38429,7 @@
     },
     {
       "address": "0x6091d9",
-      "matching": 0.9787234042553191,
+      "matching": 1.0,
       "name": "CWnd::OnNotify",
       "type": 1
     },

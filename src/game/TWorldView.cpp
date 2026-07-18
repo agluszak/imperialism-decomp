@@ -10,6 +10,8 @@
 #include "game/TGlobalMapState.h"
 #include "game/TMapMgr.h"
 #include "game/TMapUberPicture.h"
+#include "game/TNavyMgr.h"
+#include "game/TToolBarCluster.h"
 #include "game/ScopedMapQuickDrawContext.h"
 #include "game/TTaskForce.h"
 #include "game/global_data_tables.h"
@@ -345,8 +347,70 @@ void TWorldView::DispatchOverlayEvent78RootHighFromStridedRecord(int stridedReco
 
 // FUNCTION: IMPERIALISM 0x005964b0
 void TWorldView::HandleMapClickByInteractionMode(short nTileIndex, int nInputFlags) {
-  (void)nTileIndex;
-  (void)nInputFlags;
+  // Per active-unit-category interaction mode, offer the tile click to the map-context
+  // (TArmyMgr), civilian-order (TCivMgr) and navy/map-order (g_pNavyOrderManager) handlers
+  // in a mode-specific order. A handler that consumes the click either refreshes this view
+  // or advances the owner's selection cycle; every call bumps the 1..4 click-cycle counter.
+  // g_pNavyOrderManager's map-order handlers carry a TToolBarCluster:: symbol name (a Ghidra
+  // mis-attribution -- their receiver is the navy/map-order manager at 0x6a43e4); the cast
+  // reaches them until they are reattributed.
+  char handled;
+  switch (static_cast<TMapUberPicture*>(ownerContext)->activeUnitCategoryIndex96) {
+  case 0:
+    if (g_pMapContextActionManager->HandleMapClickByComputedCursorState(nTileIndex, nInputFlags) !=
+            0 ||
+        reinterpret_cast<TToolBarCluster*>(g_pNavyOrderManager)
+                ->TryHandleMapContextAction(nTileIndex, nInputFlags) != 0) {
+      goto refresh;
+    }
+    handled = g_pSelectedCivilianOrderState->HandleCivilianTileOrderAction(nTileIndex, nInputFlags);
+    goto cycle;
+  case 1:
+    if (g_pMapContextActionManager->HandleMapClickByComputedCursorState(nTileIndex, nInputFlags) !=
+            0 ||
+        g_pSelectedCivilianOrderState->HandleCivilianTileSelectionOrReportClick(nTileIndex,
+                                                                                nInputFlags) != 0 ||
+        reinterpret_cast<TToolBarCluster*>(g_pNavyOrderManager)
+                ->TryHandleMapContextAction(nTileIndex, nInputFlags) != 0) {
+      goto refresh;
+    }
+    handled =
+        g_pMapContextActionManager->HandleMapClickByCivilianCursorState(nTileIndex, nInputFlags);
+    goto cycle;
+  case 2:
+    if (g_pMapContextActionManager->HandleMapClickByComputedCursorState(nTileIndex, nInputFlags) !=
+            0 ||
+        g_pSelectedCivilianOrderState->HandleCivilianTileSelectionOrReportClick(nTileIndex,
+                                                                                nInputFlags) != 0) {
+      goto refresh;
+    }
+    handled = static_cast<char>(reinterpret_cast<TToolBarCluster*>(g_pNavyOrderManager)
+                                    ->TryQueueMapOrderFromTileAction(nTileIndex, nInputFlags));
+    goto cycle;
+  case 3:
+    if (g_pMapContextActionManager->HandleMapClickByComputedCursorState(nTileIndex, nInputFlags) ==
+            0 &&
+        g_pSelectedCivilianOrderState->HandleCivilianTileSelectionOrReportClick(nTileIndex,
+                                                                                nInputFlags) == 0) {
+      reinterpret_cast<TToolBarCluster*>(g_pNavyOrderManager)
+          ->TryHandleMapContextAction(nTileIndex, nInputFlags);
+    }
+    goto tail;
+  default:
+    goto tail;
+  }
+refresh:
+  RefreshControl();
+  goto tail;
+cycle:
+  if (handled != 0) {
+    static_cast<TMapUberPicture*>(ownerContext)->CycleMapInteractionSelectionAfterHandledClick();
+  }
+tail:
+  ++clickCycleCounter72;
+  if (clickCycleCounter72 > 4) {
+    clickCycleCounter72 = 1;
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x00596680

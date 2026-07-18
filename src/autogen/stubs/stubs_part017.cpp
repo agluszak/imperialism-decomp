@@ -91,14 +91,6 @@ undefined4 GetMapContextActionLabelToken(void)
   return 0;
 }
 
-// ghidra_name TryQueueMapOrderFromTileAction
-// ghidra_proto int __thiscall TryQueueMapOrderFromTileAction(short nTileIndex, int nInputFlags)
-// FUNCTION: IMPERIALISM 0x0055a160
-undefined4 TryQueueMapOrderFromTileAction(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_ftol_At0055b640
 // ghidra_proto undefined WrapperFor_ftol_At0055b640()
 // FUNCTION: IMPERIALISM 0x0055b640
