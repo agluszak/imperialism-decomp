@@ -67,14 +67,6 @@ undefined4 WrapperFor_AdjustCityDialogScrollRangeByDeltaAndClamp_At00573f16(void
   return 0;
 }
 
-// ghidra_name RenderStrategicMapViewportBandsAndBlit_Impl
-// ghidra_proto undefined RenderStrategicMapViewportBandsAndBlit_Impl()
-// FUNCTION: IMPERIALISM 0x00575080
-undefined4 RenderStrategicMapViewportBandsAndBlit_Impl(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_ftol_At00575130
 // ghidra_proto undefined WrapperFor_ftol_At00575130()
 // FUNCTION: IMPERIALISM 0x00575130

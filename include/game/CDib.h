@@ -89,6 +89,9 @@ public:
   // Serialize backends: write a .bmp (BITMAPFILEHEADER + BITMAPINFO + pixels) / read one back.
   void Write(CFile* file); // 0x0047b9f0
   int Read(CFile* file);   // 0x0047b6d0
+
+  // abs(biHeight) -- rows are stored bottom-up when biHeight > 0. 0x00575080
+  int GetAbsoluteHeight();
 };
 
 ASSERT_SIZE(CDib, 0x38);

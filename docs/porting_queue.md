@@ -201,8 +201,38 @@ each with the evidence needed to start (address, size, current score if any, blo
   `ownerLocalX` fetch order) plus an extra short-width truncate/sign-extend our
   codegen adds that the original doesn't — tried extracting the scaled value into
   its own local, no effect, reverted to the simpler inline form.
-  Remaining un-landed in this file: `ApplyRectSlot110` 0x574970 (~928B, calls a
-  still-stubbed `RenderStrategicMapViewportBandsAndBlit_Impl`).
+  `RenderStrategicMapViewportBandsAndBlit_Impl` (0x575080, its callee) landed
+  2026-07-18 (0% -> 100%): a trivial 13-byte thiscall — real name/owner is
+  **`CDib::GetAbsoluteHeight()`** (`if (biHeight <= 0) biHeight = -biHeight; return
+  biHeight;` — the original uses a `test/jg/neg` branch, NOT the `abs()` intrinsic's
+  branchless `cdq/xor/sub` idiom; using `abs()` scored only 50%, the explicit branch
+  hit 100%). Moved from the autogen stub to `CDib.cpp`/`CDib.h`.
+  `ApplyRectSlot110` itself (0x574970, 724B) is **NOT landed** — investigated
+  2026-07-18, no code changed (kept as the fabricated `{}` body). Substantial real
+  progress: confirmed the function draws the up/down-arrow and thumb bitmaps from a
+  shared atlas (`g_pStrategicMapViewSystem->atlas694[5]`, a `TQuickDrawSurfaceContext*`)
+  onto `this->surfaceContext90`, using the already-declared
+  `TQuickDrawSurfaceContext::GetBlitSurface()` accessor for every
+  `BlitRectWithOptionalTransparency` call (confirmed both surface args are always
+  `<surface>->GetBlitSurface()`, i.e. `<surface>+4` reinterpreted as
+  `TQuickDrawBlitSurface*` — do not reinvent this, the accessor already exists).
+  Three near-identical "band" blocks each: null-check `atlas694[5]->surfaceDib` (or
+  `surfaceContext90->surfaceDib` for the third), call the now-real
+  `GetAbsoluteHeight()`, `OffsetRect` one of a pair of duplicate `RECT{0,0,
+  frameWidth34,word8c}`-shaped locals by a computed dy, then blit; a final
+  fourth block builds a local `RECT` copy of the **incoming `rectBuffer` parameter**
+  (read very late, at `[esp+0x4c]` — do not model this function as ignoring its
+  argument) and blits it verbatim between `surfaceContext90` and
+  `g_pActiveQuickDrawSurfaceContext`. **Blocked on**: the exact stack-slot boundaries
+  for the two duplicate `RECT{0,0,frameWidth34,word8c}` locals and the `OffsetRect`
+  target address (`[esp+0x10]`) don't cleanly resolve to non-overlapping 16-byte
+  RECT windows from the raw listing alone — real ambiguity in a function this
+  stack-slot-dense, not analysis laziness. Needs `just ghidra-decompile 0x574970`
+  cross-checked line-by-line against the listing (the decompiler's own local-variable
+  split will disambiguate the overlapping-looking offsets) before writing the body.
+  Magic constants seen and worth preserving for that pass: `0x12c`/`0x13e` (300/318,
+  an 18px-tall sprite row in the atlas) and `0xfffffd96`/`-0x12c` (-618/-300) as
+  `OffsetRect` deltas.
 - `0x574720` TScrollBarView::NoOpUiLifecycleHook at 73.5% — residual is pure
   instruction-scheduling wobble inside the surface-rect block; structure verified.
 - `0x5e50c0` at 77.8% — residual is an ecx/eax naming permutation in the slot-cursor
