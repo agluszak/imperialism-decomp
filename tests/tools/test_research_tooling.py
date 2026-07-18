@@ -106,6 +106,7 @@ class QueryRegistryTests(unittest.TestCase):
         "raw-disasm",
         "jumptable",
         "decompile",
+        "vtable-abi-evidence",
         "vtable-dump",
         "read-data",
         "function-slice",

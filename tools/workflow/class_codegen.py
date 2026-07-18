@@ -124,6 +124,10 @@ class ClassifiedSlot:
     decompiled_c: str | None
     base_target: str | None  # bare hex of base's slot target, for inherited comment
     dtor_suspect: bool = False  # name looks like a deleting-destructor bridge (verify SYNTHETIC)
+    # Binary ABI evidence (config/vtable_abi_evidence.json) contradicts the
+    # Ghidra/symbols prototype: the generator must NOT emit it as authoritative.
+    abi_conflict: bool = False
+    abi_reasons: list[str] = field(default_factory=list)
 
 
 @dataclass
@@ -152,10 +156,42 @@ def unqualified(name: str) -> str:
     return name.rsplit("::", 1)[-1] if name else name
 
 
+def _abi_conflict_reasons(
+    sig: Signature, class_name: str, target_addr: str, abi_functions: dict
+) -> list[str]:
+    """Proven-conflict reasons for a prototype vs the binary ABI evidence.
+
+    Delegates to the vtable ABI audit's rule engine (single source of truth for
+    the strong-evidence rules) by wrapping the parsed prototype as a member
+    declaration of ``class_name``. Empty list = no proven conflict.
+    """
+    from tools.workflow.vtable_abi_audit import Decl, classify_slot
+
+    key = f"0x{int(target_addr or '0', 16):08x}"
+    facts = abi_functions.get(key)
+    if facts is None:
+        return []
+    decl = Decl(
+        addr=int(target_addr or "0", 16),
+        file="<generated>",
+        line=0,
+        ret=sig.ret,
+        cls=class_name,
+        name=sig.name,
+        args=sig.args,
+        conv="",
+        origin="generated",
+    )
+    finding = classify_slot(decl, facts, None)
+    return finding.reasons if finding.verdict == "proven_conflict" else []
+
+
 def classify_slots(
     class_slots: list[dict],
     base_slots: list[dict],
     symbols: dict[str, SymbolRow],
+    abi_functions: dict | None = None,
+    class_name: str = "",
 ) -> list[ClassifiedSlot]:
     base_targets = {s["index"]: norm_addr(s.get("target_addr", "")) for s in base_slots}
     base_count = len(base_slots)
@@ -196,6 +232,15 @@ def classify_slots(
         # SYNTHETIC instead of hand-writing a banned bridge (construction Hard Rule 10).
         dtor_suspect = kind in ("override", "new") and looks_like_deleting_dtor(qualified)
 
+        # Binary ABI evidence vs the imported prototype: a proven contradiction
+        # (RET-imm arity mismatch, void-but-consumed return, ...) means the
+        # Ghidra/symbols prototype is a poison pill — mark it so the renderers
+        # refuse to emit it as an authoritative declaration (the TMapMaker
+        # incident class of bug).
+        abi_reasons: list[str] = []
+        if sig is not None and abi_functions:
+            abi_reasons = _abi_conflict_reasons(sig, class_name or "Class", target, abi_functions)
+
         out.append(
             ClassifiedSlot(
                 index=idx,
@@ -210,6 +255,8 @@ def classify_slots(
                 decompiled_c=s.get("decompiled_c"),
                 base_target=base_target,
                 dtor_suspect=dtor_suspect,
+                abi_conflict=bool(abi_reasons),
+                abi_reasons=abi_reasons,
             )
         )
     return out
@@ -366,6 +413,27 @@ def render_cpp(class_name: str, slots: list[ClassifiedSlot], emit_markers: bool 
             lines.append(f"{class_name}::~{class_name}() {{}}")
             lines.append("")
             continue
+        if s.abi_conflict:
+            # Binary ABI evidence contradicts the imported prototype: refuse to
+            # emit it as an authoritative declaration or to claim the address
+            # with a wrong-signature stub. The slot stays layout-correct via a
+            # neutral placeholder in shape-only mode; body porting requires a
+            # reviewed row in config/vtable_signature_overrides.csv first.
+            lines.append(
+                f"// ABI-UNRESOLVED slot {s.slot_label} -> 0x{s.target_addr}: the "
+                f"Ghidra/symbols prototype contradicts binary evidence — verify at "
+                f"the raw listing and record the reviewed prototype in "
+                f"config/vtable_signature_overrides.csv before porting."
+            )
+            for reason in s.abi_reasons:
+                lines.append(f"//   evidence: {reason}")
+            if not emit_markers:
+                # Keep the vtable slot count correct without asserting a contract.
+                lines.append(
+                    f"void {class_name}::AbiUnresolvedSlot{s.index:02X}() {{}}"
+                )
+            lines.append("")
+            continue
         assert s.sig is not None
         if emit_markers:
             lines.append(f"// FUNCTION: IMPERIALISM 0x{s.target_addr}")
@@ -421,6 +489,8 @@ def plan_symbols(path: Path, owned: list[ClassifiedSlot], class_name: str) -> Cs
         target_addr = norm_addr(s.target_addr)
         if not target_addr:
             continue
+        if s.abi_conflict:
+            continue  # unresolved contract: never propagate a poison-pill prototype
         if s.kind == "scalar_dtor":
             name = f"{class_name}::`scalar deleting destructor'"
             proto = "undefined ScalarDeletingDestructor()"
@@ -477,7 +547,7 @@ def plan_ownership(path: Path, owned: list[ClassifiedSlot], target_cpp: str) -> 
     by_addr = {norm_addr(r.get("address", "")): r for r in rows}
     for s in owned:
         target_addr = norm_addr(s.target_addr)
-        if not target_addr:
+        if not target_addr or s.abi_conflict:
             continue
         existing = by_addr.get(target_addr)
         if existing is not None:
