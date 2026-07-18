@@ -147,5 +147,40 @@ void TScrollBarView::ApplyRectSlot110(RECT* rectBuffer) {}
 void TScrollBarView::DispatchPictureResourceCommand(int nEventType, void* pEventSender,
                                                     void* pEventDataA, void* pEventDataB,
                                                     int nCommandFlag) {
+  (void)pEventSender;
+  (void)pEventDataA;
   (void)nCommandFlag;
+  short target = *reinterpret_cast<short*>(static_cast<char*>(pEventDataB) + 4) - 9;
+  if (nEventType <= 0 || nEventType > 2) {
+    return;
+  }
+
+  if (target > word8a) {
+    target = word8a;
+  } else if (target < word88) {
+    target = word88;
+  }
+  if (target != word8c) {
+    word8c = target;
+    RefreshCityDialogScrollableViewportWithQuickDrawContext();
+  }
+
+  if (nEventType != 2) {
+    return;
+  }
+
+  int ratio = (word8c - word88) * 1024 / (word8a - word88);
+  TView* content = ownerView84->contentView60;
+  if (content == nullptr) {
+    return;
+  }
+  short heightDiff =
+      static_cast<short>(content->frameHeight38) - static_cast<short>(ownerView84->frameHeight38);
+  if (heightDiff <= 0) {
+    return;
+  }
+  POINT origin;
+  origin.y = -(ratio * heightDiff / 1024);
+  origin.x = content->ownerLocalX;
+  content->CaptureLayoutF0(reinterpret_cast<int*>(&origin), 1);
 }
