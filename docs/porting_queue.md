@@ -188,12 +188,21 @@ each with the evidence needed to start (address, size, current score if any, blo
   scheduling (tried caching `point->y` in a local to match the original's
   single-read-reused-three-times shape — no measurable effect, compiler already
   CSEs it; kept the cleaner form).
+  `DispatchPictureResourceCommand` (0x574d10) also landed 2026-07-18 (0% -> 86.18%
+  on the first attempt): reads a `short` at `eventDataB+4` (event type 1 or 2 only)
+  and clamps it into `[word88, word8a]`; if it changed, updates `word8c` and calls
+  `RefreshCityDialogScrollableViewportWithQuickDrawContext()`; for event type 2 it
+  additionally re-derives `contentView60`'s new Y origin from the fraction
+  `(word8c-word88)*1024/(word8a-word88)*heightDiff/1024` (same
+  `contentView60`/`ownerView84->frameHeight38` heightDiff shape as
+  `AdjustCityDialogScrollRangeByDeltaAndClamp`) and calls `CaptureLayoutF0` — the
+  vtable slot 0x3c dispatch confirmed to be `contentView60->CaptureLayoutF0`, not a
+  new receiver. Residual is a read-order swap (content's vtable-ptr vs
+  `ownerLocalX` fetch order) plus an extra short-width truncate/sign-extend our
+  codegen adds that the original doesn't — tried extracting the scaled value into
+  its own local, no effect, reverted to the simpler inline form.
   Remaining un-landed in this file: `ApplyRectSlot110` 0x574970 (~928B, calls a
-  still-stubbed `RenderStrategicMapViewportBandsAndBlit_Impl`),
-  `DispatchPictureResourceCommand` 0x574d10 (calls
-  `RefreshCityDialogScrollableViewportWithQuickDrawContext` directly plus a vtable
-  slot 0x3c `CaptureLayoutF0` dispatch on an unidentified receiver — check whether
-  that's `contentView60` too before assuming).
+  still-stubbed `RenderStrategicMapViewportBandsAndBlit_Impl`).
 - `0x574720` TScrollBarView::NoOpUiLifecycleHook at 73.5% — residual is pure
   instruction-scheduling wobble inside the surface-rect block; structure verified.
 - `0x5e50c0` at 77.8% — residual is an ecx/eax naming permutation in the slot-cursor
