@@ -581,9 +581,7 @@ char TMapMaker::ValidateSeedCandidateExistsForEachTerrainClass() {
 }
 
 // FUNCTION: IMPERIALISM 0x00526ba0
-char TMapMaker::GetBoolSlot28() {
-  return 0;
-}
+void TMapMaker::PickRandomRegionGridCell(unsigned int* outColumn, unsigned int* outRow) {}
 
 // Resets the per-attempt scratch state (region-class grid, union-find group tables),
 // then seeds each of the 7 major nations with an 8-cell region at a random unclaimed
@@ -937,7 +935,8 @@ char TMapMaker::vmethod_0023() {
 }
 
 // FUNCTION: IMPERIALISM 0x00527ed0
-char TMapMaker::GetDeactivateVetoCode() {
+int TMapMaker::TransformRegionTileTemplateState(int coarseIndex, int arg2, char arg3, int arg4,
+                                                char arg5) {
   return 0;
 }
 
@@ -1066,12 +1065,15 @@ char TMapMaker::DoIdle() {
 }
 
 // FUNCTION: IMPERIALISM 0x00528780
-int TMapMaker::GetCityDialogValueDword10() {
+int TMapMaker::RandomlyMarkEmptyRegionTilesByChance(int coarseIndex, int percentChance) {
   return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x005288a0
-void TMapMaker::SetCityDialogValueDword10(int value) {}
+int TMapMaker::RandomlyMarkEmptyRegionTilesAndNeighborsByChance(int coarseIndex,
+                                                                int percentChance) {
+  return 0;
+}
 
 // FUNCTION: IMPERIALISM 0x00528ce0
 int TMapMaker::GetAdjacentRegionGridCell(int cell, int direction) {
@@ -1138,14 +1140,12 @@ void TMapMaker::SmoothCityRegionOwnershipByNeighborSampling() {
 void TMapMaker::MapGenPassSlot1E() {}
 
 // FUNCTION: IMPERIALISM 0x005296a0
-char TMapMaker::ActivateCityProductionViewIfAllowed() {
-  return 0;
-}
+void TMapMaker::CopyRegionTemplateBankWithRandomVariant(int coarseIndex, int arg2, int arg3,
+                                                        int arg4, int arg5) {}
 
 // FUNCTION: IMPERIALISM 0x005297e0
-char TMapMaker::TryDeactivateActiveView() {
-  return 0;
-}
+void TMapMaker::CopyRegionTemplateBankToNeighborCell(int coarseIndex, int arg2, int arg3, int arg4,
+                                                     int arg5) {}
 
 // FUNCTION: IMPERIALISM 0x005298a0
 int TMapMaker::GetFineGridCellBasePointerFromCoarseIndex(int coarseIndex) {
@@ -1181,7 +1181,7 @@ char TMapMaker::HasMapGenerationFailed() {
 }
 
 // FUNCTION: IMPERIALISM 0x0052e890
-void TMapMaker::DispatchUiCommand19ToParent() {}
+void TMapMaker::MarkTileRegionAndVisitHexNeighbors(short tileIndex) {}
 
 // FUNCTION: IMPERIALISM 0x0052e900
 void TMapMaker::HandleCityProductionNoOp() {}

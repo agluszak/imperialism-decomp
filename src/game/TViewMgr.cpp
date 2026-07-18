@@ -1164,25 +1164,25 @@ void TViewMgr::DispatchTurnEventSlot4C(short eventCode, int payload) {
     } else if (newCode == 0x7d8) {
       if (static_cast<short>(g_pSimMgr->mode) == 0x68) {
         mainView->RefreshControl();
-        this->UiRuntimeSlot6C();
+        this->UiRuntimeSlot6C(newCode);
       }
     } else if (newCode == 0x7d9 || newCode == 0x7da) {
       mainView->RefreshControl();
-      this->UiRuntimeSlot5C();
+      this->UiRuntimeSlot5C(newCode);
     } else if (newCode == 0x7db) {
       mainView->RefreshControl();
-      this->UiRuntimeSlotA8();
+      this->UiRuntimeSlotA8(newCode);
     } else if (newCode == 0x7dd) {
       mainView->RefreshControl();
-      this->UiRuntimeSlotBC();
+      this->UiRuntimeSlotBC(newCode);
     } else if (newCode == 0x7de) {
       mainView->RefreshControl();
-      this->UiRuntimeSlot84();
+      this->UiRuntimeSlot84(newCode);
     } else if (newCode == 0x2103) {
       this->UiRuntimeSlot9C();
     } else if (newCode == 0x2260) {
       mainView->RefreshControl();
-      this->HandleTurnEventVtableSlot64RefreshMainHudTitles();
+      this->HandleTurnEventVtableSlot64RefreshMainHudTitles(newCode);
     }
     DispatchPostTurnStateUpdatesTail();
     return;
@@ -1239,7 +1239,7 @@ void TViewMgr::DispatchTurnEventSlot4C(short eventCode, int payload) {
         this->UiRuntimeSlot108();
         break;
       case 0x7d8:
-        this->UiRuntimeSlot6C();
+        this->UiRuntimeSlot6C(newCode);
         break;
       }
     } else if (newCode > 0x898) {
@@ -1252,30 +1252,30 @@ void TViewMgr::DispatchTurnEventSlot4C(short eventCode, int payload) {
       } else if (newCode == 0xf3d) {
         this->HandleTurnEventF3D_PopulateRecentTurnMessages(static_cast<int>(secondary));
       } else if (newCode == 0x2103) {
-        this->HandleTurnEventVtableSlot64RefreshMainHudTitles();
+        this->HandleTurnEventVtableSlot64RefreshMainHudTitles(newCode);
       } else if (newCode == 0x2134) {
-        this->HandleTurnEventVtableSlot60ActivateMainDialog();
+        this->HandleTurnEventVtableSlot60ActivateMainDialog(newCode);
       } else if (newCode == 0x2260) {
         this->UiRuntimeSlot9C();
       }
     } else if (newCode == 0x898) {
-      this->UiRuntimeSlotBC();
+      this->UiRuntimeSlotBC(newCode);
     } else {
       switch (newCode) {
       case 0x7d9:
-        this->UiRuntimeSlotBC();
+        this->UiRuntimeSlotBC(newCode);
         break;
       case 0x7da:
-        this->UiRuntimeSlot5C();
+        this->UiRuntimeSlot5C(newCode);
         break;
       case 0x7db:
-        this->UiRuntimeSlotA8();
+        this->UiRuntimeSlotA8(newCode);
         break;
       case 0x7dd:
         this->UiRuntimeSlot50(static_cast<int>(secondary));
         break;
       case 0x7de:
-        this->UiRuntimeSlot84();
+        this->UiRuntimeSlot84(newCode);
         break;
       case 0x7e0:
         this->UiRuntimeSlot50(static_cast<int>(secondary));
@@ -1285,7 +1285,7 @@ void TViewMgr::DispatchTurnEventSlot4C(short eventCode, int payload) {
   } else if (newCode == 0x3c0) {
     this->HandleTurnEventTable66F220_Slot0C_InvokeGoldViewSlots0C_1E4_14x14();
   } else if (newCode == 0x3b8) {
-    this->UiRuntimeSlotD0();
+    this->UiRuntimeSlotD0(newCode);
   }
   DispatchPostTurnStateUpdatesTail();
 }
@@ -1301,7 +1301,7 @@ void TViewMgr::UiRuntimeSlotA4(int payload, TEventHandler* waitTarget) {
 }
 
 // FUNCTION: IMPERIALISM 0x005d7cb0
-void TViewMgr::UiRuntimeSlotA8() {
+void TViewMgr::UiRuntimeSlotA8(int) {
   turn_event_ui_refresh::BindCursorPanelAndSetTurnEventCodeRange();
   TView* mainView = turn_event_ui_refresh::ActiveMainView();
   if (mainView == nullptr) {
@@ -1353,7 +1353,7 @@ void TViewMgr::UiRuntimeSlot50(int payload) {
 }
 
 // FUNCTION: IMPERIALISM 0x005d8040
-void TViewMgr::UiRuntimeSlot6C() {
+void TViewMgr::UiRuntimeSlot6C(int) {
   turn_event_ui_refresh::BindCursorPanelAndSetTurnEventCodeRange();
   TView* mainView = turn_event_ui_refresh::ActiveMainView();
   if (mainView == nullptr) {
@@ -1383,7 +1383,7 @@ void TViewMgr::UiRuntimeSlot6C() {
 }
 
 // FUNCTION: IMPERIALISM 0x005d83b0
-void TViewMgr::UiRuntimeSlot84() {
+void TViewMgr::UiRuntimeSlot84(int) {
   turn_event_ui_refresh::RefreshMainCouncilTickerPanel();
   turn_event_ui_refresh::BindCursorPanelAndSetTurnEventCodeRange();
 
@@ -1405,7 +1405,9 @@ void TViewMgr::UiRuntimeSlot84() {
   }
 }
 
-void TViewMgr::UiRuntimeSlot88(int abilityIndex) { (void)abilityIndex; }
+void TViewMgr::UiRuntimeSlot88(int abilityIndex) {
+  (void)abilityIndex;
+}
 
 char TViewMgr::RequestDiplomacyDecisionSlot90(int sourceNation, int targetNation,
                                               int proposalCode) {
@@ -1435,7 +1437,7 @@ void TViewMgr::UiRuntimeSlot9C() {}
 void TViewMgr::UiRuntimeSlotA0() {}
 
 // FUNCTION: IMPERIALISM 0x005d8dd0
-void TViewMgr::UiRuntimeSlot5C() {
+void TViewMgr::UiRuntimeSlot5C(int) {
   turn_event_ui_refresh::BindCursorPanelAndSetTurnEventCodeRange();
   turn_event_ui_refresh::RefreshTradClusterPictureAndHintText();
   turn_event_ui_refresh::RefreshToolBarClusterByTag(kControlTagBpot);
@@ -1486,7 +1488,7 @@ void TViewMgr::UiRuntimeSlot5C() {
 }
 
 // FUNCTION: IMPERIALISM 0x005da040
-void TViewMgr::HandleTurnEventVtableSlot60ActivateMainDialog() {
+void TViewMgr::HandleTurnEventVtableSlot60ActivateMainDialog(int) {
   TView* mainControl =
       static_cast<TView*>(g_pDisplayMgr->activeDialog->ResolveControlByTag(kControlTagMain));
   mainControl->AssertValid();
@@ -1502,7 +1504,7 @@ void TViewMgr::HandleTurnEventVtableSlot60ActivateMainDialog() {
 }
 
 // FUNCTION: IMPERIALISM 0x005da180
-void TViewMgr::HandleTurnEventVtableSlot64RefreshMainHudTitles() {
+void TViewMgr::HandleTurnEventVtableSlot64RefreshMainHudTitles(int) {
   TView* mainView = g_pDisplayMgr->activeDialog;
 
   g_pCursorControlPanel =
@@ -1533,7 +1535,7 @@ void TViewMgr::HandleTurnEventVtableSlot64RefreshMainHudTitles() {
 }
 
 // FUNCTION: IMPERIALISM 0x005da360
-void TViewMgr::UiRuntimeSlotBC() {
+void TViewMgr::UiRuntimeSlotBC(int) {
   const short activeNationId = g_pSimMgr->GetActiveNationId();
   if (g_pSimMgr->IsNationSlotEligibleForEventProcessing(activeNationId) == 0) {
     g_pSimMgr->CopyScenarioNationSetupIntoFlowState(nullptr);
@@ -1755,7 +1757,7 @@ undefined TViewMgr::InvokeStrategicMapViewMethod70() {
 }
 
 // FUNCTION: IMPERIALISM 0x005dc1e0
-void TViewMgr::UiRuntimeSlotD0() {
+void TViewMgr::UiRuntimeSlotD0(int) {
   turn_event_ui_refresh::RefreshToolBarClusterByTag(kControlTagTool);
 
   TControl* goldControl = turn_event_ui_refresh::ResolveMainTaggedControl(kControlTagGold);
@@ -1824,7 +1826,7 @@ void TViewMgr::HandleTurnEventVtableSlot2CInitializeHotKeyDialog() {
 }
 
 // FUNCTION: IMPERIALISM 0x005dcf20
-void TViewMgr::HandleTurnEventDialogFactorySlotD8() {
+void TViewMgr::HandleTurnEventDialogFactorySlotD8(int) {
   GoldCommitControl* rootGold = static_cast<GoldCommitControl*>(
       static_cast<TView*>(g_pDisplayMgr->activeDialog->ResolveControlByTag(kControlTagGold)));
   if (rootGold == nullptr) {

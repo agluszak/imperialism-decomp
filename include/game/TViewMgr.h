@@ -47,18 +47,18 @@ public:
   virtual void UiRuntimeSlot50(int payload);                          // 0x50
   virtual short GetPendingTurnOverlayCode();                          // 0x54
   virtual void UiRuntimeSlot58();                                     // 0x58
-  virtual void UiRuntimeSlot5C();                                     // 0x5c
+  virtual void UiRuntimeSlot5C(int eventCode);                        // 0x5c
   // Resolves the active dialog's 'main' and 'curs' panels, refreshes the cursor info
   // panel's map-hint style, then clears the 'main' panel's title text (0x5da040).
-  virtual void HandleTurnEventVtableSlot60ActivateMainDialog(); // 0x60
+  virtual void HandleTurnEventVtableSlot60ActivateMainDialog(int eventCode); // 0x60
   // Sibling of slot 0x60: refreshes the 'curs' cursor panel, then repopulates the
   // 'quer' query label and 'titL' nation-title panel from the current scenario setup
   // (0x5da180).
-  virtual void HandleTurnEventVtableSlot64RefreshMainHudTitles(); // 0x64
+  virtual void HandleTurnEventVtableSlot64RefreshMainHudTitles(int eventCode); // 0x64
 
   // UI runtime helper functions
   virtual void AddPendingTurnOverlayCode(int modeValue); // 0x68
-  virtual void UiRuntimeSlot6C();                        // 0x6c
+  virtual void UiRuntimeSlot6C(int eventCode);           // 0x6c
   // Resolve the factory dialog for eventCode, commit its 'GOLD' child, then push the
   // slot-0x9c refresh down the dialog's linked children (0x5d6cd0).
   virtual void HandleTurnEventDialogFactorySlot70(int eventCode); // 0x70 0x5d6cd0
@@ -68,7 +68,7 @@ public:
   virtual void HandleTurnEventDialogFactorySlot78(int eventCode); // 0x78 0x5d6e50
   virtual void HandleTurnEventDialogFactorySlot7C(int eventCode); // 0x7c 0x5d6f10
   virtual void HandleTurnEventDialogFactorySlot80(int eventCode); // 0x80 0x5d6fd0
-  virtual void UiRuntimeSlot84();                                 // 0x84
+  virtual void UiRuntimeSlot84(int eventCode);                    // 0x84
   virtual void UiRuntimeSlot88(int abilityIndex);                 // 0x88 body 0x5d8980 (ret 4)
   virtual void UiRuntimeSlot8C(int arg);                          // 0x8c
   virtual char RequestDiplomacyDecisionSlot90(int sourceNation, int targetNation,
@@ -80,7 +80,7 @@ public:
   virtual void UiRuntimeSlot9C();                                       // 0x9c
   virtual void UiRuntimeSlotA0();                                       // 0xa0
   virtual void UiRuntimeSlotA4(int payload, TEventHandler* waitTarget); // 0xa4
-  virtual void UiRuntimeSlotA8();                                       // 0xa8
+  virtual void UiRuntimeSlotA8(int eventCode);                          // 0xa8
   // Forwards to g_pStrategicMapViewSystem's own vtable slot 0x5c/0x60/0x68/0x6c/
   // 0x70/0x74 (TMacViewMgr) -- verified via disassembly (0057db14-style pattern:
   // `mov ecx,[g_pStrategicMapViewSystem]; mov eax,[ecx]; jmp [eax+0xNN]`, no
@@ -93,19 +93,19 @@ public:
   // caller args, places/refreshes it, then forwards the refresh result to the child
   // (0x5dc430).
   virtual void HandleTurnEventDialogFactorySlotB8(int a, int b, int c); // 0xb8 0x5dc430
-  virtual void UiRuntimeSlotBC();                                       // 0xbc
+  virtual void UiRuntimeSlotBC(int eventCode);                          // 0xbc
   virtual undefined InvokeStrategicMapViewMethod68();                   // 0xc0 0x5dc180
   virtual undefined InvokeStrategicMapViewMethod70();                   // 0xc4 0x5dc1c0
   virtual undefined InvokeStrategicMapViewMethod74();                   // 0xc8 0x5dc1a0
   virtual void InvokeStrategicMapViewMethod6C();                        // 0xcc 0x5dc160
-  virtual void UiRuntimeSlotD0();                                       // 0xd0
+  virtual void UiRuntimeSlotD0(int eventCode);                          // 0xd0
   virtual void UiRuntimeSlotD4(int arg);                                // 0xd4
   // Resolves the active dialog's 'GOLD' panel, notifies it of the current turn-event
   // code, then resolves+shows+refreshes the 0x546 factory dialog's own 'GOLD' child
   // (0x5dcf20).
-  virtual void HandleTurnEventDialogFactorySlotD8(); // 0xd8
-  virtual int ShowConstructionOptionsDialog();       // 0xdc
-  virtual void UiRuntimeSlotE0();                    // 0xe0
+  virtual void HandleTurnEventDialogFactorySlotD8(int eventCode); // 0xd8
+  virtual int ShowConstructionOptionsDialog();                    // 0xdc
+  virtual void UiRuntimeSlotE0();                                 // 0xe0
   // Opens factory dialog 0x1c52, places it, and sets the 'GOLD'->'name' text from a
   // localized string code (0x5dd220).
   virtual void HandleTurnEventDialogFactorySlotE4(int stringCode); // 0xe4

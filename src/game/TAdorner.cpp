@@ -10,45 +10,50 @@ IMPLEMENT_DYNCREATE(TAdorner, TObject)
 TAdorner::TAdorner() {}
 
 // FUNCTION: IMPERIALISM 0x0049d900
-undefined TAdorner::WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d900() {
+undefined TAdorner::WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d900(int) {
   return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x0049d930
-undefined TAdorner::WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d930() {
+undefined TAdorner::WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d930(int) {
   return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x0049d960
-void TAdorner::ReadFrom(TStream* stream) {
-}
+void TAdorner::ReadFrom(TStream* stream) {}
 
 // FUNCTION: IMPERIALISM 0x0049d990
-void TAdorner::WriteTo(TStream* stream) {
-}
+void TAdorner::WriteTo(TStream* stream) {}
 
 // FUNCTION: IMPERIALISM 0x0049d9c0
-undefined TAdorner::WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d9c0() {
+undefined TAdorner::WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d9c0(int,
+                                                                                             int) {
   return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x0049d9f0
-undefined TAdorner::WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d9f0() {
+undefined TAdorner::WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d9f0(int,
+                                                                                             int,
+                                                                                             int,
+                                                                                             int) {
   return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x0049da20
-undefined TAdorner::WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049da20() {
+undefined TAdorner::WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049da20(int) {
   return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x0049da50
-undefined TAdorner::WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049da50() {
+undefined TAdorner::WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049da50(int,
+                                                                                             int,
+                                                                                             int,
+                                                                                             int) {
   return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x0049da80
-undefined TAdorner::WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049da80() {
+undefined TAdorner::WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049da80(int) {
   return 0;
 }
 
