@@ -222,7 +222,7 @@ void CMainFrame::OnCommand800C() {
 
 // FUNCTION: IMPERIALISM 0x00485590
 void CMainFrame::OnCommand800D() {
-  g_pUiRuntimeContext->HandleTurnEventVtableSlot64RefreshMainHudTitles();
+  g_pUiRuntimeContext->HandleTurnEventVtableSlot64RefreshMainHudTitles(0);
 }
 
 // FUNCTION: IMPERIALISM 0x00485920
