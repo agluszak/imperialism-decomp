@@ -34524,8 +34524,8 @@
     },
     {
       "address": "0x5e58ab",
-      "matching": 0.0,
-      "name": "Create(void)",
+      "matching": 1.0,
+      "name": "CToolBarCtrl::Create",
       "type": 1
     },
     {
@@ -34572,8 +34572,8 @@
     },
     {
       "address": "0x5e5a36",
-      "matching": 0.0,
-      "name": "Create(void)",
+      "matching": 1.0,
+      "name": "CStatusBarCtrl::Create",
       "type": 1
     },
     {
@@ -34596,8 +34596,8 @@
     },
     {
       "address": "0x5e5c0b",
-      "matching": 0.0,
-      "name": "Create(void)",
+      "matching": 1.0,
+      "name": "CListCtrl::Create",
       "type": 1
     },
     {
@@ -34656,8 +34656,8 @@
     },
     {
       "address": "0x5e5fe5",
-      "matching": 0.0,
-      "name": "Create(void)",
+      "matching": 1.0,
+      "name": "CTreeCtrl::Create",
       "type": 1
     },
     {
@@ -34722,14 +34722,14 @@
     },
     {
       "address": "0x5e6379",
-      "matching": 0.0,
-      "name": "Create(void)",
+      "matching": 1.0,
+      "name": "CSpinButtonCtrl::Create",
       "type": 1
     },
     {
       "address": "0x5e6416",
-      "matching": 0.0,
-      "name": "Create(void)",
+      "matching": 1.0,
+      "name": "CSliderCtrl::Create",
       "type": 1
     },
     {
@@ -34740,32 +34740,32 @@
     },
     {
       "address": "0x5e6557",
-      "matching": 0.0,
-      "name": "Create(void)",
+      "matching": 1.0,
+      "name": "CProgressCtrl::Create",
       "type": 1
     },
     {
       "address": "0x5e65c8",
-      "matching": 0.0,
-      "name": "Create(void)",
+      "matching": 1.0,
+      "name": "CHeaderCtrl::Create",
       "type": 1
     },
     {
       "address": "0x5e666a",
-      "matching": 0.0,
-      "name": "Create(void)",
+      "matching": 1.0,
+      "name": "CHotKeyCtrl::Create",
       "type": 1
     },
     {
       "address": "0x5e6710",
-      "matching": 0.0,
-      "name": "Create(void)",
+      "matching": 1.0,
+      "name": "CTabCtrl::Create",
       "type": 1
     },
     {
       "address": "0x5e67ec",
-      "matching": 0.0,
-      "name": "Create(void)",
+      "matching": 1.0,
+      "name": "CAnimateCtrl::Create",
       "type": 1
     },
     {
@@ -34806,8 +34806,8 @@
     },
     {
       "address": "0x5e69cb",
-      "matching": 0.16666666666666666,
-      "name": "FromHandlePermanent",
+      "matching": 1.0,
+      "name": "CMenu::FromHandlePermanent(struct HMENU__*)",
       "type": 1
     },
     {
@@ -34818,14 +34818,14 @@
     },
     {
       "address": "0x5e6a0f",
-      "matching": 0.0,
-      "name": "Create(void)",
+      "matching": 1.0,
+      "name": "CImageList::Create(unsigned int, int, int, unsigned long)",
       "type": 1
     },
     {
       "address": "0x5e6a41",
-      "matching": 0.0,
-      "name": "Create(void)",
+      "matching": 1.0,
+      "name": "CImageList::Create(char const *, int, int, unsigned long)",
       "type": 1
     },
     {
@@ -39194,12 +39194,6 @@
       "address": "0x60d0c8",
       "matching": 1.0,
       "name": "CMenu::FromHandle",
-      "type": 1
-    },
-    {
-      "address": "0x60d0de",
-      "matching": 1.0,
-      "name": "CMenu::FromHandlePermanent",
       "type": 1
     },
     {

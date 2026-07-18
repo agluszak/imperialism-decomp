@@ -414,7 +414,7 @@ undefined4 RegisterCommdlgSetRgbColorMessage(void)
 // ghidra_name Copy
 // ghidra_proto undefined ?Copy@CUIntArray@@QAEXABV1@@Z()
 // FUNCTION: IMPERIALISM 0x00601d71
-undefined4 Z_00601D71(void)
+undefined4 Z(void)
 {
   return 0;
 }

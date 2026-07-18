@@ -6278,7 +6278,7 @@ address|name|symbol|size|type|prototype|provenance
 5e56cd|CDragListBox::DrawInsert|?DrawInsert@CDragListBox@@UAEXH@Z|37|function|public: virtual void __thiscall CDragListBox::DrawInsert(int)|msvc500_library_oracle
 5e56f2|CDragListBox::DrawSingle|?DrawSingle@CDragListBox@@QAEXH@Z|247|function|public: void __thiscall CDragListBox::DrawSingle(int)|msvc500_library_oracle
 5e57e9|CDragListBox::OnChildNotify|?OnChildNotify@CDragListBox@@MAEHIIJPAJ@Z|188|function|protected: virtual int __thiscall CDragListBox::OnChildNotify(unsigned int, unsigned int, long, long *)|msvc500_library_oracle
-5e58ab|Create||57|function|undefined ?Create@CHotKeyCtrl@@QAEHKABUtagRECT@@PAVCWnd@@I@Z()|
+5e58ab|CToolBarCtrl::Create|?Create@CToolBarCtrl@@QAEHKABUtagRECT@@PAVCWnd@@I@Z|57|function|public: int __thiscall CToolBarCtrl::Create(unsigned long, struct tagRECT const &, class CWnd *, unsigned int)|msvc500_library_override
 5e58e4|CProgressCtrl::~CProgressCtrl|??1CProgressCtrl@@UAE@XZ|56|function|undefined ~CHotKeyCtrl()|
 5e591c|AddBitmap|?AddBitmap@CToolBarCtrl@@QAEHHPAVCBitmap@@@Z|52|function|int __thiscall ?AddBitmap@CToolBarCtrl@@QAEHHPAVCBitmap@@@Z@005e591c(int param_1, CBitmap * param_2)|msvc500_library_oracle
 5e5950|CToolBarCtrl::AddBitmap|?AddBitmap@CToolBarCtrl@@QAEHHI@Z|55|function|public: int __thiscall CToolBarCtrl::AddBitmap(int, unsigned int)|msvc500_library_oracle
@@ -6286,12 +6286,12 @@ address|name|symbol|size|type|prototype|provenance
 5e59b7|RestoreState|?RestoreState@CToolBarCtrl@@QAEXPAUHKEY__@@PBD1@Z|48|function|void __thiscall ?RestoreState@CToolBarCtrl@@QAEXPAUHKEY__@@PBD1@Z@005e59b7(HKEY__ * param_1, char * param_2, char * param_3)|msvc500_library_oracle
 5e59e7|CToolBarCtrl::AddString|?AddString@CToolBarCtrl@@QAEHI@Z|38|function|public: int __thiscall CToolBarCtrl::AddString(unsigned int)|msvc500_library_oracle
 5e5a0d|CToolBarCtrl::OnCreate|?OnCreate@CToolBarCtrl@@IAEHPAUtagCREATESTRUCTA@@@Z|41|function|protected: int __thiscall CToolBarCtrl::OnCreate(struct tagCREATESTRUCTA *)|msvc500_library_override
-5e5a36|Create||57|function|undefined ?Create@CHotKeyCtrl@@QAEHKABUtagRECT@@PAVCWnd@@I@Z()|
+5e5a36|CStatusBarCtrl::Create|?Create@CStatusBarCtrl@@QAEHKABUtagRECT@@PAVCWnd@@I@Z|57|function|public: int __thiscall CStatusBarCtrl::Create(unsigned long, struct tagRECT const &, class CWnd *, unsigned int)|msvc500_library_override
 5e5a6f|CProgressCtrl::~CProgressCtrl|??1CProgressCtrl@@UAE@XZ|56|function|undefined ~CHotKeyCtrl()|
 5e5ad2|CStatusBarCtrl::GetText|?GetText@CStatusBarCtrl@@QBE?AVCString@@HPAH@Z|159|function|public: class CString __thiscall CStatusBarCtrl::GetText(int, int *) const|msvc500_library_oracle
 5e5b9a|GetBorders|?GetBorders@CStatusBarCtrl@@QBEHAAH00@Z|58|function|int __thiscall ?GetBorders@CStatusBarCtrl@@QBEHAAH00@Z@005e5b9a(int * param_1, int * param_2, int * param_3)|msvc500_library_oracle
 5e5bd7|CListCtrl::OnChildNotify|?OnChildNotify@CListCtrl@@MAEHIIJPAJ@Z|46|function|undefined WrapperFor_DispatchReflectedControlMessageOrFallback_At005e5bd7()|
-5e5c0b|Create||57|function|undefined ?Create@CHotKeyCtrl@@QAEHKABUtagRECT@@PAVCWnd@@I@Z()|
+5e5c0b|CListCtrl::Create|?Create@CListCtrl@@QAEHKABUtagRECT@@PAVCWnd@@I@Z|57|function|public: int __thiscall CListCtrl::Create(unsigned long, struct tagRECT const &, class CWnd *, unsigned int)|msvc500_library_override
 5e5c44|CProgressCtrl::~CProgressCtrl|??1CProgressCtrl@@UAE@XZ|56|function|undefined ~CHotKeyCtrl()|
 5e5c9c|CListCtrl::InsertColumn|?InsertColumn@CListCtrl@@QAEHHPBDHHH@Z|83|function|public: int __thiscall CListCtrl::InsertColumn(int, char const *, int, int, int)|msvc500_library_oracle
 5e5cef|CListCtrl::InsertItem|?InsertItem@CListCtrl@@QAEHIHPBDIIHJ@Z|76|function|public: int __thiscall CListCtrl::InsertItem(unsigned int, int, char const *, unsigned int, unsigned int, int, long)|msvc500_library_oracle
@@ -6303,7 +6303,7 @@ address|name|symbol|size|type|prototype|provenance
 5e5eee|CListCtrl::OnChildNotify|?OnChildNotify@CListCtrl@@MAEHIIJPAJ@Z|46|function|undefined WrapperFor_DispatchReflectedControlMessageOrFallback_At005e5eee()|
 5e5f1c|CListCtrl::RemoveImageList|?RemoveImageList@CListCtrl@@IAEXH@Z|57|function|protected: void __thiscall CListCtrl::RemoveImageList(int)|msvc500_library_oracle
 5e5f55|CListCtrl::OnNcDestroy|?OnNcDestroy@CListCtrl@@IAEXXZ|37|function|protected: void __thiscall CListCtrl::OnNcDestroy(void)|msvc500_library_oracle
-5e5fe5|Create||57|function|undefined ?Create@CHotKeyCtrl@@QAEHKABUtagRECT@@PAVCWnd@@I@Z()|
+5e5fe5|CTreeCtrl::Create|?Create@CTreeCtrl@@QAEHKABUtagRECT@@PAVCWnd@@I@Z|57|function|public: int __thiscall CTreeCtrl::Create(unsigned long, struct tagRECT const &, class CWnd *, unsigned int)|msvc500_library_override
 5e601e|CProgressCtrl::~CProgressCtrl|??1CProgressCtrl@@UAE@XZ|56|function|undefined ~CHotKeyCtrl()|
 5e6076|CTreeCtrl::GetItemText|?GetItemText@CTreeCtrl@@QBE?AVCString@@PAU_TREEITEM@@@Z|160|function|public: class CString __thiscall CTreeCtrl::GetItemText(struct _TREEITEM *) const|msvc500_library_oracle
 5e6116|CTreeCtrl::GetItemImage|?GetItemImage@CTreeCtrl@@QBEHPAU_TREEITEM@@AAH1@Z|63|function|public: int __thiscall CTreeCtrl::GetItemImage(struct _TREEITEM *, int &, int &) const|msvc500_library_oracle
@@ -6315,22 +6315,22 @@ address|name|symbol|size|type|prototype|provenance
 5e628b|CTreeCtrl::HitTest|?HitTest@CTreeCtrl@@QBEPAU_TREEITEM@@VCPoint@@PAI@Z|54|function|_TREEITEM * __thiscall HitTest_005E628B(CPoint param_1, uint * param_2)|msvc500_library_oracle
 5e62c1|CTreeCtrl::RemoveImageList|?RemoveImageList@CTreeCtrl@@IAEXH@Z|57|function|protected: void __thiscall CTreeCtrl::RemoveImageList(int)|msvc500_library_oracle
 5e62fa|CTreeCtrl::OnDestroy|?OnDestroy@CTreeCtrl@@QAEXXZ|28|function|public: void __thiscall CTreeCtrl::OnDestroy(void)|msvc500_library_oracle
-5e6379|Create||57|function|undefined ?Create@CHotKeyCtrl@@QAEHKABUtagRECT@@PAVCWnd@@I@Z()|
+5e6379|CSpinButtonCtrl::Create|?Create@CSpinButtonCtrl@@QAEHKABUtagRECT@@PAVCWnd@@I@Z|57|function|public: int __thiscall CSpinButtonCtrl::Create(unsigned long, struct tagRECT const &, class CWnd *, unsigned int)|msvc500_library_override
 5e63b2|CProgressCtrl::~CProgressCtrl|??1CProgressCtrl@@UAE@XZ|56|function|undefined ~CHotKeyCtrl()|
-5e6416|Create||57|function|undefined ?Create@CHotKeyCtrl@@QAEHKABUtagRECT@@PAVCWnd@@I@Z()|
+5e6416|CSliderCtrl::Create|?Create@CSliderCtrl@@QAEHKABUtagRECT@@PAVCWnd@@I@Z|57|function|public: int __thiscall CSliderCtrl::Create(unsigned long, struct tagRECT const &, class CWnd *, unsigned int)|msvc500_library_override
 5e644f|CProgressCtrl::~CHotKeyCtrl|CProgressCtrl::~CHotKeyCtrl|56|function|undefined ??1CProgressCtrl@@UAE@XZ@005e644f()|
 5e64be|CSliderCtrl::SetRange|?SetRange@CSliderCtrl@@QAEXHHH@Z|51|function|public: void __thiscall CSliderCtrl::SetRange(int, int, int)|msvc500_library_oracle
-5e6557|Create||57|function|undefined ?Create@CHotKeyCtrl@@QAEHKABUtagRECT@@PAVCWnd@@I@Z()|
+5e6557|CProgressCtrl::Create|?Create@CProgressCtrl@@QAEHKABUtagRECT@@PAVCWnd@@I@Z|57|function|public: int __thiscall CProgressCtrl::Create(unsigned long, struct tagRECT const &, class CWnd *, unsigned int)|msvc500_library_override
 5e6590|CProgressCtrl::~CProgressCtrl|??1CProgressCtrl@@UAE@XZ|56|function|undefined ~CHotKeyCtrl()|
-5e65c8|Create||57|function|undefined ?Create@CHotKeyCtrl@@QAEHKABUtagRECT@@PAVCWnd@@I@Z()|
+5e65c8|CHeaderCtrl::Create|?Create@CHeaderCtrl@@QAEHKABUtagRECT@@PAVCWnd@@I@Z|57|function|public: int __thiscall CHeaderCtrl::Create(unsigned long, struct tagRECT const &, class CWnd *, unsigned int)|msvc500_library_override
 5e6601|CProgressCtrl::~CProgressCtrl|??1CProgressCtrl@@UAE@XZ|56|function|undefined ~CHotKeyCtrl()|
 5e663c|CListCtrl::OnChildNotify|?OnChildNotify@CListCtrl@@MAEHIIJPAJ@Z|46|function|undefined WrapperFor_DispatchReflectedControlMessageOrFallback_At005e663c()|
-5e666a|Create||57|function|undefined ?Create@CHotKeyCtrl@@QAEHKABUtagRECT@@PAVCWnd@@I@Z()|
+5e666a|CHotKeyCtrl::Create|?Create@CHotKeyCtrl@@QAEHKABUtagRECT@@PAVCWnd@@I@Z|57|function|public: int __thiscall CHotKeyCtrl::Create(unsigned long, struct tagRECT const &, class CWnd *, unsigned int)|msvc500_library_override
 5e66a3|CProgressCtrl::~CProgressCtrl|??1CProgressCtrl@@UAE@XZ|56|function|undefined ~CHotKeyCtrl()|
-5e6710|Create||57|function|undefined ?Create@CHotKeyCtrl@@QAEHKABUtagRECT@@PAVCWnd@@I@Z()|
+5e6710|CTabCtrl::Create|?Create@CTabCtrl@@QAEHKABUtagRECT@@PAVCWnd@@I@Z|57|function|public: int __thiscall CTabCtrl::Create(unsigned long, struct tagRECT const &, class CWnd *, unsigned int)|msvc500_library_override
 5e6749|CProgressCtrl::~CProgressCtrl|??1CProgressCtrl@@UAE@XZ|56|function|undefined ~CHotKeyCtrl()|
 5e6784|CListCtrl::OnChildNotify|?OnChildNotify@CListCtrl@@MAEHIIJPAJ@Z|46|function|undefined WrapperFor_DispatchReflectedControlMessageOrFallback_At005e6784()|
-5e67ec|Create||57|function|undefined ?Create@CHotKeyCtrl@@QAEHKABUtagRECT@@PAVCWnd@@I@Z()|
+5e67ec|CAnimateCtrl::Create|?Create@CAnimateCtrl@@QAEHKABUtagRECT@@PAVCWnd@@I@Z|57|function|public: int __thiscall CAnimateCtrl::Create(unsigned long, struct tagRECT const &, class CWnd *, unsigned int)|msvc500_library_override
 5e6825|CProgressCtrl::~CProgressCtrl|??1CProgressCtrl@@UAE@XZ|56|function|undefined ~CHotKeyCtrl()|
 5e685d|CProgressCtrl::~CProgressCtrl|??1CProgressCtrl@@UAE@XZ|56|function|undefined ~CHotKeyCtrl()|
 5e68a2|CGdiObject::`scalar deleting dtor'|??_GCGdiObject@@UAEPAXI@Z|28|function|undefined ??_GCGdiObject@@UAEPAXI@Z()|
@@ -6339,10 +6339,10 @@ address|name|symbol|size|type|prototype|provenance
 5e691b|afxMapHMENU|?afxMapHMENU@@YAPAVCHandleMap@@H@Z|112|function|undefined afxMapHIMAGELIST()|
 5e698b|CMenu::DestroyMenu|?DestroyMenu@CMenu@@QAEHXZ|22|function|public: int __thiscall CMenu::DestroyMenu(void)|msvc500_library_oracle
 5e69a1|CMenu::DeleteTempMap|?DeleteTempMap@CMenu@@SGXXZ|20|function|undefined DeleteTempMap()|
-5e69cb|FromHandlePermanent||28|function|undefined FromHandlePermanent()|
+5e69cb|CMenu::FromHandlePermanent|?FromHandlePermanent@CMenu@@SGPAV1@PAUHMENU__@@@Z|28|function|public: static class CMenu * __stdcall CMenu::FromHandlePermanent(struct HMENU__*)|msvc500_library_override
 5e69e7|CImageList::Create|?Create@CImageList@@QAEHHHIHH@Z|40|function|public: int __thiscall CImageList::Create(int, int, unsigned int, int, int)|msvc500_library_override
-5e6a0f|Create||50|function|undefined ?Create@CImageList@@QAEHIHHK@Z()|
-5e6a41|Create||50|function|undefined ?Create@CImageList@@QAEHIHHK@Z()|
+5e6a0f|CImageList::Create|?Create@CImageList@@QAEHIHHK@Z|50|function|public: int __thiscall CImageList::Create(unsigned int, int, int, unsigned long)|msvc500_library_override
+5e6a41|CImageList::Create|?Create@CImageList@@QAEHPBDHHK@Z|50|function|public: int __thiscall CImageList::Create(char const *, int, int, unsigned long)|msvc500_library_override
 5e6a73|CImageList::Create|?Create@CImageList@@QAEHAAV1@H0HHH@Z|49|function|public: int __thiscall CImageList::Create(class CImageList &, int, class CImageList &, int, int, int)|msvc500_library_oracle
 5e6aa4|CImageList::Attach|?Attach@CImageList@@QAEHPAU_IMAGELIST@@@Z|45|function|public: int __thiscall CImageList::Attach(struct _IMAGELIST *)|msvc500_library_oracle
 5e6ad1|CImageList::Read|?Read@CImageList@@QAEHPAVCArchive@@@Z|45|function|public: int __thiscall CImageList::Read(class CArchive *)|msvc500_library_oracle
