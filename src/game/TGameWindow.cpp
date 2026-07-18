@@ -6,6 +6,7 @@
 #include "game/TSimMgr.h"
 #include "game/TUiEvent.h"
 #include "game/TView.h"
+#include "game/TViewMgr.h"
 #include "game/TMovieView.h"
 #include "game/UiRuntimeContext.h"
 #include "game/global_data_tables.h"
@@ -14,7 +15,6 @@
 #include "game/startup_helpers.h"
 #include "game/ui_control_tags.h"
 
-undefined4 DispatchUiRuntimeMessage101AAndRefreshActiveView(void);
 undefined4 SelectAndActivatePendingEventForCurrentView(void);
 
 namespace {
@@ -43,8 +43,7 @@ static short ConsumeFirstPendingAbilityUnlockForNation(short nationId) {
 }
 
 static void DispatchUiRuntimeMessage101AAndRefreshActiveViewGate() {
-  reinterpret_cast<void(__cdecl*)(void)>(
-      reinterpret_cast<void (*)()>(::DispatchUiRuntimeMessage101AAndRefreshActiveView))();
+  g_pUiRuntimeContext->DispatchUiRuntimeMessage101AAndRefreshActiveView();
 }
 
 static void SelectAndActivatePendingEventForCurrentViewGate() {

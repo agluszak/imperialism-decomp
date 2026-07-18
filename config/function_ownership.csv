@@ -5140,6 +5140,7 @@ address|target_cpp|ownership|note
 5de010|src/game/TViewMgr.cpp|manual|marker_sync
 5de4f0|src/game/TViewMgr.cpp|manual|marker_sync
 5de5d0|src/game/TViewMgr.cpp|manual|marker_sync
+5de8f0|src/game/TViewMgr.cpp|manual|marker_sync
 5de990|src/game/TViewMgr.cpp|manual|marker_sync
 5dea60|src/game/TViewMgr.cpp|manual|marker_sync
 5deb40|src/game/TViewMgr.cpp|manual|marker_sync

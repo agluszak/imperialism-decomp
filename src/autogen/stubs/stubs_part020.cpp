@@ -235,14 +235,6 @@ undefined4 OpenSuperArmyRosterPageAndActivateProvinceSelection(void)
   return 0;
 }
 
-// ghidra_name DispatchUiRuntimeMessage101AAndRefreshActiveView
-// ghidra_proto undefined DispatchUiRuntimeMessage101AAndRefreshActiveView()
-// FUNCTION: IMPERIALISM 0x005de8f0
-undefined4 DispatchUiRuntimeMessage101AAndRefreshActiveView(void)
-{
-  return 0;
-}
-
 // ghidra_name WrapperFor_ftol_At005dee20
 // ghidra_proto undefined WrapperFor_ftol_At005dee20()
 // FUNCTION: IMPERIALISM 0x005dee20

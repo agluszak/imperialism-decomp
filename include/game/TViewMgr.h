@@ -177,6 +177,9 @@ public:
   // dispatch; returns the prompt result byte.
   char ShowLocalizedUiPromptByGroupAndIndex(int uiStringGroup, int uiStringIndex, int overlayMode,
                                             int arg4);
+  // 0x5de8f0 — resolve the turn-event dialog node for message context 0x101a, place it,
+  // capture its layout, refresh it, then run its void tail hook and free it.
+  void DispatchUiRuntimeMessage101AAndRefreshActiveView();
   // 0x5deb40 — pose the confirm prompt matching `actionTag` ('magc'/'gwen'/'quit'/
   // 'load'; group 0x2737 index by game-flow mode) and, when accepted during session
   // teardown, dispatch the 'abdi' game-state event. Returns the accepted byte.

@@ -6099,7 +6099,7 @@ address|name|symbol|size|type|prototype|provenance
 5de010|TViewMgr::MakePlanetSeedDialog||992|function|int MakePlanetSeedDialog(const char* instruction,CString& planetSeed,const char* firstChoice,const char* secondChoice,int initialChoice,unsigned char showCancel) const|
 5de4f0|ShowCivilianReportDialogAndReturnConfirm||176|function|bool __fastcall ShowCivilianReportDialogAndReturnConfirm(int * pCivilianOrderEntry)|
 5de5d0|RefreshCurrentUiViewAndActivePanelState||181|function|undefined RefreshCurrentUiViewAndActivePanelState()|
-5de8f0|DispatchUiRuntimeMessage101AAndRefreshActiveView||123|function|undefined DispatchUiRuntimeMessage101AAndRefreshActiveView()|
+5de8f0|TViewMgr::DispatchUiRuntimeMessage101AAndRefreshActiveView||123|function|undefined DispatchUiRuntimeMessage101AAndRefreshActiveView()|
 5de990|TViewMgr::ShowLocalizedUiPromptByGroupAndIndex||148|function|char __thiscall ShowLocalizedUiPromptByGroupAndIndex(int, int, int, int)|
 5dea60|TViewMgr::CreateModalMessageCommandAndQueue||164|function|void __thiscall CreateModalMessageCommandAndQueue(class CString * message, int payload)|
 5deb40|TViewMgr::DispatchGameStateEventIfLocalizedPromptAccepted||323|function|char __thiscall DispatchGameStateEventIfLocalizedPromptAccepted(int)|
