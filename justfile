@@ -96,6 +96,7 @@ _require-ghidra-install:
 sync-ghidra: _require-ghidra-install
   uv run python -m tools.ghidra.daemon stop --quiet
   just push-names --apply --include-library-symbols --library-start 0x005e539c --library-end 0x00626c7d
+  just push-library-override-names --apply --quiet
   just prune-ilt-db-functions --apply --quiet
   uv run python -m tools.ghidra.sync_exports \
     --ghidra-install-dir "$GHIDRA_INSTALL_DIR" \
@@ -781,6 +782,15 @@ export-project *args: _require-ghidra-install
 [group('ghidra-db')]
 push-names *args: _require-ghidra-install
   uv run python -m tools.ghidra.push_names_to_ghidra {{args}}
+
+# MUTATES: Ghidra DB (with --apply).
+# Push reviewed library override names (config/msvc500_library_overrides.csv)
+# directly into the DB, including label-only + out-of-range addresses push-names
+# skips, so the exported .gzf carries them. Dry-run by default; --apply writes.
+[doc('MUTATES: Ghidra DB (--apply). Push reviewed library override names into the DB')]
+[group('ghidra-db')]
+push-library-override-names *args: _require-ghidra-install
+  uv run python -m tools.ghidra.push_library_override_names {{args}}
 
 # MUTATES: Ghidra DB (with --apply).
 # Define real functions Ghidra never created (vtable slot targets, ILT jmp
