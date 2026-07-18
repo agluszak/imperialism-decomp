@@ -628,6 +628,25 @@ extern const double g_MissionScoreOneConstant_0065a470 = 1.0;
 
 // Same conceptual pair as above (0.0f mul/div selector, 1.0 "remaining priority" base),
 // read by AssignTrackedEntryActionsByProfileToOrdersOrUnits' (0x4eb8b0) inline scoring.
+// Per-personality defense-minister FP weights returned by the slot-0x60
+// weight getter (0x4ec0a0 family; flag selects between the pair).
+// GLOBAL: IMPERIALISM 0x006548e0
+extern const float g_DefenseMinisterWeightZero_006548E0 = 0.0f;
+// GLOBAL: IMPERIALISM 0x006548e8
+extern const double g_MinisterWeightHalf_006548E8 = 0.5;
+// GLOBAL: IMPERIALISM 0x006548f0
+extern const double g_MinisterWeightOne_006548F0 = 1.0;
+// GLOBAL: IMPERIALISM 0x006548f8
+extern const double g_BismarckWeightHigh_006548F8 = 0.9;
+// GLOBAL: IMPERIALISM 0x00654900
+extern const double g_BismarckWeightLow_00654900 = 0.6;
+// GLOBAL: IMPERIALISM 0x00654908
+extern const float g_DefenderMinisterWeight_00654908 = 0.75f;
+// GLOBAL: IMPERIALISM 0x00654910
+extern const double g_BullyWeightLow_00654910 = 0.7;
+// GLOBAL: IMPERIALISM 0x00654918
+extern const double g_BullyWeightHigh_00654918 = 0.8;
+
 // GLOBAL: IMPERIALISM 0x006545d0
 extern const float g_MissionDefaultScore_006545d0 = 0.0f;
 // Orphaned neighbor constant (no known reader yet) sitting between the two named

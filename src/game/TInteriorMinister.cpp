@@ -51,16 +51,19 @@ short TInteriorMinister::DispatchNationStateEventCode10(short nationSlot) {
 }
 
 // FUNCTION: IMPERIALISM 0x004be3f0
-void TInteriorMinister::InteriorSlot1A() {}
+void TInteriorMinister::InteriorSlot1A(short) {}
 
 // FUNCTION: IMPERIALISM 0x004be410
-void TInteriorMinister::InteriorSlot1B() {}
+void TInteriorMinister::InteriorSlot1B(short) {}
 
 // FUNCTION: IMPERIALISM 0x004be430
-void TInteriorMinister::InteriorSlot1C() {}
+void TInteriorMinister::InteriorSlot1C(short) {}
 
 // FUNCTION: IMPERIALISM 0x004be450
-void TInteriorMinister::MinisterSlot12() {}
+void TInteriorMinister::MinisterSlot12(short arg1, short arg2) {
+  field12 = arg1;
+  field10 = arg2;
+}
 
 // FUNCTION: IMPERIALISM 0x004be480
 void TInteriorMinister::InteriorSlot16() {}
