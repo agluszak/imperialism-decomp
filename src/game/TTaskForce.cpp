@@ -57,7 +57,7 @@ inline TZone** EnsurePrimaryNeighborSlot(TZonePrimaryNeighborStretch& neighbors,
 // FUNCTION: IMPERIALISM 0x00536f70
 void TMapOrderChildLinkNode::SetChainActiveFlag(unsigned char flag) {
   for (TMapOrderChildLinkNode* node = this; node != nullptr; node = node->next) {
-    node->active_flag = flag;
+    node->active = flag;
   }
 }
 
@@ -137,7 +137,7 @@ TTaskForce* TTaskForce::GetOrCreateMissionOrderEntryForNode() {
       TMapOrderChildLinkNode* found;
       if (head == nullptr) {
         found = nullptr;
-      } else if (head->object_ptr == this) {
+      } else if (head->payload == this) {
         found = head;
       } else {
         found = head->next->FindNodeMatching(this);
@@ -298,14 +298,14 @@ void TTaskForce::RemoveNode(TTaskForce* self) {
   if (owner_ctx != 0) {
     TMapOrderChildLinkNode* list_head = owner_ctx->childOrderList;
 
-    if ((list_head != 0) && (this != list_head->object_ptr)) {
+    if ((list_head != 0) && (this != list_head->payload)) {
       list_head = list_head->next->FindNodeMatching(this);
     }
 
     if (list_head != 0) {
       list_head = owner_ctx->childOrderList;
       if (list_head != 0) {
-        if (this == list_head->object_ptr) {
+        if (this == list_head->payload) {
           list_head = list_head->DeleteMapOrderChildLinkAndReturnNext();
         } else {
           list_head->next->RemoveLinkedOrderNodeByValueRecursive(this);
@@ -332,7 +332,7 @@ void TTaskForce::RemoveNode(TTaskForce* self) {
       owner_ctx->activeChildEntry = 0;
       for (; list_head != 0; list_head = list_head->next) {
         owner_ctx->activeChildEntry =
-            list_head->object_ptr->SelectPreferredMapOrderEntryByPriorityRules(
+            static_cast<TTaskForce*>(list_head->payload)->SelectPreferredMapOrderEntryByPriorityRules(
                 owner_ctx->activeChildEntry, 0);
       }
     }
@@ -350,13 +350,13 @@ void TTaskForce::ReassignOrderNodeNationAndRebindParentCounters(short nation) {
   TTaskForce* parent = owner;
   if (parent != 0 && parent->required_count != nation) {
     TMapOrderChildLinkNode* link = parent->childOrderList;
-    if (link != 0 && this != link->object_ptr) {
+    if (link != 0 && this != link->payload) {
       link = link->next->FindNodeMatching(this);
     }
     if (link != 0) {
       TMapOrderChildLinkNode* head = parent->childOrderList;
       if (head != 0) {
-        if (this == head->object_ptr) {
+        if (this == head->payload) {
           head = head->DeleteMapOrderChildLinkAndReturnNext();
         } else {
           head->next->RemoveLinkedOrderNodeByValueRecursive(this);
@@ -375,7 +375,7 @@ void TTaskForce::ReassignOrderNodeNationAndRebindParentCounters(short nation) {
       parent->activeChildEntry = 0;
       TMapOrderChildLinkNode* node;
       for (node = parent->childOrderList; node != 0; node = node->next) {
-        parent->activeChildEntry = node->object_ptr->SelectPreferredMapOrderEntryByPriorityRules(
+        parent->activeChildEntry = static_cast<TTaskForce*>(node->payload)->SelectPreferredMapOrderEntryByPriorityRules(
             parent->activeChildEntry, 0);
       }
     }
@@ -418,12 +418,12 @@ void TTaskForce::SetMapOrderActiveChildEntry(TTaskForce* newEntry) {
 }
 
 // FUNCTION: IMPERIALISM 0x00552510
-TMapOrderChildLinkNode* TMapOrderChildLinkNode::FindNodeMatching(TTaskForce* child_node) {
+TMapOrderChildLinkNode* TMapOrderChildLinkNode::FindNodeMatching(TObject* child_node) {
   if (this == 0) {
     return 0;
   }
   TMapOrderChildLinkNode* node = this;
-  while (node->object_ptr != child_node) {
+  while (node->payload != child_node) {
     node = node->next;
     if (node == 0) {
       return 0;
@@ -436,10 +436,10 @@ TMapOrderChildLinkNode* TMapOrderChildLinkNode::FindNodeMatching(TTaskForce* chi
 TMapOrderChildLinkNode* TMapOrderChildLinkNode::DeleteMapOrderChildLinkAndReturnNext() {
   TMapOrderChildLinkNode* next_node = this->next;
   if (next_node != 0) {
-    next_node->prev_link = this->prev_link;
+    next_node->prev = this->prev;
   }
-  if (this->prev_link != 0) {
-    this->prev_link->next = this->next;
+  if (this->prev != 0) {
+    this->prev->next = this->next;
   }
 
   delete this;
@@ -448,18 +448,18 @@ TMapOrderChildLinkNode* TMapOrderChildLinkNode::DeleteMapOrderChildLinkAndReturn
 
 // FUNCTION: IMPERIALISM 0x005525d0
 TMapOrderChildLinkNode*
-TMapOrderChildLinkNode::RemoveLinkedOrderNodeByValueRecursive(TTaskForce* child_node) {
+TMapOrderChildLinkNode::RemoveLinkedOrderNodeByValueRecursive(TObject* child_node) {
   if (this == 0) {
     return 0;
   }
 
-  if (child_node == this->object_ptr) {
+  if (child_node == this->payload) {
     TMapOrderChildLinkNode* next_node = this->next;
     if (next_node != 0) {
-      next_node->prev_link = this->prev_link;
+      next_node->prev = this->prev;
     }
-    if (this->prev_link != 0) {
-      this->prev_link->next = this->next;
+    if (this->prev != 0) {
+      this->prev->next = this->next;
     }
     delete this;
     return next_node;
@@ -470,7 +470,7 @@ TMapOrderChildLinkNode::RemoveLinkedOrderNodeByValueRecursive(TTaskForce* child_
 }
 
 // FUNCTION: IMPERIALISM 0x00552650
-TMapOrderChildLinkNode* TMapOrderChildLinkNode::CreateLinkedOrderNode(TTaskForce* child_node) {
+TMapOrderChildLinkNode* TMapOrderChildLinkNode::CreateLinkedOrderNode(TObject* child_node) {
   TMapOrderChildLinkNode* new_node = new TMapOrderChildLinkNode(child_node, this);
   if (new_node == 0) {
     FailNilPointerWithAssert(s_SourcePathUNavy_006983C8, 0x64e);
@@ -482,20 +482,20 @@ TMapOrderChildLinkNode* TMapOrderChildLinkNode::CreateLinkedOrderNode(TTaskForce
 TMapOrderChildLinkNode* TMapOrderChildLinkNode::PruneDefeatedMapOrderChildrenAndReturnHead() {
   TMapOrderChildLinkNode* head = this;
   while (head != 0) {
-    TTaskForce* child_node = head->object_ptr;
+    TTaskForce* child_node = static_cast<TTaskForce*>(head->payload);
     unsigned char headDefeated = (child_node->required_count <= 0);
     if (headDefeated != 0) {
       child_node->owner = 0;
-      head->object_ptr->Free();
+      static_cast<TTaskForce*>(head->payload)->Free();
 
       // Manual unlink (the original inlines the DeleteMapOrderChildLinkAndReturnNext
       // steps here rather than calling 0x552590).
       TMapOrderChildLinkNode* next_node = head->next;
       if (next_node != 0) {
-        next_node->prev_link = head->prev_link;
+        next_node->prev = head->prev;
       }
-      if (head->prev_link != 0) {
-        head->prev_link->next = head->next;
+      if (head->prev != 0) {
+        head->prev->next = head->next;
       }
       delete head;
       head = next_node;
@@ -571,14 +571,14 @@ void TTaskForce::RelinkMapOrderQueueNodeBetween(TTaskForce* prev_node, TTaskForc
 // FUNCTION: IMPERIALISM 0x00552930
 void TTaskForce::Free() {
   while (childOrderList != nullptr) {
-    childOrderList->object_ptr->owner = nullptr;
+    static_cast<TTaskForce*>(childOrderList->payload)->owner = nullptr;
 
     TMapOrderChildLinkNode* next = childOrderList->next;
     if (next != nullptr) {
-      next->prev_link = childOrderList->prev_link;
+      next->prev = childOrderList->prev;
     }
-    if (childOrderList->prev_link != nullptr) {
-      childOrderList->prev_link->next = next;
+    if (childOrderList->prev != nullptr) {
+      childOrderList->prev->next = next;
     }
     delete childOrderList;
     childOrderList = next;
@@ -623,12 +623,12 @@ void TTaskForce::SetMapOrderType9AndQueue() {
   attachment = 9;
 
   for (TMapOrderChildLinkNode* node = childOrderList; node != nullptr;) {
-    if (node->active_flag != 0) {
+    if (node->active != 0) {
       node = node->next;
       continue;
     }
 
-    TTaskForce* child = node->object_ptr;
+    TTaskForce* child = static_cast<TTaskForce*>(node->payload);
     child->owner = nullptr;
 
     short bucketIndex = static_cast<short>(
@@ -642,10 +642,10 @@ void TTaskForce::SetMapOrderType9AndQueue() {
 
     TMapOrderChildLinkNode* next = node->next;
     if (next != nullptr) {
-      next->prev_link = node->prev_link;
+      next->prev = node->prev;
     }
-    if (node->prev_link != nullptr) {
-      node->prev_link->next = next;
+    if (node->prev != nullptr) {
+      node->prev->next = next;
     }
     delete node;
     node = next;
@@ -701,12 +701,12 @@ void TTaskForce::SetMapOrderType3Or4AndQueue(char fUseType4) {
   activeChildEntry = nullptr;
 
   for (TMapOrderChildLinkNode* node = childOrderList; node != nullptr;) {
-    if (node->active_flag != 0) {
+    if (node->active != 0) {
       node = node->next;
       continue;
     }
 
-    TTaskForce* child = node->object_ptr;
+    TTaskForce* child = static_cast<TTaskForce*>(node->payload);
     child->owner = nullptr;
 
     short bucketIndex = static_cast<short>(
@@ -720,10 +720,10 @@ void TTaskForce::SetMapOrderType3Or4AndQueue(char fUseType4) {
 
     TMapOrderChildLinkNode* next = node->next;
     if (next != nullptr) {
-      next->prev_link = node->prev_link;
+      next->prev = node->prev;
     }
-    if (node->prev_link != nullptr) {
-      node->prev_link->next = next;
+    if (node->prev != nullptr) {
+      node->prev->next = next;
     }
     delete node;
     node = next;
@@ -781,13 +781,13 @@ void TTaskForce::PromoteMapOrderChainAndQueue(TZone* pContextAnchor) {
   pContextAnchor->PropagateMapActionContextDistanceLevelsRecursive(-1);
 
   // Minimum g_NavyOrderResourceDescriptorTable[order_type].descriptorWeight
-  // among *active* (active_flag != 0) children, clamped to the 10000
+  // among *active* (active != 0) children, clamped to the 10000
   // sentinel (no active children).
   int minPriority = 10000;
   for (TMapOrderChildLinkNode* node = childOrderList; node != nullptr; node = node->next) {
-    if (node->active_flag != 0) {
+    if (node->active != 0) {
       short priority =
-          g_NavyOrderResourceDescriptorTable[node->object_ptr->order_type].descriptorWeight;
+          g_NavyOrderResourceDescriptorTable[static_cast<TTaskForce*>(node->payload)->order_type].descriptorWeight;
       if (priority < minPriority) {
         minPriority = priority;
       }
@@ -825,12 +825,12 @@ void TTaskForce::PromoteMapOrderChainAndQueue(TZone* pContextAnchor) {
   }
 
   for (TMapOrderChildLinkNode* pruneNode = childOrderList; pruneNode != nullptr;) {
-    if (pruneNode->active_flag != 0) {
+    if (pruneNode->active != 0) {
       pruneNode = pruneNode->next;
       continue;
     }
 
-    TTaskForce* child = pruneNode->object_ptr;
+    TTaskForce* child = static_cast<TTaskForce*>(pruneNode->payload);
     child->SetMapOrderActiveChildEntry(nullptr);
 
     short bucketIndex = static_cast<short>(
@@ -861,12 +861,12 @@ void TTaskForce::SetMapOrderType6AndQueue(int nOrderTarget) {
   activeChildEntry = nullptr;
 
   for (TMapOrderChildLinkNode* node = childOrderList; node != nullptr;) {
-    if (node->active_flag != 0) {
+    if (node->active != 0) {
       node = node->next;
       continue;
     }
 
-    TTaskForce* child = node->object_ptr;
+    TTaskForce* child = static_cast<TTaskForce*>(node->payload);
     child->owner = nullptr;
 
     short bucketIndex = static_cast<short>(
@@ -880,10 +880,10 @@ void TTaskForce::SetMapOrderType6AndQueue(int nOrderTarget) {
 
     TMapOrderChildLinkNode* next = node->next;
     if (next != nullptr) {
-      next->prev_link = node->prev_link;
+      next->prev = node->prev;
     }
-    if (node->prev_link != nullptr) {
-      node->prev_link->next = next;
+    if (node->prev != nullptr) {
+      node->prev->next = next;
     }
     delete node;
     node = next;
@@ -940,12 +940,12 @@ void TTaskForce::SetMapOrderType5AndQueue(int nOrderTarget) {
   activeChildEntry = nullptr;
 
   for (TMapOrderChildLinkNode* node = childOrderList; node != nullptr;) {
-    if (node->active_flag != 0) {
+    if (node->active != 0) {
       node = node->next;
       continue;
     }
 
-    TTaskForce* child = node->object_ptr;
+    TTaskForce* child = static_cast<TTaskForce*>(node->payload);
     child->owner = nullptr;
 
     short bucketIndex = static_cast<short>(
@@ -959,10 +959,10 @@ void TTaskForce::SetMapOrderType5AndQueue(int nOrderTarget) {
 
     TMapOrderChildLinkNode* next = node->next;
     if (next != nullptr) {
-      next->prev_link = node->prev_link;
+      next->prev = node->prev;
     }
-    if (node->prev_link != nullptr) {
-      node->prev_link->next = next;
+    if (node->prev != nullptr) {
+      node->prev->next = next;
     }
     delete node;
     node = next;
@@ -1022,9 +1022,9 @@ void TTaskForce::RefreshTaskForceSelectionFlagsForCurrentNationOrders(int mode) 
 // FUNCTION: IMPERIALISM 0x00553a50
 void TTaskForce::ApplyTaskForceSelectionModeForCurrentNationOrders(char reserveExtraSlot) {
   for (TMapOrderChildLinkNode* node = childOrderList; node != nullptr; node = node->next) {
-    if (node->active_flag != 0) {
+    if (node->active != 0) {
       // Same node+0x34 overrun documented on FindOrCreateChildOrderLink.
-      *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(node->object_ptr) + 0x34) =
+      *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(node->payload) + 0x34) =
           (reserveExtraSlot != 0) ? 1u : 2u;
     }
   }
@@ -1043,8 +1043,8 @@ void TTaskForce::ApplyTaskForceSelectionModeForCurrentNationOrders(char reserveE
 
   for (TMapOrderChildLinkNode* recheckNode = childOrderList; recheckNode != nullptr;
        recheckNode = recheckNode->next) {
-    recheckNode->active_flag =
-        *reinterpret_cast<int*>(reinterpret_cast<char*>(recheckNode->object_ptr) + 0x34) == 0;
+    recheckNode->active =
+        *reinterpret_cast<int*>(reinterpret_cast<char*>(recheckNode->payload) + 0x34) == 0;
   }
 }
 
@@ -1063,7 +1063,7 @@ unsigned int TTaskForce::HasActiveMapOrderEntryChildren() {
     const short* words = reinterpret_cast<const short*>(reinterpret_cast<const char*>(this) + 0x1e);
     if (words[0] + words[1] + words[2] + words[3] != 0) {
       for (TMapOrderChildLinkNode* node = childOrderList; node != nullptr; node = node->next) {
-        if (node->active_flag != 0) {
+        if (node->active != 0) {
           return reinterpret_cast<unsigned int>(node) & 0xffffff00u;
         }
       }
@@ -1078,7 +1078,7 @@ void TTaskForce::FindOrCreateChildOrderLink(TTaskForce* node) {
   TMapOrderChildLinkNode* existingLink;
   if (head == 0) {
     existingLink = 0;
-  } else if (head->object_ptr != node) {
+  } else if (head->payload != node) {
     existingLink = head->next->FindNodeMatching(node);
   } else {
     existingLink = head;
@@ -1096,7 +1096,7 @@ void TTaskForce::FindOrCreateChildOrderLink(TTaskForce* node) {
     short nodePriority = static_cast<short>(
         g_NavyOrderResourceDescriptorTable[node->order_type].enabledFlagOrBucketOffset);
     do {
-      if (static_cast<short>(g_NavyOrderResourceDescriptorTable[nextLink->object_ptr->order_type]
+      if (static_cast<short>(g_NavyOrderResourceDescriptorTable[static_cast<TTaskForce*>(nextLink->payload)->order_type]
                                  .enabledFlagOrBucketOffset) >= nodePriority) {
         break;
       }
@@ -1107,15 +1107,15 @@ void TTaskForce::FindOrCreateChildOrderLink(TTaskForce* node) {
 
   TMapOrderChildLinkNode* newLink = new TMapOrderChildLinkNode();
   if (newLink != 0) {
-    newLink->object_ptr = node;
+    newLink->payload = node;
     newLink->next = nextLink;
-    newLink->prev_link = prevLink;
-    newLink->active_flag = 1;
+    newLink->prev = prevLink;
+    newLink->active = 1;
     if (nextLink != 0) {
-      nextLink->prev_link = newLink;
+      nextLink->prev = newLink;
     }
-    if (newLink->prev_link != 0) {
-      newLink->prev_link->next = newLink;
+    if (newLink->prev != 0) {
+      newLink->prev->next = newLink;
     }
   } else {
     MessageBoxA(nullptr, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
@@ -1158,7 +1158,7 @@ void TTaskForce::RecomputeMapOrderChildAggregateMetric() {
   activeChildEntry = nullptr;
   for (TMapOrderChildLinkNode* node = childOrderList; node != nullptr; node = node->next) {
     activeChildEntry =
-        node->object_ptr->SelectPreferredMapOrderEntryByPriorityRules(activeChildEntry, 0);
+        static_cast<TTaskForce*>(node->payload)->SelectPreferredMapOrderEntryByPriorityRules(activeChildEntry, 0);
   }
 }
 
@@ -1167,8 +1167,8 @@ void TTaskForce::RebuildMapOrderEntryChildren() {
   activeChildEntry = nullptr;
   TMapOrderChildLinkNode* node = childOrderList;
   while (node != nullptr) {
-    if (node->active_flag == 0) {
-      TTaskForce* entry = node->object_ptr;
+    if (node->active == 0) {
+      TTaskForce* entry = static_cast<TTaskForce*>(node->payload);
       entry->owner = nullptr;
 
       short bucketIndex = static_cast<short>(
@@ -1181,10 +1181,10 @@ void TTaskForce::RebuildMapOrderEntryChildren() {
       }
       TMapOrderChildLinkNode* next = node->next;
       if (next != nullptr) {
-        next->prev_link = node->prev_link;
+        next->prev = node->prev;
       }
-      if (node->prev_link != nullptr) {
-        node->prev_link->next = node->next;
+      if (node->prev != nullptr) {
+        node->prev->next = node->next;
       }
       delete node;
       node = next;
@@ -1196,7 +1196,7 @@ void TTaskForce::RebuildMapOrderEntryChildren() {
   activeChildEntry = nullptr;
   for (node = childOrderList; node != nullptr; node = node->next) {
     activeChildEntry =
-        node->object_ptr->SelectPreferredMapOrderEntryByPriorityRules(activeChildEntry, 0);
+        static_cast<TTaskForce*>(node->payload)->SelectPreferredMapOrderEntryByPriorityRules(activeChildEntry, 0);
   }
 }
 
@@ -1204,20 +1204,20 @@ void TTaskForce::RebuildMapOrderEntryChildren() {
 char TTaskForce::PruneInactiveTaskForceOrderHead() {
   TMapOrderChildLinkNode* head = childOrderList;
   if (head != 0) {
-    TTaskForce* headChild = head->object_ptr;
+    TTaskForce* headChild = static_cast<TTaskForce*>(head->payload);
     unsigned char headDefeated = (headChild->required_count <= 0);
     if (headDefeated != 0) {
       headChild->owner = 0;
-      head->object_ptr->Free();
+      static_cast<TTaskForce*>(head->payload)->Free();
 
       // Unlink the head link node (inlined DeleteMapOrderChildLinkAndReturnNext,
       // same manual unlink TTaskForce::Free uses).
       TMapOrderChildLinkNode* next = head->next;
       if (next != 0) {
-        next->prev_link = head->prev_link;
+        next->prev = head->prev;
       }
-      if (head->prev_link != 0) {
-        head->prev_link->next = head->next;
+      if (head->prev != 0) {
+        head->prev->next = head->next;
       }
       delete head;
 
@@ -1232,7 +1232,7 @@ char TTaskForce::PruneInactiveTaskForceOrderHead() {
   TMapOrderChildLinkNode* node;
   for (node = head; node != 0; node = node->next) {
     activeChildEntry =
-        node->object_ptr->SelectPreferredMapOrderEntryByPriorityRules(activeChildEntry, 0);
+        static_cast<TTaskForce*>(node->payload)->SelectPreferredMapOrderEntryByPriorityRules(activeChildEntry, 0);
   }
 
   if (childOrderList == 0) {
@@ -1306,7 +1306,7 @@ unsigned int TTaskForce::CanQueueMapOrderForProvinceContext(void* province) {
   bool noneQueued = (this == nullptr) || (words[0] + words[1] + words[2] + words[3]) == 0;
   if (!noneQueued) {
     for (TMapOrderChildLinkNode* node = childOrderList; node != nullptr; node = node->next) {
-      if (node->active_flag != 0) {
+      if (node->active != 0) {
         return *(reinterpret_cast<unsigned char*>(province) + 0xa0);
       }
     }
@@ -1323,12 +1323,12 @@ void TTaskForce::RequeueMapOrderEntry() {
   activeChildEntry = 0;
   TMapOrderChildLinkNode* node = childOrderList;
   while (node != 0) {
-    if (node->active_flag != 0) {
+    if (node->active != 0) {
       node = node->next;
     } else {
-      node->object_ptr->owner = 0;
+      static_cast<TTaskForce*>(node->payload)->owner = 0;
       short bucketIndex =
-          static_cast<short>(g_NavyOrderResourceDescriptorTable[node->object_ptr->order_type]
+          static_cast<short>(g_NavyOrderResourceDescriptorTable[static_cast<TTaskForce*>(node->payload)->order_type]
                                  .enabledFlagOrBucketOffset);
       short* bucketCounter = reinterpret_cast<short*>(pad_1e) + bucketIndex;
       --*bucketCounter;
@@ -1339,10 +1339,10 @@ void TTaskForce::RequeueMapOrderEntry() {
       // here instead of calling 0x552590.
       TMapOrderChildLinkNode* following = node->next;
       if (following != 0) {
-        following->prev_link = node->prev_link;
+        following->prev = node->prev;
       }
-      if (node->prev_link != 0) {
-        node->prev_link->next = node->next;
+      if (node->prev != 0) {
+        node->prev->next = node->next;
       }
       delete node;
       node = following;
@@ -1352,7 +1352,7 @@ void TTaskForce::RequeueMapOrderEntry() {
   activeChildEntry = 0;
   for (node = childOrderList; node != 0; node = node->next) {
     activeChildEntry =
-        node->object_ptr->SelectPreferredMapOrderEntryByPriorityRules(activeChildEntry, 0);
+        static_cast<TTaskForce*>(node->payload)->SelectPreferredMapOrderEntryByPriorityRules(activeChildEntry, 0);
   }
   AssertValid();
 
@@ -1404,7 +1404,7 @@ void TTaskForce::RecomputeTaskForceAverageOrderScore() {
   for (TMapOrderChildLinkNode* node = childOrderList; node != nullptr; node = node->next) {
     // Each child entry's +0x10 slot read as a flat aggregate (same opaque order-node
     // internals SelectPreferredMapOrderEntryByPriorityRules reaches via raw casts).
-    sum += *reinterpret_cast<int*>(reinterpret_cast<char*>(node->object_ptr) + 0x10);
+    sum += *reinterpret_cast<int*>(reinterpret_cast<char*>(node->payload) + 0x10);
     ++count;
   }
   // The rounded average is written back as one 32-bit store spanning this entry's
@@ -1423,17 +1423,17 @@ void TTaskForce::SetTaskForceOrderSelectionByNationClassAndFlag(short nationClas
   if (node == nullptr) {
     return;
   }
-  while (static_cast<short>(g_NavyOrderResourceDescriptorTable[node->object_ptr->order_type]
+  while (static_cast<short>(g_NavyOrderResourceDescriptorTable[static_cast<TTaskForce*>(node->payload)->order_type]
                                 .enabledFlagOrBucketOffset) != nationClass ||
-         node->active_flag == activeFlag) {
+         node->active == activeFlag) {
     node = node->next;
     if (node == nullptr) {
       return;
     }
   }
-  node->active_flag = activeFlag;
+  node->active = activeFlag;
   if (activeFlag != 0) {
-    *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(node->object_ptr) + 0x34) = 0;
+    *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(node->payload) + 0x34) = 0;
   }
 }
 
@@ -1443,13 +1443,13 @@ void TTaskForce::SetTaskForceOrderSelectionByNodeId(TTaskForce* targetOrderObjec
   TMapOrderChildLinkNode* node;
   if (childOrderList == nullptr) {
     node = nullptr;
-  } else if (childOrderList->object_ptr == targetOrderObject) {
+  } else if (childOrderList->payload == targetOrderObject) {
     node = childOrderList;
   } else {
     node = childOrderList->next->FindNodeMatching(targetOrderObject);
   }
   if (node != nullptr) {
-    node->active_flag = activeFlag;
+    node->active = activeFlag;
     if (activeFlag != 0) {
       *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(targetOrderObject) + 0x34) = 0;
     }
@@ -1460,9 +1460,9 @@ void TTaskForce::SetTaskForceOrderSelectionByNodeId(TTaskForce* targetOrderObjec
 int TTaskForce::CountTaskForceSelectedOrdersByNationClass(short nationClass) {
   int count = 0;
   for (TMapOrderChildLinkNode* node = childOrderList; node != nullptr; node = node->next) {
-    if (static_cast<short>(g_NavyOrderResourceDescriptorTable[node->object_ptr->order_type]
+    if (static_cast<short>(g_NavyOrderResourceDescriptorTable[static_cast<TTaskForce*>(node->payload)->order_type]
                                .enabledFlagOrBucketOffset) == nationClass &&
-        node->active_flag != 0) {
+        node->active != 0) {
       ++count;
     }
   }
@@ -1473,10 +1473,10 @@ int TTaskForce::CountTaskForceSelectedOrdersByNationClass(short nationClass) {
 unsigned int TTaskForce::GetMinActionThresholdFromEntryChildren() {
   unsigned int minWeight = 10000;
   for (TMapOrderChildLinkNode* node = childOrderList; node != nullptr; node = node->next) {
-    if (node->active_flag != 0 &&
-        g_NavyOrderResourceDescriptorTable[node->object_ptr->order_type].descriptorWeight <
+    if (node->active != 0 &&
+        g_NavyOrderResourceDescriptorTable[static_cast<TTaskForce*>(node->payload)->order_type].descriptorWeight <
             static_cast<int>(minWeight)) {
-      minWeight = g_NavyOrderResourceDescriptorTable[node->object_ptr->order_type].descriptorWeight;
+      minWeight = g_NavyOrderResourceDescriptorTable[static_cast<TTaskForce*>(node->payload)->order_type].descriptorWeight;
     }
   }
   return minWeight == 10000 ? 0 : minWeight;
@@ -1487,8 +1487,8 @@ int TTaskForce::CalculateMapOrderEntryAverageChildRatingX10() {
   int sum = 0;
   int count = 0;
   for (TMapOrderChildLinkNode* node = childOrderList; node != nullptr; node = node->next) {
-    if (node->active_flag != 0) {
-      sum += g_NavyOrderResourceDescriptorTable[node->object_ptr->order_type].descriptorWeight;
+    if (node->active != 0) {
+      sum += g_NavyOrderResourceDescriptorTable[static_cast<TTaskForce*>(node->payload)->order_type].descriptorWeight;
       ++count;
     }
   }
@@ -1618,8 +1618,8 @@ char TTaskForce::ResolveTaskForceOrderConflictAndPickCandidate(TTaskForce* other
     int sum = 0;
     int count = 0;
     for (TMapOrderChildLinkNode* node = childOrderList; node != nullptr; node = node->next) {
-      if (node->active_flag != 0) {
-        sum += g_NavyOrderResourceDescriptorTable[node->object_ptr->order_type].descriptorWeight;
+      if (node->active != 0) {
+        sum += g_NavyOrderResourceDescriptorTable[static_cast<TTaskForce*>(node->payload)->order_type].descriptorWeight;
         ++count;
       }
     }
@@ -1692,8 +1692,8 @@ char TTaskForce::ShouldAttemptMapOrderPairResolution(TTaskForce* other) {
   int sum = 0;
   int count = 0;
   for (TMapOrderChildLinkNode* node = childOrderList; node != nullptr; node = node->next) {
-    if (node->active_flag != 0) {
-      sum += g_NavyOrderResourceDescriptorTable[node->object_ptr->order_type].descriptorWeight;
+    if (node->active != 0) {
+      sum += g_NavyOrderResourceDescriptorTable[static_cast<TTaskForce*>(node->payload)->order_type].descriptorWeight;
       ++count;
     }
   }
@@ -1712,12 +1712,12 @@ char TTaskForce::ShouldAttemptMapOrderPairResolution(TTaskForce* other) {
 char TTaskForce::TryMarkLosingMapOrderEntryFromForceBalance(TTaskForce* other) {
   int thisTotal = 0;
   for (TMapOrderChildLinkNode* node = childOrderList; node != nullptr; node = node->next) {
-    thisTotal += node->object_ptr->ComputeMapOrderEntryHeuristicScore();
+    thisTotal += static_cast<TTaskForce*>(node->payload)->ComputeMapOrderEntryHeuristicScore();
   }
   int otherTotal = 0;
   for (TMapOrderChildLinkNode* otherNode = other->childOrderList; otherNode != nullptr;
        otherNode = otherNode->next) {
-    otherTotal += otherNode->object_ptr->ComputeMapOrderEntryHeuristicScore();
+    otherTotal += static_cast<TTaskForce*>(otherNode->payload)->ComputeMapOrderEntryHeuristicScore();
   }
 
   if (thisTotal * 100 < kOrderTypePriorityWeight[order_type] * otherTotal) {
@@ -1754,9 +1754,9 @@ char TTaskForce::TryMarkLosingMapOrderEntryFromForceBalance(TTaskForce* other) {
 char TTaskForce::ComputeTaskForceOrderTieBreakScore(TTaskForce* other) {
   unsigned short minDescriptorWeight = 10000;
   for (TMapOrderChildLinkNode* node = childOrderList; node != nullptr; node = node->next) {
-    if (node->active_flag != 0) {
+    if (node->active != 0) {
       short weight = static_cast<short>(
-          g_NavyOrderResourceDescriptorTable[node->object_ptr->order_type].descriptorWeight);
+          g_NavyOrderResourceDescriptorTable[static_cast<TTaskForce*>(node->payload)->order_type].descriptorWeight);
       if (weight < static_cast<short>(minDescriptorWeight)) {
         minDescriptorWeight = static_cast<unsigned short>(weight);
       }
@@ -1767,8 +1767,8 @@ char TTaskForce::ComputeTaskForceOrderTieBreakScore(TTaskForce* other) {
   int count = 0;
   for (TMapOrderChildLinkNode* otherNode = other->childOrderList; otherNode != nullptr;
        otherNode = otherNode->next) {
-    if (otherNode->active_flag != 0) {
-      sum += g_NavyOrderResourceDescriptorTable[otherNode->object_ptr->order_type].descriptorWeight;
+    if (otherNode->active != 0) {
+      sum += g_NavyOrderResourceDescriptorTable[static_cast<TTaskForce*>(otherNode->payload)->order_type].descriptorWeight;
       ++count;
     }
   }
@@ -1814,7 +1814,7 @@ char TTaskForce::IsTaskForceOrderMixWithinPriorityThresholds(TTaskForce* other) 
 int TTaskForce::ComputeTaskForceOrderAggregateScore() {
   int total = 0;
   for (TMapOrderChildLinkNode* node = childOrderList; node != nullptr; node = node->next) {
-    total += node->object_ptr->ComputeMapOrderEntryHeuristicScore();
+    total += static_cast<TTaskForce*>(node->payload)->ComputeMapOrderEntryHeuristicScore();
   }
   return total;
 }
@@ -1838,7 +1838,7 @@ void TTaskForce::ApplyMapOrderTypeExecutionEffects() {
   switch (attachment) {
   case 1: {
     for (TMapOrderChildLinkNode* node = childOrderList; node != nullptr; node = node->next) {
-      node->object_ptr->attachment = reinterpret_cast<int>(owner);
+      static_cast<TTaskForce*>(node->payload)->attachment = reinterpret_cast<int>(owner);
     }
     return;
   }
@@ -1854,7 +1854,7 @@ void TTaskForce::ApplyMapOrderTypeExecutionEffects() {
   }
   case 8: {
     for (TMapOrderChildLinkNode* node = childOrderList; node != nullptr; node = node->next) {
-      TTaskForce* child = node->object_ptr;
+      TTaskForce* child = static_cast<TTaskForce*>(node->payload);
       short cap =
           static_cast<short>(g_NavyOrderResourceDescriptorTable[child->order_type].stockCap);
       child->required_count = static_cast<s16>(child->required_count + cap / 4);

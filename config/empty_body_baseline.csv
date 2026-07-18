@@ -10,7 +10,8 @@ include/game/TList.h|0|0|1|0
 include/game/TMiniCivView.h|0|0|1|0
 include/game/TTacticalPlayer.h|0|0|1|0
 include/game/TTacticalUnit.h|0|0|1|0
-include/game/TTaskForce.h|0|0|1|0
+include/game/TTaskForce.h|0|0|0|0
+include/game/TMapOrderChildLinkNode.h|0|0|1|0
 include/game/TTechItemView.h|0|0|1|0
 src/game/CMainFrame.cpp|0|0|1|0
 src/game/T2PictToggleButton.cpp|0|0|1|0

@@ -57,7 +57,7 @@ void CopyCStringIntoFixedBuffer(char* dest, int destSize, const char* src) {
 float SumMapOrderChildPowerAtOrAboveTier(TMapOrderChildLinkNode* head, int minTier) {
   float total = 0.0f;
   for (TMapOrderChildLinkNode* node = head; node != nullptr; node = node->next) {
-    TTaskForce* child = node->object_ptr;
+    TTaskForce* child = static_cast<TTaskForce*>(node->payload);
     const TNavyOrderResourceDescriptor& descriptor =
         g_NavyOrderResourceDescriptorTable[child->order_type];
     if (descriptor.priorityTier < minTier) {
@@ -73,7 +73,7 @@ float SumMapOrderChildPowerAtOrAboveTier(TMapOrderChildLinkNode* head, int minTi
 int CountMapOrderChildrenAtOrAboveTier(TMapOrderChildLinkNode* head, int minTier) {
   int count = 0;
   for (TMapOrderChildLinkNode* node = head; node != nullptr; node = node->next) {
-    if (g_NavyOrderResourceDescriptorTable[node->object_ptr->order_type].priorityTier >= minTier) {
+    if (g_NavyOrderResourceDescriptorTable[static_cast<TTaskForce*>(node->payload)->order_type].priorityTier >= minTier) {
       ++count;
     }
   }
@@ -105,7 +105,7 @@ void ApplyMapOrderConflictAttrition(TMapOrderChildLinkNode* head, int currentCou
     if (currentCount == target || static_cast<int>(rand()) % currentCount < target) {
       ++selected;
       int roll = static_cast<int>(rand()) % 100 + static_cast<int>(rand()) % 100 + 100;
-      TTaskForce* child = node->object_ptr;
+      TTaskForce* child = static_cast<TTaskForce*>(node->payload);
       float delta = 0.5f + g_NavyOrderResourceDescriptorTable[child->order_type].taskForceWeight *
                                (roll * 0.005f) * favorRatio * -0.01f;
       child->required_count = static_cast<short>(child->required_count - static_cast<short>(delta));
@@ -123,7 +123,7 @@ TMapOrderChildLinkNode* PruneMapOrderConflictHeadAndTail(TMapOrderChildLinkNode*
   if (head == nullptr) {
     return nullptr;
   }
-  TTaskForce* child = head->object_ptr;
+  TTaskForce* child = static_cast<TTaskForce*>(head->payload);
   if (child->required_count < 1) {
     child->SetMapOrderActiveChildEntry(nullptr);
     child->Free();
@@ -169,7 +169,7 @@ void BuildMapOrderBattleSideSnapshot(MapOrderBattleSnapshot* snapshot, int side,
     // These children are TShip primary-order nodes (not nested TTaskForce entries --
     // confirmed via the CString read at +0x18, which only lines up with
     // TShip::displayName18; TTaskForce's own +0x18 is contextAnchor, an int).
-    TShip* child = node->ShipPayload();
+    TShip* child = static_cast<TShip*>(node->payload);
     MapOrderBattleSideChildRecord& rec = records[idx];
     rec.resourceType = child->resourceType04;
     rec.stockOrRequired = child->stockLevel1c;
@@ -600,9 +600,9 @@ void RevalidateAndRequeueMapOrdersForTurn() {
         TMapOrderChildLinkNode* node = entry->childOrderList;
         if (node != 0) {
           do {
-            node->active_flag =
-                node->object_ptr->required_count <
-                g_NavyOrderResourceDescriptorTable[node->object_ptr->order_type].stockCap;
+            node->active =
+                static_cast<TTaskForce*>(node->payload)->required_count <
+                g_NavyOrderResourceDescriptorTable[static_cast<TTaskForce*>(node->payload)->order_type].stockCap;
             node = node->next;
           } while (node != 0);
         }
@@ -616,7 +616,7 @@ void RevalidateAndRequeueMapOrdersForTurn() {
       TMapOrderChildLinkNode* node = entry->childOrderList;
       if (node != 0) {
         do {
-          node->active_flag = 1;
+          node->active = 1;
           node = node->next;
         } while (node != 0);
       }
@@ -634,12 +634,12 @@ void RevalidateAndRequeueMapOrdersForTurn() {
         entry->attachment = 4;
         entry->activeChildEntry = 0;
         while (node != 0) {
-          if (node->active_flag != 0) {
+          if (node->active != 0) {
             node = node->next;
           } else {
-            node->object_ptr->SetMapOrderActiveChildEntry(0);
+            static_cast<TTaskForce*>(node->payload)->SetMapOrderActiveChildEntry(0);
             short bucketIndex =
-                static_cast<short>(g_NavyOrderResourceDescriptorTable[node->object_ptr->order_type]
+                static_cast<short>(g_NavyOrderResourceDescriptorTable[static_cast<TTaskForce*>(node->payload)->order_type]
                                        .enabledFlagOrBucketOffset);
             short* bucketCounter = reinterpret_cast<short*>(entry->pad_1e) + bucketIndex;
             --*bucketCounter;
@@ -651,7 +651,7 @@ void RevalidateAndRequeueMapOrdersForTurn() {
         }
         entry->activeChildEntry = 0;
         for (node = entry->childOrderList; node != 0; node = node->next) {
-          entry->activeChildEntry = node->object_ptr->SelectPreferredMapOrderEntryByPriorityRules(
+          entry->activeChildEntry = static_cast<TTaskForce*>(node->payload)->SelectPreferredMapOrderEntryByPriorityRules(
               entry->activeChildEntry, 0);
         }
         entry->AssertValid();
@@ -894,11 +894,11 @@ TTaskForce* TNavyMgr::UpdateType7NavyOrderChildSelectionByChanceThreshold(short 
 
   if (entry != nullptr) {
     for (TMapOrderChildLinkNode* node = entry->childOrderList; node != nullptr; node = node->next) {
-      TTaskForce* child = node->object_ptr;
+      TTaskForce* child = static_cast<TTaskForce*>(node->payload);
       bool notSelected =
           child->required_count < g_NavyOrderResourceDescriptorTable[child->order_type].stockCap ||
           chancePercent <= rand() % 100;
-      node->active_flag = notSelected ? 0 : 1;
+      node->active = notSelected ? 0 : 1;
     }
   }
 
@@ -932,13 +932,13 @@ char TNavyMgr::SelectEligibleMapOrderInteractionForNationAndContext(
   if (nationEntry != nullptr) {
     for (TMapOrderChildLinkNode* node = nationEntry->childOrderList; node != nullptr;
          node = node->next) {
-      TTaskForce* child = node->object_ptr;
+      TTaskForce* child = static_cast<TTaskForce*>(node->payload);
       char active = 1;
       if (child->required_count < g_NavyOrderResourceDescriptorTable[child->order_type].stockCap ||
           static_cast<int>(priorityRatio) <= static_cast<int>(rand()) % 100) {
         active = 0;
       }
-      node->active_flag = active;
+      node->active = active;
     }
   }
 
@@ -981,9 +981,9 @@ char TNavyMgr::SelectEligibleMapOrderInteractionForNationAndContext(
     int ratingSum = 0;
     int activeCount = 0;
     for (TMapOrderChildLinkNode* node = entry->childOrderList; node != nullptr; node = node->next) {
-      if (node->active_flag != 0) {
+      if (node->active != 0) {
         ratingSum +=
-            g_NavyOrderResourceDescriptorTable[node->object_ptr->order_type].descriptorWeight;
+            g_NavyOrderResourceDescriptorTable[static_cast<TTaskForce*>(node->payload)->order_type].descriptorWeight;
         ++activeCount;
       }
     }
@@ -1114,10 +1114,10 @@ void TNavyMgr::ProcessNationMapOrderInteractionsAndApplyOutcomes(short mode) {
           if (childCount > 0) {
             for (TMapOrderChildLinkNode* node = orderEntry->childOrderList; node != nullptr;
                  node = node->next) {
-              node->object_ptr->tiebreak_strength = static_cast<short>(
-                  node->object_ptr->tiebreak_strength + (transferredCount * 3) / childCount);
-              if (node->object_ptr->tiebreak_strength > 499) {
-                node->object_ptr->tiebreak_strength = 499;
+              static_cast<TTaskForce*>(node->payload)->tiebreak_strength = static_cast<short>(
+                  static_cast<TTaskForce*>(node->payload)->tiebreak_strength + (transferredCount * 3) / childCount);
+              if (static_cast<TTaskForce*>(node->payload)->tiebreak_strength > 499) {
+                static_cast<TTaskForce*>(node->payload)->tiebreak_strength = 499;
               }
             }
           }
@@ -1146,14 +1146,14 @@ void TNavyMgr::ResolveMapOrderPairConflictStep(TTaskForce* leftEntry, TTaskForce
   int maxTier = 1;
   for (TMapOrderChildLinkNode* node = leftEntry->childOrderList; node != nullptr;
        node = node->next) {
-    int tier = g_NavyOrderResourceDescriptorTable[node->object_ptr->order_type].priorityTier;
+    int tier = g_NavyOrderResourceDescriptorTable[static_cast<TTaskForce*>(node->payload)->order_type].priorityTier;
     if (tier > maxTier) {
       maxTier = tier;
     }
   }
   for (TMapOrderChildLinkNode* rightNode = rightEntry->childOrderList; rightNode != nullptr;
        rightNode = rightNode->next) {
-    int tier = g_NavyOrderResourceDescriptorTable[rightNode->object_ptr->order_type].priorityTier;
+    int tier = g_NavyOrderResourceDescriptorTable[static_cast<TTaskForce*>(rightNode->payload)->order_type].priorityTier;
     if (tier > maxTier) {
       maxTier = tier;
     }
@@ -1286,7 +1286,7 @@ void TNavyMgr::ResolveMapOrderPairConflictStep(TTaskForce* leftEntry, TTaskForce
     if (winnerCount > 0) {
       for (TMapOrderChildLinkNode* node = winner->childOrderList; node != nullptr;
            node = node->next) {
-        node->object_ptr->AdjustMapOrderNodeStatCapped499(
+        static_cast<TTaskForce*>(node->payload)->AdjustMapOrderNodeStatCapped499(
             static_cast<short>((bump * 3) / winnerCount));
       }
     }

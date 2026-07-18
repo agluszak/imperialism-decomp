@@ -4,6 +4,7 @@
 #include "decomp_types.h"
 #include "game/TObject.h"
 #include "game/mfc.h"
+#include "game/TMapOrderChildLinkNode.h"
 
 class TTaskForce;
 class TStream;
@@ -11,84 +12,6 @@ class CString;
 class TZone;
 class TShip;
 
-// Child-link node for map-order mission trees (NOT TOcean / TZone).
-struct TMapOrderChildLinkNode {
-  // The payload is a "map order node": either a TTaskForce map-order entry (the
-  // dominant case -- order_type/required_count/tiebreak_strength accessed directly) or a
-  // TShip primary-order node. Both share the +0x04/+0x1c/+0x30 order-node read offsets,
-  // and the original dispatches __thiscall on both receiver types (see the receiver-pun
-  // notes on TShip). Typed TTaskForce* for the common case; use ShipPayload() at the
-  // documented TShip sites instead of an open-coded reinterpret_cast.
-  TTaskForce* object_ptr;
-  // The same payload reinterpreted as its TShip primary-order-node form (genuine,
-  // documented heterogeneity -- the two classes share the order-node layout region).
-  TShip* ShipPayload() const {
-    return reinterpret_cast<TShip*>(object_ptr);
-  }
-  TMapOrderChildLinkNode* next;
-  TMapOrderChildLinkNode* prev_link;
-  unsigned char active_flag;
-  unsigned char pad_0d;
-  unsigned char pad_0e;
-  unsigned char pad_0f;
-
-  // Trivial default ctor for the POD link node: FindOrCreateChildOrderLink's raw `new`
-  // (0x553bc0) does no field writes before the caller's own stores. It exists only
-  // because the chain-insert ctor below suppresses the implicit one; no original
-  // function address corresponds to it (never emitted out of line).
-  TMapOrderChildLinkNode() {}
-  // Inline head-insert constructor: chains the new node in front of `nextNode`
-  // (which may be null). CreateLinkedOrderNode's 0x552650 body is exactly the
-  // `new`-site expansion of this ctor under /Ob1 (in-class definition, heuristic
-  // 116): alloc null-guard, these assignments in this order, then the two relinks.
-  // The pad bytes stay uninitialized, matching the original stores.
-  TMapOrderChildLinkNode(TTaskForce* childNode, TMapOrderChildLinkNode* nextNode) {
-    next = nextNode;
-    object_ptr = childNode;
-    prev_link = 0;
-    active_flag = 1;
-    if (nextNode != 0) {
-      nextNode->prev_link = this;
-    }
-    if (prev_link != 0) {
-      prev_link->next = this;
-    }
-  }
-
-  // Real __thiscall method (0x552510, ECX=this node, one stack arg, RET 4) --
-  // was mis-modeled as a "static" TTaskForce member taking (node, child_node) as
-  // two ordinary params, which mismatched the callee-cleans-1-arg convention Ghidra
-  // showed (bd 1uj.16.1 fix). Walks `this` and its `next` chain (null-safe on `this`)
-  // for the first node whose object_ptr == child_node.
-  TMapOrderChildLinkNode* FindNodeMatching(TTaskForce* child_node); // 0x552510
-
-  // Real __thiscall method (0x536f70, ECX=this node, one stack arg, RET 4) -- was mis-
-  // modeled as a "static" TScatteredShipsMission member taking (node, flag), same class
-  // of bug FindNodeMatching had (bd 1uj.16.3 fix). Null-safe on `this`; sets active_flag
-  // on `this` and every following node in the `next` chain.
-  void SetChainActiveFlag(unsigned char flag); // 0x536f70
-
-  // The four link-list helpers below are likewise real __thiscall methods on the node
-  // (ECX = node in every original call site) -- they were mis-modeled as "static"
-  // TTaskForce members taking the node as a stack parameter, which emitted a
-  // push+cdecl call shape the original never uses (same bug family as FindNodeMatching).
-
-  // Unlinks `this` from its siblings, frees it, and returns the old `next`. 0x552590.
-  TMapOrderChildLinkNode* DeleteMapOrderChildLinkAndReturnNext();
-  // Null-safe on `this`; unlinks and frees the first node in the chain whose
-  // object_ptr == child_node (recursing down `next`). Returns the node now standing
-  // where `this` stood (0 on null, the old `next` when `this` itself was removed,
-  // otherwise `this`); every current caller ignores it. 0x5525d0, RET 4.
-  TMapOrderChildLinkNode* RemoveLinkedOrderNodeByValueRecursive(TTaskForce* child_node);
-  // Receiver is the NEW node's `next` (may be null): allocates a fresh link node for
-  // child_node, chained in front of `this`, and returns it. 0x552650, RET 4.
-  TMapOrderChildLinkNode* CreateLinkedOrderNode(TTaskForce* child_node);
-  // Null-safe on `this`; frees leading defeated children (required_count <= 0) off the
-  // chain, recursively prunes the survivors' tail, and returns the new head. 0x5526e0.
-  TMapOrderChildLinkNode* PruneDefeatedMapOrderChildrenAndReturnHead();
-};
-
-ASSERT_SIZE(TMapOrderChildLinkNode, 0x10);
 
 // The former TMapOrderEntryOwnerContext placeholder struct (this comment block
 // used to sit here) is gone: bd 1uj.16.1 resolved FindOrCreateChildOrderLink's
@@ -310,8 +233,8 @@ public:
   // returns 0 if none are active (used as a gating predicate for map-order actions).
   unsigned int GetMinActionThresholdFromEntryChildren(); // 0x554a80
 
-  // Finds the childOrderList entry whose object_ptr == targetOrderObject (head fast-path,
-  // else FindNodeMatching from the second node) and, if found, sets its active_flag; when
+  // Finds the childOrderList entry whose payload == targetOrderObject (head fast-path,
+  // else FindNodeMatching from the second node) and, if found, sets its active; when
   // the flag is nonzero also clears targetOrderObject's +0x34 dword (same idiom as
   // SetTaskForceOrderSelectionByNationClassAndFlag).
   void SetTaskForceOrderSelectionByNodeId(TTaskForce* targetOrderObject,
@@ -392,19 +315,19 @@ public:
   // This order's resource-type calculateWeight column.
   short GetOrderNodeDescriptorWord0CByResourceType(); // 0x550820
 
-  // Marks every active childOrderList entry's order node (object_ptr+0x34 -- same
+  // Marks every active childOrderList entry's order node (payload+0x34 -- same
   // out-of-bounds write documented on FindOrCreateChildOrderLink) with a 1-or-2
   // selection-mode code depending on `reserveExtraSlot`, then scans the global primary
   // navy order list (g_pNavyPrimaryOrderListHead) for TShip nodes matching this entry's
   // contextAnchor/required_count and re-attaches each one via FindOrCreateChildOrderLink,
-  // and finally recomputes each childOrderList entry's active_flag from whether its
+  // and finally recomputes each childOrderList entry's active from whether its
   // node+0x34 slot was left at 0.
   void ApplyTaskForceSelectionModeForCurrentNationOrders(char reserveExtraSlot); // 0x553a50
 
   // Finds the first childOrderList entry whose order node's resource-type bucket
   // (g_NavyOrderResourceDescriptorTable[...].enabledFlagOrBucketOffset, low word) equals
-  // `nationClass` and whose active_flag differs from `activeFlag`; sets that entry's
-  // active_flag and, when activating (activeFlag != 0), clears its order node's +0x34
+  // `nationClass` and whose active differs from `activeFlag`; sets that entry's
+  // active and, when activating (activeFlag != 0), clears its order node's +0x34
   // slot (same overrun as above).
   void SetTaskForceOrderSelectionByNationClassAndFlag(short nationClass,
                                                       char activeFlag); // 0x554930
