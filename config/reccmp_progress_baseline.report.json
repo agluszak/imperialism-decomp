@@ -10151,7 +10151,7 @@
     },
     {
       "address": "0x4bac50",
-      "matching": 0.0,
+      "matching": 0.018691588785046728,
       "name": "BlitBitmapResourceRectWithScreenOffsetAndPalette",
       "type": 1
     },
@@ -10169,7 +10169,7 @@
     },
     {
       "address": "0x4bb7a0",
-      "matching": 0.0,
+      "matching": 0.0034904013961605585,
       "name": "TToolBarCluster::InitializeCityProductionDialog",
       "type": 1
     },
@@ -10199,7 +10199,7 @@
     },
     {
       "address": "0x4bc9b0",
-      "matching": 0.9295774647887324,
+      "matching": 0.9436619718309859,
       "name": "TCityProductionView::RenderViewIntoPrimaryRenderContextWithTemporaryClip",
       "type": 1
     },
@@ -13118,7 +13118,8 @@
     },
     {
       "address": "0x4e0610",
-      "matching": 1.0,
+      "effective": true,
+      "matching": 0.42857142857142855,
       "name": "TGreatPower::ReturnFalseNationStateActionStub_8a",
       "type": 1
     },
@@ -13166,7 +13167,7 @@
     },
     {
       "address": "0x4e09a0",
-      "matching": 0.5903614457831325,
+      "matching": 0.5662650602409639,
       "name": "TGreatPower::ComputeCityOrderCapabilityAggregateScore",
       "type": 1
     },
@@ -17513,7 +17514,7 @@
     },
     {
       "address": "0x5178f0",
-      "matching": 0.3260340632603406,
+      "matching": 0.3446601941747573,
       "name": "ComputeRepresentativeTileIndexForTerrainTypeWithWrapBias",
       "type": 1
     },
@@ -18114,7 +18115,8 @@
     },
     {
       "address": "0x522c10",
-      "matching": 1.0,
+      "effective": true,
+      "matching": 0.9848484848484849,
       "name": "TMapDialog::DrawMapDialogWrappedTileConnectionMarker_00522c10",
       "type": 1
     },
@@ -21608,7 +21610,7 @@
     },
     {
       "address": "0x545940",
-      "matching": 0.4299095607235142,
+      "matching": 0.4176356589147287,
       "name": "TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine",
       "type": 1
     },
@@ -22599,13 +22601,13 @@
     },
     {
       "address": "0x553b10",
-      "matching": 0.4827586206896552,
+      "matching": 0.6206896551724138,
       "name": "HasNoMapOrderEntryChildrenQueued",
       "type": 1
     },
     {
       "address": "0x553b50",
-      "matching": 0.5818181818181818,
+      "matching": 0.5454545454545454,
       "name": "HasActiveMapOrderEntryChildren",
       "type": 1
     },
@@ -22744,7 +22746,7 @@
     },
     {
       "address": "0x555420",
-      "matching": 0.544,
+      "matching": 0.5546666666666666,
       "name": "ResolveTaskForceOrderConflictAndPickCandidate",
       "type": 1
     },
@@ -22967,7 +22969,7 @@
     },
     {
       "address": "0x5578a0",
-      "matching": 0.44324324324324327,
+      "matching": 0.44594594594594594,
       "name": "ResolveMapOrderChainsForTurnPhase",
       "type": 1
     },

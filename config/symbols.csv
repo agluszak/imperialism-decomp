@@ -1924,17 +1924,17 @@ address|name|symbol|size|type|prototype|provenance
 4ba3b0|TTransFocusAnimation::InitializeCityBuildingControlRegions||718|function|void __thiscall InitializeCityBuildingControlRegions(void * pInitContext)|
 4ba740|TCityProductionView::ReleaseCityBuildingControls||70|function|void __thiscall ReleaseCityBuildingControls(void)|
 4ba7b0|THQButton::RenderCityBuildingIcons||929|function|void __thiscall RenderCityBuildingIcons(tagRECT * pTargetRect)|
-4bac50|BlitBitmapResourceRectWithScreenOffsetAndPalette||294|function|undefined BlitBitmapResourceRectWithScreenOffsetAndPalette()|
+4bac50|BlitBitmapResourceRectWithScreenOffsetAndPalette||294|function|undefined BlitBitmapResourceRectWithScreenOffsetAndPalette(RECT* sourceRect, int surface, short offsetY, short offsetX, undefined4 context, undefined4 flags, undefined4 palette)|
 4badd0|TCityProductionView::RenderNationHeaderDateLabelWithPeriodicRefresh||356|function|undefined RenderNationHeaderDateLabelWithPeriodicRefresh()|
 4bafa0|TToolBarCluster::HandleCityBuildingHoverSelection||1629|function|void __thiscall HandleCityBuildingHoverSelection(int * pCursorPoint, int nEventFlags)|
-4bb7a0|TToolBarCluster::InitializeCityProductionDialog||1849|function|undefined InitializeCityProductionDialog()|
+4bb7a0|TToolBarCluster::InitializeCityProductionDialog||1849|function|undefined InitializeCityProductionDialog(int arg1, int* arg2)|
 4bc0b0|UpdateCityProductionDialogCommodityValueControls||871|function|undefined UpdateCityProductionDialogCommodityValueControls()|
 4bc500|RefreshCityBuildingActionAvailabilityIndicators||199|function|undefined RefreshCityBuildingActionAvailabilityIndicators()|
 4bc610|WrapperFor_HandleCityDialogToggleCommandOrForward_At004bc610||62|function|undefined WrapperFor_HandleCityDialogToggleCommandOrForward_At004bc610()|
 4bc660|TCityProductionView::HandleCityBuildingSlotClickAndDispatchAction||411|function|undefined HandleCityBuildingSlotClickAndDispatchAction()|
 4bc870|WrapperFor_IsPointInsideHitRegion_At004bc870||121|function|undefined WrapperFor_IsPointInsideHitRegion_At004bc870()|
 4bc910|OrphanCallChain_C5_I49_004bc910||119|function|undefined OrphanCallChain_C5_I49_004bc910()|
-4bc9b0|TCityProductionView::RenderViewIntoPrimaryRenderContextWithTemporaryClip||244|function|undefined RenderViewIntoPrimaryRenderContextWithTemporaryClip()|
+4bc9b0|TCityProductionView::RenderViewIntoPrimaryRenderContextWithTemporaryClip||244|function|undefined RenderViewIntoPrimaryRenderContextWithTemporaryClip(int arg1, int arg2)|
 4bcaf0|RefreshCityDialogSummaryValues||874|function|undefined RefreshCityDialogSummaryValues()|
 4bcf40|TRailheadDialog::CreateObject|?CreateObject@TRailheadDialog@@SGPAVCObject@@XZ|106|function|undefined CreateObject()|rtti
 4bcfd0|TRailheadDialog::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|

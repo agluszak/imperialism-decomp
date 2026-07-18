@@ -29,9 +29,6 @@ address|class|slot|summary
 0x004b7c40|TPowerPlantOrder|0x38|declared 1 stack dword(s) -> expected RET 0x4, binary shows plain RET
 0x004b80a0|TFoodProcessingOrder|0x38|declared 1 stack dword(s) -> expected RET 0x4, binary shows plain RET
 0x004b8420|TPopGrowthOrder|0x38|declared 1 stack dword(s) -> expected RET 0x4, binary shows plain RET
-0x004bac50|TCityProductionView|0x1d0|declared 6 stack dword(s) -> expected RET 0x18, binary shows RET 0x1c
-0x004bb7a0|TCityProductionView|0x1d8|declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x8
-0x004bc9b0|TCityProductionView|0x1e8|declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x8
 0x004bd040|TRailheadDialog|0x1a0|declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
 0x004bd260|TRailheadDialog|0x1a4|declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
 0x004bd3e0|TTransportView|0x1a0|declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
