@@ -130,9 +130,9 @@ public:
   // Switching notifies the previous and new targets through TEventHandler slots.
   virtual void SetWindowTarget(TEventHandler* target); // slot 0x70 0x48ddc0
   virtual undefined
-  WrapperFor_CenterWindowWithinOwnerOrWorkArea_At0048e150(char param_1,
-                                                          char param_2); // slot 0x71 0x48e150
-  virtual void AssertMcAppUILine2358();                                  // slot 0x72 0x48d8d0
+  WrapperFor_CenterWindowWithinOwnerOrWorkArea_At0048e150(char param_1, char param_2,
+                                                          int unusedArg3); // slot 0x71 0x48e150
+  virtual void AssertMcAppUILine2358(int unusedArg);                       // slot 0x72 0x48d8d0
   virtual undefined OrphanCallChain_C2_I39_0048d900(char param_1,
                                                     char param_2); // slot 0x73 0x48d900
   // MacApp TWindow::CloseAndFree(): Close (slot 0x28) then Free (slot 0x07).

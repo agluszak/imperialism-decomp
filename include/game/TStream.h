@@ -64,6 +64,6 @@ public:
   virtual char ReadByte(void* outByte);                   // 44 (0xb0) primitive TODO: 0x004892f0
   virtual void WriteObjectSlotB4(void* object, int flag); // 45 (0xb4) writes a polymorphic object
   virtual void OrphanCallChain_C2_I18_00488ff0();         // 46 (0xb8)
-  virtual void AssertMcAppStreamLine304();                // 47 (0xbc)
-  virtual void AssertMcAppStreamLine596();                // 48 (0xc0)
+  virtual void AssertMcAppStreamLine304(int unusedArg);   // 47 (0xbc)
+  virtual void AssertMcAppStreamLine596(int unusedArg1, int unusedArg2); // 48 (0xc0)
 };

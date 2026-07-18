@@ -28,8 +28,8 @@ TDlgWindow::~TDlgWindow() {}
 // Run the base TWindow assert hook, then fire the UGameWindow line-634 invalidation assert;
 // fire the line-639 assert too when the main view host's +0x0a field is set.
 // FUNCTION: IMPERIALISM 0x005003a0
-void TDlgWindow::AssertMcAppUILine2358() {
-  TWindow::AssertMcAppUILine2358();
+void TDlgWindow::AssertMcAppUILine2358(int) {
+  TWindow::AssertMcAppUILine2358(0);
   AssertUGameWindowInvalidation(g_szUGameWindowSourcePath_00696bc0, 0x27a);
   void* mainViewHost = *reinterpret_cast<void**>(kAddrMainViewHostPtr);
   if (*reinterpret_cast<short*>(reinterpret_cast<char*>(mainViewHost) + 0xa) != 0) {
