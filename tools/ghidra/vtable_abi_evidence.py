@@ -89,13 +89,18 @@ def parse_spec(spec: str) -> tuple[str, int, int | None]:
 
 
 class Extractor:
-    def __init__(self, program):
+    def __init__(self, program, known_vtables: set[int] | None = None):
         self.program = program
         self.af = program.getAddressFactory().getDefaultAddressSpace()
         self.fm = program.getFunctionManager()
         self.listing = program.getListing()
         self.mem = program.getMemory()
         self.refmgr = program.getReferenceManager()
+        # Annotated vtable base addresses: precise reviewed extent boundaries.
+        # When available they REPLACE the RTTI-getter name heuristic, which
+        # misreads the view branch's mid-table class-name virtual (TView slot
+        # 26 -> TEventHandler's getter) as a boundary.
+        self.known_vtables = known_vtables or set()
 
     # ------------------------------------------------------------------ #
     # Thunk resolution (same contract as vtable_slots.resolve)
@@ -397,7 +402,14 @@ class Extractor:
                     "unresolved_thunk": bool(fn is not None and fn.isThunk()),
                 }
             if count is None:
-                decision = extent_decision(i, is_null, resolved_name, null_run_seen)
+                decision = extent_decision(
+                    i,
+                    is_null,
+                    resolved_name,
+                    null_run_seen,
+                    at_known_vtable=(vtable + 4 * i) in self.known_vtables,
+                    use_getter_heuristic=not self.known_vtables,
+                )
                 if decision.stop:
                     print(
                         f"[vtable-abi-evidence] {name}: auto-extent stopped at slot "
@@ -445,12 +457,13 @@ def run(program, argv: list[str]) -> int:
             specs.append(a)
 
     targets: list[tuple[str, int, int | None]] = [parse_spec(s) for s in specs]
-    if from_source:
-        from tools.common.repo import repo_root_from_file
+    from tools.common.repo import repo_root_from_file
 
-        repo_root = repo_root_from_file(__file__)
+    repo_root = repo_root_from_file(__file__)
+    annotated = discover_annotated_classes(repo_root)
+    if from_source:
         have = {addr for _, addr, _ in targets}
-        for name, addr in discover_annotated_classes(repo_root):
+        for name, addr in annotated:
             if addr not in have:
                 targets.append((name, addr, None))
     if not targets:
@@ -461,7 +474,7 @@ def run(program, argv: list[str]) -> int:
         )
         return 2
 
-    ex = Extractor(program)
+    ex = Extractor(program, known_vtables={addr for _, addr in annotated})
     classes: dict = {}
     functions: dict = {}
     for name, vtable, count in targets:
