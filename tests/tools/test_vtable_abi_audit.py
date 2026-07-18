@@ -17,7 +17,6 @@ from __future__ import annotations
 
 import unittest
 
-from tools.workflow import class_codegen as bc
 from tools.workflow.vtable_abi_audit import (
     Decl,
     arg_stack_dwords,
@@ -322,67 +321,6 @@ class TestDeclarationParsing(unittest.TestCase):
         self.assertEqual(ret_width_class("TView*"), "dword")
         self.assertEqual(ret_width_class("undefined"), "unknown")
         self.assertEqual(ret_width_class("float"), "fp")
-
-
-class TestGeneratorRefusal(unittest.TestCase):
-    """recover-class must not emit authoritative declarations over conflicts."""
-
-    ABI = {
-        "0x00527040": facts("imm", 0x10),
-    }
-
-    SLOT = {
-        "index": 12,
-        "byte_offset": 48,
-        "slot_label": "0x30",
-        "target_addr": "0x00527040",
-        "is_null": False,
-        "ghidra_name": "QueryStepValue",
-        "prototype": "TEventHandler* QueryStepValue()",  # the poison pill
-        "size": 100,
-    }
-
-    def test_conflicted_slot_marked_and_not_rendered(self):
-        slots = bc.classify_slots([dict(self.SLOT)], [], {}, self.ABI, "TMapMaker")
-        self.assertEqual(len(slots), 1)
-        self.assertTrue(slots[0].abi_conflict)
-        self.assertTrue(slots[0].abi_reasons)
-
-        cpp = bc.render_cpp("TMapMaker", slots, emit_markers=True)
-        self.assertNotIn("// FUNCTION: IMPERIALISM", cpp)
-        self.assertNotIn("QueryStepValue", cpp.split("ABI-UNRESOLVED", 1)[-1].split("\n")[0])
-        self.assertIn("ABI-UNRESOLVED", cpp)
-        self.assertIn("vtable_signature_overrides.csv", cpp)
-
-    def test_conflicted_slot_shape_only_keeps_layout(self):
-        slots = bc.classify_slots([dict(self.SLOT)], [], {}, self.ABI, "TMapMaker")
-        cpp = bc.render_cpp("TMapMaker", slots, emit_markers=False)
-        self.assertIn("AbiUnresolvedSlot0C", cpp)  # neutral, layout-preserving
-        self.assertNotIn("QueryStepValue", cpp.replace("evidence:", ""))
-
-    def test_conflicted_slot_gets_no_symbols_or_ownership_rows(self):
-        import tempfile
-        from pathlib import Path
-
-        slots = bc.classify_slots([dict(self.SLOT)], [], {}, self.ABI, "TMapMaker")
-        with tempfile.TemporaryDirectory() as td:
-            sym = Path(td) / "symbols.csv"
-            sym.write_text("address|name|size|type|prototype\n", encoding="utf-8")
-            own = Path(td) / "ownership.csv"
-            own.write_text("address|target_cpp|ownership|note\n", encoding="utf-8")
-            self.assertEqual(bc.plan_symbols(sym, slots, "TMapMaker").new_rows, [])
-            self.assertEqual(bc.plan_ownership(own, slots, "TMapMaker.cpp").new_rows, [])
-
-    def test_clean_slot_still_rendered_normally(self):
-        clean = dict(self.SLOT)
-        clean["prototype"] = (
-            "int AssignRegionClassToCellAndNeighbors(int cellIndex, int mode, "
-            "int classIndex, int retryBudget)"
-        )
-        slots = bc.classify_slots([clean], [], {}, self.ABI, "TMapMaker")
-        self.assertFalse(slots[0].abi_conflict)
-        cpp = bc.render_cpp("TMapMaker", slots, emit_markers=True)
-        self.assertIn("// FUNCTION: IMPERIALISM 0x527040", cpp)
 
 
 if __name__ == "__main__":

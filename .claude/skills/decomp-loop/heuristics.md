@@ -309,8 +309,8 @@ no marker/ownership churn, so skip `regen-stubs`.
   1-byte placeholder; a 4-byte return would be `xor eax,eax` — at `0x5e5140` the
   original *does* `xor eax,eax` and the fix is the opposite: retype to `int`.) Swept 7
   (TDisplayMgr ×3, TMacViewMgr ×4) 94–98%→100% in one build. These are frequently
-  virtuals in a "GENERATED DECLS" block introduced by that class — self-contained to
-  change; run `just format` after (trailing `// slot` comments re-align).
+  class-introduced virtuals whose decl + definition are self-contained to change; run
+  `just format` after (trailing `// slot` comments re-align).
 - **Recomp-extra `test rX,rX; je …` = a null guard the original never had.** When the
   original loads a pointer and immediately dereferences it but the port wraps the call
   in `if (p != nullptr)`, delete the guard and call unconditionally.
