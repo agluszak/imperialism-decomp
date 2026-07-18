@@ -744,22 +744,88 @@ int TMapMaker::AssignRegionClassToCellAndNeighbors(int cellIndex, int mode, int 
   return mode - remaining;
 }
 
-// Body not yet ported -- see the header doc comment (needs the +0x1a8
-// groupMemberLists1a8[7][3] field modeled first). Same `return 0` as before the
-// signature fix, so no behavior regression.
+// Union-find merge of classIndex's region group against each coarse-grid hex
+// neighbor's assigned class: if a neighbor has a different already-assigned class,
+// join the two classes into one group (allocating a new group id, adopting the
+// neighbor's group, or absorbing the neighbor into this class's group -- in any
+// direction, tracking up to 3 member classes per group in groupMemberLists1a8).
+// Returns false the moment two neighbors' classes already belong to two DIFFERENT
+// established groups (a genuine conflict) or a group's member list is full.
 // FUNCTION: IMPERIALISM 0x00527300
 char TMapMaker::TryMergeRegionGroupWithNeighborsRestrictedToMajors(int cellIndex, int classIndex) {
-  (void)cellIndex;
-  (void)classIndex;
-  return 0;
+  for (int dir = 0; dir < 6; ++dir) {
+    int neighborCell = GetAdjacentRegionGridCell(cellIndex, dir);
+    int neighborClass =
+        (neighborCell != -1) ? regionClassGrid10[neighborCell / 27][neighborCell % 27] : -1;
+    if (neighborClass == -1 || neighborClass == classIndex) {
+      continue;
+    }
+    int myGroupId = cityRegionIds200[classIndex];
+    int neighborGroupId = cityRegionIds200[neighborClass];
+    if (myGroupId == -1) {
+      if (neighborGroupId == -1) {
+        int newGroupId = ++cityRegionNextId1fc;
+        groupMemberLists1a8[newGroupId][0] = classIndex;
+        groupMemberLists1a8[newGroupId][1] = neighborClass;
+        cityRegionIds200[classIndex] = newGroupId;
+        cityRegionIds200[neighborClass] = newGroupId;
+      } else {
+        int slot = 0;
+        while (slot < 3 && groupMemberLists1a8[neighborGroupId][slot] != -1) {
+          ++slot;
+        }
+        if (slot == 3) {
+          return 0;
+        }
+        groupMemberLists1a8[neighborGroupId][slot] = classIndex;
+        cityRegionIds200[classIndex] = neighborGroupId;
+      }
+    } else if (neighborGroupId == -1) {
+      int slot = 0;
+      while (slot < 3 && groupMemberLists1a8[myGroupId][slot] != -1) {
+        ++slot;
+      }
+      if (slot == 3) {
+        return 0;
+      }
+      groupMemberLists1a8[myGroupId][slot] = neighborClass;
+      cityRegionIds200[neighborClass] = myGroupId;
+    } else if (myGroupId != neighborGroupId) {
+      return 0;
+    }
+  }
+  return 1;
 }
 
-// Body not yet ported -- see the header doc comment.
+// Same union-find neighbor-merge as TryMergeRegionGroupWithNeighborsRestrictedToMajors
+// above, but without the groupMemberLists1a8 bookkeeping: a class with an existing
+// group can only merge by adopting a neighbor's group (or forming a new one when
+// neither has one yet) -- if this class already has a group and the neighbor doesn't,
+// that's treated as a conflict rather than expanding this class's group.
 // FUNCTION: IMPERIALISM 0x005274d0
 char TMapMaker::TryMergeRegionGroupWithNeighbors(int cellIndex, int classIndex) {
-  (void)cellIndex;
-  (void)classIndex;
-  return 0;
+  for (int dir = 0; dir < 6; ++dir) {
+    int neighborCell = GetAdjacentRegionGridCell(cellIndex, dir);
+    int neighborClass =
+        (neighborCell != -1) ? regionClassGrid10[neighborCell / 27][neighborCell % 27] : -1;
+    if (neighborClass == -1 || neighborClass == classIndex) {
+      continue;
+    }
+    int myGroupId = cityRegionIds200[classIndex];
+    int neighborGroupId = cityRegionIds200[neighborClass];
+    if (myGroupId == -1) {
+      if (neighborGroupId == -1) {
+        int newGroupId = ++cityRegionNextId1fc;
+        cityRegionIds200[classIndex] = newGroupId;
+        cityRegionIds200[neighborClass] = newGroupId;
+      } else {
+        cityRegionIds200[classIndex] = neighborGroupId;
+      }
+    } else if (myGroupId != neighborGroupId) {
+      return 0;
+    }
+  }
+  return 1;
 }
 
 // FUNCTION: IMPERIALISM 0x005275a0
