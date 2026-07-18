@@ -3,9 +3,13 @@
 #include "game/TEscortMission.h"
 #include "game/TDiplomacyMgr.h"
 #include "game/TGreatPower.h"
+#include "game/TMinor.h"
 #include "game/TOcean.h"
+#include "game/TShip.h"
+#include "game/TSimMgr.h"
 #include "game/TStream.h"
 #include "game/TZone.h"
+#include "game/global_data_tables.h"
 
 IMPLEMENT_SERIAL(TEscortMission, TNavyMission, 1)
 
@@ -81,20 +85,98 @@ void TEscortMission::ResetValue0CToZero() {
       (score / 5000.0f) * static_cast<float>(nation->tradeCapacity) / static_cast<float>(needCap);
 }
 
-// TODO: promote body (bd 1uj.16.3) -- 770-byte function, heavily corrupted Ghidra decompile
-// (register-carried loop state via CONCAT44/CONCAT22; several sub-calls not yet identified:
-// 0x40793c/0x4063e3/0x40605f family and the vtable slot 8 index 0x04 diplomacy dispatch). Shape: walks
-// g_apSecondaryNationStateSlots[7..22] (TMinor*), gates each by an eligibility/diplomacy
-// check against this mission's nation (needCapA6-like threshold vs. a
-// g_pDiplomacyTurnStateManager field), then for eligible nations accumulates a 4-category
-// weighted sum (same category-weight-table shape as TControlSeaZoneMission::NoOpSlot3C) into
-// an accumulator, and finally spreads a lookup table (DAT_00697978) scaled by that
-// accumulator across resourceWeights2c[4] -- the same tail shape TControlSeaZoneMission's
-// own NoOpSlot3C uses. Left unported pending a dedicated follow-up; see bd 1uj.16.3 notes.
+// Walks the 16 minor-nation slots (g_apSecondaryNationStateSlots[7..22]), gating each by
+// (a) a scenario-year-derived relation-score threshold when its encodedNationSlot < 200
+// (relationStandingScoreMatrix79c[i*0x17 + nationId04] vs. quarterGateTick2c/4 + 110), or
+// (b) a direct owner-slot match otherwise (the same test as
+// TCountry::IsEncodedNationSlotMinus200Equal). For each eligible minor, resolves its home
+// port zone's cached-owner context (FindFirstPortZoneContextByNation +
+// primaryNeighbors.EnsureSlotAllocatedAndReturnPointer(0), the same idiom
+// ResetValue0CToZero above uses) and scores that context's tagged primary navy order-list
+// ships (gated by TDiplomacyMgr::HasPolicyWithNationSlot44) into a 4-category vector --
+// categories 0-2 scaled by stockLevel1c/normalizationBase, category 3 unscaled -- via the
+// same per-ship math as AccumulateNavyOrderCategoryVectorWithScale, but inlined here rather
+// than calling out (no CALL to 0x537c60 in the raw listing; same inlining choice as
+// TNavyMission::BuildMissionQueuedOrderCategoryVector). Scores the vector's divergence from
+// a {40,30,30,0} weight profile (g_Populate_Beachhead_Mission_LookupTable_00697958[4..7])
+// the same way TShip::ComputeNavyOrderDistributionScoreForNation does, and accumulates that
+// per-nation score into a running total seeded at 1.0f across every eligible minor. Spreads
+// the final total across resourceWeights2c[4] via a second, address-distinct {40,30,30,0}
+// profile (g_NavyOrderDistributionCategoryWeights_00697978).
 // FUNCTION: IMPERIALISM 0x00539e70
 void TEscortMission::NoOpSlot3C() {
-  for (int i = 0; i < 4; ++i) {
-    resourceWeights2c[i] = 0.0f;
+  float total = 1.0f;
+  short year = static_cast<short>(g_pSimMgr->quarterGateTick2c / 4);
+  float yearThreshold = static_cast<float>(year) + 110.0f;
+
+  for (int i = 7; i < 23; ++i) {
+    TMinor* nation = g_apSecondaryNationStateSlots[i];
+    if (nation == nullptr) {
+      continue;
+    }
+
+    bool eligible;
+    if (nation->encodedNationSlot < 200) {
+      eligible =
+          static_cast<float>(
+              g_pDiplomacyTurnStateManager->relationStandingScoreMatrix79c[i * 0x17 + nationId04]) >
+          yearThreshold;
+    } else {
+      eligible = nation->IsEncodedNationSlotMinus200Equal(nationId04) != 0;
+    }
+    if (!eligible) {
+      continue;
+    }
+
+    TZone* homePortZone = g_pActiveMapOrderContext->FindFirstPortZoneContextByNation(i);
+    TZone* targetContext = *homePortZone->primaryNeighbors.EnsureSlotAllocatedAndReturnPointer(0);
+
+    float vector[4] = {0.0f, 0.0f, 0.0f, 0.0f};
+    for (TShip* node = GetNavyPrimaryOrderListHead(); node != nullptr; node = node->nextOlder24) {
+      if (node->field08 != targetContext) {
+        continue;
+      }
+      if (!g_pDiplomacyTurnStateManager->HasPolicyWithNationSlot44(nationId04,
+                                                                   node->ownerNationSlot14)) {
+        continue;
+      }
+      short normalizationBase = node->GetNavyOrderNormalizationBaseByNationType();
+      float scale = static_cast<float>(node->stockLevel1c / normalizationBase);
+      vector[0] +=
+          static_cast<float>(node->ComputeNavyOrderPriorityContributionPercentByCategory(0)) *
+          scale;
+      vector[1] +=
+          static_cast<float>(node->ComputeNavyOrderPriorityContributionPercentByCategory(1)) *
+          scale;
+      vector[2] +=
+          static_cast<float>(node->ComputeNavyOrderPriorityContributionPercentByCategory(2)) *
+          scale;
+      vector[3] +=
+          static_cast<float>(node->ComputeNavyOrderPriorityContributionPercentByCategory(3));
+    }
+
+    float sum = vector[0] + vector[1] + vector[2] + vector[3];
+    float result;
+    if (sum == 0.0f) {
+      result = 0.0f;
+    } else {
+      float delta = 0.0f;
+      const unsigned short* weights = &g_Populate_Beachhead_Mission_LookupTable_00697958[4];
+      for (int c = 0; c < 4; ++c) {
+        float diff = vector[c] / sum - static_cast<float>(static_cast<short>(weights[c])) * 0.01f;
+        if (diff <= 0.0f) {
+          diff = -diff;
+        }
+        delta += diff;
+      }
+      result = sum * (1.0f - delta * 0.5f);
+    }
+    total = result + total;
+  }
+
+  for (int c = 0; c < 4; ++c) {
+    resourceWeights2c[c] =
+        static_cast<float>(g_NavyOrderDistributionCategoryWeights_00697978[c]) * total * 0.01f;
   }
 }
 
