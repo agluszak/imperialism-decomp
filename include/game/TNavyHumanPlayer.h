@@ -6,7 +6,6 @@
 // VTABLE: IMPERIALISM 0x00669760
 class TNavyHumanPlayer : public TNavyPlayer {
 public:
-  // === BEGIN GENERATED DECLS (TNavyHumanPlayer) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TNavyHumanPlayer)
   virtual ~TNavyHumanPlayer() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -26,7 +25,6 @@ public:
   // slot 0x10 AlwaysTrueTacticalPredicate10 inherited unchanged (0x59adf0)
   // slot 0x11 ProceedAfterBattleIntroAccepted inherited unchanged (0x59ae10)
   virtual undefined ConstructTNavyHumanPlayerBaseState(); // slot 0x12 0x59efc0
-  // === END GENERATED DECLS (TNavyHumanPlayer) ===
 
   TNavyHumanPlayer();
 };

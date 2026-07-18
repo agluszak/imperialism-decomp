@@ -6,7 +6,6 @@
 // VTABLE: IMPERIALISM 0x00642b18
 class TRadioText : public TDropShadowText {
 public:
-  // === BEGIN GENERATED DECLS (TRadioText) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TRadioText)
   virtual ~TRadioText() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -128,7 +127,6 @@ public:
   // Refreshes self, then notifies the owner panel via its slot 0x13c
   // (TView::InvokeSlot13C, same "selection confirmed" hook TTextList uses).
   virtual void RefreshAndNotifyOwnerSlot13C(); // slot 0x76 0x579580
-  // === END GENERATED DECLS (TRadioText) ===
 
   TRadioText();
 

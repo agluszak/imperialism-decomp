@@ -7,7 +7,6 @@
 // VTABLE: IMPERIALISM 0x00658d70
 class TTerrainInfoDialog : public TNoHilitePicture {
 public:
-  // === BEGIN GENERATED DECLS (TTerrainInfoDialog) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TTerrainInfoDialog)
   virtual ~TTerrainInfoDialog() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -124,7 +123,6 @@ public:
   // slot 0x71 ResetPictureResourceEntry inherited unchanged (0x48f520)
   // slot 0x72 SetPictureResourceIdAndRefresh inherited unchanged (0x48f570)
   // slot 0x73 UniversityDialogMethod_00405623 inherited unchanged (0x572bb0)
-  // === END GENERATED DECLS (TTerrainInfoDialog) ===
   // RTTI oracle: sizeof(TTerrainInfoDialog) == 0x94, identical to TNoHilitePicture -- this
   // class adds no data members of its own; its ctor (0x51b140) just installs its own vtable
   // over the real TNoHilitePicture base construction.

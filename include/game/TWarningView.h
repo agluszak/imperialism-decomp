@@ -7,7 +7,6 @@ struct CRuntimeClass;
 // VTABLE: IMPERIALISM 0x6687b8
 class TWarningView : public TPicture {
 public:
-  // === BEGIN GENERATED DECLS (TWarningView) — refreshed by recover-class; do not hand-edit ===
   virtual ~TWarningView() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
   // slot 0x03 AssertValid inherited unchanged (0x412bf0)
@@ -122,7 +121,6 @@ public:
   // slot 0x70 SetControlStateFlagAndMaybeRefresh inherited unchanged (0x48e810)
   // slot 0x71 ResetPictureResourceEntry inherited unchanged (0x48f520)
   // slot 0x72 SetPictureResourceIdAndRefresh inherited unchanged (0x48f570)
-  // === END GENERATED DECLS (TWarningView) ===
   char pad_90_to_93[0x04];
 
   TWarningView();

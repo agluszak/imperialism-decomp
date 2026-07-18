@@ -7,7 +7,6 @@
 // VTABLE: IMPERIALISM 0x00655fb0
 class TOffersPanelView : public TPanelView {
 public:
-  // === BEGIN GENERATED DECLS (TOffersPanelView) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TOffersPanelView)
   virtual ~TOffersPanelView() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -116,7 +115,6 @@ public:
   // slot 0x67 CtrlSlot103_SubtractPosAndDispatchSlot19C_Impl inherited unchanged (0x48bac0)
   // slot 0x68 OrphanRetStub_00430550 inherited unchanged (0x430550)
   virtual undefined RunDiplomacyNegotiationPopupAndAwaitResponse(); // slot 0x69 0x4f9450
-  // === END GENERATED DECLS (TOffersPanelView) ===
   // TPanelView's slice ends at 0x64; RTTI oracle confirms sizeof(TOffersPanelView) == 0x70.
   // The ctor (0x4f8f70) zeroes field68 and field6c; field64 is unconfirmed padding.
   int pad64;   // +0x64

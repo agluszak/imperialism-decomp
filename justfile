@@ -574,6 +574,16 @@ ghidra-daemon-status:
 ghidra-listing *args: _require-ghidra-install
   uv run python -m tools.ghidra.query listing {{args}}
 
+# Read-only vtable evidence dump: resolve each slot of one or more vtables to its real
+# body (ILT thunks chased) as JSON on stdout — target address, Ghidra name, size,
+# listing signature, optional decompile. Inspection only; never writes source/symbols.
+# Manual class recovery is source-first; use this as evidence, not a generator.
+#   just class-vtable-dump TMapUberPicture=0x00668f08[:COUNT] [Base=0x... ...] [--decompile]
+[doc('Read-only: dump a vtable class resolved slot targets as JSON (evidence only)')]
+[group('ghidra-inspect')]
+class-vtable-dump *args: _require-ghidra-install
+  uv run python -m tools.ghidra.vtable_slots {{args}}
+
 # One-shot porting dossier for a stub: identity+owner, callers, direct calls with
 # ILT thunks chased (and each target's owner), vtable-slot/IAT calls, named globals,
 # jump tables, and the decompile. `just ghidra-portprep 0xADDR [--no-decompile]`.
@@ -989,6 +999,28 @@ vtable-abi-gate-update:
 marker-gate:
   uv run python -m tools.workflow.check_marker_hygiene --paths src include
 
+# Reject stale recover-class "generated declaration" ownership markers in manual
+# source (include/game, src/game). Those "do not hand-edit" boundaries are obsolete:
+# all game source is hand-owned; the read-only extractor (`just class-vtable-dump`)
+# inspects but never rewrites it. Excludes the real generated trees.
+[group('gates')]
+generated-marker-gate:
+  uv run python -m tools.workflow.check_generated_markers
+
+# Ratchet gate against ILT/thunk-name ossification in manual source: rejects NEW
+# identifiers that start with thunk_/ILT_/WrapperFor_ or end with _At<8hex> (calls
+# via linker thunks; history-encoded body names). Existing debt is grandfathered in
+# config/ilt_ossification_baseline.csv — a finite, shrink-only migration queue.
+[group('gates')]
+ilt-ossification-gate:
+  uv run python -m tools.workflow.check_ilt_ossification
+
+# MUTATES: config/ilt_ossification_baseline.csv. Ratchet down after migrating a thunk
+# or renaming a WrapperFor_/_At body. Never run to silence a new offender.
+[group('gates')]
+ilt-ossification-gate-update:
+  uv run python -m tools.workflow.check_ilt_ossification --write-baseline
+
 # Ensure every `// VTABLE:` annotation is immediately followed by its class/struct
 # (not a forward declaration, comment, or blank line).
 [doc('Every // VTABLE: must be immediately followed by its class/struct')]
@@ -1152,6 +1184,8 @@ source-gates:
   just antipattern-gate
   just tgreatpower-gate
   just marker-gate
+  just generated-marker-gate
+  just ilt-ossification-gate
   just vtable-annotation-gate
   just vtable-collision-gate
   just synthetic-gate

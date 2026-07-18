@@ -10,7 +10,6 @@ class TObject;
 // VTABLE: IMPERIALISM 0x00649e58
 class TWindow : public TView {
 public:
-  // === BEGIN GENERATED DECLS (TWindow) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TWindow)
   virtual ~TWindow() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -139,7 +138,6 @@ public:
   virtual void CloseAndFree();                       // slot 0x74 0x48e120
   virtual undefined SetWindowText(CString* param_1); // slot 0x75 0x48d9c0
   virtual undefined GetWindowText(CString* param_1); // slot 0x76 0x48d9f0
-  // === END GENERATED DECLS (TWindow) ===
 
   // --- TWindow data members (object size 0xa0; the TView subobject ends at 0x60). ---
   // The 0x74 region is an embedded TDialogBehavior subobject (ConstructTDialogBehaviorBaseState

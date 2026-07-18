@@ -6,8 +6,6 @@
 // VTABLE: IMPERIALISM 0x0065f440
 class TUpDownPictureButton : public TPicture {
 public:
-  // === BEGIN GENERATED DECLS (TUpDownPictureButton) — refreshed by recover-class; do not hand-edit
-  // ===
   DECLARE_DYNCREATE(TUpDownPictureButton)
   virtual ~TUpDownPictureButton() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -126,7 +124,6 @@ public:
   // slot 0x71 ResetPictureResourceEntry inherited unchanged (0x48f520)
   // slot 0x72 SetPictureResourceIdAndRefresh inherited unchanged (0x48f570)
   virtual bool IsSelected(); // slot 0x73 0x571690
-                             // === END GENERATED DECLS (TUpDownPictureButton) ===
   short glyph90;
   short timingWord92;
 

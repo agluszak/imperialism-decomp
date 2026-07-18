@@ -7,7 +7,6 @@
 // VTABLE: IMPERIALISM 0x0064eb10
 class TInfoBarBehavior : public TBehavior {
 public:
-  // === BEGIN GENERATED DECLS (TInfoBarBehavior) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TInfoBarBehavior)
   virtual ~TInfoBarBehavior() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -25,7 +24,6 @@ public:
   virtual undefined
   InitializeInfoBarTagEntryWithOptionalDummyChild(int param_1, int* param_2); // slot 0x0e 0x4b0e20
   virtual undefined RefreshInfoBarCursorPanelRegionClip();                    // slot 0x0f 0x4b0f50
-  // === END GENERATED DECLS (TInfoBarBehavior) ===
   // TBehavior's own slice ends exactly at 0x10 (ASSERT_SIZE). Real CString member (ctor
   // placement-constructs it); semantics unconfirmed -- InitializeInfoBarTagEntryWith-
   // OptionalDummyChild/RefreshInfoBarCursorPanelRegionClip aren't ported yet.

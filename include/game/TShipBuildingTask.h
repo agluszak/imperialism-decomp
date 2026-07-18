@@ -9,7 +9,6 @@ class TStream;
 // VTABLE: IMPERIALISM 0x0066a9f8
 class TShipBuildingTask : public TCityTask {
 public:
-// === BEGIN GENERATED DECLS (TShipBuildingTask) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TShipBuildingTask)
   virtual ~TShipBuildingTask() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -26,7 +25,6 @@ public:
   // slot 0x0d QueueCityRecruitmentSupportCommandsIfDeficit inherited unchanged (0x5ae0e0)
   // slot 0x0e QueueCityOrderInputDeltaCommands inherited unchanged (0x5ae240)
   // slot 0x0f QueueCityProductionOrderCommand inherited unchanged (0x5ae4b0)
-// === END GENERATED DECLS (TShipBuildingTask) ===
 
   TShipBuildingTask();
 };

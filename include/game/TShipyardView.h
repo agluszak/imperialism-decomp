@@ -6,7 +6,6 @@
 // VTABLE: IMPERIALISM 0x00651b30
 class TShipyardView : public TBuildingView {
 public:
-  // === BEGIN GENERATED DECLS (TShipyardView) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TShipyardView)
   virtual ~TShipyardView() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -133,7 +132,6 @@ public:
   virtual void __fastcall RefreshCityViewStatusPanel(int* pCityViewDialog); // slot 0x7a 0x4c9a60
   virtual undefined BuildIndustryActionCostSummaryTextByActionIndex();      // slot 0x7b 0x4c97c0
   virtual void InitializeCityViewActionButtons();                           // slot 0x7c 0x4c8d70
-  // === END GENERATED DECLS (TShipyardView) ===
 
   TShipyardView();
 };

@@ -15,7 +15,6 @@ struct TBitmapSurfaceNode;
 // VTABLE: IMPERIALISM 0x00658660
 class TMacViewMgr : public TObject {
 public:
-  // === BEGIN GENERATED DECLS (TMacViewMgr) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TMacViewMgr)
   virtual ~TMacViewMgr() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -89,7 +88,6 @@ public:
   EnsureClipRegionWrapperAtSlotAndMergeSourceRegion(undefined4 param_1,
                                                     short param_2); // slot 0x25 0x50d680
   virtual RgnHandle GetClipRegionSlotByIndex(short index);          // slot 0x26 0x509e10
-  // === END GENERATED DECLS (TMacViewMgr) ===
 
   TView* field04;
   RgnHandle regionSlots[0x17];

@@ -6,8 +6,6 @@
 // VTABLE: IMPERIALISM 0x0066d288
 class TInfoBarPictureText : public TInfoBarText {
 public:
-  // === BEGIN GENERATED DECLS (TInfoBarPictureText) — refreshed by recover-class; do not hand-edit
-  // ===
   DECLARE_DYNCREATE(TInfoBarPictureText)
   virtual ~TInfoBarPictureText() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -140,7 +138,6 @@ public:
                                     RECT* layoutRect) override; // slot 0x80 0x5b5cb0
   // slot 0x81 InitializeMapHintTextStyleAndThemeFlags inherited unchanged (0x5b6840)
   // slot 0x82 OrphanCallChain_C1_I05_005b6810 inherited unchanged (0x5b6810)
-  // === END GENERATED DECLS (TInfoBarPictureText) ===
 
   TInfoBarPictureText();
 };

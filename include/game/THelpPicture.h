@@ -6,7 +6,6 @@
 // VTABLE: IMPERIALISM 0x00657080
 class THelpPicture : public TPicture {
 public:
-  // === BEGIN GENERATED DECLS (THelpPicture) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(THelpPicture)
   virtual ~THelpPicture() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -127,7 +126,6 @@ public:
   virtual undefined OrphanCallChain_C2_I34_005041a0();            // slot 0x74 0x5041a0
   virtual undefined RefreshHelpSubjectListControlsWithPrevNext(); // slot 0x75 0x5046c0
   virtual undefined BuildHelpSubjectListControlsWithPrevNext();   // slot 0x76 0x504220
-  // === END GENERATED DECLS (THelpPicture) ===
 
   THelpPicture();
 };

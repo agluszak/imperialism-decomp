@@ -2,7 +2,6 @@
 #include "game/TSimMgr.h"
 #include "game/TRailCluster.h"
 #include "game/TShipyardCluster.h"
-#include "game/ui_widget_thunks.h"
 #include "game/mfc.h"
 #include "game/UiRuntimeContext.h"
 #include "game/quickdraw_guards.h"
@@ -106,8 +105,8 @@ void TTradeCluster::NoOpUiLifecycleHook(int styleSeed) {
   TAmtBar* sellControl = reinterpret_cast<TAmtBar*>(this->ResolveControlByTag(kControlTagSell));
   if (sellControl != 0) {
     int styleDescriptor[5];
-    reinterpret_cast<void(__cdecl*)(int, void*, int, int, int)>(
-        thunk_InitializeUiTextStyleDescriptor)(0, styleDescriptor, 0xe, 0x2b68, 2);
+    InitializeUiTextStyleDescriptor(reinterpret_cast<TControlPictureRectState*>(styleDescriptor), 0,
+                                    0xe, 0x2b68, 2);
     sellControl->ApplyStyleDescriptor(styleDescriptor, 0);
     sellControl->SetStyleState(-1, 0);
     RECT boundsBuffer;

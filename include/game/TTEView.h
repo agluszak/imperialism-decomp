@@ -7,7 +7,6 @@
 class TTEView : public TStaticText {
 public:
   TTEView();
-  // === BEGIN GENERATED DECLS (TTEView) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TTEView)
   virtual ~TTEView() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -126,7 +125,6 @@ public:
   // slot 0x73 LoadUiStringAndDispatchViaVslot1C8 inherited unchanged (0x48fed0)
   // slot 0x74 AssignSharedStringFromField84 inherited unchanged (0x4294d0)
   // slot 0x75 RenderControlStateTextBySelectionCode inherited unchanged (0x4900a0)
-  // === END GENERATED DECLS (TTEView) ===
   int MeasureCurrentTextWidthInLayoutRect();
   // Mac-style second-phase init (not the ctor — no vtable store): runs the TStaticText
   // base init, copies the 0x68-0x74 inset rect and the packed text-style descriptor,

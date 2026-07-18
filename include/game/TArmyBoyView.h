@@ -6,7 +6,6 @@
 // VTABLE: IMPERIALISM 0x0064dff8
 class TArmyBoyView : public TView {
 public:
-  // === BEGIN GENERATED DECLS (TArmyBoyView) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TArmyBoyView)
   virtual ~TArmyBoyView() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -111,7 +110,6 @@ public:
   // slot 0x65 AssertMcAppUILine1914 inherited unchanged (0x48c7a0)
   // slot 0x66 AssertMcAppUILine1922 inherited unchanged (0x48c7d0)
   // slot 0x67 CtrlSlot103_SubtractPosAndDispatchSlot19C_Impl inherited unchanged (0x48bac0)
-  // === END GENERATED DECLS (TArmyBoyView) ===
   // Unrecovered context object read by ApplyRectSlot110: +2 veterancy level (short),
   // +4 unit/nation name (c-string), +0x24 xp percent (short). Raw storage until the
   // real pointee class is identified.

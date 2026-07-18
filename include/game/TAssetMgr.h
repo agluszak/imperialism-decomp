@@ -10,7 +10,6 @@ class TMovieView;
 // VTABLE: IMPERIALISM 0x0066f508
 class TAssetMgr : public TObject {
 public:
-  // === BEGIN GENERATED DECLS (TAssetMgr) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TAssetMgr)
   virtual ~TAssetMgr() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -32,7 +31,6 @@ public:
   virtual void
   PlayMovieClipAndDispatchTurnStateFollowup(CString movieName,
                                             TMovieView* movieView); // slot 0x0e 0x5dfc10
-  // === END GENERATED DECLS (TAssetMgr) ===
 
   // Non-virtual resource-stream helpers (every call site loads ECX = g_pUiViewManager;
   // the callees ignore `this`). Used by the battle-setup .tab loader (0x5a4fc0).

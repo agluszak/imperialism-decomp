@@ -23,17 +23,22 @@ public:
                                       int commandFlag) override; // slot 0x68 0x4bc870
   // slots 0x02..0x06, 0x08..0x0e, 0x10..0x34, 0x36, 0x38..0x43, and
   // 0x45..0x67 and 0x69..0x73 inherited from TNoHilitePicture.
-  virtual void
-  BlitBitmapResourceRectWithScreenOffsetAndPalette(RECT* sourceRect, int surface, short offsetY,
-                                                   short offsetX, undefined4 context,
-                                                   undefined4 flags); // slot 0x74 0x4bac50
-  virtual void RenderNationHeaderDateLabelWithPeriodicRefresh();      // slot 0x75 0x4badd0
-  virtual void InitializeCityProductionDialog();                      // slot 0x76 0x4bb7a0
-  virtual void UpdateCityProductionDialogCommodityValueControls();    // slot 0x77 0x4bc0b0
-  virtual void RefreshCityBuildingActionAvailabilityIndicators();     // slot 0x78 0x4bc500
-  virtual void OrphanCallChain_C5_I49_004bc910();                     // slot 0x79 0x4bc910
-  virtual void RenderViewIntoPrimaryRenderContextWithTemporaryClip(); // slot 0x7a 0x4bc9b0
-  virtual void RefreshCityDialogSummaryValues();                      // slot 0x7b 0x4bcaf0
+  // RET 0x1c = 7 stack dwords; Ghidra recovered only 6. The trailing dword is the
+  // palette the name promises (body still a stub). slot 0x74 0x4bac50
+  virtual void BlitBitmapResourceRectWithScreenOffsetAndPalette(RECT* sourceRect, int surface,
+                                                                short offsetY, short offsetX,
+                                                                undefined4 context,
+                                                                undefined4 flags,
+                                                                undefined4 palette);
+  virtual void RenderNationHeaderDateLabelWithPeriodicRefresh(); // slot 0x75 0x4badd0
+  // RET 0x8 = 2 stack dwords (int + int*), not 0. slot 0x76 0x4bb7a0
+  virtual void InitializeCityProductionDialog(int arg1, int* arg2);
+  virtual void UpdateCityProductionDialogCommodityValueControls(); // slot 0x77 0x4bc0b0
+  virtual void RefreshCityBuildingActionAvailabilityIndicators();  // slot 0x78 0x4bc500
+  virtual void OrphanCallChain_C5_I49_004bc910();                  // slot 0x79 0x4bc910
+  // RET 0x8 = 2 stack dwords (vestigial; SEH-framed body reads neither). slot 0x7a 0x4bc9b0
+  virtual void RenderViewIntoPrimaryRenderContextWithTemporaryClip(int arg1, int arg2);
+  virtual void RefreshCityDialogSummaryValues(); // slot 0x7b 0x4bcaf0
 
   TCityProductionView();
 

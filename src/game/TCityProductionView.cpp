@@ -52,13 +52,14 @@ void TCityProductionView::ApplyRectSlot110(RECT* rectBuffer) {
 // FUNCTION: IMPERIALISM 0x004bac50
 void TCityProductionView::BlitBitmapResourceRectWithScreenOffsetAndPalette(
     RECT* sourceRect, int surface, short offsetY, short offsetX, undefined4 context,
-    undefined4 flags) {
+    undefined4 flags, undefined4 palette) {
   (void)sourceRect;
   (void)surface;
   (void)offsetY;
   (void)offsetX;
   (void)context;
   (void)flags;
+  (void)palette;
 }
 
 // FUNCTION: IMPERIALISM 0x004badd0
@@ -123,7 +124,10 @@ void TCityProductionView::HandleCursorHoverSelectionByChildHitTestAndFallback(CP
 }
 
 // FUNCTION: IMPERIALISM 0x004bb7a0
-void TCityProductionView::InitializeCityProductionDialog() {}
+void TCityProductionView::InitializeCityProductionDialog(int arg1, int* arg2) {
+  (void)arg1;
+  (void)arg2;
+}
 
 // FUNCTION: IMPERIALISM 0x004bc0b0
 void TCityProductionView::UpdateCityProductionDialogCommodityValueControls() {}
@@ -162,7 +166,9 @@ void TCityProductionView::DispatchPictureResourceCommand(int eventType, void* ev
 void TCityProductionView::OrphanCallChain_C5_I49_004bc910() {}
 
 // FUNCTION: IMPERIALISM 0x004bc9b0
-void TCityProductionView::RenderViewIntoPrimaryRenderContextWithTemporaryClip() {
+void TCityProductionView::RenderViewIntoPrimaryRenderContextWithTemporaryClip(int arg1, int arg2) {
+  (void)arg1;
+  (void)arg2;
   CTemporaryRegion surface;
 
   RECT boundsRecord;

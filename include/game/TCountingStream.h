@@ -8,7 +8,6 @@
 class TCountingStream : public TStream {
 public:
   // clang-format off
-  // === BEGIN GENERATED DECLS (TCountingStream) — refreshed by recover-class; do not hand-edit ===
   virtual ~TCountingStream() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
   // slot 0x03 AssertValid inherited unchanged (0x412bf0)
@@ -57,7 +56,6 @@ public:
   // slot 0x2e OrphanCallChain_C2_I18_00488ff0 inherited unchanged (0x488ff0)
   // slot 0x2f AssertMcAppStreamLine304 inherited unchanged (0x488b10)
   // slot 0x30 AssertMcAppStreamLine596 inherited unchanged (0x488e00)
-  // === END GENERATED DECLS (TCountingStream) ===
   // clang-format on
   int positionOrByteCount;
   int maxExtentOrLimit;

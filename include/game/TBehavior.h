@@ -7,7 +7,6 @@
 // VTABLE: IMPERIALISM 0x00648d60
 class TBehavior : public TObject {
 public:
-// === BEGIN GENERATED DECLS (TBehavior) — refreshed by recover-class; do not hand-edit ===
   virtual ~TBehavior() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
   // slot 0x03 AssertValid inherited unchanged (0x412bf0)
@@ -20,7 +19,6 @@ public:
   // slots 0x0a-0x0d (bytes 0x28-0x34) are the typed virtuals declared below
   // (SetDword08/GetFlag0C/SetFlag0C/NoOpSlot34); the generated Orphan*
   // placeholders were duplicates of these slots and were removed.
-// === END GENERATED DECLS (TBehavior) ===
   TBehavior();
 
   DECLARE_DYNCREATE(TBehavior)

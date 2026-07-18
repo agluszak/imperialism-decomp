@@ -6,7 +6,6 @@
 // VTABLE: IMPERIALISM 0x00660180
 class TClickZone : public TControl {
 public:
-  // === BEGIN GENERATED DECLS (TClickZone) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TClickZone)
   virtual ~TClickZone() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -122,7 +121,6 @@ public:
   // slot 0x6f LogUnhandledDialogMethodAndReturnFalse inherited unchanged (0x4294a0)
   // slot 0x70 SetControlStateFlagAndMaybeRefresh inherited unchanged (0x48e810)
   virtual undefined OrphanRetStub_005723d0(); // slot 0x71 0x5723d0
-                                              // === END GENERATED DECLS (TClickZone) ===
 
   TClickZone();
 };

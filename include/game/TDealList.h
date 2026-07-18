@@ -12,7 +12,6 @@ class CArchive;
 // VTABLE: IMPERIALISM 0x0066da38
 class TDealList : public TSortedPtrList {
 public:
-  // === BEGIN GENERATED DECLS (TDealList) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TDealList)
   virtual ~TDealList() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x412bd0)
@@ -33,7 +32,6 @@ public:
   // Deal-priority comparator: weighted (value * priority) score, inverted for deal
   // kinds 0xd-0x10, with a mod-7 pseudo-random tiebreak over the record fields.
   short Compare(void* a, void* b) override; // slot 0x11 0x5ba260
-  // === END GENERATED DECLS (TDealList) ===
 
   TDealList();
 };

@@ -21,7 +21,6 @@ struct TQuickDrawSurfaceContext;
 // VTABLE: IMPERIALISM 0x0064c4e8
 class TAnimator : public TEventHandler {
 public:
-  // === BEGIN GENERATED DECLS (TAnimator) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TAnimator)
   virtual ~TAnimator() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -60,7 +59,6 @@ public:
   // slot 0x23 DetachUiResourceOwnerIfMatches inherited unchanged (0x48a4a0)
   // slot 0x24 SetUiResourceOwner inherited unchanged (0x48a4d0)
   virtual undefined OrphanCallChain_C2_I13_004a0c00(); // slot 0x25 0x4a0c00
-                                                       // === END GENERATED DECLS (TAnimator) ===
   void RemoveUiTransientRegistryObjectByTag(int tag);
   // Creates the shared offscreen surface (bounds from the global surface dims, bit
   // depth 8) and the registry TList, and stores the idle frequency into the

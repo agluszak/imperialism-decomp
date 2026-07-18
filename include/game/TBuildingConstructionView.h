@@ -8,7 +8,6 @@ class TCity;
 // VTABLE: IMPERIALISM 0x00651d88
 class TBuildingConstructionView : public TPicture {
 public:
-  // === BEGIN GENERATED DECLS (TBuildingConstructionView) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TBuildingConstructionView)
   virtual ~TBuildingConstructionView() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -127,7 +126,6 @@ public:
   virtual void OpenCityViewBuildingOrderDialog(short nBuildingSlotId, int* pCityState,
                                                int nDialogContextFlags);     // slot 0x73 0x4c9eb0
   virtual void ApplyCityViewBuildingOrderDialogResult(int nDialogActionTag); // slot 0x74 0x4ca8f0
-  // === END GENERATED DECLS (TBuildingConstructionView) ===
   // TPicture's own slice ends at 0x90 (ASSERT_SIZE); RTTI oracle confirms
   // sizeof(TBuildingConstructionView) == 0x9c. The ctor (0x4c9e30) zeroes pCity (+0x90)
   // and field98 (+0x98); the 0x94 slot is left as unconfirmed padding.

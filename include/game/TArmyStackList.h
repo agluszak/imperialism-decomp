@@ -6,7 +6,6 @@
 // VTABLE: IMPERIALISM 0x0064c9a0
 class TArmyStackList : public TSortedList {
 public:
-  // === BEGIN GENERATED DECLS (TArmyStackList) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TArmyStackList)
   virtual ~TArmyStackList() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -40,7 +39,6 @@ public:
   // slot 0x1c VTableSlot1C inherited unchanged (0x487b60)
   // slot 0x1d QueueCityRecruitmentSupportCommandsIfDeficit inherited unchanged (0x487bd0)
   // slot 0x1e GetTTaskClassNamePointer inherited unchanged (0x487cc0)
-  // === END GENERATED DECLS (TArmyStackList) ===
 
   TArmyStackList();
 };

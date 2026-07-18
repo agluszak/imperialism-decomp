@@ -10,7 +10,6 @@ class TTacticalUnit;
 // VTABLE: IMPERIALISM 0x0064ca68
 class TArmyBattle : public TTacticalBattle {
 public:
-  // === BEGIN GENERATED DECLS (TArmyBattle) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TArmyBattle)
   virtual ~TArmyBattle() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -37,7 +36,6 @@ public:
   // slot 0x16 ComputeRallyStrengthAndQueueTacticalRallyCommand inherited unchanged (0x5a3810)
   // slot 0x17 ExecuteTacticalMineActionAndQueuePacket inherited unchanged (0x5a34d0)
   // slot 0x18 ExecuteTacticalDigActionAndConsumeUnitActionPoints inherited unchanged (0x5a3640)
-  // === END GENERATED DECLS (TArmyBattle) ===
 
   // Both original construction sites (TArmyMgr::CreateTacticalBattleViewAndInitialize-
   // BattleSetup 0x4a5b60 and the network receive path 0x54a1df) inline this ctor as just

@@ -6,7 +6,6 @@
 // VTABLE: IMPERIALISM 0x006426b8
 class TLoadSavePicture : public TPicture {
 public:
-  // === BEGIN GENERATED DECLS (TLoadSavePicture) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TLoadSavePicture)
   virtual ~TLoadSavePicture() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -125,7 +124,6 @@ public:
   // slot 0x72 SetPictureResourceIdAndRefresh inherited unchanged (0x48f570)
   virtual undefined HandleSaveGameSlotSelectionAndPromptFlow();  // slot 0x73 0x56d2a0
   virtual undefined HandleTurnFlowStateTickOrPostTurnEvent5DC(); // slot 0x74 0x56d190
-  // === END GENERATED DECLS (TLoadSavePicture) ===
 
   // 0 = save picture, nonzero = load picture (the builder writes it, the prompt flow
   // 0x56d2a0 branches on it).

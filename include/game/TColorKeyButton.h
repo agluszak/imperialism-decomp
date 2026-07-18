@@ -6,7 +6,6 @@
 // VTABLE: IMPERIALISM 0x0065fd28
 class TColorKeyButton : public TColorKeyPicture {
 public:
-  // === BEGIN GENERATED DECLS (TColorKeyButton) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TColorKeyButton)
   virtual ~TColorKeyButton() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -125,7 +124,6 @@ public:
   // slot 0x72 SetPictureResourceIdAndRefresh inherited unchanged (0x573040)
   // slot 0x73 UniversityDialogMethod_00405623 inherited unchanged (0x572bb0)
   virtual undefined OrphanCallChain_C1_I05_00572060(); // slot 0x74 0x572060
-  // === END GENERATED DECLS (TColorKeyButton) ===
 
   TColorKeyButton();
 };

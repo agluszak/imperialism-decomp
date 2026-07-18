@@ -9,7 +9,6 @@ class TStream;
 // VTABLE: IMPERIALISM 0x0064f8a0
 class TUnitOrder : public TProductionOrder {
 public:
-  // === BEGIN GENERATED DECLS (TUnitOrder) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TUnitOrder)
   virtual ~TUnitOrder() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -39,7 +38,6 @@ public:
       void* pCityState, short nEntryId, short nPrimaryInputResourceId, short nPrimaryInputPerUnit,
       short nSecondaryInputResourceId, short nSecondaryInputPerUnit, short nCashCostPerUnit,
       short nWorkforceMode, byte bSpecialistMode); // slot 0x11 0x4b6fe0
-                                                   // === END GENERATED DECLS (TUnitOrder) ===
   // TUnitOrder adds 0x10 bytes (0x4c..0x5c) over TProductionOrder's 0x4c base. All are
   // written by the slot-0x11 init InitializeCityRecruitmentOrderContext (0x004b6fe0),
   // so the roles are that init's own named parameters (recruit/training recipe: two

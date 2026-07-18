@@ -9,7 +9,6 @@ class TAmtBar;
 // VTABLE: IMPERIALISM 0x666318
 class TRailCluster : public TUberCluster {
 public:
-  // === BEGIN GENERATED DECLS (TRailCluster) — refreshed by recover-class; do not hand-edit ===
   virtual ~TRailCluster() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
   // slot 0x03 AssertValid inherited unchanged (0x412bf0)
@@ -128,7 +127,6 @@ public:
   virtual void ApplyMoveValue(int value);                                   // slot 0x74 0x5899c0
   virtual int NotifyControlSelectionChange(void* boundEntry, int arg2 = 0); // slot 0x75 0x5899f0
   virtual int GetControlFlag(int arg1 = 0, int arg2 = 0);                   // slot 0x76 0x589d10
-  // === END GENERATED DECLS (TRailCluster) ===
   TAmtBar* selectedMetricControl; // 0x88
   short selectedMetricValue;      // 0x8c
   short selectedMetricStep;       // 0x8e

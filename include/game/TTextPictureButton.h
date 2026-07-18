@@ -6,7 +6,6 @@
 // VTABLE: IMPERIALISM 0x006603a8
 class TTextPictureButton : public TUpDownPictureButton {
 public:
-  // === BEGIN GENERATED DECLS (TTextPictureButton) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TTextPictureButton)
   virtual ~TTextPictureButton() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -123,7 +122,6 @@ public:
   // slot 0x71 ResetPictureResourceEntry inherited unchanged (0x48f520)
   // slot 0x72 SetPictureResourceIdAndRefresh inherited unchanged (0x48f570)
   // slot 0x73 IsSelected inherited unchanged (0x571690)
-  // === END GENERATED DECLS (TTextPictureButton) ===
   CString buttonText; // 0x94
   short pointSize98;  // 0x98
   short themeCode9A;  // 0x9A

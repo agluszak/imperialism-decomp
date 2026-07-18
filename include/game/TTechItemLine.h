@@ -6,7 +6,6 @@
 // VTABLE: IMPERIALISM 0x0066aec8
 class TTechItemLine : public TLineData {
 public:
-  // === BEGIN GENERATED DECLS (TTechItemLine) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TTechItemLine)
   virtual ~TTechItemLine() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -19,7 +18,6 @@ public:
   // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
   virtual void CreateLineItemView(TView* panel, int* offsetLayout) override; // slot 0x0a 0x5b1160
   // slot 0x0b OrphanRetStub_0056f480 inherited unchanged (0x56f480)
-  // === END GENERATED DECLS (TTechItemLine) ===
 
   int nationSlot10; // +0x10 — forwarded to ConstructTTechItemViewBaseState
   int techId14;     // +0x14 — forwarded to ConstructTTechItemViewBaseState

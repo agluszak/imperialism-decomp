@@ -6,7 +6,6 @@
 // VTABLE: IMPERIALISM 0x0064d100
 class TArmyUnitView : public TView {
 public:
-  // === BEGIN GENERATED DECLS (TArmyUnitView) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TArmyUnitView)
   virtual ~TArmyUnitView() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -112,7 +111,6 @@ public:
   // slot 0x65 AssertMcAppUILine1914 inherited unchanged (0x48c7a0)
   // slot 0x66 AssertMcAppUILine1922 inherited unchanged (0x48c7d0)
   // slot 0x67 CtrlSlot103_SubtractPosAndDispatchSlot19C_Impl inherited unchanged (0x48bac0)
-  // === END GENERATED DECLS (TArmyUnitView) ===
   // Unrecovered context object read by ApplyRectSlot110: +8 unit-type code (int,
   // compared against 0xe), +0x24 unit-type display name (CString), +0x34 veterancy
   // level (short), +0x38 xp percent (short). Raw storage until the real pointee

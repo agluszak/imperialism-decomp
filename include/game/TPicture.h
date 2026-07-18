@@ -11,7 +11,6 @@ class CDib;
 // VTABLE: IMPERIALISM 0x0064a930
 class TPicture : public TControl {
 public:
-  // === BEGIN GENERATED DECLS (TPicture) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TPicture)
   virtual ~TPicture() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -128,7 +127,6 @@ public:
   virtual void ResetPictureResourceEntry(); // slot 0x71 0x48f520
   virtual void SetPictureResourceIdAndRefresh(short nPictureId,
                                               bool fRefreshNow); // slot 0x72 0x48f570
-  // === END GENERATED DECLS (TPicture) ===
   short glyphBase84;
   short field86;
   short bitmapId;

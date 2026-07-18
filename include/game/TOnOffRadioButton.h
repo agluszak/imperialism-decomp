@@ -6,7 +6,6 @@
 // VTABLE: IMPERIALISM 0x0065f8a8
 class TOnOffRadioButton : public TPictureButton {
 public:
-  // === BEGIN GENERATED DECLS (TOnOffRadioButton) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TOnOffRadioButton)
   virtual ~TOnOffRadioButton() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -126,7 +125,6 @@ public:
   // slot 0x73 IsSelected inherited unchanged (0x5708c0)
   virtual undefined OrphanCallChain_C2_I16_00571b20(undefined4 param_1,
                                                     undefined4 param_2); // slot 0x74 0x571b20
-  // === END GENERATED DECLS (TOnOffRadioButton) ===
 
   TOnOffRadioButton();
 };

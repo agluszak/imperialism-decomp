@@ -6,7 +6,6 @@
 // VTABLE: IMPERIALISM 0x006440d8
 class TNetSelectPicture : public TNoHilitePicture {
 public:
-  // === BEGIN GENERATED DECLS (TNetSelectPicture) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TNetSelectPicture)
   virtual ~TNetSelectPicture() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -124,7 +123,6 @@ public:
   // slot 0x71 ResetPictureResourceEntry inherited unchanged (0x48f520)
   // slot 0x72 SetPictureResourceIdAndRefresh inherited unchanged (0x48f570)
   // slot 0x73 UniversityDialogMethod_00405623 inherited unchanged (0x572bb0)
-  // === END GENERATED DECLS (TNetSelectPicture) ===
 
   // NOOP: verified empty in original 0x004544c4 (trivial inline ctor: the builder
   // expansion site emits only the base ctor call + vtbl install)

@@ -6,7 +6,6 @@
 // VTABLE: IMPERIALISM 0x0064c130
 class TNewGameCommand : public TCommand {
 public:
-  // === BEGIN GENERATED DECLS (TNewGameCommand) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TNewGameCommand)
   virtual ~TNewGameCommand() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -19,7 +18,6 @@ public:
   // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
   // slot 0x0a NextDiplomacyCommandVtableSlotE8_NotifyOwnerSlot94 inherited unchanged (0x487900)
   virtual void DoIt() override; // slot 0x0b 0x49ddb0
-  // === END GENERATED DECLS (TNewGameCommand) ===
 
   // Fully inlined at every construction site (base TCommand ctor call + vtable
   // store); defined in-class so `new TNewGameCommand()` reproduces that shape.

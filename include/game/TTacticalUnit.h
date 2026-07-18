@@ -10,7 +10,6 @@
 // VTABLE: IMPERIALISM 0x0066a1b8
 class TTacticalUnit : public TObject {
 public:
-  // === BEGIN GENERATED DECLS (TTacticalUnit) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TTacticalUnit)
   virtual ~TTacticalUnit() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -35,7 +34,6 @@ public:
   // Toggles side20 between 0 and 1; invoked when a unit is handed to the other
   // side's list (TTacticalPlayer::AddTacticalUnitToUnitListHead).
   virtual void FlipUnitSideAffiliation(); // slot 0x0f 0x5a5eb0
-  // === END GENERATED DECLS (TTacticalUnit) ===
 
   // Layout (object is 0x34 per RTTI; derived classes append at +0x34). Recovered from
   // the tactical receive/command handlers (0x5a1010..0x5a53e0), ApplyTacticalDamage

@@ -5,7 +5,6 @@
 // VTABLE: IMPERIALISM 0x006549b0
 class TDefenseMinister : public TMinister {
 public:
-  // === BEGIN GENERATED DECLS (TDefenseMinister) — refreshed by recover-class; do not hand-edit ===
   virtual ~TDefenseMinister() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
   // slot 0x03 AssertValid inherited unchanged (0x412bf0)
@@ -15,7 +14,6 @@ public:
   // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
   // slot 0x0a (byte 0x28) MinisterSlot0A overridden below (body 0x4ec3d0)
   // slots 0x0b-0x11 inherited from TMinister unchanged
-  // === END GENERATED DECLS (TDefenseMinister) ===
   TDefenseMinister();
   void InitializeBaseOrderArrayMetrics();
 

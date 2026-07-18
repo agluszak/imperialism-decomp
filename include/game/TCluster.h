@@ -7,7 +7,6 @@ struct CRuntimeClass;
 // VTABLE: IMPERIALISM 0x64b0c0
 class TCluster : public TControl {
 public:
-  // === BEGIN GENERATED DECLS (TCluster) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TCluster)
   virtual ~TCluster() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -124,7 +123,6 @@ public:
   // slot 0x70 SetControlStateFlagAndMaybeRefresh inherited unchanged (0x48e810)
   virtual int GetField84();                               // slot 0x71 0x491770
   virtual void SetControlClassAndRefresh(int classState); // slot 0x72 0x491790 (1 arg; RET 4)
-                                                          // === END GENERATED DECLS (TCluster) ===
   int field84;
 
   TCluster();

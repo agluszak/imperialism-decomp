@@ -34,7 +34,6 @@ struct MapContextActionRecord {
 // VTABLE: IMPERIALISM 0x0064c928
 class TArmyMgr : public TObject {
 public:
-  // === BEGIN GENERATED DECLS (TArmyMgr) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TArmyMgr)
   virtual ~TArmyMgr() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -119,7 +118,6 @@ public:
   // CommitCityActionGateCostIfAffordable) for the two "in range" codes.
   virtual undefined HandleMapClickByCivilianCursorState(short tileIndex,
                                                         short mode); // slot 0x18 0x4a4ad0
-  // === END GENERATED DECLS (TArmyMgr) ===
 
   // 0x004a5aa0 — weighted sum (g_WeightedNeighborScoreByUnitType table at 0x6955f0)
   // over the military units stationed on cityScoreTable[nodeIndex]'s tile chain.

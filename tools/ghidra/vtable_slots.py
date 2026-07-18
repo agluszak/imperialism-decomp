@@ -1,14 +1,17 @@
 #!/usr/bin/env python3
-"""Read-only pyghidra extractor: resolve vtable slots to real bodies as JSON.
+"""Read-only pyghidra vtable extractor: resolve vtable slots to real bodies as JSON.
 
-The data half of the `just recover-class` workflow. For one or more vtables it
-reads each slot pointer, follows a single ILT `jmp` thunk to the real body, and
+A standalone inspection command (`just class-vtable-dump`). For one or more vtables
+it reads each slot pointer, follows a single ILT `jmp` thunk to the real body, and
 records the resolved target address, Ghidra name, size, listing signature and
-(optionally) the decompiled C. Output is a JSON document the pure-python
-`tools.workflow.class_codegen` codegen consumes, so the heavy Ghidra startup
-runs once and the scaffolding logic stays Ghidra-free and unit-testable.
+(optionally) the decompiled C, all to stdout. It is purely observational: it never
+writes a header, source file, symbol prototype, or ownership row. Manual class
+recovery is source-first — author `include/game/<Class>.h` and
+`src/game/<Class>.cpp` by hand and verify with `just build` / `just vtable` /
+`just gates`; use this dump only as evidence while doing so.
 
 Usage:
+  just class-vtable-dump Class=0x0066ee18[:COUNT] [Base=0x00653868[:COUNT] ...]
   uv run python -m tools.ghidra.vtable_slots [--decompile] \
       Class=0x0066ee18[:COUNT] [Base=0x00653868[:COUNT] ...]
 

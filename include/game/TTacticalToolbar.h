@@ -9,7 +9,6 @@ class TArmyTacUnit;
 // VTABLE: IMPERIALISM 0x00644d98
 class TTacticalToolbar : public TCluster {
 public:
-  // === BEGIN GENERATED DECLS (TTacticalToolbar) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TTacticalToolbar)
   virtual ~TTacticalToolbar() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -133,7 +132,6 @@ public:
   UpdateTacticalCurrentUnitControlAndDialogLabel(TTacticalUnit* unit); // slot 0x73 0x5acb50
   virtual undefined
   WrapperFor_InvalidateCityDialogRectRegion_At005acc90(int param_1); // slot 0x74 0x5acc90
-  // === END GENERATED DECLS (TTacticalToolbar) ===
   // Toolbar slice (base TCluster ends at +0x88). battle88/unitSpriteAtlasSurface94 are
   // wired by the live-battle initializer 0x5a9d90; currentUnit8C by slot 0x73.
   class TTacticalBattle* battle88;    // +0x88

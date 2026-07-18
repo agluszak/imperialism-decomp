@@ -9,7 +9,6 @@ class TStream;
 // VTABLE: IMPERIALISM 0x0064f540
 class TLaborPool : public TObject {
 public:
-// === BEGIN GENERATED DECLS (TLaborPool) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TLaborPool)
   virtual ~TLaborPool() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -22,7 +21,6 @@ public:
   // slot 0x09 ShallowFree inherited unchanged (0x415ce0)
   virtual undefined OrphanLeaf_NoCall_Ins44_004b2270(int param_1, short param_2); // slot 0x0a 0x4b2270
   virtual undefined CreateTCityInstance(int param_1, short param_2); // slot 0x0b 0x4b2340
-// === END GENERATED DECLS (TLaborPool) ===
 
   TLaborPool();
 };

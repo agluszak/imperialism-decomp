@@ -6,7 +6,6 @@
 // VTABLE: IMPERIALISM 0x0064d778
 class TSuperCivRoster : public TPageView {
 public:
-  // === BEGIN GENERATED DECLS (TSuperCivRoster) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TSuperCivRoster)
   virtual ~TSuperCivRoster() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -122,7 +121,6 @@ public:
   // old ConstructTSuperCivRosterBaseState name was a misread — this is not a ctor).
   virtual undefined InitializeLedgerRosterPages(TView* pOwnerContext, int* pBoundsRect,
                                                 TView** pOutDialogView); // slot 0x6e 0x4ab470
-  // === END GENERATED DECLS (TSuperCivRoster) ===
 
   // Object slice from the inline-expanded ctor at 0x5ddde1 (inside
   // TViewMgr::ShowCivilianLedgerDialogAndSelectUnit): base TPageView ctor, own vptr,

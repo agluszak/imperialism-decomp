@@ -6,7 +6,6 @@
 // VTABLE: IMPERIALISM 0x00669708
 class TNavyTacUnit : public TTacticalUnit {
 public:
-  // === BEGIN GENERATED DECLS (TNavyTacUnit) — refreshed by recover-class; do not hand-edit ===
   DECLARE_DYNCREATE(TNavyTacUnit)
   virtual ~TNavyTacUnit() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -26,7 +25,6 @@ public:
   // Navy-only added virtual: returns the unit's source fleet (the old
   // ConstructTNavyPlayerBaseState name was Ghidra junk).
   virtual class TShip* GetSourceTaskForce(); // slot 0x10 0x59ed60
-                                                  // === END GENERATED DECLS (TNavyTacUnit) ===
 
   // Navy slice (+0x34..): mostly unrecovered; +0x3c is the per-ship action-point
   // store read back by GetBaseActionPoints (0x5a6310).
