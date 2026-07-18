@@ -25,12 +25,12 @@ public:
   // slot 0x0f FlipUnitSideAffiliation inherited unchanged (0x5a5eb0)
   // Navy-only added virtual: returns the unit's source fleet (the old
   // ConstructTNavyPlayerBaseState name was Ghidra junk).
-  virtual class TTaskForce* GetSourceTaskForce(); // slot 0x10 0x59ed60
+  virtual class TShip* GetSourceTaskForce(); // slot 0x10 0x59ed60
                                                   // === END GENERATED DECLS (TNavyTacUnit) ===
 
   // Navy slice (+0x34..): mostly unrecovered; +0x3c is the per-ship action-point
   // store read back by GetBaseActionPoints (0x5a6310).
-  class TTaskForce* sourceTaskForce34; // +0x34 source fleet (range delegate, 0x5a6330)
+  class TShip* sourceTaskForce34; // +0x34 source ship order node (range delegate, 0x5a6330)
   unsigned char pad38[4];              // +0x38
   int baseActionPoints3c;              // +0x3c
 

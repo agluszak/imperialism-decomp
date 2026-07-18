@@ -20,6 +20,7 @@
 #include "game/TMapMgr.h"
 #include "game/TMilitaryUnit.h"
 #include "game/TShip.h"
+#include "game/navy_order.h"
 #include "game/TTaskForce.h"
 #include "game/TUnitOrder.h"
 #include "game/TViewMgr.h"
@@ -568,11 +569,7 @@ void TTechMgr::UpdateSelectionAndRecalculateScores(int resourceType, int nationS
 
   for (node = GetNavyPrimaryOrderListHead(); node != 0; node = node->nextOlder24) {
     if (node->ownerNationSlot14 == nationSlot) {
-      // The original dispatches TTaskForce's 0x550370 __thiscall on the TShip-shaped
-      // primary-order node (shared +0x30 strength slot -- the documented TShip/TTaskForce
-      // node-prefix pun, see TShip.h).
-      reinterpret_cast<TTaskForce*>(node)->AdjustMapOrderNodeStatCapped499(
-          static_cast<short>(scoreSum / remainingOwned));
+      node->AdjustMapOrderNodeStatCapped499(static_cast<short>(scoreSum / remainingOwned));
     }
   }
 

@@ -44,6 +44,7 @@
 #include "game/TOcean.h"
 #include "game/TProductionOrder.h"
 #include "game/TShip.h"
+#include "game/navy_order.h"
 #include "game/TSimMgr.h"
 #include "game/TSortedByRelationshipList.h"
 #include "game/TSortedList.h"

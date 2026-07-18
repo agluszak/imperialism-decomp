@@ -1,4 +1,5 @@
 #include "game/TGreatPower_internal.h"
+#include "game/navy_order.h"
 
 #include "game/CIterator.h"
 #include "game/TArmyMission.h"

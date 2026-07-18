@@ -18,6 +18,7 @@
 #include "game/TGreatPower.h"
 #include "game/TOcean.h"
 #include "game/TShip.h"
+#include "game/navy_order.h"
 #include "game/TStream.h"
 #include "game/TZone.h"
 #include "game/global_data_tables.h"

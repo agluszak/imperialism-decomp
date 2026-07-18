@@ -1,5 +1,6 @@
 #include "decomp_types.h"
 #include <stdlib.h>
+#include "game/navy_order.h"
 
 #include "game/TAutoGreatPower.h"
 

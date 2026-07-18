@@ -9,6 +9,7 @@
 #include "game/TZone.h"
 #include "game/TMinor.h"
 #include "game/TShip.h"
+#include "game/navy_order.h"
 #include "game/global_data_tables.h"
 #include "game/TDiplomacyMgr.h"
 

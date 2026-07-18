@@ -1,4 +1,5 @@
 #include "game/TNavyPlayer.h"
+#include "game/TShip.h"
 
 #include "game/CIterator.h"
 #include "game/TNavyTacUnit.h"
@@ -26,8 +27,8 @@ void TNavyPlayer::CommitTacticalResultsToSourceUnits(int unused) {
   CIterator unitIter(unitList4);
   for (TNavyTacUnit* unit = static_cast<TNavyTacUnit*>(unitIter.Reset()); unitIter.More();
        unit = static_cast<TNavyTacUnit*>(unitIter.Advance())) {
-    TTaskForce* force = unit->GetSourceTaskForce();
-    force->DecrementRequiredCount(static_cast<short>(force->required_count - unit->strength4));
+    TShip* force = unit->GetSourceTaskForce();
+    force->DecrementRequiredCount(static_cast<short>(force->stockLevel1c - unit->strength4));
   }
   taskForce28->eliminatedFlag26 = 1;
   taskForce28->PruneInactiveTaskForceOrderHead();

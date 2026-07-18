@@ -135,3 +135,62 @@ bodies before the protocol boundary in step 3 is settled.
 - Whether `ComputeOrderNodeCompositeEconomicScore` (0x550b60) is the Windows form
   of Mac `TShip::ComputeValueForMission` (signature differs; confirm before
   renaming).
+
+
+---
+
+## Pass 1 outcome (implemented): ship-node re-attribution
+
+Deeper listing evidence OVERTURNED part of the original audit: the "TTaskForce
+child payloads" reading was itself the misattribution. Both child lists --
+`TTaskForce::childOrderList` AND `TNavyMission::orderList24` -- hold **TShip\***
+order nodes. Proof (all from raw listings, not the decompiler):
+
+- `GetOrCreateMissionOrderEntryForNode` (0x5503a0) raw-reads `this+0x14` as a
+  SHORT (impossible on TTaskForce, whose +0x14 is a pointer; natural on TShip:
+  `ownerNationSlot14`), seeds the new entry's zone from `this+0x08`
+  (TShip::field08), and links `this` itself into the entry's childOrderList.
+- `SetOwnerOrderEntryAndCacheType` (0x551220, ex "SetMapOrderActiveChildEntry")
+  wrote `this+0x34` -- past TTaskForce's 0x34-byte end, documented as an
+  "overrun"; on the 0x38-byte TShip it is simply `field34`. The "+0x10 reuse
+  pun" is `quantityFlag10`.
+- `ReassignOrderNodeNationAndRebindParentCounters` (0x551100) reads a
+  `TMission*` at `this+0x2c` (TShip::missionBacklink2c; TNavyMission slot-0x84/
+  0x8C attach/detach write the same field) and writes nation to `this+0x14`.
+- The depleted-prune paths write -666 to payload+0x1c (`stockLevel1c`) and call
+  the payload's virtual Free -- TShip::Free (roster unlink).
+- TTechMgr's capability sweep walks the primary SHIP roster and called 0x550370
+  through a `reinterpret_cast<TTaskForce*>(node)` -- deleted.
+- `SelectPreferredMapOrderEntryByPriorityRules` (0x550670): the binary reads
+  `[ecx+0x20]`/`[edi+0x20]` (admiral backlink) SYMMETRICALLY and then each
+  admiral's `field_10`; the old TTaskForce-receiver body misread the receiver
+  side as +0x08/+0x06 (attachment/order_strength) -- a genuine logic mis-port,
+  fixed by the migration.
+- `SelectEligibleMapOrderInteractionForNationAndContext` (0x557f10) at 0x5582a2
+  scores `[childOrderList->payload]` (the head child SHIP), not the entry; the
+  port called it on the entry -- fixed with the binary's null guard.
+
+Methods re-attributed TTaskForce -> TShip (markers moved to TShip.cpp):
+0x5501b0 CalculateMissionOrderPriorityScore, 0x550370 AdjustMapOrderNodeStat-
+Capped499, 0x5503a0 GetOrCreateMissionOrderEntryForNode, 0x550510/0x550820
+GetOrderNodeDescriptorWord20/0C, 0x550670 SelectPreferred..., 0x550840/0x550aa0
+node-score family, 0x550f80 DecrementRequiredCount, 0x550ff0 RemoveNode,
+0x551100 Reassign..., 0x551220 SetOwnerOrderEntryAndCacheType. Field model:
+TShip::field2c -> `TMission* missionBacklink2c`; TTaskForce::activeChildEntry ->
+`TShip*`; TNavyTacUnit::sourceTaskForce34 -> `TShip*`;
+FindOrCreateChildOrderLink takes `TShip*`. All the "cross-type pun"/"+0x34
+overrun"/"+0x10 reuse" narration those fields carried is deleted -- the puns
+were artifacts of the wrong receiver class, exactly as the model audit
+predicted. API hygiene: the 8 UNavy free functions moved from TShip.h to
+include/game/navy_order.h.
+
+Verified: build + gates + tooling tests green; all 12 moved addresses pair at
+their prior-or-better scores (the 2 corrected mis-ports changed codegen at
+0x550670/0x557f10 by fixing real bugs); stats net -1 aligned / -0.00pp
+(TU-relocation wobble; 3 improved).
+
+Still open (follow-ups): the entry-side +0x1e bucket-counter region is still
+raw-cast (unmodeled TTaskForce fields); `TTaskForce::owner`'s remaining
+entry-receiver readers (TNavyMgr queue passes, PromoteMapOrderChainAndQueue's
+owner-as-TZone read) deserve the same listing-level receiver audit; GetFirst/
+GetNth/GetIndex Mac-name alignment; TShip's ~50 unported Mac combat methods.

@@ -1,4 +1,5 @@
 #include "game/TCity.h"
+#include "game/navy_order.h"
 
 #include "game/TGreatPower.h"
 #include "game/TProductionOrder.h"

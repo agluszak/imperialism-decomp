@@ -14,6 +14,7 @@
 #include "game/TDiplomacyMgr.h"
 #include "game/TPortZone.h"
 #include "game/TShip.h"
+#include "game/navy_order.h"
 #include "game/TSimMgr.h"
 #include "game/TTaskForce.h"
 #include "game/UiRuntimeContext.h"

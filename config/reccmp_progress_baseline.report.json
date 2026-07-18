@@ -9287,7 +9287,7 @@
     },
     {
       "address": "0x4b4390",
-      "matching": 0.5136612021857924,
+      "matching": 0.5054945054945055,
       "name": "AllocateRandomResourceCountsWithinWeightBudget",
       "type": 1
     },
@@ -13118,7 +13118,8 @@
     },
     {
       "address": "0x4e0610",
-      "matching": 1.0,
+      "effective": true,
+      "matching": 0.42857142857142855,
       "name": "TGreatPower::ReturnFalseNationStateActionStub_8a",
       "type": 1
     },
@@ -13166,7 +13167,7 @@
     },
     {
       "address": "0x4e09a0",
-      "matching": 0.5903614457831325,
+      "matching": 0.5662650602409639,
       "name": "TGreatPower::ComputeCityOrderCapabilityAggregateScore",
       "type": 1
     },
@@ -13967,7 +13968,7 @@
     },
     {
       "address": "0x4ea300",
-      "matching": 0.891566265060241,
+      "matching": 0.8795180722891566,
       "name": "TAutoGreatPower::ResetNationDiplomacySlotsAndMarkRelatedNations",
       "type": 1
     },
@@ -17141,7 +17142,7 @@
     },
     {
       "address": "0x5136a0",
-      "matching": 1.0,
+      "matching": 0.8888888888888888,
       "name": "TMapMgr::OrphanLeaf_NoCall_Ins35_005136a0",
       "type": 1
     },
@@ -17339,7 +17340,7 @@
     },
     {
       "address": "0x515b10",
-      "matching": 0.3378995433789954,
+      "matching": 0.3167420814479638,
       "name": "TMapMgr::MarkSeedNeighborTilesUnavailableByCapabilityMaskProfileB",
       "type": 1
     },
@@ -17513,7 +17514,7 @@
     },
     {
       "address": "0x5178f0",
-      "matching": 0.3260340632603406,
+      "matching": 0.3446601941747573,
       "name": "ComputeRepresentativeTileIndexForTerrainTypeWithWrapBias",
       "type": 1
     },
@@ -22172,26 +22173,26 @@
     },
     {
       "address": "0x5501b0",
-      "matching": 0.46296296296296297,
-      "name": "CalculateMissionOrderPriorityScore",
+      "matching": 0.4537037037037037,
+      "name": "TShip::CalculateMissionOrderPriorityScore",
       "type": 1
     },
     {
       "address": "0x550370",
       "matching": 0.6153846153846154,
-      "name": "AdjustMapOrderNodeStatCapped499",
+      "name": "TShip::AdjustMapOrderNodeStatCapped499",
       "type": 1
     },
     {
       "address": "0x5503a0",
       "matching": 0.5050505050505051,
-      "name": "TScatteredShipsMission::GetOrCreateMissionOrderEntryForNode",
+      "name": "TShip::GetOrCreateMissionOrderEntryForNode",
       "type": 1
     },
     {
       "address": "0x550510",
       "matching": 0.75,
-      "name": "GetOrderNodeDescriptorWord20ByResourceType",
+      "name": "TShip::GetOrderNodeDescriptorWord20ByResourceType",
       "type": 1
     },
     {
@@ -22226,20 +22227,20 @@
     },
     {
       "address": "0x550670",
-      "matching": 0.3416370106761566,
-      "name": "ObjectPool::SelectPreferredMapOrderEntryByPriorityRules",
+      "matching": 0.7124463519313304,
+      "name": "TShip::SelectPreferredMapOrderEntryByPriorityRules",
       "type": 1
     },
     {
       "address": "0x550820",
       "matching": 0.75,
-      "name": "GetOrderNodeDescriptorWord0CByResourceType",
+      "name": "TShip::GetOrderNodeDescriptorWord0CByResourceType",
       "type": 1
     },
     {
       "address": "0x550840",
       "matching": 0.2727272727272727,
-      "name": "ComputeOrderNodeDerivedScoreFromQuantityAndWord18",
+      "name": "TShip::ComputeOrderNodeDerivedScoreFromQuantityAndWord18",
       "type": 1
     },
     {
@@ -22258,7 +22259,7 @@
     {
       "address": "0x550aa0",
       "matching": 0.5773195876288659,
-      "name": "ComputeMapOrderEntryHeuristicScore",
+      "name": "TShip::ComputeMapOrderEntryHeuristicScore",
       "type": 1
     },
     {
@@ -22336,25 +22337,25 @@
     {
       "address": "0x550f80",
       "matching": 1.0,
-      "name": "DecrementOrderNodeRequiredCount",
+      "name": "TShip::DecrementRequiredCount",
       "type": 1
     },
     {
       "address": "0x550ff0",
       "matching": 0.5112781954887218,
-      "name": "ObjectPool::RemoveNode",
+      "name": "TShip::RemoveNode",
       "type": 1
     },
     {
       "address": "0x551100",
       "matching": 0.8028169014084507,
-      "name": "ReassignOrderNodeNationAndRebindParentCounters",
+      "name": "TShip::ReassignOrderNodeNationAndRebindParentCounters",
       "type": 1
     },
     {
       "address": "0x551220",
       "matching": 1.0,
-      "name": "TScatteredShipsMission::SetMapOrderActiveChildEntry",
+      "name": "TShip::SetOwnerOrderEntryAndCacheType",
       "type": 1
     },
     {
@@ -22599,13 +22600,13 @@
     },
     {
       "address": "0x553b10",
-      "matching": 0.4827586206896552,
+      "matching": 0.41379310344827586,
       "name": "HasNoMapOrderEntryChildrenQueued",
       "type": 1
     },
     {
       "address": "0x553b50",
-      "matching": 0.5818181818181818,
+      "matching": 0.5454545454545454,
       "name": "HasActiveMapOrderEntryChildren",
       "type": 1
     },
@@ -22744,7 +22745,7 @@
     },
     {
       "address": "0x555420",
-      "matching": 0.544,
+      "matching": 0.5546666666666666,
       "name": "ResolveTaskForceOrderConflictAndPickCandidate",
       "type": 1
     },
@@ -22979,7 +22980,7 @@
     },
     {
       "address": "0x557f10",
-      "matching": 0.2054176072234763,
+      "matching": 0.20535714285714285,
       "name": "SelectEligibleMapOrderInteractionForNationAndContext",
       "type": 1
     },
@@ -29945,7 +29946,7 @@
     },
     {
       "address": "0x5a39a0",
-      "matching": 0.9393939393939394,
+      "matching": 0.7286821705426356,
       "name": "ComputeHexTileDistanceFromIndices",
       "type": 1
     },

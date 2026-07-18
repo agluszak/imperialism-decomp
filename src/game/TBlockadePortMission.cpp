@@ -12,6 +12,7 @@
 #include "game/TDiplomacyMgr.h"
 #include "game/TGreatPower.h"
 #include "game/TShip.h"
+#include "game/navy_order.h"
 #include "game/TStream.h"
 #include "game/TTaskForce.h"
 #include "game/TZone.h"
