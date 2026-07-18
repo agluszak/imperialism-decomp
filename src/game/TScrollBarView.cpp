@@ -1,11 +1,14 @@
 #include "game/TScrollBarView.h"
 
+#include "game/CDib.h"
 #include "game/ScopedMapQuickDrawContext.h"
 #include "game/TDisplayMgr.h"
 #include "game/TPictureButton.h"
+#include "game/TQuickDrawSurfaceContext.h"
 #include "game/TScrollView.h"
 #include "game/TSoundPlayer.h"
 #include "game/global_data_tables.h"
+#include "game/quickdraw_rendering.h"
 
 // SYNTHETIC: IMPERIALISM 0x00573df0
 // TScrollBarView::`scalar deleting destructor'
@@ -141,7 +144,78 @@ void TScrollBarView::BeginMouseCaptureAndStartRepeatTimer(CPoint* point, int arg
 }
 
 // FUNCTION: IMPERIALISM 0x00574970
-void TScrollBarView::ApplyRectSlot110(RECT* rectBuffer) {}
+void TScrollBarView::ApplyRectSlot110(RECT* rectBuffer) {
+  ResetQuickDrawStrokeState();
+  SetQuickDrawFillColor(0);
+  SetQuickDrawStrokeColor(0xffffff);
+
+  RECT srcRect;
+  RECT dstRect;
+  srcRect.bottom = word8c;
+  srcRect.right = frameWidth34;
+  srcRect.left = 0;
+  dstRect.left = 0;
+  srcRect.top = 0;
+  dstRect.top = 0;
+  dstRect.right = srcRect.right;
+  dstRect.bottom = srcRect.bottom;
+  if (g_pStrategicMapViewSystem->atlas694[5]->surfaceDib != nullptr) {
+    int h = g_pStrategicMapViewSystem->atlas694[5]->surfaceDib->GetAbsoluteHeight();
+    OffsetRect(&srcRect, 0, (h - srcRect.top) - srcRect.bottom);
+  }
+  if (surfaceContext90->surfaceDib != nullptr) {
+    int h = surfaceContext90->surfaceDib->GetAbsoluteHeight();
+    OffsetRect(&dstRect, 0, (h - dstRect.top) - dstRect.bottom);
+  }
+  BlitRectWithOptionalTransparency(g_pStrategicMapViewSystem->atlas694[5]->GetBlitSurface(),
+                                   surfaceContext90->GetBlitSurface(), &srcRect, &dstRect, 0,
+                                   nullptr);
+
+  srcRect.right = frameWidth34;
+  srcRect.left = 0;
+  dstRect.top = word8c;
+  srcRect.top = 0x12c;
+  srcRect.bottom = 0x13e;
+  dstRect.left = 0;
+  dstRect.bottom = dstRect.top + 0x12;
+  dstRect.right = srcRect.right;
+  if (g_pStrategicMapViewSystem->atlas694[5]->surfaceDib != nullptr) {
+    int h = g_pStrategicMapViewSystem->atlas694[5]->surfaceDib->GetAbsoluteHeight();
+    OffsetRect(&srcRect, 0, h - 0x26a);
+  }
+  if (surfaceContext90->surfaceDib != nullptr) {
+    int h = surfaceContext90->surfaceDib->GetAbsoluteHeight();
+    OffsetRect(&dstRect, 0, (h - dstRect.top) - dstRect.bottom);
+  }
+  BlitRectWithOptionalTransparency(g_pStrategicMapViewSystem->atlas694[5]->GetBlitSurface(),
+                                   surfaceContext90->GetBlitSurface(), &srcRect, &dstRect, 0,
+                                   nullptr);
+
+  dstRect.top = word8c + 0x12;
+  srcRect.top = 299 - static_cast<short>(static_cast<short>(frameHeight38) - word8c - 0x12);
+  srcRect.right = frameWidth34;
+  srcRect.bottom = 300;
+  dstRect.bottom = frameHeight38;
+  srcRect.left = 0;
+  dstRect.left = 0;
+  dstRect.right = srcRect.right;
+  if (g_pStrategicMapViewSystem->atlas694[5]->surfaceDib != nullptr) {
+    int h = g_pStrategicMapViewSystem->atlas694[5]->surfaceDib->GetAbsoluteHeight();
+    OffsetRect(&srcRect, 0, (h - srcRect.top) - 300);
+  }
+  if (surfaceContext90->surfaceDib != nullptr) {
+    int h = surfaceContext90->surfaceDib->GetAbsoluteHeight();
+    OffsetRect(&dstRect, 0, (h - dstRect.top) - dstRect.bottom);
+  }
+  BlitRectWithOptionalTransparency(g_pStrategicMapViewSystem->atlas694[5]->GetBlitSurface(),
+                                   surfaceContext90->GetBlitSurface(), &srcRect, &dstRect, 0,
+                                   nullptr);
+
+  srcRect = *rectBuffer;
+  BlitRectWithOptionalTransparency(surfaceContext90->GetBlitSurface(),
+                                   g_pActiveQuickDrawSurfaceContext->GetBlitSurface(), &srcRect,
+                                   &srcRect, 0, nullptr);
+}
 
 // FUNCTION: IMPERIALISM 0x00574d10
 void TScrollBarView::DispatchPictureResourceCommand(int nEventType, void* pEventSender,

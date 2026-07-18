@@ -207,32 +207,30 @@ each with the evidence needed to start (address, size, current score if any, blo
   biHeight;` — the original uses a `test/jg/neg` branch, NOT the `abs()` intrinsic's
   branchless `cdq/xor/sub` idiom; using `abs()` scored only 50%, the explicit branch
   hit 100%). Moved from the autogen stub to `CDib.cpp`/`CDib.h`.
-  `ApplyRectSlot110` itself (0x574970, 724B) is **NOT landed** — investigated
-  2026-07-18, no code changed (kept as the fabricated `{}` body). Substantial real
-  progress: confirmed the function draws the up/down-arrow and thumb bitmaps from a
-  shared atlas (`g_pStrategicMapViewSystem->atlas694[5]`, a `TQuickDrawSurfaceContext*`)
-  onto `this->surfaceContext90`, using the already-declared
-  `TQuickDrawSurfaceContext::GetBlitSurface()` accessor for every
-  `BlitRectWithOptionalTransparency` call (confirmed both surface args are always
-  `<surface>->GetBlitSurface()`, i.e. `<surface>+4` reinterpreted as
-  `TQuickDrawBlitSurface*` — do not reinvent this, the accessor already exists).
-  Three near-identical "band" blocks each: null-check `atlas694[5]->surfaceDib` (or
-  `surfaceContext90->surfaceDib` for the third), call the now-real
-  `GetAbsoluteHeight()`, `OffsetRect` one of a pair of duplicate `RECT{0,0,
-  frameWidth34,word8c}`-shaped locals by a computed dy, then blit; a final
-  fourth block builds a local `RECT` copy of the **incoming `rectBuffer` parameter**
-  (read very late, at `[esp+0x4c]` — do not model this function as ignoring its
-  argument) and blits it verbatim between `surfaceContext90` and
-  `g_pActiveQuickDrawSurfaceContext`. **Blocked on**: the exact stack-slot boundaries
-  for the two duplicate `RECT{0,0,frameWidth34,word8c}` locals and the `OffsetRect`
-  target address (`[esp+0x10]`) don't cleanly resolve to non-overlapping 16-byte
-  RECT windows from the raw listing alone — real ambiguity in a function this
-  stack-slot-dense, not analysis laziness. Needs `just ghidra-decompile 0x574970`
-  cross-checked line-by-line against the listing (the decompiler's own local-variable
-  split will disambiguate the overlapping-looking offsets) before writing the body.
-  Magic constants seen and worth preserving for that pass: `0x12c`/`0x13e` (300/318,
-  an 18px-tall sprite row in the atlas) and `0xfffffd96`/`-0x12c` (-618/-300) as
-  `OffsetRect` deltas.
+  `ApplyRectSlot110` itself (0x574970, 724B) landed 2026-07-18 (0% -> 22.37%) using
+  `just ghidra-decompile 0x574970` to resolve the stack-slot ambiguity the raw
+  listing alone left open — the decompile showed there are only TWO local `RECT`s
+  (`srcRect`/`dstRect`), reused and re-mutated across all three "band" blocks, not
+  three separate pairs as the listing's overlapping-looking offsets suggested.
+  Confirmed the function draws the up/down-arrow and thumb bitmaps from a shared
+  atlas (`g_pStrategicMapViewSystem->atlas694[5]`, a `TQuickDrawSurfaceContext*`)
+  onto `this->surfaceContext90`, via the already-declared
+  `TQuickDrawSurfaceContext::GetBlitSurface()` accessor; a final fourth block
+  copies the incoming `rectBuffer` parameter into a local `RECT` and blits it
+  verbatim between `surfaceContext90` and `g_pActiveQuickDrawSurfaceContext`.
+  Magic constants: `0x12c`/`0x13e` (300/318, an 18px-tall sprite row in the atlas),
+  `0xfffffd96` (-618) and `-300` as `OffsetRect` deltas, `299` in the thumb band's
+  `srcRect.top` formula. Residual (22.37%) is a genuine register-allocation
+  difference: the original keeps FOUR values live across the whole function
+  (`push ebx/ebp/esi/edi`), ours only needs three (`ebx/esi/edi`) — tried (1)
+  literal raw-disassembly field-write order instead of the decompile's presented
+  order for the first band's rect init (regressed 22.37%->21.46%, reverted), and
+  (2) hoisting `g_pStrategicMapViewSystem->atlas694[5]` into a local `atlas`
+  pointer per-band and function-wide (both regressed to 14.78%/15.49%, reverted —
+  the original genuinely re-reads the global+field chain at every use, confirmed
+  against the decompile's literal re-expansion). Don't retry either without new
+  evidence; this is the same "optimizer register-pressure choice you can't force
+  from a source tweak" class of residual documented in the codegen-shapes skill.
 - `0x574720` TScrollBarView::NoOpUiLifecycleHook at 73.5% — residual is pure
   instruction-scheduling wobble inside the surface-rect block; structure verified.
 - `0x5e50c0` at 77.8% — residual is an ecx/eax naming permutation in the slot-cursor
