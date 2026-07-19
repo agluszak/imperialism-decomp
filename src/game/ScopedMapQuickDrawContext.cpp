@@ -64,7 +64,7 @@ ScopedMapQuickDrawContext::ScopedMapQuickDrawContext(TView* renderTargetArg)
     renderTarget->Refresh();
     RECT clipRect;
     renderTarget->ApplyBounds(&clipRect, 0);
-    IntersectClipRectOnPrimaryAndSecondaryDc(reinterpret_cast<int*>(&clipRect));
+    clientDc.IntersectClipRect(&clipRect);
   }
   g_pScopedMapQuickDrawViewContext = this->renderTarget;
   if (this != 0) {
@@ -84,7 +84,7 @@ ScopedMapQuickDrawContext::ScopedMapQuickDrawContext(TView* renderTargetArg)
 ScopedMapQuickDrawContext::ScopedMapQuickDrawContext(TView* renderTargetArg, RECT* clipRect)
     : clientDc(renderTargetArg->nativeWindow50), renderTarget(renderTargetArg) {
   renderTarget->Refresh();
-  IntersectClipRectOnPrimaryAndSecondaryDc(reinterpret_cast<int*>(clipRect));
+  clientDc.IntersectClipRect(clipRect);
   g_pScopedMapQuickDrawViewContext = renderTarget;
   if (this != 0) {
     g_pScopedMapQuickDrawDcHandleObject = &clientDc;
@@ -108,16 +108,7 @@ ScopedMapQuickDrawContext::~ScopedMapQuickDrawContext() {
   g_pScopedMapQuickDrawViewContext = 0;
 }
 
-// FUNCTION: IMPERIALISM 0x00612fd8
-int* ScopedMapQuickDrawContext::IntersectClipRectOnPrimaryAndSecondaryDc(int* clipRect) {
-  if (clientDc.m_hDC != clientDc.m_hAttribDC) {
-    clipRect = reinterpret_cast<int*>(IntersectClipRect(
-        reinterpret_cast<HDC>(clientDc.m_hDC), clipRect[0], clipRect[1], clipRect[2], clipRect[3]));
-  }
-  if (clientDc.m_hAttribDC != 0) {
-    clipRect = reinterpret_cast<int*>(IntersectClipRect(reinterpret_cast<HDC>(clientDc.m_hAttribDC),
-                                                        clipRect[0], clipRect[1], clipRect[2],
-                                                        clipRect[3]));
-  }
-  return clipRect;
-}
+// 0x00612fd8 is CDC::IntersectClipRect(LPCRECT) linked from nafxcw.lib -- it was
+// mis-owned here as a guard member because clientDc sits at offset 0, so the real CDC
+// method (this = &clientDc) looked like a method on the enclosing guard. It is now a
+// LIBRARY entry (library_msvc500_fid.cpp) and callers use clientDc.IntersectClipRect().

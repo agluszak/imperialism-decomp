@@ -7433,9 +7433,9 @@ address|name|symbol|size|type|prototype|provenance
 612e9a|CDC::GetClipBox|?GetClipBox@CDC@@UBEHPAUtagRECT@@@Z|16|function|public: virtual int __thiscall CDC::GetClipBox(struct tagRECT *) const|msvc500_library_oracle
 612eaa|CDC::SelectClipRgn|?SelectClipRgn@CDC@@QAEHPAVCRgn@@@Z|78|function|undefined SelectClipRegionOnPrimaryAndSecondaryDc()|
 612ef8|CDC::IntersectClipRect|CDC::IntersectClipRect|74|function|undefined ?IntersectClipRect@CDC@@QAEHHHHH@Z@00612ef8()|
-612f42|CDC::ExcludeClipRect|CDC::ExcludeClipRect|76|function|undefined ?IntersectClipRect@CDC@@QAEHPBUtagRECT@@@Z@00612f42()|
+612f42|CDC::ExcludeClipRect|CDC::ExcludeClipRect|76|function|undefined ?ExcludeClipRect@CDC@@QAEHPBUtagRECT@@@Z@00612f42()|
 612f8e|CDC::IntersectClipRect|CDC::IntersectClipRect|74|function|undefined ?IntersectClipRect@CDC@@QAEHHHHH@Z@00612f8e()|
-612fd8|IntersectClipRectOnPrimaryAndSecondaryDc||76|function|undefined IntersectClipRectOnPrimaryAndSecondaryDc()|
+612fd8|CDC::IntersectClipRect|CDC::IntersectClipRect|76|function|undefined ?IntersectClipRect@CDC@@QAEHPBUtagRECT@@@Z@00612fd8()|
 613024|CDC::OffsetClipRgn|CDC::OffsetClipRgn|62|function|undefined ?OffsetClipRgn@CDC@@QAEHUtagSIZE@@@Z@00613024()|
 613062|CDC::OffsetClipRgn|CDC::OffsetClipRgn|62|function|undefined ?OffsetClipRgn@CDC@@QAEHUtagSIZE@@@Z@00613062()|
 6130a0|CDC::OffsetWindowOrg|?OffsetWindowOrg@CDC@@QAE?AVCPoint@@HH@Z|76|function|undefined ?OffsetViewportOrg@CDC@@UAE?AVCPoint@@HH@Z@006130a0()|

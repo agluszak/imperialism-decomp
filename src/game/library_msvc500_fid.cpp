@@ -2223,6 +2223,9 @@
 // LIBRARY: IMPERIALISM 0x00612f8e
 // CDC::IntersectClipRect
 
+// LIBRARY: IMPERIALISM 0x00612fd8
+// CDC::IntersectClipRect
+
 // LIBRARY: IMPERIALISM 0x00613024
 // CDC::OffsetClipRgn
 

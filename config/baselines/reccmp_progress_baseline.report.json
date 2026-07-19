@@ -6292,13 +6292,13 @@
     },
     {
       "address": "0x494700",
-      "matching": 0.6486486486486487,
+      "matching": 0.6306306306306306,
       "name": "ScopedMapQuickDrawContext::ScopedMapQuickDrawContext(class TView *)",
       "type": 1
     },
     {
       "address": "0x4947e0",
-      "matching": 0.7789473684210526,
+      "matching": 0.7578947368421053,
       "name": "ScopedMapQuickDrawContext::ScopedMapQuickDrawContext(class TView *, struct tagRECT *)",
       "type": 1
     },
@@ -15332,7 +15332,7 @@
     },
     {
       "address": "0x4f6bd0",
-      "matching": 0.242914979757085,
+      "matching": 0.2248995983935743,
       "name": "TDiplomacyMapView::BlitDiplomacyMapEventPaletteMaskToSurface",
       "type": 1
     },
@@ -21935,7 +21935,7 @@
     },
     {
       "address": "0x545940",
-      "matching": 0.4261712439418417,
+      "matching": 0.41518578352180935,
       "name": "TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine",
       "type": 1
     },
@@ -40285,12 +40285,6 @@
       "type": 1
     },
     {
-      "address": "0x612fd8",
-      "matching": 0.17391304347826086,
-      "name": "ScopedMapQuickDrawContext::IntersectClipRectOnPrimaryAndSecondaryDc",
-      "type": 1
-    },
-    {
       "address": "0x613024",
       "matching": 1.0,
       "name": "CDC::OffsetClipRgn(int, int)",
@@ -45217,6 +45211,6 @@
       "type": 5
     }
   ],
-  "file": "Imperialism.exe.gog-original",
+  "file": "Imperialism.exe",
   "format": 1
 }
