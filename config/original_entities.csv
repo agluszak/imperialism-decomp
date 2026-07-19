@@ -8575,6 +8575,7 @@ address|name|symbol|size|type|prototype|provenance
 69810c|g_Calculate_Mission_Order_LookupTable_0069810C|||global||
 698110|g_Task_Force_Order_LookupTable_00698110|||global||
 698118|g_Navy_Order_Priority_LookupTable_00698118|||global||
+6984b4|g_nMapActionContextDistanceCacheSizedFor|||global||
 698ab0|g_nRandomMapSelectedNationSlot00698AB0|||global||
 698ae0|g_szCountryNameProfileKey00698AE0|||global||
 698b10|g_nTurnCooldownSideFlag00698B10|||global||
