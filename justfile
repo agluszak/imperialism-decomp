@@ -97,10 +97,14 @@ ghidra-apply-source *args: _require-ghidra-install
 
 # The full one-command operation: build (fresh PDB/inputs), apply the source
 # model to the DB, export the vendored .gzf.
-[doc('MUTATES: Ghidra DB + vendored .gzf. build -> ghidra-apply-source --apply -> export-project')]
+# Order matters: the PDB import names entities from the generated data sources
+# (inventory names), so the source-declaration name pass must run AFTER it —
+# source names win last.
+[doc('MUTATES: Ghidra DB + vendored .gzf. build -> import-ghidra -> ghidra-apply-source --apply -> export-project')]
 [group('sync')]
 ghidra-apply-source-full:
   just build
+  just import-ghidra
   just ghidra-apply-source --apply --quiet
   just export-project
 
@@ -741,15 +745,6 @@ export-project *args: _require-ghidra-install
   uv run python -m tools.ghidra.export_project {{args}}
 
 # MUTATES: Ghidra DB (with --apply).
-# Push reviewed library override names (config/reviewed_library_identities.csv)
-# directly into the DB, including label-only + out-of-range addresses push-names
-# skips, so the exported .gzf carries them. Dry-run by default; --apply writes.
-[doc('MUTATES: Ghidra DB (--apply). Push reviewed library override names into the DB')]
-[group('ghidra-db')]
-push-library-override-names *args: _require-ghidra-install
-  uv run python -m tools.ghidra.push_library_override_names {{args}}
-
-# MUTATES: Ghidra DB (with --apply).
 # Define real functions Ghidra never created (vtable slot targets, ILT jmp
 # targets, inventory rows). Dry-run by default; --apply writes + saves the DB.
 # See docs/ghidra-db-mutations.md before applying.
@@ -784,11 +779,6 @@ prune-ilt-db-functions *args: _require-ghidra-install
 [group('ghidra-db')]
 fix-in-stack-params *args: _require-ghidra-install
   uv run python -m tools.ghidra.fix_in_stack_params {{args}}
-
-# MUTATES: Ghidra DB (with --apply).
-[group('ghidra-db')]
-apply-source-datatypes *args: _require-ghidra-install
-  uv run python -m tools.ghidra.apply_source_datatypes {{args}}
 
 # MUTATES: Ghidra DB (with --apply).
 [group('ghidra-db')]
@@ -1200,19 +1190,19 @@ tgreatpower-gate-update:
   @test "${ALLOW_POLICY_BASELINE_UPDATE:-}" = "1" || { echo "REFUSED: this rewrites an architecture-policy baseline (blessing new debt)."; echo "If a human approved the exception, rerun with ALLOW_POLICY_BASELINE_UPDATE=1."; exit 2; }
   uv run python -m tools.workflow.check_tgreatpower_hygiene --baseline "{{tgreatpower_gate_baseline}}" --write-baseline
 
-# MUTATES: config/stub_count_baseline.json.
+# MUTATES: config/baselines/stub_count_baseline.json.
 [group('baseline-update')]
 stub-count-gate-update:
   @test "${ALLOW_POLICY_BASELINE_UPDATE:-}" = "1" || { echo "REFUSED: this rewrites an architecture-policy baseline (blessing new debt)."; echo "If a human approved the exception, rerun with ALLOW_POLICY_BASELINE_UPDATE=1."; exit 2; }
   uv run python -m tools.workflow.check_stub_count --write-baseline
 
-# MUTATES: config/boundary_baseline.json.
+# MUTATES: config/baselines/boundary_baseline.json.
 [group('baseline-update')]
 boundary-gate-update:
   @test "${ALLOW_POLICY_BASELINE_UPDATE:-}" = "1" || { echo "REFUSED: this rewrites an architecture-policy baseline (blessing new debt)."; echo "If a human approved the exception, rerun with ALLOW_POLICY_BASELINE_UPDATE=1."; exit 2; }
   uv run python -m tools.workflow.check_boundary_ratchet --write-baseline
 
-# MUTATES: config/datacmp_baseline.csv.
+# MUTATES: config/baselines/datacmp_baseline.csv.
 [group('baseline-update')]
 datacmp-gate-update:
   uv run python -m tools.workflow.check_datacmp_baseline --target "{{target}}" --build-dir "{{build_dir}}" --write-baseline
@@ -1263,7 +1253,7 @@ correct-scalar-dtors *args:
 # MUTATES: config/original_entities.csv + stub manifest (with --write).
 # Dry-run-first vtable repair planner. Applies only deterministic fixes with --write:
 # manifest slot promotion, scalar-dtor spelling cleanup, and safe ILT thunk pruning.
-[doc('MUTATES (--write): symbols.csv + stub manifest. Dry-run-first vtable repair planner')]
+[doc('MUTATES (--write): original_entities.csv. Dry-run-first vtable repair planner')]
 [group('rewrite')]
 vtable-autofix *args:
   uv run python -m tools.workflow.vtable_autofix {{args}}
