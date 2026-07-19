@@ -1830,6 +1830,9 @@ void TTacticalBattle::HandleTacticalCommandTag_targ() {
     cursor = next;
   } while (cursor != position && result == NULL);
 
+  // UNRESOLVED_FIELD_ATTRIBUTION: writes the new target into +0x30 (see TTacticalUnit.h); this
+  // pointer-as-int store matches the binary (0x005a4101) but conflicts with the scalar bar
+  // reading -- keep localized until the attribution is resolved.
   selectedUnit1c->field30 = reinterpret_cast<int>(result);
   if (result == NULL) {
     g_pSfxPlaybackSystem->PlaySoundEffect(0x1b5a, 0, 1);

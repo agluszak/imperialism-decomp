@@ -39,7 +39,7 @@ Body outline:
   common tail: scanBracketExpressions(g_pSimMgr, &target(F-0x54?), strB, strA);
   spec->AssignTextSharedRef(&strB,1); spec->SetCityProductionDialogPictureRect(&descA,1).
 - Rows: for (col=0; col<3; col++) { y=0x50;
-    base = [0x6a43e8] + arg*0x21c;   // arg*3*5*9*4; [esp+0x6c] arg slot reused as running offset
+    base = [0x6a43e8] + arg*0x21c;   // arg*3*5*9*4; the arg is then carried in [esp+0x6c] as a running offset
     entry = base + 0xc + i*0x3c (i=0..2, countdown 3):
     if (entry->dword2c) {
       FormatInterNationEventRowTokensToSharedStrings(entry, tokens);

@@ -30,12 +30,12 @@ public:
   void AllocateAndAppendRecord(int param1, int param2, int param3, int param4);
 
 private:
-  // Dual-purpose layout (see AGENTS.md dual-purpose-offset guardrail): on a
-  // "container" instance these are a record count (field_0x4) plus up to 3
-  // TFuzzyVar* record slots (field_0x8/0xc/0x10); on a "leaf" record allocated
-  // by AllocateAndAppendRecord they instead hold 4 raw caller-supplied values.
-  // Same memory, different role depending on how the instance is used, so the
-  // slots stay raw ints rather than forcing pointer typing onto leaf use.
+  // UNRESOLVED_FIELD_ATTRIBUTION: +0x4..+0x10 read as {count, TFuzzyVar* slots[3]} on the
+  // "container" instance but as four raw scalars on instances allocated by
+  // AllocateAndAppendRecord. This is EITHER a role-polymorphic object OR two distinct record
+  // classes mistakenly merged as one TFuzzyVar -- unresolved until the two allocation sites
+  // are proven to share (or not) the TFuzzyVar vtable/ctor. Resolve to a role/union model or a
+  // separate leaf-record type then; the slots stay raw until proven (not "dual-purpose").
   int field_0x4;
   int field_0x8;
   int field_0xc;
@@ -43,4 +43,3 @@ private:
 };
 
 ASSERT_SIZE(TFuzzyVar, 0x14);
-
