@@ -1113,6 +1113,21 @@ generated-marker-gate:
 # identifiers that start with thunk_/ILT_/WrapperFor_ or end with _At<8hex> (calls
 # via linker thunks; history-encoded body names). Existing debt is grandfathered in
 # config/baselines/ilt_ossification_baseline.csv — a finite, shrink-only migration queue.
+# Rejects "dual-use"/"dual-purpose"/"reused as" hand-waving and raw pointer<->int member
+# storage (reinterpret_cast<int>(ptr), int-member->class-pointer casts). A purported dual-use
+# field is an unresolved modelling defect: prove one model (union/record/accessors) or mark it
+# // UNRESOLVED_FIELD_ATTRIBUTION: with both readings + evidence. Existing debt grandfathered in
+# config/baselines/dual_use_baseline.csv (shrink-only migration queue).
+[group('gates')]
+dual-use-gate:
+  uv run python -m tools.workflow.check_dual_use
+
+# MUTATES: config/baselines/dual_use_baseline.csv. Ratchet down after resolving a field's
+# attribution. Never run to silence a new offender.
+[group('gates')]
+dual-use-gate-update:
+  uv run python -m tools.workflow.check_dual_use --write-baseline
+
 [group('gates')]
 ilt-ossification-gate:
   uv run python -m tools.workflow.check_ilt_ossification
@@ -1266,6 +1281,7 @@ source-gates:
   just tgreatpower-gate
   just marker-gate
   just generated-marker-gate
+  just dual-use-gate
   just ilt-ossification-gate
   just vtable-annotation-gate
   just vtable-collision-gate

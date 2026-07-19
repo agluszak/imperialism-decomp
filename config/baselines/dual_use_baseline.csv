@@ -1,0 +1,20 @@
+path|offender
+include/game/TArmyMgr.h|term:dual-purpose:int tileOrObject08; // +0x08 (dual-purpose per actionType04 -- keep int)
+include/game/TFuzzyVar.h|term:dual-purpose:// Dual-purpose layout (see AGENTS.md dual-purpose-offset guardrail): on a
+include/game/TMapMgr.h|term:dual-purpose:// flat, -1-terminated list -- a genuinely dual-purpose layout.
+include/game/TMapMgr.h|term:dual-use:// terrainStateTable index -- same dual-use pattern flagged on
+include/game/TTaskForce.h|term:dual-purpose:// 6 (port-zone blockade orders) -- stores `nOrderTarget` into the dual-purpose `owner`
+include/game/TTaskForce.h|term:dual-purpose:// own declaration. `owner` remains genuinely dual-purpose (TTaskForce::
+include/game/TTaskForce.h|term:reused as:// Type 1 propagates `owner` (reused as a raw assignment-target value) into every
+include/game/global_data_tables.h|term:reused as:short stockCap; // +0x0c (was same table's +0x04; reused as navy-order "normalization base")
+src/game/TCommand.cpp|term:dual slot:// override individual slots through real C++ inheritance).
+src/game/TDiplomacyMapView.cpp|term:dual-purpose:// than a cursor handle -- matches the established this-codebase pattern of dual-purpose
+src/game/TEngineerDialog.cpp|int2ptr:BlitQuickDrawSurfaces(reinterpret_cast<TQuickDrawBlitSurface*>(this->field60 + 4),
+src/game/TEngineerDialog.cpp|int2ptr:BlitQuickDrawSurfaces(reinterpret_cast<TQuickDrawBlitSurface*>(this->field64 + 4),
+src/game/TEngineerDialog.cpp|int2ptr:BlitQuickDrawSurfaces(reinterpret_cast<TQuickDrawBlitSurface*>(this->field68 + 4),
+src/game/TMapMgr.cpp|term:dual-purpose:// Dual-purpose with pendingDevelopmentFlag0d's documented sentinel-flag use elsewhere:
+src/game/TNavyMgr.cpp|term:dual-purpose:// dual-purpose +0x18 slot TControlSeaZoneMission reinterprets as TZone*).
+src/game/TNavyMgr.cpp|term:dual-purpose:// type-modeling guardrail's dual-purpose-offset exception).
+src/game/TNavyMgr.cpp|term:reused as:// reused as two shorts elsewhere and as one combined int here, matching the
+src/game/TTacticalBattle.cpp|ptr2int:selectedUnit1c->field30 = reinterpret_cast<int>(result);
+src/game/TZone.cpp|term:dual-purpose:// contextAnchor is a dual-purpose opaque int slot (see TTaskForce.h); here it
