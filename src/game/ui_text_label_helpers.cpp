@@ -12,6 +12,133 @@
 void SetControlHoverHelpText(CString sharedString, TView* control);
 void SetControlHoverHelpTextAltEntry(CString sharedString, TView* control);
 
+// FUNCTION: IMPERIALISM 0x005c3d20
+void MapUiThemeCodeToStyleFlags(short themeCode, int* outStyleFlags) {
+  switch (themeCode) {
+  case 0x2b67:
+    *outStyleFlags = 0x1000000;
+    return;
+  case 0x2b68:
+    *outStyleFlags = 0x1000013;
+    return;
+  case 0x2b6a:
+    *outStyleFlags = 0x100005c;
+    return;
+  case 0x2b6b:
+    *outStyleFlags = 0x10000d2;
+    return;
+  case 0x2b69:
+    *outStyleFlags = 0x10000cb;
+    return;
+  case 0x2b6c:
+    *outStyleFlags = 0x1000028;
+    return;
+  case 0x2b6d:
+    *outStyleFlags = 0x1000001;
+    return;
+  case 0x2b6e:
+    *outStyleFlags = 0x1000001;
+    return;
+  case 0x2b6f:
+    *outStyleFlags = 0x100002a;
+    return;
+  case 0x2b70:
+    *outStyleFlags = 0x10000c9;
+    return;
+  case 0x2b71:
+    *outStyleFlags = 0x100001b;
+    return;
+  case 0x2b72:
+    *outStyleFlags = 0x1000030;
+    return;
+  case 0x2b73:
+    *outStyleFlags = 0x10000c8;
+    return;
+  case 0x2b74:
+    *outStyleFlags = 0x10000e3;
+    return;
+  default:
+    *outStyleFlags = (themeCode & 0xffff) | 0x1000000;
+    return;
+  }
+}
+
+// FUNCTION: IMPERIALISM 0x005c3e80
+void BuildUiTextStyleDescriptor(TUiTextStyleDescriptor* styleDescriptor, int unused, int arg2,
+                                int themeCode) {
+  (void)unused;
+  // Verified against 0x5c3e9b-0x5c3f01: constructed unconditionally, never read or
+  // written again -- a genuinely dead local kept faithfully (not our porting
+  // artifact; the original does the same).
+  CString deadLocal;
+  styleDescriptor->fontStyleFlags = 0;
+  int styleFlags = 0;
+  MapUiThemeCodeToStyleFlags(static_cast<short>(themeCode), &styleFlags);
+  styleDescriptor->textColor = styleFlags;
+  styleDescriptor->fontSize = static_cast<short>(arg2);
+  styleDescriptor->fontFamily = (arg2 >= 0xc) ? 1 : 3;
+}
+
+// FUNCTION: IMPERIALISM 0x005c3f50
+void InitializeUiTextStyleDescriptor(TUiTextStyleDescriptor* styleDescriptor, short face,
+                                     short pointSize, int themeCode, short font) {
+  // Same dead CString shape as BuildUiTextStyleDescriptor; the original constructs and
+  // destroys it while only using the packed descriptor fields below.
+  CString deadLocal;
+  int styleFlags = 0;
+  styleDescriptor->fontStyleFlags = face;
+  MapUiThemeCodeToStyleFlags(static_cast<short>(themeCode), &styleFlags);
+  styleDescriptor->fontSize = pointSize;
+  styleDescriptor->textColor = styleFlags;
+  styleDescriptor->fontFamily = font;
+}
+
+// FUNCTION: IMPERIALISM 0x005c4020
+TStaticText* ApplyControlThemeStyleAndOptionalCaption(TStaticText* control, int unused2,
+                                                      int pointSize, int themeCode, int themeCode2,
+                                                      const char* caption) {
+  (void)unused2;
+  control->AssertValid();
+  TUiTextStyleDescriptor styleDescriptor;
+  styleDescriptor.fontFamily = 0;
+  styleDescriptor.fontStyleFlags = 0;
+  styleDescriptor.fontSize = 0;
+  styleDescriptor.textColor = 0;
+  BuildUiTextStyleDescriptor(&styleDescriptor, 0, pointSize, themeCode);
+  control->SetTextStyleAndMaybeRefresh(&styleDescriptor, 0);
+  control->SetTextThemeCodeAndMaybeRefresh(static_cast<short>(themeCode2), 0);
+  if (caption != 0) {
+    CString captionString(caption);
+    control->AssignTextSharedRefIfChangedAndMaybeInvalidate(&captionString, 0);
+  }
+  return control;
+}
+
+// FUNCTION: IMPERIALISM 0x005c4180
+TStaticText* ConfigureUiControlStyleValueAndCaptionFromStringResource(TStaticText* control,
+                                                                      int unused2, int pointSize,
+                                                                      int themeCode, int themeCode2,
+                                                                      int stringResourceGroup,
+                                                                      short stringResourceIndex) {
+  (void)unused2;
+  CString caption;
+  g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&caption, stringResourceGroup,
+                                                                  stringResourceIndex);
+  control->AssertValid();
+  TUiTextStyleDescriptor styleDescriptor;
+  styleDescriptor.fontFamily = 0;
+  styleDescriptor.fontStyleFlags = 0;
+  styleDescriptor.fontSize = 0;
+  styleDescriptor.textColor = 0;
+  BuildUiTextStyleDescriptor(&styleDescriptor, 0, pointSize, themeCode);
+  control->SetTextStyleAndMaybeRefresh(&styleDescriptor, 0);
+  control->SetTextThemeCodeAndMaybeRefresh(static_cast<short>(themeCode2), 0);
+  if (static_cast<LPCSTR>(caption) != 0) {
+    control->AssignTextSharedRefIfChangedAndMaybeInvalidate(&caption, 0);
+  }
+  return control;
+}
+
 // FUNCTION: IMPERIALISM 0x005c4310
 TStaticText* __cdecl RefreshActiveControlThenApplyThemeStyleAndCaption(unsigned int controlTag,
                                                                        int unused2, int pointSize,
@@ -42,6 +169,29 @@ void __cdecl DispatchToSelectableTextOptionEntries(TView* view, TUiTextStyleDesc
       child = iter.NextSubView();
     } while (iter.MoreSubViews());
   }
+}
+
+// FUNCTION: IMPERIALISM 0x005c4470
+void ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(int unused, int styleWidth, int themeCode) {
+  TUiTextStyleDescriptor styleDescriptor;
+  styleDescriptor.textColor = 0;
+  BuildUiTextStyleDescriptor(&styleDescriptor, unused, styleWidth, themeCode);
+  SetQuickDrawTextFace(styleDescriptor.fontStyleFlags);
+  SetQuickDrawTextSize(styleDescriptor.fontSize);
+  SetQuickDrawTextFont(styleDescriptor.fontFamily);
+  SetQuickDrawColorAndSyncGlobals(styleDescriptor.textColor);
+}
+
+// FUNCTION: IMPERIALISM 0x005c4500
+void InitializeUiTextStyleDescriptorAndApplyQuickDraw(short face, short pointSize, int themeCode,
+                                                      short font) {
+  TUiTextStyleDescriptor styleDescriptor;
+  styleDescriptor.textColor = 0;
+  InitializeUiTextStyleDescriptor(&styleDescriptor, face, pointSize, themeCode, font);
+  SetQuickDrawTextFace(styleDescriptor.fontStyleFlags);
+  SetQuickDrawTextSize(styleDescriptor.fontSize);
+  SetQuickDrawTextFont(styleDescriptor.fontFamily);
+  SetQuickDrawColorAndSyncGlobals(styleDescriptor.textColor);
 }
 
 // FUNCTION: IMPERIALISM 0x005c4590
