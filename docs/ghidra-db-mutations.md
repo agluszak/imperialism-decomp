@@ -335,6 +335,34 @@ they await real class layouts. This is the datatype-hygiene prerequisite to the
 compiler-backed class-model work (the durable fix that sizes CPoint/CRect/game
 classes and drives committed opaque-by-value to 0).
 
+## 2026-07-19 (thirteenth): class-model projection — real layouts replace the stubs (PR #101, committed DB change)
+
+`just apply-class-model --apply` (`tools/ghidra/apply_class_model.py`) projected
+the verified class model (PR #100's three artifacts) into the DB: **438 records
+projected (375 existing stub/partial datatypes REPLACED — rewriting every
+reference — and 63 created), 0 failures, 96 blocked** per the RTTI audit
+(source_incomplete=83 / source_oversized=13 never project — the tool refuses to
+choose between disagreeing models). One transaction, verify-then-commit (every
+projected structure's final length re-checked against the oracle size).
+
+Per record: game bases flattened recursively at oracle offsets (e.g. `TMission`
+= 20 bytes: `base_CObject`@0, `nationId04:short`@4, `pathMarker06:short`@6 …;
+`TView` = 96 bytes with the flattened TEventHandler chain); MFC bases placed as
+single components of the DB's MFC type when its length matches the oracle
+EXTBASE size; fields at exact oracle offsets with the semantic type used ONLY
+when it resolves at exactly the oracle size (physical truth wins; otherwise
+undefined bytes); vptr at 0 for polymorphic roots.
+
+Downstream effect (the reason class projection precedes signature projection):
+datatype-hygiene **committed opaque-by-value 1 → 0** ("signature rows using fake
+by-value classes: 0" acceptance met), type resolution `generic_pointer_fallback`
+77 → 28 and `exact_complete` 3728 → 3797 — the signature projector now resolves
+parameter types against real layouts instead of 1-byte placeholders. Exported →
+`75494c6b…`. Wired into `ghidra-apply-source-full` BEFORE the signature
+projections; blocked records live in
+`build-msvc500/evidence/class_model_queue.csv` until their source declarations
+are fixed (exact size deltas in the class-model audit).
+
 ## Committed mutations (already in the current .gzf, newest first)
 
 From `git log --follow -- vendor/ghidra/exports/Imperialism.gzf`:

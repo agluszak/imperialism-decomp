@@ -55,6 +55,7 @@ module|tools.clang_ast_index|just:clang-decl-index|Clang-AST declaration index (
 module|tools.class_model|just:record-model|Semantic class model: AST record walk (records/bases/fields; never host layout)
 module|tools.layout_oracle|just:layout-oracle|Physical class layouts measured by the real MSVC500 container (build evidence)
 module|tools.class_model_audit|just:class-model-audit|Cross-check oracle sizeof vs binary RTTI m_nObjectSize (verified/incomplete/oversized)
+module|tools.ghidra.apply_class_model|just:apply-class-model|Project the verified class model into Ghidra (sized structs replace 1-byte stubs)
 module|tools.ghidra.dump_message_maps|just:dump-message-maps|Enumerate MFC message maps: message->handler->port-status per class
 module|tools.ghidra.apply_mfc_datatypes|just:apply-mfc-datatypes|Apply MFC datatypes into Ghidra
 module|tools.ghidra.apply_mfc_rtti|just:apply-mfc-rtti|Apply MFC RTTI into Ghidra
