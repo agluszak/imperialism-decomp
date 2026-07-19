@@ -1159,6 +1159,85 @@ void TNavyMgr::ProcessNationMapOrderInteractionsAndApplyOutcomes(short mode) {
   }
 }
 
+// FUNCTION: IMPERIALISM 0x00559dd0
+unsigned short TNavyMgr::GetMapContextActionLabelTokenByActionCode(short nTileIndex,
+                                                                   int nInputFlags) {
+  return static_cast<unsigned short>(
+      g_awMapContextActionLabelTokenByCommand[GetMapContextActionCode(nTileIndex, nInputFlags)]);
+}
+
+// FUNCTION: IMPERIALISM 0x00559e00
+unsigned short TNavyMgr::GetMapContextActionLabelToken(short nTileIndex, int nInputFlags) {
+  int actionCode = GetMapContextActionCode(nTileIndex, nInputFlags);
+  if (actionCode != 0) {
+    return g_awMapContextActionLabelTokenByCommand[actionCode];
+  }
+
+  TTaskForce* entry = GetActiveMapOrderEntry();
+  if (entry == nullptr) {
+    return g_awMapContextActionLabelTokenByCommand[0];
+  }
+
+  if (g_pGlobalMapState->terrainStateTable[nTileIndex].terrainType00 == 5) {
+    TZone* context = g_pActiveMapOrderContext->GetLinkedZoneForSeaTile(nTileIndex);
+    bool canResolve = false;
+    if (context != nullptr && entry->HasNoMapOrderEntryChildrenQueued() == 0) {
+      bool hasActiveChild = false;
+      for (TMapOrderChildLinkNode* node = entry->childOrderList; node != nullptr;
+           node = node->next) {
+        if (node->active != 0) {
+          hasActiveChild = true;
+          break;
+        }
+      }
+      if (hasActiveChild) {
+        unsigned short minimumWeight = 10000;
+        for (TMapOrderChildLinkNode* node = entry->childOrderList; node != nullptr;
+             node = node->next) {
+          if (node->active != 0) {
+            TShip* ship = static_cast<TShip*>(node->payload);
+            short weight =
+                g_NavyOrderResourceDescriptorTable[ship->resourceType04].descriptorWeight;
+            if (weight < static_cast<short>(minimumWeight)) {
+              minimumWeight = static_cast<unsigned short>(weight);
+            }
+          }
+        }
+        short threshold = minimumWeight != 10000 ? static_cast<short>(minimumWeight) : 0;
+        short distance = reinterpret_cast<TZone*>(entry->contextAnchor)
+                             ->GetCachedMapActionContextDistanceOrRecompute(context);
+        canResolve = distance <= threshold;
+      }
+    }
+    if (canResolve) {
+      actionCode = entry->ResolveMapOrderCommandFromActionContext(context);
+      return g_awMapContextActionLabelTokenByCommand[actionCode];
+    }
+  } else {
+    TGlobalMapCityScoreRecord* province = GetProvinceByTileIndex(nTileIndex);
+    bool canResolve = false;
+    if (province != nullptr) {
+      short* queuedCounts = reinterpret_cast<short*>(&entry->pad_1e[0]);
+      if (queuedCounts[0] + queuedCounts[1] + queuedCounts[2] + queuedCounts[3] != 0) {
+        for (TMapOrderChildLinkNode* node = entry->childOrderList; node != nullptr;
+             node = node->next) {
+          if (node->active != 0) {
+            canResolve = province->padA0 != 0;
+            break;
+          }
+        }
+      }
+    }
+    if (canResolve) {
+      char relationOutOfDate = g_pDiplomacyTurnStateManager->IsNationPairRelationTurnStampOutOfDate(
+          entry->required_count, province->ownerNationCode00);
+      return g_awMapContextActionLabelTokenByCommand[relationOutOfDate != 0 ? 16 : 1];
+    }
+  }
+
+  return g_awMapContextActionLabelTokenByCommand[1];
+}
+
 // FUNCTION: IMPERIALISM 0x0055a020
 bool TNavyMgr::TryHandleMapContextAction(short nTileIndex, int nInputFlags) {
   int actionCode = GetMapContextActionCode(nTileIndex, nInputFlags);

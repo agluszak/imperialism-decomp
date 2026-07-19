@@ -16,9 +16,10 @@ public:
   unsigned short field6a;
   unsigned short field6c;
   unsigned short field6e;
-  unsigned char pad70[2];
-  // 0x72 — click-cycle counter bumped once per HandleMapClickByInteractionMode call,
-  // wrapping 1..4 (reset to 1 when it exceeds 4).
+  short hoverRegionBand70;
+  // 0x72 is dual-purpose in the original: the hover path stores the previous
+  // hoverRegionBand70 here, while HandleMapClickByInteractionMode also bumps it as a
+  // click-cycle counter wrapping 1..4.
   short clickCycleCounter72;
   // Written by SetFlagByteAndInvokeVslot1A4 (this+0x74=flagByte), read as a byte gate by
   // TMapDialog::RenderMapDialogTerrainOverlayFrameByTileOwner.

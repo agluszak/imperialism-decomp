@@ -1000,6 +1000,11 @@ undefined TArmyMgr::HandleMapClickByComputedCursorState(short tileIndex, short m
   return handled;
 }
 
+// FUNCTION: IMPERIALISM 0x004a4930
+unsigned short TArmyMgr::LookupMapCursorTokenByStateIndex(short tileIndex, short mode) {
+  return g_mapCursorTokenByStateIndex_00695668[ComputeMapCursorStateIndex(tileIndex, mode)];
+}
+
 // FUNCTION: IMPERIALISM 0x004a4960
 static int __stdcall ComputeMapCursorStateIndex(short tileIndex, short mode) {
   TTerrainStateRecordView* rec = &g_pGlobalMapState->terrainStateTable[tileIndex];
@@ -1031,6 +1036,12 @@ static int __stdcall ComputeMapCursorStateIndex(short tileIndex, short mode) {
     }
   }
   return 2;
+}
+
+// FUNCTION: IMPERIALISM 0x004a4aa0
+unsigned short TArmyMgr::LookupCivilianMapCursorTokenByStateIndex(short tileIndex, short mode) {
+  return g_civilianMapCursorTokenByStateIndex_00695680[this->ComputeCivilianMapCursorStateIndex(
+      tileIndex, mode)];
 }
 
 // FUNCTION: IMPERIALISM 0x004a4ad0

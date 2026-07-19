@@ -209,13 +209,6 @@ int __stdcall GetMapContextActionCode(short nTileIndex, int dwInputFlags) {
   return 0;
 }
 
-// FUNCTION: IMPERIALISM 0x00559dd0
-unsigned short __stdcall GetMapContextActionLabelTokenByActionCode(short nTileIndex,
-                                                                   int dwInputFlags) {
-  return static_cast<unsigned short>(
-      g_awMapContextActionLabelTokenByCommand[GetMapContextActionCode(nTileIndex, dwInputFlags)]);
-}
-
 // FUNCTION: IMPERIALISM 0x00565d20
 void ComputeWrappedIsometricScreenOffsetFromTile(int tileIndex, int* outScreenXY, int tileScale,
                                                  short originCol, short originRow) {

@@ -138,6 +138,14 @@ public:
   // active map-order context's overlays.
   void ResolveMapOrderChainsForTurnPhase(); // 0x5578a0
 
+  // Map-hover label lookups. These are real __thiscall members on the navy manager;
+  // 0x559e00 additionally resolves the active task-force entry against the clicked
+  // sea-zone or province context before choosing a cursor token.
+  unsigned short GetMapContextActionLabelTokenByActionCode(short nTileIndex,
+                                                           int nInputFlags); // 0x559dd0
+  unsigned short GetMapContextActionLabelToken(short nTileIndex,
+                                               int nInputFlags); // 0x559e00
+
   // 0x0055a020 -- resolves and executes a context-sensitive map click action against this
   // manager's active map-order state (dialogs for actions 2..8, set-active-entry for 9,
   // UI-runtime slot 0xf0 for 10, entry-order dialog for 11 which walks orderListHead04).
