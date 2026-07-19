@@ -87,6 +87,12 @@ _POINTER_ALIASES = {
     "position", "lpvoid", "lpcvoid", "hwnd", "hdc", "hbitmap", "hicon",
     "hcursor", "hmenu", "hinstance", "hmodule", "hgdiobj", "hpen", "hbrush",
     "hpalette", "hfont", "hrgn", "handle", "hkey", "hglobal", "hlocal",
+    # string pointers and a few more pointer-sized typedefs the DB lacks as names
+    "lpctstr", "lptstr", "lpcstr", "lpstr", "lpcwstr", "lpwstr",
+    "rgnhandle",       # Mac/GDI region handle (opaque pointer)
+    "lpcreatestruct", "lpcreatestructa", "lprect", "lppoint", "lpsize", "lpmsg",
+    "tsortedlistcomparefunc", "tlistcomparefunc",  # function-pointer typedefs
+    "farproc", "wndproc", "dlgproc", "hookproc", "timerproc",
 }
 
 
@@ -170,10 +176,25 @@ def parse_prototype(proto: str):
     cc = m.group(1) if m else None
     if cc:
         proto = proto.replace(cc, " ")
-    # Split head(...) — take the LAST top-level paren group as the arg list.
+    # Take the FIRST balanced paren group after the name as the arg list — NOT the
+    # last. For a constructor with a member-initializer list
+    # (`TFoo::TFoo(args) : TBase(...), field(0)`) the last `)` closes the init list,
+    # not the args; balanced matching stops at the real arg list's close and ignores
+    # everything after it (init list, trailing `const`, `{`). Nested parens in a
+    # function-pointer parameter are handled by the depth counter.
     open_i = proto.find("(")
-    close_i = proto.rfind(")")
-    if open_i < 0 or close_i < open_i:
+    if open_i < 0:
+        return None
+    depth, close_i = 0, -1
+    for i in range(open_i, len(proto)):
+        if proto[i] == "(":
+            depth += 1
+        elif proto[i] == ")":
+            depth -= 1
+            if depth == 0:
+                close_i = i
+                break
+    if close_i < 0:
         return None
     head = proto[:open_i].strip()          # "RetType Class::method" (or "Class::ctor")
     argstr = proto[open_i + 1:close_i].strip()

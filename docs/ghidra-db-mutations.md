@@ -254,6 +254,30 @@ The 277 queue is the input to the ABI-exception lowering follow-up (sret / packe
 CUSTOM_STORAGE / type modeling for the 177 unresolved). Wired into
 `ghidra-apply-source-full` after the in_stack projection.
 
+## 2026-07-19 (tenth): constructor-prototype parse fix + missing typedefs (PR #97, committed DB change)
+
+Diagnosing the divergent queue's 177 `unresolved_param` revealed most were not
+missing types but a PARSER bug: `parse_prototype` took the LAST balanced paren
+group as the arg list, so a constructor with a member-initializer list
+(`TFoo::TFoo(args) : TBase(...), field(0)`) parsed its args as the init-list tail
+(`) : TBase(`). Fixed to take the FIRST balanced group (nested parens in a
+function-pointer parameter handled by a depth counter); added the genuinely-missing
+pointer-sized typedefs (`RgnHandle`, `LPCTSTR`/`LPTSTR`, `LPCREATESTRUCT`,
+`TSortedListCompareFunc`, window/dialog procs, …) to the pointer-alias set.
+
+Re-running `project-divergent-signatures --apply` on the #96 base (`5ccd1088…`):
+`unresolved_param` 177 → 6, **projected=37** more, 0 apply_error. Re-exported →
+`6b841b63…`. The structural audit moved **converged 3701 → 3871** (95%),
+`db_signature_incomplete` 255 → 87, type-resolution `unresolved` 201 → 15 — a mix
+of 37 real new projections and ~133 constructors that were always converged but
+mis-measured by the same parse bug (the audit shares `parse_prototype`), so the
+true convergence was always higher than #96 reported. The remaining queue (87
+`introduced_in_stack`, 3 sret, 6 unresolved, 8 decompile timeouts) is the genuine
+ABI-exception set — sret needs correct return-type SIZES first (e.g. `CPoint` is a
+1-byte DB placeholder; MSVC returns non-trivial small structs via a hidden pointer
+Ghidra won't model until the type is sized), so type modeling precedes the
+sret/packed CUSTOM_STORAGE lowering.
+
 ## Committed mutations (already in the current .gzf, newest first)
 
 From `git log --follow -- vendor/ghidra/exports/Imperialism.gzf`:
