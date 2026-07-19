@@ -131,4 +131,9 @@ public:
   virtual void SelectUniversityRecruitmentEntry(short nRecruitmentEntryIndex); // slot 0x79 0x4cb320
 
   TUniversityView();
+
+  // Original object size is 0xac (CRuntimeClass m_nObjectSize); the source class ended at 0xa0. Trailing 12 byte(s) not yet semantically recovered — declared so sizeof and the recomp's allocation size match the original.
+  int fielda0;
+  int fielda4;
+  int fielda8;
 };

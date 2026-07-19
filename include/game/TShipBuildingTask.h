@@ -27,4 +27,7 @@ public:
   // slot 0x0f QueueCityProductionOrderCommand inherited unchanged (0x5ae4b0)
 
   TShipBuildingTask();
+
+  // Original object size is 0x18 (CRuntimeClass m_nObjectSize); the source class ended at 0x14. Trailing 4 byte(s) not yet semantically recovered — declared so sizeof and the recomp's allocation size match the original.
+  int field14;
 };

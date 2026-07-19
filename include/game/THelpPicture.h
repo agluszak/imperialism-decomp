@@ -128,4 +128,8 @@ public:
   virtual undefined BuildHelpSubjectListControlsWithPrevNext();   // slot 0x76 0x504220
 
   THelpPicture();
+
+  // Original object size is 0x98 (CRuntimeClass m_nObjectSize); the source class ended at 0x90. Trailing 8 byte(s) not yet semantically recovered — declared so sizeof and the recomp's allocation size match the original.
+  int field90;
+  int field94;
 };

@@ -192,4 +192,7 @@ public:
   // of the two "opposite" hex neighbors (by parity of tileIndex) are trench-deploy
   // tiles; indexes an unrecovered 20-short table. 0x5aa670.
   short ComputeTacticalUnitSpriteOrientationIndexByAdjacentType1Occupancy(int tileIndex);
+
+  // Original object size is 0xd8 (CRuntimeClass m_nObjectSize); the source class ended at 0xd4. Trailing 4 byte(s) not yet semantically recovered — declared so sizeof and the recomp's allocation size match the original.
+  int fieldd4;
 };

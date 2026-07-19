@@ -124,4 +124,8 @@ public:
   // slot 0x72 SetPictureResourceIdAndRefresh inherited unchanged (0x48f570)
 
   TBook();
+
+  // Original object size is 0x98 (CRuntimeClass m_nObjectSize); the source class ended at 0x90. Trailing 8 byte(s) not yet semantically recovered — declared so sizeof and the recomp's allocation size match the original.
+  int field90;
+  int field94;
 };

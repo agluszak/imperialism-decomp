@@ -40,6 +40,15 @@ public:
   // slot 0x18 ExecuteTacticalDigActionAndConsumeUnitActionPoints inherited unchanged (0x5a3640)
 
   TNavyBattle();
+
+  // Original object size is 0x94 (CRuntimeClass m_nObjectSize); the source class ended at 0x78. Trailing 28 byte(s) not yet semantically recovered — declared so sizeof and the recomp's allocation size match the original.
+  int field78;
+  int field7c;
+  int field80;
+  int field84;
+  int field88;
+  int field8c;
+  int field90;
 };
 
 // 0x5a59a0: tileIndex -> (row = tileIndex/0x1d, doubled column = (row&1) + (tileIndex%0x1d)*2)

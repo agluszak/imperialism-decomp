@@ -121,4 +121,7 @@ public:
   int field60; // +0x60
 
   TMinisterView();
+
+  // Original object size is 0x68 (CRuntimeClass m_nObjectSize); the source class ended at 0x64. Trailing 4 byte(s) not yet semantically recovered — declared so sizeof and the recomp's allocation size match the original.
+  int field64;
 };

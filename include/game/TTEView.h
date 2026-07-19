@@ -134,4 +134,12 @@ public:
                                  int layoutParam5, int layoutParam6, RECT* insetRect,
                                  TControlPictureRectState* style, short styleWord90, int unusedB,
                                  int unusedC);
+
+  // Original object size is 0x98 (CRuntimeClass m_nObjectSize). These three
+  // members previously sat at the head of TDeluxeText, but the RTTI sizes prove
+  // they belong here: sizeof(TTEView)=0x98 and TDeluxeText's remaining fields
+  // then land exactly on their offset-suffixed names (cursorThemeCode98 @0x98).
+  unsigned char field94;      // +0x94
+  unsigned char field95;      // +0x95
+  unsigned char padding96[2]; // +0x96
 };

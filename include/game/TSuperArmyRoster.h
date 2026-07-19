@@ -119,4 +119,7 @@ public:
   virtual undefined ConstructTSuperArmyRosterBaseState(); // slot 0x6e 0x4aa540
 
   TSuperArmyRoster();
+
+  // Original object size is 0x88 (CRuntimeClass m_nObjectSize); the source class ended at 0x84. Trailing 4 byte(s) not yet semantically recovered — declared so sizeof and the recomp's allocation size match the original.
+  int field84;
 };

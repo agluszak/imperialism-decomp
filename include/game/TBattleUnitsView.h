@@ -118,4 +118,7 @@ public:
   // slot 0x6d OrphanCallChain_C4_I18_0056ff90 inherited unchanged (0x56ff90)
 
   TBattleUnitsView();
+
+  // Original object size is 0x8c (CRuntimeClass m_nObjectSize); the source class ended at 0x88. Trailing 4 byte(s) not yet semantically recovered — declared so sizeof and the recomp's allocation size match the original.
+  int field88;
 };

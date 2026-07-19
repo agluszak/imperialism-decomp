@@ -127,4 +127,7 @@ public:
   // NOOP: verified empty in original 0x00458dcb (trivial inline ctor: the builder
   // expansion site emits only the base ctor call + vtbl install)
   TSpecialQuitPicture() {}
+
+  // Original object size is 0x94 (CRuntimeClass m_nObjectSize); the source class ended at 0x90. Trailing 4 byte(s) not yet semantically recovered — declared so sizeof and the recomp's allocation size match the original.
+  int field90;
 };

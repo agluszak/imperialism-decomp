@@ -68,4 +68,7 @@ public:
   int field_C0;
   CDib* field_C4; // backdrop DIB (tiled-background path of OnEraseBkgnd)
   int field_CC;
+
+  // Original object size is 0xd0 (CRuntimeClass m_nObjectSize); the source class ended at 0xcc. Trailing 4 byte(s) not yet semantically recovered — declared so sizeof and the recomp's allocation size match the original.
+  int fieldcc;
 };

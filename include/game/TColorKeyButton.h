@@ -126,4 +126,7 @@ public:
   virtual undefined OrphanCallChain_C1_I05_00572060(); // slot 0x74 0x572060
 
   TColorKeyButton();
+
+  // Original object size is 0x9c (CRuntimeClass m_nObjectSize); the source class ended at 0x98. Trailing 4 byte(s) not yet semantically recovered — declared so sizeof and the recomp's allocation size match the original.
+  int field98;
 };

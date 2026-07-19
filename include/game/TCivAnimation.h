@@ -21,4 +21,7 @@ public:
   // slot 0x0c RenderBattleReportViewSurfaceSpriteWithResourceHandle inherited unchanged (0x49f2d0)
 
   TCivAnimation();
+
+  // Original object size is 0x30 (CRuntimeClass m_nObjectSize); the source class ended at 0x2c. Trailing 4 byte(s) not yet semantically recovered — declared so sizeof and the recomp's allocation size match the original.
+  int field2c;
 };

@@ -23,5 +23,9 @@ public:
   virtual undefined CreateTCityInstance(int param_1, short param_2); // slot 0x0b 0x4b2340
 
   TLaborPool();
+
+  // Original object size is 0xc (CRuntimeClass m_nObjectSize); the source class ended at 0x4. Trailing 8 byte(s) not yet semantically recovered — declared so sizeof and the recomp's allocation size match the original.
+  int field04;
+  int field08;
 };
 

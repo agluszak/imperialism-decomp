@@ -130,4 +130,7 @@ public:
   // scenario/session context (turn-event 0xE receive tail; the original tolerates a
   // null `this`).
   void RefreshMapAndMessageControlsForCurrentContext();
+
+  // Original object size is 0x98 (CRuntimeClass m_nObjectSize); the source class ended at 0x94. Trailing 4 byte(s) not yet semantically recovered — declared so sizeof and the recomp's allocation size match the original.
+  int field94;
 };

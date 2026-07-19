@@ -39,6 +39,9 @@ public:
   void MinisterSlot21() override;
   void Call90() override;
   void DispatchProposalSlot98(int arg1, int arg2, int arg3, int targetNation) override;
+
+  // Original object size is 0x84 (CRuntimeClass m_nObjectSize); the source class ended at 0x80. Trailing 4 byte(s) not yet semantically recovered — declared so sizeof and the recomp's allocation size match the original.
+  int field80;
 };
 
 // VTABLE: IMPERIALISM 0x00659f48
