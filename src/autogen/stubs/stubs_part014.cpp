@@ -259,10 +259,10 @@ undefined4 RenderDiplomacyMatrixRowStatusIcons(void)
   return 0;
 }
 
-// ghidra_name WrapperFor_InvalidateCityDialogRectRegion_At004f6d90
-// ghidra_proto undefined WrapperFor_InvalidateCityDialogRectRegion_At004f6d90()
+// ghidra_name Function_004f6d90
+// ghidra_proto undefined4 Function_004f6d90(void)
 // FUNCTION: IMPERIALISM 0x004f6d90
-undefined4 WrapperFor_InvalidateCityDialogRectRegion_At004f6d90(void)
+undefined4 Function_004f6d90(void)
 {
   return 0;
 }

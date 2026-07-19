@@ -25,7 +25,7 @@
 
 // Free-function region-invalidate wrapper (ILT target 0x004f6d90); the base class
 // TDiplomacyMapView calls it through this same thunk-cast at four sites.
-undefined4 thunk_WrapperFor_InvalidateCityDialogRectRegion_At004f6d90(void);
+undefined4 Function_004f6d90(void);
 
 namespace {
 const short kCouncilCoatOfArmsPictureBase = 0x1105;
@@ -171,8 +171,7 @@ void TCouncilView::HandleEvent(int commandId, TEventHandler* sourceHandler, TEve
       tagIndex += 1;
     } while (reinterpret_cast<int>(tagTable) < reinterpret_cast<int>(g_councilControlTagTable + 6));
     if (tagIndex < 6) {
-      reinterpret_cast<void(__stdcall*)(int)>(
-          thunk_WrapperFor_InvalidateCityDialogRectRegion_At004f6d90)(tagIndex);
+      reinterpret_cast<void(__stdcall*)(int)>(Function_004f6d90)(tagIndex);
       return;
     }
   } else {
