@@ -5,6 +5,7 @@
 // expands inline-marked functions) so they fold back into the switch body instead of becoming
 // out-of-line calls.
 
+#include "game/TAmbitApplication.h"
 #include "game/TLoadSavePicture.h"
 #include "game/TNewsMgr.h"
 #include "game/THelpMgr.h"

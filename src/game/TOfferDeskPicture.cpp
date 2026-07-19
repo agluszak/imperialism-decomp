@@ -1,3 +1,4 @@
+#include "game/TAmbitApplication.h"
 #include "game/TOfferDeskPicture.h"
 
 #include "game/CString.h"

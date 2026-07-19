@@ -33,6 +33,7 @@ const unsigned int kControlTagEnd = 0x656e6420u;  // ' end'
 const unsigned int kControlTagText = 0x74657874u; // 'text'
 const unsigned int kControlTagFood = 0x646f6f66u; // 'food'
 const unsigned int kControlTagOkay = 0x6f6b6179u; // 'okay' — confirm button
+const unsigned int kControlTagBack = 0x6261636bu; // 'back' — dismiss/back button
 const unsigned int kControlTagProt = 0x70726f74u; // 'prot' — network protocol option field
 const unsigned int kControlTagPro0 = 0x70726f30u; // 'pro0' — default protocol option tag
 const unsigned int kControlTagPass = 0x70617373u; // 'pass' — password edit field

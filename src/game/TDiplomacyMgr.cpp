@@ -1,3 +1,4 @@
+#include "game/TAmbitApplication.h"
 #include "game/TDiplomacyMgr.h"
 #include "game/global_data_tables.h"
 #include "game/nation_slot_eligibility.h"

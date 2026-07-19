@@ -1,3 +1,4 @@
+#include "game/TAmbitApplication.h"
 #include "game/TNextDiplomationCommand.h"
 
 #include "game/TApplication.h"

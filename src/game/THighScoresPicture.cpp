@@ -1,3 +1,4 @@
+#include "game/TAmbitApplication.h"
 #include "game/THighScoresPicture.h"
 
 #include "game/TApplication.h"

@@ -14,6 +14,7 @@ class TView;
 class TInfoBarText;
 
 #include "game/TArmyPlayer.h"
+#include "game/TAmbitApplication.h"
 #include "game/mfc.h"
 #include "game/global_data_tables.h"
 #include "game/sea_geometry.h"
@@ -96,7 +97,7 @@ THelpMgr* g_pHelpMgr = 0;
 // GLOBAL: IMPERIALISM 0x006a43e8
 TNewsMgr* g_pInterNationEventQueueManager = 0;
 // GLOBAL: IMPERIALISM 0x006a1344
-TApplication* g_pGlobalUiRootController = 0;
+TAmbitApplication* g_pGlobalUiRootController = 0;
 // GLOBAL: IMPERIALISM 0x006a43c8
 TMultiplayerMgr* g_pGameFlowState = 0;
 // GLOBAL: IMPERIALISM 0x006a43d0

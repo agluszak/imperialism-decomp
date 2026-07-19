@@ -1,3 +1,4 @@
+#include "game/TAmbitApplication.h"
 #include "game/TSoundPlayer.h"
 
 #include "game/mfc.h"

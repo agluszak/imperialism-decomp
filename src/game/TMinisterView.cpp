@@ -1,4 +1,11 @@
 #include "game/TMinisterView.h"
+
+#include "game/TAmbitApplication.h"
+#include "game/TDisplayMgr.h"
+#include "game/TEventHandler.h"
+#include "game/TWindow.h"
+#include "game/global_data_tables.h"
+#include "game/ui_control_tags.h"
 // SYNTHETIC: IMPERIALISM 0x004f2bb0
 // TMinisterView::CreateObject
 
@@ -30,11 +37,26 @@ char TMinisterView::DispatchUiMouseEventToChildrenOrSelf_Impl(CPoint* point, int
 }
 
 // FUNCTION: IMPERIALISM 0x004f2e00
-void TMinisterView::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {}
+void TMinisterView::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
+  int tag = sourceHandler->controlTag;
+  if (commandId == 0xa) {
+    if (tag == kControlTagOkay) {
+      OrphanLeaf_NoCall_Ins03_004f2ea0();
+      TWindow* owner = static_cast<TWindow*>(OwnerPanel());
+      g_pGlobalUiRootController->CloseAndFreeWindow(owner);
+      return;
+    }
+    if (tag == kControlTagBack) {
+      OrphanLeaf_NoCall_Ins03_004f2ea0();
+      return;
+    }
+  }
+  TEventHandler::HandleEvent(commandId, sourceHandler, event);
+}
 
 // FUNCTION: IMPERIALISM 0x004f2ea0
 undefined TMinisterView::OrphanLeaf_NoCall_Ins03_004f2ea0() {
-  return 0;
+  return g_pDisplayMgr->DispatchUiWindowStatusTickForClass99Windows();
 }
 
 // FUNCTION: IMPERIALISM 0x004f2ec0

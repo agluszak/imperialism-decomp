@@ -15020,13 +15020,13 @@
     },
     {
       "address": "0x4f2e00",
-      "matching": 0.04081632653061224,
+      "matching": 0.6436781609195402,
       "name": "TMinisterView::HandleEvent",
       "type": 1
     },
     {
       "address": "0x4f2ea0",
-      "matching": 0.0,
+      "matching": 1.0,
       "name": "TMinisterView::OrphanLeaf_NoCall_Ins03_004f2ea0",
       "type": 1
     },
@@ -16991,7 +16991,7 @@
     },
     {
       "address": "0x50bea0",
-      "matching": 0.20899591094956838,
+      "matching": 0.20354384370740572,
       "name": "TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets",
       "type": 1
     },
@@ -21934,7 +21934,7 @@
     },
     {
       "address": "0x545940",
-      "matching": 0.3804137039431157,
+      "matching": 0.4261712439418417,
       "name": "TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine",
       "type": 1
     },
@@ -30218,7 +30218,7 @@
     },
     {
       "address": "0x5a1ee0",
-      "matching": 0.5649867374005305,
+      "matching": 0.6737400530503979,
       "name": "TTacticalBattle::EvaluateAndResolveTacticalActionAgainstTileOccupant",
       "type": 1
     },
@@ -30296,7 +30296,7 @@
     },
     {
       "address": "0x5a3810",
-      "matching": 0.8571428571428571,
+      "matching": 0.7107438016528925,
       "name": "TTacticalBattle::ComputeRallyStrengthAndQueueTacticalRallyCommand",
       "type": 1
     },
@@ -30812,7 +30812,7 @@
     },
     {
       "address": "0x5a8ac0",
-      "matching": 0.6086956521739131,
+      "matching": 0.6867469879518072,
       "name": "TTacticalBattleView::CenterViewportAroundGridIndexAndSnap",
       "type": 1
     },
@@ -32821,7 +32821,7 @@
     },
     {
       "address": "0x5bf930",
-      "matching": 0.7890818858560794,
+      "matching": 0.7543424317617866,
       "name": "TOfferDeskPicture::RefreshSelectedNationOrderCompatibilityInfo",
       "type": 1
     },

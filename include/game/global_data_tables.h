@@ -266,6 +266,7 @@ extern short g_Rebuild_Primary_Nation_Value_00653570[6][0x17];
 
 extern "C" {
 class TApplication;
+class TAmbitApplication;
 class TTacticalBattle;
 class ImperialismApp;
 
@@ -328,7 +329,7 @@ extern void* g_apNationStates_End;
 extern TSimMgr* g_pSimMgr;
 extern THelpMgr* g_pHelpMgr;
 extern TNewsMgr* g_pInterNationEventQueueManager;
-extern TApplication* g_pGlobalUiRootController;
+extern TAmbitApplication* g_pGlobalUiRootController;
 
 // The live tactical battle (turn-event 0x29/0x2a receive dispatch target).
 extern TTacticalBattle* g_pActiveTacticalBattle;

@@ -1,3 +1,4 @@
+#include "game/TAmbitApplication.h"
 #include "game/TMultiplayerMgr.h"
 
 #include <string.h>

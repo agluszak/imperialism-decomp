@@ -1,3 +1,4 @@
+#include "game/TAmbitApplication.h"
 #include "game/TAnimator.h"
 
 #include "game/CIterator.h"

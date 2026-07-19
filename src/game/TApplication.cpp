@@ -1,3 +1,4 @@
+#include "game/TAmbitApplication.h"
 #include "game/TApplication.h"
 
 #include "game/TNewGameCommand.h"
