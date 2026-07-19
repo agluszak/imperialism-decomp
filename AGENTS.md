@@ -51,7 +51,7 @@ never set it to make a red gate go away (see the gate-chasing guardrail).
 - **`quality-control`** — build, reccmp detect/compare/stats, gates,
   formatting, and reccmp pairing-failure diagnosis.
 - **`sync-pipeline`** — the derived-artifact pipeline: the raw entity inventory, function
-  ownership, generated stubs, name overrides, `just generate`/`db-resync`, and the
+  ownership, generated stubs, `just generate`/`ghidra-apply-source`, and the
   resync failure→fix taxonomy (junk thunk rows, type flips, size clamps).
 - **`class-recovery`** — class/vtable reconstruction, slice/class discovery,
   Mac-evidence oracle use, and real-virtual dispatch on recovered classes.
@@ -456,7 +456,7 @@ per-session refresh stays just `uv sync`.
 - **Still blocked:** running the game (`just run`/`debug`/`screenshot`) needs the full
   retail install (a `Data/` folder next to the exe), which is not present — only the exe
   was supplied.
-- **Ghidra targets work in cloud** (`ghidra-*`, `sync-ghidra`, `db-resync`,
+- **Ghidra targets work in cloud** (`ghidra-*`, `ghidra-apply-source`, `refresh-inventory`,
   `restore-project`). The snapshot ships Ghidra 12.1.2 at `/opt/ghidra_12.1.2_PUBLIC`, the
   matching `.env` `GHIDRA_INSTALL_DIR`, and the LFS-pulled project export
   (`vendor/ghidra/exports/Imperialism.gzf`, sha256 in the sibling `.sha256`). The one gotcha

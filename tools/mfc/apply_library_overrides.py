@@ -14,7 +14,7 @@ projection step. This module is that step. It is idempotent and safe to re-run.
 Precedence (highest first): reviewed override > FID match > existing curated
 identity > provisional Ghidra identity. This tool owns the top tier: it writes
 name/symbol/prototype/provenance into `config/original_entities.csv` (the curated merge in
-`sync-ghidra` preserves those columns by address) and ensures a `// LIBRARY:`
+the refresh preserves those columns by address) and ensures a `// LIBRARY:`
 marker exists (markers are the ownership authority).
 
 A marker is only *added* when no `// LIBRARY:` marker already exists for the

@@ -181,7 +181,7 @@ def main() -> int:
 
         # Wholesale refresh: the exported inventory replaces original_entities.csv
         # outright. Curated knowledge lives in source (markers/decls) and in the DB
-        # (via push-source-names / ghidra-apply-source), never merged back here.
+        # (via ghidra-apply-source), never merged back here.
 
 
         print("Done.")

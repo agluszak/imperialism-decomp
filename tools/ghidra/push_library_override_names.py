@@ -22,7 +22,7 @@ functionized). Names Ghidra cannot store as symbols (spaces/backticks, e.g. the
 push-names skips them.
 
 Read-only by default; ``--apply`` writes the DB and saves it. Run it inside
-`sync-ghidra` (right after `push-names`) so `sync_exports`/`export-project` pick
+the refresh flow so `sync_exports`/`export-project` pick
 up the names.
 """
 

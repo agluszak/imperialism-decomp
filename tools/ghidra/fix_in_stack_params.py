@@ -9,7 +9,7 @@ function as real parameters (at their exact ``Stack[0xN]`` storage, with the typ
 decompiler inferred), so a re-decompile names them ``param_N`` instead of
 ``in_stack_*``. (``commitParamsToDatabase`` alone does not help: the decompiler keeps
 these as non-parameter locals, so the committed prototype never includes them.) After
-a single ``--apply`` run + ``just sync-ghidra`` + autogen regen, ``in_stack_*`` is gone
+a single ``--apply`` run + ``just refresh-inventory``, ``in_stack_*`` is gone
 everywhere — the proper fix, vs. text-patching each promoted body.
 
 Read-only by default (reports the count); ``--apply`` opens the program writable and
@@ -153,7 +153,7 @@ def main() -> int:
             f"decomp_failed={result['no_decomp']}"
         )
         if not args.apply:
-            print("Re-run with --apply to commit the stack params, then `just sync-ghidra`.")
+            print("Re-run with --apply to commit the stack params, then `just refresh-inventory`.")
         return 0
     finally:
         if txid is not None:

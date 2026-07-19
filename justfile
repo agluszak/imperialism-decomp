@@ -31,7 +31,6 @@ macos_workspace := env_var_or_default("MACOS_CODEWARRIOR_WORKSPACE", justfile_di
 
 # Transitional aliases for renamed targets (see docs/workflows.md).
 alias stats-commit := stats-baseline-update
-alias full-sync-build := db-resync
 
 default:
   @just --list
@@ -85,17 +84,34 @@ _require-ghidra-install:
 # The three canonical playbooks live in docs/workflows.md.
 # ---------------------------------------------------------------------------
 
-# MUTATES: Ghidra DB, config/original_entities.csv (wholesale refresh).
-# Push source names into the DB, re-export symbols, prune ILT rows, then gate. The DB
-# is modified (push-names --apply), so `just export-project` must follow before
-# committing — or run `just db-resync` instead. Decompiled reference bodies go to
-# {{build_dir}}/evidence/ghidra-export/ (uncommitted evidence, not source).
-[doc('MUTATES: Ghidra DB, original_entities.csv. Re-export pipeline; follow with export-project')]
+# MUTATES: Ghidra DB (--apply). The ONE sanctioned source->Ghidra operation:
+# derives names from source markers + C++ declarations (inventory names as
+# fallback), applies function names/namespaces (primary-aware), labels, and
+# `Class::'vftable'` labels from // VTABLE: annotations, then audits datatype
+# drift. Dry-run by default. There is no automated Ghidra->source path.
+[doc('MUTATES: Ghidra DB (--apply). One-way apply of the source model; dry-run default')]
 [group('sync')]
-sync-ghidra: _require-ghidra-install
+ghidra-apply-source *args: _require-ghidra-install
   uv run python -m tools.ghidra.daemon stop --quiet
-  just push-names --apply --include-library-symbols --library-start 0x005e539c --library-end 0x00626c7d
-  just push-library-override-names --apply --quiet
+  uv run python -m tools.ghidra.apply_source {{args}}
+
+# The full one-command operation: build (fresh PDB/inputs), apply the source
+# model to the DB, export the vendored .gzf.
+[doc('MUTATES: Ghidra DB + vendored .gzf. build -> ghidra-apply-source --apply -> export-project')]
+[group('sync')]
+ghidra-apply-source-full:
+  just build
+  just ghidra-apply-source --apply --quiet
+  just export-project
+
+# MUTATES: Ghidra DB (prune), config/original_entities.csv (WHOLESALE refresh).
+# Intentional raw-inventory refresh from the DB after boundary analysis
+# (gap repair, function-bounds fixes). Replaces the file outright — curated
+# knowledge must already live in source / the DB (ghidra-apply-source first).
+[doc('MUTATES: original_entities.csv (wholesale) + Ghidra DB (ILT prune). Refresh the raw inventory')]
+[group('sync')]
+refresh-inventory: _require-ghidra-install
+  uv run python -m tools.ghidra.daemon stop --quiet
   just prune-ilt-db-functions --apply --quiet
   uv run python -m tools.ghidra.sync_exports \
     --ghidra-install-dir "$GHIDRA_INSTALL_DIR" \
@@ -106,25 +122,7 @@ sync-ghidra: _require-ghidra-install
   just symbols-anchor-gate
   just symbols-integrity-gate
   just vtable-collision-gate
-  @echo "sync-ghidra done. The Ghidra DB was modified; run 'just export-project' before committing (or use 'just db-resync' for the full pipeline)."
-
-# MUTATES: everything sync-ghidra touches + ownership/stubs + build tree + vendored .gzf.
-# The one-command full resync (docs/ghidra-db-mutations.md procedure): sync-ghidra ->
-# ownership/stubs -> build -> gates -> stats -> export-project. Replaces full-sync-build.
-[doc('MUTATES: all sync outputs + Ghidra DB + vendored .gzf. One-command full resync incl. build/gates/stats/export')]
-[group('sync')]
-db-resync:
-  just tooling-check
-  just sync-ghidra
-  just apply-library-overrides
-  just apply-library-oracle
-  just symbols-integrity-gate
-  just push-source-names --apply --quiet
-  just build
-  just detect
-  just gates
-  just stats
-  just export-project
+  @echo "refresh-inventory done. Run 'just export-project' before committing."
 
 # Generate the build inputs (source index + linkable stubs) into <build_dir>/generated.
 # Read-only over committed state: scans source markers directly (no sync step, no
@@ -743,15 +741,6 @@ export-project *args: _require-ghidra-install
   uv run python -m tools.ghidra.export_project {{args}}
 
 # MUTATES: Ghidra DB (with --apply).
-# Push source-owned names into the Ghidra DB so the export below already carries
-# them (names converge instead of churning). Source-owned addresses only; dry-run
-# by default — pass --apply to write + save the DB.
-[doc('MUTATES: Ghidra DB (--apply). Push source-owned names into the DB so exports converge')]
-[group('ghidra-db')]
-push-names *args: _require-ghidra-install
-  uv run python -m tools.ghidra.push_names_to_ghidra {{args}}
-
-# MUTATES: Ghidra DB (with --apply).
 # Push reviewed library override names (config/msvc500_library_overrides.csv)
 # directly into the DB, including label-only + out-of-range addresses push-names
 # skips, so the exported .gzf carries them. Dry-run by default; --apply writes.
@@ -759,15 +748,6 @@ push-names *args: _require-ghidra-install
 [group('ghidra-db')]
 push-library-override-names *args: _require-ghidra-install
   uv run python -m tools.ghidra.push_library_override_names {{args}}
-
-# MUTATES: Ghidra DB (with --apply).
-# Mirror ALL curated config/original_entities.csv names into the DB (source is authoritative):
-# game class methods, RTTI/global descriptors, etc. that push-names (overrides-only)
-# never pushes. Run after a resync (inventory final). Dry-run by default.
-[doc('MUTATES: Ghidra DB (--apply). Mirror curated inventory names into the DB')]
-[group('ghidra-db')]
-push-source-names *args: _require-ghidra-install
-  uv run python -m tools.ghidra.push_source_names_to_ghidra {{args}}
 
 # MUTATES: Ghidra DB (with --apply).
 # Define real functions Ghidra never created (vtable slot targets, ILT jmp
@@ -790,16 +770,16 @@ fix-function-bounds *args: _require-ghidra-install
 # MUTATES: Ghidra DB (with --apply).
 # Remove Function entities sitting on ILT jmp thunks (they block reccmp's thunk
 # auto-resolution and collapse vtable matching). The DB-side counterpart of
-# prune-ilt-thunks; sync-ghidra runs it automatically before the export.
-[doc('MUTATES: Ghidra DB (--apply). Remove Function entities on ILT jmp thunks (runs inside sync-ghidra)')]
+# prune-ilt-thunks; refresh-inventory runs it automatically before the export.
+[doc('MUTATES: Ghidra DB (--apply). Remove Function entities on ILT jmp thunks (runs inside refresh-inventory)')]
 [group('ghidra-db')]
 prune-ilt-db-functions *args: _require-ghidra-install
   uv run python -m tools.ghidra.prune_ilt_db_functions {{args}}
 
 # MUTATES: Ghidra DB (with --apply).
 # One-time Ghidra cleanup: commit Ghidra's `in_stack_*` stack args as real function
-# parameters in the DB, so after `just sync-ghidra` + autogen regen no `in_stack_*`
-# reads remain anywhere. Read-only by default; pass --apply to write (then sync-ghidra).
+# parameters in the DB, so after a refresh no `in_stack_*`
+# reads remain anywhere. Read-only by default; pass --apply to write (then refresh-inventory).
 [doc('MUTATES: Ghidra DB (--apply). Commit in_stack_* args as real parameters')]
 [group('ghidra-db')]
 fix-in-stack-params *args: _require-ghidra-install
@@ -827,7 +807,7 @@ apply-fidb *args: _require-ghidra-install
 
 # MUTATES: Ghidra DB (with --apply).
 # Atomically re-attribute a class in the DB: namespace + functions + datatypes +
-# vtable-struct + vtable label, in one transaction (push-source-names only does
+# vtable-struct + vtable label, in one transaction (ghidra-apply-source only does
 # function/label names, so a datatype-level junk name survives it). Dry-run by default.
 #   just ghidra-rename-class TSoundChannelNode TLongintList --vtable 0x650a08 [--apply]
 [doc('MUTATES: Ghidra DB (--apply). Atomically rename a class: namespace+datatypes+vtable')]
@@ -1299,7 +1279,7 @@ apply-msvc500-library-region *args:
 
 # MUTATES: config/original_entities.csv + src/game/library_msvc500_overrides.cpp.
 # Project reviewed library-identity overrides (config/msvc500_library_overrides.csv)
-# onto the derived artifacts. Idempotent; runs inside db-resync.
+# onto the derived artifacts. Idempotent.
 # Reviewed overrides win over FID for confirmed CRT/MFC functions FID missed (rand).
 [group('rewrite')]
 apply-library-overrides *args:
@@ -1323,7 +1303,7 @@ build-library-oracle *args:
 # MUTATES: config/original_entities.csv + src/game/library_msvc500_oracle.cpp + review CSV.
 # Project confident, unique oracle matches into the derived artifacts (upgrade
 # library symbols/prototypes; convert unowned FID-missed CRT/MFC funcs to library).
-# Idempotent; runs inside db-resync. Precedence: override > oracle.
+# Idempotent. Precedence: override > oracle.
 [group('rewrite')]
 apply-library-oracle *args:
   uv run python -m tools.mfc.apply_library_oracle {{args}}
