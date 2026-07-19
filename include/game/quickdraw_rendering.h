@@ -71,6 +71,12 @@ static __inline void DrawTextWithCachedStyle(const CString* text) {
   DrawTextWithCachedQuickDrawStyleState(text);
 }
 
+// Cached-style rect text draw leaf (0x494bf0): same cached-font/color setup as
+// DrawTextWithCachedQuickDrawStyleState, but draws into a caller rect via CDC::DrawText with
+// a styleSel-selected format. Sole caller: TTradeScreenPicture::ApplyRectSlot110.
+void __cdecl RenderTradeScreenCommoditySummaryRows_Impl(CString* text, RECT* rect, short styleSel,
+                                                        int unused);
+
 // QuickDraw text-style words (txFont/txFace/txSize) write the corresponding fields of
 // g_QuickDrawMeasureFontPreset (mode/flag2/pointSize) and mark the measure-font dirty
 // (g_bQuickDrawMeasureFontDirty). Real game functions (the D:\Ambit\QuickDraw.cpp layer),

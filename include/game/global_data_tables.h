@@ -463,6 +463,7 @@ extern TTradeMgr* g_pNationInteractionStateManager;
 extern CString g_cstrCountryNameSettingValue006A4220;
 extern TSetupRandomMapPicture* g_pActiveRandomMapSetupPicture006A4268;
 extern "C" short g_nationMetricSlotDispatchOrder006d810[0x11];
+extern "C" const unsigned int g_tradeCommodityRowTagTable[17];
 extern GlobalViewportRectDefaultsRecord g_globalViewportRectDefaultsRecord;
 extern GlobalViewportRectDefaultsRecord* g_pGlobalViewportRectDefaultsRecord;
 extern TWNetSessionManager g_NetworkSessionManager006a5f60;

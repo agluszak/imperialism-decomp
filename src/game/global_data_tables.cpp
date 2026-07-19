@@ -1143,6 +1143,15 @@ char g_szConanCheatFileName_00698BEC[] = "Conan";
 // GLOBAL: IMPERIALISM 0x0066d810
 short g_nationMetricSlotDispatchOrder006d810[0x11] = {0};
 
+// 17 four-char control tags (space + digit + 2-letter category: "sr" raw materials 0-6,
+// "am" manufactured 0-5, "dg" 0-3), walked by TTradeScreenPicture::ApplyRectSlot110 to
+// resolve each commodity summary-row control. Stored little-endian as the in-memory bytes.
+// GLOBAL: IMPERIALISM 0x0066dad0
+const unsigned int g_tradeCommodityRowTagTable[17] = {
+    0x72733020, 0x72733120, 0x72733220, 0x72733320, 0x72733420, 0x72733520,
+    0x72733620, 0x6d613020, 0x6d613120, 0x6d613220, 0x6d613320, 0x6d613420,
+    0x6d613520, 0x67643020, 0x67643120, 0x67643220, 0x67643320};
+
 // GLOBAL: IMPERIALISM 0x006a58c8
 int g_defaultDropShadowTextColor = 0;
 // GLOBAL: IMPERIALISM 0x006a5fc0

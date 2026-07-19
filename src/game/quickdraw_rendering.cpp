@@ -196,6 +196,63 @@ void __cdecl DrawTextWithCachedQuickDrawStyleState(const CString* text) {
   dc->SelectObject(oldFont);
 }
 
+// Draws one text cell into a rect with the cached QuickDraw measure-font/color state, the
+// same font-rebuild + SelectObject/SetTextColor idiom as DrawTextWithCachedQuickDrawStyleState
+// (0x494a90) but using CDC::DrawText into a caller rect; styleSel selects the DrawText format
+// flags. Only called by TTradeScreenPicture::ApplyRectSlot110.
+// FUNCTION: IMPERIALISM 0x00494bf0
+void __cdecl RenderTradeScreenCommoditySummaryRows_Impl(CString* text, RECT* rect, short styleSel,
+                                                        int unused) {
+  int sel = styleSel; // compared as a sign-extended int in the original (movsx + cmp eax)
+  int drawFormat = 0x920;
+  if (sel != -2) {
+    if (sel == -1) {
+      drawFormat = 0x922;
+    } else if (sel == 1) {
+      drawFormat = 0x921;
+    }
+  }
+
+  if (g_bQuickDrawMeasureFontDirty != 0 || g_pQuickDrawCachedMeasureFont == 0) {
+    if (g_pQuickDrawCachedMeasureFont != 0) {
+      delete g_pQuickDrawCachedMeasureFont;
+    }
+    g_pQuickDrawCachedMeasureFont =
+        CreateFontFromPresetAndAttachRegionHandle(&g_QuickDrawMeasureFontPreset);
+    g_bQuickDrawMeasureFontDirty = 0;
+  }
+
+  CDC* dc = g_pQuickDrawMemoryDc;
+  if (dc == nullptr) {
+    dc = g_pScopedMapQuickDrawDcHandleObject;
+  }
+  CFont* oldFont = dc->SelectObject(g_pQuickDrawCachedMeasureFont);
+
+  dc = g_pQuickDrawMemoryDc;
+  if (dc == nullptr) {
+    dc = g_pScopedMapQuickDrawDcHandleObject;
+  }
+  dc->SetTextColor(static_cast<COLORREF>(g_QuickDrawMeasureFontPreset.styleRef6));
+
+  dc = g_pQuickDrawMemoryDc;
+  if (dc == nullptr) {
+    dc = g_pScopedMapQuickDrawDcHandleObject;
+  }
+  dc->SetMapperFlags(1);
+
+  dc = g_pQuickDrawMemoryDc;
+  if (dc == nullptr) {
+    dc = g_pScopedMapQuickDrawDcHandleObject;
+  }
+  dc->DrawText((LPCSTR)*text, text->GetLength(), rect, drawFormat);
+
+  dc = g_pQuickDrawMemoryDc;
+  if (dc == nullptr) {
+    dc = g_pScopedMapQuickDrawDcHandleObject;
+  }
+  dc->SelectObject(oldFont);
+}
+
 // FUNCTION: IMPERIALISM 0x00494e00
 short __cdecl MeasureTextExtentWithCachedQuickDrawStyle(const CString* text) {
   // Active-DC path: reuse the global QuickDraw CDC, SelectObject the cached measure-font
