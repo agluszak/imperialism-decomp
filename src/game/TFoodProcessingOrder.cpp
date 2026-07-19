@@ -15,7 +15,7 @@ TFoodProcessingOrder::TFoodProcessingOrder() {}
 TFoodProcessingOrder::~TFoodProcessingOrder() {}
 
 // FUNCTION: IMPERIALISM 0x004b7e80
-undefined TFoodProcessingOrder::InitializeCityProductionState_Impl_At004b7e80(int param_1) {
+undefined TFoodProcessingOrder::FoodProcessingOrderSlot11(int param_1) {
   return 0;
 }
 

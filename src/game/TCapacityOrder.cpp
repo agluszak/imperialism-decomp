@@ -212,11 +212,9 @@ IMPLEMENT_DYNCREATE(TCapacityOrder, TItemOrder)
 
 TCapacityOrder::~TCapacityOrder() {}
 // FUNCTION: IMPERIALISM 0x004b8d50
-undefined TCapacityOrder::InitializeCityProductionState_Impl_At004b8d50(TCity* city,
-                                                                        short resourceType,
-                                                                        short trackingIndex4eInit,
-                                                                        short trackingIndex50Init,
-                                                                        short field52Init) {
+undefined TCapacityOrder::CapacityOrderSlot12(TCity* city, short resourceType,
+                                              short trackingIndex4eInit, short trackingIndex50Init,
+                                              short field52Init) {
   this->cityField08 = city;
   this->summaryField0c = city->productionSummary1d8;
   this->resourceTypeIndex48 = resourceType;

@@ -1789,7 +1789,7 @@ address|name|symbol|size|type|prototype|provenance
 4b5200|TItemOrder::GetRuntimeClass||6|function|undefined GetTItemOrderClassNamePointer()|rtti
 4b5240|TItemOrder::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 4b5270|TItemOrder::DestructTItemOrderAndMaybeFree||7|function|undefined DestructTItemOrderAndMaybeFree()|
-4b5290|TItemOrder::InitializeCityProductionState_Impl_At004b5290||96|function|undefined InitializeCityProductionState_Impl_At004b5290(int param_1, undefined2 param_2, undefined2 param_3, undefined2 param_4, undefined2 param_5)|
+4b5290|TItemOrder::ItemOrderSlot11||96|function|undefined InitializeCityProductionState_Impl_At004b5290(int param_1, undefined2 param_2, undefined2 param_3, undefined2 param_4, undefined2 param_5)|
 4b5310|TItemOrder::MaxOrder||142|function|undefined MaxOrder(void)|
 4b53d0|TItemOrder::SetQuantity||244|function|undefined SetQuantity(short param_1)|
 4b5510|TItemOrder::FillOrderSheet||78|function|undefined FillOrderSheet(int param_1)|
@@ -1801,7 +1801,7 @@ address|name|symbol|size|type|prototype|provenance
 4b57e0|TOrItemOrder::GetRuntimeClass||6|function|undefined GetTOrItemOrderClassNamePointer()|rtti
 4b5820|TOrItemOrder::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 4b5850|TOrItemOrder::DestructTOrItemOrderAndMaybeFree||7|function|undefined DestructTOrItemOrderAndMaybeFree()|
-4b5870|TOrItemOrder::InitializeCityProductionState_Impl_At004b5870||96|function|undefined InitializeCityProductionState_Impl_At004b5870(int param_1, undefined2 param_2, undefined2 param_3, undefined2 param_4, undefined2 param_5)|
+4b5870|TOrItemOrder::OrItemOrderSlot12||96|function|undefined InitializeCityProductionState_Impl_At004b5870(int param_1, undefined2 param_2, undefined2 param_3, undefined2 param_4, undefined2 param_5)|
 4b58f0|TOrItemOrder::MaxOrder||123|function|int MaxOrder(void)|
 4b5990|TOrItemOrder::SetQuantity||331|function|bool SetQuantity(short nNewOrderAmount)|
 4b5b40|TPopulationMgr::CreateObject|?CreateObject@TPopulationMgr@@SGPAVCObject@@XZ|24|function|undefined CreateObject()|rtti
@@ -1828,7 +1828,7 @@ address|name|symbol|size|type|prototype|provenance
 4b6a90|TTrainingOrder::GetRuntimeClass||6|function|undefined GetTTrainingOrderClassNamePointer()|rtti
 4b6ad0|TTrainingOrder::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 4b6b00|TTrainingOrder::DestructTTrainingOrderAndMaybeFree||7|function|undefined DestructTTrainingOrderAndMaybeFree()|
-4b6b20|TTrainingOrder::InitializeCityProductionState_Impl_At004b6b20||65|function|undefined InitializeCityProductionState_Impl_At004b6b20(int param_1, undefined2 param_2)|
+4b6b20|TTrainingOrder::TrainingOrderSlot11||65|function|undefined InitializeCityProductionState_Impl_At004b6b20(int param_1, undefined2 param_2)|
 4b6b90|TTrainingOrder::MaxOrder||242|function|undefined MaxOrder(void)|
 4b6cd0|TTrainingOrder::SetQuantity||197|function|undefined SetQuantity(short param_1)|
 4b6de0|TTrainingOrder::FillOrderSheet||55|function|undefined FillOrderSheet(void)|
@@ -1866,7 +1866,7 @@ address|name|symbol|size|type|prototype|provenance
 4b7df0|TFoodProcessingOrder::GetRuntimeClass||6|function|undefined GetTFoodProcessingOrderClassNamePointer()|rtti
 4b7e30|TFoodProcessingOrder::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 4b7e60|TFoodProcessingOrder::DestructTFoodProcessingOrderAndMaybeFree||7|function|undefined DestructTFoodProcessingOrderAndMaybeFree()|
-4b7e80|TFoodProcessingOrder::InitializeCityProductionState_Impl_At004b7e80||62|function|undefined InitializeCityProductionState_Impl_At004b7e80(int param_1)|
+4b7e80|TFoodProcessingOrder::FoodProcessingOrderSlot11||62|function|undefined InitializeCityProductionState_Impl_At004b7e80(int param_1)|
 4b7ed0|TFoodProcessingOrder::MaxOrder||85|function|undefined MaxOrder(void)|
 4b7f50|TFoodProcessingOrder::SetQuantity||198|function|undefined SetQuantity(ushort param_1)|
 4b8060|TFoodProcessingOrder::CommitIfPending||37|function|undefined CommitIfPending(void)|
@@ -1901,7 +1901,7 @@ address|name|symbol|size|type|prototype|provenance
 4b8f80|TExpansionOrder::GetRuntimeClass||6|function|undefined GetTExpansionOrderClassNamePointer()|rtti
 4b8fc0|TExpansionOrder::`scalar deleting destructor'||30|function|undefined ScalarDeletingDestructor()|
 4b8ff0|TExpansionOrder::DestructTExpansionOrderAndMaybeFree||7|function|undefined DestructTExpansionOrderAndMaybeFree()|
-4b9010|TExpansionOrder::InitializeCityProductionState_Impl_At004b9010||96|function|undefined InitializeCityProductionState_Impl_At004b9010(int param_1, undefined2 param_2, undefined2 param_3, undefined2 param_4, undefined2 param_5)|
+4b9010|TExpansionOrder::ExpansionOrderSlot12||96|function|undefined InitializeCityProductionState_Impl_At004b9010(int param_1, undefined2 param_2, undefined2 param_3, undefined2 param_4, undefined2 param_5)|
 4b9090|TExpansionOrder::CommitIfPending||267|function|undefined CommitIfPending(void)|
 4b91f0|TExpansionOrder::MaxOrder||65|function|undefined MaxOrder(void)|
 4b9260|TExpansionOrder::SetQuantity||174|function|undefined SetQuantity(short param_1)|
