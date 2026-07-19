@@ -39,7 +39,7 @@ void TTradePageBuyView::RebuildNationBidRowsForCategory(short categorySlot) {
       headerBounds[0] = 0x24;
       headerRow->SetTextLineRowBoundsAndStyle(0, 0, headerBounds, 0x2741, 3);
       headerRow->SetField1E(1);
-      TControlPictureRectState headerStyle;
+      TUiTextStyleDescriptor headerStyle;
       BuildUiTextStyleDescriptor(&headerStyle, 4, 0xc, 0x2b6a);
       headerRow->SetTextLineStyleDescriptor(&headerStyle);
       field_0x7c->AddTail(headerRow);

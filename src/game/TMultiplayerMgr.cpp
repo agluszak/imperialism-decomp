@@ -1073,8 +1073,8 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
     } else {
       BuildUiMessageTextFromBracketTemplate(g_pSimMgr, &titleText, 0x2749, 3, 0x2749, 0);
     }
-    TControlPictureRectState styleDescriptor;
-    styleDescriptor.styleRef6 = 0;
+    TUiTextStyleDescriptor styleDescriptor;
+    styleDescriptor.textColor = 0;
     BuildUiTextStyleDescriptor(&styleDescriptor, 0, 0xc, 0x2b67);
     TurnEventDialogNode* dialog = static_cast<TurnEventDialogNode*>(
         g_pUiViewManager->ResolveTurnEventDialogNodeByMessageContext(0x7e4));
@@ -1106,7 +1106,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
     if (titleControl == 0) {
       FailNilPointerWithAssert(s_SourcePathUMultiplayerMgr_00698040, 0x807);
     }
-    titleControl->SetCityProductionDialogPictureRectAndMaybeRefresh(&styleDescriptor, 0);
+    titleControl->SetTextStyleAndMaybeRefresh(&styleDescriptor, 0);
     titleControl->SetTextThemeCodeAndMaybeRefresh(1, 0);
     titleControl->AssignTextSharedRefIfChangedAndMaybeInvalidate(&titleText, 0);
     TDeluxeText* infoControl = static_cast<TDeluxeText*>(dialog->ResolveControlByTag(0x696e666f));

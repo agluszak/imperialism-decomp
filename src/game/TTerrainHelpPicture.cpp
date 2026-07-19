@@ -28,8 +28,8 @@ TTerrainHelpPicture::TTerrainHelpPicture() {}
 
 // FUNCTION: IMPERIALISM 0x00504e90
 void TTerrainHelpPicture::BuildMapTileActionContextMenu(short nTileIndex) {
-  TControlPictureRectState itemStyle;
-  itemStyle.styleRef6 = 0;
+  TUiTextStyleDescriptor itemStyle;
+  itemStyle.textColor = 0;
   memset(menuItemIds94, 0, sizeof(menuItemIds94));
   short count = 0;
 
@@ -126,7 +126,7 @@ void TTerrainHelpPicture::BuildMapTileActionContextMenu(short nTileIndex) {
   for (short i = 0; i < 12; i++) {
     TStaticText* itemPane =
         static_cast<TStaticText*>(ResolveControlByTag(0x69303061 /* 'i00a' */ + i));
-    itemPane->SetCityProductionDialogPictureRectAndMaybeRefresh(&itemStyle, 1);
+    itemPane->SetTextStyleAndMaybeRefresh(&itemStyle, 1);
     short itemId = menuItemIds94[i];
     if (itemId != 0) {
       itemPane->LoadUiStringAndDispatchViaVslot1C8(0x2755, itemId, 1);
@@ -157,8 +157,8 @@ void TTerrainHelpPicture::BuildMapTileActionContextMenu(short nTileIndex) {
   infoTextPane90->ApplyTextStyleDescriptorAndMaybeRefresh(&itemStyle, 0);
 
   // Title pane + location text.
-  TControlPictureRectState titleStyle;
-  titleStyle.styleRef6 = 0;
+  TUiTextStyleDescriptor titleStyle;
+  titleStyle.textColor = 0;
   CString strCityName;
   CString strTemplate;
   CString strOwnerLabel;
@@ -168,7 +168,7 @@ void TTerrainHelpPicture::BuildMapTileActionContextMenu(short nTileIndex) {
   titlePane->SetEnabled(1, 1);
   titlePane->SetState(0, 1);
   titlePane->SetTextThemeCodeAndMaybeRefresh(1, 0);
-  titlePane->SetCityProductionDialogPictureRectAndMaybeRefresh(&titleStyle, 0);
+  titlePane->SetTextStyleAndMaybeRefresh(&titleStyle, 0);
 
   if (g_pGlobalMapState->terrainStateTable[nTileIndex].terrainType00 == 5) {
     TZone* zone = g_pActiveMapOrderContext->GetLinkedZoneForSeaTile(nTileIndex);
@@ -200,12 +200,12 @@ void TTerrainHelpPicture::BuildMapTileActionContextMenu(short nTileIndex) {
 // FUNCTION: IMPERIALISM 0x005057a0
 void TTerrainHelpPicture::HighlightSelectedMenuItemAndRefreshDetailText(int selectedIndex) {
   OwnerPanel();
-  TControlPictureRectState normalStyle;
-  TControlPictureRectState highlightStyle;
-  TControlPictureRectState captionStyle;
-  normalStyle.styleRef6 = 0;
-  highlightStyle.styleRef6 = 0;
-  captionStyle.styleRef6 = 0;
+  TUiTextStyleDescriptor normalStyle;
+  TUiTextStyleDescriptor highlightStyle;
+  TUiTextStyleDescriptor captionStyle;
+  normalStyle.textColor = 0;
+  highlightStyle.textColor = 0;
+  captionStyle.textColor = 0;
   InitializeUiTextStyleDescriptor(&normalStyle, 4, 0xc, 0x2b6d, 3);
   InitializeUiTextStyleDescriptor(&highlightStyle, 4, 0xc, 0x2b69, 3);
   InitializeUiTextStyleDescriptor(&captionStyle, 0, 0xc, 0x2b67, 1);
@@ -216,12 +216,12 @@ void TTerrainHelpPicture::HighlightSelectedMenuItemAndRefreshDetailText(int sele
   captionPane->SetEnabled(1, 1);
   captionPane->SetState(0, 1);
   captionPane->SetTextThemeCodeAndMaybeRefresh(1, 0);
-  captionPane->SetCityProductionDialogPictureRectAndMaybeRefresh(&captionStyle, 0);
+  captionPane->SetTextStyleAndMaybeRefresh(&captionStyle, 0);
 
   for (int i = 0; i < 12; i++) {
     TStaticText* itemPane =
         static_cast<TStaticText*>(ResolveControlByTag(0x69303061 /* 'i00a' */ + i));
-    itemPane->SetCityProductionDialogPictureRectAndMaybeRefresh(
+    itemPane->SetTextStyleAndMaybeRefresh(
         (selectedIndex == i) ? &highlightStyle : &normalStyle, 1);
   }
 

@@ -28,11 +28,11 @@ TStaticText* __cdecl RefreshActiveControlThenApplyThemeStyleAndCaption(unsigned 
 // subtree: if `view` itself is a TStaticText it gets the state, then each subview is visited
 // via the shared CSubViewIterator (which recurses into their subviews in turn).
 // FUNCTION: IMPERIALISM 0x005c43b0
-void __cdecl DispatchToSelectableTextOptionEntries(TView* view, TControlPictureRectState* state,
+void __cdecl DispatchToSelectableTextOptionEntries(TView* view, TUiTextStyleDescriptor* state,
                                                    int flag) {
   if (view->IsKindOf(RUNTIME_CLASS(TStaticText))) {
     view->AssertValid();
-    static_cast<TControl*>(view)->SetCityProductionDialogPictureRectAndMaybeRefresh(state, flag);
+    static_cast<TControl*>(view)->SetTextStyleAndMaybeRefresh(state, flag);
   }
   CSubViewIterator iter(view);
   TView* child = iter.FirstSubView();
@@ -47,10 +47,10 @@ void __cdecl DispatchToSelectableTextOptionEntries(TView* view, TControlPictureR
 // FUNCTION: IMPERIALISM 0x005c4590
 void __cdecl ApplyUiTextStyleAndThemeFlags(TDropShadowText* control, int unused, int pointSize,
                                            int shadowThemeCode, int textThemeCode) {
-  TControlPictureRectState styleDescriptor;
-  styleDescriptor.styleRef6 = 0;
+  TUiTextStyleDescriptor styleDescriptor;
+  styleDescriptor.textColor = 0;
   BuildUiTextStyleDescriptor(&styleDescriptor, unused, pointSize, textThemeCode);
-  control->SetCityProductionDialogPictureRectAndMaybeRefresh(&styleDescriptor, 0);
+  control->SetTextStyleAndMaybeRefresh(&styleDescriptor, 0);
   MapUiThemeCodeToStyleFlags(static_cast<short>(shadowThemeCode), &control->shadowThemeCode94);
 }
 

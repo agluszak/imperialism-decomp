@@ -21,8 +21,8 @@ TUpDownPictureButton::TUpDownPictureButton() : TPicture(), timingWord92(7000) {}
 // FUNCTION: IMPERIALISM 0x00571620
 void TUpDownPictureButton::SetControlStateFlagAndMaybeRefresh(bool enabledState, bool refreshNow) {
   char mode = enabledState ? 1 : 0;
-  if (mode != static_cast<char>(commandTagResourceByte)) {
-    commandTagResourceByte = static_cast<unsigned char>(mode);
+  if (mode != static_cast<char>(controlState64)) {
+    controlState64 = static_cast<unsigned char>(mode);
     short bitmapId =
         mode == 0 ? static_cast<short>(glyphBase84 - 1) : static_cast<short>(glyphBase84 + 1);
     reinterpret_cast<TAmtBar*>(this)->SetBitmap(bitmapId, 1);

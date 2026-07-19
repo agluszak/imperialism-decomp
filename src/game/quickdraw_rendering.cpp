@@ -7,7 +7,7 @@
 #include <cstring>
 
 // FUNCTION: IMPERIALISM 0x00494130
-CFont* __cdecl CreateFontFromPresetAndAttachRegionHandle(TControlPictureRectState* preset) {
+CFont* __cdecl CreateFontFromPresetAndAttachRegionHandle(TUiTextStyleDescriptor* preset) {
   // Height table for the fixed-size families (indices are size codes 1-0x18); the
   // original builds it on the stack every call.
   int heightBySizeIndex[25];
@@ -38,10 +38,10 @@ CFont* __cdecl CreateFontFromPresetAndAttachRegionHandle(TControlPictureRectStat
   heightBySizeIndex[24] = 0x1e;
 
   int sizeIndex = 0xc;
-  if (preset->pointSize != 0) {
-    sizeIndex = preset->pointSize;
+  if (preset->fontSize != 0) {
+    sizeIndex = preset->fontSize;
   }
-  int family = preset->mode;
+  int family = preset->fontFamily;
   if (family < 1 || family > 4) {
     family = 0;
   }
@@ -59,28 +59,28 @@ CFont* __cdecl CreateFontFromPresetAndAttachRegionHandle(TControlPictureRectStat
   logFont.lfCharSet = DEFAULT_CHARSET;
   logFont.lfHeight = height;
   lstrcpynA(logFont.lfFaceName, g_apszQuickDrawFontFaceNames[family], 0x20);
-  if ((preset->flag2 & 1) != 0) {
+  if ((preset->fontStyleFlags & 1) != 0) {
     logFont.lfWeight = 700;
   }
-  logFont.lfItalic = static_cast<unsigned char>(preset->flag2 & 2);
-  logFont.lfUnderline = static_cast<unsigned char>(preset->flag2 & 4);
+  logFont.lfItalic = static_cast<unsigned char>(preset->fontStyleFlags & 2);
+  logFont.lfUnderline = static_cast<unsigned char>(preset->fontStyleFlags & 4);
   font->Attach(CreateFontIndirectA(&logFont));
   return font;
 }
 
 // FUNCTION: IMPERIALISM 0x004944e0
-CFont* __cdecl UpdateGlobalFontPresetAndRebuildCachedFontIfDirty(TControlPictureRectState* style) {
-  if (g_QuickDrawCachedFontPreset.mode != style->mode) {
+CFont* __cdecl UpdateGlobalFontPresetAndRebuildCachedFontIfDirty(TUiTextStyleDescriptor* style) {
+  if (g_QuickDrawCachedFontPreset.fontFamily != style->fontFamily) {
     g_bQuickDrawCachedFontDirty = 1;
-    g_QuickDrawCachedFontPreset.mode = style->mode;
+    g_QuickDrawCachedFontPreset.fontFamily = style->fontFamily;
   }
-  if (g_QuickDrawCachedFontPreset.flag2 != style->flag2) {
+  if (g_QuickDrawCachedFontPreset.fontStyleFlags != style->fontStyleFlags) {
     g_bQuickDrawCachedFontDirty = 1;
-    g_QuickDrawCachedFontPreset.flag2 = style->flag2;
+    g_QuickDrawCachedFontPreset.fontStyleFlags = style->fontStyleFlags;
   }
-  if (g_QuickDrawCachedFontPreset.pointSize != style->pointSize) {
+  if (g_QuickDrawCachedFontPreset.fontSize != style->fontSize) {
     g_bQuickDrawCachedFontDirty = 1;
-    g_QuickDrawCachedFontPreset.pointSize = style->pointSize;
+    g_QuickDrawCachedFontPreset.fontSize = style->fontSize;
   }
   if (g_bQuickDrawCachedFontDirty != 0 || g_pQuickDrawCachedUiFont == 0) {
     if (g_pQuickDrawCachedUiFont != 0) {
@@ -112,7 +112,7 @@ void RenderTacticalBattleSelectionAndUnitOverlayPass_Impl(char glyph) {
   if (dc == nullptr) {
     dc = g_pScopedMapQuickDrawDcHandleObject;
   }
-  dc->SetTextColor(static_cast<COLORREF>(g_QuickDrawMeasureFontPreset.styleRef6));
+  dc->SetTextColor(static_cast<COLORREF>(g_QuickDrawMeasureFontPreset.textColor));
   dc = g_pQuickDrawMemoryDc;
   if (dc == nullptr) {
     dc = g_pScopedMapQuickDrawDcHandleObject;
@@ -162,7 +162,7 @@ void __cdecl DrawTextWithCachedQuickDrawStyleState(const CString* text) {
   if (dc == nullptr) {
     dc = g_pScopedMapQuickDrawDcHandleObject;
   }
-  dc->SetTextColor(static_cast<COLORREF>(g_QuickDrawMeasureFontPreset.styleRef6));
+  dc->SetTextColor(static_cast<COLORREF>(g_QuickDrawMeasureFontPreset.textColor));
 
   dc = g_pQuickDrawMemoryDc;
   if (dc == nullptr) {
@@ -232,7 +232,7 @@ void __cdecl RenderTradeScreenCommoditySummaryRows_Impl(CString* text, RECT* rec
   if (dc == nullptr) {
     dc = g_pScopedMapQuickDrawDcHandleObject;
   }
-  dc->SetTextColor(static_cast<COLORREF>(g_QuickDrawMeasureFontPreset.styleRef6));
+  dc->SetTextColor(static_cast<COLORREF>(g_QuickDrawMeasureFontPreset.textColor));
 
   dc = g_pQuickDrawMemoryDc;
   if (dc == nullptr) {
@@ -306,7 +306,7 @@ void SetQuickDrawFillColor(int fillColor) {
   if (g_pActiveQuickDrawSurfaceContext != 0) {
     g_pActiveQuickDrawSurfaceContext->quickDrawColor = fillColor;
   }
-  g_QuickDrawMeasureFontPreset.styleRef6 = fillColor;
+  g_QuickDrawMeasureFontPreset.textColor = fillColor;
 }
 
 // Sets the current QuickDraw draw color, propagating it to the active surface context and the
@@ -316,7 +316,7 @@ void SetQuickDrawColorAndPropagateIfChanged(int newColor) {
   if (g_Quick_Draw_Color_State_006950FC != newColor) {
     g_Quick_Draw_Color_State_006950FC = newColor;
     g_pActiveQuickDrawSurfaceContext->quickDrawColor = newColor;
-    g_QuickDrawMeasureFontPreset.styleRef6 = newColor;
+    g_QuickDrawMeasureFontPreset.textColor = newColor;
   }
 }
 
@@ -332,7 +332,7 @@ void SetQuickDrawStrokeColor(int strokeColor) {
 void SetQuickDrawColorAndSyncGlobals(int color) {
   g_Quick_Draw_Color_State_006950FC = color;
   g_pActiveQuickDrawSurfaceContext->quickDrawColor = color;
-  g_QuickDrawMeasureFontPreset.styleRef6 = color;
+  g_QuickDrawMeasureFontPreset.textColor = color;
 }
 
 // FUNCTION: IMPERIALISM 0x004950d0
@@ -372,24 +372,24 @@ void UpdatePaletteIndexWithDefaultFallback(unsigned int paletteIndex) {
 
 // FUNCTION: IMPERIALISM 0x00495230
 void SetQuickDrawTextFont(short value) {
-  if (g_QuickDrawMeasureFontPreset.mode != value) {
-    g_QuickDrawMeasureFontPreset.mode = value;
+  if (g_QuickDrawMeasureFontPreset.fontFamily != value) {
+    g_QuickDrawMeasureFontPreset.fontFamily = value;
     g_bQuickDrawMeasureFontDirty = 1;
   }
 }
 
 // FUNCTION: IMPERIALISM 0x00495260
 void SetQuickDrawTextSize(short value) {
-  if (g_QuickDrawMeasureFontPreset.pointSize != value) {
-    g_QuickDrawMeasureFontPreset.pointSize = value;
+  if (g_QuickDrawMeasureFontPreset.fontSize != value) {
+    g_QuickDrawMeasureFontPreset.fontSize = value;
     g_bQuickDrawMeasureFontDirty = 1;
   }
 }
 
 // FUNCTION: IMPERIALISM 0x00495290
 void SetQuickDrawTextFace(short value) {
-  if (g_QuickDrawMeasureFontPreset.flag2 != value) {
-    g_QuickDrawMeasureFontPreset.flag2 = value;
+  if (g_QuickDrawMeasureFontPreset.fontStyleFlags != value) {
+    g_QuickDrawMeasureFontPreset.fontStyleFlags = value;
     g_bQuickDrawMeasureFontDirty = 1;
   }
 }
@@ -801,33 +801,33 @@ void MapUiThemeCodeToStyleFlags(short themeCode, int* outStyleFlags) {
 }
 
 // FUNCTION: IMPERIALISM 0x005c3e80
-void BuildUiTextStyleDescriptor(TControlPictureRectState* styleDescriptor, int unused, int arg2,
+void BuildUiTextStyleDescriptor(TUiTextStyleDescriptor* styleDescriptor, int unused, int arg2,
                                 int themeCode) {
   (void)unused;
   // Verified against 0x5c3e9b-0x5c3f01: constructed unconditionally, never read or
   // written again -- a genuinely dead local kept faithfully (not our porting
   // artifact; the original does the same).
   CString deadLocal;
-  styleDescriptor->flag2 = 0;
+  styleDescriptor->fontStyleFlags = 0;
   int styleFlags = 0;
   MapUiThemeCodeToStyleFlags(static_cast<short>(themeCode), &styleFlags);
-  styleDescriptor->styleRef6 = styleFlags;
-  styleDescriptor->pointSize = static_cast<short>(arg2);
-  styleDescriptor->mode = (arg2 >= 0xc) ? 1 : 3;
+  styleDescriptor->textColor = styleFlags;
+  styleDescriptor->fontSize = static_cast<short>(arg2);
+  styleDescriptor->fontFamily = (arg2 >= 0xc) ? 1 : 3;
 }
 
 // FUNCTION: IMPERIALISM 0x005c3f50
-void InitializeUiTextStyleDescriptor(TControlPictureRectState* styleDescriptor, short face,
+void InitializeUiTextStyleDescriptor(TUiTextStyleDescriptor* styleDescriptor, short face,
                                      short pointSize, int themeCode, short font) {
   // Same dead CString shape as BuildUiTextStyleDescriptor; the original constructs and
   // destroys it while only using the packed descriptor fields below.
   CString deadLocal;
   int styleFlags = 0;
-  styleDescriptor->flag2 = face;
+  styleDescriptor->fontStyleFlags = face;
   MapUiThemeCodeToStyleFlags(static_cast<short>(themeCode), &styleFlags);
-  styleDescriptor->pointSize = pointSize;
-  styleDescriptor->styleRef6 = styleFlags;
-  styleDescriptor->mode = font;
+  styleDescriptor->fontSize = pointSize;
+  styleDescriptor->textColor = styleFlags;
+  styleDescriptor->fontFamily = font;
 }
 
 // FUNCTION: IMPERIALISM 0x005c4020
@@ -836,13 +836,13 @@ TStaticText* ApplyControlThemeStyleAndOptionalCaption(TStaticText* control, int 
                                                       const char* caption) {
   (void)unused2;
   control->AssertValid();
-  TControlPictureRectState styleDescriptor;
-  styleDescriptor.mode = 0;
-  styleDescriptor.flag2 = 0;
-  styleDescriptor.pointSize = 0;
-  styleDescriptor.styleRef6 = 0;
+  TUiTextStyleDescriptor styleDescriptor;
+  styleDescriptor.fontFamily = 0;
+  styleDescriptor.fontStyleFlags = 0;
+  styleDescriptor.fontSize = 0;
+  styleDescriptor.textColor = 0;
   BuildUiTextStyleDescriptor(&styleDescriptor, 0, pointSize, themeCode);
-  control->SetCityProductionDialogPictureRectAndMaybeRefresh(&styleDescriptor, 0);
+  control->SetTextStyleAndMaybeRefresh(&styleDescriptor, 0);
   control->SetTextThemeCodeAndMaybeRefresh(static_cast<short>(themeCode2), 0);
   if (caption != 0) {
     CString captionString(caption);
@@ -853,23 +853,23 @@ TStaticText* ApplyControlThemeStyleAndOptionalCaption(TStaticText* control, int 
 
 // FUNCTION: IMPERIALISM 0x005c4470
 void ApplyUiTextStyleDescriptorToQuickDrawAndSyncColor(int unused, int styleWidth, int themeCode) {
-  TControlPictureRectState styleDescriptor;
-  styleDescriptor.styleRef6 = 0;
+  TUiTextStyleDescriptor styleDescriptor;
+  styleDescriptor.textColor = 0;
   BuildUiTextStyleDescriptor(&styleDescriptor, unused, styleWidth, themeCode);
-  SetQuickDrawTextFace(styleDescriptor.flag2);
-  SetQuickDrawTextSize(styleDescriptor.pointSize);
-  SetQuickDrawTextFont(styleDescriptor.mode);
-  SetQuickDrawColorAndSyncGlobals(styleDescriptor.styleRef6);
+  SetQuickDrawTextFace(styleDescriptor.fontStyleFlags);
+  SetQuickDrawTextSize(styleDescriptor.fontSize);
+  SetQuickDrawTextFont(styleDescriptor.fontFamily);
+  SetQuickDrawColorAndSyncGlobals(styleDescriptor.textColor);
 }
 
 // FUNCTION: IMPERIALISM 0x005c4500
 void InitializeUiTextStyleDescriptorAndApplyQuickDraw(short face, short pointSize, int themeCode,
                                                       short font) {
-  TControlPictureRectState styleDescriptor;
-  styleDescriptor.styleRef6 = 0;
+  TUiTextStyleDescriptor styleDescriptor;
+  styleDescriptor.textColor = 0;
   InitializeUiTextStyleDescriptor(&styleDescriptor, face, pointSize, themeCode, font);
-  SetQuickDrawTextFace(styleDescriptor.flag2);
-  SetQuickDrawTextSize(styleDescriptor.pointSize);
-  SetQuickDrawTextFont(styleDescriptor.mode);
-  SetQuickDrawColorAndSyncGlobals(styleDescriptor.styleRef6);
+  SetQuickDrawTextFace(styleDescriptor.fontStyleFlags);
+  SetQuickDrawTextSize(styleDescriptor.fontSize);
+  SetQuickDrawTextFont(styleDescriptor.fontFamily);
+  SetQuickDrawColorAndSyncGlobals(styleDescriptor.textColor);
 }

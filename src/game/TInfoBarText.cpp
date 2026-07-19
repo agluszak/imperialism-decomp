@@ -52,7 +52,7 @@ void TInfoBarText::OrphanCallChain_C1_I05_005b6810() {
 
 // FUNCTION: IMPERIALISM 0x005b6840
 void TInfoBarText::InitializeMapHintTextStyleAndThemeFlags(int stylePrimary, int styleSecondary) {
-  TControlPictureRectState styleDescriptor = {0, 0, 0, 0};
+  TUiTextStyleDescriptor styleDescriptor = {0, 0, 0, 0};
   BuildUiTextStyleDescriptor(&styleDescriptor, 0, 0xc, styleSecondary);
   ApplyTextStyleDescriptorAndMaybeRefresh(&styleDescriptor, 0);
   SetTextThemeCodeAndMaybeRefresh(static_cast<short>(-1), 0);

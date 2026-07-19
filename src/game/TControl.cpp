@@ -16,7 +16,7 @@
 
 // FUNCTION: IMPERIALISM 0x00429450
 int TControl::QuerySelectedIndexSlotBC() {
-  return hasCommandTagResource;
+  return frameStyle60;
 }
 
 // FUNCTION: IMPERIALISM 0x00429470
@@ -52,13 +52,10 @@ TObject* TControl::ShallowClone() {
 
 IMPLEMENT_DYNCREATE(TControl, TView)
 
-TModalTemplateDialogBase::TModalTemplateDialogBase()
-    : TView(), hasCommandTagResource(1), commandTagResourceByte(0), field68(0), field6C(0),
-      field70(0) {}
-
 // FUNCTION: IMPERIALISM 0x0048e520
 TControl::TControl()
-    : TModalTemplateDialogBase(), field74(0), textStyle78(g_UiResourceEntryDefaultTextStyle) {}
+    : TView(), frameStyle60(1), controlState64(0), contentInsets68(0, 0, 0, 0),
+      textStyle78(g_UiResourceEntryDefaultTextStyle) {}
 
 // Destructors are compiler-generated (implicit) from real inheritance.
 
@@ -100,7 +97,7 @@ void TControl::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* 
     return;
   }
   if (commandId == 0x21) {
-    SetControlStateFlagAndMaybeRefresh(commandTagResourceByte == 0, 1);
+    SetControlStateFlagAndMaybeRefresh(controlState64 == 0, 1);
     return;
   }
   TEventHandler* child = QueryStepValue();
@@ -110,17 +107,16 @@ void TControl::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* 
 }
 
 // FUNCTION: IMPERIALISM 0x0048e7a0
-void TControl::SetControlPictureEntryAndMaybeRefresh(int* pictureEntryRef, bool refreshNow) {
-  textStyle78.styleRef6 = *pictureEntryRef;
+void TControl::SetTextColorAndMaybeRefresh(const int* textColor, bool refreshNow) {
+  textStyle78.textColor = *textColor;
   if (refreshNow) {
     PaintOrInvalidateControl(0);
   }
 }
 
 // FUNCTION: IMPERIALISM 0x0048e7d0
-void TControl::SetCityProductionDialogPictureRectAndMaybeRefresh(TControlPictureRectState* state,
-                                                                 char refreshNow) {
-  textStyle78 = *state;
+void TControl::SetTextStyleAndMaybeRefresh(const TUiTextStyleDescriptor* style, char refreshNow) {
+  textStyle78 = *style;
   if (refreshNow != 0) {
     PaintOrInvalidateControl(0);
   }
@@ -128,8 +124,8 @@ void TControl::SetCityProductionDialogPictureRectAndMaybeRefresh(TControlPicture
 
 // FUNCTION: IMPERIALISM 0x0048e810
 void TControl::SetControlStateFlagAndMaybeRefresh(bool enabledState, bool refreshNow) {
-  if (commandTagResourceByte != static_cast<unsigned char>(enabledState)) {
-    commandTagResourceByte = static_cast<unsigned char>(enabledState);
+  if (controlState64 != static_cast<unsigned char>(enabledState)) {
+    controlState64 = static_cast<unsigned char>(enabledState);
     if (refreshNow) {
       RefreshControl();
     }
@@ -152,18 +148,18 @@ void TControl::DispatchPictureResourceCommand(int eventType, void* eventSender, 
     return;
   }
   if (eventType == 2 && PointInBoundsAndActionable(reinterpret_cast<CPoint*>(eventDataB)) != 0) {
-    if (hasCommandTagResource == 4) {
+    if (frameStyle60 == 4) {
       DispatchEvent(0x21, this, 0);
-      DispatchEvent(hasCommandTagResource, this, 0);
+      DispatchEvent(frameStyle60, this, 0);
       return;
     }
-    if (hasCommandTagResource != 0xc) {
+    if (frameStyle60 != 0xc) {
       DispatchEvent(0x20, this, 0);
-      DispatchEvent(hasCommandTagResource, this, 0);
+      DispatchEvent(frameStyle60, this, 0);
       return;
     }
     DispatchEvent(0x1f, this, 0);
-    DispatchEvent(hasCommandTagResource, this, 0);
+    DispatchEvent(frameStyle60, this, 0);
   }
 }
 
@@ -180,7 +176,7 @@ char TControl::PointInBoundsAndActionable(CPoint* point) {
 // FUNCTION: IMPERIALISM 0x0048e980
 void TControl::BuildInsetContentRect(RECT* boundsBuffer) {
   QueryContentBounds(boundsBuffer);
-  reinterpret_cast<CRect*>(boundsBuffer)->DeflateRect(reinterpret_cast<RECT*>(&field68));
+  reinterpret_cast<CRect*>(boundsBuffer)->DeflateRect(&contentInsets68);
 }
 
 // FUNCTION: IMPERIALISM 0x0048e9c0
@@ -196,10 +192,9 @@ undefined TControl::ReturnZeroFromUiSlot6C(int) {
 
 // The template-dialog modal helpers (PrepareAndCreateModalFromTemplate 0x0049d360 and
 // FinalizeModalDialogAndRestoreOwnerFocus 0x0049d450) and the CDialog constructor
-// (0x006050d0) that used to be modelled here as TModalTemplateDialogBase methods were
-// really MFC-dialog machinery on the CDialog-derived dialog classes, not on the TControl
-// widget hierarchy. They now live on TModalDialogBase (src/game/TModalDialogBase.cpp);
-// 0x006050d0 is the LIBRARY CDialog::CDialog constructor.
+// (0x006050d0) are really MFC-dialog machinery on the CDialog-derived dialog classes, not
+// on the TControl widget hierarchy. They live on TModalDialogBase
+// (src/game/TModalDialogBase.cpp); 0x006050d0 is the LIBRARY CDialog::CDialog constructor.
 
 // KNOWN ILT (retired): 0x004087fb is a 5-byte `jmp TControl::TControl` linker stub — not ported.
 
@@ -226,8 +221,8 @@ void TControl::SetDiplomacyNationSelectionFilterAndRefreshRows(short selectedNat
 // Real ctor: TControl::TControl @ 0x0048e520 (base via : TView()).
 
 // FUNCTION: IMPERIALISM 0x0058e440
-void TControl::SetHasCommandTagResource(int value) {
-  hasCommandTagResource = value;
+void TControl::SetFrameStyle60(int value) {
+  frameStyle60 = value;
 }
 
 TControl::~TControl() {}

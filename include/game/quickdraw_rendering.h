@@ -23,21 +23,21 @@ void FillRectWithQuickDrawBrushAndContextOffset(RECT* rect);
 void SetQuickDrawTextOriginWithContextOffset(short x, short y);
 void DrawCenteredGuideLineOnMapDc(short x, short y);
 
-struct TControlPictureRectState;
+struct TUiTextStyleDescriptor;
 
 // Build a CFont from a packed text-style preset (mode=font family 0-4, flag2=bold/
 // italic/underline bits, pointSize=size index): fixed-size families 2/3 map the size
 // index through a height table, scalable families compute (index*10+3)/8; the face
 // name comes from g_apszQuickDrawFontFaceNames. 0x00494130
-CFont* __cdecl CreateFontFromPresetAndAttachRegionHandle(TControlPictureRectState* preset);
+CFont* __cdecl CreateFontFromPresetAndAttachRegionHandle(TUiTextStyleDescriptor* preset);
 
 // Copy the preset into the global font-preset cache, rebuild the cached CFont if any
 // field changed (or none exists yet), and return it. 0x004944e0
-CFont* __cdecl UpdateGlobalFontPresetAndRebuildCachedFontIfDirty(TControlPictureRectState* style);
+CFont* __cdecl UpdateGlobalFontPresetAndRebuildCachedFontIfDirty(TUiTextStyleDescriptor* style);
 
-void BuildUiTextStyleDescriptor(TControlPictureRectState* styleDescriptor, int unused, int arg2,
+void BuildUiTextStyleDescriptor(TUiTextStyleDescriptor* styleDescriptor, int unused, int arg2,
                                 int themeCode);
-void InitializeUiTextStyleDescriptor(TControlPictureRectState* styleDescriptor, short face,
+void InitializeUiTextStyleDescriptor(TUiTextStyleDescriptor* styleDescriptor, short face,
                                      short pointSize, int themeCode, short font);
 
 // 0x5c4020 -- asserts the text control, applies a theme style descriptor built from

@@ -36,7 +36,7 @@ void TStaticText::UpdateTextEntrySharedStringIfChanged(CString* text) {
 // FUNCTION: IMPERIALISM 0x0048F890
 TStaticText::TStaticText()
     : TControl(), text(new CString()), field88((void*)0xffffffff), field8C(0), field90(0) {
-  hasCommandTagResource = 13;
+  frameStyle60 = 13;
 }
 
 // Destructors are compiler-generated (implicit) from real inheritance; the
@@ -58,15 +58,10 @@ TStaticText::~TStaticText() {
 void TStaticText::CopyViewStateFromSource(TView* source) {
   TView::CopyViewStateFromSource(source);
   TStaticText* src = static_cast<TStaticText*>(source);
-  this->hasCommandTagResource = src->hasCommandTagResource;
-  this->commandTagResourceByte = src->commandTagResourceByte;
-  this->field68 = src->field68;
-  this->field6C = src->field6C;
-  this->field70 = src->field70;
-  this->field74 = src->field74;
-  this->commandTagDefaultParam0 = src->commandTagDefaultParam0;
-  this->commandTagDefaultParam1 = src->commandTagDefaultParam1;
-  this->commandTagDefaultParam2 = src->commandTagDefaultParam2;
+  this->frameStyle60 = src->frameStyle60;
+  this->controlState64 = src->controlState64;
+  this->contentInsets68 = src->contentInsets68;
+  this->textStyle78 = src->textStyle78;
   this->text = new CString();
   *this->text = *src->text;
 }
@@ -101,7 +96,7 @@ void TStaticText::InitializeTextEntryBaseAndOptionalStringResource(
     panel->AttachChildControl(this, 0);
   }
   resourceTemplateId40 = 0;
-  SetCityProductionDialogPictureRectAndMaybeRefresh(&g_UiResourceEntryDefaultTextStyle, 0);
+  SetTextStyleAndMaybeRefresh(&g_UiResourceEntryDefaultTextStyle, 0);
   field88 = reinterpret_cast<void*>(static_cast<int>(stringResourceGroup));
   field8C = stringResourceIndex;
   if (stringResourceGroup != -1) {
@@ -152,20 +147,14 @@ void TStaticText::ApplyRectSlot110(RECT* rectBuffer) {
   (void)rectBuffer;
   CDC* dc = GetActiveQuickDrawDc();
   dc->SetBkMode(TRANSPARENT);
-  RECT bounds;
+  CRect bounds;
   BuildRectFromSlot158(&bounds);
-  // The original calls the CRect::DeflateRect(LPCRECT) COMDAT (0x61f342) on the
-  // 0x68-0x74 inset region; the four ints are open-coded here because the insets are
-  // modeled as separate fields.
-  bounds.left += field68;
-  bounds.top += field6C;
-  bounds.right -= field70;
-  bounds.bottom -= field74;
+  bounds.DeflateRect(&contentInsets68);
   CFont* font = UpdateGlobalFontPresetAndRebuildCachedFontIfDirty(&textStyle78);
   CFont* oldFont = dc->SelectObject(font);
   COLORREF textColor;
   if (stylePayload48 == 0) {
-    textColor = textStyle78.styleRef6;
+    textColor = textStyle78.textColor;
   } else {
     textColor = stylePayload48->styleWord;
   }

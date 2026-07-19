@@ -141,14 +141,10 @@ void TPicture::SetPictureResourceIdAndRefresh(short nPictureId, bool fRefreshNow
 TObject* TPicture::ShallowClone() {
   TPicture* clone = static_cast<TPicture*>(ShallowFree());
   clone->CopyViewStateFromSource(this);
-  clone->hasCommandTagResource = hasCommandTagResource;
-  clone->commandTagResourceByte = commandTagResourceByte;
-  clone->field68 = field68;
-  clone->field6C = field6C;
-  clone->field70 = field70;
-  clone->field74 = field74;
-  clone->commandTagDefaultParam0 = commandTagDefaultParam0;
-  clone->commandTagDefaultParam1 = commandTagDefaultParam1;
+  clone->frameStyle60 = frameStyle60;
+  clone->controlState64 = controlState64;
+  clone->contentInsets68 = contentInsets68;
+  clone->textStyle78 = textStyle78;
   clone->glyphBase84 = glyphBase84;
   clone->field86 = field86;
   clone->bitmapId = bitmapId;
