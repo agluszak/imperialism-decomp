@@ -1159,6 +1159,164 @@ void TNavyMgr::ProcessNationMapOrderInteractionsAndApplyOutcomes(short mode) {
   }
 }
 
+// FUNCTION: IMPERIALISM 0x0055a020
+bool TNavyMgr::TryHandleMapContextAction(short nTileIndex, int nInputFlags) {
+  int actionCode = GetMapContextActionCode(nTileIndex, nInputFlags);
+  if (actionCode == 0) {
+    return false;
+  }
+  TMapUberPicture* mapUberPicture = g_pUiRuntimeContext->mapUberPictureF0;
+  switch (actionCode) {
+  case 9: {
+    TZone* zone = g_pActiveMapOrderContext->GetLinkedZoneForSeaTile(nTileIndex);
+    mapUberPicture->SetActiveMapOrderEntry(zone);
+    return true;
+  }
+  case 2:
+  case 3:
+  case 4:
+  case 5:
+  case 6:
+  case 7:
+  case 8: {
+    TZone* zone = g_pActiveMapOrderContext->GetLinkedZoneForSeaTile(nTileIndex);
+    mapUberPicture->OpenMapContextActionDialogByType(zone, actionCode - 2,
+                                                     g_pCachedMapActionContext);
+    return true;
+  }
+  case 11: {
+    TTaskForce* entry = this->orderListHead04;
+    while (entry != 0 && entry->tiebreak_strength != nTileIndex) {
+      entry = entry->queue_next;
+    }
+    mapUberPicture->OpenMapEntryOrderDialog(entry);
+    return true;
+  }
+  case 10: {
+    g_pUiRuntimeContext->HandleTurnEventDialogFactorySlotF0(GetActiveMapOrderEntry());
+    return true;
+  }
+  default:
+    return false;
+  }
+}
+
+// Queues a map order for a clicked tile when immediate context handling does not consume
+// the click: resolves a command id (action-context path for sea tiles, province-context
+// path otherwise) off the active map-order entry, then dispatches by command id, setting
+// the entry's order kind + target context and running the rebuild/queue/finalize pipeline.
+// FUNCTION: IMPERIALISM 0x0055a160
+int TNavyMgr::TryQueueMapOrderFromTileAction(short nTileIndex, int nInputFlags) {
+  // A context-only action consumes the click without any queue mutation.
+  if (TryHandleMapContextAction(nTileIndex, nInputFlags) != 0) {
+    return 0;
+  }
+  TTaskForce* entry = GetActiveMapOrderEntry();
+  int commandId;
+  if (entry == nullptr) {
+    commandId = 0;
+  } else if (g_pGlobalMapState->terrainStateTable[nTileIndex].terrainType00 == 5) {
+    TZone* ctx = g_pActiveMapOrderContext->GetLinkedZoneForSeaTile(nTileIndex);
+    bool queueable;
+    if (ctx == nullptr) {
+      queueable = false;
+    } else if (entry->HasActiveMapOrderEntryChildren() == 0) {
+      short dist = reinterpret_cast<TZone*>(entry->contextAnchor)
+                       ->GetCachedMapActionContextDistanceOrRecompute(ctx);
+      queueable = dist <= static_cast<short>(entry->GetMinActionThresholdFromEntryChildren());
+    } else {
+      queueable = false;
+    }
+    commandId = queueable ? entry->ResolveMapOrderCommandFromActionContext(ctx) : 1;
+  } else {
+    void* province = GetProvinceByTileIndex(nTileIndex);
+    commandId = (entry->CanQueueMapOrderForProvinceContext(province) == 0)
+                    ? 1
+                    : entry->ResolveMapOrderCommandFromProvinceContext(province);
+  }
+  if (commandId == 0) {
+    return 0;
+  }
+  entry = GetActiveMapOrderEntry();
+  switch (commandId) {
+  case 0x0a:
+    g_pUiRuntimeContext->HandleTurnEventDialogFactorySlotF0(entry);
+    break;
+  case 0x0c:
+    entry->attachment = 3;
+    entry->RebuildMapOrderEntryChildren();
+    if (g_pNavyOrderManager->MoveMapOrderEntryToQueueHeadIfValid(entry)) {
+      g_pActiveMapOrderContext->FinalizeQueuedMapOrderEntry(entry);
+      return 1;
+    }
+    break;
+  case 0x0d: {
+    TZone* ctx = g_pActiveMapOrderContext->GetLinkedZoneForSeaTile(nTileIndex);
+    entry->attachment = 1;
+    entry->owner = reinterpret_cast<TTaskForce*>(ctx);
+    entry->RebuildMapOrderEntryChildren();
+    if (g_pNavyOrderManager->MoveMapOrderEntryToQueueHeadIfValid(entry)) {
+      g_pActiveMapOrderContext->FinalizeQueuedMapOrderEntry(entry);
+      return 1;
+    }
+    break;
+  }
+  case 0x0e: {
+    TZone* ctx = g_pActiveMapOrderContext->GetLinkedZoneForSeaTile(nTileIndex);
+    entry->attachment = 6;
+    entry->owner = reinterpret_cast<TTaskForce*>(ctx);
+    entry->RebuildMapOrderEntryChildren();
+    if (g_pNavyOrderManager->MoveMapOrderEntryToQueueHeadIfValid(entry)) {
+      g_pActiveMapOrderContext->FinalizeQueuedMapOrderEntry(entry);
+      return 1;
+    }
+    break;
+  }
+  case 0x0f: {
+    TZone* ctx = g_pActiveMapOrderContext->GetLinkedZoneForSeaTile(nTileIndex);
+    entry->attachment = 1;
+    entry->owner = reinterpret_cast<TTaskForce*>(ctx);
+    entry->RebuildMapOrderEntryChildren();
+    bool alreadyQueued = false;
+    for (TTaskForce* node = g_pNavyOrderManager->orderListHead04; node != nullptr;
+         node = node->queue_next) {
+      if (node == entry) {
+        alreadyQueued = true;
+        break;
+      }
+    }
+    bool committed;
+    if (alreadyQueued) {
+      committed = true;
+    } else if (entry->GetMapOrderEntryChildCount() < 1) {
+      entry->Free();
+      committed = false;
+    } else {
+      entry->RelinkMapOrderQueueNodeBetween(nullptr, g_pNavyOrderManager->orderListHead04);
+      g_pNavyOrderManager->orderListHead04 = entry;
+      committed = true;
+    }
+    if (committed) {
+      g_pActiveMapOrderContext->FinalizeQueuedMapOrderEntry(entry);
+      return 1;
+    }
+    break;
+  }
+  case 0x10:
+    entry->attachment = 5;
+    entry->owner = reinterpret_cast<TTaskForce*>(GetProvinceByTileIndex(nTileIndex));
+    entry->RebuildMapOrderEntryChildren();
+    if (g_pNavyOrderManager->MoveMapOrderEntryToQueueHeadIfValid(entry)) {
+      g_pActiveMapOrderContext->FinalizeQueuedMapOrderEntry(entry);
+      return 1;
+    }
+    break;
+  default:
+    return 0;
+  }
+  return 1;
+}
+
 // FUNCTION: IMPERIALISM 0x0055a780
 void TNavyMgr::ResolveMapOrderPairConflictStep(TTaskForce* leftEntry, TTaskForce* rightEntry) {
   MapOrderBattleSnapshot snapshot;
@@ -1327,162 +1485,4 @@ void TNavyMgr::ResolveMapOrderPairConflictStep(TTaskForce* leftEntry, TTaskForce
   RefreshMapOrderBattleSideSnapshot(&snapshot, 1,
                                     rightEntry->childOrderList != nullptr ? rightEntry : nullptr);
   g_pMapContextActionManager->AppendMapContextActionRecordAndResetWorkingFields(&snapshot, 0);
-}
-
-// FUNCTION: IMPERIALISM 0x0055a020
-bool TNavyMgr::TryHandleMapContextAction(short nTileIndex, int nInputFlags) {
-  int actionCode = GetMapContextActionCode(nTileIndex, nInputFlags);
-  if (actionCode == 0) {
-    return false;
-  }
-  TMapUberPicture* mapUberPicture = g_pUiRuntimeContext->mapUberPictureF0;
-  switch (actionCode) {
-  case 9: {
-    TZone* zone = g_pActiveMapOrderContext->GetLinkedZoneForSeaTile(nTileIndex);
-    mapUberPicture->SetActiveMapOrderEntry(zone);
-    return true;
-  }
-  case 2:
-  case 3:
-  case 4:
-  case 5:
-  case 6:
-  case 7:
-  case 8: {
-    TZone* zone = g_pActiveMapOrderContext->GetLinkedZoneForSeaTile(nTileIndex);
-    mapUberPicture->OpenMapContextActionDialogByType(zone, actionCode - 2,
-                                                     g_pCachedMapActionContext);
-    return true;
-  }
-  case 11: {
-    TTaskForce* entry = this->orderListHead04;
-    while (entry != 0 && entry->tiebreak_strength != nTileIndex) {
-      entry = entry->queue_next;
-    }
-    mapUberPicture->OpenMapEntryOrderDialog(entry);
-    return true;
-  }
-  case 10: {
-    g_pUiRuntimeContext->HandleTurnEventDialogFactorySlotF0(GetActiveMapOrderEntry());
-    return true;
-  }
-  default:
-    return false;
-  }
-}
-
-// Queues a map order for a clicked tile when immediate context handling does not consume
-// the click: resolves a command id (action-context path for sea tiles, province-context
-// path otherwise) off the active map-order entry, then dispatches by command id, setting
-// the entry's order kind + target context and running the rebuild/queue/finalize pipeline.
-// FUNCTION: IMPERIALISM 0x0055a160
-int TNavyMgr::TryQueueMapOrderFromTileAction(short nTileIndex, int nInputFlags) {
-  // A context-only action consumes the click without any queue mutation.
-  if (TryHandleMapContextAction(nTileIndex, nInputFlags) != 0) {
-    return 0;
-  }
-  TTaskForce* entry = GetActiveMapOrderEntry();
-  int commandId;
-  if (entry == nullptr) {
-    commandId = 0;
-  } else if (g_pGlobalMapState->terrainStateTable[nTileIndex].terrainType00 == 5) {
-    TZone* ctx = g_pActiveMapOrderContext->GetLinkedZoneForSeaTile(nTileIndex);
-    bool queueable;
-    if (ctx == nullptr) {
-      queueable = false;
-    } else if (entry->HasActiveMapOrderEntryChildren() == 0) {
-      short dist = reinterpret_cast<TZone*>(entry->contextAnchor)
-                       ->GetCachedMapActionContextDistanceOrRecompute(ctx);
-      queueable = dist <= static_cast<short>(entry->GetMinActionThresholdFromEntryChildren());
-    } else {
-      queueable = false;
-    }
-    commandId = queueable ? entry->ResolveMapOrderCommandFromActionContext(ctx) : 1;
-  } else {
-    void* province = GetProvinceByTileIndex(nTileIndex);
-    commandId = (entry->CanQueueMapOrderForProvinceContext(province) == 0)
-                    ? 1
-                    : entry->ResolveMapOrderCommandFromProvinceContext(province);
-  }
-  if (commandId == 0) {
-    return 0;
-  }
-  entry = GetActiveMapOrderEntry();
-  switch (commandId) {
-  case 0x0a:
-    g_pUiRuntimeContext->HandleTurnEventDialogFactorySlotF0(entry);
-    break;
-  case 0x0c:
-    entry->attachment = 3;
-    entry->RebuildMapOrderEntryChildren();
-    if (g_pNavyOrderManager->MoveMapOrderEntryToQueueHeadIfValid(entry)) {
-      g_pActiveMapOrderContext->FinalizeQueuedMapOrderEntry(entry);
-      return 1;
-    }
-    break;
-  case 0x0d: {
-    TZone* ctx = g_pActiveMapOrderContext->GetLinkedZoneForSeaTile(nTileIndex);
-    entry->attachment = 1;
-    entry->owner = reinterpret_cast<TTaskForce*>(ctx);
-    entry->RebuildMapOrderEntryChildren();
-    if (g_pNavyOrderManager->MoveMapOrderEntryToQueueHeadIfValid(entry)) {
-      g_pActiveMapOrderContext->FinalizeQueuedMapOrderEntry(entry);
-      return 1;
-    }
-    break;
-  }
-  case 0x0e: {
-    TZone* ctx = g_pActiveMapOrderContext->GetLinkedZoneForSeaTile(nTileIndex);
-    entry->attachment = 6;
-    entry->owner = reinterpret_cast<TTaskForce*>(ctx);
-    entry->RebuildMapOrderEntryChildren();
-    if (g_pNavyOrderManager->MoveMapOrderEntryToQueueHeadIfValid(entry)) {
-      g_pActiveMapOrderContext->FinalizeQueuedMapOrderEntry(entry);
-      return 1;
-    }
-    break;
-  }
-  case 0x0f: {
-    TZone* ctx = g_pActiveMapOrderContext->GetLinkedZoneForSeaTile(nTileIndex);
-    entry->attachment = 1;
-    entry->owner = reinterpret_cast<TTaskForce*>(ctx);
-    entry->RebuildMapOrderEntryChildren();
-    bool alreadyQueued = false;
-    for (TTaskForce* node = g_pNavyOrderManager->orderListHead04; node != nullptr;
-         node = node->queue_next) {
-      if (node == entry) {
-        alreadyQueued = true;
-        break;
-      }
-    }
-    bool committed;
-    if (alreadyQueued) {
-      committed = true;
-    } else if (entry->GetMapOrderEntryChildCount() < 1) {
-      entry->Free();
-      committed = false;
-    } else {
-      entry->RelinkMapOrderQueueNodeBetween(nullptr, g_pNavyOrderManager->orderListHead04);
-      g_pNavyOrderManager->orderListHead04 = entry;
-      committed = true;
-    }
-    if (committed) {
-      g_pActiveMapOrderContext->FinalizeQueuedMapOrderEntry(entry);
-      return 1;
-    }
-    break;
-  }
-  case 0x10:
-    entry->attachment = 5;
-    entry->owner = reinterpret_cast<TTaskForce*>(GetProvinceByTileIndex(nTileIndex));
-    entry->RebuildMapOrderEntryChildren();
-    if (g_pNavyOrderManager->MoveMapOrderEntryToQueueHeadIfValid(entry)) {
-      g_pActiveMapOrderContext->FinalizeQueuedMapOrderEntry(entry);
-      return 1;
-    }
-    break;
-  default:
-    return 0;
-  }
-  return 1;
 }
