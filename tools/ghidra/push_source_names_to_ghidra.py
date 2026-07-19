@@ -80,7 +80,34 @@ def main() -> int:
         if args.apply:
             txid = program.startTransaction("push source names")
 
-        stats = {"already": 0, "fn": 0, "label": 0, "skipped_illegal": 0, "failed": 0}
+        # Match states (source is authoritative; the PRIMARY entity is what counts):
+        #   primary_exact      - primary function/symbol already == the source name
+        #   secondary_only     - a *secondary* symbol matched but the primary is stale
+        #                        (the old-loop bug: reported "already" and skipped, so the
+        #                        primary never converged). Now a repair action.
+        #   wrong_namespace    - primary is the right simple name in the wrong class
+        #   wrong_simple_name  - primary is in the right class, wrong simple name
+        #   no_function        - a source-owned address with no function -> label
+        stats = {
+            "primary_exact": 0,
+            "fn": 0,
+            "label": 0,
+            "secondary_only": 0,
+            "wrong_namespace": 0,
+            "wrong_simple_name": 0,
+            "skipped_illegal": 0,
+            "failed": 0,
+        }
+
+        def secondary_matches(a, name: str) -> bool:
+            prim = st.getPrimarySymbol(a)
+            for s in st.getSymbols(a):
+                if s is prim:
+                    continue
+                if name in (s.getName(), s.getName(True)):
+                    return True
+            return False
+
         for row in rows:
             name = (row.get("name") or "").strip()
             addr_text = (row.get("address") or "").strip()
@@ -90,22 +117,42 @@ def main() -> int:
                 addr = int(addr_text, 16)
             except ValueError:
                 continue
-            a = af.getAddress(addr)
-            syms = st.getSymbols(a)
-            if any(name in (s.getName(), s.getName(True)) for s in syms):
-                stats["already"] += 1
-                continue
             if any(ch in name for ch in "` "):
                 stats["skipped_illegal"] += 1
                 if not args.quiet:
                     print(f"  skip (illegal chars) 0x{addr:08x} {name}")
                 continue
+            a = af.getAddress(addr)
             ns_path, simple = split_qualified(name)
             fn = fm.getFunctionAt(a)
+
+            # Decide against the PRIMARY entity, never an arbitrary secondary symbol.
+            if fn is not None:
+                current_qualified = fn.getName(True)
+                if current_qualified == name:
+                    stats["primary_exact"] += 1
+                    continue
+                # Classify why it needs repair (for reporting only).
+                if secondary_matches(a, name):
+                    kind = "secondary_only"
+                elif ns_path and fn.getName() == simple:
+                    kind = "wrong_namespace"
+                elif fn.getParentNamespace().getName(True) == "::".join(ns_path):
+                    kind = "wrong_simple_name"
+                else:
+                    kind = "wrong_namespace"
+                stats[kind] += 1
+            else:
+                prim = st.getPrimarySymbol(a)
+                if prim is not None and prim.getName(True) == name:
+                    stats["primary_exact"] += 1
+                    continue
+
             if not args.apply:
                 if not args.quiet:
-                    print(f"  would set 0x{addr:08x} -> {name} ({'fn' if fn else 'label'})")
-                stats["fn" if fn else "label"] += 1
+                    tag = "fn" if fn is not None else "label"
+                    print(f"  would set 0x{addr:08x} -> {name} ({tag})")
+                stats["fn" if fn is not None else "label"] += 1
                 if args.limit and (stats["fn"] + stats["label"]) >= args.limit:
                     break
                 continue
@@ -133,7 +180,11 @@ def main() -> int:
 
         mode = "APPLIED" if args.apply else "DRY RUN"
         print(
-            f"[{mode}] already={stats['already']} set_fn={stats['fn']} set_label={stats['label']} "
+            f"[{mode}] primary_exact={stats['primary_exact']} set_fn={stats['fn']} "
+            f"set_label={stats['label']} "
+            f"(repairs: secondary_only={stats['secondary_only']} "
+            f"wrong_namespace={stats['wrong_namespace']} "
+            f"wrong_simple_name={stats['wrong_simple_name']}) "
             f"skipped_illegal={stats['skipped_illegal']} failed={stats['failed']}"
         )
         return 0
