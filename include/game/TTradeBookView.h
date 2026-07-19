@@ -113,4 +113,12 @@ public:
   // slot 0x67 CtrlSlot103_SubtractPosAndDispatchSlot19C_Impl inherited unchanged (0x48bac0)
 
   TTradeBookView();
+
+  // Original object size is 0x78 (CRuntimeClass m_nObjectSize); the source class ended at 0x60. Trailing 24 byte(s) not yet semantically recovered — declared so sizeof and the recomp's allocation size match the original.
+  int field60;
+  int field64;
+  int field68;
+  int field6c;
+  int field70;
+  int field74;
 };

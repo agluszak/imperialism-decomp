@@ -108,4 +108,7 @@ public:
   virtual undefined OrphanCallChain_C4_I28_004e75c0(int needSlot);
   // slot 0xb3 — 0x004ea990.
   virtual undefined IterateLinkedListCursorAndRelinkNodeOwners_004ea990();
+
+  // Original object size is 0xb70 (CRuntimeClass m_nObjectSize); the source class ended at 0xb6c. Trailing 4 byte(s) not yet semantically recovered — declared so sizeof and the recomp's allocation size match the original.
+  int fieldb6c;
 };

@@ -131,4 +131,7 @@ public:
   void ApplyRectSlot110(RECT* rectBuffer) override;
 
   void SetSelectionAndEnableByMappedValue(int selectedValue);
+
+  // Original object size is 0xa0 (CRuntimeClass m_nObjectSize); the source class ended at 0x9c. Trailing 4 byte(s) not yet semantically recovered — declared so sizeof and the recomp's allocation size match the original.
+  int field9c;
 };

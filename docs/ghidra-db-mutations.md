@@ -335,6 +335,90 @@ they await real class layouts. This is the datatype-hygiene prerequisite to the
 compiler-backed class-model work (the durable fix that sizes CPoint/CRect/game
 classes and drives committed opaque-by-value to 0).
 
+## 2026-07-19 (thirteenth): class-model projection — real layouts replace the stubs (PR #101, committed DB change)
+
+`just apply-class-model --apply` (`tools/ghidra/apply_class_model.py`) projected
+the verified class model (PR #100's three artifacts) into the DB: **438 records
+projected (375 existing stub/partial datatypes REPLACED — rewriting every
+reference — and 63 created), 0 failures, 96 blocked** per the RTTI audit
+(source_incomplete=83 / source_oversized=13 never project — the tool refuses to
+choose between disagreeing models). One transaction, verify-then-commit (every
+projected structure's final length re-checked against the oracle size).
+
+Per record: game bases flattened recursively at oracle offsets (e.g. `TMission`
+= 20 bytes: `base_CObject`@0, `nationId04:short`@4, `pathMarker06:short`@6 …;
+`TView` = 96 bytes with the flattened TEventHandler chain); MFC bases placed as
+single components of the DB's MFC type when its length matches the oracle
+EXTBASE size; fields at exact oracle offsets with the semantic type used ONLY
+when it resolves at exactly the oracle size (physical truth wins; otherwise
+undefined bytes); vptr at 0 for polymorphic roots.
+
+Downstream effect (the reason class projection precedes signature projection):
+datatype-hygiene **committed opaque-by-value 1 → 0** ("signature rows using fake
+by-value classes: 0" acceptance met), type resolution `generic_pointer_fallback`
+77 → 28 and `exact_complete` 3728 → 3797 — the signature projector now resolves
+parameter types against real layouts instead of 1-byte placeholders. Exported →
+`75494c6b…`. Wired into `ghidra-apply-source-full` BEFORE the signature
+projections; blocked records live in
+`build-msvc500/evidence/class_model_queue.csv` until their source declarations
+are fixed (exact size deltas in the class-model audit).
+
+## 2026-07-19 (fourteenth): MFC value types + sret attempt-and-verify (PR #102, committed DB change)
+
+The last fake-by-value blockers were the MFC VALUE types (`CPoint`/`CRect`/
+`CSize`/`CTime` — 1-byte stubs or missing). The layout oracle now measures them
+like everything else (MFCVALUE/MFCFIELD lines: field names are the public MFC API
+surface, every offset/size measured by real VC5 — CPoint=8 {x@0,y@4}, CRect=16,
+CSize=8), and `apply-class-model` projects them FIRST so game fields typed with
+them resolve at the correct size. Applied: 438 game records re-projected
+idempotently + the 5 MFC value types (441 replaced, 2 created).
+
+The signature projector's `sret_by_value_return` gate is retired: a >4-byte
+by-value return is now ATTEMPTED (Ghidra models the MSVC sret ABI itself once the
+return type is really sized) and per-function verification decides. Result:
+**14 signatures projected** that were blocked on CPoint — all the
+`OnLButtonDown(uint, CPoint)`-family message handlers (game + MFC library rows).
+Two honest residuals remain queued: `ReadOrCreateRegistryStringValueWithFallback`
+(CString return — a 4-byte non-trivial class MSVC returns via sret but Ghidra's
+size-based auto-sret cannot model) and `TView::TransformPointViaSlot138` (the
+attempt did not rebind in_stack@0x8 under __thiscall; rolled back, needs explicit
+CUSTOM_STORAGE sret lowering).
+
+Datatype hygiene reached the acceptance target: **by-value opaque uses 0
+(committed=0, queued=0)** — no signature anywhere uses a fake by-value class and
+no backlog remains. Type resolution: opaque_by_value 15 → 0, opaque_pointee
+101 → 33, exact_complete 3797 → 3863; structural converged 3854 → 3868.
+Exported → `85a1e55b…`.
+
+## 2026-07-19 (fifteenth): source class-size campaign — 72 classes verified (PR #103, committed DB + SOURCE change)
+
+The class-model audit's `source_incomplete` queue is a SOURCE defect list: a class
+whose sizeof is short compiles a wrong allocation size into the recomp
+(`operator_new(sizeof(T))` immediates), diverging from the original binary. The
+mechanical campaign: for each incomplete class with delta ≤ 28, append honest
+unknown trailing fields (`int fieldNN;` named by offset + evidence comment citing
+`m_nObjectSize`), exactly the codebase's existing pad-field convention.
+
+The oracle re-run is the physical verifier, and it caught two real cascade bugs:
+(1) editing a base AND its derived class in one pass double-counts the delta —
+detected as new `source_oversized`, trimmed, converged over three iterations;
+(2) a genuine mis-attribution: `TDeluxeText.field94/field95/padding96` belong to
+the base `TTEView` (RTTI proves sizeof(TTEView)=0x98, and TDeluxeText's remaining
+fields then land exactly on their offset-suffixed names — `cursorThemeCode98`@0x98).
+Moved to the base; inherited member access keeps all call sites compiling.
+
+Result: **verified 312 → 384** (+72 classes), incomplete 83 → 11 (only >28-byte
+deltas needing real recovery), oversized back to the pre-existing 13.
+`just build` green over the 64 edited headers; **reccmp stats: 76 functions
+improved, 0 regressions, +1 at 100%** — the corrected allocation immediates match
+the original binary. class-size-gate passes (0 mismatches). Baseline updated.
+
+`apply-class-model --apply` then projected the newly-verified: **projected
+438 → 510** (blocked 96 → 24). Exported → `697ee1cc…`. Remaining queue: 11
+incomplete (large deltas: TCityInteriorMinister-family +380, THighScoresPicture
++360, TScenarioChooser +204, …) and 13 oversized (TGreatPower family −0x208,
+TMinister −0x38, …) — per-class investigations, each with its exact delta.
+
 ## Committed mutations (already in the current .gzf, newest first)
 
 From `git log --follow -- vendor/ghidra/exports/Imperialism.gzf`:

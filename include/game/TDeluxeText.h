@@ -151,9 +151,8 @@ public:
   // `undefined` rather than guessing a real return type.
   virtual int
   RecenterTextFromMeasuredWidthAndMaybeInvalidate(char refreshNow); // slot 0x7e 0x5b63e0
-  unsigned char field94;      // +0x94
-  unsigned char field95;      // +0x95
-  unsigned char padding96[2]; // +0x96
+  // field94/field95/padding96 moved to the base TTEView (its RTTI object size is
+  // 0x98; TDeluxeText's own fields start at 0x98 — see TTEView.h).
   int cursorThemeCode98;      // +0x98
   int cursorThemeCode9c;      // +0x9c
   unsigned char fieldA0;      // +0xa0

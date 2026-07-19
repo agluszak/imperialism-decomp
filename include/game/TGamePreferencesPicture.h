@@ -124,4 +124,7 @@ public:
   // slot 0x72 SetPictureResourceIdAndRefresh inherited unchanged (0x48f570)
 
   TGamePreferencesPicture();
+
+  // Original object size is 0x94 (CRuntimeClass m_nObjectSize); the source class ended at 0x90. Trailing 4 byte(s) not yet semantically recovered — declared so sizeof and the recomp's allocation size match the original.
+  int field90;
 };

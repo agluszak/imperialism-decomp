@@ -98,7 +98,9 @@ ghidra-apply-source *args: _require-ghidra-install
 # Order matters: the PDB import names entities from the generated data sources
 # (inventory names), so the source-declaration name pass must run AFTER it —
 # source names win last.
-[doc('MUTATES: Ghidra DB + vendored .gzf. build -> import -> names -> decl-index -> in_stack/divergent/packed signature projection -> audits -> export')]
+# Class projection runs BEFORE signature projection so the signature projector
+# resolves parameter types against real layouts instead of 1-byte placeholders.
+[doc('MUTATES: Ghidra DB + vendored .gzf. build -> import -> names -> type model -> class projection -> signature projection -> audits -> export')]
 [group('sync')]
 ghidra-apply-source-full:
   just build
@@ -106,6 +108,8 @@ ghidra-apply-source-full:
   just ghidra-apply-source --apply --quiet --strict
   just ghidra-apply-source --quiet --strict
   just clang-decl-index
+  just generate-type-model
+  just apply-class-model --apply
   just apply-source-signatures --apply --strict
   just project-divergent-signatures --apply --strict
   just project-packed-signatures --apply --strict
@@ -857,6 +861,52 @@ source-signature-audit *args: _require-ghidra-install
 [group('sync')]
 clang-decl-index *args:
   uv run python -m tools.clang_ast_index {{args}}
+
+# The durable class model, two strictly separated evidence layers:
+#   SEMANTIC  — Clang AST record walk (records/bases/fields; never host layout)
+#   PHYSICAL  — the MSVC500 layout oracle: a generated TU compiled+run by the REAL
+#               VC5 container (same flags as the game), printing sizeof/offsets.
+# Then the audit cross-checks oracle sizeof against the original binary's
+# CRuntimeClass::m_nObjectSize (config/rtti_class_oracle.csv):
+#   verified / source_incomplete (missing trailing fields; projection blocked) /
+#   source_oversized (modelling error; projection blocked) / no_rtti.
+# Needs docker (imperialism-msvc500 image) for the oracle step.
+[doc('Generate the class type model: AST records -> MSVC500 layout oracle -> RTTI audit')]
+[group('sync')]
+generate-type-model:
+  uv run python -m tools.class_model
+  uv run python -m tools.layout_oracle
+  uv run python -m tools.class_model_audit
+
+[doc('AST record extraction only (semantic layer of the class model)')]
+[private]
+[group('sync')]
+record-model *args:
+  uv run python -m tools.class_model {{args}}
+
+[doc('MSVC500 layout oracle only (physical layer; needs docker)')]
+[private]
+[group('sync')]
+layout-oracle *args:
+  uv run python -m tools.layout_oracle {{args}}
+
+[doc('Cross-check oracle layouts vs binary RTTI sizes (read-only)')]
+[group('ghidra-inspect')]
+class-model-audit *args:
+  uv run python -m tools.class_model_audit {{args}}
+
+# MUTATES: Ghidra DB (with --apply). Projects the VERIFIED class model into the DB:
+# sized structures replace the 1-byte stubs (references rewrite), game bases are
+# flattened at oracle offsets, MFC bases placed as single components, fields at
+# exact oracle offsets (semantic type only when it matches the oracle size —
+# physical truth wins), vptr at 0 for polymorphic roots. Only audit-verdict
+# verified/no_rtti records project; source_incomplete/source_oversized stay
+# blocked. Single transaction, verify-then-commit.
+[private]
+[group('ghidra-db')]
+apply-class-model *args: _require-ghidra-install
+  uv run python -m tools.ghidra.daemon stop --quiet
+  uv run python -m tools.ghidra.apply_class_model {{args}}
 
 # READ-ONLY structural convergence audit: for EVERY source/reviewed claim (not just
 # functions showing in_stack), compare the expected logical signature (source model +
