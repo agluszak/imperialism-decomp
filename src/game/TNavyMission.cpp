@@ -417,8 +417,7 @@ void TNavyMission::ConsolidateMissionOrderEntriesByTargetAndQueue(int* pContextA
       TTaskForce* entry = static_cast<TShip*>(node->payload)->GetOrCreateMissionOrderEntryForNode();
       for (TMapOrderChildLinkNode* other = orderList24; other != nullptr; other = other->next) {
         if (other->active == 0 &&
-            reinterpret_cast<int>(static_cast<TShip*>(other->payload)->field08) ==
-                entry->contextAnchor) {
+            static_cast<TShip*>(other->payload)->field08 == entry->contextAnchor) {
           static_cast<TShip*>(other->payload)->RemoveNode(entry);
           other->active = 1;
         }

@@ -13349,8 +13349,7 @@
     },
     {
       "address": "0x4e0590",
-      "effective": true,
-      "matching": 0.42857142857142855,
+      "matching": 1.0,
       "name": "TGreatPower::ComputeMinisterSkillFloatSlot88",
       "type": 1
     },
@@ -13363,7 +13362,8 @@
     },
     {
       "address": "0x4e0610",
-      "matching": 1.0,
+      "effective": true,
+      "matching": 0.42857142857142855,
       "name": "TGreatPower::ComputeMinisterSkillFloatSlot8A",
       "type": 1
     },
@@ -13375,8 +13375,7 @@
     },
     {
       "address": "0x4e0690",
-      "effective": true,
-      "matching": 0.42857142857142855,
+      "matching": 1.0,
       "name": "TGreatPower::ComputeMinisterSkillFloatSlot8C",
       "type": 1
     },
@@ -13394,7 +13393,7 @@
     },
     {
       "address": "0x4e0770",
-      "matching": 1.0,
+      "matching": 0.6666666666666666,
       "name": "TGreatPower::ComputeNationRuntimeAdvisoryMetricCase6",
       "type": 1
     },
@@ -22491,7 +22490,7 @@
     },
     {
       "address": "0x54ff00",
-      "matching": 0.7093596059113301,
+      "matching": 0.6995073891625616,
       "name": "TShip::ComputeNavyOrderPriorityContributionPercentByCategory",
       "type": 1
     },
@@ -22834,7 +22833,7 @@
     },
     {
       "address": "0x552800",
-      "matching": 0.7567567567567568,
+      "matching": 0.7222222222222222,
       "name": "TTaskForce::TTaskForce(int, short)",
       "type": 1
     },
@@ -23081,7 +23080,7 @@
     },
     {
       "address": "0x555420",
-      "matching": 0.544,
+      "matching": 0.5546666666666666,
       "name": "TTaskForce::ResolveTaskForceOrderConflictAndPickCandidate",
       "type": 1
     },
@@ -30312,7 +30311,7 @@
     },
     {
       "address": "0x5a39a0",
-      "matching": 0.7286821705426356,
+      "matching": 0.9545454545454546,
       "name": "ComputeHexTileDistanceFromIndices",
       "type": 1
     },
