@@ -98,7 +98,7 @@ ghidra-apply-source *args: _require-ghidra-install
 # Order matters: the PDB import names entities from the generated data sources
 # (inventory names), so the source-declaration name pass must run AFTER it —
 # source names win last.
-[doc('MUTATES: Ghidra DB + vendored .gzf. build -> import -> names -> decl-index -> in_stack + divergent signature projection -> audits -> export')]
+[doc('MUTATES: Ghidra DB + vendored .gzf. build -> import -> names -> decl-index -> in_stack/divergent/packed signature projection -> audits -> export')]
 [group('sync')]
 ghidra-apply-source-full:
   just build
@@ -108,6 +108,7 @@ ghidra-apply-source-full:
   just clang-decl-index
   just apply-source-signatures --apply --strict
   just project-divergent-signatures --apply --strict
+  just project-packed-signatures --apply --strict
   just in-stack-audit
   just structural-signature-audit
   just export-project
@@ -822,6 +823,18 @@ apply-source-signatures *args: _require-ghidra-install
 project-divergent-signatures *args: _require-ghidra-install
   uv run python -m tools.ghidra.daemon stop --quiet
   uv run python -m tools.ghidra.apply_source_signatures --project-divergent {{args}}
+
+# MUTATES: Ghidra DB (with --apply). Recovers PACKED sub-dword parameter frames (two
+# shorts in one dword, byte+short, ...) via CUSTOM_STORAGE: MSVC500 packs adjacent
+# sub-dword args, which DYNAMIC_STORAGE dword-aligns and leaves an unbound in_stack
+# read. Models the args tight-packed from 0x4 (this in ECX for __thiscall) and commits
+# ONLY on a fully clean re-decompile — the packing is the hypothesis, the empty
+# in_stack is the proof. Everything else rolls back.
+[private]
+[group('ghidra-db')]
+project-packed-signatures *args: _require-ghidra-install
+  uv run python -m tools.ghidra.daemon stop --quiet
+  uv run python -m tools.ghidra.apply_source_signatures --project-packed {{args}}
 
 # READ-ONLY static audit of the source->Ghidra signature projection: parses every
 # source-owned C++ prototype and reports which resolve cleanly vs which are queued
