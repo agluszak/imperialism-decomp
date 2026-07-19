@@ -858,6 +858,39 @@ source-signature-audit *args: _require-ghidra-install
 clang-decl-index *args:
   uv run python -m tools.clang_ast_index {{args}}
 
+# The durable class model, two strictly separated evidence layers:
+#   SEMANTIC  — Clang AST record walk (records/bases/fields; never host layout)
+#   PHYSICAL  — the MSVC500 layout oracle: a generated TU compiled+run by the REAL
+#               VC5 container (same flags as the game), printing sizeof/offsets.
+# Then the audit cross-checks oracle sizeof against the original binary's
+# CRuntimeClass::m_nObjectSize (config/rtti_class_oracle.csv):
+#   verified / source_incomplete (missing trailing fields; projection blocked) /
+#   source_oversized (modelling error; projection blocked) / no_rtti.
+# Needs docker (imperialism-msvc500 image) for the oracle step.
+[doc('Generate the class type model: AST records -> MSVC500 layout oracle -> RTTI audit')]
+[group('sync')]
+generate-type-model:
+  uv run python -m tools.class_model
+  uv run python -m tools.layout_oracle
+  uv run python -m tools.class_model_audit
+
+[doc('AST record extraction only (semantic layer of the class model)')]
+[private]
+[group('sync')]
+record-model *args:
+  uv run python -m tools.class_model {{args}}
+
+[doc('MSVC500 layout oracle only (physical layer; needs docker)')]
+[private]
+[group('sync')]
+layout-oracle *args:
+  uv run python -m tools.layout_oracle {{args}}
+
+[doc('Cross-check oracle layouts vs binary RTTI sizes (read-only)')]
+[group('ghidra-inspect')]
+class-model-audit *args:
+  uv run python -m tools.class_model_audit {{args}}
+
 # READ-ONLY structural convergence audit: for EVERY source/reviewed claim (not just
 # functions showing in_stack), compare the expected logical signature (source model +
 # clang decl index) against the DB signature and classify the gap (converged /
