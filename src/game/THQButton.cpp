@@ -28,7 +28,7 @@ void THQButton::NoOpUiLifecycleHook(int arg) {
   TView::NoOpUiLifecycleHook(arg);
   glyph98 = 0;
   glyph90 = glyph;
-  hasCommandTagResource = 0xc;
+  frameStyle60 = 0xc;
   timingWord92 = (short)(glyph + 1);
   glyph94 = (short)(glyph + 2);
   glyph96 = (short)(glyph + 3);
@@ -37,8 +37,8 @@ void THQButton::NoOpUiLifecycleHook(int arg) {
 // FUNCTION: IMPERIALISM 0x0058b750
 void THQButton::SetControlStateFlagAndMaybeRefresh(bool enabledState, bool refreshNow) {
   char mode = enabledState ? 1 : 0;
-  if (mode != static_cast<char>(commandTagResourceByte)) {
-    commandTagResourceByte = static_cast<unsigned char>(mode);
+  if (mode != static_cast<char>(controlState64)) {
+    controlState64 = static_cast<unsigned char>(mode);
     short bitmapId = 0;
     short modeState = glyph98;
     if (mode == 0) {
@@ -66,7 +66,7 @@ void THQButton::SetControlStateFlagAndMaybeRefresh(bool enabledState, bool refre
 void THQButton::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
   TAmtBar* control = reinterpret_cast<TAmtBar*>(this);
   if (commandId == 0xc) {
-    if (commandTagResourceByte == 0) {
+    if (controlState64 == 0) {
       control->InvokeSlot1CC(1, 1);
     }
     TControl::HandleEvent(commandId, sourceHandler, event);
@@ -88,13 +88,13 @@ bool THQButton::IsSelected(short value, bool refreshNow) {
   if (GetBoolSlot28()) {
     SetControlStateFlagAndMaybeRefresh(value != 0, refreshNow);
   }
-  return commandTagResourceByte != 0;
+  return controlState64 != 0;
 }
 
 // FUNCTION: IMPERIALISM 0x0058b8d0
 void THQButton::SetSelectionStateAndRefreshBitmap(short selectionState) {
   glyph98 = selectionState;
-  commandTagResourceByte = 0;
+  controlState64 = 0;
   short bitmapId;
   if (selectionState == 0) {
     bitmapId = glyph90;

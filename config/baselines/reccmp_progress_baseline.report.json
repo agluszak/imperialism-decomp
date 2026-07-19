@@ -3086,7 +3086,7 @@
     },
     {
       "address": "0x4860e0",
-      "matching": 0.5671641791044776,
+      "matching": 0.8032786885245902,
       "name": "TTEView::MeasureCurrentTextWidthInLayoutRect",
       "type": 1
     },
@@ -4912,7 +4912,7 @@
     {
       "address": "0x48c220",
       "matching": 0.4166666666666667,
-      "name": "TView::EnableAndProcessFlag",
+      "name": "TView::SetHoverHelpText",
       "type": 1
     },
     {
@@ -5319,7 +5319,7 @@
     },
     {
       "address": "0x48e520",
-      "matching": 0.5555555555555556,
+      "matching": 0.8571428571428571,
       "name": "TControl::TControl",
       "type": 1
     },
@@ -5344,13 +5344,13 @@
     {
       "address": "0x48e7a0",
       "matching": 1.0,
-      "name": "TControl::SetControlPictureEntryAndMaybeRefresh",
+      "name": "TControl::SetTextColorAndMaybeRefresh",
       "type": 1
     },
     {
       "address": "0x48e7d0",
       "matching": 1.0,
-      "name": "TControl::SetCityProductionDialogPictureRectAndMaybeRefresh",
+      "name": "TControl::SetTextStyleAndMaybeRefresh",
       "type": 1
     },
     {
@@ -5518,7 +5518,7 @@
     },
     {
       "address": "0x48f640",
-      "matching": 0.4536082474226804,
+      "matching": 0.7766990291262136,
       "name": "TPicture::ShallowClone",
       "type": 1
     },
@@ -5554,7 +5554,7 @@
     },
     {
       "address": "0x48fb10",
-      "matching": 0.6851851851851852,
+      "matching": 1.0,
       "name": "TStaticText::CopyViewStateFromSource",
       "type": 1
     },
@@ -5596,7 +5596,7 @@
     },
     {
       "address": "0x48ffb0",
-      "matching": 0.5228758169934641,
+      "matching": 0.624113475177305,
       "name": "TStaticText::ApplyRectSlot110",
       "type": 1
     },
@@ -8045,7 +8045,7 @@
     },
     {
       "address": "0x4a2900",
-      "matching": 0.13063763608087092,
+      "matching": 0.12752721617418353,
       "name": "BuildArmyContextActionRecordsAndDispatchLabel",
       "type": 1
     },
@@ -8556,13 +8556,13 @@
     },
     {
       "address": "0x4aa280",
-      "matching": 0.8888888888888888,
+      "matching": 0.07142857142857142,
       "name": "TArmyCheckBox::HandleEvent",
       "type": 1
     },
     {
       "address": "0x4aa2f0",
-      "matching": 1.0,
+      "matching": 0.6666666666666666,
       "name": "TArmyCheckBox::NoOpUiLifecycleHook",
       "type": 1
     },
@@ -8586,7 +8586,7 @@
     },
     {
       "address": "0x4aa3a0",
-      "matching": 0.1111111111111111,
+      "matching": 0.0,
       "name": "TArmyCheckBox::OrphanCallChain_C2_I16_004aa3a0",
       "type": 1
     },
@@ -15290,7 +15290,7 @@
     },
     {
       "address": "0x4f6170",
-      "matching": 0.5764705882352941,
+      "matching": 0.5705882352941176,
       "name": "TDiplomacyMapView::RenderDiplomacyLegendSurfaceAndPresent",
       "type": 1
     },
@@ -15332,7 +15332,7 @@
     },
     {
       "address": "0x4f6bd0",
-      "matching": 0.242914979757085,
+      "matching": 0.2248995983935743,
       "name": "TDiplomacyMapView::BlitDiplomacyMapEventPaletteMaskToSurface",
       "type": 1
     },
@@ -15404,7 +15404,7 @@
     },
     {
       "address": "0x4f79e0",
-      "matching": 1.0,
+      "matching": 0.2,
       "name": "TPanelView::NoOpUiLifecycleHook",
       "type": 1
     },
@@ -16817,7 +16817,11 @@
     },
     {
       "address": "0x508800",
-      "matching": 0.6461538461538462,
+<<<<<<< HEAD
+      "matching": 0.7230769230769231,
+=======
+      "matching": 0.7076923076923077,
+>>>>>>> ce07dac9 (Rename the "shared string" control helpers to cursor hover-help-text)
       "name": "TLanguageMgr::BuildNewsTableDimensions",
       "type": 1
     },
@@ -16991,7 +16995,7 @@
     },
     {
       "address": "0x50bea0",
-      "matching": 0.21263062244434347,
+      "matching": 0.20263516583371194,
       "name": "TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets",
       "type": 1
     },
@@ -17377,7 +17381,7 @@
     },
     {
       "address": "0x512930",
-      "matching": 0.26334519572953735,
+      "matching": 0.25622775800711745,
       "name": "BuildHexAreaTileIndexList",
       "type": 1
     },
@@ -17653,7 +17657,7 @@
     },
     {
       "address": "0x515b10",
-      "matching": 0.3378995433789954,
+      "matching": 0.3167420814479638,
       "name": "TMapMgr::MarkSeedNeighborTilesUnavailableByCapabilityMaskProfileB",
       "type": 1
     },
@@ -17827,7 +17831,7 @@
     },
     {
       "address": "0x5178f0",
-      "matching": 0.3446601941747573,
+      "matching": 0.30434782608695654,
       "name": "TMapMgr::ComputeRepresentativeTileIndexForTerrainTypeWithWrapBias",
       "type": 1
     },
@@ -18428,8 +18432,7 @@
     },
     {
       "address": "0x522c10",
-      "effective": true,
-      "matching": 0.9848484848484849,
+      "matching": 1.0,
       "name": "TMapDialog::DrawMapDialogWrappedTileConnectionMarker_00522c10",
       "type": 1
     },
@@ -18633,7 +18636,7 @@
     },
     {
       "address": "0x5274d0",
-      "matching": 0.37593984962406013,
+      "matching": 0.3088235294117647,
       "name": "TMapMaker::TryMergeRegionGroupWithNeighbors",
       "type": 1
     },
@@ -21935,7 +21938,11 @@
     },
     {
       "address": "0x545940",
+<<<<<<< HEAD
+      "matching": 0.3804137039431157,
+=======
       "matching": 0.4261712439418417,
+>>>>>>> ce07dac9 (Rename the "shared string" control helpers to cursor hover-help-text)
       "name": "TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine",
       "type": 1
     },
@@ -23300,7 +23307,7 @@
     },
     {
       "address": "0x5578a0",
-      "matching": 0.44594594594594594,
+      "matching": 0.44324324324324327,
       "name": "TNavyMgr::ResolveMapOrderChainsForTurnPhase",
       "type": 1
     },
@@ -25497,13 +25504,13 @@
     },
     {
       "address": "0x571cb0",
-      "matching": 1.0,
+      "matching": 0.1,
       "name": "TCzechBox::HandleEvent",
       "type": 1
     },
     {
       "address": "0x571cf0",
-      "matching": 1.0,
+      "matching": 0.6666666666666666,
       "name": "TCzechBox::NoOpUiLifecycleHook",
       "type": 1
     },
@@ -26478,7 +26485,7 @@
     },
     {
       "address": "0x5798a0",
-      "matching": 0.5865384615384616,
+      "matching": 0.5673076923076923,
       "name": "TRadioTextCluster::AddItem",
       "type": 1
     },
@@ -28108,7 +28115,7 @@
     },
     {
       "address": "0x58a020",
-      "matching": 0.45685279187817257,
+      "matching": 0.47715736040609136,
       "name": "TRailAmtBar::NoOpUiLifecycleHook",
       "type": 1
     },
@@ -28578,7 +28585,7 @@
     {
       "address": "0x58e440",
       "matching": 1.0,
-      "name": "TControl::SetHasCommandTagResource",
+      "name": "TControl::SetFrameStyle60",
       "type": 1
     },
     {
@@ -29839,7 +29846,7 @@
     },
     {
       "address": "0x59e0d0",
-      "matching": 0.6,
+      "matching": 1.0,
       "name": "TArmyPlayer::ScoreTacticalTileEnemyEdgeColumnZoneBonus",
       "type": 1
     },
@@ -30309,7 +30316,7 @@
     },
     {
       "address": "0x5a39a0",
-      "matching": 0.9545454545454546,
+      "matching": 0.9393939393939394,
       "name": "ComputeHexTileDistanceFromIndices",
       "type": 1
     },
@@ -30813,7 +30820,7 @@
     },
     {
       "address": "0x5a8ac0",
-      "matching": 0.6867469879518072,
+      "matching": 0.6086956521739131,
       "name": "TTacticalBattleView::CenterViewportAroundGridIndexAndSnap",
       "type": 1
     },
@@ -30939,7 +30946,7 @@
     },
     {
       "address": "0x5ac840",
-      "matching": 0.7577639751552795,
+      "matching": 0.028985507246376812,
       "name": "TTacticalToolbar::NoOpUiLifecycleHook",
       "type": 1
     },
@@ -31005,7 +31012,7 @@
     },
     {
       "address": "0x5ad180",
-      "matching": 1.0,
+      "matching": 0.16666666666666666,
       "name": "TTacNavyToolbar::NoOpUiLifecycleHook",
       "type": 1
     },
@@ -31569,7 +31576,7 @@
     },
     {
       "address": "0x5b2970",
-      "matching": 1.0,
+      "matching": 0.2222222222222222,
       "name": "TMapEditCluster::HandleEvent",
       "type": 1
     },
@@ -32822,7 +32829,7 @@
     },
     {
       "address": "0x5bf930",
-      "matching": 0.7477253928866832,
+      "matching": 0.7890818858560794,
       "name": "TOfferDeskPicture::RefreshSelectedNationOrderCompatibilityInfo",
       "type": 1
     },
@@ -33363,13 +33370,13 @@
     {
       "address": "0x5c49d0",
       "matching": 0.46153846153846156,
-      "name": "ApplySharedStringToControlState",
+      "name": "SetControlHoverHelpText",
       "type": 1
     },
     {
       "address": "0x5c4a40",
       "matching": 0.46153846153846156,
-      "name": "AssignSharedStringToControlState",
+      "name": "SetControlHoverHelpTextAltEntry",
       "type": 1
     },
     {
@@ -45211,6 +45218,6 @@
       "type": 5
     }
   ],
-  "file": "Imperialism.exe.gog-original",
+  "file": "Imperialism.exe",
   "format": 1
 }

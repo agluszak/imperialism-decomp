@@ -21,11 +21,11 @@ IMPLEMENT_DYNCREATE(TDeluxeText, TTEView)
 
 // FUNCTION: IMPERIALISM 0x005b5ff0
 void TDeluxeText::ConstructTDeluxeTextBaseState(TView* panel, int* offsetLayout, int* sizeLayout,
-                                                RECT* insetRect, TControlPictureRectState* style,
+                                                RECT* insetRect, TUiTextStyleDescriptor* style,
                                                 short styleWord90) {
   ConstructTTEViewBaseState(0, panel, offsetLayout, sizeLayout, 5, 5, insetRect, style, styleWord90,
                             0, 1);
-  cursorThemeCode98 = style->styleRef6;
+  cursorThemeCode98 = style->textColor;
   SetSelectedFlagAndState(0);
 }
 
@@ -70,16 +70,15 @@ void TDeluxeText::ApplyRectSlot110(RECT* rectBuffer) {
 }
 
 // FUNCTION: IMPERIALISM 0x005b62a0
-void TDeluxeText::ApplyTextStyleDescriptorAndMaybeRefresh(TControlPictureRectState* styleDescriptor,
+void TDeluxeText::ApplyTextStyleDescriptorAndMaybeRefresh(TUiTextStyleDescriptor* styleDescriptor,
                                                           int refreshFlag) {
-  cursorThemeCode98 = styleDescriptor->styleRef6;
-  SetCityProductionDialogPictureRectAndMaybeRefresh(styleDescriptor,
-                                                    static_cast<char>(refreshFlag));
+  cursorThemeCode98 = styleDescriptor->textColor;
+  SetTextStyleAndMaybeRefresh(styleDescriptor, static_cast<char>(refreshFlag));
 }
 
 // FUNCTION: IMPERIALISM 0x005b62e0
 void TDeluxeText::BuildAndApplyTextStyleDescriptor(int unused, int pointSize, int themeCode) {
-  TControlPictureRectState styleDescriptor = {0, 0, 0, 0};
+  TUiTextStyleDescriptor styleDescriptor = {0, 0, 0, 0};
   BuildUiTextStyleDescriptor(&styleDescriptor, unused, pointSize, themeCode);
   ApplyTextStyleDescriptorAndMaybeRefresh(&styleDescriptor, 1);
 }
@@ -93,15 +92,15 @@ void TDeluxeText::SetTextEntryFromChars(const char* textChars, int textLength) {
 
 // FUNCTION: IMPERIALISM 0x005b63e0
 int TDeluxeText::RecenterTextFromMeasuredWidthAndMaybeInvalidate(char refreshNow) {
-  field74 = 0;
-  field6C = 0;
+  contentInsets68.bottom = 0;
+  contentInsets68.top = 0;
   int measuredWidth = MeasureCurrentTextWidthInLayoutRect();
   int inset = 0;
   if (measuredWidth < frameHeight38) {
     inset = (frameHeight38 - measuredWidth) / 2;
   }
-  field74 = static_cast<short>(inset);
-  field6C = static_cast<short>(inset);
+  contentInsets68.bottom = static_cast<short>(inset);
+  contentInsets68.top = static_cast<short>(inset);
   if (refreshNow != 0) {
     RefreshControl();
   }

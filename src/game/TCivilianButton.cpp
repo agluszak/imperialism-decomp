@@ -19,7 +19,7 @@ IMPLEMENT_DYNCREATE(TCivilianButton, TRadioPictureButton)
 
 // FUNCTION: IMPERIALISM 0x0058b3e0
 TCivilianButton::TCivilianButton() : TRadioPictureButton() {
-  this->hasCommandTagResource = 0xc;
+  this->frameStyle60 = 0xc;
 }
 
 // Destructors are compiler-generated (implicit) from real inheritance.
@@ -30,7 +30,7 @@ TCivilianButton::~TCivilianButton() {}
 
 // FUNCTION: IMPERIALISM 0x0058b460
 void TCivilianButton::SetSelectionAndEnableByMappedValue(int selectedValue) {
-  this->hasCommandTagResource = 0xc;
+  this->frameStyle60 = 0xc;
   this->selectedValue9c = (short)selectedValue;
   if (selectedValue != 0) {
     SetEnabled(1, 0);

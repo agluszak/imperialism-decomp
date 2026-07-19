@@ -205,10 +205,10 @@ TView* BuildStartupIntroBackground() {
       background->stylePayload48->packedColor = 0xffffff;
     }
 
-    background->hasCommandTagResource = 0xa;
-    background->field68 = 0;
-    background->field6C = 0;
-    background->field70 = 0;
+    background->frameStyle60 = 0xa;
+    background->contentInsets68.left = 0;
+    background->contentInsets68.top = 0;
+    background->contentInsets68.right = 0;
 
     background->SetPictureResourceIdAndRefresh(0x11f7, 0);
 
@@ -237,10 +237,10 @@ TView* BuildStartupIntroBackground() {
         movie->stylePayload48->packedColor = 0xffffff;
       }
 
-      movie->hasCommandTagResource = 0xa;
-      movie->field68 = 0;
-      movie->field6C = 0;
-      movie->field70 = 0;
+      movie->frameStyle60 = 0xa;
+      movie->contentInsets68.left = 0;
+      movie->contentInsets68.top = 0;
+      movie->contentInsets68.right = 0;
 
       movie->SetPictureResourceIdAndRefresh(0x11f7, 0);
       PopUiWidgetBuildStackNode();
@@ -1560,12 +1560,12 @@ TView* __cdecl InitializeArmyNavyReportViewsAndCommandTags(CWnd* pHostWindow, in
       reportView->SetState(0, 0);
       reportView->inputGateFlag4c = 1;
       reportView->childHitTestFlag4d = 1;
-      reportView->hasCommandTagResource = 0xa;
+      reportView->frameStyle60 = 0xa;
       CRect zeroRect(0, 0, 0, 0);
-      reportView->field68 = zeroRect.left;
-      reportView->field6C = zeroRect.top;
-      reportView->field70 = zeroRect.right;
-      reportView->field74 = zeroRect.bottom;
+      reportView->contentInsets68.left = zeroRect.left;
+      reportView->contentInsets68.top = zeroRect.top;
+      reportView->contentInsets68.right = zeroRect.right;
+      reportView->contentInsets68.bottom = zeroRect.bottom;
       reportView->SetPictureResourceIdAndRefresh(0x605, 0);
       g_pUiResourceContext = 0;
     }
@@ -1593,12 +1593,12 @@ TView* __cdecl InitializeArmyNavyReportViewsAndCommandTags(CWnd* pHostWindow, in
       titleText->SetState(0, 0);
       titleText->inputGateFlag4c = 1;
       titleText->childHitTestFlag4d = 1;
-      titleText->hasCommandTagResource = 0xd;
+      titleText->frameStyle60 = 0xd;
       CRect zeroRect(0, 0, 0, 0);
-      titleText->field68 = zeroRect.left;
-      titleText->field6C = zeroRect.top;
-      titleText->field70 = zeroRect.right;
-      titleText->field74 = zeroRect.bottom;
+      titleText->contentInsets68.left = zeroRect.left;
+      titleText->contentInsets68.top = zeroRect.top;
+      titleText->contentInsets68.right = zeroRect.right;
+      titleText->contentInsets68.bottom = zeroRect.bottom;
       BindUiResourceTextAndStyle(0x5e5, 0x24, g_szUiArmyReportTitle_006948E0, 3, 1, 0x12, 0, 1);
       g_pUiResourceContext = 0;
     }
@@ -1627,12 +1627,12 @@ TView* __cdecl InitializeArmyNavyReportViewsAndCommandTags(CWnd* pHostWindow, in
       whomText->SetState(0, 0);
       whomText->inputGateFlag4c = 1;
       whomText->childHitTestFlag4d = 1;
-      whomText->hasCommandTagResource = 0xd;
+      whomText->frameStyle60 = 0xd;
       CRect zeroRect(0, 0, 0, 0);
-      whomText->field68 = zeroRect.left;
-      whomText->field6C = zeroRect.top;
-      whomText->field70 = zeroRect.right;
-      whomText->field74 = zeroRect.bottom;
+      whomText->contentInsets68.left = zeroRect.left;
+      whomText->contentInsets68.top = zeroRect.top;
+      whomText->contentInsets68.right = zeroRect.right;
+      whomText->contentInsets68.bottom = zeroRect.bottom;
       BindUiResourceTextAndStyle(0x5e5, 0x12, g_szUiOneHenTwoDucks_006948AC, 3, 0, 0xc, 0, -2);
       g_pUiResourceContext = 0;
     }
@@ -3571,14 +3571,14 @@ TView* __cdecl BuildTurnEventDialogResources_2508(CWnd* pHostWindow, int nEventC
   widget->inputGateFlag4c = 1;
   widget->childHitTestFlag4d = 1;
   {
-    static_cast<TControl*>(g_pUiResourceContext)->hasCommandTagResource = 0xa;
+    static_cast<TControl*>(g_pUiResourceContext)->frameStyle60 = 0xa;
 #pragma inline_depth(0)
     CRect zeroRect(0, 0, 0, 0);
 #pragma inline_depth()
-    static_cast<TControl*>(g_pUiResourceContext)->field68 = zeroRect.left;
-    static_cast<TControl*>(g_pUiResourceContext)->field6C = zeroRect.top;
-    static_cast<TControl*>(g_pUiResourceContext)->field70 = zeroRect.right;
-    static_cast<TControl*>(g_pUiResourceContext)->field74 = zeroRect.bottom;
+    static_cast<TControl*>(g_pUiResourceContext)->contentInsets68.left = zeroRect.left;
+    static_cast<TControl*>(g_pUiResourceContext)->contentInsets68.top = zeroRect.top;
+    static_cast<TControl*>(g_pUiResourceContext)->contentInsets68.right = zeroRect.right;
+    static_cast<TControl*>(g_pUiResourceContext)->contentInsets68.bottom = zeroRect.bottom;
     static_cast<TPicture*>(g_pUiResourceContext)->SetPictureResourceIdAndRefresh(0x252a, 0);
   }
   g_pUiResourceContext = 0;
@@ -3605,14 +3605,14 @@ TView* __cdecl BuildTurnEventDialogResources_2508(CWnd* pHostWindow, int nEventC
   widget->inputGateFlag4c = 1;
   widget->childHitTestFlag4d = 1;
   {
-    static_cast<TControl*>(g_pUiResourceContext)->hasCommandTagResource = 0x22;
+    static_cast<TControl*>(g_pUiResourceContext)->frameStyle60 = 0x22;
 #pragma inline_depth(0)
     CRect zeroRect(0, 0, 0, 0);
 #pragma inline_depth()
-    static_cast<TControl*>(g_pUiResourceContext)->field68 = zeroRect.left;
-    static_cast<TControl*>(g_pUiResourceContext)->field6C = zeroRect.top;
-    static_cast<TControl*>(g_pUiResourceContext)->field70 = zeroRect.right;
-    static_cast<TControl*>(g_pUiResourceContext)->field74 = zeroRect.bottom;
+    static_cast<TControl*>(g_pUiResourceContext)->contentInsets68.left = zeroRect.left;
+    static_cast<TControl*>(g_pUiResourceContext)->contentInsets68.top = zeroRect.top;
+    static_cast<TControl*>(g_pUiResourceContext)->contentInsets68.right = zeroRect.right;
+    static_cast<TControl*>(g_pUiResourceContext)->contentInsets68.bottom = zeroRect.bottom;
     static_cast<TPicture*>(g_pUiResourceContext)->SetPictureResourceIdAndRefresh(0x24c2, 0);
   }
   g_pUiResourceContext = 0;
@@ -3640,14 +3640,14 @@ TView* __cdecl BuildTurnEventDialogResources_2508(CWnd* pHostWindow, int nEventC
   widget->inputGateFlag4c = 1;
   widget->childHitTestFlag4d = 1;
   {
-    static_cast<TControl*>(g_pUiResourceContext)->hasCommandTagResource = 0xa;
+    static_cast<TControl*>(g_pUiResourceContext)->frameStyle60 = 0xa;
 #pragma inline_depth(0)
     CRect zeroRect(0, 0, 0, 0);
 #pragma inline_depth()
-    static_cast<TControl*>(g_pUiResourceContext)->field68 = zeroRect.left;
-    static_cast<TControl*>(g_pUiResourceContext)->field6C = zeroRect.top;
-    static_cast<TControl*>(g_pUiResourceContext)->field70 = zeroRect.right;
-    static_cast<TControl*>(g_pUiResourceContext)->field74 = zeroRect.bottom;
+    static_cast<TControl*>(g_pUiResourceContext)->contentInsets68.left = zeroRect.left;
+    static_cast<TControl*>(g_pUiResourceContext)->contentInsets68.top = zeroRect.top;
+    static_cast<TControl*>(g_pUiResourceContext)->contentInsets68.right = zeroRect.right;
+    static_cast<TControl*>(g_pUiResourceContext)->contentInsets68.bottom = zeroRect.bottom;
     static_cast<TPicture*>(g_pUiResourceContext)->SetPictureResourceIdAndRefresh(0x2508, 0);
   }
   g_pUiResourceContext = 0;
@@ -3773,12 +3773,12 @@ TView* __cdecl InitializeGameSetupScreenControlsAndModeTags(CWnd* pHostWindow, i
       w2->stylePayload48 = new TUiStyleBytes();
       w2->stylePayload48->styleWord = 0;
       w2->stylePayload48->packedColor = 0xffffff;
-      w2->hasCommandTagResource = 0xa;
+      w2->frameStyle60 = 0xa;
       CRect layoutRect(0, 0, 0, 0);
-      w2->field68 = layoutRect.left;
-      w2->field6C = layoutRect.top;
-      w2->field70 = layoutRect.right;
-      w2->field74 = layoutRect.bottom;
+      w2->contentInsets68.left = layoutRect.left;
+      w2->contentInsets68.top = layoutRect.top;
+      w2->contentInsets68.right = layoutRect.right;
+      w2->contentInsets68.bottom = layoutRect.bottom;
       w2->SetPictureResourceIdAndRefresh(0x1068, 0);
       g_pUiResourceContext = 0;
     }
@@ -3803,12 +3803,12 @@ TView* __cdecl InitializeGameSetupScreenControlsAndModeTags(CWnd* pHostWindow, i
       w3->SetState(1, 0);
       w3->inputGateFlag4c = 1;
       w3->childHitTestFlag4d = 1;
-      w3->hasCommandTagResource = 0x22;
+      w3->frameStyle60 = 0x22;
       CRect layoutRect(0, 0, 0, 0);
-      w3->field68 = layoutRect.left;
-      w3->field6C = layoutRect.top;
-      w3->field70 = layoutRect.right;
-      w3->field74 = layoutRect.bottom;
+      w3->contentInsets68.left = layoutRect.left;
+      w3->contentInsets68.top = layoutRect.top;
+      w3->contentInsets68.right = layoutRect.right;
+      w3->contentInsets68.bottom = layoutRect.bottom;
       w3->SetPictureResourceIdAndRefresh(0x119e, 0);
       g_pUiResourceContext = 0;
     }
@@ -3834,12 +3834,12 @@ TView* __cdecl InitializeGameSetupScreenControlsAndModeTags(CWnd* pHostWindow, i
       w4->SetState(1, 0);
       w4->inputGateFlag4c = 1;
       w4->childHitTestFlag4d = 1;
-      w4->hasCommandTagResource = 0x22;
+      w4->frameStyle60 = 0x22;
       CRect layoutRect(0, 0, 0, 0);
-      w4->field68 = layoutRect.left;
-      w4->field6C = layoutRect.top;
-      w4->field70 = layoutRect.right;
-      w4->field74 = layoutRect.bottom;
+      w4->contentInsets68.left = layoutRect.left;
+      w4->contentInsets68.top = layoutRect.top;
+      w4->contentInsets68.right = layoutRect.right;
+      w4->contentInsets68.bottom = layoutRect.bottom;
       w4->SetPictureResourceIdAndRefresh(0x119f, 0);
       g_pUiResourceContext = 0;
     }
@@ -3865,12 +3865,12 @@ TView* __cdecl InitializeGameSetupScreenControlsAndModeTags(CWnd* pHostWindow, i
       w5->SetState(0, 0);
       w5->inputGateFlag4c = 1;
       w5->childHitTestFlag4d = 1;
-      w5->hasCommandTagResource = 0xd;
+      w5->frameStyle60 = 0xd;
       CRect layoutRect(0, 0, 0, 0);
-      w5->field68 = layoutRect.left;
-      w5->field6C = layoutRect.top;
-      w5->field70 = layoutRect.right;
-      w5->field74 = layoutRect.bottom;
+      w5->contentInsets68.left = layoutRect.left;
+      w5->contentInsets68.top = layoutRect.top;
+      w5->contentInsets68.right = layoutRect.right;
+      w5->contentInsets68.bottom = layoutRect.bottom;
       BindUiResourceTextAndStyle(0x514, 3, g_szUiPlaceholderStaticText_00694354, 0, 0, 0, 0, 0);
       g_pUiResourceContext = 0;
     }
@@ -3896,12 +3896,12 @@ TView* __cdecl InitializeGameSetupScreenControlsAndModeTags(CWnd* pHostWindow, i
       w6->SetState(0, 0);
       w6->inputGateFlag4c = 1;
       w6->childHitTestFlag4d = 1;
-      w6->hasCommandTagResource = 0xd;
+      w6->frameStyle60 = 0xd;
       CRect layoutRect(0, 0, 0, 0);
-      w6->field68 = layoutRect.left;
-      w6->field6C = layoutRect.top;
-      w6->field70 = layoutRect.right;
-      w6->field74 = layoutRect.bottom;
+      w6->contentInsets68.left = layoutRect.left;
+      w6->contentInsets68.top = layoutRect.top;
+      w6->contentInsets68.right = layoutRect.right;
+      w6->contentInsets68.bottom = layoutRect.bottom;
       BindUiResourceTextAndStyle(0x514, 3, g_szUiPlaceholderStaticText_00694354, 0, 0, 0, 0, 0);
       g_pUiResourceContext = 0;
     }
@@ -3927,12 +3927,12 @@ TView* __cdecl InitializeGameSetupScreenControlsAndModeTags(CWnd* pHostWindow, i
       w7->SetState(0, 0);
       w7->inputGateFlag4c = 1;
       w7->childHitTestFlag4d = 1;
-      w7->hasCommandTagResource = 0xd;
+      w7->frameStyle60 = 0xd;
       CRect layoutRect(0, 0, 0, 0);
-      w7->field68 = layoutRect.left;
-      w7->field6C = layoutRect.top;
-      w7->field70 = layoutRect.right;
-      w7->field74 = layoutRect.bottom;
+      w7->contentInsets68.left = layoutRect.left;
+      w7->contentInsets68.top = layoutRect.top;
+      w7->contentInsets68.right = layoutRect.right;
+      w7->contentInsets68.bottom = layoutRect.bottom;
       BindUiResourceTextAndStyle(0x514, 3, g_szUiPlaceholderStaticText_00694354, 0, 0, 0, 0, 0);
       g_pUiResourceContext = 0;
     }
@@ -3958,12 +3958,12 @@ TView* __cdecl InitializeGameSetupScreenControlsAndModeTags(CWnd* pHostWindow, i
       w8->SetState(0, 0);
       w8->inputGateFlag4c = 1;
       w8->childHitTestFlag4d = 1;
-      w8->hasCommandTagResource = 0xd;
+      w8->frameStyle60 = 0xd;
       CRect layoutRect(0, 0, 0, 0);
-      w8->field68 = layoutRect.left;
-      w8->field6C = layoutRect.top;
-      w8->field70 = layoutRect.right;
-      w8->field74 = layoutRect.bottom;
+      w8->contentInsets68.left = layoutRect.left;
+      w8->contentInsets68.top = layoutRect.top;
+      w8->contentInsets68.right = layoutRect.right;
+      w8->contentInsets68.bottom = layoutRect.bottom;
       BindUiResourceTextAndStyle(0x514, 3, g_szUiPlaceholderStaticText_00694354, 0, 0, 0, 0, 0);
       g_pUiResourceContext = 0;
     }
@@ -3989,12 +3989,12 @@ TView* __cdecl InitializeGameSetupScreenControlsAndModeTags(CWnd* pHostWindow, i
       w9->SetState(0, 0);
       w9->inputGateFlag4c = 1;
       w9->childHitTestFlag4d = 1;
-      w9->hasCommandTagResource = 5;
+      w9->frameStyle60 = 5;
       CRect layoutRect(0, 0, 0, 0);
-      w9->field68 = layoutRect.left;
-      w9->field6C = layoutRect.top;
-      w9->field70 = layoutRect.right;
-      w9->field74 = layoutRect.bottom;
+      w9->contentInsets68.left = layoutRect.left;
+      w9->contentInsets68.top = layoutRect.top;
+      w9->contentInsets68.right = layoutRect.right;
+      w9->contentInsets68.bottom = layoutRect.bottom;
       g_pUiResourceContext = 0;
     }
     {
@@ -4018,12 +4018,12 @@ TView* __cdecl InitializeGameSetupScreenControlsAndModeTags(CWnd* pHostWindow, i
       w10->SetState(1, 0);
       w10->inputGateFlag4c = 1;
       w10->childHitTestFlag4d = 1;
-      w10->hasCommandTagResource = 0xc;
+      w10->frameStyle60 = 0xc;
       CRect layoutRect(0, 0, 0, 0);
-      w10->field68 = layoutRect.left;
-      w10->field6C = layoutRect.top;
-      w10->field70 = layoutRect.right;
-      w10->field74 = layoutRect.bottom;
+      w10->contentInsets68.left = layoutRect.left;
+      w10->contentInsets68.top = layoutRect.top;
+      w10->contentInsets68.right = layoutRect.right;
+      w10->contentInsets68.bottom = layoutRect.bottom;
       w10->SetPictureResourceIdAndRefresh(0x119e, 0);
       g_pUiResourceContext = 0;
     }
@@ -4050,10 +4050,10 @@ TView* __cdecl InitializeGameSetupScreenControlsAndModeTags(CWnd* pHostWindow, i
       w11->inputGateFlag4c = 1;
       w11->childHitTestFlag4d = 1;
       CRect layoutRect(0, 0, 0, 0);
-      w11->field68 = layoutRect.left;
-      w11->field6C = layoutRect.top;
-      w11->field70 = layoutRect.right;
-      w11->field74 = layoutRect.bottom;
+      w11->contentInsets68.left = layoutRect.left;
+      w11->contentInsets68.top = layoutRect.top;
+      w11->contentInsets68.right = layoutRect.right;
+      w11->contentInsets68.bottom = layoutRect.bottom;
       w11->SetPictureResourceIdAndRefresh(0x119e, 0);
       g_pUiResourceContext = 0;
     }
@@ -4079,12 +4079,12 @@ TView* __cdecl InitializeGameSetupScreenControlsAndModeTags(CWnd* pHostWindow, i
       w12->SetState(1, 0);
       w12->inputGateFlag4c = 1;
       w12->childHitTestFlag4d = 1;
-      w12->hasCommandTagResource = 0xc;
+      w12->frameStyle60 = 0xc;
       CRect layoutRect(0, 0, 0, 0);
-      w12->field68 = layoutRect.left;
-      w12->field6C = layoutRect.top;
-      w12->field70 = layoutRect.right;
-      w12->field74 = layoutRect.bottom;
+      w12->contentInsets68.left = layoutRect.left;
+      w12->contentInsets68.top = layoutRect.top;
+      w12->contentInsets68.right = layoutRect.right;
+      w12->contentInsets68.bottom = layoutRect.bottom;
       w12->SetPictureResourceIdAndRefresh(0x119e, 0);
       g_pUiResourceContext = 0;
     }
@@ -4110,12 +4110,12 @@ TView* __cdecl InitializeGameSetupScreenControlsAndModeTags(CWnd* pHostWindow, i
       w13->SetState(1, 0);
       w13->inputGateFlag4c = 1;
       w13->childHitTestFlag4d = 1;
-      w13->hasCommandTagResource = 0xc;
+      w13->frameStyle60 = 0xc;
       CRect layoutRect(0, 0, 0, 0);
-      w13->field68 = layoutRect.left;
-      w13->field6C = layoutRect.top;
-      w13->field70 = layoutRect.right;
-      w13->field74 = layoutRect.bottom;
+      w13->contentInsets68.left = layoutRect.left;
+      w13->contentInsets68.top = layoutRect.top;
+      w13->contentInsets68.right = layoutRect.right;
+      w13->contentInsets68.bottom = layoutRect.bottom;
       w13->SetPictureResourceIdAndRefresh(0x119e, 0);
       g_pUiResourceContext = 0;
     }
@@ -4142,12 +4142,12 @@ TView* __cdecl InitializeGameSetupScreenControlsAndModeTags(CWnd* pHostWindow, i
       w14->SetState(1, 0);
       w14->inputGateFlag4c = 1;
       w14->childHitTestFlag4d = 1;
-      w14->hasCommandTagResource = 0x22;
+      w14->frameStyle60 = 0x22;
       CRect layoutRect(0, 0, 0, 0);
-      w14->field68 = layoutRect.left;
-      w14->field6C = layoutRect.top;
-      w14->field70 = layoutRect.right;
-      w14->field74 = layoutRect.bottom;
+      w14->contentInsets68.left = layoutRect.left;
+      w14->contentInsets68.top = layoutRect.top;
+      w14->contentInsets68.right = layoutRect.right;
+      w14->contentInsets68.bottom = layoutRect.bottom;
       w14->SetPictureResourceIdAndRefresh(0x119e, 0);
       g_pUiResourceContext = 0;
     }
@@ -4173,12 +4173,12 @@ TView* __cdecl InitializeGameSetupScreenControlsAndModeTags(CWnd* pHostWindow, i
       w15->SetState(1, 0);
       w15->inputGateFlag4c = 1;
       w15->childHitTestFlag4d = 1;
-      w15->hasCommandTagResource = 0x22;
+      w15->frameStyle60 = 0x22;
       CRect layoutRect(0, 0, 0, 0);
-      w15->field68 = layoutRect.left;
-      w15->field6C = layoutRect.top;
-      w15->field70 = layoutRect.right;
-      w15->field74 = layoutRect.bottom;
+      w15->contentInsets68.left = layoutRect.left;
+      w15->contentInsets68.top = layoutRect.top;
+      w15->contentInsets68.right = layoutRect.right;
+      w15->contentInsets68.bottom = layoutRect.bottom;
       w15->SetPictureResourceIdAndRefresh(0x119e, 0);
       g_pUiResourceContext = 0;
     }
@@ -4204,12 +4204,12 @@ TView* __cdecl InitializeGameSetupScreenControlsAndModeTags(CWnd* pHostWindow, i
       w16->SetState(1, 0);
       w16->inputGateFlag4c = 1;
       w16->childHitTestFlag4d = 1;
-      w16->hasCommandTagResource = 0x22;
+      w16->frameStyle60 = 0x22;
       CRect layoutRect(0, 0, 0, 0);
-      w16->field68 = layoutRect.left;
-      w16->field6C = layoutRect.top;
-      w16->field70 = layoutRect.right;
-      w16->field74 = layoutRect.bottom;
+      w16->contentInsets68.left = layoutRect.left;
+      w16->contentInsets68.top = layoutRect.top;
+      w16->contentInsets68.right = layoutRect.right;
+      w16->contentInsets68.bottom = layoutRect.bottom;
       w16->SetPictureResourceIdAndRefresh(0x119e, 0);
       g_pUiResourceContext = 0;
     }
@@ -4235,12 +4235,12 @@ TView* __cdecl InitializeGameSetupScreenControlsAndModeTags(CWnd* pHostWindow, i
       w17->SetState(1, 0);
       w17->inputGateFlag4c = 1;
       w17->childHitTestFlag4d = 1;
-      w17->hasCommandTagResource = 0x22;
+      w17->frameStyle60 = 0x22;
       CRect layoutRect(0, 0, 0, 0);
-      w17->field68 = layoutRect.left;
-      w17->field6C = layoutRect.top;
-      w17->field70 = layoutRect.right;
-      w17->field74 = layoutRect.bottom;
+      w17->contentInsets68.left = layoutRect.left;
+      w17->contentInsets68.top = layoutRect.top;
+      w17->contentInsets68.right = layoutRect.right;
+      w17->contentInsets68.bottom = layoutRect.bottom;
       w17->SetPictureResourceIdAndRefresh(0x119e, 0);
       g_pUiResourceContext = 0;
     }
@@ -4266,12 +4266,12 @@ TView* __cdecl InitializeGameSetupScreenControlsAndModeTags(CWnd* pHostWindow, i
       w18->SetState(0, 0);
       w18->inputGateFlag4c = 1;
       w18->childHitTestFlag4d = 1;
-      w18->hasCommandTagResource = 0xd;
+      w18->frameStyle60 = 0xd;
       CRect layoutRect(0, 0, 0, 0);
-      w18->field68 = layoutRect.left;
-      w18->field6C = layoutRect.top;
-      w18->field70 = layoutRect.right;
-      w18->field74 = layoutRect.bottom;
+      w18->contentInsets68.left = layoutRect.left;
+      w18->contentInsets68.top = layoutRect.top;
+      w18->contentInsets68.right = layoutRect.right;
+      w18->contentInsets68.bottom = layoutRect.bottom;
       BindUiResourceTextAndStyle(0x514, 0xf, g_szNewGameGameNameLabel_00694A88, 0, 0, 0, 0, 0);
       g_pUiResourceContext = 0;
     }
@@ -4297,12 +4297,12 @@ TView* __cdecl InitializeGameSetupScreenControlsAndModeTags(CWnd* pHostWindow, i
       w19->SetState(1, 0);
       w19->inputGateFlag4c = 1;
       w19->childHitTestFlag4d = 0;
-      w19->hasCommandTagResource = 6;
+      w19->frameStyle60 = 6;
       CRect layoutRect(3, 3, 3, 3);
-      w19->field68 = layoutRect.left;
-      w19->field6C = layoutRect.top;
-      w19->field70 = layoutRect.right;
-      w19->field74 = layoutRect.bottom;
+      w19->contentInsets68.left = layoutRect.left;
+      w19->contentInsets68.top = layoutRect.top;
+      w19->contentInsets68.right = layoutRect.right;
+      w19->contentInsets68.bottom = layoutRect.bottom;
       BindUiResourceTextAndStyle(0x514, 0x10, g_szNewGameScenarioPlaceholderTitle_00694A68, 0, 0, 0,
                                  0, 0);
       w19->AssertValid();
@@ -4388,12 +4388,12 @@ TView* __cdecl InitializeGameSetupScreenControlsAndModeTags(CWnd* pHostWindow, i
       w2->stylePayload48 = new TUiStyleBytes();
       w2->stylePayload48->styleWord = 0;
       w2->stylePayload48->packedColor = 0xffffff;
-      w2->hasCommandTagResource = 0xa;
+      w2->frameStyle60 = 0xa;
       CRect layoutRect(0, 0, 0, 0);
-      w2->field68 = layoutRect.left;
-      w2->field6C = layoutRect.top;
-      w2->field70 = layoutRect.right;
-      w2->field74 = layoutRect.bottom;
+      w2->contentInsets68.left = layoutRect.left;
+      w2->contentInsets68.top = layoutRect.top;
+      w2->contentInsets68.right = layoutRect.right;
+      w2->contentInsets68.bottom = layoutRect.bottom;
       w2->SetPictureResourceIdAndRefresh(0x11ee, 0);
       g_pUiResourceContext = 0;
     }
@@ -4418,12 +4418,12 @@ TView* __cdecl InitializeGameSetupScreenControlsAndModeTags(CWnd* pHostWindow, i
       w3->SetState(0, 0);
       w3->inputGateFlag4c = 1;
       w3->childHitTestFlag4d = 1;
-      w3->hasCommandTagResource = 0xd;
+      w3->frameStyle60 = 0xd;
       CRect layoutRect(0, 0, 0, 0);
-      w3->field68 = layoutRect.left;
-      w3->field6C = layoutRect.top;
-      w3->field70 = layoutRect.right;
-      w3->field74 = layoutRect.bottom;
+      w3->contentInsets68.left = layoutRect.left;
+      w3->contentInsets68.top = layoutRect.top;
+      w3->contentInsets68.right = layoutRect.right;
+      w3->contentInsets68.bottom = layoutRect.bottom;
       BindUiResourceTextAndStyle(0x514, -1, g_szEmptyString, 0, 0, 0, 0, 0);
       g_pUiResourceContext = 0;
     }
@@ -4483,12 +4483,12 @@ TView* __cdecl InitializeGameSetupScreenControlsAndModeTags(CWnd* pHostWindow, i
       w2->stylePayload48 = new TUiStyleBytes();
       w2->stylePayload48->styleWord = 0;
       w2->stylePayload48->packedColor = 0xffffff;
-      w2->hasCommandTagResource = 0xa;
+      w2->frameStyle60 = 0xa;
       CRect layoutRect(0, 0, 0, 0);
-      w2->field68 = layoutRect.left;
-      w2->field6C = layoutRect.top;
-      w2->field70 = layoutRect.right;
-      w2->field74 = layoutRect.bottom;
+      w2->contentInsets68.left = layoutRect.left;
+      w2->contentInsets68.top = layoutRect.top;
+      w2->contentInsets68.right = layoutRect.right;
+      w2->contentInsets68.bottom = layoutRect.bottom;
       w2->SetPictureResourceIdAndRefresh(0x4e20, 0);
       g_pUiResourceContext = 0;
     }
@@ -4537,12 +4537,12 @@ TView* __cdecl InitializeGameSetupScreenControlsAndModeTags(CWnd* pHostWindow, i
       w4->SetState(1, 0);
       w4->inputGateFlag4c = 1;
       w4->childHitTestFlag4d = 1;
-      w4->hasCommandTagResource = 0xa;
+      w4->frameStyle60 = 0xa;
       CRect layoutRect(0, 0, 0, 0);
-      w4->field68 = layoutRect.left;
-      w4->field6C = layoutRect.top;
-      w4->field70 = layoutRect.right;
-      w4->field74 = layoutRect.bottom;
+      w4->contentInsets68.left = layoutRect.left;
+      w4->contentInsets68.top = layoutRect.top;
+      w4->contentInsets68.right = layoutRect.right;
+      w4->contentInsets68.bottom = layoutRect.bottom;
       w4->SetPictureResourceIdAndRefresh(0x4e21, 0);
       g_pUiResourceContext = 0;
     }
@@ -4568,12 +4568,12 @@ TView* __cdecl InitializeGameSetupScreenControlsAndModeTags(CWnd* pHostWindow, i
       w5->SetState(1, 0);
       w5->inputGateFlag4c = 1;
       w5->childHitTestFlag4d = 1;
-      w5->hasCommandTagResource = 0xa;
+      w5->frameStyle60 = 0xa;
       CRect layoutRect(0, 0, 0, 0);
-      w5->field68 = layoutRect.left;
-      w5->field6C = layoutRect.top;
-      w5->field70 = layoutRect.right;
-      w5->field74 = layoutRect.bottom;
+      w5->contentInsets68.left = layoutRect.left;
+      w5->contentInsets68.top = layoutRect.top;
+      w5->contentInsets68.right = layoutRect.right;
+      w5->contentInsets68.bottom = layoutRect.bottom;
       w5->SetPictureResourceIdAndRefresh(0x4e22, 0);
       g_pUiResourceContext = 0;
     }
@@ -5739,14 +5739,14 @@ TView* __cdecl BuildTurnEventDialogResourcesForEvent898(CWnd* pHostWindow, int n
   widget->stylePayload48->styleWord = 0;
   widget->stylePayload48->packedColor = 0xffffff;
   {
-    static_cast<TControl*>(g_pUiResourceContext)->hasCommandTagResource = 0xa;
+    static_cast<TControl*>(g_pUiResourceContext)->frameStyle60 = 0xa;
 #pragma inline_depth(0)
     CRect zeroRect(0, 0, 0, 0);
 #pragma inline_depth()
-    static_cast<TControl*>(g_pUiResourceContext)->field68 = zeroRect.left;
-    static_cast<TControl*>(g_pUiResourceContext)->field6C = zeroRect.top;
-    static_cast<TControl*>(g_pUiResourceContext)->field70 = zeroRect.right;
-    static_cast<TControl*>(g_pUiResourceContext)->field74 = zeroRect.bottom;
+    static_cast<TControl*>(g_pUiResourceContext)->contentInsets68.left = zeroRect.left;
+    static_cast<TControl*>(g_pUiResourceContext)->contentInsets68.top = zeroRect.top;
+    static_cast<TControl*>(g_pUiResourceContext)->contentInsets68.right = zeroRect.right;
+    static_cast<TControl*>(g_pUiResourceContext)->contentInsets68.bottom = zeroRect.bottom;
     static_cast<TPicture*>(g_pUiResourceContext)->SetPictureResourceIdAndRefresh(0x898, 0);
   }
 
@@ -5772,14 +5772,14 @@ TView* __cdecl BuildTurnEventDialogResourcesForEvent898(CWnd* pHostWindow, int n
   widget->inputGateFlag4c = 1;
   widget->childHitTestFlag4d = 1;
   {
-    static_cast<TControl*>(g_pUiResourceContext)->hasCommandTagResource = 0xd;
+    static_cast<TControl*>(g_pUiResourceContext)->frameStyle60 = 0xd;
 #pragma inline_depth(0)
     CRect zeroRect(0, 0, 0, 0);
 #pragma inline_depth()
-    static_cast<TControl*>(g_pUiResourceContext)->field68 = zeroRect.left;
-    static_cast<TControl*>(g_pUiResourceContext)->field6C = zeroRect.top;
-    static_cast<TControl*>(g_pUiResourceContext)->field70 = zeroRect.right;
-    static_cast<TControl*>(g_pUiResourceContext)->field74 = zeroRect.bottom;
+    static_cast<TControl*>(g_pUiResourceContext)->contentInsets68.left = zeroRect.left;
+    static_cast<TControl*>(g_pUiResourceContext)->contentInsets68.top = zeroRect.top;
+    static_cast<TControl*>(g_pUiResourceContext)->contentInsets68.right = zeroRect.right;
+    static_cast<TControl*>(g_pUiResourceContext)->contentInsets68.bottom = zeroRect.bottom;
     BindUiResourceTextAndStyle(0xc80, 1, g_szUiPlaceholderSampleText_00694A98, 3, 0, 0xc, 0, 1);
   }
   g_pUiResourceContext = 0;
@@ -5807,14 +5807,14 @@ TView* __cdecl BuildTurnEventDialogResourcesForEvent898(CWnd* pHostWindow, int n
   widget->inputGateFlag4c = 1;
   widget->childHitTestFlag4d = 1;
   {
-    static_cast<TControl*>(g_pUiResourceContext)->hasCommandTagResource = 5;
+    static_cast<TControl*>(g_pUiResourceContext)->frameStyle60 = 5;
 #pragma inline_depth(0)
     CRect zeroRect(0, 0, 0, 0);
 #pragma inline_depth()
-    static_cast<TControl*>(g_pUiResourceContext)->field68 = zeroRect.left;
-    static_cast<TControl*>(g_pUiResourceContext)->field6C = zeroRect.top;
-    static_cast<TControl*>(g_pUiResourceContext)->field70 = zeroRect.right;
-    static_cast<TControl*>(g_pUiResourceContext)->field74 = zeroRect.bottom;
+    static_cast<TControl*>(g_pUiResourceContext)->contentInsets68.left = zeroRect.left;
+    static_cast<TControl*>(g_pUiResourceContext)->contentInsets68.top = zeroRect.top;
+    static_cast<TControl*>(g_pUiResourceContext)->contentInsets68.right = zeroRect.right;
+    static_cast<TControl*>(g_pUiResourceContext)->contentInsets68.bottom = zeroRect.bottom;
     static_cast<TCluster*>(g_pUiResourceContext)->field84 = 0x20202020;
   }
 
@@ -5840,14 +5840,14 @@ TView* __cdecl BuildTurnEventDialogResourcesForEvent898(CWnd* pHostWindow, int n
   widget->inputGateFlag4c = 1;
   widget->childHitTestFlag4d = 1;
   {
-    static_cast<TControl*>(g_pUiResourceContext)->hasCommandTagResource = 0xa;
+    static_cast<TControl*>(g_pUiResourceContext)->frameStyle60 = 0xa;
 #pragma inline_depth(0)
     CRect zeroRect(0, 0, 0, 0);
 #pragma inline_depth()
-    static_cast<TControl*>(g_pUiResourceContext)->field68 = zeroRect.left;
-    static_cast<TControl*>(g_pUiResourceContext)->field6C = zeroRect.top;
-    static_cast<TControl*>(g_pUiResourceContext)->field70 = zeroRect.right;
-    static_cast<TControl*>(g_pUiResourceContext)->field74 = zeroRect.bottom;
+    static_cast<TControl*>(g_pUiResourceContext)->contentInsets68.left = zeroRect.left;
+    static_cast<TControl*>(g_pUiResourceContext)->contentInsets68.top = zeroRect.top;
+    static_cast<TControl*>(g_pUiResourceContext)->contentInsets68.right = zeroRect.right;
+    static_cast<TControl*>(g_pUiResourceContext)->contentInsets68.bottom = zeroRect.bottom;
     static_cast<TPicture*>(g_pUiResourceContext)->SetPictureResourceIdAndRefresh(0x8b4, 0);
   }
   g_pUiResourceContext = 0;
@@ -5875,14 +5875,14 @@ TView* __cdecl BuildTurnEventDialogResourcesForEvent898(CWnd* pHostWindow, int n
   widget->inputGateFlag4c = 1;
   widget->childHitTestFlag4d = 1;
   {
-    static_cast<TControl*>(g_pUiResourceContext)->hasCommandTagResource = 0xd;
+    static_cast<TControl*>(g_pUiResourceContext)->frameStyle60 = 0xd;
 #pragma inline_depth(0)
     CRect zeroRect(0, 0, 0, 0);
 #pragma inline_depth()
-    static_cast<TControl*>(g_pUiResourceContext)->field68 = zeroRect.left;
-    static_cast<TControl*>(g_pUiResourceContext)->field6C = zeroRect.top;
-    static_cast<TControl*>(g_pUiResourceContext)->field70 = zeroRect.right;
-    static_cast<TControl*>(g_pUiResourceContext)->field74 = zeroRect.bottom;
+    static_cast<TControl*>(g_pUiResourceContext)->contentInsets68.left = zeroRect.left;
+    static_cast<TControl*>(g_pUiResourceContext)->contentInsets68.top = zeroRect.top;
+    static_cast<TControl*>(g_pUiResourceContext)->contentInsets68.right = zeroRect.right;
+    static_cast<TControl*>(g_pUiResourceContext)->contentInsets68.bottom = zeroRect.bottom;
     BindUiResourceTextAndStyle(0xce4, 1, g_szUiPlaceholderSeason_006943BC, 3, 0, 9, 0, 1);
   }
   g_pUiResourceContext = 0;
@@ -5910,14 +5910,14 @@ TView* __cdecl BuildTurnEventDialogResourcesForEvent898(CWnd* pHostWindow, int n
   widget->inputGateFlag4c = 1;
   widget->childHitTestFlag4d = 1;
   {
-    static_cast<TControl*>(g_pUiResourceContext)->hasCommandTagResource = 0xd;
+    static_cast<TControl*>(g_pUiResourceContext)->frameStyle60 = 0xd;
 #pragma inline_depth(0)
     CRect zeroRect(0, 0, 0, 0);
 #pragma inline_depth()
-    static_cast<TControl*>(g_pUiResourceContext)->field68 = zeroRect.left;
-    static_cast<TControl*>(g_pUiResourceContext)->field6C = zeroRect.top;
-    static_cast<TControl*>(g_pUiResourceContext)->field70 = zeroRect.right;
-    static_cast<TControl*>(g_pUiResourceContext)->field74 = zeroRect.bottom;
+    static_cast<TControl*>(g_pUiResourceContext)->contentInsets68.left = zeroRect.left;
+    static_cast<TControl*>(g_pUiResourceContext)->contentInsets68.top = zeroRect.top;
+    static_cast<TControl*>(g_pUiResourceContext)->contentInsets68.right = zeroRect.right;
+    static_cast<TControl*>(g_pUiResourceContext)->contentInsets68.bottom = zeroRect.bottom;
     BindUiResourceTextAndStyle(0xce4, 2, g_szUiPlaceholderTreasury_006943B0, 3, 0, 9, 0, 1);
   }
   g_pUiResourceContext = 0;
@@ -6021,14 +6021,14 @@ TView* __cdecl BuildTurnEventDialogResourcesForEvent8FC(CWnd* pHostWindow, int n
     mainBook->stylePayload48->styleWord = 0;
     mainBook->stylePayload48->packedColor = 0xffffff;
     {
-      mainBook->hasCommandTagResource = 0xa;
+      mainBook->frameStyle60 = 0xa;
 #pragma inline_depth(0)
       CRect zeroRect(0, 0, 0, 0);
 #pragma inline_depth()
-      mainBook->field68 = zeroRect.left;
-      mainBook->field6C = zeroRect.top;
-      mainBook->field70 = zeroRect.right;
-      mainBook->field74 = zeroRect.bottom;
+      mainBook->contentInsets68.left = zeroRect.left;
+      mainBook->contentInsets68.top = zeroRect.top;
+      mainBook->contentInsets68.right = zeroRect.right;
+      mainBook->contentInsets68.bottom = zeroRect.bottom;
       mainBook->SetPictureResourceIdAndRefresh(0x8fc, 0);
     }
     g_pUiResourceContext = 0;
@@ -6054,14 +6054,14 @@ TView* __cdecl BuildTurnEventDialogResourcesForEvent8FC(CWnd* pHostWindow, int n
     toolbar->inputGateFlag4c = 1;
     toolbar->childHitTestFlag4d = 1;
     {
-      toolbar->hasCommandTagResource = 5;
+      toolbar->frameStyle60 = 5;
 #pragma inline_depth(0)
       CRect zeroRect(0, 0, 0, 0);
 #pragma inline_depth()
-      toolbar->field68 = zeroRect.left;
-      toolbar->field6C = zeroRect.top;
-      toolbar->field70 = zeroRect.right;
-      toolbar->field74 = zeroRect.bottom;
+      toolbar->contentInsets68.left = zeroRect.left;
+      toolbar->contentInsets68.top = zeroRect.top;
+      toolbar->contentInsets68.right = zeroRect.right;
+      toolbar->contentInsets68.bottom = zeroRect.bottom;
       toolbar->field84 = 0x20202020;
     }
     g_pUiResourceContext = 0;
@@ -6087,14 +6087,14 @@ TView* __cdecl BuildTurnEventDialogResourcesForEvent8FC(CWnd* pHostWindow, int n
     endButton->inputGateFlag4c = 1;
     endButton->childHitTestFlag4d = 1;
     {
-      endButton->hasCommandTagResource = 0xa;
+      endButton->frameStyle60 = 0xa;
 #pragma inline_depth(0)
       CRect zeroRect(0, 0, 0, 0);
 #pragma inline_depth()
-      endButton->field68 = zeroRect.left;
-      endButton->field6C = zeroRect.top;
-      endButton->field70 = zeroRect.right;
-      endButton->field74 = zeroRect.bottom;
+      endButton->contentInsets68.left = zeroRect.left;
+      endButton->contentInsets68.top = zeroRect.top;
+      endButton->contentInsets68.right = zeroRect.right;
+      endButton->contentInsets68.bottom = zeroRect.bottom;
       endButton->SetPictureResourceIdAndRefresh(0x8fd, 0);
     }
     g_pUiResourceContext = 0;
@@ -6121,14 +6121,14 @@ TView* __cdecl BuildTurnEventDialogResourcesForEvent8FC(CWnd* pHostWindow, int n
     seasonLabel->inputGateFlag4c = 1;
     seasonLabel->childHitTestFlag4d = 1;
     {
-      seasonLabel->hasCommandTagResource = 0xd;
+      seasonLabel->frameStyle60 = 0xd;
 #pragma inline_depth(0)
       CRect zeroRect(0, 0, 0, 0);
 #pragma inline_depth()
-      seasonLabel->field68 = zeroRect.left;
-      seasonLabel->field6C = zeroRect.top;
-      seasonLabel->field70 = zeroRect.right;
-      seasonLabel->field74 = zeroRect.bottom;
+      seasonLabel->contentInsets68.left = zeroRect.left;
+      seasonLabel->contentInsets68.top = zeroRect.top;
+      seasonLabel->contentInsets68.right = zeroRect.right;
+      seasonLabel->contentInsets68.bottom = zeroRect.bottom;
       BindUiResourceTextAndStyle(0xce4, 1, g_szUiPlaceholderSeason_006943BC, 3, 0, 9, 0, 1);
     }
     g_pUiResourceContext = 0;
@@ -6155,14 +6155,14 @@ TView* __cdecl BuildTurnEventDialogResourcesForEvent8FC(CWnd* pHostWindow, int n
     treasuryLabel->inputGateFlag4c = 1;
     treasuryLabel->childHitTestFlag4d = 1;
     {
-      treasuryLabel->hasCommandTagResource = 0xd;
+      treasuryLabel->frameStyle60 = 0xd;
 #pragma inline_depth(0)
       CRect zeroRect(0, 0, 0, 0);
 #pragma inline_depth()
-      treasuryLabel->field68 = zeroRect.left;
-      treasuryLabel->field6C = zeroRect.top;
-      treasuryLabel->field70 = zeroRect.right;
-      treasuryLabel->field74 = zeroRect.bottom;
+      treasuryLabel->contentInsets68.left = zeroRect.left;
+      treasuryLabel->contentInsets68.top = zeroRect.top;
+      treasuryLabel->contentInsets68.right = zeroRect.right;
+      treasuryLabel->contentInsets68.bottom = zeroRect.bottom;
       BindUiResourceTextAndStyle(0xce4, 2, g_szUiPlaceholderTreasury_006943B0, 3, 0, 9, 0, 1);
     }
     g_pUiResourceContext = 0;
@@ -6190,14 +6190,14 @@ TView* __cdecl BuildTurnEventDialogResourcesForEvent8FC(CWnd* pHostWindow, int n
     potToolbar->inputGateFlag4c = 1;
     potToolbar->childHitTestFlag4d = 1;
     {
-      potToolbar->hasCommandTagResource = 5;
+      potToolbar->frameStyle60 = 5;
 #pragma inline_depth(0)
       CRect zeroRect(0, 0, 0, 0);
 #pragma inline_depth()
-      potToolbar->field68 = zeroRect.left;
-      potToolbar->field6C = zeroRect.top;
-      potToolbar->field70 = zeroRect.right;
-      potToolbar->field74 = zeroRect.bottom;
+      potToolbar->contentInsets68.left = zeroRect.left;
+      potToolbar->contentInsets68.top = zeroRect.top;
+      potToolbar->contentInsets68.right = zeroRect.right;
+      potToolbar->contentInsets68.bottom = zeroRect.bottom;
       potToolbar->field84 = 0x20202020;
     }
     g_pUiResourceContext = 0;
@@ -6223,14 +6223,14 @@ TView* __cdecl BuildTurnEventDialogResourcesForEvent8FC(CWnd* pHostWindow, int n
     transportButton->inputGateFlag4c = 1;
     transportButton->childHitTestFlag4d = 1;
     {
-      transportButton->hasCommandTagResource = 0xa;
+      transportButton->frameStyle60 = 0xa;
 #pragma inline_depth(0)
       CRect zeroRect(0, 0, 0, 0);
 #pragma inline_depth()
-      transportButton->field68 = zeroRect.left;
-      transportButton->field6C = zeroRect.top;
-      transportButton->field70 = zeroRect.right;
-      transportButton->field74 = zeroRect.bottom;
+      transportButton->contentInsets68.left = zeroRect.left;
+      transportButton->contentInsets68.top = zeroRect.top;
+      transportButton->contentInsets68.right = zeroRect.right;
+      transportButton->contentInsets68.bottom = zeroRect.bottom;
       transportButton->SetPictureResourceIdAndRefresh(0x24ef, 0);
     }
     g_pUiResourceContext = 0;
@@ -6257,14 +6257,14 @@ TView* __cdecl BuildTurnEventDialogResourcesForEvent8FC(CWnd* pHostWindow, int n
     cityButton->inputGateFlag4c = 1;
     cityButton->childHitTestFlag4d = 1;
     {
-      cityButton->hasCommandTagResource = 0xa;
+      cityButton->frameStyle60 = 0xa;
 #pragma inline_depth(0)
       CRect zeroRect(0, 0, 0, 0);
 #pragma inline_depth()
-      cityButton->field68 = zeroRect.left;
-      cityButton->field6C = zeroRect.top;
-      cityButton->field70 = zeroRect.right;
-      cityButton->field74 = zeroRect.bottom;
+      cityButton->contentInsets68.left = zeroRect.left;
+      cityButton->contentInsets68.top = zeroRect.top;
+      cityButton->contentInsets68.right = zeroRect.right;
+      cityButton->contentInsets68.bottom = zeroRect.bottom;
       cityButton->SetPictureResourceIdAndRefresh(0x24ed, 0);
     }
     g_pUiResourceContext = 0;
@@ -6291,14 +6291,14 @@ TView* __cdecl BuildTurnEventDialogResourcesForEvent8FC(CWnd* pHostWindow, int n
     tradeButton->inputGateFlag4c = 1;
     tradeButton->childHitTestFlag4d = 1;
     {
-      tradeButton->hasCommandTagResource = 0xa;
+      tradeButton->frameStyle60 = 0xa;
 #pragma inline_depth(0)
       CRect zeroRect(0, 0, 0, 0);
 #pragma inline_depth()
-      tradeButton->field68 = zeroRect.left;
-      tradeButton->field6C = zeroRect.top;
-      tradeButton->field70 = zeroRect.right;
-      tradeButton->field74 = zeroRect.bottom;
+      tradeButton->contentInsets68.left = zeroRect.left;
+      tradeButton->contentInsets68.top = zeroRect.top;
+      tradeButton->contentInsets68.right = zeroRect.right;
+      tradeButton->contentInsets68.bottom = zeroRect.bottom;
       tradeButton->SetPictureResourceIdAndRefresh(0x24eb, 0);
     }
     g_pUiResourceContext = 0;
@@ -6325,14 +6325,14 @@ TView* __cdecl BuildTurnEventDialogResourcesForEvent8FC(CWnd* pHostWindow, int n
     diplomacyButton->inputGateFlag4c = 1;
     diplomacyButton->childHitTestFlag4d = 1;
     {
-      diplomacyButton->hasCommandTagResource = 0xa;
+      diplomacyButton->frameStyle60 = 0xa;
 #pragma inline_depth(0)
       CRect zeroRect(0, 0, 0, 0);
 #pragma inline_depth()
-      diplomacyButton->field68 = zeroRect.left;
-      diplomacyButton->field6C = zeroRect.top;
-      diplomacyButton->field70 = zeroRect.right;
-      diplomacyButton->field74 = zeroRect.bottom;
+      diplomacyButton->contentInsets68.left = zeroRect.left;
+      diplomacyButton->contentInsets68.top = zeroRect.top;
+      diplomacyButton->contentInsets68.right = zeroRect.right;
+      diplomacyButton->contentInsets68.bottom = zeroRect.bottom;
       diplomacyButton->SetPictureResourceIdAndRefresh(0x24e9, 0);
     }
     g_pUiResourceContext = 0;
@@ -6360,14 +6360,14 @@ TView* __cdecl BuildTurnEventDialogResourcesForEvent8FC(CWnd* pHostWindow, int n
     trb2Toolbar->inputGateFlag4c = 1;
     trb2Toolbar->childHitTestFlag4d = 1;
     {
-      trb2Toolbar->hasCommandTagResource = 5;
+      trb2Toolbar->frameStyle60 = 5;
 #pragma inline_depth(0)
       CRect zeroRect(0, 0, 0, 0);
 #pragma inline_depth()
-      trb2Toolbar->field68 = zeroRect.left;
-      trb2Toolbar->field6C = zeroRect.top;
-      trb2Toolbar->field70 = zeroRect.right;
-      trb2Toolbar->field74 = zeroRect.bottom;
+      trb2Toolbar->contentInsets68.left = zeroRect.left;
+      trb2Toolbar->contentInsets68.top = zeroRect.top;
+      trb2Toolbar->contentInsets68.right = zeroRect.right;
+      trb2Toolbar->contentInsets68.bottom = zeroRect.bottom;
       trb2Toolbar->field84 = 0x20202020;
     }
     g_pUiResourceContext = 0;
@@ -6533,14 +6533,14 @@ TView* __cdecl BuildTurnEventDialogResourcesForEvent8FC(CWnd* pHostWindow, int n
     topPicture->inputGateFlag4c = 1;
     topPicture->childHitTestFlag4d = 1;
     {
-      topPicture->hasCommandTagResource = 0xa;
+      topPicture->frameStyle60 = 0xa;
 #pragma inline_depth(0)
       CRect zeroRect(0, 0, 0, 0);
 #pragma inline_depth()
-      topPicture->field68 = zeroRect.left;
-      topPicture->field6C = zeroRect.top;
-      topPicture->field70 = zeroRect.right;
-      topPicture->field74 = zeroRect.bottom;
+      topPicture->contentInsets68.left = zeroRect.left;
+      topPicture->contentInsets68.top = zeroRect.top;
+      topPicture->contentInsets68.right = zeroRect.right;
+      topPicture->contentInsets68.bottom = zeroRect.bottom;
       topPicture->SetPictureResourceIdAndRefresh(0x942, 0);
     }
     g_pUiResourceContext = 0;
@@ -6566,14 +6566,14 @@ TView* __cdecl BuildTurnEventDialogResourcesForEvent8FC(CWnd* pHostWindow, int n
     titleText->inputGateFlag4c = 1;
     titleText->childHitTestFlag4d = 1;
     {
-      titleText->hasCommandTagResource = 0xd;
+      titleText->frameStyle60 = 0xd;
 #pragma inline_depth(0)
       CRect zeroRect(0, 0, 0, 0);
 #pragma inline_depth()
-      titleText->field68 = zeroRect.left;
-      titleText->field6C = zeroRect.top;
-      titleText->field70 = zeroRect.right;
-      titleText->field74 = zeroRect.bottom;
+      titleText->contentInsets68.left = zeroRect.left;
+      titleText->contentInsets68.top = zeroRect.top;
+      titleText->contentInsets68.right = zeroRect.right;
+      titleText->contentInsets68.bottom = zeroRect.bottom;
       BindUiResourceTextAndStyle(0x3e9, 1, g_szUiPlaceholderStaticText_00694354, 0, 0, 0, 0, 0);
     }
     g_pUiResourceContext = 0;
@@ -6600,14 +6600,14 @@ TView* __cdecl BuildTurnEventDialogResourcesForEvent8FC(CWnd* pHostWindow, int n
     patchPicture->inputGateFlag4c = 1;
     patchPicture->childHitTestFlag4d = 1;
     {
-      patchPicture->hasCommandTagResource = 0xa;
+      patchPicture->frameStyle60 = 0xa;
 #pragma inline_depth(0)
       CRect zeroRect(0, 0, 0, 0);
 #pragma inline_depth()
-      patchPicture->field68 = zeroRect.left;
-      patchPicture->field6C = zeroRect.top;
-      patchPicture->field70 = zeroRect.right;
-      patchPicture->field74 = zeroRect.bottom;
+      patchPicture->contentInsets68.left = zeroRect.left;
+      patchPicture->contentInsets68.top = zeroRect.top;
+      patchPicture->contentInsets68.right = zeroRect.right;
+      patchPicture->contentInsets68.bottom = zeroRect.bottom;
       patchPicture->SetPictureResourceIdAndRefresh(0x945, 0);
     }
     g_pUiResourceContext = 0;
@@ -6657,14 +6657,14 @@ TView* __cdecl BuildTurnEventDialogResourcesForEvent8FC(CWnd* pHostWindow, int n
     okayButton->inputGateFlag4c = 1;
     okayButton->childHitTestFlag4d = 1;
     {
-      okayButton->hasCommandTagResource = 0x22;
+      okayButton->frameStyle60 = 0x22;
 #pragma inline_depth(0)
       CRect zeroRect(0, 0, 0, 0);
 #pragma inline_depth()
-      okayButton->field68 = zeroRect.left;
-      okayButton->field6C = zeroRect.top;
-      okayButton->field70 = zeroRect.right;
-      okayButton->field74 = zeroRect.bottom;
+      okayButton->contentInsets68.left = zeroRect.left;
+      okayButton->contentInsets68.top = zeroRect.top;
+      okayButton->contentInsets68.right = zeroRect.right;
+      okayButton->contentInsets68.bottom = zeroRect.bottom;
       okayButton->SetPictureResourceIdAndRefresh(0x24c2, 0);
     }
     g_pUiResourceContext = 0;
@@ -6754,12 +6754,12 @@ TView* __cdecl InitializeTradeScreenBitmapControls(CWnd* pHostWindow, int nEvent
       main->stylePayload48 = new TUiStyleBytes();
       main->stylePayload48->styleWord = 0;
       main->stylePayload48->packedColor = 0xffffff;
-      main->hasCommandTagResource = 0xa;
+      main->frameStyle60 = 0xa;
       CRect zeroRect(0, 0, 0, 0);
-      main->field68 = zeroRect.left;
-      main->field6C = zeroRect.top;
-      main->field70 = zeroRect.right;
-      main->field74 = zeroRect.bottom;
+      main->contentInsets68.left = zeroRect.left;
+      main->contentInsets68.top = zeroRect.top;
+      main->contentInsets68.right = zeroRect.right;
+      main->contentInsets68.bottom = zeroRect.bottom;
       main->SetPictureResourceIdAndRefresh(0x835, 0);
       g_pUiResourceContext = 0;
     }
@@ -6786,12 +6786,12 @@ TView* __cdecl InitializeTradeScreenBitmapControls(CWnd* pHostWindow, int nEvent
       toolbar->SetState(0, 0);
       toolbar->inputGateFlag4c = 1;
       toolbar->childHitTestFlag4d = 1;
-      toolbar->hasCommandTagResource = 5;
+      toolbar->frameStyle60 = 5;
       CRect zeroRect(0, 0, 0, 0);
-      toolbar->field68 = zeroRect.left;
-      toolbar->field6C = zeroRect.top;
-      toolbar->field70 = zeroRect.right;
-      toolbar->field74 = zeroRect.bottom;
+      toolbar->contentInsets68.left = zeroRect.left;
+      toolbar->contentInsets68.top = zeroRect.top;
+      toolbar->contentInsets68.right = zeroRect.right;
+      toolbar->contentInsets68.bottom = zeroRect.bottom;
       toolbar->field84 = 0x20202020; // '    '
       g_pUiResourceContext = 0;
     }
@@ -10322,12 +10322,12 @@ TView* __cdecl BuildUniversityDialogShell(CWnd* pHostWindow, int nEventCode) {
     w2->SetState(0, 0);
     w2->inputGateFlag4c = 1;
     w2->childHitTestFlag4d = 1;
-    w2->hasCommandTagResource = 0xa;
+    w2->frameStyle60 = 0xa;
     CRect layoutRect(0, 0, 0, 0);
-    w2->field68 = layoutRect.left;
-    w2->field6C = layoutRect.top;
-    w2->field70 = layoutRect.right;
-    w2->field74 = layoutRect.bottom;
+    w2->contentInsets68.left = layoutRect.left;
+    w2->contentInsets68.top = layoutRect.top;
+    w2->contentInsets68.right = layoutRect.right;
+    w2->contentInsets68.bottom = layoutRect.bottom;
     w2->SetPictureResourceIdAndRefresh(0x26ac, 0);
     g_pUiResourceContext = 0;
   }
@@ -10352,12 +10352,12 @@ TView* __cdecl BuildUniversityDialogShell(CWnd* pHostWindow, int nEventCode) {
     w3->SetState(0, 0);
     w3->inputGateFlag4c = 1;
     w3->childHitTestFlag4d = 0;
-    w3->hasCommandTagResource = 6;
+    w3->frameStyle60 = 6;
     CRect layoutRect(3, 3, 3, 3);
-    w3->field68 = layoutRect.left;
-    w3->field6C = layoutRect.top;
-    w3->field70 = layoutRect.right;
-    w3->field74 = layoutRect.bottom;
+    w3->contentInsets68.left = layoutRect.left;
+    w3->contentInsets68.top = layoutRect.top;
+    w3->contentInsets68.right = layoutRect.right;
+    w3->contentInsets68.bottom = layoutRect.bottom;
     BindUiResourceTextAndStyle(-1, -1, g_szUiPlaceholderZero_00694378, 3, 0, 9, 0, 0);
     w3->AssertValid();
     w3->field_9c = 0xff;
@@ -10389,12 +10389,12 @@ TView* __cdecl BuildUniversityDialogShell(CWnd* pHostWindow, int nEventCode) {
     w4->SetState(0, 0);
     w4->inputGateFlag4c = 1;
     w4->childHitTestFlag4d = 0;
-    w4->hasCommandTagResource = 6;
+    w4->frameStyle60 = 6;
     CRect layoutRect(3, 3, 3, 3);
-    w4->field68 = layoutRect.left;
-    w4->field6C = layoutRect.top;
-    w4->field70 = layoutRect.right;
-    w4->field74 = layoutRect.bottom;
+    w4->contentInsets68.left = layoutRect.left;
+    w4->contentInsets68.top = layoutRect.top;
+    w4->contentInsets68.right = layoutRect.right;
+    w4->contentInsets68.bottom = layoutRect.bottom;
     BindUiResourceTextAndStyle(-1, -1, g_szUiPlaceholderZero_00694378, 3, 0, 9, 0, 0);
     w4->AssertValid();
     w4->field_9c = 0xff;
@@ -10426,12 +10426,12 @@ TView* __cdecl BuildUniversityDialogShell(CWnd* pHostWindow, int nEventCode) {
     w5->SetState(0, 0);
     w5->inputGateFlag4c = 1;
     w5->childHitTestFlag4d = 1;
-    w5->hasCommandTagResource = 0xd;
+    w5->frameStyle60 = 0xd;
     CRect layoutRect(0, 0, 0, 0);
-    w5->field68 = layoutRect.left;
-    w5->field6C = layoutRect.top;
-    w5->field70 = layoutRect.right;
-    w5->field74 = layoutRect.bottom;
+    w5->contentInsets68.left = layoutRect.left;
+    w5->contentInsets68.top = layoutRect.top;
+    w5->contentInsets68.right = layoutRect.right;
+    w5->contentInsets68.bottom = layoutRect.bottom;
     BindUiResourceTextAndStyle(0xfa0, 2, g_szUiAvailableColon_006949C8, 3, 0, 9, 0, -2);
     g_pUiResourceContext = 0;
   }
@@ -10457,12 +10457,12 @@ TView* __cdecl BuildUniversityDialogShell(CWnd* pHostWindow, int nEventCode) {
     w6->SetState(0, 0);
     w6->inputGateFlag4c = 1;
     w6->childHitTestFlag4d = 1;
-    w6->hasCommandTagResource = 0xd;
+    w6->frameStyle60 = 0xd;
     CRect layoutRect(0, 0, 0, 0);
-    w6->field68 = layoutRect.left;
-    w6->field6C = layoutRect.top;
-    w6->field70 = layoutRect.right;
-    w6->field74 = layoutRect.bottom;
+    w6->contentInsets68.left = layoutRect.left;
+    w6->contentInsets68.top = layoutRect.top;
+    w6->contentInsets68.right = layoutRect.right;
+    w6->contentInsets68.bottom = layoutRect.bottom;
     BindUiResourceTextAndStyle(0xfa0, 1, g_szUiCostColon_006949D8, 3, 0, 9, 0, -2);
     g_pUiResourceContext = 0;
   }
@@ -10489,10 +10489,10 @@ TView* __cdecl BuildUniversityDialogShell(CWnd* pHostWindow, int nEventCode) {
     w7->inputGateFlag4c = 1;
     w7->childHitTestFlag4d = 1;
     CRect layoutRect(0, 0, 0, 0);
-    w7->field68 = layoutRect.left;
-    w7->field6C = layoutRect.top;
-    w7->field70 = layoutRect.right;
-    w7->field74 = layoutRect.bottom;
+    w7->contentInsets68.left = layoutRect.left;
+    w7->contentInsets68.top = layoutRect.top;
+    w7->contentInsets68.right = layoutRect.right;
+    w7->contentInsets68.bottom = layoutRect.bottom;
     BindUiResourceTextAndStyle(0xfa0, 4, g_szUiLevel1_00694B38, 3, 0, 9, 0, -2);
     g_pUiResourceContext = 0;
   }
@@ -10519,10 +10519,10 @@ TView* __cdecl BuildUniversityDialogShell(CWnd* pHostWindow, int nEventCode) {
     w8->inputGateFlag4c = 1;
     w8->childHitTestFlag4d = 1;
     CRect layoutRect(0, 0, 0, 0);
-    w8->field68 = layoutRect.left;
-    w8->field6C = layoutRect.top;
-    w8->field70 = layoutRect.right;
-    w8->field74 = layoutRect.bottom;
+    w8->contentInsets68.left = layoutRect.left;
+    w8->contentInsets68.top = layoutRect.top;
+    w8->contentInsets68.right = layoutRect.right;
+    w8->contentInsets68.bottom = layoutRect.bottom;
     BindUiResourceTextAndStyle(0xfa0, 3, g_szUiThousandDollars_00694B30, 3, 0, 9, 0, -1);
     g_pUiResourceContext = 0;
   }
@@ -10549,10 +10549,10 @@ TView* __cdecl BuildUniversityDialogShell(CWnd* pHostWindow, int nEventCode) {
     w9->inputGateFlag4c = 1;
     w9->childHitTestFlag4d = 1;
     CRect layoutRect(0, 0, 0, 0);
-    w9->field68 = layoutRect.left;
-    w9->field6C = layoutRect.top;
-    w9->field70 = layoutRect.right;
-    w9->field74 = layoutRect.bottom;
+    w9->contentInsets68.left = layoutRect.left;
+    w9->contentInsets68.top = layoutRect.top;
+    w9->contentInsets68.right = layoutRect.right;
+    w9->contentInsets68.bottom = layoutRect.bottom;
     BindUiResourceTextAndStyle(0xfa0, -1, g_szEmptyString, 3, 0, 9, 0, -2);
     g_pUiResourceContext = 0;
   }
@@ -10578,12 +10578,12 @@ TView* __cdecl BuildUniversityDialogShell(CWnd* pHostWindow, int nEventCode) {
     w10->SetState(0, 0);
     w10->inputGateFlag4c = 1;
     w10->childHitTestFlag4d = 1;
-    w10->hasCommandTagResource = 0xd;
+    w10->frameStyle60 = 0xd;
     CRect layoutRect(0, 0, 0, 0);
-    w10->field68 = layoutRect.left;
-    w10->field6C = layoutRect.top;
-    w10->field70 = layoutRect.right;
-    w10->field74 = layoutRect.bottom;
+    w10->contentInsets68.left = layoutRect.left;
+    w10->contentInsets68.top = layoutRect.top;
+    w10->contentInsets68.right = layoutRect.right;
+    w10->contentInsets68.bottom = layoutRect.bottom;
     BindUiResourceTextAndStyle(0xfa0, 3, g_szUiThousandDollars_00694B30, 3, 0, 9, 0, -1);
     g_pUiResourceContext = 0;
   }
@@ -10609,12 +10609,12 @@ TView* __cdecl BuildUniversityDialogShell(CWnd* pHostWindow, int nEventCode) {
     w11->SetState(0, 0);
     w11->inputGateFlag4c = 1;
     w11->childHitTestFlag4d = 1;
-    w11->hasCommandTagResource = 0xd;
+    w11->frameStyle60 = 0xd;
     CRect layoutRect(0, 0, 0, 0);
-    w11->field68 = layoutRect.left;
-    w11->field6C = layoutRect.top;
-    w11->field70 = layoutRect.right;
-    w11->field74 = layoutRect.bottom;
+    w11->contentInsets68.left = layoutRect.left;
+    w11->contentInsets68.top = layoutRect.top;
+    w11->contentInsets68.right = layoutRect.right;
+    w11->contentInsets68.bottom = layoutRect.bottom;
     BindUiResourceTextAndStyle(0xfa0, 5, g_szUiUniversityTitle_00694B20, 3, 0, 0x18, 0, 1);
     g_pUiResourceContext = 0;
   }
@@ -10640,12 +10640,12 @@ TView* __cdecl BuildUniversityDialogShell(CWnd* pHostWindow, int nEventCode) {
     w12->SetState(0, 0);
     w12->inputGateFlag4c = 1;
     w12->childHitTestFlag4d = 1;
-    w12->hasCommandTagResource = 0xd;
+    w12->frameStyle60 = 0xd;
     CRect layoutRect(0, 0, 0, 0);
-    w12->field68 = layoutRect.left;
-    w12->field6C = layoutRect.top;
-    w12->field70 = layoutRect.right;
-    w12->field74 = layoutRect.bottom;
+    w12->contentInsets68.left = layoutRect.left;
+    w12->contentInsets68.top = layoutRect.top;
+    w12->contentInsets68.right = layoutRect.right;
+    w12->contentInsets68.bottom = layoutRect.bottom;
     BindUiResourceTextAndStyle(0xfa0, -1, g_szEmptyString, 3, 1, 9, 0, 1);
     g_pUiResourceContext = 0;
   }
@@ -10671,12 +10671,12 @@ TView* __cdecl BuildUniversityDialogShell(CWnd* pHostWindow, int nEventCode) {
     w13->SetState(0, 0);
     w13->inputGateFlag4c = 1;
     w13->childHitTestFlag4d = 1;
-    w13->hasCommandTagResource = 5;
+    w13->frameStyle60 = 5;
     CRect layoutRect(0, 0, 0, 0);
-    w13->field68 = layoutRect.left;
-    w13->field6C = layoutRect.top;
-    w13->field70 = layoutRect.right;
-    w13->field74 = layoutRect.bottom;
+    w13->contentInsets68.left = layoutRect.left;
+    w13->contentInsets68.top = layoutRect.top;
+    w13->contentInsets68.right = layoutRect.right;
+    w13->contentInsets68.bottom = layoutRect.bottom;
     g_pUiResourceContext = 0;
   }
   {
@@ -10700,12 +10700,12 @@ TView* __cdecl BuildUniversityDialogShell(CWnd* pHostWindow, int nEventCode) {
     w14->SetState(0, 0);
     w14->inputGateFlag4c = 1;
     w14->childHitTestFlag4d = 1;
-    w14->hasCommandTagResource = 5;
+    w14->frameStyle60 = 5;
     CRect layoutRect(0, 0, 0, 0);
-    w14->field68 = layoutRect.left;
-    w14->field6C = layoutRect.top;
-    w14->field70 = layoutRect.right;
-    w14->field74 = layoutRect.bottom;
+    w14->contentInsets68.left = layoutRect.left;
+    w14->contentInsets68.top = layoutRect.top;
+    w14->contentInsets68.right = layoutRect.right;
+    w14->contentInsets68.bottom = layoutRect.bottom;
     g_pUiResourceContext = 0;
   }
   {
@@ -10729,12 +10729,12 @@ TView* __cdecl BuildUniversityDialogShell(CWnd* pHostWindow, int nEventCode) {
     w15->SetState(0, 0);
     w15->inputGateFlag4c = 1;
     w15->childHitTestFlag4d = 1;
-    w15->hasCommandTagResource = 0xa;
+    w15->frameStyle60 = 0xa;
     CRect layoutRect(0, 0, 0, 0);
-    w15->field68 = layoutRect.left;
-    w15->field6C = layoutRect.top;
-    w15->field70 = layoutRect.right;
-    w15->field74 = layoutRect.bottom;
+    w15->contentInsets68.left = layoutRect.left;
+    w15->contentInsets68.top = layoutRect.top;
+    w15->contentInsets68.right = layoutRect.right;
+    w15->contentInsets68.bottom = layoutRect.bottom;
     w15->SetPictureResourceIdAndRefresh(0x26b2, 0);
     g_pUiResourceContext = 0;
   }
@@ -10763,12 +10763,12 @@ TView* __cdecl BuildUniversityDialogShell(CWnd* pHostWindow, int nEventCode) {
     w16->stylePayload48 = new TUiStyleBytes();
     w16->stylePayload48->styleWord = 0;
     w16->stylePayload48->packedColor = 0x6ac9c0;
-    w16->hasCommandTagResource = 6;
+    w16->frameStyle60 = 6;
     CRect layoutRect(3, 3, 3, 3);
-    w16->field68 = layoutRect.left;
-    w16->field6C = layoutRect.top;
-    w16->field70 = layoutRect.right;
-    w16->field74 = layoutRect.bottom;
+    w16->contentInsets68.left = layoutRect.left;
+    w16->contentInsets68.top = layoutRect.top;
+    w16->contentInsets68.right = layoutRect.right;
+    w16->contentInsets68.bottom = layoutRect.bottom;
     BindUiResourceTextAndStyle(-1, -1, g_szUiPlaceholderZero_00694378, 3, 0, 9, 0, 1);
     w16->AssertValid();
     w16->field_9c = 0xff;
@@ -10801,12 +10801,12 @@ TView* __cdecl BuildUniversityDialogShell(CWnd* pHostWindow, int nEventCode) {
     w17->SetState(1, 0);
     w17->inputGateFlag4c = 1;
     w17->childHitTestFlag4d = 1;
-    w17->hasCommandTagResource = 0xa;
+    w17->frameStyle60 = 0xa;
     CRect layoutRect(0, 0, 0, 0);
-    w17->field68 = layoutRect.left;
-    w17->field6C = layoutRect.top;
-    w17->field70 = layoutRect.right;
-    w17->field74 = layoutRect.bottom;
+    w17->contentInsets68.left = layoutRect.left;
+    w17->contentInsets68.top = layoutRect.top;
+    w17->contentInsets68.right = layoutRect.right;
+    w17->contentInsets68.bottom = layoutRect.bottom;
     w17->SetPictureResourceIdAndRefresh(0x26ad, 0);
     g_pUiResourceContext = 0;
   }
@@ -10832,12 +10832,12 @@ TView* __cdecl BuildUniversityDialogShell(CWnd* pHostWindow, int nEventCode) {
     w18->SetState(1, 0);
     w18->inputGateFlag4c = 1;
     w18->childHitTestFlag4d = 1;
-    w18->hasCommandTagResource = 0xa;
+    w18->frameStyle60 = 0xa;
     CRect layoutRect(0, 0, 0, 0);
-    w18->field68 = layoutRect.left;
-    w18->field6C = layoutRect.top;
-    w18->field70 = layoutRect.right;
-    w18->field74 = layoutRect.bottom;
+    w18->contentInsets68.left = layoutRect.left;
+    w18->contentInsets68.top = layoutRect.top;
+    w18->contentInsets68.right = layoutRect.right;
+    w18->contentInsets68.bottom = layoutRect.bottom;
     w18->SetPictureResourceIdAndRefresh(0x26af, 0);
     g_pUiResourceContext = 0;
   }
@@ -10864,12 +10864,12 @@ TView* __cdecl BuildUniversityDialogShell(CWnd* pHostWindow, int nEventCode) {
     w19->SetState(1, 0);
     w19->inputGateFlag4c = 1;
     w19->childHitTestFlag4d = 1;
-    w19->hasCommandTagResource = 0xc;
+    w19->frameStyle60 = 0xc;
     CRect layoutRect(0, 0, 0, 0);
-    w19->field68 = layoutRect.left;
-    w19->field6C = layoutRect.top;
-    w19->field70 = layoutRect.right;
-    w19->field74 = layoutRect.bottom;
+    w19->contentInsets68.left = layoutRect.left;
+    w19->contentInsets68.top = layoutRect.top;
+    w19->contentInsets68.right = layoutRect.right;
+    w19->contentInsets68.bottom = layoutRect.bottom;
     w19->SetPictureResourceIdAndRefresh(0x26c0, 0);
     g_pUiResourceContext = 0;
   }
@@ -10895,12 +10895,12 @@ TView* __cdecl BuildUniversityDialogShell(CWnd* pHostWindow, int nEventCode) {
     w20->SetState(1, 0);
     w20->inputGateFlag4c = 1;
     w20->childHitTestFlag4d = 1;
-    w20->hasCommandTagResource = 0xc;
+    w20->frameStyle60 = 0xc;
     CRect layoutRect(0, 0, 0, 0);
-    w20->field68 = layoutRect.left;
-    w20->field6C = layoutRect.top;
-    w20->field70 = layoutRect.right;
-    w20->field74 = layoutRect.bottom;
+    w20->contentInsets68.left = layoutRect.left;
+    w20->contentInsets68.top = layoutRect.top;
+    w20->contentInsets68.right = layoutRect.right;
+    w20->contentInsets68.bottom = layoutRect.bottom;
     w20->SetPictureResourceIdAndRefresh(0x26c2, 0);
     g_pUiResourceContext = 0;
   }
@@ -10926,12 +10926,12 @@ TView* __cdecl BuildUniversityDialogShell(CWnd* pHostWindow, int nEventCode) {
     w21->SetState(0, 0);
     w21->inputGateFlag4c = 1;
     w21->childHitTestFlag4d = 1;
-    w21->hasCommandTagResource = 5;
+    w21->frameStyle60 = 5;
     CRect layoutRect(0, 0, 0, 0);
-    w21->field68 = layoutRect.left;
-    w21->field6C = layoutRect.top;
-    w21->field70 = layoutRect.right;
-    w21->field74 = layoutRect.bottom;
+    w21->contentInsets68.left = layoutRect.left;
+    w21->contentInsets68.top = layoutRect.top;
+    w21->contentInsets68.right = layoutRect.right;
+    w21->contentInsets68.bottom = layoutRect.bottom;
     g_pUiResourceContext = 0;
   }
   {
@@ -10955,12 +10955,12 @@ TView* __cdecl BuildUniversityDialogShell(CWnd* pHostWindow, int nEventCode) {
     w22->SetState(0, 0);
     w22->inputGateFlag4c = 1;
     w22->childHitTestFlag4d = 1;
-    w22->hasCommandTagResource = 0xa;
+    w22->frameStyle60 = 0xa;
     CRect layoutRect(0, 0, 0, 0);
-    w22->field68 = layoutRect.left;
-    w22->field6C = layoutRect.top;
-    w22->field70 = layoutRect.right;
-    w22->field74 = layoutRect.bottom;
+    w22->contentInsets68.left = layoutRect.left;
+    w22->contentInsets68.top = layoutRect.top;
+    w22->contentInsets68.right = layoutRect.right;
+    w22->contentInsets68.bottom = layoutRect.bottom;
     w22->SetPictureResourceIdAndRefresh(0x26b2, 0);
     g_pUiResourceContext = 0;
   }
@@ -10989,12 +10989,12 @@ TView* __cdecl BuildUniversityDialogShell(CWnd* pHostWindow, int nEventCode) {
     w23->stylePayload48 = new TUiStyleBytes();
     w23->stylePayload48->styleWord = 0;
     w23->stylePayload48->packedColor = 0x6ac9c0;
-    w23->hasCommandTagResource = 6;
+    w23->frameStyle60 = 6;
     CRect layoutRect(3, 3, 3, 3);
-    w23->field68 = layoutRect.left;
-    w23->field6C = layoutRect.top;
-    w23->field70 = layoutRect.right;
-    w23->field74 = layoutRect.bottom;
+    w23->contentInsets68.left = layoutRect.left;
+    w23->contentInsets68.top = layoutRect.top;
+    w23->contentInsets68.right = layoutRect.right;
+    w23->contentInsets68.bottom = layoutRect.bottom;
     BindUiResourceTextAndStyle(-1, -1, g_szUiPlaceholderZero_00694378, 3, 0, 9, 0, 1);
     w23->AssertValid();
     w23->field_9c = 0xff;
@@ -11027,12 +11027,12 @@ TView* __cdecl BuildUniversityDialogShell(CWnd* pHostWindow, int nEventCode) {
     w24->SetState(1, 0);
     w24->inputGateFlag4c = 1;
     w24->childHitTestFlag4d = 1;
-    w24->hasCommandTagResource = 0xa;
+    w24->frameStyle60 = 0xa;
     CRect layoutRect(0, 0, 0, 0);
-    w24->field68 = layoutRect.left;
-    w24->field6C = layoutRect.top;
-    w24->field70 = layoutRect.right;
-    w24->field74 = layoutRect.bottom;
+    w24->contentInsets68.left = layoutRect.left;
+    w24->contentInsets68.top = layoutRect.top;
+    w24->contentInsets68.right = layoutRect.right;
+    w24->contentInsets68.bottom = layoutRect.bottom;
     w24->SetPictureResourceIdAndRefresh(0x26ad, 0);
     g_pUiResourceContext = 0;
   }
@@ -11058,12 +11058,12 @@ TView* __cdecl BuildUniversityDialogShell(CWnd* pHostWindow, int nEventCode) {
     w25->SetState(1, 0);
     w25->inputGateFlag4c = 1;
     w25->childHitTestFlag4d = 1;
-    w25->hasCommandTagResource = 0xa;
+    w25->frameStyle60 = 0xa;
     CRect layoutRect(0, 0, 0, 0);
-    w25->field68 = layoutRect.left;
-    w25->field6C = layoutRect.top;
-    w25->field70 = layoutRect.right;
-    w25->field74 = layoutRect.bottom;
+    w25->contentInsets68.left = layoutRect.left;
+    w25->contentInsets68.top = layoutRect.top;
+    w25->contentInsets68.right = layoutRect.right;
+    w25->contentInsets68.bottom = layoutRect.bottom;
     w25->SetPictureResourceIdAndRefresh(0x26af, 0);
     g_pUiResourceContext = 0;
   }
@@ -11090,12 +11090,12 @@ TView* __cdecl BuildUniversityDialogShell(CWnd* pHostWindow, int nEventCode) {
     w26->SetState(1, 0);
     w26->inputGateFlag4c = 1;
     w26->childHitTestFlag4d = 1;
-    w26->hasCommandTagResource = 0xc;
+    w26->frameStyle60 = 0xc;
     CRect layoutRect(0, 0, 0, 0);
-    w26->field68 = layoutRect.left;
-    w26->field6C = layoutRect.top;
-    w26->field70 = layoutRect.right;
-    w26->field74 = layoutRect.bottom;
+    w26->contentInsets68.left = layoutRect.left;
+    w26->contentInsets68.top = layoutRect.top;
+    w26->contentInsets68.right = layoutRect.right;
+    w26->contentInsets68.bottom = layoutRect.bottom;
     w26->SetPictureResourceIdAndRefresh(0x26c4, 0);
     g_pUiResourceContext = 0;
   }
@@ -11121,12 +11121,12 @@ TView* __cdecl BuildUniversityDialogShell(CWnd* pHostWindow, int nEventCode) {
     w27->SetState(0, 0);
     w27->inputGateFlag4c = 1;
     w27->childHitTestFlag4d = 1;
-    w27->hasCommandTagResource = 5;
+    w27->frameStyle60 = 5;
     CRect layoutRect(0, 0, 0, 0);
-    w27->field68 = layoutRect.left;
-    w27->field6C = layoutRect.top;
-    w27->field70 = layoutRect.right;
-    w27->field74 = layoutRect.bottom;
+    w27->contentInsets68.left = layoutRect.left;
+    w27->contentInsets68.top = layoutRect.top;
+    w27->contentInsets68.right = layoutRect.right;
+    w27->contentInsets68.bottom = layoutRect.bottom;
     g_pUiResourceContext = 0;
   }
   {
@@ -11150,12 +11150,12 @@ TView* __cdecl BuildUniversityDialogShell(CWnd* pHostWindow, int nEventCode) {
     w28->SetState(0, 0);
     w28->inputGateFlag4c = 1;
     w28->childHitTestFlag4d = 1;
-    w28->hasCommandTagResource = 0xa;
+    w28->frameStyle60 = 0xa;
     CRect layoutRect(0, 0, 0, 0);
-    w28->field68 = layoutRect.left;
-    w28->field6C = layoutRect.top;
-    w28->field70 = layoutRect.right;
-    w28->field74 = layoutRect.bottom;
+    w28->contentInsets68.left = layoutRect.left;
+    w28->contentInsets68.top = layoutRect.top;
+    w28->contentInsets68.right = layoutRect.right;
+    w28->contentInsets68.bottom = layoutRect.bottom;
     w28->SetPictureResourceIdAndRefresh(0x26b2, 0);
     g_pUiResourceContext = 0;
   }
@@ -11184,12 +11184,12 @@ TView* __cdecl BuildUniversityDialogShell(CWnd* pHostWindow, int nEventCode) {
     w29->stylePayload48 = new TUiStyleBytes();
     w29->stylePayload48->styleWord = 0;
     w29->stylePayload48->packedColor = 0x6ac9c0;
-    w29->hasCommandTagResource = 6;
+    w29->frameStyle60 = 6;
     CRect layoutRect(3, 3, 3, 3);
-    w29->field68 = layoutRect.left;
-    w29->field6C = layoutRect.top;
-    w29->field70 = layoutRect.right;
-    w29->field74 = layoutRect.bottom;
+    w29->contentInsets68.left = layoutRect.left;
+    w29->contentInsets68.top = layoutRect.top;
+    w29->contentInsets68.right = layoutRect.right;
+    w29->contentInsets68.bottom = layoutRect.bottom;
     BindUiResourceTextAndStyle(-1, -1, g_szUiPlaceholderZero_00694378, 3, 0, 9, 0, 1);
     w29->AssertValid();
     w29->field_9c = 0xff;
@@ -11222,12 +11222,12 @@ TView* __cdecl BuildUniversityDialogShell(CWnd* pHostWindow, int nEventCode) {
     w30->SetState(1, 0);
     w30->inputGateFlag4c = 1;
     w30->childHitTestFlag4d = 1;
-    w30->hasCommandTagResource = 0xa;
+    w30->frameStyle60 = 0xa;
     CRect layoutRect(0, 0, 0, 0);
-    w30->field68 = layoutRect.left;
-    w30->field6C = layoutRect.top;
-    w30->field70 = layoutRect.right;
-    w30->field74 = layoutRect.bottom;
+    w30->contentInsets68.left = layoutRect.left;
+    w30->contentInsets68.top = layoutRect.top;
+    w30->contentInsets68.right = layoutRect.right;
+    w30->contentInsets68.bottom = layoutRect.bottom;
     w30->SetPictureResourceIdAndRefresh(0x26ad, 0);
     g_pUiResourceContext = 0;
   }
@@ -11253,12 +11253,12 @@ TView* __cdecl BuildUniversityDialogShell(CWnd* pHostWindow, int nEventCode) {
     w31->SetState(1, 0);
     w31->inputGateFlag4c = 1;
     w31->childHitTestFlag4d = 1;
-    w31->hasCommandTagResource = 0xa;
+    w31->frameStyle60 = 0xa;
     CRect layoutRect(0, 0, 0, 0);
-    w31->field68 = layoutRect.left;
-    w31->field6C = layoutRect.top;
-    w31->field70 = layoutRect.right;
-    w31->field74 = layoutRect.bottom;
+    w31->contentInsets68.left = layoutRect.left;
+    w31->contentInsets68.top = layoutRect.top;
+    w31->contentInsets68.right = layoutRect.right;
+    w31->contentInsets68.bottom = layoutRect.bottom;
     w31->SetPictureResourceIdAndRefresh(0x26af, 0);
     g_pUiResourceContext = 0;
   }
@@ -11285,12 +11285,12 @@ TView* __cdecl BuildUniversityDialogShell(CWnd* pHostWindow, int nEventCode) {
     w32->SetState(1, 0);
     w32->inputGateFlag4c = 1;
     w32->childHitTestFlag4d = 1;
-    w32->hasCommandTagResource = 0xc;
+    w32->frameStyle60 = 0xc;
     CRect layoutRect(0, 0, 0, 0);
-    w32->field68 = layoutRect.left;
-    w32->field6C = layoutRect.top;
-    w32->field70 = layoutRect.right;
-    w32->field74 = layoutRect.bottom;
+    w32->contentInsets68.left = layoutRect.left;
+    w32->contentInsets68.top = layoutRect.top;
+    w32->contentInsets68.right = layoutRect.right;
+    w32->contentInsets68.bottom = layoutRect.bottom;
     w32->SetPictureResourceIdAndRefresh(0x26c6, 0);
     g_pUiResourceContext = 0;
   }
@@ -11316,12 +11316,12 @@ TView* __cdecl BuildUniversityDialogShell(CWnd* pHostWindow, int nEventCode) {
     w33->SetState(0, 0);
     w33->inputGateFlag4c = 1;
     w33->childHitTestFlag4d = 1;
-    w33->hasCommandTagResource = 5;
+    w33->frameStyle60 = 5;
     CRect layoutRect(0, 0, 0, 0);
-    w33->field68 = layoutRect.left;
-    w33->field6C = layoutRect.top;
-    w33->field70 = layoutRect.right;
-    w33->field74 = layoutRect.bottom;
+    w33->contentInsets68.left = layoutRect.left;
+    w33->contentInsets68.top = layoutRect.top;
+    w33->contentInsets68.right = layoutRect.right;
+    w33->contentInsets68.bottom = layoutRect.bottom;
     g_pUiResourceContext = 0;
   }
   {
@@ -11345,12 +11345,12 @@ TView* __cdecl BuildUniversityDialogShell(CWnd* pHostWindow, int nEventCode) {
     w34->SetState(0, 0);
     w34->inputGateFlag4c = 1;
     w34->childHitTestFlag4d = 1;
-    w34->hasCommandTagResource = 0xa;
+    w34->frameStyle60 = 0xa;
     CRect layoutRect(0, 0, 0, 0);
-    w34->field68 = layoutRect.left;
-    w34->field6C = layoutRect.top;
-    w34->field70 = layoutRect.right;
-    w34->field74 = layoutRect.bottom;
+    w34->contentInsets68.left = layoutRect.left;
+    w34->contentInsets68.top = layoutRect.top;
+    w34->contentInsets68.right = layoutRect.right;
+    w34->contentInsets68.bottom = layoutRect.bottom;
     w34->SetPictureResourceIdAndRefresh(0x26b2, 0);
     g_pUiResourceContext = 0;
   }
@@ -11379,12 +11379,12 @@ TView* __cdecl BuildUniversityDialogShell(CWnd* pHostWindow, int nEventCode) {
     w35->stylePayload48 = new TUiStyleBytes();
     w35->stylePayload48->styleWord = 0;
     w35->stylePayload48->packedColor = 0x6ac9c0;
-    w35->hasCommandTagResource = 6;
+    w35->frameStyle60 = 6;
     CRect layoutRect(3, 3, 3, 3);
-    w35->field68 = layoutRect.left;
-    w35->field6C = layoutRect.top;
-    w35->field70 = layoutRect.right;
-    w35->field74 = layoutRect.bottom;
+    w35->contentInsets68.left = layoutRect.left;
+    w35->contentInsets68.top = layoutRect.top;
+    w35->contentInsets68.right = layoutRect.right;
+    w35->contentInsets68.bottom = layoutRect.bottom;
     BindUiResourceTextAndStyle(-1, -1, g_szUiPlaceholderZero_00694378, 3, 0, 9, 0, 1);
     w35->AssertValid();
     w35->field_9c = 0xff;
@@ -11417,12 +11417,12 @@ TView* __cdecl BuildUniversityDialogShell(CWnd* pHostWindow, int nEventCode) {
     w36->SetState(1, 0);
     w36->inputGateFlag4c = 1;
     w36->childHitTestFlag4d = 1;
-    w36->hasCommandTagResource = 0xa;
+    w36->frameStyle60 = 0xa;
     CRect layoutRect(0, 0, 0, 0);
-    w36->field68 = layoutRect.left;
-    w36->field6C = layoutRect.top;
-    w36->field70 = layoutRect.right;
-    w36->field74 = layoutRect.bottom;
+    w36->contentInsets68.left = layoutRect.left;
+    w36->contentInsets68.top = layoutRect.top;
+    w36->contentInsets68.right = layoutRect.right;
+    w36->contentInsets68.bottom = layoutRect.bottom;
     w36->SetPictureResourceIdAndRefresh(0x26ad, 0);
     g_pUiResourceContext = 0;
   }
@@ -11448,12 +11448,12 @@ TView* __cdecl BuildUniversityDialogShell(CWnd* pHostWindow, int nEventCode) {
     w37->SetState(1, 0);
     w37->inputGateFlag4c = 1;
     w37->childHitTestFlag4d = 1;
-    w37->hasCommandTagResource = 0xa;
+    w37->frameStyle60 = 0xa;
     CRect layoutRect(0, 0, 0, 0);
-    w37->field68 = layoutRect.left;
-    w37->field6C = layoutRect.top;
-    w37->field70 = layoutRect.right;
-    w37->field74 = layoutRect.bottom;
+    w37->contentInsets68.left = layoutRect.left;
+    w37->contentInsets68.top = layoutRect.top;
+    w37->contentInsets68.right = layoutRect.right;
+    w37->contentInsets68.bottom = layoutRect.bottom;
     w37->SetPictureResourceIdAndRefresh(0x26af, 0);
     g_pUiResourceContext = 0;
   }
@@ -11480,12 +11480,12 @@ TView* __cdecl BuildUniversityDialogShell(CWnd* pHostWindow, int nEventCode) {
     w38->SetState(0, 0);
     w38->inputGateFlag4c = 1;
     w38->childHitTestFlag4d = 1;
-    w38->hasCommandTagResource = 5;
+    w38->frameStyle60 = 5;
     CRect layoutRect(0, 0, 0, 0);
-    w38->field68 = layoutRect.left;
-    w38->field6C = layoutRect.top;
-    w38->field70 = layoutRect.right;
-    w38->field74 = layoutRect.bottom;
+    w38->contentInsets68.left = layoutRect.left;
+    w38->contentInsets68.top = layoutRect.top;
+    w38->contentInsets68.right = layoutRect.right;
+    w38->contentInsets68.bottom = layoutRect.bottom;
     g_pUiResourceContext = 0;
   }
   {
@@ -11509,12 +11509,12 @@ TView* __cdecl BuildUniversityDialogShell(CWnd* pHostWindow, int nEventCode) {
     w39->SetState(0, 0);
     w39->inputGateFlag4c = 1;
     w39->childHitTestFlag4d = 1;
-    w39->hasCommandTagResource = 0xa;
+    w39->frameStyle60 = 0xa;
     CRect layoutRect(0, 0, 0, 0);
-    w39->field68 = layoutRect.left;
-    w39->field6C = layoutRect.top;
-    w39->field70 = layoutRect.right;
-    w39->field74 = layoutRect.bottom;
+    w39->contentInsets68.left = layoutRect.left;
+    w39->contentInsets68.top = layoutRect.top;
+    w39->contentInsets68.right = layoutRect.right;
+    w39->contentInsets68.bottom = layoutRect.bottom;
     w39->SetPictureResourceIdAndRefresh(0x26b2, 0);
     g_pUiResourceContext = 0;
   }

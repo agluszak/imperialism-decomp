@@ -34,11 +34,11 @@ void TInfoPanelView::NoOpUiLifecycleHook(int arg) {
     child->AssertValid();
     CString text;
     g_pSimMgr->GetString(0x2733, (short)(0x4e + i), &text);
-    ApplySharedStringToControlState(text, child);
+    SetControlHoverHelpText(text, child);
   }
 
   CString empty(g_szEmptyString);
-  ApplySharedStringToControlState(empty, this);
+  SetControlHoverHelpText(empty, this);
 }
 
 // FUNCTION: IMPERIALISM 0x004fa190

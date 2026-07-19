@@ -75,11 +75,11 @@ TUiStyleBytes* TUiStyleBytes::Reset() {
 void __cdecl SetUiResourceLayoutValues(int frameStyle, int rectLeft, int rectTop, int rectRight,
                                        int rectBottom) {
   TControl* context = static_cast<TControl*>(g_pUiResourceContext);
-  context->hasCommandTagResource = frameStyle;
-  context->field68 = rectLeft;
-  context->field6C = rectTop;
-  context->field70 = rectRight;
-  context->field74 = rectBottom;
+  context->frameStyle60 = frameStyle;
+  context->contentInsets68.left = rectLeft;
+  context->contentInsets68.top = rectTop;
+  context->contentInsets68.right = rectRight;
+  context->contentInsets68.bottom = rectBottom;
 }
 
 // Bind a text + style onto the current g_pUiResourceContext text control: assign the
@@ -98,12 +98,12 @@ void __cdecl BindUiResourceTextAndStyle(int nGroupId, int nVariant, char* szText
     CString text(szText);
     context->AssignTextSharedRefIfChangedAndMaybeInvalidate(&text, 0);
   }
-  TControlPictureRectState style;
-  style.mode = nMode;
-  style.flag2 = nFlag;
-  style.pointSize = nPointSize;
-  style.styleRef6 = styleRef.value;
-  context->SetCityProductionDialogPictureRectAndMaybeRefresh(&style, 0);
+  TUiTextStyleDescriptor style;
+  style.fontFamily = nMode;
+  style.fontStyleFlags = nFlag;
+  style.fontSize = nPointSize;
+  style.textColor = styleRef.value;
+  context->SetTextStyleAndMaybeRefresh(&style, 0);
   context->SetTextThemeCodeAndMaybeRefresh(nThemeCode, 0);
 }
 

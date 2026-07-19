@@ -1038,7 +1038,7 @@ undefined TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word nati
   if (nationSlot == static_cast<word>(-1)) {
     TControl* panel = ResolveTaggedPanelOrFail(hostView, kTagCityProductionTotal);
     g_pSimMgr->GetString(0x2735, 0, &scratch38);
-    panel->EnableAndProcessFlag(scratch38);
+    panel->SetHoverHelpText(scratch38);
 
     TMyStaticText* textEntry = new TMyStaticText();
 
@@ -1050,14 +1050,14 @@ undefined TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word nati
     textEntry->InitializeTextEntryBaseAndOptionalStringResource(panel, &layoutAnchor, &layoutHeight,
                                                                 5, 5, -1, 0);
 
-    TControlPictureRectState styleDescriptor;
+    TUiTextStyleDescriptor styleDescriptor;
     BuildUiTextStyleDescriptor(&styleDescriptor, 0, 0xa, 0x2b67);
-    textEntry->SetCityProductionDialogPictureRectAndMaybeRefresh(&styleDescriptor, 0);
+    textEntry->SetTextStyleAndMaybeRefresh(&styleDescriptor, 0);
     textEntry->SetTextThemeCodeAndMaybeRefresh(0, 0);
     textEntry->controlTag = kTagDetailText;
 
     g_pSimMgr->GetString(0x2735, 1, &scratch38);
-    textEntry->EnableAndProcessFlag(scratch38);
+    textEntry->SetHoverHelpText(scratch38);
 
     short needCap = nation != 0 ? nation->needCapA6 : 0;
     SetPanelShortField(panel, 0x94, nation != 0 ? nation->needsOverCapFlag : 0);
@@ -1331,7 +1331,7 @@ undefined TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word nati
     SetPanelShortField(panel, 0x98, deficitCount);
   }
 
-  panel->EnableAndProcessFlag(displayText);
+  panel->SetHoverHelpText(displayText);
 
   if (needCurrent == 0) {
     panel->SetEnabled(0, 0);
@@ -1372,14 +1372,14 @@ undefined TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word nati
   textEntry->InitializeTextEntryBaseAndOptionalStringResource(panel, &textPos, &textHeight, 5, 5,
                                                               -1, 0);
 
-  TControlPictureRectState styleDescriptor;
+  TUiTextStyleDescriptor styleDescriptor;
   BuildUiTextStyleDescriptor(&styleDescriptor, 0, 0xa, 0x2b67);
-  textEntry->SetCityProductionDialogPictureRectAndMaybeRefresh(&styleDescriptor, 0);
+  textEntry->SetTextStyleAndMaybeRefresh(&styleDescriptor, 0);
   textEntry->SetTextThemeCodeAndMaybeRefresh(0, 0);
   textEntry->controlTag = kTagDetailText;
 
   g_pSimMgr->GetString(0x2735, 4, &scratch38);
-  textEntry->EnableAndProcessFlag(scratch38);
+  textEntry->SetHoverHelpText(scratch38);
 
   if (nationSlot == 0x15 || nationSlot == 0x16) {
     TMyStaticText* valueEntry = new TMyStaticText();
@@ -1390,7 +1390,7 @@ undefined TMacViewMgr::RefreshCityProductionDetailPanelAndArrowWidgets(word nati
     int valueAnchor = 0x32;
     valueEntry->InitializeTextEntryBaseAndOptionalStringResource(panel, &valuePos, &valueHeight, 5,
                                                                  5, -1, 0);
-    valueEntry->SetCityProductionDialogPictureRectAndMaybeRefresh(&styleDescriptor, 0);
+    valueEntry->SetTextStyleAndMaybeRefresh(&styleDescriptor, 0);
     valueEntry->SetTextThemeCodeAndMaybeRefresh(0, 0);
     valueEntry->controlTag = kTagDetailValue;
   }

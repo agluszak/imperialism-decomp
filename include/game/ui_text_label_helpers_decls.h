@@ -6,9 +6,13 @@ class TDropShadowText;
 class TStaticText;
 class TView;
 
-// 0x5c49d0: apply a shared/string caption to a control (sets the text state).  Callee
-// consumes `sharedString` by value; `control` is asserted and updated.
-void ApplySharedStringToControlState(CString sharedString, TView* control);
+// 0x5c49d0 / 0x5c4a40: set a control's cursor hover-help text -- both forward `text`
+// (by value) to TView::SetHoverHelpText, which stores it in hoverHelpText58 and sets
+// hoverHelpEnabled5c; TView::HandleCursorHoverFallback later sends that string + the
+// control rect to g_pCursorControlPanel. Two separate original addresses with identical
+// bodies (do NOT merge -- likely distinct source functions or linker-fold candidates).
+void SetControlHoverHelpText(CString text, TView* control);
+void SetControlHoverHelpTextAltEntry(CString text, TView* control);
 
 // 0x5c4310: resolve `controlTag` on g_pDisplayMgr->activeDialog, AssertValid it, and
 // forward to ApplyControlThemeStyleAndOptionalCaption. Genuine __cdecl free function
@@ -34,11 +38,8 @@ class TView;
 TView* __cdecl ApplySharedStringToGlobalControlTag(CString sharedString, unsigned int controlTag);
 
 // 0x5c4850: load string (group,index) from the module library cache and apply it to the
-// control via ApplySharedStringToControlState.
+// control via SetControlHoverHelpText.
 void LoadUiStringByGroupAndIndexToControlObject(short group, short index, TView* control);
-
-// 0x5c49d0: forward the shared string (by value) to the control's EnableAndProcessFlag.
-void ApplySharedStringToControlState(CString sharedString, TView* control);
 
 // 0x5c4b70: build a CString from `text`, resolve `controlTag` on the active dialog, assert
 // it, then assign the shared string through the normal control-state path.

@@ -35,9 +35,9 @@ void TJoinSelectorDialog::NoOpUiLifecycleHook(int arg) {
   gameControl->AssertValid();
 
   ConfigureUiControlStyleValueAndCaptionFromStringResource(tnamControl, 0, 0xc, 0x2b6b, -2, 0x2742,
-                                                            4);
+                                                           4);
   ConfigureUiControlStyleValueAndCaptionFromStringResource(tgamControl, 0, 0xc, 0x2b6b, -2, 0x2742,
-                                                            5);
+                                                           5);
 
   CString normalizedPlayerName =
       g_pLanguageMgr->NormalizeRuntimeCredentialNameToken(&g_pGameFlowState->playerNameString);
@@ -58,8 +58,8 @@ void TJoinSelectorDialog::HandleEvent(int commandId, TEventHandler* sourceHandle
        sourceHandler->controlTag == kControlTagCncl ||
        sourceHandler->controlTag == kControlTagOkay)) {
     static_cast<TControl*>(OwnerPanel())
-        ->SetCityProductionDialogPictureRectAndMaybeRefresh(
-            reinterpret_cast<TControlPictureRectState*>(sourceHandler->controlTag), 1);
+        ->SetTextStyleAndMaybeRefresh(
+            reinterpret_cast<TUiTextStyleDescriptor*>(sourceHandler->controlTag), 1);
   }
   TControl::HandleEvent(commandId, sourceHandler, event);
 }

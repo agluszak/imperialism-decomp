@@ -116,8 +116,8 @@ public:
   // slot 0x6a AssertCityProductionGlobalStateInitialized inherited unchanged (0x429470)
   // slot 0x6b NoOpUiViewSlotHandler inherited unchanged (0x48e9c0)
   // slot 0x6c OrphanRetStub_00487a00 inherited unchanged (0x48e9e0)
-  // slot 0x6d SetCityProductionDialogPictureRectAndMaybeRefresh inherited unchanged (0x48e7d0)
-  // slot 0x6e SetControlPictureEntryAndMaybeRefresh inherited unchanged (0x48e7a0)
+  // slot 0x6d SetTextStyleAndMaybeRefresh inherited unchanged (0x48e7d0)
+  // slot 0x6e SetTextColorAndMaybeRefresh inherited unchanged (0x48e7a0)
   // slot 0x6f LogUnhandledDialogMethodAndReturnFalse inherited unchanged (0x4294a0)
   // slot 0x70 SetControlStateFlagAndMaybeRefresh inherited unchanged (0x48e810)
   // slot 0x71 SetTextThemeCodeAndMaybeRefresh inherited unchanged (0x48ff70)
@@ -132,7 +132,7 @@ public:
   // 0x486050, __thiscall, RET 0x2c.
   void ConstructTTEViewBaseState(int unusedA, TView* panel, int* offsetLayout, int* sizeLayout,
                                  int layoutParam5, int layoutParam6, RECT* insetRect,
-                                 TControlPictureRectState* style, short styleWord90, int unusedB,
+                                 TUiTextStyleDescriptor* style, short styleWord90, int unusedB,
                                  int unusedC);
 
   // Original object size is 0x98 (CRuntimeClass m_nObjectSize). These three

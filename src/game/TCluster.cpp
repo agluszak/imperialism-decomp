@@ -26,7 +26,7 @@ IMPLEMENT_DYNCREATE(TCluster, TControl)
 
 // FUNCTION: IMPERIALISM 0x00491400
 TCluster::TCluster() {
-  this->hasCommandTagResource = 5;
+  this->frameStyle60 = 5;
   this->field84 = 0x20202020;
 }
 
@@ -60,7 +60,7 @@ void TCluster::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* 
     return;
   }
   if (commandId == 0x21) {
-    SetControlStateFlagAndMaybeRefresh(commandTagResourceByte == 0, true);
+    SetControlStateFlagAndMaybeRefresh(controlState64 == 0, true);
     return;
   }
   TView* child = static_cast<TView*>(QueryStepValue());

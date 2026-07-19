@@ -440,14 +440,14 @@ bool TViewMgr::RunNationInfoModalAndReturnNonCancel(int overlayMode, CString mes
                                                     int* eventPayload, int contextTag,
                                                     char showCancel) {
   CString titleText;
-  TControlPictureRectState styleDescriptor;
+  TUiTextStyleDescriptor styleDescriptor;
   RECT bounds;             // function-scope like the original (0x38): not overlapped with the
   short overlaySfxIds[13]; // sfx table (0x48), so the frame keeps both live regions
   // The payload is a {-1000 sentinel, resource word} pair; the word is only read
   // through a short lvalue over the pre-zeroed int (word stores/compares, dword pass).
   int payloadResource;
   // The original zeroes the four styleRef6 bytes individually (0x5d5d69..0x5d5d85).
-  char* styleRefBytes = reinterpret_cast<char*>(&styleDescriptor.styleRef6);
+  char* styleRefBytes = reinterpret_cast<char*>(&styleDescriptor.textColor);
   styleRefBytes[0] = 0;
   styleRefBytes[1] = 0;
   styleRefBytes[2] = 0;
@@ -525,7 +525,7 @@ bool TViewMgr::RunNationInfoModalAndReturnNonCancel(int overlayMode, CString mes
       MessageBoxA(0, g_szUiNilPointerMessage, g_szUiFailureMessage, 0x30);
       TemporarilyClearAndRestoreUiInvalidationFlag(s_SourcePathUViewMgr_0069B6BC, 0x31a);
     }
-    title->SetCityProductionDialogPictureRectAndMaybeRefresh(&styleDescriptor, 0);
+    title->SetTextStyleAndMaybeRefresh(&styleDescriptor, 0);
     title->SetTextThemeCodeAndMaybeRefresh(1, 0);
     BuildUiMessageTextFromBracketTemplate(g_pSimMgr, &titleText, 0x2749, overlayMode, 0x2749,
                                           contextTagSx);
@@ -1023,7 +1023,7 @@ void RefreshTradClusterPictureAndHintText() {
 
   CString hintText;
   g_pSimMgr->GetString(0x2730, 0, &hintText);
-  tradControl->EnableAndProcessFlag(hintText);
+  tradControl->SetHoverHelpText(hintText);
 }
 
 void RefreshTaggedControlWithLocalizedString(unsigned int controlTag, short stringCode,
@@ -1035,7 +1035,7 @@ void RefreshTaggedControlWithLocalizedString(unsigned int controlTag, short stri
   control->AssertValid();
   CString localizedText;
   g_pSimMgr->GetString(stringCode, stringIndex, &localizedText);
-  control->EnableAndProcessFlag(localizedText);
+  control->SetHoverHelpText(localizedText);
 }
 
 void ApplyThemeToTaggedTextControl(unsigned int controlTag, int styleWidth, int stylePrimary,
@@ -1045,13 +1045,13 @@ void ApplyThemeToTaggedTextControl(unsigned int controlTag, int styleWidth, int 
     return;
   }
   control->AssertValid();
-  TControlPictureRectState styleDescriptor;
-  styleDescriptor.mode = 0;
-  styleDescriptor.flag2 = 0;
-  styleDescriptor.pointSize = 0;
-  styleDescriptor.styleRef6 = 0;
+  TUiTextStyleDescriptor styleDescriptor;
+  styleDescriptor.fontFamily = 0;
+  styleDescriptor.fontStyleFlags = 0;
+  styleDescriptor.fontSize = 0;
+  styleDescriptor.textColor = 0;
   BuildUiTextStyleDescriptor(&styleDescriptor, 0, styleWidth, styleSecondary);
-  control->SetCityProductionDialogPictureRectAndMaybeRefresh(&styleDescriptor, 0);
+  control->SetTextStyleAndMaybeRefresh(&styleDescriptor, 0);
   (void)stylePrimary;
 }
 
@@ -1063,7 +1063,7 @@ void RefreshQuerControlLayoutAndClearText() {
   querControl->AssertValid();
   int layoutCaptureBuffer = 0;
   querControl->CaptureLayoutF0(&layoutCaptureBuffer, 0);
-  querControl->EnableAndProcessFlag(g_szEmptyString);
+  querControl->SetHoverHelpText(g_szEmptyString);
 }
 
 } // namespace turn_event_ui_refresh
@@ -1314,7 +1314,7 @@ void TViewMgr::UiRuntimeSlotA8(int) {
     cityControl->AssertValid();
     cityControl->SetState(0, 0);
     cityControl->SwitchActiveChildAndNotify(nullptr);
-    cityControl->EnableAndProcessFlag(g_szEmptyString);
+    cityControl->SetHoverHelpText(g_szEmptyString);
   }
 
   turn_event_ui_refresh::RefreshToolBarClusterByTag(kControlTagBpot);
@@ -1323,7 +1323,7 @@ void TViewMgr::UiRuntimeSlotA8(int) {
   TControl* querControl = static_cast<TControl*>(mainView->ResolveControlByTag(kControlTagQuer));
   if (querControl != nullptr) {
     querControl->AssertValid();
-    querControl->EnableAndProcessFlag(g_szEmptyString);
+    querControl->SetHoverHelpText(g_szEmptyString);
   }
 }
 
@@ -1366,7 +1366,7 @@ void TViewMgr::UiRuntimeSlot6C(int) {
     diplControl->AssertValid();
     diplControl->SetState(0, 0);
     diplControl->SwitchActiveChildAndNotify(nullptr);
-    diplControl->EnableAndProcessFlag(g_szEmptyString);
+    diplControl->SetHoverHelpText(g_szEmptyString);
   }
 
   turn_event_ui_refresh::RefreshToolBarClusterByTag(kControlTagBpot);
@@ -1375,7 +1375,7 @@ void TViewMgr::UiRuntimeSlot6C(int) {
   TControl* querControl = static_cast<TControl*>(mainView->ResolveControlByTag(kControlTagQuer));
   if (querControl != nullptr) {
     querControl->AssertValid();
-    querControl->EnableAndProcessFlag(g_szEmptyString);
+    querControl->SetHoverHelpText(g_szEmptyString);
   }
 
   if (diplControl != nullptr) {
@@ -1393,7 +1393,7 @@ void TViewMgr::UiRuntimeSlot84(int) {
     tranControl->AssertValid();
     tranControl->SetState(0, 0);
     tranControl->SwitchActiveChildAndNotify(nullptr);
-    tranControl->EnableAndProcessFlag(g_szEmptyString);
+    tranControl->SetHoverHelpText(g_szEmptyString);
   }
 
   turn_event_ui_refresh::RefreshToolBarClusterByTag(kControlTagBpot);
@@ -1402,7 +1402,7 @@ void TViewMgr::UiRuntimeSlot84(int) {
   TControl* querControl = turn_event_ui_refresh::ResolveMainTaggedControl(kControlTagQuer);
   if (querControl != nullptr) {
     querControl->AssertValid();
-    querControl->EnableAndProcessFlag(g_szEmptyString);
+    querControl->SetHoverHelpText(g_szEmptyString);
   }
 }
 
@@ -1448,7 +1448,7 @@ void TViewMgr::UiRuntimeSlot5C(int) {
   TControl* textControl = turn_event_ui_refresh::ResolveMainTaggedControl(kControlTagText);
   if (textControl != nullptr) {
     textControl->AssertValid();
-    textControl->EnableAndProcessFlag(g_szEmptyString);
+    textControl->SetHoverHelpText(g_szEmptyString);
   }
 
   const short activeNationId = g_pSimMgr->GetActiveNationId();
@@ -1466,20 +1466,20 @@ void TViewMgr::UiRuntimeSlot5C(int) {
   turn_event_ui_refresh::RefreshTaggedControlWithLocalizedString(kControlTagFood, 0x2730, 0);
   turn_event_ui_refresh::RefreshTaggedControlWithLocalizedString(kControlTagFood, 0x2731, 0);
 
-  TControlPictureRectState foodStyle;
-  foodStyle.mode = 0;
-  foodStyle.flag2 = 0;
-  foodStyle.pointSize = 0;
-  foodStyle.styleRef6 = 0;
+  TUiTextStyleDescriptor foodStyle;
+  foodStyle.fontFamily = 0;
+  foodStyle.fontStyleFlags = 0;
+  foodStyle.fontSize = 0;
+  foodStyle.textColor = 0;
   BuildUiTextStyleDescriptor(&foodStyle, 0, 0xc, 0x2b6b);
   TControl* foodControl = turn_event_ui_refresh::ResolveMainTaggedControl(kControlTagFood);
   if (foodControl != nullptr) {
     foodControl->AssertValid();
-    foodControl->SetCityProductionDialogPictureRectAndMaybeRefresh(&foodStyle, 0);
+    foodControl->SetTextStyleAndMaybeRefresh(&foodStyle, 0);
     turn_event_ui_refresh::RefreshTaggedControlWithLocalizedString(kControlTagFood, 0x2730, 0);
-    foodControl->SetCityProductionDialogPictureRectAndMaybeRefresh(&foodStyle, 0);
+    foodControl->SetTextStyleAndMaybeRefresh(&foodStyle, 0);
     turn_event_ui_refresh::RefreshTaggedControlWithLocalizedString(kControlTagFood, 0x2730, 0);
-    foodControl->SetCityProductionDialogPictureRectAndMaybeRefresh(&foodStyle, 0);
+    foodControl->SetTextStyleAndMaybeRefresh(&foodStyle, 0);
     turn_event_ui_refresh::RefreshTaggedControlWithLocalizedString(kControlTagFood, 0x2730, 0);
   }
 
@@ -1501,7 +1501,7 @@ void TViewMgr::HandleTurnEventVtableSlot60ActivateMainDialog(int) {
   g_pCursorControlPanel->InitializeMapHintTextStyleAndThemeFlags(0x2b6c, 0x2b67);
 
   CString emptyTitle(g_szEmptyString);
-  ApplySharedStringToControlState(emptyTitle, mainControl);
+  SetControlHoverHelpText(emptyTitle, mainControl);
 }
 
 // FUNCTION: IMPERIALISM 0x005da180
@@ -1516,7 +1516,7 @@ void TViewMgr::HandleTurnEventVtableSlot64RefreshMainHudTitles(int) {
   TView* mainControl = static_cast<TView*>(mainView->ResolveControlByTag(kControlTagMain));
   mainControl->AssertValid();
   CString emptyTitle(g_szEmptyString);
-  ApplySharedStringToControlState(emptyTitle, mainControl);
+  SetControlHoverHelpText(emptyTitle, mainControl);
 
   TView* queryControl = mainControl->ResolveControlByTag(kControlTagQuer);
   LoadUiStringByGroupAndIndexToControlObject(0x2730, 3, queryControl);
@@ -1530,7 +1530,7 @@ void TViewMgr::HandleTurnEventVtableSlot64RefreshMainHudTitles(int) {
         ->InitializeMapHintTextStyleAndThemeFlags(0x2b6c, 0x2b6b);
     CString titleString;
     g_pSimMgr->CopyScenarioNationSetupIntoFlowState(&titleString);
-    titleControl->EnableAndProcessFlag(titleString);
+    titleControl->SetHoverHelpText(titleString);
   }
   // 0x5bac50 is invoked on the 'main' deal-book control (the binary's receiver), not 'titL'.
   static_cast<TDealBookPicture*>(mainControl)->RefreshHudNationTitleControlsAndTheme(0x2b6c);
@@ -1628,7 +1628,7 @@ void RefreshMainMenuButtonLabel(TView* mainView, unsigned int controlTag, short 
   }
   CString label;
   g_pSimMgr->GetString(codeGroup, stringIndex, &label);
-  control->EnableAndProcessFlag(label);
+  control->SetHoverHelpText(label);
 }
 } // namespace
 
@@ -1683,7 +1683,7 @@ void TViewMgr::UiRuntimeSlotF8() {
 
   g_pCursorControlPanel->InitializeMapHintTextStyleAndThemeFlags(0x2b6b, 0x2b6c);
 
-  TControlPictureRectState styleDescriptor = {0, 0, 0, 0};
+  TUiTextStyleDescriptor styleDescriptor = {0, 0, 0, 0};
   BuildUiTextStyleDescriptor(&styleDescriptor, 0, 0xe, 0x2b6c);
   g_pCursorControlPanel->ApplyTextStyleDescriptorAndMaybeRefresh(&styleDescriptor, 1);
   g_pCursorControlPanel->SetTextThemeCodeAndMaybeRefresh(1, 0);
@@ -1697,7 +1697,7 @@ void TViewMgr::UiRuntimeSlotF8() {
   TControl* mainControl = static_cast<TControl*>(mainView->ResolveControlByTag(kControlTagMain));
   mainControl->AssertValid();
   CString emptyString(g_szEmptyString);
-  mainControl->EnableAndProcessFlag(emptyString);
+  mainControl->SetHoverHelpText(emptyString);
 
   RefreshMainMenuButtonLabel(mainView, kControlTagRand, 0x2737, 0, 0xdf0);
   RefreshMainMenuButtonLabel(mainView, kControlTagLoad, 0x2737, 1, 0xdf9);
@@ -2026,10 +2026,10 @@ int TViewMgr::MakePlanetSeedDialog(const char* instruction, CString& planetSeed,
   TStaticText* instructionText =
       static_cast<TStaticText*>(dialog->ResolveControlByTag(0x696e7374 /* 'inst' */));
   instructionText->AssertValid();
-  TControlPictureRectState instructionStyle;
-  instructionStyle.styleRef6 = 0;
+  TUiTextStyleDescriptor instructionStyle;
+  instructionStyle.textColor = 0;
   BuildUiTextStyleDescriptor(&instructionStyle, 0, 0xe, 0);
-  instructionText->SetCityProductionDialogPictureRectAndMaybeRefresh(&instructionStyle, 0);
+  instructionText->SetTextStyleAndMaybeRefresh(&instructionStyle, 0);
   CString instructionString(instruction);
   instructionText->AssignTextSharedRefIfChangedAndMaybeInvalidate(&instructionString, 0);
 
@@ -2037,10 +2037,10 @@ int TViewMgr::MakePlanetSeedDialog(const char* instruction, CString& planetSeed,
       static_cast<TEditText*>(dialog->ResolveControlByTag(0x706c616e /* 'plan' */));
   planetEdit->AssertValid();
   CString editText(planetSeed);
-  TControlPictureRectState editStyle;
-  editStyle.styleRef6 = 0;
+  TUiTextStyleDescriptor editStyle;
+  editStyle.textColor = 0;
   BuildUiTextStyleDescriptor(&editStyle, 0, 0xc, 0);
-  planetEdit->SetCityProductionDialogPictureRectAndMaybeRefresh(&editStyle, 0);
+  planetEdit->SetTextStyleAndMaybeRefresh(&editStyle, 0);
   planetEdit->InitDialogWindowAndSyncTitleIfChanged(&editText, 0);
   planetEdit->ActivateCityProductionViewIfAllowed();
   planetEdit->SetEditSelectionAndScrollCaret(0, static_cast<short>(editText.GetLength()), 1);

@@ -42,20 +42,20 @@ void TNewspaperView::BuildInterNationEventSummaryRowsForAdvisorDialog(int pageNa
   newsTexStream94 =
       g_pUiViewManager->LoadTableResourceStreamByName(g_pLanguageMgr->GetNewsTexPath());
 
-  TControlPictureRectState titleStyle;   // (face 0, 12pt)
-  TControlPictureRectState featureStyle; // (face 1, 14pt)
-  TControlPictureRectState plainStyle;   // (face 0, 14pt)
-  char* styleRefBytes = reinterpret_cast<char*>(&titleStyle.styleRef6);
+  TUiTextStyleDescriptor titleStyle;   // (face 0, 12pt)
+  TUiTextStyleDescriptor featureStyle; // (face 1, 14pt)
+  TUiTextStyleDescriptor plainStyle;   // (face 0, 14pt)
+  char* styleRefBytes = reinterpret_cast<char*>(&titleStyle.textColor);
   styleRefBytes[0] = 0;
   styleRefBytes[1] = 0;
   styleRefBytes[2] = 0;
   styleRefBytes[3] = 0;
-  char* featureRefBytes = reinterpret_cast<char*>(&featureStyle.styleRef6);
+  char* featureRefBytes = reinterpret_cast<char*>(&featureStyle.textColor);
   featureRefBytes[0] = 0;
   featureRefBytes[1] = 0;
   featureRefBytes[2] = 0;
   featureRefBytes[3] = 0;
-  char* plainRefBytes = reinterpret_cast<char*>(&plainStyle.styleRef6);
+  char* plainRefBytes = reinterpret_cast<char*>(&plainStyle.textColor);
   plainRefBytes[0] = 0;
   plainRefBytes[1] = 0;
   plainRefBytes[2] = 0;
@@ -71,7 +71,7 @@ void TNewspaperView::BuildInterNationEventSummaryRowsForAdvisorDialog(int pageNa
                     static_cast<short>(g_pSimMgr->quarterGateTick2c / 4) + 0x717);
   panelText = dateText + g_szListSeparator_00695760 + formatText;
   dateControl->AssignTextSharedRefIfChangedAndMaybeInvalidate(&panelText, 1);
-  dateControl->SetCityProductionDialogPictureRectAndMaybeRefresh(&titleStyle, 1);
+  dateControl->SetTextStyleAndMaybeRefresh(&titleStyle, 1);
 
   TStaticText* specialControl =
       static_cast<TStaticText*>(ResolveControlByTag(0x73706563)); // 'spec'
@@ -120,7 +120,7 @@ void TNewspaperView::BuildInterNationEventSummaryRowsForAdvisorDialog(int pageNa
     }
   }
   specialControl->AssignTextSharedRefIfChangedAndMaybeInvalidate(&panelText, 1);
-  specialControl->SetCityProductionDialogPictureRectAndMaybeRefresh(&titleStyle, 1);
+  specialControl->SetTextStyleAndMaybeRefresh(&titleStyle, 1);
 
   for (int col = 0; col < 3; col++) {
     int y = 0x50;
@@ -247,7 +247,7 @@ void TNewspaperView::BuildLocalizedNationListFromBitmaskWithConjunction(CString*
 // FUNCTION: IMPERIALISM 0x0055df50
 int TNewspaperView::AppendInterNationEventSummaryTextEntry(int column, int y, int recordId,
                                                            int recordLength,
-                                                           TControlPictureRectState* style,
+                                                           TUiTextStyleDescriptor* style,
                                                            int styleWord, CString* tokens) {
   (void)recordId;
   TDeluxeText* text;

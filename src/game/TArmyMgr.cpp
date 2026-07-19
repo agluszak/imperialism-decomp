@@ -1346,8 +1346,8 @@ void TArmyMgr::CreateTacticalBattleViewAndInitializeBattleSetup(TArmyStack* ourS
 
 // FUNCTION: IMPERIALISM 0x004a5ec0
 bool TArmyMgr::BuildMapOrderContextSummaryStringForNation(short cityRecordIndex,
-                                                          TControlPictureRectState* styleC,
-                                                          TControlPictureRectState* styleD) {
+                                                          TUiTextStyleDescriptor* styleC,
+                                                          TUiTextStyleDescriptor* styleD) {
   // TODO: port body @ 0x4a5ec0 (1580 bytes; not yet ported). Declared for real so
   // BuildMapHintOverlayTextAndDispatchUiMessages gets a correctly-typed call site.
   (void)cityRecordIndex;
@@ -1358,16 +1358,16 @@ bool TArmyMgr::BuildMapOrderContextSummaryStringForNation(short cityRecordIndex,
 
 // FUNCTION: IMPERIALISM 0x004a6680
 void TArmyMgr::BuildMapHintOverlayTextAndDispatchUiMessages(short cityRecordIndex) {
-  TControlPictureRectState styleA;
+  TUiTextStyleDescriptor styleA;
   InitializeUiTextStyleDescriptor(&styleA, 0, 0xe, 0x2b67, 1);
 
-  TControlPictureRectState styleB;
+  TUiTextStyleDescriptor styleB;
   BuildUiTextStyleDescriptor(&styleB, 0, 0xc, 0x2b67);
 
-  TControlPictureRectState styleC;
+  TUiTextStyleDescriptor styleC;
   InitializeUiTextStyleDescriptor(&styleC, 0, 0xa, 0x2b67, 3);
 
-  TControlPictureRectState styleD;
+  TUiTextStyleDescriptor styleD;
   InitializeUiTextStyleDescriptor(&styleD, 0, 0xa, 0x2b67, 3);
 
   if (!this->BuildMapOrderContextSummaryStringForNation(cityRecordIndex, &styleC, &styleD)) {

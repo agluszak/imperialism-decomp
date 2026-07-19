@@ -2,41 +2,23 @@
 
 #include "game/TView.h"
 
+// 10-byte packed text-style descriptor: three shorts plus a COLORREF-bearing text-color
+// field at offset 6, as built by BuildUiTextStyleDescriptor (0x5c3e80) and
+// BindUiResourceTextAndStyle (0x41b490). This is a reusable UI value type, not
+// TControl-specific storage -- TTextLine independently embeds the identical 10-byte
+// layout at its own +0x14 (styleDescriptor14).
 #pragma pack(push, 2)
-// 10-byte packed text-style descriptor: three shorts plus a 4-byte style ref at offset
-// 6, as built by BuildUiTextStyleDescriptor (0x5c3e80) and BindUiResourceTextAndStyle
-// (0x41b490) and consumed by TControl slot 0x6d (copied into the 10 bytes at
-// TControl+0x78, i.e. the commandTagDefaultParam0/1/2 view of the same region).
-struct TControlPictureRectState {
-  short mode;      // 0x0 — 3 when pointSize < 12, else 1
-  short flag2;     // 0x2
-  short pointSize; // 0x4
-  int styleRef6;   // 0x6
+struct TUiTextStyleDescriptor {
+  short fontFamily;     // 0x0 -- font-family index (CreateFontFromPresetAndAttachRegionHandle);
+                        // 3 when fontSize < 12, else 1
+  short fontStyleFlags; // 0x2 -- bold/italic/underline bits
+  short fontSize;       // 0x4 -- font size or size index
+  int textColor;        // 0x6 -- COLORREF, passed to CDC::SetTextColor
 };
 #pragma pack(pop)
 
-// Widget-hierarchy layout base for TControl: adds the 0x60-0x73 field region between TView
-// (ends 0x60) and TControl (starts 0x74). The template-dialog machinery that used to live
-// here was really CDialog-derived and now lives on TModalDialogBase
-// (include/game/TModalDialogBase.h); this class is a pure widget base with no dialog
-// behaviour.
-class TModalTemplateDialogBase : public TView {
-protected:
-  TModalTemplateDialogBase();
-
-public:
-  // Written directly by the turn-event dialog factory builders (frame/bevel style dword
-  // plus the 0x68-0x74 rect region shared with TControl::field74), so they stay public.
-  int hasCommandTagResource;
-  unsigned char commandTagResourceByte;
-  unsigned char padding_65_to_67[3];
-  int field68;
-  int field6C;
-  int field70;
-};
-
 // VTABLE: IMPERIALISM 0x64a098
-class TControl : public TModalTemplateDialogBase {
+class TControl : public TView {
 public:
   virtual ~TControl() override; // slot 0x01 (scalar deleting destructor)
   // slot 0x02 Serialize inherited unchanged (0x485e90)
@@ -141,10 +123,10 @@ public:
   virtual void DispatchPictureResourceCommand(int eventType, void* eventSender, void* eventDataA,
                                               void* eventDataB,
                                               int commandFlag); // slot 0x68 0x48e850
-  // Build this control's content bounds (via QueryContentBounds) then deflate by the
-  // 0x68-0x74 inset region — the shared "content rect with margins applied" primitive
-  // used by ApplyRectSlot110-family paint code. Some subclasses (e.g. TCivDescription)
-  // repurpose this vtable slot for an unrelated override rather than this semantic.
+  // Build this control's content bounds (via QueryContentBounds) then deflate by
+  // contentInsets68 -- the shared "content rect with margins applied" primitive used by
+  // ApplyRectSlot110-family paint code. Some subclasses (e.g. TCivDescription) repurpose
+  // this vtable slot for an unrelated override rather than this semantic.
   virtual void BuildInsetContentRect(RECT* boundsBuffer); // slot 0x69 0x48e980
   virtual void AssertCityProductionGlobalStateInitialized(int arg1,
                                                           int arg2); // slot 0x6a 0x429470
@@ -152,40 +134,34 @@ public:
   // One ignored stack arg (bare RET 0x4). Pure base slot inherited by 154
   // UI classes with no overrides. slot 0x6c 0x48e9e0
   virtual undefined ReturnZeroFromUiSlot6C(int unusedArg); // slot 0x6c 0x48e9e0
-  virtual void
-  SetCityProductionDialogPictureRectAndMaybeRefresh(TControlPictureRectState* state,
-                                                    char refreshNow); // slot 0x6d 0x48e7d0
-  virtual void SetControlPictureEntryAndMaybeRefresh(int* pictureEntryRef,
-                                                     bool refreshNow); // slot 0x6e 0x48e7a0
-  virtual char LogUnhandledDialogMethodAndReturnFalse();               // slot 0x6f 0x4294a0
+  virtual void SetTextStyleAndMaybeRefresh(const TUiTextStyleDescriptor* style,
+                                           char refreshNow); // slot 0x6d 0x48e7d0
+  virtual void SetTextColorAndMaybeRefresh(const int* textColor,
+                                           bool refreshNow); // slot 0x6e 0x48e7a0
+  virtual char LogUnhandledDialogMethodAndReturnFalse();     // slot 0x6f 0x4294a0
   virtual void SetControlStateFlagAndMaybeRefresh(bool enabledState,
                                                   bool refreshNow); // slot 0x70 0x48e810
   void SetDiplomacyNationSelectionFilterAndRefreshRows(short selectedNation);
 
-  int field74;
-  // 0x78-0x81 — one 10-byte region, two verified views: text widgets store the packed
-  // text-style descriptor (font family/style-flag/size shorts + COLORREF-bearing
-  // styleRef at +0x7e, fed to the cached-font engine and CDC by ApplyRectSlot110
-  // 0x48ffb0); picture/command widgets store the command-tag default params
-  // (SetControlPictureEntryAndMaybeRefresh writes the +0x7e styleRef6 int).
-#pragma pack(push, 2)
-  union {
-    TControlPictureRectState textStyle78;
-    struct {
-      int commandTagDefaultParam0;            // 0x78
-      int commandTagDefaultParam1;            // 0x7c
-      unsigned short commandTagDefaultParam2; // 0x80
-    };
-  };
-#pragma pack(pop)
-  unsigned char padding_82[2];
+  // 0x60 -- construction-time frame/style selector; SetUiResourceLayoutValues names its
+  // parameter "frameStyle". DispatchPictureResourceCommand later dispatches this same
+  // value as a command/event code (observed values: 4, 5, 6, 0xa, 0xc, 0xd, 0x22), so the
+  // field genuinely serves double duty rather than being a boolean "has resource" flag.
+  int frameStyle60;
+  // 0x64 -- enabled/mode state byte: SetControlStateFlagAndMaybeRefresh's enabledState;
+  // THQButton/TUpDownPictureButton also drive a multi-valued "mode" through it.
+  unsigned char controlState64;
+  unsigned char padding_65_to_67[3];
+  CRect contentInsets68; // 0x68-0x77 -- left/top/right/bottom content insets
+                         // (BuildInsetContentRect, TStaticText/TTEView::ApplyRectSlot110)
+  TUiTextStyleDescriptor textStyle78; // 0x78-0x81
 
   TControl();
   DECLARE_DYNCREATE(TControl)
   // Slot 0x08 override (0x00435760): controls cannot be cloned (no engineer-dialog
   // state); assert via the McAppUI invalidation thunk and return null.
   TObject* ShallowClone() override;
-  void SetHasCommandTagResource(int value);
+  void SetFrameStyle60(int value);
 
   virtual void HandleEvent(int commandId, TEventHandler* sourceHandler,
                            TEvent* event) override; // 0x0f 0x48e710
@@ -193,3 +169,5 @@ public:
                                                     int arg4) override;
   virtual int QuerySelectedIndexSlotBC() override;
 };
+
+ASSERT_SIZE(TControl, 0x84);

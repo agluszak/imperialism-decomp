@@ -11,7 +11,7 @@ IMPLEMENT_DYNCREATE(TEditText, TStaticText)
 
 // FUNCTION: IMPERIALISM 0x004903a0
 TEditText::TEditText() : TStaticText() {
-  this->hasCommandTagResource = 13;
+  this->frameStyle60 = 13;
   this->field_94 = nullptr;
   this->field_98 = nullptr;
   this->field_9c = 0xff;

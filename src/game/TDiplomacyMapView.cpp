@@ -1060,5 +1060,5 @@ void TDiplomacyMapView::RenderDiplomacyPendingPolicyIconsAndFrames() {
 // / HandleTurnEventVtableSlot64RefreshMainHudTitles (src/game/TViewMgr.cpp): the vtable
 // evidence (`just vtable TViewMgr`) shows both are TViewMgr's own vtable slots 0x60/0x64, not
 // TDiplomacyMapView methods -- neither body ever reads `this`, and this class's prior
-// attribution called TView::EnableAndProcessFlag with an implicit (wrong) `this` receiver
+// attribution called TView::SetHoverHelpText with an implicit (wrong) `this` receiver
 // instead of the real disassembly's explicitly-resolved 'main' control.

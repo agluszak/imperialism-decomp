@@ -46,7 +46,7 @@ void TBattleReportView::NoOpUiLifecycleHook(int arg) {
   // 14-byte style buffer: the 10-byte descriptor plus 4 explicitly zeroed tail bytes
   // (the original zeroes them once before the first Build call).
   struct {
-    TControlPictureRectState desc;
+    TUiTextStyleDescriptor desc;
     unsigned char tail[4];
   } style;
   style.tail[0] = 0;
@@ -61,28 +61,28 @@ void TBattleReportView::NoOpUiLifecycleHook(int arg) {
   BuildUiTextStyleDescriptor(&style.desc, 0, 0xe, 0x2b67);
   TControl* control = static_cast<TControl*>(ResolveControlByTag(0x72657375)); // 'user'
   control->AssertValid();
-  control->SetCityProductionDialogPictureRectAndMaybeRefresh(&style.desc, 0);
+  control->SetTextStyleAndMaybeRefresh(&style.desc, 0);
 
   BuildUiTextStyleDescriptor(&style.desc, 2, 0xe, 0x2b67);
   control = static_cast<TControl*>(ResolveControlByTag(0x6c6f6361)); // 'acol'
   control->AssertValid();
-  control->SetCityProductionDialogPictureRectAndMaybeRefresh(&style.desc, 0);
+  control->SetTextStyleAndMaybeRefresh(&style.desc, 0);
 
   BuildUiTextStyleDescriptor(&style.desc, 0, 0xc, 0x2b67);
   control = static_cast<TControl*>(ResolveControlByTag(0x6661646d)); // 'mdaf'
   control->AssertValid();
-  control->SetCityProductionDialogPictureRectAndMaybeRefresh(&style.desc, 0);
+  control->SetTextStyleAndMaybeRefresh(&style.desc, 0);
   control = static_cast<TControl*>(ResolveControlByTag(0x6561646d)); // 'mdae'
   control->AssertValid();
-  control->SetCityProductionDialogPictureRectAndMaybeRefresh(&style.desc, 0);
+  control->SetTextStyleAndMaybeRefresh(&style.desc, 0);
 
   BuildUiTextStyleDescriptor(&style.desc, 0, 0xa, 0x2b67);
   control = static_cast<TControl*>(ResolveControlByTag(0x66736870)); // 'phsf'
   control->AssertValid();
-  control->SetCityProductionDialogPictureRectAndMaybeRefresh(&style.desc, 0);
+  control->SetTextStyleAndMaybeRefresh(&style.desc, 0);
   control = static_cast<TControl*>(ResolveControlByTag(0x65736870)); // 'phse'
   control->AssertValid();
-  control->SetCityProductionDialogPictureRectAndMaybeRefresh(&style.desc, 0);
+  control->SetTextStyleAndMaybeRefresh(&style.desc, 0);
 
   int selectedOrdinal = -1;
   int remaining = g_pMapContextActionManager->mapContextActionRecordList04->GetSize();
@@ -223,8 +223,8 @@ void TBattleReportView::NoOpUiLifecycleHook(int arg) {
   g_pCursorControlPanel->SetTextThemeCodeAndMaybeRefresh(1, 1);
   g_pCursorControlPanel->InitializeMapHintTextStyleAndThemeFlags(0x2b67, 0x2b6c);
 
-  ApplySharedStringToControlState(g_pBattleReportSharedText_0064dc30,
-                                  ResolveControlByTag(0x6d61696e)); // 'main'
+  SetControlHoverHelpText(g_pBattleReportSharedText_0064dc30,
+                          ResolveControlByTag(0x6d61696e)); // 'main'
   LoadUiStringByGroupAndIndexToControlObject(0x273d, 0x16, ResolveControlByTag(0x6661646d));
   LoadUiStringByGroupAndIndexToControlObject(0x273d, 0x16, ResolveControlByTag(0x66736870));
   LoadUiStringByGroupAndIndexToControlObject(0x273d, 0x16, ResolveControlByTag(0x66666c67));

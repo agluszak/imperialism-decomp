@@ -19,17 +19,17 @@ TTEView::TTEView() {}
 // FUNCTION: IMPERIALISM 0x00486050
 void TTEView::ConstructTTEViewBaseState(int unusedA, TView* panel, int* offsetLayout,
                                         int* sizeLayout, int layoutParam5, int layoutParam6,
-                                        RECT* insetRect, TControlPictureRectState* style,
+                                        RECT* insetRect, TUiTextStyleDescriptor* style,
                                         short styleWord90, int unusedB, int unusedC) {
   (void)unusedA;
   (void)unusedB;
   (void)unusedC;
   InitializeTextEntryBaseAndOptionalStringResource(panel, offsetLayout, sizeLayout, layoutParam5,
                                                    layoutParam6, -1, 0);
-  field68 = insetRect->left;
-  field6C = insetRect->top;
-  field70 = insetRect->right;
-  field74 = insetRect->bottom;
+  contentInsets68.left = insetRect->left;
+  contentInsets68.top = insetRect->top;
+  contentInsets68.right = insetRect->right;
+  contentInsets68.bottom = insetRect->bottom;
   textStyle78 = *style;
   field90 = styleWord90;
 }
@@ -40,12 +40,9 @@ int TTEView::MeasureCurrentTextWidthInLayoutRect() {
   dc.Attach(CreateCompatibleDC(static_cast<HDC>(0)));
   CFont* font = UpdateGlobalFontPresetAndRebuildCachedFontIfDirty(&textStyle78);
   CFont* oldFont = dc.SelectObject(font);
-  RECT bounds;
+  CRect bounds;
   BuildRectFromSlot158(&bounds);
-  bounds.left += field68;
-  bounds.top += field6C;
-  bounds.right -= field70;
-  bounds.bottom -= field74;
+  bounds.DeflateRect(&contentInsets68);
   dc.DrawText(*text, text->GetLength(), &bounds, 0xd10);
   dc.SelectObject(oldFont);
   return bounds.right - bounds.left;
