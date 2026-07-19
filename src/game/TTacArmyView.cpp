@@ -354,7 +354,7 @@ undefined TTacArmyView::DrawTacticalTileInClipRect(int tileIndex, RECT* clipRect
   }
 
   // Column guide ticks between deployment columns (setup phase only).
-  if (tacticalBattle60->field10 == 0 && rowParity > 0) {
+  if (tacticalBattle60->battleLive10 == 0 && rowParity > 0) {
     g_pUiRuntimeContext->ApplyTurnEventPaletteColorByEventCode(0);
     if (tacticalBattle60->ApplyGridColumnSelectionGuard(tileIndex) &&
         grid[tileIndex].occupant4 == 0) {

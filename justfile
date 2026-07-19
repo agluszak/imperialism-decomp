@@ -116,6 +116,7 @@ ghidra-apply-source-full:
   just in-stack-audit
   just structural-signature-audit
   just datatype-hygiene-audit
+  just signature-evidence-union --strict
   just export-project
 
 # MUTATES: Ghidra DB (prune), config/original_entities.csv (WHOLESALE refresh).
@@ -716,6 +717,14 @@ ghidra-datatype-audit *args: _require-ghidra-install
 dedupe-ambiguous-datatypes *args: _require-ghidra-install
   uv run python -m tools.ghidra.dedupe_ambiguous_datatypes {{args}}
 
+# READ-ONLY: cross-check no_rtti class-model records against original-binary
+# evidence (operator new immediates, ctor/dtor max-offset scans, derived-class
+# zero-own-field chains). Writes build-msvc500/evidence/no_rtti_class_audit.csv.
+[doc('READ-ONLY: audit no_rtti class-model records against original-binary evidence')]
+[group('ghidra-inspect')]
+no-rtti-class-audit *args: _require-ghidra-install
+  uv run python -m tools.ghidra.no_rtti_class_audit {{args}}
+
 # Decompile benchmark gate: must-keep patterns for curated Ghidra typing work.
 # Pass --strict to also fail on missing should-improve patterns.
 [doc('Decompile benchmark gate for curated Ghidra typing work')]
@@ -903,6 +912,14 @@ layout-oracle *args:
 class-model-audit *args:
   uv run python -m tools.class_model_audit {{args}}
 
+# READ-ONLY: measures semantic field-name/type quality per class (weak fieldXX/
+# padXX names, void*, undefined placeholders) and ranks classes by active weak
+# bytes x code-reference weight. Writes build-msvc500/evidence/class_field_coverage.csv.
+[doc('READ-ONLY: semantic field-quality report ranking classes by weak-byte impact')]
+[group('ghidra-inspect')]
+class-field-coverage *args:
+  uv run python -m tools.class_field_coverage {{args}}
+
 # MUTATES: Ghidra DB (with --apply). Projects the VERIFIED class model into the DB:
 # sized structures replace the 1-byte stubs (references rewrite), game bases are
 # flattened at oracle offsets, MFC bases placed as single components, fields at
@@ -917,13 +934,16 @@ apply-class-model *args: _require-ghidra-install
   uv run python -m tools.ghidra.apply_class_model {{args}}
 
 # READ-ONLY structural convergence audit: for EVERY source/reviewed claim (not just
-# functions showing in_stack), compare the expected logical signature (source model +
-# clang decl index) against the DB signature and classify the gap (converged /
-# db_signature_incomplete / convention_mismatch / this_presence_mismatch /
-# param_count_mismatch), with per-row type-resolution quality (exact / canonical_alias
-# / generic_pointer_fallback / ambiguous_simple_name / unresolved). No DB write.
-# Writes build-msvc500/evidence/signature_convergence.csv.
-[doc('READ-ONLY: audit every source signature vs the DB, structurally (no DB write)')]
+# functions showing in_stack), compare the expected signature (source model + clang
+# decl index) against the DB signature on THREE separate tiers -- logical (cc/this/
+# arity/varargs: converged / db_cc_unknown / db_signature_incomplete /
+# convention_mismatch / this_presence_mismatch / param_count_mismatch /
+# varargs_mismatch), abi_storage (per-param + return ABI sizes, sret presence; only
+# evaluated once logical converges), and semantic (every resolved type is a REAL
+# match -- exact_complete/canonical_alias -- not just an ABI-compatible pointer
+# stand-in; only evaluated once abi_storage converges). No DB write. Writes
+# build-msvc500/evidence/signature_convergence.csv.
+[doc('READ-ONLY: audit every source signature vs the DB on 3 tiers (no DB write)')]
 [group('ghidra-inspect')]
 structural-signature-audit *args: _require-ghidra-install
   uv run python -m tools.ghidra.apply_source_signatures --structural-audit {{args}}
@@ -938,6 +958,31 @@ structural-signature-audit *args: _require-ghidra-install
 [group('ghidra-inspect')]
 datatype-hygiene-audit *args: _require-ghidra-install
   uv run python -m tools.ghidra.apply_source_signatures --datatype-audit {{args}}
+
+# READ-ONLY, no Ghidra needed (pure file I/O): merges the 3 per-mode projector
+# queues (in_stack/divergent/packed -- previously one shared file, silently
+# clobbered by whichever projector ran last) with the structural audit, datatype
+# hygiene audit, and in_stack_audit into ONE address-keyed view, so nothing masks
+# another phase's evidence. `--strict` fails on "unexplained structural divergence":
+# a non-converged structural row with zero trace in any other evidence source.
+# Writes build-msvc500/evidence/signature_evidence_union.csv.
+[doc('READ-ONLY: merge all signature-projection evidence files by address (no Ghidra)')]
+[group('ghidra-inspect')]
+signature-evidence-union *args:
+  uv run python -m tools.ghidra.signature_evidence_union {{args}}
+
+# READ-ONLY: distinct-type inventory over every source signature's remaining
+# opaque_pointee / generic_pointer_fallback / unresolved type-resolution grade
+# (ambiguous_simple_name and opaque_by_value are already driven to zero). Each
+# DISTINCT type text (not per-function) is classified as
+# canonical_game_class_exists / canonical_mfc_type_exists /
+# typedef_or_namespace_spelling_mismatch / missing_external_opaque_type /
+# stale_duplicate / genuinely_unknown. Writes
+# build-msvc500/evidence/weak_pointer_type_inventory.csv.
+[doc('READ-ONLY: classify every remaining weak source-signature pointer/value type')]
+[group('ghidra-inspect')]
+weak-pointer-type-inventory *args: _require-ghidra-install
+  uv run python -m tools.ghidra.weak_pointer_type_inventory {{args}}
 
 # MUTATES: Ghidra DB (with --apply).
 [private]

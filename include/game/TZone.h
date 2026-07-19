@@ -130,15 +130,15 @@ public:
   void AppendUniquePrimaryNeighbor(TZone* zone);
   // Picks the primaryNeighbors entry most at war with nationSlot: a neighbor qualifies
   // if it isn't a port zone or `nationSlot` doesn't hold flag D there, then scores it by
-  // how many of the (up to 7) g_apTerrainTypeDescriptorTable nations it lists in field10
-  // (its key mask) are currently at war with nationSlot per
+  // how many of the (up to 7) g_apTerrainTypeDescriptorTable nations it lists in
+  // nationKeyMask10 (its key mask) are currently at war with nationSlot per
   // TDiplomacyMgr::IsNationPairAtWar. Returns the highest-scoring neighbor, or null if
   // none qualify. 0x560e70.
   TZone* SelectBestPrimaryNeighborForNationDiplomacyMask(int nationSlot);
   // BFS relaxation step over primaryNeighbors, writing shortest known distance
-  // (in "hops") into field44. level == -1 means "start a fresh search": resets
-  // every zone's field44 to the 0x29a sentinel first, then reseeds at level 0.
-  // Recurses onto each neighbor with level+1 while that improves its field44.
+  // (in "hops") into distanceLevel44. level == -1 means "start a fresh search": resets
+  // every zone's distanceLevel44 to the 0x29a sentinel first, then reseeds at level 0.
+  // Recurses onto each neighbor with level+1 while that improves its distanceLevel44.
   void PropagateMapActionContextDistanceLevelsRecursive(short level); // 0x560f80
   // Zone-graph BFS distance from `this` to `other`, cached in a lazily-(re)built
   // g_pMapActionContextDistanceCache[thisOrd][otherOrd] byte matrix sized by
@@ -149,7 +149,7 @@ public:
   // 0x0055f4d0 — true when any secondaryNeighbors entry (a TGlobalMapCityScoreRecord*
   // under the documented stretch pun) has byte 0 (ownerNationCode00) == nationTag.
   char HasSecondaryNeighborWithNationTag(short nationTag);
-  // 0x0055f540 — true when key's bit is set in field10's low byte, or any
+  // 0x0055f540 — true when key's bit is set in nationKeyMask10's low byte, or any
   // secondaryNeighbors entry (TGlobalMapCityScoreRecord* stretch pun) has byte 0 == key.
   char IsZoneMaskOrArrayEntryPresentForKey(short key);
   // 0x0055f440 — true when any secondaryNeighbors entry (TGlobalMapCityScoreRecord*
@@ -157,7 +157,7 @@ public:
   // &g_pGlobalMapState->cityScoreTable[cityIndex].
   char ContainsCityStatePointerInZoneArrayByCityIndex(short cityIndex);
   // 0x560b00: whether this map-order context has a displayable primary navy order for
-  // `nation` (-1 = active nation): field10 bit set and a g_pNavyPrimaryOrderListHead
+  // `nation` (-1 = active nation): nationKeyMask10 bit set and a g_pNavyPrimaryOrderListHead
   // ship with field08 == this, matching owner, field0c == 0 (and field34 == 0 unless
   // skipField34Check). Ghidra's TCivToolbar attribution is junk.
   char CanDisplayMapOrderEntryInCurrentContext(short nation, char skipField34Check);
@@ -170,21 +170,26 @@ public:
   // entries (TGlobalMapCityScoreRecord* stretch pun).
   int ComputeMapActionContextNodeValueAverage();
 
-  short field04;                                // +0x04
+  // statusCode04: -1 sentinel means unset; GenerateZoneStatusCodeIfUnset (0x55f5c0) rolls a
+  // PRNG-selected value on first read, then GenerateMapActionContextDisplayNameAndHeadline
+  // (0x55f780) uses it as the GetString(0x275a, ...) headline-template index.
+  short statusCode04;                           // +0x04
   char pad06[2];                                // +0x06
   CString displayName;                          // +0x08
-  int field0c;                                  // +0x0c tile / terrain id storage
-  unsigned short field10;                       // +0x10 (key mask in nation context slices)
-  short field12;                                // +0x12 seed nation id arg
-  short field14;                                // +0x14 context ordinal
+  int tileOrTerrainId0c;                        // +0x0c tile / terrain id storage
+  unsigned short nationKeyMask10;                // +0x10 (key mask in nation context slices)
+  short seedNationId12;                         // +0x12 seed nation id arg
+  short contextOrdinal14;                       // +0x14 context ordinal
   char pad16[2];                                // +0x16
   TZone* prev18;                                // +0x18 older in g_pMapActionContextListHead chain
   TZone* next1c;                                // +0x1c newer link
-  short field20;                                // +0x20 active tile index
+  short activeTileIndex20;                      // +0x20 active tile index
   char pad22[2];                                // +0x22
   TZonePrimaryNeighborStretch primaryNeighbors; // +0x24
   TZoneSecondaryNeighborStretch secondaryNeighbors; // +0x34
-  short field44;                                    // +0x44
+  // distanceLevel44: BFS "hops" distance written by
+  // PropagateMapActionContextDistanceLevelsRecursive; 0x29a is the "unreached" sentinel.
+  short distanceLevel44;                             // +0x44
 
   TZone();
   void SetMapActionContextTargetTileAndRefreshMarkers(int nationSeedId, int tileIndex);
@@ -219,7 +224,7 @@ public:
   // each to the other's primaryNeighbors (GetOrAppendUnique).
   void ResolvePortZoneOwnerContextAndDispatch();
 
-  // 0x005609e0. If `nation` has this map-order context zone flagged (field10 bit) and a
+  // 0x005609e0. If `nation` has this map-order context zone flagged (nationKeyMask10 bit) and a
   // matching primary-order ship, builds and returns a new TTaskForce order entry for it
   // (via the TTaskForce(contextAnchor, requiredCount) ctor); otherwise returns null.
   // `nation` == -1 resolves the active nation. Called by
@@ -241,8 +246,8 @@ ASSERT_SIZE(TZonePrimaryNeighborStretch, 0x10);
 ASSERT_SIZE(TZoneSecondaryNeighborStretch, 0x10);
 ASSERT_SIZE(TZone, 0x48);
 
-// Walks g_pMapActionContextListHead (via prev18) for the zone whose field14 context
-// ordinal matches nodeId; -1 and misses return 0. Used by mission deserialization.
+// Walks g_pMapActionContextListHead (via prev18) for the zone whose contextOrdinal14
+// context ordinal matches nodeId; -1 and misses return 0. Used by mission deserialization.
 TZone* FindMapActionContextByNodeId(short nodeId); // 0x55f100
 
 // 0x564570 moved to TOcean::FindMapActionContextContainingNodeByIndex — every original

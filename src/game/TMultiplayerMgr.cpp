@@ -802,7 +802,7 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
       }
       TZone* portZone =
           g_pActiveMapOrderContext->FindFirstPortZoneContextByNation(static_cast<short>(dirSlot));
-      portZone->field14 = directory->portZoneOrdinalBySlot[dirSlot];
+      portZone->contextOrdinal14 = directory->portZoneOrdinalBySlot[dirSlot];
     }
     RefreshNationStatusLabelsAndCodesForSlotOrAll(-1);
     break;
@@ -1899,14 +1899,14 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
     TurnEvent24CityRecordPacket* cityRecord = static_cast<TurnEvent24CityRecordPacket*>(packet);
     TGlobalMapCityScoreRecord* city24 =
         &g_pGlobalMapState->cityScoreTable[cityRecord->cityRecordIndex];
-    city24->ownerNationCode00 = cityRecord->record.field00;
-    city24->developmentStage = cityRecord->record.field02;
-    city24->fortLevel03 = cityRecord->record.field03;
-    city24->lastTurnTick = cityRecord->record.field06;
+    city24->ownerNationCode00 = cityRecord->record.ownerNationCode00;
+    city24->developmentStage = cityRecord->record.developmentStage;
+    city24->fortLevel03 = cityRecord->record.fortLevel03;
+    city24->lastTurnTick = cityRecord->record.lastTurnTick;
     {
       // 10-short copy 0x82..0x95 (explicit word loop in the original, not rep movs).
       short* cityWordCursor = &city24->resourceDevelopmentCounts82[0];
-      short* recordWordCursor = cityRecord->record.block82;
+      short* recordWordCursor = cityRecord->record.resourceDevelopmentCounts82;
       int wordCountdown = 10;
       do {
         *cityWordCursor = *recordWordCursor;
@@ -1915,8 +1915,8 @@ unsigned char TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine(NetMes
         --wordCountdown;
       } while (wordCountdown != 0);
     }
-    city24->exploredByNationMaskA1 = cityRecord->record.fieldA1;
-    city24->resourcePresenceMaskA2 = cityRecord->record.fieldA2;
+    city24->exploredByNationMaskA1 = cityRecord->record.exploredByNationMaskA1;
+    city24->resourcePresenceMaskA2 = cityRecord->record.resourcePresenceMaskA2;
     break;
   }
   case 0x25: { // merge nation status tags; ding when exactly one nation stays busy
@@ -2587,37 +2587,37 @@ void TMultiplayerMgr::DispatchCityRedrawInvalidateEvent(short cityId) {
 
 // FUNCTION: IMPERIALISM 0x0054ae90
 NationStateRecordA8& NationStateRecordA8::operator=(const NationStateRecordA8& source) {
-  field00 = source.field00;
-  field01 = source.field01;
-  field02 = source.field02;
-  field03 = source.field03;
-  field04 = source.field04;
-  field06 = source.field06;
-  field08 = source.field08;
+  ownerNationCode00 = source.ownerNationCode00;
+  formerOwnerNationCode01 = source.formerOwnerNationCode01;
+  developmentStage = source.developmentStage;
+  fortLevel03 = source.fortLevel03;
+  cityTileIndex04 = source.cityTileIndex04;
+  lastTurnTick = source.lastTurnTick;
+  adjacentRegionCount08 = source.adjacentRegionCount08;
   for (int a = 0; a < 12; ++a) {
-    block0A[a] = source.block0A[a];
+    adjacentRegionIds0A[a] = source.adjacentRegionIds0A[a];
   }
   for (int b = 0; b < 12; ++b) {
-    block22[b] = source.block22[b];
+    adjacentRegionAnchorTiles22[b] = source.adjacentRegionAnchorTiles22[b];
   }
-  field3A = source.field3A;
+  linkedRegionCount = source.linkedRegionCount;
   field3B = source.field3B;
   field3C = source.field3C;
-  field3E = source.field3E;
-  field40 = source.field40;
+  secondaryNeighborTileIndex3e = source.secondaryNeighborTileIndex3e;
+  primaryNeighborTileIndex40 = source.primaryNeighborTileIndex40;
   for (int c = 0; c < 0x20; ++c) {
-    block42[c] = source.block42[c];
+    linkedRegionIds42[c] = source.linkedRegionIds42[c];
   }
   for (int d = 0; d < 10; ++d) {
-    block82[d] = source.block82[d];
+    resourceDevelopmentCounts82[d] = source.resourceDevelopmentCounts82[d];
   }
-  field98 = source.field98;
-  field9C = source.field9C;
-  fieldA0 = source.fieldA0;
-  fieldA1 = source.fieldA1;
-  fieldA2 = source.fieldA2;
-  fieldA3 = source.fieldA3;
-  sharedTextA4 = source.sharedTextA4;
+  reservedUnitChainSlot98 = source.reservedUnitChainSlot98;
+  reservedCityScoreSlot9C = source.reservedCityScoreSlot9C;
+  padA0 = source.padA0;
+  exploredByNationMaskA1 = source.exploredByNationMaskA1;
+  resourcePresenceMaskA2 = source.resourcePresenceMaskA2;
+  regionClassA3 = source.regionClassA3;
+  cityNameA4 = source.cityNameA4;
   return *this;
 }
 

@@ -428,7 +428,7 @@ void TTaskForce::SetMapOrderType3Or4AndQueue(char fUseType4) {
 
 // FUNCTION: IMPERIALISM 0x005533f0
 void TTaskForce::PromoteMapOrderChainAndQueue(TZone* pContextAnchor) {
-  // Reseed the zone-graph BFS distance levels (TZone::field44) from
+  // Reseed the zone-graph BFS distance levels (TZone::distanceLevel44) from
   // pContextAnchor before using them below to steer the candidate-promotion
   // walk. level == -1 means "start a fresh search" (see
   // TZone::PropagateMapActionContextDistanceLevelsRecursive).
@@ -464,7 +464,7 @@ void TTaskForce::PromoteMapOrderChainAndQueue(TZone* pContextAnchor) {
       do {
         TZone* candidate = *EnsurePrimaryNeighborSlot(current->primaryNeighbors, index);
         current = reinterpret_cast<TZone*>(owner);
-        if (candidate->field44 < current->field44) {
+        if (candidate->distanceLevel44 < current->distanceLevel44) {
           // Walk one hop closer to pContextAnchor: promote this neighbor to
           // be the new owner (re-fetches the slot, matching the original's
           // repeated ensure-slot call rather than reusing `candidate`).

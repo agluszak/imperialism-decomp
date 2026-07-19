@@ -1670,9 +1670,9 @@ void TArmyPlayer::RunTacticalAutoTurnControllerForActiveUnit() {
           unit, g_anTacticalTileHeuristicWeightsByAiState_00699500[13]);
     }
   } else if ((unit->aiStateCode2c == 5 || unit->aiStateCode2c == 2 || categoryCode == 4) &&
-             battle14->field74 < 2) {
+             battle14->roundCounter74 < 2) {
     targetTileIndex = homeTileIndex;
-  } else if (categoryCode == 6 && battle14->field74 < 2) {
+  } else if (categoryCode == 6 && battle14->roundCounter74 < 2) {
     targetTileIndex = SelectBestTacticalTileByWeightedHeuristics(
         unit, g_anTacticalTileHeuristicWeightsByAiState_00699500[18]);
   } else {
@@ -1686,7 +1686,7 @@ void TArmyPlayer::RunTacticalAutoTurnControllerForActiveUnit() {
   // Phase 2: march toward it, one echoed step at a time (guarded at 200 steps).
   if (targetTileIndex != unit->tileIndex8) {
     int moveGuard = 200;
-    while (battle14->field48 != 0 && unit->state1c == 0 && unit->tileIndex8 != targetTileIndex) {
+    while (battle14->pendingEndOfActionFlag48 != 0 && unit->state1c == 0 && unit->tileIndex8 != targetTileIndex) {
       if (moveGuard-- == 0) {
         break;
       }
@@ -1695,7 +1695,7 @@ void TArmyPlayer::RunTacticalAutoTurnControllerForActiveUnit() {
   }
 
   // Phase 3: act from the reached tile.
-  if (battle14->field48 != 0 && unit->state1c == 0) {
+  if (battle14->pendingEndOfActionFlag48 != 0 && unit->state1c == 0) {
     if (unit->unitTypeC >= 0x1b) {
       // Officer types: rally the first adjacent friendly whose morale dropped below
       // its strength.
@@ -1747,7 +1747,7 @@ void TArmyPlayer::RunTacticalAutoTurnControllerForActiveUnit() {
       if (fireTarget != 0) {
         battle14->ExecuteTacticalActionAndQueueEventIfNoAdjacentValidTarget(unit,
                                                                             fireTarget->tileIndex8);
-        if (battle14->field48 != 0 &&
+        if (battle14->pendingEndOfActionFlag48 != 0 &&
             g_awTacticalUnitAiClassByUnitType_006693B8[unit->unitTypeC] == 1 &&
             unit->actionPoints28 != 0) {
           int aiState = unit->aiStateCode2c;
@@ -1772,7 +1772,7 @@ void TArmyPlayer::RunTacticalAutoTurnControllerForActiveUnit() {
   }
 
   // Hand the turn back.
-  if (battle14->field48 != 0) {
+  if (battle14->pendingEndOfActionFlag48 != 0) {
     battle14->QueueTacticalEventPacket232A();
   }
 }

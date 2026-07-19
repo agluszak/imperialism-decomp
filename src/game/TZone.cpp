@@ -102,10 +102,10 @@ IMPLEMENT_DYNCREATE(TZone, TObject)
 
 // FUNCTION: IMPERIALISM 0x0055e700
 TZone::TZone()
-    : field04(-1), displayName(), field0c(-1), field10(0), field12(-1), field14(0),
-      prev18(static_cast<TZone*>(g_pMapActionContextListHead)), next1c(0), field20(-1),
-      primaryNeighbors(), secondaryNeighbors(), field44(0) {
-  field14 = static_cast<short>(g_nMapActionContextCount);
+    : statusCode04(-1), displayName(), tileOrTerrainId0c(-1), nationKeyMask10(0), seedNationId12(-1), contextOrdinal14(0),
+      prev18(static_cast<TZone*>(g_pMapActionContextListHead)), next1c(0), activeTileIndex20(-1),
+      primaryNeighbors(), secondaryNeighbors(), distanceLevel44(0) {
+  contextOrdinal14 = static_cast<short>(g_nMapActionContextCount);
   g_nMapActionContextCount = g_nMapActionContextCount + 1;
   g_pMapActionContextListHead = this;
   if (prev18 != 0) {
@@ -147,7 +147,7 @@ bool TZone::QueryZoneCapabilityFlagE(int unused) {
 // FUNCTION: IMPERIALISM 0x0055e8c0
 bool TZone::HasZoneActiveChildCount(int unused) {
   (void)unused;
-  return field44 > 0;
+  return distanceLevel44 > 0;
 }
 
 // FUNCTION: IMPERIALISM 0x0055e8e0
@@ -274,18 +274,18 @@ void TZone::Free() {
 void TZone::ReadFrom(TStream* stream) {
   TObject::ReadFrom(stream);
   stream->streamSlot70(&displayName, 0x20);
-  stream->ReadBytes(&field04, 2);
-  stream->ReadBytes(&field0c, 4);
-  stream->ReadBytes(&field12, 2);
-  stream->ReadBytes(&field20, 2);
+  stream->ReadBytes(&statusCode04, 2);
+  stream->ReadBytes(&tileOrTerrainId0c, 4);
+  stream->ReadBytes(&seedNationId12, 2);
+  stream->ReadBytes(&activeTileIndex20, 2);
   if (g_nSaveFormatVersion < 0x12) {
-    field14 = static_cast<short>(g_nMapActionContextCount);
+    contextOrdinal14 = static_cast<short>(g_nMapActionContextCount);
     ++g_nMapActionContextCount;
   } else {
-    stream->ReadBytes(&field14, 2);
+    stream->ReadBytes(&contextOrdinal14, 2);
   }
-  field10 = 0;
-  field44 = 0;
+  nationKeyMask10 = 0;
+  distanceLevel44 = 0;
 
   if (primaryNeighbors.Data() != 0) {
     void* oldData = primaryNeighbors.Data();
@@ -339,11 +339,11 @@ void TZone::ReadFrom(TStream* stream) {
 void TZone::WriteTo(TStream* stream) {
   TObject::WriteTo(stream);
   stream->streamSlotAc(&displayName);
-  stream->WriteBytesSlot78(&field04, 2);
-  stream->WriteBytesSlot78(&field0c, 4);
-  stream->WriteBytesSlot78(&field12, 2);
-  stream->WriteBytesSlot78(&field20, 2);
-  stream->WriteBytesSlot78(&field14, 2);
+  stream->WriteBytesSlot78(&statusCode04, 2);
+  stream->WriteBytesSlot78(&tileOrTerrainId0c, 4);
+  stream->WriteBytesSlot78(&seedNationId12, 2);
+  stream->WriteBytesSlot78(&activeTileIndex20, 2);
+  stream->WriteBytesSlot78(&contextOrdinal14, 2);
 }
 
 // FUNCTION: IMPERIALISM 0x0055f070
@@ -361,7 +361,7 @@ short TZone::GetContextOrdinalOrInvalid() {
   if (this == 0) {
     return -1;
   }
-  return field14;
+  return contextOrdinal14;
 }
 
 // FUNCTION: IMPERIALISM 0x0055f100
@@ -372,7 +372,7 @@ TZone* FindMapActionContextByNodeId(short nodeId) {
   TZone* node;
   for (node = g_pMapActionContextListHead; node != 0; node = node->prev18) {
     // Original inlines GetContextOrdinalOrInvalid (null -> -1, unreachable here).
-    short ordinal = (node != 0) ? node->field14 : -1;
+    short ordinal = (node != 0) ? node->contextOrdinal14 : -1;
     if (ordinal == nodeId) {
       break;
     }
@@ -453,7 +453,7 @@ char TZone::HasSecondaryNeighborWithNationTag(short nationTag) {
 // FUNCTION: IMPERIALISM 0x0055f540
 char TZone::IsZoneMaskOrArrayEntryPresentForKey(short key) {
   unsigned char keyBit = static_cast<unsigned char>(1 << key);
-  if ((field10 & keyBit) != 0) {
+  if ((nationKeyMask10 & keyBit) != 0) {
     return 1;
   }
   unsigned int entryCount = static_cast<unsigned int>(this->secondaryNeighbors.Count());
@@ -477,7 +477,7 @@ char TZone::IsZoneMaskOrArrayEntryPresentForKey(short key) {
 
 // FUNCTION: IMPERIALISM 0x0055f5c0
 void TZone::GenerateZoneStatusCodeIfUnset() {
-  if (field04 != -1) {
+  if (statusCode04 != -1) {
     return; // status code already assigned
   }
   short category;
@@ -545,7 +545,7 @@ void TZone::GenerateZoneStatusCodeIfUnset() {
     }
   }
   g_zoneStatusCodePrngSeed_006a5aec = g_zoneStatusCodePrngSeed_006a5aec * 0x15a4e35 + 1;
-  field04 = static_cast<short>(((g_zoneStatusCodePrngSeed_006a5aec >> 0xc) & 3) + category * 4);
+  statusCode04 = static_cast<short>(((g_zoneStatusCodePrngSeed_006a5aec >> 0xc) & 3) + category * 4);
 }
 
 // FUNCTION: IMPERIALISM 0x0055f780
@@ -611,7 +611,7 @@ void TZone::GenerateMapActionContextDisplayNameAndHeadline(void* usedCityFlags,
   }
   // Build the headline by expanding the status-code-selected template with the display name.
   CString headlineTemplate;
-  g_pSimMgr->GetString(0x275a, field04, &headlineTemplate);
+  g_pSimMgr->GetString(0x275a, statusCode04, &headlineTemplate);
   CString expanded;
   scanBracketExpressions(g_pSimMgr, &expanded, headlineTemplate, static_cast<LPCSTR>(displayName));
   displayName = expanded;
@@ -635,30 +635,30 @@ void TZoneSecondaryNeighborStretch::ResizePointerArrayCapacityByRequestedCount(i
 
 // FUNCTION: IMPERIALISM 0x0055fb60
 void TZone::SetMapActionContextTargetTileAndRefreshMarkers(int nationSeedId, int tileIndex) {
-  field12 = static_cast<short>(nationSeedId);
+  seedNationId12 = static_cast<short>(nationSeedId);
   unsigned short resolvedTile = static_cast<unsigned short>(tileIndex);
   if (resolvedTile == 0xffff) {
     resolvedTile = static_cast<unsigned short>(
         g_pGlobalMapState->ComputeRepresentativeTileIndexForTerrainTypeWithWrapBias(
             static_cast<short>(nationSeedId), 0));
   }
-  field0c = static_cast<int>(static_cast<short>(resolvedTile));
-  field20 = static_cast<short>(field0c);
+  tileOrTerrainId0c = static_cast<int>(static_cast<short>(resolvedTile));
+  activeTileIndex20 = static_cast<short>(tileOrTerrainId0c);
   if (QueryPortZoneCapability() != 0) {
-    SetMapTileStateByteAndNotifyObserver(field20, -0xe);
+    SetMapTileStateByteAndNotifyObserver(activeTileIndex20, -0xe);
     return;
   }
-  SetMapTileStateByteAndNotifyObserver(field20, -0x10);
-  field20 = g_pGlobalMapState->StepHexTileIndexByDirectionWithWrapRules(field20, 5);
-  SetMapTileStateByteAndNotifyObserver(field20, -0x12);
-  field20 = g_pGlobalMapState->StepHexTileIndexByDirectionWithWrapRules(field20, 0);
-  SetMapTileStateByteAndNotifyObserver(field20, -0x14);
+  SetMapTileStateByteAndNotifyObserver(activeTileIndex20, -0x10);
+  activeTileIndex20 = g_pGlobalMapState->StepHexTileIndexByDirectionWithWrapRules(activeTileIndex20, 5);
+  SetMapTileStateByteAndNotifyObserver(activeTileIndex20, -0x12);
+  activeTileIndex20 = g_pGlobalMapState->StepHexTileIndexByDirectionWithWrapRules(activeTileIndex20, 0);
+  SetMapTileStateByteAndNotifyObserver(activeTileIndex20, -0x14);
 }
 
 // FUNCTION: IMPERIALISM 0x0055fe60
 short TZone::FindNearestActiveSeaContextTileFromOffset216() {
   short stepSign = 1;
-  short tileIndex = static_cast<short>(field0c + 0xd8);
+  short tileIndex = static_cast<short>(tileOrTerrainId0c + 0xd8);
   short stepMagnitude = 1;
   for (;;) {
     TTerrainStateRecordView& tileRecord = g_pGlobalMapState->terrainStateTable[tileIndex];
@@ -681,7 +681,7 @@ short TZone::FindNearestActiveSeaContextTileFromOffset216() {
 
 // FUNCTION: IMPERIALISM 0x0055fef0
 short TZone::GetActiveNationSlotTile() {
-  short tileIndex = static_cast<short>(field0c);
+  short tileIndex = static_cast<short>(tileOrTerrainId0c);
   short stepSign = 1;
   short stepMagnitude = 1;
   for (;;) {
@@ -802,7 +802,7 @@ short TZone::FindBestCoastalTileForContextAndCityStateByHeuristic(int contextCit
   }
 
   if (static_cast<short>(tileCandidate) > 0x194f) {
-    tileCandidate = static_cast<unsigned short>(static_cast<short>(field0c) + 0x6c);
+    tileCandidate = static_cast<unsigned short>(static_cast<short>(tileOrTerrainId0c) + 0x6c);
   }
 
   short bestTile = static_cast<short>(tileCandidate);
@@ -862,26 +862,26 @@ short TZone::FindBestCoastalTileForContextAndCityStateByHeuristic(int contextCit
 
 // FUNCTION: IMPERIALISM 0x00560580
 void TZone::SetMapOrderUiFlag(int flag) {
-  unsigned char tileStateByte = g_pGlobalMapState->terrainStateTable[field20].tileActionClass16;
+  unsigned char tileStateByte = g_pGlobalMapState->terrainStateTable[activeTileIndex20].tileActionClass16;
   if (((static_cast<unsigned char>(flag != 0) !=
         static_cast<unsigned char>(static_cast<signed char>(tileStateByte) < 0 ? 1 : 0)) &&
        (g_pUiRuntimeContext != 0)) &&
       (g_pUiRuntimeContext->mapUberPictureF0 != 0)) {
     char sign = static_cast<char>((-(static_cast<int>(flag != 0)) & 2) - 1);
     if (QueryPortZoneCapability() != 0) {
-      SetMapTileStateByteAndNotifyObserver(field20, static_cast<int>(sign) * 0xe);
-      NotifyMapUberPictureTileMarker(field20);
+      SetMapTileStateByteAndNotifyObserver(activeTileIndex20, static_cast<int>(sign) * 0xe);
+      NotifyMapUberPictureTileMarker(activeTileIndex20);
       return;
     }
     int magnitude = static_cast<int>(sign);
-    SetMapTileStateByteAndNotifyObserver(field20, magnitude << 4);
-    NotifyMapUberPictureTileMarker(field20);
-    field20 = g_pGlobalMapState->StepHexTileIndexByDirectionWithWrapRules(field20, 5);
-    SetMapTileStateByteAndNotifyObserver(field20, magnitude * 0x12);
-    NotifyMapUberPictureTileMarker(field20);
-    field20 = g_pGlobalMapState->StepHexTileIndexByDirectionWithWrapRules(field20, 0);
-    SetMapTileStateByteAndNotifyObserver(field20, magnitude * 0x14);
-    NotifyMapUberPictureTileMarker(field20);
+    SetMapTileStateByteAndNotifyObserver(activeTileIndex20, magnitude << 4);
+    NotifyMapUberPictureTileMarker(activeTileIndex20);
+    activeTileIndex20 = g_pGlobalMapState->StepHexTileIndexByDirectionWithWrapRules(activeTileIndex20, 5);
+    SetMapTileStateByteAndNotifyObserver(activeTileIndex20, magnitude * 0x12);
+    NotifyMapUberPictureTileMarker(activeTileIndex20);
+    activeTileIndex20 = g_pGlobalMapState->StepHexTileIndexByDirectionWithWrapRules(activeTileIndex20, 0);
+    SetMapTileStateByteAndNotifyObserver(activeTileIndex20, magnitude * 0x14);
+    NotifyMapUberPictureTileMarker(activeTileIndex20);
   }
 }
 
@@ -892,7 +892,7 @@ TTaskForce* TZone::CreateTaskForceFromNavyOrdersForNationIfEligible(short nation
     resolvedNation = g_pSimMgr->GetActiveNationId();
   }
   unsigned char nationBit = static_cast<unsigned char>(1 << resolvedNation);
-  if ((field10 & nationBit) != 0) {
+  if ((nationKeyMask10 & nationBit) != 0) {
     for (TShip* ship = GetNavyPrimaryOrderListHead(); ship != nullptr; ship = ship->nextOlder24) {
       if (ship->field08 == this && ship->ownerNationSlot14 == resolvedNation &&
           ship->ownerOrderEntry0c == 0) {
@@ -918,7 +918,7 @@ char TZone::CanDisplayMapOrderEntryInCurrentContext(short nation, char skipField
     nation = g_pSimMgr->GetActiveNationId();
   }
   unsigned char nationBit = static_cast<unsigned char>(1 << nation);
-  if ((field10 & nationBit) == 0) {
+  if ((nationKeyMask10 & nationBit) == 0) {
     return 0;
   }
   for (TShip* ship = GetNavyPrimaryOrderListHead(); ship != 0; ship = ship->nextOlder24) {
@@ -947,7 +947,7 @@ TZone* TZone::SelectBestPrimaryNeighborForNationDiplomacyMask(int nationSlot) {
       int warCount = 0;
       for (int otherNation = 0; otherNation < 7; ++otherNation) {
         if (g_apTerrainTypeDescriptorTable[otherNation] != 0 &&
-            (neighbor->field10 & (1 << otherNation)) != 0 &&
+            (neighbor->nationKeyMask10 & (1 << otherNation)) != 0 &&
             g_pDiplomacyTurnStateManager->IsNationPairAtWar(nationSlot, otherNation)) {
           ++warCount;
         }
@@ -965,12 +965,12 @@ TZone* TZone::SelectBestPrimaryNeighborForNationDiplomacyMask(int nationSlot) {
 void TZone::PropagateMapActionContextDistanceLevelsRecursive(short level) {
   if (level == -1) {
     for (TZone* node = g_pMapActionContextListHead; node != 0; node = node->prev18) {
-      node->field44 = 0x29a;
+      node->distanceLevel44 = 0x29a;
     }
     level = 0;
   }
-  if (level < field44) {
-    field44 = level;
+  if (level < distanceLevel44) {
+    distanceLevel44 = level;
     for (int i = primaryNeighbors.Count() - 1; i >= 0; --i) {
       primaryNeighbors.EnsureCapacityAtLeast(i + 1);
       if (primaryNeighbors.Count() <= i) {
@@ -1006,11 +1006,11 @@ short TZone::GetCachedMapActionContextDistanceOrRecompute(TZone* other) {
 
   if (cachedDistance < 0) {
     for (TZone* node = g_pMapActionContextListHead; node != 0; node = node->prev18) {
-      node->field44 = 0x29a;
+      node->distanceLevel44 = 0x29a;
     }
 
-    if (field44 > 0) {
-      field44 = 0;
+    if (distanceLevel44 > 0) {
+      distanceLevel44 = 0;
       for (int i = primaryNeighbors.Count() - 1; i >= 0; --i) {
         primaryNeighbors.EnsureCapacityAtLeast(i + 1);
         if (primaryNeighbors.Count() <= i) {
@@ -1025,8 +1025,8 @@ short TZone::GetCachedMapActionContextDistanceOrRecompute(TZone* other) {
          writeNode = writeNode->prev18) {
       short nodeOrd = writeNode->GetContextOrdinalOrInvalid();
       cache = static_cast<char*>(g_pMapActionContextDistanceCache);
-      cache[thisOrd * g_nMapActionContextCount + nodeOrd] = static_cast<char>(writeNode->field44);
-      cache[nodeOrd * g_nMapActionContextCount + thisOrd] = static_cast<char>(writeNode->field44);
+      cache[thisOrd * g_nMapActionContextCount + nodeOrd] = static_cast<char>(writeNode->distanceLevel44);
+      cache[nodeOrd * g_nMapActionContextCount + thisOrd] = static_cast<char>(writeNode->distanceLevel44);
     }
 
     cache = static_cast<char*>(g_pMapActionContextDistanceCache);
@@ -1135,7 +1135,7 @@ TZone* TZone::FindPortZoneByTile(short nTileIndex) {
     if (zone == 0) {
       return 0;
     }
-    if (static_cast<short>(zone->field0c) == nTileIndex || zone->field20 == nTileIndex ||
+    if (static_cast<short>(zone->tileOrTerrainId0c) == nTileIndex || zone->activeTileIndex20 == nTileIndex ||
         static_cast<TPortZone*>(zone)->field48 == nTileIndex) {
       return zone;
     }
@@ -1238,7 +1238,7 @@ void PopulatePortZoneAdjacencyToNearbyCityContexts(void) {
       context = TZone::GetFirstPortZone();
       while (context != 0) {
         short ti = static_cast<short>(tileIndex);
-        if (static_cast<short>(context->field0c) == ti || context->field20 == ti ||
+        if (static_cast<short>(context->tileOrTerrainId0c) == ti || context->activeTileIndex20 == ti ||
             static_cast<TPortZone*>(context)->field48 == ti) {
           break;
         }

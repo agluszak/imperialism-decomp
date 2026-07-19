@@ -20,11 +20,12 @@ IMPLEMENT_DYNCREATE(TOceanDialog, TWorldView)
 TOceanDialog::TOceanDialog() : scrollRowOffset7c(0), scrollColOffset7e(0) {
   // Inherited TWorldView viewport fields seeded from the ocean-dialog seed globals
   // (0x6a3ff0/0x6a3ff4); their only writer is the reset helper at 0x56a3b0 which zeroes
-  // both. field76/field78 are fixed layout constants for the ocean dialog.
+  // both. projectionScale76/previewSquareRadius78 are fixed layout constants for the
+  // ocean dialog.
   viewportOffsetX = g_nOceanDialogSeedViewportOffsetX;
   viewportOffsetY = g_nOceanDialogSeedViewportOffsetY;
-  field76 = 4;
-  field78 = 0x10;
+  projectionScale76 = 4;
+  previewSquareRadius78 = 0x10;
 }
 
 // SYNTHETIC: IMPERIALISM 0x00565ee0

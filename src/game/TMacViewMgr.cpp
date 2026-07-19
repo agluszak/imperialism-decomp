@@ -135,22 +135,22 @@ StrategicMapCallbackRecord::~StrategicMapCallbackRecord() {
 // FUNCTION: IMPERIALISM 0x004d4b90
 StrategicMapCallbackRecord::StrategicMapCallbackRecord() {
   ownedBuffer04 = 0;
-  field08 = 0;
-  field0c = 0;
+  bufferCapacity08 = 0;
+  committedLength0c = 0;
   dispatchTable00 = 0x006404a4;
-  field10 = 0;
-  field14 = 0;
-  field18 = 0;
+  appendCursor10 = 0;
+  alignmentCursor14 = 0;
+  hadTrailingPadding18 = 0;
   ownedBuffer20 = 0;
-  field24 = 0;
-  field28 = 0;
+  cursorBufferSize24 = 0;
+  cursorBufferInitialized28 = 0;
   subobjectDispatchTable1c = 0x006404a8;
-  field2c = 0;
+  lastBoundSurface2c = 0;
 }
 
 // FUNCTION: IMPERIALISM 0x004d4e40
 unsigned char* StrategicMapCallbackRecord::EnsureOpcodeBufferByteAtIndex(int index) {
-  if (index >= field08) {
+  if (index >= bufferCapacity08) {
     int required = index + 1;
     int newCapacity = required + required;
     if (newCapacity < required) {
@@ -158,16 +158,16 @@ unsigned char* StrategicMapCallbackRecord::EnsureOpcodeBufferByteAtIndex(int ind
     }
 
     char* newBuffer = new char[newCapacity];
-    if (ownedBuffer04 != 0 && field0c > 0) {
-      memcpy(newBuffer, ownedBuffer04, field0c);
+    if (ownedBuffer04 != 0 && committedLength0c > 0) {
+      memcpy(newBuffer, ownedBuffer04, committedLength0c);
     }
     delete[] ownedBuffer04;
     ownedBuffer04 = newBuffer;
-    field08 = newCapacity;
+    bufferCapacity08 = newCapacity;
   }
 
-  if (index >= field0c) {
-    field0c = index + 1;
+  if (index >= committedLength0c) {
+    committedLength0c = index + 1;
   }
   return reinterpret_cast<unsigned char*>(ownedBuffer04 + index);
 }
@@ -177,7 +177,7 @@ void StrategicMapCallbackRecord::BuildBitmapMaskOpcodeBufferFromResourceRows(int
                                                                              int width, int height,
                                                                              int surface,
                                                                              int transparentPixel) {
-  field2c = surface;
+  lastBoundSurface2c = surface;
 
   CDib* dib = g_pModuleLibraryCacheState->LoadBmpResourceByIdCached(
       static_cast<unsigned short>(resourceId));
@@ -218,10 +218,10 @@ void StrategicMapCallbackRecord::BuildBitmapMaskOpcodeBufferFromResourceRows(int
 
 // FUNCTION: IMPERIALISM 0x004d5580
 StrategicMapCallbackRecord* StrategicMapCallbackRecord::AppendOpcodeByte(int value) {
-  unsigned int index = static_cast<unsigned int>(field10);
+  unsigned int index = static_cast<unsigned int>(appendCursor10);
   int newCount = index + 1;
-  field10 = newCount;
-  if (index >= static_cast<unsigned int>(field08)) {
+  appendCursor10 = newCount;
+  if (index >= static_cast<unsigned int>(bufferCapacity08)) {
     unsigned int grownCapacity = static_cast<unsigned int>(newCount) * 2;
     unsigned int clampedCapacity = grownCapacity;
     if (0x7fffffff < grownCapacity) {
@@ -230,14 +230,14 @@ StrategicMapCallbackRecord* StrategicMapCallbackRecord::AppendOpcodeByte(int val
     char* grown = static_cast<char*>(realloc(ownedBuffer04, grownCapacity));
     if (grown == 0) {
       ownedBuffer04 = static_cast<char*>(realloc(ownedBuffer04, newCount));
-      field08 = newCount;
+      bufferCapacity08 = newCount;
     } else {
       ownedBuffer04 = grown;
-      field08 = clampedCapacity;
+      bufferCapacity08 = clampedCapacity;
     }
   }
-  if (index >= static_cast<unsigned int>(field0c)) {
-    field0c = newCount;
+  if (index >= static_cast<unsigned int>(committedLength0c)) {
+    committedLength0c = newCount;
   }
   ownedBuffer04[index] = static_cast<char>(value);
   return this;
@@ -251,12 +251,12 @@ void StrategicMapCallbackRecord::AppendOpcodeBytePair(int value) {
 
 // FUNCTION: IMPERIALISM 0x004d5720
 void StrategicMapCallbackRecord::FinalizeOpcodeBufferAlignment() {
-  while (((reinterpret_cast<unsigned int>(ownedBuffer04) + field14) & 3) != 0) {
+  while (((reinterpret_cast<unsigned int>(ownedBuffer04) + alignmentCursor14) & 3) != 0) {
     AppendOpcodeByte(0);
-    field14 = (field14 + 1) & 3;
+    alignmentCursor14 = (alignmentCursor14 + 1) & 3;
   }
-  if (field14 != 0) {
-    field18 = 1;
+  if (alignmentCursor14 != 0) {
+    hadTrailingPadding18 = 1;
   }
 }
 
