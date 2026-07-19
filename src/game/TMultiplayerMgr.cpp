@@ -147,6 +147,7 @@ struct TurnEvent15Packet : NetMessage {
 #include "game/TViewMgr.h"
 #include "game/TApplication.h"
 #include "game/TAssetMgr.h"
+#include "game/TRadioTextCluster.h"
 #include "game/TMacViewMgr.h"
 #include "game/TCountry.h"
 #include "game/TSoundPlayer.h"
@@ -155,6 +156,7 @@ struct TurnEvent15Packet : NetMessage {
 #include "game/TControl.h"
 #include "game/TDeluxeText.h"
 #include "game/TDropShadowText.h"
+#include "game/TEditText.h"
 #include "game/TNewsMgr.h"
 #include "game/TLanguageMgr.h"
 #include "game/TLoungeDialog.h"
@@ -167,6 +169,7 @@ struct TurnEvent15Packet : NetMessage {
 #include "game/TTextPictureButton.h"
 #include "game/quickdraw_rendering.h"
 #include "game/turn_event_dialog_provisional.h"
+#include "game/ui_control_tags.h"
 #include "game/ui_invalidation_guard.h"
 #include "game/ui_text_label_helpers_decls.h"
 #include <cstdlib>
@@ -360,6 +363,17 @@ void TMultiplayerMgr::EnsureGameFlowStateAndPostTurnEvent5E5() {
   g_pGlobalUiRootController->InstallCohandler(self, 1);
   g_pGlobalUiRootController->PostTurnEventCodeMessage2420(0x5e5);
   self->sessionPhaseTag = 0x70726570; // 'prep'
+}
+
+// FUNCTION: IMPERIALISM 0x00544630
+void TMultiplayerMgr::ResetDiplomacyRuntimeSelectionAndSetModeNada() {
+  g_pGlobalUiRootController->InstallCohandler(g_pGameFlowState, 0);
+  g_pSimMgr->field44 = 0;
+  if (g_pNetMgr006a6014 != 0) {
+    g_pNetMgr006a6014->ResetRuntimeSelectionRecordBufferAndReturnTrue();
+  }
+  sessionPhaseTag = 0x6e616461; // 'nada'
+  lobbyDialogView40 = 0;
 }
 
 // FUNCTION: IMPERIALISM 0x005446a0
@@ -702,6 +716,105 @@ struct TurnEvent2BPresenceMaskPacket : TimelyMessageHeader {
 };
 
 void LoadUiStringAndDispatchSharedMessageCommand(short group, short index, TView* control);
+
+// FUNCTION: IMPERIALISM 0x00544e70
+unsigned char TMultiplayerMgr::InitializeProtocolOptionControlFromProvider(TView* provider) {
+  lobbyDialogView40 = provider;
+  if (!g_pNetMgr006a6014->ResetRuntimeProtocolOptionsAndRebuildSelectionSource(provider)) {
+    return 0;
+  }
+
+  int defaultProtocolTag = 0;
+  g_pUiViewManager->LoadSettingValueByKeyIntoOut("DefaultProtocol", 0x70726f30 /* 'pro0' */,
+                                                 &defaultProtocolTag);
+  TRadioTextCluster* protControl =
+      static_cast<TRadioTextCluster*>(provider->ResolveControlByTag(kControlTagProt));
+  protControl->AssertValid();
+  TView* defaultOption = protControl->ResolveControlByTag(defaultProtocolTag);
+  if (defaultOption != 0) {
+    protControl->SetSelectedTextOptionByTag(defaultProtocolTag, true);
+  } else {
+    protControl->SetSelectedTextOptionByTag(0x70726f30 /* 'pro0' */, true);
+  }
+  return 1;
+}
+
+// FUNCTION: IMPERIALISM 0x00544f30
+unsigned char TMultiplayerMgr::ResetGameFlowStateAndPostTurnEvent5DC() {
+  lobbyDialogView40 = 0;
+  g_pGlobalUiRootController->InstallCohandler(g_pGameFlowState, 0);
+  g_pSimMgr->field44 = 0;
+  if (g_pNetMgr006a6014 != 0) {
+    g_pNetMgr006a6014->ResetRuntimeSelectionRecordBufferAndReturnTrue();
+  }
+  sessionPhaseTag = 0x6e616461; // 'nada'
+  lobbyDialogView40 = 0;
+  g_pGlobalUiRootController->PostTurnEventCodeMessage2420(0x5dc);
+  return 1;
+}
+
+// FUNCTION: IMPERIALISM 0x00544fc0
+void TMultiplayerMgr::ValidateGameFlowNameAndSelectionContext(int protocolValue, int flag) {
+  g_pNetMgr006a6014->OpenRuntimeSelectionSourceByIndexAndCopyPath(
+      protocolValue, flag, static_cast<LPCSTR>(gameNameString));
+}
+
+// FUNCTION: IMPERIALISM 0x00545110
+unsigned char TMultiplayerMgr::InitializeRuntimeSelectionCredentialsFromProviderAndConnect(
+    TView* provider) {
+  ReturnTrueRuntimeCredentialInitStub();
+  lobbyDialogView40 = provider;
+
+  TEditText* nameControl = static_cast<TEditText*>(provider->ResolveControlByTag(kControlTagName));
+  nameControl->AssertValid();
+  CString normalizedPlayerName =
+      g_pLanguageMgr->NormalizeRuntimeCredentialNameToken(&playerNameString);
+  nameControl->InitDialogWindowAndSyncTitleIfChanged(&normalizedPlayerName, 0);
+
+  TEditText* passControl = static_cast<TEditText*>(provider->ResolveControlByTag(kControlTagPass));
+  passControl->AssertValid();
+  CString emptyCaption(g_szEmptyString);
+  passControl->InitDialogWindowAndSyncTitleIfChanged(&emptyCaption, 0);
+
+  return g_pNetMgr006a6014->ReturnTrueRuntimeCredentialFinalizeStub();
+}
+
+// FUNCTION: IMPERIALISM 0x00545290
+unsigned char TMultiplayerMgr::ResetGameFlowStateAndPostTurnEvent5DCAlt() {
+  lobbyDialogView40 = 0;
+  g_pGlobalUiRootController->InstallCohandler(g_pGameFlowState, 0);
+  g_pSimMgr->field44 = 0;
+  if (g_pNetMgr006a6014 != 0) {
+    g_pNetMgr006a6014->ResetRuntimeSelectionRecordBufferAndReturnTrue();
+  }
+  sessionPhaseTag = 0x6e616461; // 'nada'
+  lobbyDialogView40 = 0;
+  g_pGlobalUiRootController->PostTurnEventCodeMessage2420(0x5dc);
+  return 1;
+}
+
+// FUNCTION: IMPERIALISM 0x00545320
+unsigned char TMultiplayerMgr::ApplyJoinGameSelectionAndPostTurnEvent5E4(int selectionTag) {
+  CString defaultGameName("Frog");
+  unsigned char joined = g_pNetMgr006a6014->OpenJoinGameRuntimeSelectionAndStartSession(
+      selectionTag, &playerNameString, defaultGameName);
+  if (joined) {
+    playerNameMirror = playerNameString;
+    lobbyDialogView40 = 0;
+    g_pSimMgr->field44 = 2;
+    g_pGlobalUiRootController->PostTurnEventCodeMessage2420(0x5e4);
+    return 1;
+  }
+  playerNameString = playerNameMirror;
+  return 0;
+}
+
+// FUNCTION: IMPERIALISM 0x00545480
+unsigned char TMultiplayerMgr::AssignStringAtB4FromB0AndResetState40() {
+  playerNameMirror = playerNameString;
+  lobbyDialogView40 = 0;
+  return 1;
+}
 
 // FUNCTION: IMPERIALISM 0x00545660
 unsigned char TMultiplayerMgr::ResetLocalUiStateAndPostTurnEvent5E5() {

@@ -116,13 +116,13 @@ public:
   // Post-attempt validity probe: nonzero means the attempt failed and the driver
   // regenerates (was junk-named OnDeactivateVetoed(int); really a 0-arg __thiscall
   // returning AL). slot 26 / 0x68
-  virtual char HasMapGenerationFailed();
+  virtual char ErrorCheck();
   virtual void HandleCityProductionNoOp(); // slot 27 / 0x6c
   // Marks the region record of tile `tileIndex` (byte 0xf7) then visits its six hex
   // neighbours via slots 0x1d/0x1c. Verified RET 0x4 (1 stack short arg, void return) --
   // the previous 0-arg `DispatchUiCommand19ToParent()` was templated off TEventHandler's
   // real slot-28 virtual and does not describe this slot. slot 28 / 0x70
-  virtual void MarkTileRegionAndVisitHexNeighbors(short tileIndex);
+  virtual void EraseZones(long coarseIndex);
   // Resolves the region-grid cell adjacent to `cell` in hex `direction` 0..5 (was
   // junk-named DispatchCityProductionAction1A; verified two-arg __thiscall returning
   // the neighbour cell index). slot 29 / 0x74

@@ -834,11 +834,16 @@ undefined TMacViewMgr::RenderTurnEventPalettePreviewSurfaceAndProgress() {
     }
   }
   {
-    char* compareRow = reinterpret_cast<char*>(pixelBase + 1);
+    // rowStart tracks the row origin (advances by strideBytes once per outer
+    // iteration); compareRow is a fresh per-row cursor reset from it -- the original
+    // (pcVar9/pcVar10 at 0x0050b640) keeps these separate so the inner loop's 214
+    // single-byte steps never bleed into the row stride advance.
+    char* rowStart = reinterpret_cast<char*>(pixelBase + 1);
     char* scratchRow = reinterpret_cast<char*>(scratchBuffer + 0x1b1);
     int edgeRow = 0x70;
     while (edgeRow != 0) {
       int edgeCol = 0xd6;
+      char* compareRow = rowStart;
       while (edgeCol != 0) {
         char centerPixel = compareRow[0];
         char neighborPixel;
@@ -856,7 +861,7 @@ undefined TMacViewMgr::RenderTurnEventPalettePreviewSurfaceAndProgress() {
         scratchRow = scratchRow + 1;
         edgeCol = edgeCol - 1;
       }
-      compareRow = compareRow + strideBytes;
+      rowStart = rowStart + strideBytes;
       scratchRow = scratchRow + 3;
       edgeRow = edgeRow - 1;
     }

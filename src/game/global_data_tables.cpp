@@ -364,6 +364,10 @@ int g_councilControlTagTable[6] = {0x696e6674, 0x74727474, 0x67726174,
                                    0x74726174, 0x636f7574, 0x6f666672};
 // GLOBAL: IMPERIALISM 0x006a143c
 int g_McAppUiFlag_006A143C = 0;
+// GLOBAL: IMPERIALISM 0x00698ab8
+char g_szSetupScreensSourcePath_00698AB8[] = "D:\\Ambit\\Cross\\USetupScreens.cpp";
+// GLOBAL: IMPERIALISM 0x006a4264
+int g_SetupScreensAssertFlag_006A4264 = 0;
 // GLOBAL: IMPERIALISM 0x006a1b04
 int g_McAppUiFlag_006A1B04 = 0;
 // GLOBAL: IMPERIALISM 0x006a1b08
@@ -1179,6 +1183,12 @@ short g_anCapabilityPriorityRangePairs[53] = {
     55, 56, 60, 56, 60, 56, 60, 61, 65, 61, 65, 66, 70, 66, 70, 0,  0};
 // GLOBAL: IMPERIALISM 0x006a601c
 int DAT_006a601c = 0;
+// GLOBAL: IMPERIALISM 0x006a5fc8
+char g_JoinGameSeedBuffer_006a5fc8[0x20];
+// GLOBAL: IMPERIALISM 0x006a6008
+CString g_JoinGamePlayerNameStaging_006a6008;
+// GLOBAL: IMPERIALISM 0x006a600c
+int g_JoinGamePlayerDataTag_006a600c = 0;
 
 // InitInstance asset-path literals (LoadLanguageResourcesFromIrgFiles,
 // EnsurePictWvDataGobLoadedBySlot).
@@ -1376,6 +1386,8 @@ CList<void*, void*> g_WNetPendingPacketList006a5f40(10);
 // DirectPlay session manager object embedded at a fixed address (not a pointer).
 // GLOBAL: IMPERIALISM 0x006a5f60
 TWNetSessionManager g_NetworkSessionManager006a5f60;
+// GLOBAL: IMPERIALISM 0x006a5fe8
+char g_RuntimeSelectionSourceSeedBuffer_006a5fe8[0x20];
 
 // Heap-owned runtime selection records used by the DirectPlay session chooser.
 // This TU's CArray specialization has vtable 0x00646fb0 and ctor 0x00480b20.

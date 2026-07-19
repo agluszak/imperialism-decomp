@@ -381,6 +381,15 @@ extern TMultiplayerMgr* g_pGameFlowState;
 extern int g_NetworkDefaultNationId006a5fc0;
 extern int g_NetworkBroadcastNationId006a5fc4;
 extern int DAT_006a601c;
+// Seed-text buffer for TNetMgr::OpenJoinGameRuntimeSelectionAndStartSession's
+// strncpy'd "seed" argument.
+extern char g_JoinGameSeedBuffer_006a5fc8[0x20];
+// Staging CString round-tripped through the local player's DPNAME during
+// OpenJoinGameRuntimeSelectionAndStartSession.
+extern CString g_JoinGamePlayerNameStaging_006a6008;
+// 4-byte SetPlayerData payload written for the local player after CreatePlayer
+// succeeds; never observed read back anywhere in the binary.
+extern int g_JoinGamePlayerDataTag_006a600c;
 // City-order capability rule-table pointer slots written into TTechMgr+0x264 as tech
 // unlocks are applied (default at construction, alternates for tech ids 0x0b/0x16).
 // 26 (start, end) capability-priority range pairs (see the .cpp note).
@@ -470,6 +479,10 @@ extern "C" const unsigned int g_tradeCommodityRowTagTable[17];
 extern GlobalViewportRectDefaultsRecord g_globalViewportRectDefaultsRecord;
 extern GlobalViewportRectDefaultsRecord* g_pGlobalViewportRectDefaultsRecord;
 extern TWNetSessionManager g_NetworkSessionManager006a5f60;
+// Seed buffer for the DirectPlay session-open path (TNetMgr::
+// OpenRuntimeSelectionSourceByIndexAndCopyPath strncpy's the caller's seed here,
+// truncated to 31 chars + NUL).
+extern char g_RuntimeSelectionSourceSeedBuffer_006a5fe8[0x20];
 extern CArray<RuntimeSelectionRecord*, RuntimeSelectionRecord*> g_RuntimeSelectionRecords006a15e0;
 // Global TNetMgr (0x6a6014), created by TMultiplayerMgr session init.
 extern TNetMgr* g_pNetMgr006a6014;
@@ -669,6 +682,11 @@ extern char g_szUCountrySourcePath_00696728[];
 // Gate checked by TControl::AssertCityProductionGlobalStateInitialized before the
 // McAppUI.h line-0x56f assert path runs.
 extern int g_McAppUiFlag_006A143C;
+
+// Source path/gate for the USetupScreens.cpp line-0x2e6 assert in
+// TNetSelectPicture::HandleEvent (and siblings in that TU).
+extern char g_szSetupScreensSourcePath_00698AB8[];
+extern int g_SetupScreensAssertFlag_006A4264;
 
 } // extern "C"
 

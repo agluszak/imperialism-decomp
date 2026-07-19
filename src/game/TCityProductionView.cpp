@@ -15,7 +15,6 @@
 #include "game/quickdraw_rendering.h"
 #include "game/TQuickDrawSurfaceContext.h"
 #include "game/mfc.h"
-#include "game/ui_widget_thunks.h"
 
 extern "C" short g_Render_Nation_Header_Value_006961E0[12] = {0};
 extern "C" short g_Render_Nation_Header_Value_006961F8[12] = {0};

@@ -2,9 +2,9 @@
 
 #include "decomp_types.h"
 #include "game/global_data_tables.h"
+#include "game/TDisplayMgr.h"
 #include "game/TQuickDrawSurfaceContext.h"
 #include "game/mfc.h"
-#include "game/ui_widget_thunks.h"
 
 // SYNTHETIC: IMPERIALISM 0x004d04b0
 // TEngineerDialog::CreateObject
@@ -16,9 +16,9 @@ IMPLEMENT_DYNCREATE(TEngineerDialog, TView)
 
 // FUNCTION: IMPERIALISM 0x004d0560
 TEngineerDialog::TEngineerDialog() {
-  this->field60 = 0;
-  this->field64 = 0;
-  this->field68 = 0;
+  this->headerSurface60 = 0;
+  this->footerSurface64 = 0;
+  this->bodyTileSurface68 = 0;
 }
 
 // SYNTHETIC: IMPERIALISM 0x004d0590
@@ -28,24 +28,21 @@ TEngineerDialog::~TEngineerDialog() {}
 
 // FUNCTION: IMPERIALISM 0x004d05e0
 void TEngineerDialog::Free() {
-  if (this->field60 != 0) {
-    delete[] field60;
-    field60 = 0;
+  if (this->headerSurface60 != 0) {
+    g_pDisplayMgr->FreeQuickDrawSurfaceContextSlot(&headerSurface60);
   }
-  if (this->field64 != 0) {
-    delete[] field64;
-    field64 = 0;
+  if (this->footerSurface64 != 0) {
+    g_pDisplayMgr->FreeQuickDrawSurfaceContextSlot(&footerSurface64);
   }
-  if (this->field68 != 0) {
-    delete[] field68;
-    this->field68 = 0;
+  if (this->bodyTileSurface68 != 0) {
+    g_pDisplayMgr->FreeQuickDrawSurfaceContextSlot(&bodyTileSurface68);
   }
   TView::Free();
 }
 
 // FUNCTION: IMPERIALISM 0x004d0650
 void TEngineerDialog::ApplyRectSlot110(RECT* rectBuffer) {
-  if (this->field60 == 0) {
+  if (this->headerSurface60 == 0) {
     return;
   }
 
@@ -65,7 +62,7 @@ void TEngineerDialog::ApplyRectSlot110(RECT* rectBuffer) {
   dstRect.left = 0;
   dstRect.right = 0x148;
 
-  BlitQuickDrawSurfaces(reinterpret_cast<TQuickDrawBlitSurface*>(this->field60 + 4),
+  BlitQuickDrawSurfaces(this->headerSurface60->GetBlitSurface(),
                         g_pActiveQuickDrawSurfaceContext->GetBlitSurface(), &headerRect,
                         &headerRect, 0);
 
@@ -75,7 +72,7 @@ void TEngineerDialog::ApplyRectSlot110(RECT* rectBuffer) {
     do {
       dstRect.top = bodyY;
       dstRect.bottom = bodyY + 0x0e;
-      BlitQuickDrawSurfaces(reinterpret_cast<TQuickDrawBlitSurface*>(this->field68 + 4),
+      BlitQuickDrawSurfaces(this->bodyTileSurface68->GetBlitSurface(),
                             g_pActiveQuickDrawSurfaceContext->GetBlitSurface(), &bodyTileRect,
                             &dstRect, 0);
       bodyY = static_cast<short>(bodyY + 0x0e);
@@ -85,7 +82,7 @@ void TEngineerDialog::ApplyRectSlot110(RECT* rectBuffer) {
 
   dstRect.top = bodyY;
   dstRect.bottom = bodyY + 0x0e;
-  BlitQuickDrawSurfaces(reinterpret_cast<TQuickDrawBlitSurface*>(this->field64 + 4),
+  BlitQuickDrawSurfaces(this->footerSurface64->GetBlitSurface(),
                         g_pActiveQuickDrawSurfaceContext->GetBlitSurface(), &bodyTileRect, &dstRect,
                         0);
 
