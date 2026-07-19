@@ -209,8 +209,17 @@ void TMapDialog::DrawHexNeighborOutlineFromTileArray(short* neighborTiles) {
 }
 
 // FUNCTION: IMPERIALISM 0x0051A900
-undefined TMapDialog::UpdateMapDialogProjectedTileMarkerAndInvalidate(short) {
-  return 0;
+void TMapDialog::UpdateMapDialogProjectedTileMarkerAndInvalidate(int tileIndex) {
+  int originalTileIndex = tileIndex;
+  short projectedY;
+  ProjectTileIndexToWrappedScreenOffsetByScale(
+      static_cast<short>(originalTileIndex), reinterpret_cast<short*>(&viewportOffsetX),
+      &projectedY, reinterpret_cast<short*>(&tileIndex), 1);
+
+  CRect invalidateRect(static_cast<short>(tileIndex), projectedY,
+                       static_cast<short>(tileIndex) + 0x40, projectedY + 0x40);
+  ReleaseTileMarkerForTile(static_cast<short>(originalTileIndex));
+  InvalidateCityDialogRectRegion(&invalidateRect, 1);
 }
 
 // FUNCTION: IMPERIALISM 0x0051a990

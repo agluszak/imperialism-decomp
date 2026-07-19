@@ -18012,7 +18012,7 @@
     },
     {
       "address": "0x51a900",
-      "matching": 0.05,
+      "matching": 0.4533333333333333,
       "name": "TMapDialog::UpdateMapDialogProjectedTileMarkerAndInvalidate",
       "type": 1
     },
@@ -18432,7 +18432,8 @@
     },
     {
       "address": "0x522c10",
-      "matching": 1.0,
+      "effective": true,
+      "matching": 0.9848484848484849,
       "name": "TMapDialog::DrawMapDialogWrappedTileConnectionMarker_00522c10",
       "type": 1
     },
