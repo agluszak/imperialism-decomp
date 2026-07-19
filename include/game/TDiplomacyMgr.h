@@ -84,8 +84,7 @@ public:
                                                                 int sideEffectCode); // 37 (0x94)
   virtual int SelectNationSlotFromCollectedStandingEntriesSlot98(int sourceNation,
                                                                  int primaryOnlyFlag); // 38 (0x98)
-  virtual int
-  WrapperFor_IsNationSlotEligibleForEventProcessingAt413250(int nationSlot); // 39 (0x9c)
+  virtual int IsNationSlotEligibleForEventProcessing(int nationSlot);                  // 39 (0x9c)
 
   // Slot-name aliases retained for recovered call sites.
   char HasPolicyWithNationSlot44(short sourceNation, short targetNation) {

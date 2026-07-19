@@ -231,8 +231,7 @@ short THelpMgr::DispatchTurnStateSpecialAdvisoriesAndReturnCount() {
     switch (eventRecord[0]) {
     case 0x13b: {
       short standingNation = static_cast<short>(
-          g_pDiplomacyTurnStateManager->WrapperFor_IsNationSlotEligibleForEventProcessingAt413250(
-              eventRecord[1]));
+          g_pDiplomacyTurnStateManager->IsNationSlotEligibleForEventProcessing(eventRecord[1]));
       if (standingNation != activeNation) {
         g_apNationStates[standingNation]->FormatOverlayTerrainLabelText(&nationNameText);
         g_apSecondaryNationStateSlots[eventRecord[1]]->FormatOverlayTerrainLabelText(

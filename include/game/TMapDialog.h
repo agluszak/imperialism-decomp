@@ -112,7 +112,7 @@ public:
                                                                  int row2);
   virtual void DrawHexNeighborConnectionMask(unsigned char connectionMask, int screenX, int screenY,
                                              short tileIndex);
-  virtual undefined WrapperFor_SetQuickDrawFillColor_At00523060();
+  virtual undefined MapDialogSetFillColor();
   virtual undefined UpdateMapOrderEntryTilePreviewSlot(int arg1, short arg2, short arg3);
   virtual undefined OrphanLeaf_NoCall_Ins100_005241b0(int arg1, int arg2, short arg3, short arg4);
   virtual undefined GetTEventHandlerClassNamePointer(int arg1, int arg2, short arg3, short arg4);
