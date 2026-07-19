@@ -18948,14 +18948,14 @@
     },
     {
       "address": "0x52e840",
-      "matching": 0.07407407407407407,
-      "name": "TMapMaker::HasMapGenerationFailed",
+      "matching": 0.46808510638297873,
+      "name": "TMapMaker::ErrorCheck",
       "type": 1
     },
     {
       "address": "0x52e890",
-      "matching": 0.05714285714285714,
-      "name": "TMapMaker::MarkTileRegionAndVisitHexNeighbors",
+      "matching": 0.75,
+      "name": "TMapMaker::EraseZones",
       "type": 1
     },
     {
