@@ -14,5 +14,6 @@ IMPLEMENT_DYNCREATE(TAutomatedPlayDialog, TDialogView)
 TAutomatedPlayDialog::TAutomatedPlayDialog() {}
 
 // FUNCTION: IMPERIALISM 0x005b46c0
-void TAutomatedPlayDialog::CallVoidSlotA0() {
+char TAutomatedPlayDialog::CallVoidSlotA0() {
+  return 0;
 }

@@ -46,7 +46,7 @@ public:
   // slot 0x25 ResolveControlByTag inherited unchanged (0x48afd0)
   // slot 0x26 SwitchActiveChildAndNotify inherited unchanged (0x48af80)
   // slot 0x27 DispatchSlot9CToLinkedChildren inherited unchanged (0x48c820)
-  virtual void CallVoidSlotA0() override; // slot 0x28 0x564bf0
+  virtual char CallVoidSlotA0() override; // slot 0x28 0x564bf0
   // slot 0x29 SetEnabled inherited unchanged (0x48b1c0)
   // slot 0x2a SetState inherited unchanged (0x48b070)
   // slot 0x2b GetField4E inherited unchanged (0x427200)

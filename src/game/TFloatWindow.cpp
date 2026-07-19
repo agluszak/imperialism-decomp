@@ -21,7 +21,7 @@ int TFloatWindow::GetWindowTypeTag() {
 }
 
 // FUNCTION: IMPERIALISM 0x00492330
-void TFloatWindow::CallVoidSlotA0() {
+char TFloatWindow::CallVoidSlotA0() {
   busyFlag98 = 0;
   if (nativeWindow50 != 0 && nativeWindow50->m_hWnd != 0) {
     SendMessageA(reinterpret_cast<HWND>(nativeWindow50->m_hWnd), 0x468, 1, controlTag);
@@ -33,5 +33,5 @@ void TFloatWindow::CallVoidSlotA0() {
       child->CallVoidSlotA0();
     }
   }
-  OrphanCallChain_C2_I39_0048d900(0, 1);
+  return OrphanCallChain_C2_I39_0048d900(0, 1);
 }

@@ -35,7 +35,7 @@ public:
   void HandleEvent(int commandId, TEventHandler* sourceHandler,
                    TEvent* event) override; // slot 0x0f 0x4f70c0
   void ForwardParam(int param) override;    // slot 0x12 0x4f7130
-  void CallVoidSlotA0() override;           // slot 0x28 0x4f3e30
+  char CallVoidSlotA0() override;           // slot 0x28 0x4f3e30
   void HandleCursorHoverFallback(CPoint* point,
                                  RgnHandle hitArg) override; // slot 0x2c 0x4f5f90
   void HandleCursorHoverSelectionByChildHitTestAndFallback(CPoint* point,

@@ -919,7 +919,7 @@ void TView::DispatchSlot9CToLinkedChildren() {
   }
 }
 // FUNCTION: IMPERIALISM 0x0048c890
-void TView::CallVoidSlotA0() {
+char TView::CallVoidSlotA0() {
   if (childList44 != 0) {
     POSITION pos = childList44->GetHeadPosition();
     while (pos != NULL) {
@@ -927,6 +927,7 @@ void TView::CallVoidSlotA0() {
       child->CallVoidSlotA0();
     }
   }
+  return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x0048c900

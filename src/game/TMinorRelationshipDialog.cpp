@@ -14,7 +14,8 @@ IMPLEMENT_DYNCREATE(TMinorRelationshipDialog, TDialogView)
 TMinorRelationshipDialog::TMinorRelationshipDialog() {}
 
 // FUNCTION: IMPERIALISM 0x005b3400
-void TMinorRelationshipDialog::CallVoidSlotA0() {
+char TMinorRelationshipDialog::CallVoidSlotA0() {
+  return 0;
 }
 
 // FUNCTION: IMPERIALISM 0x005b3570

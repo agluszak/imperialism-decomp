@@ -19,5 +19,6 @@ undefined TTransportView::ApplyCityDialogMinisterValues() {
 }
 
 // FUNCTION: IMPERIALISM 0x004bd690
-void TTransportView::CallVoidSlotA0() {
+char TTransportView::CallVoidSlotA0() {
+  return 0;
 }
