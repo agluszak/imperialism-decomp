@@ -167,8 +167,7 @@ def parse_oracle_output(raw: str) -> tuple[dict, dict]:
     out: dict = {}
     ext: dict = {}
     for line in raw.splitlines():
-        # pipe-split-ok: parsing the oracle exe's own stdout protocol, not a config table
-        parts = line.strip().split("|")
+        parts = line.strip().split("|")  # pipe-split-ok: oracle exe stdout protocol, not a config table
         if parts[0] == "RECORD" and len(parts) == 3:
             out.setdefault(parts[1], {"size": None, "bases": {}, "fields": {}})
             out[parts[1]]["size"] = int(parts[2])
