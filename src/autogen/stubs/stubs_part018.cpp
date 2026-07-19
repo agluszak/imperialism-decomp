@@ -315,10 +315,10 @@ undefined4 WrapperFor_ftol_At005931e0(void)
   return 0;
 }
 
-// ghidra_name Helper_Uses_ForwardMciCommand808ToDevice_At00593210
-// ghidra_proto undefined Helper_Uses_ForwardMciCommand808ToDevice_At00593210()
+// ghidra_name Function_00593210
+// ghidra_proto undefined4 Function_00593210(void)
 // FUNCTION: IMPERIALISM 0x00593210
-undefined4 Helper_Uses_ForwardMciCommand808ToDevice_At00593210(void)
+undefined4 Function_00593210(void)
 {
   return 0;
 }

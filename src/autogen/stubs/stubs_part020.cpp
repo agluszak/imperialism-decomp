@@ -59,10 +59,10 @@ undefined4 WrapperFor_thunk_GetTickCountDiv16_At005c3b00(void)
   return 0;
 }
 
-// ghidra_name WrapperFor_thunk_BusyWaitUntilShiftedTickDeadline_At005c3b40
-// ghidra_proto undefined WrapperFor_thunk_BusyWaitUntilShiftedTickDeadline_At005c3b40()
+// ghidra_name Function_005c3b40
+// ghidra_proto undefined4 Function_005c3b40(void)
 // FUNCTION: IMPERIALISM 0x005c3b40
-undefined4 WrapperFor_thunk_BusyWaitUntilShiftedTickDeadline_At005c3b40(void)
+undefined4 Function_005c3b40(void)
 {
   return 0;
 }

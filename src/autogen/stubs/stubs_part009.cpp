@@ -11,14 +11,6 @@ undefined4 thunk_InitializeCityInteriorMinister(void)
   return 0;
 }
 
-// ghidra_name thunk_WrapperFor_InvalidateCityDialogRectRegion_At004f6d90
-// ghidra_proto undefined thunk_WrapperFor_InvalidateCityDialogRectRegion_At004f6d90()
-// ILT thunk 0x00403f71 - unannotated on purpose (see ILT_THUNK_RANGE)
-undefined4 thunk_WrapperFor_InvalidateCityDialogRectRegion_At004f6d90(void)
-{
-  return 0;
-}
-
 // ghidra_name thunk_HandleEngineerConstructionAction
 // ghidra_proto bool __thiscall thunk_HandleEngineerConstructionAction(short nTileIndex, undefined2 param_2)
 // ILT thunk 0x00406ccb - unannotated on purpose (see ILT_THUNK_RANGE)

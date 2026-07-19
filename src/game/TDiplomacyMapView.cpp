@@ -33,7 +33,7 @@ void __cdecl BuildDiplomacyOverlayHitMaskOpcodeStream(DiplomacyMaskBufferRun* ru
 undefined4 FrameRegionOnHdcAndReleaseBrushState(void);
 undefined4 MapTurnEventCodeToPaletteIndex(void);
 undefined4 BlitMonochromeMaskBytePatternToSurface(void);
-undefined4 thunk_WrapperFor_InvalidateCityDialogRectRegion_At004f6d90(void);
+undefined4 Function_004f6d90(void);
 undefined4 RunDiplomacyWaitSheetPopupAndAwaitResponse(void);
 
 namespace {
@@ -943,16 +943,14 @@ void TDiplomacyMapView::BlitDiplomacyMapEventPaletteMaskToSurface(short maskInde
 // FUNCTION: IMPERIALISM 0x004f7040
 void TDiplomacyMapView::InvalidateAndRunChildWaitSheet(void* arg1, void* arg2, void* arg3,
                                                        void* arg4) {
-  reinterpret_cast<void(__stdcall*)(int)>(
-      thunk_WrapperFor_InvalidateCityDialogRectRegion_At004f6d90)(5);
+  reinterpret_cast<void(__stdcall*)(int)>(Function_004f6d90)(5);
   reinterpret_cast<void(__fastcall*)(void*, int, void*, void*, void*, void*)>(
       RunDiplomacyWaitSheetPopupAndAwaitResponse)(childControlAtB4, 0, arg1, arg2, arg3, arg4);
 }
 
 // FUNCTION: IMPERIALISM 0x004f7080
 void TDiplomacyMapView::InvalidateAndForwardTabSwitchToChild(void* arg1, void* arg2, void* arg3) {
-  reinterpret_cast<void(__stdcall*)(int)>(
-      thunk_WrapperFor_InvalidateCityDialogRectRegion_At004f6d90)(5);
+  reinterpret_cast<void(__stdcall*)(int)>(Function_004f6d90)(5);
   childControlAtB4->BuildInsetContentRect(reinterpret_cast<RECT*>(arg1));
 }
 
@@ -969,8 +967,7 @@ void TDiplomacyMapView::HandleEvent(int commandId, TEventHandler* panelEvent, TE
       tabIndex += 1;
     } while (reinterpret_cast<unsigned int>(tagTable) < 0x696990);
     if (tabIndex < 6) {
-      reinterpret_cast<void(__stdcall*)(int)>(
-          thunk_WrapperFor_InvalidateCityDialogRectRegion_At004f6d90)(tabIndex);
+      reinterpret_cast<void(__stdcall*)(int)>(Function_004f6d90)(tabIndex);
       return;
     }
   } else {

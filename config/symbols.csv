@@ -2,7 +2,6 @@ address|name|symbol|size|type|prototype|provenance
 401122|thunk_TPictureButton::TPictureButton|||global||
 4028d8|thunk_InitializeCityInteriorMinister||5|function|undefined thunk_InitializeCityInteriorMinister()|
 403b16|UiRuntimeContext::GetActiveNationId|||global||
-403f71|thunk_WrapperFor_InvalidateCityDialogRectRegion_At004f6d90||5|function|undefined thunk_WrapperFor_InvalidateCityDialogRectRegion_At004f6d90()|
 404d9f|thunk_GetCityDialogValueDwordC|||global||
 406ccb|thunk_HandleEngineerConstructionAction||5|function|bool __thiscall thunk_HandleEngineerConstructionAction(short nTileIndex, undefined2 param_2)|
 409205|UiRuntimeContext::MapTurnEventCodeToPaletteIndex|||global||
@@ -2834,7 +2833,7 @@ address|name|symbol|size|type|prototype|provenance
 4f6840|TDiplomacyMapView::RebuildDiplomacyLegendPaletteMode1AndBlit||563|function|undefined RebuildDiplomacyLegendPaletteMode1AndBlit()|
 4f6b10|TDiplomacyMapView::BuildTurnEventMonochromeMaskBuffers||130|function|undefined BuildTurnEventMonochromeMaskBuffers()|
 4f6bd0|TDiplomacyMapView::BlitDiplomacyMapEventPaletteMaskToSurface||349|function|undefined BlitDiplomacyMapEventPaletteMaskToSurface()|
-4f6d90|WrapperFor_InvalidateCityDialogRectRegion_At004f6d90||513|function|undefined WrapperFor_InvalidateCityDialogRectRegion_At004f6d90()|
+4f6d90|Function_004f6d90||513|function|undefined4 Function_004f6d90(void)|
 4f7040|WrapperFor_thunk_WrapperFor_InvalidateCityDialogRectRegion_At004f6d90_At004f7040||45|function|undefined WrapperFor_thunk_WrapperFor_InvalidateCityDialogRectRegion_At004f6d90_At004f7040()|
 4f7080|WrapperFor_InvalidateCityDialogRectRegionChain_At004f7080||43|function|undefined WrapperFor_InvalidateCityDialogRectRegionChain_At004f7080()|
 4f70c0|TDiplomacyMapView::HandleDiplomacyMapControlTagToggleOrForward||74|function|undefined HandleDiplomacyMapControlTagToggleOrForward()|
@@ -5188,7 +5187,7 @@ address|name|symbol|size|type|prototype|provenance
 592980|TWarningView::HandleEvent||161|function|undefined ReleaseRuntimeSelectionOwnerAndDestroyObject(void)|
 592a70|TWarningView::NoOpUiLifecycleHook||1432|function|undefined OrphanLeaf_NoCall_Ins07_004d8920(void)|
 5931e0|WrapperFor_ftol_At005931e0||30|function|undefined WrapperFor_ftol_At005931e0()|
-593210|Helper_Uses_ForwardMciCommand808ToDevice_At00593210||113|function|undefined Helper_Uses_ForwardMciCommand808ToDevice_At00593210()|
+593210|Function_00593210||113|function|undefined4 Function_00593210(void)|
 5932b0|TSoundPlayer::CreateObject|?CreateObject@TSoundPlayer@@SGPAVCObject@@XZ|122|function|undefined CreateObject()|rtti
 593350|TSoundPlayer::GetRuntimeClass||6|function|undefined GetRuntimeClass()|rtti
 593370|TSoundPlayer::?ConstructTSoundPlayerBaseState@@YIPAUSoundPlayerState@?%Z:imperialismsrcgameTSoundPlayer.cpp14012305@@PAU12@@Z||38|function|undefined ?ConstructTSoundPlayerBaseState@@YIPAUSoundPlayerState@?%Z:imperialismsrcgameTSoundPlayer.cpp14012305@@PAU12@@Z()|
@@ -5974,7 +5973,7 @@ address|name|symbol|size|type|prototype|provenance
 5c38e0|FindMilitaryUnitByIdAcrossTerrainDescriptors||133|function|undefined InitializeBattleSetupArmyStacksAndPopulateSelectionState_Impl()|
 5c3ad0|WrapperFor_ftol_At005c3ad0||30|function|undefined WrapperFor_ftol_At005c3ad0()|
 5c3b00|WrapperFor_thunk_GetTickCountDiv16_At005c3b00||15|function|undefined WrapperFor_thunk_GetTickCountDiv16_At005c3b00()|
-5c3b40|WrapperFor_thunk_BusyWaitUntilShiftedTickDeadline_At005c3b40||19|function|undefined WrapperFor_thunk_BusyWaitUntilShiftedTickDeadline_At005c3b40()|
+5c3b40|Function_005c3b40||19|function|undefined4 Function_005c3b40(void)|
 5c3b70|LoadBitmapResourceSurfaceAndRestoreQuickDrawContext||336|function|undefined LoadBitmapResourceSurfaceAndRestoreQuickDrawContext()|
 5c3d20|MapUiThemeCodeToStyleFlags||201|function|undefined MapUiThemeCodeToStyleFlags()|
 5c3e80|BuildUiTextStyleDescriptor||151|function|void __cdecl BuildUiTextStyleDescriptor(void * styleDescriptor, int unused, int arg2, int arg3)|
