@@ -13,7 +13,9 @@ TTask::TTask() {}
 // TTask::`scalar deleting destructor'
 TTask::~TTask() {}
 
-undefined TTask::OrphanLeaf_NoCall_Ins04_005adc30() { return 0; }
+undefined TTask::OrphanLeaf_NoCall_Ins04_005adc30(int) {
+  return 0;
+}
 
 void TTask::WriteTo(TStream* stream) {}
 

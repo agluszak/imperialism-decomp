@@ -15,7 +15,7 @@ TShipBuildingTask::TShipBuildingTask() : TCityTask() {}
 TShipBuildingTask::~TShipBuildingTask() {}
 
 // FUNCTION: IMPERIALISM 0x005ae780
-undefined TShipBuildingTask::OrphanLeaf_NoCall_Ins04_005adc30() {
+undefined TShipBuildingTask::OrphanLeaf_NoCall_Ins04_005adc30(int) {
   return 0;
 }
 

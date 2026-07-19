@@ -13,7 +13,7 @@ TCityTask::TCityTask() {}
 // TCityTask::`scalar deleting destructor'
 TCityTask::~TCityTask() {}
 // FUNCTION: IMPERIALISM 0x005adde0
-undefined TCityTask::OrphanLeaf_NoCall_Ins04_005adc30() {
+undefined TCityTask::OrphanLeaf_NoCall_Ins04_005adc30(int) {
   return 0;
 }
 
@@ -50,4 +50,3 @@ void TCityTask::WriteTo(TStream* stream) {
 void TCityTask::ReadFrom(TStream* stream) {
   (void)stream;
 }
-

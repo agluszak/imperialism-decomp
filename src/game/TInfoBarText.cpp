@@ -35,7 +35,7 @@ void TInfoBarText::SetTextAndLayoutRect(CString text, RECT* layoutRect) {
 
 // Clear the text-entry layout rect and push an empty shared string, then recenter.
 // FUNCTION: IMPERIALISM 0x005b6770
-void TInfoBarText::ClearTextAndLayoutRect() {
+void TInfoBarText::ClearTextAndLayoutRect(int) {
   CString text;
   layoutRectA4.left = 0;
   layoutRectA4.top = 0;
