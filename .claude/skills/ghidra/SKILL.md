@@ -149,7 +149,7 @@ different project, invoke the module directly with the env override, e.g.
 ## Sync with the source tree
 
 - `just sync-ghidra` / `just db-resync` — forward: export Ghidra
-  names/protos/types/globals into `config/` + `src/ghidra_autogen/` artifacts.
+  names/protos/types/globals into `config/` + build-evidence artifacts.
   Ownership of that pipeline (curated-merge semantics, junk cleanup, name
   convergence, failure→fix) lives in the **`sync-pipeline` skill** — read it
   before running or debugging a resync. Prefer `just db-resync` for the full

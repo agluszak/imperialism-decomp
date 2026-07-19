@@ -81,6 +81,16 @@ def parse_args() -> argparse.Namespace:
         ),
     )
     parser.add_argument(
+        "--chunk-prefix",
+        default="stubs_part",
+        help=(
+            "Basename prefix for generated chunk files. Secondary builds (lint) must "
+            "use a distinct prefix: reccmp resolves PDB line info by basename, and a "
+            "same-named copy in another build dir ties the path-match score and drops "
+            "the marker resolution."
+        ),
+    )
+    parser.add_argument(
         "--annotation-kind",
         default="FUNCTION",
         choices=("STUB", "FUNCTION", "none"),
@@ -263,7 +273,7 @@ def render_chunk(
 def clean_output_dir(output_dir: Path) -> None:
     if not output_dir.is_dir():
         return
-    for path in output_dir.glob("*.cpp"):
+    for path in output_dir.glob("*.cpp"):  # any prefix — stale copies must not linger
         path.unlink()
     manifest = output_dir / "_manifest.json"
     if manifest.is_file():
@@ -302,7 +312,7 @@ def main() -> int:
     seen_idents: set[str] = set()
     generated_files: list[str] = []
     for idx, chunk in enumerate(chunked_rows(function_rows, args.max_functions_per_file), start=1):
-        relpath = "stubs_part{:03d}.cpp".format(idx)
+        relpath = "{}{:03d}.cpp".format(args.chunk_prefix, idx)
         (output_dir / relpath).write_text(
             render_chunk(
                 chunk_rows=chunk,

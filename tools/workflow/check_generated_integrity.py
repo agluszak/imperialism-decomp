@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Generated-artifact integrity: no hand-edits under generated directories.
 
-Files under src/ghidra_autogen/, include/ghidra_autogen/ and
-config/function_ownership.csv are tool output. A diff may only touch them when it
+config/function_ownership.csv is tool output (plus legacy generated trees no
+longer in git). A diff may only touch them when it
 also changes at least one `// FUNCTION:`-family marker in manual src/include —
 that is the signal that the sync pipeline legitimately
 re-derived them. Generated churn with no marker change means someone hand-edited
@@ -25,6 +25,7 @@ from pathlib import Path
 REPO_ROOT = Path(__file__).resolve().parents[2]
 
 GENERATED_VIA_TOOLS = (
+    # Legacy generated trees stay listed so stale-checkout leftovers still trip.
     "src/ghidra_autogen/",
     "include/ghidra_autogen/",
     "config/function_ownership.csv",
@@ -35,7 +36,7 @@ MARKER_RE = re.compile(
 # Marker-bearing manual sources plus the curated tables the sync pipeline reads;
 # a change to any of these legitimises regenerated output.
 REGEN_INPUT_PREFIXES = ("src/", "include/", "config/symbols.csv",
-                       "config/name_overrides", "config/thunk_map.csv")
+                       "config/name_overrides")
 
 
 def _git(*args: str) -> str:
@@ -50,7 +51,11 @@ def generated_violations(base: str, *, include_worktree: bool = True) -> list[st
     if include_worktree:
         names |= {l[3:].strip() for l in _git("status", "--porcelain").splitlines()
                   if l.strip()}
-    generated = sorted(p for p in names if p.startswith(GENERATED_VIA_TOOLS))
+    # Deleting tool output is retirement (the legacy generated trees are being
+    # removed from git), not a hand-edit — only *content* changes to a still-present
+    # generated path need a justifying marker change.
+    generated = sorted(p for p in names
+                       if p.startswith(GENERATED_VIA_TOOLS) and (REPO_ROOT / p).exists())
     if not generated:
         return []
 

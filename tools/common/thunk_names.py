@@ -19,14 +19,12 @@ Two name families need different handling to avoid corrupting output:
     ``TGreatPower::TGreatPower``). We only rewrite these when unqualified AND in call
     position (followed by ``(``), so we never double-qualify nor corrupt a cast.
 
-The mapping is built offline from ``config/thunk_map.csv`` (dumped from Ghidra by
-``tools.ghidra.dump_thunk_map``) or, in ``decompile_one``, live from the Ghidra DB.
+The mapping is built live from the Ghidra DB (``decompile_one``).
 """
 
 from __future__ import annotations
 
 import re
-from pathlib import Path
 
 
 class ThunkResolver:
@@ -71,29 +69,3 @@ class ThunkResolver:
 
     def __bool__(self) -> bool:
         return self._re is not None
-
-
-def load_thunk_map(path: Path) -> dict[str, str]:
-    """Load ``config/thunk_map.csv`` (``thunk_name|real_name``) into a dict.
-
-    Returns an empty dict when the file is absent so offline consumers degrade
-    gracefully (the resolver becomes a no-op).
-    """
-    if not path.exists():
-        return {}
-    from tools.common.pipe_csv import read_pipe_rows
-
-    out: dict[str, str] = {}
-    for row in read_pipe_rows(path):
-        thunk = (row.get("thunk_name") or "").strip()
-        real = (row.get("real_name") or "").strip()
-        if thunk and real and thunk != real:
-            out[thunk] = real
-    return out
-
-
-def dump_thunk_map(thunk_map: dict[str, str]) -> str:
-    """Serialize a thunk map to deterministic ``thunk_name|real_name`` CSV text."""
-    lines = ["thunk_name|real_name"]
-    lines.extend(f"{k}|{thunk_map[k]}" for k in sorted(thunk_map))
-    return "\n".join(lines) + "\n"

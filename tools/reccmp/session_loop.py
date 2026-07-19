@@ -111,8 +111,6 @@ def pick_best_location(locations: list[Location]) -> Location:
         path_s = str(loc.path).replace("\\", "/")
         if "/src/game/" in path_s:
             bucket = 0
-        elif "/src/ghidra_autogen/" in path_s:
-            bucket = 1
         elif "/generated/stubs/" in path_s:
             bucket = 2
         else:
@@ -142,11 +140,8 @@ def load_ghidra_index(path: Path) -> dict[int, str]:
 def action_hint(path: str, ghidra_file: str | None) -> str:
     normalized = path.replace("\\", "/")
     if "/generated/stubs/" in normalized:
-        if ghidra_file:
-            return f"Promote from stub into manual source using body in src/ghidra_autogen/{ghidra_file}."
-        return "Promote from stub into manual source file."
-    if "/src/ghidra_autogen/" in normalized:
-        return "Move/rewrite into manual source and keep ghidra_autogen as reference."
+        return ("Port into manual source (seed with `just seed-function <addr>`; "
+                "the draft is evidence, not source).")
     return "Refine implementation for higher similarity."
 
 
@@ -206,7 +201,8 @@ def main() -> int:
     history = load_last_history_entry(build_dir / "reccmp_progress_history.jsonl") or {}
     ranked = load_core_ranked(core_json)
     annot_index = build_annotation_index(repo_root / "src", args.target)
-    ghidra_index = load_ghidra_index(repo_root / "src" / "ghidra_autogen" / "index.csv")
+    ghidra_index = load_ghidra_index(
+        repo_root / "build-msvc500" / "evidence" / "ghidra-export" / "src" / "index.csv")
 
     selected: list[dict] = []
     for row in ranked:

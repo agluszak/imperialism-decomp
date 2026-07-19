@@ -12,11 +12,8 @@ module|tools.workflow.check_vtable_address_collisions|just:vtable-collision-gate
 module|tools.workflow.check_synthetic_names|just:synthetic-gate|Synthetic symbol/source name agreement gate
 module|tools.workflow.check_symbols_anchors|just:symbols-anchor-gate|Sanity-check reccmp-critical symbols.csv rows after Ghidra export
 module|tools.workflow.normalize_reccmp_markers|just:normalize-markers|Marker normalization utility
-module|tools.workflow.resolve_autogen_thunks|just:normalize-autogen|Resolve Ghidra jmp-thunk and alias names in autogen references
-module|tools.workflow.reshape_autogen_signatures|just:normalize-autogen|Reshape Ghidra thiscall autogen heads into C++ member definitions
 module|tools.workflow.check_marker_hygiene|just:marker-gate|Marker hygiene gate (Hard Rules 3 and 4)
 module|tools.workflow.check_generated_markers|just:generated-marker-gate|Reject stale recover-class generated-decl markers in manual source
-module|tools.workflow.check_ghidra_name_drift|just:ghidra-name-drift-gate|Offline gate: Ghidra autogen names must not contradict source (symbols.csv)
 module|tools.workflow.check_ilt_ossification|just:ilt-ossification-gate|Ratchet gate against ILT/thunk-name ossification in manual source
 module|tools.workflow.check_construction_antipatterns|just:antipattern-gate|Real-C++-construction anti-pattern gate
 module|tools.workflow.check_tgreatpower_hygiene|just:tgreatpower-gate|TGreatPower hygiene policy gate
@@ -35,7 +32,6 @@ module|tools.reccmp.progress_stats|just:stats/stats-baseline-update|Progress sta
 module|tools.reccmp.library_inventory|just:inventory|Library/wrapper inventory
 module|tools.reccmp.generate_ignore_functions|just:generate-ignores|Ignore-function update
 module|tools.reccmp.session_loop|just:session-loop|Top-impact session queue
-module|tools.workflow.promote_from_autogen|just:promote|Promote function bodies from autogen
 module|tools.workflow.format_cpp|just:format|Formatting helper
 module|tools.workflow.check_tooling_surface|just:tooling-check|Tooling surface validator
 module|tools.ghidra.listing_one|query:listing|Read-only pyghidra instruction listing
@@ -51,7 +47,6 @@ module|tools.ghidra.vtable_slots|just:class-vtable-dump|Read-only vtable slot ev
 module|tools.ghidra.propagate_virtual_method_names|just:propagate-virtual-method-names|Propagate virtual method identities parent-first
 module|tools.ghidra.vtable_struct_check|just:ghidra-vtable-struct-check|Check Ghidra vtable struct field names
 module|tools.ghidra.fix_in_stack_params|just:fix-in-stack-params|Promote Ghidra in_stack variables to parameters
-module|tools.ghidra.dump_thunk_map|just:dump-thunk-map|Dump Ghidra thunk-name map for offline promotion
 module|tools.ghidra.dump_message_maps|just:dump-message-maps|Enumerate MFC message maps: message->handler->port-status per class
 module|tools.ghidra.apply_mfc_datatypes|just:apply-mfc-datatypes|Apply MFC datatypes into Ghidra
 module|tools.ghidra.apply_mfc_rtti|just:apply-mfc-rtti|Apply MFC RTTI into Ghidra

@@ -18,8 +18,8 @@ mutation ledger + re-run procedure in `docs/ghidra-db-mutations.md`.
 | Curated stub suppression w/o marker | ownership rows with a curated note (below) | — |
 | Symbol table for reccmp | Ghidra DB (via `sync-ghidra` merge) | `config/symbols.csv` (curated name/proto/type survive the merge) |
 | Vtable identity | `// VTABLE:` annotation + real inheritance | any symbols.csv row at that address is a bug (merge drops them) |
-| Reference decompiles | Ghidra DB | `src/ghidra_autogen/`, `include/ghidra_autogen/` |
-| Linkable stubs | symbols.csv + ownership | `src/autogen/stubs/` |
+| Reference decompiles | Ghidra DB | `just seed-function` / sync-ghidra evidence export (build dir, uncommitted) |
+| Linkable stubs | symbols.csv + source markers + ownership | `build-msvc500/generated/stubs/` (build artifact) |
 | Confirmed CRT/MFC library identity (reviewed) | `config/msvc500_library_overrides.csv` | symbols.csv name/symbol/proto + `src/game/library_msvc500_overrides.cpp` marker |
 | CRT/MFC identity (object-matcher oracle) | `libcmt.lib`/`nafxcw.lib` via `just build-library-oracle` | `config/msvc500_library_oracle.csv` + symbols.csv + `src/game/library_msvc500_oracle.cpp` marker |
 
