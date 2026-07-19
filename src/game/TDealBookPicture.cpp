@@ -4,6 +4,7 @@
 #include "game/TSimMgr.h"
 #include "game/TSoundPlayer.h"
 #include "game/TStaticText.h"
+#include "game/TToolBarCluster.h"
 #include "game/TTradePageBuyView.h"
 #include "game/TTradePageSellView.h"
 #include "game/global_data_tables.h"
@@ -30,25 +31,22 @@ TDealBookPicture::~TDealBookPicture() {}
 
 // FUNCTION: IMPERIALISM 0x005bac50
 void TDealBookPicture::RefreshHudNationTitleControlsAndTheme(int themeCode) {
-  // Nation title control ('loot').
-  TView* lootControl = this->ResolveControlByTag(0x746f6f6c);
-  lootControl->AssertValid();
-  // NOTE: 'loot' also invokes slot 0x73 (no args) and slot 0x74 (active nation id) on its
-  // own (unrecovered) control class -- neither matches a modeled type yet, so they are
-  // omitted pending recovery of the nation-title control class.
-  g_pSimMgr->GetActiveNationId();
-  lootControl->RefreshControl();
+  // Toolbar cluster ('tool'): refresh the turn-order status panel and re-derive its
+  // nation/treasury text for the active nation.
+  TToolBarCluster* toolControl =
+      static_cast<TToolBarCluster*>(this->ResolveControlByTag(0x746f6f6c));
+  toolControl->AssertValid();
+  toolControl->RefreshTurnOrderStatusPanelTextsAndControls();
+  toolControl->UpdateControlTagTreaTextFromNationAndMapContext(g_pSimMgr->GetActiveNationId());
+  toolControl->RefreshControl();
 
-  // Re-cache the six commodity sub-controls. field98 is a dual-use slot: it holds the
-  // 'guob' control pointer here but is read back as a short picture id by
-  // RefreshTradeSelectionHeaderAndNationOfferBidLines (SetPictureResourceIdAndRefresh), so
-  // per the type-modeling guardrail it stays int and takes a raw pointer cast here.
-  this->field98 = reinterpret_cast<int>(this->ResolveControlByTag(0x626f7567));           // 'guob'
+  // Re-cache the six commodity sub-controls.
+  this->field98 = this->ResolveControlByTag(0x626f7567);                                  // 'guob'
   this->field9c = this->ResolveControlByTag(0x736f6c64);                                  // 'dlos'
   this->buyView = static_cast<TTradePageBuyView*>(this->ResolveControlByTag(0x74626f75)); // 'uobt'
   this->sellView =
       static_cast<TTradePageSellView*>(this->ResolveControlByTag(0x74736f6c)); // 'lost'
-  this->fieldAC = reinterpret_cast<TTradePageBuyView*>(this->field98);
+  this->fieldAC = static_cast<TTradePageBuyView*>(this->field98);
   this->fieldA8 = static_cast<TTradePageSellView*>(this->field9c);
 
   // 'mark' toggle + label reload.
@@ -225,12 +223,12 @@ void TDealBookPicture::RefreshTradeSelectionHeaderAndNationOfferBidLines() {
     LoadUiStringAndDispatchSharedMessageCommand(0x2740, 4, tabsControl2);
   }
 
-  // NOTE: the receiver for the first CaptureLayoutF0 call below is not yet confirmed
-  // (field9c reuse is a placeholder pending compare/triage evidence).
+  // Capture the four commodity sub-views' layouts (the original caches all four distinct
+  // views -- field98/field9c and the buy/sell pages -- not buyView twice).
   int captureBuffer1[2] = {1000, 1000};
-  field9c->CaptureLayoutF0(captureBuffer1, 1);
+  field98->CaptureLayoutF0(captureBuffer1, 1);
   int captureBuffer2[2] = {1000, 1000};
-  buyView->CaptureLayoutF0(captureBuffer2, 1);
+  field9c->CaptureLayoutF0(captureBuffer2, 1);
   int captureBuffer3[2] = {0x41, 0x59};
   sellView->CaptureLayoutF0(captureBuffer3, 1);
   int captureBuffer4[2] = {0x13a, 0x59};
@@ -244,6 +242,12 @@ void TDealBookPicture::RefreshTradeSelectionHeaderAndNationOfferBidLines() {
     field92 = fieldA8->field_0x60 - 1;
   }
 
-  SetPictureResourceIdAndRefresh(field98, 1);
+  // Reapply the dialog's own picture and re-run the selection toggle. field98 is a control
+  // pointer (the 'guob' sub-control cached by RefreshHudNationTitleControlsAndTheme), NOT the
+  // bitmap id -- SetPictureResourceIdAndRefresh's arg is a bitmap resource id (a stack local
+  // in the original; field90 is this dialog's selection/picture field). initializedFlagB1 is
+  // flipped as part of the trailing UpdateDealBook call.
+  SetPictureResourceIdAndRefresh(field90, 1);
   initializedFlagB1 = initializedFlagB1 == 0;
+  UpdateDealBookResourceSelectionAndToggleControls(0, field90);
 }
