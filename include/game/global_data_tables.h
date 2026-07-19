@@ -13,7 +13,6 @@
 #include <afxtempl.h>
 #include "game/app_init_globals.h"
 #include "game/TCountry.h"
-#include "game/startup_helpers.h"
 #include "game/TDisplayMgr.h"
 #include "game/quickdraw_regions.h"
 #include "game/TGreatPower.h"

@@ -19,7 +19,6 @@ class TInfoBarText;
 #include "game/sea_geometry.h"
 #include "game/app_init_globals.h"
 #include "game/UiRuntimeContext.h"
-#include "game/startup_helpers.h"
 #include "game/TNetMgr.h"
 #include "game/TTurnEventDialogFactoryRegistry.h"
 #include "game/TCountry.h"

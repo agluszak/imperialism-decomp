@@ -1,6 +1,6 @@
 #include "game/TCivMgr.h"
 
-#include "game/startup_helpers.h"
+#include "game/TAmbitApplication.h"
 #include "decomp_types.h"
 #include "game/TAnimator.h"
 #include "game/TCivUnit.h"

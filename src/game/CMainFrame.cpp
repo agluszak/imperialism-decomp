@@ -7,7 +7,6 @@
 #include "game/TSimMgr.h"
 #include "game/TViewMgr.h"
 #include "game/global_data_tables.h"
-#include "game/startup_helpers.h" // GetMainViewHostFromActiveThread
 
 #include <new>
 

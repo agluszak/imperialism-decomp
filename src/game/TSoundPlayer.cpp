@@ -7,7 +7,7 @@
 #include "game/TApplication.h"
 #include "game/TLongintList.h"
 #include "game/TSoundResourceManager.h"
-#include "game/startup_helpers.h"
+#include "game/TAmbitApplication.h"
 #include "game/cd_audio.h"
 #include "game/timer_slots.h"
 #include "game/turn_flow_cooldown.h"
