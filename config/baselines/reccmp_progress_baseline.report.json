@@ -1307,7 +1307,7 @@
     },
     {
       "address": "0x45d2a0",
-      "matching": 0.6666666666666666,
+      "matching": 1.0,
       "name": "TMapUberUberPicture::AutoScrollByEdgeMask",
       "type": 1
     },
@@ -1331,7 +1331,7 @@
     },
     {
       "address": "0x45d3b0",
-      "matching": 0.2,
+      "matching": 1.0,
       "name": "TTacMapUberPicture::AutoScrollByEdgeMask",
       "type": 1
     },
@@ -29252,7 +29252,7 @@
     },
     {
       "address": "0x5977a0",
-      "matching": 0.08333333333333333,
+      "matching": 0.8636363636363636,
       "name": "TMapUberPicture::AutoScrollByEdgeMask",
       "type": 1
     },
@@ -29306,7 +29306,7 @@
     },
     {
       "address": "0x5988c0",
-      "matching": 0.8,
+      "matching": 0.972972972972973,
       "name": "TMapUberPicture::DispatchSelectedTileToSubviewsAndSyncTradeToolState",
       "type": 1
     },
@@ -29324,7 +29324,7 @@
     },
     {
       "address": "0x598990",
-      "matching": 0.9655172413793104,
+      "matching": 0.896551724137931,
       "name": "TMapUberPicture::InvalidateTileMarkerAndRefreshLinkedControl",
       "type": 1
     },
@@ -29336,7 +29336,7 @@
     },
     {
       "address": "0x598a20",
-      "matching": 0.6666666666666666,
+      "matching": 0.6153846153846154,
       "name": "TMapUberPicture::NotifySubviewOfSelectedTile",
       "type": 1
     },
@@ -29390,7 +29390,7 @@
     },
     {
       "address": "0x599a50",
-      "matching": 0.6412213740458015,
+      "matching": 0.6666666666666666,
       "name": "TMapUberPicture::EnterMapInteractionOverlayMode",
       "type": 1
     },
@@ -31029,7 +31029,7 @@
     },
     {
       "address": "0x5ad3a0",
-      "matching": 0.10526315789473684,
+      "matching": 0.6666666666666666,
       "name": "TTacMapUberPicture::NoOpUiLifecycleHook",
       "type": 1
     },
@@ -38978,7 +38978,7 @@
     },
     {
       "address": "0x6091d9",
-      "matching": 0.9787234042553191,
+      "matching": 1.0,
       "name": "CWnd::OnNotify",
       "type": 1
     },

@@ -3,6 +3,8 @@
 #include "game/TMapUberUberPicture.h"
 #include "game/mfc.h"
 
+class TTacticalBattleView;
+
 // VTABLE: IMPERIALISM 0x006451f0
 class TTacMapUberPicture : public TMapUberUberPicture {
 public:
@@ -122,10 +124,12 @@ public:
   // slot 0x71 ResetPictureResourceEntry inherited unchanged (0x48f520)
   // slot 0x72 SetPictureResourceIdAndRefresh inherited unchanged (0x48f570)
   // slot 0x73 ForwardCombineOptionalSourceRegionIntoDestinationAndUpdateBox inherited unchanged (0x573940)
-  virtual undefined AutoScrollByEdgeMask(short edgeMask) override; // slot 0x74 0x45d3b0
+  virtual void AutoScrollByEdgeMask(short edgeMask) override; // slot 0x74 0x45d3b0
 
   TTacMapUberPicture();
 
-  // Original object size is 0x98 (CRuntimeClass m_nObjectSize); the source class ended at 0x94. Trailing 4 byte(s) not yet semantically recovered — declared so sizeof and the recomp's allocation size match the original.
-  int field94;
+  // Tactical 'DLOG' child resolved by NoOpUiLifecycleHook. AutoScrollByEdgeMask forwards
+  // the edge mask to its slot 0x6b
+  // (TTacticalBattleView::AdjustTacticalUnitVerticalOffsetAndRefreshMarker).
+  TTacticalBattleView* tacticalBattleView94;
 };

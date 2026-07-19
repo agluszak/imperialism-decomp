@@ -5,8 +5,10 @@
 #include "game/TAnimator.h"
 #include "game/TArmyMgr.h"
 #include "game/TCivMgr.h"
+#include "game/TMapDialog.h"
 #include "game/TMiniMapView.h"
 #include "game/TOcean.h"
+#include "game/TOceanDialog.h"
 #include "game/TSimMgr.h"
 #include "game/TTaskForce.h"
 #include "game/TViewMgr.h"
@@ -38,10 +40,11 @@ void TMapUberPicture::NoOpUiLifecycleHook(int arg) {
 
   static_cast<TAmbitApplication*>(g_pGlobalUiRootController)->edgeScrollTarget48 = this;
 
-  subview2A8 = static_cast<TMapUberPicture*>(ResolveControlByTag(kControlTagGold));
+  subview2A8 = static_cast<TMapDialog*>(ResolveControlByTag(kControlTagGold));
   subview2A8->AssertValid();
 
-  TView* alternateMapDialog = ResolveControlByTag(0x444f4f47); // 'DOOG'
+  TOceanDialog* alternateMapDialog =
+      static_cast<TOceanDialog*>(ResolveControlByTag(0x444f4f47)); // 'DOOG'
   if (alternateMapDialog != nullptr) {
     goodGoldTagControlA4 = alternateMapDialog;
     alternateMapDialog->AssertValid();
@@ -147,9 +150,16 @@ void TMapUberPicture::vmethod_0017(int param) {}
 void TMapUberPicture::ForwardParam(int param) {}
 
 // FUNCTION: IMPERIALISM 0x005977a0
-undefined TMapUberPicture::AutoScrollByEdgeMask(short edgeMask) {
-  (void)edgeMask;
-  return 0;
+void TMapUberPicture::AutoScrollByEdgeMask(short edgeMask) {
+  if (invalidationFlag94 != 0) {
+    subview2A8->UpdateMapInteractionPreviewParityAndRenderTransientSprites(edgeMask);
+  } else {
+    goodGoldTagControlA4->ApplyDirectionalNudgeAndRefreshDisplay(
+        static_cast<unsigned char>(edgeMask));
+  }
+  if (field_0xc0 != nullptr) {
+    field_0xc0->RefreshControl();
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x00597810
@@ -251,9 +261,9 @@ void TMapUberPicture::InvalidateTileMarkerChain(short tileIndex) {
 
 // FUNCTION: IMPERIALISM 0x005988c0
 undefined TMapUberPicture::DispatchSelectedTileToSubviewsAndSyncTradeToolState(short entryIndex) {
-  this->subviewAc->NotifySubviewOfSelectedTile(entryIndex);
+  this->subviewAc->OrphanRetStub_005966c0(entryIndex);
   if (this->invalidationFlag94 == 0) {
-    this->subview2A8->SetTradeToolSubcontrolEnabledStateByFlag(entryIndex != 0);
+    this->subview2A8->ReleaseTileMarkerForTile(entryIndex);
   }
   return 0;
 }
@@ -280,7 +290,7 @@ undefined TMapUberPicture::RefreshAfterSelectionChange() {
 
 // FUNCTION: IMPERIALISM 0x00598990
 undefined TMapUberPicture::InvalidateTileMarkerAndRefreshLinkedControl(short param) {
-  this->subviewAc->InvalidateTileMarkerChain(param);
+  this->subviewAc->UpdateMapDialogTileRowColumnMarkerAndInvalidate(param);
   if (this->field_0xc0 != nullptr) {
     this->field_0xc0->RefreshControl();
   }
@@ -296,7 +306,8 @@ undefined TMapUberPicture::OrphanCallChain_C2_I16_005989d0(int tileX, int tileY)
 
 // FUNCTION: IMPERIALISM 0x00598a20
 undefined TMapUberPicture::NotifySubviewOfSelectedTile(short entryIndex) {
-  return this->subviewAc->OrphanCallChain_C2_I11_00598910(entryIndex);
+  this->subviewAc->OrphanCallChain_C6_I29_00596700(entryIndex);
+  return 0;
 }
 
 // TODO: body not yet ported (1405-byte dialog-construction routine). Real receiver and
@@ -336,9 +347,8 @@ void TMapUberPicture::EnterMapInteractionOverlayMode(int param1) {
   }
   this->invalidationFlag94 = 1;
 
-  // Ground truth also calls goodGoldTagControlA4->vtable[0x1f4]() here and forwards the
-  // result into subview2A8->InvalidateTileMarkerChain(...) (see the class-attribution
-  // caveat on goodGoldTagControlA4's declaration); left undone.
+  int selectedTile = goodGoldTagControlA4->ComputeWrappedTileIndexFromObjectOffset7C7E();
+  subview2A8->UpdateMapDialogTileRowColumnMarkerAndInvalidate(selectedTile);
 
   this->goodGoldTagControlA4->CaptureLayoutF0(g_MapUberModeLayoutScratch_006a45e8, 0);
   this->subview2A8->CaptureLayoutF0(g_MapUberModeSecondaryLayoutScratch_006a45b8, 1);
