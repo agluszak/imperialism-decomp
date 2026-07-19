@@ -38,7 +38,7 @@ void TTacticalBattle::DeployTacticalUnitToTile(TTacticalUnit* unit, int tileInde
   (void)tileIndex;
 }
 
-undefined TTacticalBattle::CreateTTacticalBattleInstance() {
+undefined TTacticalBattle::CreateTTacticalBattleInstance(int) {
   return 0;
 }
 

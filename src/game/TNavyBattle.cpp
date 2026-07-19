@@ -100,7 +100,7 @@ void TNavyBattle::ComputeTacticalReachableTileCostsByUnitCategory(TTacticalUnit*
 }
 
 // FUNCTION: IMPERIALISM 0x005a5b70
-undefined TNavyBattle::CreateTTacticalBattleInstance() {
+undefined TNavyBattle::CreateTTacticalBattleInstance(int) {
   return 0;
 }
 

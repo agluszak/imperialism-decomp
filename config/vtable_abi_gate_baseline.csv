@@ -51,8 +51,6 @@ address|class|slot|summary
 0x005921c0|TTransportPicture|0x1cc|declared 2 stack dword(s) -> expected RET 0x8, binary shows plain RET
 0x0059c3c0|TArmyPlayer|0x4c|declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
 0x0059efc0|TNavyHumanPlayer|0x48|declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
-0x005a5320|TArmyBattle|0x48|declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
-0x005a5b70|TNavyBattle|0x48|declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
 0x005aed50|TTaskList|0x7c|declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
 0x005baf70|TDealBookPicture|0x1cc|declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x8
 0x005bc780|TDealTabControl|0x1c4|declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x8

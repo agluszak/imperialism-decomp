@@ -376,6 +376,6 @@ void TArmyBattle::DeployTacticalUnitToTile(TTacticalUnit* unit, int tileIndex) {
 }
 
 // FUNCTION: IMPERIALISM 0x005a5320
-undefined TArmyBattle::CreateTTacticalBattleInstance() {
+undefined TArmyBattle::CreateTTacticalBattleInstance(int) {
   return 0;
 }

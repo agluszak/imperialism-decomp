@@ -58,7 +58,7 @@ public:
                                                       int targetTileIndex); // slot 0x10 0x5a1ee0
   // Moves a unit's record onto the opposing side's player list (artillery capture).
   virtual void TransferTacticalUnitToOpposingSide(TTacticalUnit* unit); // slot 0x11 0x5a2700
-  virtual undefined CreateTTacticalBattleInstance();                    // slot 0x12 0x59f730
+  virtual undefined CreateTTacticalBattleInstance(int);                 // slot 0x12 0x59f730
   virtual void
   MarkTacticalTileStateQueuedAndMaybeDispatchPacket(TArmyTacUnit* unit,
                                                     int targetTileIndex); // slot 0x13 0x5a3190
