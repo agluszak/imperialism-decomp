@@ -35,10 +35,7 @@ undefined TFoodProcessingOrder::CommitIfPending() {
 }
 
 // FUNCTION: IMPERIALISM 0x004b80a0
-undefined TFoodProcessingOrder::ResetCityOrderItemDerivedStateNoop(const char* name) {
-  (void)name;
-  return 0;
-}
+void TFoodProcessingOrder::ResetCityOrderItemDerivedStateNoop() {}
 
 // FUNCTION: IMPERIALISM 0x004b80c0
 void TFoodProcessingOrder::FillOrderSheet(OrderSheet* orderSheet, short quantity) {

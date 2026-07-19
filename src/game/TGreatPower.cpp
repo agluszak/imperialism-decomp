@@ -3260,8 +3260,7 @@ void TGreatPower::SetHomeCityTileAndDisplayName(short homeRegionTile, char* city
     CString nameStr(cityName);
     short cityRecordIndex = g_pGlobalMapState->terrainStateTable[regionIndex].cityRecordIndex;
     g_pGlobalMapState->SetGlobalMapCellSharedLabel(cityRecordIndex, &nameStr);
-    static_cast<TProductionOrder*>(selectedOrder)
-        ->ResetCityOrderItemDerivedStateNoop((const char*)nameStr);
+    static_cast<TProductionOrder*>(selectedOrder)->ResetCityOrderItemDerivedStateNoop();
   }
 
   this->RebuildNationResourceYieldCountersAndDevelopmentTargets();

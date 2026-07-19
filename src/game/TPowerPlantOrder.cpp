@@ -35,9 +35,19 @@ undefined TPowerPlantOrder::CommitIfPending() {
 }
 
 // FUNCTION: IMPERIALISM 0x004b7c40
-undefined TPowerPlantOrder::ResetCityOrderItemDerivedStateNoop(const char* name) {
-  (void)name;
-  return 0;
+void TPowerPlantOrder::ResetCityOrderItemDerivedStateNoop() {
+  // Same quantity re-clamp as TItemOrder's slot 0x0e, minus the field40 guard: zero
+  // the pending quantity and re-drive SetQuantity with the smaller of the current
+  // derived value (field4c) and the recomputed MaxOrder() ceiling.
+  short maxOrder = MaxOrder();
+  short savedDerived = field4c;
+  quantityField04 = 0;
+  if (maxOrder < savedDerived) {
+    SetQuantity(maxOrder);
+    field4c = savedDerived;
+  } else {
+    SetQuantity(savedDerived);
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x004b7c90

@@ -56,10 +56,7 @@ undefined TPopGrowthOrder::CommitIfPending() {
 }
 
 // FUNCTION: IMPERIALISM 0x004b8420
-undefined TPopGrowthOrder::ResetCityOrderItemDerivedStateNoop(const char* name) {
-  (void)name;
-  return 0;
-}
+void TPopGrowthOrder::ResetCityOrderItemDerivedStateNoop() {}
 
 // FUNCTION: IMPERIALISM 0x004b8440
 void TPopGrowthOrder::FillOrderSheet(OrderSheet* orderSheet, short quantity) {

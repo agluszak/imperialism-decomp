@@ -35,10 +35,8 @@ bool TProductionOrder::SetQuantity(short param_1) {
   return 0;
 }
 
-undefined TProductionOrder::ResetCityOrderItemDerivedStateNoop(const char* name) {
-  (void)name;
-  return 0;
-}
+// NOOP: verified empty in original 0x004b5140
+void TProductionOrder::ResetCityOrderItemDerivedStateNoop() {}
 
 undefined TProductionOrder::CommitIfPending() {
   return 0;

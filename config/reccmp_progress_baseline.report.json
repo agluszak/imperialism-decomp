@@ -9401,7 +9401,7 @@
     },
     {
       "address": "0x4b5140",
-      "matching": 0.0,
+      "matching": 1.0,
       "name": "TProductionOrder::ResetCityOrderItemDerivedStateNoop",
       "type": 1
     },
@@ -9473,7 +9473,7 @@
     },
     {
       "address": "0x4b5620",
-      "matching": 0.0,
+      "matching": 1.0,
       "name": "TItemOrder::ResetCityOrderItemDerivedStateNoop",
       "type": 1
     },
@@ -9683,7 +9683,7 @@
     },
     {
       "address": "0x4b6f00",
-      "matching": 0.0,
+      "matching": 1.0,
       "name": "TTrainingOrder::ResetCityOrderItemDerivedStateNoop",
       "type": 1
     },
@@ -9755,7 +9755,7 @@
     },
     {
       "address": "0x4b79f0",
-      "matching": 0.36363636363636365,
+      "matching": 0.42424242424242425,
       "name": "TPowerPlantOrder::CreateObject",
       "type": 1
     },
@@ -9797,7 +9797,7 @@
     },
     {
       "address": "0x4b7c40",
-      "matching": 0.0,
+      "matching": 1.0,
       "name": "TPowerPlantOrder::ResetCityOrderItemDerivedStateNoop",
       "type": 1
     },
@@ -9863,7 +9863,7 @@
     },
     {
       "address": "0x4b80a0",
-      "matching": 0.0,
+      "matching": 1.0,
       "name": "TFoodProcessingOrder::ResetCityOrderItemDerivedStateNoop",
       "type": 1
     },
@@ -9911,7 +9911,7 @@
     },
     {
       "address": "0x4b8420",
-      "matching": 0.0,
+      "matching": 1.0,
       "name": "TPopGrowthOrder::ResetCityOrderItemDerivedStateNoop",
       "type": 1
     },
@@ -12998,7 +12998,7 @@
     },
     {
       "address": "0x4dfd30",
-      "matching": 0.5806451612903226,
+      "matching": 0.5740740740740741,
       "name": "TGreatPower::SetHomeCityTileAndDisplayName",
       "type": 1
     },
@@ -13101,15 +13101,13 @@
     },
     {
       "address": "0x4e0610",
-      "effective": true,
-      "matching": 0.42857142857142855,
+      "matching": 1.0,
       "name": "TGreatPower::ReturnFalseNationStateActionStub_8a",
       "type": 1
     },
     {
       "address": "0x4e0650",
-      "effective": true,
-      "matching": 0.42857142857142855,
+      "matching": 1.0,
       "name": "TGreatPower::OrphanRetStub_004d7fe0_8b",
       "type": 1
     },
@@ -13121,7 +13119,7 @@
     },
     {
       "address": "0x4e06d0",
-      "matching": 0.8095238095238095,
+      "matching": 0.8571428571428571,
       "name": "TGreatPower::SumNationRuntimeFiveBucketValue44",
       "type": 1
     },
@@ -13151,7 +13149,7 @@
     },
     {
       "address": "0x4e09a0",
-      "matching": 0.5662650602409639,
+      "matching": 0.5903614457831325,
       "name": "TGreatPower::ComputeCityOrderCapabilityAggregateScore",
       "type": 1
     },
@@ -21600,7 +21598,7 @@
     },
     {
       "address": "0x545940",
-      "matching": 0.4176356589147287,
+      "matching": 0.4299095607235142,
       "name": "TMultiplayerMgr::ProcessDiplomacyTurnStateEventStateMachine",
       "type": 1
     },
@@ -32402,7 +32400,7 @@
     },
     {
       "address": "0x5bf930",
-      "matching": 0.7907361455748553,
+      "matching": 0.7775020678246485,
       "name": "RefreshSelectedNationOrderCompatibilityInfo",
       "type": 1
     },

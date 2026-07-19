@@ -48,9 +48,20 @@ undefined TItemOrder::CommitIfPending() {
 }
 
 // FUNCTION: IMPERIALISM 0x004b5620
-undefined TItemOrder::ResetCityOrderItemDerivedStateNoop(const char* name) {
-  (void)name;
-  return 0;
+void TItemOrder::ResetCityOrderItemDerivedStateNoop() {
+  // Clamp the pending quantity to MaxOrder(): recompute the ceiling, zero the
+  // pending-quantity field, then re-drive SetQuantity with whichever of the current
+  // derived value (field4c) / the new ceiling is smaller. SetQuantity itself rewrites
+  // field4c, so the smaller-ceiling branch restores the pre-clamp value afterwards.
+  short maxOrder = MaxOrder();
+  short savedDerived = field4c;
+  quantityField04 = 0;
+  if (maxOrder < savedDerived && field40 == 0) {
+    SetQuantity(maxOrder);
+    field4c = savedDerived;
+  } else {
+    SetQuantity(savedDerived);
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x004b5670

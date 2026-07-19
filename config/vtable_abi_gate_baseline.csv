@@ -12,15 +12,7 @@ address|class|slot|summary
 0x004b0c00|THotspotBehavior|0x38|declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x8
 0x004b0f50|TInfoBarBehavior|0x3c|declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x8
 0x004b4580|TCity|0x40|declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
-0x004b5620|TCapacityOrder|0x38|declared 1 stack dword(s) -> expected RET 0x4, binary shows plain RET
-0x004b5620|TExpansionOrder|0x38|declared 1 stack dword(s) -> expected RET 0x4, binary shows plain RET
-0x004b5620|TItemOrder|0x38|declared 1 stack dword(s) -> expected RET 0x4, binary shows plain RET
-0x004b5620|TOrItemOrder|0x38|declared 1 stack dword(s) -> expected RET 0x4, binary shows plain RET
-0x004b6f00|TTrainingOrder|0x38|declared 1 stack dword(s) -> expected RET 0x4, binary shows plain RET
 0x004b7ab0|TPowerPlantOrder|0x44|declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
-0x004b7c40|TPowerPlantOrder|0x38|declared 1 stack dword(s) -> expected RET 0x4, binary shows plain RET
-0x004b80a0|TFoodProcessingOrder|0x38|declared 1 stack dword(s) -> expected RET 0x4, binary shows plain RET
-0x004b8420|TPopGrowthOrder|0x38|declared 1 stack dword(s) -> expected RET 0x4, binary shows plain RET
 0x004bd040|TRailheadDialog|0x1a0|declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
 0x004bd260|TRailheadDialog|0x1a4|declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
 0x004bd3e0|TTransportView|0x1a0|declared 0 stack dword(s) -> expected RET 0x0, binary shows RET 0x4
