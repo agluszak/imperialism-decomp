@@ -122,3 +122,4 @@ module|tools.mfc.build_library_oracle|just:build-library-oracle|Relocation-maske
 module|tools.workflow.mfc_collection_audit|just:mfc-collection-audit|Embedded-MFC-collection audit: identity, offsets, block size, duplicate-COMDAT twins
 module|tools.workflow.template_alias_check|just:template-alias-check|Re-verify template_aliases.csv rows: same name + normalized-body equivalence
 module|tools.workflow.template_emission_matrix|just:template-emission-matrix|Template-emission compiler matrix: compile probe TUs per /Ob-TU cell, inventory CList COMDATs
+module|tools.ghidra.dedupe_ambiguous_datatypes|just:dedupe-ambiguous-datatypes|Remove /Demangler duplicate datatypes that make TypeResolver simple-name lookups ambiguous
