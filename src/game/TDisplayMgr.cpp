@@ -133,7 +133,7 @@ void TDisplayMgr::EnsurePrimaryRenderSurfaceContextAllocated() {
 }
 
 // FUNCTION: IMPERIALISM 0x004febd0
-undefined TDisplayMgr::WrapperFor_thunk_NoOpCallback_00498ca0_At004febd0() {
+undefined TDisplayMgr::DisplayMgrSlot0D() {
   if (dialogActiveFlag != 0 && activeDialog != 0) {
     activeDialog->RefreshCityProductionViewStateFromContext(0);
   }
@@ -166,7 +166,7 @@ void TDisplayMgr::DispatchDisplayManagerControlStringMessage(CString message,
 }
 
 // FUNCTION: IMPERIALISM 0x004fed00
-undefined TDisplayMgr::WrapperFor_thunk_NoOpCallback_00498ca0_At004fed00() {
+undefined TDisplayMgr::DisplayMgrSlot0E() {
   if (dialogActiveFlag != 0 && activeDialog != 0) {
     activeDialog->InvalidateOffsetRegionUsingChildClipRect(0);
     activeDialog->InvokeSlot13C();

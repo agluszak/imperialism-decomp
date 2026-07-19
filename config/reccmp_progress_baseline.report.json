@@ -5113,36 +5113,6 @@
       "type": 1
     },
     {
-      "address": "0x48e1c0",
-      "matching": 0.5,
-      "name": "TWindow::CtrlSlot95_TestPointInBoundsFromSlot128_Impl",
-      "type": 1
-    },
-    {
-      "address": "0x48e1e0",
-      "matching": 1.0,
-      "name": "TWindow::OrphanCallChain_C11_I88_004874b0_60",
-      "type": 1
-    },
-    {
-      "address": "0x48e210",
-      "matching": 1.0,
-      "name": "TWindow::OrphanLeaf_NoCall_Ins07_004d8920",
-      "type": 1
-    },
-    {
-      "address": "0x48e240",
-      "matching": 1.0,
-      "name": "TWindow::OrphanCallChain_C11_I88_004874b0_62",
-      "type": 1
-    },
-    {
-      "address": "0x48e270",
-      "matching": 1.0,
-      "name": "TWindow::GetTEventHandlerClassNamePointer",
-      "type": 1
-    },
-    {
       "address": "0x48e2a0",
       "matching": 0.9166666666666666,
       "name": "TWindow::Free",
@@ -5858,27 +5828,9 @@
       "type": 1
     },
     {
-      "address": "0x492d00",
-      "matching": 1.0,
-      "name": "TWindow::vmethod_0078",
-      "type": 1
-    },
-    {
-      "address": "0x492d20",
-      "matching": 1.0,
-      "name": "TWindow::vmethod_0076",
-      "type": 1
-    },
-    {
       "address": "0x492d40",
       "matching": 1.0,
       "name": "TWindow::DispatchVslot134WithRectAndRectPlus8_Impl",
-      "type": 1
-    },
-    {
-      "address": "0x492d60",
-      "matching": 1.0,
-      "name": "TWindow::CtrlSlot103_SubtractPosAndDispatchSlot19C_Impl",
       "type": 1
     },
     {
@@ -7871,7 +7823,7 @@
     {
       "address": "0x4a3bc0",
       "matching": 0.26666666666666666,
-      "name": "TArmyMgr::WrapperFor_IsNationSlotEligibleForEventProcessing_At004a3bc0",
+      "name": "TArmyMgr::ArmyMgrSlot12",
       "type": 1
     },
     {
@@ -8913,6 +8865,12 @@
       "type": 1
     },
     {
+      "address": "0x4b0c00",
+      "matching": 0.05128205128205128,
+      "name": "THotspotBehavior::HotspotBehaviorSlot0E",
+      "type": 1
+    },
+    {
       "address": "0x4b0c90",
       "matching": 0.4230769230769231,
       "name": "TInfoBarBehavior::CreateObject",
@@ -9558,7 +9516,7 @@
     {
       "address": "0x4b5ed0",
       "matching": 0.008264462809917356,
-      "name": "TPopulationMgr::Helper_Uses_thunk_DeleteObjectIfNonNullViaVslot04_At004b5ed0",
+      "name": "TPopulationMgr::PopulationMgrSlot0E",
       "type": 1
     },
     {
@@ -15593,7 +15551,7 @@
     {
       "address": "0x4febd0",
       "matching": 0.75,
-      "name": "TDisplayMgr::WrapperFor_thunk_NoOpCallback_00498ca0_At004febd0",
+      "name": "TDisplayMgr::DisplayMgrSlot0D",
       "type": 1
     },
     {
@@ -15617,7 +15575,7 @@
     {
       "address": "0x4fed00",
       "matching": 0.5454545454545454,
-      "name": "TDisplayMgr::WrapperFor_thunk_NoOpCallback_00498ca0_At004fed00",
+      "name": "TDisplayMgr::DisplayMgrSlot0E",
       "type": 1
     },
     {
@@ -16411,7 +16369,7 @@
     {
       "address": "0x507570",
       "matching": 0.025,
-      "name": "TNumberedIcon::Helper_Uses_ConstructTMyNumberTextBaseState_At00507570",
+      "name": "TNumberedIcon::NumberedIconSlot77",
       "type": 1
     },
     {
@@ -16693,7 +16651,7 @@
     {
       "address": "0x50d6c0",
       "matching": 0.5925925925925926,
-      "name": "TMacViewMgr::WrapperFor_IsPointInsideHitRegion_At0050d6c0",
+      "name": "TMacViewMgr::MacViewMgrSlot24",
       "type": 1
     },
     {
@@ -16723,7 +16681,7 @@
     {
       "address": "0x50d950",
       "matching": 0.75,
-      "name": "TMacViewMgr::WrapperFor_CallObjectOffset24Vslot54IfPresent_At0050d950",
+      "name": "TMacViewMgr::MacViewMgrSlot1B",
       "type": 1
     },
     {
@@ -17241,7 +17199,7 @@
     {
       "address": "0x514dc0",
       "matching": 0.6666666666666666,
-      "name": "TMapMgr::WrapperFor_IsValidSecondaryNationHomeTileCandidate_At00514dc0",
+      "name": "TMapMgr::MapMgrSlot1F",
       "type": 1
     },
     {
@@ -17277,13 +17235,13 @@
     {
       "address": "0x515330",
       "matching": 0.2804878048780488,
-      "name": "TMapMgr::WrapperFor_LookupOrderCompatibilityMatrixValue_At00515330",
+      "name": "TMapMgr::MapMgrSlot23",
       "type": 1
     },
     {
       "address": "0x515460",
       "matching": 0.3707865168539326,
-      "name": "TMapMgr::WrapperFor_LookupOrderCompatibilityMatrixValue_At00515460",
+      "name": "TMapMgr::MapMgrSlot24",
       "type": 1
     },
     {
@@ -24891,9 +24849,15 @@
       "type": 1
     },
     {
+      "address": "0x570de0",
+      "matching": 0.0,
+      "name": "TPictureRadioButton::PictureRadioButtonSlot75",
+      "type": 1
+    },
+    {
       "address": "0x570ea0",
       "matching": 0.0,
-      "name": "TPictureRadioButton::WrapperFor_CopyOffset10PointPairToOutOrZero_At00570ea0",
+      "name": "TPictureRadioButton::PictureRadioButtonSlot76",
       "type": 1
     },
     {
@@ -30400,7 +30364,7 @@
     {
       "address": "0x5a8900",
       "matching": 0.0425531914893617,
-      "name": "TTacticalBattleView::WrapperFor_InvalidateCityDialogRectRegion_At005a8900",
+      "name": "TTacticalBattleView::TacticalBattleViewSlot68",
       "type": 1
     },
     {
@@ -30562,7 +30526,7 @@
     {
       "address": "0x5acc90",
       "matching": 0.041666666666666664,
-      "name": "TTacticalToolbar::WrapperFor_InvalidateCityDialogRectRegion_At005acc90",
+      "name": "TTacticalToolbar::TacticalToolbarSlot74",
       "type": 1
     },
     {
@@ -30592,7 +30556,7 @@
     {
       "address": "0x5ad0f0",
       "matching": 0.6666666666666666,
-      "name": "TTacNavyToolbar::WrapperFor_InvalidateCityDialogRectRegion_At005acc90",
+      "name": "TTacNavyToolbar::TacticalToolbarSlot74",
       "type": 1
     },
     {
@@ -43448,7 +43412,7 @@
     },
     {
       "address": "0x656a98",
-      "matching": 1.0,
+      "matching": 0.9344262295081968,
       "name": "TGameWindow::`vftable'",
       "type": 5
     },

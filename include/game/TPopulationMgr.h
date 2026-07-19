@@ -34,8 +34,7 @@ public:
   virtual undefined OrphanLeaf_NoCall_Ins20_004b5d50(short param_1); // slot 0x0c 0x4b5d50
   virtual undefined OrphanLeaf_NoCall_Ins87_004b66a0(short param_1,
                                                      short param_2); // slot 0x0d 0x4b66a0
-  virtual undefined
-  Helper_Uses_thunk_DeleteObjectIfNonNullViaVslot04_At004b5ed0(); // slot 0x0e 0x4b5ed0
+  virtual undefined PopulationMgrSlot0E();                           // slot 0x0e 0x4b5ed0
   virtual undefined OrphanLeaf_NoCall_Ins111_004b6260(short* param_1,
                                                       ushort* param_2); // slot 0x0f 0x4b6260
   virtual undefined OrphanCallChain_C2_I61_004b65b0();                  // slot 0x10 0x4b65b0

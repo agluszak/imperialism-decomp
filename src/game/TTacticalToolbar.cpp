@@ -109,7 +109,7 @@ undefined TTacticalToolbar::UpdateTacticalCurrentUnitControlAndDialogLabel(TTact
 }
 
 // FUNCTION: IMPERIALISM 0x005acc90
-undefined TTacticalToolbar::WrapperFor_InvalidateCityDialogRectRegion_At005acc90(int param_1) {
+undefined TTacticalToolbar::TacticalToolbarSlot74(int param_1) {
   return 0;
 }
 

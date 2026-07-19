@@ -1472,8 +1472,7 @@ void TMacViewMgr::EnsureClipRegionWrapperAtSlotAndMergeSourceRegion(undefined4 p
 }
 
 // FUNCTION: IMPERIALISM 0x0050d6c0
-undefined TMacViewMgr::WrapperFor_IsPointInsideHitRegion_At0050d6c0(CPoint* point,
-                                                                    short regionIndex) {
+undefined TMacViewMgr::MacViewMgrSlot24(CPoint* point, short regionIndex) {
   if (regionSlots[regionIndex] != 0) {
     return QueryPointInsideHitRegion(point->x, point->y, regionSlots[regionIndex]);
   }
@@ -1543,7 +1542,7 @@ void TMacViewMgr::OrphanCallChain_C1_I10_0050d920() {
 }
 
 // FUNCTION: IMPERIALISM 0x0050d950
-void TMacViewMgr::WrapperFor_CallObjectOffset24Vslot54IfPresent_At0050d950() {
+void TMacViewMgr::MacViewMgrSlot1B() {
   TView* hostView = g_pDisplayMgr->activeDialog;
   GoldDialogControl* goldControl =
       reinterpret_cast<GoldDialogControl*>(hostView->ResolveControlByTag(0x444c4f47));

@@ -20,8 +20,7 @@ public:
   // slot 0x0b OrphanLeaf_NoCall_Ins02_004872a0 inherited unchanged (0x4872a0)
   // slot 0x0c CreateTDialogBehaviorInstance inherited unchanged (0x4872c0)
   // slot 0x0d OrphanRetStub_004872e0 inherited unchanged (0x4872e0)
-  virtual undefined WrapperFor_AllocateWithFallbackHandler_At004b0c00(); // slot 0x0e 0x4b0c00
+  virtual undefined HotspotBehaviorSlot0E(); // slot 0x0e 0x4b0c00
 
   THotspotBehavior();
 };
-

@@ -130,8 +130,7 @@ public:
   // Ghidra mislabel.
   virtual undefined
   UpdateTacticalCurrentUnitControlAndDialogLabel(TTacticalUnit* unit); // slot 0x73 0x5acb50
-  virtual undefined
-  WrapperFor_InvalidateCityDialogRectRegion_At005acc90(int param_1); // slot 0x74 0x5acc90
+  virtual undefined TacticalToolbarSlot74(int param_1);                // slot 0x74 0x5acc90
   // Toolbar slice (base TCluster ends at +0x88). battle88/unitSpriteAtlasSurface94 are
   // wired by the live-battle initializer 0x5a9d90; currentUnit8C by slot 0x73.
   class TTacticalBattle* battle88;    // +0x88
