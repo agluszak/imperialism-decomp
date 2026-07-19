@@ -108,6 +108,7 @@ Two standing behavioral rules the topical skills exist to enforce:
   `reccmp-user.yml`, `just restore-project`) — gitignored machine state does not
   follow the git tree.
 - `docs/toolchain.md` — compiler/linker forensics and reproduction decisions.
+- `docs/cloud-env.md` — Cursor Cloud session setup (dockerd, Ghidra paths, blockers).
 - `docs/reference/` — layout/contract and game-domain references (struct layouts,
   function/entry-chain map, bitmap IDs, tech unlocks).
 
@@ -209,41 +210,38 @@ Mandatory. Do not use bridge thunks, placement-new shims, manual vtable writes, 
 runtime helpers when a real C++ construct can express the same thing. Full recipes,
 examples, and rationale: `docs/reference/construction.md`.
 
-1. **Prefer real inheritance over construction bridges.** A structurally-derived class
-   is `class TDerived : public TBase`, and its ctor calls `: TBase()` naturally — not
-   `ConstructTBaseAtThis(this)` / `new (this) TBase()` / `VCall_RuntimeBaseCtor(this)`.
-2. **No manual vtable writes** (`*(void**)this = ...`, `vptr = g_vtbl...`). The
-   `// VTABLE:` annotation + C++ inheritance own vtable emission; a needed vptr write
-   means the class model is wrong. Allowed only in quarantined runtime files with a
-   comment proving it isn't normal construction. *(enforced by `just antipattern-gate`)*
+1. **Prefer real inheritance over construction bridges** — `class TDerived : public
+   TBase` with a natural `: TBase()` ctor, not `ConstructTBaseAtThis(this)` /
+   `new (this) TBase()` / `VCall_RuntimeBaseCtor(this)`.
+2. **No manual vtable writes** (`*(void**)this = ...`, `vptr = g_vtbl...`). `// VTABLE:` +
+   C++ inheritance own vtable emission; a needed vptr write means the class model is
+   wrong. Allowed only in quarantined runtime files with a comment proving it isn't normal
+   construction. *(enforced by `just antipattern-gate`)*
 3. **Constructor field init is about placement.** Use member-initializer lists (in
    declaration order) when the original writes scalar fields before constructing later
    non-POD members; body assignments force the member construction first and mismatch.
 4. **Declaration order is part of the reconstruction** — C++ constructs members in
    declaration order. Match the original layout; do not reorder fields for looks.
-5. **Use real member objects, not raw storage + init helpers** — declare a `CString`
-   member as `CString`, not `unsigned char[4]` + `InitializeCString`. Raw storage only
-   while the type is genuinely unknown.
-6. **Compiler construction/destruction helpers are compiler output, not source-model
-   APIs.** MSVC EH/vector iterator functions (`CallCallbackRepeatedly`,
-   `InvokeCallbackNTimesWithSehGuard`, array constructors/destructors, cleanup callbacks,
-   unwind helpers) and scalar deleting destructors must not be restored, wrapped, ported
-   into invented helper TUs, or renamed as gameplay/runtime abstractions in manual game
-   code. Do not keep them as "runtime helpers" either: in manual source they must
-   disappear into real C++ source constructs. Recover the actual element/member type and
-   let C++ member arrays, constructors, destructors, scalar deleting destructors, and
-   inheritance emit those helper calls naturally. Never introduce `callback_helpers`,
-   `CallCallbackRepeatedly`, `InvokeCallbackRepeatedly`, raw callback-address wrappers,
-   or similar fake abstractions as a substitute for the real element type.
-7. **Virtual calls are real virtual calls / real member methods**, not `VCall_*`
-   facades or `reinterpret_cast` to fake calling conventions (see the guardrail below).
+5. **Use real member objects, not raw storage + init helpers** — a `CString` member is
+   `CString`, not `unsigned char[4]` + `InitializeCString`. Raw storage only while the
+   type is genuinely unknown.
+6. **Compiler construction/destruction helpers are compiler output, not source APIs.**
+   MSVC EH/vector-iterator functions (array ctors/dtors, cleanup callbacks, unwind
+   helpers) and scalar deleting destructors must not be restored, wrapped, ported into
+   invented helper TUs, or renamed as gameplay/runtime abstractions — in manual source
+   they disappear into real C++ constructs. Recover the actual element/member type and
+   let C++ member arrays, ctors, dtors, scalar deleting dtors, and inheritance emit those
+   helper calls naturally. Never introduce `callback_helpers`, `CallCallbackRepeatedly`,
+   raw callback-address wrappers, or similar fakes in place of the real element type.
+7. **Virtual calls are real virtual calls / real member methods**, not `VCall_*` facades
+   or `reinterpret_cast` to fake calling conventions (see the guardrail below).
 8. **No `operator new`/`operator delete` factories or `__cdecl` free-function factory /
    class-name helpers** (`CreateTViewInstance`, etc.) as a porting approach — port real
    methods + real inheritance. The retired "EH-new factory" pattern is not a template.
    *(baseline-tracked by `just antipattern-gate`)*
-9. **No placement-new (`new (this) T()`) for base construction** — use real
-   inheritance. Placement-new is only for genuine placement semantics (pools, explicit
-   reconstruction into a buffer). *(enforced by `just antipattern-gate`)*
+9. **No placement-new (`new (this) T()`) for base construction** — use real inheritance;
+   placement-new is only for genuine placement semantics (pools, explicit reconstruction
+   into a buffer). *(enforced by `just antipattern-gate`)*
 10. **Scalar deleting destructors (`??_G`/`??_E`) are compiler-generated** — claim them
    with `// SYNTHETIC` + an exact backtick name in `config/original_entities.csv`; never
    hand-write a `Destruct*AndMaybeFree` bridge. Requires a genuinely polymorphic class.
@@ -259,135 +257,73 @@ examples, and rationale: `docs/reference/construction.md`.
 
 ## Gate-chasing guardrail (never revert architecture to pass verification)
 
-When `just gates`, `just vtable`, `just build`, or pre-commit checks fail **after** you
+When `just gates`, `just vtable`, `just build`, or a pre-commit check fails **after** you
 have promoted real C++ shape — typed fields, real methods, `new T()`, typed singleton
-globals — **never undo that work to make verification pass.** Regressing from real
-methods back to `extern undefined4` + `reinterpret_cast` at the callsite is strictly
-worse than a failing gate and is treated as a source-model corruption (construction
-Hard Rule 11).
+globals — **never undo that work to make verification pass.** Reverting real methods to
+`extern undefined4` + `reinterpret_cast` at the callsite is strictly worse than a failing
+gate and is a source-model corruption (construction Hard Rule 11). Promotion is one-way:
+bridges get retired, never restored.
 
-### Typical failure mode (do not repeat)
-
-1. Port real shape: named fields instead of `this + offset`, `g_pX->Method()` instead of
-   a free-function stub, `new TNetMgr()` instead of a heap shim.
-2. A gate fails (`just vtable`, duplicate `// FUNCTION:`, `antipattern-gate`, link error).
-3. Agent **reverts step 1** — restores stub casts, `new char[]` buffers, or deletes the
-   promoted method — so the gate passes.
-
-Step 3 is **forbidden**. Fix forward or stop and report; never fix backward.
-
-### Fix forward (in order)
-
-1. **Build/link** — missing symbol: promote/own the callee as a real method, or use a
-   genuine LIBRARY symbol (`operator new` at `0x606f73`, not a fake
-   `AllocateWithFallbackHandler` stub). Wrong owner: fix the marker; stubs
-   regenerate on the next build.
-2. **Duplicate marker** — one address, one owner; move `// FUNCTION:` to the class that
-   owns the method, sync ownership, regen stubs. Do not delete the manual method.
-3. **`just vtable Class`** — first `new T()` in manual code can expose a pre-existing
-   class-model gap. Fix slot ownership / imports / missing overrides on that class; do
-   **not** stop constructing the class and do **not** re-stub callsites.
-4. **`antipattern-gate`** — prefer `new T()` over explicit `operator new` + placement;
-   prefer real inheritance over bridge thunks. Do not replace `new T()` with stub dispatch.
-
-If none of the above can resolve the gate **without** architectural regression, **stop
-and report** what failed, what you tried, and what class-model work remains. A blocked
-commit with correct source beats a passing commit with reverted stubs.
-
-### Callee classification (pick once, do not flip-flop)
-
-| Evidence | Correct model | Forbidden rollback |
-|----------|---------------|--------------------|
-| `mov ecx, …` / callee uses `[ecx+off]` | Real `__thiscall` method on owning class; `obj->Method()` | `reinterpret_cast` to `__thiscall*` on `undefined4` stub |
-| Vtable dispatch | Real `virtual` on recovered class | Raw `vftable[i]` or `VCall_*` facade |
-| `0x606f73` / `AllocateWithFallbackHandler` in listing | `new T()` (MFC `operator new` LIBRARY in `mfc_heap_library.cpp`) | `new char[n]` + stub ctor cast |
-| `// LIBRARY:` in repo | Link against MFC; no stub definition | Add a fake `undefined4` stub |
-| Genuine `__cdecl` free function, no `this` | Port the real callee when feasible; the legacy `extern undefined4` + typed-cast-at-callsite form is a bridge being retired, not a porting approach | — |
-
-**The legacy typedef-cast form applies only to genuine free-function thunks.** It does
-**not** permit re-stubbing a callee you have already verified is `__thiscall` on a
-recoverable class because a gate failed.
-
-### Promotion direction is one-way
-
-Temporary bridges must be **retired**, not restored. Once a callsite uses
-`g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(...)` or
-`new TNetMgr()` / `TNetMgr::ConstructGlobalTurnEventQueueManager(...)`, do not put the
-free-function stub or fake calling-convention cast back to unblock a commit.
+**Fix forward or stop and report — never fix backward.** If a build/link, duplicate
+marker, `just vtable`, or `antipattern-gate` failure cannot be resolved *without*
+architectural regression, stop and report what failed and what class-model work remains.
+A blocked commit with correct source beats a passing commit with reverted stubs. The
+step-by-step fix-forward order and the callee-classification table (thiscall / vtable /
+operator-new / LIBRARY / cdecl → correct model vs forbidden rollback) live in the
+**`quality-control`** skill.
 
 ## MSVC500 calling-convention guardrail
 
-- **Ghidra's calling-convention attribution is frequently WRONG** (it default-labels
-  unknown functions `__cdecl`; ~33% of "defined `__cdecl`" are really `__thiscall`, and
-  it mislabels `__fastcall`/`__thiscall`/vtable dispatch). Treat every convention from
-  Ghidra/decompiler output as a hypothesis to verify against the assembly (who sets
-  `ecx`/`edx`, who cleans the stack), never as ground truth.
-- **Model real classes with real methods/virtuals — do not fake calling conventions
-  with `reinterpret_cast` to paper over Ghidra's labels.** This is the single most
-  repeated correction. (`reinterpret_cast` to a `__thiscall` function pointer is
-  enforced against by `just antipattern-gate`.)
-  - If a call is `thiscall`, the callee is a class method: declare it as a real method
-    on the real class and call `obj->Method(args)`. Do NOT cast a free-function pointer
-    to a fake `__fastcall(void*, int /*edx*/, ...)` shape with a dummy `edx`.
-  - If a call is a **vtable dispatch**, model the real C++ class with real `virtual`
-    methods (in the correct slot order — verify the slot offset in the disassembly) and
-    call `obj->Virtual(args)` directly on the owning recovered class.
-- A `reinterpret_cast` that only adjusts a return type or argument types of a genuinely
-  same-convention free function (e.g. a real `__cdecl(void)` thunk) is fine. Faking the
-  *convention* (esp. thiscall-as-fastcall-with-dummy-edx) is not.
-- For an unavoidable free-function bridge where no class can yet be modeled, prefer
-  `__fastcall` and keep the bridge out of primary method bodies — but first ask whether
-  the right fix is to recover the owning class.
+- **Ghidra's calling-convention attribution is frequently WRONG** — it default-labels
+  unknown functions `__cdecl` (~33% of "defined `__cdecl`" are really `__thiscall`), and
+  mislabels `__fastcall`/`__thiscall`/vtable dispatch. Treat every convention as a
+  hypothesis to verify against the assembly (who sets `ecx`/`edx`, who cleans the stack).
+- **Model real classes with real methods/virtuals — never fake a convention with
+  `reinterpret_cast` to paper over a label.** This is the single most repeated correction
+  (enforced by `just antipattern-gate`). A `thiscall` callee is a class method → declare
+  it and call `obj->Method(args)`; a vtable dispatch → real `virtual` in the verified slot
+  order, called on the recovered class. Do NOT cast a free-function pointer to a fake
+  `__fastcall(void*, int /*edx*/, …)` shape with a dummy `edx`.
+- Adjusting only the return/argument types of a genuinely same-convention free function
+  (e.g. a real `__cdecl(void)` thunk) is fine; faking the *convention* is not. For an
+  unavoidable bridge where no class can yet be modeled, prefer `__fastcall`, keep it out
+  of primary method bodies, and first ask whether the right fix is to recover the owning
+  class. Full recipes: the **`calling-conventions`** skill.
 
 ## Type-modeling guardrail
 
-- **Use the correct type, and the real MFC type when the data is one.** Model a field,
-  parameter, or local as the actual type the original used — not `int`, raw
-  `unsigned char[]` storage, or a hand-rolled struct standing in for a known type. When
-  the layout/behaviour is an MFC class, declare it as that MFC type (`CString`,
-  `CPtrList`/`CObList`/`CObArray`/`CTypedPtrList`, `CPoint`/`CRect`/`RECT`, `CWnd`,
-  `CArchive`, `CRuntimeClass`, …) so members construct correctly and call sites use the
-  real API instead of walking protected internals (see the `mfc-collections` skill and
-  construction Hard Rule 5). A `reinterpret_cast` to reach a method is the smell that the
-  underlying type is mismodelled.
+Examples and evidence recipes live in the **`data-modeling`** and **`mfc-collections`**
+skills; the invariants:
+
+- **Use the real type — the real MFC type when the data is one.** Model a field/param/
+  local as what the original used, not `int`, raw `unsigned char[]`, or a hand-rolled
+  stand-in. MFC data gets the MFC type (`CString`, `CPtrList`/`CObList`/`CObArray`/
+  `CTypedPtrList`, `CPoint`/`CRect`/`RECT`, `CWnd`, `CArchive`, `CRuntimeClass`, …) so
+  members construct and call sites use the real API instead of protected internals. A
+  `reinterpret_cast` to reach a method is the smell of a mismodelled type.
 - **Never borrow a type from a neighbouring signature.** A parameter labelled `TEvent*`
-  on one method does not make the object passed there a `TEvent`. Confirm the object's
-  real class first (its constructor/vtable, `config/recovered_globals.csv`, `original_entities.csv`,
-  or the Mac oracle) before typing or casting. Distinct classes that merely share a layout
-  region or a slot are *not* interchangeable — `PostCommand(TCommand*)` vs
-  `PostAnEvent(TEvent*)` in the Mac evidence proves `TCommand` ≠ `TEvent`, so a
-  `TCommand`→`TEvent*` cast is a genuine type pun, not an identity.
-- **An opaque/polymorphic vtable slot takes `void*`, not one caller's type.** When
-  different overrides interpret the same slot's argument differently (one caller passes a
-  `RECT*`, another a `TCommand*`), type the parameter `void*` and do the interpretation
-  (`static_cast<TCommand*>`) inside each override body. Every call site then converts
-  implicitly (cast-free); confine the one genuine cross-type pun to a single spot in the
-  body. Do not pick one caller's type and force the others to `reinterpret_cast`.
+  elsewhere does not make this object a `TEvent`. Confirm the real class (ctor/vtable,
+  `config/recovered_globals.csv`, `original_entities.csv`, or the Mac oracle) before
+  typing or casting. Distinct classes sharing a layout region or slot are *not*
+  interchangeable (`PostCommand(TCommand*)` vs `PostAnEvent(TEvent*)` proves
+  `TCommand` ≠ `TEvent`).
+- **An opaque/polymorphic vtable slot takes `void*`, not one caller's type** — do the
+  `static_cast<TCommand*>` interpretation inside each override body so every call site
+  converts implicitly. Don't force other callers to `reinterpret_cast`.
 - **Type pointer-bearing fields as typed pointers** (`TEventHandler* targetHandler`, not
-  `int field10`) and update the init helper's argument to match, so call sites pass real
-  objects via implicit upcast with no cast. Exception: a single offset reused as both an
-  `int` and a pointer in different methods must stay `int`/raw — do not force a pointer
-  type onto a dual-purpose slot.
-- **Renames and pointer↔pointer / int-as-int narrowing are codegen-neutral and safe.**
-  reccmp pairs by address and these casts compile to nothing, so aligning a C++ identifier
-  to the curated `original_entities.csv` name (reuse it — don't invent a third) and tightening types
-  cannot regress a score; confirm with `just compare <addr>`. Update an override's
-  signature in lockstep with the base, or it silently stops overriding (`override` fails to
-  compile, or a new vtable slot is created).
-- **Be opportunistic in touched code.** Whenever you are already reading or editing a
-  function, class, or file for an unrelated task, take the chance to improve types/names
-  per the rules above and fix any other issues you notice there (wrong types, stray
-  `reinterpret_cast`s, junk names, obvious bugs) — even if you didn't cause them and even
-  if fixing them isn't strictly required to close the task at hand. Don't go out of scope
-  hunting for unrelated problems elsewhere; this is about not walking past a fixable issue
-  in code you're already looking at.
-- **Every global in `global_data_tables.cpp` must be declared in `global_data_tables.h`.**
-  Consumer `.cpp` files must `#include "game/global_data_tables.h"` and use that
-  declaration — never hand-roll a local `extern` re-declaration of a global that's already
-  (or should be) declared there. When adding a new global to the `.cpp`, add its matching
-  `extern` to the header in the same change. When touching a file that locally
-  re-declares one of these globals, migrate it to the header include (opportunistic-fix
-  scope above).
+  `int field10`), updating the init helper's argument to match. Exception: an offset
+  genuinely reused as both `int` and pointer stays `int`/raw.
+- **Renames and pointer↔pointer / int-as-int narrowing are codegen-neutral and safe** —
+  reccmp pairs by address and these casts compile to nothing. Reuse the curated
+  `original_entities.csv` name (don't invent a third); confirm with `just compare <addr>`.
+  Update an override's signature in lockstep with its base or it silently stops overriding.
+- **Be opportunistic in touched code.** While reading/editing any function for another
+  task, fix the wrong types, stray `reinterpret_cast`s, junk names, and obvious bugs you
+  see there — even if you didn't cause them. Don't go out of scope hunting elsewhere.
+- **Every global in `global_data_tables.cpp` must be declared in `global_data_tables.h`**,
+  and consumers must `#include "game/global_data_tables.h"` — never hand-roll a local
+  `extern`. Add the `extern` in the same change as a new global; migrate any local
+  re-declaration you touch (opportunistic-fix scope above).
 
 ## Commit-message policy
 
@@ -419,52 +355,6 @@ score. Accept the delta and `just stats-baseline-update` (full pattern: the
   `codegen-shapes`, `data-modeling`, `big-functions`, `vtable-matching`,
   `class-recovery`, `mfc-collections`); loop-process lessons go to
   `.claude/skills/decomp-loop/heuristics.md`.
-
-## Cursor Cloud specific instructions
-
-Environment prep (install `uv`/`just`/Docker/host-`wine`, `uv sync`, and the one-time
-`just docker-build` of the `imperialism-msvc500` image) is already done by the VM
-snapshot + startup update script; only the notes below are non-obvious. To
-re-provision a fresh host from scratch (system packages, Ghidra, original binary,
-first build), run `scripts/bootstrap.sh` — it is the one-time bootstrap; the
-per-session refresh stays just `uv sync`.
-
-- **Start the Docker daemon before any build.** `dockerd` is not auto-started on a
-  fresh session. Start it once per session (it needs the docker-in-docker workaround
-  already configured in `/etc/docker/daemon.json` = `fuse-overlayfs`):
-  `sudo dockerd >/tmp/dockerd.log 2>&1 &` (or run it in a tmux session). Then
-  `sudo docker info` should report `Storage Driver: fuse-overlayfs`.
-- **`just` calls bare `docker`.** User `ubuntu` is in the `docker` group, so a
-  *newly started* shell can run `docker`/`just build` without `sudo`. Within a shell
-  that started before the group took effect, wrap the command:
-  `sg docker -c 'just build'`.
-- **The original binary is present in the snapshot** at `orig/Imperialism.exe` (sha256
-  `6afab8495db715fd9e719cffa74abe5ede4dd763428ff65d73be4edf16c9e691`), wired via the
-  gitignored `.env` (`ORIGINAL_BINARY=/workspace/orig/Imperialism.exe`) and
-  `reccmp-user.yml` (`targets.IMPERIALISM.path`). Do **not** run `just bootstrap-reccmp`
-  — it refuses to overwrite the committed `reccmp-project.yml`; hand-write/keep
-  `reccmp-user.yml` instead (workflows §0). These three files are gitignored and persist
-  in the snapshot.
-- **reccmp needs host-side `wine`** (installed): the compare/stats/roadmap tools run
-  `cvdump.exe` via `wine`/`winepath` to parse the recompiled PDB. Prefix long compare
-  runs with `WINEDEBUG=-all` to silence Wine chatter.
-- **What works:** the whole loop — `just tooling-check`, `just test`, `just build`,
-  `just detect`, `just resource-check`, `just compare 0xADDR` / `--file`, `just stats`,
-  `just vtable`, `just datacmp`, `just gates`, `just precommit`, and the source-only gates.
-  (`just compare`/`--file` exits non-zero when any listed function is below 100% — that
-  is a score signal, not a setup failure.)
-- **Still blocked:** running the game (`just run`/`debug`/`screenshot`) needs the full
-  retail install (a `Data/` folder next to the exe), which is not present — only the exe
-  was supplied.
-- **Ghidra targets work in cloud** (`ghidra-*`, `ghidra-apply-source`, `refresh-inventory`,
-  `restore-project`). The snapshot ships Ghidra 12.1.2 at `/opt/ghidra_12.1.2_PUBLIC`, the
-  matching `.env` `GHIDRA_INSTALL_DIR`, and the LFS-pulled project export
-  (`vendor/ghidra/exports/Imperialism.gzf`, sha256 in the sibling `.sha256`). The one gotcha
-  is that a fresh shell does **not** inherit `GHIDRA_INSTALL_DIR` — export it before any
-  `just ghidra-*` target: `export GHIDRA_INSTALL_DIR=/opt/ghidra_12.1.2_PUBLIC` (or
-  `set -a; . ./.env; set +a`). Run `just restore-project` once per session to load the
-  program into the Ghidra project (`Program already present` means it's ready); then
-  `just ghidra-decompile 0xADDR`, `just ghidra-listing`, etc. all work.
 
 <!-- BEGIN BEADS INTEGRATION v:1 profile:minimal hash:6cd5cc61 -->
 ## Beads Issue Tracker
