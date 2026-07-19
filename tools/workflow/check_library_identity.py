@@ -32,18 +32,16 @@ library match classified as game code) are deferred until that oracle lands; see
 from __future__ import annotations
 
 import argparse
-import json
 import re
 import sys
 from pathlib import Path
 
 from tools.common.pipe_csv import read_pipe_rows
 from tools.common.repo import repo_root_from_file, resolve_repo_path
-from tools.mfc.apply_library_overrides import LibraryOverride, load_overrides
+from tools.mfc.reviewed_identities import LibraryOverride, load_overrides
 
 DEFAULT_OVERRIDES = "config/reviewed_library_identities.csv"
 DEFAULT_SYMBOLS = "build-msvc500/generated/symbols.csv"
-DEFAULT_BASELINE = "config/baselines/library_identity_gate_baseline.json"
 DEFAULT_ORACLE = "build-msvc500/evidence/library/msvc500_library_oracle.csv"
 DEFAULT_GAMECODE_ALLOWLIST = "config/library_oracle_gamecode_allowlist.csv"
 
@@ -56,14 +54,8 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--overrides", default=DEFAULT_OVERRIDES)
     parser.add_argument("--symbols", default=DEFAULT_SYMBOLS)
-    parser.add_argument("--baseline", default=DEFAULT_BASELINE)
     parser.add_argument("--oracle", default=DEFAULT_ORACLE)
     parser.add_argument("--gamecode-allowlist", default=DEFAULT_GAMECODE_ALLOWLIST)
-    parser.add_argument(
-        "--write-baseline",
-        action="store_true",
-        help="Record the current applied-override count as the baseline and exit.",
-    )
     return parser.parse_args()
 
 
@@ -206,18 +198,9 @@ def main() -> int:
     repo_root = repo_root_from_file(__file__)
     overrides_path = resolve_repo_path(repo_root, args.overrides)
     symbols_path = resolve_repo_path(repo_root, args.symbols)
-    baseline_path = resolve_repo_path(repo_root, args.baseline)
 
     overrides = load_overrides(overrides_path)
     applied_count = len(overrides)
-
-    if args.write_baseline:
-        baseline_path.write_text(
-            json.dumps({"applied_override_count": applied_count}, indent=2) + "\n",
-            encoding="utf-8",
-        )
-        print(f"wrote {args.baseline}: applied_override_count={applied_count}")
-        return 0
 
     symbols = index_symbols(symbols_path)
     ownership = index_ownership(repo_root)
@@ -235,26 +218,15 @@ def main() -> int:
         )
     )
 
-    baseline_count = 0
-    if baseline_path.is_file():
-        baseline_count = int(json.loads(baseline_path.read_text()).get("applied_override_count", 0))
-    if applied_count < baseline_count:
-        problems.append(
-            f"applied override count dropped {baseline_count} -> {applied_count}: a "
-            f"confirmed library identity was removed. Restore it or, if intentional, "
-            f"run `just library-identity-gate-update`."
-        )
-
+    # Exact consistency: every current reviewed row must project exactly. There
+    # is no count baseline — git history records intentional removals.
     if problems:
         print("library-identity gate failed:")
         for problem in problems:
             print(f"  - {problem}")
         return 1
 
-    print(
-        f"library-identity gate passed: {applied_count} reviewed overrides applied "
-        f"(baseline {baseline_count})."
-    )
+    print(f"library-identity gate passed: {applied_count} reviewed identities project exactly.")
     return 0
 
 

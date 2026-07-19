@@ -52,7 +52,6 @@ module|tools.ghidra.dump_message_maps|just:dump-message-maps|Enumerate MFC messa
 module|tools.ghidra.apply_mfc_datatypes|just:apply-mfc-datatypes|Apply MFC datatypes into Ghidra
 module|tools.ghidra.apply_mfc_rtti|just:apply-mfc-rtti|Apply MFC RTTI into Ghidra
 module|tools.ghidra.apply_fidb|just:apply-fidb|Attach/query/apply an MSVC/MFC Function ID database into Ghidra
-module|tools.mfc.apply_msvc500_library_region|just:apply-msvc500-library-region|Generate/apply bounded MSVC500 FID LIBRARY ownership and symbol names
 module|tools.ghidra.datatype_audit|just:ghidra-datatype-audit|Audit Ghidra datatype state
 module|tools.ghidra.restore_project|just:restore-project|Recreate the live Ghidra project from the vendored .gzf
 module|tools.ghidra.export_project|just:export-project|Repack the live Ghidra project into the vendored .gzf
@@ -109,10 +108,8 @@ module|tools.workflow.check_typedef_ghidra_args|just:typedef-args-audit|Typedef-
 module|tools.workflow.gen_compile_commands|just:gen-compile-commands|Rewrite lint compile_commands.json for host clangd
 module|tools.common.reccmp_report|dependency:tools.reccmp.compare_batch|Shared full-report runner (reccmp-reccmp --json, diet or full)
 module|tools.common.symbols|dependency:tools.reccmp.triage|Shared symbols.csv / function_ownership.csv loaders
-module|tools.mfc.apply_library_overrides|just:apply-library-overrides|Project reviewed library-identity overrides onto symbols.csv + LIBRARY markers
 module|tools.mfc.library_identify|just:library-identify|Per-address library-identity diagnostic (symbols/ownership/override/FID/oracle verdict)
 module|tools.workflow.check_library_identity|just:library-identity-gate|Semantic gate: reviewed library overrides applied + ownership=library + ratchet
-module|tools.mfc.apply_library_oracle|just:apply-library-oracle|Project confident oracle matches into symbols.csv + LIBRARY markers (upgrade/convert)
 module|tools.mfc.build_library_oracle|just:build-library-oracle|Relocation-masked object matcher: match exe functions to libcmt/nafxcw COFF members
 module|tools.workflow.check_generated_integrity|just:generated-integrity-gate|No hand-edits under generated dirs (shared with agent-check + CI)
 module|tools.workflow.mfc_collection_audit|just:mfc-collection-audit|Embedded-MFC-collection audit: identity, offsets, block size, duplicate-COMDAT twins

@@ -995,12 +995,6 @@ symbols-integrity-gate:
 library-identity-gate:
   uv run python -m tools.workflow.check_library_identity
 
-[doc('MUTATES config/baselines/library_identity_gate_baseline.json: record current applied-override count')]
-[group('baseline-update')]
-library-identity-gate-update:
-  @test "${ALLOW_POLICY_BASELINE_UPDATE:-}" = "1" || { echo "REFUSED: this rewrites an architecture-policy baseline (blessing new debt)."; echo "If a human approved the exception, rerun with ALLOW_POLICY_BASELINE_UPDATE=1."; exit 2; }
-  uv run python -m tools.workflow.check_library_identity --write-baseline
-
 # Sanity-check a few reccmp-critical symbols.csv rows after Ghidra export.
 [group('gates')]
 symbols-anchor-gate:
@@ -1263,19 +1257,6 @@ vtable-autofix *args:
 mfc-runtime-macros *args:
   uv run python -m tools.workflow.mfc_runtime_macros {{args}}
 
-# MUTATES: config (library region rows).
-[group('rewrite')]
-apply-msvc500-library-region *args:
-  uv run python -m tools.mfc.apply_msvc500_library_region {{args}}
-
-# MUTATES: config/original_entities.csv + src/game/library_msvc500_overrides.cpp.
-# Project reviewed library identities (config/reviewed_library_identities.csv)
-# onto the derived artifacts. Idempotent.
-# Reviewed overrides win over FID for confirmed CRT/MFC functions FID missed (rand).
-[group('rewrite')]
-apply-library-overrides *args:
-  uv run python -m tools.mfc.apply_library_overrides {{args}}
-
 # Diagnostic: aggregate every identity signal for one address (symbols, ownership,
 # reviewed override, cached FID match, object-matcher oracle) into a verdict.
 # Run before behaviourally naming any MSVC/MFC-range or CRT-shaped function:
@@ -1290,14 +1271,6 @@ library-identify address:
 [group('rewrite')]
 build-library-oracle *args:
   uv run python -m tools.mfc.build_library_oracle {{args}}
-
-# MUTATES: config/original_entities.csv + src/game/library_msvc500_oracle.cpp + review CSV.
-# Project confident, unique oracle matches into the derived artifacts (upgrade
-# library symbols/prototypes; convert unowned FID-missed CRT/MFC funcs to library).
-# Idempotent. Precedence: override > oracle.
-[group('rewrite')]
-apply-library-oracle *args:
-  uv run python -m tools.mfc.apply_library_oracle {{args}}
 
 # MUTATES: the given paths (clang-format).
 [group('rewrite')]

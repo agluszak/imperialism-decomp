@@ -19,7 +19,7 @@ secondary evidence — the symbol the address already carries — before falling
 to a review queue. Output: build-msvc500/evidence/library/msvc500_library_oracle.csv with
 address|name|symbol|prototype|library|member|match_kind|confidence|candidate_count.
 
-Unique matches are safe to apply automatically (see apply_library_oracle.py);
+Unique matches: accept by copying into config/reviewed_library_identities.csv;
 ambiguous rows stay a review queue rather than receiving an invented name.
 """
 
