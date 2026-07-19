@@ -5,6 +5,37 @@ planned to be replaced with a newer DB in a separate folder. Everything below is
 the record of what has mutated the DB, so the still-wanted mutations can be
 re-run against the new database.
 
+## 2026-07-19 (latest): `apply_mfc_rtti` stops creating class-layout datatypes (code change, no DB re-apply)
+
+`apply_mfc_rtti.py` had two code paths (`ensure_class_struct`'s "no preserved
+root struct" branch and `ensure_root_class_dt_for_curated`) that independently
+built a NEW root class struct (via `build_class_struct`, now removed) whenever
+none existed yet, sized from RTTI `m_nObjectSize` with only a `vftable` field
+and opaque `field_0x..` base-flattened bytes. This is a second, cruder class-
+layout authority competing with `apply_class_model.py` (Clang AST + MSVC500
+layout oracle + RTTI cross-check) -- worse, an empty/opaque stub it created for
+a not-yet-modeled class is exactly the kind of duplicate `TypeResolver` indexes
+by simple name and can pick over the real one once `apply_class_model` later
+lands the correct struct (see the `ambiguous_simple_name` fix above/below).
+
+Both call sites now only REUSE an existing canonical root struct (refreshing
+its vftable-pointer field to the newly-typed `<Class>Vtbl`) and otherwise defer
+entirely -- no struct is created, sized, or replaced. A class not yet reached by
+`apply_class_model` is left alone (`class_struct_deferred` stat) rather than
+filled with a stub. `apply_mfc_rtti.py` keeps its read-only-adjacent job scope:
+CRuntimeClass descriptor mining, vtable identification/naming, and Ghidra
+runtime-class (DECLARE_DYNAMIC) namespace/inheritance-edge naming -- no
+independent game-class datatype creation, no empty root stubs, no separate
+class-hierarchy authority. `tools/ghidra/rtti_class_oracle.py` remains the
+actual read-only RTTI evidence extractor (walks CRuntimeClass, never opens the
+project writable).
+
+This tool is not wired into `ghidra-apply-source-full` (it has its own
+standalone `just apply-mfc-rtti` target), so the change did not require
+re-running it with `--apply` against the live DB; verified via dry-run (no
+crash, `descriptors=458 vtables=407 overrides_renamed=2425` unaffected) plus
+the full gate/test/stats suite.
+
 ## 2026-07-19: `ghidra-rename-class` tool + full autogen convergence (committed)
 
 Added `just ghidra-rename-class OLD NEW --vtable 0xADDR --apply`

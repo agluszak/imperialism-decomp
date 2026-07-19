@@ -24,11 +24,18 @@ into the Ghidra database so the decompiled code we promote is better:
   4. propagates virtual names base->derived: an anonymous override (a derived
      slot whose body differs from the base's but has only an auto/thunk name) is
      renamed ``<Class>::<BaseVirtualName>`` and filed under the class namespace.
-  5. builds/replaces ``/MFC/vtables/<Class>Vtbl`` so Ghidra can type vtables,
-     while class structures stay canonical at root paths such as ``/<Class>``.
-     Canonical MFC library classes reuse the root datatypes from
-     ``apply_mfc_datatypes`` instead of growing a second class hierarchy. The
-     pass removes stale ``/MFC/classes/<Class>`` duplicates left by older runs.
+  5. builds/replaces ``/MFC/vtables/<Class>Vtbl`` so Ghidra can type vtables.
+     This pass NEVER creates, sizes, or replaces a class's own struct at its
+     root path (``/<Class>``) -- that layout authority belongs entirely to
+     ``apply_class_model.py`` (Clang AST + MSVC500 layout oracle + RTTI
+     cross-check). If a canonical root struct already exists (from
+     ``apply_mfc_datatypes`` or ``apply_class_model``), this pass only
+     refreshes its vftable-pointer field to point at the newly-typed vtable
+     struct; if none exists yet, the class is left alone (`class_struct_
+     deferred` in the stats) rather than filled with an empty/opaque root
+     stub that would make ``TypeResolver``'s by-simple-name lookups
+     ambiguous. The pass removes stale ``/MFC/classes/<Class>`` duplicates
+     left by older runs.
   6. applies high-confidence non-manual prototypes: per-slot function-pointer
      signatures from the live target function or matching Mac CodeWarrior method
      evidence, CreateObject factory return types, direct vtable-store methods,
@@ -389,14 +396,12 @@ def run(program, args) -> dict:
         "vtbl_structs": 0,
         "vtbl_structs_replaced": 0,
         "class_structs": 0,
-        "class_structs_replaced": 0,
+        "class_struct_deferred": 0,
         "class_vptr_verified": 0,
         "class_vptr_mismatch": 0,
         "mfc_canonical_class_reused": 0,
         "mfc_class_duplicates_removed": 0,
         "class_duplicates_removed": 0,
-        "root_this_structs": 0,
-        "root_this_replaced": 0,
         "root_this_preserved": 0,
         "vtable_data_typed": 0,
         "vtable_data_failed": 0,
@@ -725,23 +730,6 @@ def run(program, args) -> dict:
             fdt = dtm.addDataType(fdt, DataTypeConflictHandler.REPLACE_HANDLER)
             return fdt, used_mac
 
-        def build_class_struct(cat, cls: str, base_name: str | None, vptr, size: int):
-            s = _SDT(cat, cls, size, dtm)
-            s.replaceAtOffset(0, vptr, 4, "vftable", None)
-            base_dt = root_or_mfc_datatype(base_name) if base_name else None
-            if base_dt is not None and not is_generated_root_struct(base_dt):
-                for i in range(base_dt.getNumComponents()):
-                    comp = base_dt.getComponent(i)
-                    offset = comp.getOffset()
-                    length = comp.getLength()
-                    if offset < 4 or length <= 0 or offset + length > size:
-                        continue
-                    name = comp.getFieldName() or f"base_0x{offset:x}"
-                    if name == "vftable":
-                        continue
-                    s.replaceAtOffset(offset, comp.getDataType(), length, name, comp.getComment())
-            return s
-
         def component0_type_name(dt) -> str:
             try:
                 if dt is None or dt.getNumComponents() == 0:
@@ -861,24 +849,25 @@ def run(program, args) -> dict:
                 remove_stale_class_duplicate(datatype, cls)
 
         def ensure_class_struct(cls: str, base_name: str | None, vtbl_dt, size: int):
+            """Refresh the vftable field type on an EXISTING canonical root class
+            struct. Never creates or sizes a class struct: layout authority is
+            `apply_class_model.py` (Clang AST + MSVC500 layout oracle + RTTI cross-
+            check); a class this pass hasn't reached yet is left alone rather than
+            filled with an empty/opaque root stub for TypeResolver to trip over."""
+            del base_name, size  # no longer used: never build a struct from these
             existing = dtm.getDataType(CategoryPath.ROOT, cls)
-            preserved = existing is not None and not is_generated_root_struct(existing)
-            if preserved:
-                class_dt = existing
-                replaced = False
-                if cls in MFC_LIBRARY_CLASS_NAMES:
-                    stats["mfc_canonical_class_reused"] += 1
-            else:
-                vptr = PointerDataType(vtbl_dt, dtm) if vtbl_dt else PointerDataType()
-                s = build_class_struct(CategoryPath.ROOT, cls, base_name, vptr, size)
-                class_dt, replaced = replace_or_add_datatype(CategoryPath.ROOT, cls, s)
+            if existing is None or is_generated_root_struct(existing):
+                return None, False, False, "<no canonical struct yet>", "<deferred to apply-class-model>", True
+            class_dt = existing
+            if cls in MFC_LIBRARY_CLASS_NAMES:
+                stats["mfc_canonical_class_reused"] += 1
 
             duplicate = dtm.getDataType(classes_cat, cls)
             if duplicate is not None:
                 remove_stale_class_duplicate(duplicate, cls)
 
             vptr_text = component0_type_name(class_dt)
-            if preserved and vtbl_dt is not None and hasattr(class_dt, "replaceAtOffset"):
+            if vtbl_dt is not None and hasattr(class_dt, "replaceAtOffset"):
                 try:
                     class_dt.replaceAtOffset(
                         0, PointerDataType(vtbl_dt, dtm), 4, "vftable", None
@@ -886,11 +875,7 @@ def run(program, args) -> dict:
                     vptr_text = component0_type_name(class_dt)
                 except Exception as exc:  # noqa: BLE001
                     changes.append(f"  !! class struct {cls} refresh vftable type failed: {exc}")
-            if preserved:
-                return class_dt, replaced, preserved, vptr_text, "preserved canonical root type", True
-            expected = f"{cls}Vtbl *" if vtbl_dt is not None else "pointer"
-            verified = vtbl_dt is None or vptr_text == expected
-            return class_dt, replaced, preserved, vptr_text, expected, verified
+            return class_dt, False, True, vptr_text, "preserved canonical root type", True
 
         def ecx_this_like(fn) -> bool:
             for ins in listing.getInstructions(fn.getBody(), True):
@@ -917,30 +902,28 @@ def run(program, args) -> dict:
                 vtbl_dt, slots = None, []
             apply_vtable_data(cls, vt, vtbl_dt, slots)
             try:
-                _class_dt, class_replaced, root_preserved, vptr_text, expected_vptr, verified = ensure_class_struct(
+                class_dt, _class_replaced, root_preserved, vptr_text, expected_vptr, verified = ensure_class_struct(
                     cls, base, vtbl_dt, info.get("size") or 4
                 )
-                stats["class_structs"] += 1
-                if class_replaced:
-                    stats["class_structs_replaced"] += 1
-                if verified:
-                    stats["class_vptr_verified"] += 1
+                if class_dt is None:
+                    stats["class_struct_deferred"] += 1
+                    if args.verbose:
+                        changes.append(f"  {cls}: no canonical root struct yet -- deferred to apply-class-model")
                 else:
-                    stats["class_vptr_mismatch"] += 1
-                    changes.append(
-                        f"  !! class struct {cls} vftable type is {vptr_text}, expected {expected_vptr}"
-                    )
-                if args.verbose:
-                    changes.append(f"  {cls} class field0: {vptr_text}")
-                if root_preserved:
-                    stats["root_this_preserved"] += 1
-                else:
-                    stats["root_this_structs"] += 1
-                    if class_replaced:
-                        stats["root_this_replaced"] += 1
-                if args.verbose:
-                    mode = "preserved" if root_preserved else "refreshed"
-                    changes.append(f"  {cls} root this type {mode}; field0: {vptr_text}")
+                    stats["class_structs"] += 1
+                    if verified:
+                        stats["class_vptr_verified"] += 1
+                    else:
+                        stats["class_vptr_mismatch"] += 1
+                        changes.append(
+                            f"  !! class struct {cls} vftable type is {vptr_text}, expected {expected_vptr}"
+                        )
+                    if args.verbose:
+                        changes.append(f"  {cls} class field0: {vptr_text}")
+                    if root_preserved:
+                        stats["root_this_preserved"] += 1
+                    if args.verbose:
+                        changes.append(f"  {cls} root this type preserved; field0: {vptr_text}")
             except Exception as exc:  # noqa: BLE001
                 changes.append(f"  !! class/root struct {cls} failed: {exc}")
 
@@ -1217,23 +1200,17 @@ def run(program, args) -> dict:
             return dtm.getDataType(CategoryPath.ROOT, name)
 
         def ensure_root_class_dt_for_curated(cls: str, object_size: int | None = None):
-            """Return a root struct for pointer typing. RTTI may not have built one
-            (e.g. Config is not DYNCREATE) even when the class namespace exists."""
+            """Return the EXISTING canonical root struct for pointer typing, or None.
+            Never creates one: RTTI may not have built one yet (e.g. Config is not
+            DYNCREATE) even when the class namespace exists, but that's
+            apply_class_model.py's layout authority to fill, not this pass's --
+            fabricating an empty/opaque stub here would make it a fake canonical
+            datatype (and an ambiguous-by-simple-name trap for TypeResolver)."""
+            del object_size  # kept for call-site compatibility; no longer used to size a stub
             existing = root_class_dt(cls)
             if existing is not None and existing.getLength() > 1:
                 return existing
-            ns = st.getNamespace(cls, None)
-            if ns is None and object_size is None:
-                return existing
-            size = object_size or (existing.getLength() if existing is not None else 4)
-            if size < 4:
-                size = 4
-            vptr = PointerDataType()
-            s = build_class_struct(CategoryPath.ROOT, cls, None, vptr, size)
-            dt, _replaced = replace_or_add_datatype(CategoryPath.ROOT, cls, s)
-            if args.verbose:
-                changes.append(f"  curated ensure struct {cls} (size=0x{size:x}) for pointer typing")
-            return dt
+            return None
 
         for row in read_pipe_csv(RECOVERED_GLOBALS_PATH):
             name = (row.get("name") or "").strip()
@@ -1516,15 +1493,13 @@ def main() -> int:
             f"          vtbl_structs={s['vtbl_structs']} class_structs={s['class_structs']} "
             f"ctors_named={s['ctors_named']} this_typed={s['this_typed']}\n"
             f"          vtbl_replaced={s['vtbl_structs_replaced']} "
-            f"class_replaced={s['class_structs_replaced']} "
+            f"class_struct_deferred={s['class_struct_deferred']} "
             f"class_vptr_verified={s['class_vptr_verified']} "
             f"class_vptr_mismatch={s['class_vptr_mismatch']} "
             f"mfc_canonical_reused={s['mfc_canonical_class_reused']} "
             f"mfc_duplicates_removed={s['mfc_class_duplicates_removed']} "
             f"class_duplicates_removed={s['class_duplicates_removed']}\n"
-            f"          root_this_structs={s['root_this_structs']} "
-            f"root_this_replaced={s['root_this_replaced']} "
-            f"root_this_preserved={s['root_this_preserved']}\n"
+            f"          root_this_preserved={s['root_this_preserved']}\n"
             f"          vtable_data_typed={s['vtable_data_typed']} "
             f"vtable_data_failed={s['vtable_data_failed']} "
             f"slot_signatures={s['slot_signatures']} "
