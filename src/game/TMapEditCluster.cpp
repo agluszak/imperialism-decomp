@@ -1,5 +1,7 @@
 #include "game/TMapEditCluster.h"
 
+#include "game/TCluster.h"
+
 // SYNTHETIC: IMPERIALISM 0x005b2900
 // TMapEditCluster::`scalar deleting destructor'
 TMapEditCluster::~TMapEditCluster() {}
@@ -14,4 +16,6 @@ IMPLEMENT_DYNCREATE(TMapEditCluster, TCluster)
 TMapEditCluster::TMapEditCluster() {}
 
 // FUNCTION: IMPERIALISM 0x005b2970
-void TMapEditCluster::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) { }
+void TMapEditCluster::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {
+  TCluster::HandleEvent(commandId, sourceHandler, event);
+}

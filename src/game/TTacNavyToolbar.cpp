@@ -25,7 +25,10 @@ IMPLEMENT_DYNCREATE(TTacNavyToolbar, TTacticalToolbar)
 TTacNavyToolbar::TTacNavyToolbar() {}
 
 // FUNCTION: IMPERIALISM 0x005ad180
-void TTacNavyToolbar::NoOpUiLifecycleHook(int arg) {}
+void TTacNavyToolbar::NoOpUiLifecycleHook(int arg) {
+  TTacticalToolbar::NoOpUiLifecycleHook(arg);
+  SetControlClassAndRefresh(0x68756c6c); // 'hull'
+}
 
 // FUNCTION: IMPERIALISM 0x005ad1b0
 void TTacNavyToolbar::HandleEvent(int commandId, TEventHandler* sourceHandler, TEvent* event) {}

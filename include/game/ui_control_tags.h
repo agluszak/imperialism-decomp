@@ -135,6 +135,7 @@ const unsigned int kTagNada = 0x6e616461; // 'nada' — sentinel: no option sele
 const unsigned int kControlTagTarg = 0x74617267u; // 'targ' — tactical target button
 const unsigned int kControlTagRetr = 0x72657472u; // 'retr' — tactical retreat button
 const unsigned int kControlTagCurr = 0x63757272u; // 'curr' — tactical current-unit portrait
+const unsigned int kControlTagHelp = 0x68656c70u; // 'help' — tactical toolbar help button
 
 // Battle-intro ('hola') dialog tags
 const unsigned int kControlTagAttackerCoat = 0x61636f61u; // 'acoa'
