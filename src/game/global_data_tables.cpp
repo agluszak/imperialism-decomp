@@ -671,6 +671,10 @@ float g_TileHeatmapNeighborDiffusionFactor = 0.2f;
 double g_MapPreviewScaleX6A3410;
 // GLOBAL: IMPERIALISM 0x006a33d0
 double g_MapPreviewScaleY6A33D0;
+// GLOBAL: IMPERIALISM 0x006a3360
+extern double g_mapCellRowScale_006a3360;
+// GLOBAL: IMPERIALISM 0x006a3388
+extern double g_mapCellColumnScale_006a3388;
 
 // Two more 1/64 (0.015625) scale-factor doubles reset to default by the same defaults-table
 // initializers (0x49c0c0 / 0x49c0f0); g_ScaleDefault6A1FC0 is scaled by

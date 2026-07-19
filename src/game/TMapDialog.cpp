@@ -22,6 +22,13 @@ extern "C" long _ftol(void);
 
 void NormalizeWrappedMapCoord108x60(short* xCoord, short* yCoord);
 
+static inline double DefaultMapCellScale() {
+  return 0.015625;
+}
+
+double g_mapCellRowScale_006a3360 = DefaultMapCellScale();
+double g_mapCellColumnScale_006a3388 = DefaultMapCellScale();
+
 // Genuine __cdecl free function (bare RET; every caller cleans the 0x14 arg bytes) — not a
 // TMapDialog member, despite living among the map-dialog projection code. The vertical
 // (row-based) output is the THIRD parameter and the horizontal the fourth — the original
@@ -211,44 +218,37 @@ void TMapDialog::ComputeWrappedMapCellAndRegionBandFromScreenCoord(int overlayRe
                                                                    unsigned short* outCol,
                                                                    short* outBand) {
   int* tileOffset = reinterpret_cast<int*>(overlayRecord);
-  unsigned int roundedCol = static_cast<unsigned int>(_ftol());
-  *outCol = static_cast<unsigned short>(roundedCol);
-  short rowValue = 0;
-  if ((roundedCol & 1) == 0) {
-    rowValue = static_cast<short>(_ftol());
+  *outCol = static_cast<unsigned short>(
+      static_cast<int>((viewportOffsetY + tileOffset[1]) * g_mapCellColumnScale_006a3388));
+  short rowValue;
+  if ((*outCol & 1) != 0) {
+    rowValue = static_cast<short>(
+        static_cast<int>((tileOffset[0] + viewportOffsetX + 0x20) * g_mapCellRowScale_006a3360));
+    --rowValue;
   } else {
-    rowValue = static_cast<short>(_ftol()) - 1;
+    rowValue = static_cast<short>(
+        static_cast<int>((tileOffset[0] + viewportOffsetX) * g_mapCellRowScale_006a3360));
   }
   *outRow = rowValue;
   NormalizeWrappedMapCoord108x60(outRow, reinterpret_cast<short*>(outCol));
 
   int wrappedY = viewportOffsetY + tileOffset[1];
-  unsigned short signY = static_cast<unsigned short>(wrappedY >> 31);
-  short bandRow = static_cast<short>(
-                      (((static_cast<unsigned short>(wrappedY) ^ signY) - signY) & 0x3f) ^ signY) -
-                  static_cast<short>(signY);
+  short bandRow = static_cast<short>(wrappedY % 0x40);
 
   short bandCol = 0;
-  if ((*outCol & 1) == 0) {
-    int wrappedX = tileOffset[0] + viewportOffsetX;
-    unsigned short signX = static_cast<unsigned short>(wrappedX >> 31);
-    bandCol = static_cast<short>(
-        (((static_cast<unsigned short>(wrappedX) ^ signX) - signX) & 0x3f) ^ signX);
-    bandCol = static_cast<short>(bandCol - static_cast<short>(signX));
-  } else {
+  if ((*outCol & 1) != 0) {
     int wrappedX = tileOffset[0] + 0x20 + viewportOffsetX;
-    unsigned short signX = static_cast<unsigned short>(wrappedX >> 31);
-    bandCol = static_cast<short>(
-        ((((static_cast<unsigned short>(wrappedX) ^ signX) - signX) & 0x3f) ^ signX) -
-        static_cast<short>(signX));
-    bandCol = static_cast<short>(bandCol - 1);
+    bandCol = static_cast<short>(wrappedX % 0x40 - 1);
+  } else {
+    int wrappedX = tileOffset[0] + viewportOffsetX;
+    bandCol = static_cast<short>(wrappedX % 0x40);
   }
 
   if (bandCol < 0x20) {
     *outBand = static_cast<short>((bandRow < 0x20) + 1);
     return;
   }
-  *outBand = static_cast<short>((0x1f < bandRow) + 3);
+  *outBand = static_cast<short>((bandRow >= 0x20) + 3);
 }
 
 // FUNCTION: IMPERIALISM 0x0051aad0

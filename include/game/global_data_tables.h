@@ -952,6 +952,10 @@ extern const float g_HexHighlightScreenScale_00658640;
 extern float g_TileHeatmapNeighborDiffusionFactor;
 extern double g_MapPreviewScaleX6A3410;
 extern double g_MapPreviewScaleY6A33D0;
+// Strategic-map screen-coordinate conversion scales (1/64). MSVC500 emits their
+// dynamic initializers at 0x519910/0x519940, matching the original BSS-backed globals.
+extern double g_mapCellRowScale_006a3360;
+extern double g_mapCellColumnScale_006a3388;
 extern double g_ScaleDefault6A1FE8;
 extern double g_ScaleDefault6A1FC0;
 extern int g_ResetStateDword6A1E20;
