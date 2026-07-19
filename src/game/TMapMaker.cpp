@@ -970,7 +970,7 @@ void TMapMaker::MapGenPassSlot0F() {
           }
         }
       }
-      vmethod_0023();
+      CreateRivers();
       return;
     }
 
@@ -995,14 +995,84 @@ void TMapMaker::MapGenPassSlot0F() {
 }
 
 // FUNCTION: IMPERIALISM 0x00527d00
-char TMapMaker::vmethod_0023() {
-  return 0;
+void TMapMaker::CreateRivers() {
+  int riversRemaining = g_mapGenRiverCount_006a38e4;
+  int attemptsRemaining = 5000000;
+  while (riversRemaining != 0) {
+    int tileIndex;
+    do {
+      g_mapGenLcgState_006a38e8 = g_mapGenLcgState_006a38e8 * 0x15a4e35 + 1;
+      tileIndex = static_cast<int>((g_mapGenLcgState_006a38e8 >> 12 & 0x7fff) % 0x1950);
+      --attemptsRemaining;
+      if (attemptsRemaining == 0) {
+        return;
+      }
+    } while (mapTileGrid08[tileIndex * 0x24] != 3);
+
+    g_mapGenLcgState_006a38e8 = g_mapGenLcgState_006a38e8 * 0x15a4e35 + 1;
+    int firstDirection = static_cast<int>((g_mapGenLcgState_006a38e8 >> 12 & 0x7fff) % 5);
+    int direction = firstDirection;
+    int neighbor;
+    do {
+      direction = direction == 5 ? 0 : direction + 1;
+      neighbor = ComputeHexAdjacentFullGridTileIndex(tileIndex, direction);
+    } while (mapTileGrid08[neighbor * 0x24] == 3 && direction != firstDirection);
+
+    if (direction != firstDirection && GrowRiver(tileIndex, direction, 6, 0, 1)) {
+      --riversRemaining;
+    }
+  }
 }
 
 // FUNCTION: IMPERIALISM 0x00527ed0
-int TMapMaker::TransformRegionTileTemplateState(int coarseIndex, int arg2, char arg3, int arg4,
-                                                char arg5) {
-  return 0;
+char TMapMaker::GrowRiver(long tileIndex, long incomingDirection, long outgoingDirection,
+                          long depth, unsigned char startedOnHills) {
+  char* tile = mapTileGrid08 + tileIndex * 0x24;
+  char terrainType = *tile;
+  char beganOnHills = terrainType == 2;
+  if (tile[2] != 0 || (terrainType == 3 && depth != 0) ||
+      (terrainType == 2 && startedOnHills == 0)) {
+    return 0;
+  }
+  if (terrainType == 5) {
+    if (depth < 5) {
+      return 0;
+    }
+    tile[2] = static_cast<char>(outgoingDirection + 0x10);
+    return 1;
+  }
+
+  long oppositeDirection = outgoingDirection;
+  long nextDirection = incomingDirection;
+  if (outgoingDirection < 6) {
+    oppositeDirection = outgoingDirection + 3;
+    if (oppositeDirection > 5) {
+      oppositeDirection -= 6;
+    }
+    do {
+      g_mapGenLcgState_006a38e8 = g_mapGenLcgState_006a38e8 * 0x15a4e35 + 1;
+      nextDirection =
+          incomingDirection - static_cast<long>((g_mapGenLcgState_006a38e8 >> 12 & 0x7fff) % 3) + 1;
+      if (nextDirection > 5) {
+        nextDirection -= 6;
+      } else if (nextDirection < 0) {
+        nextDirection += 6;
+      }
+    } while (g_riverConnectionTypeByDirectionPair_00697568[nextDirection][oppositeDirection] == 0);
+  }
+
+  int neighbor = ComputeHexAdjacentFullGridTileIndex(static_cast<int>(tileIndex),
+                                                     static_cast<int>(nextDirection));
+  if (!GrowRiver(neighbor, incomingDirection, nextDirection, depth + 1, beganOnHills)) {
+    return 0;
+  }
+  if (depth == 0) {
+    tile[2] = static_cast<char>(nextDirection + 10);
+  } else {
+    tile[2] = static_cast<char>(
+        g_riverConnectionTypeByDirectionPair_00697568[nextDirection][oppositeDirection]);
+  }
+  return 1;
 }
 
 // Same hex-neighbor math as TMapMgr::ComputeHexNeighborTileIndices, but over

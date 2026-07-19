@@ -101,15 +101,15 @@ public:
   // (46% chance each) until `retryBudget` spreads land. Returns the spread count.
   // slot 22 / 0x58
   virtual int PlaceCityMarkerAndSpreadNeighbors(int tileIndex, int retryBudget, char markerVariant);
-  virtual char vmethod_0023(); // slot 23 / 0x5c
+  virtual void CreateRivers(); // slot 23 / 0x5c
   // Region-template state transform over the tile record at `coarseIndex` (branches on
   // terrain-state bytes 2/3/5 and mirrors a 36-byte template block). Verified RET 0x14
   // (5 stack dwords) -- the previous 0-arg `char GetDeactivateVetoCode()` was templated
   // off TEventHandler's real slot-24 virtual and does not describe this slot. Arg types
   // beyond the dword count are Ghidra-inferred and provisional (body still a stub).
   // slot 24 / 0x60
-  virtual int TransformRegionTileTemplateState(int coarseIndex, int arg2, char arg3, int arg4,
-                                               char arg5);
+  virtual char GrowRiver(long tileIndex, long incomingDirection, long outgoingDirection, long depth,
+                         unsigned char startedOnHills);
   // Map-gen finalize pass (was junk-named OnDeactivated; takes one mode arg the
   // driver passes as 0 -- verified RET 4). slot 25 / 0x64
   virtual void MapGenFinalizePassSlot19(int mode);
