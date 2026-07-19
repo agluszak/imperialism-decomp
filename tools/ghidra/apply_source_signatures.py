@@ -7,11 +7,23 @@ The authoritative signature source is therefore the source model
 (`tools.source_model`, which parses the C++ declaration head into a prototype).
 
 This tool projects those prototypes onto source-owned functions that still carry
-unbound `in_stack_*` reads, and — crucially — VERIFIES each by re-decompile,
-reverting anything that does not converge. Verification is the classifier: only
-"plain missing params" (+ convention-from-source) survive; sret / packed-short /
-sub-dword-alignment / unknown-convention / unresolved-type cases are queued with
-a reason and never left with a guessed signature.
+unbound `in_stack_*` reads, and — crucially — VERIFIES each by re-decompile.
+Verification is the classifier; every function ends in exactly one bucket:
+
+  - **converged** — the re-decompile has NO in_stack left. Kept.
+  - **params_bound_residual** — every originally-flagged offset is now bound (the
+    parameters are correct) but a residual in_stack remains at a *different* offset
+    (a sub-dword read inside a bound param slot, or a spurious local). The correct
+    binding is KEPT (reverting it would restore a weaker signature) and the residual
+    is logged, so the queue still accounts for the function.
+  - **dynamic_storage_insufficient** — an originally-flagged offset is still unbound
+    (packed sub-dword args, sret, wrong boundary). Reverted to the exact prior
+    signature and queued: a signature that didn't help is worse than an honest
+    classification.
+  - **sret / unknown_cc / unresolved / unparsable** — queued before any edit.
+
+A guessed signature is never left in place; the only signatures kept are ones a
+fresh decompile confirms bound the flagged parameters.
 
   just apply-source-signatures            # dry-run: report what would change
   just apply-source-signatures --apply    # project + verify + revert non-converged
@@ -391,15 +403,32 @@ def run(program, args, model):
 
             ifc.flushCache()
             after = _decompile_in_stack(ifc, fn, monitor)
-            if after is not None and before.isdisjoint(after):
-                converged.append((addr, claim.name, "projected", len(param_dts)))
-                applied += 1
-            else:
-                still = sorted(before & (after or before))
+            after = after if after is not None else before
+            original_still = sorted(before & after)   # originally-flagged offsets left unbound
+            if original_still:
+                # The projection did not bind the missing-parameter offsets it was
+                # meant to — the frame is DYNAMIC_STORAGE-insoluble (packed sub-dword
+                # args, sret, or a wrong boundary). Revert to the exact prior
+                # signature and queue: keeping a signature that didn't help is worse
+                # than an honest classification.
                 _restore(fn, snap)
                 queued.append((addr, claim.name,
-                               "dynamic_storage_insufficient:" + ",".join(hex(o) for o in still),
+                               "dynamic_storage_insufficient:" + ",".join(hex(o) for o in original_still),
                                claim.prototype))
+            elif after:
+                # Every originally-flagged offset is now bound (the parameters are
+                # correct), but a residual in_stack remains at a DIFFERENT offset —
+                # a sub-dword read inside an already-bound param slot, or a spurious
+                # local. KEEP the (correct) parameter binding — reverting it would
+                # restore a weaker signature — but log the residual so the queue
+                # still accounts for every function that decompiles with in_stack.
+                applied += 1
+                queued.append((addr, claim.name,
+                               "params_bound_residual:" + ",".join(hex(o) for o in sorted(after)),
+                               claim.prototype))
+            else:
+                converged.append((addr, claim.name, "projected", len(param_dts)))
+                applied += 1
 
         if args.apply and txid is not None:
             program.endTransaction(txid, True)

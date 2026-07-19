@@ -166,19 +166,26 @@ C++ prototype onto each source-owned (`FUNCTION`) and reviewed-library
   the convention from source (method ⇒ `__thiscall`, free ⇒ `__cdecl`); Ghidra
   auto-generates `this`. A leaked `undefined` return keeps the DB's inferred
   return (source is not authoritative for a placeholder).
-- **flushCache + re-decompile + verify**: kept only if the `in_stack` set clears;
-  otherwise reverted to the exact pre-projection signature and queued with the
-  residual offsets. It NEVER infers a parameter from an `in_stack` slot and never
-  appends — the two bugs that made the old fixer unsound.
+- **flushCache + re-decompile + verify**, then classify into one of three
+  buckets. It NEVER infers a parameter from an `in_stack` slot and never appends —
+  the two bugs that made the old fixer unsound:
+  - **converged** — no `in_stack` left; keep.
+  - **params_bound_residual** — the flagged offsets are bound (params correct) but
+    a residual `in_stack` remains at a *different* offset (a sub-dword read inside
+    a bound slot); keep the binding, log the residual (reverting would restore a
+    weaker signature).
+  - **dynamic_storage_insufficient** — a flagged offset stayed unbound; revert to
+    the exact prior signature.
 
-Applied on the clean #91 DB: **163 converged** (verified cleared), **53 queued**
-(`dynamic_storage_insufficient` — packed sub-dword args, sret hidden pointers,
-and spurious high-offset locals that a formal-param projection cannot bind), **0**
-unparsable/apply_error (strict passes). The 53 residuals are the standing
-evidence queue (`build-msvc500/evidence/source_signature_queue.csv`) — explained,
-not a backlog. `just in-stack-audit` is retained as the final read-only
-diagnostic in the full flow; `packed`/`sret` binding via `CUSTOM_STORAGE` is a
-deliberate follow-up, not part of this pass.
+Applied on the clean #91 DB: **152 converged** + **11 params_bound_residual**
+(163 signatures kept, verified) + **53 reverted** (`dynamic_storage_insufficient`
+— packed sub-dword args, sret hidden pointers, spurious high-offset locals), **0**
+unparsable/apply_error (strict passes). The **64** queued
+(`build-msvc500/evidence/source_signature_queue.csv`) are the standing evidence —
+explained, not a backlog — so every source-owned function that still decompiles
+with `in_stack` has an understood reason. `just in-stack-audit` is retained as the
+final read-only diagnostic in the full flow; `packed`/`sret` binding via
+`CUSTOM_STORAGE` is a deliberate follow-up, not part of this pass.
 
 ## Committed mutations (already in the current .gzf, newest first)
 
