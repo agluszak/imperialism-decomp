@@ -11,17 +11,16 @@ class TStream;
 class CString;
 class TZone;
 class TShip;
+struct TGlobalMapCityScoreRecord;
 
 // The former TMapOrderEntryOwnerContext placeholder struct (this comment block
 // used to sit here) is gone: bd 1uj.16.1 resolved FindOrCreateChildOrderLink's
 // receiver to be TTaskForce itself (the parent order entry), not a distinct
-// manager class -- see the `owner` field comment below and FindOrCreateChildOrderLink's
-// own declaration. UNRESOLVED_FIELD_ATTRIBUTION: `owner` (+0x18) is a tagged payload keyed by
-// `attachment`, not a plain TTaskForce* -- PromoteMapOrderChainAndQueue reads it as TZone*
-// (bd 1uj.47.2), attachment 1 propagates it as a raw value, attachment 5 as a target-city
-// record. The final model is a discriminator-keyed union/accessors once every writer and
-// receiver is inventoried; kept raw with per-site casts until then (do not call it
-// "dual-purpose").
+// manager class -- see FindOrCreateChildOrderLink's own declaration. The `owner`
+// slot (+0x0c) that was previously flagged UNRESOLVED is now modeled as the
+// attachment-keyed union TMapOrderContext (see the field comment below); a full
+// writer/receiver disassembly inventory confirmed the discriminator mapping and
+// found no wrong-receiver/wrong-offset defect.
 
 // Map-order queue entry (0x34 bytes). RTTI-confirmed real name TTaskForce
 // (CRuntimeClass chain: TTaskForce -> TObject -> CObject; see
@@ -58,18 +57,26 @@ public:
   // (already used by TTaskForce::SelectPreferredMapOrderEntryByPriorityRules)
   // to avoid touching working code; see bd 1uj.16 notes.
   int attachment;
-  // Was read as a generic "targetRecord" pointer (compared against a
-  // cityRecordPtr) by TNavyMgr's order filter, and, when a child order node's
-  // own owner, as the PARENT TTaskForce entry acting as this node's queue/bucket
-  // owner (bd 1uj.16.1 merge): RemoveNode (0x550ff0), ReassignOrderNodeNation-
-  // AndRebindParentCounters, and FindOrCreateChildOrderLink (0x553bc0) all read
-  // the pointee at the SAME offsets childOrderList/activeChildEntry/bucket-count
-  // region use on `this` -- i.e. `owner` doesn't point at a distinct manager
-  // object (the former TMapOrderEntryOwnerContext guess), it points at another
-  // TTaskForce (the parent order this entry is queued under). TAdmiral's own
-  // primary-order-node accessors (TAdmiral.cpp) read the same +0xc/+0x10/+0x14
-  // shape off a TShip-typed primary order node.
-  TTaskForce* owner;
+  // +0x0c order-context payload: a discriminated variant keyed by `attachment` (+0x08).
+  // The order-entry machinery reuses this one 4-byte slot for the order's context object,
+  // whose concrete type depends on the order kind:
+  //   attachment 1/2/3/4/6 -> asZone       (map/port-zone context; walked through the zone
+  //                           neighbor graph in PromoteMapOrderChainAndQueue, dispatched via
+  //                           TZone vtable slot 0x4c in UpdateNavyOrderMapMarkerByOrderType)
+  //   attachment 5         -> asCityTarget (record in the 384-entry city-score table; its
+  //                           +0xa1 owner-nation flag is read by ApplyMapOrderTypeExecution-
+  //                           Effects, and GetCityIndexFromCityStatePointer resolves it)
+  //   attachment 9 / 0     -> null (SetMapOrderType9AndQueue never writes it; ctor nulls it)
+  // Proven a real tagged union (not incidental reuse) by WriteTo/ReadFrom (0x552b90/
+  // 0x552d10), which serialize THIS slot two different ways depending on attachment==5 (a
+  // city-table index) vs otherwise (a generic CObject reference). Every reader/writer
+  // touches [this+0xc] as one 4-byte pointer, so the members alias at offset 0 and codegen
+  // is identical to the former raw pointer.
+  union TMapOrderContext {
+    TZone* asZone;
+    TGlobalMapCityScoreRecord* asCityTarget;
+    int raw; // packed set-path value / pointer-identity compares
+  } owner;
   // Head of this entry's own child order-node chain (was opaque pad_10[0]).
   // Same TMapOrderChildLinkNode shape TNavyMission::orderList24 walks. When
   // `this` is referenced via a child's `owner` pointer, this is that child's
@@ -81,11 +88,14 @@ public:
   // same role this plays for TAdmiral's primary-order owner and for a child's
   // `owner->activeChildEntry` (former TMapOrderEntryOwnerContext::active_node).
   TShip* activeChildEntry; // +0x14
-  // Copied from the source order node's own +0x08 field when this entry is
-  // created (GetOrCreateMissionOrderEntryForNode, 0x5503a0); compared against
-  // sibling nodes' own +0x08 field by ConsolidateMissionOrderEntriesByTarget-
-  // AndQueue. Real pointee type unconfirmed (was opaque pad_10[8]).
-  int contextAnchor; // +0x18
+  // +0x18 map-action context zone. Unlike `owner`, this is NOT a tagged variant: every
+  // writer stores a zone/context and every reader treats it as TZone* -- equality vs a
+  // primary order node's own +0x08 (TShip::field08, a TZone*), and vtable dispatch through
+  // TZone slots 0x2c (AssignZoneDisplayName), 0x38, 0x4c (tile search) and 0x54 (coastal
+  // heuristic). Serialized as a single CObject reference regardless of attachment. Seeded
+  // from the source order node's +0x08 when the entry is created (0x5503a0); the 2-arg ctor
+  // takes it as an opaque int and stores it verbatim.
+  TZone* contextAnchor; // +0x18
   s16 required_count;
   char pad_1e[0x02];
   int attached_entity;
@@ -104,10 +114,9 @@ public:
   TTaskForce();
   // Real constructor used when a task-force order entry is created for a specific
   // context/nation slot (CreateTaskForceFromNavyOrdersForNationIfEligible 0x560a78,
-  // RebuildMapOrderEntryChildrenForContext 0x536dce). `contextAnchorArg` is an opaque
-  // caller-supplied value stored verbatim into contextAnchor (its real pointee type
-  // varies by caller -- see the contextAnchor field comment); `requiredCountArg` seeds
-  // required_count.
+  // RebuildMapOrderEntryChildrenForContext 0x536dce). `contextAnchorArg` is the context
+  // TZone* passed as an opaque int and stored verbatim into contextAnchor;
+  // `requiredCountArg` seeds required_count.
   TTaskForce(int contextAnchorArg, short requiredCountArg);
 
   void RelinkMapOrderQueueNodeBetween(TTaskForce* prev_node, TTaskForce* next_node);
@@ -347,9 +356,9 @@ public:
   void PromoteMapOrderChainAndQueue(TZone* pContextAnchor); // 0x5533f0
 
   // bd 1uj.16.2/1uj.16.5 target: sibling of SetMapOrderType9AndQueue for map-order kind
-  // 6 (port-zone blockade orders) -- stores `nOrderTarget` into the `owner` tagged-payload
-  // slot (see the owner UNRESOLVED_FIELD_ATTRIBUTION note; same slot PromoteMapOrderChainAndQueue
-  // writes as `contextAnchor`), sets
+  // 6 (port-zone blockade orders) -- stores `nOrderTarget` (a port-zone TZone* passed as an
+  // opaque value) into the `owner` variant via owner.raw, read back as owner.asZone under
+  // attachment 6, sets
   // attachment=6, then the identical free-inactive-children / recompute /
   // self-Free-or-queue tail as SetMapOrderType9AndQueue. Ghidra/symbols.csv mis-attribute
   // this to TControlSeaZoneMission, but its body only ever reads TTaskForce's own field

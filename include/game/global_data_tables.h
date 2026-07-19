@@ -1026,6 +1026,9 @@ extern "C" MappedFlavorTextNationVariantEntry g_MappedFlavorTextNationVariantTab
 class SeapointStretch;
 class SeaSegmentStretch;
 extern SeapointStretch g_seapointQuadTable_006a3478;
+// Scratch remap from pre-existing city-region id to compact id. The load-map form of
+// TMapMaker::MapGenFinalizePassSlot19 clears all 256 entries to -1 before populating it.
+extern int g_cityRegionIdRemapTable_006a3498[0x100];
 extern SeaSegmentStretch g_regionBorderLinkTable_006a3900;
 
 // Hex-neighbour offset tables (offset-coordinate grid; even/odd rows shift columns
@@ -1034,6 +1037,11 @@ extern const int g_anTechItemPurchaseCostBySlot_0066aae8[34];
 extern const int g_hexColOffsetEvenRow_00697450[6];
 extern const int g_hexRowOffset_00697468[6];
 extern const int g_hexColOffsetOddRow_00697480[6];
+// Coarse 27x15 region-grid neighbour deltas. These are a second set of the same
+// offset-coordinate hex directions used by TMapMaker::GetAdjacentRegionGridCell.
+extern const int g_coarseHexColOffsetEvenRow_00697498[6];
+extern const int g_coarseHexRowOffset_006974b0[6];
+extern const int g_coarseHexColOffsetOddRow_006974c8[6];
 
 // Per-hex-direction adjacency bit masks (1,2,4,8,16,32), indexed by direction 0..5. Read
 // byte-wise (OR'd into per-tile adjacency mask bytes) by the tile-adjacency update pass.
