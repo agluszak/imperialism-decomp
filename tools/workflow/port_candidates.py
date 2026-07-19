@@ -54,7 +54,7 @@ def _load_symbols() -> dict[int, tuple[str, int, str]]:
 
 
 def _load_ownership() -> dict[int, tuple[str, str]]:
-    from tools.source_index import ownership_kind, ownership_view
+    from tools.source_model import ownership_kind, ownership_view
 
     return {a: (c.file, ownership_kind(c.kind))
             for a, c in ownership_view(REPO_ROOT).items()}

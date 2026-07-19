@@ -83,7 +83,7 @@ def main() -> int:
     address = parse_hex_address(args.address)
 
     symbols_row = _row_for_address(resolve_repo_path(repo_root, args.symbols), address)
-    from tools.source_index import ownership_kind, ownership_view
+    from tools.source_model import ownership_kind, ownership_view
 
     claim = ownership_view(repo_root).get(address)
     ownership_row = (

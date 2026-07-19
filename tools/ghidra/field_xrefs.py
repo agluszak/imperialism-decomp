@@ -42,7 +42,7 @@ def class_function_addrs(repo_root, cls: str) -> dict[int, str]:
         for addr, name in names_by_addr.items()
         if name.startswith(f"{cls}::") or name.startswith(f"thunk_{cls}::")
     }
-    from tools.source_index import ownership_view
+    from tools.source_model import ownership_view
 
     target_cpp = f"src/game/{cls}.cpp"
     for addr, claim in ownership_view(repo_root).items():

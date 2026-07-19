@@ -511,7 +511,7 @@ def update_symbols(symbols_path: Path, candidates: list[Candidate]) -> int:
 def write_synthetic_claims(repo_root: Path, candidates: list[Candidate]) -> int:
     """Claim each macro-generated GetRuntimeClass with the standard two-line
     // SYNTHETIC block (markers are the only ownership authority)."""
-    from tools.source_index import claimed_addresses
+    from tools.source_model import claimed_addresses
 
     claimed = claimed_addresses(repo_root, "IMPERIALISM")
     added = 0

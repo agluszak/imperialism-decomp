@@ -123,7 +123,7 @@ def _ownership_row(addr: str, source: str = "") -> dict:
         path = first.split(":", 1)[1] if ":" in first else first
         return {"address": format(addr_int, "x"), "target_cpp": path,
                 "ownership": "manual", "note": f"marker in {source}"}
-    from tools.source_index import ownership_kind, ownership_view
+    from tools.source_model import ownership_kind, ownership_view
 
     claim = ownership_view(REPO_ROOT).get(addr_int)
     if claim is None:

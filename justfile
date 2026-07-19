@@ -135,7 +135,7 @@ refresh-inventory: _require-ghidra-install
 [group('build')]
 generate:
   @test ! -e src/autogen || { echo "stale src/autogen exists — stubs are build artifacts now (generated into {{build_dir}}/generated/stubs); delete src/autogen to avoid duplicate reccmp markers" >&2; exit 1; }
-  uv run python -m tools.source_index --gen-dir "{{build_dir}}/generated"
+  uv run python -m tools.source_model --gen-dir "{{build_dir}}/generated"
   uv run python -m tools.generate_symbols --gen-dir "{{build_dir}}/generated"
   uv run python -m tools.stubgen \
     --output-dir "{{build_dir}}/generated/stubs"
@@ -176,7 +176,7 @@ detect:
 [group('build')]
 lint flags="":
   mkdir -p "{{lint_build_dir}}"
-  uv run python -m tools.source_index --gen-dir "{{lint_build_dir}}/generated"
+  uv run python -m tools.source_model --gen-dir "{{lint_build_dir}}/generated"
   uv run python -m tools.stubgen \
     --output-dir "{{lint_build_dir}}/generated/stubs" \
     --chunk-prefix lint_stubs_part \

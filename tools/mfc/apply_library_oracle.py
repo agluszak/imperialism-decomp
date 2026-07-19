@@ -130,7 +130,7 @@ def load_oracle(path: Path) -> list[OracleRow]:
 
 def load_ownership_map(repo_root: Path) -> dict[int, tuple[str, str]]:
     """addr -> (owning file, manual/library) derived from source markers."""
-    from tools.source_index import ownership_kind, ownership_view
+    from tools.source_model import ownership_kind, ownership_view
 
     return {a: (c.file, ownership_kind(c.kind))
             for a, c in ownership_view(repo_root).items()}

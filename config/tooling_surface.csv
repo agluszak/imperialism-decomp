@@ -2,7 +2,7 @@ kind|entry|source|note
 module|tools.ghidra.sync_exports|just:refresh-inventory|Wholesale raw-inventory refresh from the DB
 module|tools.ghidra.apply_source|just:ghidra-apply-source|One-way source model -> Ghidra DB
 module|tools.stubgen|just:generate|Generated build-input stubs (build dir)
-module|tools.source_index|just:generate|Source-marker index (build-dir artifact)
+module|tools.source_model|just:generate|The central source model (single scan/parse authority)
 module|tools.generate_symbols|just:generate|Raw-inventory + source overlay -> generated symbols.csv
 module|tools.workflow.annotate_globals_from_symbols|just:annotate-globals|Global annotation pass
 module|tools.workflow.annotate_vtables_from_symbols|just:annotate-vtables|Vtable annotation pass

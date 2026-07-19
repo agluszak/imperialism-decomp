@@ -95,13 +95,13 @@ def index_symbols(symbols_path: Path) -> dict[int, dict[str, str]]:
 
 
 def index_ownership(repo_root: Path) -> dict[int, str]:
-    from tools.source_index import ownership_kind, ownership_view
+    from tools.source_model import ownership_kind, ownership_view
 
     return {a: ownership_kind(c.kind) for a, c in ownership_view(repo_root).items()}
 
 
 def index_ownership_full(repo_root: Path) -> dict[int, tuple[str, str]]:
-    from tools.source_index import ownership_kind, ownership_view
+    from tools.source_model import ownership_kind, ownership_view
 
     return {a: (c.file, ownership_kind(c.kind))
             for a, c in ownership_view(repo_root).items()}

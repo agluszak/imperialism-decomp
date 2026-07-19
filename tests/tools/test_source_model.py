@@ -1,4 +1,4 @@
-"""Tests for the source-marker index (tools.source_index).
+"""Tests for the central source model (tools.source_model).
 
 The index is the authority for which original addresses manual source claims —
 stub generation and gates derive from it, so scanning must see every marker kind
@@ -11,7 +11,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from tools.source_index import find_duplicate_claims, scan_marker_claims
+from tools.source_model import find_duplicate_claims, scan_marker_claims
 
 
 def _repo(tree: dict[str, str]) -> Path:
@@ -84,3 +84,59 @@ class TestScanMarkerClaims(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class TestDeclarationParsing(unittest.TestCase):
+    def _model(self, tree):
+        root = _repo(tree)
+        from tools.source_model import build_model
+        return build_model(root, "IMPERIALISM")
+
+    def test_qualified_name_and_prototype(self):
+        m = self._model({"src/game/A.cpp":
+            "// FUNCTION: IMPERIALISM 0x00401000\n"
+            "void TLaborPool::WriteTo(TStream* stream) {}\n"})
+        c = m.functions[0x401000]
+        self.assertEqual(c.name, "TLaborPool::WriteTo")
+        self.assertEqual(c.prototype, "void TLaborPool::WriteTo(TStream* stream)")
+
+    def test_free_function_name_is_first_class(self):
+        # The old parser required '::' and dropped free functions to the inventory.
+        m = self._model({"src/game/A.cpp":
+            "// FUNCTION: IMPERIALISM 0x00401000\n"
+            "int ShowOutOfMemoryErrorNewHandler(unsigned int n) { return 0; }\n"})
+        self.assertEqual(m.functions[0x401000].name, "ShowOutOfMemoryErrorNewHandler")
+
+    def test_multiline_declaration(self):
+        m = self._model({"src/game/A.cpp":
+            "// FUNCTION: IMPERIALISM 0x00401000\n"
+            "void TFoo::Bar(int a,\n"
+            "               int b) {\n"
+            "}\n"})
+        c = m.functions[0x401000]
+        self.assertEqual(c.name, "TFoo::Bar")
+        self.assertEqual(c.prototype, "void TFoo::Bar(int a, int b)")
+
+    def test_synthetic_comment_name(self):
+        m = self._model({"src/game/A.cpp":
+            "// SYNTHETIC: IMPERIALISM 0x00401000\n"
+            "// CAmbitDocument::GetRuntimeClass\n"})
+        self.assertEqual(m.functions[0x401000].name, "CAmbitDocument::GetRuntimeClass")
+
+    def test_library_mangled_comment_is_symbol_not_name(self):
+        m = self._model({"src/game/A.cpp":
+            "// LIBRARY: IMPERIALISM 0x00401000\n"
+            "// ___ld12tod\n"})
+        c = m.functions[0x401000]
+        self.assertEqual(c.name, "")
+        self.assertEqual(c.symbol, "___ld12tod")
+
+    def test_vtable_and_global(self):
+        m = self._model({"include/game/T.h":
+            "// VTABLE: IMPERIALISM 0x00650a08\n"
+            "class TLongintList : public CObject {\n};\n",
+            "src/game/g.cpp":
+            "// GLOBAL: IMPERIALISM 0x006a2158\n"
+            "TDisplayMgr* g_pDisplayMgr = 0;\n"})
+        self.assertEqual(m.vtables[0x650a08], "TLongintList")
+        self.assertEqual(m.globals[0x6a2158], "g_pDisplayMgr")
