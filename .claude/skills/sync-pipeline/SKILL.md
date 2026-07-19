@@ -1,6 +1,6 @@
 ---
 name: sync-pipeline
-description: Own the derived-artifact pipeline for the Imperialism decomp — symbols.csv, function ownership, autogen stubs, name overrides, and the Ghidra DB resync (regen-stubs / sync-ghidra / db-resync). Use when editing markers changes ownership, when running or debugging a resync, when symbols.csv rows look wrong (type flips, junk thunk rows, size clamps), when stubs collide or go missing at link time, or when deciding where a curated name belongs.
+description: Own the derived-artifact pipeline for the Imperialism decomp — symbols.csv, function ownership, generated stubs, name overrides, and the Ghidra DB resync (just generate / sync-ghidra / db-resync). Use when editing markers changes ownership, when running or debugging a resync, when symbols.csv rows look wrong (type flips, junk thunk rows, size clamps), when stubs collide or go missing at link time, or when deciding where a curated name belongs.
 ---
 
 # Sync pipeline
@@ -39,7 +39,7 @@ The **reviewed override layer** fixes such rows durably:
 
 - Add a row to `config/msvc500_library_overrides.csv`
   (`address|name|symbol|prototype|library_family|object_member|evidence`).
-- `just apply-library-overrides` (idempotent; auto-runs inside `regen-stubs`)
+- `just apply-library-overrides` (idempotent; runs inside `db-resync`)
   projects it into symbols.csv (name/symbol/prototype, `provenance=msvc500_library_override`)
   and ensures a `// LIBRARY:` marker (in `library_msvc500_overrides.cpp`) so
   `sync-ownership` sets `ownership=library`. It only adds a marker where none
@@ -66,7 +66,7 @@ confident identity regardless of where the linker placed anything. Output:
 `config/msvc500_library_oracle.csv`
 (`address|name|symbol|prototype|library|member|match_kind|confidence|candidate_count`).
 
-`just apply-library-oracle` (idempotent; auto-runs in `regen-stubs`) projects the
+`just apply-library-oracle` (idempotent; runs inside `db-resync`) projects the
 confident, unique matches: it **upgrades the exact decorated `symbol` + prototype**
 on already-library rows, and **converts unowned FID-missed functions** (in the dense
 range, large enough, invented name unreferenced in source) to library ownership.
@@ -88,13 +88,14 @@ dense range).
 
 ## The two commands
 
-- **`just regen-stubs`** — after any marker add/remove/move (incl. `just promote`).
+- **`just build`** — after any marker add/remove/move; it regenerates the build
+  inputs (source index + stubs) from current markers automatically.
   Runs `sync-ownership` (deletion-reconciling) + `symbols-integrity-gate` first,
   then stubgen. Then `just build`.
 - **`just db-resync`** — the full resync after any Ghidra DB mutation:
   `tooling-check` → `sync-ghidra` (push-names → prune ILT DB entities → export →
   prune ILT csv rows → thunk map → normalize autogen → symbol gates) →
-  `regen-stubs` → `build` → `detect` → `gates` → `stats` → `export-project`.
+  ownership sync → `build` → `detect` → `gates` → `stats` → `export-project`.
   `sync-ghidra` alone still mutates the DB (push-names), so `export-project`
   must follow it before committing either way.
 

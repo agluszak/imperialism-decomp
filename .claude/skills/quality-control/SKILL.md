@@ -49,7 +49,7 @@ See `.cursor/rules/commit-workflow.mdc` for regression thresholds and failure ha
 ## Export-sync sequence (run whenever markers/ownership change)
 
 ```sh
-just regen-stubs      # reconciles ownership CSV + checks symbols.csv, then regenerates stubs
+just generate         # regenerates build inputs (source index + stubs) — also runs inside `just build`
 just build
 ```
 
@@ -112,7 +112,7 @@ local/gitignored and commit only `reccmp-project.yml`.
      no comment/blank line between).
    - Check for duplicate address ownership (one impl per address; no duplicate
      `// FUNCTION` across manual files and stubs).
-   - Re-run `just regen-stubs` + `just detect`.
+   - Re-run `just build` + `just detect`.
 2. **`Dropped duplicate address ...`** — the same address is still annotated in a stub
    shard or another manual file.
 3. **Compare name looks like a sentence/comment** — a comment line sits between the

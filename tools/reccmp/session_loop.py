@@ -113,7 +113,7 @@ def pick_best_location(locations: list[Location]) -> Location:
             bucket = 0
         elif "/src/ghidra_autogen/" in path_s:
             bucket = 1
-        elif "/src/autogen/stubs/" in path_s:
+        elif "/generated/stubs/" in path_s:
             bucket = 2
         else:
             bucket = 3
@@ -141,7 +141,7 @@ def load_ghidra_index(path: Path) -> dict[int, str]:
 
 def action_hint(path: str, ghidra_file: str | None) -> str:
     normalized = path.replace("\\", "/")
-    if "/src/autogen/stubs/" in normalized:
+    if "/generated/stubs/" in normalized:
         if ghidra_file:
             return f"Promote from stub into manual source using body in src/ghidra_autogen/{ghidra_file}."
         return "Promote from stub into manual source file."

@@ -52,7 +52,7 @@ agent-start mode +addrs:
   uv run python -m tools.workflow.agent_task start {{mode}} {{addrs}}
 
 # Diff-aware verification: derives the right steps from the actual git diff
-# (markers changed -> regen-stubs; generated files hand-edited -> hard error),
+# (marker changes always regenerate build inputs; hand-edited generated files -> hard error),
 # then format-check on touched C++, build, detect, batch compare + triage of every
 # touched address, gates, tests, stats. Reruns are cheap — fix forward and rerun.
 [doc('Verify the current diff: regen/format/build/compare/triage/gates/tests/stats')]
@@ -120,7 +120,11 @@ sync-ghidra: _require-ghidra-install
 db-resync:
   just tooling-check
   just sync-ghidra
-  just regen-stubs
+  just apply-library-overrides
+  just apply-library-oracle
+  just sync-ownership
+  just symbols-integrity-gate
+  just ownership-integrity-gate
   just push-source-names --apply --quiet
   just build
   just detect
@@ -141,14 +145,16 @@ sync-ownership:
     --target "{{target}}" \
     --ownership-csv "{{function_ownership}}"
 
-# MUTATES: src/autogen/stubs/ (+ runs sync-ownership first, which rewrites ownership CSV).
-# Regenerate linkable stubs for unowned addresses. Runs sync-ownership and the
-# symbols.csv/function_ownership.csv integrity checks first, so
-# "edit markers -> regen-stubs -> build" is safe.
-[doc('MUTATES: src/autogen/stubs/. Regenerate stubs (runs sync-ownership + symbols-integrity-gate + ownership-integrity-gate first)')]
-[group('sync')]
-regen-stubs: apply-library-overrides apply-library-oracle sync-ownership symbols-integrity-gate ownership-integrity-gate
+# Generate the build inputs (source index + linkable stubs) into <build_dir>/generated.
+# Read-only over committed state: scans source markers directly (no sync step, no
+# committed mutation), so "edit markers -> build" is always safe. `just build` runs it.
+[doc('Generate build inputs (source index + stubs) into build-msvc500/generated')]
+[group('build')]
+generate:
+  @test ! -e src/autogen || { echo "stale src/autogen exists — stubs are build artifacts now (generated into {{build_dir}}/generated/stubs); delete src/autogen to avoid duplicate reccmp markers" >&2; exit 1; }
+  uv run python -m tools.source_index --gen-dir "{{build_dir}}/generated"
   uv run python -m tools.stubgen \
+    --output-dir "{{build_dir}}/generated/stubs" \
     --name-overrides "{{name_overrides}}" \
     --ownership-csv "{{function_ownership}}"
 
@@ -213,10 +219,11 @@ dump-thunk-map *args: _require-ghidra-install
 # build — compile, lint, run.
 # ---------------------------------------------------------------------------
 
-[doc('Docker MSVC500 build into build-msvc500/ (runs vtable-gate first)')]
+[doc('Docker MSVC500 build into build-msvc500/ (runs vtable-gate + generate first)')]
 [group('build')]
 build:
   just vtable-gate
+  just generate
   mkdir -p "{{build_dir}}"
   docker run --rm --network none \
     -e CMAKE_FLAGS="{{cmake_flags}}" \
@@ -236,6 +243,12 @@ detect:
 [group('build')]
 lint flags="":
   mkdir -p "{{lint_build_dir}}"
+  uv run python -m tools.source_index --gen-dir "{{lint_build_dir}}/generated"
+  uv run python -m tools.stubgen \
+    --output-dir "{{lint_build_dir}}/generated/stubs" \
+    --annotation-kind none \
+    --name-overrides "{{name_overrides}}" \
+    --ownership-csv "{{function_ownership}}"
   docker run --rm --network none \
     -e CMAKE_FLAGS="{{flags}}" \
     -e LINT=1 \
@@ -806,7 +819,7 @@ push-library-override-names *args: _require-ghidra-install
 # MUTATES: Ghidra DB (with --apply).
 # Mirror ALL curated config/symbols.csv names into the DB (source is authoritative):
 # game class methods, RTTI/global descriptors, etc. that push-names (overrides-only)
-# never pushes. Run after regen-stubs (symbols.csv final). Dry-run by default.
+# never pushes. Run after a resync (symbols.csv final). Dry-run by default.
 [doc('MUTATES: Ghidra DB (--apply). Mirror curated symbols.csv names into the DB')]
 [group('ghidra-db')]
 push-source-names *args: _require-ghidra-install
@@ -1367,7 +1380,7 @@ apply-msvc500-library-region *args:
 
 # MUTATES: config/symbols.csv + src/game/library_msvc500_overrides.cpp.
 # Project reviewed library-identity overrides (config/msvc500_library_overrides.csv)
-# onto the derived artifacts. Idempotent; runs automatically inside regen-stubs.
+# onto the derived artifacts. Idempotent; runs inside db-resync.
 # Reviewed overrides win over FID for confirmed CRT/MFC functions FID missed (rand).
 [group('rewrite')]
 apply-library-overrides *args:
@@ -1391,7 +1404,7 @@ build-library-oracle *args:
 # MUTATES: config/symbols.csv + src/game/library_msvc500_oracle.cpp + review CSV.
 # Project confident, unique oracle matches into the derived artifacts (upgrade
 # library symbols/prototypes; convert unowned FID-missed CRT/MFC funcs to library).
-# Idempotent; runs automatically inside regen-stubs. Precedence: override > oracle.
+# Idempotent; runs inside db-resync. Precedence: override > oracle.
 [group('rewrite')]
 apply-library-oracle *args:
   uv run python -m tools.mfc.apply_library_oracle {{args}}

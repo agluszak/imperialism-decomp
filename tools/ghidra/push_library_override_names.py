@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Propagate reviewed MSVC500 library override NAMES into the live Ghidra DB.
 
-`apply_library_overrides` (run inside `regen-stubs`) writes the reviewed names in
+`apply_library_overrides` (run inside `db-resync`) writes the reviewed names in
 ``config/msvc500_library_overrides.csv`` into ``config/symbols.csv``, but nothing
 pushes them into the Ghidra database itself. `push-names` (which does push
 symbols.csv names into the DB) runs *before* the overrides are applied and also

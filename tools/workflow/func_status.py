@@ -87,7 +87,7 @@ def main() -> int:
             note = f" note={own['note']}" if own.get("note") else ""
             print(f"  ownership   : {own.get('ownership', '')} -> {own.get('target_cpp', '')}{note}")
         else:
-            print("  ownership   : (stub / unowned — lives in src/autogen/stubs)")
+            print("  ownership   : (stub / unowned — generated into build-msvc500/generated/stubs)")
 
         ag = autogen.get(key)
         if ag:

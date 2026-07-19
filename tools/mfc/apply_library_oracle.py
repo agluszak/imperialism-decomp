@@ -262,7 +262,7 @@ def main() -> int:
             continue
         # Apply full identity + schedule a // LIBRARY: marker. (A marker this file
         # already owns from a prior run just means idempotent re-conversion — the
-        # ownership row lags the marker by one sync-ownership step inside regen-stubs.)
+        # ownership row lags the marker by one sync-ownership step.)
         if row is None:
             row = {"address": format(r.address, "x"), "size": "", "type": "function"}
             rows.append(row)

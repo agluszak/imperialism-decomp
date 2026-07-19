@@ -15,9 +15,10 @@ library-shaped targets) library-identify, writing everything into
 build-msvc500/agent-task.json.
 
 `agent-check` inspects the actual git diff and derives the workflow from it:
-markers changed -> regen-stubs; generated files edited without marker changes ->
-hard error; touched C++ -> format-check; then build, detect, batch compare of every
-touched address, triage for below-100% functions, gates, tests, stats.
+build inputs (source index + stubs) are always regenerated (cheap, no committed
+churn); generated/config files edited without marker changes -> hard error; touched
+C++ -> format-check; then build, detect, batch compare of every touched address,
+triage for below-100% functions, gates, tests, stats.
 
 `agent-finish` renders the receipt + diff into a summary suitable for a PR body.
 The receipt is guidance for the agent and reviewers — CI recomputes the checks
@@ -344,7 +345,7 @@ def cmd_start(args: argparse.Namespace) -> int:
             stub_callees[addr] = sorted({
                 line.strip()
                 for line in proc.stdout.splitlines()
-                if "autogen/stubs" in line
+                if "generated/stubs" in line
             })
 
     # 7. Initial compare (score signal — nonzero exit for <100% is expected).
@@ -384,7 +385,7 @@ def cmd_start(args: argparse.Namespace) -> int:
             "ILT thunks are never modeled — resolve to the real target",
         ],
         "allowed_generated_mutations": [
-            "src/autogen/stubs/** + config/function_ownership.csv via `just regen-stubs` only",
+            "config/function_ownership.csv via `just sync-ownership` only (stubs are build artifacts now)",
             "config/*_baseline.* via their `just *-update` targets only (policy baselines need ALLOW_POLICY_BASELINE_UPDATE=1)",
         ],
     }
@@ -415,9 +416,9 @@ def cmd_check(args: argparse.Namespace) -> int:
     results: dict = {}
     failures: list[str] = []
 
-    # Marker-aware stub regeneration.
+    # Generated build inputs are disposable — always regenerate (cheap, no
+    # committed churn). Hand-edits to the remaining tool-owned config still fail.
     diff_text = _git("diff", base, "--", "src", "include") + "\n" + _git("diff", "--", "src", "include")
-    markers_changed = any(MARKER_RE.match(l) for l in diff_text.splitlines())
     from tools.workflow.check_generated_integrity import generated_violations
     violations = generated_violations(base)
     if violations:
@@ -426,12 +427,8 @@ def cmd_check(args: argparse.Namespace) -> int:
         for p in violations[:10]:
             print(f"  - {p}")
         return 2
-    if markers_changed:
-        if _step("regen-stubs", ["just", "regen-stubs"], results).returncode != 0:
-            failures.append("regen-stubs")
-    else:
-        print("[agent-check] no marker changes — skipping stub regeneration "
-              "(running it anyway would only churn generated files)")
+    if _step("generate", ["just", "generate"], results).returncode != 0:
+        failures.append("generate")
 
     # Format check on touched manual C++.
     cpp = [p for p in paths
@@ -478,7 +475,7 @@ def cmd_check(args: argparse.Namespace) -> int:
     task["check"] = {
         "checked_utc": _now(),
         "paths": paths,
-        "markers_changed": markers_changed,
+        "markers_changed": any(MARKER_RE.match(l2) for l2 in diff_text.splitlines()),
         "scores": scores,
         "failures": failures,
         "results": {k: {kk: vv for kk, vv in v.items() if kk != "tail"} | (

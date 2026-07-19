@@ -248,7 +248,7 @@ static-init modeling decision; defer rather than fake with placement-new.
      for the parent sized code+inline-jump-table (RET→end-of-table, NOT the trailing
      NOP/INT3 alignment padding: here 0x59c970..0x59ca98 = 296); (c) delete all the interior
      fragment rows (their ranges now overlap the parent — the symbols-integrity-gate's
-     no-overlap check both forces and validates this); (d) `just regen-stubs` prunes the old
+     no-overlap check both forces and validates this); (d) the next `just build` prunes the old
      fragment ownership + drops the now-orphaned stubs (stub-count falls → ratchet).
      Frequently the parent switch is a verbatim copy of an apply-switch another function
      already inlines (0x59c970's body == the mode-apply switch inside 0x59c440
