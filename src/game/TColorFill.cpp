@@ -14,7 +14,6 @@ IMPLEMENT_DYNCREATE(TColorFill, TAdorner)
 TColorFill::TColorFill() {}
 
 // FUNCTION: IMPERIALISM 0x004ff1c0
-undefined
-TColorFill::WrapperFor_thunk_SetGlobalUiInvalidationFlagAndReturnPrevious_At0049d9c0(int, int) {
+undefined TColorFill::AdornerSlot0C(int, int) {
   return 0;
 }
