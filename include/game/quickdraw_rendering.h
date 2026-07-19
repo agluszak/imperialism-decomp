@@ -49,6 +49,13 @@ TStaticText* ApplyControlThemeStyleAndOptionalCaption(TStaticText* control, int 
                                                       int pointSize, int themeCode, int themeCode2,
                                                       const char* caption);
 
+// 0x5c4180 -- same shape as ApplyControlThemeStyleAndOptionalCaption, but the caption
+// text is loaded from a string-table resource (group/index) via
+// g_pModuleLibraryCacheState instead of being passed as a literal pointer.
+TStaticText* ConfigureUiControlStyleValueAndCaptionFromStringResource(
+    TStaticText* control, int unused2, int pointSize, int themeCode, int themeCode2,
+    int stringResourceGroup, short stringResourceIndex);
+
 // If paletteIndex is the sentinel -1 (as a short), resolves it from the default
 // cached bitmap resource's palette instead. 0x004951e0
 void UpdatePaletteIndexWithDefaultFallback(unsigned int paletteIndex);

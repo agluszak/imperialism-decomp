@@ -2,6 +2,7 @@
 
 #include "game/bitmap_descriptor_helpers.h"
 #include "game/global_data_tables.h"
+#include "game/TModuleLibraryCacheTableStateB.h"
 #include "game/TQuickDrawSurfaceContext.h"
 #include "game/TStaticText.h"
 #include <cstring>
@@ -847,6 +848,29 @@ TStaticText* ApplyControlThemeStyleAndOptionalCaption(TStaticText* control, int 
   if (caption != 0) {
     CString captionString(caption);
     control->AssignTextSharedRefIfChangedAndMaybeInvalidate(&captionString, 0);
+  }
+  return control;
+}
+
+// FUNCTION: IMPERIALISM 0x005c4180
+TStaticText* ConfigureUiControlStyleValueAndCaptionFromStringResource(
+    TStaticText* control, int unused2, int pointSize, int themeCode, int themeCode2,
+    int stringResourceGroup, short stringResourceIndex) {
+  (void)unused2;
+  CString caption;
+  g_pModuleLibraryCacheState->LoadUiStringResourceByGroupAndIndex(&caption, stringResourceGroup,
+                                                                   stringResourceIndex);
+  control->AssertValid();
+  TControlPictureRectState styleDescriptor;
+  styleDescriptor.mode = 0;
+  styleDescriptor.flag2 = 0;
+  styleDescriptor.pointSize = 0;
+  styleDescriptor.styleRef6 = 0;
+  BuildUiTextStyleDescriptor(&styleDescriptor, 0, pointSize, themeCode);
+  control->SetCityProductionDialogPictureRectAndMaybeRefresh(&styleDescriptor, 0);
+  control->SetTextThemeCodeAndMaybeRefresh(static_cast<short>(themeCode2), 0);
+  if (static_cast<LPCSTR>(caption) != 0) {
+    control->AssignTextSharedRefIfChangedAndMaybeInvalidate(&caption, 0);
   }
   return control;
 }
