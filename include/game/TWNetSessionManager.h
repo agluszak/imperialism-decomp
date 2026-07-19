@@ -61,10 +61,6 @@ public:
   unsigned char DestroyPlayerAndStoreResult(DWORD idPlayer);
   // Free the runtime selection entries and release the DirectPlay interfaces.
   void ResetRuntimeSelectionRecordBuffer(); // 0x00480400
-  // Drop g_RuntimeSelectionRecords006a15e0's contents and free its backing array
-  // (shared tail of ResetRuntimeSelectionRecordBuffer and
-  // OpenRuntimeSelectionSourceWithOptionalSeed's success paths).
-  void ClearRuntimeSelectionRecordArray();
   // If sessionEntry is null and a session is already open (directPlayInterface04 !=
   // 0), no-op success. Otherwise closes any open session, then either creates a
   // fresh IDirectPlay bound to sessionEntry's GUID (DirectPlayCreate, ordinal 1 of

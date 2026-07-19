@@ -21,7 +21,7 @@ unsigned char TWNetSessionManager::DestroyPlayerAndStoreResult(DWORD idPlayer) {
   return destroyResult >= 0;
 }
 
-void TWNetSessionManager::ClearRuntimeSelectionRecordArray() {
+static void ClearRuntimeSelectionRecordArray() {
   for (int index = 0; index < g_RuntimeSelectionRecords006a15e0.GetSize(); ++index) {
     delete g_RuntimeSelectionRecords006a15e0[index];
   }
@@ -74,7 +74,10 @@ unsigned char TWNetSessionManager::OpenRuntimeSelectionSourceWithOptionalSeed(
 
 // FUNCTION: IMPERIALISM 0x00480400
 void TWNetSessionManager::ResetRuntimeSelectionRecordBuffer() {
-  ClearRuntimeSelectionRecordArray();
+  for (int index = 0; index < g_RuntimeSelectionRecords006a15e0.GetSize(); ++index) {
+    delete g_RuntimeSelectionRecords006a15e0[index];
+  }
+  g_RuntimeSelectionRecords006a15e0.RemoveAll();
 
   if (directPlayInterface04 != 0) {
     directPlayInterface04->Close();
